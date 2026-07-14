@@ -1,197 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE9D448CFF
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 12:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856164483BA
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 12:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784033927; cv=none; b=LvqvGlBxpmCCT9Nd6bmBNQpmanh3ZY+cmbdb41+seVHr2/h7P8RJLIb4HnwKcU44xSRpgIgTMi6CfzSxt/1NdtAFvgNVyUJSz8aw0obpw4JFOsL2ioOvM+aFbeBmrLx2pdGl3VzxsWZMlXTNYSh0wsOrv7zOGSGaGyW1uKc7YaA=
+	t=1784033936; cv=none; b=DpErzS36K8ygRKXIJqDLQOQAwHAoIQGZtuSZ/lNGJB568BvfZTtvmzrL2TZIIALh55mS+L4GmsT3Fb9d18IkUxOuqDnxvHPj0BE6vv+iBdO9f1vsPAYww4r5A1T6SIADfWafqOCoSCKeXluTUAst06Wyn3o7p5JzLDe4Om9biYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784033927; c=relaxed/simple;
-	bh=hv/2p3O30g4J5S1LHHY0tlua7fnp53UkHxgT0cX0pQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zgwtz8/nhOVlSmSvLFYflNgsFYyTF871eP8kIF7fWPA/5ps+1CQcfuFfLLsXcWbaJB7DrGkjRA1qyXStvaizifoY7TNlbDrWzgQxRBO+uKnS6qcgwwzNXwLmWFd8JfIcxlVegG7sK4Ek+lJ4+tRNgFI9p9lc/JPIO672HDuF6vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJiEyHuF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784033936; c=relaxed/simple;
+	bh=kh3suqL/Cm8hQIsIKe0J8PGLIi3c5/TsdDTB9lcKtKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZvDRTbbtwQrKjIvRExdY0VRDgqdnODY2Taca5MJP/DzRVCS2NaRI0hV1WTxNV0eUF1dW/tK7/O/r7VflLckDLTitFIFzhXj5l2XRd3W67fx1zMmAOK9QmW8omelHfT4h140yy2kKnOicBqhiOciTLPGzl7LTTbwL/zJ5bCrEx0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=wupdiznG; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJiEyHuF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95AD1F00A3E;
-	Tue, 14 Jul 2026 12:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784033926;
-	bh=3C5Zz7z6jaqU/key9OpG6xocIqZ2SWzEt8FlkruHztk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YJiEyHuFX3ayB9X9FZKk2paX7L3Ticm5iy1rh3VbMN1251z2WYeT1FcFGnZgeZNzt
-	 tsdf4+PoD5JBVeZ1ZdbJ8ZdhcZoVA+vJRN9qpnoohp6EodNi3013X1LK2jwUVfuqyL
-	 /NIzYj/V8wSidurQ44WPSWNNgq84cgfZVab8oW0Fu/fazw6TzpLSkPnxAZg30fPEQk
-	 KnWBDILKLWeeh4VvS3DOo2YbjDJfnUfEwWbCTWLjD5CSmZS76idtcjRVr6WxRl0Uve
-	 DCFpHDm9PjcvEHrFEFfCAlqlZq5LTRY2lDvfibd1iP4ecRvgmYmUkYfTgtySDmSgBE
-	 h98D+Xr1dataA==
-From: Simon Horman <horms@kernel.org>
-To: mmc@linux.ibm.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bjking1@linux.ibm.com,
-	haren@linux.ibm.com,
-	ricklind@linux.ibm.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v3 10/15] ibmveth: Enable multi-queue RX receive path
-Date: Tue, 14 Jul 2026 13:55:58 +0100
-Message-ID: <20260714125557.1837451-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260706193603.8039-11-mmc@linux.ibm.com>
-References: <20260706193603.8039-11-mmc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="wupdiznG"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39c74722e27so10234251fa.0
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 05:58:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784033932; x=1784638732; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kh3suqL/Cm8hQIsIKe0J8PGLIi3c5/TsdDTB9lcKtKk=;
+        b=wupdiznGcYprahXhJW6o2Is6dB5DIVNgFItm+8Dj7MbdAfl1s6OvBIUfebvG2V+m9a
+         QSqwEV90UhhC2b8sXapkBBoDZM8Wv7m+itT3Lsja1S2VYPrKhlxJ1ImFSMZZsMNRcxLR
+         O8i+3nb2dVQ1vXmDDIxlB9TaBgYKL7T0NAS3dncZ0shUO2sRTceSjeS87E9NhJ6pM7MG
+         7tJ/j4mC5XdLYSi3irSeuRbK0Eo3Hv9JZWzDQ8Pl5owlIhUWCdBTE6xWNDyBi6n2unIr
+         AbpMXilmsHktYItX2xrRyHre7F8bsr6zzaBC8P163uLE5bDeyIE0HxtkmLcmNCsPdvIN
+         lK3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784033932; x=1784638732;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kh3suqL/Cm8hQIsIKe0J8PGLIi3c5/TsdDTB9lcKtKk=;
+        b=m8Vqyy/Cc+0DvfE+QC9IwhgJT7rOmH7qXn3ojyAK+ClytpFz2qs+0bsNkYGs9jyGPE
+         tInae5piEwqChmP9b7z9zpAElkJ+l131jgiD9t/A8uv58fG+v8G1zR3Q+e3FKalh2iaE
+         CYcgFb8TXRwCbGcL7lQF4QBw65eQmxq8A74Qjhjl5N5C5bPcoTCgsJUNm7XEfASFHglg
+         f/ZNJ1MOdzi1AKDP0KLyDRIg4aJ2667C+fLe6dPTRLgMiV/Nerxu+8apuJ0iTLpDTBXj
+         LfA5MJ1eChX+S2n4LpSrKI/T+/Np9rMZ3rOhIfMr8STsGQEdpmpvnKWPTIj1D0t5MDal
+         2alg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpcw3R3vDDzX9fD/E75yytm4j0d3N3aBvHmK+qe57KaLGQRbLNy29KBOO0trmSfpMQecnY/Bzg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/Ns/DdaW3y49Lic3PtasvA5s1lCmjlasefUvjo8nvz65y6zOK
+	9PdJhGXZoQK7gt9Ctf65pAvkB+TTIlHO3LnOdnGLd8Fp+ghpkL39dKfUKLKuG0MJitA=
+X-Gm-Gg: AfdE7ckIAae7rBgF/VyK0BSlL5YtOYlA84fcXThIACqRe9Ce7dHFlhl4neqhsoLBvBO
+	ivKCy6a9ta/mlFIBQ4m71qEiRT5cC05gwv2fXSwMMPtIh3gd1PFL81ntcYfAp44RLYgkR3gByEz
+	oMXsq8jZHUH6HXb8zhkV40fw6AmPpTuqeHv9coGkIvoSgSVAG6pW+kby/0CEu16eLb/M93IKQYQ
+	bfSBuuzwKdn0swrA8WLpxzRkPYVjcSQrxet1IFP2sEXPWJs0ysbDFxkGSyklAzhzyydUSLiJm4t
+	lIcdMsxvBlQLyJGoTCyUBVkxuUrxieOEHSkL/PmpC5SAhoNCCx3obMeZfTWxve2UIaB2gQ/dAIw
+	lay+FVChYlYUL/O/85dAnoqsb+TV1S7gD+JNQCkQr1IpgeJP7X27OvdwkFL0v4hgMB2OhSN7OT2
+	guvnZJ8rrCQsMidzLEVwFiuQvU8FeM45avFA==
+X-Received: by 2002:a05:651c:b26:b0:39c:753a:853f with SMTP id 38308e7fff4ca-39ca9f115d0mr30337311fa.3.1784033932550;
+        Tue, 14 Jul 2026 05:58:52 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39c849174ebsm32107621fa.7.2026.07.14.05.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 05:58:52 -0700 (PDT)
+Date: Tue, 14 Jul 2026 14:58:45 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next V6 2/4] devlink: Factor out eswitch mode setting
+Message-ID: <alYygM-2f4NB0uJA@FV6GYCPJ69>
+References: <20260714061731.531849-1-mbloch@nvidia.com>
+ <20260714061731.531849-3-mbloch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714061731.531849-3-mbloch@nvidia.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-ibmveth: Enable multi-queue RX receive path
+Tue, Jul 14, 2026 at 08:17:28AM +0200, mbloch@nvidia.com wrote:
+>Move the common eswitch mode set checks into a small helper and use it
+>from the netlink eswitch set command. This makes the same validation
+>available to the devlink core path that applies eswitch mode defaults.
+>
+>Signed-off-by: Mark Bloch <mbloch@nvidia.com>
 
-This is the first patch that sets multi_queue from H_ILLAN_ATTRIBUTES
-and switches registration, buffer posting, and receive to the MQ
-hcall path. It also raises num_rx_queues and enables per-queue NAPI.
-
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index b3b3886c3eedb..863e5c68b42c7 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-
-[ ... ]
-
-> @@ -826,15 +841,23 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->   */
->  static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
->  {
-> -	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
-> +	int i;
-> +
-> +	for (i = 0; i < adapter->num_rx_queues; i++) {
-> +		__be64 *p = adapter->buffer_list_addr[i] + 4096 - 8;
-> +		u64 drops = be64_to_cpup(p);
->  
-> -	adapter->rx_no_buffer = be64_to_cpup(p);
-> +		if (i == 0)
-> +			adapter->rx_no_buffer = drops;
-> +	}
->  }
-
-[Severity: Medium]
-Will this logic silently discard the hardware drop counts for all queues
-other than queue 0?
-
-Since ethtool -S reports the global adapter->rx_no_buffer statistic, shouldn't
-this loop accumulate the drops across all queues instead of only recording
-them when evaluating the first queue?
-
-[ ... ]
-
-> @@ -842,6 +865,8 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
->  				   int queue_index)
->  {
-> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
-> +	unsigned long flags;
->  	int i;
->  
->  	if (queue_index >= adapter->num_rx_queues)
-> @@ -842,6 +865,8 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
->  
->  	adapter->replenish_task_cycles++;
->  
-> +	spin_lock_irqsave(&rxq->replenish_lock, flags);
-> +
-
-[Severity: Medium]
-With multi-queue RX enabled, can multiple NAPI threads execute this task
-concurrently for different queues?
-
-If so, does this non-atomic increment of the global replenish_task_cycles
-stat risk data corruption, torn reads on 32-bit platforms, or lost updates?
-
-Similarly, in ibmveth_replenish_buffer_pool():
-
-drivers/net/ethernet/ibm/ibmveth.c:ibmveth_replenish_buffer_pool() {
-    ...
-    buffers_added += filled;
-    adapter->replenish_add_buff_success += filled;
-    remaining -= filled;
-    ...
-}
-
-Even though the caller acquires the per-queue rxq->replenish_lock,
-replenish_add_buff_success is a global adapter statistic. Does this update
-also race with other CPUs holding the locks for their respective queues?
-
-[ ... ]
-
-> @@ -2268,34 +2299,40 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
->  
->  static int ibmveth_poll(struct napi_struct *napi, int budget)
->  {
-[ ... ]
->  		} else {
->  			struct sk_buff *skb, *new_skb;
-> -			int length = ibmveth_rxq_frame_length(adapter);
-> -			int offset = ibmveth_rxq_frame_offset(adapter);
-> -			int csum_good = ibmveth_rxq_csum_good(adapter);
-> -			int lrg_pkt = ibmveth_rxq_large_packet(adapter);
-> +			int length = ibmveth_rxq_frame_length(adapter, queue_index);
-> +			int offset = ibmveth_rxq_frame_offset(adapter, queue_index);
-> +			int csum_good = ibmveth_rxq_csum_good(adapter, queue_index);
-> +			int lrg_pkt = ibmveth_rxq_large_packet(adapter, queue_index);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this code validate the
-length and offset provided by the hardware descriptor before modifying the
-SKB bounds?
-
-Later in ibmveth_poll(), these values are used directly:
-
-drivers/net/ethernet/ibm/ibmveth.c:ibmveth_poll() {
-    ...
-    skb_reserve(skb, offset);
-    skb_put(skb, length);
-    ...
-}
-
-If the hypervisor provides an untrusted or artificially large length, could
-the call to skb_put() trigger an skb_over_panic() and crash the guest
-kernel?
-
-[ ... ]
-
-Also, I noticed a potential memory leak in the error unwinding path of
-ibmveth_open():
-
-drivers/net/ethernet/ibm/ibmveth.c:ibmveth_open() {
-    ...
-    if (rc) {
-        netdev_err(netdev, "failed to set number of rx queues\n");
-        goto out_unregister_queues;
-    }
-    ...
-out_free_buffer_pools:
-    ibmveth_free_buffer_pools(adapter);
-out_unregister_queues:
-    ibmveth_dispose_subordinate_irq_mappings(adapter);
-    ibmveth_free_all_queues(adapter);
-}
-
-[Severity: Medium]
-This is a pre-existing issue, but if netif_set_real_num_rx_queues() fails,
-the code jumps to the out_unregister_queues label.
-
-Does this bypass out_free_buffer_pools, leaving the RX buffer pools unfreed
-and causing a memory leak when cleaning up after a failure?
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
