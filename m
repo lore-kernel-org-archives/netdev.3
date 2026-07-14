@@ -1,202 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E9F3E274B
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 12:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E744F448CFF
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 12:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784033616; cv=none; b=DJwqaMImMMDA2/OEGsemNz/JwOjsk/FhEFILuh8OOakWZVYV5t4PoAbwcx9Jl9mK1UbSNCyvU8EkxuJjXW8nSQdGRnSctEVzyhxdLTvZoXJMulzh/4WOFqVEGxHGetxQAGvlNSKcImJyAvaepN8VIFWNDANGkU8dD9h+p1Rnmtk=
+	t=1784033920; cv=none; b=EO14gtPDRUWA3QTDqosBHGOfMJIITyQNELs2hTJdW3XrHT+5X4dytEmbXlD//ihqYzq+1adU9Jk5rRMUYcvQdZ6bOwEQ/rsZEt9Tx9P0yr5eYtXEvmpdmRN1fM6sZayRxOftRqGuWtJEbROLHh8ZmafT6j92vdH2L8QInXAOVkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784033616; c=relaxed/simple;
-	bh=PY769dikClxRKUlT8JTWcKWeNDJivOIMFzPkL9Y7A2Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=likbhicn4LgmGxQhtnBnbw2ok348RW31fhykTabjRvdYajj0kB9a6u4LeD8OA0IuTxTBFMMOPgnwQI9N2wy7VtdmFkwNqgenUiWiP5foTybDLLKmPUpVBmrCiaY/3PEoiTVsUjkfAgeczoAoXdX4CYW7y6C1hF3N96IKDzVzMng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mp1gA8pc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784033920; c=relaxed/simple;
+	bh=zodWS7rv1aDgcuPkzbqACdUmH3WWZLSmb9HJQdCdNTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XT6cqC7R0Hc6K9OrCiMcd8B1KsDLqsmyupr4Py9WOIT6wRQ/Ma1NRPGOa+XgoIe/QcH7y6Hh53I1RnOEV35MIzQK5xTR61TxkJZFsteYFD9mL2vnrdIsSuCgYfiEZr9f72QyYhsqe9UrE4FzCaK4cCsq2pX9U2VUnCUCkweyjrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=sNKcInuH; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mp1gA8pc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C61A1F000E9;
-	Tue, 14 Jul 2026 12:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784033614;
-	bh=EMkk7CFtTQcIlGBgRJv9LJja2Ycb8KtPZthsLBihCqA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mp1gA8pcEahDgKIw5Qycwx1OZhwPqMMHSLJDxBv34rD0UuhlBfQtwFpEQoPVo6gku
-	 uqt+ZMqIP5XkisRmSdtm6/xzqApyhmIHEpe90NFHOMTXrO1x6b9aIcWsV1A1KF294B
-	 VFUHiOwdHS6LuKMmCMB0Ye9GN0MppyxqMN3V3HazkKG2kHkJa110+vIXUBYzcrcXt8
-	 1vpz4kbhL2Rgse4UrRmo8/0r0X2feCODsp4CFrq8UyzqB/+zDrG+3fnUwx2QltcpmF
-	 pKpwWaAW1Vy08yjxHnlLHsRUiUZsF5eoQxtjpnroOu8ZG9jC/muelTwG6fXtd+uv46
-	 2T99lTU53CcrA==
-From: Simon Horman <horms@kernel.org>
-To: mmc@linux.ibm.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bjking1@linux.ibm.com,
-	haren@linux.ibm.com,
-	ricklind@linux.ibm.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v3 09/15] ibmveth: Add queue-aware RX buffer submit helper for MQ
-Date: Tue, 14 Jul 2026 13:50:20 +0100
-Message-ID: <20260714125019.1833862-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260706193603.8039-10-mmc@linux.ibm.com>
-References: <20260706193603.8039-10-mmc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="sNKcInuH"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-39c86945164so33981411fa.1
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 05:58:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784033915; x=1784638715; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LFB0TEAvMFCr6jHr2OUldXZ9xrpx3f7gJBKNTJaTmYM=;
+        b=sNKcInuHSrzfnMZNWQ7jrzoaZYi7udGugtrUx7kAsLngaOINg4VMEz3QZm59ETPbkP
+         G4jN3WG+zF2WKM1WJorX93KPeO5lt8meIqO4NNWYOo3lCdd3mHIjXdcKARocpNw9idmr
+         gAp0RvZm51j+xsHH40AQFHPKKspveEPQc4sdZNZmpzJHS73PCY84qFWZ6h6xLa17Xhav
+         CMFcDyJ77ivh4UFHEMsxejeF5eMN+pDSE6RLHFfWmhrZxc6d17bH+yOO4jJ97TSqPs0G
+         9je/EXDV6Z7qcoAO+qHNXV8va1Quo2xfiv46DWiM14VrmC8bBH++KdyBALOPqRGh6lw0
+         0KEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784033915; x=1784638715;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LFB0TEAvMFCr6jHr2OUldXZ9xrpx3f7gJBKNTJaTmYM=;
+        b=ehV2XH5K59D6HiSa6SUdodVAbKeYh//0Ivwo1sBYrCssoMUJEoiYCv5HGVtrrbKbSX
+         0rOyesB76RH1hq8xyxYC3qi0z/ep9iwuO79X5bqS2HgAotHmbgwv1hPUqeB4Vekn4GAo
+         ES6/RopCvAiI5nAPh8XEIqn+JULx+KfqqdZlvtZXlDlKtRE7+8m0eNHBmv3hHoWluH8y
+         Liji6SOF7G6qGaccdMegp9XW/F3Kt7Pq/bGQxNEDEoGfkPvyGRC4+F/+wnfaHHn8eLS+
+         aLZnWV8fVdrLvjoVyQEA5OA5pxUWKtfXDKQ2d/59NrE6d4VoYo4BIRL/V8yGd0FlH+fo
+         dMlA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7IbeqGTUaZA8Mu9SddQLNCaEtJ/ZDSyyw/wIPbpEPKh9qnTVhmw5nbCd91J2d+fqowfLc2K0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyje9pVqJzq2O1JMbVUbRfE5c5UnGzoz0oqMGh3WuuV8powIMvU
+	w6lQztIBVjTH1INc28bys3jZ28AOBqw2IZcEtbr9jB0zo8WqTfWfn4EVjv5cH6ZUG1U=
+X-Gm-Gg: AfdE7cmid9WukcnSVmbJtyNCS8yewXm5sGQJ/Y/AZO44DzTPWIxyvPPBbZMrK+oWDhn
+	G52JGSwnqPyqED8p1abmf+Mw5mt13ytiRlzMggmJQlm6Z0r9c6clX6vZGRdiSu3LU54ZxBAhu+i
+	2sl/5ju9iDKjumaTxJyyssxUXKackHMtQR18qsxMJGdkbqtVXTMPgvK8BcTQ0cpk9254rETJW5w
+	Xym5s4Sx4Gl7cUqTKwweIcWs4EfIU4cI6wYk4TwzEQ1MgT44EQ+6U6fmJDGmsDvE+iW8hnn5AQK
+	2icwiD9OCmcL+zaI1pFQgRaICPUAXsH94I/Jmg9nhXV3cHh8fDAZuG/Jm4VYdu2uyw4N+XiVJTP
+	QQ9TxZJvrupg+aJI2mku6iLkBAyt/Hv67hj94jqC4w4VoU25xS+f96/UmadYWwCPLEx8i8PTk2u
+	S1e3BQpY2i5I/JaGx3DgNjiP8=
+X-Received: by 2002:a05:6512:8395:b0:5b0:1760:fabe with SMTP id 2adb3069b0e04-5b0236651e9mr1956976e87.15.1784033914770;
+        Tue, 14 Jul 2026 05:58:34 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b01caa66cbsm3482896e87.61.2026.07.14.05.58.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 05:58:34 -0700 (PDT)
+Date: Tue, 14 Jul 2026 14:58:30 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next V6 3/4] devlink: Parse eswitch mode boot defaults
+Message-ID: <alYycEavj752bHjD@FV6GYCPJ69>
+References: <20260714061731.531849-1-mbloch@nvidia.com>
+ <20260714061731.531849-4-mbloch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714061731.531849-4-mbloch@nvidia.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-ibmveth: Add queue-aware RX buffer submit helper for MQ
+Tue, Jul 14, 2026 at 08:17:29AM +0200, mbloch@nvidia.com wrote:
+>Add devlink_eswitch_mode= kernel command line parsing for a default
+>eswitch mode.
+>
+>The supported syntax selects either all devlink handles or one explicit
+>comma-separated handle list:
+>
+>  devlink_eswitch_mode=*=<mode>
+>
+>  devlink_eswitch_mode=<handle>[,<handle>...]=<mode>
+>
+>where <mode> is one of legacy, switchdev or switchdev_inactive. All
+>selected handles receive the same mode. Assigning different modes to
+>different handle lists in the same parameter value is not supported.
+>
+>Store the parsed selector and mode in devlink core so the default can be
+>applied by a downstream patch.
+>
+>Document the devlink_eswitch_mode= syntax and duplicate handle handling.
+>
+>Signed-off-by: Mark Bloch <mbloch@nvidia.com>
 
-This patch updates the ibmveth driver's buffer replenishment path to
-be queue-aware for multi-queue receive support. It adds a helper to select
-the correct hypervisor call and handles fallback to single-buffer mode if
-batch operations are unsupported.
-
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index fa2d4777ffc7b..b3b3886c3eedb 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -597,11 +597,73 @@ static inline void ibmveth_flush_buffer(void *addr, unsigned long length)
-
-[ ... ]
-
-> +static long ibmveth_add_logical_lan_buffers(struct ibmveth_adapter *adapter,
-> +					    union ibmveth_buf_desc *descs,
-> +					    int filled,
-> +					    unsigned long buff_size,
-> +					    int queue_index)
-> +{
-> +	struct vio_dev *vdev = adapter->vdev;
-> +	unsigned long rc;
-> +
-> +	if (adapter->multi_queue) {
-> +		unsigned long buffersznum = (buff_size << 32) | filled;
-> +		unsigned long ioba[IBMVETH_MAX_RX_PER_HCALL / 2] = {0};
-> +		int i;
-> +
-> +		/* Pack descriptor addresses into ioba pairs.
-> +		 * Each ioba holds two 32-bit addresses packed into 64 bits:
-> +		 * - Even descriptors (0,2,4...) go in high 32 bits
-> +		 * - Odd descriptors (1,3,5...) go in low 32 bits
-> +		 */
-> +		for (i = 0; i < filled && i < IBMVETH_MAX_RX_PER_HCALL; i++) {
-> +			int pair_idx = i / 2;           /* Which pair: 0-5 */
-> +			int is_high = (i % 2 == 0);     /* High or low 32 bits */
-> +
-> +			if (is_high)
-> +				ioba[pair_idx] = (unsigned long)descs[i].fields.address << 32;
-> +			else
-> +				ioba[pair_idx] |= descs[i].fields.address;
-> +		}
-> +
-> +		rc = h_add_logical_lan_buffers_queue(vdev->unit_address,
-> +						     adapter->queue_handle[queue_index],
-> +						     buffersznum,
-> +						     ioba[0], ioba[1], ioba[2],
-> +						     ioba[3], ioba[4], ioba[5]);
-> +		adapter->hcall_stats.add_bufs_queue++;
-
-[Severity: Medium]
-Will this counter increment lose updates when multiple NAPI poll routines run
-concurrently on different CPUs?
-
-Since multi-queue enables concurrent execution, it seems global statistic
-counters like hcall_stats.add_bufs_queue and replenish_add_buff_success might 
-need atomic or per-CPU operations to avoid read-modify-write data races.
-
-> +	} else if (filled == 1) {
-> +		rc = h_add_logical_lan_buffer(vdev->unit_address,
-> +					      descs[0].desc);
-> +		adapter->hcall_stats.add_buf++;
-> +	} else {
-> +		rc = h_add_logical_lan_buffers(vdev->unit_address,
-> +					       descs[0].desc, descs[1].desc,
-> +					       descs[2].desc, descs[3].desc,
-> +					       descs[4].desc, descs[5].desc,
-> +					       descs[6].desc, descs[7].desc);
-> +		adapter->hcall_stats.add_bufs++;
-> +	}
-> +
-> +	return rc;
-> +}
-
-[ ... ]
-
-> @@ -745,24 +798,19 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->  		}
->  		adapter->replenish_add_buff_failure += filled;
->  
-> -		/*
-> -		 * If multi rx buffers hcall is no longer supported by FW
-> -		 * e.g. in the case of Live Partition Migration
-> -		 */
-> -		if (batch > 1 && lpar_rc == H_FUNCTION) {
-> -			/*
-
-[ ... ]
-
-> +		if (lpar_rc == H_FUNCTION) {
-> +			if (adapter->multi_queue) {
-> +				netdev_err(adapter->netdev,
-> +					   "Unexpected H_FUNCTION from multi-queue buffer add (queue=%d, batch=%d)\n",
-> +					   queue_index, batch);
-> +				break;
-> +			} else if (batch > 1) {
-> +				netdev_warn(adapter->netdev,
-> +					    "H_FUNCTION from legacy batch buffer add (batch=%d), falling back to single buffer mode\n",
-> +					    batch);
-> +				adapter->rx_buffers_per_hcall = 1;
-> +				continue;
-
-[Severity: High]
-Does this continue statement cause an infinite loop?
-
-Looking at ibmveth_replenish_buffer_pool(), the local batch variable is set
-before the while loop:
-
-	batch = adapter->rx_buffers_per_hcall;
-	while (remaining > 0) {
-		...
-
-If the fallback updates adapter->rx_buffers_per_hcall to 1 and issues a continue,
-the loop will restart but the local batch variable will retain its original
-value.
-
-Would this lead to the loop repeatedly attempting the unsupported batch size
-and failing with H_FUNCTION forever?
-
-> +			}
->  		}
->  		break;
->  	}
-> @@ -784,18 +832,24 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
->  }
->  
->  /* replenish routine */
-> -static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
-> +static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
-> +				   int queue_index)
->  {
->  	int i;
->  
-> +	if (queue_index >= adapter->num_rx_queues)
-> +		return;
-> +
->  	adapter->replenish_task_cycles++;
-
-[Severity: Medium]
-Similar to the hcall_stats counters above, could this increment suffer from data
-races when multiple queues are processed concurrently across different CPUs?
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
