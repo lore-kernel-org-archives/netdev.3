@@ -1,141 +1,88 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0D83F8EB7
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 08:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E0E2FD7D3;
+	Tue, 14 Jul 2026 08:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784017524; cv=none; b=NctBPDPuPbnHZE5lSDKXIGLm38jcistACeSeeQqcpe6PgxMO2inIvQLMgxtChqXckcR+0BlDXAY4JXjjKSE3CwEcpzg1RTAgWz0qOhQ2ZtxYExiISuMynnP/WRFKh0S6QW/pMB33/jy2qDNcw2oN5UZO1LvtRnN7tCUokG/oFYk=
+	t=1784018082; cv=none; b=O3mJeiqqW5DvV4sHgr68sABf4mAzbqSW/A4FSI1Bijb9BD1RDKc8QtlRjKowiLGfNOSrZ9pJ4jnitUmrM5WMJtZTzmZK6odQYBpAXVuFKx2oc9Os6LiDrvsHrtUVTHm5yrX3Q3Qb7br7/Z4y2Qlr5qXA4zRo0GdXRinW8PSDD84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784017524; c=relaxed/simple;
-	bh=Mwbnhj9N+bChxzWMPQVb/tX7I1RBQGFrsOYlWCn2Wos=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mBPEbPPj/FHuWISZuGmqSixQSgD/xUOB1C/oyrHcmYvYGsjTeve5Axk1JgWEiYOvxZNCpFt46uQBcAiYu5vkGI3qE87s5WNjR6OgwbUoHHdxqgvlckkWsCTOs2APYrKtn71rtWEr/G0DjMyXHAST7t3u5OrjVVDe8mJqJqqXJ68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giy/cU2f; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giy/cU2f"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aec139da7eso694545e87.1
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 01:25:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784017517; x=1784622317; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2aq9ASsSVVcCb27XWhYTSc8/QMqg/E/6IObcZcIPIKs=;
-        b=giy/cU2foZ00BP+AAsqLLwrFBOuhJN3Tv9QMNapN7LSoDv4f7cNGsqrWIYZ9TgYo2f
-         hVj2CYkHsRK7OQAzmWe5f3EH4GOTLD8MERZyQnxRU5bbARPIvfjmftgz5s1mvAPQzFH7
-         HF1rcXAMjYTJKHY5aM7WSCPLHfLPeuuVSIQHBGx3AlTHrn/c+mjJxA1NQvBNijEpY/4x
-         d4EmTgABNsrVN2gqUKKwEeeMm6YcQOe00T338Gc6kAghkmBBqJEoaRkaPCWSo18NVmcx
-         50MsOvFdvadzBdTTmmGX2khT4Wflq08ro3TrczpX0AsnDfIUHmkwYxciCKMwDAIG4gzA
-         m7fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784017517; x=1784622317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2aq9ASsSVVcCb27XWhYTSc8/QMqg/E/6IObcZcIPIKs=;
-        b=GUqaNvTsPbdySb8uDXjsHHqkriUoyRS4koy/L86c1cAOyQzK3IYaA4IsVatuixO86R
-         kyeOMBN50kH7QBcwIwXfpksPEqsPOcvn5lKDtD+A1hnytih0jy7Bu+7OtFtSf7lpUEeD
-         GmETGjLO/kCVhbr03RMtZkzyaz7w59VD4O4JIxSwjhqLADRzdWI8syTGM9AtIKHRM/qq
-         O5iQ+yZ1DwaPNSJ8ecOMk9osbZHyWdO72QUBenDB6pTMTNkJslI3U2eJ8yT28JDjN6VN
-         lB5eXGuYVSNXrMD0e7UWslptGZ11qAfTLNj/GUhUCfZKWZ0bGiRwOKUhS+yxg3jPLsww
-         zpEg==
-X-Gm-Message-State: AOJu0YxMoq5d7IzNBoutdNLvCSB8Eo2K0Y5XCXbFsS5X78dScmSLaMpC
-	AD4E1y99ycgABCpwaGGsUq+odORa9nqArDtoJX3wn4O9pnkMXM+7b3o13bJwlnTyV6o=
-X-Gm-Gg: AfdE7cl2aAnrMVsZz4K4NjjbBJw+ibD7szj1NQKFwlhigSS467FgGyXfu/wybLKr+Dg
-	obl9BBgRqHQxr1r/aP27uqqDttiYopAKTLRO86CKcaJhX/TKDUEX1YfDML/02h2Z+lE46rkJMEE
-	DPsWhyPPhb+fLfFgVOgaHbX4FHwMF17kkJmKguFPTbeL2CJtIHidmYl0Yv9KAbUM1vR3GWdCymz
-	AMxUi8MKcpA2QxNyK1qVStXZLlCWdq0Osi5fnSQV2AEdudpkeImNuBXbw9b2JbHjSz0s6KkAe2J
-	7p73E4hs98FKranBVRUvGTRanN1IwP8vqyN35RcZB8g7megBnZT3KR5an7I/aq0dN5PU42jmLml
-	nnNOlFt8kvU1vR1MSYUJo192XccZJPy3Qg1h6tCkSFSdaClHYwHNpgN0LdlFa5DqbVolRSXgb6d
-	Sq6DygtKskKBOrYmKbJJwgmxQKatGNGC8RZoAJRByHpiIoXOWKEMEzKqpdDv/wh9z/LE3DofV8c
-	iExD9Y7VdiDUKPXdw==
-X-Received: by 2002:a05:6512:22d0:b0:5ae:ba93:abe with SMTP id 2adb3069b0e04-5b01c55a3bdmr2888577e87.30.1784017516359;
-        Tue, 14 Jul 2026 01:25:16 -0700 (PDT)
-Received: from debian.localdomain (95-25-161-220.broadband.corbina.ru. [95.25.161.220])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39c84b9382esm30676591fa.29.2026.07.14.01.25.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 01:25:15 -0700 (PDT)
-From: Igor Putko <igorpetindev@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Igor Putko <igorpetindev@gmail.com>
-Subject: [PATCH] net: core: use WARN_ON_ONCE in datagram iterators
-Date: Tue, 14 Jul 2026 11:25:11 +0300
-Message-ID: <20260714082511.2817-1-igorpetindev@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1784018082; c=relaxed/simple;
+	bh=nAw5WXfDYrIiKxb6xntrpoofY6Sl50zOilEzOa/JhTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I2NLhr6H17mhUW2VYN6CWK211VonSMNqsE9+GlRHUsIa7u9SbamnaJ0ttvNRnjPPbOdf4Zy6Yqt9PMCOwGLssjpFBh/gNnc59zlVzaStXlFQu8L3nymn/gFocFLolkO0caG+T1owj4+lqppVvTyMjiXDnPPEehHowA896UJSHr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4D672201A03;
+	Tue, 14 Jul 2026 10:34:27 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wjYax-001k2o-0k;
+	Tue, 14 Jul 2026 10:34:27 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wjYax-000000092BP-0TJa;
+	Tue, 14 Jul 2026 10:34:27 +0200
+Date: Tue, 14 Jul 2026 10:34:27 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next v7 3/4] net: pse-pd: realtek-pse-mcu: add I2C
+ transport
+Message-ID: <alX0kwfhFuxlJDdw@pengutronix.de>
+References: <20260712192251.1413279-1-jelonek.jonas@gmail.com>
+ <20260712192251.1413279-4-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260712192251.1413279-4-jelonek.jonas@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Datagram fragment iteration helpers check for invalid buffer offsets
-using WARN_ON(). In fast-path packet processing routines, a malformed
-skb or lower-level driver bug triggering this check can result in
-unbounded dmesg logging.
+On Sun, Jul 12, 2026 at 07:22:49PM +0000, Jonas Jelonek wrote:
+> Add the I2C/SMBus transport for the Realtek PSE MCU core. It registers
+> the MCU on an I2C bus and provides the send/recv callbacks the core
+> uses to exchange the 12-byte frames.
+> 
+> The MCU firmware expects one of two framings on the I2C bus, and which one
+> is part of the compatible: '-smbus' (reads carry a leading command byte
+> and a repeated start) or raw '-i2c' (bare block writes and reads). The
+> match data flags the raw-I2C case; SMBus is the default because that's
+> what the majority of devices uses.
+> 
+> Because i2c_master_send()/i2c_master_recv() may DMA, the raw-I2C path
+> bounces each frame through a heap buffer rather than the core's stack
+> buffers; the SMBus path is unaffected.
+> 
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-Excessive console logging in data-path contexts introduces severe I/O
-latency overhead and risks triggering a DoS or system instability
-via log flooding.
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Replace WARN_ON() with WARN_ON_ONCE() in __skb_datagram_iter() and
-skb_copy_datagram_from_iter(). This ensures anomalous conditions remain
-reportable for debugging without spamming the kernel log on repeated
-occurrences.
-
-Signed-off-by: Igor Putko <igorpetindev@gmail.com>
----
- net/core/datagram.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index c285c6465..125b52870 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -416,7 +416,7 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
- 		int end;
- 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
- 
--		WARN_ON(start > offset + len);
-+		WARN_ON_ONCE(start > offset + len);
- 
- 		end = start + skb_frag_size(frag);
- 		if ((copy = end - offset) > 0) {
-@@ -449,7 +449,7 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
- 	skb_walk_frags(skb, frag_iter) {
- 		int end;
- 
--		WARN_ON(start > offset + len);
-+		WARN_ON_ONCE(start > offset + len);
- 
- 		end = start + frag_iter->len;
- 		if ((copy = end - offset) > 0) {
-@@ -570,7 +570,7 @@ int skb_copy_datagram_from_iter(struct sk_buff *skb, int offset,
- 		int end;
- 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
- 
--		WARN_ON(start > offset + len);
-+		WARN_ON_ONCE(start > offset + len);
- 
- 		end = start + skb_frag_size(frag);
- 		if ((copy = end - offset) > 0) {
-@@ -594,7 +594,7 @@ int skb_copy_datagram_from_iter(struct sk_buff *skb, int offset,
- 	skb_walk_frags(skb, frag_iter) {
- 		int end;
- 
--		WARN_ON(start > offset + len);
-+		WARN_ON_ONCE(start > offset + len);
- 
- 		end = start + frag_iter->len;
- 		if ((copy = end - offset) > 0) {
+Thank you!
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
