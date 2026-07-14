@@ -1,224 +1,497 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012019.outbound.protection.outlook.com [40.107.200.19])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F9035F191;
-	Tue, 14 Jul 2026 01:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783993856; cv=fail; b=U2/JX5gHR7dgArP5tABaSqtJXNGhjsgnsUtikw969BwdVXCbDaWa9mgvp2htGcrz6PehqdzN6wubuil0fEmnDh/rZ5EJKtq7xQKTa1wfhlgxNOeXKRHs742IjaObv/l2Vr1LmP1FIMANkWfp5TgnaJEhiDIBCrYFmgdSn8RFZHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783993856; c=relaxed/simple;
-	bh=dXuFkpWNPCfI/uZgSy+KIcPJLPw2kPLOu+gWqjYtPfE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wl/VN5A4dzYmVm1xe33Sr5o7aOy7mVhAyQiqWbg898eYHK9svKZADI0851MG44PGxWSVhc2sP0OLYXZS5mFFH3URSj64kbtV1yoZVc+4rgtuUexTHt8Wyu4r8qtrE35Y6XkBwebyp8QlZPMejE9Z2BSZCyI2Hvfc45cO1A0qqnU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=NUs2tltJ; arc=fail smtp.client-ip=40.107.200.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D54C371046;
+	Tue, 14 Jul 2026 01:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783994050; cv=none; b=cqZXvLO0Pr5Az3qW6VWonXlCzYIByPpwgHsznaAeYTeSnScelybQDmCSG33agGgjzHA/JMSvuSaH2L4AOzrGuqxdQ9Vjj0H+DImsVyXKaeqcaCKRgqHLaS3Z18Qy6/vAbE9rRhhbPD01xRYN+ORk27CbNC/esmuesXWbUVYUl14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783994050; c=relaxed/simple;
+	bh=Kf9eG/Vn9i87gM7zjGpAd7I+Iru4T8/9pKGL+uNQZq4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h5ZYqwNwHn9k9G/8g8587OypP8+4hJcZWredlPOqdUnTjBPcH1YQi5wmcuWEQLOFcvpEJEGCyAcTlVvwVwxKJeZknqIoMAmzvijJHEqgNEccFHmj3Y4KBYiaDC0Gk4gznXSy2QHl6LfX8CGfn4zBCqB1USey0diqLN9L2PdfO+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=kS45+BUC; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="NUs2tltJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hPFC45gxkieeOpyDsv6chHBi+UpDdF9kUcDO7F6upc94v1zwE0WC5eTRr+otXr0T5udmby8fyFsZKqdNYRrZZ99Hgz0Z2sjE4bRsydg92eWi2laLhiFHvdSVq52gu7wAbrf8E5TPp94g8KlypJrhtmP9+zNyD316XX85AgpczQ0N7DHynYQFLtXq/72OSGN2Fy7N/S651qulrcV5EsU/bBzqi+ixKtE8ywte3cppsyBk/xP9mKXWHNJdMlETSpS48IhnFdohSLlev9cfQ3oWCVvBx2iyYDBorByJHJxqmly65y1B4+oIZu5yHjkeHRCqtTWHAJ45UGnn2bJ/cbTSbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dXuFkpWNPCfI/uZgSy+KIcPJLPw2kPLOu+gWqjYtPfE=;
- b=akmy/oeZjafp8VOyKE91gMPuC3rdlPTcARBq1WEzcjW/NwqeBbCX5coCgj8PpSF0q322x/3XAT1sgzvrx5eYsnKbfz7Fa9KXR+53vvMpC+w8EBrtniJHkn2W2s2nVPk6ko0wj/kvbLt/YGJ0M83MA+s/AklyoXUbxPanmBJh+09CGOv3ftVmsTBa8md5d1GzPh+w8yJe+Pa6IsZjPCnp9qHwWADr8KPq4GwkkKZd3sw/L0fhX9/ezyNkxP5/A5TpGXIxHuRHvqt9lt4Hr6jgqEnzhRRG7ttx1YM8trRMURjtI2bYEFEY7BQPti2FvpyOxlQJyEH3A9/SNQBQzP8CFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dXuFkpWNPCfI/uZgSy+KIcPJLPw2kPLOu+gWqjYtPfE=;
- b=NUs2tltJmppTKp52irEz768wVGYjooQQHCmKYLuNwdBy43OtordmArvTYhCc+MAvC0Uz7eMpyFGkeJRdhAjGIhLZH9EmKZOHFog1hdRLmdUO9a12TXQr+ddv6NQ5VLW4ppvK+SsvMwwWipF0e0JQJgVAbMyAZwHPQ/PC00vMdPovGX9D2t2feDAXOIOtp28AF6aulJkY4GIxR27egBR1sK6gJJ0r8U6Z7dRCe1HhJfhJDy7aZ76wcz48LBPg/+T3pKoD+hQrrn6wlxLCe3BcQXMoDam8enoC8Izg7RgiKuXrH18RpUk93UYR3BuBYaXyGeSUWeM8ajJq3ldrTrBnAQ==
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
- by LV8PR03MB8162.namprd03.prod.outlook.com (2603:10b6:408:297::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
- 2026 01:50:51 +0000
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
- 01:50:51 +0000
-From: "Nazle Asmade, Muhammad Nazim Amirul"
-	<muhammad.nazim.amirul.nazle.asmade@altera.com>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
-	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-	"Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] net: stmmac: fix l3l4 filter rejecting unsupported
- offload requests
-Thread-Topic: [PATCH v3 2/3] net: stmmac: fix l3l4 filter rejecting
- unsupported offload requests
-Thread-Index: AQHdCId6Wj9ZvtWAUE2zYCIZF+m9K7ZsVVgA
-Date: Tue, 14 Jul 2026 01:50:50 +0000
-Message-ID: <35415c60-4db1-4ccd-9b38-3828fa220808@altera.com>
-References:
- <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <20260630115622.9426-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
-In-Reply-To:
- <20260630115622.9426-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=altera.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR03MB6964:EE_|LV8PR03MB8162:EE_
-x-ms-office365-filtering-correlation-id: a4997650-7a2e-4493-54e5-08dee14a5589
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|3023799007|18002099003|6133799003|56012099006|4143699003|11063799006|22082099003|55112099003|38070700021;
-x-microsoft-antispam-message-info:
- 7Wv5T4DVEJPyqjB1CwLxT9uavygIdwnNd9bfQVyRBGZ3pBlZD0Wu6kKuFAk42PDtMwHxWQ0jAdALpxJYYkBLQ9kiJG05XJq5BUPOuxNxsUKNr5+Uf5qfgFTvODz598R12txaF3SNp6+nid/vI5NLYwIm3sKTwBjT6sKhR45Bl0itNrZ6AHLWSmcCb3PJRSyztGfV6WMl18Lx0/bZtgJ44OYM2wgw37qDGbrB5egbJYKAvX8z6EDWcIZyjopjnVIb/pLUX75+JSPTeYUO2cSMQcP76QpE5VxD//YqlwF/uKzpLz5WKwqM9qjOJQI90GC0toiUCcG+3TBIQFJRUJvMZvGGhCfWyweD95qH0jcIFnENGTFGGlR2mOLXLdJoP21kAdRuc/R+/xEBx0NuZPCwSkyP0eq6/mVJKrqs4Q6/utoWKvo/xrTp2pX9EoV457ysycTZU1CMTzuggSbUui68EpD5Sjue2l1FVqzwpXNa6JEpfBZMG4jm3vVzXGN9ttDo311n6j9NVtEaRr5NmIRASdi7+C5B+5pP6Z6gTrXT9qbBC9FF6ikjgcUxccNH8PbVshhg4/Y9FP8Y9Y9+QxjCacNj7TMlyk6fRee9BDLNOjwAXzYTbSexyGl9ur+a0BfK7rrBuQsfP6bdTM5D3kf0oLX4YK9o3l0ztYgUIV/PgD/MmXHtg4m41YxnMQjj0gxSkkjb+Uu/D43UodKeAgusIPmS9PWfi+07qpAyu6buORg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(3023799007)(18002099003)(6133799003)(56012099006)(4143699003)(11063799006)(22082099003)(55112099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TW9Wc0p5RVFyVS85Vkx6a1MrMVd5eDBMazdqaU10TnJCbHhNQ05Ia1dYQWhY?=
- =?utf-8?B?UUlsQTlWZ2psdHpqZitHRE93VlE5dGlub0NOUDRPQkdldlVlRUxHOEFyYmtL?=
- =?utf-8?B?aHd2NmhMeUZCUlVZeDVnS0czNGdnM0luRjJrUmlOc21Temkya0xGQUV1K1FL?=
- =?utf-8?B?U0oycnM3WkpEVEJ3aHdkM0VjUHRweTRTb2d2N1B0VXJLSnc2aFFnQURPbHp1?=
- =?utf-8?B?c29zak1MMjVCV1JwbFU4cm12SHlCREdJK1I4RFZqYzV5M3U0bEtEUzFzUnpm?=
- =?utf-8?B?NjRWOUI5Mi9RcnU3VU41eWpMWmdRdUV3SHAvK0RXU0s1NmVNNlAySXJHV05R?=
- =?utf-8?B?SHNhTlR0S1o1WnVLVUE4d1FjN3FJTTVXVHkzMzM3NjVFL0NZek90QmxNQW5n?=
- =?utf-8?B?QTVjRlVSUS9zQUIzOUdxN2ZJcGhudXQ3ZUVjV2QyVEUxbXhWalB5OGE3WU9D?=
- =?utf-8?B?LzJiUDVWYm9LQUxQZWY2aEIwcnB6ZW9OdHViV05RQUdkYVk2NDdFeDdwL1B3?=
- =?utf-8?B?VDlnNkxTNjlRTStnZWdGakR1cUFSY29TeXJ6WVp2cFducy9zRTdPdEsyTklq?=
- =?utf-8?B?NzJpdEYwTzFiRUlKdVFiMHdoYWFFbUptVWFzekhTZW5SU0gwbnJMQittL1hR?=
- =?utf-8?B?WXN0dXJxOHF1bnpYMWhzWWdieDVEQldsc01PODdNaW1qU0JyRWVORWRkWHV0?=
- =?utf-8?B?YzcvS1BYT2pHdGFSREJqcVBpeG41aGMxUVJNSE5Hb1JvMHVSUko4M2UzR295?=
- =?utf-8?B?Zm02QXhvWFZWbDFodHVSYWVlays5Tk95RUYzcWk3bHh4SzNMNEE3TWExMG5y?=
- =?utf-8?B?enovRHovNkM0eWhUUXBQMmxEaWJLQmZMaTNsVElSQ2VwMVJIS0VUTldZMDdK?=
- =?utf-8?B?WDJNd1EzNHVtSFp6Zi90NkJ4YjdMUzdwMDlhVk9NemdmWXRhRUEyNVF3SHVZ?=
- =?utf-8?B?Z1Z4M1o1OTVlZ09GN1lGY3JCM3FDTnEvWTVoL0Z5RVJKekwxcTFpakVOK21R?=
- =?utf-8?B?KzVnbWhTbXFYSjlRWmk5TVpWM3lQQmRSbURQNWFINDVpY21TNXBvR3NLR0h6?=
- =?utf-8?B?WnZyNUtFckhYejRsWkY2L1ZsQXVZVytkemJackJ6azhMVnJlL0VydFlyajJ2?=
- =?utf-8?B?S0tleEVtVXBkbUxkQ2lGQlhwaE1sOS9rMFpLMGN2NHdWN3ZJcjZYVGRYUG1a?=
- =?utf-8?B?Nk1ScjFybEZTUnE0cGc0QzRoNTJHazhmcmc2TlR5bU9OelFVZythWS9kQnZt?=
- =?utf-8?B?enFvRlFQTS9MUmNTOEppYlNVRytqVjJORGllMlh2NVRQR1dLRklLVkRzTHF2?=
- =?utf-8?B?Rk1kN0RmbHllOUdlb0tQcEJ6cldQM1QyT1FkMzV2b3NOVVVHc3pRRWlVTXFL?=
- =?utf-8?B?b2FjNzJQRWxHR0ltZkF0QU9CVDhFU0JpaFpaNmNyd082NHVodmJMTElNcjJ3?=
- =?utf-8?B?cU42N1I2V29TOS9rME5FSVJHRTZ2VnVPRDZCYldNVTRBRE9hNGhuejByTDgz?=
- =?utf-8?B?QUQ3QVUyZzR0bGp4YUl0RkkvdE1PZVpQWEVRZXVpOGZqcU02Q2xINStJMHdo?=
- =?utf-8?B?RHhsR1k5WTljY3VuYjIyLzVTTUNTaHZKRnpndTF2WGI3emFHQ2ZrdkVrdjI2?=
- =?utf-8?B?WDlaY2I1OWRwbWRPRkNqZ3phMjhZQ28xQlJrNHpKaUtFeXl0c2x4V0pCUGQ0?=
- =?utf-8?B?c2pwSllndXpCY1VDczB2WVJBMXVQOEFGVXVJMnZuK1lWdnorQkQ0M1g0cFFr?=
- =?utf-8?B?dW1xV1FzY3d0M04zaGNYc3hNQy95cDRKemxhTnBHOUg5UmFvN2FjN0NLODM4?=
- =?utf-8?B?WTQ1ZDNqT0xNbDA3TkNnc1ZnblB0dmc1NWJ4TkFtclRCRUFaNTZhcmJ1ZjZM?=
- =?utf-8?B?VmVKRWdKK3g1djVwTTVzdlZmNjhpckVUYUNtMGhrTm1vUVBSU1RqZzBkRCsz?=
- =?utf-8?B?SmRIZWVsY0thS0NwN2hPc2thQXFxbFlIa04vTUp2MXZhZTFuZVk3SUZkV2Nk?=
- =?utf-8?B?QlpMSlcvOU5heGQ0T1dpZEJVbnRuSXBRaUtUMnlkMzBIK2xFZjU3V0EyNFB6?=
- =?utf-8?B?a1MycDEwOFhpOTZ0OUN4YnM2bUh1bEJaaEhwR1I0M1FkSUJBdXIwR0MrK24y?=
- =?utf-8?B?THFPc0xKQjVJWkNmWU1WckRGdzJPa1RlaGZ2NDdiZitTWFpmSzlGcFd5ZXdL?=
- =?utf-8?B?WkN6OGxUSWVNdFEybDVNMmtUMytzNW90dEErTm95clJnTSs4VzlNZ2VOd0sy?=
- =?utf-8?B?WGNzYk9Pek10Z0FiNlRjQmFka1NzTlpoZ1ZQVXYrZFZQb0wvTDI3YmJvSUFm?=
- =?utf-8?B?RmJ0UmRqSmNFSHZvMW9GOWtmNy9IenVDVTh2eGdYOXJ2QWN3OUlDTXhzQUFp?=
- =?utf-8?Q?mjYcCu42h4Vt8VvQelc0zeqQFN/XPbvaGiUheKeBhgw3n?=
-x-ms-exchange-antispam-messagedata-1: dXKhpdhT23Lyzw==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <289C804834074C489BDB0781A68CF188@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kS45+BUC"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DNrBnG2954880;
+	Mon, 13 Jul 2026 18:54:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=6
+	t0CDkGxMdxqnBgq+D7tpV+hLSeoCjVcfEG3sn/Sggk=; b=kS45+BUCam9gNcAmC
+	H6QaoNkc92hHXMEeMiMRcKlTZ4PsaGml97tSvfDs0gk7aYT8f23NVaSPZ5LNgNM4
+	Yz1geemkYp/ynF312s1yclyErLdVp8UMFUTQ27SB5nfBs4alBcSGXIpxJ7Mp+qWs
+	igVmnrA+3O+HdqG8VVZD6UkB/PuR6QKubrGgMlN+t9lRDL9nLw2zUyflpyoJJuRw
+	PpDVDFmY/bOLd+g1fzDRKs7Wkb9qx0fTcOXVpoWHjTCZoxzv6rFaYpEYp/nzxubf
+	7TOs0sq6t5RikwuXGkvDvTkPb6IhIGv4oqlg/+e4580i+BvbKl9bu/5r7ihpDKV3
+	3/BFQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fbnbex55b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 18:54:00 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 13 Jul 2026 18:53:59 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 13 Jul 2026 18:53:59 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id B7BF15E6866;
+	Mon, 13 Jul 2026 18:53:56 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v3 net-next 5/9] octeontx2-af: switch: TL1 scheduling and NPC channel control
+Date: Tue, 14 Jul 2026 07:23:27 +0530
+Message-ID: <20260714015331.1801922-6-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260714015331.1801922-1-rkannoth@marvell.com>
+References: <20260714015331.1801922-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4997650-7a2e-4493-54e5-08dee14a5589
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2026 01:50:51.1558
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QT8cvH818iVS2i/nQHPp/iytffWv5rLHgcfJShYC3Wk7MuLIp5JCaQk5My0vOJez0E06iFYDDm4qVb/Kpx4UWov6jCCPgb4Vl/Owe/WUWFyIY6cE6m1rLrOAUArE5jBDW+OhaszlXLIkVCWgYFfNtg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR03MB8162
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: jLMCS1WdeBiPQvbBUC0bJxxuHxtkUwcu
+X-Authority-Analysis: v=2.4 cv=WOdPmHsR c=1 sm=1 tr=0 ts=6a5596b8 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=5G8DWUFWGqKwcvO_TfUA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: jLMCS1WdeBiPQvbBUC0bJxxuHxtkUwcu
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfX5cz7t77Xvo83
+ f9NQr4jGFo29a9XTWV9nj0dW4PkMw28LSSUII9E7w0mTbxib+4Of/kthY1zcVBPYMZ5MJvruf8C
+ t8WF36tGw6zoj5rulHDuFhawJ861vmU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfX2s2pMDkrCUzN
+ omRLkwxaM7zX8m8VPykTONYfnaWLGmUvybJxRUmV9u5AlKIIpVTicom2k8FSM9c6+tz++77+xS4
+ CXY1jezJXFdLpHGkKs+kIiuzePWdJRrj7gWAXGq3vEWf3u0aMwercJlqehFXOUiIiS58XgoS43u
+ eO8MMWH9Y6BBxEjCcz1YT6U0JyFHK+P4g5q/evAYmlPKC+irarEfhKMTfScEpCyaamepRVtnSL4
+ ITk2PwHZiOdnQBnsrppiPh8J1zVorKJiIymY1NiDrizQvuyx3N0cRLe2p9crUVIWrzmNMlbYbvB
+ mTe53KVQwHSnC/QPVp//FIrzBfCLHExZU25FHsYpU5x7wlui3Db8L/7z9uLwtwYYlemZ3tPQ8t5
+ 1YsHev65HVenzdrCRgROAnwWkZI41ssngXq2HaA8Z5xuEAMFCpmXnxVc0bqjbRa4WUX4F/AZ6z/
+ q0RQSqWPND3q4GKreHg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_06,2026-07-10_01,2025-10-01_01
 
-T24gMzAvNi8yMDI2IDc6NTYgcG0sIE5hemxlIEFzbWFkZSwgTXVoYW1tYWQgTmF6aW0gQW1pcnVs
-IHdyb3RlOg0KDQpIaSwNCg0KZG8gd2UgaGF2ZSBhbnkgdXBkYXRlIG9uIHRoaXMgcGF0Y2ggc3Rh
-dHVzIHRvIGdvIGluPw0KDQpCUiwNCk5hemltDQo+IEZyb206IE5hemltIEFtaXJ1bCA8bXVoYW1t
-YWQubmF6aW0uYW1pcnVsLm5hemxlLmFzbWFkZUBhbHRlcmEuY29tPg0KPiANCj4gVGhlIGJhc2lj
-IGZsb3cgcGFyc2VyIGluIHRjX2FkZF9iYXNpY19mbG93KCkgZG9lcyBub3QgdmFsaWRhdGUgbWF0
-Y2gNCj4ga2V5cyBiZWZvcmUgcHJvY2VlZGluZy4gVW5zdXBwb3J0ZWQgb2ZmbG9hZCBjb25maWd1
-cmF0aW9ucyBzdWNoIGFzDQo+IHBhcnRpYWwgcHJvdG9jb2wgbWFza3MsIG5vbi1JUHY0IG5ldHdv
-cmsgcHJvdG8sIG9yIG5vbi1UQ1AvVURQIHRyYW5zcG9ydA0KPiBwcm90byBhcmUgc2lsZW50bHkg
-YWNjZXB0ZWQgaW5zdGVhZCBvZiByZXR1cm5pbmcgLUVPUE5PVFNVUFAuDQo+IA0KPiBBZGQgdmFs
-aWRhdGlvbiB0byByZXR1cm4gLUVPUE5PVFNVUFAgZWFybHkgZm9yOg0KPiAtIE5vIG5ldHdvcmsg
-b3IgdHJhbnNwb3J0IHByb3RvIHByZXNlbnQgaW4gdGhlIGtleQ0KPiAtIFBhcnRpYWwgcHJvdG9j
-b2wgbWFzayAob25seSBmdWxsIG1hc2sgc3VwcG9ydGVkKQ0KPiAtIE5ldHdvcmsgcHJvdG8gaXMg
-bm90IElQdjQNCj4gLSBUcmFuc3BvcnQgcHJvdG8gaXMgbm90IFRDUCBvciBVRFANCj4gDQo+IEVh
-Y2ggcmVqZWN0aW9uIGluY2x1ZGVzIGFuIGV4dGFjayBtZXNzYWdlIHNvIHRoZSB1c2VyIGtub3dz
-IHdoaWNoIHBhcnQNCj4gb2YgdGhlIG1hdGNoIGlzIHVuc3VwcG9ydGVkLg0KPiANCj4gQWxzbyBw
-cm9wYWdhdGUgLUVPUE5PVFNVUFAgZnJvbSB0Y19hZGRfYmFzaWNfZmxvdygpIGluIHRjX2FkZF9m
-bG93KCkNCj4gYnkgcmV0dXJuaW5nIGl0IGRpcmVjdGx5IHJhdGhlciB0aGFuIHVzaW5nIGJyZWFr
-LiBUaGUgYnJlYWsgd2FzIHNpbGVudGx5DQo+IGRpc2NhcmRpbmcgdGhlIGVycm9yIGZvciBGTE9X
-X0NMU19SRVBMQUNFIG9wZXJhdGlvbnMgd2hlcmUgZW50cnktPmluX3VzZQ0KPiBpcyBhbHJlYWR5
-IHRydWUsIGNhdXNpbmcgdGNfYWRkX2Zsb3coKSB0byByZXR1cm4gMCAoc3VjY2VzcykgZm9yDQo+
-IHVuc3VwcG9ydGVkIHJlcGxhY2UgcmVxdWVzdHMuDQo+IA0KPiBGaXhlczogNDI1ZWFiZGRhZjBm
-ICgibmV0OiBzdG1tYWM6IEltcGxlbWVudCBMMy9MNCBGaWx0ZXJzIHVzaW5nIFRDIEZsb3dlciIp
-DQo+IFNpZ25lZC1vZmYtYnk6IFJvaGFuIEcgVGhvbWFzIDxyb2hhbi5nLnRob21hc0BhbHRlcmEu
-Y29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBOYXppbSBBbWlydWwgPG11aGFtbWFkLm5hemltLmFtaXJ1
-bC5uYXpsZS5hc21hZGVAYWx0ZXJhLmNvbT4NCj4gLS0tDQo+IENoYW5nZXMgaW4gdjM6DQo+IC0g
-QWRkIGV4dGFjayBtZXNzYWdlcyB0byBlYWNoIC1FT1BOT1RTVVBQIHJldHVybiBzbyB1c2VycyBr
-bm93IHdoaWNoDQo+ICAgIHBhcnQgb2YgdGhlIG1hdGNoIGlzIHVuc3VwcG9ydGVkIChKYWt1YiBL
-aWNpbnNraSkNCj4gLSBSZXR1cm4gLUVPUE5PVFNVUFAgZGlyZWN0bHkgaW5zdGVhZCBvZiBicmVh
-ayB0byBhdm9pZCBzaWxlbnRseQ0KPiAgICByZXBvcnRpbmcgc3VjY2VzcyBvbiB1bnN1cHBvcnRl
-ZCBGTE9XX0NMU19SRVBMQUNFIChTYXNoaWtvIHJldmlldykNCj4gLSBQYXRjaGVzIDEvMyBhbmQg
-My8zIGFyZSB1bmNoYW5nZWQgZnJvbSB2Mg0KPiANCj4gQ2hhbmdlcyBpbiB2MjoNCj4gLSBObyBj
-aGFuZ2VzDQo+IA0KPiAtLS0NCj4gICAuLi4vbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0
-bW1hY190Yy5jICAgfCAzNCArKysrKysrKysrKysrKysrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQs
-IDM0IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5l
-dC9zdG1pY3JvL3N0bW1hYy9zdG1tYWNfdGMuYyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWlj
-cm8vc3RtbWFjL3N0bW1hY190Yy5jDQo+IGluZGV4IGQ3ODY1MjcxODU5OS4uMTRjYWJlNzZlNTNl
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1t
-YWNfdGMuYw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1t
-YWNfdGMuYw0KPiBAQCAtNDQ2LDYgKzQ0Niw3IEBAIHN0YXRpYyBpbnQgdGNfcGFyc2VfZmxvd19h
-Y3Rpb25zKHN0cnVjdCBzdG1tYWNfcHJpdiAqcHJpdiwNCj4gICB9DQo+ICAgDQo+ICAgI2RlZmlu
-ZSBFVEhFUl9UWVBFX0ZVTExfTUFTSwljcHVfdG9fYmUxNih+MCkNCj4gKyNkZWZpbmUgSVBfUFJP
-VE9fRlVMTF9NQVNLCTB4RkYNCj4gICANCj4gICBzdGF0aWMgaW50IHRjX2FkZF9iYXNpY19mbG93
-KHN0cnVjdCBzdG1tYWNfcHJpdiAqcHJpdiwNCj4gICAJCQkgICAgIHN0cnVjdCBmbG93X2Nsc19v
-ZmZsb2FkICpjbHMsDQo+IEBAIC00NjEsNiArNDYyLDMzIEBAIHN0YXRpYyBpbnQgdGNfYWRkX2Jh
-c2ljX2Zsb3coc3RydWN0IHN0bW1hY19wcml2ICpwcml2LA0KPiAgIA0KPiAgIAlmbG93X3J1bGVf
-bWF0Y2hfYmFzaWMocnVsZSwgJm1hdGNoKTsNCj4gICANCj4gKwkvKiBCb3RoIG5ldHdvcmsgcHJv
-dG8gYW5kIHRyYW5zcG9ydCBwcm90byBub3QgcHJlc2VudCBpbiB0aGUga2V5ICovDQo+ICsJaWYg
-KCFtYXRjaC5tYXNrIHx8ICEobWF0Y2gubWFzay0+bl9wcm90byB8fCBtYXRjaC5tYXNrLT5pcF9w
-cm90bykpIHsNCj4gKwkJTkxfU0VUX0VSUl9NU0dfTU9EKGNscy0+Y29tbW9uLmV4dGFjaywNCj4g
-KwkJCQkgICAiZmlsdGVyIG11c3Qgc3BlY2lmeSBuZXR3b3JrIG9yIHRyYW5zcG9ydCBwcm90b2Nv
-bCIpOw0KPiArCQlyZXR1cm4gLUVPUE5PVFNVUFA7DQo+ICsJfQ0KPiArDQo+ICsJLyogSWYgdGhl
-IHByb3RvIGlzIHByZXNlbnQgaW4gdGhlIGtleSBhbmQgaXMgbm90IGZ1bGwgbWFzayAqLw0KPiAr
-CWlmICgobWF0Y2gubWFzay0+bl9wcm90byAmJiBtYXRjaC5tYXNrLT5uX3Byb3RvICE9IEVUSEVS
-X1RZUEVfRlVMTF9NQVNLKSB8fA0KPiArCSAgICAobWF0Y2gubWFzay0+aXBfcHJvdG8gJiYgbWF0
-Y2gubWFzay0+aXBfcHJvdG8gIT0gSVBfUFJPVE9fRlVMTF9NQVNLKSkgew0KPiArCQlOTF9TRVRf
-RVJSX01TR19NT0QoY2xzLT5jb21tb24uZXh0YWNrLA0KPiArCQkJCSAgICJvbmx5IGZ1bGwgcHJv
-dG9jb2wgbWFzayBpcyBzdXBwb3J0ZWQiKTsNCj4gKwkJcmV0dXJuIC1FT1BOT1RTVVBQOw0KPiAr
-CX0NCj4gKw0KPiArCS8qIE5ldHdvcmsgcHJvdG8gaXMgcHJlc2VudCBpbiB0aGUga2V5IGFuZCBp
-cyBub3QgSVB2NCAqLw0KPiArCWlmIChtYXRjaC5tYXNrLT5uX3Byb3RvICYmIG1hdGNoLmtleS0+
-bl9wcm90byAhPSBjcHVfdG9fYmUxNihFVEhfUF9JUCkpIHsNCj4gKwkJTkxfU0VUX0VSUl9NU0df
-TU9EKGNscy0+Y29tbW9uLmV4dGFjaywNCj4gKwkJCQkgICAib25seSBJUHY0IG5ldHdvcmsgcHJv
-dG9jb2wgaXMgc3VwcG9ydGVkIik7DQo+ICsJCXJldHVybiAtRU9QTk9UU1VQUDsNCj4gKwl9DQo+
-ICsNCj4gKwkvKiBUcmFuc3BvcnQgcHJvdG8gaXMgcHJlc2VudCBpbiB0aGUga2V5IGFuZCBpcyBu
-b3QgVENQIG9yIFVEUCAqLw0KPiArCWlmIChtYXRjaC5tYXNrLT5pcF9wcm90byAmJg0KPiArCSAg
-ICBtYXRjaC5rZXktPmlwX3Byb3RvICE9IElQUFJPVE9fVENQICYmDQo+ICsJICAgIG1hdGNoLmtl
-eS0+aXBfcHJvdG8gIT0gSVBQUk9UT19VRFApIHsNCj4gKwkJTkxfU0VUX0VSUl9NU0dfTU9EKGNs
-cy0+Y29tbW9uLmV4dGFjaywNCj4gKwkJCQkgICAib25seSBUQ1AgYW5kIFVEUCB0cmFuc3BvcnQg
-cHJvdG9jb2xzIGFyZSBzdXBwb3J0ZWQiKTsNCj4gKwkJcmV0dXJuIC1FT1BOT1RTVVBQOw0KPiAr
-CX0NCj4gKw0KPiAgIAllbnRyeS0+aXBfcHJvdG8gPSBtYXRjaC5rZXktPmlwX3Byb3RvOw0KPiAg
-IAlyZXR1cm4gMDsNCj4gICB9DQo+IEBAIC01OTgsMTEgKzYyNiw3IEBAIHN0YXRpYyBpbnQgdGNf
-YWRkX2Zsb3coc3RydWN0IHN0bW1hY19wcml2ICpwcml2LA0KPiAgIAkJcmV0ID0gdGNfZmxvd19w
-YXJzZXJzW2ldLmZuKHByaXYsIGNscywgZW50cnkpOw0KPiAgIAkJaWYgKCFyZXQpDQo+ICAgCQkJ
-ZW50cnktPmluX3VzZSA9IHRydWU7DQo+IC0JCWVsc2UgaWYgKHJldCA9PSAtRU9QTk9UU1VQUCkN
-Cj4gLQkJCS8qIFRoZSBiYXNpYyBmbG93IHBhcnNlciB3aWxsIHJldHVybiBFT1BOT1RTVVBQLCBp
-ZiBhDQo+IC0JCQkgKiByZXF1ZXN0ZWQgb2ZmbG9hZCBub3QgZnVsbHkgc3VwcG9ydGVkIGJ5IHRo
-ZSBody4gQW5kDQo+IC0JCQkgKiBpbiB0aGF0IGNhc2UgZmFpbCBlYXJseS4NCj4gLQkJCSAqLw0K
-PiAtCQkJYnJlYWs7DQo+ICsJCWVsc2UgaWYgKHJldCA9PSAtRU9QTk9UU1VQUCkNCj4gKwkJCXJl
-dHVybiByZXQ7DQo+ICAgCX0NCj4gICANCj4gICAJaWYgKCFlbnRyeS0+aW5fdXNlKQ0KDQo=
+Switch (PAN) mode needs more than one TL1 scheduler queue index so the
+hardware can steer traffic to different links according to NPC flow
+rules, not only the PF/VF default Tx link.
+Add NIX_TXSCH_ALLOC_FLAG_PAN to nix_txsch_alloc requests: use the PAN
+link index for scheduler range calculation, allow multiple TL1 queues
+when the aggregate level spans start..end, and allocate indices in
+that range. Add TXSCHQ_FREE_PAN_TL1 so TL1 entries in that path can be
+freed via nix_txsch_free where they were previously skipped.
+For NPC install flow, add set_chanmask so callers can keep a non-default
+chan_mask when the requester is not the AF; without it, chan_mask was
+always forced to 0xFFF for non-AF functions.
+Allocate the NIX LF SQ bitmap with the same span used by
+bitmap_weight(..., BITS_PER_LONG * 16) in rvu_get_hwinfo().
+Extend struct sg_list with cq_idx and len for transmit-side metadata.
+
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+---
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  15 ++
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |  16 ++-
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   6 +
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 133 +++++++++++++++---
+ .../marvell/octeontx2/af/rvu_npc_fs.c         |   7 +-
+ .../marvell/octeontx2/nic/otx2_txrx.h         |   2 +
+ 6 files changed, 155 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index cdfb5a8bafb9..bf8edab569b1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1158,6 +1158,13 @@ struct nix_txsch_alloc_req {
+ 	/* Scheduler queue count request at each level */
+ 	u16 schq_contig[NIX_TXSCH_LVL_CNT]; /* No of contiguous queues */
+ 	u16 schq[NIX_TXSCH_LVL_CNT]; /* No of non-contiguous queues */
++	/* Set only by the single switchdev PF (rvu->rswitch.pcifunc). This is
++	 * not the eswitch representor (rvu->rep_pcifunc). That PF requests two
++	 * aggregate-level TL2 queues on the PAN link, one for CGX and one for
++	 * SDP steering. No other PF or VF sets this flag.
++	 */
++#define NIX_TXSCH_ALLOC_FLAG_PAN BIT_ULL(0)
++	u64 flags;
+ };
+ 
+ struct nix_txsch_alloc_rsp {
+@@ -1176,6 +1183,10 @@ struct nix_txsch_alloc_rsp {
+ struct nix_txsch_free_req {
+ 	struct mbox_msghdr hdr;
+ #define TXSCHQ_FREE_ALL BIT_ULL(0)
++	/* Frees PAN TL2 queues allocated with NIX_TXSCH_ALLOC_FLAG_PAN. Used
++	 * only by the switchdev PF (rvu->rswitch.pcifunc), not by other PFs/VFs.
++	 */
++#define TXSCHQ_FREE_PAN_TL1 BIT_ULL(1)
+ 	u16 flags;
+ 	/* Scheduler queue level to be freed */
+ 	u16 schq_lvl;
+@@ -2115,6 +2126,10 @@ struct npc_install_flow_req {
+ 	u8 hw_prio;
+ 	u8  req_kw_type; /* Key type to be written */
+ 	u8 alloc_entry;	/* only for cn20k */
++	/* When set, rvu_mbox_handler_npc_install_flow() keeps caller chan_mask
++	 * for switchdev-installed flows instead of the default CPT override.
++	 */
++	u8 set_chanmask;
+ /* For now use any priority, once AF driver is changed to
+  * allocate least priority entry instead of mid zone then make
+  * NPC_MCAM_LEAST_PRIO as 3
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index df4f1c05a2a0..532c2b69fb85 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2054,8 +2054,12 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
+ 		info->rq_cnt = 0;
+ 
+ 		mutex_lock(&rvu->rsrc_lock);
+-		if (pfvf->sq_bmap)
+-			info->sq_cnt = bitmap_weight(pfvf->sq_bmap, BITS_PER_LONG * 16);
++		if (pfvf->sq_bmap) {
++			int sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
++					   NIX_SQ_BMAP_BITS : pfvf->sq_ctx->qsize;
++
++			info->sq_cnt = bitmap_weight(pfvf->sq_bmap, sq_bmap_bits);
++		}
+ 
+ 		if (pfvf->cq_bmap)
+ 			info->cq_cnt = bitmap_weight(pfvf->cq_bmap, BITS_PER_LONG);
+@@ -2101,8 +2105,12 @@ int rvu_mbox_handler_iface_get_info(struct rvu *rvu, struct msg_req *req,
+ 			info->rq_cnt = 0;
+ 
+ 			mutex_lock(&rvu->rsrc_lock);
+-			if (pfvf->sq_bmap)
+-				info->sq_cnt = bitmap_weight(pfvf->sq_bmap, BITS_PER_LONG * 16);
++			if (pfvf->sq_bmap) {
++				int sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
++						   NIX_SQ_BMAP_BITS : pfvf->sq_ctx->qsize;
++
++				info->sq_cnt = bitmap_weight(pfvf->sq_bmap, sq_bmap_bits);
++			}
+ 
+ 			if (pfvf->cq_bmap)
+ 				info->cq_cnt = bitmap_weight(pfvf->cq_bmap, BITS_PER_LONG);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 8cf1ad9ec749..0662cc6134b0 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -335,6 +335,7 @@ struct nix_txsch {
+ 	u8   lvl;
+ #define NIX_TXSCHQ_FREE		      BIT_ULL(1)
+ #define NIX_TXSCHQ_CFG_DONE	      BIT_ULL(0)
++#define NIX_SQ_BMAP_BITS	      (BITS_PER_LONG * 16)
+ #define TXSCH_MAP_FUNC(__pfvf_map)    ((__pfvf_map) & 0xFFFF)
+ #define TXSCH_MAP_FLAGS(__pfvf_map)   ((__pfvf_map) >> 16)
+ #define TXSCH_MAP(__func, __flags)    (((__func) & 0xFFFF) | ((__flags) << 16))
+@@ -904,6 +905,11 @@ static inline bool is_pffunc_af(u16 pcifunc)
+ 	return !pcifunc;
+ }
+ 
++static inline bool rvu_is_switch_pcifunc(struct rvu *rvu, u16 pcifunc)
++{
++	return rvu->rswitch.pcifunc && pcifunc == rvu->rswitch.pcifunc;
++}
++
+ static inline bool is_rvu_fwdata_valid(struct rvu *rvu)
+ {
+ 	return (rvu->fwdata->header_magic == RVU_FWDATA_HEADER_MAGIC) &&
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 67c9621dbc1d..1a0ba148478e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -1600,7 +1600,11 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 	if (rc)
+ 		goto free_mem;
+ 
+-	pfvf->sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
++	if (rvu_is_switch_pcifunc(rvu, pcifunc))
++		pfvf->sq_bmap = kcalloc(BITS_TO_LONGS(NIX_SQ_BMAP_BITS),
++					sizeof(long), GFP_KERNEL);
++	else
++		pfvf->sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
+ 	if (!pfvf->sq_bmap) {
+ 		rc = -ENOMEM;
+ 		goto free_mem;
+@@ -2127,6 +2131,25 @@ static void nix_get_txschq_range(struct rvu *rvu, u16 pcifunc,
+ 	}
+ }
+ 
++static int nix_get_pan_tx_link(struct rvu *rvu)
++{
++	struct rvu_hwinfo *hw = rvu->hw;
++
++	return hw->cgx_links + hw->lbk_links + 1;
++}
++
++static bool nix_txsch_is_pan_schq(struct rvu *rvu, int schq)
++{
++	int pan_link = nix_get_pan_tx_link(rvu);
++
++	return schq >= pan_link && schq <= pan_link + 1;
++}
++
++static bool nix_txsch_pan_allowed(struct rvu *rvu, u16 pcifunc)
++{
++	return rvu_is_switch_pcifunc(rvu, pcifunc);
++}
++
+ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 				      struct nix_hw *nix_hw,
+ 				      struct nix_txsch_alloc_req *req)
+@@ -2142,12 +2165,27 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 	if (!req_schq)
+ 		return 0;
+ 
+-	link = nix_get_tx_link(rvu, pcifunc);
++	if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
++		if (!nix_txsch_pan_allowed(rvu, pcifunc))
++			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		link = nix_get_pan_tx_link(rvu);
++	} else {
++		link = nix_get_tx_link(rvu, pcifunc);
++	}
+ 
+ 	/* For traffic aggregating scheduler level, one queue is enough */
+ 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
+-		if (req_schq != 1)
++		if (req_schq != 1 && !(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN))
++			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		if (req->schq[lvl] > MAX_TXSCHQ_PER_FUNC ||
++		    req->schq_contig[lvl] > MAX_TXSCHQ_PER_FUNC)
+ 			return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
++			if (link >= txsch->schq.max || link + 1 >= txsch->schq.max)
++				return NIX_AF_ERR_TLX_ALLOC_FAIL;
++			if (req_schq > 2)
++				return NIX_AF_ERR_TLX_ALLOC_FAIL;
++		}
+ 		return 0;
+ 	}
+ 
+@@ -2176,9 +2214,9 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 	return 0;
+ }
+ 
+-static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+-			    struct nix_txsch_alloc_rsp *rsp,
+-			    int lvl, int start, int end)
++static int nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
++			   struct nix_txsch_alloc_rsp *rsp,
++			   int lvl, int start, int end)
+ {
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	u16 pcifunc = rsp->hdr.pcifunc;
+@@ -2188,6 +2226,46 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 	 * on transmit link to which PF_FUNC is mapped to.
+ 	 */
+ 	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
++		if (start != end) {
++			int want_contig = rsp->schq_contig[lvl];
++			int got_contig = 0, got = 0;
++			int want = rsp->schq[lvl];
++
++			for (schq = start; schq <= end; schq++) {
++				if (test_bit(schq, txsch->schq.bmap))
++					continue;
++
++				if (got_contig < want_contig) {
++					set_bit(schq, txsch->schq.bmap);
++					rsp->schq_contig_list[lvl][got_contig++] = schq;
++					continue;
++				}
++
++				if (got < want) {
++					set_bit(schq, txsch->schq.bmap);
++					rsp->schq_list[lvl][got++] = schq;
++				}
++			}
++
++			rsp->schq_contig[lvl] = got_contig;
++			rsp->schq[lvl] = got;
++
++			if (got_contig < want_contig || got < want) {
++				for (idx = 0; idx < got_contig; idx++)
++					clear_bit(rsp->schq_contig_list[lvl][idx],
++						  txsch->schq.bmap);
++				for (idx = 0; idx < got; idx++)
++					clear_bit(rsp->schq_list[lvl][idx],
++						  txsch->schq.bmap);
++				rsp->schq_contig[lvl] = 0;
++				rsp->schq[lvl] = 0;
++				dev_err(rvu->dev,
++					"Could not allocate schq at lvl=%u start=%u end=%u\n",
++					lvl, start, end);
++				return -ENOMEM;
++			}
++			return 0;
++		}
+ 		/* A single TL queue is allocated */
+ 		if (rsp->schq_contig[lvl]) {
+ 			rsp->schq_contig[lvl] = 1;
+@@ -2202,7 +2280,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			rsp->schq[lvl] = 1;
+ 			rsp->schq_list[lvl][0] = start;
+ 		}
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Adjust the queue request count if HW supports
+@@ -2214,7 +2292,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		if (idx >= (end - start) || test_bit(schq, txsch->schq.bmap)) {
+ 			rsp->schq_contig[lvl] = 0;
+ 			rsp->schq[lvl] = 0;
+-			return;
++			return 0;
+ 		}
+ 
+ 		if (rsp->schq_contig[lvl]) {
+@@ -2227,7 +2305,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			set_bit(schq, txsch->schq.bmap);
+ 			rsp->schq_list[lvl][0] = schq;
+ 		}
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Allocate contiguous queue indices requesty first */
+@@ -2258,6 +2336,8 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		/* Update how many were allocated */
+ 		rsp->schq[lvl] = idx;
+ 	}
++
++	return 0;
+ }
+ 
+ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+@@ -2282,6 +2362,10 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 	if (!nix_hw)
+ 		return NIX_AF_ERR_INVALID_NIXBLK;
+ 
++	if ((req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) &&
++	    !nix_txsch_pan_allowed(rvu, pcifunc))
++		return NIX_AF_ERR_TLX_ALLOC_FAIL;
++
+ 	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	/* Check if request is valid as per HW capabilities
+@@ -2304,11 +2388,14 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 		rsp->schq[lvl] = req->schq[lvl];
+ 		rsp->schq_contig[lvl] = req->schq_contig[lvl];
+ 
+-		link = nix_get_tx_link(rvu, pcifunc);
++		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN)
++			link = nix_get_pan_tx_link(rvu);
++		else
++			link = nix_get_tx_link(rvu, pcifunc);
+ 
+ 		if (lvl >= hw->cap.nix_tx_aggr_lvl) {
+ 			start = link;
+-			end = link;
++			end = link + !!(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN);
+ 		} else if (hw->cap.nix_fixed_txschq_mapping) {
+ 			nix_get_txschq_range(rvu, pcifunc, link, &start, &end);
+ 		} else {
+@@ -2316,10 +2403,11 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 			end = txsch->schq.max;
+ 		}
+ 
+-		nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end);
++		if (nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end))
++			goto err;
+ 
+ 		/* Reset queue config */
+-		for (idx = 0; idx < req->schq_contig[lvl]; idx++) {
++		for (idx = 0; idx < rsp->schq_contig[lvl]; idx++) {
+ 			schq = rsp->schq_contig_list[lvl][idx];
+ 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
+ 			    NIX_TXSCHQ_CFG_DONE))
+@@ -2329,7 +2417,7 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+ 		}
+ 
+-		for (idx = 0; idx < req->schq[lvl]; idx++) {
++		for (idx = 0; idx < rsp->schq[lvl]; idx++) {
+ 			schq = rsp->schq_list[lvl][idx];
+ 			if (!(TXSCH_MAP_FLAGS(pfvf_map[schq]) &
+ 			    NIX_TXSCHQ_CFG_DONE))
+@@ -2625,11 +2713,11 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
+ 		 /* TLs above aggregation level are shared across all PF
+ 		  * and it's VFs, hence skip freeing them.
+ 		  */
+-		if (lvl >= hw->cap.nix_tx_aggr_lvl)
+-			continue;
+-
+ 		txsch = &nix_hw->txsch[lvl];
+ 		for (schq = 0; schq < txsch->schq.max; schq++) {
++			if (lvl >= hw->cap.nix_tx_aggr_lvl &&
++			    !nix_txsch_is_pan_schq(rvu, schq))
++				continue;
+ 			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
+ 				continue;
+ 			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+@@ -2673,7 +2761,16 @@ static int nix_txschq_free_one(struct rvu *rvu,
+ 	schq = req->schq;
+ 	txsch = &nix_hw->txsch[lvl];
+ 
+-	if (lvl >= hw->cap.nix_tx_aggr_lvl || schq >= txsch->schq.max)
++	if (req->flags & TXSCHQ_FREE_PAN_TL1) {
++		if (!nix_txsch_pan_allowed(rvu, pcifunc))
++			return NIX_AF_ERR_TLX_INVALID;
++		if (!nix_txsch_is_pan_schq(rvu, schq))
++			return NIX_AF_ERR_TLX_INVALID;
++	} else if (lvl >= hw->cap.nix_tx_aggr_lvl) {
++		return 0;
++	}
++
++	if (schq >= txsch->schq.max)
+ 		return 0;
+ 
+ 	pfvf_map = txsch->pfvf_map;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index 09c7ee8571df..03bc3e321522 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1828,8 +1828,11 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+ 		target = req->hdr.pcifunc;
+ 	}
+ 
+-	/* ignore chan_mask in case pf func is not AF, revisit later */
+-	if (!is_pffunc_af(req->hdr.pcifunc))
++	/* Non-AF requesters normally get the CPT default chan_mask. set_chanmask
++	 * preserves caller-supplied chan_mask for switchdev-installed flows; see
++	 * npc_install_flow_req.set_chanmask.
++	 */
++	if (!is_pffunc_af(req->hdr.pcifunc) && !req->set_chanmask)
+ 		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 
+ 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
+index acf259d72008..73a98b94426b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
+@@ -78,6 +78,8 @@ struct otx2_rcv_queue {
+ struct sg_list {
+ 	u16	num_segs;
+ 	u16	flags;
++	u16	cq_idx;
++	u16	len;
+ 	u64	skb;
+ 	u64	size[OTX2_MAX_FRAGS_IN_SQE];
+ 	u64	dma_addr[OTX2_MAX_FRAGS_IN_SQE];
+-- 
+2.43.0
+
