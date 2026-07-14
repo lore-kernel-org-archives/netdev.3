@@ -1,367 +1,183 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936203BA253
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8973612DB;
+	Tue, 14 Jul 2026 13:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034003; cv=none; b=T04BkmJMkBanSGznu3VO9thLVOTGS2qKHgXoBCr35lXGR0W/kJg0dmXVQYgCcfdG9iDghv0Aye7mbIiNgvVqeZjymZF5LemXx+UTn2KC8PWphXlLV4SnxuLod+UcbIRul6zKS7XSZqmf9ips8G+bstQFSR0B0osJ0Qlmj34RV9s=
+	t=1784034077; cv=none; b=mxOLyjkTZodjzf5lQfEmmSAkTmFSuzfLXx38bUjbzdwct0Xf67jeMpgNDemtUvXKYmi6MJzPjy1xd+Jl1VjjyWjDTCUcecMDitj8bQE1czQCFPso+Y/s6ODtEGiIx1v7TRwPqI3YDmMsxy6XU9IK4bzWwT17lyA1HMS3AW4GJnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034003; c=relaxed/simple;
-	bh=edGerEJ2K5myu6qiGTaeBTVDgr0lKCq+OdaQF1FfJOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kcwTzCHi4cbld3nxt4AF8sYrwhgVGJpTeDY+NSwSP4WZHyJr9+KUhsNmUXJ6r/uLPE83UbJkxw/+ddItR+/lOS1FT8wmEoCye39xtR1K/0RFRsYcNBSlTP5W0KGoIiNDWPH4D4I8mcHwJwoW3SM+VQGe/h/694/NBbV6w1G3YqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eytIbY63; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784034077; c=relaxed/simple;
+	bh=7CeV2JqxygSEcV7QVYtBYJkoFG8rn1xPd64XyHQGA9g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=M532kVrTeyogswW3xuOpqqnoVi4qwYSW8G//M3vAnLsNO6OpcHKVZhgqZr4ApO9y7FPy61I477ptYUIH4+FhSPRxEmgXTYg4ZXxxeRdEx2apr0+Z8uG+XMoRBm5skF0BaKblxj6R1ecwSPLhKe0rlS4ioWqtGuBgYKB7cA4Ly7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=rZ/lK5jD; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eytIbY63"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784034000;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KdoVF3uvyBF3nIIOAV85VbQPsvy+M+muvRTvMX/JvCk=;
-	b=eytIbY63z2F1Zuvqfwt3PZZLTHDE1dsgl52lgMsdcIQQowa/IqY7CT3vL38H41gip9OCeC
-	8unipnBU+cVxI89u+s2fKS5KC77L21MGw6cauGHZI8grbn9+5eYd7yjb8xZ1M5NYmcVa3E
-	TlNn38+QLZ82r5EKwZ7jgswzLaeJZBY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-442-RxiK1hhaMkC9i9zSBNT7rg-1; Tue,
- 14 Jul 2026 08:59:58 -0400
-X-MC-Unique: RxiK1hhaMkC9i9zSBNT7rg-1
-X-Mimecast-MFC-AGG-ID: RxiK1hhaMkC9i9zSBNT7rg_1784033997
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="rZ/lK5jD"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3C6D3410E2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1784034074; bh=N7EMk0B6AUtZUiM/QA5lBMqbPP1I3abAcQ9/YZ6+Tzk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rZ/lK5jDFFbj57Sl/24gU1iFuYlaluvoVZ5Ug1idxSk24WOPCmZ88zIRW5f+YEzVX
+	 OzhkNgXiPh9OlddACJ4HW/nAE0hrweCLvZ3Br47g8RTMD/2YI7NWfraTs/0jrI5bfA
+	 wxL1aA/kuV0bUH9ibIbKx8O5AkiBKjJbp6cqIqHf+4LNGJdlv4surZ7bloLjRvWGDB
+	 gXaXax69FImiTwDeRIWMhBVy8YdBnFw7wCtTCrrj/dpLNvTlQrRPsZ3LTIwCxxYc0E
+	 X363mMGut+t5vLTp43fHZdEuLl9FLOjoLmIz4ZpDAr5I/3Uz8a9+z0JZRgQeW/b/we
+	 S28cEuHBv0YFQ==
+Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BBCEF195605A;
-	Tue, 14 Jul 2026 12:59:56 +0000 (UTC)
-Received: from p16v (unknown [10.43.2.199])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F2065180049F;
-	Tue, 14 Jul 2026 12:59:53 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] dpll: use pin owner's dpll ref for pin-level attribute reporting
-Date: Tue, 14 Jul 2026 14:59:44 +0200
-Message-ID: <20260714125945.1823269-1-ivecera@redhat.com>
+	by ms.lwn.net (Postfix) with ESMTPSA id 3C6D3410E2;
+	Tue, 14 Jul 2026 13:01:14 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: David 'equinox' Lamparter <equinox@diac24.net>, Paolo Abeni
+ <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>
+Cc: David Ahern <dsahern@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Fernando
+ Fernandez Mancera <fmancera@suse.de>, Lorenzo Colitti
+ <lorenzo@google.com>, Maciej =?utf-8?Q?=C5=BBenczykowski?=
+ <maze@google.com>, Patrick Rohr
+ <prohr@google.com>, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, David 'equinox' Lamparter
+ <equinox@diac24.net>
+Subject: Re: [PATCH net-next 9/9] net: document RFC6724 rule 5.5 implementation
+In-Reply-To: <20260714094030.136317-10-equinox@diac24.net>
+References: <20260714094030.136317-1-equinox@diac24.net>
+ <20260714094030.136317-10-equinox@diac24.net>
+Date: Tue, 14 Jul 2026 07:01:13 -0600
+Message-ID: <87zeztg1ye.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
 
-Commit c191b319f208 ("dpll: allow registering FW-identified pin with a
-different DPLL") relaxed dpll_pin_register() to let fwnode-identified pins
-register with DPLLs from a different driver. This allows, for example, the
-ICE driver to register a zl3073x-created pin with its TXC DPLL using
-ice_dpll_txclk_ops, which lack frequency_get and phase_adjust_get
-callbacks.
+David 'equinox' Lamparter <equinox@diac24.net> writes:
 
-After such cross-driver registration, the pin's dpll_refs xarray contains
-refs from both drivers. dpll_cmd_pin_get_one() calls
-dpll_xa_ref_dpll_first() which returns the ref with the lowest DPLL id.
-When the foreign DPLL (e.g. ICE TXC) has a lower id than the owner DPLL
-(e.g. zl3073x), the foreign ops are used for reporting. Since those ops
-lack callbacks like frequency_get, pin-level attributes are silently
-omitted from the netlink response.
+> RFC6724 rule 5.5 is anything but obvious, especially if trying to do it
+> well.  (RFC8028 and its errata kinda proves the point.)
+>
+> This documents what exactly the Linux kernel does for RFC6724 rule 5.5,
+> especially what the routing table needs to look like for it to work.
+>
+> Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
+> ---
+>  Documentation/networking/ipv6-addrsel.rst | 75 +++++++++++++++++++++++
+>  MAINTAINERS                               |  1 +
+>  2 files changed, 76 insertions(+)
+>  create mode 100644 Documentation/networking/ipv6-addrsel.rst
 
-For example, a zl3073x output pin that should report frequency and
-phase-adjust shows neither:
+You need to add this new document to the index.rst file or it won't be
+part of the docs build...you should have seen a warning when you built
+the docs.
 
-Before:
-  # dpll pin show id 45
-  pin id 45:
-    module-name: zl3073x
-    clock-id: 3427468959636104019
-    board-label: 156M25_NAC0_CLKREF_SYNC
-    package-label: OUT3
-    type: synce-eth-port
-    capabilities: 0x0
-    phase-adjust-min: -2147483648
-    phase-adjust-max: 2147483647
-    phase-adjust-gran: 800
-    parent-device:
-      ...
+> diff --git a/Documentation/networking/ipv6-addrsel.rst b/Documentation/networking/ipv6-addrsel.rst
+> new file mode 100644
+> index 000000000000..bed032e69570
+> --- /dev/null
+> +++ b/Documentation/networking/ipv6-addrsel.rst
+> @@ -0,0 +1,75 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +====================================
+> +IPv6 source address selection trivia
+> +====================================
+> +
+> +
+> +RFC6724 rule 5.5 support
+> +------------------------
 
-After:
-  # dpll pin show id 19
-  pin id 19:
-    module-name: zl3073x
-    clock-id: 15964355450360090479
-    board-label: 156M25_NAC0_CLKREF_SYNC
-    package-label: OUT3
-    type: synce-eth-port
-    frequency: 156250000 Hz
-    frequency-supported:
-      156250000 Hz
-    capabilities: 0x0
-    phase-adjust-min: -2147483648
-    phase-adjust-max: 2147483647
-    phase-adjust-gran: 800
-    phase-adjust: 0
-    parent-device:
-      ...
+Please stick with the section markup guidelines in
+Documentation/doc-guide/sphinx.rst. 
 
-Fix this by:
+> +RFC6724 rule 5.5 is a very short paragraph in a complex RFC that has turned
+> +out quite tricky, but also immensely useful in multihoming scenarios.  For
+> +reference, it says:
+> +
+> +::
 
-1. Adding dpll_pin_own_dpll_ref_first() helper that returns the first ref
-   whose DPLL matches the pin's (module, clock_id) tuple — i.e. the DPLL
-   from the driver that created the pin and has the complete set of ops.
-   Return NULL if no owner ref is found.
+You'll likely get more visually pleasing results if you just leave out
+the "::" here; you don't need literal formatting.
 
-2. Using dpll_pin_own_dpll_ref_first() in dpll_cmd_pin_get_one() with a
-   fallback to dpll_xa_ref_dpll_first() for pin-on-pin child pins whose
-   dpll_refs all point to a different driver's DPLLs.
+> +   Rule 5.5: Prefer addresses in a prefix advertised by the next-hop.
+> +   If SA or SA's prefix is assigned by the selected next-hop that will
+> +   be used to send to D and SB or SB's prefix is assigned by a different
+> +   next-hop, then prefer SA.  Similarly, if SB or SB's prefix is
+> +   assigned by the next-hop that will be used to send to D and SA or
+> +   SA's prefix is assigned by a different next-hop, then prefer SB.
+> +
+> +The way this works on Linux is as follows:
+> +
+> +- prior to any source address selection happening, when receiving a RA, more
+> +  than the installation of a default route (or ::/128 route) needs to happen:
+> +  for each PIO, a source-specific (subtree) route is *additionally* installed.
+> +  The effect of this is that *after* a source address has been selected, one
+> +  of the routers that advertised it will remain in use (this is *not* RFC 6724
+> +  related, but rather RFC 8028.)  At the same time, these extra routes serve
+> +  to remember which router advertised what.
+> +
+> +- per usual, a route lookup for the IPv6 destination address in consideration
+> +  is done first.  This is passed around in kernel as a dst_entry.
+> +
+> +- the source address selection code iterates through the various rules in
+> +  RFC 6724.
+> +
+> +- if/when rule 5.5 is reached, first of all, there is a check if *any* source
+> +  specific routes exist in the routing table.  If there are none, the entire
+> +  code for 5.5 is skipped because it cannot have any effect, but is not free
+> +  to execute (can involve multiple routing lookups.)  **In applications that
+> +  use a lot of unbound (e.g. UDP) sockets, installing subtree routes should
+> +  therefore be avoided to not incur this cost on each source address selection
+> +  pass.**  Alternatively, applications should bind their sockets to a specific
+> +  source address such that the selection code is never hit.
+> +
+> +- if subtree routes do exist, the source address selection code now repeats
+> +  the routing lookup done before source address selection is entered, except
+> +  with the source address under consideration filled in.  This lookup will hit
+> +  the subtree routes that were installed (see first item), giving a fresh
+> +  dst_entry.  If the new dst_entry matches the original dst_entry, that means
+> +  the original router has in fact sent RAs with PIOs for this source address,
+> +  so it is preferred.  Otherwise it is not.
+> +
+> +
+> +There are a few caveats to consider:
+> +
+> +- the kernel currently does not create the subtree routes mentioned in the
+> +  first item.  This is a separate work item, partially done at the time of
+> +  writing this.  But this can equally well be performed in userspace processing
+> +  of RAs, e.g. NetworkManager or plain static configuration.
+> +
+> +- since addresses can also be acquired from DHCPv6, even RA/PIO combinations
+> +  that didn't result in the creation of any addresses (e.g. A=0) should have
+> +  subtree routes added.  Those routes *may* be relevant for DHCPv6-generated
+> +  addresses.
+> +
+> +- the "announce check" lookup does not backtrack.  Only the destination prefix
+> +  that provided the "unspecific" (::/128) match is checked for source prefixes
+> +  to see what routers advertised what.  This means that for e.g. RIOs, subtree
+> +  routes also have to be created.  (Backtracking for this case would further
+> +  increase the cost of source address selection, for a pretty rare situation
+> +  that has an easy fix/workaround.)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f3218abefd0c..4edf48362a07 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18912,6 +18912,7 @@ F:	Documentation/netlink/specs/rt-addr.yaml
+>  F:	Documentation/netlink/specs/rt-neigh.yaml
+>  F:	Documentation/netlink/specs/rt-route.yaml
+>  F:	Documentation/netlink/specs/rt-rule.yaml
+> +F:	Documentation/networking/ipv6-addrsel.rst
 
-3. Using dpll_pin_own_dpll_ref_first() in SET operations
-   (dpll_pin_freq_set, dpll_pin_esync_set, dpll_pin_ref_sync_state_set,
-   dpll_pin_phase_adj_set) returning -ENODEV if no owner ref exists.
-   Replacing the validation loops that rejected the entire operation when
-   any ref's ops lacked the required callback — instead validate only the
-   owner refs so that foreign DPLLs with incomplete ops no longer block
-   SET operations.
+It seems weird to add this one file here - I wonder why there isn't just
+an entry for Documentation/networking ?
 
-4. Guarding all SET and rollback xa_for_each loops against NULL set
-   callbacks so that foreign refs without the operation are safely skipped
-   instead of causing a NULL pointer dereference.
+Thanks,
 
-Fixes: c191b319f208 ("dpll: allow registering FW-identified pin with a different DPLL")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/dpll_core.c    | 27 +++++++++++++++++
- drivers/dpll/dpll_core.h    |  1 +
- drivers/dpll/dpll_netlink.c | 60 ++++++++++++++++++++++++++++++-------
- 3 files changed, 78 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index bb1e8650c9d59..245f625f4b3b4 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -1146,6 +1146,33 @@ void *dpll_pin_on_pin_priv(struct dpll_pin *parent,
- 	return reg->priv;
- }
- 
-+/**
-+ * dpll_pin_own_dpll_ref_first - find the first owner dpll ref of a pin
-+ * @pin: pointer to a dpll pin
-+ *
-+ * Search pin's dpll_refs for a ref whose dpll matches the pin's
-+ * (module, clock_id) tuple, i.e. the dpll registered by the driver
-+ * that created the pin. This ensures pin-level attributes are
-+ * reported and modified using the owner's ops even when the pin is
-+ * also registered with dplls from other drivers.
-+ *
-+ * Return: pointer to the owner's dpll_pin_ref, or NULL if no
-+ * owner ref is found.
-+ */
-+struct dpll_pin_ref *dpll_pin_own_dpll_ref_first(struct dpll_pin *pin)
-+{
-+	struct dpll_pin_ref *ref;
-+	unsigned long i;
-+
-+	xa_for_each(&pin->dpll_refs, i, ref) {
-+		if (ref->dpll->module == pin->module &&
-+		    ref->dpll->clock_id == pin->clock_id)
-+			return ref;
-+	}
-+
-+	return NULL;
-+}
-+
- const struct dpll_pin_ops *dpll_pin_ops(struct dpll_pin_ref *ref)
- {
- 	struct dpll_pin_registration *reg;
-diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
-index e245771134317..da8a369556ed1 100644
---- a/drivers/dpll/dpll_core.h
-+++ b/drivers/dpll/dpll_core.h
-@@ -93,6 +93,7 @@ void *dpll_pin_on_pin_priv(struct dpll_pin *parent, struct dpll_pin *pin);
- 
- const struct dpll_device_ops *dpll_device_ops(struct dpll_device *dpll);
- struct dpll_device *dpll_device_get_by_id(int id);
-+struct dpll_pin_ref *dpll_pin_own_dpll_ref_first(struct dpll_pin *pin);
- const struct dpll_pin_ops *dpll_pin_ops(struct dpll_pin_ref *ref);
- struct dpll_pin_ref *dpll_xa_ref_dpll_first(struct xarray *xa_refs);
- extern struct xarray dpll_device_xa;
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index bf729cde796a7..b3f0cb7d3d349 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -696,7 +696,9 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
- 	struct dpll_pin_ref *ref;
- 	int ret;
- 
--	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
-+	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref)
-+		ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
- 	ASSERT_NOT_NULL(ref);
- 
- 	ret = dpll_msg_add_pin_handle(msg, pin);
-@@ -1087,12 +1089,19 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
--		if (!ops->frequency_set || !ops->frequency_get) {
--			NL_SET_ERR_MSG(extack, "frequency set not supported by the device");
-+		if ((!ops->frequency_set || !ops->frequency_get) &&
-+		    ref->dpll->module == pin->module &&
-+		    ref->dpll->clock_id == pin->clock_id) {
-+			NL_SET_ERR_MSG(extack,
-+				       "frequency set not supported by the device");
- 			return -EOPNOTSUPP;
- 		}
- 	}
--	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
-+	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref) {
-+		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
-+		return -ENODEV;
-+	}
- 	ops = dpll_pin_ops(ref);
- 	dpll = ref->dpll;
- 	ret = ops->frequency_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
-@@ -1106,6 +1115,8 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->frequency_set)
-+			continue;
- 		dpll = ref->dpll;
- 		ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 					 dpll, dpll_priv(dpll), freq, extack);
-@@ -1125,6 +1136,8 @@ dpll_pin_freq_set(struct dpll_pin *pin, struct nlattr *a,
- 		if (ref == failed)
- 			break;
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->frequency_set)
-+			continue;
- 		dpll = ref->dpll;
- 		if (ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 				       dpll, dpll_priv(dpll), old_freq, extack))
-@@ -1148,13 +1161,19 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
--		if (!ops->esync_set || !ops->esync_get) {
-+		if ((!ops->esync_set || !ops->esync_get) &&
-+		    ref->dpll->module == pin->module &&
-+		    ref->dpll->clock_id == pin->clock_id) {
- 			NL_SET_ERR_MSG(extack,
- 				       "embedded sync feature is not supported by this device");
- 			return -EOPNOTSUPP;
- 		}
- 	}
--	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
-+	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref) {
-+		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
-+		return -ENODEV;
-+	}
- 	ops = dpll_pin_ops(ref);
- 	dpll = ref->dpll;
- 	ret = ops->esync_get(pin, dpll_pin_on_dpll_priv(dpll, pin), dpll,
-@@ -1178,6 +1197,8 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 		void *pin_dpll_priv;
- 
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->esync_set)
-+			continue;
- 		dpll = ref->dpll;
- 		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
- 		ret = ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
-@@ -1201,6 +1222,8 @@ dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
- 		if (ref == failed)
- 			break;
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->esync_set)
-+			continue;
- 		dpll = ref->dpll;
- 		pin_dpll_priv = dpll_pin_on_dpll_priv(dpll, pin);
- 		if (ops->esync_set(pin, pin_dpll_priv, dpll, dpll_priv(dpll),
-@@ -1235,8 +1258,11 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 		NL_SET_ERR_MSG(extack, "reference sync pin not available");
- 		return -EINVAL;
- 	}
--	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
--	ASSERT_NOT_NULL(ref);
-+	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref) {
-+		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
-+		return -ENODEV;
-+	}
- 	ops = dpll_pin_ops(ref);
- 	if (!ops->ref_sync_set || !ops->ref_sync_get) {
- 		NL_SET_ERR_MSG(extack, "reference sync not supported by this pin");
-@@ -1255,6 +1281,8 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 		return 0;
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->ref_sync_set)
-+			continue;
- 		dpll = ref->dpll;
- 		ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 					ref_sync_pin,
-@@ -1277,6 +1305,8 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin,
- 		if (ref == failed)
- 			break;
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->ref_sync_set)
-+			continue;
- 		dpll = ref->dpll;
- 		if (ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 				      ref_sync_pin,
-@@ -1468,12 +1498,18 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
--		if (!ops->phase_adjust_set || !ops->phase_adjust_get) {
-+		if ((!ops->phase_adjust_set || !ops->phase_adjust_get) &&
-+		    ref->dpll->module == pin->module &&
-+		    ref->dpll->clock_id == pin->clock_id) {
- 			NL_SET_ERR_MSG(extack, "phase adjust not supported");
- 			return -EOPNOTSUPP;
- 		}
- 	}
--	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
-+	ref = dpll_pin_own_dpll_ref_first(pin);
-+	if (!ref) {
-+		NL_SET_ERR_MSG(extack, "pin owner dpll not found");
-+		return -ENODEV;
-+	}
- 	ops = dpll_pin_ops(ref);
- 	dpll = ref->dpll;
- 	ret = ops->phase_adjust_get(pin, dpll_pin_on_dpll_priv(dpll, pin),
-@@ -1488,6 +1524,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 
- 	xa_for_each(&pin->dpll_refs, i, ref) {
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->phase_adjust_set)
-+			continue;
- 		dpll = ref->dpll;
- 		ret = ops->phase_adjust_set(pin,
- 					    dpll_pin_on_dpll_priv(dpll, pin),
-@@ -1510,6 +1548,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
- 		if (ref == failed)
- 			break;
- 		ops = dpll_pin_ops(ref);
-+		if (!ops->phase_adjust_set)
-+			continue;
- 		dpll = ref->dpll;
- 		if (ops->phase_adjust_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
- 					  dpll, dpll_priv(dpll), old_phase_adj,
--- 
-2.53.0
-
+jon
