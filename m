@@ -1,57 +1,57 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24413911DC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8A039150A
 	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 11:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784029485; cv=none; b=YS4yTfmRXE4+VL7bbD3PuuUP3ey/sqrwnI20v6eR5rANZOpDUkrs5L8eRpWV4zAC6v9P1VhKBr7G/T/XrUeoR4jyq5oH7GuCavurIwVV4+a3ZESNAUGgqjb1mT/oAtvHqBMXCUe1y6eA/6qmVpRjgBxj1z9+6paQfiZqrs5Fmk0=
+	t=1784029490; cv=none; b=SJU8rvbzSA/rJn3nBPdy+qHmDEbiEKi4Dhh/M0uchSryRqmARvAVJnF0KbAweVujrcI85ix/T3c6K8mEh8hfQAVt9mKxGt7dn6eE+mYgxMk7bpPk9Qqep1ShVXWyhqcoMJIjXF8Rzc4XVgQCXZpv4TctckaVJJTR7NRm+p09MM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784029485; c=relaxed/simple;
-	bh=p5LEF0TpeuJUKX9WSanvmmAQejWqAwoFRjpWjPdXn3s=;
+	s=arc-20240116; t=1784029490; c=relaxed/simple;
+	bh=Htl6c36B8dE9puLyF/oy3vogvxkI7f0K2VvzunfRNqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HU4RojJVH28SDEOTW+3tTOaIJNZTsGZkeBt3wKYxJclVsPky/AuKDGvlsMHHwsHOG6HfYtadipwFfANj9dXU/6H3NjxLqlxU0ScIn48j5q/FQe5qlj+RwvX9XvGcY4PDKwKGNqwCUq659jIiyq+cpn81cDBI4ABps3SJJ0P4cc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=I0+agjdg; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=I0+agjdg; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=oxh/tPRldhSn9M3HmUwoCNZZbAiGmQGyTKhmWlQ+cOBBTb9rYp8bsfOqvRavYuMjnQPUIIPVCIGhR2HnTdrwkys2iha2TnhmZve2S4ms+1MSV1AlPqb7fFi2WncgnuDbwVdrk7mTzHuULpd87CX/Qnb7vtsqaEZkOEkv27dK3iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ACcewGrJ; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ACcewGrJ; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="I0+agjdg";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="I0+agjdg"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ACcewGrJ";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ACcewGrJ"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B804477E2F;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 809113E26;
 	Tue, 14 Jul 2026 11:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1784029472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Enu0+TkL5+FOi84prkYHDpdzqlXme7u+bi/VxlIaI6M=;
-	b=I0+agjdgqt98dPTb83pEeoB49401JRC2CDwxRBYNn7mCJhnlYgENjcqEjYsllelYFtbiVA
-	BPi8m6ZA+LXalNpsfdixAS8ViI1iutiNisuVeVy35s+3arpZPp3cUPi62TQZz+3/NbCfyV
-	Y4EyVJKNiICAGfDT5u59Y044egwzL+A=
-Authentication-Results: smtp-out1.suse.de;
-	none
+	bh=2idcN/Q/emwBtFOQniHHb7bc/xbfDXc0WloxPi9y6hA=;
+	b=ACcewGrJiBuLK6p780Z1lbn69ErixJCDjBzgZaqMLfyhmz2maPLwmnj4UgI4SzFjQ0hCmK
+	TlgkFBvjh0AdAi/nmmXCiWQ8Jg5LYyyQq59vBpyimIpvv797DQRuX0SPep7m9BIpR6kOqO
+	7Z8Y1b3+8dru4IfrBQXI8A9WwkQwVik=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=ACcewGrJ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1784029472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Enu0+TkL5+FOi84prkYHDpdzqlXme7u+bi/VxlIaI6M=;
-	b=I0+agjdgqt98dPTb83pEeoB49401JRC2CDwxRBYNn7mCJhnlYgENjcqEjYsllelYFtbiVA
-	BPi8m6ZA+LXalNpsfdixAS8ViI1iutiNisuVeVy35s+3arpZPp3cUPi62TQZz+3/NbCfyV
-	Y4EyVJKNiICAGfDT5u59Y044egwzL+A=
+	bh=2idcN/Q/emwBtFOQniHHb7bc/xbfDXc0WloxPi9y6hA=;
+	b=ACcewGrJiBuLK6p780Z1lbn69ErixJCDjBzgZaqMLfyhmz2maPLwmnj4UgI4SzFjQ0hCmK
+	TlgkFBvjh0AdAi/nmmXCiWQ8Jg5LYyyQq59vBpyimIpvv797DQRuX0SPep7m9BIpR6kOqO
+	7Z8Y1b3+8dru4IfrBQXI8A9WwkQwVik=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 854E1779AF;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4BF3D779AE;
 	Tue, 14 Jul 2026 11:44:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qOhoHyAhVmp+cwAAD6G6ig
+	id IIqKESAhVmp+cwAAD6G6ig
 	(envelope-from <oneukum@suse.com>); Tue, 14 Jul 2026 11:44:32 +0000
 From: Oliver Neukum <oneukum@suse.com>
 To: andrew+netdev@lunn.ch,
@@ -63,9 +63,9 @@ To: andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCHv3 net-next 4/9] net: usb: use cdc_state in struct usbnet
-Date: Tue, 14 Jul 2026 13:44:24 +0200
-Message-ID: <20260714114429.1073434-4-oneukum@suse.com>
+Subject: [PATCHv3 net-next 3/9] net: usb: usbnet: add cdc_state to struct usbnet
+Date: Tue, 14 Jul 2026 13:44:23 +0200
+Message-ID: <20260714114429.1073434-3-oneukum@suse.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260714114429.1073434-1-oneukum@suse.com>
 References: <20260714114429.1073434-1-oneukum@suse.com>
@@ -76,105 +76,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 809113E26
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.30 / 50.00];
+X-Spam-Score: -1.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.51 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[netdev];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_COUNT_TWO(0.00)[2];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
-X-Spam-Score: -1.30
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:email,suse.com:mid]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-Remove private copies as now a central state can be used.
+This allows centralisation of code using cdc_state in usbnet, reducing
+code duplication. No functional change intended.
 
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
- drivers/net/usb/cdc_ether.c  | 9 +++------
- drivers/net/usb/rndis_host.c | 6 +++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ include/linux/usb/usbnet.h | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index e688fb99c61d..76ad4ffa950a 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -85,7 +85,7 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
- 	u8				*buf = intf->cur_altsetting->extra;
- 	int				len = intf->cur_altsetting->extralen;
- 	struct usb_interface_descriptor	*d;
--	struct cdc_state		*info = (void *) &dev->data;
-+	struct cdc_state		*info = &dev->cdc;
- 	int				status = -ENODEV;
- 	int				rndis;
- 	bool				android_rndis_quirk = false;
-@@ -336,7 +336,7 @@ EXPORT_SYMBOL_GPL(usbnet_ether_cdc_bind);
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index bbf799ccf3b3..79f48eb388ee 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -16,6 +16,14 @@
+ #include <linux/usb.h>
+ #include <linux/spinlock.h>
  
- void usbnet_cdc_unbind(struct usbnet *dev, struct usb_interface *intf)
- {
--	struct cdc_state		*info = (void *) &dev->data;
-+	struct cdc_state		*info = &dev->cdc;
- 	struct usb_driver		*driver = driver_of(intf);
- 
- 	/* combined interface - nothing  to do */
-@@ -374,10 +374,7 @@ EXPORT_SYMBOL_GPL(usbnet_cdc_unbind);
- int usbnet_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
- {
- 	int				status;
--	struct cdc_state		*info = (void *) &dev->data;
--
--	BUILD_BUG_ON((sizeof(((struct usbnet *)0)->data)
--			< sizeof(struct cdc_state)));
-+	struct cdc_state		*info = &dev->cdc;
- 
- 	status = usbnet_ether_cdc_bind(dev, intf);
- 	if (status < 0)
-diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-index 5e39d05a2d7b..d539654687c3 100644
---- a/drivers/net/usb/rndis_host.c
-+++ b/drivers/net/usb/rndis_host.c
-@@ -57,7 +57,7 @@ EXPORT_SYMBOL_GPL(rndis_status);
- static void rndis_msg_indicate(struct usbnet *dev, struct rndis_indicate *msg,
- 				int buflen)
- {
--	struct cdc_state *info = (void *)&dev->data;
-+	struct cdc_state *info = &dev->cdc;
- 	struct device *udev = &info->control->dev;
- 
- 	if (dev->driver_info->indication) {
-@@ -90,7 +90,7 @@ static void rndis_msg_indicate(struct usbnet *dev, struct rndis_indicate *msg,
++struct cdc_state {
++	struct usb_cdc_header_desc      *header;
++	struct usb_cdc_union_desc       *u;
++	struct usb_cdc_ether_desc       *ether;
++	struct usb_interface            *control;
++	struct usb_interface            *data;
++};
++
+ /* interface from usbnet core to each USB networking link we handle */
+ struct usbnet {
+ 	/* housekeeping */
+@@ -41,6 +49,7 @@ struct usbnet {
+ 	/* protocol/interface state */
+ 	struct net_device	*net;
+ 	int			msg_enable;
++	struct cdc_state	cdc;		/* too common to leave out*/
+ 	unsigned long		data[5];
+ 	u32			xid;
+ 	u32			hard_mtu;	/* count any extra framing */
+@@ -211,13 +220,6 @@ extern int usbnet_write_cmd_async(struct usbnet *dev, u8 cmd, u8 reqtype,
+  * (notably, using multiple interfaces according to the CDC
+  * union descriptor) get some helper code.
   */
- int rndis_command(struct usbnet *dev, struct rndis_msg_hdr *buf, int buflen)
- {
--	struct cdc_state	*info = (void *) &dev->data;
-+	struct cdc_state	*info = &dev->cdc;
- 	struct usb_cdc_notification notification;
- 	int			master_ifnum;
- 	int			retval;
-@@ -290,7 +290,7 @@ generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
- {
- 	int			retval;
- 	struct net_device	*net = dev->net;
--	struct cdc_state	*info = (void *) &dev->data;
-+	struct cdc_state	*info = &dev->cdc;
- 	union {
- 		void			*buf;
- 		struct rndis_msg_hdr	*header;
+-struct cdc_state {
+-	struct usb_cdc_header_desc	*header;
+-	struct usb_cdc_union_desc	*u;
+-	struct usb_cdc_ether_desc	*ether;
+-	struct usb_interface		*control;
+-	struct usb_interface		*data;
+-};
+ 
+ extern void usbnet_cdc_update_filter(struct usbnet *dev);
+ extern int usbnet_generic_cdc_bind(struct usbnet *, struct usb_interface *);
 -- 
 2.54.0
 
