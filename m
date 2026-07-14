@@ -1,198 +1,117 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05583909B9
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 17:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784051052; cv=pass; b=qIrOvcbq4dgQ5I9TTqdhhyFVlVFY9RhPsKvjLqpQF+t7m5xxM2+zn3u++D4DOhx53YPZdBcEkuV0b2XUN+mxfcywcQkL/W4aE5AyDjjrRwRSCDPHdbT8gtw/Wvaky95jM7Oq4IwRzWYG7eeU85HxaR6NgO7beLGXqYp/4igJd38=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784051052; c=relaxed/simple;
-	bh=JDuTfhJTWstpJvfRy/NTAtn6+ConTe3zcMRhSX3H1kY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CaOBT4LJJ8xJphLAL7aksIHZIDsCXdK1dRYTqBPA5YlRLRWICs7jI+Ze/VjKAOtUlNFPORBVAxWgXJMuQSSkWyUfnm5smVvDmEX7NaT/64MJ9TFdAlyfrjipx2T2EkCovQiKAlMX7QxIAi2cNDGU7ffL9+ecAiwGPLt75IdUj5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLC58upT; arc=pass smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715234156DF
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 17:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784051325; cv=none; b=oWgQV8EZNHVzD2iqK8wBaoMc6V2C9/2eMUY4MTsAINX27kGBorSAL+PSKm6raRaKZI5bcCg2hWTFs+JcBROhVPbRlvDH3PXkR6X6useoDtbxutD43JSm+sHQZXpQe7wNdnokvVCUwzJGd3Lz9nCTybNYHxl53tM6sq774ECKeS4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784051325; c=relaxed/simple;
+	bh=8e6hSHdI724CwWnH0GaeVjz34PTzNe4kgTZ9OdXxjt0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Lmb36JeW1mi/xOAa3dUt9Xz+eRKl8d8I5hAVDwwoVkfTmlrtZDhkWXIXLnA9xh2WRmBRQ56aoyUIoRQypWHg+5aSgJjvO3gFmqn1CEyHDSYwDQWQoRUJg3J/9UqVpT6UBTA75JOJEkhImAtK0pwhDz7gZq0eC8jWGtWBAekHYIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=YmKwBtKK; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLC58upT"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-697cee2eb6dso1391912a12.0
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 10:44:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784051039; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dNCbsiWsFi7YayONo0ArPAi/dTdnMkHMmMm2+PscWV5mZ/pXEJFapK6CFX9KoV98cu
-         fxWavnQCLwURt1oaTNBoqmjlMLMqH1Y9fp9RcM8JeYXpgPsi7FCWkpkxa6DKnKui+P7W
-         oRvZyA2njPIMxlqgCJCOQQQEcCad5F2L8lPJLJ6SfYcP2EqwBCm61WfYEGWfCMdL30u9
-         I60yAjNIcqI980/RyFwFt4ZsRIM2cerKq5B8fwZaJpi9OUT/jE5XEnCX0rbtqE5fcMyx
-         vw3LwqbL1viQw1w03imqjsDeVhLOxcgvvmB9fA7ndS/d/EKIZ4hxegpvJIXL1etlSXFn
-         WGhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zmM3GtgNw27l1Tq0fmnNqzL+GRDJtL7rqIl7qgYTkHE=;
-        fh=7vMLJMeHk2Ud5AWOyNHhspgPwF8221eOByoqAyUFh8A=;
-        b=ilopfU7ze7bo6KDVaQvdxzEWCzXIRl2vPYpvH1mj9C1OkdiFmXuiY6GpCgWRT7RkWF
-         PEXhL1zbaKxKJaDUOb3iK+/OU3s/MlQSMkIiYF01zZsy37aZtU55YpVqea7AcshymBVt
-         AVGMu9Y2snCqvuXGJ9LfxG1Vx4tUomD07gWqtVYzdhIMjE0PPZDw/0XL3aCPLQkRB0qa
-         ziO55nso5K8txKpjbK2G/dLLqNDsbwhol0gNYZlbzZXypMWd583Qd/tbMax7iVl1GYUE
-         CP4rNlFHHi/UGglWCHUN3akaDlqkBiLgCKFc0zZ+wuQ/6LdCG67HCi3wiGJSdAph3H/e
-         kP2g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="YmKwBtKK"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47f365afc5aso1561486f8f.0
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 10:48:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784051039; x=1784655839; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zmM3GtgNw27l1Tq0fmnNqzL+GRDJtL7rqIl7qgYTkHE=;
-        b=NLC58upTQMuiESgjhiWEY3Az5lgSX08qYzabWHB7awqhuSW04/dGmIW8HdWJVEKcOb
-         CnAUAP5JD6wG7m96S/nOAv43tK7vD4dfe3jFv6tw/l8argjFWI3bNsPSpblkKtC2riKc
-         Vl4m9EUgk70RTKgFYbCBhAGUrD+UA4W1CNXtj1+jVmMkk+SyNGDCnTCRIzm1FhH97eyZ
-         UUrpfpEPleRCdgRMZBYMsThGn3cbNz7OOK5+xP/E3e/PJWGFa9UF3CpgCWm6G3i7nSTS
-         LbiY0c57Moqa4M7pAZJEBzoADcv3bywvm3l9ivgwa93XroGEIds9EKzUafm9Vfwp+6w/
-         3i2w==
+        d=cloudflare.com; s=google09082023; t=1784051309; x=1784656109; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RnbOgZY6mix2R8qxVZm3ntkswSOtMNcqG52n3byUMp8=;
+        b=YmKwBtKKNI31nt33hUMyAvAXSbsDXbVKkqOG9+b4QX9o5ZROREIVRN1KmVwVJgJws1
+         6XjDqu+l2e/FefhpuC6KyPz6Q9yxDf8gHXZgmXCJQfWLbeYrxv+i5FmTz1CPIHc0dW6E
+         L0q0Jcj0IAfkgkaeR87T24rHxwSaqJ5WL74EaEqXfrlHqeaYDMGthn6KoJSul6Xe+Ht9
+         jD+6TlcGxAX2Ory+wZZrpo4VWQ9VZVu9r2wog0A+/05rbYgu0PioiANnoNyxrQD9chSQ
+         nMfLzttNTmZ5URRVXK/e6bSGthREbKtG1FsDLmMxhCxEgcTPN16qZBgUbJFqO+Ve13YM
+         eHEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784051039; x=1784655839;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784051309; x=1784656109;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zmM3GtgNw27l1Tq0fmnNqzL+GRDJtL7rqIl7qgYTkHE=;
-        b=sqUuinOCe0ooYfi/ArTO4peG/2/YEgbz6lw9ommgGjtvnCZ629ZxNhMVE8L4Z57CXk
-         2IWJqKJa5nhGq+ZtP+ADc9kSnJ6EB9jdR3anzSISfZcbnbk3IUz8xL/8Rzdn1Z8Z1Rff
-         i480r+uLUujY6mUvrdYvlnVmxgC4DlfT8VRlWSNEjaydmiResDPw0iVSYLICvZCvqZm1
-         v4xPmKxFwTnepj7nw7hDeuFALOMYLDtA+OkijAHf2GXmX4G39PtC2AxCCXriDha5p5iu
-         2sMf4lQvL5fsLH/dzDBNTuQWaFVeoORJuveCnyjbjQNFYyGdMmdkFiGN23FSUsK2l63p
-         4GiA==
-X-Forwarded-Encrypted: i=1; AHgh+RqVnqeMPzOGojMAs/DAxX662hJkT7XkRS7Y6er8RnbCbVbyoXcRf9Vh/+13VVzSfoVQDMi5N2w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLyKp3+uv7qdAwZNMNGraKTLkCvNjhHuLbf6T8OnbH1yQNPoba
-	nT0zS+S6g9jLHdk9yZeQpNRXCeFUhWYc751hNaXhj8OkdPXZL0mD3ZgWh63QaqyLbegxr0HatQb
-	7HSPvv+dJMeICE3ISor+wRGqG6/EommE=
-X-Gm-Gg: AfdE7cl95Ohg93r+tuDgnDPk+ZDygZFrvjAyufa6tRT+O4eu7AiQaQCnZrNcV+I1tub
-	skIOqhNkGaW41wQJX1rhZBEm2WR24sUJAhXcrQk+XS1WGwz+1MDTAQfYnXn/7BYsbfjwsJRdTbP
-	6NCD+KDh2CB0EKXdODlcu0EY3vQfpUjMp3zZ8Wf9m9aV9g5JlHor7QlpWYbrKB2E9RnUvDtMKER
-	NemBye5RmNPc/ymfOmAG/epRiOIZj2Whz3BBiHn+E8M3yJby6Qu0J4wxhwUVjjzKRec9JfbHNGU
-	dnK6HVnlM8qTHVXkm2cWEZSHhDxf
-X-Received: by 2002:a17:907:6e86:b0:c0e:4017:6471 with SMTP id
- a640c23a62f3a-c161e86871cmr681203966b.16.1784051038882; Tue, 14 Jul 2026
- 10:43:58 -0700 (PDT)
+        bh=RnbOgZY6mix2R8qxVZm3ntkswSOtMNcqG52n3byUMp8=;
+        b=QoC4OB8mhDvV+DHvi34B+J51mA3STTxi/tCFCthH69HDV+d0L5FVo12bJnfNl4WlNC
+         KbCyjr7eGP6x2UQed4wmVwbljmjny0/xp6TX8SQ0R+k62f2C1X2KMO1b5DXZumEkARBo
+         a3kYZQwO/ffxnczYs/EHmC2+AxHIe4eiZHsi0CGjsyeHni1Hzwbs4nktlxCi1MY+tegv
+         gdEvhOV7cJOVszlBl57kPg0lXz8IEwyCkxs2c0C/CsZTfojWBR/skCJF78TVCO2TC0HR
+         VctlmYY2bkDv2K2hgIyv2Dx0IynCYKGv7vLL1rJrgQHlsj2wxCsh2TvCCWG2CWs2EOpc
+         5l9g==
+X-Gm-Message-State: AOJu0Yx8Qb2TD3xgNDyi1UdSyrOrlQL2ThigglcmjuN9nnwzY4wF1LeO
+	KAHjWMLieRiUYCrl4nBXpv+xa1zDNgWdHt0Tr/Cn+bpNPfvvzA2iKIno8aSHn2QMSTA=
+X-Gm-Gg: AfdE7clKfz6+0brodNzepqU2ib+oHoNjcFs9y0gDVUSv0/Lfv3NjoiVxuCYlBAA7V+r
+	FDRTOBS8F9ZhL26ylapl+Idpm0D96vGx/gE7md8h5gsGO3/+TPaIdstYYga/mdChS3fLH3DNOHY
+	uRypXZUTEhjjKHOBSlAa109ufi8hMCXvvBHBvEmIfmYHyT555K7Y/U4mxADnb/REQr3We6DM9+Z
+	b2SkMlZd8acZxH7ZRWIj3Cb3wSpARvXX3BcljA24qI6Amv1GA7ALVOQYAv6qsxhxSceP56rq+n1
+	YlCDVIj/Fa+QVA+wZg9uAs/CNbtE/aGqJw5W8SHquqA/wtpy3hvRUMNO2Y19pugkdLo1hVZ2H0W
+	SDITkDVXJrVU1Zx34YCSnPd4H9CuoBj4GrXX+j1PWZKqR8h8JmlVLyK8kNOfwhbeLUat98lLXu6
+	MtzRbFAmW7z79lFz8ksSlaAKWgV3e+gQ0cTj5/rNJjvPVq0ds=
+X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr3882336f8f.4.1784051309376;
+        Tue, 14 Jul 2026 10:48:29 -0700 (PDT)
+Received: from cloudflare.com (93-57-92-86.ip163.fastwebnet.it. [93.57.92.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm10826048f8f.22.2026.07.14.10.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 10:48:29 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Date: Tue, 14 Jul 2026 19:48:21 +0200
+Subject: [PATCH RFC net-next 2/6] bpf: Allow access to
+ bpf_sock_ops_kern->skb
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706163024.1205930-2-bestswngs@gmail.com> <20260713134610.1779498-1-horms@kernel.org>
-In-Reply-To: <20260713134610.1779498-1-horms@kernel.org>
-From: Weiming Shi <bestswngs@gmail.com>
-Date: Wed, 15 Jul 2026 01:43:21 +0800
-X-Gm-Features: AUfX_myVDAgOYXdE7b544NcnLD48aV5KTXGXCZVfOr8LYmN7iu9JiFYjOoQPhlg
-Message-ID: <CANgPUi1G441VV3G-gHy0Ng8Q9A43rTXLAUnTU7OyRgCZJSicpA@mail.gmail.com>
-Subject: Re: [PATCH net v2] tipc: fix NULL deref in tipc_named_node_up() on
- empty publication list
-To: Simon Horman <horms@kernel.org>
-Cc: jmaloy@redhat.com, netdev@vger.kernel.org, 
-	tipc-discussion@lists.sourceforge.net, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	hoang.h.le@dektech.com.au, xmei5@asu.edu, linux-kernel@vger.kernel.org, 
-	tung.quang.nguyen@est.tech
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260714-bpf-meta-inside-skb-ext-v1-2-5871c07a8dd6@cloudflare.com>
+References: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+In-Reply-To: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com
+X-Mailer: b4 0.15.2
 
-Simon Horman <horms@kernel.org> =E4=BA=8E2026=E5=B9=B47=E6=9C=8813=E6=97=A5=
-=E5=91=A8=E4=B8=80 21:46=E5=86=99=E9=81=93=EF=BC=9A
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> tipc: fix NULL deref in tipc_named_node_up() on empty publication list
->
-> This commit fixes a NULL pointer dereference in tipc_named_node_up() that
-> occurs when the cluster_scope publication list is empty. The fix introduc=
-es
-> an early return to avoid calling named_distribute() with an empty list.
->
-> > diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-> > index ba4f4906e13b7..60ccaa862162c 100644
-> > --- a/net/tipc/name_distr.c
-> > +++ b/net/tipc/name_distr.c
-> > @@ -218,6 +218,10 @@ void tipc_named_node_up(struct net *net, u32 dnode=
-, u16 capabilities)
-> >       spin_unlock_bh(&tn->nametbl_lock);
-> >
-> >       read_lock_bh(&nt->cluster_scope_lock);
-> > +     if (list_empty(&nt->cluster_scope)) {
-> > +             read_unlock_bh(&nt->cluster_scope_lock);
-> > +             return;
-> > +     }
->
-> [Severity: Critical]
-> Does this early return prevent the transmission of the last_bulk
-> synchronization message to the peer node?
->
-> In tipc_named_dequeue(), the peer node sets *open =3D true only when rece=
-iving
-> a message where msg_is_last_bulk(hdr) is true:
->
-> net/tipc/name_distr.c:tipc_named_dequeue() {
->         ...
->         if (*open && (*rcv_nxt =3D=3D seqno)) {
->                 (*rcv_nxt)++;
->                 __skb_unlink(skb, namedq);
->                 ...
->                 return skb;
->         }
->         ...
-> }
->
-> If *open is false, all subsequent non-bulk name publications will fail th=
-is
-> sequence check and remain in the namedq indefinitely.
->
-> Without sending the last_bulk message, could this cause a permanent stall
-> of name table updates and an unbounded memory leak of socket buffers on t=
-he
-> peer node?
->
-> >       named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but looking at named_distribut=
-e()
-> called here, what happens if buffer allocation fails during the loop?
->
-> Inside named_distribute():
->
-> net/tipc/name_distr.c:named_distribute() {
->         ...
->         if (!skb) {
->                 skb =3D named_prepare_buf(net, PUBLICATION, msg_rem, dnod=
-e);
->                 if (!skb) {
->                         pr_warn("Bulk publication failure\n");
->                         return;
->                 }
->         ...
-> }
->
-> If the function returns early due to allocation failure, the messages
-> already added to the queue are transmitted by tipc_node_xmit(), but none
-> of them will have the last_bulk flag set since that happens at the very e=
-nd
-> of the function.
->
-> Could this also prevent the receiving node from transitioning its named_o=
-pen
-> state to true, leading to the exact same permanent stall and memory leak =
-of
-> subsequent normal name publications?
->
-> >       tipc_node_xmit(net, &head, dnode, 0);
-> >       read_unlock_bh(&nt->cluster_scope_lock);
-> --
-> pw-bot: changes-requested
+sock_ops programs receive bpf_sock_ops_kern as their kernel context, which
+holds a pointer to the sk_buff being processed. Mark bpf_sock_ops_kern->skb
+as BTF_TYPE_SAFE_TRUSTED_OR_NULL so that BPF programs can dereference it
+and pass it to kfuncs expecting a trusted sk_buff pointer, such as
+bpf_skb_storage_get().
 
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+ kernel/bpf/verifier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Hi ,
-Thank you for the review and feedback. v3 sent.
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a78ef1e37f24..e10886ca5089 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5675,6 +5675,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
+ 	struct file *vm_file;
+ };
+ 
++BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern) {
++	struct sk_buff *skb;
++};
++
+ static bool type_is_rcu(struct bpf_verifier_env *env,
+ 			struct bpf_reg_state *reg,
+ 			const char *field_name, u32 btf_id)
+@@ -5717,6 +5721,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
++	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern));
+ 
+ 	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
+ 					  "__safe_trusted_or_null");
+
+-- 
+2.43.0
+
