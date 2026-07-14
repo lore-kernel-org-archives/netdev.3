@@ -1,468 +1,185 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013054.outbound.protection.outlook.com [40.93.201.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39EE33D6EE
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 05:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784007257; cv=none; b=XUany+EHso0c39PVu2S5FXopPPYM+/fcPQDCyWpp8QGf4vxT0ieglsmrfOsnS/r7oq+UwYC4KA+g6eGurxgOtIzhpBhQPv+bYIeVG2X8YYwn9HHKExsUnDQSn44yqX5eK29byAjsfZZ5Re8L0+oJN/WmqhkMJcgbGcXD3T7KDXc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784007257; c=relaxed/simple;
-	bh=gmv99zqa1PVpdEbCQJDKuhLLk73XtCM4nYr1M8mwtO4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l5u2wBVpH98R1j2cyD+JJqQls0Fx6A/NVVEcFUeO9YPKwScca7ScAVSdcEH2/3SIdp9p6nbPxtAE2OJsgaJAXpOiKByt30E5gyAn5fENVr81hXBSdu2mGnj6U0JXWRiiE+t9oxF95n9KQkI19VhqPrzWRVx+GhfCe02COh/TykY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xx+QqDzz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BBk27tlv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9C834CFDD;
+	Tue, 14 Jul 2026 06:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784009880; cv=fail; b=mkQzeJa4jAYsKWEXIE7h9xRX7sHFu5YTxEfOsiSZBYSKCjNbDBpCCuIxHKKLEdMVeuFuBxEgcQ2k3kX69gO26c9Q/ZoT76eXgkyabjpWB7vXiCH/OxWny4+gw7qLEvQ8lGigJbqQHMs+bbWdne0RvDquluWBVFWYey/FU/pLYzI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784009880; c=relaxed/simple;
+	bh=RoW1xLNqkr6WVJSgd7G78abNw+yVpijwdETVHxNBDkw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DPDBfE6SlgQ2MfkrMWv6RVRm2dwwyNYmUPWF+gA8q0PvmtmI1S3tJwcnYgKhXOBegSUVXCn+m17exWRnpq4vBWP2MHvGk/YhiwkR5Up7tZJWdx29Y6cxwM+FNFSYb1H17Pf4Q+80vE8tnrThkoyC5VGm7XerzwhKNE2qyOwJDNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pedpX1bT; arc=fail smtp.client-ip=40.93.201.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xx+QqDzz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BBk27tlv"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66E38W3t3417725
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 05:34:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fXVHWx0Zf5/xynoCpxYZ0QwwZNMBpb6VXl8Ewna+hEI=; b=Xx+QqDzz7dgapCAP
-	aFzfsuyqmx3jBkVvWlMhgA+QJd3uIzvFMNIh2955A0mFVR1PeUNpQAhD0fUr++uR
-	W6A1T3yoyAPBrx+brHdZm68xi0mS3FxsCGr8aIfMNkN4WLH3uUt6j7Fdl4IdKGXF
-	IypzC3FFDM2/gNKjYED1LSMn9YJhttZjosmNDWV4yUFo4OSPT/wjOH3T636fm5CA
-	lR0SK3da9ZVJbmn3H1ShsD4ZjNTGSnNB12gAzQUr9Sa3uVUWvZhmdQTimg5wD9l9
-	wk36VEBljKBA0iQbtBhNnoR3rcX32P3ENgO0x1IiaIUWZiwCBVmDtcikrPvpNtMh
-	dRIFvw==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fd44j254k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 05:34:14 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486c3411c8so5714334b3a.2
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 22:34:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784007253; x=1784612053; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fXVHWx0Zf5/xynoCpxYZ0QwwZNMBpb6VXl8Ewna+hEI=;
-        b=BBk27tlvtKAkDFxPY0o8IZSXXaoeU7ybbnsXxiWHQIGG+cTskRoPuqrsxhA6NfxINC
-         N7QI3dEkgssBcJFhBMady1S9YDt1HOm/5aB10LcCvD55Tt0D6IWFyllpqWYqPf8zg+fM
-         Qq5r77YgH5Lf8Ozk6LZFmB/9pE8pNNvX7OCkn+k8wT+pvP1xhzBgp/UgKzSvG5iMEaMZ
-         EDjhx9gWjm0gZNjt3uoa0Dq0NmQwn+sU+qusfzRUOi9PHaD57Suna78tLpmwo/sbB4T3
-         K7ZdwMRes28QCreg/FmAEOUCzn5Xb/aXJQWZ0RAbu2Jj8CTAovLQTNaeQ8Nk2O6ZuIH1
-         nKWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784007253; x=1784612053;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fXVHWx0Zf5/xynoCpxYZ0QwwZNMBpb6VXl8Ewna+hEI=;
-        b=DXTqkOF5ESPb2lVJsUObGMVnf3KPY7g6LsKX3GNsAxpOjEz1EslQb5B2ZDBFBakxv1
-         s8Z8oQ/0trkCWA/DElKpJbEavC94cExVCHmeg/fCdnSUN6FgP891V/pFz793baHel0G9
-         /MKa95EiavqHrRtL/h1dy67zLML5cstHsOpiLo1M/SBtJukstqVi7z08rjFV/2ksfIFa
-         AiBLB+UVUwCU8YVOgLH8t33Tl/A8ej8p1TJAdBJXLldSld8oLGRhXcuKqvz7rnfpL2dr
-         uL1C32j1B2b7KChRzuOW1fZZ3pMdUqBINwz8TMYzWMLCmAohFXtR8vdIBXhQ0Lnkihbg
-         8BcA==
-X-Forwarded-Encrypted: i=1; AHgh+RrRhNZ7B0Z3E9e47MMbbGp0b9r47TAv4d485BkzaLxbI6QiM5FQddJlPM77eRi3TCmFPdHg46s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdQR41K0ijtLnQaIlaainA0nShTwPSRmHxKgVIqr3wNzRkq0na
-	ghvKqE/sfdylKHvTQIUXq5v1jergh2YEMlPz8DwQevuDPBuIHdUSSauLB5++UpEk+604nnDZcSj
-	RxmHfU9JNW9XQgitBNBJQUKkrl/SRc5uVJZ5r/MvzH/3TkuZKUC6X19+tb0Q=
-X-Gm-Gg: AfdE7clRSh3r/ESt4C7JZTaNb4yOnoaM25kBit4OfPZTf8QbK0KMNMJjxXV1Ebr565C
-	uS/ioAexMIn0cmG60+msVh3rq0gbIMX1H4RFlvfY6x2y9a/6yDHqD/or2c6l87aYao2BTwKV6RO
-	CLKY8Uyr50zRI8DTE/zHsP09CnB0GUwRxdUGRg6oI3aYXZRJLeWPtVlF0lieGpyDdkJBafsuP2E
-	9yo3+H7INb0Ue2hvuPXn4R5x9CIHZEnHr1Wp4gohv8p8TQMmRk0pmOdgV1OEs2CVAJLxXfop10J
-	IBNxUlrJVLxLwWobCTnVdNm5HgQSJSASWv+gbrYRQiSS61++9c+1UbBv7sthSpPSytA3V9HVEql
-	W5NfEX8tJMuQHRuAcPgWvzF1izyCz3XNb52fCug4gIGTnKCg=
-X-Received: by 2002:a05:6a00:228f:b0:847:8250:2b2a with SMTP id d2e1a72fcca58-8488971d058mr10901876b3a.60.1784007253348;
-        Mon, 13 Jul 2026 22:34:13 -0700 (PDT)
-X-Received: by 2002:a05:6a00:228f:b0:847:8250:2b2a with SMTP id d2e1a72fcca58-8488971d058mr10901842b3a.60.1784007252826;
-        Mon, 13 Jul 2026 22:34:12 -0700 (PDT)
-Received: from hu-vishsant-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f6bebcesm846227b3a.32.2026.07.13.22.34.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 22:34:12 -0700 (PDT)
-From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-Date: Tue, 14 Jul 2026 11:02:32 +0530
-Subject: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a single
- coherent block
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pedpX1bT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=perlDvUjKsmGW8f/sdspMRXtcKQ46RArVUu8NDpgRS3BVjiyLoJurcPkAX3KBChUOJ67D9YQlpGICJi9CZ8ScTvPhn/ilBt5uzi4KripgI9x/IXhOp5dXrFN9lRJhhBZjZaYeX7IpSP2ADGv47A3y/ld/3oecHXG4vkiX019Ix3WCvPtryUb6PwRBcbvsheli7oMmb8fMQ6Gt/wQC5ILP2WHvOTxwD8Ucw8Epu92krzmTOzhYsVm4W3ckuE6ygGYE2fpPZoacn2SzcFIZorzTg3ZZkMVIs4cmgOahfmq1Vgm3npUfr/iN1VktcLKhDQmWv7R03/nfiUnaCAfFEMPHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2rQj2u02+BlzS7ShDyNMjWS9LBoOsUoIsCoVRGDz84o=;
+ b=ScRLfSOX0/v3EtPbzd5MUvfxp9T7W1If72Th9io+OkrFJq8orcljITHPyibNSIwP8AEbzL/xwPM8krJYyMl5H63Uda1LjnvBxhseKn5S/ohCKcNwXa8ab/ZWWdRAkEb+eUfntNeamImHpepHOyaNb4InGfVo3QruRye+7/mJ6fAH1Uyd7CqyFvCLElcBAckhlxxWWKsYtuRgkhmi/LhAYy/kytyJiQMGYPcZ3M73afMdkfH77ZYDDKCZ0l6cnMammCpDqkV4P5a9QBFA341B8iJMX6OAkAuNzFOEVJDWLgfs+rQ+iRwJEDeonILC8PUnL6fdTyJlc92kofnwrl5gKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=resnulli.us smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2rQj2u02+BlzS7ShDyNMjWS9LBoOsUoIsCoVRGDz84o=;
+ b=pedpX1bTuuCv0UG7hRDow+Fk4vSEKtV3IwF+wSp9xzwotAT9hGD8SgZoJDRdZUlDsqm5dLbvzUFWshnLTl2WUJ/qs/yYFwh3S9czq31c7mXnSWwVda+mdy1EeR5l4tZLKdOCK4iHPRnkhp544jZipyHscspeiM2iGOhbO/STUPCOFKV9Bp9tz0SVKWQKYa8vU7bJqLxuntdW/+tDu+MNrZcrCeYvXQ40fMkHvGyG1vjge1QvxUPutxVgEWvxnRtVFHwNVtgMvvi5IW1Ggt5uaSFLDco3BRiThPArrehkppvmuowUu4Xc5i/C58lTWYLH+mQr/Rnq00MkzzFVZvh6cA==
+Received: from SJ2P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5da::6)
+ by BN7PPF0FD1DEA27.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6c8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Tue, 14 Jul
+ 2026 06:17:54 +0000
+Received: from SJ1PEPF00002319.namprd03.prod.outlook.com
+ (2603:10b6:a03:5da:cafe::73) by SJ2P220CA0003.outlook.office365.com
+ (2603:10b6:a03:5da::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.9 via Frontend Transport; Tue, 14
+ Jul 2026 06:17:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF00002319.mail.protection.outlook.com (10.167.242.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.223.9 via Frontend Transport; Tue, 14 Jul 2026 06:17:54 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 13 Jul
+ 2026 23:17:42 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 13 Jul
+ 2026 23:17:41 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 13
+ Jul 2026 23:17:37 -0700
+From: Mark Bloch <mbloch@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Shay Drori
+	<shayd@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>
+Subject: [PATCH net-next V6 1/4] net/mlx5: Clear FW reset-in-progress bit before reload
+Date: Tue, 14 Jul 2026 09:17:27 +0300
+Message-ID: <20260714061731.531849-2-mbloch@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260714061731.531849-1-mbloch@nvidia.com>
+References: <20260714061731.531849-1-mbloch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
-References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
-In-Reply-To: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
-To: Stephan Gerhold <stephan@gerhold.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>,
-        chris.lew@oss.qualcomm.com,
-        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784007235; l=11718;
- i=vishnu.santhosh@oss.qualcomm.com; s=20251203; h=from:subject:message-id;
- bh=gmv99zqa1PVpdEbCQJDKuhLLk73XtCM4nYr1M8mwtO4=;
- b=MEW0ZkwIwTi0V3ad5+Op/2XUp9TTpSEit2BMVaoqj1TWLn7cSP2+P/9gTl/MXfZn1uIYgdoX6
- ZUaxDB5bd0tD/JgODWBA8fKrSOeP2Z+Vqj8DmeuTUK0phZ0Ul4Ezv1q
-X-Developer-Key: i=vishnu.santhosh@oss.qualcomm.com; a=ed25519;
- pk=G8/AJPecB1feGI7wxArGWGN0PPGQS0GUaD4THQCbdis=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDA1NSBTYWx0ZWRfX0YZk5C1B+98e
- f+ta6dGXoa25UYJWzS2n9mvqR2pALzERzDEnA+J4yi/H4KoBu2oY3LMAgA/1PuvAbMd9r1J2yQ1
- dBvlzAcDhbGPwPsfLOB1+FnMNrnJ3iU=
-X-Authority-Analysis: v=2.4 cv=N4UZ0W9B c=1 sm=1 tr=0 ts=6a55ca56 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=EUspDBNiAAAA:8 a=Yt_q4RW75Gh75vbNyMgA:9 a=QEXdDO2ut3YA:10
- a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-GUID: DL-rVg_dntn9QbbEkxzmTVl8B87tUmGT
-X-Proofpoint-ORIG-GUID: DL-rVg_dntn9QbbEkxzmTVl8B87tUmGT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDA1NSBTYWx0ZWRfX5swvB6zyYh1A
- +pUbGdogESddbZSet48gJlNJR/IhZTZWxSe9NqhAtkK8OJcPahQ2dPTHyqUE4V+4tyVwBn3hLjJ
- 1XpO2QvH+5b44gTUIRHmTuI+A/zWz42Op+i7/p6m0g4O5LDUcmZUrgMGlK9gXGrirQSu7QJ62f6
- wuhrtZ/RdBPyZeByS1jkBLSzDojiKYqZtlMx+qV4ndcLaCE74HLtLmXaND5AXL8Ij4siXiVGqZ4
- GcHSugIoa0y8Hfo7R8W+/zwyaNwpVSKIkQgXEkh/VPqT0lbecdBJjH+XBWVF1maBQpTfiqknyAz
- zKzMePZLOS+jfjI7S3lTKgMPXDhB4XPm35XW1Y6AUhmI81bxik9+DaBP4ZO4v5tMYgA34OuAURj
- 3cgZ+mJ+DFkM9j6h+BynjFoEyRTdOVRbHaF2PGSPTXdS3Vlsx1o8M2qExtyuXjwXrWuHnfx1yCB
- x+HC2It6H49azVnMC4A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-14_01,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 phishscore=0 priorityscore=1501 suspectscore=0
- bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140055
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002319:EE_|BN7PPF0FD1DEA27:EE_
+X-MS-Office365-Filtering-Correlation-Id: b499070f-8ec8-447a-85f9-08dee16fa3f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|23010399003|1800799024|376014|7416014|36860700016|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	MVsbLmCs4d+SnX+tepLE+UTgtmKembJULIHDt4BTMuX9vVFXXOo2vlwCN0veYEPuoRoyOtdPhPAc+6YYfH/4MSQBERUhIDHTP7IsWSp8V1rbE1+rNqfNQd/OEsT/AyI4DV1/1FfJIY/Y2xXvxKw8seNv04JeNKfG53BYTaTBHkmf3dWNq0Dc63MwDi8DPqfFAqpkuhTmrcL4QJTTievm8FgG58RKXuud2elrRgTRhU/S6AvLXwCq1knByJ/EB4nPXN+mvhr+Px+XeIXdGQbRZHoxrkf4GVcJRzfrb5x0XZcF5JTzO+oCKlPLwnyXCVFR9YRzo/UE+tgcgKgKrYoxlUW4sXNvFupUcIY4DKTWTd67mwiTWTs/s6jMeaNIiOwcXIvBjA8Tcngg4C9JEzDHVDf/C0QL6+eJmHmJ8Ju+0gYSGZzTRCSQpppifqP44d0sZFyRSqWSD353+hTYHrhxrvtb/3ltSGJIkRnifAS/LpGOgM86+hDuPrL49YzHV259uNlTz9xCZ9ceyM7BMfCGemxsKAXRweR9SZYMy2y49aI9Z9eD4m45PWakgSvS3rJM22KQWrIJVV1A/+nFQOKxnwZUc8p0bgY+vHCy67nd3nR3aVt51gKx7KU2P2oWiTlxa6qDw3q5hJ592FkQrjL2fJT9FFFPrIl9B+VlMgj+oRd+Avg1I3PrF8bOngdq9R2n
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(1800799024)(376014)(7416014)(36860700016)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	QVtblH8o8TUebFwkT+es3bFITngushGgzPZXKOPZL8pOEu4ztX7cXPK5Be26cvLFH5MBdx/QgsOxkYqObQUWHMjfQviS3FefWJp9+Cz3R7eVVvphscDQoPch241+P+kAIhuvxA0HlKglIWUV75Rp9NEB2NF1AdE532HGG3kVY+sjl+RuGGBqULbXLD+qeluyrjLiwBzBVRtqYdPLpSn1XXRna+RSA01oQuV+xcaH1iQbxMC2AT+oloGhA7jIN+7dV3OwGx83E/dhu/x7SNYCLFw1l2ABVw15uf/0u/mXb3stcA947c8WXrnf2Ni3mF/k8xmT4mNUG9H/L2jqBSb3LeaDVPntYXITV6xDtyYyCC4Nidp8Y+6JkqJ7jySNl9AOS3qvi9vaHsaU0TnfU8uYsWX0voPjVFXUCapjQnvf+RhGTVf+toY2t1cZ3q5S9ZN8
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 06:17:54.1377
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b499070f-8ec8-447a-85f9-08dee16fa3f6
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002319.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF0FD1DEA27
 
-On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
-NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
-per-region access control, each individually DMA-mapped RX buffer
-requires its own XPU resource group (RG). With ~16 RGs available, the
-32 per-buffer dma_map_single() calls exhaust the table and the first
-inbound transfer faults with an XPU violation.
+mlx5 sets MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS when acknowledging a sync
+reset request. This bit blocks devlink reload and other devlink operations
+while the firmware reset is running, but it was kept set until after the
+driver reload finished.
 
-BAM-DMUX is a singleton (exactly one instance per SoC), so the
-destination VMID does not need to be a DT property; it is looked up
-from the compatible string's match data instead. Add struct
-bam_dmux_data with a single vmid field, and a shikra_data instance
-hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
+Clear the reset-in-progress bit once the reset unload flow is done and PCI
+access is back, before reloading the device. For a reset initiated through
+devlink, clear it before completing the reload waiter. For a reset reported
+through an asynchronous firmware event, keep the unload flow outside
+devl_lock, then take devl_lock before clearing the bit and reloading
+through the devl-locked load helper.
 
-When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
-a single contiguous dma_alloc_coherent() block and SCM-assign that
-block to HLOS plus the VMID once at probe. This reduces RG consumption
-from 32 to 1. The block is never reclaimed across a modem power cycle
-(bam_dmux_power_off() does not touch it), so the probe-time assignment
-covers every subsequent restart without re-assigning or reclaiming. It
-is reclaimed to HLOS only once, at remove or on a probe error, and if
-that reclaim fails it is leaked rather than returned to the page
-allocator.
-
-Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
-the block, so no per-buffer mapping is needed at power-on. Because the
-coherent block is not page-backed, received payload is copied into a
-regular netdev skb before handoff to the network stack; this is an
-unavoidable extra copy on the XPU-enforced RX path.
-
-Platforms without match data are unaffected: rx_virt stays NULL, no
-coherent memory is allocated, and the per-buffer dma_map_single() path
-is unchanged.
-
-Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
 ---
- drivers/net/wwan/Kconfig         |   1 +
- drivers/net/wwan/qcom_bam_dmux.c | 134 ++++++++++++++++++++++++++++++++++++---
- 2 files changed, 125 insertions(+), 10 deletions(-)
+ .../ethernet/mellanox/mlx5/core/fw_reset.c    | 28 +++++++++++--------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
-index 958dbc7347fa84ee869439bf8b503037faab8bef..1b133c56231615269698140187ca3141dfe48dbf 100644
---- a/drivers/net/wwan/Kconfig
-+++ b/drivers/net/wwan/Kconfig
-@@ -65,6 +65,7 @@ config MHI_WWAN_MBIM
- config QCOM_BAM_DMUX
- 	tristate "Qualcomm BAM-DMUX WWAN network driver"
- 	depends on (DMA_ENGINE && PM && QCOM_SMEM_STATE) || COMPILE_TEST
-+	select QCOM_SCM
- 	help
- 	  The BAM Data Multiplexer provides access to the network data channels
- 	  of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm
-diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-index cc6ace8d64371eb8d00c638a39b234ee540b83c9..247230b720e6011876d5c429badbb5a1f34fc576 100644
---- a/drivers/net/wwan/qcom_bam_dmux.c
-+++ b/drivers/net/wwan/qcom_bam_dmux.c
-@@ -9,10 +9,12 @@
- #include <linux/completion.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-+#include <linux/firmware/qcom/qcom_scm.h>
- #include <linux/if_arp.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/soc/qcom/smem_state.h>
-@@ -62,6 +64,7 @@ struct bam_dmux_skb_dma {
- 	struct bam_dmux *dmux;
- 	struct sk_buff *skb;
- 	dma_addr_t addr;
-+	void *rx_virt; /* non-NULL: slot in the coherent RX block */
- };
- 
- struct bam_dmux {
-@@ -75,6 +78,10 @@ struct bam_dmux {
- 	struct completion pc_ack_completion;
- 
- 	struct dma_chan *rx, *tx;
-+	/* Single coherent block backing all RX buffers, NULL if unused */
-+	void *rx_buf;
-+	dma_addr_t rx_buf_dma;
-+	u64 rx_buf_perms; /* SCM source-VMID bitmask of rx_buf */
- 	struct bam_dmux_skb_dma rx_skbs[BAM_DMUX_NUM_SKB];
- 	struct bam_dmux_skb_dma tx_skbs[BAM_DMUX_NUM_SKB];
- 	spinlock_t tx_lock; /* Protect tx_skbs, tx_next_skb */
-@@ -92,6 +99,10 @@ struct bam_dmux_netdev {
- 	u8 ch;
- };
- 
-+struct bam_dmux_data {
-+	u32 vmid;
-+};
-+
- static void bam_dmux_pc_vote(struct bam_dmux *dmux, bool enable)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 07440c58713a..7283e5b49eed 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -238,24 +238,30 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
  {
- 	reinit_completion(&dmux->pc_ack_completion);
-@@ -111,6 +122,9 @@ static bool bam_dmux_skb_dma_map(struct bam_dmux_skb_dma *skb_dma,
- {
- 	struct device *dev = skb_dma->dmux->dev;
+ 	struct mlx5_fw_reset *fw_reset = dev->priv.fw_reset;
+ 	struct devlink *devlink = priv_to_devlink(dev);
++	int err;
  
-+	if (skb_dma->rx_virt) /* coherent RX slot: addr pre-assigned */
-+		return true;
-+
- 	skb_dma->addr = dma_map_single(dev, skb_dma->skb->data, skb_dma->skb->len, dir);
- 	if (dma_mapping_error(dev, skb_dma->addr)) {
- 		dev_err(dev, "Failed to DMA map buffer\n");
-@@ -124,6 +138,9 @@ static bool bam_dmux_skb_dma_map(struct bam_dmux_skb_dma *skb_dma,
- static void bam_dmux_skb_dma_unmap(struct bam_dmux_skb_dma *skb_dma,
- 				   enum dma_data_direction dir)
- {
-+	if (skb_dma->rx_virt) /* coherent RX slot: nothing to unmap */
+ 	/* if this is the driver that initiated the fw reset, devlink completed the reload */
+ 	if (test_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags)) {
++		clear_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS,
++			  &fw_reset->reset_flags);
+ 		complete(&fw_reset->done);
+-	} else {
+-		mlx5_sync_reset_unload_flow(dev, false);
+-		if (mlx5_health_wait_pci_up(dev))
+-			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+-		else
+-			mlx5_load_one(dev, true);
+-		devl_lock(devlink);
+-		devlink_remote_reload_actions_performed(devlink, 0,
+-							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+-							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+-		devl_unlock(devlink);
 +		return;
-+
- 	dma_unmap_single(skb_dma->dmux->dev, skb_dma->addr, skb_dma->skb->len, dir);
- 	skb_dma->addr = 0;
- }
-@@ -468,9 +485,10 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmux_skb_dma *skb_dma)
- {
- 	struct bam_dmux *dmux = skb_dma->dmux;
- 	struct dma_async_tx_descriptor *desc;
-+	size_t len = skb_dma->rx_virt ? BAM_DMUX_BUFFER_SIZE : skb_dma->skb->len;
- 
- 	desc = dmaengine_prep_slave_single(dmux->rx, skb_dma->addr,
--					   skb_dma->skb->len, DMA_DEV_TO_MEM,
-+					   len, DMA_DEV_TO_MEM,
- 					   DMA_PREP_INTERRUPT);
- 	if (!desc) {
- 		dev_err(dmux->dev, "Failed to prepare RX DMA buffer\n");
-@@ -485,6 +503,10 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmux_skb_dma *skb_dma)
- 
- static bool bam_dmux_skb_dma_queue_rx(struct bam_dmux_skb_dma *skb_dma, gfp_t gfp)
- {
-+	/* Coherent RX slots have rx_virt and addr pre-assigned at probe. */
-+	if (skb_dma->rx_virt)
-+		return bam_dmux_skb_dma_submit_rx(skb_dma);
-+
- 	if (!skb_dma->skb) {
- 		skb_dma->skb = __netdev_alloc_skb(NULL, BAM_DMUX_BUFFER_SIZE, gfp);
- 		if (!skb_dma->skb)
-@@ -499,9 +521,10 @@ static bool bam_dmux_skb_dma_queue_rx(struct bam_dmux_skb_dma *skb_dma, gfp_t gf
- static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
- {
- 	struct bam_dmux *dmux = skb_dma->dmux;
--	struct sk_buff *skb = skb_dma->skb;
--	struct bam_dmux_hdr *hdr = (struct bam_dmux_hdr *)skb->data;
-+	struct bam_dmux_hdr *hdr = skb_dma->rx_virt ? skb_dma->rx_virt :
-+				   (struct bam_dmux_hdr *)skb_dma->skb->data;
- 	struct net_device *netdev = dmux->netdevs[hdr->ch];
-+	struct sk_buff *skb;
- 
- 	if (!netdev || !netif_running(netdev)) {
- 		dev_warn(dmux->dev, "Data for inactive channel %u\n", hdr->ch);
-@@ -514,10 +537,18 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
- 		return;
  	}
  
--	skb_dma->skb = NULL; /* Hand over to network stack */
--
--	skb_pull(skb, sizeof(*hdr));
--	skb_trim(skb, hdr->len);
-+	if (skb_dma->rx_virt) {
-+		/* Coherent block is not page-backed: copy out to a real skb */
-+		skb = netdev_alloc_skb(netdev, hdr->len);
-+		if (!skb)
-+			return;
-+		skb_put_data(skb, (u8 *)skb_dma->rx_virt + sizeof(*hdr), hdr->len);
-+	} else {
-+		skb = skb_dma->skb;
-+		skb_dma->skb = NULL; /* Hand over to network stack */
-+		skb_pull(skb, sizeof(*hdr));
-+		skb_trim(skb, hdr->len);
-+	}
- 	skb->dev = netdev;
- 
- 	/* Only Raw-IP/QMAP is supported by this driver */
-@@ -574,10 +605,14 @@ static void bam_dmux_rx_callback(void *data)
- {
- 	struct bam_dmux_skb_dma *skb_dma = data;
- 	struct bam_dmux *dmux = skb_dma->dmux;
--	struct sk_buff *skb = skb_dma->skb;
--	struct bam_dmux_hdr *hdr = (struct bam_dmux_hdr *)skb->data;
-+	struct bam_dmux_hdr *hdr;
- 
--	bam_dmux_skb_dma_unmap(skb_dma, DMA_FROM_DEVICE);
-+	if (skb_dma->rx_virt) {
-+		hdr = skb_dma->rx_virt; /* coherent RX: no skb to unmap */
-+	} else {
-+		bam_dmux_skb_dma_unmap(skb_dma, DMA_FROM_DEVICE);
-+		hdr = (struct bam_dmux_hdr *)skb_dma->skb->data;
-+	}
- 
- 	if (hdr->magic != BAM_DMUX_HDR_MAGIC) {
- 		dev_err(dmux->dev, "Invalid magic in header: %#x\n", hdr->magic);
-@@ -644,6 +679,9 @@ static void bam_dmux_free_skbs(struct bam_dmux_skb_dma skbs[],
- 	for (i = 0; i < BAM_DMUX_NUM_SKB; i++) {
- 		struct bam_dmux_skb_dma *skb_dma = &skbs[i];
- 
-+		if (skb_dma->rx_virt) /* coherent block freed at remove */
-+			continue;
++	mlx5_sync_reset_unload_flow(dev, false);
++	err = mlx5_health_wait_pci_up(dev);
 +
- 		if (skb_dma->addr)
- 			bam_dmux_skb_dma_unmap(skb_dma, dir);
- 		if (skb_dma->skb) {
-@@ -762,6 +800,71 @@ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
- 	return 0;
++	devl_lock(devlink);
+ 	clear_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
++	if (err)
++		mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
++	else
++		mlx5_load_one_devl_locked(dev, true);
++
++	devlink_remote_reload_actions_performed(devlink, 0,
++						BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
++						BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
++	devl_unlock(devlink);
  }
  
-+static int bam_dmux_alloc_coherent_rx(struct bam_dmux *dmux)
-+{
-+	struct device *dev = dmux->dev;
-+	const struct bam_dmux_data *data = of_device_get_match_data(dev);
-+	size_t size = BAM_DMUX_NUM_SKB * BAM_DMUX_BUFFER_SIZE;
-+	u64 src = BIT_ULL(QCOM_SCM_VMID_HLOS);
-+	struct qcom_scm_vmperm dst[2];
-+	int i, ret;
-+
-+	if (!data)
-+		return 0;
-+
-+	if (!qcom_scm_is_available())
-+		return -EPROBE_DEFER;
-+
-+	dst[0].vmid = QCOM_SCM_VMID_HLOS;
-+	dst[0].perm = QCOM_SCM_PERM_RW;
-+	dst[1].vmid = data->vmid;
-+	dst[1].perm = QCOM_SCM_PERM_RW;
-+
-+	dmux->rx_buf = dma_alloc_coherent(dev, size, &dmux->rx_buf_dma, GFP_KERNEL);
-+	if (!dmux->rx_buf)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < BAM_DMUX_NUM_SKB; i++) {
-+		dmux->rx_skbs[i].rx_virt = dmux->rx_buf + i * BAM_DMUX_BUFFER_SIZE;
-+		dmux->rx_skbs[i].addr = dmux->rx_buf_dma + i * BAM_DMUX_BUFFER_SIZE;
-+	}
-+
-+	ret = qcom_scm_assign_mem(dmux->rx_buf_dma, size, &src, dst, ARRAY_SIZE(dst));
-+	if (ret) {
-+		dev_err(dev, "SCM assign RX block failed: %d\n", ret);
-+		dma_free_coherent(dev, size, dmux->rx_buf, dmux->rx_buf_dma);
-+		dmux->rx_buf = NULL;
-+		return ret;
-+	}
-+	dmux->rx_buf_perms = src;
-+
-+	return 0;
-+}
-+
-+static void bam_dmux_free_coherent_rx(struct bam_dmux *dmux)
-+{
-+	struct qcom_scm_vmperm hlos = {
-+		.vmid = QCOM_SCM_VMID_HLOS,
-+		.perm = QCOM_SCM_PERM_RW,
-+	};
-+	size_t size = BAM_DMUX_NUM_SKB * BAM_DMUX_BUFFER_SIZE;
-+
-+	if (!dmux->rx_buf)
-+		return;
-+
-+	if (dmux->rx_buf_perms) {
-+		if (qcom_scm_assign_mem(dmux->rx_buf_dma, size, &dmux->rx_buf_perms,
-+					&hlos, 1)) {
-+			dev_err(dmux->dev, "SCM reclaim RX block failed; leaking\n");
-+			return;
-+		}
-+		dmux->rx_buf_perms = 0;
-+	}
-+
-+	dma_free_coherent(dmux->dev, size, dmux->rx_buf, dmux->rx_buf_dma);
-+	dmux->rx_buf = NULL;
-+}
-+
- static int bam_dmux_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -809,6 +912,10 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 		dmux->tx_skbs[i].dmux = dmux;
- 	}
- 
-+	ret = bam_dmux_alloc_coherent_rx(dmux);
-+	if (ret)
-+		return ret;
-+
- 	/* Runtime PM manages our own power vote.
- 	 * Note that the RX path may be active even if we are runtime suspended,
- 	 * since it is controlled by the remote side.
-@@ -845,6 +952,7 @@ static int bam_dmux_probe(struct platform_device *pdev)
- err_disable_pm:
- 	pm_runtime_disable(dev);
- 	pm_runtime_dont_use_autosuspend(dev);
-+	bam_dmux_free_coherent_rx(dmux);
- 	return ret;
- }
- 
-@@ -879,13 +987,19 @@ static void bam_dmux_remove(struct platform_device *pdev)
- 	disable_irq(dmux->pc_irq);
- 	bam_dmux_power_off(dmux);
- 	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
-+	bam_dmux_free_coherent_rx(dmux);
- }
- 
- static const struct dev_pm_ops bam_dmux_pm_ops = {
- 	SET_RUNTIME_PM_OPS(bam_dmux_runtime_suspend, bam_dmux_runtime_resume, NULL)
- };
- 
-+static const struct bam_dmux_data shikra_data = {
-+	.vmid = QCOM_SCM_VMID_NAV,
-+};
-+
- static const struct of_device_id bam_dmux_of_match[] = {
-+	{ .compatible = "qcom,shikra-bam-dmux", .data = &shikra_data },
- 	{ .compatible = "qcom,bam-dmux" },
- 	{ /* sentinel */ }
- };
-
+ static void mlx5_stop_sync_reset_poll(struct mlx5_core_dev *dev)
 -- 
-2.34.1
+2.43.0
 
