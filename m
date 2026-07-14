@@ -1,57 +1,57 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CB5370D7C;
-	Tue, 14 Jul 2026 01:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF38370D7C;
+	Tue, 14 Jul 2026 01:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783994174; cv=none; b=rnKXCFY+dyhDGwlR44YlKTmFMUi7pofGimW4hwUaw+mvRR0nmHJILFipXXxidP2miKve5eMn2B7ghnYQCjCFb8Awpdyzbsjfb/I97gub8yZ+DuwmURpwG7zEbPxTUlQVdtunE15T/cYwOJZ9QfArHJ9ezcvc2zBlFohGq3y4o8Y=
+	t=1783994181; cv=none; b=WQeKT96jCX0IW2n8rff7UkNncOn8d/6PyFxnSLQZY2cYFL5JKnrC+OiO0Tn7vSdoOOSEIVyd4ak+mUtPNfF2e7Y88LbZ0RIn4E0bHbi7uh68+vmyQNyUuH8AxUzA5PK0LEv4DsmjHTZ673tOlfd+gb/r/JmtqltFfz0JXXLzleQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783994174; c=relaxed/simple;
-	bh=Q7U3bjrqdi8Rw86PhvwL7r3Uti0HA29+JAItJ2c3ZHQ=;
+	s=arc-20240116; t=1783994181; c=relaxed/simple;
+	bh=Mv+dDvABi94MNH45UXFXQykoZNkpev9EpkcKln9Zmqs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Linp0HmD9Q6bw2QaghgtnhOgNHVjeoisjlpggM83kLhQVVEPun5AEOyAHn+YLvzo2Fz7/hzM6KUNQYf0ZYdEPwasVT8RHREoWNYbhw1PPT1tIZz4UdcXgSdnWywGXoNktHke1KgAGwkCWA96zvwulaJ+qo/NGXNDuu+lMpsgOts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YCZGbRgd; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=rBwOwOczmvjbuZiT6KTm7n/xfsjtXEDsBCHcJOmWzVv+Gd25SPj0TcX5bSuvqxOCBHQ8T14gadsp5SgzwUR0x0S2aa2kJQw4Ek6mnFvR4SH7xoTxBweMSDLUH2cbwLmYfnW5Ebegxw8/QysO3di3jW+P090M6tcUGUnFXHXFlqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=OquQMdGK; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YCZGbRgd"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DNmw5B1678285;
-	Mon, 13 Jul 2026 18:53:48 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="OquQMdGK"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DNnZOf2948457;
+	Mon, 13 Jul 2026 18:53:57 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=z
-	EjCTs8fsYndKO+EktnzTJMS3VnByE1H/MeTIU7lqtM=; b=YCZGbRgd3ymGC8asH
-	m6qks6t0xWbJSFENAoS9zQ0JZi2ya8tEGG2HmMVDxBPk6s+F70t1SGX+LQgvHhr1
-	iQiptNGFtaV3pRVERz8oZsNn4CaXrUAzV26fun8CORxWoWp8Pc+McppXVzo88EMQ
-	Ygkg2pQ69D+Lk22INcJ93Z4EYd4HR6oxbI0xmoBgzDmyLvDcilpy2icuJSOyZrGS
-	H72xdtpwmowS0H2Sry3lJ2cqNoht9JLL99+NY0ditBsV50/j6t4gpONusNoapPkt
-	NnE9g1BcEar/pEE0W+AMaD4T6ZzJDVkf71fVv2dA2Fxufam5d3BCD95FtLe7+A55
-	UwfWA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fc6k9mjjp-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=h
+	MsiOJYKphB86SdSIwVQpvOPHxAMVQQmyyo1656mblg=; b=OquQMdGK8zOQwmVsC
+	4qlwEJe4OyaicyU3eM3Vg0Pzu7D57KQeA1Hv9gOGH1rFA8dhyKOfwFYV1Mz8fj93
+	kkHdcbHcCPVXoTNlzvKol9P0xOPTa9yhn+XxnWKPkUd3Cc4meUd8ZsPqM4draASU
+	HgWAAloHSrG21aJr6UPstI2Jm+W1j7ShjxTNRqmrAgfyTm9Zuz07JbfbAAQYpI2d
+	5SsCjfHWtxikbel2CbWYvbL42MfPWD80kMUwq0H447OEfJMlEdZT9zkR1RuEYHt1
+	5kVkRVJ2ytbKm6tP3WfTvZwi72YlRQOlABwp8D9CbIsnnM0ybEOemn8XCj6Dqvkr
+	x5+6w==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fbnbex559-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jul 2026 18:53:48 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+	Mon, 13 Jul 2026 18:53:57 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 13 Jul 2026 18:53:47 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 13 Jul 2026 18:53:47 -0700
+ 15.2.1544.25; Mon, 13 Jul 2026 18:53:56 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 13 Jul 2026 18:53:56 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id E74E55E6866;
-	Mon, 13 Jul 2026 18:53:44 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id CF28A5E6866;
+	Mon, 13 Jul 2026 18:53:53 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v3 net-next 1/9] octeontx2-af: switch: Add AF to switch mbox and skeleton files
-Date: Tue, 14 Jul 2026 07:23:23 +0530
-Message-ID: <20260714015331.1801922-2-rkannoth@marvell.com>
+Subject: [PATCH v3 net-next 4/9] octeontx2-af: switch: Representor for switch port
+Date: Tue, 14 Jul 2026 07:23:26 +0530
+Message-ID: <20260714015331.1801922-5-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260714015331.1801922-1-rkannoth@marvell.com>
 References: <20260714015331.1801922-1-rkannoth@marvell.com>
@@ -63,323 +63,165 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: _ZkJFH_7aVjOfJQrVcf207tEv3dxL5zx
-X-Proofpoint-GUID: _ZkJFH_7aVjOfJQrVcf207tEv3dxL5zx
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfX4BsWwcZBuyOt
- TDNaM+5SOLnf02QD3hkBLw5Q6jnvC6Ak0PuZt5MMGdybF0onGTHqkGYv05ERi2xb3M+5te2Hef0
- 8kpjv/kQPooRLHnGhkR1JJ6pQAgM2fs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfXwma5KU6mAoWr
- +LSITjbS8711Ba+uZrAekRD82Zx9KJaeZcA49IBWLQUoBQUEndeDvqTCd2Bxg+JL+3BYOcQZmC3
- f12UKantT10oXdEbdGfw+z/qv9mjagLijMnCztYIpgrFyIJBv8peOoV4X2TGAivZrvGR5SbzvhC
- cazkU/IEdJhXWXyTzRN+bqdK49QmyActYaxJN8LxODyKmp5pKw5YRVFQrpmu5eZ6oRMzWPJy3aU
- oUEWcF4n7jZptWFsRhg2YWZlzl1q8qgbllTh1NzgWYbuMqNlJi+nHXYNUjMHcenXvIhZaOe+Wyf
- zIK5iIYKOGv6N5OHdjy7/EffIX5QVLfuU+WNjDNlYk2PFFlhS0KlMrhmvgJ7B0VSEG4HtP8g0B7
- o92sZdN7hqI39qPJfAo/uSVrt65y1tabipdep6MqZFXn6+SoKkq8yT2kd8ThUo8wbCscgHGfFKx
- /8Xdix5hY0eRSA9zHSQ==
-X-Authority-Analysis: v=2.4 cv=ULLt2ify c=1 sm=1 tr=0 ts=6a5596ac cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+X-Proofpoint-GUID: w9payAAMT-svuNdXyNjrmO3ZAMtX9IQh
+X-Authority-Analysis: v=2.4 cv=WOdPmHsR c=1 sm=1 tr=0 ts=6a5596b5 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=Q9e_prp1UuIZLeogYfEA:9
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=vKW80V-kDxkLz87EuU0A:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: w9payAAMT-svuNdXyNjrmO3ZAMtX9IQh
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfX1o296gcaEHpC
+ Xgx98eBv42L4BRoNKTZ/ex7QgWc2EeI82Xpft0mvry0yfOX4N1EHY2kcm0v5PtMLUC9GY0lRdsg
+ 5VZHcft+5syEyZOm3JusZWnFYavBh2A=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDAxNiBTYWx0ZWRfX6sruFipUHRlX
+ b4otwe08bsRabOC+RddktBtdDxXMV/4t5uc1c0wGVtP3yWVCUFl100sVB2a/ZgSj0ALh0EV4by/
+ +z4fx1umcG8eLzPnVkqZwZZm5RSzn1RFygHwKVy2sJv8F1RvOacBBAwFisrHKX4la8dDpWvfbfD
+ w8AhqGu0Y4O91HNGZj0qNzyW7HN9vexXPQalmxDWNh8NXQJdNGfuj2g0w+p4pc+LikAOjw7TOIe
+ FvJ2bKzaZQPGDHJQ8NO8X1JhL/cpMBGFdk7IsDiZnp/w0E1UKiEK+M1jxuX3szl/wFqK21lOnIk
+ eJNouz9qhYELBGPRKpjImVkh/AtdlE7QhuuGjxj0RIUxD+dRzmVJs3yR+AR7tQkIwOPPgdWt/nf
+ QY3EQE+4RJi5avlUi4yoR4iH5rTLUSeqGrXS0EXzZIZmlDDtBD01zGBwP8vnSRjYDdUUCmIG8Po
+ O68B8ZiJMBurXPT9sgQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-13_06,2026-07-10_01,2025-10-01_01
 
-The Marvell switch hardware runs on a Linux OS. This OS receives
-various messages, which are parsed to create flow rules that can be
-installed on HW. The switch is capable of accelerating both L2 and
-L3 flows.
-
-This commit adds various mailbox messages used by the Linux OS
-(on arm64) to send events to the switch hardware.
-
-fdb messages:     Linux bridge FDB messages
-fib messages:     Linux routing table messages
-status messages:  Packet status updates sent to Host
-                  Linux to keep flows active
-                  for connection-tracked flows.
+Extends esw_cfg with a devlink-derived switch id, copies it into
+rvu->rswitch on the AF, adds rvu_sw_port_id(), exports
+rvu_rep_get_vlan_id().
 
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- .../ethernet/marvell/octeontx2/af/Makefile    |   3 +-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 107 ++++++++++++++++++
- .../marvell/octeontx2/af/switch/rvu_sw_fl.c   |  21 ++++
- .../marvell/octeontx2/af/switch/rvu_sw_fl.h   |  11 ++
- .../marvell/octeontx2/af/switch/rvu_sw_l2.c   |  14 +++
- .../marvell/octeontx2/af/switch/rvu_sw_l2.h   |  11 ++
- .../marvell/octeontx2/af/switch/rvu_sw_l3.c   |  14 +++
- .../marvell/octeontx2/af/switch/rvu_sw_l3.h   |  11 ++
- 8 files changed, 191 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.c
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.h
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.h
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.c
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.h
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  1 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  5 +++++
+ .../ethernet/marvell/octeontx2/af/rvu_rep.c   |  3 ++-
+ .../marvell/octeontx2/af/switch/rvu_sw.c      | 19 +++++++++++++++++++
+ .../marvell/octeontx2/af/switch/rvu_sw.h      |  5 +++++
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  |  4 ++++
+ 6 files changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/Makefile b/drivers/net/ethernet/marvell/octeontx2/af/Makefile
-index 91b7d6e96a61..82dd387308c9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/Makefile
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for Marvell's RVU Admin Function driver
- #
- 
--ccflags-y += -I$(src)
-+ccflags-y += -I$(src) -I$(src)/switch/
- obj-$(CONFIG_OCTEONTX2_MBOX) += rvu_mbox.o
- obj-$(CONFIG_OCTEONTX2_AF) += rvu_af.o
- 
-@@ -12,5 +12,6 @@ rvu_af-y := cgx.o rvu.o rvu_cgx.o rvu_npa.o rvu_nix.o \
- 		  rvu_reg.o rvu_npc.o rvu_debugfs.o ptp.o rvu_npc_fs.o \
- 		  rvu_cpt.o rvu_devlink.o rpm.o rvu_cn10k.o rvu_switch.o \
- 		  rvu_sdp.o rvu_npc_hash.o mcs.o mcs_rvu_if.o mcs_cnf10kb.o \
-+		  switch/rvu_sw_l2.o switch/rvu_sw_l3.o switch/rvu_sw_fl.o\
- 		  rvu_rep.o cn20k/mbox_init.o cn20k/nix.o cn20k/debugfs.o \
- 		  cn20k/npa.o cn20k/npc.o
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index f87cdf1b971d..2867da47d9f5 100644
+index 23bc66ed854e..cdfb5a8bafb9 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -164,6 +164,14 @@ M(PTP_GET_CAP,		0x00c, ptp_get_cap, msg_req, ptp_get_cap_rsp)	\
- M(GET_REP_CNT,		0x00d, get_rep_cnt, msg_req, get_rep_cnt_rsp)	\
- M(ESW_CFG,		0x00e, esw_cfg, esw_cfg_req, msg_rsp)	\
- M(REP_EVENT_NOTIFY,     0x00f, rep_event_notify, rep_event, msg_rsp) \
-+M(FDB_NOTIFY,		0x010,  fdb_notify,				\
-+				fdb_notify_req, msg_rsp)		\
-+M(FIB_NOTIFY,		0x011,  fib_notify,				\
-+				fib_notify_req, msg_rsp)		\
-+M(FL_NOTIFY,		0x012,  fl_notify,				\
-+				fl_notify_req, msg_rsp)		\
-+M(FL_GET_STATS,		0x013,  fl_get_stats,				\
-+				fl_get_stats_req, fl_get_stats_rsp)	\
- /* CGX mbox IDs (range 0x200 - 0x3FF) */				\
- M(CGX_START_RXTX,	0x200, cgx_start_rxtx, msg_req, msg_rsp)	\
- M(CGX_STOP_RXTX,	0x201, cgx_stop_rxtx, msg_req, msg_rsp)		\
-@@ -1807,6 +1815,105 @@ struct rep_event {
- 	struct rep_evt_data evt_data;
+@@ -1834,6 +1834,7 @@ struct get_rep_cnt_rsp {
+ struct esw_cfg_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 ena;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+ 	u64 rsvd;
  };
  
-+#define FDB_ADD  BIT_ULL(0)
-+#define FDB_DEL	 BIT_ULL(1)
-+#define FIB_CMD	 BIT_ULL(2)
-+#define FL_ADD	 BIT_ULL(3)
-+#define FL_DEL	 BIT_ULL(4)
-+#define DP_ADD	 BIT_ULL(5)
-+
-+struct fdb_notify_req {
-+	struct  mbox_msghdr hdr;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 73d2329b5c26..8cf1ad9ec749 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -576,6 +576,10 @@ struct rvu_switch {
+ 	u16 *entry2pcifunc;
+ 	u16 mode;
+ 	u16 start_entry;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
 +	u64 flags;
-+	u8  mac[ETH_ALEN];
-+};
++	u16 pcifunc;
+ };
+ 
+ struct rep_evtq_ent {
+@@ -1197,4 +1201,5 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu);
+ void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena);
+ int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable);
+ int npc_mcam_verify_entry(struct npc_mcam *mcam, u16 pcifunc, int entry);
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc);
+ #endif /* RVU_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index a2781e0f504e..6bb6064b2391 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -189,7 +189,7 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
+ 	return 0;
+ }
+ 
+-static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
+ {
+ 	int id;
+ 
+@@ -436,6 +436,7 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 		return 0;
+ 
+ 	rvu->rep_mode = req->ena;
++	memcpy(rvu->rswitch.switch_id, req->switch_id, MAX_PHYS_ITEM_ID_LEN);
+ 
+ 	if (!rvu->rep_mode)
+ 		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+index fe143ad3f944..403d57870efe 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+@@ -5,7 +5,26 @@
+  *
+  */
+ 
++#include <linux/bitfield.h>
 +
-+struct fib_entry {
-+	u64 cmd;
-+	u64 gw_valid : 1;
-+	u64 mac_valid : 1;
-+	u64 vlan_valid: 1;
-+	u64 host    : 1;
-+	u64 bridge  : 1;
-+	u64 ipv6  : 1;
-+	__be16 vlan_tag;
-+	u32 dst_len;
-+	u8 dst6_plen;
-+	u8 gw6_plen;
-+	union {
-+		__be32 dst;
-+		__be32 dst6[4];
-+	};
-+	union {
-+		__be32 gw;
-+		__be32 gw6[4];
-+	};
-+	u16 port_id;
-+	u8 nud_state;
-+	u8 mac[ETH_ALEN];
-+};
+ #include "rvu.h"
++#include "rvu_sw.h"
 +
-+struct fib_notify_req {
-+	struct  mbox_msghdr hdr;
-+	u16 cnt;
-+	u16 rsvd[3]; /* explicit padding for entry[] 8-byte alignment */
-+	struct fib_entry entry[16];
-+};
-+
-+struct fl_tuple {
-+	__be32 ip4src;
-+	__be32 m_ip4src;
-+	__be32 ip4dst;
-+	__be32 m_ip4dst;
-+	__be16 sport;
-+	__be16 m_sport;
-+	__be16 dport;
-+	__be16 m_dport;
-+	__be16 eth_type;
-+	__be16 m_eth_type;
-+	u8 proto;
-+	u8 smac[6];
-+	u8 m_smac[6];
-+	u8 dmac[6];
-+	u8 m_dmac[6];
-+	u64 is_xdev_br : 1;
-+	u64 is_indev_br : 1;
-+	u64 uni_di  : 1;
-+	u16 in_pf;
-+	u16 xmit_pf;
-+	u16 rsvd;
-+	u64 features;
-+	struct {				/* FLOW_ACTION_MANGLE */
-+		u8		offset;
-+		u8		type;
-+		u16		rsvd;
-+		u32		mask;
-+		u32		val;
-+#define MANGLE_ARR_SZ 9
-+	} mangle[MANGLE_ARR_SZ]; /* 2 for ETH, 1 for VLAN, 4 for IPv6, 2 for L4. */
-+#define MANGLE_LAYER_CNT 4
-+	u8 mangle_map[MANGLE_LAYER_CNT]; /* 1 for ETH,  1 for VLAN, 1 for L3, 1 for L4 */
-+	u8 mangle_cnt;
-+};
-+
-+struct fl_notify_req {
-+	struct  mbox_msghdr hdr;
-+	u64 cookie;
-+	u64 flags;
-+	u64 features;
-+	struct fl_tuple tuple;
-+};
-+
-+struct fl_get_stats_req {
-+	struct  mbox_msghdr hdr;
-+	u64 cookie;
-+};
-+
-+struct fl_get_stats_rsp {
-+	struct  mbox_msghdr hdr;
-+	u64 pkts_diff;
-+};
-+
- struct flow_msg {
- 	unsigned char dmac[6];
- 	unsigned char smac[6];
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.c
-new file mode 100644
-index 000000000000..1f8b82a84a5d
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.c
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
-+#include "rvu.h"
-+
-+int rvu_mbox_handler_fl_get_stats(struct rvu *rvu,
-+				  struct fl_get_stats_req *req,
-+				  struct fl_get_stats_rsp *rsp)
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
 +{
-+	return 0;
++	u16 rep_id;
++
++	if (!rvu->rep2pfvf_map || !rvu->rep_cnt)
++		return RVU_SW_INVALID_PORT_ID;
++
++	rep_id = rvu_rep_get_vlan_id(rvu, pcifunc);
++	if (rep_id >= rvu->rep_cnt ||
++	    rvu->rep2pfvf_map[rep_id] != pcifunc)
++		return RVU_SW_INVALID_PORT_ID;
++
++	return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
++	       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
 +}
+ 
+ int rvu_mbox_handler_swdev2af_notify(struct rvu *rvu,
+ 				     struct swdev2af_notify_req *req,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
+index f28dba556d80..e9ad32c84576 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.h
+@@ -8,4 +8,9 @@
+ #ifndef RVU_SWITCH_H
+ #define RVU_SWITCH_H
+ 
++/* RVU Switch */
++#define RVU_SW_INVALID_PORT_ID	((u32)~0U)
 +
-+int rvu_mbox_handler_fl_notify(struct rvu *rvu,
-+			       struct fl_notify_req *req,
-+			       struct msg_rsp *rsp)
-+{
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.h
-new file mode 100644
-index 000000000000..cf3e5b884f77
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_fl.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc);
 +
-+#ifndef RVU_SW_FL_H
-+#define RVU_SW_FL_H
+ #endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 0f5d5642d3f7..257a2ae6a53e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -399,8 +399,11 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+ 
+ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ {
++	struct devlink_port_attrs attrs = {};
+ 	struct esw_cfg_req *req;
+ 
++	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
 +
-+#endif
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
-new file mode 100644
-index 000000000000..5f805bfa81ed
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
-+#include "rvu.h"
-+
-+int rvu_mbox_handler_fdb_notify(struct rvu *rvu,
-+				struct fdb_notify_req *req,
-+				struct msg_rsp *rsp)
-+{
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.h
-new file mode 100644
-index 000000000000..ff28612150c9
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
-+
-+#ifndef RVU_SW_L2_H
-+#define RVU_SW_L2_H
-+
-+#endif
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.c
-new file mode 100644
-index 000000000000..2b798d5f0644
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
-+#include "rvu.h"
-+
-+int rvu_mbox_handler_fib_notify(struct rvu *rvu,
-+				struct fib_notify_req *req,
-+				struct msg_rsp *rsp)
-+{
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.h b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.h
-new file mode 100644
-index 000000000000..ac8c4f9ba5ac
---- /dev/null
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l3.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Marvell RVU Admin Function driver
-+ *
-+ * Copyright (C) 2026 Marvell.
-+ *
-+ */
-+
-+#ifndef RVU_SW_L3_H
-+#define RVU_SW_L3_H
-+
-+#endif
+ 	mutex_lock(&priv->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+ 	if (!req) {
+@@ -408,6 +411,7 @@ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ 		return -ENOMEM;
+ 	}
+ 	req->ena = ena;
++	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
+ 	otx2_sync_mbox_msg(&priv->mbox);
+ 	mutex_unlock(&priv->mbox.lock);
+ 	return 0;
 -- 
 2.43.0
 
