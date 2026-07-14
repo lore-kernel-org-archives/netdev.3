@@ -1,133 +1,153 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430224657C0
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC6546AEF2
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034645; cv=none; b=G6ezPbJv/fzAbOTgvQs/vlVOu49GaEjSZ/LdWJYYAc7xlUxynT5l1ohBAcHH3D5SG4lN74gqZlledUO+U6tmxiugmhzhVPTBJAjo4ln1OfBPIBS1U9kWqFIXVQbVYWCz9nq4vjhj7w7DbJKz0vN/YrKtGUIGzd+81+EVuMZlqTA=
+	t=1784034709; cv=none; b=O/2Q0AfhdY/TceS5GoNJ1N/6ZBcZC7FhGVTQ4UXHiQy009DMixB7iMqeRf5i0dyE+uL9MuprLX4K2MwqaB5r1gyg9Sc6w7VwGPBCteMeqb/t0TrgXFAk2f9gNWOutfYxfN95FHPJ1svumZ0g4wZPCekIeQ+lL8NQzsj2YLd7Snc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034645; c=relaxed/simple;
-	bh=Wt0XsrpFCYOVOMQtdvuVWC8FpSQrK3dbcXgQQELA5E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lXZ6LTUFIZ+L7w6lnhAkAFYt/7kinZK2hgeaIp7pdzi6ZM60CAu0ja76WY9wTE5Et04fogpngmiGYwO9c68IDS0PlEYvi2sMawD5vokO+XjFM0ZAwQsm2HMmSpfnk1njGJLQ5ZN8F5oLDeq/m5cp1IS0ZLvt7s+FusuM0MmMIq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=VF2gBOr/; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1784034709; c=relaxed/simple;
+	bh=FE2EPfjvJMithoEW/fui01TCFZWjWkp5M4xCvn7iSYQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tvwzZrvexIgJs9HKRl1bqf8DDS22QzByivszVRFO1j/yunoYHQXd6DRxPuXDMBUnq+p8wlqNIW9VXUFKZyOAUyQ9YDThAsnHLYuA7hBTwxf7ixMZRN1s9Hcq2S6jQMwgWDk92FcP93KVDh4OZr9JYPd++MzPMYaIoeJ4vSyWC6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UnnoTHkR; arc=none smtp.client-ip=74.125.227.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="VF2gBOr/"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so31419305e9.1
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 06:10:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UnnoTHkR"
+Received: by mail-pj2-f0.google.com with SMTP id 98e67ed59e1d1-380f4166f80so534157a91.1
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 06:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784034641; x=1784639441; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fl2dG+Oml92bsky/TLYXt/NwIn7LAhhgtCJrCDemdtI=;
-        b=VF2gBOr/6hwaVX5t7Z/v5+td9WpqPxLIk+n9Iy20iZrynA5ENJ6zeO/1jM5aDp1XD7
-         XVv2VCX8zOtyOucd+U1Ymr/6WNixaUqajIoPcJcYjiuYV2DmnmwEECGjbOHvXv9rho9A
-         KqW9Z76nH+8cyFA95HRT3gefjXambuXJgepAdDJa87XSOkWrOeHTbX+xxSvp7cndUAAO
-         ogZn8LvTbGo1WIygX83ds3gHluGoZqntxKZW5wgOM2/V08aUlwCgOHxJvcbZu5NBxaXt
-         OXYmP0KtxfjMly23HeEPGdaebGPaTeLnznPP+GtAg6PUs0s3nqB34itZmnyA49ZDckxC
-         IbUA==
+        d=gmail.com; s=20251104; t=1784034707; x=1784639507; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zttJBjTaiSdOL2YoKvs9d14mmFIguoT+2c8c38o/5Ts=;
+        b=UnnoTHkRolTSPfQzcYjyGPXLXUW3b1Tl16tnRHj3yNVUsaxYTi6PsXZXDMMKKQJ9ji
+         7twX1IH3EN3DaZN6K+4cpNfPURRFskhy0qoo9gtDdOGv/m3kI0eCDxJgwQhsTX1TOG7m
+         aitMAmtnoqWp2ckzIglOJEt/gFjT+teXYeI2feS3zPOUf7SYk1WlWbcFDSfTWajlJj5w
+         e0d52/2es3DuPlCCQIeXuAH6dK9HTpLv1R3VuuVsXii0pYqZ54CcQjsbWz7DaQWmtO0Q
+         Yy6cJ3C5ykGSDvFdoJ/DmzcFRxfDHAZAOk5v/9tZ9UnHHBe4d0frDZYMY4ECqdDvPjL9
+         4bMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784034641; x=1784639441;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fl2dG+Oml92bsky/TLYXt/NwIn7LAhhgtCJrCDemdtI=;
-        b=eNfQ0zfq44XUpNd+4OR+Rf5y/xqqC+dZ6xxcuM5rFysIS3wux2QiBusSaNv/M67Pjg
-         yziMpwxl6wYAtW0lI9P9cTIH71kMRutNx0h/R6AckFjabkRLrJ8Q2WLmQ2TydRNlervL
-         HlyRVgZmx0ZpKGuzxG3Gwklcm0UOCxlPhN7bSJhnJzeaq1hr9Perpi546jdmkqFM2Yto
-         pgoCndpVoQWwpF6dWYt5GL2xdYPcjP43yUwq8nB72G5MnDi47z3eOaeOCvrLlEYfZD8a
-         UZ9nG82h5LbqH9VDXgJsJhx7hS2Cgj2pZx0/1meCRN2ExUmyoFw+eDxCrYUimhCpOxxG
-         CdLA==
-X-Forwarded-Encrypted: i=1; AHgh+RodVVSAv7G7i7HFQnB1mqi9hBA/AuApHc7cELikKLCa1dAr5BrcaUD0xqgfUdJlyP8thfvwEU0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHLCs05/7hQr4EAnTBfN/zgct1c6RsmeHS5L1l/i4oFxpmmTXQ
-	edPK0lKxJFhJwFzIfTpDg1flMiudiMRIQ+GFVtVDnXGj/8vCzfeNQsCP3olKX7R3Y6s=
-X-Gm-Gg: AfdE7cnBeZnfFbJPa70kGrPuFkwt80EEOpZZ3MWKHhr//LqrW++Y1j5uG+rH8ksaLnQ
-	a3tTo6Ijsto6Tov83hUDc/gtkuOwRkIKyF55zvPvyu0cmDWUo01VNi9L3qG7u/aNwBrsMB5O+gL
-	tF7EUXXCHCrPsSgZ7NrmTQxbsbist6jB2Hw1kkLKe0yRALT+LuF/MBBQBQXZ+DtPFyCO6NMUO4s
-	qkSh+CUr9I/6+jM+y5dwbslbmWnolXhn446jVrdz3xsgsP9hVYNGZE04Sz5Vfyw+5NeMaTiL31A
-	tP3eKpxEdPF2JngiklAW9LXSUdSFO95aoFH75LKo+N0VIknL5+CKCsH2FBJ4wI1RRNRTiUSOsTe
-	xEHoZJyp+ztMjIrdeXGaA4k/dPLJEIdj+7Z12nMJq6b5bEU6Mo3/SataeLBSxXk8l9YDzQaWuts
-	DqvIDBrJqvWMa4UREqUKIujw==
-X-Received: by 2002:a05:600c:3e1b:b0:493:e890:9e0b with SMTP id 5b1f17b1804b1-493f883157bmr140435405e9.26.1784034641364;
-        Tue, 14 Jul 2026 06:10:41 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a32b9f3sm85941695e9.13.2026.07.14.06.10.40
+        d=1e100.net; s=20251104; t=1784034707; x=1784639507;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=zttJBjTaiSdOL2YoKvs9d14mmFIguoT+2c8c38o/5Ts=;
+        b=Gx6s3shg47qqVaANGxv9wcV7W/naqkHHHrIAzyXI7wQh0BPqO8KGesob4bjYWlcrjE
+         6XT0bSoosvrWAd9Icazh4wQn4REoUzCUcZ1avyXUETnTDIbHiKBB/4NIG92uOnhVeEC9
+         jLAOzxWw9jYEbcMzn42iCZlB5cWbYj7eQ4J0isJViffnlHISkmyz6+tfSHz3a0y6jh/l
+         6DCqr1I9yf3YuxQkNMQ1vnnOnVi/EzikIXlDngob2DCnPd7IoHQaCpamLDLa/Qjz40nm
+         rLsusinmt9lDMqAKQDnaMBM0ZhivT4dhMhdLNSQ3kweQ6rMtgKypVSc7e85uQ+sPVNbQ
+         kqNw==
+X-Gm-Message-State: AOJu0YxoEmz4wt966sajkdDJqZYJjGXFC01pxYcjob4JF5l2XlqKWiXO
+	tvGpX0XEK34/5Jx2ClZSQhANNVbGHeX81hi3jq6Q9OnNuo50UP0M1tMf
+X-Gm-Gg: AfdE7ckRhgFQcsxNu9Uo77nn5H7l3qXK6rlel8xWR065+7Q9W+2Onx1HwXiw82qc6lL
+	weOoJs5WDQUofQScOslzRm8oCIxH+2jgDekcPed/mcCj+tKslwxud4y47/pGqPLaRqZwKKvZwGY
+	KTrLMRiyYYDYmQWfqJkE+8xJLsLxHENNNP5jdaWNqOdkS21CaDyAvZM9GWGn2iCHVRHSEeOPaco
+	2CpStMz2AiXa4hacjrVo4olCtdmP7rXNDivS5NUxEs1F6CVW5vyH1V9Eex8dn5K+UxIhzPnzKUn
+	aG1uDHt650PN7hJKoFfz0tDofMOArpJk7p2ZSbLeayorzRS9hwjcu7hBy40OW7gwLHU+63sUxVc
+	0jkAgtZacrc2FHy3UjPSaVS40iQhyImStBMOtML4J/RoFJlW8rD2jMySCieH4rAAqEfnnaYwdRr
+	AplEzYmGhATPM3dDComzKpZURJNg==
+X-Received: by 2002:a05:6a21:7018:b0:3bf:6edd:4dfb with SMTP id adf61e73a8af0-3c110009c5bmr13403343637.5.1784034707016;
+        Tue, 14 Jul 2026 06:11:47 -0700 (PDT)
+Received: from [192.168.1.100] ([218.194.37.120])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca79aff904dsm8130702a12.6.2026.07.14.06.11.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 06:10:40 -0700 (PDT)
-Date: Tue, 14 Jul 2026 15:10:37 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: han.junyang@zte.com.cn
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, ran.ming@zte.com.cn, 
-	han.chengfei@zte.com.cn, zhang.yanze@zte.com.cn
-Subject: Re: [PATCH net-next v8 2/2] dinghai: add hardware register access
- and PCI? capability scanning
-Message-ID: <alY0foKtgceGUCtP@FV6GYCPJ69>
-References: <202607132221104795CMBHxJGy8iTj3qc36Qw6@zte.com.cn>
- <20260713222804514zLeRvL3Su1xlklpOdahhF@zte.com.cn>
+        Tue, 14 Jul 2026 06:11:46 -0700 (PDT)
+From: Yanan He <grumpycat921013@gmail.com>
+Date: Tue, 14 Jul 2026 21:11:01 +0800
+Subject: [PATCH net-next v3] net: phy: motorcomm: Enable optional clock for
+ YT8531
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713222804514zLeRvL3Su1xlklpOdahhF@zte.com.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260714-motorcomm-yt8531-clk-v3-1-10dc303ef1a5@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ7CMAzAvjLlTKRtbYHxFcSBhRQCtEVtQEPT/
+ k6Bo2XZMxTOwgV2zQyZX1IkxQpm1QBdjvHMKKfK0Lf9ut10FkPSlCmFgG/dOtMh3W/onB8cGet
+ HO0BNH5m9TL/tHiIrRp4UDn9TnuOVSb9XWJYPEMWy0oIAAAA=
+X-Change-ID: 20260714-motorcomm-yt8531-clk-55f95c34fb49
+To: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yanan He <grumpycat921013@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784034702; l=1923;
+ i=grumpycat921013@gmail.com; s=20260618; h=from:subject:message-id;
+ bh=FE2EPfjvJMithoEW/fui01TCFZWjWkp5M4xCvn7iSYQ=;
+ b=IVJsEwK97AVds/JNM09AlbIgnBy1uZcybVCdtUN1AmQ5AfxMIYmQwMvL8gYqpyO4Y9znekDZt
+ zRg6SxEDPvNCe/g1TxEcxc86vwwMg18l1jTwWMh6RAbc5xrljE4V/Dc
+X-Developer-Key: i=grumpycat921013@gmail.com; a=ed25519;
+ pk=oWrY8KwXIunZWlYBV76NG2A3V4p1bJ+aD45Mr56ErTw=
 
-Mon, Jul 13, 2026 at 04:28:04PM +0200, han.junyang@zte.com.cn wrote:
+Some boards feed the YT8531 PHY from an SoC-provided external
+reference clock described by the common ethernet-phy "clocks" property.
 
+Enable the optional PHY clock during probe so boards can model this
+clock as a PHY input instead of keeping the clock alive from the MAC
+driver.
 
-[..]
+This is needed on the Alientek DLRV1126, where the PHY reference clock
+is provided by CLK_GMAC_ETHERNET_OUT.
 
->@@ -48,5 +85,34 @@ struct zxdh_pf_device {
-> void *dh_core_alloc_priv(struct dh_core_dev *dh_dev, size_t size);
-> void dh_core_free_priv(struct dh_core_dev *dh_dev);
-> void dh_pf_pci_close(struct dh_core_dev *dev);
->+int zxdh_pf_pci_find_capability(struct pci_dev *pdev, u8 cfg_type,
->+				u32 ioresource_types, int *bars);
->+void __iomem *zxdh_pf_map_capability(struct dh_core_dev *dh_dev, int off,
->+				     size_t minlen, u32 align,
->+				     u32 start, u32 size,
->+				     size_t *len, resource_size_t *pa,
->+				     u32 *bar_off);
->+int zxdh_pf_common_cfg_init(struct dh_core_dev *dh_dev);
->+int zxdh_pf_notify_cfg_init(struct dh_core_dev *dh_dev);
->+int zxdh_pf_device_cfg_init(struct dh_core_dev *dh_dev);
->+void zxdh_pf_modern_cfg_uninit(struct dh_core_dev *dh_dev);
->+int zxdh_pf_modern_cfg_init(struct dh_core_dev *dh_dev);
->+u16 zxdh_pf_get_queue_notify_off(struct dh_core_dev *dh_dev,
->+				 u16 phy_index, u16 index);
->+void __iomem *zxdh_pf_map_vq_notify(struct dh_core_dev *dh_dev,
->+				     u16 phy_index, u16 index,
->+				     resource_size_t *pa);
->+void zxdh_pf_unmap_vq_notify(struct dh_core_dev *dh_dev, void __iomem *priv);
->+void zxdh_pf_set_status(struct dh_core_dev *dh_dev, u8 status);
->+u8 zxdh_pf_get_status(struct dh_core_dev *dh_dev);
->+u8 zxdh_pf_get_cfg_gen(struct dh_core_dev *dh_dev);
->+void zxdh_pf_get_vf_mac(struct dh_core_dev *dh_dev, u8 *mac, int vf_id);
->+void zxdh_pf_set_vf_mac_reg(struct zxdh_pf_device *pf_dev,
->+			    u8 *mac, int vf_id);
->+void zxdh_pf_set_vf_mac(struct dh_core_dev *dh_dev, u8 *mac, int vf_id);
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Yanan He <grumpycat921013@gmail.com>
+---
+v3:
+- Split the Motorcomm PHY change out of the Alientek DLRV1126 board
+  support series as requested by Andrew.
+- Keep the clock modeled as an optional PHY input clock.
 
-I don't follow. You introduce functions yet you never use them? When you
-introduce some function, you need to use it in the same patchset.
+v2:
+- Model CLK_GMAC_ETHERNET_OUT as a PHY clock instead of keeping it alive
+  from dwmac-rk.
+---
+ drivers/net/phy/motorcomm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Honestly, I would expect quite different patchset quality in V8 :/
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 5071605a1a11..3396a38cfc0f 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -6,6 +6,7 @@
+  * Author: Frank <Frank.Sae@motor-comm.com>
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/etherdevice.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -1180,9 +1181,15 @@ static int yt8521_probe(struct phy_device *phydev)
+ static int yt8531_probe(struct phy_device *phydev)
+ {
+ 	struct device *dev = &phydev->mdio.dev;
++	struct clk *clk;
+ 	u16 mask, val;
+ 	u32 freq;
+ 
++	clk = devm_clk_get_optional_enabled(dev, NULL);
++	if (IS_ERR(clk))
++		return dev_err_probe(dev, PTR_ERR(clk),
++				     "failed to get and enable PHY clock\n");
++
+ 	if (device_property_read_u32(dev, "motorcomm,clk-out-frequency-hz", &freq))
+ 		freq = YTPHY_DTS_OUTPUT_CLK_DIS;
+ 
 
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260714-motorcomm-yt8531-clk-55f95c34fb49
 
->+void zxdh_set_mac(struct dh_core_dev *dh_dev, u8 *mac);
->+void zxdh_get_mac(struct dh_core_dev *dh_dev, u8 *mac);
->+u64 zxdh_pf_get_features(struct dh_core_dev *dh_dev);
->+void zxdh_pf_set_features(struct dh_core_dev *dh_dev, u64 features);
->
-> #endif /* __ZXDH_EN_PF_H__ */
->-- 
->2.27.0
->
+Best regards,
+--  
+Yanan He <grumpycat921013@gmail.com>
+
