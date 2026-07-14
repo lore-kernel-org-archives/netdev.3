@@ -1,57 +1,57 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229413B27C1
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 11:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837E7385516
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 11:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784029500; cv=none; b=liJlI3oNlHcgl4i+D4NHwiPwRzxTpzHI+5xoIGhE1fU5mlbT/+PrhrxiNbPEHgJokBUHy8lO4Eao/fbKwCZSUt6XdUL7w7JTPJ7UgTA5zhO1k8ZMvN980pjjtENydep1CeUuqxnztk2KOZvzgmi9sP7uZw3bORxcsR4ZWMTAjXI=
+	t=1784029506; cv=none; b=p9orKvfr4evVcZTfcFTzWDMws3lu2kFyunN+2f0kSZSciEYfzKb1OGOKshSaq39WjK8anYPLnYWh6G4yLcc1AOHNIg96H5xJKEspDMhJ5RaV/AwMrMqZosoTKozIfPi4WrOLo31+rLX7maJJwQlVkE8RiT7byPUh1UNzc/rOxCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784029500; c=relaxed/simple;
-	bh=WN++4PiQVtaSIQZEGOz3Rbyzx8A7cSHakrZfyK6W5Gw=;
+	s=arc-20240116; t=1784029506; c=relaxed/simple;
+	bh=R7mxBYm7QXxFHYEmZZipEBOPywDA2/cB/RkNuUbKF4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwOr2Vw1gWr5+0hfuXHi6UmcexSOkhtNx0nDrzNV1wnHmdr0e21HV5n+l6e8svlZOuxIIsj/Nw+WWVTcyQAzdMVDoLbEk52IEENdZ6DZaAo23WT+0shnEeaQfawiW70MvHJ/kT7lkiM+NmPSZdrANkshdDRIxnBhYcFblGiVAMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=n3FLQV0n; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=DONg2CsR; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=jBmwXk7wZ+cG8u/kJLGKrCIu5vtspZtENRzmRgEcUQOaQaopvXHEA+vFsqyazMo9+h2mYtZcsIgQ1HQ9mVu+stJ7po3iArbxWO5Oq4puwwzb8xca/y5jzpXKCWJscw4SXOgxSaToL3zUcDgYdCjmJYMIXbrZGoXCDX0EvxqTCFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=EyzG6U+Q; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=EyzG6U+Q; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="n3FLQV0n";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="DONg2CsR"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="EyzG6U+Q";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="EyzG6U+Q"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F29D977E34;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 497923E2E;
 	Tue, 14 Jul 2026 11:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1784029474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wa8xfTrtdPUYc25tlb71+dHhzufOEBD9q7G/upAWK+s=;
-	b=n3FLQV0ngu9sqVjcJ41UPysQUBDIU0Ww9YCK2Plf8ISE6HzMyfGir8th4c06qWYxVfw4G0
-	mbb7YoTlOGFQDehtxEa4CrWwytupHqxSziyTzIr6sqOxSGSKL2R7T7dlqy3Fgx92GunUqH
-	80GrXfo16AxOhOATrjs5q9XosUKE71I=
-Authentication-Results: smtp-out1.suse.de;
-	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1784029473; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wa8xfTrtdPUYc25tlb71+dHhzufOEBD9q7G/upAWK+s=;
-	b=DONg2CsRG34pzwJDGKsADY5oHsjfXd7GJoRFCLrVSQVy45fFeqzABgjOWCnxhyOKa83BAz
-	w7KVNsVwY5xxcz97xQjKeZjUSa3x8JuaVRVd82FM7zYeo8Nq40IBEwovWUfPsk3Dzf/MD5
-	Ln2UdMzN3ACm5mZ9Xd75IhzdW98vbwY=
+	bh=O3VxfLZef5FP95RENfFmhUdB0Qomc8ikbs+fE3FDzxc=;
+	b=EyzG6U+Q8qBfNPKD1rYlsnQFVfR2TNBRyGZkBjYJ25mhBvcvBwBaPEWmep3t8m0WfcJMJu
+	1rx07TE/j+tRNOuGM1VwO7p98ji4RHb0IO8zyL+qIarpazOKh//zNpVJeYT+VmfVkk04Yv
+	i0dancvZ1rHpdd+skDbtKHE37DdfSzM=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=EyzG6U+Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1784029473; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O3VxfLZef5FP95RENfFmhUdB0Qomc8ikbs+fE3FDzxc=;
+	b=EyzG6U+Q8qBfNPKD1rYlsnQFVfR2TNBRyGZkBjYJ25mhBvcvBwBaPEWmep3t8m0WfcJMJu
+	1rx07TE/j+tRNOuGM1VwO7p98ji4RHb0IO8zyL+qIarpazOKh//zNpVJeYT+VmfVkk04Yv
+	i0dancvZ1rHpdd+skDbtKHE37DdfSzM=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDB86779AE;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E392779AF;
 	Tue, 14 Jul 2026 11:44:33 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KJtVLSEhVmp+cwAAD6G6ig
+	id uPN0AiEhVmp+cwAAD6G6ig
 	(envelope-from <oneukum@suse.com>); Tue, 14 Jul 2026 11:44:33 +0000
 From: Oliver Neukum <oneukum@suse.com>
 To: andrew+netdev@lunn.ch,
@@ -63,9 +63,9 @@ To: andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCHv3 net-next 9/9] net: usb: usbnet: corrections in the comments
-Date: Tue, 14 Jul 2026 13:44:29 +0200
-Message-ID: <20260714114429.1073434-9-oneukum@suse.com>
+Subject: [PATCHv3 net-next 6/9] net: usb: move exported symbols from cdc_ether to usbnet
+Date: Tue, 14 Jul 2026 13:44:26 +0200
+Message-ID: <20260714114429.1073434-6-oneukum@suse.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260714114429.1073434-1-oneukum@suse.com>
 References: <20260714114429.1073434-1-oneukum@suse.com>
@@ -77,64 +77,834 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.30 / 50.00];
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.51 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLp6hgsbiwipf7smy58x9iwpej)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
-X-Spam-Score: -1.30
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[netdev];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RLz16omcg76fjdrcypgyg1war3)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 497923E2E
+X-Spam-Score: -1.51
 
-Correct grammar in comments.
+Move the rest of the symbols to usbnet, so that the cdc_ether
+driver does not need to be loaded as a library.
 
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
+ drivers/net/usb/cdc_ether.c | 372 ------------------------------------
+ drivers/net/usb/usbnet.c    | 356 ++++++++++++++++++++++++++++++++++
+ include/linux/usb/usbnet.h  |  17 ++
+ 3 files changed, 373 insertions(+), 372 deletions(-)
 
-v3:
-- added to fix concerns about language in comments
-
- drivers/net/usb/usbnet.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
+index 76ad4ffa950a..6bf6538f3468 100644
+--- a/drivers/net/usb/cdc_ether.c
++++ b/drivers/net/usb/cdc_ether.c
+@@ -19,378 +19,6 @@
+ #include <linux/usb/usbnet.h>
+ 
+ 
+-#if IS_ENABLED(CONFIG_USB_NET_RNDIS_HOST)
+-
+-static int is_rndis(struct usb_interface_descriptor *desc)
+-{
+-	return (desc->bInterfaceClass == USB_CLASS_COMM &&
+-		desc->bInterfaceSubClass == 2 &&
+-		desc->bInterfaceProtocol == 0xff);
+-}
+-
+-static int is_activesync(struct usb_interface_descriptor *desc)
+-{
+-	return (desc->bInterfaceClass == USB_CLASS_MISC &&
+-		desc->bInterfaceSubClass == 1 &&
+-		desc->bInterfaceProtocol == 1);
+-}
+-
+-static int is_wireless_rndis(struct usb_interface_descriptor *desc)
+-{
+-	return (desc->bInterfaceClass == USB_CLASS_WIRELESS_CONTROLLER &&
+-		desc->bInterfaceSubClass == 1 &&
+-		desc->bInterfaceProtocol == 3);
+-}
+-
+-static int is_novatel_rndis(struct usb_interface_descriptor *desc)
+-{
+-	return (desc->bInterfaceClass == USB_CLASS_MISC &&
+-		desc->bInterfaceSubClass == 4 &&
+-		desc->bInterfaceProtocol == 1);
+-}
+-
+-#else
+-
+-#define is_rndis(desc)		0
+-#define is_activesync(desc)	0
+-#define is_wireless_rndis(desc)	0
+-#define is_novatel_rndis(desc)	0
+-
+-#endif
+-
+-static const u8 mbm_guid[16] = {
+-	0xa3, 0x17, 0xa8, 0x8b, 0x04, 0x5e, 0x4f, 0x01,
+-	0xa6, 0x07, 0xc0, 0xff, 0xcb, 0x7e, 0x39, 0x2a,
+-};
+-
+-/* We need to override usbnet_*_link_ksettings in bind() */
+-static const struct ethtool_ops cdc_ether_ethtool_ops = {
+-	.get_link		= usbnet_get_link,
+-	.nway_reset		= usbnet_nway_reset,
+-	.get_drvinfo		= usbnet_get_drvinfo,
+-	.get_msglevel		= usbnet_get_msglevel,
+-	.set_msglevel		= usbnet_set_msglevel,
+-	.get_ts_info		= ethtool_op_get_ts_info,
+-	.get_link_ksettings	= usbnet_get_link_ksettings_internal,
+-	.set_link_ksettings	= NULL,
+-};
+-
+-/* probes control interface, claims data interface, collects the bulk
+- * endpoints, activates data interface (if needed), maybe sets MTU.
+- * all pure cdc, except for certain firmware workarounds, and knowing
+- * that rndis uses one different rule.
+- */
+-int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
+-{
+-	u8				*buf = intf->cur_altsetting->extra;
+-	int				len = intf->cur_altsetting->extralen;
+-	struct usb_interface_descriptor	*d;
+-	struct cdc_state		*info = &dev->cdc;
+-	int				status = -ENODEV;
+-	int				rndis;
+-	bool				android_rndis_quirk = false;
+-	struct usb_driver		*driver = driver_of(intf);
+-	struct usb_cdc_parsed_header header;
+-
+-	if (sizeof(dev->data) < sizeof(*info))
+-		return -EDOM;
+-
+-	/* expect strict spec conformance for the descriptors, but
+-	 * cope with firmware which stores them in the wrong place
+-	 */
+-	if (len == 0 && dev->udev->actconfig->extralen) {
+-		/* Motorola SB4100 (and others: Brad Hards says it's
+-		 * from a Broadcom design) put CDC descriptors here
+-		 */
+-		buf = dev->udev->actconfig->extra;
+-		len = dev->udev->actconfig->extralen;
+-		dev_dbg(&intf->dev, "CDC descriptors on config\n");
+-	}
+-
+-	/* Maybe CDC descriptors are after the endpoint?  This bug has
+-	 * been seen on some 2Wire Inc RNDIS-ish products.
+-	 */
+-	if (len == 0) {
+-		struct usb_host_endpoint	*hep;
+-
+-		hep = intf->cur_altsetting->endpoint;
+-		if (hep) {
+-			buf = hep->extra;
+-			len = hep->extralen;
+-		}
+-		if (len)
+-			dev_dbg(&intf->dev,
+-				"CDC descriptors on endpoint\n");
+-	}
+-
+-	/* this assumes that if there's a non-RNDIS vendor variant
+-	 * of cdc-acm, it'll fail RNDIS requests cleanly.
+-	 */
+-	rndis = (is_rndis(&intf->cur_altsetting->desc) ||
+-		 is_activesync(&intf->cur_altsetting->desc) ||
+-		 is_wireless_rndis(&intf->cur_altsetting->desc) ||
+-		 is_novatel_rndis(&intf->cur_altsetting->desc));
+-
+-	memset(info, 0, sizeof(*info));
+-	info->control = intf;
+-
+-	cdc_parse_cdc_header(&header, intf, buf, len);
+-
+-	info->u = header.usb_cdc_union_desc;
+-	info->header = header.usb_cdc_header_desc;
+-	info->ether = header.usb_cdc_ether_desc;
+-	if (!info->u) {
+-		if (rndis) {
+-			goto skip;
+-		} else {
+-			/* in that case a quirk is mandatory */
+-			dev_err(&dev->udev->dev, "No union descriptors\n");
+-			goto bad_desc;
+-		}
+-	}
+-	/* we need a master/control interface (what we're
+-	 * probed with) and a slave/data interface; union
+-	 * descriptors sort this all out.
+-	 */
+-	info->control = usb_ifnum_to_if(dev->udev, info->u->bMasterInterface0);
+-	info->data = usb_ifnum_to_if(dev->udev, info->u->bSlaveInterface0);
+-	if (!info->control || !info->data) {
+-		dev_dbg(&intf->dev,
+-			"master #%u/%p slave #%u/%p\n",
+-			info->u->bMasterInterface0,
+-			info->control,
+-			info->u->bSlaveInterface0,
+-			info->data);
+-		/* fall back to hard-wiring for RNDIS */
+-		if (rndis) {
+-			android_rndis_quirk = true;
+-			goto skip;
+-		}
+-		dev_err(&intf->dev, "bad CDC descriptors\n");
+-		goto bad_desc;
+-	}
+-	if (info->control != intf) {
+-		/* Ambit USB Cable Modem (and maybe others)
+-		 * interchanges master and slave interface.
+-		 */
+-		if (info->data == intf) {
+-			info->data = info->control;
+-			info->control = intf;
+-		} else {
+-			dev_err(&intf->dev, "bogus CDC Union\n");
+-			goto bad_desc;
+-		}
+-	}
+-
+-	/* some devices merge these - skip class check */
+-	if (info->control == info->data)
+-		goto skip;
+-
+-	/* a data interface altsetting does the real i/o */
+-	d = &info->data->cur_altsetting->desc;
+-	if (d->bInterfaceClass != USB_CLASS_CDC_DATA) {
+-		dev_err(&intf->dev, "slave class %u\n", d->bInterfaceClass);
+-		goto bad_desc;
+-	}
+-skip:
+-	/* Communication class functions with bmCapabilities are not
+-	 * RNDIS.  But some Wireless class RNDIS functions use
+-	 * bmCapabilities for their own purpose. The failsafe is
+-	 * therefore applied only to Communication class RNDIS
+-	 * functions.  The rndis test is redundant, but a cheap
+-	 * optimization.
+-	 */
+-	if (rndis && is_rndis(&intf->cur_altsetting->desc) &&
+-	    header.usb_cdc_acm_descriptor &&
+-	    header.usb_cdc_acm_descriptor->bmCapabilities) {
+-		dev_err(&intf->dev,
+-			"ACM capabilities %02x, not really RNDIS?\n",
+-			header.usb_cdc_acm_descriptor->bmCapabilities);
+-		goto bad_desc;
+-	}
+-
+-	if (header.usb_cdc_ether_desc && info->ether->wMaxSegmentSize) {
+-		dev->hard_mtu = le16_to_cpu(info->ether->wMaxSegmentSize);
+-		/* because of Zaurus, we may be ignoring the host
+-		 * side link address we were given.
+-		 */
+-	}
+-
+-	if (header.usb_cdc_mdlm_desc &&
+-	    memcmp(header.usb_cdc_mdlm_desc->bGUID, mbm_guid, 16)) {
+-		dev_err(&intf->dev, "GUID doesn't match\n");
+-		goto bad_desc;
+-	}
+-
+-	if (header.usb_cdc_mdlm_detail_desc &&
+-		header.usb_cdc_mdlm_detail_desc->bLength <
+-			(sizeof(struct usb_cdc_mdlm_detail_desc) + 1)) {
+-		dev_err(&intf->dev, "Descriptor too short\n");
+-		goto bad_desc;
+-	}
+-
+-
+-
+-	/* Microsoft ActiveSync based and some regular RNDIS devices lack the
+-	 * CDC descriptors, so we'll hard-wire the interfaces and not check
+-	 * for descriptors.
+-	 *
+-	 * Some Android RNDIS devices have a CDC Union descriptor pointing
+-	 * to non-existing interfaces.  Ignore that and attempt the same
+-	 * hard-wired 0 and 1 interfaces.
+-	 */
+-	if (rndis && (!info->u || android_rndis_quirk)) {
+-		info->control = usb_ifnum_to_if(dev->udev, 0);
+-		info->data = usb_ifnum_to_if(dev->udev, 1);
+-		if (!info->control || !info->data || info->control != intf) {
+-			dev_err(&intf->dev,
+-				"rndis: master #0/%p slave #1/%p\n",
+-				info->control,
+-				info->data);
+-			goto bad_desc;
+-		}
+-
+-	} else if (!info->header || (!rndis && !info->ether)) {
+-		dev_err(&intf->dev, "missing cdc %s%s%sdescriptor\n",
+-			info->header ? "" : "header ",
+-			info->u ? "" : "union ",
+-			info->ether ? "" : "ether ");
+-		goto bad_desc;
+-	}
+-
+-	/* claim data interface and set it up ... with side effects.
+-	 * network traffic can't flow until an altsetting is enabled.
+-	 */
+-	if (info->data != info->control) {
+-		status = usb_driver_claim_interface(driver, info->data, dev);
+-		if (status < 0) {
+-			dev_err(&intf->dev, "Second interface unclaimable\n");
+-			goto bad_desc;
+-		}
+-	}
+-	status = usbnet_get_endpoints(dev, info->data);
+-	if (status < 0) {
+-		dev_dbg(&intf->dev, "Mandatory endpoints missing\n");
+-		goto bail_out_and_release;
+-	}
+-
+-	/* status endpoint: optional for CDC Ethernet, not RNDIS (or ACM) */
+-	if (info->data != info->control)
+-		dev->status = NULL;
+-	if (info->control->cur_altsetting->desc.bNumEndpoints == 1) {
+-		struct usb_endpoint_descriptor	*desc;
+-
+-		dev->status = &info->control->cur_altsetting->endpoint[0];
+-		desc = &dev->status->desc;
+-		if (!usb_endpoint_is_int_in(desc) ||
+-		    (le16_to_cpu(desc->wMaxPacketSize)
+-		     < sizeof(struct usb_cdc_notification)) ||
+-		    !desc->bInterval) {
+-			dev_dbg(&intf->dev, "bad notification endpoint\n");
+-			dev->status = NULL;
+-		}
+-	}
+-	if (rndis && !dev->status) {
+-		dev_err(&intf->dev, "missing RNDIS status endpoint\n");
+-		status = -ENODEV;
+-		goto bail_out_and_release;
+-	}
+-
+-	/* override ethtool_ops */
+-	dev->net->ethtool_ops = &cdc_ether_ethtool_ops;
+-
+-	return 0;
+-
+-bail_out_and_release:
+-	usb_set_intfdata(info->data, NULL);
+-	if (info->data != info->control)
+-		usb_driver_release_interface(driver, info->data);
+-bad_desc:
+-	return status;
+-}
+-EXPORT_SYMBOL_GPL(usbnet_generic_cdc_bind);
+-
+-
+-/* like usbnet_generic_cdc_bind() but handles filter initialization
+- * correctly
+- */
+-int usbnet_ether_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
+-{
+-	int rv;
+-
+-	rv = usbnet_generic_cdc_bind(dev, intf);
+-	if (rv < 0)
+-		goto bail_out;
+-
+-	/* Some devices don't initialise properly. In particular
+-	 * the packet filter is not reset. There are devices that
+-	 * don't do reset all the way. So the packet filter should
+-	 * be set to a sane initial value.
+-	 */
+-	usbnet_cdc_update_filter(dev);
+-
+-bail_out:
+-	return rv;
+-}
+-EXPORT_SYMBOL_GPL(usbnet_ether_cdc_bind);
+-
+-void usbnet_cdc_unbind(struct usbnet *dev, struct usb_interface *intf)
+-{
+-	struct cdc_state		*info = &dev->cdc;
+-	struct usb_driver		*driver = driver_of(intf);
+-
+-	/* combined interface - nothing  to do */
+-	if (info->data == info->control)
+-		return;
+-
+-	/* disconnect master --> disconnect slave */
+-	if (intf == info->control && info->data) {
+-		/* ensure immediate exit from usbnet_disconnect */
+-		usb_set_intfdata(info->data, NULL);
+-		usb_driver_release_interface(driver, info->data);
+-		info->data = NULL;
+-	}
+-
+-	/* and vice versa (just in case) */
+-	else if (intf == info->data && info->control) {
+-		/* ensure immediate exit from usbnet_disconnect */
+-		usb_set_intfdata(info->control, NULL);
+-		usb_driver_release_interface(driver, info->control);
+-		info->control = NULL;
+-	}
+-}
+-EXPORT_SYMBOL_GPL(usbnet_cdc_unbind);
+-
+-/* Communications Device Class, Ethernet Control model
+- *
+- * Takes two interfaces.  The DATA interface is inactive till an altsetting
+- * is selected.  Configuration data includes class descriptors.  There's
+- * an optional status endpoint on the control interface.
+- *
+- * This should interop with whatever the 2.4 "CDCEther.c" driver
+- * (by Brad Hards) talked with, with more functionality.
+- */
+-
+-int usbnet_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
+-{
+-	int				status;
+-	struct cdc_state		*info = &dev->cdc;
+-
+-	status = usbnet_ether_cdc_bind(dev, intf);
+-	if (status < 0)
+-		return status;
+-
+-	status = usbnet_get_ethernet_addr(dev, info->ether->iMACAddress);
+-	if (status < 0) {
+-		usb_set_intfdata(info->data, NULL);
+-		usb_driver_release_interface(driver_of(intf), info->data);
+-		return status;
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(usbnet_cdc_bind);
+-
+ static int usbnet_cdc_zte_bind(struct usbnet *dev, struct usb_interface *intf)
+ {
+ 	int status = usbnet_cdc_bind(dev, intf);
 diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 0347f6887222..76bbbfb7a24e 100644
+index 14e9f1b1e0a2..ce932c81382e 100644
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -2351,12 +2351,12 @@ void usbnet_cdc_status(struct usbnet *dev, struct urb *urb)
+@@ -2369,6 +2369,362 @@ int usbnet_cdc_zte_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 	return 1;
  }
- EXPORT_SYMBOL_GPL(usbnet_cdc_status);
+ EXPORT_SYMBOL_GPL(usbnet_cdc_zte_rx_fixup);
++
++
++#if IS_ENABLED(CONFIG_USB_NET_RNDIS_HOST)
++
++static int is_rndis(struct usb_interface_descriptor *desc)
++{
++	return (desc->bInterfaceClass == USB_CLASS_COMM &&
++		desc->bInterfaceSubClass == 2 &&
++		desc->bInterfaceProtocol == 0xff);
++}
++
++static int is_activesync(struct usb_interface_descriptor *desc)
++{
++	return (desc->bInterfaceClass == USB_CLASS_MISC &&
++		desc->bInterfaceSubClass == 1 &&
++		desc->bInterfaceProtocol == 1);
++}
++
++static int is_wireless_rndis(struct usb_interface_descriptor *desc)
++{
++	return (desc->bInterfaceClass == USB_CLASS_WIRELESS_CONTROLLER &&
++		desc->bInterfaceSubClass == 1 &&
++		desc->bInterfaceProtocol == 3);
++}
++
++static int is_novatel_rndis(struct usb_interface_descriptor *desc)
++{
++	return (desc->bInterfaceClass == USB_CLASS_MISC &&
++		desc->bInterfaceSubClass == 4 &&
++		desc->bInterfaceProtocol == 1);
++}
++
++#else
++
++#define is_rndis(desc)		0
++#define is_activesync(desc)	0
++#define is_wireless_rndis(desc)	0
++#define is_novatel_rndis(desc)	0
++
++#endif
++
++/* Communications Device Class, Ethernet Control model
++ *
++ * Takes two interfaces.  The DATA interface is inactive till an altsetting
++ * is selected.  Configuration data includes class descriptors.  There's
++ * an optional status endpoint on the control interface.
++ *
++ * This should interop with whatever the 2.4 "CDCEther.c" driver
++ * (by Brad Hards) talked with, with more functionality.
++ */
++
++int usbnet_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
++{
++	int				status;
++	struct cdc_state		*info = &dev->cdc;
++
++	status = usbnet_ether_cdc_bind(dev, intf);
++	if (status < 0)
++		return status;
++
++	status = usbnet_get_ethernet_addr(dev, info->ether->iMACAddress);
++	if (status < 0) {
++		usb_set_intfdata(info->data, NULL);
++		usb_driver_release_interface(driver_of(intf), info->data);
++		return status;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(usbnet_cdc_bind);
++
++/* probes control interface, claims data interface, collects the bulk
++ * endpoints, activates data interface (if needed), maybe sets MTU.
++ * all pure cdc, except for certain firmware workarounds, and knowing
++ * that rndis uses one different rule.
++ */
++int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
++{
++	u8				*buf = intf->cur_altsetting->extra;
++	int				len = intf->cur_altsetting->extralen;
++	struct usb_interface_descriptor	*d;
++	struct cdc_state		*info = &dev->cdc;
++	int				status = -ENODEV;
++	int				rndis;
++	bool				android_rndis_quirk = false;
++	struct usb_driver		*driver = driver_of(intf);
++	struct usb_cdc_parsed_header header;
++
++	if (sizeof(dev->data) < sizeof(*info))
++		return -EDOM;
++
++	/* expect strict spec conformance for the descriptors, but
++	 * cope with firmware which stores them in the wrong place
++	 */
++	if (len == 0 && dev->udev->actconfig->extralen) {
++		/* Motorola SB4100 (and others: Brad Hards says it's
++		 * from a Broadcom design) put CDC descriptors here
++		 */
++		buf = dev->udev->actconfig->extra;
++		len = dev->udev->actconfig->extralen;
++		dev_dbg(&intf->dev, "CDC descriptors on config\n");
++	}
++
++	/* Maybe CDC descriptors are after the endpoint?  This bug has
++	 * been seen on some 2Wire Inc RNDIS-ish products.
++	 */
++	if (len == 0) {
++		struct usb_host_endpoint	*hep;
++
++		hep = intf->cur_altsetting->endpoint;
++		if (hep) {
++			buf = hep->extra;
++			len = hep->extralen;
++		}
++		if (len)
++			dev_dbg(&intf->dev,
++				"CDC descriptors on endpoint\n");
++	}
++
++	/* this assumes that if there's a non-RNDIS vendor variant
++	 * of cdc-acm, it'll fail RNDIS requests cleanly.
++	 */
++	rndis = (is_rndis(&intf->cur_altsetting->desc) ||
++		 is_activesync(&intf->cur_altsetting->desc) ||
++		 is_wireless_rndis(&intf->cur_altsetting->desc) ||
++		 is_novatel_rndis(&intf->cur_altsetting->desc));
++
++	memset(info, 0, sizeof(*info));
++	info->control = intf;
++
++	cdc_parse_cdc_header(&header, intf, buf, len);
++
++	info->u = header.usb_cdc_union_desc;
++	info->header = header.usb_cdc_header_desc;
++	info->ether = header.usb_cdc_ether_desc;
++	if (!info->u) {
++		if (rndis) {
++			goto skip;
++		} else {
++			/* in that case a quirk is mandatory */
++			dev_err(&dev->udev->dev, "No union descriptors\n");
++			goto bad_desc;
++		}
++	}
++	/* we need a master/control interface (what we're
++	 * probed with) and a slave/data interface; union
++	 * descriptors sort this all out.
++	 */
++	info->control = usb_ifnum_to_if(dev->udev, info->u->bMasterInterface0);
++	info->data = usb_ifnum_to_if(dev->udev, info->u->bSlaveInterface0);
++	if (!info->control || !info->data) {
++		dev_dbg(&intf->dev,
++			"master #%u/%p slave #%u/%p\n",
++			info->u->bMasterInterface0,
++			info->control,
++			info->u->bSlaveInterface0,
++			info->data);
++		/* fall back to hard-wiring for RNDIS */
++		if (rndis) {
++			android_rndis_quirk = true;
++			goto skip;
++		}
++		dev_err(&intf->dev, "bad CDC descriptors\n");
++		goto bad_desc;
++	}
++	if (info->control != intf) {
++		/* Ambit USB Cable Modem (and maybe others)
++		 * interchanges master and slave interface.
++		 */
++		if (info->data == intf) {
++			info->data = info->control;
++			info->control = intf;
++		} else {
++			dev_err(&intf->dev, "bogus CDC Union\n");
++			goto bad_desc;
++		}
++	}
++
++	/* some devices merge these - skip class check */
++	if (info->control == info->data)
++		goto skip;
++
++	/* a data interface altsetting does the real i/o */
++	d = &info->data->cur_altsetting->desc;
++	if (d->bInterfaceClass != USB_CLASS_CDC_DATA) {
++		dev_err(&intf->dev, "slave class %u\n", d->bInterfaceClass);
++		goto bad_desc;
++	}
++skip:
++	/* Communication class functions with bmCapabilities are not
++	 * RNDIS.  But some Wireless class RNDIS functions use
++	 * bmCapabilities for their own purpose. The failsafe is
++	 * therefore applied only to Communication class RNDIS
++	 * functions.  The rndis test is redundant, but a cheap
++	 * optimization.
++	 */
++	if (rndis && is_rndis(&intf->cur_altsetting->desc) &&
++	    header.usb_cdc_acm_descriptor &&
++	    header.usb_cdc_acm_descriptor->bmCapabilities) {
++		dev_err(&intf->dev,
++			"ACM capabilities %02x, not really RNDIS?\n",
++			header.usb_cdc_acm_descriptor->bmCapabilities);
++		goto bad_desc;
++	}
++
++	if (header.usb_cdc_ether_desc && info->ether->wMaxSegmentSize) {
++		dev->hard_mtu = le16_to_cpu(info->ether->wMaxSegmentSize);
++		/* because of Zaurus, we may be ignoring the host
++		 * side link address we were given.
++		 */
++	}
++
++	if (header.usb_cdc_mdlm_desc &&
++	    memcmp(header.usb_cdc_mdlm_desc->bGUID, mbm_guid, 16)) {
++		dev_err(&intf->dev, "GUID doesn't match\n");
++		goto bad_desc;
++	}
++
++	if (header.usb_cdc_mdlm_detail_desc &&
++		header.usb_cdc_mdlm_detail_desc->bLength <
++			(sizeof(struct usb_cdc_mdlm_detail_desc) + 1)) {
++		dev_err(&intf->dev, "Descriptor too short\n");
++		goto bad_desc;
++	}
++
++
++
++	/* Microsoft ActiveSync based and some regular RNDIS devices lack the
++	 * CDC descriptors, so we'll hard-wire the interfaces and not check
++	 * for descriptors.
++	 *
++	 * Some Android RNDIS devices have a CDC Union descriptor pointing
++	 * to non-existing interfaces.  Ignore that and attempt the same
++	 * hard-wired 0 and 1 interfaces.
++	 */
++	if (rndis && (!info->u || android_rndis_quirk)) {
++		info->control = usb_ifnum_to_if(dev->udev, 0);
++		info->data = usb_ifnum_to_if(dev->udev, 1);
++		if (!info->control || !info->data || info->control != intf) {
++			dev_err(&intf->dev,
++				"rndis: master #0/%p slave #1/%p\n",
++				info->control,
++				info->data);
++			goto bad_desc;
++		}
++
++	} else if (!info->header || (!rndis && !info->ether)) {
++		dev_err(&intf->dev, "missing cdc %s%s%sdescriptor\n",
++			info->header ? "" : "header ",
++			info->u ? "" : "union ",
++			info->ether ? "" : "ether ");
++		goto bad_desc;
++	}
++
++	/* claim data interface and set it up ... with side effects.
++	 * network traffic can't flow until an altsetting is enabled.
++	 */
++	if (info->data != info->control) {
++		status = usb_driver_claim_interface(driver, info->data, dev);
++		if (status < 0) {
++			dev_err(&intf->dev, "Second interface unclaimable\n");
++			goto bad_desc;
++		}
++	}
++	status = usbnet_get_endpoints(dev, info->data);
++	if (status < 0) {
++		dev_dbg(&intf->dev, "Mandatory endpoints missing\n");
++		goto bail_out_and_release;
++	}
++
++	/* status endpoint: optional for CDC Ethernet, not RNDIS (or ACM) */
++	if (info->data != info->control)
++		dev->status = NULL;
++	if (info->control->cur_altsetting->desc.bNumEndpoints == 1) {
++		struct usb_endpoint_descriptor	*desc;
++
++		dev->status = &info->control->cur_altsetting->endpoint[0];
++		desc = &dev->status->desc;
++		if (!usb_endpoint_is_int_in(desc) ||
++		    (le16_to_cpu(desc->wMaxPacketSize)
++		     < sizeof(struct usb_cdc_notification)) ||
++		    !desc->bInterval) {
++			dev_dbg(&intf->dev, "bad notification endpoint\n");
++			dev->status = NULL;
++		}
++	}
++	if (rndis && !dev->status) {
++		dev_err(&intf->dev, "missing RNDIS status endpoint\n");
++		status = -ENODEV;
++		goto bail_out_and_release;
++	}
++
++	/* override ethtool_ops */
++	dev->net->ethtool_ops = &cdc_ether_ethtool_ops;
++
++	return 0;
++
++bail_out_and_release:
++	usb_set_intfdata(info->data, NULL);
++	if (info->data != info->control)
++		usb_driver_release_interface(driver, info->data);
++bad_desc:
++	return status;
++}
++EXPORT_SYMBOL_GPL(usbnet_generic_cdc_bind);
++
++/* like usbnet_generic_cdc_bind() but handles filter initialization
++ * correctly
++ */
++int usbnet_ether_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
++{
++	int rv;
++
++	rv = usbnet_generic_cdc_bind(dev, intf);
++	if (rv < 0)
++		goto bail_out;
++
++	/* Some devices don't initialise properly. In particular
++	 * the packet filter is not reset. There are devices that
++	 * don't do reset all the way. So the packet filter should
++	 * be set to a sane initial value.
++	 */
++	usbnet_cdc_update_filter(dev);
++
++bail_out:
++	return rv;
++}
++EXPORT_SYMBOL_GPL(usbnet_ether_cdc_bind);
++
++void usbnet_cdc_unbind(struct usbnet *dev, struct usb_interface *intf)
++{
++	struct cdc_state		*info = &dev->cdc;
++	struct usb_driver		*driver = driver_of(intf);
++
++	/* combined interface - nothing  to do */
++	if (info->data == info->control)
++		return;
++
++	/* disconnect master --> disconnect slave */
++	if (intf == info->control && info->data) {
++		/* ensure immediate exit from usbnet_disconnect */
++		usb_set_intfdata(info->data, NULL);
++		usb_driver_release_interface(driver, info->data);
++		info->data = NULL;
++	}
++
++	/* and vice versa (just in case) */
++	else if (intf == info->data && info->control) {
++		/* ensure immediate exit from usbnet_disconnect */
++		usb_set_intfdata(info->control, NULL);
++		usb_driver_release_interface(driver, info->control);
++		info->control = NULL;
++	}
++}
++EXPORT_SYMBOL_GPL(usbnet_cdc_unbind);
++
+ /*-------------------------------------------------------------------------*/
  
--/* Make sure packets have correct destination MAC address
-+/* Make sure packets have the correct destination MAC address
-  *
-  * A firmware bug observed on some devices (ZTE MF823/831/910) is that the
-- * device sends packets with a static, bogus, random MAC address (event if
-- * device MAC address has been updated). Always set MAC address to that of the
-- * device.
-+ * device sends packets with a static, bogus, random MAC address (event if the
-+ * device MAC address has been updated). Always set the MAC address to that
-+ * of the device.
-  */
- int usbnet_cdc_zte_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- {
+ static int __init usbnet_init(void)
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index 79f48eb388ee..b3a77078fb10 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -16,6 +16,11 @@
+ #include <linux/usb.h>
+ #include <linux/spinlock.h>
+ 
++static const u8 mbm_guid[16] = {
++	0xa3, 0x17, 0xa8, 0x8b, 0x04, 0x5e, 0x4f, 0x01,
++	0xa6, 0x07, 0xc0, 0xff, 0xcb, 0x7e, 0x39, 0x2a,
++};
++
+ struct cdc_state {
+ 	struct usb_cdc_header_desc      *header;
+ 	struct usb_cdc_union_desc       *u;
+@@ -304,4 +309,16 @@ extern void usbnet_status_stop(struct usbnet *dev);
+ 
+ extern void usbnet_update_max_qlen(struct usbnet *dev);
+ 
++/* We need to override usbnet_*_link_ksettings in bind() */
++static const struct ethtool_ops cdc_ether_ethtool_ops = {
++	.get_link		= usbnet_get_link,
++	.nway_reset		= usbnet_nway_reset,
++	.get_drvinfo		= usbnet_get_drvinfo,
++	.get_msglevel		= usbnet_get_msglevel,
++	.set_msglevel		= usbnet_set_msglevel,
++	.get_ts_info		= ethtool_op_get_ts_info,
++	.get_link_ksettings	= usbnet_get_link_ksettings_internal,
++	.set_link_ksettings	= NULL,
++};
++
+ #endif /* __LINUX_USB_USBNET_H */
 -- 
 2.54.0
 
