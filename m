@@ -1,85 +1,113 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A121E418A5C;
-	Tue, 14 Jul 2026 19:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333AB4C6EF6
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 19:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784056507; cv=none; b=GkKRggC06VZpWWD1UK9YxAXJE5UebMDCEEWoRCXRmxxNoOhDUpSldV62beXZ5YrMYY6PViTsrCpP14fm3R0ykByqLMZbwTcdGaO1hWIDkj/PTWARlHetVQTsmmwpv/p1Iyt88dK83vgbKVUxWVMt9HCIddx3BYnK+hHMcdCkndw=
+	t=1784056554; cv=none; b=LsDGAGX90rz/ojfG/hCkIFzaCBImiUTNjFXfpWHuwl6GXTTRWkEMPUGXqpe2j7BdvoVM8W3BNOgNp11RRQxPVaG3/6F/g6s0BDTQWAiEhKyGSMr19hzEQ7kTww33+/hbTNoPl10d5xDny/NsP7TMrdsI+g9e66nNZn5rYxKTlE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784056507; c=relaxed/simple;
-	bh=p0wmZLOKDngMCtvjd+Iw+F/TFcdzRjhdAPjVktGfQrU=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C2uHtWEv/qQo5wyyylamlgvgApMBEB200uvXKfyAXVYmVDrCZvYmlUaZv1YhAUyLFzd6KzkJ/TEJhph9agx4RAhzBBR37Vjd4TZzrtG854uE5lqs2P4beyXF23Z9fKv25RP6ejx9ary6ktY06C8/SIZsUduD/CQ/yHwAdQrkCp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wjiaq-000000006sq-0Sxh;
-	Tue, 14 Jul 2026 19:15:00 +0000
-Date: Tue, 14 Jul 2026 20:14:56 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1784056554; c=relaxed/simple;
+	bh=gR9OgTYQ9fjGLmRFLC+m4hXCInJcvIxRkK82+UFP0WA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zze8q0og/3+2NSBGfbfvdbpF7Ukz5BKdwHLefiGwKYTn+zwSQ/Gc4qZCrenrbfh5LHO3O8yt2YLKxqfATFeRlpG1rOOlrj5uilPQC3FAcJFiJpFXPl/iSou7pO13AQYdec0Aq8D7zP3MmTj29r09y5+5Yh3zYJZ0AevoBykwYXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZbECPdR; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZbECPdR"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493bf73ec2aso32082375e9.2
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 12:15:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784056551; x=1784661351; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NVmBD966C9OYKfvXL3zarSW+MDcZqfgKZz9YMy/NnbI=;
+        b=YZbECPdR6rWvh190eaGYke7OS2atGHLooE8+c+qhcZhnxQg6hewjaMF5ITtSusz4A1
+         fY0mkOcp5BjIADrtbo4Q5/ygJnKDsgrXIqso/paKsDmp2Hpaq8T2nh8AT/H57O5l1dn5
+         Mp2JvgqFJq+8Uasr4QFQ8HDy+h7Gom/LrUp/OlrNwygZ+cdxsRgcFaELkGz49H2vGSca
+         Ukl+qvwdTBtF38JfUHV/MQU73npyFeiizRv7yt/qWphKZoXqAHrWSRbyx5EkGxbdUh9k
+         pQVvdzDr+h/gzenV3MGC3BO2jrCxeCwiE3CdYv8+6NQ1X9JQ3A4pmcZLYJS0RBwpy0gN
+         kCng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784056551; x=1784661351;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NVmBD966C9OYKfvXL3zarSW+MDcZqfgKZz9YMy/NnbI=;
+        b=g5kyOVPyHx+Tf0XqjkD80XiIq47C+Cns7Kmxw5BNyCaPrl4Se6FTLC4cIek9molPiT
+         xyoCzHlCPce6F/PgXwLx+Qu0IYrrhHr3lCpos23M7ePsep3uvr37Y9Vu+gO1MxKk2tOw
+         MPp9SJI/uEB+dVbAL2GbmE1V3WcV+Lag1rNPtEnH+7J7YMlhsVyBuQeD2lNRCBKBAquS
+         yw0Jnr35L5IUPsePEMHoJFBDXpdMrbt3eviKYGobib70i8Ea5pwDPlxYnGeC2/3W4ysg
+         C3MoDFu/9BNaOsIBuiCKqNdQUatDEj7HGX1GoBTLupD6bHY7qh96ZLgM45A2ddGLHlIP
+         XE6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrDdxpXN7C+AOrP+MMEH5cKvf7iIK2z6FCwPFjWMrYuB3L5H2WJpRCdU0McC5CpuII0htnMPVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzFZ/4WyvdEZ4Iuxb93isqDEPocNeBL82DiuQIFMvn3lT3WU6h
+	YvJ7SZ9QAsfC7ghJ+3vMUguN9oR2osRYopavt5N1Qeku93vtA31bAPW8
+X-Gm-Gg: AfdE7cnUo6twmtYml50HOkHWHLCKKc+dhz3ui8vURJ3RPuHW1BevbfRenktHwB79eRc
+	20go+Jr0/hTjCk4G+AUEYtRObjBl7Z+/knTc0n0dz8MgNU1juwdHnzwZVlnZGkmc90cTZB0rBxP
+	ceQ1vzbJz6De7aPdPoSWjZPz1SfHwitDhpOjTRdfOd7pqWlnZpj90TkNO1VZUSupL4WHt3zFV2G
+	xaTxPMCVIIO2Hjvcb0DHXiGfeMoosVzo6dha9RSHMpsMIHSo8WJRdQZrafxSygFvo3U4gx+V7BS
+	8F8Kncux6Lzrnt17EX40REKgqXDLk83Cl13BlRW7IjKLDVAqYIsm/KJdD5Cvy1L3Vc3pFtIgj0v
+	Ty5XRGQ6/sSaA4VmeHqEgTr9ObarlwHUOC+kj+kTWdy5mohOERQsfn6CYc1Cy4E/jX94x4mCr60
+	C7NkN5RKb7lxQ=
+X-Received: by 2002:a05:600c:604a:b0:495:3aac:1098 with SMTP id 5b1f17b1804b1-4953c28ef1amr1040425e9.32.1784056551104;
+        Tue, 14 Jul 2026 12:15:51 -0700 (PDT)
+Received: from localhost ([5.83.201.220])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49508725c0bsm96157365e9.2.2026.07.14.12.15.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 12:15:50 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/4] net: dsa: mxl862xx: add devlink
- flash_update and info_get
-Message-ID: <alaKsBXSK9tP__O8@makrotopia.org>
-References: <cover.1783988826.git.daniel@makrotopia.org>
- <5d1614d1cd6b99bf0f0635c6370bbed10736a7fa.1783988826.git.daniel@makrotopia.org>
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net: dsa: microchip: make read-only const array ts_reg static
+Date: Tue, 14 Jul 2026 20:14:05 +0100
+Message-ID: <20260714191406.195375-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d1614d1cd6b99bf0f0635c6370bbed10736a7fa.1783988826.git.daniel@makrotopia.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 14, 2026 at 01:51:02AM +0100, Daniel Golle wrote:
-[...]
-> +	if (!of_property_read_string_index(ds->dev->of_node, "compatible", 0,
-> +					   &compatible)) {
-> +		ret = devlink_info_version_fixed_put(req,
-> +						     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
-> +						     compatible);
+Don't populate the read-only const array ts_reg on the stack
+at run time, instead make it static
 
-Review of the fwupd counterpart of this series[1] made me reconsider
-what the driver reports as the "asic.id" fixed version. The devicetree
-compatible string used here ("maxlinear,mxl86252") turned out to be an
-unfortunate choice as the comma is awkward for userspace consumers, so
-for v3 I plan to follow the mv88e6xxx example and report a chip name
-from a per-model info table instead:
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/dsa/microchip/ksz_ptp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-  fixed:
-    asic.id MaxLinear MxL86252
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 8b98039320ad..5bdf829a6e38 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1101,8 +1101,10 @@ static void ksz_ptp_msg_irq_free(struct ksz_port *port, u8 n)
+ 
+ static int ksz_ptp_msg_irq_setup(struct ksz_port *port, u8 n)
+ {
+-	u16 ts_reg[] = {REG_PTP_PORT_PDRESP_TS, REG_PTP_PORT_XDELAY_TS,
+-			REG_PTP_PORT_SYNC_TS};
++	static const u16 ts_reg[] = {
++		REG_PTP_PORT_PDRESP_TS, REG_PTP_PORT_XDELAY_TS,
++		REG_PTP_PORT_SYNC_TS
++	};
+ 	static const char * const name[] = {"pdresp-msg", "xdreq-msg",
+ 					    "sync-msg"};
+ 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+-- 
+2.53.0
 
-Before sending v3 I would like to clarify the preferred format of the
-value. Existing implementations differ: mv88e6xxx reports for example
-"Marvell 88E6085", including the vendor name and a space, sja1105
-reports "SJA1105E", hellcreek reports "hellcreek", and bnxt and ionic
-report bare chip identifiers.
-
-Documentation/networking/devlink/devlink-info.rst only describes
-"asic.id" as "ASIC design identifier" without any format constraints.
-
-Userspace builds firmware matching identifiers from these values, in
-the case of fwupd for example
-
-  MDIO_BUS\COMPONENT_fw&ASIC.ID_MaxLinear MxL86252
-
-and while a space works there, such identifiers commonly avoid spaces
-in favour of underscores, hyphens or dots.
-
-Is there a preference for new drivers? Should the vendor name be part
-of "asic.id" as done by mv88e6xxx, or would a single token such as
-"MxL86252" be more appropriate?
-
-[1] https://github.com/fwupd/fwupd/pull/10667
