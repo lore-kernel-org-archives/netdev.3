@@ -1,171 +1,74 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180C4381EA8
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 11:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C259F363C50;
+	Tue, 14 Jul 2026 11:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784029750; cv=none; b=NYFNozldtfxCrqnFj9pFNdhTRlbYzI7K6t1znbX9J/ebmhiJdhblfJjsRywN0WEW9m0hY4UVVSrN6TxG7tUFahXBhYqr5NJMEpRSzWDWtTbzQ9qic2IsST7h8zU/JW2PVvMMkjzgMDwwnYwRcuhiVIsVxRuksYp7LTyzeoE5AoA=
+	t=1784030128; cv=none; b=MiiH0LWmsDCNDdX13eAkHN0E8ch+OhIVmo8YmKdKT1OpTH2cbDMH2ITHvc90hC8/K0cs57q+JNkV8M/GeyhDvzgH+7jZ8gRfwp4clul9Zh5siPGbpdwSlLRXij/EQMUQ74T6cSOtuvfvG2g3kpGwZY2B5bZgaugV6jdyoiw92ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784029750; c=relaxed/simple;
-	bh=ZGYvGbRP+oXuIcup1YsFuHoUmTi9k6xwxTD9TCdJ5qw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sUIokS1gwWOlghKeKASoehrtRmoFeBwFAnPwnN5oP7p/xo+yqfJb3ZqoQXvxXVJGwT3XNxF2YHxrWQtOTWqx9fCoScUmgTM34N2y2AEmu3uayS9/JCNz8AUUZ29DhrqTt9ESw6y/Yg8eRU/l0KEFd9YmxN4R08rpPo+MxLCmodA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=svBsPqnv; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784030128; c=relaxed/simple;
+	bh=CHS00y8b6nbLwNrfwrMOKEszdL0AFvXwLKZHCkRgwMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OwOVE62dzl8NnT3DNVVHG9Es4ZYx0BAIlc+62wdD+2b93t+Ryb4sb2atPRDHj/DDSk6DZfKTg6mw/hUdnvXC8ng5GTswaVEys1ZPh2dMhW8/wwqaa31SeXL03IGk3UVuM1J8rF0Y/MApt7SQrtsfpVDmSzVjwuiz5yf9j/HGQHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=daxhQ1My; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="svBsPqnv"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e6c4a867cso56248485a.0
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 04:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784029748; x=1784634548; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1JUpepjd+suSCp2cPlkh7EA3gKkiN6bvfQtDVC0IsC0=;
-        b=svBsPqnvkfvOh7NfF2v/W2O1G/xVRiQ1CYms/5QQcPbKrP86JXGBzWXil0GWK76PlT
-         iccXMG8hC5ux0WGtLTTq/WYtEjSXbW+RpKgXq4S2EkrIDfLayt8/q+CFdCWxc3ZteKYS
-         Qdos3iQqkJDuwoXnCh4iKL8qW171KTCTvJjOJxxfb+EytwDbR5fEsF1THk0HOSOO/0C3
-         ZNtTV5EPnc6IWSdHr4sTqOu9PEBvbyP/VNDk8lDmAIbgyuPtz1ShP8DbrTNDLRGykPn2
-         MBQ23o24jGX/SpuCG26KYnEmMY1rMtseq2A0CCWGf37ry6ssuWf9sng86RBaES8PlhZ8
-         LOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784029748; x=1784634548;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1JUpepjd+suSCp2cPlkh7EA3gKkiN6bvfQtDVC0IsC0=;
-        b=ZsUYxtFq8jBeiVD5Zr7sxgj400Wk+/n8wu1/0dZyR8cZyNAaxkupIKdPGKUNo5qE0P
-         bZJceSPTDU/XzNKkWqpD0R/PoEQzh7ZL94HOKbgJRxdQtheYsTJNmyzjOFn/cpObTuYU
-         uGza6WkzKlFVbPD5Zc8n/n3mfhdAR5QLZNoIG8XsLbhVF6CttZ2HD6Nhw+9IX2PCr4Xq
-         4cw3+mLwfYGw2LH5au60d67IHzuy+63MYHnCsjr99xo3D3JyA7tmGsbh/9kChGrQ6Czw
-         se0I1A8rE6L1p1cwmrFhTpKoWC3PvchfRO/v2kFZlSmUZzdDrGr8h4umHAZBGzEqgmpT
-         cPVA==
-X-Forwarded-Encrypted: i=1; AHgh+RqSCCX0uWxiZZUVFTx7CmSjg8JYMPTdU1pfNhQIJFBhliI54CbrQ6dJPGEi81I+VIBqArkatC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHmc5IFPem0Rqz4cLp8gvh1ek5fYxKmobqposvPkAM5K1Ayxz8
-	4C7IhMTSD1dDsoSByOyF4D6qq7PgewkNtRohtRXAoxZkpCE1Su5goPrd
-X-Gm-Gg: AfdE7cnMCP3tbJ0ky8IhZF0znH2+SOl+Pxq+Lo7cAbwYQCcDt0ZYDyQITsg6Ibjun1x
-	p4helxMdOtQDNn7FSBjpGe8EcfhEmGEevVOesJKFt7FDdeWTESJfXz8WSQ53OlDeUO7/IQ12sdM
-	tGUds7bL5UPTTfp81ZgSPK/PhYIPv2ejhJ1JzpL50c1MxjPG4YEr8O/I3zBg3KlRtr/qv644/Xa
-	bjrEfVzAyDdHi9tAWc93oIKVOrISQQ8YrWTOVYjQAv8CcgLOMoT5MWhnMGXdWTNcUF89rKOBpof
-	wfFBLYR1z6u1PT4xYk1V+a8kTmLKkOzfHhCJzta3nYcszmO3wTERf8Vpct+fqD72tVI9MW33Y+U
-	I1qhsY0yhvDElM1QH5FoKa2bFVN42ugPQUmTlKB9kik3W5v8B/1vYzXZmvFgrX/FAO8FoPZut1R
-	r7M0qMc9myIDhw0yySf4CL3WXJ0X/SzZJuLQJ7PAPbrr/SLIfENIeV7z4FDaIM865q22WGf2Y6d
-	iLtUwPUBg==
-X-Received: by 2002:a05:620a:258c:b0:92e:54b1:2881 with SMTP id af79cd13be357-92ef2bb787bmr1289546185a.16.1784029747886;
-        Tue, 14 Jul 2026 04:49:07 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5baaab7sm1500521585a.19.2026.07.14.04.49.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 04:49:07 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Antoine Tenart <atenart@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Tom Herbert <tom@herbertland.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] ila: reload IPv6 header after pskb_may_pull in checksum adjust
-Date: Tue, 14 Jul 2026 07:49:03 -0400
-Message-ID: <20260714114903.3763420-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="daxhQ1My"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CHS00y8b6nbLwNrfwrMOKEszdL0AFvXwLKZHCkRgwMw=; b=daxhQ1MyF/mslvu3ImHjHEFhJu
+	Bw7Db0koveFJz6tXd88D9EV8tSGhuXwk4CL475IwBjbWnqUqtNGmiDv9hZPA9kxH3Q3UqjxuAD/ny
+	jWaHfqAAvzb1qheH+Q2Y//8B1Wr1m8LssosgG4odZrlabyCIhT//q8jkrjMRso0M9AN/mgjLjdA+9
+	hS8sTamn61f/ITfkihfkNjHy9tIvJDdu4J475FZntgP+xeHtBD6qIuYQ2gjm2ae8L2ZRAAsuoHwmK
+	cCxWWa2nMn4CkL4ggW1MnqLp95Fm55VeVTNJZaSGrEz9NydjfmsL9YWgYpJgZ+Mt8Pc00/EAkLfbq
+	9jPiF5rg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wjbjK-002G2F-0V;
+	Tue, 14 Jul 2026 11:55:21 +0000
+Date: Tue, 14 Jul 2026 04:55:13 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>, tipc-discussion@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] tipc: clear sock->sk on the failed-insert path in
+ tipc_sk_create()
+Message-ID: <alYjBty7EtpE5rg7@gmail.com>
+References: <20260713082342.3803379-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713082342.3803379-1-4ncienth@gmail.com>
+X-Debian-User: leitao
 
-ila_csum_adjust_transport() caches ip6h = ipv6_hdr(skb) before calling
-pskb_may_pull(). On a non-linear skb whose transport header sits in a page
-fragment, pskb_may_pull() can call __pskb_pull_tail() / pskb_expand_head()
-and free the old skb head, leaving ip6h dangling; the following
-get_csum_diff(ip6h, p) then reads freed memory. ila_update_ipv6_locator()
-uses ip6h (and the iaddr derived from it) again after the csum-adjust
-call and additionally writes the new locator through that pointer.
+On Mon, Jul 13, 2026 at 05:23:42PM +0900, Daehyeon Ko wrote:
+> Clear sock->sk on the failed-insert path so the existing tipc_release()
+> NULL check fires and the use-after-free is avoided.
 
-Impact: a remote IPv6 packet routed through a configured ILA
-csum-adjust-transport route or receive-side mapping triggers a
-slab-use-after-free in ila_update_ipv6_locator() (KASAN). The route or
-mapping requires CAP_NET_ADMIN to configure, but trigger packets are
-unauthenticated once it exists.
+The fix itself looks right: clearing sock->sk on the failed-insert path
+is what __sock_create() expects from pf->create() on failure, and it
+mirrors the same dangling-sk fix done for AF_SMC in commit d293958a8595
+("net/smc: do not leave a dangling sk pointer in __smc_create()").
 
-Reload ip6h after each pskb_may_pull() in ila_csum_adjust_transport()
-before the csum-diff read. In ila_update_ipv6_locator() only the
-ILA_CSUM_ADJUST_TRANSPORT case pulls the skb, so reload ip6h and iaddr in
-that case alone before the destination-address write; the neutral-map
-modes never pull and keep their cached pointers.
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-Fixes: 33f11d16142b ("ila: Create net/ipv6/ila directory")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
-v2: In ila_update_ipv6_locator() reload ip6h/iaddr only in the
-    ILA_CSUM_ADJUST_TRANSPORT case instead of unconditionally, per
-    Antoine Tenart's review; the neutral-map modes never pull the skb,
-    so their cached pointers remain valid.
-v1: https://lore.kernel.org/netdev/20260711150648.2915106-1-michael.bommarito@gmail.com/
+> Fixes: 07f6c4bc048a ("tipc: convert tipc reference table to use generic rhashtable")
 
-Evidence: a KUnit case on UML+KASAN drives ila_update_ipv6_locator()
-with a non-linear skb whose transport header sits in a fragment, so the
-pskb_may_pull() in ila_csum_adjust_transport() reallocates the head.
-Stock: BUG: KASAN: slab-use-after-free in ila_update_ipv6_locator, Read of
-size 4 (the stale ip6h/iaddr). Patched: both the valid-linear control and
-the fragmented case pass, KASAN-clean. Built clean, no new warnings.
-
-
- net/ipv6/ila/ila_common.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/ipv6/ila/ila_common.c b/net/ipv6/ila/ila_common.c
-index e71571455c8a0..b78179bfc4c72 100644
---- a/net/ipv6/ila/ila_common.c
-+++ b/net/ipv6/ila/ila_common.c
-@@ -85,6 +85,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
- 			struct tcphdr *th = (struct tcphdr *)
- 					(skb_network_header(skb) + nhoff);
- 
-+			ip6h = ipv6_hdr(skb);
- 			diff = get_csum_diff(ip6h, p);
- 			inet_proto_csum_replace_by_diff(&th->check, skb,
- 							diff, true, true);
-@@ -96,6 +97,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
- 					(skb_network_header(skb) + nhoff);
- 
- 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-+				ip6h = ipv6_hdr(skb);
- 				diff = get_csum_diff(ip6h, p);
- 				inet_proto_csum_replace_by_diff(&uh->check, skb,
- 								diff, true, true);
-@@ -110,6 +112,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
- 			struct icmp6hdr *ih = (struct icmp6hdr *)
- 					(skb_network_header(skb) + nhoff);
- 
-+			ip6h = ipv6_hdr(skb);
- 			diff = get_csum_diff(ip6h, p);
- 			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
- 							diff, true, true);
-@@ -127,6 +130,15 @@ void ila_update_ipv6_locator(struct sk_buff *skb, struct ila_params *p,
- 	switch (p->csum_mode) {
- 	case ILA_CSUM_ADJUST_TRANSPORT:
- 		ila_csum_adjust_transport(skb, p);
-+		/*
-+		 * ila_csum_adjust_transport() calls pskb_may_pull(), which can
-+		 * reallocate the skb head and leave ip6h (and the iaddr derived
-+		 * from it) dangling; reload both before the write below.  The
-+		 * other csum modes do not pull, so their cached pointers stay
-+		 * valid.
-+		 */
-+		ip6h = ipv6_hdr(skb);
-+		iaddr = ila_a2i(&ip6h->daddr);
- 		break;
- 	case ILA_CSUM_NEUTRAL_MAP:
- 		if (sir2ila) {
--- 
-2.53.0
+Is 07f6c4bc048a the commit that actually introduced this? Or the
+sk_free() that got added by commit 00aff3590fc0a ("net: tipc: fix
+possible refcount leak in tipc_sk_create()") ?
 
