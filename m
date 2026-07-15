@@ -1,156 +1,136 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18F6419FAD
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 18:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A30B3B14D1
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 18:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784138784; cv=pass; b=ZoAkeLA06YU0YA1MChp+Lb0klstAWoWYghLj3pKImBJHJOLtuQKG5M+xxM7cDO8D5YpvUTjzUrTu+JYe9cZAQk5JPxJkQoPaN8QrdBBpyCQWDv6wjgNw4ylgdKBPe4Z2gh4aIxMEMvGTEspLgJz+Xs6drjOidphonIRjD+Frp00=
+	t=1784138908; cv=pass; b=VgQILvuJdIN8y+XWnIjf9uprIo3UvHjaxDExlC1rJfS8VfDj5G9s+5Cw973soHH6ZNYGIMjkV2sR7Q8g01clkOohoe/5hkoj+p5k3T1OIAT64VUGil0NOqSb/iTl8XJUASKskO+TodjQoyMEyj2haE1JsW+nv2tjOKI4tjsqONg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784138784; c=relaxed/simple;
-	bh=CvtqbhTpcUIjBiRcNfVQIUfQdk2rVlupkqd6L4xp+Qk=;
+	s=arc-20240116; t=1784138908; c=relaxed/simple;
+	bh=gmWkK5GBY2LMEWE6ufMsEeT5/UFyj/875yClB5NG2hM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GNwXJzMcSU30n2/7pKxrTOzKLyTHg8cDf34aNGauleA3m+X9IXKEfgIVpYG4OD+JekgsMFiLTDEMLx+e8k+c8TzXjvBeeXruedF7bExwlJzxt5cECz3fIJiztWf38iAXEyMYf+jiwTOWX2K0dm2K1nnmW2Qcl3UcfUkf7GDRSVs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CwWaJlov; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=l/MlP/Rq6eXdjeZnAPBTUnz6V4tzE/sKD1XU06U3XEjxn/nrasWoLc6wevcxHdw+mSEoQpYbcNkizT17EZzkBRFrIOM3R9fi28dkLG1mzZhJWy7V13EeAtfgEHXX6DrVpJDMpRlJ2StKKhDzofin5+MjKO/LoXmmYbd91SVEKTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=E6xfUung; arc=pass smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CwWaJlov"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ccdf36f63dso12555ad.0
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 11:06:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784138770; cv=none;
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="E6xfUung"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso25446875ad.2
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 11:08:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784138904; cv=none;
         d=google.com; s=arc-20260327;
-        b=QnkBGOpYnXczdKe7ondHFKdFHGO/+o127QTM3QBwZm3jNoqXwdIM5nsOIwGV+EQc5z
-         r7dJZSyPkcn/hufDu34HqR2aAfUUR5nHqSe7iMGyRUSWB0esXcJfusWtsa30/nQD59mg
-         03d60UDd7vYuIdDoI0vjv60DfUkCKlrNAomXU6fP1X+DXVnxyKgcbvhbhsEoW5+OPTFl
-         fNNzSKV2D1vnl7U/y8gm4T9Y/fOYtNyiw3ciVc693MQzKF5u2yKBDvStSTtuBUWmc39V
-         m5HFa5wB84mEDfHO0bw+E2ffko87ZDJmoWFPI0/3tF55S5zT2D2G1mLFyVmPdYxYInbv
-         wfLA==
+        b=izOQZgS/doY04PbBe1IIDALmA26xRROCW4FSkXOfS+mTAMDVIRqOudxavGvdft5ud2
+         rwNbefNxLotwjmfwUL0kkgZWJvNVRDBvFH9BIETTl4tXV7BKppxnPPa+9Y38sBdepmCg
+         vycL3NhMlxP8otyvq/DJ87/Wftm61la42UYT2DJSOPzJRCAJFKdkJZvSYxOIFL7OL+Wa
+         tYbaNjYFSmtmtakqjVbdnxfKClBU9ByTr2WUNw+YWiqVZJ9Q9Qt8CgTxZDaPFXuaj+Ax
+         yf6trqd3eE79HROdWVAQP+qaShgXAPfBB5Fo6fQ7CmGudp19uWstCQmXNDAvVJvgBsVX
+         fxAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pbDYprAtTAaUYhTnGvnNHpzVJY8syKc/fpVU22ZOJTI=;
-        fh=eeUVkgBS+h949Zk/UGKVK6g54cl20ahiiMAzuCzzNlc=;
-        b=F7ZBpKBBNaqlKBUucBUeO3FITcbgrS3yOrk2Tl4vwxkTjNr4XiSaEqWVuSWV4mi6no
-         B7bTdMsCqOe5Q0Ds4kEQTDdyzIJrpY0tgldilmH8+7dIVxCNFRcTPeUL20/n6/yqP/wg
-         FTsP7WP3dPSlpHvWmja+2N9iOwGRcHHapuO6u7T9lzyRX+f8Qai8/p6CNU1SN1xya54y
-         Tf1wRaxwu0cQFPNo9PO7ci/bJJPqjLH2u51nyRbhW4EJS4i6zzmXSq+rz9WKc7QW0Zi9
-         rFlqNg5+O3fhKMy+YQ0+v66rXLNcQJqgoCbJVYck6XpcQFrKWVk837aD5p5L/CF9x3XW
-         8KCg==;
+        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
+        fh=iVfQvShXx4Yl9AKxOw2GLH/AnesA30sYp4RjCLdbTNs=;
+        b=IUQNi0MZnHkiOswEd0w/BtY5seF7DorsysSGkwBWoP2RpZfqVKnZTuu/LHTooh6lEw
+         2k87bQuBNu6r2VS12C2LhAWzDrvG4nX6gnYqAVb9x8fdl23aB+sJLQ/8NZtri+PZyJAX
+         Qr2xaYNpKBRdBN0ocrFZWDAgQ1vjwoMX40C3prHJ3u3b/X51teIZnGrgC9JR85mMmxDd
+         npCPWHuT+6y+bdvWUvKD6sJCEH74OncAU4jX7GqSg9jTZftERe49sbVsb/YzdDRX9yCP
+         z1NyEzIz0/LH0+8qoeqJNpbMfJpjqQ3Nq4I7tg6nFifxjWT12DVgLqfrNaQ7fpfCKIsW
+         14Ug==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784138770; x=1784743570; darn=vger.kernel.org;
+        d=asu.edu; s=google; t=1784138904; x=1784743704; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pbDYprAtTAaUYhTnGvnNHpzVJY8syKc/fpVU22ZOJTI=;
-        b=CwWaJlovbHtRFgFkiot0TdBPHpgK14XUK9NOD1ejoAiUYPRaBmr4YCnmCzlxWUiNCS
-         IPD3a+ER9NJAjdDmI7TFZJUvbZ4IvvepFXN9+cmG7E7+ZIMbPyhPXgwD8WfpkNG/vK4Z
-         CvqvJ2xab6DJN1MHzEtI26y8MBIMmHMhwnt4167ksS6cmK0SdHQ9aYIBK1xFUbUpxEr/
-         7SBUhsYb80wwStm6en0zLUsvuX/q58gdxTdhfv++t69sPUUQsZ82efpD0seeEeDBcrfX
-         2WwmsOo/STxSOCnjGTL4lO5VLIFmksvQPHez6LKomt3etllHPENbi9BvaEh7axBqImnh
-         JE4A==
+        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
+        b=E6xfUungElGUkhJ+Hik4RR1k5vKtgjx7vK3uMtZyvWxMlqW3FeMXMWmQgiCNk1PQCg
+         qrF56pnQzfjp+kwK7Nn87hD7uSceDB3eqQDgnoO3tPoDFZ48kWtWgeXf82aaVjVXCypH
+         faKSYBW7iMpeJIhTW7SbMttzBlkU6SGdYiRGVhaZ3O34CCwXTHdsPVFB4+pB/y9FsrsT
+         Kt/+OxupuvAn1tZEL3CIzB6WdvxwXkfQD+eSnFNvshHSkY+oGhNwBiTGclSZ68IuHkxQ
+         0rLvq3WOPF20ivlVNoVoB/QXwL2Mwe4RGEEJG/MATXbqBkbYrqpaWI88Tnmp3S6ejNCx
+         R0Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784138770; x=1784743570;
+        d=1e100.net; s=20251104; t=1784138904; x=1784743704;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pbDYprAtTAaUYhTnGvnNHpzVJY8syKc/fpVU22ZOJTI=;
-        b=SBa9uprR4uD/iz5VkwqLWX5PDBHhQ/L/sc0jFU+sC5/24ElQUhYkEcVdkGw6uLko9J
-         AGzoLCyb+1Ry0niNj9uhSo85MoK5bWjDg6xTG+E9F9VN3q3YGgnIV+nVfozcx9j2XXc+
-         nEcNbtVnE744JaWLyvozgtj2+YgoFqga+qnwK6N/oDGsX6Yty874SgmrSRxDb6VsDzdP
-         Zmidl7Wqz4qDQkLTT28DpmGQJkL6EXr34Po9Xr4XRSwfBoNcFrka/ZcBEpvGSWdnK45t
-         fUKioni1ary353Xju6kjLyL81dbLLpxXZrAuNpMaGiqIzXMu6ybl5QqeTfjizeb5AZgz
-         D/Zw==
-X-Gm-Message-State: AOJu0YyNdItManUjwMhfzHWqHQzkXCeOYsAR8NHv4adgbjs8DvSa6SA1
-	LPO07yj5ypTAX/8XZ0c14Aj+lZZCjZIs9NMXGj13htfh3mGfhVLfJR4b9wyrju1eIS5VzX76ZTc
-	f6IValLfKFqdMgY1ig/zAkgHVuT1SlTfTMJgRTs0aaeoeo3TP0PYQa+Hp
-X-Gm-Gg: AfdE7clyTZho9l6fZDNDCPGUj5Cs1tNZ3nYPZiY1R1dAjyBBr8a+ZLIH/Zg13SUKfxm
-	WRf+FHyVQP06IZ1+dFVBi4uV/coMI/ESEpZHolpuSPKMi2F2CG3sAa/CG7RjmL3ZZTBX4A58YJw
-	p+zscHlhs7xuYsXxqXJL0mNZO/GBgdfEudqgp7WMnocrU+VgOPIZw5eE6MBCbgjkRGroyMfB4eU
-	C3i3I4yrl13lU00wQHwDzUhp+BKLtYl8Ok0ST851YsCq5WeK/f1YlRuxh+/R2eTwO39L4qJ9JNS
-	IMgDjp43BlRP38bXnFK5IJOiqoY=
-X-Received: by 2002:a17:903:1850:b0:2bf:139c:dcf3 with SMTP id
- d9443c01a7336-2cf19639aa5mr404555ad.19.1784138769096; Wed, 15 Jul 2026
- 11:06:09 -0700 (PDT)
+        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
+        b=j9BOFwcEvTWYuqAsQReqInnrRgnfur3c9ze7pz1lJwAfCePcAFGxJ7rR3lt8k+4nrS
+         iTnEwIyO7ZAH7bHbzPXb1jGKkIwSDiX7Zq+Obgp0/L8FDDXRdZiWv3GeF58iTCVytmrY
+         ShNjiNqfU4ml6ChDJNXe43W3KXNDImDnkHMlY4VHGL/zIvJq+CkF+zgyu+yK3GfsTYCL
+         z/jxtg5tcn3/xmQJcP6xPtj0J59VMg2dWz/W8eFdPsE5K9j3yWj+04bIzhSZRIe/nfJs
+         c0kQUZkFlosID4qt7ArgfoWJdvIps/kjkR49SHiQuTXAsydDGRjGFnz6cG2gK6JPA2FW
+         pG2w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0aSnUAGFnRoMWgzbBLImwL5UP1I1qHmok81ngwEVMfp7efCzHSieM33TJ7sUVYkC70KErcTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUzkAqabzQBuBI3o/dtyIchM78KLpfyZJcvSCD0XSkr0e6igZM
+	MgDNUQtZsv0HwLHMDqvzXYBb4wh+ACJoCxZQEbUeUfAjvaDdzrPsuLYqtUwbGPEuKHm5T9lPM9a
+	Am5g5vdDcEoMbnHIjr8FZZ5a0TsWbEXsSFntXDfsb
+X-Gm-Gg: AfdE7cnqI+e+CkQwdKEMXM3QrEOaBISnOJDx5rMc+/OlJyGNws+AGiHA+s6rOAn1wpJ
+	DCAVwop//HDaXD05bskjjNu7ORyLaA9vdc/4w3VcGGa/Aea7CUD+AWzu8rKdzlvYLarBkz/6tMN
+	yn/QZek+/3czx/h+JYyvCmgoEi0iY0dvDJeCVlB0a+9ifCrAUEYLJ4LUdQtYam+vL9gq0nx49z3
+	Kv+jgrwyHv5ihdBoZiXmxDETWgapqRCzhQqUP51nEGV7I4IATsAIgm8w9zw37qB1xe2El3PgckA
+	3QI3NxQlf87YO4ndjIomVqCJqpHy
+X-Received: by 2002:a17:902:ecce:b0:2c9:c083:cd50 with SMTP id
+ d9443c01a7336-2ce9e9ac9acmr170981245ad.17.1784138904382; Wed, 15 Jul 2026
+ 11:08:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20260715123610eucas1p100ea97629de7a87fa67016275cfb38f4@eucas1p1.samsung.com>
- <20260715123602.51950-1-j.raczynski@samsung.com> <20260715123602.51950-2-j.raczynski@samsung.com>
-In-Reply-To: <20260715123602.51950-2-j.raczynski@samsung.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 15 Jul 2026 11:05:55 -0700
-X-Gm-Features: AUfX_myiC01IMInrfsYG52lU15TUIyRDhJY9tdWQ7zQwCgNUQoJkmDKfWc-MS5U
-Message-ID: <CAHS8izOC=hSwB=nFhs5h8UP8knnfMTj7Zu=9trxZ5+vHN0dXBg@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/2] net/stmmac: Set Rx queue page_pool to NULL
- when freeing DMA resources
-To: Jakub Raczynski <j.raczynski@samsung.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mcoquelin.stm32@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
+References: <20260704210333.668216-1-xmei5@asu.edu> <alddIi8ArJ13ytSC@secunet.com>
+In-Reply-To: <alddIi8ArJ13ytSC@secunet.com>
+From: Xiang Mei <xmei5@asu.edu>
+Date: Wed, 15 Jul 2026 11:08:13 -0700
+X-Gm-Features: AUfX_mzFjlKmKNXWUkRNr2pzRBXPzS3cMIwj9lKmxyFNCb-B-xpM5GlG5AEUE1c
+Message-ID: <CAPpSM+TxGBMPoP==W0vv8e2Hx30ceF28Pv3Y5cgSAGTBJmLU6g@mail.gmail.com>
+Subject: Re: [PATCH ipsec] xfrm6: fix out-of-bounds write in
+ xfrm6_input_addr() when secpath is full
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: herbert@gondor.apana.org.au, davem@davemloft.net, nakam@linux-ipv6.org, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, bestswngs@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 15, 2026 at 5:42=E2=80=AFAM Jakub Raczynski <j.raczynski@samsun=
-g.com> wrote:
+On Wed, Jul 15, 2026 at 3:13=E2=80=AFAM Steffen Klassert
+<steffen.klassert@secunet.com> wrote:
 >
-> When freeing RX descriptor resources, there is standard clearing of
-> descriptor page_pool via page_pool_destroy() which does destroy
-> page but does not set its pointer to NULL, which must be done by driver
-> calling this function.
-> It is not done in __free_dma_rx_desc_resources() when stopping interface,
-> which is generally not an issue, because __alloc_dma_rx_desc_resources() =
-does
-> setup this regardless of previous state.
-> But above is true assuming reinitialization is successful.
+> On Sat, Jul 04, 2026 at 02:03:32PM -0700, Xiang Mei wrote:
+> > The depth check in xfrm6_input_addr() is off by one:
+> >
+> >   if (1 + sp->len =3D=3D XFRM_MAX_DEPTH)
+> >           goto drop;
+> >   ...
+> >   sp->xvec[sp->len++] =3D x;
+> >
+> > xfrm_input() can leave sp->len =3D=3D XFRM_MAX_DEPTH, and the transport=
+-mode
+> > receive path re-enters IPv6 input via xfrm_trans_reinject() with that
+> > secpath preserved. If the inner packet carries a destination-options HA=
+O
+> > option or a type-2 routing header, xfrm6_input_addr() is called with
+> > sp->len =3D=3D XFRM_MAX_DEPTH; the check (1 + 6 =3D=3D 6) is false, so
+> > sp->xvec[sp->len++] writes one slot past the 6-element xvec[]. The writ=
+e
+> > stays within the sec_path allocation (invisible to KASAN); UBSAN_BOUNDS
+> > flags it and panics under panic_on_warn.
+> >
+> > Use "sp->len >=3D XFRM_MAX_DEPTH", matching xfrm_input(). This also
+> > restores one chain level the old check rejected at sp->len =3D=3D 5.
+> >
+> >   UBSAN: array-index-out-of-bounds in net/ipv6/xfrm6_input.c:309:10
+> >   index 6 is out of range for type 'xfrm_state *[6]'
+> >
+> > Fixes: 9473e1f631de ("[XFRM] MIPv6: Fix to input RO state correctly.")
+> > Reported-by: Weiming Shi <bestswngs@gmail.com>
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
 >
-> In case of failure of page_pool_create() in __alloc_dma_rx_desc_resources=
-(),
-> all non-NULL pages will be freed, including those already cleared.
-> So there is possible kernel panic due to wrong paging request at address.
->
-> Fix this by assigning NULL to page_pool pointer on free.
-> Also remove NULL check as page_pool_destroy() does check for NULL param.
->
-> Fixes: da5ec7f22a0f1 ("net: stmmac: refactor stmmac_init_rx_buffers for s=
-tmmac_reinit_rx_buffers")
-> Signed-off-by: Yashwant Varur <yashwant.v@samsung.com>
-> Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/=
-net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 2a0d7eff88d3..3098971e0b66 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -2172,8 +2172,8 @@ static void __free_dma_rx_desc_resources(struct stm=
-mac_priv *priv,
->                 xdp_rxq_info_unreg(&rx_q->xdp_rxq);
->
->         kfree(rx_q->buf_pool);
-> -       if (rx_q->page_pool)
-> -               page_pool_destroy(rx_q->page_pool);
-> +       page_pool_destroy(rx_q->page_pool);
-> +       rx_q->page_pool =3D NULL;
+> Applied, thanks a lot!
 
-I wonder if it's reasonable to add pool =3D NULL; to the end of
-page_pool_destroy. I don't know that any caller wants to ever retain
-the pool pointer after that function returns, and grepping this
-function I see almost every call site nulling after destroy anyway.
-But anyway:
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
---=20
-Thanks,
-Mina
+Thank you!
