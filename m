@@ -1,146 +1,199 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C6B327BEC
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 01:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7BB35DA5B;
+	Wed, 15 Jul 2026 01:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784079771; cv=none; b=loEuDUbcfiUZbdxY3wpgQ29RPI5YGbjes5VJRTPxG+3EVcRsXZygyGoGtBc2PFxNsDr6Ujm2+d7omrm1MyWgAHVzEfdq32OX1NQV16/RvnUwmVDNVKBobEZTRNhRVTJQQ6ZjcptPfKRrtvnyKOJklI25qd9F7NPQLAvjY3H1Aa8=
+	t=1784080266; cv=none; b=FfRGA+8aFsK1n6bW8w+yyWmUwXAA9fo1J3icVLbebHL5pRfv4a9yjdAGbrHjct7e5pRsfq0VnedHFGZUbPCcVy+hbc3xFXKWXll+B7grd9Ik9DudjHjCAFeZxqjgzstohdhBB7Oja9jV+TL8zIsUpzTNq1Wtt98d6sTcEzpVPWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784079771; c=relaxed/simple;
-	bh=FkqbnLgfbX/PkNrWSqiWdIHM/TMGNDd1V2BQIr0wxNo=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D5EzlI/WtaCCs+yjVZDu6aNwKSsPWfUeO9ZH7gyLOzEGWRsvWbERd1u47EfmKwGB3QnguYdgffCLVRks5M8YiogJdoywOZxBopAIb+meCG52w9CrBvW1xKj7Vp6riskSJBKnbYj7PTyOIGuRdb0Yi/rEnZtTN0BtI7B5kIxDmXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync5t1784079697t7e947160
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.200.247.46])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 3329323566490880469
-To: "'Jacob Keller'" <jacob.e.keller@intel.com>,
-	<netdev@vger.kernel.org>
-Cc: "'Duanqiang Wen'" <duanqiangwen@net-swift.com>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Przemek Kitszel'" <przemyslaw.kitszel@intel.com>
-References: <069DF89AA8029189+20260713060441.276612-1-jiawenwu@trustnetic.com> <6ab773c8-6c43-4c53-86ed-46bbaecb8073@intel.com>
-In-Reply-To: <6ab773c8-6c43-4c53-86ed-46bbaecb8073@intel.com>
-Subject: RE: [PATCH net-next v2] net: libwx: disable TX VLAN offload for packets with >2 VLAN tags
-Date: Wed, 15 Jul 2026 09:41:36 +0800
-Message-ID: <0e3601dd13fb$12ea0ab0$38be2010$@trustnetic.com>
+	s=arc-20240116; t=1784080266; c=relaxed/simple;
+	bh=IaZpU3KheShkpUqkXBYfwnp2EQm+NbAylhZ4Haw1WTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lm89CA0zlR/uFhpDePgF1bwrZHehB1HP35oqEngvpiMNhBZb/tW0wtRU3i9MLWiB9be7oNP8VkVfoVNqpqPPJHgRLLgg4ANLjfz5JGyOlRsTC8s36UMurVmqjrv5FMTjkIm2W2bGL+p/e5K4AxnGtMtP8ogjtbK/GEYRqrK/Ge0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.76.78.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019 (unknown [123.114.53.210])
+	by app2 (Coremail) with SMTP id zQmowADXcwtp51ZqEkZSAA--.21501S3;
+	Wed, 15 Jul 2026 09:50:43 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	matttbe@kernel.org,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	tpluszz77@gmail.com,
+	roxy520tt@gmail.com,
+	n05ec@lzu.edu.cn,
+	sashiko-bot@kernel.org
+Subject: [PATCH net v3 1/2] sctp: avoid auth_enable sysctl UAF during netns teardown
+Date: Wed, 15 Jul 2026 09:50:10 +0800
+Message-ID: <390cd5e91ed60eea27b0b64d0468301a9e73b808.1784033357.git.roxy520tt@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784033357.git.roxy520tt@gmail.com>
+References: <cover.1784033357.git.roxy520tt@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQLxvNkQjT+hsz/l7gMt8rrNSwW/qAI0s1o4tDLWIeA=
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: N4kMhpKju7/ptVRiazWLcHyGNMUxt7Oip50/PvN13Xpt/22VPXg9y/7Y
-	M91OavF1DWEiJnCL+3nAIguTrMwEDHUyY7dofBhnRVK+gpHp0sVOD73voeA4IbEzKeEFiL+
-	UWCN1GRqxma3LXmCbz6LWif397u+kvG7Lt+WN8MpZXQu+HSeCPeIIeUKyh2fQXnSYzbl5Sm
-	QYCN7JkL3QVjVP7WVWfwHcgvNABL4kWuorhVsPGj34MOaYNLV2NHpS6A572iXQyNCUHl80X
-	SYxyuKHIrLU9lgRpyjnOSxo4PoyJ6X3hWLdY/0s7m8b6Gm5Fqo8F7ZpLei989fqFljybPFl
-	ez00h/ALfjjZUAU7glji+lEass5MjzjKCUh2mbZsi+8lW9gW4clBbcsUp0q4TS88OnK3dEN
-	z21Z/qtXnzFM4vlNFk+jhOAQPsxAa2AHMZXMojljre34dOymV+4oDYQxYmBz0T/pDOaEFEr
-	O2PLV5dM7rAl5a4/2zpAlOZE3WpXAoAkCY2soEmK6YoSVPsYbUpuhoTB36xCYCNYxaOu+Lc
-	ylLH26Fq7+/qgRmVMpZwP9UR/xf/5T6jxwDrZ9v9/cHKH7opO+c7LMZvuhtC7npR43fMCk5
-	04VmAbp0aSfrh2AOFkSLOXxyid7+m3I3IZFjFWkaCb0VmlfNZnZyu1ea4p+nAf4Fjc0atDV
-	2kaPOuHBlDAhn7zR1jwvQ6Vs5xWMIBKdp8la+znXkn2plq8ortPd2d0VuyyZ9BJyb/b7Y6O
-	0oRwxDpVytZygBC8zeshmIOGxYdghw3HaY8s36dSnhWjlWUUNIO4MBTgISGe31/pOj8aqJw
-	XJIfV6s4G6y5c3enFN7pxpyGjngqVBuZLwKkaF3VBzF4z3SdwiI5xy18awLUqAAViXtJOYd
-	Zih3XeKPI3Nlyr6P+n6+DlSjTBkX/ia1e5XxkNIyIZgMsh+JkKEyIz+FBAzGyASKX032m0i
-	zS8qcqezFWyClwclO/6PFY31eNOaiPAsODOhShJtAKAJ/quGLYPpG4VDr0+O+NOhTm+rtCw
-	P00QGmYbkX09LmiTIQnPE2hVl2jiWhtlNdzruc+VIGWGZ1TXyrxz6bzRUd8NJSLD3oy9vo2
-	GSqWJsfJWuutsICCA+C7RvOJxXPhaqNWg==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQmowADXcwtp51ZqEkZSAA--.21501S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrWktrWrAFyrCry3XryDAwb_yoWrur1Dpa
+	4fWa98tr17JrWrXF1fJF4UKF1rKan7J3srCw1kG34YkwsrGryrK3W8KayxZFnrCFW8CFyr
+	ZF18trW29ws8ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB21xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
+	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
+	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1s
+	IEY20_GrWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRMxRhDUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0JCWpV8VkJwwAAsR
 
-On Wed, Jul 15, 2026 8:27 AM, Jacob Keller wrote:
-> On 7/12/2026 11:04 PM, Jiawen Wu wrote:
-> > The current hardware does not support TX VLAN offload for packets with
-> > three or more VLAN tags. When such packets are transmitted with hardware
-> > VLAN offload enabled, the hardware may malfunction or produce corrupted
-> > frames.
-> >
-> > Add a check in wx_features_check() to parse the VLAN depth of the
-> > skb. If more than two VLAN tags are detected (including both the
-> > hardware tag and in-band tags), strip NETIF_F_HW_VLAN_CTAG_TX and
-> > NETIF_F_HW_VLAN_STAG_TX from the feature set. This forces the
-> > kernel networking stack to handle VLAN insertion in software for
-> > these specific packets, ensuring correct transmission.
-> >
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> 
-> 
-> Is there a reason this was targeted at net-next instead of as a bug fix
-> to net with a Fixes tag to the commit which first introduced VLAN tagging?
-> 
-> Thanks,
-> Jake
+From: Zhiling Zou <roxy520tt@gmail.com>
 
-Probably because I couldn't find a Fixes tag for it...
+proc_sctp_do_auth() updates the SCTP control socket after changing
+net.sctp.auth_enable. The handler gets the per-net SCTP state from
+ctl->data, so an already opened sysctl file can still target a network
+namespace while that namespace is being torn down.
 
-> 
-> > ---
-> > v2:
-> > - Remove redundant 'parse_depth'.
-> > - Optimize the loop.
-> >
-> > v1: https://lore.kernel.org/all/C1BF77C0E073A40C+20260710071831.210196-1-jiawenwu@trustnetic.com
-> > ---
-> >  drivers/net/ethernet/wangxun/libwx/wx_lib.c | 24 +++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > index 814d88d2aee4..34542b3dc884 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > @@ -3228,6 +3228,30 @@ netdev_features_t wx_features_check(struct sk_buff *skb,
-> >  				    netdev_features_t features)
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> > +	__be16 type = skb->protocol;
-> > +	u16 vlan_depth = ETH_HLEN;
-> > +	u32 vlan_num = 0;
-> > +
-> > +	if (skb_vlan_tag_present(skb))
-> > +		vlan_num++;
-> > +
-> > +	while (eth_type_vlan(type)) {
-> > +		struct vlan_hdr vhdr, *vh;
-> > +
-> > +		vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
-> > +		if (unlikely(!vh))
-> > +			break;
-> > +
-> > +		type = vh->h_vlan_encapsulated_proto;
-> > +		vlan_depth += VLAN_HLEN;
-> > +		vlan_num++;
-> > +
-> > +		if (vlan_num > 2) {
-> > +			features &= ~(NETIF_F_HW_VLAN_CTAG_TX |
-> > +				      NETIF_F_HW_VLAN_STAG_TX);
-> > +			break;
-> > +		}
-> > +	}
-> >
-> >  	if (!skb->encapsulation)
-> >  		return features;
-> 
-> 
+SCTP previously registered its per-net sysctls from sctp_defaults_init(),
+while the control socket is created later from sctp_ctrlsock_init(). This
+exposed a window during initialization where auth_enable was writable
+before net->sctp.ctl_sock existed, and a teardown window where auth_enable
+stayed writable after inet_ctl_sock_destroy() had released the control
+socket.
+
+Move the per-net SCTP sysctl registration into sctp_ctrlsock_init() after
+sctp_ctl_sock_init() succeeds, and unregister the sysctl table before
+destroying the control socket in sctp_ctrlsock_exit(). If sysctl
+registration fails after the control socket was created, destroy the
+control socket in the same init path.
+
+Make sctp_sysctl_net_unregister() tolerate a missing header and clear the
+saved pointer so init-error and exit paths can safely share the unregister
+helper.
+
+Fixes: 15649fd5415e ("sctp: sysctl: auth_enable: avoid using current->nsproxy")
+Cc: stable@vger.kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Zhiling Zou <roxy520tt@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+Changes in v3:
+- Follow Xin Long's suggestion and return immediately when
+  sctp_ctl_sock_init() fails.
+- Keep per-net SCTP sysctl registration in a separate success path after
+  the control socket has been created.
+
+ net/sctp/protocol.c | 20 ++++++++++++--------
+ net/sctp/sysctl.c   |  9 +++++++--
+ 2 files changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
+index cf335494bffe..49d9740b1e0f 100644
+--- a/net/sctp/protocol.c
++++ b/net/sctp/protocol.c
+@@ -1383,10 +1383,6 @@ static int __net_init sctp_defaults_init(struct net *net)
+ 	net->sctp.l3mdev_accept = 1;
+ #endif
+ 
+-	status = sctp_sysctl_net_register(net);
+-	if (status)
+-		goto err_sysctl_register;
+-
+ 	/* Allocate and initialise sctp mibs.  */
+ 	status = init_sctp_mibs(net);
+ 	if (status)
+@@ -1420,8 +1416,6 @@ static int __net_init sctp_defaults_init(struct net *net)
+ 	cleanup_sctp_mibs(net);
+ #endif
+ err_init_mibs:
+-	sctp_sysctl_net_unregister(net);
+-err_sysctl_register:
+ 	return status;
+ }
+ 
+@@ -1436,7 +1430,6 @@ static void __net_exit sctp_defaults_exit(struct net *net)
+ 	net->sctp.proc_net_sctp = NULL;
+ #endif
+ 	cleanup_sctp_mibs(net);
+-	sctp_sysctl_net_unregister(net);
+ }
+ 
+ static struct pernet_operations sctp_defaults_ops = {
+@@ -1450,16 +1443,27 @@ static int __net_init sctp_ctrlsock_init(struct net *net)
+ 
+ 	/* Initialize the control inode/socket for handling OOTB packets.  */
+ 	status = sctp_ctl_sock_init(net);
+-	if (status)
++	if (status) {
+ 		pr_err("Failed to initialize the SCTP control sock\n");
++		return status;
++	}
++
++	status = sctp_sysctl_net_register(net);
++	if (status) {
++		inet_ctl_sock_destroy(net->sctp.ctl_sock);
++		net->sctp.ctl_sock = NULL;
++	}
+ 
+ 	return status;
+ }
+ 
+ static void __net_exit sctp_ctrlsock_exit(struct net *net)
+ {
++	sctp_sysctl_net_unregister(net);
++
+ 	/* Free the control endpoint.  */
+ 	inet_ctl_sock_destroy(net->sctp.ctl_sock);
++	net->sctp.ctl_sock = NULL;
+ }
+ 
+ static struct pernet_operations sctp_ctrlsock_ops = {
+diff --git a/net/sctp/sysctl.c b/net/sctp/sysctl.c
+index 15e7db9a3ab2..fca840484ebf 100644
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -615,11 +615,16 @@ int sctp_sysctl_net_register(struct net *net)
+ 
+ void sctp_sysctl_net_unregister(struct net *net)
+ {
++	struct ctl_table_header *header = net->sctp.sysctl_header;
+ 	const struct ctl_table *table;
+ 
+-	table = net->sctp.sysctl_header->ctl_table_arg;
+-	unregister_net_sysctl_table(net->sctp.sysctl_header);
++	if (!header)
++		return;
++
++	table = header->ctl_table_arg;
++	unregister_net_sysctl_table(header);
+ 	kfree(table);
++	net->sctp.sysctl_header = NULL;
+ }
+ 
+ static struct ctl_table_header *sctp_sysctl_header;
+-- 
+2.43.0
 
