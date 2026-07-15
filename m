@@ -1,190 +1,83 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4DC47DFB7
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 14:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D4441DECF
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784127273; cv=none; b=uUOYsfz8uHCijeC1OWorkHOmY0QX0ghCkt4jKjwyjw3lu5heuuu1P6/gqqJd2+bpgo1CDAmWtQJj11tmGFTyzCq8DFu4NAeyjHT7TkdjrapmzyBykNECXC1q8Nmga/QS6OaGHt38i/t+iRkm0d37zcfrdPLMcHYiLuU56rmvdME=
+	t=1784127781; cv=none; b=DEThuBtDT5JZeLAHl/qOZaWnR0vS3vlvDcRlznvmP+RtMKID59glvDaHtXjCzRZOuLMOFOKeM/EJh/KkZcCvnWGhGBhMegyJ87twYE8LEJNz8E2NvnrWE5+CCQF8SfJbPVHCgQqDvNcywq9juxWE0sxQft17G+ToUgqcZM1s3BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784127273; c=relaxed/simple;
-	bh=IxAkk/33tiz9H88smr/LKk6TLSYHCBaXGlpP5ahBnLU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjTcRg2bqMTubCcot5yC31+OyXAYMUMASw9kvn6GvzSaK0Kal60lKzxehfgkfFYA4/wADdVyugCBhsPVI+RWD6GCYs3IKRCRyX3EexVgqZnZGtrqD2oCBwHrKFyxDvhvOOqXQPXVpozJ+1yB+EoRWjX71vx26u2s8brKtq2bBYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=op66BKic; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784127781; c=relaxed/simple;
+	bh=BT4NCCefGBEHg9Oqy1ef01/bhz/T6gxhIP1pP8s+y1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IROsDyewSUzqLQ/v7zI7sV3EKciKflzQPL9R/TebuFmxhjNuu5ZjYvZ9sIdSPuCdie84JvAGDo9BkauztbgRVY1mDIZXPBL5VtwX2z6R2iiHdLXo06zpvrMIlEUlp4TESummMlzvgXsbz0ub+qZMQ7a/dDHNkaOMUtM9ZFxcNeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJzhNnpG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="op66BKic"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784127267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+EzxkN0ejXTQh2wUnfoxzGBh8Ymoz3E2lArEKEFtPUU=;
-	b=op66BKicsUEDzJU9EBMBIG9auGepduRlOXJENPcAc59EpmXyybvMIjdNDyRkn7EZKUdImP
-	DJhrCbG28bjahdW9pPXsvj59PPM19OYtIBk6x8U2t8dcSsndFKQRREcgu4X421il3aIF69
-	iXE+vKNgL1E5c7iYt+evt8eg7EKh8/Y=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Yung Chih Su <yuuchihsu@gmail.com>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [RFC PATCH net-next v2 2/2] selftests/net: packetdrill: Add two tcp_purge_receive_queue tests
-Date: Wed, 15 Jul 2026 22:53:27 +0800
-Message-ID: <20260715145328.54597-3-leon.hwang@linux.dev>
-In-Reply-To: <20260715145328.54597-1-leon.hwang@linux.dev>
-References: <20260715145328.54597-1-leon.hwang@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJzhNnpG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636531F00A3A;
+	Wed, 15 Jul 2026 15:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784127780;
+	bh=wDNmqqm3V2brDMwyu7i/iBciQvN4pYkMed4wykoEK6k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RJzhNnpGnWYQ5RcTbk1utzRvoSZDYMpXu59ptMyCf5R/AGY4tAIJ5AYDXi1CkTDoC
+	 y6ZrUIMNKaSBEU7Cv1L/jfK2gaPG/Dxxe18CAChv2eTJbpwf+Tdtyfwcpvm/pTnJku
+	 Ci29pLVmweh26/+iHtPymFpWYKW8/WVlXgWePq0zHpPl2cH8Eee8nWVRoX1izras0u
+	 D590sSfgfjgHMAZTBBrwPj+aW0ln8PQtDzXT3ts4sad+7PhEuknaLdOCD13vAJ5yM6
+	 hzpn6W9B+BlPLgzB4CHQTHI7ZWa0YSgcBI5ZI8GuRD7tGW8iWnacJ8ZmjgYxnkmouP
+	 CH7wmMdlxVjcA==
+Message-ID: <01009484-2a68-4b44-b742-bee13bbb08b2@kernel.org>
+Date: Wed, 15 Jul 2026 09:02:59 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next] ipmaddr: use RTM_GETMULTICAST to list
+ multicast addresses
+Content-Language: en-US
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: netdev@vger.kernel.org
+References: <20260711030733.48567-1-sigefriedhyy@gmail.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260711030733.48567-1-sigefriedhyy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Run the tests:
+On 7/10/26 9:07 PM, Yuyang Huang wrote:
+> +static int accept_maddr(struct nlmsghdr *n, void *arg)
+> +{
+> +	struct maddr_dump_ctx *ctx = arg;
+> +	struct ifaddrmsg *ifm = NLMSG_DATA(n);
+> +	int len = n->nlmsg_len - NLMSG_LENGTH(sizeof(*ifm));
+> +	struct rtattr *tb[IFA_MAX + 1];
+> +	struct ma_info *ma;
+> +
+> +	if (n->nlmsg_type != RTM_GETMULTICAST &&
+> +	    n->nlmsg_type != RTM_NEWMULTICAST)
+> +		return 0;
 
- # ./ksft_runner.sh ./tcp_purge_receive_queue_disabled.pkt
- TAP version 13
- 1..3
- ok 1 ipv4
- ok 2 ipv6
- ok 3 ipv4-mapped-ipv6
- # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
+From claude (and I agree with the finding)
 
- # ./ksft_runner.sh ./tcp_purge_receive_queue_enabled.pkt
- TAP version 13
- 1..3
- ok 1 ipv4
- ok 2 ipv6
- ok 3 ipv4-mapped-ipv6
- # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
+> +static int accept_maddr(struct nlmsghdr *n, void *arg)
+> +{
+> ...
+> +     if (n->nlmsg_type != RTM_GETMULTICAST &&
+> +         n->nlmsg_type != RTM_NEWMULTICAST)
+> +             return 0;
 
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
- .../tcp_purge_receive_queue_disabled.pkt      | 40 ++++++++++++++++++
- .../tcp_purge_receive_queue_enabled.pkt       | 42 +++++++++++++++++++
- 2 files changed, 82 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_disabled.pkt
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_enabled.pkt
+The kernel replies to a RTM_GETMULTICAST dump request with
+RTM_NEWMULTICAST messages — it never sends RTM_GETMULTICAST in a
+response.  Including RTM_GETMULTICAST in the guard is dead code and is
+confusing; it inverts the usual convention used everywhere else in
+iproute2 (e.g. ipaddress.c always checks RTM_NEW* / RTM_DEL*, never
+RTM_GET*).
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_disabled.pkt b/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_disabled.pkt
-new file mode 100644
-index 000000000000..a46f93eaab1f
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_disabled.pkt
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Test: with tcp_purge_receive_queue disabled (default), receiving RST
-+// in CLOSE_WAIT state does NOT purge the receive queue.
-+// The unread data in the receive queue is still accessible to the
-+// application.
-+
-+`./defaults.sh
-+./set_sysctls.py /proc/sys/net/ipv4/tcp_purge_receive_queue=0`
-+
-+// Establish a connection (server side).
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 32792 <mss 1000,sackOK,nop,nop,nop,wscale 7>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+ +.1 < . 1:1(0) ack 1 win 257
-+
-+   +0 accept(3, ..., ...) = 4
-+
-+// Remote sends 4KiB data so that receive queue is populated.
-+ +.1 < . 1:4097(4096) ack 1 win 257
-+   +0 > . 1:1(0) ack 4097
-+
-+// Remote sends FIN -> socket enters CLOSE_WAIT.
-+ +.1 < F. 4097:4097(0) ack 1 win 257
-+   +0~+.04 > . 1:1(0) ack 4098
-+
-+// Inject RST directly while in CLOSE_WAIT.
-+ +.1 < R. 4098:4098(0) ack 1 win 257
-+
-+// With tcp_purge_receive_queue=0, the receive queue is NOT purged.
-+// Data is still in the receive queue; read returns data.
-+   +0 read(4, ..., 1) = 1
-+
-+   +0 close(4) = 0
-+
-+// Restore sysctls.
-+`/tmp/sysctl_restore_${PPID}.sh`
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_enabled.pkt b/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_enabled.pkt
-new file mode 100644
-index 000000000000..b1d1dff28f50
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_purge_receive_queue_enabled.pkt
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Test: with tcp_purge_receive_queue enabled, receiving RST in
-+// CLOSE_WAIT state purges the receive queue immediately.
-+// The unread data is discarded, so read() observes EOF.
-+//
-+// RFC 9293 Section 3.10.7.4:
-+//   "all segment queues should be flushed"
-+
-+`./defaults.sh
-+./set_sysctls.py /proc/sys/net/ipv4/tcp_purge_receive_queue=1`
-+
-+// Establish a connection (server side).
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 32792 <mss 1000,sackOK,nop,nop,nop,wscale 7>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+ +.1 < . 1:1(0) ack 1 win 257
-+
-+   +0 accept(3, ..., ...) = 4
-+
-+// Remote sends 4KiB data so that receive queue is populated.
-+ +.1 < . 1:4097(4096) ack 1 win 257
-+   +0 > . 1:1(0) ack 4097
-+
-+// Remote sends FIN -> socket enters CLOSE_WAIT.
-+ +.1 < F. 4097:4097(0) ack 1 win 257
-+   +0~+.04 > . 1:1(0) ack 4098
-+
-+// Inject RST directly while in CLOSE_WAIT.
-+ +.1 < R. 4098:4098(0) ack 1 win 257
-+
-+// With tcp_purge_receive_queue=1, the receive queue IS purged.
-+// Queue was purged by RST handler; read returns EOF.
-+   +0 read(4, ..., 1) = 0
-+
-+   +0 close(4) = 0
-+
-+// Restore sysctls.
-+`/tmp/sysctl_restore_${PPID}.sh`
--- 
-2.55.0
+Should be:
+
+        if (n->nlmsg_type != RTM_NEWMULTICAST)
+                return 0;
+
 
