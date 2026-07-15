@@ -1,25 +1,25 @@
-Received: from out28-122.mail.aliyun.com (out28-122.mail.aliyun.com [115.124.28.122])
+Received: from out28-220.mail.aliyun.com (out28-220.mail.aliyun.com [115.124.28.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CFD44C641;
-	Wed, 15 Jul 2026 11:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7066A3CAA49;
+	Wed, 15 Jul 2026 12:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784116629; cv=none; b=cofpW7Y8EsPuL7ncZk1DIih24GmPh2PzPrf+QpW3MsYxhfZYNzkE5A0I6b1vcoZQm3Zk7AwgR0ALKIg2BtJE2Pnaf1rZqKLnQ7t1cHUQoeLcbw8YAyk3gVmsrFi3jCNjFJSZ8o/UPId5NbdOzqVvRs2ntQ9g2TODbszYBjspdXE=
+	t=1784116815; cv=none; b=VLj35V/DsKTGVVZkWBZgkkd8CgblCRjWAYVXoGZgf5/ctMHoNbnHxxg5tNxzo7E9XM6bMxQLgwVxocf+gQkIpEAsFB3JmMRaZgz3nMvtckv0i0iJt7Z5l/HpeOcP2Arrtq2xO9y5S7HVSfdWMOA1R5s99CjIbZW8pFcVdROEu2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784116629; c=relaxed/simple;
-	bh=db1L9OnnXwHnIHYUhA6U0FpDLSkQ8Hwlej3bT2npRbQ=;
+	s=arc-20240116; t=1784116815; c=relaxed/simple;
+	bh=mH3qArF2dKOYqYwlfBDDrx9WweSING/NqjZALu8/69k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PRUQ1zKmTR1Iit2y4Z4M7d48gFj/RDQBOLtQ85/aRpgC3jPUvGAHVFTHfV1wNTtYhXuo4mXOxGYYg/7KUWpQv5j4oPAknMs2eIoXYOZqdnSffXiYBpBrkbfZNJaCAA6VsVcmTAXI+Zhilp0hukceigNx+zQC+eF1UntdMKKRB5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.122
+	 In-Reply-To:Content-Type; b=jgaB8KtUPo+tZRmdPSXxekkLW88Uh6DsdnybuCl1orOd9Ss3f+ydT0Wb8CLFzYn/8ujU22oHKW0C3uLmtamwSikZRw8M4XGGG06lJJ6gx70uMOqh91u4uhe8JMN3qOX4ZFghwLgztYrpoP3pM2t0BcnW0733D5yQs0lWZtviY/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0725335|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00787841-0.119412-0.87271;FP=18372274822953045179|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045018182;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iM2Pum6_1784116614;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iM2Pum6_1784116614 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2697289|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.022684-0.000293287-0.977023;FP=14913588932206190439|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iM32tT9_1784116796;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iM32tT9_1784116796 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 15 Jul 2026 19:56:56 +0800
-Message-ID: <50549cc2-c5e4-42b1-9b81-8b9e7bebd60a@motor-comm.com>
-Date: Wed, 15 Jul 2026 19:56:53 +0800
+          Wed, 15 Jul 2026 20:00:00 +0800
+Message-ID: <47b67113-2903-49b5-a25e-84e704ac017d@motor-comm.com>
+Date: Wed, 15 Jul 2026 19:59:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,95 +35,31 @@ Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
  jianmin.wang@motor-comm.com, ming.xu@motor-comm.com,
  xiaolin.xu@motor-comm.com, jie.han@motor-comm.com
 References: <20260714111203.3852126-1-kyle.switch@motor-comm.com>
- <a0e43216-d215-4c81-9954-c5e497b2d50f@lunn.ch>
+ <46c380a2-74ab-4690-a289-6050cb33c1a4@lunn.ch>
 Content-Language: en-US
 From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <a0e43216-d215-4c81-9954-c5e497b2d50f@lunn.ch>
+In-Reply-To: <46c380a2-74ab-4690-a289-6050cb33c1a4@lunn.ch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 7/15/26 05:43, Andrew Lunn wrote:
-> On Tue, Jul 14, 2026 at 07:12:03PM +0800, Kyle Switch wrote:
->> Add a driver for motorcomm yt8824 quad 2.5G ethernet phy, supports
->> 2.5G/1000M/100M/10M speed.
-> 
-> Please take a read of:
-> 
-> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-> 
-> and set the Subject line correctly.
-> 
->> +#define REG_MII_MMD_CTRL			0x0D
->> +#define REG_MII_MMD_DATA			0x0E
-> 
-> include/uapi/linux/mii.h
-> 
-> #define	MII_MMD_CTRL		0x0d	/* MMD Access Control Register */
-> #define	MII_MMD_DATA		0x0e	/* MMD Access Data Register */
-> 
-> Please don't repeat something which already exists. But i also wounder
-> why you need these.
-> 
->> +static int ytphy_write_mmd(struct phy_device *phydev,
->> +			   u16 device, u16 reg,
->> +			   u16 value)
+On 7/15/26 05:46, Andrew Lunn wrote:
+>> +static inline int ytphy_top_write(struct phy_device *phydev, u32 regnum,
+>> +				  u16 val)
 >> +{
->> +	int ret;
+>> +	struct yt8521_priv *priv = phydev->priv;
+>> +	struct mii_bus *bus = phydev->mdio.bus;
 >> +
->> +	ret = __phy_write(phydev, REG_MII_MMD_CTRL, device);
->> +	if (ret)
->> +		return ret;
->> +	ret = __phy_write(phydev, REG_MII_MMD_DATA, reg);
->> +	if (ret)
->> +		return ret;
->> +	ret = __phy_write(phydev, REG_MII_MMD_CTRL, device | 0x4000);
->> +	if (ret)
->> +		return ret;
->> +	ret = __phy_write(phydev, REG_MII_MMD_DATA, value);
->> +
->> +	return ret;
+>> +	return bus->write(bus, priv->top_phy_addr, regnum, val);
 >> +}
 > 
-> Why are you reinventing these functions when they already exist?
-Ans: Sorry, I didn't notice the existing interface before. next patch, i will remove 
-the duplicate functional interfaces include REG_MII_MMD_CTRL, REG_MII_MMD_DATA, and
-ytphy_mmd_write api.
-
->> +
->>  /**
->>   * ytphy_get_wol() - report whether wake-on-lan is enabled
->>   * @phydev: a pointer to a &struct phy_device
->> @@ -3059,99 +3187,1620 @@ static int yt8821_resume(struct phy_device *phydev)
->>  	return yt8821_modify_utp_fiber_bmcr(phydev, BMCR_PDOWN, 0);
->>  }
->>  
->> -static struct phy_driver motorcomm_phy_drvs[] = {
->> -	{
->> -		PHY_ID_MATCH_EXACT(PHY_ID_YT8511),
->> -		.name		= "YT8511 Gigabit Ethernet",
->> -		.config_init	= yt8511_config_init,
->> -		.suspend	= genphy_suspend,
->> -		.resume		= genphy_resume,
->> -		.read_page	= yt8511_read_page,
->> -		.write_page	= yt8511_write_page,
->> -	},
->> -	{
->> -		PHY_ID_MATCH_EXACT(PHY_ID_YT8521),
->> -		.name		= "YT8521 Gigabit Ethernet",
->> -		.get_features	= yt8521_get_features,
->> -		.probe		= yt8521_probe,
+> Please could you explain the architecture in detail. It seems like you
+> are accessing registers of some other device on the bus.
 > 
-> Why are these all stoppering? diff would not remove them unless
-> something is changing.
-> 
+> Maybe you need to use the code in phy_package.c?
 
-Ans: after double check, no existing code logic has been modified. I guess the possible reason
-is that git diff employs the Diff Algorithm, a "context minimization" strategy adopted to 
-represent changes in the most compact manner. It consolidates modifications into a single block.
-
->     Andrew
+Ans: YT8824 contains top extend reg space, and the addr is fixed, for 
+internal phy8824 the value is 9, and external phy8824 is (baseaddr + 4).
 > 
-> ---
-> pw-bot: cr
+>       Andrew
