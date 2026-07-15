@@ -1,167 +1,106 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50AC31B130;
-	Wed, 15 Jul 2026 14:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90242BC37
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 14:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784124794; cv=none; b=hqt3L3CzMR87IFT1adPLog0PKrubCAlKj1zfH6DkMsuD1laR0oeRBPZstjVjh9bsPtlisl6UtNeK4Jx+b9UuiL/No28fsDd42V1WzeboHygFagdMU6ifogzw4bS48cHjrs10XQh9cLFqVvftOaWazldNLu/H7Ulofq0iVwAVdiI=
+	t=1784126159; cv=none; b=C//vZsNKvtI46mz7lUb4z40kBco5sPVam4GBzb+IcdGR+SsaWGFgt41ixdQ4f1eY8QBki/EwLgnJBgx74FoRq4oXGK2DiGkue6ndeib0rz65zfpAzSgjb+gcxYAvZ1MW6Mxt54k+y/zNNZbwG/JiZOdlHDFRD+qNfyGhDmg0epU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784124794; c=relaxed/simple;
-	bh=7RcPmoCf9XH1oY2JDlvttQRnKxT/yye3zSHLT4O7nKo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=A9SrD6uWSK8tpkngMFVj4ySlKKDupgxexjIplCkAAPmH6B1RehYIn1dqmaVCUc6oydQIR5lVzOPAMaWVgNguP70+iOZAepR1BXwvy1/4lPVwm/Nc8NIig1uaVuDOgo5aR6rUPOKmPJIcpW3S7UL2Cg7plpDVuVA3cbTCXRt/BvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=o+sR6kY1; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1784126159; c=relaxed/simple;
+	bh=hxmKRPMmqGMKGywEfTu9KROw+Ys4d3cc+jYzBoXbH1A=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=WQFXfTB05jIKGN1S4Vv8T0ctCqhcQjtYQJFzueetIFbeHhrEuLJtkpQH7VyCu5yIxpFc53+e1f+U6/3KZoh7cP9yHvmEiuegNETnHhsxh3+u1msfKW5YA6VS6hnLSXHaNSJEyX11hlGub/foeUGrmsU172chR2iBDPVXaSeG4JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvT+oBVU; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="o+sR6kY1"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 994DEA5188;
-	Wed, 15 Jul 2026 16:13:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1784124786; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=dFP4b15ezb3GF5jTFRUAT5mkZf73hGVmktkG09Chtz4=;
-	b=o+sR6kY1zL+PXpOBhrUNtcfOJTm4DrEI7n6/ck5tEE80xSt1149HFX8XMEfrSv14Xy9gzc
-	fmbiNmmlcomjAjInGPGYye7YzmmO6LVlMfm32WsHvtJU23PlQVtuKp648Z3+pabEALQaQw
-	ozCJIhMRbN26wlVYvczKbnDSp0hZ+VrJD3D7tKowdae4W+XgpJi479lVm6l1cvrqp8/mtr
-	G6n0bgBCuh054sHgKyfKuWKSkaF8ojZgvc2zFwTUddArrw9LEOyPUe7zbDys6szVKdj5jt
-	3dzX7utX4zHbhxEJLLkrtCm3NnUmtmNHyH1B7UwpSJx2Yp9qBf3HxmcB/ZLnSw==
-Date: Wed, 15 Jul 2026 16:12:58 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?ISO-8859-1?Q?Th=E9o_Lebrun?= <theo.lebrun@bootlin.com>
-CC: Conor Dooley <conor.dooley@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Paolo Valerio <pvalerio@redhat.com>,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
- Gregory CLEMENT <gregory.clement@bootlin.com>,
- =?ISO-8859-1?Q?Beno=EEt_Monin?= <benoit.monin@bootlin.com>,
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v3_06/15=5D_net=3A_macb=3A_alloca?=
- =?US-ASCII?Q?te_tieoff_descriptor_once_across_device_lifetime?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <DJZ6XCJDMFE8.PPNN42W2TGSQ@bootlin.com>
-References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com> <20260701-macb-context-v3-6-00268d5b1502@bootlin.com> <6e449ee7d40ec885e8a53fa18fe70e86@tipi-net.de> <DJXFDPIB17FW.2BN105BPCBSKB@bootlin.com> <DJZ6XCJDMFE8.PPNN42W2TGSQ@bootlin.com>
-Message-ID: <DB3DD915-341A-4995-B438-1613363C3205@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvT+oBVU"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso3533006a12.2
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 07:35:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784126158; x=1784730958; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z3P+ay8dWFUyLvh92+wpcw02jxXPVk53CiD8LmKlD/k=;
+        b=jvT+oBVUxc+9uR00Ulxnxc9l1TVjSUAaJWNrjsnWQJd/DjIjZx5gnV1J3dIVUep/dX
+         jAPjoUOW5xX8hRqkxm++CIEigTCXnQ/1eIaB1WrJA8cR7DiNa5H4FuQO1eNTUbxyZhm7
+         iTwSl7Jj3bs9jX47Lowr956C2t5HEmSBVLYSKmqQ0lPPw8XeDwuRtyWivnwExxNyNHe7
+         890kQOUgNB72SJUSjLTB8wC1+kzpHyIYp01vLBVSw0PFJQ1TViJqgclP5nhvu4Cf+Jx/
+         PluddWa/+0GiOCuvAa3/bhyxtrXjmJF6tUHIFbGH5Pg4JcYtvFURBZWPSyzGWzzpRt02
+         2cdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784126158; x=1784730958;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=z3P+ay8dWFUyLvh92+wpcw02jxXPVk53CiD8LmKlD/k=;
+        b=UgjuzXNi03hkZtW+xBYV4Lb2cbUg0wbhCxF5FxQvNYSpbXMdYB6oaphSedJjIqmE1M
+         alPiAP6e3Q5z/K6y7qfCNCf1lFftGqmkLJwcl0cVYtxW7ZHW7ixzfBz+LVeq0U0MDLvL
+         kXMrMLegOpheoT94hjaADgyvsdrXnW/jRXBkFXQphBWPNzadLE/GgChmmUTQfef9ljma
+         pKEZNVtz/zVN+mMDQbkdgmJR9srInd4da2qkvR8zhOMgYsEzQFKAKFxeK2I+4DldKbO+
+         aw5DOklM5NKoTYkq6Gjleii2Bl8bdjOY6KYT0xWKGKbE4q2WfFqOt+BiHIYoDFsfw/Zt
+         xJeg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0bp+49OatzZd6GaOWg6ZfyAbzMvJz/eG1XhrRJTvQiabRkktVrKhdo0iaHgqjKIaVQ3MkkpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQmbrhkvUEPsZJOtEXjNn3PFRJWd8FT0O9hChil5T646LmnOyu
+	9WBYQaNnErMPMiUOpb8INbgdG3afGtC5fLMG859qgAxZmSV9GJz6w/oK
+X-Gm-Gg: AfdE7cn1MgBQz3Ju2GYYA+uikTBJENB30amMm2x9U0X2TxF0M6P1qugs82lTBfNAI9Z
+	iU9fgn7hmoUl8IAB9Rxt2aaQU+OnNgKq8NfVhy1qMDbfNmfitftL/v4zdmfct53EiJVrTY1YuXE
+	MlTTpMhsz+l8KU+K70bQCq5VfYlUvcYuIn1utvUWHlHoe201Y7M2vcuE7dEbG92bPLY4yy8rKg3
+	v0R1cQxBQXVWmLzzmE/LS2DJIllaeEVX6kkpuK96PeJY9nj1g3PASqC9uVkU5nhBmsis41sTJhK
+	eqWhYPhPGbybyo3I4Nyy5p5eXqoqGFqRxCaL12uUpc2xv8ZqcKuQpm7OQ9WufAJcoBktW4+e7Uf
+	xojJYOwfRQXtYdoFwAVvnU37GTU4UY4u9SzFfHEWvRwqfzQg3CL4v3cgRD8+gAzR4AWO6RPwnLy
+	5aAXdoQZ4EJ6ZAYjnb2TJzG2YGTj4CfGcWlF9WxVG0a7kVVIeQncQ=
+X-Received: by 2002:a05:6300:6d85:10b0:3c3:7a0a:18a6 with SMTP id adf61e73a8af0-3c37a199b18mr757383637.18.1784126157664;
+        Wed, 15 Jul 2026 07:35:57 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:90:2db1:3066:c473:74d2:497d])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e4fcd31sm2370744eec.4.2026.07.15.07.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 07:35:57 -0700 (PDT)
+Sender: Deepak Rao Gaikwad <deepaksraog@gmail.com>
+From: deepakraog <gaikwad.dcg@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: selftests: fix typo in ip_defrag comment
+Date: Wed, 15 Jul 2026 20:05:48 +0530
+Message-ID: <20260715143549.14094-1-gaikwad.dcg@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Th=C3=A9o
+Correct "thourough" to "thorough" in a comment describing the
+non-overlap reassembly test loop.
 
-On July 15, 2026 3:48:18 PM GMT+02:00, "Th=C3=A9o Lebrun" <theo=2Elebrun@b=
-ootlin=2Ecom> wrote:
->On Mon Jul 13, 2026 at 2:00 PM CEST, Th=C3=A9o Lebrun wrote:
->> On Thu Jul 2, 2026 at 12:54 PM CEST, Nicolai Buchwitz wrote:
->>> On 1=2E7=2E2026 17:59, Th=C3=A9o Lebrun wrote:
->>>> The tieoff descriptor is a RX DMA descriptor ring of size one=2E It g=
-ets
->>>> configured onto queues for Wake-on-LAN during system-wide suspend whe=
-n
->>>> hardware does not support disabling individual queues
->>>> (MACB_CAPS_QUEUE_DISABLE)=2E
->>>>=20
->>>> MACB/GEM driver allocates it alongside the main RX ring
->>>> inside macb_alloc() at open=2E Free is done by macb_free() at close=
-=2E
->>>>=20
->>>> Change to allocate once at probe and free on probe failure or device
->>>> removal=2E This makes the tieoff descriptor lifetime much longer,
->>>> avoiding repeating coherent buffer allocation on each open/close cycl=
-e=2E
->>>>=20
->>>> Main benefit: we dissociate its lifetime from the main ring's lifetim=
-e=2E
->>>> That way there is less work to be doing on resources (re)alloc=2E Thi=
-s
->>>> currently happens on close/open, but will soon also happen on context
->>>> swap operations (set_ringparam, change_mtu, set_channels, etc)=2E
->>>>=20
->>>> Signed-off-by: Th=C3=A9o Lebrun <theo=2Elebrun@bootlin=2Ecom>
->>>> ---
->>>>  drivers/net/ethernet/cadence/macb_main=2Ec | 75=20
->>>> +++++++++++++++++---------------
->>>>  1 file changed, 41 insertions(+), 34 deletions(-)
->>>>=20
->>>> diff --git a/drivers/net/ethernet/cadence/macb_main=2Ec=20
->>>> b/drivers/net/ethernet/cadence/macb_main=2Ec
->>>> index 8b52122bc134=2E=2E951a7f080225 100644
->>>> --- a/drivers/net/ethernet/cadence/macb_main=2Ec
->>>> +++ b/drivers/net/ethernet/cadence/macb_main=2Ec
->>>
->>>> [=2E=2E=2E]
->>>
->>>>  static void macb_init_rings(struct macb *bp)
->>>> @@ -2832,8 +2801,6 @@ static void macb_init_rings(struct macb *bp)
->>>>  	bp->queues[0]=2Etx_head =3D 0;
->>>>  	bp->queues[0]=2Etx_tail =3D 0;
->>>>  	desc->ctrl |=3D MACB_BIT(TX_WRAP);
->>>> -
->>>> -	macb_init_tieoff(bp);
->>>>  }
->>>>=20
->>>>  static void macb_reset_hw(struct macb *bp)
->>>> @@ -5518,6 +5485,38 @@ static int eyeq5_init(struct platform_device=
-=20
->>>> *pdev)
->>>>  	return ret;
->>>>  }
->>>>=20
->>>> +static int macb_alloc_tieoff(struct macb *bp)
->>>> +{
->>>> +	/* Tieoff is a workaround in case HW cannot disable queues, for PM=
-=2E=20
->>>> */
->>>> +	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
->>>> +		return 0;
->>>
->>> Before, the tieoff was allocated in macb_alloc(), which the at91ether=
-=20
->>> path
->>> never called=2E Now it's allocated from macb_probe() for all variants,=
-=20
->>> gated only
->>> on MACB_CAPS_QUEUE_DISABLE, so EMAC gets a coherent descriptor it neve=
-r=20
->>> uses=2E
->>>
->>> Add MACB_CAPS_MACB_IS_EMAC to the if statement?
->>
->> Clearly=2E That EMAC distinction keeps being annoying=2E
->
->Well well well=2E Under AT91 with WOL active there is nothing preventing
->the tieoff from being used in macb_suspend()=2E Meaning the tieoff is
->being used zero-initialised=2E Not advisable=2E
->
->So I withdraw my previous comment: we won't shield macb_alloc_tieoff()
->from IS_EMAC and maybe it will fix a bug=2E
+Signed-off-by: deepakraog <gaikwad.dcg@gmail.com>
+---
+ tools/testing/selftests/net/ip_defrag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sounds reasonable=2E
+diff --git a/tools/testing/selftests/net/ip_defrag.c b/tools/testing/selftests/net/ip_defrag.c
+index f9ed749fd..146f2a2a5 100644
+--- a/tools/testing/selftests/net/ip_defrag.c
++++ b/tools/testing/selftests/net/ip_defrag.c
+@@ -378,7 +378,7 @@ static void run_test(struct sockaddr *addr, socklen_t alen, bool ipv6)
+ 		} else {
+ 			/* Without overlaps, each packet reassembly (== one
+ 			 * send/receive pair below) takes very little time to
+-			 * run, so we can easily afford more thourough testing
++			 * run, so we can easily afford more thorough testing
+ 			 * with a nested loop: the full non-overlap test takes
+ 			 * less than one second).
+ 			 */
+-- 
+Deepak Rao Gaikwad
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net=2Ede>
-
-Thanks,
-Nicolai
-
->
->Thanks,
->
->--
->Th=C3=A9o Lebrun, Bootlin
->Embedded Linux and Kernel engineering
->https://bootlin=2Ecom
->
