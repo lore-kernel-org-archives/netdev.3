@@ -1,51 +1,52 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551603644C4
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61239477E3F
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784118974; cv=none; b=JRTqBDsje5UAYdsG+GX7DA3+xfRE9k1c7723jejd/Y8OmKJe6UT9Pe5Auf8GsIF9G/v2+DGwuIHTHALsSN/Tn1qJQ67R9zeM6NkuJ+2UG0TCZ9iATqMK1eaNhc2MYV1kzZ4klEQbc+F8k/m5eTGgtrqWxPQK392Zwt37UrPEEm0=
+	t=1784118980; cv=none; b=bqJ2q5SkC0p8WiNnBjp8wFT98NQsYaJbCniRa6zSG3oUgrlYK+pjbVROXPCXblvh84PHugnoOF51yz5h8lk4XJb8G+hsYbLmkQomC8uCn3H3YUUT4Je2LEJhIcAmlfFmF37rubXqP7AvvnTMTh5MySNtL+Qn0UzObrjug6ZLjQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784118974; c=relaxed/simple;
-	bh=3K8tCYgOogiXE6opUYKajW5n8qGiG95G+MUViEbfnw0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=Rhe1czL9FN1YSMAsssRxWLsD1qqGPd6Vs9QQWRR5+ir4/KWmZKdQtvkJVWI7FAbD2p+Xi+K7So7XBgpGduzMM0kiZ4DUFCTWqV1ZVRro4MRgJw4G+MsPA6Mdrk1C6czSIhD7ebZrnolbAg92Ax/EPU6W617vk8MbVTLrB32d68w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=uemelT76; arc=none smtp.client-ip=210.118.77.11
+	s=arc-20240116; t=1784118980; c=relaxed/simple;
+	bh=vEsiKMGdx5Ffi6xHHnP8FyY/HHOQPO+iDK0oie/ay+k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=amKn/pJEu22mMhbm0OCW9CUAUhgzJbaA3xvOl/fL9SUin9ZWODZMFtnFPqIGiTpyBUkEG7jCzaL4mC3Fv6go9MCu9aR6AmthqyxxtA6iSvG+pxmgVyCUh2L89AjuAeFX30HKnGIjphJKyfXBbTWHW48C99dCweUjYPEOMLmnU+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=j0mzjQl0; arc=none smtp.client-ip=210.118.77.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="uemelT76"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="j0mzjQl0"
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260715123610euoutp01229193c2926d3676b4a6f11cf15a8133~CdsA1q74D1870818708euoutp01d
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:36:10 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260715123610euoutp01229193c2926d3676b4a6f11cf15a8133~CdsA1q74D1870818708euoutp01d
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260715123611euoutp0251f02cfc825369d91c7376405c75211a~CdsB1lN1j2113121131euoutp02Y
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:36:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260715123611euoutp0251f02cfc825369d91c7376405c75211a~CdsB1lN1j2113121131euoutp02Y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1784118970;
-	bh=SDVJJ1xLr7xWky9ho2VxmausoMg83j1se4IAydWbvyk=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=uemelT76i6UY2X5tg7rTHBUs6lCA4V/nH0Rn6HMYiwuJOeOZwt8NkhTlejbY9RmMg
-	 rT21VlTUCk5fwPyFFH2vrdP7JTLzH9XOILYjpKRvnWA36DsY0tXNFyUZfhEfm88kGo
-	 k+nzcY9ku5kR88E6iC+hzTjm5XsLwxE8rKtl59+Q=
+	s=mail20170921; t=1784118971;
+	bh=A6XmGwoyQK4IATTx7Sicb5Md/GOMK8vp+z2XevcvSds=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=j0mzjQl0/5yjujQR70Pvx+WWmS6qaZixVmpjPwtxf/vZGoJg6HodJZ05ghl9WYH0F
+	 zoGpXDV7KFyAsIltKelmMsnQRIkvdGPTQ/JgvFVfHsebEK+47ehj37Lu2w4Fs0snkI
+	 cDi6DuhQo/ZGaFg2wXCLSCHwaGjaAvSNzg10gv9k=
 Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260715123609eucas1p276498c4701060ffbb6789cb096696a31~CdsAMHlXz0124001240eucas1p23;
-	Wed, 15 Jul 2026 12:36:09 +0000 (GMT)
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260715123610eucas1p1487b60d74fe9741507fe744fe8e3132c~CdsBfDezb0259902599eucas1p1Y;
+	Wed, 15 Jul 2026 12:36:10 +0000 (GMT)
 Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
 	[106.120.77.61]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260715123609eusmtip2e748e18c41f35c2b9b6c1ce83debc305~Cdr-s-uy20360603606eusmtip2D;
-	Wed, 15 Jul 2026 12:36:09 +0000 (GMT)
+	20260715123610eusmtip2250609b51eddc41b7670006498b06290~CdsA2NKFQ0123201232eusmtip2v;
+	Wed, 15 Jul 2026 12:36:10 +0000 (GMT)
 From: Jakub Raczynski <j.raczynski@samsung.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
 	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Jakub
 	Raczynski <j.raczynski@samsung.com>
-Subject: [PATCH net v3 0/2] net/stmmac: Secure against failures of DMA
- memory allocation
-Date: Wed, 15 Jul 2026 14:36:00 +0200
-Message-Id: <20260715123602.51950-1-j.raczynski@samsung.com>
+Subject: [PATCH net v3 2/2] net/stmmac: Prevent dma queue NULL free on
+ allocation failure
+Date: Wed, 15 Jul 2026 14:36:02 +0200
+Message-Id: <20260715123602.51950-3-j.raczynski@samsung.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260715123602.51950-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,44 +54,103 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260715123609eucas1p276498c4701060ffbb6789cb096696a31
+X-CMS-MailID: 20260715123610eucas1p1487b60d74fe9741507fe744fe8e3132c
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260715123609eucas1p276498c4701060ffbb6789cb096696a31
+X-RootMTR: 20260715123610eucas1p1487b60d74fe9741507fe744fe8e3132c
 X-EPHeader: CA
-X-CMS-RootMailID: 20260715123609eucas1p276498c4701060ffbb6789cb096696a31
-References: <CGME20260715123609eucas1p276498c4701060ffbb6789cb096696a31@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20260715123610eucas1p1487b60d74fe9741507fe744fe8e3132c
+References: <20260715123602.51950-1-j.raczynski@samsung.com>
+	<CGME20260715123610eucas1p1487b60d74fe9741507fe744fe8e3132c@eucas1p1.samsung.com>
 
-This series fixing two issues related to fails of
-__alloc_dma_rx_desc_resources(). Original issue from 1st patch is related to
-page_pool that has happened in testing env, while second was requested by
-Sashiko to have similar change for DMA allocation. 
-To have complete fix for all failures of __alloc_dma_rx_desc_resources(),
-merge two fixes into series.
+During allocation of RX/TX descriptor resources and its DMA,
+there is verification of failed dma_alloc_coherent() due to lack of memory.
+In case of that failure, all allocated resources are freed instantly after,
+but there are no checks for dma_free_coherent() whether previous step has
+failed.
+This will generally result in panic due to freeing NULL address.
 
+Fix it by adding NULL verification of memory that is to be freed.
+Also assign NULL to page pointers to avoid double free scenario.
+
+Fixes: e73b19baa3b1c ("net: stmmac: simplify DMA descriptor allocation/init/freeing")
+Reported-by: Sashiko AI <sashiko-bot@kernel.org>
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
 ---
-Changes in v3:
-- Added null assignment to page pointers (suggested by sashiko)
-- Convert IS_ERR_OR_NULL check to just NULL check
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 +++++++++++++------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-Changes in v2:
-- Added reviewed by Maxime to first patch
-- Dropped null check as page_pool_destroy() does provide that
-- Modified comment to reflect that
-
-Link to v2:
-https://lore.kernel.org/all/20260707174115.1264466-1-j.raczynski@samsung.com/
-
-Link to v1:
-https://lore.kernel.org/netdev/20260630100953.747868-1-j.raczynski@samsung.com/
-
-Jakub Raczynski (2):
-  net/stmmac: Set Rx queue page_pool to NULL when freeing DMA resources
-  net/stmmac: Prevent dma queue NULL free on allocation failure
-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 32 ++++++++++++-------
- 1 file changed, 21 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3098971e0b66..77604d6ab466 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2146,7 +2146,6 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 					 u32 queue)
+ {
+ 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+-	size_t size;
+ 	void *addr;
+ 
+ 	/* Release the DMA RX socket buffers */
+@@ -2158,15 +2157,21 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	rx_q->buf_alloc_num = 0;
+ 	rx_q->xsk_pool = NULL;
+ 
+-	/* Free DMA regions of consistent memory previously allocated */
+-	if (priv->extend_desc)
++	if (priv->extend_desc) {
+ 		addr = rx_q->dma_erx;
+-	else
++		rx_q->dma_erx = NULL;
++	} else {
+ 		addr = rx_q->dma_rx;
++		rx_q->dma_rx = NULL;
++	}
+ 
+-	size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
++	/* Free DMA regions of consistent memory if previously allocated */
++	if (addr) {
++		size_t size;
++		size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
+ 
+-	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
++		dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
++	}
+ 
+ 	if (xdp_rxq_info_is_reg(&rx_q->xdp_rxq))
+ 		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
+@@ -2198,7 +2203,6 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
+ 					 u32 queue)
+ {
+ 	struct stmmac_tx_queue *tx_q = &dma_conf->tx_queue[queue];
+-	size_t size;
+ 	void *addr;
+ 
+ 	/* Release the DMA TX socket buffers */
+@@ -2206,15 +2210,21 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
+ 
+ 	if (priv->extend_desc) {
+ 		addr = tx_q->dma_etx;
++		tx_q->dma_etx = NULL;
+ 	} else if (tx_q->tbs & STMMAC_TBS_AVAIL) {
+ 		addr = tx_q->dma_entx;
++		tx_q->dma_entx = NULL;
+ 	} else {
+ 		addr = tx_q->dma_tx;
++		tx_q->dma_tx = NULL;
+ 	}
+ 
+-	size = stmmac_get_tx_desc_size(priv, tx_q) * dma_conf->dma_tx_size;
++	if (addr) {
++		size_t size;
++		size = stmmac_get_tx_desc_size(priv, tx_q) * dma_conf->dma_tx_size;
+ 
+-	dma_free_coherent(priv->device, size, addr, tx_q->dma_tx_phy);
++		dma_free_coherent(priv->device, size, addr, tx_q->dma_tx_phy);
++	}
+ 
+ 	kfree(tx_q->tx_skbuff_dma);
+ 	kfree(tx_q->tx_skbuff);
 -- 
 2.34.1
 
