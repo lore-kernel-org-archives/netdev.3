@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835FA1E5B68;
-	Wed, 15 Jul 2026 14:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F0339E18E;
+	Wed, 15 Jul 2026 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784126546; cv=none; b=EerUFSBFBHWiV6Gbv3r39XSyQUqA5VIw1OHcSXYJPezw+V3rEm/uzJzMj7E4OW9CPiRFFnG4NIDQkupKsX4/p5DpHLyD8LEoAzSkBjQBAJEqrHZAiu4FE3t0ynDcHTT/LcEXb2ICuR6pVmITy0achinm/AFRulcbKl5HOzHwGbY=
+	t=1784126578; cv=none; b=GHIb+ynOh6wmrnEao5bykvrzq2zJlG7n17LADpS+HBPQW5pz/889eRVm49dheI7Kcvq+iY/+Gvx7k0FPOq5FMCcePoXLO1+uuHjNgy2BhQNDZqV84/UC8NucvX9mT06YCbflONMxkiyDICXGpnyZNvr3VVFzJ5Zt3338U0dC0Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784126546; c=relaxed/simple;
-	bh=RA5eAl239pnC21oBM8FR2e98RaUjx/jaBE/mbW41fKI=;
+	s=arc-20240116; t=1784126578; c=relaxed/simple;
+	bh=hZfKkntzRF3JWotGHA9KobmY7110d0rvs9C45TNTPhk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TBGWEqTvkIwjrXldzwYjXHzbU7m6cVWNPMHjzlnWVDJ8pvbROyJtOZk/sj9D/Uhl4RHD64+92Zjv0C6MIcfoYgrKtILoOKl1z9Kq1m4VL7snOApNOQI0Sxf83JTiJNr1CFjc+7Pa3yA9PmOdZowLRtu0rDJoKGNbzxR+QvZzPqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1Qf7K4O; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=heMGXr7mmz6w7f58HI/vkjNWztxr6EaoVVP/D/yHPpDq2r54itDTKyFtznZyI/dMP+haDhwF+OIjg8QOrB7dADkAG0vc081DOblWjylM9bJAw0/iDkvxXtKFf4k3O7x/3z5AupbTVdQ026BnDxagset8G3ewuCBsByZeCVzOgIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqrTUef5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1Qf7K4O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B961F000E9;
-	Wed, 15 Jul 2026 14:42:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqrTUef5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D760C1F000E9;
+	Wed, 15 Jul 2026 14:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784126545;
-	bh=EcA8XKltHJY/ZWwJgQ4nUBhuW+JogaG1av/hmIt5pfo=;
+	s=k20260515; t=1784126576;
+	bh=y94y46NC3K1ZZI8tlKiA/R/+i1PYrV6dRlO0JHTnWns=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d1Qf7K4OfbNOOv+QDCtK3D5P06ts0W90+8kGzOeOpL78YQBtUYc3iGMpa4wmzKoZC
-	 hd+7KVKnsx8NzRnu1qceO0FTWtPXZpkf1vmOLmRJtmgz/zhDOeqP3QbR9W0PQzqkpk
-	 PgIg6FrohxZ6LlXZTYAlV5uEKL2starLe0cGqJMuwOFmpCqD8/NMjJZ27ccmpbWSum
-	 QVxOrbXWCyUBNy+IEB8id/QMcSVrbrjt7cRiVBOBgaETllOQP42/w5DO5lUnLQ6ZL+
-	 szmtpjxosEjc1EUTaUX/q/lOX3182GyQaT9CR0uzGB9ErjX/E1aLPUvRUANL1wn2GR
-	 8Q/JE6uF6mZ0A==
-Date: Wed, 15 Jul 2026 15:42:17 +0100
+	b=fqrTUef5hie4dseuKlvJZWMbM6oxzMfztOTlfDAO5YP6VUIDGCPQkD0/M91jQGTRd
+	 pWbmXHdRI9tqw+6i0VtgnJZNvjaRJMBfnbnC/u7TkQ1dyMH9bws7pjlxdqIEsGoNCi
+	 xmFYvssOGsmaJHXv3opkIkyDFhgIDbWmKR+T9McqG/mpiqIdfspTUH6zvad7vH1kGq
+	 OyufaeddCz5b/+X24ioC/c9E+6bqSFa2g+yDCgauqAVYXjC1szXnIr2w2ogj+G8/g8
+	 B3XxKmluDQIbRYydCJFMxplaNIHqetMj/rJkwG6WJBK1cNYfBvvzCdoYi57RI9MqMV
+	 HAK20AqgF+hSA==
+Date: Wed, 15 Jul 2026 15:42:49 +0100
 From: Simon Horman <horms@kernel.org>
 To: Cosmin Ratiu <cratiu@nvidia.com>
 Cc: Tariq Toukan <tariqt@nvidia.com>,
@@ -52,12 +52,12 @@ Cc: Tariq Toukan <tariqt@nvidia.com>,
 	"aleksandr.loktionov@intel.com" <aleksandr.loktionov@intel.com>,
 	Gal Pressman <gal@nvidia.com>, Lama Kayal <lkayal@nvidia.com>,
 	"jacob.e.keller@intel.com" <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net-next 15/15] net/mlx5e: psp: Report PSP dev
- registration errors
-Message-ID: <20260715144217.GQ1364329@horms.kernel.org>
-References: <20260707130858.969928-16-tariqt@nvidia.com>
- <20260714173151.1863310-2-horms@kernel.org>
- <ac799bee802e02b17f5f27e227c84df396d1e1c3.camel@nvidia.com>
+Subject: Re: [PATCH net-next 13/15] net/mlx5e: psp: Make PSP steering config
+ dynamic
+Message-ID: <20260715144249.GR1364329@horms.kernel.org>
+References: <20260707130858.969928-14-tariqt@nvidia.com>
+ <20260714173021.1862773-1-horms@kernel.org>
+ <a7f3a36f058d7ee1298c8f3f5d5c65c1aa7863b6.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,78 +67,103 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac799bee802e02b17f5f27e227c84df396d1e1c3.camel@nvidia.com>
+In-Reply-To: <a7f3a36f058d7ee1298c8f3f5d5c65c1aa7863b6.camel@nvidia.com>
 
-On Tue, Jul 14, 2026 at 08:08:03PM +0000, Cosmin Ratiu wrote:
-> On Tue, 2026-07-14 at 18:31 +0100, Simon Horman wrote:
+On Tue, Jul 14, 2026 at 08:05:39PM +0000, Cosmin Ratiu wrote:
+> On Tue, 2026-07-14 at 18:30 +0100, Simon Horman wrote:
 > > This is an AI-generated review of your patch. The human sending this
 > > email has considered the AI review valid, or at least plausible.
 > > Full review at: https://sashiko.dev
 > > ---
-> > --- Patch [15]: [PATCH net-next 15/15] net/mlx5e: psp: Report PSP dev
-> > registration errors ---
-> > commit 76afe7de4d1e708e7c01d267ef1fb9cf946de937
+> > --- Patch [13]: [PATCH net-next 13/15] net/mlx5e: psp: Make PSP
+> > steering config dynamic ---
+> > commit 133d9a32cbf9c1b939ae4ca8473c41624c313951
 > > Author: Cosmin Ratiu <cratiu@nvidia.com>
 > > 
-> > net/mlx5e: psp: Report PSP dev registration errors
+> > net/mlx5e: psp: Make PSP steering config dynamic
 > > 
-> > This commit updates mlx5e_psp_register() to return an error code
-> > instead
-> > of void when psp_dev_create() fails. The caller, mlx5e_nic_enable(),
-> > is
-> > also updated to check this return value and abort if PSP registration
-> > fails.
-> > 
-> > > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > > b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> > > @@ -6199,7 +6199,9 @@ static int mlx5e_nic_enable(struct mlx5e_priv
-> > > *priv)
-> > >  
-> > >  	mlx5e_fs_init_l2_addr(priv->fs, netdev);
-> > >  	mlx5e_ipsec_init(priv);
-> > > -	mlx5e_psp_register(priv);
-> > > +	err = mlx5e_psp_register(priv);
-> > > +	if (err)
-> > > +		goto out_ipsec_cleanup;
-> > 
-> > [Severity: High]
-> > Could propagating this error cause the entire network interface to
-> > fail if
-> > the optional PSP offload fails to register?
-> > 
-> > If psp_dev_create() fails (e.g., due to memory pressure or ID
-> > exhaustion
-> > in xa_alloc_cyclic), mlx5e_nic_enable() will now abort, resulting in
-> > a
-> > complete loss of networking capability for the device.
-> > 
-> > Notice how the code immediately following this handles MACsec
+> > This commit changes PSP steering tables to only be created when PSP
+> > configuration is enabled on a device, instead of at device
 > > initialization
-> > failures by logging the error and allowing the NIC to continue
-> > operating:
+> > time. This avoids imposing steering overhead on all UDP packets when
+> > PSP
+> > is not being used.
 > > 
-> > 	err = mlx5e_macsec_init(priv);
-> > 	if (err)
-> > 		mlx5_core_err(mdev, "MACsec initialization failed,
-> > %d\n", err);
-> > 
-> > Should PSP registration failure fall back gracefully and allow the
-> > core NIC
-> > to function without the offload, similar to how MACsec is handled?
-> > 
+> > > diff --git
+> > > a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+> > > b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+> > > index b526b3898c22e..3f212e46fc2f9 100644
+> > > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+> > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+> > > @@ -220,18 +220,7 @@ static inline void
+> > > mlx5e_accel_tx_finish(struct mlx5e_txqsq *sq,
 > > >  
-> > >  	err = mlx5e_macsec_init(priv);
-> > >  	if (err)
-> > >  		mlx5_core_err(mdev, "MACsec initialization failed,
-> > > %d\n", err);
+> > >  static inline int mlx5e_accel_init_rx(struct mlx5e_priv *priv)
+> > >  {
+> > > -	int err;
+> > > -
+> > > -	err = mlx5_accel_psp_fs_init_rx_tables(priv);
+> > > -	if (err)
+> > > -		goto out;
+> > > -
+> > > -	err = mlx5e_ktls_init_rx(priv);
+> > > -	if (err)
+> > > -		mlx5_accel_psp_fs_cleanup_rx_tables(priv);
+> > > -
+> > > -out:
+> > > -	return err;
+> > > +	return mlx5e_ktls_init_rx(priv);
+> > >  }
+> > >  
+> > >  static inline void mlx5e_accel_cleanup_rx(struct mlx5e_priv *priv)
+> > > @@ -242,12 +231,6 @@ static inline void
+> > > mlx5e_accel_cleanup_rx(struct mlx5e_priv *priv)
+> > >  
+> > >  static inline int mlx5e_accel_init_tx(struct mlx5e_priv *priv)
+> > >  {
+> > > -	int err;
+> > > -
+> > > -	err = mlx5_accel_psp_fs_init_tx_tables(priv);
+> > > -	if (err)
+> > > -		return err;
+> > > -
+> > >  	return mlx5e_ktls_init_tx(priv);
+> > >  }
+> > 
+> > [Severity: Critical]
+> > Does removing the unconditional table creation here prevent PSP
+> > tables
+> > from being restored on device attach or resume?
+> > 
+> > Since mlx5_accel_psp_fs_cleanup_tx_tables() is still called during
+> > device
+> > detach or suspend, the PSP steering tables are destroyed. However,
+> > because
+> > mlx5e_accel_init_tx() no longer recreates them, the tables appear to
+> > remain
+> > missing after a suspend/resume or detach/attach cycle.
+> > 
+> > Because software psp_assoc structures remain bound to active sockets,
+> > could
+> > this leave the device in a state where the hardware TX steering table
+> > (which
+> > contains the CRYPTO_ENCRYPT action) is missing?
+> > 
+> > If so, would this cause egress traffic to bypass encryption and be
+> > transmitted in plaintext?
 > 
-> This is an intentional change, as discussed in this thread with Jakub:
+> When the device is suspended, 1. all TX keys are released and 2.
+> steering rules are removed. 3. psp state is completely freed, including
+> the configuration intention.
 > 
-> https://lore.kernel.org/netdev/20260417050201.192070-1-tariqt@nvidia.com/t/#u
+> When the device is resumed, psp is reinitialized to a blank state.
 > 
-> We carefully chose to fail device init on the very unlikely event PSP
-> dev creation fails.
+> Before these changes, psp was also reset to a blank state (no keys, but
+> with steering rules readded). This also broke existing PSP connections.
+> 
+> I guess fixing this behavior during suspend is outside the scope of
+> this series. I don't like it, we should do something about it, but not
+> in this series.
 
-Thanks, sorry for not noticing that discussion earlier.
+Thanks, point taken.
+I think we can leave this problem for another time.
