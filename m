@@ -1,145 +1,134 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD72EEE9E
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6698E4534AD
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784129083; cv=none; b=TURRrbCXED/JGrwZKLilTbGx+lbZJ+bdT6pMBYRGWt3IFpnCj28uJNxB6A3i3jS5GPDFL38GCwh2/Y7ljEU2Yc/oaJXuZjF3xuqHgefEg9yjYLHgpnEHtgqE0QQACQBdzjtxY/i73EgpCO4n29C2ZJMzEx2zpSnLsIn1NcF8Y1k=
+	t=1784129189; cv=none; b=IEvW+Q13h54blG9H6++HxWBC9d7Wz942zwgWvqpD+hSOxh2fpCHxEJyWd/NnhUR0giaJa8Kv01Ar17zng2LWRms7aWxjADzYxFPB6WAwjVR25iOrqGeUdB4vVEB4vBlR/gCXvhw8YtrJvwr66Q2fbPWvgReubyQeEELa+pNoTe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784129083; c=relaxed/simple;
-	bh=sEk93MFRkXZnBHH3w3/gyg+6jiWJcM1uXHZES+5BO7Q=;
+	s=arc-20240116; t=1784129189; c=relaxed/simple;
+	bh=xdP0ArL5gj/ZOhu33xZ5Z3/r/9Z5XjyCI4qrp+oXj+8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XuYaSq+RDXnbtwybz5wOwkyKEmu/f0vFPmn7Xwy5pZth/wuV/AWYUi62mGiKfscSLqLOeSAFUNhu/1myxGB9BFHnld3JcgJ11bAjrn+8j2rj/71hAKHOyjq3znIJoPBt89DgBP3eA+QIjWlabpr57LnQfLPEynoTyfVD9HFLXIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qgi+7r8Y; arc=none smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=enNavelQYJQUbU6hEMKrAKzUpyNQR4poHFoWnMvEdPFqcFWgZ9VXbWxcLVvXOzNPxerUEzQvCqTO3Zz++4vq1SlaDYB5F7zDtHp4CFMw2WagmfcHclLEiWHOmfc8G46F+ssNuEW/kbPuZCKYGRZD6SInOroJgxKfFpA9L7qKEag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Cz8q7zpC; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qgi+7r8Y"
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6a31b9a492aso3597341eaf.1
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 08:24:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784129080; x=1784733880; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fbizxbGSlmpaW+4UvpWda4ms/XR6DbFdjKqJi1v9eXA=;
-        b=Qgi+7r8YcwoQGhZWiQBKdR7DuCiZEKEb9W531ojupm2J4jm+VAEuLoFcp1n2GaoFZA
-         id42J6wDTVzBrXXRL6fWD9pnP7S3mf/27mix2nuIf9nHFL2FwzcDnACGWhjvKy3klmtC
-         hmpbfk9KAl2msMhKw3hxJlUdm2ge+YdOX+tI7u10wA/lMhB/YQRGXlzEdEYWkSPErqMd
-         NCKyjOfe0pnQfsaULrB6JDcsfMM0HozaHt8VHXDzIrmsLGXrKb0roEOxfWg0vDBJmLP5
-         NdXe8FRhdIbFslQybyVP91X0Ooo/wWHNto4glzREg3pKM1YZyYutiC3be7TY6/csI32n
-         ++IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784129080; x=1784733880;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fbizxbGSlmpaW+4UvpWda4ms/XR6DbFdjKqJi1v9eXA=;
-        b=Btsh7k0mvBlx5/8+dXlP6qMKBHz30+oRlLahdWlF2jCFfJellm2Au2uq/tzBeQth4o
-         DmnKDD8e0wsewfvrejOyXRdqqhQdCIBKJGMq2+3hJb0aF7PkKbXMnZOs671anKKfNi7Z
-         K1l4XO9JA9ZZXBWzNVgYWjoCasdrLje4ceYlDpj1RjdMwUBo6sU4Es2BKpY2mCos+y3Q
-         YEo5suaryXfqP+eNhDbT7USCWNO+3YvSXvRPSTGALZdluPQ1v/NzM+dQu0FJAkkONhST
-         RTa5yeifAMIqfG23EqzAXxFz4uyAqbNay8/Q47v+v95z5+14RCnl0C70jeqMIUTQYmw4
-         gmwA==
-X-Gm-Message-State: AOJu0YyEHWLzLieVaVJLeFzKB+81epdwoweusH5euxwhFKwWc0IYbpDn
-	oa3U8o8REwdyVHCd5/3oThcaGylyHKordiqSQQIxhs2F1eJ8irpYAexb
-X-Gm-Gg: AfdE7ckXiQFoa7WDKJ3K3QBCoRAUj0eTgQVIfze4t0IwYvpiIfPmw0rFRufSys+9Xyb
-	8PbRX4K3Pu2u5VaJEEyG6G5PjZfHb+gQOZYf21qQswuiciM7YMYs6kbCYBSWZ/5JhwtCEnDSJVb
-	OQnFrARnNBh4OrRrJcknoI6WahHDNjYX7J8VC4XeHfOXiKRi8oeNzETkIqrfY3RV/EUHOcG7g1Y
-	op+eoDFpvIZsIpQiXYRpWa7HIP6CkrUYPqEmaTeTHCSTR0CIdCcET38a3aoFgjJ408Di062qnT5
-	P26vY5Kuv/QAsacfTDaYgijIg7ZTV6/+rln3eGAwd/ChU53n5meMjINfco9Q7wWdiSst+wvXyyD
-	0qsr1dPyPoidvsZdju+B1PnH+LK85zjmn5+U7Yx7hpgP2WmRGJUr49pUrRieXNBbryVreWF5neq
-	rXdtISGdYMjlglxtUQ3BbKFyhRPK5q+PsY5s7aByNmz8p8ZQsaJgnH35E0o6oy8cO5jngIMvJBi
-	+A9OWQ=
-X-Received: by 2002:a05:6820:1a0c:b0:6a3:81df:4770 with SMTP id 006d021491bc7-6a3cbb8415bmr3581307eaf.33.1784129080378;
-        Wed, 15 Jul 2026 08:24:40 -0700 (PDT)
-Received: from ?IPV6:2601:282:1e02:1040:9c92:7274:e627:290e? ([2601:282:1e02:1040:9c92:7274:e627:290e])
-        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-6a36a66b668sm15721591eaf.8.2026.07.15.08.24.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jul 2026 08:24:40 -0700 (PDT)
-Message-ID: <d9961c0a-dfe6-4d77-8547-fed90f7fb705@gmail.com>
-Date: Wed, 15 Jul 2026 09:24:38 -0600
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Cz8q7zpC"
+Message-ID: <2dc3d52b-ce4a-411d-9c30-934318ee98b0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784129174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JP3A/Omv4EUP9yEwVlgSrlWoXSIU6lWPXQB91//sneg=;
+	b=Cz8q7zpC2CodYaOysieqVFvzXPcAnNxIfrGexxAdrsqa96M6OI0KYGFogVk0n2UOiCk/vy
+	RLYyw/zscwXB1QYUyY7IJbP0aBg7FRxoktlQog/ppxlyOnWX+XEYfiZ4NkL3faM1OUk/E4
+	74MSrG88CZ1fN4SbRLZlk/fhpdcoTLA=
+Date: Wed, 15 Jul 2026 23:25:51 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] mpls: fix NULL deref in mpls_valid_fib_dump_req() on
- CONFIG_INET=n
+Subject: Re: [RFC PATCH net-next v2 1/2] tcp: Add
+ net.ipv4.tcp_purge_receive_queue sysctl
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Neal Cardwell
+ <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ij@kernel.org>, Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+ Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
+ <bronzed_45_vested@icloud.com>, Jason Xing <kerneljasonxing@gmail.com>,
+ Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260715145328.54597-1-leon.hwang@linux.dev>
+ <20260715145328.54597-2-leon.hwang@linux.dev>
+ <CANn89iLyeAPNV2VHTM3w0-zpzjZNFy3aJDsVUERYyniLN4ub7A@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
 Content-Language: en-US
-To: Xiang Mei <xmei5@asu.edu>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bestswngs@gmail.com
-References: <20260712220903.3131568-1-xmei5@asu.edu>
-From: David Ahern <dsahern@gmail.com>
-In-Reply-To: <20260712220903.3131568-1-xmei5@asu.edu>
+In-Reply-To: <CANn89iLyeAPNV2VHTM3w0-zpzjZNFy3aJDsVUERYyniLN4ub7A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 7/12/26 4:09 PM, Xiang Mei wrote:
-> On CONFIG_INET=n, mpls_valid_fib_dump_req()'s local strict-check loop
-> enters the RTA_OIF arm on the index alone and calls nla_get_u32(tb[i]).
-> Since nlmsg_parse_deprecated_strict() leaves tb[i] NULL for any omitted
-> attribute, a dump without RTA_OIF dereferences NULL and oopses.
-> 
-> Skip unset attributes before dispatching on the index, mirroring
-> ip_valid_fib_dump_req().
-> 
->   Oops: general protection fault, probably for non-canonical address
->   0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
->   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->   RIP: 0010:mpls_valid_fib_dump_req (net/mpls/af_mpls.c:2189)
->   Call Trace:
->    mpls_dump_routes (net/mpls/af_mpls.c:2236)
->    netlink_dump (net/netlink/af_netlink.c:2331)
->    __netlink_dump_start (net/netlink/af_netlink.c:2446)
->    rtnetlink_rcv_msg (net/core/rtnetlink.c:7041)
->    netlink_rcv_skb (net/netlink/af_netlink.c:2556)
->    netlink_unicast (net/netlink/af_netlink.c:1345)
->    netlink_sendmsg (net/netlink/af_netlink.c:1900)
->    __sock_sendmsg (net/socket.c:790)
->    ____sys_sendmsg (net/socket.c:2684)
->    ___sys_sendmsg (net/socket.c:2738)
->    __sys_sendmsg (net/socket.c:2770)
->    do_syscall_64 (arch/x86/entry/syscall_64.c:94)
->    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
->   Kernel panic - not syncing: Fatal exception
-> 
-> Fixes: 196cfebf8972 ("net/mpls: Handle kernel side filtering of route dumps")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
->  net/mpls/af_mpls.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-> index ca504d9626cf..1ad07df89d5b 100644
-> --- a/net/mpls/af_mpls.c
-> +++ b/net/mpls/af_mpls.c
-> @@ -2185,13 +2185,16 @@ static int mpls_valid_fib_dump_req(struct net *net, const struct nlmsghdr *nlh,
->  	for (i = 0; i <= RTA_MAX; ++i) {
->  		int ifindex;
->  
-> +		if (!tb[i])
-> +			continue;
-> +
->  		if (i == RTA_OIF) {
->  			ifindex = nla_get_u32(tb[i]);
->  			filter->dev = dev_get_by_index_rcu(net, ifindex);
->  			if (!filter->dev)
->  				return -ENODEV;
->  			filter->filter_set = 1;
-> -		} else if (tb[i]) {
-> +		} else {
->  			NL_SET_ERR_MSG_MOD(extack, "Unsupported attribute in dump request");
->  			return -EINVAL;
->  		}
+On 2026/7/15 23:15, Eric Dumazet wrote:
+> On Wed, Jul 15, 2026 at 4:54 PM Leon Hwang <leon.hwang@linux.dev> wrote:
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+[...]
+
+>> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+>> index 61045a8886e4..4f1027173e95 100644
+>> --- a/net/ipv4/tcp_input.c
+>> +++ b/net/ipv4/tcp_input.c
+>> @@ -4853,6 +4853,7 @@ void tcp_done_with_error(struct sock *sk, int err)
+>>  /* When we get a reset we do this. */
+>>  void tcp_reset(struct sock *sk, struct sk_buff *skb)
+>>  {
+>> +       const struct net *net = sock_net(sk);
+>>         int err;
+>>
+>>         trace_tcp_receive_reset(sk);
+>> @@ -4869,6 +4870,27 @@ void tcp_reset(struct sock *sk, struct sk_buff *skb)
+>>                 err = ECONNREFUSED;
+>>                 break;
+>>         case TCP_CLOSE_WAIT:
+>> +               /* RFC9293 3.10.7.4. Other States
+>> +                *   Second, check the RST bit:
+>> +                *     CLOSE-WAIT STATE
+>> +                *
+>> +                * If the RST bit is set, then any outstanding RECEIVEs and
+>> +                * SEND should receive "reset" responses.  All segment queues
+>> +                * should be flushed.  Users should also receive an unsolicited
+>> +                * general "connection reset" signal.  Enter the CLOSED state,
+>> +                * delete the TCB, and return.
+>> +                *
+>> +                * If net.ipv4.tcp_purge_receive_queue is enabled,
+>> +                * sk_receive_queue will be flushed too.
+>> +                */
+>> +               if (unlikely(READ_ONCE(net->ipv4.sysctl_tcp_purge_receive_queue))) {
+>> +                       struct tcp_sock *tp = tcp_sk(sk);
+>> +
+>> +                       skb_queue_purge(&sk->sk_receive_queue);
+>> +                       WRITE_ONCE(tp->copied_seq, tp->rcv_nxt);
+>> +                       WRITE_ONCE(tp->urg_data, 0);
+>> +                       sk_set_peek_off(sk, -1);
+>> +               }
+>>                 err = EPIPE;
+>>                 break;
+>>         case TCP_CLOSE:
+>> --
+>> 2.55.0
+>>
+> 
+> My thoughts are:
+> 
+> out_of_order_queue has been forgotten. skbs could be there and still
+> 'block devmem'
+> 
+> WRITE_ONCE(tp->copied_seq, tp->rcv_nxt) is certainly wrong, because
+> read() will return 0, instead of -1 (errno = EPIPE or ECONNRESET)
+> So the application will not know a RST was received :/
+> 
+> I think that BSD and linux implementations have historically retained
+> acknowledged,
+> buffered receive data upon RST to allow applications to drain data
+> already ACKed prior to the reset.
+> 
+> Adding a narrow sysctl specifically for CLOSE_WAIT creates
+> inconsistent behavior across TCP states.
+
+
+Got it. I won't pursue this sysctl approach in the future. Thanks for
+the review.
+
+Leon
 
