@@ -1,196 +1,133 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713F2288B8
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C5C3B774B
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784094946; cv=none; b=p/84nNAydPc1K6ESFnyy1kagZBL0FlHD6hJGnYmHtfiFn8wAkA0WDBsgH+hG6k54EV0cH8i0c6X68+WYiYQZd9eQsKm3F/AyO6rzllYXFaPJrz913WJ5Z/Don6CnloI2NIR9091N1EF85kphYM/EGfNFxyH5VAAtQrTBe6fhfF4=
+	t=1784095018; cv=none; b=lReYqvjI47kgzHNI6+YDA5RydL+333B3UZ4q6MbHEkmqDLQPnRcS+SHJA9v5ON0BbEzSlwvGyERlzPGRIKquY+8meTQmJNbHp7nuNJU2qmBguImgTB6ivY3UV9c/23i3MTqXOUIiUbVRvWRUgPoxcrlVoCEO6806VIIuQVXt4WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784094946; c=relaxed/simple;
-	bh=53XfI/KkF0mmY5A9JJmrFjOmjJhgDNUEArjHoTmn+MQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ExyUbB/GHfcxCy6VXEWDon8SYjSkcMsqP5SbYEvyo9HH7IsPa5nDbpY/31rDmadA6lksotZWw7jBW7zFttQ8zz58rPM+SmgM+XHY26RnbqP0iZGxT8i0Hp8vBjWyo9206cZTLlVSSMUDzFcL2TnNICnH69cigsJpJwO9cILd418=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rMMAatdQ; arc=none smtp.client-ip=209.85.219.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1784095018; c=relaxed/simple;
+	bh=esL/43unqiNUkBr/Ljva6pP91lPf4vb7RyxAP1zl12c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fx3dXir0aEvA7Sh7/qVdIEnfghh4CCMAhf7hYJC/OCpSqeAsORBpv5zbKKUUhiw1rv2fX1KWfEhceUOPpsm6Tua+U3eP0bM4kO1+YWU+V5EZoXwrzY3QG+NGNTobBLjOzLwaziYByOOH4QLYjVu9n+jCIVzZm6Q7vEIohvbqSz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=nCsoSLEc; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rMMAatdQ"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8efe7db1c42so87979816d6.3
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:55:44 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="nCsoSLEc"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-476a130c138so1661805f8f.0
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784094943; x=1784699743; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O1DRXJ9qvEDCtJ8qta/t+BdzBvjJWf+O4Oh/glnl8ig=;
-        b=rMMAatdQCi/HPCgt1GIGMFM/XPsWYRh2aPa2UVywsBtmsHhUG7bpCNvzz200QRfxAh
-         qF5tp+NNgCVIhdJA6FfbfzH89Ex1Mn7+AdtBntHzGrVj98miUTG/MKD1T9nYVfi6CN3k
-         TIHJes6wm7a2FKX9l/ujeDWtfsAT9Oo78jH02cWadceOa9arCABZXuMQ+sKU+D5YdHt0
-         poCBELuMK2MH+KTFcnc9OuEfbmlD6swc7jsVja8fv5GxfNaz9zrKiYQte6h6rgLH/HdW
-         Ewppg9iyy67447csgcJzPFzAY5rVoOhCAPpwwV1uDduXLS59wWi0fXSFp2S3xgc8U0G+
-         VDuA==
+        d=0sec.ai; s=google; t=1784095013; x=1784699813; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
+        b=nCsoSLEcjUE3qQ+jpRtBiSHZz+xWcrG9vjTNkYWF1V+0mZyK5KTd4njN7WY7qhetK/
+         OLV6TrS5aBpEU7A3jLAubLcnSjYMHarXfQbbisTm2KEqGGAWfCnBmDGEa4/+zKr4ILNz
+         oPrCPXvXflKVHA7+LJxKIxO4Wxw4/gpeRdhelvUv61j7S5qgGf31y0f07LaOTg2j9yPR
+         SkeWsn18bLqGp/luj9vQw8oV3AWWt9clqvFOGVXZT892pz7yuPMDwF5jezGjLXJiU4Bs
+         celWm3mRxtVW7t3XZ6kCAVqh7DFWhV6u4YfvXnLGkzXFGh5KbFl6n1KNbqEGCaynF5Xv
+         pePA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784094943; x=1784699743;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=O1DRXJ9qvEDCtJ8qta/t+BdzBvjJWf+O4Oh/glnl8ig=;
-        b=CVmU6zqCUKoTsgc2VYRMAx4pFjOP3a4XZ6io+UI1/Zk30/7OcwDnNiy6fYd8IOg3Zy
-         EgHXQ+CtWhP8CwZMwMo8s3NqXhl79pWrbQR13bpeqYGqqm7iiAex3wQlD7GwJHzdPLbl
-         ns16jmRaJpeDxv9epgZSR6OkQEMFUmAQ71mRTIX94H91U8R1KvjOjL/r8+LaXDKo74wp
-         qE3qSUEC7+bRTaYeSTZ77gvDAZmF1Z2rLHMUygEFGM8NE2R+McM9N7hrQfXJcul8JFS5
-         6p0joXBzxCAiWtKNI6Bzho6wjK23ustdFHWRCWKXOiKR4pfhm+v6IVvePOKoSzyyzTIP
-         Rtdg==
-X-Forwarded-Encrypted: i=1; AHgh+RqeoP4z4F8KajSpwcJeiUS8Hz6V+R3IBTCfnX3pDTekaiJ99hXwYBvgAZvfAf77Cgack0N0gJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOWx7sBx0RiNUXEa78L1u5smYVX7EhOvSaed1ey0fY5l62GpKZ
-	uNhHSYK1K8tQzT6zXwP0KwM0c/O8e/vn3ONaEJnxfijcl14roEagP1xshW2fmZW5ohGUhb0b5OI
-	lBnnrqBe+8EwPcA==
-X-Received: from qvop1.prod.google.com ([2002:a0c:fac1:0:b0:8dd:6cbd:afab])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:800a:b0:907:5516:3d61 with SMTP id 6a1803df08f44-90755163e96mr34199166d6.21.1784094943070;
- Tue, 14 Jul 2026 22:55:43 -0700 (PDT)
-Date: Wed, 15 Jul 2026 05:55:41 +0000
+        d=1e100.net; s=20251104; t=1784095013; x=1784699813;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
+        b=U8UwPmYJc3diW7ZjO62K1+op2DXF9mNb3MfN1y78RiBumaaxBEEbgbNaB7K4Rl9bD+
+         IHA/Cz4uLxTV+JgF+ZZ6qgvJ3sh80T0Bz5hkS/6k8hnM3+dCyrN6WEEzs6XHqJo2RPGN
+         ryggK/d+tK0wZtp62q7UT3CbziAZqN6undu8JA1ynDPrr/iY6+K8yeHjez2i/lI7oytO
+         +2NuQqPDV53vffz3wy/2x1T4l94+7K31L7iGtT7nIBVtMtbz/NhcY8t74Aq/CPTK3Xyj
+         VQWEzgUtQd/YEJxcPX+jR+toTedoRjZyPA2EtwpTB5j48XD49sJ3oioJgMbkX/PPAyuv
+         ZeiA==
+X-Forwarded-Encrypted: i=1; AHgh+RqgfQVzOACJnSaBqCvpWSJPNMHDIy2kYsGkMiy2QMi/nfnG5eEz+AjIdOxDtyDCHJPxFraxRRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxckP0TsSSqskre4j/yJY7zNL9oU2XKdPrUgR4YxRGqbXCOS0bE
+	r8MMdqVFeYxWEJ/BW36oDSJjYMJqQZdZVS/VaXk6dpUh1zKJWSJtfRkRd6CSEW+rGRGa
+X-Gm-Gg: AfdE7cmlO49FRMkLb9YTlLjWaSh1tFzauHzepkLkKOUOy+egk/CbJaLQLsaDTU/NHuc
+	s4xkGYa5QX3n639UTKjLtjLmlrYH9MfNmxpCSM2uYnf9VleUKh16tQb5OogYV/fJXzJOVGcfYjW
+	ZiNM4QxKtobUj1LUJSrJ5hSHZr7rbWm5s/r8YBIJlqMwveV4KOBPIkAO/UWPECsUvM9uo1CE3zp
+	/qvs790G2J+5gWHSZ0dChXZLD2EVmegxQtXHZ0BsTyaOMma5Qlxn3MDb5RZdlkCzu4l/iYG7EKn
+	nBmS9T1L+A3sE7b74SpBthgYwwemOwm/VAIamNwsrWSh/3JL/r3kldQ6j8pRIztdaNDPGINkTe5
+	mN72aXN2R62vUIkp7YOKBSNKKKze4nEJdXUTzkqyHhn92A0DyjnPwCEmXB1Da1P2841XEDPCptd
+	+ZrG+Bq3cGWRZDInD8uzwOPxB7uy1aaFqU73dZ90mvZnw3GMaw0umj+WVOqPi9QT02j1JzOm7/R
+	iTV4NyopRdRGYFwdPUuk3uH9ZDOkz6mkjg=
+X-Received: by 2002:a5d:59c7:0:b0:461:a16c:a5f4 with SMTP id ffacd0b85a97d-47f2dd1f29emr18774517f8f.33.1784095013281;
+        Tue, 14 Jul 2026 22:56:53 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635082csm14220369f8f.7.2026.07.14.22.56.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Jul 2026 22:56:52 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch
+Cc: sd@queasysnail.net,
+	linville@tuxdriver.com,
+	mschiffer@universe-factory.net,
+	maoyixie.tju@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net 2/2] geneve: require CAP_NET_ADMIN in the device netns for changelink
+Date: Wed, 15 Jul 2026 07:56:48 +0200
+Message-ID: <20260715055648.33060-3-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260715055648.33060-1-doruk@0sec.ai>
+References: <20260715055648.33060-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260715055541.1147542-1-edumazet@google.com>
-Subject: [PATCH net] ppp: annotate concurrent dev->stats accesses
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-dev->stats fields can be updated concurrently from multiple CPUs
-without synchronization.
+A tunnel changelink() operates on at most two netns, dev_net(dev) and
+the sticky underlay netns geneve->net. They differ once the device is
+created in or moved to a netns other than the one the request runs in.
+The rtnl changelink path checks CAP_NET_ADMIN only against dev_net(dev),
+so a caller privileged there but not in geneve->net can rewrite a geneve
+device whose underlay lives in geneve->net.
 
-Use DEV_STATS_INC() for stats increments and DEV_STATS_READ()
-when reading dev->stats in ppp_get_stats64() and ppp_get_stats()
-to avoid data races.
+geneve_changelink() applies the new configuration against geneve->net:
+geneve_link_config() and the geneve_quiesce()/geneve_unquiesce() pair
+reopen the underlay sockets in that netns (geneve_sock_add() uses
+geneve->net), so the same reasoning as the tunnel changelink series
+applies here.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Gate geneve_changelink() with rtnl_dev_link_net_capable(), at the top of
+the op before any attribute is parsed, matching ipgre_changelink() and
+the rest of the "require CAP_NET_ADMIN in the device netns for
+changelink" series.
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
+Cc: stable@vger.kernel.org
+Assisted-by: 0sec:multi-model
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 ---
- drivers/net/ppp/ppp_generic.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/geneve.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 717c1d3aa95380da64eb5ae6fc1da6e4dfaa9d87..ef54e0a0462a175bb989db8dda895e9ae755965f 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1482,7 +1482,7 @@ ppp_start_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 396e1a113cd4..03c99a016298 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -2376,6 +2376,9 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	struct geneve_config cfg;
+ 	int err;
  
-  outf:
- 	kfree_skb(skb);
--	++dev->stats.tx_dropped;
-+	DEV_STATS_INC(dev, tx_dropped);
- 	return NETDEV_TX_OK;
- }
- 
-@@ -1532,11 +1532,11 @@ ppp_net_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- static void
- ppp_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats64)
- {
--	stats64->rx_errors        = dev->stats.rx_errors;
--	stats64->tx_errors        = dev->stats.tx_errors;
--	stats64->rx_dropped       = dev->stats.rx_dropped;
--	stats64->tx_dropped       = dev->stats.tx_dropped;
--	stats64->rx_length_errors = dev->stats.rx_length_errors;
-+	stats64->rx_errors        = DEV_STATS_READ(dev, rx_errors);
-+	stats64->tx_errors        = DEV_STATS_READ(dev, tx_errors);
-+	stats64->rx_dropped       = DEV_STATS_READ(dev, rx_dropped);
-+	stats64->tx_dropped       = DEV_STATS_READ(dev, tx_dropped);
-+	stats64->rx_length_errors = DEV_STATS_READ(dev, rx_length_errors);
- 	dev_fetch_sw_netstats(stats64, dev->tstats);
- }
- 
-@@ -1889,7 +1889,7 @@ ppp_prepare_tx_skb(struct ppp *ppp, struct sk_buff **pskb)
- 
-  drop:
- 	kfree_skb(skb);
--	++ppp->dev->stats.tx_errors;
-+	DEV_STATS_INC(ppp->dev, tx_errors);
- 	return 1;
- }
- 
-@@ -2156,7 +2156,7 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
-  err_linearize:
- 	if (ppp->debug & 1)
- 		netdev_err(ppp->dev, "PPP: no memory (fragment)\n");
--	++ppp->dev->stats.tx_errors;
-+	DEV_STATS_INC(ppp->dev, tx_errors);
- 	++ppp->nxseq;
- 	return 1;	/* abandon the frame */
- }
-@@ -2329,7 +2329,7 @@ ppp_input(struct ppp_channel *chan, struct sk_buff *skb)
- 	if (!ppp_decompress_proto(skb)) {
- 		kfree_skb(skb);
- 		if (ppp) {
--			++ppp->dev->stats.rx_length_errors;
-+			DEV_STATS_INC(ppp->dev, rx_length_errors);
- 			ppp_receive_error(ppp);
- 		}
- 		goto done;
-@@ -2391,7 +2391,7 @@ ppp_receive_frame(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
- static void
- ppp_receive_error(struct ppp *ppp)
- {
--	++ppp->dev->stats.rx_errors;
-+	DEV_STATS_INC(ppp->dev, rx_errors);
- 	if (ppp->vj)
- 		slhc_toss(ppp->vj);
- }
-@@ -2658,7 +2658,7 @@ ppp_receive_mp_frame(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
++	if (!rtnl_dev_link_net_capable(dev, geneve->net))
++		return -EPERM;
++
+ 	/* If the geneve device is configured for metadata (or externally
+ 	 * controlled, for example, OVS), then nothing can be changed.
  	 */
- 	if (seq_before(seq, ppp->nextseq)) {
- 		kfree_skb(skb);
--		++ppp->dev->stats.rx_dropped;
-+		DEV_STATS_INC(ppp->dev, rx_dropped);
- 		ppp_receive_error(ppp);
- 		return;
- 	}
-@@ -2694,7 +2694,7 @@ ppp_receive_mp_frame(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
- 		if (pskb_may_pull(skb, 2))
- 			ppp_receive_nonmp_frame(ppp, skb);
- 		else {
--			++ppp->dev->stats.rx_length_errors;
-+			DEV_STATS_INC(ppp->dev, rx_length_errors);
- 			kfree_skb(skb);
- 			ppp_receive_error(ppp);
- 		}
-@@ -2800,7 +2800,7 @@ ppp_mp_reconstruct(struct ppp *ppp)
- 		if (lost == 0 && (PPP_MP_CB(p)->BEbits & E) &&
- 		    (PPP_MP_CB(head)->BEbits & B)) {
- 			if (len > ppp->mrru + 2) {
--				++ppp->dev->stats.rx_length_errors;
-+				DEV_STATS_INC(ppp->dev, rx_length_errors);
- 				netdev_printk(KERN_DEBUG, ppp->dev,
- 					      "PPP: reconstructed packet"
- 					      " is too long (%d)\n", len);
-@@ -2855,7 +2855,7 @@ ppp_mp_reconstruct(struct ppp *ppp)
- 					      "  missed pkts %u..%u\n",
- 					      ppp->nextseq,
- 					      PPP_MP_CB(head)->sequence-1);
--			++ppp->dev->stats.rx_dropped;
-+			DEV_STATS_INC(ppp->dev, rx_dropped);
- 			ppp_receive_error(ppp);
- 		}
- 
-@@ -3322,8 +3322,8 @@ ppp_get_stats(struct ppp *ppp, struct ppp_stats *st)
- 		st->p.ppp_opackets += tx_packets;
- 		st->p.ppp_obytes += tx_bytes;
- 	}
--	st->p.ppp_ierrors = ppp->dev->stats.rx_errors;
--	st->p.ppp_oerrors = ppp->dev->stats.tx_errors;
-+	st->p.ppp_ierrors = DEV_STATS_READ(ppp->dev, rx_errors);
-+	st->p.ppp_oerrors = DEV_STATS_READ(ppp->dev, tx_errors);
- 	if (!vj)
- 		return;
- 	st->vj.vjs_packets = vj->sls_o_compressed + vj->sls_o_uncompressed;
 -- 
-2.55.0.141.g00534a21ce-goog
+2.43.0
 
