@@ -1,97 +1,131 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6ED3EAC9B;
-	Wed, 15 Jul 2026 10:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90813E51EF
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 10:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110440; cv=none; b=KBvbU1tMYna0wzLbpEz3MDzaV38+d+G+GKidKVqdlacgOGh3wr4Ug8lM/e+HrRU+8kMWiru7rdvJddshlcW2wCVtyITODwmqxarCOQUjkU2ywH89rdtlJNTXZhHq9HEjKOYzadJYmY6iBqjnvBowFjsAUIOdsMAnaFMkJkijCEU=
+	t=1784110517; cv=none; b=Q12XHns+xAOQrOe3yC7M6ubu9ofHZKOfITWolBqH0TnjRvcLOZEzzQyLyekXs86Q0/Psc+kMr/uvQTSuoQIx0UFvyFehgt2hlZRhPnWeNI9b3kXWpwLJ5+hzWRtuT2yoOmgHLc/p6jBTfzZjpOMKSr/9QO+ypMq3vuozQ5EFFLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110440; c=relaxed/simple;
-	bh=dznAcgeibEjN5/Xb9OznAx0ywgJh5zCe/GLG45FruNY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vCFqjzta9QoKKmoGg4s9645mO0Wljw2xYJ5o5U0/N++vaf9rSTp49XU+VGG/sz5soQ5rp3j2liTHeonxX8sLYdJoYHSA45cunFBDqccFzc0yNsla/aWBjxQqIPYoeq82vaZtQ1qndbOg6JMrx3YP0e+i/5530wHuQD/z3c65MRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Ni7SGsFz; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1784110517; c=relaxed/simple;
+	bh=KkuGd+d8gm2IYS/fTqDghHxK4JS2j1Y2Pxjjj99KUVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LXTKVmk8qyswxPWAslAgCbUPHxibTApeuDQhxbEC0/6a6pv6Wi/WYF5A8l4xnX+13BHEnJxjD/AIJnR2cWk10vEFu/K85RJkFWXciWiNp/5RPuH2s2Z6NgYjHv3vRYUSuyU/dwquKVEOUoRJiG2CdwPhdkJfB649YfhZ8kQENHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lCC8LRuq; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Ni7SGsFz"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 9C69720684;
-	Wed, 15 Jul 2026 12:13:56 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6iOoDMKxnsTn; Wed, 15 Jul 2026 12:13:56 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 0FCF9205CF;
-	Wed, 15 Jul 2026 12:13:56 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0FCF9205CF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1784110436;
-	bh=uAguo58+adgfuGry8xKS5mrXnN+Rcg5dlUr4HpI7O0c=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=Ni7SGsFzlXhvFvjTsMhMq386z5nh3x6YWZu+daTART1IaMVJpXApqDNgP0wYQP5R3
-	 AVXkLry6JsEGHIw0yNOTkQLCiwhYLhyOnHabh3KpAxyilwnR/rfWeDEJp2QEFFqOzA
-	 xvRY1/2oqEayXa4EHbsMAoJa0W5TyqUr7bgaUvg5vzzjTY25SHV6AbYgIuNBusOrn7
-	 pE1JJU8HwEDujT0RSN2YF+x56T2BdhnymJe/zXc+dwAXlJDwONCRgw9YRTcTSn+DX/
-	 t/LgSdtEmZcgyy/6ilYbU/NoWiJsRE9OEMNkFH6MD2LK9Z1SjHCkMwmvC2xYUfU6DX
-	 Nf1v8r8/JsMcA==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 15 Jul
- 2026 12:13:55 +0200
-Received: (nullmailer pid 699512 invoked by uid 1000);
-	Wed, 15 Jul 2026 10:13:54 -0000
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lCC8LRuq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 174711A0FF3;
+	Wed, 15 Jul 2026 10:15:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DE5466035C;
+	Wed, 15 Jul 2026 10:15:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2134B11BD3BB3;
+	Wed, 15 Jul 2026 12:15:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784110511; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=6nZorEMvp7MChNt8EprrNo5x6LonYT52L40mYo/flmA=;
+	b=lCC8LRuqbqhF5+67zjnMiKX/JXW/dsD2ubzbGTG69nwblfYueupfLfmAAdWVmdtQsRTGMp
+	WHZASHShIpSqBhCKJqR7v6znY3535VIfSjn0yuGsnuJTZYaA0K6zpum2jOFV+PV0wiuJyJ
+	18CK63MEltNNUkXaySSOU6Mg3Wgrq9P75dlWRtODqCj9tEFTTQCJ/8rfK+TCYn89SBYwDf
+	FDAE2MJpUv8kvvhl7RV/6EOzbbCBFo4dZhQgrBPpo5hUiHokY3FQBMXcQUSJTZSo2ZMNXz
+	KXWq/Gwfey9KScx3SQBfMUMjMpViH3YYwQglZqj76Px1ngrZ9UV66NHcWwNHfw==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH net-next] net: phy: at803x: Use a helper to check for phy reset existence
 Date: Wed, 15 Jul 2026 12:13:54 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Maher Azzouzi <maherazz04@gmail.com>
-CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-	<netdev@vger.kernel.org>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <w@1wt.eu>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] esp: do not unref managed frag pages in
- esp_ssg_unref()
-Message-ID: <alddYsnyQXXU2E1I@secunet.com>
-References: <20260712170530.9807-1-maherazz04@gmail.com>
+Message-ID: <20260715101355.88536-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260712170530.9807-1-maherazz04@gmail.com>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Jul 12, 2026 at 06:05:30PM +0100, Maher Azzouzi wrote:
-> esp_ssg_unref() releases the page references held on the source
-> scatterlist after the AEAD operation completes.  It calls
-> skb_page_unref() on every frag page for an out-of-place transform
-> (req->src != req->dst), and in the error path of esp_output_tail()
-> (already_unref == true) on the request's own scatterlist.
-> 
-> This is wrong when the skb carries managed frags
-> (SKBFL_MANAGED_FRAG_REFS).  Managed frags are owned by a zerocopy ubuf
-> and the skb does not hold a per-frag page reference; io_uring SEND_ZC
-> with a registered buffer attaches the bvec pages this way via
-> io_sg_from_iter().  The rest of the stack honours this invariant:
-> skb_release_data() skips the per-frag unref when SKBFL_MANAGED_FRAG_REFS
-> is set, and skb_zcopy_managed() is the guard used at the other unref
-> sites.
-> 
-> esp_ssg_unref() is missing that guard, so for a managed-frag skb it
-> drops a page reference the skb never acquired.  This can underflow the
-> page reference count and free a page that is still in use.
-> 
-> Guard the function with skb_zcopy_managed() so both unref paths are
-> skipped for managed-frag skbs, matching skb_release_data().
-> 
-> Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
-> Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
-> Signed-off-by: Maher Azzouzi <maherazz04@gmail.com>
+The at803x family of devices are subjected to an errata that requires
+hard-reseting the PHY upon link change.
 
-Applied to the ipsec tree, thanks a lot!
+That can only work if there's a physical reset line wired to the PHY,
+which the driver checks by looking if there's a reset GPIO configured
+for the MDIO device.
+
+The reset may however be controlled through a reset controller, which
+isn't accounted for in the errata handling.
+
+Besides that, PHY drivers aren't expected to directly access the
+mdiodev's resources directly, let's therefore wrap this with a phylib
+helper, that uses a similar mdio helper to check for reset existence.
+
+This was found in preparation for bus-level resource management for
+better mdio scan support.
+
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/qcom/at803x.c | 2 +-
+ include/linux/mdio.h          | 5 +++++
+ include/linux/phy.h           | 5 +++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
+index ba4dc07752b6..6872dbf77856 100644
+--- a/drivers/net/phy/qcom/at803x.c
++++ b/drivers/net/phy/qcom/at803x.c
+@@ -537,7 +537,7 @@ static void at803x_link_change_notify(struct phy_device *phydev)
+ 	 * in the FIFO. In such cases, the FIFO enters an error mode it
+ 	 * cannot recover from by software.
+ 	 */
+-	if (phydev->state == PHY_NOLINK && phydev->mdio.reset_gpio) {
++	if (phydev->state == PHY_NOLINK && phy_device_has_reset(phydev)) {
+ 		struct at803x_context context;
+ 
+ 		at803x_context_save(phydev, &context);
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index 300805e66592..a7d9e3ae362a 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -86,6 +86,11 @@ static inline void *mdiodev_get_drvdata(struct mdio_device *mdio)
+ 	return dev_get_drvdata(&mdio->dev);
+ }
+ 
++static inline bool mdiodev_has_reset(struct mdio_device *mdio)
++{
++	return (mdio->reset_gpio || mdio->reset_ctrl);
++}
++
+ void mdio_device_free(struct mdio_device *mdiodev);
+ struct mdio_device *mdio_device_create(struct mii_bus *bus, int addr);
+ int mdio_device_register(struct mdio_device *mdiodev);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index fc680901275b..beff1d6fcc7c 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2231,6 +2231,11 @@ static inline void phy_device_reset(struct phy_device *phydev, int value)
+ 	mdio_device_reset(&phydev->mdio, value);
+ }
+ 
++static inline bool phy_device_has_reset(struct phy_device *phydev)
++{
++	return mdiodev_has_reset(&phydev->mdio);
++}
++
+ #define phydev_err(_phydev, format, args...)	\
+ 	dev_err(&_phydev->mdio.dev, format, ##args)
+ 
+-- 
+2.55.0
+
