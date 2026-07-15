@@ -1,167 +1,71 @@
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704093C73D9
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA675424D41
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784118548; cv=none; b=tElMabasfvH72l/PiYgGCqLG++v7r31iZTW/40e0U9XibfrvFnevk5mnDekNvk7F0UZNoW865z+optvtlfSscfQe+eQiN07k8B262Ht0ko/+I5kYqA8lMXYBvFH38y5xoU3rNPDy7DqVmHIBHVhnTdLRqKkNOQPuSEE5yv40dD4=
+	t=1784118557; cv=none; b=MYihab8PH/Kvo1qAw3FiFrPXv6kHqkYm7O5Af35tCdA+NqOaduW3qy9agFipT5CklplR6IDYSgTJUwL1i5QlvBN9lQyavok5nj18BEOlwgY5Lk2uDUEXfcoHL+M7iXYpz6xlhJABk7H7NKtAd4dYOlGeqrB8BnOPZ2yxnT+4ea0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784118548; c=relaxed/simple;
-	bh=OdruJZBa6oWspM/17dQouf+1Ety7FDflBlOYn7n3WbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=INpA+ymh0X8/RaGsHv6sRpeyItsORHh50XB9ElKOdkqem9gaMfp+fAjkYbYhtbgMJip6mBeIPoEpp1/qljfgBiSh823HCI9ECbnrFTHngJBzRF2qnhq2lZkfKl+2bM9Z/1nuxzeUTmDQiXUiFJpGjflkhzBVzoU28NUuBaqRW3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=S0GFZWFg; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1784118557; c=relaxed/simple;
+	bh=AVCeO1AiRmislj+12l/4ZjCvshaxkwNvXHhjCpyQtEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YMaJoFyY9+hzdD0QGLiFH9DGxCSUEmmzWYgBZJIGvIQZBItnOpp07uHVbjgkt4K8/kSJI66dS8RxHRVEOQyhfPtVHwI+cMSJvS6FKpuFqSYVf6+db+9njsIgeaRhW+uZMgas5v7lwuF1OG67vtbmbgbIPRdMa6oHelEgjGDNVgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibWP1me+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="S0GFZWFg"
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 96C543F581
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1784118542;
-	bh=Xwm+NMhrBU9VQqJsed9CGdyjA7mRZEQ6yrEUTZU5TnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=S0GFZWFg+GLqFFN/+a5qTvjv35xqceiFvesf+m5wDQ2Pzi2vYDKONCai7BzYEnZBA
-	 dR/TwWyisBh/w3oKAmjR1jlStj4IfhySqN32hGPutsHNIkzfmIwTSx4ztTv1CrJdde
-	 PubicYGAgZUhvAk1CkQGFmHMQiuKB8NgW4cVCZ+y5asrh/Wx4AqFCnQo+Zi6MPIQlx
-	 jBoZCUK6HUpSK7tCnY0Xh7KwSKCOD+bnNzNZdjG2sWLWhbAhxi+uYRXdf7BAGAVq+d
-	 mSK2MG1DuamjbkJ4A9A/S+1oyrOS9iURtuRYmY73a7lLqIqJWfvWZuQpFXqAszTxnm
-	 FZ6PHGQrPukAFZbFAesA/ARyuFtODFPse5I67/pKsHcLdDoDyBZEcOeDbcTzqx8v57
-	 bBJGg4+EDXhlcsAMDkCAA0P1USfHBbCp4GPzkH+9SMPI0wySSXk2YxEghkTK7j9rKK
-	 l8Xv38S++TCvDXEbweS1ngmgZV+qCOhBiEkFSw8Nh9vZHkdWuIkn461YuR/MFK+21o
-	 +763s6YXPalXemUU0BrfA+LcoFm7m/e4N9O50b5My+oLinzfOMfMooU0hQP7ITfhDb
-	 6wcc89e6O6YYDSLC9KTTeG7FM90ucyEkt0wLElnZFgVYNiiHhpvE4QhGG5ISJfuOpN
-	 J9jqgzmwtMQtZbohj2QuTUcA=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493bfc3b84aso26614015e9.0
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:29:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784118542; x=1784723342;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xwm+NMhrBU9VQqJsed9CGdyjA7mRZEQ6yrEUTZU5TnE=;
-        b=MBP016O6Mn6lyoue5z42z5Q2xtfyTt/5+e526XLp15cYvYdKu+cdqUNCxlUaOVUfd8
-         FuXOoPaI7dDJcEie3eZr9g3X0KSj3b1C9ZrSmcbyO3iW3+RluaeZh+ucXxItjBe0aQjF
-         W0J42a1Uv1aGfYTY5eGhBI+4tjAdGczauy/9hn+spjmoXp/fDgv7tdX2Zw3Iaao7ZBTz
-         uR5eakg4oJKLzkjkkpci/kMA/jv44ghzZ0SYG/pmE+Fu2DVjfkC4+NVAVrWfRSScHtpK
-         T/Q90TLwofrfrgaVkhMruoJEuC3IR810IE6NywbuJb6CfReCqHUN6mSSD5Vpz8Jn59HH
-         DsqQ==
-X-Gm-Message-State: AOJu0YyBzsGJLBQWKZV5h/cxxHEswgRhgSOHy0Uaf35WnQ7kQWs3UFev
-	P6vUc9FivY10sQlEtn3j4oJN2t4vNJhoJUlpX7XBsdaEfVFQrEIEt59ENhI5a+FrqVXGu3I87xy
-	tPTY99L5KAicZGC50TPxQE9dzUyIZNOEtFMJFtXxNZjhu0Tt22A/8xC+emFk1mMQP6euu1fT/uE
-	T0dx2Xlg==
-X-Gm-Gg: AfdE7ckuGdl6OEqZfOw+v9vehp6uHva/mXwJAL5W0i+UbGyaDRKsxsbmiLkaAukc50r
-	bC9KVx9iGFQmu8HL4b6zHkAl447bq/AW3525ByaoRG075vJcMIImo3fHSaUaib6YbqeIOJblhTT
-	yGGXLxJJu1oB6+jLy0OPdwpO1aRAB1FsXyhJtuxF60x5ASo7/GU2Xvaj6SRPOs3LQ5jV1uqOf2D
-	8K+1lNFI0Zhx4UMZmFjMPwd4d4LSXQz21phAzDWUcqAHBskt0rxOSqZk1TRiX1tPawMXSoOasJw
-	vsov+TapmhEnVfB8bQPQw5QwA8sXQEIJ88zgM2J0Dz9buqW2Aoe51eqLkQXdzEhWWN+rXtWmqHu
-	6smIMmHO9vYDnAWYgGjh4L3+M/h6S1AEL7/3dlp87iPxcTxUXo4/UdYyjB8X8WFKGyewuSUN3uO
-	vYxVNkAg==
-X-Received: by 2002:a05:600c:608d:b0:495:3e0d:ea3b with SMTP id 5b1f17b1804b1-4953e0ded3amr21982925e9.19.1784118542157;
-        Wed, 15 Jul 2026 05:29:02 -0700 (PDT)
-X-Received: by 2002:a05:600c:608d:b0:495:3e0d:ea3b with SMTP id 5b1f17b1804b1-4953e0ded3amr21982645e9.19.1784118541771;
-        Wed, 15 Jul 2026 05:29:01 -0700 (PDT)
-Received: from localhost (93-40-66-109.ip37.fastwebnet.it. [93.40.66.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4953c599049sm44206255e9.0.2026.07.15.05.29.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 05:29:01 -0700 (PDT)
-From: Alessio Faina <alessio.faina@canonical.com>
-To: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Subject: [PATCH net-next v3] selftests/net: Skip srv6_end_dt46_l3vpn_test if iproute2 too old
-Date: Wed, 15 Jul 2026 14:28:59 +0200
-Message-ID: <20260715122859.36177-1-alessio.faina@canonical.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibWP1me+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DAD1F000E9;
+	Wed, 15 Jul 2026 12:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784118556;
+	bh=vCwQnp8htPs9Eh/MP3qfpJZkYwRAjQYwif3i4a2+SwI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ibWP1me+C9M2e4B3J9HI6qQ9QDBKE7obHJnMhklhtLq72Ybk1GX2dMAkKHnTV/kyS
+	 Zql0VyMkW1z9lIrcUmfWXZOJwU6G4dbEC1icKFEseTjUuiTNbxTKVEs9VKB5B8TzTM
+	 DRRvws0FniLRxa1ei0fHlgkUALm7H6DFlhX7WAynb09XbzRschrKbUXD09fR9aW9eo
+	 0yX5DQxrde8Vq1F72MH7goOubyyWPIBiTRB6VDU3RNRI6AjsQ3Lz8lsKSPglC+o8va
+	 UfHQFV6VoM7NemgeICebjEfJYxqImB4BuDshnQ7qIPWjQjGyPjKrKlueNT7HVEyy5j
+	 G9qlIuT/wmEyg==
+Date: Wed, 15 Jul 2026 13:29:12 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org, pmenzel@molgen.mpg.de,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH iwl-next v3] ixgbe: E610: force phy link to get down when
+ interface is down
+Message-ID: <20260715122912.GA1922694@horms.kernel.org>
+References: <20260708100609.331976-1-jedrzej.jagielski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708100609.331976-1-jedrzej.jagielski@intel.com>
 
-In case iproute2 is older than version 5.14.0, released ~Sept 1, 2021,
-the End.DT46 support is not available and the host_vpn_tests test contained
-in the srv6_end_dt46_l3vpn_test.sh file is failing in some kernel backports.
-This is the result of those tests:
+On Wed, Jul 08, 2026 at 12:06:09PM +0200, Jedrzej Jagielski wrote:
+> For the E610 family, similarly to the E8xx adapters, the default behavior
+> is for the PHY link to remain up even when the corresponding OS interface
+> is down.
+> 
+> Add function setting down the PHY config IXGBE_ACI_PHY_ENA_LINK bit
+> what leads to disabling PHY link.
+> 
+> Now ixgbe_close() needs to share some of the ixgbe_watchdog_link_is_down
+> code so move the common part into the separate function.
+> 
+> Align functionality with the implementation of the ice driver.
+> 
+> Let user to configure link-down-on-close enablement through ethtool.
+> 
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+> ---
+> v2: apply Paul's notes
+> v3: use e_err
 
-################################################################################
-TEST SECTION: SRv6 VPN connectivity test among hosts in the same tenant
-################################################################################
-
-    TEST: IPv6 Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)  [ FAIL ]
-
-    TEST: IPv4 Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)  [ FAIL ]
-
-    TEST: IPv6 Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)  [ FAIL ]
-
-    TEST: IPv4 Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)  [ FAIL ]
-
-    TEST: IPv6 Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)  [ FAIL ]
-
-    TEST: IPv4 Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)  [ FAIL ]
-
-    TEST: IPv6 Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)  [ FAIL ]
-
-    TEST: IPv4 Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)  [ FAIL ]
-
-To amend this, check the current running iproute2 supports the required
-feature and, if not, just skip the entire test to avoid a failure.
-
-
-Signed-off-by: Alessio Faina <alessio.faina@canonical.com>
----
-v3:
- -  fix indentation in test_iproute2_supp_or_ksft_skip()
- -  fix subject to reflect full test suite skip
- -  https://lore.kernel.org/netdev/20260713095750.2671173-1-alessio.faina@canonical.com/
-v2: 
-	- skip entire test suite if iproute2 is too old
-v1: https://lore.kernel.org/netdev/20260708152745.2430714-1-alessio.faina@canonical.com/
-
- .../testing/selftests/net/srv6_end_dt46_l3vpn_test.sh  | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-index a5e959a080bb..50e37d3217ea 100755
---- a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
-@@ -536,6 +536,14 @@ host_vpn_isolation_tests()
- 	done
- }
- 
-+test_iproute2_supp_or_ksft_skip()
-+{
-+	if ! ip route add help 2>&1 | grep -qo "End.DT46"; then
-+		echo "SKIP: Missing SRv6 End.DT46 support in iproute2"
-+		exit "${ksft_skip}"
-+	fi
-+}
-+
- if [ "$(id -u)" -ne 0 ];then
- 	echo "SKIP: Need root privileges"
- 	exit $ksft_skip
-@@ -546,6 +554,8 @@ if [ ! -x "$(command -v ip)" ]; then
- 	exit $ksft_skip
- fi
- 
-+test_iproute2_supp_or_ksft_skip
-+
- modprobe vrf &>/dev/null
- if [ ! -e /proc/sys/net/vrf/strict_mode ]; then
-         echo "SKIP: vrf sysctl does not exist"
--- 
-2.43.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
