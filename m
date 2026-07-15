@@ -1,278 +1,89 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB14352009
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 19:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784144882; cv=pass; b=HxHjZ/9SrYH54XosPEzFOkDuyUn+C4f+lmngkuuJX6TuoO1e637YBJG/yBk+QDn6PnQ3nw041ShX8GPE6HZnDQNn9eOBlBeMtB59JmvU66oM2KfsSW+GqoVScaeDb2dBw4QFdMvRZGX/Rf95M8VYybB6XUZjDtDi9DboyxzRLXo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784144882; c=relaxed/simple;
-	bh=dIhi4VtC/oWi5aR4YNNcENq5DTcL/ZqsCcgfo1Mwf7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=secZgd9SBT7UMByLnvWf9A2+7jqOEzJczkEj353uV0G3DaJwRxTMElaVEqoaxqRw/9B3twIAlJ9iWJ+w+LCjskMI527JGvpCIFbIXqTsGc+mywOHhCOR2sBXKOyegcb/NmpDfm9ShNLdrR9R8VdHApzchMnOA/LBWFC5Gq4ekzs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ej+59QmY; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23B23624C2
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 20:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784146359; cv=none; b=sF0TEGAewXhluueUEhxI+SBTAUhgr/3M3jWhtwLOay/ss7nD0rh67+os9CxkAzhrTePNJ9mz262ZT68ws1QQsY8igO5vFXGjfv4GN2z86fnIBP0nDu1hHQnlv0QZiZ4/Q/D9SpMD61nHPtxuYx2TfCJupCtZRoahsB7OT1aX6h4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784146359; c=relaxed/simple;
+	bh=NEU0IPZL/pI02ZDJrDSUS3AZAlWSDRSodxbiU0Ch/Ok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CZpnzF5rsuiMnmQeEEVkKU8JH8SvP9HxCQEgljsrJKiZak0CbER6lYp2ZRqdthjVol1Dim4ffwrTYCZDdOX07jDy4kg17zzlvUDIrViN+QTAcx9JD1cxVT6EPTTjunxcTFEwcCW5tYsh571N3nCDcrfgXUbKQTept6dvidVWegE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PY/w8xO0; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ej+59QmY"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aeb59d54b1so2126500e87.1
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 12:48:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784144878; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AYeycE5w1QFjUqX2gB3nKO1bcXMAGUyhusNIPPoepZQdi3LarmeMVcABvFmHtH2LhX
-         N4qo7lQ2xlcll4wDEWxFoYuIaEhgHJRC3PZKwWvosnOGIfxqc4YyBaoLY8LsYHvdWbrw
-         p9Ekb1dT+s+/mhNyHQDyqse1/UnZbj3qcVX4IhgX5Pt5SpddnMK0sDTmQZZIhiDEMBOo
-         9/zRA+Rhb6kwZ87/LE7W/nwixkYJT9JXugWS0GGk88jF4hu/n0cyS+Gsb5up/uInj6R3
-         nvgc8IQlp0ZPPobIPRVslUOsdgu/Ergx0bdicHuoEayXsQ22uDqf3xk0caA5yZVe2oUO
-         wElw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dBVUuCUdZQyhhgMg9WgictR2p+yzKuTN2XYSx4iiXhM=;
-        fh=JI3h9u+zcTfgqfsrvii+M2LwYW6m91hHHyR7PjAVQZI=;
-        b=L+whIaLsavq9egw3vjvGINUSWs/4D99I0WgHzYRYl+BgAbQEEuhxOAfktKPgke+fnn
-         2oWvdvAJFd7aN6m02XbHdhhBQX2lGqYhhjcRnO+mWxMwagH4ZdCxSXZo2RQgkTUdwRar
-         8z/G1kSX6bPspJ2TibeA+SpDiSo1Hpcx7vNQeoOB1r6hEX6lhjxVdXAJG5itw4sgoz8L
-         DJI3w13JxralQ9KEzmxBTHkFUHClNtvEQWUlJpP5V35iOhe5cttBYxnjDliYI4Vg1yW7
-         iLUmUIwzcbjD3U79q9LEDLgrK4tVk1jJe57jwFv+3/yf9WO5jFfbpODc5/9nJ7XEHZes
-         Hejw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784144878; x=1784749678; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dBVUuCUdZQyhhgMg9WgictR2p+yzKuTN2XYSx4iiXhM=;
-        b=ej+59QmYVugP49g8Z/SHsgiC7rw74vyIAqEfbOBn6RcCsUnWpwVrdB6TwB//WWD3H+
-         0L66wnRPAAadp0x89kjBKnSR0PtCOlvTRMNzgO5bxpHaSAf1xX/lFr+5CPqLxCgggoVn
-         5BkM4kd75OIZ4j0ernBmROywfDK4sWnOhpBU+TXj7OsYZmoLOh3CuP/fWvvrTE0/uWx8
-         LQauP84XdlF3zncXZGXCf9MDIW+VH0jFhwua7MaEF7+14jMVbRftZEdG31FXK2btraU0
-         xSkDNZNVkYGCgDXofGrc/U6Y2d1WCNA4zbU+vDnBiFrzw97dhcUttBlv3Rkth4ir9KfK
-         w99w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784144878; x=1784749678;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dBVUuCUdZQyhhgMg9WgictR2p+yzKuTN2XYSx4iiXhM=;
-        b=LlJpUw7lq2MYdY8SVWVux6Hv7YERn/IrwUBEmxMjiLASaX/2psVNpOtE7OoId6f/2X
-         sTOD6Hr57oLPtPO4X3YHIXuMetKsO1Xah0reJ1ufgKMrfQ6VvALA4HmSRlX7a/uW4MHf
-         pywlWkGXwlc/DV2bYvJMIWyFFSxyG2nWJ7HPQRS+1v4Wfgz23XH7/rDjIbj7xeH+3CGf
-         nVUD1OENw+RqLIqyksExULfBJaIwOL0eGlIf8Nkal+ql8LeWj0wq3doVeJo6YrbmoBKF
-         Wk0WP8d0oOqz2/AjhTA/rhUXtk103T1P23rnlO2zayDnCUt+apqpJOpQY44WJ3UigUG6
-         Oyhw==
-X-Gm-Message-State: AOJu0Yx0j3zPEvEUncIg3yf0XLgLp7KvuTU0njq5yEpkaOF3zOSzTIuy
-	TWXSSDIamXpLdDhrbKqFkWojkfIJ7rV7/YMnYSapBKHj4t2g221qXTRHU0pPBmhPUEFlOtyqJ0s
-	+FOqUUXLoR5ztNmzkzaX7MU4SNMmESbI=
-X-Gm-Gg: AfdE7cmk22tryEA/t7CS4vw8eJiQgoZin9uteyEOqXM72S+CKGxZz52+Ay3No2pOXqq
-	AqvxNm2jZUdi5bE5f1i0TxOz+SNd5KWNI41o9OF1OkHHn30z+NraAc0zgh7mIEF4L3pX8Xmfuf1
-	6Zy30GYSEBMnuzQsiKTIb1ktbTrTyNnuKgMczKL2ynIl4VJIDyvyA1cK8vrhsQfXxUBmn/pnSfp
-	SOxXSX+nUVkhTIu2/UDiMsnlYeFzBzvFlJRnaW2djMmHLnIH4egyddGwiJpWXzoNjGTxw8seLxp
-	sLpIXrTWQuemiRlrNnCiXoNtdFkqEccr9xJeamaGsyJXOvuL9Z9cnWTgJsACn92i7zFeYO5PFWU
-	jQ0BoGyks01k=
-X-Received: by 2002:ac2:5d2b:0:b0:5ae:ba27:ee63 with SMTP id
- 2adb3069b0e04-5b023566499mr2872321e87.7.1784144878158; Wed, 15 Jul 2026
- 12:47:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PY/w8xO0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 80D624E40DEB;
+	Wed, 15 Jul 2026 20:12:32 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3BCA76035C;
+	Wed, 15 Jul 2026 20:12:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6547A11BD050A;
+	Wed, 15 Jul 2026 22:12:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784146351; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=KkARUnXsNW6sRxzZNVM/+JYilzPkvtrqJXeA6qHePxM=;
+	b=PY/w8xO0Vt/zWGUooVDVn457pjGt17dK3kBwRbmsLszgDhBUy+nJDbNUPhDPYHkvRuNonW
+	KQDHRJAdseaYAQMmzZOVjWI/3XRwgvEBO6vMpQRSFvpWL0dwAHY63S0NFcIIirslOrVTrq
+	Rb50aunF73nSmy886SiM9Kc/urczpSd/3Oe5XrdGEd8+TJYQpf+dhgLEACJmSNerfzUbun
+	fl+zayYtpgRmhipjk0QEhRVO/u5UA+NoaxewJnQAmT9aadng4nFTGPHmWxUog06vKU1vhS
+	Eo9nOb7zKYP5OxB2jOJzHQkMNN5qiNSDqa76UMaM7daktVdOZBFaFKxnmyKMbQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH net-next] net: phy: drop duplicated header include in mdio-device
+Date: Wed, 15 Jul 2026 22:12:12 +0200
+Message-ID: <20260715201213.206180-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714140722.111645-1-maciej.fijalkowski@intel.com> <alfaRiK4Ok3gS2Sm@boxer>
-In-Reply-To: <alfaRiK4Ok3gS2Sm@boxer>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 15 Jul 2026 21:47:18 +0200
-X-Gm-Features: AUfX_mztILQsk3Pzb_mQohCtF_THNHYIOvDqAf69uuijc1d4f5OraDRSpzp751U
-Message-ID: <CAL+tcoDtrDfTBo_EBjVvizkw=4CSzJvOjH+so03ppLu=GTKp4Q@mail.gmail.com>
-Subject: Re: [PATCH v3 net 0/6] xsk: fix AF_XDP multi-buffer Tx descriptor reclaim
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
-	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	bjorn@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jul 15, 2026 at 9:06=E2=80=AFPM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> On Tue, Jul 14, 2026 at 04:07:16PM +0200, Maciej Fijalkowski wrote:
->
-> Top posting!
->
-> I took a look at sashiko reports for this revision. I believe we can
-> continue the process and get human interview now (or everyone including m=
-e
-> are sick of this code). I would say the AI review evil has been
-> suppressed.
+During a tree-wide gpio include cleanup, the linux/gpio.h include was
+replaced with linux/gpio/consumer.h.
 
-Thank you, Maciej! I'll finish review all of them in these two days as
-quickly as possible.
+mdio-device.c was already including that header, resulting in a
+duplicated inclusion. Let's drop it.
 
-Thanks,
-Jason
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+Yet another small cleanup while looking at bus-scan improvements. If I
+find more I'll group them in a dedicated cleanup series, but I'll likely
+not look at this stuff in the coming days so I might as well send this
+one now, sorry for the low-value churn...
 
->
-> The need_wakeup issues which I brought up at 4/6 can be send as a
-> follow-up.
->
-> > v2: https://lore.kernel.org/netdev/20260710194424.84844-1-maciej.fijalk=
-owski@intel.com/
-> > v2->v3:
-> >
-> > * Added a preceding patch that sizes the pool-wide temporary Tx descrip=
-tor
-> >   array to the larger of the first Tx ring and the device's
-> >   xdp_zc_max_segs capability. This guarantees that the shared-UMEM path=
- can
-> >   inspect one maximum-sized valid packet even when the socket that crea=
-tes
-> >   the pool has a smaller Tx ring. Consequently, this patch now records =
-the
-> >   actual allocated size in pool->tx_descs_nentries rather than the firs=
-t
-> >   socket's Tx ring size.
-> >
-> > * Fixed a possible infinite retry loop when a shared-UMEM socket contai=
-ns
-> >   an incomplete multi-buffer packet. Pass the original descriptor budge=
-t
-> >   to xskq_cons_read_desc_batch() instead of the number of descriptors
-> >   currently available, so the parser can distinguish producer exhaustio=
-n
-> >   from actual budget exhaustion.
-> >
-> > * Moved the completion-ring space check to the common batched Tx path, =
-so
-> >   it is performed exactly once for both singular and shared-SG pools. K=
-eep
-> >   the legacy shared non-SG fallback outside this handling, as it reserv=
-es
-> >   completion entries one descriptor at a time.
-> >
-> > * Reworked xsk_tx_peek_release_desc_batch() to use a common singular/sh=
-ared
-> >   batched flow. Resolve an empty Tx socket list before checking CQ spac=
-e,
-> >   select the shared-SG walker through an explicit shared-pool condition=
-,
-> >   and commit the resulting batch through one common path.
-> >
-> > * Simplified xsk_tx_commit_batch() by moving the cached CQ producer
-> >   snapshot into the helper instead of passing it from each caller.
-> >
-> > v1: https://lore.kernel.org/netdev/20260623133240.1048434-1-maciej.fija=
-lkowski@intel.com/
-> > v1->v2:
-> >
-> > * Reduced the series from seven to five patches by squashing the three
-> >   generic Tx drain and reclaim changes into a single patch. The resulti=
-ng
-> >   patch handles overflow, invalid descriptors in the middle of a packet=
-,
-> >   and reclaim of the offending descriptor as one coherent change. This
-> >   so it will be less likely to have things reported by Sashiko that are
-> >   fixed in later commits;
-> >
-> > * Reworked the zero-copy implementation substantially:
-> >   * removed the bind-transition mechanism, including tx_share_pending,
-> >     xp_prepare_xsk_tx_share(), xp_finish_xsk_tx_share(),
-> >     synchronize_net(), and the transient bind() -EAGAIN behavior;
-> >   * added packet-framed parsing for shared-UMEM SG pools, allowing
-> >     per-socket drain state to be resumed by both singular and shared Tx
-> >     paths;
-> >   * retained the legacy one-descriptor fallback for shared non-SG pools=
-;
-> >   * preserved the existing per-socket fairness quota while allowing the
-> >     shared walker to consume multiple complete packets and continue
-> >     filling the requested batch across fairness rounds;
-> >   * made the fairness quota large enough to process one maximum-sized
-> >     valid multi-buffer packet;
-> >   * extended the parser result with consumed-descriptor and
-> >     budget-limited accounting needed by the shared walker;
-> >   * recorded the size of the pool's temporary Tx descriptor array and
-> >     capped batch processing at that size;
-> >   * kept reclaim-only descriptors ordered after preceding driver-visibl=
-e
-> >     descriptors and protected the delayed-reclaim state with
-> >     READ_ONCE()/WRITE_ONCE().
-> >
-> > * Rewrote the zero-copy patch description to cover oversized packets,
-> >   continuation draining across calls, shared-UMEM SG handling, and CQ
-> >   publication ordering.
-> >
-> > * Corrected the too-many-frags selftest description to state that the
-> >   invalid packet contains max_frags + 1 fragments and terminates at an
-> >   explicit packet boundary.
-> >
-> >
-> > Hi,
-> >
-> > This series fixes several AF_XDP multi-buffer Tx paths where descriptor=
-s
-> > consumed from the Tx ring are not consistently returned to userspace
-> > through the completion ring when the packet is later dropped as invalid=
-.
-> >
-> > The affected cases are invalid or oversized multi-buffer Tx packets in
-> > both the generic and zero-copy paths. In these cases, the kernel can
-> > consume one or more Tx descriptors while building or validating a
-> > multi-buffer packet, then drop the packet before it reaches the device.
-> > Userspace still owns the UMEM buffers only after the corresponding
-> > addresses are returned through the CQ. Missing completions therefore
-> > make userspace lose track of those buffers.
-> >
-> > The generic path fixes cover following related cases:
-> > * partially built multi-buffer skbs dropped by xsk_drop_skb();
-> >   continuation descriptors left in the Tx ring after xsk_build_skb()
-> >   reports overflow;
-> > * invalid descriptors encountered in the middle of a multi-buffer
-> >   packet, including the offending invalid descriptor itself.
-> >
-> > The zero-copy path is handled separately. The batched Tx parser now
-> > distinguishes descriptors that can be passed to the driver from
-> > descriptors that are consumed only because they belong to an invalid
-> > multi-buffer packet. Reclaim-only descriptors are written to the CQ
-> > address area and published in completion order, after any earlier
-> > driver-visible Tx descriptors.
-> >
-> > The last two patches update xskxceiver so the tests account invalid
-> > multi-buffer Tx packets as descriptors that must be reclaimed, while
-> > still not expecting those invalid packets on the Rx side.
-> >
-> > This is a follow-up to Jason's changes [0] which were addressing generi=
-c
-> > xmit only and this set allows me to pass full xskxceiver test suite run
-> > against ice driver.
-> >
-> > Thanks,
-> > Maciej
-> >
-> > [0]: https://lore.kernel.org/netdev/20260520004244.55663-1-kerneljasonx=
-ing@gmail.com/
-> >
-> >
-> > Jason Xing (2):
-> >   xsk: fix buffer leak in xsk_drop_skb() for AF_XDP multi-buffer Tx
-> >   xsk: drain continuation descs after overflow in xsk_build_skb()
-> >
-> > Maciej Fijalkowski (4):
-> >   xsk: provide sufficient space in pool->tx_descs
-> >   xsk: reclaim invalid multi-buffer Tx descs in ZC path
-> >   selftests/xsk: fix too-many-frags multi-buffer Tx test
-> >   selftests/xsk: account invalid multi-buffer Tx descriptors
-> >
-> >  include/net/xdp_sock.h                        |   1 +
-> >  include/net/xsk_buff_pool.h                   |   9 +-
-> >  net/xdp/xsk.c                                 | 254 ++++++++++++++++--
-> >  net/xdp/xsk_buff_pool.c                       |  13 +-
-> >  net/xdp/xsk_queue.h                           |  76 ++++--
-> >  .../selftests/bpf/prog_tests/test_xsk.c       |  48 ++--
-> >  6 files changed, 329 insertions(+), 72 deletions(-)
-> >
-> > --
-> > 2.43.0
-> >
+ drivers/net/phy/mdio_device.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/phy/mdio_device.c b/drivers/net/phy/mdio_device.c
+index a18263d5bb02..06151f207134 100644
+--- a/drivers/net/phy/mdio_device.c
++++ b/drivers/net/phy/mdio_device.c
+@@ -9,7 +9,6 @@
+ #include <linux/delay.h>
+ #include <linux/errno.h>
+ #include <linux/gpio/consumer.h>
+-#include <linux/gpio/consumer.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+-- 
+2.55.0
+
