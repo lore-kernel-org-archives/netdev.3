@@ -1,35 +1,35 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FF942BC50;
-	Wed, 15 Jul 2026 00:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546D02C9D;
+	Wed, 15 Jul 2026 00:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784073742; cv=none; b=ix2Sgx+sbVGPJ/RfAcCBcxUcbxqQ/UfDCD8f6e0JZ5uEzBKln5NgdWKOokrjV4epVMCsJ27tBgB4eKBdXqttkiRhOhjDPv4Fd0QHHcgCJRIvQJBn7+POctrMCmcHm2n01BVu+e+y0eRC9ZMOmmYNr9IUCOxwMM3DDwOM2Zdmu1c=
+	t=1784074125; cv=none; b=s5OVKBimCa8Awpq/1IQ6+lHBJwQJwhqeCV2XwvksjiL29sIE7tfTFCAJ9dNwP2LubCURXP094pFShhdA/hKS/C5CTI2gXHPGpyGg0M4CuyH5ga3mc2I8UcmYjAqchttaH9zZQ+UUWidLO9mlEYjD2804fZGryODSlCDoyScXSjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784073742; c=relaxed/simple;
-	bh=TuProlNK/Uv3DE8FKBMfInHmc8gDxlSQsdyUlTsvyGQ=;
+	s=arc-20240116; t=1784074125; c=relaxed/simple;
+	bh=HhTxsjwPf9ilQD9fx9qSHKloUaHkCZSe8NEirijYkI0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNkklN88oXG991lt8qJQlA602BFm5r20Fb/02zD1wxPZp+IfA2puvhr/9NqBMuIUyEXFaDyyhcYjqHX68Z0jvnIj6Fs4X5NBCQV7HNxoaY4H9G+jraEvtlvym271xqKPmEdroDdMxx2WODgyFWaZtOvX/xZtO7DP0w/5AH8R41o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3R+jcue0; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=kR5y6oERpJd1wKEbsMjOZYvYb7OYAzKtk5KVKx4la5EzcIoKNIKzLHmtg8HRYI2ir/8PnXLcxjPCWqH+0OpKTs81jgBG256so0YrgnMeUmyYWfpTzfa9cWKJQY2F/GcDPrIkM9gib1/IlX8yPlbZNtHGEojbHWY1bffG22Okbco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4Islqyk2; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3R+jcue0"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4Islqyk2"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pTvkOjlns9RFkv0+vSukvxooP890RSLYU4Y9WY59W6I=; b=3R+jcue0ePU832L7UAHKfkc6po
-	64iYXMvt4SOWi7sr2IkkXoTQQdEt8CLemAItqo8M18NVp99tIf/T73nbm3ksuv+/ITSet9mHP5jt/
-	hdhayqXQzCSW7C0XotGiK2kVPyI8MKJNCcjP0CJY+oYmuJcqEOGFHFiMlnycmA3QcJYI=;
+	bh=+8CdzOLF4Z7ievgNWligxSX6Ig48hMUY6P+71lmcb/U=; b=4Islqyk2nyTlkl2gpDqKFmIDd+
+	Zxv3gjGl93DFSbaX5qRBw7BW5pcPM2g6MYOdmYN54jaSNb47FxqU+BdIWQfLCHfLSGtRobpuGcGqo
+	bK21NAKIJRrgsDerAsGbQoVto7KnP0QWJd0xCjsd775lQGGHHw2MDlPYfQBSoSEP5ILI=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wjn4h-00CGm1-Mu; Wed, 15 Jul 2026 02:02:07 +0200
-Date: Wed, 15 Jul 2026 02:02:07 +0200
+	id 1wjnAu-00CGoH-4a; Wed, 15 Jul 2026 02:08:32 +0200
+Date: Wed, 15 Jul 2026 02:08:32 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Luke Howard <lukeh@padl.com>
+To: Luke Howard <lukeh@padl.com>, Jonas Gorski <jonas.gorski@gmail.com>
 Cc: Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -43,11 +43,11 @@ Cc: Vladimir Oltean <olteanv@gmail.com>,
 	Christoph Mellauner <christoph.mellauner@joyned.at>,
 	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 3/3] net: dsa: mv88e6xxx: don't clip ATU Move
- ToPort delete sentinel
-Message-ID: <b925cbe2-bb34-4f63-b4b2-657babdf63ed@lunn.ch>
+Subject: Re: [PATCH net v3 2/3] net: dsa: mv88e6xxx: flush the ATU when the
+ hash algorithm changes
+Message-ID: <a607d5f5-a315-493c-971c-d5e8cab33941@lunn.ch>
 References: <20260715-mv88e6x41-fixes-v3-0-9a8702b27ecc@padl.com>
- <20260715-mv88e6x41-fixes-v3-3-9a8702b27ecc@padl.com>
+ <20260715-mv88e6x41-fixes-v3-2-9a8702b27ecc@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,26 +56,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260715-mv88e6x41-fixes-v3-3-9a8702b27ecc@padl.com>
+In-Reply-To: <20260715-mv88e6x41-fixes-v3-2-9a8702b27ecc@padl.com>
 
-On Wed, Jul 15, 2026 at 09:29:43AM +1000, Luke Howard wrote:
-> mv88e6xxx_g1_atu_data_write() masked the port vector, which is correct
-> for a load operation (where portvec is a bitmap) but wrong for a move,
-> where the portvec encodes a ToPort/FromPort pair.
+On Wed, Jul 15, 2026 at 09:29:42AM +1000, Luke Howard wrote:
+> Changing the ATU hash algorithm invalidates existing entries: those
+> loaded under the previous algorithm end up in different bins and read
+> back corrupted.
 > 
-> An all-ones ToPort value is the sentinel used to delete an entry. Chips
-> with fewer than eight ports (e.g. 88E6141) clipped this value, turning a
-> delete into a move (to port 3 on the 6141/6341). Other chips such as
-> the 7-port 88E6352 were unaffected by chance.
-> 
-> Fix this by moving the mv88e6xxx_port_mask() mask into
-> mv88e6xxx_g1_atu_loadpurge(), where the portvec always represents a
-> bitmap; the move path then writes its ToPort/FromPort pair unmasked.
-> 
-> Fixes: e606ca36bbf2 ("net: dsa: mv88e6xxx: rework ATU Remove")
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Luke Howard <lukeh@padl.com>
+> Flush the ATU whenever the hash algorithm is changed through devlink
+> and reload the default broadcast entries. Per-VLAN ATU entries and
+> any static addresses are not replayed, so the hash must be selected
+> before the FDB or MDB are configured.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Hi Jonas
 
-    Andrew
+For v2 you said you thought this was a bit of a foot gun. I suggested
+maybe checking all user ports are admin down. What do you think?
+
+      Thanks
+	Andrew
+
