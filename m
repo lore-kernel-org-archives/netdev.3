@@ -1,186 +1,188 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEE337E5C6
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D2848A2A7
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784129448; cv=pass; b=MQgnHWw0w/duZvG4UBfEPQAFRRutRaMr/8zxtUlEdYfdVaZf7ad08vf5JPXvlwMZYgwkgkIt+tYEWHGmpxRxgiSUYx+msKowNb9BZbIRcEtNR7E7gnyxCaK7qUXHDhi5Gh6Mw0gqJvu6li2Cck5bGcOkOIo2c78OZnc02WzXekg=
+	t=1784129450; cv=pass; b=JKhl9QZSMk8Dag0Z1FibVKs/ASXQNk4h0xMh8uNgxTNpcCB1Paps32gVGkCiYs9KkxU4dfiGg1AQeZaiivkacEfZR8S5g6n6/ZDrHAegPga1JMHizmXvsftGWbOv/qlgA1HJfMeXJD7mvKfRVjIC+EHyhu6UnmHEt1yjgOJeVVs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784129448; c=relaxed/simple;
-	bh=lXXjOHrd0s8yXav1J7kav1XI5xDGhAIIbsthcPw0y7w=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=rJFIs8CMY9ilb1Q5GV1oCrmAyayi9FWD0yAwJOqMEekqw8e2zDUbAf8jPluwNuACYSzlajEnubFBc5ax4qfN7ozRr3p4eU1rpYiwDkBDudPiYxlwo+Pf2w6BCuGxEqos8XXj9q5V3ldD2gbztPy8QmRWElZQwED2KoV41ycrNAo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WcMlB2Wu; arc=pass smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784129450; c=relaxed/simple;
+	bh=a5mdkI2L/Dbv1+W+Y3MrrreSzCjtlRhjsUjoxEMa4d0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XKK88NCO9fabTiBVyavuA/P80tMSZLy4esVrQPsnwKqIC74bLVuUz28MF8/UVSAv+4I7tKVIfynA8izy623VsXX4gpES3tBvvCnb/JrDCSO42f3OntQR41vtjiyfvonm53cB2HpaqLKPkQ50opDi4h1nPMxepzygbwPrdF6RKl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wwqk7p4s; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WcMlB2Wu"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15f025146dso73200666b.2
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 08:30:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784129445; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wwqk7p4s"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e533aacf2so127606585a.2
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 08:30:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784129448; cv=none;
         d=google.com; s=arc-20260327;
-        b=rz49LkiciEvk/8C6q1Phx50uDWUBCEXxXFR1BrNgeI/mjVOgPT/inRKTbCfxBJRLoj
-         XcQGaVzu+P+hhXjsOK1cssy2bgTqHatxAdR/tzaTUkvB5OAiVrlNBX2MR8y3eSzRMWfY
-         nQ2X3ah4JYxb+4cPcJ4xUCgR4tmr7yWGefDWDu3g4tcyTg13CDlTm95z3OvOjc/dHvmh
-         CExcwKLoC2BaaqBi8FWlqT8frOQ6/lQI0kI3dv96nW14Hh0dJem8UfqeRJiCMyxjOxEA
-         oQGr3fd+9ROUuFjI5jNtvHQWdnu9jAQGvE4fARWkYwSyB+WDL4oEh1RbPqn3wGBovqBE
-         taYg==
+        b=nV9xrkYeL6FlOzEREuZw/dSR3OCWeSwuUVZhNFEd7CB6Uj6TzogQf9K3AXBaSSwn7k
+         HXO5TasJ7S+kQazxYU3eSwBjcCIgWsjzLn8lIfOE4K6WapuswAsqV5/KckirfNSGMisN
+         7A+faUOSDxCAVDEdB33Q5ZnabzfBnzh2jLUjeVLxoSXcFKvn+4Npn+r6g4+HSos8tHVH
+         dDhCSiHzMywvXZ+DigNkJ5RP3c5xxQjLb8DTHA3TejRIIoGIXbeolTmo/tMwEgDutHAr
+         YB64Zq6DiSzNVg3RAZjkXygnDtgVASpghMDN9R0a/qXMQghfEMCyODfVkdKzPaomWhtw
+         3x5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=iJyvWzKMMFmmRLKtpG6KcfWT8Jk8RWHQJwrqiRAxiqw=;
-        fh=MK8ndxV1vYU4erojvdwqklFRN3kK3/r/tHEe7+X9c6Q=;
-        b=qqBlEfAeS4K2avHiDpsPOvu3Q4CswHPfMq9lRso7Yj5kbiky5QE8Ww2Va35cUmwNaa
-         08dazy/cUfEPVEvoF1nfXvkhA4xmEsZY28Vftcuoq8uVpfKbmoodaOMDx6OeJ1yHFbUq
-         wHn3IYpg6RrwBk5V1E3P0gD5htxrjy6xVbIZayH9oVsDGk92jgksgbFzoDr1bX9AQJfm
-         6jzVomalG96/UbJlCpADc6LUhWR0t6tFXpqrXUJ0Sz1Mk+iH0nUYCcUcurd0OwJABC+W
-         yW5bj6iRql8eeWpIxnp6uwqOQ1sUPLDzzOpqq/xFpx0dN5XQWVaQGEzRpk96wBgFoF6Z
-         cxEg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YVV2ZbfQNvN6Fg6uxe70CkyOoUGkDw0WBSeQAqc4p6s=;
+        fh=M+vdSeqmnik+Pbwv3aA2xStlam2/wtnvfiAzxZw31YI=;
+        b=Rybrbp8m1FfzZ0Q6eBHPIq22Pn5gIlYHXA/Rhj0ag+KA99Cf3jbB+HkZukXD2ZGefO
+         IdwIARzT4AaaLXEwEJXnpwxKzWMpOqCv7ttRDgqFqlShU0sG6nq9u19rPKqfE5DuKNm2
+         ZJ9C1nJFjPLozM/V2uRELggcSrxlbzx2ovwyxw3pZaeGh/yrhXyRX33QmTmb0BWrwMAk
+         qjiqLrQyyRT3V0ri6i/15vX20+ScunEdS1pEa+xhok3wHqbpz45b1wMWw7n01DFP0Epi
+         OCKiVnd2vMpqWZoqHV/nVjjGAwcKc1THn5hV0Y7gsRW/mnyanKiPYZyAmPbAwJ5wqKo4
+         Vcwg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784129445; x=1784734245; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iJyvWzKMMFmmRLKtpG6KcfWT8Jk8RWHQJwrqiRAxiqw=;
-        b=WcMlB2WuUYz7L5u+DGZud16sGA6Tt1tJHOY7VnbIdK31TawC48+r6zKLoGvvVRKg86
-         9TA0xAdgL8l8m9uyur7INuADPEJSNuIS9Qqvr4RszTi/Ik3f2cap/tY8moyGknuVIYsC
-         YSYaoqiFmetvDSoQsw7ouGZ7xf/odj/f7JxSgBKz2fS4/feNIts2nugClfUiTO6+YMNx
-         yATzON1oniSBh/OPchMd4aP3pJPKQzWxQaaS0x9iWDk2IbvApBu6yofyH8KK6nr7OwGl
-         hwqVY/ZQ6f6x8bMbDOy2w9zVLDzQ+88/09Bp4OhtwIbs5w/RRF/Nbi19Dtv5y9dBUL/f
-         xiSw==
+        d=google.com; s=20251104; t=1784129448; x=1784734248; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YVV2ZbfQNvN6Fg6uxe70CkyOoUGkDw0WBSeQAqc4p6s=;
+        b=Wwqk7p4sYWz/0i+KkwtuzmR5u49LxegFq1+corwSUFTk6KO9ovfkBuV+ftmGO+QD6W
+         GtNhj0+xHsOT41Gm84Dg7XSsOm2d8b6WW1jX1R5raIk+oSDfTJFRXn2Fz+TMvjLp3D9W
+         RIqaEw6auog+LdjIIQGkjwRCY9JZK3pBydMPilp4tOonZNyaoB5bo027nyk9+pxgJeq8
+         hHLm8yN5FvgizY/cTKxlmIxbzAYlVvKFTW20O2ZDIh1SgifIqqhSH7/Wj06m2io363Nl
+         JKkXelCsgmfIKzdqbMkRu3oMusxwObiYu/ZUxIVzDYBY9FWFfEVzuzYZDHrE5N9R/VMc
+         Lqrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784129445; x=1784734245;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=iJyvWzKMMFmmRLKtpG6KcfWT8Jk8RWHQJwrqiRAxiqw=;
-        b=Xnu5vP8fjrzpTc9lDJhn7O0LZkZmd8m/pa/x3zLfNj1I0CqGXxlMXoJTZc6xktncjw
-         yvatoPxWCt7nORPY4kQUep3EdvX7NVv9a2Qe5fDMWz2uKnOfuiMb5qCovHwYKrh58fl7
-         JtHQtpzES0Qej6twAH/jtfFgE86yJxfxQszq+M4kd+qQ70si4jguNtgSW7AhNAmZ7R7S
-         MTWKozrKYeaZ61pRPkvEavP8Uk/diodw2sTuEM5SnMRq8MNm/VWmemcTUvbAuqy/xM8Y
-         fczcgeAWrIGC26NMJX20YLn6LtPne+jR6PKUijEwud9Sy0WUcRNlrPylsSIQtuZUTx84
-         aiqg==
-X-Gm-Message-State: AOJu0Yw0l9xdgfdHVXrBL4anmF/ainFpWt7aGA79pPdeIwS98nqQW4Bt
-	k5g2o3HTLObflh/wspjSNx7qBMlQkMUpFF9md5jVkmTiqc4OdFd4+x+ZsKFA+PEM98bEdh8/9hB
-	Ul9GPu3jSkVnQxyjsiPOnFLWhh6lta7QH3YNzqpg=
-X-Gm-Gg: AfdE7clhWXwfMUph08OGYyOKb5SKhjj7pRg5NhNDdQuumjwJdjDhpzkA+7vJTpSXdcM
-	/QaKmyLle4rhpYjOgvqmV/aJkfIAG+YJcD0xoIzEsBJKurfQs6CZvjb7mtnA8VmUFkrLj+YZt00
-	9qjLKChjVlCfeTuMS9asUnmdL0GWWPJ0HWuhtRR7hEOO6I+0Le8HnOKByw2PkvFB+x23prQHTYF
-	yDY+iuViBJ7M/PPY7pL1IrUBQTw4bDxrSZqmjKUPmhOHfbTHhyMWVn8OitMHoWlsiaofX8=
-X-Received: by 2002:a17:907:940b:b0:c15:e277:c550 with SMTP id
- a640c23a62f3a-c161ea025c9mr536614866b.5.1784129445240; Wed, 15 Jul 2026
- 08:30:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784129448; x=1784734248;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YVV2ZbfQNvN6Fg6uxe70CkyOoUGkDw0WBSeQAqc4p6s=;
+        b=CJ3iVXxELxgJ+JVBgRFu+Pghm6uWmfTwhHZif/yJD6QQaTc6GvJBWpBS38Hat05Tf0
+         kJjaNh/j20qiMuhFPLrU7Ya+1FvpcdZXuiTyHhCDrOqdxEyJpuzKv1TY7rkA+MwXsQg0
+         QpOWFVxit6ByHY8r+fhicWlSlzuLhEghC3yw1as9QkUjOsvASWlQ1sirSY3vtHWSnbNE
+         PXloMX+yO1U9cb7Sf7bC+eisO5Q67ATzAxmnXX/1QkLXRL4PHdVrvQomjusQrRLBQLeZ
+         CMhxIVh3W1uMsve8sSgeF0zj1AngMdFWBdpDikU0PaWCYxX999rYaUA40WQJuGmGqDVJ
+         nqcw==
+X-Gm-Message-State: AOJu0YyxPXZkupDhIUeuPSltvpHj3NUuKN4t2zgHa4sDs6E+HQc4FIjL
+	cky1+KUi6JnFiK+a5W0o+ySdAPXEH05OklZ/3FABJer2f4DvttysdzzykbMoLA6FzGBgXcxEVkX
+	URcmT6SM9m0RVZ///UEhcwJjNHEMHX5eHEd1Bogqb
+X-Gm-Gg: AfdE7clHp0ujucp1dD7ocnn8J8bd4HTY99R+U1GLTJvPKdbc4ulDvfNh8IABbi0xbb7
+	EHFGNewjzEbG1FQwQHLxo7YQJbJSXg0eCr2S2Xu8UlGAbG1Am4pN+dAeP4LSnpuUPtcxFkub1w4
+	onM5Bfo3kOuhvuINLwiuFuCNrR4IaR02qT0MrC2z0Lk4r1R3tGzie2WPc5+6YzZwZ1GmLkqAtYu
+	KMjrugNmWkMEGoFjQOKIQ69gbVmpzvWVayB2ZtMXCCb4UvW7ktI39Oyr2eMHWDKGPGnh8F3LsDb
+	xYck6wWgNjmpynRF2tURmE4SoVtKtZgJwW2QN+Teic5U2IgC5Nz7PIJQA9TFewDMGNdjPijy3ft
+	god8xHekYi78vKmVvtJusvw==
+X-Received: by 2002:a05:622a:55:b0:51c:17cd:1fe8 with SMTP id
+ d75a77b69052e-51cbf0e6241mr163158791cf.33.1784129447058; Wed, 15 Jul 2026
+ 08:30:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Muhammad Ziad <muhzi100@gmail.com>
-Date: Wed, 15 Jul 2026 17:30:42 +0200
-X-Gm-Features: AUfX_mzM_jJdwrB2qnWedvlUdNgcANghpAbq2fnBKMu_EJg0bTzDt3D1guNYbNE
-Message-ID: <CAOAwikA60AYKdFr_UDLyja3oU4hqyAE7uFZWqum5uRdaQsgRYg@mail.gmail.com>
-Subject: ipv4: icmp: icmp_route_lookup() relookups pick wrong netdev with
- policy routing + strict rp_filter
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
+References: <20260715145328.54597-1-leon.hwang@linux.dev> <20260715145328.54597-2-leon.hwang@linux.dev>
+ <CANn89iLyeAPNV2VHTM3w0-zpzjZNFy3aJDsVUERYyniLN4ub7A@mail.gmail.com> <2dc3d52b-ce4a-411d-9c30-934318ee98b0@linux.dev>
+In-Reply-To: <2dc3d52b-ce4a-411d-9c30-934318ee98b0@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 15 Jul 2026 17:30:35 +0200
+X-Gm-Features: AUfX_mzy7J4tzxjjlmG1HjDmg9aSDxMDxT9_M1uN2gCzgz8_R9SHMTPEMeYAqpY
+Message-ID: <CANn89iLV9pyCKU4vyNMzW5FFv4=Xcq_pgvZaFhzJHAAbCK0h7w@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next v2 1/2] tcp: Add net.ipv4.tcp_purge_receive_queue
+ sysctl
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Ido Schimmel <idosch@nvidia.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ij@kernel.org>, 
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, Yung Chih Su <yuuchihsu@gmail.com>, 
+	Wyatt Feng <bronzed_45_vested@icloud.com>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Wed, Jul 15, 2026 at 5:26=E2=80=AFPM Leon Hwang <leon.hwang@linux.dev> w=
+rote:
+>
+> On 2026/7/15 23:15, Eric Dumazet wrote:
+> > On Wed, Jul 15, 2026 at 4:54=E2=80=AFPM Leon Hwang <leon.hwang@linux.de=
+v> wrote:
+>
+> [...]
+>
+> >> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> >> index 61045a8886e4..4f1027173e95 100644
+> >> --- a/net/ipv4/tcp_input.c
+> >> +++ b/net/ipv4/tcp_input.c
+> >> @@ -4853,6 +4853,7 @@ void tcp_done_with_error(struct sock *sk, int er=
+r)
+> >>  /* When we get a reset we do this. */
+> >>  void tcp_reset(struct sock *sk, struct sk_buff *skb)
+> >>  {
+> >> +       const struct net *net =3D sock_net(sk);
+> >>         int err;
+> >>
+> >>         trace_tcp_receive_reset(sk);
+> >> @@ -4869,6 +4870,27 @@ void tcp_reset(struct sock *sk, struct sk_buff =
+*skb)
+> >>                 err =3D ECONNREFUSED;
+> >>                 break;
+> >>         case TCP_CLOSE_WAIT:
+> >> +               /* RFC9293 3.10.7.4. Other States
+> >> +                *   Second, check the RST bit:
+> >> +                *     CLOSE-WAIT STATE
+> >> +                *
+> >> +                * If the RST bit is set, then any outstanding RECEIVE=
+s and
+> >> +                * SEND should receive "reset" responses.  All segment=
+ queues
+> >> +                * should be flushed.  Users should also receive an un=
+solicited
+> >> +                * general "connection reset" signal.  Enter the CLOSE=
+D state,
+> >> +                * delete the TCB, and return.
+> >> +                *
+> >> +                * If net.ipv4.tcp_purge_receive_queue is enabled,
+> >> +                * sk_receive_queue will be flushed too.
+> >> +                */
+> >> +               if (unlikely(READ_ONCE(net->ipv4.sysctl_tcp_purge_rece=
+ive_queue))) {
+> >> +                       struct tcp_sock *tp =3D tcp_sk(sk);
+> >> +
+> >> +                       skb_queue_purge(&sk->sk_receive_queue);
+> >> +                       WRITE_ONCE(tp->copied_seq, tp->rcv_nxt);
+> >> +                       WRITE_ONCE(tp->urg_data, 0);
+> >> +                       sk_set_peek_off(sk, -1);
+> >> +               }
+> >>                 err =3D EPIPE;
+> >>                 break;
+> >>         case TCP_CLOSE:
+> >> --
+> >> 2.55.0
+> >>
+> >
+> > My thoughts are:
+> >
+> > out_of_order_queue has been forgotten. skbs could be there and still
+> > 'block devmem'
+> >
+> > WRITE_ONCE(tp->copied_seq, tp->rcv_nxt) is certainly wrong, because
+> > read() will return 0, instead of -1 (errno =3D EPIPE or ECONNRESET)
+> > So the application will not know a RST was received :/
+> >
+> > I think that BSD and linux implementations have historically retained
+> > acknowledged,
+> > buffered receive data upon RST to allow applications to drain data
+> > already ACKed prior to the reset.
+> >
+> > Adding a narrow sysctl specifically for CLOSE_WAIT creates
+> > inconsistent behavior across TCP states.
+>
+>
+> Got it. I won't pursue this sysctl approach in the future. Thanks for
+> the review.
 
-There appears to be a bug in mainline Linux in ICMP reverse-path
-relookup logic inside icmp_route_lookup() (called by __icmp_send())
-when strict rp_filter setting is in place.
-
-When Linux forwards a packet between two interfaces and needs to
-generate an ICMP error, icmp_route_lookup() performs a "secondary"
-reverse-path lookup to find a suitable route back towards the original
-source via ip_route_input(). To simulate the reverse path, the kernel
-derives the incoming netdev by calling ip_route_output_key() with a
-decoy flow that has *only* daddr assigned in it:
-
-    struct flowi4 fl4_2 = {};
-    fl4_2.daddr = fl4_dec.saddr;
-    rt2 = ip_route_output_key(net, &fl4_2); /* no saddr */
-    ...
-    ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
-                    dscp, rt2->dst.dev);
-
-This can lead to a mismatch between rt2->dst.dev and the netdev the
-real reverse packet would use once routing policy rules are in
-effect. With strict rp_filter, passing the wrong netdev to
-ip_route_input() causes the relookup to fail and a "martian source"
-message to be logged, after which icmp_route_lookup() falls back to
-the earlier output route lookup (relookup_failed).
-
-In such a scenario, I would expect the relookup to use a canonical
-netdev and the kernel to not produce spurious "martian source" log
-messages as a result. This suggests the decoy flow would possibly
-need to carry saddr too so that ip_route_output_key() is able to
-resolve the right netdev.
-
-I tested this on: Ubuntu kernel 6.17.0-35-generic.
-
-Here is a reproducer script that sets up two net namespaces: a
-"forwarder" with two routes to the same dst in separate routing tables
-picked according to saddr, and a "sender" netns behind it which sends
-a ping with ttl=1 via the forwarder forcing it to generate an ICMP
-error as a response which leads to the result explained above:
-
-    #!/bin/bash
-
-    if [ "${forwarder_ns:-}" != "1" ]; then
-    exec env forwarder_ns=1 unshare -Urn bash "$0" "$@"
-    fi
-
-    SRC=10.0.1.2
-    DST=198.51.100.5
-
-    # Current netns is the "forwarder".
-    # Create a second namespace for the sender.
-    unshare -n sleep 120 &
-    cpid=$!
-    trap 'kill "$cpid" 2>/dev/null || true' EXIT
-    in_ns() { nsenter -t "$cpid" -n "$@"; }
-
-    # veth r0(router) <-> s0(src)
-    ip link add s0 type veth peer name r0
-    ip link set s0 netns "$cpid"
-    ip link set lo up
-    ip link set r0 up
-    ip addr add 10.0.1.1/24 dev r0
-    ip link add dumA type dummy
-    ip addr add 203.0.113.1/24 dev dumA
-    ip link set dumA up
-    ip link add dumB type dummy
-    ip addr add 192.0.2.1/24 dev dumB
-    ip link set dumB up
-
-    sysctl -q -w net.ipv4.ip_forward=1
-    for c in all default r0 dumA dumB; do
-    sysctl -q -w "net.ipv4.conf.$c.rp_filter=1"
-    sysctl -q -w "net.ipv4.conf.$c.log_martians=1"
-    done
-
-    # Destination reachable two ways.
-    # Policy rule diverts traffic FROM src to dumB
-    ip route add 198.51.100.0/24 dev dumA
-    ip route add 198.51.100.0/24 dev dumB table 100
-    ip rule add from "$SRC" lookup 100
-
-    # sender namespace setup.
-    in_ns ip link set lo up
-    in_ns ip link set s0 up
-    in_ns ip addr add 10.0.1.2/24 dev s0
-    in_ns ip route add default via 10.0.1.1
-
-    # This will trigger a "martian source" log.
-    in_ns ping -q -c1 -W2 -t1 "$DST" &>/dev/null
-
-
-Happy to test patches or provide additional traces, if needed.
-
-Thank you,
-Mohamed Ghazy
+My intention was not to kill your proposal, only to start a conversation...
