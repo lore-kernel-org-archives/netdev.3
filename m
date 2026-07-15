@@ -1,142 +1,176 @@
-Received: from mail-ej2-f0.google.com (mail-ej2-f0.google.com [74.125.228.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A683D1CB0
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 21:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784151596; cv=pass; b=OgDeffGpdsYjEU3GtFQJ+Cv/OpXopDRxlV1C12DczQZDqyEy3SveI3Ub1xehfDNJA3Gekc0yjLvGKaP3CwVdtNkYmRFuwPdxw6pW2qXUlYWRMnffa2KSR2jubYimqk8AW0wymPC8u7P8vHKE68uVCZ+wCHVYcNxG5FSkPWWjwz4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784151596; c=relaxed/simple;
-	bh=CsvwPucuw+Ke8ThpJVLG/Iaipb3NGCgmvRxgL3GovcY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t2G40B0n/FGcKEhL6m80gBsnoaD9I8vlrwBJquzKV141ANIqt/y/xnIZXutj9Lt6nCLCCR762lrfuga7wAmU4ofET01vIIqCZBnzPj0ct6n4e0Tw8ZTOE4FWyoltNVcQnEBzPaqSBOwAjtYhClBQf/arZppGVM5c/9Tw5lT7skQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=okhixzm1; arc=pass smtp.client-ip=74.125.228.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE172D6E64;
+	Wed, 15 Jul 2026 21:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784151660; cv=none; b=GdjAPSwAar+hAbSJaWmSOU/TWjr3oL/Sl2aRKSho105LQpqzKdjEnW1LiVTvcXQWpaNl/H0qzneHTlC6g2yVYrHZQ54GA3ZKGKrO7yIn1ELYAQ/8JFhnz0NMZp5pGSDLDPMuUb9fghT8v3cYGp2S3A242ljQEeXSKW+fEzDsNr8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784151660; c=relaxed/simple;
+	bh=+wRx/2cZl1CRjeNc+LZxEILml80uHsfQzvBknjG31C0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q3aQFHkc3IEPnjc2sDdhBtTE66V9p5SdOi7b7w8peOuMmJTaXD9KKlAu3KWAvW8kv9Aw0b+lLp7mTT7ty0EG9lRUhWh0pMb1rdqox220i9qNIsLbo5lradYNW71HIn33aenqal982IQIUJYqUvKye0dk8BpCOx/4I7eiRJcehqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM5Zby8I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="okhixzm1"
-Received: by mail-ej2-f0.google.com with SMTP id a640c23a62f3a-c16772d888aso73041866b.1
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 14:39:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784151591; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r4JJMw9QJmrziD5N6SyjTQ42GWEYIl8EHdmGfR8k7xqB352aABDT4LKiWtGcdEDxAU
-         LvaJJiKnmSthpeLjy64M0LLg2h+cpySfBtGVEy14csTOtzbE+NiM1PBOrV2+alSRRF1B
-         MROyjfCI6oxaKmiQiIIQX/v8oY80JLqqIix5aPxItjzRSBOSSZjit/f84TJ/OoIllQ8Z
-         +pHjGZkOTfGl1SgevuBHIWg01zKQdSEm33ix7lgId3pFka6Q0/imOFwnBya2AR+m70ts
-         HD87AbsyZhXXX+Uk/4aENOf8oNKeoWDxDP4y3P37Ni0I62ffllCyJyUdDFU9PeMNHGLt
-         N1ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ocL48N0azq4XQo6lTJ0uGSQUcUQGguK7kbKdujwlOjs=;
-        fh=9F9wYNA7xJb/rHwjHOqxpR+vKsmX/kcMbr1GKrTkgwg=;
-        b=ASSYL7RPe12Mago8jG1C9UKuAc9+k+zyeX5Q5GZv4DOPdWFcPYKqdNkcijH2WiVkV/
-         dlIJjtXKWFdzl/Sv6Tv5IowncXnpStnJCTvmLPXuc+QkVNPzbjGX8xY0oaemuEwvYyJA
-         hqYtIInKTRD/06cOPcZTm4VFTdJP3DnYlZfEXUA3xQB71dP6A5CPeKfQBGye9Rg3xOGB
-         SLMI6FJygE/61IUbXWLS66YmvwbZvn9gcVfdddYxgTcIaPdWHLrpYmcdLbfB1b0/jPuz
-         faK1QPIKZmWozVO6jDFEcAp6yYsT3niFBYyQwUJcDVziR+GWBQNG21WRi8yz4bAMsfTb
-         vaiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784151591; x=1784756391; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ocL48N0azq4XQo6lTJ0uGSQUcUQGguK7kbKdujwlOjs=;
-        b=okhixzm1cL/f45isRHCKp1QMBkP2YxDR/GGV+FoOjdW6JayvVmeIaA+BWX1/bHk6UX
-         g0soFqMhJdoWLq4ianFiSjm9alDpFm4ppk4P28FOz6W8TKyeq95vBySP4WC7oaE8upSJ
-         8VUnZNrSB0b3P5kraBKa+xfuoBvPnHkTOESwbGC3E+9K8aEsiHfw45LDeRyOvU+SJMow
-         gfM6xHM7t8WIfjBW2qJIr8aKFdy288yZOH7bMp9Zuye/o1CCwvpgGUZULXH9QQXOIvCv
-         tkD9VsYE24vWFdtYGWDPCaME2pNH/V4Q2pu9JZTRPeKhiAcKIoOYqAN01xiigVGFpNiV
-         bHAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784151591; x=1784756391;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ocL48N0azq4XQo6lTJ0uGSQUcUQGguK7kbKdujwlOjs=;
-        b=DhBwOwCABUPz3NQiu+ic1CLvGhpklM/GpS0ZXQgXVRiUV+6UVJ75YOJq4fZcs9AIlm
-         uDCqSwf3BeK/RwKbiOun5r7HumcjH+RPv7rl3AQx8j+vra7gWbnhhKB6L+4a0pJpZ9EY
-         BC1pkuyhgWqJobL2JVRs2cJ5xmeymF1sKEi7tgIDjPi23aGKaaj8uKx9to8J+jXwrOuS
-         pRW7IibeYtsxFz/HbFGMLrsns1j0eMe/MRs42pQ1cuQcaFZfRdINj7c4zS9hDVHuu7ap
-         VNpU37wXTOvzvZpIv4sl0WV8Smkc0S6B2Ya7t8fjoueEmwuFSrfWoVIcnYfMynpnCLr/
-         OMFQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrh0bKmHvymZautClb3XtdKdRjD/gUi3dllAL5LNgs/vkQawMfJA59N1LEAycqxe2DD4o/sgP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWBqVj7BCxVNqBb/UYx9PLxYNiYX2BPzI3uQ9Tz936ZsoqYN1i
-	CAq7K7r1biGBLBSWFyuirw6ogi7x2FlRCl5mHDJZhkGmtL7s6Ox2MD9cHG9mu4xaZ0J06iGH3Jg
-	rieNehr8Ns6+0m6Rmggh6XkFT4+ApqqE=
-X-Gm-Gg: AfdE7clYhD5hdSeKRR+GEP9QGLLhnvwoTJGjvJkqOczK8OMVdhWTdHgKuORxm0CvWDV
-	jmICZHJrehhlZkfUbEUhbwjvU5EqQSVqyjTiiJ6Fl0BHSh1VzzguWAHrRvzMHQF6jnc5IaRFguI
-	dfmtOOtdh/TrY3XMfxCfgFU2JxV0haFm2VbygiyORlWYEvUc6Vmtk6tCYy4wkwsdgZ1u1AcN0Nz
-	TVPZRzCgmYzoNQYh3qR4VzRYI6or7W7eFYGA3xCz0YWq37FFrwYhY+PATatJ+OV
-X-Received: by 2002:a17:907:c317:b0:c12:68f5:e083 with SMTP id
- a640c23a62f3a-c16794fbce8mr296353766b.64.1784151591115; Wed, 15 Jul 2026
- 14:39:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM5Zby8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4766E1F000E9;
+	Wed, 15 Jul 2026 21:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784151659;
+	bh=beMvsMOYV/35qvC4uNSHGPgxhMwJhGYCp9bcZZ4egZU=;
+	h=From:Subject:Date:To:Cc;
+	b=nM5Zby8IovOatbyak1vT2rmYnjz/8yyWs1oXOT7zbxv73sEFKBa+H1gPrkdx28+Sp
+	 YIkDERxUSsq/tnZdjX26mEfidhyzojKK+6E30lHjgbgGLqgOC4/kesGpjK0JvjGvUu
+	 fAbuzIjtoqila0/bQ0TSJDHKaZVZSGtWzKJGd9QHLLAFBvL3a9E67R46fM8IfnbflT
+	 lRtufK5+UzisSaPAOaCniTW3Srnfl1E0I5dJI3JuY7yLBupLyNxWEo6JbD0fGkqzDE
+	 4b33R+4uxrTZ2x9p3sT93WkehSHfqZn7dyShngFIDD1lk0XUgrWJe4hAjd0dt2aJZx
+	 4YTUlJfbieWCA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH bpf-next v5 0/8] Add the the capability to load HW RX
+ checksum in eBPF programs
+Date: Wed, 15 Jul 2026 23:39:40 +0200
+Message-Id: <20260715-bpf-xdp-meta-rxcksum-v5-0-623d5c0d0ab7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714191341.690906-1-coiaprant@gmail.com> <20260714191341.690906-2-coiaprant@gmail.com>
- <dc21b2fc-ae11-4fde-a5b9-09e2c6bee5c9@bootlin.com> <CALj3r0gWyfHHp0S4=71M1-TjgHKcgGax4Lr0DzPi37Q69-iCwA@mail.gmail.com>
- <685d91a3-be6f-42c6-9e23-07629e21bcee@lunn.ch>
-In-Reply-To: <685d91a3-be6f-42c6-9e23-07629e21bcee@lunn.ch>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Thu, 16 Jul 2026 05:39:39 +0800
-X-Gm-Features: AUfX_myJ66lYjr_Qz6cecGRXkAPSo59po4VpMAdHmLlPvDjxBLGd-D-lw51lYoE
-Message-ID: <CALj3r0hrKt7T6_aZJ_cOJ=akPgShsau6-whcrrWekJE6H-z05w@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/10] net: stmmac: move XPCS lifetime management to
- platform drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	robh@kernel.org, krzk+dt@kernel.org, heiko@sntech.de, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
-	Christian Marangi <ansuelsmth@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33OwW6DMAyA4Vepcm4mx8FAetp7TD2EYErUFlBCE
+ VPFuy8gTeo00aNl/Z/9FJGD5yhOh6cIPPno+y4NdDwI19ruwtLXaRYISGCQZDU0cq4HeefRyjC
+ 7a3zcpQHIS2I0YGqR0iFw4+eN/RJr0fE8inPatD6Offje7k247d/TE0qQeaUbNmXh2KjPK4eOb
+ x99uKynUp0DKv2mtiW6rAS0TcWv9frPpH5/WBXYUVRSmGoiZy1Qpv4p+lUpdhSdFA2AmSOobPF
+ XWZblBz8K4ZaNAQAA
+X-Change-ID: 20250925-bpf-xdp-meta-rxcksum-900685e2909d
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+ Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Emil Tsalapatis <emil@etsalapatis.com>
+Cc: Vladimir Vdovin <deliran@verdict.gg>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
 
-Andrew Lunn <andrew@lunn.ch> =E4=BA=8E2026=E5=B9=B47=E6=9C=8816=E6=97=A5=E5=
-=91=A8=E5=9B=9B 03:57=E5=86=99=E9=81=93=EF=BC=9A
->
-> > I actually spent all night debugging call traces caused by the current
-> > stmmac PCS lifetime management, and it was not a pleasant experience.
-> > The code feels like accumulated technical debt that should be cleaned
-> > up.
->
-> Russell King will strongly agree with you, if he was around. The
-> phylink integration into stmmac causes a lot of pain, and he wanted to
-> rip it all out and start again. But doing that without breaking stuff
-> is going to be interesting.
->
-> If you feel up to it, have a go. But take a good look around first,
-> make sure you understand the different variant, internal vs external
-> PCS.
->
->         Andrew
+Introduce bpf_xdp_metadata_rx_checksum() kfunc in order to load the HW
+RX checksum results in the eBPF program binded to the NIC.
+Implement xmo_rx_checksum callback for veth and ice drivers.
 
-Hi Andrew,
+If the hardware detects a wrong/failed checksum, it will report
+CHECKSUM_NONE in the packet metadata. Moreover, CHECKSUM_NONE will be
+returned even if the NIC can't parse the packet (e.g. if it does not
+support a specific protocol). A possible use case for
+bpf_xdp_metadata_rx_checksum() would be to implement a XDP DDoS
+application [1] combining the info from bpf_xdp_metadata_rx_checksum()
+and bpf_xdp_metadata_rx_hash() kfuncs in order to filter packets with a
+wrong/failed checksum.
 
-Thanks for sharing this. It's reassuring to know that I'm not alone in
-finding this code painful.
+[1] https://blog.cloudflare.com/unimog-cloudflares-edge-load-balancer/
 
-I fully agree that ripping it out and starting over would be a huge
-undertaking, and I'm definitely not confident enough to take that on
-right now - especially given the risk of breaking existing platforms.
-My current focus is on getting this RK3568 SGMII support into a
-mergeable state, rather than attempting a full redesign of the
-stmmac PCS layer.
+---
+Changes in v5:
+- Add new kfunc to Documentation/networking/xdp-rx-metadata.rst
+  documentation
+- Introduce bpf_skb_rx_checksum kfunc and related selftest.
+- Introduce selftest to check the driver invalidates the rx checksum if
+  running in XDP mode.
 
-That said, I'll keep this in mind. Once my current series lands and I
-have a better understanding of the different PCS variants, maybe I'll
-be in a better position to contribute to that long-term effort.
+Changes in v4:
+- Report cusm and csum_level separately and convert ip_summed to a
+  bitmask in bpf_xdp_metadata_rx_hash()
+- Fix endianness issue in bpf selftests
+- Add a comment about the driver expected behaviour if the the NIC reports
+  CHECKSUM_UNNECESSARY or CHECKSUM_COMPLETE and the eBPF program modifes
+  the packet
+- Introduce bpf_get_skb_cksum kfunc and related selftest to load the
+  checksum result to the SCHED_CLS eBPF program attached to the qdisc.
+- Link to v3: https://lore.kernel.org/r/20260217-bpf-xdp-meta-rxcksum-v3-0-30024c50ba71@kernel.org
 
-For now, I'll stick to the incremental fix that this series provides.
+Changes in v3:
+- Remoe leftover assignment from v2 in veth_xdp_rx_checksum()
+- Fix typos
+- Fix commit logs
+- Link to v2: https://lore.kernel.org/r/20260213-bpf-xdp-meta-rxcksum-v2-0-a82c4802afbe@kernel.org
 
-Thanks,
-Coia
+Changes in v2:
+- Remove XDP_CHECKSUM_PARTIAL definition
+- Improve veth_xdp_rx_checksum() callback
+- Fix uninitialized case for cksum_meta in ice_get_rx_csum()
+- Fix sparse warnings in ice driver
+- Fix typos
+- Link to v1: https://lore.kernel.org/r/20260210-bpf-xdp-meta-rxcksum-v1-0-e5d55caa0541@kernel.org
+
+Changes in v1:
+- Rebase on top of bpf-next
+- Test ice driver using xdp_hw_metadata tool available in the bpf
+  kernel selftest
+- Improve cover letter with an use-case for
+  bpf_xdp_metadata_rx_checksum()
+- Link to RFC v2: https://lore.kernel.org/r/20250925-bpf-xdp-meta-rxcksum-v2-0-6b3fe987ce91@kernel.org
+
+Changes in RFC v2:
+- Squash patch 1/6 and 2/6
+- Introduce enum xdp_checksum definitions
+- Rework ice support to reuse ice_rx_csum codebase
+
+---
+Lorenzo Bianconi (8):
+      netlink: specs: add XDP RX checksum capability to XDP metadata specs
+      net: veth: add xmo_rx_checksum callback to veth driver
+      net: ice: add xmo_rx_checksum callback
+      selftests/bpf: add selftest support for bpf_xdp_metadata_rx_checksum
+      selftests/bpf: add bpf_xdp_metadata_rx_checksum support to xdp_hw_metadat prog
+      net: add bpf_skb_rx_checksum kfunc to read skb checksum metadata
+      selftests/bpf: Add test for bpf_skb_rx_checksum kfunc
+      selftests: net: add test for XDP_PASS skb checksum invalidation
+
+ Documentation/netlink/specs/netdev.yaml            |   5 +
+ Documentation/networking/xdp-rx-metadata.rst       |   8 ++
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c      | 123 ++++++++++++++-------
+ drivers/net/veth.c                                 |  32 ++++++
+ include/net/xdp.h                                  |  13 +++
+ include/uapi/linux/netdev.h                        |   3 +
+ net/core/filter.c                                  |  31 ++++++
+ net/core/xdp.c                                     |  32 ++++++
+ tools/include/uapi/linux/netdev.h                  |   3 +
+ tools/testing/selftests/bpf/bpf_kfuncs.h           |   8 ++
+ .../selftests/bpf/prog_tests/skb_rx_checksum.c     |  50 +++++++++
+ .../selftests/bpf/prog_tests/xdp_metadata.c        |   9 ++
+ .../testing/selftests/bpf/progs/skb_rx_checksum.c  |  33 ++++++
+ .../testing/selftests/bpf/progs/xdp_hw_metadata.c  |   7 ++
+ tools/testing/selftests/bpf/progs/xdp_metadata.c   |   2 +
+ tools/testing/selftests/bpf/skb_rx_checksum.h      |   8 ++
+ tools/testing/selftests/bpf/xdp_hw_metadata.c      |  31 ++++++
+ tools/testing/selftests/bpf/xdp_metadata.h         |  13 +++
+ .../selftests/drivers/net/hw/xdp_metadata.py       |  55 ++++++++-
+ .../selftests/net/lib/skb_metadata_csum.bpf.c      |  73 ++++++++++++
+ 20 files changed, 496 insertions(+), 43 deletions(-)
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20250925-bpf-xdp-meta-rxcksum-900685e2909d
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
