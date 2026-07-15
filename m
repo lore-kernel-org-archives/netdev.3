@@ -1,64 +1,62 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C5C3B774B
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33203B7B96
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784095018; cv=none; b=lReYqvjI47kgzHNI6+YDA5RydL+333B3UZ4q6MbHEkmqDLQPnRcS+SHJA9v5ON0BbEzSlwvGyERlzPGRIKquY+8meTQmJNbHp7nuNJU2qmBguImgTB6ivY3UV9c/23i3MTqXOUIiUbVRvWRUgPoxcrlVoCEO6806VIIuQVXt4WQ=
+	t=1784095018; cv=none; b=PP8womkDmv3jtTUglIR4bGfYCRtv1r42TEX4y3W2P/PKcYF5zoElWon5nj9bIAuoeuengoUsmGtts+xw4uLA5dqXSmTSr0QkmJBXmArBenx8pBxQ5lZkzOFE9Bv8BsavVvRT5iiCrjBksCnfk9spluPSmvegdkP9XI7QV7dlCes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784095018; c=relaxed/simple;
-	bh=esL/43unqiNUkBr/Ljva6pP91lPf4vb7RyxAP1zl12c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fx3dXir0aEvA7Sh7/qVdIEnfghh4CCMAhf7hYJC/OCpSqeAsORBpv5zbKKUUhiw1rv2fX1KWfEhceUOPpsm6Tua+U3eP0bM4kO1+YWU+V5EZoXwrzY3QG+NGNTobBLjOzLwaziYByOOH4QLYjVu9n+jCIVzZm6Q7vEIohvbqSz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=nCsoSLEc; arc=none smtp.client-ip=209.85.221.48
+	bh=JUgcjgzKZlD5NiT4TvdYD0wcCzeZqi59Xs+dSlvz/vI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SLZKPEamjBeoD2ANb+lkcvPRmnmLhuVzK13I0W8Isx751aaaz+BHn2zOra7JpgoHot0/UjvidO7LOCexiSZzsfcCcUYbKFb+gi7csaMp9k5p2xBLZFs7wSt/uj2AhvhiKMh9hP40h4xI3RkOqCuldceUYJ5spfuLjru3EdTM+/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=zsRXIQqc; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="nCsoSLEc"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-476a130c138so1661805f8f.0
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:56:55 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="zsRXIQqc"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-474560436c3so1251593f8f.0
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1784095013; x=1784699813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
-        b=nCsoSLEcjUE3qQ+jpRtBiSHZz+xWcrG9vjTNkYWF1V+0mZyK5KTd4njN7WY7qhetK/
-         OLV6TrS5aBpEU7A3jLAubLcnSjYMHarXfQbbisTm2KEqGGAWfCnBmDGEa4/+zKr4ILNz
-         oPrCPXvXflKVHA7+LJxKIxO4Wxw4/gpeRdhelvUv61j7S5qgGf31y0f07LaOTg2j9yPR
-         SkeWsn18bLqGp/luj9vQw8oV3AWWt9clqvFOGVXZT892pz7yuPMDwF5jezGjLXJiU4Bs
-         celWm3mRxtVW7t3XZ6kCAVqh7DFWhV6u4YfvXnLGkzXFGh5KbFl6n1KNbqEGCaynF5Xv
-         pePA==
+        d=0sec.ai; s=google; t=1784095011; x=1784699811; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mLDox969500edpp7yPoO2VoVcW+rCs50A1jCw1l6TY0=;
+        b=zsRXIQqcofkfwxoSezx/3qtFNEyDgAwMVidWUs4ekiRFPvqJEJSDr0z01FEDlnblsa
+         /3+LUtTvqGXMrVN/HYTJ9kwNsuTRcZwsOlhqE/Mp7/gkIeGzegivtSM3FI6JVpGj5fPZ
+         EMOLNHMNWosr0VfgwDowuDgczfiw55UV6LD8QkUky6R/gYw2GpMtosMADIHmUPO2yOeg
+         bs0V79vjbW3tHAa6E6qWiAC3KdHGFs9s02ZHrGHlptqG/PuxlgslDkX+XCSybFm37jPT
+         lqY/d/K5tY9PrhYtbO5ULEFcrZq/rP3air+2QhNbpdZY/H045JR71rW3jl6ruIkuplgm
+         Oe1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784095013; x=1784699813;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iueURVe0vlYIqUuAsBfvKYIJESyK+6jqiIp58cwZiM8=;
-        b=U8UwPmYJc3diW7ZjO62K1+op2DXF9mNb3MfN1y78RiBumaaxBEEbgbNaB7K4Rl9bD+
-         IHA/Cz4uLxTV+JgF+ZZ6qgvJ3sh80T0Bz5hkS/6k8hnM3+dCyrN6WEEzs6XHqJo2RPGN
-         ryggK/d+tK0wZtp62q7UT3CbziAZqN6undu8JA1ynDPrr/iY6+K8yeHjez2i/lI7oytO
-         +2NuQqPDV53vffz3wy/2x1T4l94+7K31L7iGtT7nIBVtMtbz/NhcY8t74Aq/CPTK3Xyj
-         VQWEzgUtQd/YEJxcPX+jR+toTedoRjZyPA2EtwpTB5j48XD49sJ3oioJgMbkX/PPAyuv
-         ZeiA==
-X-Forwarded-Encrypted: i=1; AHgh+RqgfQVzOACJnSaBqCvpWSJPNMHDIy2kYsGkMiy2QMi/nfnG5eEz+AjIdOxDtyDCHJPxFraxRRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxckP0TsSSqskre4j/yJY7zNL9oU2XKdPrUgR4YxRGqbXCOS0bE
-	r8MMdqVFeYxWEJ/BW36oDSJjYMJqQZdZVS/VaXk6dpUh1zKJWSJtfRkRd6CSEW+rGRGa
-X-Gm-Gg: AfdE7cmlO49FRMkLb9YTlLjWaSh1tFzauHzepkLkKOUOy+egk/CbJaLQLsaDTU/NHuc
-	s4xkGYa5QX3n639UTKjLtjLmlrYH9MfNmxpCSM2uYnf9VleUKh16tQb5OogYV/fJXzJOVGcfYjW
-	ZiNM4QxKtobUj1LUJSrJ5hSHZr7rbWm5s/r8YBIJlqMwveV4KOBPIkAO/UWPECsUvM9uo1CE3zp
-	/qvs790G2J+5gWHSZ0dChXZLD2EVmegxQtXHZ0BsTyaOMma5Qlxn3MDb5RZdlkCzu4l/iYG7EKn
-	nBmS9T1L+A3sE7b74SpBthgYwwemOwm/VAIamNwsrWSh/3JL/r3kldQ6j8pRIztdaNDPGINkTe5
-	mN72aXN2R62vUIkp7YOKBSNKKKze4nEJdXUTzkqyHhn92A0DyjnPwCEmXB1Da1P2841XEDPCptd
-	+ZrG+Bq3cGWRZDInD8uzwOPxB7uy1aaFqU73dZ90mvZnw3GMaw0umj+WVOqPi9QT02j1JzOm7/R
-	iTV4NyopRdRGYFwdPUuk3uH9ZDOkz6mkjg=
-X-Received: by 2002:a5d:59c7:0:b0:461:a16c:a5f4 with SMTP id ffacd0b85a97d-47f2dd1f29emr18774517f8f.33.1784095013281;
-        Tue, 14 Jul 2026 22:56:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784095011; x=1784699811;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mLDox969500edpp7yPoO2VoVcW+rCs50A1jCw1l6TY0=;
+        b=jNlcNwhTWpdaJnWLu9W6wXJso7SBXYg+lmQV18QbqklouH4DR5hQDXM5epbFX+R3cU
+         grD6CXrBY01t7aMdTlTGQjC2DPEWTar3xxK5dsSv+rbVwm6UL70B7YAI8CCTRWBIv13A
+         VVliPqLSyGfG5Q8H2tKSiTNMVa8hpBF1kOjQ1Dl2BiVHIJ+bcsnwSq7xGZojVImhM3y1
+         4d3uCnM1JXc/IXPoZ4J6vZl4NwbRMsJcvUp1dj1j2AX7qltQ1NAKtgrtKbQd7Vnjt407
+         4ecIXvMMm1Fa4CVDhxUMQB1IAC7bt+CFiD0kkxlgQpfJxCEB09FXrd/3ZuiaDz4vg0Sg
+         BZKw==
+X-Forwarded-Encrypted: i=1; AHgh+RrWU9JM6DnvTCudn5r+WGUEsRiZRDl9nAKYZ18sEglv+zoekZI9U/imAqYzD+4C2cOuJYSKh9o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo2ICZUTxcfG8kj3PefKF7dXmyuvB3TcBbawgB/a+FBj8N7DMQ
+	2GN7gbCcjAr9JLsKW+lNCZPsTvvZ9KB0JiKNvR/GTDejH1J52SBbBy86M5LrYuybl7xW
+X-Gm-Gg: AfdE7cnlc1yyclnCNy2f4OPtlFe1XzYkEcexCuWbjfGwHR78kL4wTzV509+STiNPmbQ
+	o71Fo8WD5J5Hfr9RlQMy86FzXvtX1zI4I/YDp5Gqj/Isl0cBbllsdNe2jhT9Yax9/yta8e/GSBt
+	WhyvsWoadjA8vEN2Ayf+bw1ATA6zSqcHuG9jPrTUfHUgSXtSTOId1Jy3izbQScFbe/PacDtva9+
+	xprUZjrkl2KEin8uIr5ImmYzD1bQcYNdd5MWuihotFR6MFf40fac8Pr7kmCKa9E3tjWL9peS+ds
+	np97ulfPGe4SBYLpECArScrfvvR+zEHh+ZIdJiWzvLpNUXgHFRygevWWWPtgrx3D6x3uwVe/DPp
+	TxbCHoIfOAZlL7u87GFwLRHkxZiC+nFY3ijechWikMBhM/x5aBNQhTLQWI2dT9NGFxNVxhTuJP3
+	kFycjFIV2E3SBEh0zhnOMF0FMFGzSUFjegRsPfHwT8N38bm7Y3nJ68pFSXbGkBderZfDd2ysMA3
+	eVx/WVOgqd4UthHJ6IN5vHv2U19gTFOEdw=
+X-Received: by 2002:a05:6000:4b1d:b0:475:f0d1:eb59 with SMTP id ffacd0b85a97d-47f2dd11257mr18449527f8f.52.1784095010720;
+        Tue, 14 Jul 2026 22:56:50 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635082csm14220369f8f.7.2026.07.14.22.56.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635082csm14220369f8f.7.2026.07.14.22.56.49
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Jul 2026 22:56:52 -0700 (PDT)
+        Tue, 14 Jul 2026 22:56:50 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -70,14 +68,11 @@ Cc: sd@queasysnail.net,
 	mschiffer@universe-factory.net,
 	maoyixie.tju@gmail.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] geneve: require CAP_NET_ADMIN in the device netns for changelink
-Date: Wed, 15 Jul 2026 07:56:48 +0200
-Message-ID: <20260715055648.33060-3-doruk@0sec.ai>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] vxlan, geneve: require CAP_NET_ADMIN in the device netns for changelink
+Date: Wed, 15 Jul 2026 07:56:46 +0200
+Message-ID: <20260715055648.33060-1-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715055648.33060-1-doruk@0sec.ai>
-References: <20260715055648.33060-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,48 +81,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A tunnel changelink() operates on at most two netns, dev_net(dev) and
-the sticky underlay netns geneve->net. They differ once the device is
-created in or moved to a netns other than the one the request runs in.
-The rtnl changelink path checks CAP_NET_ADMIN only against dev_net(dev),
-so a caller privileged there but not in geneve->net can rewrite a geneve
-device whose underlay lives in geneve->net.
+The recent series "require CAP_NET_ADMIN in the device netns for
+changelink" (8165f7ff57d9..27ccb68e7ccc) added rtnl_dev_link_net_capable()
+and gated the eight IP tunnel drivers (ip_gre, ipip, ip_vti, ip6_tunnel,
+ip6_gre, ip6_vti, sit, xfrm_interface). VXLAN and GENEVE share the exact
+same shape but were not covered: both store the underlay netns sticky at
+newlink (vxlan->net / geneve->net) and their changelink() operates on that
+netns, while the generic RTM_NEWLINK path only checks CAP_NET_ADMIN against
+dev_net(dev). Once such a device is created in or moved to another netns,
+a caller privileged in dev_net(dev) but not in the underlay netns can
+reconfigure the tunnel's underlay.
 
-geneve_changelink() applies the new configuration against geneve->net:
-geneve_link_config() and the geneve_quiesce()/geneve_unquiesce() pair
-reopen the underlay sockets in that netns (geneve_sock_add() uses
-geneve->net), so the same reasoning as the tunnel changelink series
-applies here.
+This completes that series for the two UDP tunnel drivers that were left
+out. Same helper, same placement (top of changelink, before any attribute
+is parsed).
 
-Gate geneve_changelink() with rtnl_dev_link_net_capable(), at the top of
-the op before any attribute is parsed, matching ipgre_changelink() and
-the rest of the "require CAP_NET_ADMIN in the device netns for
-changelink" series.
+Verified on next-20260714 in QEMU with CONFIG_VXLAN=y + CONFIG_USER_NS=y:
+an unprivileged user namespace holding CAP_NET_ADMIN only in a child netns
+issues an IFLA_INFO_DATA changelink on a vxlan device whose underlay lives
+in init_net. Before: returns 0 (reconfigures the init_net underlay).
+After: returns -EPERM.
 
-Found by 0sec automated security-research tooling (https://0sec.ai).
+Doruk Tan Ozturk (2):
+  vxlan: require CAP_NET_ADMIN in the device netns for changelink
+  geneve: require CAP_NET_ADMIN in the device netns for changelink
 
-Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
-Cc: stable@vger.kernel.org
-Assisted-by: 0sec:multi-model
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- drivers/net/geneve.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/geneve.c           | 3 +++
+ drivers/net/vxlan/vxlan_core.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 396e1a113cd4..03c99a016298 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -2376,6 +2376,9 @@ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct geneve_config cfg;
- 	int err;
- 
-+	if (!rtnl_dev_link_net_capable(dev, geneve->net))
-+		return -EPERM;
-+
- 	/* If the geneve device is configured for metadata (or externally
- 	 * controlled, for example, OVS), then nothing can be changed.
- 	 */
 -- 
 2.43.0
 
