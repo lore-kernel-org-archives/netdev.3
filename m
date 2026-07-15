@@ -1,77 +1,100 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8B61A8F7B
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 05:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416551F192E;
+	Wed, 15 Jul 2026 05:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784093482; cv=none; b=NUTwyCHLhcPreET8bU59qJoWRy3KGlb2EuQQiwdE/UK4kdyj1B/Bw46xvVJgvc0Zds1WvXtUrh9NdIpOemMj7bviGpRcblTZrlSEd6KaWgSkTVW1oJ29BtcCw2dhw3wJqvpaZo8/YPijB5++EHknp5SZxtf/AGAU+7l0fsYlwJ0=
+	t=1784093730; cv=none; b=rS5AtnJ5JQOYMrSxV02frgtaXS1eHyXT14turU3L3PiSYKu6o8HaeMDvVGYdAm+Zdk82gZVys6oeHty8tjB/fHYPmSiC89oO91DR88ABESIyeIt/3XCqm6fx8BlIxne14+lqMdTLzW+L5IOlu2mS0o/JuxMw3iym0zGYgrkXCyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784093482; c=relaxed/simple;
-	bh=ugJnAwMrZudP5W6/NCbvXshsTfn6ZgiR1yUWNFxBKDk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oRQJIvxrPWSZtwCfaRwn+mMnyCk1RvTt2fVqdUjFmpqOg2NrxxX9AIiRMLIKkmRTmSIGZzEGBJ8VIoLja8p3Omyc633ngnjUqr76Ovlw0WqyN7qgJ0Tq45iLHhet0JFbT0Nbqn6Zmu9Vuc3VExB+1ovWDE9LFxRTo+hSGYYyC2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SEVXk03s; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784093730; c=relaxed/simple;
+	bh=qzNd4lJnp8G3pQxoGfnqn/XQndLFNVA0827fMrZlCRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n1ENnluJt0xAt4FP+DvsBGOtlK/fdPNPwnoMAsjdhTshVverXvhnT6uyOZEBRrGg4pK6X/4ibcuSffC5s1Mxs/Qp1mt3n1uXEQ2GN6Cnz35gPlFj4EBm1Bp2MtIczs/hpP8y0RWzSCxdiEtLIoDWGuf6D7E4O0w8tXhHzQkMZUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TJHaqb0f; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SEVXk03s"
-Message-ID: <e07c280b-d3a8-442d-bf19-f00d544ab26c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784093468;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OnBUbq3k1b9tRTWvCLJ4zc2zppxBtgM0T1Bl95+DRd0=;
-	b=SEVXk03sXpdnZ9KQ8ppgRaStRmjskPj2AxKXL6+3L/TrMPZAuiB86HoGkcllnBSMlqhnKC
-	zecO0CGARsqgWXgVV4BhyACqxg71cJLpBC62wFIcSzsJMElWDIX7Cf7tmr5l+g2nuQaFjq
-	CV1XjC+xxQlU45r3XuOvSUosyXjyklk=
-Date: Wed, 15 Jul 2026 13:30:39 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TJHaqb0f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784093727; x=1815629727;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qzNd4lJnp8G3pQxoGfnqn/XQndLFNVA0827fMrZlCRc=;
+  b=TJHaqb0fkmahdqlBw5UyKv7DDHkpT0CZYto3K/bmsZsToEfVYGLkM6nV
+   2tFv9/9XZF0a5zhsFeV+PYoMRlGkMVTJAq3OOpATYsAE22oLSqPdHNQw4
+   6lA8mYmGh5wSxUsC1w0N4RxJuMrtC8hEE9+Aw69L7grniNqLtKMwYXmVe
+   2YkV8VRpH6CUQefErNKJcl0tSoKr2TpK3Go5tsRiQNZ/gFYtT6Yop0QYg
+   Zro07OwZtLqaV10F5dPyIrYm5hqHBjpMGGeJjAyFtkgfP7wNs9qAfQr7S
+   D/7o+GplqLw/0cF94ES5O9ssgDwwpM68yWtAyS034iNkJ6Ids1Lf1twjx
+   Q==;
+X-CSE-ConnectionGUID: KzLNWknhRNeYxsyOn0PQGw==
+X-CSE-MsgGUID: I77V9ubjTxG+Hq9egnSjxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="110268527"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="110268527"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 22:35:26 -0700
+X-CSE-ConnectionGUID: 9pIJRe8aRP+qwaC22jXy/w==
+X-CSE-MsgGUID: oYSLFNM1SYes8v1QU8WBXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="256107748"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 14 Jul 2026 22:35:23 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wjsHA-00000000NKV-12iR;
+	Wed, 15 Jul 2026 05:35:20 +0000
+Date: Wed, 15 Jul 2026 13:35:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Weiming Shi <bestswngs@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	Tung Nguyen <tung.quang.nguyen@est.tech>, xmei5@asu.edu,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: Re: [PATCH net v5] tipc: serialize udp bearer replicast list updates
+Message-ID: <202607151342.sJOXeRCT-lkp@intel.com>
+References: <20260714192140.1810202-1-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next] ppp: reuse ppp_get_stats64() for ioctl stats
-To: Zhixing Chen <running910@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org
-References: <20260714091941.33783-1-running910@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <20260714091941.33783-1-running910@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714192140.1810202-1-bestswngs@gmail.com>
 
-Hi,
+Hi Weiming,
 
-On 2026/7/14 17:19, Zhixing Chen wrote:
-> ppp_get_stats() open-codes the per-cpu tstats aggregation even though
-> ppp_get_stats64() already collects the packet, byte and error counters
-> needed by the legacy SIOCGPPPSTATS ioctl path.
->
-> Reuse ppp_get_stats64() when filling struct ppp_stats. This keeps the
-> ioctl stats path consistent with the netdev stats64 path and removes the
-> open-coded per-cpu stats aggregation from the ioctl path.
->
-> Signed-off-by: Zhixing Chen <running910@gmail.com>
-> ---
->
-> This is meant as a small cleanup. The ioctl path and the netdev stats64
-> path already use the same underlying counters, so this just makes the
-> ioctl path reuse ppp_get_stats64() instead of open-coding the per-cpu
-> aggregation locally.
+kernel test robot noticed the following build warnings:
 
-On a 32-bit architecture, this will introduce unnecessary seqlock 
-overhead to get the upper 32-bit of a counter, which would then be 
-immediately discarded.
+[auto build test WARNING on net/main]
 
-Regards,
+url:    https://github.com/intel-lab-lkp/linux/commits/Weiming-Shi/tipc-serialize-udp-bearer-replicast-list-updates/20260715-033047
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260714192140.1810202-1-bestswngs%40gmail.com
+patch subject: [PATCH net v5] tipc: serialize udp bearer replicast list updates
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260715/202607151342.sJOXeRCT-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260715/202607151342.sJOXeRCT-lkp@intel.com/reproduce)
 
-Qingfang
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607151342.sJOXeRCT-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+>> Warning: net/tipc/udp_media.c:106 struct member 'disabled' not described in 'udp_bearer'
+>> Warning: net/tipc/udp_media.c:106 struct member 'disabled' not described in 'udp_bearer'
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
