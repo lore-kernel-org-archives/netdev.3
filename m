@@ -1,268 +1,145 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021103.outbound.protection.outlook.com [40.107.130.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95047AF43
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.103
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784128854; cv=fail; b=eRGMV43m6WT1COHlGBryjxWlFhwD4OO41xDw9JN98akmy/ivkJL5PW7oMDSfKxGIdT1WBhyU4W5OTD/dPXwZfDuZr/ltRlT2PpRU1AoYWETohDiFqxmChI97e/QMAlfQK4AQv09rlgnXmCpUpAlDBHUv36NNF3JxByPh3gTS9JA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784128854; c=relaxed/simple;
-	bh=Etc0OPGX8X2j0lf7gqjGrURJJKUPah7BxHHQKP0nCVc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XVsQ+wVX+iQ0sF1liliD32KmzDDXeIbdrehk3pe48444nyh0OsXpyCJknP7lZDfqLRrJtc1VwjYfItfCUS/byaxo/Mqyea1BOKioguz7mtKKvFR/JSjErdT5D4nta122TrPJ+O0kef/RfEdpATPc72ZLgkwkevGr/9ZYAVFScPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=technica-engineering.de; spf=pass smtp.mailfrom=technica-engineering.de; dkim=pass (1024-bit key) header.d=technica-engineering.de header.i=@technica-engineering.de header.b=cEqjlLtG; arc=fail smtp.client-ip=40.107.130.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=technica-engineering.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technica-engineering.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD72EEE9E
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 15:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784129083; cv=none; b=TURRrbCXED/JGrwZKLilTbGx+lbZJ+bdT6pMBYRGWt3IFpnCj28uJNxB6A3i3jS5GPDFL38GCwh2/Y7ljEU2Yc/oaJXuZjF3xuqHgefEg9yjYLHgpnEHtgqE0QQACQBdzjtxY/i73EgpCO4n29C2ZJMzEx2zpSnLsIn1NcF8Y1k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784129083; c=relaxed/simple;
+	bh=sEk93MFRkXZnBHH3w3/gyg+6jiWJcM1uXHZES+5BO7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XuYaSq+RDXnbtwybz5wOwkyKEmu/f0vFPmn7Xwy5pZth/wuV/AWYUi62mGiKfscSLqLOeSAFUNhu/1myxGB9BFHnld3JcgJ11bAjrn+8j2rj/71hAKHOyjq3znIJoPBt89DgBP3eA+QIjWlabpr57LnQfLPEynoTyfVD9HFLXIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qgi+7r8Y; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=technica-engineering.de header.i=@technica-engineering.de header.b="cEqjlLtG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=goYDjmB7bGsBLZO8RNtfgdUau8GWhc8V9gtUHYCckxnfn/Sb32N2hALv5HKqV7Dgq/uWElcfyBhibd6zzs3BC4iFCsCmq6JrDaUqUgCxBCtj4m/mDK8jUrSWrgfRJ3KVz7YkWk+xTeEi7XZWFZl6hG9qxwM8qb7uK6BEebhWiHUXnaGCP9JRDjBtyps77L/5TIAGNWjjNbR84XpBsQIBTXDjsUuBko5akQZCZGgl35PAoTRngVXr1dd9LGNSeVqUJ/Wtd3q9awA6fNqalQGW8c6E+5z2Z2cJ8eygBHOWxNgx+haMOmpYVzMooHFrCybf4QlWljtMVfh/HOolQoEwPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Etc0OPGX8X2j0lf7gqjGrURJJKUPah7BxHHQKP0nCVc=;
- b=LBXCzbwI4l4jbNA/D0ufMG3S4+02hie2Q4oxSD/MBXBkpTfze4kKvW8Rf6MyIxXhg+J4SPLtFqh2Smwtvt6FblpHbycYJq0CSOax1Kwd8zDa/wlqLmfO0/wHVanonPn5dPOqcN6mKy8K85pJ/7h4k3o+p5T/mWWJS7dq2GPQqT+In4TGjSS1/y8Eyk/4JcedIYhutwBIgsSzhg4PBR0mEcoWpAKbU6kpj3HHqsqbGN11P1+U0S1YQzB/132xvOB9qpy+Imlv5eZ9i1qRPyd1/NuXz6C94QZaFdk+GUtw1gyCecr+GlA5deSn5W5puezsldDM42ds4wQPMG6mvL58vA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=technica-engineering.de; dmarc=pass action=none
- header.from=technica-engineering.de; dkim=pass
- header.d=technica-engineering.de; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qgi+7r8Y"
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6a31b9a492aso3597341eaf.1
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 08:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=technica-engineering.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Etc0OPGX8X2j0lf7gqjGrURJJKUPah7BxHHQKP0nCVc=;
- b=cEqjlLtG3Gmdyls65NmyTqosRjiuRlY+MfrfgjlUKIKatFDT1ij9PSJOwYTs8oyBUbN+Do45vvKmTvt1g2FkmvZRxs3VH00dxbpRk/GqZFqU/RiMBEcbw9qq7N20nEmQ+51HQqH2w24GIgwJfLbmhHAXvzMDfT1tzu14vTIKVDo=
-Received: from AS4PR08MB8021.eurprd08.prod.outlook.com (2603:10a6:20b:584::15)
- by GV1PR08MB10930.eurprd08.prod.outlook.com (2603:10a6:150:1ed::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Wed, 15 Jul
- 2026 15:20:47 +0000
-Received: from AS4PR08MB8021.eurprd08.prod.outlook.com
- ([fe80::edd9:a452:6f60:5e9]) by AS4PR08MB8021.eurprd08.prod.outlook.com
- ([fe80::edd9:a452:6f60:5e9%4]) with mapi id 15.21.0202.018; Wed, 15 Jul 2026
- 15:20:45 +0000
-From: Ayoub Kaanich <ayoub.kaanich@technica-engineering.de>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Russell King <linux@armlinux.org.uk>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, =?iso-8859-1?Q?Dr=2E_Lars_V=F6lker?=
-	<lars.voelker@technica-engineering.de>
-Subject: Re: RFC: symmetric SET_MODULE_EEPROM_BY_PAGE with i2c_address for
- non-SFF pages
-Thread-Topic: RFC: symmetric SET_MODULE_EEPROM_BY_PAGE with i2c_address for
- non-SFF pages
-Thread-Index:
- AQHdEqUvQ2S5XVAteEurgYKiixGWIrZtcDEAgAC2GcqAAGmagIAAAGhMgAAclQCAAABHdw==
-Date: Wed, 15 Jul 2026 15:20:45 +0000
-Message-ID:
- <AS4PR08MB8021EAE9D0196FA87849F74DB7F82@AS4PR08MB8021.eurprd08.prod.outlook.com>
-References:
- <AS4PR08MB80212ED810625BB46A8EE1B7B7FA2@AS4PR08MB8021.eurprd08.prod.outlook.com>
- <23323308-6278-47ba-834e-662b0e408705@lunn.ch>
- <AS4PR08MB8021E0A64800F977B6887141B7F82@AS4PR08MB8021.eurprd08.prod.outlook.com>
- <cd58995a-6bcf-4283-a072-84651a4f0031@lunn.ch>
- <AS4PR08MB80219505FEC2334B503C55DCB7F82@AS4PR08MB8021.eurprd08.prod.outlook.com>
- <259dbf46-5d93-4fc4-bf67-a7356a70ed26@lunn.ch>
-In-Reply-To: <259dbf46-5d93-4fc4-bf67-a7356a70ed26@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_Enabled=True;MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_SiteId=1f04372a-6892-44e3-8f58-03845e1a70c1;MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_SetDate=2026-07-15T15:20:44.584Z;MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_Name=Internal;MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_ContentBits=1;MSIP_Label_f4ba6aec-3794-45cc-8203-ba2df4db1a2c_Method=Standard;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=technica-engineering.de;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR08MB8021:EE_|GV1PR08MB10930:EE_
-x-ms-office365-filtering-correlation-id: 9b1be9f7-b809-4672-0e69-08dee284a428
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|38070700021|6133799003|22082099003|5023799004|4143699003|56012099006|10067099003|3023799007|55112099003|18002099003;
-x-microsoft-antispam-message-info:
- Urb33YJiYxOJEDpeXIt7ApkbwWRKQd9tYwjbP4YkSFrSnSp12bmrhnHmbuCtotcWzIFd/QAVmDqaAP2nVK8Jlq7Y3Dqmmf4odhgjeEnxUhXoY7flCl3rJPV+QSxPfl7S34hfWkBXsfdai6F1yKqQ5Ho/nyiXSe+6VgJeFeS6GALRAOjtYLpr6rUG/hMCNweA4LUMIm20UWk1ud4mWkxXWdAYJ8942+Nf2FR67MKxxme2eAUF2bXVaEuI1c9fs9wgJYM4hI/EfxRYJQP9lpSjP9BtqdyWGsAo7Yis9xZJNnowr6VU7MB/bWfUJC936OArr5r79fbS6YDf7KHzIFYLFhaxtxfnbqnF0tJAtWD8o8laYAElzaCojtXzOEXeRWf8D5vcwixyrfY8zIv9G20IYjqfFdeSmEam8iKwiM7nIK4T+F7JAVFWMB0usyqGB23a2dkSrdK0q234Zup6bcA0F/cQb6f0Zi0gqAcnbdbW3Unk33MacXHvbpITJK58S9GwLrWx2O7oozkJq64SpenjGyaNfsbN9KBV4dUgSRT1zHjWv2hGYb+y+5VDAWN3zDaNBooZrKdFTHRSfUA7DM+2koMxIjlcf3jbyPj0oWvh3HiaovmTBQddOgJaT1a5GzfTkSXOUeF5cqRymqQjwl5LoYciWLHw58KpaOEc4Hg5lDw=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR08MB8021.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(38070700021)(6133799003)(22082099003)(5023799004)(4143699003)(56012099006)(10067099003)(3023799007)(55112099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?nQuiDMkcSCxL9cJmrcFZWKHHObkBW2PKfAij8ieTQXvDo5IlGi1v2GidS+?=
- =?iso-8859-1?Q?7r53E1ppI6zgN24hLsmkAA2Q+8DujGvvErMy1CBF/51M2CVREzzaJSRejt?=
- =?iso-8859-1?Q?A1MP6Ik2uuaoKDHnvoyRwfnHhnpi9vkiBZET/B3rzBjZgVWFLnI94K+eAE?=
- =?iso-8859-1?Q?X+XKbn9+fKnI+Na1zkZau8W9bVuqmg+CZbKi+ouZZJHgzG+f8xXXlKoMsB?=
- =?iso-8859-1?Q?OZ0UdW890GYVcs4mt1T0orzHs/A6zqptl8HfbjHX3hgRPR8Xg+PfRhyUY9?=
- =?iso-8859-1?Q?9sDGRgF41R8acXslzR5zfth6GevWPxTVSI3FmYmDJ6+IV1huGdLJg9hCXT?=
- =?iso-8859-1?Q?vBalRFNGlMc5wL8td+qVg5oeH5/uOb0k3tqbr34ME3AJJzLY1Sqbxivqhh?=
- =?iso-8859-1?Q?MyVy0A6X7tk6tONnldpiROzLAuH15u19LeBfOsl0NK+M/D9agpqbPKGEev?=
- =?iso-8859-1?Q?zjdtxnsZvXdx1qj3B9JIDq+U1w30psXv5wfkT9l4hM48HKQF+Z7OFoJR4K?=
- =?iso-8859-1?Q?XrSJpOvv0RAAQNvDLn0tfp0QCgCjc2WbOsFnPD91O52zCD6VvONhBUno0s?=
- =?iso-8859-1?Q?xySgqxTjpcHoiNVUR0+MVkPPrmvSr5x+xi4w6JqmXTtJFq26WkMsrJ+GtB?=
- =?iso-8859-1?Q?goJE9RCJHL1mut82zhBfoqWqzSoT+f3Qvwt7opuQgA7rThKtTr31Gr0Q4h?=
- =?iso-8859-1?Q?rNPYPjO7VMn1PJZ5dvxih+vsM59mBfUO21MQzuPSd4XgUM7pP6xG8NSU7A?=
- =?iso-8859-1?Q?+Sd4qjbHGuoF+uKk79AhhoZ2gaXKf+eFCeErhz3VtnxXEpAx2aMik8eCRU?=
- =?iso-8859-1?Q?dtt+noWRZrFew2WMkpDi0U2D1Up2mNxGSgVC68fu8Tl3ueqLZzMeUUBSsB?=
- =?iso-8859-1?Q?8/gI27KjR1fs46eIX0Lu4OX5m1xDXuH0oHuISQ+UATgp82PTm1fzpEVpxU?=
- =?iso-8859-1?Q?v/z1Qviou8AfTMMnf/6snghD++aL7nS25+v4lMbWSnZ3oInErcNtyMi4Ar?=
- =?iso-8859-1?Q?GD1ujz4FWcr+QjykzR4xoIVJmdWYQTO1kXruPLbQJzavsfnF3sbiaTvj/G?=
- =?iso-8859-1?Q?dVcn19PyXWxab4wvJu9o3FJ3XzPamXPgaRHxqr3gLLOG/luGkOdhfjRwFt?=
- =?iso-8859-1?Q?CkaPnir0Dz/BhsKer7b8KUlf7uW6HR2uDQ4E+Sjyr0ldyT3KyeEQq7tek7?=
- =?iso-8859-1?Q?djd9layG9Un6t6cUdnaQ7OIpGyAYWR43E+wPnRe8Qles1LNh1MrC+FN2S6?=
- =?iso-8859-1?Q?Rhbnt3P0laM7TEn8ljuseZ+Vv3AuxBM/m9AK7rI02Kw8zMVWqBwn+8pLTi?=
- =?iso-8859-1?Q?WuHmKkRgnALyZBwn1tsOnUHpOOoV7vqhfbTcU6a4ZyvYTwT+mBvWVZOblO?=
- =?iso-8859-1?Q?PNVHJlw6wmo87gk4xGsVmNXTpllwTYWcvQAEv3+jD6nOR5aMxqft+Z7Oeo?=
- =?iso-8859-1?Q?6fkJN51dLCwfESVw0sXoL5KfHL3lZYpRammJmVHIHouTcFebRQwO3GkLR3?=
- =?iso-8859-1?Q?1FaVIGckWXTBvyx7ZHKNDVzSyJ6dW8zJY20gzhAy94et9+3QOULyq1PHHQ?=
- =?iso-8859-1?Q?caZaAGJJQbK1Izx8NkSKWo37OL3+LBY688Vj8E/FWSuU7ePd5ORGJGf2e6?=
- =?iso-8859-1?Q?vfqO6VfMWz9VBj47xIJcKlbpeWCz0e2LpjEkXjrzCbNoGqfJBux6qUbRgX?=
- =?iso-8859-1?Q?tZM0bcfqSfVuiSEroa1honivQtEWtApQFlU6dNj/mXunMUUbBbK5dmD2IR?=
- =?iso-8859-1?Q?g61UUpmZGAyKlXk4xnYN1Bo2nqEMnBFKvPwF/LziHeK6qUBeAUdrYC1wqb?=
- =?iso-8859-1?Q?D5JP//HxUKiFGkxt+4LMEmVeW8pgJUI=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20251104; t=1784129080; x=1784733880; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fbizxbGSlmpaW+4UvpWda4ms/XR6DbFdjKqJi1v9eXA=;
+        b=Qgi+7r8YcwoQGhZWiQBKdR7DuCiZEKEb9W531ojupm2J4jm+VAEuLoFcp1n2GaoFZA
+         id42J6wDTVzBrXXRL6fWD9pnP7S3mf/27mix2nuIf9nHFL2FwzcDnACGWhjvKy3klmtC
+         hmpbfk9KAl2msMhKw3hxJlUdm2ge+YdOX+tI7u10wA/lMhB/YQRGXlzEdEYWkSPErqMd
+         NCKyjOfe0pnQfsaULrB6JDcsfMM0HozaHt8VHXDzIrmsLGXrKb0roEOxfWg0vDBJmLP5
+         NdXe8FRhdIbFslQybyVP91X0Ooo/wWHNto4glzREg3pKM1YZyYutiC3be7TY6/csI32n
+         ++IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784129080; x=1784733880;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fbizxbGSlmpaW+4UvpWda4ms/XR6DbFdjKqJi1v9eXA=;
+        b=Btsh7k0mvBlx5/8+dXlP6qMKBHz30+oRlLahdWlF2jCFfJellm2Au2uq/tzBeQth4o
+         DmnKDD8e0wsewfvrejOyXRdqqhQdCIBKJGMq2+3hJb0aF7PkKbXMnZOs671anKKfNi7Z
+         K1l4XO9JA9ZZXBWzNVgYWjoCasdrLje4ceYlDpj1RjdMwUBo6sU4Es2BKpY2mCos+y3Q
+         YEo5suaryXfqP+eNhDbT7USCWNO+3YvSXvRPSTGALZdluPQ1v/NzM+dQu0FJAkkONhST
+         RTa5yeifAMIqfG23EqzAXxFz4uyAqbNay8/Q47v+v95z5+14RCnl0C70jeqMIUTQYmw4
+         gmwA==
+X-Gm-Message-State: AOJu0YyEHWLzLieVaVJLeFzKB+81epdwoweusH5euxwhFKwWc0IYbpDn
+	oa3U8o8REwdyVHCd5/3oThcaGylyHKordiqSQQIxhs2F1eJ8irpYAexb
+X-Gm-Gg: AfdE7ckXiQFoa7WDKJ3K3QBCoRAUj0eTgQVIfze4t0IwYvpiIfPmw0rFRufSys+9Xyb
+	8PbRX4K3Pu2u5VaJEEyG6G5PjZfHb+gQOZYf21qQswuiciM7YMYs6kbCYBSWZ/5JhwtCEnDSJVb
+	OQnFrARnNBh4OrRrJcknoI6WahHDNjYX7J8VC4XeHfOXiKRi8oeNzETkIqrfY3RV/EUHOcG7g1Y
+	op+eoDFpvIZsIpQiXYRpWa7HIP6CkrUYPqEmaTeTHCSTR0CIdCcET38a3aoFgjJ408Di062qnT5
+	P26vY5Kuv/QAsacfTDaYgijIg7ZTV6/+rln3eGAwd/ChU53n5meMjINfco9Q7wWdiSst+wvXyyD
+	0qsr1dPyPoidvsZdju+B1PnH+LK85zjmn5+U7Yx7hpgP2WmRGJUr49pUrRieXNBbryVreWF5neq
+	rXdtISGdYMjlglxtUQ3BbKFyhRPK5q+PsY5s7aByNmz8p8ZQsaJgnH35E0o6oy8cO5jngIMvJBi
+	+A9OWQ=
+X-Received: by 2002:a05:6820:1a0c:b0:6a3:81df:4770 with SMTP id 006d021491bc7-6a3cbb8415bmr3581307eaf.33.1784129080378;
+        Wed, 15 Jul 2026 08:24:40 -0700 (PDT)
+Received: from ?IPV6:2601:282:1e02:1040:9c92:7274:e627:290e? ([2601:282:1e02:1040:9c92:7274:e627:290e])
+        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-6a36a66b668sm15721591eaf.8.2026.07.15.08.24.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jul 2026 08:24:40 -0700 (PDT)
+Message-ID: <d9961c0a-dfe6-4d77-8547-fed90f7fb705@gmail.com>
+Date: Wed, 15 Jul 2026 09:24:38 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: technica-engineering.de
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR08MB8021.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b1be9f7-b809-4672-0e69-08dee284a428
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2026 15:20:45.0305
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 1f04372a-6892-44e3-8f58-03845e1a70c1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0QeT9fQP24ZTq6fyA5pc27IfBYhrl72O5z6BkK5IT67UbvNGRtqzvdNyJGUw1uTKToh4Cxy8KNR8gB8jwX1y0aaeSM+ABPYiXBSBvpJ/mJ3cs1mc8RT8UqUcID1JyKPi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10930
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] mpls: fix NULL deref in mpls_valid_fib_dump_req() on
+ CONFIG_INET=n
+Content-Language: en-US
+To: Xiang Mei <xmei5@asu.edu>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bestswngs@gmail.com
+References: <20260712220903.3131568-1-xmei5@asu.edu>
+From: David Ahern <dsahern@gmail.com>
+In-Reply-To: <20260712220903.3131568-1-xmei5@asu.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,=0A=
-=0A=
-I suppose a bit of context is required here.=0A=
-=0A=
-We develop SFP modules on top of automotive PHYs, the SFP module takes care=
- of all what's needed for the PHY to function correctly (it has a mini embe=
-dded processor).=0A=
-=0A=
-The NIC firmware does not need to know the details of the PHY and how it op=
-erates, we take care of that in the SFP.=0A=
-=0A=
-The SFP modules we develop, are not meant to go in the car, they are meant =
-to go into PC test-benches that communicate and validated the embedded devi=
-ces.=0A=
-This is the reason we are interested in the Intel cards in particular (and =
-not embedded systems)=0A=
-=0A=
-=0A=
-The issue is that automotive PHYs have extra functions, not available in st=
-andard SFP 1000BASET/Fiber modules.=0A=
-=0A=
-Namely:=0A=
-=0A=
-* 1000BASET1 PHY needs to be assigned a role (either master or slave), a st=
-andard NIC have no concept of this.=0A=
-* The PHY have multiple operational speeds, for example 100BASET1 and 1000B=
-ASET1=0A=
-=0A=
-Example of how it looks like, can be found in table 9: https://flex-product=
-.com/assets/produkte/fl3x_sfp_1000base-t1/instruction_for_use_fl3x_sfp_1000=
-base-t1.pdf=0A=
-=0A=
-In order to set those configurations, we need to send an I2C command to the=
- SFP module; to inform it in which mode the user wants it to work (the enti=
-re config is just few bytes of data)=0A=
-=0A=
-This pattern is common in automotive SFPs, where SFP behaves as close as po=
-ssible to a Fiber/RJ45 SFP so "it just works".=0A=
-=0A=
-We made workarounds using DIP-Switches in the SFP module body so far, but t=
-hat's won't scale for the next generation of automotive features:=0A=
-=0A=
-* Configuring the PHY Macsec certificates=0A=
-* Automotive TC10 (sleep/wakeup commands)=0A=
-=0A=
-To make those features work, the only interface available between the PC an=
-d SFP, is the I2C bus controlled by the NIC driver.=0A=
-=0A=
-Since this bus is already exposed for other operations (like read EEPROM an=
-d flash EEPROM), it would be nice if the kernel was able to expose the I2C =
-bus to third party drivers, so that SFP manufactures can develop SFP driver=
-s.=0A=
-=0A=
-Best Regards.=0A=
-=0A=
-Ayoub Kaanich=0A=
-=0A=
-Principal Software Engineer=0A=
-Engineering Department=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-________________________________________=0A=
-From: Andrew Lunn <andrew@lunn.ch>=0A=
-Sent: Wednesday, July 15, 2026 04:49 PM=0A=
-To: Ayoub Kaanich <ayoub.kaanich@technica-engineering.de>=0A=
-Cc: Russell King <linux@armlinux.org.uk>; netdev@vger.kernel.org <netdev@vg=
-er.kernel.org>; Dr. Lars V=F6lker <lars.voelker@technica-engineering.de>=0A=
-Subject: Re: RFC: symmetric SET_MODULE_EEPROM_BY_PAGE with i2c_address for =
-non-SFF pages=0A=
-=0A=
-=0A=
-CAUTION: This email originated from outside of the organization. Do not cli=
-ck links or open attachments unless you recognize the sender and know the c=
-ontent is safe.=0A=
-=0A=
-=0A=
-=0A=
-> That does not sound reasonable, given that the only interface needed=0A=
-=0A=
-> to the SFP/PHY is the I2C bus which the kernel could access directly=0A=
-=0A=
-> (to read EEPROM for example)=0A=
-=0A=
-=0A=
-=0A=
-The MAC driver needs to know what the PHY has negotiated. Should it be=0A=
-=0A=
-sending packets at 10Mbps half duplex, or 1G full duplex. Has the PHY=0A=
-=0A=
-negotiated pause? sync or async pause? The configuration API via=0A=
-=0A=
-netlink is via the top of the MAC driver. So the MAC driver needs to=0A=
-=0A=
-ask the PHY to advertise what the user wants it to advertise. Enabling=0A=
-=0A=
-loopback again comes via the MAC driver. There are all sorts of APIs=0A=
-=0A=
-between the MAC and the PHY. The firmware needs to implement all=0A=
-=0A=
-these. You cannot drive the PHY independent of the MAC.=0A=
-=0A=
-=0A=
-=0A=
-And when you consider this is an SFP, ideally you need access to the=0A=
-=0A=
-GPIO lines. You want to know when a module is inserted. For a copper=0A=
-=0A=
-SFP, LOS has less meaning, so you can probably do without it. You=0A=
-=0A=
-could maybe use TX_ENABLE to save power when the MAC is admin down.=0A=
-=0A=
-=0A=
-=0A=
-I'm actually surprised you are interested in ice. You seem to be=0A=
-=0A=
-targeting automotive. I would of expected a more embedded SoC,=0A=
-=0A=
-probably ARM based, and those do tend to have Linux driving the=0A=
-=0A=
-hardware.=0A=
-=0A=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0 Andrew=0A=
-=0A=
+On 7/12/26 4:09 PM, Xiang Mei wrote:
+> On CONFIG_INET=n, mpls_valid_fib_dump_req()'s local strict-check loop
+> enters the RTA_OIF arm on the index alone and calls nla_get_u32(tb[i]).
+> Since nlmsg_parse_deprecated_strict() leaves tb[i] NULL for any omitted
+> attribute, a dump without RTA_OIF dereferences NULL and oopses.
+> 
+> Skip unset attributes before dispatching on the index, mirroring
+> ip_valid_fib_dump_req().
+> 
+>   Oops: general protection fault, probably for non-canonical address
+>   0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+>   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>   RIP: 0010:mpls_valid_fib_dump_req (net/mpls/af_mpls.c:2189)
+>   Call Trace:
+>    mpls_dump_routes (net/mpls/af_mpls.c:2236)
+>    netlink_dump (net/netlink/af_netlink.c:2331)
+>    __netlink_dump_start (net/netlink/af_netlink.c:2446)
+>    rtnetlink_rcv_msg (net/core/rtnetlink.c:7041)
+>    netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+>    netlink_unicast (net/netlink/af_netlink.c:1345)
+>    netlink_sendmsg (net/netlink/af_netlink.c:1900)
+>    __sock_sendmsg (net/socket.c:790)
+>    ____sys_sendmsg (net/socket.c:2684)
+>    ___sys_sendmsg (net/socket.c:2738)
+>    __sys_sendmsg (net/socket.c:2770)
+>    do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+>    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>   Kernel panic - not syncing: Fatal exception
+> 
+> Fixes: 196cfebf8972 ("net/mpls: Handle kernel side filtering of route dumps")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> ---
+>  net/mpls/af_mpls.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+> index ca504d9626cf..1ad07df89d5b 100644
+> --- a/net/mpls/af_mpls.c
+> +++ b/net/mpls/af_mpls.c
+> @@ -2185,13 +2185,16 @@ static int mpls_valid_fib_dump_req(struct net *net, const struct nlmsghdr *nlh,
+>  	for (i = 0; i <= RTA_MAX; ++i) {
+>  		int ifindex;
+>  
+> +		if (!tb[i])
+> +			continue;
+> +
+>  		if (i == RTA_OIF) {
+>  			ifindex = nla_get_u32(tb[i]);
+>  			filter->dev = dev_get_by_index_rcu(net, ifindex);
+>  			if (!filter->dev)
+>  				return -ENODEV;
+>  			filter->filter_set = 1;
+> -		} else if (tb[i]) {
+> +		} else {
+>  			NL_SET_ERR_MSG_MOD(extack, "Unsupported attribute in dump request");
+>  			return -EINVAL;
+>  		}
+
+Reviewed-by: David Ahern <dsahern@kernel.org>
+
