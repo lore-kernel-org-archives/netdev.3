@@ -1,46 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEE9379EDA;
-	Wed, 15 Jul 2026 01:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0134636E46F;
+	Wed, 15 Jul 2026 01:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784078586; cv=none; b=NCZp8XHqVjyx7vszcs6cerAO4akzZDNHPLa5wQUqOc9J2epRbU9LxXJDhR0c/FV0+E7W+qy6ww5BB3vKfAYn9lZJtKRqdof4lxKT5w5gsgPhLzsu/jPY47jk2E5XIgiLqmpMu/nOQiDass+9UKyTpwIhofdva1kXO2l9B8BaJmQ=
+	t=1784078714; cv=none; b=qytHGCMYht7VNXMl7FRvCg6kwN9lNO2473yPrIxtHVH4AHob88O2IdCfVi+7YKVTgJLxZCngn3SWy4ko+t9/Oxy4m5YK1zK8BZNWfGza75h8hSd4gOYehB1offkgr/285JaK9LDz14QGyryXCsbPJ/RRiCK30O7S3eAXzStYLwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784078586; c=relaxed/simple;
-	bh=ALNjLK7mfttHKLhhylYdx/L25TSASK/bzxXH7dwg8VI=;
+	s=arc-20240116; t=1784078714; c=relaxed/simple;
+	bh=nbrK9mldE5JqeDv6K+pYmo9pJVnhcvcCJUx6TIlTKKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H16pkl/ZF1MaPnR8vHAB2gOJYDlYRPeNpJ4/XKa7eRhu3rIpo5oLsfiqdhhpjTZnRsSD1HQ3Tc3TtF8Rvql0d/Cr03qEyyrWhRqI/QZHOLzqM7jjyTEIgiVAW0SUSl1gry4CG4oEo2RWzEwqbPRUpNwjeLXbu/XYEQvzSRm/32Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yVJcr72W; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhh8zhztXt0IxUhhcOjJZvQJPgKeFTs9zIubskJyaLqnmrDSUweG7vy/ID0qOt0Sl8nrEImSkRMoGNvupyHOJ5uMa+T4LjQcpuZa3QJonXhRT93wAfOdwBpbUg7Sv0c5KPAUNV0p4edsfvaaUVDJPT9K8b9CcqOwsiVtPPW4ziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oV1LT2CU; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yVJcr72W"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oV1LT2CU"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=46KRPMy9u5mU2TKTccVzrsXsAqZY9tVODkcEVrUETYY=; b=yVJcr72W8TTwXeNlB+kFnhdYDO
-	fyUw7Fto58/Ps3cswXSx/M3Dh7S7VF32FAx23uQEnNWL9YrY9hfz2hne+dR/st6O0IfrD77k5DEPT
-	V+kD7wV0i6eWdwbbiHl0uBcEgtMhxBiukbNoK3YH0VLvC6yThZxshugf2l571JTurhCo=;
+	bh=VZs1HzUMld6RU4sSBPQ3XBPcKPbX0uuBl/BKkS0rsJ0=; b=oV1LT2CUg9cBrpAnzcryXXqctI
+	xAOKGC0J5CIUdfSlN0Shlim0Eh1HJaqBSdnbzj8PJJALQgkGqQioOaVtatQrfH+95oLicLJ/aF1sk
+	b9IhkfkSge/bJsdVSHJge29kxcCUOeL9NpygBqEKqg5/yZL/944ydOKvpYMMtHiC3ueI=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wjoKs-00CHOV-4g; Wed, 15 Jul 2026 03:22:54 +0200
-Date: Wed, 15 Jul 2026 03:22:54 +0200
+	id 1wjoMy-00CHQd-VG; Wed, 15 Jul 2026 03:25:04 +0200
+Date: Wed, 15 Jul 2026 03:25:04 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: dinguyen@kernel.org, maxime.chevallier@bootlin.com,
-	rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org, conor+dt@kernel.org,
-	robh@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 4/4] net: stmmac: dwmac-socfpga: Add support
- for Agilex5 TSN GMAC with FPGA converter
-Message-ID: <2f3763bc-678e-4346-b060-d3bc8afb67b3@lunn.ch>
-References: <20260714021303.30042-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <20260714021303.30042-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/3] net: dsa: motorcomm: Add LED support
+Message-ID: <2b7b6626-7339-4998-b1bd-ce88cef92546@lunn.ch>
+References: <20260701155519.273212-1-mmyangfl@gmail.com>
+ <20260701155519.273212-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,22 +47,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260714021303.30042-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
+In-Reply-To: <20260701155519.273212-4-mmyangfl@gmail.com>
 
-On Mon, Jul 13, 2026 at 07:13:03PM -0700, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On Wed, Jul 01, 2026 at 11:54:06PM +0800, David Yang wrote:
+> LEDs can be described in the device tree using the same format as qca8k.
+> Each port can configure up to 3 LEDs.
 > 
-> The Agilex5 SoCDK TSN Config2 board uses a GMII-to-RGMII converter
-> implemented as FPGA soft IP between gmac1 and its PHY. This converter
-> provides the RGMII TX/RX clock delays, so the MAC interface selector
-> must be configured for GMII while the PHY is configured without delays.
+> Currently, only parallel mode and strict 1:1 mapping are supported.
 > 
-> Add the "altr,socfpga-stmmac-agilex5-tsn" compatible to the match table
-> and detect it in probe to force GMII for the MAC interface selector and
-> strip the delay bits from phy_interface so the PHY is not configured to
-> add delays already provided by the FPGA converter.
-> 
-> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
