@@ -1,136 +1,133 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A30B3B14D1
-	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 18:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F1C400979
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 18:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784138908; cv=pass; b=VgQILvuJdIN8y+XWnIjf9uprIo3UvHjaxDExlC1rJfS8VfDj5G9s+5Cw973soHH6ZNYGIMjkV2sR7Q8g01clkOohoe/5hkoj+p5k3T1OIAT64VUGil0NOqSb/iTl8XJUASKskO+TodjQoyMEyj2haE1JsW+nv2tjOKI4tjsqONg=
+	t=1784138923; cv=pass; b=VgGHORvtuFn1TstJqZj7dXIuyLRbSF35NwEKKUu5GqqzGZoK/DO/TJM75QrDDMV43zHsgRrB98D8smrSfIpNxxPFHZnyULIhZirg2hhyPmmao5xDUIQSMQAgCx9AguIJmf3BKtGHVL89S3rOujHBLQIXI0Aza6qcqAKgNsbXZ18=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784138908; c=relaxed/simple;
-	bh=gmWkK5GBY2LMEWE6ufMsEeT5/UFyj/875yClB5NG2hM=;
+	s=arc-20240116; t=1784138923; c=relaxed/simple;
+	bh=kms617EFclEvRrNPTRVheqPWG3JDFp4EMWFZVwNFooY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l/MlP/Rq6eXdjeZnAPBTUnz6V4tzE/sKD1XU06U3XEjxn/nrasWoLc6wevcxHdw+mSEoQpYbcNkizT17EZzkBRFrIOM3R9fi28dkLG1mzZhJWy7V13EeAtfgEHXX6DrVpJDMpRlJ2StKKhDzofin5+MjKO/LoXmmYbd91SVEKTY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=E6xfUung; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	 To:Cc:Content-Type; b=czaKmFK9rwjh69dJ4/bda2hCIDfQwnbBvVanzI1s7aK3ohXzFsKpeH3LjWrqVbbeHvkUHzK9G/7fMr5ARfRA9XX0FCanzM5W7gjDiQT8w2VKHIyJO4J/NWTfJEwjLJthmaePO3T98sm9LlZNQyPDjegMpvGnMpHWGxlojRzugbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ktKNpeE8; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="E6xfUung"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso25446875ad.2
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 11:08:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784138904; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ktKNpeE8"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cab97c86bdso11995ad.1
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 11:08:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784138918; cv=none;
         d=google.com; s=arc-20260327;
-        b=izOQZgS/doY04PbBe1IIDALmA26xRROCW4FSkXOfS+mTAMDVIRqOudxavGvdft5ud2
-         rwNbefNxLotwjmfwUL0kkgZWJvNVRDBvFH9BIETTl4tXV7BKppxnPPa+9Y38sBdepmCg
-         vycL3NhMlxP8otyvq/DJ87/Wftm61la42UYT2DJSOPzJRCAJFKdkJZvSYxOIFL7OL+Wa
-         tYbaNjYFSmtmtakqjVbdnxfKClBU9ByTr2WUNw+YWiqVZJ9Q9Qt8CgTxZDaPFXuaj+Ax
-         yf6trqd3eE79HROdWVAQP+qaShgXAPfBB5Fo6fQ7CmGudp19uWstCQmXNDAvVJvgBsVX
-         fxAw==
+        b=BKkPBRvFSpUMztRrTEmr27qFKLAz6t6pqMD7QU2TYb1b4hV+3EhQSbMqGtKnMFHIbV
+         I2kznx85/eeJIMW8WHj/csSlpvDgwzinXgYqbjiDdf3kvB2NdHxmYxn+NuOZKtTumCXq
+         GGdKEgydcGGpf7kaM+aQICRTynOjqE34/twSPAm71tAKh9IX0WOm23iwfHwrIJfAYa8F
+         XzLFys+J8YmbTKIYE9R/imryJT83fIcbn40VV38Q71SPjwOSThYJgsCuKDRZYq7AU9eh
+         iAIwTpWrFcgFlI5H3CZOnA1qnqr860BG1H0MqctVkfmEDjHgYQQ+y6MSEyQ4HFjXMDYt
+         MKQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
-        fh=iVfQvShXx4Yl9AKxOw2GLH/AnesA30sYp4RjCLdbTNs=;
-        b=IUQNi0MZnHkiOswEd0w/BtY5seF7DorsysSGkwBWoP2RpZfqVKnZTuu/LHTooh6lEw
-         2k87bQuBNu6r2VS12C2LhAWzDrvG4nX6gnYqAVb9x8fdl23aB+sJLQ/8NZtri+PZyJAX
-         Qr2xaYNpKBRdBN0ocrFZWDAgQ1vjwoMX40C3prHJ3u3b/X51teIZnGrgC9JR85mMmxDd
-         npCPWHuT+6y+bdvWUvKD6sJCEH74OncAU4jX7GqSg9jTZftERe49sbVsb/YzdDRX9yCP
-         z1NyEzIz0/LH0+8qoeqJNpbMfJpjqQ3Nq4I7tg6nFifxjWT12DVgLqfrNaQ7fpfCKIsW
-         14Ug==;
+        bh=x/AT8S3JN9glEWAK1CajRZOnoyU5JvnfFpVjCNdoVhQ=;
+        fh=XdiMdfBZ5SwXC9kO1KD9vfU1uyLfSSFRKCwzGBYh5oE=;
+        b=oo2J37eJBheI7pbrPWrGIig+4Wxk2VL5iSRuO/oaA8QpsSSH3Sx7o9UvkdXNTePE+Z
+         LlNst56cSZHVlrhlwqwLA4S6s+1mpT4ZWOuVKmVhRRzUuCSWqDI170HDOb1qNawsJDv1
+         zq5vpdV/4feOmrVwmjgZY8teng93kYQ/XFScyVdmLKndD4/X+3bX5t+BzHlepeCnCSlu
+         sPOwx7zrdWzRS8KTBNc+3gy+sAFKJn8abpM/kf6iVL45g7UeNFKO7ZwGnyA1d7Gbv0lV
+         X5z4//eG9j7oC1kgQe1tRwuO8IF+47SMknRp0HYil+HBnsZiJII2oO6OxQD11oLNV5FO
+         0Frg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1784138904; x=1784743704; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784138918; x=1784743718; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
-        b=E6xfUungElGUkhJ+Hik4RR1k5vKtgjx7vK3uMtZyvWxMlqW3FeMXMWmQgiCNk1PQCg
-         qrF56pnQzfjp+kwK7Nn87hD7uSceDB3eqQDgnoO3tPoDFZ48kWtWgeXf82aaVjVXCypH
-         faKSYBW7iMpeJIhTW7SbMttzBlkU6SGdYiRGVhaZ3O34CCwXTHdsPVFB4+pB/y9FsrsT
-         Kt/+OxupuvAn1tZEL3CIzB6WdvxwXkfQD+eSnFNvshHSkY+oGhNwBiTGclSZ68IuHkxQ
-         0rLvq3WOPF20ivlVNoVoB/QXwL2Mwe4RGEEJG/MATXbqBkbYrqpaWI88Tnmp3S6ejNCx
-         R0Pg==
+        bh=x/AT8S3JN9glEWAK1CajRZOnoyU5JvnfFpVjCNdoVhQ=;
+        b=ktKNpeE8jasqBBAOWKVFo2Bb4wq9271I1lPQZDYPl+kvXu41b83w8S8mm/taInS43Z
+         sE0TRpTLL7fbgTnP4Dd3jQQiSO5fo5eAU95FJB9SOUKFAW0ALZi7FzjaOvWgRyH6rATd
+         N+m8d+mzvuq9TOhGoS1Vbct8E3bSEZEjx+fXEm58g547krXdBtBiktrdLtaUw6V4jvXv
+         QeSeBTPYcXu9QHwb/h4UIHaxPHjA4Dz23NiJ/vO2ab1cnDzMid1tKDq+fi//N5SV0dKL
+         KhIronNFgmtkLhSkKzhcyhBZGr3P3qNi93ydg/MBWsc4DodPDfzNP0HrxB3O7b9TS7CY
+         i8jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784138904; x=1784743704;
+        d=1e100.net; s=20251104; t=1784138918; x=1784743718;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bTExRgnSTH/zGIn3ftYaOW1KZnYtj39qMY/sUCg+ou8=;
-        b=j9BOFwcEvTWYuqAsQReqInnrRgnfur3c9ze7pz1lJwAfCePcAFGxJ7rR3lt8k+4nrS
-         iTnEwIyO7ZAH7bHbzPXb1jGKkIwSDiX7Zq+Obgp0/L8FDDXRdZiWv3GeF58iTCVytmrY
-         ShNjiNqfU4ml6ChDJNXe43W3KXNDImDnkHMlY4VHGL/zIvJq+CkF+zgyu+yK3GfsTYCL
-         z/jxtg5tcn3/xmQJcP6xPtj0J59VMg2dWz/W8eFdPsE5K9j3yWj+04bIzhSZRIe/nfJs
-         c0kQUZkFlosID4qt7ArgfoWJdvIps/kjkR49SHiQuTXAsydDGRjGFnz6cG2gK6JPA2FW
-         pG2w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0aSnUAGFnRoMWgzbBLImwL5UP1I1qHmok81ngwEVMfp7efCzHSieM33TJ7sUVYkC70KErcTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUzkAqabzQBuBI3o/dtyIchM78KLpfyZJcvSCD0XSkr0e6igZM
-	MgDNUQtZsv0HwLHMDqvzXYBb4wh+ACJoCxZQEbUeUfAjvaDdzrPsuLYqtUwbGPEuKHm5T9lPM9a
-	Am5g5vdDcEoMbnHIjr8FZZ5a0TsWbEXsSFntXDfsb
-X-Gm-Gg: AfdE7cnqI+e+CkQwdKEMXM3QrEOaBISnOJDx5rMc+/OlJyGNws+AGiHA+s6rOAn1wpJ
-	DCAVwop//HDaXD05bskjjNu7ORyLaA9vdc/4w3VcGGa/Aea7CUD+AWzu8rKdzlvYLarBkz/6tMN
-	yn/QZek+/3czx/h+JYyvCmgoEi0iY0dvDJeCVlB0a+9ifCrAUEYLJ4LUdQtYam+vL9gq0nx49z3
-	Kv+jgrwyHv5ihdBoZiXmxDETWgapqRCzhQqUP51nEGV7I4IATsAIgm8w9zw37qB1xe2El3PgckA
-	3QI3NxQlf87YO4ndjIomVqCJqpHy
-X-Received: by 2002:a17:902:ecce:b0:2c9:c083:cd50 with SMTP id
- d9443c01a7336-2ce9e9ac9acmr170981245ad.17.1784138904382; Wed, 15 Jul 2026
- 11:08:24 -0700 (PDT)
+        bh=x/AT8S3JN9glEWAK1CajRZOnoyU5JvnfFpVjCNdoVhQ=;
+        b=W6iiIMW66zGvejr8HRo9rOfziSyOk1OXqd5U3Wro0TlXpmYRN1ULph/Ik5S6ILiOe5
+         9u46Fvx8mscTZYOLJnynk4/OXHSkPtY7ifBY3Ee7w4EhTA94wQPWE1jwc+j9iCOGjKCK
+         CMczBWAM/d4opUW0vwNkT3Lc/OKtvKPfTkCVyBmKxW6QRYWwNigpgw+Q/6oG24R22vWb
+         FxFPL7+GDqX2WKdytQS1cEPfTuZrCpPlkNlloravUWyX6yvX4Td1XZqxcSFMK7UGBKt5
+         PaQLRWK2EFfHy5+Nls+X/yieuF8BBV1vYU800N/hdqqn31jC5P49Dy4rD2KcKTxJh+mt
+         Rexg==
+X-Forwarded-Encrypted: i=1; AHgh+Rok2SYj4O40b4bqlQBgos7/ckibtDkQK5p9CKO4Ul6UDbLGmoKvn/f6bg4KIpV5wQad5pgLxMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVg3Yi6rBL388/7S4yjZgMX7boNZpxVt8ywDVNGDLyLuazkhZ8
+	DDzstX2/nuGyXqE9FyesuqywwJh8zCX88b/gzY9KAh2LOZ1zE7zuw8nKLuzSaVes+Ue/a8Cp6Z9
+	6zr2txmcocuYCUnhXYHPu1CawmsfS5AdCo5gcL6ma
+X-Gm-Gg: AfdE7cmQjrqsmIJK3icD+FAo/9XiIrOxWEj+LwvTUzGYMt4eHFFUhVQA4+yVBMay0Q5
+	5peeP/UM8n+ap1jSLyiMtjeqEnn/ZoXXdmP8GWsLYvs8hhLW1J+una8e1KAto0fRJdVBwBbUu8f
+	GD+YounRBmBFNKNzZd8A+ZfBXWQIJfkzTfkwHi4hjFI4UEuE3qjAaXk4CjaZuwGp98uBwLwdDic
+	VdQryPPU6RlnUj+p5uVjNjkLsq9YW7D1Q+mxrpUs+xtSTnWrpXaub9DE4HQmOn6iWrGlzeZ9oIm
+	dW68xVv/MhgIb47VXMmTJILsbfogF7cCmZbPEg==
+X-Received: by 2002:a17:903:b8e:b0:2ce:b436:272a with SMTP id
+ d9443c01a7336-2cf1a94694dmr10215ad.3.1784138917054; Wed, 15 Jul 2026 11:08:37
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260704210333.668216-1-xmei5@asu.edu> <alddIi8ArJ13ytSC@secunet.com>
-In-Reply-To: <alddIi8ArJ13ytSC@secunet.com>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Wed, 15 Jul 2026 11:08:13 -0700
-X-Gm-Features: AUfX_mzFjlKmKNXWUkRNr2pzRBXPzS3cMIwj9lKmxyFNCb-B-xpM5GlG5AEUE1c
-Message-ID: <CAPpSM+TxGBMPoP==W0vv8e2Hx30ceF28Pv3Y5cgSAGTBJmLU6g@mail.gmail.com>
-Subject: Re: [PATCH ipsec] xfrm6: fix out-of-bounds write in
- xfrm6_input_addr() when secpath is full
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: herbert@gondor.apana.org.au, davem@davemloft.net, nakam@linux-ipv6.org, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, bestswngs@gmail.com
+References: <20260715074342.49281-1-mhun512@gmail.com>
+In-Reply-To: <20260715074342.49281-1-mhun512@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 15 Jul 2026 11:08:24 -0700
+X-Gm-Features: AUfX_mzkA0hD7asNtCMsqlVotbVc-A8PQP0w85ziBMNVAOzmXkB_qMwVa23CiHg
+Message-ID: <CAHS8izN635zULNXH1UOejjjG7ZygwPD7EuN1Z2LXAw5qUFAfaA@mail.gmail.com>
+Subject: Re: [PATCH v2] idpf: disable PCIe PTM on probe failure and removal
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, intel-wired-lan@lists.osuosl.org, 
+	Milena Olech <milena.olech@intel.com>, Emil Tantilov <emil.s.tantilov@intel.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ijae Kim <ae878000@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 15, 2026 at 3:13=E2=80=AFAM Steffen Klassert
-<steffen.klassert@secunet.com> wrote:
+On Wed, Jul 15, 2026 at 12:44=E2=80=AFAM Myeonghun Pak <mhun512@gmail.com> =
+wrote:
 >
-> On Sat, Jul 04, 2026 at 02:03:32PM -0700, Xiang Mei wrote:
-> > The depth check in xfrm6_input_addr() is off by one:
-> >
-> >   if (1 + sp->len =3D=3D XFRM_MAX_DEPTH)
-> >           goto drop;
-> >   ...
-> >   sp->xvec[sp->len++] =3D x;
-> >
-> > xfrm_input() can leave sp->len =3D=3D XFRM_MAX_DEPTH, and the transport=
--mode
-> > receive path re-enters IPv6 input via xfrm_trans_reinject() with that
-> > secpath preserved. If the inner packet carries a destination-options HA=
-O
-> > option or a type-2 routing header, xfrm6_input_addr() is called with
-> > sp->len =3D=3D XFRM_MAX_DEPTH; the check (1 + 6 =3D=3D 6) is false, so
-> > sp->xvec[sp->len++] writes one slot past the 6-element xvec[]. The writ=
-e
-> > stays within the sec_path allocation (invisible to KASAN); UBSAN_BOUNDS
-> > flags it and panics under panic_on_warn.
-> >
-> > Use "sp->len >=3D XFRM_MAX_DEPTH", matching xfrm_input(). This also
-> > restores one chain level the old check rejected at sp->len =3D=3D 5.
-> >
-> >   UBSAN: array-index-out-of-bounds in net/ipv6/xfrm6_input.c:309:10
-> >   index 6 is out of range for type 'xfrm_state *[6]'
-> >
-> > Fixes: 9473e1f631de ("[XFRM] MIPv6: Fix to input RO state correctly.")
-> > Reported-by: Weiming Shi <bestswngs@gmail.com>
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> idpf_probe() enables PCIe Precision Time Measurement with
+> pci_enable_ptm(pdev, NULL), which programs the PTM control bits and sets
+> pdev->ptm_enabled when the bus/controller supports it.
 >
-> Applied, thanks a lot!
+> If a later probe step fails, the error path releases the allocated
+> workqueues and adapter memory without disabling PTM.  The remove path has
+> the same imbalance when a successfully probed device is detached.  In
+> both cases, the PCI core's software PTM state and the device's PTM contro=
+l
+> bits remain set with no bound driver.
+>
+> Add pci_disable_ptm() to the common probe unwind after the PTM enable and
+> to idpf_remove().  pci_disable_ptm() is a no-op when PTM was not enabled,
+> so the non-fatal pci_enable_ptm() failure remains safe.
+> pcim_enable_device() only arranges for pci_disable_device() and does not
+> undo the PTM enable.
+>
+> Fixes: 8d5e12c5921c ("idpf: add initial PTP support")
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 
-Thank you!
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+
+--=20
+Thanks,
+Mina
