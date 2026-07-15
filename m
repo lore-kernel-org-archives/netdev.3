@@ -1,139 +1,165 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379BA3019C3;
-	Wed, 15 Jul 2026 07:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100705; cv=none; b=MnSl1u/+ySs9qJ8uDOgdLvLw2eJ/kQDwBFAwYUAGcvW/3sfl3sjFpIQmGG6pyF0OGx6l5qt3xBIVOs8VxhC1vTseGs0lZbjexKb7iN3FV09m1C6olGEfv0Ssmv7pCLfG3tzdULcD9NlEbhIgFbbTryonaTxrAGqgsNJ58H/OVBo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100705; c=relaxed/simple;
-	bh=uEdkfiJrOo9VyHc0Ck0Ar4SOPXpkPzT4/Oj905lrKqs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y3hrK5rXDZF5HjrE1MOCqifz5o4Id12gMm2BE6JzU5H9C/6xdORvaNIyP9nxjp2/Tl6OLGY+as+c0fDyNJ15urRRmKBkQefzYVuOrHEp6QBm+JpwCNzm/08fGqRIThRQc3tYfWkrUJRpYtcErIoHs6N1VOZuknt5wBqS6UP100k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Cu/NfRTn; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C709197A7D
+	for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 07:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784101224; cv=pass; b=uQJJzdszwmh2OI84kqnhvNQATL+o0pbTvzlCe6olxFep6b/zAeOVdFM3PJ+bfc0CZmW5UiWjkfY/+ZJz5reNx15jEpB9eIyUzIrf9IGaN1W4DRkILeHYFDZh//razWvHoxpka1scKStbE6vOD8jDtKt0omgq7XjpGAa5CV9n6aQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784101224; c=relaxed/simple;
+	bh=itAFmdwV0LJe1R7G2BPunnfcyEOW+YigWSuUC1X06Z8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HaWemrjJZxDsldXoyYbLkmsBCjyYXZbUIdBwMUDV8qyg4ZSdVRv3TIaCZfG7R/NO2mjWx199/i4sceTy8DJUcSNxnUvzAwMt+7pWqfmhokgyupe9MEDhWrtE8rLceB12ouniF7t8a71J6tL/cIXK7SZ7BWWkuLucMBUzyY+mKHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBi/b4iq; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Cu/NfRTn"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F3lO2d1893071;
-	Wed, 15 Jul 2026 00:31:36 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=RcJRDN43yaxKPhIDRT7I3C7
-	OcsVbvhyi4prds4LBzOo=; b=Cu/NfRTnHXJipMxnP3LNcv7lp6BgVsV7lqe2axz
-	hlpx3ZzVomToG0WKknsTwuGlNd41Kn55j6DUwcKFKD77JRgerlDrMm+uoP8eMA/7
-	mkfo/UWwffW+dBcKmCUWTqIv9oIQXXITXHHQLCKMErMxTQ4AyyAZf1WqLx3GshV4
-	DKgs6H23Kl3ebE3pEOASSawWssrMGS2cC+2avHksrhZj9QhJQZUQh8/14oYD0KnJ
-	1EXZyMnc9h+3w+DHuxy4e24DxRb1YrW/1GZJ5O7lIledhjOkU6VUaIAs2CgvxdFH
-	ZXte4ERnimnttDpijm2VrXmJ1GhPJW68NpAY05ItaOI8D1Q==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fdkdc3nsv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 00:31:35 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 15 Jul 2026 00:31:34 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 15 Jul 2026 00:31:34 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 6180B3F7044;
-	Wed, 15 Jul 2026 00:31:30 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Shijith Thotton <sthotton@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next] octeontx2-af: return VWQE timer delay in NIX HW info
-Date: Wed, 15 Jul 2026 13:01:11 +0530
-Message-ID: <20260715073112.622662-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBi/b4iq"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-698acd36d67so9241157a12.0
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 00:40:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784101221; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ISYYxzN240IlNgrm6awHQPbJk4qLZRyekoowirfXAdPwKlC6zT20Bnn9I7vfsV9hI3
+         pJk8zFno1+KnT3aaTJBtSnSDooS7luClPGDtwOEtKc6FxK06pBdcJ6gcc+KhO66UG5y7
+         GASl3Bk1xI7vM7imHuCp7u8cNUZQnEH7YncIkPsS/Sa7H7MAGkph3c2jJpEzZbKyHeGM
+         yT6i+Lsd9tsUIxdxDQvxUYcdxNRmHYuOng7eBHpgUvAZfYtDvQQTet2Rx0nT6UOfbpOm
+         ZzopcrjjiBkWSxei6aWZqg+4KfTIxyzlATtsrtlsOujzIQGpGKxua4/KgnWOhMDYfnsc
+         Vpzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=igOCTwbRnr8tA6QltCFIDH42Xkuh1DYpx7zUIRQrrmQ=;
+        fh=eMBaa78yJ5kzutoNfjQIHkH6dH1C8bhkxzf8mOwoPPo=;
+        b=djGxCoQMCoRtlvGtXu1btU/7FbDnCUyyn1xHNBSvzFy4DC7FaURulk0q1kT8swrd8f
+         pfaSmqWAjPfKoPXp6MBh/tRf7o0vMiu1A40Rram++F+gRTVWlMQg9uZUXi+pH0p5+Vk2
+         zEnBu2N/6Go5lFXca945JKMIPBTXdlzGKFZaQCjHQShVRv0Z8M1c1nIdi1EpCMABFnNa
+         fNAJwIb8PelXDIx4DSawULp7KHwtB1vGMtz9KzBszrnm2w4i2RgsTKVfY/WOpxrz1R8m
+         2jG0EZqzFduiBj637vTteDv6fUCAWb6xBarKiWChTQwofbnczED5orLl+1DIaWtFUeIM
+         VZnQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784101221; x=1784706021; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=igOCTwbRnr8tA6QltCFIDH42Xkuh1DYpx7zUIRQrrmQ=;
+        b=UBi/b4iqWB7iKBCxO+WrQik2h7guidhJEjm9xsQ0O0HdG/wLgxj02cxdb/uscLOW8p
+         qgMdoDuoNO/2zYeT7+2X/10biJLYp/AfbYc9kUDZU1x/3dZdHK510co/0VQnQux7nNwt
+         S5I2AWfm6Nz5xnw+XFgiCTnXbFm3ZRMCWAxmXVlYTbaoVToBf/9KUR+cDJf2i3Xg+cj+
+         eSRyCbGFuVLTV0LBNHuJ8EmcegxTEGcnT6jRofLop7X3HneVtCCxfGOlq6g9DxQpZoDe
+         m9pj9MxdhONod2EqVwzngoPeAFuIviv7WjzsV/g/cWGCEBQrPLwaU/sfE8v17fbFr93v
+         TTPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784101221; x=1784706021;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=igOCTwbRnr8tA6QltCFIDH42Xkuh1DYpx7zUIRQrrmQ=;
+        b=j4wWgiiMdiDAgRkUo5EkiyJTrXvQGubCpYj/1wzyLxFtsplSWQaWha0Zk/EWvcmDZ7
+         gr+i8YUsCmItlrxdWFxsC7A1KQTvsSAb4WyzGvZaN0hUm2Ig1jzFfRVqO9c1kmRWOm8+
+         dqIOkjVohXl0pYahWGha/4JzTP0W3bYi1G/OI9RZMW9NatA1j4p6c70+rhaVA3z0hMc1
+         MEAf7hyxX/Ry7YxArNDGbkGPsVRdtCeUOdWdqjIf7l1Fz3+PS+YrmZLUoJFZamvTgd9v
+         aUStqVSZ1FrLtrvZAC+qGztZiKDL2hGlMVYbFRD1yQIvPGcKppu3xyuZsbd++ITgDJIC
+         oa9w==
+X-Forwarded-Encrypted: i=1; AHgh+RpQ8w9WbHtCP1p625SXxl9LT+kQ5tapxZjh9SDpUEhgJoUsm0bhL1AiAmRpkIGqGxgB/9Ta3/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd1EzAlJCV+YMI134awfkWr4/nrA670G1+Ubz5m+KZrHTJws4Z
+	umT3GBUPxpgsxHyZyABSfMwhOiWADYQ+U1H6lbNkiFAzO3uScMV7q2Zc8jdpMJtUPoYiZPc51p4
+	HuupgLDe5WhszGuhTQE2D3EOvzpR0lg==
+X-Gm-Gg: AfdE7cmyuL598Kysfung0jmu5J8Vlt9SK/FbQkqKtGYlaMGyyAuwthYX5reiT42lLrQ
+	/HcvC/cicsHkOIX5w9ZFMpNGsEjDfCNRO4+VmJkEoAJfRmK+1rz9xorN0H+IkaPNXiX14xV9upk
+	CadT9gHmRkAMRgn2Z8cSB6XVz9X9RXk9zTXfi7bBV5rHSwrV9c4VKgINy7y7ioN3TKN/K6luuqW
+	Gq1isZev1B1PJhbsCuvS3hAQkodWE5anzhCZ8K1VdyKnwKaiK9uzolExylpOCKCcdbE2AkERUSp
+	IfqciztlbZAILoETcXBCotZ9vOVGuHVZsdD9szC0Oyni2wsVniAojVaylg8OjpdO9KEXfEud7z8
+	4clQNTQ==
+X-Received: by 2002:a17:907:7b82:b0:c0e:883e:93fd with SMTP id
+ a640c23a62f3a-c16619189d8mr390316766b.48.1784101220517; Wed, 15 Jul 2026
+ 00:40:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA3MSBTYWx0ZWRfX8FBdLPMmM5Vj
- pw6fggXubWDa+tpLzio9etpI25BShyKVx2eN7Bq2B2QxbL6b30pGj9UwrXixBFzYRzxCvq8Nj7V
- u/s2Y/0ZsfBeD1BGEI2+Vw6XXPVfw34=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA3MSBTYWx0ZWRfX6xD7mYxSW0tU
- UDsa+wYs79dUfVLSUXt68mXpzvyD7hisJfuy26j5ifkWUNCRS1F99nd/Tc5FGyKb/DN58FlBNHE
- PbzDQTinMoPkjZlz4PtKvZcwyU4X7TsLZRo2llu7h3BujbArNAWqaxaUdSCFsUiDuBAk/LlDGS8
- 7NIasszl2eLYO498FAaVcd0r75J60yN6BRurVK4kslWi0qFJXnWHfp0kvvqTCLdQP3uV/JIv7bi
- b/pg6qbKNvpZqmNhxQlLpXIMm7/OXDKJz/lxu+DIHemf/gndM1iDUH6FPCjeoWazSdCCPFT8p55
- rL7NJsqnfB0H9Ea1gnNTRvLX8RXn4F/GWPKItXUsLyja4cQvgOZtAMUWmJmN/NanmsL4USbEeNZ
- DkZ4cq/4Monz9rY7YLouoj55+thc9APcShioBDeTP2Zb/7vCQMKnFekGEHtO25EKU3I1u/ZY/AM
- VOylG0VQKnYBtjLTCTQ==
-X-Proofpoint-GUID: PnxuLbFT6fYnDLwKmwiSIMYISMF97ZcY
-X-Authority-Analysis: v=2.4 cv=WsYb99fv c=1 sm=1 tr=0 ts=6a573757 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=PdPszD-o5J0UizkRgOIA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: lsHfrib_NPs1pby_IMi5S6yIQYurtN6s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
+References: <20260714081124.90962-1-mhun512@gmail.com> <edc9c916-1a9b-407d-b2e4-cd8709287a34@intel.com>
+In-Reply-To: <edc9c916-1a9b-407d-b2e4-cd8709287a34@intel.com>
+From: Myeonghun Pak <mhun512@gmail.com>
+Date: Wed, 15 Jul 2026 16:40:08 +0900
+X-Gm-Features: AUfX_mwF8rw8M5B3ICI8wj67I6_sihRqUfRxt_fZ9SmAsrUyUR8MYWyVag-xsxQ
+Message-ID: <CAGEsz8EyKpppgu57nsdtw73H5HSufgKh7GMMhZcQuaJkQa=WMA@mail.gmail.com>
+Subject: Re: [PATCH] idpf: disable PCIe PTM on device removal
+To: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, intel-wired-lan@lists.osuosl.org, 
+	Milena Olech <milena.olech@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Shijith Thotton <sthotton@marvell.com>
+Thanks, you're right. A successful pci_enable_ptm() is followed by
+several operations that may fail, and those paths currently return
+without disabling PTM.
 
-Update the NIX_GET_HW_INFO mailbox message to return the VWQE timer
-delay, which is used for vector packet wait time calculation.
-Repurpose the existing rsvs16 reserved field in struct nix_hw_info
-to vwqe_delay and populate it by reading the NIX_AF_VWQE_TIMER
-register (applicable for non-OTX2 silicon).
+I'll add pci_disable_ptm() to the common probe error unwind path and
+send a v2.
 
-Signed-off-by: Shijith Thotton <sthotton@marvell.com>
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/mbox.h    | 2 +-
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Thanks,
+Myeonghun
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index f87cdf1b971d..253dfee9646e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1463,7 +1463,7 @@ struct nix_inline_ipsec_lf_cfg {
- 
- struct nix_hw_info {
- 	struct mbox_msghdr hdr;
--	u16 rsvs16;
-+	u16 vwqe_delay;
- 	u16 max_mtu;
- 	u16 min_mtu;
- 	u32 rpm_dwrr_mtu;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 78667a0977c0..c5bddd2ad920 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3936,6 +3936,11 @@ int rvu_mbox_handler_nix_get_hw_info(struct rvu *rvu, struct msg_req *req,
- 	if (blkaddr < 0)
- 		return NIX_AF_ERR_AF_LF_INVALID;
- 
-+	rsp->vwqe_delay = 0;
-+	if (!is_rvu_otx2(rvu))
-+		rsp->vwqe_delay = rvu_read64(rvu, blkaddr, NIX_AF_VWQE_TIMER) &
-+				  GENMASK_ULL(9, 0);
-+
- 	if (is_lbk_vf(rvu, pcifunc))
- 		rvu_get_lbk_link_max_frs(rvu, &rsp->max_mtu);
- 	else
--- 
-2.48.1
-
+2026=EB=85=84 7=EC=9B=94 15=EC=9D=BC (=EC=88=98) =EC=98=A4=EC=A0=84 1:37, T=
+antilov, Emil S <emil.s.tantilov@intel.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
+=84=B1:
+>
+> On 7/14/2026 1:11 AM, Myeonghun Pak wrote:
+> > idpf_probe() enables PCIe Precision Time Measurement with
+> > pci_enable_ptm(pdev, NULL), which programs the PTM control bits and set=
+s
+> > pdev->ptm_enabled when the bus/controller supports it.  The teardown pa=
+th
+> > in idpf_remove() releases the workqueues, vports, mutexes and the adapt=
+er
+> > memory but never calls pci_disable_ptm(), so PTM is left enabled on the
+> > device after the driver detaches.
+> >
+> > This leaves the PCI core's software PTM state and the device's PTM cont=
+rol
+> > bits set with no bound driver.  pcim_enable_device() only arranges for
+> > pci_disable_device() on teardown and does not undo the PTM enable, so i=
+t
+> > is not a substitute here.
+> >
+> > Pair the enable with pci_disable_ptm(pdev) in idpf_remove(), matching t=
+he
+> > igc and mlx5 drivers which already disable PTM on their remove paths.
+> >
+> > Fixes: 8d5e12c5921c ("idpf: add initial PTP support")
+> > Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> > ---
+> >   drivers/net/ethernet/intel/idpf/idpf_main.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/=
+ethernet/intel/idpf/idpf_main.c
+> > index 0dd741dcfc..3d3471d3f7 100644
+> > --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > @@ -159,6 +159,7 @@ static void idpf_remove(struct pci_dev *pdev)
+> >       mutex_destroy(&adapter->queue_lock);
+> >       mutex_destroy(&adapter->vc_buf_lock);
+> >
+> > +     pci_disable_ptm(pdev);
+> >       pci_set_drvdata(pdev, NULL);
+> >       kfree(adapter);
+> >   }
+>
+> I think another call will also be needed in idpf_probe() in the error
+> path, following pci_enable_ptm().
+>
+> Thanks,
+> Emil
