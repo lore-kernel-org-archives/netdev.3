@@ -1,118 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94872E7391;
-	Thu, 16 Jul 2026 05:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8708B234994;
+	Thu, 16 Jul 2026 06:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784181291; cv=none; b=uxWIZwY7Og+rnTG+Im4juFYakrCBTns/IM13W6tbnWl9+YL8H3uP5iYjHyA1L0+K4Gn9g6LHp/QiAxDuALJIZYqSPa5GqGcVAVddHExzvdE5k/ZcLDGj1d+HdrS+UJYw1t4QbgtL2vxMX3rWipoVekL7KU35x5eZWOo7N5aULVY=
+	t=1784181941; cv=none; b=mto4f5r04gMU8FEKu1aCwf/QqpFHY6Z9kIWQ8rssMBNyhy03UMjTR8DEND9zjTV1/uI2y25xYiOHgcuHY3bgmDJ7Boq7RGkzKnLgrXd65kM5pf6IrsLgC6BYHCKOFzqahAqMBIr2WksKEBh68OgjSgRSIzYh1NJ+67grXec3iVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784181291; c=relaxed/simple;
-	bh=qHqsHlXUbvMT5idpItcGJRfVzZZ+xZwZtrRFDIkck70=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=NqbVPahWhJM0H0I6OrjcrHsDSIG1N+SdfCBwwaMcnF2qCEvG0U56GzeTvoTgTiqVrx30N3jcB5Hliz+HT7hlvT0Nce7tiCUY8YjuSQAc4Vl2v2tl8Z9Cc47McJk/Z7TI+115rp0TzFR+Eija7jYLBiT2nNww3WlUMWx0aXbWU4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVt8keMX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784181941; c=relaxed/simple;
+	bh=GLO1pAxaJdY9mn06VprM5C+XrP2pmxP6RplRkS9TPoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sJP3yVAwUPfN1lIoan5PIv+m7sFSV5A/ZxyzTav/N/Y47UHdpislDfIEKHWc2SIVKbFdL9eDhSEJ4cgerN+rfdZ11qR6ljTFcrXKrvqq4ksvQxh5XrjmfIDc3qWPN1E9GEFnEIVVbz+/rklAmKWs9Rw0A9ZRdcodSHB77Eu1uME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Z4F4K37w; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVt8keMX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1381F000E9;
-	Thu, 16 Jul 2026 05:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784181290;
-	bh=0kltrmg92IxFhBBOgNV/X0hHz2a88Am7o+QnR+QVhDA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References;
-	b=eVt8keMXHCyFAhwrIb3av8NBNKYSnRFAWhkcfizTzrD7qqaKkiR/8CCTOJKmLZPwR
-	 04BmfxZFHxozsAEb5um2lPTzHf9JY4yU4ySrJwnyQ6aQtBWqdoUFYfBL2PbuJzm8J5
-	 7jn/oAmt/MHX5/ZrkpYnCIvt0Yn4YXL7AlHp+e+x7vO41okuu2BwXCVRiudT1ChloA
-	 QKZcBxZjc434mLsUlZjLs0P2tk9X229s3ZFKWPG/Q7dRUCjTShW4RVhowv64ipm5Al
-	 ER4tJBbpjZ3SmEcpX1F1Fv6k81NtqjzIxV2i0XwS3BbeYjNP5lWE61kku4ZXFTrK7C
-	 vbGNvR3Twt1gg==
-Date: Wed, 15 Jul 2026 22:54:48 -0700
-From: Kees Cook <kees@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>, Harry Yoo <harry@kernel.org>
-CC: Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v3=5D_net=3A_skb=3A_isolate_skb?=
- =?US-ASCII?Q?_data_area_allocations_into_a_separate_bucket?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <aldpAY6nXwgayHL0@pedro-suse.lan>
-References: <20260702170728.168755-1-pfalcato@suse.de> <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com> <ak4w2k4Woj55E0On@pedro-suse> <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org> <aldpAY6nXwgayHL0@pedro-suse.lan>
-Message-ID: <153C14E7-738D-4411-9F7A-F3A33DABB4EC@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Z4F4K37w"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lvBdS4RGU9Yw/3MYdrQYhu+XNnpQLrYr2vG2OyUGajo=;
+	b=Z4F4K37wPPA7OrmKUwNucPZyKjvIcIr4BcO1oa8mKXcE1vIqW2zk0M9GG+y+o5NaPVVBw3zhe
+	YooKKdR2I0wuvkL1MesTJ4LPDlqoczrdRzSd1xOflLpq7IBx3Nbs+6bPvwHpjN1lU5zAs19Wq5d
+	cc3DGZz5qWGXU71qTQ29rHk=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h12My6ttwznTtT;
+	Thu, 16 Jul 2026 13:55:58 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id AE76040586;
+	Thu, 16 Jul 2026 14:05:33 +0800 (CST)
+Received: from [10.67.121.183] (10.67.121.183) by
+ dggpemf500013.china.huawei.com (7.185.36.188) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Jul 2026 14:05:32 +0800
+Message-ID: <a5ade771-151d-4c02-9c1c-a776c4cb3cdf@huawei.com>
+Date: Thu, 16 Jul 2026 14:05:31 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virtio_net: fix infinite loop in virtnet_poll_cleantx
+ when device is broken
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: <jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>,
+	<eperezma@redhat.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <liuyonglong@huawei.com>,
+	<wangzhou1@hisilicon.com>, <linuxarm@huawei.com>
+References: <20260716035201.3736582-1-yangjinqian1@huawei.com>
+ <20260716011312-mutt-send-email-mst@kernel.org>
+From: Jinqian Yang <yangjinqian1@huawei.com>
+In-Reply-To: <20260716011312-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
+Hi,
 
+On 2026/7/16 13:14, Michael S. Tsirkin wrote:
+> On Thu, Jul 16, 2026 at 11:52:01AM +0800, Jinqian Yang wrote:
+>> virtnet_poll_cleantx() contains a do-while loop that cleans up
+>> transmitted TX buffers and calls virtqueue_enable_cb_delayed() to check
+>> whether more buffers need processing. When the virtio backend stops
+>> responding during guest reboot, used->idx is never updated, so
+>> virtqueue_enable_cb_delayed() always returns false and the loop never
+>> terminates. Then it will block reboot process, and the guest will hang.
+>>
+>> The problem occurs during guest reboot under network traffic:
+>>
+>>    1. kernel_restart() -> device_shutdown() traverses the device list
+>>    2. virtio_dev_shutdown() calls virtio_break_device() which sets
+>>       vq->broken = true
+>>    3. virtio_dev_shutdown() then calls virtio_synchronize_cbs() to wait
+>>       for in-flight callbacks to complete
+>>    4. A virtio interrupt fires, softirq is deferred to ksoftirqd which
+>>       calls net_rx_action() -> virtnet_poll() -> virtnet_poll_cleantx()
+>>    5. virtnet_poll_cleantx() enters the do-while loop and never exits
+>>       because the QEMU backend has stopped updating used->idx, despite
+>>       vq->broken having been set to true in step 2.
+>>
+>> Since the loop runs inside ksoftirqd (a SCHED_OTHER kthread), it is
+>> visible to the scheduler and does not trigger a hard lockup. However,
+>> the kthread never leaves the loop, so RCU detects it as a CPU stall
+>> and reports it periodically. Meanwhile, the reboot process remains
+>> blocked in device_shutdown() because virtio_dev_shutdown() cannot
+>> complete its synchronization step, and the guest hangs permanently.
+>>
+>> This can be reproduced on a guest with a virtio-net device: run iperf3
+>> traffic in the guest, then trigger reboot. The reboot occasionally hangs
+>> permanently with RCU stall on ksoftirqd.
+>>
+>> Observed on ARM64 KVM guest:
+>>
+>>    CPU#1 RCU stall (ksoftirqd/1), repeated periodically:
+>>      virtqueue_enable_cb_delayed_split <- virtnet_poll <- __napi_poll <-
+>>      net_rx_action <- handle_softirqs <- run_ksoftirqd <-
+>>      smpboot_thread_fn <- kthread
+>>
+>> Fix by adding a virtqueue_is_broken() check to the loop condition, so
+>> that the loop exits immediately when the device is broken, allowing
+>> the device shutdown to proceed.
+>>
+>> Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
+> 
+> 
+> Good thanks! Just the subject needs change so it's clear
+> we are changing virtio core not virtio net.
+> 
 
-On July 15, 2026 4:07:49 AM PDT, Pedro Falcato <pfalcato@suse=2Ede> wrote:
->On Wed, Jul 08, 2026 at 10:27:54PM +0900, Harry Yoo wrote:
->>=20
->>=20
->> On 7/8/26 8:16 PM, Pedro Falcato wrote:
->> > On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
->> >> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
->> >> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
->> >>>  }
->> >>>  EXPORT_SYMBOL(napi_build_skb);
->> >>> =20
->> >>> +static kmem_buckets *skb_data_buckets __ro_after_init;
->> >>> +
->> >>>  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int =
-node)
->> >>>  {
->> >>>  	if (!gfp_pfmemalloc_allowed(flags))
->> >>> @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size=
-, gfp_t flags, int node)
->> >>>  	if (!obj_size)
->> >>>  		return kmem_cache_alloc_node(net_hotdata=2Eskb_small_head_cache,
->> >>>  					     flags, node);
->> >>> -	return kmalloc_node_track_caller(obj_size, flags, node);
->> >>> +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj=
-_size,
->> >>> +						    flags, node);
->> >>
->> >> Sashiko noted that some drivers may require GFP_DMA buckets, and the
->> >> above may break them:
->> >>
->> >> https://sashiko=2Edev/#/patchset/20260702170728=2E168755-1-pfalcato%=
-40suse=2Ede
->> >=20
->> > Oh, this is really awkward=2E Adding linux-mm and slab maintainers fo=
-r input here=2E
->> >=20
->> > Considering the current slab bucketing does not seem to duplicate DMA=
- or
->> > CGROUP caches, could it make sense to duplicate those as well?
->>=20
->> Could we specify what kmalloc types the user needs when creating
->> kmem_buckets and duplicate caches for the requested kmalloc types only?
->
->Perhaps=2E But do the users themselves know? alloc_skb() allows users to =
-specify
->random __GFP flags=2E We're bound to see some random caller do
->alloc_skb(__GFP_ACCOUNT) ;)
->
->In all honesty, I'm not quite sure what the best way forward here is=2E T=
-he most
->transparent way is to bucket those other kmalloc types as well, but that =
-might
->very trivially result in a lot more caches (and possibly memory usage) fo=
-r no
->great reason=2E So perhaps specifying caches might do=2E
+Thanks for the catch. Will change the subject prefix to "virtio_ring:"
+and send v3 shortly.
 
-How about dropping non-standard flag alloc requests into the general kmall=
-oc buckets? (I=2Ee=2E have kmem_buckets_alloc redirect on flag mismatch?)
+Thanks,
+Jinqian
 
--Kees
+>> ---
+>> Changes in v2:
+>>    - Moved vq->broken check to virtqueue_enable_cb_delayed().
+>>
+>> v1: https://lore.kernel.org/lkml/20260713132025.703147-1-yangjinqian1@huawei.com/
+>> ---
+>>   drivers/virtio/virtio_ring.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+>> index b438dc2ce1b8..5c169fbb418a 100644
+>> --- a/drivers/virtio/virtio_ring.c
+>> +++ b/drivers/virtio/virtio_ring.c
+>> @@ -3233,6 +3233,14 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
+>>   {
+>>   	struct vring_virtqueue *vq = to_vvq(_vq);
+>>   
+>> +	/*
+>> +	 * When the device is broken there is no point in polling used->idx,
+>> +	 * the backend will never update it. Return true to let callers
+>> +	 * exit their cleanup loops instead of spinning forever.
+>> +	 */
+>> +	if (unlikely(vq->broken))
+>> +		return true;
+>> +
+>>   	if (vq->event_triggered)
+>>   		data_race(vq->event_triggered = false);
+>>   
+>> -- 
+>> 2.33.0
+> 
+> 
 
---=20
-Kees Cook
