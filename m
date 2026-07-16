@@ -1,136 +1,174 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770A541BA86;
-	Thu, 16 Jul 2026 11:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784201963; cv=none; b=VrhprYOFFhc5d+rvtckaWdqFtmrAeOJV5AyXSUSBcgiJ0tjMnF0Op0+6x0pmmT2PxHQHCxc3eN+4LaBWCyQosUoG3NwHER1+Aca7yWCT8IyNKFWKmhKnx3Q1whp0NVGoTOZlG7NmJltLq97c32ChpslJPpgf/nkLjOSqnnbkot8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784201963; c=relaxed/simple;
-	bh=xhvo0TssXigBZEtmj8shKdLhEgk1c6KWckqcsGkEVRA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hnGdzAEqjbM9oE3y0F9i7QcdkA3qrCfo5TMnuy3OLOMFrik5mAmQ2eI18V0yjjYxxhe7X/aAaz3fvmWVb0N/QEJWPJts8hMW1Fk6zdnCukLAK/fnyLtA3LJaz56grYo7ALwzGQE/4M+ds+tmf33nRkQdyFmsCPq0OOXdoQ6D0Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com; spf=pass smtp.mailfrom=tencent.com; dkim=pass (1024-bit key) header.d=tencent.com header.i=@tencent.com header.b=lZOJpPFu; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C71530BF67
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784202190; cv=pass; b=a24EUSGycRZzDbZZydsM4+8OpNuyvqc83oA6qww8IeIhpw+EqS71XDn3GdQOcv/aMNNcvZqfOnL+7bm8H/1Tqu4vEwMrkFT6c5xsRuFqlcxdSrTtZVUK6yOQimleGIGbWvV95Mr2LFy9SjSCbLcnc+SAyEvqP6KvAiGRp1QoLjE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784202190; c=relaxed/simple;
+	bh=7jX2el78Z4qXDp5GUOiAEV/a6gDt+AMIIngnAQWH+kM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q9Jd1jKVlPgOlX+vLgT0c6suF7mLQCQq/vHNH0BORLZxEDy2XrASbfZdQNJz4DTZKG5XYFgruQk388x/uHZPMK6tV5jpgmu21/aMeKvJlz+Qeh6zpUTIeZfwz2wYuaDAczkHBqGCbYMl3IQtR8GWvJqB2yCGcXosKk9cK6KyK9E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4Ws9QlA; arc=pass smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tencent.com header.i=@tencent.com header.b="lZOJpPFu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
-	s=s201512; t=1784201949;
-	bh=tXkMwg9Ltdv9kC1EmbDQ6kbQY/ZIImE6dQ3kuFrs3do=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=lZOJpPFu1MFR/JC8z+Npj0y6F7Zzt3kEIRVcRZngn6dyNnu2OuKZTCC/sy5NDSrlF
-	 VDfCAI8r72X3N2mcl9DvH5DVqunb0al7a/jlX8dDYoHuX8IfnrgFv0eB14Ew+cLv1y
-	 51jCg2Yf8v9nI3lfP7JKYLMzZIMugzDeteX5DXbQ=
-X-QQ-mid: esmtpgz14t1784201948te6fea8b8
-X-QQ-Originating-IP: 3KJDf4wvd+SARAxlsRTdD/N9bosazwthnDKhH80Xl5c=
-Received: from JUNVYYANG-MC1.tencent.com ( [21.36.98.78])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 16 Jul 2026 19:39:06 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11546903899262708686
-X-QQ-CSender: aigbot@tencent.com
-Sender: aigbot@tencent.com
-From: "=?gb18030?B?1uzIuMC2vvxBSUdCb3TTys/k?=" <aigbot@tencent.com>
-To: netdev@vger.kernel.org
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] sctp: don't free the ASCONF's own transport in DEL-IP processing
-Date: Thu, 16 Jul 2026 19:39:04 +0800
-Message-ID: <64BCFE010EC8ABF4+20260716113904.33080-1-junvyyang@tencent.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4Ws9QlA"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso3801370a91.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:43:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784202189; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eNOqHYR0LO8IS35LVSJhtT6aEI+XF7IxNfODcUN/bx3De5pwHOinyDo1ZZ0p7NLiuq
+         51SiAs5MJ+ndUesrjhlnDH70MgkwVPA+9REPYVN4/E1z6MojdiH3qSkBUCaI96MGsgDX
+         50K7QKQNQUXQU+NHMglz0vH39iyyPWVuoNNS0uasKX0fWo/JCaiSDhW8eQFgga6Y9JYK
+         h6WQNJ+W5xMp/PFOrrO4E9bUrgIhWGgse8toUXE8vUdQRWPrIZzwKh1lMWAWhNcZhMLQ
+         Zgx3/cxTphZ1yzD96nDLOzkjP3Eqy1dtub7wd04gDkgVeg4lYlAcSN9vT8jLbn1TmUOr
+         hGKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JovS+rCQDfsh3cyPYuCXkkxVWrghph9UOjUZsNYKjQE=;
+        fh=iQyfmahMB3C/1k5ZOqTpS1ZCAShbyOWo1k7gUDQ9Q6o=;
+        b=rCMCfEVJjVdGn7+lBvfg2VEGQ5zJ6Q8sS5+b/gaqjQ+9RVLUt80riQMQ3zdVsVpzAh
+         drv6lBJ+oRUTUR+M0QylOrQn1nVDCFKWV01EghFMhqbaeIxJETNu2fNykA6OhqoXUFBf
+         8GdH9C4UdqXMUG2BfvGkwRvg2DK2cIdarbNwdaq6/6BKSoP9eGWiDOSYtDx9XUP8Sqlo
+         FBgw8lvbnbniCPIHl+gdGUm0Mw9YASg4b/ruLJDnAScjkKtxeCfkCgRGunc/QMK7Zutt
+         uvrQkbh2nZJaE9n8RDguCN4tqgzoioozN6ZnlUHL8hXdt5Hzw8aJ3/4EzjuRnPZXK/nK
+         f9pw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784202189; x=1784806989; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JovS+rCQDfsh3cyPYuCXkkxVWrghph9UOjUZsNYKjQE=;
+        b=G4Ws9QlAKJ6gwBc9bvgszGegrSMMbj6E6awWqmGUAwDLGpzGJoYIZzMT/fVIscYYhw
+         Octym6FzDGvanIyqUOhfvBKKOHA+3Z1BWgnSyHkGbH3bUR53hacdjJoEdOzQYQ6RnkFd
+         p4ZZpc8T8D5xTH0peraI8GA4BN59RoL1gtntn6ap0MozNOeHrfUihLu8siJvtFrfLPZv
+         3f7EIXTPOmdxEbuuWFBK6MXcfVJk6F7Nr0rRfBrlOqUYZzgS/xpXS8anpwMXLjaLGw8d
+         XDO3fMWyJ/gmD3iXlE4CydaRErPQNDfO8EreXYkVzRrQRaAjJnqzI2wkwqwOGgeqMRxi
+         XQsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784202189; x=1784806989;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JovS+rCQDfsh3cyPYuCXkkxVWrghph9UOjUZsNYKjQE=;
+        b=dTEXf4FfTz5HEHwU/I6D9u0VP63oyPPyijsvJPpzzwgsiT//5g2Oe60K8zc97X669c
+         gFFXJYKIyD38AG5kjT+jPonfodzh+GZRzxvWUc+3j1VeNqNjEsfpmbfRwhDq+kFtAsNh
+         vh8Yk+24ipdWv09FBK1ljWT/93x01YJtxzZmtZ7MjrT1erm2IheLPQriniGHIDUjcrem
+         YRam/6zABirhMCmdRif/2ISGKgukfD31IZUq2v0PHCP/hGDUW1NyrnzR4Gwf8J57X1qE
+         2sDj17AYqEbXxblWGoBEUuDbkpix4VBKAkv5eQpS+Tnw5jEN7lA5FylEZRwNfZe4sdrf
+         b9VQ==
+X-Gm-Message-State: AOJu0Ywp9NKjRYwmpFu/9h1AJdQwfjLP1sWPT8637pp4A6qMzVcc0FvH
+	hSzTSnZZ7sBj7Qdbf8VaBtHiS3DbFdnisHKrhbprMSWM82rnzzh/XYx37LwVVxO4aorKWjuCQse
+	tci8hhzKw3zoP+zXf0N//76CudkiQKkk=
+X-Gm-Gg: AfdE7cnCYxuT8+1og2JPgC6OGGeHsU+p0TFXg0XzNeZdmVP3refwty4qxdBKvDmksqr
+	SviFJezascIMD5WkjIfrGL/Sk02FU1yyAqNKAu7cNSc0xTXuA5T6/4y2qwRO/JsjjZhCL2eiV3K
+	9FisUBQHSmWSZB5JUpsjFORlKtmMLtdJ5TWwIi0Tpz60+r0a+sytrGoKXLp8xRQLf/k03pwf1Hc
+	Iz3/KFak3xb8c+puWxLjUlrJ2FXCi9SZzp4/Q0PkvCpne9tUITuVbL5n8c9pkiEJGqKV5Kz6NsZ
+	hUR7Y4bmEEe7qFiDlbW0CKiLt3zdVZrlV7vHyvJ8kPymZsGviSFleQUKcZFr9WmWi0ynrIeJoXi
+	/Dw==
+X-Received: by 2002:a17:90b:3842:b0:387:e0cb:7f4 with SMTP id
+ 98e67ed59e1d1-38e17fa8e74mr11239037a91.40.1784202188739; Thu, 16 Jul 2026
+ 04:43:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:tencent.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NUTz4BkILuKLphSou9uUGeLyGG0ftyhAepKiKSYydMvLCev82HHq8NCm
-	1UwmDtsZAq8Qcvpj9mMLhJMHRKHclJcsd0ZPZwZTEOZ3FfSnG29gozzRXjJLBoCMpWf9F4J
-	ryVjSmJuCUwKd1mUJdFx81bou+QisaAja9UJZFpRznkUqpmGECoCDjKwWqaiPyJ6GS8kUHF
-	TDfQv8fg/QbSa5PjWtbonuQkfXfZHL6cbBd9tPkLEnpuUR7i3KxIOmGM4CYxEpuyCAd40Ky
-	3sk0PFMyzPsEUTvJsB/AtJER5BM/lDJB3mSr4Lg9x1Ut+hrv8mkncNzIKsZoAQBcqxqtE22
-	6K9ducaVqph/pWAMn9W/X7NR0y25MO3CUVUIJys/BChaZoGQM916bXyzAIG1cVXJq7XMCnK
-	UZPhh241G4+T9IuBRc334qQ2+yDoABNJVlG+eFXTK4InIAOCQF2GzQr6ujLalpHsWxLPqj1
-	QP7nueaQF1unZV2QcgY0CFzFeuU4FWIREr7VcFSweqkpcqN8/RKBtSMMs74FD9cZ+caLHiw
-	Q5weVy9hwJl6iVkQ86oHxxJLoyTGGtOz1X5b8TkZqd+CFKUx+vdnpAWkqnVYeRCmLf78pME
-	1YLeUPYYMQBiswxAC1g3ryCxsKyGmL+ngGYBscIy9HE75ct0rD7lSqRob5tYoEGnSORY5NK
-	xQsGvOxTsgCP8sn41bsqylM/Cz73BTMRm/o5qJPkQlmBIxtek8zNEWDVBrR2v3sElG8NjfW
-	tnKlyzLGoNt7Zb2RC+ZRgSpKPRRCLL57XF8wbPRs+sNlPgvSoBIQgr6ThQE1nBKsKgGuTuQ
-	wfa6ZnTE+fx2Lwx2EbqMDX3ti71+8YweDbualgnnO5EzVr1vfn4QxX96k8l42RoGx5DOQ0y
-	/24Dhuu/pCKwckGba4twin2lluQk0rtiL5e54kJOUTtZ5UDMvIFSPy32iahc6gOvCzIZ1Jp
-	bHUx6ArUpyVn6iGoz0N44NtveLx2VxvHX8+J06qho42Pm4AqjMPPTCjGwKfGaoSo7w2yp8E
-	POaEfArux64OZrCHhiEbkn535I7a75s7vwU5u4MQ==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+References: <20260714140722.111645-1-maciej.fijalkowski@intel.com>
+ <20260714140722.111645-2-maciej.fijalkowski@intel.com> <CAL+tcoAc7d8MSCqK23_pmL2G8tSS-MpfM53brijPntv5A+BA2Q@mail.gmail.com>
+ <ali/sIjljiNm9RmI@boxer>
+In-Reply-To: <ali/sIjljiNm9RmI@boxer>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jul 2026 13:42:28 +0200
+X-Gm-Features: AUfX_mxN1Ir_5WiSskAyAn49z75NXsXgLWgUizzsp6h8K925OgrttctYn20cySg
+Message-ID: <CAL+tcoBGJDC-Kx=qvxoQtd4BUPCDBv00Gta1SOvejx9nNvVo3w@mail.gmail.com>
+Subject: Re: [PATCH v3 net 1/6] xsk: fix buffer leak in xsk_drop_skb() for
+ AF_XDP multi-buffer Tx
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
+	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	bjorn@kernel.org, Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-sctp_process_asconf() caches the transport the ASCONF chunk is processed
-against in asconf->transport (== chunk->transport, set once in sctp_rcv()).
-For an ASCONF located through its Address Parameter by
-__sctp_rcv_asconf_lookup(), that cached transport corresponds to the
-Address Parameter, which need not be the packet's source address.
+On Thu, Jul 16, 2026 at 1:25=E2=80=AFPM Maciej Fijalkowski
+<maciej.fijalkowski@intel.com> wrote:
+>
+> On Thu, Jul 16, 2026 at 01:22:24PM +0200, Jason Xing wrote:
+> > On Tue, Jul 14, 2026 at 4:08=E2=80=AFPM Maciej Fijalkowski
+> > <maciej.fijalkowski@intel.com> wrote:
+> > >
+> > > From: Jason Xing <kernelxing@tencent.com>
+> > >
+> > > This patch is inspired by the check[1] from sashiko. It says when
+> > > overflow happens, the address of cq to be published is invalid.
+> > > Actually the severer thing is the whole process of publishing the
+> > > address of cq in this particular case is not right: it should truely
+> > > publish the address and advance the cached_prod in cq as long as it
+> > > reads descriptors from txq.
+> > >
+> > > The following is the full analysis.
+> > > xsk_drop_skb() is called in three places, which all discard a partial=
+ly
+> > > built multi-buffer skb:
+> > > 1) xsk_build_skb() -EOVERFLOW error path: packet exceeds MAX_SKB_FRAG=
+S
+> > > 2) __xsk_generic_xmit() post-loop cleanup: an invalid descriptor in
+> > >    the TX ring prevents the partial packet from completing
+> > > 3) xsk_release(): socket close while xs->skb holds an incomplete pack=
+et
+> > >
+> > > In all three cases, the TX descriptors for the already-processed frag=
+s
+> > > have been consumed from the TX ring (xskq_cons_release), and CQ slots
+> > > have been reserved. However, xsk_drop_skb() calls xsk_consume_skb()
+> > > which cancels the CQ reservations via xsk_cq_cancel_locked(). Since
+> > > the buffer addresses never appear in the completion queue, userspace
+> > > permanently loses track of these buffers.
+> > >
+> > > Fix this by letting consume_skb() trigger the existing xsk_destruct_s=
+kb
+> > > destructor, which already submits buffer addresses to the CQ via
+> > > xsk_cq_submit_addr_locked().
+> > >
+> > > Note that cancelling the descriptors back to the TX ring (via
+> > > xskq_cons_cancel_n) is not a appropriate option because an oversized
+> > > packet that always exceeds MAX_SKB_FRAGS would be retried indefinitel=
+y,
+> > > which is an obviously deadlock bug in the TX path.
+> > >
+> > > Also move the desc->addr assignment in xsk_build_skb() above the
+> > > overflow check so that the current descriptor's address is recorded
+> > > before a potential -EOVERFLOW jump to free_err, consistent with the
+> > > zerocopy path in xsk_build_skb_zerocopy().
+> > >
+> > > [1]: https://lore.kernel.org/all/20260425041726.85FB3C2BCB2@smtp.kern=
+el.org/
+> > >
+> > > Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on Tx =
+path")
+> > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> >
+> > Maciej, maybe your tag is missing here?
+>
+> IIRC this has been taken as-is from your patchset. The next one has been
+> touched in few ways and I included my co-developed tag there.
 
-sctp_process_asconf_param() rejects a DEL-IP for the packet source address
-(ADDIP D8, SCTP_ERROR_DEL_SRC_IP), but nothing protects asconf->transport.
-A single ASCONF can therefore carry, in order:
+Yep, I mean maybe you can simply drop your reviewed-by or acked-by tag
+here if you approve.
 
-    [Address Parameter L] [DEL-IP L] [DEL-IP 0.0.0.0]
+Thanks,
+Jason
 
-where L differs from the source. The DEL-IP for L passes the D8 check and
-calls sctp_assoc_rm_peer() on the transport that asconf->transport still
-points at, freeing it (RCU-deferred). The following wildcard DEL-IP then
-reuses the now-dangling asconf->transport in sctp_assoc_set_primary() and
-sctp_assoc_del_nonprimary_peers(): set_primary() dereferences the freed
-transport (->ipaddr, ->state) and plants the dangling pointer into
-asoc->peer.primary_path / active_path, and del_nonprimary_peers(), keeping
-only the pointer that is no longer on the list, removes every real
-transport, leaving the association with a transport_count of 0 and
-primary_path/active_path pointing at freed memory.
-
-Reject a DEL-IP that targets the transport the ASCONF is being processed
-against, mirroring the existing source-address guard, so the wildcard
-branch can never reuse a freed transport.
-
-Fixes: 42e30bf3463c ("[SCTP]: Handle the wildcard ADD-IP Address parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
----
-v2: add [net] subject prefix to target the net tree.
-
- net/sctp/sm_make_chunk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-index 8adac9e0cd66..b14251214896 100644
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -3153,6 +3153,12 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
- 		if (!peer)
- 			return SCTP_ERROR_DNS_FAILED;
-
-+		/* Don't free asconf->transport; a later wildcard DEL-IP
-+		 * parameter reuses it.
-+		 */
-+		if (peer == asconf->transport)
-+			return SCTP_ERROR_DEL_SRC_IP;
-+
- 		sctp_assoc_rm_peer(asoc, peer);
- 		break;
- 	case SCTP_PARAM_SET_PRIMARY:
---
-2.55.0
+>
+> >
+> > Thanks,
+> > Jason
