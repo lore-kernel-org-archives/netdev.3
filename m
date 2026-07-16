@@ -1,91 +1,185 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E852FFDCB;
-	Thu, 16 Jul 2026 07:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66073B841D;
+	Thu, 16 Jul 2026 07:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784187052; cv=none; b=NcrdfCiPZ/R+JGEVUJ+WqXH4ZQ4rpOT2SALGvOI/zKx2CqAYIuvblNmut6kotAY90JYnBYEM+pXAXF1restVK1MBHbUPIaIHcnP7acG9FHJ9DKO3Rc+z1nPfrNR6zHQ7cxMG+XROqjeDceAT416rq8k4MODJSo5SRJ0TZmqfk1M=
+	t=1784187105; cv=none; b=a53wyeWmanXAZz53SkmId+qvn0s1Hx4sLqwt8jRG6s9/1mS5wK+KPrGtPlAvUEFzVZTw2syw8p1Ss6fnX/srVWOlTUfno/xJ/x8ibM+CPGNRmfw2+examYwCzKRylGD0nodB2ueyl/v+w4evIoR7HKg2UIE+ZAWE3s3s/CbfjrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784187052; c=relaxed/simple;
-	bh=5yFZbpNkdbIBERBx195OmdpFrMz9jVJZtpoBD48VsDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gRIt1NEqzMAJbnRyszh0Ph5D/ajv0yPc9VaTqmDd0+Ma4jMwZc7jtIJNGPqeVOe3bKrOdo5k25oDn2aYuhFFyIwXOs8XIp7pbAtAkyPxYdOsdkpWYgE5ljQNgj7FBPeskelNQeDd+QxThD0Z9FsBuCCsUULTPb5X4LfL90tqGys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pcyisqzj; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pcyisqzj"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1588E4E40DFF;
-	Thu, 16 Jul 2026 07:30:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CDAA2602B8;
-	Thu, 16 Jul 2026 07:30:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08DB311BD057C;
-	Thu, 16 Jul 2026 09:30:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784187044; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=GCrqmH9b1H/YVE63PUByvlMfO6u776WKzGDBctjFpRU=;
-	b=pcyisqzjUShEU8xVfu/cSx/J1/B5EedBEBPC6x2l3O0Agw/mDY3UrHEkRQy2aCxE0zFqMn
-	f1cybtCjaxz+DEUvEhn7AFNdLCztSNagzHWalHFlsZViRWhpCrNZsG4IWlf8/DTCjGEBp6
-	43uLpyhowiDx6ouf/1/Q0b9bSs2PKw7Hl3n9zJ4OVfWPT0UwrN3mLVc5qDtKeOKeJdIjCn
-	jUTro2i0AfG4bAgYMm4p+bicBjQxgKdihNmGgMQb+wQKyx31kCj8w33KEs5/iEie0IPsDW
-	mWJnxJR9nXTb9ag1gZYCLEWp1949HjUBDp796k17o381cP2HTj33u4+JxBt46A==
-Message-ID: <a1e6cf0a-a243-4739-8563-be385add37b2@bootlin.com>
-Date: Thu, 16 Jul 2026 09:30:33 +0200
+	s=arc-20240116; t=1784187105; c=relaxed/simple;
+	bh=MyByETTfMejsFg2h/7TBNRF1/JzJWW5gx3cnCd+bm6I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bNEJSzqkECO4ETVdu1SitpgO/IVA0QdSR1c9RKP9AHiJp1AcN8k2LjEZtg1odnkUqBqdzG3cYUI6Tmym2JR3LRDQ3jYje6HSuFDG7eKmCaD+ZjrFdm/S4zbbeZq31fr/LEZdD+teOIgSDj6JxR9NKAbbM8pcWclUY2PtZz+HltE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 620d7fbe80e811f1aa26b74ffac11d73-20260716
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_UNTRUSTED
+	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:fa48a989-bdec-4bf6-9678-e5f6ac5a2b58,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:fa48a989-bdec-4bf6-9678-e5f6ac5a2b58,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:dca8558546fcef295ed8be98c05a617d,BulkI
+	D:2607161531394NT1ASB1,BulkQuantity:0,Recheck:0,SF:10|38|66|78|81|82|102|1
+	27|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:
+	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
+	RE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 620d7fbe80e811f1aa26b74ffac11d73-20260716
+X-User: tanze@kylinos.cn
+Received: from desktop-od00ebi.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
+	(envelope-from <tanze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1490481796; Thu, 16 Jul 2026 15:31:39 +0800
+From: Ze Tan <tanze@kylinos.cn>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	linux_oss@crudebyte.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	v9fs@lists.linux.dev,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	tanze@kylinos.cn
+Subject: [PATCH v2 2/3] net/9p: prepare fd transports for asynchronous aborts
+Date: Thu, 16 Jul 2026 15:30:50 +0800
+Message-ID: <01635c2204d8181058bb808ff4b13df52df98a16.1784186316.git.tanze@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1784186316.git.tanze@kylinos.cn>
+References: <cover.1784186316.git.tanze@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: dwmac-rk: enable the reference
- clock for output mode
-To: Jiaxing Hu <gahing@gahingwoo.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, heiko@sntech.de, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org
-References: <02ef3409-4078-4c3a-8c17-cb1a7f1f07e4@smtp-relay.sendinblue.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <02ef3409-4078-4c3a-8c17-cb1a7f1f07e4@smtp-relay.sendinblue.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The fd transports keep their request reference while a sent request is on
+the receive list. That reference is released when a reply is consumed or
+when p9_conn_cancel() tears the connection down, so the caller can stop
+waiting without freeing the request or reusing its tag.
 
-On 7/16/26 08:56, Jiaxing Hu wrote:
-> 
-> rk_gmac_clk_init() only requests the refout clock group for RMII. The
-> ArmSoM CM5 has an on-module YT8531 RGMII PHY with no crystal that needs
-> the SoC 25 MHz reference (clk_mac_refout), so in RGMII the clock was
-> never enabled and the PHY did not respond on MDIO.
-> 
-> Request the group whenever the SoC drives the clock (clock_in_out =
-> "output"), not just for RMII. The clocks are optional, so other boards
-> are unaffected.
+Add an explicit transport capability and teach the fd reply path to
+consume replies for requests whose caller has aborted. Leave the capability
+disabled for transports with different request or DMA lifetime rules.
 
-DT binding for rockchip-dwmac says :
+Signed-off-by: Ze Tan <tanze@kylinos.cn>
+---
+ include/net/9p/client.h    |  3 +++
+ include/net/9p/transport.h |  4 ++++
+ net/9p/trans_fd.c          | 10 +++++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-clock_in_out:
-    description:
-      For RGMII, it must be "input", means main clock(125MHz)
-      is not sourced from SoC's PLL, but input from PHY.
-      For RMII, "input" means PHY provides the reference clock(50MHz),
-      "output" means GMAC provides the reference clock.
-
-So the statement "For RGMII, it must be input [...]" is now incorrect :
- - it can be output for RGMII
- - it will be 25Hz if set to output, from what I get from the commit log.
-
-Can you update it ?
-
-Maxime
+diff --git a/include/net/9p/client.h b/include/net/9p/client.h
+index 55c6cb54bd25..700dcb37c1dc 100644
+--- a/include/net/9p/client.h
++++ b/include/net/9p/client.h
+@@ -58,6 +58,8 @@ enum p9_trans_status {
+  * @REQ_STATUS_UNSENT: request waiting to be sent
+  * @REQ_STATUS_SENT: request sent to server
+  * @REQ_STATUS_RCVD: response received from server
++ * @REQ_STATUS_ABORTED: caller stopped waiting, but the request keeps its tag
++ *                      reserved until a reply arrives or the transport closes
+  * @REQ_STATUS_FLSHD: request has been flushed
+  * @REQ_STATUS_ERROR: request encountered an error on the client side
+  */
+@@ -67,6 +69,7 @@ enum p9_req_status_t {
+ 	REQ_STATUS_UNSENT,
+ 	REQ_STATUS_SENT,
+ 	REQ_STATUS_RCVD,
++	REQ_STATUS_ABORTED,
+ 	REQ_STATUS_FLSHD,
+ 	REQ_STATUS_ERROR,
+ };
+diff --git a/include/net/9p/transport.h b/include/net/9p/transport.h
+index a912bbaa862f..93349fe33dff 100644
+--- a/include/net/9p/transport.h
++++ b/include/net/9p/transport.h
+@@ -34,6 +34,9 @@
+  * @supports_vmalloc: set if this transport can work with vmalloc'd buffers
+  *                    (non-physically contiguous memory). Transports requiring
+  *                    DMA should leave this as false.
++ * @supports_async_abort: set if a sent request remains referenced by the
++ *                        transport until its reply is consumed or the
++ *                        transport is closed
+  * @create: member function to create a new connection on this transport
+  * @close: member function to discard a connection on this transport
+  * @request: member function to issue a request to the transport
+@@ -55,6 +58,7 @@ struct p9_trans_module {
+ 	bool pooled_rbuffers;
+ 	bool def;		/* this transport should be default */
+ 	bool supports_vmalloc;	/* can work with vmalloc'd buffers */
++	bool supports_async_abort; /* keeps sent requests alive after caller exits */
+ 	struct module *owner;
+ 	int (*create)(struct p9_client *client,
+ 		      struct fs_context *fc);
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index eb685b52aeb2..d5cff8c2c88c 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -293,7 +293,9 @@ static void p9_read_work(struct work_struct *work)
+ 			 m, m->rc.size, m->rc.tag);
+ 
+ 		m->rreq = p9_tag_lookup(m->client, m->rc.tag);
+-		if (!m->rreq || (m->rreq->status != REQ_STATUS_SENT)) {
++		if (!m->rreq ||
++		    (m->rreq->status != REQ_STATUS_SENT &&
++		     m->rreq->status != REQ_STATUS_ABORTED)) {
+ 			p9_debug(P9_DEBUG_ERROR, "Unexpected packet tag %d\n",
+ 				 m->rc.tag);
+ 			err = -EIO;
+@@ -332,6 +334,9 @@ static void p9_read_work(struct work_struct *work)
+ 		if (m->rreq->status == REQ_STATUS_SENT) {
+ 			list_del(&m->rreq->req_list);
+ 			p9_client_cb(m->client, m->rreq, REQ_STATUS_RCVD);
++		} else if (m->rreq->status == REQ_STATUS_ABORTED) {
++			list_del(&m->rreq->req_list);
++			p9_client_cb(m->client, m->rreq, REQ_STATUS_ABORTED);
+ 		} else if (m->rreq->status == REQ_STATUS_FLSHD) {
+ 			/* Ignore replies associated with a cancelled request. */
+ 			p9_debug(P9_DEBUG_TRANS,
+@@ -996,6 +1001,7 @@ static struct p9_trans_module p9_tcp_trans = {
+ 	.pooled_rbuffers = false,
+ 	.def = false,
+ 	.supports_vmalloc = true,
++	.supports_async_abort = true,
+ 	.create = p9_fd_create_tcp,
+ 	.close = p9_fd_close,
+ 	.request = p9_fd_request,
+@@ -1011,6 +1017,7 @@ static struct p9_trans_module p9_unix_trans = {
+ 	.maxsize = MAX_SOCK_BUF,
+ 	.def = false,
+ 	.supports_vmalloc = true,
++	.supports_async_abort = true,
+ 	.create = p9_fd_create_unix,
+ 	.close = p9_fd_close,
+ 	.request = p9_fd_request,
+@@ -1026,6 +1033,7 @@ static struct p9_trans_module p9_fd_trans = {
+ 	.maxsize = MAX_SOCK_BUF,
+ 	.def = false,
+ 	.supports_vmalloc = true,
++	.supports_async_abort = true,
+ 	.create = p9_fd_create,
+ 	.close = p9_fd_close,
+ 	.request = p9_fd_request,
+-- 
+2.43.0
 
