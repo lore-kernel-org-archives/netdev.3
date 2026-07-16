@@ -1,81 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490583F88BE;
-	Thu, 16 Jul 2026 10:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E33FBEB8;
+	Thu, 16 Jul 2026 10:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784196607; cv=none; b=mRxahqXHpI/twRa0w59NHc2AXzfDR1LHeYCVB0f0fWrdceOLn+sIZCv+ri/0+WsZomcWJ7ZvgByPXmEpDBTBMkGAzud4l3UQq47T2Yb0oV5S2ERQAB4QcsTgD3ztfFAzM7kgWW1Ju3T6jGwKZymDPk3PZY2F2vvC0XN2128X6+Q=
+	t=1784196918; cv=none; b=s9tAD66pGei+3Bmx2Fb5NPZYdTbYiXmZxR5y9A+uxvpagKybUkMp4S8my5HwvF4fSKq63m/IRSpqQtdkFWOEcKbSfInTg6xJI2RNiOHgLRmEX3Wg4c7ywyS3BZ3BAMH6buwPfQYFYVhwo39XczRb7o7ytTSecnjIRbaim0qLBV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784196607; c=relaxed/simple;
-	bh=6dI4LrN2rac5vpS0VtXLhxk9jhVaPdOUsppC7PwadeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bYXmSxs+alXIHEydzt3WddShnoB4CIeAW0eLn/69R2LoRa+5CvvMW2mRpHCfeuWLC8cFVB44xRwrhxVJ5GpC6guLZUELo29rhxVIumDLFoqS6qoVYokjfsYc/4AcGZmdbGCTdMhhGKgTK1hIQOU+eA96g4jmy1fkMFiEEdjW2/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/rLm2Nr; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/rLm2Nr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3EA1F000E9;
-	Thu, 16 Jul 2026 10:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784196604;
-	bh=Ho3qOuPHccaSzVJZUIKFsHF2ay53CDEw45Om5Sv7AfA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b/rLm2Nry19Iru8u98b7gJZGZLxrzKj13pA6YlqPDZ6tiOuxU9+oP1TvVMSrOpNKc
-	 6X0LBueKg6wVaAjEcffZgZvhuEc2v+PNGL/Fe4s6NzPNEH75Dmz5yabBtyX5tHuJfO
-	 cmsebPE/wwzTTeLswd6Yewx1ErUwkvtoDDNa9az+3xTfJwRB7Kltai7cUV3AZ2soS3
-	 PHUSz+t8FLr4h94Bwp6GDti5YtLkqBplnnkMqZvrQERyMwY4xvoAlnWwq9oy0WwjUn
-	 NSIPlH8cQQZ5WYqt35gfV+iFa6d3GT03tOMx6l4cxk2+3K5I0hfwSFqjsk7N6jysbL
-	 +d32iAAS8nxwQ==
-Date: Thu, 16 Jul 2026 11:09:59 +0100
-From: Simon Horman <horms@kernel.org>
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: alex.aring@gmail.com, stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	phoebe.buckheister@itwm.fraunhofer.de, linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] mac802154: llsec: reject frames shorter than the
- authentication tag
-Message-ID: <20260716100959.GH95246@horms.kernel.org>
-References: <20260709131246.44517-1-doruk@0sec.ai>
+	s=arc-20240116; t=1784196918; c=relaxed/simple;
+	bh=F6zxoCTVtRAFR5DuG1jCDdnxViSPJW+v9TONdatUqxk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TVxOKAI5bELdRBmV+qm4BB6CvbLuSxoE4ygEZAZuxlXl5oxksOIK4zNMHQs9qCskqyBDfYf4EFwAseBlkG5A/2IRZFUhTTOk+IllXdWLfTVI93dVL4Q2j9OLkW/KnH8SUeSIdKnjG1IiSh4tfTQ0eg7c5ukrMFhsChAbQYeKOQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3a44e85c80ff11f1aa26b74ffac11d73-20260716
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:8921d6fb-05a7-4c57-be43-80be2834340c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:9a37fe03b14288cc02d888aa2ef85f33,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
+	I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 3a44e85c80ff11f1aa26b74ffac11d73-20260716
+X-User: heminhong@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <heminhong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 510243431; Thu, 16 Jul 2026 18:15:10 +0800
+From: Minhong He <heminhong@kylinos.cn>
+To: courmisch@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	remi.denis-courmont@nokia.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Minhong He <heminhong@kylinos.cn>
+Subject: [PATCH net v2] phonet: check register_netdevice_notifier() error in phonet_device_init()
+Date: Thu, 16 Jul 2026 18:15:04 +0800
+Message-Id: <20260716101504.158387-1-heminhong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709131246.44517-1-doruk@0sec.ai>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 09, 2026 at 03:12:46PM +0200, Doruk Tan Ozturk wrote:
-> llsec_do_decrypt_auth() computes the associated-data length for the
-> AEAD request as
-> 
-> 	assoclen += datalen - authlen;
-> 
-> where datalen is the number of bytes after the MAC header and authlen
-> (4, 8 or 16) is the length of the authentication tag. Nothing verifies
-> that the frame actually carries at least authlen payload bytes. A
-> secured frame whose payload is shorter than the tag makes
-> datalen - authlen negative; assoclen is then passed to
-> aead_request_set_ad() as an unsigned value close to 4 GiB, so
-> crypto_aead_decrypt() walks far off the end of the scatterlist that
-> only spans the real frame.
-> 
-> The frame is fully attacker-controlled and reaches this path from any
-> IEEE 802.15.4 peer in radio range. Reject frames whose payload is
-> shorter than the authentication tag before the subtraction.
-> 
-> Dynamically reproduced on a KASAN kernel as a general-protection-fault
-> in the AEAD scatterwalk, and the fix confirmed.
-> 
-> Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
-> Cc: stable@vger.kernel.org
-> Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-> Assisted-by: 0sec:claude-opus-4-8
-> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+phonet_device_init() registers a netdevice notifier before calling
+phonet_netlink_register(), but does not check whether notifier
+registration succeeded. On failure, netlink setup still proceeds and
+init may return success without the notifier in place.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Check the notifier registration error and unwind only the resources
+that were already registered (proc entry and pernet), without calling
+unregister_netdevice_notifier() for a notifier that was never
+registered.
+
+Fixes: f8ff60283de2 ("Phonet: network device and address handling")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+---
+v2:
+- On notifier registration failure, unwind only proc/pernet; do not call
+  phonet_device_exit() / unregister_netdevice_notifier() for a notifier
+  that was never registered.
+v1: https://lore.kernel.org/netdev/20260713075212.431455-1-heminhong@kylinos.cn/
+
+ net/phonet/pn_dev.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
+index ad44831d6745..e6c31cfdad9a 100644
+--- a/net/phonet/pn_dev.c
++++ b/net/phonet/pn_dev.c
+@@ -356,7 +356,12 @@ int __init phonet_device_init(void)
+ 
+ 	proc_create_net("pnresource", 0, init_net.proc_net, &pn_res_seq_ops,
+ 			sizeof(struct seq_net_private));
+-	register_netdevice_notifier(&phonet_device_notifier);
++	err = register_netdevice_notifier(&phonet_device_notifier);
++	if (err) {
++		remove_proc_entry("pnresource", init_net.proc_net);
++		unregister_pernet_subsys(&phonet_net_ops);
++		return err;
++	}
+ 	err = phonet_netlink_register();
+ 	if (err)
+ 		phonet_device_exit();
+-- 
+2.25.1
 
