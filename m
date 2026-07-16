@@ -1,93 +1,93 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372FE328616
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 18:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516352D6E5A
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 18:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784226781; cv=pass; b=X4NDZHwpbJ20DwfTtVHv6FugmF7tqHYYiGbDx8UHEgtc3Q34BXVXLw/p9MhSKG2WY1x9vfWb7opLB0M1r2sM7MixBCqe2FuW07CtjnWq/gnmpyDnupgxYQqc5f++Ap178wzeC5NMfdASHHOwYJIRR4VVy83Siy+DvyCYr9VhKxY=
+	t=1784227547; cv=pass; b=qdXwKzxSLB9ix6fc/KTZjxpqH39vETtr6NEqwNNJAVrcOpySYQFo5PJIs2fkornqOFxzvqcKqCjNLfaLv11uZLOe7Y71rSouWQAZDeTpf0MgHNEfX+EzJqNmyrOVG7Vl1pEdYR5sMeUmVuBTMQQNism/qvtIrqGr4SBhLzWh46A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784226781; c=relaxed/simple;
-	bh=ajwTxekkF3zV1IRBLCIVWPkHfTOXCaPPKAh0nXr72VU=;
+	s=arc-20240116; t=1784227547; c=relaxed/simple;
+	bh=pFfxZK9lGPotJLMrVCTotkrjsr0MN/yP6OYGGXtfcRI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VjJuke0RR1zfJeEhmACP/7ERC89X7YyrjBjW7oDEcOk/OTrD7fvjNlac+PnATFnThvSYhLU016FXj0ZM/f+n2agh5zqVCY7u3+UscBYxZ7bX4k24WA1CrFdCgy8Wr5l6ARTVVYEQKTAZOFJ7An7uB2Lg0ONGspMCWvF7fy6ygrc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=YwW0548H; arc=pass smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=k5G+YgjwixaXmcyAB+NPDoL2NmazHUCkk/RZAFyUqUrMl5fnpDqnyXCggFTx7YkBA/dLajcIBo3nc1zNQn32YcDvwsOIbZrbAIfqWLGj/nYAfZJF1FuimT1GnJ+7riOdO9l6xjXrrcLrhGOX8SjvKpFTH58rk+EiKNvGUMLWRkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=R3RgMk32; arc=pass smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="YwW0548H"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso633295a91.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:32:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784226778; cv=none;
+	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="R3RgMk32"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ce98cb8165so10056755ad.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:45:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784227545; cv=none;
         d=google.com; s=arc-20260327;
-        b=UxCsFGcMXXNFPJPLVAIxQ+nNlLsYYD4gzUKbVitSS21Pp1DDfPaapH2fO1RdHyvDcV
-         rz1xrGRHbEuf7X8WVnry4wQHbupoqccCaSU6P1L7oM46p1/r1la4lbUaaB6kSQQnGGb8
-         z3IYMfvf9LHnr3rxrsclweQK76/Qxiv8xVdyHjNN6Vmp3aARSuh6BcJARgzTRbLBEoXn
-         jScaUbIR6ZoFh1iQNGooOnMQ4obVxAFTKOezG0sO59jnXYFwKFStEPVrjB3E8JZH6F0H
-         /v0sA1obz4GRU0T8GajpCeLALzVBAmYS+33Rhm23cHn3O2lyG+OihDr8NBuF/JQrajQo
-         aJmQ==
+        b=etZvZKrFI9KIrcLASFkDNle8IFnbSUio5PaVNTgAfk5MdK0ep/NmDHwSngXUXisI94
+         eugwsTLMcBY6rEzZDjkxZQSuqQYSQ+G1MHWHGuxYK0f1ejQm/dVSUssWnolNDtpgS6U2
+         esSZ0M+jfFhUweZdtM6dDyDLrSvtvd7tgsA+v3ui4HW44b3F1r6C6BXvm02FgrIwpBXz
+         JpEyvGf+zY/j6+gxP5OMDBSUA/iYDRbXWQg0V/+auSx9UqSxmmKAZRhXMJz7Y8FcCmwO
+         MiLpwOKiYJWprPWCXbw8T9wP5doz1gQwhC2KeO68EJMFs8fEK4TxgWv4/07LhcURtg1v
+         YNMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
-        fh=cxfyBmHHqMkCuZ3Hle3smpR2GPDqof5Wp4ihBjK/MNc=;
-        b=ATezBJijPYGfT5v7dkYTNa63A/uAqGcWEuCQa23GE0WxH1nxXs77ivEVYVtVt4q073
-         JVybcVwFQx++E0UZZ0WGkGHQkIAIw6KO03VmTRjMxgTCsFf60NudF//T8lXfChDm5MgZ
-         zVifT6a0xexR/LSnfNkZ4kNkw4F610bk8qHQCv/US6U/Vesaa9qgbl1uBARiyY6TooFv
-         MuVgCEFYhD5qwFFgw3M2cDkdEK09KLRwKp2N2dfGC1fZHtpFzb1DYTdrwEsDAyFTJhpm
-         dmm4WV8EXd8Y57GNyRpfT9/cvyrlldK2Ucrbo2GAJGlNG7LooWvyo9JOYi5HeTkpxxjL
-         nw1w==;
+        bh=h5ybI5HJjOUi136pJ8MM8b9ff5G7zzP65amCAnLsIss=;
+        fh=HnY1yoyF0ZtL778zPoC3VTXSwjNZ0U9wUxJm76ywr+E=;
+        b=FWFFD6wHVceXuC6tn/6tsu6Lm2v38SImCrXduuDbsjaXsxu4t/C/5gQRuzHnCYiGcr
+         GGaU7inuKLCq1Vr8OjJOzpvQzDIj2IiQSaqfVQnviROmQ4F9nbp1XViyg5ZS7Rg1sAc3
+         KpF1KI6vyrus8/1YruSg3PdKs49BF0F2ZWHgTwdSO6yV27C96P52mAHeMkjvITFrkFOK
+         wVRd/w6e67/vWXI7QszWc7q+mHVrgxTO24D+ELuCHkbnLq8yhd9OfkNwLV5bHwsGRWPB
+         l7CtGCc7pRyb5c5mK0ECDsskljJR0t3jiNnaiEA/8edzqsTktVjuOYs/eohJVSCdy3/L
+         SbfQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1784226778; x=1784831578; darn=vger.kernel.org;
+        d=isovalent.com; s=google; t=1784227545; x=1784832345; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
-        b=YwW0548HsBJZiIfjnP6d+7IShGzpp2heaMcf3mtgxb56eVwZ9EA/tZAthdmvH7mALC
-         17/7YpfGMENpmpRv0O95zQeb5pLLl45dIIRT2LVFXd71rxx7ZChv9L1gXSX1AFpU6g0j
-         ipht62ZEUO2yaMGlfydhhI67vtlNu7U4QZPk4EiU7//3q/BMFGw4qnFc9VwVEqkwl3Fo
-         apQ49UE9fFJbY5OsCc5xoau9qyXCXCTgTknQNJBH+bLE/TvAObRwIZaNHuKFMEyCpwBg
-         gpSIpirREkzKqpXdAYb3uA54YjtsYwVhCjK0vkpVvEwgXjyYPuajDvwDt+GomKjTWrKQ
-         4RzA==
+        bh=h5ybI5HJjOUi136pJ8MM8b9ff5G7zzP65amCAnLsIss=;
+        b=R3RgMk32RnYN+oEecPtUOra49iWA+jycLiL7XMNaXirkz+23Hye8/p6ivgz5/mxt8z
+         qUVEZ7bRfKBqWPYb0G6c1hJEf26PjI3I6ApZgTqvQTOWxsL6iGnnmaIaIY7WIRGOB7ZT
+         hQQ3thZBsUnga591ol4zJ8nFQJzHFAOd+47c0pn8tXkZibIMPZki0EYCIKP7bsV/ZVPi
+         3b7X/PGcxyJB8PzOwsAhVdvlcfFzbUVQzIYSzsjNaOMBOVdeRCBmBOvhaJ+DlV+8JBQw
+         tZybvzYpMEuvlUIVq3RDdDLTUAFzxVe3x2weH5Sg12meZni/pRcVMQpMLdsEFTSEVq8e
+         Nrqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784226778; x=1784831578;
+        d=1e100.net; s=20251104; t=1784227545; x=1784832345;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
-        b=CQsHK4/Wnpu/j/4FkMWDNywjE4xlbq8l0qrjOJlAFSEAKLcqOYFrMRJnpMLbls3Oaq
-         uE3VAZmQZhgB/UQhhsOp830q8+Il7jG5W37hXfPrl8wehvegCJfYSb3bU9pSryDCgTaa
-         OI8Lx2UEUzk38QWbNJXyt+shgxOWcr4MckHBQqJ5W/y6gS1vJXbLcy3rNUcZbdPe4iq+
-         sbHpI+rSLUZXXPaI9C2fXdcl/dS2T+Ee9IREWl998ynla3HAlelG8NrEAC+sPEXrIgap
-         TsOqCYp1atAeZFCaYBrMhe/n4S1qgU+kckrgoyaJoiP3wS04QeXgTLNlxsMUjLveX0o4
-         p0uA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6ueZtJ6LMt6JD9BeWjwl1RpOdUlAhnl6JMARqrxFpnUoX/3DweuLJXwGBjPAhK0j7nh4Z32w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMq2UB8KNj8omCdFPo1IV8JtOf6UK9bjwpdqOexAsRlvBjuzme
-	byRMJHGsaqBl1iqhLaUijxzecjYfIwkXcwhfeFry9K8nTyrqnZs503qyfmHShXycwA0Ha3b6U5y
-	7J9kuiJAlprmGnbCE6HYGwsuLVycvoUOFlXnWZDk0Mg==
-X-Gm-Gg: AfdE7cnzGJHiNEXvYcYD1hQoviUyveHsfdI44kuYn0ljlecJV2Zyvz4z2C4QD++9wKY
-	CR2KrQYE7brlvKm/are+kwkRFOIICsZ2onsMtxB9AqnzRrR1jDvBf/x3Yg0GnH02Gr7dUwSHlWy
-	bbs90eSnkVjFKzCk9GA7OsxCI8vWTTevWFPjkBe/mnkkZZI1Z+WRtJBv2i1ixSi+fNTj9o9AUgH
-	y9zNfZh6c6FpcP+SiMGJz6kmbPtADT2WhQpk1ViUPYF9apA7sQVZIpMUNGS0gYJMxjaEfEgqWAu
-	qMr7s3Y6Shiv400x9EGjRHW6NubqBoBZYMARPOlXd4jlN6rX
-X-Received: by 2002:a05:6a20:cc0b:b0:3bf:a0e5:999f with SMTP id
- adf61e73a8af0-3c3a5aee53dmr396730637.22.1784226778301; Thu, 16 Jul 2026
- 11:32:58 -0700 (PDT)
+        bh=h5ybI5HJjOUi136pJ8MM8b9ff5G7zzP65amCAnLsIss=;
+        b=nZWrdN01Lo7tJeE4fPKXJDOPIO3qqQGrUF7sv3PwuqNXwmlEG1nB9k+xle8fgstqgj
+         cvIhuVnNTVlp4iWDW3abRy7aPBKbp1q4YITFPOAcn6uF7Tb3r1MEn+wvrey3Su09T5WB
+         rITalPLJ8e5Shf1LcJe4DOHz6VVnRcO5dDSc3WMA11pEG8dND7gNg5YA3lQcULKsXuJY
+         ZWWlz6G+EeHHPqXvH56FcECqOSE7iMZ8ldwmKnK5gjwsp9TY7Fe5A4PbJ5ZtLHu6igKf
+         MFEDyBiObldqhIl65x+UsE/mmkBnzZd18jRsOgRPr6HKPKZHpFjUq5Ttin5FAx1X8oMn
+         XgWQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpx6KrYm68wA9oVNuWNJVoiSbZlo0apKCeW8RHFc05VyB6msRo2/nbrYYPm4wryj1+79rLipSU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV/YWo1EpKyMExZt2ZvhnX58RmIuuO0mY4U4VJBB0edjPQXKa3
+	wZ5uVmekXBu90XBcBbxXvAKGT6eothubpLQ1uY/y0REwWh9HnnNqKFHRvRSUj84UZhzd0hmNpOy
+	0X26gxWgGE6QqO83RdshG+jyAWClPtj077SiZCDIPwg==
+X-Gm-Gg: AfdE7cmHrigS7zAB+Q+DnKvKUqbbUSdCUipQqeW1Amr2aMT+c+v3Kb/JV7Erc77/f5l
+	jUdpyc1hsniFcsz/oAih2IOOAN0tA4xioZt7TLPywTlC1rSqfzsXvsTgFWw2uovDwsBUTWuJ7hk
+	cjQr4D9N+4prOEd3a4c2wWvSyrcGJQ348O/01/piF7fune8vpWRtZvFudUJJCLe8X0y8YQLO7QN
+	JgYt/SQy+Xg595npeNo1dISLTdjvqK/eAuBK5bgAh5QMhDdi/bg10hMbN8ByMgoOI4nFcRYbGbY
+	wEFJ4VN3Mc3dzWBA9FmhBDgJz+CpwvmR3sSCkh3Jce8FFJoZ
+X-Received: by 2002:a17:902:d54f:b0:2c9:b90b:8448 with SMTP id
+ d9443c01a7336-2cf1f599c3bmr41298095ad.27.1784227545372; Thu, 16 Jul 2026
+ 11:45:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710134242.216538-6-alice.kernel@fastmail.im> <20260716144805.336424-2-horms@kernel.org>
-In-Reply-To: <20260716144805.336424-2-horms@kernel.org>
+References: <20260710134242.216538-9-alice.kernel@fastmail.im> <20260716144830.337991-2-horms@kernel.org>
+In-Reply-To: <20260716144830.337991-2-horms@kernel.org>
 From: Alice Mikityanska <alice@isovalent.com>
-Date: Thu, 16 Jul 2026 21:32:40 +0300
-X-Gm-Features: AUfX_mzfjspddebkNRtKmT3XCaxUwLoWF092aSdvFX4Dp51fQcHl4pBtKL816JI
-Message-ID: <CAD0BsJVNtu3ENqpqQFfO0J69gBZxoN8iMWRUnF-GdrZ2uaAy7A@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive
+Date: Thu, 16 Jul 2026 21:45:28 +0300
+X-Gm-Features: AUfX_mw0lNMCLxfLoWUYDbY8GGV0eMPak-mSoEJPzaZ-GDhvVdCXEpqL0BviPOY
+Message-ID: <CAD0BsJVygjPcoBgmYMyDQPjMY52ytbWzeO39YQoDDSb+TAhYXg@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 8/9] geneve: Enable BIG TCP packets
 To: Simon Horman <horms@kernel.org>
 Cc: alice.kernel@fastmail.im, daniel@iogearbox.net, davem@davemloft.net, 
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, lucien.xin@gmail.com, 
@@ -102,94 +102,60 @@ On Thu, 16 Jul 2026 at 17:48, Simon Horman <horms@kernel.org> wrote:
 > email has considered the AI review valid, or at least plausible.
 > Full review at: https://sashiko.dev
 > ---
-> --- Patch [5]: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive ---
-> commit f1316d873c7549e0a49dc98d7614be1dc5b0f66c
+> --- Patch [8]: [PATCH net-next v9 8/9] geneve: Enable BIG TCP packets ---
+> commit d560b2b7c8bd97bea9e23790fdfc21cfe031b961
 > Author: Alice Mikityanska <alice@isovalent.com>
 >
-> udp: Validate UDP length in udp_gro_receive
+> geneve: Enable BIG TCP packets
 >
-> This patch adds an early check for malformed or padded UDP packets with
-> len=0 at udp_gro_receive to exclude them from GRO, moving the check out of
-> udp_gro_receive_segment.
+> In Cilium we do support BIG TCP, but so far the latter has only been
+> enabled for direct routing use-cases. A lot of users rely on Cilium
+> with vxlan/geneve tunneling though. The underlying kernel infra for
+> tunneling has not been supporting BIG TCP up to this point.
 >
-> > diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> > index 4f9a3922937cc..8f77c8788f6db 100644
-> > --- a/net/ipv4/udp_offload.c
-> > +++ b/net/ipv4/udp_offload.c
->
-> [ ... ]
->
-> > @@ -782,8 +778,14 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
-> >       struct sk_buff *p;
-> >       struct udphdr *uh2;
-> >       unsigned int off = skb_gro_offset(skb);
-> > +     unsigned int ulen;
-> >       int flush = 1;
+> > diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+> > index 011bf9d833caf..a1639ad53077e 100644
+> > --- a/drivers/net/geneve.c
+> > +++ b/drivers/net/geneve.c
+> > @@ -1745,6 +1745,8 @@ static void geneve_setup(struct net_device *dev)
+> >       dev->max_mtu = IP_MAX_MTU - GENEVE_BASE_HLEN - dev->hard_header_len;
 > >
-> > +     /* Do not deal with padded or malicious packets, sorry! */
-> > +     ulen = udp_get_len_short(uh);
-> > +     if (ulen <= sizeof(*uh) || ulen != skb_gro_len(skb))
-> > +             goto out;
+> >       netif_keep_dst(dev);
+> > +     netif_set_tso_max_size(dev, GSO_MAX_SIZE);
 > > +
 >
 > [Severity: High]
-> Could this early return bypass inner GRO flow matching for padded UDP tunnel
-> packets?
+> This is a pre-existing issue, but by enabling BIG TCP on Geneve, will it
+> expose a bug where valid BIG TCP packets are incorrectly dropped?
+
+BIG TCP on Geneve is not broken (and the selftest shows that), but see below...
+
+> In geneve_post_decap_hint(), there is a legacy size check that rejects
+> packets aggregated by GRO to sizes >= 65536 bytes:
 >
-> When a padded UDP tunnel packet, such as a small TCP ACK inside VXLAN or
-> GENEVE, arrives in net/ipv4/udp_offload.c:udp_gro_receive() while previous
-> packets of the same inner flow are held in the GRO list, the
-> ulen != skb_gro_len(skb) check evaluates to true and triggers the goto out.
-
-Min Ethernet payload size is 46 bytes. Outer IP (20) + UDP (8) + VXLAN
-(8) + inner Ethernet (14) + inner IP (20) + inner TCP (20) is already
-way bigger than 46, so "a small TCP ACK inside VXLAN" won't be padded.
-This check should only trigger on actual malformed packets.
-
-> Because the goto out path yields pp = NULL and flush = 1, dev_gro_receive()
-> passes the new padded packet to the network stack immediately, leaving older
-> packets stuck in the GRO list.
-
-The early return does bypass inner GRO matching, but it does not
-normally deliver the packet immediately. We call skb_gro_flush_final,
-marking the current skb for flushing. dev_gro_receive then classifies
-it as GRO_NORMAL, and gro_normal_one queues it on gro->rx_list. At
-NAPI flush, gro_flush_normal first flushes held GRO aggregates, then
-submits the normal list, preserving order in the normal case.
-
-Of course, gro_normal_one might submit the normal list early, if
-gro_normal_batch is reached, but it's an edge case, and we are talking
-about receiving malformed/padded packets, not something that should
-normally occur in high-performance TCP traffic.
-
-> Before this change,
-
-...the same flush mechanism was used for UDP GRO packets, when a
-malformed one occurred. It could hit the same edge case (when
-gro_normal_batch is reached), and reordering is more unpleasant for
-UDP.
-
-> the packet would reach inner GRO handlers (like
-> tcp4_gro_receive()) which would detect the sequence or padding mismatch,
-
-The inner TCP handler won't detect padding at the outer UDP layer, it
-would be done in inet_gro_receive, which will mark the packet for
-flush.
-
-> set flush = 1, and return the held packet via pp = p. This ensured older
-> packets were flushed to the stack before the new padded packet, preserving
-> delivery order.
-
-If this edge case is important, I can send a follow-up that addresses
-both the existing case (UDP GRO) and the new case (TCP in UDP tunnel)
-by separating ulen > skb_gro_len and sizeof(*uh) <= ulen < skb_gro_len
-cases. In the latter case, I can mark the SKB for flush, but proceed
-with the inner GRO handlers, so that they could return the held
-aggregate via pp.
-
-> Will bypassing this inner flow matching lead to out-of-order delivery for
-> the inner protocol, resulting in duplicate ACKs and throughput degradation?
+> drivers/net/geneve.c:geneve_post_decap_hint() {
+>         ...
+>         total_len = skb->len - gro_hint->nested_nh_offset;
+>         if (total_len >= GRO_LEGACY_MAX_SIZE)
+>                 return -E2BIG;
+>         ...
+> }
 >
-> >       /* We can do L4 aggregation only if the packet can't land in a tunnel
-> >        * otherwise we could corrupt the inner stream. Detecting such packets
-> >        * cannot be foolproof and the aggregation might still happen in some
+> When BIG TCP is enabled and the Geneve tunnel is configured with gro_hint,
+> large flows are aggregated by GRO into packets exceeding 64KB. This will hit
+> the legacy check and return -E2BIG, causing packet loss for large flows.
+
+...This concern looks valid: in the double Geneve setup with gro_hint
+enabled BIG TCP aggregate packets will be dropped.
+
+Since this is an incompatibility between two opt-in features (BIG TCP
+and GRO hint), which doesn't affect single Geneve, can it be addressed
+in a follow-up? I can see how geneve_post_decap_hint may be altered,
+but it sure needs testing.
+
+Thanks,
+Alice
+
+> >       dev->priv_flags &= ~IFF_TX_SKB_SHARING;
+> >       dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
+> >       dev->lltx = true;
