@@ -1,63 +1,63 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34532429806
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD074248AF
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208246; cv=none; b=k7DnHXXlBRxnTKAxupr4jfUYUEu1+LhC+fuQXgG2+qnk0L0CdIOOKuol99MYUKlwKMgEoZ4Jnuu5j6zbCfaZddBriQ8PTL7RAHAqoPexzisSfCxszWfwro0mL1qsCPYicsC2NJGibSGpHw5wy9soR/2LJaffzb2TguRuePHVVS8=
+	t=1784208252; cv=none; b=T/PoKOLM6RkvUgwENSa4KqrjlyIPWol1/FuYMh9RFI0QCUJ96PPvjHZuHDWwyFrdLHWp7O8y66OJDdyLTSGr2HjHRJs6l0nSyNYuiM9jtfBOMznLWrJySpQLvbKaFIip9dYuLId+bm27BkOPqDz0pAs8DvkC4Gb3LrwPhHQmNJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208246; c=relaxed/simple;
-	bh=vXTVHC8jrIfunzmq69nH+ECf64rA25Ltg6ybB9/xSAY=;
+	s=arc-20240116; t=1784208252; c=relaxed/simple;
+	bh=zFeWDdafDoYi7ea+8KDHKiNyfn2RCWSEnlN5ywMFr9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onTZeVrUt9UCMbvumurDMgWj0YDqOK9xNvbGAamS0nMCyjTjj5STOmX8eAQRtgbzqG7B6fjoNDd+LJBd+pdziFRN4SAeCjWO62QoVMr4pwTZ6tlgbvJdNufeIQUeVobui5s1foAMMSybRjg/bC0b2qCkguWKWXtwHAzGFJyTIEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=NzfYDzrK; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=LFRiGDDNA8oZF4SZnuvAS7823q7UUhPbQ0rnudQkF6U29mkMyQl/kdhHjEFva/LwcJ2T/aRiR3T3rNN6wdsiD+HQGWxcwA1DgFp3MSb2FQIvz3OrYPFBbDJwQuDiwk1sNrOiMUijdveZD8q+I39QSRqd0lttR3+3Ap0iWb+/hDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=O042gtuL; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="NzfYDzrK"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-476a130c138so3218605f8f.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:24:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="O042gtuL"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495437bb891so3362545e9.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:24:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208243; x=1784813043; darn=vger.kernel.org;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208248; x=1784813048; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=axmo6X45l643i+ylWNgoVG07bt+75yV7VClJ23IyRYM=;
-        b=NzfYDzrKfSXlqHYGnyFriyPDXXHmWZnXqM3PJaM+mrg5B/59DlRpH3ATg42SaZ7dzL
-         eQZmwnRJjOf1cEtLlg5xdM9adeUGLGllxQ4e/Bxgf29paRMVa4oSCZMrs0pOkytTuB79
-         oSJfXyUwZVpDtuAibVMP4VArNjbSZy4QaZY8xWUbDdxz/nMzWiRCtN21i/Y1SqCz5+ZY
-         AYUVBH+zbdkHrEul6F8SDXOiMZsehCLDPMN6ecBFfp0W5DYXda045AWrnDueMZ+QHIrm
-         FdPJzPAJ1rqaAP6/IkULzbPLkp2zKcaPMKjdfuYUzM3xTjsv0Vu6J39LQuIrYsZpG3Vz
-         6tjg==
+        bh=myAuJMzKK/4iG9Cmnf7VPvLoMfqifqNKwX3ebA7nias=;
+        b=O042gtuL4LYOEy+SyRQCnxeZzMebGdF1yLbEEsAhXGrT7ON792v3lOFl30BmMmgoi3
+         DDEVwahCP3E4rh9hSd7WbpT09YiZwwQyIEnMn0ppIKZ+VfB8OB5qB7j11mkyKHVGVuWL
+         reMp1MrFt+2hXtaoqZTiqOgjghVQIAV1KE0GYyf6aJj/VaPSMSicVQSUAc3rw3v0+ttd
+         RL4puLpC0nIf/oCifTKz0SYijzMVumMA5m8YVS+kLCdlIgjOOPY274kaqnIkEv8Iiyph
+         vcwG8uCvN4v3A5G4ry7pRn75aAftfKHdtgjJczT4XfjOhhZoMYAVWbQqf1fWJf6VjcOV
+         vOEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784208243; x=1784813043;
+        d=1e100.net; s=20251104; t=1784208248; x=1784813048;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=axmo6X45l643i+ylWNgoVG07bt+75yV7VClJ23IyRYM=;
-        b=GCyyIPO7rzlt7cwQm4lItjpxY4o6NEi3BHHJIXbXKws5cE+7vpjtLzv+nmfymt3RmF
-         IkpsL4MTC4t2ukMkHlXQrmpQgtmLz5rZus3itXqdwH083N7zCT9imHtID0aR0Sf8ce9d
-         0WP0+SWMhyZhE6y6HL6jSGisZ0zAsTvHh4MWYv7xO3IFwIit7L5mmqzWZOqhaOQ71ehB
-         aBNi3BsfOEmxBt24QYeUKe2GAy2MeDUgcNFpyaQJ/QRAnTEjzfJdaVxTrgDHDH9CB1fp
-         2svBNlN/zv9OUtpW31345djYvty962ghfkp3ch/64pk/Stl5WqGS2Bt3LsreiBRPOJIp
-         Q45w==
-X-Forwarded-Encrypted: i=1; AHgh+Rou84OECN6r8qUzQp0MsR5vCfVFOC4SaIX4NA8/vamaGPA3xymwj6NPLk7M0dIkwxYhH2469js=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyuus5KiPgsP1slEovy2HecfeLfqE0nzKXmAnU952e+McPiAHvw
-	4mNEb4ljYWk4mRWLxK64wxyuKnr4nKfdpk4ij+QwezKI3SaLdnNc13oKQmhHh6iGhtg=
-X-Gm-Gg: AfdE7ckX1NUJ4iwjkZBsSY8JKRJUXI8K3fBArRwEzqC6NWOfix7avdiBT/TVobF00oH
-	kcD8yDjeXBuMakEdJAvwfQkq2SXYup89Nl8wlM4JiLTy4e/E2obmWa/7uc8ocANSC6KGRV/18ms
-	HmZM8co1cXVIvbxTtlw7jb6FbeL4LFXgwcCtvBcWueiVhqcwpdbNgscmqCtDfN9366i8thf7op1
-	CMA3USTpdX0TAWYb6dyw9lREHD1HsBItPtvilmLQpF4IkXcrZk1oAPc7dMtc8ROcLeJRPe5xYZH
-	r4Q1qBjY7p/Y+MQcxP0INoBQAb0onuSUG5exQUqIJqPFupMfrS0o91PKxZmgM46h+yK2QBQV5Zy
-	M7ks2UigHzFOaCv4SlHNSGh65f6SnVkU4Rk71z4bJwNxvWdjnffUChqbz50YF5ywX1rziZyq3cp
-	ipa368Me1PKAo=
-X-Received: by 2002:a05:6000:27db:20b0:47f:5378:b6e1 with SMTP id ffacd0b85a97d-47f5378b75fmr4609976f8f.30.1784208243456;
-        Thu, 16 Jul 2026 06:24:03 -0700 (PDT)
+        bh=myAuJMzKK/4iG9Cmnf7VPvLoMfqifqNKwX3ebA7nias=;
+        b=eFpAsAqlZEuOO16El39OtbmIhyiLOqIMaPgZzJIVjakK5GN47P1lzxC26HHYTFInKs
+         DtjQrF0nS56naPJE4BBUFHNiGze69S1IUrMVWCp/qRaRqaf+Hli3XyFGFtRSZLLe6ROl
+         hZiCDBbReaTsrGuPId34Gf9pBoTf2wMzsUY74vybdOQk3dZlrTibcB4BgNc9cgWmdtyC
+         H3xuDJdGaTSZnHjF3W2Kkhm/k5GBX4tw6hgFxcWS0WHr4+3pRiKgwiwcZ5le9l/Xtn9+
+         VS0OYD9nzYYzfem4iCBuFN8XIrk14X5jIfsWuA0WOF11fDuXJxEd+G1H1VjGHa+VBTk+
+         L2kw==
+X-Forwarded-Encrypted: i=1; AHgh+RrPHN1l50eFzHkQv8OSTE9rFz2K8KAPkR9e/C07e3mfCTZrXriMNMIoqekmuIKf48a3RYJopmE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaorNSdPb3xjGql+mJfcrQKNUe671TS7j3kLJv+7Wmw+tKMGRL
+	oJzvXsxihr8Jytw5cyjhGMF+4/VfmauLmRHPZN6vjcI03AUHfKrodYsf+C6/MioleAE=
+X-Gm-Gg: AfdE7ck+ru+kWoIuZuf3vAHG2jej7qVePblVsc3Sd12/uQ8zCX7WK7PHRszFuYZRWwm
+	hw3p5P6qHI9c9Ff0OTtBf7faIFRXhV1mPYXphUy/GH4fLyJOQO4bumpStjXnBn+Jgro96ixu3vb
+	kOl1m8F/5ZDccwuAnKEYllcsVjzolNXH/oQmvCKf2gonl20+AOgmYRbP99V1m2aZJquDDyuzUfF
+	PJPAP6xzXTKf57kCxj24ixGquCKgY8+9/F6f5OXI4z54ASRtBWHdfDKVbyCqTYYJo1mwl3W36y7
+	09B1XBhe1V4mYTT68nihxkJgfUovIHXAfWQiDYkYGBoQNaXEvs0IaHk3KVvEinYbl1TrD4TaiR/
+	U1FrX+Wc6tQ6P6Txu5Zz/g9/zbpqFw5IBG/oisi5M4q+ETIXJTBvHSU/YfBhb1Rh7VnS3FhDQWS
+	CsnMF0EIjIqW8=
+X-Received: by 2002:a05:600c:6094:b0:492:714d:8c4 with SMTP id 5b1f17b1804b1-495428801cfmr26808555e9.11.1784208248133;
+        Thu, 16 Jul 2026 06:24:08 -0700 (PDT)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635a63esm24667399f8f.9.2026.07.16.06.24.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4953c599049sm100313305e9.0.2026.07.16.06.24.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:24:02 -0700 (PDT)
+        Thu, 16 Jul 2026 06:24:07 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: linux-rdma@vger.kernel.org
 Cc: cgroups@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: cgroups@vger.kernel.org,
 	wenjia@linux.ibm.com,
 	yanjun.zhu@linux.dev,
 	cui.tao@linux.dev
-Subject: [PATCH rdma-next v3 11/14] RDMA/core: Make device names unique per net namespace
-Date: Thu, 16 Jul 2026 15:23:12 +0200
-Message-ID: <20260716132316.1495242-12-jiri@resnulli.us>
+Subject: [PATCH rdma-next v3 12/14] RDMA/rxe: Allow queue VMAs to outlive ucontexts
+Date: Thu, 16 Jul 2026 15:23:13 +0200
+Message-ID: <20260716132316.1495242-13-jiri@resnulli.us>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
 References: <20260716132316.1495242-1-jiri@resnulli.us>
@@ -98,90 +98,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Use rdma_dev_access_netns() to scope RDMA device name lookup and "%d" name
-allocation to the relevant net namespace. Keep shared mode and
-CONFIG_NET_NS=n behaviour system-wide.
+Prepare queue mappings for asynchronous ucontext disassociation during
+device disable. Rely on the VMA page references to preserve mapped
+memory until the final unmap.
 
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
- drivers/infiniband/core/device.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+v1->v2:
+- new patch
+---
+ drivers/infiniband/sw/rxe/rxe_mmap.c | 35 ++--------------------------
+ 1 file changed, 2 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index bb02640239d7..4c75078448a3 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -129,7 +129,7 @@ static DECLARE_RWSEM(rdma_nets_rwsem);
- bool ib_devices_shared_netns = true;
- module_param_named(netns_mode, ib_devices_shared_netns, bool, 0444);
- MODULE_PARM_DESC(netns_mode,
--		 "Share device among net namespaces; default=1 (shared)");
-+		 "Share device among net namespaces; default=1 (shared). In exclusive mode device names are unique per net namespace");
- /**
-  * rdma_dev_access_netns() - Return whether an rdma device can be accessed
-  *			     from a specified net namespace or not.
-@@ -359,7 +359,8 @@ static struct ib_device *__ib_device_get_by_name(const char *name,
- 	unsigned long index;
+diff --git a/drivers/infiniband/sw/rxe/rxe_mmap.c b/drivers/infiniband/sw/rxe/rxe_mmap.c
+index 7f723a2f3700..a4ead89ccbd3 100644
+--- a/drivers/infiniband/sw/rxe/rxe_mmap.c
++++ b/drivers/infiniband/sw/rxe/rxe_mmap.c
+@@ -11,7 +11,6 @@
  
- 	xa_for_each (&devices, index, device)
--		if (!strcmp(name, dev_name(&device->dev)))
-+		if (rdma_dev_access_netns(device, net) &&
-+		    !strcmp(name, dev_name(&device->dev)))
- 			return device;
+ #include "rxe.h"
+ #include "rxe_loc.h"
+-#include "rxe_queue.h"
  
- 	return NULL;
-@@ -437,7 +438,11 @@ int ib_device_set_dim(struct ib_device *ibdev, u8 use_dim)
- 	return 0;
- }
- 
--/* Pick a free index for the '%d' style @name pattern. */
-+/*
-+ * Pick a free index for the '%d' style @name pattern within net namespace
-+ * @net. Returns the index on success or a negative errno. The caller builds
-+ * the final unique device name from the returned index.
-+ */
- static int __alloc_name_id(struct net *net, const char *name,
- 			   const struct ib_device *skip)
+ void rxe_mmap_release(struct kref *ref)
  {
-@@ -452,7 +457,7 @@ static int __alloc_name_id(struct net *net, const char *name,
- 	xa_for_each (&devices, index, device) {
- 		char buf[IB_DEVICE_NAME_MAX];
- 
--		if (device == skip)
-+		if (device == skip || !rdma_dev_access_netns(device, net))
- 			continue;
- 		if (sscanf(dev_name(&device->dev), name, &i) != 1)
- 			continue;
-@@ -1233,7 +1238,8 @@ static __net_init int rdma_dev_init_net(struct net *net)
+@@ -30,29 +29,6 @@ void rxe_mmap_release(struct kref *ref)
+ 	kfree(ip);
  }
  
- /*
-- * Assign the unique string device name and the unique device index. This is
-+ * Assign the unique string device name and the unique device index. The device
-+ * name is unique within the net namespace the device is assigned to. This is
-  * undone by ib_dealloc_device.
-  */
- static int assign_name(struct ib_device *device, const char *name)
-@@ -1416,8 +1422,9 @@ static void ib_device_notify_register(struct ib_device *device)
+-/*
+- * open and close keep track of how many times the memory region is mapped,
+- * to avoid releasing it.
+- */
+-static void rxe_vma_open(struct vm_area_struct *vma)
+-{
+-	struct rxe_mmap_info *ip = vma->vm_private_data;
+-
+-	kref_get(&ip->ref);
+-}
+-
+-static void rxe_vma_close(struct vm_area_struct *vma)
+-{
+-	struct rxe_mmap_info *ip = vma->vm_private_data;
+-
+-	kref_put(&ip->ref, rxe_mmap_release);
+-}
+-
+-static const struct vm_operations_struct rxe_vm_ops = {
+-	.open = rxe_vma_open,
+-	.close = rxe_vma_close,
+-};
+-
  /**
-  * ib_register_device - Register an IB device with IB core
-  * @device: Device to register
-- * @name: unique string device name. This may include a '%' which will
-- * 	  cause a unique index to be added to the passed device name.
-+ * @name: device name, unique within the device's net namespace. This may
-+ *	  include a '%' which will cause a unique index to be added to the
-+ *	  passed device name.
-  * @dma_device: pointer to a DMA-capable device. If %NULL, then the IB
-  *	        device will be used. In this case the caller should fully
-  *		setup the ibdev for DMA. This usually means using dma_virt_ops.
-@@ -1708,6 +1715,7 @@ static bool rdma_dev_name_in_netns(struct ib_device *skip, struct net *net,
+  * rxe_mmap - create a new mmap region
+  * @context: the IB user context of the process making the mmap() call
+@@ -106,17 +82,10 @@ int rxe_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
+ 	list_del_init(&ip->pending_mmaps);
+ 	spin_unlock_bh(&rxe->pending_lock);
  
- 	xa_for_each(&devices, index, device)
- 		if (device != skip &&
-+		    rdma_dev_access_netns(device, net) &&
- 		    !strcmp(name, dev_name(&device->dev)))
- 			return true;
+-	vma->vm_ops = &rxe_vm_ops;
+-	vma->vm_private_data = ip;
+-
+ 	ret = remap_vmalloc_range(vma, ip->obj, 0);
+-	if (ret) {
+-		vma->vm_private_data = NULL;
+-		vma->vm_ops = NULL;
+-		kref_put(&ip->ref, rxe_mmap_release);
++	kref_put(&ip->ref, rxe_mmap_release);
++	if (ret)
+ 		rxe_dbg_dev(rxe, "err %d from remap_vmalloc_range\n", ret);
+-		goto done;
+-	}
  
+ done:
+ 	return ret;
 -- 
 2.54.0
 
