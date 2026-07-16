@@ -1,285 +1,161 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099C33F39E2
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A648539EF27
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 10:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784195898; cv=fail; b=Cz6889pQKYk0Yu2WPzepWJVjCJxCLYmgwAZ1jYVDqsa+UCUhgEyIZF5KhctBE18oM0X9VA9Kh4Ea2fTjA5ZP4u8BqiyBxOMLlMGbpe0W31Op9rBkIkeWHnMvr9rE34hRCURzK7LR+ZflBRuzbdci9WuTN/rrwOyJgqR7jKyKZgE=
+	t=1784196117; cv=pass; b=ms6ejKPCppQdZmGGBl9wwUVeXXVOg+vhU0005FTDxCZQVsa/PTTiB1BLdQLoRm3mdPyQVJ+T11hmIT8+aCMsTbYG0l4fh3rVrS58emD1BHF175AhcE78LTyWcwm5EC1a53RiXL0+hDItD0vxsoSpPyDaN5gWeUDD3iK7rhBPNLY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784195898; c=relaxed/simple;
-	bh=1pCRsvuLYey+3oGj+x00R1J3Nk+vx27EqzNKOkrclww=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DHIOjyhDblMk2RkrIOKrxVuC9QvOdLcv+1xFIgE1IcQ9H0anbFQDHPIL1w8DV2qm8fseBqjLqPal3ORtCafbuHpdAZx0z3UBN31q8gw13YkGIEDyQq3/ItHnG19Km4opKz8iO+XOzP8F3u18CLJmaKaQpkl0rUlJ7oI+H+L75i4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ezP3TS2U; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784196117; c=relaxed/simple;
+	bh=4J+LRl1E31ETdtySJs91tQOjUybYz/e/7NrIdVDeAbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMDZ4yUJV4+LYXh8NHopqs2Joq2mqiTpeLr/qpBSiCNZZGYMyfNBbFDo5d+HUJg2FdrIYBi5kEmUKwOINgKVPW+5XxJVFIM2dfmry/dhZBkBB59jASWJduD2qQT9TrNGcoCuAjJWQPoorVMXvWZ9A85s8HZlPPUP7hEhnQWLbrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AtLmSLiS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkCfhEgi; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ezP3TS2U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784195897; x=1815731897;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1pCRsvuLYey+3oGj+x00R1J3Nk+vx27EqzNKOkrclww=;
-  b=ezP3TS2UvGa34uyl95T+SunOQDCtg1JBdSsfLksCsdpN+lpuTqakAfYc
-   EOMvh27DIS+LRiLM1vUrPqPeGXqOXkb8uCL/Xu0klmh8D3Wme5wSaYZ/M
-   pG6liOuvt0Eh+nuHY85s2etuXfwO90N6LQcbkdv0fxmNgdGBRaVhwO7Xi
-   N7I97fraWp5Jzc5Cy+SgwNkUv1wSFu2mmEwYlnK74weRrfcZyic4EWTwG
-   NqbkZ1UlpRImJKAhIaE/yrAv68NtGYcb9hUlauXV0U15OwiaxpssbYi/D
-   z6UkjHWD8WH6yixHnqq17CV5IMbZko5lI3VxDISNKiva8vIrdMi4C/fxS
-   Q==;
-X-CSE-ConnectionGUID: Di+xF/QoQ26piWW29iNVgw==
-X-CSE-MsgGUID: PZAyZU6PSMCztlu2dQA4xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="96215713"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="96215713"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:58:16 -0700
-X-CSE-ConnectionGUID: 2EJmKU1nQu6jpZCpDPo9TQ==
-X-CSE-MsgGUID: 2ARI0SHwQ6yzqbi+2WlFSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="252029108"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:58:16 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 16 Jul 2026 02:58:15 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 16 Jul 2026 02:58:15 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.18) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 16 Jul 2026 02:58:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CSoWlrzCVEBtlfKOqsncXv6LYHf9CW8YpzMEV4OTJhhWfE5NJXySdgLW5RDlZTqBvnImci7UQx123/8X1oab1XCMClR1Fx9bVN3/JHsvy8w8aCXbCCoemIAIF0dGucVhHUGyr7xD85g/uCPMkeCKoCpby04frb1S+51dRHpvZqy3MkjRn9+WquLLGUZePn3RfwYou4ZqAy/SQ30xO+ES7usvFyR0ZutvS1WPrZErpjAHMxFFkG7rBPeBC+NFgVTTrZG2HFEmx9irNAFWVg4yVY/0mkOGPACtp93mRSJtN1HvdH6t8DIWt9rywW7g/6wyi0mNX+0+eh6ps0xiUDVbIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zb3pC+iIO5JGABYOh5qvEfnviqHivWC3NLkzbKC4zGI=;
- b=BbQfn32nleg2GdSUwdiHKxRHGI/QbAZ3B6yzbMLfe1RrgZqr45k2tPJ1Cjh4UxLLVfwWdY6P1gTuP1AWKJ51qMXIHfa1ameD7TXbwVpAWufBznHD6DkjFDPBmu3tjtxnVePuo0MBtAEu1tmW45D3mYhijwmXr1NqYUEGpj30u3kRC2we4hkalpcCPtsaKx8t31cf4MdnwO/ISWbrl7Rq6JgsKbM2ZrFAwXON2/5zybUL7KGSQhr85f1nfF/PIDmhp8l0OhpkJ0nar/HKUX94PPjxVoZXi5zwiBcTQfafocQ3QHCfGQCe3Bw6NCOqVy8yOZvqhXzXTrf5/cRMRju5DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- DM4PR11MB8160.namprd11.prod.outlook.com (2603:10b6:8:189::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.11; Thu, 16 Jul 2026 09:58:11 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 09:58:11 +0000
-Message-ID: <918f2fc4-2aec-43a4-b52a-028011aa91b4@intel.com>
-Date: Thu, 16 Jul 2026 15:27:59 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] drm/xe/xe_ras: Add error-event support for CRI
-To: Raag Jadav <raag.jadav@intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<netdev@vger.kernel.org>, <aravind.iddamsetty@linux.intel.com>,
-	<anshuman.gupta@intel.com>, <rodrigo.vivi@intel.com>,
-	<joonas.lahtinen@linux.intel.com>, <kuba@kernel.org>,
-	<simona.vetter@ffwll.ch>, <airlied@gmail.com>, <pratik.bari@intel.com>,
-	<joshua.santosh.ranjan@intel.com>, <ashwin.kumar.kulkarni@intel.com>,
-	<shubham.kumar@intel.com>, <ravi.kishore.koppuravuri@intel.com>,
-	<maarten.lankhorst@linux.intel.com>, <mallesh.koujalagi@intel.com>,
-	<soham.purkait@intel.com>, Michal Wajdeczko <michal.wajdeczko@intel.com>
-References: <20260701094409.129131-5-riana.tauro@intel.com>
- <20260701094409.129131-8-riana.tauro@intel.com>
- <ak9yEyDF_tlJe-Rx@black.igk.intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <ak9yEyDF_tlJe-Rx@black.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0068.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b7::7) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AtLmSLiS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkCfhEgi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784196113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kte+O5lQxSAWFzdWKKSzuAvAp1/LhbKZS7adJyPOIok=;
+	b=AtLmSLiSBfTA3Ojh2HsjnDHOfApmvP7u8zfKbHbWC3wIwtaaKZUbRhW5ubSA0jq0408wJl
+	6AV7u1uE8JB5qb0aVeqxi3cEeDLDcQShDZGl/Lvc3gZF+kQbWrabNmytDLsSIE7P3uKPZP
+	F56HL5Vxgx0xgFU6DWWqothCf/NlU9U=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-p7Hw_0iMOxWhySufVQ_cqA-1; Thu, 16 Jul 2026 06:01:52 -0400
+X-MC-Unique: p7Hw_0iMOxWhySufVQ_cqA-1
+X-Mimecast-MFC-AGG-ID: p7Hw_0iMOxWhySufVQ_cqA_1784196112
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-81e735bcceaso62504717b3.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 03:01:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784196111; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OEnqCLI3usGJCv2rISls0AYr3jyIgO6+8sbuRCgjBLnr3Pbt0a8cFBfvXMfScY57yK
+         bJqEay9YPnnpWnl7L2ZROLtiIys2EBcQ6PMrqRC2Z0aQoGdbvLT3qtA2bWl2zJlrqaQS
+         NItUmlsXp+oiwN0XIkfCeZUIkOxcQsL4ouZMNNknccKQVqwVtH6xfoDZvPEcFSW876ta
+         SKb2iySNZycKcTATVJg0CcojTs7RS4Ch2/80QGq/eSbz3ipekiDJBgbHCTWstAWWquI5
+         wDJHeYqZ+tgMQjVkpCjaOTGjBPtXVzNJQKAkvulfTX2PgrlZwwdT6+sQ7mVs3b3p7XFJ
+         Bvrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kte+O5lQxSAWFzdWKKSzuAvAp1/LhbKZS7adJyPOIok=;
+        fh=BlE6kakFDXN5B9S4Vu7yJTE4e4qOSMOHdKIA+VRLmcE=;
+        b=GTtNEgJKEIqUWMejAdVzi2qi2H1y5CVc1agFbfSwFQXiyFPQqgKfNa9NZFkF95cktC
+         VENubDFbn/pKcWKjaxFZU3ARECkNRI3mBKxxrtfQDJaGZSTUm4kHo0tAFij8tasjfMH3
+         QPSd+zPu2/mRH14sMDzNI076qKQNuHrcWvsXrOEb6b56k0qkUYhFSaOtTjqH0HpG2GcU
+         dRKV9qGOUwPID8HWvMzT9E4cYcvGy/0/KalEKvhudQ4r3poCobWNl82BH0KIxJ3gpDDP
+         obH8b3/pobUjkAIqT0LuPIrbexukfIXLVNenT5wHTLMjrLnkyD65kziyV/E0OfFrJYGv
+         39Ww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784196111; x=1784800911; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kte+O5lQxSAWFzdWKKSzuAvAp1/LhbKZS7adJyPOIok=;
+        b=PkCfhEgizwycGdLUuyPL2Bz45cHVLtpUIDjBBHHB312XfSAc/luYvF9ha8e8tC9ym3
+         zQHcLn13heIi3PDcarAAQlSTytX5WipioEihVr88TKoXBxCiM6oGqr/xv3i/Q8T+AZgO
+         WAsiTVl5zsDNvRgM5mszPBYKEG7FvtVn/PuI2j9pT8OtYuiEUvUYyseko4bWswQffod0
+         qNXPOWPA1tSBzRXZfGA7Ts+7PwmeI7yZUMq7tqHfWYdALPRy+6sXlBf5GUJ1Qkk7zRaN
+         97Pq0pIf8OeC1zud9n5jPAJOBiU5xsXE0xzb5oPz/QNLv/GfvmDM9YRL+7shMLO8utzY
+         WB3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784196111; x=1784800911;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kte+O5lQxSAWFzdWKKSzuAvAp1/LhbKZS7adJyPOIok=;
+        b=Ipe4oVhOQvcqmVrvPK675ZbQnmVz05Vbz8HtOhqf/01jxosAEHfU3qzeZ4t41xKURw
+         absoHAcNaHuaQD8gaeHDZ4bpPUYq+rdq2D0jxmownAYqF+grnkbt8qIJBIY15wIb/HTF
+         jfW4MwmJnY7j3GTChLxV8KEmTDBmh/I4/JDjf1iEn5S6jbrr2mFufMExZGAFMFO5Ggmu
+         q/2aKGW8et/FPKTnn/X3Be0O1WE3K8cJ2/Bm1r4NudsTYki3OWbNU1hhpiTvBWovc/3D
+         sVrNMIhRlUxL1wpUk4E9FqT5wd4DV+D/Wa4ZJQjwyoVS6+2D7D3JA9NEPpjfH9w7GO2W
+         klSg==
+X-Forwarded-Encrypted: i=1; AHgh+RrKRiaCFqFuhWEqFESjK0YVbFF5fIluTHwYziqU/sVJN5bpGXraJ9ctbrBZpccGsNA8nkjRR5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqIMKN3XEiST3cHrQEWuuhPAr8fO8QOq9i/DrhOv1E/vAE+hP3
+	mV7/Rj6CvCyJSQ3zGr1cy7Hdo13ePyvSBgN1+EwnTIgxZDQnoGciTsV6WdBwykXaivLo4RQc2J3
+	Ee8gPaOTekH32EGIL/s3WYtbpNvDmW2cgxcMOEl4wfHz7z7Fo80+JtF7S9/ZnBJtBbYFcUxWUxc
+	S52zglqS7GEawEnu9pwoFWCMfX1FahqXVcEa0fXeVb
+X-Gm-Gg: AfdE7ckqyXE6SMlLfTB8XatHXXKqxIJYmoEvxPc5sXvQ0VXyKm7HEC/DsOH5xa3kMRh
+	ZBcM291FliDgdS5FythaHv4Xu+jM5iP/HpZMWTVzV9WKNmlS6PlgQGIMMj45dq/Ys7phGb1YVT2
+	Iuw5gVnNUSp4r/nbrAdY4UrdEZKzMfo+I4OhJL1fiD9rCO1N9TvXny5Eteb8Zg6WDc7O9XFT6C6
+	eKBI0KGqV+69a9fnrB81ce/0ArHLFmOwmi7d+g2+kWiWlGoyKMAJMOu3Dm8aRprCdPb/FWjXbzo
+	+z8remXHgi/BltQ=
+X-Received: by 2002:a05:690c:e212:20b0:81e:c5ba:b052 with SMTP id 00721157ae682-81ec5bab97emr51788247b3.39.1784196111561;
+        Thu, 16 Jul 2026 03:01:51 -0700 (PDT)
+X-Received: by 2002:a05:690c:e212:20b0:81e:c5ba:b052 with SMTP id
+ 00721157ae682-81ec5bab97emr51787967b3.39.1784196111105; Thu, 16 Jul 2026
+ 03:01:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|DM4PR11MB8160:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c8ec468-4575-448a-db4b-08dee320bee1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|4143699003|3023799007|10067099003|56012099006|22082099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info: 1teGZ8e9hhnZ5UenCjq6y1q5H1/w0Q7RefcH6bMHwdtTBP5tcN5/oQk7FAjrCsEfGAqDB6bGvFRuR/IPoTyfx3lbsZ4Gm/MNZ+YjXokiU8kF3LurkNkmMZHewiUa902OBIBAPTjNckeWaZn4olULdijje8woPnf516ZGALGRQFZqZIr7bX/d+Ej2vt1Hd2K9NDXW4SgAsBnIy5nTPQBjwlJHA3LCXf/uJGRquxhM3UsviCfj0ANSSIFimi3KQKcHx16l5hXztVWprHWxq1lvxnHL3ceigH7NrnYobjWimkJ/lBYl/RSC+vZOxpvAAAjAFUdiqfpMzsxVPVXY73Y9ySKTCLIUrR5RezFy5qHMJqtugoeMVjSklSoGE/k0NdJ4rna5B7I72SeIb2V/8HdW/idsHMswuWlbadq1EYGekLD28Jhebg3gziy/f6O7NSE5u9RXBag55dPdKjN06rbhETeeSqc1g9xQYVkSCuA2QyslCPI97rOIu6HgKTrD5k6nNuqIsWEsZbgSUEVCY3tbeQIN2infu03DcQDdPrnA44Rep0CAdCp8FUPnx6dXWfbQWQluPizmAwxHyeliN9kAs8zB3ZQlqvcL9q+8bk/6S9ID3TZi3CAccQwRP1J2WFSAf3R6BJlW0ZBW8I0r5+T6EXlR18iW5VYm7FFTHRnl/t0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(4143699003)(3023799007)(10067099003)(56012099006)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y1NGSDdST1FKMFo3UnVnem9kSVNBVnp6OUNkVElBN3Z5RVJYZU5ZUzRDTlhG?=
- =?utf-8?B?S2IxSFhrSEJuMjVtd2RUeWswY3Y5OFRkV05sZ2MyMTFzVGM2V3U5Si94eFl4?=
- =?utf-8?B?TDFQbEQ1OWhjSUtTcXlLbVp3cXowRVRRUjNMdUlrd3NvQXN3U1ZuM2JlY20w?=
- =?utf-8?B?VTNtQkduNGtCQ2p3OHh3T0I4bnFUV2NWK2RGYWFPN1FuenNVay8ydkk4VXNr?=
- =?utf-8?B?aVJVeTJORTV0NmRFNVRJS1lWSTh0ZmtFNXY0ZkFESEZhbHl3c2Z1bEUwQkRn?=
- =?utf-8?B?Tzk2MlNXODU5SkpaQzY2eXNVM2ExUGNOUTk0Z2VuNnlMVVZqc1hSaUIwMm5v?=
- =?utf-8?B?TkFTVlp6MktPOFhVNWJFa3oyL1EwaU1Iay91eGhzVXF5Y3lXeVF6YVEzL0Zo?=
- =?utf-8?B?UTJzRUs0T1lueExtRTdMZis5cGFPWEI2aHBwbTNoM29ZTysySU1qQjNWMmor?=
- =?utf-8?B?NzJVSkdDNU5IT0EwZEpCQTZIdzkrNlFvYnZocmlqMVBhWVlmQjFXWGc2a3hU?=
- =?utf-8?B?cXlLVEtJeDZZK1R5UEpyOCtkN0tudGIvM3VkZ2JsdXpMWENJdjlmdS81cWZH?=
- =?utf-8?B?T3dsd0luekNyL3hLSkcxT2Q2bUN1cUhsR2pKRHBEdVA5M3NEOFdHK3lYTWFI?=
- =?utf-8?B?ZHl0aTV4TVF3clZaUXJDOWw0Lzg3YXQ3UGszZTZFQktjcElJaElKQm1xSjlh?=
- =?utf-8?B?cGxReGZ5NklFSndDZFRqTlNxdVM1d1F5SU9SSVJqQ1pkQStGU3NqdjBVMXVH?=
- =?utf-8?B?UXI0T3ZsSUhlTDFBL3I5ZjZzSlVjWTNsK0dTbzRIQUk1bE9sbkp0bVB6QzFY?=
- =?utf-8?B?UU9nSWNXY1o3SS91aEd4VlBXdG1Mc2xwdXVLeEJEdVVla3ZrenhvRW5ZWHRG?=
- =?utf-8?B?Yll2RUdnVUpFVGF2bGErNkhDNkx0dUg3QTJRaXpJbzQ2TFlGZ09VcnBBeTdt?=
- =?utf-8?B?d3hNaXpwQ1hwNmgrM3B2Ni9hanVOMHJ0VkxKK3RNREwyYXNCRlkyNENpOENi?=
- =?utf-8?B?NXNBZ3AyQWxiaHlERUpiWXhpTnduRG9qeit2UFhyM0QvMzN3M0VHNS9yeGJq?=
- =?utf-8?B?YXBodjQ1WDNjUDM4aytINmU5cTY3NE90V3RPeG0yV3ZCT2Y1dUtIV0FwZFhV?=
- =?utf-8?B?L1IrMkR0S01LdWsxc2pBTStyL0JlL0NLZ2haUHpRbVpNUUtuZDErTTdkdjJn?=
- =?utf-8?B?a3JWaUhrbHVNUzRzUmhaZGlXZ3NRNGxNdXVVMU1SK3VxQ3FhYTdaazIxWTdU?=
- =?utf-8?B?bVhQMmVucEpOQ0VsOVZhYUJjY3ZzZGVLNkNLQkJIRXRGTnN3akhGWWR5R2hE?=
- =?utf-8?B?bHc4Z1dFeW5sM0NMMk1YM05zM0RuMzdtbUVwazFsajdCRXozVXhVb29SMisx?=
- =?utf-8?B?Qmd4c09SRlgxMEZHQ3hHdjdyLytkSkpZNlZhT2ExRlk5VTQzM0NvazF3cndw?=
- =?utf-8?B?WldNbDNFM05UeFZoN29NTW10VlJXYXpXR1dXam1zY0VGSG9WbjFrRkZnRzlH?=
- =?utf-8?B?dDg2T0F1a255Sy91U0xtL3dWTWZqKzlwVmpFZkFFajdSbEZGbU14Nm85STBS?=
- =?utf-8?B?cXh5Vi9TMjgwY2RQeEk0QkhOeFFZck5sM201blpaenNnQ0ozVHlFZWZ3R3N5?=
- =?utf-8?B?ek01MlpQa0JXemJlZEdSZDFSZFpudEQ1U1BMSTZDbnBaMUpDbkVPeGpvZVE4?=
- =?utf-8?B?c1RZdUs5clZLVkhIZFpON05pcklubFZhc3FvSWw1cVZBL1NxWGVlSDNnVFYr?=
- =?utf-8?B?WGw3UFh2dC9WV2FQd3FseTBFaE5lNEtBZ0VtSk1CWkxuV2Nnbk5sOGt2Q0w0?=
- =?utf-8?B?Y1JHVklHb3V0ZGRvbE12djE3bnpORHpYOTZmdmNrdHkzSjZsNTlqejFRT012?=
- =?utf-8?B?ZGJ1WkV6RkhqOW1hcDlESm5ET1ErSVJFbkhlYXhOUnMxc2p3M0xacHdmd01r?=
- =?utf-8?B?YTlDNTM4WDdKeWRpa3JSa1hRRXh1dWY2SjY4OGpEY1Y0WmF5dVU1OEEzNlpq?=
- =?utf-8?B?L2tUQnd2R20zYVVOUDZBSTZYckNSL1NyZWhPK0dvZVVyNFU1N2MxKzJiMUJW?=
- =?utf-8?B?SVQ2TnREdVNWbjBSamlTbEhpc1FVVkk0a0FXc2lhbWo2TGMwV0xaNzE5Q0Rn?=
- =?utf-8?B?YmRhRWFsd3MxWFIwR3JXbFVLLzZrejRKYnVMOWNZd0tTSTFvSFNnVkZIeGdq?=
- =?utf-8?B?MGs0WnBUek9vY0NySlN0aUtFd2FOVHZKQVVxSkZOQjBqVmZSKzZLV2ZzeWds?=
- =?utf-8?B?Wm9qQlYrVUo4T2JVYlVrRlNVQlUreGVZdFFwa0U0RmxXVVhzaERmV3FzWHJa?=
- =?utf-8?B?dFIwM3VnV2FObXBQQ1ljb3ZoTE9sMEtJR0FpbGczOFEyQ1ZpMnhZUT09?=
-X-Exchange-RoutingPolicyChecked: bxnrQ/WpGK+xopMdP8nPg4LEKNiEYrbqO0R+u71q7o/Vo5bT97/zvf8Ml/nc2iMFN07VgKfs36uO22jnHiSayh/hyDIADnRhjwWtjQx+259Zy4QH3nAqrZKd6ojbdkZP7iGZN/GKy8zj1X/kS2Oy+tcv2xVtDek+wXD5drknAxPhFq/454hyy1l3bulK0e3C6Gz+asCveVI2SviATFpZAdCLTaBBNbk2pLlE9jIbYYcwyfhAD3PzdNcjZf8QgwtEcBRJAuDnCVC+uMLdfju+nc7CbEjY7wxI9EB7CPlinyTNzYP53aH80E1gZFxCur/gdoAl2K1fzogvpa34Xmvqiw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c8ec468-4575-448a-db4b-08dee320bee1
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 09:58:11.5924
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6GUB6vd2MUAgFNvyc7KYOJ1Ej49fxSrdq0RARbgQ5SQsw/PTJli0qnBjf/AwblcXMlvK0sDqMPFzbjgp7yT9vA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8160
-X-OriginatorOrg: intel.com
+References: <20260716030242.124455-1-xiongwm2026@163.com>
+In-Reply-To: <20260716030242.124455-1-xiongwm2026@163.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 16 Jul 2026 12:01:14 +0200
+X-Gm-Features: AUfX_mx1UNEXbgfju8J4YPpG9wOazGi-4uMhtWJ0TvC5HjB07XmtqFhXc3IuHh0
+Message-ID: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
+Subject: Re: [PATCH] vhost-vdpa: propagate set_map error to caller
+To: Weimin Xiong <xiongwm2026@163.com>
+Cc: virtualization@lists.linux.dev, mst@redhat.com, jasowangio@gmail.com, 
+	netdev@vger.kernel.org, kvm@vger.kernel.org, 
+	xiongweimin <xiongweimin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 09-07-2026 15:34, Raag Jadav wrote:
-> On Wed, Jul 01, 2026 at 03:14:13PM +0530, Riana Tauro wrote:
->> Add error-event support for Correctable errors in CRI. Report an error
->> event to userspace for every component that has crossed the threshold on
->> receiving an interrupt.
-> ...
+On Thu, Jul 16, 2026 at 5:02=E2=80=AFAM Weimin Xiong <xiongwm2026@163.com> =
+wrote:
 >
->> +static void ras_send_error_event(struct xe_device *xe, u8 severity, u8 component)
->> +{
->> +	u8 drm_severity, drm_component;
->> +	u32 value;
->> +	int ret;
->> +
->> +	drm_severity = xe_to_drm_ras_severity(severity);
->> +	if (drm_severity == DRM_XE_RAS_ERR_SEV_MAX) {
->> +		xe_warn(xe, "sysctrl: unexpected severity %u\n", severity);
-> This is uapi and not coming from sysctrl, so the message is a bit
-> misleading. But if at all it needs validation, it should be done in
-> drm_ras layer.
-
-You mean in the ras_event function?  The parameters to this function are 
-coming from sysctrl.
-So added sysctrl flag
-
-
+> From: xiongweimin <xiongweimin@kylinos.cn>
 >
->> +		return;
->> +	}
->> +
->> +	drm_component = xe_to_drm_ras_component(component);
->> +	if (drm_component == DRM_XE_RAS_ERR_COMP_MAX) {
->> +		xe_warn(xe, "sysctrl: unexpected component %u\n", component);
-> Ditto.
+> The return value of ops->set_map() is currently ignored when handling
+> VHOST_IOTLB_BATCH_END. If the backend fails to program the IOTLB,
+> the VMM incorrectly believes the operation succeeded and may continue
+> with stale or incorrect mappings.
 >
->> +		return;
->> +	}
->> +
->> +	ret = xe_ras_get_counter(xe, drm_severity, drm_component, &value);
-> No, instead of converting back and forth just do get_counter() using
-> sysctrl values and send_event() afterwards.
-
-The reason for using this is to avoid unnecessary churn of moving the 
-get counter above or use forward declaration.
-Yeah i can use that too directly.
-
->> +	if (ret)
->> +		return;
->> +
->> +	xe_drm_ras_event(xe, drm_component, drm_severity, value, GFP_KERNEL);
->> +}
->> +
->>   void xe_ras_counter_threshold_crossed(struct xe_device *xe,
->>   				      struct xe_sysctrl_event_response *response)
->>   {
->>   	struct xe_ras_threshold_crossed *pending = (void *)&response->data;
->>   	struct xe_ras_error_class *errors = pending->counters;
->>   	u32 id, ncounters = pending->ncounters;
->> +	u8 sent = 0;
->>   
->>   	BUILD_BUG_ON(sizeof(response->data) < sizeof(*pending));
->> +	BUILD_BUG_ON(XE_RAS_COMP_MAX > (BITS_PER_BYTE * sizeof(sent)));
-> I prefer it the other way around. Also, have you tried using BITS_PER_TYPE()?
+> Save and propagate the error from ops->set_map() in BATCH_END.
 >
-> 	BUILD_BUG_ON(BITS_PER_TYPE(sent) < XE_RAS_COMP_MAX));
-
-Will try this
-
+> Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
+> ---
+>  drivers/vhost/vdpa.c | 6 +++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
->>   	xe_device_assert_mem_access(xe);
->>   
->>   	if (!ncounters || ncounters > XE_RAS_NUM_COUNTERS)
->> @@ -154,6 +211,24 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
->>   
->>   		xe_warn(xe, "[RAS]: %s %s detected\n",
->>   			comp_to_str(component), sev_to_str(severity));
->> +
->> +		if (severity != XE_RAS_SEV_CORRECTABLE) {
->> +			xe_warn(xe, "sysctrl: unexpected severity %s (%u)\n", sev_to_str(severity),
->> +				severity);
-> This should be before "detected" log above.
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index bb96b1aa5..ffbb10a92 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -1297,8 +1297,10 @@ static int vhost_vdpa_process_iotlb_msg(struct vho=
+st_dev *dev, u32 asid,
+>                 v->in_batch =3D true;
+>                 break;
+>         case VHOST_IOTLB_BATCH_END:
+> -               if (v->in_batch && ops->set_map)
+> -                       ops->set_map(vdpa, asid, iotlb);
+> +               if (v->in_batch && ops->set_map) {
+> +                       r =3D ops->set_map(vdpa, asid, iotlb);
+> +                       break;
+> +               }
+>                 v->in_batch =3D false;
 
-okay
+Maybe this needs to be discussed, but v->in_batch should be set to
+false even in failure case.
 
->
->> +			continue;
->> +		}
->> +
->> +		if (component >= XE_RAS_COMP_MAX) {
->> +			xe_warn(xe, "sysctrl: unexpected component %u\n", component);
-> Ditto. Also, use xx_to_str() in both cases or don't but be consistent.
+>                 break;
+>         default:
+> --
+> 2.39.3
 >
 
-It will only display not supported. Will remove the string in both.
-
-Thanks
-Riana
-
->
-> Raag
->
->> +			continue;
->> +		}
->> +
->> +		/* Send event once per component */
->> +		if (sent & BIT(component))
->> +			continue;
->> +		sent |= BIT(component);
->> +
->> +		ras_send_error_event(xe, severity, component);
->>   	}
->>   }
->>   
->> -- 
->> 2.47.1
->>
