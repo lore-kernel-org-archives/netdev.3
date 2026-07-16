@@ -1,75 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6313D0BE1;
-	Thu, 16 Jul 2026 10:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784199437; cv=none; b=pOhn+PKCi0AdO2XhbvAKdmkSiZIGpP9BSA3iqLmI94K0dkIaUSUXTAaF9+l3rVyAJIpdNEiKOEpbefh2C87+ILTMCfxmgTlnHHXd1MJZmR9iLDWBWPSeQHuEajVk/+nrpRTkMY3Siq5/+vLWpWXd04IyYEdQiCKhDM8DvD45djU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784199437; c=relaxed/simple;
-	bh=qYV6O8WLiUAVRIq9p5phVYx4RpSDa47S0zaEBo+iNZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SwEvafjTTjVN39toQJlLuprPvdc6k56hdRhyPQqzjwge6EpwVl/1V20xID9NYoJCofmyhkloD6R3aJmBa/NSftNkYdff7KOOPJoU9mv4kPIySIHn3UwkNWatIDOhV6drvBykPNxAqfhGy7qjNLDaDsvfAqekhdcm/4yc4h4gl1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwnJbz3T; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721A3417340
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784200374; cv=pass; b=Qmn33kvZc7N2rLrTteuTM11lzzHyhH/AHhsrC7xaMEp8AZKGXrg12yvcRTOzcMQvrx+Q710yGhEbTwE4IkV+5n75PX3O/V1Zbpy8GE4mHf820HatNXKQmOz0oaoIupRY8vKOe1Mkr3wUb+qwuWqTniIY8Sdl4r6mTPJZ/zUJRpI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784200374; c=relaxed/simple;
+	bh=2Mf1yi7rcpKQx+KVf6gqOog7j/QWN72FP0RMqbdb1Bs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tc0q7gwoy7OipHfL+D1dnQN/vt5rAld1fp6ZwNkn7YEUxQcG6DhGOew6yZ/vGup/xjhCKNeN+g/yxt9RLQWFztXEt7/A9zi9Syl0nQ+opEv1MHIKOZobI4ttDfc5K9+zOJm0h+x0y/mp6n2b9zmMUa4hiAK475caO8xQUkQQolk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GksKhXvt; arc=pass smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwnJbz3T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E09F1F000E9;
-	Thu, 16 Jul 2026 10:57:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784199435;
-	bh=cuIxl/Ur1TuKbEfJfRVEKRh6y9+ljPg5aoWyN9FCFDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HwnJbz3TdM/RBA2x3LzGLLiWik36rNwrzAk56mzVYn0n5upuIpx1X4Zv6tZEQPQWE
-	 6JIY+5+8hola72e53CP2fGV/EohqjCaWX2QqhvoFT8faeo2zwRV6tvz4pbwosf2kzl
-	 2hV+WV0tPa6v+h5LUUPdcD2S8zrw9yg1VmmBb8U53mFerKQBmPhRP2u/vWX+lfFZee
-	 AWZytuIig6UeWaW2IKXcEwPIBS2LeX3BDPOQXb3oDSQJyOn7dOY6fYaD4WK9wlyOD3
-	 vCoOXvkJ6vGy6XzQZI4SNwI6xIaw78UaPsJcm9+lpIS+gN1dmU9tQuRa32b58AIKli
-	 aDP7yBnA/dnGQ==
-Date: Thu, 16 Jul 2026 11:57:09 +0100
-From: Simon Horman <horms@kernel.org>
-To: Luke Howard <lukeh@padl.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Cedric Jehasse <cedric.jehasse@gmail.com>,
-	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>,
-	Max Hunter <max@huntershome.org>,
-	Christoph Mellauner <christoph.mellauner@joyned.at>,
-	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp
- fixes
-Message-ID: <20260716105709.GI95246@horms.kernel.org>
-References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GksKhXvt"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b021916bd3so5500228e87.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:12:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784200369; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ho868RzckXd1gpIEphiUt9OtXBz8EhIXTEuUo3IaI/PqeFMwr5OgJ9cLah0MguU48I
+         BWCk8bq3p7p4hfMPEHa6UL2gb1fJ/2p3OLp2dhFpb7E4/SquDwaLOFDT0B9biBAyZgee
+         UR9l9CjOsnKygK25qKceVU//It7s/cuoi7dc4KgA30M06deaZQ3UZAsjWuKSH1Z6xoDx
+         a5E5muVGUx80n+eeRt9l2aCkxD84wr2UpU7zLhusSpf+8coZu2ntCF0B0aCxh7Szutq+
+         IC1AG1baBd1PsgAZMjaBKV7TGHIWu5yG8ERvBS0coUxcyAuKurHgHJMQHWA8IcR5CJ40
+         ssDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
+        fh=dg2ymdLbiNbBotc6WzqHvzRlh+YSf/ncbbWgtJsyWH0=;
+        b=IgRRDhl5xo86EpfvjGCSpAkexN2pSAQswOgWUAFbolJP54xcqEMbkXk+w/8+LpcMLY
+         nHukRg4dlpOaspW/f1459BVJ/GBT6RU/CgmxBVp/mcABGnAlexj+XiyvegkUE1byOe7k
+         bBz8ICtv53xQ3VK9wvaWJtuKYAu3M+uYMdxfZjIFNUjqvgX1IFC+MVLcZq9szIQxAFkZ
+         7cpQsx8KtZ9L00VRsfHJ1LNBQgFvFbs/pbYqz9w9LQVQYQ7mJ5nAlaJVP2BH1H4ab/hd
+         UeLsXDJLFdN4QWuPVvfeGsjbQgHUK/vsShGnL7VU/wskPqD1AMyFc+TajgVEMy7/4I8s
+         Qz5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784200369; x=1784805169; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
+        b=GksKhXvtnwBvUj0gLkAqD11G1Yx5WfhZ+src/qJ3Uv2n44i615qy/aXyNnUaozeBbl
+         KuMp5BH99UidbdwkjYxwh3+t3qadzKQVQJKYTbRgZJOcUFcdXcW4+A8xG9RQ1tKw8yd5
+         52/KiKkpCnsUh3+Kx4uKQY/ZapBS3qJTSi9WVwBKVodXiEZtJGB/i0uH8tUcVsdibfHe
+         eocvyHaOwQKw1obh9+UFHdKOScC7PjpnyOXfIab61Uw5pHHHewGwNMqucA8YS3mBxStH
+         GbCD2JZ3TEdhjO9Mdo5A5hT0Q0ztl3y3dopvK3gseZA+o9RHMFNn5jelyywjdv/j9aqf
+         greA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784200369; x=1784805169;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
+        b=bHRFswGDXlbvGo6xf4WILSAN5qWKAkanwloUtmEyFR2tYG6icp9WMq/ZpuR/zs6Zvv
+         quQPfj02V7Clp/VvkAGhGAhj1BBhaO/VoJJDaHBn9dmEs/TyZ66GGA76YDlGRLNaGmo1
+         1h3ugo1a8FAtHtDfaq/Bn+AIisaY1emefvyO6qOWBq+w4NsMf63J22ZkSjBl9E9zQzqd
+         v1jmnu+Sk0vleALi6xh1+ZGjKwdSX3+K+BUcqLj1aNy6lywVB0m6d5rGSO8YJ+qyVQJw
+         K/EFjTUr+TB2qjbdxnHzc4B9/W1PhfkgFV8igT0bPF3zOsc46IRWnVuqJeGdx5VqhSFw
+         rrmg==
+X-Gm-Message-State: AOJu0YwXcdmkACvtWWQqtdIAMetD/kw0S+N+8u9r6fkSV20fmGDoj1zD
+	H1b285B4f/yf1+gniogokiFdYsKux+W1HnqPx8bDD9TwJokq+eyMAk9BPnHz9g7/a14ErEdBI+K
+	xPjD9IpcIJkOe3+EeLlZ31T/N8xmJEp8=
+X-Gm-Gg: AfdE7cmVC0sYulNypBcJed/K6BmeaSZCaM+Gj0kg+1ci9RCohyK/xN/vvhcD5DAz8nW
+	+zVtwmerSpS9p65GIgNY3WV8CWifUMzAxQppNMuIy5PCI7/MNbllLQfb32pqVv8tVADO0u5l8Wa
+	+QpmQpcb1IWtguOfxJ+8CW1XduEisw2WDWAJTThplvH4C+mIq82rjY11yz9dDsok2FarjQWPPpS
+	xsAs1PJGT5ircam4+YGt6Ay+cnORsUR1TkUHbs3I7l7NtxyuV42MpbSlDS/C5mNaFNPVycMvPLp
+	sPTWsqEG2wnXimVoJ7Vu2cB+4ChEAxRkeb8a26bm1qvZPsljlgDygP2PZsT18+nCR6C9dMJJynW
+	7k/K45A96YWeC
+X-Received: by 2002:a05:6512:66da:b0:5b0:1f61:f5e with SMTP id
+ 2adb3069b0e04-5b15d79d300mr1002660e87.33.1784200368660; Thu, 16 Jul 2026
+ 04:12:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
+References: <80818E6580896D22+20260716091212.43126-1-junvyyang@tencent.com>
+In-Reply-To: <80818E6580896D22+20260716091212.43126-1-junvyyang@tencent.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jul 2026 13:12:10 +0200
+X-Gm-Features: AUfX_mwHCtQnLYHwyJACRbZaSuoOmgR_fxhvzgV2tOwIYEgCwlBYYl3bVBeunEU
+Message-ID: <CAL+tcoD_BH0xhyAJ1p=TcX8KW8_heVjN8wHeVwWzkMKS4MMgNA@mail.gmail.com>
+Subject: Re: [PATCH] sctp: don't free the ASCONF's own transport in DEL-IP processing
+To: =?UTF-8?B?5pyx6ZuA6JOd5YabQUlHQm906YKu566x?= <aigbot@tencent.com>
+Cc: netdev@vger.kernel.org, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-sctp@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jun Yang <junvyyang@tencent.com>, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 10, 2026 at 04:43:40PM +1000, Luke Howard wrote:
-> Two fixes for improving the reliably of hardware timestamp acquisition
-> on Marvell switches. In our tests this eliminated missed timestamps in
-> ptp4l.
-> 
-> Signed-off-by: Luke Howard <lukeh@padl.com>
+On Thu, Jul 16, 2026 at 11:16=E2=80=AFAM =E6=9C=B1=E9=9B=80=E8=93=9D=E5=86=
+=9BAIGBot=E9=82=AE=E7=AE=B1 <aigbot@tencent.com> wrote:
+>
+> sctp_process_asconf() caches the transport the ASCONF chunk is processed
+> against in asconf->transport (=3D=3D chunk->transport, set once in sctp_r=
+cv()).
+> For an ASCONF located through its Address Parameter by
+> __sctp_rcv_asconf_lookup(), that cached transport corresponds to the
+> Address Parameter, which need not be the packet's source address.
+>
+> sctp_process_asconf_param() rejects a DEL-IP for the packet source addres=
+s
+> (ADDIP D8, SCTP_ERROR_DEL_SRC_IP), but nothing protects asconf->transport=
+.
+> A single ASCONF can therefore carry, in order:
+>
+>     [Address Parameter L] [DEL-IP L] [DEL-IP 0.0.0.0]
+>
+> where L differs from the source. The DEL-IP for L passes the D8 check and
+> calls sctp_assoc_rm_peer() on the transport that asconf->transport still
+> points at, freeing it (RCU-deferred). The following wildcard DEL-IP then
+> reuses the now-dangling asconf->transport in sctp_assoc_set_primary() and
+> sctp_assoc_del_nonprimary_peers(): set_primary() dereferences the freed
+> transport (->ipaddr, ->state) and plants the dangling pointer into
+> asoc->peer.primary_path / active_path, and del_nonprimary_peers(), keepin=
+g
+> only the pointer that is no longer on the list, removes every real
+> transport, leaving the association with a transport_count of 0 and
+> primary_path/active_path pointing at freed memory.
+>
+> Reject a DEL-IP that targets the transport the ASCONF is being processed
+> against, mirroring the existing source-address guard, so the wildcard
+> branch can never reuse a freed transport.
+>
+> Fixes: 42e30bf3463c ("[SCTP]: Handle the wildcard ADD-IP Address paramete=
+r")
+> Cc: stable@kernel.org
+> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> Acked-by: Xin Long <lucien.xin@gmail.com>
+
+It should explicitly target the net branch?
+
+Thanks,
+Jason
+
 > ---
-> Changes in v2:
-> - Lineraize SKBs before retrieving embedded timestamp
-> - Hoist driver register lock out of per-frame loop
-> - Link to v1: https://patch.msgid.link/20260703-mv88e6xxx-ptp-fixes-v1-0-0138581889a9@padl.com
-
-For the series:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+>  net/sctp/sm_make_chunk.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 8adac9e0cd66..b14251214896 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -3153,6 +3153,12 @@ static __be16 sctp_process_asconf_param(struct sct=
+p_association *asoc,
+>                 if (!peer)
+>                         return SCTP_ERROR_DNS_FAILED;
+>
+> +               /* Don't free asconf->transport; a later wildcard DEL-IP
+> +                * parameter reuses it.
+> +                */
+> +               if (peer =3D=3D asconf->transport)
+> +                       return SCTP_ERROR_DEL_SRC_IP;
+> +
+>                 sctp_assoc_rm_peer(asoc, peer);
+>                 break;
+>         case SCTP_PARAM_SET_PRIMARY:
+> --
+> 2.55.0
+>
+>
