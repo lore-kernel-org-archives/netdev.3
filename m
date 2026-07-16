@@ -1,253 +1,242 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F5421A07
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF84422541
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784207175; cv=pass; b=OhMJUagznF1NfmMM/wSpSngnoRgnJ/pJmCvlJxsajr+yLPT6JVH98/HjKuTdQ684wFziv9ZMZPtGvhtkOPq6eGwlyogUMc/r2DeCjoi49Y9aMC4si5xtGPyzsUONLvDyrgzD1X4u6ZPm5H2djqPaxRTsjfcue5UfTo8hdxOCwzo=
+	t=1784207217; cv=fail; b=srTIFpxlA0M7pzzHKcTqhiqfg+iebPota8/G6XJ3QX401VhmDvtD28FBo8d/aPvBKQY1ZzMJB9nbFCF9587BirO6W7lIw2UDCBnQ9txKPvYmdOVJvOBq+pZNJ4Irdggpma81wcnWViTtyl7fOtzg5l2BI8IP8CN5ZoiDxzbXilE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784207175; c=relaxed/simple;
-	bh=1wnXdhckJI97rLdoqJYmLzBh5axQs8yGqPWrx+jl7i0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iwVbApZFax6lDvFXCHoLHTJP2FA6qVyFMhSTxZ7bSVBr0ALWQimnkH+jz3j0t3sPSp5dSxQyP2kMeUVMQ+5z/puT8z79iAimkluphxydTIBjlpGQLvJ0Kw3BZrp8blVuXAJOOzB4Q3p3PcJiZ3HOoHWYZCIZtplnwN3/CX76UkY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iUkGPi0q; arc=pass smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784207217; c=relaxed/simple;
+	bh=DA+Rh7iZcMdLlFSlv3HNseWii5uhXEp1aLyAD68EQuo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fNDu0isGmmj+JU+HLwcJ+W2DqKv4PIKZhj5Ojx946xjLtjBNpTAo2Pt71t9q4Wi9TMMlzFY+upyx6tLlRDrIz9ZY5YmPbXPpwSV1gE+VogHL4L+r6/idQRbhp9oNnuhmAktnISNCSVGGV5ngk+f/Vaiu1Bl5BiHFCCWN4mZw7lI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJnm9E9k; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iUkGPi0q"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e50979c71so644273485a.3
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:06:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784207173; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BD5PhyG2VKWqdRwHTVBUTDUl+++h8XPHMaRyVghEy02e0t2rOuAjGJbpqxP+JLDBsv
-         dhXHroYZBVC80xZ8rqewZ3h10wk0362j7RvHNgxcFIUVyEWwPkpZLnnh5ZsQGNoHLOYB
-         e56KiMoHUW0lQ21iROpspk0DScA76Qo+wEPkvs6bJ2vIbLShXT7i4M8oYVvU6iiRcro6
-         HQz5H41ntt5SrlxC8jqHm/DgOEqJICu8z2zW/Do6TzAY7ddiHF5egHIbqRZ2IVVvOvTj
-         y5gkLMDgJUB7Knogp8PJTlsChVzHb5oHLhB6FBClKqkwqxrSgrSjuo2Nqj/o3PceHppx
-         fEIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=n4E2C8YOywcBmOO+gOVchWXmp+mKvYIN5oukFyrgQTM=;
-        fh=3nLhOydFECV0U2u+btKVyN6MXJ7wr3kXoXyOs/gPtoA=;
-        b=L4Gljy24PPcaW0O8BZhHVUQx8f3S1Yyg0HuMUIBWgK/96m9z6q//R2+KzhH/o/Y3Kc
-         KEH+6tnDUxx9q4WO7YIWPIXJVxJB+e25GWc4nVY7Orr1XtrKv/BCcm3VV2iCtrl+Qoan
-         HnZ7BSSULl500UHdBOP0t9X5tN/UhkqYWMMlchwdMmY0FTF288nXKBAcSNdL9IV1/d4v
-         JRdMMY9oNijU5hhL3Oc6cIjIKNc4EejvgVr/Q0wbcYfanjwgaR+V893/VzfhhLeDkNB8
-         6Qu7R7MYx8tc3lTj+Ao1G3NdFTjK/qqakxm+XCJTdQUr7wkQXOpTgf3vNYdBQTgMx1lS
-         pBvA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784207173; x=1784811973; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=n4E2C8YOywcBmOO+gOVchWXmp+mKvYIN5oukFyrgQTM=;
-        b=iUkGPi0q9TkQpKuO6nS09sUC05Yf7xQfZU4kj3ztuUm2Djd84H0C/glpanVl90A2Xm
-         PmSTEYpwpsPHTxlM2gXagGhsdexKyB8aWdfMsy6Iry0K9PQV+vLIVEA1ttiQC5lFmhDo
-         UbY1CbRUepEkp9mnh2zjhU/Mewah4yFHJ9GNppzU68I98hRz6KDE71zlgYghqHMKJq9v
-         4g1HJyKBzPHOhhbqimjhTZ8zVBwzA+KJoTueh9JCS6ueipu8EFySsA+KXlAyqMNCvBhe
-         OngwnWn6/zWbGe8Imc3ACs3+o56OFb8KBGC8hXKsL4VZ5MY//sX8/5OenfOOdExTT6Fw
-         WlvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784207173; x=1784811973;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n4E2C8YOywcBmOO+gOVchWXmp+mKvYIN5oukFyrgQTM=;
-        b=OqciF+76YP2ATN9Iuz8UtaxwsSoyEIlmSF49UCjTBdBV8UxTDsVjJgvnqTnAxXcpsa
-         mwff/7HkZCFzBkrGrobnLlfK+H4/CZb1Kl45Tl1gz3kk0QsziDoWOuvLghPXz3OtJAo5
-         GJ07JOxnYYO7H+xLt9lFSv1szlmMtsocEyVEeEKk517QvpJ9dpU0ggv8CI2COwSVo2iQ
-         URco6CJ9n1bZ3kjYip5AGSXvyJVHZ8Q36ucs/ZFgHcoMWnVIo59czFDjR8a70oAEgq4r
-         jM4CxIlzYaY1nsIY9fg27b9ifSti+/ykTRhO/+kdpz3JO/y3sg6/EqYtHxrz5dYSfyLK
-         PrAg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpqdem4chitGVeucg+YYqrZHZerm5aWWk9NF9ItmZA71xYx3jRDqrK/Xgg5Br6vsreZgP9f4HQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr2DvKljTbjG+4BWjCUVnknSxsVSfFwnPwFTAvZJ2S6xK4zLRx
-	oze49fk8as9IvvbBAEhnWmKG1Pu4EyCNymUSa5BGjTcQYrSpMoz0eGoR5NzevgAcawBG5cMh4Lm
-	BgVCZDFniKZv9C1NDXgTA9BDSvBhDITidLlnQg0A7
-X-Gm-Gg: AfdE7clqHcm4xQU2ea0qJcQIOVwphCKCFrJnVNHksKFFI7/JjZnhjqPQB5Pn+IfOAnB
-	66wDrm5tNe3DwBUA5igjK7K0qAIfD+1QRWaSZTd1yw3vW3pYE0K+iUWaVTUt8eTSmJDT26Y0lIC
-	HKaDZtnG73BpTHzKDq8nyM4UJKbu5Zoi1xVNfiweCBhPNxSefKWMRRsI3n2WbdTGC5EjvfsV8S/
-	baKsxLmJkbjaFTRN806qwJZMEHYncQmisp1uv4Vo6rSq3pB0jzNqBAZgK2fQzKto7a+ct7SnWz+
-	ZUdgecR5uP0yHbDXzQL3ps51Lyv1HXEmtzo3S1ka16teqKTf1PUCXqnZ8en3V2wgXz/buMrnxJ6
-	g+A6cH/n2hyU=
-X-Received: by 2002:a05:620a:6403:b0:92e:c117:9eb0 with SMTP id
- af79cd13be357-930962f9bf6mr714849085a.94.1784207172310; Thu, 16 Jul 2026
- 06:06:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJnm9E9k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784207215; x=1815743215;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DA+Rh7iZcMdLlFSlv3HNseWii5uhXEp1aLyAD68EQuo=;
+  b=ZJnm9E9kGoIIZpkH6N54DkGuwQNFSFBTd/WD2EzKDjEZPFl01DAuNlHm
+   tt67zne4zpxJB6Wx+hzZ1UXaCqDetVxfWl25U1TtmPd4lu8DQI3TF9q/z
+   pYaStQdbRH1mBQtxDh1JkVFEWqNGGkv9s8ItkUmt4+NYtBJ4Bi0cTeZZf
+   2c7LCWNoBZZGcwn4r8EXU/vXVAMECu0O9h1005Eka5Dni56EtDIHTxrrc
+   ztj2AL1NsbM5bfrOwxL21oOwt242JJxDiaqA9/9M8Wjf7Wlw+Jf7iPTFd
+   4WYYw5yUgfLfO6BAQSOTxh25alLvYGN7QC17rts/kDEkLk488uTJsJS0L
+   w==;
+X-CSE-ConnectionGUID: fJ9aJFemTWCtRyZzaU+O9Q==
+X-CSE-MsgGUID: g1FtK9uPSq60cntkguhKGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84720119"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="84720119"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 06:06:54 -0700
+X-CSE-ConnectionGUID: 0dx1Rs+BT8G7ZAg5TOt+TA==
+X-CSE-MsgGUID: gdJGfs7oRl6uBMDutUmT3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="250135406"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 06:06:54 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 16 Jul 2026 06:06:43 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Thu, 16 Jul 2026 06:06:43 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.46) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 16 Jul 2026 06:06:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g/sY/7n5V1X+yInckrAsb+Jeltx+WB0H4OoYCIeR0q9CH72I+3W8dRRCyAWRmHjMaDd6C4+R7qy0HCMXI7AVVehTyD4IrnDK7QRi2Eex8FqEMTUVAgL7t2LK8teN3tV0lDtZsaU6QyIpv8vYvXVk76Cwaovns2Xfbz+zLqmpsdn/hdYl+CsRH7JyXmBR/4TWDieHcDibHdh/XcbhURY8jaTKWTj9jEFKF20hyP4SdfIXvxSPsZuMCKw/PiYYNfKDrSbaFvEh1wyqh+Fnobo7JsAoAlVDCIzGhB3Iya5+idq/Nqb3zI+5QcZaXJZJrPXzSh4kUEInbENocvmM4QXnYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pcTW8sQ6j9On6lcf2o11a4b48mCnmaW52jmx1BEXJtk=;
+ b=uexD4Zx9R2QepZViE2bci+ehykXrf75xj8CxZVjLdVef4FnV+J2mUzoG65HhTw4ZnCs2QLj51kWrtNoABinCQRyJ1c0AzeLqNrFQtC13aOGWPNl5iqybszfc6RFCwcIEZomT4TfvHpbEnXiQ5NPpDPDA/OVsQeOEz65QGgxv/ckfMkPL4QB6hN2iwnZgsg1suUn77O9fpV+oaCn09cYSlyR5JAPs9VWpujtoFaNRv6baY18PGFDKHqqu2ZSOQfiBXYcJ6ET/P0Yn0DEF5bp4mqneyI83bOPZYbPrUayxAm5C26uEzaJsUgan4VztmlrPOoqvIE6x+s4Kgnl5crAHLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6858.namprd11.prod.outlook.com (2603:10b6:510:1ee::10)
+ by CH0PR11MB5218.namprd11.prod.outlook.com (2603:10b6:610:e1::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Thu, 16 Jul
+ 2026 13:06:25 +0000
+Received: from PH7PR11MB6858.namprd11.prod.outlook.com
+ ([fe80::b606:2c8e:e783:d585]) by PH7PR11MB6858.namprd11.prod.outlook.com
+ ([fe80::b606:2c8e:e783:d585%7]) with mapi id 15.21.0202.018; Thu, 16 Jul 2026
+ 13:06:25 +0000
+From: "Temerkhanov, Sergey" <sergey.temerkhanov@intel.com>
+To: Simon Horman <horms@kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH iwl-next v1 1/2] ixgbe: Refactor device operations to
+ check whether netdev is available
+Thread-Topic: [PATCH iwl-next v1 1/2] ixgbe: Refactor device operations to
+ check whether netdev is available
+Thread-Index: AQHdFSN8v+7tmDOhnUWHajUnbYAl5rZwHP7A
+Date: Thu, 16 Jul 2026 13:06:25 +0000
+Message-ID: <PH7PR11MB68589A68491D44E04E0C9CA280C72@PH7PR11MB6858.namprd11.prod.outlook.com>
+References: <20260710105403.1050025-2-sergey.temerkhanov@intel.com>
+ <20260716130254.309674-2-horms@kernel.org>
+In-Reply-To: <20260716130254.309674-2-horms@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6858:EE_|CH0PR11MB5218:EE_
+x-ms-office365-filtering-correlation-id: 4e5aa382-9712-47ee-cb64-08dee33b0ac6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|4143699003|5023799004|11063799006|56012099006|18002099003|22082099003|38070700021|10067099003;
+x-microsoft-antispam-message-info: Ng3z43PS1tkOZrH34jMLGRU9oF1mJu5g/KPUeL7tOdb67BPlCMWFOrrk3H87ynpKxzjpvA2eWtxsgG47aSlJH0n9bBXr4O8kenWXjDJnPBcr5rhGb0qa/VV77Dlkrb+bGJRbrrPxO892U6md/CXB1VcVxqmNX4qShg42B6pDr7cgngSWRIKiDdgCRgLXdxFyNmTEHAceTcZayuLjwvABJl2J6gnt+XGoY9/Hh83yUobi+CSKgZsEjdc0HNBydAvJtjKwHMm3g9LDChBdQ8nuPS2mmANqx2gwOm7CbvURx2tjNc4iBinqXCKZexfamo+Ng6FDhhKuVDqhrwzT7auAZVkiWPabpa92OVcjLwyq5Mau4igYFCGpY/tIsxNSA3ifumrloQ8WZ9YlRCxOprBfjIi5LnDW0NZVKUoYXqfE23WVxbt96yQIqtKR9qrNoGcwpoZcmw68hKyjQTeZakauBQXLc+fpKrSfTtysrVNbouCr69/NhUPB8SkZoICRL6g8iFBoY2HmWhOY6d6i9PgWPvxMRQ3ASNZdnDYF+AriExFNkw6WAH3Qd3gtwyTiI4PRxpNN30sM3506yYn87Jkxy0cos8bwowGUkPLpnI3U1C2Ofw+Y4Hya8KJl4VprvBp2L1oOK1hzwVhLfS+vrdtzMkKuWPeyjhC9+caTpoPFVJg=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6858.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(4143699003)(5023799004)(11063799006)(56012099006)(18002099003)(22082099003)(38070700021)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9sBCLHeIfFwV9kexmk45D/Q9qTj3KJ2EbEjEkS6UViKwy50yI6GGvaRposFQ?=
+ =?us-ascii?Q?5jHPE8YL/EqFnF6/l2T5PRtSZyVQ6tG1jLtNvtOdL2j7alQOkkGwxmVBRbpY?=
+ =?us-ascii?Q?xVYKpvtQ5jaMQOY9RbyOfF+CZK5XHKxKgxqNpAoG3TzlwbI0ISEgWxh+TMo+?=
+ =?us-ascii?Q?j4/RLdrU8Ypuvy1Ai8alGKzVPEjjDre9jbl2+9nnXr6BW4hXD7tvx6HbV/qb?=
+ =?us-ascii?Q?EKW/vpT8BBks1NSfn0Ib7Sp7wjkXEe4JyN7Cg4/wk912P7AAHBjFNW6cw5JS?=
+ =?us-ascii?Q?eq2ebRp0Lbj6RGKlI9qFeIquQ3TiMqSasuDSqzIVexcQynVRPn/sWqfhY4Aq?=
+ =?us-ascii?Q?C+Mi2o+8atclkd+/hH/eiKnDLuGsh0xllol0a9B1sbBMGE8+vz7zDzqOOshk?=
+ =?us-ascii?Q?j0E2C8LqfN9nDLCidWmQfdV+2LZnxtlKIDlz3lfDFFvVAeN+V5qeLpWZuPIM?=
+ =?us-ascii?Q?BXLrFoLvLosAkU50t0v14+c//Jt1jf+CP2iESACGiMh6h4lZD8AB/uFSs3tI?=
+ =?us-ascii?Q?ag1Bhe+KZEKTZ9h5zMe9Q+sDaaLBIx8Use7n/546bZiCVSSgrEUXSrqhss3E?=
+ =?us-ascii?Q?S9vekkmyiTxCvb4x+KVzwT9MUuRfj2NYIcjlMPWDraXcu6leavK7Xy+PIuhq?=
+ =?us-ascii?Q?z0QYW66+c7gQ0THHorIM8nweSw61ZJZ8QKkb7GAk7Rq7gfItZMimRMuhyquu?=
+ =?us-ascii?Q?2nfx6gDHceEJaq9Jd5QfrLG1qkXeznzn2ROwfvXz/Z2FeXm9vEn+Wuw5Rqxm?=
+ =?us-ascii?Q?VjTSAB9Gp6IGNnP10C5p2MYnGlDo+lZ52Dllr6chj6gI64SUMKK2S+fM5iwf?=
+ =?us-ascii?Q?etmm0hC1EBAddZMSlr3CYKA0cYSKDxUyL+SVipMK8gh/3Se3OsmFyL0eiJt5?=
+ =?us-ascii?Q?0irdfnsj/R/J5cT5656o1sep5MyxetJBr0h5JvHRH1IUbgohNYx054mocu4U?=
+ =?us-ascii?Q?yIhOmDeA72tSdDDmOSE1Lt5bDvZk6r4B91OEu39RBkJSKe5ayoeJ8MncKvpo?=
+ =?us-ascii?Q?xj7u6/Bhwv50pcGsxR5BuORsrnqHT4CG4PpHAQsJWbXZyJ3Psc+D/ZvXOuid?=
+ =?us-ascii?Q?EsnGQ61ilTfdtdbLCrFC0VLDgavc5TR+yxgIAVomCB+r2APAtMZqt9o5pD9Y?=
+ =?us-ascii?Q?prAHM5TRLqWWSHzrvrg+MVlr6WKrfq8P1Tf3qkmgq1MnlKUI7bnqfL4eSi8Q?=
+ =?us-ascii?Q?6Ap8C+Kxq/gqYy+VLiWxq31pyhPIuyfCOb5aZlvjatPKLDmcXIDVG8rdJyml?=
+ =?us-ascii?Q?mKNvl7UcoJjWw6UBOgfOdA/ofKjZf2IDJWX/Of1l6QZ41zVIwQ/GLK/aX7KY?=
+ =?us-ascii?Q?FPG8tbTDk5zFItkGXOuEMm4KDa+pqhufqK1kwzRgFtRM+T7V/t+sB91zk04y?=
+ =?us-ascii?Q?4yAbV28aiHM8LRivjve6sB0yPvihed5RKckHbFuev6gqLIdp5URGHhNTjlLg?=
+ =?us-ascii?Q?lOlHyt3pVQg4blU9Hkan93s0QjaGTU/C7Lr+o34Ib/zRVLH1hlAGg1tcSoVx?=
+ =?us-ascii?Q?ZKIsp7q+sqdxQm4kfJyhMTCP5g0U2eVYbWjZKLfXDF/80JptWrNB3XQXlWlL?=
+ =?us-ascii?Q?bfQOXZveeJ8ARtgjTw3BSa+vi0ozhtPbeadLy04R8ZzxEmv1aCougQXc5F4R?=
+ =?us-ascii?Q?xPxNbD/7Xvfl9bL/u786zFfyv+XytGr8xBYf1cJBq2xKAp8nkKWmWwDlCFcm?=
+ =?us-ascii?Q?1QAfwEQhh+PHH/uKRSbPlqjrpA3hrmMoa3XQtIDo8l+bJXsKVp/nUvHRLUx4?=
+ =?us-ascii?Q?sBWtt9H8nGr+SWAExyEMOBUmFbUBNKk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com> <CANn89i+z6ECLND1o8oD10re_zGJg73JCOr3dnV9AADeG40K=_Q@mail.gmail.com>
-In-Reply-To: <CANn89i+z6ECLND1o8oD10re_zGJg73JCOr3dnV9AADeG40K=_Q@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 16 Jul 2026 15:06:00 +0200
-X-Gm-Features: AUfX_my1VIKZNPgCTgXOsmzo4a4J1SoR_UoWgRqoalwh4h0rXOb59TCF1AavQ-w
-Message-ID: <CANn89iKOb0003aqdxJw65F0_xaLOkM-45MZv+CUmQ13-NGoGOA@mail.gmail.com>
-Subject: Re: [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX
- on lower device
-To: xietangxin <xietangxin@h-partners.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, John Fastabend <john.r.fastabend@intel.com>, 
-	Jesse Gross <jesse@nicira.com>, gaoxingwang1@huawei.com, huyizhen <huyizhen2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: kcURVxwGZj+uL5+0le/MITxTcPz1cB9RNkqjGbaqDu+jphr8pgXJBjhhcNnSiAhxIbEdAsgZSJvSuneyVOhFlYQoTQ+20LtLEU+d9UKm7OJJARvDYTpNpskh7SnuE2BxJ9ENX8+hUtK6A7YuQM8mcqlVQCkFiVODUG6KuLu9Ybs7SYOtRfmuVPn4uoxf6VdzKmPhhRn2DBVHhOrdKwCnhADYsGhL64rXH918FnMt2qimjfWTYpuSrufPp0DaeFlhrh5+KIt/yO5WgRJ95padMxn6dbqdnti5kE8xk7tT+CC6+iDB16mmm51v8k22ckvBMWa4B7glGdOL7VZ5cv379w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6858.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e5aa382-9712-47ee-cb64-08dee33b0ac6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2026 13:06:25.6467
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: e1seQzPj/P2C1zNwGzbQAE42IrZzJW/0+TfLa79mnnv8n26jlFrvpGqgu/dWFtOcl8RzibbFg8PZIAo+qx8NaSz1z75Q0lHJjq+lGgUk9gI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5218
+X-OriginatorOrg: intel.com
 
-On Thu, Jul 16, 2026 at 2:53=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Thu, Jul 16, 2026 at 2:20=E2=80=AFPM xietangxin <xietangxin@h-partners=
-.com> wrote:
+> -----Original Message-----
+> From: Simon Horman <horms@kernel.org>
+> Sent: Thursday, July 16, 2026 3:03 PM
+> To: Temerkhanov, Sergey <sergey.temerkhanov@intel.com>
+> Cc: Simon Horman <horms@kernel.org>; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org
+> Subject: Re: [PATCH iwl-next v1 1/2] ixgbe: Refactor device operations to
+> check whether netdev is available
+>=20
+> This is an AI-generated review of your patch. The human sending this emai=
+l
+> has considered the AI review valid, or at least plausible.
+> https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> ixgbe: Refactor device operations to check whether netdev is available
+>=20
+> This commit refactors several ixgbe driver operations to check whether th=
+e
+> netdev they operate on is enabled by introducing an ixgbe_netif_running()
+> helper and adding netif_device_present() guards across the ethtool, DCB,
+> FCoE and XDP code paths.
+>=20
+> > diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> > b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> > index 8873a8cc4a18..12361ed58a0f 100644
+> > --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> > +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>=20
+> [ ... ]
+>=20
+> > @@ -10954,8 +10958,10 @@ static int ixgbe_xdp_setup(struct net_device
+> *dev, struct bpf_prog *prog)
+> >  			synchronize_rcu();
+> >  		err =3D ixgbe_setup_tc(dev, adapter->hw_tcs);
 > >
-> > [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on lo=
-wer device
-> >
-> > Hi all,
-> >
-> > We encountered a skb_under_panic triggered by toggling
-> > NETIF_F_HW_VLAN_CTAG_TX on the lower device while a VLAN device is
-> > up and sending traffic.
-> >
-> > Call trace
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> >  skbuff: skb_under_panic: text:ffffc0d2900283d8 len:74 put:14
-> >   head:ffff334820249c00 data:ffff334820249bfe tail:0x48 end:0xc0 dev:vl=
-an4
-> >  ------------[ cut here ]------------
-> >  kernel BUG at net/core/skbuff.c:116!
-> >  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-> >  Call trace:
-> >   skb_panic+0xcc/0xd0
-> >   __skb_checksum+0x0/0x480
-> >   eth_header+0x48/0x1a0
-> >   vlan_dev_hard_header+0xd0/0x284
-> >   neigh_connected_output+0x16c/0x20c
-> >   ip6_finish_output2+0x4b4/0xd74
-> >   __ip6_finish_output.part.0+0x1ac/0x3b0
-> >   ip6_finish_output+0x160/0x200
-> >   ip6_output+0x13c/0x294
-> >   ndisc_send_skb+0x41c/0x6f0
-> >   ndisc_send_rs+0xac/0x3b0
-> >   addrconf_rs_timer+0x42c/0x660
-> >   call_timer_fn+0x54/0x290
-> >   expire_timers+0x26c/0x420
-> >
-> > Reproducer
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> >  # Create veth pair (NETIF_F_HW_VLAN_CTAG_TX is ON by default)
-> >  ip link add veth0 type veth peer name veth1
-> >  ip link set veth0 up
-> >  ip link set veth1 up
-> >
-> >  # Turn off HW VLAN TX offload on lower device
-> >  ethtool -K veth0 tx-vlan-hw-insert off
-> >
-> >  # Create VLAN device on veth0
-> >  # At this point: header_ops =3D &vlan_header_ops, hard_header_len =3D =
-18
-> >  ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
-> >  ip addr add 192.168.10.1/24 dev veth0.10
-> >  ip link set veth0.10 up
-> >
-> >  # Turn HW VLAN TX offload back ON on lower device
-> >  # This triggers NETDEV_FEAT_CHANGE -> vlan_transfer_features()
-> >  # hard_header_len changes from 18 to 14, but header_ops is NOT updated
-> >  ethtool -K veth0 tx-vlan-hw-insert on
-> >
-> >  # When a packet is sent through veth0.10
-> >  # - skb is allocated based on hard_header_len=3D14 -> ~16 bytes
-> >  # - vlan_dev_hard_header() pushes VLAN_HLEN(4) + ETH_HLEN(14) =3D 18 b=
-ytes
-> >  # - skb_under_panic!
-> >
-> >
-> > Any feedback or guidance would be greatly appreciated.
->
-> This rings a bell, I thought we already fixed this issue long ago :/
->
-> I would suggest we always add VLAN_HLEN even if not (yet) needed.
->
-> diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-> index 2b74ed56eb166d52c3351768d9dfedc7b2c8ec2d..d7f90b3b2bb3aadb2c4668917=
-20a7f407d0bc34b
-> 100644
-> --- a/net/8021q/vlan.c
-> +++ b/net/8021q/vlan.c
-> @@ -323,10 +323,7 @@ static void vlan_transfer_features(struct net_device=
- *dev,
->
->         netif_inherit_tso_max(vlandev, dev);
->
-> -       if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
-> -               vlandev->hard_header_len =3D dev->hard_header_len;
-> -       else
-> -               vlandev->hard_header_len =3D dev->hard_header_len + VLAN_=
-HLEN;
-> +       vlandev->hard_header_len =3D dev->hard_header_len + VLAN_HLEN;
->
->  #if IS_ENABLED(CONFIG_FCOE)
->         vlandev->fcoe_ddp_xid =3D dev->fcoe_ddp_xid;
->
-> A kind-of-similar change is needed in net/8021q/vlan_dev.c
+> > -		if (err)
+> > +		if (err) {
+> > +			xchg(&adapter->xdp_prog, old_prog);
+> >  			return -EINVAL;
+> > +		}
+> >  		if (!prog)
+> >  			xdp_features_clear_redirect_target(dev);
+> >  	} else {
+>=20
+> [Medium]
+> The xchg(&adapter->xdp_prog, old_prog) rollback on the ixgbe_setup_tc()
+> error path looks like a semantic fix rather than a refactor.
+>=20
+> Before this patch the error path left adapter->xdp_prog pointing at prog:
+>=20
+>     old_prog =3D xchg(&adapter->xdp_prog, prog);
+>     ...
+>     err =3D ixgbe_setup_tc(dev, adapter->hw_tcs);
+>     if (err)
+>         return -EINVAL;
+>=20
+> while the ndo_bpf caller dev_xdp_install() drops its reference on prog wh=
+en
+> the driver returns an error:
+>=20
+>     if (err) {
+>         if (prog)
+>             bpf_prog_put(prog);
+>         return err;
+>     }
+>=20
+> Can this leave adapter->xdp_prog as a dangling pointer to a freed bpf_pro=
+g on
+> the pre-patch code, which is what the new xchg() restores?
+>=20
+> The commit message describes only a refactor and does not mention this
+> change.
+>=20
+> Should the xdp_prog rollback be split into its own patch with a Fixes:
+> tag pointing at the commit that introduced the missing rollback, per
+> Documentation/process/submitting-patches.rst which asks for one logical
+> change per patch?
+>=20
+> The new behavior also skips the subsequent if (old_prog)
+> bpf_prog_put(old_prog) in the failure path, which is a separate semantic
+> worth calling out in the commit log.
 
-The second part would be a nice cleanup, unless I am missing something.
+This part is going to a separate patch in v2
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 7aa3af8b10ead0384bbb2e767883b63a37be5fa2..dfd907e2ede2dcb0b6120e1fa5b=
-6bb4d30bfb28a
-100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -496,26 +496,6 @@ static const struct header_ops vlan_header_ops =3D {
-        .parse_protocol =3D vlan_parse_protocol,
- };
-
--static int vlan_passthru_hard_header(struct sk_buff *skb, struct
-net_device *dev,
--                                    unsigned short type,
--                                    const void *daddr, const void *saddr,
--                                    unsigned int len)
--{
--       struct vlan_dev_priv *vlan =3D vlan_dev_priv(dev);
--       struct net_device *real_dev =3D vlan->real_dev;
--
--       if (saddr =3D=3D NULL)
--               saddr =3D dev->dev_addr;
--
--       return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
--}
--
--static const struct header_ops vlan_passthru_header_ops =3D {
--       .create  =3D vlan_passthru_hard_header,
--       .parse   =3D eth_header_parse,
--       .parse_protocol =3D vlan_parse_protocol,
--};
--
- static const struct device_type vlan_type =3D {
-        .name   =3D "vlan",
- };
-@@ -575,13 +555,8 @@ static int vlan_dev_init(struct net_device *dev)
- #endif
-
-        dev->needed_headroom =3D real_dev->needed_headroom;
--       if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) =
-{
--               dev->header_ops      =3D &vlan_passthru_header_ops;
--               dev->hard_header_len =3D real_dev->hard_header_len;
--       } else {
--               dev->header_ops      =3D &vlan_header_ops;
--               dev->hard_header_len =3D real_dev->hard_header_len + VLAN_H=
-LEN;
--       }
-+       dev->header_ops      =3D &vlan_header_ops;
-+       dev->hard_header_len =3D real_dev->hard_header_len + VLAN_HLEN;
-
-        dev->netdev_ops =3D &vlan_netdev_ops;
+Regards,
+Sergey
