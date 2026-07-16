@@ -1,177 +1,91 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD074248AF
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FD1429CDD;
+	Thu, 16 Jul 2026 13:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208252; cv=none; b=T/PoKOLM6RkvUgwENSa4KqrjlyIPWol1/FuYMh9RFI0QCUJ96PPvjHZuHDWwyFrdLHWp7O8y66OJDdyLTSGr2HjHRJs6l0nSyNYuiM9jtfBOMznLWrJySpQLvbKaFIip9dYuLId+bm27BkOPqDz0pAs8DvkC4Gb3LrwPhHQmNJk=
+	t=1784208255; cv=none; b=UUCymnBA4NnvzfkEXzUcBgGY8XUf+dqoTOe4WXVNU/BBt7DYBNLTAXfCQk87y1hzyInLF/cbTGNarPTvnhZpqY5k5WnOzHHckGHDRWl4CD/knoCYoB3kbCqKK/Es69aUgTs4uSZyT9MemyOK+9Ip1S4IoaQXwM+qMAUYL61Q40o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208252; c=relaxed/simple;
-	bh=zFeWDdafDoYi7ea+8KDHKiNyfn2RCWSEnlN5ywMFr9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFRiGDDNA8oZF4SZnuvAS7823q7UUhPbQ0rnudQkF6U29mkMyQl/kdhHjEFva/LwcJ2T/aRiR3T3rNN6wdsiD+HQGWxcwA1DgFp3MSb2FQIvz3OrYPFBbDJwQuDiwk1sNrOiMUijdveZD8q+I39QSRqd0lttR3+3Ap0iWb+/hDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=O042gtuL; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1784208255; c=relaxed/simple;
+	bh=Fjgy1z0Z81DUwO8onxh+U/cNhVGjlKnF4EcpganB5kc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GvehRjVqmE3LcnVabNmsSTWhHcypnvjultnlKwN9TuWSu500XRa/27XyLDNXBOdmprhxnSY103BUpnEaAsy2gZZQUKC3p2/42fjb9x5xpgn0ewkJS4XcOb2zUQc/+i8ifa5RwOYyLNPUOxgane2Ur187YZcYUK3AXs9Sryo+GFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=TJUEXA7E; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="O042gtuL"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495437bb891so3362545e9.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:24:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208248; x=1784813048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=myAuJMzKK/4iG9Cmnf7VPvLoMfqifqNKwX3ebA7nias=;
-        b=O042gtuL4LYOEy+SyRQCnxeZzMebGdF1yLbEEsAhXGrT7ON792v3lOFl30BmMmgoi3
-         DDEVwahCP3E4rh9hSd7WbpT09YiZwwQyIEnMn0ppIKZ+VfB8OB5qB7j11mkyKHVGVuWL
-         reMp1MrFt+2hXtaoqZTiqOgjghVQIAV1KE0GYyf6aJj/VaPSMSicVQSUAc3rw3v0+ttd
-         RL4puLpC0nIf/oCifTKz0SYijzMVumMA5m8YVS+kLCdlIgjOOPY274kaqnIkEv8Iiyph
-         vcwG8uCvN4v3A5G4ry7pRn75aAftfKHdtgjJczT4XfjOhhZoMYAVWbQqf1fWJf6VjcOV
-         vOEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784208248; x=1784813048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=myAuJMzKK/4iG9Cmnf7VPvLoMfqifqNKwX3ebA7nias=;
-        b=eFpAsAqlZEuOO16El39OtbmIhyiLOqIMaPgZzJIVjakK5GN47P1lzxC26HHYTFInKs
-         DtjQrF0nS56naPJE4BBUFHNiGze69S1IUrMVWCp/qRaRqaf+Hli3XyFGFtRSZLLe6ROl
-         hZiCDBbReaTsrGuPId34Gf9pBoTf2wMzsUY74vybdOQk3dZlrTibcB4BgNc9cgWmdtyC
-         H3xuDJdGaTSZnHjF3W2Kkhm/k5GBX4tw6hgFxcWS0WHr4+3pRiKgwiwcZ5le9l/Xtn9+
-         VS0OYD9nzYYzfem4iCBuFN8XIrk14X5jIfsWuA0WOF11fDuXJxEd+G1H1VjGHa+VBTk+
-         L2kw==
-X-Forwarded-Encrypted: i=1; AHgh+RrPHN1l50eFzHkQv8OSTE9rFz2K8KAPkR9e/C07e3mfCTZrXriMNMIoqekmuIKf48a3RYJopmE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaorNSdPb3xjGql+mJfcrQKNUe671TS7j3kLJv+7Wmw+tKMGRL
-	oJzvXsxihr8Jytw5cyjhGMF+4/VfmauLmRHPZN6vjcI03AUHfKrodYsf+C6/MioleAE=
-X-Gm-Gg: AfdE7ck+ru+kWoIuZuf3vAHG2jej7qVePblVsc3Sd12/uQ8zCX7WK7PHRszFuYZRWwm
-	hw3p5P6qHI9c9Ff0OTtBf7faIFRXhV1mPYXphUy/GH4fLyJOQO4bumpStjXnBn+Jgro96ixu3vb
-	kOl1m8F/5ZDccwuAnKEYllcsVjzolNXH/oQmvCKf2gonl20+AOgmYRbP99V1m2aZJquDDyuzUfF
-	PJPAP6xzXTKf57kCxj24ixGquCKgY8+9/F6f5OXI4z54ASRtBWHdfDKVbyCqTYYJo1mwl3W36y7
-	09B1XBhe1V4mYTT68nihxkJgfUovIHXAfWQiDYkYGBoQNaXEvs0IaHk3KVvEinYbl1TrD4TaiR/
-	U1FrX+Wc6tQ6P6Txu5Zz/g9/zbpqFw5IBG/oisi5M4q+ETIXJTBvHSU/YfBhb1Rh7VnS3FhDQWS
-	CsnMF0EIjIqW8=
-X-Received: by 2002:a05:600c:6094:b0:492:714d:8c4 with SMTP id 5b1f17b1804b1-495428801cfmr26808555e9.11.1784208248133;
-        Thu, 16 Jul 2026 06:24:08 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4953c599049sm100313305e9.0.2026.07.16.06.24.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:24:07 -0700 (PDT)
-From: Jiri Pirko <jiri@resnulli.us>
-To: linux-rdma@vger.kernel.org
-Cc: cgroups@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	parav@nvidia.com,
-	mbloch@nvidia.com,
-	cmeiohas@nvidia.com,
-	roman.gushchin@linux.dev,
-	bvanassche@acm.org,
-	zyjzyj2000@gmail.com,
-	shuah@kernel.org,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	hannes@cmpxchg.org,
-	alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	yanjun.zhu@linux.dev,
-	cui.tao@linux.dev
-Subject: [PATCH rdma-next v3 12/14] RDMA/rxe: Allow queue VMAs to outlive ucontexts
-Date: Thu, 16 Jul 2026 15:23:13 +0200
-Message-ID: <20260716132316.1495242-13-jiri@resnulli.us>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
-References: <20260716132316.1495242-1-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="TJUEXA7E"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/PvATEpeA+fg+mhGDaN27YwObJ/Rtexpnw9c2IPB0rk=; b=TJUEXA7Ei4IbzcqT+QbURJJ8vq
+	hEL8LQTjRH5G5+bV9qthDR89+/0M+hPsOK4IFsTxv+AgVEfKo3oKG2xD8t33QMq8jIJMp8eT+2Z6W
+	7bYzhvvJOqV9HosoRntoe6WWXP2Xz2MKtRmS2ZBEsyoPwgYI7eXEyf0ronfvzrQ3qNejCYtq8c4b3
+	CqITZni+2YfmuFxXJzKNLkPccqV1Am4V1Xu84wPBrZ+SWes8CYv/1eMPG/1NdNZcQm9iF104gJUB0
+	z8h2heq0ItkLDJP8zlmL9o/nKfLe/rSwY6prdQO482UmLTqNG3yDse9yeBcnpQl3eIlWXMPgQzzlW
+	OLNH4u9g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wkM4H-003qs3-2L;
+	Thu, 16 Jul 2026 13:24:01 +0000
+Date: Thu, 16 Jul 2026 06:23:56 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, 
+	miquel.raynal@bootlin.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, phoebe.buckheister@itwm.fraunhofer.de, 
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] mac802154: llsec: reject frames shorter than the
+ authentication tag
+Message-ID: <aljbEr7K3uVRjJNT@gmail.com>
+References: <20260709131246.44517-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260709131246.44517-1-doruk@0sec.ai>
+X-Debian-User: leitao
 
-From: Jiri Pirko <jiri@nvidia.com>
+On Thu, Jul 09, 2026 at 03:12:46PM +0200, Doruk Tan Ozturk wrote:
 
-Prepare queue mappings for asynchronous ucontext disassociation during
-device disable. Rely on the VMA page references to preserve mapped
-memory until the final unmap.
+> Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
----
-v1->v2:
-- new patch
----
- drivers/infiniband/sw/rxe/rxe_mmap.c | 35 ++--------------------------
- 1 file changed, 2 insertions(+), 33 deletions(-)
+Usually you don't have Reported-by if you are fixing something yourself.
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_mmap.c b/drivers/infiniband/sw/rxe/rxe_mmap.c
-index 7f723a2f3700..a4ead89ccbd3 100644
---- a/drivers/infiniband/sw/rxe/rxe_mmap.c
-+++ b/drivers/infiniband/sw/rxe/rxe_mmap.c
-@@ -11,7 +11,6 @@
- 
- #include "rxe.h"
- #include "rxe_loc.h"
--#include "rxe_queue.h"
- 
- void rxe_mmap_release(struct kref *ref)
- {
-@@ -30,29 +29,6 @@ void rxe_mmap_release(struct kref *ref)
- 	kfree(ip);
- }
- 
--/*
-- * open and close keep track of how many times the memory region is mapped,
-- * to avoid releasing it.
-- */
--static void rxe_vma_open(struct vm_area_struct *vma)
--{
--	struct rxe_mmap_info *ip = vma->vm_private_data;
--
--	kref_get(&ip->ref);
--}
--
--static void rxe_vma_close(struct vm_area_struct *vma)
--{
--	struct rxe_mmap_info *ip = vma->vm_private_data;
--
--	kref_put(&ip->ref, rxe_mmap_release);
--}
--
--static const struct vm_operations_struct rxe_vm_ops = {
--	.open = rxe_vma_open,
--	.close = rxe_vma_close,
--};
--
- /**
-  * rxe_mmap - create a new mmap region
-  * @context: the IB user context of the process making the mmap() call
-@@ -106,17 +82,10 @@ int rxe_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
- 	list_del_init(&ip->pending_mmaps);
- 	spin_unlock_bh(&rxe->pending_lock);
- 
--	vma->vm_ops = &rxe_vm_ops;
--	vma->vm_private_data = ip;
--
- 	ret = remap_vmalloc_range(vma, ip->obj, 0);
--	if (ret) {
--		vma->vm_private_data = NULL;
--		vma->vm_ops = NULL;
--		kref_put(&ip->ref, rxe_mmap_release);
-+	kref_put(&ip->ref, rxe_mmap_release);
-+	if (ret)
- 		rxe_dbg_dev(rxe, "err %d from remap_vmalloc_range\n", ret);
--		goto done;
--	}
- 
- done:
- 	return ret;
--- 
-2.54.0
+> ---
+>  net/mac802154/llsec.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+> index 5e7cc11fab3a..364a1ac1d771 100644
+> --- a/net/mac802154/llsec.c
+> +++ b/net/mac802154/llsec.c
+> @@ -893,6 +893,11 @@ llsec_do_decrypt_auth(struct sk_buff *skb, const struct mac802154_llsec *sec,
 
+Why not returning here, before sg_init_one()? here you alrady have
+datalen and authlen.
+
+>  	sg_init_one(&sg, skb_mac_header(skb), assoclen + datalen);
+>  
+> +	if (datalen < authlen) {
+> +		kfree_sensitive(req);
+> +		return -EBADMSG;
+> +	}
+> +
+>  	if (!(hdr->sec.level & IEEE802154_SCF_SECLEVEL_ENC)) {
+>  		assoclen += datalen - authlen;
+>  		datalen = authlen;
+> -- 
+> 2.43.0
+> 
+> 
