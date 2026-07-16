@@ -1,64 +1,64 @@
 Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6153930AD1A
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD98830B525
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784162645; cv=none; b=Xopdclifbi65nPc0ITrlPJdrBOcBnCrbXJqfjj+hrlaoIIi/NZU+5IhNf9meL39hzsCTDZhslxhfqQ2IBlLUgTWdZ6k+6JcSVdU9oLhV2SO6VWa0eekUKhhOWtVYN8Sv+9ehF/hKvCgF86iRk3u/1y+8k7nWoXZeF8ns9MiAu+Y=
+	t=1784162646; cv=none; b=GQDBO4dXFi6P/NWw9cPBvqkvh/A5icrHSrvz3rtDWZ+G8tkRtr3WAMiRJ4OQozlQYJL+s125OmNPXlYwJeru2IgQ0aEzJj6/czGzICxqM7rd5zXmi9hJiM3MVAbaEpGz/led4LKVBr9C0TWAd7YLoUWEHvfrBaSnecdU3v7MVPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784162645; c=relaxed/simple;
-	bh=2G6jX/fDUGhuh78H4k/QnWnytFyS22b5IyQpplABToo=;
+	s=arc-20240116; t=1784162646; c=relaxed/simple;
+	bh=LkzKdUO+JmG0HF2usl69sh+fsYe38FuCXJBrcY3/aIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QCaSiFyho5dE81k1Qu5ZRyfXH8JqfMhc+D2WHZBkowVuscCON0H1Ms71zjReKCGWXR2pp3MqN9NZP5zlaIV1RNlGiAtNMHdV3BhJRIMxuQP8E9EpF2DmqNl+sTbWv3E/BCuf6gXKXCGu7rILUgvtMxZ+XVLyM6PnjA1++f5lCPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nAnVNOM+; arc=none smtp.client-ip=209.85.215.173
+	 MIME-Version:Content-Type; b=hcuEns58EzgjJ+fRAi8z9P4/w2nX6wfDCe+e3YcXlwZ802ePsC63iicT1l/Gs1wpfOitsLD9oY1IR0m9FH1aKQbp53Ddqu8IOvHokVjheKkTMPw40T4bwQYtzq6MzsPu5CSXnCdp/VulMHwzBsi1+vl+xbHYh18JysmjjnM+ILo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/gteU5L; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nAnVNOM+"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-ca7c1176317so4451488a12.1
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/gteU5L"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so3895043a12.2
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784162643; x=1784767443; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784162644; x=1784767444; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ielH78VxMdnXNQvVLt3KPq+JAgT1fEDU0jLTYAml4gA=;
-        b=nAnVNOM+RvQVdrqqethTeWkRUg8OBrmX+mapucP2tgEM15iDH7MMMXadR0O9iYLKmS
-         6S8QmgOdIH+u2jfw1NSRvgJjRXXfDKyqraIGf3yD+SYJeomhuxRGKf0Ho5A3Qd7u36Y5
-         yZBz5WyiOoT5QHx7kIU7NgepaarzdB8WPPaSIFgBIW449EBrOrsjlna7mFR/zzI6ezqF
-         bRe19Zt3iA1j7TamGuAtJmrWxWE2ig1MGhMP4N1bU0o4xnfPdng4XicZhGKygLzicDe+
-         I1fhjPm+JMqSBj7tJRLvjiuhmrLnVqZrHXw1rP3//rT94gfGu3B4yjxC7piJucs2PH3V
-         NOmA==
+        bh=oURpgbk9qcfxkTyiXEXzSzC9IFYy3cXT62egJ45Q2qY=;
+        b=N/gteU5Lrf3Krb9xet+Gq4QYxFc2PYezqcnSa4OPDHBB0hLA751f+ajI0TtytaJNVz
+         Iim62SNDb/f79+kfGOxAfpy7Zle+NcI9IHk0Q1dTmkvwcWVwnJBkdn9xf8x6ph225LRL
+         enu+1kXarLHkjlCX+sgB5PF7m5pqDbX+XclG3QosD8LMJboF3KgADSpZ9kxI9pp1z3Al
+         8vnUbHdP0XwKr/TaSooO+3vhNH/FvS9v8I3oid7LhDQvN/Zs98EAyVAxxgdbJtSbKwaF
+         kvDNPCpvAO8o5W1oOXQ3w+GV/pqN0YVbYZlp9Tiigxr3kWKWOSRglpX8/GK3Z/mJAyPv
+         RH9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784162643; x=1784767443;
+        d=1e100.net; s=20251104; t=1784162644; x=1784767444;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ielH78VxMdnXNQvVLt3KPq+JAgT1fEDU0jLTYAml4gA=;
-        b=i35+uzynvJRWDhJpyIPgPE3j4SUVGHxQTionpYOEByd3jAvB4tfm2jxCnExFoY0pj/
-         VSRRvJ99ADImOnRODZr1c4RsHsFkeUYiJ7Gu8qETXEOHMTgPR5qaPETBODxwsdA3ocfd
-         l2IxzZT+6XGFy0XNC8d9CBM0VkWWf6nbLnwZGCQAaJD3pzodipm30ms91sCo8HMYM2KX
-         Fp85MimaPF+s1qOXSvSpJm7djlICGuow9+jDYS1InuhL47eF4ojDve70bHGlKqDjmdWm
-         xW5hc66qnJIe/8sCC2GLfKimgGLCGUmK4bv6Dix6E5DRs7QJ/yk4cRzuE03+noeDs7K7
-         jj1w==
-X-Gm-Message-State: AOJu0YzZvpMhnLFWVsI6nxzesnYT+hd2l+UVzcRQnhUVIHEFDIDmawQL
-	81pnmy9YaY9CJxU1Lxy2MJA11NlZfkMJNHM+nWdaKLSHTjcfmSQCGM8jK2BV7A==
-X-Gm-Gg: AfdE7cnq41mOGbT+S84z7aHZoQZYiyM0qc8XHxp/UUWmk6UMNo2e1yLM4qKPTjHtWCj
-	n+s/ublrWcVPRQqI2lUd8dHwk7wofVzEyL8nTWd7dQ28cKTWwuKq3NX9A1pbWJhGhIcFgZpzDXu
-	trRfBhKOp0yAwETLI1+BZYj/0ErdSsZfufa4hizla/RUL3T+HoRmyrw5JQWdJqpkls2Tyjm/gno
-	R7+GG0wQhccou0yolyp5xRMou05bdGPxR0AAUM0Zo5JujqJmlFWca5IowLlo8eIuy8xaVLgiEJu
-	npUSkbQaiteQNwUd3aOrlxNNglq1+Di5k7C1NwqjTzMgMRG86yEQEs9+u7yC2GlwodN41c9uY0x
-	M3IBv/9iQYvJNyBncIhuflB6sz2eOOKjY0xP0FNxuPSTREnHRRzP/iDeh+pAOLyRbexvmk7fd9h
-	Hd05tJEVVKlRXMrx62l9sYoovv/SkJbfMDvNfBsDyPaO/7IWR8h3h6tT7Ed8xYoXYr5NAYkHFHR
-	dxAD1862g==
-X-Received: by 2002:a05:6a21:3a42:b0:3c3:8c91:5da0 with SMTP id adf61e73a8af0-3c38c916004mr628308637.15.1784162642618;
-        Wed, 15 Jul 2026 17:44:02 -0700 (PDT)
+        bh=oURpgbk9qcfxkTyiXEXzSzC9IFYy3cXT62egJ45Q2qY=;
+        b=U8iZpe3/Y4XFmjAjakmjEf5usQYBRRAcNIjKEvqmbGz7gTTrx1nsVzkyrS1jMslQBY
+         KFg56v9Z1tlJV1eqir/Jjbh9zMfmnn7CmGW/BNYM5GhAKUo2MCoYzCTNxr2V/NJ9t8rd
+         6uStv1Swy39JDbiagLNoP3qR8J/k9n9S3Q7+MwgvAC/mUUQ7tu3hmvjn7uSz7AsD0t4S
+         zN4nW14qJIRvlX3fD/chudH35pAzrBNlN3gkXErjyZ/Cid/8CjKt3P6DecKoYY8z2VOr
+         q1LuikLDWSRIZGCkNnC4CfNCczQC+FMwY/7vHm1tkSmYuRhvzmhpnsaJKPtwWIYzRVXU
+         CSCw==
+X-Gm-Message-State: AOJu0YwFfjy5FIzae6PDRwzgqd4VD/EGEyxCkgCAbcUvs0Iqf6VtxLx7
+	cPZ3gkaipIOoevgOGBiK/nzxQuVHEO2xfEQA1O2+Y1UDt+BDMLMK29JOTM5iPg==
+X-Gm-Gg: AfdE7ckAV3invEyzI6yIyuhEzXkTJNx0A3wnt/4UjBmUa/mlyAveBtDOkSw6HuI8s1d
+	5p8ywT57pAbs+rWZ89jsK50HRYUyKblUg5ekQ+RHROo9Pu4NFJK61qM5ATrds1F4Lk1PDXpjOG7
+	G8i/MSIWz+qIC1NVIlGr0Kt5H+D4/qTVld/xSJW8CIqbNqhw9y0GLQ2hw13MaTAs+yp0FtOCtOz
+	hMfKMO3/kKp/kUkREbaz/K5IjMPEBrtgMH2Mmk8jhT8+96KMzCbkvwAfjq+Ch5zsCAk3O7U9vJN
+	aqXwJZOqyZG2DJd7Z9QMkF53ORUthufFJMkdeyFrB2xnPe77jIASmbEe1Fc3AgxxrF4IGibEVok
+	1l5KgsPla2pNKH8FWizD9W+joUPAE/O94quXGKmg2Y7nA0o7IAXu3xBdc78an85tFfrSUGrN3Od
+	7zuafCJsdvetyIOQQnCvS71LI9CR+O/JCb+oaprCtqpFCJ92xcTnTGvBRqXSD8Jwblah0rF1cQk
+	goKdocoIrK827Z2IwtI
+X-Received: by 2002:a05:6a20:6a22:b0:3c3:8041:89e3 with SMTP id adf61e73a8af0-3c380418eedmr2728200637.63.1784162644049;
+        Wed, 15 Jul 2026 17:44:04 -0700 (PDT)
 Received: from l.localdomain ([76.166.220.66])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.01
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 17:44:02 -0700 (PDT)
+        Wed, 15 Jul 2026 17:44:03 -0700 (PDT)
 From: Dave Seddon <dave.seddon.ca@gmail.com>
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -70,9 +70,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Dave Seddon <dave.seddon.ca@gmail.com>
-Subject: [PATCH net-next v1 02/11] net: flow_dissector: opt-in fast-path for eth + IPv{4,6} + {TCP,UDP}
-Date: Wed, 15 Jul 2026 17:43:48 -0700
-Message-ID: <20260716004357.3652679-3-dave.seddon.ca@gmail.com>
+Subject: [PATCH net-next v1 03/11] net: flow_dissector: add fast-path for VLAN and QinQ + IP + TCP/UDP
+Date: Wed, 15 Jul 2026 17:43:49 -0700
+Message-ID: <20260716004357.3652679-4-dave.seddon.ca@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
 References: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
@@ -85,444 +85,301 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A small targeted optimisation to __skb_flow_dissect(). A new
-flow_dissect_fast() dispatcher routes the standard flow_keys dissector
-calls through per-shape straight-line extractors for the common
-eth + IPv4/IPv6 + TCP/UDP packet shapes. On any miss, falls back to the
-existing graph walk. Output is byte-identical to the slow path for the
-shapes handled.
+Extension of the parent series covering the VLAN-tagged shapes: a
+single ETH_P_8021Q or ETH_P_8021AD tag, or two stacked tags (the
+canonical QinQ S-tag + C-tag), in front of IPv4/IPv6 + TCP/UDP. Adds
+flow_dissect_fast_vlan() that consumes the tag(s) and dispatches to
+the existing flow_dissect_fast_ipv4 / _ipv6 helpers on the inner
+ethertype.
 
-This is the parent of the fast-path series. Subsequent patches add
-per-shape extensions for single VLAN, QinQ, PPPoE, MPLS, IP-in-IP and
-GRE. Each patch ships its own per-shape sysctl in the new
-``/proc/sys/net/flow_dissector/`` subtree; this patch establishes the
-subtree and registers the first entry, ``eth_ip``.
+  - What this covers. VLAN-tagged Eth (8021Q or 8021AD, depth 1 or
+    2) + IPv4 or IPv6 (per parent's shape constraints) + TCP/UDP.
+    Both hardware-stripped (TCI in skb metadata, inner ethertype in
+    skb->protocol; only ever the outermost tag) and in-band (4-byte
+    vlan_hdr at data + nhoff) tag forms.
 
-The fast path is invoked strictly after the netns BPF flow dissector
-hook: if a BPF program is attached and returns a verdict other than
-BPF_FLOW_DISSECTOR_CONTINUE, __skb_flow_dissect() returns before
-flow_dissect_fast() is reached. Attached BPF dissectors therefore
-always take precedence and observe no behaviour change from this
-series.
+  - Keys written. Outer tag: FLOW_DISSECTOR_KEY_VLAN (vlan_id /
+    vlan_priority / vlan_tpid / vlan_eth_type); inner tag (depth 1):
+    FLOW_DISSECTOR_KEY_CVLAN, mirroring the slow-path's
+    MAX -> VLAN -> CVLAN state machine. Bumps
+    FLOW_DISSECTOR_KEY_NUM_OF_VLANS when requested by the dissector.
+    Byte-identical with the slow path. Past depth 2 the helper
+    returns false (defers to the slow path).
 
-  - What this does. Adds an opt-in fast-path for eth + IPv4 (IHL=5,
-    not fragmented) + TCP/UDP and eth + IPv6 (no extension headers) +
-    TCP/UDP. When the per-shape sysctl is enabled and a packet
-    matches, the helper fills struct flow_keys byte-identically to the
-    slow path and returns. On any miss it defers to the existing graph
-    walk. Only the two standard dissectors are eligible
-    (flow_keys_dissector and flow_keys_dissector_symmetric); custom
-    dissectors and slow-path-only flags defer unconditionally.
+  - Gates. Two static keys, each with its own sysctl:
+    DEFINE_STATIC_KEY_FALSE(flow_dissector_vlan_key)
+    (/proc/sys/net/flow_dissector/vlan) gates entry at depth 0, and
+    DEFINE_STATIC_KEY_FALSE(flow_dissector_qinq_key)
+    (/proc/sys/net/flow_dissector/qinq) gates the depth-1 tag.
+    Defaults 0; off has no behaviour change beyond one extra
+    not-taken JMP in the dispatcher switch.
 
-  - How it gates. A new
-    DEFINE_STATIC_KEY_FALSE(flow_dissector_eth_ip_key), externed in
-    <net/flow_dissector.h>, toggled by
-    /proc/sys/net/flow_dissector/eth_ip with proc_do_static_key. When
-    the sysctl is 0 the dispatcher's per-shape case is a forward not-
-    taken JMP — same slow-path cost as today. When 1, the helper runs
-    inline.
+  - Sibling-key handling. The two gates are coupled in their proc
+    handlers: writing qinq=1 auto-enables the vlan key (QinQ extends
+    VLAN; depth-0 entry is gated by vlan), and turning vlan off clears
+    the qinq key (depth-2 cannot fire when the outer entry is off).
+    Reads always reflect the underlying key state.
 
-  - Namespace. The sysctl subtree is /proc/sys/net/flow_dissector/
-    (registered by a new late_initcall in net/core/flow_dissector.c
-    via register_net_sysctl(&init_net, "net/flow_dissector", tbl) —
-    same shape as net/mpls, net/bridge).
+  - Cost. On a miss, one ethertype switch + the static_branch test.
+    On a hit, ~3-5 ns added to the IPv4/IPv6 fast-path body per tag
+    consumed, while the slow-path's per-tag handling (state-machine
+    transition + proto_again rewind) is skipped -- net saving
+    ~30 ns/skb on the single-VLAN shape and ~50 ns/skb on QinQ.
 
-  - Forward declarations. flow_dissect_fast_ipv4 / _ipv6 are forward-
-    declared at the top of the file (after includes). Subsequent
-    patches add flow_dissect_fast_vlan etc. that call these helpers;
-    anchoring the declarations at top of file makes the patch insertion
-    order robust against kernel-version line-number drift.
-
-  - Cost model. On a miss, dispatcher overhead is one ethertype switch
-    (~5 cycles) plus the per-case static_branch test (~not-taken JMP
-    when 0). On a hit, the straight-line body saves ~30 ns/skb of
-    graph-walk cost on the common shape (Zen 2 / Cortex-A76; see the
-    cover letter for the cross-uarch microbench table).
-
-  - Output contract. Byte-identical with the slow path for the
-    eligible shape. The IPv6 fast-path defers on any non-zero flow
-    label: callers passing FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL --
-    skb_get_hash(), i.e. RPS/RFS, fq, fq_codel, cake -- make the slow
-    path stop at a non-zero label, and dissectors requesting the label
-    key write it; deferring on the label itself keeps byte-identity
-    for every combination without threading flags into the helpers,
-    and zero-label IPv6 stays on the fast path. Fragmented IPv4
-    packets defer. Custom dissectors defer, as do FLOW_DISSECTOR_F_*
-    flags other than PARSE_1ST_FRAG and STOP_AT_FLOW_LABEL. Admitting
-    STOP_AT_FLOW_LABEL is what makes the fast path reachable from
-    skb_get_hash() at all -- the kernel's main dissection consumer.
+Verified byte-identical by the KUnit equivalence suite. Isolated
+dissector cost on the allshapes microbench (all fast paths compiled
+in, range across 7 measured microarchitectures): vlan -18.1%..-38.5%,
+qinq -16.1%..-39.8% -- see the cover letter's performance summary.
 
 Assisted-by: Claude:claude-fable-5 sparse smatch
 Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
 ---
- Documentation/admin-guide/sysctl/net.rst |  27 ++-
- include/net/flow_dissector.h             |   5 +
- net/core/flow_dissector.c                | 273 ++++++++++++++++++++++-
- 3 files changed, 302 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/sysctl/net.rst |  31 +++++
+ include/net/flow_dissector.h             |   2 +
+ net/core/flow_dissector.c                | 147 +++++++++++++++++++++++
+ 3 files changed, 180 insertions(+)
 
 diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index e586e17fc7a5..aac82169e019 100644
+index aac82169e019..824f4b735caa 100644
 --- a/Documentation/admin-guide/sysctl/net.rst
 +++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -460,7 +460,32 @@ historical importance.
+@@ -485,6 +485,37 @@ when this is 0.
  
  Default: 0
  
--2. /proc/sys/net/unix - Parameters for Unix domain sockets
-+2. /proc/sys/net/flow_dissector - Flow dissector fast-path per-shape sysctls
-+---------------------------------------------------------------------------
++vlan
++~~~~
 +
-+The flow dissector is invoked on every packet that needs a flow hash
-+(RPS, RFS, ECMP, sch_cake, cls_flower, ...). For common shapes
-+(Eth+IPv4/IPv6+TCP/UDP, plus per-shape extensions for VLAN/QinQ,
-+PPPoE, MPLS, IP-in-IP and GRE added by this series), an opt-in
-+fast-path bypasses the slow-path graph walk and writes
-+``struct flow_keys`` directly. Each shape is gated by its own static
-+key + sysctl so operators enable only what their deployment uses.
-+
-+All defaults are 0 (off). Flipping any of these on takes effect
-+immediately; no kernel rebuild needed.
-+
-+eth_ip
-+~~~~~~
-+
-+Eth + IPv4 (IHL=5, no fragmentation) + TCP/UDP, and Eth + IPv6 (no
-+extension headers) + TCP/UDP. Output is byte-identical to the slow
-+path on the eligible shape; non-matching packets fall through to the
-+slow path unchanged. The dispatcher costs one not-taken JMP per call
-+when this is 0.
++Single 802.1Q or 802.1AD tagged frames over Eth + IPv4/IPv6 +
++TCP/UDP. Handles both the hardware-stripped form (tag in skb
++metadata, inner ethertype in skb->protocol) and the in-band form
++(4-byte vlan_hdr at data + nhoff). Writes FLOW_DISSECTOR_KEY_VLAN
++and bumps FLOW_DISSECTOR_KEY_NUM_OF_VLANS when those keys are
++requested by the dissector. Byte-identical with the slow path for
++the eligible shape; defers on any miss (QinQ defers; see the qinq
++sysctl).
 +
 +Default: 0
 +
-+3. /proc/sys/net/unix - Parameters for Unix domain sockets
++qinq
++~~~~
++
++Lifts the vlan fast-path's depth limit from 1 to 2 so two stacked
++802.1AD / 802.1Q tags (canonical QinQ S-tag + C-tag, or two stacked
++802.1Q tags) are also fast-pathed. Outer tag is written to
++FLOW_DISSECTOR_KEY_VLAN, inner to FLOW_DISSECTOR_KEY_CVLAN, mirroring
++the slow-path's MAX → VLAN → CVLAN state machine. Byte-identical
++with the slow path for the eligible shape.
++
++Auto-toggle: writing qinq=1 also enables vlan (QinQ extends VLAN;
++the depth-0 entry of the helper is gated by the vlan key). Turning
++vlan off (writing 0) also clears qinq (depth-2 cannot fire when
++the outer entry is off).
++
++Default: 0
++
+ 3. /proc/sys/net/unix - Parameters for Unix domain sockets
  ----------------------------------------------------------
  
- There is only one file in this directory.
 diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index ced79dc8e856..7d513a6cbb55 100644
+index 7d513a6cbb55..4f36f3889a28 100644
 --- a/include/net/flow_dissector.h
 +++ b/include/net/flow_dissector.h
-@@ -425,6 +425,11 @@ __be32 flow_get_u32_dst(const struct flow_keys *flow);
- extern struct flow_dissector flow_keys_dissector;
- extern struct flow_dissector flow_keys_basic_dissector;
+@@ -429,6 +429,8 @@ extern struct flow_dissector flow_keys_basic_dissector;
+  * /proc/sys/net/flow_dissector/<shape>. All default off.
+  */
+ extern struct static_key_false flow_dissector_eth_ip_key;
++extern struct static_key_false flow_dissector_vlan_key;
++extern struct static_key_false flow_dissector_qinq_key;
  
-+/* Per-shape fast-path static-branch keys, toggled via
-+ * /proc/sys/net/flow_dissector/<shape>. All default off.
-+ */
-+extern struct static_key_false flow_dissector_eth_ip_key;
-+
  /* struct flow_keys_digest:
   *
-  * This structure is used to hold a digest of the full flow keys. This is a
 diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index b8c59209b460..88b1bd1cc4ca 100644
+index 88b1bd1cc4ca..826314e28db0 100644
 --- a/net/core/flow_dissector.c
 +++ b/net/core/flow_dissector.c
-@@ -37,6 +37,33 @@
- #endif
- #include <linux/bpf-netns.h>
+@@ -42,6 +42,10 @@
+  */
+ DEFINE_STATIC_KEY_FALSE(flow_dissector_eth_ip_key);
+ EXPORT_SYMBOL(flow_dissector_eth_ip_key);
++DEFINE_STATIC_KEY_FALSE(flow_dissector_vlan_key);
++EXPORT_SYMBOL(flow_dissector_vlan_key);
++DEFINE_STATIC_KEY_FALSE(flow_dissector_qinq_key);
++EXPORT_SYMBOL(flow_dissector_qinq_key);
  
-+/* Per-shape fast-path gates, one static_branch per shape so operators
-+ * enable only what their deployment carries. All default off.
-+ */
-+DEFINE_STATIC_KEY_FALSE(flow_dissector_eth_ip_key);
-+EXPORT_SYMBOL(flow_dissector_eth_ip_key);
-+
-+/* IPv4 version/IHL byte of an option-less header: version 4, IHL 5. */
-+#define FLOW_DIS_IPV4_VIHL_NOOPT	0x45
-+
-+/* Fast-path helper forward declarations. */
-+static bool flow_dissect_fast_ipv4(const struct sk_buff *skb,
-+				   struct flow_dissector *flow_dissector,
-+				   void *target_container,
-+				   const void *data,
-+				   int nhoff, int hlen);
-+static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
-+				   struct flow_dissector *flow_dissector,
-+				   void *target_container,
-+				   const void *data,
-+				   int nhoff, int hlen);
-+
-+/* One of the two dissectors the fast-path eligibility check admits;
-+ * defined here so flow_dissect_fast() below can reference it (its keys
-+ * and init live near the bottom of the file).
-+ */
-+static struct flow_dissector flow_keys_dissector_symmetric __read_mostly;
-+
- static void dissector_set_key(struct flow_dissector *flow_dissector,
- 			      enum flow_dissector_key_id key_id)
- {
-@@ -1043,6 +1070,223 @@ static bool is_pppoe_ses_hdr_valid(const struct pppoe_hdr *hdr)
- 	return hdr->ver == 1 && hdr->type == 1 && hdr->code == 0;
+ /* IPv4 version/IHL byte of an option-less header: version 4, IHL 5. */
+ #define FLOW_DIS_IPV4_VIHL_NOOPT	0x45
+@@ -1242,6 +1246,93 @@ static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
+ 	return true;
  }
  
-+/* The IPv4 fast-path assumes a 20-byte IPv4 header (IHL == 5). The
-+ * runtime IHL check below is the dynamic invariant; this static
-+ * assertion is the compile-time one, in the unlikely case struct
-+ * iphdr ever grows.
++/* Strip up to two 802.1Q/802.1AD tags: outer tag ->
++ * FLOW_DISSECTOR_KEY_VLAN, inner -> _CVLAN, mirroring the slow path's
++ * MAX -> VLAN -> CVLAN state machine; more than two tags defer.
++ * Depth 0 is gated by the vlan key, depth >= 1 by the qinq key (the
++ * qinq sysctl also flips vlan on -- see the proc_handlers).
 + */
-+static_assert(sizeof(struct iphdr) == 20);
-+
-+/* Straight-line eth + IPv4 (IHL=5, not fragmented) + TCP|UDP. Returns
-+ * true when @target_container has been filled byte-identically to the
-+ * slow path; false on any miss (caller falls back to the slow path).
-+ */
-+static bool flow_dissect_fast_ipv4(const struct sk_buff *skb,
++static bool flow_dissect_fast_vlan(const struct sk_buff *skb,
 +				   struct flow_dissector *flow_dissector,
 +				   void *target_container,
 +				   const void *data,
-+				   int nhoff, int hlen)
++				   __be16 proto, int nhoff, int hlen,
++				   int vlan_depth)
 +{
-+	struct flow_dissector_key_control *key_control;
-+	struct flow_dissector_key_addrs *key_addrs;
-+	struct flow_dissector_key_basic *key_basic;
-+	struct flow_dissector_key_ports *key_ports;
-+	const struct iphdr *iph;
-+	int thoff;
++	struct flow_dissector_key_num_of_vlans *key_nvs;
++	struct flow_dissector_key_vlan *key_vlan;
++	enum flow_dissector_key_id vlan_key;
++	__be16 inner_proto;
++	__be16 saved_tpid;
++	u16 tci_prio;
++	u16 tci_id;
 +
-+	if (unlikely(hlen - nhoff < (int)sizeof(*iph) + 4))
++	if (vlan_depth >= 1 &&
++	    !static_branch_unlikely(&flow_dissector_qinq_key))
++		return false;
++	if (vlan_depth >= 2)
 +		return false;
 +
-+	iph = (const struct iphdr *)((const u8 *)data + nhoff);
++	vlan_key = vlan_depth == 0 ?
++		   FLOW_DISSECTOR_KEY_VLAN :
++		   FLOW_DISSECTOR_KEY_CVLAN;
++	saved_tpid = proto;
 +
-+	if (unlikely(*(const u8 *)iph != FLOW_DIS_IPV4_VIHL_NOOPT))
-+		return false;
++	/* HW-stripped tag is only ever the outermost. */
++	if (vlan_depth == 0 && skb && skb_vlan_tag_present(skb)) {
++		tci_id = skb_vlan_tag_get_id(skb);
++		tci_prio = skb_vlan_tag_get_prio(skb);
++		inner_proto = skb->protocol;
++	} else {
++		const struct vlan_hdr *vlan;
 +
-+	if (unlikely(iph->frag_off & htons(IP_MF | IP_OFFSET)))
-+		return false;
-+
-+	if (unlikely(iph->protocol != IPPROTO_TCP &&
-+		     iph->protocol != IPPROTO_UDP))
-+		return false;
-+
-+	thoff = nhoff + (int)sizeof(*iph);
-+
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_CONTROL)) {
-+		key_control = skb_flow_dissector_target(flow_dissector,
-+							FLOW_DISSECTOR_KEY_CONTROL,
-+							target_container);
-+		key_control->addr_type = FLOW_DISSECTOR_KEY_IPV4_ADDRS;
-+		key_control->thoff = min_t(u16, thoff,
-+					   skb ? skb->len : hlen);
-+		key_control->flags = 0;
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_BASIC)) {
-+		key_basic = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_BASIC,
-+						      target_container);
-+		key_basic->n_proto = htons(ETH_P_IP);
-+		key_basic->ip_proto = iph->protocol;
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_IPV4_ADDRS)) {
-+		key_addrs = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_IPV4_ADDRS,
-+						      target_container);
-+		memcpy(&key_addrs->v4addrs.src, &iph->saddr,
-+		       sizeof(key_addrs->v4addrs.src));
-+		memcpy(&key_addrs->v4addrs.dst, &iph->daddr,
-+		       sizeof(key_addrs->v4addrs.dst));
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_PORTS)) {
-+		const __be32 *ports = (const __be32 *)
-+			((const u8 *)data + thoff);
-+
-+		key_ports = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_PORTS,
-+						      target_container);
-+		key_ports->ports = *ports;
-+	}
-+
-+	return true;
-+}
-+
-+/* Same as flow_dissect_fast_ipv4 but for a fixed 40-byte IPv6 header
-+ * (no extension headers). The nexthdr check below holds the run-time
-+ * invariant; the static_assert holds the compile-time one.
-+ */
-+static_assert(sizeof(struct ipv6hdr) == 40);
-+
-+static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
-+				   struct flow_dissector *flow_dissector,
-+				   void *target_container,
-+				   const void *data,
-+				   int nhoff, int hlen)
-+{
-+	struct flow_dissector_key_control *key_control;
-+	struct flow_dissector_key_addrs *key_addrs;
-+	struct flow_dissector_key_basic *key_basic;
-+	struct flow_dissector_key_ports *key_ports;
-+	const struct ipv6hdr *iph;
-+	int thoff;
-+
-+	if (unlikely(hlen - nhoff < (int)sizeof(*iph) + 4))
-+		return false;
-+
-+	iph = (const struct ipv6hdr *)((const u8 *)data + nhoff);
-+
-+	if (unlikely((*(const u8 *)iph >> 4) != 6))
-+		return false;
-+
-+	/* Any non-zero flow label defers, checked before everything else
-+	 * (including the tunnel descents below). Callers passing
-+	 * FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL (skb_get_hash() -- so
-+	 * RPS/RFS, fq, cake) make the slow path stop at a non-zero label
-+	 * even on a tunnel outer, and dissectors requesting the label key
-+	 * write it; both diverge from the plain parse. Deferring on the
-+	 * label itself covers every combination without threading flags
-+	 * into the helpers, and zero-label IPv6 (the overwhelmingly
-+	 * common case) stays on the fast path.
-+	 */
-+	if (unlikely((iph->flow_lbl[0] & 0x0f) |
-+		     iph->flow_lbl[1] | iph->flow_lbl[2]))
-+		return false;
-+
-+	if (unlikely(iph->nexthdr != IPPROTO_TCP &&
-+		     iph->nexthdr != IPPROTO_UDP))
-+		return false;
-+
-+	thoff = nhoff + (int)sizeof(*iph);
-+
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_CONTROL)) {
-+		key_control = skb_flow_dissector_target(flow_dissector,
-+							FLOW_DISSECTOR_KEY_CONTROL,
-+							target_container);
-+		key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
-+		key_control->thoff = min_t(u16, thoff,
-+					   skb ? skb->len : hlen);
-+		key_control->flags = 0;
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_BASIC)) {
-+		key_basic = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_BASIC,
-+						      target_container);
-+		key_basic->n_proto = htons(ETH_P_IPV6);
-+		key_basic->ip_proto = iph->nexthdr;
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_IPV6_ADDRS)) {
-+		key_addrs = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_IPV6_ADDRS,
-+						      target_container);
-+		memcpy(&key_addrs->v6addrs.src, &iph->saddr,
-+		       sizeof(key_addrs->v6addrs.src));
-+		memcpy(&key_addrs->v6addrs.dst, &iph->daddr,
-+		       sizeof(key_addrs->v6addrs.dst));
-+	}
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_PORTS)) {
-+		const __be32 *ports = (const __be32 *)
-+			((const u8 *)data + thoff);
-+
-+		key_ports = skb_flow_dissector_target(flow_dissector,
-+						      FLOW_DISSECTOR_KEY_PORTS,
-+						      target_container);
-+		key_ports->ports = *ports;
-+	}
-+
-+	return true;
-+}
-+
-+/* Top-level dispatcher: eligibility check (only the two standard
-+ * dissectors and flag subset) + per-proto switch with per-shape
-+ * static_branch gating. Each case's branch is a forward not-taken JMP
-+ * when its sysctl is 0 — matches the slow-path cost.
-+ */
-+static bool flow_dissect_fast(const struct sk_buff *skb,
-+			      struct flow_dissector *flow_dissector,
-+			      void *target_container,
-+			      const void *data,
-+			      __be16 proto, int nhoff, int hlen,
-+			      unsigned int flags)
-+{
-+	if (flow_dissector != &flow_keys_dissector &&
-+	    flow_dissector != &flow_keys_dissector_symmetric)
-+		return false;
-+
-+	/* skb_get_hash() -- behind RPS/RFS, fq, fq_codel, cake -- passes
-+	 * FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL on every dissect, so the
-+	 * flag must be admitted or the fast path never runs for the
-+	 * kernel's main consumers. Its only semantic (stop early on a
-+	 * non-zero IPv6 flow label) is subsumed by the IPv6 fast path
-+	 * deferring on any non-zero label. Any other flag defers.
-+	 */
-+	if (flags & ~(unsigned int)(FLOW_DISSECTOR_F_PARSE_1ST_FRAG |
-+				    FLOW_DISSECTOR_F_STOP_AT_FLOW_LABEL))
-+		return false;
-+
-+	switch (proto) {
-+	case htons(ETH_P_IP):
-+		if (!static_branch_unlikely(&flow_dissector_eth_ip_key))
++		if (unlikely(hlen - nhoff < (int)sizeof(*vlan)))
 +			return false;
++		vlan = (const struct vlan_hdr *)((const u8 *)data + nhoff);
++		tci_id = ntohs(vlan->h_vlan_TCI) & VLAN_VID_MASK;
++		tci_prio = (ntohs(vlan->h_vlan_TCI) &
++			    VLAN_PRIO_MASK) >> VLAN_PRIO_SHIFT;
++		inner_proto = vlan->h_vlan_encapsulated_proto;
++		nhoff += (int)sizeof(*vlan);
++	}
++
++	if (dissector_uses_key(flow_dissector, vlan_key)) {
++		key_vlan = skb_flow_dissector_target(flow_dissector,
++						     vlan_key,
++						     target_container);
++		key_vlan->vlan_id = tci_id;
++		key_vlan->vlan_priority = tci_prio;
++		key_vlan->vlan_tpid = saved_tpid;
++		key_vlan->vlan_eth_type = inner_proto;
++	}
++	if (dissector_uses_key(flow_dissector,
++			       FLOW_DISSECTOR_KEY_NUM_OF_VLANS)) {
++		key_nvs = skb_flow_dissector_target(flow_dissector,
++						    FLOW_DISSECTOR_KEY_NUM_OF_VLANS,
++						    target_container);
++		key_nvs->num_of_vlans++;
++	}
++
++	switch (inner_proto) {
++	case htons(ETH_P_IP):
 +		return flow_dissect_fast_ipv4(skb, flow_dissector,
 +					      target_container, data,
 +					      nhoff, hlen);
 +	case htons(ETH_P_IPV6):
-+		if (!static_branch_unlikely(&flow_dissector_eth_ip_key))
-+			return false;
 +		return flow_dissect_fast_ipv6(skb, flow_dissector,
 +					      target_container, data,
 +					      nhoff, hlen);
++	case htons(ETH_P_8021Q):
++	case htons(ETH_P_8021AD):
++		return flow_dissect_fast_vlan(skb, flow_dissector,
++					      target_container, data,
++					      inner_proto, nhoff, hlen,
++					      vlan_depth + 1);
 +	default:
 +		return false;
 +	}
 +}
 +
- /**
-  * __skb_flow_dissect - extract the flow_keys struct and return it
-  * @net: associated network namespace, derived from @skb if NULL
-@@ -1183,6 +1427,13 @@ bool __skb_flow_dissect(const struct net *net,
- 		rcu_read_unlock();
- 	}
+ /* Top-level dispatcher: eligibility check (only the two standard
+  * dissectors and flag subset) + per-proto switch with per-shape
+  * static_branch gating. Each case's branch is a forward not-taken JMP
+@@ -1270,6 +1361,13 @@ static bool flow_dissect_fast(const struct sk_buff *skb,
+ 		return false;
  
-+	/* Opt-in fast-path; flow_dissect_fast() does the eligibility check
-+	 * and per-shape gating.
-+	 */
-+	if (flow_dissect_fast(skb, flow_dissector, target_container,
-+			      data, proto, nhoff, hlen, flags))
-+		return true;
-+
- 	if (dissector_uses_key(flow_dissector,
- 			       FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
- 		struct flow_dissector_key_eth_addrs *key_eth_addrs;
-@@ -1879,8 +2130,6 @@ void make_flow_keys_digest(struct flow_keys_digest *digest,
- }
- EXPORT_SYMBOL(make_flow_keys_digest);
- 
--static struct flow_dissector flow_keys_dissector_symmetric __read_mostly;
--
- u32 __skb_get_hash_symmetric_net(const struct net *net, const struct sk_buff *skb)
- {
- 	struct flow_keys keys;
-@@ -2116,3 +2365,23 @@ static int __init init_default_flow_dissectors(void)
- 	return 0;
- }
+ 	switch (proto) {
++	case htons(ETH_P_8021Q):
++	case htons(ETH_P_8021AD):
++		if (!static_branch_unlikely(&flow_dissector_vlan_key))
++			return false;
++		return flow_dissect_fast_vlan(skb, flow_dissector,
++					      target_container, data,
++					      proto, nhoff, hlen, 0);
+ 	case htons(ETH_P_IP):
+ 		if (!static_branch_unlikely(&flow_dissector_eth_ip_key))
+ 			return false;
+@@ -2367,6 +2465,41 @@ static int __init init_default_flow_dissectors(void)
  core_initcall(init_default_flow_dissectors);
-+
-+/* Per-shape fast-path sysctls under /proc/sys/net/flow_dissector/. */
-+static struct ctl_table flow_dissector_sysctl_table[] = {
-+	{
-+		.procname	= "eth_ip",
-+		.data		= &flow_dissector_eth_ip_key.key,
-+		.maxlen		= sizeof(flow_dissector_eth_ip_key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key,
-+	},
-+};
-+
-+static int __init flow_dissector_sysctl_init(void)
+ 
+ /* Per-shape fast-path sysctls under /proc/sys/net/flow_dissector/. */
++/* proc_handler for net.flow_dissector.vlan. Writes of 0 also clear
++ * flow_dissector_qinq_key — QinQ depth-2 is meaningless when the
++ * outer single-VLAN gate is off, so the slow path would have to
++ * handle every VLAN-tagged packet anyway.
++ */
++static int proc_set_vlan_key(const struct ctl_table *table, int write,
++			     void *buffer, size_t *lenp, loff_t *ppos)
 +{
-+	if (!register_net_sysctl(&init_net, "net/flow_dissector",
-+				 flow_dissector_sysctl_table))
-+		return -ENOMEM;
-+	return 0;
++	int ret;
++
++	ret = proc_do_static_key(table, write, buffer, lenp, ppos);
++	if (ret == 0 && write &&
++	    !static_branch_unlikely(&flow_dissector_vlan_key) &&
++	    static_branch_unlikely(&flow_dissector_qinq_key))
++		static_branch_disable(&flow_dissector_qinq_key);
++	return ret;
 +}
-+late_initcall(flow_dissector_sysctl_init);
++
++/* proc_handler for net.flow_dissector.qinq. Writes of 1 also enable
++ * flow_dissector_vlan_key — QinQ extends the VLAN fast-path to depth
++ * 2; it cannot fire when the depth-0 entry is gated off.
++ */
++static int proc_set_qinq_key(const struct ctl_table *table, int write,
++			     void *buffer, size_t *lenp, loff_t *ppos)
++{
++	int ret;
++
++	ret = proc_do_static_key(table, write, buffer, lenp, ppos);
++	if (ret == 0 && write &&
++	    static_branch_unlikely(&flow_dissector_qinq_key) &&
++	    !static_branch_unlikely(&flow_dissector_vlan_key))
++		static_branch_enable(&flow_dissector_vlan_key);
++	return ret;
++}
++
+ static struct ctl_table flow_dissector_sysctl_table[] = {
+ 	{
+ 		.procname	= "eth_ip",
+@@ -2375,6 +2508,20 @@ static struct ctl_table flow_dissector_sysctl_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_static_key,
+ 	},
++	{
++		.procname	= "vlan",
++		.data		= &flow_dissector_vlan_key.key,
++		.maxlen		= sizeof(flow_dissector_vlan_key),
++		.mode		= 0644,
++		.proc_handler	= proc_set_vlan_key,
++	},
++	{
++		.procname	= "qinq",
++		.data		= &flow_dissector_qinq_key.key,
++		.maxlen		= sizeof(flow_dissector_qinq_key),
++		.mode		= 0644,
++		.proc_handler	= proc_set_qinq_key,
++	},
+ };
+ 
+ static int __init flow_dissector_sysctl_init(void)
 -- 
 2.54.0
 
