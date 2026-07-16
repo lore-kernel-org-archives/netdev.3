@@ -1,45 +1,84 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52263BBA09;
-	Thu, 16 Jul 2026 10:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26CE3BE62B
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 10:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784196297; cv=none; b=mvhCIY/Vag21ZW9Vn6aTgmdeSbnKFrMy3SHJ6etrdm/n7ZGwbiXTR2626IwrW939YS7UqfP44Nr3puTgxZxUZf4qPrKI+6/p/cl9HOLYuERfmYB5ZnMiuHMK3CAp+J31nWP62vr7TtX+qqx1p2WeHGJxdO2w2Ln/GeqO/kBB8ng=
+	t=1784196374; cv=none; b=ra40eZ9gBl4Bh+ItiTbUMh26r/PMHgru2ia5CQvoI8KVDvaBRBCKCfTQ+/ptp3Kn4/IKPO82hFr0SAwdHKioyttiZ7/+nSxwaWOQaFMdLH/TeDukdNFDP9YaLkJYuL4qlS3aPekkfGTMuofK7YJdA80tpwlqQ148w4jC9E+Tgoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784196297; c=relaxed/simple;
-	bh=VxJOqaYjc96ux6auGLRa1m88ed/8mIVND1Ty92dCe6k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GuA9LOj9rWURqQWZJvP388yn65SSIRTEpfE9K2FUfSKE+TlHIfXw7NxugUt0JipdcTPCBh0j13UoQtDXE1sUqEpfsWVNzRTEwfEMckf3g2j6WdZnQAa7HvyEXdfanW0wSbhMHpkxY64esdRlY4uiyaYgIpG/L5utzDxRDkvBHp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KUdus9tJ; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784196374; c=relaxed/simple;
+	bh=+ammkv9WmlsXieg1M/BdCjHugEumXiLSHhThR842jLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FTq6otQXFd/Sb0D5Wrtu7GCQei+cx90XNxIqI+h6NYV2//ypDEQMvPnIErAfhowVyEQ+RDrm0i4Y+SFdrPfVZXyn9B4aSkjrhCkLjSvBzzj7BjTaXW+LF0O8wJ9aSoDkE0aoe1zHWw9WRS3DcI+sCEEzMUF0nuPzVQEbJ8hPyWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=xVvLpbvZ; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KUdus9tJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Xb
-	dUoFETFx3sxFfOWnV3nSITFAjfBNTVmvkCQ5jOhSo=; b=KUdus9tJsfmkXZT3HS
-	BYQwj2L9KNivfq2ivv+ynb1lFvEewgpyQSbUraDlbXYOBolrmssu8IGi0q3qHa+k
-	tyIkCGisSHQ1CfJKNIj1/9vqf81mtDoFRGnTHh5qR4JqoRBdIqOtV9Lq3aMSqFwl
-	8M9PO/RDLtAK3Ra/bYebdsuZQ=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wC3ou+XrFhqiTS8Ig--.46S2;
-	Thu, 16 Jul 2026 18:04:10 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-sctp@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b="xVvLpbvZ"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493b966dd74so26057835e9.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 03:06:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1784196371; x=1784801171; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4zobRwr1il7Vi209UdGxxH04APhzDHoeOJcQfGK80zc=;
+        b=xVvLpbvZjS0j2PNK/QyhcNZgHnw4TrJzIDpIDChWZMxYmj5VHp0eN3L7mNrdmTEBho
+         Gg9P+v92+pBSZtWGnPANDjWx5BInUa8EpexLHDtjueN1pxo1aqh95uzCQ0azuOiE9mJ5
+         QJlu4KqY55RO5/Hw4NONkBphcR+2/fWaqqWJkRD1b6dWGyuHI8Hm0eOKLCYbA6MIu2AW
+         7KT0Ddovk4UWzkFqeQp8xo3x9KCKAGg+ZW9B6GHFNZ7AmFZjMfLVJy/6NkyAhj02WCGG
+         gyQeck8wzfLnY3Dk99IDq2r5dhBIYdL5k4qvZ0L8Yr8Jerd//umwLQLPAQmgNUJxT0vo
+         4Tbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784196371; x=1784801171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4zobRwr1il7Vi209UdGxxH04APhzDHoeOJcQfGK80zc=;
+        b=bQAGXSQxZ/heZrSkPdOcfBbZvnlWO6bh/tCANOkL52+/dvqJez+f3BzadJhJpZP2SN
+         VcKqvJ2K5eT5joIphRLJWOX+7mJUx7ZGLfaQZhvPbYbI5pZyz5mn1viPTmKA57gsqDIR
+         FJ8k1RILBJVY/HAwNIerkLTLGT5m+5q0o7j6kgB5yWw1/XWDW9JRN4WsBsxX+A7ohRcM
+         LPM8C/+xEtmgSITs3NpZ0geazLJwA/7KpaHFvCLfMACp4lCQLPZK+MJB2yWEhs9+wId7
+         lWxClpRrPA4mzhA6DelfXnBLJAwM8yjrkuTAlaLs8ugK7iOSCMnUrQdc21P4PjeHrwBH
+         gQ2Q==
+X-Forwarded-Encrypted: i=1; AHgh+Roq72WxTSSaf/zXo4OvaDAcSCyljGDjrPCAN+B9WWggRh2nS1uFDYmZpQIWCXmfvAaDAYimzHI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaKqhHJEJP3MuvcmqQZRWBo9Jykbn95YLdBZqgQ1WgfcOgroFg
+	ENt6UY0wfyFlaKGzF/IDmkg7Tin1fdhqzDJxy4WB7SAa0wBNeTct5D7quTjnuuE86ak=
+X-Gm-Gg: AfdE7ckPAKBVxCIGMM6QslbON0sP7OPaudeQY80h4eBcDc4a81iIzbg7hlQuYPZ1klW
+	mXhDEacgJhAubcMy0vA8tzOzpwFqoghMdmhnWTOh+ZYKNobFwoyGn9ZmuxDQC/fIeJFjF9XebxH
+	lcMN7snQWd53VOr3dBdQWgPQZXWulY67aeaOYUwjjyjZ4fRuyt0SBQD2TZaDr/XgmpXK/t6uHr0
+	otVEab1PNvl0/bNCKAYByKkVWlXEQJFMEcm8GhaFiGn6ik/pxcelgc1xQD10RgIaXxc2U9D0uS5
+	k5VrKyN3M6MiOxGKXphz6w/+iMcBNlTuvbYsAFrEc2B1eW2Y3pdSORSqCgxD7YvEIfQtBltyk3p
+	JosS00NstIdJ3PD7gT9N28pzRcmWjTMNMSL0ieMH7CBACzuPFHDvXEKmKsti10/Sc9jFIhJvStX
+	MaNcIV
+X-Received: by 2002:a05:600c:c83:b0:493:c84c:2b57 with SMTP id 5b1f17b1804b1-4953c28b1a6mr63914085e9.29.1784196370491;
+        Thu, 16 Jul 2026 03:06:10 -0700 (PDT)
+Received: from matt-Precision-5490.. ([2a09:bac6:37a8:2696::3d8:30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e9a7bbsm46976365e9.13.2026.07.16.03.06.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 03:06:09 -0700 (PDT)
+From: Matt Fleming <matt@readmodwrite.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	luoqing@kylinos.cn
-Subject: [PATCH v2 1/2] net: sctp: socket: Fix uninitialized error on socket shutdown
-Date: Thu, 16 Jul 2026 18:04:06 +0800
-Message-Id: <20260716100407.1490724-1-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
+	stable@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: [PATCH bpf] veth: convert frag_list skbs before running XDP
+Date: Thu, 16 Jul 2026 11:06:05 +0100
+Message-ID: <20260716100605.939654-1-matt@readmodwrite.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,49 +86,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3ou+XrFhqiTS8Ig--.46S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF47Cw4UGryrWFW3AFyUtrb_yoWkKrb_u3
-	y8u3W7Za45Wrsakan5Cr4YyrWvyw43KFyI9ryktF9rG348GFZ7trWDAFnavr1xGrZa9r1D
-	Jw1YyF95Za1fCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8jhF3UUUUU==
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC+hoCRmpYrJq4vwAA3n
 
-From: luoqing <luoqing@kylinos.cn>
+From: Matt Fleming <mfleming@cloudflare.com>
 
-When sctp_skb_recv_datagram() detects sk->sk_shutdown & RCV_SHUTDOWN,
-it breaks out of the loop and returns NULL without setting *err.
-This leaves the error pointer uninitialized or with a stale value,
-which can confuse callers expecting a clean shutdown indication.
+A frag_list skb can reach veth with data_len set but nr_frags zero.
+veth_convert_skb_to_xdp_buff() only converts skbs that are shared,
+locked, have frags[], or do not have enough headroom. It later uses
+skb_is_nonlinear() to decide whether to set XDP_FLAGS_HAS_FRAGS and
+xdp_frags_size.
 
-Compare with the generic __skb_wait_for_more_packets() in
-net/core/datagram.c which properly handles shutdown by setting *err = 0.
+That exposes frag_list data to XDP as if it were stored in frags[], but
+frags[] is empty. AF_XDP copy mode can then trust the bogus XDP fragment
+metadata, walk an empty fragment entry, and crash in memcpy() from
+__xsk_rcv().
 
-Fix this by setting *err = 0 before breaking when the socket is shut down,
-indicating an orderly shutdown rather than an error condition.
+Route frag_list skbs through skb_pp_cow_data() before exposing them to
+XDP, and only advertise XDP frags when the resulting skb has frags[].
+skb_copy_bits() already handles frag_list input, and skb_pp_cow_data()
+builds frags[] output with skb_add_rx_frag(), which is the representation
+XDP multi-buffer expects.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-Signed-off-by: luoqing <luoqing@kylinos.cn>
+Fixes: 718a18a0c8a6 ("veth: Rework veth_xdp_rcv_skb in order to accept non-linear skb")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
 ---
- net/sctp/socket.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/veth.c | 4 ++--
+ net/core/skbuff.c  | 9 ++++-----
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..ea7050b27715 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -9117,8 +9117,10 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
- 		if (error)
- 			goto no_packet;
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 1c5142149175..efb24aae1f26 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -756,7 +756,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+ 	u32 frame_sz;
  
--		if (sk->sk_shutdown & RCV_SHUTDOWN)
-+		if (sk->sk_shutdown & RCV_SHUTDOWN) {
-+			*err = 0;
- 			break;
-+		}
+ 	if (skb_shared(skb) || skb_head_is_locked(skb) ||
+-	    skb_shinfo(skb)->nr_frags ||
++	    skb_shinfo(skb)->nr_frags || skb_has_frag_list(skb) ||
+ 	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
+ 		if (skb_pp_cow_data(rq->page_pool, pskb, XDP_PACKET_HEADROOM))
+ 			goto drop;
+@@ -771,7 +771,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+ 	xdp_prepare_buff(xdp, skb->head, skb_headroom(skb),
+ 			 skb_headlen(skb), true);
  
+-	if (skb_is_nonlinear(skb)) {
++	if (skb_shinfo(skb)->nr_frags) {
+ 		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
+ 		xdp_buff_set_frags_flag(xdp);
+ 	} else {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 18dabb4e9cfa..1e837d01a908 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -936,12 +936,11 @@ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+ 	int err, i, head_off;
+ 	void *data;
  
- 		/* User doesn't want to wait.  */
+-	/* XDP does not support fraglist so we need to linearize
+-	 * the skb.
++	/*
++	 * skb_copy_bits() handles both frags[] and frag_list input. If the
++	 * copied skb remains non-linear, it uses frags[], which is the
++	 * representation used by XDP multi-buffer.
+ 	 */
+-	if (skb_has_frag_list(skb))
+-		return -EOPNOTSUPP;
+-
+ 	max_head_size = SKB_WITH_OVERHEAD(PAGE_SIZE - headroom);
+ 	if (skb->len > max_head_size + MAX_SKB_FRAGS * PAGE_SIZE)
+ 		return -ENOMEM;
 -- 
-2.25.1
+2.43.0
 
