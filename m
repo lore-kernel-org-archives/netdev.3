@@ -1,536 +1,504 @@
-Received: from postout1.mail.lrz.de (postout1.mail.lrz.de [129.187.255.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C330237BE78;
-	Thu, 16 Jul 2026 16:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.187.255.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B40D37CD5A
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 16:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784219022; cv=none; b=GrNUPcOJeUPMQjR0pKGAk8aVc2ZHjW9K9FsgeF7qwzZD+VhR/gVrr0+F86nIY739MSfpoPOA13fP92DupGI88GYT/FPBHq6GDSekUnPNspJKGimY/aRBr2Ctv6gNqoAvCyz6PMakz40FrQizrwP0/pGoDR4wYO4WrO9PWTJuJxE=
+	t=1784219069; cv=none; b=mpv2uvO7bJAnN55QFF7+occKyVxOmHsmR5CfteEau9EjQNJrlPleuAcgspOETD24cS/sf+F4Japgl3sz+liI8CnXNdUaaH9oLF/exDbEGV+lAQ/1uIEUmZm40EIEug/ZLb8NSNUSpDbeVhlD72VgmW3pPyvAO3OaNLEdsx6qnYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784219022; c=relaxed/simple;
-	bh=XiIVJZqXs4htEsK1/Gc5OmFrqfLUL6MRogRzku27jT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYnbtkfQDhvQuNZAxCxgjktVF3TSq7xYtjUKRrrUP1CBVWz2Hg4Zmb4QzPr2KZqgfqVNaLB9AGife9fiEIb9ub0wiVr4fgt+XtBDO8lW/gpSwY62IxcO+e4Hgp/DqR2zQotmzlfvjw7Fkr1o+z2ePAH9FQP0iqwGIj/Dmw0kQjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hs-ansbach.de; spf=pass smtp.mailfrom=hs-ansbach.de; dkim=pass (2048-bit key) header.d=hs-ansbach.de header.i=@hs-ansbach.de header.b=yeAYsmkh; arc=none smtp.client-ip=129.187.255.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hs-ansbach.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hs-ansbach.de
+	s=arc-20240116; t=1784219069; c=relaxed/simple;
+	bh=UpDAhW2ValPQeX/cu4q1GgaspWqJM2TSkYVG7a8nayE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fiuAfVh4plWVxFdUo4putsEmybYE6IN5wRiYl7MlZdwqqBVwwx83d/Gp0EP2rhP+cYiNhEQXARy0m99o1MpeakFpVuijainnX2FZHbX0RPqeHOmGJYGQzAKNaSk+yyaPcAcnTT7um/1lESdXNMu/Ou7pWytaAOSOylTxhFgUKl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=Z+saZih2; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hs-ansbach.de header.i=@hs-ansbach.de header.b="yeAYsmkh"
-Received: from lxmhs51.srv.lrz.de (localhost [127.0.0.1])
-	by postout1.mail.lrz.de (Postfix) with ESMTP id 4h1JJ86cy1zyWS;
-	Thu, 16 Jul 2026 18:23:36 +0200 (CEST)
-Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=hs-ansbach.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hs-ansbach.de;
-	 h=content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=an-postout22; t=1784219016; bh=s/JeyjKv01w
-	nG8T00VBk4Dzsjsc5kyYzQCnlgZRIkoA=; b=yeAYsmkhhLgK5bqnqR7xI5wVL0S
-	IDXW2hW/QOd6d6NBsZnmzfoUUbxDCFe68fa2Hg7fkBuypxn1UeQeyqn4bTGLP2Nn
-	5z1NtTyi7M6+lmIkWoEYT+/uUyvkBldDP+yxgl24W5LIMxPHhCGDx+PYxmPs6/6q
-	Xnn8dAgGZywWeWv/hiQ+z9P0LTW1XDGjbACnwnserj9zR8Xz5sX8xSE5s5lv3zHo
-	wcaE8XdS8ntTa241F1zL2lDbi6K093/XtfFhSqyUqTDQ6PgTh39SYf10chOKCJhP
-	j3/CLPnbwUgG7+bWxus51ABimcGDFDyepGmR9Earhg2kVignLATxeB+2/ew==
-X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs51.srv.lrz.de
-X-Spam-Flag: NO
-X-Spam-Score: -2.887
-X-Spam-Level:
-Received: from postout1.mail.lrz.de ([127.0.0.1])
- by lxmhs51.srv.lrz.de (lxmhs51.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
- with LMTP id lsGVAy89tKNg; Thu, 16 Jul 2026 18:23:36 +0200 (CEST)
-Received: from chimchar.fritz.box (p200300eeb7001900d36d09bcf7cd0c19.dip0.t-ipconnect.de [IPv6:2003:ee:b700:1900:d36d:9bc:f7cd:c19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by postout1.mail.lrz.de (Postfix) with ESMTPSA id 4h1JJ74m0CzyZ4;
-	Thu, 16 Jul 2026 18:23:35 +0200 (CEST)
-From: Simon Dietz <dietz23838@hs-ansbach.de>
-To: simon.dietz@plantwatch.de
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	dietz23838@hs-ansbach.de,
-	edumazet@google.com,
-	johannes@sipsolutions.net,
-	kuniyu@google.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [RFC PATCH net-next v0 6/6] net: apply RCS to GeoNetworking
-Date: Thu, 16 Jul 2026 18:21:52 +0200
-Message-ID: <20260716162152.3616762-1-dietz23838@hs-ansbach.de>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260716161605.3587079-1-dietz23838@hs-ansbach.de>
-References: <20260716161605.3587079-1-dietz23838@hs-ansbach.de>
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="Z+saZih2"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92b21f65b60so31661985a.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1784219059; x=1784823859; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g6rfA8E/nTTUH3FZ9wbpw5nWZ5aMILnFKMF2quaGc0c=;
+        b=Z+saZih2SDdCpVcmSsvqOOJna3PAFrFV/Iv4r7GOD/UwfDPa6eeybkFDIMaTxO5DvZ
+         3gTTNfVWhtv8j5sOw6O94PX75kYqPkuqrr10iXI1V20Jit+s3jE5rxXIUqT4H9AFCyYO
+         cA1pyaIWaCumo3lKQMleWtiITYhRbYBj+QHXrjuiCzlJhJlhshCBgkO648318qgOzFeI
+         LPezl5Y50wEssMayPQVvDokEr94wBDme12SC69taDrJmdxuwFdRF2OwY1pgoq8wIzRd1
+         yAYYckUofn6hRdtiQq80vLYfdrPu7jPTY9bb3Vdnr1mqssrVQFIYdt6FGBJT8YPxJ/p9
+         0Vvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784219059; x=1784823859;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g6rfA8E/nTTUH3FZ9wbpw5nWZ5aMILnFKMF2quaGc0c=;
+        b=Y/88HsgTr1qMj5UzjOAHR/t7EIZX1XEnxbb4ZigH9OtpIYQdzaIUKpc6SThs+scbXU
+         yBa9gL2+9HHtUm1K782dJSWmhJ3ZEiWrOsgJoCQUgQ4cC+gZhxqBQJ3jmYTP63guNkIx
+         aA0Z44P8R2uUe7jroBW1U9jqqXLFnX9T61cYxc9Hrdo4I5ate68tCENO5mM6X3oFIj6R
+         7R4gEQnPZpKdiWJvA98fVbG7+9+fHpFEXtvjVfqcjnZhSPLJHH+K7fp4W1hwOf+36P7l
+         uQYsOJozyhsZzhDuMjBntBKIYIgIn/7GQwI0Ffxes1iStV9EuXVwEKljUSuqrm2gdknW
+         VA3g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8SBF+xOOMEvf52B75YVjZJBjyBOuC+usZasTVFiw+OhgRRuHg4rLQJEgrvU2hkIjpnnUxhaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGszFXxSWLtT/kbRZnhLsCyZ6H7uME9WIMwg1Dx1c5ok/Dadnq
+	DxHBTCBDN9B6VCKsEm/xiGQ7ZmEBiP8szH2FH93mG1Ofi41ARQnSTQRSpDzN7ETuqrU=
+X-Gm-Gg: AfdE7cln2GeZRkmGhGF+yQSETVqzP7suDvhE7i7pgscxEC3asnS1Y+j2BEVYgve3tBk
+	BHv0ljTOXMNfbeU/2/5fcdz1hBik1rSCZAwTpZ3A5VD9Fq5HQM1PBslco/5oot574i//Ovuz48N
+	Lfj8//6+UlFCM2Unqz+D/MJIKHmd9Xcgk2ieqgiZY0SARgxd1UPSnjRdS/pqW/gzOh1PlwrqSdB
+	xjoA5Q9fyoOs7IXTLEwpXIH6ygZNVQwvek8RUbOChv23c3zbq4u5zlqdKljH/oi2guQG3f7yIU9
+	3uhk5iIY+xYczj6JTqhufouRCnxlsAsyAx3IiweXqs2+veI+xiEpP9rdwRLYmJaZk34+Q8zcPyR
+	ImKsTEz1/nLSYJKY+cZ/Mir321GvME3TobmTaraOTaL1dYhaOmxyc2riEINgjMc9AGz9HNgSnCs
+	x+kg==
+X-Received: by 2002:a05:620a:31a6:b0:918:4374:bbb with SMTP id af79cd13be357-930a5ff44c2mr318207985a.23.1784219059017;
+        Thu, 16 Jul 2026 09:24:19 -0700 (PDT)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cf9d9bsm2045063385a.28.2026.07.16.09.24.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jul 2026 09:24:18 -0700 (PDT)
+Message-ID: <df217d83-272a-4d4c-8aba-a87e4b8869fc@riscstar.com>
+Date: Thu, 16 Jul 2026 11:24:15 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 12/14] gpio: tc956x: add TC956x/QPS615 support
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
+ brgl@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ daniel@riscstar.com, mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
+ alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
+ chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
+ john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
+ mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260605010022.968612-1-elder@riscstar.com>
+ <20260605010022.968612-13-elder@riscstar.com>
+ <dhnylud7o5dhaaq6kvbes4vkml3ppa5ev542j2lyxdijibknzg@pfcy22wz6jav>
+Content-Language: en-US
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <dhnylud7o5dhaaq6kvbes4vkml3ppa5ev542j2lyxdijibknzg@pfcy22wz6jav>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Simon Dietz <simon.dietz@plantwatch.de>
+On 7/16/26 2:02 AM, Manivannan Sadhasivam wrote:
+> On Thu, Jun 04, 2026 at 08:00:19PM -0500, Alex Elder wrote:
+>> Toshiba TC956x is an Ethernet-AVB/TSN bridge and is essentially
+>> a small and highly-specialized SoC.  TC956x includes a GPIO block that
+>> can be accessed, alongside several other peripherals, via two PCIe
+>> endpoint functions.  The PCIe function driver creates an auxiliary
+>> device for the GPIO block, and that device gets bound to this auxiliary
+>> device driver.
+>>
+>> This driver is implemented using the generic regmap-based GPIO driver.
+>>
+> 
+> While the regmap over the switch BAR works for GPIO access post-enumeration,
+> there is a blocker in using these GPIOs to control the power to endpoints.
 
-Signed-off-by: Simon Dietz <simon.dietz@plantwatch.de>
----
- net/gn/gn_proc.c    |   2 +-
- net/gn/gn_prot.c    | 123 +++++++++++++++++++++++---------------------
- net/gn/gn_routing.c |  24 ++++-----
- 3 files changed, 76 insertions(+), 73 deletions(-)
+We're aware of the power control driver and its use of these GPIOs.
 
-diff --git a/net/gn/gn_proc.c b/net/gn/gn_proc.c
-index ecd2aea446e5..bc1280079695 100644
---- a/net/gn/gn_proc.c
-+++ b/net/gn/gn_proc.c
-@@ -38,8 +38,8 @@ static void gn_seq_socket_stop(struct seq_file *seq, void *v)
- 
- static int gn_seq_socket_show(struct seq_file *seq, void *v)
- {
--	struct sock *s;
- 	struct gn_sock *gn;
-+	struct sock *s;
- 
- 	if (v == SEQ_START_TOKEN) {
- 		seq_puts(seq, "Type Local_addr  Remote_addr Tx_queue Rx_queue St UID\n");
-diff --git a/net/gn/gn_prot.c b/net/gn/gn_prot.c
-index 1599dc0aa185..c8a6d4a78771 100644
---- a/net/gn/gn_prot.c
-+++ b/net/gn/gn_prot.c
-@@ -99,8 +99,9 @@ static void gn_activate_beacon(void);
- static struct gn_iface *gn_if_add_device(struct net_device *dev,
- 					 struct sockaddr_gn *sa)
- {
-+	struct gn_iface *new_gnif = kzalloc_obj(*new_gnif, GFP_KERNEL);
-+	struct gn_iface *gnif;
- 	bool was_empty;
--	struct gn_iface *gnif, *new_gnif = kzalloc_obj(*new_gnif, GFP_KERNEL);
- 
- 	if (!new_gnif)
- 		return NULL;
-@@ -138,8 +139,8 @@ static struct gn_iface *gn_if_add_device(struct net_device *dev,
- 
- static void gn_if_drop_device(struct net_device *dev)
- {
--	struct gn_iface *gnif;
- 	struct hlist_node *tmp;
-+	struct gn_iface *gnif;
- 
- 	spin_lock_bh(&gn_interfaces_lock);
- 	hlist_for_each_entry_safe(gnif, tmp, &gn_interfaces, hnode) {
-@@ -154,8 +155,8 @@ static void gn_if_drop_device(struct net_device *dev)
- 
- static void gn_interfaces_clear(void)
- {
--	struct gn_iface *gnif;
- 	struct hlist_node *tmp;
-+	struct gn_iface *gnif;
- 
- 	spin_lock_bh(&gn_interfaces_lock);
- 	hlist_for_each_entry_safe(gnif, tmp, &gn_interfaces, hnode) {
-@@ -341,8 +342,8 @@ try_next_port:;
- static struct sock *gn_find_or_insert_socket(struct sock *sk,
- 					     struct sockaddr_gn *sgn)
- {
--	struct sock *s;
- 	struct gn_sock *gn;
-+	struct sock *s;
- 
- 	write_lock_bh(&gn_sockets_lock);
- 	sk_for_each(s, &gn_sockets) {
-@@ -373,9 +374,11 @@ static int gn_bind(struct socket *sock, struct sockaddr_unsized *uaddr,
- {
- 	DECLARE_SOCKADDR(struct sockaddr_gn *, addr, uaddr);
- 	struct sock *sk = sock->sk;
--	struct gn_sock *gn = gn_sk(sk);
-+	struct gn_sock *gn;
- 	int err;
- 
-+	gn = gn_sk(sk);
-+
- 	if (!sock_flag(sk, SOCK_ZAPPED) ||
- 	    addr_len != sizeof(struct sockaddr_gn))
- 		return -EINVAL;
-@@ -413,10 +416,12 @@ static int gn_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
- 		      int addr_len, int flags)
- {
- 	struct sock *sk = sock->sk;
--	struct gn_sock *gn = gn_sk(sk);
- 	struct sockaddr_gn *addr;
-+	struct gn_sock *gn;
- 	int err;
- 
-+	gn = gn_sk(sk);
-+
- 	sk->sk_state = TCP_CLOSE;
- 	sock->state = SS_UNCONNECTED;
- 
-@@ -450,8 +455,8 @@ static int gn_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
- static struct sock *gn_search_socket(struct sockaddr_gn *tosgn,
- 				     struct gn_iface *gnif)
- {
--	struct sock *s;
- 	struct gn_sock *gn;
-+	struct sock *s;
- 
- 	read_lock_bh(&gn_sockets_lock);
- 	sk_for_each(s, &gn_sockets) {
-@@ -537,11 +542,11 @@ static void gn_fill_bh_ch_nopayload(struct gn_iface *gnif,
- static void gn_location_service_req(struct gn_iface *gnif, gn_address_t saddr,
- 				    gn_address_t daddr)
- {
--	int size = 0;
--	struct sk_buff *skb;
--	struct gn_basic_header *gb_h;
--	struct gn_common_header *gc_h;
- 	struct gn_ls_request_header *gls_h;
-+	struct gn_common_header *gc_h;
-+	struct gn_basic_header *gb_h;
-+	struct sk_buff *skb;
-+	int size = 0;
- 
- 	size += gn_dl->header_length;
- 	size += gnif->dev->hard_header_len;
-@@ -577,11 +582,11 @@ static void gn_location_service_reply(struct gn_spv *depv,
- 				      struct gn_iface *gnif, gn_address_t addr,
- 				      u64 llc)
- {
--	int size;
--	struct sk_buff *skb;
--	struct gn_basic_header *gb_h;
--	struct gn_common_header *gc_h;
- 	struct gn_ls_reply_header *gls_h;
-+	struct gn_common_header *gc_h;
-+	struct gn_basic_header *gb_h;
-+	struct sk_buff *skb;
-+	int size;
- 
- 	size = 0;
- 	size += gn_dl->header_length;
-@@ -616,8 +621,8 @@ static void gn_location_service_reply(struct gn_spv *depv,
- 
- static int gn_pass_payload_sock(struct sockaddr_gn *tosgn, struct sk_buff *skb)
- {
--	struct sock *sock;
- 	int rc = NET_RX_DROP;
-+	struct sock *sock;
- 
- 	sock = gn_search_socket(tosgn, NULL);
- 	if (!sock)
-@@ -631,9 +636,9 @@ static int gn_pass_payload_sock(struct sockaddr_gn *tosgn, struct sk_buff *skb)
- static int gn_forward_guc_packet(struct sk_buff *skb, gn_address_t dest_addr)
- {
- 	struct sk_buff *forward_skb;
-+	u8 next_hop_mac[ETH_ALEN];
- 	struct gn_header *fwd_gh;
- 	struct gn_iface *gnif;
--	u8 next_hop_mac[ETH_ALEN];
- 
- 	fwd_gh = (struct gn_header *)skb_network_header(skb);
- 	if (fwd_gh->gb_h.rhl <= 0)
-@@ -684,10 +689,10 @@ static int gn_forward_tsb_packet(struct sk_buff *skb)
- 
- static int gn_process_guc_packet(struct sk_buff *skb)
- {
--	struct gn_header *gh;
- 	struct btp_header *btp_h;
- 	struct sockaddr_gn tosgn;
- 	struct gn_iface *gnif;
-+	struct gn_header *gh;
- 
- 	gh = (struct gn_header *)skb_network_header(skb);
- 	GN_SET_BTP(skb, btp_h, struct gn_guc_header);
-@@ -764,14 +769,14 @@ static struct gn_geo_scope gn_decode_geo_scope(struct gn_header *gh)
- 
- static int gn_process_gxc_packet(struct sk_buff *skb)
- {
--	struct gn_header *gh;
-+	unsigned long long next_hop_addr;
-+	struct gn_geo_scope scope;
- 	struct btp_header *btp_h;
- 	struct sockaddr_gn tosgn;
- 	struct gn_iface *gnif;
--	s64 f_value;
--	struct gn_geo_scope scope;
-+	struct gn_header *gh;
- 	bool run_dpd;
--	unsigned long long next_hop_addr;
-+	s64 f_value;
- 
- 	next_hop_addr = GN_BROADCAST_ADDR;
- 
-@@ -821,8 +826,8 @@ static int gn_process_gxc_packet(struct sk_buff *skb)
- 	// Forwarding
- 	if (gh->gb_h.rhl > 0 && ((gh->gc_h.ht == CH_HT_GAC && f_value >= 0) ||
- 				 gh->gc_h.ht == CH_HT_GBC)) {
--		struct sk_buff *forward_skb;
- 		struct gn_basic_header *fwd_gb_h;
-+		struct sk_buff *forward_skb;
- 		u8 dest_addr[ETH_ALEN];
- 		int rc;
- 
-@@ -873,9 +878,9 @@ static int gn_process_gxc_packet(struct sk_buff *skb)
- 
- static int gn_process_shb_packet(struct sk_buff *skb, const u8 *ll_address)
- {
--	struct gn_header *gh;
- 	struct btp_header *btp_h;
- 	struct sockaddr_gn tosgn;
-+	struct gn_header *gh;
- 
- 	gh = (struct gn_header *)skb_network_header(skb);
- 	GN_SET_BTP(skb, btp_h, struct gn_shb_header);
-@@ -905,9 +910,9 @@ static int gn_process_shb_packet(struct sk_buff *skb, const u8 *ll_address)
- 
- static int gn_process_tsb_packet(struct sk_buff *skb)
- {
--	struct gn_header *gh;
- 	struct btp_header *btp_h;
- 	struct sockaddr_gn tosgn;
-+	struct gn_header *gh;
- 
- 	gh = (struct gn_header *)skb_network_header(skb);
- 	GN_SET_BTP(skb, btp_h, struct gn_tsb_header);
-@@ -955,9 +960,9 @@ static int gn_process_beacon_packet(struct sk_buff *skb, const u8 *llc)
- 
- static int gn_process_ls_packet(struct sk_buff *skb)
- {
--	struct gn_header *gh;
- 	gn_address_t dest_addr;
- 	struct gn_iface *gnif;
-+	struct gn_header *gh;
- 
- 	gh = (struct gn_header *)skb_network_header(skb);
- 
-@@ -1221,28 +1226,27 @@ static int gn_fill_tsb_header(struct gn_tsb_header *tsb_h,
-  */
- static int gn_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- {
--	int packet_type, packet_subtype, btp_type;
--	int err = -EINVAL;
--	struct sock *sk = sock->sk;
--	struct gn_sock *gn = gn_sk(sk);
--
--	/*
--	 * usgn will contain address and port of the destination
--	 */
- 	DECLARE_SOCKADDR(struct sockaddr_gn *, usgn, msg->msg_name);
--	int flags = msg->msg_flags;
--	struct sockaddr_gn local_sgn;
--	struct sk_buff *skb;
--	struct net_device *dev;
--	struct btp_header *btp_h;
--	void *gp_h;
-+	int packet_type, packet_subtype, btp_type;
- 	struct gn_common_header *gc_h;
- 	struct gn_basic_header *gb_h;
-+	struct sockaddr_gn local_sgn;
-+	struct gn_spv depv = { 0 };
-+	u8 rhl = DEFAULT_HOP_LIMIT;
-+	int flags = msg->msg_flags;
-+	struct btp_header *btp_h;
-+	struct net_device *dev;
- 	struct gn_iface *gnif;
--	u32 size;
-+	struct sk_buff *skb;
-+	struct gn_sock *gn;
-+	int err = -EINVAL;
-+	struct sock *sk;
- 	u32 eh_size;
--	u8 rhl = DEFAULT_HOP_LIMIT;
--	struct gn_spv depv = { 0 };
-+	void *gp_h;
-+	u32 size;
-+
-+	sk = sock->sk;
-+	gn = gn_sk(sk);
- 
- 	if (flags & ~(MSG_DONTWAIT | MSG_CMSG_COMPAT)) {
- 		pr_warn("unsupported sendmsg flags");
-@@ -1514,13 +1518,12 @@ static int gn_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		      int flags)
- {
- 	struct sock *sk = sock->sk;
-+	struct gn_header *gh;
- 	struct sk_buff *skb;
--	int err = 0;
- 	u16 copied = 0;
-+	int err = 0;
- 	u32 offset;
- 
--	struct gn_header *gh;
--
- 	/* It is necessary to find the actual length of the payload, which,
- 	 * in case of an unsecured package, resides in the commonheader and
- 	 * still has to be calculated without the length of the btp-header
-@@ -1562,11 +1565,11 @@ static int gn_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- static int gn_send_beacon(struct gn_iface *gnif)
- {
- 	/* Note: Media dependent procedures (e.g. ITS-G5 DCC / DCC Access) evaluated here */
--	unsigned int size;
--	struct gn_basic_header *gb_h;
--	struct gn_common_header *gc_h;
- 	struct gn_beacon_header *gbe_h;
-+	struct gn_common_header *gc_h;
-+	struct gn_basic_header *gb_h;
- 	struct sk_buff *skb;
-+	unsigned int size;
- 
- 	size = gn_dl->header_length;
- 	size += gnif->dev->hard_header_len;
-@@ -1660,11 +1663,12 @@ static int validate_scope(struct gn_scope *scope)
- static int gn_setsockopt(struct socket *sock, int level, int optname,
- 			 sockptr_t optval, unsigned int optlen)
- {
--	struct gn_scope opt;
- 	struct sock *sk = sock->sk;
--	struct gn_sock *gn = gn_sk(sk);
--
- 	int rc = -ENOPROTOOPT;
-+	struct gn_scope opt;
-+	struct gn_sock *gn;
-+
-+	gn = gn_sk(sk);
- 
- 	if (level != SOL_GN || optname != GN_SCOPE)
- 		goto out;
-@@ -1693,9 +1697,11 @@ static int gn_setsockopt(struct socket *sock, int level, int optname,
- static int gn_getsockopt(struct socket *sock, int level, int optname,
- 			 char __user *optval, int __user *optlen)
- {
--	struct sock *sk = sock->sk;
--	struct gn_sock *gn = gn_sk(sk);
- 	int len, rc = -ENOPROTOOPT;
-+	struct sock *sk = sock->sk;
-+	struct gn_sock *gn;
-+
-+	gn = gn_sk(sk);
- 
- 	if (level != SOL_GN || optname != GN_SCOPE)
- 		goto out;
-@@ -1737,12 +1743,11 @@ static int gn_validate_pos(struct gn_position *pos)
-  */
- static int gn_if_ioctl(struct socket *sock, unsigned int cmd, void __user *argp)
- {
-+	struct gn_iface *gnif = NULL;
- 	struct sockaddr_gn *sa;
- 	struct net_device *dev;
--	struct ifreq gnreq;
- 	struct gn_position pos;
--
--	struct gn_iface *gnif = NULL;
-+	struct ifreq gnreq;
- 
- 	if (copy_from_user(&gnreq, argp, sizeof(gnreq)))
- 		return -EFAULT;
-@@ -1824,9 +1829,9 @@ static int gn_if_ioctl(struct socket *sock, unsigned int cmd, void __user *argp)
- 
- static int gn_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- {
--	int rc = -ENOIOCTLCMD;
--	struct sock *sk = sock->sk;
- 	void __user *argp = (void __user *)arg;
-+	struct sock *sk = sock->sk;
-+	int rc = -ENOIOCTLCMD;
- 
- 	switch (cmd) {
- 	/* Protocol layer */
-diff --git a/net/gn/gn_routing.c b/net/gn/gn_routing.c
-index 3672a345530f..c438c6ab6666 100644
---- a/net/gn/gn_routing.c
-+++ b/net/gn/gn_routing.c
-@@ -189,9 +189,9 @@ static inline u64 dist(struct gn_coord c)
-  */
- __s64 gn_F(struct gn_coord self, struct gn_geo_scope scope)
- {
-+	struct gn_coord coord_diff = gn_coord_diff(self, scope.coord);
- 	s32 a2, b2, x2, y2;
- 	s64 result = -1;
--	struct gn_coord coord_diff = gn_coord_diff(self, scope.coord);
- 	/* Note: Scope angle rotation for non-circular geographical areas */
- 	a2 = scope.a * scope.a;
- 	b2 = scope.b * scope.b;
-@@ -223,12 +223,11 @@ __s64 gn_F(struct gn_coord self, struct gn_geo_scope scope)
- 
- static int greedy_forward(struct gn_iface *gnif, u8 *addr, struct gn_lpv *depv)
- {
-+	struct gn_coord dest_coord = pv_to_coord(depv);
-+	u64 min_dist, curr_dist, ego_dist;
-+	u8 *found_addr = NULL;
- 	struct loc_te *curr;
- 	int bkt, rc;
--	u8 *found_addr = NULL;
--
--	u64 min_dist, curr_dist, ego_dist;
--	struct gn_coord dest_coord = pv_to_coord(depv);
- 
- 	ego_dist = dist(gn_coord_diff(dest_coord, gnif->pos.coord));
- 	min_dist = ego_dist;
-@@ -279,8 +278,8 @@ int gn_gxc_forward(struct gn_iface *gnif, s64 f, u8 *addr, struct gn_lpv *depv)
- 
- static void debug_loc_te(void)
- {
--	struct loc_te *entry;
- 	struct hlist_node *tmp;
-+	struct loc_te *entry;
- 	int bucket;
- 
- 	spin_lock_bh(&gn_loc_t_lock);
-@@ -301,11 +300,10 @@ static void debug_loc_te(void)
- 
- static void gn_prune(void)
- {
-+	struct hlist_node *tmp;
- 	struct loc_te *entry;
- 	int bucket;
- 
--	struct hlist_node *tmp;
--
- 	spin_lock_bh(&gn_loc_t_lock);
- 	hash_for_each_safe(gn_loc_t, bucket, tmp, entry, hnode) {
- 		if (!GN_TST_VALID(entry->tst_addr)) {
-@@ -406,8 +404,8 @@ int gn_update_location_table(struct gn_lpv *pv, bool make_neighbour,
- 
- static void __ls_queue(struct sk_buff_head *q, struct sk_buff *skb)
- {
--	struct sk_buff *curr;
- 	u32 qlen = skb_queue_len(q);
-+	struct sk_buff *curr;
- 
- 	while (qlen-- > GN_LSB_SIZE) {
- 		curr = skb_dequeue(q);
-@@ -479,9 +477,9 @@ int gn_ls_queue(gn_address_t dest_addr, struct sk_buff *skb)
- 
- void gn_ls_flush(gn_address_t dest_addr)
- {
--	struct loc_te *entry;
- 	struct sk_buff *tmp_skb;
- 	u8 ll_address[ETH_ALEN];
-+	struct loc_te *entry;
- 	bool has_mac = false;
- 
- 	spin_lock_bh(&gn_loc_t_lock);
-@@ -557,9 +555,9 @@ int gn_query_ll_address(gn_address_t query_addr, u8 *ll_address)
-  */
- int gn_query_ll_nexthop(struct gn_iface *gnif, gn_address_t query_addr, u8 *ll_address)
- {
--	struct loc_te *entry;
--	struct gn_lpv target_pv;
- 	bool is_neighbor = false;
-+	struct gn_lpv target_pv;
-+	struct loc_te *entry;
- 	bool found = false;
- 
- 	spin_lock_bh(&gn_loc_t_lock);
-@@ -620,9 +618,9 @@ int gn_fill_depv(struct gn_spv *depv, gn_address_t dest_addr)
- 
- void gn_routing_exit(void)
- {
-+	struct hlist_node *tmp;
- 	struct loc_te *entry;
- 	int bucket;
--	struct hlist_node *tmp;
- 
- 	spin_lock_bh(&gn_loc_t_lock);
- 	hash_for_each_safe(gn_loc_t, bucket, tmp, entry, hnode) {
--- 
-2.55.0
+I think the point you're making is not about the specific way we
+are using GPIOs, but that someone could try to use this GPIO
+controller in a way that would lead to a circular dependency
+(between the controller and the PCIe device it depends on).
+
+And you suggest a GPIO driver that uses I2C (and would be
+used by the pwrctrl driver as well), and I think it's a pretty
+reasonable suggestion.
+
+> We have a design [1] where the GPIOs from the switch are used to control power
+> and PERST# signals to the EP. With this current design, during the initial PCI
+> bus scan, the switch will get enumerated, but the EP will not. Because, power to
+> the EP depends on the GPIO Aux driver that will get probed only after the switch
+> enumeration.
+
+Yes, on the RB3gen2 platform, reset signals (PERST#) for two of
+the TC9563 PCIe switch ports (downstream 1 and downstream 2) are
+managed by the GPIO controller that resides within the TC9563
+itself.  The pwrctl driver takes special care to ensure the GPIO
+controller is functional (powered) before trying to use it.
+
+The TC9563 *chip* gets powered when its embedded PCIe switch is
+probed--that is, when its upstream port begins its enumeration.
+(It's a little unclear to me which of the supplies are required
+for the various non-PCIe components on the chip, including I2C
+and GPIO, to be functional.)
+
+And so until the switch gets probed (and its pwrctl driver used),
+the GPIO controller can't work.  So nothing internal to the TC956x 
+should be dependent on any of the GPIOs supplied by this controller.
+(Except the pwrctrl driver, which enables power before using GPIO.)
+
+
+Two things to note:
+- We are working with TC9564 (and there are other successors in
+   the TC956x series).
+- Downstream port 3 (which we are using) on the switch does not
+   have such a distinct controlled reset line.
+
+> But this creates a chicken-and-egg problem with the PCI Pwrctrl design.
+> pcie-qcom driver uses the Pwrctrl framework to power on the PCI endpoints before
+> the initial PCI bus scan. It calls pci_pwrctrl_create_devices() and
+> pci_pwrctrl_power_on_devices() APIs to create the platform device for all PCI
+> devices defined in DT (that require pwrctrl support), waits for their respective
+> pwrctrl drivers to get probed and then power ON all of them.
+
+The way I understood it was that certain parameters for the PCIe
+links needed to be set before using them, and the pwrctrl framework
+made that possible.  (I summarize what that driver does at the end
+of this message.)
+
+  This step is
+> required because in DT platforms, many Root Ports are not hotplug capable and
+> also BIOS doesn't assign bridge windows during boot. So all the devices has to
+> appear during the initial PCI bus scan so that the PCI core can allocate the
+> resources properly.
+
+This part I didn't know before.  Yes, the bridge windows are
+allocated by Linux rather than by firmware.  And if this host
+bridge doesn't support hotplug, then yes, to correctly assign
+address space, all PCIe devices must be available to report
+their required memory space.
+
+Are you saying that "setting those parameters" wouldn't be
+needed if this particular root port supported hotplug?  (I'm
+just curious; it's not relevant to the point you're making.)
+
+> Now the issue with this Aux driver design is that, if an EP makes use of the
+> switch GPIO for PERST# or power, like:
+> 
+> 	tc9563: pcie@0,0 {
+> 		compatible = "pci1179,0623";
+> 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+> 		...
+> 
+> 		pcie@1,0 {
+> 			compatible = "pciclass,0604";
+> 			reg = <0x20800 0x0 0x0 0x0 0x0>;
+> 			#address-cells = <3>;
+> 			#size-cells = <2>;
+> 
+> 			device_type = "pci";
+> 			ranges;
+> 			bus-range = <0x3 0xff>;
+> 
+> 			reset-gpios = <&tc9563 5 GPIO_ACTIVE_LOW>;
+> 		};
+> 	...
+> 
+> 	};
+> 
+> Then the pwrctrl driver (pci/pwrctrl/generic.c) will try to acquire the GPIO
+> controller during its probe, but will fail with -EPROBE_DEFER as the GPIO
+> controller won't be available at that time. So the whole PCIe instance will
+> probe defer as the driver requires all pwrctrl drivers to be probed before
+> starting the initial bus scan.
+
+The only GPIOs we're using are for asserting reset on the two
+Ethernet PHYs.  That doesn't occur until after the embedded
+endpoint functions are probed, so this should be OK.
+
+However you're right, the lines on this GPIO controller should
+be restricted to avoid this circular dependency.
+> So we need to make sure that the GPIO controller driver is available before
+> enumerating the switch device. One way to achieve is by creating the GPIO Aux
+> device in the pci/pwrctrl/pci-pwrctrl-tc9563.c driver and let the GPIO
+> controller driver use I2C communication for setting up the GPIOs. Thankfully,
+> the switch allows both I2C and BAR MMIO configurations for internal GPIOs.
+
+Daniel and I have talked about this solution exactly, but opted
+not to propose using it just yet (not unless someone like you
+suggested it...).  Our solution for now was just to have the
+(PCIe BAR-based) GPIO driver reserve the two GPIO lines used by
+the pwrctrl driver, and rely on the fact that the pwrctrl driver
+will only touch those shared registers at times the "real" GPIO
+driver does not.
+
+
+We could instead implement a "proper" I2C-based GPIO controller
+driver.  This would be used by the pwrctrl driver (rather than
+that driver just updating the registers directly), as well as
+the Ethernet PHY for reset control, and for any other uses on
+future platforms.
+
+All uses so far are for managing resets, so the higher I2C
+latency wouldn't be much of an issue.
+
+> With this change, the GPIO driver will get probed by the time the pwrctrl
+> generic driver acquires the 'reset-gpios' and will turn ON the EP.
+
+One thing I'll point out is that the next version of this
+code will define "pci-ep-bus" nodes, and will not use the
+auxiliary bus model.  However the issue you raise remains
+in that model too.
+
+Thank you very much for raising this Mani.  Please see my
+questions a little further below.
+
+					-Alex
+
+> Let me know your thoughts!
+> 
+> - Mani
+> 
+> [1] https://lore.kernel.org/linux-pci/e2inl7k5gsjj6oomv2k5ximuzpb3gfiz66ufet3b4hvov7zqt4@qz4pifbos7yf/
+
+
+Here's what the pwrctrl driver does:
+
+In drivers/pci/pwrctrl/pci-pwrctrl-tc9563.c, the registers at
+offset 0x1208 and 0x1210 from the base of the "SFR" address space
+are updated to assert/deassert these two reset signals.  It does
+so using the I2C interface--out of band from access via PCI BARs.
+The reset signals are GPIO02 (for downstream endpoint 1 on the
+switch) and GPIO03 (for endpoint 2), which are controlled by
+bits 2 and 3 in the two registers, respectively.
+
+The pwrctrl driver enables a set of regulators defined in the
+devicetree node for the upstream port of the TC9564 embedded
+PCIe switch.  It then asserts the main RESX (chip) reset signal,
+and after a short delay asserts these other two resets.
+
+At that point it uses properties defined in devicetree to
+configure five "ports":  upstream, downstream 1-3, and Ethernet.
+(I have some questions related to this--but I put them below.)
+The properties configured are:  ASPM L0s entry delay; ASP L1 entry
+delay; TX amplitude; Number of Fast Training Sequences (NTFS); and 
+Decision Feedback Equalization (DFE).
+
+Finally, the two resets and the main RESX reset are deasserted,
+and the driver reports that the device is now ready, with:
+   devm_pci_pwrctrl_device_set_ready();
+
+
+
+Questions related to the "ports" configured by the pwrctrl driver:
+- Given that downstream port 3 connects to the internal, embedded
+   PCIe endpoint, does it still require these settings programmed?
+
+- Does the TC9563 chip have only *one* function on its embedded
+   endpoint, supporting just one Ethernet?
+     - If so, this driver will have to be modified to support
+       the second embedded function and Ethernet controller.
+
+- Why is "Ethernet" configured like the PCIe ports, *in addition*
+   to the downstream port 3 that it sits behind?
+
+
+>> Co-developed-by: Daniel Thompson <daniel@riscstar.com>
+>> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+>> Signed-off-by: Alex Elder <elder@riscstar.com>
+>> ---
+>>   MAINTAINERS                |   1 +
+>>   drivers/gpio/Kconfig       |  12 ++++
+>>   drivers/gpio/Makefile      |   1 +
+>>   drivers/gpio/gpio-tc956x.c | 130 +++++++++++++++++++++++++++++++++++++
+>>   4 files changed, 144 insertions(+)
+>>   create mode 100644 drivers/gpio/gpio-tc956x.c
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 0924f7ec43cb0..0439607d1155f 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -27057,6 +27057,7 @@ M:	Alex Elder <elder@kernel.org>
+>>   M:	Daniel Thompson <danielt@kernel.org>
+>>   S:	Maintained
+>>   F:	Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
+>> +F:	drivers/gpio/gpio-tc956x.c
+>>   F:	drivers/misc/tc956x_pci.c
+>>   
+>>   TOSHIBA WMI HOTKEYS DRIVER
+>> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+>> index 020e51e30317a..36631ca722fa3 100644
+>> --- a/drivers/gpio/Kconfig
+>> +++ b/drivers/gpio/Kconfig
+>> @@ -743,6 +743,18 @@ config GPIO_TB10X
+>>   	select GPIO_GENERIC
+>>   	select GENERIC_IRQ_CHIP
+>>   
+>> +config GPIO_TC956X
+>> +	tristate "Toshiba TC956X GPIO support"
+>> +	depends on TOSHIBA_TC956X_PCI
+>> +	select GPIO_REGMAP
+>> +	default m
+>> +	help
+>> +	  This enables support for the GPIO controller embedded in the Toshiba
+>> +	  TC956X (and Qualcomm QPS615).  This device connects to the host
+>> +	  via PCIe port, which is the upstream port on an internal PCIe
+>> +	  switch.  On some platforms, a few of the GPIO lines are used to
+>> +	  manage external resets.
+>> +
+>>   config GPIO_TEGRA
+>>   	tristate "NVIDIA Tegra GPIO support"
+>>   	default ARCH_TEGRA
+>> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+>> index b267598b517de..c3584e7cba9b4 100644
+>> --- a/drivers/gpio/Makefile
+>> +++ b/drivers/gpio/Makefile
+>> @@ -178,6 +178,7 @@ obj-$(CONFIG_GPIO_SYSCON)		+= gpio-syscon.o
+>>   obj-$(CONFIG_GPIO_TANGIER)		+= gpio-tangier.o
+>>   obj-$(CONFIG_GPIO_TB10X)		+= gpio-tb10x.o
+>>   obj-$(CONFIG_GPIO_TC3589X)		+= gpio-tc3589x.o
+>> +obj-$(CONFIG_GPIO_TC956X)		+= gpio-tc956x.o
+>>   obj-$(CONFIG_GPIO_TEGRA186)		+= gpio-tegra186.o
+>>   obj-$(CONFIG_GPIO_TEGRA)		+= gpio-tegra.o
+>>   obj-$(CONFIG_GPIO_THUNDERX)		+= gpio-thunderx.o
+>> diff --git a/drivers/gpio/gpio-tc956x.c b/drivers/gpio/gpio-tc956x.c
+>> new file mode 100644
+>> index 0000000000000..0dc6b1028d970
+>> --- /dev/null
+>> +++ b/drivers/gpio/gpio-tc956x.c
+>> @@ -0,0 +1,130 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +/*
+>> + * Copyright (C) 2026 by RISCstar Solutions Corporation.  All rights reserved.
+>> + */
+>> +
+>> +/*
+>> + * The Toshiba TC956X implements a PCIe Gen 3 switch that connects an
+>> + * upstream x4 port to two downstream PCIe x2 ports.  It incorporates
+>> + * an internal endpoint on a internal PCIe port that implements two
+>> + * Synopsys XGMAC Ethernet interfaces.
+>> + *
+>> + * 35 GPIOs are also implemented by an embedded GPIO controller.  Three
+>> + * registers control the first 32 GPIOs (other than 20 and 21, which are
+>> + * reserved).  Three other registers control GPIOs 32 through 36. GPIOs
+>> + * 22-24, 27-28, 31, and 34 are treated as "input only".
+>> + *
+>> + * There is a TC956X PCI power controller driver that accesses the
+>> + * direction and output value registers for GPIOs 2 and 3.  These
+>> + * GPIOs control the reset signal for the two downstream PCIe ports.
+>> + * Their values will never change during operation of this driver, and
+>> + * this driver reserves these two GPIOS.
+>> + */
+>> +
+>> +#include <linux/auxiliary_bus.h>
+>> +#include <linux/gpio/driver.h>
+>> +#include <linux/module.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/gpio/regmap.h>
+>> +
+>> +#define DRIVER_NAME		"tc956x-gpio"
+>> +
+>> +#define TC956X_GPIO_COUNT	37	/* Number of GPIOs (20-21 reserved) */
+>> +
+>> +/* The GPIO offsets are relative to 0x1200 in TC956X SFR space. */
+>> +#define GPIO_IN0_OFFSET		0x00		/* Input value (0-31) */
+>> +#define GPIO_EN0_OFFSET		0x08		/* 0: out; 1: in (0-31) */
+>> +#define GPIO_OUT0_OFFSET	0x10		/* Output value (0-31) */
+>> +
+>> +/*
+>> + * There are two sets of registers, each representing (up to) 32 GPIOs with a
+>> + * stride of 4 bytes (IN1 is 4 bytes past IN0, EN1 is 4 bytes past EN0, etc.).
+>> + */
+>> +#define GPIO_PER_REG		32
+>> +#define GPIO_REG_STRIDE		4
+>> +
+>> +static int tc956x_gpio_init_valid_mask(struct gpio_chip *gc,
+>> +				       unsigned long *valid_mask,
+>> +				       unsigned int ngpios)
+>> +{
+>> +	/*
+>> +	 * GPIOs 2 and 3 are used by the PCI power control driver, and
+>> +	 * we don't allow them to be used.  GPIOs 20 and 21 are reserved
+>> +	 * (and not usable).
+>> +	 */
+>> +	bitmap_fill(valid_mask, ngpios);
+>> +	bitmap_clear(valid_mask, 2, 2);
+>> +	bitmap_clear(valid_mask, 20, 2);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int tc956x_gpio_probe(struct auxiliary_device *adev,
+>> +			     const struct auxiliary_device_id *id)
+>> +{
+>> +	DECLARE_BITMAP(zeroes, TC956X_GPIO_COUNT);
+>> +	DECLARE_BITMAP(fixed, TC956X_GPIO_COUNT);
+>> +	struct gpio_regmap_config config = { };
+>> +	struct gpio_regmap *gpio_regmap;
+>> +	struct device *dev = &adev->dev;
+>> +
+>> +	/* We need the regmap pointer, stored in our platform data */
+>> +	if (!dev->platform_data)
+>> +		return -EINVAL;
+>> +
+>> +	/*
+>> +	 * Only some of our GPIOs are fixed direction:
+>> +	 *	22, 23, 24, 27, 28, 31, and 34	(all input-only)
+>> +	 * Set up the fixed bitmap to indicate which are fixed.
+>> +	 */
+>> +	bitmap_zero(fixed, TC956X_GPIO_COUNT);
+>> +	bitmap_set(fixed, 22, 3);
+>> +	bitmap_set(fixed, 27, 2);
+>> +	set_bit(31, fixed);
+>> +	set_bit(34, fixed);
+>> +
+>> +	/* All fixed GPIOs are input; the zeroes bitmap indicates that. */
+>> +	bitmap_zero(zeroes, TC956X_GPIO_COUNT);
+>> +
+>> +	config.parent = dev;
+>> +	config.regmap = dev->platform_data;
+>> +	config.label = DRIVER_NAME;
+>> +	config.ngpio = TC956X_GPIO_COUNT;
+>> +	config.reg_dat_base = GPIO_REGMAP_ADDR(GPIO_IN0_OFFSET);
+>> +	config.reg_set_base = GPIO_REGMAP_ADDR(GPIO_OUT0_OFFSET);
+>> +	config.reg_dir_in_base = GPIO_REGMAP_ADDR(GPIO_EN0_OFFSET);
+>> +	config.reg_stride = GPIO_REG_STRIDE;
+>> +	config.ngpio_per_reg = GPIO_PER_REG;
+>> +	config.init_valid_mask = tc956x_gpio_init_valid_mask;
+>> +	config.fixed_direction_mask = fixed;
+>> +	config.fixed_direction_output = zeroes;
+>> +
+>> +	gpio_regmap = devm_gpio_regmap_register(dev, &config);
+>> +	if (IS_ERR(gpio_regmap))
+>> +		return PTR_ERR(gpio_regmap);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static const struct auxiliary_device_id tc956x_gpio_ids[] = {
+>> +	{ .name = "tc956x_pci.tc9564-gpio", },
+>> +	{ }
+>> +};
+>> +MODULE_DEVICE_TABLE(auxiliary, tc956x_gpio_ids);
+>> +
+>> +static struct auxiliary_driver tc956x_gpio_driver = {
+>> +	.name		= DRIVER_NAME,
+>> +	.probe          = tc956x_gpio_probe,
+>> +	.id_table       = tc956x_gpio_ids,
+>> +	.driver = {
+>> +		.name		= DRIVER_NAME,
+>> +		.owner		= THIS_MODULE,
+>> +		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+>> +	},
+>> +};
+>> +module_auxiliary_driver(tc956x_gpio_driver);
+>> +
+>> +MODULE_DESCRIPTION("Toshiba TC956X PCIe GPIO Driver");
+>> +MODULE_LICENSE("GPL");
+>> +MODULE_ALIAS("auxiliary:" DRIVER_NAME);
+>> -- 
+>> 2.51.0
+>>
+> 
 
