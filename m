@@ -1,215 +1,259 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012067.outbound.protection.outlook.com [52.101.66.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E533BED59;
-	Thu, 16 Jul 2026 09:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86223C141F
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194124; cv=fail; b=FDcMOzWm2y4Ye/xtfWwojXvcZ4I53bDMkslAuKQPX9e04Qit7PaWHmMbnfM1L8H2/4vdaDV4JLS4ZOww6+XzoEba5Qd5lVxknortt2StMB2MWclQUJxMxz5fcwJc3JPb415ESlPUNrau861DCkagRdRNEmkiMYf53IP+Z6w5pl0=
+	t=1784194231; cv=pass; b=Zqs/jmeEQbzJ7inbZCSjt9ZTXtRv8p9ihRSXSf52+g601/or/eZ8E9lEaa2R55Jg7VnHcIAYfM+cq0Xfz2upA+20bPYRtm/vmlwLJYAJBYofjT6N/496poc92eHgC+Rsmtky5SQTSuO8JNdGuGj7pmAHOkkYMKBboRBB2UZEFUg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194124; c=relaxed/simple;
-	bh=wR5wMSsvfBUqTYyvap9wzPGGqRgJE9pHku0A3YhUEE4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oDRVrkCKsHc38+JOY9w0Npy0uI4TQqU6I/nKqqsKM9SYb/pcay5JClkSuM6zoAcqdisUUs1GKb+TLjd1ZYqALlgTOXp47Ynx6vE448iyYtlvivwgLkluVig+zaA6RC2TKpb7CrW0idBPfA1zXcWz/eFga0TdWmFKWaPh8qVkBrU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=eVesY0+b; arc=fail smtp.client-ip=52.101.66.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	s=arc-20240116; t=1784194231; c=relaxed/simple;
+	bh=QEHatCPgUz5QULPujcSct7LiVVyaQ2UL0dKtrQX2mpw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ey+U6StRmpE2TP4tnQZ6Gcl6sTBtHmfBlluwqiq+0Gy+ZekDQpELJnu4+8/ddcqI9gBDjUIYNqxVuzHk/GknE6MZ9usaH62rHn4XNaeQLci//JuUNAsxuGEclueE5bAGe3URdTki+v8ZQOh6iFMUt7TPJxvYHH3CmjipF8388zc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rq986dAY; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="eVesY0+b"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k+wPBlWub2xbnBjAcPqdhRbPpsFvX0BaQ4LuSYmAtNyB4BDM8aOspHU4uyYpdFCCeJk5K5WKdbbg/x1RzMrVTFqrBS4HjLW7a3yqabQPxds0Y6v8bhHMmGEz2BrAoGNiYGoHyyDxuHMwT2v/LMH2guiWByf+jkt/NGzSo9ZgBaSGNwAQujiBavHEy29rkwUothovmLKhSMb5mI2R824VvmrbmbR5iwwW1RnwuZQERPbFWOLvY77Xb+lLYZgqXYV6xkW+BJU1a+SvSYoZCDbZAX6R2jLs5ut6+yn6Caz+FTxjZCEScCPFsZ+zTTdUpk18bHfq/qqUVkwZ8eclog4Hkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EfroHOs7fm+hBRbKyMIhxx3LXL6UcDk9LSAqyP9Jjtc=;
- b=osmrytnSXw1jeX2OLH8vwkaMuTjl6CDZn6DiY3UbGdp87UaDtBUboHAbokDVKKIPDNtI1ER7eZ4/36ybeRxkjc7qC/lDOs+bPizY41ffim4Yuk8r5PZmgk6yl02U84P6zE+K6jXTd6wBpEYmz9is64FFGU/W1bKGv6ee4bXDDRpsuI4upKt2v5JYhOkab0fUEiPmadweI26+PmLjosztepHernHerYO3nmxtTRBH3jNUTQBDF97xc60dFOdUtWAcKHkxiIYg6t8m49ZoTfKLsKCT47aBK7NcYFRUOOJMhLSeSlWejSY5FctGarAqgyX/TFpjfvco4qjSv7/tblMmqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EfroHOs7fm+hBRbKyMIhxx3LXL6UcDk9LSAqyP9Jjtc=;
- b=eVesY0+bqXhfrKuP5TNatUlglCIKybSWKEIfAgrRqcNJNTeuzeIVz6rCc8eLCTTu5CL9z/eQgaKxVx/9ZazLUb0PlrVmGUxmlsWXWzEnCd783DiCqLylRKU7Di7nGXsTCR3YlHVa3Cqlfyay1mop276q7tGsBzEY4DYxSKugyLat7TakkpcPyMhl7IqdhORjCTniPcTEq39q0dAiawuOr1FsN9HE9dHkIrR61BlNi1nWQ7ePpPyMVkPFV2zxC/hfIt0MWKJ183hgak90r6ggKmyxS2Wosq8cnbroKs2/vIDKjBfFXp/o3ynK4pWUbwU7/Yw9nmlrOLsazNxQd/fhtw==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- GV2P189MB2981.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:267::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.4; Thu, 16 Jul 2026 09:28:35 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0245.003; Thu, 16 Jul 2026
- 09:28:35 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Weiming Shi <bestswngs@gmail.com>
-CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Xiang Mei
-	<xmei5@asu.edu>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>
-Subject: RE: [PATCH net v3 2/2] tipc: fix NULL deref in tipc_named_node_up()
- on empty publication list
-Thread-Topic: [PATCH net v3 2/2] tipc: fix NULL deref in tipc_named_node_up()
- on empty publication list
-Thread-Index: AQHdE7f/Qg/mrV11ZEODMiwB1rIarLZv3yng
-Date: Thu, 16 Jul 2026 09:28:34 +0000
-Message-ID:
- <GV1P189MB1988239A710C4D42F6DCA15EC6C72@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260714174110.1571033-1-bestswngs@gmail.com>
- <20260714174110.1571033-3-bestswngs@gmail.com>
-In-Reply-To: <20260714174110.1571033-3-bestswngs@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|GV2P189MB2981:EE_
-x-ms-office365-filtering-correlation-id: b38d4aa2-83b8-4ab0-314e-08dee31c9c06
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10067099003|38070700021|18002099003|22082099003|56012099006|11063799006|6133799003|4143699003;
-x-microsoft-antispam-message-info:
- uBtTBE599rkZfdJBefdBL+6DbCG4SgTB2xrLbDq7MLmTyFtjzTD3UwJqUUPzVC7uSH9KX0Ssmzd4rpntyHYSffDyEOg4LQpEyMhhu8cE4dgckBtwKmmKcLalfvoT6D+RIz0PDQ3Toph0//14X92P/xvr5+BE6QTJycrqYrqdbVfMtm/YW/iJhGd/H6q01oyx2samfx2obhXVwNDvvQSuf3V7+4XQSX3BH134vuhqTTmHwm/n1xVTW4VL5gO4qya8XB+RwCmL7rg5U7Hd4ona7xbTTFLiKGUEv5ejGR9LX1VXNmn1CbdTPGPegohpPsmoKRmwUEJJSONmuN20b4Nu6dP0iEg/uZomq8RdgJvNxWk2uH/svZ6Dk2XvVtuwkEUJlaiMTP9r0EDrE88v/SGssNHvTMWdvkgA6eyFctc1yWyiG1d4fyrAhftUVsWJ/OphWGwASaBSpzSyeZqex1r/yBXbh2q4ljpCEPxK4pMUnh01QQu/MMJHRoRTeSx2LmKhl5F0N3+IsCYUoq4KZS7o7q5VGw4y3KNlmgTGv3/RHSh0PNVcF3GarTISFLhXVUMC9aiXZJK3g0ryBGuWMRXmmvTTug/G393s1j0GHq/QyK9p7MV9+K9PlnYD5zxlmy7/JPgv8C2vdX1xQGLUcxcWj4Tgb3CXchXotqDQtJLPZS9TRu+UIQSe4d8Trl0dUhKxC78W9yvYWUYnYlydrtP9O6RHCBsfApmA43jBFO1wKqQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10067099003)(38070700021)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?MG9xpN2vAEhuUyJaaRyJvx7FCEouPAmYXpasE3msKyuJzaXcaET0F2fGji64?=
- =?us-ascii?Q?meHr8SJu8j0GsoYdJIxWEjETaFN7b5M/YdnJSpBQgcBATNtatsC8Rjv8RQWd?=
- =?us-ascii?Q?ntB4RTKw22a1wmuT/FzPAT+eWrxVePUQpqHzRhGUT6gVJ9urHWFvgDqV+Xb+?=
- =?us-ascii?Q?zz+pHRjiDggLHYkv/d2fLg1ZdXZoKUf40d2bcxLyuCAaVWgiaXT6Mk6IRSbJ?=
- =?us-ascii?Q?rNAiK/ofoHimO41Xq3DbVbJvEuLiKIDAsz4aogdFCpZHqIoDu9e9ZIbs4je4?=
- =?us-ascii?Q?SjajgN/82xEREo+xb9AAW3dtdh1LQGE+GmXzFkaLt/RvypNGNuplV6mnrIxA?=
- =?us-ascii?Q?HTSxSlITGJrb+kF30lXzCtVRFfcEwhL8jhQa3MGYgoqEZhQnfBIFDe7ASlD9?=
- =?us-ascii?Q?6GfuiWJ1TgoSIAZSj8k2I57Iqr6vQuTt2xK7SUTxNlvyFEEw31RNVIw+heCb?=
- =?us-ascii?Q?4IhHgx/xxzIXXY6IugYvLU+DmAoJVrmD1MRyTIpNXb22VQD9LdD3ihBVMZJo?=
- =?us-ascii?Q?Qeuo9+lVbQVnkUOdCXLXhrn8zBjKipL3bIQUpoHK9GHEBLs0FvoHC2X9XSg9?=
- =?us-ascii?Q?H+6iuRqzJEMnuDaI2kdI5fLpH6cHFbcxJl8IwlQdT0rhSwOEXYaEEOduk455?=
- =?us-ascii?Q?vMOXMsdAvYcKx3XDzbBgLjSWk2rI36dbJC+O/2aMZTrtFSpV6GjDO5oTJx5W?=
- =?us-ascii?Q?RycB3V7GjCkE7IlrtKttJG1v2Gn4QgGSE3Y0yPlxkqY/MBHd1mA6JVzeEIMV?=
- =?us-ascii?Q?wM2FeAI//SSYDB5rzO10Vo10h4GZrNkurMQuaR2JAkjexNgdQu9fchXVYubv?=
- =?us-ascii?Q?FrrtiCrTTyanvyrLhtwUqXhZy4s4KI+VoNGUkDrCqUh9fltBQY74aVX/CrAm?=
- =?us-ascii?Q?M7rFiU0AepWsBY23JxkWQXRvuqn0NWrhcdUGi25IdjegdOJwizd+tidSaX1h?=
- =?us-ascii?Q?Wz/SJ8pUIFIt9ptDykgIK2HAgTdVeRiKpEHNUOata1XjV9XJuzEXJl7GwyrU?=
- =?us-ascii?Q?TfCXiQZpbFlgQdjRFGtil1BnlBjdFfXQF7y+Kgb58ptYcjg+VpslAR/Nen8Y?=
- =?us-ascii?Q?A0PmJlF0c7RbdgDK5tvlDQeKK2358C4eBapUQKRLVSSezsIUvVKWcHLCMTdi?=
- =?us-ascii?Q?4NdMkIzYzVJY2W/0wHflV6sXGDhBPJds7C8d798stsaeyB1WvLCnBiP4nrjX?=
- =?us-ascii?Q?4XZGVlRE4Qq/9iQA7cSMk6tpcVBtQ+zQaYEoHv6emfKQNFUV6yHKbeWF2/Tn?=
- =?us-ascii?Q?W64I916e7dmT0tRomVkE6RRxOmHuqc7rWqz6s78ocKF9ZTvwPc/fSUck4v8J?=
- =?us-ascii?Q?BmXFJ6JN7US5FI0UAvC26MOQPQrWet8gP2dofiua5DChlrp5NAuUCKNuYWm/?=
- =?us-ascii?Q?2r76dxHFdfPrpUh0UBEycw331mxkmAvHyHGQRY50ni91qA7ynJZQk93MK3MW?=
- =?us-ascii?Q?eSg2qRCVbvJxo9cnkpYap1pyyBle6Z0Znoe5L1uNwMMvbDd6wg6BAINT38MA?=
- =?us-ascii?Q?uRyOMZdtMYU4T8QKDtBV5fyKq5kA7+o/0+WGVjQnUi/Zoh8PlljqoBDwx0bK?=
- =?us-ascii?Q?PT5fZ5/22omyWEm3W3XoZLg3QZYVFB2IabJHoOoEwwYJRpRWPD72x9DfPpMA?=
- =?us-ascii?Q?ji1GUU3RgkfO7VZXytf0G0TUhqw2dKKnHnRXATJoxEdOvZ/nHAwyp2ZUexTG?=
- =?us-ascii?Q?NBBp9GAHO/hkWGJCZqGXr47lloD5KypY4Y79HHI/hqIhyHbiVy5qhRdLuPZv?=
- =?us-ascii?Q?DZqRX4Sx0A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rq986dAY"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b015b2d792so7610699e87.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:30:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784194228; cv=none;
+        d=google.com; s=arc-20260327;
+        b=U+rofg04oUTgOVpfsQ9Jnd3mplhqi2Es/mwIxpz3n8YyaLtPDUi++GaPCA7noc/8aF
+         19v1S3zKBsyDXiYavlrHNXy5Yjq5jxq95QiZCOx/PAmc5qTw1DvLIOwSLbu2gfyvI8Gw
+         HBZ/lwdPrIW1/edn/KRBkCAFq6+cSh1IBZLlNwEuf7vYpkC6tAKbo4lj/9SdaxDiJCQ7
+         ukgvUwCLyG5L+2Nvg3gVfuCfEtDxgy/Ej3/Q2YmaldMOShjmaVrvO20NmE8aTtQRAeac
+         LZTFUVCrem2Q5hgb8jXFrzgy96L+h14YXQEe7/r3BWg7g/U4JMqRum2A4nDjTDpUqmgL
+         QSiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WS394X+Kw3Dgf7nUjZ+wZTSIL0JaKnCQXCnKc8IU5iI=;
+        fh=JI3h9u+zcTfgqfsrvii+M2LwYW6m91hHHyR7PjAVQZI=;
+        b=rW/6JeBh3gqYSSlWNm/kPEIk/Ed5jMa6WZ1pE5DRMIFWufifzZHbCgTducNwKc6WJ/
+         KyoIFkOSx0RWPlw67XSrAvK2rtX7qOWUud4J326Zw29HoJsv2SiDVPnol8mnHAZ795zK
+         t1WUHYVSfjPBsJLBfkpzp0B76B4aDyHmeGvkP0bBOiUMr1YIDdejMcjyXbX41gJtmLWY
+         rcI2VNeekq69ocurjQCSD3UnqR1mOiu1dgBbHf9pprTHhbyyF8qIlOzLGtpwHR0Lcfso
+         z1vji/Z77choBCLp2Tsa9xSQ6e8Lj42Cslt3mcortWHuNPT6XRoIgLpbhunzEjUXcTOG
+         ShZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784194228; x=1784799028; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WS394X+Kw3Dgf7nUjZ+wZTSIL0JaKnCQXCnKc8IU5iI=;
+        b=rq986dAYYeG96SEjd7OQ1bTQCvnR+Wnklmfbb1z0bzoRFyNDLoGK3D/PGInZSYidGE
+         OdPBLjetUJnpKPUhxptq9ZhUXJmadTCvQE3O2jevHTbixHybzcGJBDFcQTvToNk1hwog
+         aqOOzN3mvVw6ebkdTcR0k9tZWEcOdFpwFjGEDGB3dpEGNxU5gZyqR6WijJKFxu7W7+vW
+         NW7ABANpx9yoBV+8kgT5c3oBnAAICtdhvJ9qFu8BuYuaKfAYM1KVYCoSYHde+3FAv89m
+         JzPSz2/v8qFBL3nbaN0LseJq0J6IpLPl2bgsy2wi7vP8JML7+oG3onle3FHUp4XWiMDw
+         zpug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784194228; x=1784799028;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WS394X+Kw3Dgf7nUjZ+wZTSIL0JaKnCQXCnKc8IU5iI=;
+        b=esFeG6v0cdeox+n/a73ei70wqOEI/kK/c9h+LEhlB6fBPTZdeF9Ks7Ju3jHD+Ya63h
+         QluckF1SVsbD9pMXyTM0QT2cD9H8k7AIeHLR5WqqPXGFfQryRmFl5Nv4taQStewkbssj
+         VDcqvpb5Gc8MjTY0Df4P4x6LeLIBdvpCbniIbQS6AGeiRYPsSuTcd7XFNXXqBXr++VVb
+         fxTocK13adVdALALN+v9vx+ALWHuMG4/b/WNb7bIER3kHoJxph0FexyczuiDSf5jHebh
+         oZpeDMaHm2fWyVOx5vnyk2Yqtwhw7Jvk6Z5bKaGK6aubXwyJk4VF9v0ELAhTjxuKbIcP
+         0MPQ==
+X-Gm-Message-State: AOJu0YzYQOfOHQUakdaGNc1fMvu8eq+iYm1zT4itEOhcHf+6RY+Lbs6Y
+	ZpLBQ9SqwJVHr5y4+YWrCsh6KWbJwDXR5SGa7P72S5i9z3lg2odx01f3MACW9fj5KTAfPCkF2G7
+	C93J0Tt0qcFWxZ51i5JW5exKzIjvjhjw=
+X-Gm-Gg: AfdE7clTvlJBa2ouGbgjGkOf5nETAHpd/LQR9aofaLjjp5HbQVAWibeIOoNSRJBeawF
+	ulhmYfpUgag8/5FPycG+qpPdONQ7lHmUMp8tsSCzi3lrKIZG5ISO3N82oYjwyxS2aGpWZN76fOP
+	LpyRt9RrQNwli5NVta6VJLYOwy2s5/96GsPWB5E2ueavddYb2MRMIDVRL/tABrAo5eMEOPncjB4
+	v6KVD+lJqiruTyNZG6EcW32fvT+ifWezTwSV+frgxaNXDgf9C1ruIRqD75sAK9yOqJ2a6rfwT5u
+	QD8dA+TOjFzCbxwlTOg2TZ+0ucIxoCbHDpBBCKFko95rGR8rIYGA9rTiShxkwxmyYpL/e7SE41w
+	q8A==
+X-Received: by 2002:ac2:5686:0:b0:5b1:58d6:4542 with SMTP id
+ 2adb3069b0e04-5b159b6fd09mr2305986e87.14.1784194227328; Thu, 16 Jul 2026
+ 02:30:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b38d4aa2-83b8-4ab0-314e-08dee31c9c06
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2026 09:28:34.9005
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EkWQYOz5NFZff4GQviJ6CN9fmemDYs0oKpUeI+jHAA286wcNbhnZXGwVxYNpK4mc2W7WiN1CqjQeTwDVP7f0rVJWZJi9hZK51a09JVZIQbA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2P189MB2981
+References: <20260714140722.111645-1-maciej.fijalkowski@intel.com> <20260714140722.111645-4-maciej.fijalkowski@intel.com>
+In-Reply-To: <20260714140722.111645-4-maciej.fijalkowski@intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jul 2026 11:29:49 +0200
+X-Gm-Features: AUfX_mx3YuK7-PMdW_fqvP-8PVYBxqa6igSapUEDh9lpTolcc79xRdPp5nkh2Jk
+Message-ID: <CAL+tcoDc-a=Tx3VGfjnPoLq2hWaGCBjUe+NzHeaz=QPvjWEXjA@mail.gmail.com>
+Subject: Re: [PATCH v3 net 3/6] xsk: provide sufficient space in pool->tx_descs
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
+	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	bjorn@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->named_distribute() ends by stamping the last_bulk flag on the tail skb via
->buf_msg(skb_peek_tail(list)). When the publication list is empty no skb is
->enqueued, skb_peek_tail() returns NULL, and buf_msg(NULL) is dereferenced.
+On Tue, Jul 14, 2026 at 4:08=E2=80=AFPM Maciej Fijalkowski
+<maciej.fijalkowski@intel.com> wrote:
 >
->tipc_named_node_up() runs this on &nt->cluster_scope. With a node-id
->configuration cluster_scope is populated only later by tipc_net_finalize()=
-, so a
->peer link that comes up first reaches named_distribute() with an empty lis=
-t. It
->is reachable by an unprivileged user (TIPC genl ops use
->GENL_UNS_ADMIN_PERM) over a UDP bearer in a user+net namespace:
+> The temporary Tx descriptor array in an XSK buffer pool is currently
+> sized from the Tx ring of the socket that creates the pool.
 >
-> KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-> RIP: 0010:tipc_named_node_up (net/tipc/name_distr.c:196)
->  tipc_named_node_up (net/tipc/name_distr.c:196 net/tipc/name_distr.c:221)
->  tipc_node_write_unlock (net/tipc/node.c:428)
->  tipc_rcv (net/tipc/node.c:2185)
->  tipc_udp_recv (net/tipc/udp_media.c:392)  Kernel panic - not syncing: Fa=
-tal
->exception in interrupt
+> This is insufficient for shared-UMEM Tx. A later socket may have a
+> larger Tx ring and submit a valid multi-buffer packet containing more
+> descriptors than the first socket's ring, while still remaining within
+> the device's xdp_zc_max_segs limit.
 >
->The peer holds back this node's later name updates until it sees a bulk wi=
-th the
->last_bulk flag, so simply skipping the empty bulk would stall it.
->Emit an item-less bulk when the list is empty, and break out of the build =
-loop
->on allocation failure instead of returning, so the last_bulk flag is appli=
-ed to the
->last queued skb.
+> A packet-framed batch parser bounded by the temporary array cannot reach
+> the end-of-packet descriptor in that case. It leaves the packet on the
+> Tx ring and encounters the same packet on every subsequent attempt,
+> stalling Tx processing for that socket.
 >
->Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
->Reported-by: Xiang Mei <xmei5@asu.edu>
->Assisted-by: Claude:claude-opus-4-8
->Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->---
-> net/tipc/name_distr.c | 16 +++++++++++++++-
-> 1 file changed, 15 insertions(+), 1 deletion(-)
+> Size the temporary descriptor array to the larger of the first Tx ring
+> and the device's xdp_zc_max_segs capability. This keeps the array large
+> enough to inspect one maximum-sized valid packet. Larger shared Tx rings
+> do not require further resizing, as they can be processed over multiple
+> batches.
 >
->diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c index
->ba4f4906e13b..dbcfa965de34 100644
->--- a/net/tipc/name_distr.c
->+++ b/net/tipc/name_distr.c
->@@ -165,7 +165,7 @@ static void named_distribute(struct net *net, struct
->sk_buff_head *list,
-> 						dnode);
-> 			if (!skb) {
-> 				pr_warn("Bulk publication failure\n");
->-				return;
->+				break;
-> 			}
-> 			hdr =3D buf_msg(skb);
-> 			msg_set_bc_ack_invalid(hdr, true);
->@@ -192,6 +192,20 @@ static void named_distribute(struct net *net, struct
->sk_buff_head *list,
-> 		skb_trim(skb, INT_H_SIZE + (msg_dsz - msg_rem));
-> 		__skb_queue_tail(list, skb);
-> 	}
->+
->+	if (skb_queue_empty(list)) {
->+		skb =3D named_prepare_buf(net, PUBLICATION, 0, dnode);
->+		if (!skb) {
->+			pr_warn("Bulk publication failure\n");
->+			return;
->+		}
+> Following commit will actually address the data path side.
+>
+> Fixes: d5581966040f ("xsk: support ZC Tx multi-buffer in batch API")
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-This approach is wrong because:
-1. When 'list' is empty, it is caused by memory allocation failure before. =
-So, it is likely that 'skb' could be NULL again because of memory allocatio=
-n failure.
-2. Even if 'skb' is not NULL, allocation of non-data (zero-in-size) message=
- will break the receiving peer when it handles this message.
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
->+		hdr =3D buf_msg(skb);
->+		msg_set_bc_ack_invalid(hdr, true);
->+		msg_set_bulk(hdr);
->+		msg_set_non_legacy(hdr);
->+		__skb_queue_tail(list, skb);
->+	}
->+
-> 	hdr =3D buf_msg(skb_peek_tail(list));
-> 	msg_set_last_bulk(hdr);
-> 	msg_set_named_seqno(hdr, seqno);
->--
->2.43.0
+I noticed there is one interesting comment[1] from sashiko, which
+actually I think is valid. Probably we don't need to do it in the fix,
+but we might need to target -next branch. Now the tx_descs is limited
+by the first tx ring.
 
+[1]:
+"...since tx_descs is not
+reallocated if it already exists, the array size is permanently frozen
+to the first socket's size.
+
+Should the array be resized to accommodate the largest shared ring, or
+should the batch readers be updated to cap their reads to the array's
+actual size?"
+
+Thanks,
+Jason
+
+> ---
+>  include/net/xsk_buff_pool.h |  6 ++++--
+>  net/xdp/xsk.c               | 10 +++++++---
+>  net/xdp/xsk_buff_pool.c     | 12 ++++++++----
+>  3 files changed, 19 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+> index ccb3b350001f..f5e737a83055 100644
+> --- a/include/net/xsk_buff_pool.h
+> +++ b/include/net/xsk_buff_pool.h
+> @@ -102,12 +102,14 @@ struct xsk_buff_pool {
+>
+>  /* AF_XDP core. */
+>  struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+> -                                               struct xdp_umem *umem);
+> +                                               struct xdp_umem *umem,
+> +                                               u32 max_segs);
+>  int xp_assign_dev(struct xsk_buff_pool *pool, struct net_device *dev,
+>                   u16 queue_id, u16 flags);
+>  int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *um=
+em_xs,
+>                          struct net_device *dev, u16 queue_id);
+> -int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struct xdp_sock *xs);
+> +int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struct xdp_sock *xs,
+> +                     u32 max_segs);
+>  void xp_destroy(struct xsk_buff_pool *pool);
+>  void xp_get_pool(struct xsk_buff_pool *pool);
+>  bool xp_put_pool(struct xsk_buff_pool *pool);
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 43791647cf18..385a3f4a1b32 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -1525,7 +1525,8 @@ static int xsk_bind(struct socket *sock, struct soc=
+kaddr_unsized *addr, int addr
+>                          * and/or device.
+>                          */
+>                         xs->pool =3D xp_create_and_assign_umem(xs,
+> -                                                            umem_xs->ume=
+m);
+> +                                                            umem_xs->ume=
+m,
+> +                                                            dev->xdp_zc_=
+max_segs);
+>                         if (!xs->pool) {
+>                                 err =3D -ENOMEM;
+>                                 sockfd_put(sock);
+> @@ -1557,7 +1558,8 @@ static int xsk_bind(struct socket *sock, struct soc=
+kaddr_unsized *addr, int addr
+>                          * utilizes
+>                          */
+>                         if (xs->tx && !xs->pool->tx_descs) {
+> -                               err =3D xp_alloc_tx_descs(xs->pool, xs);
+> +                               err =3D xp_alloc_tx_descs(xs->pool, xs,
+> +                                                       dev->xdp_zc_max_s=
+egs);
+>                                 if (err) {
+>                                         xp_put_pool(xs->pool);
+>                                         xs->pool =3D NULL;
+> @@ -1575,7 +1577,9 @@ static int xsk_bind(struct socket *sock, struct soc=
+kaddr_unsized *addr, int addr
+>                 goto out_unlock;
+>         } else {
+>                 /* This xsk has its own umem. */
+> -               xs->pool =3D xp_create_and_assign_umem(xs, xs->umem);
+> +               xs->pool =3D xp_create_and_assign_umem(xs, xs->umem,
+> +                                                    dev->xdp_zc_max_segs=
+);
+> +
+>                 if (!xs->pool) {
+>                         err =3D -ENOMEM;
+>                         goto out_unlock;
+> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> index 1f28a9641571..12c9fb29af05 100644
+> --- a/net/xdp/xsk_buff_pool.c
+> +++ b/net/xdp/xsk_buff_pool.c
+> @@ -42,9 +42,12 @@ void xp_destroy(struct xsk_buff_pool *pool)
+>         kvfree(pool);
+>  }
+>
+> -int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struct xdp_sock *xs)
+> +int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struct xdp_sock *xs,
+> +                     u32 max_segs)
+>  {
+> -       pool->tx_descs =3D kvzalloc_objs(*pool->tx_descs, xs->tx->nentrie=
+s);
+> +       u32 nentries =3D max(xs->tx->nentries, max_segs);
+> +
+> +       pool->tx_descs =3D kvzalloc_objs(*pool->tx_descs, nentries);
+>         if (!pool->tx_descs)
+>                 return -ENOMEM;
+>
+> @@ -52,7 +55,8 @@ int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struc=
+t xdp_sock *xs)
+>  }
+>
+>  struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+> -                                               struct xdp_umem *umem)
+> +                                               struct xdp_umem *umem,
+> +                                               u32 max_segs)
+>  {
+>         bool unaligned =3D umem->flags & XDP_UMEM_UNALIGNED_CHUNK_FLAG;
+>         struct xsk_buff_pool *pool;
+> @@ -69,7 +73,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct =
+xdp_sock *xs,
+>                 goto out;
+>
+>         if (xs->tx)
+> -               if (xp_alloc_tx_descs(pool, xs))
+> +               if (xp_alloc_tx_descs(pool, xs, max_segs))
+>                         goto out;
+>
+>         pool->chunk_mask =3D ~((u64)umem->chunk_size - 1);
+> --
+> 2.43.0
+>
