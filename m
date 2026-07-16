@@ -1,176 +1,221 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986F93ACA4C;
-	Thu, 16 Jul 2026 15:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784214225; cv=none; b=cL/GoN1V0pkvV5WmW1eeLe4tnP+tySyMDc1/ZhhjECG1txq4/hTR/eAU9z/6PeUlwrWoSv27NIr+hPkbjxyRWHGnwDxcgRVuo6yJ1zrRmKyCvd9Ne86trb2hzviEvaSN2xbGvvtYfp4Pdk4uf+Z2FiETjDEymMs5uQSg+OaaB8A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784214225; c=relaxed/simple;
-	bh=qq+VdI/9klQNjOHl3y1LbQQxSp4ObtXo54lV0dv8Yrg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fzElxXOonnx2cFQDmFnWenTVGnv7NURpKNsER6AGIOHUgyKW+iTHK2S9PIn6dNLd19LGQnPcMyYXxmFnwuizt0Wl5kj1UY4wrdp1DxpgiSmI0BOc/tvmsdmjoVDR6TYWGpmd6bcJBQ1jY8PRL7NNvLl+jvQQsCz0hnzJIecPfOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=lHX/Myvd; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=JISOUZ4g; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC6E4248A8
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 15:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784214443; cv=pass; b=YoBSvlQ03UsnMuu2czlrpt+zov6jwDN725M2gWtS+0mifAlAuEg0KZiSv/crV9gI9I2B0FwlES1KIzDcmyY8bBIrdG6rinbG4UeLKzbe5iRJ81y/8w3xKNsTiIB4mcpjlOV9P2mmRT51vv8QxCyMjkE7VBSGzeobFZAzV6tQnB4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784214443; c=relaxed/simple;
+	bh=LUfaQzJn2bnCsR/uWb1AJU4vhXIfysy8sSohRbkEbgo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DWMmvRzbbRzlDZ1OmuGjJNFnA1U6Oq5bkaujnvoN1FofeyuhXKIIeH1o2Z79wdgybeXdnXj/e8x6PpvOWud284LPmW1KHI5Pjo0mKRNNyfSpR56w7Qv13gvftr43Erw/2svBH0FdX2uBP3qNd/BOpJoyGYSFbHegJKM+e59JE0Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2CE4j8Z; arc=pass smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="lHX/Myvd";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="JISOUZ4g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784213656;
-	bh=qq+VdI/9klQNjOHl3y1LbQQxSp4ObtXo54lV0dv8Yrg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lHX/MyvdoCM99kLTkPtBIB+iIhx3/mmJjoZZAFuJslxPpXbJ4EA2K9BAiIPAOwktH
-	 s9nGrnU8R5Hy73HRK40aRtp/dWNgo/sRSFONYNUPINqJratK7Ysf99kCPVQv0RTd2R
-	 pOD1qlIPr2B8dtZMpw1ZyBcLIaCbq0sbXN6+d8fF/3HvBLCoQaFyuQsHqOv1CNTF2J
-	 WDUCBQfPy8bT2nD4o/OWaqir+Uu2WFtzWbdpuuhq7FGdyHozx5qTX25kz14Al2jWBR
-	 fxXi2OhMWzKvHmbx/h7UJ923/hvi0gTw5wMyIjywLxExv3vmQqDM0xtgwBmVxMWGRv
-	 +AafBIUo9G+7A==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id EBC6D48A5A; Thu, 16 Jul 2026 14:54:16 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784213654;
-	bh=qq+VdI/9klQNjOHl3y1LbQQxSp4ObtXo54lV0dv8Yrg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JISOUZ4gSwfzIeCssWjyNP3aiJ2jp9+Y1szY5tBuGmxwKoVoi0z4vEJee7cG+yYOd
-	 xpETcCt3sR0A1vsgabf0opGCjvYP4MrQtljdfxe+IVUDKCYO9HYo2mt/65j5HJHFAm
-	 ik0z+8QiwFP2sw27VNMVZgoJ9ojxUWiIOngP+YmmfqImcZf9iAaql0diN+k1cRqtTE
-	 tucoOMqpZ/vJjmBlW8RTmKoZgxxgY+weL3eLDossRIn1+RYLa6jdxcGKnQ1zBVrFqd
-	 EO9ppTyIb2WDtLa6ZVRvIP1cqdFbfmCS+mRzqLjJWdZps5TQsmbX+SErhxx217YfwO
-	 SyXfqKzo2o6QQ==
-Received: from [IPV6:2003:c6:9f1c:3c00:bbfc:bbca:ccd8:f82e] (p200300c69f1c3c00bbfcbbcaccd8f82e.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:bbfc:bbca:ccd8:f82e])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id F3BA648A41;
-	Thu, 16 Jul 2026 14:54:13 +0000 (UTC)
-Message-ID: <de0bfcdc-01d4-4683-97e1-16c0466023ef@birger-koblitz.de>
-Date: Thu, 16 Jul 2026 16:54:13 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2CE4j8Z"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5b01910b499so656455e87.0
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 08:07:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784214439; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rKPUkZyg+Mhv0NuLU1YKrnKbuG0W3hV6mJtpFygI7FJY1e7v+qj9clY+YNZgn/ePgN
+         Y9Nyu934VqJAgPBpzfxSdyGZcrSzWqoKdf5QgKjpL1r35xJlCpH+tSQKoymupN85MGiI
+         0sOCyPEgQpQiMjAUTd3a3bF4S+2HPdC8jQ+fUuWrXhY6XKwonO0sblqiPjW5A7jMnluP
+         Z+VjvY2XGJY7Dp8w0bhdemYIAWq77YqlqVdKZd5PSBjarxVFV0nY20fe1xqeKRCyX+YP
+         UK/64BFHKgD7dYwEzTHzQ6Gu4ywmopyIwUtf2ZKIc6Wcate+ZFhn0QpPqJr4qUsL+mla
+         GYSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k7M2ApiM/8dxQZGiLlnNgbMz+W9cwib1Oj2a063GQa0=;
+        fh=cKSZeFolDVjodMnzlQG7J6sztudrBHF+9PL3zmh99Ug=;
+        b=jhAJV89H95Nj0eW/IMMOXznJ7qoBfNo20FTpSB/sTkUaSp3vo++zitipuW83R3crPG
+         2gsaXEgENDVf7XYef3DP9oVwyGGaCC449OcptFqRGn3DTUQSSpJvzkuuDPnlyi8ghPeR
+         dpPeqVzVVaHnxJhFNQLYVROJPe1eD7eEwe5x2H5Gnah9twqVio0OLamfRcD33D0Td0rJ
+         Jrfws1mhiPdw7baDyBpN9YO1HU2ActYUTFvAr84fG3153V2On22ABvJFwngyMd/sQVWT
+         uBm9yOIqQ2OH/jtMdAaJxSIelUnIhIxZTq7HRCNIWxiMqdTitB1fsmZiv5p3aU7h51BG
+         cUFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784214439; x=1784819239; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k7M2ApiM/8dxQZGiLlnNgbMz+W9cwib1Oj2a063GQa0=;
+        b=f2CE4j8Z2HAWNVepdjltH97LkNovDc6TTN1/BbQu18b1HFKPA7B1VAGdE2BIhfYqYo
+         woKSEhTynCx0bF9vrARKHs6U8QD1BfWDpireD9BgRLDbcXNt1RhUVtgC1ZbFE4Xdu78Q
+         RgD6J50vdQAz7ot6jIxlQH3GXVIXCJ4l8dG75xYH34KTObjVhrqhna0NXt9JXVmNNaNR
+         ZXL/9pX3E0Kwko1pSlmIEkM5kPXVsPPF9rRaI9GW57iTN4Iz7vVR5gimpyPQ+WlH9NH0
+         KBw0tNK72fabCqv44CND4SD9GbqPY9tj6ckm1RG/F2z89gC1W6jn4qzJJ80Lw/zSRj34
+         vkYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784214439; x=1784819239;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k7M2ApiM/8dxQZGiLlnNgbMz+W9cwib1Oj2a063GQa0=;
+        b=U/TD/7faxli3tfoyGIDMuRnk9YJT3hHAH1AAxVdJsat+cqDKBsFVKfS5iiP/GHPB1J
+         096fThL63n71vOkpBbNgNsWO2+4oRiAakwb6GyvkodSEhmOhDn9zMTm5qkCAEKWRY8rQ
+         ixedpLY2vA3g9e7boK20gcSYRn6pMwO4cazxs2Zik1gG66WVmFEAMbmqo/QHEb07dZGL
+         r8iv+YcR7eUhw7xnO/sMk+qLWmGibJOhKA9JNUJUNcyuvtyPUVctg3c48CUJ582H0vtX
+         NbWu4K7FlNGshMeyTulQaZNyAtmDmR7TtofTaCe5P/2k9Y3GXcjIuB6aGk8Kz8IOmXzE
+         Qy1Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrDpw5827CXt5SiA1/XWS4AgR0JRIFp8Bi38nNuphjMFQcbbIojtF015BakFoMaNvjE2fC/Fsg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1sQYMetb8voQz55+s7zSGvffgH+qVUbqb8xKw/P+AKKzMdFnU
+	qFXek+EbmdOMNQrZXCaW+zpqLpFdtbl1TEckskG7jDTLy0d3tWzjj3WLRXylyv5lbrdgeL8cU/F
+	AB8B06jbar9JXN+4YlGfIuyJv9yimB7k=
+X-Gm-Gg: AfdE7ck/nheH6igECus/KS0KNVkS8MmbehMp8+ehugM3vPNg78egzAqiagzmPbRpiYU
+	/TWJf25T75FzxM+xqrPMS3tsu5ThGytpXOixff/hwlFAQDVn26WQdAp8BsRY4msk2kYoiLul+Q4
+	LryNBy6xcgfdo69XZBEPzi5pSz9B/8qKw0CT5XVxWii7aktIT4pauyFVdQPx3Z+YvW/7oFTG1GQ
+	tE7gldwwVjfR0lhks4ioPKe9fSH3Lemqkn8dCOYeyd68q43qrMrGFwERKrCXpGm1JJ5BVFSChsG
+	srcmOOuSR62f0S51U0iqxc6052cLdSxOGOXi3AsISvbnX5DSOfWfsYnXR3xOp7ikGOa5Cbb9ERc
+	A0Q==
+X-Received: by 2002:a05:6512:1192:b0:5ae:b5d7:4b99 with SMTP id
+ 2adb3069b0e04-5b28a0f58camr826062e87.0.1784214439114; Thu, 16 Jul 2026
+ 08:07:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 02/12] ax88179_178a: Add HW support for
- AX179A-based chips
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
- <20260708-ax88179a-v2-2-0800fedb2e16@birger-koblitz.de>
- <1f858852-8e8e-4cff-bbdc-eb6751f44ca5@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <1f858852-8e8e-4cff-bbdc-eb6751f44ca5@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+ <20260714-bpf-meta-inside-skb-ext-v1-3-5871c07a8dd6@cloudflare.com>
+ <aljKKt6nCB3fjFVA@devvm7509.cco0.facebook.com> <87a4rrjdj4.fsf@cloudflare.com>
+In-Reply-To: <87a4rrjdj4.fsf@cloudflare.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jul 2026 17:06:41 +0200
+X-Gm-Features: AUfX_mzujQhauOkZ5JSUcux-n5CL7A4vg5pNAEiHfjZwtqvCZWJ7lHML3E_SwaU
+Message-ID: <CAL+tcoB4fwO5WxAcnW3QRErSQCnMBVMh6mfhFfG_dZhL+=MA6Q@mail.gmail.com>
+Subject: Re: [PATCH RFC net-next 3/6] bpf: Allow skb extensions to survive
+ packet scrubbing
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Stanislav Fomichev <sdf.kernel@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	kernel-team@cloudflare.com, Jakub Kicinski <kuba@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jul 16, 2026 at 3:00=E2=80=AFPM Jakub Sitnicki <jakub@cloudflare.co=
+m> wrote:
+>
+> On Thu, Jul 16, 2026 at 05:11 AM -07, Stanislav Fomichev wrote:
+> > On 07/14, Jakub Sitnicki wrote:
+> >> skb_scrub_packet() drops all skb extensions unconditionally via
+> >> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv,
+> >> vxlan_rcv, etc.) and cross-netns forwarding (dev_forward_skb).
+> >>
+> >> This makes it impossible for a BPF program to pass metadata via
+> >> bpf_skb_ext through a tunnel or across a netns boundary. The extension
+> >> is always lost at the scrub point.
+> >>
+> >> Introduce skb_ext_scrub() which consults each active extension before
+> >> discarding it. Extensions that request preservation are kept while the
+> >> rest are torn down. When the extension slab is shared with clones, COW
+> >> ensures isolation. Replace the skb_ext_reset() call in
+> >> skb_scrub_packet() with skb_ext_scrub().
+> >>
+> >> Expose the opt-in mechanism to BPF via the BPF_SKB_EXT_F_NO_SCRUB flag
+> >> for bpf_dynptr_from_skb_ext(). A program that sets this flag when
+> >> creating the extension signals that its metadata should survive
+> >> scrubbing.
+> >>
+> >> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+> >> ---
+> >>  include/linux/bpf.h      |  1 +
+> >>  include/linux/skbuff.h   |  2 ++
+> >>  include/uapi/linux/bpf.h |  3 +-
+> >>  net/core/filter.c        | 11 +++++--
+> >>  net/core/skbuff.c        | 82 +++++++++++++++++++++++++++++++++++++++=
++++------
+> >>  net/ipv4/udp.c           |  2 +-
+> >>  6 files changed, 86 insertions(+), 15 deletions(-)
+> >>
+> >> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> >> index 6b918a5b61bf..a46ca53c5b27 100644
+> >> --- a/include/linux/bpf.h
+> >> +++ b/include/linux/bpf.h
+> >> @@ -4214,6 +4214,7 @@ static inline int bpf_map_check_op_flags(struct =
+bpf_map *map, u64 flags, u64 all
+> >>  #ifdef CONFIG_BPF_SKB_EXT
+> >>
+> >>  struct bpf_skb_ext {
+> >> +    u64 flags;
+> >>      u8 buf[CONFIG_BPF_SKB_EXT_SIZE] __aligned(8);
+> >>  };
+> >>
+> >> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> >> index 584d8440d352..66afa5489007 100644
+> >> --- a/include/linux/skbuff.h
+> >> +++ b/include/linux/skbuff.h
+> >> @@ -5063,6 +5063,7 @@ void *__skb_ext_set(struct sk_buff *skb, enum sk=
+b_ext_id id,
+> >>  void *skb_ext_add(struct sk_buff *skb, enum skb_ext_id id);
+> >>  void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id);
+> >>  void __skb_ext_put(struct skb_ext *ext);
+> >> +void skb_ext_scrub(struct sk_buff *skb);
+> >>
+> >>  static inline void skb_ext_put(struct sk_buff *skb)
+> >>  {
+> >> @@ -5132,6 +5133,7 @@ static inline bool skb_has_extensions(struct sk_=
+buff *skb)
+> >>  static inline void __skb_ext_put(struct skb_ext *ext) {}
+> >>  static inline void skb_ext_put(struct sk_buff *skb) {}
+> >>  static inline void skb_ext_reset(struct sk_buff *skb) {}
+> >> +static inline void skb_ext_scrub(struct sk_buff *skb) {}
+> >>  static inline void skb_ext_del(struct sk_buff *skb, int unused) {}
+> >>  static inline void __skb_ext_copy(struct sk_buff *d, const struct sk_=
+buff *s) {}
+> >>  static inline void skb_ext_copy(struct sk_buff *dst, const struct sk_=
+buff *s) {}
+> >> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+> >> index 3eee4467422d..02da170205de 100644
+> >> --- a/include/uapi/linux/bpf.h
+> >> +++ b/include/uapi/linux/bpf.h
+> >> @@ -7734,7 +7734,8 @@ struct bpf_insn_array_value {
+> >>
+> >>  /* Flags to control bpf_dynptr_from_skb_ext() behavior. */
+> >>  enum {
+> >> -    BPF_SKB_EXT_F_CREATE =3D (1ULL << 0),
+> >> +    BPF_SKB_EXT_F_CREATE    =3D (1ULL << 0),
+> >> +    BPF_SKB_EXT_F_NO_SCRUB  =3D (1ULL << 1),
+> >
+> > Do I understand correctly that you do prefer the NO_SCRUB mode? Any rea=
+son
+> > we need to have scrub mode? If it's all produced/consumed by bpf, maybe
+> > we can just carry this data unconditionally instead of having a SCRUB/N=
+O_SCRUB
+> > option?
+>
+> Yes, that's correct. We definitely need NO_SCRUB but I don't have a use
+> case that relies on metadata scrubbing. I believe Kuniyuki also would
+> like the no-scrub to be the only/default behavior for Google's egress
+> use case.
+>
+> I've made it an opt-out mostly because that the existing metadata
+> (skb->mark, skb->data_meta) gets scrubbed. Although as Jakub K has
+> pointed out to me - you can circumvent it by using bpf_redirect into the
+> target netns. So I guess we have a precendent?
+>
+> I could use input from folks operating in K8S-like environments, if
 
-On 7/15/26 00:58, Andrew Lunn wrote:
->> +	/* Initialize MII structure */
->> +	dev->mii.dev = dev->net;
->> +	dev->mii.mdio_read = ax88179_mdio_read;
->> +	dev->mii.mdio_write = ax88179_mdio_write;
->> +	dev->mii.phy_id_mask = 0xff;
->> +	dev->mii.reg_num_mask = 0xff;
->> +	dev->mii.phy_id = 0x03;
->> +	if (!ax179_data->is_ax88772d)
->> +		dev->mii.supports_gmii = 1;
-> 
-> O.K, so you are keeping going.
-> 
-> I still think mii has to die, and you need to swap to phylink.
-O.K. you have me convinced to try harder. Especially with the suggestion
-to create own PHY-IDs for these embedded PHYs it looks doable and not
-too ugly.
+Sorry, I don't quite follow it here. Why don't we need the NO_SCRUB
+here? The crucial point here is to allow skb traverse across different
+containers, which is also what I expect. We do need to support this
+case to make this feature standalone, which means it is independent
+and not affected by other components.
 
-> 
-> It is a bit ugly, but there is a way around the PHYs having a totally
-> different API, despite the same ID register values.
-> 
-> Some generation of Marvel Ethernet switches set the OUI part of the
-> PHY ID register, but left the product part as 0. They even documented
-> this was intentional. We worked around it by trapping reads to
-> registers 2 and 3, and filling in the missing information, using an ID
-> from the marvel range which was not in use. We could then make the
-> Marvell PHY driver do the right thing.
-> 
-> You can do the same here. Intercept the reads to registers 2 and 3,
-> and return a different ID. You can then extend the PHY driver.
-> 
-Doing that and seems to work. I will be cluttering ASIX's own PHY-ID space
-with vendor part 0x3b, see the ax88796b PHY driver which already provides support
-for the 772A, 772B and 772C PHYs. So I will add there the 772D/E and 179A and 279.
-This seems safe, since ASIX appears to have stopped selling (discrete) PHYs. At
-least I am no longer able to find any references to PHYs built by them. It
-also appears appropriate since with the firmware they are using the PHYs are more
-ASIX PHYs than whatever other PHY IP-core they may have been.
+And one part of what I'm doing for BPF timestamping v2 is to address
+the issue in the container scenario as well, FYI.
 
-It will take a bit of time to convert the code, though, and I will submit that
-then as v3.
+Thanks,
+Jason
 
-A comment on phylink and USB-Ethernet NICs, though. Grepping for phylink
-in drivers/net/usb shows only 2 drivers that use phylink: asix_devices (the
-antiquated one using the 772A-PHYs) and lan789xx, which is also rather old.
-There are more than 30 drivers there, so that makes < 7% phylink usage vs 93% mii.
-
-And at least for the 179A-based controllers it is clear that there is an
-advantage not to use phylink: When the link changes, the controller sends out
-an interrupt URB, that has everything in there to set up the link. No need to
-do costly USB requests to query the PHY. In fact, the proprietary driver
-works hard to not talk to the PHY at all. A good example is WoL, which is in
-principle a PHY configuration issue. For setting that up, the driver actually
-never talks to the PHY, everything necessary is done by the controller's
-firmware. For USB Ethernet controllers it makes a lot of sense to abstract the
-PHY away and rely only on controller commands that concurrently configure MAC and
-PHY to reduce USB transfers.
-
-On the bright side, it appears possible to convert also the r8152 driver to phylink:
-The RTL8157-based USB controllers have:
-[10848.976063] usb 2-1: New USB device found, idVendor=0bda, idProduct=8157, bcdDevice=30.00
-[10848.976068] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=7
-[10848.976071] usb 2-1: Product: USB 10/100/1G/2.5G/5G LAN
-[10848.976074] usb 2-1: Manufacturer: Realtek
-[10884.829998] r8152 2-1:1.0: PHY REG 2: 001c
-[10884.830079] r8152 2-1:1.0: PHY REG 3: c862
-rg finds:
-#define RTL_8251B                           0x001cc862
-
-RTL8159:
-10970.521382] usb 2-1: New USB device found, idVendor=0bda, idProduct=815a, bcdDevice=30.00
-[10970.521386] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=7
-[10970.521389] usb 2-1: Product: USB 10/100/1G/2.5G/5G/10G LAN
-[10970.521391] usb 2-1: Manufacturer: Realtek
-[10970.797123] r8152 2-1:1.0: PHY REG 2: 001c
-[10970.797207] r8152 2-1:1.0: PHY REG 3: c890
-#define RTL_8261C                           0x001cc890
-
-RTL8156:
-[11299.622636] usb 2-4: New USB device found, idVendor=0bda, idProduct=8156, bcdDevice=31.04
-[11299.622641] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-[11299.622644] usb 2-4: Product: USB 10/100/1G/2.5G LAN
-[11299.622647] usb 2-4: Manufacturer: Realtek
-[11299.882412] r8152 2-4:1.0: PHY REG 2: 001c
-[11299.882467] r8152 2-4:1.0: PHY REG 3: c840
-#define RTL_8221B                           0x001cc840
-
-RTL8153b:
-[11498.161341] usb 2-4: New USB device found, idVendor=0bda, idProduct=8153, bcdDevice=31.00
-[11498.161348] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-[11498.161350] usb 2-4: Product: USB 10/100/1000 LAN
-[11498.161352] usb 2-4: Manufacturer: Realtek
-[11810.891092] r8152 2-4:1.0: PHY REG 2: 001c
-[11810.891138] r8152 2-4:1.0: PHY REG 3: c800
-#define RTL_GENERIC_PHYID                   0x001cc800
-
-Looking into the Realtek PHY driver code, what is done there appears to duplicate
-the code in r8152.
-
-
-Cheers,
-   Birger
-
+> no-scrub-only mode would be acceptable there? Daniel, John, any opinion?
+>
+>
