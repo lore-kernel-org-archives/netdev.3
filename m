@@ -1,43 +1,49 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C506141D4F2
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA43B41D64B;
+	Thu, 16 Jul 2026 11:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784202790; cv=none; b=W2ZaY69cSZMEhSjE5cwoobgtMxzy0JH8VDHxBYM1uxdlhh8fNR3b3DzNIsWa6/eRQjt4ki1y5u99kfQsyHjnRS57SgWm/J52HafjuNDkMCr5zCbf6b4Oz6+hY3LhmP9qLQqqk2l/cHSEu89ycXyw9qf+ArBRloicCMaPRS5ILd4=
+	t=1784203189; cv=none; b=F1UL9BskL5n+qzYUl0HS+4qygB/xxC91zyupnCGtKbEK8x4Uet5efNrqExcTY4Lgo/+R1u5YmPTcVQ859YCP3Aeccz8bX9ypdZNuOKZqXKy5Vf+8K5wdzZyLfpKSi5Rii2SiZloKgQ7lUq77cXKVwybTgqGuvU7acjFNYsLS4vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784202790; c=relaxed/simple;
-	bh=wiNBOpF9mBCvlKgVoZNmib1ytCoepz6XQr/TxoD7bVo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQ6kFG1oyi76JPaJhJXx1B86KwUhqOEubXRC6aev39eOvEhYliZxpp4PLYufcQtz2UT7A3XodlRuxkKFilAOs3CiuajjaGPQjYlTV4OBimf5Bn/u2qKkw+RBVrE+wc3RgvtSLqJGyFXOxgBwwdMcg1vYRaZdp/V2OZA8ES/ZY0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dous64v8; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784203189; c=relaxed/simple;
+	bh=QRH2nCRi2AJcsHgASTiwpMuQqva/K/ZADnblDXPGNxo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZoXSTH6WHuJ8BTLr80xP59EpS4eYpjbzjyiDM865okHr48vGH1/NRX+Eee1/BbNXHRdBURucZNJ9Wg/Co7tSrHzVPwrJwpikOzBb6HtEbJRICzeb9QEoVVM1bsASV2bEk/sz78gmQdbI3dYEWNZ+UlSdT26MifFGNeV8n7VKOoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=odIo4Y5O; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dous64v8"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784202786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bWgeMwa2DqsCaJo9mzWXEgnkWChcVu8T9yh5w+OyZ3w=;
-	b=dous64v8bKUyNoU6tEw1FHDQ3C/ZnLr9le7l19zUvjbpx4/z1pMDEaO+sTMrnbH2kvn8rP
-	P0hPCfOXQceH8WPevHRI98UOjZ5l27+tZFBTs1mry36YmmSEKd774iTopUunMa7lv1c8Bk
-	z6datw3MHMD6ODk0aLwOivIM5qGhk6g=
-From: Tao Cui <cui.tao@linux.dev>
-To: dsahern@kernel.org,
-	leonro@nvidia.com
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>
-Subject: [PATCH iproute2-next v7 2/2] rdma: display resource limits in curr/max format
-Date: Thu, 16 Jul 2026 19:52:37 +0800
-Message-ID: <20260716115237.1859633-3-cui.tao@linux.dev>
-In-Reply-To: <20260716115237.1859633-1-cui.tao@linux.dev>
-References: <20260716115237.1859633-1-cui.tao@linux.dev>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="odIo4Y5O"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=AzSLZfuT3hZEITMJME2LjKJXE9lnjM46O9KbbYTXnSc=;
+	b=odIo4Y5Oh1uXwkFcktScRbAAsyrrKPtR2lwmkuHIm8BvYXdEgzKVmG/9IQIMXQFNGvmI12V+M
+	WaD6LMTaIXCJNftOAsJ7cLfRFzjMSsfGi3KZrK0wM+sSjg3Ux+kJiUmV31O09rz7TkOZbtxIV8Z
+	gMGTG1iPaAeAH/ZhTs5hWgw=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h1BDw43Xqzcb0m;
+	Thu, 16 Jul 2026 19:50:24 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8F6DE4057D;
+	Thu, 16 Jul 2026 19:59:42 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Jul
+ 2026 19:59:41 +0800
+From: Jinqian Yang <yangjinqian1@huawei.com>
+To: <mst@redhat.com>, <jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>,
+	<eperezma@redhat.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <liuyonglong@huawei.com>,
+	<wangzhou1@hisilicon.com>, <linuxarm@huawei.com>, Jinqian Yang
+	<yangjinqian1@huawei.com>
+Subject: [PATCH v3] virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
+Date: Thu, 16 Jul 2026 19:59:40 +0800
+Message-ID: <20260716115940.394832-1-yangjinqian1@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,81 +51,84 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
-From: Tao Cui <cuitao@kylinos.cn>
+virtnet_poll_cleantx() contains a do-while loop that cleans up
+transmitted TX buffers and calls virtqueue_enable_cb_delayed() to check
+whether more buffers need processing. When the virtio backend stops
+responding during guest reboot, used->idx is never updated, so
+virtqueue_enable_cb_delayed() always returns false and the loop never
+terminates. Then it will block reboot process, and the guest will hang.
 
-Parse the new RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX netlink attribute
-to show resource limits alongside current counts in curr/max format:
+The problem occurs during guest reboot under network traffic:
 
-  Before: 0: mlx5_0: qp 123  cq 45  mr 200  pd 10
-  After:  0: mlx5_0: qp 123/131072  cq 45/65536  mr 200/1000000  pd 10/32768
+  1. kernel_restart() -> device_shutdown() traverses the device list
+  2. virtio_dev_shutdown() calls virtio_break_device() which sets
+     vq->broken = true
+  3. virtio_dev_shutdown() then calls virtio_synchronize_cbs() to wait
+     for in-flight callbacks to complete
+  4. A virtio interrupt fires, softirq is deferred to ksoftirqd which
+     calls net_rx_action() -> virtnet_poll() -> virtnet_poll_cleantx()
+  5. virtnet_poll_cleantx() enters the do-while loop and never exits
+     because the QEMU backend has stopped updating used->idx, despite
+     vq->broken having been set to true in step 2.
 
-JSON output provides separate <name> and <name>-max fields per resource
-type, so scripts can compute usage against the device limit; resources
-without an upper bound (e.g. cm_id, ctx) are reported without a -max
-field:
+Since the loop runs inside ksoftirqd (a SCHED_OTHER kthread), it is
+visible to the scheduler and does not trigger a hard lockup. However,
+the kthread never leaves the loop, so RCU detects it as a CPU stall
+and reports it periodically. Meanwhile, the reboot process remains
+blocked in device_shutdown() because virtio_dev_shutdown() cannot
+complete its synchronization step, and the guest hangs permanently.
 
-  $ rdma resource show -j
-  [{
-      "ifindex": 0,
-      "ifname": "mlx5_0",
-      "qp": 123, "qp-max": 131072,
-      "cq": 45, "cq-max": 65536,
-      "mr": 200, "mr-max": 1000000,
-      "pd": 10, "pd-max": 32768,
-      "cm_id": 0, "ctx": 0
-  }]
+This can be reproduced on a guest with a virtio-net device: run iperf3
+traffic in the guest, then trigger reboot. The reboot occasionally hangs
+permanently with RCU stall on ksoftirqd.
 
-Backward compatible: no output change when the kernel lacks the new
-attribute.
+Observed on ARM64 KVM guest:
 
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Link: https://lore.kernel.org/all/20260615003646.168704-1-cui.tao@linux.dev/
+  CPU#1 RCU stall (ksoftirqd/1), repeated periodically:
+    virtqueue_enable_cb_delayed_split <- virtnet_poll <- __napi_poll <-
+    net_rx_action <- handle_softirqs <- run_ksoftirqd <-
+    smpboot_thread_fn <- kthread
+
+Fix by adding a vq->broken check in virtqueue_enable_cb_delayed(), so
+that the loop exits immediately when the device is broken, allowing
+the device shutdown to proceed.
+
+Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
 ---
- rdma/res.c   | 16 +++++++++++++++-
- rdma/utils.c |  1 +
- 2 files changed, 16 insertions(+), 1 deletion(-)
+Changes in v2:
+  - Moved vq->broken check to virtqueue_enable_cb_delayed().
+Changes in v3:
+  - Updated the patch subject prefix.
 
-diff --git a/rdma/res.c b/rdma/res.c
-index 062f0007..7efced8d 100644
---- a/rdma/res.c
-+++ b/rdma/res.c
-@@ -55,7 +55,21 @@ static int res_print_summary(struct nlattr **tb)
+v1: https://lore.kernel.org/lkml/20260713132025.703147-1-yangjinqian1@huawei.com/
+v2: https://lore.kernel.org/lkml/20260716035201.3736582-1-yangjinqian1@huawei.com/
+---
+ drivers/virtio/virtio_ring.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index b438dc2ce1b8..5c169fbb418a 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -3233,6 +3233,14 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
+ {
+ 	struct vring_virtqueue *vq = to_vvq(_vq);
  
- 		name = mnl_attr_get_str(nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_NAME]);
- 		curr = mnl_attr_get_u64(nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
--		res_print_u64(name, curr, nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
-+		if (nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX]) {
-+			uint64_t max;
-+			char max_name[64];
++	/*
++	 * When the device is broken there is no point in polling used->idx,
++	 * the backend will never update it. Return true to let callers
++	 * exit their cleanup loops instead of spinning forever.
++	 */
++	if (unlikely(vq->broken))
++		return true;
 +
-+			max = mnl_attr_get_u64(
-+				nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX]);
-+			snprintf(max_name, sizeof(max_name), "%s-max", name);
-+			print_u64(PRINT_JSON, name, NULL, curr);
-+			print_u64(PRINT_JSON, max_name, NULL, max);
-+			if (!is_json_context())
-+				pr_out("%s %" PRIu64 "/%" PRIu64 " ", name, curr, max);
-+		} else {
-+			res_print_u64(name, curr,
-+				      nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
-+		}
- 	}
- 	return 0;
- }
-diff --git a/rdma/utils.c b/rdma/utils.c
-index 87003b2c..90ea1c55 100644
---- a/rdma/utils.c
-+++ b/rdma/utils.c
-@@ -480,6 +480,7 @@ static const enum mnl_attr_data_type nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
- 	[RDMA_NLDEV_ATTR_EVENT_TYPE] = MNL_TYPE_U8,
- 	[RDMA_NLDEV_SYS_ATTR_MONITOR_MODE] = MNL_TYPE_U8,
- 	[RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED] = MNL_TYPE_U8,
-+	[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX] = MNL_TYPE_U64,
- };
+ 	if (vq->event_triggered)
+ 		data_race(vq->event_triggered = false);
  
- static int rd_attr_check(const struct nlattr *attr, int *typep)
 -- 
-2.43.0
+2.33.0
 
