@@ -1,213 +1,125 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6E241DE14
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784204189; cv=pass; b=MFzF1Y7GCsJrcLx9cCHwfkPluULXgKOoxTUMwdpOOlXYcV7uq0Q2M4VafDnUo821VMlHbIBSltmDtCN+DcJI/6A6MpD6TW6u0FDRmIBCZZxA6usjhgsoXuk/FT4dKVJvZMp+n+0ipflq+UQ2jCHxHGslltxcgeGu2DPLwVkEOr0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784204189; c=relaxed/simple;
-	bh=OI5CR551vZ38Fw1JyzAypqs6isFToLHGY9xedqEEwUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S+zO2w1T8R6lsGA6BRCFlMG/+jW1GpmLW+2h0zH0RfrGGboIkueKa9o0OMmLEWr/MVduLrtSQF3gwSYxvb70k3YWoQihAcfZ6QqTYfIe2UAyJh3nxX2LU2T3T656rHRvR+Izdb7HagbgW3/YtDPye2/IURS2ekb8iiHi1zWHol0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bG73Slvx; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F01130F95F;
+	Thu, 16 Jul 2026 12:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784204412; cv=none; b=lx63tpJe4zA+REUuvmJ40Osn9XEGq/VRfe1jTHo+/P4B0Ga8O8XtVDbfy4CbAbIoWppYOym8/Kftz+pFFR2PQvIqatnh/WOePDRCj3CT9xvyK5SbSTX72U2a/bKl+Iio4/wwtySOfT3Uryyn8sThQ5yM5EdV9IXdzrmYYkXeq7U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784204412; c=relaxed/simple;
+	bh=9TX3CitbWUKGHrB8D51zYwiiD5iRycUXS2KAi9+WQTM=;
+	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=X1SMJsmFz3vSGD8OngTiPvrWdOBkxuAQ9Lfqky4CrltQReGqZynZ2gS/QbLbh8wRpjeuP2vFZwIVAEtD2+YRgmiDoGqwsGXLK0YOWP9WS1DzS4NJhFMNVwPneLP/CwqVFPyun1nGHHbCMUTdQJ2JxSQ4rDyw6DxERLrnjv/K+pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=P7seXuic; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bG73Slvx"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b0117dda13so2979538e87.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 05:16:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784204169; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RQ1N2wL3LxuxpmCC1OoidYBEJxsfTV7xnjmO5jyxT3fQscuV4B0inPm3UY3YFGCqX/
-         uRY23/9/XEZaHTrsRhWMH0VV6BX7Sy3P++0s+PQVAwoPa28iFfo0XKeVrwHG0M/48Ba9
-         lrz6dDQNjcSQbBcB5DKPmzux+/oTO6JX8B6RYuvS8FGSv5/5vL116vfhMqYzwcyTx4um
-         YrES3ZUfQSLTE6j5u9s4nO3qbxXrtbjYHcPm9mr/nvzZ2tpSdMElVhe0wMlkk56pVn77
-         LE3H0JVRFifAqVcW/IZXTQwK959jHrmq6BKryyhIdIfxttAZ19tZHrKcCq/KYqs93ptC
-         oiXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DvPcLTIf8tzenpklFTitrlKKvKQ7nhdgU0jncYQi+RE=;
-        fh=iQyfmahMB3C/1k5ZOqTpS1ZCAShbyOWo1k7gUDQ9Q6o=;
-        b=qiEngRlbiwYsNv4VXkj9rBjC9b9DLpIEuI8FZDtNH+dxhYcHqvXmmVQ6hcjJCirH36
-         zYO7PCa8KPxVs3kbqRcvhn6modgUNgmaGSXysLdJy2pp0UPc3z4vWxr1dLT6h0GhgEYR
-         gMa9zvxegsFlwarLCT8TTqVcOZtRMq9nGWLsen06TIdCZs1klcvzUoJ8nDnUg/OvNE0z
-         6n72tIb0S8dT8V2HKhXK+uvLS+9UEETOFLa0f5SAnSbhsbUv2xQYIJPNMHBPIRyDOeHH
-         dEJ8kCWKJLIJpWl9qsC3TBbQ9W7V0Q6RMlPIPpTMHYFCn3+Fp+qme2/jYi+GM1zQphxl
-         20vQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784204169; x=1784808969; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DvPcLTIf8tzenpklFTitrlKKvKQ7nhdgU0jncYQi+RE=;
-        b=bG73SlvxuAq3lrT+7hYy0v2BN6gwq+ym+ffDHO9SvyAkSck04d5gKymRrXmSMtQoWj
-         jXDKhECcQbGLVa5G6gIS98AgiRp+NwSmVsxNNnOX4J+X0oU22ZLujlwgOwYwHbfggyLZ
-         w647QeYkgwAlDb9e4FJcuVlf2NDr9vZ/+YCghIwVgoFkLs5PmNOD7rmQepYqZa9w5VB4
-         qrAxWb5M28cP0VPnGCa9aJ7Yjr6aYnGUDQHWGRo+9VwMoBrrihlXVGe0v3V59G+/KZps
-         8egEGgy8M0U01f/89RRlW8ZD7pPI2A7CE0PyADpb0OsGOanoUl7Cfh9GTz4qBkvKZhNg
-         fGCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784204169; x=1784808969;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DvPcLTIf8tzenpklFTitrlKKvKQ7nhdgU0jncYQi+RE=;
-        b=f5sWg8tPYn7z/2f9BzHJ3RB26ui/wTl9KTkZOW3I0MmPNfLMatUGwkyzMfAlfLQRjN
-         f1Qza8//SU+cMwlU6NBy7KUQ/42NNZyV/zk7Yj3du/C+tESeO7SN4O4rSvGY6Q88Fdg5
-         cTJkiNC3prn0QtW3rT7Straf8gkBxaDuao+6WUxxNyAkEOUqfZSntnPkw9lXH5Vjs02R
-         nRBMS+bJycB0Ghnxpj+XNa+YiqZyacBkis89awfT+qcOe4M7Wq4ZTQE01Nh3KrpMzgHS
-         YhyGJ+cyHo6b3QLD9QVoekYeU5ezAaZSXXKsf5/E75yWb6QkCWOayoWWCT886Hez9Po2
-         GZ4Q==
-X-Gm-Message-State: AOJu0Yx6Mhf2/A7QymPQ4XmIQHXkhfXJhdvK74Re34fQLZzS65BoJBHU
-	JXJzkwGDpA6+9kCgR2Hn6c1UwZpshF0mrmiviV3xqM2KFmF8JreIMpvejDCx7IO/uHvTLvh2nTr
-	qoMSXgyqS41t6WQ6paGzybG1WaR6vpSw=
-X-Gm-Gg: AfdE7cn50GpQOskHGZZED+rrcj8DEy9MUNfzjQJ7bq/CVCZdR0iHiRpNV990tW2i5Pd
-	lDgtl0oWyvc/0LOQ8Lob002iQDq/e/pF+c2hQEqhopNS7tN0haJPgAr+k3dfPbm+YOXCHPynzh4
-	74u887ssijRZE9EeYSUFZwZtlN2qndeQlbeDAyNPE3QRgrdwuP8vbBBRmRgXNrM/BahFjTIeroD
-	LmwKX6O8BzTpKdA5Dwsi3+jvenENVgo+/mlr3Ibx1ASk5MlFcp4mo2HTOTgCjB/7Q3/KbtBsj+2
-	E87vMCn1/J72G++JNOL9J7IE9GrCp0qH3pDdrEKa8uFBIhiSAm9PC9U+/yF1oaJ47EEOL4fPw/L
-	X4Q==
-X-Received: by 2002:a05:6512:61b:20b0:5b0:1f7c:254d with SMTP id
- 2adb3069b0e04-5b0236bffb9mr3464136e87.58.1784204168645; Thu, 16 Jul 2026
- 05:16:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="P7seXuic"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Bu1LLfuzd2nAEZgn5mU4YfWHv1CL5j3qcL1aHodI5Tw=;
+	b=P7seXuicazuGkr41KgyDkJwaadkPzblzXkJyY2jIeesGrbbLmcBPngZNuLpjw92kkU8Gpm62Y
+	/UjhpJPzu4BbNGVewYpRLjDBBEONeOuUsubNvfvFhJN//lMl6y1XVaPd9UGechlL9WdC3SbkUws
+	XhuFqVXsf6KnRJc92ltKKfc=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h1BhT4PZhz1T4JN;
+	Thu, 16 Jul 2026 20:10:49 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id CEAEA2012A;
+	Thu, 16 Jul 2026 20:20:01 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 16 Jul 2026 20:20:00 +0800
+Message-ID: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
+Date: Thu, 16 Jul 2026 20:20:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714140722.111645-1-maciej.fijalkowski@intel.com>
- <20260714140722.111645-2-maciej.fijalkowski@intel.com> <CAL+tcoAc7d8MSCqK23_pmL2G8tSS-MpfM53brijPntv5A+BA2Q@mail.gmail.com>
- <ali/sIjljiNm9RmI@boxer> <CAL+tcoBGJDC-Kx=qvxoQtd4BUPCDBv00Gta1SOvejx9nNvVo3w@mail.gmail.com>
- <aljF91Tx804Lcwyx@boxer>
-In-Reply-To: <aljF91Tx804Lcwyx@boxer>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 16 Jul 2026 14:15:28 +0200
-X-Gm-Features: AUfX_my_rcqL11Tq6EEIJwAiGe0ryqzI-IibSTvULZhec0d8Qy7DxzNB3yWQCUk
-Message-ID: <CAL+tcoCz+eMqpZoEB7JVHazzeQpMk-Yn917W0EBGtRbFBoq0mw@mail.gmail.com>
-Subject: Re: [PATCH v3 net 1/6] xsk: fix buffer leak in xsk_drop_skb() for
- AF_XDP multi-buffer Tx
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
-	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	bjorn@kernel.org, Jason Xing <kernelxing@tencent.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, John Fastabend <john.r.fastabend@intel.com>,
+	Jesse Gross <jesse@nicira.com>, <gaoxingwang1@huawei.com>, huyizhen
+	<huyizhen2@huawei.com>
+From: xietangxin <xietangxin@h-partners.com>
+Subject: [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on
+ lower device
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-On Thu, Jul 16, 2026 at 1:52=E2=80=AFPM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> On Thu, Jul 16, 2026 at 01:42:28PM +0200, Jason Xing wrote:
-> > On Thu, Jul 16, 2026 at 1:25=E2=80=AFPM Maciej Fijalkowski
-> > <maciej.fijalkowski@intel.com> wrote:
-> > >
-> > > On Thu, Jul 16, 2026 at 01:22:24PM +0200, Jason Xing wrote:
-> > > > On Tue, Jul 14, 2026 at 4:08=E2=80=AFPM Maciej Fijalkowski
-> > > > <maciej.fijalkowski@intel.com> wrote:
-> > > > >
-> > > > > From: Jason Xing <kernelxing@tencent.com>
-> > > > >
-> > > > > This patch is inspired by the check[1] from sashiko. It says when
-> > > > > overflow happens, the address of cq to be published is invalid.
-> > > > > Actually the severer thing is the whole process of publishing the
-> > > > > address of cq in this particular case is not right: it should tru=
-ely
-> > > > > publish the address and advance the cached_prod in cq as long as =
-it
-> > > > > reads descriptors from txq.
-> > > > >
-> > > > > The following is the full analysis.
-> > > > > xsk_drop_skb() is called in three places, which all discard a par=
-tially
-> > > > > built multi-buffer skb:
-> > > > > 1) xsk_build_skb() -EOVERFLOW error path: packet exceeds MAX_SKB_=
-FRAGS
-> > > > > 2) __xsk_generic_xmit() post-loop cleanup: an invalid descriptor =
-in
-> > > > >    the TX ring prevents the partial packet from completing
-> > > > > 3) xsk_release(): socket close while xs->skb holds an incomplete =
-packet
-> > > > >
-> > > > > In all three cases, the TX descriptors for the already-processed =
-frags
-> > > > > have been consumed from the TX ring (xskq_cons_release), and CQ s=
-lots
-> > > > > have been reserved. However, xsk_drop_skb() calls xsk_consume_skb=
-()
-> > > > > which cancels the CQ reservations via xsk_cq_cancel_locked(). Sin=
-ce
-> > > > > the buffer addresses never appear in the completion queue, usersp=
-ace
-> > > > > permanently loses track of these buffers.
-> > > > >
-> > > > > Fix this by letting consume_skb() trigger the existing xsk_destru=
-ct_skb
-> > > > > destructor, which already submits buffer addresses to the CQ via
-> > > > > xsk_cq_submit_addr_locked().
-> > > > >
-> > > > > Note that cancelling the descriptors back to the TX ring (via
-> > > > > xskq_cons_cancel_n) is not a appropriate option because an oversi=
-zed
-> > > > > packet that always exceeds MAX_SKB_FRAGS would be retried indefin=
-itely,
-> > > > > which is an obviously deadlock bug in the TX path.
-> > > > >
-> > > > > Also move the desc->addr assignment in xsk_build_skb() above the
-> > > > > overflow check so that the current descriptor's address is record=
-ed
-> > > > > before a potential -EOVERFLOW jump to free_err, consistent with t=
-he
-> > > > > zerocopy path in xsk_build_skb_zerocopy().
-> > > > >
-> > > > > [1]: https://lore.kernel.org/all/20260425041726.85FB3C2BCB2@smtp.=
-kernel.org/
-> > > > >
-> > > > > Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on=
- Tx path")
-> > > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > > >
-> > > > Maciej, maybe your tag is missing here?
-> > >
-> > > IIRC this has been taken as-is from your patchset. The next one has b=
-een
-> > > touched in few ways and I included my co-developed tag there.
-> >
-> > Yep, I mean maybe you can simply drop your reviewed-by or acked-by tag
-> > here if you approve.
->
-> I see. I am not sure what are principles for such cases, I could assume
-> that if I include this as a sender then it implies my ack on such change.
-> Anyways I can just:
->
-> Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+[BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on lower device
 
-Thanks.
+Hi all,
 
->
-> BTW now I reminded myself I dropped Stan's tags in whole set. I think it
-> was of changes on 4/6, otherwise I don't have other excuse.
->
-> So Jason if you bump at Stan somewhere in the netdevconf's hallway could
-> you ask him to re-ack it if it still works for him?
+We encountered a skb_under_panic triggered by toggling
+NETIF_F_HW_VLAN_CTAG_TX on the lower device while a VLAN device is
+up and sending traffic.
 
-No problem, but I don't see him appearing in netdev today. But yes, I
-would if I saw him.
+Call trace
+==========
 
-Thanks,
-Jason
+ skbuff: skb_under_panic: text:ffffc0d2900283d8 len:74 put:14
+  head:ffff334820249c00 data:ffff334820249bfe tail:0x48 end:0xc0 dev:vlan4
+ ------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:116!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ Call trace:
+  skb_panic+0xcc/0xd0
+  __skb_checksum+0x0/0x480
+  eth_header+0x48/0x1a0
+  vlan_dev_hard_header+0xd0/0x284
+  neigh_connected_output+0x16c/0x20c
+  ip6_finish_output2+0x4b4/0xd74
+  __ip6_finish_output.part.0+0x1ac/0x3b0
+  ip6_finish_output+0x160/0x200
+  ip6_output+0x13c/0x294
+  ndisc_send_skb+0x41c/0x6f0
+  ndisc_send_rs+0xac/0x3b0
+  addrconf_rs_timer+0x42c/0x660
+  call_timer_fn+0x54/0x290
+  expire_timers+0x26c/0x420
 
->
-> >
-> > Thanks,
-> > Jason
-> >
-> > >
-> > > >
-> > > > Thanks,
-> > > > Jason
+Reproducer
+==========
+
+ # Create veth pair (NETIF_F_HW_VLAN_CTAG_TX is ON by default)
+ ip link add veth0 type veth peer name veth1
+ ip link set veth0 up
+ ip link set veth1 up
+
+ # Turn off HW VLAN TX offload on lower device
+ ethtool -K veth0 tx-vlan-hw-insert off
+
+ # Create VLAN device on veth0
+ # At this point: header_ops = &vlan_header_ops, hard_header_len = 18
+ ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
+ ip addr add 192.168.10.1/24 dev veth0.10
+ ip link set veth0.10 up
+
+ # Turn HW VLAN TX offload back ON on lower device
+ # This triggers NETDEV_FEAT_CHANGE -> vlan_transfer_features()
+ # hard_header_len changes from 18 to 14, but header_ops is NOT updated
+ ethtool -K veth0 tx-vlan-hw-insert on
+
+ # When a packet is sent through veth0.10
+ # - skb is allocated based on hard_header_len=14 -> ~16 bytes
+ # - vlan_dev_hard_header() pushes VLAN_HLEN(4) + ETH_HLEN(14) = 18 bytes
+ # - skb_under_panic!
+
+
+Any feedback or guidance would be greatly appreciated.
+
+-- 
+Best regards,
+Tangxin Xie
+
