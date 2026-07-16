@@ -1,85 +1,130 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DE42E7368
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 10:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92872E7368;
+	Thu, 16 Jul 2026 10:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784198936; cv=none; b=XFbJHfz6m7CCEuusvrWz9uV0e0SOkjab1j2yy45vaNqi2FOUioiEKkrqrXBO8QPghyyEgyxV9yH5F6YZtuugTRI+3WK/tmZwpxUKLJcE/eOhoVJhY5iPnE6y2XybdLZkFC50ZKP6XWzkdT0W0GsOmBNC9pfiLgO2M0q6y2+sKs8=
+	t=1784199016; cv=none; b=RrTeE+AjX1U9fZzIHCXnxcbhCH9Wb2wYe9Ug1lxR0taqZO8zq4osP9tcoSR0DCVN61BtxNp8BD0mtKJLvjz41antDiYbKg6JbLAfTptrx1JLeLF2RTN0tnHg1uE4FnQpW8VHZZLfk57HcwhpYK8HGbPKkYLTLrlU9wS9XvGSEVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784198936; c=relaxed/simple;
-	bh=ZVMVCy+5YLTcUEbYimQ2OkPduNxoBr36ZpqTdmZuMw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aORQXjSl8Hi1ZIE6Btu/dg2HUxtTT+kO2K0ktRbRmWs7DIvpXwDuiz9I3plaNGgO+f0Ia8sZH+dzHU4f/USMazn3i/CzjegzBVtma1KaBjb1kFztmpxiK1pLlYKGHcxjWQ+KRFHqvLvmkFXJ8eVjlw76X4wG3jke2rS5lAOa28c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pmRD8xUM; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784199016; c=relaxed/simple;
+	bh=l/CAFPX+3wzfGA7GQQv7QLTlLECJJ2OZI0iTW/zeoSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iyWI1MwG9zWii5ndJzj2rwalwQZjAwb6+/CHLb4fyrc3Cxabdu26rnOWXLVz3lr7ozfmleJyy5BYepuGLvaf/QGYtiOBODzZhtzXAwqJ3W1rASVh8t3Y0aS0r0Axzp7pL83kxIBU3EiRRgjqei18aG4W2EoQPGR0RjYk+2qBUu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cEM0Q00D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pmRD8xUM"
-Message-ID: <a4f21915-cccc-4f46-a3d1-0a9a825b47e3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784198921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2KF6F1IBEP/oQ8UWITdmZa3tHiqzXYueqmN5G4KAT3s=;
-	b=pmRD8xUMq34c+6Lf9bm/re0CopZpPjkUCWjbAXKC4gJUAbrFVCv39xvwmTVAT1EZnXvqB4
-	Ihq0IW0hjxMJsP5BPbvdFojZH0sP8NBlfqnpJ0+5xJUU4bcwdJNPxNDie39WhbFJjqyq02
-	MFE+SOUYNam6X7F2HD9qk8BU+aXmAWA=
-Date: Thu, 16 Jul 2026 18:48:30 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cEM0Q00D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A921F000E9;
+	Thu, 16 Jul 2026 10:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784199015;
+	bh=0xvySaEqarBgFceDdKkgAiCmMCUO1cbSbfqzLAmtXMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cEM0Q00Dl518+KV5XCLr2F+KOZAIWB40dgNb3iHaA+TE1QJ646oyPDK6CZvh3ssJX
+	 IlijWAy68AU9ryANoHBmoXAOj7Nc9x2HQE5IM6fjCtLXVhzs9L9IqUVEmO/CuApQKI
+	 SA5zU/kXHBFrgy/ocvpBOx4cdG3WGtXTS2xmVwCFD2Ex4FlWbAbVxhBBpHU4eJsAqn
+	 mb+EBiQ6B99dsGWjRHEQ8bcZ360voOqxpKuDeCPcU3Kdkpsb/uuD7fcnhu4vNVswIk
+	 1ikQN0onQ2IaONUvKkqzWizgJhtOWAWrcYrNUDcXOL+xcyopqScaA803MC4v8dZxeS
+	 DuxGImKzMZlgQ==
+Date: Thu, 16 Jul 2026 13:50:08 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>
+Cc: jgg@ziepe.ca, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+	tariqt@nvidia.com, mbloch@nvidia.com, dtatulea@nvidia.com,
+	shayd@nvidia.com, moshe@nvidia.com,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: Re: [PATCH rdma-next v3] RDMA/mlx5: quiesce CQ polling before device
+ shutdown on reboot
+Message-ID: <20260716105008.GD357857@unreal>
+References: <20260715082307.1593915-1-chenguang.zhao@linux.dev>
+ <20260716084211.GC70906@unreal>
+ <c2c5dda9-3228-44a3-a4c9-89e8cc4501bc@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 0/2] bpf, sockmap: handle spurious tcp_msg_wait_data()
- wakeup
-To: Nnamdi Onyeyiri <nnamdio@gmail.com>
-Cc: bpf@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, jakub@cloudflare.com, john.fastabend@gmail.com,
- kuba@kernel.org, kuniyu@google.com, ncardwell@google.com,
- netdev@vger.kernel.org, pabeni@redhat.com, sashiko-reviews@lists.linux.dev
-References: <5b07d2ab-84ee-46ae-84c9-7542499d26d7@linux.dev>
- <20260715213538.37229-1-nnamdio@gmail.com>
- <95e690bf-2eed-469f-93ef-6ae3fb2a7162@linux.dev>
- <aliwTlOayzvvlN10@localhost.localdomain>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <aliwTlOayzvvlN10@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <c2c5dda9-3228-44a3-a4c9-89e8cc4501bc@linux.dev>
 
+On Thu, Jul 16, 2026 at 05:03:37PM +0800, Chenguang Zhao wrote:
+> Hi, Leon
+> reboot -f skips orderly shutdown and goes directly to:
+> 
+> kernel_restart_prepare() -> device_shutdown() -> mlx5 shutdown
+> Upper layers may still hold live CQs, while ib-comp-wq keeps
+> polling — a use-after-free race.
 
-On 7/16/26 6:24 PM, Nnamdi Onyeyiri wrote:
-> On Thu, Jul 16, 2026 at 09:30:30AM +0800, Jiayuan Chen wrote:
->> Please do not send a patch by replying to an old thread.
->>
->> ...
->>
->> Please use a commit subject like "selftests/bpf: add selftest xxx" for the
->> selftest patch.
->>
-> Sorry, I'll resubmit with these changes.
->   
->> Please use existing test frameworks such as sockmap_basic.c or
->> sockmap_strp.c.
->>
-> Just to clarify, do you mean I should add the new tests to one of these
-> existing files? Or that I should add a new file, but write the test in the
-> same way as sockmap_basic.c implements them?
->
-> Thanks!
+The point is that this flow is neither RDMA- nor mlx5-specific, and it
+works as expected. mlx5 shutdown() stops the FW/HW, while the kernel
+stops and tears down the running threads.
 
-Using existing files is enough I guess.
+> 
+> Normal reboot usually works because userspace has already
+> torn down RDMA and called ib_free_cq().
 
+There is no difference, from the kernel's perspective, between a
+normal and a forced reboot, except that the former bypasses
+userspace shutdown.
 
-I didn't read your selftest files fully, but I don't think a selftest 
-with 299+ lines  is a good idea for reproducing a single problem.
+Thanks
 
-I think you should try to shorten it to a reasonable size, e.g., by 
-reusing helpers.
-
-
+> 
+> Thanks
+> 
+> 在 2026/7/16 16:42, Leon Romanovsky 写道:
+> > On Wed, Jul 15, 2026 at 04:23:07PM +0800, Chenguang Zhao wrote:
+> >> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> >>
+> >> On reboot -f with NFS over RDMA, mlx5 shutdown can tear the device
+> >> down while ib-comp-wq still polls live CQs, leading to UAF in
+> >> wr_cqe->done().
+> >>
+> >> Mark the device shutting down before teardown, flush completion
+> >> workqueues so in-flight pollers observe the flag, skip SYS_ERROR
+> >> completion delivery, and make poll/arm CQ a no-op under the CQ lock
+> >> while shutting down.
+> >>
+> >> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> >> ---
+> >> changelog:
+> >>  - Fix the race on MLX5_INTERFACE_STATE_SHUTTING_DOWN: set the
+> >>    flag, then flush ib-comp / mlx5_ib event workqueues via an
+> >>    mlx5_ib quiesce hook before fast_unload/teardown.
+> >>  - Check shutting-down under cq->lock in mlx5_ib_poll_cq/arm_cq.
+> >>  - Export ib_comp_wq and ib_comp_unbound_wq so modular mlx5_ib
+> >>    can flush them.
+> >>
+> >> v2:
+> >>  https://lore.kernel.org/all/20260714075558.1420384-1-chenguang.zhao@linux.dev/
+> >>
+> >> v1:
+> >>  https://lore.kernel.org/all/20260702073422.279820-1-chenguang.zhao@linux.dev/
+> >>
+> >>  drivers/infiniband/core/device.c              |  2 ++
+> >>  drivers/infiniband/hw/mlx5/cq.c               | 11 ++++++++++
+> >>  drivers/infiniband/hw/mlx5/main.c             | 20 +++++++++++++++++++
+> >>  .../net/ethernet/mellanox/mlx5/core/health.c  |  3 +++
+> >>  .../net/ethernet/mellanox/mlx5/core/main.c    | 10 ++++++++++
+> >>  .../mellanox/mlx5/core/sf/dev/driver.c        |  3 +++
+> >>  include/linux/mlx5/driver.h                   | 11 ++++++++++
+> >>  7 files changed, 60 insertions(+)
+> > <...>
+> >
+> >> +static void mlx5_ib_shutdown_quiesce(void)
+> >> +{
+> >> +	flush_workqueue(ib_comp_wq);
+> >> +	flush_workqueue(ib_comp_unbound_wq);
+> >> +	flush_workqueue(mlx5_ib_event_wq);
+> >> +}
+> > These workqueues are shared by all IB drivers and the core. Drivers
+> > must not flush or destroy them.
+> >
+> > Why this is not FW issue?
+> >
+> > Thanks
