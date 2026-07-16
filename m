@@ -1,79 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out02-fra1-mx.uberspace.de (out02-fra1-mx.uberspace.de [185.139.157.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324293DCDBF;
-	Thu, 16 Jul 2026 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D5A3B0AF5
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 08:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784190340; cv=none; b=IQhCGiw/T+aQB8bO+qEzbYqvENcvdjqK8Csuy2NveWZRZ8DoeUihfOO2vT3ZfD2R0lFxjpekQ21i2vlzR4bmnsOTupx38XiP96rAy47E2Paksb8Ct/I8NHSQ5EJwTscJu6hb30nqTfrq73I0qbMWRSplIHJSNMxGrgFQsBhQI5o=
+	t=1784190907; cv=none; b=ff03/wgyJwV2DB39wAh82lX1VaHBIWvmCIzrTHn4NFra9jfagjBp0l6kFuf7634B3IGILj+3i5TQnaGc4fi57YpmkJbnANO8oka0Q/qyNSFmcmPav1bhoPayoavL2zW8SmjstYEos6sMgw/9iN7YZ4qe7trG80AgTuIrGm99xtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784190340; c=relaxed/simple;
-	bh=hTseHX9McpunvK9ku+Y1VPRrEwU9kKTwkoegTw9D25A=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=o7M9T11XfAoUwJzIhB29Wzx6lBefww7eQz1yPXEeLphBHlGftKio/yJHNx+HF6JnRILqmP8aREAmgiGl4e1PmxLx6KVAxz/9VH9PkxXO15khm3O2SRh9J8bL/EK8P9Fnovgj7yh7RGzatfy+LOvMp3Q3uMkIPAiNkJj0BI1yxHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VooyUSBA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784190907; c=relaxed/simple;
+	bh=kkmxmgCuPkzEat5WPNYJfMhRJWb6Q3dPlUALq+5DBwE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oPsSq2lPKFVFgXf2h+S/4F2HvRTTiA+kQAj4Fg/GD/oh0mXFNds9wakX7wiDNqDzIJUYwgbZc6C+sRriZ4P6+EXvEvIYlpfuwF6Ccu/q4BIRYTbVMlivcL90K6Dar/ryoVDguXYXgsi2L9zXCEMdtkSrfDIXJZlx9Ni8LLjdpsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=A1DR4hIE; arc=none smtp.client-ip=185.139.157.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VooyUSBA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD811F000E9;
-	Thu, 16 Jul 2026 08:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784190337;
-	bh=qZW+M3P/+ig7Jw2pQiKmK7s0foyMbhMBzVV1CbKMT3E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=VooyUSBA/aLIk7mc+S7WnuDjCbhI35Nu6XJ2T22OUncxNcM8AHbPLnL9rxFMJ2Ni8
-	 IxYp4a0Ys7A6skJwtWLeJIzs8i0+xe9OlXnWT7jfgfFzo3DczBYl0jYCs9itTDYwDL
-	 9yR3Or5pChF+13gfprcjNptw0790sfLtZwZVjAHc3rauxCBJo86VwCQi50xeyZVITm
-	 EVH9V8D1Z1UdNHNh+M2M42pkWiTxDaY9jX9VL7EYBYIdGUtOb5XYTiWzFbWddsIkW6
-	 XzVTTS7uhtt5gIKzODRUT1ZI77MyuUKVQQZ76JjaN4+3OcatdYzxznsMijie4TUkge
-	 Gpi4tTECObiAQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
- netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
- Tariq Toukan <tariqt@nvidia.com>
-Cc: Alexei Lazar <alazar@nvidia.com>, Alex Vesker <valex@nvidia.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Cosmin Ratiu <cratiu@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
- Feng Liu <feliu@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
- Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
- Paolo Abeni <pabeni@redhat.com>, Parav Pandit <parav@nvidia.com>, 
- Shay Drory <shayd@nvidia.com>, Simon Horman <horms@kernel.org>, 
- Yevgeny Kliteynik <kliteyn@nvidia.com>
-In-Reply-To: <20260713084320.1015240-1-tariqt@nvidia.com>
-References: <20260713084320.1015240-1-tariqt@nvidia.com>
-Subject: Re: [PATCH mlx5-next 0/2] mlx5-next updates 2026-07-13
-Message-Id: <178419033442.296394.4741555309463988362.b4-ty@kernel.org>
-Date: Thu, 16 Jul 2026 04:25:34 -0400
+	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="A1DR4hIE"
+Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
+	by out02-fra1-mx.uberspace.de (Postfix) with ESMTPS id C13B6C042A;
+	Thu, 16 Jul 2026 10:28:34 +0200 (CEST)
+From: Simon Dietz <simon.dietz@plantwatch.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
+	s=uberspace1; t=1784190513;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kkmxmgCuPkzEat5WPNYJfMhRJWb6Q3dPlUALq+5DBwE=;
+	b=A1DR4hIETs9Yt2fBl2QNNDTN7BQdxJ9UImNowKhGR9Qzyv1S0+WaANtD4wXQUMwE6bZ25P
+	6zEZlGo8UBoPzjZkWVccPV9nAPjcfwUwoflcTvn1xhHmA7rTsoiRzrpSD3gknqkjQNPHYP
+	/r51F8ZQrzZZ1vDXjo8X5vPwK+fEj4VJm0mRUyaGp7HNgEmvlZBc/JVs8RVy7aOpSmu1Tj
+	O7VJ4mGSrB0tfuTExjI9zLtPCz2otWNbDbl+4/x/WBYmdcrI3xe91zVF3Nomu+lB2ZscEA
+	ZsKaN4z5Wz62Jed87YjPxpitC44wCI/DAX2Ugt06ERDbbCLMQ1HnwkJML8rQJg==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
+To: andrew@lunn.ch
+Cc: davem@davemloft.net,
+	dietz23838@hs-ansbach.de,
+	edumazet@google.com,
+	kuniyu@google.com,
+	netdev@vger.kernel.org,
+	simon.dietz@plantwatch.de
+Subject: Re: [RFC PATCH net-next 0/6] net: add GeoNetworking protocol
+Date: Thu, 16 Jul 2026 10:26:50 +0200
+Message-ID: <20260716082650.1202710-1-simon.dietz@plantwatch.de>
+In-Reply-To: <a1440c5d-2848-4587-a2c8-b3d65dd4272a@lunn.ch>
+References: <a1440c5d-2848-4587-a2c8-b3d65dd4272a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.73 / 999.00];
+	MID_CONTAINS_FROM(1.00)[];
+	BAYES_HAM(-0.67)[82.99%];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_DN_NONE(0.00)[];
+	ARC_NA(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
+	MISSING_XM_UA(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
+	FROM_HAS_DN(0.00)[]
 
+Due to - let's call it a misconfiguration of my mail server - indeed
+only the cover letter made it to the list. I'm now waiting the 24h
+resubmission period to cool down to submit it again (including the
+patches this time).
 
-On Mon, 13 Jul 2026 11:43:18 +0300, Tariq Toukan wrote:
-> This series contains mlx5 shared updates.
-> 
-> Regards,
-> Tariq
-> 
-> Cosmin Ratiu (1):
->   net/mlx5: ifc: Add PSP related fields
-> 
-> [...]
+I'll then include the linux-wireless list and the 802.11 maintainers.
+OCB is already implemented in the mac80211 code base, so changes to
+the wireless related parts should be minimal. I'll include them,
+nevertheless.
 
-Applied, thanks!
-
-[1/2] net/mlx5: Drop redundant esw_cap, reuse e_switch_cap
-      https://git.kernel.org/rdma/rdma/c/0b7b17502300f7
-[2/2] net/mlx5: ifc: Add PSP related fields
-      https://git.kernel.org/rdma/rdma/c/bee40a7d0bd126
-
-Best regards,
--- 
-Leon Romanovsky <leon@kernel.org>
-
+Simon
