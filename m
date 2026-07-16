@@ -1,253 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C91D41E6CB;
-	Thu, 16 Jul 2026 12:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784206194; cv=none; b=YVwiBGZFyNwedUVk9kHBY+Q/xBnaX2acGNE7OEc4RvXaM8VZjY7DejgqfL7Y0hVWJBYowNDtl8S74JpvSE3v6VoXXKO18P2E57p0zeHZ0s0AMcxEEm9INmGTd2mI2alzLpsmMWc5Jrm7fTwQB6vcgFAVTy2xQb48Q8L7wY3VDNw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784206194; c=relaxed/simple;
-	bh=srIyBDg0zIgsZEktS9hxZD2lKjLh1HP/H77kcG09KzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV8qEfdn7CY6AXKQ0fgdRWOFC86c6Bt6K6CHNF2syMh98nsPJab9SdKhyvE2mfY1rBWnqBkYrDAh0zr9j6Y9Df6onL/vOzPuhj8dRVeCESzQYU7oTTtCzpPQMNWWPE2FRhFO05cQVaBBbIrHU9iIkGuRLxVFdvtfcwXBAWZ6aEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZM6CxH5j; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF0841DE0B
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784206418; cv=pass; b=QzHlh9t9a+T/OSI2kldCKSFRwdWAy16Ip99agW8eXoZo+yE5fpwE+eHwqE/1DCKnITDhNrUWh8WdrOg6KFKQWRwCmmrHg+skefSBu2BbJtEyTNOQ2YCTu2MTx4GFDpOvY8ShlfmS0zWjj/fq1eTW43PrbxpSn6Rl7ktgb8zB6Sc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784206418; c=relaxed/simple;
+	bh=rVuZ1/j6WS3yKJ/+J5ak2N5sJ6zYZ6SuijxYLYOO9IU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OfrOXzkSkNw6/6pmt2myGKh+lPWM3B4diTBdN83EOzNSjRsrTxqipIc+hTX93OIybDcKsrxL83clgNs3PKZ5v2ERhott08bS9yLgwUPMzM0O66tSp8T2Q45F0k+jP3lN/SqrW1GGLxgveaxNWO7tp0NpHy5PdVrjrs8aFvnZavo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pi57i/kA; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM6CxH5j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933881F00A3A;
-	Thu, 16 Jul 2026 12:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784206193;
-	bh=sRmSoYQ1H3fBB3GhAuOFx+4D+QchTkAKC/wuASYBpj4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZM6CxH5jy48DAmRrE7l+JwcTOqthQhRKOjRZSN2DxfqkeFH/hL75g+YBxtdGGvtl0
-	 5LXZyNY/50Jf2TlAPD84/GsQ/XQm3P0f/mzFwTRS1/1FSAXHbj4g3u5EXnQRpxlHui
-	 HBV2LPUbtZBdvIwEfYPaoS2VFRnE+nq/xDx1nmKbmhBFzfU1rQyWgqcSagdz+hKKdB
-	 AitzLdE4Bs3YzHvKeNfTRjkxUuzs8tNlA5Sa9rln9p09oA1cbrQ0CzfcK1dX3GI0SG
-	 0ssXYwiJ38eXwQtVdn9JK77R2vG+z0cpaIDKKkZ1B8A23wix6UMJ78Ce7GcJDgp61A
-	 ne0Jod7H4XUmw==
-From: Simon Horman <horms@kernel.org>
-To: security@auditcode.ai
-Cc: Simon Horman <horms@kernel.org>,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] mac802154: flush rx_mac_cmd_list before freeing sdata
-Date: Thu, 16 Jul 2026 13:49:27 +0100
-Message-ID: <20260716124926.304297-2-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260710111353.12138-1-security@auditcode.ai>
-References: <20260710111353.12138-1-security@auditcode.ai>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pi57i/kA"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c05dcdf49so71534651cf.0
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 05:53:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784206415; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ATYHaJGqRCXAiQTHkOKFg8AHm50EsXwq7xFIfs3sHjpIdxFaGNnUKK1UtDa/SRU9hf
+         msBL+hE6VTJZByL85F6Fs+m4Bslj0FACpHiAt1m9WrULD5wZz1mbxj94+bzVqRnFIBKk
+         EM2L/F9Y7Kt6Vz8kC/uNk9KEw3wM6igFOHtH5s3T3c61EIqEfQ3S+9E4pkDClUqjGGBh
+         u7mjtda4YjK2xXaewEnloLVHoQ6VxqMlTG7wNmqSsYfD2hIAy9tVxFOVEZ8ZcMLZtgkr
+         y0DiVsMSvNKJgSYJIVpHk6fNkfB82V3BgOe4jIEcrqIAcFZHnYK6NmCaPN1vER2H2N8l
+         skog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
+        fh=ojKZeLhxxF8tvpd8ig4avFGXJKR3RRMR+zT+pC4n8Rw=;
+        b=c2YRPItKYVAmsNsSf9hymWiEtnTm6pt5lAKCapV4rLM5i+EBRRA0UDT0jRqfzu9ISG
+         +S+6ZPxJSHR+y88Tqq+MugqpHzuRVxLjGlZ7wF+pLqV1yD7OXm7zJSlcpNhpxJEI+fjz
+         7F3yXcKNDaJNAkf61p4fxBF14Ay8NjFYoKBvum/0HBireSpMOWjEoG7Bo894zT0Qim7P
+         y4ve3myoJjpusXnjvp8u8wjB0FPbAJfkHY4YQRCcVFjMPsJ/xZ0qJ85BWaMsIiuMZZ/4
+         hYRze7/iaSfoZ4n/X8Jo+DVv2SanwRayMkLpZ/RauCQxCcRFfXyGyAGKKb5pomiM/lk1
+         GeRA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784206415; x=1784811215; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
+        b=Pi57i/kA/eu9OMgc/ZkLovRj9YR/JqZ2RCgXdgkeAcpJsce12d0gK15wS/o/WORCuO
+         qwhBeik7AT+T7WsvC3wxW/ZcRnIUAmSzBOKcKhbEwoASQyOJ/GSGUMS+Zz9H5r09YVKY
+         l8Nv9+eoehXFTQ7Ure75QUeKvX3KpAYhUQP4wqLH/anpY0DJouGVKzHqhpno/xhwo7t/
+         HNAlI95UH+PVwOii4nRUqfmZY4CepwxZHywCsBpCZL5dH66gAuhbdRrgTTtUtc45XwX5
+         +qVjC7jzBIn2pV86pBHYWP/OrLw4/6vfRcqd9gBufFoFFfo1caw/dAB606LqJIApJOKS
+         sX2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784206415; x=1784811215;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
+        b=XzYDDQ5pAhtAXOcbef1xqFZiR4zImRH9JrAgtpREI04AMxsqISzxNJq9FJ1+5JTl4O
+         9xYWaKmao8e7yOD0+WlFnpCXY512kZIAYgRkpn+a08y1Dy9ltCXYAyAwC3cifhUtSbDr
+         L7xNc15fSrY9aXuslbJjEXMfRZPHP/GaQDe4sbupPQ5GMZBVEBT6wtkigAlRA2GrSmp1
+         BKzNFvCBt7jhVE3gPgMvPkUZ8Awgxksd8+R7YFPPwspbakkn0OnNp/m/QYF2XX5WmrLI
+         ApCIotQp0/CiOQltqb12RlZYmMyllKDJ7qNeJ1wVuyM8eNUOk7Dtzpdql82m0eOvLPN7
+         VPFg==
+X-Forwarded-Encrypted: i=1; AHgh+RqQYj4tqLKAZO3nH/tU8x7kJhVkViboY5MUGL8THAb6D9iCoQqxKns79Zq9TrIFidrOHGvmBHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywdm7yDGrWHyqUcM8M5YAzeb6P+iUFMG+V/UvT6lvs6aqT6e/Hu
+	wL7Cbd1ngE8CF3WuUOQMRWcK1nHfQT+l3ndmisqwiDzFPmR6cBTcwMl0ygCikVQGWt0wxc6lSdY
+	Bqx4xujrYydZg8W/VlhjXkgqExnM4eLMjIGocRDPl
+X-Gm-Gg: AfdE7clC48ZYILIbk3URZ69UyJRAJZ7VyYh6loiZKHOZFq7MlBzU/A8nZvdb2jkPkro
+	arQhzZY6HiPz2N9Zk/kG83LWC2RHtLpF0H++/p30nWU5xLoBxzdJ1ewz8fpZaBRIQ80PEcawfYd
+	FyyTSIGDS0rn0edEBUrZfjNz5EDz+jSrK5RJnoXe0Xhi7INqsEmflqqpwXl9uGVM0RY87B14h16
+	PhMEhbcb9E0BwELjW1ZrTq/OAw1htpU3MHDvGSphZHKcCwXyAgLAob7+6bbZsRp2+4C30Mj803o
+	WlFYwiqE/be6gk9Cmg6WhsC26Yq3YLh06h1aXammPBSKJNrHZ+nRSPu6XcagDwXlsmyCBu0Sptq
+	q
+X-Received: by 2002:a05:622a:301:b0:51c:7b12:5fd3 with SMTP id
+ d75a77b69052e-51e4f129ca6mr78062931cf.79.1784206414654; Thu, 16 Jul 2026
+ 05:53:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
+In-Reply-To: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 16 Jul 2026 14:53:23 +0200
+X-Gm-Features: AUfX_mwJ6wOXiWALTw9CQCSGPqtRuyG63o1Vlu5Z0draBHhLIJs3UoqtlSjaa80
+Message-ID: <CANn89i+z6ECLND1o8oD10re_zGJg73JCOr3dnV9AADeG40K=_Q@mail.gmail.com>
+Subject: Re: [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX
+ on lower device
+To: xietangxin <xietangxin@h-partners.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, John Fastabend <john.r.fastabend@intel.com>, 
+	Jesse Gross <jesse@nicira.com>, gaoxingwang1@huawei.com, huyizhen <huyizhen2@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-https://netdev-ai.bots.linux.dev/sashiko/
----
-mac802154: flush rx_mac_cmd_list before freeing sdata
+On Thu, Jul 16, 2026 at 2:20=E2=80=AFPM xietangxin <xietangxin@h-partners.c=
+om> wrote:
+>
+> [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on lowe=
+r device
+>
+> Hi all,
+>
+> We encountered a skb_under_panic triggered by toggling
+> NETIF_F_HW_VLAN_CTAG_TX on the lower device while a VLAN device is
+> up and sending traffic.
+>
+> Call trace
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>  skbuff: skb_under_panic: text:ffffc0d2900283d8 len:74 put:14
+>   head:ffff334820249c00 data:ffff334820249bfe tail:0x48 end:0xc0 dev:vlan=
+4
+>  ------------[ cut here ]------------
+>  kernel BUG at net/core/skbuff.c:116!
+>  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+>  Call trace:
+>   skb_panic+0xcc/0xd0
+>   __skb_checksum+0x0/0x480
+>   eth_header+0x48/0x1a0
+>   vlan_dev_hard_header+0xd0/0x284
+>   neigh_connected_output+0x16c/0x20c
+>   ip6_finish_output2+0x4b4/0xd74
+>   __ip6_finish_output.part.0+0x1ac/0x3b0
+>   ip6_finish_output+0x160/0x200
+>   ip6_output+0x13c/0x294
+>   ndisc_send_skb+0x41c/0x6f0
+>   ndisc_send_rs+0xac/0x3b0
+>   addrconf_rs_timer+0x42c/0x660
+>   call_timer_fn+0x54/0x290
+>   expire_timers+0x26c/0x420
+>
+> Reproducer
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>  # Create veth pair (NETIF_F_HW_VLAN_CTAG_TX is ON by default)
+>  ip link add veth0 type veth peer name veth1
+>  ip link set veth0 up
+>  ip link set veth1 up
+>
+>  # Turn off HW VLAN TX offload on lower device
+>  ethtool -K veth0 tx-vlan-hw-insert off
+>
+>  # Create VLAN device on veth0
+>  # At this point: header_ops =3D &vlan_header_ops, hard_header_len =3D 18
+>  ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
+>  ip addr add 192.168.10.1/24 dev veth0.10
+>  ip link set veth0.10 up
+>
+>  # Turn HW VLAN TX offload back ON on lower device
+>  # This triggers NETDEV_FEAT_CHANGE -> vlan_transfer_features()
+>  # hard_header_len changes from 18 to 14, but header_ops is NOT updated
+>  ethtool -K veth0 tx-vlan-hw-insert on
+>
+>  # When a packet is sent through veth0.10
+>  # - skb is allocated based on hard_header_len=3D14 -> ~16 bytes
+>  # - vlan_dev_hard_header() pushes VLAN_HLEN(4) + ETH_HLEN(14) =3D 18 byt=
+es
+>  # - skb_under_panic!
+>
+>
+> Any feedback or guidance would be greatly appreciated.
 
-This patch adds mac802154_flush_queued_mac_cmds() and calls it from
-ieee802154_if_remove() and ieee802154_unregister_hw() to drain
-local->rx_mac_cmd_list before sdata is freed, aiming to close a KASAN
-use-after-free in mac802154_rx_mac_cmd_worker().
+This rings a bell, I thought we already fixed this issue long ago :/
 
-> diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-> index b823720630e7..59a045cccfe9 100644
-> --- a/net/mac802154/iface.c
-> +++ b/net/mac802154/iface.c
-> @@ -694,6 +694,16 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
->  	mutex_unlock(&sdata->local->iflist_mtx);
->  
->  	synchronize_rcu();
-> +
-> +	/*
-> +	 * Drop any rx_mac_cmd_list entry still pointing at this sdata
-> +	 * before it is freed below: mac802154_rx_mac_cmd_worker() runs
-> +	 * asynchronously on local->mac_wq and derefs mac_pkt->sdata with
-> +	 * no liveness check of its own (see mac802154_flush_queued_mac_cmds()
-> +	 * for details).
-> +	 */
-> +	mac802154_flush_queued_mac_cmds(sdata->local, sdata);
-> +
->  	unregister_netdevice(sdata->dev);
->  }
+I would suggest we always add VLAN_HLEN even if not (yet) needed.
 
-[High]
-When ieee802154_if_remove() runs to delete one interface, does anything
-stop RX softirq on sibling interfaces of the same phy from concurrently
-enqueueing into local->rx_mac_cmd_list while the flush is walking it?
+diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
+index 2b74ed56eb166d52c3351768d9dfedc7b2c8ec2d..d7f90b3b2bb3aadb2c466891720=
+a7f407d0bc34b
+100644
+--- a/net/8021q/vlan.c
++++ b/net/8021q/vlan.c
+@@ -323,10 +323,7 @@ static void vlan_transfer_features(struct net_device *=
+dev,
 
-The producer path is ieee802154_subif_frame(), reached from the RX
-tasklet under rcu_read_lock only, and it unconditionally does:
+        netif_inherit_tso_max(vlandev, dev);
 
-    mac_pkt->sdata = sdata;
-    list_add_tail(&mac_pkt->node, &sdata->local->rx_mac_cmd_list);
-    queue_work(sdata->local->mac_wq, &sdata->local->rx_mac_cmd_work);
+-       if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
+-               vlandev->hard_header_len =3D dev->hard_header_len;
+-       else
+-               vlandev->hard_header_len =3D dev->hard_header_len + VLAN_HL=
+EN;
++       vlandev->hard_header_len =3D dev->hard_header_len + VLAN_HLEN;
 
-with no lock on rx_mac_cmd_list. list_del_rcu() + synchronize_rcu()
-above only quiesces the sdata being removed; other sdata on the same
-local remain in local->interfaces and can keep receiving MAC-command
-frames on other CPUs throughout the flush.
+ #if IS_ENABLED(CONFIG_FCOE)
+        vlandev->fcoe_ddp_xid =3D dev->fcoe_ddp_xid;
 
-> diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-> index ea1efef3572a..2f8c57e78db1 100644
-> --- a/net/mac802154/main.c
-> +++ b/net/mac802154/main.c
-> @@ -277,6 +277,17 @@ void ieee802154_unregister_hw(struct ieee802154_hw *hw)
->  	tasklet_kill(&local->tasklet);
->  	flush_workqueue(local->workqueue);
->  
-> +	/*
-> +	 * tasklet_kill() above stops any further frame reaching
-> +	 * ieee802154_subif_frame(), but mac802154_rx_mac_cmd_worker() may
-> +	 * still be queued/running on local->mac_wq and derefs the sdata of
-> +	 * every interface ieee802154_remove_interfaces() is about to free
-> +	 * below. flush_workqueue(local->workqueue) does not cover it --
-> +	 * that is the DATA workqueue, not local->mac_wq -- so drain it
-> +	 * explicitly first.
-> +	 */
-> +	mac802154_flush_queued_mac_cmds(local, NULL);
-> +
->  	rtnl_lock();
->  
->  	ieee802154_remove_interfaces(local);
-
-[High]
-Does tasklet_kill() actually stop any further frame from reaching
-ieee802154_subif_frame() here?
-
-tasklet_kill() clears TASKLET_STATE_SCHED and waits for a running
-instance to finish, but it does not prevent a subsequent
-tasklet_schedule() from a driver's ieee802154_rx_irqsafe() path. If a
-driver interrupt fires between mac802154_flush_queued_mac_cmds(local,
-NULL) and destroy_workqueue(local->mac_wq) further down, a new
-mac_pkt would be added to rx_mac_cmd_list, the worker would be queued
-on local->mac_wq, and it would then run against sdatas already freed
-by ieee802154_remove_interfaces().
-
-Note this call site also runs before rtnl_lock() a few lines below,
-which is relevant to the kernel-doc comment quoted further down.
-
-> diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
-> index cd8f2a11920d..0b167f76cb23 100644
-> --- a/net/mac802154/rx.c
-> +++ b/net/mac802154/rx.c
-> @@ -128,6 +128,48 @@ void mac802154_rx_mac_cmd_worker(struct work_struct *work)
->  	kfree(mac_pkt);
->  }
->  
-> +/**
-> + * mac802154_flush_queued_mac_cmds - drop pending rx_mac_cmd_list work
-> + * @local: the mac802154 device the queue belongs to
-> + * @sdata: interface being torn down, or %NULL to flush unconditionally
-> + *
-> + * Every queued &struct cfg802154_mac_pkt stashes a raw pointer to the
-> + * interface it was received on (see ieee802154_subif_frame() below) which
-> + * mac802154_rx_mac_cmd_worker() dereferences without ever checking whether
-> + * that interface is still alive. Callers must invoke this before freeing
-> + * @sdata -- or every interface on @local, when @sdata is %NULL -- so the
-> + * worker can never run against freed memory:
-> + *
-> + *  - cancel_work_sync() waits out a run already in flight. That is still
-> + *    safe to let finish because nothing has been freed yet, and it blocks
-> + *    any new run from starting for as long as we hold the RTNL.
-
-[Low]
-Is this description of cancel_work_sync() accurate?
-
-cancel_work_sync() only guarantees the work is not pending or executing
-by the time it returns, and does not itself block future queue_work()
-calls. RTNL is not held at the ieee802154_unregister_hw() call site
-(the flush is invoked before rtnl_lock() there), and at the
-ieee802154_if_remove() site RTNL is a plain mutex that does not disable
-BH and does not serialize with the RX softirq path
-ieee802154_tasklet_handler() -> ieee802154_rx() ->
-__ieee802154_rx_handle_packet() -> ieee802154_subif_frame(), which is
-what enqueues into rx_mac_cmd_list and re-arms rx_mac_cmd_work via
-queue_work(local->mac_wq, ...).
-
-Could this comment be reworded to describe an invariant the code
-actually provides?
-
-> + *  - every list entry pointing at @sdata (all of them, if @sdata is NULL)
-> + *    is then dropped so no future run of the worker can see it.
-> + *
-> + * Mirrors mac802154_flush_queued_beacons() in scan.c, which does not need
-> + * the cancel_work_sync() step because its worker never dereferences sdata.
-> + */
-> +void mac802154_flush_queued_mac_cmds(struct ieee802154_local *local,
-> +				     struct ieee802154_sub_if_data *sdata)
-> +{
-> +	struct cfg802154_mac_pkt *mac_pkt, *tmp;
-> +
-> +	cancel_work_sync(&local->rx_mac_cmd_work);
-> +
-> +	list_for_each_entry_safe(mac_pkt, tmp, &local->rx_mac_cmd_list, node) {
-> +		if (sdata && mac_pkt->sdata != sdata)
-> +			continue;
-> +
-> +		list_del(&mac_pkt->node);
-> +		kfree_skb(mac_pkt->skb);
-> +		kfree(mac_pkt);
-> +	}
-> +
-> +	/* Other interfaces on @local may still have entries pending. */
-> +	if (!list_empty(&local->rx_mac_cmd_list))
-> +		queue_work(local->mac_wq, &local->rx_mac_cmd_work);
-> +}
-
-[High]
-Given that ieee802154_subif_frame() can still be entered from softirq on
-sibling interfaces after cancel_work_sync() returns, what protects
-rx_mac_cmd_list during this iteration?
-
-The producer does:
-
-    list_add_tail(&mac_pkt->node, &sdata->local->rx_mac_cmd_list);
-    queue_work(sdata->local->mac_wq, &sdata->local->rx_mac_cmd_work);
-
-with no lock. cancel_work_sync() does not block a subsequent
-queue_work(), so mac802154_rx_mac_cmd_worker() can start on another CPU
-while this function is still iterating. The worker does
-list_first_entry_or_null() + list_del() on the same list, and the
-iterator here pre-loads tmp = list_next_entry(pos) each round.
-
-Under that shape, could a concurrent list_del() from the worker on the
-head entry (a) target the same entry the flush is about to delete
-(double kfree() of mac_pkt), (b) free the entry that tmp points at
-(use-after-free inside the flush loop), or (c) race with a
-list_add_tail() from the producer softirq and leave neighbour pointers
-inconsistent?
-
-The trailing:
-
-    if (!list_empty(&local->rx_mac_cmd_list))
-        queue_work(local->mac_wq, &local->rx_mac_cmd_work);
-
-also reads list state and re-arms the worker without any lock, which is
-a TOCTOU against a softirq list_add_tail() on the same list.
-
-Would either a spin_lock_bh() around every rx_mac_cmd_list mutation
-plus the queue_work() (matching the softirq producer), or preventing
-new enqueues for the sdata being torn down in ieee802154_subif_frame()
-before the flush runs, close this window?
-
-Also, in the multi-interface case ieee802154_if_remove() only quiesces
-the sdata being removed with synchronize_rcu(); does this fix actually
-address the scenario the commit message describes, where MAC_CMD
-traffic is arriving on a sibling interface of the same phy during
-NL802154_CMD_DEL_INTERFACE?
+A kind-of-similar change is needed in net/8021q/vlan_dev.c
