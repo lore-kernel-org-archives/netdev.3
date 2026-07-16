@@ -1,60 +1,62 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1817E41B8EA
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1710541C2EF
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784201906; cv=none; b=PD/yEwxK41bT8q+1qIq1+m8IAia7J7zqpHNt65GbbtmBu59fA1vMUboaSBrUrpeVr3bM8wibDzjG78Cbs0T/3nGsQtfQYhIM6KU2HCxZRBVSHuFUHJTSbIyBVtCs3uy00jtVGKwGd8Wtu6QcupISup3UIF/oIeKdDFwp448DjFY=
+	t=1784201912; cv=none; b=X3NZPPumFepEwYe0htq599zUgl+exrzCl7zRuFjlR/TjjEMqqiiRb5V6GdcL6Dsz4YUVS2WO8M6Ex6guW+qJ+9tzAekntL43nFgcZDJFQgnPLgxPYRmjXH2F+du6MtpxA7rC9ZHTBMhP6iurfhQeiJVccebB4IMPm14/vYOGbiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784201906; c=relaxed/simple;
-	bh=3UMLJAI4zwX+xrknDoWcjeW5Fe2Hf6s9W7u8AIIupAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dWqWVK7PYaxFG/llJG4zAeu8/+01P/NA91ajcxWtZsEuDwGXeg+YHuGTXvQ7MSHTdVErhzUfOHdhlgW2YY++YH0qadVSmLsBHBDhYLPJcz5p0gjWbFtJu+6aK8HmH0WSPS4yCGtgA0RqthvS9NG/PX4mxaHt+3aS/cp/AgTsC9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q2nCF+G1; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1784201912; c=relaxed/simple;
+	bh=HC9Umllw/UhQV3rgBtTIo/fWCOVWhQWvCTMxwy1tUJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BnswoC/tzsjHCLHgQK9ObP+MgMXVESJaL5tdVQ/BaoGt7LsKwsLnaroYOVYzx8aCQ2p8P71JXnOoYxkWU4o8wFN8ZvbQGWPRQGa72JxC9ikIxPAsUbnmtiV5V3iqMOoYwo6lnR9ANJwig5VkQ4YBrs/TUcMkyVsDvkHjpBi7UsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F9z1q4L/; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q2nCF+G1"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so44442905e9.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:38:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F9z1q4L/"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49546c690ffso275605e9.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784201900; x=1784806700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KEa5P/HyCPNQnlgLKXJFWDQu1oUmRVxgO3uBuivoKGM=;
-        b=Q2nCF+G1UldggFdau2wg2I9yNriVWi2ltdoE1qR9aBOwcxGYSVGKuqoEnHbM9gLfoR
-         DM3/GbVVTIhOHT3zPREv+CFyRoeaSU8J+n1K/8IPFymlXeM4OCGj7oMB6rgaUoma7tOu
-         /TimVI2C3vsO5dh99jrGrhQLuRf/yZ+0g3dBBI7R7nBeiEADxIbAViog5cmLjvMTb34h
-         WofBMfRvd4WcqGraOECzBQeH3phJL4kwTfco+ZB6S5FXXP4ux5bsw1DImWdY42H70v8m
-         45iSmcBrFi+5jsaZIEL+F5Iy5hy2gjn2H3vc83fWoE43CucWOrdvwrxXj6yCxgxVyquU
-         Lz1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784201900; x=1784806700;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784201907; x=1784806707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KEa5P/HyCPNQnlgLKXJFWDQu1oUmRVxgO3uBuivoKGM=;
-        b=PZa7lC3wNDjT/vEJebOcipWjIbmkpU9Ucs8RFPCqkCzHjFsV7JPXkOoz2fqTrjqzW/
-         lsSXsppcKnzhju75AV5umbTXpSYKvF7qrPk3nsTEEp0wr0NOhHR7ZpbU4YzMMgsLt+4Y
-         sa0sgfG3iVBps0QA3WwRZdiurbdU7FqR3leKZVEqLccT2tOzy9zsbY+p115czkSBbTi4
-         /3ashieQx9y9vMEZZLHaQ8dPMF1iDwUJltxTb/pCjm3CrlcH4vb4UdOZxFJNjIru/2I/
-         b3uVa/jX9RH2D0DTuc7jomTXSwfOSluli3EN5e2aUp5q/ELDIDRSC+U+BYbRyCmii2AQ
-         fUkQ==
-X-Gm-Message-State: AOJu0YxtSWYlDcAwJv+LkjNKD/44B2lSjuoV07TulNAMVobGdLEB3kj+
-	7l73aGaEu2jaOF319BTQADUzISxSpAcaXxlrGJGSZ16uCCHZ6E5VInwYKR6TvQ==
-X-Gm-Gg: AfdE7cmd11ZPfCy9qFrD9y8eI6oBSnPJ8nyJW8kXqJBd8hkSdM9DBSpB+bT7lJEEzaA
-	7LRZ2dbztt4FjBmudN4uFCxxiN4qQaHUrGYVybThVavbd29CwUsrBGCVLnlnptj6q/Brw28vS1v
-	ygEHNm/0KsmiLF2iRwmuYQy6PWNxFAhAwvtJnhjA+s7IgAxdsaGjhWvC4MKDg8z/l4DwTlOWugH
-	3PHWo+CzqRxaVHvJtN68gjRmvjeYjunNjxNi2ui1mEKWJBG67ph1/2tHP9L6GqH8z/mQtt4lJLW
-	OWLFJLpi0Cbu6rrN9EE4yFTInnjeA1gHmqxRDs4G95DtEHNq2M2pv39CQEA2/K5ENQr7WEuwDYR
-	EYklVmPBOKBWpfqrzd8OUAUTJI1rHbwhutDDovfT2o5XxVaGnj6aTMyxODQZDJeg36mx+lBbtNX
-	GxhbDEzfuBBXwPh7HNtl0=
-X-Received: by 2002:a05:600c:5292:b0:495:40aa:d982 with SMTP id 5b1f17b1804b1-49540aad9a1mr36326985e9.6.1784201900203;
-        Thu, 16 Jul 2026 04:38:20 -0700 (PDT)
+        bh=ryr2s2w0siIeOD0ExeDIYeRjYrw6WRSyoBeAvMjxr1M=;
+        b=F9z1q4L/jczupaarn5vp6gCOcvuO+NTPIbS+0YF9myjMLeFa8bJmaoJ/s6Ax565ikP
+         +XqR1oDZdpcW771cPizVXNJsLr2eieNjFU4DFGG97RJXQXPuUq0dhgq32mB+ws0CsA47
+         s8u8sWheWN/JKUJSFITEbLug8eKWu2q57ekYaM23pKCVK37t5OjdMk9kfyh9vXHJOuIi
+         pEOCtm30lZFHWF4rpyFEY/u2ReUEVjGSPx1SmruG+DgViYNevq1ijkYB+mKTDbpkCFMj
+         5GUN0SbsCEfcMQnfxhkAABe7IPDU2ajIvAjDxTpKG6np8x0WX1upase5r/T+kSiuqZ0k
+         cqgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784201907; x=1784806707;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ryr2s2w0siIeOD0ExeDIYeRjYrw6WRSyoBeAvMjxr1M=;
+        b=tAkHSISDaql+GSJqqXJactIhIBmCmj6IESg/olRW+qywOei/GB/zPpN852AL5wQ7/7
+         MIeHtxnu7spQxMMrrCwBhdnY5eBguM/TR4XkjwXY9d1/Nl5tMQYHZnCcu7AeUvwDc1ze
+         IUvwfIvKqWTI3hD8ErINuBX0oiCkXS1gd9OyTtUT4vMsKZPJ6dEZaE4dXkPziZNFSQ78
+         WaXPqdlouvjBEdeEl3USC9DS5QZZ7U+6rQin6xTQdmnhAMxoE71t0ONhIte0bnK3KM2l
+         mxNgNlqjCA/NMjqr2Km13bAZ6Jn6YcpI7ZxhKi+HyPrvCUXn8oYJBlSPZ7b0z/ySgpr7
+         qSAw==
+X-Gm-Message-State: AOJu0YziUtRt9EAlR4mNMrHyzkN9db7LKolx1y09Ljl5CufJzWjZkY2+
+	zVMLz5p9VKfGmLSbqVgPLIF2X3tBqeNiaJnM4Z2R6cqaMhx2X2lN9GQ+hRYq3g==
+X-Gm-Gg: AfdE7ck6sRkC7oQIedKVnfhMYDTsymXi30Nhp3St5JRlCFWUY4z9TgmiVfWgdVpqW/o
+	ztppkWZ+gOkA7M3e/YgoObz5sJHi4+hSIbAS6rZAHBzUsa8gFfcMd6UKqPp0ODoDqmg9ZOcwgnU
+	dZ/qX/grpl2omCVSbxWYRFjnNK/s/p9ROsBbGOBdHf/UvPXa/YEESo1ypUwjsjmkNJt1FRQ9Ksl
+	1/Hnei3tC+Fe3LGY8t0z1o1hfqAsWwRPY/nF2np6IOu0IyawYU9BjGA+NzDSvgvaudyLKHK8/iU
+	qGTHCZZ8Q3MrqxH5wCtz+vXnr/1J9OoYUhxBWb0Zov5BNkQ0m7KQUoBsLLV8Ww4IvvjQaOwxqum
+	arCVtDc6Ek7T5jTLqhdRANxZW7aUT0RjBSgGmZYi6KQhQJbxI32wKw64PmQ6k8zfTOxZL/ZoeyQ
+	xe0oIK/W+qH62izQLgpl8=
+X-Received: by 2002:a05:600c:1908:b0:492:41c9:886b with SMTP id 5b1f17b1804b1-4953c1620c0mr74288235e9.14.1784201906695;
+        Thu, 16 Jul 2026 04:38:26 -0700 (PDT)
 Received: from NB-6746.corp.yadro.com ([188.243.183.76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e83bcbsm49217165e9.4.2026.07.16.04.38.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e83bcbsm49217165e9.4.2026.07.16.04.38.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 04:38:19 -0700 (PDT)
+        Thu, 16 Jul 2026 04:38:26 -0700 (PDT)
 From: Artem Shimko <a.shimko.dev@gmail.com>
 To: netdev@vger.kernel.org,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -70,10 +72,12 @@ To: netdev@vger.kernel.org,
 Cc: Artem Shimko <a.shimko.dev@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH net-next v2 0/2] Add DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY driver
-Date: Thu, 16 Jul 2026 14:38:02 +0300
-Message-ID: <20260716113805.593215-1-a.shimko.dev@gmail.com>
+Subject: [PATCH net-next v2 1/2] dt-bindings: net: add DAPU Telecom DAP8211R(I) PHY binding
+Date: Thu, 16 Jul 2026 14:38:03 +0300
+Message-ID: <20260716113805.593215-2-a.shimko.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260716113805.593215-1-a.shimko.dev@gmail.com>
+References: <20260716113805.593215-1-a.shimko.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,169 +86,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Add device tree binding documentation for the DAPU Telecom DAP8211R(I)
+Gigabit Ethernet PHY.
 
-This series adds support for the DAPU Telecom DAP8211R(I) Gigabit
-Ethernet PHY, commonly used in enterprise and industrial networking
-applications. The PHY supports 10/100/1000 Mbps operation with RGMII
-interface and includes features such as IEEE 802.3az Energy Efficient
-Ethernet, IEEE 1588 SyncE, and an internal packet generator for
-diagnostics.
+The PHY supports TX and RX clock delays in 150 ps steps from 0 to 2250 ps,
+with a default of 1950 ps if not specified. The dapu,tx-inverted-clk flag
+provides a vendor-specific extension for boards where PCB trace length or
+MAC requirements necessitate 180-degree clock phase shift.
 
-The driver implements extended register access via indirect addressing
-(registers 0x1E/0x1F) and provides comprehensive device tree support
-for RGMII delay configuration. The rx-internal-delay-ps and
-tx-internal-delay-ps properties allow precise tuning of clock delays
-in 150 ps steps from 0 to 2250 ps. The optional dapu,tx-inverted-clk
-flag enables 180-degree TX clock phase shift for boards where signal
-integrity or MAC requirements necessitate clock inversion.
-
-This PHY is used on the NDA platform with 1G Ethernet tile and has
-been tested on that hardware with successful link establishment and
-RGMII delay tuning.
-
-Due to the specific PCB layout of the platform and FPGA configuration,
-the default RGMII timing configuration was insufficient, causing packet
-loss during normal operation. Tuning the TX/RX line delays and enabling
-clock inversion restored proper signal timing, resulting in zero packet
-loss and stable link performance.
-
-$ make dt_binding_check DT_SCHEMA_FILES=dapu,dap8211r.yaml
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-  CHKDT   ./Documentation/devicetree/bindings
-  LINT    ./Documentation/devicetree/bindings
-  STYLE   ./Documentation/devicetree/bindings
-  DTEX    Documentation/devicetree/bindings/net/dapu,dap8211r.example.dts
-  DTC [C] Documentation/devicetree/bindings/net/dapu,dap8211r.example.dtb
-
-grep -i "dap8211r" Documentation/devicetree/bindings/processed-schema.json
-chema.json
-    "http://devicetree.org/schemas/net/dapu,dap8211r.yaml": {
-        "$filename": ".../devicetree/bindings/net/dapu,dap8211r.yaml",
-        "$id": "http://devicetree.org/schemas/net/dapu,dap8211r.yaml#",
-        "title": "DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY",
-
-Working with xgmac.
-
-Board side:
-
-$ arping -I eth0 192.168.5.100
-ARPING 192.168.5.1 from 192.168.5.100 eth0
-Unicast reply from 192.168.5.1 [board.mac.addr]  8.543ms
-Unicast reply from 192.168.5.1 [board.mac.addr]  3.295ms
-Unicast reply from 192.168.5.1 [board.mac.addr]  4.301ms
-Unicast reply from 192.168.5.1 [board.mac.addr]  4.096ms
-Unicast reply from 192.168.5.1 [board.mac.addr]  2.872ms
-...
-
-$ Unfortunately, there is a dependence on the axibus speed here
-$ iperf3 -c 192.168.5.1
-Connecting to host 192.168.5.1, port 5201
-[  5] local 192.168.5.100 port 58936 connected to 192.168.5.1 port 5201
-[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-[  5]   0.00-1.00   sec  7.88 MBytes  65.8 Mbits/sec    0    150 KBytes
-[  5]   1.00-2.00   sec  8.50 MBytes  71.4 Mbits/sec    0    165 KBytes
-[  5]   2.00-3.00   sec  8.25 MBytes  69.2 Mbits/sec    0    165 KBytes
-[  5]   3.00-4.01   sec  8.50 MBytes  71.1 Mbits/sec    0    165 KBytes
-[  5]   4.01-5.00   sec  8.38 MBytes  70.3 Mbits/sec    0    165 KBytes
-[  5]   5.00-6.00   sec  8.50 MBytes  71.5 Mbits/sec    0    165 KBytes
-[  5]   6.00-7.01   sec  8.62 MBytes  72.0 Mbits/sec    0    174 KBytes
-[  5]   7.01-8.00   sec  8.62 MBytes  72.8 Mbits/sec    0    174 KBytes
-[  5]   8.00-9.00   sec  8.62 MBytes  72.2 Mbits/sec    0    174 KBytes
-[  5]   9.00-10.04  sec  8.62 MBytes  69.9 Mbits/sec    0    174 KBytes
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.04  sec  84.6 MBytes  70.7 Mbits/sec    0 sender
-[  5]   0.00-10.12  sec  84.8 MBytes  70.3 Mbits/sec receiveriperf Done.
-
-$ ethtool -t eth0
-...
-The test extra info:
- 1. MAC Loopback                 0
- 2. MAC Loopback (diff. queues)  0
- 3. PHY Loopback                 0
-...
-
-ELP side:
-...
-17:29:11.974973 ARP, Reply ELP is-at elp.mac.addr(oui Unknown), length 28
-17:29:12.975199 ARP, Request who-has ELP tell 192.168.5.100, length 46
-17:29:12.975217 ARP, Reply ELP is-at elp.mac.addr(oui Unknown), length 28
-17:29:13.975022 ARP, Request who-has ELP tell 192.168.5.100, length 46
-17:29:13.975035 ARP, Reply ELP is-at elp.mac.addr(oui Unknown), length 28
-17:29:14.974837 ARP, Request who-has ELP tell 192.168.5.100, length 46
-17:29:14.974849 ARP, Reply ELP is-at elp.mac.addr(oui Unknown), length 28
-17:29:15.975026 ARP, Request who-has ELP tell 192.168.5.100, length 46
-...
-
-Accepted connection from 192.168.5.100, port 58932
-[  5] local 192.168.5.1 port 5201 connected to 192.168.5.100 port 58936
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  7.12 MBytes  59.7 Mbits/sec
-[  5]   1.00-2.00   sec  8.50 MBytes  71.3 Mbits/sec
-[  5]   2.00-3.00   sec  8.50 MBytes  71.3 Mbits/sec
-[  5]   3.00-4.00   sec  8.38 MBytes  70.3 Mbits/sec
-[  5]   4.00-5.00   sec  8.50 MBytes  71.3 Mbits/sec
-[  5]   5.00-6.00   sec  8.38 MBytes  70.3 Mbits/sec
-[  5]   6.00-7.00   sec  8.62 MBytes  72.4 Mbits/sec
-[  5]   7.00-8.00   sec  8.62 MBytes  72.3 Mbits/sec
-[  5]   8.00-9.00   sec  8.62 MBytes  72.4 Mbits/sec
-[  5]   9.00-10.00  sec  8.62 MBytes  72.4 Mbits/sec
-[  5]  10.00-10.12  sec   896 KBytes  62.3 Mbits/sec
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-10.12  sec  84.8 MBytes  70.3 Mbits/sec receiver
-
-DTS node example:
-&ethernet_1g_tile {
-  ...
-  phy-mode = "rgmii-rxid";
-  phy-handle = <&phy1>;
-  ...
-
-  mdio: mdio {
-    phy1: ethernet-phy@1 {
-      ...
-      compatible = "ethernet-phy-id0008.011b";
-      rx-internal-delay-ps = <1050>;
-      dapu,tx-inverted-clk;
-      ...
-    };
-  };
-};
-
---
-Best regards,
-Artem Shimko
-
-ChangeLog:
-  v2:
-    - Drop debugfs interface
-    - Simplify RGMII delay reading logic using of_property_read_u32()
-    - Fix missing newline at end of dapu,dap8211r.yaml (yamllint error)
-    - Simplify delay property description in DT binding
-    - Rename tx-inverted-clk to dapu,tx-inverted-clk (vendor prefix)
-    - Replace enum with multipleOf + maximum for delay validation
-    - Fix compatible string and tx-internal-delay-ps value in example
-    - Remove rounding logic, return -EINVAL for unsupported delay values
-    - Respect DT delay properties for all RGMII modes
-    - Add polling for self-clearing reset bit instead of fixed sleep
-    - Remove unused packet generator macros (DAP8211R_PKGC5 and related)
-  v1:
-    - https://lore.kernel.org/all/20260713131223.279555-1-a.shimko.dev@gmail.com/T/#t
-
-Artem Shimko (2):
-  dt-bindings: net: add DAPU Telecom DAP8211R(I) PHY binding
-  net: phy: add DAPU Telecom DAP8210R(I) Gigabit Ethernet PHY driver
-
- .../bindings/net/dapu,dap8211r.yaml           |  73 +++++
- drivers/net/phy/Kconfig                       |  10 +
- drivers/net/phy/Makefile                      |   1 +
- drivers/net/phy/dap8211r.c                    | 281 ++++++++++++++++++
- 4 files changed, 365 insertions(+)
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+---
+ .../bindings/net/dapu,dap8211r.yaml           | 73 +++++++++++++++++++
+ 1 file changed, 73 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/dapu,dap8211r.yaml
- create mode 100644 drivers/net/phy/dap8211r.c
 
+diff --git a/Documentation/devicetree/bindings/net/dapu,dap8211r.yaml b/Documentation/devicetree/bindings/net/dapu,dap8211r.yaml
+new file mode 100644
+index 000000000000..d4012fa17a1e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/dapu,dap8211r.yaml
+@@ -0,0 +1,73 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/dapu,dap8211r.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: DAPU Telecom DAP8211R(I) Gigabit Ethernet PHY
++
++maintainers:
++  - Artem Shimko <a.shimko.dev@gmail.com>
++
++description: |
++  The DAP8211R(I) is a Gigabit Ethernet PHY with RGMII interface,
++  supporting IEEE 802.3az Energy Efficient Ethernet, IEEE 1588 SyncE,
++  and an internal packet generator for diagnostics.
++
++  Specifications:
++    - 10BASE-Te, 100BASE-TX, 1000BASE-T
++    - RGMII with configurable TX/RX clock delays (150 ps steps, 0-2250 ps)
++    - IEEE 802.3az-2010 Energy Efficient Ethernet
++    - IEEE 1588 SyncE support
++    - Internal packet generator and checker for link diagnostics
++
++allOf:
++  - $ref: ethernet-phy.yaml#
++
++properties:
++  compatible:
++    const: ethernet-phy-id0008.011b
++
++  reg:
++    maxItems: 1
++
++  rx-internal-delay-ps:
++    description:
++      RGMII RX clock delay in picoseconds (0 to maximum).
++    multipleOf: 150
++    maximum: 2250
++    default: 1950
++
++  tx-internal-delay-ps:
++    description:
++      RGMII TX clock delay in picoseconds (0 to maximum).
++    multipleOf: 150
++    maximum: 2250
++    default: 1950
++
++  dapu,tx-inverted-clk:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If present, the RGMII TX clock to the MAC is inverted (180 degree
++      phase shift relative to the data lines). This is a vendor-specific
++      extension for boards where PCB trace length or MAC requirements
++      necessitate clock inversion. Only use this property after hardware
++      signal integrity validation.
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy@1 {
++            compatible = "ethernet-phy-id0008.011b";
++            reg = <1>;
++            rx-internal-delay-ps = <2100>;
++            tx-internal-delay-ps = <2100>;
++            dapu,tx-inverted-clk;
++        };
++    };
++
 -- 
 2.43.0
 
