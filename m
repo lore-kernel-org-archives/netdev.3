@@ -1,203 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5B392C39;
-	Thu, 16 Jul 2026 09:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194493; cv=none; b=j71ZDjYQ66N262+g+dxQgJE1KLOwxcfN2BXBcnviVRuvml9nKADEKNaOvjE4jAOipu1uuCb67e+JkiaYQzY8dtxi5ypFQigQTmEneIg+jDv2k0+kddM7OCzJCWyUS8oxNN4uw5prX2u4QUG8WXb5jlE8b6pLsL9rl4gjfxt/Chs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194493; c=relaxed/simple;
-	bh=piGvS9odsFqceYHmKyj89Egg30SAmpFDNbFAimmJCfo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+caOhfxIm/ff4+Zt20WIq/sKo9GHJ9n0yzamndotWiZik6IX8u7CAovudW1szmNapTBydKPbWUPksudkb/EWLOx2y0Ie9c2tRA42jHUEXYMaG8F8xH0eeFo9p+ACsZUgZhBkYw3tNYq81ll6LId74BT3PqBNsCTFngs6FHk3ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btzwrW2W; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303FE3A5436
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784194922; cv=pass; b=gg5u6AU3hIKBra0StG5HZ0WJOS4NRwZMyZycd4ddL+oKZq/f5xnk6DVENf+yF4W0o9ZUMrf+688uH3n7WR6kvf3xxV6rdwF2XZHh2t0m+RFO8J2fcadpnoCmWksXro/aqK+XL5yngmjjsZlnZq/PflIVWHATr8jtP8mjJJwcU/I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784194922; c=relaxed/simple;
+	bh=LqqsdM1x0Zd6TudpeBiM7tPh+032sxPHxb49LL/o6kA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y/yC99LcpGNsRc1xZqSCRVWo3rquhAaq4BWEv2PPzEEya1zZ1rJ59+Z44F9qAu9ruu6Gv4fluD4uz1g15xcRztjn4lIQLoicxRP1oW4nFbsqtN3Btoec4dJMsUnBKNF7lh+pMFlouMH5F/s5It9Y6SmFMiMJfG1/1198EKg/T9I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S0HJvOaW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BhJCKv9T; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btzwrW2W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599081F00A3A;
-	Thu, 16 Jul 2026 09:34:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784194476;
-	bh=6TV8tl8agqKwLpgfHtmJHvY+8PG3WpGYxYzrYv+Oy+A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=btzwrW2WHUhoHzOAas/Q8lx/bETANDijmUL3bYGTX3QlggJmQiTq8Tk5IhZ83nOcs
-	 D5Qn5Ceu5eXEJHDnkLCHMibfsdWy8aJd3Ki1cNSeRXW/seJUuwo6hg8Os2ZKVekRQf
-	 oqjT95fcO3utuaeudnh9VMPxS+YI08GfB6tSPKdQ3OoDuNqjUBYVwRiq5zJf5r37tD
-	 0mh0xgYvlFN8ZYF83ji6FXT9yQTcnEH4DzXWrgwIKXMxs8DcO7W1ipm7jBFbIcuosl
-	 isV3SQQCeZCjuGx5Ym1JZoDvn/j1VX82kRK7LJQF1U15+nqDnWZRX7DQu2IHPAb7eV
-	 QmzRuHJiia5lQ==
-From: Simon Horman <horms@kernel.org>
-To: jackbb_wu@compal.com
-Cc: Simon Horman <horms@kernel.org>,
-	loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	wen-zhi.huang@mediatek.com,
-	shi-wei.yeh@mediatek.com,
-	Minano.tseng@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] net: wwan: t9xx: Add AT & MBIM WWAN ports
-Date: Thu, 16 Jul 2026 10:34:29 +0100
-Message-ID: <20260716093429.231132-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709-t9xx_driver_v1-v4-6-a8c009d509c5@compal.com>
-References: <20260709-t9xx_driver_v1-v4-6-a8c009d509c5@compal.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S0HJvOaW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BhJCKv9T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784194916;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
+	b=S0HJvOaWGyDwPBKwCLNMWIWxD72EhMGYK5Q5upmidzxYpP2pHNgYb14SctLXHe0t5Gc5BC
+	dHchjpVYZf/5CN9iM/UQ2OwxCjsxjFqdLOZEKKLlGkzuWHsKTn2XcRbMTBuWclti2ALPmL
+	sOttTvJMrOzAla7xj3TGmvBho2XTmI0=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-E-6Ps3_gOfaaV_6tO-qxcQ-1; Thu, 16 Jul 2026 05:41:51 -0400
+X-MC-Unique: E-6Ps3_gOfaaV_6tO-qxcQ-1
+X-Mimecast-MFC-AGG-ID: E-6Ps3_gOfaaV_6tO-qxcQ_1784194910
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-80ee3cb097eso191911787b3.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:41:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784194910; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Zxz49GKqdE7ndUL/Hb5T63eXcbo1xbdopKMnRfMogdeFusYNXM+IQ0i4bR0Yx7ymIQ
+         fsker7dpDrLeOSPEq0hbma+3kpy23P0ittOwKrvd787Caw8jgqdW+N/BSIvJTA43J1XP
+         hAWWw9tIH6sZS3GtQGa4lo+NhX5gYPwNbzMoVtbo6pafzbVJmDLBxyKnPrAGYbQ/RwMa
+         to1XLPcEGb3wVh3RLPNu3/1SB/+ElfPfv0e2bCfFNNFKYTK7BntnKqa0BYsAVZsKqxVb
+         7LnGfX4KgGSCwIYuvHb8xQFi5NsK/uYs+T+Jkm4z0lfdiklPpfWoWtMMs0muLwfLQA0i
+         kyMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
+        fh=N72YIsU28Z+4Yld0bnNgAjY3tNCCEmM0gVXO7fDaMMM=;
+        b=RJOiiLQIwBnUo7Wvq7BhXIO6cFDPTKvWMt9oIMsqvKHmFWQNPpnpkojZQv3Gw+MiuN
+         D4JV3/98+oBSeQNTfZG8TgaS1tzqxk85/x3RyuttKkW3wWp+DoDB7Xg8eCgx3q2vKjvF
+         WNZqcPl0AdJSJIs4PelhR4T1kZTcT9E3QiHr3keCV/9HbV9noRd59c9lgRIUFYqitX5S
+         ryUi3UcNRVsziZtGuH1CBUNBdgfGkxc7jf9wQT1I+IrMMOB1gMR8awio1wufuPCTWmNB
+         gaS1MYCVdURT7XzQdJCFMwS3q7PfLwiZJiGMhkBHXzhtjFAJKWNqNneCda/c8LmJZYVX
+         8AzA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784194910; x=1784799710; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
+        b=BhJCKv9TXVDrgois5zsqTO0a+cs4+RQmeCu9YW20l+GA5pGHySFacdMFdbXyAOXEkx
+         mPSJ10Y5ydJSFRH/UQCyclDY5QlmNcvTPZgub51ohs8llDG/3sDzkh1XiiWaNedpSLwl
+         W6J3UYTXSG+lvu7WPkPIQypiVMnaOgC/cjV5RK6sZkAGWkgOQxMstSAa/QdcNuwwlxSJ
+         RBcbzisv5yzmF2wxwIxYbUHKguiCvKvvIJVEdYlFtTMnKBEXgv0Ymp0Kf4eH8CqAME4G
+         oPypXdiyE031+gnsPnLs7ipryj9O+fIHrJmT+s64vdKUlpAyh9FuFFZM4ZS509Phqb7E
+         ORXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784194910; x=1784799710;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
+        b=lbZs/Jx0SNtB9OpUIJsetwc9rx2BK2PvEiO7GNf4q13s0igwboWlZPf5hgRnKCquZt
+         PX2aJ8oWjzEginK+TYcts5sGkG7KNIYoEbrTMGo7ZgHdWR1aql6fOdfuiTMSwN9DlSW1
+         K31W6iHQ9TZRkmAYxR8MTWH0gThBmngs1k58mO7gJoy6J258JmRkPS1ts+BFevePvdLZ
+         5o0NgD9yCsZ3zOa9FpWEUCqUlq1xzXnrR6eGOeflhpSClAlB/KShHWfEnt0mN62bDkUI
+         8ZX3pvFV2TdgpP2ZG7jaj2zfUZrIpe/1aVtLZNqdwQy+5m4LsUnjwJa0b7McZhSQsOk2
+         JAhw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpw9CIISPYndJ2jhqinrULGhT592J7a4RUXA9KduMVvDhNhDcKo4pp3KkaD5bFotVT2ZsIw+hs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCuM46cvl7SA6tu6x5Qk6ZP1mtn/B+cQCt76p8uSCjotmGgAFS
+	FEZLJMsMUszJzvY7ebMFp4HddITmSw/zoF+ge+JZnt35unvsABk9gseAlUn8TgugUkve+6iUIyg
+	3p3fol17KRhUAbVb7FzSgq68f7rSrLQlOFDK/trez+/qKivkZxHHXzt0ztVfLazzgX+PkCW4zNc
+	fI5+fw1hgchZnBVSymiegTKMXpL0O5gmDP
+X-Gm-Gg: AfdE7cnxbqTQVGdbJ/wS3scnGeiktI2N+xZAkeknPIeJQ4vcypzK1SGyktgTWCnspuz
+	R+I/mK72BveUHjaFAZpyWDdd2g4NbEtOgJYavt9qbzjqEnL3CiFFE8YoImOyTE2ucz/AB0zbk6/
+	QSlhiaJT8/09eC/MdRiNwS9up7sHq71EW/sYZ1FKFDYUdQ3tUHoYr38ULy+IsX8qzRBV5TCiH+1
+	mXm5DoU1yH7fwB7JjMqhwK3HfK1cD2Q5sy8T82bpCs5qHKxqdGmaA8zFAbEeU9IZt9JqFwdKH12
+	nmt7y2AuGgFGWAI=
+X-Received: by 2002:a05:690c:6a12:b0:809:fd83:a88b with SMTP id 00721157ae682-81ebfda0fedmr73234497b3.3.1784194910373;
+        Thu, 16 Jul 2026 02:41:50 -0700 (PDT)
+X-Received: by 2002:a05:690c:6a12:b0:809:fd83:a88b with SMTP id
+ 00721157ae682-81ebfda0fedmr73234217b3.3.1784194909834; Thu, 16 Jul 2026
+ 02:41:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260716030236.124322-1-xiongwm2026@163.com>
+In-Reply-To: <20260716030236.124322-1-xiongwm2026@163.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 16 Jul 2026 11:41:13 +0200
+X-Gm-Features: AUfX_myzajePn8mltUINphDNuq-00hOZMHHFFuGnRbdhRoWqlQATXfpqP4mVDnA
+Message-ID: <CAJaqyWfW9n5o+ojrEjK-m+6cwH_TSxWckjkvEXowZA8r=vDmdQ@mail.gmail.com>
+Subject: Re: [PATCH] vhost: reject zero-size IOTLB INVALIDATE
+To: Weimin Xiong <xiongwm2026@163.com>
+Cc: virtualization@lists.linux.dev, mst@redhat.com, jasowangio@gmail.com, 
+	netdev@vger.kernel.org, kvm@vger.kernel.org, 
+	xiongweimin <xiongweimin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
---- Patch [6]: [PATCH v4 6/7] net: wwan: t9xx: Add AT & MBIM WWAN ports ---
-commit 1739a55610bf7a44ce24874819e01c07236d9442
-Author: Jack Wu <jackbb_wu@compal.com>
+On Thu, Jul 16, 2026 at 5:02=E2=80=AFAM Weimin Xiong <xiongwm2026@163.com> =
+wrote:
+>
+> From: xiongweimin <xiongweimin@kylinos.cn>
+>
+> Reject VHOST_IOTLB_INVALIDATE messages with size =3D=3D 0 to prevent
+> iova + size - 1 from underflowing to U64_MAX, which would
+> incorrectly delete the entire IOTLB.
+>
+> Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
+> ---
+>  drivers/vhost/vhost.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 3c080c454e374cabd7321416ed92c5f7d3135254..xxxxxxxxxx 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -1656,6 +1656,10 @@ static int vhost_process_iotlb_msg(struct vhost_de=
+v *dev, u32 asid,
+>                 if (!dev->iotlb) {
+>                         ret =3D -EFAULT;
+>                         break;
+> +               }
+> +               if (!msg->size) {
+> +                       ret =3D -EINVAL;
+> +                       break;
+>                 }
 
-net: wwan: t9xx: Add AT & MBIM WWAN ports
+I think the issue is real, but how about adding the condition to the
+caller vhost_chr_write_iter? It is already the
 
-Add AT & MBIM ports to the port infrastructure.
-The WWAN initialization method is responsible for creating the
-corresponding ports using the WWAN framework infrastructure. The
-implemented WWAN port operations are start, stop, tx, tx_blocking
-and tx_poll.
+if (msg.type =3D=3D VHOST_IOTLB_UPDATE && msg.size =3D=3D 0) {
+        ret =3D -EINVAL;
+        goto done;
+}
 
-> diff --git a/drivers/net/wwan/t9xx/mtk_port_io.c b/drivers/net/wwan/t9xx/mtk_port_io.c
-> index e3a2de6d2f297..882254b74026f 100644
-> --- a/drivers/net/wwan/t9xx/mtk_port_io.c
-> +++ b/drivers/net/wwan/t9xx/mtk_port_io.c
+So it should be somthing in the line of:
 
-[ ... ]
+if ((msg.type =3D=3D VHOST_IOTLB_UPDATE || msg.type =3D=3D
+VHOST_IOTLB_INVALIDATE) && msg.size =3D=3D 0) {
+        ret =3D -EINVAL;
+        goto done;
+}
 
-> @@ -234,6 +376,198 @@ static const struct port_ops port_internal_ops = {
->  	.recv = mtk_port_internal_recv,
->  };
->  
-> +static int mtk_port_wwan_open(struct wwan_port *w_port)
+With that, please add my acked-by.
 
-[ ... ]
+>                 vhost_vq_meta_reset(dev);
+>                 vhost_iotlb_del_range(dev->iotlb, msg->iova,
+> --
+> 2.39.3
+>
 
-> +static int mtk_port_wwan_write(struct wwan_port *w_port, struct sk_buff *skb)
-> +{
-> +	struct mtk_port *port = wwan_port_get_drvdata(w_port);
-> +	union user_buf user_buf;
-> +	int ret;
-> +
-> +	if (unlikely(!skb->len)) {
-> +		consume_skb(skb);
-> +		return 0;
-> +	}
-> +
-> +	port->info.flags &= ~PORT_F_BLOCKING;
-> +	user_buf.kbuf = (void *)skb->data;
-> +	ret = mtk_port_common_write(port, user_buf, skb->len, false);
-> +	if (ret < 0)
-> +		return ret;
-
-[Severity: High]
-If mtk_port_common_write() successfully sends the first few fragments but
-fails on subsequent ones, returning a positive partial write count, does
-this code silently drop the remaining data?
-
-The condition ret < 0 is false for partial writes, so the SKB is consumed
-and 0 is returned to the caller, falsely reporting complete success to the
-WWAN core.
-
-> +
-> +	consume_skb(skb);
-> +	return 0;
-> +}
-> +
-> +static int mtk_port_wwan_write_blocking(struct wwan_port *w_port, struct sk_buff *skb)
-> +{
-> +	struct mtk_port *port = wwan_port_get_drvdata(w_port);
-> +	union user_buf user_buf;
-> +	int ret;
-> +
-> +	if (unlikely(!skb->len)) {
-> +		consume_skb(skb);
-> +		return 0;
-> +	}
-> +
-> +	port->info.flags |= PORT_F_BLOCKING;
-> +	user_buf.kbuf = (void *)skb->data;
-> +	ret = mtk_port_common_write(port, user_buf, skb->len, false);
-> +	if (ret < 0)
-> +		return ret;
-
-[Severity: High]
-Can the same silent drop of partially written SKBs happen here?
-
-> +
-> +	consume_skb(skb);
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +static void mtk_port_wwan_enable(struct mtk_port *port)
-> +{
-> +	struct mtk_port_mngr *port_mngr;
-> +	int ret;
-> +
-> +	port_mngr = port->port_mngr;
-> +
-> +	if (test_bit(PORT_S_ENABLE, &port->status))
-> +		return;
-> +
-> +	ret = mtk_port_ch_enable(port);
-> +	if (ret && ret != -EBUSY)
-> +		return;
-> +
-> +	port->w_priv.w_port = wwan_create_port(port_mngr->ctrl_blk->mdev->dev,
-> +					       port->w_priv.w_type,
-> +					       &wwan_ops, NULL, port);
-> +	if (IS_ERR(port->w_priv.w_port)) {
-
-[Severity: High]
-Can a race condition occur here if wwan_create_port() fails and returns an
-error pointer?
-
-Once mtk_port_ch_enable() completes, hardware RX can start. If
-wwan_create_port() fails, an ERR_PTR is stored in port->w_priv.w_port
-without holding w_lock. Concurrently, the RX interrupt handler could call
-mtk_port_wwan_recv():
-
-	mutex_lock(&port->w_priv.w_lock);
-	if (!port->w_priv.w_port) {
-		mutex_unlock(&port->w_priv.w_lock);
-		return -ENXIO;
-	}
-	wwan_port_rx(port->w_priv.w_port, skb);
-
-Because an ERR_PTR is not NULL, mtk_port_wwan_recv() will pass it to
-wwan_port_rx(), which will then dereference the error pointer.
-
-> +		dev_warn(port_mngr->ctrl_blk->mdev->dev,
-> +			 "Failed to create wwan port for (%s)\n", port->info.name);
-> +		port->w_priv.w_port = NULL;
-> +		mtk_port_ch_disable(port);
-> +		return;
-> +	}
-> +
-> +	set_bit(PORT_S_WR, &port->status);
-> +	set_bit(PORT_S_ENABLE, &port->status);
-> +}
-> +
