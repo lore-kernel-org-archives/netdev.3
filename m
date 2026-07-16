@@ -1,71 +1,591 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2753AEF53;
-	Thu, 16 Jul 2026 21:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784238473; cv=none; b=Dsvj0ZTU9v/TX60k2s5oG3HswjOJQZDWnV+vMNlEDiiAIJ7cVbKmoq98kID9aK+9uCsAHPw08lflnWvX2njbvN66jNzUiACm2+0IzzhTYtOhYnpSlJ2UeCesFd3lyIXI4fa8y85oTIbhnIFt/5Xr4dmauG69PSD9x6b3lT7jdzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784238473; c=relaxed/simple;
-	bh=SCP5vSspLwmjnjt6JQ/eCVJ7Hj5onjVMARZH/tKBcwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G9Wh0+4r4s0cZWtjPtyA70qxBLNXF7Ql04zIOzVF2+4U0CjyKhU8yHP6ieMttZH/TOhzJiwmqOzn4yfCEZfTxIorlsj6mgw+SwUi+tEG/rAtAfi2P7FsmjOoDeX4ZGt8PVW7zLay2vxVfEeQNEkWu8UNOfCEUOzcXyE3rIpsj/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x+3W/Rst; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579F93B2D0F
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 21:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784239146; cv=pass; b=W3pA68wlmFeY+LrsAlwzQ6OHJkR+iAGmXfFsaVbSs+xO1tDe33Jq9N3NaQPQBOU2TBdgQtsXplU6qku8iIf9zfGiOrGSvy5ad4+Eip+30tqhMJYKu+FODmq9IVjeCQUpViDIJ+uu+BEaEhiWeNj4ajEq2TmobiTCbXvvSA9MEvE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784239146; c=relaxed/simple;
+	bh=gW6WpYWzjcPfsc0bSwHS3G797oW9PCY91xfm4tsJvvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EvXJSL47cVGu5js41dRSfi4c5yA+DVKL16EX8DjlLwP90iCecmNcJtsEwKPUYRZ8N+SYjLBsnJipHkNWZ99wQOBbEjy/OWeU/UEyOUv1W+lXVwpZ7mUvRflk+8uM6tMvMM91udEZ72/B3lSFL1vPO45bCir/y1iF/EbIyDdywr4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IE/KzwOR; arc=pass smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x+3W/Rst"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=o+Ass545k6w6Fj8Enob1p3mv+kPnP8r1DzVN8pwwt7o=; b=x+3W/Rstc4h+YIWcn9ZgbRe66m
-	KYFxrTJnJk6VZmbgGQ62/MdOLrRCAfptPjbks5PcnijVSWUurk4aAtxWbqUnEx41gETATvcBN4FLf
-	60NYRNjI6BjkZLyPfrOUkbdXflmrX+5zloB48JQestTUFYsQbCmI9gMkOk6kxELt0Cds=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wkTvi-00CeeE-Tu; Thu, 16 Jul 2026 23:47:42 +0200
-Date: Thu, 16 Jul 2026 23:47:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: tresonic <tresonic@mail.de>
-Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
-	rmk+kernel@armlinux.org.uk, kuba@kernel.org
-Subject: Re: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
- ("net: stmmac: enable RPS and RBU interrupts")
-Message-ID: <17ebe5ba-16a5-4b3a-94cd-e9707c88df3e@lunn.ch>
-References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IE/KzwOR"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39c9bb9d2fbso32590271fa.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 14:59:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784239142; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GTTh5SqpBdBQGMMtOACOo5Acz06vr4I4wlCcYp3kJL9PVdMdKsqnofPnW0tMTx+Smc
+         JubRFNLgztZEKn0X0ZxrkuvCWwUGx71tLnuePuHXWdwjNLGuTz8NN/cwNtqH8xHBexsV
+         cvSycT4OQ4eLXVQS5YtSf0uA6NA2a1Tu+1kaNxqaUM5KjvUdnQsvdGITYk9SIrDBtJDt
+         hl4yIegsmTPIHWHN09Fmpv4No6Q1u8WyDGoDXsW8dxZk1YocYfo69sP81OniUQG0Za3R
+         Pm+9VzssjXwuuvfzZLhSIOu/3zJeRdls/Pcmrilz0/pSsx9XNFt3oZtmzPJvmH34Wfaa
+         uhQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
+        fh=JI3h9u+zcTfgqfsrvii+M2LwYW6m91hHHyR7PjAVQZI=;
+        b=ferZCUSx0XrgSL87B3+O1XNoECQPvn2EBzBKOPLESaSopHDpky3zn0sans9Kl/S5PV
+         hEw2wblfQfM4SPR5kreBgwpWB0y8iSBMm85u96Q9DeJlxBThd96nGb4wKdkO7Ck2QYjY
+         PL2xBrrKaYN7giUoQzDAb/4s0S1ta5lsZp4ZvofMy2+gGrSD47s3McOC/YmnEoOtGFg6
+         NbTsTFGYE6aAT0UWQFqWB3N5YEqJmzFq9jpvq7tfZu4ChASK1dVAr09yhpArpqeAoGin
+         M3x9ZlDBN1mJJDrzFqu57pLntUe3+ir7M6Qwl8Oxq9jKWtF+BWfYoeRT8X5Xb9OCEsOE
+         mWjA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784239142; x=1784843942; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
+        b=IE/KzwORJDNQEzaypTnveWxAk3dMAUNomC5O5DW9I8jfiN6y9+uy9VoCKAl+1Kk1qI
+         PnaO46Td4JUQTG9cEMp6YFxFwSW2UGfEM2G2CEeZ6II8guY4UqzXUHRLgrjoVf7UFJQG
+         LP4XpzkvMj6di7vhrdjlLwYudi0KlGbI2cBD//PYlS7Sho1D8Z2mksPDZIXbEPyCjAfv
+         CNXW2gm8xtajnFTgXdv3CNBB8nPy8AVS9d2M6dzjm5BhGpsQcxZMznEaXGE7j9HRnUYP
+         BiYv/s3bmfE+nvqzCLGHWy9mn9yy6qh1JFnSfWqE1kmAeCj0GQmMxRBUCF2ixgbbo6mb
+         wxeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784239142; x=1784843942;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
+        b=LFwAFxBPrYLw9Jy8aXZOF6IfGLe+txF85AdQayO+g4OE2xktcQSsbeubRUrN30M0Bw
+         /6peBS/GSZJEgimo17pxdlv3isa0vchcF7P+ufqsrSqUUlMd3OT5m2hyzwXtrTjJw2Kn
+         OA7iiG+8GOOKRWKTkRafkW1z0AVSmIB9q09SLxmRrquqIEgNuZDaBgrGWiXmjokz+IYX
+         uoZWMzAkYOwuuHGfTe311eCGEZxXHqzBaClXOfB7AoLC/RCVjqROgpSUcJWDr83vXWFN
+         mZjzoa09PbdtHa5KQXo5k972/QuOy9w2HedNFTI3vLsIJ3/MtoOBkD+H6juhUCL8kxnM
+         sTfg==
+X-Gm-Message-State: AOJu0Yzgjk1vW0O4p1T/deqHhJYiTfoy+AUwYauXZXIX4oxahTpoa/md
+	+UEDlqivaETkcYp9JmEsQcNdBar1EK/dEJwa+0SfW2yv0V2bcP6rBqE/2p3zWkKQXGFN09IcdCV
+	A40hjfAQBdaqOwEujCHwsS6mTbXbw3iJN0PqL+5N3TQ==
+X-Gm-Gg: AfdE7cnbBo3+NKC0LI8urjjtRSf4TF/ODs3M1FS2h4XDGIFwz63ZBcUZyCLz/9qbvQe
+	GwyBiaEshhm/DZx9ye0sSefiex/90wxY03/Oy3Z1vGa7f9Z4DdelGzDkfDIcI9If6gCaTl6kvpE
+	P7l5YG52k3nFVH0W0M01nqWFY9K54J4ZUfT3qXJAXP/Z9jgfxHs8MhuoxFu41N5Y0/yDaW6b3TH
+	IZWYsKUMkN4yFOFcu0oxzBk5eMkWEfv13o1wsrg8aCAP4DliCcc04BkmdrQBBdBr8QKBVfqacA7
+	auyjjo8WB/6kw0mlytW4nBH99GENVMzuXZ0amdw+yWAoLhZ6ZYudNnwgVUmn9kwBw9NkQEuGyi7
+	y
+X-Received: by 2002:a05:6512:8393:b0:5ae:a9ed:162e with SMTP id
+ 2adb3069b0e04-5b28dd9baddmr88477e87.65.1784239141928; Thu, 16 Jul 2026
+ 14:59:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+References: <20260714140722.111645-1-maciej.fijalkowski@intel.com> <20260714140722.111645-5-maciej.fijalkowski@intel.com>
+In-Reply-To: <20260714140722.111645-5-maciej.fijalkowski@intel.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 16 Jul 2026 23:58:24 +0200
+X-Gm-Features: AUfX_mxO9kFG9HNrt8MeDwHgh7BGBFAU8QENnOwKKWJgypMFdtIt2hSIc5Ja6a4
+Message-ID: <CAL+tcoDyygM5XiVhHrmYrZTnZN6QSD0dN9mMPZmZYPtikssYxw@mail.gmail.com>
+Subject: Re: [PATCH v3 net 4/6] xsk: reclaim invalid multi-buffer Tx descs in
+ ZC path
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
+	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	bjorn@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 16, 2026 at 10:10:25PM +0200, tresonic wrote:
-> Hello,
-> Please bear with me, this is my first time writing to a mailing list...
+On Tue, Jul 14, 2026 at 4:08=E2=80=AFPM Maciej Fijalkowski
+<maciej.fijalkowski@intel.com> wrote:
+>
+> The zero-copy Tx batch parser stops when it encounters an invalid
+> descriptor. If this happens after one or more continuation descriptors,
+> the Tx consumer can be advanced past fragments that are neither submitted
+> to the driver nor returned to userspace through the completion ring.
+>
+> A similar problem occurs when a packet exceeds xdp_zc_max_segs. The
+> descriptors consumed up to the limit are released without completion, and
+> the remaining continuation descriptors can subsequently be interpreted
+> as the beginning of another packet.
+>
+> Parse Tx batches in packet units and distinguish descriptors belonging to
+> complete valid packets from descriptors consumed while draining an
+> invalid or oversized packet. Return the former to the driver and append
+> the latter to the CQ address area so userspace can reclaim their UMEM
+> frames.
+>
+> Once draining starts, continue until the packet's end-of-packet
+> descriptor is consumed. Preserve the drain state on the socket when EOP
+> has not yet been supplied, so draining can continue during a later call.
+> Leave incomplete but otherwise valid packets on the Tx ring. Keep the
+> existing handling of standalone invalid descriptors unchanged.
+>
+> Shared-UMEM pools using multi-buffer Tx also need packet-framed parsing.
+> Walk their Tx sockets one packet at a time, preserving the existing
+> per-socket fairness scheme, instead of using the legacy one-descriptor
+> fallback. Keep that fallback for shared pools that do not use
+> multi-buffer Tx. Since the drain state is maintained per socket and both
+> the singular and shared paths can resume an interrupted drain, changing
+> the socket list from singular to shared requires no special bind-time
+> transition.
+>
+> CQ entries are positional, and drivers may complete only part of the Tx
+> work returned by xsk_tx_peek_release_desc_batch(). Therefore, reclaim-onl=
+y
+> entries cannot be published immediately when earlier driver-visible
+> descriptors are still outstanding.
+>
+> Track the number of driver-visible CQ entries preceding the reclaim
+> entries. Let xsk_tx_completed() publish partial real Tx completions, and
+> publish the reclaim entries only after every earlier Tx descriptor has
+> completed. Complete a reclaim-only batch immediately when there is no
+> driver-visible work in front of it, and prevent another Tx batch from
+> being appended while reclaim entries remain pending.
+>
+> Also cap batch processing by the size of the pool's temporary descriptor
+> array, as Tx rings belonging to sockets sharing a UMEM may have different
+> sizes.
+>
+> This ensures that every descriptor consumed as part of an invalid
+> multi-buffer packet is eventually returned to userspace without exposing
+> the dropped packet to the driver or violating CQ completion ordering.
+>
+> Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on Tx path=
+")
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-Thanks for the report. Nice description for a first post. Lots of
-useful details.
+Thanks for working on this big patch! It's not easy to fix it in a
+simpler way, I think. And I didn't observe any obvious performance
+impact by xdpsock.
 
-> Since commit 1b9707e6f1a9, suspend (systemctl suspend) causes a full system freeze on my laptop. Fans and keyboard backlight stay powered; the machine is completely unresponsive and requires a hard power-off (holding the power button) to recover. I could not get any kernel output from the hang.
+Overall, it looks good to me except for a few minor points:
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-1b9707e6f1a9 makes in effect 4 changes.
+> ---
+>  include/net/xsk_buff_pool.h |   3 +
+>  net/xdp/xsk.c               | 192 ++++++++++++++++++++++++++++++++----
+>  net/xdp/xsk_buff_pool.c     |   1 +
+>  net/xdp/xsk_queue.h         |  76 ++++++++++----
+>  4 files changed, 232 insertions(+), 40 deletions(-)
+>
+> diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+> index f5e737a83055..2bb1d122b1bc 100644
+> --- a/include/net/xsk_buff_pool.h
+> +++ b/include/net/xsk_buff_pool.h
+> @@ -78,6 +78,9 @@ struct xsk_buff_pool {
+>         u32 chunk_size;
+>         u32 chunk_shift;
+>         u32 frame_len;
+> +       u32 tx_descs_nentries;
+> +       u32 reclaim_descs;
+> +       u32 tx_zc_pending_descs;
+>         u32 xdp_zc_max_segs;
+>         u8 tx_metadata_len; /* inherited from umem */
+>         u8 cached_need_wakeup;
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 385a3f4a1b32..2909a0ec6837 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -499,6 +499,23 @@ void __xsk_map_flush(struct list_head *flush_list)
+>
+>  void xsk_tx_completed(struct xsk_buff_pool *pool, u32 nb_entries)
+>  {
+> +       u32 reclaim_descs =3D READ_ONCE(pool->reclaim_descs);
+> +
+> +       if (unlikely(reclaim_descs)) {
 
-Can you do some testing to see if the changes to
-DMA_CHAN_INTR_ABNORMAL or the changes to DMA_CHAN_INTR_ABNORMAL_4_10
-break it. Or both, but i think that is unlikely.
+Just a side note: it might impact the performance because new descs
+need to wait for the existing descs to be completed if there are
+reclaim descs.
 
-Once you know which of those is responsible, can you test to see which
-of DMA_CHAN_INTR_ENA_RPS or DMA_CHAN_INTR_ENA_RBU broke it.
+> +               u32 pending_descs =3D READ_ONCE(pool->tx_zc_pending_descs=
+);
+> +
+> +               if (nb_entries < pending_descs) {
+> +                       WRITE_ONCE(pool->tx_zc_pending_descs,
+> +                                  pending_descs - nb_entries);
+> +                       xskq_prod_submit_n(pool->cq, nb_entries);
+> +                       return;
+> +               }
+> +
+> +               WRITE_ONCE(pool->tx_zc_pending_descs, 0);
+> +               nb_entries +=3D reclaim_descs;
+> +               WRITE_ONCE(pool->reclaim_descs, 0);
+> +       }
+> +
+>         xskq_prod_submit_n(pool->cq, nb_entries);
+>  }
+>  EXPORT_SYMBOL(xsk_tx_completed);
+> @@ -574,24 +591,162 @@ static u32 xsk_tx_peek_release_fallback(struct xsk=
+_buff_pool *pool, u32 max_entr
+>         return nb_pkts;
+>  }
+>
+> +static void xsk_tx_commit_batch(struct xsk_buff_pool *pool,
+> +                               struct xsk_tx_batch *batch)
+> +{
+> +       u32 nb_descs =3D xsk_tx_batch_cq_descs(batch);
+> +       u32 cq_cached_prod;
+> +
+> +       if (!nb_descs)
+> +               return;
+> +
+> +       cq_cached_prod =3D pool->cq->cached_prod;
+> +       xskq_prod_write_addr_batch(pool->cq, pool->tx_descs, nb_descs);
+> +
+> +       if (unlikely(batch->reclaim_descs)) {
+> +               u32 cq_pending_descs;
+> +
+> +               /* CQ is positional. Descriptors already written but not
+> +                * submitted must complete before any reclaim-only descri=
+ptors
+> +                * appended below.
+> +                */
+> +               cq_pending_descs =3D cq_cached_prod - xskq_get_prod(pool-=
+>cq);
+> +
+> +               WRITE_ONCE(pool->tx_zc_pending_descs,
+> +                          batch->tx_descs + cq_pending_descs);
+> +               WRITE_ONCE(pool->reclaim_descs, batch->reclaim_descs);
+> +               if (unlikely(!pool->tx_zc_pending_descs))
+> +                       xsk_tx_completed(pool, 0);
+> +       }
+> +}
+> +
+> +static struct xsk_tx_batch
+> +__xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, struct xdp_=
+sock *xs,
+> +                                struct xdp_desc *descs, u32 max_descs)
+> +{
+> +       struct xsk_tx_batch batch =3D {};
+> +       u32 entries;
+> +
+> +       entries =3D xskq_cons_nb_entries(xs->tx, max_descs);
+> +       if (!entries)
+> +               return batch;
+> +
+> +       batch =3D xskq_cons_read_desc_batch(xs, pool, descs, max_descs);
+> +       if (!xsk_tx_batch_cq_descs(&batch)) {
+> +               xs->tx->queue_empty_descs++;
+> +               if (batch.consumed_descs) {
+> +                       __xskq_cons_release(xs->tx);
+> +                       xs->sk.sk_write_space(&xs->sk);
+> +               }
+> +               return batch;
+> +       }
+> +
+> +       __xskq_cons_release(xs->tx);
+> +       xs->sk.sk_write_space(&xs->sk);
+> +       return batch;
+> +}
+> +
+> +static struct xsk_tx_batch
+> +xsk_tx_peek_release_shared_desc_batch(struct xsk_buff_pool *pool, u32 ma=
+x_descs)
+> +{
+> +       u32 cq_descs_before, cq_descs_after;
+> +       struct xsk_tx_batch sum_batch =3D {};
+> +       bool budget_exhausted;
+> +       u32 per_socket_budget;
+> +       struct xdp_sock *xs;
+> +
+> +       /* The fairness quota must allow one maximum-sized valid packet. =
+*/
+> +       per_socket_budget =3D max_t(u32, MAX_PER_SOCKET_BUDGET,
+> +                                 pool->xdp_zc_max_segs);
+> +
+> +again:
+> +       budget_exhausted =3D false;
+> +       cq_descs_before =3D xsk_tx_batch_cq_descs(&sum_batch);
+> +       list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list) {
+> +               u32 budget, budget_left, offset, remaining;
+> +               struct xsk_tx_batch curr_batch;
+> +
+> +               /* Once reclaim-only descriptors have been appended to th=
+e CQ
+> +                * address area, do not append driver-visible Tx descript=
+ors
+> +                * from another socket after them. xsk_tx_completed() rel=
+ies on
+> +                * all driver-visible descriptors preceding all reclaim-o=
+nly
+> +                * descriptors in CQ order.
+> +                */
+> +               if (sum_batch.reclaim_descs)
+> +                       break;
+> +
+> +               /* be gentle when playing with pool->tx_descs */
 
-It kind of sounds like an interrupt storm, but that is just a
-guess. If it is an interrupt storm, it suggests an interrupt is not
-being disabled during suspend.
+Minor nit: seems unneeded comment?
 
-   Andrew
+> +               offset =3D xsk_tx_batch_cq_descs(&sum_batch);
+> +               if (offset >=3D max_descs)
+> +                       break;
+> +
+> +               if (xs->tx_budget_spent >=3D per_socket_budget) {
+> +                       if (xskq_cons_nb_entries(xs->tx, 1))
+> +                               budget_exhausted =3D true;
+> +                       continue;
+> +               }
+> +
+> +               budget_left =3D per_socket_budget - xs->tx_budget_spent;
+> +               remaining =3D max_descs - offset;
+> +               budget =3D min(remaining, budget_left);
+> +
+> +               curr_batch =3D __xsk_tx_peek_release_desc_batch(pool, xs,
+> +                                                             pool->tx_de=
+scs + offset,
+> +                                                             budget);
+> +               if (!xsk_tx_batch_cq_descs(&curr_batch)) {
+> +                       if (curr_batch.budget_limited && budget_left < re=
+maining)
+> +                               budget_exhausted =3D true;
+> +                       xs->tx_budget_spent +=3D curr_batch.consumed_desc=
+s;
+> +                       continue;
+> +               }
+> +
+> +               xs->tx_budget_spent +=3D curr_batch.consumed_descs;
+> +               sum_batch.tx_descs +=3D curr_batch.tx_descs;
+
+No need to use '+' here because of the previous reclaim_descs check.
+
+> +               sum_batch.reclaim_descs +=3D curr_batch.reclaim_descs;
+> +       }
+> +
+> +       cq_descs_after =3D xsk_tx_batch_cq_descs(&sum_batch);
+> +
+> +       if (sum_batch.reclaim_descs || cq_descs_after >=3D max_descs)
+> +               return sum_batch;
+> +
+> +       /* Continue filling the batch while this pass made progress */
+> +       if (cq_descs_before !=3D cq_descs_after)
+> +               goto again;
+> +
+> +       if (!budget_exhausted)
+> +               return sum_batch;
+> +
+> +       list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list)
+> +               xs->tx_budget_spent =3D 0;
+> +       goto again;
+> +}
+> +
+>  u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, u32 nb_pk=
+ts)
+>  {
+> +       struct xsk_tx_batch batch =3D {};
+>         struct xdp_sock *xs;
+> +       bool umem_shared;
+>
+>         rcu_read_lock();
+> -       if (!list_is_singular(&pool->xsk_tx_list)) {
+> -               /* Fallback to the non-batched version */
+> -               rcu_read_unlock();
+> -               return xsk_tx_peek_release_fallback(pool, nb_pkts);
+> -       }
+> +       if (unlikely(READ_ONCE(pool->reclaim_descs)))
+> +               goto out;
+>
+> -       xs =3D list_first_or_null_rcu(&pool->xsk_tx_list, struct xdp_sock=
+, tx_list);
+> -       if (!xs) {
+> -               nb_pkts =3D 0;
+> +       xs =3D list_first_or_null_rcu(&pool->xsk_tx_list, struct xdp_sock=
+,
+> +                                   tx_list);
+> +       if (!xs)
+>                 goto out;
+> -       }
+>
+> -       nb_pkts =3D xskq_cons_nb_entries(xs->tx, nb_pkts);
+> +       nb_pkts =3D min(nb_pkts, pool->tx_descs_nentries);
+> +       if (!nb_pkts)
+> +               goto out;
+> +
+> +       umem_shared =3D !list_is_singular(&pool->xsk_tx_list);
+> +
+> +       if (umem_shared && !(pool->umem->flags & XDP_UMEM_SG_FLAG)) {
+> +               rcu_read_unlock();
+> +               return xsk_tx_peek_release_fallback(pool, nb_pkts);
+> +       }
+>
+>         /* This is the backpressure mechanism for the Tx path. Try to
+>          * reserve space in the completion queue for all packets, but
+> @@ -603,19 +758,16 @@ u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_=
+pool *pool, u32 nb_pkts)
+>         if (!nb_pkts)
+>                 goto out;
+>
+> -       nb_pkts =3D xskq_cons_read_desc_batch(xs->tx, pool, nb_pkts);
+> -       if (!nb_pkts) {
+> -               xs->tx->queue_empty_descs++;
+> -               goto out;
+> -       }
+> -
+> -       __xskq_cons_release(xs->tx);
+> -       xskq_prod_write_addr_batch(pool->cq, pool->tx_descs, nb_pkts);
+> -       xs->sk.sk_write_space(&xs->sk);
+> +       batch =3D umem_shared ?
+> +               xsk_tx_peek_release_shared_desc_batch(pool, nb_pkts) :
+> +               __xsk_tx_peek_release_desc_batch(pool, xs,
+> +                                                pool->tx_descs,
+> +                                                nb_pkts);
+> +       xsk_tx_commit_batch(pool, &batch);
+>
+>  out:
+>         rcu_read_unlock();
+> -       return nb_pkts;
+> +       return batch.tx_descs;
+>  }
+>  EXPORT_SYMBOL(xsk_tx_peek_release_desc_batch);
+>
+> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> index 12c9fb29af05..a4089480b22b 100644
+> --- a/net/xdp/xsk_buff_pool.c
+> +++ b/net/xdp/xsk_buff_pool.c
+> @@ -51,6 +51,7 @@ int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struc=
+t xdp_sock *xs,
+>         if (!pool->tx_descs)
+>                 return -ENOMEM;
+>
+> +       pool->tx_descs_nentries =3D nentries;
+>         return 0;
+>  }
+>
+> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
+> index 3e3fbb73d23e..a15ff1929db6 100644
+> --- a/net/xdp/xsk_queue.h
+> +++ b/net/xdp/xsk_queue.h
+> @@ -58,6 +58,18 @@ struct parsed_desc {
+>         u32 valid;
+>  };
+>
+> +struct xsk_tx_batch {
+> +       u32 tx_descs;
+> +       u32 reclaim_descs;
+> +       u32 consumed_descs;
+> +       bool budget_limited;
+> +};
+> +
+> +static inline u32 xsk_tx_batch_cq_descs(const struct xsk_tx_batch *batch=
+)
+> +{
+> +       return batch->tx_descs + batch->reclaim_descs;
+> +}
+> +
+>  /* The structure of the shared state of the rings are a simple
+>   * circular buffer, as outlined in
+>   * Documentation/core-api/circular-buffers.rst. For the Rx and
+> @@ -263,17 +275,18 @@ static inline void parse_desc(struct xsk_queue *q, =
+struct xsk_buff_pool *pool,
+>         parsed->mb =3D xp_mb_desc(desc);
+>  }
+>
+> -static inline
+> -u32 xskq_cons_read_desc_batch(struct xsk_queue *q, struct xsk_buff_pool =
+*pool,
+> -                             u32 max)
+> +static inline struct xsk_tx_batch
+> +xskq_cons_read_desc_batch(struct xdp_sock *xs, struct xsk_buff_pool *poo=
+l,
+> +                         struct xdp_desc *descs, u32 max)
+>  {
+> -       u32 cached_cons =3D q->cached_cons, nb_entries =3D 0;
+> -       struct xdp_desc *descs =3D pool->tx_descs;
+> -       u32 total_descs =3D 0, nr_frags =3D 0;
+> +       bool drain =3D READ_ONCE(xs->drain_cont);
+> +       u32 cached_cons, nb_entries =3D 0, released;
+> +       struct xsk_tx_batch batch =3D {};
+> +       struct xsk_queue *q =3D xs->tx;
+> +       u32 nr_frags =3D 0;
+> +
+> +       cached_cons =3D q->cached_cons;
+>
+> -       /* track first entry, if stumble upon *any* invalid descriptor, r=
+ewind
+> -        * current packet that consists of frags and stop the processing
+> -        */
+>         while (cached_cons !=3D q->cached_prod && nb_entries < max) {
+>                 struct xdp_rxtx_ring *ring =3D (struct xdp_rxtx_ring *)q-=
+>ring;
+>                 u32 idx =3D cached_cons & q->ring_mask;
+> @@ -282,26 +295,49 @@ u32 xskq_cons_read_desc_batch(struct xsk_queue *q, =
+struct xsk_buff_pool *pool,
+>                 descs[nb_entries] =3D ring->desc[idx];
+>                 cached_cons++;
+>                 parse_desc(q, pool, &descs[nb_entries], &parsed);
+> -               if (unlikely(!parsed.valid))
+> -                       break;
+> +               if (unlikely(!parsed.valid)) {
+> +                       if (!drain && !nr_frags && !parsed.mb)
+
+I understand you're fixing the mb problem here. But I'm wondering if
+it still has a problem in the non mb case because the single invalid
+packet (mb =3D=3D0, nr_frags =3D=3D 0, drain =3D=3D 0) that isn't published=
+ in CQ
+cannot be tracked by application?
+
+My thinking is to just remove the above line in this patch. Or I can
+cook a follow-up patch to fix this specific problem?
+
+Thanks,
+Jason
+
+> +                               break;
+> +
+> +                       drain =3D true;
+> +               }
+> +
+> +               nr_frags++;
+> +               nb_entries++;
+>
+>                 if (likely(!parsed.mb)) {
+> -                       total_descs +=3D (nr_frags + 1);
+> -                       nr_frags =3D 0;
+> -               } else {
+> -                       nr_frags++;
+> -                       if (nr_frags =3D=3D pool->xdp_zc_max_segs) {
+> +                       if (unlikely(drain)) {
+> +                               batch.reclaim_descs =3D nr_frags;
+> +                               WRITE_ONCE(xs->drain_cont, false);
+>                                 nr_frags =3D 0;
+>                                 break;
+>                         }
+> +
+> +                       batch.tx_descs +=3D nr_frags;
+> +                       nr_frags =3D 0;
+> +                       continue;
+> +               }
+> +
+> +               if (nr_frags =3D=3D pool->xdp_zc_max_segs)
+> +                       drain =3D true;
+> +       }
+> +
+> +       if (nr_frags) {
+> +               if (drain) {
+> +                       batch.reclaim_descs =3D nr_frags;
+> +                       WRITE_ONCE(xs->drain_cont, true);
+> +               } else {
+> +                       if (nb_entries =3D=3D max)
+> +                               batch.budget_limited =3D true;
+> +                       cached_cons -=3D nr_frags;
+>                 }
+> -               nb_entries++;
+>         }
+>
+> -       cached_cons -=3D nr_frags;
+> +       released =3D cached_cons - q->cached_cons;
+>         /* Release valid plus any invalid entries */
+> -       xskq_cons_release_n(q, cached_cons - q->cached_cons);
+> -       return total_descs;
+> +       xskq_cons_release_n(q, released);
+> +       batch.consumed_descs =3D released;
+> +       return batch;
+>  }
+>
+>  /* Functions for consumers */
+> --
+> 2.43.0
+>
