@@ -1,91 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511AB351C28;
-	Thu, 16 Jul 2026 19:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351403290B9
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 20:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784230958; cv=none; b=s+Yrx1xfoPvPhUtPSV9sDc6ASosUZyLkyeuieClNN+S7osCeU6P7IIwa/2ZoMwOu1tq9W3Ot5rIUT2fxtah6h38zsrLRJG8ZZr+8/nRB6PxWyQ/lQ6kCwY8v0/I30aZGvJjkXqLQ68l3xxBcFh95ogV2KzuXNnsv3YK97vxvrVk=
+	t=1784232036; cv=none; b=lSYAyfmtod2XdlYj1G6OlYXUff5RqLFKywExggew5YtfT0XZmGDx113l87hCwyVZuAvvlkrgY/vSscdIW541x68SKj6VikIn4gNNLzd9bY4RpAYGxc3agXLBvSngoQ+pTyw1JKpbEr+XbuPyr4LN4LR/5FmWxFRMJMDFLZDlTRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784230958; c=relaxed/simple;
-	bh=Ig+GsN0kMZ05cJ4o3ugakK8qv+geJHudqh6YgXHniOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aKup+n8BzicQaKIlFgg3eghOlxjzjXLP704KAC3zIHHdnr9g7Z3R2BrTEILNAml6SFeSwikkIaTi3mkZe9S8egMRzdTVQkjQ53XeCyWVBDpDAJa80UbbgLoJExeqBHsipr/bS0j1EIYWzFf5h3tnHqyhJxjIlEj+Cx64FQWirZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHHnrgri; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784232036; c=relaxed/simple;
+	bh=4ApHG23tsfCBQlAihIc7JtLXV89PM3rHQnHOW06U9Do=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QZFzgmn/BlXaGqBm57nIV2tyFnyB0EShEAMjysqhpInfH8RRPmnWI8R9ZQGscuYK+9+bPlzJHWFCGeoJ1SHSW4Ra/j6xPaKaiHuyv7OxxEfYU5tIjQLQ7DvPh4fW8j7EQNG5CpeHIrOpQloKRIag6cBSzKaFpQWAYfPFlW02NKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MjoBqUHE; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHHnrgri"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51D21F000E9;
-	Thu, 16 Jul 2026 19:42:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784230956;
-	bh=usR4FsGWwyujnpLuckLUoYL0cDU6hXmHk5b1uovpKno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WHHnrgriO+KrWCsVg+TwAvkOfNWs/YkXkGQ1U3xxZ9mhjMX3Lr0Grm7vAzXVHIJn9
-	 ctA9QM3HGp2Ze1NRWtDy+wSs4UuXRVpkGjl53T2V9mNgDburjmXXR24tRt7uTBUPcZ
-	 gvfyaboifn0XGp/WKn7chqa5qTHjN/l/ohrNaoCX8v1PPDHA27mbyj3jg0NA9n1W5r
-	 V6FqBhqa44TF2LcNoN0AlORsEzAkH2F6DUDbbVsbisfdmubF9TrArc3v/RikOrhMsQ
-	 c3OZAX2Pcba9r7LV5Ibx4dxMN7aD1XwfuHYJK2o3rEXm01PWu3oy44quzApuD+uemy
-	 elvvQxD+O5t8g==
-Date: Thu, 16 Jul 2026 14:42:36 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Bjorn Andersson <andersson@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>, daniel@makrotopia.org,
-	linux-block@vger.kernel.org, linux-mmc@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, Jens Axboe <axboe@kernel.dk>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Saravana Kannan <saravanak@kernel.org>,
-	linux-bluetooth@vger.kernel.org,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ath10k@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH v8 1/9] dt-bindings: mmc: Document fixed-layout NVMEM
- provider support
-Message-ID: <178423095566.1177840.10999909737617285520.robh@kernel.org>
-References: <20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com>
- <20260703-block-as-nvmem-v8-1-98ae32bfc49a@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MjoBqUHE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784232032;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l/PIEzA9NrTlrzyjSKDZkdjEaXzWkZ5PFXxW2iujoLo=;
+	b=MjoBqUHEJCkvz6hJqcdi6yd8FetM6H8Mxq84rsZ/f8XdXeZMSSNdGf0VwREVpnEvg0C0OQ
+	zh+0jCmJXU37T62zMzZUCetCmsmal3PwVm7vhtYuxOc/9s6jVlwvY/FaXE8p8fxaJ0S9T5
+	24cBKDZq/mNra1SdPYs1vrK0WeGIFKg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-gwydn86FPpSfnirdwQia6g-1; Thu,
+ 16 Jul 2026 16:00:29 -0400
+X-MC-Unique: gwydn86FPpSfnirdwQia6g-1
+X-Mimecast-MFC-AGG-ID: gwydn86FPpSfnirdwQia6g_1784232026
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4DDA180067E;
+	Thu, 16 Jul 2026 20:00:25 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAEB51800286;
+	Thu, 16 Jul 2026 20:00:23 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Shuah Khan
+ <shuah@kernel.org>,  netdev@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-kernel@vger.kernel.org,  Eelco
+ Chaudron <echaudro@redhat.com>,  Ilya Maximets <i.maximets@ovn.org>,
+  dev@openvswitch.org
+Subject: Re: [PATCH net 2/7] selftests: openvswitch: add config file
+In-Reply-To: <f7t5x2frlkh.fsf@redhat.com> (Aaron Conole's message of "Thu, 16
+	Jul 2026 11:38:54 -0400")
+References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
+	<20260710-net-sft-fix-containers-v1-2-a2915c294ef5@kernel.org>
+	<f7t5x2frlkh.fsf@redhat.com>
+Date: Thu, 16 Jul 2026 16:00:22 -0400
+Message-ID: <f7tldbar9gp.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703-block-as-nvmem-v8-1-98ae32bfc49a@oss.qualcomm.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
+Aaron Conole <aconole@redhat.com> writes:
 
-On Fri, 03 Jul 2026 15:45:14 +0200, Loic Poulain wrote:
-> Allow an eMMC hardware partition node to describe an NVMEM layout so the
-> partition can be exposed as an NVMEM provider. This lets a partition
-> (e.g. an eMMC boot partition) store device-specific information such as a
-> WiFi MAC address or a Bluetooth BD address and reference it through NVMEM
-> cells.
-> 
-> Accept "fixed-layout" as the partition node compatible, in addition to
-> "fixed-partitions", so the layout can be described directly on the
-> partition node.
-> 
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-> ---
->  .../devicetree/bindings/mmc/mmc-card.yaml          | 23 +++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
-> 
+> Hi Matthieu,
+>
+> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+>
+>> The kselftests doc mentions that a config file should be present "if a
+>> test needs specific kernel config options enabled". This selftest
+>> requires some kernel config, but no config file was provided.
+>>
+>> We could say that a sub-target could use the parent's config file, but
+>> the kselftests doc doesn't mention anything about that. Plus the
+>> net/openvswitch target is the only net target without a config file.
+>
+> We've been operating on that assumption from the openvswitch side, but
+> it's true that isn't explicitly documented anywhere, and I guess it
+> isn't officially supported in the kselftest framework.  I guess we'll
+> need to keep updating this config as we add tests for things like SCTP,
+> and others, and maybe that's a good thing like we can add a comment
+> describing which tests take which configs.
+>
+> The downside is for most of the OVS testing we use the NIPA scripts
+> and those 'inherit' the parent config, so it would be a change on our
+> side from the development standpoint (but probably something we should
+> have been doing from the beginning).
+>
+> That said, would it be worth also exploring the 'cascading
+> configuration' support?  It seems like a useful feature, but maybe it
+> should be a separate discussion.  I ask because of how OVS interacts
+> with the networking stack as an 'alternative bridge' so-to-speak, I do
+> worry about having to duplicate lots of configurations between the two
+> as we expand the test coverage on OVS side.
+>
+>> Here is a new config file, which is a trimmed version of the net one,
+>> with hopefully the minimal required kconfig on top of 'make defconfig'.
+>
+> Should this also remove the OVS configs from the upper level since there
+> shouldn't be OVS tests executing there (ie: CONFIG_OPENVSWITCH*)?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Actually, forget this part.  The P-MTU tests in pmtu.sh use ovs to
+create a datapath through OVS.  So these configurations need to stay at
+the top level as well.
+
+>> The Fixes tag points to the introduction of the net/openvswitch target,
+>> just to help validating this target on stable kernels.
+>>
+>> Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> ---
+>> To: Aaron Conole <aconole@redhat.com>
+>> To: Eelco Chaudron <echaudro@redhat.com>
+>> To: Ilya Maximets <i.maximets@ovn.org>
+>> Cc: dev@openvswitch.org
+>> ---
+>>  tools/testing/selftests/net/openvswitch/config | 16 ++++++++++++++++
+>>  1 file changed, 16 insertions(+)
+>>
+>> diff --git a/tools/testing/selftests/net/openvswitch/config
+>> b/tools/testing/selftests/net/openvswitch/config
+>> new file mode 100644
+>> index 000000000000..c659749cd086
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/net/openvswitch/config
+>> @@ -0,0 +1,16 @@
+>> +CONFIG_GENEVE=m
+>> +CONFIG_INET_DIAG=y
+>> +CONFIG_IPV6=y
+>> +CONFIG_NETFILTER=y
+>> +CONFIG_NET_IPGRE=m
+>> +CONFIG_NET_IPGRE_DEMUX=m
+>> +CONFIG_NF_CONNTRACK=m
+>> +CONFIG_NF_CONNTRACK_OVS=y
+>> +CONFIG_OPENVSWITCH=m
+>> +CONFIG_OPENVSWITCH_GENEVE=m
+>> +CONFIG_OPENVSWITCH_GRE=m
+>> +CONFIG_OPENVSWITCH_VXLAN=m
+>> +CONFIG_PSAMPLE=m
+>> +CONFIG_VETH=y
+>> +CONFIG_VLAN_8021Q=y
+>> +CONFIG_VXLAN=m
 
