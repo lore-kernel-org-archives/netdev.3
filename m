@@ -1,230 +1,274 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0902E091B;
-	Thu, 16 Jul 2026 16:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784218359; cv=fail; b=fMcVwnqZmI1kpbZe0vxBamd97NH5W8hUFNMKR786HXyGiVnRj5OixLfmXoTNIedS+mZ1NEKs4FKuQDDPmL8XdOOqCRmNpizQ0dR0a9AZm/0oUoP/7FwNTpzycYlnI8rPvMjTGyadifV2dfwGJEYfT1viJBGwYDE448nvcbwmz7A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784218359; c=relaxed/simple;
-	bh=0VUcLLKqvI5hTmvoQ+iL7Cd7OuF/jZWzs+ulPJIdlQ8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UMyQYicNQk4mV14WaAZiZssRP3vqP28tyVsb4xoZjlFbbxNad35PQyimUY7VqtXQpIbcPR4fk1a4OnZCqdGv/1sgtcSwAZjJhV4UbZ3A+YaOq9YBH+9DFa/hzPGfORSVTmu1CvgfhXmnOxVGM9JNYp0TQNsdKGr9KXX1eiD9OrY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqOwxQmt; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A28D3B2D18
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 16:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784218394; cv=none; b=cyOu4I/RhcK5qDFOlzAdtNrYKPLXZK0XlMRxiG/FHa4IPIyBEJOt18T+tgITptUD2XRgYJg+Y0TW5lCrZtMiPBU3MfDx7/bNgvSZ+QTtbFWKRg3sKTqLaa5LfYcpd46oIj1vbrWYoPr3Mj+aqnpwvEdPWEcc1ytwI8/MF1Z8S20=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784218394; c=relaxed/simple;
+	bh=kKKZU3L+6reK4B7gcJARVHlxz60vhrpuTNd2xoB+G8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ryYouxir2ElFTHOPc6NI3CXlc4oXcyx+i5AI2Fsmnr2i/96DR9sPRD93uOqe9Sv7TjMZlyDlggIqS8oK/6No2uN/Ggs4V1Dq4LCaPJzdVLHAvDMaD1dT0fztrZDiEC6baPLCpSf1kFehUssxVpM/NEDEb/8KJpISgeu6FiBFRBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T36//J4J; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dt4uYwX7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqOwxQmt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784218353; x=1815754353;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=0VUcLLKqvI5hTmvoQ+iL7Cd7OuF/jZWzs+ulPJIdlQ8=;
-  b=DqOwxQmt2qpzHt6y6ej+e9OKY/WjRZqNEde+f/W4H62Ax2Ap4psdu5Ut
-   A3R2ZfZwk16cAP991VMwcYiEgAzGERqPpixnbURjrUgruT+ejeFhfhDPP
-   D9heS3O6eCzKKXGi+jkWm8BmyuFlUdS7JO9sgoFK99VSq4QKXxgtz2rbJ
-   eLjssaWlBFFo9C0dXE2KR98ufSVhQph4tgsfxNl1MZVHoSc0lipulc7Xr
-   DzRYLdt/gm8XfT4Ud6o+Breo0LBYQ8C4DkpTBRfyuc3c+PXU+2LI1CBl2
-   QuUxUMtN/jRIpWR7ntZwB9Llmp9PO73BuN2ZY6zQhQtJpCsFPkmfi8mki
-   A==;
-X-CSE-ConnectionGUID: PRsqof/1Q3+DunbQ+3CrFw==
-X-CSE-MsgGUID: 8VexRlHDTRiSBj2DTBq7NQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="72416599"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="72416599"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 09:12:32 -0700
-X-CSE-ConnectionGUID: QYQ4wENNSy+QGUmdz1QBQw==
-X-CSE-MsgGUID: VxDtXJvzQf2dIp/FH6WlYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="252112291"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 09:12:32 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 16 Jul 2026 09:12:31 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 16 Jul 2026 09:12:31 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.36)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 16 Jul 2026 09:12:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cqOJF3rzVlcIozwEI0adieAmz91SODk20n8I5Aom8TVkwL7yQErkHHNx3zJsn0zRvueOTETmM2LldEktC1Li6WdZYYwkRyHGSNCVsFJ9TY0/k8g4rtTPuxXnkFXIWVi2bQPHEbhGJsy3lc9UDF8zUohULnAM3iLoS4p3otGrPWpGlpqxEiaj+rkVHZDZ8MOawfbsOTOxQXOIyV+ByGkCE5BD2C2Wj9Ob+DkrmsyBBAApCSArF7QbwBxPESzABYDQucXe6XJvciylZ60psibMZzbpNL93a0oSkqaMoz7ri0RXJg4OJfEkv/4jggcLPkZdhVZuxGC4tCc/Ohfg1sPPMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0VUcLLKqvI5hTmvoQ+iL7Cd7OuF/jZWzs+ulPJIdlQ8=;
- b=awqC5JoFei41MDGZMWi3HH/0jyJxu7KsRLpLLVcsd6RkIp1cA/+Xqzwld8sp0AMaae+j1eRPCuPW6u+/LamkHnxNt3QXq/kwgf6kqDXpwgdF7+lEsHI4czOUu20Rqhzef54yYq+TdVvhlfJbMEqgSRZRbJK/1khUWNeGGDAdhMcdqVp+XmbcJFfIzxmJ82X1m8i98JoYmIKYJXjQggfD+jiebSRzczauzJGyRFxVO3TnBSsVa5oN0zbDmw6oJOmLQLDaqWZ9+o6+3sgGjHio/+4q6ZiorguXfriyWsB5hQIeCvToic6ejekNk2Ce72UIHemX6KKJAnIYJ6W43u4JfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6297.namprd11.prod.outlook.com (2603:10b6:a03:458::8)
- by SJ2PR11MB7647.namprd11.prod.outlook.com (2603:10b6:a03:4c3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Thu, 16 Jul
- 2026 16:12:21 +0000
-Received: from SJ1PR11MB6297.namprd11.prod.outlook.com
- ([fe80::6f05:5b37:2440:556e]) by SJ1PR11MB6297.namprd11.prod.outlook.com
- ([fe80::6f05:5b37:2440:556e%3]) with mapi id 15.21.0202.014; Thu, 16 Jul 2026
- 16:12:21 +0000
-From: "Salin, Samuel" <samuel.salin@intel.com>
-To: "Tantilov, Emil S" <emil.s.tantilov@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Bhat, Jay" <jay.bhat@intel.com>, "Barrera,
- Ivan D" <ivan.d.barrera@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, "Zaremba, Larysa"
-	<larysa.zaremba@intel.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"Lobakin, Aleksander" <aleksander.lobakin@intel.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Chittim, Madhu"
-	<madhu.chittim@intel.com>, "decot@google.com" <decot@google.com>,
-	"willemb@google.com" <willemb@google.com>, "sheenamo@google.com"
-	<sheenamo@google.com>, "lukas@wunner.de" <lukas@wunner.de>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v3 2/2] idpf: implement pci
- error handlers
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v3 2/2] idpf: implement pci
- error handlers
-Thread-Index: AQHdCObdb3dnfohhNUqHdGr/i8It8rZwaP0A
-Date: Thu, 16 Jul 2026 16:12:20 +0000
-Message-ID: <SJ1PR11MB62970F5BDCF78402EA8EDF9D9BC72@SJ1PR11MB6297.namprd11.prod.outlook.com>
-References: <20260630231854.11536-1-emil.s.tantilov@intel.com>
- <20260630231854.11536-3-emil.s.tantilov@intel.com>
-In-Reply-To: <20260630231854.11536-3-emil.s.tantilov@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6297:EE_|SJ2PR11MB7647:EE_
-x-ms-office365-filtering-correlation-id: 5eca9f8a-e185-45fa-89f6-08dee35503d3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|4143699003|56012099006|11063799006|22082099003|10067099003|38070700021;
-x-microsoft-antispam-message-info: djc430ZKn92IrlbtFyPxOTgMdjqUeOnkOQ5nIMk6VxD6it5ztu3KDkI0SoVs99jFVi/UbgIZirrGCPgF8PJxducFHUbvewszok2bx03uTYzra6Of7HW5YCy8maqcJkxtX42N8HNKNPA5pxwTvE6pxcoIb9DRGmUiHITzh6PQb4qv8s2CKukThwWS5sfsmNeDjxm3EDpdo86RQ0ccae5WWuo3FNSlDkMRKPd4iq0Fm8qiLm2+CryyGT9tDmYADelTIxh2cR44VYGbLtdtslX+LFCIGBVggAUybU+LxDMxPehIoDhYy1Ke0uJPXlutg2qkETHZ4sGw1KyG8biUlSY0dBD9rSIQ6+yyWg9t12E7Q0QX8ybXqdS15U5OfQ9BQiznXJYJlxtkYh9EM01QrK8+N1dW4aLhSDA5TZ9hicFIyeCBXa2ZYpc9gq5U0TL2rfg2Hl98JKLbkuDfjeXnHymUzXzOtKd3iNXVGIvTWszkGlX00rKPEYND3XqkZIy035dw0Fis6IQPci+KvzcjlbFhPq5PBJ4V2oj4akLBwkUhEW7OHgTnRVgC8tVs8Jh+vrsfs8+LGBFumQiMopq0y9Ry3W+d/BFMg0fmi5MEq3YRLmwHhPyHvfuzDMluEW7a5v8hVc0hJNKZI1qJYIiOhnvKxEUI8GYajwI0aaAQHz0DVhLF4LnooG46+TqjCyAG8etPL9q6qAIuZy23YaJwF4RCGpw4e3IpsTbVB3ZXLrBETuU=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6297.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(4143699003)(56012099006)(11063799006)(22082099003)(10067099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ZedGx4EBoOsThrAK0vzQNPcBKa7ur+9CTHj2CbVeQT+tux4c+3gvZ+183ZrE?=
- =?us-ascii?Q?Fu5zxHGwAzyhX7ZjKONtFUGqvisrmv3O9OE+RCKOXIqq7QZwi3GuybQr22dI?=
- =?us-ascii?Q?AH4fC7ZjLxf96WvQY0CX7wtX8mvab/nhIahsLVxLC2oBWiryAWYr4GH3LzCm?=
- =?us-ascii?Q?0QPiOuMr9FuhDamYn1gWvqLDC1s0WCDU9SIEnN6Ixq9nnyWJZ2cLTpnpg0Ef?=
- =?us-ascii?Q?RhA3KV41dVK51mDzJjnydgujPxiKIYj051+IlafwbXZaaox4t8eKMty9DIkX?=
- =?us-ascii?Q?QalFDznArZsQ/2UNdMM5MUhLagu93gyG5VeJ+PsVy3enZb1uKwuMQMiEDQot?=
- =?us-ascii?Q?ROxXqVUmL06z8+bwXW6zSOb9eiEHYcg8pwbNGVzP4SQcHMNtFicsLHHX1gxa?=
- =?us-ascii?Q?o6oqDvbgxgO0YVaM256r+cmMh8/YqnJQlTcnObXb5DLDgPsaZwr75WMSGCQ4?=
- =?us-ascii?Q?YsF/9aBambxYEV+mV/2vuZMH/S0w8ZIny0wicap+twqP5uV30D0FdwUxooGl?=
- =?us-ascii?Q?Mj4dWDetK3rQRTKIg3NdcbUR93IzlLO9rD6As4KxY2IQ+ue4F9gd4fMKTfSH?=
- =?us-ascii?Q?0zp25xiX71vELK/dfH1+XUO8i+WSq4f4cpvaWut2kHwqR2D04vv7iV+wVbDd?=
- =?us-ascii?Q?UlIHyA7ldnrHtT9MjcJTMHPx+H67ysfxVAijh72SyRmTEdjzPOwv5srEQ25u?=
- =?us-ascii?Q?aEvMr04vYl8tat6aDdyMWFMbIJ7+gS8IEedRdvMo4VITnJirG5zrA7wNP7wZ?=
- =?us-ascii?Q?yHgkhVxTkgMsqz0aX2ucCK/7Fh2NZc3LblwjbMVq2CO37xpzBthK78wnENX5?=
- =?us-ascii?Q?Z6WSljeM+UHofqzhVBdK3ms2YEimn0CJsgwIt0kF+Ba/uwvXkBMEhd58DMSq?=
- =?us-ascii?Q?79DAp6OeCbd01lyBPhy6K23wVrUUnMWQkdRArvawoH0qkt4VNwzA2yzpYg8b?=
- =?us-ascii?Q?BNAs9sXa4JcsLdn0Dv/vsqcm0lz4DoWvYJznXijEl5d9GjlnH+hUM31T6iHK?=
- =?us-ascii?Q?ZVhzOcX755KLNmwNEdHz9adp4FOT92PM42+uT4ygvXtXzCS2afaXCbMW7a5l?=
- =?us-ascii?Q?PCARR8/knHLWU0206/94aUAkxUIzi8aCH/NIjwpB/FTJWDW6Rwgxxisjpk9A?=
- =?us-ascii?Q?r6tYK5/u43az+mK3b/AD4z73eH3EQGFJK1HLCGs5yLFVpLr289ZftvzqvBI1?=
- =?us-ascii?Q?2IFmUdNFp76l15IYYLC71T4NejsUfpExh2KKvis2XTQvp3S9uR8fxlvp+bNa?=
- =?us-ascii?Q?rNmWo9iaFyv/b0RQzE2iODFStKJ/xWVb/Om/6MACvaOufeH5qePWH7jxLA2r?=
- =?us-ascii?Q?vfdH4477ARAb3oQe4SEXuFYSIzcv/XfdFtut0wHMtVy12dtHjUr9YDaAHiB7?=
- =?us-ascii?Q?aiAieuLNQzMC2rcI/MJFSNe2ufYwlVKT5hguo1EHnAqQeMwhiyrMITnNUjFO?=
- =?us-ascii?Q?GDCtfgKk0Lg9X1hVH91kDLhIxBtO6xAntRi7rEN46YAemi4ZXZMzroOBJVua?=
- =?us-ascii?Q?GR6I5CFBgYX+rXPd1mjnXIUG4AQZSImKowz68jWYHD6YSVlReECjTMYQkkgr?=
- =?us-ascii?Q?xkLHN3GcI9BiXaIvLiJtdLLSLo6N8qyxX7RjtL5Ay2300qjp2LBkk2ZMZY9T?=
- =?us-ascii?Q?cIQeRMKl6li9vIFOpJEzhptkUAsvDj/FTKo5YbqgpGCdHCo0vR5Mu6UbhetJ?=
- =?us-ascii?Q?FxFN5owz/VlLODKAoEhUqORQ2YsxUZUhx85yfavpRk4DO+SQ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T36//J4J";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dt4uYwX7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784218391;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+	b=T36//J4JH3qMz3pMg+qskoDH1IQhaQQeispSwaCDBTY7LhA7mGtaJrh9qqHRJBWzOxGlhf
+	iYKOSCGXV+c7onYlcFItvFjNEV2D14bzAVdBhzddrG3WeKg3NxVvicD/JzDwaCki+J++Gl
+	Sc9Zd4UHlYJPnl6EuS4UjL9WvMpYdnE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-xNgKE19PO2y4Y4oJxKCfuw-1; Thu, 16 Jul 2026 12:13:10 -0400
+X-MC-Unique: xNgKE19PO2y4Y4oJxKCfuw-1
+X-Mimecast-MFC-AGG-ID: xNgKE19PO2y4Y4oJxKCfuw_1784218389
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-474170b59dfso3916998f8f.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784218389; x=1784823189; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+        b=dt4uYwX7EYt46fsT6WqnWoMbi6wUVXURuB0b7YbA8MINGXJ4GP0h6IiazDw6NrVo7A
+         /b8sepZ3CYyCY7uFRqz5m68Pkd+tbJRA36Y8jOpLUbrwEItNO9ELq2NDeDdOUg2hq11X
+         Sep4/FS473fP7WqO/Q9fPhF9BBKKn9SdJ+uZD0IuZqoK2Sdn1BKr/RfSajd4NxNbpkU/
+         ormc3uWp9A0FjHABDTZ2ioLt2lw0TpmqI02ZMWo2cavtvFyT5FbblvXxgbvyhRfuXO6t
+         1sv0cW4cq6OUT5o8+K87mfqV7M1W9PMA/XU52OQporTFSCf7ooix8apM7GvcGyWI5v20
+         2Vfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784218389; x=1784823189;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+        b=GNID8q0C17JaxSzXQU+rsn3MaDqOiW/loI93nahdk6MEMH2P7/4JPx0JgYfWWGpa1K
+         FgU9rXrTs/6cri8jtj85YOriIOosI74AECNuwhMRoHW7wuoYK8HDjLqi3F8q3gntSKE+
+         0kb0D6J4HU6QECrgoenEqDTYA0FBl+EVWja9QupaKjCgSUIGCZ0Nx9SUHPADwGmnT53l
+         t88jK3WOM7iFa99ERyjf0byYGjRhLcyL9FUbSsEsOa5NBcL5+lbvNH5/RSJQZI87GELz
+         hUhAjkoI28+UXRaL18p4N3mJqgBz/rmO5XutysJmsxxFpau8DZKKQjyOxcptqdqYpCjj
+         QkuA==
+X-Forwarded-Encrypted: i=1; AHgh+RqGEBcL9KClJWHbbKhuAbtgtse1IpFaN9+JM4hhsyV5ukSmNqcKTh3rR+1B3Zm7n2pEOjhE8p4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX/8FlaFql6U35TsA0DWKlN7385O9/iJOZTvsFUJm7+5dNUY61
+	B0y1rNSYIW9JYCZOJR8WmoTzqfo1XEaztjHcqB1o9I2FSLoAqZpTPCCCVSCCqzFzw8o7/QMFayz
+	wtG7XaXNb/sDrwYit/vtaRP55sGNbNjO87YQahVTY7dM+tfd1QXYBeJ3MeA==
+X-Gm-Gg: AfdE7ckn7px2v/I3IQOWzNObbRxEzicfu0IaxS3J8E+m90airsj/yQIVYbKPUtKJBqR
+	3RY0TEjwOUxgmwL7ipas68/hAiJusuoT7s+fosPYw9VO5RIW70ZJdUQ/LaXeiSba1lMrzVc/Kxh
+	L5vQUaa/6XzUFUgsTs7AALdenWjLaC/S45q5EvaVoubRyCRqgA6pmDn0/g1TzYuzTd/j/HoGvox
+	gtOFbhV6zapJLWb9VGmtxC8KSM0n0uXI31Dgq6jDzss9hoMfOwbU6HMPJIUNY+i796Wnxd5ZeE6
+	6hhckLvfKNt65RGbGiJTsNgTeoDsFxqZ/KqrfTlxQzl2kZf4J1S/tTZupSAJduj0W1RHEuYOlNU
+	JiHOKScrAaDLkW12OYAvrLk89e+v3Axd4f1Vfq+vZcqHEpLryyg==
+X-Received: by 2002:a05:600d:6445:20b0:495:4182:444c with SMTP id 5b1f17b1804b1-49541824759mr38415345e9.26.1784218389348;
+        Thu, 16 Jul 2026 09:13:09 -0700 (PDT)
+X-Received: by 2002:a05:600d:6445:20b0:495:4182:444c with SMTP id 5b1f17b1804b1-49541824759mr38414535e9.26.1784218388605;
+        Thu, 16 Jul 2026 09:13:08 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e9ee07sm70836725e9.15.2026.07.16.09.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 09:13:07 -0700 (PDT)
+Date: Thu, 16 Jul 2026 18:13:02 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <alj_YKTitwqMjAez@sgarzare-redhat>
+References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+ <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
+ <alibLtcrC7o5r4Dh@sgarzare-redhat>
+ <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: cF4agDFubStrn1STi9/bxcVwSr5dSCk0hKIiHrAak1GVXmJ62cLfKEnJ1ReQLX2p/wF3Sfw/UYk21zDUB3T+VwHMEZaQGuZ1DQRyiBijorzRNP/TkB/bLVAPF9y0CEw+gJ/8u+5PKri6xvg0Ydcz5MpwynpkQbsHCWbDNs77QhcKdO2giaPYnzqiv1qUn9fAC0smMQo/R5gGxzBy6iOO3PdkILWzZxWWUGGr0NH0ofRUHERUTVw6DAUm2jkeYYrMjGRwS97i2bl+LlToavIGmSKmNpZxzebmCjKcXgCWn0CqxnZZgLQMZ2W2qHGw+wfpy7ho5GwnzwLMUKBVPsqc5A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6297.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5eca9f8a-e185-45fa-89f6-08dee35503d3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2026 16:12:20.8986
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UQeHdXb855heJA5MyKR+Tyqt/lYrdfqKffaHELgSmR34OcPyCaaM3OD77EQfQxIdoahaWCmemnfrJpwrpA0R/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7647
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
 
+On Thu, Jul 16, 2026 at 06:39:48PM +0300, Andrey Drobyshev wrote:
+>On 7/16/26 11:57 AM, Stefano Garzarella wrote:
+>> On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
+>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>> the vq->worker pointers and immediately frees the workers, without
+>>> waiting for a grace period.  A caller that fetched the worker right
+>>> before the pointer was cleared can therefore still be queueing work on
+>>> it while it is freed.  And even when the queueing itself wins the race,
+>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>> future attempts to queue it are silently skipped.
+>>>
+>>> None of the current callers can actually hit this: net and scsi stop
+>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>> the lockless send/cancel paths become able to race with the teardown.
+>>>
+>>> Close this the way vhost_worker_killed() already does: clear the
+>>> vq->worker pointers, wait for a grace period, run whatever the last
+>>> readers may have queued, and only then free the workers.  The
+>>> synchronize_rcu() is skipped if the device has no workers, so cleanup of
+>>> devices which never got an owner stays cheap.
+>>>
+>>
+>> Do we need a Fixes tag for this?
+>>
+>
+>I'm guessing it should be:
+>
+>Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>
+>> Thanks for pointing out that the issue wasn't occurring, but I think we
+>> should add it because it's a sneaky problem we discovered by chance.
+>> IMO the code should already have `synchronize_rcu()` after
+>> `rcu_assign_pointer()` loop.
+>>
+>> @Michael, what do you think?
+>>
+>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>> ---
+>>> drivers/vhost/vhost.c | 15 +++++++++++++++
+>>> 1 file changed, 15 insertions(+)
+>>>
+>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>>> index 4c525b3e16ea..0d1414d40f4e 100644
+>>> --- a/drivers/vhost/vhost.c
+>>> +++ b/drivers/vhost/vhost.c
+>>> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>>>
+>>> 	for (i = 0; i < dev->nvqs; i++)
+>>> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>>> +
+>>> +	/*
+>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>>> +	 * caller that fetched a worker before we cleared the pointers above
+>>> +	 * may still be about to queue work on it.  Wait for those RCU readers
+>>> +	 * to finish before freeing the worker, then run whatever they queued
+>>> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
+>>> +	 * vhost_worker_killed().
+>>> +	 */
+>>> +	if (!xa_empty(&dev->worker_xa)) {
+>>> +		synchronize_rcu();
+>>> +		xa_for_each(&dev->worker_xa, i, worker)
+>>> +			vhost_run_work_list(worker);
+>>> +	}
+>>> +
+>>
+>> Following sashiko review [1], I tried to undersand why we need this, but
+>> TBH I'm really confused. That said, this seems wrong also because it
+>> will work only with vhost_tasks, and not with kthreads.
+>>
+>> IIUC vhost_worker_killed() will be called anyway when calling
+>> vhost_worker_destroy(). For vhost_tasks, it will call
+>> vhost_task_do_stop() that calls vhost_task_stop(). This sets
+>> VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing
+>> stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that
+>> is exactly vhost_worker_killed() you mentioned we are mirroring here.
+>>
+>
+>Hmm, are we sure it's the case for our codepath?  Looking at the
+>vhost_task loop function:
+>
+>> static int vhost_task_fn(void *data)
+>> {
+>>     for (;;) {
+>>         if (signal_pending(current)) {
+>>             if (get_signal(&ksig))
+>>                 break;
+>>         }
+>>         ...
+>>         if (test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>             __set_current_state(TASK_RUNNING);
+>>             break;
+>>         }
+>>         did_work = vtsk->fn(vtsk->data);
+>>         ...
+>>     }
+>>
+>>     ...
+>>
+>>     if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>         set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
+>>         vtsk->handle_sigkill(vtsk->data);
+>>     }
+>>     ...
+>> }
+>
+>AFAICT, we exit the loop in 2 cases: signal delivery or STOP bit
+>setting.  Like you said, STOP is set by vhost_task_stop.  E.g. for our
+>RESET_OWNER case:
+>
+>vhost_vsock_reset_owner()
+>  vhost_dev_reset_owner()
+>    vhost_dev_cleanup()
+>      vhost_workers_free()
+>        vhost_worker_destroy()
+>          vhost_task_stop()  // for vhost_task_ops backend
+>            set_bit(VHOST_TASK_FLAGS_STOP)
+>
+>So, first of all, actual work by .fn() callback is done after the exit
+>checks, therefore we skip it - no chance to drain there.
+>
+>Secondly, the handle_sigkill() callback is deliberately NOT called in
+>the STOP case and only called on fatal signal delivery.  And for
+>vhost_task backend the .handle_sigkill() callback is exactly
+>vhost_worker_killed().
+>
+>So my understanding is: if we only call synchronize_rcu() here and leave
+>this path undrained, then whatever work which was put by send_pkt() for
+>the worker currently being freed - will be lost.  Please correct me if
+>I'm wrong.
 
+Yep, your right. But what will be the issue of loosing them?
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Emil Tantilov
-> Sent: Tuesday, June 30, 2026 4:19 PM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Bhat, Jay <jay.bhat@intel.com>; Barrera,
-> Ivan D <ivan.d.barrera@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Zaremba, Larysa
-> <larysa.zaremba@intel.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; andrew+netdev@lunn.ch;
-> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> pabeni@redhat.com; Lobakin, Aleksander <aleksander.lobakin@intel.com>;
-> linux-pci@vger.kernel.org; Chittim, Madhu <madhu.chittim@intel.com>;
-> decot@google.com; willemb@google.com; sheenamo@google.com;
-> lukas@wunner.de
-> Subject: [Intel-wired-lan] [PATCH iwl-next v3 2/2] idpf: implement pci er=
-ror
-> handlers
->=20
-> Add callbacks to handle PCI errors and FLR reset. When preparing to handl=
-e
-> reset on the bus, the driver must stop all operations that can lead to MM=
-IO
-> access in order to prevent HW errors. To accomplish this, introduce helpe=
-r
-> idpf_reset_prepare() that gets called prior to FLR or when PCI error is
-> detected. Upon resume the recovery is done through the existing reset pat=
-h
-> by starting the event task.
->=20
-> The following callbacks are implemented:
-> .reset_prepare runs the first portion of the generic reset path leading u=
-p to the
-> part where we wait for the reset to complete.
-> .reset_done/resume runs the recovery part of the reset handling.
-> .error_detected is the callback dealing with PCI errors, similar to the p=
-repare
-> call, we stop all operations, prior to attempting a recovery.
-> .slot_reset is the callback attempting to restore the device, provided a =
-PCI reset
-> was initiated due to an error on the bus.
->=20
-> Whereas previously the init logic guaranteed netdevs during reset, the
-> addition of idpf_detach_and_close() to the PCI callbacks flow makes it po=
-ssible
-> for the function to be called without netdevs. Add check to avoid NULL po=
-inter
-> dereference in that case.
->=20
-> Co-developed-by: Alan Brady <alan.brady@intel.com>
-> Signed-off-by: Alan Brady <alan.brady@intel.com>
-> Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-> Reviewed-by: Jay Bhat <jay.bhat@intel.com>
-> Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> 2.37.3
+IIUC we are not loosing any data, just avoiding some works that will be 
+handled later when/if will set a new owner.
 
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+>
+>That said, I agree that vhost_run_work_list() will only work with
+>vhost_task backend, not with kthreads backend.  If we do
+>vhost_worker_flush() instead - I guess it'll keep the drain here, yet
+>become backend-agnostic. I.e.:
+>
+>> +       if (!xa_empty(&dev->worker_xa)) {
+>> +               synchronize_rcu();
+>> +               xa_for_each(&dev->worker_xa, i, worker)
+>> +                       vhost_worker_flush(worker);
+>> +       }
+>
+>With the last 2 lines being equivalent to just calling
+>vhost_dev_flush(dev).  And once we become backend-agnostic here, I'm
+>guessing the warning reported by Sashiko should be dealt with as well.
+
+I'd avoid `if !xa_empty(&dev->worker_xa)` at all, and call 
+synchronize_rcu() in any case.
+
+About vhost_dev_flush(), we are calling it in several places, and maybe 
+we should re-check them. E.g. we call in vhost_vsock_flush(), but it's 
+also called by vhost_dev_stop(), maybe we can avoid to call 
+vhost_vsock_flush() if we call vhost_dev_stop().
+
+I'm not sure we really need another one here, but if you think some 
+other works can be queued between the vhost_dev_stop() and the 
+synchronize_rcu() we are adding here, then okay, it may have sense.
+
+Thanks,
+Stefano
 
