@@ -1,63 +1,63 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A64426429
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C46426D13
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208230; cv=none; b=V+AeGIMGQCeTpSeAq8uoYitG+vNKGVS1DU3mCag0oXicqgZDVLe3NtEDKF1Hun5bhS/yQwHDA4xB4S4uc/LsyDMhtfFl8BwqPmcY5z/Ge6elyn4BxKzqle0u6OJX0inAyck5KMRmhG1stBKqIV7sj5+O9CrrEzeqjEfnbyCtKNM=
+	t=1784208235; cv=none; b=hjLnn8k/OR4a7+HnZfa+kM7VmZLYx3b6UaiFOq6sLmaKGjf6dNsN/LeWcJV5DFa2MmzQR9flpkQcbc1yn3oYx7PYN1dNLv5oHWZLUlwjzP1IYSVwVFXRyHwyaWR1JNnykA6Yh9GVrXdNJ2BrEXl5CKHf1kwCeRF5snb3nUBN5QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208230; c=relaxed/simple;
-	bh=Wqi5KzpmB6zpmbpQROgcTMyYw+gD16pJ028ef+YpomU=;
+	s=arc-20240116; t=1784208235; c=relaxed/simple;
+	bh=LDxEmI3TVHKUYrMzZXZyrOOfTxlXtBU8VlpAoeWy5yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyRJrbrFmzmC34maZBvZd5Dr1H8QO4kG392+x3jZcANSTyjkUDq1YxLiPfuQAIspV+gOocYQ/6uhh6+r5MFbLgqL4dRTNq4peij213qgEvnRxxmx6Uce4/bclzlPcafaelh1hNh/QxrcWbsivYVVQzVH6YaIXkCrOf9bp8oHX90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=po53amPU; arc=none smtp.client-ip=209.85.128.51
+	 MIME-Version; b=gfIgwSO8ldMkmGNVThQfmS22nBXh/2N+houXIw9QJTRHenS7XoHu76YyES2kXo/oBbd1O8PzSDpzYYkQDRhD742ZO+W07HCGqKl+S4uROTT6nErd08pPel6ahp3hdm9sGzFgyfIbEYak5kzBJaLIztDm60wHkM0eu6tiLq1aYfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=CkqVy38k; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="po53amPU"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493ae59eca6so17543395e9.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:23:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="CkqVy38k"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493e4ccccc2so41447685e9.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:23:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208227; x=1784813027; darn=vger.kernel.org;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208231; x=1784813031; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BMcX0YddrsVQYToOf5sZrqslr+alhSoWvC1LhYQrOaI=;
-        b=po53amPUM725dcb24/q8qw2miCPBVvTMo9cJ919gRo0m8SpPTdBrQUHhKZCVlqyM/r
-         7kPymwIQBe0np1JSaapBk25psoqy7t1ILnICgcUmVFQZzce4h9ZYQfkxDiYIBgnNF/Th
-         o9K7FZ8knAihJ3KJnSsE6l5uqUOMOGwhfKt49Q12ehNnvks34Ztl4niyD+fWqZXzKz02
-         EhIpagrBcpY8eDuhemvnwmQ1XBxgOxJhk0Cv+R3HHx4kHolYKxRSPepuR5mBpX7lNWMl
-         H5FTTmqC3e2zBzFlX3gAK5e++PCAew9gN4GZiIoTshuJPDf9WUh3GT/QTjm2tZkySVXG
-         ARJQ==
+        bh=bRy0m6NWNW2PQCoNaWlnRG4v0MDoFwNVbRxZWj5ydd0=;
+        b=CkqVy38koyILT7CJxbZaCcguTKamGCDfajkEDglxOGTXI4HuGeS/DM/UK3q6CkO3G7
+         r61k4gp9OmnOG8IwQWb3vl7v4qS2/7nUY0Us/229WR/GqxpIE6bPn/TasFiIFup1JNg5
+         YN6c9jIfltCMwwX41Ba9kPxUF5gh7rMw+BMxlwTTbnX4aS1b66AktkQhWqyyRNEjQSZU
+         c7TwsNr7awuj9OhCzHfjMKLKiBoE644bcyIijep8yk591xb9M2RLb8wrMYnip0CWclec
+         xI/9wd+4Zrhe2RZ2Pa0wtzY4fSN9g0U1Yde3ZaQfQASRL7FirA4jHR+/o7RnI+dCk9y6
+         yc5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784208227; x=1784813027;
+        d=1e100.net; s=20251104; t=1784208231; x=1784813031;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BMcX0YddrsVQYToOf5sZrqslr+alhSoWvC1LhYQrOaI=;
-        b=kTCCTfLAs3ugvTlZRSHFgB3X+xq4AMRE1Jwt5o2ZOF8JKdMK3HBaLDqlmD3jqN4cQL
-         ule4igfauV/Ynaf7XSGgMAYYGKBrgS4wWFrpAoLbD6xZVp3ve2X1Bd7J1wlCQyNGvS5p
-         iUQYYrimjUgTIIcNnlp+1OP509/osCLzPQsO39bKaosWBt1UygrJe3ThjhRNzXcAidyV
-         +U61OS6siInvGrYJ6N77AEM6L7P3xr4Q+sb0U1GxqFcfA5GLAAgSELo9qk8eAdmIj5Ln
-         H4otFpPyw43qx6pv1YtpDlq13M5yHsZ4gB4FM9oY31jDKDycm1VnxpL/LhYRs737u1+V
-         FAjw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2kWCMdrudfsZyardvbeIDUYWPcbtJKCOA17sb4pQIDBits+8dUDVnJ5HnAmlhq7X3WSkwPjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIbV6mxDuiELP4j+3ovhVFGInZWrFh5VP/4gccbBSRVeqPThUY
-	E/4L33TcXaU5wgwgYkcCUX7n84jYhvCZRPY7wuNZLnfSnBnZ/s+Q5so69Nk+6otpeK4=
-X-Gm-Gg: AfdE7ckYfVpTiOFvDQxxRPcSj3N21/yS2l9Dlf6dZlU+TxHA4pWdsdttjmxyg8+PkiN
-	P21ddThtRjItJTZ/Ocu9BPXneYtWgnaDX2pMvEHZQOUrrM+TLd4FpDb5CUsKiAMP1rXkin1q4cb
-	NjS8iLMbigHFjqueeFPB9DkjPSOxiSOpkmPeimGvuj97oq4kF64SOQjOErbo6ZYLqpSBCtmcBZ7
-	/pEnAK7+wnfHHD5rX6Nck4daF8+78wQC3/eZXVcKiEwUCMeoSem3bDrhX5DN/BkISWlfiHw/YIu
-	A45JvXkTTeIbrbImxOP7gFWcjP8xdT08JYkBJxGfd7GFV4+9FI2DaP28DAmKW/QReVXDJfr87gz
-	bX3ash7OiGPQCw0vCXVje1vTjp3UC58yLbYOoBPX3UzIvs6OTSzIuRX0Yl8/K6ZTrL7LIiVhN6E
-	MFdYl5w8IrjEXXdXHi6UgF1Q==
-X-Received: by 2002:a05:600c:a47:b0:495:4126:1edb with SMTP id 5b1f17b1804b1-495413566ebmr37543415e9.29.1784208226946;
-        Thu, 16 Jul 2026 06:23:46 -0700 (PDT)
+        bh=bRy0m6NWNW2PQCoNaWlnRG4v0MDoFwNVbRxZWj5ydd0=;
+        b=fYurAbq1yEp4LTNfi7T46KzExn2DTPcN54dRgd1W6aSPXdLY6x1CH6sp8bUTrFJ1NU
+         T14ff7byUS3KLoz2ACkK2p/dnP669LA2rEFsCJXlkqBLe/ajXnP9ayAbA5wPdWHCIoYz
+         z7vYv6tLJkAAFUYjkPQy/ctTvVEuHZm1VI+yDKodApizAWol1PDA6OeoiJa8ROYM35At
+         73Klqbqpg40ThrkDSVj3uHgozT3qLjRdFHcYuucTrasFYbOqQmv/gvkdWnjkwCSrS9wJ
+         reIaeTJrgtnEXMbY7fK1jsP4PR7izIVW3HVb/yHh5W+zOzradM2G1uo4/e5EWztUfrkl
+         kKfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqQj8ngH9bI2/0xZB56FQGqRdlgywG5F6VBPvdxLzx5TCY92+jq4ntYK+K1iWhZ67kmPfk7+jg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS3DrPSHuW6CwLYaJa6SuXypwdFojjuvXO1Y5X2tsiM5sZg5Sk
+	Z4Vk6mlj5hFhSLB9QlyrpIRKd91RsxJfPaZdQfyJZIBZBwHoLpcxxY99PPdXJYHbe7Q=
+X-Gm-Gg: AfdE7cl49O45KgU32xiRsvatfUVxPTreJ731aIh7XbQHlY2XWQPTqIfG2H7bwUusBlS
+	l0qRmG0j6DuMzIHsfnOX3WUA6SQH089YE7CgidbEkyhE8gnp1AZz5oInilIpQoAGvaiUuDKCJmz
+	KF/6hnDigtVnG05kfUQUotzg7nNtsO4yE2OKKyebf7DtiF48DgaHRKmTCkor7vIl9OG7IHnK9p3
+	R27RhsNNzck1DyypLgKbrxgaREwIf/pacA8k7p3GIbHOIwHG8Lx00ctbKp66fK62rKl0YnMhdaR
+	FyUqIaaePqrUmPZYJx0PHOyDz1EV/r18xQavOZ04LtxyGG7hNHSd4gGFW9BJsD0EiEaV6eh3MIc
+	MptSwPSBwp/zJhxFyEcd7BYF3aWRICKK09t8fZMhY3RZR+goORC7GjyelFJnCauC7O3hATqU/Rv
+	VmFPtDxWVUr1yK7q8IOsskzA==
+X-Received: by 2002:a05:600c:19cc:b0:495:4732:1eb9 with SMTP id 5b1f17b1804b1-49547321ef4mr2824285e9.21.1784208231072;
+        Thu, 16 Jul 2026 06:23:51 -0700 (PDT)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464caeffsm23108105f8f.36.2026.07.16.06.23.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e7d799sm55609455e9.3.2026.07.16.06.23.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:23:46 -0700 (PDT)
+        Thu, 16 Jul 2026 06:23:50 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: linux-rdma@vger.kernel.org
 Cc: cgroups@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: cgroups@vger.kernel.org,
 	wenjia@linux.ibm.com,
 	yanjun.zhu@linux.dev,
 	cui.tao@linux.dev
-Subject: [PATCH rdma-next v3 07/14] RDMA/srp: Make the SRP sysfs class net namespace aware
-Date: Thu, 16 Jul 2026 15:23:08 +0200
-Message-ID: <20260716132316.1495242-8-jiri@resnulli.us>
+Subject: [PATCH rdma-next v3 08/14] RDMA/cgroup: Disambiguate devices across net namespaces
+Date: Thu, 16 Jul 2026 15:23:09 +0200
+Message-ID: <20260716132316.1495242-9-jiri@resnulli.us>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
 References: <20260716132316.1495242-1-jiri@resnulli.us>
@@ -98,44 +98,270 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Tag srp_class by the RDMA device's net namespace so SRP hosts derived from
-same-named RDMA devices can coexist across namespaces.
+RDMA device names are unique only within a network namespace, but an
+RDMA cgroup can account resources for devices from multiple namespaces.
+Duplicate names therefore make cgroup output ambiguous and can cause
+limit writes to select the wrong device.
+
+Use the system-wide RDMA device index to distinguish duplicate names
+while preserving the existing UAPI for unique names. Reject ambiguous
+name-only writes with -ENOTUNIQ and expose a complete device view to
+administrators.
 
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+v1->v2:
+- replace caller-netns filtering with global visibility and index-based
+  disambiguation
+---
+ Documentation/admin-guide/cgroup-v1/rdma.rst |  8 +++
+ Documentation/admin-guide/cgroup-v2.rst      | 15 ++++-
+ drivers/infiniband/core/cgroup.c             |  1 +
+ include/linux/cgroup_rdma.h                  |  1 +
+ kernel/cgroup/rdma.c                         | 71 ++++++++++++++++----
+ 5 files changed, 83 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index 0caebbc2810f..2fc8e133c70f 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -3189,10 +3189,24 @@ static struct attribute *srp_class_attrs[];
+diff --git a/Documentation/admin-guide/cgroup-v1/rdma.rst b/Documentation/admin-guide/cgroup-v1/rdma.rst
+index e69369b7252e..8d0c3a796ee3 100644
+--- a/Documentation/admin-guide/cgroup-v1/rdma.rst
++++ b/Documentation/admin-guide/cgroup-v1/rdma.rst
+@@ -90,6 +90,13 @@ Following resources can be accounted by rdma controller.
+   hca_object 	Maximum number of HCA Objects
+   ==========    =============================
  
- ATTRIBUTE_GROUPS(srp_class);
++RDMA devices from all network namespaces are listed. Each line starts with
++the device name. If more than one device has the same name, ``index=N``
++follows the name, where ``N`` is the system-wide RDMA device index, unique
++among registered devices. When configuring a limit, the index is optional
++for a globally unique name and required for a duplicate name. A write without
++the required index fails with ``-ENOTUNIQ``.
++
+ 2. Usage Examples
+ =================
  
-+/*
-+ * SRP hosts are named after their ib device, so tag the class by the ib
-+ * device's net namespace.
-+ */
-+static const struct ns_common *srp_net_namespace(const struct device *dev)
-+{
-+	struct srp_host *host = container_of(dev, struct srp_host, dev);
-+	struct net *net = rdma_dev_net(host->srp_dev->dev);
+@@ -97,6 +104,7 @@ Following resources can be accounted by rdma controller.
+ 
+ 	echo mlx4_0 hca_handle=2 hca_object=2000 > /sys/fs/cgroup/rdma/1/rdma.max
+ 	echo ocrdma1 hca_handle=3 > /sys/fs/cgroup/rdma/2/rdma.max
++	echo "rxe0 index=5 hca_handle=2" > /sys/fs/cgroup/rdma/3/rdma.max
+ 
+ (b) Query resource limit::
+ 
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 993446ab66d0..df74d554d2cd 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -2752,6 +2752,11 @@ RDMA
+ The "rdma" controller regulates the distribution and accounting of
+ RDMA resources.
+ 
++RDMA devices from all network namespaces are listed. Each line starts with
++the device name. If more than one device has the same name, ``index=N``
++follows the name, where ``N`` is the system-wide RDMA device index, unique
++among registered devices.
 +
-+	return net ? to_ns_common(net) : NULL;
-+}
+ RDMA Interface Files
+ ~~~~~~~~~~~~~~~~~~~~
+ 
+@@ -2760,7 +2765,11 @@ RDMA Interface Files
+ 	except root that describes current configured resource limit
+ 	for a RDMA/IB device.
+ 
+-	Lines are keyed by device name and are not ordered.
++	Lines are keyed by device name and are not ordered. A write may
++	include ``index=N`` after the device name. The index is optional
++	when the name is globally unique. If multiple devices have that
++	name, the index is required and a write without it fails with
++	``-ENOTUNIQ``.
+ 	Each line contains space separated resource name and its configured
+ 	limit that can be distributed.
+ 
+@@ -2776,6 +2785,10 @@ RDMA Interface Files
+ 	  mlx4_0 hca_handle=2 hca_object=2000
+ 	  ocrdma1 hca_handle=3 hca_object=max
+ 
++	For devices with duplicate names, select the device by index::
 +
- static struct class srp_class = {
- 	.name    = "infiniband_srp",
- 	.dev_groups = srp_class_groups,
--	.dev_release = srp_release_dev
-+	.dev_release = srp_release_dev,
-+	.ns_type = &net_ns_type_operations,
-+	.namespace = srp_net_namespace,
++	  echo "rxe0 index=5 hca_handle=2" > rdma.max
++
+   rdma.current
+ 	A read-only file that describes current resource usage.
+ 	It exists for all the cgroup except root.
+diff --git a/drivers/infiniband/core/cgroup.c b/drivers/infiniband/core/cgroup.c
+index 1f037fe01450..8611b4e32cfb 100644
+--- a/drivers/infiniband/core/cgroup.c
++++ b/drivers/infiniband/core/cgroup.c
+@@ -17,6 +17,7 @@
+ void ib_device_register_rdmacg(struct ib_device *device)
+ {
+ 	device->cg_device.name = device->name;
++	device->cg_device.index = device->index;
+ 	rdmacg_register_device(&device->cg_device);
+ }
+ 
+diff --git a/include/linux/cgroup_rdma.h b/include/linux/cgroup_rdma.h
+index 404e746552ca..9a5c9ee728e7 100644
+--- a/include/linux/cgroup_rdma.h
++++ b/include/linux/cgroup_rdma.h
+@@ -34,6 +34,7 @@ struct rdmacg_device {
+ 	struct list_head	dev_node;
+ 	struct list_head	rpools;
+ 	char			*name;
++	u32			index;
  };
  
- /**
+ /*
+diff --git a/kernel/cgroup/rdma.c b/kernel/cgroup/rdma.c
+index 5e82a03b3270..9489f3df0bf3 100644
+--- a/kernel/cgroup/rdma.c
++++ b/kernel/cgroup/rdma.c
+@@ -19,6 +19,7 @@
+ #define RDMACG_MAX_STR "max"
+ 
+ enum rdmacg_limit_tokens {
++	RDMACG_DEVICE_INDEX,
+ 	RDMACG_HCA_HANDLE_VAL,
+ 	RDMACG_HCA_HANDLE_MAX,
+ 	RDMACG_HCA_OBJECT_VAL,
+@@ -27,6 +28,7 @@ enum rdmacg_limit_tokens {
+ };
+ 
+ static const match_table_t rdmacg_limit_tokens = {
++	{ RDMACG_DEVICE_INDEX,		"index=%u"	},
+ 	{ RDMACG_HCA_HANDLE_VAL,	"hca_handle=%d"	},
+ 	{ RDMACG_HCA_HANDLE_MAX,	"hca_handle=max"	},
+ 	{ RDMACG_HCA_OBJECT_VAL,	"hca_object=%d"	},
+@@ -464,17 +466,53 @@ void rdmacg_unregister_device(struct rdmacg_device *device)
+ }
+ EXPORT_SYMBOL(rdmacg_unregister_device);
+ 
+-static struct rdmacg_device *rdmacg_get_device_locked(const char *name)
++static struct rdmacg_device *
++rdmacg_get_device_locked(const char *name, bool has_index, u32 index)
+ {
++	struct rdmacg_device *match = NULL;
+ 	struct rdmacg_device *device;
+ 
+ 	lockdep_assert_held(&rdmacg_mutex);
+ 
+-	list_for_each_entry(device, &rdmacg_devices, dev_node)
+-		if (!strcmp(name, device->name))
+-			return device;
++	list_for_each_entry(device, &rdmacg_devices, dev_node) {
++		if (strcmp(name, device->name))
++			continue;
+ 
+-	return NULL;
++		if (has_index) {
++			if (device->index == index)
++				return device;
++			continue;
++		}
++
++		if (match)
++			return ERR_PTR(-ENOTUNIQ);
++		match = device;
++	}
++
++	return match ?: ERR_PTR(-ENODEV);
++}
++
++static bool
++rdmacg_device_name_unique_locked(const struct rdmacg_device *device)
++{
++	struct rdmacg_device *other;
++
++	lockdep_assert_held(&rdmacg_mutex);
++
++	list_for_each_entry(other, &rdmacg_devices, dev_node)
++		if (other != device && !strcmp(other->name, device->name))
++			return false;
++
++	return true;
++}
++
++static void rdmacg_print_device_key(struct seq_file *sf,
++				    const struct rdmacg_device *device)
++{
++	seq_puts(sf, device->name);
++	if (!rdmacg_device_name_unique_locked(device))
++		seq_printf(sf, " index=%u", device->index);
++	seq_putc(sf, ' ');
+ }
+ 
+ static ssize_t rdmacg_resource_set_max(struct kernfs_open_file *of,
+@@ -488,6 +526,8 @@ static ssize_t rdmacg_resource_set_max(struct kernfs_open_file *of,
+ 	char *p;
+ 	int *new_limits;
+ 	unsigned long enables = 0;
++	u32 dev_index = 0;
++	bool has_index = false;
+ 	int i = 0, ret = 0;
+ 
+ 	/* extract the device name first */
+@@ -503,7 +543,7 @@ static ssize_t rdmacg_resource_set_max(struct kernfs_open_file *of,
+ 		goto err;
+ 	}
+ 
+-	/* parse resource limit tokens */
++	/* parse the optional device index and resource limit tokens */
+ 	while ((p = strsep(&options, " \t\n"))) {
+ 		substring_t args[MAX_OPT_ARGS];
+ 		int tok, intval;
+@@ -513,6 +553,13 @@ static ssize_t rdmacg_resource_set_max(struct kernfs_open_file *of,
+ 
+ 		tok = match_token(p, rdmacg_limit_tokens, args);
+ 		switch (tok) {
++		case RDMACG_DEVICE_INDEX:
++			if (has_index || match_uint(&args[0], &dev_index)) {
++				ret = -EINVAL;
++				goto parse_err;
++			}
++			has_index = true;
++			break;
+ 		case RDMACG_HCA_HANDLE_VAL:
+ 			if (match_int(&args[0], &intval) || intval < 0) {
+ 				ret = -EINVAL;
+@@ -546,9 +593,9 @@ static ssize_t rdmacg_resource_set_max(struct kernfs_open_file *of,
+ 	/* acquire lock to synchronize with hot plug devices */
+ 	mutex_lock(&rdmacg_mutex);
+ 
+-	device = rdmacg_get_device_locked(dev_name);
+-	if (!device) {
+-		ret = -ENODEV;
++	device = rdmacg_get_device_locked(dev_name, has_index, dev_index);
++	if (IS_ERR(device)) {
++		ret = PTR_ERR(device);
+ 		goto dev_err;
+ 	}
+ 
+@@ -626,7 +673,7 @@ static int rdmacg_resource_read(struct seq_file *sf, void *v)
+ 	mutex_lock(&rdmacg_mutex);
+ 
+ 	list_for_each_entry(device, &rdmacg_devices, dev_node) {
+-		seq_printf(sf, "%s ", device->name);
++		rdmacg_print_device_key(sf, device);
+ 
+ 		rpool = find_cg_rpool_locked(cg, device);
+ 		print_rpool_values(sf, rpool);
+@@ -650,7 +697,7 @@ static int rdmacg_events_show(struct seq_file *sf, void *v)
+ 	list_for_each_entry(device, &rdmacg_devices, dev_node) {
+ 		rpool = find_cg_rpool_locked(cg, device);
+ 
+-		seq_printf(sf, "%s ", device->name);
++		rdmacg_print_device_key(sf, device);
+ 		for (i = 0; i < RDMACG_RESOURCE_MAX; i++) {
+ 			seq_printf(sf, "%s.max=%llu %s.alloc_fail=%llu",
+ 				   rdmacg_resource_names[i],
+@@ -679,7 +726,7 @@ static int rdmacg_events_local_show(struct seq_file *sf, void *v)
+ 	list_for_each_entry(device, &rdmacg_devices, dev_node) {
+ 		rpool = find_cg_rpool_locked(cg, device);
+ 
+-		seq_printf(sf, "%s ", device->name);
++		rdmacg_print_device_key(sf, device);
+ 		for (i = 0; i < RDMACG_RESOURCE_MAX; i++) {
+ 			seq_printf(sf, "%s.max=%llu %s.alloc_fail=%llu",
+ 				   rdmacg_resource_names[i],
 -- 
 2.54.0
 
