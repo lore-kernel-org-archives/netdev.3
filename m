@@ -1,64 +1,64 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51CF306D3F
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5A7305693
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784162654; cv=none; b=CsF0c+NvipTkngvs5aIYULf9wn7PZ+mn8oGq+ONEaWi36lXtO0e/NY63MqhqhAw8oNmnxtQDU7ynkorl0M4/nTp61QNHTxH14MSqOndszHZ8I8ir7S6SLEI8lh0IOCU1T8PVIJiAoQPEjqymiDknqDr5JA4yxg6aSK1Z650pdjU=
+	t=1784162654; cv=none; b=EJEFTtFEhTu6AcotEC5UIO8egrFRTbR6JqHFl5R6RWgEPNvR1wPPYr6wgKyE9Jkh9Eh4g2zpGIBYjT9TSbXpwskYKf8NHs94XB2fz0ZTM+BPXp9dIK4WF6Fz4IQErhOlMWYUbE6xIggyVftSGFYlyBulpiHaKnnEjSMCh9VTRlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784162654; c=relaxed/simple;
-	bh=8z2dU6C3TYRJ022H9N3Ej1VRtoM6gFjZ5RUegcBnuak=;
+	bh=WhaPoRb0QmwTgOHptlhNgtNX0s0Rws9PcuRWlOBdLN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KjXswl6AZCq9soTI0LnvV/j20LfeWwIHVaJ8VGqMZssJcN8w3/LxsRqpeDir61R3anf/7DmOB2mCaPXj4U9DNQ+aQ0UR2qni4iicaGzl06m9mBS1iqCweBsoCsjaiVl70tRlYRlP4+odpJTl/JWiOOlTSJLTjXBKdCfJxO3lhG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ag07XFKm; arc=none smtp.client-ip=209.85.215.172
+	 MIME-Version:Content-Type; b=e8tKZj6YnnRl4aGo9R3ErucY+2Wu/bpOmFfnOfR6bBx6lYAUqAmEO7q978KboSSGhZWUq6P731mUeQZuQCMD32xH1LtO7qDYBMemBtFHsUriJlLrtBLWYYgqv3Lfn/BFby4qgVfxqdVO2aA7CX4BG+H7sa2l0oNu4jRlWiKRozc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3Xbxs28; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ag07XFKm"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso3919526a12.2
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3Xbxs28"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-ca7c1176317so4451523a12.1
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784162648; x=1784767448; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784162647; x=1784767447; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=vobfv6qQPpjyzGOl008TBJ35Kdt4Q/Z2GOdMKmOELa0=;
-        b=Ag07XFKm1byI2WJ9DgEnCYDBrgGXnCZ81pHFMN2wCPo5ZLlu6qhy6P8ioWmb7lv4PP
-         UteJ/2MHhrWnvgnKxol8Gp+2rrcrp9b8IW214H1UvnS9ginqGXRHmYebRc0+H1VR8D9Y
-         ZbBcbas5hs3Tfygv0OwMWn2vI9AwZWMehU3JNXWQs8CRoV+4bPdU/Uoucv3IgDXqgJv7
-         yzarAlqWGhR5yaIfHK43Zuz8r6VYoPHTpi0voUlD30snlr1JL604VnzOUWC1GVgTSDGF
-         WHZmbbC5qlLmpaAWASA3ge0dM+G7X/URzd5fQtNcYpzx7DxstkwyhN3XcjweR5innD6z
-         rIVA==
+        bh=Wj3qOVD1qVOw8XUvfGDy0ElOIdjPdoQAPsV1zxudQMA=;
+        b=J3Xbxs28jmmW4cEXtT6nmgy8HKTR0w677P7JwwvAmcm4YHf/R6EFVF1lTWeV448h9O
+         OJvCudHaPnxB/QgYlmqEeWv+o75iYJGqA6gqSTWP9vqCPrSp2pgTQpJVU01Wv/iIPiOg
+         RuqZmbo2VG0xMyUi4CJMGvYwUQJ9MI0J5YQLk5vHQvFzXuEraoLgm0MVX3E3KMea1dHu
+         4tS8pV5gTVySN7kAmW4Nx/rA6h8um+8g57JrqFXiJcHcUO/6RY3RB5XxV4DLGDUdhQIP
+         ytLWpqG9p+TYO2YW7h0esU03RiWkJjnk+hAq4hugi6m1QCjlmMWO0nB3wML+6htX+JGi
+         2k+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784162648; x=1784767448;
+        d=1e100.net; s=20251104; t=1784162647; x=1784767447;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vobfv6qQPpjyzGOl008TBJ35Kdt4Q/Z2GOdMKmOELa0=;
-        b=ENMVAGiyijDp9jrHB7dxEJur1C+ym+6ZoNJjmU5GDXB5ZCi8HUUyxF9nZq/sfQpTR4
-         UG/Ue3Blyq1fLBgeQJhnTdV97fRwHWbDDQ63Z38gSN4O2jwJ0DF2cp8mWCWX9556kFVb
-         I6KgB5FsVWyD1k2LD4k7GvO1GLVBWhsZkP1Ce24arXSksZx5Z7uDh29GYnzMKaP7u5x+
-         +0I/LOWxFcq8DICjkkKehTjaKfVCULc9tMva8WZznZpgU0UQwLHNLjj1h0CC7v/5wfbe
-         UY4cHANiFQEQdxHOGE/hi66YaaiiOVBVRoiNugyFTZJcxsOyLuyaPCfX4B6+BkaDDDKu
-         +pfQ==
-X-Gm-Message-State: AOJu0YzWgkWpuIZ9s+YNvaEZVfEUyZbCEtCl98pYXT1hanvZip+Iv9xv
-	QXkffWjUNjbmxMouffwuTvGu0COzIXbW8VVECR7tgThvNMt++fJ+5TS+/1X3BA==
-X-Gm-Gg: AfdE7ckGIIoEY/TOEND6bTrHCmiFj7fzlhiQBtlr0qA8l3fMU9Ri8L/Np7/HjqlWrlK
-	oXHVW2pKoyMHEZR50Ha3KLZeAx/JwwPXi+bYs7P/L/E7xhYyIFBgc49jxHn2Cj4cWiOwUCNyjA/
-	AggEov/qqOFGYThVdgZ02XL+FTwaYeDhvoOx3llb1DWZt3SLDzwumkz2pBdPjj1CBmbLuC05wtW
-	8k0Y0BsBwwIjAskkEZoxU7T7NgVutTHVe1CBaXZ1HYK3QxUjK3q4NrsO9KDgSf3thCVXWgql3rM
-	UCgOMHgbyoknzrb0aGRxLe2a/CXfjh6iqeklIIiVziFPXGe2aOSJ7om+OhIItWJeGMOVso6oIvh
-	/rS+/MAKj11PfQkL2HY1bz8WB4cexiNmravRFob4R+Q3yPU0V5/NWFUZC1X9Sp0Nh9Dmg1wwVw4
-	CTIP4FihiC67ONvt6omvNQ+Jaehs+qfbrfTYwR3XHT09g7y92wURE8KFAXWSDaUBASzUELPBqpx
-	w7nKSD5Jg==
-X-Received: by 2002:a05:6a20:4310:b0:3bf:e2dc:bc7d with SMTP id adf61e73a8af0-3c36c3b1de3mr5402079637.57.1784162648082;
-        Wed, 15 Jul 2026 17:44:08 -0700 (PDT)
+        bh=Wj3qOVD1qVOw8XUvfGDy0ElOIdjPdoQAPsV1zxudQMA=;
+        b=iSNBE1Lxrn0FzntZSR2XKSfbdd/bb6cICzUTt45bRZRv7mF3tOgj1RSkx8a4nyb5W6
+         AxbHGm6ugmdDorw77bGUbwoXIHCi1L3WFyhUgXJAx8UPT9m1y32LqEU4Pw27K3tHSUoM
+         vfAeHJzfdF3jsWxFaz0f2GGLa/LKCkuwgvOdeyQ8wTsD0PIrm8+v5PbMobyRxvVz/H9Q
+         A05STELG9gQalzIRc49WNV5iyMRHMjT63qclF7+XjRX2NATStw8YadjeFik1m3ymKfgK
+         /iv9PLgu/XrYLufwcqNFgmwVPm9DKN98R8TQH/RFfERAfNY7CSgWLjfLQr4+6hyYrkl4
+         Idsw==
+X-Gm-Message-State: AOJu0YzqZfE7vxNRF7Gi2oeQ3JhCa2dFducmx8dr4C0/y+eVcEDZDW+J
+	g9r3jvQknABZL7QNATmAgj43GU6HiBY5zOvk6SigPyoLKhht4Hala8rZSozDIQ==
+X-Gm-Gg: AfdE7ckqCOveuYjO807OYEgp6WfA8WxUnKuVOCyDz11fe0zH5vE7lMTlfQDbXuFups2
+	Yxb9jr4C10qcJ74glPrOHWZzjbp92eUDJr5iblKbafzFo85A8gOfQ+X4SoMuKHz45Xi7ET7tNH5
+	87XCyr32XpYUT6GzZSzeoQ4tTPSFV3b1+vjLb5w9bLtsVTS1GqdK9H5eh5UlnQNH+0K6LlhLhhe
+	C+5UNuQuKeqpxp8p4DXzm7CaitRQVN+oPBbybHzuaDzK/2Py+RFigPXFVN9jT0VUaWG8G7P5M7E
+	HV3WSIiofx7QpBMLn34uua/jnAcjsXzQ27Ww7QK7X+YYu2VLAiHWBBenTaLQxsWCoK3RVt7eNZd
+	EyHHvwLjskoZ8KRd1ROeF/J0oAI3tpLwVUQGXl/LXQuyM7ii5px/DNPB8JfoiiqpHoCWbjwBjvX
+	ry8bRr5YYyxLL2TGGky0MBR5ivHm8yzp/UI6o8sRXje6C1RlL2YYOXsCTG4kLdH9ZsfpElwYAaI
+	qAat7xn6w==
+X-Received: by 2002:a05:6a21:2291:b0:3bf:b40b:def2 with SMTP id adf61e73a8af0-3c36c0f6cf0mr5511456637.9.1784162646934;
+        Wed, 15 Jul 2026 17:44:06 -0700 (PDT)
 Received: from l.localdomain ([76.166.220.66])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.07
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 17:44:07 -0700 (PDT)
+        Wed, 15 Jul 2026 17:44:06 -0700 (PDT)
 From: Dave Seddon <dave.seddon.ca@gmail.com>
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -70,9 +70,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Dave Seddon <dave.seddon.ca@gmail.com>
-Subject: [PATCH net-next v1 06/11] net: flow_dissector: add fast-path for IP-in-IP family (IPIP / 4in6 / 6in4)
-Date: Wed, 15 Jul 2026 17:43:52 -0700
-Message-ID: <20260716004357.3652679-7-dave.seddon.ca@gmail.com>
+Subject: [PATCH net-next v1 05/11] net: flow_dissector: add fast-path for single MPLS label + IP
+Date: Wed, 15 Jul 2026 17:43:51 -0700
+Message-ID: <20260716004357.3652679-6-dave.seddon.ca@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
 References: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
@@ -85,97 +85,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Adds flow_dissect_fast_ipip_inner() — a small recursion helper
-invoked from the existing flow_dissect_fast_ipv4() and
-flow_dissect_fast_ipv6() helpers when the outer IP's protocol
-(IPv4) or nexthdr (IPv6) is IPPROTO_IPIP or IPPROTO_IPV6 and the
-ipip gate is on. Tail-calls into the matching inner IP fast-path
-then stamps FLOW_DIS_ENCAPSULATION on key_control->flags. This is
-the series' first tunnel descent: the fast path parses through the
-tunnel header and dissects the inner flow, the pattern the GRE and
-UDP-tunnel patches later in the series reuse.
+Adds flow_dissect_fast_mpls() — straight-line read of one MPLS label
+entry (ETH_P_MPLS_UC 0x8847 / ETH_P_MPLS_MC 0x8848), extracting
+label / TC / TTL / BoS and writing to FLOW_DISSECTOR_KEY_MPLS lse[0]
+when the dissector requests it.
 
-Byte-identical with the slow path's IPPROTO_IPIP and IPPROTO_IPV6
-switch cases in __skb_flow_dissect(): the slow path also lets the
-inner IP overwrite outer addrs/basic and OR's ENCAP into the
-control flags. The ENCAP write must happen *after* the inner
-returns because the existing fast-path helpers unconditionally
-set key_control->flags = 0 on entry (correct for the top-level
-call but clobbers the encap flag during recursion); the
-ipip_inner helper re-establishes ENCAP after the inner returns.
+Byte-identical with the slow path's __skb_flow_dissect_mpls() called
+with lse_index=0, bos=1: the slow path returns FLOW_DISSECT_RET_OUT_GOOD
+when BoS is set without descending into the inner packet (MPLS flow
+hashing is on the label stack, not the inner 5-tuple), so this
+fast-path does the same — no IP tail-call.
 
-Coverage:
-  outer IPv4, protocol == IPIP   -> inner IPv4
-  outer IPv4, protocol == IPV6   -> inner IPv6 (6in4)
-  outer IPv6, nexthdr  == IPIP   -> inner IPv4 (4in6)
-  outer IPv6, nexthdr  == IPV6   -> inner IPv6
+Multi-label stacks (BoS=0 on the first label) defer to the slow
+path. A depth-2+ variant can land later, mirroring the vlan ->
+qinq staging used for the VLAN gates.
 
-FLOW_DISSECTOR_F_STOP_BEFORE_ENCAP and STOP_AT_ENCAP don't apply
-because the top-level dispatcher already rejects anything beyond
-F_PARSE_1ST_FRAG, so the fast-path entry never sees the encap-stop
-flags - packets that request them go to the slow path unchanged.
+Why this matters: MPLS is the dominant SP backbone L2.5 and the
+existing slow-path traverses an iteration loop per label even when
+the consumer just wants the label-stack flow key. The fast-path
+saves the iteration overhead for the common single-label case while
+keeping the slow path as escape for multi-label and the
+entropy-label case (which can only fire from label 2+ anyway).
 
 Gated by:
-  - new DEFINE_STATIC_KEY_FALSE(flow_dissector_ipip_key)
-  - new sysctl /proc/sys/net/flow_dissector/ipip (default 0)
-  - static_branch_unlikely guard inside the v4/v6 helpers, hit only
-    when the outer protocol/nexthdr is not TCP/UDP (i.e. the
-    TCP/UDP fast-path was about to return false anyway)
+  - new DEFINE_STATIC_KEY_FALSE(flow_dissector_mpls_key)
+  - new sysctl /proc/sys/net/flow_dissector/mpls (default 0)
+  - dispatcher case htons(ETH_P_MPLS_UC) / htons(ETH_P_MPLS_MC) with
+    static_branch_unlikely(&flow_dissector_mpls_key) guard
 
-Cost when off: the not-TCP/UDP fall-through grows by one
-static_branch_unlikely check. The TCP/UDP hot path is
-unchanged — the new branch is below the existing TCP/UDP fast-out.
+When the sysctl is 0, dispatcher cost is one not-taken JMP per
+matching packet — same per-shape pattern as the other fast-path
+patches.
 
-The IPv6 helper's standalone not-TCP/UDP guard becomes unreachable
-once the new block handles that case in full, so it is removed here.
-
-Documentation/admin-guide/sysctl/net.rst grows an `ipip` subsection
+Documentation/admin-guide/sysctl/net.rst grows an `mpls` subsection
 under /proc/sys/net/flow_dissector/.
 
-The IPv6-outer descent mirrors the slow path's outer writes (v6addrs,
-addr_type) before recursing into the inner header. The slow path
-fills these for the outer header and the inner pass then overwrites
-only what it uses: an inner IPv4 overwrites just the first 8 bytes of
-the addrs union, leaving outer-v6 bytes in the tail. Byte-identical
-output means reproducing exactly that, residue included — the KUnit
-equivalence test's 4in6 cases fail otherwise. (A non-zero outer flow
-label defers before any descent — see the eth_ip patch's output
-contract — so no label residue exists. The IPv4-outer descent needs
-no mirroring: an inner IPv4 or IPv6 write always fully covers the
-outer's 8 address bytes.)
+The helper also mirrors the slow path's out_good terminal writes: for
+the standard flow_keys dissectors (which request no MPLS key), the
+slow path returns OUT_GOOD after the first LSE with nhoff advanced
+past it, so thoff, n_proto (the MPLS ethertype) and ip_proto (0) are
+still written at the exit label. Skipping those writes is observable
+in struct flow_keys and would break the byte-identical contract; the
+in-tree KUnit equivalence test added later in this series catches
+exactly this.
 
 Assisted-by: Claude:claude-fable-5 sparse smatch
 Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
 ---
- Documentation/admin-guide/sysctl/net.rst |  19 ++++
- include/net/flow_dissector.h             |   1 +
- net/core/flow_dissector.c                | 117 ++++++++++++++++++++++-
- 3 files changed, 134 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/sysctl/net.rst | 19 ++++++
+ include/net/flow_dissector.h             |  1 +
+ net/core/flow_dissector.c                | 83 ++++++++++++++++++++++++
+ 3 files changed, 103 insertions(+)
 
 diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index 1ee5419ffaeb..15c8ace2c0a4 100644
+index 1096e6ddca39..1ee5419ffaeb 100644
 --- a/Documentation/admin-guide/sysctl/net.rst
 +++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -553,6 +553,25 @@ vlan -> qinq staging used earlier in this series.
+@@ -534,6 +534,25 @@ code != 0).
  
  Default: 0
  
-+ipip
++mpls
 +~~~~
 +
-+IPv4-in-IPv4 (``IPPROTO_IPIP`` 4), IPv6-in-IPv4 (``IPPROTO_IPV6`` 41
-+inside an IPv4 outer), IPv4-in-IPv6 and IPv6-in-IPv6 tunnels. When
-+the outer IP fast-path notices the outer protocol/nexthdr is one of
-+these and this gate is on, it skips the outer header and tail-calls
-+into the inner IPv4 / IPv6 fast-path. The flow_keys ends up with the
-+inner 5-tuple (matching the slow path's behaviour, where the inner
-+parse overwrites the outer addrs/basic), plus
-+FLOW_DIS_ENCAPSULATION set on key_control->flags.
++Single-label MPLS frames (EtherType ``ETH_P_MPLS_UC`` 0x8847 or
++``ETH_P_MPLS_MC`` 0x8848 with bottom-of-stack bit set on the first
++label). The fast-path reads the 4-byte label entry, extracts
++label / TC / TTL / BoS, and writes them to FLOW_DISSECTOR_KEY_MPLS
++lse[0] when requested. Byte-identical with the slow path's
++__skb_flow_dissect_mpls() for lse_index=0, bos=1: the slow path
++returns OUT_GOOD on BoS without descending into the inner packet
++(MPLS hashing is on the label stack, not inner 5-tuple), so this
++fast-path does the same.
 +
-+Byte-identical with the slow path's IPPROTO_IPIP / IPPROTO_IPV6
-+switch cases for the eligible shape. Defers on any miss — including
-+fragmented outer, unusual outer IHL, or unsupported inner shapes
-+that the inner IP fast-path itself would defer.
++Multi-label stacks (BoS=0 on the first label) defer to slow path —
++extending to depth-2 or more is a follow-up, mirroring the
++vlan -> qinq staging used earlier in this series.
 +
 +Default: 0
 +
@@ -183,175 +168,126 @@ index 1ee5419ffaeb..15c8ace2c0a4 100644
  ----------------------------------------------------------
  
 diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index 8df7821ba769..d9b4b461cd05 100644
+index df85162959cc..8df7821ba769 100644
 --- a/include/net/flow_dissector.h
 +++ b/include/net/flow_dissector.h
-@@ -433,6 +433,7 @@ extern struct static_key_false flow_dissector_vlan_key;
+@@ -432,6 +432,7 @@ extern struct static_key_false flow_dissector_eth_ip_key;
+ extern struct static_key_false flow_dissector_vlan_key;
  extern struct static_key_false flow_dissector_qinq_key;
  extern struct static_key_false flow_dissector_pppoe_key;
- extern struct static_key_false flow_dissector_mpls_key;
-+extern struct static_key_false flow_dissector_ipip_key;
++extern struct static_key_false flow_dissector_mpls_key;
  
  /* struct flow_keys_digest:
   *
 diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 0ec1a6a1bb0e..abf4fdb0100b 100644
+index 21a3f5e0ea05..0ec1a6a1bb0e 100644
 --- a/net/core/flow_dissector.c
 +++ b/net/core/flow_dissector.c
-@@ -50,6 +50,8 @@ DEFINE_STATIC_KEY_FALSE(flow_dissector_pppoe_key);
+@@ -48,6 +48,8 @@ DEFINE_STATIC_KEY_FALSE(flow_dissector_qinq_key);
+ EXPORT_SYMBOL(flow_dissector_qinq_key);
+ DEFINE_STATIC_KEY_FALSE(flow_dissector_pppoe_key);
  EXPORT_SYMBOL(flow_dissector_pppoe_key);
- DEFINE_STATIC_KEY_FALSE(flow_dissector_mpls_key);
- EXPORT_SYMBOL(flow_dissector_mpls_key);
-+DEFINE_STATIC_KEY_FALSE(flow_dissector_ipip_key);
-+EXPORT_SYMBOL(flow_dissector_ipip_key);
++DEFINE_STATIC_KEY_FALSE(flow_dissector_mpls_key);
++EXPORT_SYMBOL(flow_dissector_mpls_key);
  
  /* IPv4 version/IHL byte of an option-less header: version 4, IHL 5. */
  #define FLOW_DIS_IPV4_VIHL_NOOPT	0x45
-@@ -65,6 +67,12 @@ static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
- 				   void *target_container,
- 				   const void *data,
- 				   int nhoff, int hlen);
-+static bool flow_dissect_fast_ipip_inner(const struct sk_buff *skb,
-+					 struct flow_dissector *flow_dissector,
-+					 void *target_container,
-+					 const void *data,
-+					 __be16 inner_eth_proto,
-+					 int inner_nhoff, int hlen);
- 
- /* One of the two dissectors the fast-path eligibility check admits;
-  * defined here so flow_dissect_fast() below can reference it (its keys
-@@ -1114,8 +1122,25 @@ static bool flow_dissect_fast_ipv4(const struct sk_buff *skb,
- 		return false;
- 
- 	if (unlikely(iph->protocol != IPPROTO_TCP &&
--		     iph->protocol != IPPROTO_UDP))
-+		     iph->protocol != IPPROTO_UDP)) {
-+		/* IPIP / IPv6-in-IPv4 outer: defer to the inner fast-path and
-+		 * stamp ENCAP. Outer addrs are not written -- the inner pass
-+		 * overwrites them, as in the slow path.
-+		 */
-+		if (static_branch_unlikely(&flow_dissector_ipip_key)) {
-+			if (iph->protocol == IPPROTO_IPIP)
-+				return flow_dissect_fast_ipip_inner(skb,
-+						flow_dissector, target_container,
-+						data, htons(ETH_P_IP),
-+						nhoff + (int)sizeof(*iph), hlen);
-+			if (iph->protocol == IPPROTO_IPV6)
-+				return flow_dissect_fast_ipip_inner(skb,
-+						flow_dissector, target_container,
-+						data, htons(ETH_P_IPV6),
-+						nhoff + (int)sizeof(*iph), hlen);
-+		}
- 		return false;
-+	}
- 
- 	thoff = nhoff + (int)sizeof(*iph);
- 
-@@ -1203,8 +1228,49 @@ static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
- 		return false;
- 
- 	if (unlikely(iph->nexthdr != IPPROTO_TCP &&
--		     iph->nexthdr != IPPROTO_UDP))
--		return false;
-+		     iph->nexthdr != IPPROTO_UDP)) {
-+		/* IPIP / IPV6-in-IPv6 tunnel outer: same pattern as the
-+		 * IPv4 helper. The nexthdr_IPIP / nexthdr_IPV6 cases
-+		 * defer to the inner IP fast-path and stamp ENCAP.
-+		 */
-+		bool ipip = static_branch_unlikely(&flow_dissector_ipip_key) &&
-+			    (iph->nexthdr == IPPROTO_IPIP ||
-+			     iph->nexthdr == IPPROTO_IPV6);
-+
-+		if (!ipip)
-+			return false;
-+
-+		/* Mirror the slow path's outer-IPv6 writes before the
-+		 * descent. The slow path fills v6addrs for the outer
-+		 * header and the inner pass then overwrites only what
-+		 * it uses — an inner IPv4 leaves the tail of the addrs
-+		 * union holding outer-v6 bytes. Byte-identical means
-+		 * reproducing exactly that, residue included. (The
-+		 * outer flow label is always zero here — a non-zero
-+		 * label deferred above — so there is no label residue.)
-+		 */
-+		if (dissector_uses_key(flow_dissector,
-+				       FLOW_DISSECTOR_KEY_IPV6_ADDRS)) {
-+			key_addrs = skb_flow_dissector_target(flow_dissector,
-+							      FLOW_DISSECTOR_KEY_IPV6_ADDRS,
-+							      target_container);
-+			memcpy(&key_addrs->v6addrs.src, &iph->saddr,
-+			       sizeof(key_addrs->v6addrs.src));
-+			memcpy(&key_addrs->v6addrs.dst, &iph->daddr,
-+			       sizeof(key_addrs->v6addrs.dst));
-+			key_control = skb_flow_dissector_target(flow_dissector,
-+								FLOW_DISSECTOR_KEY_CONTROL,
-+								target_container);
-+			key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
-+		}
-+
-+		return flow_dissect_fast_ipip_inner(skb,
-+				flow_dissector, target_container,
-+				data,
-+				iph->nexthdr == IPPROTO_IPIP ?
-+				htons(ETH_P_IP) : htons(ETH_P_IPV6),
-+				nhoff + (int)sizeof(*iph), hlen);
-+	}
- 
- 	thoff = nhoff + (int)sizeof(*iph);
- 
-@@ -1465,6 +1531,44 @@ static bool flow_dissect_fast_mpls(const struct sk_buff *skb,
- 	return true;
+@@ -1396,6 +1398,73 @@ static bool flow_dissect_fast_pppoe(const struct sk_buff *skb,
+ 				      nhoff, hlen);
  }
  
-+/* IPIP / 4in6 / 6in4 inner descent: recurse into the inner IP
-+ * fast-path, then stamp FLOW_DIS_ENCAPSULATION -- the inner helper
-+ * zeros key_control->flags, so the ENCAP write must come after.
++/* Single MPLS label (BoS=1): write FLOW_DISSECTOR_KEY_MPLS lse[0]
++ * when requested and stop -- the slow path returns OUT_GOOD on BoS
++ * without descending into the inner packet, so the fast path must
++ * not tail-call either. Multi-label stacks defer.
 + */
-+static bool flow_dissect_fast_ipip_inner(const struct sk_buff *skb,
-+					 struct flow_dissector *flow_dissector,
-+					 void *target_container,
-+					 const void *data,
-+					 __be16 inner_eth_proto,
-+					 int inner_nhoff, int hlen)
++static bool flow_dissect_fast_mpls(const struct sk_buff *skb,
++				   struct flow_dissector *flow_dissector,
++				   void *target_container,
++				   const void *data,
++				   __be16 proto, int nhoff, int hlen)
 +{
 +	struct flow_dissector_key_control *key_control;
-+	bool ok;
++	struct flow_dissector_key_basic *key_basic;
++	struct flow_dissector_key_mpls *key_mpls;
++	struct flow_dissector_mpls_lse *lse;
++	const struct mpls_label *hdr;
++	u32 entry, label, bos;
 +
-+	if (inner_eth_proto == htons(ETH_P_IP))
-+		ok = flow_dissect_fast_ipv4(skb, flow_dissector,
-+					    target_container, data,
-+					    inner_nhoff, hlen);
-+	else if (inner_eth_proto == htons(ETH_P_IPV6))
-+		ok = flow_dissect_fast_ipv6(skb, flow_dissector,
-+					    target_container, data,
-+					    inner_nhoff, hlen);
-+	else
++	if (unlikely(hlen - nhoff < (int)sizeof(*hdr)))
++		return false;
++	hdr = (const struct mpls_label *)((const u8 *)data + nhoff);
++	entry = ntohl(hdr->entry);
++	bos = (entry & MPLS_LS_S_MASK) >> MPLS_LS_S_SHIFT;
++
++	/* Multi-label stack: defer. */
++	if (!bos)
 +		return false;
 +
-+	if (!ok)
-+		return false;
++	/* Neither MPLS key requested: the slow path returns OUT_GOOD without
++	 * writing the key; skipping the write block matches it.
++	 */
++	label = (entry & MPLS_LS_LABEL_MASK) >> MPLS_LS_LABEL_SHIFT;
 +
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_CONTROL)) {
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_MPLS)) {
++		key_mpls = skb_flow_dissector_target(flow_dissector,
++						     FLOW_DISSECTOR_KEY_MPLS,
++						     target_container);
++		lse = &key_mpls->ls[0];
++		lse->mpls_ttl = (entry & MPLS_LS_TTL_MASK) >> MPLS_LS_TTL_SHIFT;
++		lse->mpls_bos = bos;
++		lse->mpls_tc = (entry & MPLS_LS_TC_MASK) >> MPLS_LS_TC_SHIFT;
++		lse->mpls_label = label;
++		dissector_set_mpls_lse(key_mpls, 0);
++	}
++
++	/* Mirror the slow path's out_good terminal: nhoff advances past the
++	 * LSE, then thoff/basic are written from the final proto/ip_proto.
++	 */
++	nhoff += (int)sizeof(*hdr);
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_CONTROL)) {
 +		key_control = skb_flow_dissector_target(flow_dissector,
 +							FLOW_DISSECTOR_KEY_CONTROL,
 +							target_container);
-+		key_control->flags |= FLOW_DIS_ENCAPSULATION;
++		key_control->thoff = min_t(u16, nhoff,
++					   skb ? skb->len : hlen);
 +	}
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_BASIC)) {
++		key_basic = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_BASIC,
++						      target_container);
++		key_basic->n_proto = proto;
++		key_basic->ip_proto = 0;
++	}
++
 +	return true;
 +}
 +
  /* Top-level dispatcher: eligibility check (only the two standard
   * dissectors and flag subset) + per-proto switch with per-shape
   * static_branch gating. Each case's branch is a forward not-taken JMP
-@@ -2681,6 +2785,13 @@ static struct ctl_table flow_dissector_sysctl_table[] = {
+@@ -1449,6 +1518,13 @@ static bool flow_dissect_fast(const struct sk_buff *skb,
+ 		return flow_dissect_fast_pppoe(skb, flow_dissector,
+ 					       target_container, data,
+ 					       nhoff, hlen);
++	case htons(ETH_P_MPLS_UC):
++	case htons(ETH_P_MPLS_MC):
++		if (!static_branch_unlikely(&flow_dissector_mpls_key))
++			return false;
++		return flow_dissect_fast_mpls(skb, flow_dissector,
++					      target_container, data,
++					      proto, nhoff, hlen);
+ 	default:
+ 		return false;
+ 	}
+@@ -2598,6 +2674,13 @@ static struct ctl_table flow_dissector_sysctl_table[] = {
  		.mode		= 0644,
  		.proc_handler	= proc_do_static_key,
  	},
 +	{
-+		.procname	= "ipip",
-+		.data		= &flow_dissector_ipip_key.key,
-+		.maxlen		= sizeof(flow_dissector_ipip_key),
++		.procname	= "mpls",
++		.data		= &flow_dissector_mpls_key.key,
++		.maxlen		= sizeof(flow_dissector_mpls_key),
 +		.mode		= 0644,
 +		.proc_handler	= proc_do_static_key,
 +	},
