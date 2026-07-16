@@ -1,651 +1,91 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1F13033FE
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9389D22301;
+	Thu, 16 Jul 2026 01:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784162659; cv=none; b=iG0QsQECFzH4ceQYZAZD0xManu82A2eyYtOT8fpfrSNz3psyLgHie2/NQJVyKstGk63PpUVSu7R0T6Och7NarYfWp/YbZz3nfq9Ofq7NiturN47B7F1THNliJFi7QTjZWiqlQxjK9Yk3xtZi+0Q5dB6vpt2pBYrkgKeMkW9j5iA=
+	t=1784164371; cv=none; b=pArhMkuGXXrM7t7dqMEVZT6gR2VeGE6fIjMoK3a0C/akijzi8gq90Xe40/iVh+ZWsTJgEcQBh5Dx52kVUVBZ2R21lXo1HkS8qAgHgh+66diy4fUZy+4W521DFt+FgYBQ7YIS1cojSiVv9zARRRQBXkPj/cExMKn+uAgA1g5rF9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784162659; c=relaxed/simple;
-	bh=p0T+/y9J8K+qskpcjQYFTK7dBe6f1Aa0M6ApkUJiPQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGOctEwaCgOufzqzTXbsCBsqGIsCscRWMr9ocPPBLsV2IKApWgkGZQdIvPAz/6IwF/U/TaeKXUkS+2IGKukMcJD6ZDmq1gfRToeG3K36CQvincfLllxoBrJh0bY4V6bTrYgcWojpd9X7AfTYzbMeeFMvfwonm7TK47t2kYY3oDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9qR5yxj; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784164371; c=relaxed/simple;
+	bh=DfEGZLbpNr1Td3qpQBAX25KuI+JZVPWvBAyQ+7BrePo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MD0onP2VBpJ/yqL9W5bYDRxN2kLMPD5BxHw1xjN8CVp/qLf2mml/7n37x/vKr2lVMwysMTJg1aMAssqD1iVbRX2ISLwNM7I7rLFzNxd4Y2DgtQ8UfRuNdKMtxhB9D51vKXxDiiVDhRuHjBP2PXcDl8kxwqGaYNUdKsu94BScowk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hy4mgGuP; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9qR5yxj"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c95d0a54ea5so4456848a12.0
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784162651; x=1784767451; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zGT9oLZKq+mTL6K4GKPIHr/ZJHA0XEBzbs9yPmGkhFY=;
-        b=l9qR5yxjxoiTVDdxjXnpVbDQ4/X5FlIE1mOoI8w3HXHwspBnjbkwxKm75zeYMvFE4C
-         sCK/LM92efuMqBo8tloqIoKuQzkabsD3U1Y0ceDs/ov0hZepg4wvj/nBHk8yEFdZG89r
-         ZVjOiOcZ1Rjjr2CEC7JPwUJ87yKIvQ6u2hXpehZkehpK3q3qlK/GpsmWT9YmfJFgnLgC
-         qY3FVdyPbcZ4Ea5MF/r01UFngf2U2ggxOBZClULpk6L95SKaMsaMhf22RUpcwdxmSNk6
-         XQVlYfQYfqL1Wgph210BlQo+jpJ8SO67QJJb+giHNtULRyO5stPkliIcp6tr88AsEWhd
-         U3Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784162651; x=1784767451;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zGT9oLZKq+mTL6K4GKPIHr/ZJHA0XEBzbs9yPmGkhFY=;
-        b=O8TrcoQoGJwMgjOikr9klgVli+8bsLNC/9rzlUfGIoyfXS2QU2zUBa0KagY+rrHfEP
-         UU0JDoO1aRbFjafxXsrNPazedoC3BuFyLQVXS1wdyEtNKMVx982liEyibMfffuX5CHtP
-         TOGhcTjIHBUhXM0XY29lh/soAWYrDpG/37ilV5YZU5r8PskcbqHMdNyxZetXEwxjxbhg
-         XfXg2ROIpXmfKJihsNslby2Z6WJMtRuYtkVc7vizVOKO1EZashZS0+wymHn+8TVayy0h
-         1g8mrm4cH5VbJzvx2KHiI/0bSXKm4iua6EBXii2TT1NLlS1IYTd9vrFuVWFz46PBKbsj
-         AzLA==
-X-Gm-Message-State: AOJu0Yz6hEaAT0bWphL8WNovFxDnD1V0isI/iVmp1YE7fO3hfyWBgRsp
-	Itw+Uz3UFpZVIl0knROUNbydzclo5C3xBgD/F7cnnF8FQnVmll7sdDeGm/Gn6g==
-X-Gm-Gg: AfdE7cmULOfMFb48IAnEZ4+djUfd+XCZY3Onln+Dz0LMDd84Wqd+vRxxKwrEDGYY8pM
-	N62TwAVxQiS/7AUbNCdr+fMd6jUjk/N6lC0l7Hhj+rpw+Nal8ppagR7tSrXzrisIX3bDYM5IuV6
-	WYLVS+WgvoXIU3oANUsHffklf3xOJXKEyExyxVRaxULSIAgHa4w5GHYxkAOjXy+IsZtbNtgOYbn
-	qt/f0vHsrL86rOf8QuRTTRavfBmH4YIZxHBiyLTX0HCzqnwLY1n6XIYd50G+nQhXluNExJqX+NF
-	ryKTb+y3EAGEeRfEnRYC7ZZz7IRUrg6+b3XtwSqUlOox+0iKxU8yUDN4V+MH+UhK8xIsf2Pvs56
-	d438QjBRNw+mXUHR3Mt9XzcbxJkLlnIkOnTEeZc/yGgwyRC7/f/KEMZBklLCqw6mLTxKli0eXl2
-	NwJkhrkGgYwwsVZQuaoyJALud9vzw0GzoOGD02vkAzVoqCSj3Y7Bik2jezX1sLLT51Gom1jiBPZ
-	eWWdqKEvA==
-X-Received: by 2002:a05:6a21:320b:b0:3bf:e761:6285 with SMTP id adf61e73a8af0-3c34d5d2da4mr11806835637.29.1784162650571;
-        Wed, 15 Jul 2026 17:44:10 -0700 (PDT)
-Received: from l.localdomain ([76.166.220.66])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 17:44:10 -0700 (PDT)
-From: Dave Seddon <dave.seddon.ca@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Tom Herbert <tom@herbertland.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Dave Seddon <dave.seddon.ca@gmail.com>
-Subject: [PATCH net-next v1 08/11] net: flow_dissector: per-shape counters + /proc/net/flow_dissector_stats
-Date: Wed, 15 Jul 2026 17:43:54 -0700
-Message-ID: <20260716004357.3652679-9-dave.seddon.ca@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
-References: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hy4mgGuP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Jk
+	mJJ/Dw/np/7CC7VDLvi1PmKMKsv3Wcz6L1/cd1zu8=; b=hy4mgGuPsW16HAfs4h
+	lwt3koyx4CO6LBx1uuL9pHaJhaIrI1FBWaJPYo1pj4HA+3INgYzb0EEJ6gjZyMMz
+	lgo+76WdHtrPvulozOz77kBwxvVOIEVElpRuBMURB5iqw3I7v1Ven7u1GpuWdNaS
+	/n2MBDVLP8u3sJholO66iJr7g=
+Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgCHLyvdL1hqtD_uHQ--.48655S2;
+	Thu, 16 Jul 2026 09:11:58 +0800 (CST)
+From: Weimin Xiong <xiongwm2026@163.com>
+To: virtualization@lists.linux.dev
+Cc: netdev@vger.kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] virtio_net: fix spelling of aggressively in comments
+Date: Thu, 16 Jul 2026 09:12:01 +0800
+Message-ID: <20260716011201.86688-1-xiongwm2026@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgCHLyvdL1hqtD_uHQ--.48655S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFy3tFyDtrWUCF4UKFyxuFg_yoWkJFb_Jr
+	yjqFn0gr45Ww1Ykw4UCa13ArZFyan0qay8WaySvrZxW3yDAry7GrZ2qr9rC3Zruw40yF13
+	GwsFyF1UJ343WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUeF_MDUUUUU==
+X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbCzh6zQ2pYL94v-gAA3y
 
-The opt-in fast-path (this series) gates each byte-identical shape behind
-its own net.flow_dissector.* sysctl. Operators need to see how traffic is
-actually composed to decide which gates to enable — and that same signal
-lets a policy layer (a userspace agent, or the auto controller
-proposed in a separate RFC thread) enable/disable the gates
-automatically instead of hand-tuning knobs.
+From: xiongweimin <xiongweimin@kylinos.cn>
 
-Add per-cpu counters, keyed by a small enum flow_dissector_shape covering
-the byte-identical shapes (eth_ip, vlan, qinq, pppoe, mpls, ipip, gre):
+Two receive-path comments misspell "aggressively" as "agressively".
 
-  occurrences[]  a shape handled by the SLOW path. Measured while its
-                 gate is off, this approximates the eligible-fraction
-                 signal: how much traffic that shape's fast body would
-                 have handled. The slow counts sit at protocol
-                 recognition points, which are a superset of fast-path
-                 eligibility (a VLAN+ARP frame counts as vlan; an
-                 options-bearing IPv4 counts as eth_ip), so eligible%
-                 is an upper bound -- the exact hit rate is
-                 fast_hits / (occurrences + fast_hits) once a gate is
-                 on. Deliberately so: matching the fast path's full
-                 eligibility conditions in the slow path would mean
-                 re-implementing the fast path's checks there.
-  fast_hits[]    the fast body actually ran for that shape (gate on).
-  dissects       total dissects — the denominator.
-
-Because the fast path returns before the slow-path classification, exactly
-one of occurrences/fast_hits is incremented per shaped packet depending on
-gate state, so (occurrences + fast_hits) / dissects is a gate-invariant
-eligible fraction. Placement mirrors the two paths precisely: the slow
-counts sit at each protocol's dissection point -- for eth_ip that is the
-out: exit label, taken only on a top-level, non-encapsulated, TCP/UDP
-terminal, so a packet counted as VLAN/IPIP/GRE is never also counted as
-eth_ip; the fast counts sit at each shape's success terminal, so a
-fall-through to the slow path is never double-counted.
-
-Expose the summed counters read-only at /proc/net/flow_dissector_stats
-(documented in Documentation/admin-guide/sysctl/net.rst),
-one line per shape with occurrences, fast_hits, computed eligible%, and
-the current gate state. Counters and the file are global (init_net),
-matching the global gates; the file is visible in the init netns only,
-so containers do not see it. Per-netns is a noted follow-up.
-
-Dissects fully handled by an attached netns BPF flow dissector program
-are deliberately not counted: the dissects increment sits after the BPF
-hook's early return, so the file counts only dissects that reach the
-in-kernel dissector. That keeps fast_hits/dissects an undiluted
-hit-rate for the code these gates control — the signal an operator (or
-the auto controller proposed in a separate RFC thread) acts on.
-
-The counters are unconditional by design, not oversight: their whole
-purpose is observing traffic composition while the gates are OFF, so a
-"stats gate" would blind exactly the signal an operator (or the
-auto-enable controller proposed separately) needs before enabling
-anything.
-
-Cost: one unconditional this_cpu_inc per dissect (the denominator)
-plus one this_cpu_inc at the matched shape's classification point,
-summed only on read. Measured on a CPU-bound pktgen soak this is
-+0.74% dissector time (+0.44 sigma -- within run-to-run noise); see
-the cover letter. The gates themselves are unaffected: an off gate
-stays a not-taken static branch.
-
-Assisted-by: Claude:claude-fable-5 sparse smatch
-Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
+Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
 ---
- Documentation/admin-guide/sysctl/net.rst |  39 ++++
- include/net/flow_dissector.h             |  17 ++
- net/core/flow_dissector.c                | 236 ++++++++++++++++++++---
- 3 files changed, 270 insertions(+), 22 deletions(-)
+ drivers/net/virtio_net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index dbc819740db0..3b55b2528ba2 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -597,6 +597,45 @@ additional 4-byte key field read and a write to
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 3e2a5876c..f3c7b28ce 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3190,7 +3190,7 @@ static int virtnet_open(struct net_device *dev)
  
- Default: 0
- 
-+The ``/proc/net/flow_dissector_stats`` observability file
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Read-only. Reports, per byte-identical shape, the number of packets the
-+slow path handled (``occurrences``), the number the fast body handled
-+(``fast_hits``), the resulting eligible fraction, and the current gate
-+state, plus a total dissect count. Because the fast path returns before
-+the slow-path classification, exactly one of the two counters is
-+incremented per shaped packet depending on gate state, so
-+``(occurrences + fast_hits) / dissects`` is a gate-invariant measure of
-+how much traffic each shape's fast body would handle -- the signal an
-+operator uses to decide whether a gate is worth enabling. The slow-path
-+counts sit at protocol recognition points, a superset of fast-path
-+eligibility (a VLAN+ARP frame counts as vlan), so the eligible fraction
-+is an upper bound; the exact hit rate once a gate is on is
-+``fast_hits / (occurrences + fast_hits)``. The counters
-+are per-cpu and summed on read; the per-packet cost is one increment on
-+the already-hot classification path.
-+
-+An example snapshot, from a host that mostly sees plain Eth + IP traffic
-+with some VLAN, before any gate has been enabled::
-+
-+  # cat /proc/net/flow_dissector_stats
-+  shape         occurrences        fast_hits  eligible%  gate
-+  eth_ip            1866909                0      75.71   off
-+  vlan               598847                0      24.28   off
-+  qinq                    0                0       0.00   off
-+  pppoe                   0                0       0.00   off
-+  mpls                    0                0       0.00   off
-+  ipip                    0                0       0.00   off
-+  gre                     0                0       0.00   off
-+  dissects: 2465765
-+
-+Read top-down: 76% of dissects are plain Eth + IP and 24% are
-+VLAN-tagged, so ``eth_ip`` and ``vlan`` are the shapes worth enabling on
-+this host; the other shapes are absent. Every gate is still off, so all
-+the traffic sits under ``occurrences``; enabling a gate moves that
-+shape's packets to ``fast_hits``.
-+
- 3. /proc/sys/net/unix - Parameters for Unix domain sockets
- ----------------------------------------------------------
- 
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index ba7226a42d19..53b16f7306c7 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -436,6 +436,23 @@ extern struct static_key_false flow_dissector_mpls_key;
- extern struct static_key_false flow_dissector_ipip_key;
- extern struct static_key_false flow_dissector_gre_key;
- 
-+/* Per-shape counters for /proc/net/flow_dissector_stats.
-+ * occurrences[]: shape seen by the slow path (the eligible-fraction
-+ * signal while its gate is off); fast_hits[]: fast path ran.
-+ * Byte-identical shapes only; the behaviour-changing descents are
-+ * never counted or auto-managed.
-+ */
-+enum flow_dissector_shape {
-+	FLOW_DISSECTOR_SHAPE_ETH_IP,
-+	FLOW_DISSECTOR_SHAPE_VLAN,
-+	FLOW_DISSECTOR_SHAPE_QINQ,
-+	FLOW_DISSECTOR_SHAPE_PPPOE,
-+	FLOW_DISSECTOR_SHAPE_MPLS,
-+	FLOW_DISSECTOR_SHAPE_IPIP,
-+	FLOW_DISSECTOR_SHAPE_GRE,
-+	FLOW_DISSECTOR_SHAPE__MAX,
-+};
-+
- /* struct flow_keys_digest:
-  *
-  * This structure is used to hold a digest of the full flow keys. This is a
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index b79c80612dee..2a4b9b2af834 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -36,6 +36,10 @@
- #include <net/netfilter/nf_conntrack_labels.h>
- #endif
- #include <linux/bpf-netns.h>
-+#include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
-+#include <linux/string_choices.h>
-+#include <linux/math64.h>
- 
- /* Per-shape fast-path gates, one static_branch per shape so operators
-  * enable only what their deployment carries. All default off.
-@@ -55,6 +59,35 @@ EXPORT_SYMBOL(flow_dissector_ipip_key);
- DEFINE_STATIC_KEY_FALSE(flow_dissector_gre_key);
- EXPORT_SYMBOL(flow_dissector_gre_key);
- 
-+/* Per-cpu, summed on read via /proc/net/flow_dissector_stats.
-+ * occurrences[]: shape handled by the slow path (with the gate off,
-+ * the shape's eligible-fraction signal); fast_hits[]: fast body ran;
-+ * dissects: denominator.
-+ */
-+struct flow_dissector_stats {
-+	u64 occurrences[FLOW_DISSECTOR_SHAPE__MAX];
-+	u64 fast_hits[FLOW_DISSECTOR_SHAPE__MAX];
-+	u64 dissects;
-+};
-+
-+static DEFINE_PER_CPU(struct flow_dissector_stats, flow_dissector_pcpu_stats);
-+
-+static inline void flow_dissector_count_slow(enum flow_dissector_shape shape)
-+{
-+	this_cpu_inc(flow_dissector_pcpu_stats.occurrences[shape]);
-+}
-+
-+static inline void flow_dissector_count_fast(enum flow_dissector_shape shape)
-+{
-+	this_cpu_inc(flow_dissector_pcpu_stats.fast_hits[shape]);
-+}
-+
-+/* Counting map: eth_ip counts in the dispatcher (only when the leaf
-+ * did not set ENCAP), vlan/qinq/pppoe/mpls in their helpers, ipip/gre
-+ * in the inner-descent helpers. The slow path counts where it
-+ * recognises each shape, gate on or off.
-+ */
-+
- /* IPv4 version/IHL byte of an option-less header: version 4, IHL 5. */
- #define FLOW_DIS_IPV4_VIHL_NOOPT	0x45
- 
-@@ -1354,6 +1387,7 @@ static bool flow_dissect_fast_vlan(const struct sk_buff *skb,
- 	__be16 saved_tpid;
- 	u16 tci_prio;
- 	u16 tci_id;
-+	bool ok;
- 
- 	if (vlan_depth >= 1 &&
- 	    !static_branch_unlikely(&flow_dissector_qinq_key))
-@@ -1403,22 +1437,35 @@ static bool flow_dissect_fast_vlan(const struct sk_buff *skb,
- 
- 	switch (inner_proto) {
- 	case htons(ETH_P_IP):
--		return flow_dissect_fast_ipv4(skb, flow_dissector,
--					      target_container, data,
--					      nhoff, hlen);
-+		ok = flow_dissect_fast_ipv4(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen);
-+		break;
- 	case htons(ETH_P_IPV6):
--		return flow_dissect_fast_ipv6(skb, flow_dissector,
--					      target_container, data,
--					      nhoff, hlen);
-+		ok = flow_dissect_fast_ipv6(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen);
-+		break;
- 	case htons(ETH_P_8021Q):
- 	case htons(ETH_P_8021AD):
--		return flow_dissect_fast_vlan(skb, flow_dissector,
--					      target_container, data,
--					      inner_proto, nhoff, hlen,
--					      vlan_depth + 1);
-+		ok = flow_dissect_fast_vlan(skb, flow_dissector,
-+					    target_container, data,
-+					    inner_proto, nhoff, hlen,
-+					    vlan_depth + 1);
-+		break;
- 	default:
- 		return false;
- 	}
-+
-+	/* Count only on full success -- a miss defers and the slow path
-+	 * counts the occurrence. Depth 0 counts vlan, depth >= 1 qinq; a
-+	 * double-tagged hit counts both, as the slow path does.
-+	 */
-+	if (ok)
-+		flow_dissector_count_fast(vlan_depth == 0 ?
-+					  FLOW_DISSECTOR_SHAPE_VLAN :
-+					  FLOW_DISSECTOR_SHAPE_QINQ);
-+	return ok;
- }
- 
- /* PPPoE session (RFC 2516) + 2-byte PPP protocol: write
-@@ -1439,6 +1486,7 @@ static bool flow_dissect_fast_pppoe(const struct sk_buff *skb,
- 	} *hdr;
- 	__be16 inner_eth_proto;
- 	u16 ppp_proto;
-+	bool ok;
- 
- 	if (unlikely(hlen - nhoff < (int)sizeof(*hdr)))
- 		return false;
-@@ -1474,12 +1522,17 @@ static bool flow_dissect_fast_pppoe(const struct sk_buff *skb,
- 	nhoff += PPPOE_SES_HLEN;
- 
- 	if (inner_eth_proto == htons(ETH_P_IP))
--		return flow_dissect_fast_ipv4(skb, flow_dissector,
--					      target_container, data,
--					      nhoff, hlen);
--	return flow_dissect_fast_ipv6(skb, flow_dissector,
--				      target_container, data,
--				      nhoff, hlen);
-+		ok = flow_dissect_fast_ipv4(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen);
-+	else
-+		ok = flow_dissect_fast_ipv6(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen);
-+
-+	if (ok)
-+		flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_PPPOE);
-+	return ok;
- }
- 
- /* Single MPLS label (BoS=1): write FLOW_DISSECTOR_KEY_MPLS lse[0]
-@@ -1546,6 +1599,7 @@ static bool flow_dissect_fast_mpls(const struct sk_buff *skb,
- 		key_basic->ip_proto = 0;
- 	}
- 
-+	flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_MPLS);
- 	return true;
- }
- 
-@@ -1584,6 +1638,7 @@ static bool flow_dissect_fast_ipip_inner(const struct sk_buff *skb,
- 							target_container);
- 		key_control->flags |= FLOW_DIS_ENCAPSULATION;
- 	}
-+	flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_IPIP);
- 	return true;
- }
- 
-@@ -1648,9 +1703,27 @@ static bool flow_dissect_fast_gre_inner(const struct sk_buff *skb,
- 							target_container);
- 		key_control->flags |= FLOW_DIS_ENCAPSULATION;
- 	}
-+	flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_GRE);
- 	return true;
- }
- 
-+/* Did a fast-path leaf stamp FLOW_DIS_ENCAPSULATION? The dispatcher
-+ * counts eth_ip only for plain top-level IP; descents count under
-+ * their own shape (UDP-tunnel descents not at all).
-+ */
-+static bool flow_dissect_fast_is_encap(struct flow_dissector *flow_dissector,
-+				       void *target_container)
-+{
-+	struct flow_dissector_key_control *key_control;
-+
-+	if (!dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_CONTROL))
-+		return false;
-+	key_control = skb_flow_dissector_target(flow_dissector,
-+						FLOW_DISSECTOR_KEY_CONTROL,
-+						target_container);
-+	return key_control->flags & FLOW_DIS_ENCAPSULATION;
-+}
-+
- /* Top-level dispatcher: eligibility check (only the two standard
-  * dissectors and flag subset) + per-proto switch with per-shape
-  * static_branch gating. Each case's branch is a forward not-taken JMP
-@@ -1689,15 +1762,24 @@ static bool flow_dissect_fast(const struct sk_buff *skb,
- 	case htons(ETH_P_IP):
- 		if (!static_branch_unlikely(&flow_dissector_eth_ip_key))
- 			return false;
--		return flow_dissect_fast_ipv4(skb, flow_dissector,
--					      target_container, data,
--					      nhoff, hlen);
-+		if (!flow_dissect_fast_ipv4(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen))
-+			return false;
-+		/* Plain top-level eth+IP only; descents count under their own shape. */
-+		if (!flow_dissect_fast_is_encap(flow_dissector, target_container))
-+			flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_ETH_IP);
-+		return true;
- 	case htons(ETH_P_IPV6):
- 		if (!static_branch_unlikely(&flow_dissector_eth_ip_key))
- 			return false;
--		return flow_dissect_fast_ipv6(skb, flow_dissector,
--					      target_container, data,
--					      nhoff, hlen);
-+		if (!flow_dissect_fast_ipv6(skb, flow_dissector,
-+					    target_container, data,
-+					    nhoff, hlen))
-+			return false;
-+		if (!flow_dissect_fast_is_encap(flow_dissector, target_container))
-+			flow_dissector_count_fast(FLOW_DISSECTOR_SHAPE_ETH_IP);
-+		return true;
- 	case htons(ETH_P_PPP_SES):
- 		if (!static_branch_unlikely(&flow_dissector_pppoe_key))
- 			return false;
-@@ -1751,6 +1833,8 @@ bool __skb_flow_dissect(const struct net *net,
- 	bool mpls_el = false;
- 	int mpls_lse = 0;
- 	int num_hdrs = 0;
-+	int nhoff_init = 0;
-+	bool eth_ip_top = false;
- 	u8 ip_proto = 0;
- 	bool ret;
- 
-@@ -1859,6 +1943,8 @@ bool __skb_flow_dissect(const struct net *net,
- 	/* Opt-in fast-path; flow_dissect_fast() does the eligibility check
- 	 * and per-shape gating.
- 	 */
-+	this_cpu_inc(flow_dissector_pcpu_stats.dissects);
-+
- 	if (flow_dissect_fast(skb, flow_dissector, target_container,
- 			      data, proto, nhoff, hlen, flags))
- 		return true;
-@@ -1892,6 +1978,8 @@ bool __skb_flow_dissect(const struct net *net,
- 		key_num_of_vlans->num_of_vlans = 0;
- 	}
- 
-+	nhoff_init = nhoff;
-+
- proto_again:
- 	fdret = FLOW_DISSECT_RET_CONTINUE;
- 
-@@ -1906,6 +1994,10 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
- 
-+		/* Top-level eth+IPv4: eth_ip shape candidate (confirmed at out:). */
-+		if (nhoff == nhoff_init)
-+			eth_ip_top = true;
-+
- 		nhoff += iph->ihl * 4;
- 
- 		ip_proto = iph->protocol;
-@@ -1954,6 +2046,9 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
- 
-+		if (nhoff == nhoff_init)
-+			eth_ip_top = true;
-+
- 		ip_proto = iph->nexthdr;
- 		nhoff += sizeof(struct ipv6hdr);
- 
-@@ -2027,8 +2122,12 @@ bool __skb_flow_dissect(const struct net *net,
- 
- 		if (dissector_vlan == FLOW_DISSECTOR_KEY_MAX) {
- 			dissector_vlan = FLOW_DISSECTOR_KEY_VLAN;
-+			/* First (outer) tag: the vlan fast-path shape. */
-+			flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_VLAN);
- 		} else if (dissector_vlan == FLOW_DISSECTOR_KEY_VLAN) {
- 			dissector_vlan = FLOW_DISSECTOR_KEY_CVLAN;
-+			/* Second tag: the qinq (double-tag) fast-path shape. */
-+			flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_QINQ);
- 		} else {
- 			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
- 			break;
-@@ -2074,6 +2173,8 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
- 
-+		flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_PPPOE);
-+
- 		/* PFC (compressed 1-byte protocol) frames are not processed.
- 		 * A compressed protocol field has the least significant bit of
- 		 * the most significant octet set, which will fail the following
-@@ -2138,6 +2239,7 @@ bool __skb_flow_dissect(const struct net *net,
- 
- 	case htons(ETH_P_MPLS_UC):
- 	case htons(ETH_P_MPLS_MC):
-+		flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_MPLS);
- 		fdret = __skb_flow_dissect_mpls(skb, flow_dissector,
- 						target_container, data,
- 						nhoff, hlen, mpls_lse,
-@@ -2235,6 +2337,7 @@ bool __skb_flow_dissect(const struct net *net,
- 			fdret = FLOW_DISSECT_RET_OUT_GOOD;
- 			break;
- 		}
-+		flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_GRE);
- 
- 		fdret = __skb_flow_dissect_gre(skb, key_control, flow_dissector,
- 					       target_container, data,
-@@ -2297,6 +2400,10 @@ bool __skb_flow_dissect(const struct net *net,
- 			fdret = FLOW_DISSECT_RET_OUT_GOOD;
- 			break;
- 		}
-+		/* Counted below the STOP check: a stop-flagged dissect is
-+		 * one the fast path could never have handled.
-+		 */
-+		flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_IPIP);
- 
- 		proto = htons(ETH_P_IP);
- 
-@@ -2388,6 +2495,15 @@ bool __skb_flow_dissect(const struct net *net,
- 	key_basic->n_proto = proto;
- 	key_basic->ip_proto = ip_proto;
- 
-+	/* eth_ip shape: top-level eth+IP, TCP/UDP, no encap -- counted here
-+	 * because the fast path returns earlier; with the gate off this is
-+	 * the shape's eligible-fraction signal.
-+	 */
-+	if (ret && eth_ip_top &&
-+	    !(key_control->flags & FLOW_DIS_ENCAPSULATION) &&
-+	    (ip_proto == IPPROTO_TCP || ip_proto == IPPROTO_UDP))
-+		flow_dissector_count_slow(FLOW_DISSECTOR_SHAPE_ETH_IP);
-+
- 	return ret;
- 
- out_bad:
-@@ -2883,11 +2999,87 @@ static struct ctl_table flow_dissector_sysctl_table[] = {
- 	},
- };
- 
-+static const char * const flow_dissector_shape_names[FLOW_DISSECTOR_SHAPE__MAX] = {
-+	[FLOW_DISSECTOR_SHAPE_ETH_IP] = "eth_ip",
-+	[FLOW_DISSECTOR_SHAPE_VLAN]   = "vlan",
-+	[FLOW_DISSECTOR_SHAPE_QINQ]   = "qinq",
-+	[FLOW_DISSECTOR_SHAPE_PPPOE]  = "pppoe",
-+	[FLOW_DISSECTOR_SHAPE_MPLS]   = "mpls",
-+	[FLOW_DISSECTOR_SHAPE_IPIP]   = "ipip",
-+	[FLOW_DISSECTOR_SHAPE_GRE]    = "gre",
-+};
-+
-+static bool flow_dissector_shape_gate(enum flow_dissector_shape shape)
-+{
-+	switch (shape) {
-+	case FLOW_DISSECTOR_SHAPE_ETH_IP:
-+		return static_key_enabled(&flow_dissector_eth_ip_key);
-+	case FLOW_DISSECTOR_SHAPE_VLAN:
-+		return static_key_enabled(&flow_dissector_vlan_key);
-+	case FLOW_DISSECTOR_SHAPE_QINQ:
-+		return static_key_enabled(&flow_dissector_qinq_key);
-+	case FLOW_DISSECTOR_SHAPE_PPPOE:
-+		return static_key_enabled(&flow_dissector_pppoe_key);
-+	case FLOW_DISSECTOR_SHAPE_MPLS:
-+		return static_key_enabled(&flow_dissector_mpls_key);
-+	case FLOW_DISSECTOR_SHAPE_IPIP:
-+		return static_key_enabled(&flow_dissector_ipip_key);
-+	case FLOW_DISSECTOR_SHAPE_GRE:
-+		return static_key_enabled(&flow_dissector_gre_key);
-+	default:
-+		return false;
-+	}
-+}
-+
-+/* /proc/net/flow_dissector_stats: per-shape occurrences (slow path),
-+ * fast_hits, and eligible% = (occurrences + fast_hits) / dissects --
-+ * the signal a policy layer thresholds against a per-shape
-+ * break-even.
-+ */
-+static int flow_dissector_stats_show(struct seq_file *seq, void *v)
-+{
-+	u64 occ[FLOW_DISSECTOR_SHAPE__MAX] = {};
-+	u64 fast[FLOW_DISSECTOR_SHAPE__MAX] = {};
-+	u64 dissects = 0;
-+	int cpu, i;
-+
-+	for_each_possible_cpu(cpu) {
-+		const struct flow_dissector_stats *s =
-+			per_cpu_ptr(&flow_dissector_pcpu_stats, cpu);
-+
-+		for (i = 0; i < FLOW_DISSECTOR_SHAPE__MAX; i++) {
-+			occ[i]  += READ_ONCE(s->occurrences[i]);
-+			fast[i] += READ_ONCE(s->fast_hits[i]);
-+		}
-+		dissects += READ_ONCE(s->dissects);
-+	}
-+
-+	seq_printf(seq, "%-8s %16s %16s %10s %5s\n",
-+		   "shape", "occurrences", "fast_hits", "eligible%", "gate");
-+	for (i = 0; i < FLOW_DISSECTOR_SHAPE__MAX; i++) {
-+		u64 total = occ[i] + fast[i];
-+		u64 pct_x100 = dissects ? div64_u64(total * 10000, dissects) : 0;
-+
-+		seq_printf(seq, "%-8s %16llu %16llu %7llu.%02llu %5s\n",
-+			   flow_dissector_shape_names[i], occ[i], fast[i],
-+			   pct_x100 / 100, pct_x100 % 100,
-+			   str_on_off(flow_dissector_shape_gate(i)));
-+	}
-+	seq_printf(seq, "dissects: %llu\n", dissects);
-+	return 0;
-+}
-+
- static int __init flow_dissector_sysctl_init(void)
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		if (i < vi->curr_queue_pairs)
+-			/* Pre-fill rq agressively, to make sure we are ready to
++			/* Pre-fill rq aggressively, to make sure we are ready to
+ 			 * get packets immediately.
+ 			 */
+ 			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
+@@ -3419,7 +3419,7 @@ static void virtnet_rx_resume(struct virtnet_info *vi,
+ 			      bool refill)
  {
- 	if (!register_net_sysctl(&init_net, "net/flow_dissector",
- 				 flow_dissector_sysctl_table))
- 		return -ENOMEM;
-+
-+	/* Global (init_net) counters — matches the global gates; per-netns
-+	 * is a noted follow-up. A missing proc file is not fatal.
-+	 */
-+	proc_create_single("flow_dissector_stats", 0444, init_net.proc_net,
-+			   flow_dissector_stats_show);
- 	return 0;
- }
- late_initcall(flow_dissector_sysctl_init);
+ 	if (netif_running(vi->dev)) {
+-		/* Pre-fill rq agressively, to make sure we are ready to get
++		/* Pre-fill rq aggressively, to make sure we are ready to get
+ 		 * packets immediately.
+ 		 */
+ 		if (refill)
 -- 
-2.54.0
+2.43.0
 
