@@ -1,63 +1,63 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3142466A
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A64426429
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208226; cv=none; b=jyG5qlLqmUXRIk5BoZwo35ObwbDFwSthskRb6uINtOYSGQ6Erbyf2oNvLp00BAkSkkUVXWD965m1VrDajNje12hMjkVAPBN7C66pNux/ct4quen4iVcpY35WVThGGr/AYSKeR0Et0MaSaDSLe0/0LDzFUIFD2Jow8kdSt0SQIQw=
+	t=1784208230; cv=none; b=V+AeGIMGQCeTpSeAq8uoYitG+vNKGVS1DU3mCag0oXicqgZDVLe3NtEDKF1Hun5bhS/yQwHDA4xB4S4uc/LsyDMhtfFl8BwqPmcY5z/Ge6elyn4BxKzqle0u6OJX0inAyck5KMRmhG1stBKqIV7sj5+O9CrrEzeqjEfnbyCtKNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208226; c=relaxed/simple;
-	bh=pdMmpZJCv+StAJxQjGBnq4nulDEDCbuKp7xLyLbTHHY=;
+	s=arc-20240116; t=1784208230; c=relaxed/simple;
+	bh=Wqi5KzpmB6zpmbpQROgcTMyYw+gD16pJ028ef+YpomU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZH4/v6XUEQaOSUVNhoehDlgtannTalvlMUeix+3iJlL8ZzYjlMGHUndzQKMmBaQ019C67kxcf5VZrHPwgMcOjWuiw+LBMN7/vOG6xARc95WwKXlK8mnSwVE1bWXj1PtM6xTFGJ3snfeI+VjgK//geXJFjnwH/sM2WnRiI0dLvI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=Xd4sPgdG; arc=none smtp.client-ip=209.85.221.52
+	 MIME-Version; b=kyRJrbrFmzmC34maZBvZd5Dr1H8QO4kG392+x3jZcANSTyjkUDq1YxLiPfuQAIspV+gOocYQ/6uhh6+r5MFbLgqL4dRTNq4peij213qgEvnRxxmx6Uce4/bclzlPcafaelh1hNh/QxrcWbsivYVVQzVH6YaIXkCrOf9bp8oHX90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=po53amPU; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="Xd4sPgdG"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4758bd3731bso494239f8f.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:23:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="po53amPU"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493ae59eca6so17543395e9.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:23:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208223; x=1784813023; darn=vger.kernel.org;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208227; x=1784813027; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NfMuLF2nfHbgRgmO34SL3Jj6SviYlx2uzsjm64OYl7Y=;
-        b=Xd4sPgdGg6OzjN4YUnTbRDwN59GeQ52siqSP5qyS3L40sUwMWUEj6rtmn//dzLtISB
-         jDhOzNMjXJWY0UzUw7c5kj2+G8b0sk9+Wz3KCPdkhVqmgmc59ZfX1YJ21AfQAvOAYGAk
-         DBR/s6goyDzYVHdhg1qREYw8Gl4UHgLE+3hoPoU317CrjaMxVSN587eLctoSfjZpNMdd
-         GeH/3ie21YQ6ZH0FWB7DJGajs8V5BbfIapAVco1MwXYjU/Y7Iijy7HvDG4s1GSl3E8en
-         Wx8yRZ+fPVN2Gb0aVlnXJG7U4QGkA/jQSljGNom4fvLgdiVyXJSYOdxK/nV56K0xVi8J
-         oQXQ==
+        bh=BMcX0YddrsVQYToOf5sZrqslr+alhSoWvC1LhYQrOaI=;
+        b=po53amPUM725dcb24/q8qw2miCPBVvTMo9cJ919gRo0m8SpPTdBrQUHhKZCVlqyM/r
+         7kPymwIQBe0np1JSaapBk25psoqy7t1ILnICgcUmVFQZzce4h9ZYQfkxDiYIBgnNF/Th
+         o9K7FZ8knAihJ3KJnSsE6l5uqUOMOGwhfKt49Q12ehNnvks34Ztl4niyD+fWqZXzKz02
+         EhIpagrBcpY8eDuhemvnwmQ1XBxgOxJhk0Cv+R3HHx4kHolYKxRSPepuR5mBpX7lNWMl
+         H5FTTmqC3e2zBzFlX3gAK5e++PCAew9gN4GZiIoTshuJPDf9WUh3GT/QTjm2tZkySVXG
+         ARJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784208223; x=1784813023;
+        d=1e100.net; s=20251104; t=1784208227; x=1784813027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NfMuLF2nfHbgRgmO34SL3Jj6SviYlx2uzsjm64OYl7Y=;
-        b=o0PgqfezkDEh8IfLeRPl1EYpjk825wB1cjCouslLd8jGgNoYIIS/URdvAOcyMbKIf7
-         8evlKyTHOyYZslB0pyym5ND80phVbto53tSkiVFjX1lfUuMxl5UQMHwZy2qCji8RefuR
-         OldQepNyyVZFdU/UjHSAKsg0HLTb1QhaYTauuaB+x4uJZvO9h44dgJQlRvZhgGWhdy0u
-         XbqDIR6QelhRynPZ+LXDSmMjHHf3RaedSocb5dz3vbMp6OARVpF4Uw23t1uBQgzABOzK
-         eOigEQt9q/vRcVvvdqvH3rdCPO4pwkTS7AxgwlqhSYtl0/4/5ohGsbONiG6PvY0LQqYk
-         8ioQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqaEt8F6vRUYH8P3JMFNPgLr7YwKhuczb0mqaufffoIF8K68zUmibvlvHGW0n1VZ04USHIeYts=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy449UdNP3KjvGwX89//YFnZMjY0j3Rwnimf1rhsACrjih6JbPR
-	ldA0d/+3gPY+4/Q8kb32pz9Gren78gUmZ3ENS7Orkt3Fjub61dk+dN35ZHvYqVF89C4=
-X-Gm-Gg: AfdE7clYZ3gwdImDVV4+DWyQA5hVj0xmsSeqBTrIs3A4JKaeaqZIqOquOPvebFrQcmA
-	qjbUEJ9lh0FdUr8XZVG8piRkLzb6V1W8tDDZnJzSneNxkkT4zyvhU8HVBAaFami5AClGPKUy+VU
-	rhyj4v63CKy3SMRLy/6hCaiNPSf/ynyvNBEG2gFS2DO55swQJvuQ/VcwC2sFnK/i67YnBIerVs1
-	7NsySi1epohZkaFqSvwf3QnyJRWTHEoRCtns6XdwrRaEbZnEafJu8xPlx9ATUgjrDIXHp8yhsAf
-	euV/NJAEeBU6A+URjX4auzY0TDVYmJG7/4P+HJ9ryF6iQmNpwkEuq+ZmBWmyFp0rRPYt4/Lm2hS
-	TDI5EG6smK/bv3G02Rzy7WGAxtyJPy/ItaOko7g8juQ6N52bviDovsRK5dYc5+LDrMOoasKknO1
-	jh1AP43C4pERtrWL0gsQmjtw==
-X-Received: by 2002:a05:6000:26ce:b0:475:f0c2:75ad with SMTP id ffacd0b85a97d-47f5a538607mr3085824f8f.24.1784208223044;
-        Thu, 16 Jul 2026 06:23:43 -0700 (PDT)
+        bh=BMcX0YddrsVQYToOf5sZrqslr+alhSoWvC1LhYQrOaI=;
+        b=kTCCTfLAs3ugvTlZRSHFgB3X+xq4AMRE1Jwt5o2ZOF8JKdMK3HBaLDqlmD3jqN4cQL
+         ule4igfauV/Ynaf7XSGgMAYYGKBrgS4wWFrpAoLbD6xZVp3ve2X1Bd7J1wlCQyNGvS5p
+         iUQYYrimjUgTIIcNnlp+1OP509/osCLzPQsO39bKaosWBt1UygrJe3ThjhRNzXcAidyV
+         +U61OS6siInvGrYJ6N77AEM6L7P3xr4Q+sb0U1GxqFcfA5GLAAgSELo9qk8eAdmIj5Ln
+         H4otFpPyw43qx6pv1YtpDlq13M5yHsZ4gB4FM9oY31jDKDycm1VnxpL/LhYRs737u1+V
+         FAjw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2kWCMdrudfsZyardvbeIDUYWPcbtJKCOA17sb4pQIDBits+8dUDVnJ5HnAmlhq7X3WSkwPjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIbV6mxDuiELP4j+3ovhVFGInZWrFh5VP/4gccbBSRVeqPThUY
+	E/4L33TcXaU5wgwgYkcCUX7n84jYhvCZRPY7wuNZLnfSnBnZ/s+Q5so69Nk+6otpeK4=
+X-Gm-Gg: AfdE7ckYfVpTiOFvDQxxRPcSj3N21/yS2l9Dlf6dZlU+TxHA4pWdsdttjmxyg8+PkiN
+	P21ddThtRjItJTZ/Ocu9BPXneYtWgnaDX2pMvEHZQOUrrM+TLd4FpDb5CUsKiAMP1rXkin1q4cb
+	NjS8iLMbigHFjqueeFPB9DkjPSOxiSOpkmPeimGvuj97oq4kF64SOQjOErbo6ZYLqpSBCtmcBZ7
+	/pEnAK7+wnfHHD5rX6Nck4daF8+78wQC3/eZXVcKiEwUCMeoSem3bDrhX5DN/BkISWlfiHw/YIu
+	A45JvXkTTeIbrbImxOP7gFWcjP8xdT08JYkBJxGfd7GFV4+9FI2DaP28DAmKW/QReVXDJfr87gz
+	bX3ash7OiGPQCw0vCXVje1vTjp3UC58yLbYOoBPX3UzIvs6OTSzIuRX0Yl8/K6ZTrL7LIiVhN6E
+	MFdYl5w8IrjEXXdXHi6UgF1Q==
+X-Received: by 2002:a05:600c:a47:b0:495:4126:1edb with SMTP id 5b1f17b1804b1-495413566ebmr37543415e9.29.1784208226946;
+        Thu, 16 Jul 2026 06:23:46 -0700 (PDT)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4634e029sm24529624f8f.3.2026.07.16.06.23.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464caeffsm23108105f8f.36.2026.07.16.06.23.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:23:42 -0700 (PDT)
+        Thu, 16 Jul 2026 06:23:46 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: linux-rdma@vger.kernel.org
 Cc: cgroups@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: cgroups@vger.kernel.org,
 	wenjia@linux.ibm.com,
 	yanjun.zhu@linux.dev,
 	cui.tao@linux.dev
-Subject: [PATCH rdma-next v3 06/14] net/smc: Look up the pnetid ib device within the net namespace
-Date: Thu, 16 Jul 2026 15:23:07 +0200
-Message-ID: <20260716132316.1495242-7-jiri@resnulli.us>
+Subject: [PATCH rdma-next v3 07/14] RDMA/srp: Make the SRP sysfs class net namespace aware
+Date: Thu, 16 Jul 2026 15:23:08 +0200
+Message-ID: <20260716132316.1495242-8-jiri@resnulli.us>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
 References: <20260716132316.1495242-1-jiri@resnulli.us>
@@ -98,79 +98,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Scope smc_pnet_find_ib() to the caller's net namespace so pnetid setup
-cannot bind to a same-named RDMA device from another namespace once names
-become per-netns.
+Tag srp_class by the RDMA device's net namespace so SRP hosts derived from
+same-named RDMA devices can coexist across namespaces.
 
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
- net/smc/smc_pnet.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/infiniband/ulp/srp/ib_srp.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index 63e286e2dfaa..ff9c9c35cc2f 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -304,13 +304,18 @@ static bool smc_pnetid_valid(const char *pnet_name, char *pnetid)
- 	return true;
- }
+diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
+index 0caebbc2810f..2fc8e133c70f 100644
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -3189,10 +3189,24 @@ static struct attribute *srp_class_attrs[];
  
--/* Find an infiniband device by a given name. The device might not exist. */
--static struct smc_ib_device *smc_pnet_find_ib(char *ib_name)
+ ATTRIBUTE_GROUPS(srp_class);
+ 
 +/*
-+ * Find an infiniband device by a given name, restricted to the devices
-+ * accessible from @net. The device might not exist.
++ * SRP hosts are named after their ib device, so tag the class by the ib
++ * device's net namespace.
 + */
-+static struct smc_ib_device *smc_pnet_find_ib(struct net *net, char *ib_name)
- {
- 	struct smc_ib_device *ibdev;
- 
- 	mutex_lock(&smc_ib_devices.mutex);
- 	list_for_each_entry(ibdev, &smc_ib_devices.list, list) {
-+		if (!rdma_dev_access_netns(ibdev->ibdev, net))
-+			continue;
- 		if (!strncmp(ibdev->ibdev->name, ib_name,
- 			     sizeof(ibdev->ibdev->name)) ||
- 		    (ibdev->ibdev->dev.parent &&
-@@ -408,8 +413,8 @@ static int smc_pnet_add_eth(struct smc_pnettable *pnettable, struct net *net,
- 	return rc;
- }
- 
--static int smc_pnet_add_ib(struct smc_pnettable *pnettable, char *ib_name,
--			   u8 ib_port, char *pnet_name)
-+static int smc_pnet_add_ib(struct smc_pnettable *pnettable, struct net *net,
-+			   char *ib_name, u8 ib_port, char *pnet_name)
- {
- 	struct smc_pnetentry *tmp_pe, *new_pe;
- 	struct smc_ib_device *ib_dev;
-@@ -419,7 +424,7 @@ static int smc_pnet_add_ib(struct smc_pnettable *pnettable, char *ib_name,
- 	bool new_ibdev;
- 
- 	/* try to apply the pnetid to active devices */
--	ib_dev = smc_pnet_find_ib(ib_name);
-+	ib_dev = smc_pnet_find_ib(net, ib_name);
- 	if (ib_dev) {
- 		ibdev_applied = smc_pnet_apply_ib(ib_dev, ib_port, pnet_name);
- 		if (ibdev_applied)
-@@ -518,7 +523,7 @@ static int smc_pnet_enter(struct net *net, struct nlattr *tb[])
- 			if (ibport < 1 || ibport > SMC_MAX_PORTS)
- 				goto error;
- 		}
--		rc = smc_pnet_add_ib(pnettable, string, ibport, pnet_name);
-+		rc = smc_pnet_add_ib(pnettable, net, string, ibport, pnet_name);
- 		if (!rc)
- 			new_ibdev = true;
- 		else if (rc != -EEXIST)
-@@ -1170,6 +1175,9 @@ int smc_pnetid_by_table_ib(struct smc_ib_device *smcibdev, u8 ib_port)
- 	struct smc_net *sn;
- 	int rc = -ENOENT;
- 
-+	if (!rdma_dev_access_netns(smcibdev->ibdev, &init_net))
-+		return -ENOENT;
++static const struct ns_common *srp_net_namespace(const struct device *dev)
++{
++	struct srp_host *host = container_of(dev, struct srp_host, dev);
++	struct net *net = rdma_dev_net(host->srp_dev->dev);
 +
- 	/* get pnettable for init namespace */
- 	sn = net_generic(&init_net, smc_net_id);
- 	pnettable = &sn->pnettable;
++	return net ? to_ns_common(net) : NULL;
++}
++
+ static struct class srp_class = {
+ 	.name    = "infiniband_srp",
+ 	.dev_groups = srp_class_groups,
+-	.dev_release = srp_release_dev
++	.dev_release = srp_release_dev,
++	.ns_type = &net_ns_type_operations,
++	.namespace = srp_net_namespace,
+ };
+ 
+ /**
 -- 
 2.54.0
 
