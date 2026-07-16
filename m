@@ -1,117 +1,133 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1FD3F6618
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF5E3D7A0C
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784192656; cv=none; b=VRcHzzju6JVYVWevb/HAr61Hhs2A+0wLq4+CPSTMizC1v49HYUp+0jNJGPZcoDSlHKy+5rXjqybzh+ogfxvz4y2jJ0mnPgCZqIrTia76rsmER94P8QmZOFGkcAjcqBGNNhwH6Z7QxnHKQgBn+SHzCflCuJFi/+l2rIyqVOOKgUM=
+	t=1784193150; cv=none; b=gJ5DPhusrdJXrL0fcyT1SXg7VcsnYI/SbfSggn4CCiizz5zMA9aVsEHkn0qpTVitVCEOjfkeWaVxNHaukQhbRP7B8EIWqDwV/PpoqdzD6GYEQixye7hwJDr3OIooP+hRYxnTmWoKb5VtVq4zd3ozO4o/LXhlPzYwlU4Ua75m+1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784192656; c=relaxed/simple;
-	bh=mePOACTNJbHmjr20jrDxPJ6i5qDMXY7jQB43hJWaqsw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xp/SggHSjRbhs7CPGnkorl8D8wAKBuX0SsC7vSAQIc+TEzfq/yV36D9y7oAcWTtMtHNqod6XPIf3jlwYNMu+/jNoC/aZm23oCJ/BsGPFDNWmpxuCGEGItu3+5LemJmhv/Cc9BD55tjoJmBQVIA+auo6/FxwueqepmUt9OrQaPng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qb1m1X3s; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784193150; c=relaxed/simple;
+	bh=h533/s68PkW/dTRQqtEhMLD26L4Imx1KV6XCi6Spb/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AAT78+7ze6lVb9MGSeawXW1rtFbulB2bcb2pMwFQgSBmqN82iHuCaI6JMCePehHKN0FcdHBPshAf0bIGXkjcNowDJR9mqQyX+k7xpo6ncu1fKVdjJFa/pLiC7XMwrQcgoMXJg8N+tSW5yjPYKXxBMkdG35NGXX1YT1O3P8/4Zuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com; spf=pass smtp.mailfrom=tencent.com; dkim=pass (1024-bit key) header.d=tencent.com header.i=@tencent.com header.b=molEfoTU; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qb1m1X3s"
-Message-ID: <c2c5dda9-3228-44a3-a4c9-89e8cc4501bc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784192635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JVeydxlq98P61v43DHGkYvt2cLW0HCqExvqi1fRdk9o=;
-	b=qb1m1X3s4pSW0gBrM1CbDf5MXLbXJSwvcpYHa2u6B5utr9ncP9NqkL9xHiIbuVLqvYBkP4
-	vXWTjd/6xuhGH7BtOH/0iuvdBZ/qrADVHb/rU5TRPnTQf8A84qSVMxopGhqgB6A+NEplIM
-	B8xskyhiHRZkc6dRl+Aws6foK0FSOpQ=
-Date: Thu, 16 Jul 2026 17:03:37 +0800
+	dkim=pass (1024-bit key) header.d=tencent.com header.i=@tencent.com header.b="molEfoTU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
+	s=s201512; t=1784193139;
+	bh=cZzj3HYQJKx8gtuyJN2jviMgDkTVbUaJ8m4ySFDZLE4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=molEfoTUPN52F5nAJZMy7Uwuvqk0sDXLqeNlDNjetRPCsPq3+2Nw6WZbIzdYk/HAU
+	 Gz9N5nvVVcmf5JUiTS86b6DnF0pV5yUr4IyuK8+NzDvUP0bkiSG+7ClpVlmLwboYsK
+	 tQuFM27PGToNT/urV2bPGXj84VI3NWcWaHR/GVTE=
+X-QQ-mid: esmtpgz16t1784193135tc698a91c
+X-QQ-Originating-IP: zyLiXb/SlMT+LvdM5maz7tsR5nsrvqeisB9yO7HQxFs=
+Received: from JUNVYYANG-MC1.tencent.com ( [21.36.98.151])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 16 Jul 2026 17:12:14 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11565686538516819325
+X-QQ-CSender: aigbot@tencent.com
+Sender: aigbot@tencent.com
+From: "=?gb18030?B?1uzIuMC2vvxBSUdCb3TTys/k?=" <aigbot@tencent.com>
+To: netdev@vger.kernel.org
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH] sctp: don't free the ASCONF's own transport in DEL-IP processing
+Date: Thu, 16 Jul 2026 17:12:12 +0800
+Message-ID: <80818E6580896D22+20260716091212.43126-1-junvyyang@tencent.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH rdma-next v3] RDMA/mlx5: quiesce CQ polling before device
- shutdown on reboot
-To: Leon Romanovsky <leon@kernel.org>
-Cc: jgg@ziepe.ca, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, dtatulea@nvidia.com, shayd@nvidia.com, moshe@nvidia.com,
- Chenguang Zhao <zhaochenguang@kylinos.cn>
-References: <20260715082307.1593915-1-chenguang.zhao@linux.dev>
- <20260716084211.GC70906@unreal>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Chenguang Zhao <chenguang.zhao@linux.dev>
-In-Reply-To: <20260716084211.GC70906@unreal>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:tencent.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: ONiEFPFYK9ddlihmWBp8NNNp7IlmNC6DTPRUQGR0yOLCAE9VJQapdvhH
+	GiYKDruRe67/TKyr9rxu+vSAU/dI/Xj3VphWHEp/xbA95akJIFUUsOb5kVQiAowxxvLQZlt
+	Hou3bdsb9AaCZa+36/9MsDlRKWqZFI4IPUGsmbFZv/tqBkGT4Gj/j4Q6AmOUN7bORpiRQij
+	xKKRRLjef8Zg5vtaQknbdef82kAi7HZg4EYKjl6Djqo0rN0mY5oN1BjZJoMFz223iiIVG1a
+	esmCjWpfw77zRI2i/qyMm4vU9c9honJM7xvSfdckxdSgs78wiicXcc3aQErhsUBeplbg1IJ
+	Xf8RzF4iIRu7RaB8mXyrOste8EPxFVpNomecQZtUc9LHMJhuGOH0DFFr+0olYY0InUP1LoQ
+	R9AsfXeMEiuZDoaDM1SYhgFTp+ggLiuYib5P6SHu5SKcG3lptihPDRcZSoOR9DrqivjpD94
+	lHG3QxtgLgjLBZnIpUyQpbmT3lH3Y3GcxfvBGAqa5gYCrHjAP8JQBqmSrZ2nS4EuUWdpC8u
+	8I/Sw4166Hai62AKrtpEzikLxzvypKfNbKMPZocpItb6Ds15uvnVmHpAlKMog85NcvHNsPT
+	huZI1zDnXE5ev2u2bYbKR2vsgzb+BnXJ0eWNo93Gt06/MAt1s+aGQW+bWf/zDI0R1ZBJrK3
+	aLBHwHGLFQ//Slg2n5iPWtYjY7jp0GVY2Uwge7epYu8aSlID1Ne1jgmhGQYaiosNXNbPvxZ
+	MrYl/MhopBOW5h8XZSyDOv57MFki0a4EWE4yHm7Z9Y/AJs/37jOa5UGxNQSqI+ZrMgUtHwD
+	+qKhAA1q2eSlHs7xt7gm3ZcLlNVIRqBM8grk0VX6LQChlI9Q+S5WVtBytRjPmY3JZHUN5c8
+	zRcLvldsPmEUcEKV2wGiOGET9821I7vLK86nPrmc9zFer4vrjH73L06fMvt1gv5byD/W37i
+	q+iO6+JgXIxt+pQ==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Hi, Leon
-reboot -f skips orderly shutdown and goes directly to:
+sctp_process_asconf() caches the transport the ASCONF chunk is processed
+against in asconf->transport (== chunk->transport, set once in sctp_rcv()).
+For an ASCONF located through its Address Parameter by
+__sctp_rcv_asconf_lookup(), that cached transport corresponds to the
+Address Parameter, which need not be the packet's source address.
 
-kernel_restart_prepare() -> device_shutdown() -> mlx5 shutdown
-Upper layers may still hold live CQs, while ib-comp-wq keeps
-polling — a use-after-free race.
+sctp_process_asconf_param() rejects a DEL-IP for the packet source address
+(ADDIP D8, SCTP_ERROR_DEL_SRC_IP), but nothing protects asconf->transport.
+A single ASCONF can therefore carry, in order:
 
-Normal reboot usually works because userspace has already
-torn down RDMA and called ib_free_cq().
+    [Address Parameter L] [DEL-IP L] [DEL-IP 0.0.0.0]
 
-Thanks
+where L differs from the source. The DEL-IP for L passes the D8 check and
+calls sctp_assoc_rm_peer() on the transport that asconf->transport still
+points at, freeing it (RCU-deferred). The following wildcard DEL-IP then
+reuses the now-dangling asconf->transport in sctp_assoc_set_primary() and
+sctp_assoc_del_nonprimary_peers(): set_primary() dereferences the freed
+transport (->ipaddr, ->state) and plants the dangling pointer into
+asoc->peer.primary_path / active_path, and del_nonprimary_peers(), keeping
+only the pointer that is no longer on the list, removes every real
+transport, leaving the association with a transport_count of 0 and
+primary_path/active_path pointing at freed memory.
 
-在 2026/7/16 16:42, Leon Romanovsky 写道:
-> On Wed, Jul 15, 2026 at 04:23:07PM +0800, Chenguang Zhao wrote:
->> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
->>
->> On reboot -f with NFS over RDMA, mlx5 shutdown can tear the device
->> down while ib-comp-wq still polls live CQs, leading to UAF in
->> wr_cqe->done().
->>
->> Mark the device shutting down before teardown, flush completion
->> workqueues so in-flight pollers observe the flag, skip SYS_ERROR
->> completion delivery, and make poll/arm CQ a no-op under the CQ lock
->> while shutting down.
->>
->> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
->> ---
->> changelog:
->>  - Fix the race on MLX5_INTERFACE_STATE_SHUTTING_DOWN: set the
->>    flag, then flush ib-comp / mlx5_ib event workqueues via an
->>    mlx5_ib quiesce hook before fast_unload/teardown.
->>  - Check shutting-down under cq->lock in mlx5_ib_poll_cq/arm_cq.
->>  - Export ib_comp_wq and ib_comp_unbound_wq so modular mlx5_ib
->>    can flush them.
->>
->> v2:
->>  https://lore.kernel.org/all/20260714075558.1420384-1-chenguang.zhao@linux.dev/
->>
->> v1:
->>  https://lore.kernel.org/all/20260702073422.279820-1-chenguang.zhao@linux.dev/
->>
->>  drivers/infiniband/core/device.c              |  2 ++
->>  drivers/infiniband/hw/mlx5/cq.c               | 11 ++++++++++
->>  drivers/infiniband/hw/mlx5/main.c             | 20 +++++++++++++++++++
->>  .../net/ethernet/mellanox/mlx5/core/health.c  |  3 +++
->>  .../net/ethernet/mellanox/mlx5/core/main.c    | 10 ++++++++++
->>  .../mellanox/mlx5/core/sf/dev/driver.c        |  3 +++
->>  include/linux/mlx5/driver.h                   | 11 ++++++++++
->>  7 files changed, 60 insertions(+)
-> <...>
->
->> +static void mlx5_ib_shutdown_quiesce(void)
->> +{
->> +	flush_workqueue(ib_comp_wq);
->> +	flush_workqueue(ib_comp_unbound_wq);
->> +	flush_workqueue(mlx5_ib_event_wq);
->> +}
-> These workqueues are shared by all IB drivers and the core. Drivers
-> must not flush or destroy them.
->
-> Why this is not FW issue?
->
-> Thanks
+Reject a DEL-IP that targets the transport the ASCONF is being processed
+against, mirroring the existing source-address guard, so the wildcard
+branch can never reuse a freed transport.
+
+Fixes: 42e30bf3463c ("[SCTP]: Handle the wildcard ADD-IP Address parameter")
+Cc: stable@kernel.org
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+---
+ net/sctp/sm_make_chunk.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 8adac9e0cd66..b14251214896 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -3153,6 +3153,12 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
+ 		if (!peer)
+ 			return SCTP_ERROR_DNS_FAILED;
+
++		/* Don't free asconf->transport; a later wildcard DEL-IP
++		 * parameter reuses it.
++		 */
++		if (peer == asconf->transport)
++			return SCTP_ERROR_DEL_SRC_IP;
++
+ 		sctp_assoc_rm_peer(asoc, peer);
+ 		break;
+ 	case SCTP_PARAM_SET_PRIMARY:
+--
+2.55.0
+
