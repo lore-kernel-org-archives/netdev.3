@@ -1,151 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from shout02.mail.de (shout02.mail.de [62.201.172.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351403290B9
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 20:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283EA34751B
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 20:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.201.172.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784232036; cv=none; b=lSYAyfmtod2XdlYj1G6OlYXUff5RqLFKywExggew5YtfT0XZmGDx113l87hCwyVZuAvvlkrgY/vSscdIW541x68SKj6VikIn4gNNLzd9bY4RpAYGxc3agXLBvSngoQ+pTyw1JKpbEr+XbuPyr4LN4LR/5FmWxFRMJMDFLZDlTRs=
+	t=1784233209; cv=none; b=DGve+wGuQMXEI8sM6l9QeIjPmE3GfHrqNhjoIe44xjC/IWt3/8dsF2vVZkJZfsknhcW2cyM0mwhI3zCzIrDowgMPpYdIuccLNl7q586vNOhVmXUFOqpq4l/QUKt7Ypc0EUSphrxz6ofHsQ9doYy8f17KK4Ybsy9M5eFi7zQ5ux8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784232036; c=relaxed/simple;
-	bh=4ApHG23tsfCBQlAihIc7JtLXV89PM3rHQnHOW06U9Do=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QZFzgmn/BlXaGqBm57nIV2tyFnyB0EShEAMjysqhpInfH8RRPmnWI8R9ZQGscuYK+9+bPlzJHWFCGeoJ1SHSW4Ra/j6xPaKaiHuyv7OxxEfYU5tIjQLQ7DvPh4fW8j7EQNG5CpeHIrOpQloKRIag6cBSzKaFpQWAYfPFlW02NKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MjoBqUHE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784233209; c=relaxed/simple;
+	bh=yqKHlv9fWd4h17KQD4PutewV/S2KDnnvLqVuks27CXk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=qd+2lfiEmiih82Cc1kLqXVebhJX1Ed8MTQ4GPA2bX1MLHOlyVjAp1qfLi/kAOPdihfEXA2VC/VWVOtbpkR3GKxw6IPJJGI4M7EfMN2urmmyXw3zWAxetNQN0e/g16CFfJukprUYoBIFI2pNKyP4Wb/XUmI09OewRZmvQ3AcNAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=h4VYYG5/; arc=none smtp.client-ip=62.201.172.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MjoBqUHE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784232032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l/PIEzA9NrTlrzyjSKDZkdjEaXzWkZ5PFXxW2iujoLo=;
-	b=MjoBqUHEJCkvz6hJqcdi6yd8FetM6H8Mxq84rsZ/f8XdXeZMSSNdGf0VwREVpnEvg0C0OQ
-	zh+0jCmJXU37T62zMzZUCetCmsmal3PwVm7vhtYuxOc/9s6jVlwvY/FaXE8p8fxaJ0S9T5
-	24cBKDZq/mNra1SdPYs1vrK0WeGIFKg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-gwydn86FPpSfnirdwQia6g-1; Thu,
- 16 Jul 2026 16:00:29 -0400
-X-MC-Unique: gwydn86FPpSfnirdwQia6g-1
-X-Mimecast-MFC-AGG-ID: gwydn86FPpSfnirdwQia6g_1784232026
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="h4VYYG5/"
+Received: from postfix02.mail.de (postfix02.bt.mail.de [10.0.121.126])
+	by shout02.mail.de (Postfix) with ESMTP id 123B9240650;
+	Thu, 16 Jul 2026 22:10:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
+	s=mailde202009; t=1784232627;
+	bh=yqKHlv9fWd4h17KQD4PutewV/S2KDnnvLqVuks27CXk=;
+	h=Message-ID:Date:From:Subject:To:Cc:From:To:CC:Subject:Reply-To;
+	b=h4VYYG5/hKlCU4Db7Fv59zRusGtyqOI7jFKVKSQKwA8wcObhpQx7AUxGkqkpd22GF
+	 2JJOA+7VJl89XQj5snSxYJ89rY4Cj1VzIebUvAQNHryUWaPrhEM1RlSkIQlL0hOmck
+	 1f/ntbuuHMhDR6P6RhjVxfKg6qz1uH0seTMRkh/P2k4UyWeBV8FT0Dh52OYk6yOGQu
+	 tVfhf41jlrPdO6ZJs/ik+NwZw/pB6MmJEVN12vnZjgz/do6+RIPlHretd++rb9rtKH
+	 pOdHpiTrebDH7b4Q4Ycc1VJTy9CHKRHnMpCF/HUNAHmQTQqdi8C6QDV4wem+9hWH58
+	 XGaf0fl1E2PXA==
+Received: from smtp01.mail.de (smtp01.bt.mail.de [10.0.121.211])
+	by postfix02.mail.de (Postfix) with ESMTP id E76E62400E1;
+	Thu, 16 Jul 2026 22:10:26 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4DDA180067E;
-	Thu, 16 Jul 2026 20:00:25 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.81.35])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAEB51800286;
-	Thu, 16 Jul 2026 20:00:23 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  netdev@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-kernel@vger.kernel.org,  Eelco
- Chaudron <echaudro@redhat.com>,  Ilya Maximets <i.maximets@ovn.org>,
-  dev@openvswitch.org
-Subject: Re: [PATCH net 2/7] selftests: openvswitch: add config file
-In-Reply-To: <f7t5x2frlkh.fsf@redhat.com> (Aaron Conole's message of "Thu, 16
-	Jul 2026 11:38:54 -0400")
-References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
-	<20260710-net-sft-fix-containers-v1-2-a2915c294ef5@kernel.org>
-	<f7t5x2frlkh.fsf@redhat.com>
-Date: Thu, 16 Jul 2026 16:00:22 -0400
-Message-ID: <f7tldbar9gp.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by smtp01.mail.de (Postfix) with ESMTPSA id ED0B5240608;
+	Thu, 16 Jul 2026 22:10:25 +0200 (CEST)
+Message-ID: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+Date: Thu, 16 Jul 2026 22:10:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+From: tresonic <tresonic@mail.de>
+Subject: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
+ ("net: stmmac: enable RPS and RBU interrupts")
+To: netdev@vger.kernel.org
+Content-Language: en-US
+Cc: regressions@lists.linux.dev, rmk+kernel@armlinux.org.uk, kuba@kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-purgate-size: 1058
+X-purgate-ID: 154282::1784232626-D8A428A6-53B54ED8/0/0
 
-Aaron Conole <aconole@redhat.com> writes:
+Hello,
+Please bear with me, this is my first time writing to a mailing list...
 
-> Hi Matthieu,
->
-> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
->
->> The kselftests doc mentions that a config file should be present "if a
->> test needs specific kernel config options enabled". This selftest
->> requires some kernel config, but no config file was provided.
->>
->> We could say that a sub-target could use the parent's config file, but
->> the kselftests doc doesn't mention anything about that. Plus the
->> net/openvswitch target is the only net target without a config file.
->
-> We've been operating on that assumption from the openvswitch side, but
-> it's true that isn't explicitly documented anywhere, and I guess it
-> isn't officially supported in the kselftest framework.  I guess we'll
-> need to keep updating this config as we add tests for things like SCTP,
-> and others, and maybe that's a good thing like we can add a comment
-> describing which tests take which configs.
->
-> The downside is for most of the OVS testing we use the NIPA scripts
-> and those 'inherit' the parent config, so it would be a change on our
-> side from the development standpoint (but probably something we should
-> have been doing from the beginning).
->
-> That said, would it be worth also exploring the 'cascading
-> configuration' support?  It seems like a useful feature, but maybe it
-> should be a separate discussion.  I ask because of how OVS interacts
-> with the networking stack as an 'alternative bridge' so-to-speak, I do
-> worry about having to duplicate lots of configurations between the two
-> as we expand the test coverage on OVS side.
->
->> Here is a new config file, which is a trimmed version of the net one,
->> with hopefully the minimal required kconfig on top of 'make defconfig'.
->
-> Should this also remove the OVS configs from the upper level since there
-> shouldn't be OVS tests executing there (ie: CONFIG_OPENVSWITCH*)?
+Since commit 1b9707e6f1a9, suspend (systemctl suspend) causes a full system freeze on my laptop. Fans and keyboard backlight stay powered; the machine is completely unresponsive and requires a hard power-off (holding the power button) to recover. I could not get any kernel output from the hang.
 
-Actually, forget this part.  The P-MTU tests in pmtu.sh use ovs to
-create a datapath through OVS.  So these configurations need to stay at
-the top level as well.
+- Reproduces on current master
+- git revert 1b9707e6f1a9... on top of master fixes the issue
+- Workaround: sudo ip link set eno1 down before suspend avoids the hang entirely; with the interface down, suspend/resume works normally even on the bad commit
 
->> The Fixes tag points to the introduction of the net/openvswitch target,
->> just to help validating this target on stable kernels.
->>
->> Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
->> To: Aaron Conole <aconole@redhat.com>
->> To: Eelco Chaudron <echaudro@redhat.com>
->> To: Ilya Maximets <i.maximets@ovn.org>
->> Cc: dev@openvswitch.org
->> ---
->>  tools/testing/selftests/net/openvswitch/config | 16 ++++++++++++++++
->>  1 file changed, 16 insertions(+)
->>
->> diff --git a/tools/testing/selftests/net/openvswitch/config
->> b/tools/testing/selftests/net/openvswitch/config
->> new file mode 100644
->> index 000000000000..c659749cd086
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/openvswitch/config
->> @@ -0,0 +1,16 @@
->> +CONFIG_GENEVE=m
->> +CONFIG_INET_DIAG=y
->> +CONFIG_IPV6=y
->> +CONFIG_NETFILTER=y
->> +CONFIG_NET_IPGRE=m
->> +CONFIG_NET_IPGRE_DEMUX=m
->> +CONFIG_NF_CONNTRACK=m
->> +CONFIG_NF_CONNTRACK_OVS=y
->> +CONFIG_OPENVSWITCH=m
->> +CONFIG_OPENVSWITCH_GENEVE=m
->> +CONFIG_OPENVSWITCH_GRE=m
->> +CONFIG_OPENVSWITCH_VXLAN=m
->> +CONFIG_PSAMPLE=m
->> +CONFIG_VETH=y
->> +CONFIG_VLAN_8021Q=y
->> +CONFIG_VXLAN=m
+Hardware:
 
+64:00.0 Ethernet controller: Motorcomm Microelectronics. YT6801 Gigabit Ethernet Controller (rev 01)
+Kernel driver in use: dwmac-motorcomm
+
+[    5.672548] YT8531S Gigabit Ethernet stmmac-6400:00: attached PHY driver (mii_bus:phy_addr=stmmac-6400:00, irq=POLL)
+[    5.890940] dwmac-motorcomm 0000:64:00.0 eno1: PHY [stmmac-6400:00] driver [YT8531S Gigabit Ethernet] (irq=POLL)
+
+Thank you,
+tresonic
