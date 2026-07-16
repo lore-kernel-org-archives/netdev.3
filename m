@@ -1,128 +1,132 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB43B387341;
-	Thu, 16 Jul 2026 15:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD4E33A9F5
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 15:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784216561; cv=none; b=FKgI86lZW8XjqLiuKt796Z1Rnx4bsn7iL39tLiY8IKPvVH6uhcfOBzbhIvTo/Ci7h+xJ3U03jkudbMnPSst2jg+9f0WJQKkZt0ph18pozVmBNawiqbO2G3UtbuGLOj+UJDR/psnbpN0cpNg1UMJJsnOsUhJXfAbpPnxctd0ifqU=
+	t=1784216623; cv=none; b=Rf5VtBjqsRv1kGK2dcMBg29VjG99aQFqUKlztjTRxcGFEN24GK7nDwtdTHnVGrJ7nHU7IuYDBq6IIewa7/C+ZIw68GYB0CEAgWxIkCyEeJfk6nZT64tkLYtL5zz02aSadnIX506uqen4Lms/IDBsYevIz8t3pmRqOoutio8zzIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784216561; c=relaxed/simple;
-	bh=/TN+5AyNuEVk0jXJG0NcT4h6hYsmHtjpSAOdqISDC5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwOxemhy6Zk3d2wDdXFHbc8FsnKNqdt3KyA0r8LzalIXi9RDSfSeH5FMkRFOXJZL3jLI4l/CTKvcVnZ6ssYmFN+BG4B4leR1KfoUah/gdld2075WEhqn8uOC6idQHwJEWqqBZdFeDW3AAvuMxuQM255z0piLEOn0WL2APX5k66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qVhkBrbC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784216623; c=relaxed/simple;
+	bh=rH75EzXICa0XdEgVwHY4Yfy9qWAaivBxfj522dz1C6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SnwYl9V0VllVNa0Da9nByhXw6jb1AA5dJWwsLK2P2o2/EGvB1VOuZjOblIEfCWAFi4mO+4mKj+yMNU+t/QIHbNt9ddxGyOaE9KlEbP0DSJ9ihfEA14rd9Rn4VUHUwzMYnx5+IKaHNJil5ZNLmFIMx1PVz8EeISKFyns98elFCUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qx0g773o; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qVhkBrbC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=EPu+Tbo9Y05KfihPlkG+qRgkWK4cT5jrnAK4ukGO2/M=; b=qVhkBrbCRECP4dbYVFgsJ/DhSm
-	ZAhM4eRIEVQQIQBtoW6AxHUY5GhGbRyc46HM6Blbb45hNpgRwY/YP7UtKP9FyCPvGgFenxiR1BWLa
-	ZDKUVxPcSsaTRa69Irq+dE+bq4ESH2jq+c8I3MLwho7Kxe9VtMLVwiLZlnxpBljYPTWk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wkOEF-00CZS4-Ml; Thu, 16 Jul 2026 17:42:27 +0200
-Date: Thu, 16 Jul 2026 17:42:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qx0g773o"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1614804757so714385966b.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 08:43:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784216620; x=1784821420; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zBypqS7GnltF0qflde2eBCHFe4sgdKQRHHH8Z6tCV90=;
+        b=Qx0g773oFC9yHmm0fB4xBDoVtAGZmJbBHJTgVyo0ju7t8AsVJ45zSImShPZpH4GlTl
+         8ckZWmjde9Rj913GfB3aj+0RmpKDiTA3idKum3GFnkY2xTCiw/3ZGivzoJVBwuyY+yV/
+         Wnh9VPDD9r+Ub3P8/xaOfq0vhEr2dW8YDTYZqK62llV2xVVA9kV8jONrFeuBL4G/oXAC
+         NMG/EiK51bDrZIq8SPVnS9Zg5fxSGe0AclL74UIT6Pko1rjRkHFBUkBwfkNQGfJuphat
+         KNrNwlMdOEZ0beLEn6f5NBjcG5WdAmavabCroOdU4p2HF/m+UzNyWLXwW5UJCONAf3BQ
+         Sarw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784216620; x=1784821420;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zBypqS7GnltF0qflde2eBCHFe4sgdKQRHHH8Z6tCV90=;
+        b=dwWt2oxFu+PSwNX1D+4x21JLVPMOcIYbsNXTHriwm8E79x5HHb2P4wIow/kQ4u+9N8
+         /ePnkZDO4hAF4LlApnf7AbuEtHSl1zkLAoafPNKm5fTHE9wC89ZUpIedQHGglVf6LhJ9
+         tWn1/QjydWX08EG1CAS06v9oF/OwCImyVcwzPWTM7IgT1tuy89uLhFTeCK1D+84bot82
+         kbHc3ZB6RctuG/+XjxGlsBAJ4MXhnL5d56lVYQgbWiHHwG8lpa8tc5nIBRDPklb2jpOK
+         xnVx747Yyx6m5/KwOpbOMnmhVmB9yMfRwY8nsNneMQ3v/I3KtP5a1G8/LWw8+Hm25Sab
+         1QBw==
+X-Forwarded-Encrypted: i=1; AHgh+RqesobcXjKDMp2dX/b0TM1muIMl0QAqsdLnnbKfZKdgqAoygtDLP7Y9pxCObJ30BBpyACmgyr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEcU/SyTckKuX56JuqUAiz5x+ADR0lbFFophgFZZQY8ZZCpFCv
+	5UawGSsXA/p7EeC1R9r3Cy8bIIiKRDv5yxNVEkn70pyEZASQwAYYFbBh
+X-Gm-Gg: AfdE7cmcyzdhHCJiRCzo0fIetVmlFzz0wcxbgqt7BceVq49C31sluyTHFApU66eihAc
+	CAQtILYX3iWBj5gtDw0Tw/RiHIGG3q0UvqbjU2+kJoiJpm08RV0L9CR7Oz/B2RKhABEDb8WGKhD
+	Z7rbYYpRG/Z6vt/YN5aprnKzKf4BZLo2TOVstoGWfVrRWDOaUbU27GTpfqmWXa8perBy6BteHiR
+	HqDr6vYh1nI40WEKpJ0F8+h3ProPLrspFc2MWi98WcRtmQdVWMO/ha8qm9QWQ8J4EC4UXM+wKLD
+	HM2qzmAgSfDhCLELpZdWTN23wk8+TOVclLu8YP5U9wcvZ3TH9zTwiK+ufpbseSFaNV+DkZjXEZY
+	3a6txH4uMZ9TDHWGSnQzBZlqfNPpymgs0KZBxCygJF0bNKQYO5LtIeUZ5/1h1w/TIfJSRuw==
+X-Received: by 2002:a17:907:3e12:b0:c12:8664:6aec with SMTP id a640c23a62f3a-c1679364167mr456134966b.53.1784216619477;
+        Thu, 16 Jul 2026 08:43:39 -0700 (PDT)
+Received: from beelink.. ([164.5.253.70])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c168a1083c7sm195166566b.30.2026.07.16.08.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 08:43:38 -0700 (PDT)
+From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 02/12] ax88179_178a: Add HW support for
- AX179A-based chips
-Message-ID: <713954ed-6d7f-4de2-9d2e-3d0af0f2db1c@lunn.ch>
-References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
- <20260708-ax88179a-v2-2-0800fedb2e16@birger-koblitz.de>
- <1f858852-8e8e-4cff-bbdc-eb6751f44ca5@lunn.ch>
- <de0bfcdc-01d4-4683-97e1-16c0466023ef@birger-koblitz.de>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Subject: [PATCH net] net: qrtr: restrict socket creation to the initial network namespace
+Date: Thu, 16 Jul 2026 12:43:19 -0300
+Message-ID: <20260716154319.3297699-1-qwe.aldo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de0bfcdc-01d4-4683-97e1-16c0466023ef@birger-koblitz.de>
+Content-Transfer-Encoding: 8bit
 
-> A comment on phylink and USB-Ethernet NICs, though. Grepping for phylink
-> in drivers/net/usb shows only 2 drivers that use phylink: asix_devices (the
-> antiquated one using the 772A-PHYs) and lan789xx, which is also rather old.
-> There are more than 30 drivers there, so that makes < 7% phylink usage vs 93% mii.
+QRTR keeps its entire port and node state in module-global variables
+that are not partitioned per network namespace: qrtr_local_nid is a
+single global node id (always 1) and qrtr_ports is a single global
+xarray. qrtr_port_lookup() and qrtr_local_enqueue() operate on that
+global state with no network-namespace check, and qrtr_create() places
+no restriction on the namespace a socket is created in.
 
-Most USB dongles are old. There might be new variant, but generally,
-that only means adding new VID:PID to a table and they work.
+As a result an unprivileged process that creates an AF_QIPCRTR socket
+in a separate network namespace, e.g. via
+unshare(CLONE_NEWUSER | CLONE_NEWNET), can send QRTR datagrams -
+including control-plane messages such as QRTR_TYPE_NEW_SERVER - to QRTR
+sockets owned by another namespace, and vice versa. The receiving
+socket sees such a message as coming from node id 1, indistinguishable
+from a legitimate local client, breaking the isolation that network
+namespaces are expected to provide.
 
-phylink becomes interesting is with speeds > 1G and enabling more
-features of the PHY, like EEE. Because mii is so old, it only supports
-speeds up to 1G. It also requires that PHY stick to the 802.3 C22
-registers, and don't really have an vendor registers. There is no
-concept of a PHY driver for mii, so there is nowhere to put per PHY
-code.
+QRTR is a transport to global hardware endpoints (the modem and other
+remote processors) and has no per-namespace semantics; its in-kernel
+name service already creates its socket in init_net only. Confine the
+socket family to the initial network namespace, as other
+non-namespace-aware socket families do (see llc_ui_create() and the
+ieee802154 socket code).
 
-For a totally new USB-ethernet driver, i would strongly push back on
-mii and want to see phylink. For the existing drivers, there is little
-i can do, i don't have the hardware. Converting to phylink would
-however be a good project for a newbie, if they have the hardware, and
-what to really learn something, rather than all the AI driven
-theoretical bug fix patches we are getting at the moment.
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+---
+ net/qrtr/af_qrtr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-You are in the space in between. It is not a fully new driver, but you
-are doing speeds > 1G. And you are looking at lots of features and
-need vendor registers, so per PHY code.
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index d02ef9a74c3c..a30fa56e6aa3 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -1263,6 +1263,14 @@ static int qrtr_create(struct net *net, struct socket *sock,
+ 	if (sock->type != SOCK_DGRAM)
+ 		return -EPROTOTYPE;
+ 
++	/* QRTR keeps its port and node state in module-global variables that
++	 * are not partitioned per network namespace, and the in-kernel name
++	 * service only operates in init_net. Confine the family to init_net so
++	 * a socket in another namespace cannot reach the global control plane.
++	 */
++	if (!net_eq(net, &init_net))
++		return -EAFNOSUPPORT;
++
+ 	sk = sk_alloc(net, AF_QIPCRTR, GFP_KERNEL, &qrtr_proto, kern);
+ 	if (!sk)
+ 		return -ENOMEM;
+-- 
+2.43.0
 
-I have another idea to throw out there, and it might be a bad idea. I
-will let you think about it. Split the current driver into two. Make a
-library out of all the code handling packets. Leave the mii code in
-the actual driver. Then add a new driver, making use of the library
-for moving packets around, but using phylink for PHY management. You
-can add the new VID:PID to this new driver. This has the advantage of
-reducing the risk of regressing the old devices you don't have. Also,
-we can put out a request for test, see if anybody has the older
-hardware, and ask them to try testing with the VID:PID added to the
-new driver. We might be able to slowly migrate them to the phylink
-driver.
-
-> And at least for the 179A-based controllers it is clear that there is an
-> advantage not to use phylink: When the link changes, the controller sends out
-> an interrupt URB, that has everything in there to set up the link. No need to
-> do costly USB requests to query the PHY.
-
-How costly? You need to balance cost with frequency. If this is
-something that happens once a day, when the machine is booted in the
-morning, does it actually cost anything? And think about all the non
-USB NICs, which do need to use a number of MDIO operations to find out
-the state of the PHY. Nobody seems to complain about that.
-
-> In fact, the proprietary driver
-> works hard to not talk to the PHY at all. A good example is WoL, which is in
-> principle a PHY configuration issue. For setting that up, the driver actually
-> never talks to the PHY, everything necessary is done by the controller's
-> firmware. For USB Ethernet controllers it makes a lot of sense to abstract the
-> PHY away and rely only on controller commands that concurrently configure MAC and
-> PHY to reduce USB transfers.
-
-I somewhat agree with you, if you can totally abstract the PHY, so a
-PHY driver is not needed. Yet the driver code you posted has lots of
-code dealing with the PHY. So it is clearly is not abstracted
-away. Such abstractions do occur, with firmware driving the hardware,
-look at many of the intel NICs, and most PCIe cards with speeds >
-1G. They often only expose a MAC interface to Linux and everything
-below that is hidden away in firmware.
-
-> Looking into the Realtek PHY driver code, what is done there appears to duplicate
-> the code in r8152.
-
-And other reason to use the Linux PHY driver, no code duplication. And
-there might be some freebies, like cable testing just works, it is
-possible to control the LEDs, etc.
-
-	Andrew
