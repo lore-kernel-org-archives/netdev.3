@@ -1,41 +1,49 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1EE2E7621;
-	Thu, 16 Jul 2026 03:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6DA32D7F8;
+	Thu, 16 Jul 2026 03:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784170976; cv=none; b=r40lD5bu2FNSXoh9vrG4n2d1wP1bEWNj7lCVGyvpr/X25XlXcyEok6pq2bqeReyh830AwM0uLxsEMeq4V9AATCJW9YT+m06PJsRsx7COSeQrjiPeH1STg55nLX8P0otRLIw43in8LrwxMHqbGX6qQ4+9V7nE/ZbzlJKbt6FWXLk=
+	t=1784173932; cv=none; b=X6szKiUC773vqxcA4KO1tq8h3Fcd6tuMijgcaB/kYy8NPfZp2eNoV8E9uWl4g9zO6jV8Bl46ofWyquEvWbsH6brx3U4qc3bDgKemEhy62nKIajFfxAS7T+rV1j5Nxjj6bCYXwX45uVyjk7N/Q4mjj3Wjyl5qRjIWrGRj1fp+giQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784170976; c=relaxed/simple;
-	bh=BmEQ1JjP3yY06yAm1q24o7DQiuX5kKIWSratjSc/NsI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BIg38FNcC8T4X949jtOXlx2dAo38eQs195D13OsUioHkr4WRcl85dCnH30i7JoWRnx5qw/zJMP0oACst06BgJGn15+lZkSK2KFTuEAmrIBtm0KPGtsrD4f6cSHj0EY9ZmnV7BZKGLj2i7UWH/01ArDnF+QthswyLGM+qPT94DwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=g9cuT17m; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784173932; c=relaxed/simple;
+	bh=No0z5O6QZXB+qmLpuRHUDHNeG8iaRsJvP+WoLxlq1fc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UTHsGM1BMmXz8POmVfwoSfMaIQMKSdiKg7l95uqvB5iukivxHYWnfEZ/t3/b/vzJT9+TAcESuNSyIXAyi7cC9aCaFX9gmbgBCXUc7aABgqYpx1HJ8HRzXSg8kkWFXcLAlyPcFPBfMITHVk+bRbJ3KbBaDktG2o0TNvmNMabpz48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Bxu5qc5l; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="g9cuT17m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=0t
-	KiRx3pNUsOkbx59/0aLdgFv6oElr06UU1M1CtyXFY=; b=g9cuT17m4OuCXSuooW
-	JMzdT3mRIj3bzPTnWzKdKatV5sqwHZ42jIy4mFAS4HSRUK886iXKu/NNNjN2k3vr
-	vXWG1bvdt7cmtMAelECtgy2+7ZtBf8p125Ag8dwQwh6+jfi+FMX5u11A74Tsr0na
-	CECDvAmWuqJFRWdpgTmr9lpqM=
-Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD370XJSVhqov9lJg--.23S2;
-	Thu, 16 Jul 2026 11:02:34 +0800 (CST)
-From: Weimin Xiong <xiongwm2026@163.com>
-To: virtualization@lists.linux.dev
-Cc: mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	netdev@vger.kernel.org,
-	kvm@vger.kernel.org,
-	xiongweimin <xiongweimin@kylinos.cn>
-Subject: [PATCH] vhost-vdpa: reject zero-size unmap
-Date: Thu, 16 Jul 2026 11:02:38 +0800
-Message-ID: <20260716030238.124368-1-xiongwm2026@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Bxu5qc5l"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yRvdsnV1PeGfljFy+4kRqeiSeYYE4q4nVsCbMZUG6c0=;
+	b=Bxu5qc5l9TSCmi10oU+HcQQ06ZfDm+jN+hwn8Mk1BMJSUXVyv+TA9/CrX3mMchwx8J7Awkb6F
+	h1FbZDaJQu80ySQIDErB4I3d1vxPBaowqx2kr2PGIkAP5/ExcIVemyj1UxQcQy4tQYIuxDH66CI
+	VRf1vF4UXzaf9p2fBUhXxK8=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4h0zQG4CWTz1K96s;
+	Thu, 16 Jul 2026 11:42:46 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 35C004048B;
+	Thu, 16 Jul 2026 11:52:04 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Jul
+ 2026 11:52:03 +0800
+From: Jinqian Yang <yangjinqian1@huawei.com>
+To: <mst@redhat.com>, <jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>,
+	<eperezma@redhat.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <liuyonglong@huawei.com>,
+	<wangzhou1@hisilicon.com>, <linuxarm@huawei.com>, Jinqian Yang
+	<yangjinqian1@huawei.com>
+Subject: [PATCH v2] virtio_net: fix infinite loop in virtnet_poll_cleantx when device is broken
+Date: Thu, 16 Jul 2026 11:52:01 +0800
+Message-ID: <20260716035201.3736582-1-yangjinqian1@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,42 +51,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD370XJSVhqov9lJg--.23S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4DWr43Cr43CF43uFy7GFg_yoWDJrXEg3
-	95Crn7Jr1S9r4qyF1I9rW3A34avFZruFZ09asYg345XwnxXw4ay3y8Zrn3J3WfurWUAFn3
-	Aw4vyr10qw1SqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnZNVDUUUUU==
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbCzgo1xGpYScphxAAA3h
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
-From: xiongweimin <xiongweimin@kylinos.cn>
+virtnet_poll_cleantx() contains a do-while loop that cleans up
+transmitted TX buffers and calls virtqueue_enable_cb_delayed() to check
+whether more buffers need processing. When the virtio backend stops
+responding during guest reboot, used->idx is never updated, so
+virtqueue_enable_cb_delayed() always returns false and the loop never
+terminates. Then it will block reboot process, and the guest will hang.
 
-Reject unmap requests with size == 0 to prevent iova + size - 1
-from underflowing to U64_MAX, which would incorrectly unmap the
-entire IOTLB range.
+The problem occurs during guest reboot under network traffic:
 
-This fix also covers the error rollback path in vhost_vdpa_va_map:
-when the first VMA lookup fails, map_iova equals iova, resulting
-in a zero-size unmap that would otherwise clear the whole IOTLB.
+  1. kernel_restart() -> device_shutdown() traverses the device list
+  2. virtio_dev_shutdown() calls virtio_break_device() which sets
+     vq->broken = true
+  3. virtio_dev_shutdown() then calls virtio_synchronize_cbs() to wait
+     for in-flight callbacks to complete
+  4. A virtio interrupt fires, softirq is deferred to ksoftirqd which
+     calls net_rx_action() -> virtnet_poll() -> virtnet_poll_cleantx()
+  5. virtnet_poll_cleantx() enters the do-while loop and never exits
+     because the QEMU backend has stopped updating used->idx, despite
+     vq->broken having been set to true in step 2.
 
-Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
+Since the loop runs inside ksoftirqd (a SCHED_OTHER kthread), it is
+visible to the scheduler and does not trigger a hard lockup. However,
+the kthread never leaves the loop, so RCU detects it as a CPU stall
+and reports it periodically. Meanwhile, the reboot process remains
+blocked in device_shutdown() because virtio_dev_shutdown() cannot
+complete its synchronization step, and the guest hangs permanently.
+
+This can be reproduced on a guest with a virtio-net device: run iperf3
+traffic in the guest, then trigger reboot. The reboot occasionally hangs
+permanently with RCU stall on ksoftirqd.
+
+Observed on ARM64 KVM guest:
+
+  CPU#1 RCU stall (ksoftirqd/1), repeated periodically:
+    virtqueue_enable_cb_delayed_split <- virtnet_poll <- __napi_poll <-
+    net_rx_action <- handle_softirqs <- run_ksoftirqd <-
+    smpboot_thread_fn <- kthread
+
+Fix by adding a virtqueue_is_broken() check to the loop condition, so
+that the loop exits immediately when the device is broken, allowing
+the device shutdown to proceed.
+
+Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
 ---
- drivers/vhost/vdpa.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v2:
+  - Moved vq->broken check to virtqueue_enable_cb_delayed().
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index bb96b1aa5..f49bf1cfb 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1035,6 +1035,9 @@ static void vhost_vdpa_unmap(struct vhost_vdpa *v,
- 	const struct vdpa_config_ops *ops = vdpa->config;
- 	u32 asid = iotlb_to_asid(iotlb);
+v1: https://lore.kernel.org/lkml/20260713132025.703147-1-yangjinqian1@huawei.com/
+---
+ drivers/virtio/virtio_ring.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index b438dc2ce1b8..5c169fbb418a 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -3233,6 +3233,14 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
+ {
+ 	struct vring_virtqueue *vq = to_vvq(_vq);
  
-+	if (!size)
-+		return;
++	/*
++	 * When the device is broken there is no point in polling used->idx,
++	 * the backend will never update it. Return true to let callers
++	 * exit their cleanup loops instead of spinning forever.
++	 */
++	if (unlikely(vq->broken))
++		return true;
 +
- 	vhost_vdpa_iotlb_unmap(v, iotlb, iova, iova + size - 1, asid);
+ 	if (vq->event_triggered)
+ 		data_race(vq->event_triggered = false);
  
- 	if (ops->set_map) {
---
-2.39.3
+-- 
+2.33.0
 
