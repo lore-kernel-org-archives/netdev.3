@@ -1,129 +1,98 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170CD3F44FC
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784201711; cv=pass; b=pXhw7fyeyVUgPl1S4V51aU/MOY9zsucZh/CCT3Kf/6HRCH4GssTebuE1o3Os1KJWsPLH47ugTom5pfv19QZlWmxLWsj9VQTrBBL7uQyyzfRNKqhjJp8pJLc90rezHWt6Zs1q1+LUdHJ7dlSVZ+Va2eBpkJyMMDWyhEGqWFH9vvE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784201711; c=relaxed/simple;
-	bh=2g36lJG3U42LVhfO3LNLyoyHEf6Sd6nntXHxonOuu3g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h7uTJ87ggHyw2Irv77/jeb+8ZZxsuFj2A/cC38n7H/whNvO0BfhciOMo4Rc5MtNNHZSMUny18arvU4rWTwj+69qGVGrKpSKgeFwT6asRMZxqCuMYBbeC7zUjzdUeuO0BErXNQTOAOiEJ4uUQVxjN4hraJQZNRNhmu3+NXH0/9KY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sH6DVVXq; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD4E41B8E0;
+	Thu, 16 Jul 2026 11:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784201885; cv=none; b=senC1NgWohtssEDPDU99wU7MZztiG+RW6Vza+aaN8C3i9gAtlP95K6l4m6Mi+JZYkQu2nxsZZS6RQjOGJsVWweK+WKgDds2CnDrY0Trs9X9JJ7h5ipF0fMAyt9inuZEneXoj54PBkDGdvf3VAj4tEgCFHE4BS7RRnbkcSNLRZvY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784201885; c=relaxed/simple;
+	bh=c79NboGB9hiWAfaIsyeo/tCz8oZPzdohQeOauPBTh3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f/c8Q9CzxFBi2voeUrnaA5Fii86/y8CFPnKV55pKuTeeWszDqfHbuSI69zZZqtI9awnxcXajfipVQ9k2K6ET2TZZ/1DBzHOgBG3tTBBFqiMcradgKa16zyKNrvqcf1A+B8QlCFBRyseNvUSLm97myCjB/NOS52jkQaA0JptzUZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FlZaCUVh; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sH6DVVXq"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso5286162a12.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:35:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784201708; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oGYKAxPhd53vs23SJ7JcxzsWrWzeq6E2g8CGQHSmJHz3HXjU+DwdHcJg0SQBmpyDPo
-         AJeZGX8L9ubEx4z84aqUTpQoFa6vv6TpfH6tvyt5mAjyKmHr0gX8PpO46nBTnFkLCx16
-         HZFi19S5HX+UJetCntRPNaKyP7WhBayafsdyxAHvBrsJpcF2nk8+SYBMthTiIBoNNS4e
-         U0lo+66Y/chbsG+rHyc2NVNyxuWjH6YsCuthHVw5mUpYmiq+ISpFH/PZO9WMnhuhbtNy
-         IEsteNEZLm/oLVaq4MtUmncwCJaFwYxVKGBis+Tce8MIIeURMC2XvSdtKpw4NeTWqQ3k
-         hr1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ysGs6NJRebtieFYvmOhVVH9xTxOC+fxmBEZ2c6/Mloo=;
-        fh=AKuqX7GEdYxfUzlvycRbWvYtARwWhXG8H7GBDFfL0bo=;
-        b=Q6DqKv5XIbnzDCFyOkWupNc0mWBxCsL1jZvfBGdAG72XAzB+gDcTyUyObsqJIzKPTd
-         dkmq84TiEfHHRuQO8ma9TdUbOLfIAoJcN6PaxA+mvtsRNND7RaVseK0YlAr/D8v6GjsY
-         +PYbdGSuGpD+Zo9e6tV6Mvv/9U+xZxf0Wsuef2MHmm3GeegVH2nvfE5hvSr6TYbtNQgd
-         MsE0kbZloihU86Sa9Q3M4/LpgNknuJpG3c9cPkdgcrgRgWIxLBVdrYKl7c8qJrqbuhlx
-         ZumEpZZGkDW6jE2UUjTxpjtwF96UcbPoyAdTWeNUzmrKznBWqXVueMzR1zvgbDGqelPu
-         c+LQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784201708; x=1784806508; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ysGs6NJRebtieFYvmOhVVH9xTxOC+fxmBEZ2c6/Mloo=;
-        b=sH6DVVXq+0bg3bPner6VRTSqoa2TnmHudaeImn8Q9khwE6G+Wj/ZRDZQCNMvYMGE6c
-         U0Jc2n2nTwe28DA90oSUI/88WWw+vm0zezAwWXQDekmVbUEjKui8EcgZuDwgzDRFf3lI
-         NvwK1U6x1WNnf4xyZxH+Uoj3f7zDUvGJkDuo9xlWqxM6mbSbqVDf9B/FxDrInBek/6dg
-         2hXrFapKo31BWuZnufLfLc/xkepV4JWiLPxhgI/d2hNf7bT9pOpML7e1W2glo47PUl42
-         nCyhgutrfnWV71ebMaVGA8tcod4ZSL1Ng/FjndAN0owl8CRTmggDyjc7/VKtMIsjV13I
-         0+rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784201708; x=1784806508;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ysGs6NJRebtieFYvmOhVVH9xTxOC+fxmBEZ2c6/Mloo=;
-        b=ISV6fwNlLLYIcwQaZVgklRMnYkYiWmNzULaRONuGZGv5qZ0HI0khNntUHJAbU4fK1u
-         Lv3UIC0rS4/98OeEGFRe2QIx/cdemc8vXR3+jlHPmiOZ+MMX4o89wD0qindRyDqOBKuB
-         0cIX0T22RxtKavb3Zz9+dklnwqs7zPIi+JQRWA02rXW/jxwukXOAYPqeei+Gn84+bjPE
-         gRjIgXTMC+r0JZg5Z5YRc0zkSPJJQJcbnTADMXHACsDRCMvboeAxqwwWd3Q4b1WAB/uh
-         +StZiz2z5Y1apx3fO76d+iiiVQYua/mEpw6bWSfScO7uTy8tXDpOS44oA9Y7oEyWBQs2
-         Bzew==
-X-Forwarded-Encrypted: i=1; AHgh+RqZHLA+XE2UtooHG+1gyq5uG8EWjP82vCMe0ZJLTYDGuwOpi3HQ5Cqx8GqJTgw0KN0KP5rm9NM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1isZPmPj6NMl/w3cYoDYhNhdaqvYA4o26PhnH7ApQm84Bf1yw
-	A0ZITDzC5bnxI/P74OEfkxgsEzlKLXapaaR2hd7u4DEArbX/P5X6xkrf88TktPH3eXfcz8nwifE
-	pG8rZwQEjcHqQAQW9wuVmOUIkxr4b294=
-X-Gm-Gg: AfdE7cnxsKNBV0ypWgpUdxrwfKcWvlU9uJuQlAFoGSCPBHfIyrKcIL1vi9nb9+gL1Ri
-	K5NWbosIdfRL7vbFIycrnURGwzUdXzCngYOnyX/znehUutJMmnoxrU5HHvb7eCEHBR3BcBISMi9
-	6IOCufE/iTaZ/cbJOsnUY9zx+DbtshmIUiuYGNsb/W6QmSKtpLHa9jzxAzLFMJgFxInv4Km3F2O
-	jfNqfWXvVUDSCx2maDeuy7XVneJ/LxciMDYd80pT8JXs6kv55SwaTxoYjIw4OfrOt7lblfqj302
-	Z+/3npdmgASUlxxNvvRm
-X-Received: by 2002:a05:6402:320d:b0:698:50ea:2d97 with SMTP id
- 4fb4d7f45d1cf-69c5f1043ddmr11746132a12.20.1784201708206; Thu, 16 Jul 2026
- 04:35:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FlZaCUVh"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784201877; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=P3n9AlLqwVjZ1NPxmow6M+93yquqP1fL1996Mg02wXE=;
+	b=FlZaCUVhQE/kiLrBCfuqIjzDs707tuys9/LmYxClb9BMPbIdPD+oR5cJuAr4kRygXT/umc+p1UbR4JlMv6AkQys/D9NXLWkqeRY03pow9Pz/4pfoP3/C4/2wNJbogzoLk0SiX2I//rWMMTfxj6P8nAv8s09fvWafYsRc5WxOFog=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X7EH86i_1784201876;
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X7EH86i_1784201876 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Jul 2026 19:37:56 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: mjambigi@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	wintera@linux.ibm.com,
+	dust.li@linux.alibaba.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	leonro@nvidia.com,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	sidraya@linux.ibm.com,
+	jaka@linux.ibm.com,
+	oliver.yang@linux.alibaba.com
+Subject: [PATCH net-next v4 1/3] net/smc: clear the correct v2 slot and buffer in smc_wr_tx_put_slot()
+Date: Thu, 16 Jul 2026 19:37:43 +0800
+Message-ID: <20260716113745.65234-2-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20260716113745.65234-1-alibuda@linux.alibaba.com>
+References: <20260716113745.65234-1-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714020340.25014-1-akiyano@amazon.com> <20260714020340.25014-3-akiyano@amazon.com>
-In-Reply-To: <20260714020340.25014-3-akiyano@amazon.com>
-From: saeed bishara <saeed.bishara.os@gmail.com>
-Date: Thu, 16 Jul 2026 14:34:57 +0300
-X-Gm-Features: AUfX_mzK79CIL23jkyupbgkP8ZJeyWpMZHgLpxQaHMyTfs3qKuX1sAZ-6xeJP9M
-Message-ID: <CAHfVqdWNk0QmvZBXi21eUKcU34DpXXZBNyJVUep+Tx1n52ihAg@mail.gmail.com>
-Subject: Re: [PATCH v4 net-next 2/7] selftests/ptp: Extract
- print_system_timestamp helper in testptp
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Richard Cochran <richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Miroslav Lichvar <mlichvar@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Wen Gu <guwen@linux.alibaba.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Woodhouse <dwmw@amazon.com>, 
-	Yonatan Sarna <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, 
-	Alexander Matushevsky <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt Wilson <msw@amazon.com>, 
-	Anthony Liguori <aliguori@amazon.com>, Nafea Bshara <nafea@amazon.com>, 
-	Evgeny Schmeilin <evgenys@amazon.com>, Netanel Belgazal <netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, 
-	Benjamin Herrenschmidt <benh@amazon.com>, Noam Dagan <ndagan@amazon.com>, David Arinzon <darinzon@amazon.com>, 
-	Evgeny Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik <ofirt@amazon.com>, 
-	Amit Bernstein <amitbern@amazon.com>, linux-kselftest@vger.kernel.org, 
-	linux-doc@vger.kernel.org, shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, vadim.fedorenko@linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
->
-> +static void print_system_timestamp(int sample_num, __kernel_clockid_t clockid,
-> +                                  long long sec, unsigned int nsec,
-> +                                  const char *when)
-> +{
-> +       switch (clockid) {
-> +       case CLOCK_REALTIME:
-> +               printf("sample #%2d: real time %s: %lld.%09u\n",
-> +                      sample_num, when, sec, nsec);
-> +               break;
-> +       case CLOCK_MONOTONIC:
-> +               printf("sample #%2d: monotonic time %s: %lld.%09u\n",
-> +                      sample_num, when, sec, nsec);
-> +               break;
-> +       case CLOCK_MONOTONIC_RAW:
-> +               printf("sample #%2d: monotonic-raw time %s: %lld.%09u\n",
-> +                      sample_num, when, sec, nsec);
-> +               break;
-These three printfs are also kind of duplicated, I think mapping the
-clockid to name first would save a few lines.
+smc_wr_tx_put_slot() tries to reset the v2 pending slot and buffer with
+memset(&link->wr_tx_v2_pend, 0, sizeof(link->wr_tx_v2_pend)) and the
+equivalent for wr_tx_buf_v2. Both are pointers, so this zeroes the 8-byte
+pointer variable instead of the structure it points to. The pending slot
+and buffer are therefore never actually cleared, and the pointers get
+overwritten with NULL.
+
+Pass the pointers directly and use sizeof(*pointer) so the intended
+structures are cleared.
+
+Fixes: 8799e310fb3f ("net/smc: add v2 support to the work request layer")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+---
+ net/smc/smc_wr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
+index 59c92b46945c..6b5add922993 100644
+--- a/net/smc/smc_wr.c
++++ b/net/smc/smc_wr.c
+@@ -288,10 +288,10 @@ int smc_wr_tx_put_slot(struct smc_link *link,
+ 	} else if (link->lgr->smc_version == SMC_V2 &&
+ 		   pend->idx == link->wr_tx_cnt) {
+ 		/* Large v2 buffer */
+-		memset(&link->wr_tx_v2_pend, 0,
+-		       sizeof(link->wr_tx_v2_pend));
+-		memset(&link->lgr->wr_tx_buf_v2, 0,
+-		       sizeof(link->lgr->wr_tx_buf_v2));
++		memset(link->wr_tx_v2_pend, 0,
++		       sizeof(*link->wr_tx_v2_pend));
++		memset(link->lgr->wr_tx_buf_v2, 0,
++		       sizeof(*link->lgr->wr_tx_buf_v2));
+ 		return 1;
+ 	}
+ 
+-- 
+2.45.0
+
