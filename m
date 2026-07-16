@@ -1,72 +1,69 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7AE4302F0;
-	Thu, 16 Jul 2026 14:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D777B432BD3;
+	Thu, 16 Jul 2026 14:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784212029; cv=none; b=GOvTJzDLhTpi8w5LrbGjmPZK755qVNkhnm6FOA25ybkBNJsdXR5Jecq6wLn2CiqZRGoxT/qZmAdupyvT4PQtlUpcQ4mlcoAEWQl4SJzFx0UNYjqKk+3zCIkUDpoNmRDs8kVya457pderLZbB+bgwWSmeim3yIjsWGpLD7ZSQSX4=
+	t=1784212061; cv=none; b=bn4i4zbGiGSn1dGmfu+S3NEpk5wfmRfRN3XX+f64VELpRWKRG8v4THmoExTbQ/B/N5uh4wAEtTfa9IGJsUFxAvMIEl96F4zPjdx2QNlZa4j+QBKco7KW3YwSQ0cW/84miI6reiTLSYUD8sN6nRXgUM8u0WzZTp7pEulx6gWPDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784212029; c=relaxed/simple;
-	bh=5tSh1mkOxy+3MKugWdIP5dBxYtDHPklNW0EhFbwcLKE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GdNeNXLlytFICpQ6wqAceiDAxby7qOsQRT3mlWyBOIoko7Kp5C43b5TqtfXEy/Tww3A0ScMJBJqEM6FlmJY0pABl+Ctrkvfkr6EQPC0hOgtnWTqd/5r4WoqN6ISHZDmlM8rzsefMs0goN5P2cY+PPye5o0u1t7g/+1bCgWcdFKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=rlgdDHzQ; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1784212061; c=relaxed/simple;
+	bh=0gJBTczmpmWFR+0rYkNAd0Rz9dzhAWX0o/hIpULzmCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=antbjD7xC8Demj3EXK1Wgqh4adivI5l2KRyEzadgIyhynL+3EqDxpuIVLjvcI8g0pxRoh8Orvh+34vOyc2Lvrgm8+1xrhbmvQzKqdRE/cPXW9PgFyH+HlY8cNw1nH5oT15PtJYno5zN5z0W7QV3IfgynWnW3KagNvGlpBGwj5lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lglD5EKo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="rlgdDHzQ"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6763F40E56
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1784212025; bh=5tSh1mkOxy+3MKugWdIP5dBxYtDHPklNW0EhFbwcLKE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rlgdDHzQ5wZv7v1f11WBXJjA3sIS0SGRaunTjEgYrRtPv30f99Ue5+r0Uq+0OROe0
-	 U8SkD8q80pFJY7UGpOtmc7pN7BeWqAUAzrhn93436rpjilsQNFMQpRoW4iwHrR4jR/
-	 V5PXU7+6x5TnR6FzeTSCNXAo5XsgNqcZkfYCeKUcTQ97F3yVdKIqhhAZkJ+h7S/alc
-	 tzMQe+ve9gM9lyNTkGHmVtahXYcVvvCnBFfTYp1JcFnILbpHSQ2QREZ3KNmeW3CZYq
-	 +6QTOhcwGHRD+AAiH0WGc3tAjHywhezjdOs4F9S91hLvJqMMnKprMl5EPSRrEXl/bh
-	 22hTgw2866GsQ==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 6763F40E56;
-	Thu, 16 Jul 2026 14:27:05 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Markus Elfring <Markus.Elfring@web.de>, Dan Carpenter
- <error27@gmail.com>, netdev@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, MD Danish Anwar <danishanwar@ti.com>, Michael Grzeschik
- <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Uwe =?utf-8?Q?Kleine-K?=
- =?utf-8?Q?=C3=B6nig?=
- <u.kleine-koenig@baylibre.com>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, Yibo Dong <dong100@mucse.com>, LKML
- <linux-kernel@vger.kernel.org>
-Subject: Re: net: rnpgbe: Pass an expression directly in rnpgbe_rm_adapter()
-In-Reply-To: <320cb00c-28f8-4871-9ec5-d9b86cca8bc9@web.de>
-References: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
- <alScHkiC3EmGzOlI@stanley.mountain>
- <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
- <aliA1EIIrX82jGR-@stanley.mountain>
- <320cb00c-28f8-4871-9ec5-d9b86cca8bc9@web.de>
-Date: Thu, 16 Jul 2026 08:27:04 -0600
-Message-ID: <877bmv9fif.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lglD5EKo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D206E1F000E9;
+	Thu, 16 Jul 2026 14:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784212060;
+	bh=ZFIDYm55M3Veb0MUxUqI8ilXNjUSkEp3G2f9uAGfdsw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lglD5EKop3xI1KvqwKHAEKUvmGfpO73DbkPY157lY2Fbb5mAwujxYu00t+Znr+Usa
+	 UzfK2fwJWXPcVQW/xKqnpNIypYuqVyocp3y0hgH/ra90WUrwvqax+XuBClwiBH2ghv
+	 bZoqhtk/OnR2knsLP/v0hX9nV/qzfSULHHQu6W8sEY0qD8WRUp15tg0SWCefacfEKc
+	 ee34Egwi+OZaOrtClpxQO+eTPyXTdOEhxwU36Ek1B13Mkt4a+e1TNH1Sd4f+enFo+3
+	 x8n4nIX8YxqDYYShHW11e2ORjVCIWlqLmvw4gN5A21KRFZDh9FsHrjBiXTmJf9RAAi
+	 nYlFMvKsRk7yw==
+Date: Thu, 16 Jul 2026 15:27:34 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aditya Garg <gargaditya@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, kotaranov@microsoft.com,
+	ernis@linux.microsoft.com, dipayanroy@linux.microsoft.com,
+	ssengar@linux.microsoft.com, gargaditya@microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mana: Add debug knob to skip TX timeout
+ recovery reset
+Message-ID: <20260716142734.GL95246@horms.kernel.org>
+References: <20260710132229.2851441-1-gargaditya@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710132229.2851441-1-gargaditya@linux.microsoft.com>
 
-Markus Elfring <Markus.Elfring@web.de> writes:
+On Fri, Jul 10, 2026 at 06:22:29AM -0700, Aditya Garg wrote:
+> Add a per-port debugfs boolean "tx_timeout_skip_reset" that, when
+> enabled, makes mana_tx_timeout() log the TX timeout and return without
+> queueing the per-port detach/attach recovery work.
+> 
+> This is a debug-only aid for bringup and qualification: skipping the
+> recovery reset keeps the device and queue state intact so a TX timeout
+> can be correlated with hardware telemetry. The knob defaults to false,
+> so production recovery behaviour is unchanged.
+> 
+> Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Reviewed-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
 
-> Does your understanding of programming language details differ from the view
-> by Jonathan Corbet?
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-I'm not sure why you keep dragging me into this - I have not opined on
-this particular situation, which is definitely *not* a dereference.
-
-jon
