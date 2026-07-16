@@ -1,180 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08BE3FFD;
-	Thu, 16 Jul 2026 02:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382AC2D7DDB
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784167823; cv=none; b=ncf1tsCrkW54pw2TpqYLmNTsS+61WB6udku9R3yk3iXlJpHm9MbTrWbKjkUdWp0U4k5gjqN9SSmL5FIgyOnDUGDf4iZzx1DOoe3zU9Xj/j2iKFcmUGxfLYtT02BtpcD4IyU7WX0w/1Q9YVSpnlXq14MACH9kueaaiRmUkFbtFgk=
+	t=1784167859; cv=none; b=EAwTZwsqjjdA3da02bAuqzsmD0HuOOtpLn7SoSkkx9lruY8X0fFlbAog0JKE9c7/xXfXvARmK/Rf3Qe9cAgHfwGyN1UbR5658toqtjoCbEgNWQ8sP5HdlxYyplISuW59Llmj6/KLRYYsDD6+G4nSJknbql+J0yUbkX/lSgjEpXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784167823; c=relaxed/simple;
-	bh=mKuHS926pppT7i9/3ZY+neZGbACcs7xl4EzLTYEhtzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dQBmgAM8NxdNRjM+xyXGPm8TARPCxPwVjw6l8IeGTcpWPRpeyY5u5Q3fwRf7bMo6cLQXqwgBY/uODKJiN1QSmJtGsMeFVyDwbVCYfJmuTPqbGa8ds0uC+7v4eFN6sRrWksZMmZRsDK6s9sLPQdnk6JziSL+QeC5pizBrK1u96QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZ+ft7uO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784167859; c=relaxed/simple;
+	bh=bqh/aOs2Su0vJ1rWIqIWhM35qPbEc2yVo47bAbMyows=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uZ4ZfvUpSCBsYV+oE/V+7Sqt/ISM5U77vkrbGJwnyZWJ/vUMMaVbEX8L0umrMjx+pdqbnug5gNHCBRiP7nlwfBjo/D2APFZt0YZoGSz29qHDyPxpUVuaU6RxtKYPgz4rSHsyW02s+yPMWp/z6a/EaHjRAYl7vrxOM76eafz/M1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bd5Kh/oL; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZ+ft7uO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5333C1F000E9;
-	Thu, 16 Jul 2026 02:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784167822;
-	bh=Dwgw+pYgZ2OOIDPwWzrI+VmqmUDlicKkSlmRoSyasLc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LZ+ft7uOZkBd27+/82RNKYawDSnuYWQ9iytbjMqNXrOf6yaKiVMajTddbylMdz0x5
-	 +xy+ODTU4l9hmBpnLftNf3KQbr9i2dp8gScKNmfZO4jJc3MUyrswzV/G6YyOeQIbdd
-	 N6ShiJ6bOUePT2ASg1vCDQvCnce/su7LZLTtYyaD80zkWtQhR+K3NLnXhOJZFtBU/s
-	 sUQglse9xTNtDRAQKI2bd+JTC+QxX5/9DfeguyeP8YxtwrHscHwdrgXrdmlkefalw0
-	 B/B4tLuCtQnd64Xse+xcRqZ47Hi7Or0VAF1lpH/pu9RHndaxMDY2ObrfJOMUM1rcin
-	 SZUdHMCDAVISg==
-Message-ID: <072337b6-30b8-41fa-a27d-7beb00e01c24@kernel.org>
-Date: Thu, 16 Jul 2026 11:10:15 +0900
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bd5Kh/oL"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-92e62e3459fso931892685a.0
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 19:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784167857; x=1784772657; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SZbr+S9RWgdH/gQT19pT8e3/RgX8euaAYxCSCSxmPII=;
+        b=Bd5Kh/oL6o/sc8AUiV3pFBvGPEYoDBV0B3DVGdm4uqGlikU21SfTmNsYssmPuT6N3b
+         3iuKVHzH9907R7oikJq2yKVELpgT5pBlsywb7EIFcw80DA7+UScwmj2i+tSS2EUgV806
+         jJoSBUZW3qmsCxUWkRLPtR0cZKjqj+SSzFlF8rnuA9d/Zamzvpfh5YM34IleJD7WHZ6F
+         lRebvzJsSjFEeUgdx9bMmM1nttwrHuq7S7xB+Sgyl1W1GxgF0qYSSBpDSeyoNP+Rx8Oo
+         arkhlwHsquzj8o5z03VyCdRC3MEYNk9QyjNTDZD6AgnVKDwF7u3lTAjitQ9z0Xv1+DLg
+         u9JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784167857; x=1784772657;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SZbr+S9RWgdH/gQT19pT8e3/RgX8euaAYxCSCSxmPII=;
+        b=D5HPcuwaVrfcQcRVIktB7W4EsbTpOW3xtG92mlWqYqj+mZApiWRhA+yPNucv5iepOr
+         GzGZrCFNZKEP2qp0g4tidAzWqWBmv8LKNnrGVMa3xmKzIl9MfP+wcTnSbrQ0GtTxP0hG
+         +vcZoppVFSG+JZQY5b7N89YdObwleTKh+pnBs/bwG8PTofhxAiwK/fJybYFAl4x60dFo
+         8sLhj5usLZys5VmDeSpJ4GGbdCYISAQUpVD2qBgbOoY6P9KPFjx01gs6QJ6dawVU44Jl
+         23s0Ivj9jcrdk+/wm7ccWh+c3dnO5PmhiTLuVy81hDdszLzGNiPxRsyJpLq1vE1koMsR
+         xVng==
+X-Forwarded-Encrypted: i=1; AHgh+Ropa0+ZSk+yZtOoHIiKszUifO5xrQddEBbMAMTd7p2ilK+DoXPO6e0DtgYiYMvJv5paVTqQBgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxprPK/VNxFdKqAPaavrLdyy5MBNS5sOXqDRaxy6HQS6t4kJFwn
+	fyRTzC/hpy1f9Z0Wf52anytCEeLhNOGDLxJiEBz+KbJ8eJsT+q7RSiaFw4zXaeNEP8B1Y/40cX2
+	DfKwJFey783R7oA==
+X-Received: from qknvy8.prod.google.com ([2002:a05:620a:4908:b0:92e:6709:3a5c])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4148:b0:92e:e307:e24a with SMTP id af79cd13be357-930961c3a27mr544713085a.15.1784167856682;
+ Wed, 15 Jul 2026 19:10:56 -0700 (PDT)
+Date: Thu, 16 Jul 2026 02:10:49 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
- into a separate bucket
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- Kees Cook <kees@kernel.org>, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@kernel.org>
-References: <20260702170728.168755-1-pfalcato@suse.de>
- <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
- <ak4w2k4Woj55E0On@pedro-suse>
- <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org>
- <aldpAY6nXwgayHL0@pedro-suse.lan>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <aldpAY6nXwgayHL0@pedro-suse.lan>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------nAdHAmQ4m2vnhCex5aHUduqE"
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+Message-ID: <20260716021049.2124921-1-edumazet@google.com>
+Subject: [PATCH net] ipv4: icmp: fill flow parameters in icmp_route_lookup
+ decoy lookup
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Muhammad Ziad <muhzi100@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------nAdHAmQ4m2vnhCex5aHUduqE
-Content-Type: multipart/mixed; boundary="------------vIh7QuKEpqskM0EoX5rWRCbB";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- Kees Cook <kees@kernel.org>, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@kernel.org>
-Message-ID: <072337b6-30b8-41fa-a27d-7beb00e01c24@kernel.org>
-Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
- into a separate bucket
-References: <20260702170728.168755-1-pfalcato@suse.de>
- <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
- <ak4w2k4Woj55E0On@pedro-suse>
- <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org>
- <aldpAY6nXwgayHL0@pedro-suse.lan>
-In-Reply-To: <aldpAY6nXwgayHL0@pedro-suse.lan>
+When Linux forwards a packet and needs to generate an ICMP error,
+icmp_route_lookup() performs a reverse-path relookup. For non-local
+destinations, it performs a decoy lookup via ip_route_output_key() to
+find the expected egress interface (rt2->dst.dev) before validating the
+path with ip_route_input().
 
---------------vIh7QuKEpqskM0EoX5rWRCbB
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Currently, the decoy flow structure (fl4_2) only sets .daddr = fl4_dec.saddr,
+leaving .saddr, .flowi4_dscp, .flowi4_proto, .flowi4_mark, and
+.flowi4_uid zeroed out.
 
+When policy routing rules (such as ip rule add from $SRC lookup 100, or
+dscp/fwmark/ipproto rules) are configured:
+1. ip_route_output_key() fails to match the policy rule because saddr and
+   other key flow selectors are missing in fl4_2.
+2. It resolves a route using the default table instead, returning an incorrect
+   egress netdev.
+3. Passing the wrong netdev to ip_route_input() causes strict reverse-path
+   filtering (rp_filter=1) to fail, logging false-positive "martian source"
+   warnings and causing the relookup to fail.
 
+Fix this by populating fl4_2 with .saddr = fl4_dec.daddr, .flowi4_dscp,
+.flowi4_proto = IPPROTO_ICMP, .flowi4_mark, and .flowi4_uid so that
+ip_route_output_key() selects the correct egress interface matching policy
+routing rules.
 
-On 7/15/26 8:07 PM, Pedro Falcato wrote:
-> On Wed, Jul 08, 2026 at 10:27:54PM +0900, Harry Yoo wrote:
->> On 7/8/26 8:16 PM, Pedro Falcato wrote:
->>> On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
->>>> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
->>>> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
->>>>>  }
->>>>>  EXPORT_SYMBOL(napi_build_skb);
->>>>> =20
->>>>> +static kmem_buckets *skb_data_buckets __ro_after_init;
->>>>> +
->>>>>  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int =
-node)
->>>>>  {
->>>>>  	if (!gfp_pfmemalloc_allowed(flags))
->>>>> @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size=
-, gfp_t flags, int node)
->>>>>  	if (!obj_size)
->>>>>  		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
->>>>>  					     flags, node);
->>>>> -	return kmalloc_node_track_caller(obj_size, flags, node);
->>>>> +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj=
-_size,
->>>>> +						    flags, node);
->>>>
->>>> Sashiko noted that some drivers may require GFP_DMA buckets, and the=
+Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
+Reported-by: Muhammad Ziad <muhzi100@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAOAwikA60AYKdFr_UDLyja3oU4hqyAE7uFZWqum5uRdaQsgRYg@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/icmp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
->>>> above may break them:
->>>>
->>>> https://sashiko.dev/#/patchset/20260702170728.168755-1-pfalcato%40su=
-se.de
->>>
->>> Oh, this is really awkward. Adding linux-mm and slab maintainers for =
-input here.
->>>
->>> Considering the current slab bucketing does not seem to duplicate DMA=
- or
->>> CGROUP caches, could it make sense to duplicate those as well?
->>
->> Could we specify what kmalloc types the user needs when creating
->> kmem_buckets and duplicate caches for the requested kmalloc types only=
-?
->=20
-> Perhaps. But do the users themselves know? alloc_skb() allows users to =
-specify
-> random __GFP flags. We're bound to see some random caller do
-> alloc_skb(__GFP_ACCOUNT) ;)
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 23e921d313b36b00d8ae5e14846527220c9db32b..2259f643cb0d43ea54819dd831c79807413e0d69 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -548,10 +548,16 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		if (IS_ERR(rt2))
+ 			err = PTR_ERR(rt2);
+ 	} else {
+-		struct flowi4 fl4_2 = {};
++		struct flowi4 fl4_2 = {
++			.daddr = fl4_dec.saddr,
++			.saddr = fl4_dec.daddr,
++			.flowi4_dscp = dscp,
++			.flowi4_proto = IPPROTO_ICMP,
++			.flowi4_mark = mark,
++			.flowi4_uid = sock_net_uid(net, NULL),
++		};
+ 		unsigned long orefdst;
+ 
+-		fl4_2.daddr = fl4_dec.saddr;
+ 		rt2 = ip_route_output_key(net, &fl4_2);
+ 		if (IS_ERR(rt2)) {
+ 			err = PTR_ERR(rt2);
+-- 
+2.55.0.141.g00534a21ce-goog
 
-Other users don't expose the buckets to drivers, so I thought only
-alloc_skb() would create the buckets for each kmalloc type.
-
-> In all honesty, I'm not quite sure what the best way forward here is. T=
-he most
-> transparent way is to bucket those other kmalloc types as well, but tha=
-t might
-> very trivially result in a lot more caches (and possibly memory usage) =
-for no
-> great reason. So perhaps specifying caches might do.
-
-Another direction could be merging those buckets.
-
-If we want to protect kmalloc objects from user-controllable
-allocations, can we create buckets for each kmalloc type during the boot
-process and let the kmem_buckets users share them?
-
-That doesn't sound like creating too many kmalloc caches, while
-providing a decent separation. We already have two buckets users,
-one w/ SLAB_ACCOUNT and the other w/o SLAB_ACCOUNT.
-
-If you really want each bucket to have a separate set of caches, you
-have to sacrifice some memory for security :)
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------vIh7QuKEpqskM0EoX5rWRCbB--
-
---------------nAdHAmQ4m2vnhCex5aHUduqE
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalg9hwAKCRCGXBN6rc5S
-1qiTAQDBTgHUQNlbhhV0KovqNCHl2aAaCrah376xCdTsuaTvSAD8Cg9gheKulpHN
-2nrpaiNOraIrtk8ZpVzV4Gwnh3mEJQI=
-=PjPB
------END PGP SIGNATURE-----
-
---------------nAdHAmQ4m2vnhCex5aHUduqE--
