@@ -1,62 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5CE422558;
-	Thu, 16 Jul 2026 13:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C320424651
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208812; cv=none; b=XFE+YVaEYwXi/jcZ4yWjJDyxPtrG+3yEwJPw6iBCCzjHStFxfwWn1rEzXKoyT3vvTMIbK8dH5YrxbxaKBfYBUXTRX2i7mxqn03OqDfoJKikzftRjZd3ZDkRuNRhy3HKBIKZkmWp1nfqrIBi6F6T37Tq3cGlVPErMB7DJe7hTQPc=
+	t=1784208858; cv=none; b=j6F5dWLPDwo/VnRaeiz/8ceHrPV2ipGN8oW33VbDYVbx3xFQYv9aMfI2DNu+lqIwL13dxnn1q+vTO2dji5Bb72RFxa2cVgoLBM3U3ByKsMmunPxfEmuw9UEV+y0GB3pQFUDgYrjrGXW6vWDUa3tYTJNIt7K1aIpP8uaqWB6RY6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208812; c=relaxed/simple;
-	bh=sutnjoYKI2uVHpmK3k6RbhRFaXqmJzyJrir0HTQz3EE=;
+	s=arc-20240116; t=1784208858; c=relaxed/simple;
+	bh=512q+FuN1hjr7tRKT5qTs7tS31ElK66Wl/lwjJg+hKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbpmu2s9DtYXapfqQ7n/8AbXSevfDj9zPyY4jFd96VnqXECk2ZNoHVJ7rYLiqrIk+q0QWCm5gZmp10qb8K8cOMPl/U2lgcVJnvdlxJW/G1TTH9amLS/+obVsEEVkWDGVrfMJcc8mRcT8j6ULJi+rFeqaP2OPGpohNPe5dbuYI+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GE9EZj0M; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=n9eaBi3oOW6m74DCz87/b297q2OM/l2M5jH0T7oSXYNN39tQUS10wWyMdvvY3jwM0+bAYAIwG336Uhq4qrDKCBAcv+YxA8pD3y5SXEvIKiRuQ68YVsi778bFfZaAHtfZ6sJ0AFOAsIH/Qu3i2qALDNegMQlGAugmXmXJD3R3Lu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C31gzjPe; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GE9EZj0M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=b/4bHkOK4at96eLi17OSQbFBAa6T8Ge0kCnTS4mV0XM=; b=GE9EZj0MYInITLNkWghARYJn9c
-	3I3MIKvsUMHLvEISRgyhU87kM7KhC3tTkIMOBOvi1IDNYce8Q9tG3pPMTqO4RFp2nQkqS5UcJLe+l
-	Lrbyn5kGOaUaTMR/bz9K/CLA/GqGklz4Zc1TRe9Cc7ECajMePYKXp1ZB9hXYEHA/rw2w=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wkMCl-00CXL5-Lt; Thu, 16 Jul 2026 15:32:47 +0200
-Date: Thu, 16 Jul 2026 15:32:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, maxime.chevallier@bootlin.com,
-	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
-	arnd@arndb.de, gregkh@linuxfoundation.org, daniel@riscstar.com,
-	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
-	alexandre.torgue@foss.st.com, ast@kernel.org,
-	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
-	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
-	julianbraha@gmail.com, livelycarpet87@gmail.com,
-	mcoquelin.stm32@gmail.com, me@ziyao.cc,
-	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
-	rohan.g.thomas@altera.com, sdf@fomichev.me,
-	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
-	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 12/14] gpio: tc956x: add TC956x/QPS615 support
-Message-ID: <a955ec54-c9bf-42a9-8477-7a4620b155a7@lunn.ch>
-References: <20260605010022.968612-1-elder@riscstar.com>
- <20260605010022.968612-13-elder@riscstar.com>
- <dhnylud7o5dhaaq6kvbes4vkml3ppa5ev542j2lyxdijibknzg@pfcy22wz6jav>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C31gzjPe"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-489f3611e0cso4411689b6e.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:34:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784208853; x=1784813653; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=paGXn2CXcdZsSsOEnSXii4F6dQRW7fZtzSuMwBvtGAs=;
+        b=C31gzjPez+kNcFatrK5gw1xFV2Zc9zZwRS00DMnmH19feSru+BW5S/AnfYD1Aq/wA1
+         Ltb0CYCXaVF/r7NGgo0Agq93OSvdHgXoSxRn8DFivoMEe8HVQ+YOjDmU5klMr9OxL1ti
+         SQWp2iOQQzOyPrYpYabBkYW5MvJwp2n63wTzGmDfj8cex33vPyDevO8P0ohfBf5CV26w
+         tGCvk2iVIOg+BId6UGtiJmN0Ka2ec67sLa8I/tL9Uhnfu9uH46SYhPtiQoy7NPS/2Jfu
+         eQ1Lob/M0wFG1k3ocM125vkmKm7r/0++y1nyXmGsG0tzuy6rXoJEOqzxjPhZdIODjTOD
+         OaZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784208853; x=1784813653;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=paGXn2CXcdZsSsOEnSXii4F6dQRW7fZtzSuMwBvtGAs=;
+        b=esetBny3IHyPYRjxOKx14jCIVgvMIaFsIk2KoMf0g4roSjLFFeImjrRa73amZ5muZ+
+         1XlqsO+C38s7G0VEQCbf01uFdQQ5qyHJd9+5912RjBjvsNNZJd0k92OU+UiRD5cmptkj
+         m8Fz81IYc8412pLe+EqEti99M9sPY5R+tpmn/iE958pR1QNvrRfDY0JBdU/bXknaNC6m
+         8ObVsTKj9/JV0XtlXcZtNUhnKMprJqzgpWIzFk6dhlV9aHE/wY8XQCL3bJH/5U+WDMtU
+         ZZlxdmPl67cWh1AghVY+n8+zAL7q0SsKVJ9YpEVU96EhXVe/pB3E6PLw/xZZQsyvMUyx
+         c7rA==
+X-Forwarded-Encrypted: i=1; AHgh+RryjIqsIN5vadWqiVLuAd2EZKi54fvNW4OJaKsQ9HfiiGvCmJ6+b0S09DNQL+TWsJNVnxACVt4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW4GrnO9tkUPG+VuHVxT9QXr07YbROYSyzI5W/8fok2YBAxYuC
+	XGEpR/pBJIrnRwYgMnHo92boVH16JkiMbv45Bz1gTArD3o46rod08i6Z
+X-Gm-Gg: AfdE7clurUrkr6ZFnBmu8goKMLWY7HdqBIxjOKEJsWX5Fk1xZMljFDrCM50QcD64WDL
+	2lDVIpdF4P3KsgrbD/j9nfSnjdPUY6mEkdyKnyhInVHYTL1/MqZ33LcI6hoptIpb+OhiEZS7viB
+	chOh62RfNT6YU7ohxEeIUJ1fM0MglcWRg4i/Xo8VvFUQcMQ1LasbbsE01j6sE7KWqwDNN+Gs0I3
+	JQ3yrSKk8+dAmJZkpRZo2aZYJ8jDFt8xaleqzReOPAkBrxESH4J6DtWq3bPXx4BMso8552zpbhX
+	kCGUMA2u2fmib+W3LS6ZLDJRkand7/Eel9rANHAM14DI3rw7MUaOt/OKkzHklvNMd9n/szoaraG
+	HYHMxBwSS9JmoVDQzqDPbzTqW+mpHudWydfnjk3x04st+3uj+wtNrUPBEnMKOXJrIihPr4D1teO
+	1/Sqrn
+X-Received: by 2002:a05:6808:30a9:b0:497:e7e2:757a with SMTP id 5614622812f47-4a496072bdbmr5807209b6e.31.1784208852841;
+        Thu, 16 Jul 2026 06:34:12 -0700 (PDT)
+Received: from localhost ([74.80.182.90])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4a1adca6bedsm18285572b6e.8.2026.07.16.06.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 06:34:11 -0700 (PDT)
+Date: Thu, 16 Jul 2026 16:34:05 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Markus Elfring <Markus.Elfring@web.de>, netdev@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Michael Grzeschik <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Yibo Dong <dong100@mucse.com>, LKML <linux-kernel@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: net: rnpgbe: Pass an expression directly in rnpgbe_rm_adapter()
+Message-ID: <aljdzTZ_f5v6ckVg@stanley.mountain>
+References: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
+ <alScHkiC3EmGzOlI@stanley.mountain>
+ <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
+ <aleFN4Z2XT3NP3od@monoceros>
+ <85ad473e-b2f5-4458-8973-a643f90eda5e@web.de>
+ <alikx3W3NX7r9o99@stanley.mountain>
+ <95abcefe-2211-4abb-9af2-7e8d7f4a9b76@web.de>
+ <062f9181-e494-4576-bedb-36de488c11ca@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,21 +92,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dhnylud7o5dhaaq6kvbes4vkml3ppa5ev542j2lyxdijibknzg@pfcy22wz6jav>
+In-Reply-To: <062f9181-e494-4576-bedb-36de488c11ca@lunn.ch>
 
-> So we need to make sure that the GPIO controller driver is available before
-> enumerating the switch device. One way to achieve is by creating the GPIO Aux
-> device in the pci/pwrctrl/pci-pwrctrl-tc9563.c driver and let the GPIO
-> controller driver use I2C communication for setting up the GPIOs. Thankfully,
-> the switch allows both I2C and BAR MMIO configurations for internal GPIOs.
+On Thu, Jul 16, 2026 at 03:24:22PM +0200, Andrew Lunn wrote:
+> On Thu, Jul 16, 2026 at 11:48:43AM +0200, Markus Elfring wrote:
+> > > In C writing if (!p) and if (p == NULL) are always equivalent but weirdly
+> > > the NULL doesn't have to zero.  It's part of the C FAQ.
+> > > https://c-faq.com/null/machexamp.html It's just a bit of fun trivia that
+> > > doesn't really matter unless you have a time machine.  Even if you invented
+> > > a time machine, the code here would still be fine because we have a NULL
+> > > test before dereferencing the results of our pointer math.
+> > Which expression evaluations would you interpret as pointer dereferences finally?
+> > https://c-faq.com/sx1/
+> 
+> This is all interesting, but nobody has yet explain how this function
+> can be called such that we have a NULL pointer.
 
-There was a comment from Rob that the GPIO controller should be
-associated with the upstream port of the switch. And there was a way
-to do that.
+mucse cannot be NULL.
 
-What we need to ensure is that the GPIO controller has an independent
-lifetime to the downstream ports. That would allow the downstream
-ports to return EPROBE_AGAIN, if the GPIO controller associated to the
-upstream port is still initialising.
+We call pci_set_drvdata() during probe() and it is still valid when
+we call the remove() function.
 
-	 Andrew
+regards,
+dan carpenter
