@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277B93AA1B0
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 07:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61F73A545E
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 07:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784186615; cv=none; b=NbAZZQ+gFfUO/MX7nN86RZaj7XnmT8feaD0fv86D/3jENCOJlG/bnDbVSC+0cVmAiIkB6wQb/8U5EmGjLAsuqv0WQLJbXNtSOibEXLZ2kgViOQEaU69xhZ+KyJQgz8nXIon61T0liUV9khbE/wHN2IQv7Dsjq8IvLI8nwlK7OCc=
+	t=1784186638; cv=none; b=QWZ+DLIWXxphY6gypH36jDqP4hHa0q9zfgiKFLRUZ18sxDrRGCa1QeMV+CZ6agJ0g9cmifffihtSQsOvzQA5nHQaLR1JefKfwCx9JNIJluMZYBXGAPhJgFqnOb2DHaxKsGhlUzEn+2uqEP4gdJU/bRd1m4PYT8eyZC6AAwWQDbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784186615; c=relaxed/simple;
+	s=arc-20240116; t=1784186638; c=relaxed/simple;
 	bh=Qj93WcIf0roTA+UVGrxKqKVHv9uIT7q9yB6krGE2dXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDyrSjhHTvJ6xBfRXkO4z4XKQXJ7v1f4iY8ZyNgVXurEcNDCg3XHqaP9shd/LdHo3OhQoFENzMYP4LNzThxgOKaF+toG+3YgADJuli3Y5IFZgxwxNFVf2sMdjl8/LKSPHZ3qTzeCeCF2gXcFBEL7EXnTydAurHeAZpWsoUkmnmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAcHFnt/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=p166HeRL5Ew86NRKl0GVNMhl8ju4sgsSdT3npGVdM1wVr2TZ4fFBeU5K+1Us3X0qLnDe15SeXuh/qOSio2/grWkS3MHXufU7DtA+sOn0Vnd1DBZmfXziNfgeyl1XP7i88kv9Ie0W8u3v8dKt329q+pIpUMEqvB6vet+NwIpWHI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YgAek4lY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAcHFnt/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3BA1F000E9;
-	Thu, 16 Jul 2026 07:23:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YgAek4lY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546ED1F000E9;
+	Thu, 16 Jul 2026 07:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784186602;
+	s=k20260515; t=1784186628;
 	bh=p24jZ2ZMlRf79TdHC+v9jF63crGEdKFlpawhSZZaWgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XAcHFnt/Le+2eqPaSU22+Jo2dLIUh9C3lDgK+Asr8X0Ct5SE4ivo2Qj/TZ5NotYAe
-	 bPTQ0H/zPLE6sBNHh+SRJm1Qn/1l11unpccM0eyGPy4IKCVTM6yoA2f0udNsLXRvij
-	 unJ8qTxyKdHw2jUeqKO9NKoplGUUN+j0sekkh7TqRV/aIQHnLKpxPTSzZUhyCzwMjf
-	 Myy+DcX226pWHUHUZG3/6jqkWBi575bSFbyolHCzkcWeMdOwC7NgLLAeGGFkJpWl2z
-	 bAeVERWroVXpBEy60fN5J2wO7pIaMnM+ZdaWJjjlKjFXL29slLvMLsil4T8creqY/K
-	 4neIWQYwlQk+g==
+	b=YgAek4lYhVNkS6cCm9GHOkvi9+eGMJlopxFVtp26olufGcIP1SwDioLvoimjWrJnn
+	 4rXRBK/5gqCHGB7aLvu9D9tc7HOSdrfEEeuj1HjSGud0ZaLBPtFPpXayMjik2QZFKX
+	 /f8bbC4ifHttMEr0KyHYXFOM/fCCjQUOQRicwHIrbxn7P9PWZQHOsiru2rjx6HqhOp
+	 RHY/r4ryhJlwBr+3olptIKgp3rQeLVIxwLXpmrowahut6SpV31XvQxBW85OTKxNath
+	 zXrWmhq6A/ZmEh3kd6yLfAEDAaRL9c5kMVqWDDXyhppB7YHxLjICwrSRHVXaobF9ch
+	 1rQNg1sMYP4OQ==
 From: Simon Horman <horms@kernel.org>
 To: nikhil.rao@amd.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -39,8 +39,8 @@ Cc: Simon Horman <horms@kernel.org>,
 	pabeni@redhat.com,
 	jacob.e.keller@intel.com
 Subject: Re: [PATCH 5/6] pds_core: add host backed memory support for firmware
-Date: Thu, 16 Jul 2026 08:23:13 +0100
-Message-ID: <20260716072313.192902-1-horms@kernel.org>
+Date: Thu, 16 Jul 2026 08:23:24 +0100
+Message-ID: <20260716072323.193018-2-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260708212222.296202-6-nikhil.rao@amd.com>
 References: <20260708212222.296202-6-nikhil.rao@amd.com>
