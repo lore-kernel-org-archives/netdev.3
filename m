@@ -1,135 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A9732AABC;
-	Thu, 16 Jul 2026 14:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AE0431A41;
+	Thu, 16 Jul 2026 14:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784212519; cv=none; b=S/kGr7r7dgc3UGfoPWYvRg1PjwY6blYYDmUPD7Hkh75ickPUIlxl/npoQZPMjlu7HJqj8A5KVVbbpJZa6NV24ogfYPgj1irDWA4R5E3Ta1CXAzQAsbPa4qLdfwABZkTbhILKHfun2vBbHBopiBJgLIABy0cO0ivpP2ot/q9FXG4=
+	t=1784212533; cv=none; b=M9W6AFF398mylRkCL2UYF0NJkXZq4qtCkn5HejkqRzKB9r3LbrHfPiy7JFtn0HwxVYq57YAH4hZcd6Q/FlTC4LgqnVqho4jhjCV8XB9AckioiBcdCj8Q0aZIapdfSCZRaAPkWf/fCQC/Sh5f1a3/aGuYT2juECFqVTbc93E9LWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784212519; c=relaxed/simple;
-	bh=tI6eGVujEQz+se3/5kUt9v2hbjwpTGiGm/4kqsAnpFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHeoSL9/VgWLX+3BOGol3V8NnqPO7Y6Uwcb7L/OpvYHhUlmK9SGVlatGIYu8jNB7KxdrNXv55hw1p7OMVWf/afaplhTXnSbYdIVRZihYX1i0hNIWr08g9uTjkvrcOylGq9u7cjJKAJ5quKkTyj1pgDL/yPZorZODF7OJPrikFyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8GYxoeh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784212533; c=relaxed/simple;
+	bh=QnyyYZAw3BAZXQq4kuAEMR6OjgpOQzxAzxKnZ2HiD2k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mxeJPdV7dULxzCX2t5FH79vvRn2IuZKiz0RIDh5Ue5daw+/uKg9B61V05Wafz8gnninbpAwZA3EYJ9XkATbOuMOVF0uHywzDRhOx/ORpSM8JhlFAwSguxObY8pdymeXBA+z4vOO9NN3wJ+tdfkbGOwNdQ5cAhykpmONCFe2DNhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XeL2mdAl; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8GYxoeh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F7B1F00A3A;
-	Thu, 16 Jul 2026 14:35:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784212518;
-	bh=WfYOXDPVJiDhZJzHJ60q7OH+ShSGL2GD7yqQK0LSNDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R8GYxoehJNGuBKNmeMP56ejtqddJgB27Hr+tTV5wm2kInCEgLnLaiw3tbdj+hXmLw
-	 6flGOeeBmnwG5PSS/ZzHJp75n5GdjtlpICxIU2wrh9SvN2znRz8mQejh5urx2Rc+Q8
-	 tWtsWws5tRdUpoOy1YeSVUuaM4TOREYKf4kMwk+c=
-Date: Thu, 16 Jul 2026 15:35:24 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Wongi Lee <qw3rtyp0@gmail.com>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jungwoo Lee <jwlee2217@gmail.com>
-Subject: Re: Please apply 736b380e28d0 and eca856950f7c down to 6.1.y
-Message-ID: <2026071658-marigold-native-a83f@gregkh>
-References: <ajuR7rZYU943EG6p@DESKTOP-19IMU7U.localdomain>
- <2026062417-conceal-driving-0ebd@gregkh>
- <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
- <2026062416-amulet-paradox-cf7c@gregkh>
- <ajum4HXbhgdRl6Vz@DESKTOP-19IMU7U.localdomain>
- <akJ9gzZrhXMUomcg@eldamar.lan>
- <aljSrJ_4uwHERDHk@eldamar.lan>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="XeL2mdAl"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4675f5e23;
+	Thu, 16 Jul 2026 22:30:07 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: kuniyu@google.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn
+Subject: [PATCH net v4] raw: annotate lockless match fields in raw_v4_match()
+Date: Thu, 16 Jul 2026 22:29:58 +0800
+Message-Id: <20260716142958.3064224-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aljSrJ_4uwHERDHk@eldamar.lan>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f6b55b8b503a1kunme8cc079a6e14
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTUpKVkJMQhhMH0oYTRkZGFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=XeL2mdAlNMfgvNlc4v37oYboUNpwZvO+YjBmO5TFL461qvAnxG7GBlENaG3VP08Q3PN5htWxgQzeogHj6/VoGtVn/86Vklexnj0aATNvjFky0hh/Om+AMGrNTwyHLf14pOyNV8qghJPkEEvZmpYnhf0BYgVtAs17n1coAvhKBOI=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=9v7Z/bdV62n5iKi1DVBgcg9dQLXbtUDHd1e2VQIBcgM=;
+	h=date:mime-version:subject:message-id:from;
 
-On Thu, Jul 16, 2026 at 02:46:36PM +0200, Salvatore Bonaccorso wrote:
-> Hi Greg,
-> 
-> On Mon, Jun 29, 2026 at 04:13:23PM +0200, Salvatore Bonaccorso wrote:
-> > Hi Greg,
-> > 
-> > On Wed, Jun 24, 2026 at 06:44:00PM +0900, Wongi Lee wrote:
-> > > On Wed, Jun 24, 2026 at 11:37:29AM +0200, Greg Kroah-Hartman wrote:
-> > > > On Wed, Jun 24, 2026 at 06:30:03PM +0900, Wongi Lee wrote:
-> > > > > On Wed, Jun 24, 2026 at 11:00:45AM +0200, Greg Kroah-Hartman wrote:
-> > > > > > On Wed, Jun 24, 2026 at 05:14:38PM +0900, Wongi Lee wrote:
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > Could the following upstream commits be queued for the active stable
-> > > > > > > trees?
-> > > > > > > 
-> > > > > > >   commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5
-> > > > > > >   ("ipv6: account for fraggap on the paged allocation path")
-> > > > > > 
-> > > > > > I do not see that commit id in Linus's tree, are you sure it is correct?
-> > > > > > 
-> > > > > > >   commit eca856950f7cb1a221e02b99d758409f2c5cec42
-> > > > > > >   ("ipv4: account for fraggap on the paged allocation path")
-> > > > > > 
-> > > > > > Same here, no id of that one in Linus's tree that I can see.
-> > > > > > 
-> > > > > > thanks,
-> > > > > > 
-> > > > > > greg k-h
-> > > > > 
-> > > > > 
-> > > > > Hi Greg,
-> > > > > 
-> > > > > First, sorry for confusing you.
-> > > > > 
-> > > > > The commit IDs are from netdev/net.git:
-> > > > > 
-> > > > >   736b380e28d0480c7bc3e022f1950f31fe53a7c5
-> > > > >   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=736b380e28d0
-> > > > > 
-> > > > >   eca856950f7cb1a221e02b99d758409f2c5cec42
-> > > > >   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=eca856950f7c
-> > > > > 
-> > > > > They were applied to netdev without Cc: stable@vger.kernel.org, so I
-> > > > > wanted to flag them for stable handling but I send it too fast (before
-> > > > > merge).
-> > > > > 
-> > > > > I will resend the request with the Linus tree commit ID.
-> > > > 
-> > > > They have to be in Linus's tree, before we can take them in a stable
-> > > > release, right?
-> > > > 
-> > > > And why were they not originally tagged with the cc: stable?  That would
-> > > > save you time in the future as it would all just happen automatically.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > 
-> > > Right, my fault.
-> > > 
-> > > Also I just forgot cc'ing stable when sending it. I'll apply it next time.
-> > 
-> > Small heads-up: Both commits are now in Linus' tree and included in
-> > v7.2-rc1:
-> > 
-> > $ git describe --contains 736b380e28d0480c7bc3e022f1950f31fe53a7c5
-> > v7.2-rc1~29^2~66^2
-> > $ git describe --contains eca856950f7cb1a221e02b99d758409f2c5cec42
-> > v7.2-rc1~29^2~66^2~1
-> > 
-> > Can you queue those as needed down to the 6.1.y stable series?
-> 
-> Can you still pick this as well for 6.1.y? The upstream commit
-> eca856950f7cb1a221e02b99d758409f2c5cec42 does not apply cleanly to
-> 6.1.y but this is just because it deletes a comment (the second hunk),
-> which was never added to 6.1.y.
+raw_v4_match() is a lockless match helper under sk_for_each_rcu(). It
+still reads inet->inet_daddr, inet->inet_rcv_saddr and
+sk->sk_bound_dev_if with plain loads while bind, connect and
+bind-to-device paths can update the same match fields concurrently.
 
-Now applied, thanks.
+Annotate only those mutable match fields in raw_v4_match(), and do so
+at the point of use instead of hoisting the bound-device read before
+the earlier short-circuit tests.
 
-greg k-h
+Also annotate the raw bind writer and the shared IPv4 datagram connect
+writer used by raw sockets, so the address fields updated on bind and
+connect match explicit WRITE_ONCE() updates.
+
+This version intentionally leaves the shared disconnect-side IPv4
+writers to follow-up cleanup and limits the writer changes here to the
+raw bind path and the datagram connect path directly exercised by raw
+sockets.
+
+Fixes: 0daf07e52709 ("raw: convert raw sockets to RCU")
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+v4:
+- drop the __udp_disconnect() annotation
+- drop the inet_reset_saddr() annotation
+- keep writer changes limited to raw_bind() and __ip4_datagram_connect()
+- previous version: https://lore.kernel.org/r/20260611035318.1091442-1-runyu.xiao@seu.edu.cn
+
+v3:
+- drop the inet_num annotation for raw sockets
+- cover inet_daddr as well
+- avoid hoisting sk_bound_dev_if into a temporary variable
+- annotate the matching IPv4 writer paths
+
+v2:
+- note that inet_num and sk_bound_dev_if already have WRITE_ONCE() writers
+- add WRITE_ONCE() in raw_bind() for inet_rcv_saddr
+- previous version: https://lore.kernel.org/r/20260601073937.1137673-1-runyu.xiao@seu.edu.cn
+
+ net/ipv4/datagram.c |  4 ++--
+ net/ipv4/raw.c      | 23 ++++++++++++++++-------
+ 2 files changed, 18 insertions(+), 9 deletions(-)
+
+diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
+index 1614593b6d72..7d25519a6cdd 100644
+--- a/net/ipv4/datagram.c
++++ b/net/ipv4/datagram.c
+@@ -63,12 +63,12 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr_unsized *uaddr, int
+ 	}
+ 
+ 	/* Update addresses before rehashing */
+-	inet->inet_daddr = fl4->daddr;
++	WRITE_ONCE(inet->inet_daddr, fl4->daddr);
+ 	inet->inet_dport = usin->sin_port;
+ 	if (!inet->inet_saddr)
+ 		inet->inet_saddr = fl4->saddr;
+ 	if (!inet->inet_rcv_saddr) {
+-		inet->inet_rcv_saddr = fl4->saddr;
++		WRITE_ONCE(inet->inet_rcv_saddr, fl4->saddr);
+ 		if (sk->sk_prot->rehash)
+ 			sk->sk_prot->rehash(sk);
+ 	}
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index 5aaf9c62c8e1..dfb294b5c794 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -120,13 +120,21 @@ bool raw_v4_match(struct net *net, const struct sock *sk, unsigned short num,
+ 		  __be32 raddr, __be32 laddr, int dif, int sdif)
+ {
+ 	const struct inet_sock *inet = inet_sk(sk);
++	__be32 daddr, rcv_saddr;
+ 
+-	if (net_eq(sock_net(sk), net) && inet->inet_num == num	&&
+-	    !(inet->inet_daddr && inet->inet_daddr != raddr) 	&&
+-	    !(inet->inet_rcv_saddr && inet->inet_rcv_saddr != laddr) &&
+-	    raw_sk_bound_dev_eq(net, sk->sk_bound_dev_if, dif, sdif))
+-		return true;
+-	return false;
++	if (!net_eq(sock_net(sk), net) || inet->inet_num != num)
++		return false;
++
++	daddr = READ_ONCE(inet->inet_daddr);
++	if (daddr && daddr != raddr)
++		return false;
++
++	rcv_saddr = READ_ONCE(inet->inet_rcv_saddr);
++	if (rcv_saddr && rcv_saddr != laddr)
++		return false;
++
++	return raw_sk_bound_dev_eq(net, READ_ONCE(sk->sk_bound_dev_if),
++				   dif, sdif);
+ }
+ EXPORT_SYMBOL_GPL(raw_v4_match);
+ 
+@@ -724,7 +732,8 @@ static int raw_bind(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 					 chk_addr_ret))
+ 		goto out;
+ 
+-	inet->inet_rcv_saddr = inet->inet_saddr = addr->sin_addr.s_addr;
++	inet->inet_saddr = addr->sin_addr.s_addr;
++	WRITE_ONCE(inet->inet_rcv_saddr, addr->sin_addr.s_addr);
+ 	if (chk_addr_ret == RTN_MULTICAST || chk_addr_ret == RTN_BROADCAST)
+ 		inet->inet_saddr = 0;  /* Use device */
+ 	sk_dst_reset(sk);
+-- 
+2.34.1
