@@ -1,131 +1,118 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from mailrelay.tu-berlin.de (mailrelay.tu-berlin.de [130.149.7.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC42938D414;
-	Thu, 16 Jul 2026 20:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C8B30E84F;
+	Thu, 16 Jul 2026 21:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.149.7.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784235317; cv=none; b=lU9ROSma+SYqDeQ2FIJn2nLXxQImZIBn0bhpw0Y5Z7LrdgG27W6kir475yzGjfHjBYkHy8Mee0tuimRrhafsgILqzQ0gkTqwauBFU29/C5lO29jgQDhr9Eg1m3yLp5drQwrWHFjh9tmh1H3Q8ykQ4/d0SFjqb7JHX3RaDzbtUNE=
+	t=1784235701; cv=none; b=OVHLBD4s6SYFj0MVAOwNihvW7ofzd/B+tcO3EH/Ll09Stp9dOV3qHZYJPg3K/sDUBKZDEDaH8NF0hJZlyWJWwwYlBjuxfz5AZnQYExsk6TlYlXjNj2HgDg/8oxNbukq6lgzw5HCywAhnqMBV0UWdyYk2c6K2/WrvP4B79TgGtpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784235317; c=relaxed/simple;
-	bh=/jYjeSXcOT3X5lsTrlA4VeJ2bkToZrgAD9L5OpajHv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nmvw5EtLIC9ZSI013uDEhHRlnTQZaxufQnUte3tvGvbTPuIqg9oJXes8fVzl3oZqkfFyUU9cvP0YZK7p0WEUvyXluZX0vC9gTqMv+q/7p/DDs0xDCwvxMUr8mBIYe0QieUF19Qf4sRh5dVfDb4GRQ9gBL0lmkihz6ZxbNqOy9PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=LappT5Ev; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SKpaO5xr; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1784235701; c=relaxed/simple;
+	bh=JqBxtipV9nCcLti9gGLdublE1c4tRouunvpT81RvG9Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=qp66HoQaPOdFWP1F9Gbuuy4+di5yvvkThQ8yYLfjVW4cSjYFdFFiXYqIsVAI4yYB/OE9kTNKZv1brIYnEEATPJgKkQKjvpamMlb9OlGKf1U8fhaUJo+zoQH9a8QJLP49j2cBa0TTntSa45qjDPDhSEbO6zm/HjhimRlMWJ+zsvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de; spf=pass smtp.mailfrom=tu-berlin.de; dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b=St5+GpZS; arc=none smtp.client-ip=130.149.7.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-berlin.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="LappT5Ev";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SKpaO5xr"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4B9FA1D000D4;
-	Thu, 16 Jul 2026 16:55:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 16 Jul 2026 16:55:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1784235312; x=1784321712; bh=OYy1tfJZXR
-	2TVEr/O4x4hI/z5S9nXSQdWXW3Zvav3OE=; b=LappT5Evn5BiYjBdwTkRCj55Ww
-	/UAwuAZkARNs3X+42FnBKa0bVXP4Z6tFOzMWCIaiz/D4pIRQP1DsqN++uGnYB6ps
-	fTjY+mSYvpDvHcPHp6EUleosFRFOMGM6Oh+ymM2fAGaWp3t9pYBRw8gjnW95csT0
-	/882UB3NTI113430X32JbbibXV1UMhvgOG7zTsIW+WQKbGvMB3it6X7+GzLlTIm+
-	YFt6a/m0WdYNLzs6wUZZQDU683J9JeuZhNVBuPJeCMXV1uwULSa5Q1bi52Smz5tn
-	JCbM6pxP20Msyq0paDKggKStDq2KV2YDq6Zj/qLPEdNVXehzsmzQsjqKYe9Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784235312; x=1784321712; bh=OYy1tfJZXR2TVEr/O4x4hI/z5S9nXSQdWXW
-	3Zvav3OE=; b=SKpaO5xrkvpvO+ahYfahkuR8q/8HL/b66VH8TfNoty9c0P4CIo+
-	ug8tHs62GgCsOZ55JxAZj60OpZ+RaoaJKsoGxg2xvx875AJZOwitvj3Q/kRTOdp4
-	+JyGNzHNlT7qqo5yNHk5kz/eyBCnBTgBQub1efcU9qT9rrRRXQkoNsRzVT0LkY1o
-	1lob/M+Y1tp5b7hr7NtDn4sjAMt002LA1+Nwv+cXnCAWNqeD/b7gfHGdcJfADaTP
-	LnHW5sy7e4hCiQ+hGy5PzyjdDTqiSwfXikJM49h6c77EDRQv9CT78603E2GQMKtT
-	FIN35g1Yk/RVh7dWpL/m8DC0pJdtj0JY0+w==
-X-ME-Sender: <xms:LkVZatnSGPXHgOtP5mGZRJwVYo4BLTf0DvFQcLVeP6JdQWOoR9GGkw>
-    <xme:LkVZan63dcXku7U8P6n9z4Sg_vguurKKQZfAzIGapbHmMYEdenVt169v24ybVEGzF
-    8HckIOC4xxCURyn2mGdwHP7CRm6Ash19n3MW64cNncRQN5yTYrJrqs>
-X-ME-Received: <xmr:LkVZap0Sr9Xw7B4T9ZCzb42uyxr27U722QwDpAG8IFCEVy4y4onDZ6fto2kZIHDIYMz5dErpT4bDDKPHAEnsGMgZqsQUTk_z>
-X-ME-Proxy-Cause: dmFkZTFnL8Z0ImdM+oE12G/gCpjnnlxANVgwjXf6yX+nI9cmWhvgDHv8JAC5kGzBVRZrmo
-    skBj6p+tOUDoxVvdB7lFEaYvL4A7NtsAX4BSTXRBmF/1Cex8moWBM/BkMnHNI/2YDRXf/g
-    31dC4YpopPx+WjICE/Eckixxg5PGf8qzZXfMWAUbgxjSfhEDBHtLf4mO1N0M0MPm6C5C0V
-    0JODzJzEWlpiK4YjT+GhcX1O5C8pTe2OYWqJtwuwNV7eoJdCRo7Ar1kMRN87FnL9M6Ya6Y
-    uWjVwRN94miv9DJl2PdB+LSNi413Ef+7acgnia5gR40rGoSALm2OjBeWSnAeZWnK79puEk
-    lqqtPVnIERQdl9fhODqBSkSm7Q50ZU9LLJUuUST4AvBmYgj4WqhOSWyq5hfyPWZOeNn6ff
-    xUcBgIxsjxnubmkQR8YHSr4COOXzBSGO6yfoTN7QE8UnLtwWiQjgDKJAF+FfQeUkkMW+Wz
-    rmhMmylm2x/5rLfcl7tPgGRcX056PWwSVdG1iEEudOHe0XKINh3JRSmugrgWkKDrd2SNkm
-    8Z2J0JKYPYymi6h9UDTiWDhF1v1mcJctEQgz26D41nmCRFKajTiNkULYQ0H/56/tACMwec
-    p+FeDvD5uXF5H1/oJcIezLGqtE1xOvxO3CtIIn9nQkzpN2eqphoUfIvv5u7A
-X-ME-Proxy: <xmx:LkVZaqEY6QmrUqdu2_N5oWDkzLy3XovlYGX5vG2joBrKQ5F82g18DQ>
-    <xmx:LkVZagixCh_iTkV180UBweeqDUBUyZ__730Ng2QN_7mvfViD9mqViA>
-    <xmx:LkVZalCOstYraig59tv5Igdif5_2qHGJO_niOQH9_d-c4bUftpn_YQ>
-    <xmx:LkVZaqTIZepf3DcJiRsfeGeJNZamy80oX8Dlar5LA4ISXU8CjsS5XQ>
-    <xmx:MEVZauy1BayoYwFnjVNb9Lvf0zGSl4nC6118WTAfGzRBjv37b9CGzIau>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Jul 2026 16:55:09 -0400 (EDT)
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: netdev@vger.kernel.org
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Breno Leitao <leitao@debian.org>,
-	stable@vger.kernel.org,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH v2 ipsec] xfrm: espintcp: fix UAF during close
-Date: Thu, 16 Jul 2026 22:54:59 +0200
-Message-ID: <a62857f72af228a0781a5c0cc0f8d898d9e0d7be.1784234935.git.sd@queasysnail.net>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b="St5+GpZS"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
+  d=tu-berlin.de; s=dkim-tub26; t=1784235698;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=4DQ9VPaSq78GhJMbvMtbs+WDO5JcO2vEYQLjBUA18os=;
+  b=St5+GpZSWGYweWH2bZQFygiU2o3xJJPaGZYFzpQfQezoQve4WD/9x798
+   6nm+uAaVQplMP3rzz7V4uKyaDg2xbJXjq5PAM9YTK9oDv0CJWaRtj3aUX
+   e/7t1/0i4CkOMDoH+ccGsvX1vH20591Du+ZgRTsIuW6PUVZIymycXC06B
+   mIENH5y+0SAxbWmveDK4tHvidDLWV23QUABlNtAqoZBDGvo84s9qhHQib
+   3NPegPXbOWy6jEZRty5BnQmPRDnNe2qeVo3TFfS5pQT4ogWWeKl2FPpeV
+   DCs4QP+o1MjUvMrAxDfKuqEG4GOCrd1LC9y5CYoHi31hAlFm0nt1UXkgp
+   g==;
+X-CSE-ConnectionGUID: RlLQaKWPQPCcHej6PzKgFA==
+X-CSE-MsgGUID: 7EZ/1NOQRZSi9qa5HoGMuA==
+X-IronPort-AV: E=Sophos;i="6.25,168,1779141600"; 
+   d="scan'208";a="64414930"
+Received: from mail.tu-berlin.de ([141.23.12.141])
+  by mailrelay.tu-berlin.de with ESMTP; 16 Jul 2026 23:00:25 +0200
+From: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>
+Date: Thu, 16 Jul 2026 22:59:47 +0200
+Subject: [PATCH net-next] net/sched: sch_cake: skip clearing unused tins
+ during rate adjustment
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-ID: <20260716-sch_cake-skip-clearing-tins-v1-1-d9787df20c28@tu-berlin.de>
+X-B4-Tracking: v=1; b=H4sIAEJGWWoC/yXM0QrCMAxA0V8ZeTawFlaLvyIiNYtbnMTRdDIY+
+ 3erPl4unA2Ms7DBqdkg81tMXlrDHRqgMenAKH1t8K0P7dEFNBqvlCZGm2RGenLKogMWUcPYheh
+ 8FwP1DFWYM99l/elnUC6ovBa4/I8ttwdT+eKw7x8QnUUeiQAAAA==
+X-Change-ID: 20260716-sch_cake-skip-clearing-tins-856812586cde
+To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, Jamal Hadi
+ Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <cake@lists.bufferbloat.net>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, =?utf-8?q?Jonas_K=C3=B6ppeler?=
+	<j.koeppeler@tu-berlin.de>, Mike Pham <mikepham4321@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784235624; l=1759;
+ i=j.koeppeler@tu-berlin.de; s=20260716; h=from:subject:message-id;
+ bh=JqBxtipV9nCcLti9gGLdublE1c4tRouunvpT81RvG9Y=;
+ b=5dm5ZXEjqLKU4ygiNJTjMo1lkIE4x3Wvw6cznsNK2Sf2FLWk/OMzYflOTxJonhxVFDT+Zpbwt
+ lrmRMXrbpe2BSoyJpnv5amIEWA9Unmi7l6VKEdlEWF0uBvjuX0q5fZ4
+X-Developer-Key: i=j.koeppeler@tu-berlin.de; a=ed25519;
+ pk=gCux0rX5l27ZRzRDqTc0LtoO66uPAXTt/SX1DzcQoBk=
 
-ZDI reported and analyzed a race condition during close for espintcp
-sockets:
+When cake_configure_rates() is called from the dequeue path with
+rate_adjust=true, it only needs to update the rate parameters. The
+loop that clears the unused tins is both unnecessary and harmful in
+this path:
 
-    espintcp_close() frees emsg->skb via kfree_skb() without holding
-    any socket lock. Concurrently, the xfrm_trans_reinject work queue
-    invokes esp_output_tcp_finish() -> espintcp_push_skb() ->
-    espintcp_push_msgs() -> skb_send_sock_locked(), which reads the
-    same skb as a data source.
+ - cake_clear_tin() overwrites q->cur_tin and q->cur_flow, which are
+   actively used by cake_dequeue(), corrupting the dequeue state.
+ - iterating over the unused tins and their internal queues to purge
+   packets adds needless overhead to the hot path.
 
-Fix this by adding a synchronize_rcu() call after resetting sk_prot,
-since esp_output_tcp_finish() runs under RCU and won't use a socket
-with sk_prot == &tcp_prot.  Simply taking the socket lock in
-espintcp_close() could lead to leaks, if esp_output_tcp_finish()
-re-adds an skb in the slot we just freed. After this, the existing
-barrier() is no longer needed.
+Skip the entire loop when rate_adjust is set, as neither
+cake_clear_tin() nor the mtu_time update are needed when only the
+rate changes.
 
-Cc: stable@vger.kernel.org
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Reported-by: zdi-disclosures@trendmicro.com
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: 15c2715a5264 ("net/sched: sch_cake: fixup cake_mq rate adjustment for diffserv config")
+Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Tested-by: Mike Pham <mikepham4321@gmail.com>
 ---
-v2: remove the unnecessary barrier()
-v1: https://lore.kernel.org/netdev/50e2ab4348eb8177581058f0152394cfae6a8d27.1783071494.git.sd@queasysnail.net/
+ net/sched/sch_cake.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- net/xfrm/espintcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index f78f8e950776..845e1c017714 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -2609,9 +2609,11 @@ static void cake_configure_rates(struct Qdisc *sch, u64 rate, bool rate_adjust)
+ 		break;
+ 	}
+ 
+-	for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
+-		cake_clear_tin(sch, c);
+-		qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
++	if (!rate_adjust) {
++		for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
++			cake_clear_tin(sch, c);
++			qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
++		}
+ 	}
+ 
+ 	qd->rate_ns   = qd->tins[ft].tin_rate_ns;
 
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 374e1b964438..cd817b855ba1 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -515,7 +515,8 @@ static void espintcp_close(struct sock *sk, long timeout)
- 	strp_stop(&ctx->strp);
- 
- 	sk->sk_prot = &tcp_prot;
--	barrier();
-+
-+	synchronize_rcu();
- 
- 	disable_work_sync(&ctx->work);
- 	strp_done(&ctx->strp);
--- 
-2.54.0
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260716-sch_cake-skip-clearing-tins-856812586cde
+
+Best regards,
+--  
+Jonas Köppeler <j.koeppeler@tu-berlin.de>
 
