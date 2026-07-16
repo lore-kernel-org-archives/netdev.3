@@ -1,164 +1,71 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A117222590
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 21:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2753AEF53;
+	Thu, 16 Jul 2026 21:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784237876; cv=none; b=n9MkuL4JSTRPTeoAMB5LFbyyagxbDhC074Lv+9lyVHW2k3JpAkvnCpzeFNvgojQh0Or9AnnPilKS81il2LOp8Z/8+3HewL2K2xK0pTNpaP+cUu6kd0SVBaCIpyQTbCd9Ikll+eZMhC7EaqV6d/D3rUEM9a2oEdLnMIVlFFq8ivE=
+	t=1784238473; cv=none; b=Dsvj0ZTU9v/TX60k2s5oG3HswjOJQZDWnV+vMNlEDiiAIJ7cVbKmoq98kID9aK+9uCsAHPw08lflnWvX2njbvN66jNzUiACm2+0IzzhTYtOhYnpSlJ2UeCesFd3lyIXI4fa8y85oTIbhnIFt/5Xr4dmauG69PSD9x6b3lT7jdzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784237876; c=relaxed/simple;
-	bh=mCDPCJAotZrB1Cv5XTQKUnAyuHiGHB/+UMEviEZlbzE=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=t0SK2E3pMs2kNdyVEpNLxg/qMtY5xBKJtyFDxKWoQ884izCELRrao3zXsPSqQIwFupPEHKRDPkuRH0H15TvSCz+3xXv/qWdMdqvRTaWnQEJ5qzwZifQEpzCsMkUdCSV+r9SaJhxqtNWNLOSK84+kISTvcYJuBUBs1Amh8IGlrxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fOsd6C2D; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y7yI/eAn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fOsd6C2D; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y7yI/eAn; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784238473; c=relaxed/simple;
+	bh=SCP5vSspLwmjnjt6JQ/eCVJ7Hj5onjVMARZH/tKBcwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G9Wh0+4r4s0cZWtjPtyA70qxBLNXF7Ql04zIOzVF2+4U0CjyKhU8yHP6ieMttZH/TOhzJiwmqOzn4yfCEZfTxIorlsj6mgw+SwUi+tEG/rAtAfi2P7FsmjOoDeX4ZGt8PVW7zLay2vxVfEeQNEkWu8UNOfCEUOzcXyE3rIpsj/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x+3W/Rst; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fOsd6C2D";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y7yI/eAn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fOsd6C2D";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y7yI/eAn"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 933663E2F;
-	Thu, 16 Jul 2026 21:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784237866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnebozS6QJhS2X7twaFcusa88EZNqoa76Ua28sbuN04=;
-	b=fOsd6C2DJW8eyzDpkfa42H5S8p7d2GlxeQz5ws2CbUg6E4KvoGmcL5GkIV9//U4CPL2LDP
-	xo3JvyI50hvuB+wR9ao0I4itr3Tx//pw3Om7L0YuYHPVK7+c1zm9AN/94vROVVfXsDz6Rk
-	T2R4AlbauSEwJDzzqNdfy+e+qkm0ADY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784237866;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnebozS6QJhS2X7twaFcusa88EZNqoa76Ua28sbuN04=;
-	b=y7yI/eAndJZ3tKIc0kmrR0qfGE5FbztmrS0ot3prziBiRMdP3ufRro+svLxaSVJ3W7Xe2w
-	qqhB7xjHtV7/u7AA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fOsd6C2D;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="y7yI/eAn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784237866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnebozS6QJhS2X7twaFcusa88EZNqoa76Ua28sbuN04=;
-	b=fOsd6C2DJW8eyzDpkfa42H5S8p7d2GlxeQz5ws2CbUg6E4KvoGmcL5GkIV9//U4CPL2LDP
-	xo3JvyI50hvuB+wR9ao0I4itr3Tx//pw3Om7L0YuYHPVK7+c1zm9AN/94vROVVfXsDz6Rk
-	T2R4AlbauSEwJDzzqNdfy+e+qkm0ADY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784237866;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnebozS6QJhS2X7twaFcusa88EZNqoa76Ua28sbuN04=;
-	b=y7yI/eAndJZ3tKIc0kmrR0qfGE5FbztmrS0ot3prziBiRMdP3ufRro+svLxaSVJ3W7Xe2w
-	qqhB7xjHtV7/u7AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3069779AE;
-	Thu, 16 Jul 2026 21:37:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cFCkLClPWWqsXAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 16 Jul 2026 21:37:45 +0000
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x+3W/Rst"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=o+Ass545k6w6Fj8Enob1p3mv+kPnP8r1DzVN8pwwt7o=; b=x+3W/Rstc4h+YIWcn9ZgbRe66m
+	KYFxrTJnJk6VZmbgGQ62/MdOLrRCAfptPjbks5PcnijVSWUurk4aAtxWbqUnEx41gETATvcBN4FLf
+	60NYRNjI6BjkZLyPfrOUkbdXflmrX+5zloB48JQestTUFYsQbCmI9gMkOk6kxELt0Cds=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wkTvi-00CeeE-Tu; Thu, 16 Jul 2026 23:47:42 +0200
+Date: Thu, 16 Jul 2026 23:47:42 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: tresonic <tresonic@mail.de>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
+	rmk+kernel@armlinux.org.uk, kuba@kernel.org
+Subject: Re: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
+ ("net: stmmac: enable RPS and RBU interrupts")
+Message-ID: <17ebe5ba-16a5-4b3a-94cd-e9707c88df3e@lunn.ch>
+References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net v2 2/2] geneve: require CAP_NET_ADMIN in the device
- netns for changelink
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
- pabeni@redhat.com, andrew+netdev@lunn.ch, fmancera@suse.de, 
- sd@queasysnail.net, linville@tuxdriver.com, mschiffer@universe-factory.net, 
- maoyixie.tju@gmail.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260716203500.70573-3-doruk@0sec.ai>
-References: <20260716203500.70573-1-doruk@0sec.ai>
- <20260716203500.70573-3-doruk@0sec.ai>
-Date: Thu, 16 Jul 2026 23:37:31 +0200
-Message-Id: <178423785144.235120.6881009495052625519.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 933663E2F
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,lunn.ch,suse.de,queasysnail.net,tuxdriver.com,universe-factory.net,gmail.com,vger.kernel.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:email,0sec.ai:url,suse.de:email,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
 
-On Thu, 16 Jul 2026 22:35:00 +0200, Doruk Tan Ozturk <doruk@0sec.ai> wrote:
-> A tunnel changelink() operates on at most two netns, dev_net(dev) and
-> the sticky underlay netns geneve->net. They differ once the device is
-> created in or moved to a netns other than the one the request runs in.
-> The rtnl changelink path checks CAP_NET_ADMIN only against dev_net(dev),
-> so a caller privileged there but not in geneve->net can rewrite a geneve
-> device whose underlay lives in geneve->net.
-> 
-> geneve_changelink() applies the new configuration against geneve->net:
-> geneve_link_config() and the geneve_quiesce()/geneve_unquiesce() pair
-> reopen the underlay sockets in that netns (geneve_sock_add() uses
-> geneve->net), so the same reasoning as the tunnel changelink series
-> applies here.
-> 
-> Gate geneve_changelink() with rtnl_dev_link_net_capable(), at the top of
-> the op before any attribute is parsed, matching ipgre_changelink() and
-> the rest of the "require CAP_NET_ADMIN in the device netns for
-> changelink" series.
-> 
-> Found by 0sec automated security-research tooling (https://0sec.ai).
-> 
-> Fixes: 5b861f6baa3a ("geneve: add rtnl changelink support")
-> Cc: stable@vger.kernel.org
-> Assisted-by: 0sec:multi-model
-> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
->
+On Thu, Jul 16, 2026 at 10:10:25PM +0200, tresonic wrote:
+> Hello,
+> Please bear with me, this is my first time writing to a mailing list...
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Thanks for the report. Nice description for a first post. Lots of
+useful details.
 
-Thanks!
+> Since commit 1b9707e6f1a9, suspend (systemctl suspend) causes a full system freeze on my laptop. Fans and keyboard backlight stay powered; the machine is completely unresponsive and requires a hard power-off (holding the power button) to recover. I could not get any kernel output from the hang.
+
+1b9707e6f1a9 makes in effect 4 changes.
+
+Can you do some testing to see if the changes to
+DMA_CHAN_INTR_ABNORMAL or the changes to DMA_CHAN_INTR_ABNORMAL_4_10
+break it. Or both, but i think that is unlikely.
+
+Once you know which of those is responsible, can you test to see which
+of DMA_CHAN_INTR_ENA_RPS or DMA_CHAN_INTR_ENA_RBU broke it.
+
+It kind of sounds like an interrupt storm, but that is just a
+guess. If it is an interrupt storm, it suggests an interrupt is not
+being disabled during suspend.
+
+   Andrew
