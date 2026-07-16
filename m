@@ -1,134 +1,272 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A323A6EF7
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F083A6F05;
+	Thu, 16 Jul 2026 09:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194258; cv=none; b=UQRyzH/sUAk0HjHnPYu3qR2cYy0ag5WkX7V5d2V8U9rJKOSSQKtUGcj9evseHLOc9bAM84CWFyBekiFWxyqqQNqdTbUrnwYzQyA+II52ob0ERjCs2y7GixImRq/zGG1doF8F/xD7GR5lx6OxxByAuqAg60YObDbI0sRKwgmxRbE=
+	t=1784194439; cv=none; b=LpK8KN2pVl+onsuBqQUElBAu2MuXBBCytYc4Csx4wA0FeVH09/eqk7MjjLuSeFXrlFFstDVr0Fc8VH5ci4ucZ4ek7KDTumtafDZg1m7zRRDLQeD7NFvozYoggYccVwaA1BVGPQnhoNPe8oI9L8U41Um915mfd1MXawGHo+cjZVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194258; c=relaxed/simple;
-	bh=pfuyWgnWckbEnoDkJJeEl5ch2vupcxskEvCrGOFWUBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OybCJhelLjDVmL66kvpyWWJtAFaZTFT50xfxAu3Bl7tpN4CGmMTyC1v4IrpTkI8AbbmQe1JtDuAVuOK8WbnJh2ha9L+HRul7pMSwm91UHMfEnXu3tBexF5ezEj/kaJeUFR3CkDVQhls3FSsGpeBX21lvSJOLuByAqCHED8A6fEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gXlEJz+6; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784194439; c=relaxed/simple;
+	bh=RQ2P3hsXYxCVCq8vxdnpYwDh4mx4aaxlHNNPWJ1/7F8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BDtgAJBqvpsK/B4WdD1mlEpfZ3BCJjg1hD0TTg4hmeI4z4Q9aUBwa6D2g0kMhWx2bZOYxQpcFsD8TSwkq+UbnKeDHj0X6vzh8CIE2oG97N2w/arlbKRUtY0kZlJ+GqnnS52Rr9A7wgEBr93cu2lfGy/9Y1F6R5AbtEfhyV+BNEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RABLBVjL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gXlEJz+6"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e9ecb1e13bso2492297a34.2
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:30:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784194255; x=1784799055; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1EKuk/C1yP1k420D+fM+wL8Aaex9k+TpkPoGeES0JJs=;
-        b=gXlEJz+6Ma4xEZ8XamayC77e0LBD7ZW7WmkovfIuPVp4IZPzP1NuIAkXvNCgU6fxd6
-         id4oBw12Z7+PGy1XHBuWrMbvY4/vO1ceb1BS7rQfA64zmd45kldaMIDE3xoyon0tq1Ja
-         xeVEUmPh2yd3AQb2qkFm5OypvWKIvgQjlRepxBZNZuR44SadXyxKN6DsC3SIc/iReGMa
-         ajsmF9VR/PUQPZpxTZ9LZbaVX5ApNkoLzIWTcFB++2sycPBY6HyppaDnNnZFad94uI8V
-         gJTgb/M2E8rx2Sbmdova82q3bhJxEsipAJGksCgNWmQn8qX2J11HfPvENGfuVeW7IXxu
-         AIOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784194255; x=1784799055;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1EKuk/C1yP1k420D+fM+wL8Aaex9k+TpkPoGeES0JJs=;
-        b=EO634zxnG4yK8uiQktDVpNxyXihZFNPXDDEratWwOqOs/L20K9/UfTs//LRXloWNsO
-         nV4hwiLD0O97A70EN2X2cGdYalzha2b+RzvQN3bwvQdXCZZYzo8H2roCtWG/TG7KTGGw
-         eo6vIU35xAM6u7c84SvOYb0LW8MoJ2du2/GW20tI7WmHBQNr3Hkx6frgW/o9Wn/ytb/z
-         Y4am4JLXJvTK4le1hrl1L7Ho7/j79Fp937o2MEAYHAX5E1pvNsBdCJhgy93ZqmwD9dFN
-         wXybe2zEY4HvpX51JeatYxMrVNDpLR7kNf6uD+y1D3f0pfB47FPLmd1/CRRmPmnRqGS5
-         u6wA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq87A04fMSiRL/SxvzEA0PMsiJjCmytpL+qttLwDiUgH0BZ9SPLrR0MuUAbSWw2Q/C3F2ReEzg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykTUDfjQz/Ae0ghjdMi1p9ZdkhNT2IpK9mAjcmnUfXUZYFxZL1
-	Z4JSZMWMWOuzLqyaCoPz6xkDI9/WrM39zSWPow7d4vt62V0dby/azpxV
-X-Gm-Gg: AfdE7cm4lPIiEe/ZRaMBb+sOhvC+M7a7bYrOJIXzgxMdU/zp0zOcBM4C96PgyQP+MJ0
-	jNAH4Di8TRBSKVB55kEh/rpu92cuDfzQukXVo+qBi7qzI/hsyeEvWsVVtlHXERLs2PoGd18+Czx
-	8dqCKJm8yvx4oBNiphPfkyGB999HIfrBjr/JCK3iuFHi7nh/9zS9qkfSJ4fkR5S/o0VY3mukjlN
-	BNmRfIeov+bIUuqjfGgvPYyp4TF8zIV2XaixqdwFTpR2T0Eskq07EG7L2rCbY4BEK4j7utoIkQA
-	0ZCwRmOhvazmCY+/rSDJeRjGHxoKZ+wbw1hOJKyqZo9mH4gJy/mqKxAAC4GhjOhjq+YbUeJ9N5E
-	EUiSUU9HWdGXWF6ARAxscNnkcLdVFWwI6HB5VfjdF8VDgR/s0Q1IXYs3xkJomGqnI0Q5log==
-X-Received: by 2002:a05:6830:6d11:b0:7e9:cad9:4bd0 with SMTP id 46e09a7af769-7ec59b01b92mr4444987a34.3.1784194255207;
-        Thu, 16 Jul 2026 02:30:55 -0700 (PDT)
-Received: from localhost ([74.80.182.90])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb3f27besm18605443a34.25.2026.07.16.02.30.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 02:30:54 -0700 (PDT)
-Date: Thu, 16 Jul 2026 12:30:47 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Michael Grzeschik <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Yibo Dong <dong100@mucse.com>, LKML <linux-kernel@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: net: rnpgbe: Pass an expression directly in rnpgbe_rm_adapter()
-Message-ID: <alikx3W3NX7r9o99@stanley.mountain>
-References: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
- <alScHkiC3EmGzOlI@stanley.mountain>
- <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
- <aleFN4Z2XT3NP3od@monoceros>
- <85ad473e-b2f5-4458-8973-a643f90eda5e@web.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RABLBVjL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAFA1F00A3A;
+	Thu, 16 Jul 2026 09:33:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784194435;
+	bh=vTo70EXcAY1AdpA01QmFv+nicuUPm+Q2XR6ayAS68A4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RABLBVjLTTg0ePG/TJZnC1JlezFxCtnstZFm2lTzX5gK3HkRsUWbHbGtgHnqOMrIZ
+	 J23d2B/jveCRRyCpm9VK29SrWFOpWXqxL877WgVs4pBcwts4/gDnI8ItE6cJ5wO4K4
+	 uSqENw+r/NFYD3sopEoaTntEXr5AnWLXfWg/Qxfclb6PRjXXqeq3i1QJT3weMgOdhl
+	 qWKynvHZjXxzYWH4n6GU599UuhaCHSc1DA1Ngjk/IJVctsgOEdgi4vAYhthFtBQ5vk
+	 pfJpTAqPj7+XAiRL9bchiusjNlmE8UfaleatP3pfcWoB8k2Y4DmW5tqbpbNTjGYafL
+	 bRKALuAK6ZUFw==
+From: Simon Horman <horms@kernel.org>
+To: jackbb_wu@compal.com
+Cc: Simon Horman <horms@kernel.org>,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	wen-zhi.huang@mediatek.com,
+	shi-wei.yeh@mediatek.com,
+	Minano.tseng@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] net: wwan: t9xx: Add PCIe core
+Date: Thu, 16 Jul 2026 10:33:24 +0100
+Message-ID: <20260716093324.230974-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260709-t9xx_driver_v1-v4-1-a8c009d509c5@compal.com>
+References: <20260709-t9xx_driver_v1-v4-1-a8c009d509c5@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <85ad473e-b2f5-4458-8973-a643f90eda5e@web.de>
 
-On Wed, Jul 15, 2026 at 08:45:48PM +0200, Markus Elfring wrote:
-> 
-> Jonathan Corbet provided the following information.
-> 
-> “…
-> But Herbert's patch added a line which dereferences the pointer prior to the check. That, of course, is a bug.
-> …”
-> 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+--- Patch [1]: [PATCH v4 1/7] net: wwan: t9xx: Add PCIe core ---
+commit 4564b6641dc4f4a3fb3d169ca45443e5d18c66b7
+Author: Jack Wu <jackbb_wu@compal.com>
 
-Notice that it says "dereferences" not "does pointer math".
+net: wwan: t9xx: Add PCIe core
 
-> 
-> >                                                       Note, I didn't
-> > study the C standard
-> 
-> I hope that clarification approaches can evolve further according to this information source.
-> 
-> 
-> >                      if the compiler is free to optimize out
-> > do_something() also in the 2nd case, but at least today gcc doesn't.
-> 
-> Can development interests grow also according to another clarification approach?
-> 
-> Does &((struct name *)NULL -> b) cause undefined behaviour in C11?
-> https://stackoverflow.com/questions/26906621/does-struct-name-null-b-cause-undefined-behaviour-in-c11
-> 
-> 
-> 
-> Would you prefer to omit a “sanity check” in the discussed function implementation?
-> 
+Registers the T900 device driver with the kernel. Set up all
+the fundamental configurations for the device: PCIe layer,
+Modem Host Cross Core Interface (MHCCIF), Reset Generation
+Unit (RGU), modem common control operations and build
+infrastructure.
 
-This is irrelevant.
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> index 0000000000000..72259bf1b6033
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+[ ... ]
+> +static irqreturn_t mtk_pci_irq_msix(int irq, void *data)
+> +{
+> +	struct mtk_pci_irq_desc *irq_desc = data;
+> +	struct mtk_md_dev *mdev = irq_desc->mdev;
+> +	struct mtk_pci_priv *priv;
+> +	u32 irq_state, irq_enable;
+> +
+> +	priv = mdev->hw_priv;
+> +	irq_state = mtk_pci_mac_read32(priv, REG_MSIX_ISTATUS_HOST_GRP0_0);
+> +	irq_enable = mtk_pci_mac_read32(priv, REG_IMASK_HOST_MSIX_GRP0_0);
+> +	irq_state &= irq_enable;
+> +
+> +	if (unlikely(!irq_state) ||
+> +	    unlikely(!((irq_state & GENMASK(priv->irq_cnt - 1, 0)) &
+> +		      irq_desc->msix_bits)))
+> +		return IRQ_NONE;
 
-In C writing if (!p) and if (p == NULL) are always equivalent but weirdly
-the NULL doesn't have to zero.  It's part of the C FAQ.
-https://c-faq.com/null/machexamp.html It's just a bit of fun trivia that
-doesn't really matter unless you have a time machine.  Even if you invented
-a time machine, the code here would still be fine because we have a NULL
-test before dereferencing the results of our pointer math.
+[Severity: High]
+Does this logic silently drop hardware interrupts when fewer than 32 vectors are
+allocated?
 
-regards,
-dan carpenter
+Because hardware source bits map to fixed high bit positions (such as bit 28
+for MTK_IRQ_SRC_MHCCIF), systems that allocate fewer vectors will mask out
+these high bits with GENMASK(priv->irq_cnt - 1, 0).
+
+Evaluating !(0 & msix_bits) as true returns IRQ_NONE, which may eventually
+disable the interrupt line.
+
+[ ... ]
+> +static int mtk_pci_request_irq_msix(struct mtk_md_dev *mdev,
+> +				    int irq_cnt_allocated)
+> +{
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	struct mtk_pci_irq_desc *irq_desc;
+> +	struct pci_dev *pdev;
+> +	int irq_cnt;
+> +	int ret, i;
+> +
+> +	/* calculate the nearest 2's power number */
+> +	irq_cnt = BIT(fls(irq_cnt_allocated) - 1);
+> +	pdev = to_pci_dev(mdev->dev);
+> +	irq_desc = priv->irq_desc;
+> +	for (i = 0; i < irq_cnt; i++) {
+> +		irq_desc[i].mdev = mdev;
+> +		irq_desc[i].msix_bits = BIT(i);
+> +		snprintf(irq_desc[i].name, MTK_IRQ_NAME_LEN, "msix%d-%s", i, mdev->dev_str);
+> +		ret = pci_request_irq(pdev, i, mtk_pci_irq_msix, NULL,
+> +				      &irq_desc[i], irq_desc[i].name);
+
+[Severity: Medium]
+Could this trigger a -Wformat-security compiler warning?
+
+Passing a dynamic string variable directly as the format string to
+pci_request_irq() can lead to format string vulnerabilities. Should this use
+"%s", irq_desc[i].name instead?
+
+[ ... ]
+> +static u32 mtk_pci_ext_h2d_evt_hw_bits(u32 chs)
+> +{
+> +	u32 hw_bits = 0;
+> +
+> +	SET_HW_BITS(hw_bits, chs, MHCCIF_RC2EP_EVT_DEVICE_RESET,
+> +		    DEV_EVT_H2D_DEVICE_RESET);
+> +	return LE32_TO_U32(cpu_to_le32(hw_bits));
+> +}
+
+[ ... ]
+
+> +int mtk_pci_send_ext_evt(struct mtk_md_dev *mdev, u32 ch)
+> +{
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	u32 rc_base, hw_bits;
+> +
+> +	rc_base = priv->cfg->mhccif_rc_base_addr;
+> +
+> +	/* Only allow one ch to be triggered at a time */
+> +	if (!is_power_of_2(ch)) {
+> +		dev_err(mdev->dev, "Unsupported ext evt ch=0x%08x\n", ch);
+> +		return -EINVAL;
+> +	}
+> +
+> +	hw_bits = mtk_pci_ext_h2d_evt_hw_bits(ch);
+> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_BSY, hw_bits);
+> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_TCHNUM, ffs(hw_bits) - 1);
+
+[Severity: Medium]
+Will this break channel index calculation on big-endian systems?
+
+If hw_bits has already been byte-swapped by cpu_to_le32() inside
+mtk_pci_ext_h2d_evt_hw_bits(), performing ffs(hw_bits) - 1 on the byte-swapped
+integer will result in a completely incorrect bit index.
+
+[Severity: Medium]
+What happens if the driver attempts to send an unmapped channel?
+
+If ch is not mapped in mtk_pci_ext_h2d_evt_hw_bits(), hw_bits will evaluate
+to 0. The calculation ffs(0) - 1 will then underflow to 0xFFFFFFFF. This
+value is written directly to the hardware and might hang or crash the device
+firmware.
+
+[ ... ]
+> +static int mtk_pci_bar_init(struct mtk_md_dev *mdev)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	u32 bar[MTK_PCI_BAR_NUM];
+> +	int i, ret;
+> +
+> +	for (i = 0; i < MTK_PCI_BAR_NUM; i++)
+> +		pci_read_config_dword(to_pci_dev(mdev->dev),
+> +				      PCI_BASE_ADDRESS_0 + (i << 2), bar + i);
+> +
+> +	ret = pcim_iomap_regions(pdev, MTK_REQUESTED_BARS, mdev->dev_str);
+> +	if (ret) {
+> +		dev_err(mdev->dev, "Failed to init MMIO. ret=%d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	/* get ioremapped memory */
+> +	priv->mac_reg_base = pcim_iomap_table(pdev)[MTK_BAR_0_1_IDX];
+> +	priv->bar23_addr = pcim_iomap_table(pdev)[MTK_BAR_2_3_IDX];
+> +	if (!priv->mac_reg_base || !priv->bar23_addr) {
+> +		dev_err(mdev->dev, "Failed to init BAR.\n");
+> +		return -EINVAL;
+> +	}
+> +	/* We use MD view base address "0" to observe registers */
+> +	priv->ext_reg_base = priv->bar23_addr - ATR_PCIE_REG_TRSL_ADDR;
+
+[Severity: Medium]
+Is it safe to store an out-of-bounds pointer?
+
+ATR_PCIE_REG_TRSL_ADDR is 0x10000000, and subtracting it here results in
+priv->ext_reg_base pointing well outside the allocated object. This invokes
+undefined behavior and might cause crashes or be optimized out by UBSAN.
+
+Could the correct offset be calculated at the time of access instead?
+
+[ ... ]
+> +static void mtk_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
+> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	struct device *dev = &pdev->dev;
+> +
+> +	mtk_pci_mask_irq(mdev, priv->mhccif_irq_id);
+> +
+> +	if (mtk_pci_pldr(mdev)) {
+> +		dev_warn(dev, "Failed to execute PLDR, try external event\n");
+> +		mtk_pci_reset(mdev, RESET_MHCCIF);
+> +	}
+> +
+> +	pci_clear_master(pdev);
+> +	mtk_pci_free_irq(mdev);
+> +	mtk_mhccif_exit(mdev);
+
+[Severity: High]
+Does this sequence result in the device being powered off before the OS
+interrupt handlers and workqueues are synchronized?
+
+Calling mtk_pci_pldr() executes the ACPI PXP._OFF method, cutting power.
+If mtk_mhccif_exit() (which calls cancel_work_sync(&priv->mhccif_work))
+or mtk_pci_free_irq() runs after this, a concurrently executing workqueue
+or interrupt handler might attempt to read MMIO registers from a powered-off
+device, causing bus errors and kernel panics.
+
+[ ... ]
+> +static pci_ers_result_t mtk_pci_error_detected(struct pci_dev *pdev,
+> +					       pci_channel_state_t state)
+> +{
+> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
+> +
+> +	dev_err(mdev->dev, "AER detected: pci_channel_state_t=%d\n", state);
+> +
+> +	/* Request a slot reset. */
+> +	return PCI_ERS_RESULT_CAN_RECOVER;
+> +}
+
+[Severity: Medium]
+Will returning PCI_ERS_RESULT_CAN_RECOVER actually abort the slot reset?
+
+The comment says "Request a slot reset", but CAN_RECOVER instructs the PCI
+core to skip the reset. Furthermore, since the driver provides no .resume or
+.mmio_enabled callbacks, the device remains in a corrupted state despite
+being marked as recovered.
+
+Shouldn't this return PCI_ERS_RESULT_NEED_RESET?
