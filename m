@@ -1,113 +1,134 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8837B3596E1
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDD4346AED;
+	Thu, 16 Jul 2026 06:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784185055; cv=none; b=FdKCYo0FyAydp9+GewNoco2xJat/4ZtdgEAgIYK8lDWbQ4TGE9fY7Uco6pk1Z5jNxvJ6xqXzVRPTaRRUNlqDDehAGAerv4MUmG75SvVE0cXzHGXGDOG34HNRqO/qhVQgFWsSGN6dMsH0YMQoWZz/eHfUL61SnyV1za2TNHhXW28=
+	t=1784185055; cv=none; b=JZEz7iAfqW9TeArCWSoTf24IfRNTKE4G8AZx0wZLsFVuqqiwcY1uu6OpcKgGYwSX0fCXApNBbxfKZQ8QkPYbbwJQxN87igz/U45xXjUQLpPl6OH82VPxUk1qaoAKl4fTVXBiuUcpwXq010c0UP8BVztovdcYSSbs8gZ8hMcPDm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784185055; c=relaxed/simple;
-	bh=xLil7Vstv8VY9VX7lK3ig+izqWkJrIls3b9UTEkEz6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qUmg+RVfo061h2Opj970G9jJkGdmqr/cDJR30f/sjQjjQDTlThcTyNq/PDOsA7IckLvAwueXYNy7AnX3aFfu46gQOmWgb7bjTaQA9DuAAOwCekZVOdlM6UuFsRtPuAri/mk4skAKPAg6z3H3w9Iw9W2JKw+yCtArEIJdyD+SGaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EY62NLIf; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=ErF52CX+fFgofAQMX/JrPKF4sF23WdI5fdgXAc4dzdw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nIVDTIGY+VmyoIwIEhPznPPpHqvR9sQepg+/DdpwM7SdijWkMapkkYRFkW6lkeVXyph1MazwFjFm1CHAhXldoGrsCaSlMIzQQS9olG2yaP+Rg7izy4pEWEJUyP3bNTP2K02BzU7PqVI4NxbS7gQaLlq21rCHVJFPv8TJ6YJbZkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ogeLC8o2; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EY62NLIf"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-44868d6a066so1955538fac.3
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 23:57:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784185052; x=1784789852; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JQwzC+SeknlTO8OOS+hCXasYqtaWNkX7Yw3a3+TJWPU=;
-        b=EY62NLIfBznC09stdXTxujzdKFbtzh26E4CDLhWZV6mm3+qo1pWH613W0SqQiASh7v
-         rEe9aGuGXlhOSEL+G/2DJ2CA4nD3xGRRTuBRGroSPDUjSMI649zUOUQQ8TbOiHD6gmpy
-         22rckdMZ4SKhJ2q/WciopsiBujh2vX2OpOa11XIXYDk13XIwkQbbDNvo9r0gxlqWSSiM
-         yxJ+G0qz6sZKfxOhSXO+zHBsqmZ+pgHXhHonCWAC8sLwUCSfA/fRvxBO81po02FvV6GY
-         yzTKec2LgADDvDhEEffe0j6SePmLwP5lQbOi5u0tkr+7fAgN9Rva0CO+GimSz5PcBPEU
-         Lkjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784185052; x=1784789852;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JQwzC+SeknlTO8OOS+hCXasYqtaWNkX7Yw3a3+TJWPU=;
-        b=AfOfSKpaWCcFB6E136JWnAq7Hz863qaUyYJEpil8dfmU+iZsO4qWLt8jiUMrTvyJtI
-         BWpGHQzm3yJjhNd5n3p2mEIxpzDDSutqdNJmB7GDKl2rjfOJ+N+EKC0pjPrRYeDl0H46
-         EQx86RKLvu1FB6LGi6X/RNMIh302seSB/PUXc3NjDZUSnjaY7Mm8iKpakDOYY1fjKb9N
-         O9kpEhYInmsmAL3H4C6Rf0+03m/vCdMbCOZwFz/ml6/gPrcNm0/wuKJ1x/Vlh7FUunX2
-         zLl63V0z8K7qcbgt8oI8rgcg0SIOtCg9TPt9AjGEn8xY7I+TqkRRgG4m4Jvw4zuMnj+1
-         wDmw==
-X-Gm-Message-State: AOJu0YxdtXTfonKIjTG7O6fALoS27C+/hPmjzpS1P7gXwWkXn1zLo2OT
-	EYI05hCbQnEpPelch/y1VG6sCJ/2b4gtVTAhVq1d49Gn4x+SKxugZkJF
-X-Gm-Gg: AfdE7cndDCK/4NEuseIDFGPSn8k5oK3Uh9iMkXb4eF1uz42VYWWzvLb1GR1o0DQ+9I2
-	xC+FCdcZgWN/mpUgo1fldxX5dXQCBrZwhxoIFgPhz8a7/EmSoF6uftyOhSwdxhNNM8BAL6LQuZf
-	1nUCIYtgzlGiYP+KppZInJLue3p2TB+3neyOzvBsxMn3YQtNAhNFB+F+J7O/mthQE0o1csgkf6a
-	YK9EDpD6iJDNXTtxNrVcarM8TAgAY7y9zPj3iISw7bEpROIHLU9AKz+W8dOAAR/ihR6HjQN8/p6
-	gBgvnGxxChkJCggQp7VGppNVTXsuRaMMxp0qSapXq2DO0pK/R1aJf8HkJL238+V1Im7h1IAdAvX
-	85LpyzhmHzqCrr1NlnSLiSTibE7ZRcatIGJ4iGykxGKfhX3W6fidZ2ID3504i0ce2xQkScw==
-X-Received: by 2002:a05:6870:4596:b0:448:9e35:c3fe with SMTP id 586e51a60fabf-4562b5fa188mr3879300fac.11.1784185052273;
-        Wed, 15 Jul 2026 23:57:32 -0700 (PDT)
-Received: from localhost ([74.80.182.90])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-45191643abdsm21502202fac.11.2026.07.15.23.57.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 23:57:30 -0700 (PDT)
-Date: Thu, 16 Jul 2026 09:57:24 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Michael Grzeschik <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Yibo Dong <dong100@mucse.com>, LKML <linux-kernel@vger.kernel.org>,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: rnpgbe: Pass an expression directly in
- rnpgbe_rm_adapter()
-Message-ID: <aliA1EIIrX82jGR-@stanley.mountain>
-References: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
- <alScHkiC3EmGzOlI@stanley.mountain>
- <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ogeLC8o2"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66G4BwZc260731;
+	Thu, 16 Jul 2026 06:57:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=snMTDz
+	bwNNdymeS84mQCskZpkjKf/Sl4uqcM+jXOw90=; b=ogeLC8o29AZXJHVIYCrhNa
+	o3y7jL8p41uQ+8iNgvrv0o3KV7VDLsHADgDoLSl5DVuoNGka2g9PBTXZqi4Uj4ww
+	5xysOwim8ulCb9zTFXP0Bt/7wS5aWxByszNv+FRq3DdCGIUDoUr3h1vobJQ5XLIr
+	wvXL6Z8iciNr1JWE8o25lyT5X2ttASy0ovSZAooKHsnn0jdLP78gmMxfVPP4AyOK
+	NuLqPk+kvxC1YISEv6pGVb+JRQfsc5R8t62ioL7X6Bi97vV/rbwNEe3T4PGSOT3c
+	myE40mF3GOI6JUNfNn+WOzKFeGqeGOKlulkry0fY369r2OIX5DnMaQGxQdtHux0Q
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fcv33fxcp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jul 2026 06:57:23 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66G6nafc030076;
+	Thu, 16 Jul 2026 06:57:22 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc0hwbwrk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jul 2026 06:57:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66G6vKxt45351322
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jul 2026 06:57:20 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 42BFE2004B;
+	Thu, 16 Jul 2026 06:57:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1106620043;
+	Thu, 16 Jul 2026 06:57:20 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Jul 2026 06:57:19 +0000 (GMT)
+Message-ID: <6e100e63-5985-4438-bb38-8dc7b0afed05@linux.ibm.com>
+Date: Thu, 16 Jul 2026 08:57:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5: Use unique names for software steering
+ caches
+To: Leon Romanovsky <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+        Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Alex Vesker <valex@nvidia.com>,
+        Yevgeny Kliteynik <kliteyn@nvidia.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260715-kmem-dupliate-name-v1-1-85551c328155@nvidia.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260715-kmem-dupliate-name-v1-1-85551c328155@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE2MDA2NyBTYWx0ZWRfXzishSvp8nUU9
+ Brv8Yan1mmrbTjKkEV1KbjM+b8OOPWQ8gA8T3jPdpbeh6Jgc+ZNQOuZyTttlRFNoOsU01Id7Y9M
+ 3Pi9rwLS0DhUmErhOOb55a9Yd+HamUU=
+X-Authority-Analysis: v=2.4 cv=Mp1iLWae c=1 sm=1 tr=0 ts=6a5880d4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=Ikd4Dj_1AAAA:8 a=T3xCB02hYxg-SKxtKl8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: NInK9OtOZWU8BZ3B6N3W5g3eEgMmkv9Y
+X-Proofpoint-ORIG-GUID: idGo9oa_uhq6jdnNcrI-1o_PtYr-JbRK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE2MDA2NyBTYWx0ZWRfX4lhDyGYGneaV
+ vjuMeORHarKj6WOiiunVxACmiGXJgtJpz/54V0j1G1NXpYFr8/H+WFMD1qJ/FHEUQDmVHLxsBng
+ MfxPR/+9fyZ5OVvqk14KmXEVnFbTyHCVXbkG9D8cAidZjwWeyVlfiFXqIY5tmZE9eT3ROnAVupT
+ uAVPZ6aE+icAPLYh8Jtzzo24EsRFnKUuMfVxvmWs3TIP9rg6CgUwlmgnH8ZvtcVICBEDFuwgwdR
+ mLU1LBLvv94pdgD8kqUzHGjHdtIArFxLMft3rJqK/SgqF0/WpKOwy0GFk+JyBt0xxlN0wE2c3bT
+ aFTj6o+TyeVf6kcMajhPrEP25bCEmhLzfzo4zieAtYbZpOuPxLvNiIB8zMu1WNz3goGXczp52iw
+ lyR1g3jSV5JLkoHqYIQGrjNHYF+CklnwzJnFrrQJ8Llw4r+ngSvV53/8xP3ugRnN4KZ0uKJPnCB
+ s8aOyROTSAC2zAOfeYQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-16_02,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 suspectscore=0 clxscore=1011 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607160067
 
-On Mon, Jul 13, 2026 at 10:22:06AM +0200, Markus Elfring wrote:
-> >> The address of a data structure member was determined before
-> >> a corresponding null pointer check in the implementation of
-> >> the function “rnpgbe_rm_adapter”.
-> >>
-> >> Thus avoid the risk for undefined behaviour by omitting the variable “hw”.
-> >> Pass the required address directly to a function call.
-> >>
-> >> This issue was detected by using the Coccinelle software.
-> >>
-> >> Fixes: 2ee95ec17e97c58b65e978a08b75fa8cb6424e4e ("net: rnpgbe: Add register_netdev")
-> > 
-> > There is no NULL dereference here.  It's just pointer math.
-> > No need for a Fixes tag.
+
+
+Am 15.07.26 um 10:22 schrieb Leon Romanovsky:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> How does your view fit to information in an article like “Fun with NULL pointers, part 1”(by Jonathan Corbet from 2009-07-20)?
-> https://lwn.net/Articles/342330/
+> Each software steering domain creates its own slab caches, but all
+> domains use the same names. When domains for two devices are alive at
+> once, the second kmem_cache_create() triggers the following splat:
+[...]
+
 > 
+> Prefix each cache name with the device name to make it unique.
+> 
+> Fixes: fd785e5213f0 ("net/mlx5: DR, Allocate icm_chunks from their own slab allocator")
+> Fixes: fb628b71fb2a ("net/mlx5: DR, Allocate htbl from its own slab allocator")
+> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/a3cea501-4d1f-47d5-b6d0-fcda9a0aab16@linux.ibm.com/
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 
-Of course you can't have NULL pointer dereferences but this is not a
-dereference, it's just pointer math.
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-regards,
-dan carpenter
+error is gone in our CI when the patch is applied.
+
