@@ -1,98 +1,139 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2B390224;
-	Thu, 16 Jul 2026 16:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB6D3D522C
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 16:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784220548; cv=none; b=ZacKKqFtnjSTyenYemEaC830U0U1Dop2eD8X4Ufsy6zx2gpvGygeLzAuX3w7Bh3HcClxgUm/SeDZsTTi40ghxBMSjeuxJEvQkSApwvaPINMcNjvOd+5ER0QnA1EzmJsj4ggT6DV2nPMs2T7kKGmBbMgbUsemn7PTcL6GwsibH0I=
+	t=1784220639; cv=none; b=qh/vEDzxhr1wllgpP3LUar2J02pl050Wqzn1g6kngb1g6e7+cWCBXSaxc1sUOVsfsUhqWMnwSULrdFPSZxIOUF7BvOR55IKh8AAw6zmYeuQVuLAx9kL/Yw0SgDQuc0ptHWPVtGKFqQ92uLAGW67t+yMiVh+xeIiur/1YX2zy2pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784220548; c=relaxed/simple;
-	bh=aG9c/oIWcQuP25QpQba87EDxqnP1ULgL/edfYWUR0vo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LXfSrRuOnnWlfp26f1wbWvykoTMBUVBWxZmX8LwG/lJBRQdE2SZ1CsCTD1VWAnobgeWZkXD/TLz4lCUHxviRTiBmEC2StHDKtDdGfQtFoLPQo21vzYgpa18xIhm0m5W4NUmAUN7KkhP+DWGV/3YMnIYtHO5xXCTkiKknQybxJU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DmRBhybb; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DmRBhybb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YolakZC7+j4Triip+5AUHmDQgBfWSYQIrahb3DvaRqQ=; b=DmRBhybbCSzjOTtB6P0D9mXEdU
-	yxc52/21jT9BQH1HCdU0Fxtxppp8xo7Cw8gmaLjV39caaOv/rod9RZJFZ47/ITb+erC8p7J00Soft
-	nwMO9EJQ6eB1liCZiaSV4Jr1z/9H7SMYlyvjtqn4tRmt9MteyMbAIblO8nUf6vEA6etbdfyyaq8Zq
-	39BQuu4wc7kk74TeSYD21Uw5zl0v25dRj69cW7lkeU5WtVK7wQSzBk/8wqzNKS+jgkmvKSBvcrbzM
-	6Mp/lqi2xahBjs3CMQmRzrmZMSsN3onlbw2DQwijz3r5hY3Pi6bRJqBLVSU7Yp7/w6BhOXNNFaRmg
-	bXiXDUiw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wkPFr-00000002tsW-2hhO;
-	Thu, 16 Jul 2026 16:48:11 +0000
-Date: Thu, 16 Jul 2026 17:48:11 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>,
-	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	iommu@lists.linux.dev, loongarch@lists.linux.dev,
-	linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-Message-ID: <alkLSzQvzT9zJbY1@casper.infradead.org>
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+	s=arc-20240116; t=1784220639; c=relaxed/simple;
+	bh=xRnhCY+k7z1dleRqIlO8T/pUtA8zwogHlTW7un2uqqs=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FrtaRzylh5+NAi7ihmpHVtmLysE2TfCMq/kP+lVgU/P3T428phe2EILMNxikaS54SaKzUI/vEhp6k6CxpUxEVT0EJXeRdGoPQS8G/+B3rizYawZWM3g3H0aV91br3rWt2EeIMVe3kNhCt0DeCAlSNtB2vQKp29BdoPv5k62+DDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-4959c49e054so6515183b6e.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:50:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784220634; x=1784825434;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=130vXAEr8kfQks0tdluythHVQMOFL0FGy2rzRI/DZaU=;
+        b=JEu/7TQQ9+EZims/xCIyCUKLfxCMcB1/86KIZv1taQgsNCwF+m9guek1HolIXDWynP
+         qNY66FGbV8y0rh8fOTE97m7xW/ADO8TwIh+e3DOxWMOLhKc6s0C7Rn9Ja3gCkR4bE+/Q
+         SG9qdJWzk2KA3kMc5eGeUNIsUDgQ2ocGxqU4OdxBK/AgqWhjM8Kt9tFdacQK2huzgLFw
+         KQy0G/02yW70IzPnRmessTsoR7DuolzYqL8UbR2taClP6lbJrDUAX005vD9V3mcajPtK
+         Jq5HsE0+YUVqlS0SM7UqrHKFV0Aiqh2dRAogvVK3kP7YqqG9gGZGYWXKstTAl2jkNzFu
+         cLlg==
+X-Forwarded-Encrypted: i=1; AHgh+RqeLJ+vCaQdzgLN9LbcA+5hEE5Hlr7xYNC4quG3o11D4j0croFV6mSwiX75Kq5LOYiyWehZnwM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxmp5z6K8FeyXttHyD1+SWEHwr14no1feB3K7aZkOWZNLHB5kI
+	mPhjf2mCAWMSN3U48BZWEs/TRPz1Ce72hGiLqhETeQhSE03PNcO8Nc3E5JXq1h24Dg4kTbVGxXM
+	O/d4pVUTcQcqIbhJfD+rSu7swq0wTV/5fRla6dndRNxy2pDJeKaC/UD3nKc8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+X-Received: by 2002:a05:6808:6b89:b0:496:301:36b9 with SMTP id
+ 5614622812f47-4a4959865a2mr5532528b6e.0.1784220633954; Thu, 16 Jul 2026
+ 09:50:33 -0700 (PDT)
+Date: Thu, 16 Jul 2026 09:50:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a590bd9.5622734e.c905.0031.GAE@google.com>
+Subject: [syzbot] [rds?] KCSAN: data-race in rds_sendmsg / rds_sendmsg (3)
+From: syzbot <syzbot+879c1877016972360186@syzkaller.appspotmail.com>
+To: achender@kernel.org, allison.henderson@oracle.com, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, rds-devel@oss.oracle.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
-> There are no external users for this surface, reduce the scope.
-> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
+Hello,
 
-Hm.  So what we're saying is that allocations which respect mempolicy are
-only for core mm and not for, eg, device drivers to do.  Is that really
-what we want to say?  I don't think so, because that's inconsistent
-with having just widened __filemap_get_folio_mpol to allow guest_memfd
-to specify a mempolicy.
+syzbot found the following issue on:
 
+HEAD commit:    3b029c035b34 Merge tag 'cgroup-for-7.2-rc3-fixes' of git:/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1638fb89580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=84b3039e8461eef5
+dashboard link: https://syzkaller.appspot.com/bug?extid=879c1877016972360186
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9ab6065d4938/disk-3b029c03.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7373fbe29535/vmlinux-3b029c03.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/938cb90d037d/bzImage-3b029c03.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+879c1877016972360186@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in rds_sendmsg / rds_sendmsg
+
+write to 0xffff888101dec818 of 8 bytes by task 30904 on cpu 0:
+ rds_sendmsg+0xc1f/0x1580 net/rds/send.c:1332
+ sock_sendmsg_nosec net/socket.c:775 [inline]
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x532/0x580 net/socket.c:2684
+ ___sys_sendmsg+0x195/0x1e0 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0xd4/0x160 net/socket.c:2773
+ x64_sys_call+0x194c/0x3020 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x136/0x3c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+write to 0xffff888101dec818 of 8 bytes by task 30905 on cpu 1:
+ rds_sendmsg+0xc1f/0x1580 net/rds/send.c:1332
+ sock_sendmsg_nosec net/socket.c:775 [inline]
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x532/0x580 net/socket.c:2684
+ ___sys_sendmsg+0x195/0x1e0 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0xd4/0x160 net/socket.c:2773
+ x64_sys_call+0x194c/0x3020 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x136/0x3c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x0000000000000000 -> 0xffff88811b61faf0
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 30905 Comm: syz.5.5733 Tainted: G        W           syzkaller #0 PREEMPT(lazy) 
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
+==================================================================
+atomic_op ffff888118e74d28 conn xmit_atomic 0000000000000000
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
