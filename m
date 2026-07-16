@@ -1,342 +1,146 @@
-Received: from sonic315-22.consmr.mail.ne1.yahoo.com (sonic315-22.consmr.mail.ne1.yahoo.com [66.163.190.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012061.outbound.protection.outlook.com [52.101.53.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6755346A1D
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784184065; cv=none; b=JhqCWdsYFKP67mrQGGQNMA6GJFg8ZcEnJCUn2FD1xuxKaUNyUc09t18v8scSllYbEuEzCllKJRR8e2ZhRFGI+IMpqRODzxT6bIVseyMR4WjEhVCwsSI92I7MP5vNx54AHmQXLABIxNapoh8QINQy7XewhI/IrsdgUEPmlneKpQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784184065; c=relaxed/simple;
-	bh=g0uL4KAaG+AVYB3nB7584VzMLHgd6XnkrQ7svB2ZtNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W1wFDsBrjg33GUjmrQ4wDL/Ii3x/ch6FUdTLDUhM3qbrtt7C/uZpXJDj02lxtZdaqcSwM1gLBYC6Ym5JSVgvs/l4KVZlHn7d+O/Y9XcLi0AcXk1SmWBn0qftdb5KwlILLk0lNoDKmHMY02ufI4LVS6YCTNDvIgLcUOO1y6WYg7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=RGqLEOyk; arc=none smtp.client-ip=66.163.190.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383EC1DED42
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784184411; cv=fail; b=L5YoF30fV++PNtty3/XdwXd4P0CwiuOhtzDqIpYlzcxnyrwHerEgjIHoaf+aSD108qnEm/7Xt5E5xpDrN698kn9FhgozJB/XlWfRW0FuT40CKrugySbhJfDPZZMGow8eL5ZfrzmDM0ObS0oq7DV/XqFiqwW8Ppr5oGBTRSkqF+g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784184411; c=relaxed/simple;
+	bh=xvPcbVw0lfX5Fu/WjVbQNQ1OFCFKvkj0m0ZU8g78KUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jx3p957A93ZEBbHDb8w/esfjTLq6VddhSPrXcPEXTWd5KpPfidcdpotTgaj8iwXFMfHEKNbo2STcUMhU05fVSzx1mfTfZhy81Dksw0XRv5sRHN77r9HEFO6sLkYybvzUVMK3fT/LDlvlKFkN5CZ0C3kYxXwRBPXR6U1eAEjzwsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Aq43ki1Y; arc=fail smtp.client-ip=52.101.53.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="RGqLEOyk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784184057; bh=heHYr7K5psryRR+29x6lSUZG52vPUAJSRX4RD7WOTMQ=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=RGqLEOykOCVkdTMwXWpGX5mFjqdihbWlOaILpfH9HWtXicbpsFKo61P57TX8TRzPrTHD9uaTfr3UoSGOMInEPCML54RIy08DCpNQi694CZgN+fsI6qnIHx9hfw5q4PI4fmpub6klxTJv1LiM5ETZtqPcnvvKxJiYaNGYAX9yfj/A0Njgl0aFUrlTjgR0DuSDMMRwI/XZnDLMkldfN8P68W/9Nt87XsUJHStJ2SQ4ZTbpa/4GOBNrs2+im730KwaaklwEoB4BhR0JR+AKN1td4Ug0Va9cD9QnNJPX6D83RGfzaOr5Bo7Gb67t3zfQjPkZ6Z7Pz4ADHx0veHdDnyoR6Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784184057; bh=0MQc4MiZh6PyjG4seSx5TMrF7vbCttl+KcsgOghg+1r=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=oEfu877U1K8nGAsB3lambdevdIqLraRB2kUfEHHLiybcIdtBsgWeogUNWX3sTz8I7/4f8ggfc3Y2mNOyX+TTmU9BbdOx+rDbdjdumtrgkaL1N5pW0zShi5uFsAy+BpdCzMWkGNotc+/CN6UhJJiZWGphAsGU1iK9hkzqSuktt+dMTG243ieAjizbIT/x6FPiNWhMYOwnRkzjFxHEv3QLDLv7Uq2tSJZpP7K4oQ3lRQlapiNvag89NikqJrCZHRuugwIX4EcOpJ32x6jPEONYB7qH1mYqIUdDD+DGwoLPVpVmd1vy6auSNsaLEeyIroq24M77hUSlsNukmUmy5kIfTA==
-X-YMail-OSG: n2lB.HIVM1kadogZUueLtTILN_SBIGN_hFsfWHD9wzfk9SEF1csAtvf1TZvU8XP
- BeEdSqMVJEvNfon_qnwKN.Ci64C4nQuDPX57iZX6cGcVC4JJ.ydQ.ClA.Ve03gRnRYFc3b7tt4AE
- z0mPMZBDinXoMXLL6_l38cb2Md0bKfJBsZXJ7kZD.RReom2HBuT4uN6IIAIw.7jZ6n_LGaPUh5eS
- 0ggfctW3pKbinD1gLrs6PDtyLmiiHNemr0APNvD7UdgOyak2epVBwfzw4.I.Dv3egPcVer1bx6Ri
- 0JNjJtfTu4jEbxke_GxJrsQkvxjyQVPb2BDP9wVmtrCfnYG7gPtTc3pKS9fiDf4fuKzdsHqcIXg4
- RgzdMdQnRTuD4RQzvMIenrcqBCZsLr_7zDNmMNMgoR0kXP.yZgKvHoXN4aeXxxUZ.M15RZN_M8Gu
- w04WfkuHppwAyA6EklG4OkiWKvW9NgpAFXE5O.VLq0TXBDNklHKYW3_JPLVF85QTmUTV_obGx_Do
- fC05WHQXrsDpuxmlrftCgflV09l9aVMfh2Wy2yTWZXbCSYnGhTfqQ0SujlXU494Nc4vRssGH1euJ
- tUduUeqiVJDJrk5EV_wp9QZM4pPz6i5TMwAQZidzFluX7Xb0egOkGXGZXjO6qyFOUy2g3svDoJV8
- TylAaqGDpIf0Q14pwd4fJsTd_DW8.80RXvTYxBoDzMStTovxQT5_c1a33ZLKBqOXf6mtqTPd_U7c
- 3C77Yw.rEUJsapcZr_kAMQeiCRaN6V1mdDBPax9j82KRhKIon09wauB1AMPzoB1oxRrNrLk5DxdK
- AXdHb3U07s5BWigXCEzioigwIOX6E2UxgtJYT0ImgJmFLkKst9F5MkoC38L.vx.WSQOiNeYjFpIx
- R6dan6_aLCBGML7Fa2BNVutB9g4Axv81hrs_LM2v7ooGCpmBkH9sjqLDrglNj_K4AN9yHlSGVy_p
- gNZKEAM9IPnX37zhqvormCAQRY.HaM6f5fUwbHaaqlMAgaeVkjHNIATZCPKmIeZWNAGnVAmIIgaS
- NzaPDMyZZ4XcU9ulVQjQyIh1m7Stzu8A34kcl5DBmB329OjG.G29Dyj1jIMrRd2_r7Y8q9myJBrg
- XUoH0wuttgbw3Bfx2Ce46Pu.oQfjHxVojccxqy6UJB_QWw5dmnuSzxuhYarjPowY6GuTbKoyyKAe
- WKIrnKeSlmCNuOMO12t4oOJkPnq2aWua04JQCmkMnOMQCtBXNmmnv44o1WS7UPjz5YJ96Vt8lTV_
- x5gzISBDxUo1ccPGa4nyAI1DZv_Pmn16JVs49H3nmnjz.lnXlSCE7fuurYZeMhCK.IbKT8qXQWo9
- nkHbWw5_0xpC9eulNlX.92ahO9lybtG6YWVX4AUmCJBtU4EWUURgDA77le6btRQkNEEGcjqGgKT8
- Knotoh9o3fYJ_r_rOCVRzbXIEgp5MTsiUVOTmd0M94oV1ej5rXmcaNwW9ki1ZXkhwWBN3Ds.bYzG
- h_rPPNMRpjgP93SNeVZ.rGb0H2kqSqeq2L3afyeg50yWwSNYovyq9zUO3SNDTmh9rAzLFntTJIyl
- NJq8w1nD4XfH7qUr.Z9ErDXMdbr8FG7m1Fm6.1NCYt8qMBSyZP2UK0I8SWFpYi9xDr.U9rPqjIAN
- mpn9RMqtY94fzfjoUPPLI3dVuTZ3gNa9Y5QBpdmeQygz7ab4tWsYzLQ04juLuzW_4kPtDri4hLvM
- CQ1PsSZCnapOg2tZSe6AX8mexuccaCje9nhFQOU.VwcOz0qvL4bQCGURfsXx3AqEdh4Iyj5YpMXF
- YUiHXaHZpxkXylIOW1vR3xgBlnzXo4VQJpZCsEBFtVB8EFdEghUfM_iZ1hpf9yoR06J6j3V9l4L1
- xxnm4AEgknTq4RxPEXkKtOQn3zAx6K.jlCPt.QsfPDvlDcBJ7OO8zKMr.K0j3uEFyEZbt8VxX9sp
- g39eS0E9RpT_Jn7vo7bQs3MxrfKNECoga6NbYh34k3Dt3tSZ7DVCP5zF86yvS4i0UktrFT9RN00m
- pwrIBvxS01tyoiwgKURlL.fR2swwZyqizSJNaPm.ps1mOr9GdFgXlAaoVRt6jnLdkCGq3XFgyYTm
- 9HCEN0J02g14sggwie.iw8c.XCTSbUATnnqx4I.LuTeECcntKmL6P4YjcUVa48LKPYJOruk7GY8I
- Sttv08f8NQEYB4YNENl5.LSsPz8p8wqJEIPhuruvWOIvzxD.X9GqkZbxMii0IJchGAXe1gSQD4l9
- v6mwSOwMkwm8dlDsBKLpgOCUApxm9A7U9aIJsQ4OwXKWT.GfEfKIwBlTC3nA7w95bbBaEp1JJAuR
- 9SXHcuD6V
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: d766069e-047a-4469-a488-f02be7a3f9e9
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Thu, 16 Jul 2026 06:40:57 +0000
-Received: by hermes--production-ir2-7b48fcd765-f9jxb (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b815d7089658c3344616350b50b22c7d;
-          Thu, 16 Jul 2026 06:40:54 +0000 (UTC)
-Message-ID: <e252cb3c-bfb2-4d62-aec7-e04b9aafe223@yahoo.com>
-Date: Thu, 16 Jul 2026 08:40:15 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Aq43ki1Y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U7ql5+xjKXJRJ42fYXc9DDG2Qn7Q9xVwQlDfVqRbz9DPFmV+xamkwKqNyJ44E/s6PDEYBPwJjjzEkFdAzGpYNFcCoJ9EvLui5ay2SEqVZW7UfWup8y/kGrOIZRfOTFQx0h6HY688JY7KM2nP151H2ndS3LerNqXxHa7JqK/68ioM6mZv9RAm4H5KzvMLO4wc778zyZcyHfXBnUC0Y6eNBmo7nGyae3CtZ4jmwNZfDA1KoW3sPik0jTK8TsDTK24Bym40jIs1gvCs3Av+5I+lgoCdShTqfLSO1wr8pXE0k2Kw5bFWv3xtzUCc73ygkr557r5++tYIeGBVFwML6R5/9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ISK2lAwXwKvp4Jl6FIxRVqrmJE40ctT6OxZD+Xu1TU0=;
+ b=B3dpMfTfBWeaJTJGl9ZbnI5D4idyJDhklz4iB/4Tb6o6N9WaJWX55S5GeOrPgaWglwr0q/xA0xhX0Y5wFJHmvy+C+I7KOwqYAU2VgU/dP82hEoXeufiMeX54xdMBfB9bnzm8Fw+eSURNQwCPhpOgfejU3Vu1QwRDSRXCuhVFeHsipSYzK193+r6lowZAcNwFerJYvjzI4lrbtMlRf2bWdYcJKBG8hz2rqAgkZdlekHcK8PKwlqxkBzRn2XOqx8VAhTRmZMux0xfSNkTG8a1Drgzz2K0OVZ3u1gcnGCQj/CXiaVNTISE24ex5RhR+fIsCTOEm/fjfh2eRAOwrGZGopA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ISK2lAwXwKvp4Jl6FIxRVqrmJE40ctT6OxZD+Xu1TU0=;
+ b=Aq43ki1YvRWP278JqvC/Gsjsgbu00trhVgLL3eHfShDY1zWO+wD+SvB40L8dKtJs/P8csiTuAs3R3sO4N0iNYKqMGRsR9K7JF4b8HKLOw8rmczlMgBJvmdN+rRBbGF1WDFqFKhxuzfEGjtPvlRcNd/KESVHS1kuLHOorrm83bMSe2wdwUf0gHNgq86O83Ragq3nXm8ctBcc+9Le8YxOTXwhs6YEieJxlaFsWeFpfFxdgg2okPwf0yrTH9a0/hpGWRaqiQrkItuUgwk5Cmhq6zTXTI0ThCT3J4Yi77ZwQekjSaSJgan1wyJ4+joTjl/O+sTBCDH1QtGL0MsP8WXs3SQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CH1PPF5A8F51299.namprd12.prod.outlook.com (2603:10b6:61f:fc00::60f) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Thu, 16 Jul
+ 2026 06:46:46 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0202.014; Thu, 16 Jul 2026
+ 06:46:44 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: mkubecek@suse.cz,
+	danieller@nvidia.com,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH ethtool 0/8] cmis: Miscellaneous fixes
+Date: Thu, 16 Jul 2026 09:45:24 +0300
+Message-ID: <20260716064532.1522382-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TLZP290CA0011.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::19) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII
- support for RTL8367S
-To: contact@c127.dev, Linus Walleij <linusw@kernel.org>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
- <20260711-rtl8367s-sgmii-v6-1-88f7944ddca7@c127.dev>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260711-rtl8367s-sgmii-v6-1-88f7944ddca7@c127.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26136 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH1PPF5A8F51299:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3d3fc8a-175e-4a55-3280-08dee3060023
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|11063799006|56012099006|18002099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	YTjxnl20BtoSHGRsIlPR1qoKgHenwyL9a0fJh2B+B+sF2qgJ1UYJz3y6JBuUYGcNuQuQswNuYio2W5ILUbbh6VltWVVvsQcVPaqolpYqF12T5zxgk1A+GZg5qZm3k1rNSNzXzhOr5W0CFOw6N0F5azVYREIcf14V0TShX/OyCYX8nN7OhrldIiMrTjn3dCW8Q/BCMiLbWErVYcfcdKFAwL8Ky8iUPou1SZvEE1wlo8z0iQajmBVjM9Dn0d+DgMU4IrZxBLeCtSGPm/TBjtKonTG+VUT0RjPatKydbN2Ir55B9hAyS5ek5QIWl77PS0tEQ9Ytr1VCuCo8q0u2QlPzZzGpoHKHwACJDS1olCnnSYvSxNc5wbDhUhXMC2pVyDQmbPB0YcBUXvD8PsPyrEnhWRyuAI5d3le79sffdjb4Ytio8DAVy0bR6LC6Gk6e2BArE8saXip4spVrBJRKFXIthCjhK6ViPQ++F6z4fb3ieHlUtHu7SwkmkKpvwDo0Qpnxle0kgfQNp3rOSMgZWpivS7mr0+qY0aDJU36dJR53qz29ntmTVKraCyJooQlqOc9jq1saH+sZSFiCvMmuKlPhA9IRo8Wy/1HGKhmhWoiL5kDlvLl0M+c3KpCMOpJVPB2/ZlBhS7c0XBRNl4Ssm4TtSrif9areSz5cf1MFOh8eANs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZLfWlqx3GVhO9SQZec9MYQAfQvRU7rp/Q0x+4fKZQGTfdtY+SzEXiXhG1E3+?=
+ =?us-ascii?Q?vGUuFRuzuEXPVH1vzdAagj8oFLmsr2s3Y9Bo08zn2KwyOOsE22ESBM6FLE4X?=
+ =?us-ascii?Q?GLPuWoXcyKGLmvNz8Dinx3yyZTf2JzIl72GNI7VNeNW2Fnl4SSGkkPgrgMan?=
+ =?us-ascii?Q?7G9QW0+h9VmBoCePRLHKr3/OsXkHSC7Qv5e9Y/kyMyXDMFmvNEjCkbVeb8rL?=
+ =?us-ascii?Q?8ipfgfzUTEq1Ps/FdNMDZYdMU/CgP1k2J8W3o83gdkXI8Dm+ubtZWCU0qVkg?=
+ =?us-ascii?Q?ZJPEVvo2PGKvpPe90cvCsZCSm2HTvYIHxItdgjumYU0WHTDvoZiCz7o0kPAj?=
+ =?us-ascii?Q?eXGzW6rbWPx/fmOGlskXi5uicHl06eXTqt/kPZOavIHnAu7BCyDgFpRf95WF?=
+ =?us-ascii?Q?7WBz3be/6aG92HHtlhLryAlKHCXWFqROZ7G5bIwKLO7P6p+m5B8pw1smjChz?=
+ =?us-ascii?Q?6e3m3k5DtDMQQt6FKmkUmBPmGqwGRpFKa8uqCFPa8gtiAXXugcnN7V2eGcf9?=
+ =?us-ascii?Q?JZd/Z2oYy4jEgexQfmd15HAUhgcKMs0pk8/tNG7r3MsKZIuguyGGsnSj4/Ys?=
+ =?us-ascii?Q?+MNqWfkbZYZ84Vo012E/+x0G5uw3XyGUb+YQxJIb7zsMBId952I+Di3CKiQt?=
+ =?us-ascii?Q?yNedJmb8KPrBECiqOPY5C9wCBbMqjWpdB1/80vI5FWd+oHsNhwQI0MZSKHt3?=
+ =?us-ascii?Q?nAHplz8fHbLeTHJDWvI65cAjKLq5hjeI1ffwyz++KtCl+jQZl8FyPiqIu88j?=
+ =?us-ascii?Q?ArkeY/dfUJW6XYP3/HWpPd5iu+bsWePvQbD2uqAcJFXlFC6yazdwO+mq1mCI?=
+ =?us-ascii?Q?uuzMxD+ZfmUWoaPOpYYCc3b3O22lG/70SKDJKX3zPvInrbg9bKRN1rWQqt8P?=
+ =?us-ascii?Q?wDT3LS1/MwAHQ4Jme3RL6ULVCtsgRZa7QAzbRoOP76VlZyhv+Y+i2MHcBy6A?=
+ =?us-ascii?Q?QR9bIyNKJvmw2UXVNOOg9G8YIsRe27J42drOOsBfiZhMiG2SK67r9ttFts9n?=
+ =?us-ascii?Q?Ss3mQHWePQv4SjUB+/BGLUPEVn4B2gJv1SGZ0+pDigJNLVjz/nrh6N3sOUXm?=
+ =?us-ascii?Q?zE6jzpgqH/zfymUCenJNlhIo1AfgX4xPHkAIBfY93RJSLpEiQXi9nzSCoMP8?=
+ =?us-ascii?Q?9vfZkpTBkbS2pN/R+7Flt8ncBE5YDJBwi6MmbgyJQZXoHmbWr3tRyk4uluf+?=
+ =?us-ascii?Q?9J/HMnoFAgOKoDJ9OkDPW2yF3zTilCLq33O73kItssOBCo0FDbz331Bk4vn7?=
+ =?us-ascii?Q?jR8zcPQaUqkeC6+GmF3EXvwIZ+PlP8D9O4+RRXJn9br6b1vYEE80IHEzo7X6?=
+ =?us-ascii?Q?zsot5ObC6S1SbFmI1M8g7f8JbWx7ITmli8kY2FCWrHi7R+QmPDqe54Y1+Whf?=
+ =?us-ascii?Q?xWEAc9HJPTZP0YSDp2KG7YHU6dsLvuvj/XqHtDvpyFXCFSsw78DzeeQ7q2/R?=
+ =?us-ascii?Q?K12j88wRrelnDtiBB1Wl3LNc6y6KyG2cAAbGiPEv2ru7Jj81kE9h7kxhOzt7?=
+ =?us-ascii?Q?aG5uU562QDMgmecQh5rpPzpyCJ2wPQr14MVk4u6LRRAFo8J7Ey+Aqlb6LPmp?=
+ =?us-ascii?Q?DwOQSVH5ULre8vUGt6M1ONu4B5nBIYLHTYt3Pl+3eE9YscrvD21DDkQA910p?=
+ =?us-ascii?Q?TceEEmEL7jZ7u8yYp8JERUzT7vOpd5kNoMyvrNWqQAAcYSp65poOj18WmEg8?=
+ =?us-ascii?Q?4VXRUqk2XYdxiRkoyWc00kHJbkPb8X4Iu8Lo1iZjfskwY/NQqJ/sjZlzRddY?=
+ =?us-ascii?Q?UKyaUlLXKg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3d3fc8a-175e-4a55-3280-08dee3060023
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 06:46:44.6924
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cD4gE/McWYHLqcOlCK3P39svzNa5HS4uu9inqr/0GL++Y97vjXQxK3/LtuLZWp67cnKClDmRYnEq8+5LjRWAUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF5A8F51299
 
-Hi Johan
+Patch #1 fixes an issue reported by a user. The rest fix valid issues
+pointed out by Claude Code after I asked it to validate the CMIS parser
+against the CMIS specification.
 
-On 7/12/2026 6:31 AM, Johan Alvarado via B4 Relay wrote:
-> From: Johan Alvarado <contact@c127.dev>
-> 
-> The RTL8367S can mux its embedded SerDes to external interface 1,
-> which is typically used to connect the switch to a CPU port. The chip
-> info table already declares SGMII as a supported interface mode for
-> this chip, but the driver only implements RGMII so far.
-> 
-> Implement SGMII support as a phylink PCS, with the configuration
-> sequence derived from the GPL-licensed Realtek rtl8367c vendor driver
-> as distributed in the Mercusys MR80X GPL code drop:
-> 
->  - Add accessors for the SerDes indirect access registers (SDS_INDACS),
->    through which the SerDes internal registers are reached.
-> 
->  - Register a phylink_pcs for the SerDes, selected from mac_select_pcs
->    for the SGMII interface, so the SerDes handling lives in the PCS
->    operations rather than in the MAC operations.
-> 
->  - Probe the SerDes tuning variant from the chip option register once
->    at setup. The vendor driver keeps two sets of SerDes tuning
->    parameters and selects between them based on this option; only the
->    variant for a non-zero option (which all RTL8367S parts seen so far
->    report) has been validated on hardware, so the SerDes interface
->    modes are only advertised in that case. An unsupported variant thus
->    fails at phylink validation time instead of at link configuration
->    time.
-> 
->  - Keep the embedded DW8051 microcontroller in reset and disabled. The
->    vendor driver loads firmware into it to manage the SerDes link, but
->    analysis of that firmware shows it only duplicates the link
->    management phylink already performs: it polls the port status and
->    writes the external interface force registers behind the driver's
->    back.
-> 
->  - Clear the line rate bypass bit for the external interface, tune the
->    SerDes with the vendor-prescribed parameters, mux the SerDes to MAC8
->    in SGMII mode and only then take the SerDes out of reset, as the
->    vendor driver does.
-> 
->  - After deasserting the SerDes reset, reset the SerDes data path via
->    the SerDes BMCR register to flush the FIFOs and resync the PLL.
->    This mirrors what the vendor firmware does right after deasserting
->    the SerDes reset, and ensures a clean link state from cold boot.
-> 
->  - Force the SGMII link parameters (link, speed, duplex) in the SDS_MISC
->    register from pcs_link_up(). SGMII in-band autonegotiation is not
->    implemented, so only fixed-link and conventional PHY setups are
->    supported, just like RGMII. This is reported to phylink through
->    pcs_inband_caps() returning LINK_INBAND_DISABLE, so phylink never
->    selects an in-band-enabled negotiation mode for this PCS.
-> 
->  - Program the SerDes pause enables in SDS_MISC from the resolved
->    pause modes when forcing the MAC external interface in mac_link_up,
->    as the vendor driver does, rather than leaving whatever state the
->    boot firmware left there. Flow control testing shows these bits,
->    not the MAC force pause bits, gate pause on the SerDes external
->    interface. This is done in the MAC layer because pcs_link_up()
->    carries no pause information.
-> 
->  - Implement pcs_get_state() by reading the link status from the
->    SerDes, with the forced speed and duplex read back from SDS_MISC.
->    Although the supported fixed-link and conventional PHY setups do not
->    use it, the PCS owns the SerDes link state, and phylink consults
->    pcs_get_state() to track the physical link when operating in in-band
->    mode with autonegotiation disabled. The SerDes has no link interrupt
->    wired up, so the PCS sets its poll flag.
-> 
-> Tested on a Mercusys MR80X v2.20, where the RTL8367S is connected to
-> the SoC over SGMII.
-> 
-> Suggested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Suggested-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-> Signed-off-by: Johan Alvarado <contact@c127.dev>
-> ---
->  drivers/net/dsa/realtek/rtl8365mb_main.c | 515 ++++++++++++++++++++++++++++++-
->  1 file changed, 511 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 5ac091bf93c9..ea03c42d0f1a 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+Note that these are not regressions (never worked).
 
-[...]
+Ido Schimmel (8):
+  cmis: Fix printing of Tx bias current
+  cmis: Fix printing of channel-level flags
+  cmis: Fix printing of CDB EPL pages
+  module-common: Fix printing of transmitter technology for CMIS
+    transceivers
+  module-common: Avoid undefined behavior with CMIS transceivers
+  module-common: Add missing CMIS transmitter technologies
+  cmis: Fix printing of attenuation and wavelength
+  cmis: Fix printing of link length
 
-> +static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-> +				phy_interface_t interface,
-> +				const unsigned long *advertising,
-> +				bool permit_pause_to_mac)
-> +{
-> +	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
-> +	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-> +	struct realtek_priv *priv;
-> +	u16 val;
-> +	int ret;
-> +	int i;
-> +
-> +	priv = mb->priv;
-> +
-> +	/* Hold the embedded DW8051 microcontroller in reset and keep it
-> +	 * disabled. The vendor driver loads firmware into it to manage the
-> +	 * SerDes link, but the firmware only duplicates work that phylink
-> +	 * already does: it polls the port status and forces the external
-> +	 * interface configuration in the very registers this driver manages.
-> +	 * Letting it run would race with phylink.
-> +	 */
-> +	ret = regmap_update_bits(priv->map, RTL8365MB_CHIP_RESET_REG,
-> +				 RTL8365MB_CHIP_RESET_DW8051_MASK,
-> +				 RTL8365MB_CHIP_RESET_DW8051_MASK);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(priv->map, RTL8365MB_MISC_CFG0_REG,
-> +				 RTL8365MB_MISC_CFG0_DW8051_EN_MASK, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* The vendor driver clears the line rate bypass for all interface
-> +	 * modes except TMII.
-> +	 */
-> +	ret = regmap_update_bits(priv->map, RTL8365MB_BYPASS_LINE_RATE_REG,
-> +				 RTL8365MB_SDS_BYPASS_LINE_RATE_MASK, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Tune the SerDes with vendor-prescribed parameters */
-> +	for (i = 0; i < ARRAY_SIZE(rtl8365mb_sds_jam_sgmii); i++) {
-> +		ret = rtl8365mb_sds_write(priv,
-> +					  rtl8365mb_sds_jam_sgmii[i].reg,
-> +					  rtl8365mb_sds_jam_sgmii[i].val);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	/* Mux the SerDes to MAC8 in SGMII mode */
-> +	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-> +				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
-> +					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK,
-> +				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK);
-> +	if (ret)
-> +		return ret;
-> +
-> +	val = RTL8365MB_EXT_PORT_MODE_SGMII
-> +	      << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
-> +	ret = regmap_update_bits(priv->map,
-> +				 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
-> +				 RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(id),
-> +				 val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Take the SerDes out of reset. The vendor driver does this only
-> +	 * after the SerDes mux and the interface mode are configured.
-> +	 */
-> +	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_RESET,
-> +				  RTL8365MB_SDS_RESET_DEASSERT);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Reset the SerDes data path and resync its PLL, mirroring what the
-> +	 * vendor firmware does right after deasserting the SerDes reset.
-> +	 * This flushes the FIFOs and ensures a clean state for the link,
-> +	 * preventing silent drops and CRC errors.
-> +	 */
-> +	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
-> +				  RTL8365MB_SDS_BMCR_DPRST_PHASE1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
-> +				  RTL8365MB_SDS_BMCR_DPRST_PHASE2);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Keep SGMII in-band autonegotiation disabled: the link parameters are
-> +	 * forced from rtl8365mb_pcs_link_up() instead.
-> +	 */
-> +	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_NWAY, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	val &= ~RTL8365MB_SDS_NWAY_EN_MASK;
-> +	val |= RTL8365MB_SDS_NWAY_RESTART_MASK;
-> +
-> +	return rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_NWAY, val);
-> +}
+ cmis.c          | 65 +++++++++++++++++++++++++++++++---------------
+ cmis.h          |  1 +
+ module-common.c | 68 +++++++++++++++++++++++++++----------------------
+ module-common.h | 57 +++++++++++++++--------------------------
+ qsfp.c          |  5 ++--
+ sff-common.h    |  4 +--
+ 6 files changed, 108 insertions(+), 92 deletions(-)
 
-For verification on real hardware:
-
-The SGMII/HSGMII link on RTL8367S (and compatible RTL8365MB-VC) can be
-intermittently unstable after cold boot, manifesting as egress stalls,
-CRC errors or complete packet loss on the SerDes-attached CPU port.
-This has been observed as a non-deterministic failure depending on the
-PLL lock state at power-on.
-
-Reverse-engineering of the vendor DW8051 firmware blob (Sgmii_Init[])
-shows that the vendor driver performs two critical steps after the
-SerDes data-path reset (BMCR DPRST_PHASE2) which were missing from the
-Linux driver:
-
-1. A ~98 ms delay to let the SerDes PLL fully lock before any further
-   register access. The vendor firmware uses a timer interrupt to count
-   this delay; without it the analog front-end may still be settling.
-
-2. Writing a "Local Jam Table" calibration vector to internal ASIC
-   registers 0x060C-0x060F (values 0x83, 0xAA, 0x7E, 0x80). These
-   registers configure the SerDes analog equalizer and DC-offset and
-   are not exposed through the normal SDS_INDACS window. Omitting them
-   leaves the analog front-end in an uncalibrated state.
-
-Add both steps to rtl8365mb_pcs_config(), immediately after the BMCR
-phase-2 data-path reset and before the NWAY configuration. This mirrors
-the exact vendor firmware bring-up sequence and eliminates the cold-boot
-race.
-
-The 98 ms delay matches the vendor firmware timeout constant
-(SGMII_TIMEOUT_98MS). It is a one-time cost during interface bring-up
-and ensures reliable link establishment regardless of the PLL state at
-reset.
-
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -95,6 +95,7 @@
- #include <linux/if_bridge.h>
- #include <linux/if_vlan.h>
- #include <linux/phylink.h>
-+#include <linux/delay.h>
- 
- #include "realtek.h"
- #include "realtek-smi.h"
-@@ -1235,6 +1236,21 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 	if (ret)
- 		return ret;
- 
-+	/* The vendor firmware waits ~98 ms here before writing the
-+	 * calibration vector.
-+	 */
-+	usleep_range(98000, 98500);
-+
-+	/* Vendor firmware writes a "Local Jam Table" to internal ASIC
-+	 * registers 0x060C-0x060F after the data path reset to calibrate
-+	 * the SerDes analog front-end. Without this, the link can be
-+	 * unstable after cold boot.
-+	 */
-+	regmap_write(priv->map, 0x060C, 0x0083);
-+	regmap_write(priv->map, 0x060D, 0x00AA);
-+	regmap_write(priv->map, 0x060E, 0x007E);
-+	regmap_write(priv->map, 0x060F, 0x0080);
-+
- 	/* Keep SGMII in-band autonegotiation disabled: the link parameters are
- 	 * forced from rtl8365mb_pcs_link_up() instead.
- 	 */
+-- 
+2.55.0
 
