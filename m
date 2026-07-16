@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F5243F09C
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9329E424671
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 14:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784213307; cv=none; b=NmfICQQVKs9ewXRx/eVpEZnIzamSNvyzxCcSvCGgk02OILBd39orLEobRoG1Xwzk1MBBWrsNReMd0MHYXfBI04udGTe5NnuAgx/jZidDVIspT9cLgnfJh/C3AcmiBa2CpDfl19hundartlQwGauVKih22gg0Fi0zjjLNgV0u6gY=
+	t=1784213324; cv=none; b=bD6w9mpCs9W4gEP7h3brr3fmyoSmHkjorefu+hQlF++MDDIx6Ng3LBX3BcessAfvOSdYln7YUzAiLkvnCs3ldit5t3zMdRmYt1TndWoppv6LAGYF8dnyCSDdI2SbHYD+qgRmzMV+z1PWpX7CZzVXpX2UkPCWXAau9OqUvC6PbuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784213307; c=relaxed/simple;
-	bh=PzPOdtSRatLk2sh8Cin6RJmQhl9Sn1TENBs38WGDcuY=;
+	s=arc-20240116; t=1784213324; c=relaxed/simple;
+	bh=+XRvv4MQceldV2fwBOvUUPmboGF+ffAPO7oPzG0p4Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctUOI4OzRKUEvYn26cN789XcwHo/wwa4YTr5BlcVjVyy1iTE9oFwu/lC/uskNcA1T697ztfsioJ3VFTAoNne8hnuc/4bId+lSXG7WNSKRMjAvYutrOHlJ0Jst6xn3wNOMxSsems4tokaVHyHNZy1UdvywM8QxXw8NX3CGufUb2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEdJlId/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=adyyJWIKdj4jW3aDVX2pXZEGmQPPk6bSAx575vb30w3ROg0ChGQNJl+2oN32KpWmtRMLFXiFWuQviRADPVwcHfBINxCgEk3wPT197izkrLConH8vqjWoeisAa/lseuuPrTdXNRN0TJKU9Af3LXvWGC8oWgu3qcEVAiyAQdY/MPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBPBr/0Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEdJlId/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB9A1F00A3A;
-	Thu, 16 Jul 2026 14:48:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBPBr/0Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3701F000E9;
+	Thu, 16 Jul 2026 14:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784213306;
-	bh=Czf14k7ftTZS6V7j8Avn7JQU90cJziYv4NIRJzJUa48=;
+	s=k20260515; t=1784213323;
+	bh=zQ4TnNCbrQSEpvT7HgWJyZhrbmf2/9fI9VcdMrCRoZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TEdJlId/wyp24ItXGbIjbusAOe/q+F0O9dN0qsaI8F4vcb6jg0a5GaBJ5kqr3UcFx
-	 OKnaHlRcu3FMkO1OyUsQiUpudQBowuUQ1pwd1Lr950pflch4XCQmBWH8C8Y9nMrWle
-	 KCXUrMt0UQDuc/Ix8ksIclH0sseXtFrHv1sKH7pn3LmjUqWJE9MMVHTpEbr6k/p/e9
-	 9DUvE887PYfm1tMb2oKxYMwgtYffCU79qEg3Tg6P2rvmADG1RLB1MZWklFj9pZoqdV
-	 +hNX2L+DgrTlvmKi5buh3PIjJpM96B6M7yY+0AUe3PLGHBvraJGn02JCkslhmCYUIz
-	 5tp2ucegHIE0w==
+	b=gBPBr/0YzOp6KqfWEL8WAHCvjAvXZqGgHPSNMir6xRdfD+chun1vCYYy0A9fvwdh/
+	 4jd2snpQEewh79hrjoJ02092/cilVTNVWoON7yRQvxvzO7ihtX4F7rzAmYNat4yvf4
+	 Ql58V/CQXReg2UoxAnewHV0xrFLdg2n2n6xTQHwgdWq0Hd/+HpCtoc//2IDiOx+h/j
+	 FMmfavUhqyd09BtRmy9Fol1RoQQPUAp/gW8jJNfwAJxWDhYtbP9jWIV8NxdCevBiaP
+	 uR/0meZXM7+bMBoesITAyhb4HLcD6x4dLpzT8mH64py0FkVIApkB/W90fjjurpy51O
+	 vXWCiS5KxnTjQ==
 From: Simon Horman <horms@kernel.org>
 To: alice.kernel@fastmail.im
 Cc: Simon Horman <horms@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	fw@strlen.de,
 	netdev@vger.kernel.org,
 	alice@isovalent.com
-Subject: Re: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive
-Date: Thu, 16 Jul 2026 15:48:06 +0100
-Message-ID: <20260716144805.336424-2-horms@kernel.org>
+Subject: Re: [PATCH net-next v9 8/9] geneve: Enable BIG TCP packets
+Date: Thu, 16 Jul 2026 15:48:31 +0100
+Message-ID: <20260716144830.337991-2-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260710134242.216538-6-alice.kernel@fastmail.im>
-References: <20260710134242.216538-6-alice.kernel@fastmail.im>
+In-Reply-To: <20260710134242.216538-9-alice.kernel@fastmail.im>
+References: <20260710134242.216538-9-alice.kernel@fastmail.im>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,58 +63,47 @@ This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://sashiko.dev
 ---
---- Patch [5]: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive ---
-commit f1316d873c7549e0a49dc98d7614be1dc5b0f66c
+--- Patch [8]: [PATCH net-next v9 8/9] geneve: Enable BIG TCP packets ---
+commit d560b2b7c8bd97bea9e23790fdfc21cfe031b961
 Author: Alice Mikityanska <alice@isovalent.com>
 
-udp: Validate UDP length in udp_gro_receive
+geneve: Enable BIG TCP packets
 
-This patch adds an early check for malformed or padded UDP packets with
-len=0 at udp_gro_receive to exclude them from GRO, moving the check out of
-udp_gro_receive_segment.
+In Cilium we do support BIG TCP, but so far the latter has only been
+enabled for direct routing use-cases. A lot of users rely on Cilium
+with vxlan/geneve tunneling though. The underlying kernel infra for
+tunneling has not been supporting BIG TCP up to this point.
 
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index 4f9a3922937cc..8f77c8788f6db 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-
-[ ... ]
-
-> @@ -782,8 +778,14 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
->  	struct sk_buff *p;
->  	struct udphdr *uh2;
->  	unsigned int off = skb_gro_offset(skb);
-> +	unsigned int ulen;
->  	int flush = 1;
+> diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+> index 011bf9d833caf..a1639ad53077e 100644
+> --- a/drivers/net/geneve.c
+> +++ b/drivers/net/geneve.c
+> @@ -1745,6 +1745,8 @@ static void geneve_setup(struct net_device *dev)
+>  	dev->max_mtu = IP_MAX_MTU - GENEVE_BASE_HLEN - dev->hard_header_len;
 >  
-> +	/* Do not deal with padded or malicious packets, sorry! */
-> +	ulen = udp_get_len_short(uh);
-> +	if (ulen <= sizeof(*uh) || ulen != skb_gro_len(skb))
-> +		goto out;
+>  	netif_keep_dst(dev);
+> +	netif_set_tso_max_size(dev, GSO_MAX_SIZE);
 > +
 
 [Severity: High]
-Could this early return bypass inner GRO flow matching for padded UDP tunnel
-packets?
+This is a pre-existing issue, but by enabling BIG TCP on Geneve, will it
+expose a bug where valid BIG TCP packets are incorrectly dropped?
 
-When a padded UDP tunnel packet, such as a small TCP ACK inside VXLAN or
-GENEVE, arrives in net/ipv4/udp_offload.c:udp_gro_receive() while previous
-packets of the same inner flow are held in the GRO list, the
-ulen != skb_gro_len(skb) check evaluates to true and triggers the goto out.
+In geneve_post_decap_hint(), there is a legacy size check that rejects
+packets aggregated by GRO to sizes >= 65536 bytes:
 
-Because the goto out path yields pp = NULL and flush = 1, dev_gro_receive()
-passes the new padded packet to the network stack immediately, leaving older
-packets stuck in the GRO list.
+drivers/net/geneve.c:geneve_post_decap_hint() {
+	...
+	total_len = skb->len - gro_hint->nested_nh_offset;
+	if (total_len >= GRO_LEGACY_MAX_SIZE)
+		return -E2BIG;
+	...
+}
 
-Before this change, the packet would reach inner GRO handlers (like
-tcp4_gro_receive()) which would detect the sequence or padding mismatch,
-set flush = 1, and return the held packet via pp = p. This ensured older
-packets were flushed to the stack before the new padded packet, preserving
-delivery order.
+When BIG TCP is enabled and the Geneve tunnel is configured with gro_hint,
+large flows are aggregated by GRO into packets exceeding 64KB. This will hit
+the legacy check and return -E2BIG, causing packet loss for large flows.
 
-Will bypassing this inner flow matching lead to out-of-order delivery for
-the inner protocol, resulting in duplicate ACKs and throughput degradation?
-
->  	/* We can do L4 aggregation only if the packet can't land in a tunnel
->  	 * otherwise we could corrupt the inner stream. Detecting such packets
->  	 * cannot be foolproof and the aggregation might still happen in some
+>  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
+>  	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
+>  	dev->lltx = true;
