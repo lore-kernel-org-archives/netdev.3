@@ -1,195 +1,176 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF0841DE0B
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784206418; cv=pass; b=QzHlh9t9a+T/OSI2kldCKSFRwdWAy16Ip99agW8eXoZo+yE5fpwE+eHwqE/1DCKnITDhNrUWh8WdrOg6KFKQWRwCmmrHg+skefSBu2BbJtEyTNOQ2YCTu2MTx4GFDpOvY8ShlfmS0zWjj/fq1eTW43PrbxpSn6Rl7ktgb8zB6Sc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784206418; c=relaxed/simple;
-	bh=rVuZ1/j6WS3yKJ/+J5ak2N5sJ6zYZ6SuijxYLYOO9IU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OfrOXzkSkNw6/6pmt2myGKh+lPWM3B4diTBdN83EOzNSjRsrTxqipIc+hTX93OIybDcKsrxL83clgNs3PKZ5v2ERhott08bS9yLgwUPMzM0O66tSp8T2Q45F0k+jP3lN/SqrW1GGLxgveaxNWO7tp0NpHy5PdVrjrs8aFvnZavo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pi57i/kA; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52E941F37C
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784206789; cv=none; b=u7gTszngBebNrJaJS5QK0r9iJCBwoIdnE0obKvUzdvNmyLuRRzOkVY3XfuGUbndFWCI3uTK8kHhLhwlmx6MQ17lgfsvQrcejN1Ffq3M1bZWmwvAti++skoBuJT+SsgE8XJWiQxT4ZB+xCDe4nDk6/DdSLdUOZ2OEsApBeRZL1cI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784206789; c=relaxed/simple;
+	bh=rpmjjD9ixMN3vKIYQ51So5awvszP0cmojx8AZD/MAyc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mgYGML6l2/53g/LS2r5di+caJKDbpd30I7z9ubD9DJi93i5qSbc4eO8tfumaVw6jArQ3o6sEHoyWU5OG+81+ljlAmXsIQqpSwvUEERtCQK5L5B2UOZHhb1gTkYZx4BLA96Qwe+5eqs2VmrEyKmLoeBxY90tx9RCmLKVORT+zbpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=LuH0ZQwB; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pi57i/kA"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c05dcdf49so71534651cf.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 05:53:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784206415; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ATYHaJGqRCXAiQTHkOKFg8AHm50EsXwq7xFIfs3sHjpIdxFaGNnUKK1UtDa/SRU9hf
-         msBL+hE6VTJZByL85F6Fs+m4Bslj0FACpHiAt1m9WrULD5wZz1mbxj94+bzVqRnFIBKk
-         EM2L/F9Y7Kt6Vz8kC/uNk9KEw3wM6igFOHtH5s3T3c61EIqEfQ3S+9E4pkDClUqjGGBh
-         u7mjtda4YjK2xXaewEnloLVHoQ6VxqMlTG7wNmqSsYfD2hIAy9tVxFOVEZ8ZcMLZtgkr
-         y0DiVsMSvNKJgSYJIVpHk6fNkfB82V3BgOe4jIEcrqIAcFZHnYK6NmCaPN1vER2H2N8l
-         skog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
-        fh=ojKZeLhxxF8tvpd8ig4avFGXJKR3RRMR+zT+pC4n8Rw=;
-        b=c2YRPItKYVAmsNsSf9hymWiEtnTm6pt5lAKCapV4rLM5i+EBRRA0UDT0jRqfzu9ISG
-         +S+6ZPxJSHR+y88Tqq+MugqpHzuRVxLjGlZ7wF+pLqV1yD7OXm7zJSlcpNhpxJEI+fjz
-         7F3yXcKNDaJNAkf61p4fxBF14Ay8NjFYoKBvum/0HBireSpMOWjEoG7Bo894zT0Qim7P
-         y4ve3myoJjpusXnjvp8u8wjB0FPbAJfkHY4YQRCcVFjMPsJ/xZ0qJ85BWaMsIiuMZZ/4
-         hYRze7/iaSfoZ4n/X8Jo+DVv2SanwRayMkLpZ/RauCQxCcRFfXyGyAGKKb5pomiM/lk1
-         GeRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="LuH0ZQwB"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so12739395e9.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 05:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784206415; x=1784811215; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
-        b=Pi57i/kA/eu9OMgc/ZkLovRj9YR/JqZ2RCgXdgkeAcpJsce12d0gK15wS/o/WORCuO
-         qwhBeik7AT+T7WsvC3wxW/ZcRnIUAmSzBOKcKhbEwoASQyOJ/GSGUMS+Zz9H5r09YVKY
-         l8Nv9+eoehXFTQ7Ure75QUeKvX3KpAYhUQP4wqLH/anpY0DJouGVKzHqhpno/xhwo7t/
-         HNAlI95UH+PVwOii4nRUqfmZY4CepwxZHywCsBpCZL5dH66gAuhbdRrgTTtUtc45XwX5
-         +qVjC7jzBIn2pV86pBHYWP/OrLw4/6vfRcqd9gBufFoFFfo1caw/dAB606LqJIApJOKS
-         sX2Q==
+        d=cloudflare.com; s=google09082023; t=1784206786; x=1784811586; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=xZvfawR8I4GAicdLgeKPOlr1vtxHRZ9vVAdVAAu3ReU=;
+        b=LuH0ZQwBkpheF40QdkRq7vYP/3gL7NFHsEpA3E3qO0fuettH+bMv56pTR8JMMZMpmY
+         E4Ebw5Keh0YmAz/BjP2AQRVCaiyZJe22mX+QldkraT/Hv0yOlAYsUQ6IpgLtq3PzfGDK
+         c0fJH9ZOOvZoEBhZAM3F7BGIbTJHUin8pcEajwpdpjBPOaIFpEEjfCkJ1IBMEsUA3iv1
+         SJG6xxa/7ykBT4jBNObwAPg3yC+FuiNcpyMf2FpdtQZid4bjfaP15ClMFzLnq7cJD68p
+         SkvRqtMkh1L3YxZfn8NC6OdO4bgF+o7Aq6hUX4Oor7cn0xNtxwC5BGM95/UPiyN0MTBS
+         8m8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784206415; x=1784811215;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sPWYmavr3P3lPLt50xEZ6dCncgfwt0JoMinuAxYXtzo=;
-        b=XzYDDQ5pAhtAXOcbef1xqFZiR4zImRH9JrAgtpREI04AMxsqISzxNJq9FJ1+5JTl4O
-         9xYWaKmao8e7yOD0+WlFnpCXY512kZIAYgRkpn+a08y1Dy9ltCXYAyAwC3cifhUtSbDr
-         L7xNc15fSrY9aXuslbJjEXMfRZPHP/GaQDe4sbupPQ5GMZBVEBT6wtkigAlRA2GrSmp1
-         BKzNFvCBt7jhVE3gPgMvPkUZ8Awgxksd8+R7YFPPwspbakkn0OnNp/m/QYF2XX5WmrLI
-         ApCIotQp0/CiOQltqb12RlZYmMyllKDJ7qNeJ1wVuyM8eNUOk7Dtzpdql82m0eOvLPN7
-         VPFg==
-X-Forwarded-Encrypted: i=1; AHgh+RqQYj4tqLKAZO3nH/tU8x7kJhVkViboY5MUGL8THAb6D9iCoQqxKns79Zq9TrIFidrOHGvmBHU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywdm7yDGrWHyqUcM8M5YAzeb6P+iUFMG+V/UvT6lvs6aqT6e/Hu
-	wL7Cbd1ngE8CF3WuUOQMRWcK1nHfQT+l3ndmisqwiDzFPmR6cBTcwMl0ygCikVQGWt0wxc6lSdY
-	Bqx4xujrYydZg8W/VlhjXkgqExnM4eLMjIGocRDPl
-X-Gm-Gg: AfdE7clC48ZYILIbk3URZ69UyJRAJZ7VyYh6loiZKHOZFq7MlBzU/A8nZvdb2jkPkro
-	arQhzZY6HiPz2N9Zk/kG83LWC2RHtLpF0H++/p30nWU5xLoBxzdJ1ewz8fpZaBRIQ80PEcawfYd
-	FyyTSIGDS0rn0edEBUrZfjNz5EDz+jSrK5RJnoXe0Xhi7INqsEmflqqpwXl9uGVM0RY87B14h16
-	PhMEhbcb9E0BwELjW1ZrTq/OAw1htpU3MHDvGSphZHKcCwXyAgLAob7+6bbZsRp2+4C30Mj803o
-	WlFYwiqE/be6gk9Cmg6WhsC26Yq3YLh06h1aXammPBSKJNrHZ+nRSPu6XcagDwXlsmyCBu0Sptq
-	q
-X-Received: by 2002:a05:622a:301:b0:51c:7b12:5fd3 with SMTP id
- d75a77b69052e-51e4f129ca6mr78062931cf.79.1784206414654; Thu, 16 Jul 2026
- 05:53:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784206786; x=1784811586;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=xZvfawR8I4GAicdLgeKPOlr1vtxHRZ9vVAdVAAu3ReU=;
+        b=e/FkZZahljsPwxhGVNzLIhyetH6TM133xCnhXgZiHcsJbXdlbXADYc0bU0EdKhg8dn
+         SKpINwkZkVhTqNiDpz6umUhAMHOczx0PdaKeYNhs42TyAC1wlOIZDyXoGinWe5Pg6VLm
+         pT3vls4wx7zgyGbPN5dwhebg44J4XMGVM///8gxhdWmNHF3JmUZm91n9XxCtKhKl8vHg
+         qvW6v8cFYVhV1AzpAiI4UbOf0EbUbUyRFPK7J8lUuZep5+no7L6zjrDiYLoZo9Vb48ge
+         yKsPxxBi7FrsvqIQsqO94kn+HOgx2kgfPBdkp00DNL80T16QPuKhVHIvcW9PVMwhOAw2
+         tt0w==
+X-Gm-Message-State: AOJu0YyhlDcmIiVbGEBjc2Z5V2Ishjm2wBFurGvUDxXNk+bb6k8lueP+
+	qVV7o2OadvrRcPoCXF8Vb7E5wbNdHiRrwhsu+CjwKnzPzvysXYvGPyJCJIJtKYDt5Cw=
+X-Gm-Gg: AfdE7cmCSKHpD1fMJ/iFhyULe7I+O29AhziSdkBEVA/cH5Y+nh7DtRKtMHMvct9iGer
+	BsNKpqk3WbpEev6TfhTohqVWmoPZhchQRqkRL1w58E+jqnOCC50JBZLifGN7O2b92WW5i6OyOAq
+	Yasg07DrDKB7H0YBFF7qPULw0eem5QTDe5CTGk0lTclpops19VICD51oqZOoSgYtBcL6BYQwLD3
+	g5biqR7Lz4dfXm3W+vnsSLtN48syRZwvdd/yif6HV7azKCX1ilZypSn57SnVoJ7jURIehnIYth7
+	tp4C/pWX9aP7KlgJdGEGFqGwo3+WpA8ovMbE4ZETNfMxEh10n8heVd266z6101iq64c8tvE9J2u
+	yAV0K19GVbhzgoKkF0rPc4u57qMYMexc0xd4cXcGLTP0iI+7Wr9vjUcCE2JQ436rZNkbjGlyxC0
+	epV8pjNw==
+X-Received: by 2002:a05:600c:4ed2:b0:495:3c8c:c16a with SMTP id 5b1f17b1804b1-49541248d08mr36567905e9.0.1784206785670;
+        Thu, 16 Jul 2026 05:59:45 -0700 (PDT)
+Received: from cloudflare.com ([104.28.189.108])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541eb0343sm57827975e9.10.2026.07.16.05.59.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 05:59:45 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>, Daniel Borkmann
+ <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>
+Cc: netdev@vger.kernel.org,  bpf@vger.kernel.org,
+  kernel-team@cloudflare.com, Jakub Kicinski <kuba@kernel.org>, Kuniyuki
+ Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH RFC net-next 3/6] bpf: Allow skb extensions to survive
+ packet scrubbing
+In-Reply-To: <aljKKt6nCB3fjFVA@devvm7509.cco0.facebook.com> (Stanislav
+	Fomichev's message of "Thu, 16 Jul 2026 05:11:30 -0700")
+References: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+	<20260714-bpf-meta-inside-skb-ext-v1-3-5871c07a8dd6@cloudflare.com>
+	<aljKKt6nCB3fjFVA@devvm7509.cco0.facebook.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Thu, 16 Jul 2026 14:59:43 +0200
+Message-ID: <87a4rrjdj4.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
-In-Reply-To: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 16 Jul 2026 14:53:23 +0200
-X-Gm-Features: AUfX_mwJ6wOXiWALTw9CQCSGPqtRuyG63o1Vlu5Z0draBHhLIJs3UoqtlSjaa80
-Message-ID: <CANn89i+z6ECLND1o8oD10re_zGJg73JCOr3dnV9AADeG40K=_Q@mail.gmail.com>
-Subject: Re: [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX
- on lower device
-To: xietangxin <xietangxin@h-partners.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, John Fastabend <john.r.fastabend@intel.com>, 
-	Jesse Gross <jesse@nicira.com>, gaoxingwang1@huawei.com, huyizhen <huyizhen2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Jul 16, 2026 at 2:20=E2=80=AFPM xietangxin <xietangxin@h-partners.c=
-om> wrote:
+On Thu, Jul 16, 2026 at 05:11 AM -07, Stanislav Fomichev wrote:
+> On 07/14, Jakub Sitnicki wrote:
+>> skb_scrub_packet() drops all skb extensions unconditionally via
+>> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv,
+>> vxlan_rcv, etc.) and cross-netns forwarding (dev_forward_skb).
+>> 
+>> This makes it impossible for a BPF program to pass metadata via
+>> bpf_skb_ext through a tunnel or across a netns boundary. The extension
+>> is always lost at the scrub point.
+>> 
+>> Introduce skb_ext_scrub() which consults each active extension before
+>> discarding it. Extensions that request preservation are kept while the
+>> rest are torn down. When the extension slab is shared with clones, COW
+>> ensures isolation. Replace the skb_ext_reset() call in
+>> skb_scrub_packet() with skb_ext_scrub().
+>> 
+>> Expose the opt-in mechanism to BPF via the BPF_SKB_EXT_F_NO_SCRUB flag
+>> for bpf_dynptr_from_skb_ext(). A program that sets this flag when
+>> creating the extension signals that its metadata should survive
+>> scrubbing.
+>> 
+>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+>> ---
+>>  include/linux/bpf.h      |  1 +
+>>  include/linux/skbuff.h   |  2 ++
+>>  include/uapi/linux/bpf.h |  3 +-
+>>  net/core/filter.c        | 11 +++++--
+>>  net/core/skbuff.c        | 82 ++++++++++++++++++++++++++++++++++++++++++------
+>>  net/ipv4/udp.c           |  2 +-
+>>  6 files changed, 86 insertions(+), 15 deletions(-)
+>> 
+>> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+>> index 6b918a5b61bf..a46ca53c5b27 100644
+>> --- a/include/linux/bpf.h
+>> +++ b/include/linux/bpf.h
+>> @@ -4214,6 +4214,7 @@ static inline int bpf_map_check_op_flags(struct bpf_map *map, u64 flags, u64 all
+>>  #ifdef CONFIG_BPF_SKB_EXT
+>>  
+>>  struct bpf_skb_ext {
+>> +	u64 flags;
+>>  	u8 buf[CONFIG_BPF_SKB_EXT_SIZE] __aligned(8);
+>>  };
+>>  
+>> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+>> index 584d8440d352..66afa5489007 100644
+>> --- a/include/linux/skbuff.h
+>> +++ b/include/linux/skbuff.h
+>> @@ -5063,6 +5063,7 @@ void *__skb_ext_set(struct sk_buff *skb, enum skb_ext_id id,
+>>  void *skb_ext_add(struct sk_buff *skb, enum skb_ext_id id);
+>>  void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id);
+>>  void __skb_ext_put(struct skb_ext *ext);
+>> +void skb_ext_scrub(struct sk_buff *skb);
+>>  
+>>  static inline void skb_ext_put(struct sk_buff *skb)
+>>  {
+>> @@ -5132,6 +5133,7 @@ static inline bool skb_has_extensions(struct sk_buff *skb)
+>>  static inline void __skb_ext_put(struct skb_ext *ext) {}
+>>  static inline void skb_ext_put(struct sk_buff *skb) {}
+>>  static inline void skb_ext_reset(struct sk_buff *skb) {}
+>> +static inline void skb_ext_scrub(struct sk_buff *skb) {}
+>>  static inline void skb_ext_del(struct sk_buff *skb, int unused) {}
+>>  static inline void __skb_ext_copy(struct sk_buff *d, const struct sk_buff *s) {}
+>>  static inline void skb_ext_copy(struct sk_buff *dst, const struct sk_buff *s) {}
+>> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+>> index 3eee4467422d..02da170205de 100644
+>> --- a/include/uapi/linux/bpf.h
+>> +++ b/include/uapi/linux/bpf.h
+>> @@ -7734,7 +7734,8 @@ struct bpf_insn_array_value {
+>>  
+>>  /* Flags to control bpf_dynptr_from_skb_ext() behavior. */
+>>  enum {
+>> -	BPF_SKB_EXT_F_CREATE = (1ULL << 0),
+>> +	BPF_SKB_EXT_F_CREATE	= (1ULL << 0),
+>> +	BPF_SKB_EXT_F_NO_SCRUB	= (1ULL << 1),
 >
-> [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on lowe=
-r device
->
-> Hi all,
->
-> We encountered a skb_under_panic triggered by toggling
-> NETIF_F_HW_VLAN_CTAG_TX on the lower device while a VLAN device is
-> up and sending traffic.
->
-> Call trace
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  skbuff: skb_under_panic: text:ffffc0d2900283d8 len:74 put:14
->   head:ffff334820249c00 data:ffff334820249bfe tail:0x48 end:0xc0 dev:vlan=
-4
->  ------------[ cut here ]------------
->  kernel BUG at net/core/skbuff.c:116!
->  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
->  Call trace:
->   skb_panic+0xcc/0xd0
->   __skb_checksum+0x0/0x480
->   eth_header+0x48/0x1a0
->   vlan_dev_hard_header+0xd0/0x284
->   neigh_connected_output+0x16c/0x20c
->   ip6_finish_output2+0x4b4/0xd74
->   __ip6_finish_output.part.0+0x1ac/0x3b0
->   ip6_finish_output+0x160/0x200
->   ip6_output+0x13c/0x294
->   ndisc_send_skb+0x41c/0x6f0
->   ndisc_send_rs+0xac/0x3b0
->   addrconf_rs_timer+0x42c/0x660
->   call_timer_fn+0x54/0x290
->   expire_timers+0x26c/0x420
->
-> Reproducer
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->  # Create veth pair (NETIF_F_HW_VLAN_CTAG_TX is ON by default)
->  ip link add veth0 type veth peer name veth1
->  ip link set veth0 up
->  ip link set veth1 up
->
->  # Turn off HW VLAN TX offload on lower device
->  ethtool -K veth0 tx-vlan-hw-insert off
->
->  # Create VLAN device on veth0
->  # At this point: header_ops =3D &vlan_header_ops, hard_header_len =3D 18
->  ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
->  ip addr add 192.168.10.1/24 dev veth0.10
->  ip link set veth0.10 up
->
->  # Turn HW VLAN TX offload back ON on lower device
->  # This triggers NETDEV_FEAT_CHANGE -> vlan_transfer_features()
->  # hard_header_len changes from 18 to 14, but header_ops is NOT updated
->  ethtool -K veth0 tx-vlan-hw-insert on
->
->  # When a packet is sent through veth0.10
->  # - skb is allocated based on hard_header_len=3D14 -> ~16 bytes
->  # - vlan_dev_hard_header() pushes VLAN_HLEN(4) + ETH_HLEN(14) =3D 18 byt=
-es
->  # - skb_under_panic!
->
->
-> Any feedback or guidance would be greatly appreciated.
+> Do I understand correctly that you do prefer the NO_SCRUB mode? Any reason
+> we need to have scrub mode? If it's all produced/consumed by bpf, maybe
+> we can just carry this data unconditionally instead of having a SCRUB/NO_SCRUB
+> option?
 
-This rings a bell, I thought we already fixed this issue long ago :/
+Yes, that's correct. We definitely need NO_SCRUB but I don't have a use
+case that relies on metadata scrubbing. I believe Kuniyuki also would
+like the no-scrub to be the only/default behavior for Google's egress
+use case.
 
-I would suggest we always add VLAN_HLEN even if not (yet) needed.
+I've made it an opt-out mostly because that the existing metadata
+(skb->mark, skb->data_meta) gets scrubbed. Although as Jakub K has
+pointed out to me - you can circumvent it by using bpf_redirect into the
+target netns. So I guess we have a precendent?
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 2b74ed56eb166d52c3351768d9dfedc7b2c8ec2d..d7f90b3b2bb3aadb2c466891720=
-a7f407d0bc34b
-100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -323,10 +323,7 @@ static void vlan_transfer_features(struct net_device *=
-dev,
+I could use input from folks operating in K8S-like environments, if
+no-scrub-only mode would be acceptable there? Daniel, John, any opinion?
 
-        netif_inherit_tso_max(vlandev, dev);
-
--       if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
--               vlandev->hard_header_len =3D dev->hard_header_len;
--       else
--               vlandev->hard_header_len =3D dev->hard_header_len + VLAN_HL=
-EN;
-+       vlandev->hard_header_len =3D dev->hard_header_len + VLAN_HLEN;
-
- #if IS_ENABLED(CONFIG_FCOE)
-        vlandev->fcoe_ddp_xid =3D dev->fcoe_ddp_xid;
-
-A kind-of-similar change is needed in net/8021q/vlan_dev.c
