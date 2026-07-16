@@ -1,591 +1,147 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579F93B2D0F
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 21:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784239146; cv=pass; b=W3pA68wlmFeY+LrsAlwzQ6OHJkR+iAGmXfFsaVbSs+xO1tDe33Jq9N3NaQPQBOU2TBdgQtsXplU6qku8iIf9zfGiOrGSvy5ad4+Eip+30tqhMJYKu+FODmq9IVjeCQUpViDIJ+uu+BEaEhiWeNj4ajEq2TmobiTCbXvvSA9MEvE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784239146; c=relaxed/simple;
-	bh=gW6WpYWzjcPfsc0bSwHS3G797oW9PCY91xfm4tsJvvc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EvXJSL47cVGu5js41dRSfi4c5yA+DVKL16EX8DjlLwP90iCecmNcJtsEwKPUYRZ8N+SYjLBsnJipHkNWZ99wQOBbEjy/OWeU/UEyOUv1W+lXVwpZ7mUvRflk+8uM6tMvMM91udEZ72/B3lSFL1vPO45bCir/y1iF/EbIyDdywr4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IE/KzwOR; arc=pass smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A197533120A
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 23:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784242885; cv=none; b=G56qYxEQUyLooldvgX2o+Bz7E8wjy+mGpfLH8tGNa7iJDIt4hawiWcd+d+IFzOHn/BoS4U1UQrvHkjdBzlKs9/5Bv+Q15Fw1d4aEJmR/YJtyuONI3uNWVIIOdOywGJgfd++BtH/HS4mwweCJKVDSc7P4pV372MxRWwtNUKKiZu8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784242885; c=relaxed/simple;
+	bh=bDX3+wffRV7PxmPLycy16u9ynIhU07YpqI3xFHl2iAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o7C1xDKV2jY+PwdqO1oxhHGLXP9mzElFIkA5E0PYz9B7B9JW3TBDpASLsrnuF/8busY/5GXuMfJs1Cc2zw+UzUz96hzFIv1wRbuDEAIURhNnaoMJvLpWZnuq9EMqn8qWEtI9v2bkVwBwXI4EAWTu91/VDpZ2Pj8YjGv88T4XBak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20251104.gappssmtp.com header.i=@jrife-io.20251104.gappssmtp.com header.b=Wwv/aH5t; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IE/KzwOR"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39c9bb9d2fbso32590271fa.2
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 14:59:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784239142; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GTTh5SqpBdBQGMMtOACOo5Acz06vr4I4wlCcYp3kJL9PVdMdKsqnofPnW0tMTx+Smc
-         JubRFNLgztZEKn0X0ZxrkuvCWwUGx71tLnuePuHXWdwjNLGuTz8NN/cwNtqH8xHBexsV
-         cvSycT4OQ4eLXVQS5YtSf0uA6NA2a1Tu+1kaNxqaUM5KjvUdnQsvdGITYk9SIrDBtJDt
-         hl4yIegsmTPIHWHN09Fmpv4No6Q1u8WyDGoDXsW8dxZk1YocYfo69sP81OniUQG0Za3R
-         Pm+9VzssjXwuuvfzZLhSIOu/3zJeRdls/Pcmrilz0/pSsx9XNFt3oZtmzPJvmH34Wfaa
-         uhQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
-        fh=JI3h9u+zcTfgqfsrvii+M2LwYW6m91hHHyR7PjAVQZI=;
-        b=ferZCUSx0XrgSL87B3+O1XNoECQPvn2EBzBKOPLESaSopHDpky3zn0sans9Kl/S5PV
-         hEw2wblfQfM4SPR5kreBgwpWB0y8iSBMm85u96Q9DeJlxBThd96nGb4wKdkO7Ck2QYjY
-         PL2xBrrKaYN7giUoQzDAb/4s0S1ta5lsZp4ZvofMy2+gGrSD47s3McOC/YmnEoOtGFg6
-         NbTsTFGYE6aAT0UWQFqWB3N5YEqJmzFq9jpvq7tfZu4ChASK1dVAr09yhpArpqeAoGin
-         M3x9ZlDBN1mJJDrzFqu57pLntUe3+ir7M6Qwl8Oxq9jKWtF+BWfYoeRT8X5Xb9OCEsOE
-         mWjA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=jrife-io.20251104.gappssmtp.com header.i=@jrife-io.20251104.gappssmtp.com header.b="Wwv/aH5t"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38dd1cc8dc8so650169a91.0
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 16:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784239142; x=1784843942; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=jrife-io.20251104.gappssmtp.com; s=20251104; t=1784242883; x=1784847683; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
-        b=IE/KzwORJDNQEzaypTnveWxAk3dMAUNomC5O5DW9I8jfiN6y9+uy9VoCKAl+1Kk1qI
-         PnaO46Td4JUQTG9cEMp6YFxFwSW2UGfEM2G2CEeZ6II8guY4UqzXUHRLgrjoVf7UFJQG
-         LP4XpzkvMj6di7vhrdjlLwYudi0KlGbI2cBD//PYlS7Sho1D8Z2mksPDZIXbEPyCjAfv
-         CNXW2gm8xtajnFTgXdv3CNBB8nPy8AVS9d2M6dzjm5BhGpsQcxZMznEaXGE7j9HRnUYP
-         BiYv/s3bmfE+nvqzCLGHWy9mn9yy6qh1JFnSfWqE1kmAeCj0GQmMxRBUCF2ixgbbo6mb
-         wxeQ==
+        bh=wyGjYfYZ0w+7WbZ59KK/1C1iYXN2+xrcuEWLzFLAWmA=;
+        b=Wwv/aH5tNEB65gqsWcnD+jgaMxsUkcc9qexD913PMY2MbtcaoQSuvNfdMkVLYfFzF7
+         Crx3cmwfUQSTlQhrHBR7ofHxXY6fwRZxjiOwXeZ9NoWjSqqJ7FdgTEYcuTXZAxnhXXeY
+         ktDRI0Z+Oqr/TqY7k9JabXAAFCp1NBqZTXkskQJL6cPOvBbBCkigwkUA906/xuKoqQpq
+         Deqi2xxNdY3B89lGlMa2nH0ZyAftAlXjWsGuBekQcYdxhtTbqoOpwrp06g7r4IFapb4s
+         lc8QyB4JhDSrBwBB7SyIZJchMesaM+1DJQMOrIfZnbwAswg0LNgq24wQ+JeoJUsK15S6
+         7vNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784239142; x=1784843942;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784242883; x=1784847683;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1SeijiA2WxkII3iZ6SO8cJEWIZ9g36I5ZaIAJ1sALII=;
-        b=LFwAFxBPrYLw9Jy8aXZOF6IfGLe+txF85AdQayO+g4OE2xktcQSsbeubRUrN30M0Bw
-         /6peBS/GSZJEgimo17pxdlv3isa0vchcF7P+ufqsrSqUUlMd3OT5m2hyzwXtrTjJw2Kn
-         OA7iiG+8GOOKRWKTkRafkW1z0AVSmIB9q09SLxmRrquqIEgNuZDaBgrGWiXmjokz+IYX
-         uoZWMzAkYOwuuHGfTe311eCGEZxXHqzBaClXOfB7AoLC/RCVjqROgpSUcJWDr83vXWFN
-         mZjzoa09PbdtHa5KQXo5k972/QuOy9w2HedNFTI3vLsIJ3/MtoOBkD+H6juhUCL8kxnM
-         sTfg==
-X-Gm-Message-State: AOJu0Yzgjk1vW0O4p1T/deqHhJYiTfoy+AUwYauXZXIX4oxahTpoa/md
-	+UEDlqivaETkcYp9JmEsQcNdBar1EK/dEJwa+0SfW2yv0V2bcP6rBqE/2p3zWkKQXGFN09IcdCV
-	A40hjfAQBdaqOwEujCHwsS6mTbXbw3iJN0PqL+5N3TQ==
-X-Gm-Gg: AfdE7cnbBo3+NKC0LI8urjjtRSf4TF/ODs3M1FS2h4XDGIFwz63ZBcUZyCLz/9qbvQe
-	GwyBiaEshhm/DZx9ye0sSefiex/90wxY03/Oy3Z1vGa7f9Z4DdelGzDkfDIcI9If6gCaTl6kvpE
-	P7l5YG52k3nFVH0W0M01nqWFY9K54J4ZUfT3qXJAXP/Z9jgfxHs8MhuoxFu41N5Y0/yDaW6b3TH
-	IZWYsKUMkN4yFOFcu0oxzBk5eMkWEfv13o1wsrg8aCAP4DliCcc04BkmdrQBBdBr8QKBVfqacA7
-	auyjjo8WB/6kw0mlytW4nBH99GENVMzuXZ0amdw+yWAoLhZ6ZYudNnwgVUmn9kwBw9NkQEuGyi7
-	y
-X-Received: by 2002:a05:6512:8393:b0:5ae:a9ed:162e with SMTP id
- 2adb3069b0e04-5b28dd9baddmr88477e87.65.1784239141928; Thu, 16 Jul 2026
- 14:59:01 -0700 (PDT)
+        bh=wyGjYfYZ0w+7WbZ59KK/1C1iYXN2+xrcuEWLzFLAWmA=;
+        b=VNJX0SqOdbVJlYUjwzNPPk7fscA9Mxhk42LtKwdhye9ImatzKYZFm7dYm3+884tbMV
+         VprOr7gLiIGrknC+m7C8XqnOgeLLJ+0vESpFLe+rx/vgS5XET6rJgtsKHZe38dXvdN8u
+         A7NJCJkvADK9BAMBXOrJ3xJ+opaJAk561V2jj9IIRUTOiOKYCByVrLTFA1lgJG3F7sxu
+         NrNHpRztzvuTlmHqQeSrC+5tijKXBuGUzNWBKUw0jl2LZngMeyQoKanQb6QYAWQXM251
+         jxNae0GdqX+ly5PRckAwRJuWASfmdpC0VImDUpDLQqNTbGZlWWrQSPp8fhcLK5c1Obna
+         XSlw==
+X-Forwarded-Encrypted: i=1; AHgh+RoMUfb873txMCwQ+N5QAYkhtEAf67jbZwD/Ve6U3tJZGOeXCBElJG9gjbYL4D+sDLKq1dFUdhc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzSxspy7Lry6Ll4hfa2a6gduBxv3y9XjdMayxQ/ma5fI9LMlvC
+	VbQN3yU0623rJtI+IKLhAkORh6wWO55zdrkoi63gj8LKmgJEpvx2w7dgM2n3GK/FKPw=
+X-Gm-Gg: AfdE7cl0O5ae0db/lzpD2q3YZn2iMVh3bjxOZSzimGoBsMxBpEO6Dnti32VUeLxQMYA
+	HSjSaVvHJSfamreGjHrT7o8qlBbKtbghHp4LyXewR1FuNj9oBw0bp2t2/SauFZlusb1mlfxja0O
+	muWJ+yqk9Vlg2lHqoQ+noeVde/9K25g50R2s6GUIkWOpFHAxOzY5QRw9hn2rAtkvNQeyQnMgPe/
+	ErlugohkMMoGWM60I7jz8SEhuLwIfSIikqhQtCtmgQrEMXy7lJy7XfmYbhDZPDcGBJTrKaix+eT
+	2g+CxW0iPvN+U07jyisTfy7udkmGVns6lIYFcjgPADwuJqhXVdobCgQ+umwxCV0uSy9EYQFh1NO
+	ikg8gFcBdMYGjP4zJMolXsS11AzPAYDkxoTNsDUgVlMSE84N0eHu2osn91BzZPA==
+X-Received: by 2002:a17:90b:5588:b0:381:cef1:11b2 with SMTP id 98e67ed59e1d1-38e4b550a72mr37011a91.7.1784242882764;
+        Thu, 16 Jul 2026 16:01:22 -0700 (PDT)
+Received: from t14 ([2001:5a8:47ec:d700:5ca:1606:20e7:441d])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd42b2c0bsm13474872c88.8.2026.07.16.16.01.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 16:01:22 -0700 (PDT)
+Date: Thu, 16 Jul 2026 16:01:20 -0700
+From: Jordan Rife <jordan@jrife.io>
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Martin KaFai Lau <martin.lau@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, AutonomousCodeSecurity@microsoft.com, 
+	tgopinath@linux.microsoft.com, kys@microsoft.com
+Subject: Re: [PATCH net] bpf: tcp: fix double sock release on batch realloc
+Message-ID: <2shuri6mxofmo7ijmzb5frge3gc72n5p25ksoobdunlqlbfs2g@rprbuqbs6vhu>
+References: <20260713233230.3553593-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714140722.111645-1-maciej.fijalkowski@intel.com> <20260714140722.111645-5-maciej.fijalkowski@intel.com>
-In-Reply-To: <20260714140722.111645-5-maciej.fijalkowski@intel.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 16 Jul 2026 23:58:24 +0200
-X-Gm-Features: AUfX_mxO9kFG9HNrt8MeDwHgh7BGBFAU8QENnOwKKWJgypMFdtIt2hSIc5Ja6a4
-Message-ID: <CAL+tcoDyygM5XiVhHrmYrZTnZN6QSD0dN9mMPZmZYPtikssYxw@mail.gmail.com>
-Subject: Re: [PATCH v3 net 4/6] xsk: reclaim invalid multi-buffer Tx descs in
- ZC path
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
-	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	bjorn@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713233230.3553593-1-xmei5@asu.edu>
 
-On Tue, Jul 14, 2026 at 4:08=E2=80=AFPM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> The zero-copy Tx batch parser stops when it encounters an invalid
-> descriptor. If this happens after one or more continuation descriptors,
-> the Tx consumer can be advanced past fragments that are neither submitted
-> to the driver nor returned to userspace through the completion ring.
->
-> A similar problem occurs when a packet exceeds xdp_zc_max_segs. The
-> descriptors consumed up to the limit are released without completion, and
-> the remaining continuation descriptors can subsequently be interpreted
-> as the beginning of another packet.
->
-> Parse Tx batches in packet units and distinguish descriptors belonging to
-> complete valid packets from descriptors consumed while draining an
-> invalid or oversized packet. Return the former to the driver and append
-> the latter to the CQ address area so userspace can reclaim their UMEM
-> frames.
->
-> Once draining starts, continue until the packet's end-of-packet
-> descriptor is consumed. Preserve the drain state on the socket when EOP
-> has not yet been supplied, so draining can continue during a later call.
-> Leave incomplete but otherwise valid packets on the Tx ring. Keep the
-> existing handling of standalone invalid descriptors unchanged.
->
-> Shared-UMEM pools using multi-buffer Tx also need packet-framed parsing.
-> Walk their Tx sockets one packet at a time, preserving the existing
-> per-socket fairness scheme, instead of using the legacy one-descriptor
-> fallback. Keep that fallback for shared pools that do not use
-> multi-buffer Tx. Since the drain state is maintained per socket and both
-> the singular and shared paths can resume an interrupted drain, changing
-> the socket list from singular to shared requires no special bind-time
-> transition.
->
-> CQ entries are positional, and drivers may complete only part of the Tx
-> work returned by xsk_tx_peek_release_desc_batch(). Therefore, reclaim-onl=
-y
-> entries cannot be published immediately when earlier driver-visible
-> descriptors are still outstanding.
->
-> Track the number of driver-visible CQ entries preceding the reclaim
-> entries. Let xsk_tx_completed() publish partial real Tx completions, and
-> publish the reclaim entries only after every earlier Tx descriptor has
-> completed. Complete a reclaim-only batch immediately when there is no
-> driver-visible work in front of it, and prevent another Tx batch from
-> being appended while reclaim entries remain pending.
->
-> Also cap batch processing by the size of the pool's temporary descriptor
-> array, as Tx rings belonging to sockets sharing a UMEM may have different
-> sizes.
->
-> This ensures that every descriptor consumed as part of an invalid
-> multi-buffer packet is eventually returned to userspace without exposing
-> the dropped packet to the driver or violating CQ completion ordering.
->
-> Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on Tx path=
-")
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+On Mon, Jul 13, 2026 at 11:32:30PM +0000, Xiang Mei (Microsoft) wrote:
+> bpf_iter_tcp_batch() releases the current batch via
+> bpf_iter_tcp_put_batch(), which drops the socket refs and rewrites
+> each slot with the socket cookie, then grows the batch. cur_sk/end_sk
+> are kept for bpf_iter_tcp_resume(), but on realloc failure the function
+> returns ERR_PTR() before resume runs, leaving cur_sk < end_sk over
+> slots that now hold cookies rather than sock pointers.
+> bpf_iter_tcp_seq_stop() then calls bpf_iter_tcp_put_batch() again and
+> dereferences a cookie as a struct sock.
+> 
+> Empty the batch on the failure path so stop() does not release it
+> again. The sockets were already freed by the first
+> bpf_iter_tcp_put_batch(), so nothing leaks, and a later read() rescans
 
-Thanks for working on this big patch! It's not easy to fix it in a
-simpler way, I think. And I didn't observe any obvious performance
-impact by xdpsock.
+Since bpf_iter_tcp_batch returns an ERR_PTR in this case iteration
+wouldn't continue on a subsequent read, but otherwise the fix makes
+sense to me.
 
-Overall, it looks good to me except for a few minor points:
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-
+> the bucket from the start instead of skipping it. The sibling
+> GFP_NOWAIT failure path still holds real socket references and is left
+> for stop() to release.
+> 
+>   BUG: KASAN: null-ptr-deref in __sock_gen_cookie
+>   Read of size 8 at addr 0000000000000059 by task exploit
+>    ...
+>    __sock_gen_cookie (net/core/sock_diag.c:28)
+>    bpf_iter_tcp_put_batch (net/ipv4/tcp_ipv4.c:2918)
+>    bpf_iter_tcp_seq_stop (net/ipv4/tcp_ipv4.c:3270)
+>    bpf_seq_read (kernel/bpf/bpf_iter.c:205)
+>    vfs_read (fs/read_write.c:572)
+>    ksys_read (fs/read_write.c:716)
+>    do_syscall_64
+>    entry_SYSCALL_64_after_hwframe
+>   Kernel panic - not syncing: Fatal exception
+> 
+> Fixes: cdec67a489d4 ("bpf: tcp: Make sure iter->batch always contains a full bucket snapshot")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 > ---
->  include/net/xsk_buff_pool.h |   3 +
->  net/xdp/xsk.c               | 192 ++++++++++++++++++++++++++++++++----
->  net/xdp/xsk_buff_pool.c     |   1 +
->  net/xdp/xsk_queue.h         |  76 ++++++++++----
->  4 files changed, 232 insertions(+), 40 deletions(-)
->
-> diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-> index f5e737a83055..2bb1d122b1bc 100644
-> --- a/include/net/xsk_buff_pool.h
-> +++ b/include/net/xsk_buff_pool.h
-> @@ -78,6 +78,9 @@ struct xsk_buff_pool {
->         u32 chunk_size;
->         u32 chunk_shift;
->         u32 frame_len;
-> +       u32 tx_descs_nentries;
-> +       u32 reclaim_descs;
-> +       u32 tx_zc_pending_descs;
->         u32 xdp_zc_max_segs;
->         u8 tx_metadata_len; /* inherited from umem */
->         u8 cached_need_wakeup;
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 385a3f4a1b32..2909a0ec6837 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -499,6 +499,23 @@ void __xsk_map_flush(struct list_head *flush_list)
->
->  void xsk_tx_completed(struct xsk_buff_pool *pool, u32 nb_entries)
->  {
-> +       u32 reclaim_descs =3D READ_ONCE(pool->reclaim_descs);
-> +
-> +       if (unlikely(reclaim_descs)) {
-
-Just a side note: it might impact the performance because new descs
-need to wait for the existing descs to be completed if there are
-reclaim descs.
-
-> +               u32 pending_descs =3D READ_ONCE(pool->tx_zc_pending_descs=
-);
-> +
-> +               if (nb_entries < pending_descs) {
-> +                       WRITE_ONCE(pool->tx_zc_pending_descs,
-> +                                  pending_descs - nb_entries);
-> +                       xskq_prod_submit_n(pool->cq, nb_entries);
-> +                       return;
-> +               }
-> +
-> +               WRITE_ONCE(pool->tx_zc_pending_descs, 0);
-> +               nb_entries +=3D reclaim_descs;
-> +               WRITE_ONCE(pool->reclaim_descs, 0);
-> +       }
-> +
->         xskq_prod_submit_n(pool->cq, nb_entries);
->  }
->  EXPORT_SYMBOL(xsk_tx_completed);
-> @@ -574,24 +591,162 @@ static u32 xsk_tx_peek_release_fallback(struct xsk=
-_buff_pool *pool, u32 max_entr
->         return nb_pkts;
->  }
->
-> +static void xsk_tx_commit_batch(struct xsk_buff_pool *pool,
-> +                               struct xsk_tx_batch *batch)
-> +{
-> +       u32 nb_descs =3D xsk_tx_batch_cq_descs(batch);
-> +       u32 cq_cached_prod;
-> +
-> +       if (!nb_descs)
-> +               return;
-> +
-> +       cq_cached_prod =3D pool->cq->cached_prod;
-> +       xskq_prod_write_addr_batch(pool->cq, pool->tx_descs, nb_descs);
-> +
-> +       if (unlikely(batch->reclaim_descs)) {
-> +               u32 cq_pending_descs;
-> +
-> +               /* CQ is positional. Descriptors already written but not
-> +                * submitted must complete before any reclaim-only descri=
-ptors
-> +                * appended below.
-> +                */
-> +               cq_pending_descs =3D cq_cached_prod - xskq_get_prod(pool-=
->cq);
-> +
-> +               WRITE_ONCE(pool->tx_zc_pending_descs,
-> +                          batch->tx_descs + cq_pending_descs);
-> +               WRITE_ONCE(pool->reclaim_descs, batch->reclaim_descs);
-> +               if (unlikely(!pool->tx_zc_pending_descs))
-> +                       xsk_tx_completed(pool, 0);
-> +       }
-> +}
-> +
-> +static struct xsk_tx_batch
-> +__xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, struct xdp_=
-sock *xs,
-> +                                struct xdp_desc *descs, u32 max_descs)
-> +{
-> +       struct xsk_tx_batch batch =3D {};
-> +       u32 entries;
-> +
-> +       entries =3D xskq_cons_nb_entries(xs->tx, max_descs);
-> +       if (!entries)
-> +               return batch;
-> +
-> +       batch =3D xskq_cons_read_desc_batch(xs, pool, descs, max_descs);
-> +       if (!xsk_tx_batch_cq_descs(&batch)) {
-> +               xs->tx->queue_empty_descs++;
-> +               if (batch.consumed_descs) {
-> +                       __xskq_cons_release(xs->tx);
-> +                       xs->sk.sk_write_space(&xs->sk);
-> +               }
-> +               return batch;
-> +       }
-> +
-> +       __xskq_cons_release(xs->tx);
-> +       xs->sk.sk_write_space(&xs->sk);
-> +       return batch;
-> +}
-> +
-> +static struct xsk_tx_batch
-> +xsk_tx_peek_release_shared_desc_batch(struct xsk_buff_pool *pool, u32 ma=
-x_descs)
-> +{
-> +       u32 cq_descs_before, cq_descs_after;
-> +       struct xsk_tx_batch sum_batch =3D {};
-> +       bool budget_exhausted;
-> +       u32 per_socket_budget;
-> +       struct xdp_sock *xs;
-> +
-> +       /* The fairness quota must allow one maximum-sized valid packet. =
-*/
-> +       per_socket_budget =3D max_t(u32, MAX_PER_SOCKET_BUDGET,
-> +                                 pool->xdp_zc_max_segs);
-> +
-> +again:
-> +       budget_exhausted =3D false;
-> +       cq_descs_before =3D xsk_tx_batch_cq_descs(&sum_batch);
-> +       list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list) {
-> +               u32 budget, budget_left, offset, remaining;
-> +               struct xsk_tx_batch curr_batch;
-> +
-> +               /* Once reclaim-only descriptors have been appended to th=
-e CQ
-> +                * address area, do not append driver-visible Tx descript=
-ors
-> +                * from another socket after them. xsk_tx_completed() rel=
-ies on
-> +                * all driver-visible descriptors preceding all reclaim-o=
-nly
-> +                * descriptors in CQ order.
-> +                */
-> +               if (sum_batch.reclaim_descs)
-> +                       break;
-> +
-> +               /* be gentle when playing with pool->tx_descs */
-
-Minor nit: seems unneeded comment?
-
-> +               offset =3D xsk_tx_batch_cq_descs(&sum_batch);
-> +               if (offset >=3D max_descs)
-> +                       break;
-> +
-> +               if (xs->tx_budget_spent >=3D per_socket_budget) {
-> +                       if (xskq_cons_nb_entries(xs->tx, 1))
-> +                               budget_exhausted =3D true;
-> +                       continue;
-> +               }
-> +
-> +               budget_left =3D per_socket_budget - xs->tx_budget_spent;
-> +               remaining =3D max_descs - offset;
-> +               budget =3D min(remaining, budget_left);
-> +
-> +               curr_batch =3D __xsk_tx_peek_release_desc_batch(pool, xs,
-> +                                                             pool->tx_de=
-scs + offset,
-> +                                                             budget);
-> +               if (!xsk_tx_batch_cq_descs(&curr_batch)) {
-> +                       if (curr_batch.budget_limited && budget_left < re=
-maining)
-> +                               budget_exhausted =3D true;
-> +                       xs->tx_budget_spent +=3D curr_batch.consumed_desc=
-s;
-> +                       continue;
-> +               }
-> +
-> +               xs->tx_budget_spent +=3D curr_batch.consumed_descs;
-> +               sum_batch.tx_descs +=3D curr_batch.tx_descs;
-
-No need to use '+' here because of the previous reclaim_descs check.
-
-> +               sum_batch.reclaim_descs +=3D curr_batch.reclaim_descs;
-> +       }
-> +
-> +       cq_descs_after =3D xsk_tx_batch_cq_descs(&sum_batch);
-> +
-> +       if (sum_batch.reclaim_descs || cq_descs_after >=3D max_descs)
-> +               return sum_batch;
-> +
-> +       /* Continue filling the batch while this pass made progress */
-> +       if (cq_descs_before !=3D cq_descs_after)
-> +               goto again;
-> +
-> +       if (!budget_exhausted)
-> +               return sum_batch;
-> +
-> +       list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list)
-> +               xs->tx_budget_spent =3D 0;
-> +       goto again;
-> +}
-> +
->  u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, u32 nb_pk=
-ts)
->  {
-> +       struct xsk_tx_batch batch =3D {};
->         struct xdp_sock *xs;
-> +       bool umem_shared;
->
->         rcu_read_lock();
-> -       if (!list_is_singular(&pool->xsk_tx_list)) {
-> -               /* Fallback to the non-batched version */
-> -               rcu_read_unlock();
-> -               return xsk_tx_peek_release_fallback(pool, nb_pkts);
-> -       }
-> +       if (unlikely(READ_ONCE(pool->reclaim_descs)))
-> +               goto out;
->
-> -       xs =3D list_first_or_null_rcu(&pool->xsk_tx_list, struct xdp_sock=
-, tx_list);
-> -       if (!xs) {
-> -               nb_pkts =3D 0;
-> +       xs =3D list_first_or_null_rcu(&pool->xsk_tx_list, struct xdp_sock=
-,
-> +                                   tx_list);
-> +       if (!xs)
->                 goto out;
-> -       }
->
-> -       nb_pkts =3D xskq_cons_nb_entries(xs->tx, nb_pkts);
-> +       nb_pkts =3D min(nb_pkts, pool->tx_descs_nentries);
-> +       if (!nb_pkts)
-> +               goto out;
-> +
-> +       umem_shared =3D !list_is_singular(&pool->xsk_tx_list);
-> +
-> +       if (umem_shared && !(pool->umem->flags & XDP_UMEM_SG_FLAG)) {
-> +               rcu_read_unlock();
-> +               return xsk_tx_peek_release_fallback(pool, nb_pkts);
-> +       }
->
->         /* This is the backpressure mechanism for the Tx path. Try to
->          * reserve space in the completion queue for all packets, but
-> @@ -603,19 +758,16 @@ u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_=
-pool *pool, u32 nb_pkts)
->         if (!nb_pkts)
->                 goto out;
->
-> -       nb_pkts =3D xskq_cons_read_desc_batch(xs->tx, pool, nb_pkts);
-> -       if (!nb_pkts) {
-> -               xs->tx->queue_empty_descs++;
-> -               goto out;
-> -       }
-> -
-> -       __xskq_cons_release(xs->tx);
-> -       xskq_prod_write_addr_batch(pool->cq, pool->tx_descs, nb_pkts);
-> -       xs->sk.sk_write_space(&xs->sk);
-> +       batch =3D umem_shared ?
-> +               xsk_tx_peek_release_shared_desc_batch(pool, nb_pkts) :
-> +               __xsk_tx_peek_release_desc_batch(pool, xs,
-> +                                                pool->tx_descs,
-> +                                                nb_pkts);
-> +       xsk_tx_commit_batch(pool, &batch);
->
->  out:
->         rcu_read_unlock();
-> -       return nb_pkts;
-> +       return batch.tx_descs;
->  }
->  EXPORT_SYMBOL(xsk_tx_peek_release_desc_batch);
->
-> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-> index 12c9fb29af05..a4089480b22b 100644
-> --- a/net/xdp/xsk_buff_pool.c
-> +++ b/net/xdp/xsk_buff_pool.c
-> @@ -51,6 +51,7 @@ int xp_alloc_tx_descs(struct xsk_buff_pool *pool, struc=
-t xdp_sock *xs,
->         if (!pool->tx_descs)
->                 return -ENOMEM;
->
-> +       pool->tx_descs_nentries =3D nentries;
->         return 0;
->  }
->
-> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-> index 3e3fbb73d23e..a15ff1929db6 100644
-> --- a/net/xdp/xsk_queue.h
-> +++ b/net/xdp/xsk_queue.h
-> @@ -58,6 +58,18 @@ struct parsed_desc {
->         u32 valid;
->  };
->
-> +struct xsk_tx_batch {
-> +       u32 tx_descs;
-> +       u32 reclaim_descs;
-> +       u32 consumed_descs;
-> +       bool budget_limited;
-> +};
-> +
-> +static inline u32 xsk_tx_batch_cq_descs(const struct xsk_tx_batch *batch=
-)
-> +{
-> +       return batch->tx_descs + batch->reclaim_descs;
-> +}
-> +
->  /* The structure of the shared state of the rings are a simple
->   * circular buffer, as outlined in
->   * Documentation/core-api/circular-buffers.rst. For the Rx and
-> @@ -263,17 +275,18 @@ static inline void parse_desc(struct xsk_queue *q, =
-struct xsk_buff_pool *pool,
->         parsed->mb =3D xp_mb_desc(desc);
->  }
->
-> -static inline
-> -u32 xskq_cons_read_desc_batch(struct xsk_queue *q, struct xsk_buff_pool =
-*pool,
-> -                             u32 max)
-> +static inline struct xsk_tx_batch
-> +xskq_cons_read_desc_batch(struct xdp_sock *xs, struct xsk_buff_pool *poo=
-l,
-> +                         struct xdp_desc *descs, u32 max)
->  {
-> -       u32 cached_cons =3D q->cached_cons, nb_entries =3D 0;
-> -       struct xdp_desc *descs =3D pool->tx_descs;
-> -       u32 total_descs =3D 0, nr_frags =3D 0;
-> +       bool drain =3D READ_ONCE(xs->drain_cont);
-> +       u32 cached_cons, nb_entries =3D 0, released;
-> +       struct xsk_tx_batch batch =3D {};
-> +       struct xsk_queue *q =3D xs->tx;
-> +       u32 nr_frags =3D 0;
-> +
-> +       cached_cons =3D q->cached_cons;
->
-> -       /* track first entry, if stumble upon *any* invalid descriptor, r=
-ewind
-> -        * current packet that consists of frags and stop the processing
-> -        */
->         while (cached_cons !=3D q->cached_prod && nb_entries < max) {
->                 struct xdp_rxtx_ring *ring =3D (struct xdp_rxtx_ring *)q-=
->ring;
->                 u32 idx =3D cached_cons & q->ring_mask;
-> @@ -282,26 +295,49 @@ u32 xskq_cons_read_desc_batch(struct xsk_queue *q, =
-struct xsk_buff_pool *pool,
->                 descs[nb_entries] =3D ring->desc[idx];
->                 cached_cons++;
->                 parse_desc(q, pool, &descs[nb_entries], &parsed);
-> -               if (unlikely(!parsed.valid))
-> -                       break;
-> +               if (unlikely(!parsed.valid)) {
-> +                       if (!drain && !nr_frags && !parsed.mb)
-
-I understand you're fixing the mb problem here. But I'm wondering if
-it still has a problem in the non mb case because the single invalid
-packet (mb =3D=3D0, nr_frags =3D=3D 0, drain =3D=3D 0) that isn't published=
- in CQ
-cannot be tracked by application?
-
-My thinking is to just remove the above line in this patch. Or I can
-cook a follow-up patch to fix this specific problem?
-
-Thanks,
-Jason
-
-> +                               break;
-> +
-> +                       drain =3D true;
-> +               }
-> +
-> +               nr_frags++;
-> +               nb_entries++;
->
->                 if (likely(!parsed.mb)) {
-> -                       total_descs +=3D (nr_frags + 1);
-> -                       nr_frags =3D 0;
-> -               } else {
-> -                       nr_frags++;
-> -                       if (nr_frags =3D=3D pool->xdp_zc_max_segs) {
-> +                       if (unlikely(drain)) {
-> +                               batch.reclaim_descs =3D nr_frags;
-> +                               WRITE_ONCE(xs->drain_cont, false);
->                                 nr_frags =3D 0;
->                                 break;
->                         }
-> +
-> +                       batch.tx_descs +=3D nr_frags;
-> +                       nr_frags =3D 0;
-> +                       continue;
-> +               }
-> +
-> +               if (nr_frags =3D=3D pool->xdp_zc_max_segs)
-> +                       drain =3D true;
-> +       }
-> +
-> +       if (nr_frags) {
-> +               if (drain) {
-> +                       batch.reclaim_descs =3D nr_frags;
-> +                       WRITE_ONCE(xs->drain_cont, true);
-> +               } else {
-> +                       if (nb_entries =3D=3D max)
-> +                               batch.budget_limited =3D true;
-> +                       cached_cons -=3D nr_frags;
->                 }
-> -               nb_entries++;
->         }
->
-> -       cached_cons -=3D nr_frags;
-> +       released =3D cached_cons - q->cached_cons;
->         /* Release valid plus any invalid entries */
-> -       xskq_cons_release_n(q, cached_cons - q->cached_cons);
-> -       return total_descs;
-> +       xskq_cons_release_n(q, released);
-> +       batch.consumed_descs =3D released;
-> +       return batch;
->  }
->
->  /* Functions for consumers */
-> --
+>  net/ipv4/tcp_ipv4.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index 209ef7522508..dd3ed62704f9 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -3141,8 +3141,11 @@ static struct sock *bpf_iter_tcp_batch(struct seq_file *seq)
+>  	bpf_iter_tcp_put_batch(iter);
+>  	err = bpf_iter_tcp_realloc_batch(iter, expected * 3 / 2,
+>  					 GFP_USER);
+> -	if (err)
+> +	if (err) {
+> +		iter->cur_sk = 0;
+> +		iter->end_sk = 0;
+>  		return ERR_PTR(err);
+> +	}
+>  
+>  	sk = bpf_iter_tcp_resume(seq);
+>  	if (!sk)
+> -- 
 > 2.43.0
->
+> 
+
+Reviewed-by: Jordan Rife <jordan@jrife.io>
