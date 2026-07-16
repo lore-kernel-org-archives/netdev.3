@@ -1,163 +1,139 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3528D2E7368
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A552412264
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784203486; cv=none; b=s9DA88D5uV676j2SLMNPSFQYnmMenUhQJfwZux9DT12YE8hUrCeGWzEiZAtflQyR9spPSifXLaRS+S73kIds1OefIUmrwfACVuQDdoAC8M5inq622pxhwQ46CKEnHs6idZSE6MMwKkIAw+H6z7Hz596fsyO7z4hGP22b05IRyXg=
+	t=1784203897; cv=none; b=cIUe5v5425dx9g+apWHv50Ix5pB4F2/+ZFSKd0sK7+YENds9iksosqbSJrAuQz+Nxc0AJHDKH3jnZ5Kz16eYnycl2O72E3TwG8dFTuaiq41F+f3EULHWhAEuxgJ8/AD+bSPXMjzaxk9s6ISknrmOXlRahhKKr/NC9fN/bl6WacA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784203486; c=relaxed/simple;
-	bh=rqYsK8i8YERiWKORPSsayS8qb4bjiatXBWXqEVOBFKM=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=WEPh3sdLhF79unn5jhn5X9NUnEWIGl2jvzsP3x/COgD7GZOMqrLrj6LHbOy7nXIC2MDNPdcTGT6r2MihDMIDynS7xJUEegaPko4ozPSP+fa8Xd1ych0QGKkOvHCQnYd3xAf81a/jFUhORc29JCwC7QeES4a/kIRc7uzvXUXEEvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 83A8E3DF3;
-	Thu, 16 Jul 2026 12:04:43 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B566B779AD;
-	Thu, 16 Jul 2026 12:04:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BQnXKNrIWGqAMwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 16 Jul 2026 12:04:42 +0000
+	s=arc-20240116; t=1784203897; c=relaxed/simple;
+	bh=f4ymZDRnM/pw2VyZ1qu8vLFhL7O6J9NcYCmD2FxFklc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tcwbSvd31ZavKvk2ZLXIIOuqcpxbvSH/wqas6xKJPY5kL7GsGnTX7ArR930hZKsvZdd2kmv4+crydbw3oYaJrSkBOSSKZrt32ETKQeA6NEBSnTsQqPIynA0Q7SnIBFE8zWubvysOCh0wDgeOFn/RK+xoQNd64mHZ2APzz6FF6Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lUjHL2SR; arc=none smtp.client-ip=74.125.227.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lUjHL2SR"
+Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc7a345f51so42391565ad.0
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 05:11:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784203896; x=1784808696; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G03SpxBcPbiMEuaQ6fjP36nhBHuuXkxtx53kuYQhpfE=;
+        b=lUjHL2SRpkAruFw6Y6T9UbM63Jp4clqBBo/TSQgT7ZiTye/Q70Om7BleTRY3pk7FCW
+         9BGrAp7mO6Qf5rrfxlu1gEx13S9N2TCZMxA4PTPZqI6ritGU8NAjQr+4dFoFs3esaFQy
+         oJOMthyh+Mn3cZ7/ZuoYE5IkplCj0pY0/O+wfBiZdh5ZPmrhe80rwB+QyNQ6FU2xJZ5Y
+         HR6eFQWSvn1K4EKcY1lI+mxCYGMkj6LbFQjeE/nRnvYOPkjmCt/o1vFRJd9qqyp3q1SN
+         GX56nIcQ/+QWxefy591uLeibSxonzgXkfD0pTdlB0hRK5JVFHklG4q1tJJwLYvgH6P2F
+         u3LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784203896; x=1784808696;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G03SpxBcPbiMEuaQ6fjP36nhBHuuXkxtx53kuYQhpfE=;
+        b=Ft3aYvDkZuNrXTJSb38Mryr7hOV42kkLLwsDZun70vI5+T0pId4FjN3VWwyVbOxqex
+         3EFKUCfPV9u7uyFncW4LZ3TJZrW7diL5W4uH3AQ4NkwogOOqN0LT4U+AkkoCoQdUDB0A
+         JSM45o5B4YQYQC8NLnHSJcxbiLu7jl32hVj0uMeGjlw7lyov69fnQXkGewZ+BpcNHxvV
+         MHKSDOmte4KIigfC0lI7lXN2ejzWhWopOYNlM6MQFrPYgcaQbS7kxld+DKk1kWhiiKz9
+         7XBf3lBhmlny6l7tRZ4kLsKDLok5GfLOf2nK/8wEsI7IHeSvOJ3o7UbET9DG/AerB/RR
+         LzYQ==
+X-Gm-Message-State: AOJu0YxXBA4Rs0FwEztdBI5MR5a/MAUH/vD5cboykvsYau1Ah1iWgFUy
+	pjCp9pnGfTp3Li2Nbbxkj32s+0ifg22qjbcMAEanBng4NYtzZUOu3qW8
+X-Gm-Gg: AfdE7cnyFbPLAinsCgbcBQzX3XpZQhVgSUb1cSQHoC2eMr39PEzEE4k7voyq3pl2Lho
+	b9sooq5ZByXAgUYEIBJtq6fMBr5hXFCaBXQvlz4AdgFYjEj02EaMmXrON+IZJwnSe4RpFutXsOT
+	JVt2zhDSe2iULZyQYFNGKXnrnuHcwJf8qdekzfdz3b+JyWnHhySh3QK+WkYv3RlxKDFhxhIR6ds
+	BXB+M2kx+oBEKiFnbrtnAtxT7TPE50QGtqOpVeHXhqZ4obxwDcpsij8Ss7YYrLm/0wUnsPo4RnT
+	aFqQcmtcwo9sEhb/iINOL0nKoOxKiq/NuTNWTqTET5+ErTgZBOclgc1MlMgWEqly1gg9yFUGD84
+	jEqbG44Nxgqv+z3jbt7q5XM44d1ZOnA87ELeaTvLe4RR8ck2W/xvLEcEVDMH2NXVLkbEUoZ8=
+X-Received: by 2002:a17:902:da81:b0:2ca:e19c:986 with SMTP id d9443c01a7336-2cf03c7c756mr62714505ad.1.1784203895554;
+        Thu, 16 Jul 2026 05:11:35 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:46::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf106b271asm19005705ad.64.2026.07.16.05.11.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 05:11:35 -0700 (PDT)
+Date: Thu, 16 Jul 2026 05:10:12 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC net-next 1/6] bpf: Introduce per-packet metadata
+ storage for BPF programs
+Message-ID: <aljJ1u-_1CBBF8Ha@devvm7509.cco0.facebook.com>
+References: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+ <20260714-bpf-meta-inside-skb-ext-v1-1-5871c07a8dd6@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next v2 0/4] net: hsr: PRP RedBox (PRP-SAN) support
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Xin Xie <xiexinet@gmail.com>, netdev@vger.kernel.org, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Felix Maurer <fmaurer@redhat.com>, Luka Gejak <luka.gejak@linux.dev>, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <178420323080.16062.15477610308661322679.b4-review@b4>
-References: <20260704234704.4297-1-xiexinet@gmail.com>
- <20260706134131.61659-1-xiexinet@gmail.com>
- <178420323080.16062.15477610308661322679.b4-review@b4>
-Date: Thu, 16 Jul 2026 14:04:31 +0200
-Message-Id: <178420347157.16062.10991723462605746308.b4-reply@b4>
-X-Mailer: b4 0.16-dev
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Queue-Id: 83A8E3DF3
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260714-bpf-meta-inside-skb-ext-v1-1-5871c07a8dd6@cloudflare.com>
 
-On 2026-07-16 14:00 +0200, Fernando Fernandez Mancera wrote:
-> On Mon, 06 Jul 2026 13:41:27 +0000, Xin Xie <xiexinet@gmail.com> wrote:
-> > This series adds PRP RedBox support to the hsr driver: a PRP node that
-> > proxies one or more SANs sitting behind an interlink port (IEC 62439-3,
-> > PRP-SAN). HSR-SAN has been supported since commit 5055cccfc2d1 ("net: hsr:
-> > Provide RedBox support (HSR-SAN)"); this extends the equivalent capability
-> > to PRP, reusing the existing protocol-neutral proxy machinery
-> > (proxy_node_db, hsr_proxy_announce(), hsr_prune_proxy_nodes()).
-> > 
-> > A SAN behind the interlink does bidirectional unicast with peers on the PRP
-> > network, its source MAC is preserved on the wire, the PRP RCT is correct,
-> > and the RedBox announces each proxied SAN with the RedBox-MAC TLV (Type 30)
-> > in its supervision frames.
-> > 
-> > The series is bisect-safe: the datapath, duplicate discard and supervision
-> > support are added first; the rtnetlink rejection of "type hsr ... interlink
-> > <dev> proto 1" is removed only in patch 3, once the feature is complete.
-> > 
-> > Design notes:
-> > 
-> >  - prp_drop_frame() does not walk the node tables. The destination
-> >    classification (PRP-network node vs proxied SAN) is resolved once per
-> >    frame in fill_frame_info() and cached in struct hsr_frame_info, so the
-> >    per egress-port drop decision is O(1) in the softIRQ path. The
-> >    classification is gated on PRP RedBox devices (prot_version == PRP_V1 &&
-> >    hsr->redbox), so HSR RedBox traffic is not affected.
-> > 
-> >  - The LAN A/B duplicate test is factored into prp_is_lan_dup() so the new
-> >    PRP interlink rules in prp_drop_frame() do not change hsr_drop_frame()
-> >    behaviour, including the NETIF_F_HW_HSR_FWD path. This is software PRP
-> >    RedBox only; it adds no new hardware-offload contract.
-> > 
-> >  - The supervision emitter uses pre-reserved tailroom (hsr_init_skb() +
-> >    skb_put()) on the existing GFP_ATOMIC path; no skb_linearize() or
-> >    pskb_expand_head(). The RedBox-MAC TLV is followed by an explicit EOT
-> >    (Type 0, Length 0); padding via skb_put_padto(ETH_ZLEN) and the 6-byte
-> >    PRP RCT remain at the absolute tail of the egress frame.
-> > 
-> >  - The hsr_get_node() hsr_ethhdr length guard is relaxed only for PRP
-> >    supervision frames (prot_version == PRP_V1 && ETH_P_PRP && is_sup), which
-> >    are untagged with mac_len == ETH_HLEN. HSR (ETH_P_HSR) supervision is
-> >    front-tagged and keeps the original length requirement, so HSR
-> >    malformed-frame filtering is unchanged.
-> > 
-> > Testing (on a net-next v7.2-rc1 kernel built from this base, x86-64):
-> >  - checkpatch.pl --strict: patches 1-3 clean; patch 4 reports only the
-> >    expected "added file(s), does MAINTAINERS need updating?" note, which is
-> >    ignorable here -- MAINTAINERS already lists
-> >    tools/testing/selftests/net/hsr/ under HSR NETWORK PROTOCOL.
-> >  - git diff --check clean; the series git-am's onto the base commit.
-> >  - tools/testing/selftests/net/hsr/hsr_prp_redbox.sh: PASS on the patched
-> >    kernel (bidirectional unicast, SAN MAC preservation, RedBox-MAC TLV +
-> >    EOT in the proxy-announce).
-> >  - HSR regression on the same kernel: hsr_redbox.sh (HSR-SAN/RedBox),
-> >    hsr_ping.sh and prp_ping.sh all PASS, confirming the PRP changes do not
-> >    regress the existing HSR/PRP paths.
-> >  - netns checks: peer<->SAN 0% loss with no duplicates and a valid PRP RCT
-> >    on the wire; a silent SAN is pruned from the announce; zero driver
-> >    WARN/BUG/Oops/RCU-stall during the run.
-> > 
-> > Beyond the in-tree selftest, this exact series (applied to this base and
-> > running as the net-next kernel on x86-64 hardware) was also validated with an
-> > out-of-tree IEC 62439-3 conformance harness (supervision TLV chain, duplicate
-> > discard, cross-LAN rejection, seqnr rollover, VLAN/multicast/GOOSE frame types
-> > with the RCT verified at the absolute frame tail), and interoperability-tested
-> > against a commercial PRP RedBox (Siemens SCALANCE X204RNA) over 100 Mbit/s
-> > Fast Ethernet with NIC hardware (PTP) timestamping: a mid-stream single-LAN
-> > outage of ~2 s at 10 kpps was bridged with zero lost and zero duplicate frames
-> > (seamless PRP failover), and the duplicate-discard window held zero lost /
-> > zero duplicates under netem asymmetric delay up to 100 ms (~1000 sequence
-> > numbers in flight), 25% reorder, and 5% single-LAN loss. The failover and
-> > impairment matrix was additionally repeated on a KASAN + lockdep + kmemleak
-> > instrumented build of this kernel, including a 72-carrier-event link
-> > flap-storm with deliberate double-LAN cuts: zero KASAN, lockdep, or kmemleak
-> > findings. This out-of-tree testing is supplementary and not required to
-> > evaluate the series.
-> > 
+On 07/14, Jakub Sitnicki wrote:
+> BPF programs attached at different points in the network stack have no way
+> to pass data between each other on a per-packet basis, other than by
+> stashing it into a shared BPF map. xdp/skb->data_meta works for XDP-to-TC
+> handoff, but is not available to programs running at later hooks like
+> cgroup/skb, sock_ops, socket filters, tracing or LSM.
 > 
-> The series looks good to me, I just found a couple of nits.
+> Add a new skb extension (struct bpf_skb_ext) that provides up to 256 bytes
+> of per-packet storage. Size is configurable at build time though the
+> CONFIG_BPF_SKB_EXT_SIZE option. The storage is embedded inside the
+> extension chunk itself.
 > 
-> Thank you!
+> Expose the storage to BPF programs via bpf_dynptr_from_skb_ext() kfunc.
+> The caller passes BPF_SKB_EXT_F_CREATE to allocate or COW (unshare) the
+> extension and get a read-write dynptr. Without the flag, it gets a
+> read-only dynptr to the existing extension, or -ENOENT if none exists.
+> 
+> Guard the feature behind a new CONFIG_BPF_SKB_EXT option.
+> 
+> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+> ---
+>  include/linux/bpf.h      |  10 ++++
+>  include/linux/filter.h   |  26 ++++++++++
+>  include/linux/skbuff.h   |   3 ++
+>  include/uapi/linux/bpf.h |   5 ++
+>  kernel/bpf/helpers.c     |   7 +++
+>  kernel/bpf/log.c         |   2 +
+>  kernel/bpf/verifier.c    |  10 +++-
+>  net/Kconfig              |  20 ++++++++
+>  net/core/filter.c        | 129 +++++++++++++++++++++++++++++++++++++++++++++++
+>  net/core/skbuff.c        |   3 ++
+>  10 files changed, 214 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index 7719f6528445..6b918a5b61bf 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -1484,6 +1484,8 @@ enum bpf_dynptr_type {
+>  	BPF_DYNPTR_TYPE_SKB_META,
+>  	/* Underlying data is a file */
+>  	BPF_DYNPTR_TYPE_FILE,
+> +	/* Underlying data is a bpf_skb_ext chunk */
+> +	BPF_DYNPTR_TYPE_SKB_EXT,
+>  };
+>  
+>  int bpf_dynptr_check_size(u64 size);
+> @@ -4209,4 +4211,12 @@ static inline int bpf_map_check_op_flags(struct bpf_map *map, u64 flags, u64 all
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_BPF_SKB_EXT
+> +
+> +struct bpf_skb_ext {
+> +	u8 buf[CONFIG_BPF_SKB_EXT_SIZE] __aligned(8);
+> +};
 
-Oh I just realized you posted a v3 - anyway, as there were no changes my
-comments also apply there.
-
-Thanks,
-Fernando.
-
+Can we do a dynamic size from the start? Say, some sysfs knob, 0 by
+default. Once written, it's locks in the size and can't be changed.
+Then your new 'flags' field can be used to indicate whether the area
+actually has been allocated or not?
