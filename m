@@ -1,124 +1,122 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0283391507;
-	Thu, 16 Jul 2026 15:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11BF3F23D1;
+	Thu, 16 Jul 2026 15:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784216883; cv=none; b=OjMLAvOp1ctiD9BH/CxNVAIGltVu4vb1ZsF7LMcC67/0SLmwciHYlZxCBM6R7FkcS6PJpjL6/yK4aiR2HI0c1QzLhovwaq9OAg2x98TxIyoOjHUPZyRf+3+ikgFe5teB0MEPivbKMDDdnip1//2umEVHypsqBcg0R29lHrxKhPU=
+	t=1784217397; cv=none; b=OlF6vSjvTLZZumVr/uo+4mRZgoM9MacsyFvnuJvQClouuoWnjtmLSMydi0HXOWi/HPMUMxXZ6c19Hh2bAEoj7gz0w9R2zLpcMfSQWEcT83NUT1TJDrtI7MXfmBrePsSjzc2BlxDZ9c9A/+DUu9JCfCK2lpt0dxzBzqu0PgS8ALQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784216883; c=relaxed/simple;
-	bh=WN+6q7KPEjcGTBu1+gNi6rjeoSh+sd11NnmV+eEGc0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IDaQWvzFTocbSrAiekTkSbERBhheeK/DZ8ewUvj/fS8bN1OewmISUI/Xq2P3Kr4KO9u+bq8VNSKdOMp/tCiF+aK+RRSiwZvN68jyLyqTLsIHHhu/k6bZArWqdjTQ6QPVb1yEnvwiRb3xv6jHsk2BCEcyfCt0bpcRqJEPr0ozmF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=nKr3wis9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mFTX8TBR; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="nKr3wis9";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mFTX8TBR"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 2309A7A0109;
-	Thu, 16 Jul 2026 11:47:57 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 16 Jul 2026 11:47:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784216876;
-	 x=1784303276; bh=HB/FKaTyvhlqB8GK9CB4ztDBDQW8yOpGTYGDpjvNGX4=; b=
-	nKr3wis9Bro742kYLtkQw/HOaGmFbeJreYwJzHq4iwssSZGiiRwqQSSW0bwD9VuQ
-	jRYGP6pGVldzgMsOdL6oR6LG6jOfo48jfw2z84AygeeR3f4OnVa64kIHjHi2Gpxb
-	Gjn2RuORLYLP7n4AhgEf6NfU/hMm3Sl7xYZgPY7iQMz87dh8x2ltJIV59mSpHGU6
-	a4iB/q7hMxNtMcicpS/oIHq34yGJwtm+qStR0xG3suVLDLXFnVtHEzkLw0ATJuyv
-	kgpXyDnTA1uDxfAXyAX+bCrNY2JV0+FzVBrg1Ntbnx3wCCL7m7KfOfnKPDfu+iGx
-	1a2b77au2RrXmphrrG45OQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784216876; x=
-	1784303276; bh=HB/FKaTyvhlqB8GK9CB4ztDBDQW8yOpGTYGDpjvNGX4=; b=m
-	FTX8TBRdSWlL86oyq+g7Y9+Hwri7yW8EPlB3BuRjjsGSQvKNdBjz0vuvXTHtsrWY
-	fqj8cqdbbgImqgqE+PYoHWiG3+n5jC+EGBMt6WmOJ5jVowjs5yvTGxR71/4Yikn+
-	mhui2CXtb5MneWunRN8WenkhEzsb5Hd9GoKY42/yONbw/3rq1/Ost/uxNZ+j7wpN
-	La5zDTcBlEUST7ceVEPqDHH+F4eBq6+Bz5JST6jZxLEqDeBeoi/wrepZdF1JtpMv
-	bQkR3Fuwb73lxgHFjcsin4igqAJz+GJ0cEu7YNdrxizObxOtFjBjr2n5wZfU/yNb
-	3/JD4OZ7XIhAJXpdsZRzg==
-X-ME-Sender: <xms:LP1Yav73PBSQ-OTFSlO6OobooyPXSbavf6YxkJnjPXIwCx__ig6jHQ>
-    <xme:LP1Yavzm57wNVkSn7HSge5rcYTOHo-Eq1So1mUmjjjjfq1NFwxqbqrFmvnNB4v5aF
-    Ea95yESZI7GAQiyfzMyenDuLTEKe1OydUezS565CO3xy_88z8JcqRM>
-X-ME-Received: <xmr:LP1YagoN-hGmmCcE-yja0y3aNMHxZK_ZxzpKFKkVh_9QygZztgSsiUYjrv5pIda0M75XRRTmlwn2Ui7WsMq1bnL5v5KEcl4>
-X-ME-Proxy-Cause: dmFkZTFU1EBs1rA1q6DrfLuabqPQngX9j5QFJ2wsEVNs0NdlFEP7iFAvVJs68Xex7Gffdd
-    sEJcOMhQnmjybeAcAon5v+WH7Y+UkWS0ZgCgh6HtTbOB8odfvTo35keA9/UnPzGvyJQNAa
-    JxNW+GJoDtziMX8mihvaj3Xd5LbfFxQo7GtsuOhFlzOX7+rCV5Vd/bYDeiROAxhqHxmGdw
-    Fagx1/0lHgw+pL4uXi+EjWCkt2owKsR31HyQqDkY855mqnUEQ8moS4952fH6evRzp/R13u
-    P+Lp2CScuEd72ZI9EbA9Ly+vfbfsxS5FHAFVKpfMKp1HJ0hc7lKN1/hGT9QfkO0XLH4fKx
-    5yRI6pi27S6MBRB+4qyW59DNZf2Ro8DPYvmyCC2ozza1DBIUSd6FL5jqUEjD7TSt/m+VZH
-    vs+3D4lK1c3+Dmfjr295UfWu5Npwp0JmuIsTKrs58lg2+0Ny1k4vXqk5phQomuEPoAVroE
-    smVhWe7IJ1tHjDrEbvf7BdyxSm38EESb9M/4hsp4FZ78OwV/8/3Nmrd9P65tDeLNWyAGi+
-    zyhuTQdE0GNj0njUqa2QV0/lPYc5CPc3A5h+/2XvGAwYFhVAt/O39VCGNwO45J1aDE0mPm
-    3AcYxbw0PP3sUgS5SR1nT9SqnBL+CaP9mE2Y9kGwnetozqPpmfezefiK5frg
-X-ME-Proxy: <xmx:LP1Yah3HZdD3daYG-BzuHlybve6E4Rjf-2RkJpqIIxXlAAsAvolubQ>
-    <xmx:LP1YapBTLh2UJ52xo8-uYfb01M4FDhB10j6mGvWhBuaZo86bW7_wIg>
-    <xmx:LP1YaiP6OdN-SJQdafFWQ81_eUEG7wHrX3_ZK0hivviauKBOgk27Pw>
-    <xmx:LP1YatS8MKbdguP0n-qW_Id3dhhrVFckju5m-z656VYonRPxV8U0KA>
-    <xmx:LP1YaqmXMzBIKOsPfH_YvwULbdaajSJKIkQpQKwtvlC2Vu2iD_2_HA5d>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Jul 2026 11:47:55 -0400 (EDT)
-Date: Thu, 16 Jul 2026 17:47:53 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"DavidS. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v4 2/3] ptp: Add driver for R-Car Gen4
-Message-ID: <20260716154753.GC1593320@ragnatech.se>
-References: <20260702125525.2230427-1-niklas.soderlund+renesas@ragnatech.se>
- <20260702125525.2230427-3-niklas.soderlund+renesas@ragnatech.se>
- <alSO_-xODO9gWXKn@monoceros>
+	s=arc-20240116; t=1784217397; c=relaxed/simple;
+	bh=FMG/8qWfFHDanhYvAc6uz9XivC+KVkIc5XksiBMPfsI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f30SMaLIGZFyNusUCrVTyrLIu+kpmgL6nC0dwECaWJr0mOy6SXXazoS98G9mbUo+NN1V0ELVIVinLSN/lZAfWCAn79EnbB/IG000oLnp8O/j0QwKs9SUtMwIcAvRSvTddKc84sumGt0rR+2OMARjc6jL0ukcpyinH+kyiWdVHkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4538920227E;
+	Thu, 16 Jul 2026 17:56:24 +0200 (CEST)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wkORj-0027od-30;
+	Thu, 16 Jul 2026 17:56:23 +0200
+Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3F8D056C3EE;
+	Thu, 16 Jul 2026 15:55:32 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	sashiko-bot@kernel.org,
+	stable@kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 15/19] can: bcm: fix data race on rx_stamp/rx_ifindex in bcm_rx_handler()
+Date: Thu, 16 Jul 2026 17:47:40 +0200
+Message-ID: <20260716155528.809908-16-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260716155528.809908-1-mkl@pengutronix.de>
+References: <20260716155528.809908-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <alSO_-xODO9gWXKn@monoceros>
 
-Hi Uwe,
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Thanks for your comment.
+For an rx op subscribed on all interfaces (ifindex == 0), the same op
+is registered once in the shared per-netns wildcard filter list, so
+bcm_rx_handler() can run concurrently on different CPUs for frames
+arriving on different net devices.
 
-On 2026-07-13 09:09:35 +0200, Uwe Kleine-König wrote:
-> Hello,
-> 
-> On Thu, Jul 02, 2026 at 02:55:24PM +0200, Niklas Söderlund wrote:
-> > +#include <linux/mod_devicetable.h>
-> 
-> Please don't add new users for this header file. Only use those
-> <linux/device-id/*.h> that you actually need (if any).
+op->rx_stamp and op->rx_ifindex were written before bcm_rx_update_lock was
+taken, allowing concurrent writers to race each other - including a torn
+store of the 64-bit rx_stamp on 32-bit platforms.
 
-Indeed, thanks!
+Beyond a torn store bcm_send_to_user() must report the timestamp/ifindex
+of the very same frame whose content it is delivering. So the assignment
+is placed in the same unbroken bcm_rx_update_lock section as the content
+comparison.
 
-> 
-> Thanks
-> Uwe
+As a side effect, the RTR-request frame feature (which never reach
+bcm_send_to_user()) no longer updates rx_stamp/rx_ifindex, since only
+the notification path needs them.
 
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Reported-by: sashiko-bot@kernel.org
+Closes: https://lore.kernel.org/linux-can/20260707145135.5BC831F00A3A@smtp.kernel.org/
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260714-bcm_fixes-v15-10-562f7e3e42da@hartkopp.net
+Cc: stable@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/bcm.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index a53dba6ab8b8..f213a0b37791 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -800,11 +800,6 @@ static void bcm_rx_handler(struct sk_buff *skb, void *data)
+ 	/* disable timeout */
+ 	hrtimer_cancel(&op->timer);
+ 
+-	/* save rx timestamp */
+-	op->rx_stamp = skb->tstamp;
+-	/* save originator for recvfrom() */
+-	op->rx_ifindex = skb->dev->ifindex;
+-
+ 	/* op->flags/op->frames may be updated concurrently by bcm_rx_setup() */
+ 	spin_lock_bh(&op->bcm_rx_update_lock);
+ 
+@@ -836,6 +831,14 @@ static void bcm_rx_handler(struct sk_buff *skb, void *data)
+ 			traffic_flags |= RX_OWN;
+ 	}
+ 
++	/* save rx timestamp and originator for recvfrom() under lock.
++	 * For an op subscribed on all interfaces (ifindex == 0)
++	 * bcm_rx_handler() can run concurrently on different CPUs so
++	 * the CAN content and the meta data must be bundled correctly.
++	 */
++	op->rx_stamp = skb->tstamp;
++	op->rx_ifindex = skb->dev->ifindex;
++
+ 	if (op->flags & RX_FILTER_ID) {
+ 		/* the easiest case */
+ 		bcm_rx_update_and_send(op, op->last_frames, rxframe,
 -- 
-Kind Regards,
-Niklas Söderlund
+2.53.0
+
