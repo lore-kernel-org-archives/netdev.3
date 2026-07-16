@@ -1,67 +1,67 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56E635E1D1
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8A3F44DB
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 09:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784195181; cv=none; b=aeTHai5avVWSVzXTBwoshECPHJbeofImwP252wUVIAVqVBAeyE6TxP0iQ/NCyLd8n8V0ceoCV4VU0L8mFTGbxuq7Wkk63AXejctcb8dNYnis3Se9mZSMqsjblNs1LONxRdUtvRwuFExAo59/ZXyMsuna5Di0oNmWaVw8ZLdQtLg=
+	t=1784195296; cv=none; b=enHxFW4/K0FnI1g/4vRETJxPSyXoRhAzlhkumdXu7WYfWLY1WrebgRxvs/npFj6NJLDnaxyr6FyS1S1Pxlj+xHcEFoJidd7Tlkx/6cNNsHraKrXGZbfzP4njAt9GzVj2vKdLh1BIpyJQKoaUPr1rXQkhPDO3RSFThBpzI7TcVQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784195181; c=relaxed/simple;
-	bh=xVT23QRkqhJ4KVE6Xjupxflg0Om9cDeSJhRc8LkXLOM=;
+	s=arc-20240116; t=1784195296; c=relaxed/simple;
+	bh=Js4qTvCyyBXGSFv7kyXRMakh0kp6EOFSGyB6oeTAbHI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UwLI/kcCncrZ6/3ulSEjoxBJNcnmzzwNzWtkLSD8NxY7Nb/l5Be7xj0veLS1mYejb7/IELkGQUS8wDS0v0C3QgugTAr/8NIDpyyfOGkG4HlFdSaUvQt8VEe9uFQMDM+qosmzh649G5ME2bj5TYTU3jmTPDdv27M/H2T24zb06lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=L6cViECS; arc=none smtp.client-ip=209.85.208.42
+	 In-Reply-To:Content-Type; b=QCgQI8JCIMQ0824rTuMQspeRVyd940BUoutQkBB2m0H1zNsJaVpffUKRBJVhxtEFXsu0d4bnnA8OJ8f4MNBg9qejclY+PzFy3bp/1E1inJ4PBi1xijY+RMjCC6Ad0gPyKQ+Xh+GBs9Nbv+nvdinItD40a0Jj0q1O7oNcRxBjF4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Rx1/HAIf; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="L6cViECS"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69a33fb0031so1067457a12.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:46:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Rx1/HAIf"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-69af1bc780bso904842a12.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 02:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1784195177; x=1784799977; darn=vger.kernel.org;
+        d=6wind.com; s=google; t=1784195288; x=1784800088; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :content-language:from:references:cc:to:subject:reply-to:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=KTxkaZPHUXOJmJBzLSBM+27rd0POVSJE0Fpas4J7vAQ=;
-        b=L6cViECSmyGEaWsbZQNXFOQ3cErfZtQGeow/R/n5cKPpg6Ggp6dz9gkPKzLq9dZiU1
-         Lpw5YilP4ASXTUnZglymBmI6OLQkfYK6lRWxoug2TO4sLJFHyj8gyDJCGqdulFbK5EQa
-         M/T16pl7M2jyS5hr4doIMPuPam4Xmv2CiF3QHbOtIU5ZZuLs0/eMCXNHfLWdaVgP6+Qe
-         xFzHj7fubuy5wr6/+x4kWnAUBQnQYpW6eiNktifwTkMnIXyIxcUF7GHa1oiE76CtfOlg
-         9pVEFduOFocY81D3UidfVH8MlGuK7b+tmkbX+CAW5106k38ZXhGq8eY8aXUcVJnj9vtE
-         jgaw==
+        bh=mdmiKhaUfRjC8X31unm5agm64vh4S/ipc2r8C/nqgyA=;
+        b=Rx1/HAIf60WzBw/LqlkJUtBGV/bfaWKHetbR5K0VmgdrsKva7F9epOC7JsSt3nHvKt
+         Y73Va62s9fbU3Qb3CSbm7J502Xq5sXDpCDNrS6uL1wxDClIK+hbnUb1tEHha3gDVVcGT
+         GGbdoT5hSAl2NBdL3pvsyRY70CUaSKr8uciex8shLJM/V8mTER/g87yH4uDZKBxYnJUP
+         Gm5Hm+piUukpo51T6kblQqu2qe+W5h+pkCHL9ZqsyoAVfTqmzvGC6UWvyY5hRwytP3+2
+         jOtDpDNZKUMxKhqiUvG19OfrML4vEF6W1yiCObQKCyBh0iuSF5z5Ke+Qnte5kYf+HPKt
+         RDoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784195177; x=1784799977;
+        d=1e100.net; s=20251104; t=1784195288; x=1784800088;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :content-language:from:references:cc:to:subject:reply-to:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=KTxkaZPHUXOJmJBzLSBM+27rd0POVSJE0Fpas4J7vAQ=;
-        b=f/T2wT2pdJV4CT0tFGp7/jy/xwb6170TLljEtC7Le/D5NyMZXPJxi5IM+kOeeHZ+JV
-         t4J5bBzCXBiDP20b2pHQEc0QAJuaF0dzm+Vm4fyiwX42hBIrYkmHQFLh5B0I+QqWPUxA
-         shIO+jfmpSvXpqsX4iIJ1f9NWj9Pz8zFy6jdeMy9ap4geOCsjrm5eUqT9PFTxaNS1tWw
-         4Q27YNl4jCWK6tWZM4C8Kmj041mS6e/1u0K5Ydl8cRnLhgYUGEo2VFT/CS38niCyqfAm
-         QcDuFlGntZ0Mde+W54uGqDMRnPcPf2YaNbjeCbdOGHoksrk85F3gUkj8uhYX3ZEZU05V
-         xXsg==
-X-Forwarded-Encrypted: i=1; AHgh+RrI7nK/IyKBiRIhrvSqCGf+LavoqQ9rmYDH0Cv120KL+dLeRaAOUC6AWDxeBe1SyEI376dCfQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8ujaDIJJoBe4w3BuYzBsECY2rX4MNBPyG/e6yyxMfXXf5I7c4
-	B0LziL3aBtxE3bgaydwj4n6DofFW+ofdtLYQcH3Xp4A1Fxznyn6rDsyZXVNWU0A0cUg=
-X-Gm-Gg: AfdE7clmEm6GapuRnSQuc5laZPJJXrjGAXd3RPLdphSaQvfmkAntsJlLlseqK8gKFTL
-	PEww8rUc3O+acnjG4DqHnwRXX7JCRtE67GvFUcWg1PibcwqGP14FmEoXBpPuqw7tczcVBTcWMjf
-	cmHxo2f0chhhM1BS89TUGsSwxJKjQJ1/+w/O0zzIugmHLWr5ZtdF/BvvTK/aPl7OfdMzx51v1Wc
-	NcY72l61n1+zHoVqKZfW6P2TaYjakw1KZYbnNICCrBU9qlLI0F6CVQAPvo15U8kU6tyLC9TtOPF
-	cs9lILt6+kFso4+2N6+EB/PN+5CJEfI9eZJQdLe7EVRjRbSAFlroL6VIL7XDuVtEcnDRDd04kc4
-	+j7qxnCKZPpSqV3cuq6PKPohWcnzu+ZqjmORPtK1vOVb9nizwmPHM4eepn8WwMSwfXlh1z91qgU
-	voCIbnAuBskLJ2gwjuAb2q88I56RoFr+RplAtdarUTwBhzOIAgRygZPCM=
-X-Received: by 2002:a17:907:3e21:b0:c16:1290:11a7 with SMTP id a640c23a62f3a-c161e923432mr637290166b.1.1784195177041;
-        Thu, 16 Jul 2026 02:46:17 -0700 (PDT)
+        bh=mdmiKhaUfRjC8X31unm5agm64vh4S/ipc2r8C/nqgyA=;
+        b=Pir0D9c2k458JmVWMyYwO0naoEZIvsY1H6eTHw2xf8wDQporKcPUN0H2jtwcBvoWJY
+         YFZg+KPQdZH2/G5i+lkfYBsaFN4pMioaEcEKQe6yGY7Za10Mw7LCCfmvJbZz9Af46nyB
+         ntw2HtVfqkExzGE8zyH1wAGj333uTZlURoGd1NuyX7Rh41M0ElC1tLFzVHg0lo8+gYi2
+         zABxepFEQKd9rBRAZBFI+boETFdgipMhqiprU3P8ds3lqeqflKNxWGrt9aL3kk1AyNQi
+         t+LmwTRQRx+F09FeOosCVk8GLkIee+zHaIVOJS0HdtvBBM0Qqm68op4e6jWt3o81Gvvu
+         1TiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrgJJDZAWktjviuElpillZtvza11SnOp9vnivBNrQWt2XyyDGJ7gVa3gKkgxrLIVEmWVKE1lMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEe8F+nO+6gV2pWFrRa+gwwrjQQONn+0A5Ux401GR/sFexJpQi
+	mmwc95S9ZQJh2vIbKKr05cyAZi/Hox1s4NsO2f7ZvKk6f2/63Dn2qbDlWT3+oJaGE2o=
+X-Gm-Gg: AfdE7clDFL4li7PSe5FhtYKR2hArKaG63eMksBlAsDRUg1rUKdff1xYr3HIXYjMdBr4
+	wk1dyzvzfnxanASnsaWB0bDYK3asWeFbECPbTUq2U5/AuLPHTsx2iKSYwX3IObW15ASvfxa4EqA
+	Nkqa8UNZiO9YgPPE8U+ZA4E69w8+nGp44EuQRaAGZ0pp9U5JtISG4ebAhv3sfY4q689SwFXRpjg
+	9m4cS5sfOJ+vRm3hFMidr/HfyDY0qXHr0+u5i+W9kl9iPJWj8HFyZAWWzZ+aDc5Uga4KcTuRSn4
+	3hhTh6zYhRjbruCZl83ZS4SH9SHP5n6nc8hj7NgAXMNeu2QLnnevYFHe/Hp/uHrAv5aHLeo4KWP
+	tBt86uupXDQn8AeTASOf8wknDYV1pGOZHOVQM5C9nHDN0Gn9bphZKAYqIVmAZsgetQdDVCO4uzh
+	sKhnohs2nFUsk85UviFg6iAJvW82IcThldB0w4GJpct3LHzZmo1bjU93elFJF51hHmxg==
+X-Received: by 2002:a05:6402:524d:b0:698:b000:204 with SMTP id 4fb4d7f45d1cf-69c5f241a28mr6312999a12.5.1784195288255;
+        Thu, 16 Jul 2026 02:48:08 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c16871262casm175544166b.6.2026.07.16.02.46.15
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69e12ccd067sm2431131a12.21.2026.07.16.02.48.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jul 2026 02:46:16 -0700 (PDT)
-Message-ID: <b517ef0e-d499-47e2-aac6-1950c5946e55@6wind.com>
-Date: Thu, 16 Jul 2026 11:46:15 +0200
+        Thu, 16 Jul 2026 02:48:07 -0700 (PDT)
+Message-ID: <be16e8d1-acff-44a3-ac6f-86abe512aede@6wind.com>
+Date: Thu, 16 Jul 2026 11:48:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,51 +70,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next 2/2] selftests: seg6: add test for post-encap SID
- route lookup
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Justin Iurman <justin.iurman@6wind.com>,
- Anthony Doeraene <anthony.doeraene@uclouvain.be>,
+Subject: Re: [PATCH iproute2-next 1/2] seg6: add support for lookup attribute
+ in SRv6 encap routes
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, David Ahern
+ <dsahern@kernel.org>, netdev@vger.kernel.org
+Cc: Stephen Hemminger <stephen@networkplumber.org>,
  Stefano Salsano <stefano.salsano@uniroma2.it>,
  Ahmed Abdelsalam <ahabdels@cisco.com>,
- Paolo Lungaroni <paolo.lungaroni@uniroma2.it>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260711162907.6521-1-andrea.mayer@uniroma2.it>
- <20260711162907.6521-3-andrea.mayer@uniroma2.it>
+ Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
+ Justin Iurman <justin.iurman@6wind.com>,
+ Anthony Doeraene <anthony.doeraene@uclouvain.be>
+References: <20260712021155.7621-1-andrea.mayer@uniroma2.it>
+ <20260712021155.7621-2-andrea.mayer@uniroma2.it>
 From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 Content-Language: en-US
 Organization: 6WIND
-In-Reply-To: <20260711162907.6521-3-andrea.mayer@uniroma2.it>
+In-Reply-To: <20260712021155.7621-2-andrea.mayer@uniroma2.it>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-
-
-Le 11/07/2026 à 18:29, Andrea Mayer a écrit :
-> Add a selftest for the SEG6_IPTUNNEL_TABLE attribute, which selects the FIB
-> table for the post-encap SID route lookup. This looks up the route for the
-> first SID, the outer destination of the encapsulated packet.
+Le 12/07/2026 à 04:11, Andrea Mayer a écrit :
+> Add support for the new optional "lookup" attribute for seg6 encap
+> routes. It selects the FIB table for the post-encap SID route lookup
+> and accepts a table number or a table name.
 > 
-> Two routers provide L3 VPN services over an IPv6 underlay. Each router uses
-> a separate VRF per tenant, with default blackhole routes (IPv4 and IPv6)
-> that drop unmatched traffic. Tenant traffic is encapsulated, then
-> decapsulated with an End.DT46.
-> The encap routes are installed in the tenant VRF, but the routes that match
-> the first SIDs live in a separate underlay table (500). The "lookup 500"
-> attribute points the lookup there rather than to the VRF.
+> Examples:
 > 
-> The test covers both the input path, where forwarded host traffic triggers
-> encapsulation, and the output path, where a router originates traffic from
-> its own loopback inside a VRF.
-> With the "lookup" attribute, traffic reaches its destination on both paths.
-> Without it, on the input path the lookup stays in the VRF and hits the
-> blackhole, and on the output path it falls through to the main table, which
-> has no matching route.
+>   # SID route installed in the underlay table 500
+>   ip -6 route add fc00::100/128 via fd00::1 dev veth0 table 500
+> 
+>   # encap route in vrf-100; the first SID is looked up in table 500
+>   ip -6 route add cafe::1/128 vrf vrf-100 \
+>       encap seg6 mode encap segs fc00::100 lookup 500 dev veth0
+> 
+>   # or if the SID is already handled by the main table
+>   ip -6 route add cafe::1/128 vrf vrf-100 \
+>       encap seg6 mode encap segs fc00::100 lookup main dev veth0
+> 
+> When the attribute is omitted, the post-encap SID route lookup behaves
+> as before, using the current routing context (e.g. the tables selected
+> according to the routing policy database).
 > 
 > Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-
 Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
