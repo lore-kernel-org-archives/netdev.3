@@ -1,63 +1,63 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BEA427F97
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D14242901F
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 13:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784208239; cv=none; b=Uf3a/QUZz9hY9538YQ8/nl+NeMjOg9qBdKTmjl8xeGyWSU+6XUTu9HaA0w4p2NjkxKM6lZ1o7ZjSnCvt53zI6sZU09MP23SEzjmvfk/9pHvYphKzyhiX7iZNnOzM7SYYxFn3zCRz24dmVCGY6t44m0JaPJWKEIV9klANErJGJBk=
+	t=1784208242; cv=none; b=bewngTVfDXSlzosQ2qMm9BRFHekbqu+yGvk1dDsg/Yw0+Vafacmsr6r81nvWElQz/rt6XDpF0FBLAfpg0VG8o6x4wFlk1t0eOCE0MeL2L3IWeMdshhKU2L+FceXKDzvKS2Aeq7UTfzEgNnpYkMVnrM6u5wTluA0dPWwbLDMo42M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784208239; c=relaxed/simple;
-	bh=BtV4YlWqSeeVkZLMl7O/Z8uUv5IQpghIyehpmENCIJs=;
+	s=arc-20240116; t=1784208242; c=relaxed/simple;
+	bh=2JgBpAWc31ZSpkYiSaZDvjmnHKEA4A5V63g6j0fsopU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXiCEVKqeFx231bnGv54wZiAbHDMGfwUHgrhGu+Fw91eiCopBjIxlOuTvwV+n/dgUx8iy8/epdkorlHsbfgdzIaenylLMU8amcGBfenMz5AFHkzRcH/RoWGiIanlzPoeqBMurt1N9rvMzAw113C3mQMVq4DahdTpz36ZAP5MR1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=L3sadX04; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version; b=ILQhSXhhIuIQRQ0vkyjRRsRTncerThj2YWwJYIoYLdjL4cspVDXyrHbJHtP1lJKXsMvv4q4oygq24rFX/DWpAg/wsjf9qCp9722mWUlC+cQVVERkmMCsgIBEOsbNKK3DkpJdAWhiuCWPOzjEklhuCURkfDW13hVbzcHF06RjCaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=z3W7Q/Vp; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="L3sadX04"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4720d22c94aso3619647f8f.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:23:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="z3W7Q/Vp"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so12999245e9.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208235; x=1784813035; darn=vger.kernel.org;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784208239; x=1784813039; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FMAXl1cpFneAc8qw41p6eJ7Eq0JeDqgZ4KunEwtw9x4=;
-        b=L3sadX04LrdZDyj+1eIDek6k1AO4oq0+VoJNTzJJxpHD7y6suFvl2BJUu87PKlqgAm
-         Ewza1KxAqL+LmKltKg1fdVDY9bgPG4kksMNzvN3PLNjjKqxB5nab+zOJi2V357atRh3X
-         KnCFlASrka4T+qTphB8LVLC44tuv/l287u825ypzdknNqwPNDNaDsa6FwieRF55YI+tS
-         fGVkyPxKJtv44NzEWRFTs/YEsauqST4sAO+yQcAvLnrrHH725cFxbv6VNCtCy8RtepMU
-         g04CpSdTg8sZLGxpG3G70yPI9iBbyRrwjLdjRPDz1ysUIPNvakCHZ6KouHbrelXCqJkE
-         i7Lg==
+        bh=jsn8I3x6C8T9FLWqok7MXQBFznxd0+GMkoGzBjmbnHQ=;
+        b=z3W7Q/Vp0l1NU8deNMLBoNbWyYcuLSpHkGAkibaFWx+4p5jEFFZ1wg3/PeOwjquSrJ
+         sG7/2NBJZ5Nb3jRXFFnRU9GOGQb3igJw5xW32mJkvID9oA/m5S2Nqb68z9FBTAgmeHXu
+         C0LIrMOGkrRSBK8h0FKbm3uBJ7+UnaKSSidEnSMUbdDE7TYfwFQFfIHVssaQMAkuzHsx
+         djL8B02CPgRwTlxHvbaAlVARHmjE+8X+af8JYFk1NOPbG0Psv9FNgDpinZEKCjP06S3/
+         cN5efKRCLZyH+IDqW+lkn/BoBP6otHCF7S/lk4FepSBtK4mllHKdFLEOQfAQt5TgKepd
+         9aIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784208235; x=1784813035;
+        d=1e100.net; s=20251104; t=1784208239; x=1784813039;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FMAXl1cpFneAc8qw41p6eJ7Eq0JeDqgZ4KunEwtw9x4=;
-        b=pLyhXb4oTtkhE/B959bw3mx7VENTS01NGydpJVmsJJryWfiUoeBl/boZZ0VOjuXCJb
-         JLJxItxkuVCBzQezLujbzmAmDyNojaBu2F+V+VJ046FjTOE6OuzPHHYVvOji+CHSpEPD
-         xmlaO1tukavhtIIfqOXdBjnnpGXt2uoCnqIFQcZn616ahqifnHSNlHPqzdHwxgbzQRWR
-         kb+cgqUT/KvF1cfFG6upGwMD3kkhVkfPF+36rPuqf8O8hdTbwmMAkf4eyLoHqRTEfGXR
-         Z/pliGCmD4MTM9C7qZNlR42+HJfVHUQwkAjWNM40IGRh7WkCNBfdoOh+n0CqHtp43CoN
-         Sulg==
-X-Forwarded-Encrypted: i=1; AHgh+RqoYWnybgTjz9aUoFMXSo4HM+3UWBfUrKCRXm78xDiqHw//Uvzwo1oXUVbCMhOZpJIMPpbXOOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypXJDIAgyLzd2+zOv/7P8AmgLJWLb8pSnd73lAmICUHWx0aJ27
-	mzc05inmT5TbyHZ0x8VEqLrLGJIcbYMkYq8Bt5rKK65BUtzt407YV5HMBjtxyh17Sbc=
-X-Gm-Gg: AfdE7cnbVZtv610hnIwqRdIcf8lQ7zLHR74rx7PMTIwYGbb4qt+jOOgxTXaQBwqK5WF
-	NCop0BQkKXgQEb+qhASYU6bIpUZgoxFQQDzgp/VFQa4WIAFntdUVYOjpK/+d8tn+7VvaVB28zCo
-	ElJLbPaOX2sTOEJ0CMnl5yYpD/17Ze7annU3Dz2CS1J8wUm7fz494T80zSvFFvhXTUnLbrNAQN5
-	24sZ7th6y1ZXW5SYZafucNuUHdaWrWARcF0yyu+fRjbAsyY30wyjYEz+Ee5q3gcztysNTk6+OG/
-	VFTTQUm7T7tF8J2V1p+fs7EzRZZ9xzargfqZs+TQhmLMgF+OeT3Q3HbtjxKmtrsY9cWT2WxTwxb
-	V4YGIKz30RsavCRZRy80NyeoRHwcKvFj6SAXxGlTBpGKPyQ1ly7pSE9XEsFs3nV5DEE1BF+Qmvn
-	+I0f2TWbPary8=
-X-Received: by 2002:a05:6000:29cc:b0:47f:4d11:3476 with SMTP id ffacd0b85a97d-47f4d113b44mr8270146f8f.5.1784208235345;
-        Thu, 16 Jul 2026 06:23:55 -0700 (PDT)
+        bh=jsn8I3x6C8T9FLWqok7MXQBFznxd0+GMkoGzBjmbnHQ=;
+        b=WvNcQWGIad+fcFLuiNpo68VLmn/ccrqSbN1A2VTbi9HF4QjxXD0+iuVywpvOrpUWz9
+         YakPrb86SsFNJDeCHammiAlk8fK8vsFVhP9+0ftRwHLdwEFsnqYl5hBQdjmvQFxnYLFp
+         WVuXctJm7TcBQ7yLvSHeo7/jC/C4Ui0n+hCY+dFhnDpMwy4isJr/COToLcfgHssnkd2c
+         VQpWeFffY+Fpe/kIrMgGRSL4q5SSN+DNZMFF1mbodAdyBoxkmx6cJo0CrH2m8azAa3lu
+         6ArbtG0Uuhj0CCct1QZePHVmjWSqiQXE0HdO4RZXvcm2uNL7JvBADZhdNjEnRFePXD9/
+         08UA==
+X-Forwarded-Encrypted: i=1; AHgh+RrUmdqZAnoWFZb2L9pEy4A9aEEDyASahWoh8zysuszD4/4b1O7dYDWbluGFuMVLeI8ODMnFI3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznbMf4CrE+z6iWBjr2j+SIkKrj2LbAlXpLCSvyXdAd1MAVZ96C
+	zPTGMFe7nsY9yF73HU482rsE15wVkISuQqKiV5uyqPabKsDM3OTtCVi33hzSBZlja9Q=
+X-Gm-Gg: AfdE7ckY4VUTUHwneDaMPZ9MB7tCgMhMVeFwJkisfZb5rDr5IdXHrQ6GEe77QIsXhx4
+	glzud5VHaiTFs35frZNOjaMYFpaMPePSebHdb0DBv88Q+jO17ZZeKQHCRblXVT4Q7lGG5f4MNuL
+	Q8ghj80Rxjuq0A5aSXV5M/BYsiQRmEAJ+Uzsm+mSdWHRjPDavyYPdlroyI0IHD/KtSEbXrjw1By
+	UIom8rYis11wTLbGB5/nJJ7b8MvFz0uXn6u4jyDYJ24GsVo2odvVET1cwibivhEKb0vzywMIA18
+	MaAEGGAsqr+a+ncoc1B/pouLMVuV42HfAO70jRTMMdN/AaL0SWlk29vjwvo+eO2Tcxrj11sIzzi
+	GBLHdsJf1j0WxnLfQrJb6zM9L9kId9giVBSA+xtkFxNqEj3C5KjotwIbWmgQbd2EfUsN8+dUNyy
+	qEc/bATjBRInU=
+X-Received: by 2002:a05:600c:6089:b0:493:b7cb:c5f with SMTP id 5b1f17b1804b1-493fa8afbb6mr218943975e9.11.1784208239547;
+        Thu, 16 Jul 2026 06:23:59 -0700 (PDT)
 Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a96fdsm24761180f8f.24.2026.07.16.06.23.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e8c47esm60892495e9.8.2026.07.16.06.23.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:23:54 -0700 (PDT)
+        Thu, 16 Jul 2026 06:23:59 -0700 (PDT)
 From: Jiri Pirko <jiri@resnulli.us>
 To: linux-rdma@vger.kernel.org
 Cc: cgroups@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: cgroups@vger.kernel.org,
 	wenjia@linux.ibm.com,
 	yanjun.zhu@linux.dev,
 	cui.tao@linux.dev
-Subject: [PATCH rdma-next v3 09/14] RDMA/cma: Document that CM configfs cannot be net namespace scoped
-Date: Thu, 16 Jul 2026 15:23:10 +0200
-Message-ID: <20260716132316.1495242-10-jiri@resnulli.us>
+Subject: [PATCH rdma-next v3 10/14] RDMA/core: Document the SELinux ibendport net namespace limitation
+Date: Thu, 16 Jul 2026 15:23:11 +0200
+Message-ID: <20260716132316.1495242-11-jiri@resnulli.us>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
 References: <20260716132316.1495242-1-jiri@resnulli.us>
@@ -98,45 +98,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Document the rdma_cm configfs limitation: configfs is global, so same-named
-RDMA devices in different net namespaces cannot both be represented there.
+Document that SELinux ibendport labels use a global (device name, port)
+key, so same-named RDMA devices in different net namespaces share a label.
 
 Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
- Documentation/ABI/testing/configfs-rdma_cm | 4 ++++
- drivers/infiniband/core/cma_configfs.c     | 4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/infiniband/core/security.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/ABI/testing/configfs-rdma_cm b/Documentation/ABI/testing/configfs-rdma_cm
-index 74f9506f42e7..739f7b6a1259 100644
---- a/Documentation/ABI/testing/configfs-rdma_cm
-+++ b/Documentation/ABI/testing/configfs-rdma_cm
-@@ -12,6 +12,10 @@ Description: 	Interface is used to configure RDMA-cable HCAs in respect to
- 		for this HCA has to be created:
- 		mkdir -p /config/rdma_cm/<hca>
+diff --git a/drivers/infiniband/core/security.c b/drivers/infiniband/core/security.c
+index 9af31d1d9d70..a82c46965416 100644
+--- a/drivers/infiniband/core/security.c
++++ b/drivers/infiniband/core/security.c
+@@ -700,6 +700,12 @@ int ib_mad_agent_security_setup(struct ib_mad_agent *agent,
+ 	if (qp_type != IB_QPT_SMI)
+ 		return 0;
  
-+		Note: configfs has no network namespace support, so this
-+		interface cannot represent two devices that share a name in
-+		different network namespaces (possible in exclusive netns mode).
-+
- 
- What: 		/config/rdma_cm/<hca>/ports/<port-num>/default_roce_mode
- Date: 		November 29, 2015
-diff --git a/drivers/infiniband/core/cma_configfs.c b/drivers/infiniband/core/cma_configfs.c
-index 891e52afb8f4..c389d4e37b6b 100644
---- a/drivers/infiniband/core/cma_configfs.c
-+++ b/drivers/infiniband/core/cma_configfs.c
-@@ -65,6 +65,10 @@ static struct cma_dev_port_group *to_dev_port_group(struct config_item *item)
- 	return container_of(group, struct cma_dev_port_group, group);
- }
- 
-+/*
-+ * configfs is not net namespace aware, so a name shared by devices in
-+ * different namespaces resolves to the first match here.
-+ */
- static bool filter_by_name(struct ib_device *ib_dev, void *cookie)
- {
- 	return !strcmp(dev_name(&ib_dev->dev), cookie);
++	/*
++	 * SELinux labels an endport by (device name, port) from a global
++	 * policy. If devices in different net namespaces share a name, they get
++	 * the same label; distinguishing them would need net namespace support
++	 * in the policy language and tooling.
++	 */
+ 	spin_lock(&mad_agent_list_lock);
+ 	ret = security_ib_endport_manage_subnet(agent->security,
+ 						dev_name(&agent->device->dev),
 -- 
 2.54.0
 
