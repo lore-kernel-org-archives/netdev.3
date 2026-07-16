@@ -1,72 +1,195 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFD5336EC0;
-	Thu, 16 Jul 2026 18:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784226747; cv=none; b=jwQeJp6v6MAYhVVTOTL6woPpqHDmFlgbv2lnqZ6y3Fs4lhpwYzTKZ+wDemad/848X1i9or1hwC8o9x0fVnrkjpvBToQP9d8Oxdb/MWrurrTpcUCuSnh76xEedvO1oFXN/0RnOC5K0yxwtn5712b9CXT/1DEG6GJCAzHhKVambOI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784226747; c=relaxed/simple;
-	bh=EfQs6+wNNb/9efWhP7XEPNOFW5aVo5BqNQQkEMuR7xY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hyA2S7d7xLsWzv5TDYDPHOcmB8nxOi9EoSZcURqHdEy7ePuDu9PK3ltmXBeBwWOIO+Rj8QJ6Ae+EYhnGtM/0FxKLhrZaXbjKG8p6h7JbbgCN2Eujp9j4uBBrG4AeHZEoU64ehiUBVWobYlXLP78fNyqu880Os5nNQquepClLdRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ljLNnZkN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372FE328616
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 18:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784226781; cv=pass; b=X4NDZHwpbJ20DwfTtVHv6FugmF7tqHYYiGbDx8UHEgtc3Q34BXVXLw/p9MhSKG2WY1x9vfWb7opLB0M1r2sM7MixBCqe2FuW07CtjnWq/gnmpyDnupgxYQqc5f++Ap178wzeC5NMfdASHHOwYJIRR4VVy83Siy+DvyCYr9VhKxY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784226781; c=relaxed/simple;
+	bh=ajwTxekkF3zV1IRBLCIVWPkHfTOXCaPPKAh0nXr72VU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VjJuke0RR1zfJeEhmACP/7ERC89X7YyrjBjW7oDEcOk/OTrD7fvjNlac+PnATFnThvSYhLU016FXj0ZM/f+n2agh5zqVCY7u3+UscBYxZ7bX4k24WA1CrFdCgy8Wr5l6ARTVVYEQKTAZOFJ7An7uB2Lg0ONGspMCWvF7fy6ygrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=YwW0548H; arc=pass smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ljLNnZkN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=z19MpaSTimTXpDTgIgf+WTg7/YH7/BLGU5EcmEIpnlA=; b=ljLNnZkNasfSLnAUBBdo+vpqVa
-	8h5YiadwuL1mLKcGxdq2oKMbYBeDD43ijoju1DZcG+O5Oc9mPmbpg4EE8uSNI7U7g6BR0R/fbkZ34
-	lfe62ueCQmO3QbXDQLLG8LT2/guglLPg6+Xm98UQsdrGSww45ecorv866l6pqpxljl2A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wkQsU-00CbrF-2C; Thu, 16 Jul 2026 20:32:10 +0200
-Date: Thu, 16 Jul 2026 20:32:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Artem Shimko <a.shimko.dev@gmail.com>, netdev@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Zhi Li <lizhi2@eswincomputing.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/2] Add DAPU Telecom DAP8211R(I) Gigabit
- Ethernet PHY driver
-Message-ID: <05bbadc9-95b0-421e-9c5a-8223a891cb5d@lunn.ch>
-References: <20260716173325.653164-1-a.shimko.dev@gmail.com>
- <77f1cc14-cc5f-4f32-a972-f0350a60931b@bootlin.com>
+	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="YwW0548H"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso633295a91.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:32:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784226778; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UxCsFGcMXXNFPJPLVAIxQ+nNlLsYYD4gzUKbVitSS21Pp1DDfPaapH2fO1RdHyvDcV
+         rz1xrGRHbEuf7X8WVnry4wQHbupoqccCaSU6P1L7oM46p1/r1la4lbUaaB6kSQQnGGb8
+         z3IYMfvf9LHnr3rxrsclweQK76/Qxiv8xVdyHjNN6Vmp3aARSuh6BcJARgzTRbLBEoXn
+         jScaUbIR6ZoFh1iQNGooOnMQ4obVxAFTKOezG0sO59jnXYFwKFStEPVrjB3E8JZH6F0H
+         /v0sA1obz4GRU0T8GajpCeLALzVBAmYS+33Rhm23cHn3O2lyG+OihDr8NBuF/JQrajQo
+         aJmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
+        fh=cxfyBmHHqMkCuZ3Hle3smpR2GPDqof5Wp4ihBjK/MNc=;
+        b=ATezBJijPYGfT5v7dkYTNa63A/uAqGcWEuCQa23GE0WxH1nxXs77ivEVYVtVt4q073
+         JVybcVwFQx++E0UZZ0WGkGHQkIAIw6KO03VmTRjMxgTCsFf60NudF//T8lXfChDm5MgZ
+         zVifT6a0xexR/LSnfNkZ4kNkw4F610bk8qHQCv/US6U/Vesaa9qgbl1uBARiyY6TooFv
+         MuVgCEFYhD5qwFFgw3M2cDkdEK09KLRwKp2N2dfGC1fZHtpFzb1DYTdrwEsDAyFTJhpm
+         dmm4WV8EXd8Y57GNyRpfT9/cvyrlldK2Ucrbo2GAJGlNG7LooWvyo9JOYi5HeTkpxxjL
+         nw1w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isovalent.com; s=google; t=1784226778; x=1784831578; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
+        b=YwW0548HsBJZiIfjnP6d+7IShGzpp2heaMcf3mtgxb56eVwZ9EA/tZAthdmvH7mALC
+         17/7YpfGMENpmpRv0O95zQeb5pLLl45dIIRT2LVFXd71rxx7ZChv9L1gXSX1AFpU6g0j
+         ipht62ZEUO2yaMGlfydhhI67vtlNu7U4QZPk4EiU7//3q/BMFGw4qnFc9VwVEqkwl3Fo
+         apQ49UE9fFJbY5OsCc5xoau9qyXCXCTgTknQNJBH+bLE/TvAObRwIZaNHuKFMEyCpwBg
+         gpSIpirREkzKqpXdAYb3uA54YjtsYwVhCjK0vkpVvEwgXjyYPuajDvwDt+GomKjTWrKQ
+         4RzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784226778; x=1784831578;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sFLi2SejFpMDhey9kvFVKWRtUJVSV+cPwvwGIcXMgGU=;
+        b=CQsHK4/Wnpu/j/4FkMWDNywjE4xlbq8l0qrjOJlAFSEAKLcqOYFrMRJnpMLbls3Oaq
+         uE3VAZmQZhgB/UQhhsOp830q8+Il7jG5W37hXfPrl8wehvegCJfYSb3bU9pSryDCgTaa
+         OI8Lx2UEUzk38QWbNJXyt+shgxOWcr4MckHBQqJ5W/y6gS1vJXbLcy3rNUcZbdPe4iq+
+         sbHpI+rSLUZXXPaI9C2fXdcl/dS2T+Ee9IREWl998ynla3HAlelG8NrEAC+sPEXrIgap
+         TsOqCYp1atAeZFCaYBrMhe/n4S1qgU+kckrgoyaJoiP3wS04QeXgTLNlxsMUjLveX0o4
+         p0uA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6ueZtJ6LMt6JD9BeWjwl1RpOdUlAhnl6JMARqrxFpnUoX/3DweuLJXwGBjPAhK0j7nh4Z32w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMq2UB8KNj8omCdFPo1IV8JtOf6UK9bjwpdqOexAsRlvBjuzme
+	byRMJHGsaqBl1iqhLaUijxzecjYfIwkXcwhfeFry9K8nTyrqnZs503qyfmHShXycwA0Ha3b6U5y
+	7J9kuiJAlprmGnbCE6HYGwsuLVycvoUOFlXnWZDk0Mg==
+X-Gm-Gg: AfdE7cnzGJHiNEXvYcYD1hQoviUyveHsfdI44kuYn0ljlecJV2Zyvz4z2C4QD++9wKY
+	CR2KrQYE7brlvKm/are+kwkRFOIICsZ2onsMtxB9AqnzRrR1jDvBf/x3Yg0GnH02Gr7dUwSHlWy
+	bbs90eSnkVjFKzCk9GA7OsxCI8vWTTevWFPjkBe/mnkkZZI1Z+WRtJBv2i1ixSi+fNTj9o9AUgH
+	y9zNfZh6c6FpcP+SiMGJz6kmbPtADT2WhQpk1ViUPYF9apA7sQVZIpMUNGS0gYJMxjaEfEgqWAu
+	qMr7s3Y6Shiv400x9EGjRHW6NubqBoBZYMARPOlXd4jlN6rX
+X-Received: by 2002:a05:6a20:cc0b:b0:3bf:a0e5:999f with SMTP id
+ adf61e73a8af0-3c3a5aee53dmr396730637.22.1784226778301; Thu, 16 Jul 2026
+ 11:32:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <77f1cc14-cc5f-4f32-a972-f0350a60931b@bootlin.com>
+References: <20260710134242.216538-6-alice.kernel@fastmail.im> <20260716144805.336424-2-horms@kernel.org>
+In-Reply-To: <20260716144805.336424-2-horms@kernel.org>
+From: Alice Mikityanska <alice@isovalent.com>
+Date: Thu, 16 Jul 2026 21:32:40 +0300
+X-Gm-Features: AUfX_mzfjspddebkNRtKmT3XCaxUwLoWF092aSdvFX4Dp51fQcHl4pBtKL816JI
+Message-ID: <CAD0BsJVNtu3ENqpqQFfO0J69gBZxoN8iMWRUnF-GdrZ2uaAy7A@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive
+To: Simon Horman <horms@kernel.org>
+Cc: alice.kernel@fastmail.im, daniel@iogearbox.net, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, lucien.xin@gmail.com, 
+	willemdebruijn.kernel@gmail.com, willemb@google.com, dsahern@kernel.org, 
+	razor@blackwall.org, shuah@kernel.org, stfomichev@gmail.com, 
+	andrew+netdev@lunn.ch, fw@strlen.de, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jul 16, 2026 at 08:11:26PM +0200, Maxime Chevallier wrote:
-> Hi Artem,
-> 
-> Please slow down a bit, you need to wait at least 24h between patch
-> submissions :
-> 
-> https://docs.kernel.org/process/maintainer-netdev.html
+On Thu, 16 Jul 2026 at 17:48, Simon Horman <horms@kernel.org> wrote:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> --- Patch [5]: [PATCH net-next v9 5/9] udp: Validate UDP length in udp_gro_receive ---
+> commit f1316d873c7549e0a49dc98d7614be1dc5b0f66c
+> Author: Alice Mikityanska <alice@isovalent.com>
+>
+> udp: Validate UDP length in udp_gro_receive
+>
+> This patch adds an early check for malformed or padded UDP packets with
+> len=0 at udp_gro_receive to exclude them from GRO, moving the check out of
+> udp_gro_receive_segment.
+>
+> > diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+> > index 4f9a3922937cc..8f77c8788f6db 100644
+> > --- a/net/ipv4/udp_offload.c
+> > +++ b/net/ipv4/udp_offload.c
+>
+> [ ... ]
+>
+> > @@ -782,8 +778,14 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
+> >       struct sk_buff *p;
+> >       struct udphdr *uh2;
+> >       unsigned int off = skb_gro_offset(skb);
+> > +     unsigned int ulen;
+> >       int flush = 1;
+> >
+> > +     /* Do not deal with padded or malicious packets, sorry! */
+> > +     ulen = udp_get_len_short(uh);
+> > +     if (ulen <= sizeof(*uh) || ulen != skb_gro_len(skb))
+> > +             goto out;
+> > +
+>
+> [Severity: High]
+> Could this early return bypass inner GRO flow matching for padded UDP tunnel
+> packets?
+>
+> When a padded UDP tunnel packet, such as a small TCP ACK inside VXLAN or
+> GENEVE, arrives in net/ipv4/udp_offload.c:udp_gro_receive() while previous
+> packets of the same inner flow are held in the GRO list, the
+> ulen != skb_gro_len(skb) check evaluates to true and triggers the goto out.
 
-Adding to that, there is no version history. How does v3 differ to
-v2.
+Min Ethernet payload size is 46 bytes. Outer IP (20) + UDP (8) + VXLAN
+(8) + inner Ethernet (14) + inner IP (20) + inner TCP (20) is already
+way bigger than 46, so "a small TCP ACK inside VXLAN" won't be padded.
+This check should only trigger on actual malformed packets.
 
-https://docs.kernel.org/process/submitting-patches.html
+> Because the goto out path yields pp = NULL and flush = 1, dev_gro_receive()
+> passes the new padded packet to the network stack immediately, leaving older
+> packets stuck in the GRO list.
 
-	Andrew
+The early return does bypass inner GRO matching, but it does not
+normally deliver the packet immediately. We call skb_gro_flush_final,
+marking the current skb for flushing. dev_gro_receive then classifies
+it as GRO_NORMAL, and gro_normal_one queues it on gro->rx_list. At
+NAPI flush, gro_flush_normal first flushes held GRO aggregates, then
+submits the normal list, preserving order in the normal case.
+
+Of course, gro_normal_one might submit the normal list early, if
+gro_normal_batch is reached, but it's an edge case, and we are talking
+about receiving malformed/padded packets, not something that should
+normally occur in high-performance TCP traffic.
+
+> Before this change,
+
+...the same flush mechanism was used for UDP GRO packets, when a
+malformed one occurred. It could hit the same edge case (when
+gro_normal_batch is reached), and reordering is more unpleasant for
+UDP.
+
+> the packet would reach inner GRO handlers (like
+> tcp4_gro_receive()) which would detect the sequence or padding mismatch,
+
+The inner TCP handler won't detect padding at the outer UDP layer, it
+would be done in inet_gro_receive, which will mark the packet for
+flush.
+
+> set flush = 1, and return the held packet via pp = p. This ensured older
+> packets were flushed to the stack before the new padded packet, preserving
+> delivery order.
+
+If this edge case is important, I can send a follow-up that addresses
+both the existing case (UDP GRO) and the new case (TCP in UDP tunnel)
+by separating ulen > skb_gro_len and sizeof(*uh) <= ulen < skb_gro_len
+cases. In the latter case, I can mark the SKB for flush, but proceed
+with the inner GRO handlers, so that they could return the held
+aggregate via pp.
+
+> Will bypassing this inner flow matching lead to out-of-order delivery for
+> the inner protocol, resulting in duplicate ACKs and throughput degradation?
+>
+> >       /* We can do L4 aggregation only if the packet can't land in a tunnel
+> >        * otherwise we could corrupt the inner stream. Detecting such packets
+> >        * cannot be foolproof and the aggregation might still happen in some
