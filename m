@@ -1,213 +1,113 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C041727FD4F
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8837B3596E1
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784185015; cv=none; b=lfNKnHD2zlHKnU7V8QRgnGHuHcuo3Eaa9twsEYo1TtIfo61dx8K2VsP1/biJ+DtufwVlkLCTP6OzVtC5icD6Kl+q+YIyZtFW0vEHE9w9EcyJ+FMPWwgIag5IpvSztlHzU1lE6Cm8NbgyIcdgPA2d0ChJo546831Blsss1ndX2FI=
+	t=1784185055; cv=none; b=FdKCYo0FyAydp9+GewNoco2xJat/4ZtdgEAgIYK8lDWbQ4TGE9fY7Uco6pk1Z5jNxvJ6xqXzVRPTaRRUNlqDDehAGAerv4MUmG75SvVE0cXzHGXGDOG34HNRqO/qhVQgFWsSGN6dMsH0YMQoWZz/eHfUL61SnyV1za2TNHhXW28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784185015; c=relaxed/simple;
-	bh=i3Ju16rcU4ecP/jxNFoioonLPru0ESo8QaGLQyksqtM=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NSST5RVSHoodo/67iBEW5YhO9kW9lVfd/jcx70IfO3p7RvIo/m3rWXkGyUAvQVW0yXCa2OwuWMnODrETCENgX6uj18Nv/kWXygPRFVQxd5KrQyip6FT5n3xQSY1w4/75SHS3AyyO8vtd0eJvnux25HIiJqD5ynINonHSBPCgmpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync8t1784184931t362d7dd6
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.200.247.46])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 4423270412133220589
-To: "'Simon Horman'" <horms@kernel.org>
-Cc: <netdev@vger.kernel.org>,
-	<mengyuanlou@net-swift.com>,
-	<andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<richardcochran@gmail.com>,
-	<linux@armlinux.org.uk>,
-	<aleksandr.loktionov@intel.com>,
-	<jacob.e.keller@intel.com>,
-	<michal.swiatkowski@linux.intel.com>,
-	<kees@kernel.org>,
-	<joe@dama.to>,
-	<leitao@debian.org>,
-	<shaojijie@huawei.com>,
-	<u.kleine-koenig@baylibre.com>,
-	<weirongguang@kylinos.cn>,
-	<larysa.zaremba@intel.com>,
-	<fabio.baltieri@gmail.com>
-References: <20260707061455.39564-6-jiawenwu@trustnetic.com> <20260714091129.1815871-1-horms@kernel.org>
-In-Reply-To: <20260714091129.1815871-1-horms@kernel.org>
-Subject: RE: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler
-Date: Thu, 16 Jul 2026 14:55:30 +0800
-Message-ID: <0ecb01dd14f0$17488c80$45d9a580$@trustnetic.com>
+	s=arc-20240116; t=1784185055; c=relaxed/simple;
+	bh=xLil7Vstv8VY9VX7lK3ig+izqWkJrIls3b9UTEkEz6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qUmg+RVfo061h2Opj970G9jJkGdmqr/cDJR30f/sjQjjQDTlThcTyNq/PDOsA7IckLvAwueXYNy7AnX3aFfu46gQOmWgb7bjTaQA9DuAAOwCekZVOdlM6UuFsRtPuAri/mk4skAKPAg6z3H3w9Iw9W2JKw+yCtArEIJdyD+SGaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EY62NLIf; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EY62NLIf"
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-44868d6a066so1955538fac.3
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 23:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784185052; x=1784789852; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JQwzC+SeknlTO8OOS+hCXasYqtaWNkX7Yw3a3+TJWPU=;
+        b=EY62NLIfBznC09stdXTxujzdKFbtzh26E4CDLhWZV6mm3+qo1pWH613W0SqQiASh7v
+         rEe9aGuGXlhOSEL+G/2DJ2CA4nD3xGRRTuBRGroSPDUjSMI649zUOUQQ8TbOiHD6gmpy
+         22rckdMZ4SKhJ2q/WciopsiBujh2vX2OpOa11XIXYDk13XIwkQbbDNvo9r0gxlqWSSiM
+         yxJ+G0qz6sZKfxOhSXO+zHBsqmZ+pgHXhHonCWAC8sLwUCSfA/fRvxBO81po02FvV6GY
+         yzTKec2LgADDvDhEEffe0j6SePmLwP5lQbOi5u0tkr+7fAgN9Rva0CO+GimSz5PcBPEU
+         Lkjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784185052; x=1784789852;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=JQwzC+SeknlTO8OOS+hCXasYqtaWNkX7Yw3a3+TJWPU=;
+        b=AfOfSKpaWCcFB6E136JWnAq7Hz863qaUyYJEpil8dfmU+iZsO4qWLt8jiUMrTvyJtI
+         BWpGHQzm3yJjhNd5n3p2mEIxpzDDSutqdNJmB7GDKl2rjfOJ+N+EKC0pjPrRYeDl0H46
+         EQx86RKLvu1FB6LGi6X/RNMIh302seSB/PUXc3NjDZUSnjaY7Mm8iKpakDOYY1fjKb9N
+         O9kpEhYInmsmAL3H4C6Rf0+03m/vCdMbCOZwFz/ml6/gPrcNm0/wuKJ1x/Vlh7FUunX2
+         zLl63V0z8K7qcbgt8oI8rgcg0SIOtCg9TPt9AjGEn8xY7I+TqkRRgG4m4Jvw4zuMnj+1
+         wDmw==
+X-Gm-Message-State: AOJu0YxdtXTfonKIjTG7O6fALoS27C+/hPmjzpS1P7gXwWkXn1zLo2OT
+	EYI05hCbQnEpPelch/y1VG6sCJ/2b4gtVTAhVq1d49Gn4x+SKxugZkJF
+X-Gm-Gg: AfdE7cndDCK/4NEuseIDFGPSn8k5oK3Uh9iMkXb4eF1uz42VYWWzvLb1GR1o0DQ+9I2
+	xC+FCdcZgWN/mpUgo1fldxX5dXQCBrZwhxoIFgPhz8a7/EmSoF6uftyOhSwdxhNNM8BAL6LQuZf
+	1nUCIYtgzlGiYP+KppZInJLue3p2TB+3neyOzvBsxMn3YQtNAhNFB+F+J7O/mthQE0o1csgkf6a
+	YK9EDpD6iJDNXTtxNrVcarM8TAgAY7y9zPj3iISw7bEpROIHLU9AKz+W8dOAAR/ihR6HjQN8/p6
+	gBgvnGxxChkJCggQp7VGppNVTXsuRaMMxp0qSapXq2DO0pK/R1aJf8HkJL238+V1Im7h1IAdAvX
+	85LpyzhmHzqCrr1NlnSLiSTibE7ZRcatIGJ4iGykxGKfhX3W6fidZ2ID3504i0ce2xQkScw==
+X-Received: by 2002:a05:6870:4596:b0:448:9e35:c3fe with SMTP id 586e51a60fabf-4562b5fa188mr3879300fac.11.1784185052273;
+        Wed, 15 Jul 2026 23:57:32 -0700 (PDT)
+Received: from localhost ([74.80.182.90])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-45191643abdsm21502202fac.11.2026.07.15.23.57.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 23:57:30 -0700 (PDT)
+Date: Thu, 16 Jul 2026 09:57:24 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Michael Grzeschik <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Yibo Dong <dong100@mucse.com>, LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net: rnpgbe: Pass an expression directly in
+ rnpgbe_rm_adapter()
+Message-ID: <aliA1EIIrX82jGR-@stanley.mountain>
+References: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
+ <alScHkiC3EmGzOlI@stanley.mountain>
+ <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQEnm0a43WP6ur8fLrbjt0gO/NQ3DQGfni8Et82oB7A=
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NRLj+a+1JRyJpouuvsTRzSIbZuCIj5qpiVUOZ5fKpUyeZx82EQRGVwVp
-	UFKc8JHylizS74WbWkpjPSLCrwZetR2fKvpvJiBBT9puHiYWAiJLvhsAGz7vipmr9ldZEh9
-	v4OrVKk4VXZmYvxGGcYe7n58qFIHR6m08QGgiSmkDSfwThdnUQZp6y+dKyN/azQ7+N0vUw1
-	enR/icwIq3HeH68h2n+uQFH0DrYf0O9YiFGiLQsL0D+3p/0y/2LE04QC36JAYV0dyE9sabP
-	2NjHVj2LxiGmSeUD05IUup+0ndwQb+XBjisNvvZFWCi+wupjaSg8tTB/lf+MHYOF6fHoor8
-	gTmc9mrq7kbwoa+2qxHRCvfBECsCxIkIRjSCmL/8iSgUVHJg5lD2ifwLgXRPdO9zbxhROXk
-	jhaSp/CGg+N15XUjjXiJuYhy/sXH9P6p03IsP/IGikRgZGzUqSY9epDzu4R3/E7oA1oKcoH
-	a/uALxw1vn9q1wFQ3IJfB9Vo4DfCIfUixxoH1/c+rHbAXznTi7xMlGM8Tpntg/UwzHxu64t
-	1TwJeMHLQKb+l/D9EEjy3vdPvPn8HNF5d1gKEihpnds/A7vJnV87OgDwka/2qmCY7zfmdB7
-	gA8NVt+z0FmkZzZ3GgIwfjanUyyQiddfUEeBlSm5fo6I2TehI57qukUKtgmOB+r3rOxzAtp
-	YdEdtppBx6AbDHQDz2p6dfT+5nwQXvTuYNN1pqCrlbEP7OPmjLXcRZhXeYlrFYtO47D+n+O
-	MQRRcqODE/Ex+5q4DvFPlwd3DlOx1ybaDfJODX4OaPKBcSuS4+9kg8HwnfrtP8xOgl418WN
-	v8vHEBJQ2llqI91fvFb/wFvi/dQUPzWGh5gCudX4MDiuvXxa4r9Kk3yKL1FyWJWIkg4uzu2
-	KjqqLdF9iEgoGrmu7otRG/ODzB9qsEnuls7lxPTl5R6HrVmPqN3YTgd+br+UjNUJKjiJQwY
-	N72omnkcHREtiUJfu24NlooT8un5ZJWmfGVk2dzw/XMWfOPhL81SuSYWlhJy6WAbPPo5m5J
-	fKKb9E1zBH0bQEIOpuDDspUVMJtuODE9qKfTeWNDRE3FgWHCyLfXN9Gjdb//cHgaOtp+pnr
-	zYFsZvR2hnXR+Dj4m3Ep7A=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8110bb3f-70d9-4f0f-82f2-ffe1262b2962@web.de>
 
-On Tue, Jul 14, 2026 5:11 PM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> --- Patch [5]: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler ---
-> commit 91baa4e77d07ab6772569a7d37ed86cfda625c00
-> Author: Jiawen Wu <jiawenwu@trustnetic.com>
-> Subject: net: wangxun: add pcie error handler
+On Mon, Jul 13, 2026 at 10:22:06AM +0200, Markus Elfring wrote:
+> >> The address of a data structure member was determined before
+> >> a corresponding null pointer check in the implementation of
+> >> the function “rnpgbe_rm_adapter”.
+> >>
+> >> Thus avoid the risk for undefined behaviour by omitting the variable “hw”.
+> >> Pass the required address directly to a function call.
+> >>
+> >> This issue was detected by using the Coccinelle software.
+> >>
+> >> Fixes: 2ee95ec17e97c58b65e978a08b75fa8cb6424e4e ("net: rnpgbe: Add register_netdev")
+> > 
+> > There is no NULL dereference here.  It's just pointer math.
+> > No need for a Fixes tag.
 > 
-> This commit adds PCIe error handling support (AER) to the wangxun drivers
-> (ngbe and txgbe). It detects hardware errors, attempts to soft quiesce,
-> and registers standard PCI error handler callbacks.
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > index ee27f96735dc7..0cb99e456a1c9 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> 
-> [ ... ]
-> 
-> > +static void wx_io_resume(struct pci_dev *pdev)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +	struct net_device *netdev;
-> > +	int err;
-> > +
-> > +	netdev = wx->netdev;
-> > +	rtnl_lock();
-> > +	if (netif_running(netdev)) {
-> > +		err = netdev->netdev_ops->ndo_open(netdev);
-> 
-> [Severity: High]
-> Does this sequence risk corrupting the hw_tc_lock seqlock?
-> 
-> During AER recovery, wx_io_slot_reset() calls down_suspend(), which bypasses
-> wx_ptp_stop(). This leaves the PTP clock registered and potentially in use by
-> userspace.
-> 
-> When wx_io_resume() then calls ndo_open(), this triggers txgbe_up() or
-> ngbe_up(), which in turn calls wx_ptp_init(). Since wx_ptp_init()
-> unconditionally calls seqlock_init(&wx->hw_tc_lock), won't this corrupt the
-> lock if userspace is actively issuing PTP ioctls?
-
-PTP clock was destroyed in wx_ptp_quiesce() before V8 patch set.
-The piece of code was removed based on the Sashiko's comment.
-I think it should be added back because the order of the calls in wx_soft_quiesce()
-has been changed.
-
-> 
-> > +		if (err) {
-> > +			wx_err(wx, "Failed to open netdev after reset\n");
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > index 92895f5035118..56d4b63387fd6 100644
-> > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> 
-> [ ... ]
-> 
-> > @@ -413,6 +428,9 @@ static void ngbe_disable_device(struct wx *wx)
-> >
-> >  static void ngbe_reset(struct wx *wx)
-> >  {
-> > +	if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
-> > +		return;
-> > +
-> >  	wx_flush_sw_mac_table(wx);
-> 
-> [Severity: High]
-> Is the hardware properly reinitialized here after an AER slot reset?
-> 
-> In wx_io_slot_reset(), the hardware needs to be restarted from scratch.
-> While txgbe_reset() calls txgbe_reset_hw(), ngbe_reset() only flushes the
-> software MAC tables and skips calling ngbe_reset_hw().
-> 
-> Because this patch registers wx_err_handler for the ngbe driver, won't this
-> leave the hardware uninitialized and the interface broken after a PCIe slot
-> reset?
-
-I think I have answered this question many times and also described ngbe's lack
-of functionality in the commit and cover-letter messages.
-
-> 
-> [ ... ]
-> 
-> > @@ -529,12 +548,16 @@ static int ngbe_close(struct net_device *netdev)
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> >
-> > +	if (test_bit(WX_STATE_RES_FREED, wx->state))
-> > +		goto out;
-> > +
-> >  	wx_ptp_stop(wx);
-> 
-> [Severity: High]
-> Does this early return cause a use-after-free for the PTP clock?
-> 
-> If a PCI error occurs, down_suspend() sets WX_STATE_RES_FREED but
-> intentionally skips wx_ptp_stop(). If the interface is subsequently closed or
-> unregistered, ngbe_close() will return early here and never call
-> wx_ptp_stop().
-> 
-> Because the PTP clock device is never unregistered, it remains exposed to
-> userspace after the driver's memory is freed. Can this lead to a
-> use-after-free if userspace interacts with the clock later?
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > index a7bde03a98feb..d85ee83192e4f 100644
-> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> 
-> [ ... ]
-> 
-> > @@ -530,12 +549,16 @@ static int txgbe_close(struct net_device *netdev)
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> >
-> > +	if (test_bit(WX_STATE_RES_FREED, wx->state))
-> > +		goto out;
-> > +
-> >  	wx_ptp_stop(wx);
-> 
-> [Severity: High]
-> Similar to ngbe_close() above, does this early return skip wx_ptp_stop() and
-> lead to a use-after-free if the txgbe device is closed after an AER suspend?
+> How does your view fit to information in an article like “Fun with NULL pointers, part 1”(by Jonathan Corbet from 2009-07-20)?
+> https://lwn.net/Articles/342330/
 > 
 
+Of course you can't have NULL pointer dereferences but this is not a
+dereference, it's just pointer math.
+
+regards,
+dan carpenter
