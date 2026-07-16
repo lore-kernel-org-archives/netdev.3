@@ -1,172 +1,314 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721A3417340
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD2040D58E
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 11:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784200374; cv=pass; b=Qmn33kvZc7N2rLrTteuTM11lzzHyhH/AHhsrC7xaMEp8AZKGXrg12yvcRTOzcMQvrx+Q710yGhEbTwE4IkV+5n75PX3O/V1Zbpy8GE4mHf820HatNXKQmOz0oaoIupRY8vKOe1Mkr3wUb+qwuWqTniIY8Sdl4r6mTPJZ/zUJRpI=
+	t=1784200951; cv=pass; b=cSBtORte2KJV4aEs27OeVyOVUVTCPodsTgOCUIuloSDGT/o0vzJ/4SYJQhqEDq764QzyXG9E38x+mD9GLz/EhMg/DT2i/7zYqm4/GiVJh7hpnwCo+I3XmMAyek0ZSCdt+yvQ0r1Lpr1a+KVo7QIYB3+PNU7ebG/eJRs2VwLfz3o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784200374; c=relaxed/simple;
-	bh=2Mf1yi7rcpKQx+KVf6gqOog7j/QWN72FP0RMqbdb1Bs=;
+	s=arc-20240116; t=1784200951; c=relaxed/simple;
+	bh=Q+FYPDlZgwpe6Fj3BPFnuCMsv6bqlOcAxIFYFoAEwbg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tc0q7gwoy7OipHfL+D1dnQN/vt5rAld1fp6ZwNkn7YEUxQcG6DhGOew6yZ/vGup/xjhCKNeN+g/yxt9RLQWFztXEt7/A9zi9Syl0nQ+opEv1MHIKOZobI4ttDfc5K9+zOJm0h+x0y/mp6n2b9zmMUa4hiAK475caO8xQUkQQolk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GksKhXvt; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=YjIN6/4e9y/Ml40MrKJoy1mQtgqSV5GLRnOeHGiyYdZCuApJ+DFttzbWoQcCHEvTnbFNzsOtN6tYfNCdx4EEJrx89U7BSw3knRKorXUaQHV06AzgrGTIO03HbqDbJkZW9BORxWKGFTNwrlrsw3YO00JfJTwTPBH6gRBILE63/QU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a6PVVJ4o; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GksKhXvt"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b021916bd3so5500228e87.3
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:12:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784200369; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a6PVVJ4o"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c5382806fso25142591cf.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 04:22:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784200948; cv=none;
         d=google.com; s=arc-20260327;
-        b=ho868RzckXd1gpIEphiUt9OtXBz8EhIXTEuUo3IaI/PqeFMwr5OgJ9cLah0MguU48I
-         BWCk8bq3p7p4hfMPEHa6UL2gb1fJ/2p3OLp2dhFpb7E4/SquDwaLOFDT0B9biBAyZgee
-         UR9l9CjOsnKygK25qKceVU//It7s/cuoi7dc4KgA30M06deaZQ3UZAsjWuKSH1Z6xoDx
-         a5E5muVGUx80n+eeRt9l2aCkxD84wr2UpU7zLhusSpf+8coZu2ntCF0B0aCxh7Szutq+
-         IC1AG1baBd1PsgAZMjaBKV7TGHIWu5yG8ERvBS0coUxcyAuKurHgHJMQHWA8IcR5CJ40
-         ssDg==
+        b=audHfEkGAZcfkQGGVwJZU7s1kTX2eSFcB7KH3liJXw5epgrZLs/8mq2az2LSCuzqFH
+         Y+r6nHjbTM0vgfTMJZkXhcZhSzrk0U9bm7v9B9XAv4I6xbN26yqi+o7pMYkUNMeXadvX
+         t+oh9iOqLuQ86lhdkj9s5vWT2E3xEM8Q3Whr13J77CI6uMFBXetru6/ExIYI5dh9wMay
+         nGChmvkA961Tfkm/2uNIMDcpHgbG2IFfo/im6vFi3dVsCgA42WKlMsfSgjWKjht8PVkQ
+         MEoBVsaQjnrRH8Z5fM5pfGvlOMIc/sA5dBoKj3F/kjBXlQYCUZzVgON96EGcuMKAX4Lw
+         SmbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
-        fh=dg2ymdLbiNbBotc6WzqHvzRlh+YSf/ncbbWgtJsyWH0=;
-        b=IgRRDhl5xo86EpfvjGCSpAkexN2pSAQswOgWUAFbolJP54xcqEMbkXk+w/8+LpcMLY
-         nHukRg4dlpOaspW/f1459BVJ/GBT6RU/CgmxBVp/mcABGnAlexj+XiyvegkUE1byOe7k
-         bBz8ICtv53xQ3VK9wvaWJtuKYAu3M+uYMdxfZjIFNUjqvgX1IFC+MVLcZq9szIQxAFkZ
-         7cpQsx8KtZ9L00VRsfHJ1LNBQgFvFbs/pbYqz9w9LQVQYQ7mJ5nAlaJVP2BH1H4ab/hd
-         UeLsXDJLFdN4QWuPVvfeGsjbQgHUK/vsShGnL7VU/wskPqD1AMyFc+TajgVEMy7/4I8s
-         Qz5w==;
+        bh=0KAWeywyeRjt2KPsAcPZ9n3jE+Llz50s64Jvh7IEU24=;
+        fh=urv/pz6bt+BMahSrX1HrZABFfnMLrtiWnWpJVr/WJ7Y=;
+        b=g/pVrzbkoCHFMXY4Tx++9x4bnvmkLqxRtk1K/+43kFRbsFTe0yJA8Viw5ZeO5R2Xha
+         CeeQayPmUDFxYzXCVecyh7zp5SadXNdOp0iSZ3V7W5yoAX/oxdF11CNXSsl1/kgccw4e
+         AKffbBLIyYRYLykhjAfbKXhtb8PXG2QZ0ZeSEq0pyispWdVq1Z4o67AqP2CSTAlExJwv
+         I8M+pX7DNbe0lHuTGxcfT8mF78A80j6Ii/zdIDoxf7wd8WCWKoB+S1AcCiUfiPlOL/ke
+         /RZVigMF9+RgYtn/d/viHYI5vAwqb7AHMppbRfg2JjdUEl+uh6gqVbJQ4xMyAWtr/cjF
+         gH+w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784200369; x=1784805169; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784200948; x=1784805748; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
-        b=GksKhXvtnwBvUj0gLkAqD11G1Yx5WfhZ+src/qJ3Uv2n44i615qy/aXyNnUaozeBbl
-         KuMp5BH99UidbdwkjYxwh3+t3qadzKQVQJKYTbRgZJOcUFcdXcW4+A8xG9RQ1tKw8yd5
-         52/KiKkpCnsUh3+Kx4uKQY/ZapBS3qJTSi9WVwBKVodXiEZtJGB/i0uH8tUcVsdibfHe
-         eocvyHaOwQKw1obh9+UFHdKOScC7PjpnyOXfIab61Uw5pHHHewGwNMqucA8YS3mBxStH
-         GbCD2JZ3TEdhjO9Mdo5A5hT0Q0ztl3y3dopvK3gseZA+o9RHMFNn5jelyywjdv/j9aqf
-         greA==
+        bh=0KAWeywyeRjt2KPsAcPZ9n3jE+Llz50s64Jvh7IEU24=;
+        b=a6PVVJ4okGw4NWodv+zK+pa96hrQtolWetof3SjIgG0aro05RUZbV64MdxyehBbaRD
+         +I2ddehMwY0a/HyMflSAJPLOTKDrUWByZWIV9dk/OtALbGWnBUa2ypDtjLJrrEQLsili
+         UGDz8uYv+rjkTF7VqGubWpM6MnaURdIZzHsHQ05D1uYQ/UfW39CyZ6yD4BidWdBaVQns
+         qoIo3Mgtl09PMHP3ObC9HbUNHJjKF4XqFEx7LTC0Ec9ZlbwsJ/cQHUayiBEsMLrle9VT
+         HHCh4JgEeBo+wjAK9Wwzo2bQS+gAsqREaOZa7uqa+qlfJoAQllYPNe9GlU9V7++99GV1
+         qU7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784200369; x=1784805169;
+        d=1e100.net; s=20251104; t=1784200948; x=1784805748;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t160BcIOQs3DWtYC6cP5bgMx0h1OMSJInLdyfc/dF0g=;
-        b=bHRFswGDXlbvGo6xf4WILSAN5qWKAkanwloUtmEyFR2tYG6icp9WMq/ZpuR/zs6Zvv
-         quQPfj02V7Clp/VvkAGhGAhj1BBhaO/VoJJDaHBn9dmEs/TyZ66GGA76YDlGRLNaGmo1
-         1h3ugo1a8FAtHtDfaq/Bn+AIisaY1emefvyO6qOWBq+w4NsMf63J22ZkSjBl9E9zQzqd
-         v1jmnu+Sk0vleALi6xh1+ZGjKwdSX3+K+BUcqLj1aNy6lywVB0m6d5rGSO8YJ+qyVQJw
-         K/EFjTUr+TB2qjbdxnHzc4B9/W1PhfkgFV8igT0bPF3zOsc46IRWnVuqJeGdx5VqhSFw
-         rrmg==
-X-Gm-Message-State: AOJu0YwXcdmkACvtWWQqtdIAMetD/kw0S+N+8u9r6fkSV20fmGDoj1zD
-	H1b285B4f/yf1+gniogokiFdYsKux+W1HnqPx8bDD9TwJokq+eyMAk9BPnHz9g7/a14ErEdBI+K
-	xPjD9IpcIJkOe3+EeLlZ31T/N8xmJEp8=
-X-Gm-Gg: AfdE7cmVC0sYulNypBcJed/K6BmeaSZCaM+Gj0kg+1ci9RCohyK/xN/vvhcD5DAz8nW
-	+zVtwmerSpS9p65GIgNY3WV8CWifUMzAxQppNMuIy5PCI7/MNbllLQfb32pqVv8tVADO0u5l8Wa
-	+QpmQpcb1IWtguOfxJ+8CW1XduEisw2WDWAJTThplvH4C+mIq82rjY11yz9dDsok2FarjQWPPpS
-	xsAs1PJGT5ircam4+YGt6Ay+cnORsUR1TkUHbs3I7l7NtxyuV42MpbSlDS/C5mNaFNPVycMvPLp
-	sPTWsqEG2wnXimVoJ7Vu2cB+4ChEAxRkeb8a26bm1qvZPsljlgDygP2PZsT18+nCR6C9dMJJynW
-	7k/K45A96YWeC
-X-Received: by 2002:a05:6512:66da:b0:5b0:1f61:f5e with SMTP id
- 2adb3069b0e04-5b15d79d300mr1002660e87.33.1784200368660; Thu, 16 Jul 2026
- 04:12:48 -0700 (PDT)
+        bh=0KAWeywyeRjt2KPsAcPZ9n3jE+Llz50s64Jvh7IEU24=;
+        b=LpA4jbv9yFzp1onEwK7y2eXHIyUBGW+3k86cB2zDKKZR7fYqlG2a+zGfU5k3FxzPOA
+         ZwJl71aerYywef+ErejYbnrEzzBLP4GVnxDlQWTtoIWoxhk3jUX4Twdp66UT6doVyXB6
+         cxMSlDUnZWpm3V+v/MLE0qR66D7DvkeQvCD2hdFOR8/n2KODaN6KvDsUIgQULN4UmI65
+         Fx+Ir3+ZRROfKNMQPEzTx9CPqTA9bmiIHT7qidFe8LW6LEl0mjfqbsgdW12mY9j6o5EW
+         Sg/Kj9RzO9mGLIaWohj1PeCKPw/Wf6aIQwb3SWvMzpi2ngzhE4zuTufLK56rvzH97OTZ
+         4XGg==
+X-Gm-Message-State: AOJu0YwSknJBJcrrMrajhP8NiQd3AMTymqYoiav358HA2ZGTyE3v7B1E
+	NzIpt53+Id/oh5PD4lWBDKJro9Jq5bP0y334i7qYD6EPqKc5LWp7ST/IQ29FjYlO8wysvNPe2CH
+	MgkQUlPFgZATA5GzKVUhKwxeO2tfD6jxu1GEK2toedFQkdl0lUhGt0lEqf9Q=
+X-Gm-Gg: AfdE7clUfLumTNbTvwyp87b9ms5eDTSijwTo0ChlZ5B06MhHiZ3zAH6Z8URT3RNCyyo
+	8087cm6Qu9odh7CZ8YParpPi4VvLLeG1VykjGgOjmSlnfIalM6OOIAYigxeL+dGkInmhmp08KqN
+	oWHB3hS9zHN5HyuqrT5Qm2vDylQyz/znKm3T8v7ttkQRE5f0SyfZ46tiaq5B8563a69P0BWVyQW
+	lgR9sZ9czSBANuiHsocd3p0gp04kvR9IZAnXcmdBQ1IxNT5hMD9zTkiZbo8woVkYjRcTYgM7cTb
+	C484fBp6m9p8G9vaUMveRCv0Lmd7vcmts++dnmNCCWzkV44CrrlN0gipCtZGuIGbuHupKH/xXOl
+	n
+X-Received: by 2002:a05:622a:ce:b0:51c:22c5:daf5 with SMTP id
+ d75a77b69052e-51cbf1b4ae3mr225826241cf.38.1784200947347; Thu, 16 Jul 2026
+ 04:22:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <80818E6580896D22+20260716091212.43126-1-junvyyang@tencent.com>
-In-Reply-To: <80818E6580896D22+20260716091212.43126-1-junvyyang@tencent.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 16 Jul 2026 13:12:10 +0200
-X-Gm-Features: AUfX_mwHCtQnLYHwyJACRbZaSuoOmgR_fxhvzgV2tOwIYEgCwlBYYl3bVBeunEU
-Message-ID: <CAL+tcoD_BH0xhyAJ1p=TcX8KW8_heVjN8wHeVwWzkMKS4MMgNA@mail.gmail.com>
-Subject: Re: [PATCH] sctp: don't free the ASCONF's own transport in DEL-IP processing
-To: =?UTF-8?B?5pyx6ZuA6JOd5YabQUlHQm906YKu566x?= <aigbot@tencent.com>
-Cc: netdev@vger.kernel.org, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-sctp@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jun Yang <junvyyang@tencent.com>, stable@kernel.org
+References: <CAOAwikA60AYKdFr_UDLyja3oU4hqyAE7uFZWqum5uRdaQsgRYg@mail.gmail.com>
+ <CANn89iLizNO3MZ4jEfkMkLOhrJUzLW=xDocOHR_mUgb+5BycJw@mail.gmail.com>
+ <CANn89iK8JzQ9cUf+81yCTqo+AXeJFiKZ1B4xBu34Njaih5+viw@mail.gmail.com> <CAOAwikBYp7AAxFAZgyLaOZEG6Eoomq3aqU9ViMS8nrO82PD2rw@mail.gmail.com>
+In-Reply-To: <CAOAwikBYp7AAxFAZgyLaOZEG6Eoomq3aqU9ViMS8nrO82PD2rw@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 16 Jul 2026 13:22:16 +0200
+X-Gm-Features: AUfX_mzG6kLItyOMfbn03Lop1cOnHvk-lh69unLZGIRNlN57q4I_HlDCYtZL8vw
+Message-ID: <CANn89iJ+M_r-c3iGK1o7_pLBTVF-s5_R-8MjL3=Q0Aj=1a4deQ@mail.gmail.com>
+Subject: Re: ipv4: icmp: icmp_route_lookup() relookups pick wrong netdev with
+ policy routing + strict rp_filter
+To: Muhammad Ziad <muhzi100@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 16, 2026 at 11:16=E2=80=AFAM =E6=9C=B1=E9=9B=80=E8=93=9D=E5=86=
-=9BAIGBot=E9=82=AE=E7=AE=B1 <aigbot@tencent.com> wrote:
+On Thu, Jul 16, 2026 at 12:40=E2=80=AFPM Muhammad Ziad <muhzi100@gmail.com>=
+ wrote:
 >
-> sctp_process_asconf() caches the transport the ASCONF chunk is processed
-> against in asconf->transport (=3D=3D chunk->transport, set once in sctp_r=
-cv()).
-> For an ASCONF located through its Address Parameter by
-> __sctp_rcv_asconf_lookup(), that cached transport corresponds to the
-> Address Parameter, which need not be the packet's source address.
+> Thank you for the fix, Eric. Applying the other selectors from skb_in
+> makes sense to me, but I'm not sure if instead we should copy them
+> from fl4_dec?
 >
-> sctp_process_asconf_param() rejects a DEL-IP for the packet source addres=
-s
-> (ADDIP D8, SCTP_ERROR_DEL_SRC_IP), but nothing protects asconf->transport=
-.
-> A single ASCONF can therefore carry, in order:
+> The mark param e.g. is gated by IP4_REPLY_MARK() on fwmark_reflect,
+> which could be different from skb_in->mark.
 >
->     [Address Parameter L] [DEL-IP L] [DEL-IP 0.0.0.0]
->
-> where L differs from the source. The DEL-IP for L passes the D8 check and
-> calls sctp_assoc_rm_peer() on the transport that asconf->transport still
-> points at, freeing it (RCU-deferred). The following wildcard DEL-IP then
-> reuses the now-dangling asconf->transport in sctp_assoc_set_primary() and
-> sctp_assoc_del_nonprimary_peers(): set_primary() dereferences the freed
-> transport (->ipaddr, ->state) and plants the dangling pointer into
-> asoc->peer.primary_path / active_path, and del_nonprimary_peers(), keepin=
-g
-> only the pointer that is no longer on the list, removes every real
-> transport, leaving the association with a transport_count of 0 and
-> primary_path/active_path pointing at freed memory.
->
-> Reject a DEL-IP that targets the transport the ASCONF is being processed
-> against, mirroring the existing source-address guard, so the wildcard
-> branch can never reuse a freed transport.
->
-> Fixes: 42e30bf3463c ("[SCTP]: Handle the wildcard ADD-IP Address paramete=
-r")
-> Cc: stable@kernel.org
-> Signed-off-by: Jun Yang <junvyyang@tencent.com>
-> Acked-by: Xin Long <lucien.xin@gmail.com>
 
-It should explicitly target the net branch?
+Yes, sashiko had some remarks.
 
-Thanks,
-Jason
+I have been playing with:
 
-> ---
->  net/sctp/sm_make_chunk.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 23e921d313b36b00d8ae5e14846527220c9db32b..b0eb4f8ff9867499dc3a96c92a4=
+14440b2d3a115
+100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -548,10 +548,12 @@ static struct rtable *icmp_route_lookup(struct
+net *net, struct flowi4 *fl4,
+                if (IS_ERR(rt2))
+                        err =3D PTR_ERR(rt2);
+        } else {
+-               struct flowi4 fl4_2 =3D {};
++               struct flowi4 fl4_2 =3D fl4_dec;
+                unsigned long orefdst;
+
+                fl4_2.daddr =3D fl4_dec.saddr;
++               fl4_2.saddr =3D fl4_dec.daddr;
++               fl4_2.flowi4_oif =3D l3mdev_master_ifindex(route_lookup_dev=
+);
+                rt2 =3D ip_route_output_key(net, &fl4_2);
+                if (IS_ERR(rt2)) {
+                        err =3D PTR_ERR(rt2);
+
+
 >
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index 8adac9e0cd66..b14251214896 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -3153,6 +3153,12 @@ static __be16 sctp_process_asconf_param(struct sct=
-p_association *asoc,
->                 if (!peer)
->                         return SCTP_ERROR_DNS_FAILED;
->
-> +               /* Don't free asconf->transport; a later wildcard DEL-IP
-> +                * parameter reuses it.
-> +                */
-> +               if (peer =3D=3D asconf->transport)
-> +                       return SCTP_ERROR_DEL_SRC_IP;
-> +
->                 sctp_assoc_rm_peer(asoc, peer);
->                 break;
->         case SCTP_PARAM_SET_PRIMARY:
-> --
-> 2.55.0
->
->
+> On Thu, Jul 16, 2026 at 3:51=E2=80=AFAM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Wed, Jul 15, 2026 at 5:43=E2=80=AFPM Eric Dumazet <edumazet@google.c=
+om> wrote:
+> > >
+> > > On Wed, Jul 15, 2026 at 5:30=E2=80=AFPM Muhammad Ziad <muhzi100@gmail=
+.com> wrote:
+> > > >
+> > > > Hello,
+> > > >
+> > > > There appears to be a bug in mainline Linux in ICMP reverse-path
+> > > > relookup logic inside icmp_route_lookup() (called by __icmp_send())
+> > > > when strict rp_filter setting is in place.
+> > > >
+> > > > When Linux forwards a packet between two interfaces and needs to
+> > > > generate an ICMP error, icmp_route_lookup() performs a "secondary"
+> > > > reverse-path lookup to find a suitable route back towards the origi=
+nal
+> > > > source via ip_route_input(). To simulate the reverse path, the kern=
+el
+> > > > derives the incoming netdev by calling ip_route_output_key() with a
+> > > > decoy flow that has *only* daddr assigned in it:
+> > > >
+> > > >     struct flowi4 fl4_2 =3D {};
+> > > >     fl4_2.daddr =3D fl4_dec.saddr;
+> > > >     rt2 =3D ip_route_output_key(net, &fl4_2); /* no saddr */
+> > > >     ...
+> > > >     ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
+> > > >                     dscp, rt2->dst.dev);
+> > > >
+> > > > This can lead to a mismatch between rt2->dst.dev and the netdev the
+> > > > real reverse packet would use once routing policy rules are in
+> > > > effect. With strict rp_filter, passing the wrong netdev to
+> > > > ip_route_input() causes the relookup to fail and a "martian source"
+> > > > message to be logged, after which icmp_route_lookup() falls back to
+> > > > the earlier output route lookup (relookup_failed).
+> > > >
+> > > > In such a scenario, I would expect the relookup to use a canonical
+> > > > netdev and the kernel to not produce spurious "martian source" log
+> > > > messages as a result. This suggests the decoy flow would possibly
+> > > > need to carry saddr too so that ip_route_output_key() is able to
+> > > > resolve the right netdev.
+> > > >
+> > > > I tested this on: Ubuntu kernel 6.17.0-35-generic.
+> > > >
+> > > > Here is a reproducer script that sets up two net namespaces: a
+> > > > "forwarder" with two routes to the same dst in separate routing tab=
+les
+> > > > picked according to saddr, and a "sender" netns behind it which sen=
+ds
+> > > > a ping with ttl=3D1 via the forwarder forcing it to generate an ICM=
+P
+> > > > error as a response which leads to the result explained above:
+> > > >
+> > > >     #!/bin/bash
+> > > >
+> > > >     if [ "${forwarder_ns:-}" !=3D "1" ]; then
+> > > >     exec env forwarder_ns=3D1 unshare -Urn bash "$0" "$@"
+> > > >     fi
+> > > >
+> > > >     SRC=3D10.0.1.2
+> > > >     DST=3D198.51.100.5
+> > > >
+> > > >     # Current netns is the "forwarder".
+> > > >     # Create a second namespace for the sender.
+> > > >     unshare -n sleep 120 &
+> > > >     cpid=3D$!
+> > > >     trap 'kill "$cpid" 2>/dev/null || true' EXIT
+> > > >     in_ns() { nsenter -t "$cpid" -n "$@"; }
+> > > >
+> > > >     # veth r0(router) <-> s0(src)
+> > > >     ip link add s0 type veth peer name r0
+> > > >     ip link set s0 netns "$cpid"
+> > > >     ip link set lo up
+> > > >     ip link set r0 up
+> > > >     ip addr add 10.0.1.1/24 dev r0
+> > > >     ip link add dumA type dummy
+> > > >     ip addr add 203.0.113.1/24 dev dumA
+> > > >     ip link set dumA up
+> > > >     ip link add dumB type dummy
+> > > >     ip addr add 192.0.2.1/24 dev dumB
+> > > >     ip link set dumB up
+> > > >
+> > > >     sysctl -q -w net.ipv4.ip_forward=3D1
+> > > >     for c in all default r0 dumA dumB; do
+> > > >     sysctl -q -w "net.ipv4.conf.$c.rp_filter=3D1"
+> > > >     sysctl -q -w "net.ipv4.conf.$c.log_martians=3D1"
+> > > >     done
+> > > >
+> > > >     # Destination reachable two ways.
+> > > >     # Policy rule diverts traffic FROM src to dumB
+> > > >     ip route add 198.51.100.0/24 dev dumA
+> > > >     ip route add 198.51.100.0/24 dev dumB table 100
+> > > >     ip rule add from "$SRC" lookup 100
+> > > >
+> > > >     # sender namespace setup.
+> > > >     in_ns ip link set lo up
+> > > >     in_ns ip link set s0 up
+> > > >     in_ns ip addr add 10.0.1.2/24 dev s0
+> > > >     in_ns ip route add default via 10.0.1.1
+> > > >
+> > > >     # This will trigger a "martian source" log.
+> > > >     in_ns ping -q -c1 -W2 -t1 "$DST" &>/dev/null
+> > > >
+> > > >
+> > > > Happy to test patches or provide additional traces, if needed.
+> > > >
+> > > > Thank you,
+> > > > Mohamed Ghazy
+> > >
+> > > Thanks for the report.
+> > >
+> > > It seems we are lacking more than saddr setting :/
+> > >
+> > > Could you test
+> > >
+> > > diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> > > index 23e921d313b36b00d8ae5e14846527220c9db32b..6277e1bf85f304678ff16=
+7e8fd2b9239f155ce42
+> > > 100644
+> > > --- a/net/ipv4/icmp.c
+> > > +++ b/net/ipv4/icmp.c
+> > > @@ -548,10 +548,17 @@ static struct rtable *icmp_route_lookup(struct
+> > > net *net, struct flowi4 *fl4,
+> > >                 if (IS_ERR(rt2))
+> > >                         err =3D PTR_ERR(rt2);
+> > >         } else {
+> > > -               struct flowi4 fl4_2 =3D {};
+> > > +               /* TODO: populate
+> > > +                       .flowi4_dscp =3D dscp,
+> > > +                       .flowi4_mark =3D mark,
+> > > +                       .flowi4_uid =3D sock_net_uid(net, NULL),
+> > > +               */
+> > > +               struct flowi4 fl4_2 =3D {
+> > > +                       .daddr =3D fl4_dec.saddr,
+> > > +                       .saddr =3D fl4_dec.daddr,
+> > > +               };
+> > >                 unsigned long orefdst;
+> > >
+> > > -               fl4_2.daddr =3D fl4_dec.saddr;
+> > >                 rt2 =3D ip_route_output_key(net, &fl4_2);
+> > >                 if (IS_ERR(rt2)) {
+> > >                         err =3D PTR_ERR(rt2);
+> >
+> > I have tested the following fix, PTAL, thanks.
+> >
+> > diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> > index 23e921d313b36b00d8ae5e14846527220c9db32b..2259f643cb0d43ea54819dd=
+831c79807413e0d69
+> > 100644
+> > --- a/net/ipv4/icmp.c
+> > +++ b/net/ipv4/icmp.c
+> > @@ -548,10 +548,16 @@ static struct rtable *icmp_route_lookup(struct
+> > net *net, struct flowi4 *fl4,
+> >                 if (IS_ERR(rt2))
+> >                         err =3D PTR_ERR(rt2);
+> >         } else {
+> > -               struct flowi4 fl4_2 =3D {};
+> > +               struct flowi4 fl4_2 =3D {
+> > +                       .daddr =3D fl4_dec.saddr,
+> > +                       .saddr =3D fl4_dec.daddr,
+> > +                       .flowi4_dscp =3D dscp,
+> > +                       .flowi4_proto =3D IPPROTO_ICMP,
+> > +                       .flowi4_mark =3D mark,
+> > +                       .flowi4_uid =3D sock_net_uid(net, NULL),
+> > +               };
+> >                 unsigned long orefdst;
+> >
+> > -               fl4_2.daddr =3D fl4_dec.saddr;
+> >                 rt2 =3D ip_route_output_key(net, &fl4_2);
+> >                 if (IS_ERR(rt2)) {
+> >                         err =3D PTR_ERR(rt2);
