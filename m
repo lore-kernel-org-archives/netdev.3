@@ -1,61 +1,63 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672B313790B
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCE3345750
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784183680; cv=none; b=Mk7XCMRq4KzEW2kRF/zqVJbGfblXw/Lyf225I8q8p7a/o6CXiGJGLPzGomGx7KIZrUGsZ/mSQ0cnUbyzqywuOfroFWIj/Cct5Ubc7nFE9/xlEsQImyx0IkPeTxmMz4s8NLXAKBfy4mkEdZU3JOWLZ0vVNJ+eHhL+EENQJOf555c=
+	t=1784183684; cv=none; b=HxEkZu5jE9R8N9RRzc8izAB1B+4mZCs0OiapSSE2RLA+E5EaE/2Xvw+UtQQ9aFpRaOleTbrde7FosqaiyBaX8l83IUmjFFyA048Mdts8dV52Ctcoyb5Lk3p5qjCuYk3fbuh8f6u6K72YyDOND5JUdNWaPFI9j6sTZZkN/eUw2vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784183680; c=relaxed/simple;
-	bh=zqQQxhUBkPqBV/Wxnm17qMpBUv1EivR8LE7WqPMtYlI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j/tLweEVSdfkvvdUdGpwuT/ei3JEPmar5dZa8r0lvbqv24gFh/a13C3uy7NVwGUrENVbQAuqXMqsCeVC+CC67ApKzXV+JSM+Jg47fd/Q9DantjiN0Wdk5wj5RwWSUsyNaS/2LG7l4a4CzAgKkJnAEf8JGxmJGMxPRg/PWUfMXjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/RndNFl; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1784183684; c=relaxed/simple;
+	bh=qcxtIhicU4yjTcuHKm9/uZfexpxtxK7NRRzA5uQ3Zio=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qSq0sRIIsjU5+8lKEJzYiYOzYtp6wLotRVZHpzilKxHVXiY9EPjDTqW6GjVboEqr5tupvOO8CP2uGNkWU60Alpf3LO4wmNuL+6PPR7vi6BpJo3Zj7x+gYW6GyzKuEWDl+bfvM9cU6hgkNa5rtyy7KkiA8gj+0TCqIQ8pT1K4r2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Igyuf2fI; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/RndNFl"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so2623110b3a.3
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 23:34:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Igyuf2fI"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8486ac3f347so215187b3a.1
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 23:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784183679; x=1784788479; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b7IjFTyBqnxJNzn0lNGNSBZ7FEn3/j80CI18ZBi2gVI=;
-        b=k/RndNFlAWWNwHHEVsoXYK0IfsJCm8fwzhFQtptHPmd7UQETm6tLR00dRir0pEw2si
-         FhO/kTI1ZOL6PXFDvIeMbtw/V0KkIvmB/mQklyqp4T5peVFek0f9y4CQvXfSMk3g1oPU
-         dmrDiakfVYuwBOA/02cdTkX6njjDBNkDxYXntGfFBXFwClnKKb7tUQQX4jKQ2z01HkoW
-         w6I7uWZTW5Zn3yCS14MwRJTsaRNd/3nYZNpApG4+1S1frL+pjb0fjlBB9iLYcqaOdspV
-         P1koIc2d23LMW0gsmLC8azMQQi2i00u+BY6rYDpBrWFkvru/cLNvD9drxf6OpmBQT67G
-         Ftew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784183679; x=1784788479;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784183683; x=1784788483; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b7IjFTyBqnxJNzn0lNGNSBZ7FEn3/j80CI18ZBi2gVI=;
-        b=jhBFb5ra44rVILChqphhB6ytNPX9/aPwqEHQaFlnk6XOx1emYuImSZfDqxgQaLtfER
-         Orn1ZDjgK4LJsF8P9y5UDEr2eZ6xIGn/SAO+W6I+SHUoUjMM2S0zuzfE4Xpouvv57n2X
-         1uF2ojq3pbl3cAeo7vqe13ZLRP3ZgJEjHZ5HayVpViw566jGDJL6NeSm//oPvaK6trBY
-         aRSecwZ7yfFJN/Snfz7LtPly+DuN83iPSsVOdFbWX6AX1+HWhgC7w/TGJ+WEAaPh5Udx
-         qLkzY71KZQvoI1Q4K3i3NYMmzEE8ElWpx2HYH/ZtkyKnGtp1blF7GD94pZsM4noqpnuH
-         8d+w==
-X-Forwarded-Encrypted: i=1; AHgh+RpVNkBEMzEwkwZuGYY6Xf4SuP2aBx2VWmbBNZNgXlolrWC/n76fB2JlBCypuu7lWqDqA2UlCMs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzLkITO3E7eOFaYoldjurtXDO3l3jVIj3KLqr2j7jwWr+qxl57
-	mVbu0Afi1ZhBnc9DCjZ+GKTI8byaiVc4l89fbBQdkaiLq2+axpQ/p8ef
-X-Gm-Gg: AfdE7ckKrKAEbc0Nt2eRmNcyqnarWHFKapv/ZuduGmJmDVv8bZhU7W90AavR/MaZT0v
-	DkzlpAyUrL4K7d5zTl5hrSK1YodXyBH/xBLfUICIa5hPRDnAKI7bCGPsZoQvx3DpDLoa0CKTq22
-	BYnf8Ie2pCwH7dprVR6cImvAgijw60vdGOvpw9GVh2Rw6eCh7JpAwtNyEGxTo3pS/uXwJE2FDfl
-	KLu2WGNoA24Pecx528lwOBC3syqoFRizSW8h3zCID0nkuPfiYoNjvifjcw/cprMqDO8+5AD4wqA
-	Udi2RCGIxsw7jo6M82yuuc4538KlUpkicfemuhGHx0VmFYyA9aaf4Ld7ytUVJwN8CNeLKUZLM3Z
-	nxYcBfV02CZ+lUmn855CdpQ8u37R6mOrM9BIymNwwfAKhW49JZhdm0rGYYSxw6H+egBwWS5P3Yw
-	t8u+acryt9t11J3XNLIFWA267OVAY=
-X-Received: by 2002:a05:6a00:14ce:b0:847:7f7a:dd18 with SMTP id d2e1a72fcca58-848895db925mr19400651b3a.3.1784183678667;
-        Wed, 15 Jul 2026 23:34:38 -0700 (PDT)
+        bh=7Wh24uH+pJSF3cGDjRO13znY6HNZJNEVNTxW5E0WYJA=;
+        b=Igyuf2fIB1lH4cABZCFKKi2PdNaReBGRSGfAfjSohbAtGJoRH5PDuiZiF5zhrSQA2r
+         8RxYfVoExTWvX1p18MVo47oDzTGMHNlTPXfVGwY8MjV9V8K7rQbuStG/fjCwhy/uL7HL
+         NTYwgK5Gk0KCBfpShMbnRrsyB3b1Z2Lv1ZZhACxttwiz/MhaZD3ATkH5Qa9eS89IMKTe
+         CLhcp7MSksFJeWP0dk1spSM4KwgVODE9n5n5kd2+OHTbHmclFwhdidvDn+UVNqiWxuHA
+         uWiB+7heHp8Ev8z+w+QEFtxeuGHOU+nNaOchI39vENsPjL5d3xPG3Bpd5Mk2/AcKM53g
+         6FAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784183683; x=1784788483;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7Wh24uH+pJSF3cGDjRO13znY6HNZJNEVNTxW5E0WYJA=;
+        b=JAzBQ2XnUardnG2WqZgSQgrj+JHotElSMSsozP/NgHigM4Sv/X4R4We0FTMZd5hl4n
+         uxarH4b55hGp3oB1ILxu/7pJoX91vE/BoM8AeavvjaOxHNKPESBw1so06ahMeEjH/d3N
+         QKqFiuWOLh0ilW1BFdE1D1bPlCreLinFNewbnqECdWiIO4bm4jKVmb8tE8StzYWCTeAl
+         29jwRgap4sKtz/cfI36yPDE3H+cjeXQSBtv8cElKlt/iQUBzXRE45EVoSiYTNT7qSI4M
+         15bdxuyb7H7+hxuHF1SObkPyPAmOI75JBqIC1I9k8bT6oshDesfEydO0hYOXHgDuuZNd
+         sa9g==
+X-Forwarded-Encrypted: i=1; AHgh+RoZzkbKUu5tNFkT5qjHXAVDjOJ4CdBXj/FUcvKwzgXICJBgT+wu+bzbB14uFXezElmihe0L3zw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYNc+0D8hRZ607ErEttBtHAt9x9p234BSGNFPwcJskZSx6qrdi
+	ZJfGwNapIeUHBatV4wBpQ6eU1NZ5vbtzQKG5BMD9i9U7oVL/CIh2d3kH
+X-Gm-Gg: AfdE7cnnJQEK3nKm68KlxsO3iPJnN5iAhd9Wyfhu4JcRi1xNXubEcSDUkSycz9QiTcr
+	rz8zTFxaKpU9Xt7PIlRJJM9sTj04I0tSP6WtXhMALhk8MrCB3znlIpzoe3StE+MShrnWMlx7ly9
+	w/TqtZpiWGceeIinS4+WJjQtJhi+aRwK1Dk00h6bjuZuL4ZbxVyOHW0u81d2Nz79zZ2b8mBMQE0
+	LUYJUJIy0nzGjupaJt4IjuqxbqVF8CL45dxUhcQPAl+7smNhV22wBeI/UhuvloYn0ruf6/jB0S4
+	lsItmuhxFYnNsFlphB1wYS64ThXxOcHiKIJ5WgvMZ3JRyrstBG1tPU9wQjszylo0s3Hby8WotIe
+	3IpslUWMgQd0Mhu6+T/I5wK9kby1IxfGU2mNlK9f0ibQiUirWzLjstCzM6MNUfecmIVYgyYRo0j
+	zzInOLXlK4hCXR9R98/JJ17OgcEoY=
+X-Received: by 2002:a05:6a00:440b:b0:847:9aa8:d3c1 with SMTP id d2e1a72fcca58-84beb53e204mr1322880b3a.34.1784183682572;
+        Wed, 15 Jul 2026 23:34:42 -0700 (PDT)
 Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7dadcfsm4242172b3a.48.2026.07.15.23.34.34
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7dadcfsm4242172b3a.48.2026.07.15.23.34.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 23:34:38 -0700 (PDT)
+        Wed, 15 Jul 2026 23:34:42 -0700 (PDT)
 From: Maoyi Xie <maoyixie.tju@gmail.com>
 To: Veerasenareddy Burru <vburru@marvell.com>,
 	Sathesh Edara <sedara@marvell.com>,
@@ -72,10 +74,12 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v5 0/3] octeon_ep, octeon_ep_vf: fix RX skb frags overflow and page leak
-Date: Thu, 16 Jul 2026 14:34:29 +0800
-Message-Id: <20260716063432.2908100-1-maoyixie.tju@gmail.com>
+Subject: [PATCH net v5 1/3] octeon_ep: fix skb frags overflow in the RX path
+Date: Thu, 16 Jul 2026 14:34:30 +0800
+Message-Id: <20260716063432.2908100-2-maoyixie.tju@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260716063432.2908100-1-maoyixie.tju@gmail.com>
+References: <20260716063432.2908100-1-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,43 +88,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The octeon_ep and octeon_ep_vf RX paths add one skb fragment per buffer
-with no bound against MAX_SKB_FRAGS. buff_info->len comes from the device
-response header. A long packet needs about 18 fragments. That is one past
-the default MAX_SKB_FRAGS of 17, so skb_add_rx_frag() writes past
-shinfo->frags[]. Patch 1 bounds octeon_ep. Patch 3 bounds octeon_ep_vf.
+__octep_oq_process_rx() builds an skb for a multi-buffer packet by adding
+one fragment per buffer_size chunk:
 
-Patch 2 is Guangshuo Li's fix for an octeon_ep_vf RX page leak on the
-napi_build_skb() failure path. It touches the same drop code as patch 3.
-I carry it here so the series applies without conflict, per Maciej. Patch 3
-moves that drain loop into a helper. The helper carries the page frees from
-patch 2, so the overflow drop path frees its pages too.
+	data_len = buff_info->len - oq->max_single_buffer_size;
+	while (data_len) {
+		...
+		skb_add_rx_frag(skb, shinfo->nr_frags, buff_info->page, 0,
+				buff_info->len, buff_info->len);
+		...
+	}
 
-octeon_ep has the same leak on its drop path. A separate patch will fix it
-once this series lands.
+buff_info->len comes from the device response header
+(be64_to_cpu(resp_hw->length)). Nothing bounds the fragment count against
+MAX_SKB_FRAGS. data_len can be close to 65535. buffer_size defaults to
+about 3776 on 4K pages, so a full packet yields about 18 fragments. That
+is one more than the default MAX_SKB_FRAGS of 17, so skb_add_rx_frag()
+writes past shinfo->frags[].
 
-v5:
- - octeon_ep, octeon_ep_vf: widen data_len to u32, per Simon Horman.
-   buff_info->len is a u64, a u16 could truncate a long length.
- - octeon_ep: dropped Maciej Fijalkowski's Reviewed-by, the check changed.
- - octeon_ep_vf: the drop helper drains the length in a u32 too.
+The fragment count is now checked before build_skb(). A packet that needs
+more fragments than the skb can hold is dropped. octep_oq_drop_rx()
+consumes its descriptors like the build_skb failure path. The same class
+was fixed in other RX paths, including commit 5ffcb7b890f6 ("net: atlantic:
+fix fragment overflow handling in RX path") and commit f0813bcd2d9d ("net:
+wwan: t7xx: fix potential skb->frags overflow in RX path").
 
-v1: https://lore.kernel.org/r/20260701112825.1653044-1-maoyixie.tju@gmail.com
-v2: https://lore.kernel.org/r/20260702180518.2013324-1-maoyixie.tju@gmail.com
-v3: https://lore.kernel.org/r/20260704061511.2350737-1-maoyixie.tju@gmail.com
-v4: https://lore.kernel.org/r/20260706150208.2944898-1-maoyixie.tju@gmail.com
+Fixes: 37d79d059606 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Co-developed-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
+Signed-off-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+---
+ drivers/net/ethernet/marvell/octeon_ep/octep_rx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Guangshuo Li (1):
-  octeon_ep_vf: Fix RX page leak on napi_build_skb() failure
-
-Maoyi Xie (2):
-  octeon_ep: fix skb frags overflow in the RX path
-  octeon_ep_vf: fix skb frags overflow in the RX path
-
- .../net/ethernet/marvell/octeon_ep/octep_rx.c |  9 ++++
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 51 ++++++++++++-------
- 2 files changed, 43 insertions(+), 17 deletions(-)
-
---
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
+index e6ebc7e44a..1e5494c652 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
+@@ -453,6 +453,15 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+ 
+ 		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
+ 
++		if (buff_info->len > oq->max_single_buffer_size) {
++			u32 data_len = buff_info->len - oq->max_single_buffer_size;
++
++			if (DIV_ROUND_UP(data_len, oq->buffer_size) > MAX_SKB_FRAGS) {
++				octep_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
++				continue;
++			}
++		}
++
+ 		skb = build_skb((void *)resp_hw, PAGE_SIZE);
+ 		if (!skb) {
+ 			octep_oq_drop_rx(oq, buff_info,
+-- 
 2.34.1
 
