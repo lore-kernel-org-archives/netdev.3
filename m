@@ -1,49 +1,48 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12BB3F4111;
-	Thu, 16 Jul 2026 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B99F3F4DE4;
+	Thu, 16 Jul 2026 15:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784217400; cv=none; b=tXrGVHwbbKS55M1diiDtvqrwdVrHCzyR5Qjoc5drBax9DFSuxjeYMFD/J8MuRfsM9r/G2Z09WrAuY/6vvrFC2Pnha6U3Ozui4y+k2RsFlwy8wCWtivDmNDrM83nroFs2SojEKEUtd3zudVFUZV17vBRXVfp7DeqfHIf9zdMsK2Y=
+	t=1784217402; cv=none; b=F9WA5OtnAIUPR+1OBhn4/v+jpONrwQvpgDsTOpEf6Zc9+xgQh9f+y25xuOpAQMgIKHPzKkO3uoEP17SRHxuizBTUFhe0Hr6q3evEV0Iju3lyvtJe+VEiDZhtJhn2HOXzDfWi64kQlNwuP2myaYb8aw01nkdo3tjx3X7AZWRpQLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784217400; c=relaxed/simple;
-	bh=mlQL/fiudo9IwQLAte70ld7YW0sSknYNNqQl+2wX56U=;
+	s=arc-20240116; t=1784217402; c=relaxed/simple;
+	bh=t9wiEAX5Bqv1EWhKlNJ6ax2/6OIJiYcTi8cIE1/Vai0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mu4604sHNQJQcbQ66nbgsTCLxCqepE77IGnWY4Rqrt4wRSDk/AnNsQQLw8j4/Hc3/90HzUDaYrtF89VnHks8eXXoX/Eyx5kSXcEyKUWbg6Z1jUYC6Quil8XN1DXDfmzzMV1wRGfRiPfR/zLjSn/K85Aep92/qPhSwffsrQloR78=
+	 MIME-Version:Content-Type; b=TdQSDyMuU87JRTKTZwl1e5EAFhmc1hIuub6uUwUpCE6Ar/3Biff13+S6XdI1Rn5x/ZgoMFlq1mqCgz7GzE8fKNIROiif/qxksLHLD/3ipNYqhBq/O7uAgkhlyvCzGxj71t+I2pq8x9N5qjqAWi5PMN986iGBgtysjuZtQPbTUbE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DB6A820227B;
-	Thu, 16 Jul 2026 17:56:23 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5B75E202281;
+	Thu, 16 Jul 2026 17:56:24 +0200 (CEST)
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wkORj-0027oV-2D;
-	Thu, 16 Jul 2026 17:56:23 +0200
+	id 1wkORj-0027ob-3A;
+	Thu, 16 Jul 2026 17:56:24 +0200
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 166E556C3EA;
-	Thu, 16 Jul 2026 15:55:32 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3B8C256C3D2;
+	Thu, 16 Jul 2026 15:55:31 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
 	Oliver Hartkopp <socketcan@hartkopp.net>,
-	sashiko-bot@kernel.org,
-	stable@kernel.org,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 13/19] can: bcm: add missing device refcount for CAN filter removal
-Date: Thu, 16 Jul 2026 17:47:38 +0200
-Message-ID: <20260716155528.809908-14-mkl@pengutronix.de>
+Subject: [PATCH net 01/19] can: vxcan: Kconfig: fix description stating no local echo provided
+Date: Thu, 16 Jul 2026 17:47:26 +0200
+Message-ID: <20260716155528.809908-2-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260716155528.809908-1-mkl@pengutronix.de>
 References: <20260716155528.809908-1-mkl@pengutronix.de>
@@ -53,127 +52,48 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-sashiko-bot remarked a problem with a concurrent device unregistration
-in isotp.c which also is present in the bcm.c code. A former fix for raw.c
-commit c275a176e4b6 ("can: raw: add missing refcount for memory leak fix")
-introduced a netdevice_tracker which solves the issue for bcm.c too.
+The Kconfig description of the vxcan kernel module erroneously states the
+the vxcan interface does not provide a local echo of sent can frames.
+However this behavior changed in commit 259bdba27e32 ("vxcan: enable local
+echo for sent CAN frames") and vxcan interfaces now provide a local echo.
 
-bcm_release(), bcm_delete_rx_op() and bcm_notifier() relied on
-dev_get_by_index(ifindex) to re-find the device for an rx_op before
-unregistering its filter. If a concurrent NETDEV_UNREGISTER has already
-unlisted the device from the ifindex table, that lookup fails and
-can_rx_unregister() is silently skipped, leaving a stale CAN filter
-pointing at the soon-to-be-freed bcm_op/socket.
+Change the description of the vxcan module in the Kconfig to reflect this
+change.
 
-Hold a netdev_hold()/netdev_put() tracked reference on op->rx_reg_dev
-from the moment the rx filter is registered in bcm_rx_setup() until it
-is unregistered in bcm_rx_unreg(), and use that reference directly in
-bcm_release() and bcm_delete_rx_op() instead of re-looking the device
-up by ifindex.
-
-Reported-by: sashiko-bot@kernel.org
-Closes: https://sashiko.dev/#/patchset/20260707094716.63578-1-socketcan@hartkopp.net
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260714-bcm_fixes-v15-8-562f7e3e42da@hartkopp.net
-Cc: stable@kernel.org
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260619090035.17769-1-alexander.hoelzl@gmx.net
+[mkl: rephrase patch description]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/bcm.c | 47 +++++++++++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 20 deletions(-)
+ drivers/net/can/Kconfig | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 2d9c9cd74536..25842061800b 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -128,6 +128,7 @@ struct bcm_op {
- 	struct canfd_frame last_sframe;
- 	struct sock *sk;
- 	struct net_device *rx_reg_dev;
-+	netdevice_tracker rx_reg_dev_tracker;
- 	spinlock_t bcm_tx_lock; /* protect tx data and timer updates */
- 	spinlock_t bcm_rx_update_lock; /* protect filter/timer data updates */
- };
-@@ -937,6 +938,7 @@ static void bcm_rx_unreg(struct net_device *dev, struct bcm_op *op)
+diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
+index e4058708ae68..a8fad6fe5302 100644
+--- a/drivers/net/can/Kconfig
++++ b/drivers/net/can/Kconfig
+@@ -40,11 +40,8 @@ config CAN_VXCAN
+ 	  When one end receives the packet it appears on its pair and vice
+ 	  versa. The vxcan can be used for cross namespace communication.
  
- 		/* mark as removed subscription */
- 		op->rx_reg_dev = NULL;
-+		netdev_put(dev, &op->rx_reg_dev_tracker);
- 	} else
- 		printk(KERN_ERR "can-bcm: bcm_rx_unreg: registered device "
- 		       "mismatch %p %p\n", op->rx_reg_dev, dev);
-@@ -967,17 +969,14 @@ static int bcm_delete_rx_op(struct list_head *ops, struct bcm_msg_head *mh,
- 				 * Only remove subscriptions that had not
- 				 * been removed due to NETDEV_UNREGISTER
- 				 * in bcm_notifier()
-+				 *
-+				 * op->rx_reg_dev is a tracked reference taken
-+				 * when the subscription was registered, so it
-+				 * stays valid here even if a concurrent
-+				 * NETDEV_UNREGISTER already unlisted the dev.
- 				 */
--				if (op->rx_reg_dev) {
--					struct net_device *dev;
--
--					dev = dev_get_by_index(sock_net(op->sk),
--							       op->ifindex);
--					if (dev) {
--						bcm_rx_unreg(dev, op);
--						dev_put(dev);
--					}
--				}
-+				if (op->rx_reg_dev)
-+					bcm_rx_unreg(op->rx_reg_dev, op);
- 			} else
- 				can_rx_unregister(sock_net(op->sk), NULL,
- 						  op->can_id,
-@@ -1496,7 +1495,17 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
- 						      bcm_rx_handler, op,
- 						      "bcm", sk);
+-	  In opposite to vcan loopback devices the vxcan only forwards CAN
+-	  frames to its pair and does *not* provide a local echo of sent
+-	  CAN frames. To disable a potential echo in af_can.c the vxcan driver
+-	  announces IFF_ECHO in the interface flags. To have a clean start
+-	  in each namespace the CAN GW hop counter is set to zero.
++	  To have a clean start in each namespace the CAN GW hop counter is
++	  set to zero.
  
--				op->rx_reg_dev = dev;
-+				/* keep a tracked reference so that a later
-+				 * unregister can safely reach the device even
-+				 * if a concurrent NETDEV_UNREGISTER has
-+				 * already unlisted it by ifindex
-+				 */
-+				if (!err) {
-+					op->rx_reg_dev = dev;
-+					netdev_hold(dev,
-+						    &op->rx_reg_dev_tracker,
-+						    GFP_KERNEL);
-+				}
- 				dev_put(dev);
- 			} else {
- 				/* the requested device is gone - do not
-@@ -1873,16 +1882,14 @@ static int bcm_release(struct socket *sock)
- 			 * Only remove subscriptions that had not
- 			 * been removed due to NETDEV_UNREGISTER
- 			 * in bcm_notifier()
-+			 *
-+			 * op->rx_reg_dev is a tracked reference taken
-+			 * when the subscription was registered, so it
-+			 * stays valid here even if a concurrent
-+			 * NETDEV_UNREGISTER already unlisted the device.
- 			 */
--			if (op->rx_reg_dev) {
--				struct net_device *dev;
--
--				dev = dev_get_by_index(net, op->ifindex);
--				if (dev) {
--					bcm_rx_unreg(dev, op);
--					dev_put(dev);
--				}
--			}
-+			if (op->rx_reg_dev)
-+				bcm_rx_unreg(op->rx_reg_dev, op);
- 		} else
- 			can_rx_unregister(net, NULL, op->can_id,
- 					  REGMASK(op->can_id),
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called vxcan.
+
+base-commit: 3f1f755366687d051174739fb99f7d560202f60b
 -- 
 2.53.0
 
