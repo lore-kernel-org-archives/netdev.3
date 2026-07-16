@@ -1,64 +1,63 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AB53043DC
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA23030C16A
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784162656; cv=none; b=JBtmFKJ/nygXa7Tb0BuYWTpgxxZA9k6OqTxu3AMhFm9kYATkLQIfIoh+sW92sZKz5A2PYHz+XVtLM7Mb6up6YsJe8SBna3OYF2KtScEAsI2YT6wJ21nSESD1Drb1qMR5+sXM7MKbWR/Nrc7ItDMJTRKcYSJV4RyfoAqNRqHPm1g=
+	t=1784162658; cv=none; b=pl1mJ/qnmJcnqiglUgDuCL6ZIQLVWx98ANhumrZHuYZLvsVTMrQZWiXKAbSUYfNEs20ueCa/IZswx27OTTT3Jv1aBeVzuBsN2yizQeQ/I/u6icahEWXRJL8Eh1h3FXaKbBh+m/Ufph+ldhe08BYGIKyQNNP2uOKRBj98ZBy7Kic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784162656; c=relaxed/simple;
-	bh=dknHAWVDVr4VbWy52X7Bw83RZF3ZCZHYuBg0q4g0ZQk=;
+	s=arc-20240116; t=1784162658; c=relaxed/simple;
+	bh=oATQsjjSeuM9iTtIYsSo8o1omXnNEePKGjgizoxIB3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGJH/B6PiSTuK3Y/C/vnQPf4Fp1k6kaKK1g9cnyWkXUO6s01UEVSLg4EQszOf60E4X/K84pPQteXZOMB/1L17qBIZWZkYbesq3qU/7PR8eVjifrEmE+4NJpwNTH+rk0ekU6w8/vWAEtiQXa46g3+SbBWqSpynTywO8t368ghy/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F5B2r3lv; arc=none smtp.client-ip=209.85.215.169
+	 MIME-Version; b=YD/2eT3a0MlrJVdLaQRhVUpoWP5LBX+c0XDLd8HwzcnIWI5s/Z9FROmXxSeQU9B6QTu8nOg/PPti5mntupct0tEeQoFozBIvT2YtfBJT+owFqImupex/0ToFVmrhBafmAqXuW6En9GAZz8788UcoXnqMqjpaSXnn9kONsG7kSX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxTTDM1/; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F5B2r3lv"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca957432c7fso4203154a12.1
-        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxTTDM1/"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso4092947a12.0
+        for <netdev@vger.kernel.org>; Wed, 15 Jul 2026 17:44:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784162649; x=1784767449; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3WXKkArdNhSXf7ay7wr0ijzbhyQDDS4XvU5X+d1Sp8s=;
-        b=F5B2r3lvueKB4Rdpe/r0/yUBkLh/jUcsJZ78AUNiHHnh9ff4gxQ4fZ8EwMHnv0ye5G
-         FBFW5fiZV9DiQ0NU6cwOv3/p3poodmWq3IXS2WdFQBlTdqVeGqfWSZNtQBdgTXFqcr8R
-         lT/sS4eE3p7yrfVPa7w0bMAvx2I92/irqahFZPmyZFu+R+Sk+f/0F194vBxmREAbWe3w
-         aN20fxQX5G9fMOpwB7DMXBguxSj0nOw3Y624i6KqYYy1lhJbiLmAF3lBmrQURghDNKXk
-         +PznGhQAi+4P0yoLskBIh5vrcfAFk1CC/mLZcFXJVq/DN6gjHozsMf+F1HaqKdDxD997
-         jceg==
+        d=gmail.com; s=20251104; t=1784162654; x=1784767454; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+34tg30fHZs04P1TYJFjNrZ6J+jY9NedABLOWWO5q2k=;
+        b=nxTTDM1/2LpT1iM/RhAMgb4JjOAsqrpDj7449lB02+L+TFVyuQkri83BB8WszI0VfX
+         Wy2+LDz7xlh8VnOjB2eLWiNuht87f55dB3/svf2h72kZic/9ZcEbTryGvF0bwoKz++5L
+         UdkZEzbvslll0MUHYeL3pKUZyf3QM5TdeRkIzgXfsJpujJloI2Def8nQBTbqZecbyL+J
+         nt1zwPmgS69Qkh1XUr4UABpOJ6JdulDIyMoj8pUYdFj0YXsJxUc/DkVRtZK9ZZXBl1SZ
+         3cXbq6WpIOfYk9FgTjt9vv2/shTXQxB7KDsA4otycIP74ObEPtHO9TLkZl1DRxc3DnAq
+         1apg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784162649; x=1784767449;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3WXKkArdNhSXf7ay7wr0ijzbhyQDDS4XvU5X+d1Sp8s=;
-        b=kWbgXNyLbiTJeYol5Q89zYGqO9gZXEX5EwK6Gs3uHghRXx5ulrTsHJilYpSeMsZikP
-         soQsAjBs9MXxg4dDARcpfK2s2FnFuGjjTEjSbQuktbsoiqWZtBQZLAgsoyznzUCIvJMu
-         lydobISpVWSfX9EBWDYEHvhS1EBqdBRtO7DAh/DQL4eYrxoErOWsCO+gebAfgS+P/fIE
-         th7I+O9AqC4rbD72bE6cKiMgMYL4g2mja1m/OrfDcFm59MFlNSDvwX5iAgQbo8u8hofl
-         8gIrUp6fbx753bFaT2SyfH5zvIF5ykSH/XOsWSk232ETzYbLZU+8EJsMU8RbSb2V4H1r
-         +Wzg==
-X-Gm-Message-State: AOJu0Yxa8XZW9HR9uNHaTsa8veP4FXLgmPj6I1v968fmddhzEeJbXv5x
-	xQvFcfggpLxGUcfbLoAMw3AcUmeivt9CwhT9rmlp5wY5vFjzCNEcMP7vQ4RY5g==
-X-Gm-Gg: AfdE7cm/u/xHqD8DTsmAIXr+y1Vq5ErJtkizW+4fvswxdWjBWVSsTHXCnGGC2Pr82DZ
-	1ZTpQp6wYuG8ZET6U1qPSxFORz7qMCdieLdwkErJFlgbTp2OsVJSYYJ8c6NQ/YBVg6h1NLgal2I
-	TrbF7sTjvbQhCgzg82QCrSKpljfLHrJOZI5ah1p3poWV9LpGnybT1uh0lf7FFpadfJXwjXWR2HO
-	SCxOE1pHLtB2mBwBhfHVSjF2omiWXropbf6FvlxquGr4efTV6yT87ErmMFYEAvF87Dfmg2PjHoS
-	M3svokHGwB5TtYpDTSyXAtzT3vsfVBvGHjwdqrJnmnj3xAUIF45kAoIA1QLf2sDJh+29gp+xbbW
-	mEte0GFrTu5Kk2GZ5h/Xlu85pqp23EvmShV+W2N04jpf5Cf/mC9ci/7AogcFPJITYD6p5tnxUIL
-	Haai/g1vgJaCGgbfQ60mqLmJEmabH/Faq4e2j9oZX2surVmqR0Pb5xHw0KeFFowCu1D31Xtkmt6
-	/zBgf00ag==
-X-Received: by 2002:a05:6a20:9f04:b0:3c0:b3f7:e5e5 with SMTP id adf61e73a8af0-3c3573959c8mr10863618637.25.1784162649425;
-        Wed, 15 Jul 2026 17:44:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784162654; x=1784767454;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+34tg30fHZs04P1TYJFjNrZ6J+jY9NedABLOWWO5q2k=;
+        b=A61ALQ/1md0FJXB6nqsr7GsF3xSjC8btVIDAYQxTWJ6OGm6vhsizwFg5WEd9YItu8m
+         Ny9jxwIsNEQSZoQat7qFKcRwHi5KYU1VGO+0O6cca/1IICjfv/JAKPdFbAz0W3KDR/j2
+         AAWKoGB34psRthvoru0JqADE+r8FZGCHdYrRCw1sdCyuezCd1OdGqw08FQ8Sur0OZCmS
+         BMOyNMlXS/KxWomrR5CRZKtkFV+EjoEDxFlnvPve65MUH6hLemqHVgxXaV9J4YIieo95
+         WhuC07WrwBp8NikFMqCPgJgY7bpgnEglmVYlz9qW+jhIf9bU6CTYzldFZE5pajXlkyL8
+         KEEg==
+X-Gm-Message-State: AOJu0YxQYA6PX+3/ERKYr/AemBYt/QYPYC7/DVM0xwxU7xjPkwSBnOD0
+	0huytzSk4Cbl14O7nnIVmeEai60ezev2xcDeC5ZugonG08KzrkBGQCGuPL0ToA==
+X-Gm-Gg: AfdE7cmwcBL0ozHK5G1fNRXGFyx1uODAVPhaICBbaY+wHwI2qnHsZZiQgLCSHpNf6YV
+	qAoOR9AFoI8BW1b81MLCUqZDTSlAo8jIUjkZ1CJBYMOcETp0n32FkSZLDdAvo7axlOZvymy8jDE
+	h+Gk3Dgs37ire0zXeZGr8xl/jMPnqZqEm27dT3llQICxFShmeGjqUCmg9Nfk22D2wmqdM1XHl6w
+	KlKhzuYyI5XQmK/EvpdFHv3btX6s+HhM/i3T/hgiWN6VDEh8aXnLdjKcAaSfgXMeve54jWSRz0z
+	zp2SgXnEnsC1d+hP94egEutQpjrph0deozCQXCpbX8biBpCbWFgp652JoUxh2ED9rLi9ODxXcfq
+	xXYoIS3S6hzkxSzScPDOXIU4nbChfBG+ieyhHfxFVGWQO7L94Nmv2NwLl2owkkWzousKCgSjwQY
+	FcDbz0M1b0SXs713xZrWqfVg2fXsQ3MvegbsMl3zMHF9NMQsUbH3eGDHKL4w7nD736D2U+ntvk2
+	Ldm34+U8Vg5BgQo6+uP
+X-Received: by 2002:a05:6a21:6d9b:b0:3b4:71a9:cd8f with SMTP id adf61e73a8af0-3c36c365548mr5456208637.41.1784162654045;
+        Wed, 15 Jul 2026 17:44:14 -0700 (PDT)
 Received: from l.localdomain ([76.166.220.66])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.08
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd4284a92sm4107620c88.4.2026.07.15.17.44.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 17:44:08 -0700 (PDT)
+        Wed, 15 Jul 2026 17:44:13 -0700 (PDT)
 From: Dave Seddon <dave.seddon.ca@gmail.com>
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -70,9 +69,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Dave Seddon <dave.seddon.ca@gmail.com>
-Subject: [PATCH net-next v1 07/11] net: flow_dissector: add byte-identical fast-path for plain GRE inner
-Date: Wed, 15 Jul 2026 17:43:53 -0700
-Message-ID: <20260716004357.3652679-8-dave.seddon.ca@gmail.com>
+Subject: [PATCH net-next v1 11/11] Documentation: networking: add flow_dissector overview and fast-path guide
+Date: Wed, 15 Jul 2026 17:43:57 -0700
+Message-ID: <20260716004357.3652679-12-dave.seddon.ca@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
 References: <20260716004357.3652679-1-dave.seddon.ca@gmail.com>
@@ -82,274 +81,213 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Adds flow_dissect_fast_gre_inner() — invoked from inside the
-existing flow_dissect_fast_ipv4() / flow_dissect_fast_ipv6() helpers
-when the outer IP's protocol/nexthdr is IPPROTO_GRE and the GRE gate
-is on.
+The kernel has no general flow_dissector documentation: Documentation/bpf/
+prog_flow_dissector.rst covers only the BPF override mechanism (and was
+itself in no toctree). Add Documentation/networking/flow_dissector.rst as a
+standalone overview -- what the flow dissector is, struct flow_keys and the
+consumers of skb->hash (RSS/RPS/RFS, ECMP/multipath, bonding/LAG,
+tc-flower,
+aRFS), the generic protocol-graph parser, and the relationship to the BPF
+flow dissector -- and document the opt-in fast paths added by this series:
+the byte-identical per-shape gates, the
+break-even model for when to enable a gate (with the observable
+/proc/net/flow_dissector_stats). The per-knob
+reference stays in Documentation/admin-guide/sysctl/net.rst; this doc links
+to it rather than duplicating it.
 
-Byte-identical with the slow path's __skb_flow_dissect_gre() for the
-subset where:
-
-  - GRE version == 0 (v1 = PPTP defers to slow path)
-  - All GRE flags clear (no CSUM, KEY, SEQ, ROUTING)
-  - protocol == ETH_P_IP or ETH_P_IPV6 (no TEB, PPP, MPLS-over-GRE)
-
-In that subset, the GRE base header is exactly 4 bytes; slow path also
-descends to inner IP (sets *p_proto = hdr->protocol and returns
-PROTO_AGAIN) and stamps FLOW_DIS_ENCAPSULATION on key_control->flags.
-The fast-path produces the same output: skips the 4-byte header,
-tail-calls into the inner IP fast-path, re-establishes ENCAP on
-key_control after the inner overwrites it (same pattern as the
-IPIP family fast-path from the prior patch).
-
-Why this matters: plain GRE (no key, no checksum) is the dominant
-shape for cloud backbone tunnels (AWS GRE between regions, GCP
-inter-region overlays) and corporate site-to-site VPNs that don't
-need per-tunnel keying. The existing slow-path GRE handler does a
-__skb_header_pointer + flag-walk per packet; the fast-path saves
-that for the common case while keeping the slow path as the escape
-valve for GRE-with-flags, v1/PPTP, TEB, and PPP-over-GRE.
-
-Gated by:
-  - new DEFINE_STATIC_KEY_FALSE(flow_dissector_gre_key)
-  - new sysctl /proc/sys/net/flow_dissector/gre (default 0)
-  - static_branch_unlikely guard inside the v4/v6 helpers, on the
-    same not-TCP/UDP fall-through path as the IPIP gate (so the
-    eth_ip hot path remains unchanged when this is off)
-
-Cost when off: the not-TCP/UDP fall-through grows by one
-static_branch_unlikely check on top of the IPIP check. The TCP/UDP
-hot path is untouched.
-
-GRE-with-KEY (used in some MPLS-over-GRE and cloud-overlay
-deployments) is a natural follow-up: same descent shape with the
-optional 4-byte key field read and a write to
-FLOW_DISSECTOR_KEY_GRE_KEYID.
-
-Documentation/admin-guide/sysctl/net.rst grows a `gre` subsection
-under /proc/sys/net/flow_dissector/.
-
-Classification note: the slow path already descends through plain
-GRE unconditionally, so this fast path is byte-identical with
-today's behaviour — a pure CPU saving. That is unlike the UDP-tunnel
-descents later in the series (VXLAN/Geneve/GTP-U/FOU/GUE), where the
-slow path stops at the outer UDP header today and the descent itself
-is the new, gated behaviour.
+Also index the previously-orphaned
+Documentation/bpf/prog_flow_dissector.rst and cross-link it with the
+new overview (the bpf/index.rst hunk can be split out if the BPF
+maintainers prefer).
 
 Assisted-by: Claude:claude-fable-5 sparse smatch
 Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
 ---
- Documentation/admin-guide/sysctl/net.rst |  25 ++++++
- include/net/flow_dissector.h             |   1 +
- net/core/flow_dissector.c                | 101 +++++++++++++++++++++--
- 3 files changed, 121 insertions(+), 6 deletions(-)
+ Documentation/bpf/index.rst                 |   1 +
+ Documentation/bpf/prog_flow_dissector.rst   |   2 +
+ Documentation/networking/flow_dissector.rst | 133 ++++++++++++++++++++
+ Documentation/networking/index.rst          |   1 +
+ 4 files changed, 137 insertions(+)
+ create mode 100644 Documentation/networking/flow_dissector.rst
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index 15c8ace2c0a4..dbc819740db0 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -572,6 +572,31 @@ that the inner IP fast-path itself would defer.
+diff --git a/Documentation/bpf/index.rst b/Documentation/bpf/index.rst
+index 0d5c6f659266..6e26731fa06f 100644
+--- a/Documentation/bpf/index.rst
++++ b/Documentation/bpf/index.rst
+@@ -23,6 +23,7 @@ that goes into great technical depth about the BPF Architecture.
+    cpumasks
+    fs_kfuncs
+    programs
++   prog_flow_dissector
+    maps
+    bpf_prog_run
+    classic_vs_extended.rst
+diff --git a/Documentation/bpf/prog_flow_dissector.rst b/Documentation/bpf/prog_flow_dissector.rst
+index f24270b8b034..f4c4648461ca 100644
+--- a/Documentation/bpf/prog_flow_dissector.rst
++++ b/Documentation/bpf/prog_flow_dissector.rst
+@@ -9,6 +9,8 @@ Overview
  
- Default: 0
+ Flow dissector is a routine that parses metadata out of the packets. It's
+ used in the various places in the networking subsystem (RFS, flow hash, etc).
++See :doc:`/networking/flow_dissector` for an overview of the flow dissector
++and the built-in C implementation this program type overrides.
  
-+gre
-+~~~
+ BPF flow dissector is an attempt to reimplement C-based flow dissector logic
+ in BPF to gain all the benefits of BPF verifier (namely, limits on the
+diff --git a/Documentation/networking/flow_dissector.rst b/Documentation/networking/flow_dissector.rst
+new file mode 100644
+index 000000000000..014f6d124b4f
+--- /dev/null
++++ b/Documentation/networking/flow_dissector.rst
+@@ -0,0 +1,133 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+GRE-encapsulated inner IP (``IPPROTO_GRE`` 47). The fast-path
-+mirrors the slow path's __skb_flow_dissect_gre() descent for the
-+common subset:
++==============
++Flow Dissector
++==============
 +
-+- GRE version 0 (the v1 PPTP variant defers to slow path)
-+- All GRE flags clear (no GRE_CSUM, GRE_KEY, GRE_SEQ, GRE_ROUTING —
-+  i.e. plain 4-byte GRE base header)
-+- protocol field is ``ETH_P_IP`` 0x0800 or ``ETH_P_IPV6`` 0x86DD
-+  (no Transparent Ethernet Bridging, no PPP-over-GRE, no MPLS-
-+  over-GRE)
++Overview
++========
 +
-+In that subset, slow path also descends to inner IP and stamps
-+``key_control->flags |= FLOW_DIS_ENCAPSULATION``; the fast-path
-+produces the same output.
++The flow dissector parses a packet's headers into a ``struct flow_keys``: the
++addresses, ports, and other fields that identify the flow the packet belongs
++to. Its entry point is ``__skb_flow_dissect()`` in
++``net/core/flow_dissector.c``.
 +
-+GRE-with-KEY (common in MPLS-over-GRE deployments and some cloud
-+overlays) is a follow-up patch — same descent shape with an
-+additional 4-byte key field read and a write to
-+``FLOW_DISSECTOR_KEY_GRE_KEYID``.
++The dissected keys feed ``skb->hash`` (via ``flow_hash_from_keys()``), which is
++the canonical flow identity consumed all over the stack, including:
 +
-+Default: 0
++* receive-side steering: RSS, RPS, RFS and accelerated RFS (aRFS);
++* transmit-side spreading: ECMP / multipath route selection and bonding / LAG
++  ``xmit_hash_policy``;
++* classification and offload: tc-flower.
 +
- 3. /proc/sys/net/unix - Parameters for Unix domain sockets
- ----------------------------------------------------------
- 
-diff --git a/include/net/flow_dissector.h b/include/net/flow_dissector.h
-index d9b4b461cd05..ba7226a42d19 100644
---- a/include/net/flow_dissector.h
-+++ b/include/net/flow_dissector.h
-@@ -434,6 +434,7 @@ extern struct static_key_false flow_dissector_qinq_key;
- extern struct static_key_false flow_dissector_pppoe_key;
- extern struct static_key_false flow_dissector_mpls_key;
- extern struct static_key_false flow_dissector_ipip_key;
-+extern struct static_key_false flow_dissector_gre_key;
- 
- /* struct flow_keys_digest:
-  *
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index abf4fdb0100b..b79c80612dee 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -52,6 +52,8 @@ DEFINE_STATIC_KEY_FALSE(flow_dissector_mpls_key);
- EXPORT_SYMBOL(flow_dissector_mpls_key);
- DEFINE_STATIC_KEY_FALSE(flow_dissector_ipip_key);
- EXPORT_SYMBOL(flow_dissector_ipip_key);
-+DEFINE_STATIC_KEY_FALSE(flow_dissector_gre_key);
-+EXPORT_SYMBOL(flow_dissector_gre_key);
- 
- /* IPv4 version/IHL byte of an option-less header: version 4, IHL 5. */
- #define FLOW_DIS_IPV4_VIHL_NOOPT	0x45
-@@ -73,6 +75,11 @@ static bool flow_dissect_fast_ipip_inner(const struct sk_buff *skb,
- 					 const void *data,
- 					 __be16 inner_eth_proto,
- 					 int inner_nhoff, int hlen);
-+static bool flow_dissect_fast_gre_inner(const struct sk_buff *skb,
-+					struct flow_dissector *flow_dissector,
-+					void *target_container,
-+					const void *data,
-+					int nhoff, int hlen);
- 
- /* One of the two dissectors the fast-path eligibility check admits;
-  * defined here so flow_dissect_fast() below can reference it (its keys
-@@ -1139,6 +1146,11 @@ static bool flow_dissect_fast_ipv4(const struct sk_buff *skb,
- 						data, htons(ETH_P_IPV6),
- 						nhoff + (int)sizeof(*iph), hlen);
- 		}
-+		if (static_branch_unlikely(&flow_dissector_gre_key) &&
-+		    iph->protocol == IPPROTO_GRE)
-+			return flow_dissect_fast_gre_inner(skb, flow_dissector,
-+					target_container, data,
-+					nhoff + (int)sizeof(*iph), hlen);
- 		return false;
- 	}
- 
-@@ -1236,8 +1248,10 @@ static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
- 		bool ipip = static_branch_unlikely(&flow_dissector_ipip_key) &&
- 			    (iph->nexthdr == IPPROTO_IPIP ||
- 			     iph->nexthdr == IPPROTO_IPV6);
-+		bool gre = static_branch_unlikely(&flow_dissector_gre_key) &&
-+			   iph->nexthdr == IPPROTO_GRE;
- 
--		if (!ipip)
-+		if (!ipip && !gre)
- 			return false;
- 
- 		/* Mirror the slow path's outer-IPv6 writes before the
-@@ -1264,11 +1278,15 @@ static bool flow_dissect_fast_ipv6(const struct sk_buff *skb,
- 			key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
- 		}
- 
--		return flow_dissect_fast_ipip_inner(skb,
--				flow_dissector, target_container,
--				data,
--				iph->nexthdr == IPPROTO_IPIP ?
--				htons(ETH_P_IP) : htons(ETH_P_IPV6),
-+		if (ipip)
-+			return flow_dissect_fast_ipip_inner(skb,
-+					flow_dissector, target_container,
-+					data,
-+					iph->nexthdr == IPPROTO_IPIP ?
-+					htons(ETH_P_IP) : htons(ETH_P_IPV6),
-+					nhoff + (int)sizeof(*iph), hlen);
-+		return flow_dissect_fast_gre_inner(skb, flow_dissector,
-+				target_container, data,
- 				nhoff + (int)sizeof(*iph), hlen);
- 	}
- 
-@@ -1569,6 +1587,70 @@ static bool flow_dissect_fast_ipip_inner(const struct sk_buff *skb,
- 	return true;
- }
- 
-+/* Plain-GRE inner descent (version 0, no flags, inner IP): a 4-byte
-+ * base header the slow path steps over with PROTO_AGAIN. Any flags,
-+ * version 1 (PPTP) or a non-IP inner defers. ENCAP is stamped after
-+ * the inner pass, which zeros key_control->flags.
-+ */
-+static bool flow_dissect_fast_gre_inner(const struct sk_buff *skb,
-+					struct flow_dissector *flow_dissector,
-+					void *target_container,
-+					const void *data,
-+					int nhoff, int hlen)
-+{
-+	struct flow_dissector_key_control *key_control;
-+	const struct gre_base_hdr *hdr;
-+	__be16 inner_proto;
-+	int inner_nhoff;
-+	bool ok;
++A single dissection therefore feeds every one of these, so the dissector sits
++on a hot path in most networking workloads.
 +
-+	if (unlikely(hlen - nhoff < (int)sizeof(*hdr)))
-+		return false;
-+	hdr = (const struct gre_base_hdr *)((const u8 *)data + nhoff);
++Two standard dissectors are built in: ``flow_keys_dissector`` (the general one)
++and ``flow_keys_dissector_symmetric`` (same source and destination hashed
++symmetrically). In addition, subsystems such as tc-flower build **custom**
++dissector instances at run time that request only the keys they need. A custom
++instance carries its own ``used_keys`` bitmask and per-key offset table, so its
++field accesses are resolved dynamically at each dissect.
 +
-+	/* flags field carries the GRE control flags *and* the 3-bit
-+	 * version in its low bits. A zero word means "no flags set
-+	 * AND version 0" — the byte-identical fast subset.
-+	 */
-+	if (hdr->flags != 0)
-+		return false;
++struct flow_keys
++================
 +
-+	switch (hdr->protocol) {
-+	case htons(ETH_P_IP):
-+		inner_proto = htons(ETH_P_IP);
-+		break;
-+	case htons(ETH_P_IPV6):
-+		inner_proto = htons(ETH_P_IPV6);
-+		break;
-+	default:
-+		return false;
-+	}
++``struct flow_keys`` (see ``include/net/flow_dissector.h``) collects the
++dissected metadata. Its main members are:
 +
-+	inner_nhoff = nhoff + (int)sizeof(*hdr);
++* ``control`` -- address type and control flags (for example
++  ``FLOW_DIS_ENCAPSULATION`` when the keys came from inside a tunnel, and
++  ``FLOW_DIS_IS_FRAGMENT``);
++* ``basic`` -- L3 protocol (``n_proto``) and L4 protocol (``ip_proto``);
++* ``addrs`` -- source and destination addresses (IPv4 or IPv6);
++* ``ports`` -- source and destination ports;
++* ``vlan`` / ``cvlan`` -- 802.1Q / 802.1AD tags;
++* ``tags``, ``keyid``, ``icmp`` -- MPLS/flow-label tags, GRE/tunnel key, and
++  ICMP identifiers.
 +
-+	if (inner_proto == htons(ETH_P_IP))
-+		ok = flow_dissect_fast_ipv4(skb, flow_dissector,
-+					    target_container, data,
-+					    inner_nhoff, hlen);
-+	else
-+		ok = flow_dissect_fast_ipv6(skb, flow_dissector,
-+					    target_container, data,
-+					    inner_nhoff, hlen);
++The dissection path
++===================
 +
-+	if (!ok)
-+		return false;
++The built-in dissector is a generic protocol-graph parser: it walks the header
++chain in a loop, dispatching on the current L2/L3 ethertype and then the L4
++protocol, following encapsulation (IP-in-IP, GRE, ...) by re-entering the loop
++on the inner header. The number of headers it will descend through is bounded
++by ``MAX_FLOW_DISSECT_HDRS`` so that a crafted deeply nested packet cannot make
++it loop without limit.
 +
-+	/* Re-establish ENCAP after the inner pass zeroed key_control->flags. */
-+	if (dissector_uses_key(flow_dissector,
-+			       FLOW_DISSECTOR_KEY_CONTROL)) {
-+		key_control = skb_flow_dissector_target(flow_dissector,
-+							FLOW_DISSECTOR_KEY_CONTROL,
-+							target_container);
-+		key_control->flags |= FLOW_DIS_ENCAPSULATION;
-+	}
-+	return true;
-+}
++This generic parser is referred to below as the *slow path*: it is table- and
++loop-driven and handles every protocol the dissector knows about.
 +
- /* Top-level dispatcher: eligibility check (only the two standard
-  * dissectors and flag subset) + per-proto switch with per-shape
-  * static_branch gating. Each case's branch is a forward not-taken JMP
-@@ -2792,6 +2874,13 @@ static struct ctl_table flow_dissector_sysctl_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_do_static_key,
- 	},
-+	{
-+		.procname	= "gre",
-+		.data		= &flow_dissector_gre_key.key,
-+		.maxlen		= sizeof(flow_dissector_gre_key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key,
-+	},
- };
- 
- static int __init flow_dissector_sysctl_init(void)
++The BPF flow dissector
++======================
++
++A per-network-namespace BPF program can be attached to replace the built-in
++dissector for the protocols it chooses to handle. When one is attached,
++``__skb_flow_dissect()`` runs it **first**; if the program returns a verdict
++other than ``BPF_FLOW_DISSECTOR_CONTINUE``, its result is used and the built-in
++dissector (including the fast paths below) is not run for that packet. A system
++running an attached BPF dissector therefore sees behaviour defined entirely by
++its program.
++
++See :doc:`/bpf/prog_flow_dissector` for the BPF program type, its API, and its
++reference implementation.
++
++Opt-in fast paths
++=================
++
++For the packet shapes that dominate real deployments, the built-in dissector
++also provides an opt-in, straight-line *fast path* that produces the same
++result as the slow-path graph walk with far fewer instructions. Restricting the
++fast path to the two standard dissectors turns their per-key offsets into
++compile-time constants, so the parse becomes branch-light straight-line code;
++the isolated per-dissect cost of the eligible shapes drops by roughly half,
++with the largest wins on in-order cores.
++
++Each shape has its own gate -- a ``static_branch`` exposed as a sysctl under
++``/proc/sys/net/flow_dissector/`` -- and **every gate is off by default**. When
++a gate is off, the only added cost is one not-taken branch per dissect, and the
++dissector's output is exactly what it was before. The fast path runs only
++*after* the BPF hook described above, so an attached BPF program always takes
++precedence.
++
++The fast paths are **byte-identical by contract**: for any packet, a fast path
++either writes exactly the ``flow_keys`` the slow path would have written, or it
++returns false and the slow path runs. There are only these two outcomes, and
++the equivalence is enforced in-tree by a KUnit test suite
++(``CONFIG_FLOW_DISSECTOR_KUNIT_TEST``). Enabling a byte-identical shape gate
++never changes any consumer's hash; it only makes the dissection cheaper.
++
++The eligible byte-identical shapes are plain Ethernet + IPv4/IPv6 + TCP/UDP,
++single and stacked VLAN (QinQ), PPPoE sessions, a single MPLS label, the
++IP-in-IP family, and plain GRE. The individual knobs are documented in
++:doc:`/admin-guide/sysctl/net` under ``/proc/sys/net/flow_dissector``.
++
++When to enable
++==============
++
++Turning a byte-identical shape gate on is worthwhile when enough traffic matches
++that shape to repay the small cost a non-matching packet pays while the gate is
++on. Concretely, if a matching packet saves ``S`` and a non-matching packet costs
++``C`` (both measured per shape and per micro-architecture), enabling the gate is
++net-positive once the fraction of traffic matching the shape exceeds the
++break-even ``p_be = C / (S + C)``.
++
++That fraction is observable: the read-only file
++``/proc/net/flow_dissector_stats`` reports, per shape, how many packets the slow
++path handled, how many the fast body handled, and the resulting eligible
++fraction, so ``(occurrences + fast_hits) / dissects`` is a gate-invariant
++measure of how much traffic each shape would accelerate.
++
++A separate RFC proposes an optional ``auto`` mode built on these counters: the
++kernel would sample them over a packet-count window and flip the
++byte-identical gates itself, with hysteresis and a flip-rate cap, so the
++operator does not have to tune each shape by hand. That controller is not part
++of this series.
++
++References
++==========
++
++* :doc:`/admin-guide/sysctl/net` -- the ``/proc/sys/net/flow_dissector/``
++  per-shape knob reference and the ``/proc/net/flow_dissector_stats`` file.
++* :doc:`/bpf/prog_flow_dissector` -- the BPF flow dissector program type.
+diff --git a/Documentation/networking/index.rst b/Documentation/networking/index.rst
+index 44a422ad3b05..65368050ebab 100644
+--- a/Documentation/networking/index.rst
++++ b/Documentation/networking/index.rst
+@@ -52,6 +52,7 @@ Contents:
+    eql
+    fib_trie
+    filter
++   flow_dissector
+    generic-hdlc
+    generic_netlink
+    ../netlink/specs/index
 -- 
 2.54.0
 
