@@ -1,62 +1,62 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012010.outbound.protection.outlook.com [52.101.53.10])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010065.outbound.protection.outlook.com [52.101.61.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26D3344031
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9327A92D
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 06:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784184452; cv=fail; b=TmvIj5DnfOMe1UQ8QbeGdssAVCnYq/6Qo1wldkgT4VN3yf2HtCti96Ez7bUODpHzOceNEtUpNt1SonVFe0LUaAwIpy+lEPrO4lihy/XFDwdvouaWHEEVK7MPx+V2w1J0l/HoPKkgtH5PLvqgPnrN3Ippx6PGvktvIw8i7FFt/4k=
+	t=1784184456; cv=fail; b=Z6T3I6J9bfi6gBCM5nyeAM3m7S2cp6QYX9uNWavYlfdQ0MD81qckSmv6bgKHLM8Kfs0WUmytxXcQGaxz9Cm4Lqmvff0MNtd0uS6wvkZalc5TX1IyzAO33yumeBH+m8TremIRti3Jmtzc6IUgjsodV/kPZVLEaBot/rA4gWgYnQI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784184452; c=relaxed/simple;
-	bh=HJwZcIOL614aGDCjkJrNv0YA80Gi9+GrGs8ij/qXC7Q=;
+	s=arc-20240116; t=1784184456; c=relaxed/simple;
+	bh=WGCVNlDNV+8EuSumZRGoc/7cpnLiy3AGXe8Jbv6tfzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d+QA+8sPXuIfU2G4GCq64IC4xSrOqEx8PiHnmi8CCdfgO93coYWvuQfduYv383BQWbD/YOwoKpg4+d5xAxramT90bgnLbvwwGQz3p+GnDgSFmZwH/Q3bjxs94oar5kQ4OMucn6RebuNTZzMdxMpAqJX19pC5knZd5pQqGtkTTQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SEZQ/fDP; arc=fail smtp.client-ip=52.101.53.10
+	 Content-Type:MIME-Version; b=LjZvZIx9zDqjNqbYv+pnhSDHQT3h1Lc4h7PbPU71z/eKW9tP2nlEYDI2Jz+h0wWteE4WcoIHWfp1oPuYDfi1H6tofHUEYRnoDI2Kw9uTmzfgiJ71Tppv8SiF1CTs+q8iqf1e4QLsYbbpLW1Eu8ZaSI8QASPkvJYRfop/ubpsspA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jRxrMcqB; arc=fail smtp.client-ip=52.101.61.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SEZQ/fDP"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jRxrMcqB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q8nrdTItlB/YMigVgJk8AQ4ImlvsaTSftrc0DiA01yES6j1ApnL1b+o0EW6O2Ot1A9YFak4g0BMsmOiYAlnp9PMLP6jeFUPRtdD1QHcPHu8ewY+iVrgS2XZaPRaXpgc0qQntfHXjGKiHnfe67MhSW1XhUyq9ECL5pfPCYzIXavQc2IPR3zSk544p3n2c7T8wpNYUQNcz1q0wAKsldgUVmxbc4L24h/XYzQg7pSL+BFTrQkKEuxGqw0if20q+DzfIiKDZm2MNIq6qHrSbm//qifm8eUPhZQOlQHwAqTlYBb1nK77ecSTWGg7OA0qioBVylyPtvADI4ud+z/aXy4RBXQ==
+ b=e+ru1Qoc7gp5V16uzW3XWpUzEP/GCjCuxGUmHWAiSugxEKg1XyuNNdqNXgm9KxegPKkla7D0iQ5ReNQTNNdn0fI40Ux779Nf5IyjO57sGpcv0DOQuT5qLD7aDS5+esrPRaD5IMPwp5NTwG5HIkmFvPL9EVIEu9G0xySsbR8JKK4TD/i6I4u5dZ9wMEGX/vuXnmYdNMEVt+0r/egsP/MwOW5H6hwDKH9VmFc5F22klidx7qyWftnif540W0ETGTF2vpOCKVsbbkzrMh2Fy4GNCL+rOcfMEw55qaytqlNhSvWikKT7f+qoqSmFGai6/g5EfB9PaZ1QNPcPsOErYiDgAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fU7DQFWTDWXgyY1IfCYp9MxhqxEn68O5vqLkzWy68Zw=;
- b=G51Y/A1bkdUD+mucnVKAa9crhQZE6IkCsrZpZBGd5QkNMIrrp1pF6KUjfEX7T/My8M0HkRteBn9CFK8bI/GqHY6Z8DA51E3NHsRFOqfe/vymggvR6SHv0gNIePk4rAV+s3PxK0euR/57udaaIq4LM9BnxORV6h2Qtj4pP49FbcTW1mYAEIAWzXFGRKaOJWuUX5O98FZidFB+XQFRQ7zQJ4XHr5QtHPr0IJ8gPUoOI+icMSZJ6D8NJnbpx8gQIZJiKvxoHEY86Eo9X/U9/N+ABTuDrsGypPZIsXFuQKiRZyezRCV21En/qpd2CaTabHX1dxfTYU5uI2xLLxu1C+c9IA==
+ bh=OGpRXSsV/adhCkDwtLk0LIXNBdKl6qmtUI8JqFL3e5I=;
+ b=QlHUWBShWBiBPJhDylc8I4CQtcywjWIA1I9cHWOVN7uejsvotMDzal+GDMKdKdQ5hLpUXl/6FOIbJFycyXZ0i5GQtgUABDQdYSq2zO/iSQS2u8ZFklTyZ2Rwar6KuiXf2ByF5Z3OryO5oMXZc/2v+TnV5T6bxQIjC6CAd4DtIac04xeFo7QQLJzb0J9OvnhBWEIxyELM1SI0dvHrkeLHyMJE7mDyOC9VdzOoha1LkzkO9TcimoTmhWi1KXhzA3l7gWw4Tf9ZFNqXEeoNStmQVFT8libw3m4CefxILUvJ80plmu+7kKAvXl0FFFSLpN/d8Y2Nkpve+Hv4xXDzO6HxLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fU7DQFWTDWXgyY1IfCYp9MxhqxEn68O5vqLkzWy68Zw=;
- b=SEZQ/fDPyOpttNYsJSZzuRMc7fOxXLiktgHNd0usqiSRX2xu7UNizJplYCF/DEpWd8qE1FM8hrzhkvcAOO+F0077elIN6GnzHKN4TPpXDFk0VGWtQXHRT2UyWJ/FXbWsPfMaAHNaQkkCbBXgrHq4B+Cbg1Nuk5KYRwCJuaBADnRFPSSHWxkuWqDDs+ERouhGsjUTMNAp9MYk6u9l61oA4QnfL5iC/QzQOefhtkgd9z5zrabHoNIA3dfzIV8ylM095qSkR8NRYCB+NOGp2sQ+pSiXA7Ov4Ge3RxS3UVJkgCzYrpzYf0kk07a9TFHCCGy11r+ustwkVBLPLL0/dVwbnA==
+ bh=OGpRXSsV/adhCkDwtLk0LIXNBdKl6qmtUI8JqFL3e5I=;
+ b=jRxrMcqBPOoYgCbX+mvf0W3OqYd8Y1d7UuyeXFA09CyaisnvJZkdHrlhb3KaSyj1g1eYHR+NcVYtyuB3bSvOCwzfF8kUy3dVZ4UATv+KOh2wn2j5g/zsoTBL74csBO29IRuh3t7ueAI/Fuy6YBQWIITq7Jx3l/roBIASEgIRD5Y1/UuVtEgwT1xTP2T9kW1l9aWt8JGbX1bxH3t/zVL5nPEMAesfOqnnxNwk8VTXkqr9ht/ryM+qPhh5X8WEHXEvTml0giUbopnJSw+NhmRexDhZguDXGgUTTMnikD6OxrPL/xA3GKeoGg9x7Vv+fdEknILJpsEgfyOiHowzBo6z7A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
  by CH1PPF5A8F51299.namprd12.prod.outlook.com (2603:10b6:61f:fc00::60f) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Thu, 16 Jul
- 2026 06:47:23 +0000
+ 2026 06:47:31 +0000
 Received: from SA3PR12MB7901.namprd12.prod.outlook.com
  ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
  ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0202.014; Thu, 16 Jul 2026
- 06:47:20 +0000
+ 06:47:31 +0000
 From: Ido Schimmel <idosch@nvidia.com>
 To: netdev@vger.kernel.org
 Cc: mkubecek@suse.cz,
 	danieller@nvidia.com,
 	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH ethtool 3/8] cmis: Fix printing of CDB EPL pages
-Date: Thu, 16 Jul 2026 09:45:27 +0300
-Message-ID: <20260716064532.1522382-4-idosch@nvidia.com>
+Subject: [PATCH ethtool 4/8] module-common: Fix printing of transmitter technology for CMIS transceivers
+Date: Thu, 16 Jul 2026 09:45:28 +0300
+Message-ID: <20260716064532.1522382-5-idosch@nvidia.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260716064532.1522382-1-idosch@nvidia.com>
 References: <20260716064532.1522382-1-idosch@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR0P281CA0227.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b2::7) To SA3PR12MB7901.namprd12.prod.outlook.com
+X-ClientProxiedBy: FR0P281CA0138.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:96::7) To SA3PR12MB7901.namprd12.prod.outlook.com
  (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,95 +66,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH1PPF5A8F51299:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc19a5ad-6ba4-428b-d9b7-08dee3061551
+X-MS-Office365-Filtering-Correlation-Id: 204118c4-a394-4204-949e-08dee3061c01
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|11063799006|56012099006|18002099003|22082099003|10067099003;
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|11063799006|56012099006|3023799007|18002099003|22082099003|10067099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	DKXZ0L/9ntFHYSK3a77Y/gCQeZwFzrMr01rArD1eJX9B8I/7CbarW9J7Zr3URG626p27r4D3Rmho0aO9kE4XMfJhWlHY8FMkjjMo70XJAkHc6Ill3aUm70uHMhzMobpvlHyN6Pp3Y2av0D1B4UaphMo0gl5GdKcbTc3zNdmwLgpXk5lidqcHu84pLX5WBigo+vAalSo5wXkZzMfQ6MCPl7StXJm6CaU8uaEW8OmngsnxvQFWnOHpl9r8zkWri0jYOioz7mr1x18U9aatwq05AcA8nl7TkgIGNOvIS+Q0XvwPr8mzf8m84+raWXL8x+Q7jOy+9AkZnBLh+n4pqa/ViZTVLM1ee2jdEi9u0fD4OuWfs2UTHxXr3p8lpNWPf25IkXo8z/hLT6NWYY4MiEi/uArT2VIerz9TeFkx5wnW544zCUYCAFcJr5spiq7KMSYPFbGar9vRJV5mn/2MlPe2Qbfa3qcW6FPAjHfGLbYGtt8xs/Nw38PTeKEhEKSVYBIRfY9RilgXeebvWAVrA5GNxHpJvvdBA2bmDma4eqemnEXRSpdr98x2HV4eNAqhG3Aqh37nXxm6e0UJb+Rit8KehTdTBGd7FijU1jq1HOlPKMi+FxUkW5EZTr5VNZQPwVGN4chXpuP5JFY6+nvb8IZVg6ngpIfSSz48ScW+BIfVvzg=
+	d0iRVkyCejTpbPq3+2/HXEb3LJnGMcsKr8pGSJDCCpR6KiJ2T3PW5zJepcYM2UNQaog6VArPPxl7MuAaclFzdT+wvCAT7L3m1Sm78wJEm2ptzk2IYzimmKgvbvsnN/GxmPKzWsW47abvcuNYuDwz6QmI8poy63F7CMb9U128MaazsJRt8tUT6S461tpyyawpgy1KnWDq9RHvI3JZ9BVETfBHzRxECwS6FLUEmMk/Jm7YnLl2aKX8Sy4w146fKXiYFf63x35VSYpoC543WoL7c+LBdfdE/c64MA0unQH55AC2E0gt0BkiJ3T4khlh1qfvd9K2v0rTw9HtGS2On4yaRfwg6p8X/j4WA9W0BKh4IhtafztMvBrye5+81hiD+JlSluhz4efCtneXta19kZ/fce8U2Sbe8H/fbwFg5B2bPb+zuQNLI2w/8tkU8SvHq4IK8+y6m6eHaAufyx8DyTvTq9vLM92Aj0+aKpCkyhIA+Z480CKbaUzdMV5EYEpF7gfFmYq/nTh9NuywjiJi21cwg95KsqU73i0LA0tFOpnUbF9SOyMRfotRjCOgC6Gh9sLJvU/Q+QCEDviNx+bRxru3myvMWVek46Gx2epBTzgHzDTLRuqOESgHheyDNLr7JtOiyOeKZwq2Q3t43z73jeuPBmwwOiLAXjOZIj16B0ruqUQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(3023799007)(18002099003)(22082099003)(10067099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DXDI/PzqO92UOMZNDLTQd0UIIEqk8t98sbue0bhSxhlqkxA43llbc2VTffnG?=
- =?us-ascii?Q?3MxP0Hy2lbmLWSxL2dB4iPIV2o6egThlmzIgMRZ+xYRGZid4HCR00/D//dtI?=
- =?us-ascii?Q?aHYP2V/ZFko5GKRiHGagR9N4EHMFGCXNAgBObRTJllzB8vFAsnb+qW1FBtRe?=
- =?us-ascii?Q?jig/yqrKSgrDIXBS25gzI17WXQ2aAS5TRocb0IrTPv7ngPc+oQf/5SMcSrGV?=
- =?us-ascii?Q?5eagW8BGIQWGUZNQzZzMnbsN8RBPs5V+LDVh6u/dtP5sokZv6EdYdZWvzcDy?=
- =?us-ascii?Q?tjM/TqvKeRSyZRngNkuA0Ex54r1NZxA/cBJwm+0iQTj1qdDJL4x+M7MSffkY?=
- =?us-ascii?Q?TMpzBaKRIbnGHicnA6Ucc9V9pMcPkUCVFaK/91zTP89Vf6g68dURdkn5MsiU?=
- =?us-ascii?Q?Px/hiJuLCLju1baXULV5qyHXWelRGRhGNx7XTl7XULhzsk/SC9gcbRgwl6YT?=
- =?us-ascii?Q?HnB4HGIkLSLBggbtHdbJ5HP4N9SDoTqM2t+a4WulA3tGqab8NzS7u28gXtfU?=
- =?us-ascii?Q?jQGdsaSqzZkKpm8Cwkcc8HhpNc1jtSOrdI6SSeXN+Odoy+Jdu7zZdv7K3KXt?=
- =?us-ascii?Q?H9sMu1hdBtpACfRUqOsYg5FbQkyGxjtnjm7JZ1uNlTdB3l3FCTZaAd4FAQBt?=
- =?us-ascii?Q?Y00A41X8eJSQW2+NrW2YVzheJv+iCiq65lUWBJ6hNTCyOt+GFNSdGlmlwuXq?=
- =?us-ascii?Q?2BLYQgQnLMq6nVowNUMZUELE06W+ANSg7kSvSpbwmiP3jOGhSYql+EaK9AnJ?=
- =?us-ascii?Q?yjaQNO9D/C9t45as2wd7/rgg6mbQNAQ6XEzOywhgM5O8zy3mf3APs9WekqjM?=
- =?us-ascii?Q?Z6KwbfukFWfM1gU5gBfgw9vL6GRxNVco5CAH7KHjpzCg0uT0EMbBr0ZzQGE5?=
- =?us-ascii?Q?pZLYsOB6SGE+oxRwgFSNvwzV0VQLZiRrIgdOi+tmSiAJBJ5iksnjWDTyXyXf?=
- =?us-ascii?Q?PAOn+VONAwFDZ+8vQZO7gtUZFElmO/b5LWe7pBvNnvMWflD++mtyuwK3uPXR?=
- =?us-ascii?Q?m+GGQvuP/j56M0nCiUR3eMvYhr2QghJrw4l7c7AqL22KDAaLvSBOvT4h2C0e?=
- =?us-ascii?Q?Zxb+SrHpdQ1IovJeInlBXR2m1uCLaYKN0CsiSrOE/nveYV+M8hPnWoyIBXds?=
- =?us-ascii?Q?OBG65AL5Z1xT7q0MYw8JRj8B8/7qCTZxgrMDfWbuTTjydC2DIz2fjlwlnBi0?=
- =?us-ascii?Q?XxPWySiuMP+TPoXWL9o5jzIBDW00eMkp24mNyQROM5Cdq7mbIsOrTHHLbl1G?=
- =?us-ascii?Q?WYc6tdmsO+BQcIQ7L+kU1sdbmzk4CX/8gof60drKc2Nk86mPdILex/uQLBZ8?=
- =?us-ascii?Q?2WedVaW2U/hb91P5OGXLcxf4cog0zJYdJAUkjZEv1EF83nT8wWzzu3q6jubj?=
- =?us-ascii?Q?6h+O5WpPH3zmCHjZwIYz/XDnZas8UO36rEoftC0y6MsUzHaKbiH2zD7JbtPG?=
- =?us-ascii?Q?zMM7lx7zFAMjl51IdAyvVgqbs3DPxe3z4WKktkjufxqxhgjThrMcMSMRjK37?=
- =?us-ascii?Q?Oi3FWVOkIOrEMvECU5dyV1fu4iMXQkHy9cstNs03GFBj4NJLqXTsZPXI+XwZ?=
- =?us-ascii?Q?an0h1Hnz97SdM3nZidumLWP5Rj4UXqRVTQaI9I7GSMr4XBbr6ceBUFlq1rnw?=
- =?us-ascii?Q?MCkKG00fyBiYb791UM2EBTx040RTJX31WfjyWvE/W4z9rYfxi0H1vFAQ2adh?=
- =?us-ascii?Q?nSUjS8tqBnRW6uTS49Gsg9g5ChejBo6IBth2B9wkBy8Alf+1i4yxThsrm+GX?=
- =?us-ascii?Q?5ie2J4nibg=3D=3D?=
+	=?us-ascii?Q?QxWWPD+mWjJSXZXVYzNorBrSzIhLPfZsJIJoP8bnssaEoIsIkTx5zRVHdHLA?=
+ =?us-ascii?Q?FltlVomvmab1VvC9ItV4X4ZsYM0MlXAhYWgdgw5T9fX5TXtNVu0uGNhtvhbW?=
+ =?us-ascii?Q?4G4gpBF2s/mGYGyGtU5Ly85kMGs9oMr74OWB9h/PPSoJ2y3hKCPfavyUxaXd?=
+ =?us-ascii?Q?awmGwb3jJOfN47mAlG3kNnOpk2O6gHuQSA9fSOxeVGlQNwcOy46xUNXgbToV?=
+ =?us-ascii?Q?hiVRegCK25aDqTltB/yRSmu2oZ/9MWiun6YaYL/aINDsvUqu5OWx1VTcYenE?=
+ =?us-ascii?Q?PNGW2i6dIxnk+UnnzPa26ZdzF+hmGQnpjj6igG+XbMccR215Nc1PwBx2cm8y?=
+ =?us-ascii?Q?7iwU8Myx52F+P0b0sAeikJGcKo0SCNM4v1ke84QOnc/zC0S3GGlbCqT7hnw7?=
+ =?us-ascii?Q?ekvkURI+xTL0Z02wnWWrmY5f2M7VZ3zkDt60PR0tJ43JMJNQJ8ccUlxxJees?=
+ =?us-ascii?Q?5Pj6nYckoj3qpgqTE2ljdg1DsCg+w6GoY+F9YU2VoGEvwq+tWKQZggLTBtXA?=
+ =?us-ascii?Q?fKk2U2fBuiSHoLdoUaV0iCbWJy6n7JqF2eTwaNwY1hdyg24Nt2CJQHUjjx6j?=
+ =?us-ascii?Q?vNzDCXor3x3Cf7M8s32LC1Oj0h4OCnPbJRCAcybU0cMqBdjOG77v2yAmEmIE?=
+ =?us-ascii?Q?wST8cLSV0OgmSz8/7pVqNstrj1HnOt+fwIGg5QHZbt0ly5FlGc+vdvfO/d27?=
+ =?us-ascii?Q?GcQV1McJMUsB0pCRjjrXEOn5lbUGYxA/2c5Eb+0WcLP4tPS2LAF5oRzahaIM?=
+ =?us-ascii?Q?8CrmDq8RgBZOAukdjKX+x8CI9hpv3EldEicFghVa34Yn5KuQT9JTYFUrG25/?=
+ =?us-ascii?Q?WfJ2oqj2nFiGZGRwpV1j6+E7vOMFdmh6+2mSVezUfk+f6JhJ0i/WUqHMqwAE?=
+ =?us-ascii?Q?iIE4Zx6YRZamQil4Pyc3glI9gSj5gtzjw+XGzOsWylgDxz115XH+mN+LhznG?=
+ =?us-ascii?Q?x81bbJsIjt/NF0JiTRobwjxib8DbDEVLT6zjif2uIreYmQeqdZa21PfoBBxC?=
+ =?us-ascii?Q?oa/nvC8daI7EOn2ImV7ZHUzb4m2SPdCNIDjv0a31DfsIZNM4hC2RV7g3KNNL?=
+ =?us-ascii?Q?qR68KkoHAn3XUX5+keq+F9xvYiaX5QGgmrjTot4T2rberyHDAsL9Og1Q33VV?=
+ =?us-ascii?Q?/WtFTMJnJnPDZFn/Y9+ejbHNKzakVU+LfekhDsL/r1my4hMg0ixL3j8xScfl?=
+ =?us-ascii?Q?CL/xHBrVWDgW+eFY6aas5cxgRSrwZWZH5Eo9qLP25xheeH0mdmYtn98YMUuo?=
+ =?us-ascii?Q?R9lTcQ1LDihr3fZ2tkWOmv6S+MZqWmO7APoAbhkAOMmXkFm7wauVTMDUe+54?=
+ =?us-ascii?Q?BfZ+wRAT/1DPQexfQXYXlG/qFBgvPiBkAd4kC1eWC5wnRo0+lWssU0MKarlK?=
+ =?us-ascii?Q?atfQPltG4SvemVpzfw1v+oear58qTqCpz2RQ1HenAVK3U/d8FGini2Ue5e1B?=
+ =?us-ascii?Q?NU18AtWTB/Er9XC/Z2BCwB8ur7664zzkQzMlA8yXEyY3Np0eNI5ycg8UUoUv?=
+ =?us-ascii?Q?FvnZ2Q0WpXE9v1rQwd7KmAcen5UGtfn0b8p+y7Eob+o1e5S6fVYeoqejDGgB?=
+ =?us-ascii?Q?G6Hd4+QyP0iPf1fL9yCgku/XRwCp7R29OQuMrvYTpqdX9kcGKwn+f2JTqvpO?=
+ =?us-ascii?Q?2Tz68I+IphfTDJ9BhIqAggkgDgQUmizuxJW3hJk14NA2vAvLi0833z07FjIh?=
+ =?us-ascii?Q?oxZhN2XBkaUPttkByDdRnLlVrNbsGAErFwt9uFa12YEBGiUBzYE1MlFrL4mZ?=
+ =?us-ascii?Q?beFCaPsRrw=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc19a5ad-6ba4-428b-d9b7-08dee3061551
+X-MS-Exchange-CrossTenant-Network-Message-Id: 204118c4-a394-4204-949e-08dee3061c01
 X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 06:47:20.2373
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 06:47:31.4208
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kJD8SoBLA8wYQ6w/HuVI3fsRRZ63eRs2vLe5ccPcg0r4h/w3WCBLMS5VEsltK9QDe6OtVBSj05ajfPTGIEy2vQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: OMTHwGhtocaw2vw7roiaFpVZpJUgg3wsbUH9mXe6jOcldOUrTkZ+TQb6LVl0sQO5LpBZYQB2b5aRQTOmdYx8/A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF5A8F51299
 
-The "CdbMaxPagesEPL" field is 4-bits. The code currently assumes that
-the value of the field directly determines the number of EPL pages, but
-values 5 / 6 / 7 correspond to 8 / 12 / 16 EPL pages.
+In CMIS, the transceiver technology is encoded in the
+"MediaInterfaceTechnology" field which is 8-bits, while in SFF-8636 it
+is encoded in the 4 MSBs of the "Device Technology" field. Both
+specifications share the same encoding for the common values (0-15), but
+CMIS supports more values given the field is 8-bits.
 
-Fix the printing of the number of EPL pages by using a translation table
-and avoid printing the field if the value is reserved (i.e., 8-15).
+Given the common encoding, cited commit consolidated the printing of
+this field between CMIS and SFF-8636. The CMIS parser passes the
+"MediaInterfaceTechnology" field and the SFF-8636 parser passes the
+"Device Technology" field while masking the 4 LSBs. This creates a
+situation where both parsers pass different values for the same
+transmitter technology (e.g., "1310 nm VCSEL" is 0x01 in CMIS and 0x10
+in SFF-8636). To overcome this, the common code matches on two values
+for each transmitter technology.
 
-Fixes: fe8e296aa023 ("cmis: Print CDB messaging support advertisement")
+While this works most of the time, it is going to create a problem for
+CMIS transceivers that utilize the 4 MSBs of the
+"MediaInterfaceTechnology" field.
+
+Fix by creating a common encoding for the transmitter technology field
+and have the SFF-8636 parser pass the shifted value of the "Device
+Technology" field to the common code. That way both parsers pass the
+same value for a given transmitter technology.
+
+Fixes: 504c4f573571 ("module_common: Add a new file to all the common code for all module types")
 Reviewed-by: Danielle Ratson <danieller@nvidia.com>
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- cmis.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ cmis.c          |  4 ++--
+ module-common.c | 47 +++++++++++++++-----------------------------
+ module-common.h | 52 +++++++++++++++----------------------------------
+ qsfp.c          |  5 ++---
+ 4 files changed, 36 insertions(+), 72 deletions(-)
 
 diff --git a/cmis.c b/cmis.c
-index 16f168a3b1af..da1ced75e4ef 100644
+index da1ced75e4ef..19a3eb7cf925 100644
 --- a/cmis.c
 +++ b/cmis.c
-@@ -924,10 +924,14 @@ static void cmis_show_cdb_mode(const struct cmis_memory_map *map)
- 
- static void cmis_show_cdb_epl_pages(const struct cmis_memory_map *map)
+@@ -254,11 +254,11 @@ static void cmis_show_sig_integrity(const struct cmis_memory_map *map)
+  */
+ static void cmis_show_mit_compliance(const struct cmis_memory_map *map)
  {
--	__u8 epl_pages = map->page_01h[CMIS_CDB_ADVER_OFFSET] &
--			 CMIS_CDB_ADVER_EPL_MASK;
-+	static const __u8 epl_page_count[] = { 0, 1, 2, 3, 4, 8, 12, 16 };
-+	__u8 epl = map->page_01h[CMIS_CDB_ADVER_OFFSET] &
-+		CMIS_CDB_ADVER_EPL_MASK;
+-	u16 value = map->page_00h[CMIS_MEDIA_INTF_TECH_OFFSET];
++	__u8 value = map->page_00h[CMIS_MEDIA_INTF_TECH_OFFSET];
  
--	module_print_any_uint("CDB EPL pages", epl_pages, NULL);
-+	if (epl >= ARRAY_SIZE(epl_page_count))
-+		return;
-+
-+	module_print_any_uint("CDB EPL pages", epl_page_count[epl], NULL);
- }
+ 	module_show_mit_compliance(value);
  
- static void cmis_show_cdb_rw_len(const struct cmis_memory_map *map)
+-	if (value >= CMIS_COPPER_UNEQUAL) {
++	if (value >= MODULE_TT_COPPER_UNEQUAL) {
+ 		module_print_any_uint("Attenuation at 5GHz",
+ 				      map->page_00h[CMIS_COPPER_ATT_5GHZ], "db");
+ 		module_print_any_uint("Attenuation at 7GHz",
+diff --git a/module-common.c b/module-common.c
+index 42fccf68301b..997dd2b37ce7 100644
+--- a/module-common.c
++++ b/module-common.c
+@@ -575,71 +575,56 @@ void module_show_mit_compliance(u16 value)
+ 	char description[SFF_MAX_DESC_LEN];
+ 
+ 	switch (value) {
+-	case MODULE_850_VCSEL:
++	case MODULE_TT_850_VCSEL:
+ 		strncpy(description, "850 nm VCSEL", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1310_VCSEL:
+-	case SFF8636_TRANS_1310_VCSEL:
++	case MODULE_TT_1310_VCSEL:
+ 		strncpy(description, "1310 nm VCSEL", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1550_VCSEL:
+-	case SFF8636_TRANS_1550_VCSEL:
++	case MODULE_TT_1550_VCSEL:
+ 		strncpy(description, "1550 nm VCSEL", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1310_FP:
+-	case SFF8636_TRANS_1310_FP:
++	case MODULE_TT_1310_FP:
+ 		strncpy(description, "1310 nm FP", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1310_DFB:
+-	case SFF8636_TRANS_1310_DFB:
++	case MODULE_TT_1310_DFB:
+ 		strncpy(description, "1310 nm DFB", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1550_DFB:
+-	case SFF8636_TRANS_1550_DFB:
++	case MODULE_TT_1550_DFB:
+ 		strncpy(description, "1550 nm DFB", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1310_EML:
+-	case SFF8636_TRANS_1310_EML:
++	case MODULE_TT_1310_EML:
+ 		strncpy(description, "1310 nm EML", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1550_EML:
+-	case SFF8636_TRANS_1550_EML:
++	case MODULE_TT_1550_EML:
+ 		strncpy(description, "1550 nm EML", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_OTHERS:
+-	case SFF8636_TRANS_OTHERS:
++	case MODULE_TT_OTHERS:
+ 		strncpy(description, "Others/Undefined", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_1490_DFB:
+-	case SFF8636_TRANS_1490_DFB:
++	case MODULE_TT_1490_DFB:
+ 		strncpy(description, "1490 nm DFB", SFF_MAX_DESC_LEN);
+ 		break;
+-	case CMIS_COPPER_UNEQUAL:
+-	case SFF8636_TRANS_COPPER_PAS_UNEQUAL:
++	case MODULE_TT_COPPER_UNEQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN, "%s unequalized", cc);
+ 		break;
+-	case CMIS_COPPER_PASS_EQUAL:
+-	case SFF8636_TRANS_COPPER_PAS_EQUAL:
++	case MODULE_TT_COPPER_PASS_EQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN, "%s passive equalized",
+ 			 cc);
+ 		break;
+-	case CMIS_COPPER_NF_EQUAL:
+-	case SFF8636_TRANS_COPPER_LNR_FAR_EQUAL:
++	case MODULE_TT_COPPER_NF_EQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN,
+ 			 "%s near and far end limiting active equalizers", cc);
+ 		break;
+-	case CMIS_COPPER_F_EQUAL:
+-	case SFF8636_TRANS_COPPER_FAR_EQUAL:
++	case MODULE_TT_COPPER_F_EQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN,
+ 			 "%s far end limiting active equalizers", cc);
+ 		break;
+-	case CMIS_COPPER_N_EQUAL:
+-	case SFF8636_TRANS_COPPER_NEAR_EQUAL:
++	case MODULE_TT_COPPER_N_EQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN,
+ 			 "%s near end limiting active equalizers", cc);
+ 		break;
+-	case CMIS_COPPER_LINEAR_EQUAL:
+-	case SFF8636_TRANS_COPPER_LNR_EQUAL:
++	case MODULE_TT_COPPER_LINEAR_EQUAL:
+ 		snprintf(description, SFF_MAX_DESC_LEN, "%s linear active equalizers",
+ 			 cc);
+ 		break;
+diff --git a/module-common.h b/module-common.h
+index 4063448f3eea..fba1d36f7f86 100644
+--- a/module-common.h
++++ b/module-common.h
+@@ -83,42 +83,22 @@ enum module_type {
+ #define  MODULE_CTOR_VENDOR_LAST		0xFF
+ 
+ /* Transmitter Technology */
+-#define MODULE_850_VCSEL			0x00
+-
+-/* SFF8636 */
+-#define	 SFF8636_TRANS_TECH_MASK		0xF0
+-#define	 SFF8636_TRANS_COPPER_LNR_EQUAL		(15 << 4)
+-#define	 SFF8636_TRANS_COPPER_NEAR_EQUAL	(14 << 4)
+-#define	 SFF8636_TRANS_COPPER_FAR_EQUAL		(13 << 4)
+-#define	 SFF8636_TRANS_COPPER_LNR_FAR_EQUAL	(12 << 4)
+-#define	 SFF8636_TRANS_COPPER_PAS_EQUAL		(11 << 4)
+-#define	 SFF8636_TRANS_COPPER_PAS_UNEQUAL	(10 << 4)
+-#define	 SFF8636_TRANS_1490_DFB			(9 << 4)
+-#define	 SFF8636_TRANS_OTHERS			(8 << 4)
+-#define	 SFF8636_TRANS_1550_EML			(7 << 4)
+-#define	 SFF8636_TRANS_1310_EML			(6 << 4)
+-#define  SFF8636_TRANS_1550_DFB			(5 << 4)
+-#define	 SFF8636_TRANS_1310_DFB			(4 << 4)
+-#define	 SFF8636_TRANS_1310_FP			(3 << 4)
+-#define	 SFF8636_TRANS_1550_VCSEL		(2 << 4)
+-#define	 SFF8636_TRANS_1310_VCSEL		(1 << 4)
+-
+-/* CMIS */
+-#define CMIS_1310_VCSEL				0x01
+-#define CMIS_1550_VCSEL				0x02
+-#define CMIS_1310_FP				0x03
+-#define CMIS_1310_DFB				0x04
+-#define CMIS_1550_DFB				0x05
+-#define CMIS_1310_EML				0x06
+-#define CMIS_1550_EML				0x07
+-#define CMIS_OTHERS				0x08
+-#define CMIS_1490_DFB				0x09
+-#define CMIS_COPPER_UNEQUAL			0x0A
+-#define CMIS_COPPER_PASS_EQUAL			0x0B
+-#define CMIS_COPPER_NF_EQUAL			0x0C
+-#define CMIS_COPPER_F_EQUAL			0x0D
+-#define CMIS_COPPER_N_EQUAL			0x0E
+-#define CMIS_COPPER_LINEAR_EQUAL		0x0F
++#define MODULE_TT_850_VCSEL			0x00
++#define MODULE_TT_1310_VCSEL			0x01
++#define MODULE_TT_1550_VCSEL			0x02
++#define MODULE_TT_1310_FP			0x03
++#define MODULE_TT_1310_DFB			0x04
++#define MODULE_TT_1550_DFB			0x05
++#define MODULE_TT_1310_EML			0x06
++#define MODULE_TT_1550_EML			0x07
++#define MODULE_TT_OTHERS			0x08
++#define MODULE_TT_1490_DFB			0x09
++#define MODULE_TT_COPPER_UNEQUAL		0x0A
++#define MODULE_TT_COPPER_PASS_EQUAL		0x0B
++#define MODULE_TT_COPPER_NF_EQUAL		0x0C
++#define MODULE_TT_COPPER_F_EQUAL		0x0D
++#define MODULE_TT_COPPER_N_EQUAL		0x0E
++#define MODULE_TT_COPPER_LINEAR_EQUAL		0x0F
+ 
+ /* Module Flags (Page 0) */
+ #define CMIS_VCC_AW_OFFSET			0x09
+diff --git a/qsfp.c b/qsfp.c
+index c82a3dec9b0b..20b6c2173284 100644
+--- a/qsfp.c
++++ b/qsfp.c
+@@ -562,12 +562,11 @@ static void sff8636_show_rate_identifier(const struct sff8636_memory_map *map)
+ static void
+ sff8636_show_wavelength_or_copper_compliance(const struct sff8636_memory_map *map)
+ {
+-	u16 value = map->page_00h[SFF8636_DEVICE_TECH_OFFSET] &
+-			SFF8636_TRANS_TECH_MASK;
++	__u8 value = map->page_00h[SFF8636_DEVICE_TECH_OFFSET] >> 4;
+ 
+ 	module_show_mit_compliance(value);
+ 
+-	if (value >= SFF8636_TRANS_COPPER_PAS_UNEQUAL) {
++	if (value >= MODULE_TT_COPPER_UNEQUAL) {
+ 		module_print_any_uint("Attenuation at 2.5GHz",
+ 				      map->page_00h[SFF8636_WAVELEN_HIGH_BYTE_OFFSET],
+ 				      "db");
 -- 
 2.55.0
 
