@@ -1,35 +1,35 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A083FE653;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ECF41E6C1;
 	Thu, 16 Jul 2026 15:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784217408; cv=none; b=JbSydBfxje9YX6NrZc+EWTjywew28YdpwElc+ULT30pWSV9mOKrwvEI9ViRTN8qbByBJUf+eU4OEl2lC5Yia8/CdKV0Evnu22g6xMsgK592cEVKXEt+OGUtD9KhzxiuyNnLKspWcV6IimmDKpZHr7V2zw5SxZ1S0FD3Pbjn31/o=
+	t=1784217408; cv=none; b=D7j5bKUjLN3yYVyIfCIXA+IiE4gsijkN2lUHzGBkqzmcRjIFoDXUfhVKVM85KpS+gDGJVefRx8M2gI5VbGPTz7JBOLAjhWWftE+lq2As0QNgsxdaJuGi1JPPRDKlizTsDgrFsjR76gHvKDsZXPCblcSHj5qWjinwWQsLlQ63gqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784217408; c=relaxed/simple;
-	bh=W2y6JQ59E4VEzqSfwBXrpxqjpX6j/D30u0sBOsod6Sw=;
+	bh=cCGsoJCBbHXiEuEyCMMGWYEJSWHCq8lacOeEGbqUFFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/EDkbFmAiHMn3DCQXm+dZVMelb7alXUjMlMPp5u261w3tNiXY7ZjKsrYIjafN46XBFTUb6+DWflEYmRWZoXpDtYnQcLc9TwP1e1OfpWfPxVoslDlyMQElZexY5HGSG3ctRqTRqNiomks5ynTX9yKuMTvzxPrudQQ2L6gmv7kZk=
+	 MIME-Version; b=oIRjs00U807MZKM1GQN7P9LUqKoEA7gyCgsEafyUZior3HZc0+06TmfbjslzSL9mmGg4Ld248d2Ec93Le4GBRo9Z8EcYjp+NFdAi03BLE3prvDgbx1HYifH52GgFeFVzXxY4x1t7Ye3q7wuDs8Yb95ZfaP9v9bEiGrtgb/EjcAM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5ECF7202282;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8551E202286;
 	Thu, 16 Jul 2026 17:56:24 +0200 (CEST)
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wkORj-0027oj-39;
+	id 1wkORk-0027p3-16;
 	Thu, 16 Jul 2026 17:56:24 +0200
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 55E3856C3D6;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DA1B156C3E4;
 	Thu, 16 Jul 2026 15:55:31 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Eulgyu Kim <eulgyukim@snu.ac.kr>,
-	Vincent Mailhol <mailhol@kernel.org>,
+	sashiko-reviews@lists.linux.dev,
+	stable@kernel.org,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 03/19] can: raw: add locking for raw flags bitfield
-Date: Thu, 16 Jul 2026 17:47:28 +0200
-Message-ID: <20260716155528.809908-4-mkl@pengutronix.de>
+Subject: [PATCH net 10/19] can: bcm: add missing rcu list annotations and operations
+Date: Thu, 16 Jul 2026 17:47:35 +0200
+Message-ID: <20260716155528.809908-11-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260716155528.809908-1-mkl@pengutronix.de>
 References: <20260716155528.809908-1-mkl@pengutronix.de>
@@ -57,165 +57,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-With commit 890e5198a6e5 ("can: raw: use bitfields to store flags in
-struct raw_sock") the formerly separate integer values have been integrated
-into a single bitfield. This led to a read-modify-write operation when
-changing a flag in raw_setsockopt() which now needs a locking to prevent
-concurrent access.
+sashiko-bot remarked the missing use of list_add_rcu() in
+bcm_[rx|tx]_setup() to have a proper initialized bcm_op structure
+when bcm_proc_show() traverses the bcm_op's under rcu_read_lock().
 
-Instead of adding a lock/unlock hell in each of the flag manipulations this
-patch introduces a wrapper for a new raw_setsockopt_locked() function
-analogue to the isotp_setsockopt[_locked]() approach in net/can/isotp.c
+To cover all initial settings of the bcm_op's the list_add_rcu() calls
+are moved to the end of the setup code.
 
-Fixes: 890e5198a6e5 ("can: raw: use bitfields to store flags in struct raw_sock")
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Closes: https://lore.kernel.org/linux-can/20260503112200.22727-1-eulgyukim@snu.ac.kr/
-Tested-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+While at it, also fix the mirroring removal side: bcm_release() called
+bcm_remove_op() - which frees the op via call_rcu() - on ops that were
+still linked in bo->tx_ops/bo->rx_ops, without list_del_rcu() first.
+Unlink each op with list_del_rcu() before handing it to bcm_remove_op(),
+matching the existing pattern in bcm_delete_tx_op()/bcm_delete_rx_op().
+
+Reported-by: sashiko-reviews@lists.linux.dev
+Closes: https://lore.kernel.org/linux-can/20260610094654.A1FFE1F00893@smtp.kernel.org/
+Fixes: dac5e6249159 ("can: bcm: add missing rcu read protection for procfs content")
 Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Tested-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20260504111928.41856-1-socketcan@hartkopp.net
-[mkl: use Closes tag instead of Link]
+Link: https://patch.msgid.link/20260714-bcm_fixes-v15-5-562f7e3e42da@hartkopp.net
+Cc: stable@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/raw.c | 66 +++++++++++++++++++++++----------------------------
- 1 file changed, 30 insertions(+), 36 deletions(-)
+ net/can/bcm.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index a26942e78e68..82d9c0499c95 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -562,8 +562,8 @@ static int raw_getname(struct socket *sock, struct sockaddr *uaddr,
- 	return RAW_MIN_NAMELEN;
- }
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 03c98e4cc677..5c1e83eeb4ff 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -265,7 +265,7 @@ static int bcm_proc_show(struct seq_file *m, void *v)
+ 			   (reduction == 100) ? "near " : "", reduction);
+ 	}
  
--static int raw_setsockopt(struct socket *sock, int level, int optname,
--			  sockptr_t optval, unsigned int optlen)
-+static int raw_setsockopt_locked(struct socket *sock, int optname,
-+				 sockptr_t optval, unsigned int optlen)
- {
- 	struct sock *sk = sock->sk;
- 	struct raw_sock *ro = raw_sk(sk);
-@@ -575,9 +575,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 	int flag;
- 	int err = 0;
+-	list_for_each_entry(op, &bo->tx_ops, list) {
++	list_for_each_entry_rcu(op, &bo->tx_ops, list) {
  
--	if (level != SOL_CAN_RAW)
--		return -EINVAL;
+ 		seq_printf(m, "tx_op: %03X %s ", op->can_id,
+ 			   bcm_proc_getifname(net, ifname, op->ifindex));
+@@ -1017,6 +1017,7 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 	struct bcm_sock *bo = bcm_sk(sk);
+ 	struct bcm_op *op;
+ 	struct canfd_frame *cf;
++	bool add_op_to_list = false;
+ 	unsigned int i;
+ 	int err;
+ 
+@@ -1158,8 +1159,7 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		hrtimer_setup(&op->thrtimer, hrtimer_dummy_timeout, CLOCK_MONOTONIC,
+ 			      HRTIMER_MODE_REL_SOFT);
+ 
+-		/* add this bcm_op to the list of the tx_ops */
+-		list_add(&op->list, &bo->tx_ops);
++		add_op_to_list = true;
+ 
+ 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
+ 
+@@ -1181,6 +1181,10 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		op->flags |= TX_ANNOUNCE;
+ 	}
+ 
++	/* add this bcm_op to the list of the tx_ops? */
++	if (add_op_to_list)
++		list_add_rcu(&op->list, &bo->tx_ops);
++
+ 	if (op->flags & TX_ANNOUNCE)
+ 		bcm_can_tx(op, NULL);
+ 
+@@ -1373,9 +1377,6 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		hrtimer_setup(&op->thrtimer, bcm_rx_thr_handler, CLOCK_MONOTONIC,
+ 			      HRTIMER_MODE_REL_SOFT);
+ 
+-		/* add this bcm_op to the list of the rx_ops */
+-		list_add(&op->list, &bo->rx_ops);
 -
- 	switch (optname) {
- 	case CAN_RAW_FILTER:
- 		if (optlen % sizeof(struct can_filter) != 0)
-@@ -598,17 +595,11 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 				return -EFAULT;
+ 		/* call can_rx_register() */
+ 		do_rx_register = 1;
+ 
+@@ -1449,10 +1450,12 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 					      bcm_rx_handler, op, "bcm", sk);
+ 		if (err) {
+ 			/* this bcm rx op is broken -> remove it */
+-			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return err;
  		}
- 
--		rtnl_lock();
--		lock_sock(sk);
--
- 		dev = ro->dev;
--		if (ro->bound && dev) {
--			if (dev->reg_state != NETREG_REGISTERED) {
--				if (count > 1)
--					kfree(filter);
--				err = -ENODEV;
--				goto out_fil;
--			}
-+		if (ro->bound && dev && dev->reg_state != NETREG_REGISTERED) {
-+			if (count > 1)
-+				kfree(filter);
-+			return -ENODEV;
- 		}
- 
- 		if (ro->bound) {
-@@ -622,7 +613,7 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 			if (err) {
- 				if (count > 1)
- 					kfree(filter);
--				goto out_fil;
-+				return err;
- 			}
- 
- 			/* remove old filter registrations */
-@@ -642,11 +633,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		}
- 		ro->filter = filter;
- 		ro->count  = count;
--
-- out_fil:
--		release_sock(sk);
--		rtnl_unlock();
--
- 		break;
- 
- 	case CAN_RAW_ERR_FILTER:
-@@ -658,16 +644,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 
- 		err_mask &= CAN_ERR_MASK;
- 
--		rtnl_lock();
--		lock_sock(sk);
--
- 		dev = ro->dev;
--		if (ro->bound && dev) {
--			if (dev->reg_state != NETREG_REGISTERED) {
--				err = -ENODEV;
--				goto out_err;
--			}
--		}
-+		if (ro->bound && dev && dev->reg_state != NETREG_REGISTERED)
-+			return -ENODEV;
- 
- 		/* remove current error mask */
- 		if (ro->bound) {
-@@ -676,7 +655,7 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 						   err_mask);
- 
- 			if (err)
--				goto out_err;
-+				return err;
- 
- 			/* remove old err_mask registration */
- 			raw_disable_errfilter(sock_net(sk), dev, sk,
-@@ -685,11 +664,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 
- 		/* link new err_mask to the socket */
- 		ro->err_mask = err_mask;
--
-- out_err:
--		release_sock(sk);
--		rtnl_unlock();
--
- 		break;
- 
- 	case CAN_RAW_LOOPBACK:
-@@ -769,6 +743,26 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 	return err;
- }
- 
-+static int raw_setsockopt(struct socket *sock, int level, int optname,
-+			  sockptr_t optval, unsigned int optlen)
-+{
-+	struct sock *sk = sock->sk;
-+	int err;
 +
-+	if (level != SOL_CAN_RAW)
-+		return -EINVAL;
-+
-+	rtnl_lock();
-+	lock_sock(sk);
-+
-+	err = raw_setsockopt_locked(sock, optname, optval, optlen);
-+
-+	release_sock(sk);
-+	rtnl_unlock();
-+
-+	return err;
-+}
-+
- static int raw_getsockopt(struct socket *sock, int level, int optname,
- 			  sockopt_t *opt)
- {
++		/* add this bcm_op to the list of the rx_ops */
++		list_add_rcu(&op->list, &bo->rx_ops);
+ 	}
+ 
+ 	return msg_head->nframes * op->cfsiz + MHSIZ;
+@@ -1786,8 +1789,10 @@ static int bcm_release(struct socket *sock)
+ 		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
+ #endif /* CONFIG_PROC_FS */
+ 
+-	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
++	list_for_each_entry_safe(op, next, &bo->tx_ops, list) {
++		list_del_rcu(&op->list);
+ 		bcm_remove_op(op);
++	}
+ 
+ 	list_for_each_entry_safe(op, next, &bo->rx_ops, list) {
+ 		/*
+@@ -1818,8 +1823,10 @@ static int bcm_release(struct socket *sock)
+ 
+ 	synchronize_rcu();
+ 
+-	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
++	list_for_each_entry_safe(op, next, &bo->rx_ops, list) {
++		list_del_rcu(&op->list);
+ 		bcm_remove_op(op);
++	}
+ 
+ 	/* remove device reference */
+ 	if (bo->bound) {
 -- 
 2.53.0
 
