@@ -1,198 +1,241 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3681943E062
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 19:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784228838; cv=pass; b=t3GYlcjuZV9Bf+XZX++uwacysOXR434hClFVxDROhJNTyCXZh9U4cUR3pw0Zv+T7DheuIczql+Z0pFfx6nxtnS7Db6M24uP0UOQcebDqt7CqXHZxLoSvcrJQNVlGd3BUMfXyHk6iLdBFtkq/Crawj47gVakHHW9LuWfnwPPlAdw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784228838; c=relaxed/simple;
-	bh=AamOLsb1Z73lgIGEnHDE7brMzUBN4s6Bz0X93FLdAkw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mmsEXvqDADloqzufgGoOO0dkvS7xyPzEwe5ceJm4cexz8xl1ekjG1otpxjdDouhT2wNX6Pe48Sd9LQPcfXmU1ChBznYdHecLaef+70ugpsM3ftyHzavGjORPecY3tTlDdBxLym/+2QF6kcIx72f2jLLmofQlai0Tl3sUMBls+5E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KizT/ls2; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B26222B8AB;
+	Thu, 16 Jul 2026 19:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784229492; cv=none; b=CCyAy9UMK+256PvPAtMk4sYd8QbEC65L4MX0sc/ACD3WqJKr1LC3oBsW1lrQj1mXUG177eb0xkqWqGa0btpRAIrCM+3engLXIbujbRj0K0O1QGfyrfFmo8uUd3J04cK8hPvRoUdjklKtCjUJh3mlHu21JExmoamnbcxMb7c+nVc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784229492; c=relaxed/simple;
+	bh=6idNok2xXfynpT/4cuRMIM8LMVihxlmG0cTHTY6wADQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mizUzaMi/KJprnK17TfCWnOfxu57l0UCi3vanj0d1wzUBWEfJh+8Rh5rCFD19WQCcD3VhiFjc6JFgb0fE9r/JXVspbTjjY/zXR09H4IKFuoW/DeYDuReOuNQb0fGBjEISksz0p6OMFK7+ORa8jfM762GACRYgkgPwRbDDMs6n2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=16ckLuPj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KizT/ls2"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c160420289bso976959766b.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 12:07:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784228835; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DfrZQik4LJtS711PFCRpnuXnxosR7RtqxGYWwgLuY6fjXl8al8lO7juSQN8r9t9YcG
-         PzPIgkuXbFdDS14qImDPZmZrN6XWeFgiLL/VtOnUD+k6fAexOFrLgsWj3oQqk7ovylfN
-         M5lyhyuFxPE64iD3nRVLzVouJE4DgVzJzcHCNXzPgSKq+4oO5ltS53ufNdy8fpl6o+eM
-         tzJH/J1cxgXx7Z5QCRRRhISZbVRqAEEC7D5e+uWncLjrwMmwueOet8Ltqy6RhmpSAFrn
-         FFPjNcME730Oc7sxlIjfINqbFGA1sOy3GUVMnz/FGktVI6Hgea7slAQ7yNHNzeICaK5P
-         LXjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9k8UPFAuqJmuiQbWbqgtoiBAi+ZMtlsQI9qF0mLRLAs=;
-        fh=9dcgNF3zLZ4mmv8AYhyJjqPKc9lpqhbZLvtkuYT5sM4=;
-        b=G433GXaGIYnh/Ims2Pvi7OU7i2OcS15IrmfFwmu8AjGwQOSwQ8ceRqH4QlDRtmtUNn
-         zeIHw1udT57X7YgNUNf8AlQJ5CqyebbqNh68FZu3ykG68KRrs7DW0neVq7pThbQtjT2f
-         2rjzzW0DAP8JJ79+J3wAPIaRzNBYGFEuTf5wZIPJ59UjjRE80lxOSRWol25Y+vnazfyg
-         cnTuNWHwU9VLy6273tror1g+2PKy8GqAxbBFO+OjS2pvEW3VJSHjdA34dHCuvE36UoU8
-         OpNlq7yb/F0V+RNFcIxMJK3h41z7A2E5lwxDU+cPUjpCrbGYqW9D94KxZ5kr28gTmO46
-         40HQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784228835; x=1784833635; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9k8UPFAuqJmuiQbWbqgtoiBAi+ZMtlsQI9qF0mLRLAs=;
-        b=KizT/ls2TcaW+6HUUdiOhJlTd8h+/LP3MpS8nAheb/6mGdp/a3CpYXi3TnCIuB0YuL
-         WgMtRKKKoT7Lxv5NK3SAyspQUO2Z49ZDH8NusHk0696zVovMbnN7fAKIxMHWBwUivSMh
-         47imr+PRmHJy8gxPOUpVbof2UUpwVeWTf5OfM35hnm3yB4n2uIwIG3/ghQxBNu1R7RdV
-         axeH41Ma8z9ETyD731T4zoaloeS/o1AAz2i+Jkj6+FCBn9VDoNWXrT1aMDrhFQPB4M4W
-         7G6cZTgQsUbQAJol/JV7XiLWCrQ/wOANVQo8Hm6H1wUwY53VrU5PGAMYsiYh9vboEn+z
-         1F8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784228835; x=1784833635;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9k8UPFAuqJmuiQbWbqgtoiBAi+ZMtlsQI9qF0mLRLAs=;
-        b=tMbiqHCc9VPg5lBDYT2LzkqzTt1yFISMyKwwvIytu0kOWauwPEN7D5vgDHzO6cxRBa
-         DBTGzWLhxGvM/9oW8bUTvssamny3bi2NM6n+7x0wV2oRcqF1nd5QQZtQ2xGJdDRVNWi2
-         3MyX5nRZ0MhLzRtfHg/EESeNnTk659BVdNzEj5VRjY0k2J5oSJGr8ZBEMxb9gD422bpl
-         DiE72MRgKxbvVtuUAaMSYkXWC1LB2FnpOdjF3FPjtc5tnGjiNz2a0qdgZf8jIuYb8fd4
-         lLd/UoyFFFXNgaKkhAw1gz+6zKfBaH8wHj55wYxDLh63S8VFvE1yNjAvrRxROPRWQP8I
-         0xEg==
-X-Forwarded-Encrypted: i=1; AHgh+Rra+4wGQvZyCvTnyLI4GWXWpISC08jsdcHd0J2jGDu9F1m+bwjxaSy/OagWH53FlXEeR39UG3Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHd5k3jIVDiuFn0T6rVW38GVb/MC02h8m2MYswSWJ9maQDCkG9
-	0JeXT87DVnmnY2cC/EVwK6fgRu7v71keUxI2HdYNtmZL6Hts5KQFJe1iM307M8RzAB1DqGvdG7Q
-	8/rpezi7xrgRYUhspFIK7L37/3Qx6gpw=
-X-Gm-Gg: AfdE7ckvXhF9wrEF61CrvpoULf9MulXvt2xsOrhNpVQiKp4WqLOBeY/V489evKt4KJj
-	k+S4zOI0rgFEb2aXE21O6EA5NYtEkEE+6PXYi3b93WnnVpycg/3EZM5yjcllZ48W86edEWwXDyv
-	7WC2t0f717k8IEgd6CpSx1SPzTpCn9EZGiiCPVhbmuceI/9/d6B6R7swDo8WCVr/suSwekA5Von
-	fOv11SJzXMUcDKpIAM4Rd2WbvXxHmIYr5iS1SCbuHx+p1noDSvrLHwAZV0jqH4wedHEbFDARUUu
-	Evh1sRDU80/AE1XffQ==
-X-Received: by 2002:a17:907:9628:b0:c15:e8c8:340 with SMTP id
- a640c23a62f3a-c16679ffcc7mr635883666b.23.1784228835222; Thu, 16 Jul 2026
- 12:07:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="16ckLuPj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XVmaILPQFz2f1Ud0v6KckAAV6fwLDHR90oRVDaBy6W4=; b=16ckLuPj5NFha7lHTbD5hWdWpR
+	D5oc5fOD5QfxK6PpkAQOVMU9t9GAOpzRmrUq3D4fDLwZgjg38yhp/VW/jLyvJ55EUumn8Pm29mJiO
+	SUyJJ6ibvNMTTUVmcl3FdOXpy1DVoPxLxwGOxQc1lyxla0qCJNkhnu3AwGWtfO623BcY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wkRak-00Ccct-Ko; Thu, 16 Jul 2026 21:17:54 +0200
+Date: Thu, 16 Jul 2026 21:17:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Simon Dietz <simon.dietz@plantwatch.de>
+Cc: netdev@vger.kernel.org, edumazet@google.com, davem@davemloft.net,
+	kuniyu@google.com, andrew+netdev@lunn.ch, dietz23838@hs-ansbach.de,
+	linux-wireless@vger.kernel.org, johannes@sipsolutions.net
+Subject: Re: [RFC PATCH net-next v0 1/6] net: add GeoNetworking protocol
+Message-ID: <9db571aa-4d5c-456a-ab24-796119c9807b@lunn.ch>
+References: <20260716135902.2895237-1-simon.dietz@plantwatch.de>
+ <20260716135902.2895237-2-simon.dietz@plantwatch.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714174110.1571033-1-bestswngs@gmail.com> <20260714174110.1571033-3-bestswngs@gmail.com>
- <GV1P189MB1988239A710C4D42F6DCA15EC6C72@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-In-Reply-To: <GV1P189MB1988239A710C4D42F6DCA15EC6C72@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-From: Weiming Shi <bestswngs@gmail.com>
-Date: Fri, 17 Jul 2026 03:06:38 +0800
-X-Gm-Features: AUfX_myFMIr5jXhQJpkTup4K1xFIUqsOeOVkSMIcDxOpENOPBMtZSSyqan8TOyw
-Message-ID: <CANgPUi1YA6NuvH_r5srnXAn_tL8pypxqp3Dcn_digWyBrk0zkA@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/2] tipc: fix NULL deref in tipc_named_node_up()
- on empty publication list
-To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Xiang Mei <xmei5@asu.edu>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260716135902.2895237-2-simon.dietz@plantwatch.de>
 
-Tung Quang Nguyen <tung.quang.nguyen@est.tech> =E4=BA=8E2026=E5=B9=B47=E6=
-=9C=8816=E6=97=A5=E5=91=A8=E5=9B=9B 17:28=E5=86=99=E9=81=93=EF=BC=9A
->
-> >named_distribute() ends by stamping the last_bulk flag on the tail skb v=
-ia
-> >buf_msg(skb_peek_tail(list)). When the publication list is empty no skb =
-is
-> >enqueued, skb_peek_tail() returns NULL, and buf_msg(NULL) is dereference=
-d.
-> >
-> >tipc_named_node_up() runs this on &nt->cluster_scope. With a node-id
-> >configuration cluster_scope is populated only later by tipc_net_finalize=
-(), so a
-> >peer link that comes up first reaches named_distribute() with an empty l=
-ist. It
-> >is reachable by an unprivileged user (TIPC genl ops use
-> >GENL_UNS_ADMIN_PERM) over a UDP bearer in a user+net namespace:
-> >
-> > KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-> > RIP: 0010:tipc_named_node_up (net/tipc/name_distr.c:196)
-> >  tipc_named_node_up (net/tipc/name_distr.c:196 net/tipc/name_distr.c:22=
-1)
-> >  tipc_node_write_unlock (net/tipc/node.c:428)
-> >  tipc_rcv (net/tipc/node.c:2185)
-> >  tipc_udp_recv (net/tipc/udp_media.c:392)  Kernel panic - not syncing: =
-Fatal
-> >exception in interrupt
-> >
-> >The peer holds back this node's later name updates until it sees a bulk =
-with the
-> >last_bulk flag, so simply skipping the empty bulk would stall it.
-> >Emit an item-less bulk when the list is empty, and break out of the buil=
-d loop
-> >on allocation failure instead of returning, so the last_bulk flag is app=
-lied to the
-> >last queued skb.
-> >
-> >Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
-> >Reported-by: Xiang Mei <xmei5@asu.edu>
-> >Assisted-by: Claude:claude-opus-4-8
-> >Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> >---
-> > net/tipc/name_distr.c | 16 +++++++++++++++-
-> > 1 file changed, 15 insertions(+), 1 deletion(-)
-> >
-> >diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c index
-> >ba4f4906e13b..dbcfa965de34 100644
-> >--- a/net/tipc/name_distr.c
-> >+++ b/net/tipc/name_distr.c
-> >@@ -165,7 +165,7 @@ static void named_distribute(struct net *net, struct
-> >sk_buff_head *list,
-> >                                               dnode);
-> >                       if (!skb) {
-> >                               pr_warn("Bulk publication failure\n");
-> >-                              return;
-> >+                              break;
-> >                       }
-> >                       hdr =3D buf_msg(skb);
-> >                       msg_set_bc_ack_invalid(hdr, true);
-> >@@ -192,6 +192,20 @@ static void named_distribute(struct net *net, struc=
-t
-> >sk_buff_head *list,
-> >               skb_trim(skb, INT_H_SIZE + (msg_dsz - msg_rem));
-> >               __skb_queue_tail(list, skb);
-> >       }
-> >+
-> >+      if (skb_queue_empty(list)) {
-> >+              skb =3D named_prepare_buf(net, PUBLICATION, 0, dnode);
-> >+              if (!skb) {
-> >+                      pr_warn("Bulk publication failure\n");
-> >+                      return;
-> >+              }
->
-> This approach is wrong because:
-> 1. When 'list' is empty, it is caused by memory allocation failure before=
-. So, it is likely that 'skb' could be NULL again because of memory allocat=
-ion failure.
-> 2. Even if 'skb' is not NULL, allocation of non-data (zero-in-size) messa=
-ge will break the receiving peer when it handles this message.
->
-> >+              hdr =3D buf_msg(skb);
-> >+              msg_set_bc_ack_invalid(hdr, true);
-> >+              msg_set_bulk(hdr);
-> >+              msg_set_non_legacy(hdr);
-> >+              __skb_queue_tail(list, skb);
-> >+      }
-> >+
-> >       hdr =3D buf_msg(skb_peek_tail(list));
-> >       msg_set_last_bulk(hdr);
-> >       msg_set_named_seqno(hdr, seqno);
-> >--
-> >2.43.0
->
+On Thu, Jul 16, 2026 at 03:58:41PM +0200, Simon Dietz wrote:
+> Implement the GeoNetworking / ETSI ITS-G5 ('net/gn') protocol which
+> is based on 802.11p wifi and used for vehicle2x applications. It is
+> standardized by the ETSI and used by some car manufacturers
+> (especially in europe). It enables ad-hoc, multi-hop geographical
+> communication and routing among vehicles (and road- or railside
+> infrastructure).
 
-Thanks for your review. Fixed and v4 sent.
+I'm probably doing a deep dive too early, but ...
+
+> +#ifdef CONFIG_PROC_FS
+> +extern int gn_proc_init(void);
+> +extern void gn_proc_exit(void);
+> +#else
+> +static inline int gn_proc_init(void)
+> +{
+> +	return 0;
+> +}
+> +static inline void gn_proc_exit(void)
+> +{
+> +}
+> +#endif /* CONFIG_PROC_FS */
+
+Nothing new has been added to /proc for a long time. Please consider a
+different interface. I've not yet looked to see what is there, but
+networking now pretty much only uses netlink.
+
+> +/* protocol-specific ioctls */
+> +#define SIOCGNSPOSITION			(SIOCPROTOPRIVATE + 0)
+
+New IOCTL code is also very likely to be rejected. The functionality
+should go through netlink.
+
+> +static inline void __gn_insert_socket(struct sock *sk)
+> +{
+> +	sk_add_node(sk, &gn_sockets);
+> +}
+> +
+> +static inline void gn_remove_socket(struct sock *sk)
+> +{
+> +	write_lock_bh(&gn_sockets_lock);
+> +	sk_del_node_init(sk);
+> +	write_unlock_bh(&gn_sockets_lock);
+> +}
+
+Generally, inline functions in a .c file are rejected. It is better to
+let the compiler decide. The exception would be if you have a
+benchmark which shows inline actually helps.
+
+> +static struct gn_iface *gn_if_add_device(struct net_device *dev,
+> +					 struct sockaddr_gn *sa)
+> +{
+> +	bool was_empty;
+> +	struct gn_iface *gnif,
+> +		*new_gnif = kzalloc(sizeof(struct gn_iface), GFP_KERNEL);
+> +
+> +	if (!new_gnif)
+> +		return NULL;
+> +
+> +	new_gnif->address = sa->sgn_addr;
+> +	new_gnif->dev = dev;
+> +
+> +	pr_info("Add interface %s with address %llx", dev->name,
+> +		new_gnif->address);
+
+This seems like debug. At minimum, it should be _dbg(), but maybe it
+should be removed altogether.
+
+> +u32 gn_tai_to_gn(ktime_t tai_time)
+> +{
+> +	/* unix timestamp of 01/01/2004 00:00:00 UTC and 32 leap seconds between TAI and UNIX*/
+> +	const ktime_t tai_offset = ms_to_ktime(1072915200000LLU + 32000LLU);
+> +
+> +	WARN_ONCE(ktime_before(tai_time, tai_offset),
+> +		  "timestamp %lld out of bounds", tai_time);
+> +	/* truncate timestamp (GN timestamp has 32 bits) */
+> +	return (u32)ktime_sub(tai_time, tai_offset);
+
+I'm too lazy to do the work. When does this wrap around? Maybe add it
+as a comment. 
+
+> +static int gn_autobind(struct sock *sock)
+> +{
+> +	//BUG();
+
+Commented out code is not something we want in the kernel.
+
+Maybe one of your later patches fixes this. We might want to consider
+squashing them, so the review is done on the final clean code.
+
+> +static void gn_location_service_req(struct gn_iface *gnif, gn_address_t saddr,
+> +				    gn_address_t daddr)
+> +{
+> +	int size = 0;
+> +	struct sk_buff *skb;
+> +	struct gn_basic_header *gb_h;
+> +	struct gn_common_header *gc_h;
+> +	struct gn_ls_request_header *gls_h;
+
+netdev uses reverse christmas tree, longest lines first, shortest
+last. It should apply to all functions.
+
+
+> +// table is * 1000 | p1 * 100 entry
+> +static int cos_table[] = {
+> +	100000, 99995,	99980,	99955,	99920,	99875,	99820,	99755,	99680,
+> +	99595,	99500,	99396,	99281,	99156,	99022,	98877,	98723,	98558,
+> +	98384,	98200,	98007,	97803,	97590,	97367,	97134,	96891,	96639,
+> +	96377,	96106,	95824,	95534,	95233,	94924,	94604,	94275,	93937,
+> +	93590,	93233,	92866,	92491,	92106,	91712,	91309,	90897,	90475,
+> +	90045,	89605,	89157,	88699,	88233,	87758,	87274,	86782,	86281,
+> +	85771,	85252,	84726,	84190,	83646,	83094,	82534,	81965,	81388,
+> +	80803,	80210,	79608,	78999,	78382,	77757,	77125,	76484,	75836,
+> +	75181,	74517,	73847,	73169,	72484,	71791,	71091,	70385,	69671,
+> +	68950,	68222,	67488,	66746,	65998,	65244,	64483,	63715,	62941,
+> +	62161,	61375,	60582,	59783,	58979,	58168,	57352,	56530,	55702,
+> +	54869,	54030,	53186,	52337,	51482,	50622,	49757,	48887,	48012,
+> +	47133,	46249,	45360,	44466,	43568,	42666,	41759,	40849,	39934,
+> +	39015,	38092,	37166,	36236,	35302,	34365,	33424,	32480,	31532,
+> +	30582,	29628,	28672,	27712,	26750,	25785,	24818,	23848,	22875,
+> +	21901,	20924,	19945,	18964,	17981,	16997,	16010,	15023,	14033,
+> +	13042,	12050,	11057,	10063,	9067,	8071,	7074,	6076,	5077,
+> +	4079,	3079,	2079,	1080,	0,	-920,	-1920,	-2920,	-3919,
+> +	-4918,	-5917,	-6915,	-7912,	-8909,	-9904,	-10899, -11892, -12884,
+> +	-13875, -14865, -15853, -16840, -17825, -18808, -19789, -20768, -21745,
+> +	-22720, -23693, -24663, -25631, -26596, -27559, -28519, -29476, -30430,
+> +	-31381, -32329, -33274, -34215, -35153, -36087, -37018, -37945, -38868,
+> +	-39788, -40703, -41615, -42522, -43425, -44323, -45218, -46107, -46992,
+> +	-47873, -48748, -49619, -50485, -51345, -52201, -53051, -53896, -54736,
+> +	-55570, -56399, -57221, -58039, -58850, -59656, -60455, -61249, -62036,
+> +	-62817, -63592, -64361, -65123, -65879, -66628, -67370, -68106, -68834,
+> +	-69556, -70271, -70979, -71680, -72374, -73060, -73739, -74411, -75075,
+> +	-75732, -76382, -77023, -77657, -78283, -78901, -79512, -80114, -80709,
+> +	-81295, -81873, -82444, -83005, -83559, -84104, -84641, -85169, -85689,
+> +	-86200, -86703, -87197, -87682, -88158, -88626, -89085, -89534, -89975,
+> +	-90407, -90830, -91244, -91648, -92044, -92430, -92807, -93175, -93533,
+> +	-93883, -94222, -94553, -94873, -95185, -95486, -95779, -96061, -96334,
+> +	-96598, -96852, -97096, -97330, -97555, -97770, -97975, -98170, -98356,
+> +	-98531, -98697, -98853, -98999, -99135, -99262, -99378, -99484, -99581,
+> +	-99667, -99744, -99810, -99867, -99914, -99950, -99977, -99993, -100000
+> +};
+> +
+> +/* icos() - look up in cos_table for a rad value.
+> + * @rad : the rad value.* 10^7
+> + *
+> + * Return : the cosine value * 100000
+> + */
+> +static int icos(__s64 rad)
+> +{
+> +	if (rad > PI)
+> +		rad = PI - (rad - PI);
+> +	return cos_table[rad / 100000];
+> +}
+> +
+> +/* degree_to_rad() - convert a degree value to a rad value.
+> +* @a : the degree value as 1/10 micro degree (10^7).
+> +*
+> +* Return : the rad value * 10^7.
+> +*/
+> +static __s64 degree_to_rad(__s64 a)
+> +{
+> +	return (((RAD_PER_DEGREE * a) / 10000000ULL)) % (PI * 2ULL);
+> +}
+
+Not the sort of thing you normally see in the kernel. I've not looked
+at the code enough to see the big picture, but generally, the kernel
+routing table is static, and fed from a user space daemon. Should all
+this code be in user space?
+
+> +static void debug_loc_te(void)
+> +{
+> +	struct loc_te *entry;
+> +	int bucket;
+> +
+> +	spin_lock_bh(&gn_loc_t_lock);
+> +	if (hash_empty(gn_loc_t)) {
+> +		spin_unlock_bh(&gn_loc_t_lock);
+> +		return;
+> +	}
+> +
+> +	pr_info("Printing location table");
+> +	hash_for_each(gn_loc_t, bucket, entry, hnode) {
+> +		pr_info("LOC_TE(%p) tst=%x addr=%llx ll_addr=%llx is_neighbour=%x ls_pending=%x",
+> +			entry, entry->tst_addr, be64_to_cpu(entry->addr),
+> +			be64_to_cpu(entry->ll_address), entry->is_neighbour,
+> +			entry->ls_pending);
+> +	}
+> +	spin_unlock_bh(&gn_loc_t_lock);
+
+debugfs? a netlink dump operation?
+
+	Andrew
