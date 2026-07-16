@@ -1,154 +1,157 @@
-Received: from out02-fra1-mx.uberspace.de (out02-fra1-mx.uberspace.de [185.139.157.45])
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388DF424D64;
-	Thu, 16 Jul 2026 14:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8857400981
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 14:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784210490; cv=none; b=G0o6vQ1YZwjEWH9Aqy0K5xs+QOieJBRuYqYDJs9clFOOknidznGnX+d11KvkmedYpvKUmY0+fSR+OPy3zTeFeR+I2c0vfP0ZLc0kqFUoOZLjUxYyatINbslK/97/eI1xNfE/f5vcthkpz8zuw91vkO+ZmXEU3sK9Ii+bHqutDK8=
+	t=1784210842; cv=none; b=GfFRjOKdM91gzQmSdL2UKW+V0KJmPIsRXYUsVB+HaZexAi2Fzr5qQZJHdQ9+iTVwTBGZm2qV4UFhVJEMYj3LhQRhpzWN+fZMlkO2JDSqetPiA0B8qFlQp33GKWAtwynvyp0pH44WSk1iVNKB9ow3apJnurt5jbi7Kt5xzPjj90E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784210490; c=relaxed/simple;
-	bh=5/2V1spGKRcRPV1ID8zq3T6K5dbltW7dZvw/bjWKbE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WZYxFXgAMk9Sjd0zKQz4TgcLSJ/g3P5iqvZckaQP1+O7JqGm7PtjMEKdVIuD+HQ8i6P6rEKtjYqaTYSfGSAHhg6rusdo337dW55rFLHWxpDG68+Q2vxSCitNPxvoReEGiQk9B+Hj3d0H4ENS99CqN7wFAbP/qqrieVmHys+Jdrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=b0d8t8nC; arc=none smtp.client-ip=185.139.157.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
+	s=arc-20240116; t=1784210842; c=relaxed/simple;
+	bh=btDASYGmUHm0kbqZqVMslt1hNdAlhelxO4Zl2zjuXKk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=idc7wFikSp3VDmi7nWvseTtM3Gh9Ww4U0TR9Fs71wN8Ee+p8rFBIOdaDRJQcYcbTEMUzgrd19i/5j9CX2o36F/rYfSX++/GBSYs8H469K/D/7OjIhZHkvhJGt7BsTo7hLydZR06WsQ0Ibr3p5IJaa+DiA94G6r8euYbKLcOjVO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hfgnwZPX; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="b0d8t8nC"
-Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
-	by out02-fra1-mx.uberspace.de (Postfix) with ESMTPS id C64CEC042A;
-	Thu, 16 Jul 2026 16:01:22 +0200 (CEST)
-From: Simon Dietz <simon.dietz@plantwatch.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
-	s=uberspace1; t=1784210477;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tUMU/I5JmBksS4n4DsoBjhx3/vQjXtQb/Z+yQzT46k0=;
-	b=b0d8t8nC5Fu8M5qSH0iILigcxH5FdjExRI8MpCdN+j7VxRIjzSUx8KNNiFQD7kPJPaEN+F
-	TtRu9pSMJYjH2b8mwZ8aVKb2iCJKReu+2tFB5rtto1Gp0iRN/jUo4Onju15Eo7BdvKDtg+
-	YhD/dUHvucvaN79OcChzTPdxS2skD5z3Y/Okq64/w41Ig88DR7xKtJB6xfIu/eYif9iK2B
-	Adh5I6Y0NPblto0VFu7gcktdNwBhCR8lpm7siE/GyD2XPioj3iLXM8znmnOC44x5KvLtxJ
-	0WLU69tJFHfowkdIG0gd5sdQkjBb9L4Rd8bNaShMSX9YK0Xvu4fKU6i5nS6EQA==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	davem@davemloft.net,
-	kuniyu@google.com,
-	andrew+netdev@lunn.ch,
-	simon.dietz@plantwatch.de,
-	dietz23838@hs-ansbach.de,
-	linux-wireless@vger.kernel.org,
-	johannes@sipsolutions.net
-Subject: [RFC PATCH net-next v0 0/6] net: add GeoNetworking protocol
-Date: Thu, 16 Jul 2026 15:58:40 +0200
-Message-ID: <20260716135902.2895237-1-simon.dietz@plantwatch.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hfgnwZPX"
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6a376ad8fc0so2238534eaf.0
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 07:07:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784210840; x=1784815640; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=DvXtVlllukOnRfih22Iy0sMwC4UQkImczALyzy6unIk=;
+        b=hfgnwZPXrRSRZVU1uPiEW/ACEJLJ2FsIfYtmEn1LlbaSCOkArC8t1ROI4enPnkk2oQ
+         wQJKY8tf/kC8IiYCe7/PvHhkL95GCajV3OwPHGoNM/oUyvGJofhpCNGfWIXy+6R8II8I
+         bBFdt05tiuAOP9Dn/izc7sz2MYeEJbQwNnDwiyau5VMQcT1woPgULithed3CWInDt2Bt
+         EW5ORCzxFFjleaX+uge6jF9rP/l8MPZQG9gd5OOSR4dibDUEZXDDvn9ISGO20/TQDAYX
+         oLmXOsrWrfIvhS4bpi9qpqKE3j0CJizYAci3AFwfS9zirKEvixfhykn6WBQ2GajDUGU9
+         kSuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784210840; x=1784815640;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=DvXtVlllukOnRfih22Iy0sMwC4UQkImczALyzy6unIk=;
+        b=XJHKViCIl13QkXcsmcPldky4GCwBnhkBPMy9Yj9sBtVKuKeEgkQuW4MLvjLVv2BM17
+         yNZQ8dFol5b5jGbbDASnKOtXrEq9HVLP61+82AvNrbvFgH3VGxtDn3JsXkFfMIjoCIhj
+         rGRWf55EGc3VmcsToznn374Udj5RqC9vAdTC7bcBxgRScueoHc/HWT+jy6jtrWlxMPvP
+         wBb5BwgBTn71gx88PaqjB9q+8X0puhApO8SG/8WGcWTS1PSoYJPtZ+jqDka0Fesp5HUS
+         1F0GYABLl9JCKfzlME4ELxQ5nQlkAp0D03ob1bB+5omKPL0xO3oZzf52lE8GQDJdovU+
+         kRdQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoOkQb3/8DXiFf7uiR4wYo1Y+AN3QW5OPL/LMc/FGmzG9IdHN1t5nio7W7m46yzjIPSvTxMvcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkQUcVmR2qM9+KighQR0rZXayjKJiifyTXP9uE4n6uf/QRKSkF
+	tqJXYVCTOHtiDaE5rVUepL9JG506d4POLsCpoqEvPmIjmcXrYekpuS0q
+X-Gm-Gg: AfdE7cmOAyQfLOLvHGjXlkwmvqPlizSWA3a3lsFc3Ra1U/ZQwT/D2WGpgWCCDKHbSkL
+	cYMRFG8YNruAvf3N+QEe/2beMmDUDZ/7ADeTsw/4BoRhfwqf1uJovsqoKNxx6jMOXeJVvSmk5y8
+	TVtaZxaDksU2Q91rutOdFYAKVPlqigx06GbbhYTqyjwSnfRaEEYUxHstjeaTNdHcdXrMWX2CZd/
+	IfNS3RPAkQc4sFhj9zJvskxHebTuHQe4RrgKRxXTtYADKhsV1sHg46c1+s9qIX8s7mXrahEYQyK
+	Sr4V2EbTmAPWtnswIGYnGBUz33y6B7aC1ZBWJfieo41dUpKfda7UEU8a3Y+8r4JhIsS++EDChwa
+	YSmD0fGWS4IqynqOmCZ4zha85LgEXfp4vt2ZWfZJ1bTavFek/isRguGor1XwyQnkmTl+F9ywdXx
+	Y/34Ur
+X-Received: by 2002:a05:6820:1849:b0:6a1:5b81:6168 with SMTP id 006d021491bc7-6a3d9ff3481mr4711592eaf.43.1784210839559;
+        Thu, 16 Jul 2026 07:07:19 -0700 (PDT)
+Received: from [127.0.1.1] ([2404:f801:8028:3:3a49:ef75:fe4d:f2de])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4561f2680d8sm6165821fac.14.2026.07.16.07.07.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 07:07:18 -0700 (PDT)
+From: Subasri S <subasris1210@gmail.com>
+Date: Thu, 16 Jul 2026 19:37:10 +0530
+Subject: [PATCH nf-next] ipvs: use type-safe allocation helpers in
+ ip_vs_rht_alloc
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.56 / 999.00];
-	BAYES_HAM(-2.34)[96.94%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ASN_FAIL(0.00)[9.1.c.0.d.c.7.f.c.b.9.0.d.6.3.d.0.0.9.1.0.0.7.b.e.e.0.0.3.0.0.2.asn6.rspamd.com:query timed out];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
-	LOCAL_OUTBOUND(0.00)[]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260716-nf-next-ipvs-deprecated-v1-1-4aad24f87cb8@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAI3lWGoC/x2MQQqAMAwEvyI5G9BYqvgV8VBs1FxqaUWE0r8bP
+ A47OwUyJ+EMc1Mg8SNZrqDQtw1spwsHo3hloI5sN/YGw46B3xslPhk9x8Sbu9kjDWStCuQnA/r
+ WYZf3Ly9rrR8ddPZwaQAAAA==
+To: Simon Horman <horms@verge.net.au>, Julian Anastasov <ja@ssi.bg>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+ lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, linux-kernel@vger.kernel.org, 
+ Subasri S <subasris1210@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784210833; l=2187;
+ i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
+ bh=btDASYGmUHm0kbqZqVMslt1hNdAlhelxO4Zl2zjuXKk=;
+ b=Fb9gx7V7iND+52cndnRympWJA22Qo7oksacuKyuXDHMsdPX/+C7HGQ88QkqJD9Q/eI1afbFxL
+ GkGcJvV3flGDbgun621aJoYoJuwKoscppT+00QUbKBOSMu+PWtfuMKZ
+X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
+ pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
 
-Implement the GeoNetworking / ETSI ITS-G5 ('net/gn') protocol which
-is based on 802.11p wifi and used for vehicle2x applications. It is
-standardized by the ETSI and used by some car manufacturers
-(especially in europe). It enables ad-hoc, multi-hop geographical
-communication and routing among vehicles (and road- or railside
-infrastructure).
+As per Documentation/process/deprecated.rst, open-coded kmalloc
+assignments for struct objects are deprecated. Replace
+kzalloc(sizeof(*ptr), GFP_KERNEL) with kzalloc_obj() and
+kvmalloc_array(n, sizeof(*ptr), GFP_KERNEL) with kvmalloc_objs()
+in ip_vs_rht_alloc().
 
-Most work of this implementation has been done by the bachelor
-project 2018/2019 of the operating systems and middleware group of
-the Hasso Plattner Institute, University of Potsdam, which the author
-was part of.
+Compile tested with CONFIG_IP_VS=y and runtime tested using
+tools/testing/selftests/net/netfilter/ipvs.sh on x86_64/QEMU.
 
-The project was supervised by:
-- Jossekin Beilharz
-- Lukas Pirl
-- Prof. Andreas Polze
+Signed-off-by: Subasri S <subasris1210@gmail.com>
+---
+ net/netfilter/ipvs/ip_vs_core.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-The code is published under the GPL v2 at this location:
-https://gitlab.com/hpi-potsdam/osm/g5-on-linux/linux-geonetworking/
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index 35cbe821c259..74047bf1e32d 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -176,7 +176,7 @@ void ip_vs_rht_rcu_free(struct rcu_head *head)
+ 
+ struct ip_vs_rht *ip_vs_rht_alloc(int buckets, int scounts, int locks)
+ {
+-	struct ip_vs_rht *t = kzalloc(sizeof(*t), GFP_KERNEL);
++	struct ip_vs_rht *t = kzalloc_obj(*t);
+ 	int i;
+ 
+ 	if (!t)
+@@ -186,7 +186,7 @@ struct ip_vs_rht *ip_vs_rht_alloc(int buckets, int scounts, int locks)
+ 
+ 		scounts = min(scounts, buckets);
+ 		scounts = min(scounts, ml);
+-		t->seqc = kvmalloc_array(scounts, sizeof(*t->seqc), GFP_KERNEL);
++		t->seqc = kvmalloc_objs(*t->seqc, scounts);
+ 		if (!t->seqc)
+ 			goto err;
+ 		for (i = 0; i < scounts; i++)
+@@ -194,8 +194,7 @@ struct ip_vs_rht *ip_vs_rht_alloc(int buckets, int scounts, int locks)
+ 
+ 		if (locks) {
+ 			locks = min(locks, scounts);
+-			t->lock = kvmalloc_array(locks, sizeof(*t->lock),
+-						 GFP_KERNEL);
++			t->lock = kvmalloc_objs(*t->lock, locks);
+ 			if (!t->lock)
+ 				goto err;
+ 			for (i = 0; i < locks; i++)
+@@ -203,7 +202,7 @@ struct ip_vs_rht *ip_vs_rht_alloc(int buckets, int scounts, int locks)
+ 		}
+ 	}
+ 
+-	t->buckets = kvmalloc_array(buckets, sizeof(*t->buckets), GFP_KERNEL);
++	t->buckets = kvmalloc_objs(*t->buckets, buckets);
+ 	if (!t->buckets)
+ 		goto err;
+ 	for (i = 0; i < buckets; i++)
 
-The original code base was based on linux version 5.1. The first patch
-includes the original codebase rebased to the current net-next code
-base so that it compiles under current net-next (as required by
-submitting patch guidelines in order not to break git bisect). I've
-backed up a not squashed version of this patch series if a more
-compartmentalized history would be desired.
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260714-nf-next-ipvs-deprecated-232667142d84
 
-The subsequent patches address bounds, null, empty checks, memory
-safety, locking, code style and ETSI standard conformity improvements.
-
-This patch series is not merge-ready, yet. E.g. network namespaces are
-not supported at all, documentation is missing, ...
-
-Purpose of this RFC is to determine if GeoNetworking support in the
-linux kernel is desirable and if so what steps would have to be done
-next. There is ongoing research on the topic vehicle2x, which may
-benefit from GeoNetworking support in the Linux kernel.
-
-Sorry for the previous submission which was only partially transmitted
-
-Greetings,
-Simon
-
-Simon Dietz (6):
-  net: add GeoNetworking protocol
-  net: fix GeoNetworking
-  net: further fix GeoNetworking
-  net: even further fix GeoNetworking
-  net: add ppc64 support for GeoNetworking
-  net: apply RCS to GeoNetworking
-
- include/linux/gn.h                  |  349 +++++
- include/linux/gn_routing.h          |   68 +
- include/linux/socket.h              |    6 +-
- include/uapi/linux/gn.h             |   84 ++
- include/uapi/linux/if_ether.h       |    1 +
- net/Kconfig                         |    2 +
- net/Makefile                        |    1 +
- net/gn/Kconfig                      |    4 +
- net/gn/Makefile                     |    8 +
- net/gn/gn_proc.c                    |   86 ++
- net/gn/gn_prot.c                    | 2012 +++++++++++++++++++++++++++
- net/gn/gn_routing.c                 |  632 +++++++++
- net/gn/sysctl_net_gn.c              |   33 +
- security/selinux/hooks.c            |    5 +-
- security/selinux/include/classmap.h |    3 +-
- 15 files changed, 3290 insertions(+), 4 deletions(-)
- create mode 100644 include/linux/gn.h
- create mode 100644 include/linux/gn_routing.h
- create mode 100644 include/uapi/linux/gn.h
- create mode 100644 net/gn/Kconfig
- create mode 100644 net/gn/Makefile
- create mode 100644 net/gn/gn_proc.c
- create mode 100644 net/gn/gn_prot.c
- create mode 100644 net/gn/gn_routing.c
- create mode 100644 net/gn/sysctl_net_gn.c
-
+Best regards,
 -- 
-2.55.0
+Subasri S <subasris1210@gmail.com>
 
