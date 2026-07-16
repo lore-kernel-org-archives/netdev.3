@@ -1,163 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61F73A545E
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 07:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784186638; cv=none; b=QWZ+DLIWXxphY6gypH36jDqP4hHa0q9zfgiKFLRUZ18sxDrRGCa1QeMV+CZ6agJ0g9cmifffihtSQsOvzQA5nHQaLR1JefKfwCx9JNIJluMZYBXGAPhJgFqnOb2DHaxKsGhlUzEn+2uqEP4gdJU/bRd1m4PYT8eyZC6AAwWQDbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784186638; c=relaxed/simple;
-	bh=Qj93WcIf0roTA+UVGrxKqKVHv9uIT7q9yB6krGE2dXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p166HeRL5Ew86NRKl0GVNMhl8ju4sgsSdT3npGVdM1wVr2TZ4fFBeU5K+1Us3X0qLnDe15SeXuh/qOSio2/grWkS3MHXufU7DtA+sOn0Vnd1DBZmfXziNfgeyl1XP7i88kv9Ie0W8u3v8dKt329q+pIpUMEqvB6vet+NwIpWHI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YgAek4lY; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD7A3B47F7
+	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 07:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784186700; cv=pass; b=WPEE0wl+nIcjeAqabgdH5amBf8yfaOZr5noeFmK3nRnxIAoRW2cbzogjIhr+hzJpZCdz8Rbh1/ucFGQal5brvZaNy533HiFEbJ12Zt54fGIVPHdWnVqw846LDcu1q3AZSRdW4RgORA7vleOhLyNMFyGXzI5W6YO8EFk+mmUp7ms=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784186700; c=relaxed/simple;
+	bh=fELdVNgUfm69Qj5RibNKLPZ9WDfUpgCmxr2Ii4NefZM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tj4tytT7GlxQIOmjTWMgGAzkk6TrOrHYuPgfYe369+wLN5ddG13hwMGiOvYKVhQqHRSe5fklzDkDRBHu1Z82PPRY7fqLWDztOaEPizPKvoNbc9I2afdU4dDR5FKar5s2I0G87FJEChBS3IHai+KKBFbazJqfdqkBVLQScRwDJM0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9NcGz2T; arc=pass smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YgAek4lY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546ED1F000E9;
-	Thu, 16 Jul 2026 07:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784186628;
-	bh=p24jZ2ZMlRf79TdHC+v9jF63crGEdKFlpawhSZZaWgk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YgAek4lYhVNkS6cCm9GHOkvi9+eGMJlopxFVtp26olufGcIP1SwDioLvoimjWrJnn
-	 4rXRBK/5gqCHGB7aLvu9D9tc7HOSdrfEEeuj1HjSGud0ZaLBPtFPpXayMjik2QZFKX
-	 /f8bbC4ifHttMEr0KyHYXFOM/fCCjQUOQRicwHIrbxn7P9PWZQHOsiru2rjx6HqhOp
-	 RHY/r4ryhJlwBr+3olptIKgp3rQeLVIxwLXpmrowahut6SpV31XvQxBW85OTKxNath
-	 zXrWmhq6A/ZmEh3kd6yLfAEDAaRL9c5kMVqWDDXyhppB7YHxLjICwrSRHVXaobF9ch
-	 1rQNg1sMYP4OQ==
-From: Simon Horman <horms@kernel.org>
-To: nikhil.rao@amd.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	brett.creeley@amd.com,
-	eric.joyner@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	jacob.e.keller@intel.com
-Subject: Re: [PATCH 5/6] pds_core: add host backed memory support for firmware
-Date: Thu, 16 Jul 2026 08:23:24 +0100
-Message-ID: <20260716072323.193018-2-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260708212222.296202-6-nikhil.rao@amd.com>
-References: <20260708212222.296202-6-nikhil.rao@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9NcGz2T"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81e86df8987so250857b3.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 00:24:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784186692; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QZqJ6ET3JYPXb55Gml5yjWmtX6glQfw8+UafuEp6hc6KjVkv/4/6eYCKD3L56CQRmH
+         Hdujr1MCKMDadO4Jr00cSl7wj5wCP7hvQpCKLS/0fQ+lBENXEWChn4kTyZ5bBC7Yercl
+         y52ShDK921MUz+uOtYR4pG6KoySISX73pQBO+yiV3cqbC4jqHU/BE5RPfyd34rJR9VN5
+         TUo0khMP4g4D6hpt1MhUFqxe6fC8iq/DOzMrN1RneJx1NhxBF6Oxn1NAbEVwlwhWRYtj
+         lfT12T9MuD62kFOxuB55CzHq7SFLYwtXOhmoR5SjPLoJhYJZ8pttLGQn1ZDMLoWroGwv
+         qmZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fELdVNgUfm69Qj5RibNKLPZ9WDfUpgCmxr2Ii4NefZM=;
+        fh=9vPFQV2YGEJZ159MygS+M/cXlmNWeLaJnsoJ1GXSsWc=;
+        b=N5RCKYaAlZhZa9m/ayEpkRQDXMi2aG2x6svc734suXzjZsz/m7Fg7mnIvf9ebTdK4u
+         D6OQohXieGetRe7DPjljrPY6dXQ9CLBXh6k6zVwYgIMj4eokFfFsthHIuqStwU2yJIl8
+         WzVjxeYklgJgteXX2UsnADT4lse5bx77JhEUVDqq5Ht2PyZLO7H2LStCma81UBI7zL+3
+         T1Q03WszIRv9Szmgq+TbHgKx4UppzXjxOTxPBS9tb7Gzh19aM0Fuv/X914TWmKUw4itl
+         Rz3ZkdvjhcWD2k4yXOa0jA+VUSbCcJOGEmT80bYgY2fggriDR487P7JTub7xNO6JvNs2
+         RQGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784186692; x=1784791492; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fELdVNgUfm69Qj5RibNKLPZ9WDfUpgCmxr2Ii4NefZM=;
+        b=L9NcGz2TP4UeU0tHwCMh5F6/MXbROc30URF8gpeygPsXWqL3MajhEgFgiiznuq6phB
+         FlsoB7S+smV+9MZ8GxZRFtkEfTBK6kHPKAeyTacMaGl/5ek2PzRAdGCXYzHDImz7kStv
+         NbxdO8RNIiMiA+qzGaU5HlYuiuV3MClB/ow98OqQyvmCxiWzOQa6hyCHKrNzJLIqNcfo
+         m1VcAzI64KD1vUIdEygdiOec1qOLdKJFwgXqvJ/h1Lfj5TuAEzxH6/LCEol/BkAPFQJx
+         +th7AegeYBosJ2VhAiw4zsUrgMqWakSZTa3e9zuC9rkIZTqIpM1t5EsRExBCxDjM63hp
+         zPDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784186692; x=1784791492;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fELdVNgUfm69Qj5RibNKLPZ9WDfUpgCmxr2Ii4NefZM=;
+        b=QKDNf+q8UBNOQSE8tVXbN5kUoEjGuXiNXWyNdwiJacNeWanU0yPwwDw/2lfRhhHG6V
+         T+p5hlOy4BsHdq5hd4RPhYUckyV78bSzVSHyrkFFIdTcfJrnPnZjbOLymBUxkowWyCA7
+         F/kCjBF3zyTdPdf2EY87587kmHBZNqoWtToivyzqBjS5RZOFR+JIiryg7dCjJ+EwOlb/
+         XNtODbEjszTSAirE3JThFDQucimDKWkCD9+0iP6G+luHMeuDT/+72q4SR1JTl2I/MHsY
+         fkdIWk3cfTh0KspAuHyRQGK+M4guwMpfsplYcOOXs2Qq1I2tk5PXoA3KD1mMhFZDKiZz
+         K2tg==
+X-Forwarded-Encrypted: i=1; AHgh+RqpX1thXE5zXB/5YLDuiZXcVSfmWSehhv8KQoB3Xy6IXIo3LN6RTJ3kGVyE4xEECbsEsIPlGW0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgKheI5JVKsyP2o8uMYNF+1l9Vs5I6hvJ4Tl2U0uXPOGtZuzc9
+	Bltfgk7QDtrqgTJnhUF/rjTzqM8xZCN7qcfq1qB9ME6G1/tcVNi+FzvgLsrpHQXIv7w5rcjeujW
+	EAR4zXE2AS525jP3tTnbOMt6WOJnpVCY=
+X-Gm-Gg: AfdE7cnqkkaSKpjSgVHvN644v39Y9xQ1JmdD8WCPawvrXs/z8mVxTQMGluyhZ7dun5j
+	bTa/x8s+lbIc+o+079XG7/C+wKd858QcEyJA2tq7E8pHfEsiKU3fm9C5ZxbYHlViOOaKTdkEjkn
+	KhMYvMeaimeqXejR42ZOvRkHJRM10o9WFtryyB01MtDgx8ShS8MyfUAViMAp+PXEOBK0dRKvzgn
+	mY3TfaNkDTYzAeBxUlsGpdEsHoX/5TT1QopBxSwxK5S2kTH9mG4vn2tIkD2be/BajkcDohaBEzD
+	orTT1BeozNKy+5aqtCegHtSqUgWT5J3JGkyjkqpQjuV5OA==
+X-Received: by 2002:a05:690c:9c13:b0:81e:68a2:89d5 with SMTP id
+ 00721157ae682-81ecfa907bbmr51286927b3.55.1784186692044; Thu, 16 Jul 2026
+ 00:24:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260715-mv88e6x41-fixes-v3-0-9a8702b27ecc@padl.com>
+ <20260715-mv88e6x41-fixes-v3-2-9a8702b27ecc@padl.com> <a607d5f5-a315-493c-971c-d5e8cab33941@lunn.ch>
+ <CAOiHx=mZeS1dZ59grQrf9U2QP3OKEJDahhYpLx5_tKCEUty1yQ@mail.gmail.com> <540B5427-A5BE-486A-818F-5D512E1BBE4E@padl.com>
+In-Reply-To: <540B5427-A5BE-486A-818F-5D512E1BBE4E@padl.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Thu, 16 Jul 2026 09:24:41 +0200
+X-Gm-Features: AUfX_mx8x0SnzLn3MawpGikjxpJlE45znbmocte-C2xgpK9_atcx3sOhcq66xkE
+Message-ID: <CAOiHx=ky3Z70k589zLG2k6zqhq9O0m+=ivm4VCZN=69+r+M0cQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/3] net: dsa: mv88e6xxx: flush the ATU when the
+ hash algorithm changes
+To: Luke Howard <lukeh@padl.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vivien Didelot <vivien.didelot@gmail.com>, Gregory CLEMENT <gregory.clement@bootlin.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Cedric Jehasse <cedric.jehasse@gmail.com>, 
+	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, Max Hunter <max@huntershome.org>, 
+	Christoph Mellauner <christoph.mellauner@joyned.at>, Simon Gapp <simon.gapp@gapp-audio.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
---- Patch [5]: [PATCH 5/6] pds_core: add host backed memory support for firmware ---
-commit 0970ce1c8fa02a37c722e99472916638286b6ad9
-Author: Nikhil P. Rao <nikhil.rao@amd.com>
+On Thu, Jul 16, 2026 at 9:09=E2=80=AFAM Luke Howard <lukeh@padl.com> wrote:
+>
+>
+>
+> > On 16 Jul 2026, at 4:52=E2=80=AFam, Jonas Gorski <jonas.gorski@gmail.co=
+m> wrote:
+> >
+> > Probably also needs to be not attached to any bridge, right? To make
+> > sure that no additional static entries can exist (because I think
+> > these are hard to recreate).
+>
+> Thank you, I have fixed and tested locally and will include in the next r=
+evision.
 
-pds_core: add host backed memory support for firmware
+The more extensive alternative would be adding a way to replay all
+static fdb (and mdb) entries to re-add them after flushing the ATU,
+then you can allow that any time. This would be also something
+interesting for e.g. b53, where disabling (the global) vlan filtering
+in hardware means you cannot add or remove (static) entries with VID
+!=3D 0.
 
-Some newer AMD/Pensando cards have minimal memory and there are cases
-where components, specifically in the control plane, need more memory.
-This series adds support for host backed DMA memory that can be used
-by the firmware for the previously mentioned cases.
+But either option is fine for me; my main concern is avoiding a desync
+of hardware and software configuration.
 
-> diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-> index a7a0bcf98ed3f..356a69c895b63 100644
-> --- a/drivers/net/ethernet/amd/pds_core/core.c
-> +++ b/drivers/net/ethernet/amd/pds_core/core.c
-
-[ ... ]
-
-> @@ -673,3 +675,161 @@ void pdsc_health_thread(struct work_struct *work)
-
-[ ... ]
-
-> +static int pdsc_host_mem_add_one(struct pdsc *pdsc, int index)
-> +{
-> +	struct pdsc_host_mem *hm = &pdsc->host_mem_reqs[index];
-> +	union pds_core_dev_comp comp = {};
-> +	union pds_core_dev_cmd cmd = {};
-> +	int err;
-
-[ ... ]
-
-> +	/* Track this allocation so pdsc_host_mem_free() can clean it up */
-> +	pdsc->num_host_mem_reqs++;
-> +
-> +	memset(&cmd, 0, sizeof(cmd));
-> +	memset(&comp, 0, sizeof(comp));
-> +	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
-> +	cmd.host_mem.oper = PDS_CORE_HOST_MEM_ADD;
-> +	cmd.host_mem.tag = cpu_to_le16(hm->tag);
-> +	cmd.host_mem.size = cpu_to_le32(hm->size);
-> +	cmd.host_mem.buf_pa = cpu_to_le64(hm->pa);
-> +
-> +	dev_dbg(pdsc->dev, "Sending devcmd for mem add tag %d size %d pa %pad\n",
-> +		hm->tag, hm->size, &hm->pa);
-> +	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
-> +	if (err || comp.status != PDS_RC_SUCCESS) {
-> +		dev_err(pdsc->dev, "mem add failed err %d status %d for tag %d\n",
-> +			err, comp.status, hm->tag);
-> +		err = err ? err : -EIO;
-> +		goto err_del;
-> +	}
-> +	dev_dbg(pdsc->dev, "mem add completed for tag %d\n", hm->tag);
-> +
-> +	return 0;
-> +
-> +err_del:
-> +	/* After MEM_QUERY succeeds, firmware expects MEM_ADD or MEM_DEL */
-> +	pdsc_host_mem_del_one(pdsc, hm->tag, PDS_RC_ENOMEM);
-> +	return err;
-> +}
-
-[Severity: Medium]
-When the MEM_ADD device command fails, does this error path leave the memory
-allocated and DMA mapped?
-
-Since pdsc->num_host_mem_reqs was incremented before the command, the memory
-will eventually be freed when pdsc_host_mem_free() runs at driver teardown.
-However, it appears up to 4MB of memory per failed request could be held
-uselessly for the entire operational runtime of the driver. 
-
-Should the driver explicitly unmap and free the memory in this error path?
-
-[ ... ]
-
-> +void pdsc_host_mem_free(struct pdsc *pdsc)
-> +{
-> +	int i;
-> +
-> +	if (!pdsc->host_mem_reqs)
-> +		return;
-> +
-> +	for (i = 0; i < pdsc->num_host_mem_reqs; i++) {
-> +		dma_unmap_page(pdsc->dev, pdsc->host_mem_reqs[i].pa,
-> +			       pdsc->host_mem_reqs[i].size,
-> +			       DMA_BIDIRECTIONAL);
-> +		__free_pages(pdsc->host_mem_reqs[i].pg,
-> +			     pdsc->host_mem_reqs[i].order);
-> +	}
-> +
-> +	kfree(pdsc->host_mem_reqs);
-> +	pdsc->host_mem_reqs = NULL;
-> +	pdsc->num_host_mem_reqs = 0;
-> +}
-
-[Severity: High]
-Does this code risk leaving the firmware with dangling DMA addresses?
-
-The loop unmaps and frees the provisioned host memory pages, but it doesn't
-appear to send a corresponding PDS_CORE_HOST_MEM_DEL device command to notify
-the firmware that the memory has been revoked.
-
-While pdsc_teardown() sends an explicit reset command for Physical Functions,
-it skips this step for Virtual Functions. If a VF frees memory without sending
-a MEM_DEL command, could the firmware still attempt to access the freed memory,
-resulting in IOMMU faults or use-after-free corruption?
+Best regards,
+Jonas
