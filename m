@@ -1,147 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBAB3B3C1F
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4830C3D9544
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 12:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784288467; cv=none; b=Z4fsxVeEHmvdfItcoC38yHCSJqZLHFHNdxUzfLq7aiGtBVQRZ6ZJ9/dV3K2eERqewRekq4oA4zaSDaRkdEz/g5PbrUO/RFkHrCXxUl2zxiYpRqRb9uKn/x3MfwF2JCX26SSdGHtODQO4balSmqMvVoN5AjNHYz/my1blJO6TCnY=
+	t=1784289982; cv=none; b=GnIo6x5kbpAk+GEhuHHPM+m5n48/XyFRHGPHZEh2xA4wUU88u/hGhz41GaqwFmsYL1WaAvnBX0dQig9ExMsdUypRmO6HOLoOCVWSeJGJQDz6eynO2OEQRGka8bcNjaCUMF+mNS1zoQ+SXchToKC2pnkqF0BUtAiQwX3i76QggCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784288467; c=relaxed/simple;
-	bh=j3uuyFppsM78ScOuEVLyKyW4kJd4D1z8nnUFmf8NBCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dcn4CtQ6hC9cWQ5mRZC+59O/19tVdt8zf/e9ztbUYGjQ1WtTdHE+jLLRDo0HH8ecXpvlJ0t1BR7iich+4bTxEroxVau7fYmHkRboydCv0vUZDJbGRoa0OtUEVxck2YMgC7xyxxNyLpr4vgtNvA5eDJNi4N7ztM91rd1QRTjq+Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eq3I0UP9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784289982; c=relaxed/simple;
+	bh=DehYR9GSpet4gvKNkoPP7w0Cevm/tQFt57PX1BoEUW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ek7EoEs3CMS2WRgargSnU5n9hsOrgBPX9j+fVayOQiac5CgGakGToMgaSPU4Bq0fd8k/kWZCxk1jOYvtYWG9mLosa9hd+tfciBx+F5hn6IHoSa5ZpuphHbyAwoaksSBPJ/mvRYQIa9RDqXFqTm4/T2NxLMj4Gf4bmgbA1yq1CuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UIsJTKLw; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eq3I0UP9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352621F00A3A;
-	Fri, 17 Jul 2026 11:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784288463;
-	bh=cIzMN4306X7NLudADecXammvcEsgxmX6qbWfhmbLqP4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Eq3I0UP9rVWzD/YfyCpm+hYLhX5QPGeKQOEdmVo+k/AYQE0zhq1Uj20ENzT8k/A2J
-	 pHCvw7fyI/a4qXvPPXy2FG6kaMsIU05dXe7ovqr1wIeks1g2K+hnCsZoTFDkdiT405
-	 U4YFJLfAqxPAHTDiKaHrIhnrxQSFxbz9i6BjTNnBwiwXy+NZt6fCtuKcAJ+2e1DWXg
-	 Ybdn2aB+iwcFmVvA6FS5fLwPUViZMlgp9Yzu6i7GgWhLkbpu7IBqmCKlFRJuEigq9F
-	 FdtQmcEOxJF97L5og2d3gn1cBD3+UzOyU4nxrX4pu+GMK0rCMwL14HiOR1iiyQQ111
-	 u3YJ7sG1Mz4mA==
-Date: Fri, 17 Jul 2026 12:40:56 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
-	linux@armlinux.org.uk, aleksandr.loktionov@intel.com,
-	jacob.e.keller@intel.com, michal.swiatkowski@linux.intel.com,
-	kees@kernel.org, joe@dama.to, leitao@debian.org,
-	shaojijie@huawei.com, u.kleine-koenig@baylibre.com,
-	weirongguang@kylinos.cn, larysa.zaremba@intel.com,
-	fabio.baltieri@gmail.com
-Subject: Re: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler
-Message-ID: <20260717114056.GN95246@horms.kernel.org>
-References: <20260707061455.39564-6-jiawenwu@trustnetic.com>
- <20260714091129.1815871-1-horms@kernel.org>
- <0ecb01dd14f0$17488c80$45d9a580$@trustnetic.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UIsJTKLw"
+Message-ID: <eee42ee1-386e-996f-b9d8-8aa2e820d311@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784289968;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q96A+H28+hAMrLim84hNXn4qwzFbgTA3nkkzS6l341k=;
+	b=UIsJTKLwPU2Agemm5e6rrxM7iiERp/vLuH/P8EJS1dG3R5eAp4UdNiU+M9McUU180yCnmg
+	2YbWg6ZllTQAGQknOx49AujDT5V8ZSVIZguSukNMiwZWO7Vu/9dO5L+LSJiVwjBmcz6MkL
+	VHd0CEZLiXff+IoJAfBJqcg5Q8zES9w=
+Date: Fri, 17 Jul 2026 08:05:59 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ecb01dd14f0$17488c80$45d9a580$@trustnetic.com>
+Subject: Re: [PATCH net v2] net: dpaa: fix mode setting
+Content-Language: en-US
+To: Paolo Abeni <pabeni@redhat.com>, Michael Walle <mwalle@kernel.org>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260710143430.2276141-1-mwalle@kernel.org>
+ <a5c5b8a6-85a8-7830-e19b-ffd5de750e3c@linux.dev>
+ <DJUZ1VG8U9SL.2W0CJM7NSMK2@kernel.org>
+ <2c8f63f5-f04a-4abc-9508-4c47a80da543@redhat.com>
+ <DK0RLUBEKFVS.168UHY5BP8D4E@kernel.org>
+ <26cb3349-5344-48c0-b0b7-37133b4e0662@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <26cb3349-5344-48c0-b0b7-37133b4e0662@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Jul 16, 2026 at 02:55:30PM +0800, Jiawen Wu wrote:
-> On Tue, Jul 14, 2026 5:11 PM, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > Full review at: https://sashiko.dev
-> > ---
-> > --- Patch [5]: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler ---
-> > commit 91baa4e77d07ab6772569a7d37ed86cfda625c00
-> > Author: Jiawen Wu <jiawenwu@trustnetic.com>
-> > Subject: net: wangxun: add pcie error handler
-> > 
-> > This commit adds PCIe error handling support (AER) to the wangxun drivers
-> > (ngbe and txgbe). It detects hardware errors, attempts to soft quiesce,
-> > and registers standard PCI error handler callbacks.
-> > 
-> > > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > > index ee27f96735dc7..0cb99e456a1c9 100644
-> > > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > 
-> > [ ... ]
-> > 
-> > > +static void wx_io_resume(struct pci_dev *pdev)
-> > > +{
-> > > +	struct wx *wx = pci_get_drvdata(pdev);
-> > > +	struct net_device *netdev;
-> > > +	int err;
-> > > +
-> > > +	netdev = wx->netdev;
-> > > +	rtnl_lock();
-> > > +	if (netif_running(netdev)) {
-> > > +		err = netdev->netdev_ops->ndo_open(netdev);
-> > 
-> > [Severity: High]
-> > Does this sequence risk corrupting the hw_tc_lock seqlock?
-> > 
-> > During AER recovery, wx_io_slot_reset() calls down_suspend(), which bypasses
-> > wx_ptp_stop(). This leaves the PTP clock registered and potentially in use by
-> > userspace.
-> > 
-> > When wx_io_resume() then calls ndo_open(), this triggers txgbe_up() or
-> > ngbe_up(), which in turn calls wx_ptp_init(). Since wx_ptp_init()
-> > unconditionally calls seqlock_init(&wx->hw_tc_lock), won't this corrupt the
-> > lock if userspace is actively issuing PTP ioctls?
+On 7/17/26 07:11, Paolo Abeni wrote:
+> On 7/17/26 12:13 PM, Michael Walle wrote:
+>> On Fri Jul 17, 2026 at 12:01 PM CEST, Paolo Abeni wrote:
+>>> On 7/10/26 4:47 PM, Michael Walle wrote:
+>>>> On Fri Jul 10, 2026 at 4:39 PM CEST, Sean Anderson wrote:
+>>>>> On 7/10/26 10:22, Michael Walle wrote:
+>>>>>> Before converting to the phylink interface, the init function would have
+>>>>>> set the correct I/F mode depending on the maximum link speed of an
+>>>>>> interface. After converting to phylink, the established link speed
+>>>>>> is used to determine this setting and is set in the .link_up()
+>>>>>> callback. The callback isn't called because the link is never
+>>>>>> established between the PCS and a connected SGMII PHY.
+>>>>>> To fix it, don't use the current speed, but set the mode depending on
+>>>>>> the interface (which implies the maximum speed) in .mac_config().
+>>>>>>
+>>>>>> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
+>>>>>> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
+>>>>>> Signed-off-by: Michael Walle <mwalle@kernel.org>
+>>>>>> ---
+>>>>>> FWIW, I dropped setting a non-reserved mode in init(). The hardware
+>>>>>> default is 0 and the mac_config() will set a valid mode anyway.
+>>>>>>
+>>>>>> Changes in v2:
+>>>>>>    - the setting is/was based on the maximum speed, not the current
+>>>>>>      speed. thus, move the setting into mac_config().
+>>>>>>    - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
+>>>>>>
+>>>>>>    .../net/ethernet/freescale/fman/fman_dtsec.c  | 26 ++++++++++---------
+>>>>>>    1 file changed, 14 insertions(+), 12 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+>>>>>> index fe35703c509e..7075f93bab49 100644
+>>>>>> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+>>>>>> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+>>>>>> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
+>>>>>>    {
+>>>>>>    	struct mac_device *mac_dev = fman_config_to_mac(config);
+>>>>>>    	struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
+>>>>>> -	u32 tmp;
+>>>>>> +	u32 ecntrl, maccfg2;
+>>>>>> +
+>>>>>> +	maccfg2 = ioread32be(&regs->maccfg2);
+>>>>>> +	maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
+>>>>>>    
+>>>>>>    	switch (state->interface) {
+>>>>>>    	case PHY_INTERFACE_MODE_RMII:
+>>>>>> -		tmp = DTSEC_ECNTRL_RMM;
+>>>>>> +		ecntrl = DTSEC_ECNTRL_RMM;
+>>>>>> +		maccfg2 |= MACCFG2_NIBBLE_MODE;
+>>>>>>    		break;
+>>>>>>    	case PHY_INTERFACE_MODE_RGMII:
+>>>>>>    	case PHY_INTERFACE_MODE_RGMII_ID:
+>>>>>>    	case PHY_INTERFACE_MODE_RGMII_RXID:
+>>>>>>    	case PHY_INTERFACE_MODE_RGMII_TXID:
+>>>>>> -		tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
+>>>>>> +		ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
+>>>>>> +		maccfg2 |= MACCFG2_BYTE_MODE;
+>>>>>>    		break;
+>>>>>>    	case PHY_INTERFACE_MODE_SGMII:
+>>>>>>    	case PHY_INTERFACE_MODE_1000BASEX:
+>>>>>>    	case PHY_INTERFACE_MODE_2500BASEX:
+>>>>>> -		tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
+>>>>>> +		ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
+>>>>>> +		maccfg2 |= MACCFG2_BYTE_MODE;
+>>>>>>    		break;
+>>>>>>    	default:
+>>>>>>    		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
+>>>>>> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
+>>>>>>    		return;
+>>>>>>    	}
+>>>>>>    
+>>>>>> -	iowrite32be(tmp, &regs->ecntrl);
+>>>>>> +	iowrite32be(ecntrl, &regs->ecntrl);
+>>>>>> +	iowrite32be(maccfg2, &regs->maccfg2);
+>>>>>>    }
+>>>>>>    
+>>>>>>    static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
+>>>>>> @@ -948,15 +955,10 @@ static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
+>>>>>>    	iowrite32be(tmp, &regs->ecntrl);
+>>>>>>    
+>>>>>>    	tmp = ioread32be(&regs->maccfg2);
+>>>>>> -	tmp &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE | MACCFG2_FULL_DUPLEX);
+>>>>>> -	if (speed >= SPEED_1000)
+>>>>>> -		tmp |= MACCFG2_BYTE_MODE;
+>>>>>> -	else
+>>>>>> -		tmp |= MACCFG2_NIBBLE_MODE;
+>>>>>> -
+>>>>>>    	if (duplex == DUPLEX_FULL)
+>>>>>>    		tmp |= MACCFG2_FULL_DUPLEX;
+>>>>>> -
+>>>>>> +	else
+>>>>>> +		tmp &= ~MACCFG2_FULL_DUPLEX;
+>>>>>
+>>>>> Did you test this when forcing 10/100 speed?
+>>>>
+>>>> No I didn't. Well I can't. I have a very weird board which only
+>>>> supports 1000base-X (and copper SFPs in 1000basex autoneg mode). On
+>>>> top of that there is a Marvell 88E1112 in between the SFP and the
+>>>> MAC, for which the PHY driver is completely broken. Long story
+>>>> short, I'm not able to test that (yet/at all? Not sure).
+>>> FTR, sashiko suspect this patch will broke such setup:
+>>> https://sashiko.dev/#/patchset/20260710143430.2276141-1-mwalle%40kernel.org
+>>
+>> I've seen that, but.. that was the actual change between v1 and v2
+>> as suggested by Sean. It does not depend on the actual link speed,
+>> but the maximum link speed. So it is not relevant if the link
+>> negotiates to a slower speed or not. At least that now matches the
+>> behavior prior to the phylink conversion. If that was working -
+>> that I can't tell you.
 > 
-> PTP clock was destroyed in wx_ptp_quiesce() before V8 patch set.  The
-> piece of code was removed based on the Sashiko's comment.  I think it
-> should be added back because the order of the calls in wx_soft_quiesce()
-> has been changed.
-
-Thanks.
-
+> I'm sorry, following all cross revision discussion is a bit hard here.
 > 
-> > 
-> > > +		if (err) {
-> > > +			wx_err(wx, "Failed to open netdev after reset\n");
-> > 
-> > [ ... ]
-> > 
-> > > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > > index 92895f5035118..56d4b63387fd6 100644
-> > > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> > 
-> > [ ... ]
-> > 
-> > > @@ -413,6 +428,9 @@ static void ngbe_disable_device(struct wx *wx)
-> > >
-> > >  static void ngbe_reset(struct wx *wx)
-> > >  {
-> > > +	if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
-> > > +		return;
-> > > +
-> > >  	wx_flush_sw_mac_table(wx);
-> > 
-> > [Severity: High]
-> > Is the hardware properly reinitialized here after an AER slot reset?
-> > 
-> > In wx_io_slot_reset(), the hardware needs to be restarted from scratch.
-> > While txgbe_reset() calls txgbe_reset_hw(), ngbe_reset() only flushes the
-> > software MAC tables and skips calling ngbe_reset_hw().
-> > 
-> > Because this patch registers wx_err_handler for the ngbe driver, won't this
-> > leave the hardware uninitialized and the interface broken after a PCIe slot
-> > reset?
-> 
-> I think I have answered this question many times and also described
-> ngbe's lack of functionality in the commit and cover-letter messages.
+> I don't understand if the 'link never established' is specific of your
+> board, or it a constant with this driver. Could you please clarify?
 
-Sorry about that, I missed that this is already covered.
+I think we should set byte/nibble mode in link_up as well as mac_config. That
+should fix the problem where the link never comes up (possibly broken since
+the phylink conversion). I think it's unlikely that this config is supposed
+to match the phy interface speed and not the link speed, but you never know...
 
-...
+--Sean
