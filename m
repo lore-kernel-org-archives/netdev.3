@@ -1,429 +1,157 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F83DDB07
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564ED34B66F;
+	Fri, 17 Jul 2026 11:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784286100; cv=none; b=Xh+HO42nfqACTHHqwKMQSJfIDY7Sa2CWyFKbrHj4Mx4HZliyZRuEre/h8d69Pnb+9H6DCQb/HC9foUj5TjF5kAEyL5yyZqidCxffuQsCllr9yj4TV+0/WFkOV+PY0RMnPo1aU8rfmCrygV2UFJp2qo8gd7OxRytZM9YJoXoBaww=
+	t=1784286161; cv=none; b=KVqNaDOp1/1PgqIxI8MZouLENjAT0vubSS54rVJv6eyh9vWYPc6Y0d39Ow6RuR+niLDWUg8QqeCExBw8UtVFWho/OmHQEJ8TyprU3guFpN5pkRTB7kBz13eLjD/04wD7xSBjEnmVVX3BEtZpJUEIso0dWLb6pvsasJHbr/KZpB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784286100; c=relaxed/simple;
-	bh=4+AjGXuugyOJ35konCN4xyQETsUoFtYwyOmkK2Z6jRk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u7Ruwg8SYWsHu0ZRlzKnYV4C0m2zkraF8sKmknMVleI9XOBBVjSDNlBRFDQdo7YsFHs9alzk7661PK8xXoaYxghtU8j2kBrpqVw/Z65xnRsC/cZAWzqSW6QWapT85WBXdNSGe5xHqyRg/k+mZ8D9JDcfVeOURfMes1Gvaxe9SQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=BrNCXABK; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="BrNCXABK"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 5E11560287;
-	Fri, 17 Jul 2026 13:01:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1784286085;
-	bh=pv2Lo/BOU36hyzDLJSH9cPuzZ+Bpqm4dt9ncBkK9NdY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BrNCXABKsWaG5b24q5JeQPDEKoObYDNQhD1sWeQVXdDjEBVnjUN2Q+2U2pOTIlgik
-	 klBVeHAytb+cFL4fM34SDFkrvz1YxhR5yNCD/0Qtk8+V7UJkNqe6uqua2pob16stgi
-	 kIKhCdXQce58STGptSDAPS3VASg8uHBa18X+qJw+WSuSZHDKYiFksRKnthO2qwplP6
-	 pq72MwrMFQDU7g8Vl9RPdDiyxTBiJmdh/KiSa//w2MJ+pMSiTotUhItBj9U8K2RN8Y
-	 5/Afu9oAI84oUbHYm+0B9ZVC+1tYMlv+6cc8cQXoVeoC47EsDH1jwgKcGGWwECvE6S
-	 dy+f2WH8QeT5Q==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: devel@lists.linux-ipsec.org
-Cc: netdev@vger.kernel.org,
-	tobias@strongswan.org,
-	eyal.birger@gmail.com,
-	antony@phenome.org,
-	steffen.klassert@secunet.com
-Subject: [PATCH net-next,v3] xfrm: allow to enable udp encapsulation without userspace socket
-Date: Fri, 17 Jul 2026 13:01:17 +0200
-Message-ID: <20260717110118.251866-1-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1784286161; c=relaxed/simple;
+	bh=mBBc8/lv7ph7coB1xS4ADIWd930ymdFgmRJa/Bi/MZQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bqb+1wVgwLizSEE8CaAyGn0riTSTUHorJH7Xl4+jWxl7Kpvh/ai6kP9tXDnR76EyMuHrUTcf/e7VvZFnYFsYDWElIl6bzDqTjxTCrCaLLatOceq1jhqfdsYeOmLFq2Q+7mQ0wv9A7Fs+b8wLhHAC4wblDcy4plJG7x5uh7DbRP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: fd0362ea81ce11f1b2470fb4f881575f-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.17,REQID:61a23bba-cce7-4795-9dd9-7675b90e8d43,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:d497b38,CLOUDID:750c3d19-ab14-4403-9336-76696324c5a8,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:n
+	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: fd0362ea81ce11f1b2470fb4f881575f-20260717
+Received: from sdmg11.sdbg.compal.com [(10.113.168.9)] by tpecef21.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1954777916; Fri, 17 Jul 2026 19:02:23 +0800
+X-UUID: f9923c8a81ce11f1b328fd8a884f4420-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:7215ff62-c96b-4b85-98c8-feeadfe71d4c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:26daf88c-879e-4a06-a1b9-fbfe288700dc,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f9923c8a81ce11f1b328fd8a884f4420-20260717
+Received: from sdbmbx12.tpe.compalcomm.com [(10.113.2.136)] by sdmg11.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES256-SHA 256/256)
+	with ESMTP id 953992257; Fri, 17 Jul 2026 19:02:17 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX12.tpe.compalcomm.com (10.113.2.136) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.2.2562.43;
+ Fri, 17 Jul 2026 19:02:16 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86%11]) with mapi id
+ 15.02.2562.043; Fri, 17 Jul 2026 19:02:16 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Simon Horman <horms@kernel.org>
+CC: "loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
+	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"wen-zhi.huang@mediatek.com" <wen-zhi.huang@mediatek.com>,
+	"shi-wei.yeh@mediatek.com" <shi-wei.yeh@mediatek.com>,
+	"Minano.tseng@mediatek.com" <Minano.tseng@mediatek.com>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>, "corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: RE: [External Mail] Re: [PATCH v4 5/7] net: wwan: t9xx: Add FSM
+ thread
+Thread-Topic: [External Mail] Re: [PATCH v4 5/7] net: wwan: t9xx: Add FSM
+ thread
+Thread-Index: AQHdFQZYY6Au0ymBcU6QRccOSxUFeLZxT48kgAA9QiQ=
+Date: Fri, 17 Jul 2026 11:02:16 +0000
+Message-ID: <b9b53e70a87648acb527a70f389ef823@compal.com>
+References: <20260709-t9xx_driver_v1-v4-5-a8c009d509c5@compal.com>,<20260716093422.231112-1-horms@kernel.org>,<cbd2ef0bba8e46efb19f692a2e114149@compal.com>
+In-Reply-To: <cbd2ef0bba8e46efb19f692a2e114149@compal.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30074.006
+x-tm-as-result: No-10--20.244000-8.000000
+x-tmase-matchedrid: QYUnrClngWYuv++HU7VXryRFbfQbCufdN0X64jGy2dZJTOxleK2tZpNz
+	D6YMRvgW4TxIMIx6VwqygWex5mZjoExpKNdX3ZAHGG92L3YEEC7+i5C4lXMwGvAGAj5s+iPSYts
+	GA1MBOo6tyHv92W7bO/ranYAb1hBlhIOMOnfndO/XIza/NEqjlZbTt2Vz36FFojKyNVmXOruKzg
+	hR2FMRuezIXYsPq2gCadWHkyQPE4zW2NgQcJOQ2p4p07KVSE/ZRXCUrhCu5WMcO9g0wIXVO78bu
+	2KvjRzVoJaYJ5BrgQI9DuOzNhKgnvFDN+Mc76F7iu6u4shZ+fGFCkPhi2xezb2L79/20sYbNlHN
+	CjMfVpFDElVyrzDzfhsu3/K0JNREbcSnmXCS46CRj0jujuSQmqODSWu0oxbKa1P8Ik1zBcXCWXL
+	d4w2EwNvIAMT/07OiB73xunbyKrpX9HM7P8GE6Q==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--20.244000-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30074.006
+x-tm-snts-smtp: 01F419E205422152DBCFDDCFF3421F264753989CA777A35C1E9D23CBE5D181DD2000:8
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-It is currently not possible to enable UDP encapsulation in xfrm without
-a userspace process that listens on the specified UDP listener port in
-the SA.
-
-People have work around this by creating dummy userspace daemons such as
-the one in the smallish perl program (see the script at the bottom of
-this link):
-
-http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
-
-This patch adds XFRM_SA_XFLAG_UDP_ENCAP_SOCK to create the UDP socket
-from the kernel.
-
-Use a hole in net->xfrm to place the new encap_socket list.
-
-The following example shows how to enable the standalone UDP
-encapsulation:
-
-    ip xfrm state add src 192.168.10.10 dst 192.168.10.11 proto esp spi 1 \
-            encap espinudp 9999 9999 0.0.0.0 \
-            if_id 0x1 reqid 1 replay-window 0 mode tunnel aead 'rfc4106(gcm(aes))' \
-            0x1111111111111111111111111111111111111111 96 \
-            sel src 10.141.10.0/24 dst 10.141.11.0/24 dir out
-
-and the receiving side uses 'extra-flag udp-encap-sock':
-
-    ip xfrm state add src 192.168.10.11 dst 192.168.10.10 proto esp spi 2 \
-            encap espinudp 9999 0 0.0.0.0 extra-flag udp-encap-sock \
-            if_id 0x1 reqid 2 replay-window 10 mode tunnel aead 'rfc4106(gcm(aes))' \
-            0x2222222222222222222222222222222222222222 96 dir in
-
-This allows for multiple SAs using the same listener udp port.
-
-This is useful for testing scenarios where UDP encapsulation is
-required.
-
-Note this patch exports xfrm6_udp_encap_rcv() just like
-xfrm4_udp_encap_rcv() otherwise linker complains due to unreachable
-symbol.
-
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
-v3: - Use x->id.daddr.a{4,6} instead of encap_oa, as suggested by Eyal and Tobias.
-    - Fix several SA using same udp encapsulation configuration.
-
-This is a follow up to:
-https://lists.linux-ipsec.org/archives/list/devel@lists.linux-ipsec.org/thread/F4IOY2DKFDX3E45UUFQHUZKTHV7AD6G4/
-
-NOTE for netdev maintainers:
-Targetting net-next so sashiko kicks in for review, ipsec-devel still has no such service yet.
-
- include/net/netns/xfrm.h  |   1 +
- include/net/xfrm.h        |  11 ++++
- include/uapi/linux/xfrm.h |   1 +
- net/ipv6/xfrm6_input.c    |   1 +
- net/xfrm/Kconfig          |   2 +
- net/xfrm/xfrm_state.c     |  16 +++++
- net/xfrm/xfrm_user.c      | 122 +++++++++++++++++++++++++++++++++++++-
- 7 files changed, 152 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
-index b73983a17e08..5091c07b1e46 100644
---- a/include/net/netns/xfrm.h
-+++ b/include/net/netns/xfrm.h
-@@ -56,6 +56,7 @@ struct netns_xfrm {
- 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
- 	struct work_struct	policy_hash_work;
- 	struct xfrm_policy_hthresh policy_hthresh;
-+	struct hlist_head	encap_socket;
- 	struct list_head	inexact_bins;
- 
- 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index a6d69aaa6cd2..99730a2fc8b9 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -25,6 +25,7 @@
- #include <net/ipv6.h>
- #include <net/ip6_fib.h>
- #include <net/flow.h>
-+#include <net/udp_tunnel.h>
- #include <net/gro_cells.h>
- 
- #include <linux/interrupt.h>
-@@ -169,6 +170,13 @@ struct xfrm_dev_offload {
- 	u8			flags : 2;
- };
- 
-+struct xfrm_encap_sock {
-+	struct hlist_node	list;
-+	struct udp_port_cfg	cfg;
-+	struct sock		*sk;
-+	refcount_t		refcnt;
-+};
-+
- struct xfrm_mode {
- 	u8 encap;
- 	u8 family;
-@@ -249,6 +257,7 @@ struct xfrm_state {
- 
- 	/* Data for encapsulator */
- 	struct xfrm_encap_tmpl	*encap;
-+	struct xfrm_encap_sock	*encap_sock;
- 
- 	/* NAT keepalive */
- 	u32			nat_keepalive_interval; /* seconds */
-@@ -2343,6 +2352,8 @@ static inline bool xfrm6_local_dontfrag(const struct sock *sk)
- }
- #endif
- 
-+int xfrm4_udp_encap_rcv(struct sock *sk, struct sk_buff *skb);
-+
- #if (IS_BUILTIN(CONFIG_XFRM_INTERFACE) && IS_ENABLED(CONFIG_DEBUG_INFO_BTF)) || \
-     (IS_MODULE(CONFIG_XFRM_INTERFACE) && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
- 
-diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-index 051f8066efd1..28aa5c8ca317 100644
---- a/include/uapi/linux/xfrm.h
-+++ b/include/uapi/linux/xfrm.h
-@@ -413,6 +413,7 @@ struct xfrm_usersa_info {
- 
- #define XFRM_SA_XFLAG_DONT_ENCAP_DSCP	1
- #define XFRM_SA_XFLAG_OSEQ_MAY_WRAP	2
-+#define XFRM_SA_XFLAG_UDP_ENCAP_SOCK	4
- 
- struct xfrm_usersa_id {
- 	xfrm_address_t			daddr;
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 89d0443b5307..2e3f7b9e5a4f 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -173,6 +173,7 @@ int xfrm6_udp_encap_rcv(struct sock *sk, struct sk_buff *skb)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(xfrm6_udp_encap_rcv);
- 
- struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 					struct sk_buff *skb)
-diff --git a/net/xfrm/Kconfig b/net/xfrm/Kconfig
-index 4a62817a88f8..fe42cfca9423 100644
---- a/net/xfrm/Kconfig
-+++ b/net/xfrm/Kconfig
-@@ -7,6 +7,7 @@ config XFRM
- 	depends on INET
- 	select GRO_CELLS
- 	select SKB_EXTENSIONS
-+	select NET_UDP_TUNNEL
- 
- config XFRM_OFFLOAD
- 	bool
-@@ -23,6 +24,7 @@ if INET
- config XFRM_USER
- 	tristate "Transformation user configuration interface"
- 	select XFRM_ALGO
-+	select NET_UDP_TUNNEL
- 	help
- 	  Support for Transformation(XFRM) user configuration interface
- 	  like IPsec used by native Linux tools.
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 36a4f6793ede..c849e7ac750a 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -27,6 +27,7 @@
- #include <linux/slab.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <net/udp_tunnel.h>
- 
- #include <crypto/aead.h>
- 
-@@ -586,6 +587,16 @@ static const struct xfrm_mode_cbs *xfrm_get_mode_cbs(u8 mode)
- 	return cbs;
- }
- 
-+static bool xfrm_socket_put(struct xfrm_encap_sock *encap_sock)
-+{
-+	if (refcount_dec_and_test(&encap_sock->refcnt)) {
-+		udp_tunnel_sock_release(encap_sock->sk);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- void xfrm_state_free(struct xfrm_state *x)
- {
- 	kmem_cache_free(xfrm_state_cache, x);
-@@ -597,6 +608,10 @@ static void xfrm_state_gc_destroy(struct xfrm_state *x)
- {
- 	if (x->mode_cbs && x->mode_cbs->destroy_state)
- 		x->mode_cbs->destroy_state(x);
-+
-+	if (x->encap_sock && xfrm_socket_put(x->encap_sock))
-+		kfree(x->encap_sock);
-+
- 	hrtimer_cancel(&x->mtimer);
- 	timer_delete_sync(&x->rtimer);
- 	kfree_sensitive(x->aead);
-@@ -3332,6 +3347,7 @@ int __net_init xfrm_state_init(struct net *net)
- 					      SLAB_HWCACHE_ALIGN | SLAB_PANIC);
- 
- 	INIT_LIST_HEAD(&net->xfrm.state_all);
-+	INIT_HLIST_HEAD(&net->xfrm.encap_socket);
- 
- 	sz = sizeof(struct hlist_head) * 8;
- 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d6db63304ba6..bc88581e51e8 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -29,6 +29,7 @@
- #include <net/xfrm.h>
- #include <net/netlink.h>
- #include <net/ah.h>
-+#include <net/udp_tunnel.h>
- #include <linux/uaccess.h>
- #if IS_ENABLED(CONFIG_IPV6)
- #include <linux/in6.h>
-@@ -484,6 +485,17 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			goto out;
- 	}
- 
-+	if (attrs[XFRMA_SA_EXTRA_FLAGS]) {
-+		u32 xflags = nla_get_u32(attrs[XFRMA_SA_EXTRA_FLAGS]);
-+
-+		if (xflags & XFRM_SA_XFLAG_UDP_ENCAP_SOCK &&
-+		    (!sa_dir || sa_dir == XFRM_SA_DIR_OUT)) {
-+			NL_SET_ERR_MSG(extack, "Flag UDP_ENCAP_SOCK can only be set on input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+	}
-+
- 	if (sa_dir == XFRM_SA_DIR_OUT) {
- 		if (p->flags & XFRM_STATE_DECAP_DSCP) {
- 			NL_SET_ERR_MSG(extack, "Flag DECAP_DSCP should not be set for output SA");
-@@ -556,7 +568,6 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 				err = -EINVAL;
- 				goto out;
- 			}
--
- 		}
- 
- 		if (attrs[XFRMA_IPTFS_DONT_FRAG]) {
-@@ -932,9 +943,17 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 			goto error;
- 	}
- 
--	if (attrs[XFRMA_SA_EXTRA_FLAGS])
-+	if (attrs[XFRMA_SA_EXTRA_FLAGS]) {
- 		x->props.extra_flags = nla_get_u32(attrs[XFRMA_SA_EXTRA_FLAGS]);
- 
-+		if (x->props.extra_flags & XFRM_SA_XFLAG_UDP_ENCAP_SOCK &&
-+		    x->encap && x->encap->encap_type != UDP_ENCAP_ESPINUDP) {
-+			NL_SET_ERR_MSG(extack, "XFRM_SA_XFLAG_UDP_ENCAP_SOCK can only be set on UDP_ENCAP_ESPINUDP type");
-+			err = -EOPNOTSUPP;
-+			goto error;
-+		}
-+	}
-+
- 	if ((err = attach_aead(x, attrs[XFRMA_ALG_AEAD], extack)))
- 		goto error;
- 	if ((err = attach_auth_trunc(&x->aalg, &x->props.aalgo,
-@@ -1036,6 +1055,97 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 	return NULL;
- }
- 
-+static struct xfrm_encap_sock *
-+xfrm_socket_find_get(struct net *net, const struct udp_port_cfg *udp_conf)
-+{
-+	struct xfrm_encap_sock *listener;
-+
-+	hlist_for_each_entry(listener, &net->xfrm.encap_socket, list) {
-+		if (!memcmp(&listener->cfg, udp_conf, sizeof(*udp_conf))) {
-+			refcount_inc(&listener->refcnt);
-+			return listener;
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+static int xfrm_socket_encap_create(struct net *net, struct xfrm_state *x,
-+				    struct udp_port_cfg *udp_conf,
-+				    struct udp_tunnel_sock_cfg *tuncfg)
-+{
-+	struct xfrm_encap_sock *listener;
-+	struct socket *sock;
-+	int err;
-+
-+	listener = kzalloc_obj(*listener);
-+	if (!listener)
-+		return -ENOMEM;
-+
-+	err = udp_sock_create(net, udp_conf, &sock);
-+	if (err) {
-+		kfree(listener);
-+		return err;
-+	}
-+	setup_udp_tunnel_sock(net, sock->sk, tuncfg);
-+
-+	listener->sk = sock->sk;
-+	listener->cfg = *udp_conf;
-+	refcount_set(&listener->refcnt, 1);
-+	hlist_add_head(&listener->list, &net->xfrm.encap_socket);
-+
-+	x->encap_sock = listener;
-+
-+	return 0;
-+}
-+
-+static int xfrm_socket_setup(struct net *net, struct xfrm_state *x,
-+			     struct netlink_ext_ack *extack)
-+{
-+	struct udp_tunnel_sock_cfg tuncfg = {};
-+	struct xfrm_encap_sock *listener;
-+	struct udp_port_cfg udp_conf;
-+	int err;
-+
-+	if (!x->encap)
-+		return -EOPNOTSUPP;
-+
-+	memset(&udp_conf, 0, sizeof(udp_conf));
-+	udp_conf.family = x->props.family;
-+
-+	switch (x->props.family) {
-+	case AF_INET:
-+		udp_conf.local_ip.s_addr = x->id.daddr.a4;
-+		tuncfg.encap_rcv = xfrm4_udp_encap_rcv;
-+		break;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case AF_INET6:
-+		udp_conf.local_ip6 = x->id.daddr.in6;
-+		tuncfg.encap_rcv = xfrm6_udp_encap_rcv;
-+		break;
-+#endif
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+	udp_conf.local_udp_port = x->encap->encap_sport;
-+
-+	listener = xfrm_socket_find_get(net, &udp_conf);
-+	if (listener) {
-+		x->encap_sock = listener;
-+		return 0;
-+	}
-+
-+	tuncfg.encap_type = UDP_ENCAP_ESPINUDP;
-+
-+	err = xfrm_socket_encap_create(net, x, &udp_conf, &tuncfg);
-+	if (err < 0) {
-+		NL_SET_ERR_MSG(extack, "Cannot initialize kernel UDP socket");
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
- static int xfrm_add_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		       struct nlattr **attrs, struct netlink_ext_ack *extack)
- {
-@@ -1053,6 +1163,14 @@ static int xfrm_add_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (!x)
- 		return err;
- 
-+	if (x->props.extra_flags & XFRM_SA_XFLAG_UDP_ENCAP_SOCK) {
-+		err = xfrm_socket_setup(net, x, extack);
-+		if (err < 0) {
-+			x->km.state = XFRM_STATE_DEAD;
-+			goto out;
-+		}
-+	}
-+
- 	xfrm_state_hold(x);
- 	if (nlh->nlmsg_type == XFRM_MSG_NEWSA)
- 		err = xfrm_state_add(x);
--- 
-2.47.3
-
+SGkgU2ltb24sDQoNCkFmdGVyIGZ1cnRoZXIgaW50ZXJuYWwgcmV2aWV3LCB3ZSBhcmUgY29ycmVj
+dGluZyBzZXZlcmFsDQpyZXNwb25zZXMgZnJvbSBvdXIgcHJldmlvdXMgcmVwbHkuIFRoZSBmb2xs
+b3dpbmcgaXRlbXMgd2lsbA0KYmUgZml4ZWQgaW4gdjUuDQoNCk9uIEphY2sgV3Ugd3JvdGU6DQoN
+Cj4+IFtTZXZlcml0eTogSGlnaF0NCj4+IEluZmluaXRlIGJ1c3kgbG9vcCBvbiBzaWduYWwgcGVu
+ZGluZy4NCg0KPiBUaGlzIGlzIGludGVudGlvbmFsLiBDaGFubmVsIGRpc2FibGUgbXVzdCBjb21w
+bGV0ZSBvciB0aW1lb3V0Lg0KPiBUaGUgbG9vcCBkb2VzIG5vdCBidXN5LXNwaW46IGVhY2ggaXRl
+cmF0aW9uIHNsZWVwcyBpbg0KPiB3YWl0X2V2ZW50X2ludGVycnVwdGlibGVfdGltZW91dCB1bnRp
+bCB0aGUgY29uZGl0aW9uIGlzIG1ldCBvcg0KPiB0aGUgdGltZW91dCBleHBpcmVzLg0KDQpXaWxs
+IGNoYW5nZSB3YWl0X2V2ZW50X2ludGVycnVwdGlibGVfdGltZW91dCB0bw0Kd2FpdF9ldmVudF90
+aW1lb3V0IGFuZCByZW1vdmUgdGhlIC1FUkVTVEFSVFNZUyAvIGdvdG8NCnN0YXJ0X3dhaXQgYmxv
+Y2suDQoNCj4+IFtTZXZlcml0eTogSGlnaF0NCj4+IFJhY2UgaW4gbXRrX2ZzbV9ldnRfc3VibWl0
+IKFYIGZzbV9oYW5kbGVyIE5VTEwgYWZ0ZXIgc3BpbmxvY2sNCj4+IHJlbGVhc2UuDQoNCj4gVGhl
+IEdBVEVDTE9TRUQgY2hlY2sgdW5kZXIgZXZ0cV9sb2NrIGVuc3VyZXMgZnNtX2hhbmRsZXIgaXMN
+Cj4gdmFsaWQuIEFmdGVyIHRoZSBjaGVjayBwYXNzZXMsIHRoZSBldmVudCBpcyBzdWJtaXR0ZWQg
+YW5kIHRoZQ0KPiBrdGhyZWFkIGlzIHdva2VuLg0KDQpXaWxsIG1vdmUgd2FrZV91cF9wcm9jZXNz
+IGluc2lkZSBldnRxX2xvY2sgaW4gZXZ0X3N1Ym1pdCwgYW5kDQpoYXZlIG10a19mc21fZXhpdCBj
+bGVhciBmc21faGFuZGxlciB1bmRlciBldnRxX2xvY2s6DQoNCiAgZXZ0X3N1Ym1pdDoNCiAgICB3
+YWtlX3VwX3Byb2Nlc3MoZnNtLT5mc21faGFuZGxlcik7DQogICAgc3Bpbl91bmxvY2tfaXJxcmVz
+dG9yZSgmZnNtLT5ldnRxX2xvY2ssIGZsYWdzKTsNCg0KICBtdGtfZnNtX2V4aXQ6DQogICAgc3Bp
+bl9sb2NrX2lycXNhdmUoJmZzbS0+ZXZ0cV9sb2NrLCBmbGFncyk7DQogICAgaGFuZGxlciA9IGZz
+bS0+ZnNtX2hhbmRsZXI7DQogICAgZnNtLT5mc21faGFuZGxlciA9IE5VTEw7DQogICAgc3Bpbl91
+bmxvY2tfaXJxcmVzdG9yZSgmZnNtLT5ldnRxX2xvY2ssIGZsYWdzKTsNCiAgICBpZiAoaGFuZGxl
+cikNCiAgICAgICAga3RocmVhZF9zdG9wKGhhbmRsZXIpOw0KDQo+PiBbU2V2ZXJpdHk6IEhpZ2hd
+DQo+PiBydGZ0X2VudHJ5LT5kYXRhIHBhc3NlZCB0byBhY3Rpb24gY2FsbGJhY2sgYmVmb3JlIGRh
+dGFfbGVuDQo+PiB2YWxpZGF0aW9uLg0KDQo+IFRoZSBhY3Rpb24gZnVuY3Rpb25zIG9ubHkgcmVh
+ZCBmaXhlZC1zaXplIGZpZWxkcy4gVGhlIG1vZGVtDQo+IGZpcm13YXJlIGlzIGEgdHJ1c3RlZCBz
+b3VyY2UuDQoNCldpbGwgbW92ZSBkYXRhX2xlbiB2YWxpZGF0aW9uIGJlZm9yZSB0aGUgY2FsbGJh
+Y2sgY2FsbCBpbg0KbXRrX2ZzbV9wYXJzZV9oczJfbXNnLCBhbmQgcGFzcyBkYXRhX2xlbiB0byB0
+aGUgY2FsbGJhY2suDQoNCj4+IFtTZXZlcml0eTogSGlnaF0NCj4+IFVuaW5pdGlhbGl6ZWQga2Vy
+bmVsIGhlYXAgbWVtb3J5IGluIG10a19mc21fc2VuZF9oczNfbXNnLg0KDQo+IFRoZSByZXNlcnZl
+ZFsyXSBmaWVsZCBpcyBzZW50IHRvIHRoZSBsb2NhbCBtb2RlbSBvdmVyIFBDSWUgRE1BLA0KPiBu
+b3QgZXhwb3NlZCB0byBleHRlcm5hbCBuZXR3b3Jrcy4NCg0KV2lsbCBhZGQgbWVtc2V0KHNrYi0+
+ZGF0YSwgMCwgUlRGVF9EQVRBX1NJWkUpIGFmdGVyDQpfX2Rldl9hbGxvY19za2IgaW4gbXRrX2Zz
+bV9zZW5kX2hzM19tc2cuDQoNCj4+IFtTZXZlcml0eTogSGlnaF0NCj4+IFNpbGVudCBrY2FsbG9j
+IGZhaWx1cmUgaW4gbXRrX3BvcnRfZGlzYWJsZS4NCg0KPiBBbGxvY2F0aW9uIGZhaWx1cmUgaXMg
+ZXh0cmVtZWx5IHVubGlrZWx5LiBIYXJkd2FyZSBoYXMgYWxyZWFkeQ0KPiBiZWVuIHBvd2VyLWN5
+Y2xlZCB2aWEgUExEUi4NCg0KV2lsbCByZXBsYWNlIHJhZGl4X3RyZWVfZ2FuZ19sb29rdXAgd2l0
+aCByYWRpeF90cmVlX2Zvcl9lYWNoX3Nsb3QsDQplbGltaW5hdGluZyB0aGUgdGVtcG9yYXJ5IGFy
+cmF5LiBTYW1lIHBhdHRlcm4gYXMNCm10a19wb3J0X3NlYXJjaF9ieV9uYW1lLg0KDQpUaGFua3Mu
+DQoNCkphY2sgV3U=
