@@ -1,150 +1,123 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A438BA3D
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 12:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5683C3449;
+	Fri, 17 Jul 2026 12:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784292727; cv=none; b=WElu4tylusjR/oGRtdcqu+2OihDzz7Y4CY8a3YTfDavECfT24dHzzvKKzyTI3HhdFaE7CcXs3AQ59tVhAq9ewu9hitiIvVTAEegma9cC0j5/+9dv3SiXmISpnoV3Nn6B4miMSWT3iwRst3qGSjGL7yYlqSwGlWp2s4vv78qFxgo=
+	t=1784293062; cv=none; b=p992b5wibRJVR/2UZoYl8ksnNpREHr0VmE1a4AaTkufy2Fs5Eam7CxKe/DwURRZoEYS/On8v8WFMeqB0NG0NR/SFD0ZOpwhA1n8k490cVHPkfRjvCK1YIhjMzJMf7Cdd9ASnDLrZFhzPkd1QB2MzynCrCBx2Pw2dPJRek8RrdTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784292727; c=relaxed/simple;
-	bh=g9RMEgiWClw5ItELtTqqQ0t+lmH5QNeGIam5qd1XJjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRa/pVogZlQ3yo6zNKrp35iY0t7bZfeSbYzudUlG8WSV659EuVP6vVdXxCebMa8uCjwGF8g6eGsYXd3yp2dRvWI8zTxb6gsEzn1MEwTLKESYx6IcfU6XdvrPaCttiWQYDsro/xHM7iJjpgaehb3hKl3sx2GkbdX9ooV2vqmLF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oCfMCubP; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784293062; c=relaxed/simple;
+	bh=nVdqnweeK/8b4Zb28MOfPjhGbGeH5RcHbujG8wAded8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:From:To:Subject:
+	 References:In-Reply-To; b=d+7Bcnzp5awQ6MPXmq54aBw5184mjeM7F2Qs+xJpRZl63dbdnZJp1g6MhMqmtnstEpmHTMFHAY44bwcqU2eqHJ73AEaZT3auo9kB/rLVdtrIp1Faq/G7XF3sefOoe6WT3+DErg87Kp74TbAIwK/uuKZQcnKFMnNmrLhEG3v6Eac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFkCxTwW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oCfMCubP"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b018fe8318so3739474e87.3
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 05:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784292724; x=1784897524; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JY69kVNM1HjHKOX0LM99C+ydMzmKJRYOseNmpgyzZYE=;
-        b=oCfMCubPTxNMbZ9fp6owAqhwB3anBcJU5sCUDhU+5IEVufFu5q8a7gWjheCy9znoa6
-         VOmaIlV6PkUXCTB+eAt+YvnKppYAoCMU8Wl+F/zODMWcXKMK2iGIrP52isyCARb6FyB9
-         knQv+D1jJBLtTrx/eRXVBJuyMR6Ef9Hk2buwc+MScW2Ox772dL0vOowDM3lhwN6gwlLs
-         Pyg8PP/WION3q0J9SzFg67EgwjPecM5FPrO5WJb8yQfuZCpSjMjquawU4xMiI3mYYQiD
-         8abtiYWppI6h4wjPr+oT0hANfDoovaBJKeQK+TumqYuAcYYIPbq9amL8KKYF/IL9xbVw
-         DM/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784292724; x=1784897524;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JY69kVNM1HjHKOX0LM99C+ydMzmKJRYOseNmpgyzZYE=;
-        b=bL7OzY491Dj160W/xFp7kvxHnSG+xREMQAk9UAphH0OuVdEfihsZugdwUsOLXZZbi3
-         eSqXf4uDSwECRnG3k2sUtiMs5EJiuemUKJ4PUw399k9e/3lFo+YxmKp0AuwUQ7zHcG3G
-         To2+bkEZKTHanvcHOgClKqL6JVx54QeAkR5uA21ZOiOhQTU3+zSOzum83dGo1Wq4Nv+M
-         67Dmp6ducm+CL23XqBoYlJbz4fap0yx9LcdiWlZ76LWAL/RI7pxB/j18qW4hzxJLl4ju
-         bamgFs7uPqdT9Il7x7CmX2GKX+re98YVJBdJ4xbd4Pt+4UHh7dOHgy+sjWkAVnEIJLJf
-         fdFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqPL/Skwx93HxjJi4DZTia80xBiGU1u9EW2bHjL7JLxfw1BJ7prPBURaMKkwCFRJirO7R/eGDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd53g1HMuixVs+10Yp/QI1Wf12q3Ma7GyoYwT7zm+yx4EXdaJO
-	148CWyUs8UfEuMOStSIjdTxZJAaV8sxpzPjou3JbteieizpttWjbXfSn
-X-Gm-Gg: AfdE7cnICMu/6Sd5ee0sVAQTTw4QFYPi/1GoBK8VWnGVZXnFygq5ub5ekm42a4Hs3fm
-	ZjTnNrvYJ/sq6QJz6LCY3N3YCvRCgmT7Czv4QrGxxTYGaH6Ja+ddSxIuLEIdYdSg+WulHVN8/7p
-	qkMWatWARghjvPiRrf9N0Xt3FQ1TustUFa4plqKi/TgJoSupMSZRW9ZdeqyKzWhKj2TsDtAAWqG
-	B8HRXpQ4GJwskaGMmn1orr6Yu0d2WGeves8mOiXmG1S6Bc7TkPxs47JL9AtqbDq+91d+thVhc1y
-	2obFSMJYrr8hzxb+6bkuqjDqm55+aqPsonaCLZZ+iWVyOXHmlZ14eIeklNs4/NnnO7xapYOTFWK
-	21LI+b06FFu6HQa3HT4IYng5PLWuQCF0VlISXSNI5aCTvGwx98U01pPkyN51+v1YKW26Fi6StHG
-	09EohYl2x0lGwf/gWqhOY6Ea2NNiy293ZvpFc=
-X-Received: by 2002:a05:6512:6202:b0:5b1:5f28:2198 with SMTP id 2adb3069b0e04-5b28f8732bamr486267e87.3.1784292724137;
-        Fri, 17 Jul 2026 05:52:04 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:c10:dac8:fc6a:1741:e55e:e7c4])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b291d9a8easm315661e87.27.2026.07.17.05.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 05:52:03 -0700 (PDT)
-From: Stanislaw <kuncy7@gmail.com>
-To: Johan Alvarado <contact@c127.dev>,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Alvin Sipraga <alsi@bang-olufsen.dk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII support for RTL8367S
-Date: Fri, 17 Jul 2026 14:51:55 +0200
-Message-ID: <20260717125155.18915-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <e252cb3c-bfb2-4d62-aec7-e04b9aafe223@yahoo.com>
-References: <e252cb3c-bfb2-4d62-aec7-e04b9aafe223@yahoo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFkCxTwW"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 096351F00A3A;
+	Fri, 17 Jul 2026 12:57:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784293060;
+	bh=nVdqnweeK/8b4Zb28MOfPjhGbGeH5RcHbujG8wAded8=;
+	h=Date:Cc:From:To:Subject:References:In-Reply-To;
+	b=JFkCxTwW6uMG3KMkh4wj8kj7NEqCAH7YZz37wrpWOD5THyMaMdnBXMP6aXqONSxl4
+	 InefTeoD4/m96vxNFANm3fRQtGZqfgp8yHamaiZRNtiQNFiIIzH7cicynybZm2Je9y
+	 PK4SjnPOeHHDrBEqzbQwxmx4OzfkOw92Xxs2WB4gK87NkqRXL8MsRNctaaDW6/gLWE
+	 Tm7nHXl+i3SPcmUfaKYfYQxV8au+q9bv+jDLI6FuE0k0qgfCRM/KVuZgh9Hu4AM00t
+	 HWx6n7/ZvyUck3/yeCRrlefITut+6CjGPJgJ2cCgChPgGtXWydq10wu87D7G9w5YpB
+	 AzweRwlH3NT+w==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=ae5ad5cfb4a78f2c248140514d559ccca382f5f4870c0bf4453ca98fc494;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Fri, 17 Jul 2026 14:57:36 +0200
+Message-Id: <DK0V3M8CTZFU.1T6GJTFM5DJ4M@kernel.org>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Paolo Abeni" <pabeni@redhat.com>, "Sean Anderson"
+ <sean.anderson@linux.dev>, "Madalin Bucur" <madalin.bucur@nxp.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>
+Subject: Re: [PATCH net v2] net: dpaa: fix mode setting
+X-Mailer: aerc 0.20.0
+References: <20260710143430.2276141-1-mwalle@kernel.org>
+ <a5c5b8a6-85a8-7830-e19b-ffd5de750e3c@linux.dev>
+ <DJUZ1VG8U9SL.2W0CJM7NSMK2@kernel.org>
+ <2c8f63f5-f04a-4abc-9508-4c47a80da543@redhat.com>
+ <DK0RLUBEKFVS.168UHY5BP8D4E@kernel.org>
+ <26cb3349-5344-48c0-b0b7-37133b4e0662@redhat.com>
+ <eee42ee1-386e-996f-b9d8-8aa2e820d311@linux.dev>
+ <382033a5-77a6-4505-ac50-58120308507b@redhat.com>
+In-Reply-To: <382033a5-77a6-4505-ac50-58120308507b@redhat.com>
 
-Hi,
+--ae5ad5cfb4a78f2c248140514d559ccca382f5f4870c0bf4453ca98fc494
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-I have been testing this series on a second RTL8367S board: a TP-Link
-Archer AX55 v1, where the switch SerDes runs HSGMII (2500base-x) on
-external interface 1 to an IPQ5018 gmac1 (stmmac, fixed-link), on an
-OpenWrt 6.12 kernel. Some cold-boot results that may be relevant to the
-calibration discussion.
+On Fri Jul 17, 2026 at 2:44 PM CEST, Paolo Abeni wrote:
+> On 7/17/26 2:05 PM, Sean Anderson wrote:
+>> On 7/17/26 07:11, Paolo Abeni wrote:
+>>> On 7/17/26 12:13 PM, Michael Walle wrote:
+>>>> I've seen that, but.. that was the actual change between v1 and v2
+>>>> as suggested by Sean. It does not depend on the actual link speed,
+>>>> but the maximum link speed. So it is not relevant if the link
+>>>> negotiates to a slower speed or not. At least that now matches the
+>>>> behavior prior to the phylink conversion. If that was working -
+>>>> that I can't tell you.
+>>>
+>>> I'm sorry, following all cross revision discussion is a bit hard here.
+>>>
+>>> I don't understand if the 'link never established' is specific of your
+>>> board, or it a constant with this driver. Could you please clarify?
 
-Test image carried, on top of the v6 series:
- - the SDS indirect-access busy-wait fix, and
- - the ~98 ms PLL-settle delay plus the 0x060C-0x060F "Local Jam
-   Table" analog calibration proposed in this thread.
+I don't think it's related to my board, but rather to the link being
+a SGMII one on my board. I assume Sean had an RGMII link while
+converting the driver (?) and moreover, that it worked correctly
+there :)
 
-Result: after the router sat powered off overnight (multi-hour cold
-soak), the first boot still came up with the trunk degraded - in this
-run completely dead. The switch reported link up (2.5G/Full), no
-CRC/symbol error counters moving, but dot1dTpPortInDiscards climbing
-on the CPU-facing port, and the WAN never got a DHCP lease (ping:
-sendto: Network unreachable). Milder runs of the same state show
-55-70 % packet loss with sub-ms RTT on the frames that do pass. So on
-this board the analog calibration, like the BMCR data-path reset and
-the busy-wait before it, does not prevent the cold-start bad state.
+>> I think we should set byte/nibble mode in link_up as well as mac_config.=
+ That
+>> should fix the problem where the link never comes up (possibly broken si=
+nce
+>> the phylink conversion). I think it's unlikely that this config is suppo=
+sed
+>> to match the phy interface speed and not the link speed, but you never k=
+now...
+> FTR, the above does not answer my question ;)
+>
+> Still I think (mostly guess) bringing the mode initialization in both
+> link_up and mac_config should be safer (that is, I agree with the above
+> plan).
 
-What does cure it, without a reboot: a full driver re-probe. Unbinding
-and re-binding the switch device re-runs the whole probe path - the
-GPIO hardware reset of the RTL8367S plus the complete chip init (all
-jam tables) - and the trunk comes back clean immediately:
+I agree. I looked at the original driver and there adjust_link()
+will also select between byte and nibble mode. I'll prepare a v3.
 
-  ----- BEFORE: ping upstream router
-  ping: sendto: Network unreachable
-  ----- BEFORE: CPU port discards
-  dot1dTpPortInDiscards: 17 (climbing)
-  ===== echo <dev> > .../unbind ; echo <dev> > .../bind =====
-  ... wan: Link is Up - 1Gbps/Full - flow control rx/tx
-  ----- AFTER: ping upstream router
-  20 packets transmitted, 20 received, 0% packet loss
+Sorry, I misunderstood Sean's intention/suggestion, thanks for
+pushing on this. FWIW, I also tried with nibble mode as the initial
+configuration on my board and link_up() is getting called. Whereas
+if it's 0 (as in being documented as "reserved", though it's the
+default), .link_up() is never called. Thus, it seems that it just
+has to be any valid setting until link_up() will set the correct
+value.
 
-A soft reboot fixes it the same way (sometimes on the second try).
-Short power-cycles (~1 min off) do not reproduce it; only a multi-hour
-cold soak does. Anything that resets the SerDes without the full chip
-re-init (BMCR data-path reset, repeated reset pulses) leaves the bad
-state in place - one variant I tried even reports the port healthy
-after a reset pulse while the datapath keeps mangling frames.
+-michael
 
-To me this points away from the SerDes analog front-end tuning values:
-the first full init on cold silicon lands the chip in a bad state, and
-a repeated full init clears it, hours later, with the silicon warm or
-cold. That looks more like an ordering/settling problem in the early
-init sequence than like the calibration vector itself.
+--ae5ad5cfb4a78f2c248140514d559ccca382f5f4870c0bf4453ca98fc494
+Content-Type: application/pgp-signature; name="signature.asc"
 
-On the hardware-health question raised elsewhere: the board looks
-clean, no bulging/dried capacitors, and the 3.3 V and 1.8 V rails
-measure correct. But this is a single unit, so I cannot rule out a
-marginal sample - the cold-soak state does reproduce reliably here
-every morning, which at least makes it a good test bench.
+-----BEGIN PGP SIGNATURE-----
 
-Happy to test any patch or instrumented build on this hardware.
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCalomwBIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/it4QF+PueGx3Bp6Fp8hUKmit5UP2NqFfNIfi7l
+Z4d7l0Fl45RzxJNXEBGW7MPJdxHpZgqwAYCvnXq5ZCjAGW7gxBJA7vlqOBvNyA+4
+4zI5pQC89vs5Ep7rIYnGztivnd7bh09Gkgs=
+=aat/
+-----END PGP SIGNATURE-----
 
-Best regards,
-Stanislaw
+--ae5ad5cfb4a78f2c248140514d559ccca382f5f4870c0bf4453ca98fc494--
