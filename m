@@ -1,81 +1,78 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E8935959;
-	Fri, 17 Jul 2026 02:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E630528640B;
+	Fri, 17 Jul 2026 02:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784254656; cv=none; b=uZJBNVO1+H2g3hHnJKSJvJONhVELRdpIT/dH+6K+B0zGRKLXHeaQISIG+rGv68WX7hLKmGGcV9zYsCYErRYzbTyF1jHk8DxH/nDrTBrb1LabwCvF0BMSbhCo0MIfQpmubFlIrhbTrehvfadeJAhUpvE1l7M2n82MVZd0AwZXyCM=
+	t=1784254991; cv=none; b=n5bzrZS8ReDEUKgvjDLHtK8Xxef8gIkfIFEfJ8+00L6FL4uub9NewffcmEL4SuqkHO+C13ZJ8nm6u0Kmj5eWg1U0h9hdLUp5s5oPjpE12DjAzUI8WHodcBVlsrfSQ3S5EmBJWtpMACrHkJyKtYlN7CVb4s9aYdKsj4qRyKyUTWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784254656; c=relaxed/simple;
-	bh=xDgkpvNQqfHrhFey0IHivSOFo7DoPR4Zz2HXVwGF/DU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=GbjhG2msmQ/BEnmfKipBqGqfe+0p1AcMa8WH9vzjNcMak4pF4r/Vv6fvuWmNjnKHjlJ2gxg2O+0Yivhp1YlHXyyTThZqJdEpzN78+IgP6VljoVJBR91OyLFXcQkY1ndADCRz0JAw+wATbNzrrAT2yE1fPjICAa3lCjBnw/xbiDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IQeZTsDF; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1784254991; c=relaxed/simple;
+	bh=gzBB4RI0McIMNfkp6nyHpRhld9DwqhLSjBfqY3GUKeU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TWHyczUtGXxUMbkQ04bfgZZPOPmORtRD0IoEUSabp7N1qlPi1DlSCVMbYwb4y932Prpe3cyqV/n1ygSwmuN94rBhafdRMfv2QOQxyNXAXqQdyF6ir8JHhOU4iTd43c7fGIU6ZAyPk1Y4kwMz6BHjOYBDqk0sBcMShWXPNNVe4XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZIHhImDa; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IQeZTsDF"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZIHhImDa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=xDgkpvNQqfHrhFey0IHivSOFo7DoPR4Zz2HXVwGF/DU=; b=I
-	QeZTsDFHbvDpDAe5i7omm9x5a0ghyqbd3fwZ+f5GtrGTQD1Kfyu5UWoyEIlZBkSb
-	y3C7/1v8740EnTtoyf3HEQitF8MOHhGKozA6bYRkW8nycBN+5piSs2QjEAeBELet
-	Q8k0Nr8XZ0WFw+YKxGYo88Mua8pfP1Gx4kJRhg3NCY=
-Received: from xiongwm2026$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-109 (Coremail) ; Fri, 17 Jul 2026 10:17:11 +0800
- (CST)
-Date: Fri, 17 Jul 2026 10:17:11 +0800 (CST)
-From: "Weimin Xiong" <xiongwm2026@163.com>
-To: eperezma@redhat.com
-Cc: virtualization@lists.linux.dev, mst@redhat.com, jasowangio@gmail.com,
-	netdev@vger.kernel.org, kvm@vger.kernel.org, xiongweimin@kylinos.cn
-Subject: Re: Re: [PATCH] vhost-vdpa: propagate set_map error to caller
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
-References: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
-X-NTES-SC: AL_Qu2TBv6eu04o5yeRbekckk8Ugeg8Xsewsvgh249ec+IEgC3DxAc7ZUV/JFL5+t+2BASjkwWLfTtNyOVnb4ZZTET/v5QqVaNDtyH5WsdzUw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=2t
+	Lk+W75QTRAmJLveJNlKhA2n+LlU7iq3Aw06vBYpq8=; b=ZIHhImDa3PbJj/RzpM
+	e/mhLIdCtYJWMN2bH1Z5TNomsAjVdK2VuvZXaeyuhuRngzlexoQh2JP0tXSHrWwY
+	WTSBHKy/aHbb6Dt0WQKzJrvgtKeoXXGQKQ+QrhhcbRLmO8DrsUVApfTbbWoNHl7T
+	1b1MA06Lds/Vgs2ToEO1LgYC8=
+Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCnyPcFkllq3S0RHA--.2823S2;
+	Fri, 17 Jul 2026 10:23:02 +0800 (CST)
+From: Weimin Xiong <xiongwm2026@163.com>
+To: netdev@vger.kernel.org
+Cc: linux-rdma@vger.kernel.org
+Subject: [PATCH net-next v2] net/rds: use krealloc_array() for iovector growth
+Date: Fri, 17 Jul 2026 10:23:02 +0800
+Message-ID: <20260717022302.329333-1-xiongwm2026@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <1f3989d4.1c32.19f6ddd0f7e.Coremail.xiongwm2026@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:bSgvCgD3F3aokFlqhukfAA--.17787W
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC7wg-zmpZkKiI6AAA39
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCnyPcFkllq3S0RHA--.2823S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JF17AFW8WrykuF43Jr43ZFb_yoWfWFc_GF
+	WIqas7W343tF43Ar1Ikr4aqr9xtF4rua1xury3KrWSq3y8Jrs8ZrWkJrn5AFsxWw4xCr1Y
+	yr1DZrn2y39xGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8_hLUUUUUU==
+X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC8AaWJmpZkga07QAA34
 
-RnJvbTogeGlvbmd3ZWltaW4gPHhpb25nd2VpbWluQGt5bGlub3MuY24+CgpIaSBFdWdlbmlvLAoK
-VGhhbmtzIGZvciB5b3VyIHJldmlldyEKCllvdSBhcmUgcmlnaHQuIE15IG9yaWdpbmFsIHBhdGNo
-IGhhcyBhbiBpc3N1ZSB3aXRoIHRoZSBgYnJlYWtgIHN0YXRlbWVudCwKd2hpY2ggc2tpcHMgdGhl
-IGB2LT5pbl9iYXRjaCA9IGZhbHNlYCBhc3NpZ25tZW50IHdoZW4gYHNldF9tYXBgIGZhaWxzLgpU
-aGUgY29ycmVjdCBhcHByb2FjaCBpcyB0byBzaW1wbHkgY2FwdHVyZSB0aGUgcmV0dXJuIHZhbHVl
-IHdpdGhvdXQKYnJlYWtpbmc6CgpgYGBjCmNhc2UgVkhPU1RfSU9UTEJfQkFUQ0hfRU5EOgogICAg
-aWYgKHYtPmluX2JhdGNoICYmIG9wcy0+c2V0X21hcCkKICAgICAgICByID0gb3BzLT5zZXRfbWFw
-KHZkcGEsIGFzaWQsIGlvdGxiKTsKICAgIHYtPmluX2JhdGNoID0gZmFsc2U7CiAgICBicmVhazsK
-YGBgCgpUaGlzIHdheToKMS4gVGhlIHJldHVybiB2YWx1ZSBvZiBgc2V0X21hcGAgaXMgcHJvcGFn
-YXRlZCB0byB0aGUgY2FsbGVyCjIuIGB2LT5pbl9iYXRjaGAgaXMgYWx3YXlzIHJlc2V0LCByZWdh
-cmRsZXNzIG9mIHN1Y2Nlc3Mgb3IgZmFpbHVyZQoKVXBkYXRlZCBwYXRjaCBhdHRhY2hlZCBiZWxv
-dy4KCi0tLQoKU3ViamVjdDogW1BBVENIXSB2aG9zdC12ZHBhOiBwcm9wYWdhdGUgc2V0X21hcCBl
-cnJvciB0byBjYWxsZXIKClRoZSByZXR1cm4gdmFsdWUgb2Ygb3BzLT5zZXRfbWFwKCkgaXMgY3Vy
-cmVudGx5IGlnbm9yZWQgd2hlbiBoYW5kbGluZwpWSE9TVF9JT1RMQl9CQVRDSF9FTkQuIElmIHRo
-ZSBiYWNrZW5kIGZhaWxzIHRvIHByb2dyYW0gdGhlIElPVExCLAp0aGUgVk1NIGluY29ycmVjdGx5
-IGJlbGlldmVzIHRoZSBvcGVyYXRpb24gc3VjY2VlZGVkIGFuZCBtYXkgY29udGludWUKd2l0aCBz
-dGFsZSBvciBpbmNvcnJlY3QgbWFwcGluZ3MuCgpQcm9wYWdhdGUgdGhlIGVycm9yIGZyb20gb3Bz
-LT5zZXRfbWFwKCkgdG8gdGhlIGNhbGxlci4KClNpZ25lZC1vZmYtYnk6IHhpb25nd2VpbWluIDx4
-aW9uZ3dlaW1pbkBreWxpbm9zLmNuPgotLS0KIGRyaXZlcnMvdmhvc3QvdmRwYS5jIHwgMiArLQog
-MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy92aG9zdC92ZHBhLmMgYi9kcml2ZXJzL3Zob3N0L3ZkcGEuYwppbmRleCBiYjk2
-YjFhYTUuLmI1MmQ4ZDk0ZSAxMDA2NDQKLS0tIGEvZHJpdmVycy92aG9zdC92ZHBhLmMKKysrIGIv
-ZHJpdmVycy92aG9zdC92ZHBhLmMKQEAgLTEyOTgsNyArMTI5OCw3IEBAIHN0YXRpYyBpbnQgdmhv
-c3RfdmRwYV9wcm9jZXNzX2lvdGxiX21zZyhzdHJ1Y3Qgdmhvc3RfZGV2ICpkZXYsIHUzMiBhc2lk
-LAogCQlicmVhazsKIAljYXNlIFZIT1NUX0lPVExCX0JBVENIX0VORDoKIAkJaWYgKHYtPmluX2Jh
-dGNoICYmIG9wcy0+c2V0X21hcCkKLQkJCW9wcy0+c2V0X21hcCh2ZHBhLCBhc2lkLCBpb3RsYik7
-CisJCQlyID0gb3BzLT5zZXRfbWFwKHZkcGEsIGFzaWQsIGlvdGxiKTsKIAkJdi0+aW5fYmF0Y2gg
-PSBmYWxzZTsKIAkJYnJlYWs7CiAJZGVmYXVsdDoKLS0KMi4zOS4zCg==
+Use krealloc_array() for growing the RDS iovector array. This makes the
+array allocation overflow-safe and derives the element size from the
+array pointer.
+
+Signed-off-by: Weimin Xiong <xiongwm2026@163.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+---
+ net/rds/send.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/rds/send.c b/net/rds/send.c
+index 68be1bf0e..a567c97a 100644
+--- a/net/rds/send.c
++++ b/net/rds/send.c
+@@ -971,11 +971,8 @@ static int rds_rm_size(struct msghdr *msg, int num_sgs,
+ 				return -EINVAL;
+ 			if (vct->indx >= vct->len) {
+ 				vct->len += vct->incr;
+-				tmp_iov =
+-					krealloc(vct->vec,
+-						 vct->len *
+-						 sizeof(struct rds_iov_vector),
+-						 GFP_KERNEL);
++				tmp_iov = krealloc_array(vct->vec, vct->len,
++							 sizeof(*vct->vec), GFP_KERNEL);
+ 				if (!tmp_iov) {
+ 					vct->len -= vct->incr;
+ 					return -ENOMEM;
+--
+2.39.3
+
