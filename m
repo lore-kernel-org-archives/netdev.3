@@ -1,124 +1,81 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678F8429CFB
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 14:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83479246BCD;
+	Fri, 17 Jul 2026 14:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298136; cv=none; b=sVRxEC3HxiTxkirS3r5iMypUAF2CyulXON5sUcZ4K6ehx7R2k7fE/zY/sRitO/qIePMl2TJtLZnDBVAWxSF6PW9c7blKnzVpc5vdyNe6gTKkc7dOZ4Mb4KwQKUD+NUmb+bpOBs1aKtHPMtXDeeV3RzX7L0zdDZaKftHaVRvYuxk=
+	t=1784298670; cv=none; b=aJuT59yPB424sGDxSByeLGZKu7o+R8M2m8qId0GTjgacDWo5JS0UJ7zb3lqphQ8km25UTUoyK4kJhpeg6eQ3qBD2wDw8BHMaURbUe+nz0LTRfJS6K1Hbtm7mP/KQtvbKMZQsj5KyXuEYRdXFXyVbkRMcoKfjtHP827wWHcFre4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298136; c=relaxed/simple;
-	bh=7kow3xJStgv3CCEwPVH94AHQZCvexA38wioGE90Sw6U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CgHOW//8XlkPWuayFpxFNHQsyafy74GVjOnIlYIAB/1ByvQxTLTGnQQh8jSAPT3GNaMpGAm6T1M7eP4KqI6dOYKXTYl681Dq2NwGp73Nik2PHxqSARFBbDiaUarsCldhrQc5Yow0soickH650nabYli6Aj3gN8tDLjBrpdLI+Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+uDacnM; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784298670; c=relaxed/simple;
+	bh=x43WABfRrQmTgHSWxif6YQkf+OShmTXhXBvgZYTwJ+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V6ftJW6Je3b0q19nyiTXQdYn/Z5DviPkAH8Dzp8dG38OpCBBOO8JgeU4vc5TeV+pSxuIDe83x+8Pi/NTUnrTbPjYZVofPFOFGyyqH1a5BCX+YJBeP/RlTipJS2sk4aecGaIknSCN40yXc/jIZjMHGLfRfERKzTfAz3Vb6/1FVbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=mkcDUMrw; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k+uDacnM"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-381b831d535so5130182a91.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 07:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784298135; x=1784902935; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ye+2o/nLKhbl8EFiB/65QBjN6Z27bE/oD+7iGYaj4l0=;
-        b=k+uDacnMuUWqF/WA/cN2H1c7Ym5Sg2/1g3VJJvl+SvPGxKBv44jXNlYUFvcL0A4Vv2
-         Aqpzu1WaNnU0V6AQsrSTvt+z4Xv2txDIxViGjHj4iYKAW2UTdb7HGkwJ75BF2PYCw44b
-         KktPl/U2XgAVYUa0903TwsTRFvvC96e7wRzUsWkpcSBrI1HNTnwOvsH0yIf9Rmiwr7xz
-         +czaKSfSCDQEUgYeKc5BJCkD8HLRfvNC/JUjrrCTmqxi60Tsz7clQOT5chEpGqrZ9ws0
-         UCT1tg5nZBKtOZVYI2x3ToWVyJ/oUjWQntzMqtTS8AWAytixyU7djLtjTKVDzJn3X5n1
-         w0YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784298135; x=1784902935;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ye+2o/nLKhbl8EFiB/65QBjN6Z27bE/oD+7iGYaj4l0=;
-        b=nIqpj9Z9ZP95Qjx1pIZjLnDPiNM+Y69cMi1QGX/MGyyAHpX9ngDor9KGLoOlzY9hTP
-         eC6Fm5DSpnHOXoe/+DqmU6vo4IAtd9q+rKCylmUsT2qpSmBpxYnt45YtKJyK60/FfKeu
-         A38vN4kOw0yhQ5zXfR6YXttzTV8RNxWOf6fcD8g25oxKU5pSasqmlp+6j/eNJIwbpRgZ
-         fIEy15uxmlP79LgRQp0Qq5XmVIoCA4AKlCW+vO1Vq/D8laa8kXOmrQ6ExDm2B/6kj553
-         gKxjnc1ntmU2H+1WNZaCA8A4yk3N2IVA/KwbOWyYMqoFxNpeta8UcWelfHjWyn3BhTBu
-         1gyg==
-X-Forwarded-Encrypted: i=1; AHgh+RovDz9G6ZNKV9C4jTv2+CPteBDT5Pulw0H0bGUBdU0a9IsiVD0ZUPssXUZ1vydIQpqS73f3vzM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQtkh75JgPJBgMyDww3ohHs1NF/WEPOE636C/45l1CXZVdtlFH
-	qBKtKmQMcTCEm6cwqWc1XKT3WeXFDGW/DamhoLlbUg00hG74KO/zohRY
-X-Gm-Gg: AfdE7cksBQ2ylzqb9OlWnnLOgMuJAYtD/ilHZcCE0kaT32a/nWxPv8gC+upm2V8ao73
-	9kaIphuLZM+o+APUmzyWGY0YROHmKas2YjvMMDbz5R0mqnH/FtzVjRYMTMuZUSWl7th3J0B5kx5
-	Htt26iQDiBjPi8OKG13HBslm799VW+IqE4T4HAxtTUHlokOIr9CNgazbL3Rudb63gdQ0ecfjfUL
-	WESAytxmFsfwXjs1S8GD8/qkAdA/9sPDo1nhx18xPmTlQ5/yzy9cmAWmXDGNxlpr78vMHXS+iLv
-	CUIIbF/g2Q0/olP8Duw4Tfowr5lUXzRzSV8t6gBjOfSTPV7ZbhYeHoGpKBEsbL9Xv1n86T+PCkR
-	eKNdoeUUcYh8uH6nJGpfRFFsSKiF7KHUAKxrKyN6uY7opxnXwL/f54EZzSeEA+6W2kum25mg2di
-	/sclSh
-X-Received: by 2002:a17:90b:1dc3:b0:384:5b5b:3465 with SMTP id 98e67ed59e1d1-38e4b5792e4mr3066215a91.29.1784298134525;
-        Fri, 17 Jul 2026 07:22:14 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e39de785dsm3009325a91.4.2026.07.17.07.22.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 07:22:14 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	michael.christie@oracle.com
-Cc: pbonzini@redhat.com,
-	stefanha@redhat.com,
-	eperezma@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL count
-Date: Fri, 17 Jul 2026 22:22:05 +0800
-Message-Id: <20260717142205.103515-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="mkcDUMrw"
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 4E87C228D5;
+	Fri, 17 Jul 2026 16:31:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1784298666;
+	bh=OCI7dqd3heCu3mo5D7WQBBmAEYaadfOKWnanUZ0DyBg=; h=From:To:Subject;
+	b=mkcDUMrwIyoZgX70TyOQrCul5D9WyijCHoXAbitsJkry9kbjE6IVPFoNIm0eSd+PT
+	 T7dtrNMTUDiOg82ePKa5W0hfhoUvV1eXEKTH2MmUqPAdJQVqpofZYDMN434H7aJmg0
+	 Ew9AA+wVftAC2T0Wlzh+DbvC0rB/QFC6wu6C9H7VyIjcyLZb1wfHJgTHGInCk5INLK
+	 bBYg/FRiLvymI61MQml6mIQeucmHUKbJfNLvlM5yEDBeWCiZZqqNroVSlMZPAEYJN7
+	 syQgGKACDiS7VgSYxTJiR4IJFQaREswsLIvGhjHvopEYAQeLAwyDxF3/52bY5EkRGy
+	 azUxLfp1soxXA==
+Date: Fri, 17 Jul 2026 16:31:02 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Christopher Kleiner <chris@kleiner.pro>
+Cc: briannorris@chromium.org, linux-wireless@vger.kernel.org,
+	francesco@dolcini.it, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: validate HT/VHT element length before
+ storing beacon IE pointers
+Message-ID: <20260717143102.GA512678@francesco-nb>
+References: <20260717000017.61415-1-chris@kleiner.pro>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717000017.61415-1-chris@kleiner.pro>
 
-The protection SGL path passes the result of vhost_scsi_calc_sgls()
-directly to sg_alloc_table_chained(). The helper returns a negative
-errno when the iterator is invalid or the request exceeds the segment
-limit. The negative errno is then treated as a very large unsigned count
-and sends the request into the SGL allocation path with an invalid size.
+On Thu, Jul 16, 2026 at 08:00:17PM -0400, Christopher Kleiner wrote:
+> mwifiex_update_bss_desc_with_ie() stores raw pointers into the beacon
+> buffer for the HT Capability, HT Operation, VHT Capability and VHT
+> Operation elements without checking that the element is long enough to
+> hold the corresponding fixed-size structure. The generic IE loop only
+> guarantees that the declared element length fits inside the beacon
+> buffer (bytes_left >= total_ie_len); it does not guarantee that
+> element_len is large enough for the struct that later consumers copy.
+> 
+> beacon_buf is a tight kmemdup() of the over-the-air IEs. When the
+> association command is built, mwifiex_cmd_append_11n_tlv() /
+> mwifiex_cmd_append_11ac_tlv() copy a fixed number of bytes from the
+> stored pointers (sizeof(struct ieee80211_ht_cap) and friends). A
+> malicious AP that emits a beacon or probe response ending in a
+> truncated (e.g. zero-length) HT Capability element leaves bcn_ht_cap
+> pointing near the end of the slab, and the subsequent copy reads out of
+> bounds. The leaked bytes are placed into the association request
+> transmitted back to the AP, disclosing adjacent slab memory; on
+> CONFIG_KASAN / panic_on_oops kernels it is an out-of-bounds oops.
+> 
+> Commit 685c9b7750bf ("mwifiex: Abort at too short BSS descriptor
+> element") added such length checks for the FH/DS/CF/IBSS parameter sets
+> and a few other elements, but did not cover the HT/VHT capability and
+> operation elements. Validate element_len against the size of the
+> structure that will be consumed, mirroring those existing checks.
+> 
+> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christopher Kleiner <chris@kleiner.pro>
 
-Repeated malformed T10-PI submissions from a host-side application caused
-memory usage to rise sharply. MemAvailable fell to about 200 MB, and PSI
-full avg10 reached about 1.46. The OOM killer terminated several userspace
-processes before the endpoint cleanup completed. The kernel log included:
-
-    [17036.451028] Out of memory: Killed process 2345 (systemd)
-    [17036.493325] Out of memory: Killed process 2349 (sd-pam)
-    [17078.265127] Out of memory: Killed process 1793 (networkd-dispat)
-
-Return the calculation error before setting up the protection SGL. This
-keeps the protection path consistent with the data SGL path and prevents
-the invalid count from entering the allocation path.
-
-Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/scsi.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 9a1253b9d..8486652fd 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -972,6 +972,9 @@ vhost_scsi_mapal(struct vhost_scsi *vs, struct vhost_scsi_cmd *cmd,
- 	if (prot_bytes) {
- 		sgl_count = vhost_scsi_calc_sgls(prot_iter, prot_bytes,
- 						 VHOST_SCSI_PREALLOC_PROT_SGLS);
-+		if (sgl_count < 0)
-+			return sgl_count;
-+
- 		cmd->prot_table.sgl = cmd->prot_sgl;
- 		ret = sg_alloc_table_chained(&cmd->prot_table, sgl_count,
- 					     cmd->prot_table.sgl,
--- 
-2.43.0
+Duplicate? We already have this in review https://lore.kernel.org/all/20260709100800.7026-1-doruk@0sec.ai/
