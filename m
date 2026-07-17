@@ -1,169 +1,424 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012041.outbound.protection.outlook.com [52.101.43.41])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EF421B192;
-	Fri, 17 Jul 2026 00:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784248585; cv=fail; b=avxavUx/5vAUfrbL0dhfMTKFeDd3uYkyCa8Z/h4iGjabPWZpz6iI15Pu2QnVqrPGDtMwaJaGBh5VoEuFW/vXJcXyioRuQhQTUlUXv9D2p6PYXP1wFfQl0E46/fz9HhLgY2GqH5waYkD/kkfD8MNtiofIUWJEAdZ/E5Fpi+crp+M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784248585; c=relaxed/simple;
-	bh=C+rGI/weQp/X4KgkwJHJEWgIsA2SJz//bQ5JO/loZnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VLnjPP5y+mU1mBCu5P1y30EQE4rSGWnD4EtarVnJYwa/UfkGTD6OKg8/qyrG4bIdnyaxYIUD0AbRA8k/YG7Mm6Me7R7rFIaFjtnUz1ZBBqTAzuEik1yoJhLkNEgO4/eHoqnVAXCHEbso78M83XAzWCnzKLoPnlXjrTRdbkA6X/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Y21zBHHl; arc=fail smtp.client-ip=52.101.43.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86771ABED9
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 00:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784249602; cv=none; b=AutRP6l4xnAm+MwlfSoVXhspi+4fn9DFCy5pfMdAQ9XYA1skD6xtYIiyYxou6bRNDgy9a8Xt7drFh8EELa6uGPGWkiD/DwWk2AmIIdBJIxt42o565gzryvoMSj6MiaLy+Sw0mlQCtCsOJEnFlQV9SUStZ9unNyDykq6tr12ilfc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784249602; c=relaxed/simple;
+	bh=SQfvUrEjS7KKRhFFGOJIMSSPBtdUhFKrhITK6ydYC08=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wofyvc3fNx5yY1VVs7b3Mc/WF6OxYizaM9gVarc1wQakdWd0txnksoJNZ74ZyI8y+jqqvFWt88txiL9zpyMka9a/8twLUgHo5IRCkLpz0Ms9gEDnpfLV+CJJwAWv0snl+IuKhQHF3ybqqXZH7kxSL3EHgOUHxVIPxJGH8o6S9FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qr7bd0oI; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Y21zBHHl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T89r6BniilbzH19QPjuEq215yvGNmIxaD9BeAJnowemlcvunsrCMu5jaLKVbArHcnI+lTByRDn9Sr2pxpDBJbcP0evXm9wsXgC9oednbGSmEvVyre/fhi1riZX9HL0BloPRW/834RbP5A5lhdQIv4Vq3TPC6sb3vftFa2MBIBEt25OdGEVTRhYjmB9xtPMDy0zuAncrD3y5EdtHEkKTyoBLmyUAF+cgct+iYNz3ZNmSxvb0sXYeGOenAQYJqNmoBqrhJg7voEdx+wrlGsmeimULuAeyHH+hr6bEna+pGQzlz1undSq0IuBxis7oCs/HnUt2FTWV6YFMfW4KBEQizNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6yz8CL/JmEEOmXLtS5Cg+ETigIBkKag8VP5JxrsSea0=;
- b=WWa5GuUT7lqMQXB0e4nNT0s/vvq9Oi0s2X+UyS6JOkc3catq5whXBDtTZdmxerr6ZYgX5UTgM+KgEfshLB/wsNpWvnx6Z7Cmdl5jMtK1vW3OmVMcOWu/XiGEL2HXqVdF30qILv8iD4S/ACBOZ1uW4lsgfaf80H3yEJqPsmOl6W17L/d4GMShxwmiDLMdALz7oWo2foY8Ct+gp0nMwPlx/AjJL0Ztiln6Gf+Kats9Ew0+XX+kgRjLCKayOPCifToCgO0IBODEsoBQVjetVFzx/EWC/rNvPXb7540zKCKwZzWlyEOFO67Q8IyCB/K5Wxkb/27sx4kI4AM397YbRsVTHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6yz8CL/JmEEOmXLtS5Cg+ETigIBkKag8VP5JxrsSea0=;
- b=Y21zBHHlA1ecVd65NErLKnNAe1Z6rtZogygrCzgblow5ZZP1kcSBVeLF5LCyAor+2HegIKEOVNqa0hzImEmKrAZ7rqLHOjCMn1FlSxu+uPVtsDF4IPwXKwTGSVrMGBn3fmC0Oc/0NJ+jLeoVB6wjXt7egUv+ksFVFQYey8GLwamj73K2USxmjaU+Rr3p63rChtshCjndN7eZyTjV+7sfrQeNt3hwTSloHYtJvIlQV5B7L5L6EkuQm7xc80p52oU/i/ltg40QB5NdRMbqWC6qQr9AXOl0k23FsqIzqnC84WdJzTAIGZJQX+cMJaoO9QE9ksh+jSgcBm7G+ZVwYiODTQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by LV2PR12MB5871.namprd12.prod.outlook.com (2603:10b6:408:174::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Fri, 17 Jul
- 2026 00:36:20 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0202.014; Fri, 17 Jul 2026
- 00:36:20 +0000
-Date: Thu, 16 Jul 2026 21:36:19 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>,
-	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v3 06/11] selftests: Fix arm64 IO barriers to match kernel
-Message-ID: <20260717003619.GA699082@nvidia.com>
-References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
- <6-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
- <20260716232210.GA700430@ax162>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716232210.GA700430@ax162>
-X-ClientProxiedBy: YT4PR01CA0169.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:110::20) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qr7bd0oI"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GNgJo6429166;
+	Fri, 17 Jul 2026 00:53:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C+Ywas
+	LxyvtU+4Kha6D3NxqJK6E85iK3nNko02JaWpk=; b=Qr7bd0oIwMQCmSh8g+aJ57
+	V3AVfr+BqLY4SJcljOVthWXUKcyap9Q7PoLW+ZUj082QRFGitl67iSvZ2E+dCuPT
+	b2HeDEk9uPy65NMYwIgPxakfgHhBSCa/JvHDcMGncGbYLkhWV3ioHU5tqVMEUb56
+	NX9ETlrRE+mKwgJUqVphXM4me1Nqpu2B3+O1OO9wO/8qjyjbaAAw+mH1Ll1MHLU9
+	d4l5i3N6j/XxCVnhzdB63ZmkVLNUpPRyiDzfMJCEhFF2Lmu8lF0n4wViDy78cR9T
+	rFXzpKXLRH5jom36/mV4EArhmbH8SK4+nLQST2eR60cMKM0iakiDaYYnYX5zLjpA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegc303t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 00:53:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66H0nmL9026499;
+	Fri, 17 Jul 2026 00:53:03 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uyf7ge-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 00:53:03 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66H0qQD719006028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 00:52:26 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B5D8D58055;
+	Fri, 17 Jul 2026 00:53:01 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8731D5804B;
+	Fri, 17 Jul 2026 00:53:00 +0000 (GMT)
+Received: from [9.61.118.188] (unknown [9.61.118.188])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Jul 2026 00:53:00 +0000 (GMT)
+Message-ID: <7262cceb-2e91-4107-8c24-d5a6b6c4281f@linux.ibm.com>
+Date: Thu, 16 Jul 2026 17:53:00 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|LV2PR12MB5871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97e93adc-0cdd-4de9-e7c8-08dee39b6bea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|4143699003|6133799003|11063799006|10067099003|3023799007|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ozMIjMtXj8AsNlF2JOG3532jwX0NEIxFX17HbpLLqfm+85FXphJFwAnJfjhFS1YLujDAibgSa925RhKBmq3sFC3tn+Qz7rmizLnXQpW3cqY9qgiL9Jcfmyqpp/8GNuXe0IZX1t/huG5jlAJrxwamphDiiNpy0v8e+4FSWhizKRPM76j5E2hjvhcLJqcBfd9EN9YtrM39DMj/TQQZH7DxHkxNNBvFw9PUmFtOGvz3afwTnOUQn41lVKrVDxa/z4qqJWIQ2ZHa99QYduZrdyWj21S40cMBFQlKFYse6D6UMD8cER+lXdN6eK66OdR9B+87sJNDhxYDJ73uGjuZiwDAYNxTk+3DweGWpDXLVjCxUX6hQs/4cd8yojvgjZlFjW0CuK9x+YGtWe4kWZ9SEWkKqwTLhvhgexoFR0BAcBCt39KJ+uFXtSqMHZJ5vAHo9ZB5HGHm3LXTnAW4JW6iHDMVZdNOuLg7K956VAt15cDTwR/bfkV4rorKjh4D40xXuLQD5ve8XoiCYhp72CDAJKCpu9yTxStxCIfk+cZc8M+sdR3kE5YXc4wBFrqNMq521G/y5ovquuyMUqBQ8jhIp7E5zIum9gZfvEKCBm8kymCQco07Z8IE+mibReKOGOj9h2+cfxnnalKj53u3v+jMrImIxJZHQZgGVrHEJB0q3ZZ5HqM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(4143699003)(6133799003)(11063799006)(10067099003)(3023799007)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HoK/N/ng8Kp+NqIWeJU1yZjwuoPIb9QwHcznZQR3lqc2HmP1J90fnzIrBq5B?=
- =?us-ascii?Q?kZw0opGvXU4wDbYhYfQ85bPG8BIVqH/14wwQasyn4hYgAGhQd26f3X6b21qV?=
- =?us-ascii?Q?ngkk0vjpScLk50PYX/TWMPzyFyzynEWsSPTcCoVcA5Owz1ITEcOdxFs8j/jt?=
- =?us-ascii?Q?XJArUawtoTmEH97vybecFOPp0Qr7Un3SgbM/+ykVKSVB30G7qfNI2vnVOWSZ?=
- =?us-ascii?Q?/M/5WSYcvfvDXcK4bYXVdvq5nYxJ95zIuy9dgRSjl3XD+ibnrJ6u89YpoWpB?=
- =?us-ascii?Q?mNO/XLzFzRU/ld6jqmCqGDMX8ELIsWZTweCjZyyrL4ZTbzLLuS/TciW//3oR?=
- =?us-ascii?Q?veBfgPUwW/i7Pq1yiXQg4UL4bqKzbMLB0Kc8LbvPNihOhY/Ip3GRRsy+rjcx?=
- =?us-ascii?Q?rOJOYsDiQCiep+vuDMFoAxDFkaq3u/HDpA4D2txNVrcUh4RR4CZXsT4d8GVQ?=
- =?us-ascii?Q?NSqk8l+6ZsNMhWFOinsgsclQ/Ix7fuFefZCM4ds0bVKnoSafTatvShuu7WCv?=
- =?us-ascii?Q?iATUkuPm7iw3/ZRh8jooWxqWF7VfjA4VKK0mU3SxQCW8sH4mTc5m2DIzeOul?=
- =?us-ascii?Q?AdljGhZNnvQBK0HQ+Xn5l4VBuxpkoClyccxNGMVJsa9lI8/9XrybWAJjNm5L?=
- =?us-ascii?Q?cwKvl1rESm9aXFB+dU0ZpQxu9zE63sZM4xlz1bTspDu112i/jWgKzYjsY9kK?=
- =?us-ascii?Q?gDGeiHGg+0pqDB82+Ke4fvAIU0MCeqxmiKEfFTOaCRtrIS9g9EgOHBojIo1X?=
- =?us-ascii?Q?/9LXLGUCF7TDLmZFDj7MgKNDR8nkSQGVBKaHMT/x1jExwgefqEIAaQJ14JKs?=
- =?us-ascii?Q?qObnREheSljjzsbYGu4MjemoZVQpSkJjpNUyBBvKVxtIF1+Aj8g9U+xg6gO3?=
- =?us-ascii?Q?Zug6/rMkxRCmjdu37QyKsnus7c2If+0ajMMqD7cV2ZV2p5/lI02G6K4ceFaL?=
- =?us-ascii?Q?FfsEEU1P+28JWFUBFvWBeeohbnuIWy5UtAJsNTPxFZVJBSbTKhpnHqHx+n9d?=
- =?us-ascii?Q?CeG16mCWNu7dHHKKzKe4iDgQIsvLBTooW85zrFuNeh+ltnGytVYsBMLhZ/r4?=
- =?us-ascii?Q?e+WeDmq3XSdwWJUjRYZARppLLSOvm+OlCm6R8eJsJBtAbfE0mWwj+0uWDWME?=
- =?us-ascii?Q?/I+5c9dExF661DXjqsOLVcM/tMuBJb0mu9DD+3VkEQfaInft/Ff1ElasgNA/?=
- =?us-ascii?Q?xJx9snj3MKypmXBOaOcemdHoLaEtQSJzKuQjFjRlk7fBnQkLUtSIzvc/FCNE?=
- =?us-ascii?Q?kFlh4iaqEhMyimIeXurPC4nAHK2n38qQMslHYqckix1T9XWuqmIuedvC+Q17?=
- =?us-ascii?Q?Aq4kxW1fETbgOifpa3/TiehubwBMi5V3eUeg01gIpw9URFSvBIzQG/fwLJO9?=
- =?us-ascii?Q?pdBP3pIFo45iuplcmVWg3q2o+Xjholt7QVyGmY1hDfLLD3U7fJT0UJ5bxMet?=
- =?us-ascii?Q?UuFZVt1SEWzQSKeRPyYdk8i+3Cf1C9Nrj54qTer8MRb8vwhva5VhMEQttdMG?=
- =?us-ascii?Q?RTbcyW9BP/VvujI9J1Tcz7tTqgwaD6W9EOpNB3kXJD1FtrPd570sM2prPaYx?=
- =?us-ascii?Q?XlwuAFkPkPpIbPiZ58sagmquFMni4IU6lsYpLcKqYcP3L2zfgG4rXMDEX80X?=
- =?us-ascii?Q?c2YQqvptCp60qvhvRZBXYZivyWVoXPPGRh40Gqb8cwRrAG4+EcorcGuQ/AI3?=
- =?us-ascii?Q?98pdqV59PxS2NI/qoXHet30NAc0v20S3yhxG1eilAWXX9Qar?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97e93adc-0cdd-4de9-e7c8-08dee39b6bea
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 00:36:20.5162
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MWyS6gTdw5bQGb0yd96u1bI99kfCheFgGAHYzCxq6j7oFEJqgAIb9AyaPta/vKcY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5871
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 08/15] ibmveth: Refactor open/close into
+ MQ-ready resource pipeline
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, Dave Marquardt <davemarq@linux.ibm.com>
+References: <20260706193603.8039-1-mmc@linux.ibm.com>
+ <20260706193603.8039-9-mmc@linux.ibm.com>
+ <20260714124736.GK1364329@horms.kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260714124736.GK1364329@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a597cf0 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=kw0fJWjWycK_0JI3rWYA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=H1KAiuew1PUbUSSU8qhj:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDAwMyBTYWx0ZWRfX/lawfimWeup0
+ PpDczANguxrKQ8Dtv2F9olidSEN3l75Jk8qAQ6mocmesCJ4KIHOs0Tv2cjdDlpykJUpmwtgHXSp
+ 9EbkBEq3oOXjbkQOHahLRXmbAutdiV9crLid3lu6oyJT0BZO+4+G4Z9EAoYEon9VHOtJXPuUeFt
+ VoBzhUPIA7nPdOFoGL3ecwznjsRvd0Ph2RpLlPpLhy6T8DlmwcCdwNJ2Z7QVk7bz+8OUI4LksSm
+ M78xKdFWejwGWrkZNddkm0hOnllVNdSRrRH5NxD6vikAIqCZwRtGKMwskJOPfj1fOQr/SiIanLY
+ 3K16hmFPjUmghWWb2ycwvKI08SXyPS/hiMqoivrH8raX66UgotqTiwja8Z4vU36kV0TB+UYqaPH
+ kIA/UO1D9D5FRf37+0Jb2Q2uZtUipx3PMZlPNsdIPeGqjrPj/Wb65MfmTDu2nnly5nbTg/aDf1A
+ pGIiy5qVEXeL91gVeow==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDAwMyBTYWx0ZWRfX1L4pVHdwsGe3
+ a4tjTI2fXFdH1lxBYi8iUIc/2S41O0+eES+2jC49RnKeEcQZrTD6KpaXtcFb0feEMbm5RBlPUOi
+ 9Pw/CHCL0soolgyE++QFDuVcazKOLC4=
+X-Proofpoint-GUID: MiCOPFzN1ZnRy_b2U4ZVCbo9d67ivL-C
+X-Proofpoint-ORIG-GUID: BLOf8-U4N7qSNPTawTtFpQq7_uzWG2WH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-16_08,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607170003
 
-On Thu, Jul 16, 2026 at 04:22:10PM -0700, Nathan Chancellor wrote:
-> On Thu, Jul 16, 2026 at 02:03:22PM -0300, Jason Gunthorpe wrote:
-> > The tools/include readl/writel MMIO accessors on arm64 use
-> > inner-shareable barriers (dmb ish) while the kernel uses
-> > outer-shareable (dmb osh).  Fix them to match.
-> > 
-> > Add __io_bw() and __io_ar() definitions matching the kernel's
-> > arch/arm64/include/asm/io.h, including the dummy control dependency
-> > in __io_ar() that orders MMIO reads against all subsequent
-> > instructions.
-> > 
-> > Assisted-by: Claude:claude-opus-4.6
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+On 7/14/26 5:47 AM, Simon Horman wrote:
+
+> On Mon, Jul 06, 2026 at 12:35:56PM -0700, Mingming Cao wrote:
+>
 > ...
-> > diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-> > index f02cc8a2e4ae32..fdd22df9174b88 100644
-> > --- a/tools/testing/selftests/lib.mk
-> > +++ b/tools/testing/selftests/lib.mk
-> > @@ -5,9 +5,14 @@ ifneq ($(filter %/,$(LLVM)),)
-> >  LLVM_PREFIX := $(LLVM)
-> >  else ifneq ($(filter -%,$(LLVM)),)
-> >  LLVM_SUFFIX := $(LLVM)
-> > +else ifneq ($(LLVM),1)
-> > +$(error Invalid value for LLVM, see Documentation/kbuild/llvm.rst)
-> >  endif
-> >  
-> >  CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
-> > +LD := $(LLVM_PREFIX)ld.lld$(LLVM_SUFFIX)
-> > +# Selftests link through $(CC), so point clang at the LLVM linker.
-> > +LDFLAGS += --ld-path=$(LD)
-> >  
-> >  CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
-> >  CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
-> 
-> Was this hunk intended to be included in this change? It is not
-> mentioned anywhere. I assume this is the only reason that the LLVM folks
-> were CC'd on this series.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> ...
+*
 
-Er no, I can no longer remember what that was about, it wasn't in
-v2. Actually I also see I forgot to delete this patch as Will
-suggested in the first place.
+Hi, Simon
 
-Jason
+
+Thanks for the careful read on open/close — these were all fair points.
+
+*
+>>   /**
+>>    * ibmveth_register_logical_lan_queue - Register subordinate queue with hypervisor
+>>    * @adapter: ibmveth adapter structure
+>> @@ -1466,208 +1479,108 @@ ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address)
+>>   static int ibmveth_open(struct net_device *netdev)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>> -	u64 mac_address;
+>> +	u64 mac_address = ether_addr_to_u64(netdev->dev_addr);
+>>   	int rxq_entries = 1;
+>> -	unsigned long lpar_rc;
+>>   	int rc;
+>> -	union ibmveth_buf_desc rxq_desc;
+>>   	int i;
+>> -	struct device *dev;
+>>   
+>>   	netdev_dbg(netdev, "open starting\n");
+>>   
+>> -	napi_enable(&adapter->napi[0]);
+>> -
+>> -	for(i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+>> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+>>   		rxq_entries += adapter->rx_buff_pool[0][i].size;
+>>   
+>> -	rc = -ENOMEM;
+>> -	adapter->buffer_list_addr[0] = (void *)get_zeroed_page(GFP_KERNEL);
+>> -	if (!adapter->buffer_list_addr[0]) {
+>> -		netdev_err(netdev, "unable to allocate list pages\n");
+>> +	rc = ibmveth_alloc_rx_qstats(adapter);
+>> +	if (rc)
+>>   		goto out;
+>> -	}
+>>   
+>> -	adapter->filter_list_addr = (void*) get_zeroed_page(GFP_KERNEL);
+>> -	if (!adapter->filter_list_addr) {
+>> -		netdev_err(netdev, "unable to allocate filter pages\n");
+>> -		goto out_free_buffer_list;
+>> -	}
+>> -
+>> -	dev = &adapter->vdev->dev;
+>> +	rc = ibmveth_alloc_filter_list(adapter);
+>> +	if (rc)
+>> +		goto out_free_rx_qstats;
+>>   
+>> -	adapter->rx_queue[0].queue_len = sizeof(struct ibmveth_rx_q_entry) *
+>> -						rxq_entries;
+>> -	adapter->rx_queue[0].queue_addr =
+>> -		dma_alloc_coherent(dev, adapter->rx_queue[0].queue_len,
+>> -				   &adapter->rx_queue[0].queue_dma, GFP_KERNEL);
+>> -	if (!adapter->rx_queue[0].queue_addr)
+>> +	rc = ibmveth_alloc_rx_queues(adapter, rxq_entries);
+>> +	if (rc)
+>>   		goto out_free_filter_list;
+>>   
+>> -	adapter->buffer_list_dma[0] = dma_map_single(dev,
+>> -						     adapter->buffer_list_addr[0],
+>> -						     4096, DMA_BIDIRECTIONAL);
+>> -	if (dma_mapping_error(dev, adapter->buffer_list_dma[0])) {
+>> -		netdev_err(netdev, "unable to map buffer list pages\n");
+>> +	rc = ibmveth_alloc_buffer_pools(adapter);
+>> +	if (rc)
+>>   		goto out_free_queue_mem;
+>> -	}
+>>   
+>> -	adapter->filter_list_dma = dma_map_single(dev,
+>> -			adapter->filter_list_addr, 4096, DMA_BIDIRECTIONAL);
+>> -	if (dma_mapping_error(dev, adapter->filter_list_dma)) {
+>> -		netdev_err(netdev, "unable to map filter list pages\n");
+>> -		goto out_unmap_buffer_list;
+>> -	}
+>> +	rc = ibmveth_register_rx_queues(adapter, mac_address);
+>> +	if (rc)
+>> +		goto out_free_buffer_pools;
+>>   
+>> -	for (i = 0; i < netdev->real_num_tx_queues; i++) {
+>> -		if (ibmveth_allocate_tx_ltb(adapter, i))
+>> -			goto out_free_tx_ltb;
+>> +	rc = netif_set_real_num_rx_queues(netdev, adapter->num_rx_queues);
+>> +	if (rc) {
+>> +		netdev_err(netdev, "failed to set number of rx queues\n");
+>> +		goto out_unregister_queues;
+>>   	}
+>>   
+>> -	adapter->rx_queue[0].index = 0;
+>> -	adapter->rx_queue[0].num_slots = rxq_entries;
+>> -	adapter->rx_queue[0].toggle = 1;
+>> -
+>> -	mac_address = ether_addr_to_u64(netdev->dev_addr);
+>> -
+>> -	rxq_desc.fields.flags_len = IBMVETH_BUF_VALID |
+>> -					adapter->rx_queue[0].queue_len;
+>> -	rxq_desc.fields.address = adapter->rx_queue[0].queue_dma;
+>> -
+>> -	netdev_dbg(netdev, "buffer list @ 0x%p\n", adapter->buffer_list_addr[0]);
+>> -	netdev_dbg(netdev, "filter list @ 0x%p\n", adapter->filter_list_addr);
+>> -	netdev_dbg(netdev, "receive q   @ 0x%p\n", adapter->rx_queue[0].queue_addr);
+>> -
+>> -	h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_DISABLE);
+>> -
+>> -	lpar_rc = ibmveth_register_logical_lan(adapter, rxq_desc, mac_address);
+>> -
+>> -	if (lpar_rc != H_SUCCESS) {
+>> -		netdev_err(netdev, "h_register_logical_lan failed with %ld\n",
+>> -			   lpar_rc);
+>> -		netdev_err(netdev, "buffer TCE:0x%llx filter TCE:0x%llx rxq "
+>> -			   "desc:0x%llx MAC:0x%llx\n",
+>> -				     adapter->buffer_list_dma[0],
+>> -				     adapter->filter_list_dma,
+>> -				     rxq_desc.desc,
+>> -				     mac_address);
+>> -		rc = -ENONET;
+>> -		goto out_unmap_filter_list;
+>> -	}
+>> +	rc = ibmveth_setup_rx_interrupts(adapter);
+>> +	if (rc)
+>> +		goto out_unregister_queues;
+>>   
+>> -	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> -		if (!adapter->rx_buff_pool[0][i].active)
+>> -			continue;
+>> -		if (ibmveth_alloc_buffer_pool(&adapter->rx_buff_pool[0][i])) {
+>> -			netdev_err(netdev, "unable to alloc pool\n");
+>> -			adapter->rx_buff_pool[0][i].active = 0;
+>> -			rc = -ENOMEM;
+>> -			goto out_free_buffer_pools;
+>> +	if (adapter->num_rx_queues > 1) {
+>> +		for (i = 0; i < adapter->num_rx_queues; i++) {
+>> +			netdev_dbg(netdev, "initial replenish cycle for queue %d\n", i);
+>> +			ibmveth_replenish_task(adapter, i);
+> ibmveth_replenish_task() only has one parameter
+> until a later patch in this series.
+*
+
+Agreed. Will address this In v4.
+
+the multi-arg replenish call moves to the patch that introduces
+
+the queue-index parameter (or that patch lands
+
+before this open() wiring).
+
+*
+>>   		}
+>> +	} else {
+>> +		netdev_dbg(netdev, "initial replenish cycle\n");
+>> +		ibmveth_interrupt(adapter->queue_irq[0], &adapter->napi[0]);
+>>   	}
+>>   
+>> -	netdev_dbg(netdev, "registering irq 0x%x\n", netdev->irq);
+>> -	rc = request_irq(netdev->irq, ibmveth_interrupt, 0, netdev->name,
+>> -			 netdev);
+>> -	if (rc != 0) {
+>> -		netdev_err(netdev, "unable to request irq 0x%x, rc %d\n",
+>> -			   netdev->irq, rc);
+>> -		do {
+>> -			lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+>> -		} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+>> -
+>> -		goto out_free_buffer_pools;
+>> -	}
+>> -
+>> -	rc = -ENOMEM;
+>> -
+>> -	netdev_dbg(netdev, "initial replenish cycle\n");
+>> -	ibmveth_interrupt(netdev->irq, netdev);
+>> +	rc = ibmveth_alloc_tx_resources(adapter);
+>> +	if (rc)
+>> +		goto out_cleanup_rx_interrupts;
+>>   
+>>   	netif_tx_start_all_queues(netdev);
+>>   
+>>   	netdev_dbg(netdev, "open complete\n");
+>> -
+>>   	return 0;
+>>   
+>> +out_cleanup_rx_interrupts:
+>> +	ibmveth_cleanup_rx_interrupts(adapter);
+>> +out_free_tx_resources:
+>> +	ibmveth_free_tx_resources(adapter);
+> The out_free_tx_resources label is unused until a later patch of this
+> series, so it should be added in that patch rather than this one.
+*
+
+Agreed — will introduce out_free_tx_resources only when a caller
+
+needs that jump target.
+
+*
+>
+> And it's not clear to me that ibmveth_free_tx_resources() should
+> be called when jumping to out_cleanup_rx_interrupts as
+> in that case ibmveth_alloc_tx_resources() hasn't run successfully.
+>
+> The AI-generated review on sashiko.dev also highlights the error handling
+> here:
+>
+>   "Are the unwind labels ordered incorrectly here?
+>
+>   "If ibmveth_setup_rx_interrupts() fails, it jumps to
+>    out_unregister_queues, which is placed after out_free_buffer_pools. Does
+>    this mean we skip freeing the buffer pools and leak memory?
+*
+
+Yes — those gotos currently skip free_buffer_pools(). Will fix
+
+unwind ordering in v4 so buffer pools are always released.
+
+*
+
+>
+>   "Also, if ibmveth_alloc_tx_resources() fails, it internally frees
+>    partially allocated LTBs. It then jumps to out_cleanup_rx_interrupts and
+>    falls through to out_free_tx_resources. Because ibmveth_free_tx_ltb()
+>    calls dma_unmap_single() unconditionally without checking or zeroing
+>    tx_ltb_dma, will this cause a double free and an invalid DMA unmap?
+
+**
+
+*Correct — on alloc_tx_resources() failure TX is already partially*
+
+*
+
+cleaned inside the helper, so falling through to
+
+free_tx_resources() is wrong and can double-unmap. Will fix the
+
+open() unwind graph in v4.
+
+*
+
+>
+>   "Finally, in the fall-through path from out_cleanup_rx_interrupts,
+>    out_free_buffer_pools is executed before out_unregister_queues (which
+>    calls ibmveth_free_all_queues() to unregister the logical LAN). Does this
+>    free and unmap the RX buffers while the hypervisor's logical LAN is still
+>    active, potentially allowing the hypervisor to DMA incoming packets into
+>    freed memory?
+>
+**
+
+*Agreed — freeing RX pools before h_free_logical_lan() is unsafe.*
+
+*
+
+v4 will unregister/free the logical LAN before releasing buffer
+
+pools on both open failure and close
+
+**
+
+*Thanks,*
+
+*
+
+Mingming
+
+*
+
+*
+
+>>   out_free_buffer_pools:
+>> -	while (--i >= 0) {
+>> -		if (adapter->rx_buff_pool[0][i].active)
+>> -			ibmveth_free_buffer_pool(adapter,
+>> -						 &adapter->rx_buff_pool[0][i]);
+>> -	}
+>> -out_unmap_filter_list:
+>> -	dma_unmap_single(dev, adapter->filter_list_dma, 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> -
+>> -out_free_tx_ltb:
+>> -	while (--i >= 0) {
+>> -		ibmveth_free_tx_ltb(adapter, i);
+>> -	}
+>> -
+>> -out_unmap_buffer_list:
+>> -	dma_unmap_single(dev, adapter->buffer_list_dma[0], 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> +	ibmveth_free_buffer_pools(adapter);
+>> +out_unregister_queues:
+>> +	ibmveth_dispose_subordinate_irq_mappings(adapter);
+>> +	ibmveth_free_all_queues(adapter);
+>>   out_free_queue_mem:
+>> -	dma_free_coherent(dev, adapter->rx_queue[0].queue_len,
+>> -			  adapter->rx_queue[0].queue_addr,
+>> -			  adapter->rx_queue[0].queue_dma);
+>> +	ibmveth_cleanup_rx_resources(adapter);
+>>   out_free_filter_list:
+>> -	free_page((unsigned long)adapter->filter_list_addr);
+>> -out_free_buffer_list:
+>> -	free_page((unsigned long)adapter->buffer_list_addr[0]);
+>> +	ibmveth_free_filter_list(adapter);
+>> +out_free_rx_qstats:
+>> +	ibmveth_free_rx_qstats(adapter);
+>>   out:
+>> -	napi_disable(&adapter->napi[0]);
+>>   	return rc;
+>>   }
+> ...
