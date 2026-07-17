@@ -1,216 +1,145 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA253F8230
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 12:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F963E7BCE
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 12:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784291488; cv=none; b=Fx79HB8Eklim2iugO06bOk4FbUZajBjP+LQpUk1HDGHKLYyXXC4pR/u44do0yfZ0nhqhIIJzFTuUSd82UU+3Z/fUAWtmK89Jqo6OCnBKkyKpUemLuBB6twqtu3zUWi5h8fb/IV3OouPPNXSANZOTWnLK7aayqFO1MBs4ylgbEe4=
+	t=1784292053; cv=none; b=Q5N0ctR1zPiPSiI0x0TcyMZJxYayXULqh1W2CGjoCChXQhrKGOz+kWZJ9bBQdovPwu489yrp20IH1N5O4vxbjfgO0zUfp3M3jjsr53o/QbFgIaAQwIBhigIRgBuO5guq41Vmgq0ieUoy/w/KyzdxOStt90hFaJnbX6INmjWSgp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784291488; c=relaxed/simple;
-	bh=9ihkX96AEO3E4UL3DxCH/YX9FZjIWFO5pZ+n6t1PKvY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WDVyfBn30/vOyKgserCI11SMrNyNTA5sg6lIAG+R/Gfl1VWT21UikvjXpFgB3fr/rfMSPIb3sgP+ns2zBi7K0oXHDdm2P7wjum8+3/tYgMt9ykOK94Z9veaUU9GcZfRyLHMfHye/k8HOX/BUht/o5bQ0cmJIFKJ8F2v+bNsSERc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TFGYsAzL; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784292053; c=relaxed/simple;
+	bh=VnXu5laklvONpIDmvyx+NDrgZX9TlzIFbJ44daU1aTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CjZ6dAJTJWsnWyP1GLbcGwmkXC1YWolitFbT+oLKX+6RFVteMWUZQRMGFlcNVF9lPWJAt51unzGw1dKwc6oI9BgT5oLE/u0UIEiq25I2RG/i2TwvKqkA8yTcCaTKFamtNNhHbTn7IwDAaHSEPpPW8Uj++zqTeooLELaQVdTwE5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyqhX68u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TFGYsAzL"
-Message-ID: <e4820c25-7598-472a-9c85-57335a382e32@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784291483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lNHNxFFwUQ+jQpBtBP2dwYsADgS4XCDnMNgzBkbdK7Q=;
-	b=TFGYsAzLyU3qgH70zufklpAa9QjsFsGU5AXaDN21BAMoUWZwd9L4VEhkGNkxJz4b5BH8Jq
-	zxw0RYVi090P6do9CTQnVBDIOJCoB3T60oTgX4ocPS51pDCnVWazNUPwT8Sa0Skcx6l1Ht
-	/WxDPH1qR18bStzXwiGxyxG1h0u3BZE=
-Date: Fri, 17 Jul 2026 13:31:17 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyqhX68u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246861F000E9;
+	Fri, 17 Jul 2026 12:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784292052;
+	bh=PcJsUYlTZPvxdXbenQwvfhTb+JKVERtYtonScuf6C14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NyqhX68uFLI4udh3Qvxnp8pjjDJT2wGwg1Sh+GJzlt1oNsFgBvfjPnNiuYGt8tsC9
+	 eAquT1NhCIfq+KHqM600dauLtUeu6gdBuUGZJBmO3lCQXXwqFnv3oKN+sqN4PdU0ql
+	 zkkhXpyeyVCYvcURfluK/yohNE4jGElAOOdyzSUSpsRTF1xKv/A3e8278EiAkNMhEi
+	 rzELy7iOA11oa7/CpoiLI/7M4G1kL3rkMIdQ4wHnHCng0+UV8L3mUC8F5xHrJDNeWm
+	 3vSewMoMCn3EKvnTLyzi2TplMzxGNYBaF1H1td2nYRquDoSSAMgn7gsH/G4NAAakzU
+	 5dkKQ2Rowbq5Q==
+Date: Fri, 17 Jul 2026 13:40:46 +0100
+From: Simon Horman <horms@kernel.org>
+To: Alice Mikityanska <alice@isovalent.com>
+Cc: alice.kernel@fastmail.im, daniel@iogearbox.net, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	lucien.xin@gmail.com, willemdebruijn.kernel@gmail.com,
+	willemb@google.com, dsahern@kernel.org, razor@blackwall.org,
+	shuah@kernel.org, stfomichev@gmail.com, andrew+netdev@lunn.ch,
+	fw@strlen.de, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v9 1/9] net: Use helpers to get/set UDP len
+ tree-wide
+Message-ID: <20260717124046.GO95246@horms.kernel.org>
+References: <20260710134242.216538-2-alice.kernel@fastmail.im>
+ <20260716144620.331419-2-horms@kernel.org>
+ <CAD0BsJWRPNsQrBT06QqCtB5atqjBQz4y8QWvGg-v2WZDqRiPRA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] net: use sync wakeups for socket error reports
-To: Breno Leitao <leitao@debian.org>, Eric Dumazet <edumazet@google.com>,
- guohua.yan@unisoc.com, xuewen.yan@unisoc.com
-Cc: davem@davemloft.net, horms@kernel.org, kuba@kernel.org,
- kuniyu@google.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- pabeni@redhat.com, willemb@google.com, shakeel.butt@linux.dev,
- hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com
-References: <20260708133815.3419465-1-usama.arif@linux.dev>
- <ak5rH-SWjiqR6MVe@gmail.com> <bc16e45e-32ef-45d8-99af-14f088733ab3@linux.dev>
- <CANn89iLc1Bv_wmKvr_9mtGRM3gL7kgoy2Prr2SgtHY4C=ZgfBg@mail.gmail.com>
- <alodxQoCH5A5iVGG@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <alodxQoCH5A5iVGG@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAD0BsJWRPNsQrBT06QqCtB5atqjBQz4y8QWvGg-v2WZDqRiPRA@mail.gmail.com>
 
-
-
-On 17/07/2026 13:20, Breno Leitao wrote:
-> On Wed, Jul 08, 2026 at 06:32:02PM +0200, Eric Dumazet wrote:
+On Thu, Jul 16, 2026 at 06:18:59PM +0300, Alice Mikityanska wrote:
+> On Thu, 16 Jul 2026 at 17:47, Simon Horman <horms@kernel.org> wrote:
+> >
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > Full review at: https://sashiko.dev
+> > ---
+> > --- Patch [1]: [PATCH net-next v9 1/9] net: Use helpers to get/set UDP len tree-wide ---
+> > commit 113d28557bcedccc492f330fafdaaf1377eb2e79
+> > Author: Alice Mikityanska <alice@isovalent.com>
+> >
+> > net: Use helpers to get/set UDP len tree-wide
+> >
+> > This commit introduces helpers for setting and getting the UDP header length
+> > tree-wide. It prepares the codebase to support BIG TCP for UDP tunnels by
+> > explicitly handling cases where UDP length might be 0 for packets larger
+> > than 65535 bytes.
+> >
+> > > diff --git a/net/6lowpan/nhc_udp.c b/net/6lowpan/nhc_udp.c
+> > > index 0a506c77283dd..ed4227e6db744 100644
+> > > --- a/net/6lowpan/nhc_udp.c
+> > > +++ b/net/6lowpan/nhc_udp.c
+> > > @@ -88,16 +88,16 @@ static int udp_uncompress(struct sk_buff *skb, size_t needed)
+> > >       switch (lowpan_dev(skb->dev)->lltype) {
+> > >       case LOWPAN_LLTYPE_IEEE802154:
+> > >               if (lowpan_802154_cb(skb)->d_size)
+> > > -                     uh.len = htons(lowpan_802154_cb(skb)->d_size -
+> > > -                                    sizeof(struct ipv6hdr));
+> > > +                     udp_set_len_short(&uh, lowpan_802154_cb(skb)->d_size -
+> > > +                                       sizeof(struct ipv6hdr));
+> >
+> > [Severity: High]
+> > If a crafted packet specifies a datagram size smaller than
+> > sizeof(struct ipv6hdr), won't this subtraction underflow?
 > 
->> Perhaps this SYNC heuristic should be a per-socket choice so that
->> applications can decide what is best for them.
+> First, I'd like to emphasize that I'm merely converting direct uh.len
+> access to the new helper. If there is an existing bug with underflow,
+> my new helper will expose it with a WARN, which is good. But should
+> such bugs exist before this refactoring, I don't think that fixing all
+> of them is in scope of this series.
+
+Yes, point taken.
+
+...
+
+> > [Severity: High]
+> > If gro_max_size is configured larger than 65535 (which is supported and used
+> > for BIG TCP), can't UDP GRO aggregate packets such that newlen > 65535?
 > 
-> Something like this?
+> This is the first patch that just converted direct access to helpers.
+> Patch 4 "udp: Support gro_ipv4_max_size > 65536" explicitly enables
+> len > 64k and replaces this line with udp_set_len. This comment on
+> patch 1 is irrelevant because it assumes that functionality added in a
+> later patch should work in a prior patch.
+
+Agreed, the AI-generated review seems wide of the mark here.
+
+...
+
+> > [Severity: High]
+> > When transmitting a TCP BIG TCP packet (which can be > 64K) over a UDP
+> > tunnel like VXLAN, skb->len will exceed 65535.
+> >
+> > Does using udp_set_len_short() here incorrectly trigger the warning for
+> > valid large GSO payloads?
 > 
->     net: add SO_ERR_WAKE_SYNC for sync error-report wakeups
->     
->     sock_def_error_report() wakes EPOLLERR waiters with
->     wake_up_interruptible_poll(), while sock_def_readable() and
->     sock_def_write_space() already pass the sync hint. A socket with
->     SO_TIMESTAMPING enabled delivers every TX and ACK timestamp through
->     sk_error_queue and raises EPOLLERR, so the error path wakes a sleeping
->     consumer very often.
->     
->     Without the sync hint the scheduler often places the woken consumer on a
->     remote CPU, which costs a rescheduling IPI. Usama Arif measured 16,326
->     such IPIs/min on a 176-core host running a production workload with
->     SO_TIMESTAMPING enabled. [1]
->     
->     Switching the error path to a sync wakeup unconditionally is not the
->     right fix, as there are different requirements for it to be async, see
->     [2].
->     
->     Eric suggested that an options is to add SO_ERR_WAKE_SYNC so
->     applications choose per socket, so a consumer draining a high-rate error
->     queue can opt in to keep the wakeup local and drop the IPI, using socket
->     flag SO_ERR_WAKE_SYNC.
->     
->     Link: https://lore.kernel.org/all/CANn89iLc1Bv_wmKvr_9mtGRM3gL7kgoy2Prr2SgtHY4C=ZgfBg@mail.gmail.com/ [1]
->     Link: https://lore.kernel.org/netdev/20260526063650.952-1-xuewen.yan@unisoc.com/ [2]
->     Suggested-by: Eric Dumazet <edumazet@google.com>
->     Signed-off-by: Breno Leitao <leitao@debian.org>
+> Same here. This is replaced by udp_set_len, which supports len > 64k,
+> in the patch that actually enables len > 64k.
 > 
-> diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-> index 5ef57f88df6b3..2a3c27aaf4e95 100644
-> --- a/arch/alpha/include/uapi/asm/socket.h
-> +++ b/arch/alpha/include/uapi/asm/socket.h
-> @@ -155,6 +155,8 @@
->  #define SO_INQ			84
->  #define SCM_INQ			SO_INQ
->  
-> +#define SO_ERR_WAKE_SYNC	85
-> +
->  #if !defined(__KERNEL__)
->  
->  #if __BITS_PER_LONG == 64
-> diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-> index 72fb1b006da93..00f31c74a63df 100644
-> --- a/arch/mips/include/uapi/asm/socket.h
-> +++ b/arch/mips/include/uapi/asm/socket.h
-> @@ -166,6 +166,8 @@
->  #define SO_INQ			84
->  #define SCM_INQ			SO_INQ
->  
-> +#define SO_ERR_WAKE_SYNC	85
-> +
->  #if !defined(__KERNEL__)
->  
->  #if __BITS_PER_LONG == 64
-> diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-> index c16ec36dfee6b..db5b6cad17d49 100644
-> --- a/arch/parisc/include/uapi/asm/socket.h
-> +++ b/arch/parisc/include/uapi/asm/socket.h
-> @@ -147,6 +147,8 @@
->  #define SO_INQ			0x4052
->  #define SCM_INQ			SO_INQ
->  
-> +#define SO_ERR_WAKE_SYNC	0x4053
-> +
->  #if !defined(__KERNEL__)
->  
->  #if __BITS_PER_LONG == 64
-> diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-> index 71befa109e1cf..5e9ff3634265c 100644
-> --- a/arch/sparc/include/uapi/asm/socket.h
-> +++ b/arch/sparc/include/uapi/asm/socket.h
-> @@ -148,6 +148,8 @@
->  #define SO_INQ                   0x005d
->  #define SCM_INQ                  SO_INQ
->  
-> +#define SO_ERR_WAKE_SYNC         0x005e
-> +
->  #if !defined(__KERNEL__)
->  
->  
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index 51185222aac29..d8ee1dae8ecaf 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -1022,6 +1022,7 @@ enum sock_flags {
->  	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
->  	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
->  	SOCK_TIMESTAMPING_ANY, /* Copy of sk_tsflags & TSFLAGS_ANY */
-> +	SOCK_ERR_WAKE_SYNC, /* Sync wakeup on error report, %SO_ERR_WAKE_SYNC */
->  };
->  
->  #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
-> diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-> index 53b5a8c002b1e..5527c9318b40e 100644
-> --- a/include/uapi/asm-generic/socket.h
-> +++ b/include/uapi/asm-generic/socket.h
-> @@ -150,6 +150,8 @@
->  #define SO_INQ			84
->  #define SCM_INQ			SO_INQ
->  
-> +#define SO_ERR_WAKE_SYNC	85
-> +
->  #if !defined(__KERNEL__)
->  
->  #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 498a57f34f5b5..59caab6a7223a 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1557,6 +1557,10 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
->  		sock_valbool_flag(sk, SOCK_SELECT_ERR_QUEUE, valbool);
->  		break;
->  
-> +	case SO_ERR_WAKE_SYNC:
-> +		sock_valbool_flag(sk, SOCK_ERR_WAKE_SYNC, valbool);
-> +		break;
-> +
->  	case SO_PASSCRED:
->  		if (sk_may_scm_recv(sk))
->  			sk->sk_scm_credentials = valbool;
-> @@ -2064,6 +2068,10 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
->  		v.val = sock_flag(sk, SOCK_SELECT_ERR_QUEUE);
->  		break;
->  
-> +	case SO_ERR_WAKE_SYNC:
-> +		v.val = sock_flag(sk, SOCK_ERR_WAKE_SYNC);
-> +		break;
-> +
->  #ifdef CONFIG_NET_RX_BUSY_POLL
->  	case SO_BUSY_POLL:
->  		v.val = READ_ONCE(sk->sk_ll_usec);
-> @@ -3641,8 +3649,12 @@ static void sock_def_error_report(struct sock *sk)
->  
->  	rcu_read_lock();
->  	wq = rcu_dereference(sk->sk_wq);
-> -	if (skwq_has_sleeper(wq))
-> -		wake_up_interruptible_poll(&wq->wait, EPOLLERR);
-> +	if (skwq_has_sleeper(wq)) {
-> +		if (sock_flag(sk, SOCK_ERR_WAKE_SYNC))
-> +			wake_up_interruptible_sync_poll(&wq->wait, EPOLLERR);
-> +		else
-> +			wake_up_interruptible_poll(&wq->wait, EPOLLERR);
-> +	}
+> > > [ ... ]
+> > > diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
+> > > index 9adb5775487fa..dcff7fb16ff64 100644
+> > > --- a/net/ipv6/ip6_udp_tunnel.c
+> > > +++ b/net/ipv6/ip6_udp_tunnel.c
+> > > @@ -93,7 +93,7 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
+> > >       uh->dest = dst_port;
+> > >       uh->source = src_port;
+> > >
+> > > -     uh->len = htons(skb->len);
+> > > +     udp_set_len_short(uh, skb->len);
+> >
+> > [Severity: High]
+> > This appears to have the same issue as IPv4 tunnels. If a large GSO payload
+> > is sent through an IPv6 UDP tunnel, won't skb->len exceed 65535 and trigger
+> > the warning?
+> 
+> Same here.
+> 
+> I'm sorry, but I highly doubt that these AI review comments were validated.
 
-Not just in report, but sock_def_write_space() and sock_def_readable() as well?
-
-
->  	sk_wake_async_rcu(sk, SOCK_WAKE_IO, POLL_ERR);
->  	rcu_read_unlock();
->  }
-
+Clearly my validation was insufficient.
+Sorry about that.
