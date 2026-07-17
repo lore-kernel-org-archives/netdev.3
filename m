@@ -1,296 +1,169 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012041.outbound.protection.outlook.com [52.101.43.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CBF1BC08F
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 00:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784248429; cv=none; b=rcMSHSgi7QX1hQsmYaggeejpXjygC7m4jp8h669FIojrFRZD48+Pv8sqKAX3dSjmEEz32bNKnKVpBiM9tN7Mn21yu5n6nMXHOoUjYfjzfOWiRPc91zXNO/fdVEEiSM/NnXSq6Zg9t8uqkKkXmNATqpvn2YowfSsTTNrgYEbcgAc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784248429; c=relaxed/simple;
-	bh=MhctI46+qSudJu9YOvRPXM/XdBgL0gC65miMgebJXKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZcUzcN7dGM688upjbcgusaGbsszN1EhGvH0uj05PSPtMaosF7CDP9JQQIKz/qUNXt5z7NmlpxNjrZ9awxuQ1/0hGl9fMvhIZgi9ztlSZFpWvD17UcYcF5ibVjz9qw7pZDGQITtleDZ6Xbi5+47BHvdWnDYfOVyU6Sf5laue4GjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lNcERlU4; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EF421B192;
+	Fri, 17 Jul 2026 00:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784248585; cv=fail; b=avxavUx/5vAUfrbL0dhfMTKFeDd3uYkyCa8Z/h4iGjabPWZpz6iI15Pu2QnVqrPGDtMwaJaGBh5VoEuFW/vXJcXyioRuQhQTUlUXv9D2p6PYXP1wFfQl0E46/fz9HhLgY2GqH5waYkD/kkfD8MNtiofIUWJEAdZ/E5Fpi+crp+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784248585; c=relaxed/simple;
+	bh=C+rGI/weQp/X4KgkwJHJEWgIsA2SJz//bQ5JO/loZnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VLnjPP5y+mU1mBCu5P1y30EQE4rSGWnD4EtarVnJYwa/UfkGTD6OKg8/qyrG4bIdnyaxYIUD0AbRA8k/YG7Mm6Me7R7rFIaFjtnUz1ZBBqTAzuEik1yoJhLkNEgO4/eHoqnVAXCHEbso78M83XAzWCnzKLoPnlXjrTRdbkA6X/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Y21zBHHl; arc=fail smtp.client-ip=52.101.43.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lNcERlU4"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GNh0Cn451440;
-	Fri, 17 Jul 2026 00:33:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cMnhf8
-	zZYUm5dbBNe3vw7k/dV027wRr3L+fwNG0S/J8=; b=lNcERlU4tSAgN4LIOadsPA
-	iXmsxeqAW2Nc/uIOAgo8jH526Cg2Sv6BZRg+mTKuL5HJ99qc8PiPJdNiYXBaGalS
-	f+4b/wYpmDvq1GjGP2OCmGvFGguQLfRVmTkQkgPq9H/BozAJKOgxebB9jSgoyQWO
-	TeLTxNxH3u/U2N8d5AEzGV8tIcVvsodbmFBdBu2u3Xqn21/1cvGftWokIDCythvO
-	iQS389n6pkIa6bKxXkcMlMhiN0T3rKGwH/UVJKoizHypzxRqBg3cO8OXJt9dHqJD
-	W4CbzHOudnAfT0bP98h49eXzEZUCPZSyTa7fPCinRZWObEQtcWhli5qN33g9IzWg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegtktt4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 00:33:35 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66H0Jpoq006930;
-	Fri, 17 Jul 2026 00:33:33 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhqd8y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 00:33:33 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66H0XW7x34931352
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jul 2026 00:33:32 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A66258067;
-	Fri, 17 Jul 2026 00:33:32 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71D4058059;
-	Fri, 17 Jul 2026 00:33:31 +0000 (GMT)
-Received: from [9.61.118.188] (unknown [9.61.118.188])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Jul 2026 00:33:31 +0000 (GMT)
-Message-ID: <a36b50e7-5df3-4e9a-bf55-98cb00ba7fde@linux.ibm.com>
-Date: Thu, 16 Jul 2026 17:33:30 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Y21zBHHl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T89r6BniilbzH19QPjuEq215yvGNmIxaD9BeAJnowemlcvunsrCMu5jaLKVbArHcnI+lTByRDn9Sr2pxpDBJbcP0evXm9wsXgC9oednbGSmEvVyre/fhi1riZX9HL0BloPRW/834RbP5A5lhdQIv4Vq3TPC6sb3vftFa2MBIBEt25OdGEVTRhYjmB9xtPMDy0zuAncrD3y5EdtHEkKTyoBLmyUAF+cgct+iYNz3ZNmSxvb0sXYeGOenAQYJqNmoBqrhJg7voEdx+wrlGsmeimULuAeyHH+hr6bEna+pGQzlz1undSq0IuBxis7oCs/HnUt2FTWV6YFMfW4KBEQizNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6yz8CL/JmEEOmXLtS5Cg+ETigIBkKag8VP5JxrsSea0=;
+ b=WWa5GuUT7lqMQXB0e4nNT0s/vvq9Oi0s2X+UyS6JOkc3catq5whXBDtTZdmxerr6ZYgX5UTgM+KgEfshLB/wsNpWvnx6Z7Cmdl5jMtK1vW3OmVMcOWu/XiGEL2HXqVdF30qILv8iD4S/ACBOZ1uW4lsgfaf80H3yEJqPsmOl6W17L/d4GMShxwmiDLMdALz7oWo2foY8Ct+gp0nMwPlx/AjJL0Ztiln6Gf+Kats9Ew0+XX+kgRjLCKayOPCifToCgO0IBODEsoBQVjetVFzx/EWC/rNvPXb7540zKCKwZzWlyEOFO67Q8IyCB/K5Wxkb/27sx4kI4AM397YbRsVTHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6yz8CL/JmEEOmXLtS5Cg+ETigIBkKag8VP5JxrsSea0=;
+ b=Y21zBHHlA1ecVd65NErLKnNAe1Z6rtZogygrCzgblow5ZZP1kcSBVeLF5LCyAor+2HegIKEOVNqa0hzImEmKrAZ7rqLHOjCMn1FlSxu+uPVtsDF4IPwXKwTGSVrMGBn3fmC0Oc/0NJ+jLeoVB6wjXt7egUv+ksFVFQYey8GLwamj73K2USxmjaU+Rr3p63rChtshCjndN7eZyTjV+7sfrQeNt3hwTSloHYtJvIlQV5B7L5L6EkuQm7xc80p52oU/i/ltg40QB5NdRMbqWC6qQr9AXOl0k23FsqIzqnC84WdJzTAIGZJQX+cMJaoO9QE9ksh+jSgcBm7G+ZVwYiODTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by LV2PR12MB5871.namprd12.prod.outlook.com (2603:10b6:408:174::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Fri, 17 Jul
+ 2026 00:36:20 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0202.014; Fri, 17 Jul 2026
+ 00:36:20 +0000
+Date: Thu, 16 Jul 2026 21:36:19 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>,
+	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
+	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, patches@lists.linux.dev
+Subject: Re: [PATCH v3 06/11] selftests: Fix arm64 IO barriers to match kernel
+Message-ID: <20260717003619.GA699082@nvidia.com>
+References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+ <6-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+ <20260716232210.GA700430@ax162>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260716232210.GA700430@ax162>
+X-ClientProxiedBy: YT4PR01CA0169.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:110::20) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 07/15] ibmveth: Add RX queue
- register/deregister helpers for MQ
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, davemarq@linux.ibm.com
-References: <20260706193603.8039-8-mmc@linux.ibm.com>
- <20260714124338.1831986-1-horms@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260714124338.1831986-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 37st7qSYPT2yH3voCG3vHnn9g5WA-bL5
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDAwMCBTYWx0ZWRfX+xO9/1Zp37Bg
- asemkV/k6c8quRojLUc9fvAk2Wugo9bF8Lc7saDwsnZUkIpSpHS3hwa8oBpQOFvxWxxXuHUJDDN
- bg8aSi71VXrrQYoHjeIk0YlpJp0AOGs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDAwMCBTYWx0ZWRfXz0rwPcNX0NrZ
- aZ7wuNaXu+FL+1ug2gfzz2lCPmQUO3uXZgMvtLTZqSpejXWg6Nyod3tkh3k9VFAk39F928uUR4H
- gzVWljrAaAki4TGLrQcpYxGO5dJvLf937fjwFT1/tWJ+zV4sGx2faX+TEvoP3TbqYpe0wUkP0s4
- w7ECnZEOZWrROMtr81yLuB+6YKWKmEf5QHvANYwAy47lDjNkJEuIhu80nQi4Dw1LgQdF8wYImAv
- WX+ts39bXQtKaXGPaxyv3ECU0M/hbfnakeZuQWvgLOEN378wOTY2Gp5D525lrYtfAxiWaXjgZ0a
- VA7IzbqSYd2GJNj+3EbC4EGbapf3Kjuk6B01eYTw1Y55bI46O+oiN+iUHTFbCPJZzQoiMlnJLm1
- 7xa9i6lbHMb3ZL+jNlsw0qQI3bcJ4CE2cj8V2yiJDdfnumcQ2z6ipTmgPY6SA7Gg8audtEz6Oxh
- XQT7rfeOliBwr1+ZRCw==
-X-Authority-Analysis: v=2.4 cv=IqMutr/g c=1 sm=1 tr=0 ts=6a59785f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=c92rfblmAAAA:8
- a=aauaAOzOPfXglxgOek8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-GUID: eHmJws6n8cqZpLncZRcbX4ryVd-104ym
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-16_08,2026-07-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607170000
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|LV2PR12MB5871:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97e93adc-0cdd-4de9-e7c8-08dee39b6bea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|4143699003|6133799003|11063799006|10067099003|3023799007|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ozMIjMtXj8AsNlF2JOG3532jwX0NEIxFX17HbpLLqfm+85FXphJFwAnJfjhFS1YLujDAibgSa925RhKBmq3sFC3tn+Qz7rmizLnXQpW3cqY9qgiL9Jcfmyqpp/8GNuXe0IZX1t/huG5jlAJrxwamphDiiNpy0v8e+4FSWhizKRPM76j5E2hjvhcLJqcBfd9EN9YtrM39DMj/TQQZH7DxHkxNNBvFw9PUmFtOGvz3afwTnOUQn41lVKrVDxa/z4qqJWIQ2ZHa99QYduZrdyWj21S40cMBFQlKFYse6D6UMD8cER+lXdN6eK66OdR9B+87sJNDhxYDJ73uGjuZiwDAYNxTk+3DweGWpDXLVjCxUX6hQs/4cd8yojvgjZlFjW0CuK9x+YGtWe4kWZ9SEWkKqwTLhvhgexoFR0BAcBCt39KJ+uFXtSqMHZJ5vAHo9ZB5HGHm3LXTnAW4JW6iHDMVZdNOuLg7K956VAt15cDTwR/bfkV4rorKjh4D40xXuLQD5ve8XoiCYhp72CDAJKCpu9yTxStxCIfk+cZc8M+sdR3kE5YXc4wBFrqNMq521G/y5ovquuyMUqBQ8jhIp7E5zIum9gZfvEKCBm8kymCQco07Z8IE+mibReKOGOj9h2+cfxnnalKj53u3v+jMrImIxJZHQZgGVrHEJB0q3ZZ5HqM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(4143699003)(6133799003)(11063799006)(10067099003)(3023799007)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HoK/N/ng8Kp+NqIWeJU1yZjwuoPIb9QwHcznZQR3lqc2HmP1J90fnzIrBq5B?=
+ =?us-ascii?Q?kZw0opGvXU4wDbYhYfQ85bPG8BIVqH/14wwQasyn4hYgAGhQd26f3X6b21qV?=
+ =?us-ascii?Q?ngkk0vjpScLk50PYX/TWMPzyFyzynEWsSPTcCoVcA5Owz1ITEcOdxFs8j/jt?=
+ =?us-ascii?Q?XJArUawtoTmEH97vybecFOPp0Qr7Un3SgbM/+ykVKSVB30G7qfNI2vnVOWSZ?=
+ =?us-ascii?Q?/M/5WSYcvfvDXcK4bYXVdvq5nYxJ95zIuy9dgRSjl3XD+ibnrJ6u89YpoWpB?=
+ =?us-ascii?Q?mNO/XLzFzRU/ld6jqmCqGDMX8ELIsWZTweCjZyyrL4ZTbzLLuS/TciW//3oR?=
+ =?us-ascii?Q?veBfgPUwW/i7Pq1yiXQg4UL4bqKzbMLB0Kc8LbvPNihOhY/Ip3GRRsy+rjcx?=
+ =?us-ascii?Q?rOJOYsDiQCiep+vuDMFoAxDFkaq3u/HDpA4D2txNVrcUh4RR4CZXsT4d8GVQ?=
+ =?us-ascii?Q?NSqk8l+6ZsNMhWFOinsgsclQ/Ix7fuFefZCM4ds0bVKnoSafTatvShuu7WCv?=
+ =?us-ascii?Q?iATUkuPm7iw3/ZRh8jooWxqWF7VfjA4VKK0mU3SxQCW8sH4mTc5m2DIzeOul?=
+ =?us-ascii?Q?AdljGhZNnvQBK0HQ+Xn5l4VBuxpkoClyccxNGMVJsa9lI8/9XrybWAJjNm5L?=
+ =?us-ascii?Q?cwKvl1rESm9aXFB+dU0ZpQxu9zE63sZM4xlz1bTspDu112i/jWgKzYjsY9kK?=
+ =?us-ascii?Q?gDGeiHGg+0pqDB82+Ke4fvAIU0MCeqxmiKEfFTOaCRtrIS9g9EgOHBojIo1X?=
+ =?us-ascii?Q?/9LXLGUCF7TDLmZFDj7MgKNDR8nkSQGVBKaHMT/x1jExwgefqEIAaQJ14JKs?=
+ =?us-ascii?Q?qObnREheSljjzsbYGu4MjemoZVQpSkJjpNUyBBvKVxtIF1+Aj8g9U+xg6gO3?=
+ =?us-ascii?Q?Zug6/rMkxRCmjdu37QyKsnus7c2If+0ajMMqD7cV2ZV2p5/lI02G6K4ceFaL?=
+ =?us-ascii?Q?FfsEEU1P+28JWFUBFvWBeeohbnuIWy5UtAJsNTPxFZVJBSbTKhpnHqHx+n9d?=
+ =?us-ascii?Q?CeG16mCWNu7dHHKKzKe4iDgQIsvLBTooW85zrFuNeh+ltnGytVYsBMLhZ/r4?=
+ =?us-ascii?Q?e+WeDmq3XSdwWJUjRYZARppLLSOvm+OlCm6R8eJsJBtAbfE0mWwj+0uWDWME?=
+ =?us-ascii?Q?/I+5c9dExF661DXjqsOLVcM/tMuBJb0mu9DD+3VkEQfaInft/Ff1ElasgNA/?=
+ =?us-ascii?Q?xJx9snj3MKypmXBOaOcemdHoLaEtQSJzKuQjFjRlk7fBnQkLUtSIzvc/FCNE?=
+ =?us-ascii?Q?kFlh4iaqEhMyimIeXurPC4nAHK2n38qQMslHYqckix1T9XWuqmIuedvC+Q17?=
+ =?us-ascii?Q?Aq4kxW1fETbgOifpa3/TiehubwBMi5V3eUeg01gIpw9URFSvBIzQG/fwLJO9?=
+ =?us-ascii?Q?pdBP3pIFo45iuplcmVWg3q2o+Xjholt7QVyGmY1hDfLLD3U7fJT0UJ5bxMet?=
+ =?us-ascii?Q?UuFZVt1SEWzQSKeRPyYdk8i+3Cf1C9Nrj54qTer8MRb8vwhva5VhMEQttdMG?=
+ =?us-ascii?Q?RTbcyW9BP/VvujI9J1Tcz7tTqgwaD6W9EOpNB3kXJD1FtrPd570sM2prPaYx?=
+ =?us-ascii?Q?XlwuAFkPkPpIbPiZ58sagmquFMni4IU6lsYpLcKqYcP3L2zfgG4rXMDEX80X?=
+ =?us-ascii?Q?c2YQqvptCp60qvhvRZBXYZivyWVoXPPGRh40Gqb8cwRrAG4+EcorcGuQ/AI3?=
+ =?us-ascii?Q?98pdqV59PxS2NI/qoXHet30NAc0v20S3yhxG1eilAWXX9Qar?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97e93adc-0cdd-4de9-e7c8-08dee39b6bea
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 00:36:20.5162
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MWyS6gTdw5bQGb0yd96u1bI99kfCheFgGAHYzCxq6j7oFEJqgAIb9AyaPta/vKcY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5871
 
+On Thu, Jul 16, 2026 at 04:22:10PM -0700, Nathan Chancellor wrote:
+> On Thu, Jul 16, 2026 at 02:03:22PM -0300, Jason Gunthorpe wrote:
+> > The tools/include readl/writel MMIO accessors on arm64 use
+> > inner-shareable barriers (dmb ish) while the kernel uses
+> > outer-shareable (dmb osh).  Fix them to match.
+> > 
+> > Add __io_bw() and __io_ar() definitions matching the kernel's
+> > arch/arm64/include/asm/io.h, including the dummy control dependency
+> > in __io_ar() that orders MMIO reads against all subsequent
+> > instructions.
+> > 
+> > Assisted-by: Claude:claude-opus-4.6
+> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ...
+> > diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+> > index f02cc8a2e4ae32..fdd22df9174b88 100644
+> > --- a/tools/testing/selftests/lib.mk
+> > +++ b/tools/testing/selftests/lib.mk
+> > @@ -5,9 +5,14 @@ ifneq ($(filter %/,$(LLVM)),)
+> >  LLVM_PREFIX := $(LLVM)
+> >  else ifneq ($(filter -%,$(LLVM)),)
+> >  LLVM_SUFFIX := $(LLVM)
+> > +else ifneq ($(LLVM),1)
+> > +$(error Invalid value for LLVM, see Documentation/kbuild/llvm.rst)
+> >  endif
+> >  
+> >  CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
+> > +LD := $(LLVM_PREFIX)ld.lld$(LLVM_SUFFIX)
+> > +# Selftests link through $(CC), so point clang at the LLVM linker.
+> > +LDFLAGS += --ld-path=$(LD)
+> >  
+> >  CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
+> >  CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
+> 
+> Was this hunk intended to be included in this change? It is not
+> mentioned anywhere. I assume this is the only reason that the LLVM folks
+> were CC'd on this series.
 
-On 7/14/26 5:43 AM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> ibmveth: Add RX queue register/deregister helpers for MQ
->
-> This patch introduces new helpers to handle RX queue registration and
-> deregistration for MQ support. It replaces the single adapter-level
-> register/free paradigm with per-queue register calls to the hypervisor,
-> fetching queue handles and IRQs. These new paths are only fully exercised
-> when multi-queue mode is enabled.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 63b0184c622a4..7fc11a4e1f61d 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->> @@ -401,6 +401,28 @@ ibmveth_dispose_subordinate_irq_mappings(struct ibmveth_adapter *adapter)
-> [ ... ]
->> +static int __maybe_unused
->> +ibmveth_setup_rx_interrupts(struct ibmveth_adapter *adapter)
->> +{
->> +	struct net_device *netdev = adapter->netdev;
->> +	int i, rc;
->> +
->> +	for (i = 0; i < adapter->num_rx_queues; i++) {
->> +		if (!adapter->queue_irq[i]) {
->> +			netdev_err(netdev, "queue %d has invalid IRQ (0)\n", i);
->> +			rc = -EINVAL;
->> +			goto err_free_irqs;
->> +		}
->> +
->> +		rc = request_irq(adapter->queue_irq[i], ibmveth_interrupt,
->> +				 0, netdev->name, &adapter->napi[i]);
->> +		if (rc) {
->> +			netdev_err(netdev,
->> +				   "request_irq() failed for irq 0x%x queue %d: %d\n",
->> +				   adapter->queue_irq[i], i, rc);
->> +			goto err_free_irqs;
->> +		}
->> +	}
->> +
->> +	for (i = 0; i < adapter->num_rx_queues; i++)
->> +		napi_enable(&adapter->napi[i]);
-> [Severity: Medium]
-> Could this sequence race with packet reception during interface bring-up?
-> By calling request_irq() before napi_enable(), the hardware interrupt is
-> unmasked while the NAPI state is still NAPI_STATE_DISABLE. If an interrupt
-> fires in this window, could ibmveth_interrupt() fail to schedule the NAPI
-> poll, potentially leading to dropped events or an interrupt storm?
->
-> [ ... ]
+Er no, I can no longer remember what that was about, it wasn't in
+v2. Actually I also see I forgot to delete this patch as Will
+suggested in the first place.
 
-**
-
-*On the request_irq vs napi_enable ordering: on open, ibmveth_enable_irq()*
-
-*
-
-(h_vio_signal / H_VIOCTL) runs only after napi_enable(), so PHYP should
-
-not deliver in the request_irq→napi_enable window. That matches what
-
-peers like ibmvnic do (NAPI before firmware unmask). I'll keep the
-
-tested open order (request_irq → napi_enable → PHYP enable) in v4.
-
-
-For teardown, v4 will follows the hard rule "mask PHYP before
-
-napi_disable": scale-down does that, and close/open-fail cleanup does
-
-too via cleanup_rx_interrupts(). Scale-up still does enable_irq before
-
-napi_enable after publish+replenish — I'm leaving that order for this
-
-v4 and can revisit as a follow-up if needed.
-
-*
-
->> @@ -1136,6 +1176,293 @@ static void __maybe_unused ibmveth_free_rx_qstats(struct ibmveth_adapter *adapte
-> [ ... ]
->> +static int
->> +ibmveth_register_logical_lan_queue(struct ibmveth_adapter *adapter,
->> +				   union ibmveth_buf_desc rxq_desc,
->> +				   int queue_index)
->> +{
-> [ ... ]
->> +	if (lpar_rc == H_FUNCTION) {
->> +		if (adapter->multi_queue) {
->> +			netdev_info(adapter->netdev,
->> +				    "Multi queue mode not supported by firmware, falling back to single queue\n");
->> +			adapter->multi_queue = 0;
->> +		} else {
->> +			netdev_err(adapter->netdev,
->> +				   "Unexpected H_FUNCTION for queue %d registration (MQ mode already disabled)\n",
->> +				   queue_index);
->> +		}
->> +		return lpar_rc;
-> [Severity: Medium]
-> Does returning lpar_rc here cause a regression for the single queue fallback?
-> Since this error propagates up to ibmveth_register_rx_queues(), it seems it
-> will unconditionally jump to err_unregister and fail the interface open
-> rather than allowing it to continue with a single queue.
-*
-
-Good catch — clearing multi_queue still returned the
-
-error and failed open, so the "falling back to single queue" log was
-
-misleading. In v4 I'll treat subordinate H_FUNCTION as a hard error:
-
-honest H_FUNCTION-specific netdev_err, then the existing generic logs,
-
-without clearing multi_queue or claiming fallback.
-
-*
->> +	}
->> +
->> +	if (try_again) {
->> +		try_again = 0;
->> +		goto retry;
-> [Severity: Low]
-> Does this retry loop provide any benefit? Unlike the primary queue which
-> calls h_free_logical_lan() before retrying to clear stale state, this
-> jumps back to retry the exact same hypercall with the exact same arguments,
-> which seems like it will immediately fail again.
-*
-
-The subordinate try_again path was indeed empty logic. Queue 0 retries
-
-only after h_free_logical_lan() clears stale PHYP state (kexec). The
-
-subqueue path retried the same H_REG_LOGICAL_LAN_QUEUE with the same
-
-args and no free, so the second attempt could not succeed for any reason
-
-we implemented — and H_FUNCTION already returned before the retry.
-
-In v4 I'll drop that blind retry and report the failure once per queue.
-
-*
->> +	}
-> [ ... ]
->> +static int
->> +ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address)
->> +{
-> [ ... ]
->> +	for (i = 1; i < adapter->num_rx_queues; i++) {
->> +		rc = ibmveth_register_single_rx_queue(adapter, i, mac_address);
->> +		if (rc) {
->> +			if (!adapter->queue_handle[i] || !adapter->queue_irq[i]) {
->> +				netdev_err(netdev,
->> +					   "Invalid hypervisor return for queue %d: handle=0x%llx irq=%u\n",
->> +					   i, adapter->queue_handle[i],
->> +					   adapter->queue_irq[i]);
->> +			}
-> [Severity: Low]
-> Is this validation check placed correctly? Because it sits inside the
-> if (rc) error block, it will log "Invalid hypervisor return" whenever
-> registration fails normally (e.g., due to resource constraints). It appears
-> the hypervisor is not expected to populate the handle and irq on failure.
-
-**
-
-*Good catch. on ordinary register failure handle/irq are still zero, so*
-
-*
-
-that caller message falsely claimed an invalid hypervisor return and
-
-duplicated ibmveth_register_single_rx_queue() (which already logs the
-
-hcall rc). In v4 I'll drop that extra log at the caller.
-
-
-Thanks for the reviewing!
-
-Mingming
-
-*
-
->
->> +			goto err_unregister;
->> +		}
->> +	}
+Jason
