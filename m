@@ -1,152 +1,164 @@
-Received: from out03-fra1-mx.uberspace.de (out03-fra1-mx.uberspace.de [185.139.157.46])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BE733ADAC;
-	Fri, 17 Jul 2026 15:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784302950; cv=none; b=FtrqdXfgRO1AszGA4tgzUK6UKoqmuaeyLIN2nA7OpHGlbAPrvdK/c9iU4Yo7cVvO1lnbJxxwPvIs4187CqevKYTdG0xWFbrxKvuzIokxqMBYtXZPGNzNyYptC6ESo3uHBSiktr8VsyEtadjg+3eA+mq17Y0HicpoxFQlwXj6Ryk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784302950; c=relaxed/simple;
-	bh=0zDAeGaeN++KZl5iGbdTvfyEPMfCz1Pd2QVxgBqFuyc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz9thArmQP6rcuJ/uVohpgOAD7oGpdi+670DfBcYkBoorpRxY/CBTGjI7mA9mEb7ga1NX7APhCC1HtIXbftUIGjXyvzjfKCBqS5xXUcpssfIrR1kMOnIafBO0PgPskNpD6aGWv2shjpGZYy9vy56dIhUJfh+GLovq3q0LYtz1kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=jMg6UvX1; arc=none smtp.client-ip=185.139.157.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7861836E460
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784303618; cv=pass; b=HqGAYCdAUiOM3Fga0Q2Eg/b9W0+N+ivvgZ21IE2yIElk6cg/4FhfJ40TE1RH8rFVk9Und9DecozAeq7ZYuo/rD5LHivkhoYQLC0s4AwTQ1y+QPK2MqrxwRToz3mntV/I3S68kR83FPGdq2Q9uAGzZrvp/Bhlzkz7nr4vXBMlXCo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784303618; c=relaxed/simple;
+	bh=lpAe0xAk3UPPvUR2fW1+fv1t9rIwTpbysjHxIFUDCLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UmwDchoAHZWhxYB/OlPUErl/v8tfU+5/upL5o5Lb925uQO/9LjIDnbnpcKCe7viWbRidkJo4yqcr0MCCChiR5QfH2QZQe8ql6XWeOE0KTgay8l5oYBpqdwCalcJcAtUsxWCUMYzcTvaT4DvUJHlcOOYYdqNzidIKiuXV28+UlG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o67YOztn; arc=pass smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="jMg6UvX1"
-Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
-	by out03-fra1-mx.uberspace.de (Postfix) with ESMTPS id 6FACB1003DD;
-	Fri, 17 Jul 2026 17:42:18 +0200 (CEST)
-From: Simon Dietz <simon.dietz@plantwatch.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
-	s=uberspace1; t=1784302938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0zDAeGaeN++KZl5iGbdTvfyEPMfCz1Pd2QVxgBqFuyc=;
-	b=jMg6UvX1XHT/lzV8mq+pqCEukt51n6p6OcWPIiVBesC9ApTBsFCnlR4r8BIAFVj8On4Qgb
-	OluuA4Vxe0SQVk+LvA5te1GLyTjUGFq5LdJySBsEX8kAQezd7/zX3gvgrcDsrdxj/ssDX9
-	hAtiP1KgZQ71eusskJ6GdMW8+A5IkEb/o4NB+rpgtkgWuwJDPfgPmwzToDubI/yMS3wrqB
-	UqZhAOer/GaVFIzGQLqf1J7qn3Eehu8I/p8ggplSEZ73mVdSEmzOekV5rbPN24cm7mQevh
-	pGX+raRb2Afb5KUk9imbGmePmhWsdL1r7Rn/vToXxE1PgghZN4N5VJCsdG7C2A==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
-To: andrew@lunn.ch
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	dietz23838@hs-ansbach.de,
-	edumazet@google.com,
-	johannes@sipsolutions.net,
-	kuniyu@google.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	simon.dietz@plantwatch.de
-Subject: Re: [RFC PATCH net-next 0/6] net: add GeoNetworking protocol
-Date: Fri, 17 Jul 2026 17:40:33 +0200
-Message-ID: <20260717154033.2092529-1-simon.dietz@plantwatch.de>
-In-Reply-To: <9db571aa-4d5c-456a-ab24-796119c9807b@lunn.ch>
-References: <9db571aa-4d5c-456a-ab24-796119c9807b@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o67YOztn"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-848643382fcso9211289b3a.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:53:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784303617; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XzMpYZ4AFhfx7pqyBRvKbwK0Uw4ysS81FtkcyoZ9QtUvDx+m6P5s1v8a7XN7/7oj6c
+         SywAiEfzU1MftFZCIRn4nx1lMGCTHUrodZKq4jKZaNDbMs7bUZ4DYTfyY5h30PwKBB82
+         BwpqcWgA0q9KUT20Lhx7d2lT9xVzvATqKYDO9gaUUUdRA+qdj9B+vOmax7BWV9uT3Epo
+         WzH+EzbAosd1J2qPP42t2HlHxlvP/HwKNciH01aWVy/+VJ9TR6UWUiNLVzl6REUKosPI
+         VuW6t2qNsJNuteI3WxCjJuU7Sd9Sem5mfEg+c1sxwgy2GPcFF8Q0LwUAbfvJv2Lmx1z8
+         WKuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
+        fh=uQADOk81kBL3PdpKso+9FHGbfzPXW3hQHB8Zq8IIadg=;
+        b=GG/g7jO0xatP7PfhW99du7XUPp7AJguzILa/aW3yG+nu6RteJ0bkd60dvG0d03MEPC
+         gCgWpsjh8fYBATTiaIF+V7q+59aGv30r2bpsXhkH4aikZsW8yefEb0zkhav3BMCZa6I1
+         7boarbsXT6G9NC+Am+BrZaMksp5muvjWPUpY26kdEcAWzgl3WamlIsuOAc3ghVmwMUsy
+         BzBvwXM6lHbWsrKCC/zUxCHtqY6Vy+ggIXCJccfbmdFeA5Z46YDJSDIsiLkuc0JFue8S
+         Vg7QXYUhBSUsnI4Jva5G0uVwh+GdfJNXPZStVTe8ly6vH/lxEFYXYOO42H64WalN7pue
+         FN1g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784303617; x=1784908417; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
+        b=o67YOztnQDE58O2YefuJBol/P08GHEjdXL3t5WQFHI/zljklWrh7VZZ6JHhjw/XIf2
+         uCC2W7uJyzXD3qerERkSXjwmAJgrqDLZB7RMRmTUloIIRh8TEVndpu2jeKoTEa0KUYze
+         jfGGqeAu84XDoPm2W4llkrqAlmh/YIyQFfzaNUmqukbd2q3aG7dDTpjZHk9LbJBOqKw8
+         nwGXUfmjlzmGBdgAXNIopB0NAun34B1QDXykjCvnLJhO7bhBrjLGL9jDYDhAcXs2NT08
+         23Y72rDmNAdk/5zUS9Rv3aZhQuJdZ6UM7SUA5htmrjmSgN5FvTCdpFvvFfVs4G+lNwXs
+         zfzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784303617; x=1784908417;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
+        b=L1l3Y+yaZKh3x8oTszZ2Gn8HFrMuou/gGWnTtiiU9XDlGWGPCRj1sR7TQonjnLSmnw
+         qUEcmHMXOfjVl9i9KyDUnV9i4PguCjQ7qkpNYsCt9PagPt1PDHiPF3kJ8vAaIpiurPli
+         xWrJhcnjXQP26SW4Ii6Im4Gba/MDaTE1u7bg0CAMtQa38ru3gmX7rvIcqqlmMkXN/JmG
+         6fV53fhkCE0SvTXdUFtO0Fpmuk0WOpHY32qH+OmNkEBhLarjJke+M8Qh/TBjRdG2W8BS
+         PeUKOzod4n9B2QdiRVvhGF8gcg/3T41yZodvK8YTo4qUNkXbiwybDgxfCJcqyWPlGK/K
+         wf3Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrmulU0EZpal3riVPOI6CbF/D3uv7ApWEaN/Pi3T14/7rFBLdEZGakf2SAZtGfn7Td00G963V8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSHyLMz97FAxoLKr/ZjsiqS6HNhGrfpcbGcr6tTVQ6u52qcd8F
+	tkuikP7E3W243ibuDl8Sxlnc7dvftBPMvSn5C00khAqVu/vZquLJComxDRuRqOFs5KsUK0mVgr5
+	LLUbIUVLXvp9AJcz3fjE1l8UTdF3yLSVl0ryW
+X-Gm-Gg: AfdE7cm7goQY6pfTGD0uXIGYaa/VUgFLPqb0gdCZyVFiFxPmaIzS+RYPjWrF1JJVAlz
+	H0+rQdgcIEwDZkiZJ29wFx+EbDgnLm67d2a55ROpuFtyUF+fJul8L1AKDKOBAe8AL8TMyH5F6ot
+	qFaCuy22oGAmA4nf4px479vKfq9E9OvlXlmIfOOsr/cPB+HtZzjdxr+oJojrx7LibAMgxjqwDO9
+	KPJ9MDufIy2mczMzTrbPhCZMeoJ2UNZCb+LgNelV7CjjlMFaArHwu4M+xjrETOa465FHZED2kR/
+	W+vjkpXwf5y3fBJf9ysDwAIzhi+8K+G4dSFKEaYDURVyamO0uxX80zgUP4Pw6eaGO1ZlI9nFhA=
+	=
+X-Received: by 2002:a05:6a00:600a:b0:848:2f73:8ffd with SMTP id
+ d2e1a72fcca58-84c29527f98mr3396780b3a.70.1784303616665; Fri, 17 Jul 2026
+ 08:53:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.89 / 999.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	BAYES_HAM(-0.01)[50.88%];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
-	LOCAL_OUTBOUND(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
-	FROM_HAS_DN(0.00)[]
+References: <20260717143315.1942-1-lirongqing@baidu.com>
+In-Reply-To: <20260717143315.1942-1-lirongqing@baidu.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 17 Jul 2026 11:53:25 -0400
+X-Gm-Features: AUfX_mxGU8bu5-y4iiwqoxhcp5tvoKqtyL6O9fFy7Chy227PrDtkXxGEFp4t_z0
+Message-ID: <CADvbK_cEUR9m-QyKi5jj2MTqF2kGbBj7d1mUXmCsHgDLNJ-bPQ@mail.gmail.com>
+Subject: Re: [PATCH] net: ipv6: fix a potential use-after-free in ip4ip6_err
+To: lirongqing <lirongqing@baidu.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> I'm probably doing a deep dive too early, but ...
-Thanks for your time and the fast response.
+On Fri, Jul 17, 2026 at 10:33=E2=80=AFAM lirongqing <lirongqing@baidu.com> =
+wrote:
+>
+> From: Li RongQing <lirongqing@baidu.com>
+>
+> Fix a use-after-free bug in ip4ip6_err() where rt->rt_flags is accessed
+> after the route entry object has been released via ip_rt_put(rt).
+>
+> If ip_rt_put() decrements the reference count to zero and frees the
+> rtable structure, reading rt->rt_flags immediately afterward
+> results in a use-after-free pointer dereference.
+>
+> Fix this by caching rt->rt_flags into a local variable before calling
+> ip_rt_put().
+>
+> Fixes: 77552cfa39c4 ("ip6_tunnel: clean up ip4ip6 and ip6ip6's err_handle=
+rs")
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
+>  net/ipv6/ip6_tunnel.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index bf8e40a..984cb0c 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -569,6 +569,7 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm=
+ *opt,
+>  {
+>         __u32 rel_info =3D ntohl(info);
+>         const struct iphdr *eiph;
+> +       unsigned int rt_flags;
+>         struct sk_buff *skb2;
+>         int err, rel_msg =3D 0;
+>         u8 rel_type =3D type;
+> @@ -627,10 +628,11 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_pa=
+rm *opt,
+>                 goto out;
+>
+>         skb2->dev =3D rt->dst.dev;
+> +       rt_flags =3D rt->rt_flags;
+>         ip_rt_put(rt);
+>
+>         /* route "incoming" packet */
+> -       if (rt->rt_flags & RTCF_LOCAL) {
+> +       if (rt_flags & RTCF_LOCAL) {
+>                 rt =3D ip_route_output_ports(dev_net(skb->dev), &fl4, NUL=
+L,
+>                                            eiph->daddr, eiph->saddr, 0, 0=
+,
+>                                            IPPROTO_IPIP,
+> --
+> 2.9.4
+>
+Have you already seen any problem triggered by this?
 
-> Nothing new has been added to /proc for a long time. Please consider
-> a different interface. I've not yet looked to see what is there, but
-> networking now pretty much only uses netlink.
+I don't really think there's a use-after-free issue here.
 
-/proc has been used during the development of the gn module for passing
-gps data from the user space to the kernel. This behaviour has been
-changed to ioctl. Procfs has only been kept for debugging reasons. It
-can safely be removed and will be in the next patch version.
+The entire IPv6 input path, including ICMPv6 error handling, runs under
+rcu_read_lock(). Since dst_release() uses call_rcu_hurry() to defer the
+actual freeing until after the RCU grace period, accessing rt->rt_flags
+after ip_rt_put(rt) is completely safe in this context.
 
-> New IOCTL code is also very likely to be rejected. The functionality
-> should go through netlink.
-
-I'll take a look into netlink and rewrite the new IOCTL code.
-
-> Generally, inline functions in a .c file are rejected. It is better
-> to let the compiler decide. The exception would be if you have a
-> benchmark which shows inline actually helps.
-
-Noted. No inline functions (besides proven by benchmarks).
-
-> This seems like debug. At minimum, it should be _dbg(), but maybe it
-> should be removed altogether.
-
-I thought to have changed all pr_info to pr_debug, this one slipped
-through.
-
-> When does this wrap around? Maybe add it as a comment.
-
-Noted.
-
-> Commented out code is not something we want in the kernel.
-
-Indeed all BUG calls should have been removed with one of the
-subsequent patches together with most of the commented out code. I'll
-take another look to ensure all comment out code is removed.
-
-> Maybe one of your later patches fixes this. We might want to consider
-> squashing them, so the review is done on the final clean code.
-
-That's good advice. I'll adhere to it.
-
-> netdev uses reverse christmas tree, longest lines first, shortest
-> last. It should apply to all functions.
-
-Fixed in patch 6/6. And partially included in squashing subsequent
-patches so they fully adhere to the coding style from the start.
-
-> Not the sort of thing you normally see in the kernel.
-> I've not looked at the code enough to see the big picture, but
-> generally, the kernel routing table is static, and fed from a user
-> space daemon. Should all this code be in user space?
-
-In GeoNetworking routing decisions can be and are in non broadcast
-situations based on the distance to the other vehicle/host. To be more
-precise routing is based on if the reciever is in the same area as the
-sender. If the sender needs to forward a packet to a reciever outside
-its own range, it is forward to the intermediary closest to the
-reciever.
-
-That's kind of the core idea/feature of GeoNetworking. I don't see the
-possibility to move this part into the userspace. But this does not
-mean that there is no option at all.
-
->> static void debug_loc_te(void) ...
-> debugfs? a netlink dump operation?
-
-I'd like to keep this debug function for now. I agree that it should be
-removed/changed in the final patch before an actual merge to net-next.
-
-Simon
+Thanks.
