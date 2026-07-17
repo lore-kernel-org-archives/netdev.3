@@ -1,122 +1,130 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A488B2DCC13
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 16:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC673F6C3C;
+	Fri, 17 Jul 2026 17:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784307425; cv=none; b=OMBlTwrENnZ71TskPxfCkKT5kIc6Ga6Z4+FfmarvFjSBLyYyZ+Yk5TpmgPGnqXHuRDqOERdwl7105SUnNt460MqthrUMOwQ8Ks6hjA4llgrTZynpinY12FYhagkD/y6vH9cs3so8QSkr04nRBwYCTlGhAVN+98XBd9tcC8DLJRM=
+	t=1784309385; cv=none; b=rpDsUpgaXqQFXUtRgJ4vrWUWd9P45uB1mxQUa36nvdXT8Ihpng/Zn6zaFUJa4r9eV8/OiABBV0gVHUyNJDNhVgsxb1hr4frFfALMYQNLR1h9Jx1Pj74bAEciS+QEBVSyefpRoKJ7ujb8HuKRGxCPYJ5UeLsdlXXsEOIieRKDG7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784307425; c=relaxed/simple;
-	bh=wKs36SOVOHO3LJ8mNUlux8QFeak+dkTNaXb1CzDcfxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PKGgD1crkoctbA/KKwT8o1slPvsNRRZjTWod3Y1neOxhcfQMWw9IrV6BmAnYbpA2URVSS+hUZP6t/XbrVBCvkcrw0u93/4J6Q8WWyEB7mZfq0jrEz+FhBUzE0KtOc2eDVVbZKh5aQJELK/gCD/D1kco7ttv5w3uw82miRe88GQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gsUQx8IV; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784309385; c=relaxed/simple;
+	bh=XF9wdLy8L2QQ1MIsBlaOqfidxTpLzvtKGCJJFg3XbJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uIYNbLTVRR2u21rii3pW/Sj3MWnfJn8qJIWZSm8ps3WFSsjZz9nTPnsGbXzYZ8/e63jFKiPCpKpERKMQlrkh1eMoh8wD80BPzZ/GDpInXJNrl+ePP7noRrzGFCefak8ffNYfubZ1oSGm8BI0Tu4hl2ntsf3Jb5/HFCYubruylPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=b+9JInNi; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gsUQx8IV"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-848882fdb18so5285956b3a.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 09:57:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784307424; x=1784912224; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jjQtERwpEh0m+PQ7Nbhz5JQWbFkPp2mGwWfv53pig2A=;
-        b=gsUQx8IV9nvoQNaRbJqUTT3p3FgXDSSYDd/b1oGAXQbiLg1CXpbs/Fttx0dh8SdRHy
-         oJryR/zEbQ1TlgjgbCna8fclAzncSF564bDR6Ct7q11Pxv/RMbldjoUqw8WeQr/nOH1Y
-         IXLIuuwpC3aB6IWyXfg3camudzpWbDiWtwY86h07Wvbs7FrAtSHKHIR8qEu8iAbCGikT
-         jIBP892WJnlx2l+l5+/evTZo83g+B1XYxJi7YBnMkvSj4Rr11OmvJI/fwAwg0ER9Wceg
-         pc/mJA1MHgchFDQKS0n86ftrpHiO8QHIEKrQGUCv60dMbqbG/dv7ri8do9zzfo/IEvNs
-         5Lrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784307424; x=1784912224;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jjQtERwpEh0m+PQ7Nbhz5JQWbFkPp2mGwWfv53pig2A=;
-        b=UvT6YuUql/h0cGZJBupNX2yD2Q2wujalUZM4sThkrraHMWjOEKYhOCL95/5jRCJpLh
-         CHClRssIEPVbioNSfHmo1P08+aSaNBDExtKr+M0uP4uDDF3auDFMnQ2aWVPABJM5eRYH
-         KMgMCOMYtopIxQENTfQ1O2Y3vWiwmNlEBG05HClYKP5PcT/GuEOROM56JGuFFbKPxmPA
-         bkkvGWHSfEein/0+5EXTxuw0BSwDREn4M4vCaNbr6hEKYUTkJkFFkZram/gTyuR2DtQK
-         MECO1sJxugjmYg3QgdZg82iaW4cYSNHCjV0JtWTgMXpNpDEqA+K+J+5lih/l7j+lmyxC
-         rhLA==
-X-Forwarded-Encrypted: i=1; AHgh+RoZpphWgQfQVh0d86yEJowwDsIj90jBpAQCeP0vdiOhgaXzNwJPjrkNaAbnTlsetAoVzaIW4zE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN0f/ButF1VW3SdOG/f8D0VCZv3BZzFYbdhImdJbD741KLqaDi
-	hBim/mozEbvvIiZ7bilH2HnWnfLhU80lMtc+QhtTUVB78bTNKVgCegytlg8J3LELGw==
-X-Gm-Gg: AfdE7clJcP/MLmexwlNti2djbOvC6HQMYcqyrIcaqUFXOeFB2gLqAXFwl9yIAPilIqa
-	YlxFwVZ55f5Q2/jjtB5RTWcQ3/lR5/5sYjsg6UdAEOija0tSablr/WWtMuxk5pgQQqTZWEWn1M9
-	NmYevAgMcxH9qkqXcZO/dFJERncigsXnMWJGYj0RQYvM19C4oFOf7usxPCk72YsQ8S6xXEj4Cax
-	aU+hSC4BKUtKuXKaevkTm4UbsTS6xcnbck6N/bL1taJhvIjWRtq38BryDzctP4kod3E+MGCxDsM
-	KYPChgKCA3oHql0IK7t6vIDSt2PUXYL1O1uRx14l7XbtjJQO6dUmfnqdKh+jvv5L0xOElf+dJzG
-	J6rC/u+stg4LecuCwJJks0312IvSt8i0a72ra+bcxQ8ZVQI2zSP/G/v02gm9zSZBfCL0Y3UxKn7
-	DLjy42x4SZyZL+WGmKylDIyKyWI43+biS8Ya6aIIpc1Ufb/WkWDqZBhaWEGAgZ+LiH0SO+S3gc9
-	GQ4GzTgqcRCtE0dN3MlvM5KNg==
-X-Received: by 2002:a05:6a00:421b:b0:848:5010:ad3a with SMTP id d2e1a72fcca58-84c294a6dd6mr4175030b3a.58.1784307423560;
-        Fri, 17 Jul 2026 09:57:03 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e87:6:93e6:5c88:4a97:3393])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af30bd6sm1442066b3a.39.2026.07.17.09.57.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 09:57:02 -0700 (PDT)
-Date: Fri, 17 Jul 2026 09:56:57 -0700
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	Eric Dumazet <eric.dumazet@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Nicolas Pitre <npitre@baylibre.com>, nathan@kernel.org, ajordanr@google.com
-Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
-Message-ID: <alpeswexV_jIgT5q@google.com>
-References: <20260118152448.2560414-1-edumazet@google.com>
- <20260118114724.cb7b7081109e88d4fa3c5836@linux-foundation.org>
- <20260118225802.5e658c2a@pumpkin>
- <20260118160125.82f645575f8327651be95070@linux-foundation.org>
- <20260119093339.024f8d57@pumpkin>
- <CANn89iJVQe=wedLheJmjZjOTJsWHijT0jZs=iRxKssJZbjAxHw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="b+9JInNi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
+	bh=6Wl5sCv+GUQA7woBHlPhm7ZYfAEeXe83Pf/DdhV+b1g=; b=b+9JInNi7RM1zc67G05aMrz0N3
+	2LqNL7N0BXUS7P8+7/Epv5uX8e1IYzplvazQ5RYBzCmyTpCVjKSH6abYr50gG8OOKaa8iQCfW6YMI
+	QKzgjQtHKgjSBbDPnKWmihVHlP8GK1j8ZZRTjy5KdyQRx7UatiGlTA8KxaHMbRSVjXaoMElzyUDhk
+	UEBW43cljA14/t+ZgIhMp2ZnOH2PhS3qOTrFIFEZxJK7eyuTZ+ErrYPCyp4Zd2Go1ggK1wmASCnN0
+	9V4bon3wzRcqO7kp/3plkRRhmDyVbMtSibM3QiWho/EOhStP+a7uoVfpWYhvIoBqiihPIsvRuGI5P
+	i1IK+wZA==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: stable@vger.kernel.org
+Cc: heiko@sntech.de,
+	quentin.schulz@cherry.de,
+	kuniyu@amazon.com,
+	kuniyu@google.com,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Lennart Poettering <mzxreary@0pointer.de>,
+	Luca Boccassi <bluca@debian.org>,
+	David Rheinsberg <david@readahead.eu>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>
+Subject: [PATCH 6.12.y 5/9] af_unix/scm: fix whitespace errors
+Date: Fri, 17 Jul 2026 19:29:18 +0200
+Message-ID: <20260717172922.3398851-6-heiko@sntech.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260717172922.3398851-1-heiko@sntech.de>
+References: <20260717172922.3398851-1-heiko@sntech.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANn89iJVQe=wedLheJmjZjOTJsWHijT0jZs=iRxKssJZbjAxHw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 19, 2026 at 11:33:29AM +0100, Eric Dumazet wrote:
-> > Many __always_inline came because of clang's reluctance to inline
-> > small things, even if the resulting code size is bigger and slower.
-> >
-> > It is a bit unclear, this seems to happen when callers are 'big
-> > enough'.
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-Haha, yes, and I've read LLVM's inline cost model before and "a bit
-unclear" is how I feel about it.  At this point, some of your Google
-compatriots have even resorted to AI for inlining.
+[ Upstream commit 2b9996417e4ec231c91818f9ea8107ae62ef75ad ]
 
-https://arxiv.org/pdf/2101.04808
+Fix whitespace/formatting errors.
 
-> > noinstr (callers) functions are also a problem.
-> >
-> > Let's take the list_add() call from dev_gro_receive() : clang does not
-> > inline it, for some reason.
-> >
-> > After adding __always_inline to list_add() and __list_add() we have
-> > smaller and more efficient code,
-> > for real workloads, not only benchmarks.
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Lennart Poettering <mzxreary@0pointer.de>
+Cc: Luca Boccassi <bluca@debian.org>
+Cc: David Rheinsberg <david@readahead.eu>
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Link: https://lore.kernel.org/20250703222314.309967-5-aleksandr.mikhalitsyn@canonical.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+---
+ include/net/scm.h  | 4 ++--
+ net/unix/af_unix.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Yeah, ChromeOS is hitting this now, too.  They're deploying AutoFDO
-where you collect traces with LBR (x86) / ETM,TRBE,BRBE,SPE (ARM) then
-feed that back into the compiler.  Then they're getting modpost warnings
-from section mismatches when constant propagation sinks addresses of
-initdata globals into specialized copies of list_add that are then not
-inlined (so not placed in .init).
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 0d35c7c77a74..ea85f7427a19 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -69,7 +69,7 @@ static __inline__ void unix_get_peersec_dgram(struct socket *sock, struct scm_co
+ static __inline__ void scm_set_cred(struct scm_cookie *scm,
+ 				    struct pid *pid, kuid_t uid, kgid_t gid)
+ {
+-	scm->pid  = get_pid(pid);
++	scm->pid = get_pid(pid);
+ 	scm->creds.pid = pid_vnr(pid);
+ 	scm->creds.uid = uid;
+ 	scm->creds.gid = gid;
+@@ -78,7 +78,7 @@ static __inline__ void scm_set_cred(struct scm_cookie *scm,
+ static __inline__ void scm_destroy_cred(struct scm_cookie *scm)
+ {
+ 	put_pid(scm->pid);
+-	scm->pid  = NULL;
++	scm->pid = NULL;
+ }
+ 
+ static __inline__ void scm_destroy(struct scm_cookie *scm)
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 1d426f5b2580..c64d8ee0ede4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1887,7 +1887,7 @@ static void unix_destruct_scm(struct sk_buff *skb)
+ 	struct scm_cookie scm;
+ 
+ 	memset(&scm, 0, sizeof(scm));
+-	scm.pid  = UNIXCB(skb).pid;
++	scm.pid = UNIXCB(skb).pid;
+ 	if (UNIXCB(skb).fp)
+ 		unix_detach_fds(&scm, skb);
+ 
+-- 
+2.53.0
 
-https://github.com/ClangBuiltLinux/linux/issues/2173
-
-I think list_add, __list_add, and probably __list_del_entry_valid should
-be always_inline, possibly except for the different definitions when
-CONFIG_LIST_HARDENED is set.
