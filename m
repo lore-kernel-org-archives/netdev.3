@@ -1,126 +1,207 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FBA3A7843
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 19:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC7238C2D4
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 20:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784317744; cv=none; b=t4/9YmDV9+HGdoti7zEA+Np8fYxVvDuLMhDrtmfp/cCkN1mZlV56Ef8G8bzSAlSKkL8tWXIZQeVLQzGWW1FVziAhn+9G8cL2WcCEQDsu4vz4ZXoprhTGAzIHI452HupOU/zXrENE0m9e3QQhdmiMdcdC3u9rXTwhmJIJQYjZ4Kc=
+	t=1784319305; cv=none; b=Y5Zl+8DKfjFxGyrefCPaB6Mx8mlB0eFdfCaQAI+7pkuD3pow+fl7Pkt55V7+IY5ohhUuCQw0+UEgRRiJKqXxeroblj5fQEtncTI3w8lA8Z4akI2WS8smBRCBh/jka0yUHgNF9Ok0JwPyt+7zbAkJX9oIgQVMuAfL8Yn+xhR1ID8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784317744; c=relaxed/simple;
-	bh=SMfQ+p6wY8TVJKloo5fm3DexlBaHJs/dO34kRwNPzMw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qFAeNBP8ijumlkCNRUBMA9GF7vsUe0dGZnisrDk6YKkIbshQCIwS/nECEf29lep8H+vDlb9PJodzrxDtR7Nj9j9IaVPDC4oN6aPAU0aL1jadpKwCFKYQi/s0sRgNl5J3ShNWufgqxC48JA2rpY9py3kIohvb/WYoXoYxtwPPzCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sitoIKRb; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784319305; c=relaxed/simple;
+	bh=GV1srDi4kDItYUj6rQIiIuZChYX2kOnVWv7DoMb6S8s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sMgzENV/CrIPW+cDZs3isc24n6xW5pwv+oOVTQgEj+OaL9feAm+p8Adg2nYwJpddy/CUDQjqwZW+Z0aTKIyxoQg5/zbHtNr1bHTz28UcqnTsv9DJnC+vDysgGieL4XglhFLWIF2XNzMG5HSwftxemC2wudWbWjuBCu1ksr46plg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HsQJqp7v; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sitoIKRb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CA8381A1078;
-	Fri, 17 Jul 2026 19:49:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 98A0360361;
-	Fri, 17 Jul 2026 19:49:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3842011BD2789;
-	Fri, 17 Jul 2026 21:48:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784317740; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=/bZyMdibmNhn8hYknzAZPzu2XCASXmLuyUZQF+8Puo4=;
-	b=sitoIKRbCuVvTpdRzdr+tuIwhhAQHlaM9sMissXz8MFyqPizzq9jX8th1PskJp1b/gwL7g
-	BTIkvOoyboPVyVpp9QaRLPQ2MVuHTQEI25u1lbRx6lcgei1mn+3FCBKiU2P00YLr/Q4kj4
-	J9RdFOLfduhhe9H3CbJN5hWTjAgHVyf5kbhuwyrH3suifPEwcoZdhvfdVDFZM/HY8E9JdB
-	LeB0Vxpo9CbiVmCRgN34sWQGoov1CG1zCPq8Ae7EG/29AzfY5H9zAJlwzaK+2PuDAGvgsQ
-	Tzf/HdTt93BvI39Jbhq58JPp6xQFQALhiqzvy0ByLBJvlpuukMmnb3PuiN9wGw==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 17 Jul 2026 21:48:18 +0200
-Subject: [PATCH net-next v4 15/15] net: macb: use context swapping in
- .ndo_change_mtu()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HsQJqp7v"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49392c85c8cso6352245e9.2
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 13:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784319301; x=1784924101; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l3e9Y+jrV2F0gWW87vf3L0ZYdrhYMVp2UOwkFO3dd0E=;
+        b=HsQJqp7vFDS7NgqVAZSxXOvNcSNT2RKOBm9GSO1SpU4lOC4gXXoNLhQ/Lz8cAyVyFy
+         hRK3+mT4tsRj6VOOIWLixdYtA5wZL5o5ituncckShDIVNN8H5K/675wTClJFhfDesNFJ
+         cZPIzA6l0VljPymMQ4Bgm8XTulzU1joyBYtpDSvfQlIuCRY8krzEPnV5ImF3RlZaY7Ur
+         lWZ4qFFQlX2umUzzkB6UHE3jyycLsVGoazrg56ufcl9dy1ljukukNydgRbawtg6F6M21
+         apsXuSvtpmf4bK2Bemh33VaTomsPv0wxS6/viSGhMXLEmu5j8qfwIUj1O8h1ueW/yZF6
+         VPeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784319301; x=1784924101;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l3e9Y+jrV2F0gWW87vf3L0ZYdrhYMVp2UOwkFO3dd0E=;
+        b=Xotw3TpB4Nwa2BxceZREN3yc94DUlzTQ5HS1/XtJsQkIy6LTzFaE0vf93zJuflaIMt
+         AxFZ+gQ4g7lCkH1D+Dzv8j7RFbuK2ZGs7K/zdpA4FtgoEhP4IpWzYZp6oPKOp68Mlt3z
+         lYMQoajjJHy1PZy9YxcrQ0XSWtJL97nA65uadPqag+EwNOJnLxOxWWuPOsenRnHpXsgh
+         1T3jwfYW+Pk/KYLKjDyQezkAwS+uhYiMHf41vl/oOhN/INcJPcxMW40IIr3kK/r/k5AF
+         j0f/TcBed9GglDcBIlkw5r5rCr6YmO4/kfuTLnNfZA4AYwxn1zCNhnGCQvKzpdDhYhO/
+         SAKg==
+X-Gm-Message-State: AOJu0Yy5H32TDL6a/ywHdWlm74BQTn17Kch0MC/go6Dj4WyCywLox17Y
+	ARBExsbK+zxt9M2rkvyh92sUEYEvkvzYNjnVzPrAhXR8BVu3FOar35PIn2DNpVNj
+X-Gm-Gg: AfdE7cmo7Sh4kAZSYPYeU0p0Izg+FmKKZEoYkZ16ooOrqZonmNqf5rNmLrtrAbPwNVx
+	eXfMGeiNSly4WMfNDo+62bVzKyAqoJaTzYhSzQsQ7TwbapbJF/u+RMGRO6DwKPnj71cy/8XnqVj
+	Oc6CL9NBp1SnSaZpBvtZ2pKVw/133JBcABLuE2MNxeWLw9dNIa0P3lwaxMYO8R7X+MpBFF7m5yj
+	E88GYaSlqybdovxcHWkK1a/KwdfgciANgjSeOt23reFLuAcKrwGTaFHAul3PaBYm+FwUayNzAmj
+	SF1r44loPcmlQLxlPQ6E6dkF7w8PS9gB1XTTLgnI4m9iOcD44/9GfAU8o2OhBSfP4eTcLbLmgvU
+	L0oaLD5xLo06RQOnNAxYIFz2mXn28Nw9//xU4qORJ3EdZVT7iE7mlGkowRM+XKPXx/w0GM8GTRd
+	yvMj4RgreJpgOLAIm8W5h353rY4htJe5LE3yjrhIQzrsqzxogIZi19C4VOe5l5ogcaKnItu8lbW
+	zYoWHyIatKkZ1SGitrWYX4NFSicyHToThCykzk=
+X-Received: by 2002:a05:600c:4e94:b0:493:ec89:db4a with SMTP id 5b1f17b1804b1-4954a38f5e6mr28817545e9.0.1784319300516;
+        Fri, 17 Jul 2026 13:15:00 -0700 (PDT)
+Received: from L-022584.energy.envision.com (dynamic-077-179-077-126.77.179.pool.telefonica.de. [77.179.77.126])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499a5847sm53179335e9.2.2026.07.17.13.14.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 13:14:59 -0700 (PDT)
+From: Xin Xie <xiexinet@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	wsa+renesas@sang-engineering.com,
+	jie.luo@oss.qualcomm.com,
+	shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	fmancera@suse.de,
+	bigeasy@linutronix.de,
+	fmaurer@redhat.com,
+	luka.gejak@linux.dev,
+	Xin Xie <xiexinet@gmail.com>
+Subject: [PATCH net-next v4 0/4] net: hsr: PRP RedBox (PRP-SAN) support
+Date: Fri, 17 Jul 2026 22:14:53 +0200
+Message-ID: <20260717201457.54-1-xiexinet@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260717-macb-context-v4-15-0acbe7f10cdb@bootlin.com>
-References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
-In-Reply-To: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
 
-Use newly introduced context buffer management to implement
-.ndo_change_mtu() as a context swap: allocate new context ->
-reconfigure HW -> free old context.
+This series adds PRP RedBox support to the hsr driver: a PRP node that
+proxies one or more SANs sitting behind an interlink port (IEC 62439-3,
+PRP-SAN). HSR-SAN has been supported since commit 5055cccfc2d1 ("net: hsr:
+Provide RedBox support (HSR-SAN)"); this extends the equivalent capability
+to PRP, reusing the existing protocol-neutral proxy machinery
+(proxy_node_db, hsr_proxy_announce(), hsr_prune_proxy_nodes()).
 
-This resists memory pressure well by failing without closing the
-interface and it is much faster by avoiding PHY reinit.
+A SAN behind the interlink does bidirectional unicast with peers on the PRP
+network, its source MAC is preserved on the wire, the PRP RCT is correct,
+and the RedBox announces each proxied SAN with the RedBox-MAC TLV (Type 30)
+in its supervision frames.
 
-AT91 EMAC is handled differently as their buffer management is separate
-and they don't do NAPI. We refuse them (-EBUSY) to avoid implementing
-context swapping for them.
+The series is bisect-safe: the datapath, duplicate discard and supervision
+support are added first; the rtnetlink rejection of "type hsr ... interlink
+<dev> proto 1" is removed only in patch 3, once the feature is complete.
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+Design notes:
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 5792647eb0a6..1de66f442c59 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3493,11 +3493,29 @@ static int macb_close(struct net_device *netdev)
- 
- static int macb_change_mtu(struct net_device *netdev, int new_mtu)
- {
--	if (netif_running(netdev))
--		return -EBUSY;
-+	struct macb *bp = netdev_priv(netdev);
-+	bool running = netif_running(netdev);
-+	struct macb_context *new_ctx;
-+
-+	if (running) {
-+		/* Context swapping is not supported for AT91. */
-+		if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-+			return -EBUSY;
-+
-+		new_ctx = macb_context_alloc(bp, new_mtu,
-+					     bp->configured_rx_ring_size,
-+					     bp->configured_tx_ring_size);
-+		if (IS_ERR(new_ctx))
-+			return PTR_ERR(new_ctx);
-+
-+		macb_context_swap_start(bp);
-+	}
- 
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
-+	if (running)
-+		macb_context_swap_end(bp, new_ctx);
-+
- 	return 0;
- }
- 
+ - prp_drop_frame() does not walk the node tables. The destination
+   classification (PRP-network node vs proxied SAN) is resolved once per
+   frame in fill_frame_info() and cached in struct hsr_frame_info, so the
+   per egress-port drop decision is O(1) in the softIRQ path. The
+   classification is gated on PRP RedBox devices (prot_version == PRP_V1 &&
+   hsr->redbox), so HSR RedBox traffic is not affected.
 
--- 
-2.55.0
+ - The LAN A/B duplicate test is factored into prp_is_lan_dup() so the new
+   PRP interlink rules in prp_drop_frame() do not change hsr_drop_frame()
+   behaviour, including the NETIF_F_HW_HSR_FWD path. This is software PRP
+   RedBox only; it adds no new hardware-offload contract.
+
+ - The supervision emitter uses pre-reserved tailroom (hsr_init_skb() +
+   skb_put()) on the existing GFP_ATOMIC path; no skb_linearize() or
+   pskb_expand_head(). The RedBox-MAC TLV is followed by an explicit EOT
+   (Type 0, Length 0); padding via skb_put_padto(ETH_ZLEN) and the 6-byte
+   PRP RCT remain at the absolute tail of the egress frame.
+
+ - The hsr_get_node() hsr_ethhdr length guard is relaxed only for PRP
+   supervision frames (prot_version == PRP_V1 && ETH_P_PRP && is_sup), which
+   are untagged with mac_len == ETH_HLEN. HSR (ETH_P_HSR) supervision is
+   front-tagged and keeps the original length requirement, so HSR
+   malformed-frame filtering is unchanged.
+
+Testing (on a net-next v7.2-rc2 kernel built from this base, x86-64):
+ - checkpatch.pl --strict: patches 1-3 clean; patch 4 reports only the
+   expected "added file(s), does MAINTAINERS need updating?" note, which is
+   ignorable here -- MAINTAINERS already lists
+   tools/testing/selftests/net/hsr/ under HSR NETWORK PROTOCOL.
+ - git diff --check clean; the series git-am's onto the base commit.
+ - tools/testing/selftests/net/hsr/hsr_prp_redbox.sh: PASS on the patched
+   kernel (bidirectional unicast, SAN MAC preservation, RedBox-MAC TLV +
+   EOT in the proxy-announce).
+ - HSR regression on the same kernel: hsr_redbox.sh (HSR-SAN/RedBox),
+   hsr_ping.sh and prp_ping.sh all PASS, confirming the PRP changes do not
+   regress the existing HSR/PRP paths.
+ - netns checks: peer<->SAN 0% loss with no duplicates and a valid PRP RCT
+   on the wire; a silent SAN is pruned from the announce; zero driver
+   WARN/BUG/Oops/RCU-stall during the run.
+
+Beyond the in-tree selftest, this exact series (applied to this base and
+running as the net-next kernel on x86-64 hardware) was also validated with an
+out-of-tree IEC 62439-3 conformance harness (supervision TLV chain, duplicate
+discard, cross-LAN rejection, seqnr rollover, VLAN/multicast/GOOSE frame types
+with the RCT verified at the absolute frame tail), and interoperability-tested
+against a commercial PRP RedBox (Siemens SCALANCE X204RNA) over 100 Mbit/s
+Fast Ethernet with NIC hardware (PTP) timestamping: a mid-stream single-LAN
+outage of ~2 s at 10 kpps was bridged with zero lost and zero duplicate frames
+(seamless PRP failover), and the duplicate-discard window held zero lost /
+zero duplicates under netem asymmetric delay up to 100 ms (~1000 sequence
+numbers in flight), 25% reorder, and 5% single-LAN loss. The failover and
+impairment matrix was additionally repeated on a KASAN + lockdep + kmemleak
+instrumented build of this kernel, including a 72-carrier-event link
+flap-storm with deliberate double-LAN cuts: zero KASAN, lockdep, or kmemleak
+findings. This out-of-tree testing is supplementary and not required to
+evaluate the series.
+
+v4:
+ - pass rx (enum hsr_port_type) to prp_is_lan_dup() instead of the frame
+   (Fernando Fernandez Mancera)
+ - restore the original macaddress_redbox indentation (Fernando Fernandez
+   Mancera)
+v3: https://lore.kernel.org/netdev/20260707135937.18-1-xiexinet@gmail.com/
+ - no code changes; repost as a new thread (v2 was incorrectly posted in
+   reply to v1)
+v2: https://lore.kernel.org/netdev/20260706134131.61659-1-xiexinet@gmail.com/
+ - publish the RedBox state before lower RX handlers can learn nodes:
+   fixes an initialization-ordering race where a node learned during
+   device setup got a single-port sequence block, breaking interlink
+   duplicate discard and letting the supervision merge read beyond the
+   source node's allocated sequence bitmap (reported by the NIPA Sashiko
+   review)
+ - harden the supervision sequence-block merge against mismatched
+   seq_port_cnt
+ - align macaddress_redbox for ether_addr_copy() on strict-alignment
+   architectures
+ - selftest: kill the background ping by exact PID and wrap an overlong
+   line
+v1: https://lore.kernel.org/netdev/20260704234704.4297-1-xiexinet@gmail.com/
+
+Xin Xie (4):
+  net: hsr: add PRP interlink (RedBox) datapath and duplicate discard
+  net: hsr: emit RedBox-MAC TLV in PRP RedBox supervision frames
+  net: hsr: allow PRP RedBox (interlink) creation
+  selftests: net: hsr: add PRP RedBox test
+
+ net/hsr/hsr_device.c                          | 44 ++++++++-
+ net/hsr/hsr_forward.c                         | 46 +++++++--
+ net/hsr/hsr_framereg.c                        | 27 +++--
+ net/hsr/hsr_framereg.h                        |  2 +
+ net/hsr/hsr_main.h                            |  2 +-
+ net/hsr/hsr_netlink.c                         |  8 +-
+ tools/testing/selftests/net/hsr/Makefile      |  1 +
+ .../selftests/net/hsr/hsr_prp_redbox.sh       | 99 +++++++++++++++++++
+ 8 files changed, 204 insertions(+), 25 deletions(-)
+ create mode 100755 tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
+
+
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+--
+2.53.0
 
