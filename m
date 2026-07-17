@@ -1,109 +1,255 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C612E1F0E
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 02:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B979B363C75
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 03:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784256760; cv=none; b=UWl0fZ7tIm5Jkd8+xoM70LQxqWiO+oKRl3lGbIaIpNcwsBJWy7of7+my+448cjmku/usc0p0OjuCXPaoqUDB3LiQngKIYyY8dHq4N1y3us820ZDHEA1AAKX48p2B3me+RzUoy5boMg1IyeLuqKKGj43K5Z1RewS3oNHdfqS7lKM=
+	t=1784257389; cv=none; b=uGWjfKMZiX2/QtD8VgORa4cZRhEhXoqfnXwrE7llFYlkRyTgUU/zpL6BAF1wCJG9BRa/gb8cjEIrGZEUzSc4l/jyQcsrBxIaQmQ+sim2CKIGmySsHxzrIIwwDE2ldLvu9WWRhwDXZoLMsR+Edk2w/9G+k5KeouNoR/OpDHGz/sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784256760; c=relaxed/simple;
-	bh=dLdFutuNBIn93obnZQhcBIj2PVvj0W3nO3cDawqW3q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KZnJ6SvEM3pbF/1Zqe1ecZsI7fFOY508K7HXkhwIDZXNYEhNQZqTeDzlo+/tVRnIR4g2HmysP1s2TiQR4i6j3J21ikgTaliukNPRZBQ/Z8ADAkiuiZwnqLcVMVKHYAScMockAikhzEyhWnOj2ceCJgLjEQ+5O/yTVGRVE81T1lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=multikernel.io; spf=pass smtp.mailfrom=multikernel.io; dkim=pass (2048-bit key) header.d=multikernel-io.20251104.gappssmtp.com header.i=@multikernel-io.20251104.gappssmtp.com header.b=LLg+kGpn; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=multikernel.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=multikernel.io
+	s=arc-20240116; t=1784257389; c=relaxed/simple;
+	bh=tx4XfYuxRQ6f1pFqK8Cx4h1qrlAlImqt75P0hM1ghpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cOln0yvwjcZNFenPBtg+BSjY/KiI8jzRQhUGObg9OgjOj6qdFVyEiybwwukLLPqnMdwY1Y5b+ML87rIwtCH464ogeVBZYt7/KxV60ydtwwceW8FVThqClmLO373IN/8Khghfo/ydUnz0uToKZLXM1pHUSIZLGOMqDsmXdny9HOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d1vtBjkh; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=multikernel-io.20251104.gappssmtp.com header.i=@multikernel-io.20251104.gappssmtp.com header.b="LLg+kGpn"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-ca913a601fbso5065610a12.3
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 19:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=multikernel-io.20251104.gappssmtp.com; s=20251104; t=1784256758; x=1784861558; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=imgrbCa7kVSrxtr+H1EX7S0xO3/9JxSteVkZZkYrlEg=;
-        b=LLg+kGpnHb1Jx0VOGOTzPVde4ptkQVjQIUaFTOJQjQebNWmY+FnjeIbrkNM03+1ZPW
-         MO2fa/kGV9tKobYchkkTjtA533hah/KmI5DAFCMKDH0Eo3LtDwrlFOKJG/UMYTDezWcT
-         4UpElVXRY2s4azB7ISBilx2+YjHG0Zx3MNjNQJL1I2EJ2nSQeYUNDIuhTb2jLd9VQUZ8
-         g86yRqGThsOjclfwuUmXfxCzr28a76VBFPXlJDiYiYYfIcEkzW6JGdq3oClyYCckat3s
-         qOviV9J/M5CYHxTpBsLOSkueNf4fMjlDF0we3jDiwx335QkU5pgpmZI8tre5BZWLqaNd
-         Nszg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784256758; x=1784861558;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=imgrbCa7kVSrxtr+H1EX7S0xO3/9JxSteVkZZkYrlEg=;
-        b=lAzDlZ1t8YPKh6j4HH7aw/N5VxP+esP73X+289FuV7N4a1SFkyK0f9FY9BUsC33fi2
-         dHgYkEjms2Fw2Ds8Ns9WAdEVI8VNeZB/Yl2wF9tQA6Ei5ULpoijZsKJAc1veD7MxOCMS
-         2/TmX8KCSIBRZLPNCc51Eje3MBZzEsEIJgfYassnIRatlC8J2rgggf/Ua5zKjFaE2D08
-         edSWzu1pmcLR6tc2x2MUQ0bZ4UZzwHUk2/B+2+D/aRc0Wr0PYXEL0EJNMV7SKGFRJwzN
-         FF6A2UF/+MISY75KQbEfjLeRB6dVtkA9ospKfOdeQRk6+C2usc0mWrdhLJuKa9h8RyML
-         86yg==
-X-Gm-Message-State: AOJu0YzcPPkrFqwk9iU8zC+6BOmEvke11ITGBzvAh5auZFRrWFvw0CbN
-	clhSKGFK1fMSoq9hNaSGSkBngDFlaSvN1JGOxCvCKxzDu5xK5F2RbhbGJpse8k+bC1iX//fxXw+
-	G4GN2
-X-Gm-Gg: AfdE7cl2ByQ8lvSTLEvLUtWPJSOHr1sOdBuYLuybvSjwBes6v9PmZuqXhReRw4R2qej
-	hiXj7KlUybAfPoFi1+rK+FYU7Ak5n1VJ4DqGhpYmC9HvKI7CWaDLSpaa1zbqQ2r+4Qupzvq2hLu
-	r0L/FKsLKlnM+TA2undRn5Zuq3BcmtzomrUaIv4R6xdWY7gXjNfHkDCenjxCtHWANDPh15KRVef
-	S6Ri5aYv/ZD/T4HY7FWpsUNbTlYIdWSg/X3AcBJCbJ5HfGQl7I7VgInDe6B14C5LbvyH+XG5G8b
-	3qnM7BtgsgTUIbb/XawMo+WwYS/LkoiUFMeK1emNrEB0MDDq/5tNnXdttrlKs+MKiF3W9Kfb7yx
-	GIzplELpjohVEciwWiKgI1cRHkA58yDsaMO+wrDg7Y2el1lD57OxyK0vePyTdN1C88yC59ZQBPU
-	Uog9j0ToD7+61YZ+KjroBAELnvuXTmy/AR1ok=
-X-Received: by 2002:a05:6a20:160a:b0:3c3:9df8:2eed with SMTP id adf61e73a8af0-3c3ad7928d3mr697498637.31.1784256758424;
-        Thu, 16 Jul 2026 19:52:38 -0700 (PDT)
-Received: from localhost ([2601:647:6802:dbc0:a27f:7ab8:2b11:2ad8])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2a129f3sm387183c88.7.2026.07.16.19.52.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 19:52:37 -0700 (PDT)
-Date: Thu, 16 Jul 2026 19:52:36 -0700
-From: Cong Wang <cwang@multikernel.io>
-To: Jon Maser <jonmaser8@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: Proposal: module for optional /net directory for network data
-Message-ID: <almY9NvR4nJtpW_o@pop-os.localdomain>
-References: <CAF=mWJMErgOuTML7hFy6gEH5zqACOdZU62Xh=bR55=VbB4fJ2g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d1vtBjkh"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GNg0Xt365175;
+	Fri, 17 Jul 2026 03:02:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/MdGIN
+	K6Se3jqqXCHdNdAaT6iOdjYsFR2lt0imh/Owo=; b=d1vtBjkhGopu3VCf/AZglZ
+	UmsIPzgmSIGG4b6A8/76K3KEzvc75W6d37sjQilphEQ/ACFQe1I87/5dFCz86TYS
+	OgCKPYHP6rTlyAOi4o3gnjs5rpW07B4uCbMr9zHU/o0BFsvMvT8tqEA4w0dBe1pR
+	7A9GpIx3hVEyMh4GcEXkkMT8gJmcRvdA1LLpBU6fNrHdKaOYJL5luxeKDGZifS4J
+	xrXGQs54t06lbZrDo6AJ/TMzZyO/5Myt7g5Y7YkcAGjpY7fKYAY07SSdbc0FkaUd
+	E6Yo+zV5Ot57MjeUyEamdJCZz3vZxaiBJNvfaLqKv4+Lh3Qa23z0fgzrhQGKG9uA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2akbyt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 03:02:49 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66H2nebc016812;
+	Fri, 17 Jul 2026 03:02:48 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uyfjta-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 03:02:48 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66H32lwo29360684
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 03:02:47 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05C6358065;
+	Fri, 17 Jul 2026 03:02:47 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C924558055;
+	Fri, 17 Jul 2026 03:02:45 +0000 (GMT)
+Received: from [9.61.118.188] (unknown [9.61.118.188])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Jul 2026 03:02:45 +0000 (GMT)
+Message-ID: <f391ea5c-200f-40f4-afed-84d9b7bdd208@linux.ibm.com>
+Date: Thu, 16 Jul 2026 20:02:45 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAF=mWJMErgOuTML7hFy6gEH5zqACOdZU62Xh=bR55=VbB4fJ2g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 14/15] ibmveth: Wire ethtool set_channels to
+ MQ RX queue resize
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, davemarq@linux.ibm.com
+References: <20260706193603.8039-15-mmc@linux.ibm.com>
+ <20260714130752.1844153-1-horms@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260714130752.1844153-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDAyMyBTYWx0ZWRfXyuSmHwBHI5CR
+ vGsu85qrUBqYLiRhwZOiDR01qK7k7ecLd8HbR+7FWsM+3x6nw0+OjfxCc5+wZGgWqxqlzLisVIl
+ zpRFlNaH0aYBzzOIqomOmL3UKc2fQes=
+X-Proofpoint-GUID: 80AG8LOcg87g0lKe-MvYDkD1qwBJHnd_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDAyMyBTYWx0ZWRfX9ofVUAhfjFdY
+ csNQ6Xxut4zeXpD9c8uRObUNCoDXeUQk1qfOOB7G4NEabyKuk7WMteH7DoCywZnmGqiPoczGygr
+ ynMaE5iEfVekNLm41nKBh15jeLYD7kn4zhLVe4bXBVoWBLTyxeOHsnCsPGDCKPObwCoXV3X3RfD
+ Op23j9kOZyeXCUxrOdWpurg53a3SPnjhaXLxy36yXE/XjKLx1fi+5eXDPQIPce0lNmd2JmXkRsF
+ Zi9cyyeCMZeRtPxVoQyXy06yosEpU9wuj7QZxhRVMLFSdbS7le2CTn4n5o9sUF/A91PckZcDqhQ
+ bs8rZXhNIhCIjrQFHnrPeSOdM5JTeRRX6uGeSkWPLfnZQclBbAiJKwRoBl15Hsy8Ej/4wWgTrol
+ +TWxHh5O2Ecb6bMMvGTZW1VsH7EBwxHTkEueOq9uPvPM9Vw6S3G8258eIUPmuFr2DxbaarIfZI8
+ ZV8RmyNNV6Ms5OoZkbw==
+X-Proofpoint-ORIG-GUID: cC0mAH2CrxfXvONhPE7P78AA819OMiG9
+X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a599b59 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=c92rfblmAAAA:8
+ a=y_x8SVAwwHyuJgv4bskA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-16_08,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607170023
 
-On Tue, Jun 16, 2026 at 06:13:51PM -0700, Jon Maser wrote:
-> A little under the weather but hopefully this comes across well lol
-> 
-> This may not be for the sensitive. and yeah I do have a mental
-> disorder as well, and I'm not an expert
+On 7/14/26 6:07 AM, Simon Horman wrote:
 
-Any idea is welcome!
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> ibmveth: Wire ethtool set_channels to MQ RX queue resize
+>
+> Expose incremental RX resize through ethtool channel control.
+> get_channels() reports rx_count from adapter->num_rx_queues and max_rx
+> as IBMVETH_MAX_RX_QUEUES when MQ firmware is enabled, else 1.
+> set_channels() validates rx_count is within 1..IBMVETH_MAX_RX_QUEUES.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index ac4d89a66a8db..50a332ab83fd3 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+>> @@ -2534,19 +2534,69 @@ static int ibmveth_set_channels(struct net_device *netdev,
+>>   				struct ethtool_channels *channels)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+> [ ... ]
+>> -	if (!(netdev->flags & IFF_UP))
+>> +	if (!(netdev->flags & IFF_UP)) {
+>> +		if (goal_rx > 1 && !adapter->multi_queue) {
+> [ ... ]
+>> +		/* Stash desired RX count; open() publishes it via
+>> +		 * netif_set_real_num_rx_queues() after queue registration.
+>> +		 */
+>> +		if (goal_rx != adapter->num_rx_queues)
+>> +			adapter->num_rx_queues = goal_rx;
+>> +
+>>   		return netif_set_real_num_tx_queues(netdev, goal);
+> [Severity: Medium]
+> If netif_set_real_num_tx_queues() fails and returns an error, the TX
+> configuration command will fail, but the RX queue count has already been
+> permanently modified in adapter->num_rx_queues. Will this leave the device in
+> an inconsistent state where the new RX count is applied on the next open
+> despite the command failing?
+*
 
-> 
-> But it would be nice for network operations to be aided by a /net
-> directory, where devices can have full access to network data,
-> including hardcore bit by bit access, complete control of data coming
-> in,and out, shell access to network data, you can easily cache network
-> operations for forensics, you can enhance firewall technology, even
-> with hardware firewalls by giving vendors time to adapt to a high
-> level access of network data
-> 
-> It needs to be a module to be a true unix imho
-> 
-> It can be as easy as cat sendack.ns > /net/0/in && cat /dev/eth0
-> 
-> Its also easy to write a firewall in shell script
+Agreed — will only commit the stashed RX count after
 
-Linux networking subsystem is ruled by netlink, devices are less
-preferred interfaces, because netlink is binary-rich and flexible.
+netif_set_real_num_tx_queues() succeeds, or restore on failure.
 
-Of course, you can always write out-of-tree modules without
-arguing with the upstream community. :)
+*
+>> +	}
+> [ ... ]
+>> +	if (goal_rx != old_rx) {
+>> +		rc = ibmveth_resize_rx_queues_incremental(adapter, goal_rx,
+>> +							  rxq_entries);
+> [Severity: High]
+> Does this new ethtool scale-down path expose an interrupt storm?
+>
+> Looking at ibmveth_resize_rx_queues_incremental(), when scaling down queues it
+> disables NAPI before disabling the hardware interrupt:
+>
+> drivers/net/ethernet/ibm/ibmveth.c:ibmveth_resize_rx_queues_incremental() {
+>      ...
+> 		for (i = new_count; i < old_count; i++)
+> 			napi_disable(&adapter->napi[i]);
+>
+> 		for (i = new_count; i < old_count; i++)
+> 			ibmveth_drain_rx_queue(adapter, i);
+>
+> 		synchronize_net();
+>      ...
+> 		/* Disable hypervisor interrupts and wait for handlers to complete
+> 		 * before updating num_rx_queues.
+> 		 */
+> 		for (i = new_count; i < old_count; i++) {
+> 			ibmveth_disable_irq(adapter, i);
+>      ...
+> }
+>
+> If the hypervisor delivers a packet during this window, ibmveth_interrupt()
+> will execute. Since NAPI is disabled, napi_schedule_prep() fails, causing the
+> handler to return IRQ_HANDLED without disabling the hardware interrupt. Will
+> this leave the virtual interrupt asserted and force an infinite interrupt loop?
+Yeah, *Same issue as on the incremental resize patch — **
 
-Regards,
-Cong
+  will fix IRQ/NAPI ordering in ibmveth_resize_rx_queues_incremental() 
+in v4.
+
+*
+>> +		if (rc) {
+>> +			netdev_err(netdev, "Failed to resize RX queues: %d\n", rc);
+>> +			return rc;
+>> +		}
+>> +	}
+>>   
+>>   	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
+>>   	 * but we may need to alloc/free the ltb's.
+>>   	 */
+> [Severity: High]
+> This is a pre-existing issue, but does this function use an uninitialized
+> variable in the error path?
+>
+> When decreasing the number of TX queues (goal < old), the allocation loop for
+> (i = old; i < goal; i++) is skipped, leaving 'i' uninitialized. If
+> netif_set_real_num_tx_queues() then fails, the error path assigns old = i;.
+>
+> The cleanup loop then uses this garbage value:
+> 	for (i = old; i > goal; i--) {
+> 		if (adapter->tx_ltb_ptr[i - 1])
+>
+> Will this access adapter->tx_ltb_ptr out of bounds and pass arbitrary pointers
+> to ibmveth_free_tx_ltb()?
+*
+
+Good catch — pre-existing, but we’ll fix it while touching
+
+set_channels in v4 (initialize i / don’t use it uninitialized on
+
+TX scale-down failure).
+
+*
+>> @@ -2580,7 +2630,7 @@ static int ibmveth_set_channels(struct net_device *netdev,
+>>   
+>>   	netif_tx_wake_all_queues(netdev);
+>>   
+>> -	return rc;
+>> +	return 0;
+> [Severity: High]
+> Does this unconditional return of 0 mask TX queue configuration failures?
+>
+> If applying the new TX queue count via netif_set_real_num_tx_queues() fails,
+> the code handles it locally, but the function exits with 0 regardless. Will
+> this mislead userspace into believing the TX channel count was successfully
+> modified?
+*
+
+Agreed — that return 0 is a regression versus returning rc. Will
+
+restore proper error reporting in v4 (and be careful about partial
+
+RX-success / TX-failure).
+
+*
+*
+
+Thanks for your review feedback.
+
+Mingming
+
+*
+
