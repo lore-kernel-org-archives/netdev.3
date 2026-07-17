@@ -1,148 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from tpecef22.compal.com (exmail3.compal.com [59.120.207.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EFF388E63;
-	Fri, 17 Jul 2026 10:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760AD3F1AD3;
+	Fri, 17 Jul 2026 10:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784285855; cv=none; b=T7JuIp12NGCnbrC4MXRKXnZZXwpwtw9sZ7CI7+MwUtqcndMgLvqkJamBKDlY7kbcZl+Se9mRIaWPa3QfmCgX13kREofZ1krF0AVvTNIQc1zJ1rcPhOJBkiQT8txAApjM1YjgHk2AU11L0USjeMskyxHldbHg1T4WcnnkFgEhFl8=
+	t=1784285910; cv=none; b=gqgUkRw7SaaWHApC/FpXMGapDuOf7EgOgjmRY4BaigwO5BJBThRnF8iQA8gRRZn6uXo0uUkohl5cbprOw1GcUM7IocqfAfafBUJddO9YvBCks3i4wYiLXnMEDTmAaA4kFEyiu0ysN4ecNLa0sEfwSglWajNRlCIzkNB635mjVS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784285855; c=relaxed/simple;
-	bh=pa6dvyFbfR9PE8HqN6zB2Jvsd1AFKISqyZFw9Np1+H0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EF4taRBSaHydFSMLdKsg9HTW7PVfO9E3yCYKz13mJVbzyiuvUGhqMoMLNXkDlEKjQsXr0Xe52ggJHFEFqxLNR0+X4vMK0bk0FZNYlOoQB275U6c88FYAqdYdhKd557vG8V6DLCEEpM0rNRss7wv5RtVGq8JKhPMsi/4uUQlLKhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZUViPnd; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZUViPnd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23D91F00A3A;
-	Fri, 17 Jul 2026 10:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784285837;
-	bh=hoRvErgqkfs5jpMpYRE1GV/40OpQ4sJSKnHa56qmmB4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SZUViPnd9pHd4zqdlwnHFih9y3wXrPDnTCkc4rSWaNNFw6f8YubW8bTmLYf2jTG/s
-	 mle7+6wvxwy5mCJ10kg72UZEJFTmCOhyrH+Zbq6XBThPmCaUpjpFTVfYGrofR2BXXV
-	 8nw0HOeSVadkmOkKm58jbk89PDDpUcxnQ2QqWoOaiP+/0n4+GB3aprsm1MttKAAsg+
-	 QolvZ3JCqDIB5mbkPmvjVpkdENcCFFvlqC2WCPZC7Xu4jMODB9LQH/CVlM3wCGcAuB
-	 CO+dqyQF78ayl8yTiCBTQ4bCH5nDmwinN7sXX/eosRaxcVhyHw0ePBpeOTSNxWzXnf
-	 JynaALHjZu3pA==
-From: Simon Horman <horms@kernel.org>
-To: hujy652@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	nbd@nbd.name,
-	lorenzo@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	sujuan.chen@mediatek.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net v2] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
-Date: Fri, 17 Jul 2026 11:55:28 +0100
-Message-ID: <20260717105527.435610-2-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260711112128.971-1-hujy652@gmail.com>
-References: <20260711112128.971-1-hujy652@gmail.com>
+	s=arc-20240116; t=1784285910; c=relaxed/simple;
+	bh=lWNNBSIoyWBOFSNOhQeKfEHHIbciltHRFCNlpYq3ZL4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cdHD4y607JjrxnrFD5pe2Go2wYcajnJL+t9IE7rWuSbJzkWxgYnIjvJyNt8dHbt8ii6SXqnMwngMUZcqLlRgW5oplvKjMmyPragtEDzRynR6tleP4U7QdbMV28iURiaiDmAh4dLnelbHsFmGcGhBYfM9wZC766FHYYrcOwfhbuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: 634c902c81ce11f1a87c2323a98e90a4-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.17,REQID:d5fdd15a-3451-4c1c-b770-ec6f9eee737c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:d497b38,CLOUDID:cff2975f-762a-4584-baab-4eebe609beea,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:n
+	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 634c902c81ce11f1a87c2323a98e90a4-20260717
+Received: from sdmg12.sdbg.compal.com [(10.113.168.10)] by tpecef22.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 712035120; Fri, 17 Jul 2026 18:58:05 +0800
+X-UUID: 60eeb05881ce11f1a9f9c99e036204b4-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:6ec2cd01-364f-4a82-a583-bffed7df6d45,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:1242613f-46cf-453a-bd84-ad9fc7cb0e8c,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 60eeb05881ce11f1a9f9c99e036204b4-20260717
+Received: from sdbmbx11.tpe.compalcomm.com [(10.113.2.135)] by sdmg12.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES128-SHA 128/128)
+	with ESMTP id 251997475; Fri, 17 Jul 2026 18:58:01 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX11.tpe.compalcomm.com (10.113.2.135) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Fri, 17 Jul 2026 18:57:59 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86%11]) with mapi id
+ 15.02.2562.043; Fri, 17 Jul 2026 18:57:59 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Simon Horman <horms@kernel.org>
+CC: "loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
+	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"wen-zhi.huang@mediatek.com" <wen-zhi.huang@mediatek.com>,
+	"shi-wei.yeh@mediatek.com" <shi-wei.yeh@mediatek.com>,
+	"Minano.tseng@mediatek.com" <Minano.tseng@mediatek.com>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>, "corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: RE: [External Mail] Re: [PATCH v4 3/7] net: wwan: t9xx: Add control
+ DMA interface
+Thread-Topic: [External Mail] Re: [PATCH v4 3/7] net: wwan: t9xx: Add control
+ DMA interface
+Thread-Index: AQHdFQZPlE9Zcx29j0SOvF2f5GB/ubZxQQT+gABKArw=
+Date: Fri, 17 Jul 2026 10:57:59 +0000
+Message-ID: <b1bc657dfd584ebfbe126ed7b1c25aa2@compal.com>
+References: <20260709-t9xx_driver_v1-v4-3-a8c009d509c5@compal.com>,<20260716093406.231071-1-horms@kernel.org>,<cacde4a05d6a48afbac6425425fe180c@compal.com>
+In-Reply-To: <cacde4a05d6a48afbac6425425fe180c@compal.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30074.006
+x-tm-as-result: No-10--8.503600-8.000000
+x-tmase-matchedrid: SIzKuw2hzSsuv++HU7VXryRFbfQbCufdN0X64jGy2dZJTOxleK2tZpNz
+	D6YMRvgW4TxIMIx6VwqygWex5mZjoExpKNdX3ZAHGG92L3YEEC7+i5C4lXMwGpkRPHajPHqahHb
+	hMYBfXh6xz2XsYPh81PcsiAWLTUtcNAvg4f4NA3aKXsEnE1HIgafbQvH9vxEz+MTGGiOqPZP4da
+	Hf+FKvHnbtoQgg+kKD9jr8sjt9AcxsWCg8ogcRFiTsj2fBdH5+Nv2nLihwToOO46CtGFNzgOhNL
+	/hId+0VYRnTRjcZm2nek37/UTxQNvXP9L7jSlOynRTJpY7VAKcZ8/pDtedih3JUlKqEwVP1lOaZ
+	ty5Hsz/VUxjVwQBhA0pXXeHBy+72qIpjxEoeciERLjqoJJt/9fmA1kk/6T8voli4ZoiOHT8g4pZ
+	YxslhbbNkeEYGbJYucluCMzRoLUAP3l5YT8MEJx4HREEROjbp2okVpnRrZa3q2PB1ITCgWA==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--8.503600-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30074.006
+x-tm-snts-smtp: B4FB75A9AA0D6DCDF4555A3E0CF07F4D01E975591359C026887BC5B1C645B58F2000:8
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-https://sashiko.dev/#/patchset/20260711112128.971-1-hujy652@gmail.com?part=1
----
---- Patch [1]: [PATCH net v2] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986 ---
-commit d478e0562d6cafb9be212cb1356ac8344230386e
-Author: Zhi-Jun You <hujy652@gmail.com>
-
-net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
-    
-WDMA_RING_TX(0) is required to set MTK_WED_WDMA_RING_TX for WED RX but on a
-non-DBDC MT7986 it is never setup because idx is 1. Fix this by calling
-mtk_wed_wdma_tx_ring_setup if wed is v2 and rx_ring[0] is not allocated.
-
-Link: https://lore.kernel.org/netdev/20260630144831.1109-1-hujy652@gmail.com/
-
-> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-> @@ -2334,6 +2334,13 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
->  		if (!dev->rx_wdma[i].desc)
->  			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
->  
-> +	/*
-> +	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
-> +	 * but tx_wdma[0] is also needed for WED to function.
-> +	 */
-> +	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
-> +		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
-
-[Severity: High]
-Is it safe to ignore the return value of mtk_wed_wdma_tx_ring_setup() here?
-
-If mtk_wed_ring_alloc() fails under memory pressure, it returns -ENOMEM:
-
-mtk_wed_wdma_tx_ring_setup() {
-    ...
-    if (!reset && mtk_wed_ring_alloc(dev, wdma, MTK_WED_WDMA_RING_SIZE,
-                                     dev->hw->soc->wdma_desc_size, true))
-        return -ENOMEM;
-    ...
-}
-
-Could this result in the hardware being enabled with uninitialized or
-zeroed base addresses, potentially leading to DMA faults or system crashes?
-
-Since mtk_wed_start() has the ability to return early on allocation
-failure (as seen with mtk_wed_rx_buffer_alloc()), should it abort the
-start sequence when this ring setup fails?
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but when this setup function
-is called with reset evaluating to true on v3 hardware, does
-mtk_wed_ring_reset() corrupt the v3-specific descriptor initialization?
-
-In mtk_wed_wdma_tx_ring_setup(), v3 hardware initializes desc->info:
-
-mtk_wed_wdma_tx_ring_setup() {
-    ...
-    if (mtk_wed_is_v3_or_greater(dev->hw)) {
-        for (i = 0; i < MTK_WED_WDMA_RING_SIZE; i++) {
-            ...
-            desc->info = cpu_to_le32(MTK_WDMA_TXD0_DESC_INFO_DMA_DONE);
-            ...
-        }
-    }
-    ...
-    if (reset)
-        mtk_wed_ring_reset(wdma, MTK_WED_WDMA_RING_SIZE, true);
-    ...
-}
-
-However, mtk_wed_ring_reset() loops over the ring and unconditionally
-clears desc->info:
-
-mtk_wed_ring_reset() {
-    ...
-    desc->info = 0;
-    ...
-}
-
-Could this wipe out the configured v3-specific state and lead to a DMA
-stall or faults on v3 hardware?
-
-> +
->  	if (dev->wlan.hw_rro) {
->  		for (i = 0; i < MTK_WED_RX_PAGE_QUEUES; i++) {
->  			u32 addr = MTK_WED_RRO_MSDU_PG_CTRL0(i) +
+SGkgU2ltb24sDQoNCkFmdGVyIGZ1cnRoZXIgaW50ZXJuYWwgcmV2aWV3LCB3ZSBhcmUgY29ycmVj
+dGluZyBzZXZlcmFsDQpyZXNwb25zZXMgZnJvbSBvdXIgcHJldmlvdXMgcmVwbHkuIFRoZSBmb2xs
+b3dpbmcgaXRlbXMgd2lsbA0KYmUgZml4ZWQgaW4gdjUuDQoNCk9uIFtkYXRlXSBKYWNrIFd1IHdy
+b3RlOg0KDQo+PiBbU2V2ZXJpdHk6IEhpZ2hdDQo+PiBJcyBhIGRtYV9ybWIoKSBuZWVkZWQgYWZ0
+ZXIgY2hlY2tpbmcgdGhlIGhhcmR3YXJlIG93bmVyc2hpcCBmbGFnPw0KDQo+IFRoZSBHUEQgZGVz
+Y3JpcHRvcnMgYXJlIGFsbG9jYXRlZCBmcm9tIGEgY29oZXJlbnQgRE1BIHBvb2wNCj4gKGRtYV9w
+b29sX3phbGxvYyksIHNvIENQVSBjYWNoZSBjb2hlcmVuY3kgaXMgZ3VhcmFudGVlZCBieSB0aGUg
+RE1BDQo+IG1hcHBpbmcuIEEgZG1hX3JtYigpIGlzIG5vdCBuZWVkZWQgYmVjYXVzZSBjb2hlcmVu
+dCBtZW1vcnkgZW5zdXJlcw0KPiB0aGUgQ1BVIGFsd2F5cyBvYnNlcnZlcyB0aGUgbGF0ZXN0IHZh
+bHVlcyB3cml0dGVuIGJ5IHRoZSBkZXZpY2UuDQoNCldlIFdpbGwgcmVtb3ZlIHRoZSBybWIoKSBh
+bmQgYWRkIGRtYV9ybWIoKSBhZnRlciB0aGUgSFdPIGNoZWNrIGluDQpib3RoIFRYIGFuZCBSWCBk
+b25lIHBhdGhzOg0KDQogIC8qIFRYIGRvbmUgKi8NCiAgaWYgKCFyZXEtPmRhdGFfdm1fYWRkciB8
+fA0KICAgICAgKHJlcS0+Z3BkLT50eF9ncGQuZ3BkX2ZsYWdzICYgQ0xETUFfR1BEX0ZMQUdfSFdP
+KSkNCiAgICAgIGJyZWFrOw0KICBkbWFfcm1iKCk7DQoNCiAgLyogUlggZG9uZSAqLw0KICBpZiAo
+cmVxLT5ncGQtPnJ4X2dwZC5ncGRfZmxhZ3MgJiBDTERNQV9HUERfRkxBR19IV08pDQogICAgICBi
+cmVhazsNCiAgZG1hX3JtYigpOw0KICBtdGtfY2xkbWFfcnhfc2tiX2FkanVzdChtZGV2LCByeHEs
+IHJlcSk7DQoNCj4+IFtTZXZlcml0eTogSGlnaF0NCj4+IElmIG10a19jbGRtYV9yZWxvYWRfcnhf
+c2tiIGZhaWxzIGR1ZSB0byBtZW1vcnkgcHJlc3N1cmUsIGl0IGp1bXBzDQo+PiB0byBvdXQgd2l0
+aG91dCBhZHZhbmNpbmcgcnhxLT5mcmVlX2lkeC4NCg0KPiBJZiBtdGtfY2xkbWFfcmVsb2FkX3J4
+X3NrYigpIGZhaWxzLCB0aGUgY29kZSBqdW1wcyB0byAib3V0IiB3aGljaA0KPiB1bm1hc2tzIHRo
+ZSBpbnRlcnJ1cHQuIE9uIHRoZSBuZXh0IGhhcmR3YXJlIGludGVycnVwdCwgcnhfZG9uZV93b3Jr
+DQo+IHJ1bnMgYWdhaW4gYW5kIHJldHJpZXMgZnJvbSB0aGUgc2FtZSBmcmVlX2lkeC4NCg0KV2ls
+bCBjaGFuZ2UgdGhlIGZhaWx1cmUgcGF0aCB0byByZWN5Y2xlIHRoZSBvbGQgYnVmZmVyIGFuZCBy
+ZXR1cm4NCnRoZSBkZXNjcmlwdG9yIHRvIGhhcmR3YXJlLCBkcm9wcGluZyB0aGUgY3VycmVudCBw
+YWNrZXQgdG8NCmd1YXJhbnRlZSBmb3J3YXJkIHByb2dyZXNzLg0KDQo+PiBbU2V2ZXJpdHk6IEhp
+Z2hdDQo+PiBEb2VzIHRoaXMgY29kZSBzYWZlbHkgaGFuZGxlIG5vbi1saW5lYXIgU0tCcz8NCg0K
+PiBXaGVuIG5yX2JkcyA9PSAwLCB0aGUgU0tCIGlzIGFsd2F5cyBsaW5lYXIgoVggaXQgaXMgYWxs
+b2NhdGVkDQo+IGludGVybmFsbHkgdmlhIF9fZGV2X2FsbG9jX3NrYigpIHdpdGggZGF0YSBjb3Bp
+ZWQgdmlhIHNrYl9wdXQoKS4NCg0KV2lsbCBjaGFuZ2Ugc2tiLT5sZW4gdG8gc2tiX2hlYWRsZW4o
+c2tiKS4NCg0KPj4gW1NldmVyaXR5OiBIaWdoXQ0KPj4gQ291bGQgdGhlcmUgYmUgYSByYWNlIGNv
+bmRpdGlvbiBoZXJlIHdpdGggbXRrX2NsZG1hX3R4X2RvbmVfd29yaz8NCg0KPiBObyByYWNlIGV4
+aXN0cy4gdHhfZG9uZV93b3JrIHNlZXMgSFdPIHN0aWxsIHNldC4NCg0KV2lsbCBhZGQgYSBmcmVl
+X2lkeCA9PSB3cl9pZHggYm91bmRhcnkgY2hlY2sgYXQgdGhlIHRvcCBvZiB0aGUNCmRvbmVfd29y
+ayBsb29wICh1c2luZyBSRUFEX09OQ0UvV1JJVEVfT05DRSkgdG8gcHJldmVudCBkb25lX3dvcmsN
+CmZyb20gY3Jvc3NpbmcgaW50byBzdWJtaXQgdGVycml0b3J5IG9uIGRlc2NyaXB0b3IgcmV1c2Uu
+DQoNClRoYW5rcw==
