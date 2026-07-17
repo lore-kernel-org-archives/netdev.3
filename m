@@ -1,286 +1,183 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BCD175A94
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A062749E6
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784250195; cv=none; b=U0TrGMEZHIFkAN9XUm+prCHxzXVNWwfnIrJTuVQYhGAvwDDipLCiKhMwjEjjxcsBiHPOzrUMizIpxR2tVifsVjS4tyrGc8E2ddtdFZu0LsSzW4gLzzVjQf2DCN/ttDXfyqcySUSiZ0NVEitZ+JFeCcyLCdM1/2SBqLCcCQGLL1M=
+	t=1784251481; cv=none; b=WRI34a3OlwDZrmDYResriTN5G1jTsBksPfip3Mu8trUPNo5RbeYhIdB5vr5axbApgHJOLyEX/ua5S2jYNxCXzx7kN/7Gbi4S4Ouc5ttfm39E1NkklIHV+189OaZijKb7BpIVzOOIXxYOM/WSQ5oYSV1OuQ5ZYx9QzJbw1Bd2u5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784250195; c=relaxed/simple;
-	bh=ANDGr9opJnrAKx5lKhYVJZzNPpvtWqTUwwD9naTe7I4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dar5/SJX/jSWaJyRUHfIXLa40gyUZdSgXi+XvVFNfDHbTDBOXhCY9vq/GoDwyV8aNc+BgbnWvuMHpxMva4V/DfvIDuNqOzOFBic9iPUwaZGlLdymJxKtDkIARF21YB043QjdFx1OFsbsJpl+gwDTSB89KvGp0ewKAOo/MfuwJ5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=f7hgjGDw; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784251481; c=relaxed/simple;
+	bh=Mi4AQ9lgb7A7mpnSDhk/r0ZmhKyRS70LfkX48YoScCg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MDZXFXXaqX4Uds9RujIs6jR/vz2fiYfHe9wAzynoe38GpxY/eLHUVCTuJ/rN4P3kDfQPc/NwR/6PkW6ZBS7nmnKte+Ngx8f4dS/pQjLg5fb5Uoi/uy34eINqYNPujZktF3j4D5cSqlHe1PotxOWgoshjG9jUKP9ZDI3Mzjynl0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jSa32VAb; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="f7hgjGDw"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GNgYau429971;
-	Fri, 17 Jul 2026 01:02:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cXHOHW
-	k2LbrwMJZNngI7oGJbD43tJaYbWSU3Rz7FsZs=; b=f7hgjGDwpYZdYFAGfjdZy4
-	kut22wNzGSKYODfT8hlGxYj/AA4gA05e/HF6eU1U8eCqzFGZNw7j070EKq/ZDIMo
-	Y9fv0FkIPM0XbYnwm4Leq4uFkhhd0S9ElBT1HegU7BXVktS12ExVxYMQax2eovZb
-	C5w0CJLP6ATJBsp89HVSxVj0QJJUu4dVAKiVGNTqNJmST7Cb0FjXY2AC9pYkGGQZ
-	4HVvc54XXRTodVvUVDCYs8x2PZ0iloD+yh+oSVB6UcoYtTnjBty/u/mjOfKf4AqX
-	ylnMoCjb2teWWOye6SihzYpVU/A0oaDlAPoRfMf8qszrhB+AYRn12mSVBcbJ+L4g
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegc3125-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 01:02:57 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66H0nlY7026485;
-	Fri, 17 Jul 2026 01:02:56 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uyf8ha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 01:02:56 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66H12tUf18350672
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jul 2026 01:02:56 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A844B58066;
-	Fri, 17 Jul 2026 01:02:55 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 690985804B;
-	Fri, 17 Jul 2026 01:02:54 +0000 (GMT)
-Received: from [9.61.118.188] (unknown [9.61.118.188])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Jul 2026 01:02:54 +0000 (GMT)
-Message-ID: <ec9288ef-1ada-4634-ac3c-e61f5c7f62c6@linux.ibm.com>
-Date: Thu, 16 Jul 2026 18:02:53 -0700
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jSa32VAb"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784251477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sA7U4b+vFXSsH7TqJ+plYP0tiCCY2l8ez4Vr1KEL+Vk=;
+	b=jSa32VAbYXdOgKnrETgjAy4RzGZYDl3WcdaJscwm+Q2TgEt2YpDS/3YwjOBoWwOiPeM0Wy
+	tMsveK7SzogqqlPbRlEnt6nVrVVows7mWzz81mVhOtzADrwXKzTKT95atIAHp0CorT3Y0m
+	F2mW5XC7dKN08DnQPGsgdYFZb+3HI7o=
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	chenguang.zhao@linux.dev,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: [PATCH net v2] i40e: xsk: fix multi-buffer XDP_PASS skb construction
+Date: Fri, 17 Jul 2026 09:24:16 +0800
+Message-Id: <20260717012416.168107-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 09/15] ibmveth: Add queue-aware RX buffer
- submit helper for MQ
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, davemarq@linux.ibm.com
-References: <20260706193603.8039-10-mmc@linux.ibm.com>
- <20260714125019.1833862-2-horms@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260714125019.1833862-2-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a597f42 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=c92rfblmAAAA:8
- a=tabgTeRoll34nVhkzG4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDAwMyBTYWx0ZWRfX254tCXNoxTgt
- NTjZwRYkEBRgrt813h+u4Oja3/gwwZm06eHdYb22fFBDiiLo1EeuBRZfBDh7ytFAudpZwxhVgnk
- TWq76DWH+0lvRaUG5mqb/8vasNuud7WB94QXpzYRjz1TK1hS2ycEl8P+kK9NdYeM0mHJY5NSodO
- JQIADouRNM1te+YUsUzSzTKZU6ldpxgTwBJIbHIuN1DGO2o4F2VJBwXFI3nOjue/XNzdvNQ/ZIg
- tPwSt6rD4TIDZ7897Imcbu58gwgtHUsGPcADeNilAEPckA40fPaS1H8bg5wa5YJrtF6+oEh/f5v
- zfKTQVto7F1S28Gp4N0YTkk3DkMWBoCW22edbYSexResULeyRMfCP++mL/AAyVQHXyvFbySfaBZ
- rZbO9/ug67lvUxsBUpvnQF5C+XrlEvN2/Iks7VIepnLxn/Hrd6HwIUuq19MKu2+pOOOp13fyEkm
- kdGUGAkB8K3DBf0iLTg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDAwMyBTYWx0ZWRfX5PFsF7ESqvbw
- n3UY1NJr1du7nZC3I1ys7ihuLfNZ5ILrtFDv6gf1uY82Nv7L5E9WClR9C8im+2AJuGfLT82GEdm
- yIpyrCdM8ukl4AYSCpwUxUOU3INZ9c8=
-X-Proofpoint-GUID: 2FIN6M0Gp7FhkD3zSdCipAvc_TQzLbkS
-X-Proofpoint-ORIG-GUID: ikg4Jx6__mu2JmwVHOXKglNF6x7T4lBh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-16_08,2026-07-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607170003
+X-Migadu-Flow: FLOW_OUT
 
-On 7/14/26 5:50 AM, Simon Horman wrote:
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> ibmveth: Add queue-aware RX buffer submit helper for MQ
->
-> This patch updates the ibmveth driver's buffer replenishment path to
-> be queue-aware for multi-queue receive support. It adds a helper to select
-> the correct hypervisor call and handles fallback to single-buffer mode if
-> batch operations are unsupported.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index fa2d4777ffc7b..b3b3886c3eedb 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
->> @@ -597,11 +597,73 @@ static inline void ibmveth_flush_buffer(void *addr, unsigned long length)
-> [ ... ]
->
->> +static long ibmveth_add_logical_lan_buffers(struct ibmveth_adapter *adapter,
->> +					    union ibmveth_buf_desc *descs,
->> +					    int filled,
->> +					    unsigned long buff_size,
->> +					    int queue_index)
->> +{
->> +	struct vio_dev *vdev = adapter->vdev;
->> +	unsigned long rc;
->> +
->> +	if (adapter->multi_queue) {
->> +		unsigned long buffersznum = (buff_size << 32) | filled;
->> +		unsigned long ioba[IBMVETH_MAX_RX_PER_HCALL / 2] = {0};
->> +		int i;
->> +
->> +		/* Pack descriptor addresses into ioba pairs.
->> +		 * Each ioba holds two 32-bit addresses packed into 64 bits:
->> +		 * - Even descriptors (0,2,4...) go in high 32 bits
->> +		 * - Odd descriptors (1,3,5...) go in low 32 bits
->> +		 */
->> +		for (i = 0; i < filled && i < IBMVETH_MAX_RX_PER_HCALL; i++) {
->> +			int pair_idx = i / 2;           /* Which pair: 0-5 */
->> +			int is_high = (i % 2 == 0);     /* High or low 32 bits */
->> +
->> +			if (is_high)
->> +				ioba[pair_idx] = (unsigned long)descs[i].fields.address << 32;
->> +			else
->> +				ioba[pair_idx] |= descs[i].fields.address;
->> +		}
->> +
->> +		rc = h_add_logical_lan_buffers_queue(vdev->unit_address,
->> +						     adapter->queue_handle[queue_index],
->> +						     buffersznum,
->> +						     ioba[0], ioba[1], ioba[2],
->> +						     ioba[3], ioba[4], ioba[5]);
->> +		adapter->hcall_stats.add_bufs_queue++;
-> [Severity: Medium]
-> Will this counter increment lose updates when multiple NAPI poll routines run
-> concurrently on different CPUs?
-*
+When AF_XDP ZC receives a multi-buffer frame and XDP returns XDP_PASS,
+i40e_construct_skb_zc() copied frags incorrectly: memcpy used
+skb_frag_page() (page metadata) and __skb_fill_page_desc_noacc() was
+given a virtual address instead of a struct page *.
 
-Thanks — these are informational ethtool/debug counters and can
+Drop the custom helper and use xdp_build_skb_from_zc() instead. On
+failure, free the xdp buff in the caller. Push the Ethernet header
+back before eth_skb_pad()/i40e_process_skb_fields() because
+xdp_build_skb_from_zc() already called eth_type_trans().
 
-race under concurrent NAPI, as with many driver stats. Datapath
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+---
+Revised as suggested by Maciej:
+ - Replace i40e_construct_skb_zc() with xdp_build_skb_from_zc()
 
-correctness does not depend on them.
+v1:
+ https://lore.kernel.org/all/20260714025112.284724-1-chenguang.zhao@linux.dev/
 
-*
-> Since multi-queue enables concurrent execution, it seems global statistic
-> counters like hcall_stats.add_bufs_queue and replenish_add_buff_success might
-> need atomic or per-CPU operations to avoid read-modify-write data races.
-*
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c | 73 +++-------------------
+ 1 file changed, 8 insertions(+), 65 deletions(-)
 
-  I'm happy to harden selected counters with atomic64_t (or percpu counter)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 9f47388eaba5..1319a5c22625 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/bpf_trace.h>
+ #include <linux/unroll.h>
++#include <net/xdp.h>
+ #include <net/xdp_sock_drv.h>
+ #include "i40e_txrx_common.h"
+ #include "i40e_xsk.h"
+@@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
+ 	return count == nb_buffs;
+ }
+ 
+-/**
+- * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
+- * @rx_ring: Rx ring
+- * @xdp: xdp_buff
+- *
+- * This functions allocates a new skb from a zero-copy Rx buffer.
+- *
+- * Returns the skb, or NULL on failure.
+- **/
+-static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
+-					     struct xdp_buff *xdp)
+-{
+-	unsigned int totalsize = xdp->data_end - xdp->data_meta;
+-	unsigned int metasize = xdp->data - xdp->data_meta;
+-	struct skb_shared_info *sinfo = NULL;
+-	struct sk_buff *skb;
+-	u32 nr_frags = 0;
+-
+-	if (unlikely(xdp_buff_has_frags(xdp))) {
+-		sinfo = xdp_get_shared_info_from_buff(xdp);
+-		nr_frags = sinfo->nr_frags;
+-	}
+-	net_prefetch(xdp->data_meta);
+-
+-	/* allocate a skb to store the frags */
+-	skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
+-	if (unlikely(!skb))
+-		goto out;
+-
+-	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
+-	       ALIGN(totalsize, sizeof(long)));
+-
+-	if (metasize) {
+-		skb_metadata_set(skb, metasize);
+-		__skb_pull(skb, metasize);
+-	}
+-
+-	if (likely(!xdp_buff_has_frags(xdp)))
+-		goto out;
+-
+-	for (int i = 0; i < nr_frags; i++) {
+-		struct skb_shared_info *skinfo = skb_shinfo(skb);
+-		skb_frag_t *frag = &sinfo->frags[i];
+-		struct page *page;
+-		void *addr;
+-
+-		page = dev_alloc_page();
+-		if (!page) {
+-			dev_kfree_skb(skb);
+-			return NULL;
+-		}
+-		addr = page_to_virt(page);
+-
+-		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
+-
+-		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
+-					   addr, 0, skb_frag_size(frag));
+-	}
+-
+-out:
+-	xsk_buff_free(xdp);
+-	return skb;
+-}
+-
+ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 				      struct xdp_buff *xdp_buff,
+ 				      union i40e_rx_desc *rx_desc,
+@@ -372,14 +309,20 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
+ 		 * SBP is *not* set in PRT_SBPVSI (default not set).
+ 		 */
+-		skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
++		skb = xdp_build_skb_from_zc(xdp_buff);
+ 		if (!skb) {
++			xsk_buff_free(xdp_buff);
+ 			rx_ring->rx_stats.alloc_buff_failed++;
+ 			*rx_packets = 0;
+ 			*rx_bytes = 0;
+ 			return;
+ 		}
+ 
++		/* xdp_build_skb_from_zc() already ran eth_type_trans();
++		 * restore the header for eth_skb_pad()/process_skb_fields().
++		 */
++		__skb_push(skb, skb->data - skb_mac_header(skb));
++
+ 		if (eth_skb_pad(skb)) {
+ 			*rx_packets = 0;
+ 			*rx_bytes = 0;
+-- 
+2.25.1
 
-in a follow-up; I don't think that needs to gate MQ...
-
-*
-
->> +	} else if (filled == 1) {
->> +		rc = h_add_logical_lan_buffer(vdev->unit_address,
->> +					      descs[0].desc);
->> +		adapter->hcall_stats.add_buf++;
->> +	} else {
->> +		rc = h_add_logical_lan_buffers(vdev->unit_address,
->> +					       descs[0].desc, descs[1].desc,
->> +					       descs[2].desc, descs[3].desc,
->> +					       descs[4].desc, descs[5].desc,
->> +					       descs[6].desc, descs[7].desc);
->> +		adapter->hcall_stats.add_bufs++;
->> +	}
->> +
->> +	return rc;
->> +}
-> [ ... ]
->
->> @@ -745,24 +798,19 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->>   		}
->>   		adapter->replenish_add_buff_failure += filled;
->>   
->> -		/*
->> -		 * If multi rx buffers hcall is no longer supported by FW
->> -		 * e.g. in the case of Live Partition Migration
->> -		 */
->> -		if (batch > 1 && lpar_rc == H_FUNCTION) {
->> -			/*
-> [ ... ]
->
->> +		if (lpar_rc == H_FUNCTION) {
->> +			if (adapter->multi_queue) {
->> +				netdev_err(adapter->netdev,
->> +					   "Unexpected H_FUNCTION from multi-queue buffer add (queue=%d, batch=%d)\n",
->> +					   queue_index, batch);
->> +				break;
->> +			} else if (batch > 1) {
->> +				netdev_warn(adapter->netdev,
->> +					    "H_FUNCTION from legacy batch buffer add (batch=%d), falling back to single buffer mode\n",
->> +					    batch);
->> +				adapter->rx_buffers_per_hcall = 1;
->> +				continue;
-> [Severity: High]
-> Does this continue statement cause an infinite loop?
-*Good catch! yes.*
->
-> Looking at ibmveth_replenish_buffer_pool(), the local batch variable is set
-> before the while loop:
->
-> 	batch = adapter->rx_buffers_per_hcall;
-> 	while (remaining > 0) {
-> 		...
->
-> If the fallback updates adapter->rx_buffers_per_hcall to 1 and issues a continue,
-> the loop will restart but the local batch variable will retain its original
-> value.
->
-> Would this lead to the loop repeatedly attempting the unsupported batch size
-> and failing with H_FUNCTION forever?
-You are correct, the MQ replenish rewrite accidentally used continue 
-instead of break on the non-MQ multi-buffer path (!multi_queue && batch 
- > 1 && H_FUNCTION). The MQ H_FUNCTION arm already hard-fails and*
-
-breaks — that wasn't the bug. I'll restore the pre-MQ break in v4.
-
-*
->> +			}
->>   		}
->>   		break;
->>   	}
->> @@ -784,18 +832,24 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
->>   }
->>   
->>   /* replenish routine */
->> -static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
->> +static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
->> +				   int queue_index)
->>   {
->>   	int i;
->>   
->> +	if (queue_index >= adapter->num_rx_queues)
->> +		return;
->> +
->>   	adapter->replenish_task_cycles++;
-> [Severity: Medium]
-> Similar to the hcall_stats counters above, could this increment suffer from data
-> races when multiple queues are processed concurrently across different CPUs?Ah yes
-Ah yes, *
-
-Same as the hcall_stats note — racy informational counter; optional
-
-**
-
-atomic/per-queue follow-up, not a functional MQ bug. (since this series 
-is already large enough)
-
-*
-
-Thanks for your review again!
-Mingming
