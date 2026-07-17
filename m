@@ -1,156 +1,259 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C00D39734B;
-	Fri, 17 Jul 2026 20:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784319599; cv=none; b=cziS7fvdacp4UabeEQ9QQnJtsy3e2s3VnWY+4PQD5GF9pz2dZFUUhdZkh2OPGVyetq1ifzIb8PWLqXcVs6UbGXYoL7s4yVDO8H5CVYLE+oXkUsZuUc9Mp/bUsrZTSZJ53hBkv+FwC0BG3KceVrFf0IHjA4gdJwxBYnHiGOUe4ao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784319599; c=relaxed/simple;
-	bh=xE5LUTzRMqAtNGpPvBSq3SvnwOrDOr6Dl0wDnD2kKuA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h6JK52bSi76K64DlB9t2LtnV7BtGilbsGaqaelLoK58LrLcr26TU5OCYGdoLQQb+7h1fToaQnNBklN7qf9JKx5qFl1bvVio4mINXozp5bNZvMH1vXkT9Ew3hl/8t7WQ0iNlLbS2sal1c7JHrIUF1oNQ06PBeuDdWodvTSM+OTwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ff5TIctv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD6B38F249;
+	Fri, 17 Jul 2026 20:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784319699; cv=fail; b=dNe4lSFMke6rDZ0/u+fmak/pZ5dZLhxfL6LHmlJJdeeYJSD/xW6ut77CdqS+egsy7WDBxOFPrJiXgKiraL+8Rsk6dq9yHKN4eI3V6M1ZepeB312N1rzT02bxT6Cc4E7dsOiBhzpHQcZ8pP4DgSVfMB6air3NB3k8+TLYszN8x3g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784319699; c=relaxed/simple;
+	bh=tvhMXeYtuh0LoARtT5iDjvYAU7JJio3gTSDxar6axWQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gIhvIZQTkU6GRvlxOTwRyRTqUVUVNsxP2jq6xixckTOOk5Py2F8mgscPOZCnQBDYlHgv6l5TgM2m1ulT/Go/v4s0q0Y4TZnwD3MFnTMLCKmjtRstFMInbSfNME2xcNU7mWo1vm6ElSRyjF2gCROxlluHBh3A/a9ItnOiBwUzGZw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iCN1eMqV; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ff5TIctv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977AC1F000E9;
-	Fri, 17 Jul 2026 20:19:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784319587;
-	bh=0GeO7xeCLqdZD0CUYenk22UbulqJIWDHKyKTrJjn6ms=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ff5TIctviJWk8DNtqyX1DmGWgwh/gstTxAF+pCGqPklDOEzHKZ5KFFE8O+S/T1Ely
-	 0DaUULg9PKxz5RF3tZu5DPpfd4dAPPZskTj7t5Snhqh72cZbGbMBs/JngiLB3fRniA
-	 QPUGPhm9+iPQxCptIIiS/9Ma5qDSaOj4eNtMvYarfF1MwBnKZK3/Q4TH831UwQ3aqU
-	 QzQSgiyoguRjBsnChs7vWqm+rIq4N7RnD1zeUsCQ2U6KYzEU+JSznaeQlet+D2c3yN
-	 uFKyt5v345PYhy49Sd2K+c2jWnWnIUPsXVg1m+2O56GY5wynf86QDipSOEDvxw32H0
-	 IVsxr1Tp/nr3w==
-Message-ID: <6264d655-640e-47ec-9521-5e292bfeaba6@kernel.org>
-Date: Fri, 17 Jul 2026 22:19:39 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iCN1eMqV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784319697; x=1815855697;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=tvhMXeYtuh0LoARtT5iDjvYAU7JJio3gTSDxar6axWQ=;
+  b=iCN1eMqV+pLMB/Tc7gj9YW70DYzIIylG4Rky0RhINgbBFGEVS1Q62gxN
+   2VJC8rHYVcldzXEImazNcXe0gS934MaF3tzMekBHTqB1W5KDF9Vbvvl8V
+   wvtgEe5SJ7vF1qH9iOm/iFYI/RMkFZk01AMejCGQHdCIFEh7MF+oQT+Zf
+   +VABft1LRU75AcLnGRtxmYvT1FDWsv+/0FQ+l/3gqkWGsOOP2gHWYgUm0
+   3n5VkRTYQT6B/6bhBD6jr0d+Bk0ovDGQNHt9HiVJNmuY0YKaThENk0Ac/
+   F4n84YjaMK42Emx3XMf7RkI5DkeDXEVpib9RjyoGzp+CHcEi5+LEcaKOb
+   g==;
+X-CSE-ConnectionGUID: HMHRHCQKSSCq/iVHkhlXlA==
+X-CSE-MsgGUID: WIVsSqYNSZW/eFO0t7GYyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="85113062"
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
+   d="scan'208";a="85113062"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 13:21:36 -0700
+X-CSE-ConnectionGUID: /pUzaoUxR46Qy97MJgSH3Q==
+X-CSE-MsgGUID: G+inSJ8oScKF2KnDLaEGzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
+   d="scan'208";a="255704964"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 13:21:36 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 17 Jul 2026 13:21:35 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Fri, 17 Jul 2026 13:21:35 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.69) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 17 Jul 2026 13:21:35 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KaKHjlQr3JchVX+vyFz2zvXACJOQf4Xy2A9uqypP4NNraITBLIdkiEUV+mbV6GMBeNjfju1oioZA8EU5Zhmvm/qxBNUp3sqUxOsiYZ6rzA5xsZVIDN0AgQJd0Fi7BuoupWaypDedFyOtI3nmS+tm6AELlOqYJ95tDyLHHYaouXUonE+W4eXGbNENFDvIqRLuUeW2QIKPQG66h9oBTNbZkjVr40s/iDa74LXBoy+vPbPHf/AHtQ5lI5grpHKEUulqp9XQLwRnXSYLXSDj6EgNnXCWKIeYl2KJsbwG0Fk+0npFwKD3ozhtCYRNNK/P38TrIpQmYtuVChItzUl3aj1wzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tu0WGqLnOmgBd3GjJmUPqAuATiz/N0vHYA3OUuKu0NQ=;
+ b=ZQjMv3ExCx4LWwW6v1XavELiyN1BBf9fJ1aSkYSkgG41AMQ+u9lgQmZAPAEbVzK5tkpQpqo9m7CYbGSXSMjEm7yOIKlamtuJ35mY4Tza4y10oFFvoO1unEGL3xSteOZ+Sr1NtBKiHKyiUtZ2rW/JJLXzrc//EVXjm8oOGG6gp2uDzbwPcU8Nrb962InJPYZ5Nu11UMSgQBiZfbhwkHSXXmo/yTXhr8mZBTX7l3NPPR69id2MoKenfJqz/W4PByCLCa5uPYd5xs8AZ4S4cq7GYSFjEnwS34EI8dAGRXf0DNkz7FNQ59JxEO5cbqsgNq5RAPqjlPDgJwIgH+u732QS/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
+ by DS7PR11MB7930.namprd11.prod.outlook.com (2603:10b6:8:da::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.202.18; Fri, 17 Jul 2026 20:21:32 +0000
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40%5]) with mapi id 15.21.0223.008; Fri, 17 Jul 2026
+ 20:21:32 +0000
+Message-ID: <37756e55-5feb-4f5c-9400-55a9762f9a77@intel.com>
+Date: Fri, 17 Jul 2026 13:21:29 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] idpf: disable PCIe PTM on probe failure and removal
+To: Myeonghun Pak <mhun512@gmail.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, <intel-wired-lan@lists.osuosl.org>
+CC: Milena Olech <milena.olech@intel.com>, Emil Tantilov
+	<emil.s.tantilov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Ijae Kim
+	<ae878000@gmail.com>
+References: <20260715074342.49281-1-mhun512@gmail.com>
+Content-Language: en-US
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <20260715074342.49281-1-mhun512@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW3PR06CA0010.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::15) To DS0PR11MB8230.namprd11.prod.outlook.com
+ (2603:10b6:8:158::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch net-next v3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|DS7PR11MB7930:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c00f8bf-a96b-4d9e-da60-08dee440fd9c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|56012099006|6133799003|18002099003|22082099003|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info: iLi762HVQsWl6dPIVUQQse9xdSVmZhbR2JFzs1jozxAD1pk0jG1fCxXrRpkutjU2sNrxDxIZnGga0S0kaPB7XYRjp8FB59wnU6lX1PsE5kUTHQur1TRaESMWhJ36RBnUXA4wSx60HzePDrD/oT2MpgppwLSp+jdFGLuH5zn8NEN0VBfHsZFYm0qXJzqr1E3Y+HQWx9NQalbRGBtlVW60aUstOiYkeUtRLIjI7V+SrB5c+L7qyHStbtGkGVxBzoExXSdQI6R/J3AuuFxm8IvId1SugS78Sm0oPLaN98nElZNmqs/4bKWIO1KjwkERVD2vlpDXJa45UVtyKrdaf+vo3txIJG5729jDM2jPKs09S0w+G2K7H+3BIuSMMP57Q/f1TLX1eDahpF5mMxkiifmeF+h/DG1F0/Z0zDdeTNTu8YDriBK2SOUnXlPxxGyjmrzI8grh6pQYiquDUVw61n2O7QritXC1ky6QjgjD5qmPk4kpp7y2FrJ4eiJNRQVWf9yyDAnfyj7IEURPEHp8pqmblQ3R7fTnytjFPg5r6RNXAkAsjSaASp5y5FgJySiOXFsVm1d6KWOhA52J3EF3/p14PPwEcV6Qeu/guuVJE5TA3fRSEPiFl3gKMpaJo/66ujyj6If26Y6HzSK1mIncyPTQUq3CBQgpLzxj3kRHdjkaR/A=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(56012099006)(6133799003)(18002099003)(22082099003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VzA0RU1xSTBxMnQvNldqQ0ZKNGw4TXdFSDBaOVNhY0ZmYzJyL0ZBYUhHTnNB?=
+ =?utf-8?B?ZUJJVmR2QktIUTBpT21hUUdaVHNncitVK0Z6N2RHYmVvb3JBeXVnYmtDaDIx?=
+ =?utf-8?B?M3RHUzZqRGd0WkRmcXd1alhRdms3NVMxNjBSOFJkZWhiSlMwZ2F4TDZPWUl6?=
+ =?utf-8?B?Q3g1U3FJeXNkbXI3THZ2UFNNOVRzY1lOMndoeFpxSlk4K1JLZnpkbE1kOER4?=
+ =?utf-8?B?WDY3VXRsVHBFVDhwZ1ByWGlLVVdhM25xRDhNZEVYc2FhQ3h5UzI1WXo0Vjd2?=
+ =?utf-8?B?ajNYbDBNNkc0ZHByQytiMmRqb1k4Z1I2M3luTnJZckRFVlQwS21EcllIZmNH?=
+ =?utf-8?B?RlVHNm5PSXlLUjVBbjJ0RkRxcVlnWkNoT2hyL3h5UWtGL1J5WXJMZ1g2VVZa?=
+ =?utf-8?B?NGFLWVdEdllIL3FGVkZlQzQrOHNVTEtmTjkyVlppd1NjWXpDeEpkUmhXWnJC?=
+ =?utf-8?B?elhJQTZLNkxSWStOMDhpNXBzSVE3eUh2eGYxOEZ6RTdlZmFCa0g2U3VtQktq?=
+ =?utf-8?B?Mk1BdjlMa0xNTmhQVWxhVG5MMmpWOTErZS92VDM1MXNodk1DWEZHUDNqSjBI?=
+ =?utf-8?B?dWdpUXMyV2lrcEQ1VmpteDNSSGlYSkcrV29ha1NqZENabHV2STZEdjR2eWh0?=
+ =?utf-8?B?ZGVKem5uOEJ0a3psaXZ2aGlENzdKZzJwd25zMlZuZjc4TlpybGRJV1BOL2Z4?=
+ =?utf-8?B?U0IzSUJkVDRMVGVTbFRDQ28zYVREdGVJRW5UZVFWUjd2ZEhMZDR6RVZpRlNj?=
+ =?utf-8?B?d0Z4OW5WMC9FY1RhRjRVNXlEc2JpVWpsU2J3Nm1jVjFsVXJKa1FlMy9tdU1r?=
+ =?utf-8?B?a1FQUnIvZDA2Z2hldUxjbFREM1FyRFFKZEpYZXRuM2V4Mmd0VWw2ZHZ6V2xH?=
+ =?utf-8?B?bkJ3K24ycC9ZR1FML2FHSGhxdURNQ0dKNk54Wkl6U1dqc0p6Q202S2tpL1I1?=
+ =?utf-8?B?dVFNdDJCWTh6cThOMTkya2grY0FNRStyeEJheWNFeVVFRjROTFBSbDFyRjBX?=
+ =?utf-8?B?blQ3Yjd1TDVVT1FoOXV3R2R0cWpSRG5FOFpMNG1xYVgrK2pkK0VhUDlvMnRv?=
+ =?utf-8?B?cGJIL2pXMEpFbno1VGxQQngrcXVpRVpoQkNMendmdnZzMEpEdEM1SStHblIx?=
+ =?utf-8?B?dGtkSjRVQ0RlUXMxY2cxRjNzdWFPd2NiOHUwWUJPRTFXSGRFYm1TdDlqV2g2?=
+ =?utf-8?B?KzNNUFFJajc0aWVnQS9nUS8vY3cwMlhsSnIxM2JvanNqckp2WjVWcXFWYnR0?=
+ =?utf-8?B?d3h5eU9TRGpNQ3NMNTNFc1hsTHVlZ0ErR1l1V0dGTEp1ZmRLVTluMEhzUU9w?=
+ =?utf-8?B?SFNITUptWmpGeGVVWmxqSlp0WUdJWjkyNUE4NHdvRFF0Z215R2lBMHFxZzJK?=
+ =?utf-8?B?SklKWEVHdlVYdVZFM0NLZG1heGd4UEQydlkreitZalAyc0ZWU1QwbURPWGRY?=
+ =?utf-8?B?aUhlcmVWWEp4VkNaVVZOWVo2TGpvS1FEMkxWNlJJcjJpWm1OckdYN0FTMDdX?=
+ =?utf-8?B?bHhEZDR5dFJTY1pIZXpCaG5GUnR1RDNVK0x3OXZZaWdmaVRSRDdyUTU1RWla?=
+ =?utf-8?B?b0FYdHNhcjV0MWd4WlFKTWlpYzZDUVBaZ3A4NnQ5L2dVaDg2S2FtRGRKc0Nn?=
+ =?utf-8?B?Qm1WRUY5ZEhrR3dHcGJXSkc5Qll4djBramZTM2lVTHJtSzcwY1YwejRHM29M?=
+ =?utf-8?B?WU9vKzVZdmlCZTQ0RGtjUkptQm9SaDRWU0R1a1Iwb2gwYzl3bk8ySVczVTAw?=
+ =?utf-8?B?aG4ydE9VOHlPMXlMMmNXQ042NXFtcG0xWHduWW9zaFZURWQvSFdtby9TUFpl?=
+ =?utf-8?B?Tldsek1wMDBzcXVaVjFVWnhBdDU1RHZ6UE5MZ1I1VjFTV0RqY1V1aFdvSmh0?=
+ =?utf-8?B?bFRQYWVRQUdpSVJaelg4V1grWE4va2lyZkMyNlFIc0p5QzlQK3hpRFBrNWJI?=
+ =?utf-8?B?dENGbkVTc252WVF1Yk1XMGIrMzNOaFVReUM2NFkrSkYwMmMxSlluWDBtVXhL?=
+ =?utf-8?B?d21pWkVJcEh3eG0yU1JpUjU4UG4xVlRZa2lvLzNIMElYb2Y1ZW1KL3dBQ29C?=
+ =?utf-8?B?bHpKN2h3N3hFeUhaZWNmTm10UzJmVGpNdStCNWRkOFZuUXZmYXl3NGNBT0VF?=
+ =?utf-8?B?Vk5CRDR6T2I3dEM0UkpQT3VQbzgwUk43bGNiZC8zM1VvUk5CdE14ZnVZclQv?=
+ =?utf-8?B?cWcwU0dwd2pFR2M2MDYvUkxqdGo0RGRRZ3l3QVdaQmp5UGRydTltdG4rV0RU?=
+ =?utf-8?B?TDJ0b0xJajFBZ3dqYVVkeU14bmRYVG9jOVNmVnRteWRvQkVHdENJK3ZVMS8r?=
+ =?utf-8?B?dTY0Skh5N21ZUHRNZ3F6eThxSjFJVjJvMlpkaEF0NStrOHZSZnh2Sms4aUV6?=
+ =?utf-8?Q?KA5cBRZHYp1uoiQY=3D?=
+X-Exchange-RoutingPolicyChecked: G47pESyY914Szm55PEqbOBwzZRj2Gu/yx8BBLme0+Sqwvn03tUdOz1fErG83pDcl3qThXNaL2b1wr6kf1J+pd8CTkTXRL8n52/wx1FzOBKB3PL1QNZpGy2/f8CumFSl5GUqzw80BFpeOW+AR8ZX3A+Pvmyp675prI82UAA++XDJu1bCdImK6fW3u6ItFdMwCmO6BIBP4lKYc+h+PjtRICRWRA6SPtOIH0rP2ddiTUD3/98kQ/eXqY5y1UE6SqVmomtepcmU12rHuYxvD/IM8yIx8EhJdWLBEnzq9H2yxaaK+1Y6HoLT7+HZ8t353cEpaQ2NCGFloC86uT3BDxXUUHA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c00f8bf-a96b-4d9e-da60-08dee440fd9c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 20:21:31.9150
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KEECUzkACde34ZNI261dn2tR8NmHbsYusPbyZWjoNQfEBtX/eRqs6dVPPTeoGaO0WMmXznb6iZtBLhfU9k5CiekAGH+5nF61ljPbZht3X/4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7930
+X-OriginatorOrg: intel.com
 
-On 17/07/2026 07:48, Kyle Switch wrote:
-> Add a driver for motorcomm yt8824 quad 2.5G ethernet phy, supports
-> 2.5G/1000M/100M/10M speed.
+
+
+On 7/15/2026 12:43 AM, Myeonghun Pak wrote:
+> idpf_probe() enables PCIe Precision Time Measurement with
+> pci_enable_ptm(pdev, NULL), which programs the PTM control bits and sets
+> pdev->ptm_enabled when the bus/controller supports it.
 > 
-> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
-
-Please run scripts/checkpatch.pl on the patches and fix reported
-warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
-patches and (probably) fix more warnings. Some warnings can be ignored,
-especially from --strict run, but the code here looks like it needs a
-fix. Feel free to get in touch if the warning is not clear.
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC (and consider --no-git-fallback argument, so you will
-not CC people just because they made one commit years ago). It might
-happen, that command when run on an older kernel, gives you outdated
-entries. Therefore please be sure you base your patches on recent Linux
-kernel.
-
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
-
+> If a later probe step fails, the error path releases the allocated
+> workqueues and adapter memory without disabling PTM.  The remove path has
+> the same imbalance when a successfully probed device is detached.  In
+> both cases, the PCI core's software PTM state and the device's PTM control
+> bits remain set with no bound driver.
+> 
+> Add pci_disable_ptm() to the common probe unwind after the PTM enable and
+> to idpf_remove().  pci_disable_ptm() is a no-op when PTM was not enabled,
+> so the non-fatal pci_enable_ptm() failure remains safe.
+> pcim_enable_device() only arranges for pci_disable_device() and does not
+> undo the PTM enable.
+> 
+> Fixes: 8d5e12c5921c ("idpf: add initial PTP support")
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 > ---
+> Changes in v2:
+> - Disable PTM in the probe error path, as requested by Emil Tantilov.
 > 
-> changes in v3:
-> 1. Using common apis defined in phy_package.c to handle shared top
-> extend register space.
-> 2. Add dts demo in motorcomm,yt8xxx.yaml.
-> 3. Fix unnecessary redundant judgments.
-> 4. Fix BMCR registers operation using magic number.
-> 5. Rename funtion based on its approximate functionality.
+>   drivers/net/ethernet/intel/idpf/idpf_main.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> changes in v2:
-> 1. Remove duplicate code and replace it with existing api. 
-> 
->  .../bindings/net/motorcomm,yt8xxx.yaml        |   30 +
->  drivers/net/phy/motorcomm.c                   | 1808 ++++++++++++++++-
->  2 files changed, 1750 insertions(+), 88 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-> index 26688e2302ea..e7592468f658 100644
-> --- a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-> @@ -149,3 +149,33 @@ examples:
->              motorcomm,auto-sleep-disabled;
->          };
->      };
-> +  - |
-> +    mdio {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> index 0dd741dcfc..f08ce13c20 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> @@ -159,6 +159,7 @@ static void idpf_remove(struct pci_dev *pdev)
+>   	mutex_destroy(&adapter->queue_lock);
+>   	mutex_destroy(&adapter->vc_buf_lock);
+>   
+> +	pci_disable_ptm(pdev);
 
-I don't understand why you are doing this. Anyway, please read the
-documents I linked and maybe there is some explanation for that change.
+Sashiko says:
 
-Best regards,
-Krzysztof
+If pci_enable_ptm() failed earlier during idpf_probe() because it was
+unsupported by the bus or controller, does this unconditional call to
+pci_disable_ptm() corrupt the upstream PTM enable counts?
+Looking at pci_disable_ptm(), it does not check if the local device was
+successfully enabled. It climbs the PCIe tree and erroneously decrements
+atomic counters like ptm_enable_cnt on parent switches.
+Could this eventually break PTM for other downstream devices sharing the 
+same
+switch if a parent's count is incorrectly decremented to -1?
+
+>   	pci_set_drvdata(pdev, NULL);
+>   	kfree(adapter);
+>   }
+> @@ -266,7 +267,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   	if (err) {
+>   		pci_err(pdev, "DMA configuration failed: %pe\n", ERR_PTR(err));
+>   
+> -		goto err_free;
+> +		goto err_disable_ptm;
+>   	}
+>   
+>   	pci_set_master(pdev);
+> @@ -279,7 +280,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   	if (!adapter->init_wq) {
+>   		dev_err(dev, "Failed to allocate init workqueue\n");
+>   		err = -ENOMEM;
+> -		goto err_free;
+> +		goto err_disable_ptm;
+>   	}
+>   
+>   	adapter->serv_wq = alloc_workqueue("%s-%s-service",
+> @@ -366,6 +367,8 @@ err_mbx_wq_alloc:
+>   	destroy_workqueue(adapter->serv_wq);
+>   err_serv_wq_alloc:
+>   	destroy_workqueue(adapter->init_wq);
+> +err_disable_ptm:
+> +	pci_disable_ptm(pdev);
+
+Like the issue in idpf_remove(), does this error path unconditionally 
+disable
+PTM even if the earlier enable attempt failed?
+If a subsequent probe step fails (such as dma_set_mask_and_coherent or
+workqueue allocation), this path is taken regardless of whether
+pci_enable_ptm() succeeded.
+Would it make sense to track the PTM state in the adapter struct, and only
+call pci_disable_ptm() when it was successfully enabled?
+
+>   err_free:
+>   	kfree(adapter);
+>   	return err;
+
