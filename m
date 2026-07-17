@@ -1,30 +1,30 @@
-Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 7305E429CDF;
-	Fri, 17 Jul 2026 14:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.202.115.85
+Received: from outbound.baidu.com (mx22.baidu.com [220.181.50.185])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 99FED305676;
+	Fri, 17 Jul 2026 14:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.50.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298770; cv=none; b=kZr6t6FYLvxN/pGKABhX7yXoyOK2IUwvG9fBbTA0gwYhtPPT+hbE3EdPUE7RPR2P/RqB4HulP4IrCGW4E/wG1OCH1I/Y4IdvNgYsKzx1NG/9Ym8isLqsNPshSAHX1BmdGhoSXS2Ue96Ssv2Gpnvr6Pw+xGzLqrsVY1y9IetvLqg=
+	t=1784298815; cv=none; b=NftkvTMzSdntgqen4OnImwZiB27g0I+kai8V/NkPFknST7jcFdLb/yD5wREbOO3kgnjKeQlhX+Vgdo0A75LUwcmGTmQFHeQ0081SvlDxuZHSRsxOADgqlM2nCZE1hH67+pfu9oQHXiIDePgO1YVO6F5+u/ZSPVj5FhR78+sGVQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298770; c=relaxed/simple;
-	bh=SlDOV5HEiZlvLrGr02vHURpPJCtkUDc2F9slhw6rNQc=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dCkFr7K8vXki7sBRyX0QepjOvZyEPik0W2mAxDdtvoywGNRoBdcXTqzq9WF8epIA5AeIi2WYNVPA8SQ3LjxrozA8omtXeVaNPEPhb7HcBJuD0IelI0lVYnMuXVPaYILE6CliZ/ewWs7KNvg+8k1W9mqyNwvu+SuE9Oe0pOoFuz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=L5i357pz; arc=none smtp.client-ip=111.202.115.85
+	s=arc-20240116; t=1784298815; c=relaxed/simple;
+	bh=Q4220uw1LI+jSO86nf3aFK2EsETUPLIIgYVrgtImPRI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ryeMz5bSoyT932munDn8OUCNcQxuXi3YKd9+8WM+XPUM9KSFmsUrzpsyQlqIbyFG64VcsdFWLGmCnZ80bUz9gEymQH5dYLs4s+eSxkg4Mh3Txp3STCTtds1BLFYlP2ge7MXiveZ4O6nxALxLq09KRF6dkGf6srmPXPAOqpp7olM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=UqX7Sq7A; arc=none smtp.client-ip=220.181.50.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="L5i357pz"
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="UqX7Sq7A"
 X-MD-Sfrom: lirongqing@baidu.com
 X-MD-SrcIP: 172.31.50.47
 From: lirongqing <lirongqing@baidu.com>
-To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
-	<kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, Li RongQing
-	<lirongqing@baidu.com>, Kees Cook <kees@kernel.org>,
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "David
+ S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Xin Long <lucien.xin@gmail.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] net: ipv6: fix dif and sdif mismatch in raw6_icmp_error
-Date: Fri, 17 Jul 2026 22:32:30 +0800
-Message-ID: <20260717143230.1836-1-lirongqing@baidu.com>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH] net: ipv6: fix a potential use-after-free in ip4ip6_err
+Date: Fri, 17 Jul 2026 22:33:15 +0800
+Message-ID: <20260717143315.1942-1-lirongqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -36,50 +36,59 @@ Content-Type: text/plain
 X-ClientProxiedBy: bjhj-exc7.internal.baidu.com (172.31.3.17) To
  bjkjy-exc3.internal.baidu.com (172.31.50.47)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1784298760;
-	bh=KD96x89q42X1YxXnAThpL74UYBHTxmO7xHWfal6hLkU=;
-	h=From:To:Subject:Date:Message-ID:Content-Type;
-	b=L5i357pz23GhuPZ5U5/HNH2mxZWXHv48CUkBijQsanbPVlEVPlC1ViBvGpcy/kias
-	 6YH9J6V/MCBvQKCmb2qKx3ON+XftGmirlT7vPPIH9SfTUx1oDDsvH/UfYlPKneU7cR
-	 QLPznJy6akgUtQe17pzJrhmcMXI946LiGe3OugfH0tk3ugkpdCKo8C4bWLOF3B94lk
-	 VBdy8ZWzVF5arozc6NXiSP0kVyCh2hFKKzdFqSKCoHtQM78yM3R+c6d1HWvgwGOaPN
-	 KRILmq6XGQ3LB7RGnpDUoa6836A2awluqXMdksNQAuCMCHn7fvGancYvJp8nKe8Lll
-	 Vh4ylnXpPDU4Q==
+	s=selector1; t=1784298804;
+	bh=BNCQi1jTLW7XPXFXQMcD6/PhUT/qZSzT68Oxpjr79f8=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=UqX7Sq7A0rAYWXvUctdxhDImxEai52UChlE9wO2XiI2VCEOz5cdpbqxk73AtpdJGA
+	 X0NY8NzEb2Vc1BeYG//bn5BztDEIQpSOZk6ZZQPW6kVORH03riP+mfe2cnGFs2QOlt
+	 5HwaUgdVKROfd8av3JTRaIfu6NbSCYQx4hnw8BEA+hS/TyLbRTdfwaeEXk7GDay6W6
+	 9zqtsFcE/NRORVugqUXhwxyBX8rfTtNcpt+JVbHQUWRbRnpk3WKDhfpr9vltRuv/oy
+	 4duUadmt9l+4HvbJojeI+vl0B7euipCbur3iPAOrUyWb5hVHwAa/ul86o6pnY9ZIfd
+	 99Wcm26+ZqoUg==
 
 From: Li RongQing <lirongqing@baidu.com>
 
-In raw6_icmp_error(), raw_v6_match() is called with inet6_iif(skb) passed
-to both the 'dif' and 'sdif' arguments. This is a copy-paste or typo error,
-as the last argument should represent the secondary interface index (sdif).
+Fix a use-after-free bug in ip4ip6_err() where rt->rt_flags is accessed
+after the route entry object has been released via ip_rt_put(rt).
 
-This mismatch breaks ICMPv6 error handling for IPv6 raw sockets in VRF
-(Virtual Routing and Forwarding) environments. When a raw socket is bound
-to a VRF master device, raw_v6_match() fails to find a match because it is
-not given the correct sdif value, causing the socket to miss relevant
-ICMPv6 error notifications.
+If ip_rt_put() decrements the reference count to zero and frees the
+rtable structure, reading rt->rt_flags immediately afterward
+results in a use-after-free pointer dereference.
 
-Fix this by properly passing inet6_sdif(skb) as the last argument to
-raw_v6_match().
+Fix this by caching rt->rt_flags into a local variable before calling
+ip_rt_put().
 
-Fixes: 5108ab4bf446fa ("net: ipv6: add second dif to raw socket lookups")
+Fixes: 77552cfa39c4 ("ip6_tunnel: clean up ip4ip6 and ip6ip6's err_handlers")
 Signed-off-by: Li RongQing <lirongqing@baidu.com>
 ---
- net/ipv6/raw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ip6_tunnel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index 3cc5869..b88d364 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -349,7 +349,7 @@ void raw6_icmp_error(struct sk_buff *skb, int nexthdr,
- 		const struct ipv6hdr *ip6h = (const struct ipv6hdr *)skb->data;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index bf8e40a..984cb0c 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -569,6 +569,7 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ {
+ 	__u32 rel_info = ntohl(info);
+ 	const struct iphdr *eiph;
++	unsigned int rt_flags;
+ 	struct sk_buff *skb2;
+ 	int err, rel_msg = 0;
+ 	u8 rel_type = type;
+@@ -627,10 +628,11 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 		goto out;
  
- 		if (!raw_v6_match(net, sk, nexthdr, &ip6h->saddr, &ip6h->daddr,
--				  inet6_iif(skb), inet6_iif(skb)))
-+				  inet6_iif(skb), inet6_sdif(skb)))
- 			continue;
- 		rawv6_err(sk, skb, type, code, inner_offset, info);
- 	}
+ 	skb2->dev = rt->dst.dev;
++	rt_flags = rt->rt_flags;
+ 	ip_rt_put(rt);
+ 
+ 	/* route "incoming" packet */
+-	if (rt->rt_flags & RTCF_LOCAL) {
++	if (rt_flags & RTCF_LOCAL) {
+ 		rt = ip_route_output_ports(dev_net(skb->dev), &fl4, NULL,
+ 					   eiph->daddr, eiph->saddr, 0, 0,
+ 					   IPPROTO_IPIP,
 -- 
 2.9.4
 
