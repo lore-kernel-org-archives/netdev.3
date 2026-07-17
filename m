@@ -1,69 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961A0325494;
-	Fri, 17 Jul 2026 15:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D4F2DEA93
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784301360; cv=none; b=iQP5uYP2RFNopHdxNEVdfEsjTWQZ4gAUTdLLs+K6LISDV+ejV/WEgevHK12rbTiMN1epl7K1LAEM7QZMnbGDGfgvRmE4YDNCaZX3qhx+pMf54vgUZ/Dq9aVdvFlGOt8iMRTk/CC8Tahrb1S07/P2TrvxYiWwV4/iXnT/6J4LVes=
+	t=1784301397; cv=none; b=bwrEyhyMB1FCnhcziP8nZnUpArnrptEcSxqTYtyBkMIklzPQb66QUgdQyWcAz6siZPTen/CqLVXWlarWzwj1lvhKBVOBgoTBbkPKSvQKQnTdjOO7oOhpWn4qKHis75gBCWaoS4Oispt4Rvd4fjglI6q4ZHDf/RZoLJSZc98udCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784301360; c=relaxed/simple;
-	bh=ejAiFtPfqvoU0cHxCN0O1MnsvxFJwWaamocYAYroLGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ScgBfvIiSObV0yPTbW3+EtR3FmWB3+etQB1Blu3X4ZDyDRDIdQ9WtyEZBCcXBIgGoO5TjNu4U6yWJw/qWYjnEuEQEq9zndYUMvoM19azseMDYnt7ta8x5QRC3ULdD+Bhw7wcQm6obLBvFWQRw4P/bQ/4+aaf/+DRkzvDfrEXFPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CxF+dhqN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784301397; c=relaxed/simple;
+	bh=NNibbsMBzcBhzHKyyVyWoEjs9JNqg5eZd/fl/Nu8GEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mbw1kblyIKga72PMWXj5iSEslpYQbl6n9dkCiqxYr+fae08P8WQ5mGdYcwyKj1jd+LhhYkNN8go8JxjKudOndPsapTqT1cpmqZU1vVshIZS99Xr1jzYMD3t28DmT09L7M61a0oBdRg33UUdhsJC4Va2Tvn4hF4NZo6/ZtKFJiMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bXkjmYQ3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CxF+dhqN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6Z7vJicvsx8yhLtOQMr4scBeET28BhC52LGcdrsnXbY=; b=CxF+dhqNEyHd6bjwhGqyTTPxQx
-	VTTxqLnTXbbaI3PYEC5FSD59huZaF5nlNsqfh/aXPNWU/bKipPbGySraKepE7N9NMvTj7s6G+a/5R
-	b3QWluamoZiP/V9+EiAR8jOerjaF4T9R+0SrACNULhbAfsXB0I6qA7ga/ap3VELWy1Z8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wkkHw-00CpXV-Q1; Fri, 17 Jul 2026 17:15:44 +0200
-Date: Fri, 17 Jul 2026 17:15:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Liu Changjie <liucj1228@outlook.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Luo Jie <jie.luo@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: phy: Add support for the Maxio
- MAE0621A
-Message-ID: <9b604f00-701f-4194-9002-304c4d93003a@lunn.ch>
-References: <MN0PR19MB609154F210DF84DCB29D3696ACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
- <MN0PR19MB609153A4A590C66241B8A3CDACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bXkjmYQ3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784301394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TRhb9mvNrRYyHgkhEJwct4IUo2+m3ly9XG+UwgjaINA=;
+	b=bXkjmYQ3rvFSjX6TY3q4fHvN7jBKP1DwS41ueLPojKhvo9DK/ILi+YqULCojnKp06c4dgX
+	dnW/vtWGr+2JbYoaVV6sMzL2MiO3inE2FaOwZ0hXrhpZlwjGFcsZwjxeO51xLcaL4MJwpG
+	GxPAN3R/xtNOln6TtkKAMG2mwxiJ6pE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-dNHHZgzCNfWqsyxdkLZFtg-1; Fri,
+ 17 Jul 2026 11:16:30 -0400
+X-MC-Unique: dNHHZgzCNfWqsyxdkLZFtg-1
+X-Mimecast-MFC-AGG-ID: dNHHZgzCNfWqsyxdkLZFtg_1784301389
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CFF11955D8D;
+	Fri, 17 Jul 2026 15:16:29 +0000 (UTC)
+Received: from lenovo-t14s.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 726A33004182;
+	Fri, 17 Jul 2026 15:16:27 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-usb@vger.kernel.org,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Laurent Vivier <lvivier@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] usbnet: cap max_mtu for drivers without bind callback
+Date: Fri, 17 Jul 2026 17:16:26 +0200
+Message-ID: <20260717151626.2913171-1-lvivier@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN0PR19MB609153A4A590C66241B8A3CDACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Fri, Jul 17, 2026 at 11:44:03AM +0800, Liu Changjie wrote:
-> Add exact PHY ID matching and optional 125 MHz CLKOUT configuration
-> for the Maxio MAE0621A Gigabit Ethernet PHY. Preserve the existing
-> hardware configuration when the firmware property is absent.
-> 
-> Signed-off-by: Liu Changjie <liucj1228@outlook.com>
+Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+caps max_mtu inside the if (info->bind) block in usbnet_probe(). Drivers
+without a bind callback never enter this block, so max_mtu stays at
+ETH_MAX_MTU.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+QEMU's usb-net device (0x0525/0xa4a2) is claimed by the cdc_subset
+driver which has no bind callback. The guest accepts any MTU from DHCP
+(e.g. 65520 from passt), leading to TCP segments that exceed the
+device's 2048-byte receive buffer and are silently dropped.
 
-    Andrew
+Move the max_mtu capping after the if/else block so it applies to all
+usbnet drivers.
+
+Fixes: c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+Cc: stable@vger.kernel.org
+Link: https://gitlab.com/qemu-project/qemu/-/issues/3268
+Link: https://bugs.passt.top/show_bug.cgi?id=189
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ drivers/net/usb/usbnet.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 25518635b7b7..d87299025552 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1825,10 +1825,6 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+ 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+ 			net->flags |= IFF_NOARP;
+ 
+-		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
+-		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
+-			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+-
+ 		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
+ 			net->mtu = dev->hard_mtu - net->hard_header_len;
+ 
+@@ -1851,6 +1847,10 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+ 		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
+ 			status = -EINVAL;
+ 	}
++	if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
++	    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
++		net->max_mtu = dev->hard_mtu - net->hard_header_len;
++
+ 	if (status >= 0 && dev->status)
+ 		status = init_status(dev, udev);
+ 	if (status < 0)
+-- 
+2.54.0
+
