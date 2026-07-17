@@ -1,109 +1,122 @@
-Received: from sonic308-9.consmr.mail.ne1.yahoo.com (sonic308-9.consmr.mail.ne1.yahoo.com [66.163.187.32])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4B036E460
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 16:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A488B2DCC13
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 16:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784306358; cv=none; b=HLsx5M8byC1bQlTHZDy1GJFPIbBlaRew+uoFZrrpJuwMVT5PrFf2YiLUbceJ6alNE1Yg5Cu5aNUY16ALXSLjthVavukEIXkuImA8aTRvQQJ5MfskkygtvD8LWH/KGlGHy4wWXCuI8Xc9Dr5mnMAA6vSlckhC6dCe1Uf1Zou16Gg=
+	t=1784307425; cv=none; b=OMBlTwrENnZ71TskPxfCkKT5kIc6Ga6Z4+FfmarvFjSBLyYyZ+Yk5TpmgPGnqXHuRDqOERdwl7105SUnNt460MqthrUMOwQ8Ks6hjA4llgrTZynpinY12FYhagkD/y6vH9cs3so8QSkr04nRBwYCTlGhAVN+98XBd9tcC8DLJRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784306358; c=relaxed/simple;
-	bh=N0VwWNgjZy0nKc8IV1CYPC3YH6HB+OUZAGcyU3UMKhs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=faGv6oDhYy3jxp0cthoy/CmAqYllDNfKL7U1bV1tGWPKwA2DF7PFKoIT8XvxyImI99t/amovD36KNsydniJKKwSvNM8QupuFOWWBxvVHX9vrUwo4eMkgXw/bzc4FldmRfNegiZccMYC64WT3thkrUKK6ucGnrilwpfBww11Ikjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=KKthGCAK; arc=none smtp.client-ip=66.163.187.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1784307425; c=relaxed/simple;
+	bh=wKs36SOVOHO3LJ8mNUlux8QFeak+dkTNaXb1CzDcfxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PKGgD1crkoctbA/KKwT8o1slPvsNRRZjTWod3Y1neOxhcfQMWw9IrV6BmAnYbpA2URVSS+hUZP6t/XbrVBCvkcrw0u93/4J6Q8WWyEB7mZfq0jrEz+FhBUzE0KtOc2eDVVbZKh5aQJELK/gCD/D1kco7ttv5w3uw82miRe88GQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gsUQx8IV; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="KKthGCAK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784306351; bh=cwGcTMGiq61hH9s2A9DOJFHP6CDdTNBniuBE9pnTs0s=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=KKthGCAKsUBZQxDQWK113D5oGMK8Av5O2jO1czrd4vOAEFqyss+FfIiGRpHM29kBeouC03IHbA2oxZ9FFV4VVfvcYpJYCdYaU2w7wCth8H4iOPSAG3wTc+NRm6+VGcNl+9SeWpWWXwpfzVvWO/AvXCAHpynw3YEO4jO+HqOd6h3BE/FPlr1AJJX6ckhYAhWRDkPlf0lYlNRUZ0svxtGg0Atm2X3oIUvO2RiRoyqgNX7ZuBCoi/JSH3sy3QWTMKWL3KdKkUrgwsqOm8IHs1VXu9wPjH8e8tnIVLaRBvA7YVxq1TZnrwTXgaqDKF25gAMx6XdpO2jzfaRweYbhOVzLkQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784306351; bh=HAa5IRr8U1KnsFoSeLEqC59EJCQ0Q0szhhFE93jT5Sc=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mSD278HaGDXnl/tcBVVeKprsklnMS1pj8Jtj8/fMjOgWuXb/IB3kIdiTOXe9rxFUkih3VoH//DEvBBiC9tTOrFTs4B2XuUuya4R6tzS+XTiDPXAl3N6MQv6LqaGlut71u57q8+6tZYhTLV+nS8yvZuS2OkdR0+/TQ/CJIn8us4WInr/jHOslv93opsSjifNAnPTXx2pVl6vKmBj5otbigMUc6T2umq1WIqCJ1eHNx7rCXGgnBRpQ1hPmLJRoUKMM22bCYte4LuKInSAuR9kUt96YSXk5jpEq1sffGuk5M3rJcS+Sg6pEnhPAe97HFvM5bzwNqB6i77C6ntgWXggOVg==
-X-YMail-OSG: 95UYLzsVM1k9bJ7flZNuJoo9Ax2dJEds0iITHQgS8u9Q14C60kaKt_5uYP5hcVW
- rzfMknNbEEOPK2rxmIvE8HPO3okH_MueNFSzfKDb76krSyrOi0tEEUILAxDtf5ptNezc0e6ptkyX
- 4T08a33BTzv5uz_vB6Qe2Kb_f_HPFtvv8R722v6giR9.GBUNKaqIuPb2vmo8Z2Bvx2Zxo_uiVP7U
- lbinOeBNWBhmzh7Rm0MiqF2w4cAOPmEGyrUNkQzrd05J2qdiUDxJ10NE42LhEv9r_OQo4QKvBgI4
- YbMEbKnqTLSQ3Ortih.AqBf6o249OBgkXNUWhiXIHM3q33Kn4ldzitf4uM0lAQS_M95BvkJ.drnm
- L9Uk6vji3DPTBmSShGux1G9mH4smgCh79p1RJX9RmNgQGQ1ufNVSXAB4Cp74fIaUHP43ldzP1hOt
- k8QuCCDrU0w9U8TFMfT8ji1wKa5L8zNpY5cgkt4yDlMcbyjrHO92oA2g7JaOwLA6P5ujIeA6jikO
- wP9jYjsOXWfqdcKq3_6106nnEjWoDVPJii9zs.FT._dBMUEtBBR9R3sA0KlnQmV7YdOhcszf2XAV
- hwEzxfPWTGWpFJh0AyxLTMJBuYfyxrNYsw8Rm1H5g3O7BoduHuvcyKOD4j9rHvOhHjOZLAh0_x0R
- hz3KXYQh2u8Pq_y.V_pbdyodVQApbuhzTv9OajyB1sLT11nUdeGbhrOiboos8Wr0_257.bQTYzY0
- driAt46ZJUbqs3OpjgUN_a7JF.Wqsv_CxmZxSAvf1TxI6N.tWI6SZ7WO8FHlzRNEGSaCDdSFmPmD
- POU.b3fs0WcbzYgkjO66rYgHok1.zQgbHGv3xYYOO35w_F74FfKpC_UA3OeseUB2D3Rh2F_5QmI3
- b877jdPzMza8GTVSbLLkYrS1Z_lZgRFhVbf1MN67tHtbPXzxcAOaAwr6Ki_5zYxq7YuMRpL2htwE
- oXQ.lY0fpqHljjNi8IjZzk6MUyjR_C8U1BgjMXtk_QOVsdrX6oEadiOQcTKXWFz58y4rZI9bv7fm
- HCjtWckOYrEYPyzWM8W5veNG.KjIzwTH6GlX7epQK3zSP6M3WaP_Yoi5PzOWELE6.o0NxRbRFNd3
- .ykFIaz7OnI5FzAU9cyUfOj3oI9XCZ_fzSI5O5Sd_4Zr9.3NMLBC6UmCYsJbk.3KrKLRrLumKKCZ
- ED.PgaoTE.AAowbY1lVQWrKFoHA8i6ynQl1zjzJeWiAGqYJPBmvGypVI0cN5K9KcAlalCqlv2M6k
- QaY3TWYnbjYKQVvTUL1GtUkjPjr6jUXR1GCiJlAX_.HCPizD0Y.rlMqJD5WJBzflBMGzytXNEeN7
- WYYIto.OH10z_w6A.VMNWEvoqc5lfzpGMf6wZbcYeai_LEvYisZvz5qiorE5VWc7wYnA8.zQoxlR
- eJC8h49UjUTPEl5Thy_IsO.NiAFTtlF.QdkmLh58vWbVrxuH1dmelIjPZgEwTZ3ZSqqNihKtvSOn
- 5eMVcLXn3va2SydwiMwxDW4kRVxMBM8FBb82bxT8af.Pe_jEsEOcy19SVis_f2jnSpkQkNaQGXpa
- WrNRHZxDC17AUul74BiG4ri43.B7l2psLJ5WmdtmGVL4zCFsi0LgNg1tSHMcgJDmTg2SAbnsoca2
- wbuME7.UT4IWOsH55u96yHdKFkA.ZAA7ftpkNF4Of5zkhp_sx0sWS3oA9CbHaHs3o61Ye.C7ym.B
- vmmV2ZxZiKoAirnvJ1CQP37wrHjOTz..P45Is1DabjZETFvZHPZD79k4UhI5y63EVeid7MkjnWQS
- DIYcr6RHgZwHUTTB.g7eLmCqXhsqlHJtcUmM3RJqA.0QZGn168y6QWFg.E.ifU86jzqdfq.rVaDs
- iZZk.U7K_hHFiTNASA0ryX_FxU2Dg_Ey.k0E9eT0IpMzMnynLDUVXpVhpZdA9vq4fmHX39.0Rgoc
- 4CaWF3PpWloA1TygVxdweNGhOL5CU.kTdHOyPZ4mg4thRW8d50MoA48Ifm3wcmZ2Nx4KHpVEYUR5
- Z03IfRZ2q1ZFntpn.ny.mERrUo4HwEqd1wICgcIYx9zXlR9_YVeqnCTbEzbcPkFYmHEYmashTtyg
- 3nJx2Peog4FXhvQSQ0nHpBzdcL9gPDMAJmXul9A.tMSClga3CjIQhb9MW8mex6mvIvjKNQA9bvX.
- APS98R4Gbwb_UjaZBxG7ijc4NFmF_RhmKF8Hf1iru34HNIr18tpiWM1uNY5i_BVBhKzck1siuvsF
- V.rhCTNhr1EN5Nw4a.oAJfTKNfcF7XbLaxsRQDbcb68GePBwgHjBGaRI0tbuWeIPSt2zLW.VapTh
- tMSMuPHHjgcq7Ww--
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: e1ee4498-727d-4dbf-899a-643e7a519c90
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Fri, 17 Jul 2026 16:39:11 +0000
-Received: by hermes--production-ir2-7b48fcd765-2dqlz (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 777a421667413e87978f9fe8af41bc8c;
-          Fri, 17 Jul 2026 16:28:54 +0000 (UTC)
-Message-ID: <1251f969-e6f9-4be3-9554-1fd4c69bf137@yahoo.com>
-Date: Fri, 17 Jul 2026 18:28:29 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gsUQx8IV"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-848882fdb18so5285956b3a.0
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 09:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784307424; x=1784912224; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jjQtERwpEh0m+PQ7Nbhz5JQWbFkPp2mGwWfv53pig2A=;
+        b=gsUQx8IV9nvoQNaRbJqUTT3p3FgXDSSYDd/b1oGAXQbiLg1CXpbs/Fttx0dh8SdRHy
+         oJryR/zEbQ1TlgjgbCna8fclAzncSF564bDR6Ct7q11Pxv/RMbldjoUqw8WeQr/nOH1Y
+         IXLIuuwpC3aB6IWyXfg3camudzpWbDiWtwY86h07Wvbs7FrAtSHKHIR8qEu8iAbCGikT
+         jIBP892WJnlx2l+l5+/evTZo83g+B1XYxJi7YBnMkvSj4Rr11OmvJI/fwAwg0ER9Wceg
+         pc/mJA1MHgchFDQKS0n86ftrpHiO8QHIEKrQGUCv60dMbqbG/dv7ri8do9zzfo/IEvNs
+         5Lrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784307424; x=1784912224;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jjQtERwpEh0m+PQ7Nbhz5JQWbFkPp2mGwWfv53pig2A=;
+        b=UvT6YuUql/h0cGZJBupNX2yD2Q2wujalUZM4sThkrraHMWjOEKYhOCL95/5jRCJpLh
+         CHClRssIEPVbioNSfHmo1P08+aSaNBDExtKr+M0uP4uDDF3auDFMnQ2aWVPABJM5eRYH
+         KMgMCOMYtopIxQENTfQ1O2Y3vWiwmNlEBG05HClYKP5PcT/GuEOROM56JGuFFbKPxmPA
+         bkkvGWHSfEein/0+5EXTxuw0BSwDREn4M4vCaNbr6hEKYUTkJkFFkZram/gTyuR2DtQK
+         MECO1sJxugjmYg3QgdZg82iaW4cYSNHCjV0JtWTgMXpNpDEqA+K+J+5lih/l7j+lmyxC
+         rhLA==
+X-Forwarded-Encrypted: i=1; AHgh+RoZpphWgQfQVh0d86yEJowwDsIj90jBpAQCeP0vdiOhgaXzNwJPjrkNaAbnTlsetAoVzaIW4zE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN0f/ButF1VW3SdOG/f8D0VCZv3BZzFYbdhImdJbD741KLqaDi
+	hBim/mozEbvvIiZ7bilH2HnWnfLhU80lMtc+QhtTUVB78bTNKVgCegytlg8J3LELGw==
+X-Gm-Gg: AfdE7clJcP/MLmexwlNti2djbOvC6HQMYcqyrIcaqUFXOeFB2gLqAXFwl9yIAPilIqa
+	YlxFwVZ55f5Q2/jjtB5RTWcQ3/lR5/5sYjsg6UdAEOija0tSablr/WWtMuxk5pgQQqTZWEWn1M9
+	NmYevAgMcxH9qkqXcZO/dFJERncigsXnMWJGYj0RQYvM19C4oFOf7usxPCk72YsQ8S6xXEj4Cax
+	aU+hSC4BKUtKuXKaevkTm4UbsTS6xcnbck6N/bL1taJhvIjWRtq38BryDzctP4kod3E+MGCxDsM
+	KYPChgKCA3oHql0IK7t6vIDSt2PUXYL1O1uRx14l7XbtjJQO6dUmfnqdKh+jvv5L0xOElf+dJzG
+	J6rC/u+stg4LecuCwJJks0312IvSt8i0a72ra+bcxQ8ZVQI2zSP/G/v02gm9zSZBfCL0Y3UxKn7
+	DLjy42x4SZyZL+WGmKylDIyKyWI43+biS8Ya6aIIpc1Ufb/WkWDqZBhaWEGAgZ+LiH0SO+S3gc9
+	GQ4GzTgqcRCtE0dN3MlvM5KNg==
+X-Received: by 2002:a05:6a00:421b:b0:848:5010:ad3a with SMTP id d2e1a72fcca58-84c294a6dd6mr4175030b3a.58.1784307423560;
+        Fri, 17 Jul 2026 09:57:03 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2e87:6:93e6:5c88:4a97:3393])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af30bd6sm1442066b3a.39.2026.07.17.09.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 09:57:02 -0700 (PDT)
+Date: Fri, 17 Jul 2026 09:56:57 -0700
+From: Nick Desaulniers <ndesaulniers@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: David Laight <david.laight.linux@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	Eric Dumazet <eric.dumazet@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Nicolas Pitre <npitre@baylibre.com>, nathan@kernel.org, ajordanr@google.com
+Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
+Message-ID: <alpeswexV_jIgT5q@google.com>
+References: <20260118152448.2560414-1-edumazet@google.com>
+ <20260118114724.cb7b7081109e88d4fa3c5836@linux-foundation.org>
+ <20260118225802.5e658c2a@pumpkin>
+ <20260118160125.82f645575f8327651be95070@linux-foundation.org>
+ <20260119093339.024f8d57@pumpkin>
+ <CANn89iJVQe=wedLheJmjZjOTJsWHijT0jZs=iRxKssJZbjAxHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII
- support for RTL8367S
-To: Stanislaw <kuncy7@gmail.com>, Johan Alvarado <contact@c127.dev>
-Cc: Linus Walleij <linusw@kernel.org>, Alvin Sipraga <alsi@bang-olufsen.dk>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <e252cb3c-bfb2-4d62-aec7-e04b9aafe223@yahoo.com>
- <20260717125155.18915-1-kuncy7@gmail.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260717125155.18915-1-kuncy7@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.26136 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89iJVQe=wedLheJmjZjOTJsWHijT0jZs=iRxKssJZbjAxHw@mail.gmail.com>
 
-Hi Stanisław
+On Mon, Jan 19, 2026 at 11:33:29AM +0100, Eric Dumazet wrote:
+> > Many __always_inline came because of clang's reluctance to inline
+> > small things, even if the resulting code size is bigger and slower.
+> >
+> > It is a bit unclear, this seems to happen when callers are 'big
+> > enough'.
 
-On 7/17/2026 2:51 PM, Stanislaw wrote:
-> Hi,
-> 
-> I have been testing this series on a second RTL8367S board: a TP-Link
-> Archer AX55 v1, where the switch SerDes runs HSGMII (2500base-x) on
-> external interface 1 to an IPQ5018 gmac1 (stmmac, fixed-link), on an
-> OpenWrt 6.12 kernel. Some cold-boot results that may be relevant to the
-> calibration discussion.
-> 
-> Test image carried, on top of the v6 series:
->  - the SDS indirect-access busy-wait fix, and
->  - the ~98 ms PLL-settle delay plus the 0x060C-0x060F "Local Jam
->    Table" analog calibration proposed in this thread.
-> 
+Haha, yes, and I've read LLVM's inline cost model before and "a bit
+unclear" is how I feel about it.  At this point, some of your Google
+compatriots have even resorted to AI for inlining.
 
-Please repeat the test only with the fix "the ~98 ms PLL-settle delay plus the 0x060C-0x060F Local Jam Table analog calibration". Only the result of these changes can tell us something.
+https://arxiv.org/pdf/2101.04808
 
-Best regards,
-Mieczysław
+> > noinstr (callers) functions are also a problem.
+> >
+> > Let's take the list_add() call from dev_gro_receive() : clang does not
+> > inline it, for some reason.
+> >
+> > After adding __always_inline to list_add() and __list_add() we have
+> > smaller and more efficient code,
+> > for real workloads, not only benchmarks.
 
+Yeah, ChromeOS is hitting this now, too.  They're deploying AutoFDO
+where you collect traces with LBR (x86) / ETM,TRBE,BRBE,SPE (ARM) then
+feed that back into the compiler.  Then they're getting modpost warnings
+from section mismatches when constant propagation sinks addresses of
+initdata globals into specialized copies of list_add that are then not
+inlined (so not placed in .init).
 
+https://github.com/ClangBuiltLinux/linux/issues/2173
+
+I think list_add, __list_add, and probably __list_del_entry_valid should
+be always_inline, possibly except for the different definitions when
+CONFIG_LIST_HARDENED is set.
