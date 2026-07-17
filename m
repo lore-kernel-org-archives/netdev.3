@@ -1,156 +1,132 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A92F3AB48F;
-	Fri, 17 Jul 2026 06:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4E23AA50A;
+	Fri, 17 Jul 2026 06:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784269649; cv=none; b=g/pem9Ky97eJBWZK+klOTXJMG6GlvmBrPIZHeIAn9lzAlQqf2kwUyVjfkLBEf4oe/UMdzRyZu7QpBb/bLKCH0rqUTmj70HP1SjdcQDKKiKCgU43i/CDpK4XkaKtHtdSUpClzaD0JPnRbN2G4NsaQUPe0H/82OxdcRgnZJstXBHU=
+	t=1784269691; cv=none; b=Yk3DLxtnx4cesRcr5tJ6PH5BPpVFWmIi2bGRJ8khky2DpNj4UUIj6KKJKNOA2GK8OFGVOv37MhFSfP49/QJ+FSZKwx3M/S/pxQcSYoFaOurvREw7SIU9VRDF+Q0Nnt66DVKSaNRRkFbdGEQce64PUVyhXbkgrY0SM3PPn+psW2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784269649; c=relaxed/simple;
-	bh=DLVM2Wzs1hkPFwJR2tdyFF8jpGHl4pQL+T7gotY/r/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOxMG58QHRvdSdlH51F+WMXJMOMN8LhxyS0xgq3DylrmKveGEfXNZ2QvNw13YG7Fd3X5wpN61ZsJAHTEfFPXwTqw7K14DEsOgfR0rovbNQl3Ztrr+U7LntY6WlUWKc+0Y/77QAegpmzq6i+5jgnjdpdzH366BmWCgtByiu0Ux2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jnkX7ep5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gMoWmDbu; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jnkX7ep5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gMoWmDbu"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1784269646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jRiOhW5HZb5V271O3MBx6AO5JteGsje3lF8XlUmLt3c=;
-	b=jnkX7ep5yVEzA017UKC8IPbWUuQs3AWCHo+3Qw76bGFVLBwUBHyqXNDiZJ/zmksb7cJN6y
-	22Z3TXNd3mJRemjoBEoe4Xb2nWNloetEzd9e4LnvrGrsb44bi7Um19gByDTW1nJgJYPpeY
-	2QAEkUraiPPrXtw+IchUXIhGopBKDYxtF5bKTOqoKF5zeBtmE8UnnTz+3/xMyS1blxn9Dc
-	GfCgYfY6IAOTnQ6V4/bb1H8WcQMxLyKyseL0GdvLB08jzjRtAjHshHbLFHMWWS8M+I/ipi
-	Z5x9ZZToZBWkaD/BmwYwzE24qxa/xvA2rClJhu/Q5iYuDFDJD0wd+Q3HBydViw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1784269646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jRiOhW5HZb5V271O3MBx6AO5JteGsje3lF8XlUmLt3c=;
-	b=gMoWmDbukUsZTkbVJbBP9m/icqVx7cun90d/EF1Cfue8/rHUJeZvV/6tqUargiBv/j4ljR
-	EbnbZjhA+Zw7oPAg==
-To: Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH net-next v2 3/3] af_unix: Clean up unix_schedule_gc()
-Date: Fri, 17 Jul 2026 08:27:17 +0200
-Message-ID: <548b1b624b13fc2582b1236a2c656e4261eb2525.1784268931.git.namcao@linutronix.de>
-In-Reply-To: <cover.1784268931.git.namcao@linutronix.de>
-References: <cover.1784268931.git.namcao@linutronix.de>
+	s=arc-20240116; t=1784269691; c=relaxed/simple;
+	bh=+WZmixc0LYgqk7x8Zg0zKSBG4nAF2PH9ypi4BLTI3D8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bC0JeOr6O0Jk3akOCcj+nl3EOmjE5jcZkEJBAZV68ZEimRXa20zrn2QVdUqJdmqFj56d/kVyvNBj8d6td+uiHsBOASEo8sN1qbNO5CNLMdkzXewj+LS496QOJfDIHacZgPUWp96wcSa0G/1BOHplZ+KE2eB3JsqqnSgYIQ5X+yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: aa2baa9e81a811f1b2470fb4f881575f-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.17,REQID:29b6c768-909f-448c-83ef-a389682b2ca7,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:d497b38,CLOUDID:0990955f-762a-4584-baab-4eebe609beea,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,B
+	EC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: aa2baa9e81a811f1b2470fb4f881575f-20260717
+Received: from sdmg11.sdbg.compal.com [(10.113.168.9)] by tpecef21.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1157579681; Fri, 17 Jul 2026 14:28:03 +0800
+X-UUID: a7956cd481a811f1b328fd8a884f4420-20260717
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:53ec91b0-798f-415f-b7e9-9289716d75da,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:68df5e3f-46cf-453a-bd84-ad9fc7cb0e8c,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a7956cd481a811f1b328fd8a884f4420-20260717
+Received: from sdbmbx11.tpe.compalcomm.com [(10.113.2.135)] by sdmg11.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES128-SHA 128/128)
+	with ESMTP id 238460647; Fri, 17 Jul 2026 14:27:59 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX11.tpe.compalcomm.com (10.113.2.135) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Fri, 17 Jul 2026 14:27:58 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::2b98:6c2c:37df:2a86%11]) with mapi id
+ 15.02.2562.043; Fri, 17 Jul 2026 14:27:57 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Simon Horman <horms@kernel.org>
+CC: "loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
+	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"wen-zhi.huang@mediatek.com" <wen-zhi.huang@mediatek.com>,
+	"shi-wei.yeh@mediatek.com" <shi-wei.yeh@mediatek.com>,
+	"Minano.tseng@mediatek.com" <Minano.tseng@mediatek.com>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>, "corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: RE: [External Mail] Re: [PATCH v4 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Topic: [External Mail] Re: [PATCH v4 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Index: AQHdFQZLXFhkpHGHwk+0HowAeOhgTrZxQAIh
+Date: Fri, 17 Jul 2026 06:27:57 +0000
+Message-ID: <47002e869f5b4f0985316669d2769c19@compal.com>
+References: <20260709-t9xx_driver_v1-v4-2-a8c009d509c5@compal.com>,<20260716093355.231047-1-horms@kernel.org>
+In-Reply-To: <20260716093355.231047-1-horms@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30074.005
+x-tm-as-result: No-10--16.406200-8.000000
+x-tmase-matchedrid: gIzQ6PxOy4Muv++HU7VXryRFbfQbCufdN0X64jGy2db7+pncqRJfy2XQ
+	7TcqkNINMlye2WA77Ai9CAA19yO7SzTILUm/BmQIWZxYhPYYrMks49QZH9p6LCLW2ccC0rwjNqy
+	UdyLI2AvnBl01IH4/9Qz88i1JVNBxy0T1fdU23LIBs8i6PyStEHKa5XrXQyxS/4EbuHnSgjTfUT
+	/CYNWKD3fuxt/hlr6ly5giTPlFHEONYN8w7dbL+QJmkj1SAkweoli4ZoiOHT8g4pZYxslhbbNke
+	EYGbJYuA/3R8k/14e0=
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--16.406200-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30074.005
+x-tm-snts-smtp: 04A923A4871FEB9BF888966411B513889BC16DBC60899E76CE3CB1EA28536E092000:8
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 
-unix_schedule_gc() is only called with NULL as an argument.
-
-Simplify by deleting the parameter.
-
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- include/net/af_unix.h |  4 ++--
- kernel/exit.c         |  2 +-
- net/unix/af_unix.c    |  2 +-
- net/unix/garbage.c    | 14 +-------------
- 4 files changed, 5 insertions(+), 17 deletions(-)
-
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 686f6f1d1c21..1dfdc0720052 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -14,14 +14,14 @@
-=20
- #if IS_ENABLED(CONFIG_UNIX)
- struct unix_sock *unix_get_socket(struct file *filp);
--void unix_schedule_gc(struct user_struct *user);
-+void unix_schedule_gc(void);
- #else
- static inline struct unix_sock *unix_get_socket(struct file *filp)
- {
- 	return NULL;
- }
-=20
--static inline void unix_schedule_gc(struct user_struct *user)
-+static inline void unix_schedule_gc(void)
- {
- }
- #endif
-diff --git a/kernel/exit.c b/kernel/exit.c
-index ba9404844523..764a911f111e 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1003,7 +1003,7 @@ void __noreturn do_exit(long code)
- 	exit_sem(tsk);
- 	exit_shm(tsk);
- 	exit_files(tsk);
--	unix_schedule_gc(NULL); /* Must be after exit_files() */
-+	unix_schedule_gc(); /* Must be after exit_files() */
- 	exit_fs(tsk);
- 	if (group_dead)
- 		disassociate_ctty(1);
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f7a9d55eee8a..759db734a866 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -733,7 +733,7 @@ static void unix_release_sock(struct sock *sk, int embr=
-ion)
-=20
- 	/* ---- Socket is dead now and most probably destroyed ---- */
-=20
--	unix_schedule_gc(NULL);
-+	unix_schedule_gc();
- }
-=20
- struct unix_peercred {
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index f180c59b3da9..d46aeb9d2051 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -635,23 +635,11 @@ static void unix_gc(struct work_struct *work)
-=20
- static DECLARE_WORK(unix_gc_work, unix_gc);
-=20
--#define UNIX_INFLIGHT_SANE_USER		(SCM_MAX_FD * 8)
--
--void unix_schedule_gc(struct user_struct *user)
-+void unix_schedule_gc(void)
- {
- 	if (READ_ONCE(unix_graph_state) =3D=3D UNIX_GRAPH_NOT_CYCLIC)
- 		return;
-=20
--	/* Penalise users who want to send AF_UNIX sockets
--	 * but whose sockets have not been received yet.
--	 */
--	if (user &&
--	    READ_ONCE(user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
--		return;
--
- 	if (!READ_ONCE(gc_in_progress))
- 		queue_work(system_dfl_wq, &unix_gc_work);
--
--	if (user && READ_ONCE(unix_graph_cyclic_sccs))
--		flush_work(&unix_gc_work);
- }
---=20
-2.47.3
-
+SGkgU2ltb24sDQoNCj4gPiAraW50IG10a19jdHJsX2luaXQoc3RydWN0IG10a19tZF9kZXYgKm1k
+ZXYpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBtdGtfY3RybF9ibGsgKmN0cmxfYmxrOw0KPiA+ICsJ
+Y3RybF9ibGsgPSBkZXZtX2t6YWxsb2MobWRldi0+ZGV2LCBzaXplb2YoKmN0cmxfYmxrKSwgR0ZQ
+X0tFUk5FTCk7DQo+DQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBEb2VzIHRoaXMgcGF0Y2ggYWN0
+dWFsbHkgaW1wbGVtZW50IHRoZSBUWCBhbmQgUlggc2VydmljZXMgZGVzY3JpYmVkDQo+IGluIHRo
+ZSBjb21taXQgbWVzc2FnZT8NCg0KV2Ugd2lsbCByZXdyaXRlIHRoZSBjb21taXQgbWVzc2FnZSB0
+byBhY2N1cmF0ZWx5IGRlc2NyaWJlDQp3aGF0IHRoaXMgcGF0Y2ggZG9lcyChWCBpdCBpbnRyb2R1
+Y2VzIHRoZSBjb250cm9sIHBsYW5lIGZyYW1ld29yaw0KYW5kIGRhdGEgc3RydWN0dXJlcywgbm90
+IHRoZSBUWC9SWCBzZXJ2aWNlIGltcGxlbWVudGF0aW9ucy4NCg0KPiA+ICsJcmV0dXJuIExFMzJf
+VE9fVTMyKGNwdV90b19sZTMyKGh3X2JpdHMpKTsNCj4gPiArfQ0KPg0KPiBbU2V2ZXJpdHk6IEhp
+Z2hdDQo+IERvZXMgdGhpcyBjb2RlIGFwcGx5IGEgZG91YmxlIGJ5dGUtc3dhcCBvbiBiaWctZW5k
+aWFuIGFyY2hpdGVjdHVyZXM/DQoNClQ5WFggY3VycmVudGx5IG9ubHkgdGFyZ2V0cyB4ODYgKGxp
+dHRsZS1lbmRpYW4pIHBsYXRmb3JtcyB3aGVyZQ0KY3B1X3RvX2xlMzIoKSBpcyBhIG5vLW9wLiBU
+aGUgS2NvbmZpZyBlbmZvcmNlcyAiZGVwZW5kcyBvbiBQQ0kgJiYNCkFDUEkiIHdoaWNoIHJlc3Ry
+aWN0cyB0aGlzIHRvIHg4NiBwbGF0Zm9ybXMuIE9uIGxpdHRsZS1lbmRpYW4sIG5vDQpieXRlLXN3
+YXAgb2NjdXJzIGF0IGFueSBwb2ludCwgc28gZmZzKCkgb3BlcmF0ZXMgb24gdGhlIGNvcnJlY3QN
+CnZhbHVlLg0KDQpUaGFua3MuDQoNCkphY2sgV3UNCiAgICA=
