@@ -1,80 +1,50 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012024.outbound.protection.outlook.com [40.107.209.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692673E1CE1;
-	Fri, 17 Jul 2026 07:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784273626; cv=fail; b=AFCTO3NfypM147sF5C6dRU59KAO/W1saDoqt+W18QoN0XuSAi+q+lLv5SWy2isEeiHtDrvT4zkBFLKGVAz9ROAeDgALlP4j10MT+Mo0Wh4VbUCj0PozEYbgsLyeJ57BASXmJrsjkhdoHEtGHyDVI3VcFS/jhUjFQqj5keMNvi3c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784273626; c=relaxed/simple;
-	bh=GdSjsIl6KjQ06bsEj5YHKmJQxJ8xsO8ztYXdA79oRt0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S5vu/wRs+RydzEiIAsISDdcc5WFsFzBenCMyehe73pWBfxaoIzYwrd7Z8r/Dl0UQpOo4JIhGFRtuRTh0sltAjO2qQhBUYh6dipjVaHEJ+fv/za1b83W5kE5vDbQcCbTSf7bITFOhcAu03gD8OiwvR/S1MkXsF0r+Fcvg2Cbo/Mo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=r8rLG+Je; arc=fail smtp.client-ip=40.107.209.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A6A3CB547;
+	Fri, 17 Jul 2026 07:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784274113; cv=none; b=deMmZfkL0EhTKp/LJxmO3j8+La7p4bU+ScaB5Ju8WEWYm0AJQ6wOdrYwlHNhSWpBBmjDr9PtJscZ4GSwcDddsz6/ycJ7tvU30A6u41b5xWEDkpSG5S7hFPniOZs7jyOwQNLAG8F706CyldQ/4dak+DjlBWFh99g3sHutTCAEryk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784274113; c=relaxed/simple;
+	bh=8SKEyKMndiTDRqfCdBwt9rcLVmSwLTh2lFDRogWrbaw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q4xf60j8gbJjDUwTtjZVy4UipXFskIY1OtnZqvVo3Wmn8ewOT7/VwzWy6h7Uyeo3GN9i+xLEb9viqJ37GUaXtmUZSAlilN2Bhdt6MfphWG2oCa2mSkIqtm3NoHsv1EMYm17sH8Q11L17QhptFGpYW43oYonMzawB3BvjRABiguw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=WsM8wkYj; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="r8rLG+Je"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wn4bWro1B8GghUZIdAd6dGVc1aTbI3UB1JBIYL6zNMYuOudmIVihWPlID9aB4uTh5F0341q7tkx4wgLDZRMgiNs5pSYeSlZi9udFBDBJ/+/H2jpgmvOkvJ24jQQyP8nA6IxcY/V2VfcMGlGKnCXX1E/+6rxbdVRxzFnj+y7u891Y4BWvjmDG8uC5HbjYyGgIh9jYUO9EA7jEHZczuqFZRRa3mp2mo4o069m8wC7E70pK5f6YDa3HGh3xSQHB2ZrrYSbA0hxJf+Vr+xQagHHBrsKsP1YbSV/53saFxygAYJDKRBMNhl15cMXKZYTWYPPDU1TYr0XmnbFwrCBuMM/+JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TOKgHtDZWy8LVnWhDmNGmiO6q6LZoAYJZ9d9da8nQ1E=;
- b=AUNJUH0Ujz2y+cbHENPP4lTAD/+P3C1c29UkRzawQZnBrkPVVhk8c9KMMmZ9wlG8wIpqrIyMkw3oFkBjf9lg0GdwXXZuAX4dB4rwa6Q9TUaeirUW3BHcXi5o9tCVffXmRgt1ym2IBVXVGwwgZn82ED3GxUHBcreWjCJtYHxKT063TOQBLSjm7DpS3JT3qfpPB8RyEDlfTAGILBfNq9GcS7vqbMrmzc725tueu7Dek/rEsDLAQIJzwJdFQ3zCgJx0BKuALE9IWipoT3JRJH82WL3S50mfMOvcxcJOJScEBlMpd0Jq+fKSCFKJAVEQhbgaJ4e7HKOTExnkPcBBP/JE5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TOKgHtDZWy8LVnWhDmNGmiO6q6LZoAYJZ9d9da8nQ1E=;
- b=r8rLG+JeCjNHn8m5eM6qQtDuHcUMiN5JZYTOjqi55OBErqDYBmk4HK12pZtKAWw0BrAuiKEsr/8Xb+fvE2nzrerJUgaepko6Dd74D05mpOEKEDZdpkVXtQGhDxeddXLEvAScMeVM1zoBNPAf9p8BP0Hs9QRCNGRywvvQDtOuChW1vC/28Kbps1D9b7UhXbwgdNiLFjrmueAigKLkKowGn49jMKWyCiKrnaaZWKVD6HcOFjTkgRIajypi34EYX/NBWCanLpUzbyMi9aKuUYA7lU0NxxWv8C1rygekMgZim/t8DRJcTWtC2w7SCJFBejHD1ryMS2JCHjJskQkeLBlJMQ==
-Received: from PH8P221CA0064.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:349::16)
- by SN7PR12MB6789.namprd12.prod.outlook.com (2603:10b6:806:26b::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 07:33:33 +0000
-Received: from CY4PEPF0000E9CF.namprd03.prod.outlook.com
- (2603:10b6:510:349:cafe::5a) by PH8P221CA0064.outlook.office365.com
- (2603:10b6:510:349::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.13 via Frontend Transport; Fri,
- 17 Jul 2026 07:33:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CY4PEPF0000E9CF.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Fri, 17 Jul 2026 07:33:32 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 17 Jul
- 2026 00:33:19 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Fri, 17 Jul 2026 00:33:19 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Fri, 17 Jul 2026 00:33:15 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Cosmin Ratiu <cratiu@nvidia.com>, Kees Cook <kees@kernel.org>, "Leon
- Romanovsky" <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Yael Chemla
-	<ychemla@nvidia.com>
-Subject: [PATCH net] net/mlx5: E-Switch, fix zero num_dest in prio_tag egress vlan rule
-Date: Fri, 17 Jul 2026 10:33:06 +0300
-Message-ID: <20260717073306.1242399-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="WsM8wkYj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=4sYHR
+	0xVe0LOZkuozwLuH94zFR49TXLrdUIOJTadZJQ=; b=WsM8wkYj/gnT37xRZL/RD
+	zixj1n108bb0xI/40c5FEn8QxZg/Jt9DO1p58OF55yFCh1b56+/sMgJTC/Pp5ro8
+	NoYpm06sIYx4Lu8jQ9x7QHUTtV3CFlYO/UI+S9Ij46ztGkIvIod9+97/ZwhQ4NxO
+	NmCds9xuLbKuC+VbcyNn8k=
+Received: from node118.platform-default.svc.cluster.local (unknown [36.102.215.18])
+	by web2 (Coremail) with SMTP id yQQGZQAXFbeX3FlqabEKAA--.18314S2;
+	Fri, 17 Jul 2026 15:41:13 +0800 (CST)
+From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	yyxroy22@gmail.com
+Subject: [PATCH net] ipv4: reject impossible oversized fragments at queue time
+Date: Fri, 17 Jul 2026 07:41:09 +0000
+Message-Id: <20260717074109.686170-1-yangyx22@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,75 +52,85 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CF:EE_|SN7PR12MB6789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53282c1f-92bd-48d7-357c-08dee3d5b418
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|36860700016|1800799024|82310400026|6133799003|5023799004|56012099006|11063799006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	jiKbKwuxYhc1Ju5Miu8MX+KsMXxtUucH00ohkegCzyq9U4jGdCQfTScINNVZos9l5EAnS5s9Nuq2A4RXksS/AvHRxAaCNgENDzOUZAlT5oDyksyEVMefwyCjWh00/JKMh8lpNV6YXsS3lzM1o1pGFdjSEptEwX/iqFxuBji+wGFxLCVqp1pooYo7cQK31ZF+MgzW8loxT5wj/Ja7hH/jfCTakUtWLi6v4aAXp0YqKZ4IG2QRFUkx0ilyAEeMn9FjCWEbDVBC2CqJJaUJQyQf25EfQIETT7UEctVl2jzxyfdQPZVgpwNKAjbczItfWj/rK+8COKaKMy/doHdvouMTzmKPWGw9NFZJdtpU+yI2IoIZ22AhxhnT1jjQaqA85YDQMlovTSUsy0DU20Tf7aV2RYSkkGdRSdrz+B/0LDetSaHLiNbUeqi432epJn/b8GDT4SkNdLBcc3V6qOQyKRkWXWH0ohSe+QYTLg+0Za8a/wirxnaBcdN7+TuyMrhdI9x+ITHT0eBN5CecaLZ3f0MB/sC6WDSV2aYeVrs3CEJGU5KAGqzNHk8EoQPZq+qndTT9IBuTsy8wWyoa+Ls8jdRY9rqgx440cdJzxDtGkcL+MOj8eIZdyVpvucvW/gKt4HEiBSqnca25ymD8NkwEW5IPm/mEhjwcWuaYMqLswxmEAqzti+wdm7U3YjH1e7FcyN8J0WOTGSyRIdcBmbjMmeyBOQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(36860700016)(1800799024)(82310400026)(6133799003)(5023799004)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	mFA7zxEyQ91OZ6DzFQ9n8uC9CAPkRd3zIIjzvyWi8vZ/lDhmWV4Ytv5DzO8fNGe8lqPUXSL452+hW6ujlSb5Dqxhi3QF2wySgpJTSclPH8udK1+rWWTbRnhyXY+DVD6G6FQ5BNtw1ysm8TD3RLVftivX3Or7NEIcw4oPzDCsAgWx5RUqTxwLTJHBGy0BhodjKzq+zy/GMqpax1iVNb4l+/gFSyE2Wv9Z/6IaI1gvXIlDvS0+0AhtdPLsqW2yuBPAEUSU42QyIFvrNglmmkfMHixCNZJeddoqe7hIfEEVnq+KHfHvV0pum3kZXtq0ZRAWQr82bVXTaDQxh32EzD/sfWz2FoKoLgOLPFpEykHxKhOXBCBq+QMSK5laHIh8+Xlpee5PiI2TL67Dwk5XoYNPVdGGGX5mN+mPN4vjnr5+9/3EyIQ+p6V3kpTRQiQ8zELg
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 07:33:32.1015
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53282c1f-92bd-48d7-357c-08dee3d5b418
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9CF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6789
+X-CM-TRANSID:yQQGZQAXFbeX3FlqabEKAA--.18314S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAry8uFWfArWUKw4DtF4rGrg_yoW5XFykpa
+	9xtFykCr1rGF97Jw1qvF4Iq3y5Gr4kXa1jgryFyr93Aws8KFyvvFW0kFyag3W3KrWkZFy0
+	v343ta98CFZ5JaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwV
+	AFwVW8CwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRSD7-U
+	UUUU=
+X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
 
-From: Yael Chemla <ychemla@nvidia.com>
+ip_frag_queue() computes each incoming fragment's end offset and may
+store it in qp->q.len without checking that the fragment can fit within
+the 65535 byte IPv4 datagram limit, even with the minimum IPv4 header.
+The only 65535 byte check lives later in ip_frag_reasm(), after the
+fragment has already been accepted into the reassembly queue and has
+updated its state.
 
-esw_egress_acl_vlan_create() hardcodes num_dest=0 in its
-mlx5_add_flow_rules() call. When invoked from the non-bond path
-fwd_dest is NULL and num_dest=0 is correct. When invoked from
-esw_acl_egress_ofld_rules_create() during a bond event, fwd_dest is
-non-NULL and flow_act.action carries MLX5_FLOW_CONTEXT_ACTION_FWD_DEST,
-but _mlx5_add_flow_rules() rejects a non-NULL dest pointer paired with
-dest_num<=0 and returns -EINVAL. The error propagates as
-"configure slave vport egress fwd, err(-22)". The passive vport's egress
-ACL table ends up with its flow groups allocated but no FTEs, so
-prio-tagged packets are not popped and bond failover is broken on
-prio_tag_required devices.
+A fragment whose end offset exceeds 65535 minus the minimum 20-byte IPv4
+header cannot be part of any valid IPv4 datagram. Letting it update
+qp->q.len leaves the shared reassembly queue with an impossible expected
+length. A later legitimate two-fragment datagram sharing that key can no
+longer complete reassembly and is not delivered.
 
-Fix by passing fwd_dest ? 1 : 0 as num_dest to match the actual number
-of destinations supplied.
+This was verified at runtime on Linux 6.12.93-0-virt. A same-key
+oversized-fragment injection (offset 65528, payload 8, end 65536) drove
+legitimate two-fragment UDP delivery from 8/8 to 0/8, while a cross-ID
+control stayed at 8/8.
 
-Fixes: bf773dc0e6d5 ("net/mlx5: E-Switch, Introduce APIs to enable egress acl forward-to-vport rule")
-Signed-off-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+With this change applied to net main, the same-key test delivered 8/8.
+A valid 65535-byte datagram with a 20-byte header was also delivered with
+both in-order and reverse-order fragments; its 65507-byte UDP payload
+was intact in both cases.
+
+Add a per-fragment bound check in ip_frag_queue() right after computing
+end and before any qp->q.len update or skb insertion. IPv4 always needs
+at least a struct iphdr, so an end offset greater than IP_MAX_MTU minus
+sizeof(struct iphdr) cannot fit in any valid IPv4 datagram. Use that
+minimum-header bound rather than the current fragment's IHL because
+fragments may arrive out of order and the first fragment may carry
+non-copied options that later fragments lack. The existing check in
+ip_frag_reasm() continues to validate the final length against the
+actual header length of the first fragment.
+
+Drop only the invalid skb so an existing queue for the same key remains
+intact.
+
+The issue was found by Yuxiang Yang, Yizhou Zhao, Ao Wang, Xuewei Feng,
+Qi Li, and Ke Xu, with assistance from GLM-5.2 by Z.ai.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/acl/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/ip_fragment.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/helper.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/helper.c
-index ba5cce706ea2..9693c74e9b16 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/helper.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/helper.c
-@@ -71,7 +71,7 @@ int esw_egress_acl_vlan_create(struct mlx5_eswitch *esw,
- 	flow_act.action = flow_action;
- 	vport->egress.allowed_vlan =
- 		mlx5_add_flow_rules(vport->egress.acl, spec,
--				    &flow_act, fwd_dest, 0);
-+				    &flow_act, fwd_dest, fwd_dest ? 1 : 0);
- 	if (IS_ERR(vport->egress.allowed_vlan)) {
- 		err = PTR_ERR(vport->egress.allowed_vlan);
- 		esw_warn(esw->dev,
-
-base-commit: 3f1f755366687d051174739fb99f7d560202f60b
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index c790d2f49..32e5240a5 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -291,6 +291,8 @@ static int ip_frag_queue(struct ipq *qp, struct sk_buff *skb, int *refs)
+ 	/* Determine the position of this fragment. */
+ 	end = offset + skb->len - skb_network_offset(skb) - ihl;
+ 	err = -EINVAL;
++	if (end > IP_MAX_MTU - sizeof(struct iphdr))
++		goto err;
+ 
+ 	/* Is this the final fragment? */
+ 	if ((flags & IP_MF) == 0) {
 -- 
-2.44.0
+2.34.1
 
