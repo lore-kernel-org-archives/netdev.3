@@ -1,63 +1,63 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B77A395D99
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 20:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A65439B944
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 20:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784319311; cv=none; b=dAxzvhb9wkBrwHg/KLCzg7QoevTyEHJrOU/S9hmU7KHY88KAvZO9LjPgbbjHQoK5sGQLKqv8stjlkZE9KK3RQ2WLKzfjRiDObNTpSnnePN1nd9NA+Wyk3o7ZtmW1ONZGh1g+rBeKBaR2IyMIFYvAd2m9EHKVRq8EmnyXriMhQ7w=
+	t=1784319315; cv=none; b=WxH6h9vaDJ0QddTKwbSnaB7dKO4Kpac9qWR/6AaBVBmQuMZIHtgicqzgvPoCorGZPiWi2YQXGBqoR7iXonuldqvz1jdKSY7jG+QrBt/xvMSYbCF8A6H+P8Joe0aMXSU3lNvaSlRC/kK4k/84kWjsUaeJlsVspaJCSdD83JhW+pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784319311; c=relaxed/simple;
-	bh=fKe70vqmsSB7Sbpqp5Pwa9y18Qh7KEsEmm0Uen+uTFw=;
+	s=arc-20240116; t=1784319315; c=relaxed/simple;
+	bh=diUIIKStfenJCEasoEwrp+wCmRi3qtN6/sa0FZ2l7bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV0jGc9aMWMGo/DSF4K87mGdxPe60F5ewmMlN5PR8VgqJDUhJmTMmYk5wNEJ7Y5KaccxX1ZEs2kj8V7V9qlr9nrpKzPwqfbJ6LqrgvizuZDZda8OiaC90ing+wCX4GLE3qbAHUH6CfLc8my6vCM6thsrvrx8Jc+3y0IlzSAZPPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DG5YIEJr; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version; b=TN+PdyISHJFmn0nNFWRT0iL6uiMKqvExcChygWZ/67Q8E5Ayx/zAO6xywi7lTQMORfTjXO/r0f4c6P2ubt1L72gsk+ikN7K4rKHANwm96W/piV4bypHG0w67MwPKJMAqeKSW1h2K03Ohm/Bg37YApeaq5Pi+mruIzzdvDmQQW/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8hK3rbW; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DG5YIEJr"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47c2ae992beso487583f8f.2
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 13:15:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8hK3rbW"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493a6258788so7994415e9.3
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 13:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784319306; x=1784924106; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784319308; x=1784924108; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f9VRQMdG5mh4GbPjofS2MPnVG7awxExT5N1bUTExBEM=;
-        b=DG5YIEJrcxqgXQuqgUTeekgqShXDHiGBfC7aElmm2s29YVh5VARPP80eTO1OQuziIJ
-         n0LXuU1OYUen7BA8DgNSFxf34Tw6d2wgRbNWv4KwqIBSK9gH6TqmWKhMa2AGNxEHZlxr
-         WvmX8yByXVD01yVyrWzFFsp4eg1GJdi6LafIv7msdJKpCUGl/Ks4CC3RgaM/ZvR47Tpp
-         gGGHRKkxJMniDBGXbiTWrqcCxzNZ4ntjrPjPtjsdViWeN53ljiTREPbuvMvS1wVqMkRx
-         LbLJvh3zkphxBM6dMXC8OisEFU29jp0r7A4FfDaf1jOEPWBXM6gfIh0PvjIp0ZBDY5jU
-         7wwg==
+        bh=4Pv4NrN4dYt4KyUEdjIMuVrZU8kjGasmAaF2k9w2Y9c=;
+        b=m8hK3rbWJ9dCXRpYUMS8e5kU6ayjyoBM4AfwAuGK+XRLsdXJCcgqRxWGTYYYjC5bIL
+         lwZ3rAcHJ1ELt8LLKUuViHJcNrhGhAxn1HUMzO1jNOB5E4+LcTilBy6ArFs/nrPSf0HE
+         vqSsCccU5f8sxpGqR9Zzbst4KRwdQnG2UNfVjOv3uVaAF9RrjqMIOd7ylJLg+TkZ4/rc
+         It3iUdpLnsm/VcuK1ff/CKLeIJJTAOyt6hWYvtqAMPfXzdSPCPisl6mNLMpVQbzV8Rwe
+         zwVEgsTrPMTpSaDPT72+dPIzkk8/Z/9mH2WDYoxorwingznSCvnOR79Ky/msqvImTTJw
+         gZ5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784319306; x=1784924106;
+        d=1e100.net; s=20251104; t=1784319308; x=1784924108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f9VRQMdG5mh4GbPjofS2MPnVG7awxExT5N1bUTExBEM=;
-        b=Z300K5BOlNkwToegUAWlY/BZqvs4uTCyUFIk8bJ2vjl9jXTlj8zYGGoEYSYCXN6AEX
-         Uv/zjJ2ICVkjGEMi8mGoAvPSmUq0PYdreWy6+y94rQ70tC/yRnOYyd6xAB0m1aSLhaiG
-         rMXYUK/T/625uV+TzYnc8nxUDpVtofuC83WxszAzZFUZjPFts+8I+M2TUDECeKSocpKs
-         uF8RHlUAlNbh+7Ys2v1UPnfVBsOHYSm5Y7ciMID5ad89dTOmAHHQuCITqLCFlNgU7LKe
-         ezwmq4huyvcuNpBVpxiL9bEqwMubn9lTKC4uiY6B7cPndthf9M3eMwun52OLlbiEkv/L
-         t6RQ==
-X-Gm-Message-State: AOJu0Yx3ZqQ/XMDNgXSTa+53dIyD62qgLhwoRtQWjvqEKCLdI+5hAeQw
-	p1CXyP9RfQYgz74vaiko0iVdA/pZBAmGO2nYc7Zxy4OFE3sVEnI5Dn3vuvEm74vy
-X-Gm-Gg: AfdE7ckAqZjFvfNJGtISU0ix3p3U1IBtFLqj7TElSKo3ki83z2Tf8h13JR+KYzaMGaa
-	0aCbSnQ6/d9hYzjs6/JeHJO8tB9ARGb5i7yIAsgorWMabTySqTMgeFD7Fn8Ke0ZHaIcMEcSg2VM
-	Rn4WFO0UzapMUcNPA8ZaueebgBuq84MfOjMb7Ec8dNAu423/3PBlaaWdwEhYf3NksPaBqYJmi7A
-	evv+JD4KjViVIjyjO0CQkJdDHbuwD1uNGxJKqBlzxaqL7gfwGJm2yMWSJShvDh+nrqL2CKnDFbt
-	AuJ8MkN8ybTbc+7HrI01lumF0XagqSAm/xii0tvcrjTI00DcTCEvr8AntHHUbf6JhtVf97d6ZkO
-	vaft22yZgKpV/0HfvlaY0Af25HcUaW3JJf4bjysDqPtzXBCXiqSa+FwDDqdyyIHxHebei0RypRL
-	UvM9gG0tF+lS241UcFoJIfXLpuCv3Sxo2z4AmQ83G5IgKItGzxf9hV9WoywtPD1RPLK/w0vvdTl
-	upBI39w1PHUEJaTwNCQ8DhwTub0axOEIOW3EIg=
-X-Received: by 2002:a05:600c:1f8c:b0:493:f7ca:bd6a with SMTP id 5b1f17b1804b1-4954a50d080mr27318195e9.8.1784319305927;
-        Fri, 17 Jul 2026 13:15:05 -0700 (PDT)
+        bh=4Pv4NrN4dYt4KyUEdjIMuVrZU8kjGasmAaF2k9w2Y9c=;
+        b=g49ZlVOqjNBVI3wm7JgEXeUQe8hmYxMW6ptaV2wu5WDWIi7AxN0laZiyRp0QURG7+v
+         1Qb2/X0BPc2tsi04fPQ/eN3/kmuWxNHDdkCXwa+HHa9JN190gdB/ZCwQ4bwCKsfIU/2L
+         00l08TgNCsbHZ65+pFKhROA3dXntTo8xoGVSiVxJlKxTGRehoFBcsTVN7a73cn9bX4VR
+         K8MsfCgBnGVLEAfj12GNJSwP7abSCTDSeYH2yXWbMHruj46hLlsGtX9wk3jlL3hX0cBV
+         EIGx1BoOX9VTFSo+v1P5HjI63pno1YcUXQ81XJbWYCBdrzBFwXdWVVy9MjmSKTM2ygnK
+         glTw==
+X-Gm-Message-State: AOJu0Yxke6JHYybVXPRf6JVDgJMPkGUZ6e9iFlhbjG+YFuAnysW0mfdR
+	gF+h3zCH5DAySSr01UZOvjNemUrgnUbERQy1EGsWoJ1Bt/f3GW4YWv/kInZqf4wB
+X-Gm-Gg: AfdE7cmm0jsDJ63xV9IReCODTdrv3qqyokgrWRueh5WhhWbiVUVvOcQniEuA2XJtOh7
+	j0EnhKT4iYz0wW0gnqqVXbxPp+nLwHGxjfH00XCtBkJfS8cCIEu57BID1tv/5EoB9+V+T/YH748
+	EU6hJAiJ9FTkbwbRgzjxc1tADJBEdDvG9Ziz+wvTJZvTKe5ar4/B6fL1OuE3L+nO0aBAd9Z3lSe
+	tfGiDJtMnbVfzQvSQw6GUnEj+64XcLSAIwaIx9++yM8xapaIG882JpXGZrYQJekBIeveIElAO+u
+	mDWcMfauFPyzC+fveeo3odYmolIqdr6ofiQrcJBPl38wd84WVTtXrRlxFFW34qVhgQ/NrDqczKk
+	rs1aT5CSWdJMxyAkVCawlbdO+i8LhVkH7kn/pOXt1Si1hzgohqgJSc0bkwEF0GoIk0GH6yIeWc6
+	3Y3ksjrKslpuqZKIg9wR5FPkZQGPTUVkX1VNNQ4/0PD4UTPUpS9z7QGQfSp7Eps1Fs+tuvz86uv
+	xTul5BrA+0B50G11I2qMU4GvdyCTgkuqAvKof4=
+X-Received: by 2002:a05:600c:46c7:b0:493:efdf:7c80 with SMTP id 5b1f17b1804b1-4954a40ebf0mr29386095e9.5.1784319307839;
+        Fri, 17 Jul 2026 13:15:07 -0700 (PDT)
 Received: from L-022584.energy.envision.com (dynamic-077-179-077-126.77.179.pool.telefonica.de. [77.179.77.126])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499a5847sm53179335e9.2.2026.07.17.13.15.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499a5847sm53179335e9.2.2026.07.17.13.15.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 13:15:04 -0700 (PDT)
+        Fri, 17 Jul 2026 13:15:06 -0700 (PDT)
 From: Xin Xie <xiexinet@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -75,9 +75,9 @@ Cc: davem@davemloft.net,
 	fmaurer@redhat.com,
 	luka.gejak@linux.dev,
 	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net-next v4 3/4] net: hsr: allow PRP RedBox (interlink) creation
-Date: Fri, 17 Jul 2026 22:14:56 +0200
-Message-ID: <20260717201457.54-4-xiexinet@gmail.com>
+Subject: [PATCH net-next v4 4/4] selftests: net: hsr: add PRP RedBox test
+Date: Fri, 17 Jul 2026 22:14:57 +0200
+Message-ID: <20260717201457.54-5-xiexinet@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260717201457.54-1-xiexinet@gmail.com>
 References: <20260717201457.54-1-xiexinet@gmail.com>
@@ -89,36 +89,141 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With the PRP interlink datapath, duplicate discard and supervision support
-in place, a PRP device can act as a RedBox. Remove the rtnetlink rejection
-of "type hsr ... interlink <dev> proto 1"; the feature is implemented
-unconditionally by the preceding patches.
+Add a kselftest that builds a PRP RedBox (interlink) with a SAN behind the
+interlink and a peer DANP, and checks bidirectional unicast across the
+interlink, preservation of the SAN source MAC on the PRP network, and that
+the proxy-announce supervision frame carries the RedBox-MAC TLV (Type 30)
+terminated by an EOT marker. It reuses the hsr_common.sh / lib.sh helpers
+and skips cleanly on a kernel or iproute2 without PRP interlink support.
+
+The background ping is killed by its exact PID: ip netns exec does not
+isolate the PID namespace, so a pattern-based pkill could hit unrelated
+processes on the host.
 
 Signed-off-by: Xin Xie <xiexinet@gmail.com>
 ---
- net/hsr/hsr_netlink.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ tools/testing/selftests/net/hsr/Makefile      |  1 +
+ .../selftests/net/hsr/hsr_prp_redbox.sh       | 99 +++++++++++++++++++
+ 2 files changed, 100 insertions(+)
+ create mode 100755 tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
 
-diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-index 8099f2069a7..88940e8014b 100644
---- a/net/hsr/hsr_netlink.c
-+++ b/net/hsr/hsr_netlink.c
-@@ -121,14 +121,8 @@ static int hsr_newlink(struct net_device *dev,
- 		}
- 	}
+diff --git a/tools/testing/selftests/net/hsr/Makefile b/tools/testing/selftests/net/hsr/Makefile
+index 31fb9326cf5..2150e487ac7 100644
+--- a/tools/testing/selftests/net/hsr/Makefile
++++ b/tools/testing/selftests/net/hsr/Makefile
+@@ -4,6 +4,7 @@ top_srcdir = ../../../../..
  
--	if (proto == HSR_PROTOCOL_PRP) {
-+	if (proto == HSR_PROTOCOL_PRP)
- 		proto_version = PRP_V1;
--		if (interlink) {
--			NL_SET_ERR_MSG_MOD(extack,
--					   "Interlink only works with HSR");
--			return -EINVAL;
--		}
--	}
- 
- 	return hsr_dev_finalize(dev, link, interlink, multicast_spec,
- 				proto_version, extack);
+ TEST_PROGS := \
+ 	hsr_ping.sh \
++	hsr_prp_redbox.sh \
+ 	hsr_redbox.sh \
+ 	link_faults.sh \
+ 	prp_ping.sh \
+diff --git a/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh b/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
+new file mode 100755
+index 00000000000..479c892225b
+--- /dev/null
++++ b/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
+@@ -0,0 +1,99 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Test a PRP RedBox (PRP-SAN): a SAN that sits behind the interlink port must
++# reach, and be reached by, a peer DANP on the PRP network with its own MAC
++# preserved on the wire, and the RedBox must announce the SAN with a RedBox-MAC
++# TLV (terminated by an EOT marker) in its PRP supervision frames.
++#
++#   RB    PRP RedBox: prp0 over rb_a/rb_b (LAN A/B) + interlink rb_il
++#   PEER  peer DANP : prp0 over pe_a/pe_b, 100.64.0.2
++#   SAN   SAN       : san_il, own MAC, 100.64.0.51 (behind the interlink)
++
++ipv6=false
++
++source ./hsr_common.sh
++
++check_prerequisites
++
++if ! command -v tcpdump >/dev/null 2>&1; then
++	echo "SKIP: This test requires tcpdump"
++	exit $ksft_skip
++fi
++
++if ! ip link help hsr 2>&1 | grep -q interlink; then
++	echo "SKIP: iproute2 too old (no hsr interlink support)"
++	exit $ksft_skip
++fi
++
++setup_ns RB PEER SAN
++trap 'cleanup_ns "$RB" "$PEER" "$SAN"' EXIT
++
++ip link add rb_a netns "$RB" type veth peer name pe_a netns "$PEER"
++ip link add rb_b netns "$RB" type veth peer name pe_b netns "$PEER"
++ip link add rb_il netns "$RB" type veth peer name san_il netns "$SAN"
++
++ip -n "$RB"   link set rb_a up
++ip -n "$RB"   link set rb_b up
++ip -n "$RB"   link set rb_il up
++ip -n "$PEER" link set pe_a up
++ip -n "$PEER" link set pe_b up
++ip -n "$SAN"  link set san_il up
++ip -n "$SAN"  addr add 100.64.0.51/24 dev san_il
++
++# Feature gate: PRP interlink (RedBox) creation. A kernel without PRP RedBox
++# support rejects this with -EINVAL, so SKIP rather than FAIL.
++if ! ip -n "$RB" link add name prp0 type hsr slave1 rb_a slave2 rb_b \
++     interlink rb_il proto 1 2>/dev/null; then
++	echo "SKIP: kernel without PRP RedBox (interlink) support"
++	exit $ksft_skip
++fi
++ip -n "$RB"   link set prp0 up
++ip -n "$PEER" link add name prp0 type hsr slave1 pe_a slave2 pe_b proto 1
++ip -n "$PEER" link set prp0 up
++ip -n "$PEER" addr add 100.64.0.2/24 dev prp0
++sleep 1
++
++san_mac=$(ip -n "$SAN" -br link show san_il | awk '{print $3}')
++rb_mac=$(ip -n "$RB" -br link show rb_il | awk '{print $3}')
++
++# Bidirectional unicast across the interlink.
++do_ping "$PEER" 100.64.0.51
++do_ping "$SAN"  100.64.0.2
++stop_if_error "PRP RedBox bidirectional unicast failed"
++
++# The SAN source MAC must be preserved on the PRP network, not laundered to the
++# RedBox MAC: the peer resolves the SAN IP to the SAN's own MAC.
++neigh=$(ip -n "$PEER" neigh show 100.64.0.51 | awk '{print $5}')
++if [ "$neigh" != "$san_mac" ]; then
++	echo "SAN MAC preservation [ FAIL ]: peer resolved 100.64.0.51 to" \
++	     "'$neigh', expected $san_mac" 1>&2
++	ret=1
++fi
++stop_if_error "SAN MAC not preserved on the PRP network"
++
++# The proxy-announce supervision frame must carry, in order, the life-check TLV
++# (type 0x14, len 6) + MacAddressA == SAN MAC + the RedBox-MAC TLV (type 0x1e,
++# len 6) + MacAddressRedBox == RedBox MAC + the EOT marker (0x0000).
++ip netns exec "$SAN" ping -i 0.2 -q 100.64.0.2 >/dev/null 2>&1 &
++ping_pid=$!
++cap=$(ip netns exec "$PEER" timeout 5 tcpdump -i pe_a -nn -x \
++	"ether proto 0x88fb and ether src $rb_mac" 2>/dev/null || true)
++kill "$ping_pid" 2>/dev/null || true
++wait "$ping_pid" 2>/dev/null || true
++
++san_hex=$(echo "$san_mac" | tr -d ':')
++rb_hex=$(echo "$rb_mac" | tr -d ':')
++# Reassemble contiguous frame hex: drop the "0x0010:" offset labels and spaces.
++frame_hex=$(echo "$cap" | awk '/^[[:space:]]*0x[0-9a-f]+:/ {
++	sub(/^[[:space:]]*0x[0-9a-f]+:[[:space:]]*/, "");
++	gsub(/ /, ""); printf "%s", $0 }')
++if ! echo "$frame_hex" | grep -q "1406${san_hex}1e06${rb_hex}0000"; then
++	echo "supervision RedBox-MAC TLV [ FAIL ]: missing SAN MAC, Type-30" \
++	     "payload, or EOT" 1>&2
++	ret=1
++fi
++stop_if_error "PRP RedBox supervision RedBox-MAC TLV/EOT check failed"
++
++echo "INFO: PRP RedBox (PRP-SAN) conformance checks passed"
++exit $ret
 -- 
 2.53.0
 
