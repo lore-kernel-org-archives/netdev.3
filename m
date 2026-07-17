@@ -1,137 +1,98 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650B1378803
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 21:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22C3A8398;
+	Fri, 17 Jul 2026 21:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784322663; cv=none; b=YCybimdNV1tWf29/kFd+ivBDNabQXdm+Lm720+5lbJYMKqG3vHORWdW7VhBehUXAtRzNgkSnrSBo61i9H2RiroYrCypHWZVGcS6bfUm5q5ggG35G3Ii6/IWcwRlZ5qRh973TEL7Wix8wMoDip0Ez3KB2b/UqNBVuPMxsSFx1/7k=
+	t=1784323641; cv=none; b=gLdUOKsJQbBpIDNiJ++pqFIH1PUvsG5gB7xQZjxDtRIVwR6bMN/ySbfxL6J0cDw5YJ5oG6v6OUngulTDtWm6MnTHFNBeHrhATubZAkrJARssxgSZK2qd/pBpZlp4moSHfnKG4cezjBgWtg7QGBFVl+3pTRcTdYWyCuj43B5jPM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784322663; c=relaxed/simple;
-	bh=kdYGciaX+V4ys3dUtDfKd7yQ0bGsbirIwkENuWJoBhc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y4rVCbTKeCt8yn/tNwtT7yeo7M4qjYUMbU5uaGO2Age4wM8Jup33wCftPpUgG/Awn+jSDpt11GzD9Gu0ZAol+zZ9OlCk75Tictpwy5FhlCJU3UBSjUn+2H7MkqPyjirc0/q+wnAHJnvY1totLnVbdjWEEyrw4FHQJAWixfa2Ncc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=D+L9j1Bn; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784323641; c=relaxed/simple;
+	bh=hlOvDEGjOs+X9GIX7iU0G0rAaBph46MvyoP4I7opZic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=toN4q6kEmVPPVEuMnbGwVlWbJ5plqVeokZ8iwY8jsdpj5aZvDn9Zi+QMJBQ3r6PybE9tDwgIMTE3AAYm1+F5/BiESwbQ99ina4SzDlliUk9ZjNz4WpJY6x9F5onA4N1lsV3FsZqGkheNhi/gBMhDTd07UAxBwVbPTpMBdiYr4OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPbvkNOR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="D+L9j1Bn"
-Message-ID: <4f7497cf-83ed-47cd-2e7b-d06ebe319b61@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784322660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HqBcCrxowAEuvpS1VnojAGqWPLHKqqkN7sCJDX8WoI8=;
-	b=D+L9j1Bneg2mTXnnueQK19Z3EXiWHml3iAuPV1fJhNIslaATc9LN/awYdTJMg5D69+kB77
-	pLBqCryPn9z5kH4a+dRruWBp6czddjAWvr/XfI32067eBGWWaovDXO4Sx+eHb9OSGFaVJS
-	upgXd62cmDaQWT5RKRRSTFdN5VdPAyQ=
-Date: Fri, 17 Jul 2026 17:10:56 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPbvkNOR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F161F000E9;
+	Fri, 17 Jul 2026 21:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784323640;
+	bh=dBXnne14TzlGPYAE+jbYfL9GYyOWxF/Hk8U7r5KsX5I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BPbvkNORLypm5tMeKLGKGv1izmes31ey74tGLqP1f0nloc7ykPU6tRrhX8tOwb0T5
+	 /P+l6Y+g2XjbjmiGE1bgryblIglANr9DKZfzapdI85P3ktmk5whQ2khOtIzXAHqXH8
+	 VfGR4JPdOMgV9GOO648cnbqY/d2yLMfShrjOb1dNOHDHN0oUsWfOGq22bEh106sc9d
+	 vtKTNCe4pPOQgD9MyHSb6qEY5mAxDVBt2U5xYNBxhHAeYNa3L5Y2Q1TfIuAbLKYbvz
+	 HBGB/Fkwd19p1VP6qLPPJm+7UXgn6ezJTXQg0ukqMb18nP/IoHdevI4YOQre+bPIbm
+	 o+mVVVHzIWuUQ==
+Date: Fri, 17 Jul 2026 16:27:19 -0500
+From: Rob Herring <robh@kernel.org>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: net: nvidia,tegra234-mgbe: Add missing
+ properties
+Message-ID: <20260717212719.GA2687584-robh@kernel.org>
+References: <20260716212001.989872-1-thierry.reding@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v3] net: dpaa: fix mode setting
-Content-Language: en-US
-To: Michael Walle <mwalle@kernel.org>, Madalin Bucur <madalin.bucur@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Christian Zigotzky <info@xenosoft.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20260717132401.2653252-1-mwalle@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20260717132401.2653252-1-mwalle@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260716212001.989872-1-thierry.reding@kernel.org>
 
-On 7/17/26 09:20, Michael Walle wrote:
-> Before converting to the phylink interface, the init function would have
-> set a non-reserved I/F mode in the maccfg2 register. After converting to
-> phylink, 0 is written as mode, which is a reserved value (although it's
-> the hardware default). Without a valid mode, a SGMII link is never
-> established between the MAC and the PHY and thus .link_up() is never
-> called which could set the correct mode according to the actual speed.
+On Thu, Jul 16, 2026 at 11:20:01PM +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
 > 
-> Fix it by setting the maximum speed of the phy_interface_t in use in
-> .mac_config() - just like the driver did before the phylink conversion.
+> Being a DWMAC derivative, the Tegra234 MGBE supports AXI configuration
+> nodes named stmmac-axi-config and phandle references to them using the
+> snps,axi-config property.
 > 
-> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
-> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
-> Signed-off-by: Michael Walle <mwalle@kernel.org>
+> While at it, add the 10gbase-r PHY mode.
+> 
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
 > ---
-> I didn't grab Sean's Rb tag as this is somewhat different.
+> This gets rid of the remaining warnings on half of the Tegra234 boards.
 > 
-> Changes in v3:
->   - keep the mode setting also in .adjust_link().
->   - reword the commit message, to be (hopefully) more precise
->   - Link to v2: https://lore.kernel.org/r/20260710143430.2276141-1-mwalle@kernel.org/
+>  .../devicetree/bindings/net/nvidia,tegra234-mgbe.yaml    | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> Changes in v2:
->   - the setting is/was based on the maximum speed, not the current
->     speed. thus, move the setting into mac_config().
->   - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
-> 
->   .../net/ethernet/freescale/fman/fman_dtsec.c    | 17 ++++++++++++-----
->   1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> index fe35703c509e..b8d70c0ecb6c 100644
-> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->   {
->   	struct mac_device *mac_dev = fman_config_to_mac(config);
->   	struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
-> -	u32 tmp;
-> +	u32 ecntrl, maccfg2;
+> diff --git a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
+> index 215f14d1897d..dc897e312c55 100644
+> --- a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
+> +++ b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
+> @@ -81,8 +81,9 @@ properties:
+>    phy-mode:
+>      contains:
+>        enum:
+> -        - usxgmii
+>          - 10gbase-kr
+> +        - 10gbase-r
+> +        - usxgmii
+>  
+>    mdio:
+>      $ref: mdio.yaml#
+> @@ -90,6 +91,12 @@ properties:
+>      description:
+>        Optional node for embedded MDIO controller.
+>  
+> +  snps,axi-config:
+> +    $ref: snps,dwmac.yaml#/properties/snps,axi-config
 > +
-> +	maccfg2 = ioread32be(&regs->maccfg2);
-> +	maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
->   
->   	switch (state->interface) {
->   	case PHY_INTERFACE_MODE_RMII:
-> -		tmp = DTSEC_ECNTRL_RMM;
-> +		ecntrl = DTSEC_ECNTRL_RMM;
-> +		maccfg2 |= MACCFG2_NIBBLE_MODE;
->   		break;
->   	case PHY_INTERFACE_MODE_RGMII:
->   	case PHY_INTERFACE_MODE_RGMII_ID:
->   	case PHY_INTERFACE_MODE_RGMII_RXID:
->   	case PHY_INTERFACE_MODE_RGMII_TXID:
-> -		tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-> +		ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-> +		maccfg2 |= MACCFG2_BYTE_MODE;
->   		break;
->   	case PHY_INTERFACE_MODE_SGMII:
->   	case PHY_INTERFACE_MODE_1000BASEX:
->   	case PHY_INTERFACE_MODE_2500BASEX:
-> -		tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-> +		ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-> +		maccfg2 |= MACCFG2_BYTE_MODE;
->   		break;
->   	default:
->   		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
-> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->   		return;
->   	}
->   
-> -	iowrite32be(tmp, &regs->ecntrl);
-> +	iowrite32be(ecntrl, &regs->ecntrl);
-> +	iowrite32be(maccfg2, &regs->maccfg2);
->   }
->   
->   static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
+> +  stmmac-axi-config:
+> +    $ref: snps,dwmac.yaml#/properties/stmmac-axi-config
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+You should be referencing the whole snps,dwmac.yaml.
 
-Christian, can you test this patch with ethernet at 100/1G speed if you still have
-access to those P5020/P5040 boards?
-
-https://lore.kernel.org/all/0bfc8f3d-cb62-25f4-2590-ff424adbe48a@xenosoft.de/
+Rob
