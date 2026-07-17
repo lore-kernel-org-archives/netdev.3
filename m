@@ -1,247 +1,296 @@
-Received: from mail-ej2-f1.google.com (mail-ej2-f1.google.com [74.125.228.129])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58703ABD95
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 06:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784269728; cv=pass; b=P1WhnpesGaenrlyX3grcCAF04bWW1X5vlHcz5PrbNO/wWYMXaQ3xRJTCwdgD/e/ANkDWDEq2ksZsx8pZlAEt4QSRUz+VNvck3fKKGOw9NhDunw2nbaSxww/NFShhIdrMOfBRGlpS0YgvAxz9fuyT0FeRnUqcrhyrgvtI6RYszUQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784269728; c=relaxed/simple;
-	bh=bhRgODpHz+FKT0ULr5bfkIJQG5tlEx/n40to0ZYuwaA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aqTEREgdqjSQvzD0ol1jVOD0lVadFOhRJ7CLWzhAEriVTf94LS7u1djQtCVN2lkmFwQ/Izk6f6I0ph0SAAe5rsRy+GTypl2QY11+qhukHkGYtv5LLe0y5xmUc36CbEeVRCiJrLA38QHI/ae0IJIYVAsymIrVc1/N0VlomuagYS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIPRUvrD; arc=pass smtp.client-ip=74.125.228.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1BD38D6BD
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 06:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784270060; cv=none; b=ME+j5pd5tRLydTJ0E6EA7yRaV5qITjMrX0MMVxl9WEZPnTV19RyFt+y8hCw+/QZ2RrIvv4QccYeM/1luPQxQoEE5K4KUwHfVrUFfDg7d0wMLLWwMlAHFNYRDWdRDu9byVXrTqVIcfGA92awjJOeiqHaccoQ5YB+4goFuwvIgems=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784270060; c=relaxed/simple;
+	bh=rLtOpX3Pm694jUGgBZ00nozbgnYGkQahZVhZM5kt01A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UqgIL7DVb9dSpBEX6pdwOOi+ocdvaNmPhabMcaQBSWAqDzhrwTX9vthRQyT5yIFxE/nRf8E812RZ/SXIJDQzQEo7ukzjbaR1y5GL4UVKGVLbUSjgstB8P9aqSn3BXZaH0caQwCv/xDz4OMpZg6fggNx8WUZk0UtOa2QwXpSryYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mv9kamXe; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIPRUvrD"
-Received: by mail-ej2-f1.google.com with SMTP id a640c23a62f3a-c15be3ef521so85571266b.1
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 23:28:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784269725; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qu6fXKBtgfB2n7RxpqOAGR/bEam/w/xmrupaqhyU70alfqUaKFbK0PU7yAX3h8iRrK
-         Tu9oriprCHgFtbDck/0tj7UBCCeoiKKzGtyHRfEem0+RiRFgdSIsZHu7uw6siyK4XIrB
-         MnzbQCIkHC9tz9y7jm/L4OPVB59QyXkQP1ZPyevYuseJMPZVkMOGUbvU8P9Shk0rRElB
-         dqzNeLXDGs5gyfpunAWA8cBKCkK48hM6mujhnQNA92H20DdvIjfcz8SstWWZ0hzrMnsX
-         AbRecmexXGXooEpKR/2q0CitP/2TdQdlZz00id/XNw/qXjhr5HxjoHK3xzZ1f2Wl/h7y
-         ddAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YHiP6evwjPbQqK8L1EQutQLTUMUz7gccfKbMReIBbck=;
-        fh=xk5m47Mki2yVxx8HqbyWGNb3W7Iqa/HNLgXZqnVQaDU=;
-        b=SjrBsu7C2EcEa9WfVYtf69U94U0RNfUOFK9hpXx7rVJbqUeDiyxoySpyJ4A1bPYjtw
-         Ki0svp5ldJxWo0G024jE9uFspI60hEaklMoFSdn+IE8XVoaKRAczgTaF/qp4cDSrQm2Y
-         9BAAeIpVHmwmk0uNyTnzUVuE9DzPin7CFHIeKb9Jj2cjDpJsfUVaG3xk0oxI5d9rC6yM
-         LlvSShzsi5kdeaW7k+F/s4DD7ZZHNILdEwT+asylBoFhnxG5qO3nVHw4yZsY9q6QUXBO
-         4eLgWXrRJ+//4Ck7V56T0idX6OLiQpZOV3fgWuOFv6VC54qz/LvU/CoKiEEZZqQHtjWc
-         i28g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mv9kamXe"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84536ecfc5bso4233513b3a.2
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 23:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784269725; x=1784874525; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YHiP6evwjPbQqK8L1EQutQLTUMUz7gccfKbMReIBbck=;
-        b=dIPRUvrDMeow4KC2lew6MhHrPpECEFpTuYNDm3MGDg+WAmwgu/Bwa6e3eP1H7R18ZN
-         5Gl0t6w+V5eHQjPR7KpJ1eGmDDm//FZ7jyoCCI4qOw0zknK+R+2vCVoOHWbCFN6I0Wv3
-         uOvUmM9y58g8GfqaQLCSZj+F232jpJGTVxCT1rA9x3uHnr5S8EYHQVRsOf4oWlmtzuoT
-         ukfOHL/bIv71VX28QmI9xWJXHfq522R60jfGVPs9FTPugBoZnIauy8RjZ8utQL6zJxIi
-         4hexyzzH8e9be3cs11OH4aIRI3kijnfheXzEL2pFPUABemUERiHVssRUBQqCy9CAwO5x
-         iAiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784269725; x=1784874525;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1784270058; x=1784874858; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YHiP6evwjPbQqK8L1EQutQLTUMUz7gccfKbMReIBbck=;
-        b=o2R4Jjpn0l7X6LxNBA+niCu+vZ9KYikrQt4gVxVVV3rzti0vjN0taO5lndr8JAiQWs
-         tVCr9uuSOfZyzkzXdDD6OupBUfTvwlA7gXEOsAkke3vDUvq1HAM5/mSMOHkTNl2fuH44
-         ZmOGn/WubmFZY2ytjT+ie+s5WdONKVxUyPbUP8EkqjsG8MJMNC3O599n/GnhRMtyFhFA
-         gH5pUgfcJLPR9LYG6ajGu6z33OJMKsCD4FU+yJcGuXvuwgoPnkXnOFH6DW0WztneihzN
-         lUezdBsEhSFy4I9YyEx6F2Xd7x0l55lDNLnZh2s8U/vmt2K+qiJV1u/JXuhQ//T7x8kQ
-         pUBA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrnidql4S29wn4F7Age0Rd9zW++fN+8OW1pgRt+VuK0r3/84o+i2R71WuYFssuX4TodsVWhG2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyUYzBUX69HTdyt5/n+NueUy8M6YiN9Q65bkyTwxPcUSPApX+p
-	vKneYbqoMtAbj8EvnJ+/xCmqTTMyvvQM45O1AtbzlFqGknEpFHn6MTExnhblIfa/bfUZpHGHbu1
-	OOL8IieDBgOI2wE9yOGGB50p7lf2axfw=
-X-Gm-Gg: AfdE7cl/0vU/ry/ZV4I68KnOQlD5BeEjhvb9BKB1MhAUft7j5lk6pEpvp1g9o6RAwks
-	ujiclFLp/VwtfK9C4nAl2ODJXwX2ym41nbD4XtCO94uD1wkbWjrohy/2BrPn45x/02TwIfaaPUJ
-	qMwH/oPjkjdyzAhXNdcjzoRH1gLrZdYICmsRWzfN+3OBhlu9ecgBijq0BB4i9tqHOuY8Pc+oLJx
-	+aUjI+xQgT0dqitOwnUqyJ5dCVG8c1s/CQEtkJQBodObQsE2zkyQV04dsA4RBWV
-X-Received: by 2002:a17:907:c248:b0:c0d:7c31:26a9 with SMTP id
- a640c23a62f3a-c16b4002edbmr59028266b.2.1784269724589; Thu, 16 Jul 2026
- 23:28:44 -0700 (PDT)
+        bh=Cy2mOijfnAIACI62+6ipNwyok1LWBe2LVqzzgKNZrwU=;
+        b=mv9kamXeBke/iOruHxxTOcof79xSyKtwoloprAM5fySDPdPuexI9UYM6QCdRrNqhFi
+         iaoKs9pn9+dQ1vUr5sResKfdmGlpWfSRoW5ARsLcnSijTa2Z245T/zNunkbEX4DHzSof
+         LhVyj4eakhLo3a3IodbDm/nmp2u3/g32wYbpAPRYWxQTnin1IC3rqoD8tpsn/rTJngG1
+         84zId5htjPBQ+3BVvl8AvKp55Bl+VHK2YMQdUQgCRAvvyGWjM+HM2N4+pfGGOzs8PWoY
+         0hivHC6UdH/1A0iHf0EzB9Ljo24U19mfMBr+H1oJSexk3zWwXlaRwhUBwdWSpqSIzBM8
+         vftQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784270058; x=1784874858;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Cy2mOijfnAIACI62+6ipNwyok1LWBe2LVqzzgKNZrwU=;
+        b=LuPg7bXjovioHwu9KbtYxhmOydPs8aG70cKowsHO6NkVGQS6tEsKEnuwmtRJkmGHqk
+         Lsdnc2ppEyiX5LJpr/WvpSXBSwKvh8/PCFL2jJFQPO/H0jH78i7Rq0kfKWTr5CsFgpXY
+         Gd8AWcf+A+hpNRBJkC+PYGeOEbjKrdj98xrZhbxDfCNfkFThdFPlRp8ARhzA7J5rYhhV
+         IqhDcwQHimVjAB5DSJ609Cqv6mlYZ+1E5Wnn7eNx4THJ0NMy2sDdZq4kS7MN+doZlxm7
+         dVHPnhdyn5SCP7OAR02SgnaI4alVKYKgTCPrncreYpKaFyeJTNe4HEiE3P2St/njnIbG
+         6BMQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrZFJFxu2QrKFytVZuE0F8EnFtI+y0AP2D8p7qojM5ttA6g6GKMu/FiNhWecUN5h2lMncFrric=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBG9wgeV+m5z6fsVsXBgfNovLXJY9HmO462TmRmBc1iHU726XH
+	QghFMYZ8t8/Y4IIEJ/5FppadqPEQEV/OeDO/n3kSg5jyNvHMuermDOLm
+X-Gm-Gg: AfdE7ck4Rw/oboIC3lcwzgQpBW+9CPVVFYSQUYSkNJX/7nxRRT7qJ9D4RNCMSjr4xCm
+	r8wdmUdutFndCwi+SdUNoW66BTK+OSnGTrDKxVqMWVjTmVeb7xKSVfU1EzOy5U78LOB7tBL35UH
+	BzLxVJhIvNtUAw7MkkeJHqK5z+nGUF5jZykucb/ytjlXp6rb0nJSeR0k82+aZb5KwB9RkTLCBUi
+	17EOck8TnYLbtaAxJAMoRXWRFyg6LW3zbvM25BRLqM+ZCgdEuW3jpUEPu5AgARaX4qSgzciSk8I
+	KglkiZmqjj0X0SVecSEjIvlHnp0NUYZJH4JsrLW1xowHNBbzBRMpanMAXtYck9p1bQ57zJaD7Jr
+	RqjMxLk8B0wnywCkVbP2Izu63gAw9GdmZS6k/iNuj93ZGrT0l/ZzQbHpLHujon2qLaZadXQoOX6
+	SRJj+pdZ5tNcf+/Dr6wGU=
+X-Received: by 2002:a05:6a00:3a04:b0:847:8504:9946 with SMTP id d2e1a72fcca58-84c29289498mr1296866b3a.25.1784270057792;
+        Thu, 16 Jul 2026 23:34:17 -0700 (PDT)
+Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:c4cd:1a6f:a45c:f79e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2afae3afsm390417b3a.60.2026.07.16.23.34.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 23:34:17 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [PATCH iproute2-next v2] ipmaddr: use RTM_GETMULTICAST to list multicast addresses
+Date: Fri, 17 Jul 2026 15:34:11 +0900
+Message-ID: <20260717063411.20206-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714191341.690906-1-coiaprant@gmail.com> <20260714191341.690906-7-coiaprant@gmail.com>
- <464cbdf3-2e9e-43ea-b30a-75b3d1b8a188@lunn.ch> <CALj3r0jdkDEjpO+7NOTGs+wgukKvD=fzFn4ewpurxxPswCE5GA@mail.gmail.com>
- <000c01dd1593$2ac0b0f0$804212d0$@trustnetic.com>
-In-Reply-To: <000c01dd1593$2ac0b0f0$804212d0$@trustnetic.com>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Fri, 17 Jul 2026 14:28:33 +0800
-X-Gm-Features: AUfX_myHBcwddy6Oo5pOOK0tb7eS6ZkIgRUXXggid3ZrYcHNKgmGXLOcuUDQTlg
-Message-ID: <CALj3r0hH=mF+8oVbisoECYo6HRuSdfSt_nuhFunHowyPsw2srQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 06/10] net: pcs: xpcs: improve SGMII AN state handling
- for Rockchip RK3568
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	robh@kernel.org, krzk+dt@kernel.org, heiko@sntech.de, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Jiawen Wu <jiawenwu@trustnetic.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=8817=E6=
-=97=A5=E5=91=A8=E4=BA=94 10:23=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Wed, Jul 15, 2026 7:05 AM, Coia Prant wrote:
-> > Andrew Lunn <andrew@lunn.ch> =E4=BA=8E2026=E5=B9=B47=E6=9C=8815=E6=97=
-=A5=E5=91=A8=E4=B8=89 06:44=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > On Wed, Jul 15, 2026 at 03:08:34AM +0800, Coia Prant wrote:
-> > > > Commit 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for SGMII =
-mode")
-> > >
-> > > You do not appear to Cc: the Wangxun NIC people. It would be good to
-> > > have there comments on this change.
-> >
-> > I apologize; the output from get_maintainer.pl is very long. I=E2=80=99=
-ve
-> > heard that having too many recipients can cause the PATCH to be
-> > rejected by the LKML mail server.
-> >
-> > I have added Wangxun maintainer (Jiawen Wu <jiawenwu@trustnetic.com>
-> > and Mengyuan Lou <mengyuanlou@net-swift.com>) to the CC list.
-> >
-> > > > Fixes: 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for SGMII =
-mode")
-> > > > Signed-off-by: Coia Prant <coiaprant@gmail.com>
-> > >
-> > > Please don't mix fixed and new code. Is this a real fix? Should it be
-> > > back ported to stable?
-> >
-> > I am not sure if this is a specific characteristic of Wangxun NICs, as
-> > I do not have any available for testing.
-> >
-> > The behavior of the Rockchip DW XPCS IP core matches what is described
-> > in the commit message (even though phylink brings the link to down
-> > based on the phydev link status).
-> >
-> > This appears to be a bug (at least on Rockchip platforms) or Wangxun
-> > NICs features.
-> >
-> > However, I cannot confirm whether Wangxun NICs behave the same way.
-> > Therefore, I have kept their code as is for now.
-> >
-> > Could a Wangxun NICs maintainer provide some feedback based on testing?
-> >
-> > If we can confirm that this is indeed a bug, I can submit a separate fi=
-x.
-> >
-> > I would greatly appreciate it.
-> >
-> > Thanks.
->
-> Hi Coia,
->
-> I have tested this patch and it works on Wangxun NICs, thanks.
->
-> The commit 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for SGMII mo=
-de")
-> is too long ago for me to recall exactly what that thought was.
->
-> The log shows:
->
-> "On this device, CL37_ANSGM_STS (bit[4:1] of VR_MII_AN_INTR_STS) indicate=
-s
-> the status received from remote link during the auto-negotiation, and
-> self-clear after the auto-negotiation is complete.
-> Meanwhile, CL37_ANCMPLT_INTR will be set to 1, to indicate CL37 AN is
-> complete. So add another way to get the state for CL37 SGMII."
->
-> I tried to reproduce this issue, but it didn't seem to exist.
-> In the current logic:
->
-> link up -> read status from CL37_ANSGM_STS -> CL37_ANCMPLT_INTR not clear
-> link down -> read status from BMCR -> CL37_ANCMPLT_INTR clear
->
-> It also works, although CL37_ANCMPLT_INTR is not cleared every time, and =
-AN
-> restart is absent. But BMCR looks like it only wants to be return as 0, i=
-t is
-> weird.
->
-> So I think Wangxun NICs also can be applied to general code as well, for
-> getting state in C37 SGMII mode.
+Replace /proc/net/igmp and /proc/net/igmp6 parsing in "ip maddr show"
+with RTM_GETMULTICAST dumps. The kernel dumps IPv6 multicast addresses
+via netlink since the beginning, IPv4 since v6.15 (eb4e17a1d915), and
+reports the group users count via IFA_MC_USERS since kernel commits
+7cb8198761e6 and e1d0f3f08391.
 
-Hi Jiawen,
+The netlink result is only used when it carries the same information
+as procfs: if the dump fails (e.g. no IPv4 dump support) or any entry
+lacks IFA_MC_USERS, the result is discarded and the procfs parsers
+run as before, so output is unchanged on older kernels.
 
-Thanks so much for testing and confirming that the patch works on Wangxun
-NICs. That's a huge relief.
+Link-layer multicast addresses are still read from
+/proc/net/dev_mcast as there is no netlink API for them.
 
-You're right to ask about the CL37_ANCMPLT_INTR clear and ANRESTART. Let
-me explain what I observed on RK3568.
+When a device is given, its ifindex is passed in the dump request so
+strict-check kernels filter the dump server side; received entries
+are checked against the ifindex again for kernels that ignore the
+request field. An unknown device keeps printing an empty list.
 
-The key difference is that on RK3568's XPCS, we're working in the MAC
-side (TX_CONFIG =3D 0), whereas on Wangxun it seems you're in the PHY side
-(TX_CONFIG =3D 1). This is based on the commit 2a22b7ae2fa3 where you set
-TX_CONFIG =3D 1.
+Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+---
+change in v2:
+- accept_maddr(): only accept RTM_NEWMULTICAST; the kernel never sends
+  RTM_GETMULTICAST in dump replies
 
-> However, I am wondering whether CL37_ANCMPLT_INTR clear and ANRESTART are
-> necessary.
+ include/libnetlink.h |   3 ++
+ ip/ipmaddr.c         | 109 +++++++++++++++++++++++++++++++++++++++++--
+ lib/libnetlink.c     |  26 +++++++++++
+ 3 files changed, 134 insertions(+), 4 deletions(-)
 
-On the RK3568 (MAC side), according to the DesignWare XPCS TRM, the
-hardware behavior is as follows:
+diff --git a/include/libnetlink.h b/include/libnetlink.h
+index e91505d9..518b8714 100644
+--- a/include/libnetlink.h
++++ b/include/libnetlink.h
+@@ -62,6 +62,9 @@ typedef int (*req_filter_fn_t)(struct nlmsghdr *nlh, int reqlen);
+ int rtnl_addrdump_req(struct rtnl_handle *rth, int family,
+ 		      req_filter_fn_t filter_fn)
+ 	__attribute__((warn_unused_result));
++int rtnl_mcaddrdump_req(struct rtnl_handle *rth, int family,
++			req_filter_fn_t filter_fn)
++	__attribute__((warn_unused_result));
+ int rtnl_addrlbldump_req(struct rtnl_handle *rth, int family)
+ 	__attribute__((warn_unused_result));
+ int rtnl_routedump_req(struct rtnl_handle *rth, int family,
+diff --git a/ip/ipmaddr.c b/ip/ipmaddr.c
+index 462b409e..16470655 100644
+--- a/ip/ipmaddr.c
++++ b/ip/ipmaddr.c
+@@ -27,6 +27,7 @@
 
-- After a software reset (BMCR_RESET), ANENABLE is automatically set to 1
-  (the hardware reset value). So auto-negotiation starts automatically.
+ static struct {
+ 	char *dev;
++	int  index;
+ 	int  family;
+ } filter;
 
-- When the link is up, CL37_ANSGM_STS contains the negotiated speed/duplex
-  and the link status.
+@@ -207,6 +208,93 @@ static void read_igmp6(struct ma_info **result_p)
+ 	fclose(fp);
+ }
 
-- When the link goes down, CL37_ANSGM_STS becomes all zero, but
-  CL37_ANCMPLT_INTR remains set to 1.
++struct maddr_dump_ctx {
++	struct ma_info *list;
++	bool mc_users_missing;
++};
++
++static int maddr_dump_filter(struct nlmsghdr *nlh, int reqlen)
++{
++	struct ifaddrmsg *ifm = NLMSG_DATA(nlh);
++
++	ifm->ifa_index = filter.index;
++
++	return 0;
++}
++
++static int accept_maddr(struct nlmsghdr *n, void *arg)
++{
++	struct maddr_dump_ctx *ctx = arg;
++	struct ifaddrmsg *ifm = NLMSG_DATA(n);
++	int len = n->nlmsg_len - NLMSG_LENGTH(sizeof(*ifm));
++	struct rtattr *tb[IFA_MAX + 1];
++	struct ma_info *ma;
++
++	if (n->nlmsg_type != RTM_NEWMULTICAST)
++		return 0;
++
++	if (len < 0)
++		return -1;
++
++	if (filter.index && filter.index != ifm->ifa_index)
++		return 0;
++
++	parse_rtattr(tb, IFA_MAX, IFA_RTA(ifm), len);
++
++	if (!tb[IFA_MULTICAST] ||
++	    RTA_PAYLOAD(tb[IFA_MULTICAST]) > sizeof(ma->addr.data))
++		return 0;
++
++	if (!tb[IFA_MC_USERS]) {
++		ctx->mc_users_missing = true;
++		return 0;
++	}
++
++	ma = calloc(1, sizeof(*ma));
++	if (ma == NULL)
++		return -1;
++
++	ma->index = ifm->ifa_index;
++	strlcpy(ma->name, ll_index_to_name(ifm->ifa_index), sizeof(ma->name));
++	ma->addr.family = ifm->ifa_family;
++	ma->addr.bytelen = RTA_PAYLOAD(tb[IFA_MULTICAST]);
++	ma->addr.bitlen = ma->addr.bytelen << 3;
++	memcpy(ma->addr.data, RTA_DATA(tb[IFA_MULTICAST]), ma->addr.bytelen);
++	ma->users = rta_getattr_u32(tb[IFA_MC_USERS]);
++	maddr_ins(&ctx->list, ma);
++
++	return 0;
++}
++
++static int read_maddr_netlink(int family, struct ma_info **result_p)
++{
++	struct maddr_dump_ctx ctx = {};
++	struct ma_info *ma;
++	int err;
++
++	rth.flags |= RTNL_HANDLE_F_SUPPRESS_NLERR;
++	err = rtnl_mcaddrdump_req(&rth, family,
++				  filter.index ? maddr_dump_filter : NULL);
++	if (err >= 0)
++		err = rtnl_dump_filter(&rth, accept_maddr, &ctx);
++	rth.flags &= ~RTNL_HANDLE_F_SUPPRESS_NLERR;
++
++	/* Kernels that dump multicast addresses but do not report the
++	 * users count via IFA_MC_USERS cannot replace procfs.
++	 */
++	if (err < 0 || ctx.mc_users_missing) {
++		maddr_clear(ctx.list);
++		return -1;
++	}
++
++	while ((ma = ctx.list) != NULL) {
++		ctx.list = ma->next;
++		maddr_ins(result_p, ma);
++	}
++
++	return 0;
++}
++
+ static void print_maddr(FILE *fp, struct ma_info *list)
+ {
+ 	print_string(PRINT_FP, NULL, "\t", NULL);
+@@ -291,12 +379,25 @@ static int multiaddr_list(int argc, char **argv)
+ 		argv++; argc--;
+ 	}
 
-- Crucially, the PCS does **not** automatically restart AN when the link
-  comes back up. Without an explicit ANRESTART, the link stays down
-  forever.
++	if (filter.dev) {
++		filter.index = ll_name_to_index(filter.dev);
++		/* an unknown device has no multicast addresses */
++		if (!filter.index) {
++			print_mlist(stdout, NULL);
++			return 0;
++		}
++	}
++
+ 	if (!filter.family || filter.family == AF_PACKET)
+ 		read_dev_mcast(&list);
+-	if (!filter.family || filter.family == AF_INET)
+-		read_igmp(&list);
+-	if (!filter.family || filter.family == AF_INET6)
+-		read_igmp6(&list);
++	if (!filter.family || filter.family == AF_INET) {
++		if (read_maddr_netlink(AF_INET, &list) < 0)
++			read_igmp(&list);
++	}
++	if (!filter.family || filter.family == AF_INET6) {
++		if (read_maddr_netlink(AF_INET6, &list) < 0)
++			read_igmp6(&list);
++	}
+ 	print_mlist(stdout, list);
+ 	maddr_clear(list);
+ 	return 0;
+diff --git a/lib/libnetlink.c b/lib/libnetlink.c
+index 8905e297..edf3a8ba 100644
+--- a/lib/libnetlink.c
++++ b/lib/libnetlink.c
+@@ -336,6 +336,32 @@ int rtnl_addrdump_req(struct rtnl_handle *rth, int family,
+ 	return send(rth->fd, &req, sizeof(req), 0);
+ }
 
-So on RK3568, the ANRESTART is mandatory to recover from a link-down
-event. Without it, the link never comes back up after a cable disconnect.
++int rtnl_mcaddrdump_req(struct rtnl_handle *rth, int family,
++			req_filter_fn_t filter_fn)
++{
++	struct {
++		struct nlmsghdr nlh;
++		struct ifaddrmsg ifm;
++		char buf[128];
++	} req = {
++		.nlh.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifaddrmsg)),
++		.nlh.nlmsg_type = RTM_GETMULTICAST,
++		.nlh.nlmsg_flags = NLM_F_DUMP | NLM_F_REQUEST,
++		.nlh.nlmsg_seq = rth->dump = ++rth->seq,
++		.ifm.ifa_family = family,
++	};
++
++	if (filter_fn) {
++		int err;
++
++		err = filter_fn(&req.nlh, sizeof(req));
++		if (err)
++			return err;
++	}
++
++	return send(rth->fd, &req, sizeof(req), 0);
++}
++
+ int rtnl_addrlbldump_req(struct rtnl_handle *rth, int family)
+ {
+ 	struct {
+--
+2.43.0
 
-In my current logic:
-
-1. If CL37_ANSGM_STS has valid speed/duplex bits, report the link as up
-   and return.
-
-2. If CL37_ANSGM_STS is zero but CL37_ANCMPLT_INTR is set, the link is
-   down. We clear the interrupt and issue an ANRESTART to start a new
-   negotiation.
-
-This works reliably on RK3568 in SGMII MAC side mode.
-
-Since you confirmed that the general code path also works on Wangxun, I
-wonder: does the ANRESTART also work on your side? If yes, perhaps we can
-make this the common path for all hardware, not just RK3568.
-
-If you can test the ANRESTART logic on Wangxun and it works, I'd be happy
-to submit a standalone fix that makes this the common code path.
-
-Otherwise, the current approach (skipping the ANRESTART trigger on
-Wangxun NICs in c37_sgmii_get_state) remains safe.
-
-If you're comfortable with the change, I'd appreciate it if you could add
-your Tested-by tag to the commit. I'll also make sure to include you on
-the CC list for any future revisions or related fixes.
-
-Thanks again for testing!
