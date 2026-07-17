@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B55D345741
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 18:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEC7393DF1
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 18:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784314429; cv=none; b=IA8vz2uzkg/vABdhK60PvPc9hbNHtRZAGgH8goIZDPI2DP7MS3HPYr0soci+ii6rXlIstyIyK1eNj1qPIsr4U/nLkPSZAtirtIxmC/f2KyjpIxDnuWQZtgSJdzHuafi2XP3CIUuOkidIcN/rzR9WM7XRy0vRNoWxTl2tihtjXdM=
+	t=1784314430; cv=none; b=SWRCwootlZIhAC69viBfWvuaukG9wNVjbpMfkYgnZWJmpuvwKVzjflpVTkozIVzhtgU8e7iBkRr6sG1pQrLWdS5V4a7zyv97JSnLiBA6CAqJKTpSmIFiJ40gg7aPsNIEsu6WtIxqPhgSeN2gdei9obxV2cGescGgX+Wf/DCBseI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784314429; c=relaxed/simple;
-	bh=eIvO8t/cc1StWNCbpgpjTmzKlzi7fSDxLY3v5Egyito=;
+	s=arc-20240116; t=1784314430; c=relaxed/simple;
+	bh=ymB+th/EM0ytcHws4YFA5DU+gTrO+phq0hABDqToolQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/I1ObzR38eu4MwZJoZcdC24OTu3UuHPND6KX5ITpU3YUMtyqqoXIyhnvUYXz2cYKnIc3CoBBeHTWeFEzNHDK1EqAet5KbQSq0odye88zJwTo67HAUkasy6YuGWCOmJCJcTtwD7gT5xuO/zgh4uH50+UddrbEbyY/ggE/ceY2i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HOWs08OF; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=RnD+zX0J6C2/vvlqqA6EywIUGdwgAJhk5GEemrPSRRpJXClpT2NhhFkYR+03qpJVNR13l187FO2jn1e4hYkNOdGHcmFr2Ba7nXthgt/ZmgqMPEpyvZzK0ep8tZdss6Fzt1F6MIZtpl8xkgTvkGlyAeYEq6cuqt3RsfllUBr09oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OIGnLl40; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HOWs08OF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OIGnLl40"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784314428; x=1815850428;
+  t=1784314430; x=1815850430;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eIvO8t/cc1StWNCbpgpjTmzKlzi7fSDxLY3v5Egyito=;
-  b=HOWs08OF3omW2X3+zaWeAyss1ao7NhYs1EQvSb9rtEZJjrYufW89SypA
-   UvH8U7DccbsPY32bzEfyQDWkhJTzKA6vZnqUcBvtv+MoityvPF/3H8u/X
-   ixSYrA61UgSsgDx3+E5T49N2odc0AJ4tVAqz+1JRjc3POPKTnjLTxDcHZ
-   2FEKtqPViv4v3voZse0a6RKE30QsE9s4VFiEHpNKcVoI3DdaS2UZXjzj8
-   gHLJs2n9nfGGMFGOWOrDwY8jmSCOX35Clr2wG8Pi09ySaMbKrmjEFIAbh
-   c8P+iG5eOFgy/ZRsN8wCsCsDl2i36VtFHWGqbj+VTHXw5NYfstIKscyuH
-   g==;
-X-CSE-ConnectionGUID: gsIzdhdMT5eHnrMF3lkigw==
-X-CSE-MsgGUID: U5LXws93Rjm+8Uv4FcUYFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347591"
+  bh=ymB+th/EM0ytcHws4YFA5DU+gTrO+phq0hABDqToolQ=;
+  b=OIGnLl40hSLiAxvQkb5OHab1owEAF6UB6UXJL9chtgtLNJUzIzlqymh0
+   D11CrZYhe+pFNUc4szIwcyiTmcchlJWvgh8LXwddjr8y21cBcQz9vFFvP
+   srNYpeJJqWFgkTGQ82Fqk/A/SoRLuv0ayLB3UkQXhz3bg27Bnioy3E/H4
+   2hSXnaT2vDZmOpA5a0A4vMbElTvf2ff1qE0i81JFaF4JkCVbNPKURCnv8
+   AE8/wd6mZMFl/+JVkW6gupuRQ3UCIyVEydo41ZSaBpqEdu+eNrBNKEXC9
+   84U7OuUXp25liwQfvPurrUYGmtQGPsr3Mxe0E7dE19IWV5u+uE++1Nsjg
+   w==;
+X-CSE-ConnectionGUID: +8Ac8g4XRCOnMEE8as1HoA==
+X-CSE-MsgGUID: LhbzaqTWSPurYanF8zW8cQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347617"
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="95347591"
+   d="scan'208";a="95347617"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:46 -0700
-X-CSE-ConnectionGUID: 2P+TZ9/PReajnVaSixaqYA==
-X-CSE-MsgGUID: Uz/f18tITX29KldlgurYrw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:47 -0700
+X-CSE-ConnectionGUID: 0IKevqeaSfOHh4/m/3h9Gg==
+X-CSE-MsgGUID: 3dXj4YJpR66lhxwl7OF5fQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="261827226"
+   d="scan'208";a="261827240"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2026 11:53:44 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2026 11:53:46 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Vincent Chen <vincent.chen@sifive.com>,
+Cc: Marcin Szycik <marcin.szycik@linux.intel.com>,
 	anthony.l.nguyen@intel.com,
-	michal.swiatkowski@linux.intel.com,
-	horms@kernel.org,
+	daniel.machon@microchip.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 02/13] ice: remove redundant switchdev check in ice_eswitch_attach_vf()
-Date: Fri, 17 Jul 2026 11:53:24 -0700
-Message-ID: <20260717185340.3595286-3-anthony.l.nguyen@intel.com>
+	Dave Ertman <david.m.ertman@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 06/13] ice: fix LAG recipe to profile association
+Date: Fri, 17 Jul 2026 11:53:28 -0700
+Message-ID: <20260717185340.3595286-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
 References: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
@@ -70,36 +72,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Vincent Chen <vincent.chen@sifive.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-All callers of ice_eswitch_attach_vf() check the switchdev mode before
-calling the function, the internal switchdev mode check in
-ice_eswitch_attach_vf() is redundant. Remove this check to align with
-the design pattern used for ice_eswitch_attach_sf(), where the caller is
-responsible for checking switchdev mode before attachment.
+ice_init_lag() associates recipes to profiles, assuming that Link
+Aggregation-related profiles will always have profile ID lower than 70
+(ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER). This value seems arbitrary and
+might not always be valid for some versions of DDP package, i.e. LAG
+profiles may have profile ID greater than 70. This would lead to
+misconfigured switch and LAG not working properly.
 
-Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
+Fix it by checking up to maximum profile ID.
+
+Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Dave Ertman <david.m.ertman@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index c30e27bbfe6e..b069e6c514fb 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -512,9 +512,6 @@ int ice_eswitch_attach_vf(struct ice_pf *pf, struct ice_vf *vf)
- 	struct ice_repr *repr;
- 	int err;
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+index 310e8fe2925c..08a17ded0ad5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.c
++++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+@@ -2623,7 +2623,7 @@ int ice_init_lag(struct ice_pf *pf)
+ 		goto  free_lport_res;
  
--	if (!ice_is_eswitch_mode_switchdev(pf))
--		return 0;
--
- 	repr = ice_repr_create_vf(vf);
- 	if (IS_ERR(repr))
- 		return PTR_ERR(repr);
+ 	/* associate recipes to profiles */
+-	for (n = 0; n < ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER; n++) {
++	for (n = 0; n < ICE_MAX_NUM_PROFILES; n++) {
+ 		err = ice_aq_get_recipe_to_profile(&pf->hw, n,
+ 						   &recipe_bits, NULL);
+ 		if (err)
 -- 
 2.47.1
 
