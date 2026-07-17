@@ -1,81 +1,85 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83479246BCD;
-	Fri, 17 Jul 2026 14:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 7305E429CDF;
+	Fri, 17 Jul 2026 14:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.202.115.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298670; cv=none; b=aJuT59yPB424sGDxSByeLGZKu7o+R8M2m8qId0GTjgacDWo5JS0UJ7zb3lqphQ8km25UTUoyK4kJhpeg6eQ3qBD2wDw8BHMaURbUe+nz0LTRfJS6K1Hbtm7mP/KQtvbKMZQsj5KyXuEYRdXFXyVbkRMcoKfjtHP827wWHcFre4c=
+	t=1784298770; cv=none; b=kZr6t6FYLvxN/pGKABhX7yXoyOK2IUwvG9fBbTA0gwYhtPPT+hbE3EdPUE7RPR2P/RqB4HulP4IrCGW4E/wG1OCH1I/Y4IdvNgYsKzx1NG/9Ym8isLqsNPshSAHX1BmdGhoSXS2Ue96Ssv2Gpnvr6Pw+xGzLqrsVY1y9IetvLqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298670; c=relaxed/simple;
-	bh=x43WABfRrQmTgHSWxif6YQkf+OShmTXhXBvgZYTwJ+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V6ftJW6Je3b0q19nyiTXQdYn/Z5DviPkAH8Dzp8dG38OpCBBOO8JgeU4vc5TeV+pSxuIDe83x+8Pi/NTUnrTbPjYZVofPFOFGyyqH1a5BCX+YJBeP/RlTipJS2sk4aecGaIknSCN40yXc/jIZjMHGLfRfERKzTfAz3Vb6/1FVbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=mkcDUMrw; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1784298770; c=relaxed/simple;
+	bh=SlDOV5HEiZlvLrGr02vHURpPJCtkUDc2F9slhw6rNQc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dCkFr7K8vXki7sBRyX0QepjOvZyEPik0W2mAxDdtvoywGNRoBdcXTqzq9WF8epIA5AeIi2WYNVPA8SQ3LjxrozA8omtXeVaNPEPhb7HcBJuD0IelI0lVYnMuXVPaYILE6CliZ/ewWs7KNvg+8k1W9mqyNwvu+SuE9Oe0pOoFuz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=L5i357pz; arc=none smtp.client-ip=111.202.115.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="mkcDUMrw"
-Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4E87C228D5;
-	Fri, 17 Jul 2026 16:31:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1784298666;
-	bh=OCI7dqd3heCu3mo5D7WQBBmAEYaadfOKWnanUZ0DyBg=; h=From:To:Subject;
-	b=mkcDUMrwIyoZgX70TyOQrCul5D9WyijCHoXAbitsJkry9kbjE6IVPFoNIm0eSd+PT
-	 T7dtrNMTUDiOg82ePKa5W0hfhoUvV1eXEKTH2MmUqPAdJQVqpofZYDMN434H7aJmg0
-	 Ew9AA+wVftAC2T0Wlzh+DbvC0rB/QFC6wu6C9H7VyIjcyLZb1wfHJgTHGInCk5INLK
-	 bBYg/FRiLvymI61MQml6mIQeucmHUKbJfNLvlM5yEDBeWCiZZqqNroVSlMZPAEYJN7
-	 syQgGKACDiS7VgSYxTJiR4IJFQaREswsLIvGhjHvopEYAQeLAwyDxF3/52bY5EkRGy
-	 azUxLfp1soxXA==
-Date: Fri, 17 Jul 2026 16:31:02 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Christopher Kleiner <chris@kleiner.pro>
-Cc: briannorris@chromium.org, linux-wireless@vger.kernel.org,
-	francesco@dolcini.it, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: validate HT/VHT element length before
- storing beacon IE pointers
-Message-ID: <20260717143102.GA512678@francesco-nb>
-References: <20260717000017.61415-1-chris@kleiner.pro>
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="L5i357pz"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+	<kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, Li RongQing
+	<lirongqing@baidu.com>, Kees Cook <kees@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] net: ipv6: fix dif and sdif mismatch in raw6_icmp_error
+Date: Fri, 17 Jul 2026 22:32:30 +0800
+Message-ID: <20260717143230.1836-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717000017.61415-1-chris@kleiner.pro>
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc7.internal.baidu.com (172.31.3.17) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1784298760;
+	bh=KD96x89q42X1YxXnAThpL74UYBHTxmO7xHWfal6hLkU=;
+	h=From:To:Subject:Date:Message-ID:Content-Type;
+	b=L5i357pz23GhuPZ5U5/HNH2mxZWXHv48CUkBijQsanbPVlEVPlC1ViBvGpcy/kias
+	 6YH9J6V/MCBvQKCmb2qKx3ON+XftGmirlT7vPPIH9SfTUx1oDDsvH/UfYlPKneU7cR
+	 QLPznJy6akgUtQe17pzJrhmcMXI946LiGe3OugfH0tk3ugkpdCKo8C4bWLOF3B94lk
+	 VBdy8ZWzVF5arozc6NXiSP0kVyCh2hFKKzdFqSKCoHtQM78yM3R+c6d1HWvgwGOaPN
+	 KRILmq6XGQ3LB7RGnpDUoa6836A2awluqXMdksNQAuCMCHn7fvGancYvJp8nKe8Lll
+	 Vh4ylnXpPDU4Q==
 
-On Thu, Jul 16, 2026 at 08:00:17PM -0400, Christopher Kleiner wrote:
-> mwifiex_update_bss_desc_with_ie() stores raw pointers into the beacon
-> buffer for the HT Capability, HT Operation, VHT Capability and VHT
-> Operation elements without checking that the element is long enough to
-> hold the corresponding fixed-size structure. The generic IE loop only
-> guarantees that the declared element length fits inside the beacon
-> buffer (bytes_left >= total_ie_len); it does not guarantee that
-> element_len is large enough for the struct that later consumers copy.
-> 
-> beacon_buf is a tight kmemdup() of the over-the-air IEs. When the
-> association command is built, mwifiex_cmd_append_11n_tlv() /
-> mwifiex_cmd_append_11ac_tlv() copy a fixed number of bytes from the
-> stored pointers (sizeof(struct ieee80211_ht_cap) and friends). A
-> malicious AP that emits a beacon or probe response ending in a
-> truncated (e.g. zero-length) HT Capability element leaves bcn_ht_cap
-> pointing near the end of the slab, and the subsequent copy reads out of
-> bounds. The leaked bytes are placed into the association request
-> transmitted back to the AP, disclosing adjacent slab memory; on
-> CONFIG_KASAN / panic_on_oops kernels it is an out-of-bounds oops.
-> 
-> Commit 685c9b7750bf ("mwifiex: Abort at too short BSS descriptor
-> element") added such length checks for the FH/DS/CF/IBSS parameter sets
-> and a few other elements, but did not cover the HT/VHT capability and
-> operation elements. Validate element_len against the size of the
-> structure that will be consumed, mirroring those existing checks.
-> 
-> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christopher Kleiner <chris@kleiner.pro>
+From: Li RongQing <lirongqing@baidu.com>
 
-Duplicate? We already have this in review https://lore.kernel.org/all/20260709100800.7026-1-doruk@0sec.ai/
+In raw6_icmp_error(), raw_v6_match() is called with inet6_iif(skb) passed
+to both the 'dif' and 'sdif' arguments. This is a copy-paste or typo error,
+as the last argument should represent the secondary interface index (sdif).
+
+This mismatch breaks ICMPv6 error handling for IPv6 raw sockets in VRF
+(Virtual Routing and Forwarding) environments. When a raw socket is bound
+to a VRF master device, raw_v6_match() fails to find a match because it is
+not given the correct sdif value, causing the socket to miss relevant
+ICMPv6 error notifications.
+
+Fix this by properly passing inet6_sdif(skb) as the last argument to
+raw_v6_match().
+
+Fixes: 5108ab4bf446fa ("net: ipv6: add second dif to raw socket lookups")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ net/ipv6/raw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 3cc5869..b88d364 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -349,7 +349,7 @@ void raw6_icmp_error(struct sk_buff *skb, int nexthdr,
+ 		const struct ipv6hdr *ip6h = (const struct ipv6hdr *)skb->data;
+ 
+ 		if (!raw_v6_match(net, sk, nexthdr, &ip6h->saddr, &ip6h->daddr,
+-				  inet6_iif(skb), inet6_iif(skb)))
++				  inet6_iif(skb), inet6_sdif(skb)))
+ 			continue;
+ 		rawv6_err(sk, skb, type, code, inner_offset, info);
+ 	}
+-- 
+2.9.4
+
