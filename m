@@ -1,39 +1,75 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56392FB97B
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 10:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AEE3DDDAA
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 10:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784284686; cv=none; b=nAie5OFdbJHjzRtQ7eTIbCAZgX/zygq4nGoR7haV4pjlzvtk4bsYeH+/sXKuIjenZhqCAd3fcH+OfGHCQuUZs5lLeG8FgRYeoL8iXXAzXp0qLD2vHJcFd5UKWqd/uF1BO+wE+dZOf0VMxJoTpb6VPZD/f2g8UBhhI88/Q9D5Fhg=
+	t=1784284748; cv=none; b=j+g4CHt+JuWQRq9y6ni2wydp+PfTF9iDEklg05QCLct5d2cV1kwRQXCPXBqcd7NR/0fHvM3NBL7gRwkNL4VuYjIBwP5LbdjGBFgjPQSo17UgXVDbJdYkf6OT/eXVouUGRHEMtf6LkW57etiTRVKtLS8KwZz27LVreUAGKiP9I2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784284686; c=relaxed/simple;
-	bh=xMLIPdfaRB3C2iAGelA6nq5WM14R9YxvR1LHsjkgaao=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j5uTs18StCkWS7gnZead1ZyDscRzjjAMesiFgxea4pmea1YS9oNhArKlwMvmVb8ipPBPzVXGcX7S2Piv9w5eyP2QCBfIYAUmkc9yB/+If7C0sBTVgOSVG7DWF8vDTU83DDphCLofq9KubP2pJ8fPw6XuHAP7Y4DX+eknY3zkVFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X0eyooNs; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784284748; c=relaxed/simple;
+	bh=+zLMKrES4StXAGONdQ/PirqGxPFtSlajROJvN8za6Qo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uztYaoUYqkXUkOF8CUdgsG7Ijp07aKiOUjspZWavOaPNc64TJK+PL/sT1RT4EOeot+ZHUr+ZPtuepgDbM0Sax7KTdj8Tf9ye5vm0VqSXjvMqPTR6ki3PVdy0Vd1CdEMSDD2IC0FqTFoHCcqtcs4lampGeUPi8KJzbdBUA8KidTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=JXRX0R1h; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X0eyooNs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=og
-	fOixQ6j0Dq9m7RRqj0ZVgn72BaBTQIwL3YHftwbXk=; b=X0eyooNs5D62G35C/U
-	eMYUzZkPFFOLnhOCNdYw6Htagyrwgyi0h37snAPHs56x1aMbcmVgkJXn/jahU1dD
-	4IT5T3eWikJmF8uG3gGcH5vmkRwvX/REsSSFazwe1IWWpsHP69bwdPMKFNczMXcG
-	+YSiDW48FbggvApUJYDZWPhxU=
-Received: from kylin-ERAZER-H610M.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBnVWDlBVpqguBEKA--.5251S2;
-	Fri, 17 Jul 2026 18:37:26 +0800 (CST)
-From: Yun Lu <luyun_611@163.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net 0/2] 8139cp: fix two TX error handling bugs
-Date: Fri, 17 Jul 2026 18:37:22 +0800
-Message-ID: <20260717103724.13971-1-luyun_611@163.com>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="JXRX0R1h"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-902fc790cd5so74630476d6.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 03:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1784284745; x=1784889545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3riQ9T4y5IQhg/VW8hsSvvb11bNPX91gfNywMrlwLaM=;
+        b=JXRX0R1hWBnuUNDgPDFURiJJoOyuEOAV5yRsFXdM/4HtQ63/EMXGSU+ukIBOyCraMM
+         dBAS6OWQxdMxrAlpKqu8yd8uLyhp+GyMgK9Rd81/w3gyqnYSVt4iYu6cLoG2RdAadjrl
+         KKLuKO5kU/1YjSnZLYia2dBmXoI28j8G194C4MgGYUtmHreZoAeLA/CLAexRcaLIaZlM
+         +VinD6JtuSWEdNHdg5A+Wg9T7wI15LAX9OH1F2XOh0Rwp8gJS3jIyL1JdVU7XVRbK9VX
+         m0msFHXzFOCwNrqRrX47+XuyKEOMGJZHNgTX5QMXcPHOq3BPVkdXfSP7CIyOusuhuebd
+         roMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784284745; x=1784889545;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3riQ9T4y5IQhg/VW8hsSvvb11bNPX91gfNywMrlwLaM=;
+        b=kOosF6shzdW0YeUhMl1X8DdpJhNufQ3KvQUZQlQdNgYHZgR2chjOswPiPcp/zV6e2l
+         7fiRZK7UldjHcgzOfl4kZ9C7OSfpQYWyrVSFJJcv1+3s92DdUkTE502+xM4Bjsxc7Kwq
+         Jp5t3daSCDxpIsc8k5xt85mnV0uxKxJZQDSGYMSP0rw5SNF9OmTWOu8P1oZSCLNQ2nbh
+         ij/hacQynJEvv0vgsmaqutFkPb2l3/6TZDZG0+p709FD3yFy2s5x6mB1DumXm28MvMzh
+         Qu6JaDxlT1mXL0FCcVI0cmiIvGapd7DhrLNvxMkATPaVnGD1cDRUHiESE/3FvLODBmQr
+         gCjw==
+X-Forwarded-Encrypted: i=1; AHgh+RqMZba7BD/qTDj15N1yle1oJALHd000lqk3vGz3v5wpDcCcdJeGqZ0NaCBjhGC9uXOkT2nr4RM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjPlgU23mVJeBvDo3DqD7uqmS8IPUJE8f4t+XTl3tXCekopVl0
+	IDEtiA5glIj1cIkVtfXSSy/+DgmdNftEIFPEXEpqGwh4+pkxZz19cC+Q/tpy83QLriY=
+X-Gm-Gg: AfdE7ckv072xpf3O3NGSIBjX5SI/cIv0LRJ9qDqGUU5Xu2zlC7+0aECLApi3egloalc
+	cE+Y9FzVMLzg7FUOiZ9DwfyifosUtoEAGXvDDG+f8Hom05TTi1kac8sfBp3jq1wdEvuSRdCyjzU
+	dsWs/7C3yPgvRXEAqrQQpRM8gZ4/tnIUrQZNPTTHsZCw7AmBz9HKeFMPbdsXcoNtd8XbArs8iUb
+	42U9bLbF1uk2Y9H/jxRTmLNUA5kSSYqP0hPlUUQ5FOg1jO31Jwu6q/cba6pz+zEN/3fUGM4fPwU
+	HkgVHaB0BogSZwtReCbmHMKJzSr03x4soyWr7wWi0BkH39rg9ADMJZ3tiDpu1LIRk2q3lyAycvg
+	bDnnMzi/rF7Tb6OeVfjNaW3AsX9hh8tXDeNtpWb2X3reS4kF05YtaHQZt0e7VxlB4KI5MME8Oa6
+	D8I7Y50Ts=
+X-Received: by 2002:a05:6214:29c9:b0:8f0:c969:596a with SMTP id 6a1803df08f44-907784e237bmr22510666d6.56.1784284745483;
+        Fri, 17 Jul 2026 03:39:05 -0700 (PDT)
+Received: from localhost ([146.190.222.192])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-9077853fa7dsm14597306d6.7.2026.07.17.03.39.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Jul 2026 03:39:05 -0700 (PDT)
+From: David Lee <david.lee@trailofbits.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: David Lee <david.lee@trailofbits.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] netconsole configfs target release NULL dereference
+Date: Fri, 17 Jul 2026 10:39:02 +0000
+Message-ID: <20260717103903.38514-1-david.lee@trailofbits.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -42,47 +78,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnVWDlBVpqguBEKA--.5251S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWrKryDWr17KF4rWw15uFW8Xrb_yoW8JF1xpr
-	WYg34Yyr95Wr1293Zayw4IvF1Yva1rt3s8JF97tws8Zrn8Crn3trWF93W0y3yUKFyxXa15
-	tw4Fv347CF1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UvLv_UUUUU=
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbCxAarempaBebFgQAA3E
 
-From: Yun Lu <luyun@kylinos.cn>
+configfs target release can call netpoll cleanup with missing netpoll state.
 
-Hi,
+Mark targets as disabled before releasing their netpoll state and skip
+cleanup when no netpoll device is present. This prevents teardown races
+from reaching netpoll cleanup after nt->np.dev has already been cleared.
 
-This short series fixes two bugs in the transmit error handling of
-the 8139cp driver. Both are only reachable when DMA mapping or
-memory allocation fails, but each can take the kernel down when
-triggered.
+Fixes: 97714695ef90 ("net: netconsole: Defer netpoll cleanup to avoid lock release during list traversal")
+Signed-off-by: David Lee <david.lee@trailofbits.com>
+Assisted-by: Codex:gpt-5.5
+---
 
-The first patch rewrites the DMA mapping unwind in cp_start_xmit().
-When mapping a TX fragment fails, the current helper unmaps the
-stale address found in the not-yet-written head descriptor slot,
-which is a double unmap of a previously completed mapping; the
-fragment unmaps use sizes shifted by one slot; and the head buffer
-mapping is never unmapped at all, leaking one DMA mapping per
-failure.
+drivers/net/netconsole.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-The second patch makes cp_tx_timeout() handle cp_init_rings()
-failure. If the RX buffer refill fails there, the ring is left
-empty, but the driver restarts the hardware and schedules NAPI
-anyway, so cp_rx_poll() dereferences a NULL rx_skb slot and hits
-BUG_ON(!skb). Bail out and leave the device down until the next
-open instead.
-
-Thanks,
-Yun
-
-Yun Lu (2):
-  8139cp: fix DMA mapping unwind on TX frag map failure
-  8139cp: handle cp_init_rings() failure in cp_tx_timeout()
-
- drivers/net/ethernet/realtek/8139cp.c | 31 +++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
-
--- 
-2.25.1
-
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 862001d..ad30e2e 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -287,6 +287,8 @@ static bool bound_by_mac(struct netconsole_target *nt)
+ 
+ static void netcons_release_dev(struct netconsole_target *nt)
+ {
++	if (!nt->np.dev)
++		return;
+ 	do_netpoll_cleanup(&nt->np);
+ 	if (bound_by_mac(nt))
+ 		memset(&nt->np.dev_name, 0, IFNAMSIZ);
+@@ -1490,10 +1492,12 @@ static void drop_netconsole_target(struct config_group *group,
+ 	 */
+ 	needs_cleanup = nt->state == STATE_ENABLED ||
+ 			nt->state == STATE_DEACTIVATED;
+-	/* Disable deactivated target to prevent races between resume attempt
+-	 * and target removal.
++	/* Disable targets that still own netpoll state before removal. This
++	 * prevents races between open configfs writers, resume attempts, and
++	 * target removal from observing STATE_ENABLED after netpoll_cleanup()
++	 * has cleared nt->np.dev.
+ 	 */
+-	if (nt->state == STATE_DEACTIVATED)
++	if (needs_cleanup)
+ 		nt->state = STATE_DISABLED;
+ 	list_del(&nt->list);
+ 	spin_unlock_irqrestore(&target_list_lock, flags);
