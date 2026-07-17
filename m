@@ -1,229 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A65439B944
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 20:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE0B314B76;
+	Fri, 17 Jul 2026 20:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784319315; cv=none; b=WxH6h9vaDJ0QddTKwbSnaB7dKO4Kpac9qWR/6AaBVBmQuMZIHtgicqzgvPoCorGZPiWi2YQXGBqoR7iXonuldqvz1jdKSY7jG+QrBt/xvMSYbCF8A6H+P8Joe0aMXSU3lNvaSlRC/kK4k/84kWjsUaeJlsVspaJCSdD83JhW+pQ=
+	t=1784319468; cv=none; b=q6vl8xR/F1m9cmU9owJcS1SxsK6Ls4r2S93m4s7VT/WnzZU51MkfSU6ZfIjCyU8V1xdVLAsLOxo4XcxpAtPtYqRVqKbM4EPEt8CUghJGELxJ9/LlhUfbdoWZ1867y2KXYfNpuonBeXT5G0HdCCTmDpoI80Xo9TK7EwC2dWnQ9xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784319315; c=relaxed/simple;
-	bh=diUIIKStfenJCEasoEwrp+wCmRi3qtN6/sa0FZ2l7bg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TN+PdyISHJFmn0nNFWRT0iL6uiMKqvExcChygWZ/67Q8E5Ayx/zAO6xywi7lTQMORfTjXO/r0f4c6P2ubt1L72gsk+ikN7K4rKHANwm96W/piV4bypHG0w67MwPKJMAqeKSW1h2K03Ohm/Bg37YApeaq5Pi+mruIzzdvDmQQW/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8hK3rbW; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784319468; c=relaxed/simple;
+	bh=j1BVRejTn3i9RLhtlh7kH1GGzMdbbGAcriybGLUh/kY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=YI7NaflBqawkcMlN2ehp0UAliBIJ0i1RZ0oNMdG+3NdrPNI2m2tySZztg8c4KgMBE27xOcBdcG+TV5aeJ21W1tUGCwNX5bL4KvCZKTQoLXgZriHGntLAq2C+n4WMML0ujKKEmvfIaOEBpVBtwLeFZmmVT4ucPqr/7G3+oMrpJag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3+U5hFQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8hK3rbW"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493a6258788so7994415e9.3
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 13:15:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784319308; x=1784924108; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4Pv4NrN4dYt4KyUEdjIMuVrZU8kjGasmAaF2k9w2Y9c=;
-        b=m8hK3rbWJ9dCXRpYUMS8e5kU6ayjyoBM4AfwAuGK+XRLsdXJCcgqRxWGTYYYjC5bIL
-         lwZ3rAcHJ1ELt8LLKUuViHJcNrhGhAxn1HUMzO1jNOB5E4+LcTilBy6ArFs/nrPSf0HE
-         vqSsCccU5f8sxpGqR9Zzbst4KRwdQnG2UNfVjOv3uVaAF9RrjqMIOd7ylJLg+TkZ4/rc
-         It3iUdpLnsm/VcuK1ff/CKLeIJJTAOyt6hWYvtqAMPfXzdSPCPisl6mNLMpVQbzV8Rwe
-         zwVEgsTrPMTpSaDPT72+dPIzkk8/Z/9mH2WDYoxorwingznSCvnOR79Ky/msqvImTTJw
-         gZ5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784319308; x=1784924108;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4Pv4NrN4dYt4KyUEdjIMuVrZU8kjGasmAaF2k9w2Y9c=;
-        b=g49ZlVOqjNBVI3wm7JgEXeUQe8hmYxMW6ptaV2wu5WDWIi7AxN0laZiyRp0QURG7+v
-         1Qb2/X0BPc2tsi04fPQ/eN3/kmuWxNHDdkCXwa+HHa9JN190gdB/ZCwQ4bwCKsfIU/2L
-         00l08TgNCsbHZ65+pFKhROA3dXntTo8xoGVSiVxJlKxTGRehoFBcsTVN7a73cn9bX4VR
-         K8MsfCgBnGVLEAfj12GNJSwP7abSCTDSeYH2yXWbMHruj46hLlsGtX9wk3jlL3hX0cBV
-         EIGx1BoOX9VTFSo+v1P5HjI63pno1YcUXQ81XJbWYCBdrzBFwXdWVVy9MjmSKTM2ygnK
-         glTw==
-X-Gm-Message-State: AOJu0Yxke6JHYybVXPRf6JVDgJMPkGUZ6e9iFlhbjG+YFuAnysW0mfdR
-	gF+h3zCH5DAySSr01UZOvjNemUrgnUbERQy1EGsWoJ1Bt/f3GW4YWv/kInZqf4wB
-X-Gm-Gg: AfdE7cmm0jsDJ63xV9IReCODTdrv3qqyokgrWRueh5WhhWbiVUVvOcQniEuA2XJtOh7
-	j0EnhKT4iYz0wW0gnqqVXbxPp+nLwHGxjfH00XCtBkJfS8cCIEu57BID1tv/5EoB9+V+T/YH748
-	EU6hJAiJ9FTkbwbRgzjxc1tADJBEdDvG9Ziz+wvTJZvTKe5ar4/B6fL1OuE3L+nO0aBAd9Z3lSe
-	tfGiDJtMnbVfzQvSQw6GUnEj+64XcLSAIwaIx9++yM8xapaIG882JpXGZrYQJekBIeveIElAO+u
-	mDWcMfauFPyzC+fveeo3odYmolIqdr6ofiQrcJBPl38wd84WVTtXrRlxFFW34qVhgQ/NrDqczKk
-	rs1aT5CSWdJMxyAkVCawlbdO+i8LhVkH7kn/pOXt1Si1hzgohqgJSc0bkwEF0GoIk0GH6yIeWc6
-	3Y3ksjrKslpuqZKIg9wR5FPkZQGPTUVkX1VNNQ4/0PD4UTPUpS9z7QGQfSp7Eps1Fs+tuvz86uv
-	xTul5BrA+0B50G11I2qMU4GvdyCTgkuqAvKof4=
-X-Received: by 2002:a05:600c:46c7:b0:493:efdf:7c80 with SMTP id 5b1f17b1804b1-4954a40ebf0mr29386095e9.5.1784319307839;
-        Fri, 17 Jul 2026 13:15:07 -0700 (PDT)
-Received: from L-022584.energy.envision.com (dynamic-077-179-077-126.77.179.pool.telefonica.de. [77.179.77.126])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499a5847sm53179335e9.2.2026.07.17.13.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 13:15:06 -0700 (PDT)
-From: Xin Xie <xiexinet@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	wsa+renesas@sang-engineering.com,
-	jie.luo@oss.qualcomm.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	fmancera@suse.de,
-	bigeasy@linutronix.de,
-	fmaurer@redhat.com,
-	luka.gejak@linux.dev,
-	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net-next v4 4/4] selftests: net: hsr: add PRP RedBox test
-Date: Fri, 17 Jul 2026 22:14:57 +0200
-Message-ID: <20260717201457.54-5-xiexinet@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260717201457.54-1-xiexinet@gmail.com>
-References: <20260717201457.54-1-xiexinet@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3+U5hFQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954D71F000E9;
+	Fri, 17 Jul 2026 20:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784319467;
+	bh=1yR+uVMZ5Kx6VZqT6fMQbfN/cTZLQWZ9FTkVuasQObk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=M3+U5hFQMlRDm0F89qJRa/74tkkGW7x/rOqXSgqTLMdoApOFZ3bNIVR83o3OTsnhR
+	 uk4hGxJPsa5ZHUVTUYo7WYM8KBSt77U0JMXJxeY6a/TUWlpIeTnMbR9luF6qFsTcJn
+	 Rjsmdwb91aphu0J6g5EiO4U6x0INy83Y+Hg29TCSf8Pfe8Ifs20mWL95dZHebuusj0
+	 FWfyiGztPQJtqV3pU56PVNnWfWyw7iZOuJdPY+1zRiah2PiwWdrZXsAEyxPzk6tHzo
+	 8O49jiSLw6eNA1xAaR9KYuqTKmNv38Ov98gtibmg0dMv+Zlc0WaWPdwPfk5zCVkZgi
+	 5z4ialaNaCZpA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19914380CFED;
+	Fri, 17 Jul 2026 20:17:21 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v7.2-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260717132610.363857-1-pabeni@redhat.com>
+References: <20260717132610.363857-1-pabeni@redhat.com>
+X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260717132610.363857-1-pabeni@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.2-rc4
+X-PR-Tracked-Commit-Id: 56d96fededd61192cd7cc8d2b0f36adfd59036c3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: e13caf1c26587434f0b768193100440939c0fb91
+Message-Id: <178431943968.1854741.8747903421545916136.pr-tracker-bot@kernel.org>
+Date: Fri, 17 Jul 2026 20:17:19 +0000
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add a kselftest that builds a PRP RedBox (interlink) with a SAN behind the
-interlink and a peer DANP, and checks bidirectional unicast across the
-interlink, preservation of the SAN source MAC on the PRP network, and that
-the proxy-announce supervision frame carries the RedBox-MAC TLV (Type 30)
-terminated by an EOT marker. It reuses the hsr_common.sh / lib.sh helpers
-and skips cleanly on a kernel or iproute2 without PRP interlink support.
+The pull request you sent on Fri, 17 Jul 2026 15:26:10 +0200:
 
-The background ping is killed by its exact PID: ip netns exec does not
-isolate the PID namespace, so a pattern-based pkill could hit unrelated
-processes on the host.
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.2-rc4
 
-Signed-off-by: Xin Xie <xiexinet@gmail.com>
----
- tools/testing/selftests/net/hsr/Makefile      |  1 +
- .../selftests/net/hsr/hsr_prp_redbox.sh       | 99 +++++++++++++++++++
- 2 files changed, 100 insertions(+)
- create mode 100755 tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/e13caf1c26587434f0b768193100440939c0fb91
 
-diff --git a/tools/testing/selftests/net/hsr/Makefile b/tools/testing/selftests/net/hsr/Makefile
-index 31fb9326cf5..2150e487ac7 100644
---- a/tools/testing/selftests/net/hsr/Makefile
-+++ b/tools/testing/selftests/net/hsr/Makefile
-@@ -4,6 +4,7 @@ top_srcdir = ../../../../..
- 
- TEST_PROGS := \
- 	hsr_ping.sh \
-+	hsr_prp_redbox.sh \
- 	hsr_redbox.sh \
- 	link_faults.sh \
- 	prp_ping.sh \
-diff --git a/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh b/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
-new file mode 100755
-index 00000000000..479c892225b
---- /dev/null
-+++ b/tools/testing/selftests/net/hsr/hsr_prp_redbox.sh
-@@ -0,0 +1,99 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Test a PRP RedBox (PRP-SAN): a SAN that sits behind the interlink port must
-+# reach, and be reached by, a peer DANP on the PRP network with its own MAC
-+# preserved on the wire, and the RedBox must announce the SAN with a RedBox-MAC
-+# TLV (terminated by an EOT marker) in its PRP supervision frames.
-+#
-+#   RB    PRP RedBox: prp0 over rb_a/rb_b (LAN A/B) + interlink rb_il
-+#   PEER  peer DANP : prp0 over pe_a/pe_b, 100.64.0.2
-+#   SAN   SAN       : san_il, own MAC, 100.64.0.51 (behind the interlink)
-+
-+ipv6=false
-+
-+source ./hsr_common.sh
-+
-+check_prerequisites
-+
-+if ! command -v tcpdump >/dev/null 2>&1; then
-+	echo "SKIP: This test requires tcpdump"
-+	exit $ksft_skip
-+fi
-+
-+if ! ip link help hsr 2>&1 | grep -q interlink; then
-+	echo "SKIP: iproute2 too old (no hsr interlink support)"
-+	exit $ksft_skip
-+fi
-+
-+setup_ns RB PEER SAN
-+trap 'cleanup_ns "$RB" "$PEER" "$SAN"' EXIT
-+
-+ip link add rb_a netns "$RB" type veth peer name pe_a netns "$PEER"
-+ip link add rb_b netns "$RB" type veth peer name pe_b netns "$PEER"
-+ip link add rb_il netns "$RB" type veth peer name san_il netns "$SAN"
-+
-+ip -n "$RB"   link set rb_a up
-+ip -n "$RB"   link set rb_b up
-+ip -n "$RB"   link set rb_il up
-+ip -n "$PEER" link set pe_a up
-+ip -n "$PEER" link set pe_b up
-+ip -n "$SAN"  link set san_il up
-+ip -n "$SAN"  addr add 100.64.0.51/24 dev san_il
-+
-+# Feature gate: PRP interlink (RedBox) creation. A kernel without PRP RedBox
-+# support rejects this with -EINVAL, so SKIP rather than FAIL.
-+if ! ip -n "$RB" link add name prp0 type hsr slave1 rb_a slave2 rb_b \
-+     interlink rb_il proto 1 2>/dev/null; then
-+	echo "SKIP: kernel without PRP RedBox (interlink) support"
-+	exit $ksft_skip
-+fi
-+ip -n "$RB"   link set prp0 up
-+ip -n "$PEER" link add name prp0 type hsr slave1 pe_a slave2 pe_b proto 1
-+ip -n "$PEER" link set prp0 up
-+ip -n "$PEER" addr add 100.64.0.2/24 dev prp0
-+sleep 1
-+
-+san_mac=$(ip -n "$SAN" -br link show san_il | awk '{print $3}')
-+rb_mac=$(ip -n "$RB" -br link show rb_il | awk '{print $3}')
-+
-+# Bidirectional unicast across the interlink.
-+do_ping "$PEER" 100.64.0.51
-+do_ping "$SAN"  100.64.0.2
-+stop_if_error "PRP RedBox bidirectional unicast failed"
-+
-+# The SAN source MAC must be preserved on the PRP network, not laundered to the
-+# RedBox MAC: the peer resolves the SAN IP to the SAN's own MAC.
-+neigh=$(ip -n "$PEER" neigh show 100.64.0.51 | awk '{print $5}')
-+if [ "$neigh" != "$san_mac" ]; then
-+	echo "SAN MAC preservation [ FAIL ]: peer resolved 100.64.0.51 to" \
-+	     "'$neigh', expected $san_mac" 1>&2
-+	ret=1
-+fi
-+stop_if_error "SAN MAC not preserved on the PRP network"
-+
-+# The proxy-announce supervision frame must carry, in order, the life-check TLV
-+# (type 0x14, len 6) + MacAddressA == SAN MAC + the RedBox-MAC TLV (type 0x1e,
-+# len 6) + MacAddressRedBox == RedBox MAC + the EOT marker (0x0000).
-+ip netns exec "$SAN" ping -i 0.2 -q 100.64.0.2 >/dev/null 2>&1 &
-+ping_pid=$!
-+cap=$(ip netns exec "$PEER" timeout 5 tcpdump -i pe_a -nn -x \
-+	"ether proto 0x88fb and ether src $rb_mac" 2>/dev/null || true)
-+kill "$ping_pid" 2>/dev/null || true
-+wait "$ping_pid" 2>/dev/null || true
-+
-+san_hex=$(echo "$san_mac" | tr -d ':')
-+rb_hex=$(echo "$rb_mac" | tr -d ':')
-+# Reassemble contiguous frame hex: drop the "0x0010:" offset labels and spaces.
-+frame_hex=$(echo "$cap" | awk '/^[[:space:]]*0x[0-9a-f]+:/ {
-+	sub(/^[[:space:]]*0x[0-9a-f]+:[[:space:]]*/, "");
-+	gsub(/ /, ""); printf "%s", $0 }')
-+if ! echo "$frame_hex" | grep -q "1406${san_hex}1e06${rb_hex}0000"; then
-+	echo "supervision RedBox-MAC TLV [ FAIL ]: missing SAN MAC, Type-30" \
-+	     "payload, or EOT" 1>&2
-+	ret=1
-+fi
-+stop_if_error "PRP RedBox supervision RedBox-MAC TLV/EOT check failed"
-+
-+echo "INFO: PRP RedBox (PRP-SAN) conformance checks passed"
-+exit $ret
+Thank you!
+
 -- 
-2.53.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
