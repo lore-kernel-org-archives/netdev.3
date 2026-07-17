@@ -1,161 +1,80 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A45377A9D
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 13:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784295102; cv=pass; b=QYotOEjuTPKcP1X0WRmKu5FqTRTiqVuH6T8sXdG3QCBiPHjHKVIp4IFKpS1QpLddps8yQNuY5vLKOCrL0N4YV/URwi5p0cyPh4KSPEpF/qdlC5V+sxZ73I9syUux6ZMUaHj1LTu/Wm2xiTTajupj2qr3ikQG89Qo1GzndMXngiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784295102; c=relaxed/simple;
-	bh=w+dBJoXuJR+/v6n/aS8nD5sx9qZhJzcgLbU8KMn+Df8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=akTjzblLlVJHECz4S1SO1gsC+qopnrD6kmPFIoQZUJCrZHbwyrZXcvrJU8m5rEXMQJNLA2PUB0WAEE/YHVQuVXLhVpVw+1AVScDa0VOPpmeKhDdSWHxK6z3zf0pSwcNHTVnM/zCfZFQ9vW/0ZEI7M1mu+B0gqtf0VhnisqDjtZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MSdz+VjU; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8AB39281B;
+	Fri, 17 Jul 2026 13:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784295643; cv=none; b=HC/OMXo1unQ84UhiJ/gIK3aL5rUJnBIQ0rKWwil7wk1WjmoT7Pf6OW2gLuVhwo5XuPN5ncG4M6DRxGlwbKiJK8u1g6uXZh9GXvBsogBJh21+y1P4UuSh0yLVm06EHU6iIFma/EaJ0JQC+pxWD1CyQ41CWFzm5/W8qzWCss4Mag4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784295643; c=relaxed/simple;
+	bh=qw913owOwee9juq7g5V9fR/kbC4QPRPGki76M0Zli3w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=C51/ByI2U40U40tUGCP93sGmBKe5uVLL36Dke01+BjVCXKJPJwLLi8NXxDgr9083iS0ILDQnRvDkvcAqm67P2tB68fCjf1aWooiUBQ58f7o5tX3jsbCEaanvt5COetR8532YVEQKXQfjxOHJrkPMrQLQS5PkxP+6L0BpgS44U3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKqBy27R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MSdz+VjU"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aeba09900bso3430666e87.2
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 06:31:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784295099; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fx71KY8AtpxcqAPtdX7cXMvTcF6l0wDpap8kbWesJu0aY10nkY7amywVDYVdX9Owhq
-         cQFXKKOBf54JWMPj4f2LAjWZykBMhNLxqeuMKixe1KLiqgIOKlpPRAw9L1oDqd/iO7bd
-         wyU4lzOzgeemTYKO4GKEoqAWJ9TnyKLUHlDNs0+wajcQOAbYzkGFbffBbm68Ig9C9xTx
-         OmV5gSBqegP2JYI18aB1FZMOoiNx8Nhz0OLU37xBgehulynEEhRNgg1H7N9ve7KYAOmh
-         HFrS/TUcQThb/RPH3dt6XLTJ+1k4PfBh17CRwjgWqFlZFME32LN9sxhE4Nc7Fa54fbjb
-         z8SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=u39MMAPRg+9PZ9dmmKPFxaac8+2GTA2VmCK0dYzDWB0=;
-        fh=zCXwXcitMxsu37PtRfQp3VckrZIA9qmsT4dVGmnez6Q=;
-        b=ZaxJJyP2OMeU9u3Ov+WhHb736uP56tKq1irO4uq16Mbf8yOdYrFFJv1gupT9YjrjCx
-         KJQuVWiyrmaPtp6WMXQDe73YUN8aXSHiXz775DtpPBEICtnfQ8PzT3OIzRA5MHzbnC7t
-         /4PUhBlskjSwzYI8PaDgFchAyvhqzEIv92AL6/ygK0/7FU47bHSBqE7EXDVQLSz0yhKT
-         mp5biN3PE3fNjZ0LuWy4APcMMGw3uI+rdShhFKZ9CGTS7EKqNSRsLnpoxuuYmLq2x2eg
-         XzmdwOhyWByZXbB7KeWCRMeR8lIuxzD2Mtnjv6QV3g3PxVD79nO9N//N/uHPq31Kh/G2
-         3IyA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784295099; x=1784899899; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u39MMAPRg+9PZ9dmmKPFxaac8+2GTA2VmCK0dYzDWB0=;
-        b=MSdz+VjUrvSE+bJo9lcspeh5m/9cwm4p9uOUVKjqeiGQziga2y6KfNzPXNts/x/pAN
-         aQLPGM0fJlzDVfQbvJgas7r/IFsvFuFb24MaZ6tSv5fo4ctrGPSxE2Dw7+xZDwLYRntc
-         Gf2cBEaa9Vszi7us4i44NoroO9Y19vdtzzuhSVf0tilWKQ6gmMZ5HSLJP9BmWapHgLYX
-         fuqwtnKTS3iOV0Bv8/Eo6VuNOjDxV3T5V3MXSIGGdUHAjQFE+P/Iwx3d9yfD90NZQtGn
-         B211b6oh1Ur9K2XgdNlU8SRpzmuhM2zE0fNVGxXy1RvDRcLtCo7gb9mJDi8oWW6NVbjj
-         GRbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784295099; x=1784899899;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u39MMAPRg+9PZ9dmmKPFxaac8+2GTA2VmCK0dYzDWB0=;
-        b=lQ0v+LOXpARLPUOSJeSekLrrMKT2YIUfeXeFej99tEf+XkQW5ylqeqa/HxTHvS6OV0
-         B3+Vz0sBW++tEwA53u+PBLasm20ERWS4CQ6++x+BjVjZ83DYMqfOOHw4Z78FgZw5SQlY
-         NVODay6JUS8Q4uTh263UcCBwsEnuuUBdPp7VvkulEPMdO0nRNLz6BgXV3y7HAF2h+ZeD
-         F9AbKk2Ws15jyGaeGaKgDJM4sPfhr4m+7uR8eY/BYdMei2f6ari0Rsen9QJyTP8Qc67z
-         jOolh3xvo/Bj3Isn7EYhnQhHOltp7Oi1riIjEncd4wD06beBV/8ozLH0j7Bo+pz1h/Ga
-         D6Ww==
-X-Forwarded-Encrypted: i=1; AHgh+Roub/4LVvcP/iYhe6ngf5mJLs/I4s/L4rzwHGFuzLJvTiWwnLvoqZIdvgobUY4w4V0jIy8BE44=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznMpiUUB/o0Yy20DgGm/ENEAU6hFalJDiv/c8edxETa4hacGhj
-	l0hOsCsmeDTzN/VAxA2CXhKbXzzef1YftYI0akOABxDlh5zI9CLdGydvr9iEkNcGw3v+4RCMiBj
-	3w+B8bP+CpMxRZjI2oALFtpjlpUub90U=
-X-Gm-Gg: AfdE7cl5olZAPVhTRVE7xF8zRGkA8vIKdryoXVwCV7ATE/g0idYbxwCjKqPedbF8+mD
-	+oZi2+odIWgTeQbV2eM2ak+kNQ8ZmxdPXQjlmT4vrvS4j26ULoVBGKhSXA0skzANHVqGfEs9YWi
-	db+WyHzIjTgcnmIjb1Bkp9/ALk+imtigo1Q3tvomZ+AkNxWWBDALydLnvH7Nk1j4Qy58pO4IRN+
-	3zVnEgzsu40nzah48U7v8h4UcvYpwELaXHnBXGs5UbK/0DwvrKCa/zG88KBV16eslAorMmgkLWR
-	8ni4m6iaVjeDhYT9MNX4fUUAFzULAPw4dG3S6kTCuvVUo80Q6XQfPY9EtWGtv8QPvW/Y0vtciK9
-	b
-X-Received: by 2002:a05:6512:2390:b0:5ae:ba93:9116 with SMTP id
- 2adb3069b0e04-5b28f855105mr759222e87.2.1784295098503; Fri, 17 Jul 2026
- 06:31:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKqBy27R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D5A1F000E9;
+	Fri, 17 Jul 2026 13:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784295642;
+	bh=lPWl/fcDZzQsiAjslA7JI02PnI5xdychDwv0+B16Nv0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kKqBy27RptL6rriWWj0IygmUf5XjSNVMOq8/yMJjD4eApYSl21IITd/mCjyWYria1
+	 VZHmYpwVMEYy8zsvNDsHHVADV/KFwUKQFqRon8wZN0fF7Uf9uYsqwoC06TxUvQLJ3I
+	 U6nHHyh0HNRR07CVeuGlhot6yNyUBljmov1/nHkLZx7ykabXII15hwG2fVG+va/0SA
+	 CdZdJxe/6q2nd0M4ccE84pLdbvfoGjBjgOMdRxdd00ip7wIhCJ23kbZAomZz9XvF3q
+	 dm7EctBY+RmmV3U62RtTNDq5xokGn7F5XVLIC2HLyzX3nm8KvnJAfkcBZ0AM/RIgO+
+	 rrx+WicLWOIfQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197F2380CEE7;
+	Fri, 17 Jul 2026 13:40:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709183315.965751-1-kuniyu@google.com> <20260709183315.965751-3-kuniyu@google.com>
-In-Reply-To: <20260709183315.965751-3-kuniyu@google.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Fri, 17 Jul 2026 15:30:59 +0200
-X-Gm-Features: AUfX_mwQF2RdA26uo8EenLMqIB0oLsHOjIRSBxOf4gs9O0vtCbtXWPpeY6a0Y8I
-Message-ID: <CAL+tcoCqxPo-pAF7ouFAsb-jTeNwGy4kowhwL3NJGvZhGCQ0Eg@mail.gmail.com>
-Subject: Re: [PATCH v1 net 2/2] net: Call net_enable_timestamp() before
- failure in sk_clone().
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, 
-	Octavian Purdila <tavip@google.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4] net: mana: Add handler for sriov configure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178429561463.1724817.13808697155660997427.git-patchwork-notify@kernel.org>
+Date: Fri, 17 Jul 2026 13:40:14 +0000
+References: <20260710192735.2921300-1-haiyangz@linux.microsoft.com>
+In-Reply-To: <20260710192735.2921300-1-haiyangz@linux.microsoft.com>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, kys@microsoft.com,
+ haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ernis@linux.microsoft.com, dipayanroy@linux.microsoft.com,
+ gargaditya@linux.microsoft.com, shradhagupta@linux.microsoft.com,
+ linux-kernel@vger.kernel.org, paulros@microsoft.com
 
-On Thu, Jul 9, 2026 at 8:34=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.com=
-> wrote:
->
-> When sk_clone() fails, sk_destruct() is called for the new socket.
->
-> If the parent socket has SK_FLAGS_TIMESTAMP in sk->sk_flags,
-> net_disable_timestamp() is called for the child socket even though
-> net_enable_timestamp() is not called for it.
->
-> Let's call net_enable_timestamp() before any failure path in
-> sk_clone().
->
-> Fixes: 704da560c0a0 ("tcp: update the netstamp_needed counter when clonin=
-g sockets")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260709032007.9E4D61F000E9@smtp.kern=
-el.org/
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Hello:
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> ---
->  net/core/sock.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index fc3ff0552d68..504d82a3aacd 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -2546,6 +2546,9 @@ struct sock *sk_clone(const struct sock *sk, const =
-gfp_t priority,
->
->         RCU_INIT_POINTER(newsk->sk_reuseport_cb, NULL);
->
-> +       if (sock_needs_netstamp(sk) && newsk->sk_flags & SK_FLAGS_TIMESTA=
-MP)
-> +               net_enable_timestamp();
-> +
->         rcu_read_lock();
->         filter =3D rcu_dereference(sk->sk_filter);
->         if (filter !=3D NULL)
-> @@ -2595,9 +2598,6 @@ struct sock *sk_clone(const struct sock *sk, const =
-gfp_t priority,
->
->         if (newsk->sk_prot->sockets_allocated)
->                 sk_sockets_allocated_inc(newsk);
-> -
-> -       if (sock_needs_netstamp(sk) && newsk->sk_flags & SK_FLAGS_TIMESTA=
-MP)
-> -               net_enable_timestamp();
->  out:
->         return newsk;
->  free:
-> --
-> 2.55.0.795.g602f6c329a-goog
->
->
+On Fri, 10 Jul 2026 12:27:29 -0700 you wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> Add callback function for the pci_driver / sriov_configure.
+> 
+> It asks the NIC to provide certain number of VFs, or disable
+> VFs if the request is zero.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v4] net: mana: Add handler for sriov configure
+    https://git.kernel.org/netdev/net-next/c/ce6b4d3216b6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
