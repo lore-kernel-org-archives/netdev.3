@@ -1,188 +1,149 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD3333DEDD
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFBE1ADC83;
+	Fri, 17 Jul 2026 08:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784276584; cv=none; b=aWYvoauwxgmOLr651vna5xyLNi62NaR8LCt2y5c0ltZWKNBfTPvBDm/AdfTwXhi84kVCq+Qer3k5Jh8EIwEORhvPaRJ9FKjgXTHByRSFM4Kj2OAP2jJDcovc2pbTtHkAXvuTweFvfPAFVmG32S2NbwwjwMmg2SV6COdH1qv+ICI=
+	t=1784276629; cv=none; b=OSLkdKDxvskyDvSJAe6Gl78jpORq+DBLrZb8fieoHXOIomI2LI0XEIU6hrGm1cAEWCVfNgdCN9VRID6KdPoF1adL5qAcsVCJxj3po0SSm03hC23RUvHRv36P6MTj0lLEAJIHNP4/uuCcwm9+gpYEVw4ufstXHrVZUtw2d9fKIpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784276584; c=relaxed/simple;
-	bh=OgfKQGcUft8+pubZB1n8Cb5kpcRbRtLkKcWVdrtca3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CyDYqCIh+mizLekFiQVHIVh25dVcxKNxQomCUO0D6QXVWDjYUnmEgxFEX7HARjA2JUuigKHYgJ/9jRfWpBfHm34J5+UMUVMdm/TuQ4Bmm8N+P1/78Hy9rW7xMvpf59i2DXZaoybMINdft1ssAeh7Kh0PX/x8YeATO946DTRL8pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oMLWAPlG; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784276629; c=relaxed/simple;
+	bh=u8FeOgGeidjBCoK8aCLS4fOTF/iMCUlPpDkwe0d7uDo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RrOMTk9Az5dsLeT4R6A37Ayjs4SsjFEvGnLyIMbX/7ZGHO/jF03qIt9CbA0CcDLlTPVMQ439AJM1OmLi3j5joAKeUE/8L80BlvX/IdskwLECPp78BSRAJy9T3RwmHsTJap32PeK8ilyo2u6hBpIwdYUfBaNSXOpVTYebbqgLXlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IEc/OFEF; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oMLWAPlG"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493b27c7451so8637535e9.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:23:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784276581; x=1784881381; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NLZAfRK2x9zkSee/fqTuHPNp25jE6qaj7rL/KrN+u8g=;
-        b=oMLWAPlGU2OR3WEZegsvP74B/Gd742nWs6VsZ04tDu3gwme40AUEOplGxxP514/B4n
-         XVLVHEyH6jcE+qV83iuLm1mbEORVJxF0hbr21NsxedYt+EQsTVlnXIQl9CtXj47EyEdY
-         u4bGBS7A3kixYCjL4IzEPB0TUIj/FcHdxeG7betOJ1RLOEamIWsmSVG3l0KKkl7ZvVe4
-         ieIhEZPnRA3aRIZJd++afq0BUibUthoQzCqufhurnvvpp+DZR9Ex/XOkQ+FpiF5VEmIB
-         YP+w8RVIS8FZ3wPHfJB6QLOuZYJOotcOutklD8iglo9hYqZzFuo4K7ThUv90SiaDoWVX
-         wQVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784276581; x=1784881381;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NLZAfRK2x9zkSee/fqTuHPNp25jE6qaj7rL/KrN+u8g=;
-        b=d5FtWydUS6ZV4VkzqfEpcUsz6PqNONsc5dG0TxLaD12OvHW6PlrmiTuEK6cTfepard
-         tPPQkX6yoCfF2Sr1950Sc5eNivdh3ysZqNA9CmWm+vW5M17iPLVihy0mUrqErt/lVTC6
-         MV06GtPdaam0nCQhhLlXplSTf9WGEIfPpCzwaAf0FVMS859gO5jf+3nMTGCm3miP2fw/
-         P7ovJJSIQUa7fCkHuK0EZFpMoI1417MISt0Mfg5LQy98NZObGDWLRUTHZ/pOwSiJ5vQ2
-         WVe+h5AQT/518eW361Y6BbpunXTrK45QzdDbtf0YpkZUxqL9c6CKQbwYiGn2OgvysVcc
-         /1JQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1y/k201tNzTnwvH3qXRFk5u/0SLJNjISxyb2NVAEvaCiy6BxgFMnFybGk/lEre57IBmfTBWk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNTmSNL+Jfklzx/NwEhPHwzo2+AeNhMERlRb1Ss8+TTJR8xDtZ
-	MTvyAh4M1FuotSSqfJNRSeqMyJ6yx75lGUphNmuGzYKEs0mPRTC9HeJr
-X-Gm-Gg: AfdE7cl9n55+9lPxvnEE1R3bq+2mFmsyP9H8Q5GTgEhW+tUkKNqSL2ovmAMdzYm3jFV
-	crl51jvxpnXO7UM6VSqOSFzfsnUTPhfH9byC+Llfnx3+4y0JeLvfxQcOF77IPMjwxcJZu8Hevqj
-	RHKqoitfEYjlhLccpM3FOMXwqwcp4KooKqJkOQEh9R7qtR322j6ZFE58iMV/lua1hwKGYKHpkfz
-	aGAni+oFwv9PFamWXtNuLdz7StOd67+0OlWQrsZAc5qrFw2iUoPeevvcnh3cTx7aXhRVwkCfNS2
-	nbHqM5DmGrVWoT3iSc1+g+45Xj8PtWl/5uEt6UjZY62uWK+hS2jwMAUucD2zY09fqjgfmwhl/tP
-	FCQAE45QOO7f1eVeMsuEdWZVHMY0FtM4qCDJCzlIYNOabvDN6s5LKADGq9ZV7EJtOaCcqRH6zAP
-	gMaGCs9gXw9ZGXzs52kbb0kYxIauS63t4h5iJOOO0=
-X-Received: by 2002:a05:600c:3113:b0:493:f478:4c71 with SMTP id 5b1f17b1804b1-4954a323b14mr16486755e9.7.1784276580733;
-        Fri, 17 Jul 2026 01:23:00 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2eddb8sm59577575e9.14.2026.07.17.01.23.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 01:23:00 -0700 (PDT)
-Date: Fri, 17 Jul 2026 09:22:58 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexander Aring
- <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Miquel
- Raynal <miquel.raynal@bootlin.com>, Remi Denis-Courmont
- <courmisch@gmail.com>, =?UTF-8?B?UsOpbWk=?= Denis-Courmont
- <remi.denis-courmont@nokia.com>, John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH net-next 5/7] phonet: pep: convert getsockopt to
- sockopt_t
-Message-ID: <20260717092258.776e63db@pumpkin>
-In-Reply-To: <20260716-getsockopt_phase4-v1-5-4f45cb12dce7@debian.org>
-References: <20260716-getsockopt_phase4-v1-0-4f45cb12dce7@debian.org>
-	<20260716-getsockopt_phase4-v1-5-4f45cb12dce7@debian.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IEc/OFEF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=cr
+	e3/aFEzBTHrCFjylFi0Gqb5tPfLro6l4NFdHJ/+DQ=; b=IEc/OFEFYWp23mpvx9
+	h+kCjNW4ixEt2rhP/2sd2g/zLFpZ85tfbDCOyNIG5GTWkIhj249QdqIEfmPoS1Ph
+	PjRA4mM4HSNtgZVDmML8+V2/9IRsgwLk6q8djafIJ/HM85Y1Fl54hq6Lx6HVuq6c
+	NHvxjeSzurC73RP/HEIDXNwn8=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCHBNnh5VlqHENqKQ--.41694S2;
+	Fri, 17 Jul 2026 16:20:51 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: jedrzej.jagielski@intel.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-sctp@vger.kernel.org,
+	lucien.xin@gmail.com,
+	luoqing@kylinos.cn,
+	marcelo.leitner@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH net v3] sctp: socket: remove unused 'err' parameter from sctp_skb_recv_datagram
+Date: Fri, 17 Jul 2026 16:20:48 +0800
+Message-Id: <20260717082048.948262-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <PH0PR11MB5902DBD696C30DB0A2308A49F0C72@PH0PR11MB5902.namprd11.prod.outlook.com>
+References: <PH0PR11MB5902DBD696C30DB0A2308A49F0C72@PH0PR11MB5902.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHBNnh5VlqHENqKQ--.41694S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr1fAFyDXrW7tw45AF47Arb_yoW5Cry7pF
+	n8AFW5ArWDJrW8uwnakFZ7J3WSgws5Jw15CFWrtw4Yyrs8tr9YqFy8KF4SkF45Cr4Yka4Y
+	qr1qgw13KrnxCFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfDGrUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3QOi5mpZ5eM2vwAA3m
 
-On Thu, 16 Jul 2026 06:00:03 -0700
-Breno Leitao <leitao@debian.org> wrote:
+From: luoqing <luoqing@kylinos.cn>
 
-> Continue converting the proto-layer getsockopt callbacks to the
-> sockopt_t interface, splitting pep_getsockopt() into a
-> do_pep_getsockopt() helper that takes a sockopt_t.
-> 
-> The thin pep_getsockopt() wrapper keeps its __user signature for now:
-> it builds a user-backed sockopt_t with sockopt_init_user(), calls the
-> helper, and writes the returned length back to optlen. The helper uses
-> copy_to_iter() instead of copy_to_user(). No functional change.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  net/phonet/pep.c | 36 ++++++++++++++++++++++++++----------
->  1 file changed, 26 insertions(+), 10 deletions(-)
-> 
-> diff --git a/net/phonet/pep.c b/net/phonet/pep.c
-> index 60d1a5375725b..c7f4ce894af56 100644
-> --- a/net/phonet/pep.c
-> +++ b/net/phonet/pep.c
-> @@ -1078,17 +1078,11 @@ static int pep_setsockopt(struct sock *sk, int level, int optname,
->  	return err;
->  }
->  
-> -static int pep_getsockopt(struct sock *sk, int level, int optname,
-> -				char __user *optval, int __user *optlen)
-> +static int do_pep_getsockopt(struct sock *sk, int optname, sockopt_t *opt)
->  {
->  	struct pep_sock *pn = pep_sk(sk);
->  	int len, val;
->  
-> -	if (level != SOL_PNPIPE)
-> -		return -ENOPROTOOPT;
-> -	if (get_user(len, optlen))
-> -		return -EFAULT;
-> -
->  	switch (optname) {
->  	case PNPIPE_ENCAP:
->  		val = pn->ifindex ? PNPIPE_ENCAP_IP : PNPIPE_ENCAP_NONE;
-> @@ -1112,11 +1106,33 @@ static int pep_getsockopt(struct sock *sk, int level, int optname,
->  		return -ENOPROTOOPT;
->  	}
->  
-> -	len = min_t(unsigned int, sizeof(int), len);
-> -	if (put_user(len, optlen))
-> +	len = min_t(unsigned int, sizeof(int), opt->optlen);
+The 'err' parameter in sctp_skb_recv_datagram() is never used by any
+of its callers. Both sctp_recvmsg() and sctp_ulpevent_read_nxtinfo()
+pass the address of a local variable but never check its value after
+the function returns, rendering the parameter completely useless.
 
-I'm pretty sure that can be min().
-More generally I'm not at all sure about negative lengths.
-Historically the user type would have been 'int', but it got replaced
-by socklen_t which is probably unsigned.
-(IIRC one of the 64bit Unix had started using a 64bit type but I think
-it was sun objected to making that change so socklen_t was born.)
+Remove the unused parameter to simplify the function signature and
+eliminate dead code.
 
-Also truncating below 4 bytes makes no sense here on BE systems.
-Some code will try to write the significant bytes out, but that
-would be better done in the wrapper.
+Signed-off-by: luoqing <luoqing@kylinos.cn>
+---
+ include/net/sctp/sctp.h |  2 +-
+ net/sctp/socket.c       | 10 +++-------
+ net/sctp/ulpevent.c     |  3 +--
+ 3 files changed, 5 insertions(+), 10 deletions(-)
 
-> +	opt->optlen = len;
-> +	if (copy_to_iter(&val, len, &opt->iter_out) != len)
->  		return -EFAULT;
-> -	if (copy_to_user(optval, &val, len))
-> +	return 0;
-> +}
-> +
-> +static int pep_getsockopt(struct sock *sk, int level, int optname,
-> +			  char __user *optval, int __user *optlen)
-> +{
-> +	sockopt_t opt;
-> +	int err;
-> +
-> +	if (level != SOL_PNPIPE)
-> +		return -ENOPROTOOPT;
-> +
-> +	err = sockopt_init_user(&opt, optval, optlen);
-
-Have I not looked at these before?
-Why is this here, not in the outer code?
-
-	David
-
-> +	if (err)
-> +		return err;
-> +
-> +	err = do_pep_getsockopt(sk, optname, &opt);
-> +	if (err)
-> +		return err;
-> +
-> +	if (put_user(opt.optlen, optlen))
->  		return -EFAULT;
-> +
->  	return 0;
->  }
->  
-> 
+diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
+index d50c27812504..b86d50d6b146 100644
+--- a/include/net/sctp/sctp.h
++++ b/include/net/sctp/sctp.h
+@@ -97,7 +97,7 @@ void sctp_sock_rfree(struct sk_buff *skb);
+ 
+ extern struct percpu_counter sctp_sockets_allocated;
+ int sctp_asconf_mgmt(struct sctp_sock *, struct sctp_sockaddr_entry *);
+-struct sk_buff *sctp_skb_recv_datagram(struct sock *, int, int *);
++struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags);
+ 
+ typedef int (*sctp_callback_t)(struct sctp_endpoint *, struct sctp_transport *, void *);
+ void sctp_transport_walk_start(struct rhashtable_iter *iter);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325ec1c..3804382d78e0 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2123,7 +2123,7 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 		goto out;
+ 	}
+ 
+-	skb = sctp_skb_recv_datagram(sk, flags, &err);
++	skb = sctp_skb_recv_datagram(sk, flags);
+ 	if (!skb)
+ 		goto out;
+ 
+@@ -9082,7 +9082,7 @@ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p)
+  * Note: This is pretty much the same routine as in core/datagram.c
+  * with a few changes to make lksctp work.
+  */
+-struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
++struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags)
+ {
+ 	int error;
+ 	struct sk_buff *skb;
+@@ -9120,17 +9120,13 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+ 			break;
+ 
+-
+ 		/* User doesn't want to wait.  */
+ 		error = -EAGAIN;
+ 		if (!timeo)
+ 			goto no_packet;
+-	} while (sctp_wait_for_packet(sk, err, &timeo) == 0);
+-
+-	return NULL;
++	} while (sctp_wait_for_packet(sk, &error, &timeo) == 0);
+ 
+ no_packet:
+-	*err = error;
+ 	return NULL;
+ }
+ 
+diff --git a/net/sctp/ulpevent.c b/net/sctp/ulpevent.c
+index 8920ca92a011..8ed51a15c3a4 100644
+--- a/net/sctp/ulpevent.c
++++ b/net/sctp/ulpevent.c
+@@ -1061,9 +1061,8 @@ void sctp_ulpevent_read_nxtinfo(const struct sctp_ulpevent *event,
+ 				struct sock *sk)
+ {
+ 	struct sk_buff *skb;
+-	int err;
+ 
+-	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT, &err);
++	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT);
+ 	if (skb != NULL) {
+ 		__sctp_ulpevent_read_nxtinfo(sctp_skb2event(skb),
+ 					     msghdr, skb);
+-- 
+2.25.1
 
