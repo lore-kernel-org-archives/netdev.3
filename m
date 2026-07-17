@@ -1,36 +1,48 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E630528640B;
-	Fri, 17 Jul 2026 02:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C5943F0AB
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 02:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784254991; cv=none; b=n5bzrZS8ReDEUKgvjDLHtK8Xxef8gIkfIFEfJ8+00L6FL4uub9NewffcmEL4SuqkHO+C13ZJ8nm6u0Kmj5eWg1U0h9hdLUp5s5oPjpE12DjAzUI8WHodcBVlsrfSQ3S5EmBJWtpMACrHkJyKtYlN7CVb4s9aYdKsj4qRyKyUTWQ=
+	t=1784255017; cv=none; b=YIJuLKdX0dWyG5+zPAMdgugUHLQYiK99ilmRAKy4jlCs+1eqx3fPo7mqtULjT5iISY/PCE5qIhiSPSlBTSTL99SG33EjVTgKdsuya4zUb5jlO2rAhE70KiruEcaJ6JhvEc7DKoiNyTJUeaNQc5suLQyuv6JldBjCp+0/emnqTIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784254991; c=relaxed/simple;
-	bh=gzBB4RI0McIMNfkp6nyHpRhld9DwqhLSjBfqY3GUKeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TWHyczUtGXxUMbkQ04bfgZZPOPmORtRD0IoEUSabp7N1qlPi1DlSCVMbYwb4y932Prpe3cyqV/n1ygSwmuN94rBhafdRMfv2QOQxyNXAXqQdyF6ir8JHhOU4iTd43c7fGIU6ZAyPk1Y4kwMz6BHjOYBDqk0sBcMShWXPNNVe4XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZIHhImDa; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784255017; c=relaxed/simple;
+	bh=jrVXpX+QjS979JWG2YI9q80Xy/kzoqYHHUu4KOFhl4k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rAzlpH0BQr/YcVpXN2LDqKwCnTSBPqpQ7aW8Fo/GM9pggx0ycPXtaExd2r2v8QD/qKlpFMUGzgzxS7ssMNCUZh0pRq1iyYIX3yQ+E+UIp0btyk/XYaaweRwUoYiLYUsjU1d9dXaaB1SzUB1nJrQYJ/gEydislG6pttJjzo8lkng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fZE2HN0A; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZIHhImDa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=2t
-	Lk+W75QTRAmJLveJNlKhA2n+LlU7iq3Aw06vBYpq8=; b=ZIHhImDa3PbJj/RzpM
-	e/mhLIdCtYJWMN2bH1Z5TNomsAjVdK2VuvZXaeyuhuRngzlexoQh2JP0tXSHrWwY
-	WTSBHKy/aHbb6Dt0WQKzJrvgtKeoXXGQKQ+QrhhcbRLmO8DrsUVApfTbbWoNHl7T
-	1b1MA06Lds/Vgs2ToEO1LgYC8=
-Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgCnyPcFkllq3S0RHA--.2823S2;
-	Fri, 17 Jul 2026 10:23:02 +0800 (CST)
-From: Weimin Xiong <xiongwm2026@163.com>
-To: netdev@vger.kernel.org
-Cc: linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v2] net/rds: use krealloc_array() for iovector growth
-Date: Fri, 17 Jul 2026 10:23:02 +0800
-Message-ID: <20260717022302.329333-1-xiongwm2026@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fZE2HN0A"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784255012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a3JqH5R6aAe2D3XZtgdrEzInTdqObFpNQmvDf5kqSx0=;
+	b=fZE2HN0AXFnIX6zXdr5iF/QYuWVyQHLknV56DlJmgswEISfHL6OEENaUO0iF3JjWJNGn6g
+	jKgqlU2HoHyJZRGwYwF0wIsL5CizeeOLy/JJ8YA4/7/4bTaKol72aK76WqgMQXL9mzUF1O
+	Cn8cExAPODYUR1svwU9jKd2iJzqt+x8=
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	chenguang.zhao@linux.dev,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: [PATCH net] net: ethernet: mtk_eth_soc: pass eth to mtk_handle_irq_rx in poll_controller
+Date: Fri, 17 Jul 2026 10:23:39 +0800
+Message-Id: <20260717022339.301914-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,41 +50,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgCnyPcFkllq3S0RHA--.2823S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JF17AFW8WrykuF43Jr43ZFb_yoWfWFc_GF
-	WIqas7W343tF43Ar1Ikr4aqr9xtF4rua1xury3KrWSq3y8Jrs8ZrWkJrn5AFsxWw4xCr1Y
-	yr1DZrn2y39xGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8_hLUUUUUU==
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC8AaWJmpZkga07QAA34
+X-Migadu-Flow: FLOW_OUT
 
-Use krealloc_array() for growing the RDS iovector array. This makes the
-array allocation overflow-safe and derives the element size from the
-array pointer.
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-Signed-off-by: Weimin Xiong <xiongwm2026@163.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
+mtk_handle_irq_rx expects a struct mtk_eth * (matching the request_irq
+cookie), but mtk_poll_controller incorrectly passed the net_device *.
+Calling ndo_poll_controller with CONFIG_NET_POLL_CONTROLLER enabled
+would then crash.
 ---
- net/rds/send.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 68be1bf0e..a567c97a 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -971,11 +971,8 @@ static int rds_rm_size(struct msghdr *msg, int num_sgs,
- 				return -EINVAL;
- 			if (vct->indx >= vct->len) {
- 				vct->len += vct->incr;
--				tmp_iov =
--					krealloc(vct->vec,
--						 vct->len *
--						 sizeof(struct rds_iov_vector),
--						 GFP_KERNEL);
-+				tmp_iov = krealloc_array(vct->vec, vct->len,
-+							 sizeof(*vct->vec), GFP_KERNEL);
- 				if (!tmp_iov) {
- 					vct->len -= vct->incr;
- 					return -ENOMEM;
---
-2.39.3
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 5d291e50a47b..351444fb4871 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3467,7 +3467,7 @@ static void mtk_poll_controller(struct net_device *dev)
+ 
+ 	mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
+ 	mtk_rx_irq_disable(eth, eth->soc->rx.irq_done_mask);
+-	mtk_handle_irq_rx(eth->irq[MTK_FE_IRQ_RX], dev);
++	mtk_handle_irq_rx(eth->irq[MTK_FE_IRQ_RX], eth);
+ 	mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
+ 	mtk_rx_irq_enable(eth, eth->soc->rx.irq_done_mask);
+ }
+-- 
+2.25.1
 
