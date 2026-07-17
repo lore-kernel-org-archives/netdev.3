@@ -1,114 +1,150 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5853EDE4A
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 10:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784285514; cv=pass; b=X3SfWjywGB306oS83On0pSrp5FaGxujaB0HTsKkW0go3XOmDZOGH2QCcIpnm5W4tSIeNkuecxEScXcaQLZs6jL7WH1KBBI64olG42XHyFlTt0p0YF5pmKWLiO1aU9OAl9sO92oTmzirLpq56aYW2LjmdxP5oKkksXfZMto3ghOg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784285514; c=relaxed/simple;
-	bh=vQplzCRPmrlbx+b3iFM8q56R2Z6YLNw+7G55zXBLBms=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kIfTEOhvlWajiqU+PqJBLOFjpepbACLECzYybS6aSH6cOUQJVI/MCwoFCAhCe6r6Emqa3eula5ti2y1sARy8mE/Zuevk1IYsJWym1/kx8zOr/XJjff436SDlbM++d6Q30LemLPOOq5iVa7VVIfrUGSGEQH8WMbS4HWxFgbvApsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nesowRCx; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EED13CF97F;
+	Fri, 17 Jul 2026 10:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784285529; cv=none; b=H4kEjVm9vijajCZJ/G33wDtpIkDYb5avTpE9yZTbPIKfJ90aS8HaKZyiwSVOH+Ezmjri6yrBluJjFQYOeWTfU6Vtp0GqIsP+yA5O8y/VZ8Y3bJpAdGWa5c7G/ki6M57/OLitvugoDq/4Ae/vvxBJKdnl5fOVW1c0dkvc7N/bH+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784285529; c=relaxed/simple;
+	bh=Q4F7ku9swsMtM+pJXBne9japIebQTPIiXc7W99t+5wA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ny9LLYxBxJA54lh40/sOiYjXWVeBvkcM6CU09liEerQsAeYkGWtjekf9VOX0DoRs3ELCkl/+22yh3qxEPTBzLqZPRJCuEYFHGYTYYLVirv9aExUS8ryEmtKgeuG7o+kntpwMfmT70C/5wL2c1ppbcXjnOWdwS7BGY1vAzpGKJdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/Zg9IYT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nesowRCx"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15c7d22070so1006197966b.2
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 03:51:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784285508; cv=none;
-        d=google.com; s=arc-20260327;
-        b=myjSn9gYhVMth4WHYc6sT9x6GJxBZr5PWVv4ncMDfpoFGdKc8HUseY2LGlwYSmgvPM
-         y16MRchVx7OO1GkWvX6Jb98C0s9ThXWnyIw2Lvn/5BBsuWwu6bovqYmcXUWA4eeqyMZt
-         snnwwklWGJwkltZ79nD8WyikSfHLRopgQ12bEMQEav0zMqZt+rMNW8V0HuSRix+cTQfE
-         9yROlbzfeaDTZZHDc/ccQFZ6FAAve47cUgsnl+OupJklpZ0MuHsz7kxUEs0l8TykExVL
-         y8/iD7SOiaLBCO4XshUgTj/3U6vMHo1sClNAy38Ee9hCaPTMhH8XxeuqSp0SbFODb+5V
-         5M2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vQplzCRPmrlbx+b3iFM8q56R2Z6YLNw+7G55zXBLBms=;
-        fh=kexc97SlzOR1V5wLThV1mhffVEHgilzutOD//Gz0HGo=;
-        b=IALO7EvkkoEe58zzXahOS4rN0iirkIk6vzsztTUQsGNTqz+LnzHxqdEVQujI/YFQP9
-         52QOQQ9cfqp2fTp9J+aVhbvYGnHECydl9LqrYGu+a4rTCsecskzcp0gvddTZORriaDjc
-         fYCy1JsimB0U1pQIt5R/ajo/c5yaSAM235uJ/vZPHGVIs8Q6pSNnns0Y9mS/i4/j78D4
-         o5VGiFBJNXlOEegTP026p+BN18K7IPy5W8qbv9HbvuHcZzpdkppMjfXTDY9LkEpgj0w8
-         ukKT7TqlKj6z1h5rTxQa+ZS7Iwvwu43EV4+zZhJQx0cm8QGvHW4rXBa7zo1wuutXaAS/
-         yZ0w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784285508; x=1784890308; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vQplzCRPmrlbx+b3iFM8q56R2Z6YLNw+7G55zXBLBms=;
-        b=nesowRCxAPFbOCI0ijOqY2zvhvEkM0oPnaGDleR5O6BeNPNP8w7FJA+9sKpu4l4l+2
-         5Yv/ygxhvTPqp3DJyYr6bY1adgTZXPSiXcnwleCl10pwAyzipOaaXgScvqKkZj4jIB+h
-         kjsHYd88+jqoq2IRWjsyUtbGfFFo47K1mGL+Iv/30D9GfYTNWDDfjKZZkS9r2jtn8fAR
-         v8iCfUpTOrRtJTsK0Um2q7dWiTO+SoxJm/+G/wum/KEOQuUimmkYLqbADCypeEXiicph
-         RUntlPEMqLKEWAhV6R1yk6Q0QUriKyP1c3XEFlPyNTS+qv2lAGlJ6JeZcZ4iYiAQwwAs
-         7mxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784285508; x=1784890308;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vQplzCRPmrlbx+b3iFM8q56R2Z6YLNw+7G55zXBLBms=;
-        b=GxPWk6d3rrxHAzdEpi0zswox1Ou55UPCHNrHdKt5BgVfT1pcpkzP66HXrND36NDYjV
-         Qs4Ml26TuZo02klHqm86IfP04NGN66owa2NSUGRmUOvgr3VqCT4GpEh7maDsY37i6cpz
-         eRAlFJuEGaDSqNgxA0ug0FlC2soIfJT84k/BDEEg+NhEOTRkA1TGovZHxr8AORssWRni
-         c7V66CxDE1MkVy2baus9o5UDFCgCWSVtzLPeWUtSdOHxFZ7Oo0vackW6ntQQFgiPQ7pV
-         gBq83pE4oWqTVTI9oL5H9CIbVIGmzMTn/K6lw4IyT12IupNI42qxc0q6cD2wSiRvUY17
-         /A3A==
-X-Forwarded-Encrypted: i=1; AHgh+RoqFLYn+Ht1sIMxNyBSj1Zz64LLgYKCrYCp8DQAwVkdHAdvOZLnjK8X5UG6j7idDTK18f8OCUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXUlKO0JBH/owm3r/J3LqCUQkKPdZnGYJin4Pw1tmT6QZrU/8K
-	yFnrUveaa8CxfeSeOdX116ew+OBWTIMEUOLuqPNvJTwc+03gKxfz2AghUa9JSdiFXZQXnrhXRnL
-	6deNIEYVwJsiMDyF+1G0vIjYdqQG+Quo=
-X-Gm-Gg: AfdE7clQBQWzPnP5xnUXKUe7u7ncDe8+5x0ZjBni+K6pTCtLTTmOudgaYtxOvmqMmYL
-	MLGRLO+4vh0HWBiXe1nS6pSv9dDmcKY0CFWkes+cvvKFYiaMCDVdn47uuZqdHMXAnI8baF/52dY
-	azb+7QUWnNUg5kC5+YNUolq8g3XPkZJKFSPKL3Ki5ck2eK1APRI9rkBHEuwh49s7XnDMiBKp6fs
-	EUg9YfT/oYLykexOPehN8Nh4GtJvh5m9Gt91CLPxXv9Pm+H6S+0SWnKEYRbZ4U=
-X-Received: by 2002:a17:907:c70c:b0:c15:c1ad:36dd with SMTP id
- a640c23a62f3a-c16b45724eemr92901366b.6.1784285508018; Fri, 17 Jul 2026
- 03:51:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/Zg9IYT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606511F000E9;
+	Fri, 17 Jul 2026 10:52:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784285524;
+	bh=HvRZAxz20iZhfxtDz4oijjKo8Euv+xm5LViHXUUaMQk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R/Zg9IYTE2U0uV/DoDGRiBbaLBW3xOzr3r+Gx1/Dp+TsjehZvUquVx5eoccgMadcb
+	 AsJeLJ1IymSQDNebxVm21mqYL90k78kJ7pTCXJllpPrcbWPLONcP54WzTipve7/51Z
+	 4gW8aaokll/XHuSjy8mu5/uYt6SiftCzL1nm5ItA=
+Date: Fri, 17 Jul 2026 12:51:57 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Zhou, Yun" <yun.zhou@windriver.com>
+Cc: sdf.kernel@gmail.com, jirislaby@kernel.org, socketcan@hartkopp.net,
+	linux-serial@vger.kernel.org, mkl@pengutronix.de,
+	linux-can@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tty: ldisc: fix deadlock between ldisc_sem and rtnl_mutex
+Message-ID: <2026071745-product-rogue-c364@gregkh>
+References: <20260716064719.1401892-1-yun.zhou@windriver.com>
+ <2026071655-steering-cardstock-cd06@gregkh>
+ <87ea3ae8-8196-4f6f-bb03-d139f2f6c806@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260716173325.653164-1-a.shimko.dev@gmail.com>
- <77f1cc14-cc5f-4f32-a972-f0350a60931b@bootlin.com> <05bbadc9-95b0-421e-9c5a-8223a891cb5d@lunn.ch>
-In-Reply-To: <05bbadc9-95b0-421e-9c5a-8223a891cb5d@lunn.ch>
-From: Artem Shimko <a.shimko.dev@gmail.com>
-Date: Fri, 17 Jul 2026 13:51:36 +0300
-X-Gm-Features: AUfX_mwM6QF-cVSBrgjxB3MqPlPRTL1soPgqjPUucWdn7x2xpIl-dWiq_De26nk
-Message-ID: <CAOPX7455qXddUEo9fd3JpYu5H3t8eb1jvNcDq81292C67uSs8w@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/2] Add DAPU Telecom DAP8211R(I) Gigabit
- Ethernet PHY driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Zhi Li <lizhi2@eswincomputing.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ea3ae8-8196-4f6f-bb03-d139f2f6c806@windriver.com>
 
-Hi Andrew,
+On Fri, Jul 17, 2026 at 11:03:18AM +0800, Zhou, Yun wrote:
+> 
+> 
+> On 7/16/26 15:57, Greg KH wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > On Thu, Jul 16, 2026 at 02:47:19PM +0800, Yun Zhou wrote:
+> > > syzbot reported a circular lock dependency involving tty ldisc_sem and
+> > > the networking rtnl_mutex. The full chain is:
+> > > 
+> > >    rtnl_mutex --> nft_commit_mutex --> ... --> ep->mtx --> ldisc_sem --> rtnl_mutex
+> > > 
+> > > The last edge (ldisc_sem -> rtnl_mutex) is created because tty line
+> > > discipline .open() callbacks (slcan, slip) call register_netdev() which
+> > > acquires rtnl_mutex, and .open() runs under ldisc_sem write lock in
+> > > tty_set_ldisc().
+> > > 
+> > > Fix by moving the .open() call outside the ldisc_sem write lock. The
+> > > ldisc .open() is initialization of the NEW discipline after the old one
+> > > has been closed - there is no need for ldisc_sem protection at this
+> > > point since:
+> > > 
+> > >   - tty_lock is held throughout, preventing concurrent tty_set_ldisc,
+> > >     hangup, or close
+> > >   - tty->ldisc is set to NULL during the window, so concurrent readers
+> > >     (tty_ldisc_ref, tty_ldisc_ref_wait) see NULL and return immediately,
+> > >     which callers already handle as a hangup condition
+> > >   - tty buffer data stays queued until the ldisc is installed
+> > > 
+> > > The sequence becomes:
+> > >    1. Hold ldisc_sem(write): close old ldisc, set tty->ldisc = NULL
+> > >    2. Release ldisc_sem(write)
+> > >    3. Call new_ldisc->ops->open() without ldisc_sem
+> > >    4. Re-acquire ldisc_sem(write): install new ldisc (or restore old)
+> > >    5. Release ldisc_sem(write)
+> > > 
+> > > Reported-by: syzbot+de610eeef174bd59a8a3@syzkaller.appspotmail.com
+> > > Closes: https://syzkaller.appspot.com/bug?extid=de610eeef174bd59a8a3
+> > > Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+> > > ---
+> > >   drivers/tty/tty_ldisc.c | 17 +++++++++++++++--
+> > >   1 file changed, 15 insertions(+), 2 deletions(-)
+> > 
+> > What commit caused this to be a problem and why have we not seen this in
+> > any real-world usages?
+> > 
+> 
+> The circular dependency has existed for a long time - it just requires
+> ldisc_sem -> rtnl_mutex (from slcan/slip registering a netdev in
+> .open()) and the reverse path through nft_commit_mutex, epoll, and
+> tty_poll back to ldisc_sem.
+> 
+> The recent dev_instance_lock series (5326fefb9fe8 "net: hold instance
+> lock around NETDEV_DOWN/GOING_DOWN") increased lockdep's observability
+> by adding lock acquisitions in more notifier paths, making it easier for
+> lockdep to collect all edges in a single run. It did not create the
+> cycle.
+> 
+> We have not seen this in real-world usage because triggering the actual
+> deadlock requires 6 unrelated subsystems to contend simultaneously -
+> something only a fuzzer like syzkaller would construct.
+> 
+> > 
+> > > 
+> > > diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
+> > > index 27fe8236f662..248a6995cc53 100644
+> > > --- a/drivers/tty/tty_ldisc.c
+> > > +++ b/drivers/tty/tty_ldisc.c
+> > > @@ -556,15 +556,28 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
+> > >        /* Shutdown the old discipline. */
+> > >        tty_ldisc_close(tty, old_ldisc);
+> > > 
+> > > -     /* Now set up the new line discipline. */
+> > > -     tty->ldisc = new_ldisc;
+> > > +     /* Clear tty->ldisc so concurrent readers back off during transition */
+> > > +     tty->ldisc = NULL;
+> > >        tty_set_termios_ldisc(tty, disc);
+> > > +     tty_ldisc_unlock(tty);
+> > > 
+> > > +     /*
+> > > +      * Open the new discipline outside ldisc_sem. The ldisc .open()
+> > > +      * may acquire locks (e.g., rtnl_mutex) that would create circular
+> > > +      * dependencies if taken under ldisc_sem. tty_lock is still held,
+> > > +      * preventing concurrent ldisc changes and hangup.
+> > > +      */
+> > >        retval = tty_ldisc_open(tty, new_ldisc);
+> > 
+> > Now you are calling open when previously we were not, are you sure this
+> > isn't going to cause problems?
+> > 
+> 
+> This is not a new .open() call - it is the same tty_ldisc_open() that
+> was always called here. The change only moves it outside ldisc_sem.
+> tty_lock is still held throughout, so .open() sees the same environment
+> as before.
 
-On Thu, Jul 16, 2026 at 9:32=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+Ah, you are right, my bad read of the patch, sorry.
 
-> Adding to that, there is no version history. How does v3 differ to
-> v2.
+thanks,
 
-My apologies, I will fix it.
---
-Best regards,
-Artem
+greg k-h
