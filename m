@@ -1,71 +1,298 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7722F8EAF;
-	Fri, 17 Jul 2026 01:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A510223702
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784252287; cv=none; b=aLm5jfzMC9Knj0TOvHS4S00nP5tRkLXK/GHiGEbgdqZrpvzbgIPm+kZFIIa0RV1bofDkEwIud2tMPgAKbKXsdRJ2758KGnyf06/Pq8hwvxsrlLN34O0xP31ycf4Gyg5u2qHtc6st4UoG/5ulVhnsKbauPQFLOXlpzq+D4DUdfvM=
+	t=1784252412; cv=none; b=drSTDoBPe6+e0ybgx2c4DimVWNsVkJv6ut+wf0F3n5edmywjvzrLnX2yVR4ZlGdj2snaBGPZHaJ7zmvHmYi++MlDga9aC98DaS2JkhfWYS46HDJ1MPGIGkMsDBUP/aaYC4Vl4gRc70nlnld/m/iCB3i+CgVIOBKPIz+3DUn/J+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784252287; c=relaxed/simple;
-	bh=CX7L8uQ/711vvKi9fmpMP0XVTVJfGvVDDSxDs0Y7z+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOlNXJNkgJnW1N0kNQ8GcAz7CpIFOV8Gjw1Gw5t1069Ql8a12fr2OxNxui3ZaHK11GgJW18l+gWkpIBCHEPWY3f9QRivnsCsl5jLLWAialyzO8SMQFR100OBHtQtuCgWiUHWvfsnbzIo8gzcRk0XmDJrYsH6vfZmGi3L/6xquPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TF58RCVT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784252412; c=relaxed/simple;
+	bh=z1IXjfnnaHJSV4kl7V9PwmOpoQrv5yMgMo1lQD9K8wI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lv1IkL4jaHoaWy1VPbLP/uh6yMm97NqCZnpNyWmWtrxO4HC4GS9+X2diFjCz131/96My9axX9zChWVNagqv1OobH8jOd4tzUSePHdBGd0pChH4MNoGBpIzSSqu8BFMcqGh7ll9GY3DK3AlEJTlvy0aG687QV9scyXCOvmA2C7Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ReTONol+; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TF58RCVT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCB31F00ADE;
-	Fri, 17 Jul 2026 01:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784252286;
-	bh=25W18Ip+YrPYAP6wyH8PVlv7KlYjk1pkSckiOn/CT4I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TF58RCVTB8bb9ncEW40JW4bxGL0Ye6VBleQbUeovrjbi7u+Ra/X8vxNbnOIyP4lTJ
-	 0xovBh/UuPyJXoEnYJcMhD6L6HgnhxQogR4aATl9zbgCKBo63pzU/2271CuihblwyH
-	 YFsrps6zKxKUhi0S+UbOqfnDmaIM1TNnFARjXMlSGS8AmLM6S4PJlRMUNmu+aTEjGf
-	 XA4KsTGBRWdDKfX10bgeua5qrllW0gbYw23bDK2rrNjdeWymQdIDQTkYYmTiqCGb/a
-	 wjw/+MAEdfDPyDwqMDq/Y5Z5HIvmVzauAAc+rYWdWBBp98WcrspU97THmWU8ljLe8H
-	 X/SbCn4AjZfjw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	olteanv@gmail.com,
-	andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>
-Subject: Re: Please backport: DSA taggers OOB read on PACKET_QDISC_BYPASS TX
-Date: Thu, 16 Jul 2026 21:37:43 -0400
-Message-ID: <20260716232340.0019-stable-reply@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714164633.75135-1-doruk@0sec.ai>
-References: <20260714164633.75135-1-doruk@0sec.ai>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ReTONol+"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GNgBSr450029;
+	Fri, 17 Jul 2026 01:39:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=htI1vh
+	Ag54Hdmwdem9Ea44wRJGWjtnUspphQJ40Xh1M=; b=ReTONol+cd3+Kme5enI97z
+	2LYBiExPD/yCZLodMcHFRIPGAmp6AX8Cc6BK7GEXkG3JhdCJWCGLNNmVKHCRUTW+
+	r5rzTnsWkeTsYZ4tAJJsUlmcXQ5XBiTgqw20KHKdu/jriB6tuDYoowvrlfh6Ffk3
+	nOu5qUWwdR1iOF1TPTQwwZDOah4Xw/uqwkEQnD+XNf2/PvtbCTPAQuq4Fvu5xGbI
+	PuuSRnL9tVsFyV0pP8VZTUSKVajsDXQ8AY+ZcO2RtIZqJgCpAiziRdK79KuewPfF
+	ng5ElNTuLcQ04Em7CTmYhIB+tZSn5+RVmOMgarR+XLJ9uifg6uSvuIBJMNTj/qKQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegtm1pq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 01:39:54 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66H1YbWT007088;
+	Fri, 17 Jul 2026 01:39:53 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uyfbwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 01:39:53 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66H1dqYu28967594
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 01:39:52 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2EC2B5804B;
+	Fri, 17 Jul 2026 01:39:52 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0514A58055;
+	Fri, 17 Jul 2026 01:39:51 +0000 (GMT)
+Received: from [9.61.118.188] (unknown [9.61.118.188])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Jul 2026 01:39:50 +0000 (GMT)
+Message-ID: <601832dd-6960-4691-bd6f-e726c884ebd4@linux.ibm.com>
+Date: Thu, 16 Jul 2026 18:39:50 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 11/15] ibmveth: Add per-queue RX and TX
+ statistics collection and reporting
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, davemarq@linux.ibm.com
+References: <20260706193603.8039-12-mmc@linux.ibm.com>
+ <20260714125948.1841205-1-horms@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260714125948.1841205-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: kyyOnUx4KifqxHssx-rsi9idxsXWjY73
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDAwOCBTYWx0ZWRfXy00gQ653fQOw
+ PZnEC/77mYpBZmL8Qw6eoy+roYdSF/xv7ta0ino1ZwiUzJt9B7Vy3xTrl/gKHAZhDDILpYmu8TJ
+ +7DHlbtS9r+DJbSowZAUYhcpyKQN4b4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDAwOCBTYWx0ZWRfX1hAhli4BTx0Y
+ d0F6Mf9W1ERzdwr0jcZgT+iS51yRr91Vy5ODdsEnUNmtrYj6tOPU7hC0wyIUUbRf8cazSL74aWN
+ YSyQiDgwHrH5sP6bN278ZBMdrlZHx66znqzX/P/uBwnTapgKr95ritbdTgtEUMtNn5JZ6lnL2J4
+ DGIX2Z1t8Kr8tbmi+rd7sSnmvpb5GvroDmJk1kNsjGo1f+vXw9CvxEo8/cIl35SJn4chRkGbhwD
+ jMXHa6yky+QjMCLO0Wrzx0n2QL+ETv9avozbFH+QpCpgQyALcRnyCf9yf/nxuFhYCGbYyG9gmck
+ CtNSU5rF9tFNcdJ/bpm+su789exLDcWqQqTxhByfWOjrFFRcSHg/uJQcI7MeRVApFSFrrrRww6h
+ HtpjztAMapGM319xkRHithDtmOdG79KMNMNQeL+cH9ep1Y5KnUDbtG1MpmGFb1iUQE5wYFW4Yui
+ W/3rUlYjgedUzT+muww==
+X-Authority-Analysis: v=2.4 cv=IqMutr/g c=1 sm=1 tr=0 ts=6a5987eb cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=c92rfblmAAAA:8
+ a=ve7GfL1ZdkmVSfFjdIIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-GUID: LkUFsAyMn4_BoKpubeg4Dbp5LQ0RRtOm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-16_08,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0
+ phishscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607170008
 
-On Tue, Jul 14, 2026 at 06:46:33PM +0200, Doruk Tan Ozturk wrote:
->   eabb1494c9f2 ("net: dsa: tag_ocelot: do not rely on skb_mac_header() for VLAN xmit")
->   499b2491d550 ("net: dsa: tag_ksz: do not rely on skb_mac_header() in TX paths")
->   f9346f00b5af ("net: dsa: tag_sja1105: don't rely on skb_mac_header() in TX paths")
->   0bcf2e4aca6c ("net: dsa: tag_ocelot: call only the relevant portion of __skb_vlan_pop() on TX")
 
-I've queued the tag_ksz fix (499b2491d550) for 6.1 and 5.15; 6.6 and
-newer already have it.
+On 7/14/26 5:59 AM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> ibmveth: Add per-queue RX and TX statistics collection and reporting
+>
+> This commit introduces per-queue statistics tracking for both receive and
+> transmit paths in the ibmveth driver. The counters are aggregated for legacy
+> interfaces and exposed individually via ethtool stringsets.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 863e5c68b42c7..4e3f49b6346fd 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>> @@ -1655,6 +1655,10 @@ static int ibmveth_open(struct net_device *netdev)
+>>   	if (rc)
+>>   		goto out_cleanup_rx_interrupts;
+>>   
+>> +	rc = ibmveth_alloc_tx_qstats(adapter);
+>> +	if (rc)
+>> +		goto out_free_tx_resources;
+>> +
+>>   	netif_tx_start_all_queues(netdev);
+>>   
+>>   	netdev_dbg(netdev, "open complete\n");
+> [ ... ]
+>>   out_cleanup_rx_interrupts:
+>>   	ibmveth_cleanup_rx_interrupts(adapter);
+>>   out_free_tx_resources:
+>>   	ibmveth_free_tx_resources(adapter);
+> [Severity: High]
+> Does the goto out_free_tx_resources on ibmveth_alloc_tx_qstats() failure
+> bypass the cleanup for RX interrupts?
+>
+> Since out_free_tx_resources is physically below out_cleanup_rx_interrupts in
+> ibmveth_open(), failing here leaves the IRQs requested and NAPI enabled. If
+> an interrupt subsequently fires, could the handler access the freed RX queue
+> memory and cause a kernel panic?
+>
+> [ ... ]
+*
 
-I'm holding off on the ocelot and sja1105 commits (and their
-skb_vlan_eth_hdr() prerequisite), as well as on 5.10 entirely - the
-backports there diverge more from upstream than I'm comfortable
-carrying without more soak time.
+  Confirmed — that goto skips RX interrupt cleanup. Will fix the
 
--- 
-Thanks,
-Sasha
+  open() unwind order in v4 so TX-stat allocation failure still
+
+  disables NAPI and frees IRQs before tearing down queues.
+
+*
+>> @@ -1699,6 +1699,7 @@ static int ibmveth_close(struct net_device *netdev)
+>>   		}
+>>   	}
+>>   
+>> +	ibmveth_free_tx_qstats(adapter);
+>>   	ibmveth_free_tx_resources(adapter);
+>>   	ibmveth_cleanup_rx_interrupts(adapter);
+>>   	ibmveth_update_rx_no_buffer(adapter);
+> [ ... ]
+>>   	ibmveth_free_rx_qstats(adapter);
+> [Severity: High]
+> If ibmveth_close() is called to bring down the interface, does this
+> unconditionally free adapter->tx_qstats and adapter->rx_qstats without a
+> grace period?
+Confirmed.
+>
+> Since ibmveth_get_stats64() can be called concurrently under RCU, and
+> ibmveth_start_xmit() can run concurrently if the datapath is not completely
+> synchronized, could this lead to a use-after-free or NULL pointer dereference
+> when these functions access the freed arrays?
+>
+> [ ... ]
+*
+
+  Good point. ndo_get_stats64 can run without RTNL. In v4 I’ll give
+
+  the qstat arrays adapter lifetime (probe/remove) instead of
+
+  open/close, so close cannot free them under concurrent readers.
+
+*
+>> @@ -1967,22 +1967,107 @@ static int ibmveth_set_features(struct net_device *dev,
+> [ ... ]
+>> +static void ibmveth_aggregate_rx_qstats(struct ibmveth_adapter *adapter)
+>> +{
+>> +	u64 total_invalid = 0;
+>> +	u64 total_large = 0;
+>> +	int i;
+>> +
+>> +	if (!adapter->rx_qstats)
+>> +		return;
+>> +
+>> +	for (i = 0; i < adapter->num_rx_queues; i++) {
+>> +		total_invalid += adapter->rx_qstats[i].invalid_buffers;
+>> +		total_large += adapter->rx_qstats[i].large_packets;
+>> +	}
+>> +
+>> +	adapter->rx_invalid_buffer = total_invalid;
+>> +	adapter->rx_large_packets = total_large;
+>> +}
+> [Severity: High]
+> Does overwriting adapter->rx_invalid_buffer and other persistent global
+> counters with the dynamically allocated adapter->rx_qstats values cause a
+> permanent loss of interface statistics?
+yes
+> When the interface is brought down and back up, ibmveth_close() frees the
+> queue stats arrays and ibmveth_open() reallocates them as zeroed. Will this
+> cause all historical statistics to be wiped out on every interface reset,
+> breaking standard persistence behavior?
+>
+> [ ... ]
+*
+
+  Agreed this regresses persistence vs pre-MQ.
+
+**
+
+In v4 per-queue qstats will stay for the adapter lifetime, and adapter-level
+
+ethtool strings are summed on read (ibmvnic-style). No dual-updating
+
+globals on the hot path, and no aggregate_* that wipes history on reopen.
+
+*
+
+>> +static void ibmveth_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+>> +{
+> [ ... ]
+>> +	for (i = 0; i < adapter->num_rx_queues; i++) {
+>> +		ethtool_sprintf(&p, "rx%d_packets", i);
+>> +		ethtool_sprintf(&p, "rx%d_bytes", i);
+> [Severity: Low]
+> Are these private ethtool stringsets duplicating standard kernel statistics?
+>
+> According to the subsystem guidelines, per-queue packet and byte statistics
+> that have a standard UAPI representation (like struct netdev_queue_stats_rx
+> exported via netlink) should not be duplicated as private ethtool strings.
+*
+
+  Thanks — **
+
+*I can move those to standard*
+
+*
+
+netdev queue stats and drop the ethtool duplicates in a follow-up. For
+
+now I'll keep device-specific counters (interrupts, polls, invalid, …)
+
+as private ethtool strings.
+
+*
+
+
+*
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index f7b20fd01acb5..390c660af979e 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+>> @@ -316,9 +316,21 @@ struct ibmveth_rx_queue_stats {
+>>   	u64 no_buffer_drops;
+>>   };
+>>   
+>> +struct ibmveth_tx_queue_stats {
+>> +	u64 packets;
+>> +	u64 bytes;
+>> +	u64 large_packets;
+>> +	u64 dropped_packets;
+>> +	u64 send_failures;
+>> +	u64 checksum_offload;
+>> +};
+> [Severity: Medium]
+> Will this structure layout prevent cache line false sharing?
+>
+> The commit message mentions tracking transmit counters per TX queue to avoid
+> cache line contention, but struct ibmveth_tx_queue_stats appears to be
+> exactly 48 bytes and lacks cacheline alignment annotations like
+> ____cacheline_aligned. When allocated as a contiguous array, will multiple
+> CPUs processing different queues end up writing to the same hardware
+> cacheline?
+
+
+*Will add cacheline alignment for the per-queue stats structs in v4*
+
+*Thanks again for your valuable feedback!*
+
+*Mingming*
+
