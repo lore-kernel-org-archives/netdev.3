@@ -1,164 +1,137 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7861836E460
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784303618; cv=pass; b=HqGAYCdAUiOM3Fga0Q2Eg/b9W0+N+ivvgZ21IE2yIElk6cg/4FhfJ40TE1RH8rFVk9Und9DecozAeq7ZYuo/rD5LHivkhoYQLC0s4AwTQ1y+QPK2MqrxwRToz3mntV/I3S68kR83FPGdq2Q9uAGzZrvp/Bhlzkz7nr4vXBMlXCo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784303618; c=relaxed/simple;
-	bh=lpAe0xAk3UPPvUR2fW1+fv1t9rIwTpbysjHxIFUDCLE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UmwDchoAHZWhxYB/OlPUErl/v8tfU+5/upL5o5Lb925uQO/9LjIDnbnpcKCe7viWbRidkJo4yqcr0MCCChiR5QfH2QZQe8ql6XWeOE0KTgay8l5oYBpqdwCalcJcAtUsxWCUMYzcTvaT4DvUJHlcOOYYdqNzidIKiuXV28+UlG0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o67YOztn; arc=pass smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF7B348C4A
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784303635; cv=none; b=XncApVFEqPOxJCKu497UerYSRqv308M0fOcgoH0lz5kRMnX4xAFbGldrJCbZhNaHf4PP5s5SALYTjd8ZZAWgxxLOH2w3XbVPTIlfFKBJIlgqjoYP6yFtyqyL7r0APmzelVVp2euKVFFAF+/P8hGiSZ0jGGifDnszFhH+u+m1wWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784303635; c=relaxed/simple;
+	bh=YF9Knm40lON0FlUgiurO8Nd3SbRk4kttQ+DtP+b13jY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EI6PnRgq6aC7KLb6bKEPCTQBTB7mQtQyqZM+aoN7v6zrneTmrSCmaS3Y2VT4PX9A6BQI0fF1rgeyoBrcUW6GSI/Er7PLdJkOtenjFq8xrUMlcDlNwcFWJxtVyG1RmNLTTWGzpZ9PiYmdeV1NMXB09cXElzX1eOmyA0uIJSxLgfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ixVOyCd+; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o67YOztn"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-848643382fcso9211289b3a.1
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:53:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784303617; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XzMpYZ4AFhfx7pqyBRvKbwK0Uw4ysS81FtkcyoZ9QtUvDx+m6P5s1v8a7XN7/7oj6c
-         SywAiEfzU1MftFZCIRn4nx1lMGCTHUrodZKq4jKZaNDbMs7bUZ4DYTfyY5h30PwKBB82
-         BwpqcWgA0q9KUT20Lhx7d2lT9xVzvATqKYDO9gaUUUdRA+qdj9B+vOmax7BWV9uT3Epo
-         WzH+EzbAosd1J2qPP42t2HlHxlvP/HwKNciH01aWVy/+VJ9TR6UWUiNLVzl6REUKosPI
-         VuW6t2qNsJNuteI3WxCjJuU7Sd9Sem5mfEg+c1sxwgy2GPcFF8Q0LwUAbfvJv2Lmx1z8
-         WKuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
-        fh=uQADOk81kBL3PdpKso+9FHGbfzPXW3hQHB8Zq8IIadg=;
-        b=GG/g7jO0xatP7PfhW99du7XUPp7AJguzILa/aW3yG+nu6RteJ0bkd60dvG0d03MEPC
-         gCgWpsjh8fYBATTiaIF+V7q+59aGv30r2bpsXhkH4aikZsW8yefEb0zkhav3BMCZa6I1
-         7boarbsXT6G9NC+Am+BrZaMksp5muvjWPUpY26kdEcAWzgl3WamlIsuOAc3ghVmwMUsy
-         BzBvwXM6lHbWsrKCC/zUxCHtqY6Vy+ggIXCJccfbmdFeA5Z46YDJSDIsiLkuc0JFue8S
-         Vg7QXYUhBSUsnI4Jva5G0uVwh+GdfJNXPZStVTe8ly6vH/lxEFYXYOO42H64WalN7pue
-         FN1g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ixVOyCd+"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47df6a5202bso5494977f8f.0
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784303617; x=1784908417; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
-        b=o67YOztnQDE58O2YefuJBol/P08GHEjdXL3t5WQFHI/zljklWrh7VZZ6JHhjw/XIf2
-         uCC2W7uJyzXD3qerERkSXjwmAJgrqDLZB7RMRmTUloIIRh8TEVndpu2jeKoTEa0KUYze
-         jfGGqeAu84XDoPm2W4llkrqAlmh/YIyQFfzaNUmqukbd2q3aG7dDTpjZHk9LbJBOqKw8
-         nwGXUfmjlzmGBdgAXNIopB0NAun34B1QDXykjCvnLJhO7bhBrjLGL9jDYDhAcXs2NT08
-         23Y72rDmNAdk/5zUS9Rv3aZhQuJdZ6UM7SUA5htmrjmSgN5FvTCdpFvvFfVs4G+lNwXs
-         zfzw==
+        d=gmail.com; s=20251104; t=1784303632; x=1784908432; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KgKTphT/EPBidWmUJpQky4fuu3ayeXNP41GXKcwaXpY=;
+        b=ixVOyCd+G5zisdrc5ETx7nVumKoUjZCxACN6n/wSNEB1YtfxqWczAEduIV05Wjd/DK
+         CM+FYVBml/Rep19+YnwjcZTtghC7xlCrFeI4tQe8h/NnYIPkV9CLyRP5JtslX7g0rv96
+         rxTY94Z88ZujwGaGJVcJvX99ce1kxwbQDDjOZGB470J+Ev7ayjM4eqXukkbepavFEszc
+         pHDhcMQgIDIHrDT9c7QyyL81iDXuMqp/ZokvlNRXxZ7qYCYodqt54cc8doh23bXcfccx
+         XlGJKa5Za3WV4i9VZJIPlDYJi+IgbSZdnEEwGK0g4CEA8jvADJVnliwisUfBGvu6SBuz
+         Wp/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784303617; x=1784908417;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4xM9ijI7eNaRyNI3DueGXfkvoObRorwP48DrsWZ89mA=;
-        b=L1l3Y+yaZKh3x8oTszZ2Gn8HFrMuou/gGWnTtiiU9XDlGWGPCRj1sR7TQonjnLSmnw
-         qUEcmHMXOfjVl9i9KyDUnV9i4PguCjQ7qkpNYsCt9PagPt1PDHiPF3kJ8vAaIpiurPli
-         xWrJhcnjXQP26SW4Ii6Im4Gba/MDaTE1u7bg0CAMtQa38ru3gmX7rvIcqqlmMkXN/JmG
-         6fV53fhkCE0SvTXdUFtO0Fpmuk0WOpHY32qH+OmNkEBhLarjJke+M8Qh/TBjRdG2W8BS
-         PeUKOzod4n9B2QdiRVvhGF8gcg/3T41yZodvK8YTo4qUNkXbiwybDgxfCJcqyWPlGK/K
-         wf3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrmulU0EZpal3riVPOI6CbF/D3uv7ApWEaN/Pi3T14/7rFBLdEZGakf2SAZtGfn7Td00G963V8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSHyLMz97FAxoLKr/ZjsiqS6HNhGrfpcbGcr6tTVQ6u52qcd8F
-	tkuikP7E3W243ibuDl8Sxlnc7dvftBPMvSn5C00khAqVu/vZquLJComxDRuRqOFs5KsUK0mVgr5
-	LLUbIUVLXvp9AJcz3fjE1l8UTdF3yLSVl0ryW
-X-Gm-Gg: AfdE7cm7goQY6pfTGD0uXIGYaa/VUgFLPqb0gdCZyVFiFxPmaIzS+RYPjWrF1JJVAlz
-	H0+rQdgcIEwDZkiZJ29wFx+EbDgnLm67d2a55ROpuFtyUF+fJul8L1AKDKOBAe8AL8TMyH5F6ot
-	qFaCuy22oGAmA4nf4px479vKfq9E9OvlXlmIfOOsr/cPB+HtZzjdxr+oJojrx7LibAMgxjqwDO9
-	KPJ9MDufIy2mczMzTrbPhCZMeoJ2UNZCb+LgNelV7CjjlMFaArHwu4M+xjrETOa465FHZED2kR/
-	W+vjkpXwf5y3fBJf9ysDwAIzhi+8K+G4dSFKEaYDURVyamO0uxX80zgUP4Pw6eaGO1ZlI9nFhA=
-	=
-X-Received: by 2002:a05:6a00:600a:b0:848:2f73:8ffd with SMTP id
- d2e1a72fcca58-84c29527f98mr3396780b3a.70.1784303616665; Fri, 17 Jul 2026
- 08:53:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784303632; x=1784908432;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KgKTphT/EPBidWmUJpQky4fuu3ayeXNP41GXKcwaXpY=;
+        b=lq17NISbIm+V/qRfGApelOrA+62zawvTDgR7l2eS7Qtl1HVfgxjeQ5P9JIdIh96fdK
+         WeM1WvaAJlAnKWdYzxDmtrUQt6EV3uzCrctYB8njjeID/LueEaFr1YIPN0ykN1InRNHF
+         3JJ1HnEohP1oU6x2X3FQOOe9kn8tSf82zYdz2rHhTrrsTMPdPzwG2rOqIAwDiPqRjrY8
+         NT2YDFFpuGb5Y4k9tF4gVWNo9C/F+h/FsOvYWw7nEssBzHcoZSzrSF4Yht/r+EHKfo+E
+         yw+HWEJgrmIVYM5KlB9GT6gSVCDKsWyHxvXdfMhTg+I102Ju4nSzHoRNHyAkHfCHNnjR
+         N9dw==
+X-Forwarded-Encrypted: i=1; AHgh+RrzD86iTRZlRyiHzywMBCm4LCRyLnwwyivWhyyc79VBfkC6UtSordBmhQE4jtiQbOQhwGVVtn0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyDYb/my2CaphwRaK5vlY38qlI/4Mjx0+awidBpwtDpaA39u57
+	HYXIfrEhsgyy0upUgpqKNANelUC8sf1vaQ80TUvLmu9Qjroc77l/YuFb
+X-Gm-Gg: AfdE7cnIucOanPwcB2uhRvAwwvqsOi02WZywm0cDK/UApHfPkXy1lZaC2ZwW41saYoJ
+	geDWgdN3MTgpbN06hUof8jUDWUcRb55jyKsKT3Dx7OgJvBxxXGaHPUxodnd38tdjzsIqGJaEzwM
+	56jvESWIqmr/vWtZm4db9feLGUqnp2UlOUk1lwx8/DNCgmJOobKOco9J8+Aai3rRTgI1HZ3ht9q
+	llJWyoQQfU2JXpjWLM8F06L95K4Yv2qp2AKcY7K5WZrPvSrmZ0fb700kQSezO5U2+AU8BHSmKKz
+	mO93TBfRv+struUOm3cfAEOfxVax2EBYObvZWIkxGCsRdDk++EKO8l6OhfmIWRyrpm3WL1seN0a
+	+WGj4uO/80azmHn9D+RzX4t4JB9k6CfjAWAgWnyZi1AcW/sopFxQ4Gu6gMCHF4SlbUUr3DZlIQA
+	awkFGCNK+eza3h4PN7JP4gBTsU/tJPyohUhuXPUjciN24zMRtWKqlPNpJLHrJUSZztOw==
+X-Received: by 2002:a05:6000:2213:b0:47f:59b4:3933 with SMTP id ffacd0b85a97d-47f62330c15mr4105029f8f.42.1784303631863;
+        Fri, 17 Jul 2026 08:53:51 -0700 (PDT)
+Received: from localhost.localdomain (host86-153-201-25.range86-153.btcentralplus.com. [86.153.201.25])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63edcf8dsm5321369f8f.27.2026.07.17.08.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 08:53:51 -0700 (PDT)
+From: Nnamdi Onyeyiri <nnamdio@gmail.com>
+To: nnamdio@gmail.com
+Cc: bpf@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	ncardwell@google.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sashiko-reviews@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/2] bpf, sockmap: handle spurious tcp_msg_wait_data() wakeup
+Date: Fri, 17 Jul 2026 16:53:46 +0100
+Message-ID: <20260717155348.54975-1-nnamdio@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717143315.1942-1-lirongqing@baidu.com>
-In-Reply-To: <20260717143315.1942-1-lirongqing@baidu.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Fri, 17 Jul 2026 11:53:25 -0400
-X-Gm-Features: AUfX_mxGU8bu5-y4iiwqoxhcp5tvoKqtyL6O9fFy7Chy227PrDtkXxGEFp4t_z0
-Message-ID: <CADvbK_cEUR9m-QyKi5jj2MTqF2kGbBj7d1mUXmCsHgDLNJ-bPQ@mail.gmail.com>
-Subject: Re: [PATCH] net: ipv6: fix a potential use-after-free in ip4ip6_err
-To: lirongqing <lirongqing@baidu.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 17, 2026 at 10:33=E2=80=AFAM lirongqing <lirongqing@baidu.com> =
-wrote:
->
-> From: Li RongQing <lirongqing@baidu.com>
->
-> Fix a use-after-free bug in ip4ip6_err() where rt->rt_flags is accessed
-> after the route entry object has been released via ip_rt_put(rt).
->
-> If ip_rt_put() decrements the reference count to zero and frees the
-> rtable structure, reading rt->rt_flags immediately afterward
-> results in a use-after-free pointer dereference.
->
-> Fix this by caching rt->rt_flags into a local variable before calling
-> ip_rt_put().
->
-> Fixes: 77552cfa39c4 ("ip6_tunnel: clean up ip4ip6 and ip6ip6's err_handle=
-rs")
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
->  net/ipv6/ip6_tunnel.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index bf8e40a..984cb0c 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -569,6 +569,7 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm=
- *opt,
->  {
->         __u32 rel_info =3D ntohl(info);
->         const struct iphdr *eiph;
-> +       unsigned int rt_flags;
->         struct sk_buff *skb2;
->         int err, rel_msg =3D 0;
->         u8 rel_type =3D type;
-> @@ -627,10 +628,11 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_pa=
-rm *opt,
->                 goto out;
->
->         skb2->dev =3D rt->dst.dev;
-> +       rt_flags =3D rt->rt_flags;
->         ip_rt_put(rt);
->
->         /* route "incoming" packet */
-> -       if (rt->rt_flags & RTCF_LOCAL) {
-> +       if (rt_flags & RTCF_LOCAL) {
->                 rt =3D ip_route_output_ports(dev_net(skb->dev), &fl4, NUL=
-L,
->                                            eiph->daddr, eiph->saddr, 0, 0=
-,
->                                            IPPROTO_IPIP,
-> --
-> 2.9.4
->
-Have you already seen any problem triggered by this?
+Spurious wakeups in tcp_msg_wait_data() isn't being handled by
+tcp_bpf_recvmsg() and tcp_bpf_recvmsg_parser(), leading to unexpected
+EAGAIN errors returned by recvfrom()/recv().  Adding handling for the
+wakeup and a selftest.
 
-I don't really think there's a use-after-free issue here.
+This issue was first discovered in an application that adds sockets to
+a sockmap as a way to view the received data.  No redirects or any
+other operations are performed.
 
-The entire IPv6 input path, including ICMPv6 error handling, runs under
-rcu_read_lock(). Since dst_release() uses call_rcu_hurry() to defer the
-actual freeing until after the RCU grace period, accessing rt->rt_flags
-after ip_rt_put(rt) is completely safe in this context.
+Sashiko has noted a few other pre-existing issues in the same area
+(https://patch.msgid.link/20260714205118.17DB11F000E9@smtp.kernel.org)
+that can lead to EAGAIN in tcp_bpf_recvmsg() and
+tcp_bpf_recvmsg_parser().  A local run of Sashiko also identified a
+potential issue in tcp_bpf_recvmsg() handling zero-data FIN packets when
+the MSG_PEEK flag is set.  To prevent this patchset from growing too
+large, I intend to submit follow up patches to address these once this
+one has been accepted.
 
-Thanks.
+Changes in v5:
+- Move selftest from net into bpf/prog_tests/sockmap_basic.c
+- Link to v4: https://patch.msgid.link/20260715213538.37229-1-nnamdio@gmail.com
+
+Changes in v4:
+- Fix potential data loss in tcp_bpf_recvmsg() when a FIN or RST has
+  been received.
+- Check the return code of pthread_create() in the selftest.
+- Fix race caused by using EXPECT macros in a thread in selftest.
+- Link to v3: https://patch.msgid.link/20260714203927.32289-1-nnamdio@gmail.com
+
+Changes in v3:
+- Added the sockmap_recvfrom selftest.
+- Link to v2: https://patch.msgid.link/alFRK66z45eDNZA7@localhost.localdomain
+
+Changes in v2:
+- In tcp_bpf_recvmsg, handle signals and the socket closing in the loop.
+- Fix spurious wakeups when SO_RCVTIMEO has been set on the socket.
+- Link to v1: https://patch.msgid.link/ak_rR-Skd8Mvn4mH@localhost.localdomain
+
+Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
+---
+Nnamdi Onyeyiri (2):
+  bpf, sockmap: handle spurious tcp_msg_wait_data() wakeup
+  selftest/bpf: added selftest sockmap_basic/sockmap recvfrom eagain
+
+ net/ipv4/tcp_bpf.c                            |  69 +++++++++--
+ .../selftests/bpf/prog_tests/sockmap_basic.c  | 115 ++++++++++++++++++
+ 2 files changed, 175 insertions(+), 9 deletions(-)
+
+-- 
+2.52.0
+
