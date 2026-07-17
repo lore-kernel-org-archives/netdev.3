@@ -1,220 +1,259 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB4D3C0A1F;
-	Fri, 17 Jul 2026 06:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE67B3C3449
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 06:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784270567; cv=none; b=YZ9cX5o6Ropw0ybc8rzj1NM+E2tnjCYVEZbXe/MFAuul6+E0yo+MA8bSVYrSNgOvXhg51iYGyxgqBDuOUHFT4BxEFvujpRWddBKtxIKV50I/Eup9AzYkN4QXqBgY5cODZqpL0g5y4laGELzWWlqnzcBTjm05RZiUgsGUZabdYTg=
+	t=1784270738; cv=none; b=ib4zCd1eav8E30qWfQMRnOZYTQITuNwyBnWmNor2NOn21WTMXsS3H+6jANXdL3evEc6quszwb2NKDBqyFA/JNN1F2zrizCLchNgflT2rnB9n7CPxGB9uv9Dkm0Z6+/tD39IufNpBahPTWhPy8ZtbsYT+5BqDu8RN5CbewScwDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784270567; c=relaxed/simple;
-	bh=CFRpqR2Y/dbwD2cRB9vc9G0i4ipGwq63+fMNdspnsyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YshAhpQUTjExn9QOMIGlGnBbOjKA+nKkOK+HQbySpRi0x36pNAt3WyiwFGxA4m0+Y1jTzvH+/zKlCkcL0/1tNyxxKqWkH3rebd2cem0K6vcePjJdEch2t7sdTgkB/OcVm1e2MtSDvrxyuESi8K5CzV9J4FoCOAmis0tCd4ujucw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=SgFZu27o; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1784270738; c=relaxed/simple;
+	bh=XV+2XAF3qZwZEC4mK31FVYhlhvi/kl5+IWlE+lpxhnM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=C49oWh8uc5gf3fd7CBwW0PyzH4PCCkyPTJAE1HELf1mRUQNCbfnDoF60TRD1ahTevjkNe2F0B47lcUxoit33klHhTNniiWwY3iamahYpItGTpQVjn4f5sZgadpOioYRLI8frTO+4GpHGwE/JeBRh7+iOPld2sfhMFu12YsftiGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZwFGcJXM; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="SgFZu27o"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Qz53QuRGTC/OOUgyUrobL4bIkQT5P+B5SvyQZ1n0hso=;
-	b=SgFZu27oYwv3rnhH0jZO0MSgaGgjZaIEC/xWH1YKkTaGyHxq6898sQ0F3ugm0NhBOHxwuHqDe
-	sVhXeBjMI3b1Kx8zENkQuN7hjhNrc4sl8JhC6BBzrcjj2LwUbDyYvb9GIBV2FxNfjrYcvWggnQW
-	hftvy2VAPJxk8mpNdUJdCto=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4h1g8h3kZpzpStj;
-	Fri, 17 Jul 2026 14:33:24 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6E1054058F;
-	Fri, 17 Jul 2026 14:42:20 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 17 Jul 2026 14:42:19 +0800
-Message-ID: <d6be3b25-3db3-491c-93d8-7e014427f380@h-partners.com>
-Date: Fri, 17 Jul 2026 14:42:19 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZwFGcJXM"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848479c9bd5so3258068b3a.3
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 23:45:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784270725; x=1784875525; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=EXn6QRqS4jvu8jHBhezi/8Kt9KeA/fpoSnIUV3/hZg0=;
+        b=ZwFGcJXMFqO4gVH1jRE5PUI9c42JhEsQ3OrnThGHZI2QZP6yky/VPqeGB5tNdy8CwH
+         duVC/b5btefSR/rgnzT66VW80F2ApJBXW7cWwQ9BKZF+8dF1VBU5VZioycWkIB2QsVxM
+         o3G+6p7PpztNGH/XJvRffGeOMoGakXyRErbMNNvgPD54citYBVibnaRiPNhSJNQXWuP/
+         TB3MVhbnZxuIjTvqhgxFuVaJ4zdZ3B09kEpUH/6n1UU2CL0fH2eCVjWKKNZIki54YMPk
+         zHSoI0nWO+ucSF1UlqJz9ZOoeHIpH4SsiXh69zIaL+h+0C/Er6oProRwDeprEF7eTKrU
+         1Mng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784270725; x=1784875525;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=EXn6QRqS4jvu8jHBhezi/8Kt9KeA/fpoSnIUV3/hZg0=;
+        b=Wlv9JXaGOnNd2/FWVTrUlvqu6tP5T0alU+XA/14IUdufg1q90agBOef8BLC3utXYcT
+         +jy5TiXVxRlMs1/41NPHUyV7aKPrOQ644JyblQPv8a+E1MyWWYguExtEs+mYFLvVms74
+         2thaSRLVyRQX77ujoJorRsj3NfjyJjlzjjwJhbPMD6cSCvdWII7QA1qT/d/fnj6SGNZk
+         Hrr1RzMm67qv3JUIutP+AvYPwDkmHQKquuA24NZJ0DJ6ygN68rl+ckcc2FofdUl94W4B
+         P3TcTQ35aePbECzrBwFsl6i8ZKGQZHlyh2jvf4RVCibNeNo4y/sIRF2rq9sbSC1GSfq4
+         orwQ==
+X-Gm-Message-State: AOJu0Yx6qr7ENENdVFOH7NNxdtKzmrVLV/Wh9EIqs1IS73DHRM1WmZvv
+	1nSCDD/KS6ft9oxQLK9nA3fjxi7b/2jtmUsQ/mxM8jQyqCXpUy4YceVN
+X-Gm-Gg: AfdE7cneslhpBaDYF7lu9/phzehOzG99vZyRgu/lfQ2vWmNKfX9VMc80QrA9bajvz4y
+	KGS3SDsIvdH4WgOI+5lI4uwPfKwq6lwHMrVQDzCN56JJR9rdA+AEgfC9YVLuJR1MR7AfFxJDtaq
+	FzAfq7rAXyffD8tBl24hE9cny2ehsauhL5KtSS0RCpxU/eJWZwIL13g7eJub3FGCgst8aNOOSuP
+	XYxGGjb/zzp+OoZgXeXodDsdHnwpUo74TZ1PFRwOs766LCKeDENsnl8OU31tp/cQ9BkrkpCMovf
+	A1757nIx6veod9F9pBnI9HVgFBkIg4fuaLs0AhGGzeyrjhnd2iXZ2zaxEpkUQ0cm4yCmo6N7ZFN
+	F/Fz50SaZw2Q7I0ks5Rq93Z7EuWhQ5ASoflNvM+TXrzaLSudjjlA9ifJuVsK1jh0Hx/uNJMtBbp
+	ZSg4LRzgPEyjQf5sePm1Tig2+jCg==
+X-Received: by 2002:a05:6a00:1bcb:b0:848:34ad:3d3b with SMTP id d2e1a72fcca58-84c292276camr1360014b3a.14.1784270725004;
+        Thu, 16 Jul 2026 23:45:25 -0700 (PDT)
+Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2ad8855fsm430531b3a.12.2026.07.16.23.45.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 23:45:24 -0700 (PDT)
+From: Jack Ma <jack4it@gmail.com>
+Subject: [PATCH net-next v2 0/3] net: nexthop: per-nexthop UDP dst port for
+ fdb (VXLAN) nexthops
+Date: Fri, 17 Jul 2026 06:45:15 +0000
+Message-Id: <20260717-b4-vxlan-fdb-port-v2-0-f4862e8fe867@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX
- on lower device
-To: Eric Dumazet <edumazet@google.com>
-CC: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	John Fastabend <john.r.fastabend@intel.com>, Jesse Gross <jesse@nicira.com>,
-	<gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>
-References: <99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com>
- <CANn89i+z6ECLND1o8oD10re_zGJg73JCOr3dnV9AADeG40K=_Q@mail.gmail.com>
- <CANn89iKOb0003aqdxJw65F0_xaLOkM-45MZv+CUmQ13-NGoGOA@mail.gmail.com>
-Content-Language: en-US
-From: xietangxin <xietangxin@h-partners.com>
-In-Reply-To: <CANn89iKOb0003aqdxJw65F0_xaLOkM-45MZv+CUmQ13-NGoGOA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHvPWWoC/yWM0QqDMAwAf0XyvIAGV2W/MvbQaJyREaXtpCD++
+ 7rt8TjuDogSVCLcqgOC7Bp1tQJ0qWCYvT0FdSwMVJOru4aQW9zzyxtOI+O2hoRt75ipuYpnB6X
+ bgkyaf887mCQ0yQkefxPfvMiQvks4zw8bvjRefwAAAA==
+X-Change-ID: 20260712-b4-vxlan-fdb-port-486bb215eab6
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Jack Ma <jack4it@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784270724; l=8892;
+ i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
+ bh=XV+2XAF3qZwZEC4mK31FVYhlhvi/kl5+IWlE+lpxhnM=;
+ b=bR4XPfyD6uoVI1JckB+yRWEcYH9SIM/TubaeggEIDLWlxaic+6ueiPAjVniQlFOJjG4JSAvGx
+ SnIWQuYzc4cB0CcerdPBMX73Nnv9nMrZ9WgFbTnn6QJWc95qWqzkBpL
+X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
+ pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
 
+FDB nexthops let a VXLAN fdb entry point at a group of remote VTEPs, with the
+kernel flow-hashing across the group (commit 1274e1cc4226 ("vxlan: ecmp support
+for mac fdb entries")).  Each leg carries its own remote IP, but the UDP
+destination port is always taken from the VXLAN device (vxlan->cfg.dst_port)
+and cannot be set per leg.
 
+This series adds an optional per-nexthop UDP destination port for fdb nexthops,
+so a group's legs can share a remote IP and differ only in UDP port.
 
-On 7/16/2026 9:06 PM, Eric Dumazet wrote:
-> On Thu, Jul 16, 2026 at 2:53 PM Eric Dumazet <edumazet@google.com> wrote:
->>
->> On Thu, Jul 16, 2026 at 2:20 PM xietangxin <xietangxin@h-partners.com> wrote:
->>>
->>> [BUG] vlan: skb_under_panic when toggling NETIF_F_HW_VLAN_CTAG_TX on lower device
->>>
->>> Hi all,
->>>
->>> We encountered a skb_under_panic triggered by toggling
->>> NETIF_F_HW_VLAN_CTAG_TX on the lower device while a VLAN device is
->>> up and sending traffic.
->>>
->>> Call trace
->>> ==========
->>>
->>>  skbuff: skb_under_panic: text:ffffc0d2900283d8 len:74 put:14
->>>   head:ffff334820249c00 data:ffff334820249bfe tail:0x48 end:0xc0 dev:vlan4
->>>  ------------[ cut here ]------------
->>>  kernel BUG at net/core/skbuff.c:116!
->>>  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
->>>  Call trace:
->>>   skb_panic+0xcc/0xd0
->>>   __skb_checksum+0x0/0x480
->>>   eth_header+0x48/0x1a0
->>>   vlan_dev_hard_header+0xd0/0x284
->>>   neigh_connected_output+0x16c/0x20c
->>>   ip6_finish_output2+0x4b4/0xd74
->>>   __ip6_finish_output.part.0+0x1ac/0x3b0
->>>   ip6_finish_output+0x160/0x200
->>>   ip6_output+0x13c/0x294
->>>   ndisc_send_skb+0x41c/0x6f0
->>>   ndisc_send_rs+0xac/0x3b0
->>>   addrconf_rs_timer+0x42c/0x660
->>>   call_timer_fn+0x54/0x290
->>>   expire_timers+0x26c/0x420
->>>
->>> Reproducer
->>> ==========
->>>
->>>  # Create veth pair (NETIF_F_HW_VLAN_CTAG_TX is ON by default)
->>>  ip link add veth0 type veth peer name veth1
->>>  ip link set veth0 up
->>>  ip link set veth1 up
->>>
->>>  # Turn off HW VLAN TX offload on lower device
->>>  ethtool -K veth0 tx-vlan-hw-insert off
->>>
->>>  # Create VLAN device on veth0
->>>  # At this point: header_ops = &vlan_header_ops, hard_header_len = 18
->>>  ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
->>>  ip addr add 192.168.10.1/24 dev veth0.10
->>>  ip link set veth0.10 up
->>>
->>>  # Turn HW VLAN TX offload back ON on lower device
->>>  # This triggers NETDEV_FEAT_CHANGE -> vlan_transfer_features()
->>>  # hard_header_len changes from 18 to 14, but header_ops is NOT updated
->>>  ethtool -K veth0 tx-vlan-hw-insert on
->>>
->>>  # When a packet is sent through veth0.10
->>>  # - skb is allocated based on hard_header_len=14 -> ~16 bytes
->>>  # - vlan_dev_hard_header() pushes VLAN_HLEN(4) + ETH_HLEN(14) = 18 bytes
->>>  # - skb_under_panic!
->>>
->>>
->>> Any feedback or guidance would be greatly appreciated.
->>
->> This rings a bell, I thought we already fixed this issue long ago :/
->>
->> I would suggest we always add VLAN_HLEN even if not (yet) needed.
->>
->> diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
->> index 2b74ed56eb166d52c3351768d9dfedc7b2c8ec2d..d7f90b3b2bb3aadb2c466891720a7f407d0bc34b
->> 100644
->> --- a/net/8021q/vlan.c
->> +++ b/net/8021q/vlan.c
->> @@ -323,10 +323,7 @@ static void vlan_transfer_features(struct net_device *dev,
->>
->>         netif_inherit_tso_max(vlandev, dev);
->>
->> -       if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
->> -               vlandev->hard_header_len = dev->hard_header_len;
->> -       else
->> -               vlandev->hard_header_len = dev->hard_header_len + VLAN_HLEN;
->> +       vlandev->hard_header_len = dev->hard_header_len + VLAN_HLEN;
->>
->>  #if IS_ENABLED(CONFIG_FCOE)
->>         vlandev->fcoe_ddp_xid = dev->fcoe_ddp_xid;
->>
->> A kind-of-similar change is needed in net/8021q/vlan_dev.c
-> 
-> The second part would be a nice cleanup, unless I am missing something.
-> 
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index 7aa3af8b10ead0384bbb2e767883b63a37be5fa2..dfd907e2ede2dcb0b6120e1fa5b6bb4d30bfb28a
-> 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
-> @@ -496,26 +496,6 @@ static const struct header_ops vlan_header_ops = {
->         .parse_protocol = vlan_parse_protocol,
->  };
-> 
-> -static int vlan_passthru_hard_header(struct sk_buff *skb, struct
-> net_device *dev,
-> -                                    unsigned short type,
-> -                                    const void *daddr, const void *saddr,
-> -                                    unsigned int len)
-> -{
-> -       struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-> -       struct net_device *real_dev = vlan->real_dev;
-> -
-> -       if (saddr == NULL)
-> -               saddr = dev->dev_addr;
-> -
-> -       return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
-> -}
-> -
-> -static const struct header_ops vlan_passthru_header_ops = {
-> -       .create  = vlan_passthru_hard_header,
-> -       .parse   = eth_header_parse,
-> -       .parse_protocol = vlan_parse_protocol,
-> -};
-> -
->  static const struct device_type vlan_type = {
->         .name   = "vlan",
->  };
-> @@ -575,13 +555,8 @@ static int vlan_dev_init(struct net_device *dev)
->  #endif
-> 
->         dev->needed_headroom = real_dev->needed_headroom;
-> -       if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
-> -               dev->header_ops      = &vlan_passthru_header_ops;
-> -               dev->hard_header_len = real_dev->hard_header_len;
-> -       } else {
-> -               dev->header_ops      = &vlan_header_ops;
-> -               dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
-> -       }
-> +       dev->header_ops      = &vlan_header_ops;
-> +       dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
-> 
->         dev->netdev_ops = &vlan_netdev_ops;
-Hi Eric,
+Motivation
 
-Thanks for the suggestion. I tested both parts of your patch locally
-and can confirm the skb_under_panic no longer reproduces.
+The deployment runs an overlay in which each tenant's traffic is terminated by
+a "forwarder": a pod that hosts the VXLAN VTEP, decapsulates the tenant's
+overlay, and relays it to and from that tenant's workload.  Forwarders for many
+different tenants are packed onto the same receiver node behind one
+mesh-routable underlay IP, and are demultiplexed purely by UDP destination
+port.  The host does a stateless outer-UDP demux by port; it never terminates
+the tunnel:
 
-your diff is against an older tree. After commit
-cd1c188db109 ("vlan: defer real device state propagation to netdev_work"),
-vlan_transfer_features() has been moved to vlan_dev.c.
+  receiver node -- one mesh-routable underlay IP (NodeIP_A)
+  +----------------------------------------------------+
+  |  host netns: stateless outer-UDP demux by dst port |
+  |              (host does NOT terminate the tunnel)  |
+  |                                                    |
+  |     dst :40000        dst :40001        dst :40002 |
+  |         |                 |                 |      |
+  |   +-----v----+      +-----v----+      +-----v----+ |
+  |   | pod0 ns  |      | pod1 ns  |      | pod2 ns  | |
+  |   | vxlan    |      | vxlan    |      | vxlan    | |
+  |   | VTEP     |      | VTEP     |      | VTEP     | |
+  |   | decap    |      | decap    |      | decap    | |
+  |   +----------+      +----------+      +----------+ |
+  +----------------------------------------------------+
+  (up to ~10 forwarder pods packed per node)
 
-Could you post a formal patch?
--- 
+The packed pods are unrelated: each belongs to a different tenant on its own
+VXLAN VNI, so the per-pod UDP port is node-level demux, not an HA construct.
+The host, which only demuxes outer UDP, never has to reason about tenancy.
+
+A single forwarder is made highly available by running replicas.  The replicas
+of one forwarder share a single anycast overlay identity: one inner MAC and IP.
+Clients address that one identity, and a sender spreads flows across the live
+replicas with an fdb nexthop group.  Failover is transparent: a dead replica is
+just dropped from the group, with no client re-resolution or route change.  The
+single identity is deliberate; the endpoint is consumed one layer up as a
+single stable address, so giving each replica its own address would push
+multi-address handling and health-checking up into that consumer.
+
+Anti-affinity keeps the two replicas of one HA set on different nodes, so a
+group's legs land on distinct node IPs.  But each leg is still reachable only
+at (node IP, that pod's UDP port), so within one group the legs differ in IP
+*and* port.  A group can already carry a distinct IP per leg, but it takes the
+UDP port from the device (a single value), so it cannot send each leg to its
+own port.  That is the gap this series closes.
+
+Zooming into one forwarder pod, there is nothing for the host to load-balance:
+the tunnel terminates on a vxlan device inside the pod's own netns, and the pod
+reaches its tenant through a separate NIC:
+
+  one forwarder pod -- its own netns, tenant VNI X
+  +-------------------------------------------------+
+  |                                                 |
+  |   on/off-ramp NIC   <--- customer data plane    |
+  |   |   on-ramp (ingress) / off-ramp (egress)     |
+  |   |   inner packet                              |
+  |   vxlan (VTEP)   encap / decap for VNI X,       |
+  |   |              listens on this pod's UDP port |
+  |   |   outer VXLAN UDP                           |
+  |   eth0 (underlay)   NodeIP:port                 |
+  |   |   to peer VTEPs over the                    |
+  |   v   mesh underlay                             |
+  |                                                 |
+  +-------------------------------------------------+
+
+Existing mechanisms do not fit this shape:
+
+  - L3 multipath in the overlay needs each leg to be a distinct routable
+    nexthop with its own address.  Since an HA set is a single anycast address
+    by design, there are no distinct per-leg addresses to route over; the fdb
+    nexthop group bridging to that shared MAC is what load-balances.
+  - Host-side fan-out (XDP / TC / SO_REUSEPORT) assumes a shared host datapath
+    that is not there.  SO_REUSEPORT balances sockets within one netns, but the
+    receivers are in different netns (in fact different tenants).  An XDP/TC
+    fan-out would require the host to terminate the tunnel and re-dispatch
+    inner traffic across netns and VNI boundaries, i.e. become a VTEP, which
+    puts the host into the tenant datapath and largely duplicates what an fdb
+    nexthop group already does.
+  - Demuxing on VNI instead of port (one shared 4789 socket, multiple vxlan
+    devices differing only in VNI, moved into each pod's netns) works when the
+    co-located pods have different VNIs.  It does not help two same-VNI HA sets
+    on one node: their outer headers are identical, so the host would again
+    have to terminate the tunnel to tell them apart.  It also costs packing
+    density: with one shared underlay IP, VNI demux allows at most one VTEP per
+    (VNI, node), so N same-VNI HA sets of two replicas need 2N nodes, whereas a
+    per-pod port fits them on two nodes with anti-affinity preserved.
+
+This series adds the attribute:
+
+  - Patch 1 adds a netlink attribute NHA_FDB_PORT (__be16, mirroring NDA_PORT),
+    stored in struct nh_info and echoed back on dump.  It is only accepted
+    together with NHA_FDB and NHA_GATEWAY.  Control-plane only; datapath
+    behaviour is unchanged.
+  - Patch 2 wires it into the VXLAN datapath: vxlan_fdb_nh_path_select() sets
+    rdst->remote_port to the selected leg's port.  vxlan_xmit_one() already
+    prefers rdst->remote_port when non-zero and otherwise falls back to the
+    device port, so nexthops without a port are unaffected (backward
+    compatible).
+  - Patch 3 adds a selftest.
+
+On the uAPI: this does not add a new datapath concept.  A single fdb entry
+already carries a per-destination UDP port (NDA_PORT), and vxlan_xmit_one()
+already prefers rdst->remote_port when set.  NHA_FDB_PORT is the nexthop analog
+of that existing attribute: control-plane only, no datapath change, and
+backward compatible (a leg with no port falls back to the device port as
+today).  It sits at the nexthop level rather than under NHA_ENCAP because fdb
+nexthops do not use the NHA_ENCAP / LWT infrastructure.
+
+Example:
+
+  ip nexthop add id 1  via 192.0.2.10 fdb port 4789
+  ip nexthop add id 2  via 192.0.2.10 fdb port 5789
+  ip nexthop add id 10 group 1/2 fdb
+  bridge fdb add 00:11:22:33:44:55 dev vxlan0 nhid 10
+
+Both legs share gateway 192.0.2.10 and differ only in UDP port; the kernel
+hashes flows across them.
+
+Testing: kernel and iproute2 built on net-next.  The control-plane selftest
+passes (6/6) and a datapath test (two netns, tcpdump on the underlay) confirms
+outer traffic is hashed across both UDP ports.  The series is bisectable:
+patches 1 and 2 each build individually.
+
+A matching iproute2 change (the `ip nexthop ... fdb port N` keyword) is posted
+separately to the iproute2 list.
+
+Changes in v2:
+- Expand the cover letter with the deployment model and the
+  addressing-vs-load-balancing distinction that motivates the attribute, as
+  requested (Ido Schimmel).
+- Reword the problem statement: the UDP port is underlay demux (addressing),
+  not what distinguishes otherwise-interchangeable load-balancing targets.
+- Drop the speculative NHA_FDB_VNI follow-up note; there is no use case for a
+  per-leg VNI in an fdb nexthop group.
+- No functional change to the patches.
+
+v1: https://lore.kernel.org/netdev/20260712191218.236-1-jack4it@gmail.com/
+
+Signed-off-by: Jack Ma <jack4it@gmail.com>
+---
+Jack Ma (3):
+      net: nexthop: add NHA_FDB_PORT for fdb nexthops
+      vxlan: honor per-nexthop fdb destination port
+      selftests: net: add coverage for fdb nexthop dst port
+
+ include/net/nexthop.h                              |  7 +-
+ include/net/vxlan.h                                |  5 +-
+ include/uapi/linux/nexthop.h                       |  3 +
+ net/ipv4/nexthop.c                                 | 20 +++++-
+ tools/testing/selftests/net/Makefile               |  1 +
+ .../testing/selftests/net/fib_nexthops_fdb_port.sh | 78 ++++++++++++++++++++++
+ 6 files changed, 111 insertions(+), 3 deletions(-)
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260712-b4-vxlan-fdb-port-486bb215eab6
+
 Best regards,
-Tangxin Xie
+--  
+Jack Ma <jack4it@gmail.com>
 
