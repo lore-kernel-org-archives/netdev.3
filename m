@@ -1,223 +1,295 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012024.outbound.protection.outlook.com [40.93.195.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C2C383987
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784286691; cv=none; b=TvPSp5bEewUmT5hwtC5xnhZn/jL8tGKTOmBwZ33THCuH5/I8yrvFJ3Tx/V8Cs09Lg/AL/sk9WBTM9o/gzYK20mDJGTj0q3uwDetCtIip1OK4U/uqcdXhx0oBXJdFIKUhluQ3W8Ci8Cg/vxyBnX5Sdaeu0UpWQUsubUourRdnu8k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784286691; c=relaxed/simple;
-	bh=Wd3KSlAioJV/7oPp15oN/oAaKkVCnRLCkMXjFYtEoTE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YCKTSsOkCt6dcpUlY53aFePqwCpe7y0l/2GtWHm7/9Lr9Clz6R7fTNk0KXfbN8swQ1J4OyHZEftzz6vzawFyBhwDHAOb9KaiaPooYj/tnIe8whhNEN+VK8EHOlYJZkQTE6NXCSvIYJoYh58zfrrMQdnMp0EnpE9gQEJMvN5hau4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wigh9B3r; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DR2zNMjC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9EE21ABB1;
+	Fri, 17 Jul 2026 11:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784287180; cv=fail; b=RLgbbUcjiH/fyWt7iBFTdnWhQUfOz0eS4i66ybnO0HnPFEehjuk8oHD6h3LLU6HbgmL0MG8BVTaKlysZg8zLPn3kmAizaNtnWQTPyTWA0s680RjqxRVLsQiRSVwHOcNGWKJ/r1A/Lk7GsiBJIhfHoqK19PcKRxtZ5dWmQn0S9cc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784287180; c=relaxed/simple;
+	bh=MsUyMdwzeb4/Cikt2qHgR8fGx1IwZl8H3YQQmmw4wWk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iof5NaViKpclyBcRep1WRN0XTbsma9n9cNjMypE1wZ7pLnFJKjjxrISLw8EsSuGEnSErRQoqYJMX/pQFDajVQX3dk70jm4aXtQy8+LgD/dX4eK6lzocCAeccb7Hg/vi35LrRDTXksD8m8TX/hRNe5J89NtLuFUrqY3pKdSURxVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zkv0a4s7; arc=fail smtp.client-ip=40.93.195.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wigh9B3r";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DR2zNMjC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784286688;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHIfBM0S8wL95GpNTxr+CMsZKZuRkWlh0xl4GFsFICM=;
-	b=Wigh9B3rgtNUtKnFGLceVhO4A78REzfeF3Bqi0cSkFwbz05J60oo3esaSvTN58a0nUdJSs
-	/wZwodpFZHxaRTneI342/5V/3jvAtA+yKLyA9PW2czdvT/q+dLfc7qx5O+c7WNB1Ga4ifT
-	BNh3tIfmFKseAaHO4Dg6Eu7ciZRNQhA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-hjxSrOnVOx-WX08L1HFBMw-1; Fri, 17 Jul 2026 07:11:27 -0400
-X-MC-Unique: hjxSrOnVOx-WX08L1HFBMw-1
-X-Mimecast-MFC-AGG-ID: hjxSrOnVOx-WX08L1HFBMw_1784286686
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-472a798fc7cso3193608f8f.1
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 04:11:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784286686; x=1784891486; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BHIfBM0S8wL95GpNTxr+CMsZKZuRkWlh0xl4GFsFICM=;
-        b=DR2zNMjCP+6RIeVlLtj5rHEYkoME3ZVcl6DaH1BsIf10AIH3Ay14qnGKf5fJSZ7CT0
-         zTfU9M4gCdjETciyLPm/REMm6pKO1zPZob2rROQ3mxEuZcdxx7pPRed/sSn46dEKM6qj
-         w6A4GHQO040XTEflbWJHFJthZPUqhBkrhAi8xASkrsk2IXYWJaNQ+o6tekmIlSODOUVi
-         p/q2eBT8eP06LMcir7ydrKd2mMmCJwBvvjhDYUyaB/LdDCWft+t828e/tyypX71hrkLN
-         hYKz9BAakHZjElCwYl5AnP+prcxO06oyD5//t8h1kAaNZ2Qwcb7PBipzJ9VmH9TZAPIi
-         E4wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784286686; x=1784891486;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BHIfBM0S8wL95GpNTxr+CMsZKZuRkWlh0xl4GFsFICM=;
-        b=OWoMPzu1OLcJMNK0lyntAtXW8bsNL4buElOnbNw7OELQ6QIeOgtfcihv6CzNpgDBOF
-         0nZXGRNbsIssNOjWfSMyM7jKUgcjR/Im44NvBliQMWpsBk8poHFoD+TL+9wyLLIvXWPj
-         9ppW3F8w12H9kDOtXPw8iB077brNRCowe55g/vG9tUBufCpAqdogaSuvna7jjGisTevd
-         NtMB1yJf1+tZGEbh8uBlA7CWgqWXDZcIU8e+OglZp2uMEcwdPJXQJQl/ZqWbXmAb8pCw
-         0vaUDjbiEupFdVm8hErRJMN1awv21JUNhlJiDSwVHMGzCtxJZVrd3uA9q5k+C2lmob8d
-         /80Q==
-X-Gm-Message-State: AOJu0YzuaRe9S/uk3kAXlqH4QY1i2rtpYmuvkbb2pHNPsT0rJSJQnISI
-	kfNZOE04FSMKGaKv6+vAqVy94lLW1+F+9QoqEGwVC0rcntyJwNolrgQ2lbaQ6+zrZ1d7RIkz20b
-	W2+RcL0hV+aAwV6gPisiVs09lVPwjUIAQh4IjhDWZ4a8+DIXSBBbVI8DLJQ==
-X-Gm-Gg: AfdE7cm/vnNILyl20Sp4r/JHex4w6bxaD0gK9nbCCAvDGStW3utSkoN9vFbpuDb1TOO
-	yQ7XjwHddtZ0IJBBfMpx5TE9DzrOMpyclcRVuTJc/piG25tV/S5+Ceq0rIyTqQ1bfPeOwL++cYQ
-	H/BLObhlrzCJRI0QsE7iMU8FSoefnYCPd3R/OfA+skdG6w3P4lLRQC0AbQCjymgUbd2S7aUpstw
-	rm2XsJSOxPZafImzxT+PhaNto025vGD27n8fi0VIKlXuEN08zlSGyQPXdpzqFixgu7KfG1p2Vo1
-	kzmGqPQ7oj2N8/hEOYD1P10TCXK7+ev7Hn24Y3rx4MSAtLgpUsNdHT4qtb7XcnY6XyQ1xcR71er
-	ywMIm4PMytbcdMJTTd6Icfrc5kirPU7w10m34BpRBCCHuaWLWkvmP+WYrzlTCUPUsQVuXvXXiBz
-	WEQQ==
-X-Received: by 2002:a05:6000:18a9:b0:478:33fe:f97c with SMTP id ffacd0b85a97d-47f62314fb3mr3114972f8f.26.1784286686033;
-        Fri, 17 Jul 2026 04:11:26 -0700 (PDT)
-X-Received: by 2002:a05:6000:18a9:b0:478:33fe:f97c with SMTP id ffacd0b85a97d-47f62314fb3mr3114916f8f.26.1784286685412;
-        Fri, 17 Jul 2026 04:11:25 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ed2313sm2733376f8f.23.2026.07.17.04.11.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jul 2026 04:11:24 -0700 (PDT)
-Message-ID: <26cb3349-5344-48c0-b0b7-37133b4e0662@redhat.com>
-Date: Fri, 17 Jul 2026 13:11:23 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zkv0a4s7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nIr0EydVpYRQ3gwAWMvHIaFBlstZdbYjCexPSuryiWy+mVs1i2pl84jvwQWBpxb5p7kUJZVWjDJ0L1JSJVsFiJxpaqIWCJAfr80NZiiEUMIzZsLbkbAhCqWAW+HRenctN6KOY7lCYjs1oW1xJWEeYJHyyfC1Xob5/ThaGp7I0sLbBU2j6nyXbPJwsjq43EFTjH6bsCmEMdFvNz8F3DGOrIAAldIqMXgYQHmFKwnvNk9HysMsqFH64pH2coNQPCXMcaDXpfg7N2CYsAqUtUmanvrLPbSCWzqlejQb3kVJVxgivoIA/3nv0f34sHsWQi5VnSh1o7IPBEVQdAgqmS87yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6LWAQXZu1AkRXVRD3WAzJkcpKIpNh+GvLZvBxraoa6s=;
+ b=wsEeE4Tr125y2tVm5OV1A+IQPP4kig986qH8vIhlDf3JVETa4MmvXGYzn18g83wnQOxgh+VtbEuLXhFRpr+fw2A4BJa53aYRMPs3gGRFsswhxeh3IaNEgxhuyWQi/wwBdoZixNB+MrkMconTQqGCj//LGFv98cisTLTlToHhVO/2p6S09cBxZ7Z57jJ2j1nWQtLCUuHgdzqD3zyCk3QLZ6hNdOyXi1iOg+5QXrwVtFOrsnbVfrSj7e/mkFoek4rdSZBK9M2Zdq/LbKdd6sowmV6nj5FufGbJGKWuMnSgvbbk7AtPtUY3K1jgokHRQGaVjzw8+ByTmUcQ9c/7Oh2Unw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6LWAQXZu1AkRXVRD3WAzJkcpKIpNh+GvLZvBxraoa6s=;
+ b=zkv0a4s7o0L/YLxR2VyJDLpnFkV2Knc3x73Hfo4BYgqaojW7xDI67L/Xb7IJt4zSTj9a2/IHioFSq+NqBcy7TzcElENu+NzLwcC28LP1ssW3XJ4B72fBSB/ID3TWsDPZhaWJCycdB+di7Xneau96cSGjq5HHCFWA1GsNJmPzqr4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
+ by SJ1PR12MB6172.namprd12.prod.outlook.com (2603:10b6:a03:459::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
+ 2026 11:19:33 +0000
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
+ 11:19:32 +0000
+Message-ID: <22f1a796-0aaa-4a46-bfd1-dcb680d742b1@amd.com>
+Date: Fri, 17 Jul 2026 16:49:23 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/4] dmaengine: xilinx_dma: Extend metadata handling
+ for AXI DMA and MCDMA
+To: Srinivas Neeli <srinivas.neeli@amd.com>, Vinod Koul <vkoul@kernel.org>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: Frank Li <Frank.Li@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Suraj Gupta <suraj.gupta2@amd.com>, Marek Vasut <marex@nabladev.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Alex Bereza <alex@bereza.email>,
+ Folker Schwesinger <dev@folker-schwesinger.de>, dmaengine@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, git@amd.com
+References: <20260717090824.2364230-1-srinivas.neeli@amd.com>
+ <20260717090824.2364230-5-srinivas.neeli@amd.com>
+Content-Language: en-US
+From: "Pandey, Radhey Shyam" <radheys@amd.com>
+In-Reply-To: <20260717090824.2364230-5-srinivas.neeli@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0014.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::17) To CY1PR12MB9697.namprd12.prod.outlook.com
+ (2603:10b6:930:107::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: dpaa: fix mode setting
-To: Michael Walle <mwalle@kernel.org>, Sean Anderson
- <sean.anderson@linux.dev>, Madalin Bucur <madalin.bucur@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260710143430.2276141-1-mwalle@kernel.org>
- <a5c5b8a6-85a8-7830-e19b-ffd5de750e3c@linux.dev>
- <DJUZ1VG8U9SL.2W0CJM7NSMK2@kernel.org>
- <2c8f63f5-f04a-4abc-9508-4c47a80da543@redhat.com>
- <DK0RLUBEKFVS.168UHY5BP8D4E@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <DK0RLUBEKFVS.168UHY5BP8D4E@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|SJ1PR12MB6172:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cace94e-0806-4b81-2b39-08dee3f54662
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|22082099003|18002099003|6133799003|11063799006|4143699003|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	l2ilJzUEKaLIpw+mVtqK+V4/O/qO94Z8kiBBCWjI2gc2pfVXbKBeVmtnEILBzGn6OrAN4aQiwRPbd4I58cnU47Vcy4NhhHjClEW4JGoHnbbemml3blP9ZJxcBO0yMM854mWTWBWWBzNhh7H8KYnCTFqtPhmfFicfAyOF+ZEUs/JagYAqXWGPMI3r1F5brYvWJREv8fUVB1WloLJwGo50oFIIXKjfQz7luSHPOlgfXsqlf8l8lfEZ953MOLU1HlyCwzkusGjWvCIwnPuecpkToxFllZeSVNnMWDnF0cvExwRZr33O8Irpge9VflT5Xg8REELptzTufEaPxPZVAdXrNQGoKZbd8ZiL93yolpyJ45Otv1X57Yj1mgmaKf7PHsyvgP1sIrIvBKjGXhf9Bd/Thrl0U7tb4cYJSINuhEw1EvTBcw4t+UWaL/289krIn/tJMyON6nDa7Kf+xIbUbuMM6eTmhcIDDZsjg86tuIJSo7ztxPkV+v+B9bEc9ZkuIL/GbTjZEPxIs/L8xCra0H3SDjPIJoFBZA4pe1++R7lCiZ7CZgolMo0jnjI3N0dPrLteNpoFb3RK5w8A9JI/V4s68IxeOmnHxjOB02RQX9DnloX3dV88sOPrLfg2LOuDJoEP9NRvNK9c1S3Ovw0EPdgka2YwxKSIU4LOeY7AmZMohyU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(6133799003)(11063799006)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qm5UdUdRd05NRkg3YUVmYXdkK0xWWEdwRnl2Y0Rocm4zUzFtWGlyU29MYklt?=
+ =?utf-8?B?aGQrVzlSTWZmUWpRT3NPcFNqZzd5SnFRTmJCejRuSTIwV01LSHVhSmk2dStC?=
+ =?utf-8?B?SU56bjNNcFMwQzdVRXJzT2lCS0JLWU41bzdQVVlLYTFkOUJWRXJVcnZrZnZH?=
+ =?utf-8?B?YUdndmV5RTJMQ2VRVDNJMFdqSktVR3RXRTUxelNEUmxKWFVHMUorZDlncUVu?=
+ =?utf-8?B?ZitMWXErcVhNVDlXZSt6ZUlSU2xvaGVzbU02T1h4VjMvWGxWY2tyc1NrRmRE?=
+ =?utf-8?B?U3lLNGs2dlBuVTdsK2hDQlFkOXBwNW0yZ2NSZENLbkZsMmVaeEJQUW9RemtJ?=
+ =?utf-8?B?R21XQVkvZXpMSkFJaDNFZk5OdDNoNExtUHFwUE81clBlUTFsRExFY205TTZE?=
+ =?utf-8?B?cEQ4RVJMTzdFc0t4LzhEWlFnU0VYUE1pYW5DYnFXMFc3TUl5VFVvSGRZQWky?=
+ =?utf-8?B?OFc5Yy9xKzZ6UGNqQVFRK0ZpUlhPaWhTeTA1bzVrM1VLck5SSzFNekZMTjVz?=
+ =?utf-8?B?TUphaVpmbG9FRkxOK3ZPa0FYSU9xajNwaGVleVVOSmNLYVlIRWxId0o4ZHVv?=
+ =?utf-8?B?MVFqQlExR0tlTlIyZVdWUDBxbUhYQXVBSnoxb3E4NjlXaU8rNHFvSFRjWDls?=
+ =?utf-8?B?UkdlaDdTdHpRc1pIY1lmVUhoakZ3bGtHS0l0bnFCeU0vTEIwRmFieVg5dUc1?=
+ =?utf-8?B?RDV0N0NRb2ZEWTJ6ZVczdVBnaTlYai83ZVdpeWdpeGxmcjRRS3BpeHNucVBK?=
+ =?utf-8?B?MW5Temp5MExpeWVvV1MyUnJLbW1hVnQ0RFVMV2NVditWUTVEcG92TmJFK3Fi?=
+ =?utf-8?B?Nk43M2czRUV4QVluRDY4ZkxVT2FTVzVPMmxlY3hIbmVaNDhpRmwxZ3I5dFlr?=
+ =?utf-8?B?U3F5OE9vTWNKZ1Z6Y1ZOdVlVUEpySHVuQXdRWXVPUFEwZEVZRmYxc3BiZGJW?=
+ =?utf-8?B?bGxsN3NPKy9pOEdZTC80SWx5LzVOa09CL0o3UE1HMGc5Nmx5UmV6bVpuQjd1?=
+ =?utf-8?B?VFFuYmUyd2M2RjNLMXhISFA2NnhXblQyNFNUd3BjTG1aZW54OGpnTEtWNncy?=
+ =?utf-8?B?cUw2ajZSWkRTRHBMUkQreTVmdC92V2pSMnRlS2pGc0RvVnAxeFIzMkU5Y3Rk?=
+ =?utf-8?B?bHFSWVNFQ2Z5OGRQNGZkU2czWnZFTWpJbXlJeURCaEFQeER1eFFETlFWU1Jz?=
+ =?utf-8?B?WU9hQUc1VHRrREw1eVlBbzVObHNNVlBvb1duRUZxTW1wY2hVYmlOVDM5cjFZ?=
+ =?utf-8?B?eTNYRzFqMXhtZDhQSkI3WU5uTXVBczhCdE5XN1M5Y3NWS2V5S2pTeU9veFJ0?=
+ =?utf-8?B?enVTbmNST1AvSnhuMzZJbFRVQlhtYUJZS2kxKzU5ZHhYY3MydUt5b3FieTFj?=
+ =?utf-8?B?ZkhtQS9QVXBHRVNRVGpVU0NNLzNqMFNRcHlPc1RUSVZtbWg2dDVTYlMwOVZO?=
+ =?utf-8?B?cXZLZFJvKytmM1pMUEx3NEU2T2xBcEJqQnBtakNoTWNUWUJOQmtLc1V0TVZa?=
+ =?utf-8?B?Rktpb0Y0RmNQRk9kdk80a3VTdWRYZXNBeFBEMnlYTVczbUExUUhtMmNQN1NF?=
+ =?utf-8?B?TzVIbjZMcndJYzFnYjJURkFXR0I4dUhBYkdqOVd4cVA0SEZkcUVvUG04dHEv?=
+ =?utf-8?B?K0ZBOXRVSHdqVVhhWDNzZXdtOE9ieC9MOWUvMnhELzJTSjAwOU02R28xQ3Vt?=
+ =?utf-8?B?cHkzbCtwU2o3d3JjbDNLbUFBSnFiSTNpWmJCaHoyKzlhek13N1lmU29kNmR4?=
+ =?utf-8?B?RU10aHErM2JzVUtFVzJ0eFN5UDd6L2kvM1ZXaUhWMkJia3pjdVZOSUppTUF2?=
+ =?utf-8?B?azRZcnRzSEp3NEltYmFVVjhValJNZEd5RSsrcFh2L0RpZDJ4YUxCdG5aOHhT?=
+ =?utf-8?B?ZmxrUWRSaE5JTDlmUHZwWkpTT0lpczExRi9BeVo2d1gwZ1AvQ2N2MU1Icjc4?=
+ =?utf-8?B?K1paYWc1YW0yS0JiREJ2VzdKRFI5RXJwbkxGd3dwQXViSEdTc1R0VTRJZjNG?=
+ =?utf-8?B?cStOcVhLdnhBeTB4a3pPQ0swbXc2NzRWZ3IvUFRNYzk0blRCZ0g0VkptNWw0?=
+ =?utf-8?B?ZWZUMjV5T1dIQjJhYkF6aDU2RGJFYzlCeVY4MXBOaWtSTzM2WG82OWtsTkJt?=
+ =?utf-8?B?b1pNZWVmUmxjUlByK0djbWRFd0hPYUNQRWpFTkFTalJrdUpCUWdWYlFuRTFB?=
+ =?utf-8?B?bXczK01hV0g5MnJnN1pPalgzTDl6Z1p5ZTdkVWpyaG0rbnRnWG94bUZGemlI?=
+ =?utf-8?B?OHJjQVFycnFISFI2SDFUV1dZQUNDSVFXOEFDaEZNeHFWVlRhdjBDcWhIOG5N?=
+ =?utf-8?B?NEgwS0FZam1SWHpnTFRORUtiYmc1RFBBNUdKeGNGbm9ZWWhWNFEwdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cace94e-0806-4b81-2b39-08dee3f54662
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 11:19:32.3624
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KFTtbspRQ+5wBrFumBk42B1m7914APXoLG0SEJWe2bqx9cB/uobR8C2CtezUm6w3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6172
 
-On 7/17/26 12:13 PM, Michael Walle wrote:
-> On Fri Jul 17, 2026 at 12:01 PM CEST, Paolo Abeni wrote:
->> On 7/10/26 4:47 PM, Michael Walle wrote:
->>> On Fri Jul 10, 2026 at 4:39 PM CEST, Sean Anderson wrote:
->>>> On 7/10/26 10:22, Michael Walle wrote:
->>>>> Before converting to the phylink interface, the init function would have
->>>>> set the correct I/F mode depending on the maximum link speed of an
->>>>> interface. After converting to phylink, the established link speed
->>>>> is used to determine this setting and is set in the .link_up()
->>>>> callback. The callback isn't called because the link is never
->>>>> established between the PCS and a connected SGMII PHY.
->>>>> To fix it, don't use the current speed, but set the mode depending on
->>>>> the interface (which implies the maximum speed) in .mac_config().
->>>>>
->>>>> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
->>>>> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
->>>>> Signed-off-by: Michael Walle <mwalle@kernel.org>
->>>>> ---
->>>>> FWIW, I dropped setting a non-reserved mode in init(). The hardware
->>>>> default is 0 and the mac_config() will set a valid mode anyway.
->>>>>
->>>>> Changes in v2:
->>>>>   - the setting is/was based on the maximum speed, not the current
->>>>>     speed. thus, move the setting into mac_config().
->>>>>   - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
->>>>>
->>>>>   .../net/ethernet/freescale/fman/fman_dtsec.c  | 26 ++++++++++---------
->>>>>   1 file changed, 14 insertions(+), 12 deletions(-)
->>>>>
->>>>> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>>>> index fe35703c509e..7075f93bab49 100644
->>>>> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>>>> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>>>> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->>>>>   {
->>>>>   	struct mac_device *mac_dev = fman_config_to_mac(config);
->>>>>   	struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
->>>>> -	u32 tmp;
->>>>> +	u32 ecntrl, maccfg2;
->>>>> +
->>>>> +	maccfg2 = ioread32be(&regs->maccfg2);
->>>>> +	maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
->>>>>   
->>>>>   	switch (state->interface) {
->>>>>   	case PHY_INTERFACE_MODE_RMII:
->>>>> -		tmp = DTSEC_ECNTRL_RMM;
->>>>> +		ecntrl = DTSEC_ECNTRL_RMM;
->>>>> +		maccfg2 |= MACCFG2_NIBBLE_MODE;
->>>>>   		break;
->>>>>   	case PHY_INTERFACE_MODE_RGMII:
->>>>>   	case PHY_INTERFACE_MODE_RGMII_ID:
->>>>>   	case PHY_INTERFACE_MODE_RGMII_RXID:
->>>>>   	case PHY_INTERFACE_MODE_RGMII_TXID:
->>>>> -		tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>>>> +		ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>>>> +		maccfg2 |= MACCFG2_BYTE_MODE;
->>>>>   		break;
->>>>>   	case PHY_INTERFACE_MODE_SGMII:
->>>>>   	case PHY_INTERFACE_MODE_1000BASEX:
->>>>>   	case PHY_INTERFACE_MODE_2500BASEX:
->>>>> -		tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>>>> +		ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>>>> +		maccfg2 |= MACCFG2_BYTE_MODE;
->>>>>   		break;
->>>>>   	default:
->>>>>   		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
->>>>> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->>>>>   		return;
->>>>>   	}
->>>>>   
->>>>> -	iowrite32be(tmp, &regs->ecntrl);
->>>>> +	iowrite32be(ecntrl, &regs->ecntrl);
->>>>> +	iowrite32be(maccfg2, &regs->maccfg2);
->>>>>   }
->>>>>   
->>>>>   static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
->>>>> @@ -948,15 +955,10 @@ static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
->>>>>   	iowrite32be(tmp, &regs->ecntrl);
->>>>>   
->>>>>   	tmp = ioread32be(&regs->maccfg2);
->>>>> -	tmp &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE | MACCFG2_FULL_DUPLEX);
->>>>> -	if (speed >= SPEED_1000)
->>>>> -		tmp |= MACCFG2_BYTE_MODE;
->>>>> -	else
->>>>> -		tmp |= MACCFG2_NIBBLE_MODE;
->>>>> -
->>>>>   	if (duplex == DUPLEX_FULL)
->>>>>   		tmp |= MACCFG2_FULL_DUPLEX;
->>>>> -
->>>>> +	else
->>>>> +		tmp &= ~MACCFG2_FULL_DUPLEX;
->>>>
->>>> Did you test this when forcing 10/100 speed?
->>>
->>> No I didn't. Well I can't. I have a very weird board which only
->>> supports 1000base-X (and copper SFPs in 1000basex autoneg mode). On
->>> top of that there is a Marvell 88E1112 in between the SFP and the
->>> MAC, for which the PHY driver is completely broken. Long story
->>> short, I'm not able to test that (yet/at all? Not sure).
->> FTR, sashiko suspect this patch will broke such setup:
->> https://sashiko.dev/#/patchset/20260710143430.2276141-1-mwalle%40kernel.org
+On 7/17/2026 2:38 PM, Srinivas Neeli wrote:
+> From: Suraj Gupta <suraj.gupta2@amd.com>
 > 
-> I've seen that, but.. that was the actual change between v1 and v2
-> as suggested by Sean. It does not depend on the actual link speed,
-> but the maximum link speed. So it is not relevant if the link
-> negotiates to a slower speed or not. At least that now matches the
-> behavior prior to the phylink conversion. If that was working -
-> that I can't tell you.
+> xilinx_dma_get_metadata_ptr() returns the AXI DMA APP words from the SOP
+> descriptor in both directions. This is wrong for RX, where the hardware
+> writes the APP words into the EOF descriptor. It also leaves AXI MCDMA
+> without metadata support.
+> 
+> Return the metadata from the SOP descriptor for TX and from the EOF
+> descriptor for RX, matching where the hardware reads and writes the
+> fields. For AXI DMA, expose the APP words (20 bytes). For AXI MCDMA,
+> expose the control sideband, status, and APP fields (28 bytes). On TX
+> the control sideband holds TID and TUSER configuration for the outgoing
+> stream. On RX the sideband status holds the received TID, TDEST and TUSER
+> from the incoming stream. The field layout differs between MM2S and S2MM,
+> and the wider payload lets a consumer distinguish the two controllers.
+> No in-tree consumer is affected.
+> 
+> Read xlnx,axistream-connected for AXI MCDMA. Attach metadata_ops in
+> xilinx_mcdma_prep_slave_sg() when an AXI4-Stream interface is present,
+> so MCDMA clients use the metadata API the same way as AXI DMA clients.
+> 
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+> Co-developed-by: Srinivas Neeli <srinivas.neeli@amd.com>
+> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
+> ---
 
-I'm sorry, following all cross revision discussion is a bit hard here.
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Thanks!
 
-I don't understand if the 'link never established' is specific of your
-board, or it a constant with this driver. Could you please clarify?
-
-/P
+> Changes in V5:
+>   - Take the metadata pointer from the SOP descriptor for TX and the EOF
+>     descriptor for RX, matching where the hardware reads and writes the
+>     fields (TX previously used the EOF descriptor).
+>   - AXI DMA now exposes only the APP words (20 bytes) in both directions,
+>     instead of the status word followed by APP (24 bytes).
+>   - AXI MCDMA exposes the control sideband, status and APP fields
+>     (28 bytes), with the sideband position differing between MM2S and S2MM.
+>   - Reworked the kernel-doc index table and commit message accordingly.
+> 
+> Changes in V4:
+>   - Restructured xilinx_dma_get_metadata_ptr(): AXIDMA is now the
+>     fall-through path instead of a separate branch guarded by
+>     WARN_ON_ONCE()/ERR_PTR().
+>   - Rewrote the kernel-doc as an index table covering AXI DMA, MCDMA S2MM
+>     and MCDMA MM2S, and documented that the pointer and payload length are
+>     the same for both MCDMA directions.
+>   - Added an inline comment explaining the union aliasing.
+>   - Condensed the commit message.
+> 
+> Changes in V3:
+>   - Renamed subject to include "AXI DMA and MCDMA" (was "AXI MCDMA" only).
+>   - Complete rewrite of commit message and implementation.
+>   - Metadata pointer now returns status field at index 0 instead of APP
+>     fields, exposing status and sideband information to clients.
+>   - Changed from list_first_entry to list_last_entry to return the EOF
+>     descriptor where hardware writes status and APP fields.
+>   - Added explicit handling for both AXIDMA and MCDMA types with proper
+>     payload length calculation.
+>   - Added WARN_ON_ONCE for unsupported DMA types.
+>   - Removed the 'chan' field from struct xilinx_dma_tx_descriptor (was
+>     added in V2) as it's no longer needed; channel is obtained from
+>     tx->chan instead.
+>   - Dropped V2 patches 4/5 (dt-bindings xlnx,include-stscntrl-strm) and
+>     5/5 (xferred_bytes support) as the approach changed to use residue.
+> 
+> Changes in V2:
+>   - Added support for MCDMA metadata handling alongside AXIDMA.
+>   - Added 'chan' field to struct xilinx_dma_tx_descriptor.
+> ---
+>   drivers/dma/xilinx/xilinx_dma.c | 48 +++++++++++++++++++++++++++++----
+>   1 file changed, 43 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+> index 1b5b00f08c5f..6bf509d33e7c 100644
+> --- a/drivers/dma/xilinx/xilinx_dma.c
+> +++ b/drivers/dma/xilinx/xilinx_dma.c
+> @@ -651,17 +651,51 @@ static inline void xilinx_aximcdma_buf(struct xilinx_dma_chan *chan,
+>    * @tx: async transaction descriptor
+>    * @payload_len: metadata payload length
+>    * @max_len: metadata max length
+> - * Return: The app field pointer.
+> + *
+> + * The metadata lives in the SOP descriptor for TX and the EOF descriptor for RX.
+> + * Field order depends on dmatype and direction:
+> + *
+> + *   AXI DMA:         [0..] app
+> + *   AXI MCDMA (TX):  [0] ctrl_sideband, [1] status, [2..] app
+> + *   AXI MCDMA (RX):  [0] status, [1] sideband, [2..] app
+> + *
+> + * Return: Pointer to the first metadata word.
+>    */
+>   static void *xilinx_dma_get_metadata_ptr(struct dma_async_tx_descriptor *tx,
+>   					 size_t *payload_len, size_t *max_len)
+>   {
+>   	struct xilinx_dma_tx_descriptor *desc = to_dma_tx_descriptor(tx);
+> +	struct xilinx_dma_chan *chan = to_xilinx_chan(tx->chan);
+> +
+> +	if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIMCDMA) {
+> +		struct xilinx_aximcdma_tx_segment *seg;
+> +
+> +		if (chan->direction == DMA_DEV_TO_MEM) {
+> +			seg = list_last_entry(&desc->segments,
+> +					      struct xilinx_aximcdma_tx_segment, node);
+> +			*max_len = *payload_len = sizeof(seg->hw.s2mm_status) +
+> +						  sizeof(seg->hw.s2mm_sideband_status) +
+> +						  sizeof(seg->hw.app);
+> +			return &seg->hw.s2mm_status;
+> +		}
+> +		seg = list_first_entry(&desc->segments,
+> +				       struct xilinx_aximcdma_tx_segment, node);
+> +		*max_len = *payload_len = sizeof(seg->hw.mm2s_ctrl_sideband) +
+> +					  sizeof(seg->hw.mm2s_status) +
+> +					  sizeof(seg->hw.app);
+> +		return &seg->hw.mm2s_ctrl_sideband;
+> +	}
+> +
+>   	struct xilinx_axidma_tx_segment *seg;
+>   
+> -	*max_len = *payload_len = sizeof(u32) * XILINX_DMA_NUM_APP_WORDS;
+> -	seg = list_first_entry(&desc->segments,
+> -			       struct xilinx_axidma_tx_segment, node);
+> +	if (chan->direction == DMA_DEV_TO_MEM)
+> +		seg = list_last_entry(&desc->segments,
+> +				      struct xilinx_axidma_tx_segment, node);
+> +	else
+> +		seg = list_first_entry(&desc->segments,
+> +				       struct xilinx_axidma_tx_segment, node);
+> +
+> +	*max_len = *payload_len = sizeof(seg->hw.app);
+>   	return seg->hw.app;
+>   }
+>   
+> @@ -2639,6 +2673,9 @@ xilinx_mcdma_prep_slave_sg(struct dma_chan *dchan, struct scatterlist *sgl,
+>   		segment->hw.control |= XILINX_MCDMA_BD_EOP;
+>   	}
+>   
+> +	if (chan->xdev->has_axistream_connected)
+> +		desc->async_tx.metadata_ops = &xilinx_dma_metadata_ops;
+> +
+>   	return &desc->async_tx;
+>   
+>   error:
+> @@ -3287,7 +3324,8 @@ static int xilinx_dma_probe(struct platform_device *pdev)
+>   
+>   	dma_set_max_seg_size(xdev->dev, xdev->max_buffer_len);
+>   
+> -	if (xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
+> +	if (xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA ||
+> +	    xdev->dma_config->dmatype == XDMA_TYPE_AXIMCDMA) {
+>   		xdev->has_axistream_connected =
+>   			of_property_read_bool(node, "xlnx,axistream-connected");
+>   	}
 
