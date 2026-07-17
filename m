@@ -1,179 +1,188 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29A1ADC83
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD3333DEDD
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784276459; cv=none; b=nyzrVHNplFXfr96xXZcYpc/b75tONdZw5mC1pkmKQ1rH00ZDiCk9rqeyJXpa2RjEm3/o8XHT35mWC1LEZ0GT5TcdVrw7n+cmL8rE6MVXLtUtLDOI4zyR8V/51kwPYp02zROhSI/TWQl+5SvHM9o52t9ukQc3mnBTJSgZ4L/JrZE=
+	t=1784276584; cv=none; b=aWYvoauwxgmOLr651vna5xyLNi62NaR8LCt2y5c0ltZWKNBfTPvBDm/AdfTwXhi84kVCq+Qer3k5Jh8EIwEORhvPaRJ9FKjgXTHByRSFM4Kj2OAP2jJDcovc2pbTtHkAXvuTweFvfPAFVmG32S2NbwwjwMmg2SV6COdH1qv+ICI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784276459; c=relaxed/simple;
-	bh=NGIySnMvAM0jHvVh0CL9ARVufhVbCh64nqGYzjpiAvw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SohOckOTecRE1d5kcNxci1+YOZpyDZfGm69IAExfAcZmZhb2t7xvTga3muFHFbSFVG5ts0okRNndxizehc41A+rOfjLfXDx/j5eVFaf1G3ixtxtGqLJGPebZPbd5WTx7URfCEYnsL8P6TwDDpntlGA1kT4jDx+9MsSq5t2YMFQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/rFqmw8; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1784276584; c=relaxed/simple;
+	bh=OgfKQGcUft8+pubZB1n8Cb5kpcRbRtLkKcWVdrtca3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CyDYqCIh+mizLekFiQVHIVh25dVcxKNxQomCUO0D6QXVWDjYUnmEgxFEX7HARjA2JUuigKHYgJ/9jRfWpBfHm34J5+UMUVMdm/TuQ4Bmm8N+P1/78Hy9rW7xMvpf59i2DXZaoybMINdft1ssAeh7Kh0PX/x8YeATO946DTRL8pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oMLWAPlG; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/rFqmw8"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47122683cf3so4292588f8f.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:20:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oMLWAPlG"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493b27c7451so8637535e9.0
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784276456; x=1784881256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7UHnlNn5lnaiCI2zNeXXOwskIZFs9ZGzASi2Xvtrbf8=;
-        b=K/rFqmw8M5zSnpB0mqBJv+8eir0yMBcHevXWkxZ3C9HxW2ORaPgaaoWFiN6ju/luEn
-         r9PSEycs2zD2zZonzBILYb/g5kpcZjPEQKdhPsYDQnuDzokYLBSaYjItOcPp3jCDit0U
-         zkuwQyleJGZ95IJuy8wP3Kp9AHQ2FCz9HAp2CKX5N0BFuB0hjOCIIodwKf3JZGdw2F0M
-         VpYTCi8aZRgeEmzUJU0XOsK6nAs7DG2BIzsVtTd45TFuEo27arNxNjh+FmgC14itWv05
-         2AU9q3sjD/ga2/wxosIZ8tH2uwlpjmhEazCSHIrv1G+T8Y4vi79lBRowqYAjNonaQyJk
-         5S/Q==
+        d=gmail.com; s=20251104; t=1784276581; x=1784881381; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NLZAfRK2x9zkSee/fqTuHPNp25jE6qaj7rL/KrN+u8g=;
+        b=oMLWAPlGU2OR3WEZegsvP74B/Gd742nWs6VsZ04tDu3gwme40AUEOplGxxP514/B4n
+         XVLVHEyH6jcE+qV83iuLm1mbEORVJxF0hbr21NsxedYt+EQsTVlnXIQl9CtXj47EyEdY
+         u4bGBS7A3kixYCjL4IzEPB0TUIj/FcHdxeG7betOJ1RLOEamIWsmSVG3l0KKkl7ZvVe4
+         ieIhEZPnRA3aRIZJd++afq0BUibUthoQzCqufhurnvvpp+DZR9Ex/XOkQ+FpiF5VEmIB
+         YP+w8RVIS8FZ3wPHfJB6QLOuZYJOotcOutklD8iglo9hYqZzFuo4K7ThUv90SiaDoWVX
+         wQVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784276456; x=1784881256;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7UHnlNn5lnaiCI2zNeXXOwskIZFs9ZGzASi2Xvtrbf8=;
-        b=G9Opqw7WAoBHVAc4IKcO8/TBGLUHK5aB+TtKEXAwFOTd0mqoSNz+8iWkFhJyh3GmtI
-         +Kj4Yuk0ZxXULRpPz88GPTzJlh47OMFc9bK/xZ194Z+nSDX/8p8vpU+MryDE5sEF5apI
-         cYg/2tkX1DzEk+uu+67o5BqjynUMnrAXLfyfLl8t5MEFm3wRRhFDDTYUsjtSz4Uqwfhy
-         9SdV9pp3iQvQp/Hb0COJtCdkJ8wTVLpNeN2b53DF+pLnlzXz+dVg+gTsmbrS7tPQRovj
-         /c0XtdpLLUt9zSVat7kvdWXWGjdi6FGy9EDL8Hni7A/tLpyQqLa9UJGw+0UIaAXRPUwQ
-         ne1g==
-X-Gm-Message-State: AOJu0YzU/Dwz9J+392srQ3xXiBpqbWcpIsrDyIhsb8Kk9keGVUknD4qy
-	oTyMSKvuavZ+5UpZNuq6EycBFy65qR8olN8qsM+X0ZMDj/eGA0NDM6Or
-X-Gm-Gg: AfdE7ckkVYCZAwrOTbUYGJsfJrjvIoXQy0Cxwepzmx1ksVCo+s/y20pbMw34OOpIWbb
-	FxW+A0cfQxfKi1Z1L5pBF+hyPh3jiX/myTQ3zRH9R0fIHhmadIwxW+WF0i0fRG/wCYXAeFDCEE6
-	jlTI7JPauO+2N5oCzs9itcJaXaWWq3gVU1Uivn0aZaMEbWUbgWSS1lW4Um2bu04YYiZR9JID2+N
-	MULnnf6bxm7d7lcG1WpLjZLTf1Y94V/Z7Z/tT94zpf1DHkLtyi7PKbzA1YvaqxmlDV4Xwc96LgW
-	7JSK5awkyFBhT8vitcQVFJLF10C9CPIWgJMXiInOokTi/7KmrF0P8N2nbHSqcqDhcRz9RxhT6Bf
-	5CGCVRXjEPkFmQglKK8zcJGjLDTfca0JNlznvZIavn4UUm9esn+Vfr8t4+uZF/UUE+9MDYEPWXK
-	nzcFcooCO14BwApie3mWqGug==
-X-Received: by 2002:adf:e542:0:b0:475:f0f0:9ef8 with SMTP id ffacd0b85a97d-47f6233f14amr1649781f8f.61.1784276456077;
-        Fri, 17 Jul 2026 01:20:56 -0700 (PDT)
-Received: from labdl-itc-sw10.tmt.telital.com ([2a01:7d0:4800:7:c817:c1b7:3e78:551a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e499c2sm1671314f8f.4.2026.07.17.01.20.53
+        d=1e100.net; s=20251104; t=1784276581; x=1784881381;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NLZAfRK2x9zkSee/fqTuHPNp25jE6qaj7rL/KrN+u8g=;
+        b=d5FtWydUS6ZV4VkzqfEpcUsz6PqNONsc5dG0TxLaD12OvHW6PlrmiTuEK6cTfepard
+         tPPQkX6yoCfF2Sr1950Sc5eNivdh3ysZqNA9CmWm+vW5M17iPLVihy0mUrqErt/lVTC6
+         MV06GtPdaam0nCQhhLlXplSTf9WGEIfPpCzwaAf0FVMS859gO5jf+3nMTGCm3miP2fw/
+         P7ovJJSIQUa7fCkHuK0EZFpMoI1417MISt0Mfg5LQy98NZObGDWLRUTHZ/pOwSiJ5vQ2
+         WVe+h5AQT/518eW361Y6BbpunXTrK45QzdDbtf0YpkZUxqL9c6CKQbwYiGn2OgvysVcc
+         /1JQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1y/k201tNzTnwvH3qXRFk5u/0SLJNjISxyb2NVAEvaCiy6BxgFMnFybGk/lEre57IBmfTBWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNTmSNL+Jfklzx/NwEhPHwzo2+AeNhMERlRb1Ss8+TTJR8xDtZ
+	MTvyAh4M1FuotSSqfJNRSeqMyJ6yx75lGUphNmuGzYKEs0mPRTC9HeJr
+X-Gm-Gg: AfdE7cl9n55+9lPxvnEE1R3bq+2mFmsyP9H8Q5GTgEhW+tUkKNqSL2ovmAMdzYm3jFV
+	crl51jvxpnXO7UM6VSqOSFzfsnUTPhfH9byC+Llfnx3+4y0JeLvfxQcOF77IPMjwxcJZu8Hevqj
+	RHKqoitfEYjlhLccpM3FOMXwqwcp4KooKqJkOQEh9R7qtR322j6ZFE58iMV/lua1hwKGYKHpkfz
+	aGAni+oFwv9PFamWXtNuLdz7StOd67+0OlWQrsZAc5qrFw2iUoPeevvcnh3cTx7aXhRVwkCfNS2
+	nbHqM5DmGrVWoT3iSc1+g+45Xj8PtWl/5uEt6UjZY62uWK+hS2jwMAUucD2zY09fqjgfmwhl/tP
+	FCQAE45QOO7f1eVeMsuEdWZVHMY0FtM4qCDJCzlIYNOabvDN6s5LKADGq9ZV7EJtOaCcqRH6zAP
+	gMaGCs9gXw9ZGXzs52kbb0kYxIauS63t4h5iJOOO0=
+X-Received: by 2002:a05:600c:3113:b0:493:f478:4c71 with SMTP id 5b1f17b1804b1-4954a323b14mr16486755e9.7.1784276580733;
+        Fri, 17 Jul 2026 01:23:00 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2eddb8sm59577575e9.14.2026.07.17.01.23.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 01:20:55 -0700 (PDT)
-From: Daniele Palmas <dnlplm@gmail.com>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH net-next 2/2] net: wwan: add exclusive open mode capability to AT and QCDM ports
-Date: Fri, 17 Jul 2026 10:19:35 +0200
-Message-ID: <20260717081935.2071083-3-dnlplm@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260717081935.2071083-1-dnlplm@gmail.com>
-References: <20260717081935.2071083-1-dnlplm@gmail.com>
+        Fri, 17 Jul 2026 01:23:00 -0700 (PDT)
+Date: Fri, 17 Jul 2026 09:22:58 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexander Aring
+ <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Miquel
+ Raynal <miquel.raynal@bootlin.com>, Remi Denis-Courmont
+ <courmisch@gmail.com>, =?UTF-8?B?UsOpbWk=?= Denis-Courmont
+ <remi.denis-courmont@nokia.com>, John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH net-next 5/7] phonet: pep: convert getsockopt to
+ sockopt_t
+Message-ID: <20260717092258.776e63db@pumpkin>
+In-Reply-To: <20260716-getsockopt_phase4-v1-5-4f45cb12dce7@debian.org>
+References: <20260716-getsockopt_phase4-v1-0-4f45cb12dce7@debian.org>
+	<20260716-getsockopt_phase4-v1-5-4f45cb12dce7@debian.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add exclusive open mode capability to AT and QCDM ports to improve
-compatibility with user-space tools using the Qualcomm diagnostic
-device (e.g. libqcdm).
+On Thu, 16 Jul 2026 06:00:03 -0700
+Breno Leitao <leitao@debian.org> wrote:
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
----
- drivers/net/wwan/wwan_core.c | 37 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+> Continue converting the proto-layer getsockopt callbacks to the
+> sockopt_t interface, splitting pep_getsockopt() into a
+> do_pep_getsockopt() helper that takes a sockopt_t.
+> 
+> The thin pep_getsockopt() wrapper keeps its __user signature for now:
+> it builds a user-backed sockopt_t with sockopt_init_user(), calls the
+> helper, and writes the returned length back to optlen. The helper uses
+> copy_to_iter() instead of copy_to_user(). No functional change.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  net/phonet/pep.c | 36 ++++++++++++++++++++++++++----------
+>  1 file changed, 26 insertions(+), 10 deletions(-)
+> 
+> diff --git a/net/phonet/pep.c b/net/phonet/pep.c
+> index 60d1a5375725b..c7f4ce894af56 100644
+> --- a/net/phonet/pep.c
+> +++ b/net/phonet/pep.c
+> @@ -1078,17 +1078,11 @@ static int pep_setsockopt(struct sock *sk, int level, int optname,
+>  	return err;
+>  }
+>  
+> -static int pep_getsockopt(struct sock *sk, int level, int optname,
+> -				char __user *optval, int __user *optlen)
+> +static int do_pep_getsockopt(struct sock *sk, int optname, sockopt_t *opt)
+>  {
+>  	struct pep_sock *pn = pep_sk(sk);
+>  	int len, val;
+>  
+> -	if (level != SOL_PNPIPE)
+> -		return -ENOPROTOOPT;
+> -	if (get_user(len, optlen))
+> -		return -EFAULT;
+> -
+>  	switch (optname) {
+>  	case PNPIPE_ENCAP:
+>  		val = pn->ifindex ? PNPIPE_ENCAP_IP : PNPIPE_ENCAP_NONE;
+> @@ -1112,11 +1106,33 @@ static int pep_getsockopt(struct sock *sk, int level, int optname,
+>  		return -ENOPROTOOPT;
+>  	}
+>  
+> -	len = min_t(unsigned int, sizeof(int), len);
+> -	if (put_user(len, optlen))
+> +	len = min_t(unsigned int, sizeof(int), opt->optlen);
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 8168239e52c3..3e4491235674 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -22,6 +22,7 @@
- #include <linux/termios.h>
- #include <linux/gnss.h>
- #include <linux/wwan.h>
-+#include <linux/tty.h>
- #include <net/rtnetlink.h>
- #include <uapi/linux/wwan.h>
- 
-@@ -79,7 +80,7 @@ struct wwan_device {
-  * @data_lock: Port specific data access serialization
-  * @headroom_len: SKB reserved headroom size
-  * @frag_len: Length to fragment packet
-- * @at_data: AT port specific data
-+ * @at_data: AT/QCDM port specific data
-  * @gnss: Pointer to GNSS device associated with this port
-  */
- struct wwan_port {
-@@ -98,6 +99,7 @@ struct wwan_port {
- 		struct {
- 			struct ktermios termios;
- 			int mdmbits;
-+			unsigned long flags;
- 		} at_data;
- 		struct gnss_device *gnss;
- 	};
-@@ -748,6 +750,14 @@ static int wwan_port_op_start(struct wwan_port *port)
- 		goto out_unlock;
- 	}
- 
-+	/* Check exclusive open mode for AT and QCDM ports */
-+	if ((port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) &&
-+	    test_bit(TTY_EXCLUSIVE, &port->at_data.flags) &&
-+	    !capable(CAP_SYS_ADMIN)) {
-+		ret = -EBUSY;
-+		goto out_unlock;
-+	}
-+
- 	/* If port is already started, don't start again */
- 	if (!port->start_count)
- 		ret = port->ops->start(port);
-@@ -857,6 +867,15 @@ static int wwan_port_fops_release(struct inode *inode, struct file *filp)
- 	struct wwan_port *port = filp->private_data;
- 
- 	wwan_port_op_stop(port);
-+
-+	/* Clear exclusive flag when last fd is closed */
-+	if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) {
-+		mutex_lock(&port->ops_lock);
-+		if (!port->start_count)
-+			clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+		mutex_unlock(&port->ops_lock);
-+	}
-+
- 	put_device(&port->dev);
- 
- 	return 0;
-@@ -1031,6 +1050,22 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
- 		break;
- 	}
- 
-+	case TIOCEXCL:
-+		set_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+		break;
-+
-+	case TIOCNXCL:
-+		clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+		break;
-+
-+	case TIOCGEXCL:
-+	{
-+		int excl = test_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+
-+		ret = put_user(excl, (int __user *)arg);
-+		break;
-+	}
-+
- 	default:
- 		ret = -ENOIOCTLCMD;
- 	}
--- 
-2.43.0
+I'm pretty sure that can be min().
+More generally I'm not at all sure about negative lengths.
+Historically the user type would have been 'int', but it got replaced
+by socklen_t which is probably unsigned.
+(IIRC one of the 64bit Unix had started using a 64bit type but I think
+it was sun objected to making that change so socklen_t was born.)
+
+Also truncating below 4 bytes makes no sense here on BE systems.
+Some code will try to write the significant bytes out, but that
+would be better done in the wrapper.
+
+> +	opt->optlen = len;
+> +	if (copy_to_iter(&val, len, &opt->iter_out) != len)
+>  		return -EFAULT;
+> -	if (copy_to_user(optval, &val, len))
+> +	return 0;
+> +}
+> +
+> +static int pep_getsockopt(struct sock *sk, int level, int optname,
+> +			  char __user *optval, int __user *optlen)
+> +{
+> +	sockopt_t opt;
+> +	int err;
+> +
+> +	if (level != SOL_PNPIPE)
+> +		return -ENOPROTOOPT;
+> +
+> +	err = sockopt_init_user(&opt, optval, optlen);
+
+Have I not looked at these before?
+Why is this here, not in the outer code?
+
+	David
+
+> +	if (err)
+> +		return err;
+> +
+> +	err = do_pep_getsockopt(sk, optname, &opt);
+> +	if (err)
+> +		return err;
+> +
+> +	if (put_user(opt.optlen, optlen))
+>  		return -EFAULT;
+> +
+>  	return 0;
+>  }
+>  
+> 
 
