@@ -1,149 +1,144 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFBE1ADC83;
-	Fri, 17 Jul 2026 08:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721D93C0617
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784276629; cv=none; b=OSLkdKDxvskyDvSJAe6Gl78jpORq+DBLrZb8fieoHXOIomI2LI0XEIU6hrGm1cAEWCVfNgdCN9VRID6KdPoF1adL5qAcsVCJxj3po0SSm03hC23RUvHRv36P6MTj0lLEAJIHNP4/uuCcwm9+gpYEVw4ufstXHrVZUtw2d9fKIpo=
+	t=1784276969; cv=none; b=NNgG9AFStMFQnr6kinB7LwB/AhFT78UTLKcGFVng0pYxde3pvPDImkUkNf4+CdhBZaUjnDVZxFevnxmtPIxZWUCj8wq8A8y0mmGwyXrh1VZ2t0wlQg2s5nqB+suoILViXJ4S2ZDtc/YxSuYR/srBwamtmud+1qUDTvJLX7H3hIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784276629; c=relaxed/simple;
-	bh=u8FeOgGeidjBCoK8aCLS4fOTF/iMCUlPpDkwe0d7uDo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RrOMTk9Az5dsLeT4R6A37Ayjs4SsjFEvGnLyIMbX/7ZGHO/jF03qIt9CbA0CcDLlTPVMQ439AJM1OmLi3j5joAKeUE/8L80BlvX/IdskwLECPp78BSRAJy9T3RwmHsTJap32PeK8ilyo2u6hBpIwdYUfBaNSXOpVTYebbqgLXlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IEc/OFEF; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784276969; c=relaxed/simple;
+	bh=gYJGpWPn3e3bGCIfGgtUOZeACOMhz8yVeCqfuC3c2zs=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CBJDftgXC4dRiMSY957Fw5BC4n4Tq+QHkhBO0aJvXvoXVLNQxja0B0W6RUtV87LvFjsigA9u6mSiXRpy/ekbPg8YWST3SBxkajns7EWysaANUFegHOXwKUAikrekB6RBDYP+0yA8Vfi1GBfSQGXgRWIlOBv1clNrv6JFTxOHDLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOxgN5Vw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IEc/OFEF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=cr
-	e3/aFEzBTHrCFjylFi0Gqb5tPfLro6l4NFdHJ/+DQ=; b=IEc/OFEFYWp23mpvx9
-	h+kCjNW4ixEt2rhP/2sd2g/zLFpZ85tfbDCOyNIG5GTWkIhj249QdqIEfmPoS1Ph
-	PjRA4mM4HSNtgZVDmML8+V2/9IRsgwLk6q8djafIJ/HM85Y1Fl54hq6Lx6HVuq6c
-	NHvxjeSzurC73RP/HEIDXNwn8=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCHBNnh5VlqHENqKQ--.41694S2;
-	Fri, 17 Jul 2026 16:20:51 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: jedrzej.jagielski@intel.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	lucien.xin@gmail.com,
-	luoqing@kylinos.cn,
-	marcelo.leitner@gmail.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net v3] sctp: socket: remove unused 'err' parameter from sctp_skb_recv_datagram
-Date: Fri, 17 Jul 2026 16:20:48 +0800
-Message-Id: <20260717082048.948262-1-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <PH0PR11MB5902DBD696C30DB0A2308A49F0C72@PH0PR11MB5902.namprd11.prod.outlook.com>
-References: <PH0PR11MB5902DBD696C30DB0A2308A49F0C72@PH0PR11MB5902.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOxgN5Vw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0A71F00A3E
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784276968;
+	bh=EPZgr4u40Ey253+h5jZaWa/6ga/57quCqeZN6Y3LbLs=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=MOxgN5Vw0ExTWFj/csnN0Eq1CWmvQhK4Uhi0Qmu6WfKTz7ScXP5gKOZ+DjIv5XEbD
+	 KK55g99Uh9TRYVscAXPiRqO8rbSGR0St22hqW8n+UbyQlNEN3VTeGuiPVlB4mxsc/i
+	 UWN46RdUqAoVguX6rv619gIPbCqrt+i2pT8hIRnK7AorfCbHOebHnq9jceHyuPuvrn
+	 UK3Wo5pzjCVV9Rw1CE+7EC+EJlWXR1CDJXu/TPc3kCbtpF7qXyAzaA853jV0ot6UQj
+	 hheX2Hg/Kq5E6zplZEjKU9Hk8SPU1IOCdZV3V+fN8UY8ylt8ewWgPKllCZzUBZCLB1
+	 SZe6ydnUs4ZoA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aeb5e85378so8148662e87.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 01:29:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrkGoAXP9bRSwF5rcA8OPq/neaMZm7gE1Gwpa64q8ORRk1OJhmCQLpz3B4XRHl6W1Ikukvaobk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv/eDUVHY+IGF+9cGGAGRj7x77m4uQjArMX5yYWZqKSO5bY/H+
+	4vUR7+gYsHyWbvkRDE6dEMIiETlYqIZ0ln2aqyTPypSh7xB0hoPNG2ReqBTCSjK7n+SG8Jdco8j
+	wIoc3SCjhlSmuqU9IEy7g1s/fmjKO7Dm9BKV8LnfC6A==
+X-Received: by 2002:a05:6512:6d0:b0:5b0:1359:3dd4 with SMTP id
+ 2adb3069b0e04-5b28f8471b5mr432020e87.5.1784276966788; Fri, 17 Jul 2026
+ 01:29:26 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 17 Jul 2026 01:29:25 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 17 Jul 2026 01:29:25 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <CAMRc=MdNehSRQT3MUs+QtbZsHcUCS8YjyZchTgHCVv-HaLQkeA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCHBNnh5VlqHENqKQ--.41694S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr1fAFyDXrW7tw45AF47Arb_yoW5Cry7pF
-	n8AFW5ArWDJrW8uwnakFZ7J3WSgws5Jw15CFWrtw4Yyrs8tr9YqFy8KF4SkF45Cr4Yka4Y
-	qr1qgw13KrnxCFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfDGrUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3QOi5mpZ5eM2vwAA3m
+References: <20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com>
+ <20260703-block-as-nvmem-v8-4-98ae32bfc49a@oss.qualcomm.com> <CAMRc=MdNehSRQT3MUs+QtbZsHcUCS8YjyZchTgHCVv-HaLQkeA@mail.gmail.com>
+Date: Fri, 17 Jul 2026 01:29:25 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MeNHzEn+pizmbTUCU6YCiTWZS7cr_yEBSNis8NuYqYjig@mail.gmail.com>
+X-Gm-Features: AUfX_mzH2Q0kFyO4TFR4vp1sRhWEa1QLfB0S2bP-OIJE8-QcpGQ5uxWfAzjRRCI
+Message-ID: <CAMRc=MeNHzEn+pizmbTUCU6YCiTWZS7cr_yEBSNis8NuYqYjig@mail.gmail.com>
+Subject: Re: [PATCH v8 4/9] nvmem: layouts: Support fixed-layout as the nvmem
+ device node itself
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, daniel@makrotopia.org, 
+	Loic Poulain <loic.poulain@oss.qualcomm.com>, Ulf Hansson <ulfh@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
+	Rocky Liao <quic_rjliao@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saravana Kannan <saravanak@kernel.org>, Christian Marangi <ansuelsmth@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: luoqing <luoqing@kylinos.cn>
+On Wed, 15 Jul 2026 14:07:24 +0200, Bartosz Golaszewski <brgl@kernel.org> said:
+> On Fri, 3 Jul 2026 15:45:17 +0200, Loic Poulain <loic.poulain@oss.qualcomm.com> said:
+>> of_nvmem_layout_get_container() only looks for a child node named
+>> "nvmem-layout" to locate the cell definitions. This does not cover
+>> providers whose device tree node is itself the fixed-layout container,
+>> such as an eMMC boot partition block device whose fwnode points directly
+>> at a "fixed-layout" compatible partitions node.
+>>
+>> When no "nvmem-layout" child is present, fall back to returning the nvmem
+>> device node itself if it is compatible with "fixed-layout", so that its
+>> cells are parsed by nvmem_add_cells_from_fixed_layout().
+>>
+>> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+>> ---
+>>  drivers/nvmem/layouts.c | 13 ++++++++++++-
+>>  1 file changed, 12 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/nvmem/layouts.c b/drivers/nvmem/layouts.c
+>> index b90584e1b99eab4217cbe7ec48373e18a7caf0dc..efa631ce7283bdd6c8ecda75915911b5e3a33c99 100644
+>> --- a/drivers/nvmem/layouts.c
+>> +++ b/drivers/nvmem/layouts.c
+>> @@ -167,7 +167,18 @@ static int nvmem_layout_bus_populate(struct nvmem_device *nvmem,
+>>
+>>  struct device_node *of_nvmem_layout_get_container(struct nvmem_device *nvmem)
+>>  {
+>> -	return of_get_child_by_name(nvmem->dev.of_node, "nvmem-layout");
+>> +	struct device_node *np;
+>> +
+>> +	/* Search for nvmem-layout child */
+>> +	np = of_get_child_by_name(nvmem->dev.of_node, "nvmem-layout");
+>> +	if (np)
+>> +		return np;
+>> +
+>> +	/* The nvmem of_node is itself a fixed-layout node */
+>> +	if (of_device_is_compatible(nvmem->dev.of_node, "fixed-layout"))
+>> +		return of_node_get(nvmem->dev.of_node);
+>> +
+>> +	return NULL;
+>>  }
+>>  EXPORT_SYMBOL_GPL(of_nvmem_layout_get_container);
+>>
+>>
+>> --
+>> 2.34.1
+>>
+>>
+>
+> I have it on my TODO list to convert nvmem layouts to be fwnode-agnostic. While
+> I'm not sure when I'll have the time to look into it, I think it makes sense
+> to not introduce any new OF-specific interfaces. Can you make it into:
+>
+>   struct fwnode_handle *nvmem_layout_get_container_node(struct nvmem_device *nvmem);
+>
+> by replacing of_get_child_by_name() with fwnode_get_name_child_node() and
+> of_device_is_compatible() with device_is_compatible()? That would mean less
+> churn in the future.
+>
+> Other than that, it looks good.
+>
+> Bart
+>
 
-The 'err' parameter in sctp_skb_recv_datagram() is never used by any
-of its callers. Both sctp_recvmsg() and sctp_ulpevent_read_nxtinfo()
-pass the address of a local variable but never check its value after
-the function returns, rendering the parameter completely useless.
+Scratch that, I didn't realize this isn't a new function but a rework of an
+existing one.
 
-Remove the unused parameter to simplify the function signature and
-eliminate dead code.
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Signed-off-by: luoqing <luoqing@kylinos.cn>
----
- include/net/sctp/sctp.h |  2 +-
- net/sctp/socket.c       | 10 +++-------
- net/sctp/ulpevent.c     |  3 +--
- 3 files changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
-index d50c27812504..b86d50d6b146 100644
---- a/include/net/sctp/sctp.h
-+++ b/include/net/sctp/sctp.h
-@@ -97,7 +97,7 @@ void sctp_sock_rfree(struct sk_buff *skb);
- 
- extern struct percpu_counter sctp_sockets_allocated;
- int sctp_asconf_mgmt(struct sctp_sock *, struct sctp_sockaddr_entry *);
--struct sk_buff *sctp_skb_recv_datagram(struct sock *, int, int *);
-+struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags);
- 
- typedef int (*sctp_callback_t)(struct sctp_endpoint *, struct sctp_transport *, void *);
- void sctp_transport_walk_start(struct rhashtable_iter *iter);
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..3804382d78e0 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2123,7 +2123,7 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		goto out;
- 	}
- 
--	skb = sctp_skb_recv_datagram(sk, flags, &err);
-+	skb = sctp_skb_recv_datagram(sk, flags);
- 	if (!skb)
- 		goto out;
- 
-@@ -9082,7 +9082,7 @@ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p)
-  * Note: This is pretty much the same routine as in core/datagram.c
-  * with a few changes to make lksctp work.
-  */
--struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
-+struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags)
- {
- 	int error;
- 	struct sk_buff *skb;
-@@ -9120,17 +9120,13 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
- 			break;
- 
--
- 		/* User doesn't want to wait.  */
- 		error = -EAGAIN;
- 		if (!timeo)
- 			goto no_packet;
--	} while (sctp_wait_for_packet(sk, err, &timeo) == 0);
--
--	return NULL;
-+	} while (sctp_wait_for_packet(sk, &error, &timeo) == 0);
- 
- no_packet:
--	*err = error;
- 	return NULL;
- }
- 
-diff --git a/net/sctp/ulpevent.c b/net/sctp/ulpevent.c
-index 8920ca92a011..8ed51a15c3a4 100644
---- a/net/sctp/ulpevent.c
-+++ b/net/sctp/ulpevent.c
-@@ -1061,9 +1061,8 @@ void sctp_ulpevent_read_nxtinfo(const struct sctp_ulpevent *event,
- 				struct sock *sk)
- {
- 	struct sk_buff *skb;
--	int err;
- 
--	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT, &err);
-+	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT);
- 	if (skb != NULL) {
- 		__sctp_ulpevent_read_nxtinfo(sctp_skb2event(skb),
- 					     msghdr, skb);
--- 
-2.25.1
-
+Bart
