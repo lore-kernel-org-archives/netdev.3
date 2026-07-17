@@ -1,84 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C673F12FC;
-	Fri, 17 Jul 2026 11:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4F32FFFA5
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784287840; cv=none; b=s3EdlqFcmeViEv0C/gc/fYxIixntSZIUZ4tP/ZdkBl/sHV/QPrM1mMLuEE0PW6CZvO17CqYGPuPZGm+SmvGt1h2BdfQa3aNPAfSnSbWtJlNLcvQmetDL+6J78SKAoCMmBi4luOsjv2kRjY0IfMfxNZvcsUpEO+k/c8u6U+Fr3iQ=
+	t=1784288255; cv=none; b=ZFudkEa+2KnQzqS9UL+kzvgQRVVew40q1j0gT9Vzb03IdVgXMK4+9SVKoV5cch5bt5UjFnSKty5/ShFZunRM7ITuqLNmlZYx2imKDlAOMEOccySzhETL1axawE9rXdbJON1Vv07dfjTE6O+8uaqQ8wtX8Ik7LJs32CkA88Dj0Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784287840; c=relaxed/simple;
-	bh=tCCW51UQqRAnCV9+aWPOkYDX40/UE0vGzPRCVq3yr5M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bSA+1IZ0bzBTs+mE2KPh5so2hgIkIl5/6ktqtwHR9CcdaTg0pa53etfCCZFFWyVojw8qkyJsAlB6+ZTqSHvh5azVU0p5vPvAYbjRLlu8lOmW+7NZQIqeFaFD6eIy7gqweYSZXLI7SAJUAtVNaCMOSkTt6oXYTXBfoLGhmPEsRQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OSvzOZUZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784288255; c=relaxed/simple;
+	bh=kg+Uno28y8LH0GLqJP4j+/TvRJiU5EsXOvYmq5/Z454=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cMb45T5gg8pfpXMEN/srvauxq+9hER1eKn+/DYQalMZ/kwNiMZ6IaRF7p7UKyf8BqdK3PbV5okkAPUIg8jQkzOgtBkDrtKhCJvgCc2B5YjD47cwhL4UCxIwQxb/yDV9A9FLqyl7wJkYhOhKr6JwNrVnBwPX3pKFr5xykU1VOQak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wxttU1oA; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSvzOZUZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5985D1F000E9;
-	Fri, 17 Jul 2026 11:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784287838;
-	bh=MI9UFehpVJgBRPPNLEaHUq+huwF0X6pl2FktHqQ844Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OSvzOZUZWS3+F9kl+ZzWFW9Qe5knFbSkLKNReYFdC46rpsZKMG70TA82LOe47x2XE
-	 ra0SeSvimTQID+D1hGDee01zYlX+sitxpaRHhe9Cp5MGvKXjOi5/KhtYBHUu5K6764
-	 F2vaPIFke5HQpwovmiS928EuUorn2gzX0s0VmjUS65YpKWowe1/aqNgpwGets46lpz
-	 /NVtKohTblYqcjk1Iv9ff1mdt/NoPYF9980q7zZ9GM5kce1fFsMOA201uzAfmpBvol
-	 AoboEwsj1WvnFnTWw3tmfqGuj0TinD7sc+SZudqi8EFxnY4m4063AtL8CAMvprFDcA
-	 4dprWjrKTRs8A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B0F380CED4;
-	Fri, 17 Jul 2026 11:30:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wxttU1oA"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 549611A1055
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:37:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 23E5160363;
+	Fri, 17 Jul 2026 11:37:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5AC4C11BD0D05;
+	Fri, 17 Jul 2026 13:37:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784288248; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=kg+Uno28y8LH0GLqJP4j+/TvRJiU5EsXOvYmq5/Z454=;
+	b=wxttU1oAiok8Es3N+ZVzBrA7tmb+RDahAu2/CX9Sh9AsaJJjbRnyqMDUg6GsVBLyFq7ElY
+	tycs4cn1wYyZdqVS6ypIQ00qqXuRytn318n9pV8Vdw48KhZWhCEXG+cJoJHtOyd8ud+p6V
+	7NdTSnM/Cv7l2sogWk5MwAHiai7dJGOiH7OCwN0ACUpib1VkQGOdLpwEkUDbtAfy2njeFJ
+	VQtfNGn7i2duIjT9dHfLobplo/89PvAgLccs1734/lNot3lXc6KisbR4O9lGKsEet3sTg5
+	2Sj8Dh/3l1ZyT/5zDeZebHri5OFu9BG8x11YJPY/+HySRexOvngz0tlDq/ZyoA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Ibrahim Hashimov <security@auditcode.ai>
+Cc: alex.aring@gmail.com,  stefan@datenfreihafen.org,
+  linux-wpan@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH v2] mac802154: hold an interface reference across the
+ scan worker
+In-Reply-To: <20260717105810.26226-1-security@auditcode.ai> (Ibrahim
+	Hashimov's message of "Fri, 17 Jul 2026 12:58:09 +0200")
+References: <20260710140927.13228-1-security@auditcode.ai>
+	<20260717105810.26226-1-security@auditcode.ai>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Fri, 17 Jul 2026 13:37:26 +0200
+Message-ID: <87fr1hkft5.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: mana: Add debug knob to skip TX timeout
- recovery reset
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178428781064.1678100.7570986576117461503.git-patchwork-notify@kernel.org>
-Date: Fri, 17 Jul 2026 11:30:10 +0000
-References: <20260710132229.2851441-1-gargaditya@linux.microsoft.com>
-In-Reply-To: <20260710132229.2851441-1-gargaditya@linux.microsoft.com>
-To: Aditya Garg <gargaditya@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- kotaranov@microsoft.com, horms@kernel.org, ernis@linux.microsoft.com,
- dipayanroy@linux.microsoft.com, ssengar@linux.microsoft.com,
- gargaditya@microsoft.com, linux-hyperv@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hello,
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+> Fixes: 57588c71177f ("mac802154: Handle passive scanning")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+> Assisted-by: AuditCode-AI:2026.07
 
-On Fri, 10 Jul 2026 06:22:29 -0700 you wrote:
-> Add a per-port debugfs boolean "tx_timeout_skip_reset" that, when
-> enabled, makes mana_tx_timeout() log the TX timeout and return without
-> queueing the per-port detach/attach recovery work.
-> 
-> This is a debug-only aid for bringup and qualification: skipping the
-> recovery reset keeps the device and queue state intact so a TX timeout
-> can be correlated with hardware telemetry. The knob defaults to false,
-> so production recovery behaviour is unchanged.
-> 
-> [...]
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Here is the summary with links:
-  - [net-next] net: mana: Add debug knob to skip TX timeout recovery reset
-    https://git.kernel.org/netdev/net-next/c/922cc43c6243
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Miqu=C3=A8l
