@@ -1,114 +1,222 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D4F2DEA93
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784301397; cv=none; b=bwrEyhyMB1FCnhcziP8nZnUpArnrptEcSxqTYtyBkMIklzPQb66QUgdQyWcAz6siZPTen/CqLVXWlarWzwj1lvhKBVOBgoTBbkPKSvQKQnTdjOO7oOhpWn4qKHis75gBCWaoS4Oispt4Rvd4fjglI6q4ZHDf/RZoLJSZc98udCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784301397; c=relaxed/simple;
-	bh=NNibbsMBzcBhzHKyyVyWoEjs9JNqg5eZd/fl/Nu8GEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mbw1kblyIKga72PMWXj5iSEslpYQbl6n9dkCiqxYr+fae08P8WQ5mGdYcwyKj1jd+LhhYkNN8go8JxjKudOndPsapTqT1cpmqZU1vVshIZS99Xr1jzYMD3t28DmT09L7M61a0oBdRg33UUdhsJC4Va2Tvn4hF4NZo6/ZtKFJiMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bXkjmYQ3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD25429827
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 15:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784301744; cv=pass; b=LNCmF5jKLXwn3tBrCF717fySQgt5iACO7gHN44gQo9dGNFK7fCDLLd1nfwWA/ZnJAsDYQcrOZuG2O+fhNUjZdLAoKyzxQPsG+RkdUkFqnkIhegnhrWg52dOcUVp4bD86Ca0J1aI825sO/HkTJARGoJ/x3XVSO0yceE1JipeFwCA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784301744; c=relaxed/simple;
+	bh=kA7ivsnxmQuG9r0ALpR4FjXxJUi+eVbNq12z6dThsUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kfElzdnUJgocXyk4pdrKiodvc/ehoPzj4kk4hbDIntsD4UK8BAU4u6mezp+I/9OkYaCsbDHg/9CV5MQsN/ZWJ4qZcZvkFAIR/7+5Fc7dBzGWnOCARHUwHUBWLGMMiON/JM8XJpfCzhVyrmQv9mzlgjO4teRdJTbYA6cGGlYn8dc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sxSiUHYh; arc=pass smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bXkjmYQ3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784301394;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TRhb9mvNrRYyHgkhEJwct4IUo2+m3ly9XG+UwgjaINA=;
-	b=bXkjmYQ3rvFSjX6TY3q4fHvN7jBKP1DwS41ueLPojKhvo9DK/ILi+YqULCojnKp06c4dgX
-	dnW/vtWGr+2JbYoaVV6sMzL2MiO3inE2FaOwZ0hXrhpZlwjGFcsZwjxeO51xLcaL4MJwpG
-	GxPAN3R/xtNOln6TtkKAMG2mwxiJ6pE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-dNHHZgzCNfWqsyxdkLZFtg-1; Fri,
- 17 Jul 2026 11:16:30 -0400
-X-MC-Unique: dNHHZgzCNfWqsyxdkLZFtg-1
-X-Mimecast-MFC-AGG-ID: dNHHZgzCNfWqsyxdkLZFtg_1784301389
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CFF11955D8D;
-	Fri, 17 Jul 2026 15:16:29 +0000 (UTC)
-Received: from lenovo-t14s.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 726A33004182;
-	Fri, 17 Jul 2026 15:16:27 +0000 (UTC)
-From: Laurent Vivier <lvivier@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-usb@vger.kernel.org,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Laurent Vivier <lvivier@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] usbnet: cap max_mtu for drivers without bind callback
-Date: Fri, 17 Jul 2026 17:16:26 +0200
-Message-ID: <20260717151626.2913171-1-lvivier@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sxSiUHYh"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84830c774a0so3820201b3a.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 08:22:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784301742; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hgBnXxY0ZmaciMuFzWkiZ5tDRhBT+CS033pqeQQmqUxYA8l+d2CVXwLZcr1nQj1/r/
+         oETS2LNwpQThcnKj3GIjhGb7eHK9EP6INIdDTR5g76NnGzQbEvkxZDJxtCnow0kpyp4X
+         SeAoquxo4uM/n4syecoNBoxXnydFn1zxQUgmtkMSY1BGEfZuL/YA8Xnk1dzUoQAbQ9Eg
+         kXmqBTnmhE+dO4ZFZdlOEOhjrFtTc4dd5mwBeMzukbWht5Z0DaoeSPfcZwigIqFm4i00
+         Ttz+hmYxhlNUjUSIXCyu4s1WpwY0KOOJqU2G7z91oTVOIbyAeGmjcMIq9vU+eGtwWBNH
+         PKDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sQf1F+DANpDFwvUPWLrBF8zRnvP9oHHYMaURhb1ah2c=;
+        fh=d/qxuJ9fO6gCk2N7SKHLYJ4wzrCFnooKHwybZnsKLoI=;
+        b=HRa782KJEunj+gMRpBt8Vhr20R0dFNuR0SpFFwEtRLzFjsr/Z+pABPWVwoeigL/cAC
+         RyCDyK/GYXuRkeg1NFBUL8pOEKpn8Fx8shY3mZl6Fz8x9wtd9f7oG8eGUiz5pVq2f1Tf
+         UZj3DTrlp5OFiTq/GWt9M4Ry0LzKnQ5dzuoiDsx28rXmIPz6/jSC9NVDzY1Jy7PASQ/m
+         LW7Kp9EenfgRGC7CF7QbU+kXhTkIxDLt8bGOjFV7MaI9h86FaW7+PVAdlEHYZfE40pAB
+         hZYbDDytBiAWCoeUgmfJtVygEcyGEnm2N63thA2Zy7f0620lNL9G1uT9bIF4fuQRFG6v
+         Oi7Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784301742; x=1784906542; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sQf1F+DANpDFwvUPWLrBF8zRnvP9oHHYMaURhb1ah2c=;
+        b=sxSiUHYh2zXgIxbNp4RrzAidSpaZjpNXpwXQNrc6U7I1Stf68oQrCXm6ltjZ28Mkpt
+         6w+HcPUntv3L+4VUOb/0IlomIghYiM2nfbTlyB4t7Fjs1IH7kJ9XkOkLsDTCi5hgugQU
+         9k7d5RoNmtoc6nJR4sCmW0lEK1WU11nMj0QVFarMdm3tFCkBflGhm8P4bgjjlsgd0MNH
+         7Ezrw22baSDesqmtJEqZyzGSTx8FwoObywwObUYc3/HHG/o9kimVNvZ+95o7IX1+2kYG
+         ogfVhuUKQWjpFEyu6TVlOFML53GPR3jiB5ADnLyR8stKRM9gIJnU2961YesKD2FWsDOd
+         R0gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784301742; x=1784906542;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sQf1F+DANpDFwvUPWLrBF8zRnvP9oHHYMaURhb1ah2c=;
+        b=V51HhgJNIbcFBvzBaw1RIwtC/ael0SKPTkEcgy2NVqbyJ0W+dWls6I9xY4uyj0iPO4
+         0aoueae6+FRs7QzJpgFoLw/kntxPMcGUqaSfUCxqVVfp8GPuHDPYvRk7w/08AI0ZT6m/
+         lsRSdg2ELU4IhUAiSg60/Goxds/Ul+GfSv0kk/LbNh1NU+mMIOTAl6gSd6iin165GXmC
+         lORNCckwW7jwbkK1CLBAo3r5M/dn0H2FwF90hlW6mgqe1nWDs7NbYVzzf7bL6axcqY1t
+         6WYyYowxoGhSuycvKX6buIeIT2jxE6Xx6ibTWaZIX0fwnf7JywoKneY072WFsQrk0ph7
+         HIPw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7cvt3eeCykzwErHKG28F0i7UnUpM7qsLBbmkM62aYDX+8YoiUUlPJvX4QHut5ZrHB+L/ud04=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqPbaaIx91pKOecjuE2kghKqeSnkwzxcI+EZecRTFiTe/eu5OD
+	fcDvHc78xzaUq7pjoPLttDH6pjclE7MMShATEPo0+B7VnMvVTgJ7eNWx7s0BR1+Oyw3HVRyaVcS
+	ygZJNtlUnEOtkVPaI+yVS47V8oYQU7Yw=
+X-Gm-Gg: AfdE7clvyZrglxVIB/RgxpV/m2cLzrv3LGz9HXQ9sTnnumgoD8vhcvvIvbdFaepYzsI
+	Oldri7iQhvCu31pfDYEf+xnl2sy/uG5tphBPAlDwlXMw/R+ZmgzptZD6fAnMs5B6W9m654YT9v5
+	juojL/yHAUs6Seo2/xSLHK8EKx7TS9JfQReIYTy4H268oZ3rgRfU5BizPyQlZmH71j7ClrJrD1q
+	ljfdMqMOsVnzXwJOcAg0nNxQxNJPJN0ICPYCMOUgwNJf4kN/kJK7xtanWYB+KyD1AI/83xVbjMc
+	N1zK1zdBqLOTRBSO5OjxkKJLWtNTN9QmynQkCIArDqaDTaDcbcBh9uHSb14o0FQ=
+X-Received: by 2002:a05:6a00:12e6:b0:848:2f74:d8d0 with SMTP id
+ d2e1a72fcca58-84c29496996mr3254876b3a.65.1784301741614; Fri, 17 Jul 2026
+ 08:22:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20260716100407.1490724-1-l1138897701@163.com> <20260716100407.1490724-2-l1138897701@163.com>
+ <CADvbK_fxLnyyx7kuuHr3_Vu9Wp9AenxAZYM7rO5kDwR=eXjd3w@mail.gmail.com>
+In-Reply-To: <CADvbK_fxLnyyx7kuuHr3_Vu9Wp9AenxAZYM7rO5kDwR=eXjd3w@mail.gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 17 Jul 2026 11:22:09 -0400
+X-Gm-Features: AUfX_mwmODfQ66DD2J9PHGPlcj4Eo_8HVK5B7IK-urXqMNQ_FeXbGIxny2Dqgww
+Message-ID: <CADvbK_e7rFqpWzDLvP2KPucbFzr1CwX9JotMoBE=HK4H_uOLpQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] net: sctp: auth: Fix safety issue when skb_clone
+ fails in auth_chunk handling
+To: luoqing <l1138897701@163.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, luoqing@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
-caps max_mtu inside the if (info->bind) block in usbnet_probe(). Drivers
-without a bind callback never enter this block, so max_mtu stays at
-ETH_MAX_MTU.
+On Fri, Jul 17, 2026 at 11:01=E2=80=AFAM Xin Long <lucien.xin@gmail.com> wr=
+ote:
+>
+> On Thu, Jul 16, 2026 at 6:05=E2=80=AFAM luoqing <l1138897701@163.com> wro=
+te:
+> >
+> > From: luoqing <luoqing@kylinos.cn>
+> >
+> > When processing AUTH + COOKIE-ECHO packets, if skb_clone fails due to
+> > memory pressure, chunk->auth_chunk is set to NULL but chunk->auth is
+> > still set to 1. This causes sctp_auth_chunk_verify to skip the AUTH
+> > validation (since auth_chunk is NULL), allowing unauthenticated
+> > COOKIE-ECHO packets to be accepted.
+> >
+> > Fix this by only setting chunk->auth =3D 1 when skb_clone succeeds.
+> >
+> > Fixes: 59d8d4434f429b ("sctp: delay the authentication for the duplicat=
+ed cookie-echo chunk")
+> >
+> > Signed-off-by: luoqing <luoqing@kylinos.cn>
+> > ---
+> >  net/sctp/associola.c   | 3 ++-
+> >  net/sctp/endpointola.c | 3 ++-
+> >  2 files changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> > index 62d3cc155809..e54068305396 100644
+> > --- a/net/sctp/associola.c
+> > +++ b/net/sctp/associola.c
+> > @@ -999,7 +999,8 @@ static void sctp_assoc_bh_rcv(struct work_struct *w=
+ork)
+> >                         if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO)=
+ {
+> >                                 chunk->auth_chunk =3D skb_clone(chunk->=
+skb,
+> >                                                               GFP_ATOMI=
+C);
+> > -                               chunk->auth =3D 1;
+> > +                               if (chunk->auth_chunk)
+> > +                                       chunk->auth =3D 1;
+> >                                 continue;
+> >                         }
+> >                 }
+> > diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
+> > index dfb1719275db..3419748c66bc 100644
+> > --- a/net/sctp/endpointola.c
+> > +++ b/net/sctp/endpointola.c
+> > @@ -368,7 +368,8 @@ static void sctp_endpoint_bh_rcv(struct work_struct=
+ *work)
+> >                         if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO)=
+ {
+> >                                 chunk->auth_chunk =3D skb_clone(chunk->=
+skb,
+> >                                                                 GFP_ATO=
+MIC);
+> > -                               chunk->auth =3D 1;
+> > +                               if (chunk->auth_chunk)
+> > +                                       chunk->auth =3D 1;
+> >                                 continue;
+> >                         }
+> >                 }
+> > --
+> > 2.25.1
+> >
+> The patch does not fully address the issues reported by Sashiko in the
+> following two cases (I will interpret them below):
+>
+> 1. [sashiko-gemini]:
+>
+> When skb_clone() fails, chunk->auth_chunk is set to NULL and chunk->auth
+> remains 0. In this case, the chunk will be dropped/skipped in
+> sctp_assoc_bh_rcv() by the following check:
+>
+>         if (sctp_auth_recv_cid(subtype.chunk, asoc) && !chunk->auth)
+>                 continue;
+>
+> This works as expected because the chunk is skipped. However, in
+> sctp_endpoint_bh_rcv(), asoc is NULL for new connections, so the above
+> condition is always false. As a result, the COOKIE-ECHO chunk can still b=
+e
+> processed with chunk->auth_chunk =3D=3D NULL.
+>
+> 2. [sashiko-claude]:
+>
+> When the association requires authentication for the COOKIE-ECHO chunk, b=
+ut
+> the packet does not contain an AUTH chunk, skb_clone() is never called an=
+d
+> chunk->auth_chunk remains NULL. Since the new association is also NULL in
+> sctp_endpoint_bh_rcv(), the check above cannot catch this case either. Th=
+e
+> COOKIE-ECHO chunk will still be processed with chunk->auth_chunk =3D=3D N=
+ULL.
+>
+> A better fix would be:
+>
+> Add a check in sctp_auth_chunk_verify() at the point where the COOKIE-ECH=
+O
+> chunk is actually being processed:
+>
+>
+>         if (!chunk->auth_chunk)
+>                 return !sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc);
+>
+> This ensures that if chunk->auth_chunk is missing while authentication is
+> required for the COOKIE-ECHO chunk, the verification fails and the chunk =
+is
+> dropped. Otherwise, when authentication is not required, processing can
+> continue normally.
+>
+> Please give it a try.
+>
+Also, please add a extra Fixes tag in your next post:
 
-QEMU's usb-net device (0x0525/0xa4a2) is claimed by the cdc_subset
-driver which has no bind callback. The guest accepts any MTU from DHCP
-(e.g. 65520 from passt), leading to TCP segments that exceed the
-device's 2048-byte receive buffer and are silently dropped.
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification
+of AUTH chunk")
 
-Move the max_mtu capping after the if/else block so it applies to all
-usbnet drivers.
+which introduces chunk->auth_chunk and calls skb_clone() in
+sctp_endpoint_bh_rcv().
 
-Fixes: c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
-Cc: stable@vger.kernel.org
-Link: https://gitlab.com/qemu-project/qemu/-/issues/3268
-Link: https://bugs.passt.top/show_bug.cgi?id=189
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- drivers/net/usb/usbnet.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 25518635b7b7..d87299025552 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1825,10 +1825,6 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
- 			net->flags |= IFF_NOARP;
- 
--		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
--		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
--			net->max_mtu = dev->hard_mtu - net->hard_header_len;
--
- 		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
- 			net->mtu = dev->hard_mtu - net->hard_header_len;
- 
-@@ -1851,6 +1847,10 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
- 			status = -EINVAL;
- 	}
-+	if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
-+	    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-+		net->max_mtu = dev->hard_mtu - net->hard_header_len;
-+
- 	if (status >= 0 && dev->status)
- 		status = init_status(dev, udev);
- 	if (status < 0)
--- 
-2.54.0
-
+Thanks.
