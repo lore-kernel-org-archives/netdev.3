@@ -1,29 +1,28 @@
 Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F3D379989
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 10:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56392FB97B
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 10:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784284684; cv=none; b=OEGywyuYqbNAcej5F0Cd4a/cPb/nKMWwilAk5Lq7HTPynNUTqcXYQ7yv00o8aVAnXJk3nnBIv/oSXwW6smJqik41Hn6OPMXDVcv1xbt+UC9o3YrHWqSy/R3clte26Q1PT2SOl/IBwY109F7Su2xBMFFhvLWSsOcqTbXGAmZf6BA=
+	t=1784284686; cv=none; b=nAie5OFdbJHjzRtQ7eTIbCAZgX/zygq4nGoR7haV4pjlzvtk4bsYeH+/sXKuIjenZhqCAd3fcH+OfGHCQuUZs5lLeG8FgRYeoL8iXXAzXp0qLD2vHJcFd5UKWqd/uF1BO+wE+dZOf0VMxJoTpb6VPZD/f2g8UBhhI88/Q9D5Fhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784284684; c=relaxed/simple;
-	bh=zjxrR5iNQxT3KBb/9QZ3n4GXdmGTzyuOZOa0xGwLtU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6bqHndu7eJ9D5Trs+CrGQZhPo7dmfuxx0M1H6hBvEJaZVPSG/bIUIqf38K1JJfKYH2qGAIu0+LV14SVxOynSEn65bAI8Lz552VOUz/glIM/Mww1Fl8a6M8Kgq9LZKopCh9AIbx2PTykjY14/IBoW4K2Gu60xvr5zeXyH8Rrd/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hP+I7Aek; arc=none smtp.client-ip=117.135.210.2
+	s=arc-20240116; t=1784284686; c=relaxed/simple;
+	bh=xMLIPdfaRB3C2iAGelA6nq5WM14R9YxvR1LHsjkgaao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j5uTs18StCkWS7gnZead1ZyDscRzjjAMesiFgxea4pmea1YS9oNhArKlwMvmVb8ipPBPzVXGcX7S2Piv9w5eyP2QCBfIYAUmkc9yB/+If7C0sBTVgOSVG7DWF8vDTU83DDphCLofq9KubP2pJ8fPw6XuHAP7Y4DX+eknY3zkVFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X0eyooNs; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hP+I7Aek"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X0eyooNs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Bp
-	2BTT0oJb2aCDNOBzGNCw9r+6YZ5pezjheFS0NzuPk=; b=hP+I7Aeke/gFuLJLvP
-	6fEUykaaL90pd3CJ6570hkiFFHShmkk2/88jKB5NaCctcQMV/gZJV+vs9PEHyLUH
-	u0ys3HDJJtrpuENirEbkZ49Q7J/Bi5UT+JMGd5FxhKnTaAnGJXqfppDyawzLFBp0
-	D3aF5MlsE+ZMwP6olhPu8ZDfA=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=og
+	fOixQ6j0Dq9m7RRqj0ZVgn72BaBTQIwL3YHftwbXk=; b=X0eyooNs5D62G35C/U
+	eMYUzZkPFFOLnhOCNdYw6Htagyrwgyi0h37snAPHs56x1aMbcmVgkJXn/jahU1dD
+	4IT5T3eWikJmF8uG3gGcH5vmkRwvX/REsSSFazwe1IWWpsHP69bwdPMKFNczMXcG
+	+YSiDW48FbggvApUJYDZWPhxU=
 Received: from kylin-ERAZER-H610M.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBnVWDlBVpqguBEKA--.5251S3;
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBnVWDlBVpqguBEKA--.5251S2;
 	Fri, 17 Jul 2026 18:37:26 +0800 (CST)
 From: Yun Lu <luyun_611@163.com>
 To: andrew+netdev@lunn.ch,
@@ -32,12 +31,10 @@ To: andrew+netdev@lunn.ch,
 	kuba@kernel.org,
 	pabeni@redhat.com
 Cc: netdev@vger.kernel.org
-Subject: [PATCH 01/13] 8139cp: fix DMA mapping unwind on TX frag map failure
-Date: Fri, 17 Jul 2026 18:37:23 +0800
-Message-ID: <20260717103724.13971-2-luyun_611@163.com>
+Subject: [PATCH net 0/2] 8139cp: fix two TX error handling bugs
+Date: Fri, 17 Jul 2026 18:37:22 +0800
+Message-ID: <20260717103724.13971-1-luyun_611@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260717103724.13971-1-luyun_611@163.com>
-References: <20260717103724.13971-1-luyun_611@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,83 +42,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnVWDlBVpqguBEKA--.5251S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZFyDJw4rJF48Gr1rCrW7Jwb_yoW5GFW7pa
-	yFya4Ykrs5JrnIv3W8Gay2qr45Za1rt34YvFyfC3s5Zrs8CFnagFWSgFyUCFWUKFW8uFWx
-	trs0ya48CF15t37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UtrchUUUUU=
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC6warempaBeZjWgAA3W
+X-CM-TRANSID:_____wBnVWDlBVpqguBEKA--.5251S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrKryDWr17KF4rWw15uFW8Xrb_yoW8JF1xpr
+	WYg34Yyr95Wr1293Zayw4IvF1Yva1rt3s8JF97tws8Zrn8Crn3trWF93W0y3yUKFyxXa15
+	tw4Fv347CF1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UvLv_UUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbCxAarempaBebFgQAA3E
 
 From: Yun Lu <luyun@kylinos.cn>
 
-When dma_map_single() fails for one of the TX fragments in
-cp_start_xmit(), unwind_tx_frag_mapping() is supposed to drop the
-DMA mappings that have been established so far. The current code
-gets this wrong in three ways:
+Hi,
 
-- it unmaps the DMA address read from the descriptor of the head
-  slot, but the head descriptor is only written after the fragment
-  loop, so a stale address of a previously completed (and already
-  unmapped) packet gets unmapped again;
-- the unmap sizes are off by one slot: slot first_entry + 1 + k
-  holds frags[k], but is unmapped with the size of frags[k + 1];
-- the head buffer mapping (first_mapping) is never unmapped at all,
-  leaking one DMA mapping on every failure.
+This short series fixes two bugs in the transmit error handling of
+the 8139cp driver. Both are only reachable when DMA mapping or
+memory allocation fails, but each can take the kernel down when
+triggered.
 
-Pass the head mapping and its length to the unwind helper, unmap it
-explicitly, and unmap the successfully mapped fragments with their
-matching sizes.
+The first patch rewrites the DMA mapping unwind in cp_start_xmit().
+When mapping a TX fragment fails, the current helper unmaps the
+stale address found in the not-yet-written head descriptor slot,
+which is a double unmap of a previously completed mapping; the
+fragment unmaps use sizes shifted by one slot; and the head buffer
+mapping is never unmapped at all, leaking one DMA mapping per
+failure.
 
-Fixes: cf3c4c03060b ("8139cp: Add dma_mapping_error checking")
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
----
- drivers/net/ethernet/realtek/8139cp.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+The second patch makes cp_tx_timeout() handle cp_init_rings()
+failure. If the RX buffer refill fails there, the ring is left
+empty, but the driver restarts the hardware and schedules NAPI
+anyway, so cp_rx_poll() dereferences a NULL rx_skb slot and hits
+BUG_ON(!skb). Bail out and leave the device down until the next
+open instead.
 
-diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
-index 5652da8a178c..03929bb0bd79 100644
---- a/drivers/net/ethernet/realtek/8139cp.c
-+++ b/drivers/net/ethernet/realtek/8139cp.c
-@@ -713,13 +713,24 @@ static inline u32 cp_tx_vlan_tag(struct sk_buff *skb)
- }
- 
- static void unwind_tx_frag_mapping(struct cp_private *cp, struct sk_buff *skb,
-+				   dma_addr_t first_mapping, u32 first_len,
- 				   int first, int entry_last)
- {
- 	int frag, index;
--	struct cp_desc *txd;
--	skb_frag_t *this_frag;
--	for (frag = 0; frag+first < entry_last; frag++) {
--		index = first+frag;
-+
-+	/* The head mapping was never written to the ring, unmap it
-+	 * using the saved address.
-+	 */
-+	dma_unmap_single(&cp->pdev->dev, first_mapping, first_len,
-+			 DMA_TO_DEVICE);
-+	cp->tx_skb[first] = NULL;
-+
-+	/* Unmap the frags that were successfully mapped. */
-+	for (frag = 0; first + 1 + frag < entry_last; frag++) {
-+		struct cp_desc *txd;
-+		skb_frag_t *this_frag;
-+
-+		index = first + 1 + frag;
- 		cp->tx_skb[index] = NULL;
- 		txd = &cp->tx_ring[index];
- 		this_frag = &skb_shinfo(skb)->frags[frag];
-@@ -828,7 +839,9 @@ static netdev_tx_t cp_start_xmit (struct sk_buff *skb,
- 						 skb_frag_address(this_frag),
- 						 len, DMA_TO_DEVICE);
- 			if (dma_mapping_error(&cp->pdev->dev, mapping)) {
--				unwind_tx_frag_mapping(cp, skb, first_entry, entry);
-+				unwind_tx_frag_mapping(cp, skb, first_mapping,
-+						       first_len, first_entry,
-+						       entry);
- 				goto out_dma_error;
- 			}
- 
+Thanks,
+Yun
+
+Yun Lu (2):
+  8139cp: fix DMA mapping unwind on TX frag map failure
+  8139cp: handle cp_init_rings() failure in cp_tx_timeout()
+
+ drivers/net/ethernet/realtek/8139cp.c | 31 +++++++++++++++++++++------
+ 1 file changed, 25 insertions(+), 6 deletions(-)
+
 -- 
 2.25.1
 
