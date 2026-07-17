@@ -1,195 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061653DD503;
-	Fri, 17 Jul 2026 10:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12643EB108;
+	Fri, 17 Jul 2026 10:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784283206; cv=none; b=f6pPj24uIDWzWEppQ8GrjM9IBBZyFqNxHGVZC/w/7OP+4N+u7sE5C9JMfaJyn9Zpk8l/iGqpdn4aR+6KyC+TdU84ZFZKVhqz2l+ZCp8QLyb6szkHUAzm7UkWyOAi9BDY8QAR3rUbr6CbssilKtk5DN/Girctmrh3r/sxSf3Uk5E=
+	t=1784283243; cv=none; b=cwIe3vT+dKGBOErkIhzb55q3+gR9qJZ8SEuhLVFzYNZ9hy3UCcjmNMtYfwFyzTuhWXdTZzLkq7MAXGOZTAEFX1qAOxl8WRqr04NQy5AD8e7xPaR++LaSjOPwzI7qb7NeoWRfhHGJIDRVWiLfqyccluczaYkVY30Bfxhu1oJftPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784283206; c=relaxed/simple;
-	bh=NUDLhNU0cH5W51yMWSOmqTceiw8CjDcNSEHEUcLiW4M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:Cc:
-	 References:In-Reply-To; b=Wcf2lfwETa8b/K4AAA9a+KvsANP0Furx4emCm9Ps5Of/ysvrZTCtqRaLtilMD/8ooXWyV0fjcRzizVNyyoeZ3gTFwhs8EkqodnbNTkfZtUeW5LRh6q/0AzGObzLmeICnX/HQV0gTP2zmksoP/uOxhdS1jkVACDy8DGdXCrKZJps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ghh9U393; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784283243; c=relaxed/simple;
+	bh=bAwzAuWOVBC+fwIMD4vd0Lu+amDZaNQ45B9q8WzraB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lVt2XDKO6bBF9fpIcxtSR42Rp/8OT3k9sOQT3BfsTUFgqcrC1yc5foHbV1gaY/6rV3UP0Stk2Wc/H/3Z6valeE1i1Xapi1KoU6TbVs62ZASgz3ouvDk0EuElQn4joTOPJfB+7m+HJWYCwWMBkK81cUCoHEE0WKDY6W60sGhgkEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ayl4lxmf; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ghh9U393"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 250171F000E9;
-	Fri, 17 Jul 2026 10:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784283204;
-	bh=1lLq0UYWgzE5wPZezyYaUbWQqszAIJGtPsskcQ/iwvM=;
-	h=Date:From:To:Subject:Cc:References:In-Reply-To;
-	b=Ghh9U393rjYaCJuOIz4l4k9twsxflbke8mCHjtLhQzOvIj8f4qxMlPkNCx6xk1x1U
-	 zoktCZLJRDQ3qE9mCfUsUgWIqt06qgGJndih+Tuqhg8FRzbHmmtjcWllxvmj6tOLmg
-	 9HaP0eej5Jqce6rEN/Unv7d/u+lCuplmi0wAdM0Qe9olJBilljqcmY8mjL2LxVCQUv
-	 jCenTnrk35pK/uBuU9EL8RYrMQqY78R1eAuuhyTv66ziSub8BJvMAQsXE93r3Udg0T
-	 Qu1Kbrxk2v7HYKDifiEFx5eHD79Edt7GH0rGe4oEBQCdT+2AGloCfgA1G98K4eOitI
-	 Eo+DpDW/dxaUQ==
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ayl4lxmf"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A88726019C;
+	Fri, 17 Jul 2026 12:13:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1784283233;
+	bh=b2o3c+4c75OHDsV9BWa2Q1SQLHQwwutW9hdOuH/E42E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ayl4lxmfBGms+9teirpfHa7PnMGumlRglIIu45ViHfNUtmT0W1p/I8ywTzpAiZwrM
+	 y48EaPx3QObw0HyOgES9q9qkNTduDYuvmck00D7nZ+Z+RjwaJMzVCT13mH9jHOzTCC
+	 2g+QCmw03MnJNMAw4ULmsHVP2w7InvekRxsmptmEZKTU8btAzeEhDyRBOjvSb/GxGs
+	 n1z8FviVnK6yRR5NOg3H7cumQuGEXHU4iKnZCddxpC6Scx42I+c62JZRqFp4ll4gDg
+	 cAXHUqNf2Yzoj7BLftIJHIwGE/Ixv6kCHBiqmvDAX7slGUoYt/xf9nmG+EeZMgXjz5
+	 ZKI9touugoJKA==
+Date: Fri, 17 Jul 2026 12:13:51 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org,
+	ja@ssi.bg
+Subject: Re: [PATCH net 8/9] ipvs: fix more places with wrong ipv6 transport
+ offsets
+Message-ID: <aloAXx0xWOv77hpb@lemonverbena>
+References: <20260710143733.29741-1-fw@strlen.de>
+ <20260710143733.29741-9-fw@strlen.de>
+ <e7ed31d3-a3aa-427a-8e82-aa65b4388368@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed;
- boundary=78a08f9f452e204ecc02be00c5dbafbb530578c24d97049daa16d0472d34;
- micalg=pgp-sha384; protocol="application/pgp-signature"
-Date: Fri, 17 Jul 2026 12:13:20 +0200
-Message-Id: <DK0RLUBEKFVS.168UHY5BP8D4E@kernel.org>
-From: "Michael Walle" <mwalle@kernel.org>
-To: "Paolo Abeni" <pabeni@redhat.com>, "Sean Anderson"
- <sean.anderson@linux.dev>, "Madalin Bucur" <madalin.bucur@nxp.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>
-Subject: Re: [PATCH net v2] net: dpaa: fix mode setting
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.0
-References: <20260710143430.2276141-1-mwalle@kernel.org>
- <a5c5b8a6-85a8-7830-e19b-ffd5de750e3c@linux.dev>
- <DJUZ1VG8U9SL.2W0CJM7NSMK2@kernel.org>
- <2c8f63f5-f04a-4abc-9508-4c47a80da543@redhat.com>
-In-Reply-To: <2c8f63f5-f04a-4abc-9508-4c47a80da543@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e7ed31d3-a3aa-427a-8e82-aa65b4388368@redhat.com>
 
---78a08f9f452e204ecc02be00c5dbafbb530578c24d97049daa16d0472d34
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+Hi,
 
-On Fri Jul 17, 2026 at 12:01 PM CEST, Paolo Abeni wrote:
-> On 7/10/26 4:47 PM, Michael Walle wrote:
->> On Fri Jul 10, 2026 at 4:39 PM CEST, Sean Anderson wrote:
->>> On 7/10/26 10:22, Michael Walle wrote:
->>>> Before converting to the phylink interface, the init function would ha=
-ve
->>>> set the correct I/F mode depending on the maximum link speed of an
->>>> interface. After converting to phylink, the established link speed
->>>> is used to determine this setting and is set in the .link_up()
->>>> callback. The callback isn't called because the link is never
->>>> established between the PCS and a connected SGMII PHY.
->>>> To fix it, don't use the current speed, but set the mode depending on
->>>> the interface (which implies the maximum speed) in .mac_config().
->>>>
->>>> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
->>>> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
->>>> Signed-off-by: Michael Walle <mwalle@kernel.org>
->>>> ---
->>>> FWIW, I dropped setting a non-reserved mode in init(). The hardware
->>>> default is 0 and the mac_config() will set a valid mode anyway.
->>>>
->>>> Changes in v2:
->>>>   - the setting is/was based on the maximum speed, not the current
->>>>     speed. thus, move the setting into mac_config().
->>>>   - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwa=
-lle@kernel.org/
->>>>
->>>>   .../net/ethernet/freescale/fman/fman_dtsec.c  | 26 ++++++++++-------=
---
->>>>   1 file changed, 14 insertions(+), 12 deletions(-)
->>>>
->>>> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/driver=
-s/net/ethernet/freescale/fman/fman_dtsec.c
->>>> index fe35703c509e..7075f93bab49 100644
->>>> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>>> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>>> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_conf=
-ig *config, unsigned int mode,
->>>>   {
->>>>   	struct mac_device *mac_dev =3D fman_config_to_mac(config);
->>>>   	struct dtsec_regs __iomem *regs =3D mac_dev->fman_mac->regs;
->>>> -	u32 tmp;
->>>> +	u32 ecntrl, maccfg2;
->>>> +
->>>> +	maccfg2 =3D ioread32be(&regs->maccfg2);
->>>> +	maccfg2 &=3D ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
->>>>  =20
->>>>   	switch (state->interface) {
->>>>   	case PHY_INTERFACE_MODE_RMII:
->>>> -		tmp =3D DTSEC_ECNTRL_RMM;
->>>> +		ecntrl =3D DTSEC_ECNTRL_RMM;
->>>> +		maccfg2 |=3D MACCFG2_NIBBLE_MODE;
->>>>   		break;
->>>>   	case PHY_INTERFACE_MODE_RGMII:
->>>>   	case PHY_INTERFACE_MODE_RGMII_ID:
->>>>   	case PHY_INTERFACE_MODE_RGMII_RXID:
->>>>   	case PHY_INTERFACE_MODE_RGMII_TXID:
->>>> -		tmp =3D DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>>> +		ecntrl =3D DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>>> +		maccfg2 |=3D MACCFG2_BYTE_MODE;
->>>>   		break;
->>>>   	case PHY_INTERFACE_MODE_SGMII:
->>>>   	case PHY_INTERFACE_MODE_1000BASEX:
->>>>   	case PHY_INTERFACE_MODE_2500BASEX:
->>>> -		tmp =3D DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>>> +		ecntrl =3D DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>>> +		maccfg2 |=3D MACCFG2_BYTE_MODE;
->>>>   		break;
->>>>   	default:
->>>>   		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
->>>> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config=
- *config, unsigned int mode,
->>>>   		return;
->>>>   	}
->>>>  =20
->>>> -	iowrite32be(tmp, &regs->ecntrl);
->>>> +	iowrite32be(ecntrl, &regs->ecntrl);
->>>> +	iowrite32be(maccfg2, &regs->maccfg2);
->>>>   }
->>>>  =20
->>>>   static void dtsec_link_up(struct phylink_config *config, struct phy_=
-device *phy,
->>>> @@ -948,15 +955,10 @@ static void dtsec_link_up(struct phylink_config =
-*config, struct phy_device *phy,
->>>>   	iowrite32be(tmp, &regs->ecntrl);
->>>>  =20
->>>>   	tmp =3D ioread32be(&regs->maccfg2);
->>>> -	tmp &=3D ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE | MACCFG2_FULL_DU=
-PLEX);
->>>> -	if (speed >=3D SPEED_1000)
->>>> -		tmp |=3D MACCFG2_BYTE_MODE;
->>>> -	else
->>>> -		tmp |=3D MACCFG2_NIBBLE_MODE;
->>>> -
->>>>   	if (duplex =3D=3D DUPLEX_FULL)
->>>>   		tmp |=3D MACCFG2_FULL_DUPLEX;
->>>> -
->>>> +	else
->>>> +		tmp &=3D ~MACCFG2_FULL_DUPLEX;
->>>
->>> Did you test this when forcing 10/100 speed?
->>=20
->> No I didn't. Well I can't. I have a very weird board which only
->> supports 1000base-X (and copper SFPs in 1000basex autoneg mode). On
->> top of that there is a Marvell 88E1112 in between the SFP and the
->> MAC, for which the PHY driver is completely broken. Long story
->> short, I'm not able to test that (yet/at all? Not sure).
-> FTR, sashiko suspect this patch will broke such setup:
-> https://sashiko.dev/#/patchset/20260710143430.2276141-1-mwalle%40kernel.o=
-rg
+On Fri, Jul 17, 2026 at 11:17:15AM +0200, Paolo Abeni wrote:
+> Hi,
+> 
+> On 7/10/26 4:37 PM, Florian Westphal wrote:
+> > From: Julian Anastasov <ja@ssi.bg>
+> > 
+> > Sashiko reports for more incorrect IPv6 transport offsets.
+> > 
+> > The app code for TCP was assuming IPv4 network header
+> > even after the ipvsh argument was provided. This can
+> > cause problems with apps over IPv6. As for the only
+> > official app in the kernel tree (FTP) this problem is
+> > harmless because we use Netfilter to mangle the FTP
+> > ports and we do not adjust the TCP seq numbers.
+> > 
+> > Also, provide correct offset of the ICMPV6 header in
+> > ip_vs_out_icmp_v6() for correct checksum checks when
+> > the IPv6 packet has extension headers.
+> > 
+> > Fixes: d12e12299a69 ("ipvs: add ipv6 support to ftp")
+> > Fixes: 2a3b791e6e11 ("IPVS: Add/adjust Netfilter hook functions and helpers for v6")
+> > Cc: stable@vger.kernel.org
+> > Link: https://sashiko.dev/#/patchset/20260706101624.69471-1-zhaoyz24%40mails.tsinghua.edu.cn
+> > Signed-off-by: Julian Anastasov <ja@ssi.bg>
+> > Signed-off-by: Florian Westphal <fw@strlen.de>
+> > ---
+> >  net/netfilter/ipvs/ip_vs_app.c  | 10 ++++------
+> >  net/netfilter/ipvs/ip_vs_core.c |  3 +--
+> >  2 files changed, 5 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/net/netfilter/ipvs/ip_vs_app.c b/net/netfilter/ipvs/ip_vs_app.c
+> > index d54d7da58334..b0e00be85cb1 100644
+> > --- a/net/netfilter/ipvs/ip_vs_app.c
+> > +++ b/net/netfilter/ipvs/ip_vs_app.c
+> > @@ -361,14 +361,13 @@ static inline int app_tcp_pkt_out(struct ip_vs_conn *cp, struct sk_buff *skb,
+> >  				  struct ip_vs_iphdr *ipvsh)
+> >  {
+> >  	int diff;
+> > -	const unsigned int tcp_offset = ip_hdrlen(skb);
+> >  	struct tcphdr *th;
+> >  	__u32 seq;
+> >  
+> > -	if (skb_ensure_writable(skb, tcp_offset + sizeof(*th)))
+> > +	if (skb_ensure_writable(skb, ipvsh->len + sizeof(*th)))
+> >  		return 0;
+> >  
+> > -	th = (struct tcphdr *)(skb_network_header(skb) + tcp_offset);
+> > +	th = (struct tcphdr *)(skb_network_header(skb) + ipvsh->len);
+> 
+> Beyond the usual set of pre-existing issues, sashiko-gemini noted this
+> patch may need a follow-up:
+> 
+> https://sashiko.dev/#/patchset/20260710143733.29741-2-fw%40strlen.de
 
-I've seen that, but.. that was the actual change between v1 and v2
-as suggested by Sean. It does not depend on the actual link speed,
-but the maximum link speed. So it is not relevant if the link
-negotiates to a slower speed or not. At least that now matches the
-behavior prior to the phylink conversion. If that was working -
-that I can't tell you.
-
-> I think we need either an explicit test from a 3rd party or a new revisio=
-n.
-I'm not sure what you mean with a v3. Going back to v1?=20
-
--michael
-
---78a08f9f452e204ecc02be00c5dbafbb530578c24d97049daa16d0472d34
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaloAQBIcbXdhbGxlQGtl
-cm5lbC5vcmcACgkQEic87j4CH/imbgGAl6emj98p4alddUGLjwyeaZ4La/pMFzpc
-fySIbLIvVjaUdR1D3Ya1Air+xasyLSF4AX0cVQOnLLaipyDtzyNeyCMokluNtPYy
-AQAgnG+qfXL44tEgxXdxE62/swKLxbMS4UY=
-=2rY0
------END PGP SIGNATURE-----
-
---78a08f9f452e204ecc02be00c5dbafbb530578c24d97049daa16d0472d34--
+Cc'ing Julian, it seems he is not on Cc, in case he can help us with this.
