@@ -1,107 +1,97 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2993AB27B;
-	Fri, 17 Jul 2026 06:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471B837E5D1;
+	Fri, 17 Jul 2026 06:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784269556; cv=none; b=VmoWftVwsTnLwDvVL+Qph1YetuQZzeoJrKSmLPcM1QFPhbqKCsoul8svA0aq4Z8Pqh0y4lztzw7XuniPftT+vYbY3pEkSpg2l2V/V8LVMxV3bKUL5ardvP68ZuX2BNLEzsxUUgHn1uFREc20NDByDKPhJt8tZEFTE7JGKI09Sjk=
+	t=1784269648; cv=none; b=aYGxR2+VyeVg9dpazfs50udlspS+czGHnvJL6pFjbaAReQ3B/IKTbT+R5mT2y+yORBh8Wu6+3kcF7wRw2Z8CUb8YTvhQudhCpGYmCAZ9XdaZHZrrd0FxYaMUgfMTEjMs12iWscE7ckSFPYQAB5Gks/33qK/X9ekL/20ehuoX2CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784269556; c=relaxed/simple;
-	bh=V45wftsuEXBvIMFd2nPl4/u6SLII7P+XcPx/TrAeE/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dnwVV3N6XgURSx4/tjlpJIKpy5FYgaKjtOJZHP24TqbT48076hGTZiOKxR6bnEnjFDAKNsJX7kUUy0EYXOdgJAwAp6Qib295MUfUCJDrbrohFYLAKSzD6MDh1WEyaMtJdAn93mOhh+49/YnWYeXqDZVXkPceOj9XJMYSqDoN1Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 57ac5bd881a811f1aa26b74ffac11d73-20260717
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:f869318d-2b99-4b29-90e2-4dc5fc5a60a4,IP:0,U
-	RL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:94922f67502caf87048fee04fd7fe257,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:1,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 57ac5bd881a811f1aa26b74ffac11d73-20260717
-X-User: yanlonglong@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <yanlonglong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1772774522; Fri, 17 Jul 2026 14:25:45 +0800
-From: longlong yan <yanlonglong@kylinos.cn>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
+	s=arc-20240116; t=1784269648; c=relaxed/simple;
+	bh=BKPpIwApMeRwTWfwyNaBSdqS3csESpAA3BeAqRcxhoQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fvyWnajZkNlB492IPL5hgr3aiI/5bxv7GgTaUdCK/K4LZcHI/WjbCTieLqC48wDcJOUnAlxnCP7uASfgFVNrZmwXJYY2aavmlPIPjlwteqcyDAnp3KaXBeBKPoPX7AdmtX65atr3ixcRmj96qdz4iDtogQt6MIZjLik3DlBFmxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N2zPa2c9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OjGMMvNF; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N2zPa2c9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OjGMMvNF"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1784269645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uSV17cNUOcdylJi5Mf1fbtYe6gZxAY+CsDtcprPu/7s=;
+	b=N2zPa2c9yvfLqpDyMSOKZqC0YrCEn+wEc6h5USdaQ/9khE9Jk19wgKfUx9EZpStp70g/Lj
+	HDkvAtrsg2k/JokRUixriTeBIv2958YwNm37s8INIDIJ87vkT7ory33ygIFhBQcNs5oUxu
+	hqKfsJzhfvuMxlN1l/XRC7V1Crrp6tWVfDUUo2lH537+teZNp5YMjFCr0229j7BPdY4deu
+	/1FWTsjQfIUkE12eX0yyi611vOUKCtkyT7A1pFvTsDSZP5VGYTB6fejjof65sCko4JHsyV
+	liqHdzzZDH8YoDqWsGmutkYHs2p6S7SCum2a4syO9Gl+EYll9ySOI1DBjNiEDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1784269645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uSV17cNUOcdylJi5Mf1fbtYe6gZxAY+CsDtcprPu/7s=;
+	b=OjGMMvNFiy2Jy6lf31EzmWCuU6qqqHQqcY+/eYCU+hcDJB1IGsTAZ+UgsWaCX4a2smrBpR
+	rymqLZ3pxcraQ2Bg==
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: longlong yan <yanlonglong@kylinos.cn>
-Subject: [PATCH] selftests/net: use ARRAY_SIZE macro in skf_net_off.c
-Date: Fri, 17 Jul 2026 14:25:02 +0800
-Message-ID: <20260717062502.1016-1-yanlonglong@kylinos.cn>
-X-Mailer: git-send-email 2.47.1.windows.2
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: [PATCH net-next v2 0/3] af_unix: Fix priority inversion issue
+Date: Fri, 17 Jul 2026 08:27:14 +0200
+Message-ID: <cover.1784268931.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-The ARRAY_SIZE macro is more compact and more formal in linux source.
+Hi,
 
-Fixes: fcd7132cb1f9 ("selftests/net: test sk_filter support for SKF_NET_OFF on frags")
-Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
----
- tools/testing/selftests/net/skf_net_off.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+While auditing AF_UNIX sockets, I noticed that the sendmsg() code paths may
+block on the garbage collector running as workqueue. This can cause
+priority inversion and latency for real-time users.
 
-diff --git a/tools/testing/selftests/net/skf_net_off.c b/tools/testing/selftests/net/skf_net_off.c
-index 1fdf61d6cd7f..d4e38d326c39 100644
---- a/tools/testing/selftests/net/skf_net_off.c
-+++ b/tools/testing/selftests/net/skf_net_off.c
-@@ -46,6 +46,7 @@
- #include <sys/types.h>
- #include <sys/uio.h>
- #include <unistd.h>
-+#include "kselftest.h"
- 
- static bool cfg_do_filter;
- static bool cfg_do_frags;
-@@ -92,7 +93,7 @@ static void sk_set_filter(int fd)
- 	};
- 
- 	struct sock_fprog filter = {
--		sizeof(filter_code) / sizeof(filter_code[0]),
-+		ARRAY_SIZE(filter_code),
- 		filter_code,
- 	};
- 
-@@ -159,7 +160,7 @@ static void tun_write(int fd)
- 	iov[4].iov_base = &payload;
- 	iov[4].iov_len  = sizeof(payload);
- 
--	ret = writev(fd, iov, sizeof(iov) / sizeof(iov[0]));
-+	ret = writev(fd, iov, ARRAY_SIZE(iov));
- 	if (ret <= 0)
- 		error(1, errno, "writev");
- }
-@@ -183,7 +184,7 @@ static void raw_read(int fd)
- 	iov[1].iov_len = sizeof(payload);
- 
- 	msg.msg_iov = iov;
--	msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
-+	msg.msg_iovlen = ARRAY_SIZE(iov);
- 
- 	ret = recvmsg(fd, &msg, 0);
- 	if (ret <= 0)
--- 
-2.43.0
+The implementation does kindly avoid blocking "sane users". However, it is
+impossible to tell whether the kernel's definition of "sane users"
+accurately describes all users out there.
+
+Digging into history and figuring out the reasons why sendmsg() needs to
+wait for garbage collector, it is determined that those reasons no longer
+apply.
+
+The first patch resolves another issue reported by Sashiko in v1, paves the
+way for the second patch to remove the block. The last one is a simple
+post-cleanup.
+
+v2:
+  - Add patch [1/3]
+  - Rebase the other two patches onto the new patch
+  - Change commit message to be more precise
+
+Nam Cao (3):
+  af_unix: Schedule the garbage collector at task exit
+  af_unix: Do not wait for garbage collector in sendmsg()
+  af_unix: Clean up unix_schedule_gc()
+
+ include/net/af_unix.h |  5 +++++
+ kernel/exit.c         |  2 ++
+ net/unix/af_unix.c    |  2 +-
+ net/unix/af_unix.h    |  1 -
+ net/unix/garbage.c    | 16 +---------------
+ 5 files changed, 9 insertions(+), 17 deletions(-)
+
+--=20
+2.47.3
 
