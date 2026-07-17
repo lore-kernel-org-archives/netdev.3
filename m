@@ -1,70 +1,147 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4F32FFFA5
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBAB3B3C1F
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784288255; cv=none; b=ZFudkEa+2KnQzqS9UL+kzvgQRVVew40q1j0gT9Vzb03IdVgXMK4+9SVKoV5cch5bt5UjFnSKty5/ShFZunRM7ITuqLNmlZYx2imKDlAOMEOccySzhETL1axawE9rXdbJON1Vv07dfjTE6O+8uaqQ8wtX8Ik7LJs32CkA88Dj0Iw=
+	t=1784288467; cv=none; b=Z4fsxVeEHmvdfItcoC38yHCSJqZLHFHNdxUzfLq7aiGtBVQRZ6ZJ9/dV3K2eERqewRekq4oA4zaSDaRkdEz/g5PbrUO/RFkHrCXxUl2zxiYpRqRb9uKn/x3MfwF2JCX26SSdGHtODQO4balSmqMvVoN5AjNHYz/my1blJO6TCnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784288255; c=relaxed/simple;
-	bh=kg+Uno28y8LH0GLqJP4j+/TvRJiU5EsXOvYmq5/Z454=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cMb45T5gg8pfpXMEN/srvauxq+9hER1eKn+/DYQalMZ/kwNiMZ6IaRF7p7UKyf8BqdK3PbV5okkAPUIg8jQkzOgtBkDrtKhCJvgCc2B5YjD47cwhL4UCxIwQxb/yDV9A9FLqyl7wJkYhOhKr6JwNrVnBwPX3pKFr5xykU1VOQak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wxttU1oA; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784288467; c=relaxed/simple;
+	bh=j3uuyFppsM78ScOuEVLyKyW4kJd4D1z8nnUFmf8NBCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dcn4CtQ6hC9cWQ5mRZC+59O/19tVdt8zf/e9ztbUYGjQ1WtTdHE+jLLRDo0HH8ecXpvlJ0t1BR7iich+4bTxEroxVau7fYmHkRboydCv0vUZDJbGRoa0OtUEVxck2YMgC7xyxxNyLpr4vgtNvA5eDJNi4N7ztM91rd1QRTjq+Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eq3I0UP9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wxttU1oA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 549611A1055
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 11:37:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 23E5160363;
-	Fri, 17 Jul 2026 11:37:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5AC4C11BD0D05;
-	Fri, 17 Jul 2026 13:37:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784288248; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kg+Uno28y8LH0GLqJP4j+/TvRJiU5EsXOvYmq5/Z454=;
-	b=wxttU1oAiok8Es3N+ZVzBrA7tmb+RDahAu2/CX9Sh9AsaJJjbRnyqMDUg6GsVBLyFq7ElY
-	tycs4cn1wYyZdqVS6ypIQ00qqXuRytn318n9pV8Vdw48KhZWhCEXG+cJoJHtOyd8ud+p6V
-	7NdTSnM/Cv7l2sogWk5MwAHiai7dJGOiH7OCwN0ACUpib1VkQGOdLpwEkUDbtAfy2njeFJ
-	VQtfNGn7i2duIjT9dHfLobplo/89PvAgLccs1734/lNot3lXc6KisbR4O9lGKsEet3sTg5
-	2Sj8Dh/3l1ZyT/5zDeZebHri5OFu9BG8x11YJPY/+HySRexOvngz0tlDq/ZyoA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Ibrahim Hashimov <security@auditcode.ai>
-Cc: alex.aring@gmail.com,  stefan@datenfreihafen.org,
-  linux-wpan@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH v2] mac802154: hold an interface reference across the
- scan worker
-In-Reply-To: <20260717105810.26226-1-security@auditcode.ai> (Ibrahim
-	Hashimov's message of "Fri, 17 Jul 2026 12:58:09 +0200")
-References: <20260710140927.13228-1-security@auditcode.ai>
-	<20260717105810.26226-1-security@auditcode.ai>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Fri, 17 Jul 2026 13:37:26 +0200
-Message-ID: <87fr1hkft5.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eq3I0UP9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352621F00A3A;
+	Fri, 17 Jul 2026 11:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784288463;
+	bh=cIzMN4306X7NLudADecXammvcEsgxmX6qbWfhmbLqP4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Eq3I0UP9rVWzD/YfyCpm+hYLhX5QPGeKQOEdmVo+k/AYQE0zhq1Uj20ENzT8k/A2J
+	 pHCvw7fyI/a4qXvPPXy2FG6kaMsIU05dXe7ovqr1wIeks1g2K+hnCsZoTFDkdiT405
+	 U4YFJLfAqxPAHTDiKaHrIhnrxQSFxbz9i6BjTNnBwiwXy+NZt6fCtuKcAJ+2e1DWXg
+	 Ybdn2aB+iwcFmVvA6FS5fLwPUViZMlgp9Yzu6i7GgWhLkbpu7IBqmCKlFRJuEigq9F
+	 FdtQmcEOxJF97L5og2d3gn1cBD3+UzOyU4nxrX4pu+GMK0rCMwL14HiOR1iiyQQ111
+	 u3YJ7sG1Mz4mA==
+Date: Fri, 17 Jul 2026 12:40:56 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+	linux@armlinux.org.uk, aleksandr.loktionov@intel.com,
+	jacob.e.keller@intel.com, michal.swiatkowski@linux.intel.com,
+	kees@kernel.org, joe@dama.to, leitao@debian.org,
+	shaojijie@huawei.com, u.kleine-koenig@baylibre.com,
+	weirongguang@kylinos.cn, larysa.zaremba@intel.com,
+	fabio.baltieri@gmail.com
+Subject: Re: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler
+Message-ID: <20260717114056.GN95246@horms.kernel.org>
+References: <20260707061455.39564-6-jiawenwu@trustnetic.com>
+ <20260714091129.1815871-1-horms@kernel.org>
+ <0ecb01dd14f0$17488c80$45d9a580$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ecb01dd14f0$17488c80$45d9a580$@trustnetic.com>
 
-Hello,
+On Thu, Jul 16, 2026 at 02:55:30PM +0800, Jiawen Wu wrote:
+> On Tue, Jul 14, 2026 5:11 PM, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > Full review at: https://sashiko.dev
+> > ---
+> > --- Patch [5]: [PATCH net-next v10 5/5] net: wangxun: add pcie error handler ---
+> > commit 91baa4e77d07ab6772569a7d37ed86cfda625c00
+> > Author: Jiawen Wu <jiawenwu@trustnetic.com>
+> > Subject: net: wangxun: add pcie error handler
+> > 
+> > This commit adds PCIe error handling support (AER) to the wangxun drivers
+> > (ngbe and txgbe). It detects hardware errors, attempts to soft quiesce,
+> > and registers standard PCI error handler callbacks.
+> > 
+> > > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> > > index ee27f96735dc7..0cb99e456a1c9 100644
+> > > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> > > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> > 
+> > [ ... ]
+> > 
+> > > +static void wx_io_resume(struct pci_dev *pdev)
+> > > +{
+> > > +	struct wx *wx = pci_get_drvdata(pdev);
+> > > +	struct net_device *netdev;
+> > > +	int err;
+> > > +
+> > > +	netdev = wx->netdev;
+> > > +	rtnl_lock();
+> > > +	if (netif_running(netdev)) {
+> > > +		err = netdev->netdev_ops->ndo_open(netdev);
+> > 
+> > [Severity: High]
+> > Does this sequence risk corrupting the hw_tc_lock seqlock?
+> > 
+> > During AER recovery, wx_io_slot_reset() calls down_suspend(), which bypasses
+> > wx_ptp_stop(). This leaves the PTP clock registered and potentially in use by
+> > userspace.
+> > 
+> > When wx_io_resume() then calls ndo_open(), this triggers txgbe_up() or
+> > ngbe_up(), which in turn calls wx_ptp_init(). Since wx_ptp_init()
+> > unconditionally calls seqlock_init(&wx->hw_tc_lock), won't this corrupt the
+> > lock if userspace is actively issuing PTP ioctls?
+> 
+> PTP clock was destroyed in wx_ptp_quiesce() before V8 patch set.  The
+> piece of code was removed based on the Sashiko's comment.  I think it
+> should be added back because the order of the calls in wx_soft_quiesce()
+> has been changed.
 
-> Fixes: 57588c71177f ("mac802154: Handle passive scanning")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
+Thanks.
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> 
+> > 
+> > > +		if (err) {
+> > > +			wx_err(wx, "Failed to open netdev after reset\n");
+> > 
+> > [ ... ]
+> > 
+> > > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > > index 92895f5035118..56d4b63387fd6 100644
+> > > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+> > 
+> > [ ... ]
+> > 
+> > > @@ -413,6 +428,9 @@ static void ngbe_disable_device(struct wx *wx)
+> > >
+> > >  static void ngbe_reset(struct wx *wx)
+> > >  {
+> > > +	if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
+> > > +		return;
+> > > +
+> > >  	wx_flush_sw_mac_table(wx);
+> > 
+> > [Severity: High]
+> > Is the hardware properly reinitialized here after an AER slot reset?
+> > 
+> > In wx_io_slot_reset(), the hardware needs to be restarted from scratch.
+> > While txgbe_reset() calls txgbe_reset_hw(), ngbe_reset() only flushes the
+> > software MAC tables and skips calling ngbe_reset_hw().
+> > 
+> > Because this patch registers wx_err_handler for the ngbe driver, won't this
+> > leave the hardware uninitialized and the interface broken after a PCIe slot
+> > reset?
+> 
+> I think I have answered this question many times and also described
+> ngbe's lack of functionality in the commit and cover-letter messages.
 
-Thanks,
-Miqu=C3=A8l
+Sorry about that, I missed that this is already covered.
+
+...
