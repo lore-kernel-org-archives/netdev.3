@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A053239FCAE
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 18:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDD43A383C;
+	Fri, 17 Jul 2026 18:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784314433; cv=none; b=OCNIv+Hrn7OtsSQk0M5dyAP5IZD9qjmouYjwvXcdcp/P1F2Guj3IZpRiH6+b42s7q8ywUDnubV4TLdff+ojNfppZcpCS0eTtcMhXazzyB8cLtBYcY+Cxi/i7YHTlckSJTtz/cesvRLXSFSTpdB69Ffy0oL/2Qu72WDJacMPUdAk=
+	t=1784314434; cv=none; b=c/medRrIYGJySckjIX39RBEcbW6l+OjHYGXD32oAn2vLjH5zdlVZg67ZPdLgqZ7vhzjK/m7B7B/m+C5NozEXrDKtomDKXZHWkO2HDI9qogQiKXA0z5NK1vDyAIwEcTgCgrKIJMmbbFv8jwptQ8ym21pk2iw2RqWFN80IQlat5NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784314433; c=relaxed/simple;
-	bh=Nas1ipnQuKPprZACURq/t6XA3zKZwlfryP9WpVD+sgs=;
+	s=arc-20240116; t=1784314434; c=relaxed/simple;
+	bh=JLcB4ySPF/PF+chFAinAMquU9n2vAiYJK/lKnD9xZ7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRIeXuRAla1T+hvhGgmbB/UO00fea6SmO8wQsEtf2zu5Azfabz5KgabwdGGBW00qGSZK9+QcXBDnlsVpQGfUYa5I5Ihl+q9uF6nImMiQIH+lA/9YbMoRbbCUf6NZ8IMcbv0z6vP9PKpgslY501r1H/Lg8tm/1OQrZK7kUqJdRTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PkZ8WkK8; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=honeJWPDkItfa0D8Gk+FQz5dO75PxqKDqvyLdE7oictOpd/v87kn+moarceiXAnQKTk46tINbwRHYhucvAUHy8EU2Im91XQIUnw2jBZE/82xVDBfEzdTbnZ5AeyPA6Zh81Q4kC96cVFITMv1psRaS3nmZw7y847iMW1opEGgJ2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UElb157G; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PkZ8WkK8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UElb157G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784314432; x=1815850432;
+  t=1784314433; x=1815850433;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Nas1ipnQuKPprZACURq/t6XA3zKZwlfryP9WpVD+sgs=;
-  b=PkZ8WkK8lx4gEGQulIn1FYNnCWCC8BkRKAJ4gScq85NFX+kPBPZzAAmG
-   fa9GyjmVhI7KnWsJSDmqstaWapcWTl5H97iTWbA0/CLxqjQzf35sGvO7O
-   tpiw7wIEnlzx7x5Lc/NPTC9gMafmUQsH1x9dbKs8iMDuOs0TgCA+fF0y8
-   ObjQ79P8WnUop+5V6z1GEt/DaRjiotwNnS1aqOsfLD/iPagCa4MKhBWsE
-   7izV2RcP+lroaCHhOBfbHsxyoOK9W+17fspdEZJ5QRdUf46lEtjhAf+a5
-   dGnhgSXuYRiKIVEYvqyM05lo9un+u0HhBLX17wnBKN0tRV9P8+K80WRlF
-   Q==;
-X-CSE-ConnectionGUID: fpPIuydjRfaMpkxfa8t88A==
-X-CSE-MsgGUID: EZrFVH6eSy2ezvY8sB4DGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347646"
+  bh=JLcB4ySPF/PF+chFAinAMquU9n2vAiYJK/lKnD9xZ7g=;
+  b=UElb157GvYhn3snMQtxNkHMDS640gIWgS1TeeR5gJucePtNJpWPKs2jn
+   W4qm7VPkISjCCaPlQY9WwULVwX92HuWSKwsS7HhLA6SzMDjJW+XjSq5h+
+   7MlYPlEDj+dj3mQO0MgT3yXivKy5ibxWVSVpWejav+AllD8wokloBawWV
+   JJuY0JRiCNqrAA908k74IAQIO5iOUewTkHxLwKWh/MGhuytb66Jpv9GQD
+   aNtzzjQU+KNJ9TH6ZMTZZ07Bli4vL2iaNkbHq96jNB/trssdyEVSMs6Rw
+   bf6pNJxcb/lqYBegQCX6275zHfU0qZ6pplDT8UlBdJmpD7YDzMHqY+Djn
+   g==;
+X-CSE-ConnectionGUID: 5jwmYkIiS4a6yxdGzWI/BA==
+X-CSE-MsgGUID: fJVShBMZTzuGE+ksIiVJiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347652"
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="95347646"
+   d="scan'208";a="95347652"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:49 -0700
-X-CSE-ConnectionGUID: IA5jQNSiTFSU+GhwQCpv5A==
-X-CSE-MsgGUID: pyIXVLOBTMio5NlWJi3+xw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:50 -0700
+X-CSE-ConnectionGUID: EQlCllcnRP2bIR/ibEFipw==
+X-CSE-MsgGUID: r7iMHqGnTV6hAmnd8PP4VQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="261827256"
+   d="scan'208";a="261827259"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2026 11:53:48 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,14 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 10/13] ice: prevent tstamp ring allocation for non-PF VSI types
-Date: Fri, 17 Jul 2026 11:53:32 -0700
-Message-ID: <20260717185340.3595286-11-anthony.l.nguyen@intel.com>
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net 11/13] ice: reject out-of-range ptype in ice_parser_profile_init
+Date: Fri, 17 Jul 2026 11:53:33 -0700
+Message-ID: <20260717185340.3595286-12-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
 References: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
@@ -69,55 +70,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-The pf->txtime_txqs bitmap tracks which Tx queues have ETF (Earliest
-TxTime First) offload enabled. This bitmap is indexed by queue number
-and is set by ice_offload_txtime(), which only operates on PF VSI
-queues.
+set_bit(rslt->ptype, prof->ptypes) operates on a DECLARE_BITMAP of
+ICE_FLOW_PTYPE_MAX (1024) bits. Nothing prevents a malicious VF from
+providing ptype >= 1024 through VIRTCHNL, resulting in a write past
+the end of the bitmap and a kernel page fault.
 
-However, ice_is_txtime_ena() does not check the VSI type before
-consulting the bitmap. When ETF offload is enabled on PF Tx queue 0,
-bit 0 is set in pf->txtime_txqs. During a subsequent PCI reset
-rebuild, the CTRL VSI's Tx queue 0 is reconfigured and
-ice_is_txtime_ena() is called for that ring. Since it only checks
-pf->txtime_txqs by queue index without distinguishing VSI type, it
-finds bit 0 set and returns true, matching the PF VSI's ETF queue,
-not the CTRL VSI's. This causes ice_vsi_cfg_txq() to spuriously
-allocate a tstamp_ring for the CTRL VSI ring.
+Reproduced with a custom kernel module injecting a crafted
+VIRTCHNL_OP_ADD_RSS_CFG on E810-C QSFP (8086:1592),
+FW 4.91 0x800214af 1.3909.0, ICE COMMS DDP 1.3.53.0,
+kernel 7.1.0-rc1.
 
-Since CTRL VSI rings have no associated netdev, ice_clean_tx_ring()
-takes an early return at the !netdev check before reaching
-ice_free_tx_tstamp_ring(), leaking the allocation. Each PCI reset
-leaks one 64-byte tstamp_ring.
+crash_parser: ice_parser_profile_init @ ffffffffc0d61b60
+crash_parser: setting ptype=0xffff (max valid=1023)
+crash_parser: calling ice_parser_profile_init -- expect OOB crash!
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0002 [#1] SMP NOPTI
+CPU: 56 UID: 0 PID: 165011 Comm: insmod Kdump: loaded Tainted: G S U OE 7.1.0-rc1 #1
+Hardware name: Intel Corporation S2600BPB/S2600BPB
+RIP: 0010:ice_parser_profile_init+0x2d/0x1d0 [ice]
+Call Trace:
+ <TASK>
+ ? __pfx_ice_parser_profile_init+0x10/0x10 [ice]
+ crash_init+0x127/0xff0 [crash_parser]
+ do_one_initcall+0x45/0x310
+ do_init_module+0x64/0x270
+ init_module_from_file+0xcc/0xf0
+ idempotent_init_module+0x17b/0x280
+ __x64_sys_finit_module+0x6e/0xe0
 
-Fix this by restricting ice_is_txtime_ena() to return true only for
-PF VSI rings, since txtime_txqs is only meaningful for PF VSI queues.
+Bail out early with -EINVAL when ptype is out of range.
 
-Fixes: ccde82e90946 ("ice: add E830 Earliest TxTime First Offload support")
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Fixes: e312b3a1e209 ("ice: add API for parser profile initialization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice.h | 3 +++
+ drivers/net/ethernet/intel/ice/ice_parser.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index f72bb1aa4067..fc91b6665f90 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -767,6 +767,9 @@ static inline bool ice_is_txtime_ena(const struct ice_tx_ring *ring)
- 	struct ice_vsi *vsi = ring->vsi;
- 	struct ice_pf *pf = vsi->back;
+diff --git a/drivers/net/ethernet/intel/ice/ice_parser.c b/drivers/net/ethernet/intel/ice/ice_parser.c
+index f8e69630fb72..3ede4c1a5a8a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_parser.c
++++ b/drivers/net/ethernet/intel/ice/ice_parser.c
+@@ -2368,6 +2368,9 @@ int ice_parser_profile_init(struct ice_parser_result *rslt,
+ 	u16 proto_off = 0;
+ 	u16 off;
  
-+	if (vsi->type != ICE_VSI_PF)
-+		return false;
++	if (rslt->ptype >= ICE_FLOW_PTYPE_MAX)
++		return -EINVAL;
 +
- 	return test_bit(ring->q_index,  pf->txtime_txqs);
- }
- 
+ 	memset(prof, 0, sizeof(*prof));
+ 	set_bit(rslt->ptype, prof->ptypes);
+ 	if (blk == ICE_BLK_SW) {
 -- 
 2.47.1
 
