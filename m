@@ -1,165 +1,162 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E653429CCA
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 16:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784305795; cv=pass; b=cvRtwWD4XeGBCUCB0NvkX575WS10EZQRconKakKyfw38dqoM5KGOrz8+RdCsu9R0K71rgDQvzAY7pxIgAdcO65QccZUhxxW5A2D/pSYqRJb0U/9FoWoRUOaOZIZas5yJnGk7rmWIoAse0l6d11DXzXqCWfBfAn1ggrPoWVB3lHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784305795; c=relaxed/simple;
-	bh=KEIvrRuiVrT7+dBXuaA0uQ4mV0n5hVwt+9ry5LaCeWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YWhuWdBlss0WAnzugK0fjqQHexTLl1w83CZqi6blD/9CAwHDUpbkqOW5lpVq/Y7J0eUM/RQ3lydMt7R7lr5iIAAh3OGL81fll1u7fbgIOQbQKZAeGfZ6pBLd4/OLfasn9RDG1m7kBBRWk0UPVVV+6wWiTWCRpgx+K3fUsCNLeeE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azzd97Uh; arc=pass smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAEF3FA5FE
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 16:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784305917; cv=none; b=IaK6YsowFK9JO0o2sgvw6rQV2iPjG8wpWFWG5QBvX6cYmassXNuGIecxIFSl47CA49j/3ST7UHiTtaMb7FHEZ8E4vMXJbzcfhs/ntpHcF064rVYvS2ehjNYthOlJqr807OloanUCUVmrnBsnq1n6doDA61Luo0LNEOriKgc5XPc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784305917; c=relaxed/simple;
+	bh=CBfSqK2AvgdhR+Bzp0CO34iyovUNpliOo+OgVtl30zk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=chXlvqpG7IgWioK1A3bvYaLAdUxfdPSgQEABZgbnmCuMtTie5Zs81WjpfqsItbpreDf9kg3ixYVMOXwf6huUXobDOWVQB0nUB7FWwfQ3pozYyZt9xJesmaKnofUru0afcZwSPwTiB+kvxlpx9QfV7UCOm8na+mJHt0Rxp3h70lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bsn0bczL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pmsu/1kO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azzd97Uh"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493be0fbcc5so76115e9.0
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 09:29:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784305793; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YoWmk5F7iv2O7cHwUSDVmT+y5g3cnQQey/FdoA55emAlClYcjZlEWJyaxuAO9GqBQQ
-         y20d+kLQhk1LU6jUHFiVzz6HjmzUbsjNJEPCdEJKMeP3KMyGJ0eLeAZBJA8jLp0XxWTc
-         R8zNgZPeZQaUXCgr930BI3TkmGpJwH3jTP2GczAem5Z4mCvEYUZ7UgXc45z6F/Opsy+F
-         gPIklPZlVvXenCfF0S7QgGyqiX5IttAGcyg7ShcqN9wQ3vrHmP1wqBqm8j1xddHvyAzE
-         bdd0kPnBVxzEofoJM+qoWVYRrtZQtUIQnL5LRmzKVE/hapzl9PZi5G8aA5OUzRf5+KBl
-         jhEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=J1fiEC3LJWgMWiE+exeLjiuwsjKxQMa3Wx9AO5yvpjU=;
-        fh=Jc1f2U+mmTULDgUwN9kastT8sATU9i2EMdtnpcVgz/U=;
-        b=fUtz2AMUB/5tVtSG8Nhbcs6D9z8gOvPiQDBnsFNcCEfRWc2Og+ZB4suIbCHQ85XzZ2
-         NNVWjeWJdVRW5QWOp39TQwjy0i+d0TdMvOJvn0NZQPdXhIV6g7XmwEUV3uJWp6qAiQiP
-         HMWxiKciELJ90yEZfYHmpnS1NiMbJmvwREO6VbvIRJFiO5tmwjFVVSQTLiB7MOrADGNZ
-         fgoZL+ZOfypocBqQMqLfmXmAtenKevLy0I1bNDDupYcZrs3/M4r1uPHvjQ1K5fx3wIpZ
-         Poh+It+8+3SB14Vog+uKrOVibP8sIZih/7nFWdENP5pMBIF3BiiWivrUFF6TQpie69gU
-         k05Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bsn0bczL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pmsu/1kO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784305906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+	b=Bsn0bczLdgO6ODU5YGth9ShbPJ3wdpdgDnC1jBL7O3u0AQtABAu140HnkQkgKOUUBfpdqf
+	EXFDSvXEcYaXi08BbTS9mF3qo6YTRu9CPpnQvin+0HSc8TM0Qw/d9ySobltthCAgrMmqVx
+	aF/Yiec2y5zrkD4bebIk9zTlYL1DP6Y=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-244-IO4jzYOaPSWkLohcblyEIw-1; Fri, 17 Jul 2026 12:31:44 -0400
+X-MC-Unique: IO4jzYOaPSWkLohcblyEIw-1
+X-Mimecast-MFC-AGG-ID: IO4jzYOaPSWkLohcblyEIw_1784305903
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47162f83c75so1059592f8f.1
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 09:31:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784305793; x=1784910593; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1784305903; x=1784910703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=J1fiEC3LJWgMWiE+exeLjiuwsjKxQMa3Wx9AO5yvpjU=;
-        b=azzd97UhRk4GDudHUsml6PbuUSQ/8qXtL/v+QsrQ8C+U+JGlD4zoZZ9/EfcXrgPJ3I
-         Fs/TE80q6YhRcj3REYloQtH/mRXRX1ifItzF2Ge8OwuZyTti4F3CCDYVv92jhXvXrPhd
-         48gLpFL9cxUn5jUtOk+0ocn3a66wjr5R3YcYdMPRaEyzAs2O3Yx5Kx90CuGaH00smq2f
-         FaXDxS85tOUL8WuG3FFGeN3OvOl7g7mcBhzMDPSCMnAaEso9hb7vi/oqxx1GvtANZmJp
-         rdAzN55SUo7rpwLMW1+L94jYxA+FR6URGmEwloPvZlJunWpdo4AMFpy5Omn8dv1CZQYz
-         bZcw==
+        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+        b=pmsu/1kO3IEzA0DlV0HiXQ8K2bWbTiZGG/mO30bjNoIOvT6VJ+3+OJQGrwoECz/TPm
+         R9N/2xlwrePe/ltmpQxigppFTDoz29ArGPTWKusY0ZElIpv2A7toofijes4u9FnTGlit
+         kBNzgIcZdKJGFEbmRpelZVvrO0RVSewn+J8g4riTCBeWi3jA4KoMPPVBXElTrzZK2ft8
+         eIg3VkFV79CWYc4X6SjQV0CRtFWpTjvCV7JhS05AsopW0CU2ylr6+nNFcEH8XTtkCPSJ
+         JllRyuQcKxgfrmcDZnzLQSGH/RppFgitwC5jcIEgtlfGa2idBu7yg146zmyeydSsCUtp
+         qDqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784305793; x=1784910593;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784305903; x=1784910703;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=J1fiEC3LJWgMWiE+exeLjiuwsjKxQMa3Wx9AO5yvpjU=;
-        b=ijGhd2VY4IeNpG6FR6y22tu22dMJN7JX/PJwOMEXwWVveQWL6rJzS/lRJRD3MGwjew
-         eYBetY6ViLSSEWffB2UAKRdAxI9lbWZR0iFiSM+3q8tQ2UYol9P8AA/C3sqe2InTgiSk
-         FLGXnKnw/Pi1GoXuAaYNiRFCQj8Bl9e5q1FD3g45ZYV3w9lqKXPht7h2RMwTA7mh8t5v
-         Gr3qJverfZfZw7oQCDXIodOHQLYNxbh1KO0bhjopTTADooY209/WtJdlzkRtgqUEWVrj
-         AyyOWzNaYg5ne5Cgzvn4KDQIEiw4RmtTa13tO9KbiXB10OYLUR6B4qZcluuxW1hAP5KK
-         fYtQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoFR/d6Jo/bXpWHpFbZcHIuGlYSRrB49edjD4/ixRmZ3cZD4uCc5nctFTu6DiYyreSxGnuOgkE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvjT2sj2k6dDAk5akqLJkEMDtCmKClfWHi6tEJYYg7S0wKRJJs
-	DncwSgHy0yxaTBZjJyOIpDr/K634v6Kn3C+VTTCM3so+k+mcztLHzCleTgLoy4+yWDCSvhI8q1U
-	hSKD6EwHNW/RROUR6lr+CY7iwMT6QJ04Bok5uKgs4K1YkhKcdZuTI1PFg
-X-Gm-Gg: AfdE7cknDnhCo/x+9BbuBc/GSfrM7uWfZ1X8V+8+GB9OnDFIInVnHHuqDerjEfGBXsM
-	DWzA4HcHp5JsChg2rIeBugbDWMYI3jKZI/IA34lK7jTgPqNgIcvkwOvmEVM/kCI1bansV/Fj017
-	FE+ND6QumAfnZvE7BcR1nBnvywV/I1FZI+1UOG8/W5GqO5LF7Fo+dq1T6SOJ9qKClmrHMKvq+ta
-	qusIHx5gDSstrnTBQH+T2rtBUA9xPDd9s5lt8Sc7CNu7j1F6RO5+8cnsMjLlFvPswQihLF9unCk
-	sKpOxZyEcDfHBTbAY6SC9L6rauc=
-X-Received: by 2002:a05:600c:41c5:b0:493:aed4:8d03 with SMTP id
- 5b1f17b1804b1-4954f623a21mr164335e9.9.1784305792127; Fri, 17 Jul 2026
- 09:29:52 -0700 (PDT)
+        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+        b=EcymgBMfsKy2Tbx0Pqrw0XQfREaOGk+IBjGBfiDaCI2coM2xTiCexitvd51x/5t3hQ
+         C6f13G6YwgiEMcRjlKN0Y2puF2fKTvtq900wJKDmQPGomqFaSOc/theeNeSaPXZqVXeE
+         OOgXmu65FAowrQ6ikOF6pnt5pPP8SVuY7gxS6TG0OPmW1lTsycaJyRqbyoPn4rD3yEFx
+         JRiswza0wSjgsFKUV9Y6vdooVmPGLRfaWHFkgn7AkyBuOeS240IGWkZsdWTYY+6vDudA
+         1h4niwBHTAExJnmbHc4RDFqUTHoPTNnA5nWjaY2vdDwJKlHy1hFFXCBkeRmk+ske0UBz
+         Q3PA==
+X-Forwarded-Encrypted: i=1; AHgh+RratEgiOdWW4HUQJpgxQrZhjRQ/Pdw8MhRpGGr5Fd8hiq2T4gqmqtygRjv9wdy6d1FZXXjVDX8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHFk89D7uZfdk+yPTRjTdmn75rVNUIbiLMOjhOVtu+mXiEU1dW
+	qru3tgOgKeBXjfV1eNdKxqhV93q7X7kxPHsnJtXvByWQSqHJ14x3NOVBsWMp3iRLegpO0iQQ1ba
+	/uUiNJfmkaKXSf4IGmNiH5l/+kXjvabXA0EN51+mzyR5YXHt1Niegz8O9nw==
+X-Gm-Gg: AfdE7cl8iy1+H1tWnD3N/xAuFAtJq/uc0cXVmA880JS0iEDyjbcvu2ecB7GfHjZjq+p
+	ODUQUXf3GsTaW92Mv7LNftKM2guFgLs5Ih/jNQgG3xhDbA7yTkKizq1n++Y8IoZHMWWokhjEjrv
+	1AlCB1nORU/FXHldKBWkecbwcUMjEm7j5cAJrs5zywsxFk1nNQHT8u6/XEo9Fj+/teAGsLynrX/
+	udOMBUfAUPW6VBpPBuhEvCDvlBP0W2aUAis8OvZdsKGI71ulrcaKq24tgV5LlszAer7dz0b93Se
+	j73aSY4jmUWt+OF6PbpV0ZmGQZP8j1Jv4/egSvpMJjck/+fEp8uoNbk0StzuUYcCraq7tuicCaO
+	wkkWL118Ct1VVeEYA25mbzMJI
+X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407834f8f.22.1784305903407;
+        Fri, 17 Jul 2026 09:31:43 -0700 (PDT)
+X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407792f8f.22.1784305902878;
+        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-24-117.inter.net.il. [80.230.24.117])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63eeece9sm5310864f8f.37.2026.07.17.09.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
+Date: Fri, 17 Jul 2026 12:31:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: Jia Jia <physicalmtea@gmail.com>, jasowang@redhat.com,
+	Linfeng Sun <slf@hdu.edu.cn>, pbonzini@redhat.com,
+	stefanha@redhat.com, eperezma@redhat.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL count
+Message-ID: <20260717123129-mutt-send-email-mst@kernel.org>
+References: <20260717142205.103515-1-physicalmtea@gmail.com>
+ <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260701192210.2997769-1-tjmercier@google.com> <akbPrI67h5btdI44@devvm29614.prn0.facebook.com>
-In-Reply-To: <akbPrI67h5btdI44@devvm29614.prn0.facebook.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Fri, 17 Jul 2026 09:29:40 -0700
-X-Gm-Features: AUfX_mwkE9srLqf9jV3ClopD-np-tcerODpRpCcyM1eqJKlhjubKKS2HeTkHP3I
-Message-ID: <CABdmKX0-tubji_pBiaZbePrxVLA9qkw5ez61wyzjDz8-pko9SQ@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests: Open /dev/udmabuf O_RDONLY
-To: Shuah Khan <shuah@kernel.org>
-Cc: kraxel@redhat.com, vivek.kasireddy@intel.com, kuba@kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	Bobby Eshleman <bobbyeshleman@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
 
-On Thu, Jul 2, 2026 at 1:53=E2=80=AFPM Bobby Eshleman <bobbyeshleman@gmail.=
-com> wrote:
->
-> On Wed, Jul 01, 2026 at 12:22:08PM -0700, T.J. Mercier wrote:
-> > Write permissions on the /dev/udmabuf device file are not required to
-> > issue ioctls and allocate udmabufs. Applications should be opening this
-> > file as O_RDONLY. The BPF dmabuf_iter selftest already does this. [1]
-> >
-> > Users are pointing to these selftests as examples of how use udmabuf,
-> > and encountering permission errors on systems where write permissions
-> > are not available on /dev/udmabuf. Apply the principle of least
-> > privilege to selftests which use udmabuf by removing the write access
-> > mode from drivers/dma-buf/udmabuf.c and drivers/net/hw/ncdevmem.c.
-> >
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/tools/testing/selftests/bpf/prog_tests/dmabuf_iter.c?h=3Dv7.1#n49
-> >
-> > Signed-off-by: T.J. Mercier <tjmercier@google.com>
+On Fri, Jul 17, 2026 at 10:13:36AM -0500, Mike Christie wrote:
+> cc'ing Linfeng.
+> 
+> Linfeng also reported this bug and provided a patch that has your check and
+> an extra check to avoid calling into the function in the first place. It's
+> been stuck in some other list.
+> 
+> I think it might be best for Linfeng to re-submit their patch now so it can
+> get merged. For that patch, I think there was one outstanding question left
+> where Michael had asked if the issue was found with AI so the proper tag
+> could be added. I don't think that question was responded to.
+
+Right, was waiting for that.
+
+> 
+> On 7/17/26 9:22 AM, Jia Jia wrote:
+> > The protection SGL path passes the result of vhost_scsi_calc_sgls()
+> > directly to sg_alloc_table_chained(). The helper returns a negative
+> > errno when the iterator is invalid or the request exceeds the segment
+> > limit. The negative errno is then treated as a very large unsigned count
+> > and sends the request into the SGL allocation path with an invalid size.
+> > 
+> > Repeated malformed T10-PI submissions from a host-side application caused
+> > memory usage to rise sharply. MemAvailable fell to about 200 MB, and PSI
+> > full avg10 reached about 1.46. The OOM killer terminated several userspace
+> > processes before the endpoint cleanup completed. The kernel log included:
+> > 
+> >      [17036.451028] Out of memory: Killed process 2345 (systemd)
+> >      [17036.493325] Out of memory: Killed process 2349 (sd-pam)
+> >      [17078.265127] Out of memory: Killed process 1793 (networkd-dispat)
+> > 
+> > Return the calculation error before setting up the protection SGL. This
+> > keeps the protection path consistent with the data SGL path and prevents
+> > the invalid count from entering the allocation path.
+> > 
+> > Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 > > ---
-> >  tools/testing/selftests/drivers/dma-buf/udmabuf.c | 2 +-
-> >  tools/testing/selftests/drivers/net/hw/ncdevmem.c | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/drivers/dma-buf/udmabuf.c b/tools/=
-testing/selftests/drivers/dma-buf/udmabuf.c
-> > index d78aec662586..ced0b95c876c 100644
-> > --- a/tools/testing/selftests/drivers/dma-buf/udmabuf.c
-> > +++ b/tools/testing/selftests/drivers/dma-buf/udmabuf.c
-> > @@ -140,7 +140,7 @@ int main(int argc, char *argv[])
-> >       ksft_print_header();
-> >       ksft_set_plan(7);
-> >
-> > -     devfd =3D open("/dev/udmabuf", O_RDWR);
-> > +     devfd =3D open("/dev/udmabuf", O_RDONLY);
-> >       if (devfd < 0) {
-> >               ksft_print_msg(
-> >                       "%s: [skip,no-udmabuf: Unable to access DMA buffe=
-r device file]\n",
-> > diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/=
-testing/selftests/drivers/net/hw/ncdevmem.c
-> > index e098d6534c3c..8114a29692fd 100644
-> > --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> > +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> > @@ -149,7 +149,7 @@ static struct memory_buffer *udmabuf_alloc(size_t s=
-ize)
-> >
-> >       ctx->size =3D size;
-> >
-> > -     ctx->devfd =3D open("/dev/udmabuf", O_RDWR);
-> > +     ctx->devfd =3D open("/dev/udmabuf", O_RDONLY);
-> >       if (ctx->devfd < 0) {
-> >               pr_err("[skip,no-udmabuf: Unable to access DMA buffer dev=
-ice file]");
-> >               goto err_free_ctx;
-> >
-> > base-commit: fbb7ad31ab376c5101b2ac7205fad0344fd2de60
-> > --
-> > 2.55.0.rc0.799.gd6f94ed593-goog
-> >
->
-> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> >   drivers/vhost/scsi.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> > index 9a1253b9d..8486652fd 100644
+> > --- a/drivers/vhost/scsi.c
+> > +++ b/drivers/vhost/scsi.c
+> > @@ -972,6 +972,9 @@ vhost_scsi_mapal(struct vhost_scsi *vs, struct vhost_scsi_cmd *cmd,
+> >   	if (prot_bytes) {
+> >   		sgl_count = vhost_scsi_calc_sgls(prot_iter, prot_bytes,
+> >   						 VHOST_SCSI_PREALLOC_PROT_SGLS);
+> > +		if (sgl_count < 0)
+> > +			return sgl_count;
+> > +
+> >   		cmd->prot_table.sgl = cmd->prot_sgl;
+> >   		ret = sg_alloc_table_chained(&cmd->prot_table, sgl_count,
+> >   					     cmd->prot_table.sgl,
+> > -- 
+> > 2.43.0
+> > 
 
-Thanks Bobby.
-
-Shuah, would you mind picking this up?
