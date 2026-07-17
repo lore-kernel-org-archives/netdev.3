@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC4C390C9A
-	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 18:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A794E3A6B66;
+	Fri, 17 Jul 2026 18:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784314435; cv=none; b=JfKHgAxoIMvq7Sa2axlwIxUMzNl/wzBLJnL3qXkcvLBn9zwot2//EgmfAnoiq8yKuky/E3T/ewT+GGMExqr2H5XdOPKXcNhkbqOpw4+Kp0zMvOH72nTSfPO/Izjm+B7kUVDq76H1q8k1cP5GtbMHMYBGLkvVPMpli3SIBOQuymw=
+	t=1784314435; cv=none; b=lsMdlPClvCqiz3WWgiTZ+EcZSWRy9eI/GIGgfaimZcoKHtswFbgg+AM3soHbKgJwsfCt6zhyGfu1Xd1sg7VJPDT1+xi0p2t3ikBs3H7PBxu1PNQiMHwP3iqjCwGYjeHmuosLVsdz4PQKnUBngbLJWEYCg5ZaYzAvzE12Zfti4MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784314435; c=relaxed/simple;
-	bh=DmNH0RNZQVGoqO1TYtQNEdlqxMRLhvhILwcKh/VKmRU=;
+	bh=xufC4EUuCf6ntUipqbGc/fRxVwUBmlWsbU+G6Pk4cfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G26Pe1PUjWewFeZTsn1wJDvUua2KY7B6xRCOyaW52nkSyhMDu6M+S+RZhSqOnsdwzVneoKyrz/j9FpETAbTh2V5fJtFB1B8XrJw1Qb03rD2O/o9CDBYD3sWuV8qKTTYqzWhN7Viu0M+7Swj6cAhIBURLccB3bPUsNh23Vhl/wkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FONirCaD; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=Pb2SEiM6J5bRJuYaaRdR8A/fOew6zE0yFWZ7XFBMZc+ZISW+A9JCHO5EoHpjXFCaVHA1B2e/7yLwvGAX8ayOig9SVYWhLydy8lcltodwi3WRZ+d1H5QWiln9JBrGF9UJDdAReHVUvALeQyxKMVdO5y9xzvlDpaaNahfxSheZxN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CnyF3u/G; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FONirCaD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CnyF3u/G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1784314434; x=1815850434;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DmNH0RNZQVGoqO1TYtQNEdlqxMRLhvhILwcKh/VKmRU=;
-  b=FONirCaDjITtGq/nEPqCI0YhRIBOFI3Ye+SoJNkq1Yc5v2PCQubF5ZHi
-   vnrA3VtY1srKxMUt7okW/adCf5b+ARs5hrxQl65rORRCE1qNJKJ5zMwXr
-   4W56Q3d3VaAyOjg3nFykyVI4q24D1fxRY0E8URNkRUNlSRRUuJb66leTa
-   gWnYrEch+qi1MP9gdMfqi7kEPCTuOp3foABAc6z38l1tJEcelvU1Enjjt
-   b2OWezXzcQ1qTU1mGBRRvbVTcwu6LICWCmxuq4jwjSkQ9wi768J6W0nuF
-   2WClCZ70bYdbCl0oMGjKgRNCdr/EQpw+boAm+/8OI6W3objtw1+Rv0H0g
-   Q==;
-X-CSE-ConnectionGUID: LOIgEd9KQTqnVsj9PwM7DQ==
-X-CSE-MsgGUID: uVJ2EFr2SHeooqbGw4SegQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347659"
+  bh=xufC4EUuCf6ntUipqbGc/fRxVwUBmlWsbU+G6Pk4cfg=;
+  b=CnyF3u/GlOQkOE9vFx6bAlgpUyHHn3xU0q96T4aixl6FOlvdKE8IOjw3
+   /XY5slAbao5m01WU9JZjiE7nEFRweD0NQ3neHeQrO8niF5rapNjr/yGzR
+   8635cQInhjetlqHMSi87nuy8UVKjs61meNWzOVUO4ZlzHu+3X7Kv4ciHx
+   UJ8UnQscmrdqcSGeaJcDIDJWB9yCBFbswWVF87Zsc+deS3N2Z7HDBTHb5
+   yytl44e0vnncqle9yUe88+YDj66K9yX7A24cMcWnUqDXXKlpMhgD+Uy9k
+   kKQnhuJT3RmXQ3DkKSxuQfewTlZ+xn6YUlR7otBGyWnqwYeSciIAgLggP
+   A==;
+X-CSE-ConnectionGUID: 4UyWYPdxRb6eFDFyBNTU5w==
+X-CSE-MsgGUID: kli9eFJYTRmp4eE5Ch5ZGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="95347665"
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="95347659"
+   d="scan'208";a="95347665"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:50 -0700
-X-CSE-ConnectionGUID: gwSXJwIPTVmzSXBRjbSARw==
-X-CSE-MsgGUID: N0FB3pFDQQunLMsbrTvmQw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 11:53:51 -0700
+X-CSE-ConnectionGUID: iVLn9aWFT3adE2wagS/mwQ==
+X-CSE-MsgGUID: ostKvh4aS0aUELl57aRqXw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
-   d="scan'208";a="261827263"
+   d="scan'208";a="261827269"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2026 11:53:49 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,16 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Emil Tantilov <emil.s.tantilov@intel.com>,
+Cc: Junrui Luo <moonafterrain@outlook.com>,
 	anthony.l.nguyen@intel.com,
-	willemb@google.com,
-	Madhu Chittim <madhu.chittim@intel.com>,
+	przemyslaw.kitszel@intel.com,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net 12/13] idpf: fix max_vport related crash on allocation error during init
-Date: Fri, 17 Jul 2026 11:53:34 -0700
-Message-ID: <20260717185340.3595286-13-anthony.l.nguyen@intel.com>
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net 13/13] iavf: validate num_vsis in VIRTCHNL_OP_GET_VF_RESOURCES response
+Date: Fri, 17 Jul 2026 11:53:35 -0700
+Message-ID: <20260717185340.3595286-14-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
 References: <20260717185340.3595286-1-anthony.l.nguyen@intel.com>
@@ -71,84 +72,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-Set adapter->max_vports only after successful allocation of vports, netdevs
-and  vport_config buffers. This fixes possible crashes on reset or rmmod,
-following failed allocation on init
+The VF allocates a fixed-size buffer for IAVF_MAX_VF_VSI (3) VSI
+entries when processing a VIRTCHNL_OP_GET_VF_RESOURCES response from
+the PF. However, num_vsis from the PF response is used unchecked as
+the loop bound when iterating over vsi_res[] in multiple functions.
 
-[  305.981402] idpf 0000:83:00.0: enabling device (0100 -> 0102)
-[  305.994464] idpf 0000:83:00.0: Device HW Reset initiated
-[  320.416872] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  320.416918] #PF: supervisor read access in kernel mode
-[  320.416942] #PF: error_code(0x0000) - not-present page
-[  320.416963] PGD 2099657067 P4D 0
-[  320.416983] Oops: Oops: 0000 [#1] SMP NOPTI
-...
-[  320.417093] RIP: 0010:idpf_remove+0x118/0x200 [idpf]
-[  320.417130] Code: 8b bb 98 09 00 00 e8 17 0f 5b e5 48 8b bb e8 08 00 00 e8 0b 0f 5b e5 66 83 bb 28 06 00 00 00 48 8b bb 20 06 00 00 74 49 31 ed <48> 8b 04 ef 48 85 c0 74 2f 48 8b 78 20 e8 66 58 91 e5 48 8b 83 20
-[  320.417183] RSP: 0018:ff7322212903fdb8 EFLAGS: 00010246
-[  320.417205] RAX: 0000000000000000 RBX: ff4463de40300000 RCX: ff7322212903fd4c
-[  320.417228] RDX: 0000000000000001 RSI: ffffffffa7f7d100 RDI: 0000000000000000
-[  320.417250] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-[  320.417272] R10: 0000000000000001 R11: ff4463de3a638f58 R12: ff4463be89ac7000
-[  320.417294] R13: ff4463be89ac7198 R14: ff4463be94fc7198 R15: ffffffffc0f10f20
-[  320.417317] FS:  00007f963c0e6740(0000) GS:ff4463fdd65d8000(0000) knlGS:0000000000000000
-[  320.417342] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  320.417362] CR2: 0000000000000000 CR3: 00000020ba674002 CR4: 0000000000773ef0
-[  320.417385] PKRU: 55555554
-[  320.417398] Call Trace:
-[  320.417412]  <TASK>
-[  320.417429]  pci_device_remove+0x42/0xb0
-[  320.417459]  device_release_driver_internal+0x1a9/0x210
-[  320.417492]  driver_detach+0x4b/0x90
-[  320.417516]  bus_remove_driver+0x70/0x100
-[  320.417539]  pci_unregister_driver+0x2e/0xb0
-[  320.417564]  __do_sys_delete_module.constprop.0+0x190/0x2f0
-[  320.417592]  ? kmem_cache_free+0x31e/0x550
-[  320.417619]  ? lockdep_hardirqs_on_prepare+0xde/0x190
-[  320.417644]  ? do_syscall_64+0x38/0x6b0
-[  320.417665]  do_syscall_64+0xc8/0x6b0
-[  320.417683]  ? clear_bhb_loop+0x30/0x80
-[  320.417706]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  320.417727] RIP: 0033:0x7f963bb30beb
+A PF sending num_vsis greater than IAVF_MAX_VF_VSI, or the received
+message is shorter than num_vsis claims leads to out-of-bounds accesses
+on the vsi_res[] array.
 
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Clamp num_vsis based on the actual bytes copied from the PF response.
+
+Fixes: 5eae00c57f5e ("i40evf: main driver core")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 26 +++++++++++++++----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index be66f9b2e101..dc5ad784f456 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3555,7 +3555,6 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
- 
- 	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
- 	num_max_vports = idpf_get_max_vports(adapter);
--	adapter->max_vports = num_max_vports;
- 	adapter->vports = kzalloc_objs(*adapter->vports, num_max_vports);
- 	if (!adapter->vports)
- 		return -ENOMEM;
-@@ -3576,6 +3575,12 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
- 		goto err_netdev_alloc;
- 	}
- 
-+	/* Set max_vports only after vports, netdevs and vport_config buffers
-+	 * are allocated to make sure max_vport bound loops don't end up
-+	 * crashing, following allocation errors on init.
-+	 */
-+	adapter->max_vports = num_max_vports;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index ec234cc8bd9d..c4039d2b24a4 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -248,12 +248,28 @@ int iavf_send_vf_ptp_caps_msg(struct iavf_adapter *adapter)
+ /**
+  * iavf_validate_num_queues
+  * @adapter: adapter structure
++ * @msglen: length of the received VF resource message
+  *
+- * Validate that the number of queues the PF has sent in
+- * VIRTCHNL_OP_GET_VF_RESOURCES is not larger than the VF can handle.
++ * Validate the VIRTCHNL_OP_GET_VF_RESOURCES response from the PF. Ensure
++ * num_vsis does not exceed what the message length can cover, and cap
++ * num_queue_pairs to the VF maximum.
+  **/
+-static void iavf_validate_num_queues(struct iavf_adapter *adapter)
++static void iavf_validate_num_queues(struct iavf_adapter *adapter, u16 msglen)
+ {
++	u16 max_vsis;
 +
- 	/* Start the mailbox task before requesting vectors. This will ensure
- 	 * vector information response from mailbox is handled
++	if (msglen < sizeof(struct virtchnl_vf_resource))
++		max_vsis = 0;
++	else
++		max_vsis = (msglen - sizeof(struct virtchnl_vf_resource)) /
++			   sizeof(struct virtchnl_vsi_resource);
++
++	if (adapter->vf_res->num_vsis > max_vsis) {
++		dev_info(&adapter->pdev->dev, "Received %d VSIs, but message can only cover %d\n",
++			 adapter->vf_res->num_vsis, max_vsis);
++		adapter->vf_res->num_vsis = max_vsis;
++	}
++
+ 	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES) {
+ 		struct virtchnl_vsi_resource *vsi_res;
+ 		int i;
+@@ -300,7 +316,7 @@ int iavf_get_vf_config(struct iavf_adapter *adapter)
+ 	 * we aren't getting too many queues
  	 */
+ 	if (!err)
+-		iavf_validate_num_queues(adapter);
++		iavf_validate_num_queues(adapter, min(event.msg_len, len));
+ 	iavf_vf_parse_hw_config(hw, adapter->vf_res);
+ 
+ 	kfree(event.msg_buf);
+@@ -2578,7 +2594,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		u16 len = IAVF_VIRTCHNL_VF_RESOURCE_SIZE;
+ 
+ 		memcpy(adapter->vf_res, msg, min(msglen, len));
+-		iavf_validate_num_queues(adapter);
++		iavf_validate_num_queues(adapter, min(msglen, len));
+ 		iavf_vf_parse_hw_config(&adapter->hw, adapter->vf_res);
+ 		if (is_zero_ether_addr(adapter->hw.mac.addr)) {
+ 			/* restore current mac address */
 -- 
 2.47.1
 
