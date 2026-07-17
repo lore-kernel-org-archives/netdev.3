@@ -1,74 +1,70 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC8043F097
-	for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 23:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280E7288B1
+	for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 00:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784244435; cv=none; b=cFe9ShkmTiGGGMM7M2PlaG3ZJhsYMf9j0Sxk/KHYppbeJ0ZxOvx9du4gHUATY2V1IV6xFdWRXuY5yzbEUD3du0xvne608eH66eVyhi45roPNVkicdhvJPXC4YSDCDot+SM2xxgswTnjbwo8BJG9jOcx9h+BNWgbFL3wqxam8Gj8=
+	t=1784246422; cv=none; b=qtvZEwlabcnKbBSAH5F+cnm2qMlE049SwGIPPAqd2+uMELC1eiFQDG/w/PN/KL81muBtdEb3pCArrEH87Mczf7n9Q0B150Bk8re3qJb9RRzRb0mm0hlExYzUMT8B7S0LYXDfBtoYWvmiuC52JMOiLav2JSC4Qt1+IkCrMtBOZl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784244435; c=relaxed/simple;
-	bh=lu7YV5CCiyyOEgBNVeSsxlZkRV4pW1Z5+pf0FhhYiGM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AJ2Cdacm8DsqJdl4nezkvuNnNQIRsBt03SRVxiLCbhGHh6gl08V0O38TQ7hyAbhXyBTpn5HXwgf4gmJY+rEhLiur2HQrKoivk2uRIXmOrZrtbjwTFJ+0uvxk+TxWWpjhmmtQ2deItoF/kxDhvxIVl6zEoSHInsDjFpwQrTpY7nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VmB6vs5j; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784246422; c=relaxed/simple;
+	bh=AfYPfJwF5BfWs/weAYfrLTws9xqmxHiZcm9loGO9wNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SlS6vutgKFSXLso0Fo358OJD9W0cQeya80tXyYAyCyqlI8qk8K0dAGizWmTcwn1rel27pUkwnuoNfjQIi+vI16HvTZwHrZz/Cu+pHigfHF4Oa8grGT8+WOmIWUJYXOEkzKoGbtw72z2R/e/9S0KbxBdZ7JNnYpc3nm5bpHesnYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kleiner.pro; spf=pass smtp.mailfrom=gracedigital.studio; dkim=pass (2048-bit key) header.d=kleiner.pro header.i=@kleiner.pro header.b=HJgtsiNk; arc=none smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kleiner.pro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gracedigital.studio
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VmB6vs5j"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15b509c323so946657066b.0
-        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 16:27:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kleiner.pro header.i=@kleiner.pro header.b="HJgtsiNk"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-664a5193741so901355d50.1
+        for <netdev@vger.kernel.org>; Thu, 16 Jul 2026 17:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784244432; x=1784849232; darn=vger.kernel.org;
+        d=kleiner.pro; s=google; t=1784246420; x=1784851220; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WXuUFnyylEezjX3V9l0E0T/Ofv34IDOK/Bhil0kWQpA=;
-        b=VmB6vs5jM57ysQUsDiFFcPQI9s+ZbXzQN20hqomrughJ9Ud8GlyZ0OGVuqD9qELtW3
-         Ps/2iCkmHjNp/R8Hy5HopqnyleavOJNUpUZzgVAVVBf52aGim6LSd3mwDTVuyPXf2Enr
-         A/bosGHRd9cvYXh2r875s6LVhmXP8qbw9hf8i1jUMTYjDeA8yf8XtUHzBaQVcGUhar7/
-         OVztUjQsV5sSrNS0jSFcp4DOaeGHNA5OaKeRqpD6fkjUq8+zxjCfDhD/CFvckDRPyEfo
-         4iRD5ewtJuXD2sMMYPHSdxFy4Um5b7/P/xZlb+uCeYcfig5LhvaeP5r1KaqAmxGrtlPW
-         f9aQ==
+        bh=KiAW/qIk5S89JuA1sLMk0vSqm7rhb7f9JlzmZCBVEVs=;
+        b=HJgtsiNkhrZFGC3EiiCiJW7pEBDlufyZEZ10F1lr9Qfmgl3bDCJKQsxhKW5j1pneV1
+         pG2B2YXelp2FF3zcwDy21Vs3lA0pvJ2FZHwIvk2ccCUZkL1W0L4tVcM32JyTywBG91iM
+         NsDmIdb1/xkhM7VKeoBB1C9Vf2I7p4fuDjvzFQCqTosxSg6L8HmSHCRuWExT6/dLpPhZ
+         hvWJqeKLB2lR6fwWIZbdAHXc/04eXS3XxbNUSFk37pPvAZvI1euiQ9q59EZwdOSt9mP0
+         4864eHq0y8yHmJT5iISw4Dp9vnGb0/HGIfwl7bY+qGRbk1qBtYz0RbceVncaDdoYTmk5
+         73aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784244432; x=1784849232;
+        d=1e100.net; s=20251104; t=1784246420; x=1784851220;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WXuUFnyylEezjX3V9l0E0T/Ofv34IDOK/Bhil0kWQpA=;
-        b=RiP99r+AwaYtNzf/zlKYHePap84/xqIg+X6xq9yGoOqeEtF+h4xaSfE53Goeo3jBnT
-         JIjo9QSwmtLpNbbdfpKTug09EQSMMNaDtVL4WQsIwlx37H0tPGavM4kRa82UPBXG8M3p
-         2NoQ7h2gup+Tz3cbemnw9PXBs58wzj+AliceoQNnQShz2CNPrxyNZ761mHm6SiioHP8W
-         CQnli/k2ijMJscMK/YFcaxhzsvHoPy28HIl3/hDRBfZ/SN7kVJVyJVuxRMBL7J8BNT7+
-         BoCQmuDoJxNAYHS5q1ObSuCuSJua64zVBiYcojM/yxKjQLLt2miwU6U/6ow3xZuIft8G
-         /Ltw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+WX+Xanrw3Fkjs4ZwttE4oMo3cFs5vhhGq0dFnHYZpdnkVBxmr9HMoKfmYx74WYvz9UrurSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCp8ljFMbDia5TYaaMWrnHenmUXbc7z3Upa5FAS+HWI0ZJG+ML
-	O4MPqpUw/8Hv0sPtoCZ+vUv4Ng4l+GNGQwNI1Mjeq96jPzgl9Ztde/bD
-X-Gm-Gg: AfdE7cl58g9XDOtjjK5I2Nfo7lLmGJnpJW5PUuHeywDmmhZhPheGK+wtRqRaaHIuvWv
-	oy2ZNgQuILp29W0xoW+SC/68D6k4IWmYKNHQBmQtgHrlwt4tJpelXbIiLo7Ir+mZ0/BVc3YPFy8
-	98mMZMVl2wFQ692zNc+FSZw6eMd7V8j9bryONA9DFlk7QHadyOCJWTdImofGHexybbAxW4FfBdc
-	8B0gl57iD/f2xzNeRYHUoz265ycYYyVTyWusFYmHHQKngkoMRqKblPGMt6b9yjxCdBx0lr8MQTJ
-	XNBdeSyIj5zk5Sop1oDztvSGiBj4NkJ1TVoxm3vX5YdRADlzr9cGEDHCHSHnz0Bj3f/H9AIXQPR
-	RI9kjUaQGHr5vZKqnMn2meIphM2DPVPE3OtfGzOxnpiy6rxmgIjpEuhNrDzPA1i3EBFTFvQ==
-X-Received: by 2002:a17:907:6094:b0:c12:a16f:6864 with SMTP id a640c23a62f3a-c16b476b7b3mr599666b.48.1784244431513;
-        Thu, 16 Jul 2026 16:27:11 -0700 (PDT)
-Received: from beelink.. ([164.5.253.70])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c168744966asm295102766b.50.2026.07.16.16.27.06
+        bh=KiAW/qIk5S89JuA1sLMk0vSqm7rhb7f9JlzmZCBVEVs=;
+        b=WqslZ1RJokIGtc9RdCKK9TnzGZoSByWwwElwUSGFTN6UFjDbRmhyKTnnbQ0cKsFl9a
+         qZwhWPwC1W8LtN+oGV8Qgn/TWuDvT2/Dor2OxJgtnNIoD5mVVboiJBgk2z2GcP7Cg148
+         ZGqIINcq5h6eoTmhkMC3swdwLeNQgiL825ri4OZjkz6Rgy4w/SWCdUSFzIcol5RYl3FC
+         hF2LorJbtDoOjrudqKu+lXpDTIgMG5zsfeA0JD7yB7qujhDURV7PePcvL2RHDgHiAmST
+         eXzKA8nxp0/ohPbvwsDZsxr0zYhtsjwYsvDLrMZI+23HqdHQb+EW9Cu1xy0PYFfLcG55
+         LUfA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7ChGHawEnaTrQ4xKp8Liow1uF/gOU2i2AqKiCarV7OCxIm+zoflCm7sBBPjdgXAdo8flOY68=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFfdtElgisaNC7Gw++84/AvRwMXdW+1qANKJWHhT6HrDPWt+g2
+	lPnJ64ioE7DUUu/jLku4JnnlRb2KKzHhpY+pHLh7YSF5rojhtGaGcrwV+KZXKF91jxv1
+X-Gm-Gg: AfdE7cnJNnX3zWwZFpnj2TnudfvO9NWnws/mLdwoQdnjZq49ei9sfd+4cLdWc5raHv5
+	E6qVwCfoQc9hOXXPso+iSiIMDCdPmDvim7aGP7la+Zl9PIbbGri72Tuz1Z1VxN3uupUwEhJrgWC
+	xiv0Q+wiPTbqkYhCRCrs9kI55nI/3ZPcE24ArLb/V+fS7EMVo5PXa7vYSBdtCLIh1M9oWifaG30
+	8OW0o3nv7cQ+RbcbGIN+KX5pO6pRmwC68mmkLmqFbwuTo9ffIWMaPoZ2K0TV0YSueuJr6c4gB6E
+	3hVYOK+CNgjSx1wXg+xdUWifnky6hMz2TYMgc4KaEJLS4xKRiAkqwssVoAQyfwp2S6pmsFgzCFL
+	/nKmFjBAlhgROZ1TurzaacwfzVpqtxBy08Tp1r9Qyc/65fs8j0JYuSPcb9Eq976OAL3wcrIAara
+	Trt0W+wJcjGbfLHA==
+X-Received: by 2002:a05:690c:15:b0:81e:ba71:2be2 with SMTP id 00721157ae682-81eba712fbamr98332757b3.5.1784246419658;
+        Thu, 16 Jul 2026 17:00:19 -0700 (PDT)
+Received: from localhost.localdomain ([217.180.197.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6bf653desm210134837b3.17.2026.07.16.17.00.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 16:27:10 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: David Heidelberg <david@ixit.cz>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
+        Thu, 16 Jul 2026 17:00:18 -0700 (PDT)
+From: Christopher Kleiner <chris@kleiner.pro>
+To: briannorris@chromium.org,
+	linux-wireless@vger.kernel.org
+Cc: francesco@dolcini.it,
 	netdev@vger.kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Subject: [PATCH net] nfc: llcp: Fix list corruption / refcount desync in nfc_llcp_recv_dm()
-Date: Thu, 16 Jul 2026 20:26:57 -0300
-Message-ID: <20260716232657.203145-1-qwe.aldo@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: mwifiex: validate HT/VHT element length before storing beacon IE pointers
+Date: Thu, 16 Jul 2026 20:00:17 -0400
+Message-ID: <20260717000017.61415-1-chris@kleiner.pro>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,102 +74,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nfc_llcp_recv_dm() handles DM(NOBOUND)/DM(REJ) for a socket that is still
-linked on local->connecting_sockets: it looks the socket up with
-nfc_llcp_connecting_sock_get(), sets sk->sk_state = LLCP_CLOSED and
-returns, without taking the socket lock and without unlinking the socket
-from the connecting_sockets list.
+mwifiex_update_bss_desc_with_ie() stores raw pointers into the beacon
+buffer for the HT Capability, HT Operation, VHT Capability and VHT
+Operation elements without checking that the element is long enough to
+hold the corresponding fixed-size structure. The generic IE loop only
+guarantees that the declared element length fits inside the beacon
+buffer (bytes_left >= total_ie_len); it does not guarantee that
+element_len is large enough for the struct that later consumers copy.
 
-llcp_sock_release() selects the list to unlink from by sk_state: a socket
-in LLCP_CONNECTING is unlinked from connecting_sockets, otherwise from the
-sockets list.  Because recv_dm left the socket physically on
-connecting_sockets but in the LLCP_CLOSED state, release() takes the else
-branch and calls nfc_llcp_sock_unlink(&local->sockets, sk).  That runs
-sk_del_node_init() while holding sockets.lock, i.e. it removes the socket
-from the connecting_sockets hlist under the wrong lock.  A concurrent
-connect() linking another socket onto connecting_sockets under
-connecting_sockets.lock then mutates the same hlist unserialized, which
-corrupts the list and desyncs the sk_add_node()/sk_del_node_init()
-sock_hold()/__sock_put() pairing.  An unprivileged local process holding
-LLCP sockets, with the DM supplied by the remote peer over an established
-LLCP link, can drive this to leak kernel sockets without bound (the
-mis-decrement goes through the non-freeing __sock_put() path, so the
-object is never released), leading to memory exhaustion / DoS.
+beacon_buf is a tight kmemdup() of the over-the-air IEs. When the
+association command is built, mwifiex_cmd_append_11n_tlv() /
+mwifiex_cmd_append_11ac_tlv() copy a fixed number of bytes from the
+stored pointers (sizeof(struct ieee80211_ht_cap) and friends). A
+malicious AP that emits a beacon or probe response ending in a
+truncated (e.g. zero-length) HT Capability element leaves bcn_ht_cap
+pointing near the end of the slab, and the subsequent copy reads out of
+bounds. The leaked bytes are placed into the association request
+transmitted back to the AP, disclosing adjacent slab memory; on
+CONFIG_KASAN / panic_on_oops kernels it is an out-of-bounds oops.
 
-This is the same class of bug that was fixed in the sibling handler
-nfc_llcp_recv_cc() by commit b493ea2765cc ("nfc: llcp: Fix use-after-free
-race in nfc_llcp_recv_cc()"); recv_dm did not receive the equivalent fix.
+Commit 685c9b7750bf ("mwifiex: Abort at too short BSS descriptor
+element") added such length checks for the FH/DS/CF/IBSS parameter sets
+and a few other elements, but did not cover the HT/VHT capability and
+operation elements. Validate element_len against the size of the
+structure that will be consumed, mirroring those existing checks.
 
-Fix it the same way: take lock_sock(), re-check that the socket is still
-hashed (release() may have won the race), and for the NOBOUND/REJ case
-unlink it from connecting_sockets before moving it to LLCP_CLOSED.  The
-unlink drops the connecting_sockets membership reference via
-sk_del_node_init(), leaving the socket unhashed, so the later
-nfc_llcp_sock_unlink() in llcp_sock_release() becomes a no-op and no
-double put occurs.
-
-Fixes: a69f32af86e3 ("NFC: Socket linked list")
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christopher Kleiner <chris@kleiner.pro>
 ---
- net/nfc/llcp_core.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/scan.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index dc65c719f35f..d8dbb1bb857b 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1249,6 +1249,7 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
- 	struct nfc_llcp_sock *llcp_sock;
- 	struct sock *sk;
- 	u8 dsap, ssap, reason;
-+	bool connecting = false;
- 
- 	dsap = nfc_llcp_dsap(skb);
- 	ssap = nfc_llcp_ssap(skb);
-@@ -1260,6 +1261,7 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
- 	case LLCP_DM_NOBOUND:
- 	case LLCP_DM_REJ:
- 		llcp_sock = nfc_llcp_connecting_sock_get(local, dsap);
-+		connecting = true;
- 		break;
- 
- 	default:
-@@ -1274,10 +1276,33 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
- 
- 	sk = &llcp_sock->sk;
- 
-+	lock_sock(sk);
-+
-+	/* Check if socket was destroyed whilst waiting for the lock */
-+	if (!sk_hashed(sk)) {
-+		release_sock(sk);
-+		nfc_llcp_sock_put(llcp_sock);
-+		return;
-+	}
-+
-+	/*
-+	 * For DM(NOBOUND)/DM(REJ) the socket is still linked on the
-+	 * connecting_sockets list.  Unlink it here, under the socket lock,
-+	 * before moving it to LLCP_CLOSED: llcp_sock_release() selects the
-+	 * list to unlink from by sk_state, so leaving a connecting socket
-+	 * in the CLOSED state would make it unlink from the wrong list and
-+	 * corrupt the connecting_sockets list / desync the socket refcount.
-+	 * This mirrors nfc_llcp_recv_cc().
-+	 */
-+	if (connecting)
-+		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-+
- 	sk->sk_err = ENXIO;
- 	sk->sk_state = LLCP_CLOSED;
- 	sk->sk_state_change(sk);
- 
-+	release_sock(sk);
-+
- 	nfc_llcp_sock_put(llcp_sock);
- }
- 
-
-base-commit: 3f1f755366687d051174739fb99f7d560202f60b
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index 97c0ec3b822e..0196c2adfeed 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -1384,6 +1384,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 							bss_entry->beacon_buf);
+ 			break;
+ 		case WLAN_EID_HT_CAPABILITY:
++			if (element_len < sizeof(struct ieee80211_ht_cap))
++				return -EINVAL;
+ 			bss_entry->bcn_ht_cap = (struct ieee80211_ht_cap *)
+ 					(current_ptr +
+ 					sizeof(struct ieee_types_header));
+@@ -1392,6 +1394,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 					bss_entry->beacon_buf);
+ 			break;
+ 		case WLAN_EID_HT_OPERATION:
++			if (element_len < sizeof(struct ieee80211_ht_operation))
++				return -EINVAL;
+ 			bss_entry->bcn_ht_oper =
+ 				(struct ieee80211_ht_operation *)(current_ptr +
+ 					sizeof(struct ieee_types_header));
+@@ -1400,6 +1404,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 					bss_entry->beacon_buf);
+ 			break;
+ 		case WLAN_EID_VHT_CAPABILITY:
++			if (element_len < sizeof(struct ieee80211_vht_cap))
++				return -EINVAL;
+ 			bss_entry->disable_11ac = false;
+ 			bss_entry->bcn_vht_cap =
+ 				(void *)(current_ptr +
+@@ -1409,6 +1415,8 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 					      bss_entry->beacon_buf);
+ 			break;
+ 		case WLAN_EID_VHT_OPERATION:
++			if (element_len < sizeof(struct ieee80211_vht_operation))
++				return -EINVAL;
+ 			bss_entry->bcn_vht_oper =
+ 				(void *)(current_ptr +
+ 					 sizeof(struct ieee_types_header));
 -- 
 2.43.0
 
