@@ -1,265 +1,186 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AC6221FCD;
-	Fri, 17 Jul 2026 07:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ED23D812C;
+	Fri, 17 Jul 2026 07:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784271839; cv=none; b=uKejoMXd+qasi1xVucrIwtf9CGrtUU1JwMRnqTMtpKGq6M80+NvRMi0+jJMk2FaQ37xQBw54oCHpVLinwj4Vl6OKq7R0hhb/RA5IbeXBPuICYbeIUmth9ipcN4X8TqYzaexc7BtsNKgpAbIojQ4CXuGgEAAl3CAAurh9ArMoH8Y=
+	t=1784272199; cv=none; b=fheAvLCfSPc/gji10/tw09BRhQYYacHhtKPMJ00fYkQofK2j1LQUSBaWzFsrF1FTR44QWJs2mPLTFZYOrfLba53b8vaTYDyGikEgotb/Q9ime4TiqT7sj7iN9mSHXkxoxB4i2KeY7GBnyfWt/4SSPV7k2PKn4m5qOd9CJL6SvdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784271839; c=relaxed/simple;
-	bh=pSnCaz9RCvX0fuz9OY7azdk2w53cF7Iiyc5zPTeU+s8=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=paicu50tV3l8y1GIAwjIKjgJhkuZagnB2BaKeHFZ7lTu1T5XYWWR7bdJfYkoTI4zdUeACaO1gLVGFjcdm1j9oQkBwLZXg296A/S9MhDljnEMh24LcSe18PfkE3X+lqsXkID9UxDKG3t0G9+AysfPhaqTfmysNYLVx5C61JHQb8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:ivesync10t1784271797t5fd06b67
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.200.247.46])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 4188014338873093882
-To: "'Coia Prant'" <coiaprant@gmail.com>
-Cc: "'Andrew Lunn'" <andrew@lunn.ch>,
-	<kuba@kernel.org>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<pabeni@redhat.com>,
-	<andrew+netdev@lunn.ch>,
-	<robh@kernel.org>,
-	<krzk+dt@kernel.org>,
-	<heiko@sntech.de>,
-	<netdev@vger.kernel.org>,
-	<linux-rockchip@lists.infradead.org>,
-	<devicetree@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-phy@lists.infradead.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>
-References: <20260714191341.690906-1-coiaprant@gmail.com> <20260714191341.690906-7-coiaprant@gmail.com> <464cbdf3-2e9e-43ea-b30a-75b3d1b8a188@lunn.ch> <CALj3r0jdkDEjpO+7NOTGs+wgukKvD=fzFn4ewpurxxPswCE5GA@mail.gmail.com> <000c01dd1593$2ac0b0f0$804212d0$@trustnetic.com> <CALj3r0hH=mF+8oVbisoECYo6HRuSdfSt_nuhFunHowyPsw2srQ@mail.gmail.com>
-In-Reply-To: <CALj3r0hH=mF+8oVbisoECYo6HRuSdfSt_nuhFunHowyPsw2srQ@mail.gmail.com>
-Subject: RE: [RFC PATCH 06/10] net: pcs: xpcs: improve SGMII AN state handling for Rockchip RK3568
-Date: Fri, 17 Jul 2026 15:03:16 +0800
-Message-ID: <000d01dd15ba$574a4b50$05dee1f0$@trustnetic.com>
+	s=arc-20240116; t=1784272199; c=relaxed/simple;
+	bh=vVo0w/Zc0HtX0MG2dLc1q8BXoTZLzNUxMBX3JzcJ/0A=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lvgp5pNu1xhorozyqhiUdZkTTbjbEeE+/vomwMWWit/xOH7gwfoHZOgp4NaGPuuFZXub6Mvb9nI3ddDkb2LKYNtuW7J8D/RmovP5REs/YeQttnOikatD7b6KFhPsf9llKoj7zuA+EaQDthj9iawG0WpkbA1lFGq1a9TjbV0lF1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=NebTsu6t; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="NebTsu6t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1784272196; x=1815808196;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Np8erMcwp8rzH3Givzf38W/R8LbiSdcNfK7ZRUqGBNQ=;
+  b=NebTsu6tdlBEA0MLbnQtimeRmZj6+sD2+75dAgViY8pdcBJLBhM48fWn
+   Kvq+K+55Alh+l9ZASj6fpR/Id9QvyPgIn8tOg+iNSVNCZp4jxN+sk70OR
+   2HIRy3DCEueNqFvDmH/qvl8dsVtZyday0Xm1EDWcfrKjq4KQeNDlwdqg1
+   z3H58kZNtOb+pDLW3jN7tMm2RB/vrpq/WLFAA+2yXxBU5nTkAX92oQiv2
+   Gdi4s+EpP5YtmFCJW1QFnqNbcdde4XMveT0DrzZZEwfalvaRLNQonBFwo
+   wQK1DRO8hLpNejOOWfO7MsVecFO/KiOcTXnbgXhjDIjEMWE99GvyNxtOK
+   w==;
+X-CSE-ConnectionGUID: 8TYJ6DiXT86MdXQkyVZutA==
+X-CSE-MsgGUID: AXfUmByPSi2JZzvDk3G/fw==
+X-IronPort-AV: E=Sophos;i="6.25,168,1779148800"; 
+   d="scan'208";a="23840297"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 07:09:54 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:22372]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.115:2525] with esmtp (Farcaster)
+ id f9ddcac5-cfdd-4301-a6fd-bc35e781ed57; Fri, 17 Jul 2026 07:09:53 +0000 (UTC)
+X-Farcaster-Flow-ID: f9ddcac5-cfdd-4301-a6fd-bc35e781ed57
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Fri, 17 Jul 2026 07:09:53 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Fri, 17 Jul 2026 07:09:47 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	<netdev@vger.kernel.org>
+CC: Arthur Kiyanovski <akiyano@amazon.com>, Richard Cochran
+	<richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Miroslav Lichvar <mlichvar@redhat.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Wen Gu <guwen@linux.alibaba.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, David Woodhouse <dwmw@amazon.com>, "Yonatan
+ Sarna" <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, "Alexander
+ Matushevsky" <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt
+ Wilson <msw@amazon.com>, Anthony Liguori <aliguori@amazon.com>, Nafea Bshara
+	<nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>, Netanel Belgazal
+	<netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt
+	<benh@amazon.com>, Noam Dagan <ndagan@amazon.com>, David Arinzon
+	<darinzon@amazon.com>, Evgeny Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik
+	<ofirt@amazon.com>, Amit Bernstein <amitbern@amazon.com>,
+	<linux-kselftest@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Bjorn Helgaas
+	<bhelgaas@google.com>, <vadim.fedorenko@linux.dev>
+Subject: [PATCH v5 net-next 5/7] net: ena: Update PHC admin interface for error bound support
+Date: Fri, 17 Jul 2026 07:09:33 +0000
+Message-ID: <20260717070936.10718-1-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260717065924.2556-1-akiyano@amazon.com>
+References: <20260717065924.2556-1-akiyano@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQLtuIytmYACIt0zp727MFXQnXwl3AG2MkWBAlDURYICTkKn3QKRc164Ap6/3qmz89AeoA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: ivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NPoj0uw5JpnxntbZJX9gsDcTXDlzIBuDXxSu1uSICFWFCIpWNzrlh6LF
-	tvW1sG3w8VGEqZ3dtgzpFHL01aVDQHMP/V/+6Aw2Ht7mPzdvJm/rr9iqsAVdi8+fBujcPbs
-	H/r4o26fjNBHcHnh2SNpe6FnSjii/d9cMA/ZqKZhF2F0U8MsIK8wHnqDNcpJnQJW/OclYkR
-	0iwVsl1bA5zgiOrCQNj4Y6c0fybD2DLU2yz2jrgY2cpwY9motJE30Dphs+fWC2T7pZdz127
-	ts9rZsr9VA6NBGdCYD1hL00Rm6oalhh4RRMqhfaI3PwnPiWeNQQMldqiZPTbVEufNhHMNJ3
-	xRbmlwA7ydgRfU5Lz7cp0nY1T4rpDxNYuSEVwoUFRYkvj2LhRR8iAET8oAclpnNXfj/HwjR
-	eP5k200eYqICvnVV4QWOBza42UliaJl5R56JSC/p1ObKTGWCOo9f+JqQsSlnAGqxIS5hcS9
-	t8TNnklrto2RPuoYLxECaaO+KIuh9gtVK+yBKe3facXI9SuXh9i7krDfGtFqGmQIv0b0jy4
-	5AC8aPxlHwZj36BWnVA54L4jsOJ1DDG6tuIiUnt0aPObblpCKPg6KMQR1TF4GJoZXPvazs2
-	FnHN2+qb0g1DLQZkf1teneaU+Fts8pz+6oeQmayn2S+M7tZpDnKI0Gifg8tJ3/lWjL/aqPV
-	DTITrrYFz/0SefqO3XJ+d8hDZuVnJfZlsGJgU/Gb6LDEGn82xnKfRG7DAMPnncdEeh8Uxji
-	FEtlYeBGbrGIu5Ty2QAN4r+MBUsNuQ70OCffAHcceh+NeFYvU+7gMxOxjK99rlvotk60Pe1
-	/JYYmteiwS4fLX9P4XJitIS+Og1gxKjUFgZTCk/VJaDe9qZTn7DtsoAlgqSeH1BwQu3mF13
-	bo35UfOrMAep+rCJrQbf3q8BTet1+sOPtHLaNkVAyDRMsvRR5TNZJSborty74TMR+RAs+Yw
-	Qe05C4XbjG2h3SXk2JFBxkHIGTof2OTyzxXRXgEI0RAcqCfwL8FzMLUvcYQMXFYIPI5oidG
-	AKLd7Yy5m4+drbL9rvaOePSxmUXbr+14sS087rRbmaSGEYxQi9J1uGfmsgwSwOGUHwPmajc
-	SCPQIfDSvUjeVK/wPvcryLcaXqkklnXKj21EGTyyDXOefXIqiai92ceWmq75ZP1/NFW+DdS
-	B/1V
-X-QQ-XMRINFO: Nq+8W0+stu50sE7OtKTvKJq3Dewzic457g==
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWB004.ant.amazon.com (10.13.139.150) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Fri, Jul 17, 2026 2:29 PM, Coia Prant wrote:
-> Jiawen Wu <jiawenwu@trustnetic.com> =
-=E4=BA=8E2026=E5=B9=B47=E6=9C=8817=E6=97=A5=E5=91=A8=E4=BA=94 =
-10:23=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Wed, Jul 15, 2026 7:05 AM, Coia Prant wrote:
-> > > Andrew Lunn <andrew@lunn.ch> =
-=E4=BA=8E2026=E5=B9=B47=E6=9C=8815=E6=97=A5=E5=91=A8=E4=B8=89 =
-06:44=E5=86=99=E9=81=93=EF=BC=9A
-> > > >
-> > > > On Wed, Jul 15, 2026 at 03:08:34AM +0800, Coia Prant wrote:
-> > > > > Commit 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for =
-SGMII mode")
-> > > >
-> > > > You do not appear to Cc: the Wangxun NIC people. It would be =
-good to
-> > > > have there comments on this change.
-> > >
-> > > I apologize; the output from get_maintainer.pl is very long. =
-I=E2=80=99ve
-> > > heard that having too many recipients can cause the PATCH to be
-> > > rejected by the LKML mail server.
-> > >
-> > > I have added Wangxun maintainer (Jiawen Wu =
-<jiawenwu@trustnetic.com>
-> > > and Mengyuan Lou <mengyuanlou@net-swift.com>) to the CC list.
-> > >
-> > > > > Fixes: 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for =
-SGMII mode")
-> > > > > Signed-off-by: Coia Prant <coiaprant@gmail.com>
-> > > >
-> > > > Please don't mix fixed and new code. Is this a real fix? Should =
-it be
-> > > > back ported to stable?
-> > >
-> > > I am not sure if this is a specific characteristic of Wangxun =
-NICs, as
-> > > I do not have any available for testing.
-> > >
-> > > The behavior of the Rockchip DW XPCS IP core matches what is =
-described
-> > > in the commit message (even though phylink brings the link to down
-> > > based on the phydev link status).
-> > >
-> > > This appears to be a bug (at least on Rockchip platforms) or =
-Wangxun
-> > > NICs features.
-> > >
-> > > However, I cannot confirm whether Wangxun NICs behave the same =
-way.
-> > > Therefore, I have kept their code as is for now.
-> > >
-> > > Could a Wangxun NICs maintainer provide some feedback based on =
-testing?
-> > >
-> > > If we can confirm that this is indeed a bug, I can submit a =
-separate fix.
-> > >
-> > > I would greatly appreciate it.
-> > >
-> > > Thanks.
-> >
-> > Hi Coia,
-> >
-> > I have tested this patch and it works on Wangxun NICs, thanks.
-> >
-> > The commit 2a22b7ae2fa3 ("net: pcs: xpcs: adapt Wangxun NICs for =
-SGMII mode")
-> > is too long ago for me to recall exactly what that thought was.
-> >
-> > The log shows:
-> >
-> > "On this device, CL37_ANSGM_STS (bit[4:1] of VR_MII_AN_INTR_STS) =
-indicates
-> > the status received from remote link during the auto-negotiation, =
-and
-> > self-clear after the auto-negotiation is complete.
-> > Meanwhile, CL37_ANCMPLT_INTR will be set to 1, to indicate CL37 AN =
-is
-> > complete. So add another way to get the state for CL37 SGMII."
-> >
-> > I tried to reproduce this issue, but it didn't seem to exist.
-> > In the current logic:
-> >
-> > link up -> read status from CL37_ANSGM_STS -> CL37_ANCMPLT_INTR not =
-clear
-> > link down -> read status from BMCR -> CL37_ANCMPLT_INTR clear
-> >
-> > It also works, although CL37_ANCMPLT_INTR is not cleared every time, =
-and AN
-> > restart is absent. But BMCR looks like it only wants to be return as =
-0, it is
-> > weird.
-> >
-> > So I think Wangxun NICs also can be applied to general code as well, =
-for
-> > getting state in C37 SGMII mode.
->=20
-> Hi Jiawen,
->=20
-> Thanks so much for testing and confirming that the patch works on =
-Wangxun
-> NICs. That's a huge relief.
->=20
-> You're right to ask about the CL37_ANCMPLT_INTR clear and ANRESTART. =
-Let
-> me explain what I observed on RK3568.
->=20
-> The key difference is that on RK3568's XPCS, we're working in the MAC
-> side (TX_CONFIG =3D 0), whereas on Wangxun it seems you're in the PHY =
-side
-> (TX_CONFIG =3D 1). This is based on the commit 2a22b7ae2fa3 where you =
-set
-> TX_CONFIG =3D 1.
+Extend the ENA admin interface to support error bound.
 
-Get it.
+Add error_bound to the PHC response structure.
+Introduce a feature version mechanism to indicate device supports
+error_bound, and add an error flag for error_bound retrieval failures.
 
->=20
-> > However, I am wondering whether CL37_ANCMPLT_INTR clear and =
-ANRESTART are
-> > necessary.
->=20
-> On the RK3568 (MAC side), according to the DesignWare XPCS TRM, the
-> hardware behavior is as follows:
->=20
-> - After a software reset (BMCR_RESET), ANENABLE is automatically set =
-to 1
->   (the hardware reset value). So auto-negotiation starts =
-automatically.
->=20
-> - When the link is up, CL37_ANSGM_STS contains the negotiated =
-speed/duplex
->   and the link status.
->=20
-> - When the link goes down, CL37_ANSGM_STS becomes all zero, but
->   CL37_ANCMPLT_INTR remains set to 1.
->=20
-> - Crucially, the PCS does **not** automatically restart AN when the =
-link
->   comes back up. Without an explicit ANRESTART, the link stays down
->   forever.
->=20
-> So on RK3568, the ANRESTART is mandatory to recover from a link-down
-> event. Without it, the link never comes back up after a cable =
-disconnect.
->=20
-> In my current logic:
->=20
-> 1. If CL37_ANSGM_STS has valid speed/duplex bits, report the link as =
-up
->    and return.
->=20
-> 2. If CL37_ANSGM_STS is zero but CL37_ANCMPLT_INTR is set, the link is
->    down. We clear the interrupt and issue an ANRESTART to start a new
->    negotiation.
->=20
-> This works reliably on RK3568 in SGMII MAC side mode.
->=20
-> Since you confirmed that the general code path also works on Wangxun, =
-I
-> wonder: does the ANRESTART also work on your side? If yes, perhaps we =
-can
-> make this the common path for all hardware, not just RK3568.
->=20
-> If you can test the ANRESTART logic on Wangxun and it works, I'd be =
-happy
-> to submit a standalone fix that makes this the common code path.
+This enables the driver to retrieve error_bound information from the
+device alongside timestamps.
 
-I've test this patch with removing the restriction on Wangxun PMA. At =
-least
-ANRESTART logic does not have a negative impact.
+Signed-off-by: Amit Bernstein <amitbern@amazon.com>
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+---
+ .../net/ethernet/amazon/ena/ena_admin_defs.h    | 17 +++++++++++------
+ drivers/net/ethernet/amazon/ena/ena_com.c       | 11 ++++++-----
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
->=20
-> Otherwise, the current approach (skipping the ANRESTART trigger on
-> Wangxun NICs in c37_sgmii_get_state) remains safe.
->=20
-> If you're comfortable with the change, I'd appreciate it if you could =
-add
-> your Tested-by tag to the commit. I'll also make sure to include you =
-on
-> the CC list for any future revisions or related fixes.
->=20
-> Thanks again for testing!
-
-Thanks for the improvements.
-Tested-by: Jiawen Wu <jiawenwu@trustnetic.com>
-
+diff --git a/drivers/net/ethernet/amazon/ena/ena_admin_defs.h b/drivers/net/ethernet/amazon/ena/ena_admin_defs.h
+index 898ecd96b96a..2d132c4bc590 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_admin_defs.h
++++ b/drivers/net/ethernet/amazon/ena/ena_admin_defs.h
+@@ -128,12 +128,14 @@ enum ena_admin_get_stats_scope {
+ 	ENA_ADMIN_ETH_TRAFFIC                       = 1,
+ };
+ 
+-enum ena_admin_phc_type {
+-	ENA_ADMIN_PHC_TYPE_READLESS                 = 0,
++enum ena_admin_phc_feature_version {
++	/* Readless with error_bound */
++	ENA_ADMIN_PHC_FEATURE_VERSION_0             = 0,
+ };
+ 
+ enum ena_admin_phc_error_flags {
+ 	ENA_ADMIN_PHC_ERROR_FLAG_TIMESTAMP   = BIT(0),
++	ENA_ADMIN_PHC_ERROR_FLAG_ERROR_BOUND = BIT(1),
+ };
+ 
+ /* ENA SRD configuration for ENI */
+@@ -1035,10 +1037,10 @@ struct ena_admin_queue_ext_feature_desc {
+ };
+ 
+ struct ena_admin_feature_phc_desc {
+-	/* PHC type as defined in enum ena_admin_get_phc_type,
+-	 * used only for GET command.
++	/* PHC version as defined in enum ena_admin_phc_feature_version,
++	 * used only for GET command as max supported PHC version by the device.
+ 	 */
+-	u8 type;
++	u8 version;
+ 
+ 	/* Reserved - MBZ */
+ 	u8 reserved1[3];
+@@ -1224,7 +1226,10 @@ struct ena_admin_phc_resp {
+ 	/* PHC timestamp (nsec) */
+ 	u64 timestamp;
+ 
+-	u8 reserved2[12];
++	u8 reserved2[8];
++
++	/* Timestamp error limit (nsec) */
++	u32 error_bound;
+ 
+ 	/* Bit field of enum ena_admin_phc_error_flags */
+ 	u32 error_flags;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index 297fb36ab8c1..40d1fd64bc34 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -1682,11 +1682,11 @@ int ena_com_phc_config(struct ena_com_dev *ena_dev)
+ 	struct ena_admin_set_feat_cmd set_feat_cmd;
+ 	int ret = 0;
+ 
+-	/* Get device PHC default configuration */
++	/* Get default device PHC configuration */
+ 	ret = ena_com_get_feature(ena_dev,
+ 				  &get_feat_resp,
+ 				  ENA_ADMIN_PHC_CONFIG,
+-				  0);
++				  ENA_ADMIN_PHC_FEATURE_VERSION_0);
+ 	if (unlikely(ret)) {
+ 		netdev_err(ena_dev->net_device,
+ 			   "Failed to get PHC feature configuration, error: %d\n",
+@@ -1694,10 +1694,11 @@ int ena_com_phc_config(struct ena_com_dev *ena_dev)
+ 		return ret;
+ 	}
+ 
+-	/* Supporting only readless PHC retrieval */
+-	if (get_feat_resp.u.phc.type != ENA_ADMIN_PHC_TYPE_READLESS) {
++	/* Supporting only PHC V0 (readless mode with error bound) */
++	if (get_feat_resp.u.phc.version != ENA_ADMIN_PHC_FEATURE_VERSION_0) {
+ 		netdev_err(ena_dev->net_device,
+-			   "Unsupported PHC type, error: %d\n",
++			   "Unsupported PHC version (0x%X), error: %d\n",
++			   get_feat_resp.u.phc.version,
+ 			   -EOPNOTSUPP);
+ 		return -EOPNOTSUPP;
+ 	}
+-- 
+2.47.3
 
