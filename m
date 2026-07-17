@@ -1,93 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DB23FCB3D;
-	Fri, 17 Jul 2026 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17525BA3D;
+	Fri, 17 Jul 2026 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784293662; cv=none; b=ItK5eK7PsTuq+gc39ehBMpgBOPZW9SnL/nrBtjNzYRh6AmOHuaw4xG4bqpXIQmLIqFfDnAkL/EBh43RROeCPJXty+XIFAE+x8c0J9EFE6mKpUOjeyO+XhPzSQYqf/v8hkEX89INdNFtRAXQ01eEP7iIrBsMUnZQaPW6NTeRsBQM=
+	t=1784294655; cv=none; b=KX/youE7O/07h4LdgkTHQsczy+qGKH52WCsIvonp8xcCCC+E1Ty8TTFX3c5p09cZEmLCDvtLl/9UXJYQXVjmsR0GBHZFWPPaeh2/99+d3uAcrRA0ODMTqyY9uXLSJFVtXF7bNCkelmxypzKka0Gzbc3hc9qz0dUx6r0CD7xak6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784293662; c=relaxed/simple;
-	bh=FK9yzES7VKd8Fftfk4CsEOxnZ30CVLaBrqab0FLOFgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VKiIr3DnyIFDeKR4oLByAMBG4EZkiUYCXkWqq9xKucPB4HW5dvmW1MTaiTueQnnG3Vqji6i7sQV1JEekxC04FRfZyvKREbpZw618g8ejbQPinQ0IctWqGRkjDlfLmQvdHMYAQ3G8Phyfa4S3KoIqLrvUcOFr1hdyKpOIxuSf7AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UFaKp3K; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784294655; c=relaxed/simple;
+	bh=Wh5aAHP76/WeVELUcKivGAIVaxiVIRXfYJQCXwoCO88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m82e/X/uTIV2ovkGX/jZpMxHTJIZnie9PXfrvnVCmrlzIAKP60RL5wQMBrZyCNVZWtr4d69xq+tJm+KaEwxO7YaKO+MHoPZpkrBcs7si2xSAAKzTEJnDvyjKF9U7w37w1TyR31cDJiLsYuJV8ZfBI23fTWZMSShCnmSxHa8r2Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpxdzmTo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UFaKp3K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129A51F000E9;
-	Fri, 17 Jul 2026 13:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784293659;
-	bh=mooRlPTlUqV1sVp6NuD8rb2bN7qHo0BLIrW5P+Xgh9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=1UFaKp3K1wugDE8JEb8ay0NtdC9vP4PtHFh0AE/O8qOH85sTTFovb+4ptE2qqLA0p
-	 L4c55q22J1kNNNzoHIBXMQiC9DTw6EM1SFK4DPR4NthzUte3gFETh0B4SOaNuMbcdW
-	 KYq2ylYlMHrAxWiMgrUYrCR/9mRDvjrWdvPQFyKo=
-Date: Fri, 17 Jul 2026 15:07:32 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
-	Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Igor Korotin <igor.korotin@linux.dev>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
-	linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v8 06/10] rust: miscdevice: set fops.owner from driver
- module pointer
-Message-ID: <2026071725-unpiloted-bogus-f1de@gregkh>
-References: <20260713-fix-fops-owner-v8-0-2495cfa82d47@linux.dev>
- <20260713-fix-fops-owner-v8-6-2495cfa82d47@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpxdzmTo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74081F000E9;
+	Fri, 17 Jul 2026 13:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784294653;
+	bh=9deRSWKyipGxDDO9EO+7ahzRIydEVDZEpzWVIqwuNlA=;
+	h=From:To:Cc:Subject:Date;
+	b=RpxdzmTopOGc2MutgjHzUSv41g605RtmNyYhpCxNWtrH5GQth1qiphg7rfohBSu/j
+	 /n7cD8q9l7WjewtPyWKe+0JMBWPKd36XY8H6g3VMLj3Qmh8ii3vM9ma8yCZ1GTdhcc
+	 W0fh2y5DkhS1AY9KQwKCc/z2ir4UdWctd5pVj//rYhAFGVokidf0ytJ7yeocyelG3T
+	 Nva5TityhbSjW5RR39e7KQBAsrPjxDvNlOEEk/VUCFYNWEqrMWnRMBPY3kAbb1LskG
+	 RQe3/vFrKT/aOVr7FYQV29izj5DdrAeUR24yn86ficv7vQ7OsILDk6FYfyPedPlW+q
+	 c8uOajRwSzOig==
+From: Michael Walle <mwalle@kernel.org>
+To: Madalin Bucur <madalin.bucur@nxp.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH net v3] net: dpaa: fix mode setting
+Date: Fri, 17 Jul 2026 15:20:29 +0200
+Message-ID: <20260717132401.2653252-1-mwalle@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713-fix-fops-owner-v8-6-2495cfa82d47@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 13, 2026 at 02:45:27PM +0800, Alvin Sun wrote:
-> Set the miscdevice fops owner field from the driver module pointer
-> via the `this_module::<T::OwnerModule>()` helper, instead of
-> defaulting to null.
-> 
-> Assisted-by: opencode:glm-5.2
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  rust/kernel/miscdevice.rs | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Before converting to the phylink interface, the init function would have
+set a non-reserved I/F mode in the maccfg2 register. After converting to
+phylink, 0 is written as mode, which is a reserved value (although it's
+the hardware default). Without a valid mode, a SGMII link is never
+established between the MAC and the PHY and thus .link_up() is never
+called which could set the correct mode according to the actual speed.
 
+Fix it by setting the maximum speed of the phy_interface_t in use in
+.mac_config() - just like the driver did before the phylink conversion.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
+Suggested-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+---
+I didn't grab Sean's Rb tag as this is somewhat different.
+
+Changes in v3:
+ - keep the mode setting also in .adjust_link().
+ - reword the commit message, to be (hopefully) more precise
+ - Link to v2: https://lore.kernel.org/r/20260710143430.2276141-1-mwalle@kernel.org/
+
+Changes in v2:
+ - the setting is/was based on the maximum speed, not the current
+   speed. thus, move the setting into mac_config().
+ - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
+
+ .../net/ethernet/freescale/fman/fman_dtsec.c    | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+index fe35703c509e..b8d70c0ecb6c 100644
+--- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
++++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+@@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
+ {
+ 	struct mac_device *mac_dev = fman_config_to_mac(config);
+ 	struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
+-	u32 tmp;
++	u32 ecntrl, maccfg2;
++
++	maccfg2 = ioread32be(&regs->maccfg2);
++	maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
+ 
+ 	switch (state->interface) {
+ 	case PHY_INTERFACE_MODE_RMII:
+-		tmp = DTSEC_ECNTRL_RMM;
++		ecntrl = DTSEC_ECNTRL_RMM;
++		maccfg2 |= MACCFG2_NIBBLE_MODE;
+ 		break;
+ 	case PHY_INTERFACE_MODE_RGMII:
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
+ 	case PHY_INTERFACE_MODE_RGMII_RXID:
+ 	case PHY_INTERFACE_MODE_RGMII_TXID:
+-		tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
++		ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
++		maccfg2 |= MACCFG2_BYTE_MODE;
+ 		break;
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 	case PHY_INTERFACE_MODE_1000BASEX:
+ 	case PHY_INTERFACE_MODE_2500BASEX:
+-		tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
++		ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
++		maccfg2 |= MACCFG2_BYTE_MODE;
+ 		break;
+ 	default:
+ 		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
+@@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
+ 		return;
+ 	}
+ 
+-	iowrite32be(tmp, &regs->ecntrl);
++	iowrite32be(ecntrl, &regs->ecntrl);
++	iowrite32be(maccfg2, &regs->maccfg2);
+ }
+ 
+ static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
+-- 
+2.47.3
+
