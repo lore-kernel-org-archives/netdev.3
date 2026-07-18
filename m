@@ -1,85 +1,72 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5B33033E8
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 07:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50C9176FB1
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 09:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784361361; cv=none; b=Spjcx+NQsiJ3lvSdNEzyBTWJ4RZTYSMKpSIVfanU8QK2SzbWJrWhq17YJwGYyx0Bq5/+Bbo7BSH8tmgNYQdij4a+mpXYBzNJMc2cRYqK2Ks4Ntq9hlbVaxk5Ndn6VnFM4LtCxxMzKMNAplfNXqrP+ymvy+OzB28sX73+m0ChRVw=
+	t=1784365790; cv=none; b=epgRxqIxDv+PRWflDm1nmRgJebhl4j5YB5Qhca6f0fN2I1fppV3oeDEj7ZYKMv/JCkG+ATL1MFwJ6xXfW3pmlz/4tv2dJrmfZAfZoM3L4kLda4RmTovQybDPCh8ZFGEB8zo6Z504q1SJPoyoDcPWB6zAtyN5DPMKjSVuTdILFUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784361361; c=relaxed/simple;
-	bh=938bOJnd7G3fEFnQqsXJyC++I5P/8chu57RekHReoPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oe5MsXRR2520O8E3qfxBMQpzt8t9PhTImvdEWeX65unEb4j1xl8zoQjSPEFPp2XUsnin3U5tIrwKK8S26g9mEErvd2bVi90OZ9n8eQ+vrjCU9vbjKAhPx286EmVhYXn6kpy2y579UuKXTQf0w1B3jFDDCCt2IIXZpBt7c7W6slk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qoud3nos; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1784365790; c=relaxed/simple;
+	bh=y9WA6GoIt1DmAJpAcsIoCrbQt4m5dvn73N6b/TcwLfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pt66lusyCMDCM/MVxVeyNlbveKvMWa1QL/6MTD1quDJuMhuBlnGQicwdKhy2KDAncsLplOyeSF6jf5Fmgt58V5ZRksy9gsG7rh5F1lrQZSV2hk9P5h4KEv+zWsDUsKoOctCcX0gjIr+1Fbv/xnd2Pz4E1SLzdrFURR3GUM3AKlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aI1B6ehu; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qoud3nos"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b0148201fbso4241225e87.3
-        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 00:55:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aI1B6ehu"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cace91f112so86786565ad.0
+        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 02:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784361358; x=1784966158; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DTuHUBF12LCmuu5LhhKk5CzbF9HbdGvjqCxvdiP6aTk=;
-        b=Qoud3nos/zukZhWOaCwzEOblazxHPAmG3fCIrxdyHJQnjwXhyx/FJxLL3Ugo19+mQR
-         lPVoQc2MVuhG9GpMcd+dtT53JXG3ZRQkj+a3N7WrYkzqpluPzI7tzYCq/zEnxSFua/aM
-         nnQKPTFjIIG/BbycKRYuEgDRit0WZhJYPHurkOY4U1wMQfvgVk3WAummccgGt5gkL4qh
-         gE34IA62AVzEraSwFGXn/hPwd3WhpINN7OMxgjLImOCJVMeR1KYoiQhkiJ3/bNT4Cp25
-         Z2rG0b+OjtjGTo0P9wwRc6jGlgoL5mJCSzfVVegpaUqWFNTy5/10EbtR5lmeajXZsFqm
-         jhZw==
+        d=gmail.com; s=20251104; t=1784365789; x=1784970589; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZQvkeIae8/A1/cDiRMAjndHiYuA/eJ8gWOsY71fIfHM=;
+        b=aI1B6ehuZL/9f5ZTAgoOX96qLjCssqiEerWLqvXmsNTm3Um8pZ5JkikhwY8X/FDpXr
+         mAZjYVUn0i1bwxlbL9PDFMr63eBBgdhHDEz8nU6GsKv+3xZSlJNGnKGNIC1FDtY7789z
+         6s4KH9XlgIXzqJD9ne1QvkyF1Z6roXbz8i428j2TyB7tic8eETvB2CyysnLs6SA8OCit
+         1v00yfY9zFQCiQ4UlEy6WzXhPA/Z0drbeKJqYjT0afS3vzNlyIqF3GmPj8byidjikIKf
+         wtbErp8SiWndtRMolRD4sJ8w5sGvSBfnIKcERdK0puRoB8+aAZ6+YaT6FNBkvC4xa3qB
+         BaXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784361358; x=1784966158;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DTuHUBF12LCmuu5LhhKk5CzbF9HbdGvjqCxvdiP6aTk=;
-        b=QmV4KM53mM+oTg3gAE+WyNyEdYVhG7j8QEApbk+MKqQ39p8QpLnagfm2ZX+iHhwcAT
-         N0P1UpxR9+lh1mPz8byd7/JI3J+D+V1xwv6OekbR+YL5oo7twasgjPomRikG+D6d2Skp
-         MR0Z/LOP6fsPu8WUX1lU78fJW1ZJqSo1JWqF3dXPu5XrvqsNAI51ugxz0FcRnY5We9zf
-         Yp8+bwc1KrN/IcXdLcxtivcXpOfeMdRBwGa8a015szn3SvbjNJGLIIJoCmyQz1ia8EMR
-         psd1ABFXVGek0b+QURNjI6BKziVp4obuCp0pmdrXaH2gp2mAlMoJZnK7NIiawa86Ss4r
-         4u+g==
-X-Forwarded-Encrypted: i=1; AHgh+RpnuVWfZX4KdYlQKJ+sf1QYL1Gmr1NITtAzxohVQHSNpLvC1rmI5iUra+JJNCbrLEOCri8Vyk8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTQRQBBMOx6j9ncf8YsS5xEcumGiIyVDEWoqeVykF0sycid4O1
-	PPtYCi4eqPTyfx/ZGVJK3gd19YV70FtY4uMjBgj5ZFSXV6PPLniIfjYF
-X-Gm-Gg: AfdE7ckRrlbmoMXJSkaMlkwhyC3mEkhsGKmZGniz8440hp69VgijDB3ugXb2CiG10r1
-	2Ew5X5r60tRX8DwmPQsQJEWmH4b4rip4+2tRXRyZDe3ZoEWyyPmQxrJpr1uSr1aqhC9bgH2OQjT
-	r/Wf+rk6Lc7MhkrmIohQ95/ZBJ0bVR7YxsU9Q/7zMEY1+DC9pY+pq9iIgmvYCVdmARrUkOEc2/+
-	gLb2N1b/43htXyaOx9vcjDBLMooZ08qViLOzEsN2GWvwJvMcNQJrCK25ICfYWBl3klvgoS3rn1r
-	dZRgBGU+DukVSpGjBr9SEFQpI8DbvtK36Ie0hYbtMsYEpOD0yr2P4VUV4thvHD8IMIXoQRlznvs
-	vmkVN6gIXOJP3MlRZGJ+QQJjohkijz+nCT0VaAs1TpVDiP6GyFqVMCTXdOCBuH/idVbyvsgu+Wd
-	VglATGiu1EGtI1FBxPPKY4/dsdUIA8YvjPMV3e/2Rx/WaeriJiqS1A
-X-Received: by 2002:a05:6512:108a:b0:5b2:8abb:2334 with SMTP id 2adb3069b0e04-5b28f9b0206mr1203395e87.51.1784361357360;
-        Sat, 18 Jul 2026 00:55:57 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs693195.centertel.pl. [5.184.251.12])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b291e25290sm839179e87.73.2026.07.18.00.55.54
+        d=1e100.net; s=20251104; t=1784365789; x=1784970589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZQvkeIae8/A1/cDiRMAjndHiYuA/eJ8gWOsY71fIfHM=;
+        b=J0VcRT9JqZivptf7fPcndPC9L/Tq8WsoFeWLG6HKHZlCQZCLAhwlvpNKrBUxS/nVDL
+         JqQhbNjozGw8rf99A6KXNqGcQPz316wsbFPw028R6l8SWqTrOJbdAu0VQDcgpruN3aLe
+         Fnpv1n9imxBYXeK1VcuartOzCjpnBQ929o8y6Cy2bMt4c7Dt5FFNiG73VoZ9wtayvEwC
+         /lu6Hx7qKcvMRC5MC3+rWB2MOPXRxcHqoZJ6j3OXTE6CFgkSRVs/NQnYlAYIyFATivHf
+         ITRTqsNcylcOMqRC7gpnheMCw2av6+3hAigfNDlBI7dkftLHM1J1JaWGOwbaCSZzJlMB
+         Z6CA==
+X-Forwarded-Encrypted: i=1; AHgh+RqHFgAjIMyD+FhUH1h9oIapKgXq1Sa7fpuAitvLcOlv9yzRiCZzOih1J5MJoOCfJE2OtVnFM6c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDhsFwwIoftQh4czciXvAZAYeUlFxWOD0/SaQRGkRAr4z+v5R5
+	1ibgKy4564w0kBXWNpc/bsnj8fUEDgAfM+xoPBn1Kd8zFyR5c9HLtmSO
+X-Gm-Gg: AfdE7cm6BLRjw3gP3oXaLFrTIHo9rwga/wSLaeudgXItagq0MDzRLEhsdigywbU/yJG
+	KxChMr4utXreTEVU6iUKODTAFGSf07I8qINBD6ur7FxNXimaxDzKXVE6NNGuIQXqZQh3pOtasyl
+	RbYhpKnf+gRn1PYFiR7heYzvI66QzCggLraQR0Wo2zGxctJyrXX6n2FlS9UqBJY5DKeIGW5pWAS
+	5fL7Xf3sg07mTTrAsEfSW5eUxeguKqNxdZ4ilw53Zex2sDIY1Ys5BpGXyuP7WPhMrnGQQ1tRmxL
+	kZNLOyjXHkxJpvUSFCeuffop+gnueJ5dO00IXW4l2jEYbBhHeDD8YiYGDQu7QugzQ0DBg8DtDGp
+	swb6/UvXsbsjMBP1gQANZqExvwPta7G1ad8pp/yCXGyvNGMssTE57CpTdB2PV0RxIYIsFn+Rr4U
+	b5Iq5Kk+C3P6+jg+vyYStXUOlyo0BjDRhcTcndyVU=
+X-Received: by 2002:a17:902:e548:b0:2c9:a5e9:c26e with SMTP id d9443c01a7336-2cf348546c2mr69152485ad.13.1784365788827;
+        Sat, 18 Jul 2026 02:09:48 -0700 (PDT)
+Received: from kimi-bug-hunter.. ([47.236.164.125])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm24285495ad.80.2026.07.18.02.09.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 00:55:55 -0700 (PDT)
-From: Stanislaw <kuncy7@gmail.com>
-To: Johan Alvarado <contact@c127.dev>,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Alvin Sipraga <alsi@bang-olufsen.dk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+        Sat, 18 Jul 2026 02:09:48 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Jon Maloy <jmaloy@redhat.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII support for RTL8367S
-Date: Sat, 18 Jul 2026 09:55:49 +0200
-Message-ID: <20260718075549.91288-1-kuncy7@gmail.com>
+	tipc-discussion@lists.sourceforge.net
+Cc: Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net v7 0/3] tipc: fix NULL deref in tipc_named_node_up() on empty publication list
+Date: Sat, 18 Jul 2026 17:09:27 +0800
+Message-ID: <20260718090931.724303-1-bestswngs@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJq09z6bqVdtmuf0LVe_WjVYM9GmjaNiqjnOALLut4jCoZBLRQ@mail.gmail.com>
-References: <CAJq09z6bqVdtmuf0LVe_WjVYM9GmjaNiqjnOALLut4jCoZBLRQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,68 +75,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Luiz, Mieczyslaw,
+This series continues the fix for the NULL dereference in
+tipc_named_node_up() on an empty publication list.
 
-> Stanislaw, do you have a reset pin or a reset controller configured?
+Patch 1/3 carries Tung Nguyen's defer-to-workqueue approach, suggested
+by Jon Maloy on the thread as the replacement for the item-less bulk
+from v2. Tung's RFC only exists as an inline diff in the thread, so I
+folded it into this series, keeping his Signed-off-by. I tested it in
+our two-node QEMU setup (veth pair, UDP bearers, node-id addressing),
+both with an unprivileged user namespace and as root: the unpatched
+kernel panics on the first run of the same reproducer, the patched one
+distributes normally with a non-empty list.
 
-Yes - a reset GPIO, no reset controller:
+While testing we found two residual issues in the approach, fixed by
+patches 2/3 and 3/3.
 
-  reset-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
+Patch 2/3: tipc_net_finalize() does not check the return value of
+tipc_nametbl_publish(). If the publish fails, for example on a
+GFP_ATOMIC allocation failure, the node is finalized but cluster_scope
+stays empty. The deferred worker then calls named_distribute() with
+an empty list and hits the same NULL dereference, this time on the
+workqueue. With this patch the worker re-checks the list and skips
+cleanly, no crash and no link flap. The tail stamp in
+named_distribute() also gets an empty-queue guard.
 
-on the switch node. So on this board the probe path does run both
-resets: the GPIO hard reset from rtl83xx_probe() plus the soft reset
-during setup. That is worth stressing, because the re-probe that cures
-the cold-soak state performs *exactly the same sequence* - same GPIO
-reset, same soft reset, same full init - as the probe that lands in
-the bad state. The only difference is that it is the second run. So
-it does not look like a missing reset; more like something about the
-very first init pass on cold silicon.
+Patch 3/3: a repeated NODE_UP while the bulk work is pending takes a
+node reference that is never dropped, because schedule_work() returns
+false when the work is already queued. Found by flapping the bearer
+during the defer window. One reference is leaked per repeated
+NODE_UP.
 
-On "loading too early": the driver is a module here and probes ~20 s
-after power-on (rootfs mount), so the rails have long been up by then.
-That said, 20 s of a cold board is a different thermal/electrical
-state than the same board a minute after a reboot, and short
-power-cycles (~1 min) never reproduce the issue - only a multi-hour
-soak does.
+Changes in v7:
+ - Patch 1/3: add the missing kernel-doc description for the new work
+   member of struct tipc_node, fixing the W=1 build warning reported
+   by the kernel test robot. No code change.
 
-Your reset-bit map is exactly the experiment this bench needs. Next
-cold-bad morning I will try the individual reset bits (SDS_RST, SW_RST,
-CHIP_RST, DW8051_RST...) on the degraded state, before falling back to
-the full re-probe, to find the minimal action that cures it. I'll
-report what I find.
+Changes in v6:
+ - Make the series self-contained: fold Tung Nguyen's base patch into
+   the series (1/3), keeping his Signed-off-by. The version sent as
+   v5 only carried the two follow-ups and depended on his patch from
+   the thread; the code changes in 2/3 and 3/3 are unchanged from
+   that version.
 
-> Please repeat the test only with the fix "the ~98 ms PLL-settle delay
-> plus the 0x060C-0x060F Local Jam Table analog calibration".
+Changes in v5:
+ - Replace the item-less bulk approach with Tung Nguyen's
+   defer-to-workqueue RFC, which fixes the reported bug in our
+   testing.
+ - Fix two residual issues found during testing (patches 2/3, 3/3).
 
-Done - last night's cold soak ran an image with only those two changes
-on top of the v6 series (busy-wait reverted). Result: the bad state
-came up as usual, no improvement - consistent with Johan's analysis of
-where those writes actually land.
+Weiming Shi (3):
+  tipc: fix NULL deref in tipc_named_node_up() on empty publication list
+  tipc: fix NULL deref in deferred bulk distribution on publish failure
+  tipc: fix node reference leak when defer work is already pending
 
-This time I had ethtool on the box before curing it, so here is the
-per-port MIB of the bad state (~35 min after the cold boot, switch
-reporting 2.5G/Full link up on the SerDes, wan 1G/Full to the wire):
+ net/tipc/core.c       |  1 +
+ net/tipc/core.h       |  2 ++
+ net/tipc/name_distr.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++----
+ net/tipc/name_distr.h |  3 ++-
+ net/tipc/net.c        |  5 ++++-
+ net/tipc/node.c       | 35 ++++++++++++++++++++++++++++++--
+ 6 files changed, 97 insertions(+), 8 deletions(-)
 
-  CPU -> switch direction (broken):
-    eth0 (SoC gmac1):        995 frames / 282,945 octets tx, no errors
-    switch port 6 (SerDes):  dot3StatsFCSErrors: 506
-                             etherStatsDropEvents: 506
-    wan wire egress:         zero - no ifOut counters at all, although
-                             the kernel handed ~990 frames for tx
+-- 
+2.43.0
 
-  switch -> CPU direction (clean):
-    p06_ifOutOctets: 172,231 == eth0 rx octet count: 172,231
-    byte-exact, zero errors - that's why ingress from upstream works
-
-So the cold-soak bad state is now precisely characterized: over half of
-the frames arriving from the SoC FCS-fail at the switch SerDes ingress
-and are dropped (and nothing reaches the wan wire), while the switch's
-transmit side is byte-exact clean. Since a full re-probe of the switch
-alone cures it - the SoC side is never touched - the bad half is the
-switch's SerDes receiver, left in that state by the first cold init.
-
-Next cold morning I'll do the reset-bit isolation on the degraded
-state, per Luiz's map, before falling back to the full re-probe.
-
-Best regards,
-Stanislaw
