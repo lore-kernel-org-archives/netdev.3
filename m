@@ -1,57 +1,95 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7653E38F24B
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 14:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653273AFB18
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 14:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784385543; cv=none; b=BE2i/K25oI1ID/RPFfU5Cb+Kt2+3nrZhkiJCYAoerUcKczTtR4u//eWn4/O3Kyl/KdFqYn6SNVZdPXRxSt8XbSiiuKeUgimh4aW2emCjlSkzK1ZmfoTjkuf/H45D07DZuHDnrDOb/r3g4mqExegcJD6iTWSPCfyC6q52b1My+hE=
+	t=1784385978; cv=none; b=hv74LhGgHiPXVHwK4+c3ABl6ozhc8w90o4OG/KAK98ZaJn4H6iN7Tm59WR6w9rx1KposlvFXeVZkTTvBalCWKOVsvk4OY+LRrpmqTJUaw3EcNQE7C2/oFKgo55M0nBa/BLHTlw6KYBCM2faavDAetxh5DGQ0WKpeMNzgJJ0thX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784385543; c=relaxed/simple;
-	bh=I6CzJ+JDKjRxZu3r96ktIWuesBGUDKfrC8qrCqZn4Es=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jxTONsBVK1VHAcBuZie7JRLDmnIy5WPP1fG7iq9NhouEu2lIvlFIz5PQeshVJNLQbyiewKb+2sKAjY5jw4Cw8pBiOopGyzfm11eXlKnEBDsD6BtEUlzpCgSwIFRfA2s9qZWu7ClEfkdNyOpHW+nNS4+SzBuFSNfHgBdAQubvYkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O2PCNXAz; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784385978; c=relaxed/simple;
+	bh=VapJVpk7Upuq/4IsumhznTZhjSgCFeW/dRXr+/nOOSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zn5jdV1mRV+OazhhWhefdh/Gy3oXxAWcUjV48E+VSal7dtj641yenM+LYQ5bJCD09DPtOOewANSdTOSe/lC+W2lvS8Vim5AS6zZLPqpKFT3GjVqM+viP4owR74DAb3zqiy5Th0w3sCwm6QOvtoT69f7+lp1JbSj0jGmDKr2VtTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aFqISbMx; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O2PCNXAz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4B90F4E40E42;
-	Sat, 18 Jul 2026 14:38:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 07D3960363;
-	Sat, 18 Jul 2026 14:38:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E1D8211BD0158;
-	Sat, 18 Jul 2026 16:38:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784385535; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=x9V6cBq+TtwXJYqhnu6T1q5wgsLXdHrhThBITkOay1U=;
-	b=O2PCNXAzjDUrE5AmaW/q2eCL+nLSBYwFFKEWvlyvm+Y+GElh/6Y+NNsT1xBrUUMgFOAO9l
-	sowywpbcNketelv260cm8YiILm5yo+rjCmXvNQi1MdB9p7b2KhMbz2IzRahNTQxKUp7VdE
-	qZ1Iiu31ZZzwffSLcUaxraJX7ngXNYC54lNClCHis/OQH/ebGYxxYV2+ZBdseMsIcv8pB2
-	WbTtSOTST/T8lT1of7CTBQ90w/vq3Rmz4N+BZHukMAJoH/DI9SkM291BSfJtqlLLOm4R0n
-	wtyR76iPOdtTIwuBb1Z+Po0Ee2xZgswjDwrTt+e8Tjc0RJDUPMm6wBUQQpXUvw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aFqISbMx"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9305a2121a1so532031085a.2
+        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 07:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784385975; x=1784990775; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VapJVpk7Upuq/4IsumhznTZhjSgCFeW/dRXr+/nOOSk=;
+        b=aFqISbMxMeI3PBTbzZ/BF/w0TUAlJCIGydRF2mEipa0728ypSkZIUtFrBK26dyvcHw
+         q4fa2swkTV9CBHsomPBL4/l5dHXU0XwKV0BMq1XlKinMCp+a2BRVWcT2cw0IQ3udqFDI
+         nSU/R18gbHvDC49Xw2G8A7xPhuSwfsA+OdMmDQfzK+Uj66WZFy2vGFZI/bxpECWPxCbe
+         8ESHBY7c83ZmfUw+Q/rh8odVQV/pTKL4uj/ZBVr7jYvMElFotc1x2dFWtyNYWA6GMkZW
+         BT3++UWtp29+i6MA3jIhoEwH/2KwzjwJyyLhFRRA6sB8r3CI5VjJ0X1kesecxnqnjHA6
+         RHcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784385975; x=1784990775;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VapJVpk7Upuq/4IsumhznTZhjSgCFeW/dRXr+/nOOSk=;
+        b=hMdjtX3gXk026t+MC/xH3jQg1pfg4DOYL6hzvUgfH3+sNRAYHlC0oM9eTQXe/3X6a2
+         OXdSs0dQeP66BsOi+SdYKDqoOnqfba4X0wWnyUznKM3G8Xfl5TgTpXyqGKiuxDhGbY1t
+         DbUbvm8Xagm3WqaKtH7o0CBNJUkioQ8+4JUoRrGvOjGmmjZ4vjvHbuAmI2tAvKy77foF
+         GO4uLyQRfd8HiAHpoNtVIaQ/JCdb42kMq8liN5Jpy6r/jTSxBVJAqKarh5LSauaIJs/w
+         9TWSmcXyOOtK89XuLa1ibvA2trRq95nYMvo6OMUbkupLh973TihUoqW0n1F9buvofR/3
+         +KsA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8Cdn+uWYvjzU4+hISMUR45y+qiy3E/Xu+16lcyV4Xtv4XRlyYjjHrVLrwZujYOeRyyQoAeC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2II9hcGr3bl08A2p/7dAWBrU484Qtvc1aP1HI3G1JVJWBlRhC
+	5rRgMYJEVDdy3KRVsAaRKxAeatFHK4aCKeS9bger5geCqUxeM9l8T+Rm
+X-Gm-Gg: AfdE7cknTanYLYhYq5j+ONJZ/kP5ryfo/vK0YWtz88adgidItvpTvExcrk3IdNksQX4
+	DgXRIxofHDCACuWjCg4jBVoJr0jzKWp3KRjof9B1u7pRkOyS1fD3BusxiZ5BldIEKW+UgQ4P+aM
+	JpIKf6xu8GXiqag13ZKbXScJTAq4+W0Xkg8ROh2SgIJwLV670+7ASQzn9kgCFfLnHArTVGIhrpm
+	E8sf4OwkjOOEg3VUJTE+eSf3XoUVPQJojwX5UNVTE3L6qXAE2z3EVuj5Uhil9/3SlB6tTKY1Y1v
+	yebVyIZgpQUzch5esEnO9bceSpN6s4ayIVlkLKlQj8XubBhTUYi9zjJsnR8w3zGExvabbhaT+Jk
+	fqNUq8dbjkpDF058FW3LOPlnMjmH8AW4IkGEe107SwVJmh3yshkmKeIp3qzFjExR0gXV4rhM6dN
+	8NjvqlK3yAVe7YvJzpIsKV3cBkc61CV3IjlA0XFJHLT+2/l1xZQpPXjA==
+X-Received: by 2002:a05:620a:400a:b0:92e:e252:bb43 with SMTP id af79cd13be357-930b4381a6dmr700628485a.77.1784385975182;
+        Sat, 18 Jul 2026 07:46:15 -0700 (PDT)
+Received: from AMD.home.internal (dhcp-9-244-8-156.gobrightspeed.net. [9.244.8.156])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545ec44sm418682185a.34.2026.07.18.07.46.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 07:46:14 -0700 (PDT)
+From: Enzo Adriano <enzo.adriano.code@gmail.com>
+To: Junhui Liu <junhui.liu@pigmoral.tech>
+Cc: Andre Przywara <andre.przywara@arm.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next] net: stmmac: Simplify ioctl handling
-Date: Sat, 18 Jul 2026 16:38:47 +0200
-Message-ID: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
+	linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 3/8] clk: sunxi-ng: a733: Add PRCM CCU
+Date: Sat, 18 Jul 2026 10:46:11 -0400
+Message-ID: <20260718144611.1523567-1-enzo.adriano.code@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260711-a733-clk-v2-3-974d188cbe0c@pigmoral.tech>
+References: <20260711-a733-clk-v2-0-974d188cbe0c@pigmoral.tech> <20260711-a733-clk-v2-3-974d188cbe0c@pigmoral.tech>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,60 +97,28 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Now that timestamping is controlled through an NDO, we can simply
-call phylink_mii_ioctl() to handle ioctls.
+Hi Junhui,
 
-The only functional difference is that phylink_mii_ioctl() ->
-phy_mii_ioctl() can handle SIOCSHWTSTAMP, but this no longer happens
-as this ioctl is not longer dispatched to the ndo_eth_ioctl().
+I re-reviewed patch 3 in v2 after Andre pointed out that my RFC reply lacked
+a formal tag.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
+I compared the RFC and v2 PRCM drivers and rechecked v2 against the Allwinner
+A733 User Manual V0.92, chapter 4.2.5. I checked all 11 programmable clock
+definitions (register offsets and divider/mux/gate fields), all 18 bus-gate
+definitions, and all 13 reset-map entries. They match the manual.
 
-Looking at this, I'm wondering if we can't just get rid of SIOCSHWTSTAMP
-handling in phy_mii_ioctl(). Looks like we can ?
+The RFC-to-v2 changes do not invalidate that check: the four R timer clocks
+move from the MP helper with no M field to the P-only helper while keeping
+their offsets and P/mux/gate fields unchanged, and the R PWM identifiers are
+renamed while keeping their offset/mux/gate fields unchanged. I also checked
+the gate-only BGRs for R-TWD, R-PPU, R-TZMA, and R-CPU-BIST; the manual defines
+gate bit 0 but no reset bit for those registers, matching v2.
 
- .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Reviewed-by: Enzo Adriano <enzo.adriano.code@gmail.com>
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2a0d7eff88d3..562d20830b94 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6371,28 +6371,17 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
-  *  @rq: An IOCTL specific structure, that can contain a pointer to
-  *  a proprietary structure used to pass information to the driver.
-  *  @cmd: IOCTL command
-- *  Description:
-- *  Currently it supports the phy_mii_ioctl(...) and HW time stamping.
-+ *  Description: Forward the PHY ioctls to phylink
-+ *  Return: Zero on success or negative error code.
-  */
- static int stmmac_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- {
- 	struct stmmac_priv *priv = netdev_priv (dev);
--	int ret = -EOPNOTSUPP;
- 
- 	if (!netif_running(dev))
- 		return -EINVAL;
- 
--	switch (cmd) {
--	case SIOCGMIIPHY:
--	case SIOCGMIIREG:
--	case SIOCSMIIREG:
--		ret = phylink_mii_ioctl(priv->phylink, rq, cmd);
--		break;
--	default:
--		break;
--	}
--
--	return ret;
-+	return phylink_mii_ioctl(priv->phylink, rq, cmd);
- }
- 
- static int stmmac_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
--- 
-2.55.0
+This analysis was done with AI assistance and each finding was checked against
+the cited sources.
 
+Thanks,
+Enzo
