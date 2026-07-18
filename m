@@ -1,119 +1,138 @@
-Received: from outbound.baidu.com (mx13.baidu.com [220.181.3.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1724C92;
-	Sat, 18 Jul 2026 00:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.3.100
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69CA1A6836;
+	Sat, 18 Jul 2026 02:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784335567; cv=none; b=cVg3c0MrZiGaLHC8LMPYzfIAQlfdACpZEgfr6sp2yhbQtwwUcyFVGN+k24LhkHonIdiaehaskjDfw2DnEzJnuAio+odIRj+Oe+35lTSZrwi/665G61SA6yoJnmHNeTjcmdrfTe4nDR5Zh0aAfhElVX7fFYaj5aGB+qgkh13b9J0=
+	t=1784342955; cv=none; b=umImNAc5uwaQId+dr48vwcUZH7wZEUTDTOvw+/g1HleQNj0RO0Vvuw3rVezcJVxVGw8B/MDkgyQW/RWnqYkP7o2iHrWFBhREOUlzvRYytwajju0BGpeWhzUn5Jluw4nkil7ShJFky5ktaBzFzKdAk4MGESe/Q6bg/iskZOBKO0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784335567; c=relaxed/simple;
-	bh=NG6t63Y6QEFu3zP1O38oFp6WH9EVcsXJRJEcfmO0m9k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XOhpnJPo7WzUkTKL/YNWRY1d5y8t8xIJfwqO3q9Se+IKhFwOW7YD5GPDO2jhVfasSyMD+q962MilV5WBY+YbmCoWjYVOrn2t0J/2OTsIhE5DZ3tyM9iHpLqRxGWKC3xXGTM11Re9AAA2RhvhXh3orbnAtaFtQ+aK7HK3hepZ1ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=a7RqbsAb; arc=none smtp.client-ip=220.181.3.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1784342955; c=relaxed/simple;
+	bh=E7EHmtqBMSlHXf6HF5pZv+p38Ks3/6GL+TMs+N4l/G4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=iDLLBeXU9WgyNOWQsNlGoGI3kLWf5wKdKN2pfosN7eJ2PMG0Iq3K/NdO/JPZjHYD6aOjOTp+93HrsZQczJGeQ+ecXZcLVVAsR9RK0mcLkpmTe40hoiaa2T41kFuk/HosCLtvVNE6TWNEnHrgJCnksPHKP7nHruXj15l2+H4bzJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OwBKI3C4; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="a7RqbsAb"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.3.12
-From: "Li,Rongqing" <lirongqing@baidu.com>
-To: Xin Long <lucien.xin@gmail.com>
-CC: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "David
- S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: =?utf-8?B?562U5aSNOiBb5aSW6YOo6YKu5Lu2XSBSZTogW1BBVENIXSBuZXQ6IGlwdjY6?=
- =?utf-8?Q?_fix_a_potential_use-after-free_in_ip4ip6=5Ferr?=
-Thread-Topic: =?utf-8?B?W+WklumDqOmCruS7tl0gUmU6IFtQQVRDSF0gbmV0OiBpcHY2OiBmaXggYSBw?=
- =?utf-8?Q?otential_use-after-free_in_ip4ip6=5Ferr?=
-Thread-Index: AQHdFfk4188Bo5DDekeCnPA+UApkw7ZxVr6AgAEZ3oA=
-Date: Sat, 18 Jul 2026 00:43:48 +0000
-Message-ID: <098518d8f02746a0abeec70110dcb5b8@baidu.com>
-References: <20260717143315.1942-1-lirongqing@baidu.com>
- <CADvbK_cEUR9m-QyKi5jj2MTqF2kGbBj7d1mUXmCsHgDLNJ-bPQ@mail.gmail.com>
-In-Reply-To: <CADvbK_cEUR9m-QyKi5jj2MTqF2kGbBj7d1mUXmCsHgDLNJ-bPQ@mail.gmail.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OwBKI3C4"
+Received: by linux.microsoft.com (Postfix, from userid 1231)
+	id 45F6920B7169; Fri, 17 Jul 2026 19:49:04 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 45F6920B7169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1784342944;
+	bh=SOnWjLNM5/oT91+v9QIK90ipsn1qlyZ8XKKBA2dE2UM=;
+	h=From:To:Subject:Date:From;
+	b=OwBKI3C4Agv2Gl9g8yuMf/ozecoYtvyYEAhrudWwy5voDqhOb/eiwvLtTPTNnYLg3
+	 vdC3hH/whLV+hrxVxTQtLzMFXmPM1GCk3SUINH246TqtlpZf3p0ypntu/rIRcigdcJ
+	 8MqXuldvCE9BJdPrfYhvVwVDtiS95aIstcygpIB4=
+From: Aditya Garg <gargaditya@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ernis@linux.microsoft.com,
+	horms@kernel.org,
+	dipayanroy@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	shacharr@microsoft.com,
+	stephen@networkplumber.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ssengar@linux.microsoft.com,
+	gargaditya@microsoft.com
+Subject: [PATCH net] net: mana: Return error code from mana_create_rxq()
+Date: Fri, 17 Jul 2026 19:48:18 -0700
+Message-ID: <20260718024818.560552-1-gargaditya@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1784335430;
-	bh=NG6t63Y6QEFu3zP1O38oFp6WH9EVcsXJRJEcfmO0m9k=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=a7RqbsAbl5OlmgMQtrByzUXpQvVl2xhLvsUnGCcsZIf+QHJ5xqUcU6Zlt+/2zfPV9
-	 7n9RaaUil4x3C0oxid5LHNDDb2jKUAOstkolaDnQ7HY3Z2wNpa+PZmytOL2Zj5ubZ6
-	 csOb6VCzHzYOnyC1SOhH8M8dIsJw43r+Pp6cxiBs1fMdAF43C7KXLCZm2gF8m1PQ23
-	 B7Cd646fZMGnxWxIsgx5FGioCTTzzWlN9Rev96rNOGk1kQK+6TeTqNJEsYuacaQ75j
-	 OH4xqJqeParAErbiFaoeLBKmnkOJQKK9eS6eyd5zvrlAeco9huWAmqWcdUN7t5vXA7
-	 esxdnoak5Ty5Q==
+Content-Transfer-Encoding: 8bit
 
-DQoNCj4gLS0tLS3pgq7ku7bljp/ku7YtLS0tLQ0KPiDlj5Hku7bkuro6IFhpbiBMb25nIDxsdWNp
-ZW4ueGluQGdtYWlsLmNvbT4NCj4g5Y+R6YCB5pe26Ze0OiAyMDI25bm0N+aciDE35pelIDIzOjUz
-DQo+IOaUtuS7tuS6ujogTGksUm9uZ3FpbmcgPGxpcm9uZ3FpbmdAYmFpZHUuY29tPg0KPiDmioTp
-gIE6IERhdmlkIEFoZXJuIDxkc2FoZXJuQGtlcm5lbC5vcmc+OyBJZG8gU2NoaW1tZWwNCj4gPGlk
-b3NjaEBudmlkaWEuY29tPjsgRGF2aWQgUyAuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47
-IEVyaWMNCj4gRHVtYXpldCA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT47IEpha3ViIEtpY2luc2tpIDxr
-dWJhQGtlcm5lbC5vcmc+OyBQYW9sbw0KPiBBYmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+OyBTaW1v
-biBIb3JtYW4gPGhvcm1zQGtlcm5lbC5vcmc+Ow0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBs
-aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IOS4u+mimDogW+WklumDqOmCruS7tl0gUmU6
-IFtQQVRDSF0gbmV0OiBpcHY2OiBmaXggYSBwb3RlbnRpYWwgdXNlLWFmdGVyLWZyZWUgaW4NCj4g
-aXA0aXA2X2Vycg0KPiANCj4gT24gRnJpLCBKdWwgMTcsIDIwMjYgYXQgMTA6MzPigK9BTSBsaXJv
-bmdxaW5nIDxsaXJvbmdxaW5nQGJhaWR1LmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBGcm9tOiBMaSBS
-b25nUWluZyA8bGlyb25ncWluZ0BiYWlkdS5jb20+DQo+ID4NCj4gPiBGaXggYSB1c2UtYWZ0ZXIt
-ZnJlZSBidWcgaW4gaXA0aXA2X2VycigpIHdoZXJlIHJ0LT5ydF9mbGFncyBpcw0KPiA+IGFjY2Vz
-c2VkIGFmdGVyIHRoZSByb3V0ZSBlbnRyeSBvYmplY3QgaGFzIGJlZW4gcmVsZWFzZWQgdmlhIGlw
-X3J0X3B1dChydCkuDQo+ID4NCj4gPiBJZiBpcF9ydF9wdXQoKSBkZWNyZW1lbnRzIHRoZSByZWZl
-cmVuY2UgY291bnQgdG8gemVybyBhbmQgZnJlZXMgdGhlDQo+ID4gcnRhYmxlIHN0cnVjdHVyZSwg
-cmVhZGluZyBydC0+cnRfZmxhZ3MgaW1tZWRpYXRlbHkgYWZ0ZXJ3YXJkIHJlc3VsdHMNCj4gPiBp
-biBhIHVzZS1hZnRlci1mcmVlIHBvaW50ZXIgZGVyZWZlcmVuY2UuDQo+ID4NCj4gPiBGaXggdGhp
-cyBieSBjYWNoaW5nIHJ0LT5ydF9mbGFncyBpbnRvIGEgbG9jYWwgdmFyaWFibGUgYmVmb3JlIGNh
-bGxpbmcNCj4gPiBpcF9ydF9wdXQoKS4NCj4gPg0KPiA+IEZpeGVzOiA3NzU1MmNmYTM5YzQgKCJp
-cDZfdHVubmVsOiBjbGVhbiB1cCBpcDRpcDYgYW5kIGlwNmlwNidzDQo+ID4gZXJyX2hhbmRsZXJz
-IikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBMaSBSb25nUWluZyA8bGlyb25ncWluZ0BiYWlkdS5jb20+
-DQo+ID4gLS0tDQo+ID4gIG5ldC9pcHY2L2lwNl90dW5uZWwuYyB8IDQgKysrLQ0KPiA+ICAxIGZp
-bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZm
-IC0tZ2l0IGEvbmV0L2lwdjYvaXA2X3R1bm5lbC5jIGIvbmV0L2lwdjYvaXA2X3R1bm5lbC5jIGlu
-ZGV4DQo+ID4gYmY4ZTQwYS4uOTg0Y2IwYyAxMDA2NDQNCj4gPiAtLS0gYS9uZXQvaXB2Ni9pcDZf
-dHVubmVsLmMNCj4gPiArKysgYi9uZXQvaXB2Ni9pcDZfdHVubmVsLmMNCj4gPiBAQCAtNTY5LDYg
-KzU2OSw3IEBAIGlwNGlwNl9lcnIoc3RydWN0IHNrX2J1ZmYgKnNrYiwgc3RydWN0DQo+ID4gaW5l
-dDZfc2tiX3Bhcm0gKm9wdCwgIHsNCj4gPiAgICAgICAgIF9fdTMyIHJlbF9pbmZvID0gbnRvaGwo
-aW5mbyk7DQo+ID4gICAgICAgICBjb25zdCBzdHJ1Y3QgaXBoZHIgKmVpcGg7DQo+ID4gKyAgICAg
-ICB1bnNpZ25lZCBpbnQgcnRfZmxhZ3M7DQo+ID4gICAgICAgICBzdHJ1Y3Qgc2tfYnVmZiAqc2ti
-MjsNCj4gPiAgICAgICAgIGludCBlcnIsIHJlbF9tc2cgPSAwOw0KPiA+ICAgICAgICAgdTggcmVs
-X3R5cGUgPSB0eXBlOw0KPiA+IEBAIC02MjcsMTAgKzYyOCwxMSBAQCBpcDRpcDZfZXJyKHN0cnVj
-dCBza19idWZmICpza2IsIHN0cnVjdA0KPiBpbmV0Nl9za2JfcGFybSAqb3B0LA0KPiA+ICAgICAg
-ICAgICAgICAgICBnb3RvIG91dDsNCj4gPg0KPiA+ICAgICAgICAgc2tiMi0+ZGV2ID0gcnQtPmRz
-dC5kZXY7DQo+ID4gKyAgICAgICBydF9mbGFncyA9IHJ0LT5ydF9mbGFnczsNCj4gPiAgICAgICAg
-IGlwX3J0X3B1dChydCk7DQo+ID4NCj4gPiAgICAgICAgIC8qIHJvdXRlICJpbmNvbWluZyIgcGFj
-a2V0ICovDQo+ID4gLSAgICAgICBpZiAocnQtPnJ0X2ZsYWdzICYgUlRDRl9MT0NBTCkgew0KPiA+
-ICsgICAgICAgaWYgKHJ0X2ZsYWdzICYgUlRDRl9MT0NBTCkgew0KPiA+ICAgICAgICAgICAgICAg
-ICBydCA9IGlwX3JvdXRlX291dHB1dF9wb3J0cyhkZXZfbmV0KHNrYi0+ZGV2KSwgJmZsNCwNCj4g
-TlVMTCwNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZWlw
-aC0+ZGFkZHIsIGVpcGgtPnNhZGRyLA0KPiAwLCAwLA0KPiA+ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBJUFBST1RPX0lQSVAsDQo+ID4gLS0NCj4gPiAyLjkuNA0K
-PiA+DQo+IEhhdmUgeW91IGFscmVhZHkgc2VlbiBhbnkgcHJvYmxlbSB0cmlnZ2VyZWQgYnkgdGhp
-cz8NCj4gDQo+IEkgZG9uJ3QgcmVhbGx5IHRoaW5rIHRoZXJlJ3MgYSB1c2UtYWZ0ZXItZnJlZSBp
-c3N1ZSBoZXJlLg0KPiANCj4gVGhlIGVudGlyZSBJUHY2IGlucHV0IHBhdGgsIGluY2x1ZGluZyBJ
-Q01QdjYgZXJyb3IgaGFuZGxpbmcsIHJ1bnMgdW5kZXINCj4gcmN1X3JlYWRfbG9jaygpLiBTaW5j
-ZSBkc3RfcmVsZWFzZSgpIHVzZXMgY2FsbF9yY3VfaHVycnkoKSB0byBkZWZlciB0aGUgYWN0dWFs
-DQo+IGZyZWVpbmcgdW50aWwgYWZ0ZXIgdGhlIFJDVSBncmFjZSBwZXJpb2QsIGFjY2Vzc2luZyBy
-dC0+cnRfZmxhZ3MgYWZ0ZXINCj4gaXBfcnRfcHV0KHJ0KSBpcyBjb21wbGV0ZWx5IHNhZmUgaW4g
-dGhpcyBjb250ZXh0Lg0KPiANCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3LiBIb3dldmVyLCBUaGUg
-aXNzdWUgaXMgdGhhdCBhZnRlciBpcF9ydF9wdXQocnQpLCB0aGUgcnQgcG9pbnRlciBtYXkgYmUg
-bG9naWNhbGx5IGZyZWVkIGlmIHJlZmNudCBkcm9wcyB0byB6ZXJvLCBhbmQgZGVyZWZlcmVuY2lu
-ZyBpdCBhZnRlcndhcmRzIGlzIGlsbGVnYWwgZXZlbiBpZiBtZW1vcnkgaXNuJ3QgcmVjeWNsZWQg
-aW1tZWRpYXRlbHkuIFRoZSBwYXRjaCBhdm9pZHMgdGhpcyBieSBjYWNoaW5nIHJ0LT5ydF9mbGFn
-cyBiZWZvcmUgdGhlIHB1dCBvcGVyYXRpb24uIFRoaXMgaXMgYSBkZWZlbnNpdmUgZml4IGFnYWlu
-c3QgcG90ZW50aWFsIFVBRiByZXBvcnRlZCBieSBzdGF0aWMgYW5hbHl6ZXJzLiANCg0KVGhhbmtz
-DQoNCltMaSxSb25ncWluZ10gDQoNCg0KPiBUaGFua3MuDQo=
+mana_create_rxq() returns a struct mana_rxq pointer and returns NULL on
+any failure. The caller, mana_add_rx_queues(), cannot tell what went
+wrong and hardcodes the error as -ENOMEM. As a result the actual failure
+reported by the lower layers (for example -EPROTO from a failed HW
+request) is masked and every RX queue creation failure looks like an
+out-of-memory error.
+
+Change mana_create_rxq() to return an int and pass the created rxq back
+to the caller through an output parameter. The caller now propagates the
+returned error code directly instead of substituting -ENOMEM.
+
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 9d9bfd116dab..9162e356e0c1 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2811,9 +2811,9 @@ static int mana_create_page_pool(struct mana_rxq *rxq, struct gdma_context *gc)
+ 	return 0;
+ }
+ 
+-static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+-					u32 rxq_idx, struct mana_eq *eq,
+-					struct net_device *ndev)
++static int mana_create_rxq(struct mana_port_context *apc, u32 rxq_idx,
++			   struct mana_eq *eq, struct net_device *ndev,
++			   struct mana_rxq **rxq_out)
+ {
+ 	struct gdma_dev *gd = apc->ac->gdma_dev;
+ 	struct mana_obj_spec wq_spec;
+@@ -2829,7 +2829,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	rxq = kvzalloc_flex(*rxq, rx_oobs, apc->rx_queue_size);
+ 	if (!rxq)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	rxq->ndev = ndev;
+ 	rxq->num_rx_buf = apc->rx_queue_size;
+@@ -2923,14 +2923,16 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ out:
+-	if (!err)
+-		return rxq;
++	if (!err) {
++		*rxq_out = rxq;
++		return 0;
++	}
+ 
+ 	netdev_err(ndev, "Failed to create RXQ: err = %d\n", err);
+ 
+ 	mana_destroy_rxq(apc, rxq, false);
+ 
+-	return NULL;
++	return err;
+ }
+ 
+ static void mana_create_rxq_debugfs(struct mana_port_context *apc, int idx)
+@@ -2963,9 +2965,8 @@ static int mana_add_rx_queues(struct mana_port_context *apc,
+ 	int i;
+ 
+ 	for (i = 0; i < apc->num_queues; i++) {
+-		rxq = mana_create_rxq(apc, i, &apc->eqs[i], ndev);
+-		if (!rxq) {
+-			err = -ENOMEM;
++		err = mana_create_rxq(apc, i, &apc->eqs[i], ndev, &rxq);
++		if (err) {
+ 			netdev_err(ndev, "Failed to create rxq %d : %d\n", i, err);
+ 			goto out;
+ 		}
+-- 
+2.43.0
+
