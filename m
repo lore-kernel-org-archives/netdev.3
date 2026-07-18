@@ -1,410 +1,232 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010011.outbound.protection.outlook.com [52.101.201.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9839631E83A
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 22:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784413542; cv=none; b=IKBpZyVihA4g9SAsZv8vvRHPdUBOi4+3bAnEMIm5laMoIPuIm5h2jmKrHfJBnMy+QBmgsoG8BSRhZHkZdbHuLUY+dR9TwDC0766nxrS+owvOpxSqtWlj4TggE5svdyyB46GvCIEZ469m5CVCZ0Aqa2yVuMiL/SesxcIr088+veo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784413542; c=relaxed/simple;
-	bh=iAJId+fn/avIvC3CYFnfQ7MRSLvCzuWWCqz5z9IG35Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ki03/IdHKEUpFUekClrQmWuGhAJZQxjHnW3o1vhcDysLRvVroexoQn8AqEV1t8XSbsIRZLZP4IQApdx1wD9MB1HL92sPcLq0As1PqqHbqy0sK2qv7DMTxCrIgaJmPkWvBRriOtAJGjoTUPp9hht8J+aikwueQ4rOBk+JLUVwlK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kozkYBnV; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2A014ABE
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 22:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784414066; cv=fail; b=B5z44iMM/nnxvS/V0MRfh8IEyl/Uc5pN47mnBDqbdZtds+v8asbeIZtKO5J4vSzYgWCw8yBK1bj0ZkJ3G/9yif91MT2Vs/aKZ1I9nl4TbzjWaEQQYprjO1yRmkEeaMTxwreEK1jZRRAjcan943ODet4QTC7qFE/fdIq3YX3zK+A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784414066; c=relaxed/simple;
+	bh=8vb+2PJWsFc9HN0nnNcUg4LPTQvUxPyJ+wzWdQ6jEhU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hoX2FfeMtOU7XOrQls6ajAER6HQbTG44gY9fF0dKWrOfRlS7CpmY4gqRMRVsx7HLsLH63WAKeGt8YErbXoRObzt56Usn5nt+OSrhy+lHbePp5PL5Nkk+dme3WUdpBpLZrywxUgXRJBEJv4KWwKuv4BRErgTeZ/daS6dD9EiKZdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LvW1DcTq; arc=fail smtp.client-ip=52.101.201.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kozkYBnV"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-473987fc217so911024f8f.0
-        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 15:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784413539; x=1785018339; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1+wiYmKLRRINoC4qepelpsntaD3E21cdrWqd0ORzOqg=;
-        b=kozkYBnV1aofr3MIfUiQ6g3MTTg5nqpv1Fm2oALM/bxL4vmVQN57tlinf3oFQx7GCH
-         xjRoZsQOnnva0KcQkmuDDhaprhw3OnkDd6jNVLaGJOuSA87s60tCH+tBQnx/8A7mtl67
-         Qd840cO68HFqeHn85jnTCEJZQIu3dMfP+fpgnUE611ZH57WX4fGKAsrTToGg/Kabx8tx
-         0FpHQwa+m8Yyy55gj2QbLBBWzXkGBQTefT1nqGAtSc/Zxd5ySb/ktamg9axbbODrvyZD
-         VD/KO3IblIuNgd5KAaYIvPGWK+Idtd4t92zKZV4uzeQR+7MmJ5zzj0e45QxsuyYKJcoL
-         fp7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784413539; x=1785018339;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1+wiYmKLRRINoC4qepelpsntaD3E21cdrWqd0ORzOqg=;
-        b=HtOkyD5BcU5MZqjSg7Jq6npMmUhUtHDgV0xSqYLV9TSZKzTlhPRE8t8FwDadgbQub6
-         Lqm7SdOJ08awmpQ3NEXxrVvCDp/QNfqUiO3yRaC3H3mLDxXNY6wkL3ht+0JrbSVpZTOh
-         XT/Prd39q2nfJqcIvxPLqmjSA2eZNEGRt6JvAM6VSAmUfh621oJdvlIeY3xCksytmiM6
-         X7LY1sZlD4W+TbbPux0oYENB7r92Z4BlWj9p+h/ov1p06ALmtkEFhnv8FLZREtd/ETLA
-         9N4kPcoLRDfFWOotQAJ/ETxm07RPCy7LQTXQzysFx0A8HSJKIFvOgVIQw5O6sNsL8f0x
-         BPfg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqw04pnOFHJAcNBrB8jj8hjo4zfghXHJw7lJfsWyHBSCZqWpKO11MLmGetF6PebZj8o/EggCt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRdhdsNL7j9MzO5LxH51nwzBROBTwI3PGzqD6k5uC3Gd3XMNV3
-	EDEuvVUkLs/In3GhN5V21LaLBtQODqZVInbYKiFAHtoyHxsiHGaeGDSf/2AKXA==
-X-Gm-Gg: AfdE7cmpHYdnQOHdfNclKz/fawNMfU+OP/N9ySEc1h2Ytsstif/4kxrLE2v1lO+lImL
-	T1p8+PbMti3m3Lb5SHwkthA0ZnvoYSYDMPjiLv3+LCRNcN37MkxJJwlNjBm2xTPf0u6yipAZBmd
-	bB0FhkiCfdvmCVWAwVsfvy8GsYfVTzvNNe3ENwbFyMG6rYzz/H72+Tcnq9tpg+q2nZC+SJKFK0J
-	I+2e2rzk+L9A9YV9PHnmqWVYoGh3l1iTsSDBOaPNbJKWa4xKvfyown1WIcda5IJxoWngglT3GB7
-	tVh8omlNjOsGkb+LV8NAy9Vclq0WG00P9BR/W/e8cCkzL/wERjLcsUZTcK4yUJOO69U75e3C2SO
-	Z8IluCZvLvjBb8JBIheniJI8iiJTEkEm7dAD8MXm7b5gUzIiWvMtuC07aGoo5DSfc6DD0zQ==
-X-Received: by 2002:a05:6000:2892:b0:476:7e04:c399 with SMTP id ffacd0b85a97d-47f62329264mr6004655f8f.7.1784413538527;
-        Sat, 18 Jul 2026 15:25:38 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d40e:d500:2769:8cc0:9049:e503])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49acesm14770232f8f.6.2026.07.18.15.25.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 15:25:37 -0700 (PDT)
-Date: Sun, 19 Jul 2026 01:25:35 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, andrew+netdev@lunn.ch,
-	Jiri Pirko <jiri@resnulli.us>,
-	Donald Hunter <donald.hunter@gmail.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/4] genetlink: apply reject policy for split
- ops on the dispatch path
-Message-ID: <20260718222535.7lfuelgt6u63qqal@skbuf>
-References: <20260311032839.417748-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LvW1DcTq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OA22L2edmt+1lrWMUmS5FEUPlIR9L2egHQXB1HHmRc0DhLzZO0t3vO8jjnRGtu0K6BdEITWk876TIruokmmdeghT3bPIOYutUuTmcB0XBHqLk+9PfdJWdsAacEKAsW1JwPR+kqtkCgIlWZIcVEQcG5KnaCFGjkFjzh/OjA2SwJTrOquwC8sgadkTcLh++O9sp5xvGhqTfhlHymU2FBnf/9uTCLIwfoZRTDMchgEMcEviplIdTiU02SRitKnCPr/sW7b1syfVp4r8A6zcx80XDced6KlYNXwXHTNBzr/BZLZtsb7Dcbee6/nPINB4GVVJx9Wuevqpk0L56U/SyY+GRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u+oopAvmwVcDf67nLv5fq05Hfrq+QOAJJQ0JOcMEuBU=;
+ b=J4OltL4HaKvX9BRVBu0CuL/a4S+2cRlFUZQgACvmVcWOwBfOmnnpxRoqQsLoKcxAo0MMi+oF66zQ8usTno6Fpjx3+mdawNBooU1WkK0359wWDVW0kmxVCrPALgZCMs4sCQiH+hQGEB19V8MGuxxKkIT4/AqVJqnr8jaUwmFv9ULstYu7ecMtJVSbF5hZdgt+fvXXYoeg+x9r/VbXtAuCrwExrrspN/0Bl48yriZZkkof6ECw6kGCB18eE81U0OdwHf4jSaxzj2zCeWP3nC70rq2V9z5e9YFCdiyq0QQnWsqRTH0HEMYKxZGeJTepQrsFDT0Q8w/EjfS8es4r4M7h1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u+oopAvmwVcDf67nLv5fq05Hfrq+QOAJJQ0JOcMEuBU=;
+ b=LvW1DcTqsai40Qub7maipqwTaUKOn6GBfIHWMamPPygyyvOp9MPio8rJdzJgkNxrD8EziyOK6Bk/qL84BWsfU4rRWL0HIWXHSk+KPq06yjDR8d6PsU9VOaDDuZmR46esJCc2BzaING1NF80dLNYCLMXRa6DQb5gxd/apfoolz7c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN2PR12MB3485.namprd12.prod.outlook.com (2603:10b6:208:c9::22)
+ by MW4PR12MB7440.namprd12.prod.outlook.com (2603:10b6:303:223::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.15; Sat, 18 Jul
+ 2026 22:34:19 +0000
+Received: from MN2PR12MB3485.namprd12.prod.outlook.com
+ ([fe80::7ac:5acc:f8b7:65c9]) by MN2PR12MB3485.namprd12.prod.outlook.com
+ ([fe80::7ac:5acc:f8b7:65c9%4]) with mapi id 15.21.0223.011; Sat, 18 Jul 2026
+ 22:34:19 +0000
+Message-ID: <780faaf8-154a-4fc8-8fcf-ec3c75ce4d11@amd.com>
+Date: Sat, 18 Jul 2026 15:34:16 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/6] pds_core: add PLDM firmware update support via
+ devlink flash
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, brett.creeley@amd.com,
+ eric.joyner@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, jacob.e.keller@intel.com,
+ nikhil.rao@amd.com
+References: <20260708212222.296202-4-nikhil.rao@amd.com>
+ <20260716072042.186444-2-horms@kernel.org>
+Content-Language: en-US
+From: "Rao, Nikhil" <nikhirao@amd.com>
+In-Reply-To: <20260716072042.186444-2-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0036.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::11) To MN2PR12MB3485.namprd12.prod.outlook.com
+ (2603:10b6:208:c9::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311032839.417748-1-kuba@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3485:EE_|MW4PR12MB7440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 148ad411-cef6-4ace-20d4-08dee51cb4f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|6133799003|56012099006|4143699003|5023799004|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	aFxP/n6gxg3fCmD9jFNO23PyLtcBxTVXBp/JsesVfiWK2V7RNqD3Cg6z2AW7b2w4LFxfhBtyOg6TiDUFgJ2gWFpdxRQ/becL7m1jorAUjjXRQrQuGijTqJ7hsHuUoXn6wK4Mpt6L13rDw+H+rDYzZlA7ynQ6+jzH+WdsS2CmjxoVyDM1a22v+tztWtPuSiSxZmkt4ZbWNIU6aCtqJZSi1QdNX7BVQT+NPvPwanMwDyQ2CgnSPcnofZpCjZs0zE8KTouwvDwPmMjOOqHZQME0X33qZg1bEL1Z4QzYnX+s2F/ObO+RXgJtP974PqIUad5uRLZ2gSfX3/sBEbe9DDkVmxDc1DmAhKSfzmuTo9Aj45hYil/NPd1GT9y9uFqMJYf6WNl+JzM9mbTtoM9YxSxlFuWNgV9Q1HcAQ/ucs2nnBzmeZMwTwIvZqXiCxmNjgtL22pf9oaBpu4t4ujFH5MNx59Oiy8WRjzj0F4ZtJcSKYoACA/RNsAhM0JBR22+EwH82VqnIjZQk+8Lcb890jN3jlIYgFji/4QvOLhGPbczlXoJPWqxmlPLUWxc6axKMWNkiowZz6AGA+SNhsKYM8GMG9YAnl0rPpY5skUm9ZN80f2E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3485.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(6133799003)(56012099006)(4143699003)(5023799004)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T0FFZ2RMNXVudGs1MHlVUjJWSnF4Yk9KVEh4SktDay9uNEVnSEc1aDZHQmo1?=
+ =?utf-8?B?MStGRGdWV1p1Mm1sT2NsOGFEUkllS2oyZmVBc0NYVFR2bkpDNit6ejFMVWJa?=
+ =?utf-8?B?RHBaT1VaZC9IZlZ0Mm9DY3JTc2E1Nm9IMHlSOWpZTUloSnBVVG1xc0RncFhl?=
+ =?utf-8?B?REFqdHhsVWFZUHRjMVN1Vk1FdW5Lc0lDazdMbXJXalpWSm9rd0FBQWpxbjRt?=
+ =?utf-8?B?Ymd2NkxkWVE1YjFhV2V0RnRyd3YySTdsS2JKR2plNm4rT2RVb2YwaGg1RnFp?=
+ =?utf-8?B?Z0t1Qlo1aGNsdUhSdUluY1NjenBtL2VnN1FxcDN1cFRUOGN2b0FUc0hxSFV2?=
+ =?utf-8?B?d1I3ckJudktZT2ZQV3h5VjV5cXhTc0EvUURVVWozNXNSS3FubkFnMmpYZlpW?=
+ =?utf-8?B?dE5RUzB2UG9PM2NLQmNzbDZCZjZ4R0JabzVsSk9YYW1INUdiRzlpS3BiWFNm?=
+ =?utf-8?B?NG1YN0REUUdIYXBXb1E5cmNTOXo0eThwVDcwWHRma3lDdWlUUEV0SEM0blps?=
+ =?utf-8?B?Y3JENEpUZ1psZDFQaXB1Y0NJOXJ3MUtzcXM1Y1lsNXNBckFsWi9oVHFqb3R3?=
+ =?utf-8?B?NnNiaVMyTG56Vm1VUWhaOWl6cVl1WnZ4YndDSyt3MTArd2xoS0FuOHlqanJ6?=
+ =?utf-8?B?WXp1LzY1MlVZRFNBeFZNdjlRNlk1RU96MVJDNG41UFowblBLWjVqVGRHcWhq?=
+ =?utf-8?B?aVVHb0dGVm15aUNRbEFMNjVJK0E2eUROUEpONHpjc09wMkN3Uy9ZVittdDdq?=
+ =?utf-8?B?MXdnSVh3cUF3bC81ekFDdDVndUl4U2I5UGl3ekt6WFdWRjQ0ejd4czZBZXJX?=
+ =?utf-8?B?bHNCbHowR1B3RlJ6OUJIUUdjV0pJVk9JWXcxUmpHM3dFc3F1cDkzTDF5dUVa?=
+ =?utf-8?B?K2JjSFdPeGY5WWNjZElqYk5VeDRKYzl0aHQvYTJQc3lTSTBSSzJVWWpva2U5?=
+ =?utf-8?B?YmovWVc1MllrVUFkMERKaC8vankrY2htOUZoK1FnMHdyY1RCNjhXRS8rNm5Y?=
+ =?utf-8?B?azZ0TU5wbjFjL2RKTzBPZS9VQmFkSDlHZ0o2K2NNbEpUS3pDQ29XbW1QVkdN?=
+ =?utf-8?B?TlV0Zm9QcitFYzlabzJRWXZCbW1LTmJqQzlEaTVXTXIrazRBTE9KMnFIWmVm?=
+ =?utf-8?B?RUZmb0RrcEFsK2k1YTB4RnR3R3NKWElBOGRJaFlxbjdVeW9tVmMwYVc5RTVy?=
+ =?utf-8?B?UkNsRlBDNWlobkhESkpnUVBQMUw1R0dyczdndjlTRWltVkI1ZmNCNTg2U1Jw?=
+ =?utf-8?B?WFQ5cmU4c1puS0IvRmVFbWxGMm42emV1TGJuSDd3VGFlUlpqOURKbDZycEl1?=
+ =?utf-8?B?Vyt2d3RNeGVQbXdCejhpSytsdFVZancvRVlMSk01bFVmcEpaUG9hK21rbU1N?=
+ =?utf-8?B?c1VZelVVYWhLK05rLzdQZmFkOWFjc0J2eHJtVXczR0VGZC9Gd2lkS2xrM0dO?=
+ =?utf-8?B?WGJSckJUbGV2aEdNVm5jMDg3WEJwb0NXRVVuSHd2NXl5RVlaMjI1OU5weGVt?=
+ =?utf-8?B?d1ZCb0hYOXh3SkRqaWYzVmI4VGx6SEIzN2lOQnZFeFVteGJ2ZUJhT3hxekRZ?=
+ =?utf-8?B?endld3ZiVVZTdktzWTQ5cnFDZ0Y2aDBDdUxJZ1NOclpuWXRuT2I0eGMwNEU4?=
+ =?utf-8?B?bXNQTExZZVBiTUYwZ2FEYjE5SmVpb2V5VS9UMTBIbUlERmMreWVJOWR2Vk9i?=
+ =?utf-8?B?b251ZjQzRFVSbTJFR1JncUZBSW9QM3lhYnFtQlg5YWdndVNrandiSkJ0aER0?=
+ =?utf-8?B?T0ZPdUZuby91d29MK3NUam1PK3BzK0dvRGhiREN6MUxxaGIvSDc4MG1NY1Nt?=
+ =?utf-8?B?K1d1ZWd4UjZRSy9PejNrUlZlVWxzSDZlakFkTlcxcHRlNlZua2VDVlNobmhO?=
+ =?utf-8?B?WTV1REwzTG9qN3MzU0ZEOU9DSFJZZ1FOdTU0L3YxQ0lwUTI3UGlqR21uSytk?=
+ =?utf-8?B?QWZLbHJIMGl1MHJ6UVRrU1M2TTNwY1JDL3A1THFwOU9PSFVqMDArZXJKNWZQ?=
+ =?utf-8?B?d3JwR3BGVFhlK1ZmcFEwNkh0M20vd01uREpXcklWOUpJYXN0ejhNR3g1UlpZ?=
+ =?utf-8?B?TmRpSGdpNEdDaDY1ZC9ab3hRdWE4RWlNRnNVMnhia3ROREZQa2MyRVNHcDFM?=
+ =?utf-8?B?aHVtTXhsSGlIMjJxSXdNK09LTUdUeWE3N0pVMzMyeGU1UHhlaHl0Vi82Q0w0?=
+ =?utf-8?B?NGJTQ1YyeDJXVW1PVFlXRldXRGRQbFVyeGo3UndhY0d0aUcvcTNabzlvakI0?=
+ =?utf-8?B?UXRCbkZsK0pSRmtwdUFZV0JRNytXelJ5OEJNaENiYWxPdmhqV0J5S2h3a0Ev?=
+ =?utf-8?B?L1B0bVcySzA1Ukl1R0tUNnpqSXVnY3BGSTR4Wk4xWW1JRWR4by9ldz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 148ad411-cef6-4ace-20d4-08dee51cb4f7
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3485.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2026 22:34:19.3253
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tvHgklWlhNgL7b6cRojaR+pUXmBM6PX7vybB656XFX7ccGpGjvn2RZX/Ih6Zyr3JElofqt924qhpANDm2ICS6g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7440
 
-Hi Jakub,
-
-On Tue, Mar 10, 2026 at 08:28:35PM -0700, Jakub Kicinski wrote:
-> Looks like I somehow missed adding default reject policies to commands
-> in families using split Netlink ops. I realized this randomly trying
-> to dump page pools for a specific device and always getting all of them
-> back. The per-device dump is simply not implemented so the request
-> should have been rejected. Patch 2 is the real change, the rest is
-> just accompaniment.
+On 7/16/2026 12:20 AM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> --- Patch [3]: [PATCH 3/6] pds_core: add PLDM firmware update support via devlink flash ---
+> commit 865af5a5208d8bbf12e2bc16faaacfc3c3239978
+> Author: Brett Creeley <brett.creeley@amd.com>
 > 
-> v2:
->  - add patch 1 to avoid breaking devlink
->  - add a lot more tests
-> v1: https://lore.kernel.org/20260307204425.1900467-1-kuba@kernel.org
+> pds_core: add PLDM firmware update support via devlink flash
 > 
-> Jakub Kicinski (4):
->   genetlink: use maxattr of 0 for the reject policy
->   genetlink: apply reject policy for split ops on the dispatch path
->   selftests: net: make sure that Netlink rejects unknown attrs in dump
->   selftests: net: add test for Netlink policy dumps
+> This commit implements PLDM firmware update support in the pds_core driver
+> using the upstream pldmfw API. It allows updating an entire PLDM FW package
+> at once or updating specific firmware components by name.
 > 
->  tools/testing/selftests/net/Makefile          |   1 +
->  net/netlink/genetlink.c                       |  20 +--
->  net/netlink/policy.c                          |   4 +-
->  .../testing/selftests/net/lib/py/__init__.py  |   5 +-
->  tools/testing/selftests/net/lib/py/ynl.py     |  10 +-
->  tools/testing/selftests/net/nl_netdev.py      |  32 ++++-
->  tools/testing/selftests/net/nl_nlctrl.py      | 135 ++++++++++++++++++
->  7 files changed, 186 insertions(+), 21 deletions(-)
->  create mode 100755 tools/testing/selftests/net/nl_nlctrl.py
+>> diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+>> index 84ea502ecb128..b149d29bd2560 100644
+>> --- a/drivers/net/ethernet/amd/pds_core/dev.c
+>> +++ b/drivers/net/ethernet/amd/pds_core/dev.c
+>> @@ -206,15 +206,56 @@ static int __pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+>>        else
+>>                memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+>>
+>> +     if (err != -ETIMEDOUT && err != -EAGAIN)
+>> +             pdsc_deferred_dma_free(pdsc);
+>> +
 > 
-> -- 
-> 2.53.0
+> [Severity: High]
+> Can pdsc_deferred_dma_free() prematurely free DMA memory that the device
+> firmware is still actively accessing?
 > 
+> If a DMA-based devcmd like pdsc_devcmd_send_component() times out after
+> polling and returns -EAGAIN, the DMA mapping is added to
+> pdsc->deferred_dma_list in pdsc_flash_component_chunk(). The firmware update
+> aborts on the host, but the device might still be processing the command in
+> the background.
 > 
+> If an unrelated devcmd (e.g., from a periodic health check) executes and
+> succeeds shortly after, this logic will unconditionally unmap and free all
+> deferred DMA memory. Does this lead to memory corruption or IOMMU faults if
+> the firmware continues to access the freed memory?
+> 
+>>        return err;
+>>   }
+>>
+>> +void pdsc_deferred_dma_add(struct pdsc *pdsc, struct pdsc_deferred_dma *entry,
+>> +                        dma_addr_t dma_addr, void *va, size_t size,
+>> +                        enum dma_data_direction dir)
+>> +{
+> 
+The free is not premature. The devcmd interface processes one command at 
+a time in firmware. A (non-EAGAIN/non-ETIMEDOUT) completion of any 
+devcmd proves the prior DMA is quiesced.
 
-It looks like this patch set broke at least filtered DEVLINK_CMD_GET/
-DEVLINK_CMD_INFO_GET dumps in general and mv88e6xxx_dump in particular
-(https://github.com/lunn/mv88e6xxx_dump).
+> 
+>> @@ -227,6 +268,47 @@ int pdsc_devcmd(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+>>        return err;
+>>   }
+>>
+>> +static int __pdsc_devcmd_with_data(struct pdsc *pdsc,
+>> +                                union pds_core_dev_cmd *cmd,
+>> +                                const void *data, size_t data_len,
+>> +                                union pds_core_dev_comp *comp,
+>> +                                int max_seconds, bool do_msg)
+>> +{
+>> +     int err;
+>> +
+>> +     mutex_lock(&pdsc->devcmd_lock);
+>> +     if (!pdsc->cmd_regs) {
+>> +             err = -ENXIO;
+>> +             goto unlock;
+>> +     }
+>> +     if (data_len > sizeof(pdsc->cmd_regs->data)) {
+>> +             err = -ENOSPC;
+>> +             goto unlock;
+>> +     }
+>> +     memcpy_toio(&pdsc->cmd_regs->data, data, data_len);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but can a concurrent PCI reset unmap the device
+> BARs while the firmware update is actively copying data to MMIO here?
+> 
+> When devlink flash initiates a firmware update, __pdsc_devcmd_with_data()
+> acquires devcmd_lock and begins copying up to 2KB of data via memcpy_toio().
+> 
+> Concurrently, a PCI reset (e.g., via sysfs or AER) triggers
+> pdsc_reset_prepare(), which calls pdsc_unmap_bars() without acquiring
+> devcmd_lock. pdsc_unmap_bars() sets pdsc->cmd_regs = NULL and calls
+> pci_iounmap().
+> 
+> Could this race cause a kernel panic if the firmware update thread dereferences
+> the now-NULL pdsc->cmd_regs pointer or accesses unmapped MMIO memory? The long
+> polling firmware update that repeatedly copies large data blocks might
+> exacerbate this race window.
+This is a valid race. Since this is a pre-existing issue, I will submit 
+a fix to -net.
 
-I didn't follow the split ops development, but here it seems that the
-idea to reject unknown attributes in dumps at the genetlink core layer
-interacts negatively with devlink's use of split ops. See
-
-int devlink_nl_dumpit(struct sk_buff *msg, struct netlink_callback *cb,
-		      devlink_nl_dump_one_func_t *dump_one)
-{
-	const struct genl_info *info = genl_info_dump(cb);
-	struct nlattr **attrs = info->attrs;
-	int flags = NLM_F_MULTI;
-
-	if (attrs &&								\
-	    (attrs[DEVLINK_ATTR_BUS_NAME] || attrs[DEVLINK_ATTR_DEV_NAME] ||	|
-	     attrs[DEVLINK_ATTR_INDEX]))					| Your patch is shunting
-		return devlink_nl_inst_single_dumpit(msg, cb, flags, dump_one,	| this entire branch
-						     attrs);			|
-	else									/
-		return devlink_nl_inst_iter_dumpit(msg, cb, flags, dump_one);   // only this will work
-}
-
-In mv88e6xxx_dump we have the following affected pattern
-(DEVLINK_CMD_INFO_GET netlink command with the NLM_F_DUMP flag which
-also attaches attributes):
-
-static void get_info(struct mv88e6xxx_ctx *ctx)
-{
-	struct nlmsghdr *nlh;
-	uint16_t flags = NLM_F_REQUEST | NLM_F_ACK | NLM_F_DUMP;
-	int err;
-
-	nlh = mnlg_msg_prepare(ctx->nlg, DEVLINK_CMD_INFO_GET, flags);
-	mnl_attr_put_strz(nlh, DEVLINK_ATTR_BUS_NAME, ctx->bus_name);
-	mnl_attr_put_strz(nlh, DEVLINK_ATTR_DEV_NAME, ctx->dev_name);
-
-	err = _mnlg_socket_sndrcv(ctx->nlg, nlh, get_info_cb, ctx);
-	if (err) {
-		printf("Unable to get devices info\n");
-		exit(EXIT_FAILURE);
-	}
-}
-
-In the kernel, the devlink_nl_ops[] split_ops item for DEVLINK_CMD_INFO_GET
-is _not_ defined with a policy for attributes. So your patch rejects it,
-and that causes the regression.
-
-I didn't review the entire devlink code, but I did review the entire
-mv88e6xxx_dump code, and that is the only breakage.
-
-We also have the following unaffected user space calls:
-
-1.
-static void list(struct mv88e6xxx_ctx *ctx)
-{
-	struct nlmsghdr *nlh;
-	uint16_t flags = NLM_F_REQUEST | NLM_F_ACK | NLM_F_DUMP;
-
-	nlh = mnlg_msg_prepare(ctx->nlg, DEVLINK_CMD_GET, flags);
-	_mnlg_socket_sndrcv(ctx->nlg, nlh, list_cb, ctx);
-}
-
-The split_op for DEVLINK_CMD_GET also does not have a policy for
-attributes, but we do not populate attributes (OK). The code does go
-through devlink_nl_dumpit(), so the regression potential is there, it is
-just not triggered with mv88e6xxx_dump.
-
-2.
-static void delete_snapshots(struct mv88e6xxx_ctx *ctx)
-{
-	struct nlmsghdr *nlh;
-	uint16_t flags = NLM_F_REQUEST | NLM_F_ACK | NLM_F_DUMP;
-
-	/* Sending a new message while decoding an older message
-	 * results in problems. So keep repeating until all regions
-	 * snapshots are gone. */
-	do {
-		ctx->repeat = false;
-		nlh = mnlg_msg_prepare(ctx->nlg, DEVLINK_CMD_REGION_GET, flags);
-		mnl_attr_put_strz(nlh, DEVLINK_ATTR_BUS_NAME, ctx->bus_name);
-		mnl_attr_put_strz(nlh, DEVLINK_ATTR_DEV_NAME, ctx->dev_name);
-
-		_mnlg_socket_sndrcv(ctx->nlg, nlh, delete_snapshots_cb, ctx);
-	} while (ctx->repeat);
-}
-
-The split_op for DEVLINK_CMD_REGION_GET *does* have a policy for the
-attributes that we add to this command when emitting it with NLM_F_DUMP.
-
-3.
-static int dump_snapshot_port_id(struct mv88e6xxx_ctx *ctx,
-				 uint32_t port, const char *region_name,
-				 uint32_t id)
-{
-	struct nlmsghdr *nlh;
-	int err;
-
-	nlh = mnlg_msg_prepare(ctx->nlg, DEVLINK_CMD_REGION_READ,
-			       NLM_F_REQUEST | NLM_F_ACK | NLM_F_DUMP);
-
-	mnl_attr_put_strz(nlh, DEVLINK_ATTR_BUS_NAME, ctx->bus_name);
-	mnl_attr_put_strz(nlh, DEVLINK_ATTR_DEV_NAME, ctx->dev_name);
-	if (port != ~0)
-		mnl_attr_put_u32(nlh, DEVLINK_ATTR_PORT_INDEX, port);
-	mnl_attr_put_strz(nlh, DEVLINK_ATTR_REGION_NAME, region_name);
-	mnl_attr_put_u32(nlh, DEVLINK_ATTR_REGION_SNAPSHOT_ID, id);
-
-	err = _mnlg_socket_sndrcv(ctx->nlg, nlh, dump_snapshot_cb, ctx);
-	if (err)
-		printf("Unable to dump snapshot %s\n", region_name);
-
-	return err;
-}
-
-Same discussion for DEVLINK_CMD_REGION_READ. It does have a policy for
-attributes.
-
-
-I'm not sending a patch because I don't know what patch to send.
-
-There are multiple directions, really.
-
-(a) semantically, I don't know whether what get_info() does makes a lot
-of sense. It requests NLM_F_DUMP, requesting a listing of all attributes,
-and it then also passes DEVLINK_ATTR_BUS_NAME and DEVLINK_ATTR_DEV_NAME,
-to filter for a single device out of that dump. That should be semantically
-equivalent to not specifying NLM_F_DUMP, because in the kernel that goes
-through the doit split op for DEVLINK_CMD_INFO_GET (which does have a policy),
-not through the dumpit one. And it even makes more sense - instead of
-dumping and telling the kernel to filter, just get the info for the
-device to which you already have a handle.
-
-I'm personally OK with saying user space is odd in this case, and fixing it.
-If Andrew is OK too and will accept a patch removing NLM_F_DUMP from
-get_info(), I can send this to mv88e6xxx_dump.
-
-But technically it is an UAPI regression, so we should take that at face
-value. Here is where the problems begin - I haven't reviewed all
-possible dumpit commands, and I don't have time to do so.
-
-(b) we can exempt all legacy split ops from your blanket policy rejection.
-Essentially make genl_op_fill_in_reject_policy_split() do the same thing
-as genl_op_fill_in_reject_policy():
-
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 0da39eaed255..61d249b9b089 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -114,7 +114,7 @@ static void
- genl_op_fill_in_reject_policy_split(const struct genl_family *family,
- 				    struct genl_split_ops *op)
- {
--	if (op->policy)
-+	if (op->policy || op->cmd < family->resv_start_op)
- 		return;
- 
- 	op->policy = genl_policy_reject_all;
-
-I think you are not in favour of this approach, because in commit
-e3a5b7f8ef2a ("genetlink: apply reject policy for split ops on the
-dispatch path") you said:
-
-    If anyone reports issues we should probably fill in fake policies
-    for specific ops rather than reverting this.
-
-so in case that remains your desire, we have the following direction:
-
-(c) add attributes to the netlink schema of all devlink commands that
-support dumps (they all go through devlink_nl_dumpit() which parses them).
-
-Essentially the patch below, generated with larger -U25 context for
-clarity, and the tools/net/ynl/ynl-regen.sh output omitted for brevity.
-
---- a/Documentation/netlink/specs/devlink.yaml
-+++ b/Documentation/netlink/specs/devlink.yaml
-@@ -1318,50 +1318,52 @@ operations:
-   enum-model: directional
-   list:
-     -
-       name: get
-       doc: Get devlink instances.
-       attribute-set: devlink
-       dont-validate: [strict, dump]
-       do:
-         pre: devlink-nl-pre-doit
-         post: devlink-nl-post-doit
-         request:
-           value: 1
-           attributes: &dev-id-attrs
-             - bus-name
-             - dev-name
-             - index
-         reply: &get-reply
-           value: 3
-           attributes:
-             - bus-name
-             - dev-name
-             - index
-             - reload-failed
-             - dev-stats
-       dump:
-+        request:
-+          attributes: *dev-id-attrs
-         reply: *get-reply
-
-     -
-       name: port-get
-       doc: Get devlink port instances.
-       attribute-set: devlink
-       dont-validate: [strict]
-       do:
-         pre: devlink-nl-pre-doit-port
-         post: devlink-nl-post-doit
-         request:
-           value: 5
-           attributes: &port-id-attrs
-             - bus-name
-             - dev-name
-             - index
-             - port-index
-         reply:
-           value: 7
-           attributes: *port-id-attrs
-       dump:
-         request:
-           attributes: *dev-id-attrs
-         reply:
-           value: 3  # due to a bug, port dump returns DEVLINK_CMD_NEW
-@@ -1984,50 +1986,52 @@ operations:
-       name: info-get
-       doc: |
-         Get device information, like driver name, hardware and firmware versions
-         etc.
-       attribute-set: devlink
-       dont-validate: [strict, dump]
-       do:
-         pre: devlink-nl-pre-doit
-         post: devlink-nl-post-doit
-         request:
-           value: 51
-           attributes: *dev-id-attrs
-         reply: &info-get-reply
-           value: 51
-           attributes:
-             - bus-name
-             - dev-name
-             - index
-             - info-driver-name
-             - info-serial-number
-             - info-version-fixed
-             - info-version-running
-             - info-version-stored
-             - info-board-serial-number
-       dump:
-+        request:
-+          attributes: *dev-id-attrs
-         reply: *info-get-reply
-
-     -
-       name: health-reporter-get
-       doc: Get health reporter instances.
-       attribute-set: devlink
-       dont-validate: [strict]
-       do:
-         pre: devlink-nl-pre-doit-port-optional
-         post: devlink-nl-post-doit
-         request:
-           attributes: &health-reporter-id-attrs
-             - bus-name
-             - dev-name
-             - index
-             - port-index
-             - health-reporter-name
-         reply: &health-reporter-get-reply
-           attributes: *health-reporter-id-attrs
-       dump:
-         request:
-           attributes: *port-id-attrs
-         reply: *health-reporter-get-reply
-
-     -
-
-But this is where things get a bit more interesting. Technically only
-devlink info-get regressed in mv88e6xxx_dump. Do we fix devlink get too?
-How far should this investigation go? I don't really want to go into a
-very deep rabbit hole. In this sense option (b) may be preferable if
-avoiding UAPI regressions is our main objective.
-
-Thanks for reading what turned out a rather long email, and sorry if I
-got anything wrong. I'm not a netlink expert by any stretch of imagination.
+Thanks,
+Nikhil
