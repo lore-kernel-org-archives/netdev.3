@@ -1,174 +1,301 @@
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795B7342CB4
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 05:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F28A3769FA
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 06:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784354381; cv=none; b=N7ww3bshRxCcyEnoGhnZHoI4N3EnfBByKKlK71eH1FGHnJTCm0mShpGy4lbxIK/t4rNHr2QH3BFZvMpUKJXd9RdJ0IjTkQ9SC7TocnQKXkEpN2gszJqCSwf/WRYoCd+FwgmRKOaJvFBIuxwFDW9GE0hLZrwnJkqNniuWTerYPFE=
+	t=1784357289; cv=none; b=D9B34QeyrFppGDQVkj97wnoFXXYh8sPyAthFmxuXnImYOkc2ryXc7Zmag3DVnI4m+WGu8TPOYznck1DMfHr8YgrWPeMsWkD7vOCtKyWh43IVwCieTf4nFRUyaCLrarD91WeeTY5a+etezeeX8rl705/kG3h/BFWYg1hm2Lv2VvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784354381; c=relaxed/simple;
-	bh=WwnllD/mXuvB0IkE8YIa1I8h+3mzONccwh5at7FCJB8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FgCIEVCnjaKElE7HRgVVhNTA2LQO0wgnKRXMvHKxplaVA+jU84VJcVphuHRTZPR3OUlDrObyq+uzkEI8WvYl8uje/yAcPf9nKVeYXOxQuP3MEZyS7iv4KLUXGnCTOL96+niJqwv4rLM7IgEkOBrz/1rEOpaW8M6NcpQuh7Mlm+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r57EDrSX; arc=none smtp.client-ip=74.125.224.54
+	s=arc-20240116; t=1784357289; c=relaxed/simple;
+	bh=+vSaySc9Hh/0537F1Jmcjz3MfjRSSE/TxDGwc+jkZSY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cpHCtEw6jhAuZuF+y7xfCxSHprblQNfOjQFNbKG6Riyf1kQgWdsy82Tg2z1M8qJHyfJqoauOsgsPJWxvne0TAqrwvQ4o6AfZ0+y0nk29rBjkJlHbdx73aDUOyrKwsnYKNueTWekCZdd6Xi/PRiCGu4b83isK+1zy9aGwPWT/VBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pKeoHCHl; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r57EDrSX"
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-6679d88abdcso5573530d50.2
-        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 22:59:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pKeoHCHl"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cea3004256so98854455ad.0
+        for <netdev@vger.kernel.org>; Fri, 17 Jul 2026 23:48:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784354379; x=1784959179; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=X0DkQ5DXc4HMZaFOZgUFvbIdU0uSFY1GVEzfBo4fxgI=;
-        b=r57EDrSXHj+5UPCvFU4zLUOBDe/sR8Z/+m9ZP6x/ZgyDqCSNHeDMJ8fQFC/SZzhP1Y
-         cPG2LSNR8OWwqsh5HfK9aBwa2SGF3UCXwZMAx5lhAzDHrncNaoYli2ew0Qk4eH/w16Zk
-         NFQS7h+U36nQ7m+/bZiDoRTLc24lrbd8F2KJUrzf7GgQSGPhbejKyAxxwGkqDsIRAMLm
-         mVfcj+Pt+2RnUSOqyDwaoPZ4f+rwSLzsfxV9W6fBs5eVnTbgvdxy8pvnBFoqJIA/J0Le
-         /Jfv49fucKPJyuwiQMOFevSmSuMEnb00Cws16ly8YfUC/3q4BildYAhbQsfwgBkEctqt
-         YOFA==
+        d=gmail.com; s=20251104; t=1784357285; x=1784962085; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fi5mgMDxIBNkaJhSvnua6zIuIuLL2opLvaZY86BAO28=;
+        b=pKeoHCHl51J+PyMmCnao8MNoJdJOkuj7NjAOgPm5ubUGa8L8RCT7kNucTLYaF05xzh
+         yeuEHsQlzkFou32RNaEOJDUG1ttCNBPnmv/qWXi1H4V/iwTffDSnHOLv80v0HwLEYT1w
+         RfzbMFcy//0R20G0wbi8RtUQXTxZo3LGwxWK1t9nFP/YkS/TA/KuXAlg8A61FesEPz5d
+         HB3Ft+KSQajMraeTTyYd8SoZ1WGcKLjpZCgR9OUui3bpgTBdu3F08qzXBvl/fLOqoele
+         DwgMVixIdTpmvJafaRKUd1JFc5oFrbx0yPY4UzlAVgocoFOabM4ZECKidN3HVe261b0R
+         Rm8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784354379; x=1784959179;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=X0DkQ5DXc4HMZaFOZgUFvbIdU0uSFY1GVEzfBo4fxgI=;
-        b=JzIj5mC9GVshzKYS4bZjT6zBeUjjDy4c8vk9LyfSL54G3PU3knS/nLSd8DKGCnSpt4
-         L9tFxmZh57MzS14MQoDKoqu1Y6qYrep34FtyG0KRFQvjuTJ8HQ99ZsCHJcNwnasksHiz
-         j/zO7bZtUG6CRQLEIv10LANW4pawdZxAlO3vBVgXWANtsfTCtFomZezLMS7dNT7qJudS
-         IbGSx5N7XS+Fz3NKmc9tdESKyAUZtMHYJsQnT933iDbFYnA2ypy3dTwl2Dts5SpXLSs1
-         1j2sQ/vGEX+dEZH+b08Tp8/DJqOrwvE32TzpLMQDOj1LUQcomV/C5awDE5pTOKlNOnsK
-         Qugw==
-X-Gm-Message-State: AOJu0Yz8SvvblW+yUSWmVhApT4zRYQP30zRfySzadKXsUmNb25nYU3pJ
-	7SA5WqoiDFOw460bRM/cqJfxF72FuhqzGbnT5jtSSyifFdF6IMlV9yh4al3k93lz
-X-Gm-Gg: AfdE7clkk09kcjn/hShiJiKh9hTTheTohHttIglczkzCPkv5aLgby5MzF29OjqghPPY
-	juyHkteET4Tmp9s4IO2It7eWnPbh5Ch/XsSn/NfosbAC39wI8Cz2lw/+f2J/S6Muu/Bx6+bF9bE
-	JYIlFlXmlsBDUJlt3vZ5Td5pcsy6czhCAzkPu7/zdSfhC0BXRQwQ+MPEiE+irDqi8XrWjudsWvB
-	xf7lI4G2VWaz9wFQp9QpR/vtDQ4KM1SKJ/njRpufB4X3vAHsNiX/w274CrRgxs/de4XoU0sTe4F
-	haTuAQCGwRo8Ig53FWRAblNIoFiORyupoumcyytpnnQMoMZeFLhl5R7Xk0QeWuw57B7FisDALag
-	3acQShVZQZ4F63qn+b3ld2z8fQ8I5xkwLHNNuZutHhnCPrKZv+Kx7k0FxYNvjRq/TN55r0yOOOA
-	+7ZrWMbT2uPAT8p5D/0Q==
-X-Received: by 2002:a53:c58b:0:b0:667:b6a3:c21b with SMTP id 956f58d0204a3-6683bc36b8emr1264477d50.46.1784354379333;
-        Fri, 17 Jul 2026 22:59:39 -0700 (PDT)
-Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6683b80d194sm3081824d50.10.2026.07.17.22.59.34
+        d=1e100.net; s=20251104; t=1784357285; x=1784962085;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fi5mgMDxIBNkaJhSvnua6zIuIuLL2opLvaZY86BAO28=;
+        b=RfOvbo6fyoxYUXGZpDH7kX4hkDAJnH7cDw5t6TlJR0EYWrpDoBYD3vEfvxk038HFt3
+         xf3jqFL+sygZFYK5rExxwJH0dLV5HFlAsiAzlt4jP9LTXV0VZY8jtbLhkFs3RWF8XA0m
+         ccxoF3q8cMZukxjaDgMljiDBqB3RE9hGNTj+CUy01qZITI6BfPWQTru4VukHagP5KIkR
+         s8aB/tZwt65zB7RyIk/1UUZ9A//kkpqgkkeUrPoea5dCAM/XdAqjvb1nKgn4kOSxqqUI
+         H96Ign3xGfe7s6H46DDAjUX3puSocrRejs7OkEdlFxv5zZs5nJrUDj1Ov21vSRlyr20a
+         95+w==
+X-Forwarded-Encrypted: i=1; AHgh+RrfuQyjmHiebegbq+Ic5DjD+pcqEpf2UL9wqk2KIZ9wMAaZxV1LN27cfdiVj3O1YtQ48ILv0Zs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYcYYDheRvZ+sGN1ZWwQqEJ2qYvsRyQfGY8La1/TyaqFY6YmLW
+	bAv8NqTGqPsJy+uB76bLR1ayDZxs97Dz/Nfne8QxNshACKx+Dyqh3BHd
+X-Gm-Gg: AfdE7ckhDa8j2K0O3KSyVh082L95QfAtYEm/d2qRFRfY7HpzPgHJtQraslIADoERtaf
+	D9jdqNCYPAd5XMW1tONXhBBtKbCeZqzJItgaBj4oGZVOAfRU0UXiIWrvWI/IeTStehmWu9MzCEY
+	rQmcwoQ0i0Ais9yc9Zk2Pkw/77R7n39OKEV1ShbAsXKdgCICBIg0ESsgjU3hzWmhZ2r8BS+HUT5
+	+wlRCjrRjD777Vi39u/k0UYhJWTVG6tUexkWNMy9u6YwzLBCDiyLD8Pl1EQpLyDjOEDtc3mtwNX
+	8RewfLFmhl4Eq5F31e3Y0Vhpw0qghpWz0neeLy9KAH2ys8MlOqzCkEyoVrpnKBrXhkrdbH+suDQ
+	GdBEB7SnIcGhAlPNLzLw6/5PV1M3J2r3YH2FjgJrv9oKBQLr7+dvZbkXK8SKj9+/cGyiRxVxQgn
+	9JRSz3k43J4wWzUl64PQ==
+X-Received: by 2002:a17:902:da81:b0:2c6:8d95:fd6d with SMTP id d9443c01a7336-2cf34892342mr60762195ad.21.1784357284838;
+        Fri, 17 Jul 2026 23:48:04 -0700 (PDT)
+Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:9278:f508:9b9:d937])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344b1353sm22975335ad.19.2026.07.17.23.48.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 22:59:38 -0700 (PDT)
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sat, 18 Jul 2026 02:59:05 -0300
-Subject: [PATCH net-next] net: dsa: realtek: rtl8365mb: use devm_mutex_init
+        Fri, 17 Jul 2026 23:48:04 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [PATCH iproute2-next v3] ipmaddr: use RTM_GETMULTICAST to list multicast addresses
+Date: Sat, 18 Jul 2026 15:48:00 +0900
+Message-ID: <20260718064800.103028-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
-X-B4-Tracking: v=1; b=H4sIACgWW2oC/yWM2wrCMBQEf6Xss4EkVCv+iojEdNXjJZbkVAql/
- 27Ux2F3ZkZhFhbsmhmZbynyShXcqkG8hnShkb4yvPUb27mtyQwP5f34HJWTmtYF23muY+9bVGn
- IPMv0C+6RqCbVFw7/pYynG6N+e1iWD6vjajZ8AAAA
-X-Change-ID: 20260718-realtek_mutext-41a072e5cd24
-To: Linus Walleij <linusw@kernel.org>, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luiz Angelo Daros de Luca <luizluca@gmail.com>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-mutex_destroy() is needed while debugging mutex. Instead of calling it
-directly on driver .remove(), just use devm.
+Replace /proc/net/igmp and /proc/net/igmp6 parsing in "ip maddr show"
+with RTM_GETMULTICAST dumps. The kernel dumps IPv6 multicast addresses
+via netlink since the beginning, IPv4 since v6.15 (eb4e17a1d915), and
+reports the group users count via IFA_MC_USERS since kernel commits
+7cb8198761e6 and e1d0f3f08391.
 
-Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+The netlink result is only used when it carries the same information
+as procfs: if the dump fails (e.g. no IPv4 dump support) or any entry
+lacks IFA_MC_USERS, the result is discarded and the procfs parsers
+run as before, so output is unchanged on older kernels.
+
+Link-layer multicast addresses are still read from
+/proc/net/dev_mcast as there is no netlink API for them.
+
+When a device is given, its ifindex is passed in the dump request so
+strict-check kernels filter the dump server side; received entries
+are checked against the ifindex again for kernels that ignore the
+request field. An unknown device keeps printing an empty list.
+
+Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 ---
- drivers/net/dsa/realtek/rtl8365mb_main.c | 15 ++++++++++++---
- drivers/net/dsa/realtek/rtl83xx.c        | 14 +++++++++++---
- 2 files changed, 23 insertions(+), 6 deletions(-)
+Changes in v2:
+- accept_maddr(): only accept RTM_NEWMULTICAST; the kernel never sends
+  RTM_GETMULTICAST in dump replies
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 5ac091bf93c9..c787fdb75413 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -1988,16 +1988,19 @@ static void rtl8365mb_get_stats64(struct dsa_switch *ds, int port,
- 	spin_unlock(&p->stats_lock);
+Changes in v3:
+- accept_maddr(): match RTM_GETMULTICAST again, reverting the v2
+  change; dump replies do carry RTM_GETMULTICAST (RTM_NEWMULTICAST is
+  only used for notifications), confirmed by testing on a live kernel
+
+ include/libnetlink.h |   3 ++
+ ip/ipmaddr.c         | 109 +++++++++++++++++++++++++++++++++++++++++--
+ lib/libnetlink.c     |  26 +++++++++++
+ 3 files changed, 134 insertions(+), 4 deletions(-)
+
+diff --git a/include/libnetlink.h b/include/libnetlink.h
+index e91505d9..518b8714 100644
+--- a/include/libnetlink.h
++++ b/include/libnetlink.h
+@@ -62,6 +62,9 @@ typedef int (*req_filter_fn_t)(struct nlmsghdr *nlh, int reqlen);
+ int rtnl_addrdump_req(struct rtnl_handle *rth, int family,
+ 		      req_filter_fn_t filter_fn)
+ 	__attribute__((warn_unused_result));
++int rtnl_mcaddrdump_req(struct rtnl_handle *rth, int family,
++			req_filter_fn_t filter_fn)
++	__attribute__((warn_unused_result));
+ int rtnl_addrlbldump_req(struct rtnl_handle *rth, int family)
+ 	__attribute__((warn_unused_result));
+ int rtnl_routedump_req(struct rtnl_handle *rth, int family,
+diff --git a/ip/ipmaddr.c b/ip/ipmaddr.c
+index 462b409e..95b703d2 100644
+--- a/ip/ipmaddr.c
++++ b/ip/ipmaddr.c
+@@ -27,6 +27,7 @@
+ 
+ static struct {
+ 	char *dev;
++	int  index;
+ 	int  family;
+ } filter;
+ 
+@@ -207,6 +208,93 @@ static void read_igmp6(struct ma_info **result_p)
+ 	fclose(fp);
  }
  
--static void rtl8365mb_stats_setup(struct realtek_priv *priv)
-+static int rtl8365mb_stats_setup(struct realtek_priv *priv)
- {
- 	struct rtl8365mb *mb = priv->chip_data;
- 	struct dsa_switch *ds = &priv->ds;
- 	struct dsa_port *dp;
-+	int ret;
- 
- 	/* Per-chip global mutex to protect MIB counter access, since doing
- 	 * so requires accessing a series of registers in a particular order.
- 	 */
--	mutex_init(&mb->mib_lock);
-+	ret = devm_mutex_init(priv->dev, &mb->mib_lock);
-+	if (ret)
-+		return ret;
- 
- 	dsa_switch_for_each_available_port(dp, ds) {
- 		struct rtl8365mb_port *p = &mb->ports[dp->index];
-@@ -2010,6 +2013,8 @@ static void rtl8365mb_stats_setup(struct realtek_priv *priv)
- 		 */
- 		INIT_DELAYED_WORK(&p->mib_work, rtl8365mb_stats_poll);
- 	}
++struct maddr_dump_ctx {
++	struct ma_info *list;
++	bool mc_users_missing;
++};
++
++static int maddr_dump_filter(struct nlmsghdr *nlh, int reqlen)
++{
++	struct ifaddrmsg *ifm = NLMSG_DATA(nlh);
++
++	ifm->ifa_index = filter.index;
 +
 +	return 0;
- }
- 
- static void rtl8365mb_stats_teardown(struct realtek_priv *priv)
-@@ -2567,7 +2572,11 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
++}
++
++static int accept_maddr(struct nlmsghdr *n, void *arg)
++{
++	struct maddr_dump_ctx *ctx = arg;
++	struct ifaddrmsg *ifm = NLMSG_DATA(n);
++	int len = n->nlmsg_len - NLMSG_LENGTH(sizeof(*ifm));
++	struct rtattr *tb[IFA_MAX + 1];
++	struct ma_info *ma;
++
++	if (n->nlmsg_type != RTM_GETMULTICAST)
++		return 0;
++
++	if (len < 0)
++		return -1;
++
++	if (filter.index && filter.index != ifm->ifa_index)
++		return 0;
++
++	parse_rtattr(tb, IFA_MAX, IFA_RTA(ifm), len);
++
++	if (!tb[IFA_MULTICAST] ||
++	    RTA_PAYLOAD(tb[IFA_MULTICAST]) > sizeof(ma->addr.data))
++		return 0;
++
++	if (!tb[IFA_MC_USERS]) {
++		ctx->mc_users_missing = true;
++		return 0;
++	}
++
++	ma = calloc(1, sizeof(*ma));
++	if (ma == NULL)
++		return -1;
++
++	ma->index = ifm->ifa_index;
++	strlcpy(ma->name, ll_index_to_name(ifm->ifa_index), sizeof(ma->name));
++	ma->addr.family = ifm->ifa_family;
++	ma->addr.bytelen = RTA_PAYLOAD(tb[IFA_MULTICAST]);
++	ma->addr.bitlen = ma->addr.bytelen << 3;
++	memcpy(ma->addr.data, RTA_DATA(tb[IFA_MULTICAST]), ma->addr.bytelen);
++	ma->users = rta_getattr_u32(tb[IFA_MC_USERS]);
++	maddr_ins(&ctx->list, ma);
++
++	return 0;
++}
++
++static int read_maddr_netlink(int family, struct ma_info **result_p)
++{
++	struct maddr_dump_ctx ctx = {};
++	struct ma_info *ma;
++	int err;
++
++	rth.flags |= RTNL_HANDLE_F_SUPPRESS_NLERR;
++	err = rtnl_mcaddrdump_req(&rth, family,
++				  filter.index ? maddr_dump_filter : NULL);
++	if (err >= 0)
++		err = rtnl_dump_filter(&rth, accept_maddr, &ctx);
++	rth.flags &= ~RTNL_HANDLE_F_SUPPRESS_NLERR;
++
++	/* Kernels that dump multicast addresses but do not report the
++	 * users count via IFA_MC_USERS cannot replace procfs.
++	 */
++	if (err < 0 || ctx.mc_users_missing) {
++		maddr_clear(ctx.list);
++		return -1;
++	}
++
++	while ((ma = ctx.list) != NULL) {
++		ctx.list = ma->next;
++		maddr_ins(result_p, ma);
++	}
++
++	return 0;
++}
++
+ static void print_maddr(FILE *fp, struct ma_info *list)
+ {
+ 	print_string(PRINT_FP, NULL, "\t", NULL);
+@@ -291,12 +379,25 @@ static int multiaddr_list(int argc, char **argv)
+ 		argv++; argc--;
  	}
  
- 	/* Start statistics counter polling */
--	rtl8365mb_stats_setup(priv);
-+	ret = rtl8365mb_stats_setup(priv);
-+	if (ret) {
-+		dev_err(priv->dev, "failed to setup stats\n");
-+		goto out_teardown_irq;
++	if (filter.dev) {
++		filter.index = ll_name_to_index(filter.dev);
++		/* an unknown device has no multicast addresses */
++		if (!filter.index) {
++			print_mlist(stdout, NULL);
++			return 0;
++		}
 +	}
- 
++
+ 	if (!filter.family || filter.family == AF_PACKET)
+ 		read_dev_mcast(&list);
+-	if (!filter.family || filter.family == AF_INET)
+-		read_igmp(&list);
+-	if (!filter.family || filter.family == AF_INET6)
+-		read_igmp6(&list);
++	if (!filter.family || filter.family == AF_INET) {
++		if (read_maddr_netlink(AF_INET, &list) < 0)
++			read_igmp(&list);
++	}
++	if (!filter.family || filter.family == AF_INET6) {
++		if (read_maddr_netlink(AF_INET6, &list) < 0)
++			read_igmp6(&list);
++	}
+ 	print_mlist(stdout, list);
+ 	maddr_clear(list);
  	return 0;
+diff --git a/lib/libnetlink.c b/lib/libnetlink.c
+index 8905e297..edf3a8ba 100644
+--- a/lib/libnetlink.c
++++ b/lib/libnetlink.c
+@@ -336,6 +336,32 @@ int rtnl_addrdump_req(struct rtnl_handle *rth, int family,
+ 	return send(rth->fd, &req, sizeof(req), 0);
+ }
  
-diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-index 90843d52c5a8..35df809a5951 100644
---- a/drivers/net/dsa/realtek/rtl83xx.c
-+++ b/drivers/net/dsa/realtek/rtl83xx.c
-@@ -156,9 +156,17 @@ rtl83xx_probe(struct device *dev,
- 	if (!priv)
- 		return ERR_PTR(-ENOMEM);
- 
--	mutex_init(&priv->map_lock);
--	mutex_init(&priv->vlan_lock);
--	mutex_init(&priv->l2_lock);
-+	ret = devm_mutex_init(dev, &priv->map_lock);
-+	if (ret)
-+		return ERR_PTR(ret);
++int rtnl_mcaddrdump_req(struct rtnl_handle *rth, int family,
++			req_filter_fn_t filter_fn)
++{
++	struct {
++		struct nlmsghdr nlh;
++		struct ifaddrmsg ifm;
++		char buf[128];
++	} req = {
++		.nlh.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifaddrmsg)),
++		.nlh.nlmsg_type = RTM_GETMULTICAST,
++		.nlh.nlmsg_flags = NLM_F_DUMP | NLM_F_REQUEST,
++		.nlh.nlmsg_seq = rth->dump = ++rth->seq,
++		.ifm.ifa_family = family,
++	};
 +
-+	ret = devm_mutex_init(dev, &priv->vlan_lock);
-+	if (ret)
-+		return ERR_PTR(ret);
++	if (filter_fn) {
++		int err;
 +
-+	ret = devm_mutex_init(dev, &priv->l2_lock);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
- 	rc.lock_arg = priv;
- 	priv->map = devm_regmap_init(dev, NULL, priv, &rc);
-
----
-base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
-change-id: 20260718-realtek_mutext-41a072e5cd24
-
-Best regards,
---  
-Luiz Angelo Daros de Luca <luizluca@gmail.com>
++		err = filter_fn(&req.nlh, sizeof(req));
++		if (err)
++			return err;
++	}
++
++	return send(rth->fd, &req, sizeof(req), 0);
++}
++
+ int rtnl_addrlbldump_req(struct rtnl_handle *rth, int family)
+ {
+ 	struct {
+-- 
+2.43.0
 
