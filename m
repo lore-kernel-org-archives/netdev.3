@@ -1,63 +1,63 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EFB385D70
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 09:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835BE385D70
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 09:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784365797; cv=none; b=rX8NJDvdPALTbrIrTCwC4T9yzaX/UZRGt347CJ1M2lEH5u9gqf1gK8ZB7TowKW/x2ijBd3gcWjp9bnhN9k7xxz7aWn86JVokBoqtjYD2sa9fuCZg9rZxvaOYr8D0W/4IVulMT8Ne0J64OzxogAtB9vr9bVFMsB/8zFDqVt1Bz1Q=
+	t=1784365801; cv=none; b=qqWA7rLgY1sPWVEjubv+7p1YH2zCnFhR/ov7JRp70qBw/v3DQnRVcRr2AmpGdWdDgqiT1VH+cUuU+UDCa+5EQIZ/vzgwhqXIEoS0RPFmLmBS8+JCKG7xnyzs+aIDwUcaFq1ItvVYKSBPWAF0vexrqivHGGlxtQxvbcje/inl12s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784365797; c=relaxed/simple;
-	bh=cOiHqROlaX3iAExcJmInGX51hn++nDNac7E4yH5eTYo=;
+	s=arc-20240116; t=1784365801; c=relaxed/simple;
+	bh=V5tbfNHmo+5s0PdsqFK8WHZyVJb6Yux3ai4P97h9D+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/De9U5XTtfEe1+xP46fyH6BAZ3RJy64oF2W7pRD0v4X/HT9lC36FmZIjtGYjEzy27wh2oBUgZ25XvwYiB1NWSbtvgB8VVWV4vRmRCPd2VEmJ6/ri7EadQ8MH0xLIJLRJ2gArxWVIvBbYiJdaYIvV5KBB+Tcws5HnDiK5ELS9a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PZh82k8Q; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=Y+sw1A75cABeW28LU77LM9l0OuKly1DqYd3MpRAP2DaMzHz1ljJoQNA+r9Ov31vo2uhphfPxGsvcVFXFkmCxZNlNvO/4LbSA8C1ui4ykSN4iXLVISUbJuguOvpOf8QVQF4iqpGc0vwNh7bDZSlzrZMhdtsMoPEByA38mF+Dw1hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mjaAjlfN; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZh82k8Q"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso57784025ad.2
-        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 02:09:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mjaAjlfN"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so47363755ad.3
+        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 02:10:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784365795; x=1784970595; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784365800; x=1784970600; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MeDAcowrYv39eI3MVM07Rji0GvDqjfJecP+ZC7wQxRY=;
-        b=PZh82k8QJrDK47lrjtR4gXpD3T283oXbKn+PlEXh32bo0douJ/A8OoD3bBjpt4Jn19
-         Q6MXUWKGQA7GY7j/xlCzibwv6+dwT5bXCEBY5QAW0mYAnnvx4S/X+1/GTRDy0qRY/eYt
-         lTvgH7N0j8Nv9olPhMsBjMyse4MGltJFpoLasP2Toawg/zIDnunPtSCFjkFBfJPnH0NB
-         GWfXiB2oas1YKZ9M2fJzdKZTo4G1pFQPgYpdhD41Cevyi4vCH/kklaadb0beu51fLX2I
-         lmdXtqaXD/KmKYH3X984cG0c0Z5Aa8ADgUUy4J8sO5fvwkulTJHbeQbLFY5DGdVGiIwd
-         ivpQ==
+        bh=J3QOcSKLKobkAtw0/HZfjC/OUXzunAPfppvcy+NSZqI=;
+        b=mjaAjlfNum6htTy6SNYsMwbMpKMjzTl0kuccvzkOt4jASHS77/2bRF49jB9d9BjHOQ
+         RShzDAFtE2I5m+1tgs71P9deaxWjSY7y+7A7x+8X+1LPwBkA4EY8s9bfHPkgDVLuDRYl
+         iwjvZTu+rtmC5KJ1Ekv7gNBEkN/4Z3t6aQqM3puKqE98aTrIxAH5L3mRoPYavX0fDgUn
+         MXisrJaitjLF+r2hcCtDOsq2sQmmHMqJi+Pg4Xdam9hSnMnc6ZlyytbETEMhGGryPfVp
+         2qEETXv8vfv7X2FQpardybFXW0AzM9upumSCMxypvYaW83DL2AKEMUGQaWsYvJSW5VgY
+         eyAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784365795; x=1784970595;
+        d=1e100.net; s=20251104; t=1784365800; x=1784970600;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MeDAcowrYv39eI3MVM07Rji0GvDqjfJecP+ZC7wQxRY=;
-        b=I/sw1BeIxvqW88mPHiCcvWlBDFpvlFv8Jg9kgOEzcBqyZTpnDC0M61K3ggYRUxooUn
-         rbqYW4MLFmfkV4RglO1M1ic2nW+x4YcS7jYsetakyieKbi17NxZYwaM1c9ZkdwiCciMK
-         +fBwcsPqwWNdtuJlAGK9RzMTH4AaOEYBCeKIi/Ap44nMvB4OpKCkc/qEwNlSFmyySzz3
-         VNQJT7OHR8hYOIIC622eBx0DtXOooSk1iv5LOGBtOJJOYB/9RS4+tfCsLYWMhW2kwk98
-         MQnHMaUKVBRJ2/jvQfySW2gQiIMWh3Kaz7PJkZZ0x3j4nsFUKt/XZ9aTAgLVSV/msz7R
-         SZPw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrl4DdeJhbg3h37dJ1tlD6HVoeUq+mMAHd+LBh78f5mvpuICm4RXV9TBzLt3guY+zJ6i0mVeOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9QLS73X827z64T8CXTYb/h7ly2b/W49W/97A+aTdJAZNfNh7F
-	y69TM4ILCuIBwBwje9yowPBq7LyKkrJJTI5wHKosCAkhjgzrjQ4kQEhK
-X-Gm-Gg: AfdE7clz/3yb1t+db2vutmvmk5c8qJwSgGB79lEQeldc6yXbb4QK6E8J5HZ+UKoz9Ec
-	QBVQ1qfIr6QPBJ7MlxEDUYAsbsUjr53sLxVZcJbgK3i5Y0lB2S82roRTa5l32qk0osbfFky7zLy
-	PHCWgRvIRk22A4mCY7T85LPclt9MoP5rFaCfIY4EGfqzcRtpi6i3G0m+kMTy7GKbv6BZ+QDdu1W
-	bnqgouuVtkINVvav5DNl2215qMiSHIosqNPNqMgfS3kKnYUqQHyS09flj4APy0EViOyR4TJhYhO
-	HKf1gjsuAaz79eeajQP+gGlOSu2OG4ARUNk/ptm3nKuGq49t7VglF/UggFaZKJjuQDr0pmqA48/
-	HWb9NjI+pb8OBXVR0S3EID89rujKdgTcCSATQZt7Qn0FCmbvNNaOmRbhXI9qKC9+EFWJcxCHMHn
-	u9upJMOijWvTTsDV9NfHIXYp/2jB9QluBOfVvCcXJy+0HngHvvKA==
-X-Received: by 2002:a17:902:f681:b0:2ca:3e3f:4956 with SMTP id d9443c01a7336-2cf34a35445mr66641645ad.44.1784365794988;
-        Sat, 18 Jul 2026 02:09:54 -0700 (PDT)
+        bh=J3QOcSKLKobkAtw0/HZfjC/OUXzunAPfppvcy+NSZqI=;
+        b=VatJ6oNgQeQ41HFnB5STYLbNbFxrpRoQZdSGJkrtqEG6xrcSfm6IRZKFejVjutP7gP
+         BrHYUk/oYV1DGhig4EzqRluhl5M1KRct6ROsyZ2QL9GHxfjcfcpAYWLGbK1762DVxrw8
+         7Ub6x0Q4syM233v6WMl9u8jcvl0Ekd4XqS5qtIftqeo70jMtp2DfiEel9zchmb3xxu80
+         sp67FybIU9M7wCv2kkUn7MmYD2oSi1LCXODDfFR9WMC1s7F47jnjM1UpA3FGpy2oQwtK
+         nBKu/cB321qrXxB8RJa0yfquWQXQ1M0RycEZ6jQgK/rdsSdJ6Obs/kRAo4pD3oTNOgVO
+         DIBg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrlp3054cMhZ1GJ1phU2bTAmSZFKAb3O8/fGI+NWjSGG/fDCCcsmCDXcx69Kyvt3GUb1Ls51YY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRX7tnjzFROUfcFK3ILeUnChnk4R6IUmArP7SXjWJ7TApnEgVS
+	SE/Dzin5ObVKVy07E1NswRvxdBSf0gPWBo5JP4jY2UJWG0IAR7QbMjr5
+X-Gm-Gg: AfdE7cmr3BiZpVRP9BNotXQL2+0YX1I1bdx6vRD66mycSIfhpjIIi8Pnhm5uv80wDr4
+	lnsP3tkVLOxYBOcnFvUtpKiyesgMHCt5tvjVQzSP2o1Kkf7IvjnKh9xHMQRY2a/TDRRz3ZVz8Ra
+	SgzQVt4F7Cm3pqVhomXGZmk76JCrPuQ3TRXKE9skftm6ZA4E1WK7UnQxzlpvbdvtmWEFznIdflT
+	awUZWHe8tCjWo4UfIzm6WEoK+3sYyaXMb+Zd2PNUZGgfSvPYc8qKGNu12Hr3+h2DGOO0nUdshPl
+	O20tzIaL+4WurXbls5+z6X4xg+dq/3KpG9+7G/sOzWnQ8SYkI2oQrQkxEwS3BAUaXqYozv69CZw
+	VkzfSKs2YOhCQ5pVSFO4+PUozva2DCoolnVOkqEB9oZ9qX6Yn2O7oV+4qQe7m+wIqTWc0RR2HZA
+	dY4gLAhny4bwm2uJOMpOuCvH0nLfM/Q5TyCsM6BBY=
+X-Received: by 2002:a17:903:1b0c:b0:2c9:e5e6:8621 with SMTP id d9443c01a7336-2cf3496bdf7mr65570815ad.25.1784365799860;
+        Sat, 18 Jul 2026 02:09:59 -0700 (PDT)
 Received: from kimi-bug-hunter.. ([47.236.164.125])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm24285495ad.80.2026.07.18.02.09.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm24285495ad.80.2026.07.18.02.09.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 02:09:54 -0700 (PDT)
+        Sat, 18 Jul 2026 02:09:59 -0700 (PDT)
 From: Weiming Shi <bestswngs@gmail.com>
 To: Jon Maloy <jmaloy@redhat.com>,
 	Tung Nguyen <tung.quang.nguyen@est.tech>,
@@ -65,17 +65,17 @@ To: Jon Maloy <jmaloy@redhat.com>,
 	tipc-discussion@lists.sourceforge.net
 Cc: Xiang Mei <xmei5@asu.edu>,
 	Weiming Shi <bestswngs@gmail.com>,
-	kernel test robot <lkp@intel.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
+	kernel test robot <lkp@intel.com>,
 	Hoang Huu Le <hoang.h.le@dektech.com.au>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v7 1/3] tipc: fix NULL deref in tipc_named_node_up() on empty publication list
-Date: Sat, 18 Jul 2026 17:09:28 +0800
-Message-ID: <20260718090931.724303-2-bestswngs@gmail.com>
+Subject: [PATCH net v7 2/3] tipc: fix NULL deref in deferred bulk distribution on publish failure
+Date: Sat, 18 Jul 2026 17:09:29 +0800
+Message-ID: <20260718090931.724303-3-bestswngs@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260718090931.724303-1-bestswngs@gmail.com>
 References: <20260718090931.724303-1-bestswngs@gmail.com>
@@ -87,272 +87,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[The defer-to-workqueue approach is by Tung Nguyen, suggested by
- Jon Maloy on the thread as the replacement for the item-less bulk
- approach. Since the RFC only exists as an inline diff in the thread,
- it is folded into this series so the fix is self-contained.]
+tipc_net_finalize() does not check the return value of
+tipc_nametbl_publish(). If the publish fails, for example on a
+GFP_ATOMIC allocation failure, the node state name never lands in
+cluster_scope, but tn->finalized is still set. A worker deferred by
+tipc_named_node_up() then wakes and calls named_distribute() with an
+empty list. That replays the same unguarded buf_msg(skb_peek_tail(list))
+tail stamp, this time on the tipc_node_dist_bulk workqueue:
 
-named_distribute() stamps the last_bulk flag on the tail skb of the
-publication list. When the list is empty no skb is enqueued and the
-tail access dereferences NULL. tipc_named_node_up() hits this on an
-empty cluster_scope, which happens with a node-id configuration where
-cluster_scope is populated only later by tipc_net_finalize(). It is
-reachable by an unprivileged user over a UDP bearer in a user+net
-namespace. The reported crash:
-
- KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
- RIP: 0010:tipc_named_node_up (net/tipc/name_distr.c:196)
-  tipc_named_node_up (net/tipc/name_distr.c:196 net/tipc/name_distr.c:221)
-  tipc_node_write_unlock (net/tipc/node.c:428)
-  tipc_rcv (net/tipc/node.c:2185)
-  tipc_udp_recv (net/tipc/udp_media.c:392)
+ KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
+ RIP: 0010:named_distribute (net/tipc/name_distr.c:200)
+ Workqueue: events tipc_node_dist_bulk
+ Call Trace:
+  tipc_named_dist_cluster_scope (net/tipc/name_distr.c:267)
+  tipc_node_dist_bulk (net/tipc/node.c:403)
+  process_one_work
+  worker_thread
  Kernel panic - not syncing: Fatal exception in interrupt
 
-When cluster_scope is empty at node-up, defer the bulk distribution
-to a workqueue and wait for tipc_net_finalize() to publish the
-node-state name, so named_distribute() always runs on a non-empty
-list. On allocation failure, purge the partially built queue and
-bring the link down so the bulk distribution restarts when the link
-comes up again.
+Check the publish result and warn on failure, but still set finalized,
+otherwise deferred workers would sleep forever. In
+tipc_named_dist_cluster_scope() re-check cluster_scope after the wait
+and skip the distribution when it is empty. This is a permanent
+condition, so return 0 instead of an error, otherwise the link would
+be bounced forever. Also guard the tail stamp in named_distribute()
+itself, so a caller that misses the precondition gets a warning and a
+link reset through the existing -ENOBUFS path instead of a crash.
+
+Reproducing this needs an allocation failure during finalize, so I
+verified it by stubbing out the publish call: both nodes log the
+failure, the workers skip the distribution, no crash, no link flap.
+The normal path is unchanged with the same two-node test.
 
 Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
 Reported-by: Xiang Mei <xmei5@asu.edu>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202607180730.TwVgASDI-lkp@intel.com/
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Tested-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- net/tipc/core.c       |  1 +
- net/tipc/core.h       |  2 ++
- net/tipc/name_distr.c | 48 +++++++++++++++++++++++++++++++++++++++----
- net/tipc/name_distr.h |  3 ++-
- net/tipc/net.c        |  2 ++
- net/tipc/node.c       | 34 ++++++++++++++++++++++++++++--
- 6 files changed, 83 insertions(+), 7 deletions(-)
+ net/tipc/name_distr.c | 11 +++++++++++
+ net/tipc/net.c        |  3 ++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/core.c b/net/tipc/core.c
-index 434e70eabe08..ce164509d9e2 100644
---- a/net/tipc/core.c
-+++ b/net/tipc/core.c
-@@ -60,6 +60,7 @@ static int __net_init tipc_init_net(struct net *net)
- 	tn->trial_addr = 0;
- 	tn->addr_trial_end = 0;
- 	tn->capabilities = TIPC_NODE_CAPABILITIES;
-+	atomic_set(&tn->finalized, 0);
- 	INIT_WORK(&tn->work, tipc_net_finalize_work);
- 	memset(tn->node_id, 0, sizeof(tn->node_id));
- 	memset(tn->node_id_string, 0, sizeof(tn->node_id_string));
-diff --git a/net/tipc/core.h b/net/tipc/core.h
-index 9ce5f9ff6cc0..76768844c808 100644
---- a/net/tipc/core.h
-+++ b/net/tipc/core.h
-@@ -145,6 +145,8 @@ struct tipc_net {
- 	struct work_struct work;
- 	/* The numbers of work queues in schedule */
- 	atomic_t wq_count;
-+	/* flag to indicate work has finished */
-+	atomic_t finalized;
- };
- 
- static inline struct tipc_net *tipc_net(struct net *net)
 diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index 190b49c5cbc3..b764274df758 100644
+index b764274df758..5b0fb09226fc 100644
 --- a/net/tipc/name_distr.c
 +++ b/net/tipc/name_distr.c
-@@ -147,7 +147,7 @@ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *p)
-  * @pls: linked list of publication items to be packed into buffer chain
-  * @seqno: sequence number for this message
-  */
--static void named_distribute(struct net *net, struct sk_buff_head *list,
-+static int named_distribute(struct net *net, struct sk_buff_head *list,
- 			     u32 dnode, struct list_head *pls, u16 seqno)
- {
- 	struct publication *publ;
-@@ -164,8 +164,9 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
- 			skb = named_prepare_buf(net, PUBLICATION, msg_rem,
- 						dnode);
- 			if (!skb) {
-+				__skb_queue_purge(list);
- 				pr_warn("Bulk publication failure\n");
--				return;
-+				return 1;
- 			}
- 			hdr = buf_msg(skb);
- 			msg_set_bc_ack_invalid(hdr, true);
-@@ -195,6 +196,8 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+@@ -193,6 +193,10 @@ static int named_distribute(struct net *net, struct sk_buff_head *list,
+ 		skb_trim(skb, INT_H_SIZE + (msg_dsz - msg_rem));
+ 		__skb_queue_tail(list, skb);
+ 	}
++	if (skb_queue_empty(list)) {
++		pr_warn("Bulk publication list empty, nothing to distribute\n");
++		return 1;
++	}
  	hdr = buf_msg(skb_peek_tail(list));
  	msg_set_last_bulk(hdr);
  	msg_set_named_seqno(hdr, seqno);
-+
-+	return 0;
- }
- 
- /**
-@@ -203,7 +206,7 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
-  * @dnode: destination node
-  * @capabilities: peer node's capabilities
-  */
--void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
-+int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
- {
- 	struct name_table *nt = tipc_name_table(net);
- 	struct tipc_net *tn = tipc_net(net);
-@@ -218,9 +221,46 @@ void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
+@@ -253,6 +257,13 @@ int tipc_named_dist_cluster_scope(struct net *net, u32 dnode)
  	spin_unlock_bh(&tn->nametbl_lock);
  
  	read_lock_bh(&nt->cluster_scope_lock);
--	named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
-+	/* tipc_net_finalize_work() has not finished inserting self address to
-+	 * name table yet.
-+	 */
 +	if (unlikely(list_empty(&nt->cluster_scope))) {
++		/* finalize is done but nothing was published (publish
++		 * failed): a permanent state, nothing to synchronize.
++		 */
 +		read_unlock_bh(&nt->cluster_scope_lock);
-+		return 1;
++		return 0;
 +	}
-+
-+	if (named_distribute(net, &head, dnode, &nt->cluster_scope, seqno)) {
-+		read_unlock_bh(&nt->cluster_scope_lock);
-+		return -ENOBUFS;
-+	}
-+
- 	tipc_node_xmit(net, &head, dnode, 0);
- 	read_unlock_bh(&nt->cluster_scope_lock);
-+	return 0;
-+}
-+
-+int tipc_named_dist_cluster_scope(struct net *net, u32 dnode)
-+{
-+	struct name_table *nt = tipc_name_table(net);
-+	struct tipc_net *tn = tipc_net(net);
-+	struct sk_buff_head head;
-+	u16 seqno;
-+
-+	__skb_queue_head_init(&head);
-+	wait_var_event(&tn->finalized, atomic_read(&tn->finalized));
-+	spin_lock_bh(&tn->nametbl_lock);
-+	seqno = nt->snd_nxt;
-+	spin_unlock_bh(&tn->nametbl_lock);
-+
-+	read_lock_bh(&nt->cluster_scope_lock);
-+	if (named_distribute(net, &head, dnode, &nt->cluster_scope, seqno)) {
-+		read_unlock_bh(&nt->cluster_scope_lock);
-+		return -ENOBUFS;
-+	}
-+	tipc_node_xmit(net, &head, dnode, 0);
-+	read_unlock_bh(&nt->cluster_scope_lock);
-+
-+	return 0;
- }
- 
- /**
-diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h
-index c677f6f082df..cadf4e8c3e66 100644
---- a/net/tipc/name_distr.h
-+++ b/net/tipc/name_distr.h
-@@ -69,7 +69,8 @@ struct distr_item {
- 
- struct sk_buff *tipc_named_publish(struct net *net, struct publication *publ);
- struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *publ);
--void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
-+int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
-+int tipc_named_dist_cluster_scope(struct net *net, u32 dnode);
- void tipc_named_rcv(struct net *net, struct sk_buff_head *namedq,
- 		    u16 *rcv_nxt, bool *open);
- void tipc_named_reinit(struct net *net);
+ 	if (named_distribute(net, &head, dnode, &nt->cluster_scope, seqno)) {
+ 		read_unlock_bh(&nt->cluster_scope_lock);
+ 		return -ENOBUFS;
 diff --git a/net/tipc/net.c b/net/tipc/net.c
-index 7e65d0b0c4a8..4c144e720ac1 100644
+index 4c144e720ac1..2aa8812c551a 100644
 --- a/net/tipc/net.c
 +++ b/net/tipc/net.c
-@@ -139,6 +139,8 @@ static void tipc_net_finalize(struct net *net, u32 addr)
+@@ -138,7 +138,8 @@ static void tipc_net_finalize(struct net *net, u32 addr)
+ 	tipc_named_reinit(net);
  	tipc_sk_reinit(net);
  	tipc_mon_reinit_self(net);
- 	tipc_nametbl_publish(net, &ua, &sk, addr);
-+	atomic_inc(&tn->finalized);
-+	wake_up_var(&tn->finalized);
+-	tipc_nametbl_publish(net, &ua, &sk, addr);
++	if (!tipc_nametbl_publish(net, &ua, &sk, addr))
++		pr_warn("Failed to publish own node state\n");
+ 	atomic_inc(&tn->finalized);
+ 	wake_up_var(&tn->finalized);
  }
- 
- void tipc_net_finalize_work(struct work_struct *work)
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 97aa970a0d83..f757722d15be 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -111,6 +111,7 @@ struct tipc_bclink_entry {
-  * @peer_net: peer's net namespace
-  * @peer_hash_mix: hash for this peer (FIXME)
-  * @crypto_rx: RX crypto handler
-+ * @work: work item for bulk distribution of cluster scope publications
-  */
- struct tipc_node {
- 	u32 addr;
-@@ -145,6 +146,7 @@ struct tipc_node {
- #ifdef CONFIG_TIPC_CRYPTO
- 	struct tipc_crypto *crypto_rx;
- #endif
-+	struct work_struct work;
- };
- 
- /* Node FSM states and events:
-@@ -303,6 +305,7 @@ static void tipc_node_free(struct rcu_head *rp)
- #ifdef CONFIG_TIPC_CRYPTO
- 	tipc_crypto_stop(&n->crypto_rx);
- #endif
-+	cancel_work_sync(&n->work);
- 	kfree(n);
- }
- 
-@@ -393,6 +396,19 @@ static void tipc_node_write_unlock_fast(struct tipc_node *n)
- 	write_unlock_bh(&n->lock);
- }
- 
-+static void tipc_node_dist_bulk(struct work_struct *work)
-+{
-+	struct tipc_node *node = container_of(work, struct tipc_node, work);
-+
-+	if (tipc_named_dist_cluster_scope(node->net, node->addr) < 0) {
-+		u32 bearer_id = node->link_id & 0xffff;
-+
-+		tipc_node_link_down(node, bearer_id, false);
-+	}
-+
-+	tipc_node_put(node);
-+}
-+
- static void tipc_node_write_unlock(struct tipc_node *n)
- 	__releases(n->lock)
- {
-@@ -424,8 +440,21 @@ static void tipc_node_write_unlock(struct tipc_node *n)
- 	if (flags & TIPC_NOTIFY_NODE_DOWN)
- 		tipc_publ_notify(net, publ_list, node, n->capabilities);
- 
--	if (flags & TIPC_NOTIFY_NODE_UP)
--		tipc_named_node_up(net, node, n->capabilities);
-+	if (flags & TIPC_NOTIFY_NODE_UP) {
-+		int rc = 0;
-+
-+		rc = tipc_named_node_up(net, node, n->capabilities);
-+		/* Defer bulk distribution to work queue */
-+		if (rc > 0) {
-+			tipc_node_get(n);
-+			schedule_work(&n->work);
-+		} else if (rc < 0) {
-+			/* Bring the link down to start over bulk distribution
-+			 * when the link is up again.
-+			 */
-+			tipc_node_link_down(n, bearer_id, false);
-+		}
-+	}
- 
- 	if (flags & TIPC_NOTIFY_LINK_UP) {
- 		tipc_mon_peer_up(net, node, bearer_id);
-@@ -564,6 +593,7 @@ struct tipc_node *tipc_node_create(struct net *net, u32 addr, u8 *peer_id,
- 	INIT_LIST_HEAD(&n->list);
- 	INIT_LIST_HEAD(&n->publ_list);
- 	INIT_LIST_HEAD(&n->conn_sks);
-+	INIT_WORK(&n->work, tipc_node_dist_bulk);
- 	skb_queue_head_init(&n->bc_entry.namedq);
- 	skb_queue_head_init(&n->bc_entry.inputq1);
- 	__skb_queue_head_init(&n->bc_entry.arrvq);
 -- 
 2.43.0
 
