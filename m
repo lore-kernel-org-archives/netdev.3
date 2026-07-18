@@ -1,200 +1,97 @@
 Received: from shout01.mail.de (shout01.mail.de [62.201.172.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0B234889F;
-	Sat, 18 Jul 2026 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F020632720D
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 15:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.201.172.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784388512; cv=none; b=OutuM53yTB+vz98arz9znGNoZ3UUaECqmPohXNv26YQOO9lHAFbJOz3xEit32apb3geY3zfn/nLHycno5ybD3Rqg9Dv7mUq/rlYJf6JhHe4yh0610oXfouZMTy3j6uueltl7frqNvs6h0p46R0ffvxqkaI6uDNk4WFRAMjm29Dw=
+	t=1784388782; cv=none; b=oTKZA1ZcujXHGwkCJVUggGHAQyy0JIbIdWI2Hwa/x7kDVG4iL5+BRLgryDCEJGBHgUObIipLKFsTWmbZreoe0z+Up2uwE2rx01aCz6CRG00oN4w3HzmNVS5LLsXZcdks6EhUGTM9Cl9z95zAzbV6eEvnqKZgY13344W9wRsing0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784388512; c=relaxed/simple;
-	bh=yK35+AhI3nm/v2z8NTIxfVsSX/APoUmq4QmgKb0ner4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPkZR9oSdCRECR4Z0OiY7XyfsxhHol+YaeBFqsXlcb/LjJoljHxkVpS8VYvQ6X0jicaVvXEOCCwQ9tweMwnQAmSOdBeCK/5mbLQ6hcUfSlPjL35n4HhH+DQXxA7/Jsu4h04pEJmtPahVbL/X0po//LJk/GGDeT6noLxsJvF0SKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=BB+qRCcS; arc=none smtp.client-ip=62.201.172.24
+	s=arc-20240116; t=1784388782; c=relaxed/simple;
+	bh=mL3ezG/p8I0SnvZhwQumvt4nAc1t5cPnYddgX++tRIk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TN4QxRMrp003mLBhHl8wJGrZXbl8meMBnvYToRRC0BRWfY/YOmoQgEmKueiFMWcL+m5GuxfpqZYWDGIapN2SJk18q7yxsZfilFvlpI5jXjTkkjVe6vq8iXL4i6DmG9mEOIp2p5OodNw8aBvS8QFMRMPSV0AAhj6ZURHwFDyFWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=YdnYNGan; arc=none smtp.client-ip=62.201.172.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="BB+qRCcS"
-Received: from postfix01.mail.de (postfix01.bt.mail.de [10.0.121.125])
-	by shout01.mail.de (Postfix) with ESMTP id 424B624061B;
-	Sat, 18 Jul 2026 17:28:23 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="YdnYNGan"
+Received: from postfix02.mail.de (postfix02.bt.mail.de [10.0.121.126])
+	by shout01.mail.de (Postfix) with ESMTP id EA5722408B0;
+	Sat, 18 Jul 2026 17:32:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
-	s=mailde202009; t=1784388503;
-	bh=yK35+AhI3nm/v2z8NTIxfVsSX/APoUmq4QmgKb0ner4=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:CC:Subject:Reply-To;
-	b=BB+qRCcSUzAH1v7bVC/Ohwy7IRO0k0JwjAtRQsdfwCHnK77q3O6dOIdzvtEecbPbc
-	 6GkmQhB6mQw5BiJwMw1hU/09i2rCuQRIAfBsq7CPEkMAu438xv2DhAbs2HHgf8Q1Qs
-	 /Gz0iEXB8p0QODhDqHKZkyAwHb0YVabmSo4nuLe0auNw6tKMAbvV66+yM+0T6KzhRI
-	 Y7EmbuIDQ2GKIu8ZclmkWtAhbDuVaTt/5ZC400fqfyjqCrtspaC3L/3HwlpF9xqz2b
-	 qXvIes7poj1Al9HFagQHzm3qRQsnDvm89DGx5o5UnWWnQf4JRQ7CFhzNG2R4/4DVoJ
-	 mkWOEQ7+ZeWwg==
+	s=mailde202009; t=1784388778;
+	bh=mL3ezG/p8I0SnvZhwQumvt4nAc1t5cPnYddgX++tRIk=;
+	h=Message-ID:Date:Subject:To:Cc:From:From:To:CC:Subject:Reply-To;
+	b=YdnYNGan2nfpP1PrAkn6D0MgCB+7lsQVO4kHPrBXjeGk5whKTfnCYV/3+NFLoR4ur
+	 9CcgQmZgXZGHj5aru6O13gRGQ4cTGeP5GLuzxOiAWuIF7B6XO+iMKAbc+MTtVZ7FwY
+	 /IyCUt36VEpintbjPB3KWlzdSxneEldQVyYiMxYJWROjxjUfebV+hgBabTrGe5FzIz
+	 3R9gzT44kcO98x7s+aYExdi8ZrSWl+Z9YmfqtLTG1FIwltDp4RhC4JYG2JD5DxjECX
+	 eEaQXFsrJxZRKcYyRSLX/OgHwtqZy2pQZdE635YPp7vJUG9COYnvf0hrFwrCl+vw7J
+	 7b0W/ZbFEmV4g==
 Received: from smtp01.mail.de (smtp01.bt.mail.de [10.0.121.211])
-	by postfix01.mail.de (Postfix) with ESMTP id 18D3124055F;
-	Sat, 18 Jul 2026 17:28:23 +0200 (CEST)
+	by postfix02.mail.de (Postfix) with ESMTP id B1D282405BE;
+	Sat, 18 Jul 2026 17:32:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp01.mail.de (Postfix) with ESMTPSA id 54D0424065B;
-	Sat, 18 Jul 2026 17:28:16 +0200 (CEST)
-From: Luis Lang <luis.la@mail.de>
-To: netdev@vger.kernel.org
-Cc: Luis Lang <luis.la@mail.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] net: stmmac: dwmac4: mask interrupts before stopping DMA in suspend
-Date: Sat, 18 Jul 2026 17:27:57 +0200
-Message-ID: <20260718152802.83553-1-luis.la@mail.de>
-In-Reply-To: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
-References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+	by smtp01.mail.de (Postfix) with ESMTPSA id D13E324064D;
+	Sat, 18 Jul 2026 17:32:57 +0200 (CEST)
+Message-ID: <045bafd3-45be-4e7d-b828-77f9fcf6beab@mail.de>
+Date: Sat, 18 Jul 2026 17:32:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
+ ("net: stmmac: enable RPS and RBU interrupts")
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ netdev@vger.kernel.org, regressions@lists.linux.dev,
+ rmk+kernel@armlinux.org.uk, kuba@kernel.org
+References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+ <17ebe5ba-16a5-4b3a-94cd-e9707c88df3e@lunn.ch>
+ <72b91ec7-202c-4301-bcd8-b818cf8d72a0@mail.de>
+ <21068662-c44b-4266-b634-24e5eac8cd96@lunn.ch>
+ <8f6aca6d-6619-401c-bed7-8d42732d166a@mail.de>
+ <09ee8651-4f29-4ae0-8e82-a32a1f7ad04a@lunn.ch>
+ <97d803a5-ca6e-4d4a-adc2-f97cabfded65@mail.de>
+ <46e90a47-4507-40fe-b74e-efef932e9b62@bootlin.com>
+ <54128253-eb77-48f5-a673-94fb65edb78f@mail.de>
+ <36957839-b03a-4403-b08e-12bbadd8bc0c@lunn.ch>
+Content-Language: en-US
+From: tresonic <tresonic@mail.de>
+In-Reply-To: <36957839-b03a-4403-b08e-12bbadd8bc0c@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-purgate: clean
 X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
 X-purgate-type: clean
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-purgate-size: 5154
-X-purgate-ID: 154282::1784388502-86D848A6-0EF441FE/0/0
+X-purgate-size: 641
+X-purgate-ID: 154282::1784388778-4AD848A6-A8C9B97D/0/0
 
-Since commit 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU
-interrupts"), suspending causes an interrupt storm from the RPS
-interrupt.
-Fix this by adding a deinit_chan() op to stmmac_dma_ops, which
-masks all default dma channel interrupts. This is called from
-stmmac_stop_all_dma(), so interrupts don't trigger while suspending.
+On 7/18/26 4:11 PM, Andrew Lunn wrote:
 
-Fixes: 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU interrupts")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Luis Lang <luis.la@mail.de>
----
- .../net/ethernet/stmicro/stmmac/dwmac4_dma.c  | 24 +++++++++++++++++++
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |  4 ++++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |  4 ++++
- 3 files changed, 32 insertions(+)
+> There are two documents for you to read:
+> 
+> https://docs.kernel.org/process/submitting-patches.html
+> 
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+> 
+> Since this is a fix, please use the net tree. And include a Fixes: tag
+> indicating the patch which broke it.
+> 
+>> Just commit and separately git send-email to netdev@vger.kernel.org?
+> 
+> ./scripts/get_maintainer.pl will give you a list of email addresses.
+I did your suggested change, read through the documents and hope to have
+sent everything correctly :)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-index 829a23bdad01..23ffe1adcd0d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-@@ -106,6 +106,17 @@ static void dwmac4_dma_init_channel(struct stmmac_priv *priv,
- 	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
- }
- 
-+static void dwmac4_dma_deinit_channel(struct stmmac_priv *priv,
-+				      void __iomem *ioaddr, u32 chan)
-+{
-+	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
-+	u32 value;
-+
-+	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+	value &= ~DMA_CHAN_INTR_DEFAULT_MASK;
-+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+}
-+
- static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
- 				      void __iomem *ioaddr,
- 				      struct stmmac_dma_cfg *dma_cfg, u32 chan)
-@@ -125,6 +136,17 @@ static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
- 	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
- }
- 
-+static void dwmac410_dma_deinit_channel(struct stmmac_priv *priv,
-+					void __iomem *ioaddr, u32 chan)
-+{
-+	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
-+	u32 value;
-+
-+	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+	value &= ~DMA_CHAN_INTR_DEFAULT_MASK_4_10;
-+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+}
-+
- static void dwmac4_dma_init(void __iomem *ioaddr,
- 			    struct stmmac_dma_cfg *dma_cfg)
- {
-@@ -548,6 +570,7 @@ const struct stmmac_dma_ops dwmac4_dma_ops = {
- 	.reset = dwmac4_dma_reset,
- 	.init = dwmac4_dma_init,
- 	.init_chan = dwmac4_dma_init_channel,
-+	.deinit_chan = dwmac4_dma_deinit_channel,
- 	.init_rx_chan = dwmac4_dma_init_rx_chan,
- 	.init_tx_chan = dwmac4_dma_init_tx_chan,
- 	.axi = dwmac4_dma_axi,
-@@ -577,6 +600,7 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
- 	.reset = dwmac4_dma_reset,
- 	.init = dwmac4_dma_init,
- 	.init_chan = dwmac410_dma_init_channel,
-+	.deinit_chan = dwmac410_dma_deinit_channel,
- 	.init_rx_chan = dwmac4_dma_init_rx_chan,
- 	.init_tx_chan = dwmac4_dma_init_tx_chan,
- 	.axi = dwmac4_dma_axi,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index e6317b94fff7..04dafec021b4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -170,6 +170,8 @@ struct stmmac_dma_ops {
- 	void (*init)(void __iomem *ioaddr, struct stmmac_dma_cfg *dma_cfg);
- 	void (*init_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			  struct stmmac_dma_cfg *dma_cfg, u32 chan);
-+	void (*deinit_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
-+			    u32 chan);
- 	void (*init_rx_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			     struct stmmac_dma_cfg *dma_cfg,
- 			     dma_addr_t phy, u32 chan);
-@@ -235,6 +237,8 @@ struct stmmac_dma_ops {
- 	stmmac_do_void_callback(__priv, dma, init, __args)
- #define stmmac_init_chan(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, dma, init_chan, __priv, __args)
-+#define stmmac_deinit_chan(__priv, __args...) \
-+	stmmac_do_void_callback(__priv, dma, deinit_chan, __priv, __args)
- #define stmmac_init_rx_chan(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, dma, init_rx_chan, __priv, __args)
- #define stmmac_init_tx_chan(__priv, __args...) \
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2a0d7eff88d3..af29a50ddb89 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2560,6 +2560,7 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
- {
- 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
- 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
-+	u8 dma_csr_ch = max(rx_channels_count, tx_channels_count);
- 	u8 chan;
- 
- 	for (chan = 0; chan < rx_channels_count; chan++)
-@@ -2567,6 +2568,9 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
- 
- 	for (chan = 0; chan < tx_channels_count; chan++)
- 		stmmac_stop_tx_dma(priv, chan);
-+
-+	for (chan = 0; chan < dma_csr_ch; chan++)
-+		stmmac_deinit_chan(priv, priv->ioaddr, chan);
- }
- 
- /**
--- 
-2.55.0
-
+Thanks for your help,
+Luis/tresonic
