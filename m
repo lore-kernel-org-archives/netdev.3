@@ -1,63 +1,63 @@
 Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835BE385D70
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 09:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8222E383C9F
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 09:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784365801; cv=none; b=qqWA7rLgY1sPWVEjubv+7p1YH2zCnFhR/ov7JRp70qBw/v3DQnRVcRr2AmpGdWdDgqiT1VH+cUuU+UDCa+5EQIZ/vzgwhqXIEoS0RPFmLmBS8+JCKG7xnyzs+aIDwUcaFq1ItvVYKSBPWAF0vexrqivHGGlxtQxvbcje/inl12s=
+	t=1784365805; cv=none; b=L31paYHQR8FnpcRZ/42RVgIOlU5hsY/YWSVeBmHB/yXpUQHxP9J3XVaqe19NgBvKL28CqNf/ERrP4K8OhikL94bQzezd6ljM+WVVNYK6uWVCGp75rTw5oSrAPjgaw6bIwAjqbQu50q1K1R/gVZFTbFhpqX09WOKzQPReYoD9zlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784365801; c=relaxed/simple;
-	bh=V5tbfNHmo+5s0PdsqFK8WHZyVJb6Yux3ai4P97h9D+w=;
+	s=arc-20240116; t=1784365805; c=relaxed/simple;
+	bh=U1dSyGmpO4jyK0gdMbi0zGrAKcDsiwvzn2p+5O8OCHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+sw1A75cABeW28LU77LM9l0OuKly1DqYd3MpRAP2DaMzHz1ljJoQNA+r9Ov31vo2uhphfPxGsvcVFXFkmCxZNlNvO/4LbSA8C1ui4ykSN4iXLVISUbJuguOvpOf8QVQF4iqpGc0vwNh7bDZSlzrZMhdtsMoPEByA38mF+Dw1hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mjaAjlfN; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version; b=WsLHJb+rP2w7EuygUxeMHWiQS0G1izm25nb7ybLOn9VoaYljNmP6Ih7hOXmifiV0x+ByNZZtYgfbO1Oc1DGaXwTx88bqPrJtix+AHHEFZUkMsVeb+YKsX6EYQrwRFZzMijEI+scx06DMXIZMcN1qZSFNpzUa9a+cmeQ0rDGsRfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AuFOL5U1; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mjaAjlfN"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so47363755ad.3
-        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 02:10:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AuFOL5U1"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cc73e322dbso103353095ad.1
+        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 02:10:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784365800; x=1784970600; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784365804; x=1784970604; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J3QOcSKLKobkAtw0/HZfjC/OUXzunAPfppvcy+NSZqI=;
-        b=mjaAjlfNum6htTy6SNYsMwbMpKMjzTl0kuccvzkOt4jASHS77/2bRF49jB9d9BjHOQ
-         RShzDAFtE2I5m+1tgs71P9deaxWjSY7y+7A7x+8X+1LPwBkA4EY8s9bfHPkgDVLuDRYl
-         iwjvZTu+rtmC5KJ1Ekv7gNBEkN/4Z3t6aQqM3puKqE98aTrIxAH5L3mRoPYavX0fDgUn
-         MXisrJaitjLF+r2hcCtDOsq2sQmmHMqJi+Pg4Xdam9hSnMnc6ZlyytbETEMhGGryPfVp
-         2qEETXv8vfv7X2FQpardybFXW0AzM9upumSCMxypvYaW83DL2AKEMUGQaWsYvJSW5VgY
-         eyAg==
+        bh=nz7xYB5+RsFyTrGLAYiyXPfONarJ2CKVSQ+VTT23UHc=;
+        b=AuFOL5U1mxCZ59jR+EMv5/o1zm+dHJthrWnw9JE0ubQVyjnFGeKfN54OGsSDi0vKLb
+         oU49SZ6fIuPshIOsL/sLH5j9EtX62Cv+5y+ctlg2whVGV+l+OpCXwB/y3Tap5J8tlbWS
+         ZLQvTotA+pfQR8QmLOeCibA5fFAJs4T/qkNEWPohaEzq8Z1f8OLBMkhk1I8YOZ9ThxL6
+         AGagkWUC76Q40osagBmHy1lEH9UPHyLRdNuGmgksZ1933NhkeSJWghqg9agnxp+S3TKH
+         Kn6PZLVpyovGLEG5DIGbjwcWqCGq3mUKVSTzJ6GPmfI/KMgr9iANsWLrNaoRHWXxsGML
+         08Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784365800; x=1784970600;
+        d=1e100.net; s=20251104; t=1784365804; x=1784970604;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J3QOcSKLKobkAtw0/HZfjC/OUXzunAPfppvcy+NSZqI=;
-        b=VatJ6oNgQeQ41HFnB5STYLbNbFxrpRoQZdSGJkrtqEG6xrcSfm6IRZKFejVjutP7gP
-         BrHYUk/oYV1DGhig4EzqRluhl5M1KRct6ROsyZ2QL9GHxfjcfcpAYWLGbK1762DVxrw8
-         7Ub6x0Q4syM233v6WMl9u8jcvl0Ekd4XqS5qtIftqeo70jMtp2DfiEel9zchmb3xxu80
-         sp67FybIU9M7wCv2kkUn7MmYD2oSi1LCXODDfFR9WMC1s7F47jnjM1UpA3FGpy2oQwtK
-         nBKu/cB321qrXxB8RJa0yfquWQXQ1M0RycEZ6jQgK/rdsSdJ6Obs/kRAo4pD3oTNOgVO
-         DIBg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrlp3054cMhZ1GJ1phU2bTAmSZFKAb3O8/fGI+NWjSGG/fDCCcsmCDXcx69Kyvt3GUb1Ls51YY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRX7tnjzFROUfcFK3ILeUnChnk4R6IUmArP7SXjWJ7TApnEgVS
-	SE/Dzin5ObVKVy07E1NswRvxdBSf0gPWBo5JP4jY2UJWG0IAR7QbMjr5
-X-Gm-Gg: AfdE7cmr3BiZpVRP9BNotXQL2+0YX1I1bdx6vRD66mycSIfhpjIIi8Pnhm5uv80wDr4
-	lnsP3tkVLOxYBOcnFvUtpKiyesgMHCt5tvjVQzSP2o1Kkf7IvjnKh9xHMQRY2a/TDRRz3ZVz8Ra
-	SgzQVt4F7Cm3pqVhomXGZmk76JCrPuQ3TRXKE9skftm6ZA4E1WK7UnQxzlpvbdvtmWEFznIdflT
-	awUZWHe8tCjWo4UfIzm6WEoK+3sYyaXMb+Zd2PNUZGgfSvPYc8qKGNu12Hr3+h2DGOO0nUdshPl
-	O20tzIaL+4WurXbls5+z6X4xg+dq/3KpG9+7G/sOzWnQ8SYkI2oQrQkxEwS3BAUaXqYozv69CZw
-	VkzfSKs2YOhCQ5pVSFO4+PUozva2DCoolnVOkqEB9oZ9qX6Yn2O7oV+4qQe7m+wIqTWc0RR2HZA
-	dY4gLAhny4bwm2uJOMpOuCvH0nLfM/Q5TyCsM6BBY=
-X-Received: by 2002:a17:903:1b0c:b0:2c9:e5e6:8621 with SMTP id d9443c01a7336-2cf3496bdf7mr65570815ad.25.1784365799860;
-        Sat, 18 Jul 2026 02:09:59 -0700 (PDT)
+        bh=nz7xYB5+RsFyTrGLAYiyXPfONarJ2CKVSQ+VTT23UHc=;
+        b=CEsAHVY1CDI65E0JlknS3QWCkisKvXQStFy2yog4n/RRJxXwDcZYQh5Dwym4Gm3K1G
+         YF1pXwbvTS82IPZurUhYfs7lVlvo5mJvFdTmGxXo7A5wFtF8kUMoRRSG7Yu6laUpDbD3
+         TPxekYiWm4BcosHk57jL+1jjf90YQd6ThCXIXH9LVXMGHqvaKK23642j+gzAAxRBaOmy
+         TukNBh1ELKDAhyERsVsCwpHXhWRhPyjJXwUCGtLPEkzTG8t3vyaDW+QT0ltu3tSVoa+8
+         mg9LyZ+ehj65r7PfKIRN+3rk8EpPlHrbnPr432RdF5E607VCH8ZV5lF3H5foNCZyjJPv
+         IP4g==
+X-Forwarded-Encrypted: i=1; AHgh+Rpyc2nlpY0RQnOh9sH+M0rjjPBUSIA8sG4zdILnQhY6UeH/BfHUpR2cLIERkDMArh1D0VN3UeA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz80oij2fsVQQdsHBYGB5LrmD5wA/L6ZDFRtDM+PJ7R13BoS0rP
+	Lo1WlsEJlOf+olD007tSAWqWFGlnK+a+wcqFO6+ygqi9teHNnMVf2N/h
+X-Gm-Gg: AfdE7cmYkTz1dD+dBPRj27xk1VUjYw+idqEPPlnOydeI72aw47K5w4H8cIhJq/joqR9
+	vz4PxlAPHdPSBAwqP2Pos6PIzBQ9DhHQ+RzgM7lxTXi0CefHhQR3VdJLcoaCY23YUs4OjZHUxwG
+	LPJsDCKEKKI+9tKCuCvCZc7wus/UpJPdk9um1i+rRwj7OhB988YCQSW2Dpmo/tJGRh7x8+k73+m
+	/IywDkWpe/N2inI5aPF6TUlWTWYObXL7sXSEimqpuYbcH+8awzrDzFEldOEmnrvUkY+JwaUZSmr
+	a6tetbB7X00CaOkASJnP4hmdMAVoKpvvkq8q+L5etPUPyTH5Vxjz4qTYptRjG47boXCC8Htxf0q
+	I3g8BcodnyZHoXKc29DeECP59HHIWunEhxtyjW1+cjaNduzA4it24IhqwKl74x7vZpghZDwF9o6
+	25HOE7iqtzwp8uZw5zUCkUd24MfLO6pUeRUuLSIDk=
+X-Received: by 2002:a17:902:e54b:b0:2c9:b48c:fdec with SMTP id d9443c01a7336-2cf348547d0mr69884695ad.12.1784365803969;
+        Sat, 18 Jul 2026 02:10:03 -0700 (PDT)
 Received: from kimi-bug-hunter.. ([47.236.164.125])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm24285495ad.80.2026.07.18.02.09.55
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm24285495ad.80.2026.07.18.02.10.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 02:09:59 -0700 (PDT)
+        Sat, 18 Jul 2026 02:10:03 -0700 (PDT)
 From: Weiming Shi <bestswngs@gmail.com>
 To: Jon Maloy <jmaloy@redhat.com>,
 	Tung Nguyen <tung.quang.nguyen@est.tech>,
@@ -70,12 +70,10 @@ Cc: Xiang Mei <xmei5@asu.edu>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Hoang Huu Le <hoang.h.le@dektech.com.au>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v7 2/3] tipc: fix NULL deref in deferred bulk distribution on publish failure
-Date: Sat, 18 Jul 2026 17:09:29 +0800
-Message-ID: <20260718090931.724303-3-bestswngs@gmail.com>
+Subject: [PATCH net v7 3/3] tipc: fix node reference leak when defer work is already pending
+Date: Sat, 18 Jul 2026 17:09:30 +0800
+Message-ID: <20260718090931.724303-4-bestswngs@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260718090931.724303-1-bestswngs@gmail.com>
 References: <20260718090931.724303-1-bestswngs@gmail.com>
@@ -87,90 +85,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tipc_net_finalize() does not check the return value of
-tipc_nametbl_publish(). If the publish fails, for example on a
-GFP_ATOMIC allocation failure, the node state name never lands in
-cluster_scope, but tn->finalized is still set. A worker deferred by
-tipc_named_node_up() then wakes and calls named_distribute() with an
-empty list. That replays the same unguarded buf_msg(skb_peek_tail(list))
-tail stamp, this time on the tipc_node_dist_bulk workqueue:
+In tipc_node_write_unlock(), TIPC_NOTIFY_NODE_UP with an empty
+cluster_scope takes a node reference and schedules n->work. If the
+link flaps down and up while that work is still pending, the next
+NODE_UP takes another reference, but schedule_work() returns false
+and the extra reference is never dropped. The tipc_node structure
+leaks.
 
- KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
- RIP: 0010:named_distribute (net/tipc/name_distr.c:200)
- Workqueue: events tipc_node_dist_bulk
- Call Trace:
-  tipc_named_dist_cluster_scope (net/tipc/name_distr.c:267)
-  tipc_node_dist_bulk (net/tipc/node.c:403)
-  process_one_work
-  worker_thread
- Kernel panic - not syncing: Fatal exception in interrupt
+Verified by flapping the bearer while the work is pending: one
+reference is leaked per repeated NODE_UP, while the work is put only
+once when it finally runs.
 
-Check the publish result and warn on failure, but still set finalized,
-otherwise deferred workers would sleep forever. In
-tipc_named_dist_cluster_scope() re-check cluster_scope after the wait
-and skip the distribution when it is empty. This is a permanent
-condition, so return 0 instead of an error, otherwise the link would
-be bounced forever. Also guard the tail stamp in named_distribute()
-itself, so a caller that misses the precondition gets a warning and a
-link reset through the existing -ENOBUFS path instead of a crash.
+Drop the reference when the work was already queued.
 
-Reproducing this needs an allocation failure during finalize, so I
-verified it by stubbing out the publish call: both nodes log the
-failure, the workers skip the distribution, no crash, no link flap.
-The normal path is unchanged with the same two-node test.
-
-Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
 Reported-by: Xiang Mei <xmei5@asu.edu>
 Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- net/tipc/name_distr.c | 11 +++++++++++
- net/tipc/net.c        |  3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ net/tipc/node.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index b764274df758..5b0fb09226fc 100644
---- a/net/tipc/name_distr.c
-+++ b/net/tipc/name_distr.c
-@@ -193,6 +193,10 @@ static int named_distribute(struct net *net, struct sk_buff_head *list,
- 		skb_trim(skb, INT_H_SIZE + (msg_dsz - msg_rem));
- 		__skb_queue_tail(list, skb);
- 	}
-+	if (skb_queue_empty(list)) {
-+		pr_warn("Bulk publication list empty, nothing to distribute\n");
-+		return 1;
-+	}
- 	hdr = buf_msg(skb_peek_tail(list));
- 	msg_set_last_bulk(hdr);
- 	msg_set_named_seqno(hdr, seqno);
-@@ -253,6 +257,13 @@ int tipc_named_dist_cluster_scope(struct net *net, u32 dnode)
- 	spin_unlock_bh(&tn->nametbl_lock);
- 
- 	read_lock_bh(&nt->cluster_scope_lock);
-+	if (unlikely(list_empty(&nt->cluster_scope))) {
-+		/* finalize is done but nothing was published (publish
-+		 * failed): a permanent state, nothing to synchronize.
-+		 */
-+		read_unlock_bh(&nt->cluster_scope_lock);
-+		return 0;
-+	}
- 	if (named_distribute(net, &head, dnode, &nt->cluster_scope, seqno)) {
- 		read_unlock_bh(&nt->cluster_scope_lock);
- 		return -ENOBUFS;
-diff --git a/net/tipc/net.c b/net/tipc/net.c
-index 4c144e720ac1..2aa8812c551a 100644
---- a/net/tipc/net.c
-+++ b/net/tipc/net.c
-@@ -138,7 +138,8 @@ static void tipc_net_finalize(struct net *net, u32 addr)
- 	tipc_named_reinit(net);
- 	tipc_sk_reinit(net);
- 	tipc_mon_reinit_self(net);
--	tipc_nametbl_publish(net, &ua, &sk, addr);
-+	if (!tipc_nametbl_publish(net, &ua, &sk, addr))
-+		pr_warn("Failed to publish own node state\n");
- 	atomic_inc(&tn->finalized);
- 	wake_up_var(&tn->finalized);
- }
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index f757722d15be..f826347b5870 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -447,7 +447,8 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 		/* Defer bulk distribution to work queue */
+ 		if (rc > 0) {
+ 			tipc_node_get(n);
+-			schedule_work(&n->work);
++			if (!schedule_work(&n->work))
++				tipc_node_put(n);
+ 		} else if (rc < 0) {
+ 			/* Bring the link down to start over bulk distribution
+ 			 * when the link is up again.
 -- 
 2.43.0
 
