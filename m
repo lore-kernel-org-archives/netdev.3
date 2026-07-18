@@ -1,138 +1,178 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from shout02.mail.de (shout02.mail.de [62.201.172.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0DA2E8897
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 07:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B363348C7D
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 07:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.201.172.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784358792; cv=none; b=DqutdPO07FnSNTQtOXS0jYPO4Rp78luWbR6KygeCghAL9rN4dD3LkWBEiF/WCiMoqLhSc3KEa9AP5dO55rsAkiN2SzmAEAtiQ/6k6Gy0iBuJNvwQ4AL4IrZbQ2xmmhSflOII30yHDsGP6sv6UXi9dW9mHzLp7rMSvDey16HrS3c=
+	t=1784360148; cv=none; b=MYgvQNKNceXJIHMcPpyK28nK7G8MJ5BCHhbp1Nfl41307pHIqiD+iqthAikdU3kWougLiBqLa2mGycVrWTMbbJ1wAYvZSloBEz2tI1Q+nmOrBq7dKyjcWYI8TCZGZQybo7Ww0DKugZm6m6rEsFo3uXipEx7OrYJTBBAalxM8Bxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784358792; c=relaxed/simple;
-	bh=ct2Y5RRo+SptjAw24PGyuywLJAbN7uO+mC+s4HhzYpY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZAGVf53Oh5khL9GnGD9de0kXrkla4A8fO9Ljh6m7m2P1domWtclw0TYzSlTm0pBm7x+lWv9qbZ+OmmlKwuc0UGsawfR2NzWurwB64kRYeqn3V8TzNvFHMFhptvrQg7B240VolNBQ2a8jGCde517kYWBZ/AJMgufgt2zFY48FxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8zUVxvd; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784360148; c=relaxed/simple;
+	bh=dq62vZ7x72Lt9eZ4YiM9fHmYGcZcxSHkxrEZsXPNFm4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nR98OQfJJuMksokbAUUT+TPorgKXP8CMW55v6HHruwTq+E5peJi8A4nUVSeZZuK+CvN6HdheZHlfJIVZfC52/6UB3JXENiScKQUFRCXv9o5wbsX0qqn/lgH23oJOPJAngjGW6N7hI/aWQ79Be/2lhYbWPCSXjEymyXxEWi/q66E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=i7vIN3lt; arc=none smtp.client-ip=62.201.172.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8zUVxvd"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8486672f03cso8562781b3a.0
-        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 00:13:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784358791; x=1784963591; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lIVE2LKlzct84UOzkVO/U64LKkvncWsXRMQbztwwo3Q=;
-        b=P8zUVxvdz7QHhQQEQ76Gc1Yxipbpn/AuK7UDSAfUEDeS7Fay07P5ZhhlQL2cThIBr/
-         mDlVBmf41jwuxhvwcp4S1Z2p351NMpV4jFpDWOc7/P5p/Gg+/KrGnCZnjRIp/72bMBGt
-         j++dwIHzY1t58Zq6DW7aseeEUO10ypKjxbP6ATb7MO/Qtd3FHeog9iEdrV6260Nq9Fz8
-         FS/8rTAKyqoXHE4oG1tIuVnQZlKk7dVkWokDmBKIXowGS/MIs92WCj/pv6TXgGbZJERa
-         ilzAblPY/J988zTEdsoUyxCLxVT0xwojgM2xKpRYnPdBLEYjibEf1t6d0k/0oKhaqhLH
-         vorQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784358791; x=1784963591;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lIVE2LKlzct84UOzkVO/U64LKkvncWsXRMQbztwwo3Q=;
-        b=M1rZmpbHSBmckXHh+3q4Pvts28BjfPdkpUpVmnIZ7MjB36o8fiyz6x2NJf2ToF8nSM
-         HyIJ7AM2nYeRK7+z+MS1bbFZd90zqNyJv07aTfyKgOL3ktsCKR6vaWn0HlTAL+QQVlyz
-         Z8HAvMgUpeLo04nNQ8UH4SAJL0fKfArDCIE6dNWBZ4LxlhMlNJhfD9GMrno6Z0WMXaZs
-         cphGwtrGAOf3uJc1qBVrSe5GQr7s1jVXL9/VR3ofRsbD87DNAuv6o1mDzFSPuC3LFXQ+
-         lH2IvE5Rw6lFyOYdaJK09H3ziTIJTMWI+DG3VQ5xdmbZCf8mLALF2GQXtioXG/54KWbP
-         w1AQ==
-X-Gm-Message-State: AOJu0YyjhdHBhOdAa2Wv4M0C5hM7LeRdxIO7gEjWtM8TVe5PUCMHMujd
-	gG3VeuxlJ+ICV9XhmhetAdx5f28C0VbBqt3mTPZZSi19DVEGMdXMkFyRxEGAGYe+
-X-Gm-Gg: AfdE7cngNTs9b3jkfj/c3nzf8sMOYcnV8yCylc3hnVG1FzMYVjHMwCB2lG0SpKOxjJb
-	2eUCntb5KwOCctVTihkgbjc1lHF5fbfjfcd6QSE2Ya9QkSTXLHXlyNDm6oQ7uI7ojimu40IDi1K
-	GDbdeoWyVSELBEK1NMWX5yEwbrJeoozEB/9IKClKpka2VCsqbwh+iZb7jzAkvnGTdHAYNZqzDpi
-	K1KR+JTqHIsD/WCrpgJWilgWnPYa77eGpXgIw9QOWWC1LsNUwYh4VzwC4/sbKvwxLNFNIUL5bST
-	sfM5nmjcglMAgc9f+b9a5kb5mDc9ZL0/gAIDlCkKgFoDYTXtjAKbaxsvtvLe+MyqLggTsjm8zCM
-	+IfV7lTPXu3qRRwR2X/YPT55BGBXRZM/F34bIoHWSBZ0MQxn52wHtDSuzyBhssII3HWJrbHqVIF
-	un/U57UWb18LYHQSgSpGcadw8jZRgBy38=
-X-Received: by 2002:a05:6a00:348b:b0:848:8715:c2cd with SMTP id d2e1a72fcca58-84c2948b105mr6497710b3a.47.1784358790977;
-        Sat, 18 Jul 2026 00:13:10 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([123.114.53.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2ad8b766sm2390754b3a.4.2026.07.18.00.13.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 00:13:10 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	sd@queasysnail.net,
-	vega@nebusec.ai,
-	roxy520tt@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] xfrm: drop ESP-in-TCP packets with no ingress device
-Date: Sat, 18 Jul 2026 15:12:50 +0800
-Message-ID: <0695ad081ad2abe6bab142be361ac4b52595fa6f.1784312563.git.roxy520tt@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784312563.git.roxy520tt@gmail.com>
-References: <cover.1784312563.git.roxy520tt@gmail.com>
+	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="i7vIN3lt"
+Received: from postfix01.mail.de (postfix01.bt.mail.de [10.0.121.125])
+	by shout02.mail.de (Postfix) with ESMTP id B63C62407CA;
+	Sat, 18 Jul 2026 09:35:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
+	s=mailde202009; t=1784360144;
+	bh=dq62vZ7x72Lt9eZ4YiM9fHmYGcZcxSHkxrEZsXPNFm4=;
+	h=Message-ID:Date:Subject:To:Cc:From:From:To:CC:Subject:Reply-To;
+	b=i7vIN3ltR/Sa3AFPDL1an5rRPJIJkytZ+SiQhKwmEdYDjLQ3DkMCAS8uz56DTKVNS
+	 LmbUxesbDmSB4fGg9Cb640cNJmsbmXVBAgx5AKFFT1q7wb6HLvy0siX01CaI8qfhUa
+	 DN0dwqL3C2XthgtqAQvB6+u8aqiWKYatsFjAM9t2aNT1TIhIeCn3D/3VtQgg5/C4Rc
+	 uLWjFfdMrTGiWa4/cV6OsyBbptF8BpfsxDPjF96RkPPrLaTvPotRaWjgYh48opem2l
+	 nfybyKeQtFkeLwnVfe4P8UHSAXo8xXDYy2PlrfVvx2V+fk5ewGF5xmfRzVXmj1gUnd
+	 5XpuVjdy0Ocpw==
+Received: from smtp01.mail.de (smtp03.bt.mail.de [10.0.121.213])
+	by postfix01.mail.de (Postfix) with ESMTP id 98779240564;
+	Sat, 18 Jul 2026 09:35:44 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp01.mail.de (Postfix) with ESMTPSA id 0D9D0240660;
+	Sat, 18 Jul 2026 09:35:42 +0200 (CEST)
+Message-ID: <97d803a5-ca6e-4d4a-adc2-f97cabfded65@mail.de>
+Date: Sat, 18 Jul 2026 09:35:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
+ ("net: stmmac: enable RPS and RBU interrupts")
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
+ rmk+kernel@armlinux.org.uk, kuba@kernel.org,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+ <17ebe5ba-16a5-4b3a-94cd-e9707c88df3e@lunn.ch>
+ <72b91ec7-202c-4301-bcd8-b818cf8d72a0@mail.de>
+ <21068662-c44b-4266-b634-24e5eac8cd96@lunn.ch>
+ <8f6aca6d-6619-401c-bed7-8d42732d166a@mail.de>
+ <09ee8651-4f29-4ae0-8e82-a32a1f7ad04a@lunn.ch>
+Content-Language: en-US
+From: tresonic <tresonic@mail.de>
+In-Reply-To: <09ee8651-4f29-4ae0-8e82-a32a1f7ad04a@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-purgate: clean
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-purgate-size: 4494
+X-purgate-ID: 154282::1784360144-EF6E9C36-31FD0AD6/0/0
 
-From: Zhiling Zou <roxy520tt@gmail.com>
+Thank you for you explanations!
 
-ESP-in-TCP receives records through the TCP strparser. handle_esp()
-restores skb->dev from the saved skb_iif before passing the packet into
-the XFRM input path.
+> The interrupt is being enabled in the init_chan call in
+> stmmac_dma_ops. Ideally, it should be disabled in a mirror function,
+> which currently does not exist. So maybe deinit_chan() needs
+> adding. But where to call it from? init_chan() is called from
+> stmmac_init_dma_engine(), from stmmac_hw_setup(). stmmac_resume() does
+> call this. So we need something in stmmac_suspend(). Maybe in
+> stmmac_stop_all_dma()?
+> 
+> stmmac is messy, there are often not mirror functions. If there is a
+> stmmac_init_dma_engine() there should be
+> stmmac_deinit_dma_engine(). If there is stmmac_hw_setup() there should
+> be stmmac_hw_tairdown(). But none of these seem to exist. 
+> 
+> Anyway, do you want to try to implement deinit_chan() and call it from
+> stmmac_stop_all_dma()?
+Yes I'd really like to implement a solution here.
+This is my try, but I still have some questions:
+- is it ok to disable all interrupts on deinit_chan()?
+- maybe the interrupt could also just be disabled in stop_rx?
 
-Queued TCP data can be processed after the original ingress device has
-been removed, for example during veth or net namespace teardown. In that
-case dev_get_by_index_rcu() returns NULL. The XFRM IPv4 and IPv6 input
-paths both expect skb->dev to be valid while building the route lookup,
-so queued ESP-in-TCP data can dereference a NULL device.
-
-Drop the packet if the saved ingress device can no longer be resolved.
-Such a packet can no longer be routed through the normal XFRM receive
-path, and this preserves the existing behaviour for packets whose ingress
-device still exists.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <roxy520tt@gmail.com>
-Assisted-by: Codex:gpt-5.4
-Reviewed-by: Ren Wei <enjou1224z@gmail.com>
----
- net/xfrm/espintcp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 374e1b964438..fc01ce89492a 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -37,6 +37,11 @@ static void handle_esp(struct sk_buff *skb, struct sock *sk)
- 
- 	rcu_read_lock();
- 	skb->dev = dev_get_by_index_rcu(sock_net(sk), skb->skb_iif);
-+	if (!skb->dev) {
-+		XFRM_INC_STATS(sock_net(sk), LINUX_MIB_XFRMINERROR);
-+		kfree_skb(skb);
-+		goto out;
-+	}
- 	local_bh_disable();
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (sk->sk_family == AF_INET6)
-@@ -45,6 +50,7 @@ static void handle_esp(struct sk_buff *skb, struct sock *sk)
- #endif
- 		xfrm4_rcv_encap(skb, IPPROTO_ESP, 0, TCP_ENCAP_ESPINTCP);
- 	local_bh_enable();
-+out:
- 	rcu_read_unlock();
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+index 829a23bdad01..65c243fb829f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+@@ -125,6 +125,17 @@ static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
+ 	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
  }
  
--- 
-2.43.0
++static void dwmac410_dma_deinit_channel(struct stmmac_priv *priv,
++					void __iomem *ioaddr, u32 chan)
++{
++	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
++	u32 value;
++
++	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
++	value &= ~DMA_CHAN_INTR_DEFAULT_MASK_4_10;
++	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
++}
++
+ static void dwmac4_dma_init(void __iomem *ioaddr,
+ 			    struct stmmac_dma_cfg *dma_cfg)
+ {
+@@ -577,6 +588,7 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
+ 	.reset = dwmac4_dma_reset,
+ 	.init = dwmac4_dma_init,
+ 	.init_chan = dwmac410_dma_init_channel,
++	.deinit_chan = dwmac410_dma_deinit_channel,
+ 	.init_rx_chan = dwmac4_dma_init_rx_chan,
+ 	.init_tx_chan = dwmac4_dma_init_tx_chan,
+ 	.axi = dwmac4_dma_axi,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index e6317b94fff7..04dafec021b4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -170,6 +170,8 @@ struct stmmac_dma_ops {
+ 	void (*init)(void __iomem *ioaddr, struct stmmac_dma_cfg *dma_cfg);
+ 	void (*init_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 			  struct stmmac_dma_cfg *dma_cfg, u32 chan);
++	void (*deinit_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
++			    u32 chan);
+ 	void (*init_rx_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 			     struct stmmac_dma_cfg *dma_cfg,
+ 			     dma_addr_t phy, u32 chan);
+@@ -235,6 +237,8 @@ struct stmmac_dma_ops {
+ 	stmmac_do_void_callback(__priv, dma, init, __args)
+ #define stmmac_init_chan(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, dma, init_chan, __priv, __args)
++#define stmmac_deinit_chan(__priv, __args...) \
++	stmmac_do_void_callback(__priv, dma, deinit_chan, __priv, __args)
+ #define stmmac_init_rx_chan(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, dma, init_rx_chan, __priv, __args)
+ #define stmmac_init_tx_chan(__priv, __args...) \
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2a0d7eff88d3..8504ecc3dbeb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2560,13 +2560,16 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
+ {
+ 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
+ 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
++	u8 max_chan = max(rx_channels_count, tx_channels_count);
+ 	u8 chan;
+ 
+-	for (chan = 0; chan < rx_channels_count; chan++)
+-		stmmac_stop_rx_dma(priv, chan);
+-
+-	for (chan = 0; chan < tx_channels_count; chan++)
+-		stmmac_stop_tx_dma(priv, chan);
++	for (chan = 0; chan < max_chan; chan++) {
++		if (chan < rx_channels_count)
++			stmmac_stop_rx_dma(priv, chan);
++		if (chan < tx_channels_count)
++			stmmac_stop_tx_dma(priv, chan);
++		stmmac_deinit_chan(priv, priv->ioaddr, chan);
++	}
+ }
+ 
+ /**
+
+
+tresonic
+
