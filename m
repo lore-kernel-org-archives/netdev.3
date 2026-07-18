@@ -1,192 +1,125 @@
-Received: from shout02.mail.de (shout02.mail.de [62.201.172.25])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A551EF36E
-	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 13:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.201.172.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63482846F;
+	Sat, 18 Jul 2026 13:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784381538; cv=none; b=oH9MuU2Qw3fiBg3GDc3Gp2y+QOW6HdGD68LSR6vRVeHod+eXmu2rSzgRoZR4cvCkDNMT0T9v671/ZYdbp6nruetLgxwxUoQbAWGQnoEl4GrdjkHbcPSWtYH+qiSF61XfkZEzypXuHOsKqbPhattoIb1uw2xknSnOjx6PxCWme6A=
+	t=1784382378; cv=none; b=LPAiUqzxNlBPhEgLE4VmqUzJwsrOkKNKpCchTuT7TaA2+p+Z0e/zJlIS8pz9kuIEHj0wFGaRQ1Pq7tJ8NdPmRGq6ZI0i1n3yb29m4TmoUH/6cs415irBGH94nylLKe/MWaEIBcdz7ykc4h8JcEbNHvoLiIXsPgz+wTbWtqNDZps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784381538; c=relaxed/simple;
-	bh=i2B9Fykno3BucfFuLCw/ivb9NLxboWJEPV0PeGQi+ik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jiBFCQMYqes+UZ4+e5/MHX+CaSgDyUjlMbGxkXqO5a2TQdeTZN19E5/O94YB/laMTnNDc8eEgWcN/c75usPs+hF8HJJ5ce4dfxlhJq3BzMxkfMhJpxsSAtZZn/qXMQQmmPRZxUx1TRWvYJU0Bx0lIg8JuVaCsaBGDiHkH31Mri8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=ZO9Nwgom; arc=none smtp.client-ip=62.201.172.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.de
+	s=arc-20240116; t=1784382378; c=relaxed/simple;
+	bh=ti3SJliEhTQwXIyW7601QIBqonk8uDfvV/xE/Ni5730=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mNq3DpgDL6K5nRNq+kM1hFJ/AnVPCcFhsIOvY+sf2fHHARm7R/uff4wAIMv3LKJnu4zn8i75jh2fQSlwCInVWybSlHl2YYi4XzFQ+04sw7sxKNdE8eHbp9gNfKVKiXQd8W8bTSo1Dpn0pBRlKbZEl4iEchjaAR2eNXfVpiw3jDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PdrKD4LX; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="ZO9Nwgom"
-Received: from postfix02.mail.de (postfix02.bt.mail.de [10.0.121.126])
-	by shout02.mail.de (Postfix) with ESMTP id 35D372407DD;
-	Sat, 18 Jul 2026 15:32:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
-	s=mailde202009; t=1784381535;
-	bh=i2B9Fykno3BucfFuLCw/ivb9NLxboWJEPV0PeGQi+ik=;
-	h=Message-ID:Date:Subject:To:Cc:From:From:To:CC:Subject:Reply-To;
-	b=ZO9Nwgommx1IliBjiVW43TcZle1l11bpYaXunZok5weHtnr1aNkvNTUHnE6emiO+f
-	 bRnqYbuytd26rhUCWsODpHx0F8wr/uGz9ptQUzxDqFSuVggzEXvN4yjG+Rb2TGNfYL
-	 sW++lmExENAC30TJRge/XxDn0IMuR+iX61Y4UVjlWL+lbF9u2mh6X1PMFgHemtsesH
-	 DSVOoqI3/2xPIMwxgZ/+OHqwV2NgbsTC/rEo0L9pnblr8kmy5T/3dY9Y0uxU7mcGq4
-	 tQvZ1sFjbPl55zXp9eLvb9DoLwb6VB/4Gaq2x0UAWcMoZh5OLpQPq8qkBK0IuaFqh4
-	 TSoD6R5u833pQ==
-Received: from smtp01.mail.de (smtp02.bt.mail.de [10.0.121.212])
-	by postfix02.mail.de (Postfix) with ESMTP id 135BE2405BE;
-	Sat, 18 Jul 2026 15:32:15 +0200 (CEST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp01.mail.de (Postfix) with ESMTPSA id 37917240CF9;
-	Sat, 18 Jul 2026 15:32:13 +0200 (CEST)
-Message-ID: <54128253-eb77-48f5-a673-94fb65edb78f@mail.de>
-Date: Sat, 18 Jul 2026 15:32:13 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PdrKD4LX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784382378; x=1815918378;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ti3SJliEhTQwXIyW7601QIBqonk8uDfvV/xE/Ni5730=;
+  b=PdrKD4LXRNXgWTG0lbMn3LNSSGFRe69y2ACb0cK44WcqHaUsa2uKamq+
+   oG6YK/Gh2Op5g/QtPmmeQgFChFuQiCCzcBow5JLOHABJHv0X7GS9mc0kB
+   djo7LmUGt9xiAXNn3Rt/3ZniHYPfo+TsvN4f7k3WY8YyBD2F00EmBkS7W
+   5+izEA3O4I5/yyWW/dCbEifd+mlHcQmn1puy+GMr3GiZSr1Sq9uFsftbX
+   Hdnb2WTeoEPhMqR1gRHTYWnWbO8bAiyWvhc8Vt3fB7A2Sxck8HGzhbxhd
+   jy3FVJToadB9StPHzafzyxUanm+j9eoFHz6z/W/OGKo4dUdRymzj8t4Gu
+   g==;
+X-CSE-ConnectionGUID: dRVlKGtcTfKuWUKH9XWYjg==
+X-CSE-MsgGUID: A/Gosla0ThOCb7Qb6IPozg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="84980697"
+X-IronPort-AV: E=Sophos;i="6.25,171,1779174000"; 
+   d="scan'208";a="84980697"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2026 06:46:17 -0700
+X-CSE-ConnectionGUID: LSYizkAISyKhCaJKRvUrww==
+X-CSE-MsgGUID: QPR/FEB9SuOlrm547vUKVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,171,1779174000"; 
+   d="scan'208";a="261995639"
+Received: from unknown (HELO brc05..) ([10.190.162.60])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2026 06:46:14 -0700
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	stfomichev@gmail.com,
+	kernelxing@tencent.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com
+Cc: bpf@vger.kernel.org
+Subject: [PATCH net-next] selftests/xsk: decouple xskxceiver and xdp apps from test_progs objects
+Date: Sat, 18 Jul 2026 13:44:50 +0000
+Message-ID: <20260718134450.575758-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [REGRESSION][BISECTED] stmmac: suspend hangs since 1b9707e6f1a9
- ("net: stmmac: enable RPS and RBU interrupts")
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
- rmk+kernel@armlinux.org.uk, kuba@kernel.org
-References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
- <17ebe5ba-16a5-4b3a-94cd-e9707c88df3e@lunn.ch>
- <72b91ec7-202c-4301-bcd8-b818cf8d72a0@mail.de>
- <21068662-c44b-4266-b634-24e5eac8cd96@lunn.ch>
- <8f6aca6d-6619-401c-bed7-8d42732d166a@mail.de>
- <09ee8651-4f29-4ae0-8e82-a32a1f7ad04a@lunn.ch>
- <97d803a5-ca6e-4d4a-adc2-f97cabfded65@mail.de>
- <46e90a47-4507-40fe-b74e-efef932e9b62@bootlin.com>
-Content-Language: en-US
-From: tresonic <tresonic@mail.de>
-In-Reply-To: <46e90a47-4507-40fe-b74e-efef932e9b62@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 4958
-X-purgate-ID: 154282::1784381534-12467780-7EE160EE/0/0
+Content-Transfer-Encoding: 8bit
 
-Hi, thanks for testing and feedback!
-> I've given this patch a test on imx8mp (that has a dwmac4.10), no regressions found
-> from running basic tests :) I think this is a good fix, if you submit it can you
-> address both dwmac410 and dwmac4 ? They both should be impacted by that problem.
+Build xskxceiver, xdp_hw_metadata, and xdp_features from explicit source
+lists instead of reusing helper objects produced by test_progs rules.
 
-I've added the deinit_chan for dwmac4.
-Sorry for the noob question, how would I submit this fix?
-Just commit and separately git send-email to netdev@vger.kernel.org?
-These are my currernt changes:
+Reusing shared objects such as network_helpers.o and xsk.o can pull in
+test_progs-only dependency chains and trigger unrelated libarena builds
+when invoking a single target.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-index 829a23bdad01..23ffe1adcd0d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-@@ -106,6 +106,17 @@ static void dwmac4_dma_init_channel(struct stmmac_priv *priv,
- 	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
- }
- 
-+static void dwmac4_dma_deinit_channel(struct stmmac_priv *priv,
-+				      void __iomem *ioaddr, u32 chan)
-+{
-+	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
-+	u32 value;
-+
-+	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+	value &= ~DMA_CHAN_INTR_DEFAULT_MASK;
-+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+}
-+
- static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
- 				      void __iomem *ioaddr,
- 				      struct stmmac_dma_cfg *dma_cfg, u32 chan)
-@@ -125,6 +136,17 @@ static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
- 	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
- }
- 
-+static void dwmac410_dma_deinit_channel(struct stmmac_priv *priv,
-+					void __iomem *ioaddr, u32 chan)
-+{
-+	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
-+	u32 value;
-+
-+	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+	value &= ~DMA_CHAN_INTR_DEFAULT_MASK_4_10;
-+	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
-+}
-+
- static void dwmac4_dma_init(void __iomem *ioaddr,
- 			    struct stmmac_dma_cfg *dma_cfg)
- {
-@@ -548,6 +570,7 @@ const struct stmmac_dma_ops dwmac4_dma_ops = {
- 	.reset = dwmac4_dma_reset,
- 	.init = dwmac4_dma_init,
- 	.init_chan = dwmac4_dma_init_channel,
-+	.deinit_chan = dwmac4_dma_deinit_channel,
- 	.init_rx_chan = dwmac4_dma_init_rx_chan,
- 	.init_tx_chan = dwmac4_dma_init_tx_chan,
- 	.axi = dwmac4_dma_axi,
-@@ -577,6 +600,7 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
- 	.reset = dwmac4_dma_reset,
- 	.init = dwmac4_dma_init,
- 	.init_chan = dwmac410_dma_init_channel,
-+	.deinit_chan = dwmac410_dma_deinit_channel,
- 	.init_rx_chan = dwmac4_dma_init_rx_chan,
- 	.init_tx_chan = dwmac4_dma_init_tx_chan,
- 	.axi = dwmac4_dma_axi,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index e6317b94fff7..04dafec021b4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -170,6 +170,8 @@ struct stmmac_dma_ops {
- 	void (*init)(void __iomem *ioaddr, struct stmmac_dma_cfg *dma_cfg);
- 	void (*init_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			  struct stmmac_dma_cfg *dma_cfg, u32 chan);
-+	void (*deinit_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
-+			    u32 chan);
- 	void (*init_rx_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			     struct stmmac_dma_cfg *dma_cfg,
- 			     dma_addr_t phy, u32 chan);
-@@ -235,6 +237,8 @@ struct stmmac_dma_ops {
- 	stmmac_do_void_callback(__priv, dma, init, __args)
- #define stmmac_init_chan(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, dma, init_chan, __priv, __args)
-+#define stmmac_deinit_chan(__priv, __args...) \
-+	stmmac_do_void_callback(__priv, dma, deinit_chan, __priv, __args)
- #define stmmac_init_rx_chan(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, dma, init_rx_chan, __priv, __args)
- #define stmmac_init_tx_chan(__priv, __args...) \
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2a0d7eff88d3..8504ecc3dbeb 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2560,13 +2560,16 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
- {
- 	u8 rx_channels_count = priv->plat->rx_queues_to_use;
- 	u8 tx_channels_count = priv->plat->tx_queues_to_use;
-+	u8 max_chan = max(rx_channels_count, tx_channels_count);
- 	u8 chan;
- 
--	for (chan = 0; chan < rx_channels_count; chan++)
--		stmmac_stop_rx_dma(priv, chan);
--
--	for (chan = 0; chan < tx_channels_count; chan++)
--		stmmac_stop_tx_dma(priv, chan);
-+	for (chan = 0; chan < max_chan; chan++) {
-+		if (chan < rx_channels_count)
-+			stmmac_stop_rx_dma(priv, chan);
-+		if (chan < tx_channels_count)
-+			stmmac_stop_tx_dma(priv, chan);
-+		stmmac_deinit_chan(priv, priv->ioaddr, chan);
-+	}
- }
- 
- /**
+Keep these standalone binaries self-contained so each target builds only
+its own required sources and BPF skeleton dependencies.
 
-tresonic
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+---
+ tools/testing/selftests/bpf/Makefile | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index b642ee489ea6..a6f0ed10ccb4 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -934,17 +934,27 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-# Include find_bit.c to compile xskxceiver.
+-EXTRA_SRC := $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c prog_tests/test_xsk.h
+-$(OUTPUT)/xskxceiver: $(EXTRA_SRC) xskxceiver.c xskxceiver.h $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
++# Keep xskxceiver independent from test_progs object dependencies.
++XSKXCEIVER_SRC := xskxceiver.c xsk.c network_helpers.c \
++		  $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c
++$(OUTPUT)/xskxceiver: $(XSKXCEIVER_SRC) xskxceiver.h xsk.h network_helpers.h \
++			   prog_tests/test_xsk.h test_progs.h bpf_util.h \
++			   $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xdp_hw_metadata.skel.h | $(OUTPUT)
++XDP_HW_METADATA_SRC := xdp_hw_metadata.c xsk.c network_helpers.c \
++			       $(TOOLSDIR)/lib/find_bit.c
++$(OUTPUT)/xdp_hw_metadata: $(XDP_HW_METADATA_SRC) xdp_metadata.h \
++			   xsk.h network_helpers.h test_progs.h bpf_util.h \
++			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-$(OUTPUT)/xdp_features: xdp_features.c $(OUTPUT)/network_helpers.o $(OUTPUT)/xdp_features.skel.h | $(OUTPUT)
++XDP_FEATURES_SRC := xdp_features.c network_helpers.c
++$(OUTPUT)/xdp_features: $(XDP_FEATURES_SRC) xdp_features.h network_helpers.h \
++			   test_progs.h bpf_util.h $(OUTPUT)/xdp_features.skel.h \
++			   $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+ 
+-- 
+2.43.0
+
