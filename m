@@ -1,172 +1,130 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB121CC51;
-	Sat, 18 Jul 2026 07:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784360206; cv=pass; b=s+8lErXtS3hYYvzuNWnXCfJqWWmQcBpCt8GfRlEQnhFlO/ufYPlXGuONe6RVYqWO4JeSyh16yOZ3NmBagLEu3ASHPSMMsMefBzfunkEanbJ6bBmaNZvYP+z7bMQev6flr8Sc8mChaXZx8hWGNsVk0dpoghiTSDcRAYwIk08mNvU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784360206; c=relaxed/simple;
-	bh=w1w1hQb2DYGiJV9eme4ZWG1Sn4wyHmb3HO4zGqK9TTg=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=Y86l5NTU09Ing2D+oQyzYq2dS8Z1UhNFr3aJmK2YInqO0QU9SAGRgwqoMk8YKfAa38YgaIToT/nJ55jlJ5n2+uBLJCJpLv6Ju5aiI1/ecUUT9FbgY2HYOWOMBqzMwDanvl87UyqjPkcig99tsa9FmAhfonJZs74pHAaXX6GrQtE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; spf=none smtp.mailfrom=xenosoft.de; dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=Kz59Pf5f; dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=eYhhsw1X; arc=pass smtp.client-ip=85.215.255.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=xenosoft.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B25A33EB0E
+	for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 07:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784360221; cv=none; b=hEMXIYK5oZeqawFfkV3y3GjO/VYhNLdMngq/oD6U2usef2+H2oIEMIB88BL1EV9RgZH9X5Gz39YrSIuzYMpSnENPaVVzSRewb/ToLg4RxKCERLUlJuaAqQV3SZUZRSPUgUsnKhFttudhRpsT7hHEzHOEs6oDoTx1+Pk5iRyMRl0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784360221; c=relaxed/simple;
+	bh=1DCFoJBf2Vu21tPTt/j0CZEOQLEYjeE7HwekksmZYz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUHGsg8pu1NNfMA+mmCV83GXgsLP2/ONyWohh9S0dF9N5OTkTpAov84+webArfcUK1B9PVCULiizvIzu8PJdXUUq2jRILQIcwsCQwwLOeU0goXq2mZSo2E5pK0Gcg8mrqFL0DvAkydBf+gIk+OeHEgz/kEN/o2ho9HzyO0QuCFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qXbRrohc; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="Kz59Pf5f";
-	dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="eYhhsw1X"
-ARC-Seal: i=1; a=rsa-sha256; t=1784360145; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=XnLp6kQafvvcrPtQSrUrPrJNApT6uBo2LHRnelxGeTA6JwujNWe02VI8DamIDk0ymO
-    VS6GH+ZBOgpYi8J0RWzHxrIjwS7UwgtPXS6JcdH+SprdRersgKzSafpcN7ECaxXFBYqB
-    ByxG/8/+N/LoSKYtYKYhpfwL4rs2an/yvXTe+jTPxjzWiJ8FGHLulhP+9h4L7jwMj1QX
-    0tapS8MAfpAGEwTgpJLFBooV5UUWBcT06SyGahlN/A8PDu/hTpRWNgJfoE+hq0H8jDD/
-    LXECvuTkmVSw3BMbWenxBj5oU75+C+JfrPyYfdVFuOGnmPhJxaddsk5ejuKtMFltsTdI
-    mBwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1784360145;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0tbd9eIynpCcFNvu0tDpYKVIEEAcJWSMR8BWz+rY1cM=;
-    b=UQURTbKAQMo2aRbfC3Eb5apJJuLsX8UgEeIW8HKLNUU0CZnE41zmYQDY2fh/g96hUV
-    IZYeqUtPZj9AIKeTKrOwP8v6zeM4P9B3AYR5TqwSrQQBT3PB/p8nuWI6k4VtDd542Zn/
-    el2pQzwziv68KHPCEHuXBf75/wH0BV9Ujb8HCN1+YwokMyeiiigkQMop8UiA4OX1sNHl
-    2aw4E9v0OL/bDqBjuiVrIuOT2DtjTZdndawgNWgshkHoGFGzHL4ZbtrwVBqpLE27oV/L
-    yA4UPDfU2sPvcQnxCAfaEagJr8KXpvkPSmxdn67ZLSFbh/9SNjDJ2JQslnThLh8thpYA
-    kLkA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1784360145;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0tbd9eIynpCcFNvu0tDpYKVIEEAcJWSMR8BWz+rY1cM=;
-    b=Kz59Pf5fw17gMvs35TbI1Kb6Qt4Oe6B4yGC4tuqMXGSw8CHLh/H4fKotbSsTzHNijL
-    4nipaigkOWoygx8IOpbPcUUf8Q/OwwqnE8bN7Rac/HSThTxTYxBU8d5zLIyv6u96O1Ys
-    wrXQ2fTv+IUyBnByD+p2Lxf/hZ8o1VQZ3p3NjkHkDGdRePQleAOpzlllh6yXQjJARQTy
-    qPgmnrN/od+gJWUQJ2bQY8HY7mhvRubTj5BVUoiyuzYzU0TPKZpgMCbAU5XTbblguKcG
-    kCBghQKOHcoiI+wvb6UkCLJnD50hSXRw7YgUJHaI580njBCJX9KUN44RACVogfJmGW24
-    8ocw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1784360145;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0tbd9eIynpCcFNvu0tDpYKVIEEAcJWSMR8BWz+rY1cM=;
-    b=eYhhsw1XzSlIip4reBkH1uEggHyh2HahxZ5PBmQY73W+u054FVCJwFJ0BRAl+qpkBU
-    idf05c0mWWramUvB9wAA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5jns36WDHmkHWjM34E2akzSGSaC3yEQATR5mHs="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id eed0ee26I7Zj18x
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sat, 18 Jul 2026 09:35:45 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qXbRrohc"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cf27856f9cso27823785ad.2
+        for <netdev@vger.kernel.org>; Sat, 18 Jul 2026 00:36:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784360219; x=1784965019; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WLt3z/YLewySScLqKbA54lMv7v0xl9mubgztEwsCZ/Q=;
+        b=qXbRrohcSI/isqvPSe84qBFKmAeLkiMlX5jD4Efm/Bh9QU4mSZmv0McWEMrS+OA+k/
+         z4bHtXeZPDdyc0+VAdi//pejeQwuygb5eBgvyBt8z/1LAEy8ZXduOmJJIhDoT2VsKBQE
+         dozEekheuQMpnm3g9BrH6/GGUTid16KpeDg+TjdEcSNx6oOnhG0UYwWo1C7AOjC9yxBY
+         z2LaaTzxCFdYZZaiyFRMpll7r8frjpBEy/nggCePEFopqCjIlX2/HZ4BY2JMSkHVur2u
+         NM/x9dJm9YXhvSDA84D668p3zLjJh41Jap0dW9+dQg2shba80YxCe2uvUn8gM190lQdl
+         7U9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784360219; x=1784965019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WLt3z/YLewySScLqKbA54lMv7v0xl9mubgztEwsCZ/Q=;
+        b=SX5FwjGXXv/YijCUNTVEZidalYrahCCv205bhdMUcyCc44idBTDthUxbVaqeVIdgyW
+         jRVQe4dzbZnXuP7k9Y/fnQ3MPVqo7mw6siYVETOltFeF512vqVD2scFkYwwngGhpiw6I
+         yq11Hr8K94W0rbwZ1TAWdLJgWEDLEhjJFl4dfFIOAHMu6B75lPB/GsUhtVGqi7rlyodj
+         lV3MBJoacXcWSKnUe9eZOf1vA3khCmcTGMQoyfI0DZR44QELkRJos7Nqr2xXJgCMTrNj
+         wf1G/ZLiKJWO8dNpI4B1yASBJrRbQV3VJrhbmkBgAcLxfdFHJb3HdWPGXJRkzqVgpHRD
+         1NpA==
+X-Gm-Message-State: AOJu0YxMRh97Hq6z2r7TkKiRS/FH1+tkW4v7Q6V2qSAFLc/nUSzqKuBH
+	1QqHS9V26fixizdZW6vZjSdczWwWYS1zqL/BS0b0AyXboTwpPVOAsOCzqeg/xu4cu1k=
+X-Gm-Gg: AfdE7cnPLb9MSbbxoZQdPTHTlFXyF5IDwG2c62OupXU55SwxP1p4i22RVz5meCutsHn
+	PSJDMpDc1G1NYTnW8UHNb0+wbv79qwgysujdsDXSlsMnHn1eTjejrTc4F/SsTYYVMezqdhlbmO0
+	XqBDfmsDCd3ACHuv7lICfJT8vRZsPOryM1RJYpM1SdC/ZchecNK61mqprZnuQIcO/HzHgNray+w
+	nahVuOMAEyEBdLcXMUm05YJR+tOsw9pVtTlR4D49jX+u8Go0L1ykudcQ++sBZIR+OBfgy1PSRdt
+	tsBnYpmFGow06adejlXHoYxKZEg3C2cRuWsLSBcoy/ypGeuaOYFESFJ5v+6YPN7ETpUwfhdzqT1
+	eIivRp8uUoT3iR6owLrqHh0lhX85hk2pgHeBr5mJx0OA3qvZms4QJyw7rND0RP11aqHRWS6gmxg
+	32+ZXHqf0WcNQs8g8mig6wep6FmJxwAQi2wgJJPgUo3rbTrg8wzORD2BI=
+X-Received: by 2002:a17:903:1a0f:b0:2c9:c18f:7446 with SMTP id d9443c01a7336-2cf34948967mr69058225ad.27.1784360219245;
+        Sat, 18 Jul 2026 00:36:59 -0700 (PDT)
+Received: from localhost.localdomain ([121.166.4.110])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf347166e6sm23494255ad.59.2026.07.18.00.36.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 00:36:58 -0700 (PDT)
+From: Sungmin Kang <726ksm@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH net] net: slip: serialize receive against buffer reallocation
+Date: Sat, 18 Jul 2026 16:36:30 +0900
+Message-ID: <20260718073631.1674-1-726ksm@gmail.com>
+X-Mailer: git-send-email 2.49.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH net v3] net: dpaa: fix mode setting
-Date: Sat, 18 Jul 2026 09:35:34 +0200
-Message-Id: <A0ED8202-B2F7-4EDC-8BC5-0E89018111F2@xenosoft.de>
-References: <4f7497cf-83ed-47cd-2e7b-d06ebe319b61@linux.dev>
-Cc: Michael Walle <mwalle@kernel.org>,
- Madalin Bucur <madalin.bucur@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- David S Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Abeni Paolo <pabeni@redhat.com>,
- Christian Zigotzky <info@xenosoft.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Trevor Dickinson <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
- hypexed@yahoo.com.au
-In-Reply-To: <4f7497cf-83ed-47cd-2e7b-d06ebe319b61@linux.dev>
-To: Sean Anderson <sean.anderson@linux.dev>
-X-Mailer: iPhone Mail (23F84)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On  17 July 2026 at 11:11 am, Sean Anderson <sean.anderson@linux.dev> wrote:=
+sl_realloc_bufs() replaces rbuff and updates buffsize while holding
+sl->lock. slip_receive_buf() reads those fields and writes through rbuff
+without holding the lock.
 
+An MTU change can therefore race with receive processing. An MTU shrink
+can expose the new smaller rbuff with the old larger bound, causing an
+out-of-bounds write. A receive callback which already loaded the old
+rbuff can instead continue writing after that buffer has been freed.
 
-=EF=BB=BFOn 7/17/26 09:20, Michael Walle wrote:
+Serialize receive processing with sl_realloc_bufs() by holding sl->lock
+while consuming each receive batch.
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sungmin Kang <726ksm@gmail.com>
 ---
-I didn't grab Sean's Rb tag as this is somewhat different.
-Changes in v3:
- - keep the mode setting also in .adjust_link().
- - reword the commit message, to be (hopefully) more precise
- - Link to v2: https://lore.kernel.org/r/20260710143430.2276141-1-mwalle@ker=
-nel.org/
-Changes in v2:
- - the setting is/was based on the maximum speed, not the current
-   speed. thus, move the setting into mac_config().
- - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@ker=
-nel.org/
- .../net/ethernet/freescale/fman/fman_dtsec.c    | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/=
-ethernet/freescale/fman/fman_dtsec.c
-index fe35703c509e..b8d70c0ecb6c 100644
---- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-@@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *co=
-nfig, unsigned int mode,
- {
-     struct mac_device *mac_dev =3D fman_config_to_mac(config);
-     struct dtsec_regs __iomem *regs =3D mac_dev->fman_mac->regs;
--    u32 tmp;
-+    u32 ecntrl, maccfg2;
+Testing:
+
+Before this change, a generic-KASAN guest reported both a
+slab-out-of-bounds write and a slab-use-after-free in slip_receive_buf()
+while receive data was raced with MTU changes. A non-KASAN build with
+SLUB redzone and poisoning also detected cross-object corruption.
+
+With this change, the same KASAN stress test ran for 180 seconds and
+completed 38,137,741 receive-writer iterations and 216,165 MTU changes
+without a KASAN report, warning, or panic.
+
+ drivers/net/slip/slip.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/slip/slip.c b/drivers/net/slip/slip.c
+index 820e1a8fc..faae711cf 100644
+--- a/drivers/net/slip/slip.c
++++ b/drivers/net/slip/slip.c
+@@ -693,6 +693,8 @@ static void slip_receive_buf(struct tty_struct *tty, const u8 *cp, const u8 *fp,
+ 	if (!sl || sl->magic != SLIP_MAGIC || !netif_running(sl->dev))
+ 		return;
+ 
++	spin_lock_bh(&sl->lock);
 +
-+    maccfg2 =3D ioread32be(&regs->maccfg2);
-+    maccfg2 &=3D ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
-       switch (state->interface) {
-     case PHY_INTERFACE_MODE_RMII:
--        tmp =3D DTSEC_ECNTRL_RMM;
-+        ecntrl =3D DTSEC_ECNTRL_RMM;
-+        maccfg2 |=3D MACCFG2_NIBBLE_MODE;
-         break;
-     case PHY_INTERFACE_MODE_RGMII:
-     case PHY_INTERFACE_MODE_RGMII_ID:
-     case PHY_INTERFACE_MODE_RGMII_RXID:
-     case PHY_INTERFACE_MODE_RGMII_TXID:
--        tmp =3D DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-+        ecntrl =3D DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-+        maccfg2 |=3D MACCFG2_BYTE_MODE;
-         break;
-     case PHY_INTERFACE_MODE_SGMII:
-     case PHY_INTERFACE_MODE_1000BASEX:
-     case PHY_INTERFACE_MODE_2500BASEX:
--        tmp =3D DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-+        ecntrl =3D DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-+        maccfg2 |=3D MACCFG2_BYTE_MODE;
-         break;
-     default:
-         dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
-@@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *conf=
-ig, unsigned int mode,
-         return;
-     }
- -    iowrite32be(tmp, &regs->ecntrl);
-+    iowrite32be(ecntrl, &regs->ecntrl);
-+    iowrite32be(maccfg2, &regs->maccfg2);
+ 	/* Read the characters out of the buffer */
+ 	while (count--) {
+ 		if (fp && *fp++) {
+@@ -708,6 +710,8 @@ static void slip_receive_buf(struct tty_struct *tty, const u8 *cp, const u8 *fp,
+ #endif
+ 			slip_unesc(sl, *cp++);
+ 	}
++
++	spin_unlock_bh(&sl->lock);
  }
-   static void dtsec_link_up(struct phylink_config *config, struct phy_devic=
-e *phy,
-
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-
-Christian, can you test this patch with ethernet at 100/1G speed if you stil=
-l have
-access to those P5020/P5040 boards?
-
-- - -
-
-Yes, I will test it as soon as possible.
-
-- Christian=
-
+ 
+ /************************************
+-- 
+2.49.0.windows.1
