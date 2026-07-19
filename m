@@ -1,98 +1,73 @@
-Received: from mail-200166.simplelogin.co (mail-200166.simplelogin.co [176.119.200.166])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF61D1A9F97
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 02:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=176.119.200.166
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784427142; cv=pass; b=LdW3ZdrmviUZCjdqtNVYcfKLl5x6sV1X81JHelsLmW77anyliviVuQAQUB2VnkRWP86ke0ZH8m7X5VEQm+5Qtizxa1cTvsR2KTuCClyA7/VM2rCzz29H33v9m3PvWJ47KGZA8LouWBkWDEhqIfIuRI4bPmRajZGhy8yjEdvnVQo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784427142; c=relaxed/simple;
-	bh=VlZG6rG4j03zYsUgtt6Nvr+4RrV8YUV0ZekM4ksBDbM=;
-	h=Date:Subject:MIME-Version:Content-Type:From:To:Cc:Message-ID; b=TkMxSSS92ccpmYuHct98GdqJWncrLJgfJ0L3PL+rqWOmpiq4dKGApraWzx1fRFQ4crAUbldkcHm0m72jAfeSihtSIE5NZCweMPKUOFBTMhPI66niRVF/D91vk0I/+Kj0AYYJ684DlseB34tnwjJU0MJlZG3Yr/72vRt5boJ/hw0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=elinell1337.me; spf=pass smtp.mailfrom=elinell1337.me; dkim=pass (1024-bit key) header.d=elinell1337.me header.i=@elinell1337.me header.b=wTm5q386; arc=pass smtp.client-ip=176.119.200.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=elinell1337.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=elinell1337.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353DD2AE68
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 02:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784428896; cv=none; b=go8Lt8Bb1KEybUOCEaG/1H8kfBkQ7P1A2dlGbJPWiVcNyKqXeyDmGEw+oTvoBv5RyqQMjXSBkTm6XPpMhION/6TxFtxoYUMHqJZK1737M9rNQgozU3YknGERTY0hRLn0D0JD/2UReJeYoka7nAwg+94/MLjmbm5b7n0s2Up6vnE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784428896; c=relaxed/simple;
+	bh=T+IMYh0kKqAALiojNf0eEsOBjqE5iDv5moDtT6Yy9JE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MS0Q2WnXTzNmToP0hNwo63cnN16m48/cx0135dVLvnwF34mFlU74HmJ9P4glDiS5nU2K8VGgGrwn4qLaUrr4Uh0oNTS2VRb74V/mPW0eMwcEVJ1jc08F7Crim8euyNSACCUJh6K0FWO6KvdGtDawF01EXInOjM0t759CXjx1PIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sn+IkZmx; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=elinell1337.me header.i=@elinell1337.me header.b="wTm5q386"
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1784427138;
-	cv=none; b=2AOEJ7IgVw6izz7kGLkomXKj3QUa/onRi+7iNKGu0mgMDbLs1p1NQD9E6guCpWfBzDpxb9XAMnUMztecom2FQ5WdcVnFVd5D+VrFY2vcYM2GuX/6x/eTZ1ougD8YuRYxm6HEAR1UgIrYNJu9chynVHzxARrGXzNi196mG1meZdRDAuE5x2bRkRDHtxcrGqw+UmNGg7pY993dCx7JmmqOl+IIPWkoPztXi+WfW1TaAMBNZPpPfPjzUcXdDatSdElmtkeFr9UN/KwWLLNTUV0sjw3FtSDZJ6869nj6ns/Yy4eqtlbnwAyuAzN5GalWCpWIRrOQAbFAWD8tzIj0GmBcDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1784427138; c=relaxed/simple;
-	bh=VlZG6rG4j03zYsUgtt6Nvr+4RrV8YUV0ZekM4ksBDbM=;
-	h=Date:Subject:From:To:Cc; b=aczz5bYeEVvhF+KJMGbU1kyFdygk6p5cbu0onSDnToc8bTqOuwTzRAKd0xQyLskeNGWC/VmsT4OOmanNVLqYTK1z0TDPrmBiLEbsagOcUzb0S0EFT0k6cVya9gaEVrvZY7UNW2cjUupl9KQD7V0ZANgZy9xdajy8h/L8U3hjoIWv5RqJjHqBzJDpnjOVzu0Cm+k4qGRNUSL6W6v2aXKqHbYzVWmb5DVzy5Tj7KU3a7b/sfbicpJCdToRJ100RxBhRl/f8DYjpEanL46SvrT0MsOW4tPlIuXh/MFsLdwEXToV06DcxV22KOIn1wm6teAJjNDjqKb2qkvHlgNYvGhMAQ==
-ARC-Authentication-Results: i=1; mail.protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elinell1337.me;
-	s=dkim; t=1784427138;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sn+IkZmx"
+Message-ID: <8638d68c-4bb8-476f-97d3-98f433949ab7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784428891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VlZG6rG4j03zYsUgtt6Nvr+4RrV8YUV0ZekM4ksBDbM=;
-	b=wTm5q386xxQ4/VMRG1sQygbq+V4vG5wTc4TvJXAK544ubbjCpkgGMEXEaRnktro9ZJRcFz
-	mhV3rG3t9GydGLbmsPHb8VGqOgOAIRbrQYPtLmSATh/gMZ4wJIEQoq40YuZqT6nRCwviGZ
-	NO5uPv99pbxUqITP/nzfGjLEH3hB5Go=
-Date: Sun, 19 Jul 2026 02:12:10 +0000
-Subject: Question: MII media mux for external PHY/SFP combo ports
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtJfWQYyZlCwt5055dITLF3UyUsl6gTusWicTltj6lI=;
+	b=Sn+IkZmxVcsADg16l30+ATSEaY8uJkAhyNOphUNHjIaw8UCaqKBtlZKexW6tdh3K9+GfnH
+	UTdm+7r3MIfSQssOQt9fNOudr/eabf+Czmmr60JitM0bLarweEl99lXQVdETNYyq5SKo1I
+	DdRqhEjo6LAyxTlfFl2KfyfnlxBU0NM=
+Date: Sun, 19 Jul 2026 10:41:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: git@elinell1337.me
-To: maxime.chevallier@bootlin.com
-Cc: andrew@lunn.ch,netdev@vger.kernel.org,olteanv@gmail.com
-Message-ID: <178442713834.7.10284519099797443296.1492041940@elinell1337.me>
-X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1492041959
-X-SimpleLogin-Want-Signing: yes
+Subject: Re: [PATCH net-next] net: dsa: realtek: rtl8365mb: use
+ devm_mutex_init
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Linus Walleij <linusw@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
+ <alsi@bang-olufsen.dk>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Maxime,
+Hi Luiz,
 
-Sorry for the duplicate email. The previous copy was rejected by the list b=
-ecause it contained HTML (default mode in Proton Mail).
-This is a plain-text resend.
+On 7/18/2026 1:59 PM, Luiz Angelo Daros de Luca wrote:
+> mutex_destroy() is needed while debugging mutex. Instead of calling it
+> directly on driver .remove(), just use devm.
+> 
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+> ---
+>   drivers/net/dsa/realtek/rtl8365mb_main.c | 15 ++++++++++++---
+>   drivers/net/dsa/realtek/rtl83xx.c        | 14 +++++++++++---
+>   2 files changed, 23 insertions(+), 6 deletions(-)
 
-I am working on upstream support for the Banana Pi BPI-R4 Pro 8X and
-would like guidance before writing any board-specific mux code.
+As you're fixing a missing teardown, and the two files were introduced 
+at different times, you should split your patch into two (one for each 
+file), re-target your series to the "net" tree, and add a Fixes tag 
+respectively.
 
-The board [1] has two independent RJ45/SFP combo connectors. Each has
-one SerDes lane, a GPIO-controlled passive external mux, one AS21010P
-copper PHY endpoint, and one SFP cage endpoint. One mux is connected
-to an MT7988 MAC. The other is connected to an MxL86252 DSA user port.
-
-The downstream policy selects SFP when a module is present and copper
-when the cage is empty. Each combo must keep one logical network port,
-its MAC address, and its bridge/VLAN configuration across a media
-transition. Switching either combo must not affect the other combo or
-the remaining switch ports.
-
-I have downstream reference code [3,4], but it polls MOD_DEF0 and
-replaces driver-private MediaTek or DSA phylink state. I am treating it
-only as bring-up evidence.
-
-The phy_port documentation [2] added by commit 62518b5b3d8e describes
-external MII mux topologies and identifies an MII mux framework as
-future work.
-
-Does runtime MII/media mux follow-up work already exist or is it
-planned? If not, is phy_port the right starting point for a generic
-design that covers both MAC and DSA consumers?
-
-I can provide the exact DTS topology, downstream references, and a board
-for copper/SFP hot-plug, traffic, and concurrent-combo testing.
-
-[1] https://docs.banana-pi.org/en/BPI-R4_Pro/BananaPi_BPI-R4_Pro
-[2] https://patch.msgid.link/20260108080041.553250-15-maxime.chevallier@boo=
-tlin.com
-[3] https://github.com/BPI-SINOVOIP/BPI-R4PRO-8X-OPENWRT-V24.10.0-Master-De=
-vel/blob/56e0e77adad258ba05782fee8f94f00d17b0b991/target/linux/mediatek/fil=
-es-6.6/drivers/net/dsa/mxl862xx/mxl862xx.c#L3696-L3738
-[4] https://github.com/frank-w/BPI-Router-Linux/blob/6aa3b285d8f88267e5f3f4=
-03000c88a08b61f851/drivers/net/ethernet/mediatek/mtk_eth_soc.c#L5430-L5508
-
-Thanks,
-Pavel Kirbai
-
+Best regards,
+Qingfang
