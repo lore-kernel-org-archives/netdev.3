@@ -1,188 +1,83 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us.padl.com (us.padl.com [216.154.215.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8358223DCE
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 11:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784460311; cv=pass; b=sWFHugeXV4U+eqeUoCqW3CFlEThCehGqzEwIfyRCLacGSjZsQ0ChUoGellGzxwE7+Qwq16HklE9kk+4ZTJte8JFgQ/yaoelsPFwOwhKVt6E6I0PAHWI2k4Tnc02DXThsZsas3gwikUF3JkK1yxbJxcCRrr+Edhbbqq1MdWNAyhM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784460311; c=relaxed/simple;
-	bh=FDGuXM2+ub+2Gvy8iCcaUBW9Y2EUIgzom8AF+wZPxmA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BCO+QOCeVh1BEbxQNP0oeUopGSFf0rQzwkKaG3+ZLNEq5DXTg9wXBeFd1xk0YytsIp0dnzTObDVo8VDCR1gBrzuJrvKfNXPAG8KoUiAyqag4j0ny7lmoNACcfMWRzttautjIZqyjU7hIulk+PEm3UjWDSnAlH41CfNU581o5NpI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I8szVpPa; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DFE346E55;
+	Sun, 19 Jul 2026 11:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784460965; cv=none; b=PjLLDAMVTrY41Y3yUFATEnpKQSud/hTY90L6WIBfTAMLDHU9uxEK7YnRD/nTo6UnB6kGYepMmGAVePzn2FvpC/G/Mq7FjGTvryt/LtHgORYSrjBdtxDML8o8tOpXhLjhcdRPxPGtSr2/DUW14LiQ3IuQk8uTTIGJ0oB3JgPL5Dg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784460965; c=relaxed/simple;
+	bh=hr43sw9qW2shQXLeShsPM+9gJu+UI7BDR2J29LrKo5c=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=q1D8TKjB3QkxDCROAvsvlb740DFmtDUwKVEDDBUyWjvEA+R6qQfUy2KVkTh2+31b2lzIuAuace1zkNJuRbacVdqa/qcRaOyoqXSpWv4rAFttDgXi98EomJWIp3048UHqrJoRxSqxkbHA7t/Q4UyZEPdiiqqpFtVS2EJ2XxQy7Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=s7n+rExg; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I8szVpPa"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aeb11c7347so6892346e87.0
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 04:25:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784460308; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xp8XQDzqZKBZxULoqwnJA+1XDRmtRCZmVwUaxsW2rk4NNNIhFaWiKZUgTB8vXyxs5H
-         8lpynIxKNx2WzzcRp3TIZIUhuAQkDViVHouh3j8xwdohX10j6NLxp7mRdmXTteJ2iORJ
-         MYAnF3YqWHRrR6fUrae+zW1MozNDFr1Gm5xv8re78V/8bKY0WyLoX3KtpDv5ZhBRcNb0
-         hMhRuIM4AIy8XQ5vhcln/N1FEtIqC1gaRDEdXfv2Kccxq9KQvpfuBZcZLVeb6nAbBX5U
-         nyx1djkm8RXf3ZdIY4jTaL6cjHN3dnxsipH6qSGiVdMM49nTjOo8YUj81IeY+/Lhm7G6
-         r9Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FDGuXM2+ub+2Gvy8iCcaUBW9Y2EUIgzom8AF+wZPxmA=;
-        fh=oOVEhjYJvV/LvZX2bvVOqzJjd0L7u8raKHMJzQiy+js=;
-        b=CyruLQt2p0l0VpFNgJB+cbG8IXyeO27p/HcCKiHPy5aFhP1yBtsP7DcVQYGc16Kkw5
-         B7OufBNkZtveM5SDad6FYOCQJHDUd8HJ9PNEWR+k6wFY37f4ZQqTGIyD1gpDyGtofJ3D
-         EbBqQIJyELqP43GOwo7D9mzXpn7kjGuhl+3KzpZ5wugFr+R6EfZa0gI9/EB7DzfLLpca
-         uwKdQtrHyyPrfKUBt0gwb+D0tj0id1WWb0BXmEcK0Bx7Ae+CjklF0ZKRriDO+kmRoMhH
-         uNxZbfaA27c6w9Q+rJHx0VYaLPuLpA0avzkZWIN85DGI0pECVceavjS5nIGm5L1phqVU
-         kEAA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784460308; x=1785065108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FDGuXM2+ub+2Gvy8iCcaUBW9Y2EUIgzom8AF+wZPxmA=;
-        b=I8szVpPabnLQ+g0PR3pWjGDsx8HYsGAGJgFBcLbMhaPIku/HJ8FrrmvQQJxSt3Og88
-         AwueKiZvpKfHynpZx2pyTS/uDbXFy6sdqv7FAbWKU96TRAGBEz52KDaczC94b05YAyww
-         c2a+APBQtqD97OXnGQKPQzdNdiL38SX+5Dr2KOBH08p3LIiRc8vjQjpyTrlOdRfYiQMC
-         QB/oCjCglJ/V+O1BkEHZ58EsacqpHwRBorweUtqLIU4becd2qtYMaJaDohrNmRZEqI0w
-         9VW1Rz9D67jiNeLpsYMuXlsZipa47w40pFLpTWyjftna2hrODkl28ggS5utjg/fvio7Z
-         OADw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784460308; x=1785065108;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FDGuXM2+ub+2Gvy8iCcaUBW9Y2EUIgzom8AF+wZPxmA=;
-        b=kjZbLyu+pkIX9vZ3zwnoRDnChfVh2DiPkOVRXthf8jStBaxo0rf63qZnJLP0JRjHZB
-         m+qPurtR+0ZCFQPKjU3OsM3jLJjn0e97IA1CrGmDGsI/a8jugfHyX4FJMPpdmdyj7GgZ
-         8OMKnVCeebcW5zDtUFiz1F8T9QB4qv4/+maTJZIOq10nJivqZhXnAKSHRCXVQNq4lKFi
-         2ccaJ4xGRC+TlpjBPzyJ/Zl+7Qz9l7McXHa/nyWJpm9f6/51oeJWzPzoa4gKdjO/LrJe
-         sbKfbvG/Bpihc6lMGT3OSCCynQ1YBZmpesdt7gh89kIskSFPCWWbxTEdyZsiJetFvgaO
-         bVPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrCtybM5lMvLjp/eDbzNGBjnmhGrr4bWuHFZHZS8DA3YjoeIbxcrUDxfn+i0BGY4fg7x0NyeOo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7dB62zT6iK/2DI3USAA5Q58KM7H4LiJlPtz/Epbl0xmNZS63q
-	kymephsChu8AADVxwlXQyZYLQSJ1+dibFY4eLIn+cHXezEDwaVpNvz2pNGomqPzPUJbxGN/kZ04
-	DK7IAtUv0wFVzj39VSl3QRDDOrQq3kv0=
-X-Gm-Gg: AfdE7cnY2R1urzG34pFDR3kPZZOupe1JHCQIduEJcyzYZTgtnkphgr6/fhDJttvqzSv
-	dGwbN2XmzyAqOwXyVWSadgQAcxUWqsJ/CGaNo1ICZzywSSN3DcJ/beOKF/g2pCtgSHVIph53DeJ
-	qUzHyhGwAEwR9bvCpfYKrMQzYF3Ic6mfitynJ2p2SrquLPTy0BDC1buBNnh0aZE5HeEcaitoLSr
-	1mZIt5PPpig9BP4R0bVXCgDxRTx9zsqbexUWL+aHF3PrjPz7Rktth8lVb4CtVsKrTHCypgeSp0Z
-	YE7x+GFHIfoyno6Fh5ZtcC8lj80Sdf0aoXi35EyuoNvRBcmvl+moMNfXVwO40w==
-X-Received: by 2002:a05:6512:6193:b0:5ae:bf95:38e0 with SMTP id
- 2adb3069b0e04-5b28f98cb4dmr2253306e87.29.1784460307561; Sun, 19 Jul 2026
- 04:25:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="s7n+rExg"
+Received: from smtpclient.apple (119-18-22-158.771216.mel.static.aussiebb.net [119.18.22.158])
+	by us.padl.com (Postfix) with ESMTPSA id 593596095A;
+	Sun, 19 Jul 2026 07:35:59 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1784460963; bh=hr43sw9qW2shQXLeShsPM+9gJu+UI7BDR2J29LrKo5c=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=s7n+rExgJHTZ6EPdD5cu2Okl2ZmnJNINBknHrHJPxrQlVs8rIu1ZGCsAdwE0D4Mvi
+	 PYXUDKuKLkZTxSxQnKPM7+OJ7l2b3NdVY8W6+ZVnkiKeYHnRL9+dHTl629hzGpGih+
+	 q8tMAmFfWor0J1gaX86U7wUXCuPeN9TezNyC+kcVwsllrUKAm1gbcXMH0Uz7jQBZOI
+	 6BXrE17Nn8OOIoAeJQeBaVJ8qRT80yAS8tAfBG9uo9GhO92LAdbsE9FfSFrBSHkEpJ
+	 kYGL8PWtfeNAeAzgOhvYGkvJZF6ce9jJcrHQOHjpXX4rLHKTkoyC/fDxzfVicbbN+3
+	 cHJRuXPnW44bg==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260717222327.7398-1-sigefriedhyy@gmail.com> <20260719065310.GB1841238@shredder>
-In-Reply-To: <20260719065310.GB1841238@shredder>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Sun, 19 Jul 2026 20:24:55 +0900
-X-Gm-Features: AUfX_mxUTfQs8aMMy0hPx-baK_D-_JWbPTpuux02IjsbinAwtVEgedfG8H7XjR0
-Message-ID: <CA+7S2vK28H0diXR1bhKiMacwXHGHMcLfikzmf1bdS94bd0kMaQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/2] ipv6: report why a route was deleted in RTM_DELROUTE
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Chris J Arges <carges@cloudflare.com>, Daniel Zahka <daniel.zahka@gmail.com>, 
-	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>, 
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: embedded PTP
+ timestamp support
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <20260719101241.xs4nz7r5bonb3qys@skbuf>
+Date: Sun, 19 Jul 2026 21:35:45 +1000
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>,
+ Andrew Lunn <andrew@lunn.ch>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Cedric Jehasse <cedric.jehasse@gmail.com>,
+ Kieran Tyrrell <kieran@sienda.com>,
+ Max Holtmann <mh@rme-audio.de>,
+ Max Hunter <max@huntershome.org>,
+ Christoph Mellauner <christoph.mellauner@joyned.at>,
+ Simon Gapp <simon.gapp@gapp-audio.com>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
+References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
+ <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
+ <20260719101241.xs4nz7r5bonb3qys@skbuf>
+To: Vladimir Oltean <olteanv@gmail.com>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
 
-On Sun, Jul 19, 2026 at 3:53=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
-> Please expand more on the motivation: Which user space application is
-> going to consume this information and what is it going to do with it?
 
-Thanks for the review, let me add more background information.
+> We try to keep the data path protocol between the switch and the host
+> API compatible, and identifiable by =
+/sys/class/net/<conduit>/dsa/tagging.
+> I would argue that the protocol where PTP timestamps are in registers,
+> vs where they are in PTP header reserved fields, vs where they are
+> appended as trailers, are 3 different protocols and should not be
+> presented as "edsa".
 
-My current use case comes from Android devices, but I think it is a
-general problem that any consumer device running Linux will face,
-especially on Wi-Fi networks (multicast delivery on Wi-Fi is not
-guaranteed, e.g. frames can be lost around DTIM for clients in power
-save mode).
+For context: I added ArrTSMode support because even with the PTP worker =
+process priority bumped, ptp4l frequently missed RX timestamps.
 
-On Android, the userspace NetworkStack process listens on
-RTMGRP_IPV6_ROUTE and today treats any loss of the IPv6 default route
-as "router lost". To prevent the device from repeatedly gaining and
-losing IPv6 connectivity on a badly configured network (e.g. a
-misconfigured RA interval), when it detects the device is on a
-dual-stack network with working IPv4 connectivity, it defensively
-clears accept_ra_defrtr and restarts IPv6. The intention is to stop
-userspace apps from continuing to use broken global IPv6 connectivity
-(while keeping link-local IPv6 working). However, if the route was
-withdrawn by a zero-lifetime RA (some ISPs do this intentionally for
-various reconfiguration reasons), that reaction is wrong - with
-accept_ra_defrtr off, IPv6 never recovers when the router advertises
-again. If the route genuinely expired, the defensive reaction is
-right, since the router failed to refresh it in time.
+I can add these as non-default tagging variants that can be selected by =
+the user. "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved=E2=80=9D?
 
-We tried to fix this in userspace but found we cannot get the needed
-information from the kernel. RTM_NEWROUTE carries the initial route
-lifetime (in rta_cacheinfo), but when a later RA refreshes the
-lifetime, the kernel does not resend RTM_NEWROUTE. So to distinguish
-the cause of an RTM_DELROUTE, userspace would have to open a raw
-socket, listen to RAs, and track lifetimes itself. That is not ideal:
-this logic already exists in the kernel, and userspace should not
-need to replicate it.
-
-I also considered sending RTM_NEWROUTE on every RA lifetime update,
-but that would be spammy and is technically wrong (a lifetime update
-does not add a new route, so it should not trigger RTM_NEWROUTE).
-
-I think RTA_DEL_REASON is the architecturally correct fix: it tells
-userspace why the route was deleted so it can react accordingly. In
-our use case, NetworkStack should defensively disable global IPv6
-only on RTA_DEL_REASON_EXPIRED, and take no action on
-RTA_DEL_REASON_RA_WITHDRAWN since that is RFC-compliant behavior.
-
-Feel free to let me know if more background is needed. If this use
-case makes sense, I will summarize it in the v2 commit message.
-
-> Also, Sashiko has some valid comments. Please take a look.
-
-Here is the reply to the sashiko's feedback.
-
->Does this new attribute violate the Netlink uAPI guidelines for integer
->types? The guidelines state we should avoid integer types smaller than 32
->bits since they save no memory due to 4-byte attribute alignment padding,
->unless the value is a fixed protocol header field.
->Should this be defined as a u32?
-...
->Since this deletion reason is a software classification and not a compact
->protocol field, it has no natural requirement to be 8-bit. Would it be
->better to document and serialize this as a 32-bit integer to prevent
->artificially limiting the enum space for future additions?
-...
->If the attribute type in the YAML spec is updated to u32, this call to
->nla_put_u8() in rt6_fill_node() would also need to be updated to
->nla_put_u32() to match the 32-bit width.
-
-Good point, given u8 saves nothing, will change it to u32 in v2.
-
->Will this operation cause a TypeError crash during test execution?
->In Python 3, using the subtraction operator between a set and a dict_keys
->object raises an unsupported operand type error. Since the caller
->ipv6_route_del_reason_ra_withdrawn() passes a set for the want parameter,
->want - seen.keys() will crash the test.
->Should this be converted to a set first, such as want - set(seen.keys())?
-
-I don't think this is a bug (dict_keys is a set-like view) and the
-test passes correctly in my local test. But the suggested form reads
-better, so I'll apply it in v2.
-
-Thanks,
-
-Yuyang
+Luke=
