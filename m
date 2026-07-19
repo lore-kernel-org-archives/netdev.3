@@ -1,116 +1,140 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E9D280331
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC87437F8C1
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784502331; cv=none; b=AN+2/+P7IwbR8TO9GMQ4O0ZVB4s8mkAl9J0F9huRoyFMbaiLNj+jjAD6F2sYPRWFiLSRLsHk5KWDKF1zwVceBjjzwjVaCMJ3ZwP/Sz0wAWdTOWw9lv3i7SVKrK+PliGW3eM3ZfPHxFs2Fhn7gFodn73slPuw/XQWHXtGvWLIEm4=
+	t=1784503318; cv=none; b=ce2FefQBf9zYKYbTIxJaTp0JFx+E7MmaclVS2+1aggHWoHWNjUiidwx9MRn1jukIsfemcTQyDQCk/K4LUxciI9TN07noUBl2ra9bnzkTEeT8Q7qhPDN0sA10JJMUsdpJQ4K5mr//PtNTMwdZpNoxMTlgJBODUnbtaeOe+ovELGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784502331; c=relaxed/simple;
-	bh=3fxW+4gs9/iUpg+Fia7rQmQId5PnlfgU2NbSFgIflkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kw79ndOAIfYIz0Re+7t4QtJ600g8yG/VZMggLxEwKMA1OgnpiblxcZa+NRIYIAB2CoO1M6oidb/7O3bVtCel2os8AVQlrHzwkxP6MYqlH98SQRelGEKyL9q4l5tEyV2UVwSoxrJWLIR6snbzf7B78ITyaIIbU6Q6EeR8weqSPCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBszSJBP; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784503318; c=relaxed/simple;
+	bh=hXLBiA56AtYJu6PvYneevXPNAEmjC0iHDLtyWlRyexE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MN4R+yPJQegXnFQ0+53isLhzAf3n7+mBg7fPWuEuZY73TAPCPeVtHsyfAVP05uBuRhr1YjC0yNQ+bUXQp8ixae6yEdSe07qCnbo9anLjYB6u7i1TaBkeLaOJun2RFcNVtQyaRRW15kSNqgPuAmNyL5YXGSBJjmW6fiChlaKfVtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=aqPmmtal; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBszSJBP"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4925a778491so4880515e9.0
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 16:05:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="aqPmmtal"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc73e322dbso112262255ad.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 16:21:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784502329; x=1785107129; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RqPTbLt9S11oOXHynyNyI3hmcOTYHrhXVPfD1vKLcOE=;
-        b=KBszSJBPnDGMgjzcdaeZfOZueIXmmyN5Vrd729b62QStjFKP+WnJrvev6gYxo6wAI8
-         DrW5sSZG/9dSeJk4ThEMSi+hPJekTmcv0Vt1o354RABI535BWK7dzjNsUNu73kj5IU42
-         zyEOpsIhUybZtq29JqM8zXydxsr0dDp5kujXHVNgdyXiwFDcxW1ZoYG1xFa+/0eYgxeG
-         w6Lu+uWJCzSz0jk7weyqGZSwJk7uSzTkZGwxIgzq57Sm21RBfuJinSeyTpc1mqk6qUcg
-         TqmhZuiyd14jAj1W1fFO0GdgLC/zuxFfhtVmcAQQm3GxznoEFdNZ/Cw+jfNO/mwoWTHM
-         aupA==
+        d=asu.edu; s=google; t=1784503316; x=1785108116; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/y8P5MwGMN985NJk2E4j0Ig7gSOteCnsYHCJe1HX2eQ=;
+        b=aqPmmtallT7rhlYHP1wYFJ2Y0cvt9DPA/INvq5O/UlPbjSDQ3fbO5SEPz4ASrurAz8
+         g5vuV5wBWOnHwqJalaEDxIMpbLQSGgOas5iBjQn6OucLcxuhXtEYN5xKZ7KtTmMPcSAN
+         mdyJ/Dxb/r2w0BeJVrDLvUgTN6iH8KAUA3oaN0E6ZH5pgC7MtBfznudTiDXSN4FrJww0
+         uTkhRdDBEQg883VhgrUnUTemGRLjGXcPX9loDsIWfj3XOegTqbohME2DQ2iZLdlosDo5
+         hvw9Ych/mOcKYsAfLTXzPT5iI3eCHQ2MWhswEoaWrSp8M+60JmryRZ2Yu88spvp4Q5En
+         q8kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784502329; x=1785107129;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=RqPTbLt9S11oOXHynyNyI3hmcOTYHrhXVPfD1vKLcOE=;
-        b=jiUA8aQFZ1nFa1wtdqZhHX124klMe6wO64HgcyY6HqXr8V/JJsoboYYpx+pK6hQVVc
-         C7/HQNm+EVszEE/QXlzgSKLu56WG/xLjP/DcTjYs80eyLrYbmyTHF4hDEz+kcL6Ee5AU
-         ktzCtc9PyBF3zLKUY0BrnXNEXVlABpxs2VrLorWQbwZWO2Cb5XD/D4WE9CgEKucU/uMC
-         bj5nl3U701Vy1F+Pgpp0Ho1v6Uui392YjC89DNrgG9B/sXnCd+1a2+x5o3EpQukOngvl
-         VLOogrNWEWyRj9ofdNg18xqfm/ErSkObLSCjKut7F9DHchCkQvy8Fw2dsFjEY9mQaEMw
-         J1Lg==
-X-Forwarded-Encrypted: i=1; AHgh+RqGTiyAQ87SUFc3e2GQtfSw9R2Z4ZV8mz1nGD91JZbt5EXBJ59dE+SAxdViBocPuIn0X3+4/xg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2b/bFuV1P0GUvpkw16/j2A87Yc75dcLURB92onEXGJOdWkJCp
-	ZSH/D4oZlHXeKcso4AhjiFDRpzlXTnWKGKdHtfOlL9dudB18RuMhg/cz
-X-Gm-Gg: AfdE7ckN9was1dX+X8M6jzXs3aavN6WwffR4x7jqJxoi5sSSSgePLyFfwJxrLVIPUIw
-	b5IKAY1v86yvroLabm4BxzWeQ3dEPXv0YfUGrbSRu4R9el/lYntSSo0rUOa2xEBprqBqBSoFilf
-	WeWrZnyAHMmmfrWu2BCUJwr4SOx5NSNDr8CJ9M3HzFRC3jeeaScISeqcrBD1vEJEw03E8U3kAf0
-	lOxeSGBI8G7veP3/dPany0XAjm+N41uwKkCBSf/V7leS5lzcayOs1BJFEB4TEXygp6N0l+UWY89
-	yqGXRPuit8lgwZQ9wERQZuNcGFFskTdLK9E1Kl7BgyT/5Ze5ENQAM6YEPMrvx5K7738NN850LY+
-	kquaF0i8HhloT73mAB1rxwrV1ulEa0JOjRfOwC1tLUSjUvbn7SxisLkAWlo+7fP7NpqotviBSfb
-	k/
-X-Received: by 2002:a05:600c:1c23:b0:490:846d:4edf with SMTP id 5b1f17b1804b1-4954a3ebc81mr70524295e9.1.1784502328701;
-        Sun, 19 Jul 2026 16:05:28 -0700 (PDT)
-Received: from skbuf ([86.127.127.104])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49500sm25706213f8f.2.2026.07.19.16.05.26
+        d=1e100.net; s=20251104; t=1784503316; x=1785108116;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/y8P5MwGMN985NJk2E4j0Ig7gSOteCnsYHCJe1HX2eQ=;
+        b=V/mU/DgFr5gSMGv3paMG47iRnXZZp5eqoikbQnkThWaTlo9INspEGESEaWuGqYsEhV
+         He+3pJUBYWJCNyuozT8d/FjsONRsqvbOl5rhXIqaxYbzKiIP7ZC5rmK7n/0YXxkd9wUh
+         5p7x6Mg7rjcT3HY0we1IloBdf+jhGvtpW/CRISdLBqyQRzpgJjEIVcE79vqjVDN3W5nS
+         utcHarkHN+Agi18597ZcDzPvQRuIoISQ9fP4VSLmKxhEge01WEmgemtIxXE3eWeEGd9y
+         9xavG3DVlk8yugjkkzMAPl/8eUV9YtxFl3Fz+4s9bavhBuNjI7W+pCYZCOWwM3+T75MH
+         3taA==
+X-Forwarded-Encrypted: i=1; AHgh+RremynN3DsjlAdZHJbvFQaGxrjIFluY62RXSqeZp/4fZZNeQBHmtH1f0l9MAskNnvWMWtrh3b0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxLang7R6D/mPPQ3jmUIe8qgJWD017DcfwLZgFrAl3f3Iph6DP
+	Ik9E902NGnYJ4kS/VcEuGRDaDRZDY0ePKO/V9aZFKUpmZMtsqr88Yw8p1RWnvKrbHQ==
+X-Gm-Gg: AfdE7clg+TK7bvxaG8cSp7Ao+3w4tkdTrdoTUKXP/ia63Qz+Sdjqlbv9vniekJjRFks
+	JyiSn2ocMYDmqa41ZPxFIjaIrRNB6dFd1lo8ee4wCwNH6DmVa+TzIAjhW/BRFKBUwUbsg4EA5Zy
+	qLGdQcrh3gbsT/txGCTbwx+W+z3Hf7xmMxm9CN7hFo/cq8VOF3fNoq91/CgixmKgNvhjJLoz2JL
+	651zvfSvtwqFG4cfHxsOIHnIBDc42eUWCjcOsTmv04Fy+fmRZVzqKFciM1Pmuq6DP9P17hbUAC8
+	52UbpjrOMtL2I0XFtWLLjnBpP84T0084muu4Y9Bn+hHaxHbnRqYDLK1u0+JOIyRy4V2h4tFk0XU
+	XjzhwcHe7ooAVwPSUUGu4hTRG57vuXvkCXLDLiiy/KB/QcrL7DVGyRAwvnNfV4vO/I5y1GG7UMv
+	rjbZqYIJU=
+X-Received: by 2002:a17:902:e54b:b0:2c9:b48c:fdec with SMTP id d9443c01a7336-2cf348547d0mr135063955ad.12.1784503316225;
+        Sun, 19 Jul 2026 16:21:56 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429fdbd45sm29720183eec.12.2026.07.19.16.21.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 16:05:27 -0700 (PDT)
-Date: Mon, 20 Jul 2026 02:04:55 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Luke Howard <lukeh@padl.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+        Sun, 19 Jul 2026 16:21:55 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Cedric Jehasse <cedric.jehasse@gmail.com>,
-	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>,
-	Max Hunter <max@huntershome.org>,
-	Christoph Mellauner <christoph.mellauner@joyned.at>,
-	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: embedded PTP
- timestamp support
-Message-ID: <20260719230455.eaf7a4mlkx5l2uzd@skbuf>
-References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
- <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
- <20260719101241.xs4nz7r5bonb3qys@skbuf>
- <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Subject: [PATCH net] bonding: fix skb_under_panic in bond_ns_send() over stacked VLANs
+Date: Sun, 19 Jul 2026 23:21:53 +0000
+Message-ID: <20260719232153.1405569-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
 
-On Sun, Jul 19, 2026 at 09:35:45PM +1000, Luke Howard wrote:
-> 
-> > We try to keep the data path protocol between the switch and the host
-> > API compatible, and identifiable by /sys/class/net/<conduit>/dsa/tagging.
-> > I would argue that the protocol where PTP timestamps are in registers,
-> > vs where they are in PTP header reserved fields, vs where they are
-> > appended as trailers, are 3 different protocols and should not be
-> > presented as "edsa".
-> 
-> For context: I added ArrTSMode support because even with the PTP
-> worker process priority bumped, ptp4l frequently missed RX timestamps.
-> 
-> I can add these as non-default tagging variants that can be selected
-> by the user. "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved”?
+bond_ns_send() builds an IPv6 Neighbor Solicitation with
+ndisc_ns_create(), which reserves exactly LL_RESERVED_SPACE(dev) +
+sizeof(struct ipv6hdr) of headroom for the later ip6_nd_hdr() push.
+bond_handle_vlan() then inserts the collected VLAN tags into the skb;
+each inner tag consumes VLAN_HLEN of that headroom via skb_push(). With
+enough stacked VLAN devices between the bond and the ns_ip6_target, the
+reserved IPv6 headroom is exhausted, so the subsequent
+ndisc_send_skb() -> ip6_nd_hdr() -> skb_push(sizeof(struct ipv6hdr))
+underflows past skb->head and hits skb_under_panic().
 
-I guess that would be fine, except:
-- worth clarifying that you're talking about the Reserved2 field (rather
-  than Reserved1 or Reserved3)
-- any reason justifying the introduction of "edsa-arrts-trailed", or
-  would it be just for completeness? As a user, what would make me
-  decide between "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved2"?
+Restore the required headroom with skb_cow_head() after VLAN insertion
+and before handing the skb to ndisc_send_skb(); drop the probe on
+allocation failure. For paths that did not exhaust the headroom this is
+a no-op, so previously working configurations are unaffected.
+
+  skbuff: skb_under_panic: len:84 put:40 head:... data:... tail:0x50 end:0x180 dev:veth0
+  kernel BUG at net/core/skbuff.c:214!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  Workqueue: bond0 bond_arp_monitor
+  RIP: 0010:skb_panic+0x142/0x230
+  Call Trace:
+   skb_push (net/core/skbuff.c:224)
+   ndisc_send_skb (net/ipv6/ndisc.c:454 net/ipv6/ndisc.c:506)
+   bond_ns_send (drivers/net/bonding/bond_main.c:3255)
+   bond_ns_send_all (drivers/net/bonding/bond_main.c:3313)
+   bond_arp_monitor (drivers/net/bonding/bond_main.c:3458)
+   process_one_work (kernel/workqueue.c:3322)
+   worker_thread (kernel/workqueue.c:3405)
+   kthread (kernel/kthread.c:436)
+  Kernel panic - not syncing: Fatal exception
+
+Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+---
+ drivers/net/bonding/bond_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index e044fc733b8c..3ac3418c9498 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3251,6 +3251,10 @@ static void bond_ns_send(struct slave *slave, const struct in6_addr *daddr,
+ 
+ 	addrconf_addr_solict_mult(daddr, &mcaddr);
+ 	if (bond_handle_vlan(slave, tags, skb)) {
++		if (skb_cow_head(skb, sizeof(struct ipv6hdr))) {
++			kfree_skb(skb);
++			return;
++		}
+ 		slave_update_last_tx(slave);
+ 		ndisc_send_skb(skb, &mcaddr, saddr);
+ 	}
+-- 
+2.43.0
+
