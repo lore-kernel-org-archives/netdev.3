@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C815C14F;
-	Sun, 19 Jul 2026 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997D11CA9;
+	Sun, 19 Jul 2026 13:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784468691; cv=none; b=UELLGBSlPc0Z1u0TvLUpQuJnXaoNoI0UD+K+aBBnF3rPkP7UF7Tktk0BNiy4MSBT597oJ5Q6axQX5OUBXFcQ0kX+sBc/5PVdDdusMUJGb9ymn19r7Dd/+xPPtpms6n7rQaAXFL3A7H0aCwM2VGoZ4/LiaRMG7UzCAcGvyocm8CY=
+	t=1784469276; cv=none; b=L6vsRWHvgOxuqufQJRSKCGT+6dZ9w4Vc0WwGHver8zU/IIodVMSEPYNyDAvOkzz3kWKCM6NmIBw6JCzdMDvfDqjuN9crjKYNkHu+dUAX4T1NkO5llf4f+mpzKQVsCpJ1PDZAEbVITrlVs+5QXfMt9SPr/DlA5LWYW7qw75MdNBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784468691; c=relaxed/simple;
-	bh=xH1j+RdmJFzOVETMujkStMXFz/ZCaiveNFB3CFpaAeE=;
+	s=arc-20240116; t=1784469276; c=relaxed/simple;
+	bh=/PhoqMVL9mcsyGslg7SgTWNoq9GWVfz6EitBdHgsXiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KlSDH795fYZAYuaAKZJAvvPSTjX9TQYNTprUttq7qECm+SrWcvXqJP02a+ZT+OynU+v8DhRa/hWdEsrOJLYGWRBOBI0je9sqgwc09eMOP0P+8vrT2fuJ3fxAFOcipdmnMOJS4pUR4I7mAvgvtdGqBDmPkDRYyeWeKBqEjbvGZIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LihoxV5j; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=NQbfgdZeTFa59/8rIMwZ4hyDGXb8+p6ntMduzeo4HtAQfZ+U+Eani/jbJST0H8P6IQI1kp+0Bi5psUmjY4a1s8T/LD9L85Hddc77xpaaku1db/8/n4poU6ck+Hc2/Cqqqe3BDVMqcztL8AWhGLxaXBuc3yMYBcBRD+OSHp0z3uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zIUcrI4j; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LihoxV5j"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zIUcrI4j"
 Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 054DD53401FF;
-	Sun, 19 Jul 2026 15:44:45 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 9F9395340265;
+	Sun, 19 Jul 2026 15:54:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784468686;
+	t=1784469271;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XgKw0JekbDRzrLiWUnHLSoA2gecog6DKGXR64Ihjv9I=;
-	b=LihoxV5jKC2zFXDDfIfJQ7iG7KpgvSJ7xy5FYUT3g6LBNQoAhU531eRnFxJhNZ8UQUThbq
-	zqV85JNWRIJsvOO9wt5qwJ6YCpriAvPzusmbiVHKYGXs+0/gweyB4suVYd0cNSJy4fioPS
-	1T671MhoLnpHQ7oUXOCmCYvJcDbscjk=
-Message-ID: <1c2cd3d9-7d97-482c-aced-63bc93faf430@ixit.cz>
-Date: Sun, 19 Jul 2026 15:44:45 +0200
+	bh=c9LFxycx3GrVr71vZRhoRf5rE4DaLHLv8PjSSLAT7J0=;
+	b=zIUcrI4jZu1it+7cpVQIrz2jzgH+Vy7LTlX1XjL5tZbuyl8w+1ffRLvYDGXAFbGluN5jvA
+	O25GIcXMeONWjN8JGJLMotsvzQOLWO1INlU9hYM8rV3Gs4AWQ6f6V94+DPcAusf17bBF/6
+	ZTsAvnADQgy9QSqC9vxay/G5GBwT3zY=
+Message-ID: <9ddb9e1b-1366-4f45-bab6-66b80ee444cf@ixit.cz>
+Date: Sun, 19 Jul 2026 15:54:30 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,12 +41,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] nfc: llcp: Fix nfc_dev refcount leak in connect
-To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>, oe-linux-nfc@lists.linux.dev
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260707183518.1888697-1-shuangpeng.kernel@gmail.com>
+Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds read in activation
+ parameter parsing
+To: Muhammad Bilal <meatuni001@gmail.com>, netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260628210026.129941-1-meatuni001@gmail.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -92,126 +94,43 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260707183518.1888697-1-shuangpeng.kernel@gmail.com>
+In-Reply-To: <20260628210026.129941-1-meatuni001@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 07/07/2026 20:35, Shuangpeng Bai wrote:
-> llcp_sock_connect() takes a reference to the NFC device with
-> nfc_get_device() and stores it in llcp_sock->dev before moving the
-> socket to LLCP_CONNECTING.
+On 28/06/2026 23:00, Muhammad Bilal wrote:
+> nci_extract_activation_params_iso_dep() and
+> nci_extract_activation_params_nfc_dep() receive a pointer into the
+> RF_INTF_ACTIVATED_NTF notification but are not told how many bytes
+> remain.  Each reads a one-byte length field (rats_res_len,
+> attrib_res_len, atr_res_len or atr_req_len) and then memcpy()s that many
+> bytes from the packet.  The length is clamped to the destination size,
+> but it is never checked against the remaining activation-parameter data,
+> so a notification whose length field is larger than the data present
+> reads past the end of the buffer.
 > 
-> If such a pending connection is released before reaching
-> LLCP_CONNECTED, llcp_sock_destruct() does not drop that device
-> reference because it only handles connected sockets. This leaks the
-> nfc_dev reference acquired during connect.
+> The sibling nci_extract_rf_params_*() helpers were recently given a
+> data_len argument and matching remaining-length checks, but the
+> activation-parameter helpers were not updated.
 > 
-> Drop the device reference for LLCP_CONNECTING sockets as well.
+> Pass the remaining length down and validate each field against it before
+> copying, as the rf_params helpers do.
 > 
-> Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+> Fixes: ac2068384034 ("NFC: Parse NCI NFC-DEP activation params")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
 > ---
->   net/nfc/llcp_sock.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   net/nfc/nci/ntf.c | 36 ++++++++++++++++++++++++++++++------
+>   1 file changed, 30 insertions(+), 6 deletions(-)
 > 
+Hello Muhammad.
 
-Hello Shuangpeng,
+This issue got (partially?) addressed by
 
-could you check the Sashiko review, if you can address the issue found within 
-the patch (the existing code issues are optional to address)?
+https://lore.kernel.org/all/20260612-b4-disp-6d52d8b0-v3-1-e26221f8826d@proton.me/
 
---- Patch [1]: [PATCH] nfc: llcp: Fix nfc_dev refcount leak in connect ---
-commit 84e092575501f812e707c62695cef1ec7ff9d8a6
-Author: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+If you feel there is still something to improve, feel free to send patch against 
+the for-linus branch where it's already applied.
 
-nfc: llcp: Fix nfc_dev refcount leak in connect
-
-llcp_sock_connect() takes a reference to the NFC device with
-nfc_get_device() and stores it in llcp_sock->dev before moving the
-socket to LLCP_CONNECTING. If such a pending connection is released
-before reaching LLCP_CONNECTED, llcp_sock_destruct() does not drop that
-device reference because it only handles connected sockets. This leaks the
-nfc_dev reference acquired during connect. Drop the device reference for
-LLCP_CONNECTING sockets as well.
-
- > diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
- > index feab29fc62f44..44639ccd438e4 100644
- > --- a/net/nfc/llcp_sock.c
- > +++ b/net/nfc/llcp_sock.c
- > @@ -960,7 +960,8 @@ static void llcp_sock_destruct(struct sock *sk)
- >
- >  	pr_debug("%p\n", sk);
- >
- > -	if (sk->sk_state == LLCP_CONNECTED)
- > +	if (sk->sk_state == LLCP_CONNECTED ||
- > +	    sk->sk_state == LLCP_CONNECTING)
-
-This isn't a bug introduced by this patch, but does llcp_sock_connect()
-lack a state check to prevent it from being called on sockets in LLCP_BOUND
-or LLCP_LISTEN states?
-
-If a user creates an AF_NFC socket and calls bind(), placing the socket in
-the LLCP_BOUND state, it links into the local->sockets list via its sk_node.
-If the user then calls connect(), which only checks for LLCP_CONNECTED and
-LLCP_CONNECTING states:
-
-net/nfc/llcp_sock.c:llcp_sock_connect() {
-     if (sk->sk_state == LLCP_CONNECTED) {
-         ret = -EISCONN;
-         goto error;
-     }
-     if (sk->sk_state == LLCP_CONNECTING) {
-         ret = -EINPROGRESS;
-         goto error;
-     }
-     ...
-}
-
-It proceeds to overwrite llcp_sock->service_name (leaking the previously
-allocated string) and calls nfc_llcp_sock_link(&local->connecting_sockets,
-sk).
-
-This executes hlist_add_head() on a node (sk->sk_node) that is already part
-of another list, thereby corrupting the pointers of both the sockets and
-connecting_sockets lists.
-
- > +		nfc_put_device(llcp_sock->dev);
-
-Can this introduce a kernel panic via a NULL pointer dereference when a
-blocking connect() call fails or is interrupted?
-
-In llcp_sock_connect(), if the wait fails or is interrupted by a signal,
-execution jumps to the sock_unlink error path:
-
-net/nfc/llcp_sock.c:llcp_sock_connect() {
-     sk->sk_state = LLCP_CONNECTING;
-
-     ret = sock_wait_state(sk, LLCP_CONNECTED,
-                           sock_sndtimeo(sk, flags & O_NONBLOCK));
-     if (ret && ret != -EINPROGRESS)
-         goto sock_unlink;
-     ...
-sock_llcp_nullify:
-     llcp_sock->local = NULL;
-     llcp_sock->dev = NULL;
-}
-
-This error path nullifies llcp_sock->dev and drops the device reference,
-but crucially fails to reset sk->sk_state back to LLCP_CLOSED.
-
-When the user subsequently closes the socket, llcp_sock_destruct() is
-invoked. The newly added logic checks for LLCP_CONNECTING sockets and
-unconditionally calls nfc_put_device(llcp_sock->dev).
-
-Since dev is NULL, nfc_put_device() evaluates &NULL->dev:
-
-include/net/nfc/nfc.h:nfc_put_device() {
-     put_device(&dev->dev);
-}
-
-This evaluates to a non-zero struct offset and bypasses the internal NULL
-check in put_device(), attempting to decrement the reference count of
-unmapped memory.
-
- >
- >  	skb_queue_purge(&sk->sk_receive_queue);
- >
+Thank you
+David
