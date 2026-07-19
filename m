@@ -1,136 +1,233 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997D11CA9;
-	Sun, 19 Jul 2026 13:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D5A1E520A;
+	Sun, 19 Jul 2026 13:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784469276; cv=none; b=L6vsRWHvgOxuqufQJRSKCGT+6dZ9w4Vc0WwGHver8zU/IIodVMSEPYNyDAvOkzz3kWKCM6NmIBw6JCzdMDvfDqjuN9crjKYNkHu+dUAX4T1NkO5llf4f+mpzKQVsCpJ1PDZAEbVITrlVs+5QXfMt9SPr/DlA5LWYW7qw75MdNBI=
+	t=1784469385; cv=none; b=AhTifHqh2Bj4UVdx/JRUMk9ulCSxacbPskavIGs7KXNO+STtJT+FOH0OkFjpFpW9+PsMGEH7Wb1LkKdUWfgzQGKy6rxOotD+DD2kLjym5U88pfnnWjzWJxmUMpJ5drJj7ONOtcv+aD5rY2Rg+r0PR6VbaKIzITPXoQxuQOT0Pdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784469276; c=relaxed/simple;
-	bh=/PhoqMVL9mcsyGslg7SgTWNoq9GWVfz6EitBdHgsXiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NQbfgdZeTFa59/8rIMwZ4hyDGXb8+p6ntMduzeo4HtAQfZ+U+Eani/jbJST0H8P6IQI1kp+0Bi5psUmjY4a1s8T/LD9L85Hddc77xpaaku1db/8/n4poU6ck+Hc2/Cqqqe3BDVMqcztL8AWhGLxaXBuc3yMYBcBRD+OSHp0z3uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zIUcrI4j; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1784469385; c=relaxed/simple;
+	bh=abfPelF1q2maxt7gQZ/q5vFPyzU70yXiR/t3AixVe2M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cgZt4m7v3RRKB8cjrJCOIxqe+isafPTmZ1aU4VSEySB1wl5x33eFotwzV+KfFBso1GsKLhkAKlwSUZSajQJHw42XPYksDdwteyKbnq3wk2vskBoShV1y0QmiapyY0HvSepoZENnJt5+85bEwn8827zxN0lem5DjtXAjDijGv0kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eqrp9H0Q; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zIUcrI4j"
-Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9F9395340265;
-	Sun, 19 Jul 2026 15:54:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784469271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c9LFxycx3GrVr71vZRhoRf5rE4DaLHLv8PjSSLAT7J0=;
-	b=zIUcrI4jZu1it+7cpVQIrz2jzgH+Vy7LTlX1XjL5tZbuyl8w+1ffRLvYDGXAFbGluN5jvA
-	O25GIcXMeONWjN8JGJLMotsvzQOLWO1INlU9hYM8rV3Gs4AWQ6f6V94+DPcAusf17bBF/6
-	ZTsAvnADQgy9QSqC9vxay/G5GBwT3zY=
-Message-ID: <9ddb9e1b-1366-4f45-bab6-66b80ee444cf@ixit.cz>
-Date: Sun, 19 Jul 2026 15:54:30 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eqrp9H0Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784469383; x=1816005383;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=abfPelF1q2maxt7gQZ/q5vFPyzU70yXiR/t3AixVe2M=;
+  b=Eqrp9H0QVXcv4Gvflg9nsPIFo4RRrMjFovGxttc4gmmxksK2Diq2Vkv/
+   5qOAcYQSCMtXgeendwkoKwrX0dE8UxtNrY2SpjeKrh93CRdiUyv/v5mOz
+   oYubtHk+OZH/CaUCiJMxx9NxYloYz9BTk3vxnl6FSl4glhdX9zH780maK
+   sGeQGlPX2NUPplc9fCdpXfbrjKZ0AHRfpKLzGejAdu173AMhVV1GiDOCj
+   xc07UwVWFD3idWDwAxLyJYaA9PGCy11BnEJnp1QbeUvbzCvuuj3Pcw1Vu
+   tltOxJRlUxx8PFneEKfqYqXqkbdLLDn5l9wPFQxEVaKi4VunAoStSO2/Z
+   w==;
+X-CSE-ConnectionGUID: lyKqT4AGSJGAWyXwyrpFKg==
+X-CSE-MsgGUID: tdSurGqwRCyuLSUicCAKCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="88894139"
+X-IronPort-AV: E=Sophos;i="6.25,172,1779174000"; 
+   d="scan'208";a="88894139"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 06:56:22 -0700
+X-CSE-ConnectionGUID: obrRlvhKQ+eBZC8Bqlh6jw==
+X-CSE-MsgGUID: tRxzyI0kT1O7FYAu9VD1eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,172,1779174000"; 
+   d="scan'208";a="260791912"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by orviesa003.jf.intel.com with ESMTP; 19 Jul 2026 06:56:19 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bjorn@kernel.org,
+	kerneljasonxing@gmail.com,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v4 net 0/6] xsk: fix AF_XDP multi-buffer Tx descriptor reclaim
+Date: Sun, 19 Jul 2026 15:56:03 +0200
+Message-Id: <20260719135609.147823-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds read in activation
- parameter parsing
-To: Muhammad Bilal <meatuni001@gmail.com>, netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260628210026.129941-1-meatuni001@gmail.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260628210026.129941-1-meatuni001@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 28/06/2026 23:00, Muhammad Bilal wrote:
-> nci_extract_activation_params_iso_dep() and
-> nci_extract_activation_params_nfc_dep() receive a pointer into the
-> RF_INTF_ACTIVATED_NTF notification but are not told how many bytes
-> remain.  Each reads a one-byte length field (rats_res_len,
-> attrib_res_len, atr_res_len or atr_req_len) and then memcpy()s that many
-> bytes from the packet.  The length is clamped to the destination size,
-> but it is never checked against the remaining activation-parameter data,
-> so a notification whose length field is larger than the data present
-> reads past the end of the buffer.
-> 
-> The sibling nci_extract_rf_params_*() helpers were recently given a
-> data_len argument and matching remaining-length checks, but the
-> activation-parameter helpers were not updated.
-> 
-> Pass the remaining length down and validate each field against it before
-> copying, as the rf_params helpers do.
-> 
-> Fixes: ac2068384034 ("NFC: Parse NCI NFC-DEP activation params")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-> ---
->   net/nfc/nci/ntf.c | 36 ++++++++++++++++++++++++++++++------
->   1 file changed, 30 insertions(+), 6 deletions(-)
-> 
-Hello Muhammad.
+v3:
+https://lore.kernel.org/netdev/20260714140722.111645-1-maciej.fijalkowski@intel.com/T/
+v3->v4:
 
-This issue got (partially?) addressed by
+* Return standalone invalid Tx descriptors through the completion ring in
+  both the generic and zero-copy Tx paths. Advancing the Tx-ring consumer
+  releases only the ring slot; returning the descriptor address through
+  the CQ also transfers ownership of the corresponding UMEM frame back to
+  userspace.
 
-https://lore.kernel.org/all/20260612-b4-disp-6d52d8b0-v3-1-e26221f8826d@proton.me/
+* Remove xsk_tx_batch::consumed_descs. With standalone invalid descriptors
+  now reclaimed through the CQ, every descriptor permanently removed from
+  the Tx ring is represented by either tx_descs or reclaim_descs. Use
+  their sum for Tx-consumer advancement, shared-UMEM fairness accounting,
+  and progress detection.
 
-If you feel there is still something to improve, feel free to send patch against 
-the for-linus branch where it's already applied.
+* Ensure that generic reclaim-only processing publishes the updated
+  Tx-ring consumer even when no packet was submitted to the networking
+  stack.
 
-Thank you
-David
+* Update the XSK selftests to count every descriptor submitted to the Tx
+  ring as an expected CQ entry, while continuing to count only valid
+  packets as expected Rx traffic. This covers standalone invalid
+  descriptors, invalid multi-buffer packets, oversized packets, and the
+  non-verbatim STAT_TX_INVALID tests.
+
+* Update the AF_XDP documentation to describe the completion ring as an
+  ownership-transfer mechanism and document that standalone, invalid
+  multi-buffer, and oversized Tx packets are reclaimed through the CQ.
+
+* Add Jason's tags
+
+v2: https://lore.kernel.org/netdev/20260710194424.84844-1-maciej.fijalkowski@intel.com/
+v2->v3:
+
+* Added a preceding patch that sizes the pool-wide temporary Tx descriptor
+  array to the larger of the first Tx ring and the device's
+  xdp_zc_max_segs capability. This guarantees that the shared-UMEM path can
+  inspect one maximum-sized valid packet even when the socket that creates
+  the pool has a smaller Tx ring. Consequently, this patch now records the
+  actual allocated size in pool->tx_descs_nentries rather than the first
+  socket's Tx ring size.
+
+* Fixed a possible infinite retry loop when a shared-UMEM socket contains
+  an incomplete multi-buffer packet. Pass the original descriptor budget
+  to xskq_cons_read_desc_batch() instead of the number of descriptors
+  currently available, so the parser can distinguish producer exhaustion
+  from actual budget exhaustion.
+
+* Moved the completion-ring space check to the common batched Tx path, so
+  it is performed exactly once for both singular and shared-SG pools. Keep
+  the legacy shared non-SG fallback outside this handling, as it reserves
+  completion entries one descriptor at a time.
+
+* Reworked xsk_tx_peek_release_desc_batch() to use a common singular/shared
+  batched flow. Resolve an empty Tx socket list before checking CQ space,
+  select the shared-SG walker through an explicit shared-pool condition,
+  and commit the resulting batch through one common path.
+
+* Simplified xsk_tx_commit_batch() by moving the cached CQ producer
+  snapshot into the helper instead of passing it from each caller.
+
+v1: https://lore.kernel.org/netdev/20260623133240.1048434-1-maciej.fijalkowski@intel.com/
+v1->v2:
+
+* Reduced the series from seven to five patches by squashing the three
+  generic Tx drain and reclaim changes into a single patch. The resulting
+  patch handles overflow, invalid descriptors in the middle of a packet,
+  and reclaim of the offending descriptor as one coherent change. This
+  so it will be less likely to have things reported by Sashiko that are
+  fixed in later commits;
+
+* Reworked the zero-copy implementation substantially:
+  * removed the bind-transition mechanism, including tx_share_pending,
+    xp_prepare_xsk_tx_share(), xp_finish_xsk_tx_share(),
+    synchronize_net(), and the transient bind() -EAGAIN behavior;
+  * added packet-framed parsing for shared-UMEM SG pools, allowing
+    per-socket drain state to be resumed by both singular and shared Tx
+    paths;
+  * retained the legacy one-descriptor fallback for shared non-SG pools;
+  * preserved the existing per-socket fairness quota while allowing the
+    shared walker to consume multiple complete packets and continue
+    filling the requested batch across fairness rounds;
+  * made the fairness quota large enough to process one maximum-sized
+    valid multi-buffer packet;
+  * extended the parser result with consumed-descriptor and
+    budget-limited accounting needed by the shared walker;
+  * recorded the size of the pool's temporary Tx descriptor array and
+    capped batch processing at that size;
+  * kept reclaim-only descriptors ordered after preceding driver-visible
+    descriptors and protected the delayed-reclaim state with
+    READ_ONCE()/WRITE_ONCE().
+
+* Rewrote the zero-copy patch description to cover oversized packets,
+  continuation draining across calls, shared-UMEM SG handling, and CQ
+  publication ordering.
+
+* Corrected the too-many-frags selftest description to state that the
+  invalid packet contains max_frags + 1 fragments and terminates at an
+  explicit packet boundary.
+
+
+Hi,
+
+This series fixes several AF_XDP multi-buffer Tx paths where descriptors
+consumed from the Tx ring are not consistently returned to userspace
+through the completion ring when the packet is later dropped as invalid.
+
+The affected cases are invalid or oversized multi-buffer Tx packets in
+both the generic and zero-copy paths. In these cases, the kernel can
+consume one or more Tx descriptors while building or validating a
+multi-buffer packet, then drop the packet before it reaches the device.
+Userspace still owns the UMEM buffers only after the corresponding
+addresses are returned through the CQ. Missing completions therefore
+make userspace lose track of those buffers.
+
+The generic path fixes cover following related cases:
+* partially built multi-buffer skbs dropped by xsk_drop_skb();
+  continuation descriptors left in the Tx ring after xsk_build_skb()
+  reports overflow;
+* invalid descriptors encountered in the middle of a multi-buffer
+  packet, including the offending invalid descriptor itself.
+
+The zero-copy path is handled separately. The batched Tx parser now
+distinguishes descriptors that can be passed to the driver from
+descriptors that are consumed only because they belong to an invalid
+multi-buffer packet. Reclaim-only descriptors are written to the CQ
+address area and published in completion order, after any earlier
+driver-visible Tx descriptors.
+
+The last two patches update xskxceiver so the tests account invalid
+multi-buffer Tx packets as descriptors that must be reclaimed, while
+still not expecting those invalid packets on the Rx side.
+
+This is a follow-up to Jason's changes [0] which were addressing generic
+xmit only and this set allows me to pass full xskxceiver test suite run
+against ice driver.
+
+Thanks,
+Maciej
+
+[0]: https://lore.kernel.org/netdev/20260520004244.55663-1-kerneljasonxing@gmail.com/
+
+
+Jason Xing (2):
+  xsk: fix buffer leak in xsk_drop_skb() for AF_XDP multi-buffer Tx
+  xsk: drain continuation descs after overflow in xsk_build_skb()
+
+Maciej Fijalkowski (4):
+  xsk: provide sufficient space in pool->tx_descs
+  xsk: reclaim invalid Tx descriptors in ZC batch path
+  selftests/xsk: fix too-many-frags multi-buffer Tx test
+  selftests/xsk: account reclaimed invalid Tx descriptors
+
+ Documentation/networking/af_xdp.rst           |  54 ++--
+ include/net/xdp_sock.h                        |   1 +
+ include/net/xsk_buff_pool.h                   |   9 +-
+ net/xdp/xsk.c                                 | 255 +++++++++++++++---
+ net/xdp/xsk_buff_pool.c                       |  13 +-
+ net/xdp/xsk_queue.h                           |  65 +++--
+ .../selftests/bpf/prog_tests/test_xsk.c       |  50 ++--
+ 7 files changed, 347 insertions(+), 100 deletions(-)
+
+-- 
+2.43.0
+
