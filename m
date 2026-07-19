@@ -1,133 +1,207 @@
-Received: from smtp-relay3.dhosting.pt (smtp-relay3.dhosting.pt [176.221.38.117])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B312212548
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 09:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.221.38.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031F317C220
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 09:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784451793; cv=none; b=R0nNwCrN4mhvZK56YeI74i158z7yehz7RheMr+1961C1NcRJVRZ3N0VTfXAZn/HgeoTzT17Umap14XkROrKIy1XV8yvRxP+kPPlh4oVcLPfNc9gK5Gov2+mmPIAl3UNvRmGn5PcvsjpJGZxuP8AC5Jvf3Mng8N7x7YFvSBTKobM=
+	t=1784451912; cv=none; b=UaTyJglfrQK4o2iiM72LToaIuL40OJAk9+iwxGSm036MdbDJezWpl5h/+MvBkYIr45yxNoH99Ovw0IZu8QLpmqNsN1HOQKKdUN5Xp4xErghPPeJogOWo2zX+3Uho8k5czFmmXEOQoONxhcshnwfN0LCIbSDs9eBa1oKB1otXrqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784451793; c=relaxed/simple;
-	bh=RSVXWfxniqZCTZ2T5EqSzqlYamQRa124sR9c49BBG3g=;
-	h=MIME-Version:Date:From:To:Subject:Message-ID:Content-Type; b=mkdfhQZsgorOfEihXPm1TZ55LeDyHDDcMSRIaNYiAdPjrvHzrQQAMQbRnXtcl873ppgQqkzm4+lT4ktVkIWDVIO0i3jYdksXdbfPL77SvSDZYsM/mJ82BMs6lmGYwXmlQnSFrvWzqE5FHg9vSC7h9dDS4xWO/vDcGqy6S+RLCSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decimal.pt; spf=pass smtp.mailfrom=decimal.pt; arc=none smtp.client-ip=176.221.38.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decimal.pt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decimal.pt
-Received: from fastmail.decimal.pt (mail.dhosting.pt [185.99.235.86])
-	by smtp-relay3.dhosting.pt (Postfix) with ESMTPS id 0005D101EC0
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:03:05 +0100 (WEST)
-Received: from fastmail.decimal.pt (localhost [127.0.0.1])
-	by fastmail.decimal.pt (Postfix) with ESMTP id A38C11009DD
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:03:05 +0100 (WEST)
-Received: from dhosting.pt (webservices.decimal.pt [185.99.235.92])
-	(Authenticated sender: mysql.jorge@decimal.pt)
-	by fastmail.decimal.pt (Postfix) with ESMTPA id 8488210083D
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:03:05 +0100 (WEST)
+	s=arc-20240116; t=1784451912; c=relaxed/simple;
+	bh=IvHasztBqatgO6+HWgAhtnOE6HJpktRID4mTRxPYqpw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a8vhENlbf67cvKEBE4Ee1wfUO/z3svgVmwsPM/oRhr9z0Cw/WU1YCArrvqaAh5N/FTFPeYGHQ8RXY15cdrAJF23g27jfhOjx3fMlcDU/FNw9UOztNpvjzSoIobtdNIKpvDH60H13l+YgwFkTnKYpK6busGvXDRqwxH3SCwTtrlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=OmkuudOq; arc=none smtp.client-ip=212.77.101.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="OmkuudOq"
+Received: (wp-smtpd smtp.wp.pl 32177 invoked from network); 19 Jul 2026 11:05:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1784451900; bh=yMi0/MVl/cPWSChXc9e6S3ptAuHAVNZiE1Q+dwVJ/JY=;
+          h=From:To:Subject;
+          b=OmkuudOqvoGnMDSUg6RId4RmmgJKOMayI7omJEAuDRSB26pwC7q+Qm0zKT7W9fyHV
+           rwiOqFR88Ltet/jgDZ3mC+jo0LhqJ/FFHBO/9f5SqxdPD8OKNtIW+XBvnMWqHXUEHk
+           sY0SMTrC4xbLQ5JfKe6Dt9/daWmB6EKavQ2odBQ/fF8PNNGdu0auuR2NZFOukp4iwQ
+           Q+24uPMw7QoOJslZXRTWV/o2KjpYQ02boabUAmYJF1vgggrkFY9WNJadD+XvTlftXp
+           50HTxvz7Hu+SMW8Tu9jYU5XcHqlkxl7BnXXv/T1w91Oq+QG1ppmF+50zF8REqBk2Uq
+           zkF78msud8gjA==
+Received: from 83.24.141.3.ipv4.supernova.orange.pl (HELO abajkowski.lan) (olek2@wp.pl@[83.24.141.3])
+          (envelope-sender <olek2@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <danieller@nvidia.com>; 19 Jul 2026 11:05:00 +0200
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
+To: danieller@nvidia.com,
+	olek2@wp.pl,
+	mkubecek@suse.cz,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jbe@pengutronix.de,
+	netdev@vger.kernel.org
+Subject: [PATCH ethtool-next v3 1/3] sfpid: print all implemented options
+Date: Sun, 19 Jul 2026 11:00:35 +0200
+Message-ID: <20260719090458.659332-1-olek2@wp.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 19 Jul 2026 10:03:05 +0100
-From: Jorge Bastos <mysql.jorge@decimal.pt>
-To: netdev@vger.kernel.org
-Subject: tc/iproute2 7.1 crash with kernel with and without SECCOMP
-User-Agent: Roundcube Webmail/1.4.9
-Message-ID: <41a5cb8db248eb2c76707289d10f7459@decimal.pt>
-X-Sender: mysql.jorge@decimal.pt
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 18d65b91fd7d1cd4c081158df4aeba23
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000001 [4YJs]                               
 
-Howdy,
+SFP modules implement multiple options. Before the “json” option was
+introduced, all options were listed. Currently, only the last option
+is listed. This commit fixes this bug. Options are represented as array.
 
-I have some VM's that were working ok, and since arround kernel 6.18x 
-and 7.1x kernel crashes when using fireqos, that uses "tc" from 
-iproute2,
+Before:
+$ ethtool -m sfp-wan
+...
+	Option values                             : 0x00 0x32
+	Option                                    : RATE_SELECT implemented
+...
+$ ethtool --json -m sfp-wan
+[ {
+...
+        "option_values": [ 0,50 ],
+        "option": "RATE_SELECT implemented",
+...
+    } ]
 
-I'm using now kernels with SECCOMP because of ssh 10.4+,
-How to make this compatible and working?
+After:
+$ ethtool -m sfp-wan
+...
+	Option values                             : 0x00 0x32
+	Option                                    : RX_LOS implemented
+	Option                                    : TX_DISABLE implemented
+	Option                                    : RATE_SELECT implemented
+...
+$ ethtool --json -m sfp-wan
+[ {
+...
+        "option_values": [ 0,50 ],
+        "option": [ "RX_LOS implemented","TX_DISABLE implemented","RATE_SELECT implemented" ],
+...
+    } ]
 
-Thanks in advanced,
-Jorge Bastos
+Fixes: 4071862f58d8 ("sfpid: Add JSON output handling to --module-info in SFF8079 modules")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+---
+Changes in v3:
+ - fix indentation and checkpatch warnings
+Changes in v2:
+ - fix typo introduced -> introduced
+ - rename module_print_array_string() -> module_print_any_array_string_entry()
+---
+ module-common.c |  8 ++++++++
+ module-common.h |  1 +
+ sfpid.c         | 35 +++++++++++++++++++----------------
+ 3 files changed, 28 insertions(+), 16 deletions(-)
 
+diff --git a/module-common.c b/module-common.c
+index 42fccf6..43ff649 100644
+--- a/module-common.c
++++ b/module-common.c
+@@ -258,6 +258,14 @@ void module_print_any_bool(const char *fn, char *given_json_fn, bool value,
+ 		printf("\t%-41s : %s\n", fn, str_value);
+ }
+ 
++void module_print_any_array_string_entry(const char *fn, const char *value)
++{
++	if (is_json_context())
++		print_string(PRINT_JSON, NULL, "%s", value);
++	else
++		printf("\t%-41s : %s\n", fn, value);
++}
++
+ void module_show_value_with_unit(const __u8 *id, unsigned int reg,
+ 				 const char *name, unsigned int mult,
+ 				 const char *unit)
+diff --git a/module-common.h b/module-common.h
+index 4063448..f3baf2a 100644
+--- a/module-common.h
++++ b/module-common.h
+@@ -281,6 +281,7 @@ void module_print_any_string(const char *fn, const char *value);
+ void module_print_any_float(const char *fn, float value, const char *unit);
+ void module_print_any_bool(const char *fn, char *given_json_fn, bool value,
+ 			   const char *str_value);
++void module_print_any_array_string_entry(const char *fn, const char *value);
+ void module_show_value_with_unit(const __u8 *id, unsigned int reg,
+ 				 const char *name, unsigned int mult,
+ 				 const char *unit);
+diff --git a/sfpid.c b/sfpid.c
+index 74a6f51..5899f8c 100644
+--- a/sfpid.c
++++ b/sfpid.c
+@@ -396,7 +396,6 @@ static void sff8079_show_wavelength_or_copper_compliance(const __u8 *id)
+ static void sff8079_show_options(const __u8 *id)
+ {
+ 	static const char *pfx = "Option";
+-	char value[64] = "";
+ 
+ 	if (is_json_context()) {
+ 		open_json_array("option_values", "");
+@@ -407,35 +406,39 @@ static void sff8079_show_options(const __u8 *id)
+ 		printf("\t%-41s : 0x%02x 0x%02x\n", "Option values", id[64],
+ 		       id[65]);
+ 	}
++
++	if (is_json_context())
++		open_json_array("option", "");
++
+ 	if (id[65] & (1 << 1))
+-		sprintf(value, "%s", "RX_LOS implemented");
++		module_print_any_array_string_entry(pfx, "RX_LOS implemented");
+ 	if (id[65] & (1 << 2))
+-		sprintf(value, "%s", "RX_LOS implemented, inverted");
++		module_print_any_array_string_entry(pfx, "RX_LOS implemented, inverted");
+ 	if (id[65] & (1 << 3))
+-		sprintf(value, "%s", "TX_FAULT implemented");
++		module_print_any_array_string_entry(pfx, "TX_FAULT implemented");
+ 	if (id[65] & (1 << 4))
+-		sprintf(value, "%s", "TX_DISABLE implemented");
++		module_print_any_array_string_entry(pfx, "TX_DISABLE implemented");
+ 	if (id[65] & (1 << 5))
+-		sprintf(value, "%s", "RATE_SELECT implemented");
++		module_print_any_array_string_entry(pfx, "RATE_SELECT implemented");
+ 	if (id[65] & (1 << 6))
+-		sprintf(value, "%s", "Tunable transmitter technology");
++		module_print_any_array_string_entry(pfx, "Tunable transmitter technology");
+ 	if (id[65] & (1 << 7))
+-		sprintf(value, "%s", "Receiver decision threshold implemented");
++		module_print_any_array_string_entry(pfx, "Receiver decision threshold implemented");
+ 	if (id[64] & (1 << 0))
+-		sprintf(value, "%s", "Linear receiver output implemented");
++		module_print_any_array_string_entry(pfx, "Linear receiver output implemented");
+ 	if (id[64] & (1 << 1))
+-		sprintf(value, "%s", "Power level 2 requirement");
++		module_print_any_array_string_entry(pfx, "Power level 2 requirement");
+ 	if (id[64] & (1 << 2))
+-		sprintf(value, "%s", "Cooled transceiver implemented");
++		module_print_any_array_string_entry(pfx, "Cooled transceiver implemented");
+ 	if (id[64] & (1 << 3))
+-		sprintf(value, "%s", "Retimer or CDR implemented");
++		module_print_any_array_string_entry(pfx, "Retimer or CDR implemented");
+ 	if (id[64] & (1 << 4))
+-		sprintf(value, "%s", "Paging implemented");
++		module_print_any_array_string_entry(pfx, "Paging implemented");
+ 	if (id[64] & (1 << 5))
+-		sprintf(value, "%s", "Power level 3 requirement");
++		module_print_any_array_string_entry(pfx, "Power level 3 requirement");
+ 
+-	if (value[0] != '\0')
+-		module_print_any_string(pfx, value);
++	if (is_json_context())
++		close_json_array("");
+ }
+ 
+ static void sff8079_show_all_common(const __u8 *id)
+-- 
+2.53.0
 
-BUG: kernel NULL pointer dereference, address: 0000000000000628
-#PF: supervisor write access in kernel mode
-#PF: error_code(0x0002) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0002 [#1] SMP PTI
-CPU: 1 UID: 0 PID: 14042 Comm: tc Not tainted 7.1.3 #1 PREEMPT(full)
-Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, 
-BIOS 090007 05/18/2018
-RIP: 0010:tcx_miniq_inc+0x2c/0x40 [sch_ingress]
-Code: 89 fb e8 f7 77 52 e1 85 c0 75 18 48 8d 3d 1c 3d e7 ff ba 81 00 00 
-00 48 c7 c6 23 70 0d a0 67 48 0f b9 3a 48 8b 83 00 02 00 00 <ff> 80 28 
-06 00 00 5b c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 90 90
-RSP: 0018:ffffc9000064f930 EFLAGS: 00010202
-RAX: 0000000000000000 RBX: ffff88805783b808 RCX: 0000000000000000
-RDX: ffff88805783b800 RSI: 0000000000000082 RDI: ffffffff82465bc0
-RBP: 00000000fffffff4 R08: ffff888004cc6e88 R09: 00000000000000d4
-R10: 00000000000000d0 R11: 00000000000000d5 R12: ffff88805783b808
-R13: ffff88808c92efa8 R14: ffff888004651000 R15: ffffc9000064fb48
-FS: 00007fb985608780(0000) GS:ffff888180ab3000(0000) 
-knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000628 CR3: 00000000a2b34004 CR4: 00000000001706b0
-Call Trace:
-<TASK>
-ingress_init+0x6e/0x110 [sch_ingress]
-qdisc_create+0x297/0x370
-tc_modify_qdisc+0x639/0x6c0
-rtnetlink_rcv_msg+0x278/0x2d0
-? __kmalloc_node_track_caller_noprof+0x37/0x320
-? __alloc_skb+0xc3/0x110
-? __pfx_rtnetlink_rcv_msg+0x10/0x10
-netlink_rcv_skb+0x83/0xe0
-netlink_unicast+0x11c/0x1b0
-netlink_sendmsg+0x271/0x2d0
-sock_sendmsg_nosec+0x32/0x40
-____sys_sendmsg+0x10b/0x180
-? copy_msghdr_from_user+0x6a/0xa0
-___sys_sendmsg+0x79/0xc0
-? ___sys_recvmsg+0x82/0xb0
-? __handle_mm_fault+0x71f/0x7a0
-? css_uses_rstat+0x9/0x20
-? __css_rstat_updated+0x22/0x70
-__sys_sendmsg+0x63/0xa0
-do_syscall_64+0x116/0x2a0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fb98529bcb2
-Code: 18 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 1a 83 e2 39 83 fa 08 
-75 12 e8 2b ff ff ff 0f 1f 00 49 89 ca 48 8b 44 24 20 0f 05 <48> 83 c4 
-18 c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 10 ff 74 24 18
-RSP: 002b:00007ffd5106e180 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 000055bdbf033640 RCX: 00007fb98529bcb2
-RDX: 0000000000000000 RSI: 00007ffd5106e240 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 000000006a57f9a8 R14: 00007ffd5107e540 R15: 000055bdbf033640
-</TASK>
-Modules linked in: sch_ingress sch_htb ifb xt_tcpmss iptable_mangle 
-xt_tcpudp xt_conntrack iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 
-nf_defrag_ipv4 iptable_filter ip_tables x_tables aesni_intel gf128mul 
-libaes aead crypto_skcipher rtc_cmos button sg sch_fq_codel loop fuse 
-configfs
-CR2: 0000000000000628
----[ end trace 0000000000000000 ]---
-RIP: 0010:tcx_miniq_inc+0x2c/0x40 [sch_ingress]
-Code: 89 fb e8 f7 77 52 e1 85 c0 75 18 48 8d 3d 1c 3d e7 ff ba 81 00 00 
-00 48 c7 c6 23 70 0d a0 67 48 0f b9 3a 48 8b 83 00 02 00 00 <ff> 80 28 
-06 00 00 5b c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 90 90
-RSP: 0018:ffffc9000064f930 EFLAGS: 00010202
-RAX: 0000000000000000 RBX: ffff88805783b808 RCX: 0000000000000000
-RDX: ffff88805783b800 RSI: 0000000000000082 RDI: ffffffff82465bc0
-RBP: 00000000fffffff4 R08: ffff888004cc6e88 R09: 00000000000000d4
-R10: 00000000000000d0 R11: 00000000000000d5 R12: ffff88805783b808
-R13: ffff88808c92efa8 R14: ffff888004651000 R15: ffffc9000064fb48
-FS: 00007fb985608780(0000) GS:ffff888180ab3000(0000) 
-knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000628 CR3: 00000000a2b34004 CR4: 00000000001706b0
