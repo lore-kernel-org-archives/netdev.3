@@ -1,149 +1,150 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA2F3806DD
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681E5281369;
+	Sun, 19 Jul 2026 10:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784455968; cv=none; b=ninmDbI1HDiDJC7amUJynpfBhUapP/2b/YCdmYQ1ZBysseyv3bdEk9AncmNHSq15rfoyzDhZdnoxIuHej9q9Tq7uPRq29/T42JdyE+Dk9CfCf2xE+PYlarzkjk8gq8WlXyEOw6/Um4ueD5lSqijprM7c9CrpBpLmQT9g1lOY2bo=
+	t=1784457183; cv=none; b=m3Sl7QJ7rwyQRnhw7N7uEP9kikNSCZVNisF4DWl6B/n2R1qfLuqXKrALwoydOtgkT42dbeVhkcgDZxHgsi5iWwUA6wbw21halAzRMyfpkRw9m/AuplQ/FkdUTVGCarIiZc+af/zIJMmIwqquHLv4KT23AuKfqkcOaPH1n0Vt9Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784455968; c=relaxed/simple;
-	bh=IX6uwEvUSMGaR0cZ+BWNkBIs5GN9bVOotT1KPZImK7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l7kIN4i96xYRdKH0IVqZ66EWql/eEBbOXmYqoLFvXK7ZqcQDKfADNDoQB3KC8+dx4KNdCcD8OXNlCcewKptj0+2I9O+g0ex0hcKHJfUGh4R5/OmSirOMfSw/2nk//2MQZBxrPD1jAmc0MLYud/TUF9CEKqQpjV5CIFlgCUNdrnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r4lBnNcJ; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784457183; c=relaxed/simple;
+	bh=+82kLG8JOFg4+s7CBuPpB164uql7KxqmYXOvZNRX680=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=anKoEIljfd1rhCrdqGhgDKZPy+BnsGMvPEdCLMPxOfAarCa9fJh3zCJTvZEBNWcVH0HoGvkIYyl3m1PhWXEM3gUCen9JBGeSy0SUgGoEBElGPUZ7I4W03u8Gi/HQaH8SLVdsDv2iiEMjumolPWXgNtEU0aseT8rKqG92wMvI7D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=pJV0VNV3; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r4lBnNcJ"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954b3c5cbeso2248445e9.1
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 03:12:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784455965; x=1785060765; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KRKs9H4rL328+i+tC6jy0yDGsWhK1FsylMyl9gj4/r4=;
-        b=r4lBnNcJdCnIbTfiskrHHMA9yWocn1b/L98dAK5Wb8oxw8UkAlIdEuQGOykh2tcQjf
-         03NPUOlU5OsBv/6DI6lH9dNZubNzaeoyynzWu/eh8Ugmthyw9NIeqOH2oskFd83KT/xp
-         qYHOV0IzVH5myXJ0PdgJybfv36mxDKM9BlebjDyNJcKM60h5I0VUXlK9FdRUSwVD1CC3
-         pH510D0DiD/7g1A3EuVoi2WrZ26hmLscRfcPzROyvzaTJxOVLsPBufDZzieFINvXL2uQ
-         Eef97j3miWd9AKEMG14f7mVoISTRvFYl2XyCeO8bvqK89oI+kjzdV48i7THy22zzHXQC
-         GOaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784455965; x=1785060765;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KRKs9H4rL328+i+tC6jy0yDGsWhK1FsylMyl9gj4/r4=;
-        b=qrFVcNfFWISKCVo7joCrhMQYh+AHNXCuo6DxHxl20bGn1I+QtXiHVc9/jEFw17kAos
-         qGyF4I0Wu/cGJc995xIbs6PfseBJf864cgCZOPa2ls4e9PGzjU1uvQwm2urfmF/2Sagb
-         QeD3sWTsJRGbEQlFdSkBuQSDh4wYi05VZTYuYd+SecC7WO6x+vMubWZU0JH3Tr+VzJYl
-         FJUPfRZbt46xhnl3uhLTixvz8aEPNRtNXILjZUokCM25gtNMkNlhlnJyeQe2L0lF22bw
-         YMWXkGxZ4KIb/Tiz6d3m79QWLP3y/79Lq5ybVfB74ceg1q6NYRqswfrRWpTESsewx0u+
-         KdeA==
-X-Forwarded-Encrypted: i=1; AHgh+RqFrGt70TIaRhP88OReuDK4NvPK5GLPG3CYo230YhzeV9CXeiEh71Rwuh13x9Fp+m1LA8AqyAQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8clHQLlI/vHIK75Tq8EATiYcKRdV33m6QdBVCLC5/vhmegXX0
-	O9KqFNMgYl8NT7wXSxtfdORiatTSDdkI3TRJCxxV/WolNECl4vc47Qez
-X-Gm-Gg: AfdE7ckV+liNn/maaJWTguOaIN76K8lfu9aFw/EeGOUKBf2c8XELOSJ9QkVO1ZDRlTz
-	zG6zcx07OjoAao36V6ugzLfQG/BFx65HkAbbAGluP5PBuwOfaING+Jr0pgKzNgcjhOSN1Qa1sF+
-	8IB1uPSDvrzYL5vnStSsT/gB8pV7KrjlR7+VgbMCNzB4oSpZSK/GNvqSuH8ngAPeB6lqMI4sr3i
-	HxN2yWKJVfAp1KOtfVzsCPCREyGVBs/wAxXFc+0YJwJojW/XuuNQHtjybhBAZ3efZnigETHs/rx
-	pOpZIWWTiFe228NZ6wcVZuw3Cs3EOrHuuCDtP9aYiXW3BRJA8jf1WjBaEdAIxM4dwK1cZd58XH7
-	H1mAopUWJPDc4xRBtL4HaZifhdDfd7XHp/MZgh4SjFqelSO3vOXQmrpkp202pw/C1ycfk
-X-Received: by 2002:a05:600c:190b:b0:493:f42e:1b3f with SMTP id 5b1f17b1804b1-4954a40b8e4mr61842115e9.3.1784455964578;
-        Sun, 19 Jul 2026 03:12:44 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d40e:d500:a8b9:5a2c:9df7:540])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2b87c6sm331350835e9.7.2026.07.19.03.12.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 03:12:43 -0700 (PDT)
-Date: Sun, 19 Jul 2026 13:12:41 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Luke Howard <lukeh@padl.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Cedric Jehasse <cedric.jehasse@gmail.com>,
-	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>,
-	Max Hunter <max@huntershome.org>,
-	Christoph Mellauner <christoph.mellauner@joyned.at>,
-	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: embedded PTP
- timestamp support
-Message-ID: <20260719101241.xs4nz7r5bonb3qys@skbuf>
-References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
- <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="pJV0VNV3"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B76B7A47FE;
+	Sun, 19 Jul 2026 12:32:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1784457169; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7cAgk9XoCReGo1vklu+Fi1iJ3QIZJXUowSXhJqwUifQ=;
+	b=pJV0VNV3YfS0CGeadzpLYOB0XEc/ELVgHns4k9339LYmB31EgD9qMNbKN1tzuBHC1XxaNb
+	OQnxiFXtujJAnt6hA9bykvDBdtXvegHMVv2eLAN1K/hDHjC4ZvTUMN+wpFPUjJL5kzU1x6
+	Fg50Uxt4R+BZVTxzbc3vD0QXAkjE03NL+SBVI/x28KEr7qpvIQnQdGH0ZEfyfkRv+3lRGX
+	oMeeuwRbr4eCYRebMUdm8PGeMtM9jH5Kgsoy/gFjto1qPzCswyX7KDDEni4o2XoBH83btY
+	BHyFJp/rXY+HhxIoq2tRRrDHSmhfflpYaxzaVCB2+tycwpEjaokQ0D+yyo1UVA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
+Date: Sun, 19 Jul 2026 12:32:45 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Paolo Valerio
+ <pvalerio@redhat.com>, Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v4 02/15] net: macb: unify device pointer naming
+ convention
+In-Reply-To: <20260717-macb-context-v4-2-0acbe7f10cdb@bootlin.com>
+References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
+ <20260717-macb-context-v4-2-0acbe7f10cdb@bootlin.com>
+Message-ID: <be5764f7a984d47c4c4ea49f3e3ce288@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 10, 2026 at 04:43:42PM +1000, Luke Howard wrote:
-> @@ -6370,6 +6371,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
->  		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
->  		.ptp_support = true,
->  		.ops = &mv88e6341_ops,
-> +		.arr_ts_mode = offsetof(struct ptp_header, reserved2),
->  	},
->  
->  	[MV88E6350] = {
-> @@ -6447,6 +6449,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
->  		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
->  		.ptp_support = true,
->  		.ops = &mv88e6352_ops,
-> +		.arr_ts_mode = offsetof(struct ptp_header, reserved2),
->  	},
->  	[MV88E6361] = {
->  		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6361,
-> diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.h b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-> index c359821d5a6ea..c25f53923e768 100644
-> --- a/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-> +++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
-> @@ -68,6 +68,20 @@
->  #define MV88E6XXX_PORT_PTP_CFG2_DEP_IRQ_EN		0x0002
->  #define MV88E6XXX_PORT_PTP_CFG2_ARR_IRQ_EN		0x0001
->  
-> +/* Arrival Time Stamp Mode (ArrTSMode), CFG2 bits [15:8]: configures how the
-> + * switch embeds the arrival time stamp (PTPArr0Time) into enabled PTP event
-> + * frames.
-> + *   0x00        frame modification disabled (time stamp read from registers)
-> + *   0x01        append the 4-byte time stamp at the end of the frame,
-> + *               growing the frame by four bytes
-> + *   0x04..0xEF  overwrite the 4-byte time stamp in place, that many bytes past
-> + *               the start of the PTP common header, without growing the frame
-> + *               (offsetof(struct ptp_header, reserved2) targets the reserved
-> + *               bytes of the header)
-> + *   others      reserved
-> + */
-> +#define MV88E6XXX_PTP_ARR_TS_MODE_APPEND		0x01
-> +
->  /* Offset 0x03: PTP LED Configuration */
->  #define MV88E6XXX_PORT_PTP_LED_CFG	0x03
+Hi Théo
 
-We try to keep the data path protocol between the switch and the host
-API compatible, and identifiable by /sys/class/net/<conduit>/dsa/tagging.
-I would argue that the protocol where PTP timestamps are in registers,
-vs where they are in PTP header reserved fields, vs where they are
-appended as trailers, are 3 different protocols and should not be
-presented as "edsa".
+On 17.7.2026 21:48, Théo Lebrun wrote:
+> Here are all device pointer variable permutations inside MACB:
+> 
+>    struct device *dev;
+>    struct net_device *dev;
+>    struct net_device *ndev;
+>    struct net_device *netdev;
+>    struct pci_dev *pdev;              // inside macb_pci.c
+>    struct phy_device *phy;
+>    struct phy_device *phydev;
+>    struct platform_device *pdev;
+>    struct platform_device *plat_dev;  // inside macb_pci.c
+> 
+> Unify to this convention:
+> 
+>    struct device *dev;
+>    struct net_device *netdev;
+>    struct pci_dev *pci;
+>    struct phy_device *phydev;
+>    struct platform_device *pdev;
+> 
+> Ensure nothing slipped through using ctags tooling:
+> 
+> ⟩ ctags -o - --kinds-c='{local}{member}{parameter}' \
+>     --fields='{typeref}' drivers/net/ethernet/cadence/* | \
+>   awk -F"\t" '
+>     $NF~/struct:.*(device|dev) / {print $NF, $1}' | \
+>   sort -u
+> typeref:struct:device * dev
+> typeref:struct:in_device * idev        // ignored
+> typeref:struct:net_device * netdev
+> typeref:struct:pci_dev * pci
+> typeref:struct:phy_device * phydev
+> typeref:struct:platform_device * pdev
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> ---
+>  drivers/net/ethernet/cadence/macb.h      |  20 +-
+>  drivers/net/ethernet/cadence/macb_main.c | 636 
+> ++++++++++++++++---------------
+>  drivers/net/ethernet/cadence/macb_pci.c  |  46 +--
+>  drivers/net/ethernet/cadence/macb_ptp.c  |  18 +-
+>  4 files changed, 361 insertions(+), 359 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h 
+> b/drivers/net/ethernet/cadence/macb.h
+> index 2de56017ee0d..9857df5b57f0 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -1207,11 +1207,11 @@ struct macb_or_gem_ops {
+> 
+>  /* MACB-PTP interface: adapt to platform needs. */
+>  struct macb_ptp_info {
+> -	void (*ptp_init)(struct net_device *ndev);
+> -	void (*ptp_remove)(struct net_device *ndev);
+> +	void (*ptp_init)(struct net_device *netdev);
+> +	void (*ptp_remove)(struct net_device *netdev);
+>  	s32 (*get_ptp_max_adj)(void);
+>  	unsigned int (*get_tsu_rate)(struct macb *bp);
+> -	int (*get_ts_info)(struct net_device *dev,
+> +	int (*get_ts_info)(struct net_device *netdev,
+>  			   struct kernel_ethtool_ts_info *info);
+>  	int (*get_hwtst)(struct net_device *netdev,
+>  			 struct kernel_hwtstamp_config *tstamp_config);
+> @@ -1326,7 +1326,7 @@ struct macb {
+>  	struct clk		*tx_clk;
+>  	struct clk		*rx_clk;
+>  	struct clk		*tsu_clk;
+> -	struct net_device	*dev;
+> +	struct net_device	*netdev;
 
-Two different switches both use the "edsa" protocol (say MV88E6390 and
-MV88E6352), yet one expects timestamps in registers and the other in the
-PTP header reserved fields. Strange.
+Looks like you have missed the one in macb_free(), from commit 
+27f575836cfe ("net:
+macb: drop in-flight Tx SKBs on close"):
 
-In some instances, user space cares (though perhaps not imminently).
-For example, libpcap/tcpdump might get confused by a non-zero arr_ts_mode.
-Or an XDP/AF_XDP implementation of the edsa protocol might not understand
-(because it has no access to this information) what arr_ts_mode the
-underlying switch is configured for, and thus where to get timestamps from.
+	bp->dev->stats.tx_dropped += dropped;
+
+This breaks the build until patch 7 rewrites thatline, which breaks 
+bisection.
+
+> [...]
+
+Thanks,
+Nicolai
