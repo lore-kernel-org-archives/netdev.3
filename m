@@ -1,35 +1,35 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837EB17C220
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 09:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55956378832
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 09:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784451918; cv=none; b=fE12CAXPId20UOC7rP0uwU6QIbU5dtuKYBSlDq/PpZLajWde7z2k9QRAtCZxkMIebmsm712aI7CHjg4CUwsxs6Y0ZkvSykGmLzoqpjGSS9V7UfPZ1a+Dgj4gf0o1F7ET/4r3GxbeJkwNYNgHSzKfiw9jB5GdB0kCTIgbSzK3Asc=
+	t=1784451930; cv=none; b=ujoE8lAhAOkkDOdsKCGeE+rLpLFhkLGpxiEnLvE0NmgAK2U4rTeVvRjQvCQtExbHOPN+8iOebxI6BmNJCLMVzJh80OXnyjKiBy2ZFnWNYgLKvaa0L4WUqZzoLVTIuGbGl6ty8zvy+qEHcA/u9f4lwNKnf/In63P2GLc7npb7gWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784451918; c=relaxed/simple;
-	bh=ls12z6ilP16hgwwYiFpRmyq10fSQ6HBEKtWwlp90Av8=;
+	s=arc-20240116; t=1784451930; c=relaxed/simple;
+	bh=zJ3h+rGrWEZ2ouTw0FS2SbC51xBqkP8svJg/wh8zXZc=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fW0Ntix2peuucm22IiAYtMxmFWd5NWGx5vBuh8W/9YH+2JxZERdvpxg7kWTfg9l3Dm8XkATIkUYWX4ZjH3h8MbHQi3LGpuSahFNszt+EG89xJV6z9MMgTwKGvcICSZxGYFL9TANCJM/iphWYSkTjcpB29hJdVeUGsppSfIIdrcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=KoVvZcCL; arc=none smtp.client-ip=212.77.101.9
+	 MIME-Version; b=hsVNqQ3OXJLeqVk+GBh4KzAwFaysCHeXkObCZJk0M7GiriIivND6Z0SvlIK0Xul7AudgntgTf4UHDEXVw07pjigRo5n7hr7861ML0KY5o1Q7YUPndOG4SpgK15DeyX6pjAeHVt3rwWmH0U0n6zDMeD3eQOiQyDLIl7CfVDNlueE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=VN9/HtFh; arc=none smtp.client-ip=212.77.101.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="KoVvZcCL"
-Received: (wp-smtpd smtp.wp.pl 16248 invoked from network); 19 Jul 2026 11:05:12 +0200
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="VN9/HtFh"
+Received: (wp-smtpd smtp.wp.pl 22018 invoked from network); 19 Jul 2026 11:05:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1784451912; bh=U1T0XUKtnfKBQZvS8rcKWwn6oY0j/J5aVkeQdolAUX0=;
+          t=1784451914; bh=mEBxu3em72tH5NZLQ+i31XYbSLe5UVhLRdd7eOLBkS8=;
           h=From:To:Subject;
-          b=KoVvZcCLQT3W0/MEgxTCELDjQWpNW9CeyOtQxOxh98Huu7Ki7VWBUVowu7ZL7dSfA
-           JOwo283r1eJ3ancpM372DVPxhGKn7YEVS2Wgy7YJaa+BXxSSIwCksNPqTRk8JrycTK
-           7Z1/pO5DIYx1+3wKZx98cgPEfidC9deF9X47RNkRiIROoVcbgCDsFRzTbNA1QyoFYG
-           6t7uPRW0ebLUt0N4jHtyUJzPgpFDe+VKnMPvW01WDobrGzKd3UHM3uYa4aDszTurOC
-           zOjmgnZf9Qa8Qxj/1BmE2hIWQXwSF9kU+XAszt9Jjb1IfCIC2HdfxM2TijuTKEto1v
-           FIGn9DvcxBk2g==
+          b=VN9/HtFhrdzyhljVtPfYBEXdHvIKI4Zb1sho0t5rm6h61IFpf4xu6qZxioy1vQ8jF
+           xQRjcKuTgFzr34qhn9WwQlHH1Wo7GnY8fSM6p/rScT+O0Q3vk1jugcVAy8rt5SuS5V
+           zjIbzZBm+ClrUMBM+c/EqmZxStnaig+OJQfO1S/rf1I7aZR7nhwLDJLB4a4N5q23uU
+           ddzoWlXoDT1yy0zMqrWdWu10VBE8KIIqM/edQ822Xr/I/2wIS5D0KkTDOpoFkaGdhw
+           jIG8RGZ8WxQwBUMlJp9fkkMwZ0ZaFVsERKee1vw7g0LpP6dLYe15ffrCzTRaIVxsz2
+           PTKXhrY4aVGlQ==
 Received: from 83.24.141.3.ipv4.supernova.orange.pl (HELO abajkowski.lan) (olek2@wp.pl@[83.24.141.3])
           (envelope-sender <olek2@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <danieller@nvidia.com>; 19 Jul 2026 11:05:12 +0200
+          for <danieller@nvidia.com>; 19 Jul 2026 11:05:14 +0200
 From: Aleksander Jan Bajkowski <olek2@wp.pl>
 To: danieller@nvidia.com,
 	olek2@wp.pl,
@@ -41,9 +41,9 @@ To: danieller@nvidia.com,
 	pabeni@redhat.com,
 	jbe@pengutronix.de,
 	netdev@vger.kernel.org
-Subject: [PATCH ethtool-next v3 2/3] sfpid: print all compliance codes
-Date: Sun, 19 Jul 2026 11:00:36 +0200
-Message-ID: <20260719090458.659332-2-olek2@wp.pl>
+Subject: [PATCH ethtool-next v3 3/3] qsfp: print all compliance codes
+Date: Sun, 19 Jul 2026 11:00:37 +0200
+Message-ID: <20260719090458.659332-3-olek2@wp.pl>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260719090458.659332-1-olek2@wp.pl>
 References: <20260719090458.659332-1-olek2@wp.pl>
@@ -54,447 +54,503 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-WP-MailID: 645c41841f2fa3a14928189a4c13f9a6
+X-WP-MailID: cd815d4e4ef7ccc16b252f4c116923d9
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [wbIh]                               
+X-WP-SPAM: NO 0000001 [8QJR]                               
 
-SFP modules implement multiple compliance codes. This is common for
+QSFP modules implement multiple compliance codes. This is common for
 dual-rate modules. Before the `json` option was introduced, all
 compliance codes were displayed. Currently, only the last code is
 displayed. This commit fixes that bug. Compliance codes are
 represented as array.
 
-Before:
-$ ethtool -m sfp-wan
-...
-	Transceiver codes                         : 0x00 0x00 0x00 0x01 0x20 0x40 0x0c 0x15 0x00
-	Transceiver type                          : FC: 100 MBytes/sec
-...
-$ ethtool --json -m sfp-wan
-[ {
-...
-        "transceiver_codes": [ 0,0,0,1,32,64,12,21,0 ],
-        "transceiver_type": "FC: 100 MBytes/sec",
-...
-    } ]
-
-After:
-$ ethtool -m sfp-wan
-...
-	Transceiver codes                         : 0x00 0x00 0x00 0x01 0x20 0x40 0x0c 0x15 0x00
-	Transceiver type                          : Ethernet: 1000BASE-SX
-	Transceiver type                          : FC: intermediate distance (I)
-	Transceiver type                          : FC: Shortwave laser w/o OFC (SN)
-	Transceiver type                          : FC: Multimode, 62.5um (M6)
-	Transceiver type                          : FC: Multimode, 50um (M5)
-	Transceiver type                          : FC: 400 MBytes/sec
-	Transceiver type                          : FC: 200 MBytes/sec
-	Transceiver type                          : FC: 100 MBytes/sec
-...
-$ ethtool --json -m sfp-wan
-[ {
-...
-        "transceiver_codes": [ 0,0,0,1,32,64,12,21,0 ],
-        "transceiver_type": [ "Ethernet: 1000BASE-SX","FC: intermediate distance (I)","FC: Shortwave laser w/o OFC (SN)","FC: Multimode, 62.5um (M6)","FC: Multimode, 50um (M5)","FC: 400 MBytes/sec","FC: 200 MBytes/sec","FC: 100 MBytes/sec" ],
-...
-    } ]
-
 Fixes: 4071862f58d8 ("sfpid: Add JSON output handling to --module-info in SFF8079 modules")
 Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
 ---
 Changes in v3:
- - fix indentation and checkpatch warnings
-Changes in v2:
- - drop </pre> leftover
- - use single sfp module in Before/After
- - rename module_print_array_string() -> module_print_any_array_string_entry()
+ - add patch to series
 ---
- sfpid.c | 253 ++++++++++++++++++++++++++++----------------------------
- 1 file changed, 128 insertions(+), 125 deletions(-)
+ qsfp.c | 264 +++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 134 insertions(+), 130 deletions(-)
 
-diff --git a/sfpid.c b/sfpid.c
-index 5899f8c..065ac4c 100644
---- a/sfpid.c
-+++ b/sfpid.c
-@@ -50,7 +50,6 @@ static void sff8079_show_connector(const __u8 *id)
- static void sff8079_show_transceiver(const __u8 *id)
+diff --git a/qsfp.c b/qsfp.c
+index c82a3de..113663a 100644
+--- a/qsfp.c
++++ b/qsfp.c
+@@ -182,7 +182,6 @@ static void sff8636_show_connector(const struct sff8636_memory_map *map)
+ static void sff8636_show_transceiver(const struct sff8636_memory_map *map)
  {
  	static const char *pfx = "Transceiver type";
 -	char value[140] = "";
  
  	if (is_json_context()) {
  		open_json_array("transceiver_codes", "");
-@@ -70,242 +69,246 @@ static void sff8079_show_transceiver(const __u8 *id)
- 		       "Transceiver codes", id[3], id[4], id[5], id[6],
- 		       id[7], id[8], id[9], id[10], id[36]);
+@@ -217,226 +216,230 @@ static void sff8636_show_transceiver(const struct sff8636_memory_map *map)
+ 		       map->page_00h[SFF8636_FC_SPEED_OFFSET]);
  	}
-+
+ 
 +	if (is_json_context())
 +		open_json_array("transceiver_type", "");
 +
- 	/* 10G Ethernet Compliance Codes */
- 	if (id[3] & (1 << 7))
--		sprintf(value, "%s",
--			"10G Ethernet: 10G Base-ER [SFF-8472 rev10.4 onwards]");
-+		module_print_any_array_string_entry(pfx,
-+						    "10G Ethernet: 10G Base-ER [SFF-8472 rev10.4 onwards]");
- 	if (id[3] & (1 << 6))
+ 	/* 10G/40G Ethernet Compliance Codes */
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_10G_LRM)
 -		sprintf(value, "%s", "10G Ethernet: 10G Base-LRM");
 +		module_print_any_array_string_entry(pfx, "10G Ethernet: 10G Base-LRM");
- 	if (id[3] & (1 << 5))
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_10G_LR)
 -		sprintf(value, "%s", "10G Ethernet: 10G Base-LR");
 +		module_print_any_array_string_entry(pfx, "10G Ethernet: 10G Base-LR");
- 	if (id[3] & (1 << 4))
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_10G_SR)
 -		sprintf(value, "%s", "10G Ethernet: 10G Base-SR");
 +		module_print_any_array_string_entry(pfx, "10G Ethernet: 10G Base-SR");
- 	/* Infiniband Compliance Codes */
- 	if (id[3] & (1 << 3))
--		sprintf(value, "%s", "Infiniband: 1X SX");
-+		module_print_any_array_string_entry(pfx, "Infiniband: 1X SX");
- 	if (id[3] & (1 << 2))
--		sprintf(value, "%s", "Infiniband: 1X LX");
-+		module_print_any_array_string_entry(pfx, "Infiniband: 1X LX");
- 	if (id[3] & (1 << 1))
--		sprintf(value, "%s", "Infiniband: 1X Copper Active");
-+		module_print_any_array_string_entry(pfx, "Infiniband: 1X Copper Active");
- 	if (id[3] & (1 << 0))
--		sprintf(value, "%s", "Infiniband: 1X Copper Passive");
-+		module_print_any_array_string_entry(pfx, "Infiniband: 1X Copper Passive");
- 	/* ESCON Compliance Codes */
- 	if (id[4] & (1 << 7))
--		sprintf(value, "%s", "ESCON: ESCON MMF, 1310nm LED");
-+		module_print_any_array_string_entry(pfx, "ESCON: ESCON MMF, 1310nm LED");
- 	if (id[4] & (1 << 6))
--		sprintf(value, "%s", "ESCON: ESCON SMF, 1310nm Laser");
-+		module_print_any_array_string_entry(pfx, "ESCON: ESCON SMF, 1310nm Laser");
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_40G_CR4)
+-		sprintf(value, "%s", "40G Ethernet: 40G Base-CR4");
++		module_print_any_array_string_entry(pfx, "40G Ethernet: 40G Base-CR4");
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_40G_SR4)
+-		sprintf(value, "%s", "40G Ethernet: 40G Base-SR4");
++		module_print_any_array_string_entry(pfx, "40G Ethernet: 40G Base-SR4");
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_40G_LR4)
+-		sprintf(value, "%s", "40G Ethernet: 40G Base-LR4");
++		module_print_any_array_string_entry(pfx, "40G Ethernet: 40G Base-LR4");
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_40G_ACTIVE)
+-		sprintf(value, "%s", "40G Ethernet: 40G Active Cable (XLPPI)");
++		module_print_any_array_string_entry(pfx, "40G Ethernet: 40G Active Cable (XLPPI)");
+ 	/* Extended Specification Compliance Codes from SFF-8024 */
+ 	if (map->page_00h[SFF8636_ETHERNET_COMP_OFFSET] &
+ 	    SFF8636_ETHERNET_RSRVD) {
+ 		switch (map->page_00h[SFF8636_OPTION_1_OFFSET]) {
+ 		case SFF8636_ETHERNET_UNSPECIFIED:
+-			sprintf(value, "%s", "(reserved or unknown)");
++			module_print_any_array_string_entry(pfx, "(reserved or unknown)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_AOC:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G AOC or 25GAUI C2M AOC with worst BER of 5x10^(-5)");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G AOC or 25GAUI C2M AOC with worst BER of 5x10^(-5)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_SR4:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G Base-SR4 or 25GBase-SR");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G Base-SR4 or 25GBase-SR");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_LR4:
+-			sprintf(value, "%s", "100G Ethernet: 100G Base-LR4");
++			module_print_any_array_string_entry(pfx, "100G Ethernet: 100G Base-LR4");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_ER4:
+-			sprintf(value, "%s", "100G Ethernet: 100G Base-ER4");
++			module_print_any_array_string_entry(pfx, "100G Ethernet: 100G Base-ER4");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_SR10:
+-			sprintf(value, "%s", "100G Ethernet: 100G Base-SR10");
++			module_print_any_array_string_entry(pfx, "100G Ethernet: 100G Base-SR10");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_CWDM4_FEC:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G CWDM4 MSA with FEC");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G CWDM4 MSA with FEC");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_PSM4:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G PSM4 Parallel SMF");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G PSM4 Parallel SMF");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_ACC:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G ACC or 25GAUI C2M ACC with worst BER of 5x10^(-5)");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G ACC or 25GAUI C2M ACC with worst BER of 5x10^(-5)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_CWDM4_NO_FEC:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G CWDM4 MSA without FEC");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G CWDM4 MSA without FEC");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_RSVD1:
+-			sprintf(value, "%s", "(reserved or unknown)");
++			module_print_any_array_string_entry(pfx, "(reserved or unknown)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_CR4:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G Base-CR4 or 25G Base-CR CA-L");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G Base-CR4 or 25G Base-CR CA-L");
+ 			break;
+ 		case SFF8636_ETHERNET_25G_CR_CA_S:
+-			sprintf(value, "%s", "25G Ethernet: 25G Base-CR CA-S");
++			module_print_any_array_string_entry(pfx, "25G Ethernet: 25G Base-CR CA-S");
+ 			break;
+ 		case SFF8636_ETHERNET_25G_CR_CA_N:
+-			sprintf(value, "%s", "25G Ethernet: 25G Base-CR CA-N");
++			module_print_any_array_string_entry(pfx, "25G Ethernet: 25G Base-CR CA-N");
+ 			break;
+ 		case SFF8636_ETHERNET_40G_ER4:
+-			sprintf(value, "%s", "40G Ethernet: 40G Base-ER4");
++			module_print_any_array_string_entry(pfx, "40G Ethernet: 40G Base-ER4");
+ 			break;
+ 		case SFF8636_ETHERNET_4X10_SR:
+-			sprintf(value, "%s", "4x10G Ethernet: 10G Base-SR");
++			module_print_any_array_string_entry(pfx, "4x10G Ethernet: 10G Base-SR");
+ 			break;
+ 		case SFF8636_ETHERNET_40G_PSM4:
+-			sprintf(value, "%s",
+-				"40G Ethernet: 40G PSM4 Parallel SMF");
++			module_print_any_array_string_entry(pfx,
++							    "40G Ethernet: 40G PSM4 Parallel SMF");
+ 			break;
+ 		case SFF8636_ETHERNET_G959_P1I1_2D1:
+-			sprintf(value, "%s",
+-				"Ethernet: G959.1 profile P1I1-2D1 (10709 MBd, 2km, 1310nm SM)");
++			module_print_any_array_string_entry(pfx,
++							    "Ethernet: G959.1 profile P1I1-2D1 (10709 MBd, 2km, 1310nm SM)");
+ 			break;
+ 		case SFF8636_ETHERNET_G959_P1S1_2D2:
+-			sprintf(value, "%s",
+-				"Ethernet: G959.1 profile P1S1-2D2 (10709 MBd, 40km, 1550nm SM)");
++			module_print_any_array_string_entry(pfx,
++							    "Ethernet: G959.1 profile P1S1-2D2 (10709 MBd, 40km, 1550nm SM)");
+ 			break;
+ 		case SFF8636_ETHERNET_G959_P1L1_2D2:
+-			sprintf(value, "%s",
+-				"Ethernet: G959.1 profile P1L1-2D2 (10709 MBd, 80km, 1550nm SM)");
++			module_print_any_array_string_entry(pfx,
++							    "Ethernet: G959.1 profile P1L1-2D2 (10709 MBd, 80km, 1550nm SM)");
+ 			break;
+ 		case SFF8636_ETHERNET_10GT_SFI:
+-			sprintf(value, "%s",
+-				"10G Ethernet: 10G Base-T with SFI electrical interface");
++			module_print_any_array_string_entry(pfx,
++							    "10G Ethernet: 10G Base-T with SFI electrical interface");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_CLR4:
+-			sprintf(value, "%s", "100G Ethernet: 100G CLR4");
++			module_print_any_array_string_entry(pfx, "100G Ethernet: 100G CLR4");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_AOC2:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G AOC or 25GAUI C2M AOC with worst BER of 10^(-12)");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G AOC or 25GAUI C2M AOC with worst BER of 10^(-12)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_ACC2:
+-			sprintf(value, "%s",
+-				"100G Ethernet: 100G ACC or 25GAUI C2M ACC with worst BER of 10^(-12)");
++			module_print_any_array_string_entry(pfx,
++							    "100G Ethernet: 100G ACC or 25GAUI C2M ACC with worst BER of 10^(-12)");
+ 			break;
+ 		case SFF8636_ETHERNET_100GE_DWDM2:
+-			sprintf(value, "%s",
+-				"100GE-DWDM2 (DWDM transceiver using 2 wavelengths on a 1550 nm DWDM grid with a reach up to 80 km)");
++			module_print_any_array_string_entry(pfx,
++							    "100GE-DWDM2 (DWDM transceiver using 2 wavelengths on a 1550 nm DWDM grid with a reach up to 80 km)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_1550NM_WDM:
+-			sprintf(value, "%s", "100G 1550nm WDM (4 wavelengths)");
++			module_print_any_array_string_entry(pfx, "100G 1550nm WDM (4 wavelengths)");
+ 			break;
+ 		case SFF8636_ETHERNET_10G_BASET_SR:
+-			sprintf(value, "%s",
+-				"10GBASE-T Short Reach (30 meters)");
++			module_print_any_array_string_entry(pfx,
++							    "10GBASE-T Short Reach (30 meters)");
+ 			break;
+ 		case SFF8636_ETHERNET_5G_BASET:
+-			sprintf(value, "%s", "5GBASE-T");
++			module_print_any_array_string_entry(pfx, "5GBASE-T");
+ 			break;
+ 		case SFF8636_ETHERNET_2HALFG_BASET:
+-			sprintf(value, "%s", "2.5GBASE-T");
++			module_print_any_array_string_entry(pfx, "2.5GBASE-T");
+ 			break;
+ 		case SFF8636_ETHERNET_40G_SWDM4:
+-			sprintf(value, "%s", "40G SWDM4");
++			module_print_any_array_string_entry(pfx, "40G SWDM4");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_SWDM4:
+-			sprintf(value, "%s", "100G SWDM4");
++			module_print_any_array_string_entry(pfx, "100G SWDM4");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_PAM4_BIDI:
+-			sprintf(value, "%s", "100G PAM4 BiDi");
++			module_print_any_array_string_entry(pfx, "100G PAM4 BiDi");
+ 			break;
+ 		case SFF8636_ETHERNET_4WDM10_MSA:
+-			sprintf(value, "%s",
+-				"4WDM-10 MSA (10km version of 100G CWDM4 with same RS(528,514) FEC in host system)");
++			module_print_any_array_string_entry(pfx,
++							    "4WDM-10 MSA (10km version of 100G CWDM4 with same RS(528,514) FEC in host system)");
+ 			break;
+ 		case SFF8636_ETHERNET_4WDM20_MSA:
+-			sprintf(value, "%s", "4WDM-20 MSA (20km version of 100GBASE-LR4 with RS(528,514) FEC in host system)");
++			module_print_any_array_string_entry(pfx,
++							    "4WDM-20 MSA (20km version of 100GBASE-LR4 with RS(528,514) FEC in host system)");
+ 			break;
+ 		case SFF8636_ETHERNET_4WDM40_MSA:
+-			sprintf(value, "%s",
+-				"4WDM-40 MSA (40km reach with APD receiver and RS(528,514) FEC in host system)");
++			module_print_any_array_string_entry(pfx,
++							    "4WDM-40 MSA (40km reach with APD receiver and RS(528,514) FEC in host system)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_DR:
+-			sprintf(value, "%s",
+-				"100GBASE-DR (clause 140), CAUI-4 (no FEC)");
++			module_print_any_array_string_entry(pfx,
++							    "100GBASE-DR (clause 140), CAUI-4 (no FEC)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_FR_NOFEC:
+-			sprintf(value, "%s",
+-				"100G-FR or 100GBASE-FR1 (clause 140), CAUI-4 (no FEC)");
++			module_print_any_array_string_entry(pfx,
++							    "100G-FR or 100GBASE-FR1 (clause 140), CAUI-4 (no FEC)");
+ 			break;
+ 		case SFF8636_ETHERNET_100G_LR_NOFEC:
+-			sprintf(value, "%s",
+-				"100G-LR or 100GBASE-LR1 (clause 140), CAUI-4 (no FEC)");
++			module_print_any_array_string_entry(pfx,
++							    "100G-LR or 100GBASE-LR1 (clause 140), CAUI-4 (no FEC)");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_ACC1:
+-			sprintf(value, "%s",
+-				"Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
++			module_print_any_array_string_entry(pfx,
++							    "Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_AOC1:
+-			sprintf(value, "%s",
+-				"Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
++			module_print_any_array_string_entry(pfx,
++							    "Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_ACC2:
+-			sprintf(value, "%s",
+-				"Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
++			module_print_any_array_string_entry(pfx,
++							    "Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_A0C2:
+-			sprintf(value, "%s",
+-				"Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
++			module_print_any_array_string_entry(pfx,
++							    "Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_CR4:
+-			sprintf(value, "%s",
+-				"50GBASE-CR, 100GBASE-CR2, or 200GBASE-CR4");
++			module_print_any_array_string_entry(pfx,
++							    "50GBASE-CR, 100GBASE-CR2, or 200GBASE-CR4");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_SR4:
+-			sprintf(value, "%s",
+-				"50GBASE-SR, 100GBASE-SR2, or 200GBASE-SR4");
++			module_print_any_array_string_entry(pfx,
++							    "50GBASE-SR, 100GBASE-SR2, or 200GBASE-SR4");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_DR4:
+-			sprintf(value, "%s", "50GBASE-FR or 200GBASE-DR4");
++			module_print_any_array_string_entry(pfx, "50GBASE-FR or 200GBASE-DR4");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_FR4:
+-			sprintf(value, "%s", "200GBASE-FR4");
++			module_print_any_array_string_entry(pfx, "200GBASE-FR4");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_PSM4:
+-			sprintf(value, "%s", "200G 1550 nm PSM4");
++			module_print_any_array_string_entry(pfx, "200G 1550 nm PSM4");
+ 			break;
+ 		case SFF8636_ETHERNET_50G_LR:
+-			sprintf(value, "%s", "50GBASE-LR");
++			module_print_any_array_string_entry(pfx, "50GBASE-LR");
+ 			break;
+ 		case SFF8636_ETHERNET_200G_LR4:
+-			sprintf(value, "%s", "200GBASE-LR4");
++			module_print_any_array_string_entry(pfx, "200GBASE-LR4");
+ 			break;
+ 		case SFF8636_ETHERNET_64G_EA:
+-			sprintf(value, "%s", "64GFC EA");
++			module_print_any_array_string_entry(pfx, "64GFC EA");
+ 			break;
+ 		case SFF8636_ETHERNET_64G_SW:
+-			sprintf(value, "%s", "64GFC SW");
++			module_print_any_array_string_entry(pfx, "64GFC SW");
+ 			break;
+ 		case SFF8636_ETHERNET_64G_LW:
+-			sprintf(value, "%s", "64GFC LW");
++			module_print_any_array_string_entry(pfx, "64GFC LW");
+ 			break;
+ 		case SFF8636_ETHERNET_128FC_EA:
+-			sprintf(value, "%s", "128GFC EA");
++			module_print_any_array_string_entry(pfx, "128GFC EA");
+ 			break;
+ 		case SFF8636_ETHERNET_128FC_SW:
+-			sprintf(value, "%s", "128GFC SW");
++			module_print_any_array_string_entry(pfx, "128GFC SW");
+ 			break;
+ 		case SFF8636_ETHERNET_128FC_LW:
+-			sprintf(value, "%s", "128GFC LW");
++			module_print_any_array_string_entry(pfx, "128GFC LW");
+ 			break;
+ 		default:
+-			sprintf(value, "%s", "(reserved or unknown)");
++			module_print_any_array_string_entry(pfx, "(reserved or unknown)");
+ 			break;
+ 		}
+ 	}
+@@ -444,104 +447,105 @@ static void sff8636_show_transceiver(const struct sff8636_memory_map *map)
  	/* SONET Compliance Codes */
- 	if (id[4] & (1 << 5))
--		sprintf(value, "%s", "SONET: OC-192, short reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-192, short reach");
- 	if (id[4] & (1 << 4))
--		sprintf(value, "%s", "SONET: SONET reach specifier bit 1");
-+		module_print_any_array_string_entry(pfx, "SONET: SONET reach specifier bit 1");
- 	if (id[4] & (1 << 3))
--		sprintf(value, "%s", "SONET: SONET reach specifier bit 2");
-+		module_print_any_array_string_entry(pfx, "SONET: SONET reach specifier bit 2");
- 	if (id[4] & (1 << 2))
+ 	if (map->page_00h[SFF8636_SONET_COMP_OFFSET] &
+ 	    (SFF8636_SONET_40G_OTN))
+-		sprintf(value, "%s", "40G OTN (OTU3B/OTU3C)");
++		module_print_any_array_string_entry(pfx, "40G OTN (OTU3B/OTU3C)");
+ 	if (map->page_00h[SFF8636_SONET_COMP_OFFSET] & (SFF8636_SONET_OC48_LR))
 -		sprintf(value, "%s", "SONET: OC-48, long reach");
 +		module_print_any_array_string_entry(pfx, "SONET: OC-48, long reach");
- 	if (id[4] & (1 << 1))
+ 	if (map->page_00h[SFF8636_SONET_COMP_OFFSET] & (SFF8636_SONET_OC48_IR))
 -		sprintf(value, "%s", "SONET: OC-48, intermediate reach");
 +		module_print_any_array_string_entry(pfx, "SONET: OC-48, intermediate reach");
- 	if (id[4] & (1 << 0))
+ 	if (map->page_00h[SFF8636_SONET_COMP_OFFSET] & (SFF8636_SONET_OC48_SR))
 -		sprintf(value, "%s", "SONET: OC-48, short reach");
 +		module_print_any_array_string_entry(pfx, "SONET: OC-48, short reach");
- 	if (id[5] & (1 << 6))
--		sprintf(value, "%s", "SONET: OC-12, single mode, long reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-12, single mode, long reach");
- 	if (id[5] & (1 << 5))
--		sprintf(value, "%s", "SONET: OC-12, single mode, inter. reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-12, single mode, inter. reach");
- 	if (id[5] & (1 << 4))
--		sprintf(value, "%s", "SONET: OC-12, short reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-12, short reach");
- 	if (id[5] & (1 << 2))
--		sprintf(value, "%s", "SONET: OC-3, single mode, long reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-3, single mode, long reach");
- 	if (id[5] & (1 << 1))
--		sprintf(value, "%s", "SONET: OC-3, single mode, inter. reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-3, single mode, inter. reach");
- 	if (id[5] & (1 << 0))
--		sprintf(value, "%s", "SONET: OC-3, short reach");
-+		module_print_any_array_string_entry(pfx, "SONET: OC-3, short reach");
+ 
+ 	/* SAS/SATA Compliance Codes */
+ 	if (map->page_00h[SFF8636_SAS_COMP_OFFSET] & (SFF8636_SAS_24G))
+-		sprintf(value, "%s", "SAS 24.0G");
++		module_print_any_array_string_entry(pfx, "SAS 24.0G");
+ 	if (map->page_00h[SFF8636_SAS_COMP_OFFSET] & (SFF8636_SAS_12G))
+-		sprintf(value, "%s", "SAS 12.0G");
++		module_print_any_array_string_entry(pfx, "SAS 12.0G");
+ 	if (map->page_00h[SFF8636_SAS_COMP_OFFSET] & (SFF8636_SAS_6G))
+-		sprintf(value, "%s", "SAS 6.0G");
++		module_print_any_array_string_entry(pfx, "SAS 6.0G");
+ 	if (map->page_00h[SFF8636_SAS_COMP_OFFSET] & (SFF8636_SAS_3G))
+-		sprintf(value, "%s", "SAS 3.0G");
++		module_print_any_array_string_entry(pfx, "SAS 3.0G");
+ 
  	/* Ethernet Compliance Codes */
- 	if (id[6] & (1 << 7))
--		sprintf(value, "%s", "Ethernet: BASE-PX");
-+		module_print_any_array_string_entry(pfx, "Ethernet: BASE-PX");
- 	if (id[6] & (1 << 6))
--		sprintf(value, "%s", "Ethernet: BASE-BX10");
-+		module_print_any_array_string_entry(pfx, "Ethernet: BASE-BX10");
- 	if (id[6] & (1 << 5))
--		sprintf(value, "%s", "Ethernet: 100BASE-FX");
-+		module_print_any_array_string_entry(pfx, "Ethernet: 100BASE-FX");
- 	if (id[6] & (1 << 4))
--		sprintf(value, "%s", "Ethernet: 100BASE-LX/LX10");
-+		module_print_any_array_string_entry(pfx, "Ethernet: 100BASE-LX/LX10");
- 	if (id[6] & (1 << 3))
+ 	if (map->page_00h[SFF8636_GIGE_COMP_OFFSET] & SFF8636_GIGE_1000_BASE_T)
 -		sprintf(value, "%s", "Ethernet: 1000BASE-T");
 +		module_print_any_array_string_entry(pfx, "Ethernet: 1000BASE-T");
- 	if (id[6] & (1 << 2))
+ 	if (map->page_00h[SFF8636_GIGE_COMP_OFFSET] & SFF8636_GIGE_1000_BASE_CX)
 -		sprintf(value, "%s", "Ethernet: 1000BASE-CX");
 +		module_print_any_array_string_entry(pfx, "Ethernet: 1000BASE-CX");
- 	if (id[6] & (1 << 1))
+ 	if (map->page_00h[SFF8636_GIGE_COMP_OFFSET] & SFF8636_GIGE_1000_BASE_LX)
 -		sprintf(value, "%s", "Ethernet: 1000BASE-LX");
 +		module_print_any_array_string_entry(pfx, "Ethernet: 1000BASE-LX");
- 	if (id[6] & (1 << 0))
+ 	if (map->page_00h[SFF8636_GIGE_COMP_OFFSET] & SFF8636_GIGE_1000_BASE_SX)
 -		sprintf(value, "%s", "Ethernet: 1000BASE-SX");
 +		module_print_any_array_string_entry(pfx, "Ethernet: 1000BASE-SX");
+ 
  	/* Fibre Channel link length */
- 	if (id[7] & (1 << 7))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_LEN_VERY_LONG)
 -		sprintf(value, "%s", "FC: very long distance (V)");
 +		module_print_any_array_string_entry(pfx, "FC: very long distance (V)");
- 	if (id[7] & (1 << 6))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_LEN_SHORT)
 -		sprintf(value, "%s", "FC: short distance (S)");
 +		module_print_any_array_string_entry(pfx, "FC: short distance (S)");
- 	if (id[7] & (1 << 5))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_LEN_INT)
 -		sprintf(value, "%s", "FC: intermediate distance (I)");
 +		module_print_any_array_string_entry(pfx, "FC: intermediate distance (I)");
- 	if (id[7] & (1 << 4))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_LEN_LONG)
 -		sprintf(value, "%s", "FC: long distance (L)");
 +		module_print_any_array_string_entry(pfx, "FC: long distance (L)");
- 	if (id[7] & (1 << 3))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_LEN_MED)
 -		sprintf(value, "%s", "FC: medium distance (M)");
 +		module_print_any_array_string_entry(pfx, "FC: medium distance (M)");
+ 
  	/* Fibre Channel transmitter technology */
- 	if (id[7] & (1 << 2))
--		sprintf(value, "%s", "FC: Shortwave laser, linear Rx (SA)");
-+		module_print_any_array_string_entry(pfx, "FC: Shortwave laser, linear Rx (SA)");
- 	if (id[7] & (1 << 1))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_TECH_LONG_LC)
 -		sprintf(value, "%s", "FC: Longwave laser (LC)");
 +		module_print_any_array_string_entry(pfx, "FC: Longwave laser (LC)");
- 	if (id[7] & (1 << 0))
+ 	if (map->page_00h[SFF8636_FC_LEN_OFFSET] & SFF8636_FC_TECH_ELEC_INTER)
 -		sprintf(value, "%s", "FC: Electrical inter-enclosure (EL)");
 +		module_print_any_array_string_entry(pfx, "FC: Electrical inter-enclosure (EL)");
- 	if (id[8] & (1 << 7))
+ 	if (map->page_00h[SFF8636_FC_TECH_OFFSET] & SFF8636_FC_TECH_ELEC_INTRA)
 -		sprintf(value, "%s", "FC: Electrical intra-enclosure (EL)");
 +		module_print_any_array_string_entry(pfx, "FC: Electrical intra-enclosure (EL)");
- 	if (id[8] & (1 << 6))
+ 	if (map->page_00h[SFF8636_FC_TECH_OFFSET] &
+ 	    SFF8636_FC_TECH_SHORT_WO_OFC)
 -		sprintf(value, "%s", "FC: Shortwave laser w/o OFC (SN)");
 +		module_print_any_array_string_entry(pfx, "FC: Shortwave laser w/o OFC (SN)");
- 	if (id[8] & (1 << 5))
+ 	if (map->page_00h[SFF8636_FC_TECH_OFFSET] & SFF8636_FC_TECH_SHORT_W_OFC)
 -		sprintf(value, "%s", "FC: Shortwave laser with OFC (SL)");
 +		module_print_any_array_string_entry(pfx, "FC: Shortwave laser with OFC (SL)");
- 	if (id[8] & (1 << 4))
+ 	if (map->page_00h[SFF8636_FC_TECH_OFFSET] & SFF8636_FC_TECH_LONG_LL)
 -		sprintf(value, "%s", "FC: Longwave laser (LL)");
 +		module_print_any_array_string_entry(pfx, "FC: Longwave laser (LL)");
- 	if (id[8] & (1 << 3))
--		sprintf(value, "%s", "Active Cable");
-+		module_print_any_array_string_entry(pfx, "Active Cable");
- 	if (id[8] & (1 << 2))
--		sprintf(value, "%s", "Passive Cable");
-+		module_print_any_array_string_entry(pfx, "Passive Cable");
- 	if (id[8] & (1 << 1))
--		sprintf(value, "%s", "FC: Copper FC-BaseT");
-+		module_print_any_array_string_entry(pfx, "FC: Copper FC-BaseT");
+ 
  	/* Fibre Channel transmission media */
- 	if (id[9] & (1 << 7))
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_TW)
 -		sprintf(value, "%s", "FC: Twin Axial Pair (TW)");
 +		module_print_any_array_string_entry(pfx, "FC: Twin Axial Pair (TW)");
- 	if (id[9] & (1 << 6))
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_TP)
 -		sprintf(value, "%s", "FC: Twisted Pair (TP)");
 +		module_print_any_array_string_entry(pfx, "FC: Twisted Pair (TP)");
- 	if (id[9] & (1 << 5))
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_MI)
 -		sprintf(value, "%s", "FC: Miniature Coax (MI)");
 +		module_print_any_array_string_entry(pfx, "FC: Miniature Coax (MI)");
- 	if (id[9] & (1 << 4))
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_TV)
 -		sprintf(value, "%s", "FC: Video Coax (TV)");
 +		module_print_any_array_string_entry(pfx, "FC: Video Coax (TV)");
- 	if (id[9] & (1 << 3))
--		sprintf(value, "%s", "FC: Multimode, 62.5um (M6)");
-+		module_print_any_array_string_entry(pfx, "FC: Multimode, 62.5um (M6)");
- 	if (id[9] & (1 << 2))
--		sprintf(value, "%s", "FC: Multimode, 50um (M5)");
-+		module_print_any_array_string_entry(pfx, "FC: Multimode, 50um (M5)");
- 	if (id[9] & (1 << 0))
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_M6)
+-		sprintf(value, "%s", "FC: Multimode, 62.5m (M6)");
++		module_print_any_array_string_entry(pfx, "FC: Multimode, 62.5m (M6)");
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_M5)
+-		sprintf(value, "%s", "FC: Multimode, 50m (M5)");
++		module_print_any_array_string_entry(pfx, "FC: Multimode, 50m (M5)");
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_OM3)
+-		sprintf(value, "%s", "FC: Multimode, 50um (OM3)");
++		module_print_any_array_string_entry(pfx, "FC: Multimode, 50um (OM3)");
+ 	if (map->page_00h[SFF8636_FC_TRANS_MEDIA_OFFSET] &
+ 	    SFF8636_FC_TRANS_MEDIA_SM)
 -		sprintf(value, "%s", "FC: Single Mode (SM)");
 +		module_print_any_array_string_entry(pfx, "FC: Single Mode (SM)");
+ 
  	/* Fibre Channel speed */
- 	if (id[10] & (1 << 7))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_1200_MBPS)
 -		sprintf(value, "%s", "FC: 1200 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 1200 MBytes/sec");
- 	if (id[10] & (1 << 6))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_800_MBPS)
 -		sprintf(value, "%s", "FC: 800 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 800 MBytes/sec");
- 	if (id[10] & (1 << 5))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_1600_MBPS)
 -		sprintf(value, "%s", "FC: 1600 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 1600 MBytes/sec");
- 	if (id[10] & (1 << 4))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_400_MBPS)
 -		sprintf(value, "%s", "FC: 400 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 400 MBytes/sec");
- 	if (id[10] & (1 << 3))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_3200_MBPS)
 -		sprintf(value, "%s", "FC: 3200 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 3200 MBytes/sec");
- 	if (id[10] & (1 << 2))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_200_MBPS)
 -		sprintf(value, "%s", "FC: 200 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 200 MBytes/sec");
- 	if (id[10] & (1 << 0))
+ 	if (map->page_00h[SFF8636_FC_SPEED_OFFSET] & SFF8636_FC_SPEED_100_MBPS)
 -		sprintf(value, "%s", "FC: 100 MBytes/sec");
 +		module_print_any_array_string_entry(pfx, "FC: 100 MBytes/sec");
- 	/* Extended Specification Compliance Codes from SFF-8024 */
- 	if (id[36] == 0x1)
--		sprintf(value, "%s",
--			"Extended: 100G AOC or 25GAUI C2M AOC with worst BER of 5x10^(-5)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G AOC or 25GAUI C2M AOC with worst BER of 5x10^(-5)");
- 	if (id[36] == 0x2)
--		sprintf(value, "%s", "Extended: 100G Base-SR4 or 25GBase-SR");
-+		module_print_any_array_string_entry(pfx, "Extended: 100G Base-SR4 or 25GBase-SR");
- 	if (id[36] == 0x3)
--		sprintf(value, "%s", "Extended: 100G Base-LR4 or 25GBase-LR");
-+		module_print_any_array_string_entry(pfx, "Extended: 100G Base-LR4 or 25GBase-LR");
- 	if (id[36] == 0x4)
--		sprintf(value, "%s", "Extended: 100G Base-ER4 or 25GBase-ER");
-+		module_print_any_array_string_entry(pfx, "Extended: 100G Base-ER4 or 25GBase-ER");
- 	if (id[36] == 0x8)
--		sprintf(value, "%s",
--			"Extended: 100G ACC or 25GAUI C2M ACC with worst BER of 5x10^(-5)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G ACC or 25GAUI C2M ACC with worst BER of 5x10^(-5)");
- 	if (id[36] == 0xb)
--		sprintf(value, "%s",
--			"Extended: 100G Base-CR4 or 25G Base-CR CA-L");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G Base-CR4 or 25G Base-CR CA-L");
- 	if (id[36] == 0xc)
--		sprintf(value, "%s", "Extended: 25G Base-CR CA-S");
-+		module_print_any_array_string_entry(pfx, "Extended: 25G Base-CR CA-S");
- 	if (id[36] == 0xd)
--		sprintf(value, "%s", "Extended: 25G Base-CR CA-N");
-+		module_print_any_array_string_entry(pfx, "Extended: 25G Base-CR CA-N");
- 	if (id[36] == 0x16)
--		sprintf(value, "%s",
--			"Extended: 10Gbase-T with SFI electrical interface");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 10Gbase-T with SFI electrical interface");
- 	if (id[36] == 0x18)
--		sprintf(value, "%s",
--			"Extended: 100G AOC or 25GAUI C2M AOC with worst BER of 10^(-12)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G AOC or 25GAUI C2M AOC with worst BER of 10^(-12)");
- 	if (id[36] == 0x19)
--		sprintf(value, "%s",
--			"Extended: 100G ACC or 25GAUI C2M ACC with worst BER of 10^(-12)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G ACC or 25GAUI C2M ACC with worst BER of 10^(-12)");
- 	if (id[36] == 0x1a)
--		sprintf(value, "%s",
--			"Extended: 100GE-DWDM2 (DWDM transceiver using 2 wavelengths on a 1550 nm DWDM grid with a reach up to 80 km)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100GE-DWDM2 (DWDM transceiver using 2 wavelengths on a 1550 nm DWDM grid with a reach up to 80 km)");
- 	if (id[36] == 0x1b)
--		sprintf(value, "%s",
--			"Extended: 100G 1550nm WDM (4 wavelengths)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G 1550nm WDM (4 wavelengths)");
- 	if (id[36] == 0x1c)
--		sprintf(value, "%s", "Extended: 10Gbase-T Short Reach");
-+		module_print_any_array_string_entry(pfx, "Extended: 10Gbase-T Short Reach");
- 	if (id[36] == 0x1d)
--		sprintf(value, "%s", "Extended: 5GBASE-T");
-+		module_print_any_array_string_entry(pfx, "Extended: 5GBASE-T");
- 	if (id[36] == 0x1e)
--		sprintf(value, "%s", "Extended: 2.5GBASE-T");
-+		module_print_any_array_string_entry(pfx, "Extended: 2.5GBASE-T");
- 	if (id[36] == 0x1f)
--		sprintf(value, "%s", "Extended: 40G SWDM4");
-+		module_print_any_array_string_entry(pfx, "Extended: 40G SWDM4");
- 	if (id[36] == 0x20)
--		sprintf(value, "%s", "Extended: 100G SWDM4");
-+		module_print_any_array_string_entry(pfx, "Extended: 100G SWDM4");
- 	if (id[36] == 0x21)
--		sprintf(value, "%s", "Extended: 100G PAM4 BiDi");
-+		module_print_any_array_string_entry(pfx, "Extended: 100G PAM4 BiDi");
- 	if (id[36] == 0x22)
--		sprintf(value, "%s",
--			"Extended: 4WDM-10 MSA (10km version of 100G CWDM4 with same RS(528,514) FEC in host system)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 4WDM-10 MSA (10km version of 100G CWDM4 with same RS(528,514) FEC in host system)");
- 	if (id[36] == 0x23)
--		sprintf(value, "%s",
--			"Extended: 4WDM-20 MSA (20km version of 100GBASE-LR4 with RS(528,514) FEC in host system)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 4WDM-20 MSA (20km version of 100GBASE-LR4 with RS(528,514) FEC in host system)");
- 	if (id[36] == 0x24)
--		sprintf(value, "%s",
--			"Extended: 4WDM-40 MSA (40km reach with APD receiver and RS(528,514) FEC in host system)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 4WDM-40 MSA (40km reach with APD receiver and RS(528,514) FEC in host system)");
- 	if (id[36] == 0x25)
--		sprintf(value, "%s",
--			"Extended: 100GBASE-DR (clause 140), CAUI-4 (no FEC)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100GBASE-DR (clause 140), CAUI-4 (no FEC)");
- 	if (id[36] == 0x26)
--		sprintf(value, "%s",
--			"Extended: 100G-FR or 100GBASE-FR1 (clause 140), CAUI-4 (no FEC)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G-FR or 100GBASE-FR1 (clause 140), CAUI-4 (no FEC)");
- 	if (id[36] == 0x27)
--		sprintf(value, "%s",
--			"Extended: 100G-LR or 100GBASE-LR1 (clause 140), CAUI-4 (no FEC)");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 100G-LR or 100GBASE-LR1 (clause 140), CAUI-4 (no FEC)");
- 	if (id[36] == 0x30)
--		sprintf(value, "%s",
--			"Extended: Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
- 	if (id[36] == 0x31)
--		sprintf(value, "%s",
--			"Extended: Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 10-6 or below");
- 	if (id[36] == 0x32)
--		sprintf(value, "%s",
--			"Extended: Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: Active Copper Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
- 	if (id[36] == 0x33)
--		sprintf(value, "%s",
--			"Extended: Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: Active Optical Cable with 50GAUI, 100GAUI-2 or 200GAUI-4 C2M. Providing a worst BER of 2.6x10-4 for ACC, 10-5 for AUI, or below");
- 	if (id[36] == 0x40)
--		sprintf(value, "%s",
--			"Extended: 50GBASE-CR, 100GBASE-CR2, or 200GBASE-CR4");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 50GBASE-CR, 100GBASE-CR2, or 200GBASE-CR4");
- 	if (id[36] == 0x41)
--		sprintf(value, "%s",
--			"Extended: 50GBASE-SR, 100GBASE-SR2, or 200GBASE-SR4");
-+		module_print_any_array_string_entry(pfx,
-+						    "Extended: 50GBASE-SR, 100GBASE-SR2, or 200GBASE-SR4");
- 	if (id[36] == 0x42)
--		sprintf(value, "%s", "Extended: 50GBASE-FR or 200GBASE-DR4");
-+		module_print_any_array_string_entry(pfx, "Extended: 50GBASE-FR or 200GBASE-DR4");
- 	if (id[36] == 0x43)
--		sprintf(value, "%s", "Extended: 200GBASE-FR4");
-+		module_print_any_array_string_entry(pfx, "Extended: 200GBASE-FR4");
- 	if (id[36] == 0x44)
--		sprintf(value, "%s", "Extended: 200G 1550 nm PSM4");
-+		module_print_any_array_string_entry(pfx, "Extended: 200G 1550 nm PSM4");
- 	if (id[36] == 0x45)
--		sprintf(value, "%s", "Extended: 50GBASE-LR");
-+		module_print_any_array_string_entry(pfx, "Extended: 50GBASE-LR");
- 	if (id[36] == 0x46)
--		sprintf(value, "%s", "Extended: 200GBASE-LR4");
-+		module_print_any_array_string_entry(pfx, "Extended: 200GBASE-LR4");
- 	if (id[36] == 0x50)
--		sprintf(value, "%s", "Extended: 64GFC EA");
-+		module_print_any_array_string_entry(pfx, "Extended: 64GFC EA");
- 	if (id[36] == 0x51)
--		sprintf(value, "%s", "Extended: 64GFC SW");
-+		module_print_any_array_string_entry(pfx, "Extended: 64GFC SW");
- 	if (id[36] == 0x52)
--		sprintf(value, "%s", "Extended: 64GFC LW");
-+		module_print_any_array_string_entry(pfx, "Extended: 64GFC LW");
- 	if (id[36] == 0x53)
--		sprintf(value, "%s", "Extended: 128GFC EA");
-+		module_print_any_array_string_entry(pfx, "Extended: 128GFC EA");
- 	if (id[36] == 0x54)
--		sprintf(value, "%s", "Extended: 128GFC SW");
-+		module_print_any_array_string_entry(pfx, "Extended: 128GFC SW");
- 	if (id[36] == 0x55)
--		sprintf(value, "%s", "Extended: 128GFC LW");
-+		module_print_any_array_string_entry(pfx, "Extended: 128GFC LW");
  
--	if (value[0] != '\0')
--		module_print_any_string(pfx, value);
+-	module_print_any_string(pfx, value);
 +	if (is_json_context())
 +		close_json_array("");
  }
  
- static void sff8079_show_encoding(const __u8 *id)
+ static void sff8636_show_encoding(const struct sff8636_memory_map *map)
 -- 
 2.53.0
 
