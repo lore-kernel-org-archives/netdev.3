@@ -1,143 +1,140 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010007.outbound.protection.outlook.com [52.101.61.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E778378826;
-	Sun, 19 Jul 2026 06:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784444005; cv=fail; b=KXIu4WGsRVmEaOhaOoSU0EXmCybHXmhUyECbBeJNIeX7YPGothzB76mMfQRkv0fJ1xiIMPa++tqi5mw7slmB1d58L2pWHtRaHsfg6D093rWA/nB7CDClFvs2ytjMgpffOE+2ho72tsvkjRlyfvHeK+1UwJBsSicHORPiAZDNrHQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784444005; c=relaxed/simple;
-	bh=B62gAUeGMLHwFtYWso6PnvzG4FAjy9Xb4aQz25plFI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ShS+PTi/PPS2zuZQCBviQ9hJ81J1sldLS5yuLzL/MBKR0lTgWXpqeEQWWqoFEK5FeiRBIcxTbi4oeXSYCwt1Qg514wp5x3fEO+WM4ivvp6MhI7cony2KmjNUKLh+cLSxM40dMKWb+JfOVG0k5p7nBS6qjjL0jtqwKZ2drL6YmGE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qnjMD1Tw; arc=fail smtp.client-ip=52.101.61.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB619443
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 07:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784446531; cv=none; b=Te9H2CLxJzcN8euvNBPvJAeT01MLnGcMf7jszZhMqgZEDDZzWOur2rYz7IjGCsKpnM2CRU0aJcLYUnBiTh7AUiJHi5C7e8vj0wxlyIh5oQwB/H2imaCDiMw9nEpA0IsIhRZuAdmOtLXchcNmqsVJ96LNhfyc9KQeHamaZ0X90TQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784446531; c=relaxed/simple;
+	bh=4ecBlAcbYQf2cS+lrV+mfChuXK9dvIG474QSj/Aj9KA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B/lIAJXe0eHAa95u1DZtaadrA4otAy9/hyKTprD7MB4l4708YIct7jLL2xGJxEdW9hQeVg19Pvz5KN1Oerq2f3nhBH8oDyiSr/1ouPCwqxzX0bqfWgwDAZFutFQ2TV+t26QSQUexk4819nKCdekTHZhZku0qwnZDk6Q070AVIhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NZtUrjb9; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qnjMD1Tw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=soB7OD1FyxIEYJYKMYOdtdla1zEULEpo+AKy3pEmm52JocDEIrl6Fz0L09CHKBPmXdZdrY4149/L4bsbASPMjgFGzRw2OgHwDdVMYGcZE+FaARb3OpJMbK3gR9e6OE3cCBjEybJSoNpeyCvpplPEYCOEc1Vg+AFCQjrLkq8waXZ+GkSB0mFVlaLSoGQ6/FafymPr1Wgf9ykdA5OdnoAiQt3iughnS5n2mBikf84VCIkQZ/5UvsflBM5iYfxyHydsRJlPj3/p1QVU2CPfLrr3kfDafrH8y1Jsq3c33sBzDsg37UcplWabcymN9zGZzsA+hbvtm/a+L+plMsUX6dn0Gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B62gAUeGMLHwFtYWso6PnvzG4FAjy9Xb4aQz25plFI0=;
- b=gJTbJH7jQ0UNquezyF1gwoJVqHdaoiZzIsf8ZlEPe1aS0qy7OaBvUY0HtBX9wum+GlZ8yjCtoRXXJvZATPFze8fqy6P6j0S1ON4DPEfNPT+hH3of9RPBp4CddvixRWPwSIUV3cyRAXqSkV3igjDTvX+1Ue8Fk+BUfD+tCkn4msks7oyvjrvP90fhlgMZx1BimqI+uZHzdF9rXfVBhff2Zh4TIKyhYALGLtGmXGRlOLiMy5Yz974el/YWWS74D+DKNqYjCnyGNGh5aFJ9pMN7fEUUF4qspVQUSYl657hw/fF7VxfYQraDns46kIeqUBTcZjSWprtcz8NB+AcaGgUXww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B62gAUeGMLHwFtYWso6PnvzG4FAjy9Xb4aQz25plFI0=;
- b=qnjMD1TwGjkXx6JmN07I8bIgas0zeaGeBlXjR+1N8Ck92UcfpRuOg/5lInqyLjLNSgyJg+zXI71886LQXRXIy6Ixj5yZR78stZEYFRwQUcYNShJ54SrLwTpoytFw+OU54U+7AAmWLxZn/+wBRWRRz2i9p+13s4YXs0XEIwUcpqKIwPrGEOdz3pDgr9t/ece9503c2UWFe/BSI7kgFOUKtY+vOrWR46nBYTw2/PVmaj+1SLYUfU/GEqdfBqQixA0vG/ud4+ZHpoTt2jDwsYNtSTdP3oerZ7/l057YQuikEX8z/0LZcnGVPYdzQyQPM/PoJByc+YTd5srvg9BtkP6qTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by IA1PR12MB7757.namprd12.prod.outlook.com (2603:10b6:208:422::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.15; Sun, 19 Jul
- 2026 06:53:20 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0223.013; Sun, 19 Jul 2026
- 06:53:19 +0000
-Date: Sun, 19 Jul 2026 09:53:10 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Chris J Arges <carges@cloudflare.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] ipv6: report why a route was deleted in
- RTM_DELROUTE
-Message-ID: <20260719065310.GB1841238@shredder>
-References: <20260717222327.7398-1-sigefriedhyy@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717222327.7398-1-sigefriedhyy@gmail.com>
-X-ClientProxiedBy: FR4P281CA0025.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::20) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZtUrjb9"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4798bea72f9so4702541f8f.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 00:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784446529; x=1785051329; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Imm+2HdKzD/NJViR1a5kBtUfxMpdoo/1H9QI/inJ3Ik=;
+        b=NZtUrjb9VTAqAM3mVZxFrpIcPbVP9dDroJhTd1q4m6K8i7pqVRYqBSwG4SH8e5+E02
+         MuAlfAIm3Bm+GjLC6I+pOj6TgwirlACQ6rsrYNhtVnppEIhpudPHmpefKNfOXjVdEIpe
+         cv3mTIHQht+f/ZafvvpmHwujvlMexZV4EWoYlzkODeGt/HVUtv4Y6wKNbv0kE6+RS3nH
+         rOR/Vko9IJWEangB5ay0mog+RQtcPZGQXK1tBQ9hyA5NkVpwdLuZPDUlzXjvZsRXyzrM
+         dpb9EQU13mKdiQeuRqdaMkBiyj/8ipNr3OzRfapaz/CL63FsOfjufePWNP3fux43EVhl
+         XKuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784446529; x=1785051329;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Imm+2HdKzD/NJViR1a5kBtUfxMpdoo/1H9QI/inJ3Ik=;
+        b=N0/XwhNW2hAyvWZsDHXUPSZQ2YLLvuvXKe/TjBRWa+YSgREGekC7qsjYd794qlG4Gc
+         GIqgFwmYwh075bu/tqr6DZosVv06sWCPBO60uzA3bnvIUBKKxA5Xhu7VejXcJFd1dfaM
+         2jCz19opuBWb462xaCMbr2ut7YJ7SUZWSBCA9YNYt/RBtEAt0GL6Ah5xJI46niTedHYL
+         axCzaQ+XNc64OcOiQS8Kl+lJCzQj17wmnkzWberpX18E+XkBcMjkkXPCj9jcfPtbz2JT
+         zpDYTyz0IG+C4L9uFB45Bm3HzWZWKyaUC3vic8+b56sM3lw6kGsXAw2xBSIGWULEIzC+
+         2Okw==
+X-Forwarded-Encrypted: i=1; AHgh+RrkmRnoaBRe8eZzncATYqaw8OJChgFPgfjQeiITHdoLgpL3m1K2L3pyru/vLrd+pSHGjP0psRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKLm8eKWrTelMweK/GlhmZhdI8+NaouRUV3SYkb8+R3aU62nFi
+	/PfznM+ViioX2jxJsbBbkmjswwhBLNXVE5VpCuiMPRPg9imif4a3uag5
+X-Gm-Gg: AfdE7ckm9+HQZ/O4rhcZvhm+NDrwUfSUOyIbRQwQVGT1p6z+ZfHy/0f8MGYBRyOaQzJ
+	VKrgTze75Etw0XbKGAhQLHlQ7qdpmZygDQMvngSms5AwZVTBwQnKDmWFTlvXqTpphgb0E6xheGO
+	rl+4m71sPy3ZgyAIeUTdkH2HHEuUQB7TDBWa6K+RkCQc19w0cFcgZZFI5S6Bl2HoE0mFH1AtYRt
+	fO2HvEXxYP2AFvhNGkpLa9F2uzdpOZGaCV6kW8pCVoZDdNIiYYhI64p1bgy7jRyhxrPdpcLvrGY
+	PXIj5GNb44nB4PbOYk2EILp1UGucSyoCZdZIL/9nDmKhMGpRBeVUbwLvqA6JmUxtzGKZgdiobkA
+	Xz4LaYS0dCzNopYb9fw1V5qJSXRD1xP37rwQMdn4P8/3KL2TXF7Z7OnpcdoHhsZFSlQICWKDyWK
+	BgfFAXP9pCugesoBdXXOyqMrgGwJAeIAvayI4QosPDNHv1zoZmR1kVM90/mRTRHyU=
+X-Received: by 2002:a5d:5d82:0:b0:472:aaba:faed with SMTP id ffacd0b85a97d-47f6232c345mr10116308f8f.31.1784446528361;
+        Sun, 19 Jul 2026 00:35:28 -0700 (PDT)
+Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs693195.centertel.pl. [5.184.251.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f69e5eff1sm11116540f8f.19.2026.07.19.00.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 00:35:27 -0700 (PDT)
+From: Stanislaw <kuncy7@gmail.com>
+To: Johan Alvarado <contact@c127.dev>,
+	Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Alvin Sipraga <alsi@bang-olufsen.dk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII support for RTL8367S
+Date: Sun, 19 Jul 2026 09:35:19 +0200
+Message-ID: <20260719073519.10947-1-kuncy7@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJq09z4TX=LFOX7iq2g_JwkjtLM1U_Q=aYvAkd123LgOwZNyUw@mail.gmail.com>
+References: <CAJq09z4TX=LFOX7iq2g_JwkjtLM1U_Q=aYvAkd123LgOwZNyUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|IA1PR12MB7757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90cb03ff-c21f-4caf-6fad-08dee5626ace
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|10067099003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	dSwASwOtgKiue++nKbvFBoMtC035NJPUFsFEQnPy3MVT9XNUiKvGzapInMJuzOVwJDzuAaUZZbh8YrAVCKSnt8Jwt76nt/vz5Em0EJQ382kvuaVaSBTSsicMQeau3qKep22js3N4ndzw3nZVI6W3i3S5Udy13S0NSvLypEkd4XhZ1PqxQ6z3ZrA5c4bpxjPioqDLm7FNRKojr0Lnvk9zdBVpr35S7tkIyy3w9SHLZdcK7HKpXv69xOqPBUuPRox9VVa2wFyb/RBhappbtoIpecQrMVW9h+Hfef5t222zX09a3K7F1ALz+GiaCmUNNKzZVyfvvLzgalh/n4KjnzmQep+FwOuGwJS8qG946rC0qAoY6c7R+N9YCnV3pQvyk/kbdAEjgiE14tFcJGpyvAoI0hCnBOSlcRJSyMGnvi3Ecab+pk0/mS1B45FRGj3WW/it2WMNQNZJ3EfGoPPeMwdLKXhJ5bprPDjw1d56KdE7srhgvAF/kQronRVvlgBJqGdlDcM180A+h+bateZVsqtVWXXZSETkSzNxZx24Vj26NlsgBTG+dfEz8EcjFwnj6lok70IfQwm4zB56YvgemAks9w5EUGb9/D3+795usqhajeq6zXrZSCR1HrEaqDCy/zbpHVTrtquC3hjvkKUnG90RIGfGU6pJEU0cmy/jbvzHXTw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1N7Gmgpnqb+LA5ivBb/kQfJN4APGxJgKxv5UlbA1sUwcQxlyw1YrBVlZm4jj?=
- =?us-ascii?Q?8WGSf1vUGKIq/VFPMxPd6xi9o7zrK0mUztxG8Wu3+y0YvTMmZD1Vm7QwkF54?=
- =?us-ascii?Q?aa7ABBTFGl/U4O1kq4WVKCi46MAz/egpyaqN2He5Ssa1BCPgdvkXvscM4Ymf?=
- =?us-ascii?Q?m7fh4tugW9Pdj8Qw2j5/OjYUj8R4QkrTMlPEhKp+DKLPL3J8ayKU3PHewalC?=
- =?us-ascii?Q?wTJ1qZfjn1ukRzVSoQRAuuHf8vL8kVH8yH9B4PkQnvKO8IIl+myjJ0S7Lcu6?=
- =?us-ascii?Q?+4cWlShR1HsNx6NRWfj+nvcTJCaFzifhQDBId5yPq/U7h3Cut+Hgp34dgpga?=
- =?us-ascii?Q?QK+JRyDJQvy9YqDZha1xZYurjrhp0RZr5YL7e4JaUL9FTVRM6igbvRA4t3Pz?=
- =?us-ascii?Q?7hhRMtr89wFq8WqUZUHpEnqmbrLQ3aUN/3wZ6F+Sb7qnlf6VUflOzRpTiwED?=
- =?us-ascii?Q?bjq/YrBQ18jJkYFgJLREyL95MfN9dKoLHUKimhIcIBGWDOMMA+c4O696aP76?=
- =?us-ascii?Q?4LzI7QX16nXVDvvZ61U7XqNRYOL+K03gzv8pL2Mqcl/cqI4CmbEJAK4+UnRk?=
- =?us-ascii?Q?e8kwnJKgDfvY0LFXGH/1aAWTCZ9yOkZM1E0XZK2zO3SXDOX/w29aerdDoQC4?=
- =?us-ascii?Q?JQOUg1SEAvyYI7+hPOMgUxFaK/7NCapUQf0MQ/0wm3KlNhlUW31HcSJBsJUd?=
- =?us-ascii?Q?fQ54Vjw1+6GtrzXw3P+OYhg6G7RwHauAWpBnvt3QO7RhW71bFVkX/s+LTZln?=
- =?us-ascii?Q?apXlP1eFelX7t+2gGy8gDM36msV0BurE1R0u738ErnuwzceQL/1ilh66B7XH?=
- =?us-ascii?Q?8lVkB832bhdW/htQ7YEsOX+mkNExTs6Cd+FEJqSzIfm3Bv3zdj3KT6A8yu6Y?=
- =?us-ascii?Q?bd1oK0Vf2GxkrCvhmdx280N1XHXj36mRB9xK5goYJLbAP637tAsKJDCVnmSF?=
- =?us-ascii?Q?CUB6r0Cc1+jEzzMB+HaHxuliLzpISTRhEJjFuNpPF2pKa0YmNarE66TVILU9?=
- =?us-ascii?Q?5qxAwONEVLMVGqwcwE8v0VH76R/fgIAZIwKZNmpsMYd0RcztiOYhd+lmLCYg?=
- =?us-ascii?Q?7XDMDWDodNRq0bMOVlvi3R1cySJAQfP88FxT2KOYQ5W6gNSlF6fPjT8iPG40?=
- =?us-ascii?Q?3+9r02gKxF+9nc0Q7kudTroSI8TOBdwizHHRK3H78aVGQ2oGNAsW+AP7R955?=
- =?us-ascii?Q?ED2nu0kYKMgx3qYGeMEFghVyEDPsuRRsbCl2n+7Kcpg3YpsNsTatrijT1X3u?=
- =?us-ascii?Q?rX+0n0mETtDFrWZIDClKsgGqF3/LQDG2gQJu9HUd+HCtY0DFPoe6kqYvivF5?=
- =?us-ascii?Q?+li830K7EA+Zbc77vH3qWtuythvUnLC8pRX4XZirrphnpuPPBK1dXYEKARLa?=
- =?us-ascii?Q?iErNTSCn+AUhHSbtYA8yvN1RY8V2If57klQJNUN0TZJg7ZqhxkQqLAfN/uA1?=
- =?us-ascii?Q?R9CV0KA5PyxshTEBd1vQ8fcykPKS9P6RWdphHjtEgjyZi+6TRqV3gVJh3I9A?=
- =?us-ascii?Q?HOiIB+gU6IAWkZMQ/6y9r2BmrJ0MRUbKM3TA1zCDcp6cvsOA9/yxylFnOhhy?=
- =?us-ascii?Q?3S7LVNvCA1csiqoEcnTgcPiF9uBJ2ArnsdReM1ncBrrjpowHlPU8AG1pMLyC?=
- =?us-ascii?Q?IEr04LIcneoJoSButLzpOObnGha8D2ZqQ8Sy/GzmHEBZy4/rt36IPYZ4aqMO?=
- =?us-ascii?Q?683lGgNksADP2EstiZygG2X9bqpZvTRAd01wJVBjASipPTcJ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90cb03ff-c21f-4caf-6fad-08dee5626ace
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2026 06:53:19.6264
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NbsRjjEfMrYtv53RM4FSK5iC1Km+efO4q0cd287NiraaVaJBBgodeRVi3DOK3U8aXKB4R1DN/pqeTMTW3oBmEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7757
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jul 18, 2026 at 07:23:25AM +0900, Yuyang Huang wrote:
-> When the kernel deletes an IPv6 route on its own, the RTM_DELROUTE
-> notification does not say why. User space cannot tell a route that
-> expired from one the router explicitly withdrew, yet the two call for
-> different reactions: an expired RA route means the router failed to
-> refresh it in time, which points at a misconfigured or unreliable
-> router and may warrant action such as disabling IPv6 on that network,
-> while a zero-lifetime withdrawal is normal, RFC-compliant operation.
+Hi Luiz,
 
-Please expand more on the motivation: Which user space application is
-going to consume this information and what is it going to do with it?
+Two updates from the bench: last night's cold-soak result, and a
+correction about the reset GPIO.
 
-Also, Sashiko has some valid comments. Please take a look.
+1) A 3-minute pre-init wait PREVENTS the bad state.
+
+Last night's image carried a plain msleep(180000) at the top of
+rtl83xx_probe(), before anything touches the chip - and nothing else
+on top of the v6 series (no busy-wait, no 0x060C writes). After ~10 h
+powered off, the first init landed clean for the first time: 0 FCS
+errors on the SerDes CPU port, 0 drop events, DHCP lease right away,
+0% loss on the trunk. Every comparable soak before (same hardware,
+overnight off, no wait) came up degraded. Single morning so far - I
+will repeat it - but this is the first thing that has *prevented* the
+state rather than cured it after the fact.
+
+During those 180 s the chip is powered and out of its (bus-level)
+reset, just untouched by the driver. So your time-vs-state
+discriminator leans "time": the very same init sequence that lands
+bad when run at t=3.5 s lands clean when run at t=187 s. It does not
+fully separate "the switch needs time" from "something else on the
+board needs time", but nothing else shows any distress at t=3.5 s -
+the SoC-side MAC/PCS come up fine, and even in the bad state the
+switch's transmit direction is byte-exact clean.
+
+2) Correction: the realtek driver performs NO hard reset here.
+
+I mis-stated this earlier: reset-gpios on this board sits on the MDIO
+*bus* node (the IPQ5018 MDIO bus driver toggles it once at bus init),
+not on the switch node. rtl83xx_probe() therefore sees neither
+reset_ctl nor a reset gpio and the hard-reset branch never runs - I
+confirmed it with a print inside that branch. So the curing re-probe
+is a pure *soft* full init (detect + complete setup/jam-table
+sequence, the only chip reset being the soft one in setup), no pin
+involved. The "double reset in probe" scenario does not apply on this
+board at all.
+
+3) Next steps, along your suggestions:
+
+- Bisect the required off-time with the no-wait image, to get
+  reproductions on demand instead of one per night.
+- On the next on-demand bad state: full register dump via regmap
+  debugfs, bad state vs. post-cure, plus the reset-bit isolation.
+- Then bisect the wait itself (180 s -> 90 -> 45 ...) to find the
+  threshold - that number should hint at which physical process we
+  are waiting out.
+
+Best regards,
+Stanislaw
