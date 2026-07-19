@@ -1,164 +1,304 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C143A381D
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 17:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227E73AEB4E;
+	Sun, 19 Jul 2026 17:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784483456; cv=none; b=oUWtaYAgWMD8p2OiSsCE9pBFL7K8GJae/S2ThVfetjzfGzKGfbJARCjU0OFzlvbd3PWGWU3Umqmvq1u3q803xn9AIx93t8GX/xZAWfATSkhgS9qaudU8UV45pbvQ0Tm46g8SVRPKMRidNxUTNExGqjRHWZw//HWIGGCqSPeF294=
+	t=1784483617; cv=none; b=PJntIAjL0I7zxbKD9xS5dnkiioY16O8YxwmXa3FjCLkYsaV27LyNYSgJK/tXAtvfX9mEwkM1owZ7LOOZXyzJt1wknEY4tPu17RZpHOEkGO/r9zizGWCfFBlew/s7/bifxUOLuseU9D11Gt0ce0o8NJem2ND4VIoMajnvpZfyA2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784483456; c=relaxed/simple;
-	bh=1pN32S2baW0QTY05fmozR5sB5cIXnuaBLTrX1Su/s9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AFbB3qfC+yFyaMvmypo+tVHD4TQw0oG9aZ6Rq6bNtuGsKmhYpa+e/crca48juEQYWGTrQqJY+iOIrujFdEq/SoQ+7MfTdnqEikcgJn1IbFh5kAy3xbLlizI9fbUqHkEzIR6aCrqx9qY1ZAxYmW0gFOMf3XQyqFFXs5GQVNDhOYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvJtKtV5; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvJtKtV5"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so9031189a91.0
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:50:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784483454; x=1785088254; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W6kSz/qjXQ0gTFAPWdJ8WtRiGAzWRY2MZwa0jKAIf2A=;
-        b=bvJtKtV5VxaBWBvksjALdqenXnw30sZXqrjneIx2V5yAO6+lBV9ej+jDdbUnobx7zB
-         kn35Dwiiv9UORrHfTZ71zX+xjIvGvFmQecbC6v+zBGyFZpRrtvdXhGP+F6dvl9vqpAqu
-         zdSbEs5263U0Ni3wQ2x8+xIU6MZZz53L/RbcuIAnRlHgAEI07WJy5W9ifhU4dMfwTxx0
-         PwvRBO+uOBzWfQRO2MrOvPd4I4xJrKqWhkkKBrPn6NhELLeF05qsOsBlupQigKog7BhE
-         NGPLEOpKOh2ucJGIhQH2zT26yPWDbnzKeE3rT3jbXPVAOhgdkmfDq5eLP8zP0ybR6q0C
-         3Vfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784483454; x=1785088254;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W6kSz/qjXQ0gTFAPWdJ8WtRiGAzWRY2MZwa0jKAIf2A=;
-        b=cQL/8MlLgbdwJCyO62OUGsXzB4PTbJlIQ9UPkLr5KvRn/iXjHxs2XYw22MlTbloY6i
-         KAbpQhK96exq/5omHP3pthLQFcQ4bp40BtuX1DEP79AmopxxnHH71BSXG+wZjabmnw5o
-         S0QizobFBwa5AeVIc8MT/1zVjJkHBJ3kfZQWmF7XWRR2KGJfAx7r+Zd3rr8YLmbACCPb
-         e45iGlZ027ndnEPi3r9QZlSUvQCTsvdqIuEcrDKr/svcwiUqWkiDLR+Wt2bTtuwfbf1S
-         GhojEdcen0CD8KI7zUhvSX65tVPxBrch5q6umGFJn9nR5slHvTHvHtchOB58qbf1xa5E
-         iDrw==
-X-Forwarded-Encrypted: i=1; AHgh+RrzGw39zPPJBlGNOeo+Od/SnDCA6JjdWHTXLFIIlpkle1ChYep2oAvOYz4/z+VfO8oFYw1h9Qw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCNI0+prKhl77bwX1Wt6u2zysKe96rhTk5CyG0jmiza+NPYMxe
-	u0G1xG9RyZdkXlQ5Zv8k6bURwDQY8fAKV+0D/KBEuGOTkUYt12eAV5y0
-X-Gm-Gg: AfdE7cly9H9/T3m/rR4EKkCjbrSz6ka1s6ebxdpuDqFlPoqDS1cndlnIdjf8C1uvySg
-	rGcGBt7sH41q+Or91Es+zIwX2fwHYvZv7Ncm1XqdevepsI1LJzfUl0x7Uw8SqkJ5MUNltLul7Bc
-	E6ZVUghd9+or8NPAG4p9M+L/CM8I01Uocja330LLY6+Y3Kn72Dtgba+10cA88jElibOHAraF+cW
-	fEhv+qtjIL+3600lW8iMYH0Lvxe8Heo4jUVCsIPh2ysUTB16nGenolg451F7yJJfx4Z6YyWCxKZ
-	mfcZEMVQJ3ec7cfvIprh2LcWS/lWtj5Y7+r2kDZTwJYBWOto79WreXzgwnuVn2W/rkBnntoJoB8
-	M/qC2h1wq3YVwlpralL3y/9ag3VVQstAQxu2R1Hd3aP5sFRX3vhDUjCIlRZ8P2k2/s7qWdlqy7k
-	3CM2m/g88BA7W3duIyEh2pPQFeEBYAoyvEqObUgbWPC5VhmvQ=
-X-Received: by 2002:a17:90a:d40f:b0:38e:542:6485 with SMTP id 98e67ed59e1d1-38e4b4461e1mr11236442a91.12.1784483454468;
-        Sun, 19 Jul 2026 10:50:54 -0700 (PDT)
-Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce29c2a48sm20625345c88.2.2026.07.19.10.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 10:50:53 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1784483617; c=relaxed/simple;
+	bh=cMJ3yKwSNW/28n+HOMONJRMCbGyr3HT0twgjBcsODe4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dxRj/3Bk01nw+jAJhrSkNbvFJrnrFKfv6HpPaKYxWci78fagNOOMtAJh1HeZck/i7rlFOajWUGXa45pAM/ZzvqPQVbFbH8evw8hFes/dx4i1FqL/P6TIXDjoQ8mvZj9gHuKx7yyPhOa0WflOHad8MeYkdke4O/wCr7g1M06w/jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wlVhf-000000004nl-0Yit;
+	Sun, 19 Jul 2026 17:53:27 +0000
+Date: Sun, 19 Jul 2026 18:53:22 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] netdevsim: tc: serialize access to nsim_block_cb_list
-Date: Sun, 19 Jul 2026 10:50:29 -0700
-Message-ID: <20260719175028.988301-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net-next v4 1/8] net: dsa: mt7530: move MDIO bus locking into
+ regmap
+Message-ID: <4b7e83ce22e4ba231e861ad59a97a002df566a9c.1784481922.git.daniel@makrotopia.org>
+References: <cover.1784481922.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1784481922.git.daniel@makrotopia.org>
 
-nsim_setup_tc() passes a single global nsim_block_cb_list, shared by every
-netdevsim device, to flow_block_cb_setup_simple(). That helper does
-list_add_tail()/list_del() on the list on block bind/unbind and walks it
-in flow_block_cb_is_busy(); it takes no lock of its own and relies on the
-caller for serialization.
+The switch register regmap was created with .disable_locking = true,
+relying on callers to manually lock the MDIO bus. Move the locking
+into the regmap using .lock/.unlock callbacks, matching the PCS
+regmaps that already do this. This allows any code path reaching the
+regmap to be automatically protected.
 
-The tc control path calls ndo_setup_tc(TC_SETUP_BLOCK) under rtnl, but the
-nf_tables hardware offload path reaches it under the per-netns nftables
-commit_mutex only. Two nft transactions committing offload chains from
-different netns thus run flow_block_cb_setup_simple() on the same list
-concurrently, corrupting it and freeing a flow_block_cb that the other CPU
-still walks:
+With regmap handling bus locking, the manual mt7530_mutex_lock/unlock
+wrappers in mt7530_write(), _mt7530_read(), mt7530_rmw() and
+mt7530_port_change_mtu() become redundant and are removed.
 
- list_del corruption. prev->next should be ffff88801f18ff00, but was ffff88801de82b00.
- kernel BUG at lib/list_debug.c:62!
- RIP: 0010:__list_del_entry_valid_or_report (lib/list_debug.c:62)
-  flow_block_cb_setup_simple (net/core/flow_offload.c:369)
-  nsim_setup_tc (drivers/net/netdevsim/tc.c)
-  nft_block_offload_cmd (net/netfilter/nf_tables_offload.c:394)
-  nft_flow_rule_offload_commit (net/netfilter/nf_tables_offload.c:585)
-  nf_tables_commit (net/netfilter/nf_tables_api.c:10490)
-  nfnetlink_rcv_batch (net/netfilter/nfnetlink.c:577)
-  nfnetlink_rcv (net/netfilter/nfnetlink.c:649)
-  netlink_unicast (net/netlink/af_netlink.c:1314)
-  netlink_sendmsg (net/netlink/af_netlink.c:1889)
-  __sys_sendto (net/socket.c:729)
+The MT7531 indirect PHY access functions need serialization of their
+multi-step register sequences, but no longer need to hold bus->mdio_lock
+across the whole operation. Switch them to reg_mutex.
 
-With KASAN the same race is reported as a slab-use-after-free read of the
-freed flow_block_cb (kmalloc-192) in flow_block_cb_setup_simple(). The
-trace above is from a 6.12.y reproduction.
+core_write()/core_rmw() are the only remaining callers of
+mt7530_mutex_lock(). They access TRGMII core PHY registers via the
+clause 22 MMD indirect protocol -- a separate register space that
+bypasses regmap and needs manual bus->mdio_lock protection.
 
-Serialize the list with a mutex. ndo_setup_tc(TC_SETUP_BLOCK) always runs
-in process context, so sleeping on the mutex is fine.
+Generated using the following semantic patch:
 
-Fixes: 955bcb6ea0df ("drivers: net: use flow block API")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+// Remove mt7530_mutex_lock/unlock around single regmap-based calls.
+@@
+expression priv, reg, val;
+@@
+ {
+-	mt7530_mutex_lock(priv);
+-
+ 	mt7530_mii_write(priv, reg, val);
+-
+-	mt7530_mutex_unlock(priv);
+ }
+
+@@
+expression priv, reg, mask, set;
+@@
+ {
+-	mt7530_mutex_lock(priv);
+-
+ 	regmap_update_bits(priv->regmap, reg, mask, set);
+-
+-	mt7530_mutex_unlock(priv);
+ }
+
+@@
+expression p;
+identifier val;
+@@
+ {
+-	u32 val;
+-	mt7530_mutex_lock(p->priv);
+-	val = mt7530_mii_read(p->priv, p->reg);
+-	mt7530_mutex_unlock(p->priv);
+-	return val;
++	return mt7530_mii_read(p->priv, p->reg);
+ }
+
+@@
+expression priv;
+@@
+-	mt7530_mutex_lock(priv);
+ 	val = mt7530_mii_read(priv, MT7530_GMACCR);
+ 	...
+ 	mt7530_mii_write(priv, MT7530_GMACCR, val);
+-	mt7530_mutex_unlock(priv);
+
+@@
+expression priv, port;
+@@
+ 	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
+-	mt7530_mutex_lock(priv);
++	mutex_lock(&priv->reg_mutex);
+
+@@
+expression priv;
+@@
+ out:
+-	mt7530_mutex_unlock(priv);
++	mutex_unlock(&priv->reg_mutex);
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/net/netdevsim/tc.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mt7530-mdio.c |  9 ++++++---
+ drivers/net/dsa/mt7530.c      | 38 +++++++++--------------------------
+ 2 files changed, 15 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/netdevsim/tc.c b/drivers/net/netdevsim/tc.c
-index a415e02a6df1..30dd7f924b71 100644
---- a/drivers/net/netdevsim/tc.c
-+++ b/drivers/net/netdevsim/tc.c
-@@ -72,11 +72,13 @@ static int nsim_setup_tc_ets(struct net_device *dev,
+diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mt7530-mdio.c
+index 11ea924a9f35..f7c8eeb27211 100644
+--- a/drivers/net/dsa/mt7530-mdio.c
++++ b/drivers/net/dsa/mt7530-mdio.c
+@@ -141,12 +141,14 @@ static const struct regmap_config regmap_config = {
+ 	.val_bits = 32,
+ 	.reg_stride = 4,
+ 	.max_register = MT7530_CREV,
+-	.disable_locking = true,
++	.lock = mt7530_mdio_regmap_lock,
++	.unlock = mt7530_mdio_regmap_unlock,
+ };
+ 
+ static int
+ mt7530_probe(struct mdio_device *mdiodev)
+ {
++	struct regmap_config rc = regmap_config;
+ 	struct mt7530_priv *priv;
+ 	struct device_node *dn;
+ 	int ret;
+@@ -200,8 +202,9 @@ mt7530_probe(struct mdio_device *mdiodev)
+ 			return PTR_ERR(priv->io_pwr);
+ 	}
+ 
+-	priv->regmap = devm_regmap_init(priv->dev, &mt7530_regmap_bus, priv,
+-					&regmap_config);
++	rc.lock_arg = &priv->bus->mdio_lock;
++	priv->regmap = devm_regmap_init(priv->dev, &mt7530_regmap_bus,
++					priv, &rc);
+ 	if (IS_ERR(priv->regmap))
+ 		return PTR_ERR(priv->regmap);
+ 
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 3c2a3029b10c..5f56a423b147 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -184,11 +184,7 @@ mt7530_mii_read(struct mt7530_priv *priv, u32 reg)
+ static void
+ mt7530_write(struct mt7530_priv *priv, u32 reg, u32 val)
+ {
+-	mt7530_mutex_lock(priv);
+-
+ 	mt7530_mii_write(priv, reg, val);
+-
+-	mt7530_mutex_unlock(priv);
  }
  
- static LIST_HEAD(nsim_block_cb_list);
-+static DEFINE_MUTEX(nsim_block_cb_lock);
- 
- int
- nsim_setup_tc(struct net_device *dev, enum tc_setup_type type, void *type_data)
+ static u32
+@@ -200,15 +196,7 @@ _mt7530_unlocked_read(struct mt7530_dummy_poll *p)
+ static u32
+ _mt7530_read(struct mt7530_dummy_poll *p)
  {
- 	struct netdevsim *ns = netdev_priv(dev);
-+	int err;
+-	u32 val;
+-
+-	mt7530_mutex_lock(p->priv);
+-
+-	val = mt7530_mii_read(p->priv, p->reg);
+-
+-	mt7530_mutex_unlock(p->priv);
+-
+-	return val;
++	return mt7530_mii_read(p->priv, p->reg);
+ }
  
- 	switch (type) {
- 	case TC_SETUP_QDISC_TAPRIO:
-@@ -84,10 +86,13 @@ nsim_setup_tc(struct net_device *dev, enum tc_setup_type type, void *type_data)
- 	case TC_SETUP_QDISC_ETS:
- 		return nsim_setup_tc_ets(dev, type_data);
- 	case TC_SETUP_BLOCK:
--		return flow_block_cb_setup_simple(type_data,
--						  &nsim_block_cb_list,
--						  nsim_setup_tc_block_cb,
--						  ns, ns, true);
-+		mutex_lock(&nsim_block_cb_lock);
-+		err = flow_block_cb_setup_simple(type_data,
-+						 &nsim_block_cb_list,
-+						 nsim_setup_tc_block_cb,
-+						 ns, ns, true);
-+		mutex_unlock(&nsim_block_cb_lock);
-+		return err;
- 	case TC_SETUP_FT:
+ static u32
+@@ -224,11 +212,7 @@ static void
+ mt7530_rmw(struct mt7530_priv *priv, u32 reg,
+ 	   u32 mask, u32 set)
+ {
+-	mt7530_mutex_lock(priv);
+-
+ 	regmap_update_bits(priv->regmap, reg, mask, set);
+-
+-	mt7530_mutex_unlock(priv);
+ }
+ 
+ static void
+@@ -555,7 +539,7 @@ mt7531_ind_c45_phy_read(struct mt7530_priv *priv, int port, int devad,
+ 
+ 	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
+ 
+-	mt7530_mutex_lock(priv);
++	mutex_lock(&priv->reg_mutex);
+ 
+ 	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
+ 				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
+@@ -588,7 +572,7 @@ mt7531_ind_c45_phy_read(struct mt7530_priv *priv, int port, int devad,
+ 
+ 	ret = val & MT7531_MDIO_RW_DATA_MASK;
+ out:
+-	mt7530_mutex_unlock(priv);
++	mutex_unlock(&priv->reg_mutex);
+ 
+ 	return ret;
+ }
+@@ -603,7 +587,7 @@ mt7531_ind_c45_phy_write(struct mt7530_priv *priv, int port, int devad,
+ 
+ 	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
+ 
+-	mt7530_mutex_lock(priv);
++	mutex_lock(&priv->reg_mutex);
+ 
+ 	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
+ 				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
+@@ -635,7 +619,7 @@ mt7531_ind_c45_phy_write(struct mt7530_priv *priv, int port, int devad,
+ 	}
+ 
+ out:
+-	mt7530_mutex_unlock(priv);
++	mutex_unlock(&priv->reg_mutex);
+ 
+ 	return ret;
+ }
+@@ -649,7 +633,7 @@ mt7531_ind_c22_phy_read(struct mt7530_priv *priv, int port, int regnum)
+ 
+ 	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
+ 
+-	mt7530_mutex_lock(priv);
++	mutex_lock(&priv->reg_mutex);
+ 
+ 	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, val,
+ 				 !(val & MT7531_PHY_ACS_ST), 20, 100000);
+@@ -672,7 +656,7 @@ mt7531_ind_c22_phy_read(struct mt7530_priv *priv, int port, int regnum)
+ 
+ 	ret = val & MT7531_MDIO_RW_DATA_MASK;
+ out:
+-	mt7530_mutex_unlock(priv);
++	mutex_unlock(&priv->reg_mutex);
+ 
+ 	return ret;
+ }
+@@ -687,7 +671,7 @@ mt7531_ind_c22_phy_write(struct mt7530_priv *priv, int port, int regnum,
+ 
+ 	INIT_MT7530_DUMMY_POLL(&p, priv, MT7531_PHY_IAC);
+ 
+-	mt7530_mutex_lock(priv);
++	mutex_lock(&priv->reg_mutex);
+ 
+ 	ret = readx_poll_timeout(_mt7530_unlocked_read, &p, reg,
+ 				 !(reg & MT7531_PHY_ACS_ST), 20, 100000);
+@@ -709,7 +693,7 @@ mt7531_ind_c22_phy_write(struct mt7530_priv *priv, int port, int regnum,
+ 	}
+ 
+ out:
+-	mt7530_mutex_unlock(priv);
++	mutex_unlock(&priv->reg_mutex);
+ 
+ 	return ret;
+ }
+@@ -1444,8 +1428,6 @@ mt7530_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ 	if (!dsa_is_cpu_port(ds, port))
  		return 0;
- 	default:
+ 
+-	mt7530_mutex_lock(priv);
+-
+ 	val = mt7530_mii_read(priv, MT7530_GMACCR);
+ 	val &= ~MAX_RX_PKT_LEN_MASK;
+ 
+@@ -1465,8 +1447,6 @@ mt7530_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ 
+ 	mt7530_mii_write(priv, MT7530_GMACCR, val);
+ 
+-	mt7530_mutex_unlock(priv);
+-
+ 	return 0;
+ }
+ 
 -- 
-2.43.0
-
+2.55.0
