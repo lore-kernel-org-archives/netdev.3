@@ -1,39 +1,39 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DF02DE70D;
-	Sun, 19 Jul 2026 10:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D338C379C5D;
+	Sun, 19 Jul 2026 10:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784457583; cv=none; b=gTUW+p3wuUSu99OlszF9ZdHgwAJRPDcX8/z/Bp7TKTPXdGSgg0pg58m4ekAmJu7nesJaZU2Rb03mJRNsMd7/WkmfvbIlOKvGCr4ZH8tBaDCnf2Kdr7YjJk538LxuE2FyBbVyx2k32N/eXWLVDythD2KtB0yxQY5Nc9QXEs+0GMk=
+	t=1784457641; cv=none; b=pWxE3RelKysgj8LXJlcJldmVgP3ANzkOpLVh6+A8yYgO2SOCmX/1tt7mGJuzAtjX9CpQUj+d//960ZQNAfnOjCFAoGzzwi3H9NQWU4H4/Ws6zJm31LzIbq+7gzZnSzsKJGOSmaC8wg/Y5Rhhf1HdwrIX8p2AIbFzm1Q2vVPlIr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784457583; c=relaxed/simple;
-	bh=IkdW1OOeWRNjr0aosTh3TY88VsFRtra7Q28UaB+1Njw=;
+	s=arc-20240116; t=1784457641; c=relaxed/simple;
+	bh=pW3FjyuN5ele+CIlVgZFWovV1GW1r4TOCxjJFxSoIPc=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ANhvm8g9knIEFnsnsL4z60mDJvLuW4xNMR3wwHjj94TYMiKgPUr3q0iiBNyf4fPGX2Zq97YWTJ2GOqjiBWtL1mzg8T3qAb8bp+6uPumNSeZPca4xAVl/5ird7cQgkfajxAiA/JUVInuQwSTGDJS+HH9JdGcHti6OXPX3h3/zXOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=M8pSuMZl; arc=none smtp.client-ip=194.13.80.246
+	 Message-ID:Content-Type; b=acI2hgQ7uTYZgPnIl1SwSLCvnVHAnCiUqCxiXxA+GB+SIyh+p7oRDnF+AJhpBEmRyl343f84ApBsViIHhUeHIDC0t2momNN6rNBA7Vevz2tWMfzWilAbkHWD5eE9M3hG+7DsYLwC2U6UQpYIz+qUQa921XH3HJiWmCOgBr3jiq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=jITSgT7C; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="M8pSuMZl"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E8EFA47FA;
-	Sun, 19 Jul 2026 12:39:39 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="jITSgT7C"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB8C4A47FE;
+	Sun, 19 Jul 2026 12:40:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1784457579; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1784457637; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=rud6A6l9YqEn6ZD31SAFWbw2qkblUeelenmP91fI9N4=;
-	b=M8pSuMZlsXjUCktaAY1flnimWPJrxZN4gv+iVhPqQf/haqNgp307ERRR+WRIa0OsgnF+Zq
-	1yPzQVdB8UoVyxa07P13xA1kIllvJYS6EVxK0VKAHDSwKal0r10rI4IubBGF8jyyGFdi6S
-	MTjkV5+rnRSgKPo8s/xIO2ywxBmug8lwEwDHpgBQ3xFBaTF8IQlca9iFnFSqGijwJYjAAl
-	SM/JCUmBfPcNKJobzXtgyOzE9ngb309gyZzFwExs7BpSysJMm7IUon88cIN5SnPFK4eup5
-	4FyUmeTDqZAv5a1YkfRV04icSsXf7MvXpNftODzy1eT8l1c2BIU+AHF/99xVsw==
+	bh=bDifZqXwxSBfjijAhLdPVREQPjsKboLNIVcVrv/bfnE=;
+	b=jITSgT7CEwIAPwRBAkbl6tERjjCEGvoFpHe3MduDZLo3gJu6CyVmEqFQVvKGnefbqmjr88
+	xMnPf1xyj0yRMaqQXOHWuL9BHn30BB+XWvhZGZZdCxERaoQp2PdgxKXNdvTgi+SwKxwMve
+	jVVAVOw1ewiduzkroyXdRmVxzkm2ktewYw4h7nxyMmhI0DJruT7wORUw6y53PAT/10mm8h
+	A8EdfENuGYOF/lw9SNE0JRZwOgxvCNaYziZWPJf8iazh8IxFL/AlN7nn0Ko1YPIBTI3axd
+	TOemq5ghJehQ3CFXptd1BShZtaYnkWaAS26n4QifXksd7pLpZeD37nTfpWEYhg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 19 Jul 2026 12:39:39 +0200
+Date: Sun, 19 Jul 2026 12:40:36 +0200
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
 Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
@@ -49,12 +49,12 @@ Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
  <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
  <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v4 08/15] net: macb: avoid
- macb_init_rx_buffer_size() modifying state
-In-Reply-To: <20260717-macb-context-v4-8-0acbe7f10cdb@bootlin.com>
+Subject: Re: [PATCH net-next v4 09/15] net: macb: make `struct macb` subset
+ reachable from macb_context struct
+In-Reply-To: <20260717-macb-context-v4-9-0acbe7f10cdb@bootlin.com>
 References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
- <20260717-macb-context-v4-8-0acbe7f10cdb@bootlin.com>
-Message-ID: <06a72a98edcdae8d5196a8a4a88a47bf@tipi-net.de>
+ <20260717-macb-context-v4-9-0acbe7f10cdb@bootlin.com>
+Message-ID: <46fd268fe30473c2e13c93809f85a74d@tipi-net.de>
 X-Sender: nb@tipi-net.de
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
@@ -64,81 +64,163 @@ X-Last-TLS-Session-Version: TLSv1.3
 Hi Théo
 
 On 17.7.2026 21:48, Théo Lebrun wrote:
-> macb_init_rx_buffer_size() takes the macb private data struct and
-> overrides its bp->ctx->rx_buffer_size. To make it usable with multiple
-> contexts, make it return its value.
+> For parallel MACB context to start become a reality, many functions 
+> need
+> to stop operating on bp->ctx (the currently active context) and instead
+> work on a context they get passed. That context might be
+> (1) the new one that is getting allocated and initialised, or,
+> (2) the old one to be freed.
 > 
-> Also, move the `bufsz` computation into it. The value is only used if
-> GEM, and for historical reason it currently lives in macb_open().
+> To reduce bug surface area, we will taint those functions to *only* 
+> take
+> a context and no `struct macb *bp`. That way, no bug of using `bp->ctx`
+> instead of `ctx` will ever occur.
+> 
+> For that, we need to embed a subset of `struct macb` information into
+> each context so that all helpers can still do their jobs. That subset
+> must be constant once probe is completed. Do this by taking a pointer
+> to a subset of macb called `struct macb_info`.
+> 
+> That subset is accessible from context (ctx->info->caps) or
+> from bp (bp->caps) using `-fms-extensions` option, thanks to
+> commit c4781dc3d1cf ("Kbuild: enable -fms-extensions").
+> https://gcc.gnu.org/onlinedocs/gcc/Unnamed-Fields.html
+> 
+> Add the structure and assign ctx->info at alloc,
+> but nothing uses it yet.
 > 
 > Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 > ---
->  drivers/net/ethernet/cadence/macb_main.c | 26 
-> +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
+>  drivers/net/ethernet/cadence/macb.h      | 31 
+> ++++++++++++++++++++++---------
+>  drivers/net/ethernet/cadence/macb_main.c |  5 +++++
+>  2 files changed, 27 insertions(+), 9 deletions(-)
 > 
+> diff --git a/drivers/net/ethernet/cadence/macb.h 
+> b/drivers/net/ethernet/cadence/macb.h
+> index 452b2c8f8641..2db01fa81559 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -1290,6 +1290,17 @@ struct ethtool_rx_fs_list {
+>  	unsigned int count;
+>  };
+> 
+> +struct macb_info {
+> +	struct platform_device	*pdev;
+> +	struct net_device	*netdev;
+> +	struct macb_or_gem_ops	macbgem_ops;
+> +	unsigned int		num_queues;
+> +	u32			caps;
+> +	int			rx_bd_rd_prefetch;
+> +	int			tx_bd_rd_prefetch;
+> +	struct queue_stats	*queue_stats[MACB_MAX_QUEUES];
+> +};
+> +
+>  struct macb_rxq {
+>  	struct macb_dma_desc	*ring;		/* MACB & GEM */
+>  	dma_addr_t		ring_dma;	/* MACB & GEM */
+> @@ -1309,6 +1320,8 @@ struct macb_txq {
+>  };
+> 
+>  struct macb_context {
+> +	const struct macb_info	*info;
+> +
+>  	unsigned int		rx_buffer_size;
+>  	unsigned int		rx_ring_size;
+>  	unsigned int		tx_ring_size;
+> @@ -1324,6 +1337,15 @@ struct macb {
+>  	u32	(*macb_reg_readl)(struct macb *bp, int offset);
+>  	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+> 
+> +	/*
+> +	 * Give direct access (bp->caps) and
+> +	 * allow taking a pointer to it (&bp->info) for contexts.
+> +	 */
+> +	union {
+> +		struct macb_info;
+> +		struct macb_info info;
+> +	};
+> +
+>  	/*
+>  	 * Context stores all its parameters.
+>  	 * But we must remember them across closure.
+> @@ -1335,17 +1357,14 @@ struct macb {
+>  	struct macb_dma_desc	*rx_ring_tieoff;
+>  	dma_addr_t		rx_ring_tieoff_dma;
+> 
+> -	unsigned int		num_queues;
+>  	struct macb_queue	queues[MACB_MAX_QUEUES];
+> 
+>  	spinlock_t		lock;
+> -	struct platform_device	*pdev;
+>  	struct clk		*pclk;
+>  	struct clk		*hclk;
+>  	struct clk		*tx_clk;
+>  	struct clk		*rx_clk;
+>  	struct clk		*tsu_clk;
+> -	struct net_device	*netdev;
+>  	/* Protects hw_stats and ethtool_stats */
+>  	spinlock_t		stats_lock;
+>  	union {
+> @@ -1353,15 +1372,12 @@ struct macb {
+>  		struct gem_stats	gem;
+>  	}			hw_stats;
+> 
+> -	struct macb_or_gem_ops	macbgem_ops;
+> -
+>  	struct mii_bus		*mii_bus;
+>  	struct phylink		*phylink;
+>  	struct phylink_config	phylink_config;
+>  	struct phylink_pcs	phylink_usx_pcs;
+>  	struct phylink_pcs	phylink_sgmii_pcs;
+> 
+> -	u32			caps;
+>  	unsigned int		dma_burst_length;
+> 
+>  	phy_interface_t		phy_interface;
+> @@ -1404,9 +1420,6 @@ struct macb {
+>  	struct delayed_work	tx_lpi_work;
+>  	u32			tx_lpi_timer;
+> 
+> -	int	rx_bd_rd_prefetch;
+> -	int	tx_bd_rd_prefetch;
+> -
+>  	u32	rx_intr_mask;
+> 
+>  	struct macb_pm_data pm_data;
 > diff --git a/drivers/net/ethernet/cadence/macb_main.c 
 > b/drivers/net/ethernet/cadence/macb_main.c
-> index d50d8520231c..29bf3c497f2a 100644
+> index 29bf3c497f2a..40ebe20bb40c 100644
 > --- a/drivers/net/ethernet/cadence/macb_main.c
 > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -2615,25 +2615,26 @@ static netdev_tx_t macb_start_xmit(struct 
-> sk_buff *skb,
->  	return ret;
->  }
+> @@ -3211,6 +3211,8 @@ static int macb_open(struct net_device *netdev)
+>  		goto pm_exit;
+>  	}
 > 
-> -static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
-> +static unsigned int macb_rx_buffer_size(struct macb *bp, unsigned int 
-> mtu)
->  {
-> -	if (!macb_is_gem(bp)) {
-> -		bp->ctx->rx_buffer_size = MACB_RX_BUFFER_SIZE;
-> -	} else {
-> -		bp->ctx->rx_buffer_size = MIN(size, RX_BUFFER_MAX);
-> +	unsigned int size;
-> 
-> -		if (bp->ctx->rx_buffer_size % RX_BUFFER_MULTIPLE) {
-> +	if (!macb_is_gem(bp)) {
-> +		size = MACB_RX_BUFFER_SIZE;
-> +	} else {
-> +		size = mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
-> +		size = MIN(size, RX_BUFFER_MAX);
+> +	bp->ctx->info = &bp->info;
 > +
-> +		if (size % RX_BUFFER_MULTIPLE) {
->  			netdev_dbg(bp->netdev,
->  				   "RX buffer must be multiple of %d bytes, expanding\n",
->  				   RX_BUFFER_MULTIPLE);
-> -			bp->ctx->rx_buffer_size =
-> -				roundup(bp->ctx->rx_buffer_size,
-> -					RX_BUFFER_MULTIPLE);
-> +			size = roundup(size, RX_BUFFER_MULTIPLE);
->  		}
->  	}
-> 
-> -	netdev_dbg(bp->netdev, "mtu [%u] rx_buffer_size [%u]\n",
-> -		   bp->netdev->mtu, bp->ctx->rx_buffer_size);
-> +	netdev_dbg(bp->netdev, "mtu [%u] rx_buffer_size [%u]\n", mtu, size);
-> +	return size;
->  }
-> 
->  static void gem_free_rx_buffers(struct macb *bp)
-> @@ -3193,7 +3194,6 @@ static void macb_set_rx_mode(struct net_device 
-> *netdev)
-> 
->  static int macb_open(struct net_device *netdev)
->  {
-> -	size_t bufsz = netdev->mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
->  	struct macb *bp = netdev_priv(netdev);
->  	struct macb_queue *queue;
->  	unsigned int q;
-> @@ -3212,7 +3212,7 @@ static int macb_open(struct net_device *netdev)
->  	}
-> 
 >  	/* RX buffers initialization */
-> -	macb_init_rx_buffer_size(bp, bufsz);
-> +	bp->ctx->rx_buffer_size = macb_rx_buffer_size(bp, netdev->mtu);
+>  	bp->ctx->rx_buffer_size = macb_rx_buffer_size(bp, netdev->mtu);
 >  	bp->ctx->rx_ring_size = bp->configured_rx_ring_size;
->  	bp->ctx->tx_ring_size = bp->configured_tx_ring_size;
+> @@ -5870,6 +5872,7 @@ static int macb_probe(struct platform_device 
+> *pdev)
+>  	u32 wtrmrk_rst_val;
+>  	void __iomem *mem;
+>  	struct macb *bp;
+> +	unsigned int q;
+>  	int num_queues;
+>  	bool native_io;
+>  	int err, val;
+> @@ -5915,6 +5918,8 @@ static int macb_probe(struct platform_device 
+> *pdev)
+>  	bp->netdev = netdev;
+>  	bp->regs = mem;
+>  	bp->native_io = native_io;
+> +	for (q = 0; q < MACB_MAX_QUEUES; q++)
+> +		bp->info.queue_stats[q] = &bp->queues[q].stats;
+>  	if (native_io) {
+>  		bp->macb_reg_readl = hw_readl_native;
+>  		bp->macb_reg_writel = hw_writel_native;
 
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
