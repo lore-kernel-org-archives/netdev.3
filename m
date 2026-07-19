@@ -1,64 +1,65 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0559A233D9E
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E9D280331
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784501858; cv=none; b=JOJw7j4QvDK3DB6T7tiCAzb5fqUt3lypGylvbLAkZ11kOd9h0ZS8c4jPrZFKOIHuyU09VuxWGrZmq+Vn7HedDWTR5Hxyxzf/xrrIEzrg3l/tBUBTdmzUyBlNsI/vCc6/Nv32nSP39Jlcu99j5Ypt+974QbppzWcnqRoe/Y6oMK4=
+	t=1784502331; cv=none; b=AN+2/+P7IwbR8TO9GMQ4O0ZVB4s8mkAl9J0F9huRoyFMbaiLNj+jjAD6F2sYPRWFiLSRLsHk5KWDKF1zwVceBjjzwjVaCMJ3ZwP/Sz0wAWdTOWw9lv3i7SVKrK+PliGW3eM3ZfPHxFs2Fhn7gFodn73slPuw/XQWHXtGvWLIEm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784501858; c=relaxed/simple;
-	bh=ip41+IpCq7Bi+P01lNPxASRgYMO/TiQqMhX8Wo0dOB0=;
+	s=arc-20240116; t=1784502331; c=relaxed/simple;
+	bh=3fxW+4gs9/iUpg+Fia7rQmQId5PnlfgU2NbSFgIflkg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MFyz3PiAFAlI+Ns0Uod4Z/JUHpNtqoO8RVSjd8/6RiZ+LmI4ojcyvjMoZDPu4WAUdf0wzEM7i3M6yg2HwqsQ+8J2H+YLj8RyTu/7IQZHrmO8nNfDIFpeXsBkJjjQguWz5tZOtW+uqZNHy/QseAYlQffNWo4ZmM/F4yBkbIJd4qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAFeHULS; arc=none smtp.client-ip=209.85.221.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kw79ndOAIfYIz0Re+7t4QtJ600g8yG/VZMggLxEwKMA1OgnpiblxcZa+NRIYIAB2CoO1M6oidb/7O3bVtCel2os8AVQlrHzwkxP6MYqlH98SQRelGEKyL9q4l5tEyV2UVwSoxrJWLIR6snbzf7B78ITyaIIbU6Q6EeR8weqSPCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBszSJBP; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAFeHULS"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4731f5ffa74so675433f8f.1
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:57:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBszSJBP"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4925a778491so4880515e9.0
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 16:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784501855; x=1785106655; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784502329; x=1785107129; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=foWVeXbcrx/1DUPB8QQ61IrKeGnDk036pk+v/B/jfNg=;
-        b=FAFeHULSiZDmrOfDVGHBlV8f4eoKGfcTmGb3xDLgCET47TXPb8bgYnJ7tY4Au3bP9S
-         ysPaaFpZ6yN0rSNpmTbjUnfYOw2Yfz5D6QQ7dXmQYEE3D0CR5sOdpO9ZfNm8eGdFTuPg
-         ptYA79wCJhKrcouIxtR5uINYmV2i9iigJ4X+bh+i2ZkavNAGXiSHWkRHT2337Txpf5lt
-         2IgEnK/ZETDgMNIWtNGxR7ifVwYpWntH0uGhQ+PX4Prpta7v+Yc4YfUbir3/fJcy8xIG
-         0KLms2RtXftYAm9Ee5HTvYIArvff3wj0JzInUlTwNMsmb7yUezKDj7i1Iu2Aekwl5E7q
-         j6Lg==
+        bh=RqPTbLt9S11oOXHynyNyI3hmcOTYHrhXVPfD1vKLcOE=;
+        b=KBszSJBPnDGMgjzcdaeZfOZueIXmmyN5Vrd729b62QStjFKP+WnJrvev6gYxo6wAI8
+         DrW5sSZG/9dSeJk4ThEMSi+hPJekTmcv0Vt1o354RABI535BWK7dzjNsUNu73kj5IU42
+         zyEOpsIhUybZtq29JqM8zXydxsr0dDp5kujXHVNgdyXiwFDcxW1ZoYG1xFa+/0eYgxeG
+         w6Lu+uWJCzSz0jk7weyqGZSwJk7uSzTkZGwxIgzq57Sm21RBfuJinSeyTpc1mqk6qUcg
+         TqmhZuiyd14jAj1W1fFO0GdgLC/zuxFfhtVmcAQQm3GxznoEFdNZ/Cw+jfNO/mwoWTHM
+         aupA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784501855; x=1785106655;
+        d=1e100.net; s=20251104; t=1784502329; x=1785107129;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=foWVeXbcrx/1DUPB8QQ61IrKeGnDk036pk+v/B/jfNg=;
-        b=K9sFHBJFsy5kFNPjw7y/cnRqOJPt3++u3+7N/hpth878kmiwebosFibWaW7EzCyfsw
-         d9mmQz/GOJezcsGkQ6xxRcd5eKNxPogaiowV+2tBK6Eu7sCe1nHkzTcbJ+9wRJmwREes
-         7H2Kw6ps3gzAlQPxmbcM3NUVZNgUUndhEie/c9vQJxpr0zkxv57v+gPJ1Jiwt7JDi0oQ
-         Gm2+lrODx4Z3nC5SebagtCPsz5jhyKRcyAGWF1jV29pWPwBdTZPPOrX3T3i/5ImJWXMZ
-         QnuyNmrZcxaM4cLFmL8tDGCAGF9c+HIXdpYwBPWFfl0snNhMzEmcO/3LlNKpkcZ4+wvI
-         gc0A==
-X-Forwarded-Encrypted: i=1; AHgh+RqGhA4QjO9zFZ5aHKLb3sqk/3iiB+kmrAe5lJhtJvf66yiAMcY1X0vupItJutMYnKIasfzgn48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpU3lvO4egRamdQzo05SuN7UBitbo16fas4SKVybisXk7yS1pI
-	O9vjx/aE0EG8YK/7gmqBT7o1m4fZUqecKefQkhil6EnrbjBMqBomm1KD
-X-Gm-Gg: AfdE7ckVEr7D1l+PpIehalYzGPr51j9yUcHvYqirjLce+V16vhSRzomBBegZG0gs3KE
-	+JiU/UcuvCLnEK9Og2G7eoy0Majaw5U0rt/8cpj+PBnbqGoiPR4QgaKPgcyNEupDADHJoaUrQJL
-	j1+3BhGij0i9JxmqgbDOU95fMEPkg/s14i2wXla+2IkfOGJrKdcurIJttPDh0n+Bf8BmLxLznSJ
-	dUKkk30KLfbZbPrCCH5HD7aW2+2vSzDW/D2w2ljcNRjml7O4F2lCZnFvn6oo0AZ3/n1h8I9qYwN
-	vZWTKeSHzZmmcfh4aNTY1DySch5dfO+g+V4zJKjL10qDhTrp+JCWmMneGKHY1sBr9v14PUsSzn9
-	KMJGZV7T7uD6Zdxn0yVGtA0vC3/cPEMEOo2ql63xmQ+vpRQk7Z9vSY9ZtN5OVv/bxnA==
-X-Received: by 2002:a05:600c:46c7:b0:493:efdf:7c80 with SMTP id 5b1f17b1804b1-4954a40ebf0mr74112875e9.5.1784501855076;
-        Sun, 19 Jul 2026 15:57:35 -0700 (PDT)
+        bh=RqPTbLt9S11oOXHynyNyI3hmcOTYHrhXVPfD1vKLcOE=;
+        b=jiUA8aQFZ1nFa1wtdqZhHX124klMe6wO64HgcyY6HqXr8V/JJsoboYYpx+pK6hQVVc
+         C7/HQNm+EVszEE/QXlzgSKLu56WG/xLjP/DcTjYs80eyLrYbmyTHF4hDEz+kcL6Ee5AU
+         ktzCtc9PyBF3zLKUY0BrnXNEXVlABpxs2VrLorWQbwZWO2Cb5XD/D4WE9CgEKucU/uMC
+         bj5nl3U701Vy1F+Pgpp0Ho1v6Uui392YjC89DNrgG9B/sXnCd+1a2+x5o3EpQukOngvl
+         VLOogrNWEWyRj9ofdNg18xqfm/ErSkObLSCjKut7F9DHchCkQvy8Fw2dsFjEY9mQaEMw
+         J1Lg==
+X-Forwarded-Encrypted: i=1; AHgh+RqGTiyAQ87SUFc3e2GQtfSw9R2Z4ZV8mz1nGD91JZbt5EXBJ59dE+SAxdViBocPuIn0X3+4/xg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2b/bFuV1P0GUvpkw16/j2A87Yc75dcLURB92onEXGJOdWkJCp
+	ZSH/D4oZlHXeKcso4AhjiFDRpzlXTnWKGKdHtfOlL9dudB18RuMhg/cz
+X-Gm-Gg: AfdE7ckN9was1dX+X8M6jzXs3aavN6WwffR4x7jqJxoi5sSSSgePLyFfwJxrLVIPUIw
+	b5IKAY1v86yvroLabm4BxzWeQ3dEPXv0YfUGrbSRu4R9el/lYntSSo0rUOa2xEBprqBqBSoFilf
+	WeWrZnyAHMmmfrWu2BCUJwr4SOx5NSNDr8CJ9M3HzFRC3jeeaScISeqcrBD1vEJEw03E8U3kAf0
+	lOxeSGBI8G7veP3/dPany0XAjm+N41uwKkCBSf/V7leS5lzcayOs1BJFEB4TEXygp6N0l+UWY89
+	yqGXRPuit8lgwZQ9wERQZuNcGFFskTdLK9E1Kl7BgyT/5Ze5ENQAM6YEPMrvx5K7738NN850LY+
+	kquaF0i8HhloT73mAB1rxwrV1ulEa0JOjRfOwC1tLUSjUvbn7SxisLkAWlo+7fP7NpqotviBSfb
+	k/
+X-Received: by 2002:a05:600c:1c23:b0:490:846d:4edf with SMTP id 5b1f17b1804b1-4954a3ebc81mr70524295e9.1.1784502328701;
+        Sun, 19 Jul 2026 16:05:28 -0700 (PDT)
 Received: from skbuf ([86.127.127.104])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f69e5eff1sm16179219f8f.19.2026.07.19.15.57.33
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49500sm25706213f8f.2.2026.07.19.16.05.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 15:57:34 -0700 (PDT)
-Date: Mon, 20 Jul 2026 01:57:01 +0300
+        Sun, 19 Jul 2026 16:05:27 -0700 (PDT)
+Date: Mon, 20 Jul 2026 02:04:55 +0300
 From: Vladimir Oltean <olteanv@gmail.com>
 To: Luke Howard <lukeh@padl.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -74,13 +75,13 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Christoph Mellauner <christoph.mellauner@joyned.at>,
 	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp
- fixes
-Message-ID: <20260719225701.okkvl2uhgsuwydfi@skbuf>
+Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: embedded PTP
+ timestamp support
+Message-ID: <20260719230455.eaf7a4mlkx5l2uzd@skbuf>
 References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
- <0A7B1CC8-F5F6-487E-A14C-1F0C2D5ADC84@padl.com>
- <20260719095307.hwtnbrqdkjxntrcr@skbuf>
- <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
+ <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
+ <20260719101241.xs4nz7r5bonb3qys@skbuf>
+ <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,58 +91,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
+In-Reply-To: <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
 
-On Sun, Jul 19, 2026 at 09:22:39PM +1000, Luke Howard wrote:
-> Hi Vladimir,
+On Sun, Jul 19, 2026 at 09:35:45PM +1000, Luke Howard wrote:
 > 
-> > ocelot_ptp_rx_timestamp() accesses MMIO-based registers, which can be
-> > done atomically.
-> > mv88e6xxx_ptp_clock_read() accesses MDIO bus registers, and the MDIO bus
-> > is sleepable. Fundamental difference.
-> > 
-> > Your hardware only provides 32 bits of partial timestamp, so
-> > mv88e6xxx_ptp_clock_read() will always be needed one way or another, to
-> > recover the full 64 bits. Either through tstamp_{cc,tc} or through
-> > direct calls.
+> > We try to keep the data path protocol between the switch and the host
+> > API compatible, and identifiable by /sys/class/net/<conduit>/dsa/tagging.
+> > I would argue that the protocol where PTP timestamps are in registers,
+> > vs where they are in PTP header reserved fields, vs where they are
+> > appended as trailers, are 3 different protocols and should not be
+> > presented as "edsa".
 > 
-> This still happens from overflow_work().
-
-Ok. My mistake.
-
-> >> Deferring to the worker can reorder frames such that PTP general
-> >> messages arrive before the timestamped event messages, which confuses
-> >> some other PTP implementations such as gptp2d [1].
-> > 
-> > True, this is a caveat, but event messages and general messages can
-> > already take different network paths, especially with PTP over IP where
-> > they go through different UDP ports (even if for gPTP that is not the case).
-> > The PTP user space implementation needs to be prepared to handle this.
+> For context: I added ArrTSMode support because even with the PTP
+> worker process priority bumped, ptp4l frequently missed RX timestamps.
 > 
-> Good point. So perhaps processing the embedded timestamp inline
-> doesn’t confer much benefit. ptp4l (which we use) handles out-of-order
-> messages fine.
+> I can add these as non-default tagging variants that can be selected
+> by the user. "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved”?
 
-If you're intending the in-band timestamps as a fix for gptp2d's
-limitations, then no. As a general optimization - maybe.
-
-> >> This optimisation of course only works for ArrTSMode because there is
-> >> no MDIO read required.
-> > 
-> > I don't understand this comment given the partial 32-bit timestamp
-> > limitation.
-> 
-> Better phrased as no MDIO read to recover the arrival timestamp.
-
-Yeah, the timecounter/cyclecounter requires refreshes at least once
-every 32-bit wraparound/2 time in order for the trick to work. But since
-that is set up, it frees up the need to access MDIO per packet, since it
-is guaranteed that cycle_now - tc->cycle_last is no larger than half the
-wraparound time, which permits distinguishing timestamps taken by
-hardware before tc->cycle_last from those taken after tc->cycle_last,
-and correctly converting both to a valid 64-bit time base. Quite clever,
-actually, I didn't fully understand the first time.
-
-The only problem with timecounter/cyclecounter is that the hardware
-clock remains free-running, which means you won't be able to apply a
-time-synchronized taprio schedule (if the hw supports that).
+I guess that would be fine, except:
+- worth clarifying that you're talking about the Reserved2 field (rather
+  than Reserved1 or Reserved3)
+- any reason justifying the introduction of "edsa-arrts-trailed", or
+  would it be just for completeness? As a user, what would make me
+  decide between "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved2"?
