@@ -1,73 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702A62CCB9;
-	Sun, 19 Jul 2026 20:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B773BB48
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784491756; cv=none; b=T08y+w0wLMEp0qsvFmf1WjaJjNfL8nzqjciLtpnt43XN/eVTsBxYqSUz0B0wunNyDqyPkgrmtZyVdCsFD44OSp41ForVlkCRn4z06otzM7CoLGWuduHet0ZgHZwEe2G41qWhtZlZfVSIhC5U0jOTBalM47PhkP9OZQ+j2U3VUl4=
+	t=1784492126; cv=none; b=gkWv9zQgxYc9GmhUtDSPdV7kOqD3cFxSSKWBkeVOLDplzlheXeFEJc0QeiagcHzHdgUCsGqFLBYHHX0xAXYGAguV8xQuT8710m7tuj7RTXr/Zt5UI2N+US3NZlJwcdp0RiA6Vm/Zlu+A0WFJmYIq76nNVcmSB+ElO6t8KbD7DfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784491756; c=relaxed/simple;
-	bh=LlbAlMe15CZyovXFFzlMM+97NL5mtScD3ZgDp+JMLNU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e4XoQsV4C/ctdjQ/AIsnHpIg0bzdf3glbNPQedaSBh9AFM2IBNJz86JzZxdUvSRgIr+a1JG7wxPB4jn0QNw44LvNNJftniIZbPDVje1QchUG2xpOhbVP3qAjtzubK+KLGEqJh0yYpZib4z19WrwQ7hWzWQuo9f7Ke4sEAEuv6IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMXSWyYv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784492126; c=relaxed/simple;
+	bh=69HVis64DsC8dFbYTYP/FrsOSDPkUAkrqXmHfFbxXSM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bbg8SH4y2CYT1c2mQ7XPi4ALO15EZvkFMIF1jPisI5HGg4mznUZJtsW+/RuzkMBfZ/OsuFeUrgaN9NYRGeHyOf9BWNeXiYzzPPRQV3IARmql14tsUBcnmvo82giT+sRf4M0AKPTHbB64IQ0is3izYNVoM1QEchi0xv8OfQoRXa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=SPJpt7gH; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMXSWyYv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709601F000E9;
-	Sun, 19 Jul 2026 20:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784491755;
-	bh=az4+zldcCl05+uDheaSeLXZwKmLPAF88rLZ1abAD3Pk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nMXSWyYvuEHlosMZCI6RXTEZp+Y88Xkow67uxUtFY7Suw3O35iaWWB8XMSygrd+t3
-	 RC9MV8wr+ZTNFbm/ZHkEwZqEEUA3jp5TUo+6eoruPgUXY/PGnbM32zEdLofkC2ImhC
-	 uLzLU+n1jp4rDjFPbl8lFpxYAoGSlpeLFnDHqACf+oMxfrlWs8mowgrhQquIwaXC31
-	 zZRkX1rC882X+fXtf4y+UiJ2MuOGMCexl9bHXu+qsCM2RJDtVkJW8eP6Tb2gXn7Fds
-	 2JHbK8PvV5C2AAEvcTn4pXozLRrA0RgsLynzx5k/9v8/yiSkfHINxN53g4V1lafzic
-	 SECALPXPTcHaA==
-Message-ID: <ae36eabfd58a08a340be7a988af6edaba9dd683a.camel@kernel.org>
-Subject: Re: [PATCH net] rds: tcp: unregister sysctl before tearing down
- listen socket
-From: Allison Henderson <achender@kernel.org>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: AutonomousCodeSecurity@microsoft.com, davem@davemloft.net, 
- edumazet@google.com, horms@kernel.org, kuba@kernel.org, kys@microsoft.com, 
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org,  pabeni@redhat.com, rds-devel@oss.oracle.com,
- tgopinath@linux.microsoft.com
-Date: Sun, 19 Jul 2026 13:09:13 -0700
-In-Reply-To: <20260719154840.6830-1-blbllhy@gmail.com>
-References: <259284aa1280d387c413cc34fa5e4b11ad28379d.camel@kernel.org>
-	 <20260719154840.6830-1-blbllhy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="SPJpt7gH"
+Date: Sun, 19 Jul 2026 22:09:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mareichelt.com;
+	s=202107; t=1784491776;
+	bh=69HVis64DsC8dFbYTYP/FrsOSDPkUAkrqXmHfFbxXSM=;
+	h=Date:From:To:Subject:Message-ID:Mail-Followup-To:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:date:author:from:to:subject:
+	 message-id:in-reply-to:references:mail-followup-to:openpgp:
+	 mime-version:content-type:content-transfer-encoding:author:from:
+	 subject:date:to:cc:resent-author:resent-date:resent-from:
+	 resent-sender:resent-to:resent-cc:resent-reply-to:
+	 resent-message-id:in-reply-to:references:mime-version:content-type:
+	 content-transfer-encoding:content-disposition:content-id:
+	 content-description:message-id:mail-followup-to:openpgp;
+	b=SPJpt7gH1Ga0evvicfy/rkWAr+eQa85JjsPis7hyIxHjC7k1TCQtVuKOulacsT06P
+	 ClZ9qW5taI7O2ZVa0qCtQBT38f4Z+hJ0nxujWSl6BvvAyVOIQry9XXSSgabIAvrwE/
+	 EQC0GdeJaDSqijgc2yR1ET0hZWyA4U91S+DYcFsf/eEjd8LXbgQmAKVuQnJFSywhyg
+	 XeTgQM5oaGwir9+JID2FIOlcX/t+POAQ554JTyVqINdGMA08JoqKFX2SPYI0NUK0Bp
+	 wkQdmpwjZquYpjxkRBlfOCwoBZv/WRHsL6EBASEcOBr18E/pTB0VcBYV0OOrZUDu4P
+	 RX0Ii1DpkpWLQ==
+From: Markus Reichelt <ml@mareichelt.com>
+To: wireguard@lists.zx2c4.com, netdev@vger.kernel.org
+Subject: Re: Wireguard head of line blocking when CPUs saturate
+Message-ID: <20260719200935.GA5205@pc21.mareichelt.com>
+Mail-Followup-To: wireguard@lists.zx2c4.com, netdev@vger.kernel.org
+References: <874iiyfrrh.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <874iiyfrrh.fsf@toke.dk>
 
-On Sun, 2026-07-19 at 11:48 -0400, Cen Zhang (Microsoft) wrote:
-> Thanks. The KASAN stack was observed on x86_64 QEMU/KASAN.
->=20
-> The full KASAN report and C reproducer are a few hundred lines. Would you
-> prefer that I include them after the --- line in v2, or reply to this
-> thread with them separately and keep v2 concise?
->=20
-> I'll prepare v2 after confirming the preferred format.
+* Toke Høiland-Jørgensen <toke@toke.dk> wrote:
 
-For the report and reproducer, just include them in a reply to this thread.
-Then you can use the lore link for the Link: tag, if you don't already have
-report a point the link at.  Also, you should note in the commit message th=
-at
-the fix was tested against the reproducer.  I think that should be enough f=
-or
-anyone landing on the commit to follow the link to the complete report if t=
-hey
-need to.=20
+> I'm sending this message to (a) see if anyone else is seeing the same
+> kind of stalling, and (b) to get input on whether the explanation
+> outlined above seems plausible. And, in the case of affirmative answers
+> to both (a) and (b), to hopefully start a discussion on what to do about
+> this :)
 
-Thank you!
-Allison
+I don't use a wireguard setup on arm hardware, I am just brainstorming...
+Given that you just use one tunnel, how about pinning wireguard to a core
+and, more importantly, pin the program that causes the 'fat tcp flow' to
+some other core?
+
+What you describe must be a common problem on low performance ARM setups
+running wg on openWRT (mikrotik comes to mind), so I'd have a look in that
+corner of the internet also ;)
+
+HTH
+
+
