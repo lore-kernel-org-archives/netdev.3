@@ -1,157 +1,137 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013039.outbound.protection.outlook.com [40.93.201.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138B7153BE9;
-	Sun, 19 Jul 2026 12:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784465723; cv=fail; b=GIwM3nVnuEx3RkUx4T0Kl1jax4rLPtMrVNDMNCyJ62OLPUmTNDazqeLyBMhGb3kiBjbwF2oufkLhRO1a3lSgxAUFrLcx7eAzVK6OW3Qe5Q3VZ0UAlgMuUFT85umzMmrEGpM1qtaRfPBQ1aAwAGDvsfPc47NR+qSC+PgTAHEIXqU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784465723; c=relaxed/simple;
-	bh=CQ1z0vMS6aPkm26Y5bLMuz8sUoqN8fR/sbDmTl5lKiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=I/L2KzNUxk+WkL+pu08izKT48xtoniRCIp8C6bt6frmso8coZLAWBwhPMF211SuBigMgRaZPqeynydeN1sMB0WRgL/6M0SoKs9WNC7ksd7w6za6e84Xl0YlH2MNf1UqTwkfT3Em4Zt9KwfXpgkLx7Zk0SgaOXcDo57PdSLUDAWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XFG94xBb; arc=fail smtp.client-ip=40.93.201.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED9821FF2E
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 12:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784465772; cv=none; b=ZPt+2TkQDszlL3pAhnwcwScO/xFnc6huCBIqzkfuV4aKU2SufRlaWe/mK+zvRzS9IJz02rZGdhRx7/lJFwH6fBS89YbEz4DdO+Fzxb+jmQFw4HXUJ/tE7PNvT3WUQiCrDCLb/zQlnXU1ThL34BLNK0HrJHfSDSsGeBX1dU8B8VM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784465772; c=relaxed/simple;
+	bh=tbFY6fp4UldEdOFPWG5qshyGEZr0Xdq96AYMiaJs3fE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pDYp8wWpnhZ4mW2ROtCRRhIpMvf7xGdeSsSMqp8cwmZukYyVDkLzQWG7mwMIw2q0DL47fIbWe+9DYn6MbqWGW1K90C4JeUHsRerQjDa/b8waAIw+7RrjezlEVXBfywcJEdt/agYRzIdwg2kf14IhL9tMDz9YIbL4TNaExWecAX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtHDaHI7; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XFG94xBb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o4n6XKG5XEuXW50PIK1136P1CtbnQB1EgroLMyqonpUZ/g5H5vhYpQ95pA8Yx/Clps6z7QeZGj9U9nmzNcxuniPyFrqYR6IjgPSW9c0SyQZAFAU1BvxnXDuafsobUDYnGrbM77s5uOHpCS6rICpl7k7iXcdHld+otHXivdkOnddI+GvnuYAnDxy0u43sZwJpZL6VDMHuqLdg8dRGbfE6ACKXCsGQovFrM5VA9Q0+y2tHkX89+ej5kfJD5V9x+W828F0FlP2vjtYp5kOgDsST9HCw8ZsK8AU/MULqb4TURzffVYn1byo5dHlmN2de0VMo4lc6AjbPWquE9w0oXMC3dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+iBGOSHofKkKlqMczsg5nflN73ZtJbV+rYbQ6lwrrk8=;
- b=om/x64ISL7DQ/Q2MT1kiS58XdEyHmHV9CjAnvY1dJbXsm5xiBuwV3zT2mQnVTXch07ofOo4dG6p8YTzk8PmGzE2BUYJWd0aEajHQgqUzIfkUZV2IQ9HnTqXCqPfTmYC2Alb0fkL+HWXLjVbhVp1yXGuQZrzWdynwDHuqdvFIR0KPA5UqHXD1L3pWnxK7C9BzK36ReyP64xCPhqhACzz2LMaJeYdtmBc3+K+pNdFFQTNaJ6XcYE27W5/XX3jStRXnP2QvVX8uc1kQj96rf3ZgGbmXYZpHogGXwksPZ5eUc5V/Apvxsuh0iyJdmQynGJkR5RmyLdUm8yWPuWOYNO05CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+iBGOSHofKkKlqMczsg5nflN73ZtJbV+rYbQ6lwrrk8=;
- b=XFG94xBbWjgqzdpKqZgeYoRQWbQ2MZ3Uj16CKj/ArnDX/mfGt1OTXaF7i0UozOUDM8ZwLYDlMLGNEiNpOVmj25i0DKOL0/4V5/WpaCoHp51LoomCp4YvUkE4IdILp1mxBbjxOanyjBDwlZbKkH+HNagLXlCnndc/AzQtf72hCJigq1Dm0aJE3m50T2h2NNgt/zSy/PsrpGCKS/Yh4fB0d/TkDDOtK7D+lnZ4/XxagD0ttw+QFjVQ6PrxK0/ydL99fxoEESh0XHYIYd/MtxQEQZm/wFV8Yh9z8Uayl1cIkztaQirPn5JJpfxTB1f/GGNCFnOu7Ep4gupi7mx/Xt1HOg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CH1PR12MB9670.namprd12.prod.outlook.com (2603:10b6:610:2af::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Sun, 19 Jul
- 2026 12:55:17 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0223.013; Sun, 19 Jul 2026
- 12:55:17 +0000
-Date: Sun, 19 Jul 2026 15:55:07 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	kuniyu@google.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+84d4a405ed798b40c96d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] ipv6: Change allocation flags to match rcu_read_lock
- section requirements
-Message-ID: <20260719125507.GA2005035@shredder>
-References: <20260719105759.558050-1-zlatistiv@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719105759.558050-1-zlatistiv@gmail.com>
-X-ClientProxiedBy: FR0P281CA0144.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:96::19) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtHDaHI7"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so83658555ad.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 05:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784465771; x=1785070571; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qmjtXqSGZiTIHq+gVdls9f/1oloIjlpItQ0r6NzmJqw=;
+        b=WtHDaHI7id7Ol8OBwU8ZDSPcf3M2AOR6kkM1dVJlOSe7KXqLSOr++pRK3MhhjHwzU2
+         wSTi7tdDmjtHMq4KkCXt073MDesghm+mFL2YkGFjYkK8F/z2OzV2/oqxWKkb4CInHQRB
+         BlLIzRm0E54a7Q2K3WTiFg8Y/moaeVFNtG5z9WX2MMOzTSgEjUCd6KFICAOAYB9shFho
+         mZw8RPnKcwPzliTQbwNnTAaSlvG2Wl1Darwh1NrKs56/a2y4DnSSJJGnCUSHFSnvMN3W
+         3onfcyscIemqC9QqcO/CIVzBT7ZuDQGNwoRo3CehcXqEXPLPfPgN1UmMexwITuqicT34
+         vkSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784465771; x=1785070571;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qmjtXqSGZiTIHq+gVdls9f/1oloIjlpItQ0r6NzmJqw=;
+        b=TShhsgs28v75BFpu3jvXDFVgD0jmEYZC482M+MfjIUNQ2G5xXj21wUaP6u219CJuIL
+         lZPFpw63E5n23CnyHOjGd5NIjRU6meV52AhWCEPT/aHJYDLUnuhgm7TW6lBGj4udN+f2
+         IVEKKfMKgDGtuAkqFEyX9OBeJDTMpjHklbH/rjlQoEtJadlBaymuwu2CH0GTV9d+8K95
+         matnLQYiiSw9G9Fmnq3ixQW5qVblzllF6MhKxGVi1Ae1+tLR4wov10s2K+CFnjukx+Hm
+         AMetkGo0yt2NowS5lNemMX98VyWkioUP20B2rZNYejI3xvlz+x7bAev796iro3wMbT+b
+         +Trg==
+X-Forwarded-Encrypted: i=1; AHgh+Roxis2fSaxdW198kPpA6CBSYCA26Ta+FTyTO14KLBIO4HiemR8IA56DqWU8tLSXqmw8c4FKNJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcQnD/Tt0MmqLhF9kWJP7PePYilSMLHTbjE1R4qV4uh0Gt4E2f
+	SpATtuqEm92FXqC/wrYvDZmrO9ToET5WlkDdyg4/gCvGRyI3mw47/lR5
+X-Gm-Gg: AfdE7cneafHswqLFZ1ezSaHqsEeFRct+Dq7gybEHPBo8d/xI1cLZ4WsCMRtl67wGtdE
+	ZK22Zd1a0dbO6hQUWaK8HCXGJ9BzRfLi1ngZNHY1RO9tgn/CMUvAGGk6wJyw+hNTdO4NSSQDIDa
+	M+VNcKZPols4tlPsPNRzp0RLYmWIwCpv7UQ+JaSh7HiT0occUYrFUuidf6LAk+VWBFYSOFGS8Al
+	u6+/SgKhVbR6bVDc+6qEFcyZsh+mFi5T+wzgK8tXcQrHGzHTPNL6l5iBZam9PpbGw7UL3OHxcnD
+	SKiu3c+qDai9s43hfsV5b5tZtv8xOPjPa/gIzmhqZjz+t2rM1d2W0r8Olq1rLVE1OGomVSdK7np
+	1waMEGpwc7OOyfZ970IcODqsQQWGPj85507r6qJKyrs7F/bInQbY1l+556fioyuvoZmIUp9wXbf
+	Md5ek=
+X-Received: by 2002:a17:902:da81:b0:2cc:7e4a:bcc5 with SMTP id d9443c01a7336-2cf34a48064mr112928635ad.32.1784465771134;
+        Sun, 19 Jul 2026 05:56:11 -0700 (PDT)
+Received: from [127.0.1.1] ([2404:f801:8028:1:edd:423c:25d9:f95a])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb6e8sm20990052c88.9.2026.07.19.05.56.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 05:56:10 -0700 (PDT)
+From: Subasri S <subasris1210@gmail.com>
+Subject: [PATCH 0/3] usb: Use %pe to print error pointers
+Date: Sun, 19 Jul 2026 18:25:45 +0530
+Message-Id: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH1PR12MB9670:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80a2c2f8-424d-48b4-bfad-08dee594fb5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|6133799003|22082099003|18002099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	U9VohrMiQDQ+vtTw/9MMUwAdf82Agmfdd3qOdwGHWWy9oeHWJunnYWFZrBsg0UNAko87vhFnrpxxmRJvQkRLyymjqRNJZKRbseFiFdS4hOlqZdLCUWgreuI4fuudpWnt6/HKy8xl+v+GQce3WjemEWXI6+xRjZD76w1n99c/T5cdPOm7VhIPwhqQCAVrYR030C5Q165wQGBo15BycYxUrWs2/IboRl4n2uv585IL240TAiKrV9B1roM/dy9w8uKwxf4mO1B8MDrs0v/TQl0973CsJhUKSL635p92dDSiIlQKNZB6+82Ygh5K/fTjUwP0djI+JTansXOXrVDtoJ4j7Qb7ba2YNJ6BGeJJBmONjTXOYCocegVtrxkFwASU4WCPgCikw38J/Gv8OTixuyq03FhO5CBut6cfvGXOGEsVcQBfFmSB0hjRJPBRCtQvVDMnt4qHVNafUgSh2hsM03sGF/iuItLdMwtUnRi/d8+27sy4V74Y4jx7X7EwwXcStRqaFP9tr3kfn7jzByIip0fTPmUMDNi1RDTNyOkvwhTPM0FxuMFveKsWxHC5pMuMuUlbxyFMTD8MTBrDK88/Sbr6HEtdQmfl8P429nlSDWt1cfFRCS/VDU4+A8LwAjHbzLnXntasN186A5B0pEbLD9Gy4OuuxymMOKRB+dJosNqU2OI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ypBSXR1PM7eMVdA1aHibaXPDdoZJ2uqWmkDPatT+OBlbObyPJPm4CTjo0wg8?=
- =?us-ascii?Q?ihwaHB4iwKL1LROEyEClQno7Hf/Ft84hGc+4THNXHEVjUG8SziqBz+ozNTsg?=
- =?us-ascii?Q?JZqNsqJePYQ4l9EaaN/nBfxjOs+Koigd4zxTOKAcetSUKOh4gEFh6LutBWx8?=
- =?us-ascii?Q?vaS+fHiW1stwKOzSRADTdXKLGao95sGg8iuhPrG+ufxEMvds/1R6CQVZJHw1?=
- =?us-ascii?Q?/P4xAIWQOumnuGQ0xE2VyNI0vGwhsvEOjKEoAZQSc6WMBvJW0p3btjKSwZz7?=
- =?us-ascii?Q?c4vXcahswZjuCsqhxVmtYyQrLVBeqJk8IaIMKbpViarW3DhEHIZI2D2tNGv9?=
- =?us-ascii?Q?GMK6g4W/jFPXWhR9B5Vsu01AGTbUq2hKLLQKYEkl5lfbvDWBpn+1/b6n9SBx?=
- =?us-ascii?Q?3ppV78ZmKI7g83zZvOOzsTFyvUtyH1e2FgNSea4W4IR+nltq+FsDu2KN/fj8?=
- =?us-ascii?Q?KE9VO0DZSYG8qkbHVDohavop3Xrw/8llTLUUsGduwcF4cYnIGCslDsBt/1D1?=
- =?us-ascii?Q?I8V1C+ZFdfSgWSPEFDXttfdk2qJIgDOQNVMdioIs/dBXMa1539KfNiYoqlMG?=
- =?us-ascii?Q?s78IltWTHGYohL+k7PAE/kQ0okbJtkUZTc/rqCvaBF9DidNHG9IvgQaYpDQN?=
- =?us-ascii?Q?60NAWeVSTP+i+TNoV5YhWE4qC2aR7wXDZqW3HlBivLXndLyQwVNjY3CFkdA0?=
- =?us-ascii?Q?aJIyVcLTmNeYhg3EW9BV9KYw0aPqbRymwAqZK3gEV4SMwr/YzUxBSDP238XR?=
- =?us-ascii?Q?o/TTkUdAeUxvTHgFPe/iZNmjOjesflaalDJ3BFEBgePnELOsdf19yxz9fLVL?=
- =?us-ascii?Q?xAnS1+jPqULs+ogdJqWCMettTLf6AcGsdo5zSNoWZ/dDs9tcGprDndGWZ5hQ?=
- =?us-ascii?Q?8elII2XgfHNBgUJYRmFtefWIt6piDa4LparluHmrSRAR9vxfQakE+zy1CxO0?=
- =?us-ascii?Q?gOHSZiYilHAQjuoy3KPmSXCSU+muTJwLNaFdO4ofdL8AvFzzTKVwuIvMNydB?=
- =?us-ascii?Q?MGE0wH2o35UaVVtbgl/qLoqctI322qL45IWiqW2HbMOvfEaAbm+T7qgiiAqW?=
- =?us-ascii?Q?RFe2qX0oxQw5lBHd/wnFbIGQnl+8HdHGNR7DE3Rakhhp69P+CSotpUalLT4C?=
- =?us-ascii?Q?6768C73hcLbOuN6HOGFehq1GmOTBjjklojM52bV9gurlIRW4TxH/vPGEQXfm?=
- =?us-ascii?Q?k4exiZSSyqIqXxpXfL3lI82zRMpoPsiSKgjf4ASAcQ9r6syje0B4dGFrGkCq?=
- =?us-ascii?Q?Ehmc6tWoIIW5OJzWybtS2XGTdy91MJraJ+x5tg7WElzvbHMOdZ6msHuGO1w0?=
- =?us-ascii?Q?0eHc32Q6io5WcucNeav3tHpz0uyoEn7idp+DhbDkHgkfz0BHCD+zGm3QDs21?=
- =?us-ascii?Q?FEK3HwDMNBH+EBMHH15WoIv0nTGWbzxBoviZozmk45Ypq8+PiDq+QEIVtcQA?=
- =?us-ascii?Q?dlZt/E3bzAQEVCFbNihnhabVrDOACVqso0FNXM/7Wfwe6mvZQQ1WfSLH+IY3?=
- =?us-ascii?Q?PiqSQN9rgVxLMdGJDzNvFtfB5HYxENQrWsymPcrYRJvdJEaBbXfaMaAjsJiC?=
- =?us-ascii?Q?4QfaUoHMRMmpq8mD0cgZ/4nbo20rUhYf2qxn6Y91CExGmoVvVHMaZBBvwWD9?=
- =?us-ascii?Q?KJAlCt1bvrBqCGVguTkxuexqmgXwRV0m+gWezUkTHWDzyw66fMXSi4cEocgu?=
- =?us-ascii?Q?EZd6lCQ3dwrph1o9ofkXS+6jULCEb3nnubf0e35UF7wU1UnQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80a2c2f8-424d-48b4-bfad-08dee594fb5f
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2026 12:55:17.0447
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T8Wn6bM1jMyxhVMnq6J61OrzZC5IPpNmV2E//WyhQr7HAjQQcYiv2ibfrbereTExGr0+kL3/tfVbqU+5H8U4Qg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9670
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFHJXGoC/x3MQQqEMBAF0atIrw0YGY14FRGJ8c/YGw3dUQTx7
+ hNcvkXVTQphKPXFTYKTlfctw5YFhdVvPxhesqmu6rZytjOHziYmmSAyRZ/CqkjGhWaxzcfNgKO
+ cRsGXr3c7jM/zB/dGg0dmAAAA
+To: Peter Chen <peter.chen@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
+ Chas Williams <3chas3@gmail.com>, Minas Harutyunyan <hminas@synopsys.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Badhri Jagan Sridharan <badhri@google.com>
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
+ Subasri S <subasris1210@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784465765; l=1535;
+ i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
+ bh=tbFY6fp4UldEdOFPWG5qshyGEZr0Xdq96AYMiaJs3fE=;
+ b=AKmLrPfrqg8Co2eNp1+tUZNc8ZaIcc3Pvtn1ics7ne1WDLCCZGIYXPUI1ATsLWt53k64N9Qzg
+ WbSIB/hP1e3CcRt9EbIhunGN2mAKRvXXd16B7GHliBKtoD87uKcy6tp
+X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
+ pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
 
-On Sun, Jul 19, 2026 at 01:57:59PM +0300, Nikola Z. Ivanov wrote:
-> Since the call to __ip6_del_rt_siblings has been converted under
-> rcu read lock and it only has one call point
-> we should no longer block or yield.
-> 
-> Our stack trace from the syzbot reproducer looks as follows:
-> 
-> __ip6_del_rt_siblings
->   rtnl_notify (Here we pass gfp_any() -> GFP_KERNEL)
->     nlmsg_notify
->       nlmsg_multicast
->         nlmsg_multicast_filtered
->           netlink_broadcast_filtered (GFP_KERNEL passed from earlier)
-> 
-> netlink_broadcast_filtered can yield if GFP_KERNEL
-> is passed, which we do not want to happen.
-> 
-> Fix this by changing the allocation flag of rtnl_notify.
-> 
-> Also change the flag passed to nlmsg_new. Even though it
-> is not related to the syzbot generated bug it still falls
-> under the same requirements.
+This patchset replaces PTR_ERR() in format strings with 
+%pe format specifier across the USB subsystem. %pe prints 
+symbolic error names (e.g., -ENOMEM) instead of 
+raw numbers (e.g., -12), making error logs more readable. 
+These patches fix coccinelle reported warning: "Consider 
+using %pe to print PTR_ERR()" in usb subsystem.
 
-I believe that the nlmsg_new() change is a no-op given that gfp_any()
-evaluates to GFP_ATOMIC under spin_lock_bh(), but it makes
-__ip6_del_rt_siblings() consistent with inet6_rt_notify() which already
-uses GFP_ATOMIC for both nlmsg_new() and rtnl_notify().
+The patches are grouped by subsystem:
+  1/3 - chipidea
+  2/3 - miscellaneous USB drivers
+  3/3 - typec
 
-> 
-> Reported-by: syzbot+84d4a405ed798b40c96d@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=84d4a405ed798b40c96d
-> Fixes: bd11ff421d36 ("ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.")
-> Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+All patches are compile-tested on x86_64. Please let me know if 
+any more testing is needed for any patch. 
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Subasri S <subasris1210@gmail.com>
+---
+Subasri S (3):
+      usb: chipidea: Use %pe to print error pointers
+      usb: misc: Use %pe to print error pointers
+      usb: typec: Use %pe to print error pointers
+
+ drivers/usb/atm/usbatm.c               |  4 ++--
+ drivers/usb/chipidea/ci_hdrc_imx.c     | 12 ++++++------
+ drivers/usb/chipidea/core.c            |  4 ++--
+ drivers/usb/core/hub.c                 |  4 ++--
+ drivers/usb/dwc2/pci.c                 |  4 ++--
+ drivers/usb/gadget/function/u_serial.c |  4 ++--
+ drivers/usb/misc/usb3503.c             |  4 ++--
+ drivers/usb/typec/mux/pi3usb30532.c    |  8 ++++----
+ drivers/usb/typec/tcpm/tcpm.c          |  2 +-
+ drivers/usb/typec/wusb3801.c           |  4 ++--
+ 10 files changed, 25 insertions(+), 25 deletions(-)
+---
+base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+change-id: 20260718-usb-ptr_err_patchset-7c5d1547bee7
+
+Best regards,
+-- 
+Subasri S <subasris1210@gmail.com>
+
