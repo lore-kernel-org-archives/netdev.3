@@ -1,145 +1,147 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524CB2F3C37
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0559A233D9E
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784499335; cv=none; b=ilhZsnKBq5ZEzO4Khli05tRnFUS5CtYUxqhb4UQN2KPZcfhHDyrCTmgbEFK+KSJbzFdVbcoRi75DLdinJE751OlZ8KytiDrpql7JgTpgu73nqgcxQm7doDnrDFASe7YRLNr0tvkvVKGMR0YLDEK5NSWAG32rktU3FhOMPoJ45XQ=
+	t=1784501858; cv=none; b=JOJw7j4QvDK3DB6T7tiCAzb5fqUt3lypGylvbLAkZ11kOd9h0ZS8c4jPrZFKOIHuyU09VuxWGrZmq+Vn7HedDWTR5Hxyxzf/xrrIEzrg3l/tBUBTdmzUyBlNsI/vCc6/Nv32nSP39Jlcu99j5Ypt+974QbppzWcnqRoe/Y6oMK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784499335; c=relaxed/simple;
-	bh=phqWj/Y9V2U1q3g+xUxQmFCZQ+uhizVr+3ljUR4LdUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NSElKm22ainXX8DI5brERvJPl0Qtvip3hS69YWvBQnLWaCkHlc3rHMCAHpGVU3IK86GC7e1shez6YTvhjIJh+Qkh0Izg0eIPiAXQLkeeMAqQzNhvv25FRM33ZmIBLRJkEVaULuYvgg2MDKVm6FLXK7SF1cRV+nGCOGrp+QDK57U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=iQtrT/0k; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1784501858; c=relaxed/simple;
+	bh=ip41+IpCq7Bi+P01lNPxASRgYMO/TiQqMhX8Wo0dOB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MFyz3PiAFAlI+Ns0Uod4Z/JUHpNtqoO8RVSjd8/6RiZ+LmI4ojcyvjMoZDPu4WAUdf0wzEM7i3M6yg2HwqsQ+8J2H+YLj8RyTu/7IQZHrmO8nNfDIFpeXsBkJjjQguWz5tZOtW+uqZNHy/QseAYlQffNWo4ZmM/F4yBkbIJd4qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAFeHULS; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="iQtrT/0k"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso66245645ad.2
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:15:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAFeHULS"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4731f5ffa74so675433f8f.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1784499334; x=1785104134; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rBbMwui+/L0pgrSCs8qYX8BN/DRimeZ19odA05vUJ9o=;
-        b=iQtrT/0kRWGXXzisfc131QpJKoAa4lVVmxVGW4ANgdNreHOHbuG17v1lPZ12rQvw5F
-         llW7nImRLEfG0XhE73Fqu/K8+tTMYkg9v8fF9zVaexLafkCV2WzRhTtRhgk+rJ9lH2Ym
-         DuZXEyuWJEWlLKYvPZsGeyztfUl62F5eshkFKHmAPxvIE2yioAG6+NXr8ZHgYHvC8BdH
-         MO1MiSJDyN8u0ywxYtnsNW9w0i3NIS0Ck8KaeKaQZSei3zX9fgAYTFOpuU+PzcBcGlKf
-         EV0n7UU80iWqOpIp0Vo69eoUai3DzpyR1u+r3IqM9eVbuASrcMLmiVC1MhD/H8KArPFi
-         7MvQ==
+        d=gmail.com; s=20251104; t=1784501855; x=1785106655; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=foWVeXbcrx/1DUPB8QQ61IrKeGnDk036pk+v/B/jfNg=;
+        b=FAFeHULSiZDmrOfDVGHBlV8f4eoKGfcTmGb3xDLgCET47TXPb8bgYnJ7tY4Au3bP9S
+         ysPaaFpZ6yN0rSNpmTbjUnfYOw2Yfz5D6QQ7dXmQYEE3D0CR5sOdpO9ZfNm8eGdFTuPg
+         ptYA79wCJhKrcouIxtR5uINYmV2i9iigJ4X+bh+i2ZkavNAGXiSHWkRHT2337Txpf5lt
+         2IgEnK/ZETDgMNIWtNGxR7ifVwYpWntH0uGhQ+PX4Prpta7v+Yc4YfUbir3/fJcy8xIG
+         0KLms2RtXftYAm9Ee5HTvYIArvff3wj0JzInUlTwNMsmb7yUezKDj7i1Iu2Aekwl5E7q
+         j6Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784499334; x=1785104134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rBbMwui+/L0pgrSCs8qYX8BN/DRimeZ19odA05vUJ9o=;
-        b=rF21j1hbFFhjktcHuA9HbzACwFDyhxX0Tec9brVfh7S66HGySyeZ3KWKnYu9a1I/j4
-         4hCru9V8WM2pUdbeoVhV/GSjSEZQPXOBKw44aZ1E6c2sLt1+lxK/ImItIWT3aUmrSd6u
-         vKykeB81BeV5kYFRIrRO7CxDv8b/y6nU901nnGsIwrWlLfKJPP6tEeGqYbwcYa36uxdO
-         PXlpke4NwdW6AoO7fdXhMYmtfNhUTPcdCofDsP1jn9Voh1lr+HrOAPbaBaEe7NLssD2h
-         1LrJ7W2Ue/4dqXjLmjhHVoFkwQz8x+CjioXxOcTDsU0DKqAIx53W+hxA9ktagX0olyNo
-         v5eg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro02azjMO4SfnFD0ygFDjv3j7Rg41s+qViT/wEWs6DuS0nGqSGSpBu2/mDV5MxY26EMUsV22Rk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEp8Unwsftmvk38b6lwoecB7LfoclZlfAg7Pwr982c42PTjkVR
-	tLx2IKbS9/1rm17pK02i/kWm3eJFUgGr61/B8yF3mEPvBQfdHylpngwdefD40L+3Ug==
-X-Gm-Gg: AfdE7ck1sY/TLqUZTzXfQiEeJMVDsV1MckeIsG3yPGbJ9KYJ2d4IyORqqC/xDErTIzk
-	UBHxYoA+2KLPj2hUbWTF0v8RD4k8MO/hnfiHJJV7vWzRKByI2Wq6/brk+8KW2U1Bepp2T/Gja/j
-	LFSColka8mx7XSYometi74+Bt23XxBlFo+w6B6wFfJZHqE01ADzi48B8feuRSr7iQvf0NSucO2M
-	hEvnzExZeQKN5xMLT/vwLh4S2e06Nu5uE3riXQwkNLPmiCHetFEQCy0xy1A+Mzi88VLig+IRYPw
-	BTceBFrjKkdBUb3ZY6YXg+54JiVYGO3l49aIBVIFWeZMkOyqXbyk8EnoOcpse4MXm5vl5VWtmms
-	bEgV664arYtF8zFRO9I/hO6nnmRJOuxeksSoMWnjov9VlnrKK6ZKdQKqwcSXNDCFy/sjKKfmtLp
-	fMSOHdS1Y=
-X-Received: by 2002:a05:6a20:c783:b0:3c3:90de:60e9 with SMTP id adf61e73a8af0-3c3adaa078amr12650690637.62.1784499333666;
-        Sun, 19 Jul 2026 15:15:33 -0700 (PDT)
-Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cd6e6esm24438644c88.13.2026.07.19.15.15.24
+        d=1e100.net; s=20251104; t=1784501855; x=1785106655;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=foWVeXbcrx/1DUPB8QQ61IrKeGnDk036pk+v/B/jfNg=;
+        b=K9sFHBJFsy5kFNPjw7y/cnRqOJPt3++u3+7N/hpth878kmiwebosFibWaW7EzCyfsw
+         d9mmQz/GOJezcsGkQ6xxRcd5eKNxPogaiowV+2tBK6Eu7sCe1nHkzTcbJ+9wRJmwREes
+         7H2Kw6ps3gzAlQPxmbcM3NUVZNgUUndhEie/c9vQJxpr0zkxv57v+gPJ1Jiwt7JDi0oQ
+         Gm2+lrODx4Z3nC5SebagtCPsz5jhyKRcyAGWF1jV29pWPwBdTZPPOrX3T3i/5ImJWXMZ
+         QnuyNmrZcxaM4cLFmL8tDGCAGF9c+HIXdpYwBPWFfl0snNhMzEmcO/3LlNKpkcZ4+wvI
+         gc0A==
+X-Forwarded-Encrypted: i=1; AHgh+RqGhA4QjO9zFZ5aHKLb3sqk/3iiB+kmrAe5lJhtJvf66yiAMcY1X0vupItJutMYnKIasfzgn48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpU3lvO4egRamdQzo05SuN7UBitbo16fas4SKVybisXk7yS1pI
+	O9vjx/aE0EG8YK/7gmqBT7o1m4fZUqecKefQkhil6EnrbjBMqBomm1KD
+X-Gm-Gg: AfdE7ckVEr7D1l+PpIehalYzGPr51j9yUcHvYqirjLce+V16vhSRzomBBegZG0gs3KE
+	+JiU/UcuvCLnEK9Og2G7eoy0Majaw5U0rt/8cpj+PBnbqGoiPR4QgaKPgcyNEupDADHJoaUrQJL
+	j1+3BhGij0i9JxmqgbDOU95fMEPkg/s14i2wXla+2IkfOGJrKdcurIJttPDh0n+Bf8BmLxLznSJ
+	dUKkk30KLfbZbPrCCH5HD7aW2+2vSzDW/D2w2ljcNRjml7O4F2lCZnFvn6oo0AZ3/n1h8I9qYwN
+	vZWTKeSHzZmmcfh4aNTY1DySch5dfO+g+V4zJKjL10qDhTrp+JCWmMneGKHY1sBr9v14PUsSzn9
+	KMJGZV7T7uD6Zdxn0yVGtA0vC3/cPEMEOo2ql63xmQ+vpRQk7Z9vSY9ZtN5OVv/bxnA==
+X-Received: by 2002:a05:600c:46c7:b0:493:efdf:7c80 with SMTP id 5b1f17b1804b1-4954a40ebf0mr74112875e9.5.1784501855076;
+        Sun, 19 Jul 2026 15:57:35 -0700 (PDT)
+Received: from skbuf ([86.127.127.104])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f69e5eff1sm16179219f8f.19.2026.07.19.15.57.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 15:15:25 -0700 (PDT)
-From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>
+        Sun, 19 Jul 2026 15:57:34 -0700 (PDT)
+Date: Mon, 20 Jul 2026 01:57:01 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Luke Howard <lukeh@padl.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH nf] netfilter: nft_payload: fix mask build for partial field offload
-Date: Sun, 19 Jul 2026 22:15:23 +0000
-Message-ID: <20260719221523.1336739-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vivien Didelot <vivien.didelot@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Cedric Jehasse <cedric.jehasse@gmail.com>,
+	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>,
+	Max Hunter <max@huntershome.org>,
+	Christoph Mellauner <christoph.mellauner@joyned.at>,
+	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp
+ fixes
+Message-ID: <20260719225701.okkvl2uhgsuwydfi@skbuf>
+References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
+ <0A7B1CC8-F5F6-487E-A14C-1F0C2D5ADC84@padl.com>
+ <20260719095307.hwtnbrqdkjxntrcr@skbuf>
+ <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
 
-nft_payload_offload_mask() builds the offload match mask for a payload
-expression that covers only part of a header field.  For a partial IPv6
-address match (field_len = 16, priv_len = 1) that shift is 1 << 120, which
-is undefined on the 32-bit int operand.  It also trims only one word, so
-the remaining words stay 0xffffffff (and when priv_len is a multiple of 4
-the trim is skipped entirely), leaving the mask covering more bytes than
-the rule matches.
+On Sun, Jul 19, 2026 at 09:22:39PM +1000, Luke Howard wrote:
+> Hi Vladimir,
+> 
+> > ocelot_ptp_rx_timestamp() accesses MMIO-based registers, which can be
+> > done atomically.
+> > mv88e6xxx_ptp_clock_read() accesses MDIO bus registers, and the MDIO bus
+> > is sleepable. Fundamental difference.
+> > 
+> > Your hardware only provides 32 bits of partial timestamp, so
+> > mv88e6xxx_ptp_clock_read() will always be needed one way or another, to
+> > recover the full 64 bits. Either through tstamp_{cc,tc} or through
+> > direct calls.
+> 
+> This still happens from overflow_work().
 
-  UBSAN: shift-out-of-bounds in net/netfilter/nft_payload.c:278:20
-  shift exponent 120 is too large for 32-bit type 'int'
-  ...
+Ok. My mistake.
 
-The match is byte-granular and struct nft_data is zero-initialised, so the
-correct mask is simply the first priv_len bytes set to 0xff. Set those
-bytes directly and drop the word/shift trimming; this removes the undefined
-shift and no longer over-masks the trailing bytes.
+> >> Deferring to the worker can reorder frames such that PTP general
+> >> messages arrive before the timestamped event messages, which confuses
+> >> some other PTP implementations such as gptp2d [1].
+> > 
+> > True, this is a caveat, but event messages and general messages can
+> > already take different network paths, especially with PTP over IP where
+> > they go through different UDP ports (even if for gPTP that is not the case).
+> > The PTP user space implementation needs to be prepared to handle this.
+> 
+> Good point. So perhaps processing the embedded timestamp inline
+> doesn’t confer much benefit. ptp4l (which we use) handles out-of-order
+> messages fine.
 
-Fixes: a5d45bc0dc50 ("netfilter: nftables_offload: build mask based from the matching bytes")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
----
- net/netfilter/nft_payload.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+If you're intending the in-band timestamps as a fix for gptp2d's
+limitations, then no. As a general optimization - maybe.
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 391539a1ceaa..8a4472fd77d9 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -259,9 +259,7 @@ static int nft_payload_dump(struct sk_buff *skb,
- static bool nft_payload_offload_mask(struct nft_offload_reg *reg,
- 				     u32 priv_len, u32 field_len)
- {
--	unsigned int remainder, delta, k;
- 	struct nft_data mask = {};
--	__be32 remainder_mask;
- 
- 	if (priv_len == field_len) {
- 		memset(&reg->mask, 0xff, priv_len);
-@@ -270,15 +268,7 @@ static bool nft_payload_offload_mask(struct nft_offload_reg *reg,
- 		return false;
- 	}
- 
--	memset(&mask, 0xff, field_len);
--	remainder = priv_len % sizeof(u32);
--	if (remainder) {
--		k = priv_len / sizeof(u32);
--		delta = field_len - priv_len;
--		remainder_mask = htonl(~((1 << (delta * BITS_PER_BYTE)) - 1));
--		mask.data[k] = (__force u32)remainder_mask;
--	}
--
-+	memset(&mask, 0xff, priv_len);
- 	memcpy(&reg->mask, &mask, field_len);
- 
- 	return true;
--- 
-2.43.0
+> >> This optimisation of course only works for ArrTSMode because there is
+> >> no MDIO read required.
+> > 
+> > I don't understand this comment given the partial 32-bit timestamp
+> > limitation.
+> 
+> Better phrased as no MDIO read to recover the arrival timestamp.
 
+Yeah, the timecounter/cyclecounter requires refreshes at least once
+every 32-bit wraparound/2 time in order for the trick to work. But since
+that is set up, it frees up the need to access MDIO per packet, since it
+is guaranteed that cycle_now - tc->cycle_last is no larger than half the
+wraparound time, which permits distinguishing timestamps taken by
+hardware before tc->cycle_last from those taken after tc->cycle_last,
+and correctly converting both to a valid 64-bit time base. Quite clever,
+actually, I didn't fully understand the first time.
+
+The only problem with timecounter/cyclecounter is that the hardware
+clock remains free-running, which means you won't be able to apply a
+time-synchronized taprio schedule (if the hw supports that).
