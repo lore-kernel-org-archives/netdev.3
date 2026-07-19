@@ -1,66 +1,67 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED9821FF2E
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 12:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FA13BB48
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 12:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784465772; cv=none; b=ZPt+2TkQDszlL3pAhnwcwScO/xFnc6huCBIqzkfuV4aKU2SufRlaWe/mK+zvRzS9IJz02rZGdhRx7/lJFwH6fBS89YbEz4DdO+Fzxb+jmQFw4HXUJ/tE7PNvT3WUQiCrDCLb/zQlnXU1ThL34BLNK0HrJHfSDSsGeBX1dU8B8VM=
+	t=1784465779; cv=none; b=RGhLd7fjt7DgA5dPcL6nAlHglpXKbGgzFHQuPPeAQErCQRuhnQT1dibtJ3sN/bIiCHfTJIrsBzUfDW6eyOczQn1TMjUiZnaD5x0mw+cDXOhDXO+JGi7YjxELChzxrymC07NBEWFM1Ncbj1+OZh2EwG2a659zHfYte0ZGgGM4tgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784465772; c=relaxed/simple;
-	bh=tbFY6fp4UldEdOFPWG5qshyGEZr0Xdq96AYMiaJs3fE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pDYp8wWpnhZ4mW2ROtCRRhIpMvf7xGdeSsSMqp8cwmZukYyVDkLzQWG7mwMIw2q0DL47fIbWe+9DYn6MbqWGW1K90C4JeUHsRerQjDa/b8waAIw+7RrjezlEVXBfywcJEdt/agYRzIdwg2kf14IhL9tMDz9YIbL4TNaExWecAX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtHDaHI7; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1784465779; c=relaxed/simple;
+	bh=n1zAO1jW4yVvRL07k2kgrVmGbmcyj6ikcTfAZVsVbnQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=T0eh7kgQZOCvceprKfDqxfzGPJONwAmioVaRw7EM+ObwslGND+mAs0mP++ZHNbFk5rhp3bZ2m8NRkdTLrFwA8IpA2QX4NqCKqfdDm/RHt0gypud0LJ7y1SF+qY2wt/T/5DI9DsflSNB7j+/2JNkHYnXul+qrM/yQYT0vy9tgDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NK8haITe; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtHDaHI7"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so83658555ad.1
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 05:56:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NK8haITe"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so8937290a91.0
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 05:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784465771; x=1785070571; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=qmjtXqSGZiTIHq+gVdls9f/1oloIjlpItQ0r6NzmJqw=;
-        b=WtHDaHI7id7Ol8OBwU8ZDSPcf3M2AOR6kkM1dVJlOSe7KXqLSOr++pRK3MhhjHwzU2
-         wSTi7tdDmjtHMq4KkCXt073MDesghm+mFL2YkGFjYkK8F/z2OzV2/oqxWKkb4CInHQRB
-         BlLIzRm0E54a7Q2K3WTiFg8Y/moaeVFNtG5z9WX2MMOzTSgEjUCd6KFICAOAYB9shFho
-         mZw8RPnKcwPzliTQbwNnTAaSlvG2Wl1Darwh1NrKs56/a2y4DnSSJJGnCUSHFSnvMN3W
-         3onfcyscIemqC9QqcO/CIVzBT7ZuDQGNwoRo3CehcXqEXPLPfPgN1UmMexwITuqicT34
-         vkSQ==
+        d=gmail.com; s=20251104; t=1784465777; x=1785070577; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cBHTVFHbPFwIbhPoWqS470Iobk9r2Zi67JYQlymcIdw=;
+        b=NK8haITeyTtsmJvJcxDsoN7DLfhzpZC79IJtoJETHGS8ELVTGVoCy6jrxypNYFJ9D5
+         HgM2BPBKv41ulOYHoWscBL9pstvoLA5IG0jSPS4yBLexBA/MkAv/vGUsi0g9dG7h4tXx
+         54KB/JyMXa3iPbqQok89Wo9VQqPIAkhcAD2a6a/ENCFgeayV8UjU3z5O9UOKwBjtVxw4
+         ZQ3tRX4M2Rtmy57GUNO6YgjU/l3AndgfjPZyf/so+aT5GPO5HAciLIs/OpaMpaUepWu/
+         6xL7lcqTw+dfut1e3gbZ9TpvjntC6DuKvL/oESd/5Qv0m856SzlOl9Qd52WyNBgIB3t8
+         NGDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784465771; x=1785070571;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qmjtXqSGZiTIHq+gVdls9f/1oloIjlpItQ0r6NzmJqw=;
-        b=TShhsgs28v75BFpu3jvXDFVgD0jmEYZC482M+MfjIUNQ2G5xXj21wUaP6u219CJuIL
-         lZPFpw63E5n23CnyHOjGd5NIjRU6meV52AhWCEPT/aHJYDLUnuhgm7TW6lBGj4udN+f2
-         IVEKKfMKgDGtuAkqFEyX9OBeJDTMpjHklbH/rjlQoEtJadlBaymuwu2CH0GTV9d+8K95
-         matnLQYiiSw9G9Fmnq3ixQW5qVblzllF6MhKxGVi1Ae1+tLR4wov10s2K+CFnjukx+Hm
-         AMetkGo0yt2NowS5lNemMX98VyWkioUP20B2rZNYejI3xvlz+x7bAev796iro3wMbT+b
-         +Trg==
-X-Forwarded-Encrypted: i=1; AHgh+Roxis2fSaxdW198kPpA6CBSYCA26Ta+FTyTO14KLBIO4HiemR8IA56DqWU8tLSXqmw8c4FKNJQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcQnD/Tt0MmqLhF9kWJP7PePYilSMLHTbjE1R4qV4uh0Gt4E2f
-	SpATtuqEm92FXqC/wrYvDZmrO9ToET5WlkDdyg4/gCvGRyI3mw47/lR5
-X-Gm-Gg: AfdE7cneafHswqLFZ1ezSaHqsEeFRct+Dq7gybEHPBo8d/xI1cLZ4WsCMRtl67wGtdE
-	ZK22Zd1a0dbO6hQUWaK8HCXGJ9BzRfLi1ngZNHY1RO9tgn/CMUvAGGk6wJyw+hNTdO4NSSQDIDa
-	M+VNcKZPols4tlPsPNRzp0RLYmWIwCpv7UQ+JaSh7HiT0occUYrFUuidf6LAk+VWBFYSOFGS8Al
-	u6+/SgKhVbR6bVDc+6qEFcyZsh+mFi5T+wzgK8tXcQrHGzHTPNL6l5iBZam9PpbGw7UL3OHxcnD
-	SKiu3c+qDai9s43hfsV5b5tZtv8xOPjPa/gIzmhqZjz+t2rM1d2W0r8Olq1rLVE1OGomVSdK7np
-	1waMEGpwc7OOyfZ970IcODqsQQWGPj85507r6qJKyrs7F/bInQbY1l+556fioyuvoZmIUp9wXbf
-	Md5ek=
-X-Received: by 2002:a17:902:da81:b0:2cc:7e4a:bcc5 with SMTP id d9443c01a7336-2cf34a48064mr112928635ad.32.1784465771134;
-        Sun, 19 Jul 2026 05:56:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784465777; x=1785070577;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cBHTVFHbPFwIbhPoWqS470Iobk9r2Zi67JYQlymcIdw=;
+        b=A8dg5fYMaR61ICTAnfvCsgj7pJiWzMPp+N94vdJsMfZ+hgcRS5yN3ZWNPxNXaHZON9
+         o8aTplY2V+9NcwiRhge/UuwiZGJTXnobT1mCfNejb3EPoxDoGzPmco49jvehvAacYWzX
+         9EtmAEeEQNXZ+afsiDYr1l1QKzJP7JgDDaMXCzcTuanZuHj1NKakK39lAosGN0FdFlpC
+         Xq3QvT/24ID7YiGAy5TEJiG2hV9woaAU21r9//vTN+k6rcmCE1l1h3YOR7Eo0xwew63L
+         upgBQggliVdNcdVshSFmWqTDbM4U1BnDsuLlX3Ywlfo597zqxpCH0UxsCzxFKFoEPfuO
+         +qZw==
+X-Forwarded-Encrypted: i=1; AHgh+RpKkEAnjJHu60LR+y7Pg4WSPLtKagGwD1oZj767dsqdcWdgWacREgMcS4MU7rsNmxpqjaXOJB0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZi96AIyhBdt2GhMnaCEWlxIiRysbWz2zyMZxT8XgzyBJ+i7P5
+	naRLS0atznGpR/miFO3Vu3eR0GnECtf7Yr7Q6adBaGMpR6AWCJ6ed7Dd
+X-Gm-Gg: AfdE7clfRHPOA3RLTxiz9UPDTjPYcoJurJJ5ktu4SY+NbFwj5ZqhM75SFfXnjO6qLQR
+	vMCxwVMWY6AHdk1MhU+r1O9kDON2Hd71QNGStJhlMTy3/szppg8nwLZ3D4umJsWRKavg3cFcbud
+	YB+CbFjlIvEZdgmGt3E3BT3At3j8t9P5OpE+m3/frM1xaJxSbuKFOt+Mf+aQ+VuvZ6faE3TofM1
+	wMMIVEgqmthaRvz/uzpDclC2rp1VAAQbipsMvsDh5esmV+oJ7kGSNiGNtvFQFVjvYmH8IAdkn39
+	LbRti3pQcXI9umDz0C1zfGtdGe/bUWNWpRvIAMlFc1qW+L83absvqZoyd2P8EZrcRYEHM1mk9V4
+	XdxUhzqbJ+4NrImdWu6eSwnk2wwjJP5nbNIP7B6zVY7ssYBM75GpoA12oKwJW5g783bIBUqZTPR
+	WsIGY=
+X-Received: by 2002:a17:90b:5547:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-38e4b441269mr10885100a91.10.1784465777270;
+        Sun, 19 Jul 2026 05:56:17 -0700 (PDT)
 Received: from [127.0.1.1] ([2404:f801:8028:1:edd:423c:25d9:f95a])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb6e8sm20990052c88.9.2026.07.19.05.56.05
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb6e8sm20990052c88.9.2026.07.19.05.56.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 05:56:10 -0700 (PDT)
+        Sun, 19 Jul 2026 05:56:16 -0700 (PDT)
 From: Subasri S <subasris1210@gmail.com>
-Subject: [PATCH 0/3] usb: Use %pe to print error pointers
-Date: Sun, 19 Jul 2026 18:25:45 +0530
-Message-Id: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
+Date: Sun, 19 Jul 2026 18:25:46 +0530
+Subject: [PATCH 1/3] usb: chipidea: Use %pe to print error pointers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,9 +70,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFHJXGoC/x3MQQqEMBAF0atIrw0YGY14FRGJ8c/YGw3dUQTx7
- hNcvkXVTQphKPXFTYKTlfctw5YFhdVvPxhesqmu6rZytjOHziYmmSAyRZ/CqkjGhWaxzcfNgKO
- cRsGXr3c7jM/zB/dGg0dmAAAA
+Message-Id: <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com>
+References: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
+In-Reply-To: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
 To: Peter Chen <peter.chen@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -86,52 +87,87 @@ Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev,
  linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
  Subasri S <subasris1210@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784465765; l=1535;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784465765; l=3053;
  i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=tbFY6fp4UldEdOFPWG5qshyGEZr0Xdq96AYMiaJs3fE=;
- b=AKmLrPfrqg8Co2eNp1+tUZNc8ZaIcc3Pvtn1ics7ne1WDLCCZGIYXPUI1ATsLWt53k64N9Qzg
- WbSIB/hP1e3CcRt9EbIhunGN2mAKRvXXd16B7GHliBKtoD87uKcy6tp
+ bh=n1zAO1jW4yVvRL07k2kgrVmGbmcyj6ikcTfAZVsVbnQ=;
+ b=/EAz0qSfa1ZrMbHJH8QpbLX7wPvSeQecXMcU4Gf/i/q6LbRiAJ+x12SC7uRmvXyky0/DKO7rt
+ pqai+Ji7fWLBLYYsUDJPeM5oyFKLNgt4Z1de4LkHeqmHlYvJzx6AW9s
 X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
  pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
 
-This patchset replaces PTR_ERR() in format strings with 
-%pe format specifier across the USB subsystem. %pe prints 
-symbolic error names (e.g., -ENOMEM) instead of 
-raw numbers (e.g., -12), making error logs more readable. 
-These patches fix coccinelle reported warning: "Consider 
-using %pe to print PTR_ERR()" in usb subsystem.
+Use the %pe format specifier instead of %ld with PTR_ERR() for printing
+error pointers in imx_get_clks(), ci_hdrc_imx_probe(), and
+ci_get_platdata(). This prints symbolic error names (e.g. -ENOMEM)
+instead of errno numbers (e.g. -12), making error logs more readable.
 
-The patches are grouped by subsystem:
-  1/3 - chipidea
-  2/3 - miscellaneous USB drivers
-  3/3 - typec
+This patch fixes coccinelle reported warnings:
+./chipidea/ci_hdrc_imx.c:452:5-12: WARNING: Consider using %pe to print PTR_ERR()
+./chipidea/ci_hdrc_imx.c:468:5-12: WARNING: Consider using %pe to print PTR_ERR()
+./chipidea/ci_hdrc_imx.c:222:4-11: WARNING: Consider using %pe to print PTR_ERR()
+./chipidea/ci_hdrc_imx.c:222:24-31: WARNING: Consider using %pe to print PTR_ERR()
+./chipidea/core.c:684:4-11: WARNING: Consider using %pe to print PTR_ERR()
 
-All patches are compile-tested on x86_64. Please let me know if 
-any more testing is needed for any patch. 
+Compile-tested only.
 
 Signed-off-by: Subasri S <subasris1210@gmail.com>
 ---
-Subasri S (3):
-      usb: chipidea: Use %pe to print error pointers
-      usb: misc: Use %pe to print error pointers
-      usb: typec: Use %pe to print error pointers
+ drivers/usb/chipidea/ci_hdrc_imx.c | 12 ++++++------
+ drivers/usb/chipidea/core.c        |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
- drivers/usb/atm/usbatm.c               |  4 ++--
- drivers/usb/chipidea/ci_hdrc_imx.c     | 12 ++++++------
- drivers/usb/chipidea/core.c            |  4 ++--
- drivers/usb/core/hub.c                 |  4 ++--
- drivers/usb/dwc2/pci.c                 |  4 ++--
- drivers/usb/gadget/function/u_serial.c |  4 ++--
- drivers/usb/misc/usb3503.c             |  4 ++--
- drivers/usb/typec/mux/pi3usb30532.c    |  8 ++++----
- drivers/usb/typec/tcpm/tcpm.c          |  2 +-
- drivers/usb/typec/wusb3801.c           |  4 ++--
- 10 files changed, 25 insertions(+), 25 deletions(-)
----
-base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
-change-id: 20260718-usb-ptr_err_patchset-7c5d1547bee7
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index 56d2ba824a0b..7bfe37ed68ae 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -218,8 +218,8 @@ static int imx_get_clks(struct device *dev)
+ 		if (IS_ERR(data->clk)) {
+ 			ret = PTR_ERR(data->clk);
+ 			dev_err(dev,
+-				"Failed to get clks, err=%ld,%ld\n",
+-				PTR_ERR(data->clk), PTR_ERR(data->clk_ipg));
++				"Failed to get clks, err=%pe,%pe\n",
++				data->clk, data->clk_ipg);
+ 			return ret;
+ 		}
+ 		/* Get wakeup clock. Not all of the platforms need to
+@@ -448,8 +448,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 		pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
+ 		if (IS_ERR(pinctrl_hsic_idle)) {
+ 			dev_err(dev,
+-				"pinctrl_hsic_idle lookup failed, err=%ld\n",
+-					PTR_ERR(pinctrl_hsic_idle));
++				"pinctrl_hsic_idle lookup failed, err=%pe\n",
++					pinctrl_hsic_idle);
+ 			ret = PTR_ERR(pinctrl_hsic_idle);
+ 			goto err_put;
+ 		}
+@@ -464,8 +464,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 								"active");
+ 		if (IS_ERR(data->pinctrl_hsic_active)) {
+ 			dev_err(dev,
+-				"pinctrl_hsic_active lookup failed, err=%ld\n",
+-					PTR_ERR(data->pinctrl_hsic_active));
++				"pinctrl_hsic_active lookup failed, err=%pe\n",
++					data->pinctrl_hsic_active);
+ 			ret = PTR_ERR(data->pinctrl_hsic_active);
+ 			goto err_put;
+ 		}
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 07563be0013f..09db8a4eace2 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -680,8 +680,8 @@ static int ci_get_platdata(struct device *dev,
+ 			/* no vbus regulator is needed */
+ 			platdata->reg_vbus = NULL;
+ 		} else if (IS_ERR(platdata->reg_vbus)) {
+-			dev_err(dev, "Getting regulator error: %ld\n",
+-				PTR_ERR(platdata->reg_vbus));
++			dev_err(dev, "Getting regulator error: %pe\n",
++				platdata->reg_vbus);
+ 			return PTR_ERR(platdata->reg_vbus);
+ 		}
+ 		/* Get TPL support */
 
-Best regards,
 -- 
-Subasri S <subasris1210@gmail.com>
+2.43.0
 
