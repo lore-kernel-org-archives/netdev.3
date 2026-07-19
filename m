@@ -1,77 +1,82 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515C7279DB1
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524CB2F3C37
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784498549; cv=none; b=YzFi8BPcXlZbCXE6paAQAVdmevgV2Ado79KW59AWzr9jjMlpFusBgrdTxHfqIGw6AJQXQ0ErxVgS+1Kw2welHxSXNQhdsKPPDIhHlc+4NwUJeqgQWvC78cTMh9NVrb9JG18UufckzitPclav/zvOXWI6HDdeQ8zbNJwdPMJ7obY=
+	t=1784499335; cv=none; b=ilhZsnKBq5ZEzO4Khli05tRnFUS5CtYUxqhb4UQN2KPZcfhHDyrCTmgbEFK+KSJbzFdVbcoRi75DLdinJE751OlZ8KytiDrpql7JgTpgu73nqgcxQm7doDnrDFASe7YRLNr0tvkvVKGMR0YLDEK5NSWAG32rktU3FhOMPoJ45XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784498549; c=relaxed/simple;
-	bh=0w+3lDYbj5Tk1FVUEhvs9fuaoqfoYazTfOE0hL658ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D5b/+ClSeanxvZeXsQbnCkx6gRq2UzKmyMGxH52qIgjsxGO91y5LaJSWwv2Nps3uS1wqub73MLKXIqKhSf81aaM4WwRXvrVmvG+yzNqZ0qR57q4/zwj1Gt3qcQUwCYWwfoWWyZnej8r2LUX8nN8Qtb1ohPBeqL6ZtYD1d60omnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJM3fmfg; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784499335; c=relaxed/simple;
+	bh=phqWj/Y9V2U1q3g+xUxQmFCZQ+uhizVr+3ljUR4LdUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NSElKm22ainXX8DI5brERvJPl0Qtvip3hS69YWvBQnLWaCkHlc3rHMCAHpGVU3IK86GC7e1shez6YTvhjIJh+Qkh0Izg0eIPiAXQLkeeMAqQzNhvv25FRM33ZmIBLRJkEVaULuYvgg2MDKVm6FLXK7SF1cRV+nGCOGrp+QDK57U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=iQtrT/0k; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJM3fmfg"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso6165684a12.1
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:02:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="iQtrT/0k"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso66245645ad.2
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:15:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784498548; x=1785103348; darn=vger.kernel.org;
+        d=asu.edu; s=google; t=1784499334; x=1785104134; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZfvhkooxWj3CsP9ZhhIe5Neuekb+2Nv4jVoCxZTmOkA=;
-        b=ZJM3fmfgYwHqQWUHphdytUiCB2LMtJBGbKL44OG1RqC104Jk4FQPnZz2D7OSq81aoh
-         swpedFNom5QSmb2aAYc5Ii94fUV75vJ/yctVavIoeQrrJcoZTvYWvGd4cwfoRkVLkjnz
-         VDKFHe/e6i6QwvJCyM7fu6nayNUdvhobnVpa6hk9TYiI/P2xi1LMhAiadx8N8atIwqEu
-         8Q07gFpBAEZ3BRun4IXHCbfY6D9GnZ8wJyerU5GyE8lGtDVyhH76bKV4pY/V4+nQFDlJ
-         wr8BZVf81egXOEqorGeBTpel/dc5ZFDEMiSaAWJLXtCUWuEm1MkE0ayLrcCL3AWTARxO
-         wVQQ==
+        bh=rBbMwui+/L0pgrSCs8qYX8BN/DRimeZ19odA05vUJ9o=;
+        b=iQtrT/0kRWGXXzisfc131QpJKoAa4lVVmxVGW4ANgdNreHOHbuG17v1lPZ12rQvw5F
+         llW7nImRLEfG0XhE73Fqu/K8+tTMYkg9v8fF9zVaexLafkCV2WzRhTtRhgk+rJ9lH2Ym
+         DuZXEyuWJEWlLKYvPZsGeyztfUl62F5eshkFKHmAPxvIE2yioAG6+NXr8ZHgYHvC8BdH
+         MO1MiSJDyN8u0ywxYtnsNW9w0i3NIS0Ck8KaeKaQZSei3zX9fgAYTFOpuU+PzcBcGlKf
+         EV0n7UU80iWqOpIp0Vo69eoUai3DzpyR1u+r3IqM9eVbuASrcMLmiVC1MhD/H8KArPFi
+         7MvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784498548; x=1785103348;
+        d=1e100.net; s=20251104; t=1784499334; x=1785104134;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZfvhkooxWj3CsP9ZhhIe5Neuekb+2Nv4jVoCxZTmOkA=;
-        b=N+IbrINLxJ5ypgJxiVNrNG9JziET1CXeCdGq1HlQDEkMt1sRupSfswfRmK3d4ro4Ih
-         QXmqLdVD7Jq7KiA/JHi3Wn5GOGiRpIeaXFd/nmkqNP4LqX1lupDhTzI0ER9cfCNpgAfZ
-         tC41SCaKvYrtH6YXuklHh7x7oHruEuHTBeVxExuLieKK7GPp5qxwE9i1f6m+auvjG3mA
-         UJzzUoJ1CJPB+7m8q8N9UtnLlwTQqxywn4cGR2ebUsQlLLPkeezAU1lLuDYXSc+ZytbK
-         I7zjUUNvtrD0Et4Knpb0Y2X5PIDU37Dv56IAfBjA/l3OXQG1/gkFUgopPTAzuJgvaEld
-         GYDQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqqxudf5c4p9MOAtB1TVwwXIbqVEVosFIL/Ru4ZQPh67/FfH1j7CoR/3E4fexp9k2jhkVExIto=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2HOkVRykrbMz0fRGcT83mgZh0i7wo8mgkjsYEscXrtyJp46Yk
-	wr8b0SE5IOyLGHqB12CDroSm35aNOTBaZHkSwfkY16b3dln5ZibO63/G
-X-Gm-Gg: AfdE7cn7WKcWd+nMEe0FpCwm1mixk/mkVh5r4zsaowqTwT1J59OpqTJTWDWvjmqIjWz
-	FuCTmU84YtlbR54viBPpi0bQsr00JsIdU0bcWEAul5AgzKL3ikNDthHlObNqQ7gK1429fjq/isB
-	V/UjJ/63gUFa9zrwpQsfx5mvSOcCaxElz7Iu5LTcwXRQ2S0Bt7MY858jsIAcp+CnTLoecHSan3b
-	phvMon7YG7EThntgKut/NHugCEkvjxK3Mk5fDjZF/Pfdg34WCrpdsq3Zg6auVEcTXjT0lxYsmp9
-	91egTXBF6eE6MicucsrvGeHlUBiFyjFUHLqDo8J+LDQ8D+I0wiC4+wMdAkzFNUAYi5KOtsbs/SL
-	yECJqnSJR4vEqYhJem0GSOyaUn4beOGZE7wpOt4rXRFEiyGllnHbA/T6q1R1BA1wDC3uGh+Fez9
-	NAPoA=
-X-Received: by 2002:a05:6a21:a382:b0:3bf:96c6:78a9 with SMTP id adf61e73a8af0-3c3ad665b3fmr11748627637.2.1784498547566;
-        Sun, 19 Jul 2026 15:02:27 -0700 (PDT)
-Received: from phi.nguyendp ([116.86.160.247])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3142a1de21asm29507484eec.23.2026.07.19.15.02.24
+        bh=rBbMwui+/L0pgrSCs8qYX8BN/DRimeZ19odA05vUJ9o=;
+        b=rF21j1hbFFhjktcHuA9HbzACwFDyhxX0Tec9brVfh7S66HGySyeZ3KWKnYu9a1I/j4
+         4hCru9V8WM2pUdbeoVhV/GSjSEZQPXOBKw44aZ1E6c2sLt1+lxK/ImItIWT3aUmrSd6u
+         vKykeB81BeV5kYFRIrRO7CxDv8b/y6nU901nnGsIwrWlLfKJPP6tEeGqYbwcYa36uxdO
+         PXlpke4NwdW6AoO7fdXhMYmtfNhUTPcdCofDsP1jn9Voh1lr+HrOAPbaBaEe7NLssD2h
+         1LrJ7W2Ue/4dqXjLmjhHVoFkwQz8x+CjioXxOcTDsU0DKqAIx53W+hxA9ktagX0olyNo
+         v5eg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro02azjMO4SfnFD0ygFDjv3j7Rg41s+qViT/wEWs6DuS0nGqSGSpBu2/mDV5MxY26EMUsV22Rk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEp8Unwsftmvk38b6lwoecB7LfoclZlfAg7Pwr982c42PTjkVR
+	tLx2IKbS9/1rm17pK02i/kWm3eJFUgGr61/B8yF3mEPvBQfdHylpngwdefD40L+3Ug==
+X-Gm-Gg: AfdE7ck1sY/TLqUZTzXfQiEeJMVDsV1MckeIsG3yPGbJ9KYJ2d4IyORqqC/xDErTIzk
+	UBHxYoA+2KLPj2hUbWTF0v8RD4k8MO/hnfiHJJV7vWzRKByI2Wq6/brk+8KW2U1Bepp2T/Gja/j
+	LFSColka8mx7XSYometi74+Bt23XxBlFo+w6B6wFfJZHqE01ADzi48B8feuRSr7iQvf0NSucO2M
+	hEvnzExZeQKN5xMLT/vwLh4S2e06Nu5uE3riXQwkNLPmiCHetFEQCy0xy1A+Mzi88VLig+IRYPw
+	BTceBFrjKkdBUb3ZY6YXg+54JiVYGO3l49aIBVIFWeZMkOyqXbyk8EnoOcpse4MXm5vl5VWtmms
+	bEgV664arYtF8zFRO9I/hO6nnmRJOuxeksSoMWnjov9VlnrKK6ZKdQKqwcSXNDCFy/sjKKfmtLp
+	fMSOHdS1Y=
+X-Received: by 2002:a05:6a20:c783:b0:3c3:90de:60e9 with SMTP id adf61e73a8af0-3c3adaa078amr12650690637.62.1784499333666;
+        Sun, 19 Jul 2026 15:15:33 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cd6e6esm24438644c88.13.2026.07.19.15.15.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 15:02:27 -0700 (PDT)
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+        Sun, 19 Jul 2026 15:15:25 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
-	virtualization@lists.linux.dev,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vsock: use sock_error() to consume sk_err after connect timeout
-Date: Mon, 20 Jul 2026 05:57:47 +0800
-Message-ID: <20260719220103.684489-1-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Subject: [PATCH nf] netfilter: nft_payload: fix mask build for partial field offload
+Date: Sun, 19 Jul 2026 22:15:23 +0000
+Message-ID: <20260719221523.1336739-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,39 +85,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After vsock_connect() exits the wait loop due to sk->sk_err being
-set, the error was read but not cleared. This left sk->sk_err set
-for subsequent operations.
-Switch to sock_error() which atomically reads and clears sk->sk_err,
-so the error is consumed when returned.
+nft_payload_offload_mask() builds the offload match mask for a payload
+expression that covers only part of a header field.  For a partial IPv6
+address match (field_len = 16, priv_len = 1) that shift is 1 << 120, which
+is undefined on the 32-bit int operand.  It also trims only one word, so
+the remaining words stay 0xffffffff (and when priv_len is a multiple of 4
+the trim is skipped entirely), leaving the mask covering more bytes than
+the rule matches.
 
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+  UBSAN: shift-out-of-bounds in net/netfilter/nft_payload.c:278:20
+  shift exponent 120 is too large for 32-bit type 'int'
+  ...
+
+The match is byte-granular and struct nft_data is zero-initialised, so the
+correct mask is simply the first priv_len bytes set to 0xff. Set those
+bytes directly and drop the word/shift trimming; this removes the undefined
+shift and no longer over-masks the trailing bytes.
+
+Fixes: a5d45bc0dc50 ("netfilter: nftables_offload: build mask based from the matching bytes")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 ---
- net/vmw_vsock/af_vsock.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/netfilter/nft_payload.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 622dbd046799..43eddc33ed12 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1847,14 +1847,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index 391539a1ceaa..8a4472fd77d9 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -259,9 +259,7 @@ static int nft_payload_dump(struct sk_buff *skb,
+ static bool nft_payload_offload_mask(struct nft_offload_reg *reg,
+ 				     u32 priv_len, u32 field_len)
+ {
+-	unsigned int remainder, delta, k;
+ 	struct nft_data mask = {};
+-	__be32 remainder_mask;
+ 
+ 	if (priv_len == field_len) {
+ 		memset(&reg->mask, 0xff, priv_len);
+@@ -270,15 +268,7 @@ static bool nft_payload_offload_mask(struct nft_offload_reg *reg,
+ 		return false;
  	}
  
--	if (sk->sk_err) {
--		err = -sk->sk_err;
-+	err = sock_error(sk);
-+	if (err) {
- 		sk->sk_state = TCP_CLOSE;
- 		sock->state = SS_UNCONNECTED;
--	} else {
--		err = 0;
- 	}
+-	memset(&mask, 0xff, field_len);
+-	remainder = priv_len % sizeof(u32);
+-	if (remainder) {
+-		k = priv_len / sizeof(u32);
+-		delta = field_len - priv_len;
+-		remainder_mask = htonl(~((1 << (delta * BITS_PER_BYTE)) - 1));
+-		mask.data[k] = (__force u32)remainder_mask;
+-	}
 -
- out_wait:
- 	finish_wait(sk_sleep(sk), &wait);
- out:
++	memset(&mask, 0xff, priv_len);
+ 	memcpy(&reg->mask, &mask, field_len);
+ 
+ 	return true;
 -- 
-2.53.0
+2.43.0
 
