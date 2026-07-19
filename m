@@ -1,68 +1,151 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C534435975;
-	Sun, 19 Jul 2026 16:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D6F28E0
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 16:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784477639; cv=none; b=qqT3uElZwv3QuCN7f/wY09fLCpX/ZEgdoa89f8ZXqsoH/lCyBgr90hDfkeaiebMP2bTVQHZY3PLAmiMOjHHSfsqO+IlHTue4JMyLZt9QAzjZ4BM+0sbwkb8F7z+5oX+FxQSWX43giCZGXdI2tAmqCKKx0xNmZHoiKvcYTG9gweQ=
+	t=1784477821; cv=none; b=nqpHWsDHhdehXtJokVbieudv/O3whmocTRDGFbQy6f3VsqCKopCr+hqNWRfDPCXc82J5NIbbFPMW0/RcpYE1WKIQwAOdRPaYAeps1Q88wQz2+rLFnF2eYPsrxfJGU9/G7UWwZiCCF5GHs7a6poQSSXTOCnZ2t640GfFGlhPr9WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784477639; c=relaxed/simple;
-	bh=yVnRBy4OnmqJW6eN/DkQv2GUcbJIqgy5DP6v6vz2czs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JKDubcqOF9R4Ha1GtxEtkKrNJWNyXr+05PWHxs0Q927rSQcQx5IfdaRqS57r8hxP04rbUzuKBAQRA51Pod7iqBKp9mswoaH/fMZJfwyR5+JkhnJqUDpbmgUP7k/9H37A8JcANNDaACkJjz8uxZ3iiTWayxAsBadETw1oKJWtBZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IUnTmK2A; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784477821; c=relaxed/simple;
+	bh=iSGrBa9MrZpnBNiL/pSvSPtiuYn2CkLBSU+mghu130o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UZvaeQtsaWDa2Pm1/A4mzY6/tmT/N1E10cO3HoA0J2VIChjmcsfH48M1Sx2k97T0m9Ko/LFZ1QRclcZIZk/fxWFRwfvRf8Y1mSgIVSWBW1JwZ3BezyBCc0Xisz8B/Rgwdto+vQd3hd9CSYV/UrqngeMHvB/4lEZmqQ0uHgNXjy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxqWL1aY; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IUnTmK2A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=75qj38gUt9K8kC/h4fbdxHuyt0mz8emxnm7YZkvJPt8=; b=IUnTmK2AhPCSYk1gnkvX4O1kVm
-	gfw+TWnesSzskcNAFGUgUbsqBZEwqQCQhZjn1APM4nmmxIspxizsk/kx0xtItzznFM6t3UEdk30nN
-	S6qg60Fe/CaPVmDQZBrBQDvKO+NA/N0TUZA1WCFE9iiqlc3NRDxgTTsu64l1evggmBWs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlU9D-00D6hX-8z; Sun, 19 Jul 2026 18:13:47 +0200
-Date: Sun, 19 Jul 2026 18:13:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
-	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
-Message-ID: <ae82997f-537e-4a2d-abce-d163fcf9d868@lunn.ch>
-References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxqWL1aY"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cb2513ec378so660009a12.3
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 09:16:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784477818; x=1785082618; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WsGdm1kAKTSurBA0TqYfEfEn/QcPy7r5m6E0+HTCYIw=;
+        b=DxqWL1aYc8w6Y2MR25y5MkHQy/eZV0OavN1GzY23KlH+Xj5TE4UqkzJH6CGQuUIURI
+         WP1q8yQkkrX1hcAZQv8aOU7V7zFyJIaTOR0i8VwX2aDD0NwGzWcTYdHmidxVOHI18l4l
+         bXiU9nxThyC1xzPA9pxEQtVIYOpaUjgd7el6o4aNnV+rqLOxhlQwQl78+AQALCTbLu3z
+         lolhIaHuFJx0HfVft0iUzvOKaT52fWEWOMsfh0gcYbXF61x6KrvUhFbzPbhCfjmJyzzJ
+         D+v+H6QyaxGUh5AXqdMzdAwkQq9ZozMEdAyJMB5AjAGOUBocCCFN6s44eOt+mFma/ACD
+         eJjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784477818; x=1785082618;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WsGdm1kAKTSurBA0TqYfEfEn/QcPy7r5m6E0+HTCYIw=;
+        b=VaW4JDdWQ9faNEUiiiAUvkyoB6elwe+458SPwAyp+amcpJPLC1v+hbgwBweQeGWJv5
+         IQGlz4j7cDHicR6P/iIsihf2KwK/CD7oczeIsjbsK4s6zlqA4lHmVfGcIRNLzmO7vx+F
+         zvo3RcnfMa6AUISun6bw8Fzie+QJWnNEoVDJGtf18n/WEMVjBubdeWDk1gBEgZXgoBDd
+         19yosROTAbmZHSgebOjy9IyHJ+oFFrZt1XEwxiF9KGSe1mpYw+LuN2VQpz+VbXMpoOfa
+         jGD3DVQfwTiW1gLyytBasSnzzV3xhLot1uxUVvKLgQh0IHoQfBTdJ2ia2kgaNZNG7MjK
+         lXjA==
+X-Gm-Message-State: AOJu0YxnZcdfKkWa422KpBOcr/9cXWN/TI40HA4IghDTv2mlxpzJp6x4
+	kJYbPBrgsv1oBRUH4Vj4stV5D9SDHEyxwrETKrO0DsnstDA1K/b2fMRU
+X-Gm-Gg: AfdE7cl1lAoXkWvE0Xs82rpSgpHQ9zQ5K1QY5UqXv4lZxWKM9flbob7KBQ6Mr2Bg30U
+	mPi/HLJ7lkYq8CjUPVpEfe8PmNeTdp2nos4Tk77J8mND64nnkkMeG+r9A/VA4Psyh/AIPSuomLz
+	mPJwpTTR4rbGP5P3h8MWdvHYIpNYP89gEnX5K52DTeSgzkruXuR0ils1aE1d3kXDaxqGegDGGGT
+	K0Z+wcVuULhtq68YEruvgpz1xFqCbPd8Q2idK5f9ww546tD3n8NxyNSX0cWuYn3ohp7tSocvOek
+	sWBaqWYnsJYPGwEVjcuDwpg3KF0W7iYIQqrgY2r4BLkjWiaHSv19Gm7nheFAjgP56PYTgpw6x87
+	63wcdlCSh8n8TdJlrVQl2Vf/RAU4Ohln9qAbYTbhB7ILdsO2IfagzPRbLRF+W0ekuyfW4vndZYl
+	WyoC9u0as2DRiqSa3uVTJ6TuJQ8RhXO5cEugN2KMMVakmmlwPYrxuWo4smIOs=
+X-Received: by 2002:a05:6a00:ad2:b0:846:8b0a:1536 with SMTP id d2e1a72fcca58-84c294da01amr8277970b3a.4.1784477817551;
+        Sun, 19 Jul 2026 09:16:57 -0700 (PDT)
+Received: from localhost.localdomain ([14.218.106.255])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c3793ec61sm3018204b3a.42.2026.07.19.09.16.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 09:16:55 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	bpf@vger.kernel.org (open list:BPF [L7 FRAMEWORK] (sockmap))
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] bpf, sockmap: Fix cork use-after-free in tcp_bpf_sendmsg()
+Date: Mon, 20 Jul 2026 00:16:30 +0800
+Message-ID: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
+Content-Transfer-Encoding: 8bit
 
-> Looking at this, I'm wondering if we can't just get rid of SIOCSHWTSTAMP
-> handling in phy_mii_ioctl(). Looks like we can ?
+tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which
+drops and reacquires the socket lock.  Its error path tries to decide
+whether msg_tx names the local temporary message by comparing it with
+the current value of psock->cork.
 
-I'm not sure about that. We need Richards input.
+This comparison is unsafe when two threads send on the same socket:
 
-The code in phy_mii_ioctl() allows the MAC to be bypassed, it goes
-straight to a PHY based stamper. It could be the MAC has no idea the
-PHY has this capability, so it has not implemented the .ndo?
+  Thread A                         Thread B
+  msg_tx = psock->cork
+  sk_msg_alloc() fails
+  sk_stream_wait_memory()
+    releases the socket lock      acquires the socket lock
+                                  completes the cork
+                                  psock->cork = NULL
+                                  frees the cork
+    reacquires the socket lock
+  msg_tx != psock->cork
+  sk_msg_free(msg_tx)
 
-It might be we need to hoist the code from phy_mii_ioctl() into
-dev_{sg}et_hwtstamp()?
+The stale cork is therefore mistaken for the local temporary message
+and freed again.  KASAN reported:
 
-	Andrew
+  BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
+  Read of size 4 at addr ffff88810c908800 by task poc/90
+  Call Trace:
+   sk_msg_free+0x49/0x50
+   tcp_bpf_sendmsg+0x14f5/0x1cc0
+   __sys_sendto+0x32c/0x3a0
+   __x64_sys_sendto+0xdb/0x1b0
+  Allocated by task 89:
+   __kasan_kmalloc+0x8f/0xa0
+   tcp_bpf_sendmsg+0x16b3/0x1cc0
+  Freed by task 91:
+   __kasan_slab_free+0x43/0x70
+   kfree+0x131/0x3c0
+   tcp_bpf_sendmsg+0xec3/0x1cc0
+
+msg_tx can only name the stack-local tmp or the shared cork.  Test for
+tmp directly so a changed psock->cork cannot turn a shared message into
+an apparent local one.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/ipv4/tcp_bpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 8e905b50dead..a30475afb6f8 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -604,7 +604,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ wait_for_memory:
+ 		err = sk_stream_wait_memory(sk, &timeo);
+ 		if (err) {
+-			if (msg_tx && msg_tx != psock->cork)
++			if (msg_tx == &tmp)
+ 				sk_msg_free(sk, msg_tx);
+ 			goto out_err;
+ 		}
+-- 
+2.43.0
+
