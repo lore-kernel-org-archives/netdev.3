@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F70A2C86D
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 11:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64511380FD8;
+	Sun, 19 Jul 2026 11:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784461426; cv=none; b=KtbOyIgKBQTuxu1IH4a6tMeDp/OS3lDBfn2J/+RXKt1m4GiI0P8RZfKtk5qVlI4bxk08jRJ12RRim57IqzSFh+xy002c0Fdqp9sD6xM48KXKzSgBSGmojypw9nr9ryze5A5Z7oiVYUQKMqpRFB6gCpjvxcrdkBm+ajRokEWOgmA=
+	t=1784462052; cv=none; b=KUY31mcwcjaLIlRq/wsiZ4tw5U5WHohhomdVq/NxbBSTumy4vMAZDbNLLxyH34IXXVl97X+m0M9xbr+sEV0mmQ7cl+Hg94qf8BCl4AeeSU/XWPJ1rs36GKt4u0OBiS442nYSo2Z/NB1zJ/flQRLwqnYW1TCxAWLW8xKTjfYvkOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784461426; c=relaxed/simple;
-	bh=HafvQRZj2UiZOi+Q8XdZFMeFMnEAmQog9ECyBaJnlck=;
+	s=arc-20240116; t=1784462052; c=relaxed/simple;
+	bh=ysu496wkYyDPNy4UtjkzhheYLJSstmjIQsD58PvkO0E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WO9Kds9fmPJqTF1Rx09iVBpu+mdzKI8Z3rIWJM1ZlWihLH7kStf+aab837q97YtpTh+vLmyaacICmdrLW9PIx/S/cf1jJE8nEyJijvGZhacb2NmG4WkVKlV4mmkPbl0ZF0YFEK0WwQB/HHXDFYDflYsi5eJM/cADz9bE4Xc0HoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=1CgpktTq; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=hd5w6iJqJm1/fPKAyI+/aWaGjk9pCUOpL2//dYdwzjGk+3JyLCtnbC7P+3gsBoocRoAABrdpBecLxkvsXrHPxlNuihX8UfXwttKndVbO/mexRT7l9LfuNrfFsmnrL+FpGFpiX82Im7xk96/WuU7ill3UEJ2tOd0ZUguY+RCuTsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=PeQUuiVW; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="1CgpktTq"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="PeQUuiVW"
 Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D70D55340207;
-	Sun, 19 Jul 2026 13:43:42 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id AC97253402AF;
+	Sun, 19 Jul 2026 13:54:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784461423;
+	t=1784462048;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V9xnyyY+pb2l/4K941Gqw3pYlWjnRuJOhqA4doL9n4E=;
-	b=1CgpktTq2JNY0KsD1MOTxZRE9qFUfxjssdWwKuBM10OnjIYPXp7jzOKm/dMrHBjRlHjBZG
-	ap5BRtjwJEa3F5EIqur8N0XB9So0b2fuDb10iq5JNfu3QrIEYBhHOExB1MydWDVRGryPUM
-	Y2u9Ds5m4vriYuf2QjlSVbdaDsvhFgk=
-Message-ID: <e78f0e29-3079-4d48-a5b7-11c663e1360f@ixit.cz>
-Date: Sun, 19 Jul 2026 13:43:42 +0200
+	bh=0oud3ONW6zV/T8t9DbOU+1lK5iOAairrRLcNu03G540=;
+	b=PeQUuiVWWi/1ZwRA9YwLOS7isbeGBHspvVhEHyrWJkScpQ50QQpWFgjk/W8m6hjZNO+lDH
+	Hjl3+PQj8EFgJuXrvPO13/mo9fS89V9KP/h84ygkPeGtZLXcySWc9cWvGIaD7PuKvod/sj
+	CmqldE5KZ+JX4N27EoCWrln5ODsT7GM=
+Message-ID: <bafc5a4f-de22-47f5-b706-603dc168b7ff@ixit.cz>
+Date: Sun, 19 Jul 2026 13:54:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,16 +41,17 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: pn533: prevent division by zero in the listen
- mode timer
-To: Yinhao Hu <dddddd@hust.edu.cn>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, David Heidelberg <david+nfc@ixit.cz>,
- Krzysztof Kozlowski <krzk@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Dan Carpenter <error27@gmail.com>, dzm91@hust.edu.cn,
- hust-os-kernel-patches@googlegroups.com
-References: <20260615103547.1599528-1-dddddd@hust.edu.cn>
- <20260616140209.GU712698@horms.kernel.org>
- <c14e4b47-0cc0-4141-b0d8-f80633594402@hust.edu.cn>
+Subject: Re: [PATCH net v2] nfc: nci: fix uninit-value in the RF
+ discover/activated NTF handlers
+To: Sam P <sam@bynar.io>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260626090301.2139500-1-sam@bynar.io>
+ <9f73948f-7045-4ef3-bc8c-731fde943c1e@ixit.cz>
+ <edfa1b87-a28c-40ca-85ca-e11ac3482518@bynar.io>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -96,28 +97,45 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <c14e4b47-0cc0-4141-b0d8-f80633594402@hust.edu.cn>
+In-Reply-To: <edfa1b87-a28c-40ca-85ca-e11ac3482518@bynar.io>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-[...]
-
+On 29/06/2026 14:23, Sam P wrote:
+> On 27/06/2026 19:41, David Heidelberg wrote:
+>>> Assisted-by: Bynario AI
+>>
+>> Hello Samuel,
+>>
+>> the fix look good, may I ask you to follow the Assisted-by syntax as requested 
+>> in [1]?
+>>
+>> Thank you
+>> David
+>>
+>> [1] https://docs.kernel.org/process/coding-assistants.html
 > 
-> If you'd still prefer the lockless accesses marked explicitly, I can add
-> READ_ONCE()/WRITE_ONCE() in v2.
+> Hey David,
+> 
+> The :MODEL_VERSION was omitted as we use a range of different models and 
+> versions in our pipeline, making it hard to attribute to a single model/version. 
+> As for the AGENT_NAME, in this instance, would the correct syntax be to remove 
+> the spacing here (e.g. Bynario-AI)?
+> 
+> Once clarified, I'll submit a new patch with the correct syntax.
 
-Heya Simon,
+Hello Sam,
 
-what's your take here?
+with recent discussion about the tag itself, I'm fine to keep it as-is :)
 
-Thanks
 David
 
 > 
->>>   	dev->cancel_listen = 1;
->>>   
->>>   	pn533_poll_next_mod(dev);
->>> -- 
->>> 2.43.0
->>>
+> Thanks,
+> Sam
 > 
+> 
+
+-- 
+David Heidelberg
+
