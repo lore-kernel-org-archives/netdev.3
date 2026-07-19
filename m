@@ -1,142 +1,97 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A3B369980;
-	Sun, 19 Jul 2026 15:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181AD3AB26D
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784475486; cv=none; b=duz64VsNTmLTvlOM3QBtOnqtgakg9250nY6Xwikcj8b8kgsrYR1YxP9qLH52WLONkxG6SbLI28UKAz4il+92MzuO+XqjOnEAhcqdITNVruLOm/7OrpmO/dExOGViY7KpucNo4B+Z9ivivzIV5yWHrASsg26Mj7E9i3l66b4BTx0=
+	t=1784476123; cv=none; b=pChXuFYjnSC9QVfq/9nq9jIR8GF3am8fJ+tunByRMVq67nlELWZ1/xX28df8ddZbhxYHjHN9LPF3KVeS5PWwtPnAh4hXUTqheR9WyXsjb8xkBdMxlPlL3p6oKdBCvYQfoVcNctlttJnsNDHL07qQKhIy/yNcqskYPudykL1Abko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784475486; c=relaxed/simple;
-	bh=Zzq/vOwDQwtCsnJCu7PHP0cxdyQVmVT/+otVGtIG2oY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ZJO4XIMwRPzU1IuKusNVfJgI6Q1O25A0iMPVZVLmkh97DoXOFAISi61S9C1nkBQ3aeIzqWYcpKX4nyqr2ByCRmt0NoqRhVPYUpjmitKg0AFjYaJyC2Zx6+pNdBzigQb/iPgWutlpBVceXuFM6/J334aFQVFSHsy/sDHKgQzXVuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me; spf=pass smtp.mailfrom=johnericson.me; dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b=bXt/XdEk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NzlO/6aO; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnericson.me
+	s=arc-20240116; t=1784476123; c=relaxed/simple;
+	bh=NtjG5Nw5m1997/9B7PcQY1C38KxBppjF+qQjGWhTijQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MTfDCy2B7iyKgZmQ+jCTSUjUzzZD5m8vyyJ6QA686J6hmhq75zpx80rCK0foMuVfFxHPNmqJe2dE2p1dNIvWlN1lLdPWm0ActmC7TO4NXfF4u97DbSZEausaVToxzTFuNj4+pDkrRjqig3FsULNl3oNF7jJE/lqLHUdYha60Tms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlmIeHJX; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b="bXt/XdEk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NzlO/6aO"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 487A81D00014;
-	Sun, 19 Jul 2026 11:38:03 -0400 (EDT)
-Received: from phl-imap-16 ([10.202.2.88])
-  by phl-compute-05.internal (MEProxy); Sun, 19 Jul 2026 11:38:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1784475483; x=1784561883; bh=/0klKgMJWjWTA5IOqL4y9SMRwzyGgO1I
-	TdHgj+RFqUo=; b=bXt/XdEkrVOvAK/VV60T1U0+zQPmS+gnRRfWWiqkTvKQpbEX
-	+LkPxbSMAjv8LIvkEhQc+7g01TVc/akIv5QlGEn/n1wZ3bCvRnFShjlgNzeoeHTd
-	7pmOGekTe+Ac3hSbET2yN0Plw9zuLI5YqC7cV66P+NDrLmOCuuaVQeVbVpBTSNx2
-	pxN195Ie2VMXrgE/RVIlZaEtmcijL606y9AmyrGw36A+dGn5C1HFCvbVezEH6xGX
-	8ICtijuqMgdsUGcvgW5kVDZsVXK9VHjLxZKBNJpK9Dw9jaq9f9ycfJdt3pGjqGVD
-	gn6+7Z/vF13dmwH4FfJSi1fQdySveI+VKQlZSQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784475483; x=
-	1784561883; bh=/0klKgMJWjWTA5IOqL4y9SMRwzyGgO1ITdHgj+RFqUo=; b=N
-	zlO/6aO5ZY3Soy+0/1Z/b0mXxACR3bWeIAJIKMHqVeQIf1XNnvpjKLcnCTb9GgC7
-	5q5sRqXqChUpww2AeQ4LRfoqEyQs8Oo1urRGuU5tJJBpCgeIRnH75ewGu9TWcueh
-	p75ocGHnkCNH1IuZAagOnA+WoMoXHi8zBsK3deyEK/H0JkUQc89RXfLuUVJDAkv8
-	SCdm3QnWY9ZQ8FsU0D7u05Hi2NtmePWrH7AK+zRx4/SFvZD4jQpf4E7nbfR0mXx4
-	I74aTLtp0X/iy1ulb27Q6UqrqNrrgGewkzCp8Ssn2kdNy1zpV1p3qPQWLl7yijUC
-	IBDsJ2F3SQVcg598bFPDw==
-X-ME-Sender: <xms:Wu9cail-Eh1EC_b0cuNd8Lm_FIWY34TLwEbujI8RF1y079Qe-i85fQ>
-    <xme:Wu9cakphk7Ur5eA5iwo65XPp1TbU-h86PC4dPhQSXI66bZLSbt6n4tb5rEiXvq-mr
-    0K8yWOgwilQgv-mdvfW0xHoIElWvawdIv3CM4nyp5Gu_pQu6W0K5Izl>
-X-ME-Proxy-Cause: dmFkZTGytmkIp3YDmkKGkFBaMZag7I5G4FGu7nR72Crousbk4TSMw8VARR+wEIc7VVhwTT
-    KNsixzGOcTif8stQUZVOrlUrikkJUh9WkS8V7EUZd7ab2bA4sW6077Vlm/6Mx/f5ze8AEU
-    aIv/Z4kIuIz3byCkzJq+E4lH+Nayx0EERgvt9YJn7bB29mP7X32bkM2F3jgiMYMf53Boy+
-    kNvRQU4UM4H9PFhHtO/ohToimqc1mdtHeJK4iwNDpc7jL4lmoGpwQESEgTHJHYn25FnndL
-    /6wqPdlk172CBnWG8KFZg/mokaAma0Olm/kwx4NhJ57ktBKJB8BrCiabj1vS+JdTsazRqP
-    yZhTmonOi6Ps88adMIx4SChbuUNA9BgzTv9LhQXcODEeys/ABXazXGM7Qxnxd6qCqjtSPV
-    8WiX4Vl4p5iQdPvFBPv/GdlKdxsHBzXuDU1/1Hot0YWAeRNFXAa0RS/n5a48ArKtzRTlYV
-    znRItKxRorvl6keFk/RNhIizh6LObzznd4/K/m1gIy8wzM1/MWlPTX2rcuzNysVQWEC4T2
-    BbnF+UIKRxwWyRnJA3vKj8Q+VpC0wNpCFQSQ2e7P+qgLQ+qVXkaGOQxN0Q9x62xs8C/X8t
-    BinWO3KaUyUW7uJGLKltgPU4QH19ARr8HgKTuUTeLBb5VtcEopOmAL+gTRMw
-X-ME-Proxy: <xmx:Wu9caiLa-UQSVU9nm1dm6FYoTMBb2erqb-tbYJBoB8xSgQV8Yw1UGw>
-    <xmx:Wu9cai4I3QhnLfTzwo-GSZgToGgFzVdc94DIm0dH8R7QJV-Ha-UnPg>
-    <xmx:Wu9cahbvfBSm8ZEjDRYLjJfGoCehWE_ZvvkhCvwywMyAw4p7ZMVyFQ>
-    <xmx:Wu9capwnYtYDGc2ksSnMLMTVT2MWxzQP5K0Z8Ci2gVVpJMO4BPuv2g>
-    <xmx:W-9car7RnRyQ295EMu1o8QealTMaKNse6o9SDrPG8Iqz2FGobBbIEp8u>
-Feedback-ID: ieb4144f1:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5B9862CC00A1; Sun, 19 Jul 2026 11:38:02 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlmIeHJX"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-81eff3ddba4so15336957b3.3
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 08:48:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784476121; x=1785080921; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NtjG5Nw5m1997/9B7PcQY1C38KxBppjF+qQjGWhTijQ=;
+        b=DlmIeHJXO5MbY9WTp7nHuYgbjeU+2obxG5OgAIQo6C6iweCqrOzfEgrnLBr2WHFO+y
+         nBDxoOv4jMERB3yI1klFRK6kpOxH35I5iKAps69LnrjZJ6/A8ERNmtHYDPIROrRo79qg
+         iZTrKmZvTTFMcDur7DxK7AWJjveC0SJYViKCei+zA+r99v4NwjQMQM/zwz3Nbug77zIr
+         6+csbv8GCv7WvXAr6KSfhajxY1P+lfV27ldVGrR83V9pfFEuTZFe90R45tlnW+247HOX
+         O5XLCpsHx0+b9H/qiYHel42KLsPBhh6ogQwTEJWy5G4ypj7jGyjuSB+bFEEmDx1+HGj6
+         XqPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784476121; x=1785080921;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NtjG5Nw5m1997/9B7PcQY1C38KxBppjF+qQjGWhTijQ=;
+        b=ZxwOTDpq6zidvEWwl07YKK6vHnAlGHjqMN23IXJrPjtPRz9cG2kji6Q+XSdRxNPObw
+         xpIJpzx0OlsUoFFjVlJ0J35jNaqR3Qgm92FxpMV5U7laJtZpGpexEYKV+TCHVx+cJGRK
+         A4dHNuFuoju+kESHFxmCM7je06TaDIhYOdnzo9pQpSVrn8HRtj5edu+fWcA4RfNHAR9D
+         4QGAGz2ttWCnIuvQqops1hkpXcEUUP1NDn7KnDNdzXMxm19uJ+CpyCJ4jqN5+DnRn7UL
+         HbiEW6FV5XNLSe1z35KyFgvBGnMYv24FTlrVhY54XbVLv6PSFMz/7OUB4OJzHEkF3VOE
+         irgA==
+X-Forwarded-Encrypted: i=1; AHgh+RpaYPyfuW+plCPciXFEKZQBTBC3lzGzhZv82qGSTCOjDXcGsdnftlonspKBTFEjgMrWoW9/8hM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziwqW+xuVTKw5gmhzv4hfmVD3RwmjlD+X13YNshH/Rj7vfvmbQ
+	XC360V8YkbIDOr/zGKNCVps9tIwBfLu1R8A3hckG6UMchYMoM55OronK
+X-Gm-Gg: AfdE7cnXx4QnIErh6anlw9nug5cwCMJ0iAsRajR6nMNvRx9PGgEzEeK/XRZUTk4Jg7x
+	NQwXfkn3xyuBTo5XRmKZN245hNv9AL+hFKGL6Mre0XBYRy0uY8iogA5UfxVVVYs7EwCwEZNSVDC
+	IyddD3yHBL7kAO8nCApgmjmRqkcJ756if316sOgF7ZOYwPCQtK0lrqX/MzBqR61iVZiB1m4zXin
+	Qj6Y24BDnkjsFshpZp616NkZsbsULvFnXtq1P3k12doqQ+nYYM0nezh1rQnxw5CWUaEOXFGU4uP
+	FTHsbjf7dJ3u6qawM/3pW0nyybaPtnVOoY3tGThd2ECrvzy4KybP694kKOLGx1mQvGWu16sTnr5
+	V2Lk2jIGlwAhBYHaDZZisWognJTn5eG7E5x639SM1DyQyom0vOVBRSX/pHdWvzQ/y31YzMCQv7F
+	lqP3N9YxFZiD8k9mpuplSobGVGbZyux5xcGSRiYsylsHQu7v8/vlcpFswhM1cLBF5rCnhhE3/XS
+	9ugUj0DlUKX8Q==
+X-Received: by 2002:a05:690e:4813:b0:668:434d:79f8 with SMTP id 956f58d0204a3-668434d837amr1539118d50.109.1784476121006;
+        Sun, 19 Jul 2026 08:48:41 -0700 (PDT)
+Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6683b80eb49sm4769861d50.11.2026.07.19.08.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 08:48:40 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: achender@kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	rds-devel@oss.oracle.com,
+	tgopinath@linux.microsoft.com
+Subject: Re: [PATCH net] rds: tcp: unregister sysctl before tearing down listen socket
+Date: Sun, 19 Jul 2026 11:48:40 -0400
+Message-ID: <20260719154840.6830-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <259284aa1280d387c413cc34fa5e4b11ad28379d.camel@kernel.org>
+References: <259284aa1280d387c413cc34fa5e4b11ad28379d.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AudyXjUgQ8Ew
-Date: Sun, 19 Jul 2026 11:37:41 -0400
-From: "John Ericson" <mail@johnericson.me>
-To: "David Laight" <david.laight.linux@gmail.com>
-Cc: "Kuniyuki Iwashima" <kuniyu@google.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Cong Wang" <cwang@multikernel.io>,
- "Simon Horman" <horms@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- "David Rheinsberg" <david@readahead.eu>, "Andy Lutomirski" <luto@kernel.org>,
- "Sergei Zimmerman" <sergei@zimmerman.foo>,
- "network dev" <netdev@vger.kernel.org>,
- =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
- =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- "Paul Moore" <paul@paul-moore.com>, linux-security-module@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-Message-Id: <85991dc3-6fa5-4466-a0cb-b407291cdb44@app.fastmail.com>
-In-Reply-To: <20260718215855.07284fb1@pumpkin>
-References: <20260703073948.2541875-1-John.Ericson@Obsidian.Systems>
- <20260703073948.2541875-3-John.Ericson@Obsidian.Systems>
- <e6f54c5b-2c92-4772-b2f9-5c21e2ec50a9@app.fastmail.com>
- <20260718215855.07284fb1@pumpkin>
-Subject: Re: unix_stream_connect and socket address resolution
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi David,
+Thanks. The KASAN stack was observed on x86_64 QEMU/KASAN.
 
-On Sat, Jul 18, 2026, at 4:58 PM, David Laight wrote:
-> My $0.02
+The full KASAN report and C reproducer are a few hundred lines. Would you
+prefer that I include them after the --- line in v2, or reply to this
+thread with them separately and keep v2 concise?
 
-Thanks for weighing in here.
-
-> If you assume that the client isn't responsible for restarting the server,
-> then there is no strong timing relation between creating a new server
-> (by any means) and the connect request from the client.
-> In other words both the above are very similar to the client being
-> preempted at the start of the connect() system call.
-> 
-> What you need to do is hard link foo to foo1, create the new
-> socket at foo2/bar then mv foo2 to foo so that it is atomic.
-> But I suspect hard links to directories aren't allowed any more :-(
-> (Creating 'random' hard links to directories used to be 'fun',
-> you could get 'find' in a right mess.)
-> 
-> David
-
-I think I am a little confused by your answer. I am not trying to do
-anything in particular in userland relating to dying and restarting
-servers. Rather, I am wondering why it was decided (long ago, pre the
-current repo's git history) for connect to re-resolve the path every
-loop iteration.
-
-I am working on a series of related af_unix refactors, and it would
-simplify things a lot if I could make `unix_stream_connect` just resolve
-the path once before the loop, but I do not know if that is an
-acceptable change in behavior.
-
-I was justifying the change in terms of the resolve-once behavior being
-less surprising in my original email, since that reason stands on its
-own, with or without my other planned work, but the truth is both that
-and the ease of refactoring with that change are my motivations.
-
-Hope that clarifies things,
-
-John
+I'll prepare v2 after confirming the preferred format.
