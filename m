@@ -1,53 +1,54 @@
 Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9A03B0AD4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7FB346E55
 	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 18:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784485052; cv=none; b=kLgZlS1Rit30jbRSWMVJB7v+sh9llBx55O7dDN2KCq0VpiG5wPhKEUM+9vuKLIOALTzyD7/2aGOw9ABdqO6psN2tyyP/UV02n/TacZYnhCkqeTscLS7FJ9l5oEtLRx4BAALElOle4r8nBKapddlIpRXweraUZRnCaCmpsv7y//4=
+	t=1784485052; cv=none; b=Df0KpoBBS89j7k7a1pPOB40AnOY1M5ysyH+d8ea11JhlZz1krh/xwSPi+FnAd1QPtt02JTze7Std2+y0MZ/HpMLTLbMl4qDIU41aDCLgyddSQf5DKAhiwNXgijkUiQRZ3c8hYBPomQY0uit40nmShGggNUaimTW1f43bOWMWa7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784485052; c=relaxed/simple;
-	bh=n404wygmqP8tdkAMlDWgqNBMKnFKCrTzZJ8Ov74PhLA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=XP8Bwnr6FVTnnQiQd2KybMpFHv7lh6WVrj1wZ/Dd6a9qiynBskFOxTrBDOaqNENJ0AS9MqHAOc4kbIQXdFac+HXjbB3y7qCOih3MyJXsjJbRaaq7fARRZxoYnSDSMEyPiqIuotCURZirrN7oFqllJjdT6lsdfNw1ydXvUb2hsqA=
+	bh=crs/b9s5b0UVw901NN5FTW7P3cfzgx1JTMV1MUXbrdc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dcfQXmX8J9xLjM9dMTwAs75vebohLwCWGGWTM641nDrnUCuCfxGcatSKG9l/O+Fnkb4HvXExq4HsKQ+Rqk+U6v6vcavHY8wTXqXMVT8FXFkLnUg91m8rmE1ZU2JAA8N9AVFuofBxMoZagHbRFaUqTbtOR0Sk1hLQXTP3PwNCwb0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-48976713b46so8815473b6e.0
+Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4a41e3d6fe9so12697523b6e.2
         for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 11:17:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1784485049; x=1785089849;
         h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vbhB7GRct7fgnOGjQL51EwfbyLdDIfQTvmOG5SVz12o=;
-        b=koQfgF1Lsb855EJ71/iLgjLuS5PTXAHd/VbmPeb2qA9C/N8TiXqsKIJJWkpb4DwFwL
-         iw6WbohuqaqPE+3ZUWfGpwH+rJ2hF0h3bWmSnLk4uWNM8+4wWz8la5UNAEJgcOkz1+32
-         GoCyxKwSfENEGAbeN9n2XqZxuDfG3jXaRTNb9ne5TY4/j0g2TjQUsG7xrq6jP3neX49h
-         8ODI3RRnxly9aX2Gk4y8AyKDpfrlj6Re1vw1J0WrLDrrbK1Jd6S+k5MrP6yyDBgUzxFm
-         3SyOMJlS72pcc8tV3kwIYggTWweShVRXxe1JI/yTtI6XRXVdg1OyEEzMlmlp0uU5ZrLk
-         JngA==
-X-Forwarded-Encrypted: i=1; AHgh+Roz39tPDdFBiCstb/9ZFzpTs/RcfNqRAh53/AnsIKsWxg7WGqV9ih45GnsPtWO1JGD5CjkIvpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUjelv2CMtdHxUH1gpFcNd5bt6N4Ag3QCpK5mQNIom0bVS3y/X
-	1RduGAp/TKzy9hSVk4la3ED3LAxcf3IbfZoRju3bYRXf2li+KI8MKhow5wyubu2aUuE1rk8Uwza
-	zD2ugijUuhe5LZT2Sb0fDnwLjNcqU+exC59cYZ79jYdvr0fd9B0WMDe3+4ko=
+        bh=3IhFjGpG+Wpj3TAEbVXnnE0L77BBCG2fqqrXSAb+BVE=;
+        b=AZp+WnRrTaHMADMlhUR9EtZmn5ZOu6btRu+4vHFMuRr4H5AR7OI/hoyRZuJ93kfwdR
+         P61gppVQ6HUtWLL+emQxm2xFYDGOyOq9Lo5zta8RAmhUFjulabxlqbo4jpaNOBcnkyzQ
+         MweQG1mQDsmcGLy5Kn2I6TKtEc5+v96t2ESm1y2GpHlSyKkIEAo8zcL2atXbBT/9uojD
+         W7yDXw0DcKuzOsLJU2uHzTo2lISjbjkMTL29FO0FynBU4fh2+/Bi/Iir1pvClhNvFJeh
+         5djcO87YmyGtBjzutMhohb5y/S2J9LZc3ntBphp4NoQFKQHuHuMqD3PIit+v3BsegkRG
+         Lg0A==
+X-Forwarded-Encrypted: i=1; AHgh+RrdwekK+TSLBPmkMm89G9zDfPkEqm94/76ixAY3XKuqtQFOfle9KKeKmdUhJz4238NXnHZj8A4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlQOvfL297M3HR7L8uL/563O+fh4X69/F4G/1RMIi0u+kIuMbY
+	pqRejtPX5d3KOJPSb8qk8oNQJgi1riEMHOsFWcx1GyHVIYcIWsRYkKcuAgjVMB9+AmGLfRF0+DG
+	s6vU40ndBnbmSyWERE1npvH1/PlCZv14n6dW1SzMxidYsoa918MIdzVdsmSM=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:23c6:b0:4a4:744:a4ff with SMTP id
- 5614622812f47-4a4d016c4famr7580681b6e.4.1784485049258; Sun, 19 Jul 2026
- 11:17:29 -0700 (PDT)
-Date: Sun, 19 Jul 2026 11:17:29 -0700
+X-Received: by 2002:a05:6808:19a4:b0:4a3:3108:866a with SMTP id
+ 5614622812f47-4a4d01e7283mr7419073b6e.17.1784485048961; Sun, 19 Jul 2026
+ 11:17:28 -0700 (PDT)
+Date: Sun, 19 Jul 2026 11:17:28 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a5d14b9.42649fcc.6186.0079.GAE@google.com>
-Subject: [syzbot] [kernel?] possible deadlock in netif_reset_xps_queues_gt (3)
-From: syzbot <syzbot+95de3405a31a366207c7@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, peterz@infradead.org, 
-	syzkaller-bugs@googlegroups.com, tglx@kernel.org
+Message-ID: <6a5d14b8.42649fcc.6186.0078.GAE@google.com>
+Subject: [syzbot] [kernfs?] possible deadlock in kernfs_iop_permission (2)
+From: syzbot <syzbot+90c39e7098489ce1def1@syzkaller.appspotmail.com>
+To: driver-core@lists.linux.dev, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, tj@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 Hello,
@@ -56,9 +57,9 @@ syzbot found the following issue on:
 
 HEAD commit:    3f1f75536668 net: openvswitch: reject oversized nested act..
 git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=13ae44b9580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=108e8789580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
-dashboard link: https://syzkaller.appspot.com/bug?extid=95de3405a31a366207c7
+dashboard link: https://syzkaller.appspot.com/bug?extid=90c39e7098489ce1def1
 compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
 Unfortunately, I don't have any reproducer for this issue yet.
@@ -69,19 +70,19 @@ vmlinux: https://storage.googleapis.com/syzbot-assets/3140a6e2252d/vmlinux-3f1f7
 kernel image: https://storage.googleapis.com/syzbot-assets/f8a7156a6da0/bzImage-3f1f7553.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+95de3405a31a366207c7@syzkaller.appspotmail.com
+Reported-by: syzbot+90c39e7098489ce1def1@syzkaller.appspotmail.com
 
+netlink: 'syz.3.10493': attribute type 1 has an invalid length.
 ======================================================
 WARNING: possible circular locking dependency detected
 syzkaller #0 Not tainted
 ------------------------------------------------------
-syz.3.9889/12021 is trying to acquire lock:
-ffffffff90021c40 (xps_map_mutex){+.+.}-{4:4}, at: netif_reset_xps_queues net/core/dev.c:2774 [inline]
-ffffffff90021c40 (xps_map_mutex){+.+.}-{4:4}, at: netif_reset_xps_queues_gt+0x6f/0xc0 net/core/dev.c:2787
+syz.3.10493/14209 is trying to acquire lock:
+ffff88801c294210 (&root->kernfs_iattr_rwsem){++++}-{4:4}, at: kernfs_iop_permission+0x7f/0x430 fs/kernfs/inode.c:288
 
 but task is already holding lock:
-ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: netif_reset_xps_queues net/core/dev.c:2773 [inline]
-ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: netif_reset_xps_queues_gt+0x61/0xc0 net/core/dev.c:2787
+ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: cgroup_attach_lock kernel/cgroup/cgroup.c:2535 [inline]
+ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: cgroup_procs_write_start+0x539/0x900 kernel/cgroup/cgroup.c:3100
 
 which lock already depends on the new lock.
 
@@ -200,7 +201,7 @@ the existing dependency chain (in reverse order) is:
        do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
        entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
--> #2 (&q->q_usage_counter(io)#49){++++}-{0:0}:
+-> #2 (&q->q_usage_counter(io)#52){++++}-{0:0}:
        blk_alloc_queue+0x544/0x690 block/blk-core.c:504
        blk_mq_alloc_queue block/blk-mq.c:4420 [inline]
        __blk_mq_alloc_disk+0x194/0x390 block/blk-mq.c:4467
@@ -220,62 +221,46 @@ the existing dependency chain (in reverse order) is:
        might_alloc include/linux/sched/mm.h:317 [inline]
        slab_pre_alloc_hook mm/slub.c:4565 [inline]
        slab_alloc_node mm/slub.c:4925 [inline]
-       __do_kmalloc_node mm/slub.c:5361 [inline]
-       __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
-       _kmalloc_noprof include/linux/slab.h:973 [inline]
-       _kzalloc_noprof include/linux/slab.h:1290 [inline]
-       __netif_set_xps_queue+0x4d8/0x1e30 net/core/dev.c:2906
-       virtnet_set_affinity+0x586/0x6c0 drivers/net/virtio_net.c:3994
-       init_vqs+0x1085/0x11c0 drivers/net/virtio_net.c:6560
-       virtnet_probe+0x21f1/0x48d0 drivers/net/virtio_net.c:6959
-       virtio_dev_probe+0xdf6/0x10c0 drivers/virtio/virtio.c:347
-       call_driver_probe drivers/base/dd.c:-1 [inline]
-       really_probe+0x254/0xae0 drivers/base/dd.c:706
-       __driver_probe_device+0x1e8/0x360 drivers/base/dd.c:868
-       driver_probe_device+0x4f/0x240 drivers/base/dd.c:898
-       __driver_attach+0x339/0x600 drivers/base/dd.c:1292
-       bus_for_each_dev+0x23b/0x2c0 drivers/base/bus.c:383
-       bus_add_driver+0x345/0x670 drivers/base/bus.c:763
-       driver_register+0x23a/0x320 drivers/base/driver.c:174
-       virtio_net_driver_init+0x71/0xa0 drivers/net/virtio_net.c:7284
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+       kmem_cache_alloc_noprof+0x64/0x5f0 mm/slub.c:4959
+       __kernfs_iattrs+0xdd/0x380 fs/kernfs/inode.c:36
+       kernfs_iattrs fs/kernfs/inode.c:60 [inline]
+       __kernfs_setattr fs/kernfs/inode.c:73 [inline]
+       kernfs_iop_setattr+0xe6/0x3f0 fs/kernfs/inode.c:127
+       notify_change+0xbba/0xea0 fs/attr.c:556
+       do_truncate+0x1c2/0x250 fs/open.c:68
+       handle_truncate fs/namei.c:4305 [inline]
+       do_open fs/namei.c:4704 [inline]
+       path_openat+0x2fed/0x3830 fs/namei.c:4863
+       do_file_open+0x23e/0x4a0 fs/namei.c:4892
+       do_sys_openat2+0x115/0x200 fs/open.c:1368
+       do_sys_open fs/open.c:1374 [inline]
+       __do_sys_openat fs/open.c:1390 [inline]
+       __se_sys_openat fs/open.c:1385 [inline]
+       __x64_sys_openat+0x138/0x170 fs/open.c:1385
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
--> #0 (xps_map_mutex){+.+.}-{4:4}:
+-> #0 (&root->kernfs_iattr_rwsem){++++}-{4:4}:
        check_prev_add kernel/locking/lockdep.c:3165 [inline]
        check_prevs_add kernel/locking/lockdep.c:3284 [inline]
        validate_chain kernel/locking/lockdep.c:3908 [inline]
        __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
        lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       netif_reset_xps_queues net/core/dev.c:2774 [inline]
-       netif_reset_xps_queues_gt+0x6f/0xc0 net/core/dev.c:2787
-       netif_set_real_num_tx_queues+0x8d8/0xae0 net/core/dev.c:3222
-       veth_set_channels+0x46f/0xad0 drivers/net/veth.c:1344
-       ethnl_set_channels+0x8d6/0x970 net/ethtool/channels.c:187
-       ethnl_default_set_doit+0xa37/0x1080 net/ethtool/netlink.c:948
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+       down_read+0x4a/0x330 kernel/locking/rwsem.c:1574
+       kernfs_iop_permission+0x7f/0x430 fs/kernfs/inode.c:288
+       do_inode_permission fs/namei.c:583 [inline]
+       inode_permission+0x3de/0x5f0 fs/namei.c:653
+       cgroup_may_write kernel/cgroup/cgroup.c:5325 [inline]
+       cgroup_procs_write_permission kernel/cgroup/cgroup.c:5345 [inline]
+       cgroup_attach_permissions+0x28e/0x9f0 kernel/cgroup/cgroup.c:5368
+       __cgroup_procs_write+0x24b/0x320 kernel/cgroup/cgroup.c:5411
+       cgroup_threads_write+0x24/0x50 kernel/cgroup/cgroup.c:5441
+       cgroup_file_write+0x331/0x8f0 kernel/cgroup/cgroup.c:4316
+       kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+       new_sync_write fs/read_write.c:595 [inline]
+       vfs_write+0x612/0xba0 fs/read_write.c:687
+       ksys_write+0x150/0x270 fs/read_write.c:739
        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
        do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
        entry_SYSCALL_64_after_hwframe+0x77/0x7f
@@ -283,7 +268,7 @@ the existing dependency chain (in reverse order) is:
 other info that might help us debug this:
 
 Chain exists of:
-  xps_map_mutex --> &nsock->tx_lock --> cpu_hotplug_lock
+  &root->kernfs_iattr_rwsem --> &nsock->tx_lock --> cpu_hotplug_lock
 
  Possible unsafe locking scenario:
 
@@ -292,18 +277,21 @@ Chain exists of:
   rlock(cpu_hotplug_lock);
                                lock(&nsock->tx_lock);
                                lock(cpu_hotplug_lock);
-  lock(xps_map_mutex);
+  rlock(&root->kernfs_iattr_rwsem);
 
  *** DEADLOCK ***
 
-3 locks held by syz.3.9889/12021:
- #0: ffffffff9009c868 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff9002c000 (rtnl_mutex){+.+.}-{4:4}, at: ethnl_default_set_doit+0x854/0x1080 net/ethtool/netlink.c:935
- #2: ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: netif_reset_xps_queues net/core/dev.c:2773 [inline]
- #2: ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: netif_reset_xps_queues_gt+0x61/0xc0 net/core/dev.c:2787
+4 locks held by syz.3.10493/14209:
+ #0: ffff8880355be450 (sb_writers#9){.+.+}-{0:0}, at: file_start_write include/linux/fs.h:2733 [inline]
+ #0: ffff8880355be450 (sb_writers#9){.+.+}-{0:0}, at: vfs_write+0x22b/0xba0 fs/read_write.c:683
+ #1: ffff888029df8c80 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter+0x1d8/0x540 fs/kernfs/file.c:336
+ #2: ffffffff8eb99560 (cgroup_mutex){+.+.}-{4:4}, at: cgroup_lock include/linux/cgroup.h:456 [inline]
+ #2: ffffffff8eb99560 (cgroup_mutex){+.+.}-{4:4}, at: cgroup_kn_lock_live+0x13c/0x230 kernel/cgroup/cgroup.c:1717
+ #3: ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: cgroup_attach_lock kernel/cgroup/cgroup.c:2535 [inline]
+ #3: ffffffff8e9e75f0 (cpu_hotplug_lock){++++}-{0:0}, at: cgroup_procs_write_start+0x539/0x900 kernel/cgroup/cgroup.c:3100
 
 stack backtrace:
-CPU: 1 UID: 0 PID: 12021 Comm: syz.3.9889 Not tainted syzkaller #0 PREEMPT(full) 
+CPU: 0 UID: 0 PID: 14209 Comm: syz.3.10493 Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
 Call Trace:
  <TASK>
@@ -315,41 +303,31 @@ Call Trace:
  validate_chain kernel/locking/lockdep.c:3908 [inline]
  __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
  lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
- __mutex_lock_common kernel/locking/mutex.c:646 [inline]
- __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
- netif_reset_xps_queues net/core/dev.c:2774 [inline]
- netif_reset_xps_queues_gt+0x6f/0xc0 net/core/dev.c:2787
- netif_set_real_num_tx_queues+0x8d8/0xae0 net/core/dev.c:3222
- veth_set_channels+0x46f/0xad0 drivers/net/veth.c:1344
- ethnl_set_channels+0x8d6/0x970 net/ethtool/channels.c:187
- ethnl_default_set_doit+0xa37/0x1080 net/ethtool/netlink.c:948
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
- __sys_sendmsg net/socket.c:2770 [inline]
- __do_sys_sendmsg net/socket.c:2775 [inline]
- __se_sys_sendmsg net/socket.c:2773 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+ down_read+0x4a/0x330 kernel/locking/rwsem.c:1574
+ kernfs_iop_permission+0x7f/0x430 fs/kernfs/inode.c:288
+ do_inode_permission fs/namei.c:583 [inline]
+ inode_permission+0x3de/0x5f0 fs/namei.c:653
+ cgroup_may_write kernel/cgroup/cgroup.c:5325 [inline]
+ cgroup_procs_write_permission kernel/cgroup/cgroup.c:5345 [inline]
+ cgroup_attach_permissions+0x28e/0x9f0 kernel/cgroup/cgroup.c:5368
+ __cgroup_procs_write+0x24b/0x320 kernel/cgroup/cgroup.c:5411
+ cgroup_threads_write+0x24/0x50 kernel/cgroup/cgroup.c:5441
+ cgroup_file_write+0x331/0x8f0 kernel/cgroup/cgroup.c:4316
+ kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd36f79de59
+RIP: 0033:0x7f3c8819de59
 Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fd3706b8028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fd36fa25fa0 RCX: 00007fd36f79de59
-RDX: 0000000000000000 RSI: 0000200000000140 RDI: 0000000000000003
-RBP: 00007fd36f833e6f R08: 0000000000000000 R09: 0000000000000000
+RSP: 002b:00007f3c890ee028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f3c88425fa0 RCX: 00007f3c8819de59
+RDX: 0000000000000012 RSI: 0000200000000c40 RDI: 000000000000000b
+RBP: 00007f3c88233e6f R08: 0000000000000000 R09: 0000000000000000
 R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fd36fa26038 R14: 00007fd36fa25fa0 R15: 00007ffd0867c478
+R13: 00007f3c88426038 R14: 00007f3c88425fa0 R15: 00007fffbdb3ac08
  </TASK>
 
 
