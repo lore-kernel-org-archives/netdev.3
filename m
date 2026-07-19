@@ -1,221 +1,157 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB6F271443;
-	Sun, 19 Jul 2026 11:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784462358; cv=pass; b=AVCviXOAMpWBPJZmN99CWyVXI7mcalZwi27wYUN80Dtv72njz+ASiRHEZUDbxfih5u/cWnC/qjyjipUmVxC6YjI/3bbLvAPuhXt0d6OQe2rBJJ/1kFdO4NSGAZcHLZc5LipmVp92YNqb3LLLqVNPE9CoYGjwDIl7bSomFg75Cvk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784462358; c=relaxed/simple;
-	bh=NcCjt5gMEzO/trevUdNMrSOLpz2ZQci3V8J4jHSf/lU=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RFSPs30LAGgog5nlI8APArAi57ipVohCweFR+hWvi1qfHabO4a5Pva+kx23wm62YZOMVuL+0ncqcz32tUwHzG91C/XquNgwFBf0EMnXfDBQi1C6zHH/zH7gC1O0C/w1KwM3vj2AzrM/vg/p8qA4bygia4+WV9doXgqGFQqaRECo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; spf=none smtp.mailfrom=xenosoft.de; dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=WKfWFWFG; dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b=/YtPfBks; arc=pass smtp.client-ip=85.215.255.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=xenosoft.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06F313B58C
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 12:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784464297; cv=none; b=Nz7qycaFWJaazcTeIGwH6rsKjDTXliqAqOJkVW5rj4w0nrTh6MFA4xoAXJ3ql4tmDu26jZYQH8pghdCSIzQOBkDz3/C1Cb8dDh6HA5Mme0jytYi4cy9tIlCJ2zKIQgnKFDi0YgZP/Yd1y/GxHZFbzC/bdENZHD+WciUIHJ87CKA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784464297; c=relaxed/simple;
+	bh=DHZjCj81HBb1IVwJIhCz/tTWkaYvujMzuCnNK16C+UQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=tXr88fdl5tYiVaV4HY/jimFf8svKNnI2O0TpXcgNYhxW6VmY4VQZIypiXKBEbT8/S0mgLoujRYSQhsHmXstIzyAMewI0kqBP1e7i4+yV1ckj9j/lykbnqwQxQwaMYXXQXphD7G8gZ0BfijsxRAr1mq78ZPmBCMedol5MCFzXlKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=GKrQNiov; arc=none smtp.client-ip=195.121.94.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="WKfWFWFG";
-	dkim=permerror (0-bit key) header.d=xenosoft.de header.i=@xenosoft.de header.b="/YtPfBks"
-ARC-Seal: i=1; a=rsa-sha256; t=1784462320; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=NUuAoqeEzzOZUqwkc08xypSPM0JDXfZGkuoRjRe2Wsh9P/Y47p36MIK57EGXUkejo7
-    qNqnehn8Mh78/7DHJnlBRZuyIxvxjtPVlHBbNDQev1eQABjqRRbGPp8s+6mpW536S+vi
-    MjtQoNhBpzIOHYlHkItqECp+AJMrBC3iqFu4jcDHhOcQWnR0q0dt6oMkejA+VSah8rTN
-    7QqieMqCa+skTym13QX/qrU0Y3RM1spzSrakW19K4GExdbZDxLUJF816hKa/vB4OJ1BW
-    ug3PMvTZs7D+uC3t8/JZT7kGbO1c5NX5dl0Sm1v1zP2HdPk2GTV7kiEUpThFVCF59jbc
-    JE2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1784462320;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=l7k6IaGR7t9bwxAHN7i2vHEnnRdlc0Zaxj86nGvMKoE=;
-    b=VnSB96okmIfoLaFJ+UzhplbGQsPEE8yCtc0YXe6KfDftm9bQ4YlZtcTnAMkLHknIjK
-    CPM+m/hPeiKRnPt8/rY4NF4QjKljM7/IFe54OKYwv821YQQ6SwH94gmY0MbMHRdedHng
-    iuAduwlsNvbS7waQ2fnp3MmNIsVu6QdLbRWlaYFtPR5mioq53AWcbN1B3P68haWzURYY
-    LvDNceZ7l6vfIHM0TdFRIP98f69TtBpRLmli5HaoMzMeCvnxfus0UYPOao5NfKHQ6ywA
-    CazF0/jIRi5s18sSI4+WxW0570KWkTA8OdzgFc17u+Ku4bzUxejq/WXIOL3DMUCqvULh
-    Uh6w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1784462319;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=l7k6IaGR7t9bwxAHN7i2vHEnnRdlc0Zaxj86nGvMKoE=;
-    b=WKfWFWFGVxWfQW+eFy7ADpCSBOOZLU03sYJpcs2Y7r2CXrYQkYltlfjU2QMfx0MGP5
-    t0kSo6i+shBibvlZt+bt/xKCJuFadS5Rok8esTrGVW9xSXJwEHJ2RnBGjNl76yWuvChW
-    wgSAQlzb9W1EdGkEDf47rN3SINmIMdEkczceu1DmXCAHTYGt0j2QViDkgVh9x8X9OzdQ
-    lbA/26CpRpE8K26o3Eq82LBRGUsfYjGV46ii+exJmkmfY856kAqVfbDKMuzv9e22ax6y
-    HwhWkBxyM2ba7M/WsuEUS6pxUw5qEZALiR33vRZQcFVm8ULGO2PDFna43FcHPftoTUNQ
-    OqDQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1784462319;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=l7k6IaGR7t9bwxAHN7i2vHEnnRdlc0Zaxj86nGvMKoE=;
-    b=/YtPfBksaeaAZkGpqf2d7Z6yoW8v5H4dg4UgnQfM4HmFObImWwe8NiJs8vecxfTchu
-    Jd+/LAlMk68f95mepBCw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+m7hzg"
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 55.5.6 DYNA|AUTH)
-    with ESMTPSA id eed0ee26JBwb3I9
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sun, 19 Jul 2026 13:58:37 +0200 (CEST)
-Subject: [PATCH net v3] net: dpaa: fix mode setting
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Sean Anderson <sean.anderson@linux.dev>, Michael Walle
- <mwalle@kernel.org>, Madalin Bucur <madalin.bucur@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Christian Zigotzky <info@xenosoft.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Damien Stewart <hypexed@yahoo.com.au>
-References: <20260717132401.2653252-1-mwalle@kernel.org>
- <4f7497cf-83ed-47cd-2e7b-d06ebe319b61@linux.dev>
- <095e561e-1e36-9ea1-b0c6-958c825851cb@xenosoft.de>
-Organization: A-EON Open Source
-Message-ID: <e2e75972-13d0-1a5c-23ab-c44913806437@xenosoft.de>
-Date: Sun, 19 Jul 2026 13:58:37 +0200
-X-Mailer: BrassMonkey/34.2.2
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="GKrQNiov"
+X-KPN-MessageId: c2c68f18-836d-11f1-8f54-005056992ed3
+Received: from mta.kpnmail.nl (unknown [10.31.161.191])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id c2c68f18-836d-11f1-8f54-005056992ed3;
+	Sun, 19 Jul 2026 14:31:26 +0200 (CEST)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.189])
+	by mta.kpnmail.nl (Halon) with ESMTP
+	id c2c54ba3-836d-11f1-91c4-00505699891e;
+	Sun, 19 Jul 2026 14:31:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=NYf1raD5UQY7WYwcwyb2mT1tPHM7j2gkw9m0yK5hjXk=;
+	b=GKrQNioviRCkaleMEhTS61GGbTfvO25oQ4KZ/Wv3UTpSen4XO5ExrWzx2qr66LJhWTnVAWPnIzLFo
+	 LF7D4CK6sq0nfbEhNt1xyK9jknTMP93kreBCroCI63eS9vhOzoUOYt6q6cWjqCa/akEBPhtMQPXXk3
+	 VfOrRXctrR6qz5YSIvMOm5PFiLr+UBItmYaMFdQE5UWEPERU+OTK9aNd/IHhDW6s8w1kqocV5kuwds
+	 MOW7mPlRRl+tyX6WTDa9N0ZRcbRA1GBykmPyGR+S7VK03E6nXIZG5/sc/ntUvMBAUOwzCdIcykuPHN
+	 TbdbZ5EYenh6U8nTq+hmzTk0NFSHSnQ==
+X-KPN-MID: 33|exm5DeESXxAcw4nNL7rTJ5+of//nAIx+RyXFrE5ZcPT1lNw2m9E9Evl8k3eAhuj
+ E2Fu+/X8NsETqw4oS2kFDbV6clpiwr4CdieE9Xqqa2d8=
+X-CMASSUN: 33|9UXII1lQl5i6oWsN8RNl+JLwFDiu2QzU3OAUgUWbm3yPhJuYoXJD97ExRL62hWr
+ lokZVhD7o7w1YxINneNdzdg==
+X-KPN-VerifiedSender: Yes
+Received: from cpxoxapps-mh03 (cpxoxapps-mh03.personalcloud.so.kpn.org [10.128.135.209])
+	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
+	id c2b79c65-836d-11f1-8edb-00505699eff2;
+	Sun, 19 Jul 2026 14:31:26 +0200 (CEST)
+Date: Sun, 19 Jul 2026 14:31:26 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Christian Brauner <brauner@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Message-ID: <2048838556.1496380.1784464286664@kpc.webmail.kpnmail.nl>
+In-Reply-To: <CAAVpQUCD27YphUQ=aL3PyPtWwTo0tEtaFt-hvyoyCnepGAmYCQ@mail.gmail.com>
+References: <20260712192958.1631672-1-jkoolstra@xs4all.nl>
+ <20260712192958.1631672-2-jkoolstra@xs4all.nl>
+ <CAAVpQUCD27YphUQ=aL3PyPtWwTo0tEtaFt-hvyoyCnepGAmYCQ@mail.gmail.com>
+Subject: Re: [net-next v5 1/4] net: af_unix: enable custom setsockopt for
+ all socket types
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <095e561e-1e36-9ea1-b0c6-958c825851cb@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Normal
 
-On 18/07/26 18:31, Christian Zigotzky wrote:
-> On 17/07/26 23:10, Sean Anderson wrote:
->> On 7/17/26 09:20, Michael Walle wrote:
->>> Before converting to the phylink interface, the init function would 
->>> have
->>> set a non-reserved I/F mode in the maccfg2 register. After 
->>> converting to
->>> phylink, 0 is written as mode, which is a reserved value (although it's
->>> the hardware default). Without a valid mode, a SGMII link is never
->>> established between the MAC and the PHY and thus .link_up() is never
->>> called which could set the correct mode according to the actual speed.
->>>
->>> Fix it by setting the maximum speed of the phy_interface_t in use in
->>> .mac_config() - just like the driver did before the phylink conversion.
->>>
->>> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
->>> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
->>> Signed-off-by: Michael Walle <mwalle@kernel.org>
->>> ---
->>> I didn't grab Sean's Rb tag as this is somewhat different.
->>>
->>> Changes in v3:
->>>   - keep the mode setting also in .adjust_link().
->>>   - reword the commit message, to be (hopefully) more precise
->>>   - Link to v2: 
->>> https://lore.kernel.org/r/20260710143430.2276141-1-mwalle@kernel.org/
->>>
->>> Changes in v2:
->>>   - the setting is/was based on the maximum speed, not the current
->>>     speed. thus, move the setting into mac_config().
->>>   - Link to v1: 
->>> https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
->>>
->>>   .../net/ethernet/freescale/fman/fman_dtsec.c    | 17 
->>> ++++++++++++-----
->>>   1 file changed, 12 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c 
->>> b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> index fe35703c509e..b8d70c0ecb6c 100644
->>> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct 
->>> phylink_config *config, unsigned int mode,
->>>   {
->>>       struct mac_device *mac_dev = fman_config_to_mac(config);
->>>       struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
->>> -    u32 tmp;
->>> +    u32 ecntrl, maccfg2;
->>> +
->>> +    maccfg2 = ioread32be(&regs->maccfg2);
->>> +    maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
->>>         switch (state->interface) {
->>>       case PHY_INTERFACE_MODE_RMII:
->>> -        tmp = DTSEC_ECNTRL_RMM;
->>> +        ecntrl = DTSEC_ECNTRL_RMM;
->>> +        maccfg2 |= MACCFG2_NIBBLE_MODE;
->>>           break;
->>>       case PHY_INTERFACE_MODE_RGMII:
->>>       case PHY_INTERFACE_MODE_RGMII_ID:
->>>       case PHY_INTERFACE_MODE_RGMII_RXID:
->>>       case PHY_INTERFACE_MODE_RGMII_TXID:
->>> -        tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>> +        ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
->>> +        maccfg2 |= MACCFG2_BYTE_MODE;
->>>           break;
->>>       case PHY_INTERFACE_MODE_SGMII:
->>>       case PHY_INTERFACE_MODE_1000BASEX:
->>>       case PHY_INTERFACE_MODE_2500BASEX:
->>> -        tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>> +        ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
->>> +        maccfg2 |= MACCFG2_BYTE_MODE;
->>>           break;
->>>       default:
->>>           dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
->>> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct 
->>> phylink_config *config, unsigned int mode,
->>>           return;
->>>       }
->>>   -    iowrite32be(tmp, &regs->ecntrl);
->>> +    iowrite32be(ecntrl, &regs->ecntrl);
->>> +    iowrite32be(maccfg2, &regs->maccfg2);
->>>   }
->>>     static void dtsec_link_up(struct phylink_config *config, struct 
->>> phy_device *phy,
->>
->> Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
->>
->> Christian, can you test this patch with ethernet at 100/1G speed if 
->> you still have
->> access to those P5020/P5040 boards?
->>
->> https://lore.kernel.org/all/0bfc8f3d-cb62-25f4-2590-ff424adbe48a@xenosoft.de/ 
->>
-> I tested the patch today. I don't see any differences.
->
-> Further information: 
-> https://github.com/chzigotzky/kernels/releases/tag/v7.2.0-rc3-fman-dtsec-patch
->
-> Christian
->
-I tested further the new patch today and switching between 100Mbit/s and 
-1Gbit/s works without any problems.
 
-[ 1692.006428] fsl_dpaa_mac ffe4e8000.ethernet eth0: PHY 
-[mdio@ffe4e1120:03] driver [Micrel KSZ9021 Gigabit PHY] (irq=POLL)
-[ 1692.006448] fsl_dpaa_mac ffe4e8000.ethernet eth0: configuring for 
-phy/rgmii link mode
-[ 1692.021436] fsl_dpaa_mac ffe5e8000.ethernet eth2: PHY 
-[mdio@ffe4e1120:07] driver [Micrel KSZ9021 Gigabit PHY] (irq=POLL)
-[ 1692.021456] fsl_dpaa_mac ffe5e8000.ethernet eth2: configuring for 
-phy/rgmii link mode
-[ 1695.057699] fsl_dpaa_mac ffe4e8000.ethernet eth0: Link is Up - 
-1Gbps/Full - flow control rx/tx
-[ 2148.681140] fsl_dpaa_mac ffe4e8000.ethernet eth0: Link is Down
-[ 2149.704534] fsl_dpaa_mac ffe4e8000.ethernet eth0: Link is Up - 
-100Mbps/Full - flow control rx/tx
-[ 2199.875179] fsl_dpaa_mac ffe4e8000.ethernet eth0: Link is Down
-[ 2201.923103] fsl_dpaa_mac ffe4e8000.ethernet eth0: Link is Up - 
-1Gbps/Full - flow control rx/tx
+> Op 14-07-2026 11:19 CEST schreef Kuniyuki Iwashima <kuniyu@google.com>:
+>=20
+> =20
+> On Sun, Jul 12, 2026 at 9:29=E2=80=AFPM Jori Koolstra <jkoolstra@xs4all.n=
+l> wrote:
+> >
+> > unix_setsockopt() and the SOCK_CUSTOM_SOCKOPT flag were only wired up
+> > for SOCK_STREAM (introduced along with the stream-only SO_INQ).
+> > Consequently custom AF_UNIX options are unreachable on SOCK_DGRAM and
+> > SOCK_SEQPACKET: those setsockopt() calls bypass unix_setsockopt() and
+> > fall through to the generic sock_setsockopt(), failing with
+> > -ENOPROTOOPT.
+> >
+> > Set SOCK_CUSTOM_SOCKOPT for every AF_UNIX socket type in unix_create(),=
+ and
+> > also for accepted sockets in unix_accept() (reachable for stream and
+> > seqpacket).
+> >
+> > This is a prerequisite for making SO_RIGHTS_NOTRUNC settable on all AF_=
+UNIX
+> > socket types.
+> >
+> > Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+> > ---
+> >  net/unix/af_unix.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> > index f7a9d55eee8a..3d256255085b 100644
+> > --- a/net/unix/af_unix.c
+> > +++ b/net/unix/af_unix.c
+> > @@ -949,7 +949,7 @@ static int unix_setsockopt(struct socket *sock, int=
+ level, int optname,
+> >         switch (optname) {
+> >         case SO_INQ:
+> >                 if (sk->sk_type !=3D SOCK_STREAM)
+> > -                       return -EINVAL;
+> > +                       return -ENOPROTOOPT;
+> >
+> >                 if (val > 1 || val < 0)
+> >                         return -EINVAL;
+> > @@ -1005,6 +1005,7 @@ static const struct proto_ops unix_dgram_ops =3D =
+{
+> >  #endif
+> >         .listen =3D       sock_no_listen,
+> >         .shutdown =3D     unix_shutdown,
+> > +       .setsockopt =3D   unix_setsockopt,
+> >         .sendmsg =3D      unix_dgram_sendmsg,
+> >         .read_skb =3D     unix_read_skb,
+> >         .recvmsg =3D      unix_dgram_recvmsg,
+> > @@ -1029,6 +1030,7 @@ static const struct proto_ops unix_seqpacket_ops =
+=3D {
+> >  #endif
+> >         .listen =3D       unix_listen,
+> >         .shutdown =3D     unix_shutdown,
+> > +       .setsockopt =3D   unix_setsockopt,
+> >         .sendmsg =3D      unix_seqpacket_sendmsg,
+> >         .recvmsg =3D      unix_seqpacket_recvmsg,
+> >         .mmap =3D         sock_no_mmap,
+> > @@ -1142,9 +1144,10 @@ static int unix_create(struct net *net, struct s=
+ocket *sock, int protocol,
+> >         if (protocol && protocol !=3D PF_UNIX)
+> >                 return -EPROTONOSUPPORT;
+> >
+> > +       set_bit(SOCK_CUSTOM_SOCKOPT, &sock->flags);
+>=20
+> Please move this to unix_create1(), then we don't need the chunk below.
+>=20
+>=20
 
-- Christian
+I don't understand how this helps. The accept() path gets its struct socket=
+ from
+sock_alloc() not via unix_create() afaict. Also, unix_create1() is called w=
+ith
+sock =3D=3D NULL on connect(), so now you have to guard against that too.
 
--- 
-Sent with BrassMonkey 34.2.2 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_34.2.2)
+But maybe I misunderstand you?
 
+I do agree with you other comment, accept() should probably inherit the tru=
+ncate
+behavior from the listen() socket.
+
+Thanks,
+Jori.
