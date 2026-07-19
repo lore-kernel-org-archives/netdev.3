@@ -1,156 +1,148 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE2D3A3812
-	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 15:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829203A3E96;
+	Sun, 19 Jul 2026 15:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784473372; cv=none; b=hmJauEcl31SnHse3c6EYsZ6mS2p5MaXjRaW3rFRkvRK/KZRBmq6FcQJMBcJPWkMRj1tDZnP054S7LTXCox0XKdKOD7AqNYZRLtoI7oA6jeXL5ZC/9eWdKaKXjDDYkH/bAEoqYlnEcJPuNSZFJnDsX+nd9rAOQ1Eo1oj4bSXCzto=
+	t=1784473464; cv=none; b=vA+Q5PzDZg2h5esccciz2sJzK5tyma8U2TFyTLBw9BTLdouBJJpsbLduo3nG3rJqoqE48qPzIepXrTvLK8mFftJ1zT6PlisHkiv0B3ilC+Oq+WTYPh3+Lb//GIiKiX0c0wCQYFFIei1LlAXtBZosmyRFPOODrjolY3Lny2e3IVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784473372; c=relaxed/simple;
-	bh=eSbibO+xhCniUvMt1FIWRWvPjNpLGZrzkTdVYCwi9r4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EtQDTMocKGJjFSi5cx9T/SNMZaLWfZTHsCqmNsdY0honH+qiwAjtz6k4FsNMGPUjIEM5PUnAhZydzxXK2EWPHEyQj2OxvzWjPmLilKljUpiuRy5/3bikhDuDJFDpBvBIwo/44hhbwuwbrUvSjh6dClo2V82fe5OUNyygeny/HzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oPeb39/v; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784473464; c=relaxed/simple;
+	bh=sGkUnfWYBxVACT6C6QfNFhZtQX1HjIOQQnzDRBM2+MM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J8irAspNWyjSkDlg82DGVIsa//xg3R0cfZ6zwUHcTE0ySrtJpqoUsYTBFB1dNdOIQytRfm0qPCKYNjtMN9RRIEHctaP1D/pGmnNWAEXByCx7xESd3YfT5+Ec4Um9NcbqzjHYveHSY92saYMDOKtCSaXxpTX3N7Ox8+FeHfFXBIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=o6KdAx7B; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oPeb39/v"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cc7a269ca1so20415435ad.3
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 08:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784473370; x=1785078170; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Min+DEzQsYXU48SJanwQaH6Js4T7CtgnWZ/eBINWIyc=;
-        b=oPeb39/vmuPz8ATR95oqeqhHqYa1efqgj0nqND11IBU3Eqj528lhyFAl2josHR/GFJ
-         1nYLhq8wo2VAFgnbKVPdA4wK7Cvo6/rhi+CFR3b4wEfiFwZk1ylJTNktjDsKX08Mo7fx
-         Z5CT7XcMF1aaCc4XBOjUCeoNukSqjUskkuJW8H5WVaylpHazwKrITG6tjwkrHW3YJ6Py
-         QuYmB+5egu7V3jdIxrPWKR+slyLDYWyiKwX5HBLfI5+uQOikVsjOPrcEdp2urtfXF4RT
-         PdCQKKfD4yrxzzFWbX1YgpaZKkoz3sAyMM0UDqbtWPgAoANvG3a7ovsCU8wqxQ2HNUWA
-         ZzPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784473370; x=1785078170;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Min+DEzQsYXU48SJanwQaH6Js4T7CtgnWZ/eBINWIyc=;
-        b=pZjYWy8mXOwAMADt9fBXU+xmMtVr3YVh7JIE/lPzVzhdcxFY0bu/n+8Gg/AW8Psjng
-         /9g3zqxgrNxLgRXDi8CPxzOEnT8LfP5llnR1Veh+sBIOjvCC053Md0tMf30z5sjkG5LH
-         8SHxcIgQn/8bVDIgCLKtPYIDjmvabkDb01vfLavQwV+Su9ayDzhPwBHJ7riKQPnq3oLQ
-         G8h6VO75ejH5f2BtAhicII+c0d5ZbGCUBr5bbGBFR/Uk2a0+Xt4vAZx/dxa6umr5ehDx
-         PaPfmc6wb2o1jTeY3dKSZEt/vX/VB2r3qYvPXU58Sy0xjEpLxi093RPzPEUsteCqJnEE
-         DQKw==
-X-Gm-Message-State: AOJu0YyGV5j1t8rJpajyzdVfxmXCQPLY/dZtBm1JxZrRirB4p3wg/JaC
-	5+QglixkFgZ5xPUOaFDM39+lh5GqlIhNH20+LyySHcfdb2mKyMr+ZrYQ
-X-Gm-Gg: AfdE7cn79KyU9fk5Fp2rn1ISM6cUtKM/+w6N1neEuiylriPO99SlL/i/a7+GfWqckXx
-	WimrSnW4R1IUt03wp+R9qFL+tZ6KXi7z9SFkL0vSM+M6jpfvRJFY+q2UtvFv4FJXVuhMXViJMuZ
-	RFFlIuwt89lOymwQQyhpAaR441d72x/YlCh3ykxzvjbnWjGZGJxjQh1BAq/WVvpiLX6++CtljPP
-	XgmZKSM+xPv9nlilMO8aqbd5K8X6ueS8W72bJ8+5mzrG0/hOhJ9qNpWBMF2yP9dXbsJH+dbOzTm
-	SHbnxo8d3ZX4bSPuKjak2mmpsFc2egIUIaOFZi1E40KEiGG2HqVNKTv6venM5FniIY3FC+hWOLA
-	bLfTH81IsDdu42bjFJsxk1wRdWzjSCatJ6l1o/7cFaMXf1vFqUZmrLlUyqpaVhcitXUmIYA+oe1
-	SMCtxOSnl5usCGnmO/ghmYTtKxr55a84FXbrhDSpDVg/Z4/Q/NGh6Rkol6NZ0=
-X-Received: by 2002:a17:902:ccd1:b0:2ca:d344:7743 with SMTP id d9443c01a7336-2cf34a05d6cmr90369635ad.7.1784473369952;
-        Sun, 19 Jul 2026 08:02:49 -0700 (PDT)
-Received: from localhost.localdomain ([14.218.106.255])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf346d9b00sm42198945ad.53.2026.07.19.08.02.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 08:02:49 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	Robert Olsson <robert.olsson@its.uu.se>,
-	Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: pktgen: fix proc entry use-after-free
-Date: Sun, 19 Jul 2026 22:57:40 +0800
-Message-ID: <20260719145740.2888967-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="o6KdAx7B"
+Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 9E2D25340260;
+	Sun, 19 Jul 2026 17:04:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1784473459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GyueglzthAji0VEDQ7Os7bxVp3phdIK0YEGjL1Ln/M4=;
+	b=o6KdAx7BvtAJWhjAqnHt7YHjrKyFD7RCz+gsIy/5+Q61+8gjvsuu3lhCPlbxCFX0QphiZB
+	iQR8x7iQjEU5AW59O9jOe+Jc5+RlplsfkwTJKtGY+kG1evavvziE2MSgxqnklRNE53r395
+	B1LDkB5oWnsr03X6JoxCbfV2bANd96g=
+Message-ID: <6753b289-3102-44be-a5b5-2a25e7a82366@ixit.cz>
+Date: Sun, 19 Jul 2026 17:04:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 0/3] nfc: fix remaining OOB bugs in NCI/LLCP
+ parsing
+To: =?UTF-8?B?TGVrw6sgSGFww6dpdQ==?= <snowwlake@icloud.com>,
+ David Heidelberg <david+nfc@ixit.cz>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, krzk@kernel.org, horms@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ oe-linux-nfc@lists.linux.dev
+References: <20260716203507.7328-1-snowwlake@icloud.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260716203507.7328-1-snowwlake@icloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-pktgen_change_name() replaces pkt_dev->entry while holding t->if_lock.
-pktgen_remove_device() removes the same entry before
-_rem_dev_from_if_list() takes that lock.
+On 16/07/2026 22:35, Lekë Hapçiu wrote:
+> Rebased against David's linux-nfc for-linus tree [1], as requested.
+> 
+> This was originally a 5-patch series. Two of the five (the
+> parse_gb_tlv()/parse_connection_tlv() offset-wrap fix and the
+> nfc_llcp_recv_snl() TLV bounds fix) have since been fixed independently
+> by other contributors already merged into for-linus:
+> 
+>    d8bd2dedbde5 ("nfc: llcp: fix OOB read and u8 offset wrap in TLV parsers")
+>    27256cdb290e ("nfc: llcp: bound SNL TLV parsing to the skb and add length checks")
+> 
+> Those two are dropped from this series to avoid duplicating work. The
+> remaining three patches are unchanged in substance from v4, just
+> rebased and renumbered:
+> 
+>    1/3 (was 1/5) - nci_store_general_bytes_nfc_dep() u8 underflow
+>    2/3 (was 4/5) - nfc_llcp_recv_dm() OOB read of the reason byte
+>    3/3 (was 5/5) - nfc_llcp_connect_sn() TLV parsing OOB
+> 
+> All three still reproduce against current for-linus (verified against
+> 1671b8fb7300 before rebase). checkpatch --strict is clean on all three.
+> 
+> [1] https://codeberg.org/linux-nfc/linux.git for-linus
+> 
+> Lekë Hapçiu (3):
+>    nfc: nci: fix u8 underflow in nci_store_general_bytes_nfc_dep
+>    nfc: llcp: fix OOB read of DM reason byte in nfc_llcp_recv_dm
+>    nfc: llcp: fix TLV parsing OOB in nfc_llcp_connect_sn
+> 
+>   net/nfc/llcp_core.c | 19 +++++++++++++++++--
+>   net/nfc/nci/ntf.c   |  6 ++++++
+>   2 files changed, 23 insertions(+), 2 deletions(-)
+> 
 
-This allows the following interleaving:
+Hello Lekë,
 
-  CPU 0 (NETDEV_CHANGENAME)       CPU 1 (kpktgend)
-  if_lock(t)
-  proc_remove(pkt_dev->entry)
-                                  proc_remove(pkt_dev->entry)
-  pkt_dev->entry = proc_create_data(...)
-  if_unlock(t)
+I'm afraid I won't make you happy here, but after merging the outstanding 
+backlog today, I ran into conflicts again with your patch series. I'm very sorry 
+about that, but I've been receiving a high number of fixes.
 
-The kthread can pass the stale proc_dir_entry to proc_remove() after the
-rename path has freed it. A reproducer with a widened race window reports:
+Now that I'm back from the conference, if you send the next revision based on 
+the current for-linus / for-next, I believe I'll be able to apply it quickly 
+enough to avoid conflicts.
 
-  BUG: KASAN: slab-use-after-free in proc_remove+0x78/0x80
-  Read of size 8 at addr ffff8881478fea70 by task kpktgend_0/67
-  Call Trace:
-   proc_remove+0x78/0x80
-   pktgen_remove_device.isra.0+0x11c/0x4c0
-   pktgen_thread_worker+0x1214/0x6bc0
-   kthread+0x2c6/0x3b0
-  Allocated by task 95:
-   __proc_create+0x204/0x790
-   proc_create_data+0x72/0xe0
-   pktgen_thread_write+0xd61/0x1510
-  Freed by task 28:
-   kmem_cache_free+0xcb/0x3d0
-   proc_free_inode+0x5b/0x80
-   rcu_core+0x50a/0x1850
-  The buggy address belongs to the object at ffff8881478fea00
-   which belongs to the cache proc_dir_entry of size 192
+Thank you for your understanding.
 
-Move proc_remove() into the if_lock-protected list removal helper. Keep it
-before list_del_rcu() to preserve the ordering required by add_device().
-The rename path must then finish replacing the entry before removal, or
-it observes that the device is no longer on the list.
-
-Fixes: 39df232f1a9b ("[PKTGEN]: fix device name handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/core/pktgen.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 8e185b318288..ee64f3012321 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -3972,6 +3972,7 @@ static void _rem_dev_from_if_list(struct pktgen_thread *t,
- 	struct pktgen_dev *p;
- 
- 	if_lock(t);
-+	proc_remove(pkt_dev->entry);
- 	list_for_each_safe(q, n, &t->if_list) {
- 		p = list_entry(q, struct pktgen_dev, list);
- 		if (p == pkt_dev)
-@@ -4001,9 +4002,6 @@ static int pktgen_remove_device(struct pktgen_thread *t,
- 	 * list to determine if interface already exist, avoid race
- 	 * with proc_create_data()
- 	 */
--	proc_remove(pkt_dev->entry);
--
--	/* And update the thread if_list */
- 	_rem_dev_from_if_list(t, pkt_dev);
- 
- #ifdef CONFIG_XFRM
--- 
-2.43.0
-
+David
