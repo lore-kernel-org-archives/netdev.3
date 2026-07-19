@@ -1,80 +1,82 @@
 Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2282437F8C9;
-	Sun, 19 Jul 2026 08:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E7037F725;
+	Sun, 19 Jul 2026 08:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784450721; cv=none; b=qZ8S1Ik1J7AD4iAma9OcBW0bkBYkDFsFtJyzbFcfrtiFew8qSyvE2+4dQ9Eisl5cIWgIelP5ADpSY3+hHezZeFgKeZkJ7WN683hqIWwMqHBqtwrNXcVtonGRPz24BUVyXGff4xpC75OU/WU3ja57wpxUXpxxU4egIGJzZlrrtBU=
+	t=1784450723; cv=none; b=h1XBjnTu9xzQAzhAFzRYoG/V6Rc5qn3FYhm7xwexfhNDQGDS0i5w9pIIezhWlsNhnE7zq1HuUD4u7DbctjIZmVezEdk4TYHkKzaoyo99EOFupjI3n2x2Qus28eBdXYxgjdyjhg+e0sG54MYViieA14tEHCp8NqjL8o3ePfbvy+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784450721; c=relaxed/simple;
-	bh=DJOEZz0LgusiJsaMcuyJ/mo5kxauoqkYFLtqBtwJznQ=;
+	s=arc-20240116; t=1784450723; c=relaxed/simple;
+	bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YjL1AUQ/v13MehlsPOi1+QZvIVeROAjW4+w8lGu4Z5tH6Bnxr2hjuUJZv8Y91Wmm8Hp4pSsjKoS02q2UBUBrgko3EXkkpZReijnPFK/Rt4Tq/5ThQVxE4rmHjn1NDBjt4nKxs+x/YUwTQF6I+Wo+XuLNCVYVKvt8lasaaD0uXiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=Y+KyIF+i; arc=none smtp.client-ip=173.37.86.72
+	 In-Reply-To:To:Cc; b=a28Si/492C2o8/iIazH+lrQevheZMS8L8zqRPCBcUFFIbVRqUV+FmxSaaZeRn70Pqdi8kitUAG0Kw5B4URH1apUG1Y+GsC0oSU4qnFJGWLIi+9V+11+InaZIeO+LB/GF/W3ocs0TXAP8OQ/UeXgMvrW2nX6dP4RR/ZBd7LWu12s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=E4FPzQWH; arc=none smtp.client-ip=173.37.86.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="Y+KyIF+i"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="E4FPzQWH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=3222; q=dns/txt;
-  s=iport01; t=1784450719; x=1785660319;
+  d=cisco.com; i=@cisco.com; l=8939; q=dns/txt;
+  s=iport01; t=1784450721; x=1785660321;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=Ismjn8aCzPjNAuW3z5gQmVHzab5Wc6BkN3bhmJ9vQgA=;
-  b=Y+KyIF+iUFRQf9AH9mXdtLrxQ6FO5OvSN8qKnZTGUNuGBQz1/UTymVOH
-   8eWHGzGT6gJeMBqZYuNBG+oBkIPKSChWPg0DJYVDs1amfCy03eFRevgj0
-   mHMcnTqWDYdUzdUSWSuGl4qH94HjG0NRvq4kK2ZP3DrtCX92HxvWw/iV3
-   ZBnYkJIc0ojgjm4BYo8tDQ2ZhDWLC9k8IrClBRPf3C+1Rda5w8TtaHQrU
-   2mOPX709RH+6JkNBoHH8t8hH9+WHOt3pEjacgFplEyf0AQT0eIuwALYYg
-   QeVE972GeukgfxDya7OMblVuBi0n0xccvy+Oc/xchrUytTIOWtVO50sel
-   A==;
-X-CSE-ConnectionGUID: 0yMchbEaQF29PTmFJY/jwA==
-X-CSE-MsgGUID: nxemRheZQ0mm38yC8hfhhQ==
-X-IPAS-Result: =?us-ascii?q?A0A6AAAEjVxq/5H/Ja1aHQEBAQEJARIBBQUBgXwIAQsBh?=
- =?us-ascii?q?ChDSYRXiBuHN4IhkU2MURSBag8BAQEPUQQBAYUFAo1TAiY0CQ4BAgQDAgMBA?=
- =?us-ascii?q?QEBAQEBAQEBAQsBAQUBAQECAQcFgQ4ThlyGWwIBAyNEEhAlAiYCAkYQBgESg?=
- =?us-ascii?q?wKCdQO9C3qBMoEBhH3ZSIFnCxQBgQouAYVwgmsBgXCEBzuEQScbgUlEgRQBg?=
- =?us-ascii?q?2mEBQEZg3+CagSDHBKRbAk/gQIcA1ksAVUTDQoLBwVhUjMDIAoLEhIYFQIUH?=
- =?us-ascii?q?BMPBBYyHXAMJxIsFzRYGwcFgR1/FgQhgQKEdiMfAzl/gTB1SnctaQESF4Evg?=
- =?us-ascii?q?hSBOgIHAwsYDUgRLDcGDhkEPQFuB41AI4FOcYEOfDVjGpdWjV9roQ+EJ4Fmo?=
- =?us-ascii?q?A8BMpdnkwWZCCOjG0MJUIRpgWg8gVkzGggbFYMiUxkPjl/SHicyPQEBBwIHD?=
- =?us-ascii?q?gMLgWiQEYFtAQE?=
-IronPort-Data: A9a23:kfLMDqNIrcEgojXvrR14lsFynXyQoLVcMsEvi/4bfWQNrUoj0mRSz
- jZNXWzTOPiKYjDze952at6x8k8Ev5bVm9dhQHM5pCpnJ55oRWUpJjg4wmPYZX76whjrFRo/h
- ykmQoCeaphyFTmE+kvF3oHJ9RFUzbuPSqf3FNnKMyVwQR4MYCo6gHqPocZh6mJTqYb/WV7lV
- e/a+ZWFZgf6gm8sawr41orawP9RlKWq0N8nlgRWicBj5Df2i3QTBZQDEqC9R1OQapVUBOOzW
- 9HYx7i/+G7Dlz91Yj9yuu+mGqGiaue60Tmm0hK6aYD76vRxjnBaPpIACRYpQRw/ZwNlMDxG4
- I4lWZSYEW/FN0BX8QgXe0Ew/ypWZcWq9FJbSJSymZT78qHIT5fj661/KUo2N6ARw8gtUFly8
- NI6GXcPcTnW0opawJrjIgVtrt4oIM+uOMYUvWttiGmJS/0nWpvEBa7N4Le03h9p2ZsIRqmYP
- ZdEL2MzMXwsYDUXUrsTIIk3gOazhnr/WzZZs1mS46Ew5gA/ySQsieK1aoeEJobiqcN9mFaVo
- 1jG8lbAWhQfb4yO4mqF/HKsv7qa9c/8cMdIfFGizdZmiUOew0QfAQMbUF+8r+X/jEOiM/pbJ
- k0I8y0GoaU49UWtCN7nUHWQrXKZuxcOVsZ4HOo95wWAjKHT5m6xBXUORxZCZcYguctwQiYlv
- neAmd/zCCMstrCJRX+D3rOJqzX0Mih9BXcLbyICTCMf7tXjqZ11hRXKJv5nEaionpj2FCv2z
- jSisicznfMQgNQN2qH9+krI6xqqq4TFQxAd+AraRCSm4xl/aYrjYJangWU39t5aJ4qfC13Et
- 38elo3GvKYFDIqGk2qGR+Bl8KyV2stp+Qb02TZHd6TNPRz0k5J/Vei8OA1DGXo=
-IronPort-HdrOrdr: A9a23:PEXRkaPKZp8nZ8BcTjejsMiBIKoaSvp037Dk7TEUdfUzSK2lfq
- GV8sjzuiWYtN98YhsdcJW7Scu9qBDnmqKdn7NwAV7KZmCP01dAbrsSjrcKqAeNJ8SRzJ856Y
- 5QN4VzF9H0C0F3loLZ7BnQKadY/PC3tI2lmuvayW5gVkVRa69m5xpkEQrzKDwReOA/P+tfKL
- OsouxaujGnZXMbKu6/BnUDQqz/guejruOfXfbDbCRXkjVnSliTmcXHLyQ=
-X-Talos-CUID: =?us-ascii?q?9a23=3AIGqkE2hOa1RfeZShRPR+VRSGMjJuKmz4x3faDka?=
- =?us-ascii?q?BJzw4cIGQZ32hv6F7up87?=
-X-Talos-MUID: 9a23:Duy9qQaJYxbWHOBTsS/hgQtiOfVRu6GrUxAcusUGtcmEDHkl
+  bh=CXMacmSzG4Vh/h4v1BbunYRM6XQpMQSp/sageLt5vm4=;
+  b=E4FPzQWHQ4oPhds7HNoYb8eYBZlucz2T1wucOugyw9POmXLkQVp8hlKt
+   MqnGmu5jPN6OlbXYIICNVnY8IivxRZx4LQ+BrCRpHDAdXrTHPQXyj9Uxp
+   FXme/hj1XMo9oE470vOxOJfGzSPMPRzZjpya/8SXZyTwiJqCxAwAdKlY4
+   MpvxK8f3rdLbmd3QQN5Y969sO6LMuJtVrn3cb5KJj71NW3zyZzALBooS0
+   nG9m1C91VXJLf4Vkfzmk2FP0UGhaOSVjGLJTEQ7SFZDGIw3R7TBDgdL4M
+   V9HvKnHYarCSkGzSr22vlkG2JTZJRhsr0aAJ1gAzmDhZgnH1PdCv4bB5t
+   g==;
+X-CSE-ConnectionGUID: VOvsOarnT9S5wK7MT/NeJA==
+X-CSE-MsgGUID: dtLV9NNPScmk+WuWB+bsrg==
+X-IPAS-Result: =?us-ascii?q?A0BHAgAEjVxq/5H/Ja1aglmCV4FSQ0mEV49SgiGRTYxRF?=
+ =?us-ascii?q?IFqDwEBAQ9RBAEBhQUCjVMCJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBA?=
+ =?us-ascii?q?QIBBwWBDhOGXIZbAgEDIwQLATQSECUCJgICRhAGARKDAoJ1A70Len8zgQGEf?=
+ =?us-ascii?q?dlIgWYBCxQBgQouhXGCawGBcIQHO4RBJxuBSUSBFYNphAUag3+CagSDHBKCS?=
+ =?us-ascii?q?I8kCT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQcEw8EFjIdcAwQFxIsF?=
+ =?us-ascii?q?zRYGwcFgR1/FgQhgQKEdiMfAzl/gTB1SnctaQESF4EvghSBOgIHAwsYDUgRL?=
+ =?us-ascii?q?DcGDhkEPQFuB41AI4FOagc9DjAUQjkxAXsFMJMLHYN+jkqBNZ9ahCeBZqAPA?=
+ =?us-ascii?q?TKXZ4xVhjCZCCOjTBJZhGmBaDyBWTMaCBsVgyJTGQ+OLRYc0h4nMj0CBwIHD?=
+ =?us-ascii?q?gMLkXmBbQEB?=
+IronPort-Data: A9a23:Jx+1FKo6F/OZam/rvuEJ5av1GeVeBmLFZBIvgKrLsJaIsI4StFCzt
+ garIBnVaa3cNmWgfoxwbY2x8hkOu5bSmtc2Hgc6qy1mFyIRp+PIVI+TRqvS04x+DSFioGZPt
+ Zh2hgzodZhsJpPkjk7zdOCn9j8kif3gqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvV0
+ T/Ji5OZYgLNNwJcaDpOtfrc8UI35ZwehRtB1rAATaET1LPhvyF94KI3fcmZM3b+S49IKe+2L
+ 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVHT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
+ I4lWapc5useFvakdOw1C3G0GszlVEFM0OevzXOX6aR/w6BaGpfh660GMa04AWEX0thQH3pp/
+ OYeFGE2Mw+g2MeKh5S2aMA506zPLOGzVG8ekmtrwTecCbMtRorOBv2ao9RZxzw3wMtJGJ4yZ
+ eJANmEpN0uGOUASfA5LVfrSn8/w7pX7WyZRtFOOpak3y2PS1wd2lrPqNbI5f/TXHJ8NxBvJ+
+ zquE2LRDg0+Co257wK++XevxdDSogm4UpkIG+jtnhJtqBjJroAJMzUaXEW2pNG1g1CzXtZYJ
+ VBS/CcyxYA2+U23R97VUxCyoXeC+BkGVLJ4HuEn7Qifx7b87AGeCWwJCDVGbbQOt9I8TBQp2
+ 0WPktevAiZg2JWcT36H+6jXqz6uNSULBWsfYylCRgtty8Hqqow1jzrVQ9pjGbLzhdrwcRn0w
+ jaXvG09iq8VgMojyaq25xbEjiiqq5yPSRQ6ji3RU36p4x1ReoGofcqr5ELd4PIGK5yWJmRtp
+ 1AekMSYqeRLBpaXmWnVEKMGHaqi4LCONzi0bUNTIqTNPg+FoxaLFb28KhknTKu1Gq7ooQPUX
+ XI=
+IronPort-HdrOrdr: A9a23:C4Apnq1kTFylEiwCVDaZmQqjBEQkLtp133Aq2lEZdPWaSL39qy
+ nIppUmPH7P5gr5N0tMpTntAsO9qDbnhPxICOoqUotKIjOHhILAFugLhrcKgQeQeBEWndQw6U
+ 4PSdkaNPTASXV3ksr+5hC1CJIDzMnvytHQuc7ui1pgUg1ubbht9ENCCgidGlBrXwUuP+teKH
+ Pl3LshmxOQPVIKc8+8Gn4JG8LHp9HNidbaRCRuPW9e1OFL5gnYkoIT1HOjr2wjbw8=
+X-Talos-CUID: =?us-ascii?q?9a23=3AJxnIZWua6D8CK0Q1fHksZ8Yf6IsbVWPG637KJXP?=
+ =?us-ascii?q?pMjt2a+KwdRi29YFNxp8=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3Ayrn0bA57l5eIvgLSYD8LEPDPxoxk/4CQWWYrqa4?=
+ =?us-ascii?q?NvsrHCjFPEXSXly64F9o=3D?=
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.25,172,1779148800"; 
-   d="scan'208";a="512025942"
+   d="scan'208";a="512025950"
 Received: from rcdn-l-core-08.cisco.com ([173.37.255.145])
-  by rcdn-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 19 Jul 2026 08:42:09 +0000
+  by rcdn-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 19 Jul 2026 08:42:10 +0000
 Received: from [127.0.0.1] (unknown [10.25.130.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-08.cisco.com (Postfix) with ESMTPS id 8A9491800046B;
-	Sun, 19 Jul 2026 08:42:08 +0000 (GMT)
+	by rcdn-l-core-08.cisco.com (Postfix) with ESMTPS id 170D61800046B;
+	Sun, 19 Jul 2026 08:42:10 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Date: Sun, 19 Jul 2026 01:41:50 -0700
-Subject: [PATCH net-next v12 06/12] enic: define MBOX message types and
- header structures
+Date: Sun, 19 Jul 2026 01:41:52 -0700
+Subject: [PATCH net-next v12 08/12] enic: add MBOX PF handlers for VF
+ register and capability
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,8 +84,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260719-enic-sriov-v2-admin-channel-v2-v12-6-6ff2c617001d@cisco.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260719-enic-sriov-v2-admin-channel-v2-v12-8-6ff2c617001d@cisco.com>
 References: <20260719-enic-sriov-v2-admin-channel-v2-v12-0-6ff2c617001d@cisco.com>
 In-Reply-To: <20260719-enic-sriov-v2-admin-channel-v2-v12-0-6ff2c617001d@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,123 +95,298 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Breno Leitao <leitao@debian.org>, Sesidhar Baddela <sebaddel@cisco.com>, 
  Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784450523; l=3237;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784450523; l=9297;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=DJOEZz0LgusiJsaMcuyJ/mo5kxauoqkYFLtqBtwJznQ=;
- b=v79hNYiTo4JD5cmwk6dCCmcNzSxvftSClxZ2ZhimllHPlDDQ6x3LcfS/DLOVW69omqvDh1Wlr
- CWPrX6PC6f6BzRnI32S8OpcPXhXRyPrcerveQtuKz9VDTBugHKzGZcy
+ bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
+ b=u6Vbx8Pd2m2dtavHAaRbp2YXq/WRA+eJjZykeqdQAjD3BLfIOK1p+L3xozKzR08XFFxbe4XRc
+ RLdSas+9d+iDjZTesDu4OcJIbdSeesZg+e0KJo1S6PfMK1o8jlded5d
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.130.254];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.130.254, [10.25.130.254]
 X-Outbound-Node: rcdn-l-core-08.cisco.com
 
-Define the mailbox protocol structures for PF-VF communication:
-message header, generic reply, and per-message-type payloads for
-capability negotiation, VF registration/unregistration, and link
-state notification/acknowledgment.
+Implement PF-side mailbox message processing for SR-IOV V2
+admin channel communication.
 
-Include linux/types.h and linux/bits.h for __le16/__le32/__le64
-and BIT() used in the header.
+When the PF receives messages from VFs, the dispatch routes
+them to type-specific handlers:
+  - VF_CAPABILITY_REQUEST: reply with protocol version 1
+  - VF_REGISTER_REQUEST: send the register reply, mark the
+    VF registered on success, then send PF_LINK_STATE_NOTIF
+    reflecting the PF's current carrier state
+  - VF_UNREGISTER_REQUEST: mark VF unregistered, send reply
+  - PF_LINK_STATE_ACK: log errors from VF acknowledgment
 
-Message types use an even=request / odd=reply convention.  The
-header carries source and destination VNIC IDs, a monotonically
-increasing message number, and the total message length.
+Per-VF state (struct enic_vf_state) is tracked via enic->vf_state
+which will be allocated when SRIOV V2 is enabled.
+
+Remove the CONFIG_PCI_IOV guard from num_vfs in struct enic. The
+PF handlers reference enic->num_vfs for VF ID bounds checking in
+enic_mbox.c, which is compiled unconditionally. The field must be
+visible regardless of CONFIG_PCI_IOV to avoid build failures.
+
+Add enic_mbox_send_link_state() helper for PF-initiated link
+state notifications, also used later by ndo_set_vf_link_state.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_mbox.h | 83 +++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic.h      |   7 +-
+ drivers/net/ethernet/cisco/enic/enic_mbox.c | 190 +++++++++++++++++++++++++++-
+ drivers/net/ethernet/cisco/enic/enic_mbox.h |   1 +
+ 3 files changed, 194 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
+index b009d87da4bd..d459318c46fc 100644
+--- a/drivers/net/ethernet/cisco/enic/enic.h
++++ b/drivers/net/ethernet/cisco/enic/enic.h
+@@ -256,9 +256,7 @@ struct enic {
+ 	struct enic_rx_coal rx_coalesce_setting;
+ 	u32 rx_coalesce_usecs;
+ 	u32 tx_coalesce_usecs;
+-#ifdef CONFIG_PCI_IOV
+ 	u16 num_vfs;
+-#endif
+ 	enum enic_vf_type vf_type;
+ 	unsigned int enable_count;
+ 	spinlock_t enic_api_lock;
+@@ -315,6 +313,11 @@ struct enic {
+ 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
+ 	struct mutex mbox_lock;
+ 	u64 mbox_msg_num;
++
++	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
++	struct enic_vf_state {
++		bool registered;
++	} *vf_state;
+ };
+ 
+ static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+index 3709704bee02..b6f05b03ae26 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+@@ -135,10 +135,183 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
+ 	return err;
+ }
+ 
++int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
++{
++	struct enic_mbox_pf_link_state_notif_msg notif = {};
++
++	if (!enic->vf_state || vf_id >= enic->num_vfs ||
++	    !enic->vf_state[vf_id].registered) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: skip link state to unregistered VF %u\n",
++			   vf_id);
++		return 0;
++	}
++
++	notif.link_state = cpu_to_le32(link_state);
++	return enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_NOTIF, vf_id,
++				  &notif, sizeof(notif));
++}
++
++static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
++					  u16 vf_id, u64 msg_num)
++{
++	struct enic_mbox_vf_capability_reply_msg reply = {};
++
++	reply.reply.ret_major = cpu_to_le16(0);
++	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
++
++	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
++				  &reply, sizeof(reply));
++}
++
++static int enic_mbox_pf_handle_register(struct enic *enic, void *msg,
++					u16 vf_id, u64 msg_num)
++{
++	struct enic_mbox_vf_register_reply_msg reply = {};
++	u32 link_state;
++	int err;
++
++	if (!enic->vf_state || vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: register from invalid VF %u\n",
++				    vf_id);
++		return -EINVAL;
++	}
++
++	/* VF re-registering (e.g. guest reboot without clean unregister):
++	 * mark the previous registration inactive before accepting the new one.
++	 */
++	if (enic->vf_state[vf_id].registered) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: VF %u re-register, cleaning previous state\n",
++			   vf_id);
++		enic->vf_state[vf_id].registered = false;
++	}
++
++	reply.reply.ret_major = cpu_to_le16(0);
++	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_REGISTER_REPLY, vf_id,
++				 &reply, sizeof(reply));
++	if (err)
++		return err;
++
++	enic->vf_state[vf_id].registered = true;
++	if (net_ratelimit())
++		netdev_info(enic->netdev, "VF %u registered via MBOX\n", vf_id);
++
++	link_state = netif_carrier_ok(enic->netdev) ?
++		ENIC_MBOX_LINK_STATE_ENABLE :
++		ENIC_MBOX_LINK_STATE_DISABLE;
++	err = enic_mbox_send_link_state(enic, vf_id, link_state);
++	if (err && net_ratelimit())
++		netdev_warn(enic->netdev,
++			    "VF %u: failed to send initial link state: %d\n",
++			    vf_id, err);
++	/* Registration succeeded; initial link state notification sent
++	 * above.  Subsequent link state changes are sent from the PF
++	 * when enic_link_check() detects carrier changes.
++	 */
++	return 0;
++}
++
++static int enic_mbox_pf_handle_unregister(struct enic *enic, void *msg,
++					  u16 vf_id, u64 msg_num)
++{
++	struct enic_mbox_vf_register_reply_msg reply = {};
++	int err;
++
++	if (!enic->vf_state || vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: unregister from invalid VF %u\n",
++				    vf_id);
++		return -EINVAL;
++	}
++
++	/* VF is unloading; clear local state regardless of whether
++	 * the reply is successfully delivered to avoid the PF treating
++	 * a dead VF as still registered.
++	 */
++	enic->vf_state[vf_id].registered = false;
++
++	reply.reply.ret_major = cpu_to_le16(0);
++	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_UNREGISTER_REPLY, vf_id,
++				 &reply, sizeof(reply));
++
++	if (net_ratelimit())
++		netdev_info(enic->netdev,
++			    "VF %u unregistered via MBOX\n", vf_id);
++
++	return err;
++}
++
++static void enic_mbox_pf_process_msg(struct enic *enic,
++				     struct enic_mbox_hdr *hdr, void *payload)
++{
++	u16 vf_id = le16_to_cpu(hdr->src_vnic_id);
++	u16 msg_len = le16_to_cpu(hdr->msg_len);
++	int err = 0;
++
++	if (!enic->vf_state) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: PF received msg but SRIOV not active\n");
++		return;
++	}
++
++	if (vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: PF received msg from invalid VF %u\n",
++				    vf_id);
++		return;
++	}
++
++	switch (hdr->msg_type) {
++	case ENIC_MBOX_VF_CAPABILITY_REQUEST:
++		err = enic_mbox_pf_handle_capability(enic, payload, vf_id,
++						     le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_VF_REGISTER_REQUEST:
++		err = enic_mbox_pf_handle_register(enic, payload, vf_id,
++						   le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_VF_UNREGISTER_REQUEST:
++		err = enic_mbox_pf_handle_unregister(enic, payload, vf_id,
++						     le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_PF_LINK_STATE_ACK: {
++		struct enic_mbox_pf_link_state_ack_msg *ack = payload;
++
++		if (msg_len < sizeof(*hdr) + sizeof(*ack))
++			break;
++		if (le16_to_cpu(ack->ack.ret_major) && net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: VF %u link state ACK error %u/%u\n",
++				    vf_id,
++				    le16_to_cpu(ack->ack.ret_major),
++				    le16_to_cpu(ack->ack.ret_minor));
++		break;
++	}
++	default:
++		netdev_dbg(enic->netdev,
++			   "MBOX: PF unhandled msg type %u from VF %u\n",
++			   hdr->msg_type, vf_id);
++		err = -EOPNOTSUPP;
++		break;
++	}
++
++	if (err && net_ratelimit())
++		netdev_warn(enic->netdev,
++			    "MBOX: PF handler for msg type %u from VF %u failed: %d\n",
++			    hdr->msg_type, vf_id, err);
++}
++
+ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
+ 				   unsigned int len)
+ {
+ 	struct enic_mbox_hdr *hdr = buf;
++	void *payload;
++	u16 msg_len;
+ 
+ 	if (len < sizeof(*hdr)) {
+ 		if (net_ratelimit())
+@@ -156,10 +329,23 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
+ 		return;
+ 	}
+ 
++	msg_len = le16_to_cpu(hdr->msg_len);
++	if (msg_len < sizeof(*hdr) || msg_len > len) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: invalid msg_len %u (buf len %u)\n",
++				    msg_len, len);
++		return;
++	}
++
+ 	netdev_dbg(enic->netdev,
+ 		   "MBOX recv: type %u from vnic %u len %u\n",
+-		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id),
+-		   le16_to_cpu(hdr->msg_len));
++		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id), msg_len);
++
++	payload = buf + sizeof(*hdr);
++
++	if (enic->vf_state)
++		enic_mbox_pf_process_msg(enic, hdr, payload);
+ }
+ 
+ void enic_mbox_init(struct enic *enic)
 diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-new file mode 100644
-index 000000000000..a52f1d25cb21
---- /dev/null
+index 73fd7f783ee2..f1de67db1273 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
 +++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
-+
-+#ifndef _ENIC_MBOX_H_
-+#define _ENIC_MBOX_H_
-+
-+#include <linux/bits.h>
-+#include <linux/types.h>
-+
-+/*
-+ * Mailbox protocol for PF-VF communication over the admin channel.
-+ *
-+ * Even numbers are requests, odd numbers are replies/acks.
-+ * The prefix indicates the initiator: VF_ = VF-initiated, PF_ = PF-initiated.
-+ */
-+enum enic_mbox_msg_type {
-+	ENIC_MBOX_VF_CAPABILITY_REQUEST		= 0,
-+	ENIC_MBOX_VF_CAPABILITY_REPLY		= 1,
-+	ENIC_MBOX_VF_REGISTER_REQUEST		= 2,
-+	ENIC_MBOX_VF_REGISTER_REPLY		= 3,
-+	ENIC_MBOX_VF_UNREGISTER_REQUEST		= 4,
-+	ENIC_MBOX_VF_UNREGISTER_REPLY		= 5,
-+	ENIC_MBOX_PF_LINK_STATE_NOTIF		= 6,
-+	ENIC_MBOX_PF_LINK_STATE_ACK		= 7,
-+	ENIC_MBOX_MAX
-+};
-+
-+struct enic_mbox_hdr {
-+	__le16 src_vnic_id;
-+	__le16 dst_vnic_id;
-+	u8 msg_type;
-+	u8 flags;
-+	__le16 msg_len;
-+	__le64 msg_num;
-+};
-+
-+struct enic_mbox_generic_reply {
-+	__le16 ret_major;
-+	__le16 ret_minor;
-+};
-+
-+#define ENIC_MBOX_ERR_GENERIC		BIT(0)
-+#define ENIC_MBOX_ERR_VF_NOT_REGISTERED	BIT(1)
-+#define ENIC_MBOX_ERR_MSG_NOT_SUPPORTED	BIT(2)
-+
-+/* ENIC_MBOX_VF_CAPABILITY_REQUEST / _REPLY */
-+#define ENIC_MBOX_CAP_VERSION_0		0
-+#define ENIC_MBOX_CAP_VERSION_1		1
-+
-+struct enic_mbox_vf_capability_msg {
-+	__le32 version;
-+	__le32 reserved[32];
-+};
-+
-+/* The embedded enic_mbox_generic_reply has 2-byte alignment, but the
-+ * __le32 members give this struct 4-byte natural alignment.  Receive
-+ * buffers come from kmalloc (>= 8-byte aligned), so there is no
-+ * misaligned access risk when casting from the receive buffer.
-+ */
-+struct enic_mbox_vf_capability_reply_msg {
-+	struct enic_mbox_generic_reply reply;
-+	__le32 version;
-+	__le32 reserved[32];
-+};
-+
-+/* ENIC_MBOX_VF_REGISTER / _UNREGISTER */
-+struct enic_mbox_vf_register_reply_msg {
-+	struct enic_mbox_generic_reply reply;
-+};
-+
-+/* ENIC_MBOX_PF_LINK_STATE_NOTIF / _ACK */
-+#define ENIC_MBOX_LINK_STATE_DISABLE	0
-+#define ENIC_MBOX_LINK_STATE_ENABLE	1
-+
-+struct enic_mbox_pf_link_state_notif_msg {
-+	__le32 link_state;
-+};
-+
-+struct enic_mbox_pf_link_state_ack_msg {
-+	struct enic_mbox_generic_reply ack;
-+};
-+
-+#endif /* _ENIC_MBOX_H_ */
+@@ -87,5 +87,6 @@ struct enic;
+ void enic_mbox_init(struct enic *enic);
+ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
+ 		       void *payload, u16 payload_len);
++int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
+ 
+ #endif /* _ENIC_MBOX_H_ */
 
 -- 
 2.43.0
