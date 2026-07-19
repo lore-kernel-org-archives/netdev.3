@@ -1,124 +1,138 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B243347C5;
-	Sun, 19 Jul 2026 10:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D8D38642A
+	for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 10:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784458469; cv=none; b=iDMdbiBbKbprNZHUFW37pdMYt91fvcbWhA/zbgLfJTwXVjNrUEud7ETtXbV5pi4/NJI0v9M0Qfu+GQY9YWIJ20qT1ZSsi5BzW3YH8FWYn3nwQgb0FVF0PVEjLrUjwxuiFOl+u7mKHpDCEXyajByLfrJ/Kky34bvxgWPWVHVDaVQ=
+	t=1784458695; cv=none; b=tvsSxFe9p+TJS6j+SFKhp0JEkzCusCrMYDHVcCNNAZLEUvkWLENWvHU6z8ezUJLAhZHt+4ND4IMoW4yztbDFGOYnzpBjjbbzHvSDG+xxoY2hEcwctCNu9/eZulFKUilPd/2Jbj0RJsUO++74r2eUuz+g5Oy8A2r8MZCYUEZ8hmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784458469; c=relaxed/simple;
-	bh=ritm/XWZBQgqFyF6+1biOaUI0sgx1ylKg+o4OEVSucY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=S2B8RDQEceu6XemEb92NqVjMzEqi1o6DqWa4xsPZU38voNubtNNslR7vW+6ifc0ipttympuvkwbo6IAuG+gcHtGSsZ4FQQJ5/OVGQWsfhfIz60H/qYCr7YkFzRCqNyGcciNwFhOZO9gdLMS1EEwPQsoSO2w1Nt4Ma+LE/7izfOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=byFYEUAu; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1784458695; c=relaxed/simple;
+	bh=kG68kuGxwTUfYF9d6eeoBkKrI492WSL5nm8S3ECKohQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ca2S9cNG1hWd9qesWqs7Sql/D7Qqk1l8+SzItG5Wh51kARkFfmPvwp2K4GQzhYgKI2Wrewsyy/8n2wnRInSffWnmEo25L09VNQmDgDGZl+f9C6TkpeLoALhmTlgo+7ooZOnUBgjrCfIN0mwpO2Qtb34Q2/x2EXsSJC4T/2ZEQOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBr7zHI3; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="byFYEUAu"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0E7CA5188;
-	Sun, 19 Jul 2026 12:54:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1784458466; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=s4dDpLABSIzeeir1TfYxMwOAYkWkN3D/SdZ9ELEpl9g=;
-	b=byFYEUAuhXyRSmvpMf77YRwmTCXNRWCpwBGvcaQ6e91DtsonNrjUFAwXdd7zioLqXB0ZSe
-	2fT/G02i6tvaRdNpams+PiHVVrjA3wopjS9X+K8VLjo7H5amz2CdCU7WMYDUybiQMx0YZ4
-	cIb/+XBl3frBSyQZ41OOPJr5jGhQK70sRwpb01StcRlvK8kE7HV+cAN5RqB2SWqrHA34zj
-	NMXhbE1Xzc6FhKbBufIJTEfvFPG4g8abAmNi1CWfccZqVOCC9SOxzEuwnpAQ7W1iBHmcfL
-	9oP0NBi8W0YlK4l39TlR2i5vnwDzvjQ9qjs7mD4f1hZwWkHD9p7NU+oZpcw9XQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBr7zHI3"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4954d383e64so9251145e9.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 03:58:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784458691; x=1785063491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7HzRtazZ4L1gYUv2iM5Gcb2OTN39V4RyFH9aAlRzqso=;
+        b=ZBr7zHI30EFKhzYd2TnU6qFjCU/DOAf6CABgZ1aDlLXBURtAELzLWPymhdiriiduKu
+         3VbtB0pWkQTRIZvIz3EaPPw2xcxDbNzIFei9e7BxrLpICwPBAl3l4BnLIWwg23hj+nJ+
+         2zFBuIma7qShyfQ9fZeJunbfYwleSchnPT2eQx+4UmJnBzTFkj7k5Z00JARW1SyCLS6B
+         mHYDWTb8wGNwbaa+XIJt5vEU4tWtiv7KI/vRTETYj4k3wd+9hkrB+8i+vnxa5RMnCJy7
+         09D2NLf/D8JKS7JTVGsvMzF63/UaU7WJJI3/a1tonoB5/Ar/3oGZHSGGfnx6EN73mNOY
+         VB9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784458691; x=1785063491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7HzRtazZ4L1gYUv2iM5Gcb2OTN39V4RyFH9aAlRzqso=;
+        b=R3V7mML4Nus9l0mGH0woCq6/iO4fsIh7D6EO7C+3P6pnbGBePXZ02GToOCt8qk4D6k
+         vWLSnzRevH7J+jiXO+2QmM08X/iA61tdiK67sjNNEUWJdPEQ0LU3eAkru6WgIy3HBdBd
+         0N5uNhmOateT7GDGgUzbicwOG7H5HeCT++CcStJGp/HSv21hCkmLpU92M6VyI3ZcmL+2
+         c5utHrVXRx/4uQ1I+hx38CfXKqt3JyEJWipB+MU5EehW/+AOoUNYzhqL45xgy/LCIUO8
+         ljf6/af1BANkk/+iHTUlI127CJIiYaXa5mepVKkGoDlVH+A2An+UjcvUmxco+vWVWl1b
+         bYCw==
+X-Forwarded-Encrypted: i=1; AHgh+RrD8g3OlZHAItiL7zOtU/VOPVKU/uWCcWWZRy71NQuZrCeqgZn9FOvXCj/1vPMKAQM6VIjz9Ic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHBmnLfImEBJyCI5zDR2RKJ+QJT4MEFs43zeerANidldTkkrS0
+	YKP4eRDobtgmhUfQf0YMUbRVs/oZwynEOIsFXGXLouBzRHO+24k3jNn6
+X-Gm-Gg: AfdE7cmZ3rUWqNuVB2eluH8GZfX8RXVDY0Ew0ffrfKQVW6u0RHgK1JcaCj4s+XQjskZ
+	45gw9lHlLom9+FX7z3iICrOy561Jrn2vEdsQiVfhy117a63wN3jzp3wb5Dem/JhoGgfYicRV7YC
+	hm/WyQdbfmr60zdKWPI5M2vQARVmVcTd9g38wDBd4AbsiZinaZ2MFohE6/4JDImm3B/YkWsXQY4
+	ZuT9/WTVCJTJLapNdb7w1GJu5PTtPOGL3BYkVJ8QsZonB5UDvyq/lFMd/YlcMY4r4H50yuy3JCK
+	udRL2wMJ34s8/bXfZUGqTMvJuBFw0f6CXQBAxEIUMYDfPPeIa8zEw6d0wpeYReuaKA6Y737c9E+
+	PSmfAtywLXAKed3k3Y5/ZBCkRARB9e38DYhcfMIVnKglX873Cy+Keo0P8gBoo6+yYQ5yFoDumTk
+	GN9540lPt/
+X-Received: by 2002:a05:600c:4703:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-4954e893f8cmr84812365e9.15.1784458690612;
+        Sun, 19 Jul 2026 03:58:10 -0700 (PDT)
+Received: from fedora-dev ([46.10.223.24])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49ab8sm21094119f8f.5.2026.07.19.03.58.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 03:58:10 -0700 (PDT)
+From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: kuniyu@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	syzbot+84d4a405ed798b40c96d@syzkaller.appspotmail.com
+Subject: [PATCH net] ipv6: Change allocation flags to match rcu_read_lock section requirements
+Date: Sun, 19 Jul 2026 13:57:59 +0300
+Message-ID: <20260719105759.558050-1-zlatistiv@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 19 Jul 2026 12:54:25 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
- King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Paolo Valerio
- <pvalerio@redhat.com>, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v4 15/15] net: macb: use context swapping in
- .ndo_change_mtu()
-In-Reply-To: <20260717-macb-context-v4-15-0acbe7f10cdb@bootlin.com>
-References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
- <20260717-macb-context-v4-15-0acbe7f10cdb@bootlin.com>
-Message-ID: <92cbeee9aa88c7ecc3ec3d0477e5f4e2@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Théo
+Since the call to __ip6_del_rt_siblings has been converted under
+rcu read lock and it only has one call point
+we should no longer block or yield.
 
-On 17.7.2026 21:48, Théo Lebrun wrote:
-> Use newly introduced context buffer management to implement
-> .ndo_change_mtu() as a context swap: allocate new context ->
-> reconfigure HW -> free old context.
-> 
-> This resists memory pressure well by failing without closing the
-> interface and it is much faster by avoiding PHY reinit.
-> 
-> AT91 EMAC is handled differently as their buffer management is separate
-> and they don't do NAPI. We refuse them (-EBUSY) to avoid implementing
-> context swapping for them.
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index 5792647eb0a6..1de66f442c59 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -3493,11 +3493,29 @@ static int macb_close(struct net_device 
-> *netdev)
-> 
->  static int macb_change_mtu(struct net_device *netdev, int new_mtu)
->  {
-> -	if (netif_running(netdev))
-> -		return -EBUSY;
-> +	struct macb *bp = netdev_priv(netdev);
-> +	bool running = netif_running(netdev);
-> +	struct macb_context *new_ctx;
-> +
-> +	if (running) {
-> +		/* Context swapping is not supported for AT91. */
-> +		if (bp->caps & MACB_CAPS_MACB_IS_EMAC)
-> +			return -EBUSY;
-> +
-> +		new_ctx = macb_context_alloc(bp, new_mtu,
-> +					     bp->configured_rx_ring_size,
-> +					     bp->configured_tx_ring_size);
-> +		if (IS_ERR(new_ctx))
-> +			return PTR_ERR(new_ctx);
-> +
-> +		macb_context_swap_start(bp);
-> +	}
-> 
->  	WRITE_ONCE(netdev->mtu, new_mtu);
-> 
-> +	if (running)
-> +		macb_context_swap_end(bp, new_ctx);
-> +
->  	return 0;
->  }
+Our stack trace from the syzbot reproducer looks as follows:
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+__ip6_del_rt_siblings
+  rtnl_notify (Here we pass gfp_any() -> GFP_KERNEL)
+    nlmsg_notify
+      nlmsg_multicast
+        nlmsg_multicast_filtered
+          netlink_broadcast_filtered (GFP_KERNEL passed from earlier)
 
-Thanks
-Nicolai
+netlink_broadcast_filtered can yield if GFP_KERNEL
+is passed, which we do not want to happen.
+
+Fix this by changing the allocation flag of rtnl_notify.
+
+Also change the flag passed to nlmsg_new. Even though it
+is not related to the syzbot generated bug it still falls
+under the same requirements.
+
+Reported-by: syzbot+84d4a405ed798b40c96d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=84d4a405ed798b40c96d
+Fixes: bd11ff421d36 ("ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+---
+ net/ipv6/route.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index a1301334da48..fc42d67e5822 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -4022,7 +4022,7 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ 		struct fib6_node *fn;
+ 
+ 		/* prefer to send a single notification with all hops */
+-		skb = nlmsg_new(rt6_nlmsg_size(rt), gfp_any());
++		skb = nlmsg_new(rt6_nlmsg_size(rt), GFP_ATOMIC);
+ 		if (skb) {
+ 			u32 seq = info->nlh ? info->nlh->nlmsg_seq : 0;
+ 
+@@ -4078,7 +4078,7 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ 
+ 	if (skb) {
+ 		rtnl_notify(skb, net, info->portid, RTNLGRP_IPV6_ROUTE,
+-			    info->nlh, gfp_any());
++			    info->nlh, GFP_ATOMIC);
+ 	}
+ 	return err;
+ }
+-- 
+2.54.0
+
