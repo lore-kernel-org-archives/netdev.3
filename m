@@ -1,251 +1,116 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB2441737B
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 12:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9793D88E5
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 12:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784550449; cv=none; b=V0jslzLHgqx1kbmdhwj0IACKXw87sAc3E6xvDPm63wvSAVNgIK4esGld/iX6YRoJhSpdghaVPbnT70oSxam9M3elcAbrczipDDeuY6b6IRpPQotc1v/2/etbJPoNy/kuw671LAM0SLQvYv26Dl7pM2YcpQrO2yGejI1+fnrPcZI=
+	t=1784551338; cv=none; b=LtIWnLdgvbE+7nwpikT6HR6v2GfKp29pnjGB5atCzIFeY4wunCIQ+2gG97950G8lOfDpwKJxUDOfL1buzfYRkQlgKkMfg0iNdAQo61TzbimBS8fnTUANI/FbSn9IuvlOudKFrmwxJU60e8Ff7IgO7BQqaM4IlwQIPY96GD/M6aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784550449; c=relaxed/simple;
-	bh=4TLrIvDe/bg8t4VrjCVE1fid6WLH027l0LXzVNxj/gY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3jlrGjkjg1kMGjMhqe0S044f29E36lxs9O1XoON2a9pmbe8N8x41c/faynieiBmnCYupqSFoql+xyP88SN/ShpAuStgBDxCJSj0dk+Bp8hbb6ak8BbjvvPAxpkBNz4d+8J3/mFGuYVs9PlXdxFFfOFCeroJJaLAE9bHlOwTl0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=YCdSEJE2; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1784551338; c=relaxed/simple;
+	bh=O0U0QH93kFMAnNCqW3cDj3rG4kKpvj/nPD7Ek6MTSfs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lUWLOIk17sZEoBSOYoy6fZMp8vdl0ixDE6S9w5VQME+Ja82wSfb5Z8P9f62J3fqD75A8Zl0lD3LcoDDluKdbr92ga6pFgdTbsFZ/fxivJMo5cKg2V6mh4L2MnbcUBZBC/MHltXK43UF6JqVtHj7V0ZtTuf3MExyJ4TidPqUQ6/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aollV8ef; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="YCdSEJE2"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so9703385ad.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 05:27:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784550447; x=1785155247; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kT3+457ZgQQK/w6X8ImwhZLDpK+RRyfUesrwJruiOJM=;
-        b=YCdSEJE2gwWGNVSWaZE+AIy8vJMATbZtMa7ZSBOTDqrisMmT06NK56oRf8csgsB2jn
-         nRNHZa+n4YqUJcqHPDcvEnPjI/DpUZLOJL1BPXGeGVR0yWfUnp327t1mWnCv0wPZ08Sz
-         rc5DDXExP0vmmu0lS5d8l5JFgJ6bfPYX2Ms9eEr1yhYhLN+NdNj3rcw1Z+OpDSy8SSdu
-         HMyIh1BFBWbun4DmpM1X2XW47BSFhojyvANxHB8m4JLhYaLPXYOiBxkgWAA2nZkgK8H3
-         iRLjFB/BQ27JCUbXotxx6uME211KsS4Ab4Ze6e7CqtKApR7FyTZutBrr4lGSGEiNP5da
-         xj3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784550447; x=1785155247;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kT3+457ZgQQK/w6X8ImwhZLDpK+RRyfUesrwJruiOJM=;
-        b=jTFawWmhnHqXWMlBzhI+O1+zWQqI+UCaBovcsKvtV6BpT82rGTvg3ckeO4y6HE24Ey
-         M7Y20pwnRfc5JpOLfQv6Km5S3EcLstqhAAUEyJ4xHfsaFgsH43WDS+p8rykHwJBiDEkO
-         12aUPaMFumGhTlBTAY4b4ziuDOo18iiJ6QtofDAnypJ0GTt9s0Au5vf7G4H3/Y3EREyU
-         uVV+Ts3r65y48UaszrrzhdEGXjr6boxkJiPZEByX/TkG7f0hmRgrq62n6cRz2XQTh5gU
-         9c3rzYEe7c2V8p7jgJRuEcj8uwfBNFQcRw/P3dGGyYLwv/ZxLIBa1M+Tv+JxLgpae2jx
-         a0ig==
-X-Gm-Message-State: AOJu0YybZaDmYQP+H+CLbSO1eOK/IU7KdBUAazpy8oFvB4+a9I72Wa4m
-	ks1/YrRdJNwbAN7pFqDFhpi2TrJnrPp2Wmpr5qu7QvhzmPi45hr08WyOoG0o7zlvWSW1CH3849v
-	0RXFONAsQnA==
-X-Gm-Gg: AR+sD13KdMNB5bmpBEv96t0K9pYTFtPSNOWuC8fAPXITWeNn/uUH/RjpDnIdoeGvweb
-	pKWEdXKrkcm00vcsAmK/csNCVc7XcGASzvDfPEHhCEjCCKMBPLhEmBvJ+Lla8aWtNozcO73MLvh
-	oatjtlRZo1QvfTC4cboXhcMJAmfXTurE4wx+7S66tr1U/UPm+T9idVP9TG+a8b6zqralUA5shNL
-	SxCkds0lQNKTKGqrqnAzBMiJ7XfGQcq3TaJyQGIqsXqqKR/3RI+CKIP0Y6oJ7dRbF5lKuqoe16D
-	eTo8sSo5Wg/gzsLRHeBCSQQ5yFQ950B8hzyMOR6o64YkXuSVc7ORduP59ek4iMKlTpzWQfpf/R4
-	qt6L4nNBRM3Tsaf4zCFd4aRlx8nBsh3GgApGY2KgZpL05CdN6+DrgbNN86z4=
-X-Received: by 2002:a17:903:4405:b0:2ca:ca48:c380 with SMTP id d9443c01a7336-2cf34a07a97mr151607535ad.47.1784550447012;
-        Mon, 20 Jul 2026 05:27:27 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:52::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344b1ef8sm58641475ad.21.2026.07.20.05.27.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 05:27:26 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: andrew+netdev@lunn.ch,
-	willemb@google.com,
-	linux-kselftest@vger.kernel.org,
-	Joe Damato <joe@dama.to>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 3/3] selftests/net: Test PACKET_AUXDATA
-Date: Mon, 20 Jul 2026 05:27:12 -0700
-Message-ID: <20260720122714.759175-4-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260720122714.759175-1-joe@dama.to>
-References: <20260720122714.759175-1-joe@dama.to>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aollV8ef"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784551335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q3J/GEMhDjOF5ve8nn5RuxHQfZV2q9C7kXXtulPd5Qw=;
+	b=aollV8efUzsp8gxLXI2OTgcEYgNhhbYZYon9EjqMygKmnuMR1nUr+Q/5Q1fooqjTJoN6Go
+	4PIk6maeWqJ9JonNl84lOTI5HtR5SU3FY52c0OZ2vLNAmHpIhAGmGhMlmDZAMl2/aC1WoR
+	ZRo4DuCiLYtBh94/+PD98p9qWR/yFZk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-5O6-x0SWMQm8U91YV3QLUQ-1; Mon,
+ 20 Jul 2026 08:42:14 -0400
+X-MC-Unique: 5O6-x0SWMQm8U91YV3QLUQ-1
+X-Mimecast-MFC-AGG-ID: 5O6-x0SWMQm8U91YV3QLUQ_1784551333
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F318E1800660;
+	Mon, 20 Jul 2026 12:42:12 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B484195422C;
+	Mon, 20 Jul 2026 12:42:11 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: houminxi@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, i.maximets@ovn.org,
+ echaudro@redhat.com
+Subject: Re: [net-next,v4] selftests/net/openvswitch: add SCTP flow key test
+In-Reply-To: <20260719162657.3263089-1-houminxi@gmail.com>
+References: <20260719162657.3263089-1-houminxi@gmail.com>
+Date: Mon, 20 Jul 2026 08:42:10 -0400
+Message-ID: <f7to6g1q1ct.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Extend the packet socket selftest, adding a recvmsg path, to test
-PACKET_AUXDATA. Check basic attributes of tpacket_auxdata.
+Minxi Hou <houminxi@gmail.com> writes:
 
-Signed-off-by: Joe Damato <joe@dama.to>
----
- tools/testing/selftests/net/psock_snd.c  | 70 ++++++++++++++++++++++--
- tools/testing/selftests/net/psock_snd.sh |  5 ++
- 2 files changed, 70 insertions(+), 5 deletions(-)
+> Add test_sctp_connect_v4() to verify OVS can match on SCTP flow keys
+> (sctp src/dst port).
+> 
+> The test sets up client and server namespaces connected through an
+> OVS bridge, installs port-keyed flows, and verifies:
+>   - sctp(dst=4443) matches client-to-server INIT
+>   - sctp(src=4443) matches server-to-client INIT-ACK
+>   - removing flows drops the connection
+>   - reinstalling flows restores connectivity
+> 
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> ---
+>  .../selftests/net/openvswitch/openvswitch.sh  | 105 ++++++++++++++++++
+>  .../selftests/net/openvswitch/ovs-dpctl.py    |   5 +
+>  2 files changed, 110 insertions(+)
+> 
+> v3 -> v4: rebase onto latest net-next (2026-07-19), resolve test list
+>   conflict from merged trunc test
 
- v3:
-  - Prevent combining test_auxdata and test_drops.
-  - Include an aligned(8) for the cmsg to ensure (1) buffer
-    alignment for cmsg struct fields and (2) aligned payload access.
+Hi Minxi,
 
- v2:
-  - Add is_psock bool argument to do_rx.
-  - Factor out aux data check into its own function for readability.
+Just a note that this will conflict with the current in-flight patch::
 
-diff --git a/tools/testing/selftests/net/psock_snd.c b/tools/testing/selftests/net/psock_snd.c
-index 81096df5cffc..bee81227f5b0 100644
---- a/tools/testing/selftests/net/psock_snd.c
-+++ b/tools/testing/selftests/net/psock_snd.c
-@@ -40,6 +40,7 @@ static bool	cfg_use_qdisc_bypass;
- static bool	cfg_use_vlan;
- static bool	cfg_use_vnet;
- static bool	cfg_drop;
-+static bool	cfg_aux_data;
- 
- static char	*cfg_ifname = "lo";
- static int	cfg_mtu	= 1500;
-@@ -279,11 +280,54 @@ static int setup_rx(void)
- 	return fd;
- }
- 
--static void do_rx(int fd, int expected_len, char *expected)
-+static void check_aux_data(struct cmsghdr *cmsg, int expected_len)
- {
-+	struct tpacket_auxdata *adata;
-+
-+	if (!cmsg)
-+		error(1, 0, "auxdata null");
-+
-+	if (cmsg->cmsg_level != SOL_PACKET)
-+		error(1, 0, "cmsg_level != SOL_PACKET");
-+
-+	if (cmsg->cmsg_type != PACKET_AUXDATA)
-+		error(1, 0, "cmsg_type != PACKET_AUXDATA");
-+
-+	adata = (struct tpacket_auxdata *)CMSG_DATA(cmsg);
-+
-+	if (adata->tp_net != ETH_HLEN)
-+		error(1, 0, "cmsg tp_net != ETH_HLEN");
-+
-+	if (adata->tp_len != expected_len)
-+		error(1, 0, "cmsg tp_len != %u", expected_len);
-+
-+	if (adata->tp_snaplen != expected_len)
-+		error(1, 0, "cmsg tp_snaplen != %u", expected_len);
-+}
-+
-+static void do_rx(int fd, int expected_len, char *expected, bool is_psock)
-+{
-+	char cmsg_buf[1024] __attribute__((aligned(8))) = {};
-+	bool aux = is_psock && cfg_aux_data;
-+	struct msghdr msg = {};
-+	struct iovec iov[1];
- 	int ret;
- 
--	ret = recv(fd, rbuf, sizeof(rbuf), 0);
-+	if (aux) {
-+		iov[0].iov_base = rbuf;
-+		iov[0].iov_len = sizeof(rbuf);
-+
-+		msg.msg_iov = iov;
-+		msg.msg_iovlen = 1;
-+
-+		msg.msg_control = cmsg_buf;
-+		msg.msg_controllen = sizeof(cmsg_buf);
-+
-+		ret = recvmsg(fd, &msg, 0);
-+	} else {
-+		ret = recv(fd, rbuf, sizeof(rbuf), 0);
-+	}
-+
- 	if (ret == -1)
- 		error(1, errno, "recv");
- 	if (ret != expected_len)
-@@ -292,6 +336,12 @@ static void do_rx(int fd, int expected_len, char *expected)
- 	if (memcmp(rbuf, expected, ret))
- 		error(1, 0, "recv: data mismatch");
- 
-+	if (aux) {
-+		struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-+
-+		check_aux_data(cmsg, expected_len);
-+	}
-+
- 	fprintf(stderr, "rx: %u\n", ret);
- }
- 
-@@ -312,6 +362,10 @@ static int setup_sniffer(void)
- 		if (setsockopt(fd, SOL_SOCKET, SO_RCVBUF, &one, sizeof(one)))
- 			error(1, errno, "setsockopt SO_RCVBUF");
- 
-+	if (cfg_aux_data)
-+		if (setsockopt(fd, SOL_PACKET, PACKET_AUXDATA, &one, sizeof(one)))
-+			error(1, errno, "setsockopt PACKET_AUXDATA");
-+
- 	pair_udp_setfilter(fd);
- 	do_bind(fd);
- 
-@@ -322,8 +376,11 @@ static void parse_opts(int argc, char **argv)
- {
- 	int c;
- 
--	while ((c = getopt(argc, argv, "bcCdDgl:qt:vV")) != -1) {
-+	while ((c = getopt(argc, argv, "abcCdDgl:qt:vV")) != -1) {
- 		switch (c) {
-+		case 'a':
-+			cfg_aux_data = true;
-+			break;
- 		case 'b':
- 			cfg_use_bind = true;
- 			break;
-@@ -373,6 +430,9 @@ static void parse_opts(int argc, char **argv)
- 
- 	if (cfg_use_gso && !cfg_use_csum_off)
- 		error(1, 0, "option gso (-g) requires csum offload (-c)");
-+
-+	if (cfg_aux_data && cfg_drop)
-+		error(1, 0, "option aux data (-a) conflicts with drop (-D)");
- }
- 
- static void check_packet_stats(int fd)
-@@ -432,11 +492,11 @@ static void run_test(void)
- 	/* BPF filter accepts only this length, vlan changes MAC */
- 	if (cfg_payload_len == DATA_LEN && !cfg_use_vlan) {
- 		do_rx(fds, total_len - sizeof(struct virtio_net_hdr),
--		      tbuf + sizeof(struct virtio_net_hdr));
-+		      tbuf + sizeof(struct virtio_net_hdr), true);
- 		check_packet_stats(fds);
- 	}
- 
--	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len);
-+	do_rx(fdr, cfg_payload_len, tbuf + total_len - cfg_payload_len, false);
- 
- out:
- 	if (close(fds))
-diff --git a/tools/testing/selftests/net/psock_snd.sh b/tools/testing/selftests/net/psock_snd.sh
-index b6ef12fad5d5..111c9e2f0d21 100755
---- a/tools/testing/selftests/net/psock_snd.sh
-+++ b/tools/testing/selftests/net/psock_snd.sh
-@@ -97,4 +97,9 @@ echo "raw gso max size + 1 (expected to fail)"
- echo "test drops statistics"
- ./in_netns.sh ./psock_snd -D
- 
-+# test aux data
-+
-+echo "test aux data"
-+./in_netns.sh ./psock_snd -a
-+
- echo "OK. All tests passed"
--- 
-2.53.0-Meta
+   [+]   1. #14675655 [new             ] [net-next,v5]
+       selftests/net/openvswitch: add ICMPv6 echo type match test
+   
+It would be best to wait before reposting, or to bundle all of your test
+case updates in a single series.
+
+Given the other patch is already reviewed by me, let's wait until that
+is accepted upstream before reposting this.  I know Ilya had some
+comments about it previously, but haven't checked to see if you've
+addressed all of them.  And a nit:
+
+[...]
+
+> +# sctp_connect_v4 test
+> +# - sctp(dst=4443) matches client-to-server INIT
+> +# - sctp(src=4443) matches server-to-client INIT-ACK
+> +# - remove flows and verify connection fails, reinstall and recover
+> +test_sctp_connect_v4() {
+> +	local t="test_sctp_connect_v4"
+> +
+> +	which nc >/dev/null 2>&1 || return $ksft_skip
+> +	nc --sctp -z 127.0.0.1 1 </dev/null 2>/dev/null || return $ksft_skip
+
+This can probably be instead::
+
+  nc --help 2>&1 | grep -q -- --sctp || return $ksft_skip
+
+This reads nicer to detect SCTP support in 'nc' binary.
 
