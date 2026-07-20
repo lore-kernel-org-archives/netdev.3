@@ -1,171 +1,160 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013056.outbound.protection.outlook.com [40.107.162.56])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C892C08BB;
-	Mon, 20 Jul 2026 01:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784510504; cv=fail; b=PHpQ3hxjHv3Wb60ZXJvlu9qe9FT0HEe+FRjFUDqYwZ7bYt3F7CsNTJKRWYpZeCDKpgdF+nwgRgoh2wpVJSpbSp0cqIjlhXsHfaC1uf0Rvy+SSsq0YRHETggvTFG7CvVBwKOd1t594GfrKMwVfbOb2fmGiZ1o6ih74rmtJbOLDME=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784510504; c=relaxed/simple;
-	bh=5/Bc5Un0GdpHJDd1r7BgwqhZVWL+xMcrfc9fkh6rjK4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PxXT9qikXsfvYwh2VZfp8w7DhObRd3tFynUUU0ftnJaX9U7oL9xg+W/ZsSVrPobrZrz50vLEMqIPoajTlLcXG6ZP9dqsBeS5ogckAl6dyEIZcgQ2iAbwvSs5WHaxBB+VnO9QSYvAKrm3nXlJDqDaf+9wjGhdLMyaDp+KYLhgpl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=F7igHP1N; arc=fail smtp.client-ip=40.107.162.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="F7igHP1N"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JtVxJC7S4YAV3893VaUDmh4yDLTTOAoNby/08CfrjIDPGTZAwUMSMgWCH/guxCPJ6rSyJaWEIr2hdjltrKA4iwZF0ve95vagtC6g0UduR3seN9UEeDtVd+ofC1axsTGZvak9a005L0i0Z1p7+vBnLR1NWoRxbPdABODdMFmsrbgp8PZmOku5wp7USTj79SYMClHhk8xDHLCLthsbrmCWc3fMsnxeiQK93dOre4bjvTdQ17onLM9EIi5kv0ZonRkPoi0PYaPKFtGDUap3ywK0DUZhRSv+VMxeFUl6Wtl0740ehHI6HK3a8e3KF0F7HwDsOGGB+6evR2DVfwu0bf7+kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XzBDseF5+L0KoATMQnQCe5n3WNMCksWRsxOdlZolFHY=;
- b=rJhPWIDwi5bqiq+nLqSdj5RxcMsEJ4SWRUk9Qtk+XELSTqdKuX0JJbddFCRldxmK31nIu/Ux1ubTDdNPmLgzvlC/OJAEjKB2mqeC5UgWwCRIDPbFUFG2P31gEd5gZUUE8PTRb6YJ9tSDE8UFGNdk6eLpeP/K6+iaO2mnSGidZFhjnlQBWWryMVE8J6tZIDnulbJ7FznCHKqEYfijdDtW6o95iwruQHvTDT99MJiF9P6esuyLPChVPgAZAIwaAh20tkNRnlyGSxLNDIeBh97+qVwYy5HD4hlP3OW8xN9cSVWVinChQXRCS698oOTfdGLmAoxeHRRHTCRO4u6dR38CKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XzBDseF5+L0KoATMQnQCe5n3WNMCksWRsxOdlZolFHY=;
- b=F7igHP1NYjkuFdmDeI2ctFq3X2cMf0dlpyM6dtRlBv0JvjcPMLMDxjsOXFYm8bb7+2heOB5GGLX9KytdB7gATmiveAah7pbHd3VbAZfRoF+dmmcSO0ecChqJYFsVnZ78ButAYeNwCwyrX9YAaBXH5Njc4jMflYVxHMaQ076q2E69J38bBmHHZVWryJRdmaSoKyCHnNNa2b7Y88muSipuXSJHN4m0oKyeDflB4bRuLzIt1KiOtLPO/2AeLcXobRMduf+74/EqxGZdZ0LoPOw5cnvNw5sx7ALk2wCTyB0Swn9vNhbiDnufuFz3ZIZfT9gVBZkVVFGn46IMz+D12zGTAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DB9PR04MB10011.eurprd04.prod.outlook.com (2603:10a6:10:4c4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 01:21:38 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
- 01:21:38 +0000
-From: wei.fang@oss.nxp.com
-To: richardcochran@gmail.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Frank.Li@nxp.com,
-	vadim.fedorenko@linux.dev
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v1 net] ptp: netc: explicitly clear TMR_OFF during initialization
-Date: Mon, 20 Jul 2026 09:25:08 +0800
-Message-Id: <20260720012508.23227-1-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0083.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1ad::9) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB1D215F42;
+	Mon, 20 Jul 2026 01:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784510732; cv=none; b=TgqeZ0gJTCOYeooovh8tgrg7vj4rpSCbUM3OgrGtvi+2P83D1+adF8tSp8oE6zlEqSs6xnPa8UP8itTO15BtQmlhDt9/qMIS5ftQABraw/ZWrtDOxKBnvunPOloJfwNFfBXAS6u1z+NTin5bL+4FP23rsXCpLylCKgxU6AyXhAA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784510732; c=relaxed/simple;
+	bh=6+7F/NUZipP39RuwxK+wfw4W4GdOSPJJypNWhoTT/oM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=B/vQc0kfJNkOCz6mJGmqbCztrSKTW6o/hPJNTLnYianxoBbXGnd9kX8obsYZZjtSVEOIoOE61xdSGSJwP+Frp4gYmHsPcMH1gQfNAHEwTUbw8c3cr3WWBI3IFX4M1nlo1mzBlIWXLPUuUBh+jEtZziSQp1hx2MWnoaqJLFRKCGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h3N932p8PzKHMPK;
+	Mon, 20 Jul 2026 09:24:39 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 071E840539;
+	Mon, 20 Jul 2026 09:25:19 +0800 (CST)
+Received: from [10.67.110.68] (unknown [10.67.110.68])
+	by APP4 (Coremail) with UTF8SMTPA id gCh0CgCn2Fn9eF1q9cl1Bw--.35424S2;
+	Mon, 20 Jul 2026 09:25:18 +0800 (CST)
+Message-ID: <5d3b049b-f671-4773-a05f-39fd986d8489@huaweicloud.com>
+Date: Mon, 20 Jul 2026 09:25:17 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DB9PR04MB10011:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e74d71a-78a7-44d3-e97f-08dee5fd3eed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|7416014|376014|18002099003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	B+3JsG6JczHZxf+WIfWtOU1GrU/xU3tCU7KsB6ifWpJ7SDGo4FVGrWKslupnXMEe8Mt46UshvYamz0JMs+Elm7fBfoHw1zXfUZ1ujrbt+D6MKcCkMTyHHcGMExvfnwOoLiC/APPoHzyPJ4Q1qN1IQvYYI5yDulRqwAzgx6KvKeYAPBgCkrHndXH+qUsflm5MbTs/aHyKUaM6rmKA8triQlWs0iT3KB9C2CDn/xx+TPo05rdELJlBxe8LxLntYKbmFD566DuL+F3Ur5IaugEk+A3R5nKMKMMuaeFUaSf65R6lFlwck5+zYfS8Y6r74gnwcGi/+YrJ7g9/BgewnybsonHDdsUHNa9oWYO8jQJqNJGdljJSWoCM8rFmG0etv8uY3SUIkCbxMCLTq8Il85j9irQRMGrX0K21mpLCdUdeOIAXtD52kSvY7vX7532abT1+yzgoLE3aKxL9WyNik/6P/HUZ26UGXRQs7AEu2YwiJW2oT683oPc6OVq7wTcFIRZptP+jp6lrhwh6bDJvH7bdU0pR6vYacSXNPX7reEoJvIi5QASxhsIaW0TqRXkmrD/Iap9otlmTmmC8Z8ChzDr0yjbme9HOxE8cYHPA12Nf6jrL0EM6pRRE2XF5pEm9FzjKELYte4MPfV6CgziENiH476O5TzX6b52Hwp5HQwN/HE4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(7416014)(376014)(18002099003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jwN7nwdlIE36FHwLw8nVoeqIRWN65MdyKM3b9MdaV6guXKjXkREpRpLso1DM?=
- =?us-ascii?Q?DIIxE4SpJAikOn5Q+BJaVVEO/e82+IfXgZd7zNkj12aSA28i4kkqyRGj3tmj?=
- =?us-ascii?Q?DYC/0kk5m+ANMSbhdLqVfO/azNi8YwehOJ5zstfKD4t6HvnLOnUeFeNTNQPT?=
- =?us-ascii?Q?iegO9GkJVyqdlF9B+Q+dzodfESS8e5fBYQ3BtPPhsySNSx431qb8I1S949yL?=
- =?us-ascii?Q?8CZUOw7XAxDGNSTANJuNfbBHN9S74bWDdbFRuJyBmq6BUAcJM6+j2Ppmjnz7?=
- =?us-ascii?Q?X+krcIDe4J8aXMj4kXTGazwd5JF5E4DViw/u9sZ0uGu2b84MBwZNSEL5cHlQ?=
- =?us-ascii?Q?2Y/iKYgXWZVsIGWsM5IMs86RxC/VYVsVlrIDy/v3j5i5yyP4GDRdNycUrMLj?=
- =?us-ascii?Q?0BEl4GPXYfnSRgdjbZRMWKHBJrQmlPup+qj0OUy1w/9X3khFtOQA+FKV8BXV?=
- =?us-ascii?Q?mgpTrWmyeOl5zKDM5bLyCGdQO2uUGz4lBGu3fWxZODUt5qKCLC//ZYYnlORD?=
- =?us-ascii?Q?xY0lT3KTnE5hA8R+nE11rGIUhJ64IOtrQPqLi3AW8hYPHcpzRqRjJTgKGG0F?=
- =?us-ascii?Q?94lxZQHWVxMsP6c2Gu/vemWGFQ9uXfnoKC9KQl8hFE9OQSuR7zIiiemW63oA?=
- =?us-ascii?Q?LBF7ynG24BuWfkRC0hw+aNfZVkYtRlZwPHuXYU5dUepSwombUeElPArJp6Vn?=
- =?us-ascii?Q?ohKD+nQfy1ZW+Dai0ZUS9p5fDYl8ZYOQbR0Bx1bd6Ke9McV9+Lr177V29x9j?=
- =?us-ascii?Q?zbgphjVCfsCayaGIroRY8L6RxCgJPDqDt0R1tN8Ux98EU1UoC0TxV0DmGb3n?=
- =?us-ascii?Q?NL3kPby8iuPutrWJg/j/Fe5OP1CG3a889GEWQiyBjMOdcE5vshpn1anEPLXD?=
- =?us-ascii?Q?13YQlgjkshRiyv8zwqBx3NTiIk6KAgtDBmCe0kGaf4tZKOWRVSRPUHBougym?=
- =?us-ascii?Q?KKyxH6StRO2jryPJVI7MrKY9HincHvcayuH1+HMnAV/+YPuR49oEeqJDeOBN?=
- =?us-ascii?Q?dTy9kuxp9bG7X5WUBokLo/nZMWS8yhd30VUYmi6GtQe49ekCS++FJsEnXhfc?=
- =?us-ascii?Q?heLwEV7y3HM7guMPiuWU770FmCdhQhzQR5YxwGpOMK0leGO2t/4puFsGR5I2?=
- =?us-ascii?Q?uM5NusVGOGDPYDzIYvlc7zwddaddSWE+V5b6vC2Hp+i6wlhoAEAxxKL5PJ6j?=
- =?us-ascii?Q?BQaU7VatCYYcD4JeG2vzxwJC9pCmYh3XoHhujOUjs6iKpgqt30Jx5XMXbn4l?=
- =?us-ascii?Q?cVY22eid5Kx5MN09/4wfL3Gl3xb6iOi5PkpkAeoO721vl9KqBr8F70H5oW9R?=
- =?us-ascii?Q?00lmdnlpxP50tztd6Xdyd98FuNU29DEfOhq55UUsbdXNKKD06Jsfrk4PJYFf?=
- =?us-ascii?Q?fYmjKFcQeWpcC03pr9vVbE7jvU+LY0X1amtjUpUp2nD8oZn3hr8fY4lK7Py6?=
- =?us-ascii?Q?uLo9cAnpX1WcvQt+YW+Ec64qrmDWWluReqCy0uvnXCZ5yRtt+2n1cWV73Fk5?=
- =?us-ascii?Q?g0o+9zRJi7iVz1cyxDO23K7kJReBkkpW8D143sSZ9lRAldEHhY9tZexKQv8+?=
- =?us-ascii?Q?uLAumJRIIhXOjujoL4ByaEh7aBRXDrXSQ7//Ht5aKK3KIJWbIe7yfVelHKsL?=
- =?us-ascii?Q?2LE0uVoWI7yiJeAl/mjnnvqUlbQKWco7nSn4Wfzrsf61Vunv7xiNaK9brzDb?=
- =?us-ascii?Q?ykCcgXXE3VfllLkfzg7kEv+p462leyjptHpRHMrW111NKzjzQma1PwRdkWfu?=
- =?us-ascii?Q?7Ecu4wnEu1qb8LEkRDZgHh5297Q2Nj1zWs/eNgoeW66FuO12mIHe?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e74d71a-78a7-44d3-e97f-08dee5fd3eed
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 01:21:38.1335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4sxRgaHF8+CaC7HnC85n8Kr0zsJoCYIwrF0F2TOEi1VSVjG5/J5PB08gc++BkZrLHa+NToJRqpkHLN8QynKVUojzLK7tHcki/oJnG+Xiu1ekMYU9C1VXSPkOsZO9oPvF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB10011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] e1000e: Fix out-of-bounds MMIO access by validating
+ BAR0 size
+Content-Language: en-US
+From: Pu Lehui <pulehui@huaweicloud.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260715035850.588070-1-pulehui@huaweicloud.com>
+In-Reply-To: <20260715035850.588070-1-pulehui@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgCn2Fn9eF1q9cl1Bw--.35424S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXFy5Jr1rXrWrXrW7KFy7Awb_yoWrury8pa
+	y3Ga45Cr4rXr17W3WxJr1UGFn8Aa1qyay5Cry7WwsY9F1UGw18Jr17tFW3Grs7Z34kAr9x
+	KryUZ34Ikr4qkaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyGb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
+	0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0E
+	wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
+	80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0
+	I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
+	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
+	xVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU17KsUUUUUU==
+X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+Gentle ping~
 
-The NETC timer does not support function level reset, so TMR_OFF_L/H
-registers are not cleared by pcie_flr(). If TMR_OFF was set to a
-non-zero value in a previous binding, it will persist across driver
-rebind and cause inaccurate PTP time.
+Hi all, Is this commit looks proper?
 
-There is also a hardware issue: after a warm reset or soft reset,
-TMR_OFF_L/H registers appear to be cleared to zero, but the timer clock
-domain internally retains the stale value. When the timer is re-enabled,
-TMR_CUR_TIME continues to track the old offset until TMR_OFF is written
-explicitly. This can cause incorrect PTP timestamps and even PTP clock
-synchronization failures.
-
-Per the recommendation from the IP team, explicitly write 0 to TMR_OFF
-in netc_timer_init() to flush the internally cached value and ensure
-TMR_CUR_TIME follows the freshly initialized counter.
-
-Fixes: 87a201d59963 ("ptp: netc: add NETC V4 Timer PTP driver support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
-No changes, just collect Reviewed-by tag
-v1 link: https://lore.kernel.org/imx/20260706081232.3661826-1-wei.fang@oss.nxp.com/
----
- drivers/ptp/ptp_netc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 94e952ee6990..5e381c354d74 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -779,6 +779,7 @@ static void netc_timer_init(struct netc_timer *priv)
- 	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
- 	netc_timer_wr(priv, NETC_TMR_ECTRL, NETC_TMR_DEFAULT_ETTF_THR);
- 
-+	netc_timer_offset_write(priv, 0);
- 	ktime_get_real_ts64(&now);
- 	ns = timespec64_to_ns(&now);
- 	netc_timer_cnt_write(priv, ns);
--- 
-2.34.1
+On 2026/7/15 11:58, Pu Lehui wrote:
+> From: Pu Lehui <pulehui@huawei.com>
+> 
+> Syzkaller reported a kernel panic caused by an out-of-bounds MMIO
+> access in the e1000e driver.
+> 
+> [   82.868719][  T404] e1000e 0000:00:02.0: The NVM Checksum Is Not Valid
+> [   82.872328][  T404] Unable to handle kernel paging request at virtual address ffff80008894e090
+> [   83.085218][  T404] CPU: 2 UID: 0 PID: 404 Comm: bash Not tainted 7.2.0-rc2-g3f1f75536668 #1 PREEMPTLAZY
+> [   83.129013][  T404] pc : e1000_get_cfg_done_82571+0x70/0x158
+> [   83.140092][  T404] lr : e1000_get_cfg_done_82571+0x68/0x158
+> [   83.151196][  T404] sp : ffff80008ac37410
+> [   83.158922][  T404] x29: ffff80008ac37410 x28: ffff0000cd6a11b8 x27: ffff0000c58190d0
+> [   83.173919][  T404] x26: ffff0000cd6a11b8 x25: ffff0000cd6a0bc0 x24: ffff0000cd6a0000
+> [   83.189417][  T404] x23: 0000000000001010 x22: ffff0000cd6a11c0 x21: ffff0000cd6a11b8
+> [   83.205195][  T404] x20: 0000000000000064 x19: ffff80008894e090 x18: 0000000000000000
+> [   83.220545][  T404] x17: ffff800081c1a3f4 x16: ffff800081c19c10 x15: ffff800081e86510
+> [   83.235764][  T404] x14: 0000000000000001 x13: 0000000000000001 x12: ffff60001bc8a8b3
+> [   83.251301][  T404] x11: 1fffe0001bc8a8b2 x10: ffff60001bc8a8b2 x9 : ffff800081eae25c
+> [   83.266705][  T404] x8 : 00009fffe437574e x7 : ffff0000de454593 x6 : 0000000000000001
+> [   83.281919][  T404] x5 : ffff0000cf2b9640 x4 : 0000000000000000 x3 : dfff800000000000
+> [   83.297317][  T404] x2 : 0000000000000007 x1 : ffff0000cd6a11c0 x0 : 0000000000000000
+> [   83.312601][  T404] Call trace:
+> [   83.318662][  T404]  e1000_get_cfg_done_82571+0x70/0x158 (P)
+> [   83.329748][  T404]  e1000e_phy_hw_reset_generic+0x17c/0x1a8
+> [   83.341541][  T404]  e1000_probe+0xbd8/0x1988
+> [   83.350334][  T404]  local_pci_probe+0x84/0x130
+> 
+> Repetition steps:
+> 1. Find PCI device which BAR0 size <= 4K. If it's:
+>     Device Addr: 0000:00:02.0   BAR0 SIZE: 4K
+>     Vendor/Device ID: 0x1af4 0x1004
+> 2. Unbind the above PCI device
+>     echo '0000:00:02.0' > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
+> 3. Set the above device to e1000e new_id
+>     echo '1af4 1004' > /sys/bus/pci/drivers/e1000e/new_id
+> 
+> During e1000_probe(), the driver maps the device's BAR0 memory region.
+> If the device has a 4K BAR0, ioremap() maps only 4K of space. Later in
+> the probe process, when the NVM checksum validation fails, the driver
+> attempts to perform a hardware reset and falls back to the err_eeprom
+> cleanup path.
+> 
+> This cleanup path will trigger an OOB access kernel panic:
+> e1000_phy_hw_reset
+>    e1000e_phy_hw_reset_generic
+>      e1000_get_cfg_done_82571
+>        er32(EEMNGCTL)
+>          readl(hw->hw_addr + EEMNGCTL); <-- EEMNGCTL(0x1010) > 4K, OOB access
+> 
+> Fix this by ensuring the MMIO length (pci_resource_len(pdev, 0)) is at
+> least 64K (0x10000) before proceeding with ioremap(). The 64K minimum
+> safely covers the maximum register offset accessed by the e1000e driver.
+> 
+> Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+> Signed-off-by: Pu Lehui <pulehui@huawei.com>
+> ---
+>   drivers/net/ethernet/intel/e1000e/netdev.c | 5 +++++
+>   drivers/net/ethernet/intel/e1000e/regs.h   | 3 +++
+>   2 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+> index 844f31ab37ad..46e58e926f7b 100644
+> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
+> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+> @@ -7450,6 +7450,11 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   	mmio_len = pci_resource_len(pdev, 0);
+>   
+>   	err = -EIO;
+> +	if (mmio_len < E1000_MMIO_LEN_MIN) {
+> +		dev_err(&pdev->dev, "MMIO len is too small\n");
+> +		goto err_ioremap;
+> +	}
+> +
+>   	adapter->hw.hw_addr = ioremap(mmio_start, mmio_len);
+>   	if (!adapter->hw.hw_addr)
+>   		goto err_ioremap;
+> diff --git a/drivers/net/ethernet/intel/e1000e/regs.h b/drivers/net/ethernet/intel/e1000e/regs.h
+> index 6c0cd8cab3ef..b63adeea1563 100644
+> --- a/drivers/net/ethernet/intel/e1000e/regs.h
+> +++ b/drivers/net/ethernet/intel/e1000e/regs.h
+> @@ -242,4 +242,7 @@
+>   /* PHY registers */
+>   #define I82579_DFT_CTRL	PHY_REG(769, 20)
+>   
+> +/* Minimum MMIO (BAR0) len, the largest offset is lower than 64K */
+> +#define E1000_MMIO_LEN_MIN	0x10000
+> +
+>   #endif
 
