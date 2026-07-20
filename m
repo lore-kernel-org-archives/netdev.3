@@ -1,146 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC4F1FA859
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28061DED4C
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784554268; cv=none; b=rlSjoXQLAVBupua5/SafGOnVNVbKYxfbyQ42MGHpyxUItb2ZNdu8HmfRbjw74U3qRlnUFtahxm8VtCc31qAoDBx9MlatKqpNk3I2UjlEcDSGmwzxL6ulxyMA4bBKdU8r0pa0UG5ZfudfJJ0saZGwTa/Jjm7Vibqi/i+Wm04Qxwg=
+	t=1784554398; cv=none; b=WmoKDp8T2olAhvbiisjTGzmm2+H6LCESiLksUd/aPN1q1nYT0eUt8eTrPoTGuBzS7cTCReHWz/y/clbJJMRH6cSVMJQcNqIAg3y9TQBwwLrMbbBJ621NpMPDnHz9g8srqh1Jnk9kIx2oNT+OE8Xbcd7xps+oc3skZJfZx5I0wxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784554268; c=relaxed/simple;
-	bh=drrriSMBs1cPOloveDK0qTkGBiOCOEH6bv2v1nv3k/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjfW3W/9ms/0KIMLdy36dXMpgmLOEdpjx1VwFGamRfcEJE3ZqXx24Nzzzb3D71WdbmdDWI9+BpZ3cq59aqPW36ah+L7F/PluCA0u/ACKXaSyeurJhmqhlsqvwdFwdAjkJUUnz7EOOQaRVUdVyNHaiVBdoOUGQHbhH53qOZ7LBf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBOrg0wo; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBOrg0wo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899641F000E9;
-	Mon, 20 Jul 2026 13:31:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784554266;
-	bh=ct81yaBUUAhTucM+P0CUBU5y7Xbf1aFZVPUvh3goSFk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FBOrg0wokX5nGth0lw1wNuLMVWnnqY47UKDuQ1AD1VOrnl0b+wbQ/ZKtWTjFph/J/
-	 NRb2JBk9YMDSsRzgyoX8wyKShZmX88g/BqGeRE50Ro5/hG97xauWbUjE7WrXmxy+w5
-	 fgwjfCqdx6jxS1ixvzplcbhfhhAqbmEZquQNnYcepkAD7sLt7ZQFYk8Wuu+vDk7ahO
-	 6hf8NIpibpsw9jAhMYM37wO1KRxu20yfbgn7p587bMxLjQU0Twqc3v9usaLmsfY3YC
-	 ME0wxmj/Xl+/KJYUhtYiMKiDwQANCMnPUUveC37Ze13e4snHpEKJjHWO70ZZUqo344
-	 x86ZFkgea0m3g==
-From: Simon Horman <horms@kernel.org>
-To: atharvapotdar07@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	hkallweit1@gmail.com,
-	nic_swsd@realtek.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	romieu@fr.zoreil.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v5] r8169: migrate Rx path to page_pool, prepare for XDP
-Date: Mon, 20 Jul 2026 14:30:16 +0100
-Message-ID: <20260720133015.145797-2-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260713035049.25310-1-atharvapotdar07@gmail.com>
-References: <20260713035049.25310-1-atharvapotdar07@gmail.com>
+	s=arc-20240116; t=1784554398; c=relaxed/simple;
+	bh=/0gy4om9MZPGkRPspEU3Ru3BEVb24EUIQUBaA17mLTc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=A+FmbwXIyGB+QF2YwK1SSMX+QvOOYBqtnJ3IKaAt2Exdev52cshjKybaPDphn1FNXbLPYucKHU0Mj4mj9jjYrJUKlkVO8XPotBgVBkzqdRS6+yzI5flZjRC4qopSvj6B2elVU48wNfsX8pN5QrQxNeSlJz3WysgnxOmF8xXi4Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-48576b535b6so6851165b6e.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:33:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784554396; x=1785159196;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=TIfbOJfS3KelAtA4NoghHgoCZpOohDChB1W363vqI5w=;
+        b=Dt1ffSd8P2fZvVgS04irDjqnw8GuE3ikZdUjmVfe25DuTvx96sMAGTJvQsEeVpridD
+         IALR+y99f7YWofZa0BntsO0URX1pqZBLYaTcFiek/NsILzt3mpXXOhsPkQmm7oL4uXNs
+         0aguhg/YDoYIik8jyD5HTzSvhdixGILXCpuaah7mUYkvDeW7Zid21nab0AHXVqf/7B/5
+         2YbtspNYXA5NcwH0N0OG9kdcYzsacYHkWk6m2zgLw5NNubh1UGWDwUGy7Qi94NKmZln4
+         z4h3b0lcwyiBZdOdiEX/wwmR7detELY7NVDAk367mrPdMwxAYBwTYZ21gu0Ujy1Kb0ht
+         Wk7w==
+X-Forwarded-Encrypted: i=1; AHgh+Rpto9YwHlMvj/5BDeNhpIzM+VndQ5hoctVans0f3jnYjKsaIHs+lFm/crgX8DpqGzhA+lWUIAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5nl3x2Dm6EH5YT71SZM2pQ/9eE3QQtcN9SoMg5AUWJfnZzJcl
+	S12pRnIKpX5yB33/lkQznjuknGrgOZotTIKw2iUh8hvHx7tnC4a3BPIkPqiPpaOgRhA9Re9DA6f
+	78pnOFxY1ZwXIOS0lszvSu6n8DJsEE6ZpWL6KwpYDGD69/FT4GxvY3VKtWHg=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:1813:b0:4a3:fb6b:bcb8 with SMTP id
+ 5614622812f47-4a4d038a4edmr8957156b6e.10.1784554395741; Mon, 20 Jul 2026
+ 06:33:15 -0700 (PDT)
+Date: Mon, 20 Jul 2026 06:33:15 -0700
+In-Reply-To: <20260720082145.1072547-1-l1138897701@163.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a5e239b.42649fcc.6186.0083.GAE@google.com>
+Subject: [syzbot ci] Re: sctp: socket: refactor sctp_skb_recv_datagram to use ERR_PTR
+From: syzbot ci <syzbot+ci7e6fcf245bce20f2@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, l1138897701@163.com, linux-kernel@vger.kernel.org, 
+	linux-sctp@vger.kernel.org, lucien.xin@gmail.com, marcelo.leitner@gmail.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-https://sashiko.dev/#/patchset/20260713035049.25310-1-atharvapotdar07@gmail.com?part=1
+syzbot ci has tested the following series
+
+[v4] sctp: socket: refactor sctp_skb_recv_datagram to use ERR_PTR
+https://lore.kernel.org/all/20260720082145.1072547-1-l1138897701@163.com
+* [PATCH net v4] sctp: socket: refactor sctp_skb_recv_datagram to use ERR_PTR
+
+and found the following issue:
+general protection fault in sctp_recvmsg
+
+Full report is available here:
+https://ci.syzbot.org/series/f979ded9-9743-486d-b911-69a904c9f4ad
+
+***
+
+general protection fault in sctp_recvmsg
+
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      e13caf1c26587434f0b768193100440939c0fb91
+arch:      amd64
+compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+config:    https://ci.syzbot.org/builds/e4b39daf-f862-498e-8aeb-c22b5a168551/config
+syz repro: https://ci.syzbot.org/findings/1893a3b4-56e4-49d0-9865-4ff919f027b3/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 0 UID: 0 PID: 5830 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:sctp_recvmsg+0x28d/0xd60 net/sctp/socket.c:2135
+Code: ff 72 0d e8 35 6a d6 f6 41 89 ee e9 da 06 00 00 4c 89 7c 24 08 48 8d 7d 70 48 89 f8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <0f> b6 04 08 84 c0 0f 85 2f 08 00 00 4c 63 7d 70 4d 39 fe 4d 0f 43
+RSP: 0018:ffffc90003a8f838 EFLAGS: 00010202
+RAX: 000000000000000e RBX: ffff888115ad1c80 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000070
+RBP: 0000000000000000 R08: 1ffff92000751ef4 R09: 1ffff11022b5a460
+R10: dffffc0000000000 R11: fffffbfff206639f R12: ffff888115ad22f0
+R13: ffffc90003a8fd00 R14: 0000000000000000 R15: 0000000000000300
+FS:  00007facf6b766c0(0000) GS:ffff88818dc17000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000055c0 CR3: 000000010a812000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ sock_recvmsg_nosec net/socket.c:1128 [inline]
+ sock_recvmsg+0x166/0x1e0 net/socket.c:1148
+ ____sys_recvmsg+0x1e6/0x4a0 net/socket.c:2904
+ ___sys_recvmsg+0x213/0x5a0 net/socket.c:2946
+ do_recvmmsg+0x31a/0x7f0 net/socket.c:3041
+ __sys_recvmmsg net/socket.c:3115 [inline]
+ __do_sys_recvmmsg net/socket.c:3138 [inline]
+ __se_sys_recvmmsg net/socket.c:3131 [inline]
+ __x64_sys_recvmmsg+0x198/0x250 net/socket.c:3131
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7facf5d9ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007facf6b76028 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 00007facf6015fa0 RCX: 00007facf5d9ce59
+RDX: 000000000400023c RSI: 00002000000055c0 RDI: 0000000000000004
+RBP: 00007facf5e32e6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000300 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007facf6016038 R14: 00007facf6015fa0 R15: 00007ffcc05d60d8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:sctp_recvmsg+0x28d/0xd60 net/sctp/socket.c:2135
+Code: ff 72 0d e8 35 6a d6 f6 41 89 ee e9 da 06 00 00 4c 89 7c 24 08 48 8d 7d 70 48 89 f8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <0f> b6 04 08 84 c0 0f 85 2f 08 00 00 4c 63 7d 70 4d 39 fe 4d 0f 43
+RSP: 0018:ffffc90003a8f838 EFLAGS: 00010202
+RAX: 000000000000000e RBX: ffff888115ad1c80 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000070
+RBP: 0000000000000000 R08: 1ffff92000751ef4 R09: 1ffff11022b5a460
+R10: dffffc0000000000 R11: fffffbfff206639f R12: ffff888115ad22f0
+R13: ffffc90003a8fd00 R14: 0000000000000000 R15: 0000000000000300
+FS:  00007facf6b766c0(0000) GS:ffff88818dc17000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000055c0 CR3: 000000010a812000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	ff 72 0d             	push   0xd(%rdx)
+   3:	e8 35 6a d6 f6       	call   0xf6d66a3d
+   8:	41 89 ee             	mov    %ebp,%r14d
+   b:	e9 da 06 00 00       	jmp    0x6ea
+  10:	4c 89 7c 24 08       	mov    %r15,0x8(%rsp)
+  15:	48 8d 7d 70          	lea    0x70(%rbp),%rdi
+  19:	48 89 f8             	mov    %rdi,%rax
+  1c:	48 c1 e8 03          	shr    $0x3,%rax
+  20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+  27:	fc ff df
+* 2a:	0f b6 04 08          	movzbl (%rax,%rcx,1),%eax <-- trapping instruction
+  2e:	84 c0                	test   %al,%al
+  30:	0f 85 2f 08 00 00    	jne    0x865
+  36:	4c 63 7d 70          	movslq 0x70(%rbp),%r15
+  3a:	4d 39 fe             	cmp    %r15,%r14
+  3d:	4d                   	rex.WRB
+  3e:	0f                   	.byte 0xf
+  3f:	43                   	rex.XB
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
---- Patch [1]: [PATCH v5] r8169: migrate Rx path to page_pool, prepare for XDP ---
-commit db5a368e94d087883d45d81ba30f59c05de881cf
-Author: Atharva Potdar <atharvapotdar07@gmail.com>
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-r8169: migrate Rx path to page_pool, prepare for XDP
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
-Replace the alloc_pages() + dma_map_page() + skb_copy() Rx model with
-a page_pool-backed napi_build_skb() path for zero-copy delivery.
-
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index ec4fc21fa21fb..c548e7e8db874 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -4311,8 +4363,20 @@ static void rtl_reset_work(struct rtl8169_private *tp)
->  
->  	rtl8169_cleanup(tp);
->  
-> -	for (i = 0; i < NUM_RX_DESC; i++)
-> -		rtl8169_mark_to_asic(tp->RxDescArray + i);
-> +	for (i = 0; i < NUM_RX_DESC; i++) {
-> +		if (tp->Rx_databuff[i])
-> +			continue;
-> +		tp->Rx_databuff[i] =
-> +			rtl8169_alloc_rx_data(tp, tp->RxDescArray + i);
-> +		if (!tp->Rx_databuff[i])
-> +			break;
-> +	}
-
-[Severity: High]
-If memory allocation fails under pressure during an interface reset,
-this loop breaks and leaves tp->Rx_databuff[i] as NULL. When NAPI runs,
-could this lead to a permanent deadlock in rtl_rx()?
-
-If a descriptor has a NULL buffer, rtl_rx() currently does:
-
-    if (unlikely(!tp->Rx_databuff[entry]))
-        break;
-
-This breaks out of the Rx loop without advancing tp->cur_rx. Because
-cur_rx didn't advance, the subsequent call to rtl8169_rx_refill() sees
-tp->dirty_rx == tp->cur_rx and will not attempt to allocate memory.
-Would it be better to advance cur_rx and drop the packet, or handle
-the allocation failure without stalling the entire ring?
-
-> @@ -4820,21 +4907,40 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
->  			goto release_descriptor;
->  		}
->  
-> -		skb = napi_alloc_skb(&tp->napi, pkt_size);
-> -		if (unlikely(!skb)) {
-> -			dev->stats.rx_dropped++;
-> -			goto release_descriptor;
-> -		}
-> +		if (unlikely(!tp->Rx_databuff[entry]))
-> +			break;
->  
->  		addr = le64_to_cpu(desc->addr);
->  		rx_buf = page_address(tp->Rx_databuff[entry]);
->  
->  		dma_sync_single_for_cpu(d, addr, pkt_size, DMA_FROM_DEVICE);
-> -		prefetch(rx_buf);
-> -		skb_copy_to_linear_data(skb, rx_buf, pkt_size);
-> -		skb->tail += pkt_size;
-> -		skb->len = pkt_size;
-> -		dma_sync_single_for_device(d, addr, pkt_size, DMA_FROM_DEVICE);
-> +		prefetch(rx_buf + tp->rx_headroom);
-> +
-> +		if (unlikely(tp->rx_headroom == 0)) {
-> +			skb = napi_alloc_skb(&tp->napi, pkt_size);
-> +			if (likely(skb)) {
-> +				skb_copy_to_linear_data(skb, rx_buf, pkt_size);
-> +				skb_put(skb, pkt_size);
-
-[Severity: Critical]
-This is a pre-existing issue, but earlier in rtl_rx() there is an
-integer underflow on runt frames:
-
-    pkt_size = status & GENMASK(13, 0);
-    if (likely(!(dev->features & NETIF_F_RXFCS)))
-        pkt_size -= ETH_FCS_LEN;
-
-If NETIF_F_RXALL is enabled, the hardware can pass runt frames smaller
-than 4 bytes. In this case, pkt_size underflows to a massive unsigned
-value. 
-
-Since this code passes pkt_size directly into dma_sync_single_for_device()
-and skb_put(), could this massive value trigger an skb_over_panic() and
-crash the kernel when processing runts?
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
