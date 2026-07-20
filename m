@@ -1,290 +1,147 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6921438B154
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598513E5EC4
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784585839; cv=none; b=Nvujxtqet3cSUj89jTIY8m6kJnTTTU/rZZ3FhDHbdE0ANmlb1z5v4g/0nILQv7ScCczQ27gRzgUqcUZKpj2ZsyJsLUeKwe71tLZYg4n3yyxC5VztUi4tG1o8yKUlgKb5Q2oLDy67FmCtjngDOYadqu52meFwUgRR/0lj7PQFRkE=
+	t=1784586849; cv=none; b=Q6Hn8t9KLEUJ3LjoGTV1oFnIPF9zCcTGbsaAuef4Cp+sSj0CTfmKwx/7j9nHDtQaSTuZOdD67Hdd8s6UIxqvViH+L+mrxZVohFVC0affhGS13zM/Wurj+IZWsOvUNUPk+9oVt4bF8zn7MAFO/ZMSXbef+uwnDvG7EP7xAVTqYMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784585839; c=relaxed/simple;
-	bh=1xpjo34pnCi231dSMDoB9YkmE0NpatqM4EsxY1S/6LU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=dOAueXMMPDZyDcfXDkWJBshnHGJaLColmdEN+l2KpybKACJCdxUJcNB9xYUUNqjllljeol7sf5fF91F2gUDj9StqNxVDEN6yY6KsghOAtHmyHIMj7x3GB7ggvHgM3nDFAhxSvnwUi1SyGnYTA/1dDtbKD+AnFLBtxdMwB57NOtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=Tb9HKKkW; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1784586849; c=relaxed/simple;
+	bh=dlRjBnXzN6CQJk18cJLEFzwZk6Rv5Ax2epHDma2e/ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SAjabDlgXh+M1Rf/mhnsY8lhcNLHVi1AFBldhmUnMjj7aUlPmqzXDrsA4W/DCalj3PCRkLjyi2iyDLUgUluDBvkvZTrybH+kq1yGeH6zj6zc+CdwlaTeS8kywo06MCUlpB3xG6ZPP6oRW9zOgvT8dOZemzNP3QjSLAWT7HqvDc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=VIFdlGyH; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="Tb9HKKkW"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8485b358552so11488176b3a.2
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:17:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="VIFdlGyH"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ce98cb8165so45413745ad.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1784585836; x=1785190636; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=guTJGgAX3t3ZDnVwO8Kbu3t9c+ccuN0bA05N3oZ321c=;
-        b=Tb9HKKkWWLm1AYxug9iF2WCgicP+5TLOBgChl/Ank4MQ6nXP90dj7hSpZ5iZ7BOgnT
-         THWZ1uQLfNlBwM+8XQf9F8umNEQ6dRYdvOKuaspvQPg9HhNYUOl/uRKUIf/tFhmbcygM
-         37O/xh/WhgSX9sS1mg3WvzIqHCWEbhDj3ic9E0IrI06dW95OTeobhfpsWX9bPWAVDvdR
-         MxoyfgEdSTKSowGi61uGsv8nRE5+OMVCmRmZwvLzkE3bLHCgeZkTPxIMLdQXBNLzgDWn
-         YPNmgp1LKKXayyES+QIDJ79YEi0mycLmrIsxpvvHmbT/HrgosdnNq95H3lHu1wm2NW1S
-         b7uw==
+        d=asu.edu; s=google; t=1784586845; x=1785191645; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=A2TPUjqiIPkxhL/mDAlf7qxw7OdM1Z6fcLVNvTrXGec=;
+        b=VIFdlGyH5ElzE7oTSew/PZyiF/g0KFjzrGiQkSXxWT9Zqsu1q6aHa5w7HuLF2jYz7C
+         jXavQCe14xjUNpahTrtctvndpWd0u4YMuwNsLmWlnaOPZEJes8P6dptsNIwPPJL/wJdM
+         UsL3+RYcMziqVuPtQ13xVdrTLu9qfiJbdqPNBHlXHgoRATvdLcybmA2SaYhhwlzS5buj
+         /zKDFHL4H3mMovaNCSvnH+uYeeI82bgBlJ2BcLPQl64ByI+IlAuvOZWoVBOhB3RafudW
+         khwkXlSDQ0W+yMWxYd1GeN/VVKIAfcmD9GjolgGuWVcAwndcCLsyd6vyRptSYz53k6rb
+         Hjcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784585836; x=1785190636;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=guTJGgAX3t3ZDnVwO8Kbu3t9c+ccuN0bA05N3oZ321c=;
-        b=YwYsuqx/5ju3j4CeJzKfXCp3k7NAeK0BQxONzwiXLoekyNItMdcEPmQ79gmt5QGSqh
-         r7XJAf7yAsTumHH/YQXEmtkchKe3AbojJox2ueRjMDvoYc2LzehkhldwrhQMtPgDEl3w
-         fB8uX/O7VcrLt7jprsVDXL5PQlzgNzaBitvVAFbeQLeKqovoJo0texdR2HvY5eAYrosU
-         zvm0VtH8cCoysa2AxgzmrewRcKr6C37X96TKavkJUtH7J0Bwm3tkKBz+Huqj5lziKggr
-         224+/c/2/v2+pgJ1TBa9dCX8ELl0kyNXr5atJ8Vebe1kZvsx8lT1c1cRHMBOhpmeQh4a
-         VsyA==
-X-Forwarded-Encrypted: i=1; AHgh+RphTEVgZtak5BwGBmAigd/vAALxlOrSYKKF8PbidT1NE4B55yAsE/UQJqNpSCrYtFVVZ0bBLyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjbfHDJREUbrD0PlL9Z5Ky/Lo27AKdangpHisRaatOaOCrmA23
-	Lwmt84+l0OocO+ClTXKB9bNIcWKHdXQ/rBT1NuEOT+7oCOzn8MEgY5irgf61zOoNsP0=
-X-Gm-Gg: AfdE7ckH9Q495EwLyp4naNyuW6XtOCm9/cgtfDgUCD6fNwLOmmhLkuzU8dPf7mTizxR
-	LT4YHnZMNxDFJ0fkFQqghYqfGaIxdp7KpDcM5TAak9fXbqNLOoGxYwYanTEDjrRPgo72x5gnwK5
-	2F6gDD/sbdWbUCbkYxS7cMpkGl8RctY/3eWwVAcBTACPcK/QfoeA6FSArb5Kno+O0EuJ40B+HBf
-	P6dFqsELgcCZYXImj4GdHdwGN6s/8H+FatIqFXvODdbD5WSwptP4kh+cOiKFlbx5/9GnhLo/YaC
-	wdGlNli1JoUWfSVX6SWbzJRwKjP+hUy01YlGXzATAW++CKxv+CqdTXCLV/kIqBZrcvrV9AJiTLx
-	FNFg77/X7NX524ensftaO66G6YT2MZ10qT0AanNxt+rij0u8UIXdkGM/iKALTnDIx4AAVSEPA6n
-	qP6FEcKR9704TIlMldRFsZlU5Ht+Cg64k=
-X-Received: by 2002:a05:6a00:368b:b0:82f:3a1e:5618 with SMTP id d2e1a72fcca58-84c29287a8dmr16559044b3a.22.1784585835659;
-        Mon, 20 Jul 2026 15:17:15 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af9ef6dsm6303201b3a.57.2026.07.20.15.17.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jul 2026 15:17:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784586845; x=1785191645;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A2TPUjqiIPkxhL/mDAlf7qxw7OdM1Z6fcLVNvTrXGec=;
+        b=fDS8PVN9AaHP1uuQaOCBaY5x2p/41cR95Yi9jr1K6nCnuWLE64JcrxKX7uQ2DN67SQ
+         qio/m7NyBbtr3OXbxv1dLzHFNI6cU5zIFY0i0zeqAXDSr0hpDH6k7vVXGlnTwK3+ndqY
+         ANsbRMyx6Po0GoWH/oXy9eiYTc/jV/TQMkJSm5gJ0g1X7zy4a2HWZ4KAoA3wfmHOexfo
+         mV1jgR5aQPKXcKXTBuTQ5jYEaGCQRgzOnpmwRgJkviBSa6X4kxmbMEUI6+W5ecuNDZ+P
+         JFiiyROpu7BKANW80HcUpiR6pIyr+0RpU+JOPqujGu4tMxxUrpQLOvNiLFh+zTee9DPb
+         tbvQ==
+X-Gm-Message-State: AOJu0YzZMzLRu8TPDrBhYOJUXwGOUXDyDeRhuHYezR0R4h7ABwZ3u2wd
+	4e+TmOlU3vC9mLCgfAvCM0XzUBXyvsVVqMv8AtDOEhm4PElAMwLQgy8tWxCyGPx3cSqeGlTa/EY
+	qq9E=
+X-Gm-Gg: AR+sD13I8M99+5rxwbvFqOphuwfxOmzMhMSa+CKJBrX2YSSQp/+UY5kVfgR8ij1t9Yf
+	vW5dXv9l4cQVdjmWamiauzvCKLrSAYwHmqrBPaLkvC/uwePe591ewUaWMQaw7DQwWeOEc7M6yLK
+	oAgFFWGx5k1ksAMrNeoMsZY8Nku6e2zaU5YLqhP8rE07mp27o80BcXC/DETYa4VqojcdUDeaq+s
+	hlnLScXhAC9KwEmKId7UijYsnG3kaJRw/Sjy/Dkq/VpEnz6Kv4polUmLPBTKnS3YGPQk04qYols
+	QsfYSY/HnQ8az3/HhnW/CxSeTtgtj8vsfBwK0FBvc7dgAIvzndmOWM4KFapPBgwO90yO3hW0M8Q
+	uKAPNadqahTWsNC25xCxq6y+t92iWRDAdW2Dz5pr6YWNSNhmQ6Y1Kr8gbZdmHl2xPxLmLrPqaBt
+	Q+hMHg6sKgiUvV4bn1Xw==
+X-Received: by 2002:a17:903:2ac6:b0:2ce:a6a4:451b with SMTP id d9443c01a7336-2cf1f2e71eamr219797525ad.11.1784586845226;
+        Mon, 20 Jul 2026 15:34:05 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429f9bcd9sm41078761eec.3.2026.07.20.15.34.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 15:34:04 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Subject: [PATCH net] bonding: alb: re-check primary_is_promisc under RTNL in bond_alb_monitor
+Date: Mon, 20 Jul 2026 22:34:00 +0000
+Message-ID: <20260720223400.1939998-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Jul 2026 18:17:14 -0400
-Message-Id: <DK3QVQIY0IR8.3VNI3HHRJ6FQN@etsalapatis.com>
-Cc: <bpf@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
- <horms@kernel.org>, <jakub@cloudflare.com>, <jiayuan.chen@linux.dev>,
- <john.fastabend@gmail.com>, <kuba@kernel.org>, <kuniyu@google.com>,
- <ncardwell@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
- <sashiko-reviews@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 2/2] selftests/bpf: add sockmap recvfrom EAGAIN
- selftest
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Nnamdi Onyeyiri" <nnamdio@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20260720171535.67867-1-nnamdio@gmail.com>
- <20260720171535.67867-3-nnamdio@gmail.com>
- <DK3Q8PFVGNAV.GZNZC89346A9@etsalapatis.com>
- <al6amg9-PpZVpQyN@localhost.localdomain>
-In-Reply-To: <al6amg9-PpZVpQyN@localhost.localdomain>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Jul 20, 2026 at 6:07 PM EDT, Nnamdi Onyeyiri wrote:
-> On Mon, Jul 20, 2026 at 05:47:09PM -0400, Emil Tsalapatis wrote:
->> On Mon Jul 20, 2026 at 1:15 PM EDT, Nnamdi Onyeyiri wrote:
->> > These selftests exercise the tcp_bpf_recvmsg() and tcp_bpf_recvmsg_par=
-ser()
->> > functions, to ensure that they are properly handling spurious wakeups =
-in
->> > tcp_msg_wait_data().
->> >
->> > The expected behaviour is that recvfrom() does not return an EAGAIN
->> > error.  If the spurious wakeups are incorrectly handled, this assertio=
-n
->> > will fail.
->> >
->> > Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
->>=20
->> The test looks fine, even if slightly flaky. Running with only patch 2/2
->> still passes sometimes on my box. Can we handle this somehow, e.g., do
->> more attempts?
->>=20
->> There's also a couple magic numbers in the tests that may need some
->> explanation (noted below).
->>
->
-> Thanks for the review!  I'll attach an explaination to the numbers.
-> Essentially the larger the payload the fewer iterations seemed to be
-> required to reproduce (on my machine).
->
-> With the issue fixed though, larger payloads and more iterations make
-> the test run longer.  Is there is a rule of thumb I should follow for
-> tuning the runtime?
+bond_alb_monitor() reads primary_is_promisc under RCU, then drops RCU and
+takes RTNL via rtnl_trylock() before undoing the promiscuity it set on the
+active slave. In that window the active slave can change under RTNL
+(RTM_DELLINK -> __bond_release_one() -> bond_alb_handle_active_change()),
+which already drops the promiscuity and clears primary_is_promisc. The
+monitor still acts on the stale decision: if the slave was removed with no
+failover, curr_active_slave is now NULL and the deref faults; if it failed
+over, the stale dev_set_promiscuity(-1) underflows the new slave's
+promiscuity counter and pins it in IFF_PROMISC.
 
-Unfortunately there's no fixed rule, I'd say the two requirements are:
-a) The test should not be flakey, esp. false positives are a no-go.
-b) The test shouldn't add noticeable latency to the testbench.
+  Oops: general protection fault, probably for non-canonical address ...
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  Workqueue: b42 bond_alb_monitor
+  RIP: 0010:bond_alb_monitor (drivers/net/bonding/bond_alb.c:1600)
+   process_one_work (kernel/workqueue.c:3322)
+   worker_thread (kernel/workqueue.c:3486)
+   kthread (kernel/kthread.c:436)
+   ret_from_fork (arch/x86/kernel/process.c:158)
+  Kernel panic - not syncing: Fatal exception
 
-As it stands the test is fine, since the main issue is a false negative
-(the test spuriously passes without the fix). That's still an issue, but
-as long as the test without the fix properly fails the vast majority of
-the time I think think it's fine.
+Re-check primary_is_promisc (and curr_active_slave) after taking RTNL so
+the monitor only undoes an increment it still owns. The other bonding
+monitors already re-read state under RTNL in their commit phase
+(bond_miimon_commit/bond_ab_arp_commit); bond_alb_monitor() was the only
+one acting on the pre-trylock decision.
 
->
->> > ---
->> >  .../selftests/bpf/prog_tests/sockmap_basic.c  | 124 +++++++++++++++++=
-+
->> >  1 file changed, 124 insertions(+)
->> >
->> > diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/=
-tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->> > index cb3229711f93..d18faf46fac0 100644
->> > --- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->> > +++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->> > @@ -1373,6 +1373,126 @@ static void test_sockmap_multi_channels(int so=
-type)
->> >  	test_sockmap_pass_prog__destroy(skel);
->> >  }
->> > =20
->> > +static void *test_sockmap_recvfrom_eagain_thread(void *arg)
->> > +{
->> > +	int fd =3D *(int *)arg;
->> > +	char buf[1024];
->> > +	void *result =3D NULL;
->> > +
->> > +	while (true) {
->> > +		ssize_t len =3D recvfrom(fd, buf, sizeof(buf), 0, NULL, NULL);
->> > +
->> > +		if (len =3D=3D -1) {
->> > +			if (errno =3D=3D EINTR)
->> > +				continue;
->> > +			result =3D (void *)1;
->> > +			break;
->> > +		}
->> > +
->> > +		if (!len || buf[len - 1] =3D=3D 'e')
->> > +			break;
->> > +	}
->> > +
->> > +	send(fd, "test", 4, MSG_NOSIGNAL);
->> > +
->> > +	close(fd);
->> > +
->> > +	return result;
->> > +}
->> > +
->> > +static void test_sockmap_recvfrom_eagain(bool with_verdict)
->> > +{
->> > +	struct test_sockmap_pass_prog *skel =3D NULL;
->> > +	struct bpf_program *prog =3D NULL;
->> > +	size_t buflen =3D 1024 * 1024 * 25;
->>=20
->> Here
->>=20
->> > +	char *buf =3D NULL;
->> > +	int map, err;
->> > +
->> > +	skel =3D test_sockmap_pass_prog__open_and_load();
->> > +	if (!ASSERT_OK_PTR(skel, "open_and_load"))
->> > +		return;
->> > +
->> > +	map =3D bpf_map__fd(skel->maps.sock_map_msg);
->> > +
->> > +	if (with_verdict) {
->> > +		prog =3D skel->progs.prog_skb_verdict;
->> > +		err =3D bpf_prog_attach(bpf_program__fd(prog), map, BPF_SK_SKB_STRE=
-AM_VERDICT, 0);
->> > +		if (!ASSERT_OK(err, "bpf_prog_attach verdict"))
->> > +			goto cleanup;
->> > +	}
->> > +
->> > +	buf =3D malloc(buflen);
->> > +	if (!ASSERT_OK_PTR(buf, "malloc buf"))
->> > +		goto cleanup;
->> > +	memset(buf, 0, buflen);
->> > +	buf[buflen - 1] =3D 'e';
->> > +
->> > +	for (int i =3D 0; i < 200; ++i) {
->>=20
->> Also here. Why 200 iterations specifically? Can we at least name the
->> defaults to make it clearer that we've chosen those numbers because
->> that's how we trigger the bug?
->>=20
->> > +		ssize_t sent;
->> > +		char ignored[128];
->> > +		pthread_t thread;
->> > +		bool thread_created =3D false;
->> > +		size_t rem =3D buflen;
->> > +		int c =3D -1, p =3D -1, zero =3D 0;
->> > +		bool success =3D false;
->> > +
->> > +		err =3D create_pair(AF_INET, SOCK_STREAM, &c, &p);
->> > +		if (!ASSERT_OK(err, "create_pair"))
->> > +			goto end_attempt;
->> > +
->> > +		err =3D pthread_create(&thread, NULL, &test_sockmap_recvfrom_eagain=
-_thread, &p);
->> > +		if (!ASSERT_OK(err, "pthread_create"))
->> > +			goto end_attempt;
->> > +		thread_created =3D true;
->> > +
->> > +		err =3D bpf_map_update_elem(map, &zero, &c, BPF_ANY);
->> > +		if (!ASSERT_OK(err, "bpf_map_update_elem"))
->> > +			goto end_attempt;
->> > +
->> > +		while (rem) {
->> > +			sent =3D xsend(c, buf + (buflen - rem), rem, 0);
->> > +			if (sent =3D=3D -1)
->> > +				goto end_attempt;
->> > +			rem -=3D sent;
->> > +		}
->> > +
->> > +		/* we cannot use recv_timeout(), otherwise EAGAIN would be an expec=
-ted errno. */
->> > +		err =3D recvfrom(c, ignored, sizeof(ignored), 0, NULL, NULL);
->> > +
->> > +		/*
->> > +		 * we are checking for the invalid return of EAGAIN, any other retu=
-rn is considered
->> > +		 * successful for the purposes of this test.
->> > +		 */
->> > +		if (err < 0 && !ASSERT_NEQ(errno, EAGAIN, "recvfrom eagain"))
->> > +			goto end_attempt;
->> > +
->> > +		success =3D true;
->> > +
->> > +end_attempt:
->> > +		if (c >=3D 0)
->> > +			close(c);
->> > +
->> > +		if (thread_created) {
->> > +			void *retval =3D NULL;
->> > +
->> > +			pthread_join(thread, &retval);
->> > +			if (!ASSERT_NULL(retval, "retval"))
->> > +				success =3D false;
->> > +		}
->> > +
->> > +		if (!thread_created && p >=3D 0)
->> > +			close(p);
->> > +		if (!success)
->> > +			break;
->> > +	}
->> > +
->> > +cleanup:
->> > +	if (buf)
->> > +		free(buf);
->> > +
->> > +	test_sockmap_pass_prog__destroy(skel);
->> > +}
->> > +
->> >  void test_sockmap_basic(void)
->> >  {
->> >  	if (test__start_subtest("sockmap create_update_free"))
->> > @@ -1451,4 +1571,8 @@ void test_sockmap_basic(void)
->> >  		test_sockmap_multi_channels(SOCK_STREAM);
->> >  	if (test__start_subtest("sockmap udp multi channels"))
->> >  		test_sockmap_multi_channels(SOCK_DGRAM);
->> > +	if (test__start_subtest("sockmap recvfrom eagain"))
->> > +		test_sockmap_recvfrom_eagain(false);
->> > +	if (test__start_subtest("sockmap recvfrom eagain with verdict"))
->> > +		test_sockmap_recvfrom_eagain(true);
->> >  }
->>=20
+Fixes: d0e81b7e2246 ("bonding: Acquire correct locks in alb for promisc change")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+---
+ drivers/net/bonding/bond_alb.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 2d37b07c8215..70458c5b23cc 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -1535,7 +1535,7 @@ void bond_alb_monitor(struct work_struct *work)
+ 					    alb_work.work);
+ 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
+ 	struct list_head *iter;
+-	struct slave *slave;
++	struct slave *slave, *curr;
+ 
+ 	if (!bond_has_slaves(bond)) {
+ 		atomic_set(&bond_info->tx_rebalance_counter, 0);
+@@ -1597,9 +1597,11 @@ void bond_alb_monitor(struct work_struct *work)
+ 			 * because a slave was disabled then
+ 			 * it can now leave promiscuous mode.
+ 			 */
+-			dev_set_promiscuity(rtnl_dereference(bond->curr_active_slave)->dev,
+-					    -1);
+-			bond_info->primary_is_promisc = 0;
++			curr = rtnl_dereference(bond->curr_active_slave);
++			if (bond_info->primary_is_promisc && curr) {
++				dev_set_promiscuity(curr->dev, -1);
++				bond_info->primary_is_promisc = 0;
++			}
+ 
+ 			rtnl_unlock();
+ 			rcu_read_lock();
+-- 
+2.43.0
 
