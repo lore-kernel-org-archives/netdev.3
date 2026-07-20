@@ -1,87 +1,109 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B996A41B8F1;
-	Mon, 20 Jul 2026 12:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061B541CB53;
+	Mon, 20 Jul 2026 12:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784552043; cv=none; b=CQqvQIAq8d5SlPaIYqk3uyfXUmbLFYtsJ+WOuCstEm3jrL7bmNwiJdH6Atf2IH4kHAnV9TOjpoFu0b9bhrtDxOwhkPJ0V9TqNsEG48PW9yzR1nUiiKu+/BX5xSypiwwRKefbx7TSCljrBxZsWtyQDtcaaYNFxjPoXgRdJ0/zxbg=
+	t=1784552348; cv=none; b=GLjbBBzBBZ35tFOdNkV9lJ2AGgzVaJZzLpxNJrv8okexrFsAQR81G9R/mYbqqKxZXbZTRG3nNInFAFwzhdGAf9rDJSAJfCde76gCjQMt88n1kO9t2JqgljDJrhsqeaotdCiojrsH6Pit1KqStNx6tk6M1doPyJ17/bsZj/VF9k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784552043; c=relaxed/simple;
-	bh=Ph0xsHWFlp6M/sJI3+/zWIpIArglFlquJ5pz2Ln7rXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V9acZ3HVdZsd5SqmBp+DnKuTS9pw8n5ItOy7LEhbL6IQJVrgcuX2+IjUnxlUd9WNX5XVOKoBEi0/iw7W0ZL147SWwFULiG6Pf4ARPjvxhBnZObuA02r/7SsDAAZqoduL5z8HO2/urFQY3kT3z0gKSHHke5WTh/eOXCQBYlnJxUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=wLC+Oz2/; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1784552348; c=relaxed/simple;
+	bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ha7a6JI/Q8Qa7cJlqBoarXuf5GxaV4FbmAPkqvVdJX+IH1jcKS8gBD213bMuuS5JflyoFFVUw7ilp8LURO6LWY56KjH+/4vrYUFAVzcjVbP0479yf3PFDRApcAFyRcfC+ScUU2d0PrMcdDKANcufYN1/SEVKEWIEfyx7YUpfiY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dKmABXHE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="wLC+Oz2/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xn8QgODelX8SRdXOis3qJa6DeGttzHTXMrwHPpIW7lM=; b=wLC+Oz2/8S/4l7X5ji1xarUrvZ
-	+ick31cUHPJ5B1GxHuyIh7Rxl3zX8d/nZul/cecoCEhrld6GjhSpfhlLAdDwfG/V8fz20J2akVGfE
-	iDbaCNfY05DroXHGftZ7dr9mADqX1zNqysFzAu+eVssgQaoXtNGHcHMVwMbEcfzp0b7Hl3siHc4XT
-	n+9Zu6lbYdzm+fCeFpif8dww4nfA2izICrA5NyWHpPQi5RFbANQhzaF0gA6KfUM3xvSvVSN9dVhmH
-	+o1aKnym49K8D6O8raqgWPu1XFhwuSStPtkN8IdhDtg+OIUuZPNgUXIuX0kSN0dmVr+M8oIlnB9dO
-	g5asmCNg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wlnV8-001Rsi-0o;
-	Mon, 20 Jul 2026 12:53:42 +0000
-Date: Mon, 20 Jul 2026 05:53:37 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Pu Lehui <pulehui@huaweicloud.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] e1000e: Fix out-of-bounds MMIO access by validating
- BAR0 size
-Message-ID: <al4Z4_tFbyQM-ogu@gmail.com>
-References: <20260715035850.588070-1-pulehui@huaweicloud.com>
- <al3uh7OU2OtkEkSY@gmail.com>
- <ffc0a0d8-6560-4589-9570-04f40d817009@huaweicloud.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dKmABXHE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F0EC2B;
+	Mon, 20 Jul 2026 05:59:01 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B928E3F99C;
+	Mon, 20 Jul 2026 05:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784552345; bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dKmABXHEllSGT7FeFg6oxaG2ujJktWVxIXZ3hFzKw45EJWrXdCv86Cdi8Lk3ybb+P
+	 2eyzZw9sSqz4kKd+F7OoRuZNUZsH093wu+fiiSmVRvRLMFKAt3uEPGr18dcBdv9V/F
+	 kKFNdv+XlRp4DjEuV/4GCCvpzaekEZeXf66xmNSY=
+Message-ID: <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
+Date: Mon, 20 Jul 2026 13:58:27 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ffc0a0d8-6560-4589-9570-04f40d817009@huaweicloud.com>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] iommu/fsl: use platform_device_set_fwnode()
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Andi Shyti <andi.shyti@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Doug Berger <opendmb@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Srinivas Kandagatla <srini@kernel.org>
+Cc: brgl@kernel.org, driver-core@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-i2c@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
+ linux-pm@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 20, 2026 at 07:56:20PM +0800, Pu Lehui wrote:
-> 
-> On 2026/7/20 17:47, Breno Leitao wrote:
-> > On Wed, Jul 15, 2026 at 03:58:50AM +0000, Pu Lehui wrote:
-> > > +/* Minimum MMIO (BAR0) len, the largest offset is lower than 64K */
-> > 
-> > Why "the largest" in this case?
-> 
-> Hi Breno,
-> 
-> Thanks for pointing that out. I meant the maximum register offset accessed
-> by the driver.
-> 
-> IIUC, common e1000e NIC usually have a 128K BAR0. But since I'm not 100%
-> sure if older NIC might be smaller, I picked 64K as a safe lower limit
-> because it covers the largest register offset used in the driver's codebase.
-> If my assumption here is off, I'd really appreciate any corrections!
-> 
-> And for this comment, how about the follow?
-> /* Minimum MMIO (BAR0) length to safely cover the maximum register offset
-> accessed by the driver */
+On 20/07/2026 10:24 am, Bartosz Golaszewski wrote:
+> Prefer the higher-level platform_device_set_fwnode() over the
+> OF-specific platform_device_set_of_node() for dynamically allocated
+> platform devices.
 
-Thanks, Would something like this be a bit better?
+This is very much non-portable code specific to OF-only platforms, but 
+if the intention is to remove platform_device_set_of_node() again 
+already, then FWIW,
 
-     /* 
-      * Smallest BAR0 that covers every register the driver accesses
-      */
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+(Although I'm slightly puzzled by the cover letter - AFAICS in -next, 
+platform_device_set_of_node() is itself very much a user of 
+platform_device_set_fwnode(), however in terms of symbol exports, 
+perhaps the former could now just be a static inline wrapper?)
+
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>   drivers/iommu/fsl_pamu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
+> index c83bbc3faad56d6ee1c89b0a7f74028af02c81e9..268a1f752fbceab4fd24013aeea5df1b6982fbb1 100644
+> --- a/drivers/iommu/fsl_pamu.c
+> +++ b/drivers/iommu/fsl_pamu.c
+> @@ -975,7 +975,7 @@ static __init int fsl_pamu_init(void)
+>   		goto error_device_alloc;
+>   	}
+>   
+> -	platform_device_set_of_node(pdev, np);
+> +	platform_device_set_fwnode(pdev, of_fwnode_handle(np));
+>   
+>   	ret = pamu_domain_init();
+>   	if (ret)
+> 
 
