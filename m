@@ -1,107 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7AD42188F
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D19425CF7
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784554790; cv=none; b=acHhhNIOYw6+0B+0EIXrXR8oef4FnVCTxKgDQOz7cFtzF85M2v9V5r7I3Oz6/rdttE16KxMJ1TEuS4IcEUQ3lLsndJFMpK5X6qEuoV4H6LQgX39C8TPLeOFa44eEaKf+4hp0zdZR9p/ApHneuXfYNPms4fOpDQczL4VD+SKvRHo=
+	t=1784555168; cv=none; b=L15BsbPp1kELZLXbbgKZUxlBwFuFFipkN6FXMrfux0jIiaAQ64pP4KapiMJw7mr8Pf/7tJIh3XNK/wj6nCNT2ul0Uo1OiBxPJm69BEUvny7nQxCdDhVyBw+Iae8b28WrcXS5t3fOO3FjE+IfBh7mLftBYJ6SwO/QLGoq8N5qjko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784554790; c=relaxed/simple;
-	bh=hEfQm+fNIIIRf5G5yrPlpKCXyKnl5+VCOUdK6KCQ6M0=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Juyv6NJvH68g2jhnEk6fI9V0ad3jRjrwFI80LDu8DB/6o4ylts+Ad/O/BhPrKklqsMKDl67uY+NfOxuUSapEhMCYs/Fmaw5Y6hYfq8KaWNIpIyST25fngaKDDCe1WudgmXWsQh56irJO9fxuliutYFLpjUhpLQV6XTuXvOH8aeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI3vLrea; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784555168; c=relaxed/simple;
+	bh=uXaikVFR1mtKR6RmfSvw2mwrSxVg6nZ6Dfz59NmUYms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQHpeL6Sq3MPiTseoudqFBew/7+JOzStuXy69Wh3oqXrS5V1Peg59q13OsqRwcHxdoxSf+hW6UtJ/KkHQhUJbdwBTvR7zRpkPSXPnsnlyx9rQCTaaKz66hyqw8ZuUBgkV/oEP95HfupcvAVT6uKiml+Ufx3heQhLVV7zrMzd9Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Z6+Wmedx; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI3vLrea"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBE91F00A3F
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784554787;
-	bh=hEfQm+fNIIIRf5G5yrPlpKCXyKnl5+VCOUdK6KCQ6M0=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=RI3vLreahJGAhgtlatHkOscyo71Y2LCTFvhRAwMLIIk1XNm/x5FMR9Dwsagw98QSb
-	 7sV4l7YWuKlvsv/ADHoTvX6VbzeQy6aOsrGF+2mCSEnlw2dUHVuMB9qL8wvcU1c3qU
-	 vemxw9+dHy1Jym9R4FaAjcU/STnSceY7lDpjKtSxt9mcg6mx/zw4CRIYYc0FFL3xqh
-	 l5YU/gZw5z8l4D8NW5lYQ5SNul06GkJW2Ykuk2hWd2bX9EC5fPpbbmmswww7MRg5or
-	 7zprAf5p7duqoarODjDXjTJAmWjBbPaeUCPXfSYZJaOk1PPoTQOBOmXIw1ZvBXcv5V
-	 wtzDBgTWkgpbw==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39c923b8c2aso97129951fa.2
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:39:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrSbGkgpSgKDfr1ccZyJKJ75mvzMNgOEFOI9o/AhSf+WtnZBM2T9i8r3W/727S28t0U7VxHhpo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9Wby79NHFlMl7+rCSwFcW0Wt1X4dp2ijecBg/agfTFHkMbwQu
-	LLwBt7lSUcOtKB4XkYa801IJSI95Ojbynlr5WrL/ff1zTMi+8psw+CehKyeQxQ8Ii7g5a4Hdc1C
-	0HE5WE3y7nJPY5ac1SkbObI40c/NjN7db1zTxf0JE4w==
-X-Received: by 2002:a2e:be29:0:b0:39c:a06f:12ba with SMTP id
- 38308e7fff4ca-39eb294c61dmr29234131fa.40.1784554785347; Mon, 20 Jul 2026
- 06:39:45 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 20 Jul 2026 15:39:44 +0200
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 20 Jul 2026 15:39:44 +0200
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Z6+Wmedx"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8486ac3f347so3071608b3a.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784555165; x=1785159965; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CiqM6HQnEYGFM1tqwPiFklMvqyJPy7ipNoK3CEVhAc8=;
+        b=Z6+WmedxIu4Gud36zEwVdxlnkDSgmdIGPOAl/o3Fa91zagwpsD0fO//uiHqHZgj8y5
+         AOftPCn26dHaJG0WMwJ9F584mK6sWrva1O7/3ksJKz1ERBxhBe2j+KgwLiQjchlub4Cp
+         NWzZlON8P0ZkQAefwJt12K+fWQMYNAcJUM3xXlFmLZYo7EwRaxxaIfZTADY5r01LSHKz
+         TnCVEVul77j5wMa+r/QPW0vtKVuufi37+tFrVrCMhi5ubAdU8BzVGP9PUui0zaa5zZaU
+         sRrFNiSXOVsEjatQiX0TZczTwVq3iOmLnGj4/5ve2qAPAjQltWotqvaDr6hKqWbieYp/
+         y4Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784555165; x=1785159965;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=CiqM6HQnEYGFM1tqwPiFklMvqyJPy7ipNoK3CEVhAc8=;
+        b=nkTaU9+BQ05RqVtnskUSfcHqffTxExml/TTc5OOtevWuYZwHc7m8tszHBI5VFNpixu
+         SDZ2c459R5bwtn+okEodq8IL+Uz12YFIfXUGHYeehwuaM33Eb6n7nQkkF2hOsV9vt1CX
+         eL5JyVGLra5G/JgCXBgESFYl02OA984ecMc/7anjTURtxbaKUslNYMCaKnW3g2dKOHfz
+         qK3riJKNNalepOnWGQcAQ5oIkBCm12XqLJpLFyoFAX/2JuRrDgvh/biYa1TZwPYKY6Ij
+         nxqN4o4eotGbVmvSPsQS+ADNcDchlDbDA25i2ggMnZHF2NjFgQ90aD1hhuV4SjxQ1sAG
+         Q1hw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7zCkicULqIuQ1o7NaEXwWKo1HfZ69vkzP0yYdOzsdGe1XG1mcJDP5PYODi9JhD5CMYTRySpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqpaLQPOaxSDSlCiBytg+3awz3y/60+BlOuMCt9SZNeMxNH2T9
+	E7pD4XPrxFG/HgiGpbD41Dl4NhLe7I7OICBfqxusU8GppuATn/J3RMPuDGA2OFEYgTA=
+X-Gm-Gg: AfdE7cku23pZ/6JUHD0cYxuL/UmcahDTi6A1U+WpSWTlwE6JRVrtlVmr4wTgQYrIZjG
+	2ABsSN0g9wxiP1gf4jBFOCHJutoSFA220HvNpsucOypWjdAILgjFEI3gfq61x1LbkxQf/JEdEWa
+	IjGC8ITBTQvftIT5vlge4NhBZmeJsZdyieT5be+uQtbxW0DZySF+NErbGkOzuSORbTrzp6+dqhC
+	SNi0UoolPOE2uaW562/oXGPAvhqrN8vVJWM1guQ7sK7lqD+uZZPg6QF8BnKmCan3CRwmPowDS0R
+	gxDnG74IdTSKNfeE52q/KlPbubJGRKMQls3y/e59eqQOx5cOffWZNR6onTudWYnjNcEb36SUszt
+	Xk0aQlx1F+PofmSOEx5kiAWQUS3qZKSsJ3MVNRtHUzrfGNdQtQTcc3UG//dXA6QCKYhRVwQ==
+X-Received: by 2002:a05:6a00:1390:b0:848:2f58:e1e9 with SMTP id d2e1a72fcca58-84beb54b717mr19266604b3a.36.1784555165506;
+        Mon, 20 Jul 2026 06:46:05 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5e::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2e68e7b8sm5439737b3a.35.2026.07.20.06.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 06:46:04 -0700 (PDT)
+Date: Mon, 20 Jul 2026 06:46:04 -0700
+From: Joe Damato <joe@dama.to>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RESEND v4 net-next 05/14] net: enetc: use PCI device name
+ for debugfs directory
+Message-ID: <al4mnM58+65TQnfI@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
+	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-6-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
- <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
-Date: Mon, 20 Jul 2026 15:39:44 +0200
-X-Gmail-Original-Message-ID: <CAMRc=MefqCMgVv-o5hWoRwS2iXPQNs5nH2qHiz55+ew162LfSA@mail.gmail.com>
-X-Gm-Features: AUfX_mzO2mZAcAjFU14cJl1wZGPQmD5GzWNsNbZLHTzrF2PNrvf-Va6RwZ7OmuY
-Message-ID: <CAMRc=MefqCMgVv-o5hWoRwS2iXPQNs5nH2qHiz55+ew162LfSA@mail.gmail.com>
-Subject: Re: [PATCH 3/8] iommu/fsl: use platform_device_set_fwnode()
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: brgl@kernel.org, driver-core@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720014317.1059359-6-wei.fang@oss.nxp.com>
 
-On Mon, 20 Jul 2026 14:58:27 +0200, Robin Murphy <robin.murphy@arm.com> said:
-> On 20/07/2026 10:24 am, Bartosz Golaszewski wrote:
->> Prefer the higher-level platform_device_set_fwnode() over the
->> OF-specific platform_device_set_of_node() for dynamically allocated
->> platform devices.
->
-> This is very much non-portable code specific to OF-only platforms, but
-> if the intention is to remove platform_device_set_of_node() again
-> already, then FWIW,
->
+On Mon, Jul 20, 2026 at 09:43:07AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> enetc_create_debugfs() is called right after register_netdev(), at which
+> point ndev->name still holds the format "eth%d" (e.g., eth0) rather than
+> the final assigned name (e.g., via udev rules).
+> 
+> Use pci_name() instead of netdev_name() to name the debugfs directory.
+> The PCI device name is unique, stable, and available from the start,
+> making it a more reliable identifier for the debugfs entry. Therefore,
+> the observable debugfs path from something like
+> /sys/kernel/debug/eth0/mac_filter to a PCI BDF-style path such as
+> /sys/kernel/debug/0002:00:00.0/mac_filter.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c b/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
+> index 4a769d9e5679..be378bf8f74d 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
+> @@ -81,10 +81,9 @@ DEFINE_SHOW_ATTRIBUTE(enetc_mac_filter);
+>  
+>  void enetc_create_debugfs(struct enetc_si *si)
+>  {
+> -	struct net_device *ndev = si->ndev;
+>  	struct dentry *root;
+>  
+> -	root = debugfs_create_dir(netdev_name(ndev), NULL);
+> +	root = debugfs_create_dir(pci_name(si->pdev), NULL);
+>  	if (IS_ERR(root))
+>  		return;
+>  
 
-Providing platform_device_set_of_node() and using it was done to make the
-transision to expanding reference counting to all firmware nodes possible.
-I don't think we'll remove it just yet as it doesn't make sense to convert
-the code under drivers/of/ to using the fwnode variant.
-
-> Acked-by: Robin Murphy <robin.murphy@arm.com>
->
-> (Although I'm slightly puzzled by the cover letter - AFAICS in -next,
-> platform_device_set_of_node() is itself very much a user of
-> platform_device_set_fwnode(), however in terms of symbol exports,
-> perhaps the former could now just be a static inline wrapper?)
->
-
-Sure that can be done independently later.
-
-Bart
+Reviewed-by: Joe Damato <joe@dama.to>
