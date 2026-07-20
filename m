@@ -1,156 +1,237 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010045.outbound.protection.outlook.com [52.101.69.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFAC437856;
-	Mon, 20 Jul 2026 15:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562335; cv=fail; b=Tbaqzct44UBnfblpxWTFAumP59wWre4OQec24SVAPDg9CbqDmdqnk7qU9/RxY+oMOQEiN9KwD9CyTIjiYOCxo1x8x2khf0yJay7XXb7W9KmFiXprgLqE0VruhWxtlOamsRrqhp+Bafj/tP2XpswKY8ao1GIyg4shl++m+1Tdies=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562335; c=relaxed/simple;
-	bh=V3P2PPhbkm0/FA1UAy55b4ZXfDx9Ro9gAoXUk4CuzmI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=F6r+hVWGhKVwJGKVY7vgD1IXCnajcy6R8w78uoeGKre8/AtBrTTGoVqS9EPAemYHH5uhZ7vl1GxaTFcn6HxjLPywbypYBjRfEhrJp8C+dUk/xRpPSreI6ZrEHLw9e7qEV+XJDAUju0kVGhfnJzdR5Q2GujFAX35ou5EOEK5Zyp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=q9JEBEtS; arc=fail smtp.client-ip=52.101.69.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2496C437871;
+	Mon, 20 Jul 2026 15:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784562735; cv=none; b=uQV19wLsgH4a0XtDJphJs1IeSlfuYH6kAjnxHoLjvlD7Hqc1k4lJncH0dXDK+umVK00+3Fsxcp4ZgrTuMjI3wmRLzDjUAjwbSt4ny5TZKOhEqkaSBUIzIgF0XOwntjmdN/uSG/8tPtvpfF7YDGSFbdgaG7h6e7gMX57dRqs9MQ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784562735; c=relaxed/simple;
+	bh=z7duEXev4BeJts1N8N5j8ORe5MGARFm4Br3XDAxzKTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LnjRc14diNSRA4W01dO1K/TZeEDJviuPPst29EpOavLOAPr47P9MbyBlVCFHJ1jGQ12QjYhqnzD6NxGDj54YFS8R5bSj1Q/YWSnUXfxvWRVuPb/rQo8nAlE4PAYDsXDLFGCpCvedlSjzFI6g+3HQYMaTX5GqxyWktvnqznR50PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5eHLBhl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="q9JEBEtS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LqML3HvuNWa0/kH3uLK9vXWkwMZRXqUNoQg3YY14mC+2Oe0NjPNH4hWYZh5vBauyg4bO5KmtjXaRE81l3VBC3HXl4Tsskzk3G9kxHN2nu5deHL2dXPZPmMun96tAY+jFt9fuyobulhKCAsqR/nU2hkQKyBgMbziefF7AfBPfaVD8Lvv0Pmkozqq1UUfLxaiJ36sHYa385DBrcEVUPNPeCh8WITbsd4hkByvxPAi6lMI+GUMGUiLOy64cnteW+vfo22v4+l2F1ATVT6oIf0q07I0WLEPsvFhFrEyVpMKM5cCRUrgLJsH350/5XA4UDwi4ZSmsIfuq2O9WszquWnSucA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V3P2PPhbkm0/FA1UAy55b4ZXfDx9Ro9gAoXUk4CuzmI=;
- b=uEGMl2HeWV1eIJmSmfV2X7ruSm/Thg9bZI6UN5pLFhCMmmJsIw3reYEZzta1OJlxMqwtAIrUB155yN3CHJJ7XvJ/4zpQhgEwg3+dTXkzpmpS64+f+sUmoFZOG2i4AZh+U7mRIni4lODvweorCKHFvfak+bV80ctZwtkxTRYMSWqzn/nX/nFkAhFsN5qqx0jFc3QPGOK6LcvK1TTJcXH8D6/1H3eKNz0WnIzSR0X0fKGObGBlUP7D2xB2qbkWEULeGkjYKML65/Mf2vJ0BvIDfMo4ci83R6dK1lWcjlRMO1Suj+bIQ/ua9SHuS+O332LmRCMtmkjTgbcratmp7+3x0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V3P2PPhbkm0/FA1UAy55b4ZXfDx9Ro9gAoXUk4CuzmI=;
- b=q9JEBEtS+MS+Hnyc7lGitRMhk0CxYIbAARrpls6txlWSB9Xcr0U6D1v7tWVlhyqZPHZL+KWUCuBAvtmPQnE59wUDIUdaO+zT8suxCAUumWAOcc2O+WM+GMXMIffN5/tt1g6P1Lbfb3zNQ2XIEQZTzxvhHb6ffxELOqgV8ZMCvpgbzwspOw0tLPN0SdoPafFV87oCxFOKPkkhXGBJIvN+ShdOFN1voaFMaoY3wI4yDdDuvpJBMo1bfkSqQPbDPDaD4ooODFL8TGAx+hYe76OtHhumnteY6vdLMUX8DgE2EEAnyE9esL1Lztf98rp47M+cGMnIgQCgjyLA8rThZ4XXdw==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- PA3P189MB3332.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:4af::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.10; Mon, 20 Jul 2026 15:45:31 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0245.009; Mon, 20 Jul 2026
- 15:45:31 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Weiming Shi <bestswngs@gmail.com>
-CC: Xiang Mei <xmei5@asu.edu>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jon Maloy
-	<jmaloy@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>
-Subject: RE: [PATCH net v8 3/3] tipc: fix node reference leak when defer work
- is already pending
-Thread-Topic: [PATCH net v8 3/3] tipc: fix node reference leak when defer work
- is already pending
-Thread-Index: AQHdFpd4Iu98YIGCLUaOzhReQUGSTbZ2kBfw
-Date: Mon, 20 Jul 2026 15:45:30 +0000
-Message-ID:
- <GV1P189MB19884D45C3C2EABF26BE83B9C6C32@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260718092544.785289-1-bestswngs@gmail.com>
- <20260718092544.785289-4-bestswngs@gmail.com>
-In-Reply-To: <20260718092544.785289-4-bestswngs@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|PA3P189MB3332:EE_
-x-ms-office365-filtering-correlation-id: e46a5185-5d11-4e2a-23e0-08dee675edec
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|10067099003|4143699003|11063799006|56012099006|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info:
- Ra++yERhudvlqqkuKE/Mf0jkSeJJXWeAx4LJ5StNF9N1TGbEWgMPazNdf1bH8dbl2YEsisfEKBxAeVceeo0wv6Jy/7ipom/OuFweALUyhC6NZSdhgQ0o7zk0q+eYlfB+snyxp9FfNw54MZvvk+kvAiG0L36fr18YWYY1dn4BE3nmegAYVfp3+oqa9IMdzbvi2/UL2UIhiUEGFzbeogYFjaP+usXN1vQRlVoRfRgWRISVxc6w35Z24UzY/NfnpO7Dl+fhDFVnS+NGp/l7F1ENqUmgrd+goJSqieo9ZrDja8EH7T1a+DzRIGIrSGnkz8NIZnNqCwgPmwUj2UOlVRF1A33MD6bPDlXPEI0pm+It4UNnNNYspzL5ftUwHBYB7I+gPEfwuCgFJt8+U7iTdFmfcufyChDcDLDDmfSDOIFk13kiivgV1pEsGRVzw13uDOIJ7gQrSFJcx8c+pUg4chWZs8QcjFHpS8znkxrAxM4VYUIKd78KfR3psgcWWfNNqvLYTPRhw+5UnybZQ1yYa2MKHUPPGC/4CxgTehUFJEF/qYAdZ7ExhA4Mm25Ampuyn1jUE/GdBNAvjp7a0f9chUGIRtIKcKZEFCVli5nOJ4/Jshf/lJdmZcFKo7zcqUGqy5r9MIPrFMGT+wJVySeNMMyzaigF6m4gxOoPA3kBnktKJ0E=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(10067099003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?6qd9JSMHfeIm79kmFRkGOdmelJ7hoNn59yRJDxEJ/bwVF8HVRDvUSzDDuP3t?=
- =?us-ascii?Q?ZTH1jPVqcRWSWlXht8yHsPu+i/tU0YqvFA5K94THObE7uwBhBCTP93XOTHM8?=
- =?us-ascii?Q?218Dyl8RaNRIjLQgzoqX3190NVqr9TTgKJDqCzAJ7Wdh2KxuKEs/yb6Wk/0T?=
- =?us-ascii?Q?443inU/ntoDe+M0mE1GNwGgDTd8W9TnmsOuPlGRNMy9vXHgcHjGRBm8vEP/v?=
- =?us-ascii?Q?ixj40r6j2uSavXy+OiBulU5ncgrWIdPZTw48S3Kjn5eVQHumJEjGekDa2tNb?=
- =?us-ascii?Q?nMS/0YtHqXBpsm7cbmOCwSMXcXojH8qyiU3oTN9rtRyU/agB8ZgXYAJxXIV0?=
- =?us-ascii?Q?/jylFLw+dkq/Dd2SLnViduUR7OJJR6dHed3p4toK3Vt22PpqvXsQRGOYHBPF?=
- =?us-ascii?Q?VNkNlFdWfBYoa+KJA7MCWx9py5VnZDoRMY0ooh4cG9iHmPZLJGiTR8L580lW?=
- =?us-ascii?Q?SJDYDx6GF4O/KnaY9Tjdb2bZ3BnulMTTMCCLVbEZzLFT+HSl1G+Io5Pumtrw?=
- =?us-ascii?Q?tHUaJjKpMiZYxf3QXN/3sDaee5MmAz15NScblRk53X+oGvvokasJ0pcrsfed?=
- =?us-ascii?Q?p6TO8zcXZRzhZlOPCxR8oqEV/lq6amVMCDoP2muoW3f/lWwK+1OkAiAuINjd?=
- =?us-ascii?Q?k3rY6NDZ/bHQsIVm5W4FHmGhZiQJABkVgYcJ76MuvdAzx3qTcCl82Xrk8gDJ?=
- =?us-ascii?Q?Vh0X87KdkkN779QvPDEPmVBKU6dSoruPTNrKNK7oq3v0iwpVJVvpz85UHTAk?=
- =?us-ascii?Q?UNfkEnspzENE9g3hRjyke5K78e2wO7NZfKxBdq6s6BB65IFiZiepGz0jaLqt?=
- =?us-ascii?Q?MnS+hZ0jpbMhXSpAmQU5g+KMvECGpoIhmbHE+GHzgehGVNBqKLDRys0Vb+hR?=
- =?us-ascii?Q?lG8cfFeD8Avy14vHhTbutZdEtWSaEvjQW5EAUmFz7y7sdI45pSX2xhG9Dz5E?=
- =?us-ascii?Q?7cwSCjjE8Z2JvOLL43lhvyApomSQb/cpWL7m8TQ7ewuCRPe/KygF0uP54hhv?=
- =?us-ascii?Q?AmFRHc/LZrxPHmvVmDreUKuqoba1lTe/KGm4DVc1VnZuU8kaj2CZejDFemvY?=
- =?us-ascii?Q?1OSPJsEtlLRoKYahSATALlctrrpQtU7HYiQq3861YFZMdmQrPmruO8/NokLz?=
- =?us-ascii?Q?7KuLG9VpJ1BStNNEFPNb2lGv4G51ittSva0My+FCkdEmnrsmgb0p+r0ybAXW?=
- =?us-ascii?Q?ZhbvCRlx25CpRlgq2iyDRo34D6mUqCZwLwxqaZFboTCYrOngT+8I44Lx8bAa?=
- =?us-ascii?Q?9aOCeLaZwo+mWXeDjFN8ETmFuO6l7oEjznnmJLTO5Xq6PK1BS4bEoePIC/zs?=
- =?us-ascii?Q?jMBvIjcV2X4Osu1g7bELDktMdB/bjiEWrAefeR/m2/+o8sKwDmAvOWMDa8uB?=
- =?us-ascii?Q?1l2aDv6RxpgQyHiweNDs1GoXVf7ynt7pQf0zAcuJ+KN6Uzl+1u7iowcu2QmB?=
- =?us-ascii?Q?R3GmOxCKw15OuLDaWQXn+2rk2LYVwsD8cMf+M0n0lAYiwY/bfSlyRzHGytaN?=
- =?us-ascii?Q?qFd8qnJL4SuYJMdc8lQuGxjFISj/HQMF2itT3oU1scybXxr1mzX0Vx2XtBDH?=
- =?us-ascii?Q?MKwi1iBOS+IVlTKRs4hEBHkW9NvIyy5hmywfxzo4Hhcw2zF93dWDVUvId1Fa?=
- =?us-ascii?Q?2tgZsCFzs1TbrNxX8FGKcPdVZovRSVlN8+ZbdEw9Egxg1ZjjSc4CnEDTwi6U?=
- =?us-ascii?Q?WGalfkhiJkalDx/URsrPfeZrrK58AA6WFZ4wDdhQWRsHrTZFFe6LYBrMCykR?=
- =?us-ascii?Q?XzvzpZU78A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5eHLBhl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B511F00A3A;
+	Mon, 20 Jul 2026 15:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784562734;
+	bh=eMdCD4co6SAqVSvd9e/VRRqocIVxpd+B/tKA9ZH5TQs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=h5eHLBhld/y7I/8Z985913VppILeYBqFRkjCuCO9TIfXW39VB2yQQmiHfxvECUVVX
+	 ZnVXQb5zgzgh1WDf9oALVxN1E2RYtTwKiR9RUN3RJl0WkawbvldURlrygg5BDsNVko
+	 YBH3tyyAz5d+fJ3JKCfcP/sP/ekZsTIVWG3kWBXBZYSmUwjRg96QBcp66TFZ4ervAB
+	 LcIjpFHj1pIm1wzyha8SdXOS0JlBYjoxSFF4OaKA5OhxKl2+VIOvEL3pRTIrzk9d39
+	 EQOTte2JbQ97vNi4mEciSYtSUaHhkNq6ZD8foLtJe3dC3sfqHKSxk0QYL8KNwo8MMe
+	 HaHd3VIIvlTcA==
+From: Simon Horman <horms@kernel.org>
+To: t.martitz@fritz.com
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] macvlan: allow source mode devices along with passthru
+Date: Mon, 20 Jul 2026 16:49:22 +0100
+Message-ID: <20260720154921.222504-2-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260713112414.2842803-2-t.martitz@fritz.com>
+References: <20260713112414.2842803-2-t.martitz@fritz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e46a5185-5d11-4e2a-23e0-08dee675edec
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2026 15:45:30.9938
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eeZ5a1DqnHkkELEWYsU6P8XQnHIDlRHO8p2adh3asZSAr/0Jqksz2X+xHOrcgXQQj6pbC+IS9j7ZZPnHtMILLpx1O3szTmbYUSJCBSFQYgI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3P189MB3332
+Content-Transfer-Encoding: 8bit
 
->Subject: [PATCH net v8 3/3] tipc: fix node reference leak when defer work =
-is
->already pending
->
->In tipc_node_write_unlock(), TIPC_NOTIFY_NODE_UP with an empty
->cluster_scope takes a node reference and schedules n->work. If the link fl=
-aps
->down and up while that work is still pending, the next NODE_UP takes anoth=
-er
->reference, but schedule_work() returns false and the extra reference is ne=
-ver
->dropped. The tipc_node structure leaks.
->
->Verified by flapping the bearer while the work is pending: one reference i=
-s
->leaked per repeated NODE_UP, while the work is put only once when it final=
-ly
->runs.
->
->Drop the reference when the work was already queued.
->
->Reported-by: Xiang Mei <xmei5@asu.edu>
->Assisted-by: Claude:claude-opus-4-8
->Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Please drop this patch because sashiko reports the same issue for patch 1/3=
-: https://sashiko.dev/#/patchset/20260718092544.785289-1-bestswngs%40gmail.=
-com
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260713112414.2842803-2-t.martitz@fritz.com?part=1
+---
+macvlan: allow source mode devices along with passthru
+
+This change permits combining one passthru macvlan with one or more
+source-mode macvlans on the same lower device, so that an rx_handler can
+be attached to the passthru device while source-mode devices continue to
+represent known senders.
+
+> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+> index c40fa331836b..635ed01abeb6 100644
+> --- a/drivers/net/macvlan.c
+> +++ b/drivers/net/macvlan.c
+
+[ ... ]
+
+> @@ -964,6 +969,21 @@ static int macvlan_init(struct net_device *dev)
+>  	return 0;
+>  }
+>  
+> +static void macvlan_restore_mac(struct macvlan_port *port)
+> +{
+> +	/* If the lower device address has been changed by passthru
+> +	 * macvlan, put it back.
+> +	 */
+> +	if (macvlan_passthru(port) &&
+> +	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+> +		struct sockaddr_storage ss;
+> +
+> +		ss.ss_family = port->dev->type;
+> +		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
+> +		dev_set_mac_address(port->dev, &ss, NULL);
+> +	}
+> +}
+> +
+>  static void macvlan_uninit(struct net_device *dev)
+>  {
+>  	struct macvlan_dev *vlan = netdev_priv(dev);
+> @@ -973,8 +993,19 @@ static void macvlan_uninit(struct net_device *dev)
+>  
+>  	macvlan_flush_sources(port, vlan);
+>  	port->count -= 1;
+> -	if (!port->count)
+> -		macvlan_port_destroy(port->dev);
+> +	if (port->count) {
+> +		/* In case of remaining source interfaces undo
+> +		 * passthru-specific properties.
+> +		 */
+> +		if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+> +			/* Order is important, do not trigger macvlan_device_event(). */
+> +			macvlan_clear_passthru(port);
+> +			macvlan_restore_mac(port);
+
+[High]
+When the last passthru macvlan is removed while source-mode siblings
+remain, does macvlan_restore_mac() actually restore the lower device's
+MAC in this ordering?
+
+macvlan_clear_passthru() is called first, which drops MACVLAN_F_PASSTHRU:
+
+    static inline void macvlan_clear_passthru(struct macvlan_port *port)
+    {
+        port->flags &= ~MACVLAN_F_PASSTHRU;
+    }
+
+Then macvlan_restore_mac() runs, but its body is gated on
+macvlan_passthru(port):
+
+    static void macvlan_restore_mac(struct macvlan_port *port)
+    {
+        if (macvlan_passthru(port) &&
+            !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+            ...
+            dev_set_mac_address(port->dev, &ss, NULL);
+        }
+    }
+
+Since the flag has just been cleared, does the guard evaluate to false
+here, causing dev_set_mac_address() to be skipped and the lower device
+to retain the passthru MAC instead of port->perm_addr?
+
+The pre-patch macvlan_port_destroy() path did not clear the flag first,
+so the restore actually took effect there.
+
+>  		}
+> +		return;
+> +	}
+> +
+> +	macvlan_port_destroy(port->dev);
+>  }
+>  
+>  static void macvlan_dev_get_stats64(struct net_device *dev,
+
+[ ... ]
+
+> @@ -1623,19 +1659,23 @@ static int macvlan_changelink(struct net_device *dev,
+>  	if (data && data[IFLA_MACVLAN_MODE]) {
+>  		set_mode = true;
+>  		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
+> -		/* Passthrough mode can't be set or cleared dynamically */
+> -		if ((mode == MACVLAN_MODE_PASSTHRU) !=
+> -		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
+> -			return -EINVAL;
+> -		if (vlan->mode == MACVLAN_MODE_SOURCE &&
+> -		    vlan->mode != mode)
+> -			macvlan_flush_sources(vlan->port, vlan);
+> +		if (mode != vlan->mode) {
+> +			/* Passthrough mode can't be set or cleared dynamically,
+> +			 * regardless of existing source interfaces. Furthermore, source
+> +			 * interfaces can't switch modes within a passhtrough port.
+> +			 */
+> +			if (vlan->mode == MACVLAN_MODE_PASSTHRU ||
+> +			    macvlan_passthru(vlan->port))
+> +				return -EINVAL;
+> +			if (vlan->mode == MACVLAN_MODE_SOURCE)
+> +				macvlan_flush_sources(vlan->port, vlan);
+> +		}
+>  	}
+
+[High]
+Does this new check still reject setting an existing non-passthru vlan
+to MACVLAN_MODE_PASSTHRU when the port has no passthru vlan yet?
+
+The comment still says "Passthrough mode can't be set or cleared
+dynamically", but the condition:
+
+    if (vlan->mode == MACVLAN_MODE_PASSTHRU ||
+        macvlan_passthru(vlan->port))
+        return -EINVAL;
+
+only catches clearing passthru on a passthru vlan, and any mode change
+on a vlan whose port already has passthru.
+
+If vlan->mode is one of VEPA/BRIDGE/PRIVATE/SOURCE and the request is
+mode == MACVLAN_MODE_PASSTHRU on a port that has no passthru vlan yet,
+does execution fall through? Later in the same function:
+
+    if (set_mode)
+        vlan->mode = mode;
+
+promotes vlan->mode to PASSTHRU, but nothing calls
+macvlan_set_passthru(port), nothing performs eth_hw_addr_inherit(dev,
+lowerdev), and no passthru promiscuity accounting is done.
+
+After this, does the vlan report mode == PASSTHRU while the port flag
+MACVLAN_F_PASSTHRU stays clear? Downstream code splits between the two
+predicates:
+
+  - macvlan_open, macvlan_stop, macvlan_fdb_add, macvlan_fdb_del, and
+    the IFLA_MACVLAN_FLAGS branch here read vlan->mode ==
+    MACVLAN_MODE_PASSTHRU.
+
+  - macvlan_device_event NETDEV_CHANGEADDR, macvlan_addr_busy,
+    macvlan_change_rx_flags, macvlan_sync_address and
+    macvlan_handle_frame read macvlan_passthru(port).
+
+Does this then produce visible symptoms such as:
+
+  - macvlan_open calling dev_set_promiscuity(lowerdev, 1) while the
+    lower device's MAC was never inherited to the vlan;
+  - macvlan_addr_busy no longer treating the port as passthru, allowing
+    a sibling with the lowerdev's address;
+  - macvlan_handle_frame not delivering to this vlan via
+    list_first_or_null_rcu(&port->vlans) because the port flag is
+    clear?
+
+Would a condition that also rejects the direction into passthru be more
+consistent with the comment, e.g.:
+
+    if (vlan->mode == MACVLAN_MODE_PASSTHRU ||
+        mode == MACVLAN_MODE_PASSTHRU ||
+        macvlan_passthru(vlan->port))
+        return -EINVAL;
+
+>  
+>  	if (data && data[IFLA_MACVLAN_FLAGS]) {
+>  		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+>  		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+> -		if (macvlan_passthru(vlan->port) && promisc) {
+> +		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
+>  			int err;
+>  
+>  			if (flags & MACVLAN_FLAG_NOPROMISC)
