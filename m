@@ -1,120 +1,80 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22561408627
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63001427F96;
+	Mon, 20 Jul 2026 13:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784555252; cv=none; b=Qkbz9XLN1mUKjp6dRHBZpKBFTSdTBr3H1MYjjHwDgItDKiKlwSJKP+AdM8ia8Si16+ssfAc/QAXEvp36mQtxWMFKyQuprFTqaEuUj3VyHIEtV6dnh19BpSVqXm4UEukxUlsg+SxetunIbEL+gdq2/HdO6IjPMHmM6ze6EAh3/q8=
+	t=1784555335; cv=none; b=F2TU9nfQz7pCMlZR0QK96VoRyZkDrlYL178w4pfsoS56Jlgl0cW8fM3Y8aKpDoe1ySVh1vz+WZOm1bqPpu7GfeQCXpzCsNhZsqM5hrDu9zNF++qcGbgHjwDixbgS7MTNrsbVpK1cvvJmwf4eVJk3uZbMMc2sQfuoWjvTj9s72+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784555252; c=relaxed/simple;
-	bh=4yntPrZ75aFgvK8fRFr1GoNSyySukRHtLsnky+C5c6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tLA2J8NDtoibwA7L89c9nhQ1njKbPnlOvFV4lR4QddHM58/lw/+YKrvlPAhjpKKDjLluJDmCO5F51xSepJ+BasbKh4DAnfSTVp8xP2hIgS3A0BwgXOzcTg77XO3knwF0ao8s/RCeaOArI/eT34G98E8XiAhsYpIME1xJZH+Ebf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=BzYs/+vZ; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1784555335; c=relaxed/simple;
+	bh=zhOdL6Czb0ab5M6qqhBHlqtPjYAwQ5pBcR+/Sh6kEcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eJYs+5eeI/TlUGYZ2/FFemER/z5Hplvrbt2wggSz114+oaveVesJraqBlz9X65YAYyH/ZkfpDArIA3yOM1Q2WY6N3viu/yqnjZyvh27ybVtIxCGzpAqpXO4YGxIZm3TpU7I31VnOYnmw3r+75TwyzfsID3aj0NNMnEmlr/LUa2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=R7zzzu5A; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="BzYs/+vZ"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso6642854f8f.3
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1784555249; x=1785160049; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0oaxpczoCU94fzTgvg4t1BTobNQ29rp5vCPHjPJ9yQw=;
-        b=BzYs/+vZaGwQkp5INEgLsEK+x+Kyq1j3gpy5eh+IQXhI6Z6BmatdVL18pZ4E4GiQhv
-         PlfuSVVmk6ZYaHQ+aENw04HeLg+WKywpn3Q9LaO3gnfoJQUSenJ9cjNgRdAXdUcId0jR
-         Wn5gY+bxwgWM1IJAgIOFdA1Vm/9+Lpy75PMyItza+fCHNwKakpQcPdxpzaArhQJZiRcE
-         aOqPMDdpExpA2DsHfkwucqn5L41GZvpEkXEaXza7RO3vPfM0yC52OlhvUFThvsWLMeCk
-         cNTR2tUBH+cY/Qu6G4ORDqbcKBnaC9XHMBpvfkdkvyuaWQaMRmHtMZDAS0ET+xgPRkuN
-         JDZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784555249; x=1785160049;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0oaxpczoCU94fzTgvg4t1BTobNQ29rp5vCPHjPJ9yQw=;
-        b=qmwCYnAqGwPoi+eA/cUVSeXln4fd5wvemsxY0qSNg7N9CfAUZjvrROSgZzGmHqHAMO
-         5xjVhfT4HBVKYFale3TUuGSTTB8yk2xd+AWdn6FVGUF389n57W7XNkh0GccN7OXQKJGf
-         yh7iyAzDGG7Cu195Smqlno+me+uPPViRFvV6EkNHh9oLIn9XVssDLtI8romvBMAS70g2
-         T+GmEKqRLqiHQJVoIagQe5+kt2c52on3K9ad6nraF7BE4aIHcLNPPttgLAn82qD863t8
-         coq/u0JSicS4mqogY/+nuN9S2zzNBR0x48Lvx74Dct5D1BJxWbkqxeRWOb7mR3+8KXOt
-         sxHw==
-X-Forwarded-Encrypted: i=1; AHgh+RqA0RM7ykVK29Tnso3VgkcF0AdlFRppLMq4HRZxqoZ0Q3qfK5e9bvzIRSEK+wqodptN+/MvCDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPs2+ZcqY0q0HfOfsgapRGM9GGTgJvIKoixdTxFLgyszDcEyWK
-	+RSggjdhl8blhOAO67sfrae0M3dnDM+Akzyp3CZ0htdbe4fuTdgVZYlxzQGnat8b/BVXh0C7mLC
-	b1nz1ACBXPjYzr8hBIoP5QGtaGZuyzw26UWAQa5XDxVMzl9m0Ajc=
-X-Gm-Gg: AfdE7cnj0ZKDJTrMqU3hKTME2JDOLaSggQUMZH5wTjQ7U1KWxIV6+Qit9atxXYq+FPC
-	hNuGK7RlT/kV30jAjGGlJI4A0rnhzltvj5py2nMkNzgKrEmZlPEvnh+khjObdhKlWkUogzDBb5T
-	//CMKtIqrEmenlgwMWMn4BLM0XRG8pDF4WviAax/yxAlg4H60LK/XTBfUbLUclTF6LRYICrzcZg
-	uQzxEY6f1/yN4b/IEtbszLZEEN5hpjXjiiG7vCjLeCt2ctwamzq1eZVfSDkDMETHH3jYNWjHCu/
-	ftiD6ja3VlfYBhLTixb1PlQPK57h/hzjnWGbnBWZQNN3+5gEZyMaFpU7ZzVZRD/wmjdZus5j7Gv
-	uWz7mWCPz/g60Ggkr+b5KTw2taNbB5FnuQkqATx1cPnoa6kBUeN2k7BXKKjygshr77dPJMNWhXW
-	u75VJV4i7ePAU6VB+cyovu7EIfQHE/+6SJxw9ohaBkT7+MVQN5wDU=
-X-Received: by 2002:a05:600c:470a:b0:495:4e22:5eb8 with SMTP id 5b1f17b1804b1-4954e226f16mr141625995e9.38.1784555249162;
-        Mon, 20 Jul 2026 06:47:29 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:32cf:3416:35c6:c361? ([2001:67c:2fbc:1:32cf:3416:35c6:c361])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e496ffsm29626545f8f.3.2026.07.20.06.47.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jul 2026 06:47:28 -0700 (PDT)
-Message-ID: <524c6b9d-352c-4f84-bc8a-802dad97d909@openvpn.net>
-Date: Mon, 20 Jul 2026 15:47:26 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="R7zzzu5A"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=7qSKy/g33amts1oK+SrM9bDZHgU8q/E7Z64+Dh0BkeI=; b=R7zzzu5Aa1i6/M0ZwDPrgyOQOh
+	ubj9TFOWJ8jPB/sSIC8qF10oJvkiPubOhdZRK5CPreSLgBveWa2BZaHg7lmCy4Gb8BRr/5K2OGBFd
+	jU63DArTxvLR1yvFopIUIKZv+a4R3lAGOrH4Ic7lc152ImRRZVwiUY6uGc/R5mlR/rcw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wloMK-00DGis-Gn; Mon, 20 Jul 2026 15:48:40 +0200
+Date: Mon, 20 Jul 2026 15:48:40 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v4] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+Message-ID: <cafd8d43-7f76-44d8-a579-670d911f9b91@lunn.ch>
+References: <20260720091133.2438175-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ovpn: prevent UAF re-add to by_transp_addr on
- float-vs-delete race
-To: Ibrahim Hashimov <security@auditcode.ai>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ralf Lici <ralf@mandelbit.com>
-References: <20260708224631.1365-1-security@auditcode.ai>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Organization: OpenVPN Inc.
-In-Reply-To: <20260708224631.1365-1-security@auditcode.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720091133.2438175-1-kyle.switch@motor-comm.com>
 
-Hi there,
+On Mon, Jul 20, 2026 at 05:11:33PM +0800, Kyle Switch wrote:
+> Add a driver for motorcomm yt8824 quad 2.5G ethernet phy, supports
+> 2.5G/1000M/100M/10M speed.
 
-On 09/07/2026 00:46, Ibrahim Hashimov wrote:
-[...]
+So this is better, however still not correct.
 
-> Fixes: f0281c1d3732 ("ovpn: add support for updating local or remote UDP endpoint")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-> Assisted-by: AuditCode-AI:2026.07
+> -		/* Enable WOL feature */
+> -		mask = YTPHY_WCR_PULSE_WIDTH_MASK | YTPHY_WCR_INTR_SEL;
+> -		val = YTPHY_WCR_ENABLE | YTPHY_WCR_INTR_SEL;
+> -		val |= YTPHY_WCR_TYPE_PULSE | YTPHY_WCR_PULSE_WIDTH_672MS;
+> -		ret = ytphy_modify_ext(phydev, YTPHY_WOL_CONFIG_REG, mask, val);
+> +		/* Enable WOL feature */
+> +		mask = YTPHY_WCR_PULSE_WIDTH_MASK | YTPHY_WCR_INTR_SEL;
+> +		val = YTPHY_WCR_ENABLE | YTPHY_WCR_INTR_SEL;
+> +		val |= YTPHY_WCR_TYPE_PULSE | YTPHY_WCR_PULSE_WIDTH_672MS;
+> +		ret = ytphy_modify_ext(phydev, YTPHY_WOL_CONFIG_REG, mask, val);
 
-Sorry for the delay in getting back to you.
-We already have a fix for this bug that is queued for being sent to net.
+Look at these lines. What changed?
 
-You can find it here:
+As a reviewer, i review diffs. Changes like this are just a waste of
+my time. Please review your own diffs, look for issues like this,
+solve them. I won't give comments on the actual code until these
+problems are gone.
 
-https://github.com/OpenVPN/ovpn-net-next/commit/beb427921aafd186eb139349bf04c6d54a4927f5
+    Andrew
 
-I was caught by Sashiko's fire and therefore had hard time sending all 
-the fixes in my queue, but I am getting there.
-
-If you want, please check the patch at the link above.
-
-
-Thanks a lot.
-
-Best Regards,
-
--- 
-Antonio Quartulli
-OpenVPN Inc.
-
+---
+pw-bot: cr
