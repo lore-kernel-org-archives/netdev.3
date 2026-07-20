@@ -1,266 +1,219 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD2A3E5A34;
-	Mon, 20 Jul 2026 10:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F63D810D;
+	Mon, 20 Jul 2026 10:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784541924; cv=none; b=R9YRUWfOrsAVaSEkb3uvfy9SkTmnEB5ab6tYUyIqRJA0F1mzVZUQNsuWvlZlm0eA/04m8Tbgmx1wDCpc5mPRqFO+QRsfYCCRoCp9+gcb/Ti1VTIUqcJzYL2z5Ex3TeZbyVf8dh+x/xCUMiEsy2B924mZ+W0Sbjrgt6i8SxAG44Y=
+	t=1784542052; cv=none; b=hlm6YOXN4MMIBEPNHxvJPLpYEC+zJNdaHgXg3UYe058elUznGTVgGqCVPNoRog0ED143cMboYUb4F00PM+eBoAjnKA9ltVGoz1O0GUkZWMj/rHukZf7Hr0RbjjtGVoC31WELA6f/RtMQoi5PbffWtEOUfwyFR17svF3WyPgqokI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784541924; c=relaxed/simple;
-	bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TYeyVqpT/p/lMb5YKzzAzjnfXKIEMFPHMKYj8QDYdOCAliGe4FMlUtFhnHfv6ZIYwHjZxw9ufq7DUtei+taQ8srLOwLLfiZB4W3RVYpOaBQhjPhUdlsQ1OhaQTcd3TtjiBmNHFCrf8NIshfYvyTdXLNotwulYJAc1yr6x0LmE9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=DsMO0Qkd; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="DsMO0Qkd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1784541918;
-	bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DsMO0Qkdk2Xliq4fo4RZ7MNfqjKTJfKN/TrfgQJT6uhR4xxdbK23qoPr6oLr/dT+R
-	 0xzO3a2cSgDotSRrYi8iYGcK+GkPk8J3ZolXDtbK7ZbBNGUMrDOiO6draba3AeElaK
-	 SXP/sn96QAIejIXCm6zg7vytZiqrkDDGo0x+uefYVnPiOtpVCCpc7VJv0yPlB4fAT8
-	 31APsCKdAKLSO12qLAzdRGerSiXRv5HhVqZ5zJVcZgok0lGn2V8W9+gx827DtMGehr
-	 YBa323097vrbvSlvyLVLHemhKo/RkiNxm0BJJykZ54GHKlhtBv4dC1OQolJIE8Hont
-	 72nf36GDEiocw==
-Received: from yukiji.home (unknown [100.64.0.131])
+	s=arc-20240116; t=1784542052; c=relaxed/simple;
+	bh=yHYO+cqaT3w+qa+Dxyz99VXXZgQfW9BPG9TeV9WX8iQ=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=HJodxi4JQfw+YSRDusED4FOh/ImGIfv+88P4Ur2afKpkC2LgU8Ca8WGejWXr+DPkcSjuo/96h+R5P3I0+Kn2UCXlorYQGe3hRYQX+Kk2uJdD/MxGDeKV+1O7jxIuKGPBn0ym7E38uk+5W7NH0iJyT0qCsqRcXzmCwIR4kbC7RUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4C93317E0676;
-	Mon, 20 Jul 2026 12:05:17 +0200 (CEST)
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Mon, 20 Jul 2026 12:04:28 +0200
-Subject: [PATCH v3 18/18] clk: mediatek: Add MT8189 ufs clock support
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h3blr29x3z4yjSh;
+	Mon, 20 Jul 2026 18:07:04 +0800 (CST)
+Received: from njy2app02.zte.com.cn ([10.40.13.116])
+	by mse-fl1.zte.com.cn with SMTP id 66KA6mci073773;
+	Mon, 20 Jul 2026 18:06:48 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njy2app03[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Mon, 20 Jul 2026 18:06:51 +0800 (CST)
+X-Zmail-TransId: 2afb6a5df33b931-43f7e
+X-Mailer: Zmail v1.0
+Message-ID: <20260720180651288d3b9DAp__Lfvo2x2PkMfC@zte.com.cn>
+Date: Mon, 20 Jul 2026 18:06:51 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-mt8189-clocks-system-base-v3-18-8e6d99ab3ad2@collabora.com>
-References: <20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com>
-In-Reply-To: <20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Chun-Jie Chen <chun-jie.chen@mediatek.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Edward-JW Yang <edward-jw.yang@mediatek.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Chen-Yu Tsai <wenst@chromium.org>
-Cc: kernel@collabora.com, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- netdev@vger.kernel.org, Irving-CH Lin <irving-ch.lin@mediatek.com>, 
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784541894; l=7242;
- i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=Zh06wlUmAIC1iukSKooFVWp0hF17e98otRnRFvdgrT0=;
- b=YJajpir1SDekl3Wkg7O/kATYdiNGI/V0BfledlBE1XvXUj4ZXDCbhVicWxBLZ1XmGB2H6pwmJ
- RCndffD/2W0DNbNOTajeIdBimv1uF2m9X/1J+5xUpwzvklNEYzUuQYD
-X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
- pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY5IDAvMl0gQWRkIFpURSBEaW5nSGFpIEV0aGVybmV0IFBGIGRyaXZlcg==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 66KA6mci073773
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 20 Jul 2026 18:07:04 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A5DF348.000/4h3blr29x3z4yjSh
 
-Add support for the MT8189 ufs clock controller,
-which provides clock gate control for Universal Flash Storage.
+From: Junyang Han <han.junyang@zte.com.cn>
 
-Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
-Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
-Co-developed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
----
- drivers/clk/mediatek/Kconfig          |  12 +++
- drivers/clk/mediatek/Makefile         |   1 +
- drivers/clk/mediatek/clk-mt8189-ufs.c | 133 ++++++++++++++++++++++++++++++++++
- 3 files changed, 146 insertions(+)
+This series adds initial support for the ZTE DingHai Ethernet controller,
+a high-performance PCIe Ethernet device supporting SR-IOV, hardware
+offloading, and advanced virtualization features.
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 919a916f1f4f..34a270a377cc 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -882,6 +882,18 @@ config COMMON_CLK_MT8189_SCP
- 	  management for SCP-related features, ensuring proper clock
- 	  distribution and gating for power efficiency and functionality.
- 
-+config COMMON_CLK_MT8189_UFS
-+	tristate "Clock driver for MediaTek MT8189 ufs"
-+	depends on COMMON_CLK_MT8189
-+	default COMMON_CLK_MT8189
-+	help
-+	  Enable this to support the clock management for the Universal Flash
-+	  Storage (UFS) interface on MediaTek MT8189 SoCs. This includes
-+	  clock sources, dividers, and gates that are specific to the UFS
-+	  feature of the MT8189 platform. It is recommended to enable this
-+	  option if the system includes a UFS device that relies on the MT8189
-+	  SoC for clock management.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index a3a93a16b369..1aa9f4265225 100644
---- a/drivers/clk/mediatek/Makefile
-+++ b/drivers/clk/mediatek/Makefile
-@@ -130,6 +130,7 @@ obj-$(CONFIG_COMMON_CLK_MT8189_DBGAO) += clk-mt8189-dbgao.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DVFSRC) += clk-mt8189-dvfsrc.o
- obj-$(CONFIG_COMMON_CLK_MT8189_IIC) += clk-mt8189-iic.o
- obj-$(CONFIG_COMMON_CLK_MT8189_SCP) += clk-mt8189-scp.o
-+obj-$(CONFIG_COMMON_CLK_MT8189_UFS) += clk-mt8189-ufs.o
- obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
- obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
- obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-ufs.c b/drivers/clk/mediatek/clk-mt8189-ufs.c
-new file mode 100644
-index 000000000000..85afab04420f
---- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-ufs.c
-@@ -0,0 +1,133 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2025-2026 MediaTek Inc.
-+ *                    Qiqi Wang <qiqi.wang@mediatek.com>
-+ *                    Irving-CH Lin <irving-ch.lin@mediatek.com>
-+ * Copyright (C) 2026 Collabora Ltd.
-+ *                    AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-+ *                    Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+
-+#include "clk-mtk.h"
-+#include "clk-gate.h"
-+
-+#include <dt-bindings/clock/mediatek,mt8189-clk.h>
-+#include <dt-bindings/reset/mediatek,mt8189-resets.h>
-+
-+#define MT8189_UFSCFG_AO_RST0_SET_OFFSET	0x48
-+#define MT8189_UFSCFG_PDN_RST0_SET_OFFSET	0x48
-+
-+static const struct mtk_gate_regs ufscfg_ao_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_AO_REG(_id, _name, _parent, _shift)		\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_ao_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_ao_reg_clks[] = {
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_TX_SYM,
-+			   "ufscfg_ao_unipro_tx_sym", "clk26m", 1),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM0,
-+			   "ufscfg_ao_unipro_rx_sym0", "clk26m", 2),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM1,
-+			   "ufscfg_ao_unipro_rx_sym1", "clk26m", 3),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_SYS,
-+			   "ufscfg_ao_unipro_sys", "ufs_sel", 4),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_SAP_CFG,
-+			   "ufscfg_ao_u_sap_cfg", "clk26m", 5),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_PHY_TOP_AHB_S_BUS,
-+			   "ufscfg_ao_u_phy_ahb_s_bus", "axi_u_sel", 6),
-+};
-+
-+static u16 ufscfg_ao_rst_ofs[] = {
-+	MT8189_UFSCFG_AO_RST0_SET_OFFSET,
-+};
-+
-+static u16 ufscfg_ao_rst_idx_map[] = {
-+	[MT8189_UFSAO_RST_UFS_MPHY] = 8,
-+};
-+
-+static const struct mtk_clk_rst_desc ufscfg_ao_rst_desc = {
-+	.version = MTK_RST_SET_CLR,
-+	.rst_bank_ofs = ufscfg_ao_rst_ofs,
-+	.rst_bank_nr = ARRAY_SIZE(ufscfg_ao_rst_ofs),
-+	.rst_idx_map = ufscfg_ao_rst_idx_map,
-+	.rst_idx_map_nr = ARRAY_SIZE(ufscfg_ao_rst_idx_map),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_ao_reg_mcd = {
-+	.clks = ufscfg_ao_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_ao_reg_clks),
-+	.rst_desc = &ufscfg_ao_rst_desc,
-+};
-+
-+static const struct mtk_gate_regs ufscfg_pdn_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_PDN_REG(_id, _name, _parent, _shift)	\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_pdn_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_pdn_reg_clks[] = {
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_UFS,
-+			    "ufscfg_ufshci_ufs", "ufs_sel", 0),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_AES,
-+			    "ufscfg_ufshci_aes", "aes_ufsfde_sel", 1),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AHB,
-+			    "ufscfg_ufshci_u_ahb", "axi_u_sel", 3),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AXI,
-+			    "ufscfg_ufshci_u_axi", "mem_sub_u_sel", 5),
-+};
-+
-+static u16 ufscfg_pdn_rst_ofs[] = {
-+	MT8189_UFSCFG_PDN_RST0_SET_OFFSET,
-+};
-+
-+static u16 ufscfg_pdn_rst_idx_map[] = {
-+	[MT8189_UFSPDN_RST_UFS_UNIPRO] = 0,
-+	[MT8189_UFSPDN_RST_UFS_CRYPTO] = 1,
-+	[MT8189_UFSPDN_RST_UFS_HCI] = 2,
-+};
-+
-+static const struct mtk_clk_rst_desc ufscfg_pdn_rst_desc = {
-+	.version = MTK_RST_SET_CLR,
-+	.rst_bank_ofs = ufscfg_pdn_rst_ofs,
-+	.rst_bank_nr = ARRAY_SIZE(ufscfg_pdn_rst_ofs),
-+	.rst_idx_map = ufscfg_pdn_rst_idx_map,
-+	.rst_idx_map_nr = ARRAY_SIZE(ufscfg_pdn_rst_idx_map),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_pdn_reg_mcd = {
-+	.clks = ufscfg_pdn_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_pdn_reg_clks),
-+	.rst_desc = &ufscfg_pdn_rst_desc,
-+};
-+
-+static const struct of_device_id of_match_clk_mt8189_ufs[] = {
-+	{ .compatible = "mediatek,mt8189-ufscfg-ao", .data = &ufscfg_ao_reg_mcd },
-+	{ .compatible = "mediatek,mt8189-ufscfg-pdn", .data = &ufscfg_pdn_reg_mcd },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_ufs);
-+
-+static struct platform_driver clk_mt8189_ufs_drv = {
-+	.probe = mtk_clk_simple_probe,
-+	.remove = mtk_clk_simple_remove,
-+	.driver = {
-+		.name = "clk-mt8189-ufs",
-+		.of_match_table = of_match_clk_mt8189_ufs,
-+	},
-+};
-+module_platform_driver(clk_mt8189_ufs_drv);
-+
-+MODULE_DESCRIPTION("MediaTek MT8189 ufs clocks driver");
-+MODULE_LICENSE("GPL");
+Changes from v8:
+- Unify the three prefix variants (dh_core* / dh_pf* / zxdh_pf*)
+  on the vendor namespace zxdh_* .
+- Address the _dev / _device suffix inconsistency: zxdh_pf_device
+  -> zxdh_pf_dev, matching zxdh_core_dev and the upstream
+  pci_dev / net_dev / usb_dev convention.
+- Keep struct zxdh_core_dev and struct zxdh_pf_dev split, with
+  zxdh_pf_dev hung off zxdh_core_dev::priv via the container-of
+  pattern. The same zxdh_core_dev handle will be shared by the
+  SF (Sub-Function) driver queued for the next merge window,
+  and by MPF drivers further out. Each device type hangs its own
+  private struct off priv: PF -> zxdh_pf_dev, SF -> zxdh_sf_dev (planned).
+  Merging now would force a re-split when SF lands.
+- Address v8 review comment "introduce functions yet you never use
+  them".
+- Wire up zxdh_pf_modern_cfg_init() into the probe path and
+  zxdh_pf_modern_cfg_uninit() into the remove path.
+- Drop the ZXDH_CONFIG_S_* and ZXDH_MSI_NO_VECTOR macros from
+  dh_queue.h.
+
+Changes from v7:
+- Remove the redundant depends on NET_VENDOR_ZTE
+  since it's already implied by the enclosing if NET_VENDOR_ZTE 
+  block in the parent Kconfig.
+- Check BAR 0 is an IORESOURCE_MEM resource before ioremap().
+- Rework .shutdown to quiesce hardware only. 
+- Add NULL guards in zxdh_set_mac() and zxdh_get_mac().
+- Zero the output buffer in zxdh_pf_get_vf_mac() up front.
+
+- Two further AI-review points were investigated and require no
+  code change:
+
+  (1) *len is written before the bounds check inside
+      zxdh_pf_map_capability. The two fields written through
+      *len and *bar_off are pf_dev->notify_len and
+      pf_dev->dev_cfg_bar_off, both populated from this
+      function. pf_dev->notify_len is only consulted when
+      pf_dev->notify_base != NULL, which only happens when
+      the corresponding map_capability() call returned a
+      non-NULL pointer; pf_dev->dev_cfg_bar_off is only
+      consumed by zxdh_pf_get_vf_mac and
+      zxdh_pf_set_vf_mac_reg, both of which gate their
+      access on pf_dev->pf_sriov_cap_base. So the early
+      *len / *bar_off writes cannot produce values that
+      end up consumed.
+
+  (2) The expression off * notify_offset_multiplier is
+      u16 * u32; the overflow only triggers when
+      notify_offset_multiplier exceeds UINT_MAX / 65535
+      (≈ 65537), which is well beyond any value a PCI
+      config register would carry for this field. A
+      malformed multiplier of that magnitude would also
+      fail sane probing of the rest of the cap layout, so
+      it cannot reach this arithmetic. The boundaries in
+      practice are enforced by the 64-bit comparison at
+      the top of zxdh_pf_map_vq_notify's notify_base
+      branch, where off is promoted to u64 before the
+      multiply. The three subsequent 32-bit multiplies in
+      that function only feed pointer arithmetic against
+      pf_dev->notify_base; a wrong offset would resolve
+      to an address outside the mapped region and fail on
+      access rather than corrupt kernel state.
+
+
+Changes from v6:
+- Clean up PCI device ID table (drop `, 0`, use `{ }` sentinel)
+- Move dh_core_alloc_priv/dh_core_free_priv from header to .c,
+  they don't need to be `static inline`
+- Use `if (!x)` and drop the "%i, x" dev_err() messages in
+  common/notify cfg init.
+
+Changes from v5:
+- Drop dev_info() log spam.
+- Propagate the real error code from dh_pf_pci_init() in
+  dh_pf_probe() instead of hard-coding -ENOMEM.
+- Register devlink only after dh_pf_pci_init() succeeds, and
+  in dh_pf_remove()/dh_pf_shutdown() unregister devlink
+  before tearing down PCI/mutex/priv.
+- Drop the "dh_dev->priv = NULL" assignment from
+  dh_core_free_priv().
+
+Changes from v4:
+- Fix sparse warning: add __iomem annotation to priv pointer
+- Fix Clang format warning
+- Use "dinghai:" as patch subject prefix
+- Ensure proper patch threading
+
+Note: Sent manually due to temporary git send-email unavailability
+in our environment. Will use git send-email or b4 for future
+submissions. Apologies for any inconvenience.
+
+Changes from v3:
+- Merged patches 1 and 2: 
+  Combined initial framework with logging infrastructure
+  for better code organization and reduced patch count. This was done because
+  the logging infrastructure now uses Linux's built-in dev_err(), dev_info(),
+  dev_warn(), etc. macros instead of a custom logging system.
+- Removed unnecessary variable initialization: 
+  Fixed "don't initialise variables".
+- Fixed variable declaration order: 
+  Applied "Reverse Christmas tree" ordering with variables
+  declared from longest to shortest line length.
+- Code quality improvements:
+  Fixed all checkpatch.pl issues (alignment, formatting, etc.).
+
+Changes from v2:
+- Address maintainer feedback from v2 review:
+  * Remove meaningless initialization
+  * Change dh_pf_pci_table to static const for better encapsulation
+  * Simplify MODULE_DESCRIPTION for brevity
+- Coding style improvements:
+  * Ensure all lines are within 80-column limit
+  * Use kernel types (u32/u8) consistently throughout
+  * Improve code readability with better formatting
+
+
+Changes from v1 (addressing feedback from AndrewLunn):
+- Update copyright years to 2022-2026
+- Remove DRV_VERSION, MODULE_VERSION and related boilerplate
+- Fix MODULE_AUTHOR to use person with email address
+- Use module_pci_driver() instead of manual init/exit
+- Remove empty suspend/resume callbacks
+- Replace char priv[] flexible array with void *priv + kzalloc
+- Switch logging from printk wrappers to dev_*() based macros
+- Remove dh_helper.h and dh_log.c, simplify to dh_log.h only
+- Fix variable declaration ordering (reverse Christmas tree)
+- Remove unnecessary NULL check in remove and pf_dev=NULL in probe
+- Fix indentation and remove unnecessary type casts
+- Use kernel idiomatic "if (ret)" style
+
+This is the initial submission and only includes the PF (Physical Function)
+driver. The VF (Virtual Function) driver will be submitted separately.
+
+Junyang Han (2):
+  dinghai: add ZTE network driver support
+  dinghai: add hardware register access and PCI capability scanning
+
+ MAINTAINERS                                 |   6 +
+ drivers/net/ethernet/Kconfig                |   1 +
+ drivers/net/ethernet/Makefile               |   1 +
+ drivers/net/ethernet/zte/Kconfig            |  20 +
+ drivers/net/ethernet/zte/Makefile           |   6 +
+ drivers/net/ethernet/zte/dinghai/Kconfig    |  34 ++
+ drivers/net/ethernet/zte/dinghai/Makefile   |   9 +
+ drivers/net/ethernet/zte/dinghai/dh_queue.h |  54 +++
+ drivers/net/ethernet/zte/dinghai/en_pf.c    | 465 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    | 101 +++++
+ 10 files changed, 697 insertions(+)
+ create mode 100644 drivers/net/ethernet/zte/Kconfig
+ create mode 100644 drivers/net/ethernet/zte/Makefile
+ create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
+ create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
+ create mode 100644 drivers/net/ethernet/zte/dinghai/dh_queue.h
+ create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
 
 -- 
-2.55.0
-
+2.27.0
