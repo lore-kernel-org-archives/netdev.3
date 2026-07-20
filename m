@@ -1,129 +1,164 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856373A4274
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 03:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38D3233943
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 05:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784519119; cv=none; b=fRj4CVmLkvdIV5uxiOqUCZr6W8q87Bniy4B6vdjrQz0mmFAQZdBDxwX2lj4OpvR6StHVKg5WuaqZHCUdcIQ6H7maFKrBK5dpL6s/kiwxESDkg827c8xUzGWU5E7rfDVElPvDqzXXB9Bq2foNGn3fqjL6+EkvYH0niiB76x7LzwQ=
+	t=1784524601; cv=none; b=T5UC//n4O7aNPDG2BNZdOAl/7grUclRcoJQWH8bKeSzXpkWa5irAxvpVJbwew2Vu6+m/DE4cO1bo6lNbgSTWj/LKZpaEU2U8yYNbhF6lQS90pDQLBInOEvnitgO6aH/IzsiWLh8n87L2vQJaCMcq5ypKlHlg1IaiUxd1EvchyhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784519119; c=relaxed/simple;
-	bh=8uUJTYu9Z11ecOT+fffiqa5MSkhO5jMXa1KI7YHCqEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IENgsYfe6/IIYsfDrO+1/TziFvG5r8Zcgn83FQEMuWCDHY6bLcXgeK0fzuQWZg6XM+15FyQalzfg8KRW4qz4SM6Ngn6ijtYv+W/nOTVKexFAKo7SHXcdmtOBbvzHvcMsB6yJOobv7G5n7R8szo2h7tnKdiycPZxiQ9oJgO47TtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VgjDSmXd; arc=none smtp.client-ip=74.125.224.41
+	s=arc-20240116; t=1784524601; c=relaxed/simple;
+	bh=a0i1t46TqtQBoF34AjwioQnWQimN/qjKoe99yOhUqH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fC+WkMGK1VtjOedm3sGgcqmvwB0sc8Bd5edIM5YunyK/pRlFrt/8Ot8CLvtZ4J1tGjdvQb3bvLoSuUFIKDcwqkRgqRuwR39Ccp7fHX15NC+L4yXS5Ov0CPOjzfuh5sXk4EZOoHreKtFOqobdVvnOttgdcdDkXZVOEBnquSnCMnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B7STUsoQ; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VgjDSmXd"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66825848551so2990088d50.0
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:45:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B7STUsoQ"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so56207305ad.3
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 22:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784519116; x=1785123916; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yppHPM8M0gBps0sSHPYVkG0WqZkYvFLfEYcOEagnwfA=;
-        b=VgjDSmXdItlJShsZSFXGl2+LScf3/WxUK88W6quqdsHbVWbJaUbyW9NPWU0Wm5GxBt
-         QXit0a3WmZ9x+hWm1uAd4BMvb1EAlypTDzd7JcJ/Bs5BoGo0sNFZkeCaNq3rziEIpBZb
-         CLjaU3ZB+nigumHpTk0akZW5zarkL4j+Ktbek/N8njLJtMMofCLETXsmxaPn+7YMbK8v
-         SI1LfzDKdX3isg9TlZJsZEXZEG37Vx5kAJhXYmwYYoCVbKLMkHcPA06GDFlOMB5tUKBp
-         T1yAQDM/Y6rI9exzL6h1K3anb1M1UnCyxoeAtakNRc1zUX8n3zi6jhHaVeeXkdl3z9ie
-         nMtQ==
+        d=gmail.com; s=20251104; t=1784524599; x=1785129399; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DGioerEBNVcfod0ZCwemUPuUtnSkx03OFUP0RKn5JUQ=;
+        b=B7STUsoQUTM4RoBjvS33ZWMMO9FQBzcp1yWbxHeduDWAULjkhDEJVlsKExpF4tpdoS
+         UDEAfsUyQ+jfMlkw9DHuiK1V8SwNo7jU8Mci0hXPepwhActxnLm+MQTJu2L8i1jOtWvB
+         mioKpbQ4S2D0y1b9AVY17+9cNwbxzeKm17UANfZ+dE1/kah0VzHo7g31VMfXwXIMdTS0
+         can6/kG31BDE6hKdIMnnavEDbXonu1H+/rtiPyd7B3PTGKRDNldiHV7navlJSMwuNTqL
+         RP5BvvbKdrLDYj4nYCJ5WH2xGnyagEsaamzNLk2u8/CEKCOlXp4O1dMKiu8vw7n6v4RP
+         VJ2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784519116; x=1785123916;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yppHPM8M0gBps0sSHPYVkG0WqZkYvFLfEYcOEagnwfA=;
-        b=VMh/te93jNCr66YJfmfjLBwY4tQYvWz2THwuMZCVHPSAp/yQnOEBH/O9jrlPg9dVWK
-         6fjvWk5XXZu+Dc9xa7IyhtTjl+lHr5FPlqouttLCOmWTB+xBCgfw9m7V+ef2fnzphj1i
-         SFnkW8I99F4Hy4B4rZR6Ilu/LdAI8gbeSxZ68o7HswsCbv2faYVftc+YDDJzH3gOrJXB
-         dArUpY9Bmi5lP1Hmw6uVRMoDfyTGjXP9pqbvFRxnj3FtPF8i0riJt65FcWoLS79gJEHN
-         lGiR/oqxHg2Xf4WBRjzXRRVxdu81VBE0YLaHnE1GL9XVTMZTKjkzhLFfbYI1Ot1jduFf
-         ejRw==
-X-Forwarded-Encrypted: i=1; AHgh+RowC4PfB2swrAJRvkCmzu9yBPmTp6jvzWzHJBEWrrzkCkWW5mmhdxOYGqqRvxMToBCD1uQ6Ai0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCcGdjxWbeSWJJPWc7YhgjuB2INny420ITOi4h6HO7Z0VjJRDX
-	DSuybwbYn+bLP9j7CGzGvNsz0g7GenFHpOSjIbQzNW0j9dBYSxwpR/5n
-X-Gm-Gg: AR+sD10FChVQOrQ8IkpKXIAI2dWydRpmcajinR8n6V2TGeJBJxv6Q/3ts94gvAtq5r2
-	64kjhZPDvI5dTAhTg2JXuA0EVrP+wrRo8g+MH5lxJE+Dy3oCcOCvRXkWpQtwLTgx9dQ50ssyvoS
-	T0s8DX+J+hRRPjNyBTEAK0yoXbgZhLT+D3XrIyDegBi3L10PUqSrXFjzUPs80oq+FACk+vZ74fI
-	1vAmNjxFdMxIr9RR/7BG9WqUu3r8+EWvTmJ0z188W4x9chrbtl9pouL/ATE6f3dvri3He4oXQY5
-	nB98nPqxtmlmzX0R4JXaTVXgI958kU979sClOVvS/50W0URu4fXndzPSJ20zDx6rrVTwMt36TSe
-	mK/FIwjkGKHhzC4XsdA0XevtFN6wQgv0b+1WAkGqW0NrTY6ylqWtHbEZuWZbfyYA89zL7MlBMyG
-	wAoJY2MfZ6tnl/kUQE74xm4gu5fAUDrQ1RJEd8ZJ4QFFRKlDeAgmzhY6oqHbWoEYIMexUrIztVl
-	xc2mlL8a4WUGg==
-X-Received: by 2002:a05:690e:4399:b0:667:8b90:2e5a with SMTP id 956f58d0204a3-6683bd8a65fmr1830105d50.102.1784519116198;
-        Sun, 19 Jul 2026 20:45:16 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6683b80d1aasm5357048d50.12.2026.07.19.20.45.15
+        d=1e100.net; s=20251104; t=1784524599; x=1785129399;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DGioerEBNVcfod0ZCwemUPuUtnSkx03OFUP0RKn5JUQ=;
+        b=TFgLCb4pwjXeOlSlYe1uL1N2eG+Q99pBfRuErrJP2rUldo/5F05Cys3tziMXjFRdms
+         4I7W2otYgsjTIZLRxEIoCrdK9s1NhKBotLIVgO+n/8LX2WCbWwNw4vI1g0tNmF8s160L
+         1PIJrIue/rvX/y0Or41fGd9XupHvcQklsGqKKq/NOC9x9xfMOtURxcDIIfYd1Qjos/2U
+         p6ngySwnqaqRR4ojIfOa4Qi8kV02CUI4yC/YK8f/njTtSE/+/3rAQp8m9UbWIgTkGCTK
+         25aMnNOJHncNCmfF2YlYGyTbu3daUEfj1mR2YIs8MfHaPjlF8AbM6TYO8zO/bOgqggX8
+         Rhiw==
+X-Gm-Message-State: AOJu0YyonK6HfKSQWsI14cklltZzL8P4EpB1JXJTE9Aq1pH9UwkXTS4U
+	R9VxiCNFd+xiSiSXBb7zXxxaqW6O5vhXIwNaqg6O4GjDK+BW6hFIe9HeQIHk6ZHK3/0=
+X-Gm-Gg: AfdE7cmRsTC9ZA6vpLjIA++N2DZ5vOxHI1+ONzfys+xCQoxUCOPU5AtwmIp5D3unVu5
+	8Wrk2bmUVoJCcdL6T0SDtRFVoBkWAYVi53EqaZdTX29mTqQdULU4laiCCOrlRV5vnoNdC0OjreD
+	XVKfxCAOQRkUEs2QP+K/8PFCaR01EYs6Zx3YDQm81GFBKJwvu2Xikl488ncpPN9fa/mOOK06DwS
+	y5Cl4jFH0Zf38jr6Lj/JDiQ94e1/iNj9Qoj4pjFHNS/drEk367mNSGQ55LVDcoUJHd1E2/5e8Qx
+	QcPLbTztXtYeTQKQ99IfeGynuwhEK3K3DKgy9iJQ6aIDmAps0BXFMMvPbbzlqZdlRtO4xMylSFY
+	SEHFl/7HXCiOG3WlcdriLUmL26GJI2YgB+6vTKKLlUddgt60JXo8SRtPs75xd75R/9Lg+/7dBGh
+	JdMmeaRv6Hp4NHsyLiCIS0RN6VGLGv
+X-Received: by 2002:a05:6a21:7d06:b0:3bf:7498:9cd1 with SMTP id adf61e73a8af0-3c3ad963e8emr12133440637.45.1784524598947;
+        Sun, 19 Jul 2026 22:16:38 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb519de2fb2sm3988938a12.24.2026.07.19.22.16.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 20:45:15 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us,
+        Sun, 19 Jul 2026 22:16:38 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH] net/sched: cls_u32: validate offshift to prevent shift-out-of-bounds
-Date: Sun, 19 Jul 2026 23:45:14 -0400
-Message-ID: <20260720034514.23053-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	xizh2024@lzu.edu.cn,
+	enjou1224z@gmail.com
+Subject: [PATCH net 1/1] packet: synchronize pressure clearing with ring reconfiguration
+Date: Mon, 20 Jul 2026 13:16:18 +0800
+Message-ID: <24f7311aed0c9ff06b8ea982647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784454541.git.xizh2024@lzu.edu.cn>
+References: <cover.1784454541.git.xizh2024@lzu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-u32_change() copies the user-provided tc_u32_sel.offshift (unsigned char,
-0-255) into the kernel knode object without bounds validation. When a
-packet later hits u32_classify() with TC_U32_VAROFFSET set, it evaluates
-`ntohs(offmask & *data) >> offshift` where the left operand is a 16-bit
-value promoted to a 32-bit int. Any offshift >= 32 is undefined behavior
-per C11 §6.5.7, triggerable by an unprivileged user via user/network
-namespaces.
+From: Zihan Xi <xizh2024@lzu.edu.cn>
 
-UBSAN: shift-out-of-bounds in net/sched/cls_u32.c:236:43
-shift exponent 32 is too large for 32-bit type int
+packet_set_ring() updates the RX ring state under sk_receive_queue.lock,
+but publishes the tpacket receive mode through po->prot_hook.func after
+releasing that lock. packet_poll() and packet_recvmsg() can therefore run
+the pressure clearing path after the ring has been cleared while still
+seeing tpacket_rcv, causing __packet_rcv_has_room() to dereference stale
+or NULL ring storage.
 
-Fix this by rejecting offshift >= 16 during filter creation in
-u32_change().
+Serialize pressure clearing with RX ring reconfiguration and update the
+receive hook while holding the same queue lock when changing the RX ring.
+This keeps the receive hook decision consistent with the ring state used
+by the tpacket room checks.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidance")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
+Reviewed-by: Ren Wei <enjou1224z@gmail.com>
 ---
- net/sched/cls_u32.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/packet/af_packet.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 8f30cc82181d..e7a9a49353f9 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -1107,6 +1107,13 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		goto erridr;
- 	}
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 8e6f3a734ba0..b369f44b4065 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1315,13 +1315,22 @@ static int packet_rcv_has_room(struct packet_sock *po, struct sk_buff *skb)
+ 	return ret;
+ }
  
-+	if (s->flags & TC_U32_VAROFFSET && s->offshift >= 16) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "offshift must be less than 16");
-+		err = -EINVAL;
-+		goto erridr;
-+	}
+-static void packet_rcv_try_clear_pressure(struct packet_sock *po)
++static void __packet_rcv_try_clear_pressure(struct packet_sock *po)
+ {
+ 	if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
+ 	    __packet_rcv_has_room(po, NULL) == ROOM_NORMAL)
+ 		packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, false);
+ }
+ 
++static void packet_rcv_try_clear_pressure(struct packet_sock *po)
++{
++	struct sock *sk = &po->sk;
 +
- 	n = kzalloc_flex(*n, sel.keys, s->nkeys);
- 	if (n == NULL) {
- 		err = -ENOBUFS;
++	spin_lock_bh(&sk->sk_receive_queue.lock);
++	__packet_rcv_try_clear_pressure(po);
++	spin_unlock_bh(&sk->sk_receive_queue.lock);
++}
++
+ static void packet_sock_destruct(struct sock *sk)
+ {
+ 	skb_queue_purge(&sk->sk_error_queue);
+@@ -4304,7 +4313,7 @@ static __poll_t packet_poll(struct file *file, struct socket *sock,
+ 			TP_STATUS_KERNEL))
+ 			mask |= EPOLLIN | EPOLLRDNORM;
+ 	}
+-	packet_rcv_try_clear_pressure(po);
++	__packet_rcv_try_clear_pressure(po);
+ 	spin_unlock_bh(&sk->sk_receive_queue.lock);
+ 	spin_lock_bh(&sk->sk_write_queue.lock);
+ 	if (po->tx_ring.pg_vec) {
+@@ -4544,14 +4553,15 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
+ 		rb->frame_max = (req->tp_frame_nr - 1);
+ 		rb->head = 0;
+ 		rb->frame_size = req->tp_frame_size;
++		if (!tx_ring)
++			po->prot_hook.func = po->rx_ring.pg_vec ?
++						tpacket_rcv : packet_rcv;
+ 		spin_unlock_bh(&rb_queue->lock);
+ 
+ 		swap(rb->pg_vec_order, order);
+ 		swap(rb->pg_vec_len, req->tp_block_nr);
+ 
+ 		rb->pg_vec_pages = req->tp_block_size/PAGE_SIZE;
+-		po->prot_hook.func = (po->rx_ring.pg_vec) ?
+-						tpacket_rcv : packet_rcv;
+ 		skb_queue_purge(rb_queue);
+ 		if (atomic_long_read(&po->mapped))
+ 			pr_err("packet_mmap: vma is busy: %ld\n",
 -- 
-2.53.0
-
+2.43.0
