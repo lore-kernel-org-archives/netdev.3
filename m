@@ -1,71 +1,49 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956813BD64A
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179A03D1A99;
+	Mon, 20 Jul 2026 09:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784540516; cv=none; b=Va+EvYR56lDrafAqUF3J33jkp5bXbbbVSc8s8BOSUsW0D8Ytqhw4lTNcS+no/3rTBn/yhO966M/X6aSCHvQXmDq07c5b5NL7yMZ32St7WnyMQXndjtTRkQ3IKlweCY5An5OFYCkEJGWsR/J709ElbVMPbfLs+MHEYgkq/89Rg/M=
+	t=1784540859; cv=none; b=kZt+QyVQsMNm0aZV/biqzjFx3bpq5SDkZUsHBZ5I22Ja9IcchKtAKv/MSDZPyNfCage1WiFjlObC5av1roTs8dKB2W+VR9pM8fR2B64DgKLfHeEambKxpmv0dnw0mqBKicow2+ost+am2nwE+JuQdonhkAR387CCnQkwJ+QunAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784540516; c=relaxed/simple;
-	bh=lR1RewoAZbIahGA8KBdG5nh8j880NEupATIBBXBivDs=;
+	s=arc-20240116; t=1784540859; c=relaxed/simple;
+	bh=u0umNnmUv8nl59ZFfwBLEx3ih1YkOUievgkIpPyxUI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p5cf/w10ZX+TQOs/CG9CwyXJdh18BJyu4sZohpuNn1utbXaZy0w6JzUNUEknjvxbNvLUO57JfwJWAemlFZUQy5LXV3FD8fO0TeFAP7uJRRcR2ge6g9Eftaba7sFR5J/xIi9rpOwX+ZvyRF8IePL28U+769pjZ4UBosNsCZT0O4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=dKgt1tBV; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=R1AZx7ScMmXPBB2oTmNvZpSYzYwQnURxosuFCLY0Lv5GAC5sLPRhYPWhpgVKBQPpGJ1PpWtxB3Cjz/iBpnU0u4wFvNUMQ3R8JzysrF3BqBlxlOMK3eb5Zwzb8gpMIhMde/M0qEZTEfx5pGq8Itw+A07kiN3+J8Kp0qxPZbJ0VfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Z1FK8FVA; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="dKgt1tBV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=PVbz
-	oDnpVKgVDd4gX36wEhQdxOoPAfSCiS1SYLlMuPY=; b=dKgt1tBVRUujW/Or9cUu
-	Njja0ewW303cV+XaqwFoCQhB4c92qFLo6R2X6sOWdGkc8aBgR5JQFhIWaEWcAIhT
-	ELaWXGkWF4TQf045bOVNttofBiEbrSDZ3+Yqm8D9+bax3qCI5R5C+MS0DeCcijN9
-	Fss16LtdQO5O0f9FhrRmDaKyVHMHZp98odmgKivqaj71XmC1opc0ba/4i74Ct9Gi
-	DuyHeZ0ZR3DyqPF5BXuurNzEbn5sfPu0hp8WuGPLN9FFs7vr0LkZCnFCvUaW6fvD
-	CQK/udY2wPkxN7LbOq1oXh8N0ro3KVlKbavEV+FZHj5TiDVYGPc1jiUWwDFBFFzV
-	pQ==
-Received: (qmail 2419193 invoked from network); 20 Jul 2026 11:41:39 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 Jul 2026 11:41:39 +0200
-X-UD-Smtp-Session: l3s3148p1@XpiKtgdXCtIujntM
-Date: Mon, 20 Jul 2026 11:41:39 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, netdev@vger.kernel.org,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 2/8] i2c: pxa-pci: use platform_device_set_fwnode()
-Message-ID: <al3tU6t0LQdWYoNX@ninjato>
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-2-2dee93f42c54@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Z1FK8FVA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=u0umNnmUv8nl59ZFfwBLEx3ih1YkOUievgkIpPyxUI4=; b=Z1FK8FVA6+6CZmZx2Mm2CKvAVO
+	8PhgsxQ9ApLybTYbNbFn90PkGLXyi7ago1hTHx64iXY3VqlmQ6AFObfaEmpz0uskZ3ccsodvnZEzR
+	+3vFlgX5HRrXVNRlAbAdcas17SEAQNmgBnnVYoy20shKbDWq3bUi59w9GZpWqLDP0Gb4yku9C0k6h
+	pKHkBzWYlN3Tw7cBu6ggdmFwMbeeeXc0liEGP54CnFXPhRusBid7GEkQABtFQOzGxOGgktLP5q7E1
+	U6uy38WX5JucRSGswm882DbB8kJPp/+/X0GUgytOlSNF34a/QAZNdZztCnD5mELAwcSpR7mXH0oPj
+	SqfIWGfw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wlkaf-001Lih-07;
+	Mon, 20 Jul 2026 09:47:13 +0000
+Date: Mon, 20 Jul 2026 02:47:08 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pu Lehui <pulehui@huaweicloud.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] e1000e: Fix out-of-bounds MMIO access by validating
+ BAR0 size
+Message-ID: <al3uh7OU2OtkEkSY@gmail.com>
+References: <20260715035850.588070-1-pulehui@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,18 +52,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-2-2dee93f42c54@oss.qualcomm.com>
+In-Reply-To: <20260715035850.588070-1-pulehui@huaweicloud.com>
+X-Debian-User: leitao
 
-On Mon, Jul 20, 2026 at 11:24:49AM +0200, Bartosz Golaszewski wrote:
-> Prefer the higher-level platform_device_set_fwnode() over the
-> OF-specific platform_device_set_of_node() for dynamically allocated
-> platform devices.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Wed, Jul 15, 2026 at 03:58:50AM +0000, Pu Lehui wrote:
+> +/* Minimum MMIO (BAR0) len, the largest offset is lower than 64K */
 
-Fine with me.
-
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Note that we still need Andi's ack.
-
+Why "the largest" in this case?
