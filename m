@@ -1,130 +1,302 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB34B42E014
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99FC42668B
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784555340; cv=none; b=efTX9uUstzbaTLQS/TjqwRPnxDLqE6onMJ8CxwxJ4WcHt3YyU7v4MiCz+ykFPI4RXbg9+01MVprUdsZFyaUl8NpmRUhl8uKF2OYZu2wi6hp3hruGHEcJo/FCzI/EvLvu0TjLSHfJS69PpxaNGYS3ugsOTeJeHJmsmq8LMPf3ppU=
+	t=1784555497; cv=none; b=nxRfgdxo17n1A3kVVUAamzf/2H79ZyTJFMtF1fv57FMNH/TUIIcSp9+ROxXLaOvW/h95q7k2Owe+u66yFMDlMvm0Ri4N8+D8oDD7em5FuI6TaFB+DpB6kkpzdLUW5b2DhEiRXGk5uwM4+vouJQ+POUBBnMc1dEEEeG3ALXhCcKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784555340; c=relaxed/simple;
-	bh=sHKsOvktHornLe+ZeU8u/20dX6bNatlr37qX8toUr58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6ucw/RkNpJZTIkR3+fBV9T7mN7DJuF3zn7quSO8lyg+6Is4Wi5+UV/lfAIqzcuztMrEOsIQzPu02W7gIHfMwcMcAo+8HCO249y8E5Ftm6LBcQP3y4/e1jkcAsAdqwfQph1WbTYybkZkGa/3//vo5DnJRa9CywEZxayNIcUeGqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=xC6+8zLl; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1784555497; c=relaxed/simple;
+	bh=8aYCnPsa3nLlSzNbWTOJrHEKxPyvPSx1jpaInV1XADk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kkorZPVZD6DbZ1AflnAb+q3qkaTybYcPjNX0bRClNolWVxY8u/+x45Oh3WG8kH5uwWQHImyEdTC2MuIXv8UtRPeZUYLxEYBd7yaJyqMr5xw9laXdu+I4GFSTok/dnTCVjd8Scgz5qbCopZVOMCwDeun+FK0Ba5VaSkPAIDpD+k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WoRaF5EK; arc=none smtp.client-ip=209.85.160.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="xC6+8zLl"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-848882fdb18so7329034b3a.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:48:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WoRaF5EK"
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c19493ac2so201600891cf.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:51:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784555334; x=1785160134; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+        d=google.com; s=20251104; t=1784555495; x=1785160295; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=exgSZUy4mQ+gBayEGCoSCzUgfoiRVrcGM1wITQ8aelo=;
-        b=xC6+8zLl7S7krs4wKiFhDBEIIGvkvZsRjZ072BSOldbfflGkE2NGRVx5dlPl52to+n
-         ouLVNs1J945DC/anYL1rhXOhdP5rPzPljJdEF4H7LYEhOqFBNsr/lwNJ6CnXfNNcCobd
-         2sGzX7XIoLXNuw4rmmCqO2CFCqb6SqYgreIo1/4KSrxDWy5tHINhtSKcgdUn6c6s0CNy
-         bC8JQHUsjFOHTX+kakFeAGDbr1gukkybITiyFXmML15h2eMBIkzLjoeZGh0JoYrtA4iy
-         0FuXRJpS1hsJ0kHWM24Tz8xJPtEgmeQ0Ej1I6X8Om1qYXBRHL2ZuEEQ0S+YFP+iTreWj
-         aaOw==
+        bh=KICH6+O2vVTAsaPbT0lNLJSSjrF/FuE3egZF4BaX0l4=;
+        b=WoRaF5EKCAeFvABBj0JCdIzpzMbmqZlFr/CEO6/XhHDsceneMeqDwGsN9o7JCfx7BD
+         EpRtNGjIaHXjoJHo0D9B/VpOy2uZMS0i0BLW7As/Ey/zaB5XjQSmQgySGe/hN5hCGFIw
+         b8DamBqjAO6rFRSghHPG5l4+3UCvq8843m0XFR0YqgNj7aF42Y+xmYxZ81GGFMAOwdiY
+         Ehp38kE8CrUiyvwGVxcTcoIhrjmZMaqr0TzgvBTKFqygkSqoGoq7r1bcEAFfzEUhnkhb
+         YXObrmOIY9keAphyaek7hkKKUX8GaxCL4nUkTYFI2BwL0X/5D8Elcw/DZu28C9izFLIo
+         haeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784555334; x=1785160134;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=exgSZUy4mQ+gBayEGCoSCzUgfoiRVrcGM1wITQ8aelo=;
-        b=pzvUsqggYgArrCNObemck9PZl44NM7Y2iVdMiXDLK72WnHaiU0bCpo9Se03YYjxVEl
-         8UVLFlOH0JmCwPlwJqXp5SpW1HbP52GOafymBpSmhb1CVakv2AxK6gn5zC42OQPDUM+3
-         FuBdXe2gU5/6OA/jwFd6279KwxAFTzpi647G75Ii9jV7E5z2piJHngxpliFOykYm3Tim
-         uU81F+joDyVEtdg4LNGb4TbO/CASVoar7cfzKWoC9uhcbOdI37avWJ9FB8IC21o2xGhg
-         ylMMM/b95zPnjbe0L8U/PYd9AbC5116eOUjgqa9yy1XpuNpYuf8QSYLIJXRO7cdvGNmB
-         Pm6A==
-X-Forwarded-Encrypted: i=1; AHgh+RoDGr7C+tiGhVXYpH0bEYPua6bBt4dP/Fo/Z/ArCcNCyfbqujJSjRQcyh+kLt7JZDq9zQLKBDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxkk05DprFSCUe3twrFwTIYYKGOTqH26Srg12/TSJKVUe7frtEJ
-	UeNLiR2TBGtGE7gMS7PG/QecXIzqYWojXuC2Fwx0IlPGyku+3IStbBzfoFzqm0k9mRk=
-X-Gm-Gg: AfdE7clIptIRqsKCt47o99XXx62P+l9eQUmlKwyWUvNededfDCSunvG0QOHmvzSAtBd
-	Gd0Fd8gIwys/ShuxX4h9CO2MLptGjYxet+moP6lJR0imbebhwK1qgcqLh4ymSXZ3j1N8JCYZWmj
-	MHTVc+WXA8YvItvujnQo1M6PFqjTwt0/WihaYD/Yg6gPWjP0BESQ3d50k87aChkpRBbv6SO+rE5
-	iN4TL8nQWdPhMJS8K2lcOeYD04ljY+9uZ4h4UByuiImWu7oJTuDjLrVXsF8Ow8cRfWsgNS0Qk9A
-	qvhkwOmNpug2ZRkYxDhVBuidFToDgjod5p6ODaGVHqEwCNrREEkKZ5HEvdyDo2W8ClI1x6GT6zm
-	MwPlqQVqBSWJJ73GexcXiFRXmxLF1UdVl4cdx7WokIBpK3fguhuiGRGE=
-X-Received: by 2002:a05:6a00:998:b0:845:eb73:411c with SMTP id d2e1a72fcca58-84c2946f027mr14586475b3a.45.1784555334640;
-        Mon, 20 Jul 2026 06:48:54 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adc3466sm5844378b3a.15.2026.07.20.06.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 06:48:53 -0700 (PDT)
-Date: Mon, 20 Jul 2026 06:48:53 -0700
-From: Joe Damato <joe@dama.to>
-To: wei.fang@oss.nxp.com
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RESEND v4 net-next 14/14] net: enetc: use kzalloc_flex()
- for enetc_psfp_gate allocation
-Message-ID: <al4nRS6hB8siUx3f@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
-	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
-	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
- <20260720014317.1059359-15-wei.fang@oss.nxp.com>
+        d=1e100.net; s=20251104; t=1784555495; x=1785160295;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KICH6+O2vVTAsaPbT0lNLJSSjrF/FuE3egZF4BaX0l4=;
+        b=guSDygEfgAa03F8tWwraxKpbSgoNy3xTZ8Yx3hur+61VU3p8eAkwfMFuTCcKFErB92
+         ItjRu2lcOIw5dbcoiB7n3Z53EEW63nve/6sBioRLh2PEICMfcwY6gbGiRt32uvJ2Iiqp
+         QbBwu68X8NK8TOnMkmTp65Vk9x87WKl/u2VLDUMxaZKDebf0DwEhHYxKCejoHA63GLfa
+         tHzJWI8TLLOT0zg0RBoZ26Hk7fOJ9nf6k1EV9bri5mREtuaQWVgGZpdOdf5moqOHp5oc
+         vDuYHu9w6u5O9AVaYAps+zM3pghdOuV+/9WR6ppKm2AoOqqYyqLmZ0ORaGXkxrgipSz0
+         b7Rg==
+X-Forwarded-Encrypted: i=1; AHgh+RokdFhF2c8K0HOQ0FH2ryxc/CW56Ao6hO099h0ZBq0ptekgXt22nL4gi7eLyJCnxk5fIZ5T/U0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEKVX+8MkK5duQKVK3goNPmLVup5gQrFKM37okvakYSol8gye9
+	psqgKJcuhIUBRQavL0CenEsjz7BFYRl1V7TOacLqfaAplhZFoynIp7t/IGKFcsKwb8i12CN5KR9
+	Ol/S7VNzsAbtG3g==
+X-Received: from qtal17-n1.prod.google.com ([2002:a05:622a:e0d1:10b0:51c:9d78:8252])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:5298:b0:51c:f3:34d9 with SMTP id d75a77b69052e-5213c9dfbdbmr120808951cf.27.1784555494361;
+ Mon, 20 Jul 2026 06:51:34 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:51:32 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720014317.1059359-15-wei.fang@oss.nxp.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260720135132.3957146-1-edumazet@google.com>
+Subject: [PATCH v2 net] gre: fix ERSPAN o_flags race/corruption in xmit and fill_info
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 20, 2026 at 09:43:16AM +0800, wei.fang@oss.nxp.com wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> Replace the open-coded struct_size() + kzalloc() pattern with the
-> kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-> removes the intermediate entries_size local variable and makes the
-> allocation site more concise.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-> index 7b17bca24f26..2aa0fcaafcd2 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-> @@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
->  	struct flow_action_entry *entry;
->  	struct action_gate_entry *e;
->  	u8 sfi_overwrite = 0;
-> -	int entries_size;
->  	int i, err;
->  
->  	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
-> @@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
->  		goto free_filter;
->  	}
->  
-> -	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
-> -	sgi = kzalloc(entries_size, GFP_KERNEL);
-> +	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
->  	if (!sgi) {
->  		err = -ENOMEM;
->  		goto free_filter;
+For IPv4 ERSPAN:
+In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
+and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
+structure. Since transmit paths can run locklessly and concurrently,
+this leads to a data race.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+Furthermore, modifying tunnel->parms.o_flags permanently alters the
+tunnel configuration. To work around this, erspan_fill_info() (which
+reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
+erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly)
+race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldnt,
+leading to GRE header corruption (injecting a key field into the ERSPAN
+GRE header).
+
+Fix this by:
+1) Snapshotting tunnel->parms.o_flags onto the stack in ipgre_xmit(),
+   gre_tap_xmit(), and __gre6_xmit(), and computing the GRE header length via
+   gre_calc_hlen(flags) instead of reading tunnel->tun_hlen. This eliminates
+   TOCTOU races between flags, offload checks, and header length.
+   Note: Since tunnel->tun_hlen is no longer used in fast path xmit, it could be
+   removed altogether in net-next.
+2) Using local flags in erspan_xmit(), clearing IP_TUNNEL_CSUM_BIT and
+   IP_TUNNEL_KEY_BIT (and IP_TUNNEL_SEQ_BIT for v0) before passing them to
+   __gre_xmit().
+3) Removing the racy modification of t->parms.o_flags in erspan_fill_info().
+4) Forcing IP_TUNNEL_KEY_BIT in the reported flags for ERSPAN locally
+   in ipgre_fill_info().
+
+For IPv6 ERSPAN:
+ip6erspan_tunnel_xmit() was locklessly clearing IP_TUNNEL_KEY_BIT in
+t->parms.o_flags even though it does not use these flags for building
+the GRE header (it uses local flags). This permanently corrupts the
+configuration and races with ip6gre_fill_info() which reads it.
+
+Remove the redundant and racy modification.
+This should remove false sharing in a fast path.
+
+Add const qualifiers in ipgre_fill_info(), erspan_fill_info()
+and ip6gre_fill_info() to clarify that these methods are not
+supposed to write any live parameters.
+
+Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
+Fixes: ee496694b9ee ("ip_gre: do not report erspan version on GRE interface")
+Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+v2: addressed Sashiko and Ido feedback.
+v1: https://lore.kernel.org/netdev/20260615140333.3161072-1-edumazet@google.com/
+
+ net/ipv4/ip_gre.c  | 45 +++++++++++++++++++++++++--------------------
+ net/ipv6/ip6_gre.c |  7 +++----
+ 2 files changed, 28 insertions(+), 24 deletions(-)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 3efdfb4ffa2112db3b056169d02d28e8853873ae..442a2c9513e84e84013b4a6d447dd5e243428c5c 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -475,15 +475,12 @@ static int gre_rcv(struct sk_buff *skb)
+ 
+ static void __gre_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       const struct iphdr *tnl_params,
+-		       __be16 proto)
++		       __be16 proto, const unsigned long *flags)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+-	IP_TUNNEL_DECLARE_FLAGS(flags);
+-
+-	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
+ 
+ 	/* Push GRE header. */
+-	gre_build_header(skb, tunnel->tun_hlen,
++	gre_build_header(skb, gre_calc_hlen(flags),
+ 			 flags, proto, tunnel->parms.o_key,
+ 			 test_bit(IP_TUNNEL_SEQ_BIT, flags) ?
+ 			 htonl(atomic_fetch_inc(&tunnel->o_seqno)) : 0);
+@@ -654,6 +651,7 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	const struct iphdr *tnl_params;
++	IP_TUNNEL_DECLARE_FLAGS(flags);
+ 
+ 	if (!pskb_inet_may_pull(skb))
+ 		goto free_skb;
+@@ -663,6 +661,8 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
+ 		return NETDEV_TX_OK;
+ 	}
+ 
++	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
++
+ 	if (dev->header_ops) {
+ 		int pull_len = tunnel->hlen + sizeof(struct iphdr);
+ 
+@@ -688,11 +688,10 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
+ 		tnl_params = &tunnel->parms.iph;
+ 	}
+ 
+-	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
+-					      tunnel->parms.o_flags)))
++	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
+ 		goto free_skb;
+ 
+-	__gre_xmit(skb, dev, tnl_params, skb->protocol);
++	__gre_xmit(skb, dev, tnl_params, skb->protocol, flags);
+ 	return NETDEV_TX_OK;
+ 
+ free_skb:
+@@ -705,6 +704,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+ 			       struct net_device *dev)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
++	IP_TUNNEL_DECLARE_FLAGS(flags);
+ 	bool truncate = false;
+ 	__be16 proto;
+ 
+@@ -728,10 +728,12 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+ 		truncate = true;
+ 	}
+ 
++	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
++
+ 	/* Push ERSPAN header */
+ 	if (tunnel->erspan_ver == 0) {
+ 		proto = htons(ETH_P_ERSPAN);
+-		__clear_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags);
++		__clear_bit(IP_TUNNEL_SEQ_BIT, flags);
+ 	} else if (tunnel->erspan_ver == 1) {
+ 		erspan_build_header(skb, ntohl(tunnel->parms.o_key),
+ 				    tunnel->index,
+@@ -746,8 +748,9 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+ 		goto free_skb;
+ 	}
+ 
+-	__clear_bit(IP_TUNNEL_KEY_BIT, tunnel->parms.o_flags);
+-	__gre_xmit(skb, dev, &tunnel->parms.iph, proto);
++	__clear_bit(IP_TUNNEL_CSUM_BIT, flags);
++	__clear_bit(IP_TUNNEL_KEY_BIT, flags);
++	__gre_xmit(skb, dev, &tunnel->parms.iph, proto, flags);
+ 	return NETDEV_TX_OK;
+ 
+ free_skb:
+@@ -760,6 +763,7 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
+ 				struct net_device *dev)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
++	IP_TUNNEL_DECLARE_FLAGS(flags);
+ 
+ 	if (!pskb_inet_may_pull(skb))
+ 		goto free_skb;
+@@ -769,14 +773,15 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+-	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
+-					      tunnel->parms.o_flags)))
++	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
++
++	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
+ 		goto free_skb;
+ 
+ 	if (skb_cow_head(skb, dev->needed_headroom))
+ 		goto free_skb;
+ 
+-	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB));
++	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB), flags);
+ 	return NETDEV_TX_OK;
+ 
+ free_skb:
+@@ -1560,12 +1565,15 @@ static size_t ipgre_get_size(const struct net_device *dev)
+ 
+ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+-	struct ip_tunnel *t = netdev_priv(dev);
+-	struct ip_tunnel_parm_kern *p = &t->parms;
++	const struct ip_tunnel *t = netdev_priv(dev);
++	const struct ip_tunnel_parm_kern *p = &t->parms;
+ 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
+ 
+ 	ip_tunnel_flags_copy(o_flags, p->o_flags);
+ 
++	if (t->erspan_ver != 0 && !t->collect_md)
++		__set_bit(IP_TUNNEL_KEY_BIT, o_flags);
++
+ 	if (nla_put_u32(skb, IFLA_GRE_LINK, p->link) ||
+ 	    nla_put_be16(skb, IFLA_GRE_IFLAGS,
+ 			 gre_tnl_flags_to_gre_flags(p->i_flags)) ||
+@@ -1608,12 +1616,9 @@ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 
+ static int erspan_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+-	struct ip_tunnel *t = netdev_priv(dev);
++	const struct ip_tunnel *t = netdev_priv(dev);
+ 
+ 	if (t->erspan_ver <= 2) {
+-		if (t->erspan_ver != 0 && !t->collect_md)
+-			__set_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
+-
+ 		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
+ 			goto nla_put_failure;
+ 
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 7c09a269b3521618e264655ad2b93586f7214b0b..9e68afec9dce41ab7f094093a8607f9f7ebca4f9 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -777,7 +777,7 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
+ 
+ 		ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
+ 
+-		gre_build_header(skb, tunnel->tun_hlen, flags,
++		gre_build_header(skb, gre_calc_hlen(flags), flags,
+ 				 protocol, tunnel->parms.o_key,
+ 				 test_bit(IP_TUNNEL_SEQ_BIT, flags) ?
+ 				 htonl(atomic_fetch_inc(&tunnel->o_seqno)) :
+@@ -964,7 +964,6 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 	if (skb_cow_head(skb, dev->needed_headroom ?: t->hlen))
+ 		goto tx_err;
+ 
+-	__clear_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
+ 	IPCB(skb)->flags = 0;
+ 
+ 	/* For collect_md mode, derive fl6 from the tunnel key,
+@@ -2115,8 +2114,8 @@ static size_t ip6gre_get_size(const struct net_device *dev)
+ 
+ static int ip6gre_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+-	struct ip6_tnl *t = netdev_priv(dev);
+-	struct __ip6_tnl_parm *p = &t->parms;
++	const struct ip6_tnl *t = netdev_priv(dev);
++	const struct __ip6_tnl_parm *p = &t->parms;
+ 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
+ 
+ 	ip_tunnel_flags_copy(o_flags, p->o_flags);
+-- 
+2.55.0.229.g6434b31f56-goog
+
