@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1F33F8243;
-	Mon, 20 Jul 2026 23:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7AE42DA4E;
+	Mon, 20 Jul 2026 23:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784590643; cv=none; b=HnEBGs3RpapQy7zLe4YwnxrXLynO2fQf6Oey3KLzaSSXlTB2r3UStKqRDC4ppc9Sx5ZuwofmQ0XBSqTCEf+u2cf7mk9gbGxIUvHZTyqn5uAltmoD+NRlSfWBEsQkoBzIN8+CKHQFME+bW7sNhA4KVEj9o33qPZ1mPLSHTwYYxlU=
+	t=1784590645; cv=none; b=ok86vGS7k1gprb+mzzksRMgR+5bjcRyo9/NoOSQv6Fj9MwCZtUQt6AfQf5oNRlaFpmIj5lNDOs1K/0ork2RZqnWwAG/6XMIUUYGjXq55voR2Toc54MXFHuZxaeNkR7+nZXhtQcWDOqb6vdV+bUEGv6aIfwne1Yz8NsD7QtgZE/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784590643; c=relaxed/simple;
-	bh=Y4KdYSrTQFONCfiGoV4UBlp2mIDf8ApzI+uAY/rY+Ok=;
+	s=arc-20240116; t=1784590645; c=relaxed/simple;
+	bh=GJRF2mmBwdo0U3u3pzVuExP4P/AKfXhC3ELjf7vqZN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MT4QNjisCvYxyq7c2YLTD/ZKbQmj1Y3uerh71GAnrPhCYMjQEv9Zble9HWKPn3xIwvtEZq5PDZqrqe2uGRwiaQ52tCDurHe4rNVUET5V+mvLxovRCEuPN1h2MZEocdMXq3bSaX6kp9pQQ4eCbExW3Dt2hKMhqUxpPXXiOyOV1s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYuDALkv; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=qdecc7AfWQ2cS0xpdPIbMRH1UbrxzUed27bO5VKlWC4NJJtxfKAd/SfOxUJB1X1VoGRVdr5UWZ2UDNFouTFQm/AWIPbYD5jV0YHJ5fk5LVv8WCcZfDj/G/DAdwPyLFbEIXH+TuUgplhquGMLhe2BCUxFBtW9jRjTy/U70Hlx4HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjDqOTIX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYuDALkv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026BF1F00A3A;
-	Mon, 20 Jul 2026 23:37:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjDqOTIX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BFE1F000E9;
+	Mon, 20 Jul 2026 23:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784590642;
-	bh=Cm3ZKC4MgRylEWlmJ26UGCn2NzOZNbAQKM/GAkDkCb0=;
+	s=k20260515; t=1784590644;
+	bh=pxhwRH3nN9dkYlZu+UEvAQ52anWMkDExFjppUiugAIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cYuDALkvWB3wTKozrqUXGwrM0v3NCzm5XxGVXH0oA7ZAJaVX56CbnQRVTXbg3yZr0
-	 KVZSo/Lflh58UQIsKyZBkeCPQePXEULeKuSI1Pzr3UcwbndR3vZ9XpMnWlowyIjG7k
-	 Os0l5XeplULjXu7k4zX5o8BzWR8hNqIU2JJdkFvG2BaRGS1Zaw9cDdtH5RwWlJUGtt
-	 +C9Ki2/o5PHRs8hR+Q/6Ba/IfjL/ILdOK/bDJFYil23Kg6Q3uAzBbBjZFUSU0xZEDQ
-	 QIa+B5WQhUNuJLI8WQs4HrqUs29WjUhxLIBY9dXkErjFmBGuebc4wxZOSRTZyWbblH
-	 kkGNj8LAexBdQ==
+	b=cjDqOTIXP/5WH1srAyZJDPS6KJSibF6J8n/G0SBTLUj1YsWG30BGe+RA5KS46IxG5
+	 L9wjVV4lND6vVAUylIJ/bG/GPRsrytIqXfSZS1AoAjOju1XL55/r7F6GyZhQVHrA4/
+	 DuHvqwgqznkPA2Ouid6MX/pxVRnYRefo/s4Ipw3ncEIOAjaLt7BKpO+gIM7pPgE9bx
+	 qu/0epFrBGunRDv0Rzn3+R6HATVlfQSTlXHXQlosEUuZv+glRrBdPYpmY6GGROc3Uh
+	 We6UfN7d2Q+NDC4I2FcYPTLjJlvYyId1b5Ly/ZV+7WMQfPbmlfxhxlPZH+pigzWb90
+	 reT2vvQb9lLEw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: lukeh@padl.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -49,12 +49,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	mattias.forsblad@gmail.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 02/12] net: dsa: qca8K: Move queuing for request frame into the core
-Date: Mon, 20 Jul 2026 16:37:19 -0700
-Message-ID: <20260720233719.444550-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 04/12] net: dsa: qca8k: Drop replies with wrong sequence numbers
+Date: Mon, 20 Jul 2026 16:37:22 -0700
+Message-ID: <20260720233722.444585-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260703-net-next-dsa-rmu-v1-2-a03febf20bb4@padl.com>
-References: <20260703-net-next-dsa-rmu-v1-2-a03febf20bb4@padl.com>
+In-Reply-To: <20260703-net-next-dsa-rmu-v1-4-a03febf20bb4@padl.com>
+References: <20260703-net-next-dsa-rmu-v1-4-a03febf20bb4@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,100 +66,63 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: dsa: qca8K: Move queuing for request frame into the core
+Subject: net: dsa: qca8k: Drop replies with wrong sequence numbers
 
-This patch introduces dsa_inband_request() in the DSA core which
-reinitialises the completion, transmits the skb via dev_queue_xmit(),
-and waits for a reply. The qca8k driver is converted to use this new
-helper in place of the open-coded dev_queue_xmit() plus
-dsa_inband_wait_for_completion() sequence.
-
-[Low]
-The subject line uses qca8K with a capital K, which is inconsistent
-with qca8k as used everywhere else in the driver and in the rest of
-the series.
-
-The commit body refers to functions that do not exist:
-
-    Combine the queuing of the request and waiting for the completion into
-    one core helper. Add the function dsa_rmu_request() to perform this.
-
-    Access to statistics is not a strict request/reply, so the
-    dsa_rmu_wait_for_completion needs to be kept.
-
-    It is also no possible to combine dsa_rmu_request() and
-    dsa_rmu_wait_for_completion() since we need to avoid the race of
-    sending the request, receiving a reply, and the completion has not
-    been reinitialised because the schedule at decided to do other things.
-
-The introduced symbol is dsa_inband_request(), and the preserved
-symbol is dsa_inband_wait_for_completion(); should the message refer
-to those names so that git log --grep for dsa_inband_request finds
-this commit?
-
-There are also a couple of small grammar issues in the same paragraph
-("It is also no possible" and "the schedule at decided to do other
-things").
+The change makes qca8k_rw_reg_ack_handler() return early when the reply
+sequence number does not match, rather than only setting ack on match.
+The intent is to avoid signalling completion for a late reply that could
+be mistaken for the next genuine reply.
 
 > diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-> index fe6fb69b6f92..4da6094552f1 100644
+> index b0cbe72c15b4..3b3fe9601617 100644
 > --- a/drivers/net/dsa/qca/qca8k-8xxx.c
 > +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-
-[ ... ]
-
-> @@ -757,8 +747,6 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
->  	qca8k_mdio_header_fill_seq_num(clear_skb, mgmt_eth_data->seq);
->  	mgmt_eth_data->ack = false;
+> @@ -185,9 +185,9 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+>  	/* We can ignore odd value, we always round up them in the alloc function. */
+>  	len *= sizeof(u16);
 >  
-> -	dev_queue_xmit(clear_skb);
-> -
->  	dsa_inband_wait_for_completion(&mgmt_eth_data->inband,
->  				       QCA8K_ETHERNET_TIMEOUT);
+> -	/* Make sure the seq match the requested packet */
+> -	if (get_unaligned_le32(&mgmt_ethhdr->seq) == mgmt_eth_data->seq)
+> -		mgmt_eth_data->ack = true;
+> +	/* Make sure the seq match the requested packet. If not, drop. */
+> +	if (get_unaligned_le32(&mgmt_ethhdr->seq) != mgmt_eth_data->seq)
+> +		return;
 
 [High]
-The other five hunks replace dev_queue_xmit() plus
-dsa_inband_wait_for_completion() with a single dsa_inband_request()
-call. This hunk deletes dev_queue_xmit(clear_skb) but leaves the bare
-dsa_inband_wait_for_completion() in place, so no packet is ever sent
-for the clear step.
+After this change, is mgmt_eth_data->ack ever assigned true anywhere in
+the driver?  A grep across drivers/net/dsa/qca/ shows five sites that
+initialise it to false before dsa_inband_request(), five sites that read
+it afterwards, and no remaining site that ever writes true.
 
-A few consequences follow from that:
+The callers still do, for example in qca8k_read_eth():
 
-Does this leak clear_skb on every path through qca8k_phy_eth_command()
-that reaches the exit: label? The skb is allocated by
-qca8k_alloc_mdio_header() and, after this change, nothing ever hands
-it to dev_queue_xmit() or frees it.
+	mgmt_eth_data->ack = false;
 
-Does every PHY read/write through this driver now stall for
-QCA8K_ETHERNET_TIMEOUT (200ms) at the exit: label, since the
-completion is reinitialised but no request is ever queued for the
-switch to reply to?
+	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
+				 QCA8K_ETHERNET_TIMEOUT);
+	...
+	ack = mgmt_eth_data->ack;
 
-Does this also skip resetting the switch's MDIO master, which was the
-purpose of the clear_skb step?
+	mutex_unlock(&mgmt_eth_data->mutex);
 
-The next patch in the series, 68baa3a653c1 ("net: dsa: qca8k:
-dsa_inband_request: More normal return values"), replaces the
-dsa_inband_wait_for_completion() call with
+	if (ret)
+		return ret;
 
-    dsa_inband_request(&mgmt_eth_data->inband, clear_skb,
-                       QCA8K_ETHERNET_TIMEOUT);
+	if (!ack)
+		return -EINVAL;
 
-Would it be worth squashing or reordering so that bisection landing
-on this commit does not see hangs and skb leaks on every management
-frame PHY access?
+With the assignment gone, does every successful reply now leave ack ==
+false and cause qca8k_read_eth(), qca8k_write_eth() and the read/write/
+clear paths in qca8k_phy_eth_command() to return -EINVAL on their fast
+path?
 
-> diff --git a/include/net/dsa.h b/include/net/dsa.h
-> index 9b0c109b3058..6b5aeb99ec3b 100644
-> --- a/include/net/dsa.h
-> +++ b/include/net/dsa.h
-> @@ -1357,6 +1357,8 @@ struct dsa_inband {
->  
->  void dsa_inband_init(struct dsa_inband *inband);
->  void dsa_inband_complete(struct dsa_inband *inband);
-> +int dsa_inband_request(struct dsa_inband *inband, struct sk_buff *skb,
-> +		       int timeout_ms);
->  int dsa_inband_wait_for_completion(struct dsa_inband *inband, int timeout_ms);
+The higher-level callers (qca8k_bulk_read(), qca8k_bulk_write(),
+qca8k_regmap_update_bits(), qca8k_internal_mdio_read() and
+qca8k_internal_mdio_write()) fall back to the slow MII path on error, so
+the device keeps functioning, but is the Ethernet management fast path
+effectively disabled between this patch and its follow-up cleanup?
 
-[ ... ]
+Would it be cleaner to fold the removal of the ack field (and the
+matching if (!ack) return -EINVAL checks in every caller) into this same
+commit, so that each commit in the series is self-contained and bisects
+cleanly?
