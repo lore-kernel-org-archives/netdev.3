@@ -1,109 +1,122 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061B541CB53;
-	Mon, 20 Jul 2026 12:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB9541F5C2
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784552348; cv=none; b=GLjbBBzBBZ35tFOdNkV9lJ2AGgzVaJZzLpxNJrv8okexrFsAQR81G9R/mYbqqKxZXbZTRG3nNInFAFwzhdGAf9rDJSAJfCde76gCjQMt88n1kO9t2JqgljDJrhsqeaotdCiojrsH6Pit1KqStNx6tk6M1doPyJ17/bsZj/VF9k0=
+	t=1784552490; cv=none; b=WS7Bu6NOFl6osgp4n6N2KidcioW5u6k02D58UIZLa/ptaUsBfjhXybuL3LcktKq8qwTJvYlW0PEurjT0V/PSw1uz9FXZ/NheMrOXf62lGZ3xTLfdK1tVHSUefKt1jP4ZIuK9Xtl1JQGJF5i234SaWdzT2BN6ti7I07oovzOvqZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784552348; c=relaxed/simple;
-	bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ha7a6JI/Q8Qa7cJlqBoarXuf5GxaV4FbmAPkqvVdJX+IH1jcKS8gBD213bMuuS5JflyoFFVUw7ilp8LURO6LWY56KjH+/4vrYUFAVzcjVbP0479yf3PFDRApcAFyRcfC+ScUU2d0PrMcdDKANcufYN1/SEVKEWIEfyx7YUpfiY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dKmABXHE; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784552490; c=relaxed/simple;
+	bh=ZwQWk2WP9mjoSrfQjXgF8dASbDwrkagioI2bo1DeRgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UpjZ5xm81gPbStYMVS+xhNJ70Fzyg22fo7YFNlc6obEwvD3jbnLXExH7Lv6u0CC2+m2DWktptc/4gDLXMeAtD8PyJubh9CCnBtLi0aOKHLixTO1VyB9acFjhXeQR8F/t1HvII6gnrogYH9t9iTrjCSmHY+QeTZts9n26+gv35Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=CeRdvc5r; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dKmABXHE"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F0EC2B;
-	Mon, 20 Jul 2026 05:59:01 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B928E3F99C;
-	Mon, 20 Jul 2026 05:58:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784552345; bh=tj7DETiWrYqcYhPQBV0lQIQF5ojnhC7kaKJUMMnBNUs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dKmABXHEllSGT7FeFg6oxaG2ujJktWVxIXZ3hFzKw45EJWrXdCv86Cdi8Lk3ybb+P
-	 2eyzZw9sSqz4kKd+F7OoRuZNUZsH093wu+fiiSmVRvRLMFKAt3uEPGr18dcBdv9V/F
-	 kKFNdv+XlRp4DjEuV/4GCCvpzaekEZeXf66xmNSY=
-Message-ID: <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
-Date: Mon, 20 Jul 2026 13:58:27 +0100
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="CeRdvc5r"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8485b358552so10796171b3a.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784552485; x=1785157285; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zTgYWUe3WXyckpxYsQfWmNHOJqSUVnZMY1AjRMMIZDc=;
+        b=CeRdvc5reR8qXpUaIl+2SlbsH/kRcBNQOFqhWjBDob6CmtXFiRk5t50YHIB0uOO6cw
+         i37kz7z7Ar8p5w6me3ZlDgsDlY6iu7LdOp5Ow+Dq4m33z1OMCpkmmiqKN0TLpdyqLCNb
+         qO9OamHl6vLquj25zgLst8E6im1Z1xMcwBDDlOSmxFhN1j7XRoWWLdZNIUW27IVULzds
+         bJ76PgpuVlpo3Nu1FXz7A2C3C9jeQHM2ty/+hglbd9RaLvQ+atQYt4TRHjf+LxyDKMZy
+         JqY75zYcibdYLiTDoxqJ0s+An6MpDVKgfXjrUhVcS+vsD/XashNPbkWqLGXADgjmWeWV
+         Xhxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784552485; x=1785157285;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zTgYWUe3WXyckpxYsQfWmNHOJqSUVnZMY1AjRMMIZDc=;
+        b=hiF3d6J7e2WJ6+Kjnifud7bmCH2WvtCf/MpxXNOQdWOxHsLh7N3LaYlYIaGCXi6koP
+         iXvbUK3ZSIg4Gwa320AIXnX17UdcMO/CGo8+Cm5VafKUlk0Ny3rPId8GJQIkiYIJcYyN
+         vTpwurLy5t9FwitOBxaaYCBF5M+W+ceUdy3D9ImBdCuUhTozUrD+t3Hv+KNEAuTJD4Cw
+         zVIBG/YsHZtuWU18xO13jh3bYYWRu73JtHb7IPfgGbxdiE3aND9kHXb0lOkIvavEIdKV
+         gljOAkSL7OVTtY/m2MaDm+w5fxnc3wRR3KKoU/eQj/RdOufeetTSbMo/JeGoCU5P3Yn5
+         qWgA==
+X-Forwarded-Encrypted: i=1; AHgh+RpaFiA29nQURfcibgTzOdKDnvs++P4Z32s/PZSf7G0DfJ/cmxppsSmCtXhUqUsqaK2QyWgDVIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9MA3WM74Ucv9HM/BCZCntgP9Dv/Flc7eGxhKPnLxH2MAMc8sx
+	bURVAb9hBnCHE4oheiSCWtKQ1f5r9upRjkJCkFBwdQFV9m1Bc4qnYznGk103ixXnhTo=
+X-Gm-Gg: AfdE7ck0pDEGqeIQvvUTXxMo2JzBBP0Vcjbx2xwDN3jIQR/qGkLdRt910irjnZ3T0Kc
+	Pa3gW6HndJpgGCkPO/SDJqK49l8YDtXUVN3hQsbvKoFOGQtBZA9wuQ3XLklojPYVu5rtfsAW/oO
+	b+TSEGdbmGY+WABfJUMPbDdssYSZHm0W2YB/Q5JeeGJLP/hi0sA4ujkPIXl4nzcvH9Jy0PBZE9K
+	ESvLDWlfC6IEZvngGuGsIb9/Up/uarq2BJI8GVHcnz8aSKyJ6yF4doyNBmrdTNktbQSBglF7C5B
+	2mzSch16lNVSV8mOlWzrqjuCpY+1wxcZbAFXeCm+lwk676FF6iBJ96bqxqojPGtQFADjIUqRnsa
+	IqGPL44YCbUZb1fV0QMc09HpULKLi45b9CYDbvJZfiujpDFyXTtEFbv3ac/zR1k7qiWZ8
+X-Received: by 2002:a05:6a00:a241:b0:848:4f04:87ed with SMTP id d2e1a72fcca58-84c292ca2a8mr13863684b3a.34.1784552484872;
+        Mon, 20 Jul 2026 06:01:24 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adfdfd0sm5649075b3a.25.2026.07.20.06.01.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 06:01:22 -0700 (PDT)
+Date: Mon, 20 Jul 2026 06:01:21 -0700
+From: Joe Damato <joe@dama.to>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>
+Cc: cai.huoqing@linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: Re: [PATCH net] hinic: fix leak of ethtool RSS user configuration
+ buffers
+Message-ID: <al4cIYk8hEulreoI@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Chenguang Zhao <chenguang.zhao@linux.dev>, cai.huoqing@linux.dev,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>
+References: <20260720091102.1653378-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] iommu/fsl: use platform_device_set_fwnode()
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Srinivas Kandagatla <srini@kernel.org>
-Cc: brgl@kernel.org, driver-core@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-i2c@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
- linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720091102.1653378-1-chenguang.zhao@linux.dev>
 
-On 20/07/2026 10:24 am, Bartosz Golaszewski wrote:
-> Prefer the higher-level platform_device_set_fwnode() over the
-> OF-specific platform_device_set_of_node() for dynamically allocated
-> platform devices.
-
-This is very much non-portable code specific to OF-only platforms, but 
-if the intention is to remove platform_device_set_of_node() again 
-already, then FWIW,
-
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-
-(Although I'm slightly puzzled by the cover letter - AFAICS in -next, 
-platform_device_set_of_node() is itself very much a user of 
-platform_device_set_fwnode(), however in terms of symbol exports, 
-perhaps the former could now just be a static inline wrapper?)
-
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Mon, Jul 20, 2026 at 05:11:02PM +0800, Chenguang Zhao wrote:
+> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> 
+> rss_indir_user and rss_hkey_user are allocated in __set_rss_rxfh() when
+> the user configures RSS via ethtool, but hinic_remove() never frees them.
+> free_netdev() only releases the nic_dev structure itself, so the separately
+> allocated buffers are leaked on driver unload.
+> 
+> Free both buffers in hinic_remove() after unregister_netdev().
+> 
+> Fixes: 4fdc51bb4e92 ("hinic: add support for rss parameters with ethtool")
+> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
 > ---
->   drivers/iommu/fsl_pamu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/ethernet/huawei/hinic/hinic_main.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
-> index c83bbc3faad56d6ee1c89b0a7f74028af02c81e9..268a1f752fbceab4fd24013aeea5df1b6982fbb1 100644
-> --- a/drivers/iommu/fsl_pamu.c
-> +++ b/drivers/iommu/fsl_pamu.c
-> @@ -975,7 +975,7 @@ static __init int fsl_pamu_init(void)
->   		goto error_device_alloc;
->   	}
->   
-> -	platform_device_set_of_node(pdev, np);
-> +	platform_device_set_fwnode(pdev, of_fwnode_handle(np));
->   
->   	ret = pamu_domain_init();
->   	if (ret)
-> 
+> diff --git a/drivers/net/ethernet/huawei/hinic/hinic_main.c b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+> index 42f4792d255b..7d9c46004bcd 100644
+> --- a/drivers/net/ethernet/huawei/hinic/hinic_main.c
+> +++ b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+> @@ -1433,6 +1433,9 @@ static void hinic_remove(struct pci_dev *pdev)
+>  
+>  	hinic_free_intr_coalesce(nic_dev);
+>  
+> +	kfree(nic_dev->rss_indir_user);
+> +	kfree(nic_dev->rss_hkey_user);
+> +
 
+I scanned the code and ... maybe I got this wrong ... but it looks like
+nothing actually uses these fields?
+
+If you look at hinic_ethtool.c, the buffers are allocated, data is copied into
+them and then they are never used. hinic_get_rxfh seems to read the state
+directly from the device ?
+
+I wonder if the correct fix is to drop the buffers and the memcpys entirely
+because they seem unnecessary and unused.
