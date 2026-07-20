@@ -1,41 +1,41 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EBB3E173B;
-	Mon, 20 Jul 2026 10:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A1F3DB32F;
+	Mon, 20 Jul 2026 10:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784541920; cv=none; b=dOdK71Is2ZOzwTKVOUxrZla/RgMCzihDW6C6+K2KCff60di281SGEiVerqo6dmd9HShz5wQ1bXqUx9cp9x7oQMOA+tKuI5JrtaFUieUyP8kN/KZ1lyzJz2ZD5JGqe2IrL6EjYArkcEynIOI6+YukvtYh3igqlUgQGVWrGChFJss=
+	t=1784541919; cv=none; b=MQ8gsrwwsPUdzRdY2FpNsVUCKKjHCd6z6IkWQWNq/71WKKIz6J29b0G19ddGbHRXSeCyW/Ple1IqQ7+UpLVctKOLZyY9wEEfSwxFlg8TbX4IDTjRh2+DAobWHKP6SzMVThNLjS4Um9eT+XRL3dApuSA46kAiXLAEf0zSDd7/3nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784541920; c=relaxed/simple;
-	bh=JjK8pa9skMKrbL9WvATZeCl7TfsvD3UbnhThFaSduHw=;
+	s=arc-20240116; t=1784541919; c=relaxed/simple;
+	bh=5G0c40uJbd/eR7jfuidEYqyEqimv15mwHokxJEwhMks=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=vBonysgYSA3FdCHkYVobhgLR+GWAoqBAWVKTsGivtq4vF0hBwPdUvQJ5vZjXseCpqGYuP2lqzG0GImF6kFx9GGFHuyJ/OmHPNKBFrVD6Eqcil0x5b7y9lfovatCH56xuM4JrjTSBCgF2s5R53j0qnlpVN434ArtvlpO7UxQlk4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ELbpPYsY; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=dm3CmvEh2lRa1qxOXzMrArph+sBxGRa4WKK4ms/BRpSwsvJAL7OSToqnXHvC3As5JMo9Uoa+ZqOGmJsgpbR7pEwVlTo9Ulmw9KsjVG2PiYLcVY+WBKcHWNc7TwaeupsGC/wKK4vsbfe/po0c9nudStXgnYAXqgrkHg/TIIy2kRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WftRbFbb; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ELbpPYsY"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WftRbFbb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1784541915;
-	bh=JjK8pa9skMKrbL9WvATZeCl7TfsvD3UbnhThFaSduHw=;
+	s=mail; t=1784541910;
+	bh=5G0c40uJbd/eR7jfuidEYqyEqimv15mwHokxJEwhMks=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ELbpPYsYwbEgYOg14lR5UHALfdwFtfj7AMr1tvB7VqyOl4J7gr9eNzOh8nZ7HGoVS
-	 5BuGrG7EfpXBujGsCn5vyJ759tOsoVUgWFS5NqqdE4rexn95hogIpqa8fkZ1n5R+aK
-	 a7msW0v3L48r1osxeC7l59i7LelY83lshkrmsr+s9y9jSwpxEgoMhi4nTEDz3x5vbA
-	 sgIyVHSwbXouhG5umzdpuzl2Nr+HDtKSv2VQA8v1Y2TKPOd+gwMuKw/UrTyGtQ8YvD
-	 Rx6xlnntVPLADf6dHB3iYPqdb+iwWtxu/InCi4yzNaeCsSNHCmruCvSHQymvZPFp3q
-	 ldR9qnFeHrmag==
+	b=WftRbFbb70r76INBFJCx/3NyuUc9g1jYH1ZNulomt258afTGOZ4QWlAPc6VK9YTOc
+	 4j9n8r1jUILcfpaukln6jQiQEPFwiKgP/6J+X7RMAlPzAVWybyPykXEj4q+9dJ8Atp
+	 GvIexsRUGzUz6wG6RB7NvLGrLaBW8Qb4vo1wuofYSrnHrrQuLWqv7lv+Pr5ZQi/Axy
+	 4kmnSvPwOFUeFnxwPE2ytL/9BkjM9QapFJEdwxw/Wg1dZsj8woR9HI1aSP5qwHL3P9
+	 +xGSicue07HZ3sWlTiYlnDAGolv82o4AC5ZOjsBLY48z1Zklp0JNMYJ3mGaYuF9OsS
+	 7/Vacj2Z8F+QQ==
 Received: from yukiji.home (unknown [100.64.0.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CDBA717E0DFF;
-	Mon, 20 Jul 2026 12:05:14 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 801AB17E0B89;
+	Mon, 20 Jul 2026 12:05:09 +0200 (CEST)
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Mon, 20 Jul 2026 12:04:26 +0200
-Subject: [PATCH v3 16/18] clk: mediatek: Add MT8189 i2c clock support
+Date: Mon, 20 Jul 2026 12:04:22 +0200
+Subject: [PATCH v3 12/18] clk: mediatek: Add MT8189 vlpcfg clock support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-mt8189-clocks-system-base-v3-16-8e6d99ab3ad2@collabora.com>
+Message-Id: <20260720-mt8189-clocks-system-base-v3-12-8e6d99ab3ad2@collabora.com>
 References: <20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com>
 In-Reply-To: <20260720-mt8189-clocks-system-base-v3-0-8e6d99ab3ad2@collabora.com>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -64,16 +64,16 @@ Cc: kernel@collabora.com, linux-clk@vger.kernel.org,
  netdev@vger.kernel.org, Irving-CH Lin <irving-ch.lin@mediatek.com>, 
  Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784541894; l=6586;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784541894; l=6536;
  i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=JjK8pa9skMKrbL9WvATZeCl7TfsvD3UbnhThFaSduHw=;
- b=3BfE8npwcwAUc8R0SySG1YERm0OxKSbtIB0HMIuh+iPoIdGPktKnb11WOv1ARPJujrzjdsILP
- whbYoeNhtcXAacsyxI3NTgh+EtvMamzsdGCsAhfP1/q1jwLTDdjH1PT
+ bh=5G0c40uJbd/eR7jfuidEYqyEqimv15mwHokxJEwhMks=;
+ b=k6Hcirvyy+jKJBWFN4AvjzHva+CSW/mJHZHwP9A9v/7ei4x1sSyz94SkuuZSpEs+st089qgQi
+ IM7ixamqnCJBuR1N/2wlihR+w8CSeelP+TTg0itstdtap4xY/dMWqQH
 X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
  pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-Add support for the MT8189 i2c clock controller,
-which provides clock gate control for i2c.
+Add support for the MT8189 vlpcfg clock controller,
+which provides clock gate control for vlp domain IPs.
 
 Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
 Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
@@ -81,53 +81,29 @@ Co-developed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
- drivers/clk/mediatek/Kconfig          |  13 ++++
- drivers/clk/mediatek/Makefile         |   1 +
- drivers/clk/mediatek/clk-mt8189-iic.c | 122 ++++++++++++++++++++++++++++++++++
- 3 files changed, 136 insertions(+)
+ drivers/clk/mediatek/Makefile            |   2 +-
+ drivers/clk/mediatek/clk-mt8189-vlpcfg.c | 116 +++++++++++++++++++++++++++++++
+ 2 files changed, 117 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 245d3b83b5d3..bba631138b07 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -859,6 +859,19 @@ config COMMON_CLK_MT8189_DVFSRC
- 	  vcore dvfs clocks. If you want to control its clocks, say Y or M
- 	  to include this driver in your kernel build.
- 
-+config COMMON_CLK_MT8189_IIC
-+	tristate "Clock driver for MediaTek MT8189 iic"
-+	depends on COMMON_CLK_MT8189
-+	default COMMON_CLK_MT8189
-+	help
-+	  Enable this option to support the clock framework for MediaTek MT8189
-+	  integrated circuits (iic). This driver is responsible for managing
-+	  clock sources, dividers, and gates specifically designed for MT8189
-+	  SoCs. Enabling this driver ensures that the system can correctly
-+	  manage clock frequencies and power for various components within
-+	  the MT8189 chipset, improving the overall performance and power
-+	  efficiency of the device.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
 diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index 4dbfc9ac83ba..bfc075023d9b 100644
+index 3b25df9e7b50..d9279b237b7b 100644
 --- a/drivers/clk/mediatek/Makefile
 +++ b/drivers/clk/mediatek/Makefile
-@@ -128,6 +128,7 @@ obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o clk-mt8189-topckgen.o
- obj-$(CONFIG_COMMON_CLK_MT8189_BUS) += clk-mt8189-bus.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DBGAO) += clk-mt8189-dbgao.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DVFSRC) += clk-mt8189-dvfsrc.o
-+obj-$(CONFIG_COMMON_CLK_MT8189_IIC) += clk-mt8189-iic.o
+@@ -124,7 +124,7 @@ obj-$(CONFIG_COMMON_CLK_MT8188_VENCSYS) += clk-mt8188-venc.o
+ obj-$(CONFIG_COMMON_CLK_MT8188_VPPSYS) += clk-mt8188-vpp0.o clk-mt8188-vpp1.o
+ obj-$(CONFIG_COMMON_CLK_MT8188_WPESYS) += clk-mt8188-wpe.o
+ obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o clk-mt8189-topckgen.o \
+-				   clk-mt8189-vlpckgen.o
++				   clk-mt8189-vlpckgen.o clk-mt8189-vlpcfg.o
  obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
  obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
  obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-iic.c b/drivers/clk/mediatek/clk-mt8189-iic.c
+diff --git a/drivers/clk/mediatek/clk-mt8189-vlpcfg.c b/drivers/clk/mediatek/clk-mt8189-vlpcfg.c
 new file mode 100644
-index 000000000000..80a01706791a
+index 000000000000..cc4ebfd46a6f
 --- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-iic.c
-@@ -0,0 +1,122 @@
++++ b/drivers/clk/mediatek/clk-mt8189-vlpcfg.c
+@@ -0,0 +1,116 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2025-2026 MediaTek Inc.
@@ -148,107 +124,101 @@ index 000000000000..80a01706791a
 +
 +#include <dt-bindings/clock/mediatek,mt8189-clk.h>
 +
-+static const struct mtk_gate_regs impe_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
++static const struct mtk_gate_regs vlpcfg_ao_reg_cg_regs = {
++	.set_ofs = 0x0,
++	.clr_ofs = 0x0,
 +	.sta_ofs = 0x0,
 +};
 +
-+#define GATE_IMPE(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impe_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
++#define GATE_VLPCFG_AO_REG(_id, _name, _parent, _shift)		\
++	GATE_MTK(_id, _name, _parent, &vlpcfg_ao_reg_cg_regs, _shift, &mtk_clk_gate_ops_no_setclr)
 +
-+static const struct mtk_gate impe_clks[] = {
-+	GATE_IMPE(CLK_IMPE_I2C0, "impe_i2c0", "i2c_sel", 0),
-+	GATE_IMPE(CLK_IMPE_I2C1, "impe_i2c1", "i2c_sel", 1),
++static const struct mtk_gate vlpcfg_ao_reg_clks[] = {
++	GATE_VLPCFG_AO_REG(CLK_VLPCFG_AO_APEINT_RX, "vlpcfg_ao_apeint_rx", "clk26m", 8),
 +};
 +
-+static const struct mtk_clk_desc impe_mcd = {
-+	.clks = impe_clks,
-+	.num_clks = ARRAY_SIZE(impe_clks),
++static const struct mtk_clk_desc vlpcfg_ao_reg_mcd = {
++	.clks = vlpcfg_ao_reg_clks,
++	.num_clks = ARRAY_SIZE(vlpcfg_ao_reg_clks),
 +};
 +
-+static const struct mtk_gate_regs impen_cg_regs = {
-+	.set_ofs = 0x8,
++static const struct mtk_gate_regs vlpcfg_reg_cg_regs = {
++	.set_ofs = 0x4,
 +	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
++	.sta_ofs = 0x4,
 +};
 +
-+#define GATE_IMPEN(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impen_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
++#define GATE_VLPCFG_REG_FLAGS(_id, _name, _parent, _shift, _flags)		\
++	GATE_MTK_FLAGS(_id, _name, _parent, &vlpcfg_reg_cg_regs, _shift,	\
++		       &mtk_clk_gate_ops_no_setclr_inv, _flags)
 +
-+static const struct mtk_gate impen_clks[] = {
-+	GATE_IMPEN(CLK_IMPEN_I2C7, "impen_i2c7", "i2c_sel", 0),
-+	GATE_IMPEN(CLK_IMPEN_I2C8, "impen_i2c8", "i2c_sel", 1),
++#define GATE_VLPCFG_REG(_id, _name, _parent, _shift)		\
++	GATE_VLPCFG_REG_FLAGS(_id, _name, _parent, _shift, 0)
++
++static const struct mtk_gate vlpcfg_reg_clks[] = {
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SCP, "vlpcfg_scp",
++			      "vlp_scp_sel", 28, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_RG_R_APXGPT_26M, "vlpcfg_r_apxgpt_26m",
++			      "clk26m", 24, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_DPMSRCK_TEST, "vlpcfg_dpmsrck_test",
++			      "clk26m", 23, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_RG_DPMSRRTC_TEST, "vlpcfg_dpmsrrtc_test",
++			      "clk32k", 22, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_DPMSRULP_TEST, "vlpcfg_dpmsrulp_test",
++			      "osc_d10", 21, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SPMI_P_MST, "vlpcfg_spmi_p",
++			      "vlp_spmi_p_sel", 20, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SPMI_P_MST_32K, "vlpcfg_spmi_p_32k",
++			      "clk32k", 18, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_PMIF_SPMI_P_SYS, "vlpcfg_pmif_spmi_p_sys",
++			      "vlp_pwrap_ulposc_sel", 13, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_PMIF_SPMI_P_TMR, "vlpcfg_pmif_spmi_p_tmr",
++			      "vlp_pwrap_ulposc_sel", 12, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG(CLK_VLPCFG_REG_PMIF_SPMI_M_SYS, "vlpcfg_pmif_spmi_m_sys",
++			"vlp_pwrap_ulposc_sel", 11),
++	GATE_VLPCFG_REG(CLK_VLPCFG_REG_PMIF_SPMI_M_TMR, "vlpcfg_pmif_spmi_m_tmr",
++			"vlp_pwrap_ulposc_sel", 10),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_DVFSRC, "vlpcfg_dvfsrc",
++			      "vlp_dvfsrc_sel", 9, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_PWM_VLP, "vlpcfg_pwm_vlp",
++			      "vlp_pwm_vlp_sel", 8, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SRCK, "vlpcfg_srck",
++			      "vlp_srck_sel", 7, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SSPM_F26M, "vlpcfg_sspm_f26m",
++			      "vlp_sspm_f26m_sel", 4, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SSPM_F32K, "vlpcfg_sspm_f32k",
++			      "clk32k", 3, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_SSPM_ULPOSC, "vlpcfg_sspm_ulposc",
++			      "vlp_sspm_ulposc_sel", 2, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_VLP_32K_COM, "vlpcfg_vlp_32k_com",
++			      "clk32k", 1, CLK_IS_CRITICAL),
++	GATE_VLPCFG_REG_FLAGS(CLK_VLPCFG_REG_VLP_26M_COM, "vlpcfg_vlp_26m_com",
++			      "clk26m", 0, CLK_IS_CRITICAL),
 +};
 +
-+static const struct mtk_clk_desc impen_mcd = {
-+	.clks = impen_clks,
-+	.num_clks = ARRAY_SIZE(impen_clks),
++static const struct mtk_clk_desc vlpcfg_reg_mcd = {
++	.clks = vlpcfg_reg_clks,
++	.num_clks = ARRAY_SIZE(vlpcfg_reg_clks),
 +};
 +
-+static const struct mtk_gate_regs imps_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPS(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &imps_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate imps_clks[] = {
-+	GATE_IMPS(CLK_IMPS_I2C3, "imps_i2c3", "i2c_sel", 0),
-+	GATE_IMPS(CLK_IMPS_I2C4, "imps_i2c4", "i2c_sel", 1),
-+	GATE_IMPS(CLK_IMPS_I2C5, "imps_i2c5", "i2c_sel", 2),
-+	GATE_IMPS(CLK_IMPS_I2C6, "imps_i2c6", "i2c_sel", 3),
-+};
-+
-+static const struct mtk_clk_desc imps_mcd = {
-+	.clks = imps_clks,
-+	.num_clks = ARRAY_SIZE(imps_clks),
-+};
-+
-+static const struct mtk_gate_regs impws_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPWS(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impws_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate impws_clks[] = {
-+	GATE_IMPWS(CLK_IMPWS_I2C2, "impws_i2c2", "i2c_sel", 0),
-+};
-+
-+static const struct mtk_clk_desc impws_mcd = {
-+	.clks = impws_clks,
-+	.num_clks = ARRAY_SIZE(impws_clks),
-+};
-+
-+static const struct of_device_id of_match_clk_mt8189_iic[] = {
-+	{ .compatible = "mediatek,mt8189-iic-wrap-e", .data = &impe_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-en", .data = &impen_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-s", .data = &imps_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-ws", .data = &impws_mcd },
++static const struct of_device_id of_match_clk_mt8189_vlpcfg[] = {
++	{ .compatible = "mediatek,mt8189-vlpcfg", .data = &vlpcfg_reg_mcd },
++	{ .compatible = "mediatek,mt8189-vlpcfg-ao", .data = &vlpcfg_ao_reg_mcd },
 +	{ /* sentinel */ }
 +};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_iic);
++MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_vlpcfg);
 +
-+static struct platform_driver clk_mt8189_iic_drv = {
++static struct platform_driver clk_mt8189_vlpcfg_drv = {
 +	.probe = mtk_clk_simple_probe,
 +	.remove = mtk_clk_simple_remove,
 +	.driver = {
-+		.name = "clk-mt8189-iic",
-+		.of_match_table = of_match_clk_mt8189_iic,
++		.name = "clk-mt8189-vlpcfg",
++		.of_match_table = of_match_clk_mt8189_vlpcfg,
 +	},
 +};
-+module_platform_driver(clk_mt8189_iic_drv);
++module_platform_driver(clk_mt8189_vlpcfg_drv);
 +
-+MODULE_DESCRIPTION("MediaTek MT8189 iic clocks driver");
++MODULE_DESCRIPTION("MediaTek MT8189 vlpcfg clocks driver");
 +MODULE_LICENSE("GPL");
 
 -- 
