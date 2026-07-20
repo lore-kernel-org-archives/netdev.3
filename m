@@ -1,149 +1,123 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CFE3CA4B8
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 20:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D843C3BF7;
+	Mon, 20 Jul 2026 20:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784580274; cv=none; b=ZgYw4Rf+0Vld1XGp2nlpSNAASwilaqegoR8T6r/tVnswQqEkItImZVq9QB5fIwlJ+OIUFEX2vsnivXy2zCtGPzoAX5BJf+e6rWHzf+c9lqbEdaYs/rm/tdhvJ+NrvYqtkOlKLtNkV3/cJlJYvES5rV7Q8Hz55nqqSJoMGSMCWK8=
+	t=1784580814; cv=none; b=dZUTLgUeDP+NzCccW9AQXvl/lMfmVixvKulEBmzy9dByDC299CJ3RyXk9wOHzZ4mH7Io6PrlscZwXm6MzV3YRzfLXAISLmvEU+OgxkgzuAImQ3KBQRE5YMhm3TK7ehZO+JwrWcjpokN/9t9CbngsfElxVmdhyfNs506n3sWA0wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784580274; c=relaxed/simple;
-	bh=TOAoY85g7R1fCg19Yk8Pg1OjQJ61RAR3DC2r7KzW9pw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KdUI85+4qRkHBcQyITnbvx8e04x+q1sMgi18nc9xqOn6htedvlGii+aWS9LdrLwEtbb6ankM0TzpcKixd1mJvUKODbLjjkqfjHa+p5mBuqccZ7WL8qH11nwEmf876lRS9jEr+Q9nMou16Ry02nIb2kdkVJYAk+9CMZ9AAK3YUBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Bm+q1wEg; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1784580814; c=relaxed/simple;
+	bh=xNGHfZFJOSvi5ZB/bgCt2e5/PoA8SaVrwdd2Hji1bo4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GMV/Ue9J+6gQtftCUkL/FNh4tck1py1J4d2JQL/x/KhpNXmtt83+QP+UDnrjUPtBElJAODFa3DzKgwxJhcB09/nWFihsnz2BlagmNLpLZzjTnRgYygdaxXKobUO0NYP2dTyD4xy5Ldsbagod66CYdsurEoqJLC8K37jb3vO8V1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kWRD/WwS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Bm+q1wEg"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9e0b89e228so4691981a12.1
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1784580273; x=1785185073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EApeSAZEaVIOU1kfv3a3qR+RN8p7t+ZNg/hKbt9uTCw=;
-        b=Bm+q1wEgf4L4T0Gl9LSB5usP06GPSf68v6K4ALZezA1BFbARIpWOru6a1nwsjc3AA6
-         /SJAStXgcaGFpx6+vJux43PFLcdOfF4krapMMKYc2EUOLRCV6/EgAdnP6KWBjEbMesMu
-         cxflupWiDoQYxIAVzBUuZAvMg5GBFyQ5i+IwNTFUibb+pfFD08jYvK6Hq5ZdjfNyyG0m
-         2udQ3z7o6QpEtmP6sLmmR8otJQbaLdpNh1uyzNecRV1+E8ggbqIvTY2Hvhp1DaUGmP2j
-         n8S5Wy4wAVziKuhvFhHRJu4fWvqL5K7iaN2uLPlmtTaPPvumU/WzuK/z+/3sF4KfNLdV
-         2czw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784580273; x=1785185073;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EApeSAZEaVIOU1kfv3a3qR+RN8p7t+ZNg/hKbt9uTCw=;
-        b=A0QCxk3ZKzy5uWEHzDfLej4wEWt/ooVpI0DwenU7WjKjfUnm1OF0aL5Pof4IkRdHaV
-         U+uhk4R8cZGFW22/zQIo4nP0vvEVaEEKzDfnDs1gP42mJbNuOFsqxKWEYl1utLMHMA14
-         DkJzgE6zjKTc3TRS24zZAm3As8UouC7UHpMY6hF+9gyLNjdfRnJom26CZecoAIBlP7hO
-         n6NdOhT1mUEAoEaNubfbMabe8nxiqU+fgYMkjOsFkqs7OS+ai9MsEMJ5CnohiwMfoX7L
-         ckuxlVfLDlvKZTJWJ31F5oAItFCFshgapHaQQq7ZEOI7iXUK4UmMqgd8/eCjHb/23iVJ
-         xfgg==
-X-Gm-Message-State: AOJu0YywPyYR3O7BOd5QQKY6s5KXLLlaIKNOEIhJhnf0OKnM/Rrnw8b3
-	505+SKwmWGygra06rP4h3qHQPrsEqwLtxFRUmpGWKqYNZZKeix4hmMl5ImS9ee9ykw==
-X-Gm-Gg: AfdE7ckkeZ56p2KO4fRI7F1SYKAKUSFkK/yHK+K3aGFwtPiUb16DjwBgnop+r812CT4
-	ngihCswzL0EBsM/GWAlJKbcMiiuSQMFsewViUk0AaKtsYRnt5U003nw1TOSh9ImMUerUQVWHwq8
-	7BTgrYI7lfhaPPvDQLNyIMiRu9ovYX5Vl0UyQtLbOV3Ldif7MP7EdkGG3ZzXEzx0kc40OIKxZQx
-	kY4ihTrNdL9pwPFzW94OilqxwFcGAr4iDit4j+4uwkCfsvc1KFEtUKjT+YVfl0tKcoCFG787FEz
-	s+EvWkseKNUM6//d/Vc6sJsONadGkiRoHKuPful944NfvnfnfF3r6eXk06VkGdDdjaQfo7vHqv6
-	LiiMdGeKJIuBjxBILVG09MZurTHBcvPgiV9jjwTx3jHzyqhrLVz9wxGfjIwfbIXrKrD8MG/juXp
-	Vah4D4Wng=
-X-Received: by 2002:a05:6a21:114c:b0:3c1:d78:6457 with SMTP id adf61e73a8af0-3c3ad80c405mr15914125637.32.1784580272829;
-        Mon, 20 Jul 2026 13:44:32 -0700 (PDT)
-Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3142a1dde81sm67750924eec.21.2026.07.20.13.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 13:44:32 -0700 (PDT)
-From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kWRD/WwS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=rLkNesRCYNFOq+ZuVFxEEhkM0txhhysUwpvEFeMD4Fw=; b=kWRD/WwSdH3oQGCu/bb2MqxLFt
+	GxxMAXajZYFA8mU3N1Pm9DTmh8P/j0xPt/6IE5Pei2n1jaMYNVOfrjUkv5qnofA/1mh5DxHW6vw6w
+	G6xJB9AiVVAZK+u8aHNV/3Pt2rqgYDi1iqaQ5Jt98DQbpEtpuFBvr45lX/W5wsB0Shy0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wluz9-00DK2K-VG; Mon, 20 Jul 2026 22:53:11 +0200
+Date: Mon, 20 Jul 2026 22:53:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Natalie Vock <nat@pixelcluster.dev>
+Cc: Taehee Yoo <ap420073@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alexei Starovoitov <ast@kernel.org>, amd-gfx@lists.freedesktop.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Bill Wendling <morbo@google.com>, bpf@vger.kernel.org,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Hoyeon Lee <hoyeon.rhee@gmail.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>, linaro-mm-sig@lists.linaro.org,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
+	Mark Bloch <mbloch@nvidia.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Nathan Chancellor <nathan@kernel.org>, netdev@vger.kernel.org,
+	Nick Desaulniers <ndesaulniers@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Ryoga Saito <contact@proelbtn.com>,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH net] seg6: fix NULL deref in input_action_end_dx{4,6}_finish() after nf hook
-Date: Mon, 20 Jul 2026 20:44:29 +0000
-Message-ID: <20260720204430.1886091-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@kernel.org>,
+	Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Yonghong Song <yonghong.song@linux.dev>
+Subject: Re: [RFC PATCH net-next 08/13] drm/amdkfd: add GPU instruction
+ emitter and disassembler
+Message-ID: <8dfbef48-db20-4642-8f50-e37f46af6627@lunn.ch>
+References: <20260719175857.4071636-1-ap420073@gmail.com>
+ <20260719175857.4071636-9-ap420073@gmail.com>
+ <41e73be8-242a-4e7b-b085-439375303590@pixelcluster.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <41e73be8-242a-4e7b-b085-439375303590@pixelcluster.dev>
 
-When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
-the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chain
-with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
-the lwtunnel state via orig_dst = skb_dst(skb) and dereference
-orig_dst->lwtstate.
+On Mon, Jul 20, 2026 at 10:05:33PM +0200, Natalie Vock wrote:
+> On 7/19/26 19:58, Taehee Yoo wrote:
+> > Add the AMD GCN (gfx9/gfx10) instruction encoder used to build the GPU
+> > shaders that knod dispatches, plus a matching disassembler used for
+> > debugging the generated code.
+> 
+> Is it really necessary to have a full-on compiler and disassembler in the
+> kernel driver? This patch is massive and I'm wondering how much benefit it
+> really provides. Is there really no way to move GPU compilation out of the
+> kernel, one way or another? Could you get acceptable perf with a static
+> shader that interprets BPF programs at runtime? Such a shader can be
+> compiled beforehand and just embedded into the kernel - there's prior art
+> there with the CWSR trap handler in amdkfd.
+> 
+> In case you really, really need to compile the BPF to native ISA, could you
+> still have userspace take care of that in one way or another?
 
-A hook in that chain can legitimately drop the dst: nf_nat_ipv{4,6}_in()
-calls skb_dst_drop(skb) when a DNAT rule rewrites the destination
-address, leaving skb_dst(skb) NULL. The okfn then dereferences a NULL
-orig_dst, causing a general protection fault and a panic (the fault
-happens in softirq NAPI receive context).
+There was a long and painful discussion about P4, and offloading it to
+hardware. The proponents of that wanted to do the compilation stage in
+user space to produce a binary blob, but it was hard to prove that the
+P4 passed to the kernel for software processing, and the binary blob
+passed to the hardware actually where the same. It opened up the path
+for closed source P4 where the kernel never got to see the actual P4
+code. So it was not really offload, but kernel bypass.
 
-Free the skb and bail out when the dst was dropped, instead of
-proceeding with a lost lwtunnel state.
+So having a compiler in the kernel is probably the correct way to go,
+if you want to be friendly to open source.
 
-  Oops: general protection fault, probably for non-canonical address...
-  KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
-  RIP: 0010:input_action_end_dx6_finish (net/ipv6/seg6_local.c:912)
-  Call Trace:
-   input_action_end_dx6 (net/ipv6/seg6_local.c:946)
-   seg6_local_input_core (net/ipv6/seg6_local.c:1621)
-   seg6_local_input (net/ipv6/seg6_local.c:1643)
-   lwtunnel_input (net/core/lwtunnel.c:465)
-   ipv6_rcv (net/ipv6/ip6_input.c:351)
-   __netif_receive_skb_core.constprop.0 (net/core/dev.c:6165)
-  Kernel panic - not syncing: Fatal exception in interrupt
+The other option is to get the GPU to do the compilation itself, so
+you pass BPF byte codes to the GPU and it generates its own native
+code. I've no idea if that is possible, but clang can target OpenMP,
+so maybe it is possible to move this compiler into the GPU?
 
-Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
----
- net/ipv6/seg6_local.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 2b41e4c0dddd..45e66ba306ca 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -909,6 +909,11 @@ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
- 	struct in6_addr *nhaddr = NULL;
- 	struct seg6_local_lwt *slwt;
- 
-+	if (!orig_dst) {
-+		kfree_skb(skb);
-+		return -EINVAL;
-+	}
-+
- 	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
- 
- 	/* The inner packet is not associated to any local interface,
-@@ -962,6 +967,11 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
- 	struct iphdr *iph;
- 	__be32 nhaddr;
- 
-+	if (!orig_dst) {
-+		kfree_skb(skb);
-+		return -EINVAL;
-+	}
-+
- 	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
- 
- 	iph = ip_hdr(skb);
--- 
-2.43.0
-
+      Andrew
