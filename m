@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0A30676E;
-	Mon, 20 Jul 2026 23:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89A630C148;
+	Mon, 20 Jul 2026 23:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784591397; cv=none; b=MzEMEelxqWFLDizrISGEwUR6df9rBGJBuy4bPFPX1Prg2FMZNdqLevdRN+XbVEA/2rG6uphKEFp+0PjvTSBi9eohZY/L+ChMt4WMn0q8VNAvwK3CUaODb9LEp1OpJP2rp3HfBftL6qTiDd6GbEsgU0LmMkHv4nA5gTnwPg5JIhI=
+	t=1784591399; cv=none; b=DS3GB+3q3N8Cf1CoM0Mk06vf2S9wvfuQF38y764oPwrAGQptVXdYuJCvBE4hDQp3jdr/k4dSkZnqaIZMZnfF6r9hcsWnuCPjE8+dS0OacmlkAOhnT2ptMwDqmuarppasnWh4Wj+83nOMkNrkCLGLvplUgauf2sgPrUh7mTL9Nag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784591397; c=relaxed/simple;
-	bh=TgEDhhxTEXPqrfT12bu74Qeaflz8pu7iXEc2m34wdOk=;
+	s=arc-20240116; t=1784591399; c=relaxed/simple;
+	bh=UeEg5+4PGYmbkIOahJ6MkJSB/TcW7tHEXrIR/tB8N1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lIUcQ0P/n6ofI+hIUUZ9N6CiyQKs/nThGEeTQ8bdZ1djbb3ppqDdhwiJygBddACdrA6+Ovy7umwcl+80a+rsxNdbwKj5fWqTcnhRjaQ9BVZ/lWPF1V3dL5U6exPKLBrqNt0YO+zRxippPfFDKEkwh4Vq7B0scRWsCxZ3YgWLJ8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KGNdrFFb; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=kv2heRZ3+yOmOv2hf5N2uUtEbsD8+NLGwqZYg28DXavT8oH9td+hKfZkWZvP4s5wK9/Zqrm3TTbzWvs53oSOntaWraZLsp0t6WSYEBglauduATVACX6REqIcx91XV2t1Az7ADm+hnPXzHzC1A342nxqPtgrComHoIiQqFiPEu6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDR+IjZF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KGNdrFFb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A6D1F000E9;
-	Mon, 20 Jul 2026 23:49:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDR+IjZF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8011F00A3A;
+	Mon, 20 Jul 2026 23:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784591396;
-	bh=MklBOiX3ojrdi7L6kKSHKf3IgZPr5Tau2Nw5v/s3OlI=;
+	s=k20260515; t=1784591397;
+	bh=orvvw69VTVa6x9PGubwGUgGzG8A8iW7BvgJAaop1qPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KGNdrFFbN3XSYxiDYAqWCZsmExhcXxWEQojwUBLvzbsp18RELJ8H4h0S5PcEZdRKb
-	 LRHSXsciilnJwBNBPxWGb7mBZhnvrgdCmOMXECInWsHi9adlrEebdVSyTjvz0NTrf7
-	 088QlFw/FP2fJRpKL6vDWkcn+v8R+VeIENpvu1sYuKGjYPDawPhdBXbEvhtHbC40xD
-	 Q/STqr0s3e/A/ANUwBYLmtom2JBbsndNiCrVeZgYvyGW03rKs1L+EwsHYbCFks2vSY
-	 MeImw1XFgt7EPMU+x97dfyr8LfVrbhhR0EVxmXtOVJICnTCBl+nhcLru5KCpT2R1gG
-	 J78esOHEr3g8g==
+	b=UDR+IjZFTu5nX2oZoU/lsdcC2vL1a4VYWHSFCfQkhJ3/7RrtPQ7OFolntVsMSuVgE
+	 C8UWphZc7hNPgye6YNY9sQzVZKRs9GVs+NfLvyQv5Q/Wiebpam0P7IrNvYmJRj7eXV
+	 5y3gfUE5Tnda9sTCDFsh+gqVah27eP8d3hR2HiI+ycCFPu8n4qlXrxCrQKLUyMr32t
+	 Puk7JYc2BLXratWMuQaaUJGv0VXPCcoO61m3ROxIwYUST6YpAQcuzzrgTlsnT1finB
+	 2/Zd4/QZEjsJhImLmxBqoR1G45Dio6LKFLvHNGS6xqFVNmxKHfiFsRH9nc69yrKDB7
+	 nOjEu5ZvMmvww==
 From: Jakub Kicinski <kuba@kernel.org>
 To: maoyixie.tju@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -38,127 +38,145 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	maciej.fijalkowski@intel.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 1/2] octeon_ep: fix skb frags overflow in the RX path
-Date: Mon, 20 Jul 2026 16:49:54 -0700
-Message-ID: <20260720234955.464082-1-kuba@kernel.org>
+Subject: Re: [PATCH net v3 2/2] octeon_ep_vf: fix skb frags overflow in the RX path
+Date: Mon, 20 Jul 2026 16:49:56 -0700
+Message-ID: <20260720234956.464154-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260704061511.2350737-2-maoyixie.tju@gmail.com>
-References: <20260704061511.2350737-2-maoyixie.tju@gmail.com>
+In-Reply-To: <20260704061511.2350737-3-maoyixie.tju@gmail.com>
+References: <20260704061511.2350737-3-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-octeon_ep: fix skb frags overflow in the RX path
+octeon_ep_vf: fix skb frags overflow in the RX path
 
-This change adds a check in __octep_oq_process_rx() so that packets whose
-fragment count would exceed MAX_SKB_FRAGS are dropped before build_skb()
-via octep_oq_drop_rx(), mirroring the existing build_skb-failure path.
+This patch adds a MAX_SKB_FRAGS check in __octep_vf_oq_process_rx() so
+packets that would require more fragments than the skb can hold are
+dropped, and factors the descriptor-drain loop into a new
+octep_vf_oq_drop_rx() helper that is shared with the napi_build_skb()
+failure path.
 
-> diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-> index e6ebc7e44a00..bdbed58c7b2a 100644
-> --- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-> +++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-> @@ -453,6 +453,15 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+> diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+> index d98247408242..aa77b673ae3e 100644
+> --- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+> +++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+> @@ -357,6 +357,29 @@ static inline u32 octep_vf_oq_next_idx(struct octep_vf_oq *oq, u32 idx)
+>  	return (idx + 1 == oq->max_count) ? 0 : idx + 1;
+>  }
 >  
->  		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
->  
-> +		if (buff_info->len > oq->max_single_buffer_size) {
-> +			u16 data_len = buff_info->len - oq->max_single_buffer_size;
+> +static void octep_vf_oq_drop_rx(struct octep_vf_oq *oq,
+> +				struct octep_vf_rx_buffer *buff_info,
+> +				u32 *read_idx, u32 *desc_used)
+> +{
+> +	u16 data_len = buff_info->len - oq->max_single_buffer_size;
 > +
-> +			if (DIV_ROUND_UP(data_len, oq->buffer_size) > MAX_SKB_FRAGS) {
-> +				octep_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
-> +				continue;
-> +			}
-> +		}
-> +
+> +	(*desc_used)++;
+> +	*read_idx = octep_vf_oq_next_idx(oq, *read_idx);
+> +	while (data_len) {
+> +		dma_unmap_page(oq->dev, oq->desc_ring[*read_idx].buffer_ptr,
+> +			       PAGE_SIZE, DMA_FROM_DEVICE);
+> +		buff_info = (struct octep_vf_rx_buffer *)
+> +			    &oq->buff_info[*read_idx];
+> +		buff_info->page = NULL;
+> +		if (data_len < oq->buffer_size)
+> +			data_len = 0;
+> +		else
+> +			data_len -= oq->buffer_size;
+> +		(*desc_used)++;
+> +		*read_idx = octep_vf_oq_next_idx(oq, *read_idx);
+> +	}
+> +}
 
 [High]
-Before this new check runs, the outer octep_oq_next_pkt() has already
-processed the head descriptor:
+Does octep_vf_oq_drop_rx() leak the pages backing the dropped
+descriptors?
 
-    static void octep_oq_next_pkt(struct octep_oq *oq,
-                                  struct octep_rx_buffer *buff_info,
-                                  u32 *read_idx, u32 *desc_used)
-    {
-            dma_unmap_page(oq->dev, oq->desc_ring[*read_idx].buffer_ptr,
+The helper dma_unmap_page()s each fragment descriptor and then just sets
+buff_info->page = NULL, without ever calling put_page() on the page that
+was allocated by dev_alloc_page() in octep_vf_oq_fill_ring_buffers() or
+octep_vf_oq_refill().
+
+Compare with octep_vf_oq_free_ring_buffers() in the same file, which
+appears to be the intended release pattern:
+
+    for (i = 0; i < oq->max_count; i++)  {
+        if (oq->buff_info[i].page) {
+            dma_unmap_page(oq->dev, desc_ring[i].buffer_ptr,
                            PAGE_SIZE, DMA_FROM_DEVICE);
-            buff_info->page = NULL;
-            ...
+            put_page(oq->buff_info[i].page);
+            oq->buff_info[i].page = NULL;
+            desc_ring[i].buffer_ptr = 0;
+        }
     }
 
-At that point the head page has refcount 1 from dev_alloc_page() and no
-struct sk_buff owns it yet, because build_skb() has not been called. resp_hw
-is only a virtual pointer, so nothing else holds a reference to the page.
+After octep_vf_oq_drop_rx() returns, octep_vf_oq_refill() will overwrite
+buff_info[refill_idx].page with a freshly allocated page from
+dev_alloc_page(), so the previously-mapped page pointer is lost without
+a matching put_page(), isn't it?
 
-When this new path takes the continue via octep_oq_drop_rx(), the head
-page is never freed — octep_oq_drop_rx() only walks fragment descriptors.
+The head descriptor of the dropped packet looks affected too. The caller
+in __octep_vf_oq_process_rx() has already stashed the head page's kernel
+address into resp_hw and cleared buff_info->page:
 
-Does this drop path leak the head Rx page? The same question applies to
-the pre-existing build_skb() failure path just below, but the new path
-is device-triggerable in normal operation (packets larger than ~66 KB on
-4 KB pages, which the commit message notes is reachable with data_len
-close to 65535).
+    resp_hw = page_address(buff_info->page);
+    buff_info->page = NULL;
 
-[High]
-octep_oq_drop_rx() also appears to reuse the same head buff_info pointer
-for every fragment descriptor:
+On the two paths that now call octep_vf_oq_drop_rx() (the new
+MAX_SKB_FRAGS-exceeded branch and the napi_build_skb() failure branch),
+napi_build_skb() is either never called or returned NULL, so no skb has
+taken ownership of resp_hw. Is the head page also leaked in these cases?
 
-    static void octep_oq_drop_rx(struct octep_oq *oq,
-                                 struct octep_rx_buffer *buff_info,
-                                 u32 *read_idx, u32 *desc_used)
-    {
-            int data_len = buff_info->len - oq->max_single_buffer_size;
-
-            while (data_len > 0) {
-                    octep_oq_next_pkt(oq, buff_info, read_idx, desc_used);
-                    data_len -= oq->buffer_size;
-            }
-    }
-
-The passed-in buff_info is the head slot's buff_info, not
-&oq->buff_info[*read_idx] for each fragment. As a result
-octep_oq_next_pkt() only clears the head slot's page pointer and never
-NULLs the fragment slots' oq->buff_info[i].page.
-
-Does this cause the fragment pages to be leaked on the next
-octep_oq_refill(), where those non-NULL page pointers get overwritten
-with a fresh dev_alloc_page() reference?
-
-And if octep_oq_free_ring_buffers() runs before refill (netdev close or
-reset), does it observe those stale page pointers and call
-dma_unmap_page() on descriptor addresses that octep_oq_next_pkt() has
-already unmapped inside drop_rx?
-
-This defect predates this patch (it appears to come from the commit
-that introduced octep_oq_drop_rx()), but this patch adds a new
-device-triggerable call site (fragment count above MAX_SKB_FRAGS) that
-would exercise it under normal jumbo Rx.
-
-[Medium]
-The new drop path silently discards the packet without updating any
-counter:
-
+> @@ -431,25 +454,16 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+>  			struct skb_shared_info *shinfo;
+>  			u16 data_len;
+>  
+> +			data_len = buff_info->len - oq->max_single_buffer_size;
 > +			if (DIV_ROUND_UP(data_len, oq->buffer_size) > MAX_SKB_FRAGS) {
-> +				octep_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
+> +				octep_vf_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
 > +				continue;
 > +			}
+> +
+>  			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
+>  			if (!skb) {
+>  				oq->stats->alloc_failures++;
+> -				desc_used++;
+> -				read_idx = octep_vf_oq_next_idx(oq, read_idx);
+> -				data_len = buff_info->len - oq->max_single_buffer_size;
+> -				while (data_len) {
+> -					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
+> -						       PAGE_SIZE, DMA_FROM_DEVICE);
+> -					buff_info = (struct octep_vf_rx_buffer *)
+> -						    &oq->buff_info[read_idx];
+> -					buff_info->page = NULL;
+> -					if (data_len < oq->buffer_size)
+> -						data_len = 0;
+> -					else
+> -						data_len -= oq->buffer_size;
+> -					desc_used++;
+> -					read_idx = octep_vf_oq_next_idx(oq, read_idx);
+> -				}
+> +				octep_vf_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
+>  				continue;
+>  			}
 
-The commit message states:
+[High]
+The napi_build_skb() failure path had the same missing put_page() before
+this patch, so that part is a pre-existing issue.
 
-    octep_oq_drop_rx() consumes its descriptors like the build_skb failure
-    path.
+The newly added MAX_SKB_FRAGS check reaches octep_vf_oq_drop_rx() on a
+device-triggered path (buff_info->len comes from the response header),
+so a misbehaving or malicious device that repeatedly sends packets whose
+fragment count exceeds MAX_SKB_FRAGS would drop roughly 18 pages per
+packet with no accounting.
 
-The sibling build_skb() failure path increments oq->stats->alloc_failures,
-but this new path does not, and ndo_get_stats64 (octep_get_stats64) is
-not updated to bump rx_dropped either.
-
-Should this drop bump a counter visible in ip -s link show or ethtool -S
-so the loss is observable?
+Would it be reasonable to have octep_vf_oq_drop_rx() put_page() the head
+page (or have the caller do so before invoking it) and put_page() each
+fragment page after dma_unmap_page(), mirroring the release sequence in
+octep_vf_oq_free_ring_buffers()?
