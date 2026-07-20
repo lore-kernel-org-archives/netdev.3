@@ -1,115 +1,156 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A899244CAF9
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 17:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1933448D1C;
+	Mon, 20 Jul 2026 17:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784569495; cv=none; b=BJfCTbmjXlfPBEqBYvDDLJMVlpPV/EqmbSULoFBAQ9E22BKnrlaZlPGyhkcySzjhYdXdRRPT//NqvvO1ul9WX8ybenQ6IYDzjx0yXuA0LGkLOOyuEuo2Bmom11ryoAfGoEyMgD71Fz9HQF3WFYJvKbKjC/5Gy/iEg9PpVYX7Xd0=
+	t=1784569719; cv=none; b=UQ9d1jTFyhuU5yPNF6z9GViuiDTD0y9PlKjW14NiyplW/hPEPmpy3nG41bkJbJo5qOmthXH/oIuukXlMOf79ifWqnka7OoZ4FNnNed+6FMUteG3qbbn0UCvjPHcYGFXp3EXlVzhsnc3oAboFBVDKgLh6j9cLTsDKaz117NMlVH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784569495; c=relaxed/simple;
-	bh=eQwLG50FQTlGIaxFUWOZqCCOrmund6wJNcAiP3xOaXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfSxCUJ4EmHhbBR7cFpkV+/7AJ9USbYuI4qBXD66x6KJkYcER9/J0KVaFhWTbL5VPuOp9avRvBBpKxuLL6zqjZsrE9BGG6+la5idxP4zSoUUEa/17WbWrH7ISnWSehfrii7RsdhR45ly5Uo4O9sT3TpCYOm+Qq1SxR43+jwQhbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=X8U6zM0w; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1784569719; c=relaxed/simple;
+	bh=ciiuwFmi2IhqAusW6jRNSMGmELJIVl8SDj0EkrVYJJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aHLk6OMVR+AMbjNOOlJdvhNoyd5sQTsmf8M95AKjL4qx2nD/AlxumzN5XP+3qy3fhSa/H2bnelNvIK6G9f8O9gQAIwB6CIlt7mIOQAB4NQr8311stGuqP4oUJvu+MnLsN9zFbPpzgUVxsFNS4Q/dtPIfpzKJEnmc4kAsc0bxEK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=k3xirIHc; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="X8U6zM0w"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51bfbe05683so94789101cf.2
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784569485; x=1785174285; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fh0Ky+WC8JAb92VghcxhTRFBn6Go7CAcxa18f3039ho=;
-        b=X8U6zM0wVzqBdPhme0rKH4934jbpYW7yQmUifhqTtQKugUMzjxrbWR2V0nbPkyGBQh
-         9oEanJic11w4rFy7w4bJsWVLEdr5NvOH86f28My6ZAYChA3qDKSCIEKL9wDJXpQdy6MA
-         H70tVAM4f0rgUzOwqE/Go3xFdHmvfIoFSdCaNE9AkeSJmHlr/FzvKsEoOo/ZSMe3xXi9
-         A87GeIdVUoGCBJOZzbmTRjuSVMq8uoC9GucP2CSIV8hxiP9i0t4b3LQ0tUi9aik56pEM
-         TPyyrvqsTIyBTT46XV/wt8ZLbanNjaaKY0I4Y79+bo8Uwas/HcYEKSSZM3SWmQXQgoIx
-         R51A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784569485; x=1785174285;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fh0Ky+WC8JAb92VghcxhTRFBn6Go7CAcxa18f3039ho=;
-        b=mcI3tC4TfMf3KdjKUuOMwc2jVd3ybCDjlEh8Yg9RIt6RnhZOYs+6R+KppNulMVFndS
-         okO3ndVAiqL3RhwTrelTExgg6BRu47GBF2Beb2xcHPoWTmZmmd2u9YHffqWGX7DVdaoE
-         jDSpHW4xQR9eD3LJHEJvyqdZXhOooiQrIkhP2ibpnEXOmZ7k4c8ziWCSqJfGUQhSbD2p
-         ELuOFt7VnwA/k7RDxkFBOYTowsZmKkNORDAhpK4n/nQQwxgy5hjBW2lvZgnYC7Ss54KO
-         5DE5X2NRLpr1nVWdIezEnyeJyEH3v5CfKXiBsvFx2CM8NDlLmazMt9KZX91ECckPVZdW
-         TAXQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqBzEIMqZ8uXh+c3oWARHZc2RE5lkOLnemf7/lV+VJb3+XckYesOPgLMLZCLrYExyFCnusw3F0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIVTe5D4McSO1gmIgYTtQrwR8yU3ajz6X2UelJ5aaKjJgSCQjX
-	Au63f3i1F5HEKMnUB8SY/rV3gm08OhBEYiQrFvD7HdnOOeaNQDBdGCOjeHojwNjefmE=
-X-Gm-Gg: AfdE7ckAXQtK3afHC+WMxGgMchp1vWtLBYd8Qxkad7EWEqenlF3TR5NICwuE4EOSc4U
-	ZJIauPcZKvRoio4gs+qpBkJm/a/1eJsB4q3NC7wwkaG5gsXBCSbdmbBvMQm5k43aREq7ybxr98/
-	DN0UfPj2cZWGbgRQ088fNC48itG0lAoOGPyYLc4m3Vc96y1CJLfGWnPvNNC28rI0CN8zH3+BbkY
-	Yvgljxo/2FoCL9wsHt8Ii1RyS9bOsVPD3u/5v4Y/pEx5pKhQzJMslaKxmsTQwqJfoFBx4Mo3zmV
-	C72vPtIte+MBclgynQSfOk+1+JygKKT0l0D4exeNn35r1ZhVVtM8FhIrN52IKFSgyYNc7acGuCm
-	+nB2sYzJnpC+kuhM2/L+LhTgkbkZohA9tSubegWIO3io3obr+XVjLvGz+Mla79hiAb7Ggbb8BKl
-	DmaBMH5QAC6pXDGZnnz7HfWmGRl7I6ZKvePeELHny9hF4fLtbxIW7CGNi+Tw==
-X-Received: by 2002:a05:622a:1107:b0:51b:fddc:1de8 with SMTP id d75a77b69052e-5213e67e2c1mr141645811cf.65.1784569485065;
-        Mon, 20 Jul 2026 10:44:45 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214cda7dbfsm77462971cf.9.2026.07.20.10.44.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:44:44 -0700 (PDT)
-Date: Mon, 20 Jul 2026 13:44:39 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm: move __folio_alloc() to page_alloc.h
-Message-ID: <al5eCOfvXR3OZjVi@gourry-fedora-PF4VCD3F>
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-3-5363b8e92d33@google.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="k3xirIHc"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id F2F724E40E82;
+	Mon, 20 Jul 2026 17:48:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C0A9660360;
+	Mon, 20 Jul 2026 17:48:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D81C411BD2234;
+	Mon, 20 Jul 2026 19:48:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784569704; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XSR4AXfcggq59Amttf4xMYQ/vlxyk3YLKhyoCNzbXMs=;
+	b=k3xirIHcu2MPtHpctqjA1grejaOH+krbONP3RNSc5mK/KYMeWOR4MDC7CyQULc50rx2zXR
+	9nKvEkyzUp+f0y9pfrPlW+9ypvCfGkz5S+fhCZ8dC8A0pp6SphXfdUHGRhyinize+DLVNT
+	PYQwxyOiZuVYI7QAqZU097WQUjyg74bwP6PH1/VRcpv9ZkOYoi7zBw5Da99LE0qhspVWZp
+	DBwSQC1KcfHeC/dhZeZ85deB8eq9NZ1OLQtthG0MckjydKecihD2n5Q4IbJ1qfV+hZm5FH
+	eXlPFPsqeRISfye9Hz901z0Vx8ACrO7e1vBPtKwZhOFaQEizI7YGsQeRVnc8FA==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH net-next v14 01/10] net: phy: phy_link_topology: Add a helper for opportunistic alloc
+Date: Mon, 20 Jul 2026 19:47:58 +0200
+Message-ID: <20260720174808.139573-2-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260720174808.139573-1-maxime.chevallier@bootlin.com>
+References: <20260720174808.139573-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716-folio-alloc-cleanups-v1-3-5363b8e92d33@google.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 16, 2026 at 02:30:12PM +0000, Brendan Jackman wrote:
-> This is no longer used outside of mm so reduce the scope.
-> 
-> Ulterior motive for the move to mm/: A later patch will add an
-> alloc_flags arg here.
-> 
+The phy_link_topology structure stores information about the PHY-related
+components connected to a net_device. It is opportunistically allocated,
+when we add the first item to the topology, as this is not relevant for
+all kinds of net_devices.
 
-I have a similar commit that is coming in on my next private node rfc,
-i'll reference this, but i wanted to make sure i hit a solid mm-new base
-so sashiko picks it up and people can actually apply it.
+In preparation for the addition of phy_port tracking in the topology,
+let's make a dedicated helper for that allocation sequence.
 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phy_link_topology.c | 40 +++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
-Reviewed-by:Gregory Price <gourry@gourry.net>
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 4134de7ae313..dadeb8def7ea 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+ 	return 0;
+ }
+ 
++static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
++{
++	int ret;
++
++	if (dev->link_topo)
++		return dev->link_topo;
++
++	/* The topology is allocated the first time we add an object to it.
++	 * It is freed alongside the netdev. It can be called on multiple
++	 * contexts:
++	 *  - It can be called from .probe() : No rtnl, no netdev_lock
++	 *  - .ndo_open() : rtnl and possibly netdev_lock
++	 *  - SFP state machine : rtnl held or not
++	 *
++	 *  However, we can't really have races :
++	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
++	 *    and trigger the alloc. Only then the ports can be added through
++	 *    phylib of sfp.
++	 *  - If we don't, the SFP port for the cage is registered first, and
++	 *    only then other ports/PHYs can be registered.
++	 */
++	ret = netdev_alloc_phy_link_topology(dev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return dev->link_topo;
++}
++
+ int phy_link_topo_add_phy(struct net_device *dev,
+ 			  struct phy_device *phy,
+ 			  enum phy_upstream upt, void *upstream)
+ {
+-	struct phy_link_topology *topo = dev->link_topo;
++	struct phy_link_topology *topo;
+ 	struct phy_device_node *pdn;
+ 	int ret;
+ 
+@@ -45,13 +73,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!topo) {
+-		ret = netdev_alloc_phy_link_topology(dev);
+-		if (ret)
+-			return ret;
+-
+-		topo = dev->link_topo;
+-	}
++	topo = phy_link_topo_get_or_alloc(dev);
++	if (IS_ERR(topo))
++		return PTR_ERR(topo);
+ 
+ 	pdn = kzalloc_obj(*pdn);
+ 	if (!pdn)
+-- 
+2.55.0
 
