@@ -1,61 +1,69 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010033.outbound.protection.outlook.com [52.101.84.33])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012005.outbound.protection.outlook.com [40.107.200.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1E411677;
-	Mon, 20 Jul 2026 12:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E5A3FADF2;
+	Mon, 20 Jul 2026 12:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784549802; cv=fail; b=JObO/RQLDrTWHxrFrwglHqvXblehCNgRA87bsDlFv3wq4qEJ5YC0RXk6cDtLCijVJFsatpxG52GGI4rXSK+EwdySJ8KCQa3L0O3LMo5p4AvEuHm8xnQ2khnWNMbETSK+8SlIM7cjGhZIDQQwju7rcH6guAaz75mDuFaEgR8++3c=
+	t=1784549816; cv=fail; b=jfagOwJdCHHGlPwhEu1+dHAqtNqD4z75/tHB0AZJhBj4KE+k0Hg6S+KqH2GMy4tGWmNYcEv1ivkue1ImgATdRj8FDAOIQURAN0O2apRo/pUgcUjiI70QEpN5bODOUNyHexrsy/GK4NJv5RBv9Bzv9M+4tJ7euwcbFIUcFFwGvx0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784549802; c=relaxed/simple;
-	bh=OouTpy1OjiKjATznIST2nMakfcW2H5FXciia5jAxPns=;
+	s=arc-20240116; t=1784549816; c=relaxed/simple;
+	bh=0RoDPcYf7tp+wePUL/v33emQ4MzTlzUsuczL9g5zpdY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GdRGgL71HBnPN0rCilbE1Tp9LcE/9dOAYJwZqru1KEACJd5lywLuuvT2rMzdImP5PL2EE2MeMSFhxzuOPxMcCJIYPGxksh1dOCJ9Etd1DN8o1EysWeNs5EIlNRQIaOOUwAXiI4stMrt13WSnuUAdhO7ZbFZN+asLNHkAzSlQLN8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=laAkLraa; arc=fail smtp.client-ip=52.101.84.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=t+IDTRQs3hMNpMnJMROYWJnlGI3FJ7ekeg+WeTkNIA0Yl09Go5vJPBrzW+6ERCR7rSWNX5JVWfNysHyul+GiR7yo3OXDtM6Kqp6Pe35wisX3OZXr10/6LqPKAMgUox0t6j9Y7PSr9Ey+t/L9V7zYkdXNx5MfEbcz1iJE3UskzVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LOHL7xtV; arc=fail smtp.client-ip=40.107.200.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="laAkLraa"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LOHL7xtV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tovnvtvffVX8q5SELsE5BniD5vFfn9I67KBqT3ekqsu/BRWpqbzJFO2q3FRpKVIKECXy4f10Ojh+1fNTxj/NmbHcLb5FlQcvh7pt/1fH0NqJRY9ffpAK1/8FZEy6jiE2PNXYJqsf0kNPKaplpZGIQW+hVOiL5PgeR4YvYXqDMmZhbQJME4VufZKatKs3CfoPbEC+nFeXVFbE1TtGR8haG+HeU36cZ+dfRUOibhjYlx3Ncz6E+MX5lmmRo5cgYEssHvvdtlBXnENnrSXht9jhEMg6un95fTSvxAp7f3ezBHiiEO6fjkfJzCvmcTs3J4/GA8RXEKwsm2Ek/bM9syLEQw==
+ b=IpBGCTkA5+Ezpd3KJigMSR195uDd6g7e5em8HdFX0Vh7lOiFOJ1OnCAQEUIQ7WD/Loc7MM4zwPIAH8gTj8G6jQZr+hhPfJJRvt/cw4ykoKFjf7niaAsfarzFhOHU66VtJ9EqP3YLLKXD/letvXdLnEdJAf6tpyy3ZVY3Lr+3g342/HzLply2h5u+AdkBPublj4zz+DO16vJf5JruQgjfpEw62uVGTnE0y7DyIwT2N1d1ebTN0RKk7aWJJOaiaVyvttqsCDkfdNVWFVuuCyD805TQDZNLbIfADABSpHsHuGvBlU09V8SCo4bHhe3zmXsCKhMiXqJ0BEewGjX7N93NEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tQ/CCW/uknPyao+U/i2vsKGTd7PEi4YMFOwexx6jaBQ=;
- b=l4z/IEdujMF/5lYSCIX9z7Y9WKGbNuLUfdI0Tz2attUlDQAhuvQcqB6FP6oY72JiallczYopFaIjq5XaXINQMLYX7lolFJc2dK3TkCMEXDM/TqpaMBU2ySbRadWK296ZGmtQ2z4Mgciei+xeob1JkQo9zqi0+nr9Xaimm0iol/kL1hw3ZBhS9wIypXWlwmI9zZ7OLLSguFgiSbeGvnJzLBNLYZUvOzEhwcz0YW/cM6S1Ml8yr+Mw5dajDL+HKfZjISuwd6xz9Ov6XZ3/0WKY4CUhcHLYp4o4cbYvSSqGf8TqvbvtC3D210PltOC9DYjnxmT2vZ3g3OmdLbXIMeB+Ug==
+ bh=QJHzbhDGqQExC3H2PqPBr/JcfhUUiL7SE8xndOa8ido=;
+ b=exaJoD+bQCP5+SB1/Yj7UZk21QgSmEUKaX0LfoaAqzGgIzsag+Z3/i9u1Lg/riCjx7s7bbubD+mDpWLXix/UNfZRQpUnniYKF6HfD/XhmroPDVjIpuLobkfNu0yN+z1UnX3MMep/erZTwCEQeRVxLO7YamHAHU8V3UQ/fKxWLgQLX45LoITOi3tuPif8X/FfuFIoobVr6YZwoGGCPUOVzKwGOHpxlSm7EJIDebUhf0mFjAYqQiTKyqF6ymj2KxP8CXZFBSgVCI1Y1pZYp2OCF9Y++7rvJG69d1Nth3JoCZLK5re+DGIPClQUnYbvKb7UQfrKCpzJUZH2Sb+f82qcuQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tQ/CCW/uknPyao+U/i2vsKGTd7PEi4YMFOwexx6jaBQ=;
- b=laAkLraajOqCuymmmEn0gGD0QjLwE5FodjYs8qW3EuOjLY/LbSFxBKGoEbUIkQu/QKi9m3+3+0u34IlpTVXhvYRJ/AiL3uVKRkVD2yNLkUbSXylX+rU6+HEeb2Kd8i8UU4WROyTPNmA8sFGy1btBasPNnwYk3wxQaWsoVOUQz+gQqkh7LITuMyd7A8jhNawW0MMpwrfRrP7CyZtE+5nmXytnojeeXpemJ3molEsF0q3eg8l96M4bGdjPl6YJYg/Jrb3Sz/zXSiVP2C87JuKHdOJG8FuRA4omyTCGPcUJiK7gwivMaPHbbAN1TU6cbVznGdXt1bXWBTcLI+PhhIgQVg==
+ bh=QJHzbhDGqQExC3H2PqPBr/JcfhUUiL7SE8xndOa8ido=;
+ b=LOHL7xtVnmQzZQIDGVLQAEmlMew38nAyTRGW73LsBOTngZ1mSRNh7KiGcH5Ss4oa9X65giqpDFrEjeq9XhaMzsrxhs1ui3gEkI8zaZ1GRH0nuhvD0g/Z/SCZrPoStODubqA1Hw4JJqbhS7u5nI7FXWCrTKrgvw5KbjS1DRkV9kBJP/oqOcFgPA5fpBwBE9ieJgACJiG5dCpMM0oeCJpy+n6BR/tFNoDjv4W+pS4ZdQtD6pLsTjITMuNjbRiU44zDQMqKA70l8ueNRBi+CiMCjNmbSi1NQGWmocY8RzzT0Qkr60vb/vtYf4Uvi4vzNrhko0b+nxSwLFhstAF6aX3AMA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by DU4PR04MB10597.eurprd04.prod.outlook.com (2603:10a6:10:581::18) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by DM4PR12MB7621.namprd12.prod.outlook.com (2603:10b6:8:10a::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
- 2026 12:16:33 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%5]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 12:16:33 +0000
+ 2026 12:16:39 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
+ 12:16:39 +0000
 Date: Mon, 20 Jul 2026 15:16:29 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: kr494167@gmail.com
-Cc: ioana.ciornei@nxp.com, vkoul@kernel.org, neil.armstrong@linaro.org,
-	netdev@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: fsl-lynx-10g: propagate PCVT enable errors
-Message-ID: <20260720121629.4uxzmxqfsek4cxwf@skbuf>
-References: <20260720101906.80584-1-kr494167@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] ipv4: require matching source address for route hint
+ reuse
+Message-ID: <20260720121629.GA2309447@shredder>
+References: <20260714122618.21698-1-zhaoyz24@mails.tsinghua.edu.cn>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260720101906.80584-1-kr494167@gmail.com>
-X-ClientProxiedBy: VI1PR08CA0207.eurprd08.prod.outlook.com
- (2603:10a6:802:15::16) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+In-Reply-To: <20260714122618.21698-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-ClientProxiedBy: FR4P281CA0262.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e8::6) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,145 +71,124 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|DU4PR04MB10597:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed288dcf-2678-48d7-63f9-08dee658bca2
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DM4PR12MB7621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e11fd50-3f06-492a-cecb-08dee658c06d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|19092799006|10070799003|376014|10067099003|6133799003|3023799007|56012099006|11063799006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|56012099006|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	ZwMq1eLpdihwhmnprX+FnXej56WasMKsMmfE+Um0xTEkbSA/F3YZpiT1oCsW7XutYOftaNYyXTXl4aRGTIh4A5BKWw276iwa7pay4IvoScWVbOTESlzVuK6gCNPCwKgpseiEmihWtDs/YLyP3AkpeBGDhrac8reuMbZ1EI9zrbga5ztWSGFpMPasWGu+XtOvatR2vABbXJ7dH6bMPgkwO+HPup7W1zAUQRTaoG9vV6KwKh1XEsHiMtg+iJ5rqgjdVjw8+LJ1GEiDgElKxZe/F7QGg30VGCguizDPCvnFLkWR/coF2yD2gU1H+yqb5SJSnpUZOPfuS5LGT4iNIjjTbsq4uAk8NRLLWJ3xMbNackULyoflRZO/OtorIkOr2FSRm0I4kmimCPbh8OoYnNrwWDSZ1EgVLc7GTLUzsUyCzXVmNyHacBtW6lFpxp4CGAtBOcntXYFoQcNL4vVY8bOYK2J+IjLcN1xc0FvyHBaUxAWIL5Pee8s2X4WllswQTjQEEC1KDg/MMw86A9+z+V23YVHLzEQJccyOEFhXwkenZB5f5gIYsYdKW7DOMlmPcoWyekbPE2Td9OXBQIq/UvL54rMqH6ACtirbQ7/pEOB60crUBdwDmY9X2gTVmY6z2fa5bvXfHzfU52WeuW4C1GtXaigJVzsLgsp/qiudI1Q0p5A=
+	Rl8B0VsJORnIvbeDgAozNBV14txjOpwSKXSgqqrARyZlxFz15ghvt+ulraErmYWXnS2otbyE/E3xCftYmvNlpkZZcqzpckp92uJxj5BfkG0znOoHM/FQJFl9VM3zJbKiT/jnbEB0XxqfDeqDtBGztZAweeKg1QlQ5FtDEINtJLnPGq13JzDC/doC6h/on5Td2OApPWcUVF8SK7H3aoFMlNV7JSOG9rSfr8oB+wFpWnB8/YAetcjjcdXxQTnf2q6X1KQEQnWoypGu0J59rJEntIHmJnt8cSI07AmNX4dCYrKdNYYlP8k+9L2LCVr7nYlO/DL6HElchZeoHfm85JUFyqWzBVq/68hAKjV385eiM85dyNB2WhZllNbqfZ/ECut45mvGo+o5CnXolmzdHuzSo7NuMrLU3eNS9Tf1YlMyTq2I9xjzmMaty6NB8S9DUI40NXXkW5P7jRD/bZxE2fLLoItEPbj7FDk6rUK12OmM2Gsj1KaCD2rsXoRJSr5Rm0GOSRMTUYiw7QeWYpZIrXkv/BFer8dV5Ux3aVt/M+6sd3IueVZYRDAcQ/3OQNM7n+dbwEtFkFNPbbwK9JAjzAWqAIu3Psn4CvaYeD1Jr+T10cdTB3oROClCmYL2T05NOq+1AYdJwVUIDFKGWiHnK/UcqGu34HG+6WMsceIucRaVJFQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(19092799006)(10070799003)(376014)(10067099003)(6133799003)(3023799007)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HF+Ta8tJJp7ixzSn1UIwSHeSQ++cRJ5zBk3CO8HAhFUt5dB3UzsTyl/kopXd?=
- =?us-ascii?Q?4HJOiaCEslOZ8ZEJ1HIHTJlvZ4OcGoTJZiTGjqg0p+1CRHt/RFb5DiZ0M66j?=
- =?us-ascii?Q?kqbwDLVF0UR2DWLQ7gYXiPC8kRE8cKXw16F7cQxpx5lvTrf2SllxUpupguwH?=
- =?us-ascii?Q?s/6ATy8dOyAeRne2Q98K9KPkZvb/4ZQt24Sr/LA699iMlytLfkRENFsHk5Cq?=
- =?us-ascii?Q?sARs3TO+6Wt8TyKwYhIAa2Do2J80QRyZ7+wo452uv1f2JF0jjcApoTmf0Rt8?=
- =?us-ascii?Q?jRHEHSFDlM8uKVdKIIRNd8O/EzgQFD4HLOu38Is5pcL003YUN4W7+9eugXlk?=
- =?us-ascii?Q?ajIE+uDlNQRdkmGj1b0rMn+W5M+921XhMFCYUo/Zt4Q9fvNHRCzmueQohyyt?=
- =?us-ascii?Q?qewMlcTKZ0x8ZLpv1L4OjcGjUbwG0RcYNZsyWx8/rgnT0qJHUtQUxK1NvlN5?=
- =?us-ascii?Q?H/EymqS4F6YX8Fb/4Szv3JC5mYSZ/aFAnAeZnjIdCBMvstKEcD17nLjhWJ/N?=
- =?us-ascii?Q?R5p7rWgFmUvkQWc0fQhmNN2Bh0DgtV0cpJatClKMbZKXJygO9Eb4/IHKVxqp?=
- =?us-ascii?Q?b2/qmLCxIXebTEJ6wK5mXxlLTUr0paOJEcfsKHNAJmG1wYzu/qHY60NdBe0M?=
- =?us-ascii?Q?yqfz+8aRUXiN0/fRlbRWdX0BrPUchsY7dO/fAR/0+SEsEJU9VW3lRK58oV9X?=
- =?us-ascii?Q?eWLCRn+Qg6l73p0r7keDTI8WUwdzDXS6OYCTCoQ3BBPQHGYL3jGO3UmuPf0R?=
- =?us-ascii?Q?7sq/DIQ47+D0UXGYnDK+k3GM/IMDeHUBbMSJxaTyJMM9EUJkPRI0Z3gD9ONk?=
- =?us-ascii?Q?dPphUYxxXJpCTpwNO5c0cifUWkRIHmvqbu+Sk69o9HH2iWJa5vdahVhTLKek?=
- =?us-ascii?Q?vQUnQHZNGezfIFynEN2QrHXmF+HkriXX6VsTVsg1D2rEh0iFQaW1agikbT1S?=
- =?us-ascii?Q?3bsAcBoSA603FYUq5Y+umdWAMH9HkFx++JahQF0t+OuaC0kaMq+t2wqGS+Wv?=
- =?us-ascii?Q?Ov6O/NZaDimUknR5dz1uwr2X7JIVXOVjP+QC3lP1zDni57um3ZnGo0YcGN3J?=
- =?us-ascii?Q?ktNQiz5Ix4PZd0H3HuriZHmlIwLCF2Nv4pKCr8+Nw6IRX8d20DCnrwx0gcpN?=
- =?us-ascii?Q?coQizSMxb7h4T0rohooqNqyRsQtGAzVjesWSELsJVoliRiNEu+gXx8inKOI+?=
- =?us-ascii?Q?4IrJQTsmMOzaZG7mfIH50l9pKS3cKoxS8e2m8ILOpdD8lFsAhmuHS8SW6lcS?=
- =?us-ascii?Q?l/Atu2ou9ypsx0Tg4CKZVQoWozvr+XZHBn0jDTVDmJOsfNR+GN5faiiYHugC?=
- =?us-ascii?Q?+/2b6+W5Hl0aCzlIlf9Uhs2kxHtZw6aBn86tEoW5rrFajHiOvPaPZ9PtLTVS?=
- =?us-ascii?Q?D1k2CHNr1CWsF/d8qnT1+gtDP7c/9DuWUSKAA3rUtZcapQXkFgvHNvE+8fX8?=
- =?us-ascii?Q?qHVg47eNrNT0r71iu4s8k+qCLDAkTsmh2HFLW9OSv7Hz07ih5tc8vbU8oTnB?=
- =?us-ascii?Q?vFpdrJ/Oupjeziut2MA8hNvZVLb5sz6oX+Ccr0uBSX+8oPeizQ6eGU/Dp96c?=
- =?us-ascii?Q?0he2GGPZe9/eWYpoLnLwn8/o8kwZ/Wrho6JbhVkbt1igIb7b5b4neFSSqL42?=
- =?us-ascii?Q?jl6DyIEDnYRczJIYsgUx2dIvaPheGoebUzTzIvfrfm8Yk4VLwUHjHjDwKbga?=
- =?us-ascii?Q?5N2V1mchOvBax+a6xPo2Hw4loOXZ5H1oY3khiONh3enszuesgDDxZBxCSRxl?=
- =?us-ascii?Q?jhi0T8dLQUozsZkhW4e4/dIJQhVVDKSP76X2a+MfNUbVgxkB0WTGtRhkfTPN?=
-X-MS-Exchange-AntiSpam-MessageData-1: 258JnEajEsnO0g==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed288dcf-2678-48d7-63f9-08dee658bca2
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+	=?us-ascii?Q?ywXXNYWeiWeiivdZMh//Ou2XDEIz9pdOEmUyugDCV3RtYtn2pzqUY9quJIA5?=
+ =?us-ascii?Q?QtGBK6j2YWKHl0wUsjmTNVgLytDMcAs21I9UnxHl6/FoBqtl+YqJykpmGwtD?=
+ =?us-ascii?Q?ccftQl6c6pzq8lAFiPovUavzsRaFjlUxO0F6IXbD1SmLKr4JWqSGe6mTKz8O?=
+ =?us-ascii?Q?46J6VX68YJdWTC0KVQU2wbVgCY1z15+NC8ZOdVSNv1xFS67MgE21MA0AnRju?=
+ =?us-ascii?Q?gtu6ANkonPQ8HrtbkbIQKBIqeVHuY0kTxKNXUZ6hPtj5y+qaqZEm+9MpmHo7?=
+ =?us-ascii?Q?dmNPmruR5rOBdCFXQ/JDNHVXPymar6GDV5jdWBmhYr8hFoFYvWpGoOixXapj?=
+ =?us-ascii?Q?lvVRiKhQqkNZfuF7jhfEIoz03TOtl1VTdg8teuU99PvOC3cD+Fnocm6lwL3P?=
+ =?us-ascii?Q?Fk0kXH/6FNiwB0U5DkY2cPngTJZusrRBmomFEcHfQ1SEm0vQTYf54ZxiMg7f?=
+ =?us-ascii?Q?2xOZjUvweD8LCrHZcyicUrrI1h0i5TP0B7vL2uwysWsCISj+KIXYX3ourZlT?=
+ =?us-ascii?Q?TfTqRQZ3VW5XkOhaF57Z11oGRy2AX4VoVgzySM4rykN2kuKh5o55dfKT5KHk?=
+ =?us-ascii?Q?/9M27EwW7xf2fNZrqhUBMHr6dA/KKzH6R6g/iID+1cX51yxafJDibCfQw02E?=
+ =?us-ascii?Q?M5tojwVln+NT4HiC3UaQS2JIzuApl2oAPs7KATwN3hVZFpsjOcfBaBeRDCvL?=
+ =?us-ascii?Q?xV70waFdqf7g883DRYEw4iWp87045odr4baYFB6Dm00epyCWgaLg65ASqhge?=
+ =?us-ascii?Q?ztnPR61xVYpxNe1bKL3aH66xEKbmDIHyiQAe+jyP9wuT2v+IzmaNsDZmqvkS?=
+ =?us-ascii?Q?IHaJpVykIlSGocdn32uqRlCQABrMk6ZWciHTlRfD547GY8M8dJcot0WWTdYh?=
+ =?us-ascii?Q?ibqJGHWMfWSoXqFFmjupE6fHV7NpL0PyEUxKJZTtLa2fe6DH1NjlO0yKmjIf?=
+ =?us-ascii?Q?bg3EdT+9YMuxZEADG+LUqQTS/xF+YTHrqNe2nYtnqYkEXFOWNBqRGN4oZ2Bu?=
+ =?us-ascii?Q?UHgBcpqCKJ1DZejdymXi9dq+TIOwVxA5ILxFx8laboBpKNf/icUv9ZtA2gsJ?=
+ =?us-ascii?Q?VVPvg1unokrGlqLqzWarnIUA4EgXemaa31CNZQDIydym7lpOevJ7xIGGTx19?=
+ =?us-ascii?Q?nNWo/JTXdiCJBRJaEbcCd6JwgvXkPHhBDXPmNH4GBSQ6+zneXzX9Jn/1qo5O?=
+ =?us-ascii?Q?PGyRFvEzr7dxIHK2lgZq2IqnCjTgqeb/88xxyhnY2wOBlMGsnwK136KPFqx5?=
+ =?us-ascii?Q?nnWhprsOkIABN2L1Vtaz5bSsSRcUu+G+oQxnVLghHe5hzxaOwFDt0FWZg6Uk?=
+ =?us-ascii?Q?mQKmSpEB9fbdwWsgxNaWGVbkPtkH+jDVEXJ8UHfxX/33Yacr7nmr5RRYjlqP?=
+ =?us-ascii?Q?QgazF5V5mhiXINYWNg5dqGM/f3Gl6HayBL1T31yXp7KDupR8fh/ShrnXa0Gd?=
+ =?us-ascii?Q?QpwfSchpj6Ft7TcujYx1fkeSKW6M55z6B0nrmh0PMou+gEhpHR6ULYs1TTNl?=
+ =?us-ascii?Q?XyoqZ6hO8az3LJzGgfDEOvJ2fOZT5DG2oK8FLpspwmDVnq7zhuL0wnImUDYc?=
+ =?us-ascii?Q?WFMqmWSY2HX7CHubNKLmp9XW95DOsqcTH9AaFJiwy/lG69cJk5D4padwRVjG?=
+ =?us-ascii?Q?LydUzzXKMezWJ2WN4YSTML6QQU8/7rnYVkoR4Ybv7brRKdEkk5weww6rRPIT?=
+ =?us-ascii?Q?q6h83b6Nrcd22L4rKmJXEltzwTcYBvxsYkTlpkEliJM2Q4yK?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e11fd50-3f06-492a-cecb-08dee658c06d
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 12:16:33.1297
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 12:16:39.5846
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xGUZTGXUCyyztY67+PX4kTteaXO5cZidX6o3IUnZxIuu8Lnl5qn8LkWVzgHM6To0/hSCi3w2CrL1+SOvmXaLLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10597
+X-MS-Exchange-CrossTenant-UserPrincipalName: P2plU72X/YNF7+0VhtxtgRP+IgidbWQi4KauztSkf6cg0P+LsIhdlMvjXKADvcNGtDj9Ft6j8gvaTwpVfoTogA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7621
 
-Hi Surendra,
-
-On Mon, Jul 20, 2026 at 03:49:06PM +0530, kr494167@gmail.com wrote:
-> From: surendra <kr494167@gmail.com>
+On Tue, Jul 14, 2026 at 08:26:17PM +0800, Yizhou Zhao wrote:
+> IPv4 list receive can reuse a route from the previous skb in the same
+> receive batch. The current eligibility check only compares the destination
+> address and TOS before calling ip_route_use_hint().
 > 
-> lynx_10g_set_mode() currently ignores failures from
-> lynx_10g_lane_enable_pcvt(). It then updates the lane mode and reports
-> success even though the protocol converter may remain disabled.
+> For forwarded routes, ip_route_use_hint() skips fib_validate_source()
+> unless the hinted route is local. This means a packet with a different
+> source address can reuse a forwarding dst created for an earlier packet
+> and avoid source validation such as strict rp_filter.
+
+I'm not sure why we are skipping source validation for non-local routes.
+
+The comment above ip_route_use_hint() says "Implements all the
+saddr-related checks as ip_route_input_slow()". I agree that
+ip_route_input_slow() only does source validation for RTN_LOCAL, but for
+RTN_UNICAST it is calling ip_mkroute_input(), which eventually calls
+fib_validate_source().
+
+Paolo, WDYT about always performing source validation [1]?
+
 > 
-> Propagate the error and leave the previous lane mode intact so the caller
-> can handle the failed reconfiguration.
+> In a KASAN QEMU router with strict rp_filter on the ingress device, a 
+
+Why mention KASAN? How is it related to this bug / patch?
+
+> bad-only burst was dropped entirely, however, a paired valid/bad burst 
+> with the same destination/TOS made all of the bad packets pass rp_filter.
 > 
-> Signed-off-by: surendra <kr494167@gmail.com>
-> ---
->  drivers/phy/freescale/phy-fsl-lynx-10g.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/phy/freescale/phy-fsl-lynx-10g.c b/drivers/phy/freescale/phy-fsl-lynx-10g.c
-> index 38def160ef1a..9740b08700c4 100644
-> --- a/drivers/phy/freescale/phy-fsl-lynx-10g.c
-> +++ b/drivers/phy/freescale/phy-fsl-lynx-10g.c
-> @@ -1231,7 +1231,9 @@ static int lynx_10g_set_mode(struct phy *phy, enum phy_mode mode, int submode)
-> 
->         lynx_10g_lane_change_proto_conf(lane, lane_mode);
->         lynx_10g_lane_remap_pll(lane, lane_mode);
-> -       WARN_ON(lynx_10g_lane_enable_pcvt(lane, lane_mode));
-> +       err = lynx_10g_lane_enable_pcvt(lane, lane_mode);
-> +       if (err)
-> +               goto out;
-> 
->         lane->mode = lane_mode;
-> 
-> --
-> 2.55.0
->
+> Require the source address to match before reusing the hint. Packets from
+> the same source/destination/TOS still take the fast path; packets whose
+> source changes go through the normal route lookup and source validation
+> path.
 
-Thank you for the patch, however you are fixing a situation which will
-never occur.
+I agree that it fixes the problem, but we will always pay the
+performance penalty, even when rp_filter is disabled. According to
+commit 02b24941619f ("ipv4: use dst hint for ipv4 list receive"), there
+is still a performance gain when we perform the source validation
+per-packet.
 
-Assume lynx_10g_lane_enable_pcvt(lane, lane_mode) will fail.
-It means one of the following functions inside of it returned a negative
-return code:
-- lynx_pcvt_rmw(lane, mode, ...)
-- lynx_pccr_write(lane, mode, ...)
-
-Let's take them one by one.
-
-lynx_pcvt_rmw() fails if priv->info->get_pcvt_offset(lane->id, mode)
-returns negative.
-
-lynx_pccr_write() fails if priv->info->get_pccr(mode, lane->id, ...)
-returns negative.
-
-Had any of these two functions returned a negative error code, the
-execution would not have reached the lynx_10g_lane_enable_pcvt() stage!
-
-The following code path:
-lynx_10g_set_mode()
--> lynx_10g_validate()
-   -> lynx_phy_mode_to_lane_mode()
-      -> lynx_lane_supports_mode()
-         -> priv->info->lane_supports_mode() // this is provided for lynx-28g
-            OR
-         -> lynx_lane_supports_mode_default() // all lynx-10g instances use this
-            -> checks priv->info->get_pccr() and
-               priv->info->get_pcvt_offset()
-
-already fails much earlier if priv->info->get_pccr() or
-priv->info->get_pcvt_offset() return negative (i.e. we don't know how to
-handle the requested protocol).
-
-The suggested placement of your error handling is extremely late anyway.
-lynx_10g_lane_change_proto_conf() and lynx_10g_lane_remap_pll() have
-already been executed, so the lane is reconfigured for the new protocol
-and remapped to the new PLL. The "goto out" label doesn't undo that.
-This is why I am reluctant to agree with your proposed change - it
-doesn't make the code any more correct, it just complicates the handling
-and actually makes that impossible case handled *incorrectly* (on
-phy_set_mode_ext() failure, you don't expect the PHY to be configured
-half way).
-
-It would be very strange to proceed thus far if we didn't first make
-sure that the protocol we are switching to is fully supported.
-
-This is why the code has the WARN_ON(). The function _can_ fail, but we
-don't need to check more than once for failures on the same mode with
-the same protocol, since they are time-invariant.
+[1]
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3f3de5164d6e..89338111793b 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2194,6 +2194,7 @@ ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
+ 	struct rtable *rt = skb_rtable(hint);
+ 	struct net *net = dev_net(dev);
+ 	u32 tag = 0;
++	int oif = 0;
+ 
+ 	if (!in_dev)
+ 		return reason;
+@@ -2214,14 +2215,13 @@ ip_route_use_hint(struct sk_buff *skb, __be32 daddr, __be32 saddr,
+ 	}
+ 
+ 	if (!(rt->rt_flags & RTCF_LOCAL))
+-		goto skip_validate_source;
++		oif = dst_dev_rcu(&rt->dst)->ifindex;
+ 
+-	reason = fib_validate_source_reason(skb, saddr, daddr, dscp, 0, dev,
++	reason = fib_validate_source_reason(skb, saddr, daddr, dscp, oif, dev,
+ 					    in_dev, &tag);
+ 	if (reason)
+ 		goto martian_source;
+ 
+-skip_validate_source:
+ 	skb_dst_copy(skb, hint);
+ 	return SKB_NOT_DROPPED_YET;
