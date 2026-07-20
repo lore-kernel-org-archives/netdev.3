@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D739AD33;
-	Mon, 20 Jul 2026 23:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF5D207A20;
+	Mon, 20 Jul 2026 23:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784589920; cv=none; b=GBAIZGfO8wAimJui0cLo9xtjItFnym1/Q1Ll19yzjRBkA1eYUGJ8/Gf/Q9b8ko1dqIMQgVkN8SpddoHMGWcqApkcT/yFGVCn18lKLTWjqGlHB/Abhpza/AvOfOCk9Pz5APXiLKKsVTjsD2kwSEok0SephtH81x6eJMq62cxQdAA=
+	t=1784590362; cv=none; b=iOTd4udIAVvZpr7/QHNbIidDxE11g87RAzgXGZZZ1KYujAGfLgKfI+FrqpA3wu1lkwTbW92hN4ynzPaxCncclbPM+OAY9dRIY1K8BC3PfreM7vRS6/mc4E+3YdKXhUtUReS4o7CbvDGEvFMNSRdxQMnBLrwM8uKL3sg/+YrmiG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784589920; c=relaxed/simple;
-	bh=/Y10i3wozkMnf60Wkl3yCC4igU9YXIYYPPeobwa3GDI=;
+	s=arc-20240116; t=1784590362; c=relaxed/simple;
+	bh=sYfSv0JFyAVNsBuCybevWdTdUKCGplASfGi5PevtwbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mltefJmGKyFvXhcqtehWpsvLbceUZ7t9rCHPwb0na7HYzAcbvAXS+bnirNk9X8gCnNmwoFbqntBHjfuQvlfJ0TmfSk0H5ey7sDxXu59y0a28RIrx3Fa9Even86UZOsUXTufN1X2q0H74IuCaYyjyLltk59I66jj7HZgzhoeBR0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hacxyw3L; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=K3FMKHt7BE+N6RbX6t/x2dAFr2Gy7c40Cs2DJJ7bOwR78VGDqZZAeOJ93shfhsTdUHMuCfF1uYrOSf6OFkoD75XaDGpiQI3B6CI+CSWV6ffgrqLBgDFkRob64Wlu0ggnmdtfyeA/0FJFTUaw7+uMIQmlM0IPkdwC1yuFkKlj2aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WqvARPqi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hacxyw3L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E851F000E9;
-	Mon, 20 Jul 2026 23:25:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WqvARPqi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686051F000E9;
+	Mon, 20 Jul 2026 23:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784589919;
-	bh=jgMSOwocUwqAdnPA+okL7WtufVXOcE4kTmboHQVEvnw=;
+	s=k20260515; t=1784590360;
+	bh=Dgp5Zh+mCjW8qPmI0oeBk+2vJWlq2PIXHElh+EPe7W4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Hacxyw3LHN/3dDFBy5YcmUJu740ha98pSzZoBPyAurnGhlpK+Yf5hYZXIHdSvl9v2
-	 OGflHt9SJn5SUE/6kCsFfVpXuHziTv/9XslkrifV7R/1BFSIdWrh0nitWz741YMIpB
-	 ggm4nOR8ubWjbuQ9v0GDuudtgI93f+vvSLtepQV4fA4SGAHfIHiKqmJY64GMG39qIe
-	 vXLjtpkh3ipgb1ZrqPS57ZvcyjzAB+TcDDquLiU737iztaanbH8OhEBmlnEOy18983
-	 8eNcmczNiNTRzqrHEICFSKE1UYpfRaJe0abtJRvPAyN9jBdC4ihgXM7FJU35hGOi7p
-	 9YXXYANhmXvzw==
-Date: Mon, 20 Jul 2026 16:25:18 -0700
+	b=WqvARPqiDdU7qwcZq2jN6jdBMiZrlhZOfsK+b4AoCn7VrWvsFyYzG1APGdklgp06K
+	 MBkSRNETqo0BKpiZxMPwC1NS6jC14ha/c/QzVYCWCU9hmUxaCsWgMR7oRPJyf4nyvB
+	 pbd2YpR/qG3Ju4tYdS20T5WSrm+nB0p8+G0uQEDGTH9mJUssH7wX8ejyU3vm9MvSu9
+	 HAE+iNeD7Vvbt0To6UVvegKw3VSLUmeQI68bGhR++NjLgkyvrqBe55POIpqVSTDPuq
+	 NVuoqZ1X/e4oACmhBaRpoQ6+YkMoq5JHZ3Yn0DjcDFz1lASJG4g/v6OaBZljBaiNSn
+	 9CRhK2uEPddZw==
+Date: Mon, 20 Jul 2026 16:32:39 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jemmy Wong <jemmywong512@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org
-Subject: Re: [RESEND PATCH] net/core: consolidate RPS dispatch into
- netif_rps() helpers
-Message-ID: <20260720162518.38414fa0@kernel.org>
-In-Reply-To: <20260707154855.12134-1-jemmywong512@gmail.com>
-References: <20260702152830.39065-1-jemmywong512@gmail.com>
-	<20260707154855.12134-1-jemmywong512@gmail.com>
+To: Fan Wu <12321260@zju.edu.cn>
+Cc: Simon Horman <horms@kernel.org>, Fan Wu <fanwu01@zju.edu.cn>,
+ netdev@vger.kernel.org, shenjian15@huawei.com, salil.mehta@huawei.com,
+ andrew+netdev@lunn.ch, "David S . Miller" <davem@davemloft.net>,
+ edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] net: hip04: quiesce tx coalesce timer before teardown
+Message-ID: <20260720163239.3d8b9f88@kernel.org>
+In-Reply-To: <4631C8F9-598D-4114-AD88-BEC5D8617BB6@zju.edu.cn>
+References: <20260703050133.2445155-1-fanwu01@zju.edu.cn>
+	<20260709124309.1557255-2-horms@kernel.org>
+	<4631C8F9-598D-4114-AD88-BEC5D8617BB6@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,21 +49,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  7 Jul 2026 23:48:55 +0800 Jemmy Wong wrote:
-> The RPS steering logic in netif_rx_internal(), netif_receive_skb_internal()
-> and netif_receive_skb_list_internal() was open-coded three times, each with
-> its own #ifdef CONFIG_RPS block and manual rcu_read_lock()/unlock() pairs.
+On Sat, 11 Jul 2026 13:34:24 +0800 Fan Wu wrote:
+> Thanks for the v1 review. The updated patch fixes the PHY teardown ordering
+> and IRQ lifetime issues: hip04_remove() unregisters the netdev, running
+> .ndo_stop and phy_stop(), before phy_disconnect(), and frees the devm-managed
+> IRQ before free_netdev().
 > 
-> Factor it into two helpers, netif_rps() for the single-skb path and
-> netif_rps_list() for the list path, and switch the callers to
-> guard(rcu)/scoped_guard(rcu). A new internal NET_RX_UNHANDLED sentinel lets
-> a helper report "RPS did not take this skb" so the caller falls back to the
-> local enqueue / __netif_receive_skb() path; it never escapes to callers.
-> 
-> netif_rps_list() keeps the early static_branch_unlikely(&rps_needed) bail
-> out so the list is not needlessly walked and re-spliced when RPS is
-> compiled in but disabled.
-> 
-> No functional change intended.
+> The remaining NULL tx_desc cleanup in hip04_free_ring() and RX refill
+> failure paths are independent pre-existing error-path issues. I will address them 
+> in separate patches rather than expanding this teardown fix. In particular, the
+> RX fix must preserve the old descriptor mapping until a replacement buffer is
+> successfully allocated and mapped.
 
-You haven't read Paolo's reply, please go away.
+If the patch matters you need to repost it, it wasn't processed in time
