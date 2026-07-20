@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FCF477994
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 17:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2A044607A;
+	Mon, 20 Jul 2026 17:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784569728; cv=none; b=qbaGMQn5IqWepuaj1xC0GcBBCa+zgGhP/YYv/rk6UUjlIUEdQMqJgty5D8I3eLG/lS+FO7g+Im2zHey6S0hMtJMjjCBzb5C+SPgd4TrwgWaFfSqcNqoUtw8OKp3P/n1MqqJ40DQKdtLtBlSQ9uTGKoWfiAqoDy7nB/6cUQdxKeY=
+	t=1784569732; cv=none; b=FPz5oPceVOtEwoM6CJA/I28E5gUq43JDoUCo+cfS0NzFVLSU02ecv5J8WO+mZc/dWz1YABGODrFAde6AjYvhNPWRkzrc75HdTAsH5SCMP5kLtPT60e20cjFsW/muqxEL6uKVVynH/X6TbXe83bA3b1FDf/FTSxseH1MHD0PMf7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784569728; c=relaxed/simple;
-	bh=VKsd0LP4Loxv7Mr3+Vf4C0YIYrmSx/bzBK8HGl1uV6E=;
+	s=arc-20240116; t=1784569732; c=relaxed/simple;
+	bh=D692ftdZPxUU2Q48sDGmDeXSb45cjlBNS2IqKAq/EIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wd1zXwG6PHdnZiFVH16tApEAw/vofsiwuxTRmWTT/Yfxytv9v/5lOy/20w6UWg9mwPGcNZ9QcOas7SYrvMM2ewtlt3yHB4L/21e0ugHipB62nLuEq169CVgH1gg4F1h/ckfBWkpKVKwU0R+lba6DeGjZiRsiU4l25IR0kleHXR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=D9h9Xrzs; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=VMb/dW2p14LYbWJPKtSKdNvzxPlqLacTPWld8sU4Ytyjp4PP9SJ99GzTevEN+fSmswhs3Z8dVO/gc87XLAoN8+76zn4t1Fei7wXTfiUIZA2x7+O5aZkF9IAl0ZcKIy/fScoDuY9LXlzF6FHTohHLNsxqZcI5BM4v3Xdkj7U14eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AsCMN4/0; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="D9h9Xrzs"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AsCMN4/0"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 5D2D11A110A;
-	Mon, 20 Jul 2026 17:48:39 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EB7984E40E82;
+	Mon, 20 Jul 2026 17:48:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A3D860360;
-	Mon, 20 Jul 2026 17:48:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D6FC811BD3A1B;
-	Mon, 20 Jul 2026 19:48:35 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BED6A60360;
+	Mon, 20 Jul 2026 17:48:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F6EA11BD3A22;
+	Mon, 20 Jul 2026 19:48:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784569718; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1784569723; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JsuEooygyN2OGHcyFokupB+St2N9AmC/SgaMooe4BJ0=;
-	b=D9h9XrzsEkP6a8EwbaCfqQ1J4oWaws4iA5Kx4gPO3Um+65/Y8+dQ/OBXb5uJBBLycUoqZG
-	iVBZtFWIhNT1XbuaWsCdLcAuElKg01xcnG5a14k6Dsz4yA6pGkzdsmYfSh22VP1bm50wI1
-	RquGfCJVEsbBhn4IdIWXD3lva7CIR7C/iLphW/WxAJevrluoR4Nx+y93dNk8hBEAlzitDl
-	fIXQZYA11m+HbffXMRoHPaWejG3UbHiLN2Y2HhjVi9sfs8x8LMRsjTBxIWmPdSir6/a+st
-	I3pF60NYOtAe8VPX5EKVXlQzlsRoFaSy6OAFbrUaVFfWf5D3PGY2nHDhCJFcfg==
+	bh=Xn9/wgAdUxJctmtORK1++cAUoHkbp1Q1saJVxvWdd7o=;
+	b=AsCMN4/08iWoxrS3s4ZqrRZdgxPIn3DW8WTNfT9WpCC2HMmQjlMVT5CzVWKq/aP1Wa4i7Y
+	wdSRgntan9VHBnPbWna5NUolVAZUkBQAi+V3/EMreTJwcQzJgq7rKOGQUzL0D8uq369Ivd
+	y4SlrMo91DWq2RbUJ7RbAHWsbOWcLiIkTUvyxtOYFi7fbLW6Y1inG1kXJchXXyYY7WrLw+
+	QwxCZaelPNu/a2v++zH8pff6Tp7Vuc8hBAoeT6LMUlu2t1VI0ENHpEg4gADKXdQmFMH8nY
+	2EnUIFRuc1fIc6g/Z9ricVTmAt8/UJBN1527wczmjmB9mTJOy+fAb9lnA9CUiQ==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -60,9 +60,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
 	Frank Wunderlich <frank.wunderlich@linux.dev>,
 	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH net-next v14 06/10] net: phy: phy_port: Store information about a port's upstream
-Date: Mon, 20 Jul 2026 19:48:03 +0200
-Message-ID: <20260720174808.139573-7-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v14 08/10] netlink: specs: Add ethernet port listing with ethtool
+Date: Mon, 20 Jul 2026 19:48:05 +0200
+Message-ID: <20260720174808.139573-9-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720174808.139573-1-maxime.chevallier@bootlin.com>
 References: <20260720174808.139573-1-maxime.chevallier@bootlin.com>
@@ -75,161 +75,195 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-MII phy_ports are not meant to be connected directly to a link partner.
-They are meant to feed into some media converter devices that will
-expose an MDI phy_port, so far we only support SFP modules for that.
-
-In the case an MDI phy_port is backed by an MII port (e.g. a SFP
-module's port, backed by the SFP cage port), let's keep track of the
-port id of the MII port backing it.
+Ethernet network interfaces may have more than one front-facing port.
+The phy_port infrastructure was introduced to keep track of
+these ports, and allow userspace to know about the presence and
+capability of these ports. Add a ethnl netlink message to report this
+information.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy_device.c | 27 +++++++++++++++++++++++++++
- drivers/net/phy/phylink.c    |  5 +++++
- include/linux/phy.h          |  4 ++++
- include/linux/phy_port.h     |  3 +++
- 4 files changed, 39 insertions(+)
+ Documentation/netlink/specs/ethtool.yaml      | 50 +++++++++++++++++++
+ Documentation/networking/ethtool-netlink.rst  | 34 +++++++++++++
+ .../uapi/linux/ethtool_netlink_generated.h    | 19 +++++++
+ 3 files changed, 103 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f50db7405443..d52515e7e303 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1493,6 +1493,7 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
- 	int ret;
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 5dd4d1b5d94b..d1151af335ca 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -210,6 +210,10 @@ definitions:
+       -
+         name: discard
+         value: 31
++  -
++    name: port-type
++    type: enum
++    entries: [mdi, sfp]
  
- 	phydev->has_sfp_mod_phy = true;
-+	phy_set_upstream_port(phy, phydev->sfp_cage_port);
+ attribute-sets:
+   -
+@@ -1905,6 +1909,32 @@ attribute-sets:
+         name: link
+         type: nest
+         nested-attributes: mse-snapshot
++  -
++    name: port
++    attr-cnt-name: --ethtool-a-port-cnt
++    attributes:
++      -
++        name: header
++        type: nest
++        nested-attributes: header
++      -
++        name: id
++        type: u32
++      -
++        name: supported-modes
++        type: nest
++        nested-attributes: bitset
++      -
++        name: supported-interfaces
++        type: nest
++        nested-attributes: bitset
++      -
++        name: type
++        type: u32
++        enum: port-type
++      -
++        name: upstream-port
++        type: u32
  
- 	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
- 	 * topology.
-@@ -1526,6 +1527,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
- 
- 	if (dev)
- 		phy_link_topo_del_phy(dev, phy);
+ operations:
+   enum-model: directional
+@@ -2859,6 +2889,26 @@ operations:
+             - worst-channel
+             - link
+       dump: *mse-get-op
++    -
++      name: port-get
++      doc: Get ports attached to an interface
 +
-+	phy_set_upstream_port(phy, NULL);
- }
- 
- /**
-@@ -1661,6 +1664,8 @@ static int phy_add_sfp_mod_port(struct phy_device *phydev)
- 	 */
- 	phydev->mod_port = port;
- 
-+	port->upstream_port = phydev->sfp_cage_port->id;
++      attribute-set: port
 +
- 	return 0;
- }
++      do: &port-get-op
++        request:
++          attributes:
++            - header
++            - id
++        reply:
++          attributes:
++            - header
++            - id
++            - supported-modes
++            - supported-interfaces
++            - type
++            - upstream-port
++      dump: *port-get-op
  
-@@ -3696,6 +3701,28 @@ struct phy_port *phy_get_sfp_port(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(phy_get_sfp_port);
+ mcast-groups:
+   list:
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index e92abf45faf5..b4326c89b075 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -2537,6 +2537,39 @@ Within each channel nest, only the metrics supported by the PHY will be present.
+ See ``struct phy_mse_snapshot`` kernel documentation in
+ ``include/linux/phy.h``.
  
-+/**
-+ * phy_set_upstream_port() - Sets the phy_port controlling the MII this PHY is
-+ *			     attached to.
-+ * @phydev: pointer to the PHY device we set the upstream of.
-+ * @port: The phy_port upstream of this PHY, can be NULL.
-+ */
-+void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port)
-+{
-+	struct phy_port *local_port;
++PORT_GET
++========
 +
-+	ASSERT_RTNL();
++Retrieve information about the physical connection points of a network device,
++referred to as "ports". User needs to specify a PORT_ID for the DO operation,
++in which case the DO request returns information about that specific port.
 +
-+	phydev->upstream_port = port;
++As there can be more than one port, the DUMP operation can be used to list the
++ports present on a given interface, by passing an interface index or name in
++the dump request.
 +
-+	phy_for_each_port(phydev, local_port)
-+		if (port)
-+			local_port->upstream_port = port->id;
-+		else
-+			local_port->upstream_port = 0;
-+}
-+EXPORT_SYMBOL_GPL(phy_set_upstream_port);
++Request contents:
 +
- /**
-  * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
-  * @fwnode: pointer to the mdio_device's fwnode
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index bdb4670c25f8..5cfbfcc1079a 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3958,6 +3958,8 @@ static int phylink_add_sfp_mod_port(struct phylink *pl)
- 		}
- 	}
- 
-+	port->upstream_port = pl->sfp_cage_port->id;
++  ===================================== ======  ===============================
++  ``ETHTOOL_A_PORT_HEADER``             nested  request header
++  ``ETHTOOL_A_PORT_ID``                 u32     port id
++  ===================================== ======  ===============================
 +
- 	pl->mod_port = port;
- 
- 	return 0;
-@@ -4061,6 +4063,8 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
- 	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
- 			  pl->config->supported_interfaces);
- 
-+	phy_set_upstream_port(phy, pl->sfp_cage_port);
++Kernel response contents:
 +
- 	/* Do the initial configuration */
- 	return phylink_sfp_config_phy(pl, phy);
- }
-@@ -4069,6 +4073,7 @@ static void phylink_sfp_disconnect_phy(void *upstream,
- 				       struct phy_device *phydev)
- {
- 	phylink_disconnect_phy(upstream);
-+	phy_set_upstream_port(phydev, NULL);
- }
- 
- static const struct sfp_upstream_ops sfp_phylink_ops = {
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 59903257e978..33ed10d4502a 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -597,6 +597,7 @@ struct phy_oatc14_sqi_capability {
-  * @sfp_bus: SFP bus attached to this PHY's fiber port
-  * @sfp_cage_port: The phy_port connected to the downstream SFP cage
-  * @mod_port: phy_port representing the SFP module, if it is phy-less
-+ * @upstream_port: phy_port this PHY's MII attaches to, if any
-  * @attached_dev: The attached enet driver's device instance ptr
-  * @adjust_link: Callback for the enet controller to respond to changes: in the
-  *               link state.
-@@ -791,6 +792,7 @@ struct phy_device {
- 	struct sfp_bus *sfp_bus;
- 	struct phy_port *sfp_cage_port;
- 	struct phy_port *mod_port;
-+	struct phy_port *upstream_port;
- 	struct phylink *phylink;
- 	struct net_device *attached_dev;
- 	struct mii_timestamper *mii_ts;
-@@ -2466,6 +2468,8 @@ int __phy_hwtstamp_set(struct phy_device *phydev,
- 
- struct phy_port *phy_get_sfp_port(struct phy_device *phydev);
- 
-+void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port);
++  ======================================= ======  =============================
++  ``ETHTOOL_A_PORT_HEADER``               nested  request header
++  ``ETHTOOL_A_PORT_ID``                   u32     the port's unique identifier,
++                                                  per netdevice.
++  ``ETHTOOL_A_PORT_SUPPORTED_MODES``      bitset  bitset of supported linkmodes
++  ``ETHTOOL_A_PORT_SUPPORTED_INTERFACES`` bitset  bitset of supported MII
++                                                  interfaces
++  ``ETHTOOL_A_PORT_TYPE``                 u32     the port type
++  ``ETHTOOL_A_PORT_UPSTREAM_PORT``        u32     If any, the index of the MII
++                                                  port that feeds into this
++                                                  port.
++  ======================================= ======  =============================
 +
- /**
-  * phy_module_driver() - Helper macro for registering PHY drivers
-  * @__phy_drivers: array of PHY drivers to register
-diff --git a/include/linux/phy_port.h b/include/linux/phy_port.h
-index 4e2a3fdd2f2e..e3a41cedebdc 100644
---- a/include/linux/phy_port.h
-+++ b/include/linux/phy_port.h
-@@ -40,6 +40,8 @@ struct phy_port_ops {
-  * @head: Used by the port's parent to list ports
-  * @parent_type: The type of device this port is directly connected to
-  * @phy: If the parent is PHY_PORT_PHYDEV, the PHY controlling that port
-+ * @upstream_port: For non-MII ports, indicates the MII port that feeds this
-+ *		   port, e.g. the SFP cage port for a SFP module port.
-  * @ops: Callback ops implemented by the port controller
-  * @pairs: The number of  pairs this port has, 0 if not applicable
-  * @mediums: Bitmask of the physical mediums this port provides access to
-@@ -59,6 +61,7 @@ struct phy_port {
- 	union {
- 		struct phy_device *phy;
- 	};
-+	u32 upstream_port;
+ Request translation
+ ===================
  
- 	const struct phy_port_ops *ops;
+@@ -2647,4 +2680,5 @@ are netlink only.
+   n/a                                 ``ETHTOOL_MSG_PHY_GET``
+   ``SIOCGHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_GET``
+   ``SIOCSHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_SET``
++  n/a                                 ``ETHTOOL_MSG_PORT_GET``
+   =================================== =====================================
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+index 8134baf7860f..f9d8794eabc1 100644
+--- a/include/uapi/linux/ethtool_netlink_generated.h
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -78,6 +78,11 @@ enum ethtool_pse_event {
+ 	ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR = 64,
+ };
  
++enum ethtool_port_type {
++	ETHTOOL_PORT_TYPE_MDI,
++	ETHTOOL_PORT_TYPE_SFP,
++};
++
+ enum {
+ 	ETHTOOL_A_HEADER_UNSPEC,
+ 	ETHTOOL_A_HEADER_DEV_INDEX,
+@@ -840,6 +845,18 @@ enum {
+ 	ETHTOOL_A_MSE_MAX = (__ETHTOOL_A_MSE_CNT - 1)
+ };
+ 
++enum {
++	ETHTOOL_A_PORT_HEADER = 1,
++	ETHTOOL_A_PORT_ID,
++	ETHTOOL_A_PORT_SUPPORTED_MODES,
++	ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
++	ETHTOOL_A_PORT_TYPE,
++	ETHTOOL_A_PORT_UPSTREAM_PORT,
++
++	__ETHTOOL_A_PORT_CNT,
++	ETHTOOL_A_PORT_MAX = (__ETHTOOL_A_PORT_CNT - 1)
++};
++
+ enum {
+ 	ETHTOOL_MSG_USER_NONE = 0,
+ 	ETHTOOL_MSG_STRSET_GET = 1,
+@@ -893,6 +910,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_ACT,
+ 	ETHTOOL_MSG_RSS_DELETE_ACT,
+ 	ETHTOOL_MSG_MSE_GET,
++	ETHTOOL_MSG_PORT_GET,
+ 
+ 	__ETHTOOL_MSG_USER_CNT,
+ 	ETHTOOL_MSG_USER_MAX = (__ETHTOOL_MSG_USER_CNT - 1)
+@@ -954,6 +972,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_NTF,
+ 	ETHTOOL_MSG_RSS_DELETE_NTF,
+ 	ETHTOOL_MSG_MSE_GET_REPLY,
++	ETHTOOL_MSG_PORT_GET_REPLY,
+ 
+ 	__ETHTOOL_MSG_KERNEL_CNT,
+ 	ETHTOOL_MSG_KERNEL_MAX = (__ETHTOOL_MSG_KERNEL_CNT - 1)
 -- 
 2.55.0
 
