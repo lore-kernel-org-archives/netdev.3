@@ -1,153 +1,129 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3879E399360
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 03:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856373A4274
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 03:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784518697; cv=none; b=bc7kV+gaoy8pFN2wIdv5r2iHar1jRDvJPAjZ6C4YOQm6gbNjoANXx+V8RTBj45R4JMWpjxwrIF/248efqu72S/vMwI3jl7OtWaZshrT51nZdXpo7T314gyy4p6YElnlieZBlalrJV13+nYqGEsQtt40iLvKcZex2tO9gJZi+RYQ=
+	t=1784519119; cv=none; b=fRj4CVmLkvdIV5uxiOqUCZr6W8q87Bniy4B6vdjrQz0mmFAQZdBDxwX2lj4OpvR6StHVKg5WuaqZHCUdcIQ6H7maFKrBK5dpL6s/kiwxESDkg827c8xUzGWU5E7rfDVElPvDqzXXB9Bq2foNGn3fqjL6+EkvYH0niiB76x7LzwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784518697; c=relaxed/simple;
-	bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cuzjm+DsSKljNk6XflU1bhXKllPiXufjOyXnVKoA+k9v8GO1ohqTcz4VWMRagSBT3AmLwYqM/rFOz8YJKt83/FtPGfbMrYCQc1KK35x74u67rR5UafbIZban0H8IyxR/tyH8+hgOJIgurvLWDxo1JhVMZOfWa4tsTaGnoLiDVbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPBkBtWZ; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1784519119; c=relaxed/simple;
+	bh=8uUJTYu9Z11ecOT+fffiqa5MSkhO5jMXa1KI7YHCqEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IENgsYfe6/IIYsfDrO+1/TziFvG5r8Zcgn83FQEMuWCDHY6bLcXgeK0fzuQWZg6XM+15FyQalzfg8KRW4qz4SM6Ngn6ijtYv+W/nOTVKexFAKo7SHXcdmtOBbvzHvcMsB6yJOobv7G5n7R8szo2h7tnKdiycPZxiQ9oJgO47TtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VgjDSmXd; arc=none smtp.client-ip=74.125.224.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPBkBtWZ"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2caed617615so106734045ad.3
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:38:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VgjDSmXd"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66825848551so2990088d50.0
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 20:45:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784518693; x=1785123493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
-        b=lPBkBtWZF2wCNviTunI5arUeBcn3MZxn4z6NQWDyJWe9kl169F5MWicasKH9xqrxf3
-         zsIZoOSmOEYV70Ue9GnrlTVtD4BAOI9g+v0w8NK2UIbPNN+gSxK6rNKr8xRkzJrDy10O
-         ghRj2jT+ewtssWQoEJYYhES4fLNbRVLdYX81ta+drVGTJBQe0a9QLyauk0lymjy4AYls
-         4poKpo90Aj7q1T1KVLCnsHze/uS1pvdiRjQClFXtaA0608GFn1R1W30V/Op9kLbXOPgA
-         WKRAacldbC4tfewACjdvusDPk3Wbc43Cx22D8+hZ6Ig0nZzitqobwjj79YoS7dVpQZWt
-         1ZZw==
+        d=gmail.com; s=20251104; t=1784519116; x=1785123916; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yppHPM8M0gBps0sSHPYVkG0WqZkYvFLfEYcOEagnwfA=;
+        b=VgjDSmXdItlJShsZSFXGl2+LScf3/WxUK88W6quqdsHbVWbJaUbyW9NPWU0Wm5GxBt
+         QXit0a3WmZ9x+hWm1uAd4BMvb1EAlypTDzd7JcJ/Bs5BoGo0sNFZkeCaNq3rziEIpBZb
+         CLjaU3ZB+nigumHpTk0akZW5zarkL4j+Ktbek/N8njLJtMMofCLETXsmxaPn+7YMbK8v
+         SI1LfzDKdX3isg9TlZJsZEXZEG37Vx5kAJhXYmwYYoCVbKLMkHcPA06GDFlOMB5tUKBp
+         T1yAQDM/Y6rI9exzL6h1K3anb1M1UnCyxoeAtakNRc1zUX8n3zi6jhHaVeeXkdl3z9ie
+         nMtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784518693; x=1785123493;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
-        b=sZ0jp83+dnMpnyFkqt03k3MrHe7zOxup0zkJFziZoR2Fs5zpWkxo097L2xrNeWjHNi
-         fT4N9z7MzUsj1Pa/laONamFIrz6OMZLGTZngGeF7YXOvbgPXJnDg/+41+lB4aSPFQZND
-         h0A1nJWtYfkIKkcSo1YFAhl2p7VlKNSb2usaCnqn8optSqAF9FparM9NbG2dh78BFyNo
-         TMeSp3ohNAVkFen41dubUQ9EhSXTVDFQTM300CK6CG+A0UB59/I5gJcYU5bisNPwLeW5
-         F+BHgO/x0+1Xbjnz7kMApK0nTZ/Tx0LHetKrVlLKy4V5w3iaQqPUxrOditnQDF/DRD8A
-         AuxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoZsHFqE9TGAEIX8aHtVDPQhx0L6W05FvSztJLPuscfVm2PhTtp3VJuVgnER0YygLM7Hzs9IwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxG5LGzeUDJcnLi/ye+hnc7bEEp6iGKD9iyT26zPs/7ELv7eCX/
-	RlJkUqL06EQlgjWhc3c5jO94IjbBLq1NGLN3szC08rQbkwQWfieFQ1XW
-X-Gm-Gg: AfdE7cnV7ZLM1KK+HSqbdqIXbMOPIR39UK3sINNwSg7g+g3YpQEtW1pNx/qymfRDVtl
-	tMjrJoinOX0+pi+lyI0rL5sc8dc4KAuH2wnvTBLTOkwE/ax+vfMUOsXBb2HrI+pv21oa5z2p8qv
-	MtFuKZbXP1JUfdj68/E47TkqXET/DUa8mcqno2rQ/PpUFcAlf99/6kCDVSMlKuaEZjt6AlT3YhQ
-	QflL+oQXFds3qvhg0BV9j264xgGjbRAy4NH3m6iwpcjWfvTrZe6E5QFg2DJgm1QNVTmHS3QmO3J
-	q4790YEEvc5EBCYLGQRG+Ocv8H7sUGL3ZOZD0YO6x4XrKFbLXPIr4/KgpFWM0O/UXBKppt7e/Bz
-	l75lxS11D1RibDW6w2dTpkcqTxL/0QsiaD4TcD3eVpWb1DX2P1uOsQt5AlMnPpaIBx045IKs=
-X-Received: by 2002:a05:6a20:2583:b0:3c0:ac0f:6558 with SMTP id adf61e73a8af0-3c3ad677d0amr13026984637.2.1784518692673;
-        Sun, 19 Jul 2026 20:38:12 -0700 (PDT)
-Received: from ubuntu.. ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2ddfb35sm26535048c88.14.2026.07.19.20.38.07
+        d=1e100.net; s=20251104; t=1784519116; x=1785123916;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yppHPM8M0gBps0sSHPYVkG0WqZkYvFLfEYcOEagnwfA=;
+        b=VMh/te93jNCr66YJfmfjLBwY4tQYvWz2THwuMZCVHPSAp/yQnOEBH/O9jrlPg9dVWK
+         6fjvWk5XXZu+Dc9xa7IyhtTjl+lHr5FPlqouttLCOmWTB+xBCgfw9m7V+ef2fnzphj1i
+         SFnkW8I99F4Hy4B4rZR6Ilu/LdAI8gbeSxZ68o7HswsCbv2faYVftc+YDDJzH3gOrJXB
+         dArUpY9Bmi5lP1Hmw6uVRMoDfyTGjXP9pqbvFRxnj3FtPF8i0riJt65FcWoLS79gJEHN
+         lGiR/oqxHg2Xf4WBRjzXRRVxdu81VBE0YLaHnE1GL9XVTMZTKjkzhLFfbYI1Ot1jduFf
+         ejRw==
+X-Forwarded-Encrypted: i=1; AHgh+RowC4PfB2swrAJRvkCmzu9yBPmTp6jvzWzHJBEWrrzkCkWW5mmhdxOYGqqRvxMToBCD1uQ6Ai0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCcGdjxWbeSWJJPWc7YhgjuB2INny420ITOi4h6HO7Z0VjJRDX
+	DSuybwbYn+bLP9j7CGzGvNsz0g7GenFHpOSjIbQzNW0j9dBYSxwpR/5n
+X-Gm-Gg: AR+sD10FChVQOrQ8IkpKXIAI2dWydRpmcajinR8n6V2TGeJBJxv6Q/3ts94gvAtq5r2
+	64kjhZPDvI5dTAhTg2JXuA0EVrP+wrRo8g+MH5lxJE+Dy3oCcOCvRXkWpQtwLTgx9dQ50ssyvoS
+	T0s8DX+J+hRRPjNyBTEAK0yoXbgZhLT+D3XrIyDegBi3L10PUqSrXFjzUPs80oq+FACk+vZ74fI
+	1vAmNjxFdMxIr9RR/7BG9WqUu3r8+EWvTmJ0z188W4x9chrbtl9pouL/ATE6f3dvri3He4oXQY5
+	nB98nPqxtmlmzX0R4JXaTVXgI958kU979sClOVvS/50W0URu4fXndzPSJ20zDx6rrVTwMt36TSe
+	mK/FIwjkGKHhzC4XsdA0XevtFN6wQgv0b+1WAkGqW0NrTY6ylqWtHbEZuWZbfyYA89zL7MlBMyG
+	wAoJY2MfZ6tnl/kUQE74xm4gu5fAUDrQ1RJEd8ZJ4QFFRKlDeAgmzhY6oqHbWoEYIMexUrIztVl
+	xc2mlL8a4WUGg==
+X-Received: by 2002:a05:690e:4399:b0:667:8b90:2e5a with SMTP id 956f58d0204a3-6683bd8a65fmr1830105d50.102.1784519116198;
+        Sun, 19 Jul 2026 20:45:16 -0700 (PDT)
+Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6683b80d1aasm5357048d50.12.2026.07.19.20.45.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 20:38:12 -0700 (PDT)
-From: Jing Wu <realwujing@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Qiliang Yuan <realwujing@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org,
+        Sun, 19 Jul 2026 20:45:15 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v10] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Mon, 20 Jul 2026 11:38:03 +0800
-Message-ID: <20260720033804.3862547-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <e011c6a8-cda5-42ce-9d42-b23d1c81b26b@suse.cz>
-References: <20260214-wujing-mm-page_alloc-v8-v10-1-bdfea431fd97@gmail.com> <e011c6a8-cda5-42ce-9d42-b23d1c81b26b@suse.cz>
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	blbllhy@gmail.com
+Subject: [PATCH] net/sched: cls_u32: validate offshift to prevent shift-out-of-bounds
+Date: Sun, 19 Jul 2026 23:45:14 -0400
+Message-ID: <20260720034514.23053-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Qiliang Yuan <realwujing@gmail.com>
+u32_change() copies the user-provided tc_u32_sel.offshift (unsigned char,
+0-255) into the kernel knode object without bounds validation. When a
+packet later hits u32_classify() with TC_U32_VAROFFSET set, it evaluates
+`ntohs(offmask & *data) >> offshift` where the left operand is a 16-bit
+value promoted to a 32-bit int. Any offshift >= 32 is undefined behavior
+per C11 §6.5.7, triggerable by an unprivileged user via user/network
+namespaces.
 
-Hi Vlastimil,
+UBSAN: shift-out-of-bounds in net/sched/cls_u32.c:236:43
+shift exponent 32 is too large for 32-bit type int
 
-Thanks for the review, and understood on taking the Ack back - the
-v10 changes were substantial, and I won't send v11 just to drop the
-tag. I'm folding it into an actual update instead. Let me answer your
-three points directly.
+Fix this by rejecting offshift >= 16 during filter creation in
+u32_change().
 
-1) The Ack
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+---
+ net/sched/cls_u32.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Yours is dropped. I've kept SeongJae's for now since he hasn't said
-anything to the contrary, but I'll understand if he'd rather it not
-carry over either, given v11 also fixes a debounce race in the atomic
-path that nobody, including me, had caught in nine prior rounds:
-last_boost_jiffies was checked and updated outside zone->lock, so
-concurrent CPUs (e.g. a multi-queue NIC spreading GFP_ATOMIC
-allocations across several softirqs) could all pass the
-once-per-second check for the same zone before either updated the
-timestamp.
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index 8f30cc82181d..e7a9a49353f9 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -1107,6 +1107,13 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		goto erridr;
+ 	}
+ 
++	if (s->flags & TC_U32_VAROFFSET && s->offshift >= 16) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "offshift must be less than 16");
++		err = -EINVAL;
++		goto erridr;
++	}
++
+ 	n = kzalloc_flex(*n, sel.keys, s->nkeys);
+ 	if (n == NULL) {
+ 		err = -ENOBUFS;
+-- 
+2.53.0
 
-2) Real-world benefit and side effects
-
-I don't have a clean before/after deployment number for this exact
-patch yet, and I want to be upfront about that. What I do have: a
-production host running a downstream 4.19 kernel logged 144 order-0
-GFP_ATOMIC failures over a 4h15m window, every single one through the
-same NIC driver RX softirq path (bnxt_rx_pages -> net_rx_action ->
-__alloc_pages_slowpath), across several unrelated network-facing
-services on the box. That's evidence the failure mode is real and
-ongoing - it is not evidence that this patch fixes it, and I don't
-want to conflate the two.
-
-On side effects: the mechanism is bounded by construction, not just by
-intent. Each zone accepts at most one boost per second (the debounce
-timer), and watermark_boost is clamped to _watermark[WMARK_HIGH] / 10
-per zone, independent of how many zones get boosted in a single
-slowpath call. Worst case this adds one extra kswapd wakeup per zone
-per second, and the ceiling on any single zone is 10% of its own high
-watermark - it can't run away or starve unrelated allocations past
-that. I've put this bound into the commit message itself so it isn't
-only visible in this thread.
-
-I know a bound isn't a measurement. If it would actually help, I can
-try to build a synthetic reproducer (fault-injected GFP_ATOMIC
-pressure under load) and come back with before/after numbers instead
-of leaving this as theory - let me know if that's the kind of
-evidence that would move this forward for you.
-
-3) netdev
-
-Cc'd this time, along with Matthew Wilcox, who asked for the same
-thing on v1 and was never followed up on. Sorry that took ten
-versions.
-
-Thanks for staying on this thread.
-
-Qiliang
