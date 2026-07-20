@@ -1,177 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCF1477E23;
-	Mon, 20 Jul 2026 18:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6281C388392;
+	Mon, 20 Jul 2026 18:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784570789; cv=none; b=BLOxKHrVG4Bv1AyIHis/py0UEeKnneqF7prI2tTedJVNg1kj8a0J9ab8ee+C5k1sLuVenIj9zNxaLnEzlucSx8RpbiR8sogfOiOVLo7PolYd4qGgVjDWb7lGHmqGSyAxnsAOLJg9uTLdOuDkks3hi+40amo8Dr70TAxnHVlRGyw=
+	t=1784571199; cv=none; b=XtmgmetNoML01KtVXC4TxYtbIrfXlRMuj3QUM6zbkfF8kNwJws2SkoiXQQaVlOoplV8mMp6vlBzeQFOYfPGiobQqgUaGV/4EhNTdNtXz/V97mwLHD6seIy82xyKZikQZrSycpuzep2ecRGpcXGxitZ9XgAk0zeGBW/uNvT/cNS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784570789; c=relaxed/simple;
-	bh=sj3XiQL94FBC+unXzaEF1EP16YDqah5lGfHb5qL1E6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ENwjcTxHMI4jIqcRJQggON//v6sRrCwif+wAG7GChoiJ3LG5P2hU4Fmcsp9OGRpYD/IN47dxdoEWvCFhkY7eQQ8Y2zp++fgoK1Ke1YbH+4pr8/Uvb4SbVmdDkj5N5lU4WWYgtYNlRiSxZ+oXQ3EbaGRVmxXz1XanL7auYRs1VzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWCsFkTE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784571199; c=relaxed/simple;
+	bh=IOKYeviaPAK9TqMrOkjCLBVODOs4vjSACv0V5kgE5GE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RQOeTRP+iAKy+2DbyH2eO9oyg/S3IJ27QN+TexENXMv7FYFCpLdUErhxSLKmmxpgWalhJ0Nne8FHgM434abd28r2UfP3UBhz5NeUgezdH1tOGxU9T0m6FdyvrY8g3zX9ffFwgGxSxB+SbdmYk7veOvtFNFLZyoFeMW7YY5V4EvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eeoZMPw0; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWCsFkTE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911531F000E9;
-	Mon, 20 Jul 2026 18:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784570787;
-	bh=nEo3+xzXNoxQF5Zig+V0NoDPZCD01sZ6pyJ78+EGJ+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LWCsFkTEe2OBn0UC3TwLqYcQX9t2MqAXgzNK1HNURCRtMzAV0HvFWVmWE4QnLZq8I
-	 77NfimYhx/SdrdkOIWn1XvLSeXpzwwoX6z3oeNrjYM+9L79e2rDY/lwxW3p9tQYGmR
-	 DGiEpe70W3aTc6Mcyb6TijUkQE1sKRFdDWQrCQu21oa1oXLdepN+yLcxCv/ohKqOh4
-	 bxYSpmkqUoYNXQrTtNRzjQy2kWMYmzF/kpbinI6Hy0CN3SylovUFkrpuHlBjjPikDT
-	 Bs16j0jXkWPgT1Yirf+19hnZQ4xI2zsiA63GuuKbTMfezxOcF1dWOl4jfRFwEK33Fb
-	 MgjU/6+xx8sOA==
-Message-ID: <bf839033-3955-4f2f-b33f-3fa948b2c2de@kernel.org>
-Date: Mon, 20 Jul 2026 20:06:17 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eeoZMPw0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0Pa1fxs7LFxjUuZs14CdRVR603IZ7HZreI70IHbVRSA=; b=eeoZMPw0Gt/Tr6PIqcxghwCERz
+	k0wETnu74pcbdTBCFw63/I8cmRgGeGfwAn46iRG/oxluiWjOmp4kVb9rY462LSYS/I+XiK0Ic0cX4
+	3e5TNJrWuiHvuesbi8bjIcFEYmlqnU10yPdoRtPF1yZiynhN1sNTfMBtOp4dgx6dfj7A=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wlsU3-00DIzk-8a; Mon, 20 Jul 2026 20:12:55 +0200
+Date: Mon, 20 Jul 2026 20:12:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
+Message-ID: <1e640dcb-43ce-4a3b-a74a-ed8e48706b86@lunn.ch>
+References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
+ <ae82997f-537e-4a2d-abce-d163fcf9d868@lunn.ch>
+ <6ac12388-60de-45aa-a8d0-62fcfaf7bea2@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev,
- loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ac12388-60de-45aa-a8d0-62fcfaf7bea2@linux.dev>
 
-On 7/16/26 16:30, Brendan Jackman wrote:
-> +++ b/mm/mempolicy.h
-> @@ -0,0 +1,31 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * mm-internal API for mempolicy.c. Public API lives in
-> + * include/linux/mempolicy.h.
-> + */
-> +#ifndef __MM_MEMPOLICY_H
-> +#define __MM_MEMPOLICY_H
-> +
-> +#include <linux/gfp.h>
-> +#include <linux/mempolicy.h>
-> +
-> +#ifdef CONFIG_NUMA
-> +struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *mpol, pgoff_t ilx, int nid);
-> +#else
-> +static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *mpol, pgoff_t ilx, int nid)
-> +{
-> +	return folio_alloc_noprof(gfp, order);
-> +}
-> +#endif
-> +
-> +#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
-> +
-> +unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
-> +				unsigned long nr_pages,
-> +				struct page **page_array);
-> +#define  alloc_pages_bulk_mempolicy(...)				\
-> +	alloc_hooks(alloc_pages_bulk_mempolicy_noprof(__VA_ARGS__))
-
-BTW, seems you forgot to delete this bulk stuff from gfp.h?
-
-> +
-> +#endif /* __MM_MEMPOLICY_H */
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5071177059a96..69f561332bb93 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -41,6 +41,7 @@
->  #include <linux/swapfile.h>
->  #include <linux/iversion.h>
->  #include <linux/unicode.h>
-> +#include "mempolicy.h"
->  #include "swap.h"
->  
->  static struct vfsmount *shm_mnt __ro_after_init;
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 5be825911e645..8ccd03c39a407 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -24,6 +24,7 @@
->  #include <linux/shmem_fs.h>
->  #include <linux/sysctl.h>
->  #include "internal.h"
-> +#include "mempolicy.h"
->  #include "swap_table.h"
->  #include "swap.h"
->  
+On Mon, Jul 20, 2026 at 04:17:32PM +0100, Vadim Fedorenko wrote:
+> On 19.07.2026 17:13, Andrew Lunn wrote:
+> > > Looking at this, I'm wondering if we can't just get rid of SIOCSHWTSTAMP
+> > > handling in phy_mii_ioctl(). Looks like we can ?
+> > 
+> > I'm not sure about that. We need Richards input.
+> > 
+> > The code in phy_mii_ioctl() allows the MAC to be bypassed, it goes
+> > straight to a PHY based stamper. It could be the MAC has no idea the
+> > PHY has this capability, so it has not implemented the .ndo?
+> > 
+> > It might be we need to hoist the code from phy_mii_ioctl() into
+> > dev_{sg}et_hwtstamp()?
 > 
+> Hi Andrew!
+> 
+> I think I've converted all phy drivers while removing support for
+> SIOCSHWTSTAMP/SIOCGHWTSTAMP from netdev ioctl. I believe it's impossible right
+> now to reach SIOCSHWTSTAMP path of phy_mii_ioctl via ioctl on net device.
 
+Lets look at this, using a random example:
+
+drivers/net/ethernet/marvell/mv643xx_eth.c
+
+mv643xx_eth_netdev_ops has nothing about time stamping. However it
+does have a mv643xx_eth_ioctl. Which calls phy_mii_ioctl().
+
+Lets say this Marvell MAC driver was paired with a
+nxp-c45-tja11xx. nxp_c45_probe() does:
+
+                priv->mii_ts.rxtstamp = nxp_c45_rxtstamp;
+                priv->mii_ts.txtstamp = nxp_c45_txtstamp;
+                priv->mii_ts.hwtstamp_set = nxp_c45_hwtstamp_set;
+                priv->mii_ts.hwtstamp_get = nxp_c45_hwtstamp_get;
+                priv->mii_ts.ts_info = nxp_c45_ts_info;
+                phydev->mii_ts = &priv->mii_ts;
+
+So it looks like in phy_mii_ioctl(), the conditions:
+
+       case SIOCSHWTSTAMP:
+                if (phydev->mii_ts && phydev->mii_ts->hwtstamp_set) {
+
+are fulfilled, and
+
+                        ret = phydev->mii_ts->hwtstamp_set(phydev->mii_ts,
+                                                           &kernel_cfg,
+                                                           &extack);
+
+will happen.
+
+Now, this combination of MAC and PHY is very unlikely but it proves
+the point. As far as i remember, Richard added this code for the
+dp83640 PHY device, but i don't remember what MAC driver it was paired
+with. He wanted to make PHY support just work without the MAC driver
+even caring.
+
+	Andrew
