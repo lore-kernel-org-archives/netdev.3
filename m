@@ -1,45 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63001427F96;
-	Mon, 20 Jul 2026 13:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB34B42E014
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784555335; cv=none; b=F2TU9nfQz7pCMlZR0QK96VoRyZkDrlYL178w4pfsoS56Jlgl0cW8fM3Y8aKpDoe1ySVh1vz+WZOm1bqPpu7GfeQCXpzCsNhZsqM5hrDu9zNF++qcGbgHjwDixbgS7MTNrsbVpK1cvvJmwf4eVJk3uZbMMc2sQfuoWjvTj9s72+8=
+	t=1784555340; cv=none; b=efTX9uUstzbaTLQS/TjqwRPnxDLqE6onMJ8CxwxJ4WcHt3YyU7v4MiCz+ykFPI4RXbg9+01MVprUdsZFyaUl8NpmRUhl8uKF2OYZu2wi6hp3hruGHEcJo/FCzI/EvLvu0TjLSHfJS69PpxaNGYS3ugsOTeJeHJmsmq8LMPf3ppU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784555335; c=relaxed/simple;
-	bh=zhOdL6Czb0ab5M6qqhBHlqtPjYAwQ5pBcR+/Sh6kEcs=;
+	s=arc-20240116; t=1784555340; c=relaxed/simple;
+	bh=sHKsOvktHornLe+ZeU8u/20dX6bNatlr37qX8toUr58=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJYs+5eeI/TlUGYZ2/FFemER/z5Hplvrbt2wggSz114+oaveVesJraqBlz9X65YAYyH/ZkfpDArIA3yOM1Q2WY6N3viu/yqnjZyvh27ybVtIxCGzpAqpXO4YGxIZm3TpU7I31VnOYnmw3r+75TwyzfsID3aj0NNMnEmlr/LUa2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=R7zzzu5A; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=T6ucw/RkNpJZTIkR3+fBV9T7mN7DJuF3zn7quSO8lyg+6Is4Wi5+UV/lfAIqzcuztMrEOsIQzPu02W7gIHfMwcMcAo+8HCO249y8E5Ftm6LBcQP3y4/e1jkcAsAdqwfQph1WbTYybkZkGa/3//vo5DnJRa9CywEZxayNIcUeGqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=xC6+8zLl; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="R7zzzu5A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7qSKy/g33amts1oK+SrM9bDZHgU8q/E7Z64+Dh0BkeI=; b=R7zzzu5Aa1i6/M0ZwDPrgyOQOh
-	ubj9TFOWJ8jPB/sSIC8qF10oJvkiPubOhdZRK5CPreSLgBveWa2BZaHg7lmCy4Gb8BRr/5K2OGBFd
-	jU63DArTxvLR1yvFopIUIKZv+a4R3lAGOrH4Ic7lc152ImRRZVwiUY6uGc/R5mlR/rcw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wloMK-00DGis-Gn; Mon, 20 Jul 2026 15:48:40 +0200
-Date: Mon, 20 Jul 2026 15:48:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v4] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <cafd8d43-7f76-44d8-a579-670d911f9b91@lunn.ch>
-References: <20260720091133.2438175-1-kyle.switch@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="xC6+8zLl"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-848882fdb18so7329034b3a.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784555334; x=1785160134; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=exgSZUy4mQ+gBayEGCoSCzUgfoiRVrcGM1wITQ8aelo=;
+        b=xC6+8zLl7S7krs4wKiFhDBEIIGvkvZsRjZ072BSOldbfflGkE2NGRVx5dlPl52to+n
+         ouLVNs1J945DC/anYL1rhXOhdP5rPzPljJdEF4H7LYEhOqFBNsr/lwNJ6CnXfNNcCobd
+         2sGzX7XIoLXNuw4rmmCqO2CFCqb6SqYgreIo1/4KSrxDWy5tHINhtSKcgdUn6c6s0CNy
+         bC8JQHUsjFOHTX+kakFeAGDbr1gukkybITiyFXmML15h2eMBIkzLjoeZGh0JoYrtA4iy
+         0FuXRJpS1hsJ0kHWM24Tz8xJPtEgmeQ0Ej1I6X8Om1qYXBRHL2ZuEEQ0S+YFP+iTreWj
+         aaOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784555334; x=1785160134;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=exgSZUy4mQ+gBayEGCoSCzUgfoiRVrcGM1wITQ8aelo=;
+        b=pzvUsqggYgArrCNObemck9PZl44NM7Y2iVdMiXDLK72WnHaiU0bCpo9Se03YYjxVEl
+         8UVLFlOH0JmCwPlwJqXp5SpW1HbP52GOafymBpSmhb1CVakv2AxK6gn5zC42OQPDUM+3
+         FuBdXe2gU5/6OA/jwFd6279KwxAFTzpi647G75Ii9jV7E5z2piJHngxpliFOykYm3Tim
+         uU81F+joDyVEtdg4LNGb4TbO/CASVoar7cfzKWoC9uhcbOdI37avWJ9FB8IC21o2xGhg
+         ylMMM/b95zPnjbe0L8U/PYd9AbC5116eOUjgqa9yy1XpuNpYuf8QSYLIJXRO7cdvGNmB
+         Pm6A==
+X-Forwarded-Encrypted: i=1; AHgh+RoDGr7C+tiGhVXYpH0bEYPua6bBt4dP/Fo/Z/ArCcNCyfbqujJSjRQcyh+kLt7JZDq9zQLKBDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkk05DprFSCUe3twrFwTIYYKGOTqH26Srg12/TSJKVUe7frtEJ
+	UeNLiR2TBGtGE7gMS7PG/QecXIzqYWojXuC2Fwx0IlPGyku+3IStbBzfoFzqm0k9mRk=
+X-Gm-Gg: AfdE7clIptIRqsKCt47o99XXx62P+l9eQUmlKwyWUvNededfDCSunvG0QOHmvzSAtBd
+	Gd0Fd8gIwys/ShuxX4h9CO2MLptGjYxet+moP6lJR0imbebhwK1qgcqLh4ymSXZ3j1N8JCYZWmj
+	MHTVc+WXA8YvItvujnQo1M6PFqjTwt0/WihaYD/Yg6gPWjP0BESQ3d50k87aChkpRBbv6SO+rE5
+	iN4TL8nQWdPhMJS8K2lcOeYD04ljY+9uZ4h4UByuiImWu7oJTuDjLrVXsF8Ow8cRfWsgNS0Qk9A
+	qvhkwOmNpug2ZRkYxDhVBuidFToDgjod5p6ODaGVHqEwCNrREEkKZ5HEvdyDo2W8ClI1x6GT6zm
+	MwPlqQVqBSWJJ73GexcXiFRXmxLF1UdVl4cdx7WokIBpK3fguhuiGRGE=
+X-Received: by 2002:a05:6a00:998:b0:845:eb73:411c with SMTP id d2e1a72fcca58-84c2946f027mr14586475b3a.45.1784555334640;
+        Mon, 20 Jul 2026 06:48:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adc3466sm5844378b3a.15.2026.07.20.06.48.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 06:48:53 -0700 (PDT)
+Date: Mon, 20 Jul 2026 06:48:53 -0700
+From: Joe Damato <joe@dama.to>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RESEND v4 net-next 14/14] net: enetc: use kzalloc_flex()
+ for enetc_psfp_gate allocation
+Message-ID: <al4nRS6hB8siUx3f@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
+	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-15-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,33 +89,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260720091133.2438175-1-kyle.switch@motor-comm.com>
+In-Reply-To: <20260720014317.1059359-15-wei.fang@oss.nxp.com>
 
-On Mon, Jul 20, 2026 at 05:11:33PM +0800, Kyle Switch wrote:
-> Add a driver for motorcomm yt8824 quad 2.5G ethernet phy, supports
-> 2.5G/1000M/100M/10M speed.
+On Mon, Jul 20, 2026 at 09:43:16AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> Replace the open-coded struct_size() + kzalloc() pattern with the
+> kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
+> removes the intermediate entries_size local variable and makes the
+> allocation site more concise.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+> index 7b17bca24f26..2aa0fcaafcd2 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+> @@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
+>  	struct flow_action_entry *entry;
+>  	struct action_gate_entry *e;
+>  	u8 sfi_overwrite = 0;
+> -	int entries_size;
+>  	int i, err;
+>  
+>  	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
+> @@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
+>  		goto free_filter;
+>  	}
+>  
+> -	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
+> -	sgi = kzalloc(entries_size, GFP_KERNEL);
+> +	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
+>  	if (!sgi) {
+>  		err = -ENOMEM;
+>  		goto free_filter;
 
-So this is better, however still not correct.
-
-> -		/* Enable WOL feature */
-> -		mask = YTPHY_WCR_PULSE_WIDTH_MASK | YTPHY_WCR_INTR_SEL;
-> -		val = YTPHY_WCR_ENABLE | YTPHY_WCR_INTR_SEL;
-> -		val |= YTPHY_WCR_TYPE_PULSE | YTPHY_WCR_PULSE_WIDTH_672MS;
-> -		ret = ytphy_modify_ext(phydev, YTPHY_WOL_CONFIG_REG, mask, val);
-> +		/* Enable WOL feature */
-> +		mask = YTPHY_WCR_PULSE_WIDTH_MASK | YTPHY_WCR_INTR_SEL;
-> +		val = YTPHY_WCR_ENABLE | YTPHY_WCR_INTR_SEL;
-> +		val |= YTPHY_WCR_TYPE_PULSE | YTPHY_WCR_PULSE_WIDTH_672MS;
-> +		ret = ytphy_modify_ext(phydev, YTPHY_WOL_CONFIG_REG, mask, val);
-
-Look at these lines. What changed?
-
-As a reviewer, i review diffs. Changes like this are just a waste of
-my time. Please review your own diffs, look for issues like this,
-solve them. I won't give comments on the actual code until these
-problems are gone.
-
-    Andrew
-
----
-pw-bot: cr
+Reviewed-by: Joe Damato <joe@dama.to>
