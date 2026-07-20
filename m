@@ -1,114 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8632531326F;
-	Sun, 19 Jul 2026 23:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C7E1F4C8E;
+	Mon, 20 Jul 2026 01:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784503996; cv=none; b=aze2i5Sbw05yMb6RogtMc7PUaquTPOCxe+bFbSr9tmFRap5a+l1L1Vcdx/NRfjvDfARKAngN3tuWX9pSxHHNi4YPg/xgvOdpagNrmVQJpaZya1zkT/1cQ5E11yUWIj8gEC7vO82c51isC96CO4yN1ndRKTtMXjDX7p1wudIRT9g=
+	t=1784510010; cv=none; b=r7uHjyVlcvNsFJ373zoVvWAeqE8VktB/+Mk+edCPBR8dQq8UavNaj3xza+sI8l4t/HR/s86U9P8xF8PnpkbVQZ7+GZn6ZrYe+U8VfXMTGVQxBHyLZptu+JXTRgxliqrGQwuEJbrogUsDfoYaPyAbNQT/s0wHdU2dV8MrSiWf/6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784503996; c=relaxed/simple;
-	bh=JohItgFDYNvTSCz5of/d/eWIF2FkzAlhthyyjzl99RI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJzoWkfQCqvA5lTgXRhp7orjVc36mfkqxVDSmeVCDspocbw3/iUCpqTtVFiX/G/d0xXBCLX+/kB4yXMYph2iJlJ1hc/MWpFdVsyYonL4W0PlUl13I6ClNwAIAMNLg9XUomuQ696fIWI3i91Ere32KY2xI0AJLwvjaZPHeUSNkig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i8VUhAz3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784510010; c=relaxed/simple;
+	bh=mzhDYiU1OVoUhCqJyxPsSIsPxPKYmPT3KU6c5ZZyJhU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UhDf0FQu7B6B/vYkEZ2rwNLUgS4OdO8f/9WyHMODY1DdEr328WtwrgIzjFRFco3bduxcpxyCq22caYVLigI+FpJuCHOfxvezXLnBsE/gRQT+GojueuE5pv61/F8QCmpcAKq5SLPZtFXV19n88ev2zwmIIquai7C1EJeiqtnLV3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=1dOyq9Vn; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i8VUhAz3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XzeshPSykIh3zVnXJaep6Cq/qVYSj3kEQobSYdnqTI4=; b=i8VUhAz3db8XRFBh4un+Y8LE6K
-	OhBDiwDHm0FX61xR3UPe7EHYP1B9LhRI3kUOFLVHyUZPUK8f5f5FWBH939rseyY5d3/k1R300YMmQ
-	tEmpC9ldC07zxJ+1aVZQ3LMHaaYxZ1A72dzHLNuxG0NhWGrAJALQF4ZJ5QnRE5QLdz/s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlb0I-00DA2P-0n; Mon, 20 Jul 2026 01:33:02 +0200
-Date: Mon, 20 Jul 2026 01:33:02 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Dietz <simon.dietz@plantwatch.de>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, johannes@sipsolutions.net, kuniyu@google.com,
-	linux-wireless@vger.kernel.org, dietz23838@hs-ansbach.de
-Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
-Message-ID: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
-References: <20260718210046.2357882-1-simon.dietz@plantwatch.de>
- <20260718210046.2357882-2-simon.dietz@plantwatch.de>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="1dOyq9Vn"
+Received: from smtpclient.apple (203-220-69-184.tpgi.com.au [203.220.69.184])
+	by us.padl.com (Postfix) with ESMTPSA id 0CDE26095A;
+	Sun, 19 Jul 2026 21:13:20 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1784510006; bh=mzhDYiU1OVoUhCqJyxPsSIsPxPKYmPT3KU6c5ZZyJhU=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=1dOyq9Vncbw/08fJG0BWDgkJcHnrLAk3wQHHKuaNmYPDLV39Jabu8MAGHXnoqoPMn
+	 i3Hy4r3fqdrumPIgiJhT9uhLGHy0snrKtCA/HOznJvPpQBwxfTavm1UDvcB61ymu5/
+	 5Q+E3l3g9LCt8Z4tFcOm9lsh/u+BLtq2EBSbsxLZVzzId70OF3R4k3cTwDKa8sysf/
+	 kvhQHSbXbxnPWUDdPHthjDK5GSRj00hy2U21VI7DPqHoM/5awudQTl5QEylo+nHrLB
+	 pFdjdhwMIZy2n7WS8ayut8UQcFA/ptTUcFXLQ3cX5PzgWfC6hdJ7FfYoHV2+2J8kSi
+	 uQrZEYT+73wQA==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260718210046.2357882-2-simon.dietz@plantwatch.de>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp
+ fixes
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <20260719225701.okkvl2uhgsuwydfi@skbuf>
+Date: Mon, 20 Jul 2026 11:13:06 +1000
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>,
+ Andrew Lunn <andrew@lunn.ch>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Cedric Jehasse <cedric.jehasse@gmail.com>,
+ Kieran Tyrrell <kieran@sienda.com>,
+ Max Holtmann <mh@rme-audio.de>,
+ Max Hunter <max@huntershome.org>,
+ Christoph Mellauner <christoph.mellauner@joyned.at>,
+ Simon Gapp <simon.gapp@gapp-audio.com>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <537810DD-FAA6-4DF9-BC6D-36ED01093022@padl.com>
+References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
+ <0A7B1CC8-F5F6-487E-A14C-1F0C2D5ADC84@padl.com>
+ <20260719095307.hwtnbrqdkjxntrcr@skbuf>
+ <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
+ <20260719225701.okkvl2uhgsuwydfi@skbuf>
+To: Vladimir Oltean <olteanv@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-> +struct gn_coord {
-> +	__s32 lat;
-> +	__s32 lon;
-> +};
-> +
 
-> +struct gn_position {
-> +	struct __kernel_timespec tst;
-> +	struct gn_coord coord;
-> +	__u8 flags;
-> +};
+>> Good point. So perhaps processing the embedded timestamp inline
+>> doesn=E2=80=99t confer much benefit. ptp4l (which we use) handles =
+out-of-order
+>> messages fine.
+>=20
+> If you're intending the in-band timestamps as a fix for gptp2d's
+> limitations, then no. As a general optimization - maybe.
 
-> +static int gn_set_link_af(struct net_device *dev, const struct nlattr *attr,
-> +			  struct netlink_ext_ack *extack)
-> +{
-> +	struct nlattr *tb[IFLA_GN_MAX + 1];
-> +	struct gn_position pos;
-> +	struct gn_iface *gnif;
-> +	int rc;
-> +
-> +	rc = nla_parse_nested(tb, IFLA_GN_MAX, attr, ifla_gn_policy, extack);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	if (!tb[IFLA_GN_POSITION])
-> +		return 0;
-> +
-> +	if (!capable(CAP_NET_ADMIN))
-> +		return -EPERM;
-> +
-> +	if (nla_len(tb[IFLA_GN_POSITION]) < sizeof(struct gn_position))
-> +		return -EINVAL;
-> +
-> +	memcpy(&pos, nla_data(tb[IFLA_GN_POSITION]), sizeof(pos));
+Delivering it inline makes more sense to me but it is a more intrusive =
+change. I don=E2=80=99t have a strong opinion either way. I=E2=80=99m =
+sure gptp2d could be fixed were someone motivated.
 
-Passing a binary structure as a netlink attribute is not going to fly.
+> The only problem with timecounter/cyclecounter is that the hardware
+> clock remains free-running, which means you won't be able to apply a
+> time-synchronized taprio schedule (if the hw supports that).
 
-Netlink messages are meant to be built up from a number of attributes
-using its fundamental types. That gives you extendability. New
-attributes can be added later without breaking backwards
-compatibility. And i think you need this. As far as i can see, you are
-only passing coordinates, but no indication of direction and
-speed. NMEA sentences do support this, and if the GPS does not, you
-can calculate it. So at some point new attributes are going to be
-needed.
+Yes, many Marvell switches support 802.1Qbv but there is no kernel =
+support at this time. For 802.1AS, you want both kernel and user =
+counters to be free running, so neighborRateRatio can be correctly =
+reported.
 
-> +	rc = gn_validate_pos(&pos);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	gnif = gn_find_interface_by_dev(dev);
-> +	if (!gnif)
-> +		return -EADDRNOTAVAIL;
-> +
-> +	memcpy(&gnif->pos, &pos, sizeof(pos));
-
-This also does not feel correct. Why is location a property of an
-interface? Can one machines interfaces be in different locations?
-
-I suppose you might have one interface pointing forwards, another
-pointing backwards, both shaped to be mostly unidirectional. And a
-third omni directional interface on the roof? The interfaces can then
-be a couple of meters apart. But is that sufficient to matter?
-
-   Andrew
+Luke=
