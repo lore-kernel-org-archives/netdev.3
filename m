@@ -1,197 +1,297 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1B384CCA
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 21:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784582160; cv=pass; b=spJ7iLtEbBZGLmffrad8Lh+t9KeXUPTUqtG+dfxaAvsV+0fab+ueVEhLNMjM5bXxq3OoDMFe8EP2YpUMQn9vqoTdJyxmQjF/fDTO4ZgTt3PDBnesio7KFLdrFedHHtan8/Wa+YszkOfQVTBce0amZ0hMfClcqIeHiitz4vOPAvI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784582160; c=relaxed/simple;
-	bh=GYmozcAMwSemNlmhz+B3xhx2TrSFNt5xSE7k56r5ovg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qdk5C/mmPAIcVOXad3y9zy5LRm2MdoG7X5dMEftwyQ3TLDJm72v4Mras3cEv/UiGXrz8AwMFyFVg4aHTisu0WvVKu+Ay6eFYCzCyg40y6I2F7gtf4fcUjrfV49YfOHewXpOo0HcdJckcJ89M/ffSHSXjYakr2LN0vSdRDPTex0Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F5hO0hcB; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713343CAA5F
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 21:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784582173; cv=none; b=doxOXpMD/iT14NT2HGMakxLhQU/hxVvV64ykSaLWWs8/8aGUErjkyff4p1yP+MbWq/MN7CWj7nROYK1FxNY8Jd/tTqYKJTyhDsZhKj+7FcWPVQXGLiAdC3peW+t8C0obP2rddm52bxXtZrA5oGKBujKjykd4OsyK6ew4b/RS/QY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784582173; c=relaxed/simple;
+	bh=EkDLUhHkVdgAGlVlMw4IHFAsXUm0ZTI1gKZCuc2A1eg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=eX9W0iqxZFTHyVeffCX7KV3o291T7vXV88mWe0m7vJNJq3U+bF1KHjjrCSpWcGF/3RAYW4vrj2xetjY3yMRGJaMSQYRcpQd6AjKenxI+22RBgGV6NwIZIGb3auy72uAjEewqvpvCWfEw7UfKiJ3oy6MbaoRQIwfT5sEk7/3gfqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=FDedrYDj; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F5hO0hcB"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cede6375caso376865ad.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 14:15:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784582158; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jRluPmIbtg4vA/vhqwMpTBDIpUBqVBQD3MmEDxoJXswAB7VUdbxLJkIu22GTLWM7MN
-         VuY7fxCSYX+zcRl9wRKSbrjhl3HHk32RR45hjC9N8iTGLqWRsmDCI6LmQ1QyzVOHJgk9
-         bCtb5e5pYtJ9viOsqlB8dWaSHt85RcU5dxTPN5zp45TKxzQb3oYEZNV8waVA/i/eIa+b
-         iUymBYqWfk7o+624xoXaj7E9Bz/OPr5IsJfsNklywsB7s/ekjgconIchUBtnJwqrG0xA
-         F/xYZmC/MRBrRBoneXdwi5W7KKfZkmCb2nPNhF1LikUwWbAS2heiLhEEpJ1z7LcC4q9H
-         KTxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
-        fh=4F5lCFeFr/L80jGDkzXD2moi/oqQZt22NIeRKt9csto=;
-        b=hqOH5HEmHFwAhrXOu1OPgIzu0lvKlFNZU/PtqZMdLf8s1c75cPynFuLh/o7nhdtkqK
-         gjW4JhlxM8sCDufcCL3nfmCOJdbOoBHy9Gbv8Theo71/XGhawMaZdogWJKtepgzp1dG7
-         HohR7YDGglLmcD11Dzy8ML29RhSdbaYeoHIc0ZT9E4ZBQpOPA2BOAgtYM9fmBeTURl5Y
-         pOqvPB3DbhK7F/DUB6L8WZosrDmWEXE4aMOh5ZrHPYE06145o1XevICN+Ch3Efix5bkr
-         S7pCtv1mWcB3V6NcLtN10tcOij3qO5QX0oX/DwslcflVa4jmwdH9dRTmE8f+dMZhlnht
-         4O6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="FDedrYDj"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cad4170e8eso146946795ad.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 14:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784582158; x=1785186958; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
-        b=F5hO0hcBNHdKGk9M59qXB0EfAf1ZQL0kiD2GIokeaFPVUU7JE0sBVMIOaHAJJlbqf1
-         hT0EOsaGQxdzfkSQxV5SGVl+QdL5b6YSb2ZjQcZcLVNAPL1/8wIsNcH96dHr/vpiGqUG
-         I/27/r9cfrp5Ztsp3RVhurZRlE2qZSv42m69MWpB8o09v5sRx2Rp61wKfeDuQt8qOgV/
-         5Npk2kIQYLRLDeexi5vPRbcgEYHVubzyoIEQIKsfg75YWhiyH8NwE+Gc22p4+NDE9kWL
-         Kq02Bv1RfaF6OK4XicyN5ZimBBBuQoKC7Cd85xPJt3ndaYNSfPVYjdP+YdCYZm6nh5OX
-         79lg==
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1784582170; x=1785186970; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8Lk9nZncA9Gi9IHgsqlcnOIHsiF41+5jkUNql3/JHM0=;
+        b=FDedrYDjk2giWdrbp5ueP1oyl6xhJUX6S9h3GjDeCLCKFqObPd81pglSw2nRBhRFPe
+         nskZE0SqK9LjoRWak2jEMmAunDQBXTNKH95qPEyNu0CFgcz6Hq14dge8WksJgpC1LkiX
+         R89bTO+zRdzHfwuhzlbRM5IkuIkvzVFPP7uWpG3qAjgyvV1QTXepNhgpGi1mUgtARuCd
+         v84k0J1ESD8eIneAqT61D2vzBgy7Mvm4rE6GIHAIBMAWKcFlaTJ6zWrrln2uk5QC1TAn
+         Xhg8SiWuCIsaHBra9tjoqTEY5p3OGfpzFP1FUo/cGhahc8kQyPQofmDV785nYSlG8Hjm
+         br1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784582158; x=1785186958;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784582170; x=1785186970;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
-        b=nkN7TVqxCQbWosBszwuiV00sCksjPU6jpdGMog3x34uXQJ37O9HRSIaIrWkpQp0+yz
-         MvtXkcVB2506WuH2jfAwffJUg1lxZZL+IlCIUbmFeLMrKULFh6jExOk2S+gAImE1Ese9
-         nTQ1Ul4DJ1oLerpnmaDU9Ik96e/UAdtMpYEqBDFnj5idezOKJcQwUbwBMB2KpIipHlRh
-         2ARCoHvo+qGu/VzofTBxST0tL5f7OzStn1bNJYqywaaCfOGPqe8XKutv+wVjVmQadchk
-         WPyxGw0sOzcNLnyYUHwS+4hCm6pvn3HEJjTLpgeQuXTdg8jv6XGefc7jLsp+fAReKxpU
-         YvzA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7Qemy+MPzm1AUIdxTlkHQzACmaMHGatDnAy8tEqf6pkKE7ZLsY4HIhyu6G+i6K+cstOKgNJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX7onz1TNM5Yj0KwlkiOVVbjSWyK7hjGDWa3bOLR+H69idkhJw
-	nZFkTcQU3nemlP4yDFKFNE4iOG7mWSAq9sCqnh8MNZ5vkfK0hg2TBvo+PwsgowdEAUMtncS797H
-	VUio9VGpAXGLo+1fGxhvrQbLCNUF5lmrWjSSbFX01
-X-Gm-Gg: AR+sD10RhWsyFNdqlRsXUvlS3ITe1qcxIP7REYkHmpYIOSPfNs6KYf43NNuIU427we8
-	jFUOEJX5+msM0GkY7IhTKYprF40fQbZDufDJYxDw83fheX9pHzpZpLmer4ObzHw7Oakdv9XG8ov
-	J5BhcTyT0IwE8XpV6iCshuU+pBmb8Hyt4uiDzgaOvPbru/3M8r93bc00qsOFhLTj32s9bEbeLOQ
-	wK05eIl4wetGoQ1jSubjCzEctY/HCaUvTcJYEJIsqBJDzHU89Tn0cPQiIH2JS6s+z3Ra89ovUWw
-	oxCPAIhHYE0fx5PXoYmZVQHRPVc=
-X-Received: by 2002:a17:902:f54c:b0:2ce:7ae6:2a23 with SMTP id
- d9443c01a7336-2cf7b702c3dmr2558895ad.27.1784582156890; Mon, 20 Jul 2026
- 14:15:56 -0700 (PDT)
+        bh=8Lk9nZncA9Gi9IHgsqlcnOIHsiF41+5jkUNql3/JHM0=;
+        b=n5hK0RxbINpIc73mWkCENF57uNjqC3EUNVeun3yZd99/ZmxOjAXqFih2LhCNUgvkvq
+         GsljgC/olqYjFEwdQfP2radnS54cRY5if6pYXb3bTsCwbwJQ1HJN7Y9oHpkPOwjkmJaT
+         WDsFP63oamcFLUslRaKTDdOJpIKQUvqC99AlyNfmbKpqRBrf1ngbgkHwLwXUYo1aHjK2
+         Fb7t75h4Ynk1gBiuILuCNiTiq+P+ABHAdhLbPqjzUyCikukbhnlA+o1CTCCTLKiv0IGy
+         4NSrweTYyKKs2f5tURI1ZvWJa+JVeUgj1aru5RCmS/aN1HBaYPuiie59qMRujda5SKa1
+         rJsQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrdtk0d1d4CgReO8wkyx5z1/dCLsVISj0tDxJEMDIxFOcior4EBZ1hZ681Dx0SXFif2u3SLEcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUIHoij/Z/ObfuSosenLCVLPLi4G7uJ7+XARragugnSusDcLo/
+	RO9s/EgxXNEvmKRsZ413Ze5py6g4Wt+/NeRGcrbraRQidt7fBZ/RrbNb+cgHE0kY+TU=
+X-Gm-Gg: AR+sD108M+kmI9aJ9IOVr/uYSxeg01Ow4nSnVh0y4pU5kNDXtBgdHG98UNK/jwTYKsh
+	vFwOwuALsMNmf3YaQGFZhawj41tG9vM35fGEpmJXPIvluS4279BfXW4Nctgm2PY9nL6erSsTSWV
+	lSKCcOA7d4jnk8lQb3yUpopknkAVmzDhWhDt5krDZXon7hHhWqf9yzlhSZOlHDaRf5L2z5ZqolF
+	Mz2V8BGn0zlPsY12+yNC7fmb6g1xiKkVplehypmWdc027Je2asFG66dgnrkgofX0xXs8QJyUg8D
+	stV/zd0DXKtVp8TxorxK+9WDy6dLW+GKpcSrzIINa1flA0ZX6mtVkva9nvkgVGZN8HMKOgwQdjY
+	N7gYpn17qg9yDOQ3KvKT4MrbBqxNdfcMVpyyv7ckg5h/j4Znmbr7QdcetRO86m7qCoVKLTD7Nsq
+	7uUQPP0ennKLVEsn+oEfRcE8R6w4Gx7O0=
+X-Received: by 2002:a17:902:ef49:b0:2ce:9b49:d4a0 with SMTP id d9443c01a7336-2cf34994db6mr177804055ad.35.1784582169654;
+        Mon, 20 Jul 2026 14:16:09 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3473ba1dsm62513545ad.65.2026.07.20.14.16.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 14:16:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com> <20260708-tcpdm-large-niovs-v5-2-34bf6fac941b@meta.com>
-In-Reply-To: <20260708-tcpdm-large-niovs-v5-2-34bf6fac941b@meta.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 20 Jul 2026 14:15:42 -0700
-X-Gm-Features: AUfX_mxUXqtSIB0dpGSWPZIOzVEGjkP0LeV9jHf6fDBCDwwRrEGRR9CjBBihAPw
-Message-ID: <CAHS8izMz_S8K80EXn3oFXiDNkGuPUMzjecaJjAvaZVky-7O40Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 2/3] selftests/net: ncdevmem: add -b option to
- set rx-buf-size on bind
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, 
-	sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net, 
-	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk, 
-	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Jul 2026 17:16:08 -0400
+Message-Id: <DK3PKY6RN5FI.4DKPSHWNEBHM@etsalapatis.com>
+Cc: <bpf@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+ <horms@kernel.org>, <jakub@cloudflare.com>, <jiayuan.chen@linux.dev>,
+ <john.fastabend@gmail.com>, <kuba@kernel.org>, <kuniyu@google.com>,
+ <ncardwell@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+ <sashiko-reviews@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] bpf, sockmap: handle spurious
+ tcp_msg_wait_data() wakeup
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Nnamdi Onyeyiri" <nnamdio@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20260720171535.67867-1-nnamdio@gmail.com>
+ <20260720171535.67867-2-nnamdio@gmail.com>
+In-Reply-To: <20260720171535.67867-2-nnamdio@gmail.com>
 
-On Wed, Jul 8, 2026 at 3:55=E2=80=AFPM Bobby Eshleman <bobbyeshleman@gmail.=
-com> wrote:
+On Mon Jul 20, 2026 at 1:15 PM EDT, Nnamdi Onyeyiri wrote:
+> recvfrom()/recv() are documented as only returning EAGAIN for blocking so=
+ckets
+> when they have a receive timeout configured.  However, adding a blocking
+> ipv4 tcp socket without a receive timeout to a sockmap will cause EAGAIN =
+errors
+> sporadically.  A socket with a receive timeout may return EAGAIN before t=
+he
+> timeout expires.
 >
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
+> There are 2 code paths affected by this:
 >
-> Add -b <bytes> to request a non-default niov size via
-> NETDEV_A_DMABUF_RX_BUF_SIZE. When the value exceeds PAGE_SIZE,
-> udmabuf_alloc() switches to an MFD_HUGETLB-backed memfd so each 2 MB
-> hugepage produces one naturally-aligned sg entry.
+>   1. tcp_bpf_recvmsg() - Used when the socket has been added to a sockmap
+>      that has no verdict program attached.
 >
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
-
+>   2. tcp_bpf_recvmsg_parser() - Used when the socket has been added to a
+>      sockmap that has a verdict program.  To reproduce this issue, it is
+>      enough for the verdict program to do nothing but return SK_PASS.
+>
+> In both cases this happens when tcp_msg_wait_data() wakes spuriously
+> (returning 0).  To fix it, we now loop back to msg_bytes_ready instead
+> of returning -EAGAIN on spurious wakeup.
+>
+> To ensure the looping does not cause sockets with a SO_RCVTIMEO set to
+> wait excessively long, tcp_msg_wait_data() now takes a pointer to timeo,
+> allowing sk_wait_event() to update it as appropriate.
+>
+> The logic in tcp_bpf_recvmsg_parser() that allow it to handle signals,
+> socket errors and closuers in its loop was also added to tcp_bpf_recvmsg(=
+).
+>
+> Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
 > ---
->  tools/testing/selftests/drivers/net/hw/ncdevmem.c | 36 +++++++++++++++++=
-++++--
->  1 file changed, 33 insertions(+), 3 deletions(-)
+>  net/ipv4/tcp_bpf.c | 69 ++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 60 insertions(+), 9 deletions(-)
 >
-> diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/te=
-sting/selftests/drivers/net/hw/ncdevmem.c
-> index d96e8a3b5a65..a16e55af51ee 100644
-> --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> @@ -40,6 +40,7 @@
->
->  #include <linux/uio.h>
->  #include <stdarg.h>
-> +#include <stdint.h>
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <unistd.h>
-> @@ -61,6 +62,7 @@
->  #include <sys/time.h>
->
->  #include <linux/memfd.h>
-> +#include <sys/param.h>
->  #include <linux/dma-buf.h>
->  #include <linux/errqueue.h>
->  #include <linux/udmabuf.h>
-> @@ -79,6 +81,7 @@
->  #define PAGE_SHIFT 12
->  #define TEST_PREFIX "ncdevmem"
->  #define NUM_PAGES 16000
-> +#define MB(x) ((x) << 20)
->
->  #ifndef MSG_SOCK_DEVMEM
->  #define MSG_SOCK_DEVMEM 0x2000000
-> @@ -100,6 +103,7 @@ static unsigned int dmabuf_id;
->  static uint32_t tx_dmabuf_id;
->  static int waittime_ms =3D 500;
->  static bool fail_on_linear;
-> +static uint32_t rx_buf_size;
->
->  /* System state loaded by current_config_load() */
->  #define MAX_FLOWS      8
-> @@ -142,6 +146,7 @@ static struct memory_buffer *udmabuf_alloc(size_t siz=
-e)
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index cc0bd73f36b6..aa5c5d741599 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+> @@ -179,7 +179,7 @@ EXPORT_SYMBOL_GPL(tcp_bpf_sendmsg_redir);
+> =20
+>  #ifdef CONFIG_BPF_SYSCALL
+>  static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
+> -			     long timeo)
+> +			     long *timeo)
 >  {
->         struct udmabuf_create create;
->         struct memory_buffer *ctx;
-> +       unsigned int memfd_flags;
->         int ret;
->
->         ctx =3D malloc(sizeof(*ctx));
-> @@ -156,9 +161,14 @@ static struct memory_buffer *udmabuf_alloc(size_t si=
-ze)
->                 goto err_free_ctx;
->         }
->
-> -       ctx->memfd =3D memfd_create("udmabuf-test", MFD_ALLOW_SEALING);
-> +       memfd_flags =3D MFD_ALLOW_SEALING;
-> +       if (rx_buf_size > getpagesize())
-> +               memfd_flags |=3D MFD_HUGETLB | MFD_HUGE_2MB;
+>  	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+>  	int ret =3D 0;
+> @@ -187,12 +187,12 @@ static int tcp_msg_wait_data(struct sock *sk, struc=
+t sk_psock *psock,
+>  	if (sk->sk_shutdown & RCV_SHUTDOWN)
+>  		return 1;
+> =20
+> -	if (!timeo)
+> +	if (!*timeo)
+>  		return ret;
+> =20
+>  	add_wait_queue(sk_sleep(sk), &wait);
+>  	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+> -	ret =3D sk_wait_event(sk, &timeo,
+> +	ret =3D sk_wait_event(sk, timeo,
+>  			    !list_empty(&psock->ingress_msg) ||
+>  			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
+>  	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+> @@ -229,6 +229,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  	int copied_from_self =3D 0;
+>  	int copied =3D 0;
+>  	u32 seq;
+> +	long timeo;
+> =20
+>  	if (unlikely(flags & MSG_ERRQUEUE))
+>  		return inet_recv_error(sk, msg, len);
+> @@ -262,6 +263,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  		}
+>  	}
+> =20
+> +	timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> +
+>  msg_bytes_ready:
+>  	copied =3D __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_se=
+lf);
+>  	/* The typical case for EFAULT is the socket was gracefully
+> @@ -280,7 +283,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  	}
+>  	seq +=3D copied_from_self;
+>  	if (!copied) {
+> -		long timeo;
+>  		int data;
+> =20
+>  		if (sock_flag(sk, SOCK_DONE))
+> @@ -299,7 +301,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  			goto out;
+>  		}
+> =20
+> -		timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>  		if (!timeo) {
+>  			copied =3D -EAGAIN;
+>  			goto out;
+> @@ -310,13 +311,15 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  			goto out;
+>  		}
+> =20
+> -		data =3D tcp_msg_wait_data(sk, psock, timeo);
+> +		data =3D tcp_msg_wait_data(sk, psock, &timeo);
+>  		if (data < 0) {
+>  			copied =3D data;
+>  			goto unlock;
+>  		}
+>  		if (data && !sk_psock_queue_empty(psock))
+>  			goto msg_bytes_ready;
+> +		if (!data && timeo > 0)
+> +			goto msg_bytes_ready;
+>  		copied =3D -EAGAIN;
+>  	}
+>  out:
+> @@ -355,6 +358,7 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct ms=
+ghdr *msg, size_t len,
+>  {
+>  	struct sk_psock *psock;
+>  	int copied, ret;
+> +	long timeo;
+> =20
+>  	if (unlikely(flags & MSG_ERRQUEUE))
+>  		return inet_recv_error(sk, msg, len);
+> @@ -371,14 +375,59 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct =
+msghdr *msg, size_t len,
+>  		return tcp_recvmsg(sk, msg, len, flags);
+>  	}
+>  	lock_sock(sk);
+> +
+> +	timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> +
+>  msg_bytes_ready:
+>  	copied =3D sk_msg_recvmsg(sk, psock, msg, len, flags);
+>  	if (!copied) {
+> -		long timeo;
+>  		int data;
+> =20
+> -		timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> -		data =3D tcp_msg_wait_data(sk, psock, timeo);
+> +		if (sock_flag(sk, SOCK_DONE)) {
+> +			ret =3D 0;
+> +			goto unlock;
+> +		}
+> +
+> +		if (sk->sk_err) {
+> +			if (!sk_psock_queue_empty(psock))
+> +				goto msg_bytes_ready;
+> +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+> +				release_sock(sk);
+> +				sk_psock_put(sk, psock);
+> +				return tcp_recvmsg(sk, msg, len, flags);
+> +			}
+> +			ret =3D sock_error(sk);
+> +			goto unlock;
+> +		}
+> +
+> +		if (sk->sk_shutdown & RCV_SHUTDOWN) {
+> +			if (!sk_psock_queue_empty(psock))
+> +				goto msg_bytes_ready;
+> +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+> +				release_sock(sk);
+> +				sk_psock_put(sk, psock);
+> +				return tcp_recvmsg(sk, msg, len, flags);
+> +			}
+> +			ret =3D 0;
+> +			goto unlock;
+
+These two error handling routines above look identical. Can you refactor
+them?
+
+> +		}
+> +
+> +		if (sk->sk_state =3D=3D TCP_CLOSE) {
+> +			ret =3D -ENOTCONN;
+> +			goto unlock;
+> +		}
+> +
+> +		if (!timeo) {
+> +			ret =3D -EAGAIN;
+> +			goto unlock;
+> +		}
 > +
 
-The fact that you are using HUGETLM and 2MB mappings here made me
-realize there is a pathological edge case in the code where the netmem
-size you're requesting is greater than the mapping size, so you
-actually get no netmems. So like if you ask for a 64KB netmem size but
-actually you did a normal udambuf mapping and all the maps (sg len
-entries) are 4K or something. IDK if the code already handles this
-well with an error or what not. Worth checking.
+Since this handling (which Sashiko flags by the way, correctly AFAICT)=20
+are taken from tcp_bpf_recvmsg, there is obvious overlap between the two
+functions. Please factor those out so that they share the logic between
+them.
 
---
-Thanks,
-Mina
+pw-bot: cr
+
+> +		if (signal_pending(current)) {
+> +			ret =3D sock_intr_errno(timeo);
+> +			goto unlock;
+> +		}
+> +
+> +		data =3D tcp_msg_wait_data(sk, psock, &timeo);
+>  		if (data < 0) {
+>  			ret =3D data;
+>  			goto unlock;
+> @@ -390,6 +439,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct ms=
+ghdr *msg, size_t len,
+>  			sk_psock_put(sk, psock);
+>  			return tcp_recvmsg(sk, msg, len, flags);
+>  		}
+> +		if (!data && timeo > 0)
+> +			goto msg_bytes_ready;
+>  		copied =3D -EAGAIN;
+>  	}
+>  	ret =3D copied;
+
