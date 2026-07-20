@@ -1,60 +1,81 @@
-Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA62399002;
-	Mon, 20 Jul 2026 17:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784567288; cv=pass; b=d+oPIZybu+5iC30c3rrn9bDSMhfODwWHDipaIAcau6hKLbzgfSNjRp6ro+aAXF5KGhTzzk8lcwSVztlbmR7Tg5yYDm2Hut9s0NFuC6jsoSEvx0qEjv1sFplO1W8nt2eSpmFg8jXMTieFG87JPLUY8KYwRd2Qux9TId6zpKo5XmQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784567288; c=relaxed/simple;
-	bh=dNqVxR63V6xQon7zsJn+Ma77TefGiYPz54fRdZ8GDJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e/gveVBHrHY7M0P1E2GvI8flibGhKE89YKwy6SVJAgsPZ2wHw2J0z0X9OO59Yrrv5lfpsywx3H7qvJ+fcb//fhezKd4NcCACx7H5lcH8DfPBaXeubkLTNYudbynkUjm8fQfJ/zhRwTSL1H0VcMkN41ZiGyls6HR8zxWO5rHGW/g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=ku50Hzrc; arc=pass smtp.client-ip=136.143.169.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auditcode.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E7439006
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 17:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784567746; cv=none; b=FHLwsYpGg8cMzOoaJIvvS2hhyGoVcEAhaFqdcOeU9F8rHi80qpLcoyYtyCm/DLN+Rtvs7Oa2SX9tTodQ1nE5BMZMchdD7y0DXEAD5MN8DCzuSy2enOCzyQANTBuGgeRdLr+fDBXPWiey+2eDGT8EH+MOepH/gFgyPehck37Ze+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784567746; c=relaxed/simple;
+	bh=aotS4eEfRpVStcxAhOhiA18MzhLy96mjpdyq44LYXME=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XfkEDEFnJAxb+jmc19A2FkhstV7xItwA9SCNYx+Jj6E0XowErYsdHAcVuBrMl46HHdQZG+h9uUkNxoBMY6vGQ3Q3N3jA9Hn6ocBI6jAgn8ua3JTAM4gmvwn7U6DC5tRT++Agm8qzs0hx9utWFa9a8oSmxwggQ0VUQ9tTGhHXlKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZrtMeU1; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b="ku50Hzrc"
-ARC-Seal: i=1; a=rsa-sha256; t=1784567244; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=ld8knbAu/Ah1xIom4ITHvPesNMHjfsXzJ6OSFIiwQ+SJtXvZ7KGOalBfVX5K5JrXMPtOtlefZbJjfFJQrfl9lxEjk/UMA1tMSm8FhtZUg21e8yadLJLldLNv69FVLcAFQAZswIBPzfIX0wLlKjxLGHAjt663gVf5g4TO+lFe3qk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1784567244; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HjByz5AvHsIQNltISoR9+2X9Bmm/qrLTUWsUjkq8GY8=; 
-	b=UDLZFinvllHs7jIEOTFx3rgQyruEbU1oRT86rjUmiKFp4SqSjQzBd59EgkEeE0yuS8vLT73c86GsLLJrt10sH9OoY3jz2wRCWM8WLrSOodqQXRleKWPTSIQbN8KJtiIm5h/hYeAPn8oQ+g8GZPVcQPWvYoGGvy9UT+GLFZUYNro=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=auditcode.ai;
-	spf=pass  smtp.mailfrom=security@auditcode.ai;
-	dmarc=pass header.from=<security@auditcode.ai>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784567244;
-	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=HjByz5AvHsIQNltISoR9+2X9Bmm/qrLTUWsUjkq8GY8=;
-	b=ku50Hzrc4DRQ5WqQiTWRTVI3Hz5nicabKWCgmkKJzz42FlWsfpR4Dri6xvjY+Dwd
-	jdbOryCN4+SaRReYpsFYXLqunJRAVR5qgc9rWL4THGzInUtGx/ACQ68Jg/vrQkVX7hK
-	pQ9CB7EptjY9KemObm931E07X9lKbfGCidG2IdHI=
-Received: by mx.zoho.eu with SMTPS id 1784567241224482.3073788218354;
-	Mon, 20 Jul 2026 19:07:21 +0200 (CEST)
-From: Ibrahim Hashimov <security@auditcode.ai>
-To: alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	wenjia@linux.ibm.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZrtMeU1"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4954afac04bso28497725e9.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:15:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784567740; x=1785172540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PMzyY0w2hvyVLQCy4KUYX/zX5WWoesLqRMdPQHdI44g=;
+        b=RZrtMeU1tdM/U7oFsgmsO+PsqJucRmiGpz2Fon6khrS+969ciIezNGVpsHbRQA3NBm
+         OPlhlxDoTSQkl157N4Tmprn1xJGA3sBEnk6LUAU8zUxgMSZjGlDAVEU2MYUA6TyelEQ0
+         EYJCfk/7lfmktevT9GpDXzbnokJpGZgsylnyNJuieF/DXBlWKo2ZVkoTV+k/Sjk1o5Md
+         z6zb/Fgqv9W1AUfWA6veeLg4tF3GVqaHMP0d2bqz7bb+Vr/0jrw6ULBgZjdqTHEPK5oi
+         0tEtcQOze0p9+k0pRyYqhWT9gOkgNKrBsVTrwD/HRWPs6Whw7rReGQeNXsfy4M2uDiPY
+         J0sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784567740; x=1785172540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PMzyY0w2hvyVLQCy4KUYX/zX5WWoesLqRMdPQHdI44g=;
+        b=JIrimnl7HRuy1NU5/3GngtCGuojVotPST09y+lRByLnwGSHFdFUzOtc7erN3/mEDJw
+         vSBdYziOrBS32PpiJz6vjqeAXZmPQA+1pH8T2X62zizg9rbP9iwgI6a9A5b5mVY+0LZJ
+         LzEZ58f3LAn9ReeUZCnw1XaWxIedSmg8Fi1M3YzLmMGBW10IOWi4TGkODLjrePrG8jgM
+         i6VKosJ0dUfjwP6R9Ftx/xdHyV1Y0xpMu8ry7fvHzUt71UNbKTl0KH7/aAqGW5jP0EMV
+         7yD6xaqYmOa5OkrZzqcTYFt8EYK6x8B+Dpl0SOVjlSODqsUfVPvtXgUEyvB1Ut/hrLRr
+         p7dg==
+X-Forwarded-Encrypted: i=1; AHgh+RpljoT+ZdRk5DtyugaWMy0lIqVcNiG5GUE8/l5OQKcNKgdpnu1XtUSnOdQtTPtNx7A7II3jbuI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMFwLtYgjNdU5psB0tQHuwH9flDTqcSP/vFQ75Vtg7eCpsp74H
+	8tao5aGe3JPRaAhrby/l7Xuyg18QA/cG+gWwW4Ty9InIBvHSN4PRpI1z
+X-Gm-Gg: AfdE7cmz/UpMPt9Tq80qQXLWsp2dtfgltIRnKwSlFSl3XPZfcHGVTqbaoplaOs1nUfo
+	tlEhRLyC1DZb1B90my0CVcE42u2uSc1g2zIkDbZiyzCq/dfTG0ivSyiBcoXoTbJ7hXETR/We+nr
+	N0vaXCKxdywVfHMP8pp7PNW2B4BVUQf5tcYTxX+6PFLcdbDby3jUEZwwlYuOBaZKWeFScquvDEt
+	txKg26TKSTY2V5UBJpz/1jsLF2y3HBV8VSs+cSnvVRIe3mK0uhPZow4MvHdecyhc1rQ2MVzsjV4
+	h4EQXpIJ4DNKCadlb5Um3M/sB/FNxlcf69rRq14f6EwtnXuYcmPniTTULYJefXMGS7dSXF7TeEq
+	O4D9IdnXWQVnPxwYA5d9BvMK0bWBeP2XzK/SAGXPPE+XVd5v2HpMRG/I9knBI/CGEpNBsrQgNFv
+	HZV9iyYx3QcKLx5WteIIUsgoN5u+42S62qx3PZ8Hsd1vJpIZEv5Cf3f3yr3t5bcGZL6Q==
+X-Received: by 2002:a05:600c:4f13:b0:495:4fd5:570 with SMTP id 5b1f17b1804b1-4954fd506eemr130115115e9.4.1784567739453;
+        Mon, 20 Jul 2026 10:15:39 -0700 (PDT)
+Received: from localhost.localdomain (host86-153-201-25.range86-153.btcentralplus.com. [86.153.201.25])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956547af7esm2304865e9.8.2026.07.20.10.15.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 10:15:38 -0700 (PDT)
+From: Nnamdi Onyeyiri <nnamdio@gmail.com>
+To: nnamdio@gmail.com
+Cc: bpf@vger.kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
 	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	ncardwell@google.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/smc: validate peer CDC cursor against RMBE size before accepting it
-Date: Mon, 20 Jul 2026 19:07:17 +0200
-Message-ID: <20260720170717.11425-1-security@auditcode.ai>
-X-Mailer: git-send-email 2.50.1
+	pabeni@redhat.com,
+	sashiko-reviews@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/2] bpf, sockmap: handle spurious tcp_msg_wait_data() wakeup
+Date: Mon, 20 Jul 2026 18:15:33 +0100
+Message-ID: <20260720171535.67867-1-nnamdio@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,98 +83,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-smc_cdc_cursor_to_host() converts the wire-format producer/consumer
-cursor of an incoming CDC message into a host smc_host_cursor. It rejects
-a cursor that goes backwards, but never checks that the cursor's count is
-inside the buffer it indexes. Per smc_host_cursor ("an offset in an
-RMBE") and the invariant smc_curs_add() enforces for every local advance
-(0 <= count < size), a valid cursor count must be < size; the wire cursor
-is peer-controlled and was never checked against that.
+Spurious wakeups in tcp_msg_wait_data() aren't being handled by
+tcp_bpf_recvmsg() and tcp_bpf_recvmsg_parser(), leading to unexpected
+EAGAIN errors returned by recvfrom()/recv().  Adding handling for the
+wakeup and a selftest.
 
-smcr_cdc_msg_to_host() accepts the producer and consumer cursors, and the
-unbounded value feeds smc_curs_diff() in smc_cdc_msg_recv_action(), which
-computes new->count - old->count without clamping against size. A peer
-that puts an out-of-range prod.count on the wire (e.g. 0x7fffffff) drives
-bytes_to_rcv far past rmb_desc->len -- the very invariant the comment
-above the atomic_add() claims but does not enforce.
+This issue was first discovered in an application that adds sockets to
+a sockmap as a way to view the received data.  No redirects or any
+other operations are performed.
 
-smc_rx_recvmsg() then trusts bytes_to_rcv as the amount of valid RMB
-data. Its first copy chunk is safely bounded by rmb_desc->len -
-cons.count, but the second chunk copies (copylen - chunk_len) bytes from
-offset 0, and copylen came from the inflated readable -- an out-of-bounds
-read of the RMB's backing (v)malloc allocation, copied straight to the
-receiving process via _copy_to_iter(). This is a remote kernel-memory
-disclosure driven by a malicious SMC-R peer, needing no local privilege
-on the victim. The same unbounded count also reaches
-smc_cdc_handle_urg_data_arrival() (base + urg_curs.count - 1) -- a
-second, narrower OOB read.
+Sashiko has noted a few other pre-existing issues in the same area
+(https://patch.msgid.link/20260714205118.17DB11F000E9@smtp.kernel.org)
+that can lead to EAGAIN in tcp_bpf_recvmsg() and
+tcp_bpf_recvmsg_parser().  A local run of Sashiko also identified a
+potential issue in tcp_bpf_recvmsg() handling zero-data FIN packets when
+the MSG_PEEK flag is set.  To prevent this patchset from growing too
+large, I intend to submit follow up patches to address these once this
+one has been accepted.
 
-Fix it where the wire cursor is accepted, mirroring the cursor-sanity
-idiom two lines above: reject any incoming cursor whose count is >= the
-size of the buffer it will index. smc_cdc_cursor_to_host() gains a size
-parameter; smcr_cdc_msg_to_host() passes conn->rmb_desc->len for the
-producer cursor and conn->peer_rmbe_size for the consumer cursor. This
-bounds it at its single origin instead of patching every downstream
-consumer. SMC-D (smcd_cdc_msg_to_host()) does not use this helper and is
-a separate, out-of-scope gap.
+Changes in v6:
+- Closing the file descriptor in the selftest worker thread.
+- Ensuring the selftest loop breaks early for an error in the worker
+  thread.
+- Added comments to selftest regarding focus on EAGAIN error.
+- Updated selftest commit message to imperative mood.
+- Link to v5: https://patch.msgid.link/20260717155348.54975-1-nnamdio@gmail.com
 
-Reproduced on a v6.19 KASAN kernel (SMC-Rv2 over soft-RoCE): a peer
-emitting prod.count=0x7fffffff triggers a vmalloc-out-of-bounds read in
-_copy_to_iter() via smc_rx_recvmsg(), returning ~960 KB of RMB-adjacent
-kernel heap to userspace; an in-range cursor transfers cleanly. With the
-fix the out-of-range cursor is dropped before it reaches
-conn->local_rx_ctrl.prod, and the reproducer returns rc=0 with no report.
+Changes in v5:
+- Move selftest from net into bpf/prog_tests/sockmap_basic.c
+- Link to v4: https://patch.msgid.link/20260715213538.37229-1-nnamdio@gmail.com
 
-Fixes: 5f08318f617b ("smc: connection data control (CDC)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-Assisted-by: AuditCode-AI:2026.07
+Changes in v4:
+- Fix potential data loss in tcp_bpf_recvmsg() when a FIN or RST has
+  been received.
+- Check the return code of pthread_create() in the selftest.
+- Fix race caused by using EXPECT macros in a thread in selftest.
+- Link to v3: https://patch.msgid.link/20260714203927.32289-1-nnamdio@gmail.com
+
+Changes in v3:
+- Added the sockmap_recvfrom selftest.
+- Link to v2: https://patch.msgid.link/alFRK66z45eDNZA7@localhost.localdomain
+
+Changes in v2:
+- In tcp_bpf_recvmsg, handle signals and the socket closing in the loop.
+- Fix spurious wakeups when SO_RCVTIMEO has been set on the socket.
+- Link to v1: https://patch.msgid.link/ak_rR-Skd8Mvn4mH@localhost.localdomain
+
+Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
 ---
- net/smc/smc_cdc.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+Nnamdi Onyeyiri (2):
+  bpf, sockmap: handle spurious tcp_msg_wait_data() wakeup
+  selftests/bpf: add sockmap recvfrom EAGAIN selftest
 
-diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
-index 696cc11f2303..f07bbef47073 100644
---- a/net/smc/smc_cdc.h
-+++ b/net/smc/smc_cdc.h
-@@ -221,6 +221,7 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
- 
- static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
- 					  union smc_cdc_cursor *peer,
-+					  unsigned int size,
- 					  struct smc_connection *conn)
- {
- 	union smc_host_cursor temp, old;
-@@ -235,6 +236,14 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
- 	if ((old.wrap == temp.wrap) &&
- 	    (old.count > temp.count))
- 		return;
-+	/* count is an offset into the RMBE and must always stay inside
-+	 * it (see smc_curs_add()); the peer is untrusted, so reject an
-+	 * out-of-range wire cursor the same way an out-of-order one is
-+	 * already rejected above, instead of letting it drive
-+	 * bytes_to_rcv / the urgent-byte offset past the buffer end
-+	 */
-+	if (temp.count >= size)
-+		return;
- 	smc_curs_copy(local, &temp, conn);
- }
- 
-@@ -246,8 +255,10 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
- 	local->len = peer->len;
- 	local->seqno = ntohs(peer->seqno);
- 	local->token = ntohl(peer->token);
--	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
--	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
-+	smc_cdc_cursor_to_host(&local->prod, &peer->prod,
-+			       conn->rmb_desc->len, conn);
-+	smc_cdc_cursor_to_host(&local->cons, &peer->cons,
-+			       conn->peer_rmbe_size, conn);
- 	local->prod_flags = peer->prod_flags;
- 	local->conn_state_flags = peer->conn_state_flags;
- }
+ net/ipv4/tcp_bpf.c                            |  69 ++++++++--
+ .../selftests/bpf/prog_tests/sockmap_basic.c  | 124 ++++++++++++++++++
+ 2 files changed, 184 insertions(+), 9 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.52.0
 
