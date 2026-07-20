@@ -1,183 +1,155 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023114.outbound.protection.outlook.com [40.107.162.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0AA3DA7F3;
-	Mon, 20 Jul 2026 10:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784542999; cv=fail; b=LpiR0n+dsdWX9S+sy+5vdyPXmp2B5t6aavT047CgvfQ/+f0xAWaHOkI9KF/OOleKGIR5TviWC2GZkKm84dCVo2sU/kQeuQza4Pq0x9KQg0m6uSytE3yFfbFjinR1+9Sd+qOvVOJVqu4GaYE/IWoxOuthyCEMOO/nnsCaAwRSPEk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784542999; c=relaxed/simple;
-	bh=lgys8dbD7hERXyIaRM3FZCwyT6Rhx4mFh/TH8g6Kxvo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YbKDep2CQjZJJSqLs354mbwc74iWorqwE8DVgxOazbK5Ln4b1R1J0Zi6tVH44sDDCxmYKu/Si55+HBpZ9kuarB3HttSCWx0IHOBfhvKDan45YfbYavRsI0eXmOdbRIaJafYxgkm1l9WLPZZYhoNBD24yowrRrsmfeoSfJ3cTFgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=mrPjBnBS; arc=fail smtp.client-ip=40.107.162.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A61303A37
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784543092; cv=none; b=t2kGVAjfeX+XcVLMD6LltmmwaONFUY/73xI7JZdUya+FxmpcOb5jVZ1U3MLGcATcEY/Cg7Z8enz5YDBgT4Nvfr6VKJDVFUbanjpg1xxsgkI5vLUl3ttkvTj7eiF5RJvVkpshFh6TK0rcPGddaDJLcTnEZNMaXF0Zjwk4RAEs90U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784543092; c=relaxed/simple;
+	bh=ZQZICDYgbRgiUxmzpxgAJ9erLVWkdQLc9nJ8avEn+Vk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mijDupebkGpOFJMDR+yCDOeP59EN4NBBLfoCGLcXAQ0lg59gxrG/IjxWalCl6MKfSgMd+SN81Ann0HvqN44uwv/i0E6HxDY/m1z7OW7dSfA0aSE/8SBgwamUa+DEsrO8IDVgnS7ikNv/h2Vav/VZTcE/tMtUf4CI6mQ2HrM2KKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=vg5IcwTi; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="mrPjBnBS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iPuDuLnw4aDJE1RRP6VH3ks8s1GD7EwDykoDfiL0n3VvjVOTxk19A87uu+5/L1+gXJresdz8/dxKt638WVawKT2XMI/ogz73NXVIZdJdpW3cRe+TQaI4LlJPsH3sgfChWMn92LGzGNNBpVsMkCUXZUJcExo2yDEsklKbTm+W8NiKqmR4N7vGIAjors5G+iXCFqLkSpypReOiOQHTdzEsN/kNivA/3JeG+qS2p28nbgh9HUg1QtlQ6pmLsrTq/YXA0/YZou5duWwc6W+vqzfcZBzq0MAegfFJ4uexX2wdMHSmviG7YC7Xb5vxPl5nsIIC/IMo+RNDpqiiKpUjyahSIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1vW51SbnbG8ZQ0F6VS0lR2oqfOZo4OqMAUEC0jtRi+s=;
- b=H0DeX590XVuqPOrSfnkQvYZFkVbKjTlSrhY8IQfKX1z70QWCh//i5YqywqyA6Kw3BdqSKPafuBJO5k2AVWH0k0EWmixSIME+CzNxYDh6Y2FJ8utywJK2MU4gojkaX6Q4OvzGrpqoEmSmesmNELnPY0677oL+x/oYihTG6UGFj5CiXXBcfIoRYjSOnHqhpIretudzPMb6tIj+REVovv+ts8tXJBD0aEcXq87nI9xUzY46HY+j7NEBaxJQMjpCCYGzZpTODHdJg5OEpQYrpgH0ZDzYLfTRGFfaKX5Kgt3lcw/cFX+z2xU+VofTBIy5HTWSnAZHFqE9X+7x0+CR9L4sAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1vW51SbnbG8ZQ0F6VS0lR2oqfOZo4OqMAUEC0jtRi+s=;
- b=mrPjBnBS91K7njTZfV+s8Jvo3PAaSpuS9eAoLbZnjVD1dqIdxFpCN7sXVCfLb+4TQyl7NHA5zv8yWAtdam3clVp0JL+ohSr3ERvL4kwf5TC21QJV0ORRsGoD8TyGxtv1xucoW83Um9VCzDuoVtjy0/ShXuh6Tmr7hlerexMU1RXgSgBFnu5Sq2t2LBuF8zNWaEM0l64SeRNtRmMeVkXp+jifCGOSsf5IQrtUvScmqqzKBUl2WnHe9n/LlofTqerj+1XhlcrjHRCMTuTRuGeit2epFmgd6oJ1kTgz+CYfpMVcwJsraNA/s8aBtOkLlrVVs/BlIWDyZDZ8mqcerYxFeQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AS8PR08MB6264.eurprd08.prod.outlook.com
- (2603:10a6:20b:29a::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 10:23:09 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
- 10:23:09 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	stefanha@redhat.com,
-	dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com,
-	bchaney@akamai.com,
-	mark.kanda@oracle.com,
-	ptikhomirov@virtuozzo.com,
-	den@openvz.org,
-	andrey.drobyshev@virtuozzo.com
-Subject: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing workers
-Date: Mon, 20 Jul 2026 13:22:40 +0300
-Message-ID: <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VIUP296CA0055.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:34b::12) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b="vg5IcwTi"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f7854678bso186934f8f.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 03:24:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1784543089; x=1785147889; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zd72l0RJ8ftcCUHhUbD81aNG9YQZtgyyjQP2cHWS9d4=;
+        b=vg5IcwTim6+mko0v5reuGZG8ZIxKuY1jOOnPyegZZKYzqPyESW98Bgse4+tZfyjsUH
+         BbDmk4bVMjgg5CUux2RYjSz5Wn27waC+NHp03PutvJNlJFCjKawqL3ijk3ub29LTAb/6
+         42l4ly/okxkVmher7uYz/dIQo3upJKc+8jgjpR3jwbweagqO+nRqSWZcHmc3i3BVD9yz
+         q1TrdfydVJOjMs2X+ki17sOllSYUumDeDL59nuwir1oahVIPQnRaBDA5bgAk+4yr9Vbh
+         /2pj1R6+BPN/HQAkDAV2hrGxMyMxCvVb/GpxNMOp9lC5lq7d+OpfQTa8vab3BZFthzQ5
+         vXWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784543089; x=1785147889;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zd72l0RJ8ftcCUHhUbD81aNG9YQZtgyyjQP2cHWS9d4=;
+        b=c/F/msWWIgsHMxjnRCQ6onO/VQqzS3vacaWKdlbPKsd/wfhdckCp2vZNIlBcxCYY3m
+         wxQR4GAnAKOyRzQ/31XFRCH6iAfBq7vmkWs5wZwJkMejRNUlSwzgF+PL6zpE3wpFPWnO
+         rT1al5VbW7dw1TbCA7W7Hv5dMMcZ4hgHSz+7pHODSOk826bO1mIfQnqLkRFuxf5QK1SO
+         J0CYN3TqmAmJysdb/UrOt9OBJMYFCNI80aDlEOhIKz0AU7yd6p6MLxg5WcrrBJMx0G0d
+         hi4bcQ6YTm9Mr45VR7Jna6B1dRRybMHR2577uYC2Jy0js4wvlHNkpRIJ4xAH3Wc2FLfd
+         YLIw==
+X-Forwarded-Encrypted: i=1; AHgh+Rowcymi5m0SHbTSaVG64JJncUKhTAXGikb2sUfNINnNb7Ob1rx1JPDGXgGilEnu4gCv5gHkk8c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxHxb7lv3t+pTHpv4i5MCHPRhq8NCXhZMq8DjQx8UjHB6ar6/Q
+	pr6gv2+an2si7u+e3e08mdtpkfIEMegx7JIXI482Z4HMoL1cmjJT5hRTF2zKVzPWjak=
+X-Gm-Gg: AfdE7clxAQT5AuRlhq/vaVesQJd0Gju4RRtr+peXMFshBMkBzLxgKXTNXhMFiAt3AMM
+	hjABhEdGMtYcDDbWQLOWuQ1iEQQx7PDiYt9grij2VuYmUfmsTDhNMARWFEWTeRNeKKZ4DlbC/em
+	j6HJaFA3JCDkMYhO/k/Y1aJlK6jR9/kZ7nzl6q+jrUV8gp4Mr8SVKO3pHChRtHMuXg0vVtFqrif
+	ZbgM3AvJsYYqQQJIubZaROBFX+J6hhWGSpYu65UrSytZbscYxExZ0pO4ln775GSirHzz5oNSS5F
+	oDliPor1haRmroPLYxC74PWXz+jb3QCaMgU7TMwATGIu6pTjOiuJqwdv6UwVNPTzNRI8iYCx8bC
+	KcTyz7jaYeMv04+wZJKPzzHZKer4Qm4vLxCfe6qZxsiPW2yD1N9Telod6D81uM9Av
+X-Received: by 2002:a05:600c:4f09:b0:495:5b32:df72 with SMTP id 5b1f17b1804b1-4955b32e0c7mr61903515e9.35.1784543088526;
+        Mon, 20 Jul 2026 03:24:48 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:1cdc::2e0:ea])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49549c96fecsm318116205e9.11.2026.07.20.03.24.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 03:24:47 -0700 (PDT)
+Date: Mon, 20 Jul 2026 11:24:47 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Lorenzo Bianconi <lorenzo@kernel.org>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, stable@vger.kernel.org, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: Re: [PATCH bpf] veth: convert frag_list skbs before running XDP
+Message-ID: <al3oXdjTYM_PziJp@matt-Precision-5490>
+References: <20260716100605.939654-1-matt@readmodwrite.com>
+ <87jyquj5wm.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB6264:EE_
-X-MS-Office365-Filtering-Correlation-Id: ccae916d-cc90-486b-8c82-08dee648e586
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|52116014|7416014|376014|1800799024|10067099003|56012099006|38350700014|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	QH2q4s1SxndfiTEUMl7LOwjXU+vDY3+QvYDOl9URxiUr3b0c2KIYGZUHxgGR/lCUps3qsVMEcN7SOAlVlgYdTSJUfHjg5FAv3ae5SneE4HvBLsxC8V/SZC21LnLf3qUqEwECqWbCksG7dRtoKufuKVtwJXQlj72dxb/C0QOp68oq0s0sH+a5/tL1MX+MX/0vv3obSOI5h7tG4e6Zjg2lHHQDtjLYKTI+dwtOGc5uv6CWl5VHuBEEit2y/s2s+XA2BtluiEA1Yb8s7LvJW45sNmmtj5IO3YV9uYtiNMuZRGU6L4AFaZK+TPJPZ8n3+FT4HZ6cfpW0tokeK/Axh0Ix61B5Tt+rwLrp8OQZjWzqgdTay2CjN1OdutOoqMzceFHNA1t0ec1IV+opFRvoKBxKEePFuqEgAn6H24MOT/X7Lz6CLf0qoVPRh6b0xAT9B1+aksURkwOlTgOSzsZ+eGgA0JcIjrrvZfJ2c++zVLJNqb/MFPNCPshsHechZVuo9noDpfQdFRlSDTBGrQs/hy/uQ1FJ4rqAOsF7ijG+lWzud7UEagcseLHYLbuOOnLd4CCC+zHspxgz7INat91uwNXdnzWzA0oSbby+Puh7EXRZVsbmruK/dMYXourkIwi6zyj4weWECvHf43dmt08d+R35d5n2YxwUqf937DUYlyopA/7e2vNb2MappAvNzeu3ognXW9W1TROR7fNFAW755/Si0AflLtwM/DgcGB6A/UTV9zs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(52116014)(7416014)(376014)(1800799024)(10067099003)(56012099006)(38350700014)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JPM7WzR9scHZ7EyDICNKDlOOxYB7DNi4uyd2TXmcOz7tPSchMi7syA+jlxVo?=
- =?us-ascii?Q?G7yc5dtnwCAwvjMmCfAbxtmV8YS9G9bnUD6wVWJFvj4tZclNoSCEg4nawmXi?=
- =?us-ascii?Q?2Gjo8KAvJTaliU5lt5XhebAUdfG/A9poC1ndCdH6OhMmvw91K7RZ8r2AUMp6?=
- =?us-ascii?Q?c6hIpg+UQHg3q+zdq+KtqVC1EIsD6UqpZc4VM8oTkMR2LZelqqXfM2qTt1MJ?=
- =?us-ascii?Q?jHC8UaOzIbwoYVwRFdS25G+WQDa66sVz2wY1AlqsCaqOtYeMF4C6p++yHMe3?=
- =?us-ascii?Q?QUDoJePuuvfb1rIKbuHznduP98Jw1mE3nYidemEoUq3ebPVef8kjefwbtL+c?=
- =?us-ascii?Q?TzmgTogxJm4cVm1vYVRX0mJWALAJ/ueNU2cpNDipFJaVHJQITQJf8oWTeOb4?=
- =?us-ascii?Q?B64mveLF3sE4RXb4XqR9gYxEHW3l79LUIAMKvWX67Q0BtV+kBP43e2hBsn+j?=
- =?us-ascii?Q?E0iJRsRtfp0+52tziR4HWzBHvdVNEAk9WeBf49B3PrmtXeXl+HNYhEAQh0Pz?=
- =?us-ascii?Q?ZKGXwbWf52IgyJ0UK9ulHi3/jE/4M+YQa1zLLCOYhvTSGcbgNOeBslVx1V7y?=
- =?us-ascii?Q?lWX3d26B5yfZiSH92aTR4+bqjPxMsoWj02u8JwlCRbBosBwAbO6X6dUlz+ZS?=
- =?us-ascii?Q?4I+eId8kdkQrpXhV5OnCz4zN913zInqqP2zhY+C+tkLWdC5lUJ71SiiTce1n?=
- =?us-ascii?Q?juHu0qNjfbl+gKiw9TRz8oraOfvZmWqJUpimOudPHogXMH5tUpEb7t66QYDo?=
- =?us-ascii?Q?zjiExurEFa2NR9leDMAHuJa180Yex+oJUC0Znop2SAzX/JxnrqMY858bpRrg?=
- =?us-ascii?Q?LK+jOCc3n6xDhgI2yByel+ZkPHL0ctbO/mi+o/SACcFs62eAM5FMDWqiqqeB?=
- =?us-ascii?Q?+v7MAxQhd2uKyJ46QdO0Nl6M8kuYcnFJVrmC9mcaaWNWqA/R1KsHLrSrlTqH?=
- =?us-ascii?Q?qvz16Z7ZrgwoACSD1XGnJeeNhQRFg4uX8yv95PX9FTia1l/8OSBX/i2wcJEm?=
- =?us-ascii?Q?RG+fZJ8s+DfC9+FH2AahHIxjXS+5jZygxBuXkrk5OW/sZy+png7xIpqsNRyw?=
- =?us-ascii?Q?db/XMUvhou1DwSpWG1b0KHady0BSERJeNy0GwbvrFAh4J8A/QEE2p91dYxmw?=
- =?us-ascii?Q?zuN28CatMi6cVokz1Ixm4kEONVWsAhjzxQgKVPgPXDe55uNm04gMKP2pufVG?=
- =?us-ascii?Q?0WJo4U2+MxyItz9xKHnva7/aB0eAKMTEACSY/UjOkNcUw3b6Bpezir35IdLR?=
- =?us-ascii?Q?uxTqPxikqMx1zI7Cm96te5RAhNiybuqnmudYFUJwLis2bhtZ/feLVpPOWyoE?=
- =?us-ascii?Q?hTxvD+qJ+l34BhaAw1QvygK0Z8IU94LKCgA7lZA7P/NM/EOort5zl7/6WxE3?=
- =?us-ascii?Q?/VoMUNqmSyVp+Hu/RR1ngR0dBqvv9LwQLK4amxC3HUMUsW/t+/kuAmmyWnHn?=
- =?us-ascii?Q?B8HMDASi15p479hI9Y2ezFb7zuPgP7A2XcQNqDjuPxD+QdwWfvDg4d4MBYIH?=
- =?us-ascii?Q?mQombhGClDV9kjoXDx++747clGGL+6ZFu5rff79f0xF3UEB2Rh8+pULIQNnm?=
- =?us-ascii?Q?+imcHFkNCizAHRhporJVdR1u/YnxsGqvK6AKfDBtCUEuzopGj+0zpYKbqrKL?=
- =?us-ascii?Q?QU9sgYqHhznVDVtKSht7t0o8nmhk6GQg7geYrKQebGUpUPsuyfSmnywqYZpQ?=
- =?us-ascii?Q?gBPxY/Dogh8XpgDPmE1RQwm9U4bEHOiBBP50xz7M4BamcL4FWcU5iyk/uht8?=
- =?us-ascii?Q?BXJ5EbPBbl1Jwby3LP/5D2FMjHdZr1Q=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccae916d-cc90-486b-8c82-08dee648e586
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 10:23:09.7833
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HCz/OeAP9UF8vLNqSbN03gOujD6oJGhMPTeZa9kAocRKp7X6UNmwgcfIoZL+RduAM+R4gjNHF15Yir7/6UCgEf7Z4ppJdZYdcnqtwzX8wHw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6264
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87jyquj5wm.fsf@toke.dk>
 
-vhost_vq_work_queue() only holds the RCU read lock while it dereferences
-vq->worker and queues work on it.  vhost_workers_free() however clears
-the vq->worker pointers and immediately frees the workers, without
-waiting for a grace period.  A caller that fetched the worker right
-before the pointer was cleared can therefore still be queueing work on
-it while it is freed.  And even when the queueing itself wins the race,
-the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
-future attempts to queue it are silently skipped.
-
-None of the current callers can actually hit this: net and scsi stop
-their virtqueues before the workers are freed, and vsock unhashes the
-device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
-before the workers go away.  But the upcoming VHOST_RESET_OWNER support
-in vhost-vsock keeps the device hashed while its workers are freed, so
-the lockless send/cancel paths become able to race with the teardown.
-
-Fix this by clearing the vq->worker pointers, waiting for a grace
-period, and then flushing the workers so any work the last readers
-queued runs before the workers are freed.
-
-Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- drivers/vhost/vhost.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 4c525b3e16ea..d6e235c25254 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+On Fri, Jul 17, 2026 at 11:56:41AM +0200, Toke Høiland-Jørgensen wrote:
+> Matt Fleming <matt@readmodwrite.com> writes:
+> 
+> > diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> > index 1c5142149175..efb24aae1f26 100644
+> > --- a/drivers/net/veth.c
+> > +++ b/drivers/net/veth.c
+> > @@ -756,7 +756,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+> >  	u32 frame_sz;
+> >  
+> >  	if (skb_shared(skb) || skb_head_is_locked(skb) ||
+> > -	    skb_shinfo(skb)->nr_frags ||
+> > +	    skb_shinfo(skb)->nr_frags || skb_has_frag_list(skb) ||
+> 
+> Isn't 'skb_shinfo(skb)->nr_frags || skb_has_frag_list(skb)' basically
+> the same as 'skb_is_nonlinear(skb)'? Which, incidentally, is what
+> generic XDP uses in the check that guards calling into the
+> skb_pp_cow_data() path.
  
- 	for (i = 0; i < dev->nvqs; i++)
- 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
-+
-+	/*
-+	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
-+	 * reader that fetched a worker before we cleared the pointers above
-+	 * may still be queueing work on it.  Wait for those readers to
-+	 * finish, then flush so any work they queued runs (clearing
-+	 * VHOST_WORK_QUEUED) before the workers are freed.
-+	 */
-+	synchronize_rcu();
-+	vhost_dev_flush(dev);
-+
- 	/*
- 	 * Free the default worker we created and cleanup workers userspace
- 	 * created but couldn't clean up (it forgot or crashed).
--- 
-2.47.1
+Yeah, you're right. I tested that expression and it still fixes the
+bug. I'll update v2 to use skb_is_nonlinear().
 
+> Looking at those two places, generic XDP checks for 'skb_cloned(skb)',
+> while veth checks 'skb_shared(skb) || skb_head_is_locked(skb)'. AFAICT,
+> the latter is stricter; should we update the generic XDP check?
+ 
+Possibly, but the surrounding code isn't set up to deal with
+skb_shared() SKBs so that'd be a larger change. I can take a look at
+that too but I'm going to need more time to get my head around making
+that change correctly given that there's different fallback rules than
+veth.
+
+> >  	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
+> >  		if (skb_pp_cow_data(rq->page_pool, pskb, XDP_PACKET_HEADROOM))
+> >  			goto drop;
+> > @@ -771,7 +771,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+> >  	xdp_prepare_buff(xdp, skb->head, skb_headroom(skb),
+> >  			 skb_headlen(skb), true);
+> >  
+> > -	if (skb_is_nonlinear(skb)) {
+> > +	if (skb_shinfo(skb)->nr_frags) {
+> >  		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
+> >  		xdp_buff_set_frags_flag(xdp);
+> >  	} else {
+> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> > index 18dabb4e9cfa..1e837d01a908 100644
+> > --- a/net/core/skbuff.c
+> > +++ b/net/core/skbuff.c
+> > @@ -936,12 +936,11 @@ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+> >  	int err, i, head_off;
+> >  	void *data;
+> >  
+> > -	/* XDP does not support fraglist so we need to linearize
+> > -	 * the skb.
+> > +	/*
+> > +	 * skb_copy_bits() handles both frags[] and frag_list input. If the
+> > +	 * copied skb remains non-linear, it uses frags[], which is the
+> > +	 * representation used by XDP multi-buffer.
+> >  	 */
+> 
+> This comment sorta reads like a function documentation comment, but it
+> ends up sitting weirdly in the middle of the function body. The comment
+> you're replacing was tied to the statement below, but this one isn't,
+> really. Should we turn it into an actual function doc comment instead?
+
+Good point. I'll make this a function doc comment.
+
+Thanks,
+Matt
