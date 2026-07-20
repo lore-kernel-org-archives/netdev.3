@@ -1,194 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BD22DCC01;
-	Mon, 20 Jul 2026 15:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561092; cv=none; b=KiL2/EO+NeEN5gOcp3O1DH3WcycYdAfo2RxY5m5vg2fUtX3u0zVYEWEGKx/xPm5CgJDCYxqW5YI4/+2+YK1kbBT9fsMrR5IelwBmAMQO+0mhXhiuiVAJpAQszfHrsEyCa145Zyk0NcBo556zDNhuYpw0AWY9EkQ7B8ELcckf4VM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561092; c=relaxed/simple;
-	bh=ymcbTeXmDfJ6awYH8DFtK/WXkS2ETAzY7tU8WMEsN68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Upce2JA+vceUlvmsms+aJNF8nqXgYoRvQt5MbUGOeu56+sj3nVPrwXjIZjjHt6wX4kcjST6vXmuJ264ZqyOtH9KrPIrKTuUH8PjfUnx+G6kHjAt6ycNPMJYSIJ+DlrINcAwiqD04ZHAabArUV+dFj45iDUWypXwU/YLjXfuWQCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNO3ehi5; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49842E7381
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784561166; cv=pass; b=M51cNYqsaXar6/ozf433fpTWilXAtepIDTh8Uc69D8rKstxGr1Rtf0GwV2F4qPpePC2qX6mmIxcR5d60Uj1xKcJq+5FLyprbczP/V/b9h7YqfXybT30Ai4Rar7kHjLYOd41zXO6BHH7RltUXCKwuMh60TbxHIhe38Szsk/apG9k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784561166; c=relaxed/simple;
+	bh=IunsqnEz/1Pn3fZK1zV4V1SviDMNSBXP3t+MpjQdMPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KNSM1jlIHVg6Fij1R8MCLbXsFR34N2rgXJ3IbwI/Ea2B+iuLOn7q97jpVMp0IiuxqYCPkwqcGrwH3j4a2OJdKL5XvGFwnR0G0wzsww2Jx2e3Y7FpVBMVAAuwWBIRoyrfPM30YdRaEBENzs+xIk9c0KOpnGwya0BSIXznNEQUV/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S54/NzGJ; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNO3ehi5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295AB1F000E9;
-	Mon, 20 Jul 2026 15:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784561091;
-	bh=kRxdxCpXj33EGcXAfxauYed1Qq0XyKE7iv2tK4kjXXo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cNO3ehi5fXeWwxX+jIK3v5GoHL2cSh2FOfF9K80sWB60yUUVDhbMcRgCMmC0Vv4Mp
-	 SRALUxTDWJlRqu81J7m+UlclXTMy+uR42HUhRPmPSKcBtp0BAYztKJhJAZy7+BTqm5
-	 b2nV6f6DJJdFZRFLEJRTLzpWbWrKnS9ijGXFa2TjZKys1mFH7IVDz82Y3NJaUYSloW
-	 +2/JlmaZZX1UEAm09Rpb3iiQuS5z7caCr2bmJZE3QMmFYIToJJadDrofPtJdHo3TdS
-	 EF+PqtiuZ02a9jpU9DRZunB5/phZpV6305fFpUJhjU9BjYrUv5SW12i/MNG9WTUxTk
-	 A81waEOUlqtYA==
-Message-ID: <d6b07d51-7026-4759-bb99-a3bf3b9560af@kernel.org>
-Date: Mon, 20 Jul 2026 17:24:45 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S54/NzGJ"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848595b338cso11694826b3a.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:26:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784561161; cv=none;
+        d=google.com; s=arc-20260327;
+        b=b2uQIHqvwSTqIcYCZS+SyWeNM9p3nCNpzUQbfT2fo0P9GrijHV4Uhi5MboavCU60TO
+         d+D8vxdh7Kxy2oGl+uaW2FbtTQp6ZhAJ0hv0P9YTD+FCdHOBzWx0pDO5n2kodq3x7IwA
+         xK2KY+onkjtsE7cT4s2EjeZWanSQNBdoMcS1+q78IQ/G5s7rQsAGT8t5VsNzeZPlzwaW
+         AqkcyrrY7plSgJvMsgTfk28lNulMk0/h83lmQG/DTlbV9vi5saSy779TeEPUP3uyS3Pk
+         mymrp2sWyasndjBnqnIxWvewUajVw/kgYKAFIxF2fEN2RO69q1VNhdG4jq0B9hclPNFb
+         ebag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B5X+/rf0QzcF5B93IYv9JZ6xs3/FlAEwkKMPzpox2ug=;
+        fh=FZcp5itZQYvKBsglKzcB97XRICMpc4+wuuC7qNvslrE=;
+        b=JY8+H7CI5Odwqo3NsaCcdDuGX59g1Jv2TO79wa60pwd1NfPO35ZXESlX8w3NTwF01H
+         cmgiboohpym400iKcQFuwBxMiHtn9m2TYn7ydoOhsQ8zw501PJrCgVEIAK0hHr2mVV3m
+         kVDRqunL5FusAV4CQLoHPRxGBrNjXKQVQ100JhTL99oN3ChMRZEmoa1USIB+7NqUNRP+
+         7b2zJR3yBq8PKCwzMeM2Lk1v0hKkIxCjRy5JN6DK48JBR1iEF0JITVAk+FjzCxxvInnI
+         BNQpIpelwV0rC2wyS94nmCq9qaGwlbz04SroVaDD45UuqODalmvIQRTj+lwpXzT64E5o
+         g+8A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784561161; x=1785165961; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=B5X+/rf0QzcF5B93IYv9JZ6xs3/FlAEwkKMPzpox2ug=;
+        b=S54/NzGJGz08pE3Wvv7gHfyohjGFxbAyOB7uiwn2Q07gb9YkGJZ2/Ds3/5edi1ak9N
+         eVKMC3p+qPt3aSlhqdSLlBp23ObNGjDTf/3gPnAJH4mkWVbt8tctUF4/KeYo2Y80mqy8
+         tq82zVyS9FnSEi/B/asHVapLeGO3HABDqF2GQ+LPe9rJIapTstBWscXwoy/tu66MDdFx
+         tDsA+xsw6VgCJLGckyxXRyO4u5LeFixOGjSAkDi+GfZ1hqr5hCMG78sgnDRaILXyUONw
+         ePW/AymDBQ7VJzIyPVcK0oWF0fcf0CVXh//WVsovJ2s5a2t7VmASMpFjF01A4hDH7a+T
+         Z/xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784561161; x=1785165961;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B5X+/rf0QzcF5B93IYv9JZ6xs3/FlAEwkKMPzpox2ug=;
+        b=CxGKeJ66a/UQ9KtMg0DAjRGkWaXzk9NEsvoI1Nlwd3ZqeS8/jhW3jyAr2SyEvQ1ZMk
+         kw383PLf6ZRkW+rPx8cJX3TvTkfCrHv1xgqrq13ENJIeqnckOSkR0kmflBgS0o1murJa
+         dVNY9DlJ402tezFNeUy3CuTrPauLh2euIn/AZtsgzPck2xsK/ae7oH83xvuL6QtcoJ61
+         7/SdTMuWZvFwUrSzQwSyOBmn8ca06Z2Ips1SzCxoNiHN61DzYrWtFG0Pt0FBLafaOwBk
+         /dfDymMSOTou8F41Vb4Ac7Hu3pYpW6Mu0W9HPhxY32RRoczI/6HE8+8q7BW7TEPPKjlz
+         Xc0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrXYVK0dUhAnVqcKGmkfaj3WrW3ZezSA8/cIc+RGy7agtdEwKDXWmTvsthtGEs3tiGMGMQpQbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGFzIVnn22VKoU7ED2j8AfAtkziD0eePy/txxALbMuLnKN5zMi
+	XzDj3Q/n5xRi8npZSsOsZx2aEbM7ejBAJ+r0/zHPZHOenRM4Lw/19PbeaFI1m/fFMtqFAOIWcgM
+	4VkbkKgN/2OElbHs0qMZ7Xvw0NWuMKE2iCAU3
+X-Gm-Gg: AfdE7cn44vSZ0Z+DtEmtv4zkBj93D+wgr0uTWJZklTf8rd1aVkif5TVvVNGzJ8UW/Ig
+	EelRE95G5dXn3vp9mxidLk1LYjwqepqCYnmZGQBgh3G4cdxxC8Y9Mx/xtfCODyLLep4dckIe7AT
+	Q4HYfJFlV0yT0ZedRcIRe+Oh0RR3sC0QODKuBV6Dl/XY8wtNXIinXuIoe8JS9OlJ/U2TnkCoEG5
+	sZvazBn6xq5Z+y1v8iJYD3UjQrMzZ+bKP+svQJXgWqoB+m+YozTjuXVV4wIUhydupAzX6l9Ns3E
+	5GIlydTmrRdUTf/n0ydhVmsCrL4QHCl0vW6B3WjsbAIXB19z0HA9sj+tS5F/NA5iqssashjfGA=
+	=
+X-Received: by 2002:a05:6a00:2e2a:b0:847:95a6:eb74 with SMTP id
+ d2e1a72fcca58-84c2930f035mr15096588b3a.23.1784561161052; Mon, 20 Jul 2026
+ 08:26:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 2/7] selftests: openvswitch: add config file
-Content-Language: fr
-To: Aaron Conole <aconole@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- dev@openvswitch.org
-References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
- <20260710-net-sft-fix-containers-v1-2-a2915c294ef5@kernel.org>
- <f7t5x2frlkh.fsf@redhat.com> <f7tldbar9gp.fsf@redhat.com>
- <a2032420-b4d4-4eba-9eb4-65eeeea2b63b@kernel.org>
- <f7t7bmppvpu.fsf@redhat.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <f7t7bmppvpu.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <PH0PR11MB5902DBD696C30DB0A2308A49F0C72@PH0PR11MB5902.namprd11.prod.outlook.com>
+ <20260717082048.948262-1-l1138897701@163.com> <CADvbK_dHFt6cceHQ5BwPMWbF1j4i8BtYZ4Su067SvMeiiD6Rcw@mail.gmail.com>
+ <20260717191913.490e5d80@pumpkin>
+In-Reply-To: <20260717191913.490e5d80@pumpkin>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 20 Jul 2026 11:25:49 -0400
+X-Gm-Features: AUfX_mzleTwQDArjEhrrX6Cq0N6HoU0SDPI8Cw61rRb62BuX9DVgp4jWswVPYE0
+Message-ID: <CADvbK_dxAc+oepu05pvoj5Ze93u6tMdB-6QQQRaMVhznM_9MTg@mail.gmail.com>
+Subject: Re: [PATCH net v3] sctp: socket: remove unused 'err' parameter from sctp_skb_recv_datagram
+To: David Laight <david.laight.linux@gmail.com>
+Cc: luoqing <l1138897701@163.com>, jedrzej.jagielski@intel.com, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, luoqing@kylinos.cn, 
+	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20/07/2026 16:43, Aaron Conole wrote:
-> Matthieu Baerts <matttbe@kernel.org> writes:
-> 
->> Hi Aaron,
->>
->> Thank you for the review!
->>
->> On 16/07/2026 22:00, Aaron Conole wrote:
->>> Aaron Conole <aconole@redhat.com> writes:
->>>> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
->>>>
->>>>> The kselftests doc mentions that a config file should be present "if a
->>>>> test needs specific kernel config options enabled". This selftest
->>>>> requires some kernel config, but no config file was provided.
->>>>>
->>>>> We could say that a sub-target could use the parent's config file, but
->>>>> the kselftests doc doesn't mention anything about that. Plus the
->>>>> net/openvswitch target is the only net target without a config file.
->>>>
->>>> We've been operating on that assumption from the openvswitch side, but
->>>> it's true that isn't explicitly documented anywhere, and I guess it
->>>> isn't officially supported in the kselftest framework.  I guess we'll
->>>> need to keep updating this config as we add tests for things like SCTP,
->>>> and others, and maybe that's a good thing like we can add a comment
->>>> describing which tests take which configs.
->>>>
->>>> The downside is for most of the OVS testing we use the NIPA scripts
->>>> and those 'inherit' the parent config, so it would be a change on our
->>>> side from the development standpoint (but probably something we should
->>>> have been doing from the beginning).
->>>>
->>>> That said, would it be worth also exploring the 'cascading
->>>> configuration' support?  It seems like a useful feature, but maybe it
->>>> should be a separate discussion.  I ask because of how OVS interacts
->>>> with the networking stack as an 'alternative bridge' so-to-speak, I do
->>>> worry about having to duplicate lots of configurations between the two
->>>> as we expand the test coverage on OVS side.
->>
->> It is not clear to me what you are using on your side, but I guess it
->> should be doable to modify some scripts to merge this new config file
->> and the net one in your case.
-> 
-> This doesn't seem to break the NIPA case (at least I can see the
-> 'contest test' output is not SKIP, but PASS for the openvswitch.sh).
+On Fri, Jul 17, 2026 at 2:19=E2=80=AFPM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Fri, 17 Jul 2026 11:10:21 -0400
+> Xin Long <lucien.xin@gmail.com> wrote:
+>
+> > On Fri, Jul 17, 2026 at 4:21=E2=80=AFAM luoqing <l1138897701@163.com> w=
+rote:
+> > >
+> > > From: luoqing <luoqing@kylinos.cn>
+> > >
+> > > The 'err' parameter in sctp_skb_recv_datagram() is never used by any
+> > > of its callers. Both sctp_recvmsg() and sctp_ulpevent_read_nxtinfo()
+> > > pass the address of a local variable but never check its value after
+> > > the function returns, rendering the parameter completely useless.
+> > >
+> > > Remove the unused parameter to simplify the function signature and
+> > > eliminate dead code.
+> > >
+> > > Signed-off-by: luoqing <luoqing@kylinos.cn>
+> > > ---
+> > >  include/net/sctp/sctp.h |  2 +-
+> > >  net/sctp/socket.c       | 10 +++-------
+> > >  net/sctp/ulpevent.c     |  3 +--
+> > >  3 files changed, 5 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
+> > > index d50c27812504..b86d50d6b146 100644
+> > > --- a/include/net/sctp/sctp.h
+> > > +++ b/include/net/sctp/sctp.h
+> > > @@ -97,7 +97,7 @@ void sctp_sock_rfree(struct sk_buff *skb);
+> > >
+> > >  extern struct percpu_counter sctp_sockets_allocated;
+> > >  int sctp_asconf_mgmt(struct sctp_sock *, struct sctp_sockaddr_entry =
+*);
+> > > -struct sk_buff *sctp_skb_recv_datagram(struct sock *, int, int *);
+> > > +struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags);
+> > >
+> > >  typedef int (*sctp_callback_t)(struct sctp_endpoint *, struct sctp_t=
+ransport *, void *);
+> > >  void sctp_transport_walk_start(struct rhashtable_iter *iter);
+> > > diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> > > index c7b9e325ec1c..3804382d78e0 100644
+> > > --- a/net/sctp/socket.c
+> > > +++ b/net/sctp/socket.c
+> > > @@ -2123,7 +2123,7 @@ static int sctp_recvmsg(struct sock *sk, struct=
+ msghdr *msg, size_t len,
+> > >                 goto out;
+> > >         }
+> > >
+> > > -       skb =3D sctp_skb_recv_datagram(sk, flags, &err);
+> > > +       skb =3D sctp_skb_recv_datagram(sk, flags);
+> > >         if (!skb)
+> > >                 goto out;
+> > >
+> > > @@ -9082,7 +9082,7 @@ static int sctp_wait_for_packet(struct sock *sk=
+, int *err, long *timeo_p)
+> > >   * Note: This is pretty much the same routine as in core/datagram.c
+> > >   * with a few changes to make lksctp work.
+> > >   */
+> > > -struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, i=
+nt *err)
+> > > +struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags)
+> > >  {
+> > >         int error;
+> > >         struct sk_buff *skb;
+> > > @@ -9120,17 +9120,13 @@ struct sk_buff *sctp_skb_recv_datagram(struct=
+ sock *sk, int flags, int *err)
+> > >                 if (sk->sk_shutdown & RCV_SHUTDOWN)
+> > >                         break;
+> > >
+> > > -
+> > >                 /* User doesn't want to wait.  */
+> > >                 error =3D -EAGAIN;
+> > >                 if (!timeo)
+> > >                         goto no_packet;
+> > > -       } while (sctp_wait_for_packet(sk, err, &timeo) =3D=3D 0);
+> > > -
+> > > -       return NULL;
+> > > +       } while (sctp_wait_for_packet(sk, &error, &timeo) =3D=3D 0);
+> > >
+> > >  no_packet:
+> > > -       *err =3D error;
+> > >         return NULL;
+> > >  }
+> > >
+> > > diff --git a/net/sctp/ulpevent.c b/net/sctp/ulpevent.c
+> > > index 8920ca92a011..8ed51a15c3a4 100644
+> > > --- a/net/sctp/ulpevent.c
+> > > +++ b/net/sctp/ulpevent.c
+> > > @@ -1061,9 +1061,8 @@ void sctp_ulpevent_read_nxtinfo(const struct sc=
+tp_ulpevent *event,
+> > >                                 struct sock *sk)
+> > >  {
+> > >         struct sk_buff *skb;
+> > > -       int err;
+> > >
+> > > -       skb =3D sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT, &=
+err);
+> > > +       skb =3D sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT);
+> > >         if (skb !=3D NULL) {
+> > >                 __sctp_ulpevent_read_nxtinfo(sctp_skb2event(skb),
+> > >                                              msghdr, skb);
+> > > --
+> > > 2.25.1
+> > >
+> > I think it's used at [1] in sctp_recvmsg():
+> >
+> >         skb =3D sctp_skb_recv_datagram(sk, flags, &err);
+> >         if (!skb)
+> >                 goto out;
+>
+> Would it make more sense to ERR_PTR() etc ?
+>
+Let's keep consistent with skb_recv_datagram() where it's &err,
+besides, there's a shutdown condition (returns 0 via err param).
 
-Note that currently, the net/openvswitch target on NIPA is executed on
-the same runner as the net one. In other words, the config files are
-merged, so at the end, my patch shouldn't change anything with the way
-NIPA is currently deployed (but that could change).
-
-> I'm not sure about the suggestion to change the script in
-> tools/testing/selftests/net/openvswitch/openvswitch.sh to do a config
-> merge.  It isn't out-of-tree or anything, and seems like that would
-> create confusing git state (and not desirable from my end) - the
-> upstream test would leave a modified, tracked file.  Was that your
-> suggestion?  Or do you mean NIPA itself (but I think it already just
-> uses the top-level config).
-
-No, sorry, I thought my modification would have caused issues with other
-tests on your side. Good to hear it is not.
-
-> The config change itself looks fine to me.
-
-Thank you!
-
->>>>> Here is a new config file, which is a trimmed version of the net one,
->>>>> with hopefully the minimal required kconfig on top of 'make defconfig'.
->>>>
->>>> Should this also remove the OVS configs from the upper level since there
->>>> shouldn't be OVS tests executing there (ie: CONFIG_OPENVSWITCH*)?
->>>
->>> Actually, forget this part.  The P-MTU tests in pmtu.sh use ovs to
->>> create a datapath through OVS.  So these configurations need to stay at
->>> the top level as well.
->>
->> Indeed. I don't know these tests well, but maybe this P-MTU selftest
->> should move to the net/openvswitch target?
-> 
-> Well, it is testing path MTU across multiple topologies, so it isn't
-> really an openvswitch specific test.  Just one that happens to use
-> openvswitch in one of the test cases.
-
-OK, it is fine there then.
-
-Note that the openvswitch test could also be moved to the 'net' one. It
-looks like the sub-targets are often created when there are multiple
-tests linked to one sub-subsystem, and also because the 'net' config is
-quite big, and it takes time to compile all that. But I'm not pushing
-for one or the other, I just wanted to be able to build all targets in
-small containers :)
-
-Cheers,
-Matt
+Thanks.
