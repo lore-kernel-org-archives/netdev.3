@@ -1,411 +1,311 @@
-Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224D83EB11C
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFBA3D0BE9
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784587891; cv=none; b=YGzJevLzsdNFjjkeDV4dxAOqpooIrFeiDnbPQ2UYV5IrjZW5MPBF3gI3tBavzRMPpmR/55iPnDnVAcSzqvtNkr8DqvwLUH24RHuBcE1FJEze1cpdG6kill+JTkh4PjTDp/KPJBcJQPdh+E2vtOgeFJaaosSLcYi+u8QZY0Y7Grs=
+	t=1784588010; cv=none; b=SyjD+qOt52Cnl1jElWBtou6sZHym6xoURrsOnKvXD8TcPwCvmoKN0fuvDRKEz8bhlpxXXgye2jxKz8tcW41A6ZkGSoirGSknt/NCM2WLSH2p4rXraAoB1YiM1zlnD36ma2x9d3MN63l8I7kRYy/VcdTD3rKUA6+zTRipR/PYWsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784587891; c=relaxed/simple;
-	bh=mzXkBKeMUHMrqLp8+yeu+sKDUWlHPQ/F9UGDYvUx4ik=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=L2p60qO1UbDtVh6zbbmcHDT1uO72RYWJHsxrBuXdWkFgSLhDpwJOCYIMul6+PL+wwSq+FNf+evs4jGbw9Z3KnDfayLDUoajUFrZOb6+qJG5in+vM1myVAeHzZYgomlOYER61acJh/YjxnelJuCtdmQgH5NFdj5jtzbCr4EC+ePg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-4a49f09233dso5941515b6e.2
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:51:28 -0700 (PDT)
+	s=arc-20240116; t=1784588010; c=relaxed/simple;
+	bh=bu9MxjR9PrOS7jFoOtI1kzXfsfiOmCRm8agej7/N0eo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rTpqldXsDCj/hlmJOdWaB1o/x4v88PVo9M3/Bnh40g/IJsp3qG0qoCeqAwcePIOVfAO3+EnmL0NupcI/j477r/rlVOiU+TE1S3qiDSrubo4uYn4QU9ptZVKML23x+8hOjmYuMNioYU5UbzC5qTU0hMwt7IS9ppgdyHDYufJJxo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYSw80KT; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qYSw80KT"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49547fc63a0so17102605e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:53:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784588007; x=1785192807; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xaOVkEmI94bSxjGZP8o0unCsarNml6GU1QHwiTIhRTw=;
+        b=qYSw80KTcXhIsJmoJ5JfON/ZxwRG+mIFCHhz0GXnMIKkdeasNRh7vNze6MBfOEposa
+         ++dLmsCTry0xU1SjRxFQe/iefs90QH8vaVGsdmKmiW3R4joATlDAIFNEbw88Xf/wrEVK
+         BeGSGKoV3E5Ss9F+q875gSOhct7T82AS1x33wgxoVTnPag58GrSmvjOWWGMFb2a4c2cZ
+         OAGg4nZEDCbZcwLpwHcsqxtJmoqJEdjkeNCDpadXX/Jk3ctlqFBq1aGZTGtKRVJjJTw+
+         IR9cahOCrpScwJ+O+vuWNNQ13+OQJCWftAnL7Ys9zFKwo43UERC1T9RVOHG4+v8UHgD7
+         pYZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784587888; x=1785192688;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1784588007; x=1785192807;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/4H/e5Xa9neimMWvXsSAb9oWXY/qj2xEbVw5H7rrwgw=;
-        b=Z6oniMzDSO3BpUo+bTgocPZhcxaQ2Z2csWiIbcdLVc71s3T+E5FoE38eGguECFyo9+
-         urLkZOvvGui53AguOXJB/mJcDCSjaZe9JAyfVhp4rInhLPC6wXd46pjLpQgwpqVr1UII
-         J8vlNOhiZ9NH0JoNLqk+ewHUI76A04EU4fDK4k1S7ndbG5dYVtexERI6LzdoeO89s46h
-         04IOt+jR6YtjGdNoZDFcDoF18zoxZtZf8wH5E6q/SpzToAqOLqTxdzDehjdoNiLDzfg9
-         s4/demduN1YKG121aeN728ZdkYdozIMe5pmo9zSO1xb+7KrIbgPmgAScMYvC9HoFMg90
-         0Edw==
-X-Forwarded-Encrypted: i=1; AHgh+RoL1xUdLGfnu/26x5N/UWlu3xLT0uAvZv4jO9WCposQyTGoPoO0rmM2mboc3HyfTItSe1GxZrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVm3e6WdLPCJKKN6f3MS24FZMCiSnYi03Q+qDnLfw34KMQSSEw
-	4sFMzenst4MNTc/wznNkCwx4GV6BpgOvF1bc+p1biGfEqgApcGhIS8IaM0aDMd39XNG18E1i2U4
-	pQeTBV0pmGTW1df2bpR/EUY+s08uzcVpc+OfI7+OOHRN/nIzk9RfaCP6ueZs=
+        bh=xaOVkEmI94bSxjGZP8o0unCsarNml6GU1QHwiTIhRTw=;
+        b=l2+JsEYGAcEFBQWDeus4wSbMfBXiSIeGrXYn8EMI2Ah45sv9S9Pog7FYj673Hwjwer
+         Yc0+P24lZcGr9J49WkTVzj3DKcX550wO5tGuNytICWPxSNhLQwdGNlDTr2Y9HN+Tap4b
+         pKEl3nmGE9oJd7cSxiQjVgg1eOYUxzuws+1AD7RSJPBOOzptj/vbmBt2NI7lqGu+VbaE
+         loejQFatj1kTIRQYnb21lDnd3wOxeau+RK3tCxGkgx4j3uFg+nvZOqgcq0rEucS8e8ln
+         flBQKr1O1wJWq0iIPi1F2jC2aXOqaSQKkYzn3o/6NZwuFJcwlyfhzPCPup2au7kOWhlU
+         t3eg==
+X-Forwarded-Encrypted: i=1; AHgh+RoVQ5fI7bnEFveOTQKZGmQMmwhKVAP7rKS0j0CI1ygWQGwlj3EJtjv3wk8tNyY1s/E8tSViwqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB4cDrIQwI2458vOPHkZXsWBSw3Jqh7TrhgIxLYAwq/D0ZdE51
+	qawbp9Eya3UPKyli7hKkdayaDGUR/3funYZF5hRcPnucFCcCaVSeBbcQ
+X-Gm-Gg: AfdE7clc/Z2c5UAwG0BbKGFk+ic4RLXirqFMPeHwsdvKDESZl+HbAhRHxT3MzDFRUJx
+	ZApQxMyxnO0k7aDVtcRGDNHCAiKlCTcuhgqX+zqoUdF8boG6xNnJPBYiPMqNPk7PjiR/Db+7sNk
+	9B4THECweQ9yzno+4XAmQVER+pe2Viz0iObGkF3jMfMD0KUk4iUdaLjTWHGoOg9JWQZ06R3kdJX
+	uCAobalbHK3rbpyFdjGlPxYfUKY9UsKQnAAsxDP5KtrzA9c8v/lb5tj1e71ac9u+b8u0UmSOyBv
+	kmMxscDJ+qULtrfjkaVMQSS3xXXUkqb3rfrq6iUu6oev6GKSs98wi47pYTAXQbnhgLzfOMEJDLj
+	tZIFt1z1C1tIZ2kTOYyUOHhLqLY2lhKBNgZJ5h4kpd1+3+Bs+5pWqk7LyGL0RbiT7n8xFd0MqyI
+	+/48V35QfDbNw4BE+jLxmp2uyRPktT9vrlkchRW/Poniopjf1+f0GUH/Hak2ntesuA47zx3pv16
+	o7/
+X-Received: by 2002:a05:600c:1f82:b0:495:607e:5ee7 with SMTP id 5b1f17b1804b1-495607e635amr51345645e9.17.1784588006289;
+        Mon, 20 Jul 2026 15:53:26 -0700 (PDT)
+Received: from localhost.localdomain (host86-153-201-25.range86-153.btcentralplus.com. [86.153.201.25])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e499c2sm31525849f8f.4.2026.07.20.15.53.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 15:53:25 -0700 (PDT)
+Date: Mon, 20 Jul 2026 23:53:23 +0100
+From: Nnamdi Onyeyiri <nnamdio@gmail.com>
+To: Emil Tsalapatis <emil@etsalapatis.com>
+Cc: bpf@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev, 
+	john.fastabend@gmail.com, kuba@kernel.org, kuniyu@google.com, ncardwell@google.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, sashiko-reviews@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] bpf, sockmap: handle spurious tcp_msg_wait_data()
+ wakeup
+Message-ID: <al6iBv_Yn4YSCmWc@localhost.localdomain>
+References: <20260720171535.67867-1-nnamdio@gmail.com>
+ <20260720171535.67867-2-nnamdio@gmail.com>
+ <DK3PKY6RN5FI.4DKPSHWNEBHM@etsalapatis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:15a3:b0:4a4:cf25:baf8 with SMTP id
- 5614622812f47-4a4d039a6abmr8739278b6e.34.1784587888024; Mon, 20 Jul 2026
- 15:51:28 -0700 (PDT)
-Date: Mon, 20 Jul 2026 15:51:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a5ea670.f1649fcc.2a4208.0576.GAE@google.com>
-Subject: [syzbot] [crypto?] possible deadlock in __alloc_workqueue (3)
-From: syzbot <syzbot+5f117b3024eab6a14c35@syzkaller.appspotmail.com>
-To: daniel.m.jordan@oracle.com, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK3PKY6RN5FI.4DKPSHWNEBHM@etsalapatis.com>
 
-Hello,
+On Mon, Jul 20, 2026 at 05:16:08PM -0400, Emil Tsalapatis wrote:
+> On Mon Jul 20, 2026 at 1:15 PM EDT, Nnamdi Onyeyiri wrote:
+> > recvfrom()/recv() are documented as only returning EAGAIN for blocking sockets
+> > when they have a receive timeout configured.  However, adding a blocking
+> > ipv4 tcp socket without a receive timeout to a sockmap will cause EAGAIN errors
+> > sporadically.  A socket with a receive timeout may return EAGAIN before the
+> > timeout expires.
+> >
+> > There are 2 code paths affected by this:
+> >
+> >   1. tcp_bpf_recvmsg() - Used when the socket has been added to a sockmap
+> >      that has no verdict program attached.
+> >
+> >   2. tcp_bpf_recvmsg_parser() - Used when the socket has been added to a
+> >      sockmap that has a verdict program.  To reproduce this issue, it is
+> >      enough for the verdict program to do nothing but return SK_PASS.
+> >
+> > In both cases this happens when tcp_msg_wait_data() wakes spuriously
+> > (returning 0).  To fix it, we now loop back to msg_bytes_ready instead
+> > of returning -EAGAIN on spurious wakeup.
+> >
+> > To ensure the looping does not cause sockets with a SO_RCVTIMEO set to
+> > wait excessively long, tcp_msg_wait_data() now takes a pointer to timeo,
+> > allowing sk_wait_event() to update it as appropriate.
+> >
+> > The logic in tcp_bpf_recvmsg_parser() that allow it to handle signals,
+> > socket errors and closuers in its loop was also added to tcp_bpf_recvmsg().
+> >
+> > Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
+> > ---
+> >  net/ipv4/tcp_bpf.c | 69 ++++++++++++++++++++++++++++++++++++++++------
+> >  1 file changed, 60 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> > index cc0bd73f36b6..aa5c5d741599 100644
+> > --- a/net/ipv4/tcp_bpf.c
+> > +++ b/net/ipv4/tcp_bpf.c
+> > @@ -179,7 +179,7 @@ EXPORT_SYMBOL_GPL(tcp_bpf_sendmsg_redir);
+> >  
+> >  #ifdef CONFIG_BPF_SYSCALL
+> >  static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
+> > -			     long timeo)
+> > +			     long *timeo)
+> >  {
+> >  	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+> >  	int ret = 0;
+> > @@ -187,12 +187,12 @@ static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
+> >  	if (sk->sk_shutdown & RCV_SHUTDOWN)
+> >  		return 1;
+> >  
+> > -	if (!timeo)
+> > +	if (!*timeo)
+> >  		return ret;
+> >  
+> >  	add_wait_queue(sk_sleep(sk), &wait);
+> >  	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+> > -	ret = sk_wait_event(sk, &timeo,
+> > +	ret = sk_wait_event(sk, timeo,
+> >  			    !list_empty(&psock->ingress_msg) ||
+> >  			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
+> >  	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+> > @@ -229,6 +229,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+> >  	int copied_from_self = 0;
+> >  	int copied = 0;
+> >  	u32 seq;
+> > +	long timeo;
+> >  
+> >  	if (unlikely(flags & MSG_ERRQUEUE))
+> >  		return inet_recv_error(sk, msg, len);
+> > @@ -262,6 +263,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+> >  		}
+> >  	}
+> >  
+> > +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> > +
+> >  msg_bytes_ready:
+> >  	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
+> >  	/* The typical case for EFAULT is the socket was gracefully
+> > @@ -280,7 +283,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+> >  	}
+> >  	seq += copied_from_self;
+> >  	if (!copied) {
+> > -		long timeo;
+> >  		int data;
+> >  
+> >  		if (sock_flag(sk, SOCK_DONE))
+> > @@ -299,7 +301,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+> >  			goto out;
+> >  		}
+> >  
+> > -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> >  		if (!timeo) {
+> >  			copied = -EAGAIN;
+> >  			goto out;
+> > @@ -310,13 +311,15 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+> >  			goto out;
+> >  		}
+> >  
+> > -		data = tcp_msg_wait_data(sk, psock, timeo);
+> > +		data = tcp_msg_wait_data(sk, psock, &timeo);
+> >  		if (data < 0) {
+> >  			copied = data;
+> >  			goto unlock;
+> >  		}
+> >  		if (data && !sk_psock_queue_empty(psock))
+> >  			goto msg_bytes_ready;
+> > +		if (!data && timeo > 0)
+> > +			goto msg_bytes_ready;
+> >  		copied = -EAGAIN;
+> >  	}
+> >  out:
+> > @@ -355,6 +358,7 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+> >  {
+> >  	struct sk_psock *psock;
+> >  	int copied, ret;
+> > +	long timeo;
+> >  
+> >  	if (unlikely(flags & MSG_ERRQUEUE))
+> >  		return inet_recv_error(sk, msg, len);
+> > @@ -371,14 +375,59 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+> >  		return tcp_recvmsg(sk, msg, len, flags);
+> >  	}
+> >  	lock_sock(sk);
+> > +
+> > +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> > +
+> >  msg_bytes_ready:
+> >  	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
+> >  	if (!copied) {
+> > -		long timeo;
+> >  		int data;
+> >  
+> > -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+> > -		data = tcp_msg_wait_data(sk, psock, timeo);
+> > +		if (sock_flag(sk, SOCK_DONE)) {
+> > +			ret = 0;
+> > +			goto unlock;
+> > +		}
+> > +
+> > +		if (sk->sk_err) {
+> > +			if (!sk_psock_queue_empty(psock))
+> > +				goto msg_bytes_ready;
+> > +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+> > +				release_sock(sk);
+> > +				sk_psock_put(sk, psock);
+> > +				return tcp_recvmsg(sk, msg, len, flags);
+> > +			}
+> > +			ret = sock_error(sk);
+> > +			goto unlock;
+> > +		}
+> > +
+> > +		if (sk->sk_shutdown & RCV_SHUTDOWN) {
+> > +			if (!sk_psock_queue_empty(psock))
+> > +				goto msg_bytes_ready;
+> > +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+> > +				release_sock(sk);
+> > +				sk_psock_put(sk, psock);
+> > +				return tcp_recvmsg(sk, msg, len, flags);
+> > +			}
+> > +			ret = 0;
+> > +			goto unlock;
+> 
+> These two error handling routines above look identical. Can you refactor
+> them?
+>
 
-syzbot found the following issue on:
+Will do.  My understanding is the same logic is needed to address the
+issue Sashiko raised with the SOCK_DONE check as well.
 
-HEAD commit:    f6f3b36c15ed net: ethernet: qualcomm: remove unneeded 'fas..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=152cacb9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
-dashboard link: https://syzkaller.appspot.com/bug?extid=5f117b3024eab6a14c35
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> > +		}
+> > +
+> > +		if (sk->sk_state == TCP_CLOSE) {
+> > +			ret = -ENOTCONN;
+> > +			goto unlock;
+> > +		}
+> > +
+> > +		if (!timeo) {
+> > +			ret = -EAGAIN;
+> > +			goto unlock;
+> > +		}
+> > +
+> 
+> Since this handling (which Sashiko flags by the way, correctly AFAICT) 
+> are taken from tcp_bpf_recvmsg, there is obvious overlap between the two
+> functions. Please factor those out so that they share the logic between
+> them.
+> 
+> pw-bot: cr
+> 
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Sashiko highlighted the "if (!timeo)" and signal_pending early returns
+when MSG_DONTWAIT is set, but I think I'm missing part of the picture.
+By the time we reach these branches, haven't we already checked for data
+in sk_receive_queue (line 372, after the patch is applied to 7.2-rc2)
+[copied below for ease of viewing]:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/47ae09206bf6/disk-f6f3b36c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9e3daf94ae30/vmlinux-f6f3b36c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c266cfd24092/bzImage-f6f3b36c.xz
+    if (!skb_queue_empty(&sk->sk_receive_queue) &&
+        sk_psock_queue_empty(psock)) {
+        sk_psock_put(sk, psock);
+        return tcp_recvmsg(sk, msg, len, flags);
+    }
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5f117b3024eab6a14c35@syzkaller.appspotmail.com
+and in the psock (line 382) [again copied below for viewing]:
 
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-infiniband syz1: set down
-infiniband syz1: added wlan1
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.1.835/9438 is trying to acquire lock:
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4565 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4925 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __do_kmalloc_node mm/slub.c:5361 [inline]
-ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
+    copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
 
-but task is already holding lock:
-ffffffff8e9f6d00 (wq_pool_mutex){+.+.}-{4:4}, at: __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #7 (wq_pool_mutex){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
-       alloc_workqueue_va kernel/workqueue.c:5946 [inline]
-       alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
-       padata_alloc+0xbe/0x360 kernel/padata.c:964
-       pcrypt_init_padata+0x27/0x100 crypto/pcrypt.c:335
-       pcrypt_init+0x60/0xc0 crypto/pcrypt.c:360
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #6 (cpu_hotplug_lock){++++}-{0:0}:
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
-       cpus_read_lock+0x42/0x160 kernel/cpu.c:490
-       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
-       nbd_reconnect_socket drivers/block/nbd.c:1379 [inline]
-       nbd_genl_reconfigure+0x1301/0x1e80 drivers/block/nbd.c:2468
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #5 (&nsock->tx_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
-       nbd_queue_rq+0x373/0x1150 drivers/block/nbd.c:1207
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
-       process_one_work kernel/workqueue.c:3322 [inline]
-       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #4 (&cmd->lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       nbd_queue_rq+0xc1/0x1150 drivers/block/nbd.c:1199
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
-       process_one_work kernel/workqueue.c:3322 [inline]
-       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
-       kthread+0x388/0x470 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #3 (set->srcu){.+.+}-{0:0}:
-       srcu_lock_sync include/linux/srcu.h:199 [inline]
-       __synchronize_srcu+0xc9/0x2f0 kernel/rcu/srcutree.c:1481
-       elevator_switch+0x1e8/0x7b0 block/elevator.c:576
-       elevator_change+0x2fa/0x480 block/elevator.c:681
-       elevator_set_default+0x375/0x440 block/elevator.c:754
-       blk_register_queue+0x3f3/0x4e0 block/blk-sysfs.c:992
-       __add_disk+0x6cb/0xe30 block/genhd.c:528
-       add_disk_fwnode+0xfb/0x4b0 block/genhd.c:597
-       add_disk include/linux/blkdev.h:800 [inline]
-       nbd_dev_add+0x733/0xb60 drivers/block/nbd.c:2021
-       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #2 (&q->elevator_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       elevator_change+0x1af/0x480 block/elevator.c:679
-       elevator_set_none+0xb5/0x140 block/elevator.c:769
-       blk_mq_elv_switch_none block/blk-mq.c:5101 [inline]
-       __blk_mq_update_nr_hw_queues block/blk-mq.c:5146 [inline]
-       blk_mq_update_nr_hw_queues+0x5ef/0x19f0 block/blk-mq.c:5211
-       nbd_start_device+0x189/0xb30 drivers/block/nbd.c:1526
-       nbd_genl_connect+0x1597/0x1c10 drivers/block/nbd.c:2276
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (&q->q_usage_counter(io)#50){++++}-{0:0}:
-       blk_alloc_queue+0x544/0x690 block/blk-core.c:504
-       blk_mq_alloc_queue block/blk-mq.c:4420 [inline]
-       __blk_mq_alloc_disk+0x194/0x390 block/blk-mq.c:4467
-       nbd_dev_add+0x494/0xb60 drivers/block/nbd.c:1991
-       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
-       do_one_initcall+0x250/0x870 init/main.c:1347
-       do_initcall_level+0x10a/0x1a0 init/main.c:1409
-       do_initcalls+0x59/0xa0 init/main.c:1425
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
-       kernel_init+0x1d/0x1d0 init/main.c:1548
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain kernel/locking/lockdep.c:3908 [inline]
-       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
-       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
-       __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
-       fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
-       might_alloc include/linux/sched/mm.h:317 [inline]
-       slab_pre_alloc_hook mm/slub.c:4565 [inline]
-       slab_alloc_node mm/slub.c:4925 [inline]
-       __do_kmalloc_node mm/slub.c:5361 [inline]
-       __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
-       _kmalloc_noprof include/linux/slab.h:973 [inline]
-       _kzalloc_noprof include/linux/slab.h:1290 [inline]
-       apply_wqattrs_prepare+0xee/0xdc0 kernel/workqueue.c:5410
-       apply_workqueue_attrs_locked kernel/workqueue.c:5495 [inline]
-       alloc_and_link_pwqs kernel/workqueue.c:5645 [inline]
-       __alloc_workqueue+0x117c/0x2060 kernel/workqueue.c:5897
-       alloc_workqueue_va kernel/workqueue.c:5946 [inline]
-       alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
-       ib_mad_port_open drivers/infiniband/core/mad.c:3252 [inline]
-       ib_mad_init_device+0x993/0x2150 drivers/infiniband/core/mad.c:3339
-       add_client_context+0x37c/0x7b0 drivers/infiniband/core/device.c:732
-       enable_device_and_get+0x19c/0x3e0 drivers/infiniband/core/device.c:1341
-       ib_register_device+0x10af/0x1380 drivers/infiniband/core/device.c:1468
-       rxe_register_device+0x1e3/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1543
-       rxe_net_add+0x81/0x110 drivers/infiniband/sw/rxe/rxe_net.c:625
-       rxe_newlink+0xf4/0x1c0 drivers/infiniband/sw/rxe/rxe.c:243
-       nldev_newlink+0x5bc/0x650 drivers/infiniband/core/nldev.c:1816
-       rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
-       rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
-       rdma_nl_rcv+0x6ef/0xa40 drivers/infiniband/core/netlink.c:259
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
-       __sock_sendmsg net/socket.c:790 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
-       __sys_sendmsg net/socket.c:2770 [inline]
-       __do_sys_sendmsg net/socket.c:2775 [inline]
-       __se_sys_sendmsg net/socket.c:2773 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
-  fs_reclaim --> cpu_hotplug_lock --> wq_pool_mutex
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(wq_pool_mutex);
-                               lock(cpu_hotplug_lock);
-                               lock(wq_pool_mutex);
-  lock(fs_reclaim);
-
- *** DEADLOCK ***
-
-6 locks held by syz.1.835/9438:
- #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:164 [inline]
- #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
- #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv+0x33d/0xa40 drivers/infiniband/core/netlink.c:259
- #1: ffffffff8fd8ae28 (link_ops_rwsem){++++}-{4:4}, at: nldev_newlink+0x429/0x650 drivers/infiniband/core/nldev.c:1806
- #2: ffffffff8fd7c308 (devices_rwsem){++++}-{4:4}, at: enable_device_and_get+0xff/0x3e0 drivers/infiniband/core/device.c:1331
- #3: ffffffff8fd7c608 (clients_rwsem){++++}-{4:4}, at: enable_device_and_get+0x165/0x3e0 drivers/infiniband/core/device.c:1339
- #4: ffff888020ea0620 (&device->client_data_rwsem){++++}-{4:4}, at: add_client_context+0x33e/0x7b0 drivers/infiniband/core/device.c:730
- #5: ffffffff8e9f6d00 (wq_pool_mutex){+.+.}-{4:4}, at: __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 9438 Comm: syz.1.835 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2043
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain kernel/locking/lockdep.c:3908 [inline]
- __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
- __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
- fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
- might_alloc include/linux/sched/mm.h:317 [inline]
- slab_pre_alloc_hook mm/slub.c:4565 [inline]
- slab_alloc_node mm/slub.c:4925 [inline]
- __do_kmalloc_node mm/slub.c:5361 [inline]
- __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
- _kmalloc_noprof include/linux/slab.h:973 [inline]
- _kzalloc_noprof include/linux/slab.h:1290 [inline]
- apply_wqattrs_prepare+0xee/0xdc0 kernel/workqueue.c:5410
- apply_workqueue_attrs_locked kernel/workqueue.c:5495 [inline]
- alloc_and_link_pwqs kernel/workqueue.c:5645 [inline]
- __alloc_workqueue+0x117c/0x2060 kernel/workqueue.c:5897
- alloc_workqueue_va kernel/workqueue.c:5946 [inline]
- alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
- ib_mad_port_open drivers/infiniband/core/mad.c:3252 [inline]
- ib_mad_init_device+0x993/0x2150 drivers/infiniband/core/mad.c:3339
- add_client_context+0x37c/0x7b0 drivers/infiniband/core/device.c:732
- enable_device_and_get+0x19c/0x3e0 drivers/infiniband/core/device.c:1341
- ib_register_device+0x10af/0x1380 drivers/infiniband/core/device.c:1468
- rxe_register_device+0x1e3/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1543
- rxe_net_add+0x81/0x110 drivers/infiniband/sw/rxe/rxe_net.c:625
- rxe_newlink+0xf4/0x1c0 drivers/infiniband/sw/rxe/rxe.c:243
- nldev_newlink+0x5bc/0x650 drivers/infiniband/core/nldev.c:1816
- rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
- rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
- rdma_nl_rcv+0x6ef/0xa40 drivers/infiniband/core/netlink.c:259
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
- __sys_sendmsg net/socket.c:2770 [inline]
- __do_sys_sendmsg net/socket.c:2775 [inline]
- __se_sys_sendmsg net/socket.c:2773 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f8013f9de59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f8014d82028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f8014225fa0 RCX: 00007f8013f9de59
-RDX: 0000000004000000 RSI: 00002000000002c0 RDI: 000000000000000d
-RBP: 00007f8014033e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f8014226038 R14: 00007f8014225fa0 R15: 00007ffc03c3f938
- </TASK>
-smbdirect: ib_dev[syz1]: added: IB_CA max_fast_reg_page_list_len=512 device_cap_flags=0x1c001223c76 kernel_cap_flags=0x14 page_size_cap=0xfffff000
-smbdirect: ib_dev[syz1]: num_ports=1 max_qp_rd_atom=128 max_qp_init_rd_atom=128 max_sgl_rd=0 max_sge_rd=32 max_cqe=32767 max_qp_wr=1048576 max_send_sge=32 max_recv_sge=32
-smbdirect: ib_dev[syz1]PORT[1]: iwarp=0 ib=0 roce=1 v1=0 v2=1 core_cap_flags=0x803005
-RDS/IB: syz1: added
-smc: adding ib device syz1 with port count 1
-smc:    ib device syz1 port 1 has no pnetid
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-wlan1 speed is unknown, defaulting to 1000
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> > +		if (signal_pending(current)) {
+> > +			ret = sock_intr_errno(timeo);
+> > +			goto unlock;
+> > +		}
+> > +
+> > +		data = tcp_msg_wait_data(sk, psock, &timeo);
+> >  		if (data < 0) {
+> >  			ret = data;
+> >  			goto unlock;
+> > @@ -390,6 +439,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+> >  			sk_psock_put(sk, psock);
+> >  			return tcp_recvmsg(sk, msg, len, flags);
+> >  		}
+> > +		if (!data && timeo > 0)
+> > +			goto msg_bytes_ready;
+> >  		copied = -EAGAIN;
+> >  	}
+> >  	ret = copied;
+> 
