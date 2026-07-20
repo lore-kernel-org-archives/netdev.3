@@ -1,218 +1,252 @@
-Received: from mx0b-00115406.pphosted.com (mx0b-00115406.pphosted.com [205.220.178.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53881421F18
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.178.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784572917; cv=pass; b=P4RefzjHohC4/FXCCAGc4MKiUWFSrLKZiXD4l9bwt27aCx19G8Ef6877dQdK8EQ8HB8FhZ2L8Xa2pbK+cFg0+ZqNtDBfNPefMovLWvRL7gcu6ZeJ3jvOI34M1xzeUOwVKvXH2TWvw6y/upbpM8qQ93BWuWSK4LSyHjcJx9knd70=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784572917; c=relaxed/simple;
-	bh=lXhOJQY+io6raY/GtbhX53sbxU6/Do4c0Vw6oHu/iWY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TKkJo8U9g3czc1komQV8tDvQgokAsOY8JyLBLMEY9eFwek6NtwO3EUmcaGGwZ3nFyV62DbgLIEkUs1b0oJ9kw9Nb7Zjdz5mAheEI+/MKi7Gp6Xo93aETWwL+Ct4rW+HmrYIyxXuzuaXztYvJxBZDejkuVE2K85d+1nio7nQZP90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dish.com; spf=pass smtp.mailfrom=dish.com; dkim=pass (2048-bit key) header.d=dish.com header.i=@dish.com header.b=Q3vZlGPh; arc=pass smtp.client-ip=205.220.178.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dish.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dish.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521652F8EA6
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784573405; cv=none; b=Y31DgD0/mRvtf0rZFxb5RsdhNlaJsBrRUuhsGKptyb6xqqCwyyptxWO/YIA63kuUD1/eDeSqjMjGYvPuBAlJ/hUMLyZkiTRIjfP9cD7qZpmM7Yoi8xu3t3AHAIu7VTEkz3MEzgjrqwU+72NJ7UOH5BsSgrjE5484xjbYfLdsi6o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784573405; c=relaxed/simple;
+	bh=V8QegDPA1ucXzNfwp1IItNCBavFQej1S4MQNpFDWQcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B64dRWju6/5NZd6+pVseE3x7b8kVcokYwNeCkjgIzTbJHOa2x3QFA+Lv8zSnOue6vZpPRFl8LgRS6iOb/Aobdxtoh5minRnjKc2s7R2rcStFDJfZbYYizLtQO/y3C9aDuwIkWIUiXmBKQkRQztCFbES2zk25S6Ih6WiVtdklA30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ebCjthYG; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dish.com header.i=@dish.com header.b="Q3vZlGPh"
-Received: from pps.filterd (m0495109.ppops.net [127.0.0.1])
-	by mx0b-00115406.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KH6Uhm2888720
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:21:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dish.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=ppt1; bh=c5dVOyQfaReZO89IgHAyzanGEqVB3
-	4DooxeL560bXpc=; b=Q3vZlGPhfjyW/enFM70y4wAedX3wNifzAJDg3jro/eKxD
-	2h7hA1n421wXXYo6W49eqaq/OxwwAyK7uiEvtx7Vc5CWt5v8xAxf0Dym5dJduIUM
-	vJOFK/D8SUjBJSXokHgbKL3Z6TjejBQNim98VVUyXuHR+Dd0tSK5CED9eH1ZDh1m
-	0yHYOggcb6A0TodnLcmnrn7jbqd+cb7OAb7/6KXkHTKzBsdZVk2qsB5DaFJs3T3Z
-	aKkjs59LRHLgy03iC1kUtRck7qkn4/YjeNWO4vMgJNzFuPPYGeRyvoOA4GtQ29Fk
-	v7Z2s509E51EqxSYFPH56sulyRc0poTvIn0bQImjw==
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com [209.85.128.199])
-	by mx0b-00115406.pphosted.com (PPS) with ESMTPS id 4fgnaaa4e2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:21:53 +0000 (GMT)
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-81e8577d187so247162597b3.1
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 11:21:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784571712; cv=none;
-        d=google.com; s=arc-20260327;
-        b=S5YX2ppTV/8hQqvmLYoCoB0moLWOlG6hTBG/4gZI4Z/eAizgRXqdLZplODtTzx9XN4
-         tRr0/Rg6ueUhi++e6/3Wcg0NI/J/GE68uyunBJgQlJZ/UxpRIT7d/Icz2icswCE/OhPY
-         HOXmhww+tNS7WIkWkO8FJdt75tdJTVnhMwDe0S9cuxsIIOWZOm3mkosiv9WNEl/FAnbR
-         5jaDB8RGlerHfzltXT2w5BToShxoZxvkuMOpHzg80b/CyA6pix1JMVfuaZ6rULg+dVVM
-         VdCLZosNTaD6MqdHRhUQNG44nEPJuNBsCcMKaajmGKqL1aODMWfKazbT58muV/sexwiQ
-         4PiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version;
-        bh=c5dVOyQfaReZO89IgHAyzanGEqVB34DooxeL560bXpc=;
-        fh=aLXdqiAAOC8NHOU6jiCvJE8hg/p+dQ6ipJkYgqKk9BY=;
-        b=dvGet8Fr/uT1n+HuLGrWqkRt2iIjsVl6NqgrnaQdHMcI7C6n3NeZZe2ua9zgzOIb8W
-         qtRT0v+S7XiPj45yh9FdB83bKIuwg2w+rMI3vuRKhJc/aijTSCHd4f+d590DFzDdDpGt
-         U9WVeb5GPeZyqSPbAEvx3CfsC4AJHG5S+bGO2Gu0tRUqc+dIEAYWFClJhcduXCushJwQ
-         us5GL7/DCse9KDMB7jW8XHXBQ25K68ScToPy/kDXqOFA9VeX5g0Ob30AhOU9tGAOfLvT
-         FI4Nz/+x6op7jZeA3b2iE2wqxTKXE8Jy2nTEoHdnlKKt6zL781QYY7klrxC+1qSuD3NL
-         3MRQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ebCjthYG"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c9b3f380006so634136a12.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 11:50:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784573404; x=1785178204; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sxHcT8HFiLzGJ4nYxQqGgTijAjXRu6HWR5YSk3UWDU4=;
+        b=ebCjthYGKdHiCA+kaGEayMJox9M8HA+RzmiaWelzE22wGEytRZABXbyyVyYd0eXa8I
+         E7wzdoeWDyoO3zpihLlML3a0kkwn3+MrFJCoYhH3B0DbdA5ydcJ+xFXJX8eWzSNA/oBQ
+         KEmWDirCntlmWfqg4vFr7ymPmBKuHE02kCn659Fh5CUTy24zHnOo0ljM1w4Ivv+83gMt
+         RBJ0O9UoNncbDIXSLUnM8GtUf2p+NWAMa/3DzjHzlbOWRGlAItCAOSK+dY8xGvuDVeVL
+         Lw61kA9k//brhrjTKtEcpHNg2X9bw0yOKe5x6OXX1bLFlJ3Qouer5j91zP9Na4DS1O+m
+         4pUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784571712; x=1785176512;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=c5dVOyQfaReZO89IgHAyzanGEqVB34DooxeL560bXpc=;
-        b=KfssB4wiSLWuxSMC3cL28/WtFTAbbwkCnMoVt0+GJ9+HlauHp2erKyc89Bei/qrdTt
-         O4on1DgdMBNxdN5i7ZXiMGserMyJAaFRk1Hk55YGucLOu3ExCp0WTBGmFVc0eldKWaVy
-         UnjNGtQJfh9/rmtjy5m2KA8DbkqlHzvCcsWJoJUcniDz3s/EhbshXgiFPVfaAKAoHRC3
-         8Pr8nJdZkgUpxuN4iVpfL3A0muWBUqfMJoy7thT+ZnsWGCX71F6jdZyRAvtZGnQqmGf4
-         ctpIyZoDdOx8jGEilf6t/m2rHWKBm+b4wbpcXyCvfe/cDtDyDfARW/adQCKGUtb/2sZe
-         NlVQ==
-X-Gm-Message-State: AOJu0YwYWb3tW5URkpEWrLaE6z3+qBAO0GVRXJ9WwokOwuUk3AfoJZ/Y
-	TB3hsLNA9H6Q9OuUauspej3hXR6Hdon1nZIgjI6xzySHrTDr6ysC7apoEiGaQ6TlYO0sVEvRMKJ
-	Zv69FhH6xmyayuppFN27KgpV+Fw89Dbi4E5/azjK1/uXV2mtjxkHVbloqKgaQQJhk5spHPAp93p
-	+flhUPZsP5g73krNoOJ9wa3cfaRq41n+nQt4MoGCLgeQKmeA0=
-X-Gm-Gg: AR+sD12cyewP+3qJwkjDVHg1g18mQHR1uNXryTziLzQwM2ny6b3YtElrv6Z2GEticfq
-	F+5UHTcc4ebNUR1lx5TxWLhsPbihoL8APejeo20ji+awqS/uIyU0HNZGV6eo29mIxGSRvw/RSgL
-	JrZZoKseruzgbYfJjREUjgf/IwKQ4y9NeG/mlEMuYflX1QEgvWOWa62irNHg==
-X-Received: by 2002:a05:690c:4508:b0:80c:6dd5:21c3 with SMTP id 00721157ae682-81ef25eb060mr48913617b3.24.1784571712274;
-        Mon, 20 Jul 2026 11:21:52 -0700 (PDT)
-X-Received: by 2002:a05:690c:4508:b0:80c:6dd5:21c3 with SMTP id
- 00721157ae682-81ef25eb060mr48913447b3.24.1784571711700; Mon, 20 Jul 2026
- 11:21:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784573404; x=1785178204;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sxHcT8HFiLzGJ4nYxQqGgTijAjXRu6HWR5YSk3UWDU4=;
+        b=UN/hndDSPSX+nAHaguym1aBfZNnakShjc6vZJHIehjdj0GWs0RE6wc9ZlFwcRmrJTS
+         YSSOCdC9PZlZxLNnEgLhHOqhCu9+d4NPvWunyiRtMpdzGMht1OIenQyEEBJbhpn9lEJA
+         kdoKjddHMQko768uHpB7dVHW89T/HuRH5tjth+t+yzIsl35dmpLkDdZcanDpM++Gg9nu
+         4i/ndljnpDVs0mN8riJKjJWqIzozw3baWB9wyeh84D83z8oONNS0jgVmB3kFSzl4biyj
+         MySaI1LCF7kzWY2BQg3016zOsuUhbcXH3QPhESfzPUzcw7SvVKdjHgDi+N2Befk07FRX
+         /gHQ==
+X-Gm-Message-State: AOJu0YxSMLTiy7I5IRYzppu5TWXhpr7kcAMmhQXCSAHLUxzSV5SuKtar
+	VIEzGjvznZI3GCbD3ePtbgPJrE902cB8c7jdrTGTR/Qh2dqRfy+zu8HJ
+X-Gm-Gg: AfdE7clJTe93wdY4ddRhq0Sva08ktGkvB+4h9b4P29dDsBNX2A9djPG3254Dr9gP/IZ
+	//mR3ry9BoGlaP2dBwdx5TkWthJfyn6DlXi6qxbJoxjXHnrcF2c1NgI2wqYu+SjZNW2YWlK2OPY
+	d5TpJ8zQ8A0z9hytiMH49hdN8EhpZuNwTPYVcerT6dW9xVp7yWrBRJ5hPSkfT2n1BGfyTjypDIh
+	EJZ2rCKGF+aHqI0nPmL6Ja/SMALPFOoKdFb1HIMj8mpiO+blJ5vkMo8f81TWWtSHStpelMtWdug
+	WnhozuRGcNMDpTOhS3e/bnUDeDwKrJTCZaMj8MBiwoHHy7MB7l2apPCjcxEnyzB4RQWhhcZZR8i
+	1yX9HNITKtgTMyswXnHwMgvXa+lEUkbeGmNKEJ25YQVuTcfGzrBywOTQjNzDmubtf3N0LHgg4Z5
+	YNkIOcRnFTzvm7UxfMB/4ZyEP9I0WrlDTHXqygplMsFD5d64FZqekCGqo0mEf1JXOslUyi
+X-Received: by 2002:a05:6a20:9c8c:b0:3c3:5e14:461b with SMTP id adf61e73a8af0-3c40fa2d957mr138703637.5.1784573403439;
+        Mon, 20 Jul 2026 11:50:03 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429ff04absm36349595eec.8.2026.07.20.11.49.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 11:50:02 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Allison Henderson <achender@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+	Ka-Cheong Poon <ka-cheong.poon@oracle.com>,
+	Dan Carpenter <error27@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] rds: synchronize info callbacks with connection teardown
+Date: Tue, 21 Jul 2026 02:49:55 +0800
+Message-ID: <20260720184955.3008978-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPT8rhu_NGbLd54RFWRxO+=7BHhJ0pS5yeOgo5kNmq4qtQ=t8w@mail.gmail.com>
-In-Reply-To: <CAPT8rhu_NGbLd54RFWRxO+=7BHhJ0pS5yeOgo5kNmq4qtQ=t8w@mail.gmail.com>
-From: Tim Wong <kanman.wong@dish.com>
-Date: Mon, 20 Jul 2026 12:21:40 -0600
-X-Gm-Features: AUfX_mzB4IkMDyq-8vCv0uYwhMyQQa6Sut7SqWcvbynyhmy5uiiLyRtGbmhlpj4
-Message-ID: <CAPT8rhtXa4q4wwaOUtfY0MMVmMSg_MRy2DaqoC+4u14RYxNd+w@mail.gmail.com>
-Subject: [PATCH net-next 2/2] selftests: net: add test for IPv4 address scope ordering
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-GUID: FlTj48e50sL-fszjX2TBT8UXrhQLt-lx
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDIwMSBTYWx0ZWRfXyQ4DlADauTvK
- hWClIHNkktCog5GDPJNQT2gi/dK1HWfGSd9ivtQMcimRGAj6aSBYamftFDIbbUKzILPcUGUhgyv
- AIpvUCVSgaD+IERuZs9iZO2iYP207kIjiaFVCAVl33VUZxAfBj3W
-X-Authority-Analysis: v=2.4 cv=O/oJeh9W c=1 sm=1 tr=0 ts=6a5e6741 cx=c_pps
- a=72HoHk1woDtn7btP4rdmlg==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=XolNvlvVfU_khZ2SZc-R:22 a=THJZACkQAH-ljx93NWkt:22
- a=BZdJCGVvAAAA:8 a=KodXEU3fMOHkBKOHQYkA:9 a=QEXdDO2ut3YA:10
- a=kA6IBgd4cpdPkAWqgNAz:22 a=U3TbxMjcxCISFbQIaatt:22
-X-Proofpoint-ORIG-GUID: FlTj48e50sL-fszjX2TBT8UXrhQLt-lx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDIwMSBTYWx0ZWRfX9tWMZh9HKN0N
- ZgZg4NqVwah8sJoK1UTvaUhP6Mf3EgagMlAVXXpmEL0xA2KXWRwp+ad/VC8OlFhp+/53xHEQltF
- Hjq0rsg9rXZAWoIE3wKCpWyCKi3G2z2F6zF21TUsZYVq+MPa2pbXXgpWRXopPLnLDQhbc07Kb8t
- 0biHG/SQvKhASCUjUID9VB5iHm8Avrgpql/LQM4fsM8Bk8ZzQueKmk19ymX/4Gtuv1czUA4zD/b
- jWImyurvKViyTvyaM0TPcEzYdLG6h/abwtkiW7l4egfUknYqX75KCA9nI5rHg7uGJi9aWDWmft2
- 58Ubge1XqXvIXnGkCh2AegLr0U6VCEEMpUUsfcmb5limJMYmgV9/lIKgmri8PYuTFHXrfTiv2xP
- W1nIjTOAYm+ijjYi1s6aDFFiuTOn9jCfwOFmzqXvB8CUI4Vhcf1ywD19D0usKBpXyOFPvYZzvOF
- copjdVJU/JcoPQtTt2g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_04,2026-07-20_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607200201
+Content-Transfer-Encoding: 8bit
 
-Add a selftest verifying that IPv4 addresses on an interface are
-enumerated with global-scope addresses listed before link-scope
-addresses, regardless of the order in which the addresses were
-configured. This exercises the ordering fixed in the preceding
-patch ("ipv4: devinet: list global scope addresses before link
-scope addresses") and guards against regression.
+rds_info_getsockopt() reads an info callback without holding
+rds_info_lock across its invocation.  At the same time, rds_exit()
+destroys all connections before unregistering the socket info callbacks.
 
-Signed-off-by: kanman.wong <kanman.wong@dish.com>
+This permits the following interleaving:
+
+  CPU0                              CPU1
+  rds_info_getsockopt()
+    func = rds6_sock_inc_info
+                                    rds_exit()
+                                      rds_conn_exit()
+                                        rds_conn_destroy()
+                                          kmem_cache_free(conn)
+    func()
+      rds6_inc_info_copy()
+        inc->i_conn->c_tos
+
+The receive queue lock keeps the incoming message on its socket queue,
+but it does not keep inc->i_conn alive.  KASAN reports:
+
+  BUG: KASAN: slab-use-after-free in rds6_inc_info_copy+0x459/0x530 [rds]
+  Read of size 1 at addr ffff888106031c50 by task poc/101
+  Call Trace:
+   rds6_inc_info_copy+0x459/0x530 [rds]
+   rds6_sock_inc_info+0x2b9/0x3c0 [rds]
+   rds_info_getsockopt+0x19d/0x380 [rds]
+   do_sock_getsockopt+0x2ac/0x480
+   __sys_getsockopt+0x128/0x210
+  Allocated by task 99:
+   kmem_cache_alloc_noprof+0x11a/0x360
+   __rds_conn_create+0x7e/0xd60 [rds]
+   rds_conn_create_outgoing+0x61/0x80 [rds]
+   rds_sendmsg+0xb83/0x1d00 [rds]
+  Freed by task 102:
+   kmem_cache_free+0x1b5/0x3d0
+   rds_conn_destroy+0x484/0x600 [rds]
+   rds_loop_exit_net+0x32/0x50 [rds]
+   unregister_pernet_device+0x2c/0x50
+   rds_conn_exit+0x13/0xa0 [rds]
+   rds_exit+0x1a/0xc40 [rds]
+   __do_sys_delete_module+0x30a/0x4d0
+
+Publish and clear callback pointers with SRCU, and keep the SRCU read-side
+critical section across callback execution. SRCU permits callbacks such as
+RDS_INFO_COUNTERS to sleep, unlike classic RCU. After clearing a slot,
+synchronize_srcu() waits for every in-flight callback.
+Move socket callback deregistration ahead of protocol and connection
+teardown. This prevents callbacks from reaching a connection after it is
+freed.
+
+Fixes: 7d0a06586b26 ("net/rds: Fix info leak in rds6_inc_info_copy()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- tools/testing/selftests/net/Makefile          |  1 +
- .../selftests/net/fib_ipv4_scope_order.sh     | 55 +++++++++++++++++++
- 2 files changed, 56 insertions(+)
- create mode 100755 tools/testing/selftests/net/fib_ipv4_scope_order.sh
+ net/rds/af_rds.c | 12 ++++++------
+ net/rds/info.c   | 20 ++++++++++++++------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/net/Makefile
-b/tools/testing/selftests/net/Makefile
-index 708d960ae07d..66a79c915961 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -33,6 +33,7 @@ TEST_PROGS := \
-  fdb_flush.sh \
-  fdb_notify.sh \
-  fib-onlink-tests.sh \
-+ fib_ipv4_scope_order.sh \
-  fib_nexthop_multiprefix.sh \
-  fib_nexthop_nongw.sh \
-  fib_nexthops.sh \
-diff --git a/tools/testing/selftests/net/fib_ipv4_scope_order.sh
-b/tools/testing/selftests/net/fib_ipv4_scope_order.sh
-new file mode 100755
-index 000000000000..3bbb7eefa2d8
---- /dev/null
-+++ b/tools/testing/selftests/net/fib_ipv4_scope_order.sh
-@@ -0,0 +1,55 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Verify IPv4 addresses are enumerated with global-scope addresses
-+# listed before link-scope addresses on the same interface,
-+# regardless of the order in which they were configured -- matching
-+# existing IPv6 address enumeration behavior.
-+
-+source lib.sh
-+
-+ret=0
-+
-+setup() {
-+ setup_ns TEST_NS
-+ ip -n "$TEST_NS" link add dummy0 type dummy
-+ ip -n "$TEST_NS" link set dummy0 up
-+}
-+
-+cleanup() {
-+ cleanup_ns "$TEST_NS"
-+}
-+
-+check_order() {
-+ local desc="$1"
-+ local order
-+ local first
-+
-+ order=$(ip -n "$TEST_NS" -o addr show dev dummy0 | grep -oP
-'(?<=scope )(global|link)')
-+ first=$(echo "$order" | head -1)
-+
-+ if [ "$first" != "global" ]; then
-+ echo "FAIL: $desc: link-scope address listed before global-scope address"
-+ ret=1
-+ else
-+ echo "PASS: $desc"
-+ fi
-+}
-+
-+trap cleanup EXIT
-+setup
-+
-+# Case 1: link-scope address added before global-scope address.
-+ip -n "$TEST_NS" addr add 169.254.1.1/16 dev dummy0 scope link
-+ip -n "$TEST_NS" addr add 192.0.2.1/24 dev dummy0 scope global
-+check_order "link added before global"
-+
-+ip -n "$TEST_NS" addr flush dev dummy0
-+
-+# Case 2: global-scope address added before link-scope address
-+# (sanity check -- should already pass even without the fix).
-+ip -n "$TEST_NS" addr add 192.0.2.1/24 dev dummy0 scope global
-+ip -n "$TEST_NS" addr add 169.254.1.1/16 dev dummy0 scope link
-+check_order "global added before link"
-+
-+exit $ret
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index d5defe9172e3..b3fe2bd6ea35 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -925,6 +925,12 @@ static void rds6_sock_info(struct socket *sock, unsigned int len,
+ static void rds_exit(void)
+ {
+ 	sock_unregister(rds_family_ops.family);
++	rds_info_deregister_func(RDS_INFO_SOCKETS, rds_sock_info);
++	rds_info_deregister_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_info);
++#if IS_ENABLED(CONFIG_IPV6)
++	rds_info_deregister_func(RDS6_INFO_SOCKETS, rds6_sock_info);
++	rds_info_deregister_func(RDS6_INFO_RECV_MESSAGES, rds6_sock_inc_info);
++#endif
+ 	proto_unregister(&rds_proto);
+ 	rds_conn_exit();
+ 	rds_cong_exit();
+@@ -933,12 +939,6 @@ static void rds_exit(void)
+ 	rds_stats_exit();
+ 	rds_page_exit();
+ 	rds_bind_lock_destroy();
+-	rds_info_deregister_func(RDS_INFO_SOCKETS, rds_sock_info);
+-	rds_info_deregister_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_info);
+-#if IS_ENABLED(CONFIG_IPV6)
+-	rds_info_deregister_func(RDS6_INFO_SOCKETS, rds6_sock_info);
+-	rds_info_deregister_func(RDS6_INFO_RECV_MESSAGES, rds6_sock_inc_info);
+-#endif
+ }
+ module_exit(rds_exit);
+ 
+diff --git a/net/rds/info.c b/net/rds/info.c
+index 21b32eb16559..7d6f3552d65b 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -32,6 +32,7 @@
+  */
+ #include <linux/percpu.h>
+ #include <linux/seq_file.h>
++#include <linux/srcu.h>
+ #include <linux/slab.h>
+ #include <linux/proc_fs.h>
+ #include <linux/export.h>
+@@ -68,8 +69,9 @@ struct rds_info_iterator {
+ 	unsigned long offset;
+ };
+ 
++DEFINE_STATIC_SRCU(rds_info_srcu);
+ static DEFINE_SPINLOCK(rds_info_lock);
+-static rds_info_func rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1];
++static rds_info_func __rcu rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1];
+ 
+ void rds_info_register_func(int optname, rds_info_func func)
+ {
+@@ -78,8 +80,8 @@ void rds_info_register_func(int optname, rds_info_func func)
+ 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+ 
+ 	spin_lock(&rds_info_lock);
+-	BUG_ON(rds_info_funcs[offset]);
+-	rds_info_funcs[offset] = func;
++	BUG_ON(rcu_access_pointer(rds_info_funcs[offset]));
++	rcu_assign_pointer(rds_info_funcs[offset], func);
+ 	spin_unlock(&rds_info_lock);
+ }
+ EXPORT_SYMBOL_GPL(rds_info_register_func);
+@@ -91,9 +93,10 @@ void rds_info_deregister_func(int optname, rds_info_func func)
+ 	BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+ 
+ 	spin_lock(&rds_info_lock);
+-	BUG_ON(rds_info_funcs[offset] != func);
+-	rds_info_funcs[offset] = NULL;
++	BUG_ON(rcu_access_pointer(rds_info_funcs[offset]) != func);
++	RCU_INIT_POINTER(rds_info_funcs[offset], NULL);
+ 	spin_unlock(&rds_info_lock);
++	synchronize_srcu(&rds_info_srcu);
+ }
+ EXPORT_SYMBOL_GPL(rds_info_deregister_func);
+ 
+@@ -165,6 +168,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	int npages = 0;
+ 	int ret;
+ 	int len;
++	int srcu_idx;
+ 	int total;
+ 
+ 	len = opt->optlen;
+@@ -214,8 +218,11 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	rdsdebug("len %d nr_pages %lu\n", len, nr_pages);
+ 
+ call_func:
+-	func = rds_info_funcs[optname - RDS_INFO_FIRST];
++	srcu_idx = srcu_read_lock(&rds_info_srcu);
++	func = srcu_dereference(rds_info_funcs[optname - RDS_INFO_FIRST],
++				&rds_info_srcu);
+ 	if (!func) {
++		srcu_read_unlock(&rds_info_srcu, srcu_idx);
+ 		ret = -ENOPROTOOPT;
+ 		goto out;
+ 	}
+@@ -225,6 +232,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, sockopt_t *opt)
+ 	iter.offset = offset0;
+ 
+ 	func(sock, len, &iter, &lens);
++	srcu_read_unlock(&rds_info_srcu, srcu_idx);
+ 	BUG_ON(lens.each == 0);
+ 
+ 	total = lens.nr * lens.each;
 -- 
-2.51.0
+2.43.0
+
