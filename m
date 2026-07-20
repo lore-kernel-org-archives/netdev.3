@@ -1,151 +1,197 @@
-Received: from mailrelay.tu-berlin.de (mailrelay.tu-berlin.de [130.149.7.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3F22236EB;
-	Mon, 20 Jul 2026 21:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.149.7.70
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784582124; cv=none; b=tCJaxo8VdL6Unf9goZoCvlzzv0sUGIgwc/lWYG+GWzWGqLrsvy008hUIpGb01e6paN6o7/MfJFf8O9yTSUbTREjlq3kkvz0ofDfidMRHpyR+vg9bVVOeNSmVRcjwccL3e8kngBhV9C0Pyn/Ydwdu8YCb5hdvQRfwHqR6g0on6As=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784582124; c=relaxed/simple;
-	bh=WxVqK7f0WnYM6l2XP/pR4xbyWlHe9CYvhfQ6aAn+dxM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=cqgoqqG5ehWUWhciEOK4TSEvxsavFuvh/5g7JZu8HJ2chxkoPaouoXy+X1ruAc+iVIPiNMey3RHZonPDHqlDjP8xJnZyggLdFScjA7PM1cn9QSBFqV8KAVioqLHO3yrL7q2XQjcD8nLKW/DKvICe8WAr9oScU3vLfwkLdtV5gQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de; spf=pass smtp.mailfrom=tu-berlin.de; dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b=F4vrfrWb; arc=none smtp.client-ip=130.149.7.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-berlin.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1B384CCA
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 21:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784582160; cv=pass; b=spJ7iLtEbBZGLmffrad8Lh+t9KeXUPTUqtG+dfxaAvsV+0fab+ueVEhLNMjM5bXxq3OoDMFe8EP2YpUMQn9vqoTdJyxmQjF/fDTO4ZgTt3PDBnesio7KFLdrFedHHtan8/Wa+YszkOfQVTBce0amZ0hMfClcqIeHiitz4vOPAvI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784582160; c=relaxed/simple;
+	bh=GYmozcAMwSemNlmhz+B3xhx2TrSFNt5xSE7k56r5ovg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qdk5C/mmPAIcVOXad3y9zy5LRm2MdoG7X5dMEftwyQ3TLDJm72v4Mras3cEv/UiGXrz8AwMFyFVg4aHTisu0WvVKu+Ay6eFYCzCyg40y6I2F7gtf4fcUjrfV49YfOHewXpOo0HcdJckcJ89M/ffSHSXjYakr2LN0vSdRDPTex0Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F5hO0hcB; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b="F4vrfrWb"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
-  d=tu-berlin.de; s=dkim-tub26; t=1784582120;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=jFz0rBRtd/CDluc+DiH0LYmRaRHZbo1Ob2zqF50rhyQ=;
-  b=F4vrfrWbgtf+tRQzDhywP9s7NR+ku7hI5mf/HqEJCAOjoEx48yYjHJ4a
-   4Q+DEtsxJ3HhPd4xvDObm+F8tuDDogxEo8dyAYruz25fC3mjRPbaSxI3V
-   OpMyiyqD/RXan0g/bCemtQGZS7AeyvpEwxCJaoe7h1hMh7QpttTNwYK2x
-   pOceB2b9AxuhosEhsX66tLbWYRYRagwkuW1D0YXDn5bWclus6OSErcOKr
-   a597HiUmwp+6UiPlzYqHthV3SB2ua3CN/cBqmwqKjt3enPyGVmbaEOo6Q
-   h/HSBuV0+i816VPwD7B1mjCCGfBZQTvqpEarQ87k9LKHkLJxJGAtwkb2z
-   w==;
-X-CSE-ConnectionGUID: IDiMJWlSRlmWvFyGo81f1w==
-X-CSE-MsgGUID: /xtZ2LA5SuyA681WUypZ+Q==
-X-IronPort-AV: E=Sophos;i="6.25,175,1779141600"; 
-   d="scan'208";a="64541735"
-Received: from bulkmail.tu-berlin.de (HELO mail.tu-berlin.de) ([141.23.12.143])
-  by mailrelay.tu-berlin.de with ESMTP; 20 Jul 2026 23:15:11 +0200
-From: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>
-Date: Mon, 20 Jul 2026 23:14:52 +0200
-Subject: [PATCH net-next v2] net/sched: sch_cake: skip clearing unused tins
- during rate adjustment
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F5hO0hcB"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cede6375caso376865ad.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 14:15:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784582158; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jRluPmIbtg4vA/vhqwMpTBDIpUBqVBQD3MmEDxoJXswAB7VUdbxLJkIu22GTLWM7MN
+         VuY7fxCSYX+zcRl9wRKSbrjhl3HHk32RR45hjC9N8iTGLqWRsmDCI6LmQ1QyzVOHJgk9
+         bCtb5e5pYtJ9viOsqlB8dWaSHt85RcU5dxTPN5zp45TKxzQb3oYEZNV8waVA/i/eIa+b
+         iUymBYqWfk7o+624xoXaj7E9Bz/OPr5IsJfsNklywsB7s/ekjgconIchUBtnJwqrG0xA
+         F/xYZmC/MRBrRBoneXdwi5W7KKfZkmCb2nPNhF1LikUwWbAS2heiLhEEpJ1z7LcC4q9H
+         KTxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
+        fh=4F5lCFeFr/L80jGDkzXD2moi/oqQZt22NIeRKt9csto=;
+        b=hqOH5HEmHFwAhrXOu1OPgIzu0lvKlFNZU/PtqZMdLf8s1c75cPynFuLh/o7nhdtkqK
+         gjW4JhlxM8sCDufcCL3nfmCOJdbOoBHy9Gbv8Theo71/XGhawMaZdogWJKtepgzp1dG7
+         HohR7YDGglLmcD11Dzy8ML29RhSdbaYeoHIc0ZT9E4ZBQpOPA2BOAgtYM9fmBeTURl5Y
+         pOqvPB3DbhK7F/DUB6L8WZosrDmWEXE4aMOh5ZrHPYE06145o1XevICN+Ch3Efix5bkr
+         S7pCtv1mWcB3V6NcLtN10tcOij3qO5QX0oX/DwslcflVa4jmwdH9dRTmE8f+dMZhlnht
+         4O6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784582158; x=1785186958; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
+        b=F5hO0hcBNHdKGk9M59qXB0EfAf1ZQL0kiD2GIokeaFPVUU7JE0sBVMIOaHAJJlbqf1
+         hT0EOsaGQxdzfkSQxV5SGVl+QdL5b6YSb2ZjQcZcLVNAPL1/8wIsNcH96dHr/vpiGqUG
+         I/27/r9cfrp5Ztsp3RVhurZRlE2qZSv42m69MWpB8o09v5sRx2Rp61wKfeDuQt8qOgV/
+         5Npk2kIQYLRLDeexi5vPRbcgEYHVubzyoIEQIKsfg75YWhiyH8NwE+Gc22p4+NDE9kWL
+         Kq02Bv1RfaF6OK4XicyN5ZimBBBuQoKC7Cd85xPJt3ndaYNSfPVYjdP+YdCYZm6nh5OX
+         79lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784582158; x=1785186958;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AUz90BaUvuUhSt2RwJPSmjEfCptOlPXUUGIO067pPsI=;
+        b=nkN7TVqxCQbWosBszwuiV00sCksjPU6jpdGMog3x34uXQJ37O9HRSIaIrWkpQp0+yz
+         MvtXkcVB2506WuH2jfAwffJUg1lxZZL+IlCIUbmFeLMrKULFh6jExOk2S+gAImE1Ese9
+         nTQ1Ul4DJ1oLerpnmaDU9Ik96e/UAdtMpYEqBDFnj5idezOKJcQwUbwBMB2KpIipHlRh
+         2ARCoHvo+qGu/VzofTBxST0tL5f7OzStn1bNJYqywaaCfOGPqe8XKutv+wVjVmQadchk
+         WPyxGw0sOzcNLnyYUHwS+4hCm6pvn3HEJjTLpgeQuXTdg8jv6XGefc7jLsp+fAReKxpU
+         YvzA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7Qemy+MPzm1AUIdxTlkHQzACmaMHGatDnAy8tEqf6pkKE7ZLsY4HIhyu6G+i6K+cstOKgNJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxX7onz1TNM5Yj0KwlkiOVVbjSWyK7hjGDWa3bOLR+H69idkhJw
+	nZFkTcQU3nemlP4yDFKFNE4iOG7mWSAq9sCqnh8MNZ5vkfK0hg2TBvo+PwsgowdEAUMtncS797H
+	VUio9VGpAXGLo+1fGxhvrQbLCNUF5lmrWjSSbFX01
+X-Gm-Gg: AR+sD10RhWsyFNdqlRsXUvlS3ITe1qcxIP7REYkHmpYIOSPfNs6KYf43NNuIU427we8
+	jFUOEJX5+msM0GkY7IhTKYprF40fQbZDufDJYxDw83fheX9pHzpZpLmer4ObzHw7Oakdv9XG8ov
+	J5BhcTyT0IwE8XpV6iCshuU+pBmb8Hyt4uiDzgaOvPbru/3M8r93bc00qsOFhLTj32s9bEbeLOQ
+	wK05eIl4wetGoQ1jSubjCzEctY/HCaUvTcJYEJIsqBJDzHU89Tn0cPQiIH2JS6s+z3Ra89ovUWw
+	oxCPAIhHYE0fx5PXoYmZVQHRPVc=
+X-Received: by 2002:a17:902:f54c:b0:2ce:7ae6:2a23 with SMTP id
+ d9443c01a7336-2cf7b702c3dmr2558895ad.27.1784582156890; Mon, 20 Jul 2026
+ 14:15:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20260720-sch_cake-skip-clearing-tins-v2-1-e6a8b0275c73@tu-berlin.de>
-X-B4-Tracking: v=1; b=H4sIAMyPXmoC/42OUQqDMBBEryL73S0moKb96j2KFE1W3SpRkigW8
- e6N9gL9HGbmzWzgyTF5uCcbOFrY82ijkJcEdFfZlpBN1CBTmaeFyNHr7qWrntD3PKEeqHJsWwx
- sPaosV0JmKteGIBImRw2vJ/0JlgJaWgOUP8fP9Zt0OOBHtmMfRvc5jyzibPy1uQgUaG6FKkwjU
- y3VI8xYkxvYXuOLct/3L+X15TjlAAAA
-X-Change-ID: 20260716-sch_cake-skip-clearing-tins-856812586cde
-To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, Jamal Hadi
- Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: <cake@lists.bufferbloat.net>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, =?utf-8?q?Jonas_K=C3=B6ppeler?=
-	<j.koeppeler@tu-berlin.de>, Mike Pham <mikepham4321@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784582110; l=3363;
- i=j.koeppeler@tu-berlin.de; s=20260716; h=from:subject:message-id;
- bh=WxVqK7f0WnYM6l2XP/pR4xbyWlHe9CYvhfQ6aAn+dxM=;
- b=D4Wu0aS+EItsdywRf35Vq65lBwdex0RcjmDd+inNHw6Gqsfd2759xtQQZBBnKypAeYZ0wT4TP
- FwxL2XvIyQeB/1rBLgjgtpqi6ypcmVaNZYrJFuN/lI5QIe2n3O5w8P8
-X-Developer-Key: i=j.koeppeler@tu-berlin.de; a=ed25519;
- pk=gCux0rX5l27ZRzRDqTc0LtoO66uPAXTt/SX1DzcQoBk=
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com> <20260708-tcpdm-large-niovs-v5-2-34bf6fac941b@meta.com>
+In-Reply-To: <20260708-tcpdm-large-niovs-v5-2-34bf6fac941b@meta.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 20 Jul 2026 14:15:42 -0700
+X-Gm-Features: AUfX_mxUXqtSIB0dpGSWPZIOzVEGjkP0LeV9jHf6fDBCDwwRrEGRR9CjBBihAPw
+Message-ID: <CAHS8izMz_S8K80EXn3oFXiDNkGuPUMzjecaJjAvaZVky-7O40Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 2/3] selftests/net: ncdevmem: add -b option to
+ set rx-buf-size on bind
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, 
+	sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net, 
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk, 
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When cake_configure_rates() is called from the dequeue path with
-rate_adjust=true, it only needs to update the rate parameters. The
-loop that clears the unused tins is both unnecessary and harmful in
-this path:
+On Wed, Jul 8, 2026 at 3:55=E2=80=AFPM Bobby Eshleman <bobbyeshleman@gmail.=
+com> wrote:
+>
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
+>
+> Add -b <bytes> to request a non-default niov size via
+> NETDEV_A_DMABUF_RX_BUF_SIZE. When the value exceeds PAGE_SIZE,
+> udmabuf_alloc() switches to an MFD_HUGETLB-backed memfd so each 2 MB
+> hugepage produces one naturally-aligned sg entry.
+>
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 
- - cake_clear_tin() overwrites q->cur_tin and q->cur_flow, which are
-   actively used by cake_dequeue(), corrupting the dequeue state.
- - iterating over the unused tins and their internal queues to purge
-   packets adds needless overhead to the hot path.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-Skip the entire loop when rate_adjust is set, as neither
-cake_clear_tin() nor the mtu_time update are needed when only the
-rate changes.
 
-The clearing loop runs on every rate adjustment from the dequeue path,
-clearing (max_tins - cur_tins) tins each time, so the cost grows the
-fewer tins the configured mode actually uses. Testing cake_mq over veth
-(8 rx/tx queues, 2 Gbit limit) with flent's [1] rrul and tcp_nup tests and
-32 TCP upstreams shows a large drop in loaded latency and a throughput
-gain, restoring behaviour to pre-15c2715a5264 levels:
+> ---
+>  tools/testing/selftests/drivers/net/hw/ncdevmem.c | 36 +++++++++++++++++=
+++++--
+>  1 file changed, 33 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/te=
+sting/selftests/drivers/net/hw/ncdevmem.c
+> index d96e8a3b5a65..a16e55af51ee 100644
+> --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> @@ -40,6 +40,7 @@
+>
+>  #include <linux/uio.h>
+>  #include <stdarg.h>
+> +#include <stdint.h>
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <unistd.h>
+> @@ -61,6 +62,7 @@
+>  #include <sys/time.h>
+>
+>  #include <linux/memfd.h>
+> +#include <sys/param.h>
+>  #include <linux/dma-buf.h>
+>  #include <linux/errqueue.h>
+>  #include <linux/udmabuf.h>
+> @@ -79,6 +81,7 @@
+>  #define PAGE_SHIFT 12
+>  #define TEST_PREFIX "ncdevmem"
+>  #define NUM_PAGES 16000
+> +#define MB(x) ((x) << 20)
+>
+>  #ifndef MSG_SOCK_DEVMEM
+>  #define MSG_SOCK_DEVMEM 0x2000000
+> @@ -100,6 +103,7 @@ static unsigned int dmabuf_id;
+>  static uint32_t tx_dmabuf_id;
+>  static int waittime_ms =3D 500;
+>  static bool fail_on_linear;
+> +static uint32_t rx_buf_size;
+>
+>  /* System state loaded by current_config_load() */
+>  #define MAX_FLOWS      8
+> @@ -142,6 +146,7 @@ static struct memory_buffer *udmabuf_alloc(size_t siz=
+e)
+>  {
+>         struct udmabuf_create create;
+>         struct memory_buffer *ctx;
+> +       unsigned int memfd_flags;
+>         int ret;
+>
+>         ctx =3D malloc(sizeof(*ctx));
+> @@ -156,9 +161,14 @@ static struct memory_buffer *udmabuf_alloc(size_t si=
+ze)
+>                 goto err_free_ctx;
+>         }
+>
+> -       ctx->memfd =3D memfd_create("udmabuf-test", MFD_ALLOW_SEALING);
+> +       memfd_flags =3D MFD_ALLOW_SEALING;
+> +       if (rx_buf_size > getpagesize())
+> +               memfd_flags |=3D MFD_HUGETLB | MFD_HUGE_2MB;
+> +
 
-  +------------+------+------+-------+-------+---------+
-  | kernel     | mode | test |  base |  load |    tput |
-  |            |      |      |  (ms) |  (ms) |  (Mbit) |
-  +------------+------+------+-------+-------+---------+
-  | net-next   | be   | rrul | 0.810 | 11.78 | 1469.67 |
-  | net-next   | be   | nup  | 0.637 | 85.71 | 1243.15 |
-  | net-next   | ds3  | rrul | 0.397 | 15.28 | 1770.06 |
-  | net-next   | ds3  | nup  | 0.351 | 15.98 | 1799.39 |
-  +------------+------+------+-------+-------+---------+
-  | patched    | be   | rrul | 0.092 |  0.56 | 1873.40 |
-  | patched    | be   | nup  | 0.109 |  1.82 | 1869.12 |
-  | patched    | ds3  | rrul | 0.097 |  0.98 | 1866.10 |
-  | patched    | ds3  | nup  | 0.101 |  0.51 | 1861.79 |
-  +------------+------+------+-------+-------+---------+
+The fact that you are using HUGETLM and 2MB mappings here made me
+realize there is a pathological edge case in the code where the netmem
+size you're requesting is greater than the mapping size, so you
+actually get no netmems. So like if you ask for a 64KB netmem size but
+actually you did a normal udambuf mapping and all the maps (sg len
+entries) are 4K or something. IDK if the code already handles this
+well with an error or what not. Worth checking.
 
-The same trend holds on real hardware (IPQ8074A, 4 rx/tx queues,
-OpenWrt): in besteffort mode the tcp_nup loaded latency drops from
-~470 ms to ~4 ms.
-
-[1] https://flent.org
-
-Fixes: 15c2715a5264 ("net/sched: sch_cake: fixup cake_mq rate adjustment for diffserv config")
-Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
-Tested-by: Mike Pham <mikepham4321@gmail.com>
----
-Changes in v2:
-- added performance data to commit message, no code changes
-- Link to v1: https://patch.msgid.link/20260716-sch_cake-skip-clearing-tins-v1-1-d9787df20c28@tu-berlin.de
----
- net/sched/sch_cake.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index f78f8e950776..845e1c017714 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2609,9 +2609,11 @@ static void cake_configure_rates(struct Qdisc *sch, u64 rate, bool rate_adjust)
- 		break;
- 	}
- 
--	for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
--		cake_clear_tin(sch, c);
--		qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
-+	if (!rate_adjust) {
-+		for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
-+			cake_clear_tin(sch, c);
-+			qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
-+		}
- 	}
- 
- 	qd->rate_ns   = qd->tins[ft].tin_rate_ns;
-
----
-base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
-change-id: 20260716-sch_cake-skip-clearing-tins-856812586cde
-
-Best regards,
---  
-Jonas Köppeler <j.koeppeler@tu-berlin.de>
-
+--
+Thanks,
+Mina
