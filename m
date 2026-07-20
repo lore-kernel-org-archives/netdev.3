@@ -1,105 +1,100 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A3135C188;
-	Mon, 20 Jul 2026 13:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8C2423A79
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784553376; cv=none; b=c7iEiQ0YOBSgu9HnZNISzc8nate2wmlKGYPRrvrqfC6CmYNRF4SDM+nBfY2jLLFEPbWiYuImNN0ufk6xJgVeYdbpHI19EYGBkBa6dN5Q2JTuRnteHvxpPNF3ahMTKYCWgeKjG1QxdmyB9iGXlB0m/N9qnjFfMUOcAK96JJxppL4=
+	t=1784553700; cv=none; b=YMEh3yM+2B+oqhCT71JR+uwnEKfm6eP96kmUFWNJP7vwXx0140j+WuS7SCF4GquvXegKJzZPHRnBBpYYDGLNb7lrFjc5aiOMN5QGWIsg4JXayVi+LUp+F3e2wGOAoM1oGDkmWx8jBtn+4YRkQDpOUKaHB5G9+I8jfTfTGaoQiD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784553376; c=relaxed/simple;
-	bh=K+OXIXi68Rh+DM8RsHl3F/a3Bg7A3e8Zx3wwvMOCuGU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ckZw9g6EpOpH0EtV8ljh8LbF9wEQbT1xaMT75WDMFj06xDrr3QNb+4wudmQL4EL2K2LwY7WuVIVmefV4DW5YtOVvp1oW9jmyAMLG9EZE7+YEIOJPqTwQ+2lr+4eBfxulPYStr8Lj3EmUL2MZiyKcJvQjX6hZhMU0huLw8dvLAVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h3gxY0sW5zYQtvb;
-	Mon, 20 Jul 2026 21:15:45 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id BE99E4082D;
-	Mon, 20 Jul 2026 21:16:10 +0800 (CST)
-Received: from [10.67.110.68] (unknown [10.67.110.68])
-	by APP4 (Coremail) with UTF8SMTPA id gCh0CgCHuluZH15q6ymyBw--.28143S2;
-	Mon, 20 Jul 2026 21:16:10 +0800 (CST)
-Message-ID: <7a25d8b5-30bc-45cb-b89b-cce07b2cbde1@huaweicloud.com>
-Date: Mon, 20 Jul 2026 21:16:09 +0800
+	s=arc-20240116; t=1784553700; c=relaxed/simple;
+	bh=q/i+h1xLBAMF009p2KMCeNBKzps8J4NXn33rD07ylA0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=usaahENV8W9oXqz4IphSh+AITqjCjQPIzavJuLLRO8Y2/Ifb+iaJ6QPaF1NT4pFe01B1enza4GmeHj5vXZm4njFKEoXgwK5QLyafP+QEla/AlXlKhHJCXV37APtGg5+0jweH/5kQceu3lRSU6PlwINfGw/lnJJAdV2/F0BjT0j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=GxVl9uIf; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="GxVl9uIf"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49558ce01afso11701115e9.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:21:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1784553697; x=1785158497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q/i+h1xLBAMF009p2KMCeNBKzps8J4NXn33rD07ylA0=;
+        b=GxVl9uIfc3wggrB6zdYUthPXLOSiAarqT58441WgUkpw02w7lAkoOUuwzNp/OC+1U5
+         dq7WsyekZ2BkBd4pDh6Vf0y/mXsB0JDfxnwZob80UdPvh9ytPUAzdabaYCWa4ZSNbZO2
+         EVbDoovGMuNEtTv0Zzl6kqh5QqDLbD9tdwQzFrMk09B+Ltad3bU9fgl5FBh9k+ErUhWR
+         CLPP+7bGt9aWifSCJdcp27w7l91drUhAG1k0B1nFiEwyGfL9ARoVEr+qKjyZl2JgZIja
+         LpO0EQSv+pXMdt0qCjTpllxXeccZbXLFEASMZL5dFdCdvac5T+fjjVWnIQjNDc/EvOv/
+         ykMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784553697; x=1785158497;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=q/i+h1xLBAMF009p2KMCeNBKzps8J4NXn33rD07ylA0=;
+        b=CecdCR4WNlWb+W9tV51AFfZWuQX28EpLRcFk5HHhP4/WEJDS2IYw/6CXqjBEvwpBma
+         UuI8O39oz+GE20kU/lT8ch1po8+1KBTkAc30X4kYZ2nPcacKDaKcVM2nry9b8I42UBOL
+         Efpu5/44vIUiAQUQCFzhQUG9ajwiWc006t9gHyqrC1aINufHekl3dTIrygqi5OwUccyt
+         ijzQ7BGNXdS+6U06ba9/aYU/y1J6cPA3ZlkVKfUdNfV3bTnc4LSBF/D2vJspWdQVfX74
+         WjBRjQEKNmDfmJ/vVkbSFRa2W8b1H7TC1ks1KOAzChx28gCvlNaKaPAlyJQhIPAYUEJB
+         +RIA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp4/pDMyppyPUj+DPgQhLXKLn5oF7+bmzuKPq8n62yxf6nxn3cGSaRMGO0V1X87hxNOw1SlJg4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEjGXt3xIUl+QTS/iGpO/kR/CvaSzdlkM1OmWKBHsG+MaiZB3W
+	9EExPqA4n6EVUowsfrRd2YQlr/EbjPisFnW/dHHUigYlrovx+A4NWVp3iZN2GB4akx9c
+X-Gm-Gg: AfdE7cm+V02AQYXH1eGmWIPAeN7dzaa4bzkMEKhSiczADNjumn9cIHhGBERSbytK9bQ
+	fCt+XqI5RcOi8aNDKtmJhg54BDvkktlCVUI7/TyFwF2NwgKyv5f/dMPtIVMNGLG9kiXKESGMSPD
+	yIiXuJ1+dzfiSX4ubC5yxmD1Z5yqaqzcu/2HApwtaLZuxBSqQG/Riw0wwsk9sMCXakD/2Lma81E
+	zwCEC3SK6NM2tgrD92xnWMTOCSUZ3EWH4XwxN0UtWbT4Wn3BW4PvaXK5CjsDqId+EURwEJ9epBR
+	cMakYNrXuXd8nsT/h8K/xl8bDWRao/AVvT1Npx0p3TppSxgO4CFIy3bekkq3vTktXWtgtLx5TkV
+	lOgbx3b5Zmh3V2Vk4CcJnBBgd52/G6Q6jxUV9w6jACtCMczsX0rGU84SFUlLhzcYFoJjanZLNCq
+	K3DZmEy5k8jNy22EvXq4csYnH+kXS/jvYIrN4rAGLLLy417NEn2VaHrH8RqB0VcQwEr5vEj7EX6
+	Q+9rqJA8RQkQ5admAUDDV1F
+X-Received: by 2002:a05:600c:198a:b0:495:6478:2dbc with SMTP id 5b1f17b1804b1-49564782e0fmr3937485e9.6.1784553696132;
+        Mon, 20 Jul 2026 06:21:36 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.222.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2b87c6sm509642335e9.7.2026.07.20.06.21.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 20 Jul 2026 06:21:35 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: david@ixit.cz,
+	horms@kernel.org
+Cc: oe-linux-nfc@lists.linux.dev,
+	hexlabsecurity@proton.me,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] nfc: fdp: bound the device-supplied read size in fdp_nci_i2c_read()
+Date: Mon, 20 Jul 2026 15:21:33 +0200
+Message-ID: <20260720132133.69635-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <879ab436-043a-450d-87c0-70e7c6f4ff8f@ixit.cz>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] e1000e: Fix out-of-bounds MMIO access by validating
- BAR0 size
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260715035850.588070-1-pulehui@huaweicloud.com>
- <al3uh7OU2OtkEkSY@gmail.com>
- <ffc0a0d8-6560-4589-9570-04f40d817009@huaweicloud.com>
- <al4Z4_tFbyQM-ogu@gmail.com>
-From: Pu Lehui <pulehui@huaweicloud.com>
-In-Reply-To: <al4Z4_tFbyQM-ogu@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgCHuluZH15q6ymyBw--.28143S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Wr4kAr1kJFyUtry3Wr13CFg_yoWDZFb_uw
-	4F9r4kCr15CFW5A3ZIyr1fZr9Yy3W7Wr43ZrZ5ZasxZFWfAF4vyF4FgwnayF1rAwsFqFZr
-	X34Yqa4Sqr4agjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbxkYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8
-	JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
+Content-Transfer-Encoding: 8bit
 
+On 20/07/2026, David Heidelberg wrote:
+> I agree, I was looking at this patch yesterday and the current format
+> feels unfavorable. Please send next revision with Simon suggestion :)
 
+Will do. One heads-up before I resend: Bryam Vargas posted a v2 for the
+same bug back in June [1] that is more complete than mine. It also
+rejects len < FDP_NCI_I2C_MIN_PAYLOAD (the lower bound Simon flagged,
+reachable via the u16 truncation) and fixes an skb leak in the same
+loop, with a KASAN reproducer, and it carries Simon's Suggested-by. It
+looks like it just stalled.
 
-On 2026/7/20 20:53, Breno Leitao wrote:
-> On Mon, Jul 20, 2026 at 07:56:20PM +0800, Pu Lehui wrote:
->>
->> On 2026/7/20 17:47, Breno Leitao wrote:
->>> On Wed, Jul 15, 2026 at 03:58:50AM +0000, Pu Lehui wrote:
->>>> +/* Minimum MMIO (BAR0) len, the largest offset is lower than 64K */
->>>
->>> Why "the largest" in this case?
->>
->> Hi Breno,
->>
->> Thanks for pointing that out. I meant the maximum register offset accessed
->> by the driver.
->>
->> IIUC, common e1000e NIC usually have a 128K BAR0. But since I'm not 100%
->> sure if older NIC might be smaller, I picked 64K as a safe lower limit
->> because it covers the largest register offset used in the driver's codebase.
->> If my assumption here is off, I'd really appreciate any corrections!
->>
->> And for this comment, how about the follow?
->> /* Minimum MMIO (BAR0) length to safely cover the maximum register offset
->> accessed by the driver */
-> 
-> Thanks, Would something like this be a bit better?
-> 
->       /*
->        * Smallest BAR0 that covers every register the driver accesses
->        */
-> 
+If you would rather pick that one up, it covers more than mine does.
+Happy to send my (narrower) v2 with Simon's suggestion if you prefer it
+instead, just let me know.
 
-make sense to me, will respin soon
+-Doruk
 
+[1] https://lore.kernel.org/all/20260616-b4-disp-b1f8ab4c-v2-1-2d1fe5955325@proton.me/
