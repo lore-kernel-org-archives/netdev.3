@@ -1,558 +1,164 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055CA443E22;
-	Mon, 20 Jul 2026 16:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784564643; cv=none; b=j98l4vbggOq9qrmIQY4kZuotra70cRppWXxaKQ6AjTcSo08rU4nb/lVZsWfCbD73ATYR6kBIpo1HcdoKr822ZxD06OBmIjboZ7rl/5KfE2huC5oYTUbPmFE+xAo7TnTICW5RPFJbAtnmMjWKqbobYTvcq72nLURqYn7qaH3YYRI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784564643; c=relaxed/simple;
-	bh=PMCPXgFEYbTkP2heRPfRFC4zHv3iq/7aK0sPh/Eow5Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c7xJ8317ljYMxBRyF7ypWqpGKaakS1LqsAtfGMmf7fLk2imHhtxaCwfJcnioqk8TuDPhEy5KdxH8SfTXaoUGiXKvGwtc/P5HD8hP/qwxkyso6lTk13L7buFcCSSB8g+3FfLQslb+izHn0mCHs4K6XvwlMkHxU3B6c4bxAzhjNns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=f1fBvYmz; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F50943DA35;
+	Mon, 20 Jul 2026 16:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784564684; cv=fail; b=aSRP3G2dsYmjmHEtCgrqUU/FwNonyvn57Y2CIFSIgGP55zm6wXzLm/rk7R0WjfRy/duJfaQMRGw9QzF/gi5cTFO5YTcLQxdNbnqZ085kOXUdarLjVWXuG8dOH1Bxu1UBlZULndcYljoLxi78sbnS3mPb2JUGNmJKi5r3FUn3Dyk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784564684; c=relaxed/simple;
+	bh=imGRy7Pmt94Ych/2Jho1mJlCPSeGvGsQS659fJuMzas=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Y1T/pnx+x+HZKAz6gHzSl1YzSEdJ5QfcIqftyOn/8LYX9juDvcXyUa648gc9VMcnSth2Nx89RqdG79bkUB1fMYj+jveiWn1gFchISTDMD/SA90TJT+bu9UNFmtcn+w0edQ0pCMJJq9bkrJOvVOpZki+EZvdwX7e9pgQswl70SoM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ne7ZuqiJ; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="f1fBvYmz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=aZT+CHPRv7AhWaUuscpXi1sFp2eHK3TTwaYhXoNLaig=; b=f1fBvYmzGLB/odcsIyRpXlxUZa
-	ZEVLZ5K9H9aoZoCCuEhrKvXHpXPdQbdA/I053oofDXjGRnx1ao5wensGOfwIOsdP9+pYhONsvJZTO
-	Ft84eenETa6UZpG9UTMOufcIu7OMWDghW5l9cMD4tZ3+QrF2JhXksfD8zEFKL5sWCNGJ09/V2oX0T
-	5AxdGOswzVjIOGnOrLhXsP1luPsU5yUm9UeyNULGZbYjGg8ppIorL5XSjIXDE2t3DX9R+0isIBaA7
-	/hLFvnW1sySCz9y/fzHpyfOZPeQp/jnPR87Z/jkWBxhaHAa69rMeR0ogy6u/2cIvKJjcsd2sqtiM7
-	rCDOcDfg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wlqmY-001Z43-25;
-	Mon, 20 Jul 2026 16:23:54 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 20 Jul 2026 09:17:48 -0700
-Subject: [PATCH net-next v2 7/7] selftests: net: getsockopt_iter: cover
- rawv6, ieee802154, phonet and tls
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ne7ZuqiJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784564677; x=1816100677;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=imGRy7Pmt94Ych/2Jho1mJlCPSeGvGsQS659fJuMzas=;
+  b=Ne7ZuqiJIRJDKe90ThZiOjCoR0rJ6JCbpG2YFgQY+l6YwCu3qMffoQUz
+   jtZ3D0pI0JwlUJX3YV6ISO1JSRrLz1RaO3LUlQ7Eq0TqlPUh9i49kvxuP
+   uastA7L/fNqf5GVLmh8KqJpBkxjulRlLKjJHQ6WmH4yTWj7byMWsWP6S1
+   xWOFsgtk6qxTpYCPUuiiLwUeBgQHV+IXCFFlIPTa1MCRRHbMF5RaZmkKl
+   VahRUBawb+lRcN7aNEFCorfb0KSx8eUeM0oqcO3vbW+csg22gejicv6qJ
+   QTmADtaLqlUY1emKOJKCFoF8pV7x5gHo0K6HfvlgU4i8+MRDnI00kaCSR
+   A==;
+X-CSE-ConnectionGUID: QD6nCXHAQW2T6lldbEMVVQ==
+X-CSE-MsgGUID: bt6nDUs6TLW4yEnK8wbLnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="87689612"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="87689612"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 09:24:31 -0700
+X-CSE-ConnectionGUID: IBAXl8JdRPGJq3khicLBUw==
+X-CSE-MsgGUID: 6Y/Y9UO/T9aYBl7j1txVQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="257560647"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 09:24:31 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 09:24:30 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 09:24:30 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.21)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 09:24:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d6v4SSC9q+7No4xAykziOswz9s92KzD+yz3rYaf7Xt382V2pt7S34q7+BVntbiApZaCDyxH82aN5kyaHu9hu2uLc/2+DudNRLRmPYLQzLUHpXhVEws8l+BfmC0fsK0EAI0JAwd4FXhZyvqUQi9ZSrq40aVurWUdWVgezJyRPn8if+yJ2ypeBuycShUv3i6lq6DWMf++szIehRCFdzOtRyMb3VSgo80QW1BUBnQEare7aUqJsB5N8wpJvAh/SNfaIxowAL7iLRM1IV+NmsRYaVCzjfWS3mWUWUuFWja1Y1Sebzf2TRqPR8s5JCpPHrBqgE57A4tWrhFiEnUZJFDCKRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b+2GD5LECNaJtb5l8N5l3J2Tx12bWZnIJYK5EAdsTHI=;
+ b=QfVDXcNOmIRF9w6jbfItai5Gxe9ka72hXUHLTFCeb1Bz+84cAwM/j6dS+BQyWx1w3G8HPF1M3jsP4RG9+vPgIjupaZ+mGvx90upNBkLXfaPC6+nzkKwm5kdxVNYWEJH7z4kOf11p39QoygCHDR/bP0LyDSUMSFY4tNp8210jgMSI5ThhRowZCjNwLnVHFLuY4m3fRi19VJ3Aj9F6aF7R78pg49GgAv8el10PWx0dRgreBXWhWAnkzF6dH/lsHNRVVlABuPBnh4gKp8YSjCHscqwr1Znot0JbUDE2oy3fwRsIgsiXxRxAAk7Rn2LlQenlFPFpmcN/7TJbx7XZfnBSWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN2PR11MB3949.namprd11.prod.outlook.com (2603:10b6:208:138::31)
+ by IA0PR11MB8336.namprd11.prod.outlook.com (2603:10b6:208:490::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 16:24:24 +0000
+Received: from MN2PR11MB3949.namprd11.prod.outlook.com
+ ([fe80::dfbf:4563:6676:e23d]) by MN2PR11MB3949.namprd11.prod.outlook.com
+ ([fe80::dfbf:4563:6676:e23d%6]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
+ 16:24:24 +0000
+Date: Mon, 20 Jul 2026 18:24:15 +0200
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
+	<sridhar.samudrala@intel.com>, <michal.swiatkowski@linux.intel.com>,
+	<maciej.fijalkowski@intel.com>, <emil.s.tantilov@intel.com>,
+	<madhu.chittim@intel.com>, <joshua.a.hay@intel.com>,
+	<jacob.e.keller@intel.com>, <jayaprakash.shanmugam@intel.com>,
+	<jiri@resnulli.us>, <horms@kernel.org>, <corbet@lwn.net>,
+	<richardcochran@gmail.com>, <skhan@linuxfoundation.org>,
+	<linux-doc@vger.kernel.org>
+Subject: Re: [PATCH net-next v5 00/15][pull request] Introduce iXD driver
+Message-ID: <al5Lr2Qm5pDa-yOF@soc-5CG4396X81.clients.intel.com>
+References: <20260715180042.1972010-1-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260715180042.1972010-1-anthony.l.nguyen@intel.com>
+X-ClientProxiedBy: AS9PR06CA0058.eurprd06.prod.outlook.com
+ (2603:10a6:20b:463::32) To MN2PR11MB3949.namprd11.prod.outlook.com
+ (2603:10b6:208:138::31)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260720-getsockopt_phase4-v2-7-8a08fcfa0d72@debian.org>
-References: <20260720-getsockopt_phase4-v2-0-8a08fcfa0d72@debian.org>
-In-Reply-To: <20260720-getsockopt_phase4-v2-0-8a08fcfa0d72@debian.org>
-To: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Stefan Schmidt <stefan@datenfreihafen.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Remi Denis-Courmont <courmisch@gmail.com>, 
- =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi.denis-courmont@nokia.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
- =?utf-8?q?R=C3=A9mi_Denis-Courmont?= <remi@remlab.net>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11714; i=leitao@debian.org;
- h=from:subject:message-id; bh=PMCPXgFEYbTkP2heRPfRFC4zHv3iq/7aK0sPh/Eow5Q=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqXktyALetQ3n8SDUmQDQHD40on4f1SjR0kEfs5
- 7291nEoA26JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCal5LcgAKCRA1o5Of/Hh3
- bSpGD/0UJL622KuWhIyVCfjm2nzKrOBJsyULnqa0cac6TYWDA9SQ8cpA+XAXAfAdi7y88dF8dF/
- RKUjyNTa5q2MTR5voEHamqWMxacO0Y+QGp5YsKYXg56tzdlktkYrPdnM6sv8xG0dQG6bdtN67Gy
- fMpX7jn8fTvULbRw5B9tan7yRVzEsNUrl4rJXr7KNpBonfQjrhRY/Bvi5f4DXsxjnmwiKWLQl/B
- Gw6IgfZaUYX674ebiqJb7se+01tN40lsB+6J7zvL8TO5xHAloY8r7LWAiRUpQa/tTgDKUB4aV8M
- pl97nsXm98JA7KaAnkTTjMTulpsUfH8HA0ODnPFpPuNg6tyD3vad5PjyiYI4GqAVhOCYSEM2/mr
- o+1nlNNKcjEZhlyyQaztePuApqN24Dg8T/Vld6wPC9mnRhJwPZPlAZESYgCg/LSd50Vz+LhUYbf
- qRbXg1ra+N8PimVESKiQ7ZMTTcXDNeWTiLsoZA+C1PdE0Qz9U3t97etp0T8fxS1Cci5WASjiohW
- h8a+jEm2ttqSWd6Db/N7cU1Xhh39COmhq4upe+ynevDtyIBqyAMLGJUO04XGOJpwKXag/b0jq2N
- dcz4wSGgIH+u97ZvKSXmIoH394l5WvLjBmGOqKXdLAFyykjtOAkwWeO+UuctY48wvzEGeNAWecT
- PQz0XAcoARL6uvg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR11MB3949:EE_|IA0PR11MB8336:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5830768b-944c-4c63-b3d0-08dee67b5ca3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|7416014|23010399003|18002099003|22082099003|11063799006|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info: qJn+0cXV7suBoarcUuuPP/fmarPG/uKUm+J89TVoI38GKf2aP/V/EUPDI9h9XcTPMU6BA0Q/xDBYlU9BcEuPM8pVwTRXn5qpd+/X1BkYxA99OxImmes+uENEZCZUq2pVi2iihpJ0iQuOxtoSxjyNoBPjlvoUyWusvd44iscdL4RiylCdPQ3/CIBlV7MsO6mT1IyirztjEnln/QIafohLex0dTAm0nGEruQ68vq08YkY2gkVceD7wTwlgBJaJbVzRQxLLKq0GE5l5AeMa7+f6OJsHrMhSSeI5LLVjZf299mqok0bsd6i9etvIb56NDBg0sWP6G204sexDXjATQtFhIUtr2KoEaNC/zl/FiBQ2eQnUOhOW94QhJHjJWtBPyKXSvd7MMK63h739z6MjxIXIRw5ZLc/t+QdrmT2K2a8BwWMJuAb7mDWp3zAN6SGEzymwVAkTX4NpYz9Sa9ZAR/rFHtO8d2VHYO7EZYP8uKzsu/gdfAGeltfClyADub0fR8XCH/VmeLcrkqMXPfh/iz/m11uyEmwFlOPwYJM/1F4QmR1OGlT/xsq8n3Oed6BSOnfGhMDGtSAakdbiTYWcBA+7uVO5i+H8so/rxLVrQq+zs2/O7WIHatKnA0Q6S/WY/shzwdNuMrq/2cBNwKDZY3o0LkZZv5L/ser2b/FVl/m0UU8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3949.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(7416014)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0HtqifWuTJdNWGIN6DJhlg5wkJCwGrkBaqA95nqnqyI289QZoqSpj80ULq6s?=
+ =?us-ascii?Q?77BBqebB/EY3CclOidb9SEMCiAfAhjVfj0EB2A4ErVIR3oYSIegxWF6Yj0zV?=
+ =?us-ascii?Q?bKKWE09dTlGmK6fV6eJgkxIZ6gzwXJUNOaEG9Km7SUIX7Yy2WcDfS7QZIMgW?=
+ =?us-ascii?Q?l5bNeOKEnjat8+akqQ1kEv8DSw/LGzUbYZKqUyjHc4oscBsk8b2jkb9aB3C2?=
+ =?us-ascii?Q?8q4E0/TkL5thYOhvhh7uQbi1XfmyFTnrNRnFvC7I71hmWOyI+T/MZzDuDySY?=
+ =?us-ascii?Q?p/PaZVoehMEBDfDBoSX66DwQjkO9+kWVcUiFZ3Pyb+2KtvH9plcjphQFlWTu?=
+ =?us-ascii?Q?+epIM/0rriNv48HdAehyetqiQbnBCfjupw5mFrhs0xiYLYNoiK9HZjZCV7mj?=
+ =?us-ascii?Q?Q6u00P5MGiECLnsvkBNMS8wzFgYatfpRpcznDdWEkBEnI3H2Ta04PhNG7UlN?=
+ =?us-ascii?Q?jxSlHfOn1SP0EQLznlbVxzVsOXWvooRm2qR/aaaXzqrkFZEouM4xgJ0w+1+p?=
+ =?us-ascii?Q?NBlzBSaC75WLQF2WYTbxG5TrJoJtNHBhuN5EK9gGdYNRQMiL5OTRoJLJRkIo?=
+ =?us-ascii?Q?riqcoAnl7D5MY59o9w81YzfECiG/NMIXCQZzQf0j2S9pDN+AqBQTQIY23ej6?=
+ =?us-ascii?Q?zqHnA62iY6JbnlqXQFqbwi8I7RJKt1dnxgn0SGtPdn1o/ww9KFBdbjed0ANW?=
+ =?us-ascii?Q?dYK+V5Qdbc7//C4a6x31FGwJKWzXQtJWgcwoF8w45nTADq0EspQoE33vxR2R?=
+ =?us-ascii?Q?GKD/UYF1qZrIfcefqkupjqsAB13NuEupoJRAwlKVAJYqUz5Be2KvtqBSKi4Z?=
+ =?us-ascii?Q?prHxASS5OBKJQMjCFEyiX/GNH4VK5hM3cedhEX1AnrsXVSAqHBZFeTJhvC59?=
+ =?us-ascii?Q?ih3Kr/BBIvBNetqEf1h3ZDDv5kQldNajO1dMvQz0HU3ihaSA3RjT+WDSadgq?=
+ =?us-ascii?Q?JomwdtsdRS6WPTn5I3FtnDUsqZ01KOcjn2vXxEL408b5avtoa7gj1PkAl2q9?=
+ =?us-ascii?Q?S3K89tOdZ7HPTwSSIMAcab4i19SjTEocnvg7DN09R8Rvij10cKXJb/b9drnM?=
+ =?us-ascii?Q?uL0PXLK4FgAPPpvMYLWLRwUx9NE842seY8swqeCY8Yzt5tiBOOHf/TUBN0ch?=
+ =?us-ascii?Q?Stcw4FPzLJ2c+8Kngr2b8TR8ybZpvyk2ubuEwjbENIt6/mdrMyTH5pKJGtOW?=
+ =?us-ascii?Q?OwjJnw0wf0ZWC7aeK8Yh0WTKN44mLDJnTiVNP/yuWoVwuzYlL/zWPbwfmWjQ?=
+ =?us-ascii?Q?90KIoFBoX6i/xkA/lN5a+FgBn5WVhbK1LMeKptlq1faRMdungM33FIIPitsl?=
+ =?us-ascii?Q?Ne1e3XTSg7Aulif2gKS/GawgiEtbxCugyXICMiq/4ztbYPOxBIWfWppf4xgT?=
+ =?us-ascii?Q?5lzugX47+dvGK8gERR2WYe8Ve6Y79uH5f67mANe3JjQAzNBn05z+xIdarQLS?=
+ =?us-ascii?Q?YHiPGPQqeAGra5A8PEj9w6qWn2m1dEBnfb/dBCyiC0s6nr7aN02zTPG7yqOe?=
+ =?us-ascii?Q?Bz8Vm6U+tNIQD8x7t8fqg8S125/xYh43BTkWAj/Nxu99f1stv4JDs8IS3IST?=
+ =?us-ascii?Q?0uunIZrMKzROGcGtGvWXe0nuPrzU7Sr5toYtcx/dmzdGTJyfRsjtKGiL3k/N?=
+ =?us-ascii?Q?wUAhxAU2YN4BKHv7aY1LVazQyTvlYA61ikSWqNRHTqoHRo5rIgUK99c7JWlY?=
+ =?us-ascii?Q?Qfyimt3qFbbbNddXvsQe5f02Lxkd+2lJmPszYt6dvNIubnb8yf1IKaSj7cum?=
+ =?us-ascii?Q?mAbn+0S8R3J0/wnH3Aw94DmRwoBSzRTNN/0Sjf489ib/MB5TDL1tYxcneGjn?=
+X-MS-Exchange-AntiSpam-MessageData-1: IdBXmVldq/I6BaTBXSXnbIdK7AOYgkkGjSo=
+X-Exchange-RoutingPolicyChecked: ik/ds1FNTuZaJlCcPjb70W8StU79WobfEVcWhHbB2vAWXlGJuBOktp4ko6t2PhpvK1DsbJGNVEo02wO5W3MboTglydsooy2qLZv38XSE9XW2/nnlK+vJ2g73a8IgKEE1cNJPw8iDuBeJkNIs72gfQ9H0GrCYsXCmm3FzXQd8K3PZq/B+DI7wwcXOWNDbzzqHAAvNgSe8MgJO963g/LXVHuw8OmfGZ+tc9pVy2ggKBEDkxOYoKtmOsqY7we2F1GMEsdrh0K4yURPkTtNswX9/1gwyvgTL/K22pafoM7LzwXu4v8A61YG5ldq/clzdSg1ZM5240mjv0MTtvGavh9xLHw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5830768b-944c-4c63-b3d0-08dee67b5ca3
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3949.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 16:24:24.3792
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4PpbHzwjhjJ9NnPUefUWVKN6gOdIjXgfd3Ot6noyeeh1MeacH2r5ZgIXZeQTsLp6Jaq4tgY8Sxsom68ImExQIbHzEYYEt/jIOCSKk5VCEQg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8336
+X-OriginatorOrg: intel.com
 
-Add fixtures for the newly converted getsockopt leaves:
-
-  - rawv6:      IPV6_HDRINCL / IPV6_CHECKSUM int paths + a SOL_RAW
-                unknown-optname case that reaches do_rawv6_getsockopt().
-  - ieee802154: WPAN_WANTACK dgram int path + non-SOL_IEEE802154 level
-                rejection.
-  - phonet:     PNPIPE_ENCAP pep int path + non-SOL_PNPIPE level
-                rejection.
-  - tls:        TLS_TX_ZEROCOPY_RO, the TLS_TX crypto_info round-trip at
-                the base and full cipher sizes, the NULL-optval and short
-                buffer EINVAL paths, and an unknown optname. It skips when
-                the kernel lacks TLS or AES-GCM.
-
-Each fixture pins the returned-length / errno semantics across exact,
-oversized and short buffers, an unknown optname and a bogus level. The
-semantics are unchanged by the sockopt_t conversion, so the tests pass
-both before and after the leaf conversions.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
----
- tools/testing/selftests/net/getsockopt_iter.c | 424 ++++++++++++++++++++++++++
- 1 file changed, 424 insertions(+)
-
-diff --git a/tools/testing/selftests/net/getsockopt_iter.c b/tools/testing/selftests/net/getsockopt_iter.c
-index fe5a5268bc34e..974065a23fa82 100644
---- a/tools/testing/selftests/net/getsockopt_iter.c
-+++ b/tools/testing/selftests/net/getsockopt_iter.c
-@@ -28,7 +28,10 @@
- #include <linux/vm_sockets.h>
- #include <linux/icmp.h>
- #include <netinet/in.h>
-+#include <netinet/tcp.h>
-+#include <arpa/inet.h>
- #include <sys/socket.h>
-+#include <linux/tls.h>
- #include "kselftest_harness.h"
- 
- #ifndef AF_VSOCK
-@@ -40,6 +43,45 @@
- #ifndef ICMP_FILTER
- #define ICMP_FILTER 1
- #endif
-+#ifndef IPV6_HDRINCL
-+#define IPV6_HDRINCL 36
-+#endif
-+#ifndef IPV6_CHECKSUM
-+#define IPV6_CHECKSUM 7
-+#endif
-+#ifndef AF_IEEE802154
-+#define AF_IEEE802154 36
-+#endif
-+#ifndef SOL_IEEE802154
-+#define SOL_IEEE802154 0
-+#endif
-+#ifndef WPAN_WANTACK
-+#define WPAN_WANTACK 0
-+#endif
-+#ifndef AF_PHONET
-+#define AF_PHONET 35
-+#endif
-+#ifndef SOL_PNPIPE
-+#define SOL_PNPIPE 275
-+#endif
-+#ifndef PN_PROTO_PIPE
-+#define PN_PROTO_PIPE 2
-+#endif
-+#ifndef PNPIPE_ENCAP
-+#define PNPIPE_ENCAP 1
-+#endif
-+#ifndef PNPIPE_ENCAP_NONE
-+#define PNPIPE_ENCAP_NONE 0
-+#endif
-+#ifndef PNPIPE_ENCAP_IP
-+#define PNPIPE_ENCAP_IP 1
-+#endif
-+#ifndef SOL_TLS
-+#define SOL_TLS 282
-+#endif
-+#ifndef TCP_ULP
-+#define TCP_ULP 31
-+#endif
- 
- /* ---------- netlink ---------- */
- 
-@@ -394,4 +436,386 @@ TEST_F(raw, bad_optname)
- 	ASSERT_EQ(sizeof(val), optlen);
- }
- 
-+/* ---------- raw (ipv6) ---------- */
-+
-+FIXTURE(rawv6)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(rawv6)
-+{
-+	self->fd = socket(AF_INET6, SOCK_RAW, IPPROTO_UDP);
-+	if (self->fd < 0)
-+		SKIP(return, "SOCK_RAW/IPv6 socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(rawv6)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(rawv6, hdrincl_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(rawv6, hdrincl_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* Raw int options clamp the reported length down to the user buffer
-+ * instead of returning EINVAL on a short buffer.
-+ */
-+TEST_F(rawv6, hdrincl_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_HDRINCL,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(rawv6, checksum_default)
-+{
-+	socklen_t optlen;
-+	int val = 0;
-+
-+	optlen = sizeof(val);
-+
-+	/* A non-ICMPv6 raw socket has the checksum disabled, reported as -1. */
-+	ASSERT_EQ(0, getsockopt(self->fd, IPPROTO_IPV6, IPV6_CHECKSUM,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_EQ(-1, val);
-+}
-+
-+TEST_F(rawv6, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	/* SOL_RAW reaches do_rawv6_getsockopt() directly. */
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- ieee802154 (dgram) ---------- */
-+
-+FIXTURE(ieee802154)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(ieee802154)
-+{
-+	self->fd = socket(AF_IEEE802154, SOCK_DGRAM, 0);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_IEEE802154 dgram socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(ieee802154)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(ieee802154, wantack_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(ieee802154, wantack_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+TEST_F(ieee802154, wantack_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IEEE802154, WPAN_WANTACK,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(ieee802154, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IEEE802154, 0x7fff,
-+				 &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* dgram_getsockopt() rejects any level other than SOL_IEEE802154. */
-+TEST_F(ieee802154, bad_level)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, WPAN_WANTACK,
-+				 &val, &optlen));
-+	ASSERT_EQ(EOPNOTSUPP, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- phonet (pep) ---------- */
-+
-+FIXTURE(phonet)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(phonet)
-+{
-+	self->fd = socket(AF_PHONET, SOCK_SEQPACKET, PN_PROTO_PIPE);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_PHONET pipe socket: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(phonet)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(phonet, encap_exact)
-+{
-+	socklen_t optlen;
-+	int val = -1;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == PNPIPE_ENCAP_NONE || val == PNPIPE_ENCAP_IP);
-+}
-+
-+TEST_F(phonet, encap_oversize_clamped)
-+{
-+	char buf[16] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* pep clamps the reported length down to the user buffer. Use an
-+ * int-sized backing buffer with a short optlen so the baseline kernel,
-+ * which writes a full int via put_user(), does not scribble past it.
-+ */
-+TEST_F(phonet, encap_undersize_clamped)
-+{
-+	socklen_t optlen = 2;
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_PNPIPE, PNPIPE_ENCAP,
-+				&val, &optlen));
-+	ASSERT_EQ(2, optlen);
-+}
-+
-+TEST_F(phonet, bad_optname)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_PNPIPE, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* pep_getsockopt() rejects any level other than SOL_PNPIPE. */
-+TEST_F(phonet, bad_level)
-+{
-+	socklen_t optlen;
-+	int val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_RAW, PNPIPE_ENCAP, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* ---------- tls ---------- */
-+
-+FIXTURE(tls)
-+{
-+	int fd;
-+	int sfd;
-+};
-+
-+FIXTURE_SETUP(tls)
-+{
-+	struct sockaddr_in a = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+	socklen_t alen = sizeof(a);
-+	int lfd;
-+
-+	self->fd = -1;
-+	self->sfd = -1;
-+
-+	lfd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (lfd < 0)
-+		SKIP(return, "TCP socket: %s", strerror(errno));
-+	if (bind(lfd, (struct sockaddr *)&a, sizeof(a)) || listen(lfd, 1) ||
-+	    getsockname(lfd, (struct sockaddr *)&a, &alen)) {
-+		close(lfd);
-+		SKIP(return, "listener setup: %s", strerror(errno));
-+	}
-+	self->fd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (connect(self->fd, (struct sockaddr *)&a, sizeof(a))) {
-+		close(lfd);
-+		SKIP(return, "connect: %s", strerror(errno));
-+	}
-+	self->sfd = accept(lfd, NULL, NULL);
-+	close(lfd);
-+	if (setsockopt(self->fd, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls")))
-+		SKIP(return, "TCP_ULP=tls: %s (built without TLS?)",
-+		     strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(tls)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+	if (self->sfd >= 0)
-+		close(self->sfd);
-+}
-+
-+/* do_tls_getsockopt_tx_zc(): fixed-size int, exact length required. */
-+TEST_F(tls, tx_zerocopy_exact)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val = -1;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX_ZEROCOPY_RO,
-+				&val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_TRUE(val == 0 || val == 1);
-+}
-+
-+TEST_F(tls, tx_zerocopy_wrong_len)
-+{
-+	socklen_t optlen = 2;
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX_ZEROCOPY_RO,
-+				 &val, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+/* do_tls_getsockopt_conf(): NULL optval still yields EINVAL -- the
-+ * converted code tests opt->iter_out.ubuf in place of optval.
-+ */
-+TEST_F(tls, conf_null_optval)
-+{
-+	socklen_t optlen = 64;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, NULL, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+TEST_F(tls, conf_short)
-+{
-+	socklen_t optlen = 2;
-+	char buf[2];
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, buf, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+/* TLS_TX before crypto is set reports not-ready. */
-+TEST_F(tls, conf_not_ready)
-+{
-+	struct tls_crypto_info info;
-+	socklen_t optlen = sizeof(info);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, TLS_TX, &info, &optlen));
-+	ASSERT_EQ(EBUSY, errno);
-+}
-+
-+/* Set TX crypto, then read it back at the base and full sizes, exercising
-+ * both copy_to_iter() branches. SKIP if AES-GCM is unavailable.
-+ */
-+TEST_F(tls, conf_crypto_roundtrip)
-+{
-+	struct tls12_crypto_info_aes_gcm_128 tx = {
-+		.info.version = TLS_1_2_VERSION,
-+		.info.cipher_type = TLS_CIPHER_AES_GCM_128,
-+	};
-+	struct tls12_crypto_info_aes_gcm_128 full;
-+	struct tls_crypto_info base;
-+	socklen_t optlen;
-+
-+	if (setsockopt(self->fd, SOL_TLS, TLS_TX, &tx, sizeof(tx)))
-+		SKIP(return, "set TLS_TX aes_gcm_128: %s", strerror(errno));
-+
-+	optlen = sizeof(base);
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX, &base, &optlen));
-+	ASSERT_EQ(sizeof(base), optlen);
-+	ASSERT_EQ(TLS_1_2_VERSION, base.version);
-+	ASSERT_EQ(TLS_CIPHER_AES_GCM_128, base.cipher_type);
-+
-+	optlen = sizeof(full);
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_TLS, TLS_TX, &full, &optlen));
-+	ASSERT_EQ(sizeof(full), optlen);
-+	ASSERT_EQ(TLS_CIPHER_AES_GCM_128, full.info.cipher_type);
-+}
-+
-+TEST_F(tls, bad_optname)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_TLS, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+}
-+
- TEST_HARNESS_MAIN
-
--- 
-2.53.0-Meta
-
+I have looked though Sashiko feedback for this version. A lot medium+ comments 
+were things that I have addressed as false-positives in v4, so those are left 
+out, same as many of low-severity subjective issues. Unfortunately, patch 4 does 
+need a fixup (see Re: for the patch itself), but hopefully this does not warrant 
+another PR.
