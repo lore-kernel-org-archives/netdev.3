@@ -1,172 +1,194 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584F83BBFD3;
-	Mon, 20 Jul 2026 20:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D143BFAD7
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 20:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784578614; cv=none; b=e1k4in6M+ioPrarTXVrLFRY/+6GwgRFbWxHmC8VGzZc+jBd9eUC7AwTjOq4+kdiT/Y01Jx6oG9s0e1e1zXVccP05ayDAPoAgRty+V/N0jtS345t+hta0mvP992BEzkmvLbw90LRIU1nMcFlFO31mnkCokwecp2J3ujCHRw0d+tQ=
+	t=1784579081; cv=none; b=e6RyxB8y/IHsZ2F36pT1OoZkNTkxiQSk2dgqT421hywnX/CvBJkqKoEYtyDW2QsdqujQzyEt7bD7pA+cRvcF21oZfiBkvFx8H7UeFACCuY3tzpzOj331V5AcodpyHAplrRmZC+UGxKrQxFlPCkq+a0K/eJQlT4BVM/xWKkcjbp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784578614; c=relaxed/simple;
-	bh=RCCc6wUnb7eRLMFWNp0Ap0THoK08GCD9mtVB3fVxdIQ=;
+	s=arc-20240116; t=1784579081; c=relaxed/simple;
+	bh=QM8Hkd0gMPdHJ/60YK8Qdb4OsDSzn4nGwT7SSTznQ4o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjXT2sAE3BkysV+816uaCQu5ARkN1zx2QhdiRQX5LX2m+uZvUnfQFbxMFzWhGHMulgLR7aM2lSW6oo0/NV1Te40ephaie23BF2nHAhOTn0RcJVVQIqV2a0TzEcaH0CtuLzmnaLwKRB5Qu+cKwDwEaNxYOgEPbuWWTtaN2VsrphI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KCZKTTY/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=qciKd+ILm4QPuyw6cBBwlsGLS1/AgsCyua4XjXfqLWKoZm2cTsr7fL65NLZ/WGzV+aNBHn/DPUEdER6ayBeulF8Y5R/k+RjlhFEPcLCiC1sR3Ge2VTZntNQTwp2O+s8Y6FmyHXx46ZjMWlkmCgImxtbOh/PKI0WCNa4838j9yTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SjHNde3w; arc=none smtp.client-ip=74.125.227.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KCZKTTY/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=X6si59MHAC2aF8OSuOresxDGb43YZ6XnzLFCCvh2a34=; b=KCZKTTY/a+cI31Zp+vBJohP4zj
-	hpSTz8spJvsLTRalxJRaIDGNqIFb6FELZx3w6FkKkLZfaJd1FzpaYGOpAR0omNdOXKylSdfgW396F
-	cm+CWveuqdaW8LmKUteGeczsTwfAggPSBeqb/xXvoAhvkOJ27EM2/VSXoVreZlBzAcBw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wluPh-00DJmg-Lz; Mon, 20 Jul 2026 22:16:33 +0200
-Date: Mon, 20 Jul 2026 22:16:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Dietz <simon.dietz@plantwatch.de>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, dietz23838@hs-ansbach.de,
-	edumazet@google.com, johannes@sipsolutions.net, kuniyu@google.com,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: short description of GeoNetworking
-Message-ID: <937e2942-3c0d-4583-a741-8a96c4e0bbc4@lunn.ch>
-References: <89b3aa8c-f2ec-4b27-b5b0-5891d870e001@lunn.ch>
- <20260720183613.2020886-1-simon.dietz@plantwatch.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SjHNde3w"
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-380feaa05dcso6183829a91.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:24:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784579078; x=1785183878; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DuxloEjMIUr3usgKrRgUoqh61BlU8RAK2e67hxqdRj8=;
+        b=SjHNde3wy9EDiajuErQyzpvkeaKM5SEtItxWkH6QNyaRFmQ4bLYdgufCGB/hsYDVnt
+         3bDlOLVNA6nTO3qD0CWnrFDdKTXAUnmc/1CSwilvSWWS5lP+AoPkvjjFOhsXz0GxZ4fq
+         9TQ4C2Pxudfi9WY7+dSMHPEbfcFX1UnhXJEXJ5azfSYe3t8ApMIrUgFs33gJHIyhmf8P
+         aGQBlx2ricP4dsh8EjNaXDukXGe7yFoYIDoOA/DrBO7/8mWKZB5U7a4QqJANnthpwdqP
+         5G5+hAiwKPDA4D7CnJf4hsW3RKIGyX++m8nFRgBwZRhCC01Za3JlR2pE52hH+Ai1Qoqc
+         E1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784579078; x=1785183878;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DuxloEjMIUr3usgKrRgUoqh61BlU8RAK2e67hxqdRj8=;
+        b=iMjR3V3rcFTUqvJR4jlpDEqCf+m/DzVgRu0a6beJ0Kb4asNc3FjtG4cKNTyzuzheXW
+         UlBpwoi6BLzCpvWRWTdgTJgbuAbn/EvMcwiW2W6pa11Cvn7KmzHNMN7dmJl6r7LaT6n4
+         IJVVILi1aHinHO8w4NPVYC6o8LJMF9rhRpAcoH/QaGqs3IIlmiCHknlGXE7y3dJfpFAX
+         RaxpjKbeZehgDexAL7GTR0BvBUqhAW75qIKpYYwELE+nCJXjHNqiQ3r66BfvevxqVru7
+         IyohulwI5ViKtvwVpsLVACNivhAUyFAARRH4lkwRc0+tRAxt3dj/c5gUbOB5JXd5DTJj
+         xZFA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+o3FTmeqNd89u+4vMsIrt3LjOh3ZiA1FZSySzZj9r7FxzOdOX6i9CLg/7RxthBL11AA3n+mE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqhE8XM5moNTCiKy93O8Yj+eRgIt+2vw6S6L0uQmTUV/FLnmSr
+	SfbVL4/PSDrifze2wsu3DMLhKCv9JxJ4oRaa2AlTx9IcSnREwZBrScFB
+X-Gm-Gg: AR+sD12fgWWMNHh/sDTCUSRQV17NxmCbLPBURXlBXbx8LK9CjaK7NGRy5I8pad78flm
+	HAMrPNab06wnW/uWGpnIr7njgyRhSPxZ6Sk0aF1qPllKgYy0lOzR5db70nlx73v+1ShAj3PgI71
+	tLuOj1WGto2ltTPcqcFlnNk3vRfSQ9IuUstKxwj3BBEsexGvZMKtW7eAkBzqGv0oAJKteHmrzQQ
+	GX3BAtvoc7SfcF3g/p3CHF8sxgmbCPzUEsI8NtBMbStDSChwa1k5vk3BMFycjWwRDU2TsvrkyCY
+	VxyLmAYM+KY+sNHJzOKs3HT3kG50wdZ6INaqsunlsC+PHZxNV0kaqhv5bi6lyY9uUR9QTVnepbp
+	UI8T7x+Be/qyTH9DQFSRtOv5eqUnIo4mmhpg47UMV5nmdOoh1rWh4yFVbTxFyKpC5uK0me3a/wk
+	B7PfuSdw==
+X-Received: by 2002:a17:90b:1350:b0:38e:6a96:447b with SMTP id 98e67ed59e1d1-38e6a96490bmr10631437a91.25.1784579078316;
+        Mon, 20 Jul 2026 13:24:38 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:71::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e47fe75c1sm1737214a91.1.2026.07.20.13.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 13:24:37 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:24:32 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	sdf@fomichev.me, horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
+	tgopinath@linux.microsoft.com, kys@microsoft.com
+Subject: Re: [PATCH net] xsk: reject tx_metadata_len smaller than struct
+ xsk_tx_metadata
+Message-ID: <al6Czy7Gvhc41RsY@devvm7509.cco0.facebook.com>
+References: <20260720155210.34229-1-blbllhy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260720183613.2020886-1-simon.dietz@plantwatch.de>
+In-Reply-To: <20260720155210.34229-1-blbllhy@gmail.com>
 
-On Mon, Jul 20, 2026 at 08:36:13PM +0200, Simon Dietz wrote:
-> Hi Andrew,
+On 07/20, Cen Zhang (Microsoft) wrote:
+> xdp_umem_reg() validates tx_metadata_len for upper bound (<256) and
+> alignment (%8) but not a lower bound.  xsk_skb_metadata() computes
+> meta = buffer - pool->tx_metadata_len then unconditionally accesses
+> the full 24-byte struct xsk_tx_metadata, so any value less than
+> sizeof(struct xsk_tx_metadata) allows an out-of-bounds read.
 > 
-> > Is there an architecture documentation somewhere?
-> No really available one, at least not public. The ETSI ITS standard is
-> public available and there are research papers, but that would be a lot
-> to read.
-
-Sorry, i was meaning Linux architecture. Something is feeding in GPS
-location information. I assume there is some daemon talking to gpsd on
-one side, and the kernel and the other? What other user space pieces
-are there?
-
-> > One of my comments was about routing tables.
-> I agree that cosine calculations may not belong to the kernel space.
-> Before we continue talking about routing tables, let me give a short
+> KASAN reports this as:
 > 
-> Description of the GeoNetworking (gn) protocol
+>   BUG: KASAN: vmalloc-out-of-bounds in xsk_skb_metadata+0x4b2/0x500
+>   Read of size 8 at addr ffffc90000f11000 by task exploit/148
 > 
-> GeoNetworking is used in a vehicle2x context where vehicles exchange
-> position information (and other data in higher protocol layers like
-> BTP) for use cases like trafic jam notifications, or railroad crossing
-
-BTP?
-
-> communication with cars or trains.
+>   xsk_skb_metadata (net/xdp/xsk.c:837)
+>   xsk_build_skb (net/xdp/xsk.c)
+>   __xsk_generic_xmit (net/xdp/xsk.c)
+>   xsk_sendmsg (net/xdp/xsk.c)
 > 
-> gn transmitts packets in various possible 'modes', including:
-> * broadcast (all recievers in range, like ip)
-
-Hold on. IP broadcast, not L2 broadcast. So if you have a mash, this
-broadcast is L2 multi hop, but stays within the same IP subnet.
-
-> * single hop broadcast (all recievers in direct range, like ip, if the
->   reviever is in the same network and no default gateway is used)
-
-Given the previous definition, this makes no sense. IP broadcast never
-leaves the IP subnet. You need to use IP multicast, and an IP
-multicast gateway for such packets to go into other subnets. And then
-you need PIM or some other multicast routing protocol.
-
-> * unicast (one reciever out of range, packet is sent to the closest
->   intermediary; only here a routing decision is involved)
-
-Closest intermediary. So the idea is the maximise the number of L2
-hops?  That can make sense, assuming the underlying WiFi network is
-using different coding rates. A short hop can use a high coding rate,
-making the use of air time shorter. If the furthest intermediary was
-used, you need to use a lower coding rate, which takes up more air
-time.
-
-And only unicast needs routing? So broadcast is dumb flood everywhere,
-and the receiver needs to remove duplicates, and not reflood
-duplicates. And broadcast uses the lowest coding rate, so giving the
-biggest coverage, but takes up the most air time.
-
-> gn packets contain a gps position and a geographic target scope, which
-> can be one of predefined shapes (rectangle, circle, ellipsis) and
-> dimensions of that shape (radius if circle, length and width if
-> rectangle). Hosts with a position outside the shape may recieve, e.g.
-> a broadcast, but drop the packet (because it's out of the target scope)
-
-So the sender does not care about the shape, it is the receiver which
-does the filtering. And there is no concept of a receiver which is
-outside the shape being able to fill dead spots by transmitting back
-towards the shape?
-
-> There are location service (ls) requests, which are used to query
-> nearby hosts for the location of a host out of the sender's own range,
-> which are answered with ls reply packets.
-
-So this is a flood search? Is the outward path recorded in each LS
-request packet as it hops away from the sender?  So when it reaches
-the target, the reply can be hop-by-hop unicast back to the requester?
-
-> I would suggest to handle them in kernel space and only notify the user
-> space, if something happens (previously unknown beacon recieved, ls
-> reply recieved, ...) instead of passing all the beacon and ls packets
-> to user space.
-
-We generally split policy from mechanical actions. Doing a routing
-table lookup is mechanical, and goes in the kernel. The policy of what
-to put in the routing table is generally in userspace. If you think
-about IP routing, we have a couple of different OSPF versions, BGP,
-IS-IS, RIP, EIGRP, etc. Each implement a different policy.
-
-It also seems like there is some scope for experimentation here with
-routing. A node at the edge of the shape receiving from a node in the
-middle of the shape could consider where its neighbours are within the
-same, and set the coding rate for the broadcast based on the unicast
-coding rates to pick the highest rate which should work for all
-neighbours, so saving air time? And rather than trying to maximise
-hops, you could try to find an intermediary somewhere in the middle,
-so you balance hops and coding rate/air time?
-
-That sort of experimentation is a lot harder to do in the kernel, it
-is more natural to do in userspace.
-
-> > There also seems to be a need for location information. How does that
-> > get into the kernel? Is there a daemon for that? Patches to gpsd?
-> In the first version /proc has been used, after that ioctl; today
-> netlink generic seems to be the most reasonable option. We used
-> standard u-blox gps recievers and wrote a little userspace tool to
-> inject the location information into the kernel space (via ioctl).
-
-So it would be good to include a link to your git repo. We generally
-want open user spaces tools. And i would expect a generic solution,
-e.g. using gpsd, so any of the GPSes supported by gpds can be used.
-However, given the simplicity of the API, this is not a GPU after all,
-this is less important.
-
-> That brings me to the question, how the ideal interface between user
-> and kernel space should look like for this module/functionality.
+> Add a lower-bound check in xdp_umem_reg() to reject tx_metadata_len
+> values that cannot cover the full metadata struct.
 > 
-> For short term, it should be possible to strip the routing stuff incl.
-> the cos table from the module and return -EOPNOTSUPP and/or -EINVAL
-> when using advanced stuff like routing and only support recieving gn
-> packets and send broadcast and beacon packets. Routing could then be
-> added in a v2 patch series.
+> Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+>  net/xdp/xdp_umem.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
+> index 58da2f4f4397..d16ad9d8f919 100644
+> --- a/net/xdp/xdp_umem.c
+> +++ b/net/xdp/xdp_umem.c
+> @@ -208,7 +208,8 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+>  		return -EINVAL;
+>  
+>  	if (mr->flags & XDP_UMEM_TX_METADATA_LEN) {
+> -		if (mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
+> +		if (mr->tx_metadata_len < sizeof(struct xsk_tx_metadata) ||
+> +		    mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
+>  			return -EINVAL;
+>  		umem->tx_metadata_len = mr->tx_metadata_len;
+>  	}
+> -- 
+> 2.53.0
+> 
 
-How useful is the stack without unicast?
+This will make adding new tx metadata types harder (and will require all
+userspace to be updated whenever we do so), will the following be
+a bit nicer? (but, obviously, paying more per-packet at runtime)
 
-    Andrew
+(untested)
+
+diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
+index 46797645a0c2..b55b878949d5 100644
+--- a/include/net/xdp_sock_drv.h
++++ b/include/net/xdp_sock_drv.h
+@@ -260,9 +260,21 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
+ 	0)
+ 
+ static inline bool
+-xsk_buff_valid_tx_metadata(const struct xsk_tx_metadata *meta)
++xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
++			   const struct xsk_tx_metadata *meta)
+ {
+-	return !(meta->flags & ~XDP_TXMD_FLAGS_VALID);
++	/* covers flags, XDP_TXMD_FLAGS_CHECKSUM & XDP_TXMD_FLAGS_TIMESTAMP */
++	if (unlikely(pool->tx_metadata_len < 16))
++		return false;
++
++	if (unlikely(meta->flags & ~XDP_TXMD_FLAGS_VALID))
++		return false;
++
++	if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
++		if (unlikely(pool->tx_metadata_len < offsetofend(struct xsk_tx_metadata, launch_time)))
++			return false;
++
++	return true;
+ }
+ 
+ static inline struct xsk_tx_metadata *
+@@ -274,7 +286,7 @@ __xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
+ 		return NULL;
+ 
+ 	meta = data - pool->tx_metadata_len;
+-	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
++	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
+ 		return NULL; /* no way to signal the error to the user */
+ 
+ 	return meta;
+@@ -469,7 +481,8 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
+ 	return (struct xdp_desc_ctx){ };
+ }
+ 
+-static inline bool xsk_buff_valid_tx_metadata(struct xsk_tx_metadata *meta)
++static inline bool xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
++					      struct xsk_tx_metadata *meta)
+ {
+ 	return false;
+ }
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index b970f30ea9b9..75b2c97e41e4 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -809,7 +809,7 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
+ 		return -EINVAL;
+ 
+ 	meta = buffer - pool->tx_metadata_len;
+-	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
++	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
+ 		return -EINVAL;
+ 
+ 	if (meta->flags & XDP_TXMD_FLAGS_CHECKSUM) {
