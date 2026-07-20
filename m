@@ -1,85 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674F141DEC8;
-	Mon, 20 Jul 2026 13:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7AD42188F
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784554667; cv=none; b=HJtsCm4GLLIzN/bOJGoIoJbUSMtmr21hb8e/IV+kDIMK/3wkg1Fsp+pqfOgHd1gD8nmHwvIlXCYxOGGHXBzVrRa8UDt+UwCnCxhdTZgS/NSD8ba0cKM2NQd5LAGJAP49TftUtR2D9EcVjrON+zHCFCewJHUN8JNY8IZIsdS3ot8=
+	t=1784554790; cv=none; b=acHhhNIOYw6+0B+0EIXrXR8oef4FnVCTxKgDQOz7cFtzF85M2v9V5r7I3Oz6/rdttE16KxMJ1TEuS4IcEUQ3lLsndJFMpK5X6qEuoV4H6LQgX39C8TPLeOFa44eEaKf+4hp0zdZR9p/ApHneuXfYNPms4fOpDQczL4VD+SKvRHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784554667; c=relaxed/simple;
-	bh=zlYwNl/Yy5M3XxmCQFaJEP2ezB3t1CAypx5HYeeAhGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3Mzf2GwC/n6NFRus2039xnbGulXG3z/cDaHzzKMti7vk4SRyH3VDM05wDediqs3e9jM7KMBPysMwXeV5nqoLHlFP88UlB0hZrRxCSsYhO1S+Ys4H32FZHB/CpmZMOoBNo39ZZ+RTOUPKTrc4pB+C9kkbdmbhpqkGImtruM3kSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tiAFgYuN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784554790; c=relaxed/simple;
+	bh=hEfQm+fNIIIRf5G5yrPlpKCXyKnl5+VCOUdK6KCQ6M0=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Juyv6NJvH68g2jhnEk6fI9V0ad3jRjrwFI80LDu8DB/6o4ylts+Ad/O/BhPrKklqsMKDl67uY+NfOxuUSapEhMCYs/Fmaw5Y6hYfq8KaWNIpIyST25fngaKDDCe1WudgmXWsQh56irJO9fxuliutYFLpjUhpLQV6XTuXvOH8aeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI3vLrea; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tiAFgYuN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=G2EGhsuaHVLZRl+o3u34XmMvktvgXy8Y7soaKygN/AM=; b=tiAFgYuNj+h49EDo6UghApL1Dk
-	79v6u85zceyiF4u+ZLYwuxjcO1Wy39Mg70jUL/8vxWBSSJAMQBpxGmjy1YYT2Nlcbh6X5nmzB3O+I
-	S7rsXZvdsjvfJVx4kw6XJdpw9sgBzd42r+Pc53zw/cLPP+eJ7OVa2AtI2werIu+Eq0Uo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wloBb-00DGeY-1L; Mon, 20 Jul 2026 15:37:35 +0200
-Date: Mon, 20 Jul 2026 15:37:35 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [Patch net-next v3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <f3b70dc6-95ff-4add-8b1d-6534fe4dc3f6@lunn.ch>
-References: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
- <06a5b8d1-f3a5-40e9-af12-52c5c9fd99e6@lunn.ch>
- <3d87f3d1-83c6-49b5-ac6f-59880c6a6c6c@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI3vLrea"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBE91F00A3F
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784554787;
+	bh=hEfQm+fNIIIRf5G5yrPlpKCXyKnl5+VCOUdK6KCQ6M0=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=RI3vLreahJGAhgtlatHkOscyo71Y2LCTFvhRAwMLIIk1XNm/x5FMR9Dwsagw98QSb
+	 7sV4l7YWuKlvsv/ADHoTvX6VbzeQy6aOsrGF+2mCSEnlw2dUHVuMB9qL8wvcU1c3qU
+	 vemxw9+dHy1Jym9R4FaAjcU/STnSceY7lDpjKtSxt9mcg6mx/zw4CRIYYc0FFL3xqh
+	 l5YU/gZw5z8l4D8NW5lYQ5SNul06GkJW2Ykuk2hWd2bX9EC5fPpbbmmswww7MRg5or
+	 7zprAf5p7duqoarODjDXjTJAmWjBbPaeUCPXfSYZJaOk1PPoTQOBOmXIw1ZvBXcv5V
+	 wtzDBgTWkgpbw==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39c923b8c2aso97129951fa.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:39:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrSbGkgpSgKDfr1ccZyJKJ75mvzMNgOEFOI9o/AhSf+WtnZBM2T9i8r3W/727S28t0U7VxHhpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9Wby79NHFlMl7+rCSwFcW0Wt1X4dp2ijecBg/agfTFHkMbwQu
+	LLwBt7lSUcOtKB4XkYa801IJSI95Ojbynlr5WrL/ff1zTMi+8psw+CehKyeQxQ8Ii7g5a4Hdc1C
+	0HE5WE3y7nJPY5ac1SkbObI40c/NjN7db1zTxf0JE4w==
+X-Received: by 2002:a2e:be29:0:b0:39c:a06f:12ba with SMTP id
+ 38308e7fff4ca-39eb294c61dmr29234131fa.40.1784554785347; Mon, 20 Jul 2026
+ 06:39:45 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 20 Jul 2026 15:39:44 +0200
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 20 Jul 2026 15:39:44 +0200
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d87f3d1-83c6-49b5-ac6f-59880c6a6c6c@motor-comm.com>
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-3-2dee93f42c54@oss.qualcomm.com>
+ <e4f9b266-8d9e-48fe-99c0-58b61e02c9bd@arm.com>
+Date: Mon, 20 Jul 2026 15:39:44 +0200
+X-Gmail-Original-Message-ID: <CAMRc=MefqCMgVv-o5hWoRwS2iXPQNs5nH2qHiz55+ew162LfSA@mail.gmail.com>
+X-Gm-Features: AUfX_mzO2mZAcAjFU14cJl1wZGPQmD5GzWNsNbZLHTzrF2PNrvf-Va6RwZ7OmuY
+Message-ID: <CAMRc=MefqCMgVv-o5hWoRwS2iXPQNs5nH2qHiz55+ew162LfSA@mail.gmail.com>
+Subject: Re: [PATCH 3/8] iommu/fsl: use platform_device_set_fwnode()
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: brgl@kernel.org, driver-core@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-> >> -static struct phy_driver motorcomm_phy_drvs[] = {
-> >> -	{
-> >> -		PHY_ID_MATCH_EXACT(PHY_ID_YT8511),
-> >> -		.name		= "YT8511 Gigabit Ethernet",
-> >> -		.config_init	= yt8511_config_init,
-> >> -		.suspend	= genphy_suspend,
-> >> -		.resume		= genphy_resume,
-> >> -		.read_page	= yt8511_read_page,
-> >> -		.write_page	= yt8511_write_page,
-> >> -	},
-> > 
-> > I still don't like this. Please stop diff deleting all these and
-> > putting them back later. It makes me thing something changed, maybe
-> > white space?
-> 
-> Ans: I tried to refactor this issue by hanging the position of the newly
-> added code. However, the same issue may still arise in other code segments, 
-> without modifying the existing code.
+On Mon, 20 Jul 2026 14:58:27 +0200, Robin Murphy <robin.murphy@arm.com> said:
+> On 20/07/2026 10:24 am, Bartosz Golaszewski wrote:
+>> Prefer the higher-level platform_device_set_fwnode() over the
+>> OF-specific platform_device_set_of_node() for dynamically allocated
+>> platform devices.
+>
+> This is very much non-portable code specific to OF-only platforms, but
+> if the intention is to remove platform_device_set_of_node() again
+> already, then FWIW,
+>
 
-Look at other patches on this list. Look at the diff generated. Do you
-see the same sort of issue? I'm pretty sure something is wrong here.
+Providing platform_device_set_of_node() and using it was done to make the
+transision to expanding reference counting to all firmware nodes possible.
+I don't think we'll remove it just yet as it doesn't make sense to convert
+the code under drivers/of/ to using the fwnode variant.
 
-Try
+> Acked-by: Robin Murphy <robin.murphy@arm.com>
+>
+> (Although I'm slightly puzzled by the cover letter - AFAICS in -next,
+> platform_device_set_of_node() is itself very much a user of
+> platform_device_set_fwnode(), however in terms of symbol exports,
+> perhaps the former could now just be a static inline wrapper?)
+>
 
-git reset HEAD~1
-git diff -w
+Sure that can be done independently later.
 
-and see if you get a different diff. That would indicate there is a
-whitespace change you need to revert.
-
-	   Andrew
+Bart
