@@ -1,25 +1,66 @@
-Received: from out198-27.us.a.mail.aliyun.com (out198-27.us.a.mail.aliyun.com [47.90.198.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB6C30566F;
-	Mon, 20 Jul 2026 08:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB13D0938
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784537464; cv=none; b=pnwYx91gWCoJc4+Mn6vrNaP/OGj/oGQDbqilFwjz+jxhdi94s9rzjBRtTASkzTBV8m81pDJI0erytNXYSBjVefRdyYyPsMNYDuIaCYPC3qUdL7L3KofFFoF1FDE95p9ZiRKMN0ZTrefx5hhdgGnSisujA0PoFEswEOtP/fY9iJE=
+	t=1784537903; cv=none; b=s06XM+daHEGeA7xuAtALU1qOERlJE8Q1KCqpIew97lRnaSLUlJ89QDf3nXmfB4t/l4ey+lUELrcrYCGlyjBs85hUt6V92ShNZUakuouaio1mOwqRZj0cEetwvlJyIiUxYQLbvDt4XSPmVbNZCvnKI0QTZ+JE+uiYSL2O03SDl0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784537464; c=relaxed/simple;
-	bh=IV38NQPivX+pwEdrZJkR29WonwCRC4QSYi6DUtVE6A0=;
+	s=arc-20240116; t=1784537903; c=relaxed/simple;
+	bh=M/FeSkUlN2iqLgZl/QwQ1vDPTww3FqT+IV1psC7BNho=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bbDI5CNXz8nUyzoApdNse3zycjy3cDzICs+1ofzrJJ74HvXGJ1cYK0LkGFLCjsZIT6Xt3XR8SBden4C7l56ixqcRa0Hfmf0RLmEy9pfJzNU5CVFwUX8JlsRi+hQCDkTK9MlrF7DmOxWPhwQ+KQI/ptcbUbvVmqW+JUCBMn/RKzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0823063|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0490074-0.000468963-0.950524;FP=16858052017944915779|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.iQ-lUL9_1784537116;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iQ-lUL9_1784537116 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Jul 2026 16:45:19 +0800
-Message-ID: <73339722-f283-4418-9d18-e80a1bd31efb@motor-comm.com>
-Date: Mon, 20 Jul 2026 16:45:16 +0800
+	 In-Reply-To:Content-Type; b=l0yZtYhr2/hWnWVRnjpO9+ZKjBg9xJ+7QpB0Zw+3CFWlqrFeALInvCc4ft60Wqyu46c9BGOWQwftfhu99wqNmakVxzmAw6arHayI1yofDbd3xKYhSoi0bMbh+t5QGiTOGbZ0QqDEa4GM+w/KRAIQ+uL23TXsg+2f47+m6v63EAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=OmEOHsHV; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="OmEOHsHV"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so40545935e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 01:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1784537900; x=1785142700; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=THIFmBumm1t3Qj7dX1twvX3kH9ShW1vcRhMAUJ6LjVo=;
+        b=OmEOHsHV1yx0RqQiAPzeLw2sgL+NqlWk1UPFafaoN/Zl+qaYW621crfEk5i0WuaD4b
+         NYW0V2qscSsfyCJFqfGGdE4LcurbM0g7i6+2z5zHS3lISYl01ay6vXx0YYFbc+Cs6Ivk
+         DVn5HnKlFydPO6NvwP8MIbIJPHx1GLyhJ7//qbVuH0zMbKralYP8O3RInrV0InP/hCE9
+         WoQNtJhPhgfSkMXxhK+cGoHK0h0UXqli2m0QwdX3a+YxTKjiOzNi9VNrL+bSvNPAj+Li
+         J4dw67cw7chtFrWCC2dIzliECo9kCvcskIpKZj4em5QbYqop8TIqyLmzNDfKshPbxCTa
+         hOOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784537900; x=1785142700;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=THIFmBumm1t3Qj7dX1twvX3kH9ShW1vcRhMAUJ6LjVo=;
+        b=ga/xSl4YVLS2qvPWon8JK79GZKSGeDTdLM6FiElTOEzlCzGV9dk0bKvucGlukU573p
+         bPy8roXWuJz7WW1k5945cnxwVxfUvKCO+LRrmRWPGIWi+fohd0h4OZrOx3NlXQd+Pf+G
+         Mvo6HRRZ09V2slxIBBeXCu0LIlDfcuZlfs20AK/Q1sqJfl2vTRHkfpYwGB3UYpuxtXS8
+         Tyb7cmIvfWu1GRlxtSqmtdCUygMCuVDZIgZ2EuSC0QM6Fx2jxKc3E5IcpSz77vGXDRmH
+         qiqy/0l9Z3HqxW2KmwfIuwVjFaMpWoYroDZxEQEIHiYPbWx2RrGVSgzwSJUN1nEjPN1A
+         AvZA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpq/OFgDnWHZM+AmWWsCG11nBOnmpzi+tWW7F2BP6x2FCkvfxA8NTBXK+r/kyR5VjCNwJuOekk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnrPnFLwj2AbnL7oLUvJ1cmTrQexgu5DWuS/Xagr69phSOTszz
+	3tg353zdli7/1p8d4JbPVVv9UvEkWde645FIO8OLH6VYgwkcU4gRYnY0/TxeqfBEISM=
+X-Gm-Gg: AfdE7cnbJIAfqr/QaVLQjZ6vseoDfYcIGm1d3wOPA2nAxO15bs/htuVnAo0XYmobVLr
+	k8ecEnjqFkNDa5K2KRrQdRa1g6Cja+bZcI4A9QT9tD/0kg55nnl78ZpDDTd01e4PBzECBL9Umyq
+	929v5Sqc1xzSAjw/ebtqns7sjXHfK2vkW3vEDePwxdRb/ceLHKWWojW7WNaeAoTNuQ1xuOwqGe4
+	nin1LkCaZXJ5oz6aEmRZA47xVoRf4tEh0wtoWGhhr2p3FL0Iv5mXP6GRz5pXWl9NrDIL9OttI/T
+	r39n14b3JlUs3t+DWwouW6mjux+mvjZgMi3gOU458THF+8If8tyoy6i2inGlG6t3p89zNCI6ZQI
+	NWv3aZSp8qf5u0vywIgJkUBR00HuIeRVGIt7XzTZ0qw8VkXLrkZe/ZD0ZQcb2u7VPWRQ9629foI
+	e6FDhNqXYQoqywcb/Q/9hEjAM8znrYMTiL
+X-Received: by 2002:a05:600c:4f44:b0:495:5b02:23a5 with SMTP id 5b1f17b1804b1-4955b02253amr51695905e9.30.1784537899449;
+        Mon, 20 Jul 2026 01:58:19 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49563eee22esm1870305e9.1.2026.07.20.01.58.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 01:58:18 -0700 (PDT)
+Message-ID: <2797c0ca-07f3-4815-9233-f0f27375162f@blackwall.org>
+Date: Mon, 20 Jul 2026 11:58:17 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -27,91 +68,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch net-next v3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Sae@motor-comm.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
- <6264d655-640e-47ec-9521-5e292bfeaba6@kernel.org>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <6264d655-640e-47ec-9521-5e292bfeaba6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH net-next 1/5] bridge: Use direct pointer in
+ br_is_nd_neigh_msg()
+Content-Language: en-US, bg
+To: Danielle Ratson <danieller@nvidia.com>, netdev@vger.kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ja@ssi.bg, petrm@nvidia.com, fw@strlen.de, kuniyu@google.com,
+ bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <cover.1784463131.git.danieller@nvidia.com>
+ <c710e4a236e69868a59c969bab31e5f29cfc0e86.1784463131.git.danieller@nvidia.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <c710e4a236e69868a59c969bab31e5f29cfc0e86.1784463131.git.danieller@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 7/18/26 04:19, Krzysztof Kozlowski wrote:
-> On 17/07/2026 07:48, Kyle Switch wrote:
->> Add a driver for motorcomm yt8824 quad 2.5G ethernet phy, supports
->> 2.5G/1000M/100M/10M speed.
->>
->> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+On 19/07/2026 16:34, Danielle Ratson wrote:
+> Both callers of br_is_nd_neigh_msg() already call pskb_may_pull() to
+> ensure sizeof(struct ipv6hdr) + sizeof(struct nd_msg) bytes are in the
+> linear area before invoking this function. The skb_header_pointer()
+> call and its fallback buffer are therefore unnecessary.
 > 
-> Please run scripts/checkpatch.pl on the patches and fix reported
-> warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
-> patches and (probably) fix more warnings. Some warnings can be ignored,
-> especially from --strict run, but the code here looks like it needs a
-> fix. Feel free to get in touch if the warning is not clear.
+> Replace skb_header_pointer() with a direct cast to ipv6_hdr(skb) + 1
+> and drop the now-unused 'msg' parameter and its corresponding stack
+> buffer from all callers.
 > 
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC (and consider --no-git-fallback argument, so you will
-> not CC people just because they made one commit years ago). It might
-> happen, that command when run on an older kernel, gives you outdated
-> entries. Therefore please be sure you base your patches on recent Linux
-> kernel.
-> 
-> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-> people, so fix your workflow. Tools might also fail if you work on some
-> ancient tree (don't, instead use mainline) or work on fork of kernel
-> (don't, instead use mainline). Just use b4 and everything should be
-> fine, although remember about `b4 prep --auto-to-cc` if you added new
-> patches to the patchset.
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+> Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+> ---
+>   net/bridge/br_arp_nd_proxy.c | 9 ++-------
+>   net/bridge/br_device.c       | 4 ++--
+>   net/bridge/br_input.c        | 4 ++--
+>   net/bridge/br_private.h      | 2 +-
+>   4 files changed, 7 insertions(+), 12 deletions(-)
 > 
 
-Ans: Thank you for your support. The warning and error code formats 
-will be fixed in the following patches according to this procedure.
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
 
->> ---
->>
->> changes in v3:
->> 1. Using common apis defined in phy_package.c to handle shared top
->> extend register space.
->> 2. Add dts demo in motorcomm,yt8xxx.yaml.
->> 3. Fix unnecessary redundant judgments.
->> 4. Fix BMCR registers operation using magic number.
->> 5. Rename funtion based on its approximate functionality.
->>
->> changes in v2:
->> 1. Remove duplicate code and replace it with existing api. 
->>
->>  .../bindings/net/motorcomm,yt8xxx.yaml        |   30 +
->>  drivers/net/phy/motorcomm.c                   | 1808 ++++++++++++++++-
->>  2 files changed, 1750 insertions(+), 88 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
->> index 26688e2302ea..e7592468f658 100644
->> --- a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
->> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
->> @@ -149,3 +149,33 @@ examples:
->>              motorcomm,auto-sleep-disabled;
->>          };
->>      };
->> +  - |
->> +    mdio {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
-> 
-> I don't understand why you are doing this. Anyway, please read the
-> documents I linked and maybe there is some explanation for that change.
 
-Ans: the bind changes will be removed in patch v4, and updated in another
-patch thread.
-
-> 
-> Best regards,
-> Krzysztof
