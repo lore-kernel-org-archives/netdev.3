@@ -1,62 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0386E23B62B;
-	Mon, 20 Jul 2026 23:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AFA255F2C;
+	Mon, 20 Jul 2026 23:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784591428; cv=none; b=tmn/A3b0yyxrbpukf2xoEbgCkgujij7Ga4C4lN7cQ9ZKGECHVasgL4q8CfX0EK6+BllZGohqN3v+nI+c82DFhVyN/RWU5kRFwYZxXNv5aJJ7CvHIUH5sRuesDVLBFSPitA5MiQuWPCpFbhOh7W7GSDEkN3Bxj6Tvy2pdLE03Z60=
+	t=1784591524; cv=none; b=tDfHHhDG0TFiHD4gnRftBiCEzsab6P8/8YfBiF5qjr0jT+qwIxf0T1zxW8p+Dmq+U9GieZ5BCEeI2PKLWY+9HYobueI/hxlkPi0Xj4O4Ltg2WLMOB41yoUwBNMNg5XQpodfmWp9U+VUAs6ljosLwvj6x1iAkQYd8NQhJc0O4KN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784591428; c=relaxed/simple;
-	bh=6McwbyPapcxi9StW5+k7jaK9H4nzKCDZ7qE2LcwxhkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rZi81SOnPXdiNBqe2nU2+L2OdqmM62k6gjwcv9gYOUUwNl7wk/RhaasFgoeS2MLMf0s4w79M41+uuSkZTf80NrEh9Mb05UVUuIuDKuuozA1con0X8hQi4NMMOGhc4+QF0q10+9qgFD6xqVOa4xmUNx3q24VAMMoJldOg6rGcHHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZnHvffpZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784591524; c=relaxed/simple;
+	bh=CkrRlCIrfvheexTh5cz3w4CkRVZ0XtKDJ4/5Eq7/uV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fm8lBEJJ552oi9MO1Cfku/a8tqL0C++XkAryl6lUwAkviIW55yhMuwuT7qhuHGO7ma/B8zB2tZU5KdjLI5iZyywHqtk9/1isXaUsRmmqM457IVkB3eyXFk1lVBTvEIih332gkrnTCxzjVpHVDjqgLnM62COcroTe6qxrdjrfNfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WP7753De; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZnHvffpZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5E81F000E9;
-	Mon, 20 Jul 2026 23:50:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WP7753De"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B721F000E9;
+	Mon, 20 Jul 2026 23:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784591426;
-	bh=wwKJZ8GsCP81atea0GRALydFPDrvE7MBzEcIpO42pbA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZnHvffpZJ/tLK1cHoPqVg7NgVqwp9dx2318QLYwnkMr4LUfwTeXX/TfEwaaTmW0Mo
-	 agc3Hpb7irX0BU7dEujLbHW5EHxP4icP/XCfnlOgaBNV/EqWwMr1eP96f9AhfeyVcy
-	 uC/zCBRRd8ZRkqdvge2swYrYWlncCRgiDqwwp1vAwl4w9jA9oruq+kJj1tpsWAEiez
-	 bkcA4MDhabGNdAsvjj7vBERt7Ho7nH6Ln19EZtfmUjK9cIMcNXiMQLboH6Ov5NkZOE
-	 L5SG00iE5zkKKMWsrYPfOnuPwS9bWiSTsiAGZtM+KLqMVF3b+4aENeHueheKq/+TpZ
-	 jz76n/i6bKGMA==
-Date: Mon, 20 Jul 2026 16:50:25 -0700
+	s=k20260515; t=1784591523;
+	bh=un0HAXYDHaLg43irNjzxBpMC77LeLjvYUBSeZ989yPg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WP7753DeRuEIDXgLjEOLnPEizjxGMvhE5CHcfqnsPwdXqWxCmF86VsTRUw3nh/xwt
+	 j6NIh3TjZINDoE7YkV3H1l/h4Un1CF6VAIGV2MIg2dGRjRyw6oRSKDSCIEh+YGvF2y
+	 gzy1mKikJJpNW9h1hFzWrxdh5QdAgAfFs66o5ARPCvkIBN+8X3g8MmHthBMxmAqXYr
+	 tJUOvmDz8NeBq9R/gUz4R5WradvvTOoAuTeEQRky0uq8HMuaNP52QuP1vgb5+NQo4x
+	 Oghn9h0tIT0ibG767aTesdSLkqobMb150KINw8OJs5EB52T0L6J+F8mVIle+LyxhNS
+	 1pItL7WSABIRA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: Veerasenareddy Burru <vburru@marvell.com>, Sathesh Edara
- <sedara@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 0/2] octeon_ep, octeon_ep_vf: fix skb frags
- overflow in the RX path
-Message-ID: <20260720165025.5f13460e@kernel.org>
-In-Reply-To: <20260704061511.2350737-1-maoyixie.tju@gmail.com>
-References: <20260704061511.2350737-1-maoyixie.tju@gmail.com>
+To: joey@tinyisr.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	olteanv@gmail.com,
+	andrew@lunn.ch,
+	devicetree@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	arinc.unal@arinc9.com,
+	Landen.Chao@mediatek.com,
+	dqfext@gmail.com,
+	sean.wang@mediatek.com,
+	daniel@makrotopia.org
+Subject: Re: [PATCH net-next v6 4/4] net: dsa: initial support for MT7628 embedded switch
+Date: Mon, 20 Jul 2026 16:52:01 -0700
+Message-ID: <20260720235201.466172-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260704105659.140970-5-joey@tinyisr.com>
+References: <20260704105659.140970-5-joey@tinyisr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat,  4 Jul 2026 14:15:09 +0800 Maoyi Xie wrote:
-> Both octeon_ep and octeon_ep_vf build an skb for a multi-buffer RX packet
-> by adding one fragment per buffer_size chunk of a device-reported length.
-> Neither bounds the count against MAX_SKB_FRAGS. A long packet yields about
-> 18 fragments, one past the default MAX_SKB_FRAGS of 17, so
-> skb_add_rx_frag() writes past shinfo->frags[].
-> 
-> Each driver now checks the fragment count before it builds the skb and
-> drops a packet that would not fit.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: dsa: initial support for MT7628 embedded switch
 
-Why are you working on this driver?
+This patch adds a DSA driver for the MT7628 embedded switch, which has
+five 100Mbps user ports and a 1Gbps CPU port. tag_8021q is used to
+isolate ports via the switch's 16-entry VLAN table, with the double tag
+feature enabled to simulate VLAN-unaware behaviour.
+
+> diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mt7628.c
+> new file mode 100644
+> index 000000000000..eccdb05fce9b
+> --- /dev/null
+> +++ b/drivers/net/dsa/mt7628.c
+
+[ ... ]
+
+> +static const struct dsa_switch_ops mt7628_switch_ops = {
+> +	.get_tag_protocol = mt7628_get_tag_proto,
+> +	.setup = mt7628_setup,
+> +	.teardown = mt7628_teardown,
+> +	.port_enable = mt7628_port_enable,
+> +	.port_disable = mt7628_port_disable,
+> +	.phylink_get_caps = mt7628_phylink_get_caps,
+> +	.tag_8021q_vlan_add = mt7628_dsa_8021q_vlan_add,
+> +	.tag_8021q_vlan_del = mt7628_dsa_8021q_vlan_del,
+> +};
+
+[Medium]
+How is a user expected to place two of the user ports into a Linux bridge?
+
+The ops table does not implement port_bridge_join or port_bridge_leave,
+so dsa_switch_bridge_join() in net/dsa/switch.c returns -EOPNOTSUPP:
+
+    if (!ds->ops->port_bridge_join)
+        return -EOPNOTSUPP;
+
+That makes ip link set swpN master brX fail for every user port, which
+seems to contradict the commit message:
+
+    The switch hardware has a very limited 16 entry VLAN table.
+    Configuring VLANs is the only way to control switch forwarding.
+    Currently 6 entries are used by tag_8021q to isolate the ports.
+
+Without a port_bridge_join hook, dsa_tag_8021q_bridge_join() is never
+invoked, so there is no path to migrate a port's tag_8021q VID from its
+standalone VID to a bridge VID.
+
+Would wiring the tag_8021q helpers directly, similar to what
+vitesse-vsc73xx-core.c does, be sufficient here:
+
+    .port_bridge_join = dsa_tag_8021q_bridge_join,
+    .port_bridge_leave = dsa_tag_8021q_bridge_leave,
+
+Related bridge-lifecycle callbacks such as port_stp_state_set,
+port_pre_bridge_flags, port_bridge_flags and port_fast_age also appear
+to be absent, is that intentional for this initial submission?
