@@ -1,164 +1,347 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F973CF1F9
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784536006; cv=pass; b=X6IBe8N196WrEbOPs/0MTqAsCYBXVCYB99SbF3YvWf0pTjTBB6NSf4yCJ/2Jy9kvHPzx76L85PeuSr/YtjYsKYAmoANAntXFmYZHMGvj63KUbjQBePWZY7AWqlpyT4MOqfbyD9gM5KBOQ7mXxOsMN7PI5Mt3HgFGBXbA5y7BG5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784536006; c=relaxed/simple;
-	bh=FE4rE9ZmDHjWh8PzHPlEHvCiDRsHpgN7gW6lJnUuzyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VIoJBJ1tAju34YdncaieS2rYzTEM8QF8nNPFvMQi6CZWZcbVaKBOmhAZACKn2vW1eV2ewPpqGPX+M5vxgdtGw5QjQo8FdIqag8ZXR3ZWDoxeNDOqAMWLKPKYH/xpINUCr7j55VPOIEQcegaS58qGncG65BUSVLnzT0UUGy4/S6I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mekzi1PL; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C53CFF58
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784536788; cv=none; b=ugfRwBlBzfUYA7hF/22Vzzb7NsU92v6r1PTo0mtyTuDrVmIx5LPsg1h8SHH/Cp1NlN53aQdr9jYiugv4WSS2JNmF3rdyxkxmy0fqNmZymhmYVt+OQadx0h1BMN8L/rjtN1HK+uFUh2BugwDwv3Vbzsy4Ed/oJKTJOLoY3Xv6lCU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784536788; c=relaxed/simple;
+	bh=Q7+IJX68QjV8feATeOoFyhllZFT4t92bU6G47rqe348=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gG17JZWBUAUAvQID/E1FpdFXYOznVpi76OlJkpZw8DxIB/vLz7pFbYsoQrVU3L07BuSuNEj+GN+iMHh1RZeVOGlgDDtySxLKwmQ8rKKE4l4B8MWKzuePwKtUXDsJehUn/WiZ0O8rFwDhSW/KnzSpbfBadZvxYjVZLZH7n5Wrv4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PC3+B/Bu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NSx2+9Q9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mekzi1PL"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5218927884fso36364321cf.3
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 01:26:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784536004; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KYTlJbQPKmlPtYJ+A44Ww5Dq79CFD5Rv1F5cEcF4sE4JueuKRc3jb+4jUbmYiDHrKK
-         ij9gJzxx7owpkdIPnvCH0wHMAmwEYuUhEbpkChGSTi66QdIXxpNXl1uaLb7eFcOc6uOb
-         nT/dJGxQlAeXhx+C8ykHUEskp7VPgHOu73D4XtCG9SXAsNcxAqdMorK9urqQgifjSvVE
-         oh8E2fV8R7y8knNqgDvlwXipeMaO4JeerqWWz9lfbUEj/2qYgOmXLiPeJjjZAv08yiEf
-         71CURuHZrnDezOjUe2s8ZBbO8LhRPt5T0tKDezeaj4iugjHBE0I+CbqJjCsM8TKGV5cu
-         Df/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Oe0i8b8XRVkHa2TSHijT+USSrZ/Aozb1yDMwFbU6CCk=;
-        fh=Sm5QEvh9WqTUJY/6QCWG57lWPYy97/Yai5DytDRrZn0=;
-        b=MI7FU7Poz3hek9dyMZrUCSzSA01mzmlmCzPaU8OednnnsauP1ztDSQpikfjgGPdxHO
-         IURsbgfRAd1DId3886HYKvexM+ZFsG52GWBg465wskCLeBju9vp1m/l1ejjJF47O00no
-         8u+qUuNoDW9SonVRRcnxuau9ru/FrxkJDCQHjtacfBM/8ZjriIPE5CJOD1fUij8yLrP4
-         UvbMmnf6XvgWQ7C0lhdFVDIE1z8jCnbeTui6r2jer/ZlLcE6g1vXS6o9gTNQYEkrOt36
-         ckHsPVi20bO9KoBo08NnGZhChgUTTyXHqyGfxA6GX8qy96LZCJ0r6O46U1tMc8T2kJzn
-         cEHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PC3+B/Bu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NSx2+9Q9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784536785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
+	b=PC3+B/Buvyw0dgCHrYf336qcMtL138DdO19CuDhl3+wOO3Tl/WVyLfzmoEbWuLKqlbt5tt
+	lBcPzXJtf2ZKYkVeD5bZD/OqtAr2es6Zz7XOzCNdim6H5SHPnyjovbYG04fOLz4pHc6bmq
+	DZBTadJzPCzl7lTnhFCf15LkphhdpXQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-581-ZRjYUB6NNZuoYxm0Yqxwfg-1; Mon, 20 Jul 2026 04:39:43 -0400
+X-MC-Unique: ZRjYUB6NNZuoYxm0Yqxwfg-1
+X-Mimecast-MFC-AGG-ID: ZRjYUB6NNZuoYxm0Yqxwfg_1784536782
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-495517d39fbso8622885e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 01:39:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784536004; x=1785140804; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1784536782; x=1785141582; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Oe0i8b8XRVkHa2TSHijT+USSrZ/Aozb1yDMwFbU6CCk=;
-        b=mekzi1PLViErsH21rCkkn6EFaFNxO0zy6C7S6fKDaw9eCW/UHIqiaoqlEsuN18/vA4
-         b50bd1tpIG1eKvv0Z5ydUc21p4dCEtANP84w1mc5OtuOyq+dL00ZNgnW6AqL5A7gz3Or
-         B2S9gOCAD2BCOXrKoWc1/Xa536tCcc3cN11Ih6iqZWBBFp7kWM0b6nDBhjvIUehsf+zT
-         P5GzFmlEpKpLtpQ1CEqpZNvsm/ZNa/F/Wo+CQ2bUXNYK2fz5FwjScdNWQwnZQXZLQh8j
-         kPpD+QyM4qkJiwGsznjoL1EshyYd6Xm5QKv1vQ3bMM7NJiOaAS4ra5onyM+mB8L4hjLs
-         aVEQ==
+        bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
+        b=NSx2+9Q9AvBzrmp+vKhQ1rK2qBJxwn2FnQpYPuAyiHO39rofxZDyiuAeY8Gm7jpO8V
+         L3Br3vCs2LqgwDoppg55e89947TM0VBuG9k5waAPCXA14Dyet0HW9J+n4f+lC9b0Rklb
+         YtC79S/fkrqXdRylSbVKc7dT3cVT1useqmeR1nbH5xEsSSC33ay6qjOmNDJ1PWL+RnBp
+         05iJGPzDUTbeCz9EJFrVjA+Ox5hnGOwmO61D9bHjMGRv7fGD+JihrA81jstFy75/LnT6
+         Idt3vQsQpEEh3hH2MX1Sr772ILRyQjzIphrVIC+mtM/qDKDFxuB86p6fSBJazBQ/lb+y
+         UhQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784536004; x=1785140804;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784536782; x=1785141582;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Oe0i8b8XRVkHa2TSHijT+USSrZ/Aozb1yDMwFbU6CCk=;
-        b=POO93fFSPpAA+IGQmpRZ6o8FKVzOd+1nmp9+yYXLOlm1hYF+XqROF8YdDd1zDmyEZS
-         Fq+cHFbYZlZ7RknO/cPiceMFnccqcZ9PfotCqYNgvZ0D6QoBIDNl6/JYY13sV9Xk65Pt
-         NL51ZO+y79Om8aWaTgvEuX464m2I9ObMeFjgjgcXQhRtLDzIOzDhFpvDHq73bQSXGsRl
-         Lo+m3VzK7L1vX/if/8/8mbF81eT7CMwbGw1YJSViNF22mL8JRyrF6rsNAffuEs6KAgW6
-         sB2hCgPBxcdrj9FtKhfctj7Alxvr4W7/Zbh8Ns/i9iU/SuUypjBBVLvnB0QA7wYG5o/G
-         VT+w==
-X-Forwarded-Encrypted: i=1; AHgh+Rp+rc1yqzkKXLzd0OpHmZ1sNmM/GjImUaAHZW94k4ZBb7DxVq/nM4FVpg16ag+H26ZOKxJLf1M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLwJWF8FMmdJnAeHvGdt1OPTJzTbQ6fddMR2p3WO+7g2VaaDhH
-	6AYf9y5qkLtw7Hhp5l0SNhYi3kSf+5Ttxs8tM90D2ZlGRetvEEGt59knnr2dLIFtp6czk5Ghi6w
-	/3ji7XEiLqwLxkCTx1hiz9vtv96UCADC9TFiDiR/R
-X-Gm-Gg: AfdE7ckjIVU4XCjCxUV26B2Yq8PIiLZV0CbZygdmIXft0CwArEsyUC277RgDAhVNq4r
-	S/EFxgK4HsO/HfrUeMc6DGxTgWHUc2O4xr4H3K9W+8UJOHYCLqK3AC02NKXOyDQaaOEkJp9Pe/h
-	Q8/+SiRtXgS6yR6wx8W5Edf+rzAWf+RghV8fR6f0GiVKekmrh5FVAPu3OM1RdyLtS3sd36aQtx4
-	NPY9EHWB/t1Z9mbOpG03t8mX0DmxLeMLT/QPsGJ+4p6OS9Dg+I5ZCjv0FQZUxgd6WYbqdkRq+Yz
-	hm2qcwerYYx/cro2Qc6NYIqXBj3blHJgmHhMKAbzXfM6NXjO9vV9ELuWgOjAMEKQ88eyj7Rmguv
-	mVvxM+LPjyQwSRDO3gKQazdy/OHnykS8=
-X-Received: by 2002:a05:622a:1a9f:b0:51c:a70:5ed with SMTP id
- d75a77b69052e-5213ad60752mr119707061cf.30.1784536003526; Mon, 20 Jul 2026
- 01:26:43 -0700 (PDT)
+        bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
+        b=tJX7wAZSrcSNpgkHijHIRgzGW6LApwU6n7Wea6nTdvqgEPEICPXTr1NI3D9rZsX6TB
+         b5tABmeP39MPq2zhCMq/rD8rIfHqkbU6Cr7Lh0T4L6O3y8evTQ8FQaxDlwvq1yFacmvm
+         7b0441LIeuKYo+lkCbcGGK8/ZHgy8OUToLhGz8ach+Vxl/cClI6tE5a5Vj2ei/W8YLPU
+         w7iwngPZQ1d3PEKOx+pQiGrukdwXUsBQfC9upGNxEDuDaZ4kkXtIjFQVDbTYTUfGRLND
+         fNJaNE1kNzqhYav7J2isL4/wRFT5ZjL8EmFd8i49mWYTFuZy9Ly1UDfCYEz3yQbfcdmx
+         1PEg==
+X-Forwarded-Encrypted: i=1; AHgh+RqS2uBmDxvNZbubFci8J1YWYCBwfiCbUR319ZSMGsL0WbhCWEGJ+Pret74B0B6lSkc6xo9m7KE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWQ6LjT0pJQnv4rNiqSRlQcHU1/vCFqYNT0JX4azVS/HD5Fr1s
+	DlKpkoZS6sPE4BQVz3i8RCyoCx9UvSHTgbg1y7DYnXTMnA+vu5m2dmPUNlNowQKWcW0JuACgY5e
+	OA24Kxd2pteE7JsKuvuhmy6jYWh1xtxfqPOFlAuZFAgvpYWd8b+mi1I3N3WpWURRLgA==
+X-Gm-Gg: AfdE7cnT7WJSMVr2hmF6r2yN6jV4rXWOCoxVWBb85crWqEKG6rbA7WgSYbzXcv6ChS5
+	9k06i+Dumx8Oj3PhPEzdBDezOO+WcoFzEniFbNC7ECTyx/OqYNlW6evN930jlF3Vc2nAFNLdRHE
+	GXwjKsFuWmZe+MBVOFfHCftSybsPt6BQg+9F7lvQiRENP1r4crBuyuOWhbGAkBqKqKvrKTasBJ9
+	DFXISXIBmS5tGEqBjlHyhweqXSCBLWni0CPKRlgRohK3TiGfo6UniUETnAi5w+dw/5ksY9nPIvO
+	HwBzvNMH5V+QpMri7PhrAOvCM9Cm6bYZTsKnKdFy66BNY0SiQxFdDXVEyKWTWghSOBc/7uV2YOH
+	ihg85kFTvplSqV3NLfExYdRaed2JFAByVniJ/9dQFgOgHUN6jwg==
+X-Received: by 2002:a05:600c:4e94:b0:495:522f:d994 with SMTP id 5b1f17b1804b1-495522fda7amr90343295e9.0.1784536782014;
+        Mon, 20 Jul 2026 01:39:42 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e94:b0:495:522f:d994 with SMTP id 5b1f17b1804b1-495522fda7amr90342865e9.0.1784536781447;
+        Mon, 20 Jul 2026 01:39:41 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954ba2abd0sm234410465e9.15.2026.07.20.01.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 01:39:40 -0700 (PDT)
+Date: Mon, 20 Jul 2026 10:39:36 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <al3bcMk0ZxMGq7Pt@sgarzare-redhat>
+References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+ <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
+ <alibLtcrC7o5r4Dh@sgarzare-redhat>
+ <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
+ <alj_YKTitwqMjAez@sgarzare-redhat>
+ <55d7c896-b871-4c50-a324-35f5c4a9d11a@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713151435.1815104-1-yun.zhou@windriver.com> <20260720075352.GA2233846@shredder>
-In-Reply-To: <20260720075352.GA2233846@shredder>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 20 Jul 2026 10:26:32 +0200
-X-Gm-Features: AUfX_mxPpTIeWhK-tBjzcXpFJCGO2ax9DwM-SV2XcPhaD3NA6ncJUkKiHPKL0Oo
-Message-ID: <CANn89i+im-_LnJgF3M=fKhstVrZvLb-+BhT3O62cRapFwV-Odg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: erspan: set lltx to avoid sch_direct_xmit deadlock
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Yun Zhou <yun.zhou@windriver.com>, dsahern@kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <55d7c896-b871-4c50-a324-35f5c4a9d11a@virtuozzo.com>
 
-On Mon, Jul 20, 2026 at 9:54=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
+On Thu, Jul 16, 2026 at 09:01:22PM +0300, Andrey Drobyshev wrote:
+>On 7/16/26 7:13 PM, Stefano Garzarella wrote:
+>> On Thu, Jul 16, 2026 at 06:39:48PM +0300, Andrey Drobyshev wrote:
+>>> On 7/16/26 11:57 AM, Stefano Garzarella wrote:
+>>>> On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
+>>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>>>> the vq->worker pointers and immediately frees the workers, without
+>>>>> waiting for a grace period.  A caller that fetched the worker right
+>>>>> before the pointer was cleared can therefore still be queueing work on
+>>>>> it while it is freed.  And even when the queueing itself wins the race,
+>>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>>>> future attempts to queue it are silently skipped.
+>>>>>
+>>>>> None of the current callers can actually hit this: net and scsi stop
+>>>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>>>> the lockless send/cancel paths become able to race with the teardown.
+>>>>>
+>>>>> Close this the way vhost_worker_killed() already does: clear the
+>>>>> vq->worker pointers, wait for a grace period, run whatever the last
+>>>>> readers may have queued, and only then free the workers.  The
+>>>>> synchronize_rcu() is skipped if the device has no workers, so cleanup of
+>>>>> devices which never got an owner stays cheap.
+>>>>>
+>>>>
+>>>> Do we need a Fixes tag for this?
+>>>>
+>>>
+>>> I'm guessing it should be:
+>>>
+>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>>
+>>>> Thanks for pointing out that the issue wasn't occurring, but I think we
+>>>> should add it because it's a sneaky problem we discovered by chance.
+>>>> IMO the code should already have `synchronize_rcu()` after
+>>>> `rcu_assign_pointer()` loop.
+>>>>
+>>>> @Michael, what do you think?
+>>>>
+>>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>>>> ---
+>>>>> drivers/vhost/vhost.c | 15 +++++++++++++++
+>>>>> 1 file changed, 15 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>>>>> index 4c525b3e16ea..0d1414d40f4e 100644
+>>>>> --- a/drivers/vhost/vhost.c
+>>>>> +++ b/drivers/vhost/vhost.c
+>>>>> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>>>>>
+>>>>> 	for (i = 0; i < dev->nvqs; i++)
+>>>>> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>>>>> +
+>>>>> +	/*
+>>>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>>>>> +	 * caller that fetched a worker before we cleared the pointers above
+>>>>> +	 * may still be about to queue work on it.  Wait for those RCU readers
+>>>>> +	 * to finish before freeing the worker, then run whatever they queued
+>>>>> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
+>>>>> +	 * vhost_worker_killed().
+>>>>> +	 */
+>>>>> +	if (!xa_empty(&dev->worker_xa)) {
+>>>>> +		synchronize_rcu();
+>>>>> +		xa_for_each(&dev->worker_xa, i, worker)
+>>>>> +			vhost_run_work_list(worker);
+>>>>> +	}
+>>>>> +
+>>>>
+>>>> Following sashiko review [1], I tried to undersand why we need this, but
+>>>> TBH I'm really confused. That said, this seems wrong also because it
+>>>> will work only with vhost_tasks, and not with kthreads.
+>>>>
+>>>> IIUC vhost_worker_killed() will be called anyway when calling
+>>>> vhost_worker_destroy(). For vhost_tasks, it will call
+>>>> vhost_task_do_stop() that calls vhost_task_stop(). This sets
+>>>> VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing
+>>>> stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that
+>>>> is exactly vhost_worker_killed() you mentioned we are mirroring here.
+>>>>
+>>>
+>>> Hmm, are we sure it's the case for our codepath?  Looking at the
+>>> vhost_task loop function:
+>>>
+>>>> static int vhost_task_fn(void *data)
+>>>> {
+>>>>     for (;;) {
+>>>>         if (signal_pending(current)) {
+>>>>             if (get_signal(&ksig))
+>>>>                 break;
+>>>>         }
+>>>>         ...
+>>>>         if (test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>>>             __set_current_state(TASK_RUNNING);
+>>>>             break;
+>>>>         }
+>>>>         did_work = vtsk->fn(vtsk->data);
+>>>>         ...
+>>>>     }
+>>>>
+>>>>     ...
+>>>>
+>>>>     if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>>>         set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
+>>>>         vtsk->handle_sigkill(vtsk->data);
+>>>>     }
+>>>>     ...
+>>>> }
+>>>
+>>> AFAICT, we exit the loop in 2 cases: signal delivery or STOP bit
+>>> setting.  Like you said, STOP is set by vhost_task_stop.  E.g. for our
+>>> RESET_OWNER case:
+>>>
+>>> vhost_vsock_reset_owner()
+>>>  vhost_dev_reset_owner()
+>>>    vhost_dev_cleanup()
+>>>      vhost_workers_free()
+>>>        vhost_worker_destroy()
+>>>          vhost_task_stop()  // for vhost_task_ops backend
+>>>            set_bit(VHOST_TASK_FLAGS_STOP)
+>>>
+>>> So, first of all, actual work by .fn() callback is done after the exit
+>>> checks, therefore we skip it - no chance to drain there.
+>>>
+>>> Secondly, the handle_sigkill() callback is deliberately NOT called in
+>>> the STOP case and only called on fatal signal delivery.  And for
+>>> vhost_task backend the .handle_sigkill() callback is exactly
+>>> vhost_worker_killed().
+>>>
+>>> So my understanding is: if we only call synchronize_rcu() here and leave
+>>> this path undrained, then whatever work which was put by send_pkt() for
+>>> the worker currently being freed - will be lost.  Please correct me if
+>>> I'm wrong.
+>>
+>> Yep, your right. But what will be the issue of loosing them?
+>>
+>> IIUC we are not loosing any data, just avoiding some works that will be
+>> handled later when/if will set a new owner.
+>>
 >
-> On Mon, Jul 13, 2026 at 11:14:35PM +0800, Yun Zhou wrote:
-> > erspan_xmit() re-enters the network stack via ip_tunnel_xmit(), causing
-> > nested acquisition of _xmit_lock on the underlay device while already
-> > holding the ERSPAN device's _xmit_lock. Both are ARPHRD_ETHER and share
-> > the same lockdep class, creating an ABBA deadlock:
-> >
-> >   sch_direct_xmit [lock erspan] -> erspan_xmit -> ip_tunnel_xmit ->
-> >   ip_output -> __dev_queue_xmit -> sch_direct_xmit [lock underlay]
-> >
-> > Set dev->lltx =3D true so HARD_TX_LOCK() skips the spinlock for ERSPAN.
-> > This is safe as erspan_xmit() has no shared mutable state: o_seqno is
-> > atomic, stats use atomic_long_inc, and dst_cache is per-CPU. GRETAP,
-> > the sibling device with identical xmit structure, already sets lltx.
+>But will it actually be handled?
 >
-> erspan_xmit() (unlike gre_tap_xmit()) is performing non-atomic
-> __clear_bit() on shared tunnel flags and KCSAN will probably flag it.
+>vhost_transport_send_pkt()  // called on every packet send
+>  virtio_vsock_skb_queue_tail(&send_pkt_queue, skb) // add skb to list
+>  vhost_vq_work_queue(&send_pkt_work) // try to arm the work
+>    vhost_worker_queue()
+>      if (!test_and_set_bit(VHOST_WORK_QUEUED, &work->flags)) {
+>        llist_add(&worker->work_list)
+>      }
 >
-> Eric had a patch [1] that changes erspan_xmit() to use a private copy of
-> these flags. I think it's better to wait for Eric's patch to be merged
-> before setting lltx.
+>So send_pkt_queue is a list of skbs, it lives on the vhost_vsock device
+>state, and survives RESET_OWNER.  In that sense you're probably right
+>that we aren't loosing any data.
 >
-> Eric, can you please submit v2 of your patch to net?
+>There's also send_pkt_work object, also living on the vhost_vsock device
+>state.  So we're accumulating skbs, and then send_pkg_work gets put in
+>the worker task list - but only if it's NOT already armed in there, i.e.
+>QUEUED bit is unset.  And the bit gets cleared by the workload callback
+>- for vhost_task backend it's vhost_run_work_list().
+>
+>The most important thing is WHERE this piece of work is being put.  That
+>is worker->work_list - this list does not survive RESET_OWNER, as we
+>free the worker in vhost_workers_free().
+>
+>Now imagine we have RESET_OWNER racing with send_pkt.  In
+>vhost_workers_free() we acquire ptr to a worker but not NULL'ify it yet.
+> Then on the send_pkt path we arm the send_pkt_work, set the QUEUED bit,
+>and place it on the work_list of a DYING worker.  Then the worker gets
+>freed.  Now we have send_pkt_work (a singleton struct) with QUEUED set
+>in its flags, and with no worker to walk through this piece of work and
+>clear this flag.  As a result - send_pkt_work can't be placed in the
+>list of any other worker, because it doesn't pass the "if
+>(!test_and_set_bit(QUEUED)" check.  Thus no new packets can be
+>processed, and the connection is stalled.
+>
+>Does this make sense?
 
-Sure, I can work on it today. Thanks!
+Honestly, I don't see the problem. The device is about to be stopped 
+because the VMM is resetting the owner, so the connection is going to 
+stall anyway, since I don't think the guest will never answer, isn't it?
 
+>>>
+>>> That said, I agree that vhost_run_work_list() will only work with
+>>> vhost_task backend, not with kthreads backend.  If we do
+>>> vhost_worker_flush() instead - I guess it'll keep the drain here, yet
+>>> become backend-agnostic. I.e.:
+>>>
+>>>> +       if (!xa_empty(&dev->worker_xa)) {
+>>>> +               synchronize_rcu();
+>>>> +               xa_for_each(&dev->worker_xa, i, worker)
+>>>> +                       vhost_worker_flush(worker);
+>>>> +       }
+>>>
+>>> With the last 2 lines being equivalent to just calling
+>>> vhost_dev_flush(dev).  And once we become backend-agnostic here, I'm
+>>> guessing the warning reported by Sashiko should be dealt with as well.
+>>
+>> I'd avoid `if !xa_empty(&dev->worker_xa)` at all, and call
+>> synchronize_rcu() in any case.
+>>
 >
-> Also, doesn't ip6erspan suffer from the same problem? Please try to
-> reproduce and fix.
+>Agreed.
 >
-> [1] https://lore.kernel.org/netdev/20260615140333.3161072-1-edumazet@goog=
-le.com/
+>> About vhost_dev_flush(), we are calling it in several places, and maybe
+>> we should re-check them. E.g. we call in vhost_vsock_flush(), but it's
+>> also called by vhost_dev_stop(), maybe we can avoid to call
+>> vhost_vsock_flush() if we call vhost_dev_stop().
+>>
+>> I'm not sure we really need another one here, but if you think some
+>> other works can be queued between the vhost_dev_stop() and the
+>> synchronize_rcu() we are adding here, then okay, it may have sense.
+>>
 >
-> >
-> > Closes: https://syzkaller.appspot.com/bug?extid=3D9bda1b9fbb7fbdf9b62b
-> > Reported-by: syzbot+9bda1b9fbb7fbdf9b62b@syzkaller.appspotmail.com
-> > Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-> > Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
-> > ---
-> > v2:
-> >   - change subject prefix to [PATCH net]
-> >
-> >  net/ipv4/ip_gre.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> > index 3efdfb4ffa21..9fbff16cda1d 100644
-> > --- a/net/ipv4/ip_gre.c
-> > +++ b/net/ipv4/ip_gre.c
-> > @@ -1363,6 +1363,8 @@ static int erspan_tunnel_init(struct net_device *=
-dev)
-> >       dev->features           |=3D GRE_FEATURES;
-> >       dev->hw_features        |=3D GRE_FEATURES;
-> >       dev->priv_flags         |=3D IFF_LIVE_ADDR_CHANGE;
-> > +     /* Skip TX lock: xmit re-enters stack, risking ABBA with underlay=
- */
-> > +     dev->lltx =3D true;
-> >       netif_keep_dst(dev);
-> >
-> >       return ip_tunnel_init(dev);
-> > --
-> > 2.43.0
-> >
+>Note that in our particular case we're gonna do:
+>
+>vhost_workers_free()
+>  vhost_dev_flush()  // the flush we're planning to add
+>  xa_for_each(&dev->worker_xa, i, worker)
+>    vhost_worker_destroy(dev, worker)
+>  xa_destroy(&dev->worker_xa)
+>
+>So we walk through the XArray, destroy workers in it one by one, then
+>destroy the XArray itself.  Then the next time we call
+>vhost_dev_flush(), e.g. from vhost_dev_stop() or wherever else, it tries
+>iterating over the XArray which no longer exists - which is gonna be a
+>no-op.
+>
+>Now, we can reach vhost_workers_free() via (at least) 2 paths:
+>RESET_OWNER and device release path.  On the former the flush is needed
+>as I illustrated above.  On the latter it's indeed redundant but is
+>cheap as it's a no-op.
+
+Again, I don't see the need for it TBH, but at the same time, I don't 
+think it's a problem to include it, so if you think it's necessary, go 
+ahead and add it.
+
+Thanks,
+Stefano
+
