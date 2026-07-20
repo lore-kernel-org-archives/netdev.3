@@ -1,103 +1,144 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950B142D752;
-	Mon, 20 Jul 2026 14:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E917431E4F
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 14:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558642; cv=none; b=GWnqllMV7JunNieHCvxzqU2Gs9/BaSOTW/PXLwRgq8A1t5MZ6YrLv3vvFhv1VpvD5zFIutIFL/mKEaoNjkdrkNoVpi9G74ezMUyjRDkifm2XeZvpKSEg7kGYQXNEboxCD8xJsMY/+4Kup5zebdg+oa4AjWLTK+vIr0mDBPweXQU=
+	t=1784558650; cv=none; b=LCHzvV7W6X9mdSq40irdlGysCp1lQ7uv7Lo4zYOGsaU9TRez93scg7TkbcrKsq4v9HspkjVnZugGycidrvjNo/OoAzvd+T53LqFIzOFUzxhJgnZcdgYn/0MIJRWSNWAkQmB/+pcmo+J+0F5Gdq8VJGarQSPGPe3cCHxIVmKIhHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558642; c=relaxed/simple;
-	bh=CQJGspfiB/NAwgT88jIh/m4ZZrG8ah3eLPy3cB4vUOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDORlzVpDyKVc5H/Ie68JyauIXkFdy4BRRJwf/R2BfajYk4ahwvNMXu9RlIxROZViPDytNqVMPfYFcDO6p2fHh7I4ZGw+nuj79KVR7RQjMiUiaN/8my8RhNlEr1E7pobcTv2wy7ZZuURphmzXN6xmPBo4tzg6EoqPy03Xyalzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u87EBpi0; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784558650; c=relaxed/simple;
+	bh=cF1YCM++gtCxzT7sQ99GVB9BZDa1LA1mlq8M3t5Rik8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Jt99vHSpI/kid9f/YAInu8S6Kjpuw8xy49rqARqR7rVleNBXleK3ILUANGpKSO2vKp7AUtwGIAc8vosieXYt9/1KKd8R+6KQ7gdhVNmgRxwLJA4E7QJkp1LO18UVVDY2BK+3K2gWnSW+8+f4bxJhV+hslsnN3PJ2N+FsNyhsmxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L6ceJxj8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u87EBpi0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BXhfFoqflgF82KRwFNK0K4F+WC7W4X52vQ4MqWkibHk=; b=u87EBpi0W7PcezV9DBKXdXN4/P
-	p9UYaLCZFtgUyOGYdytHLutMvSSNyvUcIgRfwGDopHvUqq9ZIlniLUGgYPwPRrDPsFmM1fCmmLkzn
-	A985PR89vvPMIsZsJvQqT/OtMNtLd8+M4EQYIuLAiGvk2F3QoNojNtnckKSJnLpXICWU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlpDY-00DHCs-Cz; Mon, 20 Jul 2026 16:43:40 +0200
-Date: Mon, 20 Jul 2026 16:43:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org,
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, netdev@vger.kernel.org,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, mfd@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
-Message-ID: <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch>
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L6ceJxj8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784558648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=awL865fyO28VMGXok9evyOX+G7wyqLle0dPFb8IBJyg=;
+	b=L6ceJxj8xgQpvCuDuMHPACsKNu9l+oijc9MVnMoEHU9EeE7NV+0n/coQZW2XmlxBpoytn2
+	RiKoJLyIc6/rJarCMwiqlG0NVMh9eyPX1hBnvxHoQgk+F7pGB0wcPTl0HMIp2gmnaqM+LJ
+	GBfYtWVOMlLNi6AV7e0OQQI5lXeFIUc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-30-CgV9iuZePQ6xgJpA3p9D5w-1; Mon,
+ 20 Jul 2026 10:44:03 -0400
+X-MC-Unique: CgV9iuZePQ6xgJpA3p9D5w-1
+X-Mimecast-MFC-AGG-ID: CgV9iuZePQ6xgJpA3p9D5w_1784558641
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D599180288D;
+	Mon, 20 Jul 2026 14:44:01 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2DA941592;
+	Mon, 20 Jul 2026 14:43:59 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Shuah Khan
+ <shuah@kernel.org>,  netdev@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-kernel@vger.kernel.org,  Eelco
+ Chaudron <echaudro@redhat.com>,  Ilya Maximets <i.maximets@ovn.org>,
+  dev@openvswitch.org
+Subject: Re: [PATCH net 2/7] selftests: openvswitch: add config file
+In-Reply-To: <a2032420-b4d4-4eba-9eb4-65eeeea2b63b@kernel.org> (Matthieu
+	Baerts's message of "Fri, 17 Jul 2026 11:39:34 +0200")
+References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
+	<20260710-net-sft-fix-containers-v1-2-a2915c294ef5@kernel.org>
+	<f7t5x2frlkh.fsf@redhat.com> <f7tldbar9gp.fsf@redhat.com>
+	<a2032420-b4d4-4eba-9eb4-65eeeea2b63b@kernel.org>
+Date: Mon, 20 Jul 2026 10:43:57 -0400
+Message-ID: <f7t7bmppvpu.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
-> Prefer the higher-level platform_device_set_fwnode() over the
-> OF-specific platform_device_set_of_node() for dynamically allocated
-> platform devices.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
-> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
-> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
->  		goto put_err;
->  	}
->  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
-> -	platform_device_set_of_node(ppdev, pnp);
-> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
+Matthieu Baerts <matttbe@kernel.org> writes:
 
-This is definitely an OF only driver. There are no other calls to
-fwnode functions in this driver, so this is the wrong thing to do.
+> Hi Aaron,
+>
+> Thank you for the review!
+>
+> On 16/07/2026 22:00, Aaron Conole wrote:
+>> Aaron Conole <aconole@redhat.com> writes:
+>>> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+>>>
+>>>> The kselftests doc mentions that a config file should be present "if a
+>>>> test needs specific kernel config options enabled". This selftest
+>>>> requires some kernel config, but no config file was provided.
+>>>>
+>>>> We could say that a sub-target could use the parent's config file, but
+>>>> the kselftests doc doesn't mention anything about that. Plus the
+>>>> net/openvswitch target is the only net target without a config file.
+>>>
+>>> We've been operating on that assumption from the openvswitch side, but
+>>> it's true that isn't explicitly documented anywhere, and I guess it
+>>> isn't officially supported in the kselftest framework.  I guess we'll
+>>> need to keep updating this config as we add tests for things like SCTP,
+>>> and others, and maybe that's a good thing like we can add a comment
+>>> describing which tests take which configs.
+>>>
+>>> The downside is for most of the OVS testing we use the NIPA scripts
+>>> and those 'inherit' the parent config, so it would be a change on our
+>>> side from the development standpoint (but probably something we should
+>>> have been doing from the beginning).
+>>>
+>>> That said, would it be worth also exploring the 'cascading
+>>> configuration' support?  It seems like a useful feature, but maybe it
+>>> should be a separate discussion.  I ask because of how OVS interacts
+>>> with the networking stack as an 'alternative bridge' so-to-speak, I do
+>>> worry about having to duplicate lots of configurations between the two
+>>> as we expand the test coverage on OVS side.
+>
+> It is not clear to me what you are using on your side, but I guess it
+> should be doable to modify some scripts to merge this new config file
+> and the net one in your case.
 
-Sorry, NACK.
+This doesn't seem to break the NIPA case (at least I can see the
+'contest test' output is not SKIP, but PASS for the openvswitch.sh).
+I'm not sure about the suggestion to change the script in
+tools/testing/selftests/net/openvswitch/openvswitch.sh to do a config
+merge.  It isn't out-of-tree or anything, and seems like that would
+create confusing git state (and not desirable from my end) - the
+upstream test would leave a modified, tracked file.  Was that your
+suggestion?  Or do you mean NIPA itself (but I think it already just
+uses the top-level config).
 
-       Andrew
+The config change itself looks fine to me.
+
+>>>> Here is a new config file, which is a trimmed version of the net one,
+>>>> with hopefully the minimal required kconfig on top of 'make defconfig'.
+>>>
+>>> Should this also remove the OVS configs from the upper level since there
+>>> shouldn't be OVS tests executing there (ie: CONFIG_OPENVSWITCH*)?
+>> 
+>> Actually, forget this part.  The P-MTU tests in pmtu.sh use ovs to
+>> create a datapath through OVS.  So these configurations need to stay at
+>> the top level as well.
+>
+> Indeed. I don't know these tests well, but maybe this P-MTU selftest
+> should move to the net/openvswitch target?
+
+Well, it is testing path MTU across multiple topologies, so it isn't
+really an openvswitch specific test.  Just one that happens to use
+openvswitch in one of the test cases.
+
+> Cheers,
+> Matt
+
