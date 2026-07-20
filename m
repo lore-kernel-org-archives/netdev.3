@@ -1,116 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9793D88E5
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 12:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B555419FC3
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 12:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784551338; cv=none; b=LtIWnLdgvbE+7nwpikT6HR6v2GfKp29pnjGB5atCzIFeY4wunCIQ+2gG97950G8lOfDpwKJxUDOfL1buzfYRkQlgKkMfg0iNdAQo61TzbimBS8fnTUANI/FbSn9IuvlOudKFrmwxJU60e8Ff7IgO7BQqaM4IlwQIPY96GD/M6aY=
+	t=1784551711; cv=none; b=Id8S7W04PlF5gTqWnp/mBsb0+Y2aweFPdnsDlD0bDPQrTSwx9RTootYSjU2KbhaUcHptjFIoNglz59weboG1byf1ZX9CNPtKZRJzluBzG/6ikcWbgRgRYYyRXg7o8XhVB/uNPwlwXa/Dowm1TQRSzAR9ozyJAZvBYgO10r917kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784551338; c=relaxed/simple;
-	bh=O0U0QH93kFMAnNCqW3cDj3rG4kKpvj/nPD7Ek6MTSfs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lUWLOIk17sZEoBSOYoy6fZMp8vdl0ixDE6S9w5VQME+Ja82wSfb5Z8P9f62J3fqD75A8Zl0lD3LcoDDluKdbr92ga6pFgdTbsFZ/fxivJMo5cKg2V6mh4L2MnbcUBZBC/MHltXK43UF6JqVtHj7V0ZtTuf3MExyJ4TidPqUQ6/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aollV8ef; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784551711; c=relaxed/simple;
+	bh=N+9ZTE+CayXuFy5Id8G4dwE2VT+tccB0IvDa7S0SoEM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SHw8Q+NWE78EAmzCz0EWMoRvcQSmzWxOX0eCRFh9X1ja7zKh4Htfx5U4EhJe5XTP/QujOmK731zJ78JFG3+Cp8e8RKOJD4aM9ZYde0MMaDmKeMCK1P7DONH5zcSlO/PC61obRcvWscV2kXS9oTiVaHUzY7WbV8YcbMxARdA8CSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=eUYr3WeE; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aollV8ef"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784551335;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q3J/GEMhDjOF5ve8nn5RuxHQfZV2q9C7kXXtulPd5Qw=;
-	b=aollV8efUzsp8gxLXI2OTgcEYgNhhbYZYon9EjqMygKmnuMR1nUr+Q/5Q1fooqjTJoN6Go
-	4PIk6maeWqJ9JonNl84lOTI5HtR5SU3FY52c0OZ2vLNAmHpIhAGmGhMlmDZAMl2/aC1WoR
-	ZRo4DuCiLYtBh94/+PD98p9qWR/yFZk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-5O6-x0SWMQm8U91YV3QLUQ-1; Mon,
- 20 Jul 2026 08:42:14 -0400
-X-MC-Unique: 5O6-x0SWMQm8U91YV3QLUQ-1
-X-Mimecast-MFC-AGG-ID: 5O6-x0SWMQm8U91YV3QLUQ_1784551333
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F318E1800660;
-	Mon, 20 Jul 2026 12:42:12 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.81.35])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B484195422C;
-	Mon, 20 Jul 2026 12:42:11 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, i.maximets@ovn.org,
- echaudro@redhat.com
-Subject: Re: [net-next,v4] selftests/net/openvswitch: add SCTP flow key test
-In-Reply-To: <20260719162657.3263089-1-houminxi@gmail.com>
-References: <20260719162657.3263089-1-houminxi@gmail.com>
-Date: Mon, 20 Jul 2026 08:42:10 -0400
-Message-ID: <f7to6g1q1ct.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="eUYr3WeE"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so59794495ad.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 05:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784551710; x=1785156510; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ddopxXSq+Kxxg3/7llv7uobPDFFxIZ93j3ihboSU6WM=;
+        b=eUYr3WeEmcBBtngiiLo6kxI9d88a9hzbgIRU/Dwble8XPL1pHmh0bPUxk7kZNSYkvr
+         1MZ4YOcqW5QGClg5bfTabbbiR0uWVRdRiOxXQFFBOuvuYFAvmo9TVbdqi4A3T8rAVu2P
+         2Cd5NkRM4R6aDOM3CbdgjA1JYrjI7Hg6FUry2+gGPsaGJdDm1Isxq8IgvetaYUXu+RbO
+         3QjIQ1++/RcJgJDfIWV/4fPXHTkG/scKI5upWraeAQwOfGeZK3pOGzDuRxV1G3wfCWSk
+         oIVSJbqUCFt2dXId/HwQTSarmZVWctcW8qGCVRj7w4HjkgHhBu25JaYndmuFqPGP/iXe
+         8BqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784551710; x=1785156510;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ddopxXSq+Kxxg3/7llv7uobPDFFxIZ93j3ihboSU6WM=;
+        b=m6+7ueKO+ZZkaMOSRjUcOWyNEraj2qP2fqUIvnBesOslBOMidQ9K3t4b+JMh2GALAY
+         1U2zPc5oU0RFDbGaaalgQMHs41oDpF9yzs154fxJkU1sCl4d2ekknxQIl1GDld7neqCo
+         xgAWopYXRswS7VJTpt6h41m/V8345JPsAPzkv5qxauOya3VILzBoRlVfZk4Tvd21pZG1
+         i4P9hXIiEXPjlm8kfl7fdzK/ELf/zEivSOp9ALIHlLEt4MUp21XQGOYsaiUTDjyrBlK9
+         IWAYnJLAf1DjWsLvYAWVWhNJHtMbpCtGtlVAbcBSrwtMph3R7c9dkn7GAZBJbS0dKjff
+         HGYA==
+X-Forwarded-Encrypted: i=1; AHgh+RpVi/hvCsZPyeQGAreibGNHzkTvs9quVRSVMecCYzmE0H857ybwmvrf5t61fCzb7eiRQfRBldw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYdYS6ApKeBbRfRYvchUIHjeEAZZGgK2NYXCIoCleNu2onyEQE
+	QkEkEc20I1IR6kG4Sr6eIa442vmJSeMrZ8xDdn/8GRXBOnrRLFSeijWBAmJbVSSnsEo=
+X-Gm-Gg: AR+sD13e25ZhyuabLXbXxEhM8oEKsB/5fcD1bWzW4U5pPSNHnrMwa99l6pAzH2nuq+9
+	w+Acm7vQa3sYW927ihDkt0MKX0rM5afFGxjPzdUIrzgixSXwpEkYH/rEHAYnpFug0H4kdQcRvM6
+	88NRsYhy1QRl5hbRl3yt9nmBTQaEjLHnLSek7nvkLEP2/Zsn7hO+c7OvMmI3GL+3xncrEuJ/ef4
+	aDzhFX2+5EyhiDyhvh9NOu7pLiZ4Ek9Vtb0mFf1w63u+I5zssbK1Ox2DcCMofSJ58SUyJHeWV7Z
+	8NyZ1tsfqF0Sre9Iah2mcx/w13wmru4qHcBd2zGsKxzrapVnJosTeFv/NE2vXV0FKIteuyEzqPf
+	Wt0Rf4VNIiIMBn0+zjWaQqQKjyLyRhECLDZf4idC10SWk/nrHJHCd6xCtZSQVgeCa7z87
+X-Received: by 2002:a17:903:291:b0:2c9:d8c6:1db8 with SMTP id d9443c01a7336-2cf3496c0c1mr141277275ad.28.1784551709723;
+        Mon, 20 Jul 2026 05:48:29 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:3::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf346d9f9dsm57557185ad.41.2026.07.20.05.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 05:48:29 -0700 (PDT)
+Date: Mon, 20 Jul 2026 05:48:28 -0700
+From: Joe Damato <joe@dama.to>
+To: lirongqing <lirongqing@baidu.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ipv6: fix dif and sdif mismatch in raw6_icmp_error
+Message-ID: <al4ZHPdZYTEWckkk@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	lirongqing <lirongqing@baidu.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260717143230.1836-1-lirongqing@baidu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717143230.1836-1-lirongqing@baidu.com>
 
-Minxi Hou <houminxi@gmail.com> writes:
-
-> Add test_sctp_connect_v4() to verify OVS can match on SCTP flow keys
-> (sctp src/dst port).
+On Fri, Jul 17, 2026 at 10:32:30PM +0800, lirongqing wrote:
+> From: Li RongQing <lirongqing@baidu.com>
 > 
-> The test sets up client and server namespaces connected through an
-> OVS bridge, installs port-keyed flows, and verifies:
->   - sctp(dst=4443) matches client-to-server INIT
->   - sctp(src=4443) matches server-to-client INIT-ACK
->   - removing flows drops the connection
->   - reinstalling flows restores connectivity
+> In raw6_icmp_error(), raw_v6_match() is called with inet6_iif(skb) passed
+> to both the 'dif' and 'sdif' arguments. This is a copy-paste or typo error,
+> as the last argument should represent the secondary interface index (sdif).
 > 
-> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> This mismatch breaks ICMPv6 error handling for IPv6 raw sockets in VRF
+> (Virtual Routing and Forwarding) environments. When a raw socket is bound
+> to a VRF master device, raw_v6_match() fails to find a match because it is
+> not given the correct sdif value, causing the socket to miss relevant
+> ICMPv6 error notifications.
+> 
+> Fix this by properly passing inet6_sdif(skb) as the last argument to
+> raw_v6_match().
+> 
+> Fixes: 5108ab4bf446fa ("net: ipv6: add second dif to raw socket lookups")
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
 > ---
->  .../selftests/net/openvswitch/openvswitch.sh  | 105 ++++++++++++++++++
->  .../selftests/net/openvswitch/ovs-dpctl.py    |   5 +
->  2 files changed, 110 insertions(+)
+>  net/ipv6/raw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> v3 -> v4: rebase onto latest net-next (2026-07-19), resolve test list
->   conflict from merged trunc test
+> diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+> index 3cc5869..b88d364 100644
+> --- a/net/ipv6/raw.c
+> +++ b/net/ipv6/raw.c
+> @@ -349,7 +349,7 @@ void raw6_icmp_error(struct sk_buff *skb, int nexthdr,
+>  		const struct ipv6hdr *ip6h = (const struct ipv6hdr *)skb->data;
+>  
+>  		if (!raw_v6_match(net, sk, nexthdr, &ip6h->saddr, &ip6h->daddr,
+> -				  inet6_iif(skb), inet6_iif(skb)))
+> +				  inet6_iif(skb), inet6_sdif(skb)))
 
-Hi Minxi,
+Looking at the commit under fixes, this does look like a copy/paste bug to me.
 
-Just a note that this will conflict with the current in-flight patch::
+I wonder if a future contribution would be a test to exercise this path?
 
-   [+]   1. #14675655 [new             ] [net-next,v5]
-       selftests/net/openvswitch: add ICMPv6 echo type match test
-   
-It would be best to wait before reposting, or to bundle all of your test
-case updates in a single series.
-
-Given the other patch is already reviewed by me, let's wait until that
-is accepted upstream before reposting this.  I know Ilya had some
-comments about it previously, but haven't checked to see if you've
-addressed all of them.  And a nit:
-
-[...]
-
-> +# sctp_connect_v4 test
-> +# - sctp(dst=4443) matches client-to-server INIT
-> +# - sctp(src=4443) matches server-to-client INIT-ACK
-> +# - remove flows and verify connection fails, reinstall and recover
-> +test_sctp_connect_v4() {
-> +	local t="test_sctp_connect_v4"
-> +
-> +	which nc >/dev/null 2>&1 || return $ksft_skip
-> +	nc --sctp -z 127.0.0.1 1 </dev/null 2>/dev/null || return $ksft_skip
-
-This can probably be instead::
-
-  nc --help 2>&1 | grep -q -- --sctp || return $ksft_skip
-
-This reads nicer to detect SCTP support in 'nc' binary.
-
+Reviewed-by: Joe Damato <joe@dama.to>
