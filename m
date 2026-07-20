@@ -1,44 +1,42 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478B378F2E
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 02:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABCE2264D9
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 02:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784515961; cv=none; b=Z/GKvvbK9umimIlmQDmI4WuK8FV1nAGcxJtiiHWKGMVtJsvsRV+fgwXIr4yUeK+hRduOf1xwyZjFqRVkoKOPC16cXH6ugCPQOSiDwJEbigAlFkt98NP3q+CT5NZzihCTypynNR1VeznJ11dNCdDlIFCtZxVPSGyf0O2T34PUe9M=
+	t=1784516187; cv=none; b=s6rTPIQL6zrD8ofPaVimW7NLwyqiKctHZna+Yb5dGgy93X5C7f8orC0GC6M8nlHy8Mdj3oR11QBPRtTZbd94+VLnlT/5gkvFpHUJgOSpjcfLmDzNevz7mpciDAfSyBO844dIIepu65Z+BQcZbN8r8yQrgElDj4Xo8koDuXbgP+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784515961; c=relaxed/simple;
-	bh=LXpaBCpsppv6x9DpmAW+yDFRuOD2Xeee81qlkCzqg7E=;
+	s=arc-20240116; t=1784516187; c=relaxed/simple;
+	bh=4FZpVxoEWDYkYuvpbqLoqxczZmsrs8xg7gJvHJBfoxE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBWbrNzosiliVXr6FIc+y3qJRRCk4E6rxudi0p7NRZwVllaf5ssWUkXQ7dCR9xcgU2pxtEXxDZZfoHprvm070GVOgQOQlt5MlKA+gfAVFd0r0dznEDARSI1kzEJTyNNhLDsiRd2onTccZQSwsTRX8mbP1YT+2fdzPKr5Nt2HVmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u0dqy5Re; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2wLF7xEcpCn7Q/7GnbHZsDrK6tP5FWKw35gGDGjRE/lQ5Et4r/kc3I7QmMYlJM+68jDaHKwSqv9vPDf9Y0QQQe4L+8A9LBdh/+huDREc7Ufjr8CCOTP+LQQ38o7Lcg0utZ3LVIK2wKyhdYQUyWqj2d4gZJBQfdaKQB2I9CU/qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KXO3mZnf; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u0dqy5Re"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KXO3mZnf"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eHEcpnlBK+/9Bw4zif1GGToEY3GMVPHDoyvFJZsXXNQ=; b=u0dqy5ReRUKBBWLuaMQ/VQ9oz5
-	dc8UeqweUAFBkDO7eisaqeNMJDOQcaoTg22sPHi5X424l90yhuXGYtwQkzFjrNVmMt3ScAghwxEsa
-	+QeAKUmODdR+jYRk3T3BA2Nbe+wF5SU3Wi+bcmQAzZkpFksORDc6gp6xluDeEsIw67pg=;
+	bh=dMmuhRkxaLQyPoTjQq2ZAlR+iVMtEU8LK3SXzFXTqyo=; b=KXO3mZnfg6E+504tfrVKtGVKPT
+	If+H7IJnJIkW+5h7Eiiv5b+WGxJ8ndMmK98KZyLMG9qtHCPXB22YXbzlVXEH7bDljRCNBCxZdavV3
+	Dr3WV7bge6+Q/FvxfDZZrh/MNUpasoSdyahzVCn2HHzxZvJ/SI7bvNd2FcoPGniuvhiY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wle7L-00DC1y-RP; Mon, 20 Jul 2026 04:52:31 +0200
-Date: Mon, 20 Jul 2026 04:52:31 +0200
+	id 1wleAp-00DC5C-Hs; Mon, 20 Jul 2026 04:56:07 +0200
+Date: Mon, 20 Jul 2026 04:56:07 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
-	echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	pshelar@ovn.org, yihung.wei@gmail.com, vega@nebusec.ai,
-	tonanli66@gmail.com, xuyuqiabc@gmail.com
-Subject: Re: [PATCH net 1/1] openvswitch: Fix CT limit teardown use-after-free
-Message-ID: <c357f846-d42c-4b98-acc9-46b751818dca@lunn.ch>
-References: <cover.1784355642.git.xuyuqiabc@gmail.com>
- <aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>
+Cc: bh74.an@samsung.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>
+Subject: Re: [PATCH 3/7] net: sxgbe: handle descriptor ring allocation
+ failures
+Message-ID: <9a552a88-f034-4a81-ba35-f76de8e08ce5@lunn.ch>
+References: <20260720024747.504493-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,49 +45,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com>
+In-Reply-To: <20260720024747.504493-1-chenguang.zhao@linux.dev>
 
-On Mon, Jul 20, 2026 at 10:14:16AM +0800, Ren Wei wrote:
-> From: Yuqi Xu <xuyuqiabc@gmail.com>
+On Mon, Jul 20, 2026 at 10:47:47AM +0800, Chenguang Zhao wrote:
+> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 > 
-> Packet processing uses CT limit state under RCU, while netns teardown
-> frees that state under ovs_mutex. The CT limit pointer was neither removed
-> from readers nor protected by a grace period, allowing packet processing to
-> dereference the freed state.
-> 
-> Replace the pointer before freeing the CT limit state. Wait for in-flight
-> RCU readers before freeing its contents. Serialize CT limit netlink
-> operations with teardown for the full lifetime of their state accesses.
-> 
-> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
+> sxgbe_open() ignores allocation failures and proceeds to program DMA with
+> invalid ring addresses. In addition, an RX allocation failure leaks all
+> TX descriptor rings allocated earlier. Check the return value and unwind
+> both ring types before disconnecting the PHY.
 
-Is Vega a person?
-
-> Assisted-by: Codex:GPT-5.4
-> Co-developed-by: Nan Li <tonanli66@gmail.com>
-> Signed-off-by: Nan Li <tonanli66@gmail.com>
-> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
-
-Please take a look at
-https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
-and the sections that follow. What is listed here does not follow the
-rules.
-
-> @@ -932,11 +932,15 @@ static int ovs_ct_check_limit(struct net *net,
->  			      const struct sk_buff *skb,
->  			      const struct ovs_conntrack_info *info)
->  {
-> +	const struct ovs_ct_limit_info *ct_limit_info;
->  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
-> -	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
->  	u32 per_zone_limit, connections;
->  	u32 conncount_key;
-
-Reverse Christmas tree. The lines should be sorted longest to
-shortest. Yes, it was already wrong, but you can actually fix it here.
+You are fixing two things here, so there should be two patches. We
+want lots of small patches which are obviously correct, with good
+commit messages. And if your change breaks something, a git bisect
+gives more information.
 
     Andrew
 
