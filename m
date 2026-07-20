@@ -1,302 +1,201 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99FC42668B
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE4D3DB647
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784555497; cv=none; b=nxRfgdxo17n1A3kVVUAamzf/2H79ZyTJFMtF1fv57FMNH/TUIIcSp9+ROxXLaOvW/h95q7k2Owe+u66yFMDlMvm0Ri4N8+D8oDD7em5FuI6TaFB+DpB6kkpzdLUW5b2DhEiRXGk5uwM4+vouJQ+POUBBnMc1dEEEeG3ALXhCcKI=
+	t=1784555935; cv=none; b=eFiZ8UsH/jauDt87pe8XGgzABiDzxlcqr+YfhmqyBHcxZcc6hmTY/r4UBSmOq9GImI4iEp0eH7rOIzIZZOTEqwyb6PNHVTBgzNAUQf/tJ1VFEo5dX8Wai7mKKiwixsDjRtBqAugOA1zLbNCAerA0AcIvnfyJovDBnaK5nkUaEY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784555497; c=relaxed/simple;
-	bh=8aYCnPsa3nLlSzNbWTOJrHEKxPyvPSx1jpaInV1XADk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kkorZPVZD6DbZ1AflnAb+q3qkaTybYcPjNX0bRClNolWVxY8u/+x45Oh3WG8kH5uwWQHImyEdTC2MuIXv8UtRPeZUYLxEYBd7yaJyqMr5xw9laXdu+I4GFSTok/dnTCVjd8Scgz5qbCopZVOMCwDeun+FK0Ba5VaSkPAIDpD+k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WoRaF5EK; arc=none smtp.client-ip=209.85.160.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1784555935; c=relaxed/simple;
+	bh=N6MPpxZRP1NGWFJq37/nDM+kNdRfWwpPOCZClpUNZLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fnkQSCRLZZ2WOPHA9vJHbPBqC0wIHZze90OHg1F+3RsgdLC5JaRZP/Wl/TbavXMdC6HkzM9P/NkMlle2B4M4fJnL7z7xbBNNQ+B7BMxx7JuPyHP2GzY4a0GpHC4GWfHa4FwY0lIKi7VCkXTOsQIfv0+ghTA9+3pNR9F5tQFVk6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ere3DvFm; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WoRaF5EK"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c19493ac2so201600891cf.1
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:51:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ere3DvFm"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc73e322dbso119443495ad.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:58:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784555495; x=1785160295; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KICH6+O2vVTAsaPbT0lNLJSSjrF/FuE3egZF4BaX0l4=;
-        b=WoRaF5EKCAeFvABBj0JCdIzpzMbmqZlFr/CEO6/XhHDsceneMeqDwGsN9o7JCfx7BD
-         EpRtNGjIaHXjoJHo0D9B/VpOy2uZMS0i0BLW7As/Ey/zaB5XjQSmQgySGe/hN5hCGFIw
-         b8DamBqjAO6rFRSghHPG5l4+3UCvq8843m0XFR0YqgNj7aF42Y+xmYxZ81GGFMAOwdiY
-         Ehp38kE8CrUiyvwGVxcTcoIhrjmZMaqr0TzgvBTKFqygkSqoGoq7r1bcEAFfzEUhnkhb
-         YXObrmOIY9keAphyaek7hkKKUX8GaxCL4nUkTYFI2BwL0X/5D8Elcw/DZu28C9izFLIo
-         haeg==
+        d=gmail.com; s=20251104; t=1784555933; x=1785160733; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B+N+tI3fTlFvgqkGyWfTCEbLLuo0kNzByKg6eMoo7gc=;
+        b=Ere3DvFmnjg1uMwo7Ozu/SxQoYodLB5C1HSszcadT65ogcDlSLWami6uJo1mndkj84
+         SQFjLmKYN9S6u67tvlF9Ocrbj0673oSvUX85sb/u2hyJyn6rj8ZKB00A+I0CVdjc3aMV
+         uz9fv5cbGO9ti5qPQNlvCI7NLHlUDoI6qX4KcmsyZGBMg65t/c+QFJx+j/LB4OemrpT9
+         PyshxKUjQtSYMe93MbxRsiUFB7F4fM6Lb+spCszzdqWBP9YPhjNBIks8LMRqFmmJZxXj
+         wY+n23KgO1aA4Y3vjlEpkfV0FRtAdpOuiOCMai8hZtxhW2hQxqxUT/I/ywnQdGbbxJ5W
+         zONw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784555495; x=1785160295;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KICH6+O2vVTAsaPbT0lNLJSSjrF/FuE3egZF4BaX0l4=;
-        b=guSDygEfgAa03F8tWwraxKpbSgoNy3xTZ8Yx3hur+61VU3p8eAkwfMFuTCcKFErB92
-         ItjRu2lcOIw5dbcoiB7n3Z53EEW63nve/6sBioRLh2PEICMfcwY6gbGiRt32uvJ2Iiqp
-         QbBwu68X8NK8TOnMkmTp65Vk9x87WKl/u2VLDUMxaZKDebf0DwEhHYxKCejoHA63GLfa
-         tHzJWI8TLLOT0zg0RBoZ26Hk7fOJ9nf6k1EV9bri5mREtuaQWVgGZpdOdf5moqOHp5oc
-         vDuYHu9w6u5O9AVaYAps+zM3pghdOuV+/9WR6ppKm2AoOqqYyqLmZ0ORaGXkxrgipSz0
-         b7Rg==
-X-Forwarded-Encrypted: i=1; AHgh+RokdFhF2c8K0HOQ0FH2ryxc/CW56Ao6hO099h0ZBq0ptekgXt22nL4gi7eLyJCnxk5fIZ5T/U0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEKVX+8MkK5duQKVK3goNPmLVup5gQrFKM37okvakYSol8gye9
-	psqgKJcuhIUBRQavL0CenEsjz7BFYRl1V7TOacLqfaAplhZFoynIp7t/IGKFcsKwb8i12CN5KR9
-	Ol/S7VNzsAbtG3g==
-X-Received: from qtal17-n1.prod.google.com ([2002:a05:622a:e0d1:10b0:51c:9d78:8252])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:5298:b0:51c:f3:34d9 with SMTP id d75a77b69052e-5213c9dfbdbmr120808951cf.27.1784555494361;
- Mon, 20 Jul 2026 06:51:34 -0700 (PDT)
-Date: Mon, 20 Jul 2026 13:51:32 +0000
+        d=1e100.net; s=20251104; t=1784555933; x=1785160733;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B+N+tI3fTlFvgqkGyWfTCEbLLuo0kNzByKg6eMoo7gc=;
+        b=m0ABdJVJ/JJy5RWCh/JNNOXhkJDbtaDDfqRSE/W2HyTeOic2iyi1CyYHjYd1Ka4+OE
+         68mvETQ0scpogU3kBOFBL7jCXDcSbnTCSZUDnzNg4bvb0FCkFyW87tzM9wiZU9aYn5oF
+         TafW/5XMHm0Lwdb0wtpynqkMDrB/gzz+aii48ncn9L3wEck1516KcZidzgFYuOyP2eFn
+         U1zVg/xBYqCxfa7veDvdWCvdqg/fiDcM9GeqTttMyqelj5Mj46kB8v/N2cd9voIgsM/G
+         OYqxKZzkXgwrlxeUjYmK+Y6SM3lp3KVG7pJfQYzfc8tPQEzZxB79zzRWx+BTF3jmWGOg
+         Z3RA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqf5GqibgydjHZhWAjJAIKj75emPOfzjX1Lz0TYVIfwKhfHB4Xy7nRJUdG5gaZ+cfBmhzD9JnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytH7l06gGP9tDq6RuDpiNRC2+D1szMyQUYPfDAjbFJAQpr/FQq
+	5Cmc1IFaiTb3zmc13CBcCTfOgGojcr8IVFzFJNoNllGyeo8kbyugi9g=
+X-Gm-Gg: AR+sD12yD+kk0v9Hoit91Gq7mwP4hrhJvCXziE2/bTOdXwFtA3HVjOToyrgw08pqqA8
+	6y6XAELn1GJY/AuWuW4bIssyCy0/Y4zbXjI8HEZ3wiy41YbaWEknvIKOf8oGE0XGriooL9LUf8k
+	Fxin12g3ppPWqDlcKHjXZtA+xgHpijOfbuqIihgjJerCaUGbzWgE+3MwwEQo0VsyfjOvEW6bMji
+	anynzgUqc66Bc5fwa0xwNO9MjoOqHRsDq6D2C7aoLqKnD1yasGcKwVXx0Ig42sxugZhBopFrl9+
+	EAJr9DL5yWWHuiKN+ej0S0aJ5XHw+YgGr0rbLzNZYJrwYRt2tPSAQUCh6hcXqZZQBdi0vye67T3
+	Fnp0aXYVtDqhxPHxo143vUIco72iRAnFcUalbPcRAoSr7wXWod0iC5QBkfUiRjyoAxlcSdZtKFw
+	CLU0ZmxZitKRRFZ6JGLJ6W/QiGQwmoRF4oI9hsVTJAgKBG2S4HVjpmhuHZQg7o60zkVPAWYbfYO
+	0kPA20rBm2Tv37crr02ROqikTeuH+boMpTE+aEt
+X-Received: by 2002:a17:902:f542:b0:2cc:741a:ff33 with SMTP id d9443c01a7336-2cf34a39f67mr150605265ad.43.1784555933163;
+        Mon, 20 Jul 2026 06:58:53 -0700 (PDT)
+Received: from localhost.localdomain ([14.5.152.27])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3448ee28sm57045415ad.11.2026.07.20.06.58.49
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 20 Jul 2026 06:58:52 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net] idpf: disable DIM work before freeing q_vectors
+Date: Mon, 20 Jul 2026 22:58:46 +0900
+Message-ID: <20260720135846.76229-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260720135132.3957146-1-edumazet@google.com>
-Subject: [PATCH v2 net] gre: fix ERSPAN o_flags race/corruption in xmit and fill_info
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-For IPv4 ERSPAN:
-In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
-and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
-structure. Since transmit paths can run locklessly and concurrently,
-this leads to a data race.
+idpf never drains the Tx/Rx DIM works before freeing the memory they
+live in.  tx_dim and rx_dim are embedded in struct idpf_q_vector, they
+are queued from the NAPI poll via net_dim(), and idpf_vport_intr_rel()
+ends with kfree(rsrc->q_vectors).  Nothing in the driver cancels them.
 
-Furthermore, modifying tunnel->parms.o_flags permanently alters the
-tunnel configuration. To work around this, erspan_fill_info() (which
-reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
-erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly)
-race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldnt,
-leading to GRE header corruption (injecting a key field into the ERSPAN
-GRE header).
+idpf_tx_dim_work() and idpf_rx_dim_work() then run on freed memory:
+idpf_vport_intr_write_itr() writes the ITR register through
+q_vector->intr_reg.tx_itr / rx_itr, void __iomem pointers loaded out of
+the freed q_vector.  No configuration is needed to get there --
+IDPF_ITR_IS_DYNAMIC() is defined as (itr_mode) and idpf_vport_alloc()
+initialises both modes to IDPF_ITR_DYNAMIC.
 
-Fix this by:
-1) Snapshotting tunnel->parms.o_flags onto the stack in ipgre_xmit(),
-   gre_tap_xmit(), and __gre6_xmit(), and computing the GRE header length via
-   gre_calc_hlen(flags) instead of reading tunnel->tun_hlen. This eliminates
-   TOCTOU races between flags, offload checks, and header length.
-   Note: Since tunnel->tun_hlen is no longer used in fast path xmit, it could be
-   removed altogether in net-next.
-2) Using local flags in erspan_xmit(), clearing IP_TUNNEL_CSUM_BIT and
-   IP_TUNNEL_KEY_BIT (and IP_TUNNEL_SEQ_BIT for v0) before passing them to
-   __gre_xmit().
-3) Removing the racy modification of t->parms.o_flags in erspan_fill_info().
-4) Forcing IP_TUNNEL_KEY_BIT in the reported flags for ERSPAN locally
-   in ipgre_fill_info().
+Draining after idpf_vport_intr_napi_dis_all() is not enough on its own.
+idpf_net_dim() is called from inside the
+"if (napi_complete_done(napi, work_done))" branch of the poll, and
+napi_complete_done() has already cleared NAPIF_STATE_SCHED by then.
+napi_disable_locked() waits only while (val & (NAPIF_STATE_SCHED |
+NAPIF_STATE_NPSVC)), so napi_disable() can return while the poll tail is
+still queueing the work, and a plain cancel_work_sync() would be
+re-armed behind the drain.
 
-For IPv6 ERSPAN:
-ip6erspan_tunnel_xmit() was locklessly clearing IP_TUNNEL_KEY_BIT in
-t->parms.o_flags even though it does not use these flags for building
-the GRE header (it uses local flags). This permanently corrupts the
-configuration and races with ip6gre_fill_info() which reads it.
+Use disable_work_sync(): schedule_work() on a work with a non-zero
+disable count is dropped by clear_pending_if_disabled() before
+__queue_work() is reached.
 
-Remove the redundant and racy modification.
-This should remove false sharing in a fast path.
+Move idpf_init_dim() to idpf_vport_intr_alloc() so the works are
+initialised on every path that can reach the drain -- the three
+"goto intr_deinit" sites between idpf_vport_intr_init() and
+idpf_vport_intr_ena() get there without the enable side having run.
+Nothing re-enables them: rsrc->q_vectors is freed on every exit from
+idpf_vport_open() and on every idpf_vport_stop(), so the count dies with
+the object.
 
-Add const qualifiers in ipgre_fill_info(), erspan_fill_info()
-and ip6gre_fill_info() to clarify that these methods are not
-supposed to write any live parameters.
+It is a race, not a deterministic failure -- net_dim() only schedules
+once DIM_NEVENTS events have accumulated and the profile index changes.
+A KASAN ifup/ifdown loop under load is the way to see it.
 
-Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-Fixes: ee496694b9ee ("ip_gre: do not report erspan version on GRE interface")
-Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: c2d548cad150 ("idpf: add TX splitq napi poll support")
+Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
+Cc: <stable@vger.kernel.org> # see patch description, needs adjustments for <= 6.9
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
-v2: addressed Sashiko and Ido feedback.
-v1: https://lore.kernel.org/netdev/20260615140333.3161072-1-edumazet@google.com/
+Found by static analysis; not tested on hardware.  Testing by someone at
+Intel with an idpf device would be very welcome.
 
- net/ipv4/ip_gre.c  | 45 +++++++++++++++++++++++++--------------------
- net/ipv6/ip6_gre.c |  7 +++----
- 2 files changed, 28 insertions(+), 24 deletions(-)
+disable_work_sync() landed in v6.10, which is newer than the commits
+this fixes, hence the annotation on the stable tag.  A backport to older
+trees needs the work held down another way rather than a cherry-pick;
+happy to send one if the bot reports a failure.
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 3efdfb4ffa2112db3b056169d02d28e8853873ae..442a2c9513e84e84013b4a6d447dd5e243428c5c 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -475,15 +475,12 @@ static int gre_rcv(struct sk_buff *skb)
- 
- static void __gre_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       const struct iphdr *tnl_params,
--		       __be16 proto)
-+		       __be16 proto, const unsigned long *flags)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
--	IP_TUNNEL_DECLARE_FLAGS(flags);
--
--	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
- 
- 	/* Push GRE header. */
--	gre_build_header(skb, tunnel->tun_hlen,
-+	gre_build_header(skb, gre_calc_hlen(flags),
- 			 flags, proto, tunnel->parms.o_key,
- 			 test_bit(IP_TUNNEL_SEQ_BIT, flags) ?
- 			 htonl(atomic_fetch_inc(&tunnel->o_seqno)) : 0);
-@@ -654,6 +651,7 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
- 	const struct iphdr *tnl_params;
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 
- 	if (!pskb_inet_may_pull(skb))
- 		goto free_skb;
-@@ -663,6 +661,8 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
- 	if (dev->header_ops) {
- 		int pull_len = tunnel->hlen + sizeof(struct iphdr);
- 
-@@ -688,11 +688,10 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		tnl_params = &tunnel->parms.iph;
- 	}
- 
--	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
--					      tunnel->parms.o_flags)))
-+	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
- 		goto free_skb;
- 
--	__gre_xmit(skb, dev, tnl_params, skb->protocol);
-+	__gre_xmit(skb, dev, tnl_params, skb->protocol, flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -705,6 +704,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 			       struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 	bool truncate = false;
- 	__be16 proto;
- 
-@@ -728,10 +728,12 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 		truncate = true;
- 	}
- 
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
- 	/* Push ERSPAN header */
- 	if (tunnel->erspan_ver == 0) {
- 		proto = htons(ETH_P_ERSPAN);
--		__clear_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags);
-+		__clear_bit(IP_TUNNEL_SEQ_BIT, flags);
- 	} else if (tunnel->erspan_ver == 1) {
- 		erspan_build_header(skb, ntohl(tunnel->parms.o_key),
- 				    tunnel->index,
-@@ -746,8 +748,9 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
- 		goto free_skb;
- 	}
- 
--	__clear_bit(IP_TUNNEL_KEY_BIT, tunnel->parms.o_flags);
--	__gre_xmit(skb, dev, &tunnel->parms.iph, proto);
-+	__clear_bit(IP_TUNNEL_CSUM_BIT, flags);
-+	__clear_bit(IP_TUNNEL_KEY_BIT, flags);
-+	__gre_xmit(skb, dev, &tunnel->parms.iph, proto, flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -760,6 +763,7 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
- 				struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	IP_TUNNEL_DECLARE_FLAGS(flags);
- 
- 	if (!pskb_inet_may_pull(skb))
- 		goto free_skb;
-@@ -769,14 +773,15 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
--	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
--					      tunnel->parms.o_flags)))
-+	ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
-+
-+	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT, flags)))
- 		goto free_skb;
- 
- 	if (skb_cow_head(skb, dev->needed_headroom))
- 		goto free_skb;
- 
--	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB));
-+	__gre_xmit(skb, dev, &tunnel->parms.iph, htons(ETH_P_TEB), flags);
- 	return NETDEV_TX_OK;
- 
- free_skb:
-@@ -1560,12 +1565,15 @@ static size_t ipgre_get_size(const struct net_device *dev)
- 
- static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip_tunnel *t = netdev_priv(dev);
--	struct ip_tunnel_parm_kern *p = &t->parms;
-+	const struct ip_tunnel *t = netdev_priv(dev);
-+	const struct ip_tunnel_parm_kern *p = &t->parms;
- 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
- 
- 	ip_tunnel_flags_copy(o_flags, p->o_flags);
- 
-+	if (t->erspan_ver != 0 && !t->collect_md)
-+		__set_bit(IP_TUNNEL_KEY_BIT, o_flags);
-+
- 	if (nla_put_u32(skb, IFLA_GRE_LINK, p->link) ||
- 	    nla_put_be16(skb, IFLA_GRE_IFLAGS,
- 			 gre_tnl_flags_to_gre_flags(p->i_flags)) ||
-@@ -1608,12 +1616,9 @@ static int ipgre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 
- static int erspan_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip_tunnel *t = netdev_priv(dev);
-+	const struct ip_tunnel *t = netdev_priv(dev);
- 
- 	if (t->erspan_ver <= 2) {
--		if (t->erspan_ver != 0 && !t->collect_md)
--			__set_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
--
- 		if (nla_put_u8(skb, IFLA_GRE_ERSPAN_VER, t->erspan_ver))
- 			goto nla_put_failure;
- 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 7c09a269b3521618e264655ad2b93586f7214b0b..9e68afec9dce41ab7f094093a8607f9f7ebca4f9 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -777,7 +777,7 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 
- 		ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
- 
--		gre_build_header(skb, tunnel->tun_hlen, flags,
-+		gre_build_header(skb, gre_calc_hlen(flags), flags,
- 				 protocol, tunnel->parms.o_key,
- 				 test_bit(IP_TUNNEL_SEQ_BIT, flags) ?
- 				 htonl(atomic_fetch_inc(&tunnel->o_seqno)) :
-@@ -964,7 +964,6 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	if (skb_cow_head(skb, dev->needed_headroom ?: t->hlen))
- 		goto tx_err;
- 
--	__clear_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
- 	IPCB(skb)->flags = 0;
- 
- 	/* For collect_md mode, derive fl6 from the tunnel key,
-@@ -2115,8 +2114,8 @@ static size_t ip6gre_get_size(const struct net_device *dev)
- 
- static int ip6gre_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct ip6_tnl *t = netdev_priv(dev);
--	struct __ip6_tnl_parm *p = &t->parms;
-+	const struct ip6_tnl *t = netdev_priv(dev);
-+	const struct __ip6_tnl_parm *p = &t->parms;
- 	IP_TUNNEL_DECLARE_FLAGS(o_flags);
- 
- 	ip_tunnel_flags_copy(o_flags, p->o_flags);
--- 
-2.55.0.229.g6434b31f56-goog
+libwx does the same thing in the same order -- napi_disable() then
+disable_work_sync() on the dim works -- in wx_napi_disable_all().
 
+Based on v7.2-rc2.
+
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 24 +++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 7f9056404f64..cd98674fb648 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -4148,6 +4148,26 @@ static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport,
+ 	writel(rsrc->noirq_dyn_ctl_ena, rsrc->noirq_dyn_ctl);
+ }
+
++/**
++ * idpf_vport_intr_dis_dim_all - Disable DIM work for all q_vectors
++ * @rsrc: pointer to queue and vector resources
++ *
++ * The DIM works are embedded in the q_vector array that
++ * idpf_vport_intr_rel() frees, and the poll arms them after
++ * napi_complete_done() has already cleared NAPI_STATE_SCHED.  Disable
++ * rather than just cancel, so that a poll tail still running past
++ * napi_disable() cannot queue them again behind the drain.
++ */
++static void idpf_vport_intr_dis_dim_all(struct idpf_q_vec_rsrc *rsrc)
++{
++	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++) {
++		struct idpf_q_vector *q_vector = &rsrc->q_vectors[v_idx];
++
++		disable_work_sync(&q_vector->tx_dim.work);
++		disable_work_sync(&q_vector->rx_dim.work);
++	}
++}
++
+ /**
+  * idpf_vport_intr_deinit - Release all vector associations for the vport
+  * @vport: main vport structure
+@@ -4158,6 +4178,7 @@ void idpf_vport_intr_deinit(struct idpf_vport *vport,
+ {
+ 	idpf_vport_intr_dis_irq_all(rsrc);
+ 	idpf_vport_intr_napi_dis_all(rsrc);
++	idpf_vport_intr_dis_dim_all(rsrc);
+ 	idpf_vport_intr_napi_del_all(rsrc);
+ 	idpf_vport_intr_rel_irq(vport, rsrc);
+ }
+@@ -4238,7 +4259,6 @@ static void idpf_vport_intr_napi_ena_all(struct idpf_q_vec_rsrc *rsrc)
+ 	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++) {
+ 		struct idpf_q_vector *q_vector = &rsrc->q_vectors[q_idx];
+
+-		idpf_init_dim(q_vector);
+ 		napi_enable(&q_vector->napi);
+ 	}
+ }
+@@ -4581,6 +4601,8 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport,
+ 		q_coal = &user_config->q_coalesce[v_idx];
+ 		q_vector->vport = vport;
+
++		idpf_init_dim(q_vector);
++
+ 		q_vector->tx_itr_value = q_coal->tx_coalesce_usecs;
+ 		q_vector->tx_intr_mode = q_coal->tx_intr_mode;
+ 		q_vector->tx_itr_idx = VIRTCHNL2_ITR_IDX_1;
+--
+2.43.0
