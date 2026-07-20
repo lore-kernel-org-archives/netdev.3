@@ -1,46 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62843BADAA
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 21:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEB33B3C1A
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 21:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784584100; cv=none; b=Y9YVOSgmhyh2IqgD5ZeYnklzywAGqDz6NYQ8inm4i/jZp+dyTdl2wUao5/pPUMOQe0OUZHtneLjvB5uxfT7VAFFs2GW0oYNnE/xAVX2hNXITY7ns50HLupBScey4cTsAIqvvGFoc9oBWZn3oDbBJWHlWpOJsKqM+x+AD7LwWwVg=
+	t=1784584185; cv=none; b=n3O6513qBJA4f60uGvA9KwIj2unkG6NreI+fHlowOm3xXym7gVIvpEKeXy308H3QC4g9xvuNdEfuUdy7dqe/bgT2WDwj+zUNLwNkejp8NGh3vxFc1Cn8p5xt993WL+KNMIZuRZtBAp9edEnbzDptvhdiBLKSdLI8WZNwDWgBqrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784584100; c=relaxed/simple;
-	bh=vsqCLPan+/wNGpTkf7z9LhaHDgvbDsbIV+JINchj7hQ=;
+	s=arc-20240116; t=1784584185; c=relaxed/simple;
+	bh=jfobYvFKnqZQWOJr3CSG5DZFANlVvFt3XLmpO+onttU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V7Dg/DwMRDqkL7YLQIQgo3hJ2OguGTYtAakMgxlyzPdB0bTm6VIfRyF7+3ZpqY74J2JKAyDYPjaop10tU3n78qqQVbOKSm8EtmmxnMs6NXwlUlW1YXA6N4xPFu4YsFF24NSQRAll9yH5WSVUWnZambJ8eCyx8RvoZcWQqfLpHbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEwtl3ik; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Q3ErdVvfJuyhkglKgxHjq7RYGFpyMED1/h4h6lfWsuypLVxujvOIcvgCocFYOoC8vM8RFyT/vFwEMxRBojQ35cMjcTTsSIVwYrRX7tdV86DTUx4uroTFCkiEBWElUhzRq1bd1gIjoNPxf3id64PEVMrNbM5A/plMeYd3Q4Ivq2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0SEFFG2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEwtl3ik"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361AF1F000E9;
-	Mon, 20 Jul 2026 21:48:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0SEFFG2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21371F000E9;
+	Mon, 20 Jul 2026 21:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784584097;
-	bh=vsqCLPan+/wNGpTkf7z9LhaHDgvbDsbIV+JINchj7hQ=;
+	s=k20260515; t=1784584184;
+	bh=a305+/dqeGqdMetl9gdzRzOZIEZNcEFzXc13nYcj1B8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fEwtl3ikdnwq7ANP9ITcthGzt7EaCg7gjT+NTRtJpe0A+BMU55d9tEfJeh2jLjyVB
-	 mg8e5cxFlRRyWx7S4T7dE+33+qs6H3iPeHxUNeEKafLTSwhDSt7dqtlvuq3jYLAXK/
-	 mbM5RXuIhPCMWu79pMX6d2aQvvW59RqECqPHDgexpOjXx7B73FEJkppTeQm46SmMh/
-	 osVkwjyydU9mAl3hBB4q+quKyCG5zB9cp9tz9zbvpz2Saakt88ieKKy/ZdW1Lw8nwE
-	 5ocNGkgBrp0r5KHMR5tkAE9igmUxYiHzFgb67zKztUKFNPRupwA9gZYJcMy+tDLYJW
-	 hvTNF7o3dxzKA==
-Date: Mon, 20 Jul 2026 14:48:16 -0700
+	b=g0SEFFG2bQOVF5ay6vR8eSQj8SMppWEK4zQEg54fA4wKQQL2UaNittn7FN3d1vLSv
+	 yHWCyDWlKR9HYzjhqR/r6L3y+nhip8g7ojU6WYgF12ueFPCWEh0u1kLaOz70Tznwxe
+	 Lvz+eZ4YgUxHwqJvWCNWxJDSd4WFK7cZw4v7z8gXnCtUG9i5dP2dPU7pPvV/9i3VXn
+	 Aqu69a/YPyv1baqJO11m27b2tcEk97vSWJtuwGRvnMFkV6efT7hOUzezdaNpiIEQ6T
+	 H+2/DAk7I8W2/9+v83SWkZZCzn0L4mJRPwWJxt2Nd4foa6WRO2d9t+wvhIKk+77hvw
+	 qvIh1TWpgkVlw==
+Date: Mon, 20 Jul 2026 14:49:43 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexander Lobakin
- <aleksander.lobakin@intel.com>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, Madhur Agrawal
- <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v8 0/3] airoha: add the capability to configure
- GDM3/GDM4 as WAN/LAN on demand
-Message-ID: <20260720144816.4d32909b@kernel.org>
-In-Reply-To: <aloP8n-EVtAHnl-l@lore-desk>
-References: <20260703-airoha-ethtool-priv_flags-v8-0-015ba5ac89ee@kernel.org>
-	<aloP8n-EVtAHnl-l@lore-desk>
+Cc: Wayen Yan <win847@gmail.com>, netdev@vger.kernel.org, horms@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
+ angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net] net: airoha: fix HTB class modification offload
+Message-ID: <20260720144943.0f4d1771@kernel.org>
+In-Reply-To: <akthM-O5eea52MN6@lore-desk>
+References: <178332096675.2250671.599544331813347302@gmail.com>
+	<akthM-O5eea52MN6@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,9 +47,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 17 Jul 2026 13:20:18 +0200 Lorenzo Bianconi wrote:
-> I'm not entirely sure what the next steps should be for this series.
-> Thanks in advance.
+On Mon, 6 Jul 2026 10:02:59 +0200 Lorenzo Bianconi wrote:
+> > HTB core does not populate parent_classid for TC_HTB_NODE_MODIFY.
+> > Airoha currently checks parent_classid against TC_HTB_CLASSID_ROOT
+> > in a helper shared by both TC_HTB_LEAF_ALLOC_QUEUE and
+> > TC_HTB_NODE_MODIFY. Since the modify path leaves parent_classid as
+> > zero, the check always fails and changing parameters of an already
+> > offloaded HTB class is rejected with -EINVAL.
+> > 
+> > Move the root-parent check into the allocation path and validate
+> > modify requests using the per-netdev QoS channel bitmap, consistent
+> > with the delete and query paths.
+> > 
+> > Fixes: ef1ca9271313 ("net: airoha: Add sched HTB offload support")
+> > Signed-off-by: Wayen Yan <win847@gmail.com>  
+> 
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-You have to repost, once a patch is 2 weeks old korg patchwork bots
-insist on marking it as archived.
+ditto, please repost
