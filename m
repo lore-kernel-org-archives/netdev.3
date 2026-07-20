@@ -1,91 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E8742D74D;
-	Mon, 20 Jul 2026 14:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC09431A4C;
+	Mon, 20 Jul 2026 14:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558815; cv=none; b=H4DxYvj7V94xzYd+tfyui2LSDmBDukA02xt5eNtpRouZQ09kUDpALDvpe4L0XWHRQzwOsE37Eff2zq0O1U/gWYLBXaWddaBN+FPu/TGSBfCbeEzYL5aXdA+rHOtLYAGYW56adDg07N4D8GKwnmK1dix3n2ZM2HAGs7nsBB4yifA=
+	t=1784559160; cv=none; b=gZAfB2vJL16R8VXlaSmWhn+nb+JCzdvVjbdsqpB8q4kDHyTjNvFSBKPKxY0NXpuLkm0OFrelILxrTv2uYCy4L8ETbBzTUREPi8VaKF/PejX6wKUXpp2mgFPtitawKD3Mn1JrNarSRRWz3oW7n5FEhIyRgevY132l3cXOiTqK2a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558815; c=relaxed/simple;
-	bh=MmkkCci7vAQOuzMABsY75YwfppPhMTrtpba8IaLjgjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q5jyzuTFUqr08evL/nnozA2mdV5UKB48I4jb0nyBRVI8EvYKp1tp080mq1x1Fgv5GX0S2R0eGj54KxnpAcVEHHmPEzcrd5J0xfTefH8VTcfTrg0ckWV+h5yDcXVdkU0mg5TeYMdbtCFMw2phOazFWp1eGPxsaisDR88IprncMho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LQTgNtlW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784559160; c=relaxed/simple;
+	bh=EPsyRR7LCFKmzeypBibz3LCRILY/20SblXsJzfVRsDo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qshpXk6DqkxEPAC0ly01DkD+AnN2rV42PF6lik19HbtvI740pwvuOMz1Mk0uJ0ueOwouOYwSDms4lqsQlkhSFSNbKAAwJU9sL5s2GqZGT3sWIbnBoRi1QioE5N/JQ5DBtjbgMg3857bmzyXwzO9oRDoz/WsNIq9iH4YbkhwmHxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RG/eenJr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LQTgNtlW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MuZVjOcXedZXPFO7JW1iwQVuE+ELoWb4+EQHcBM7sC8=; b=LQTgNtlWYAwuwYVvhHneXPND+C
-	yePY3KqOhQLYFANE7MNoMAHMW6T5FH2Sc65P/IBnYokpG4ZSlbPRnMmQNoN4dAU6AqZGXimPiiXrA
-	g0MVipKiVqfMN9nD3H9prVQdtuqNfbXFIJ2LC3cwZYtoSCZwX0D1DzpnusUF27BhFKuM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlpGG-00DHEu-4y; Mon, 20 Jul 2026 16:46:28 +0200
-Date: Mon, 20 Jul 2026 16:46:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Breno Leitao <leitao@debian.org>
-Cc: Pu Lehui <pulehui@huaweicloud.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] e1000e: Fix out-of-bounds MMIO access by validating
- BAR0 size
-Message-ID: <63312141-eb7f-4f8a-9cb1-84f417c08b5c@lunn.ch>
-References: <20260715035850.588070-1-pulehui@huaweicloud.com>
- <al3uh7OU2OtkEkSY@gmail.com>
- <ffc0a0d8-6560-4589-9570-04f40d817009@huaweicloud.com>
- <al4Z4_tFbyQM-ogu@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RG/eenJr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCF21F000E9;
+	Mon, 20 Jul 2026 14:52:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784559159;
+	bh=mNOG6tJb4ArYv61TC1J/bhHRHe0S/t8B6qvgryjB5RU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RG/eenJrhlrFChjXoASIEwwaT96iqfec4D/FA+H47IEz1lQN2+SIcuTwaWcZ6Svbd
+	 NPnno87gRDUyaX8F1WqM6hC19NYNS+AkPHDzAtc7AAn19W+FK8VvQZkpxJx3Od6Idm
+	 8WQSkPUs9i3tM8ilnfMl5UUVuCj8kiNsx9uYwc93dI969JDEAdkl+ZCcKB2YlBnVf3
+	 9c2H5HYZ614/4pEQvuO+WxzsHCoQ8p0cy5ubzzf9iMqgRbnRitVs6jDaYIl1W3ajy7
+	 6kHpT48Fu0LouO3vvu2Uo/Cm4EYoG2PJTC37DAXUksxaC4uIa+rIXM+ImyTHKKqm4y
+	 qyn4d4kPmhGhQ==
+From: Simon Horman <horms@kernel.org>
+To: dhowells@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	marc.dionne@auristor.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH net v3 04/14] rxrpc: Fix packet encryption error handling
+Date: Mon, 20 Jul 2026 15:52:22 +0100
+Message-ID: <20260720145222.192109-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260713081022.2186481-5-dhowells@redhat.com>
+References: <20260713081022.2186481-5-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <al4Z4_tFbyQM-ogu@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 20, 2026 at 05:53:37AM -0700, Breno Leitao wrote:
-> On Mon, Jul 20, 2026 at 07:56:20PM +0800, Pu Lehui wrote:
-> > 
-> > On 2026/7/20 17:47, Breno Leitao wrote:
-> > > On Wed, Jul 15, 2026 at 03:58:50AM +0000, Pu Lehui wrote:
-> > > > +/* Minimum MMIO (BAR0) len, the largest offset is lower than 64K */
-> > > 
-> > > Why "the largest" in this case?
-> > 
-> > Hi Breno,
-> > 
-> > Thanks for pointing that out. I meant the maximum register offset accessed
-> > by the driver.
-> > 
-> > IIUC, common e1000e NIC usually have a 128K BAR0. But since I'm not 100%
-> > sure if older NIC might be smaller, I picked 64K as a safe lower limit
-> > because it covers the largest register offset used in the driver's codebase.
-> > If my assumption here is off, I'd really appreciate any corrections!
-> > 
-> > And for this comment, how about the follow?
-> > /* Minimum MMIO (BAR0) length to safely cover the maximum register offset
-> > accessed by the driver */
-> 
-> Thanks, Would something like this be a bit better?
-> 
->      /* 
->       * Smallest BAR0 that covers every register the driver accesses
->       */
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+https://sashiko.dev/#/patchset/20260713081022.2186481-8-dhowells@redhat.com?part=4
+---
+--- Patch [4]: [PATCH net v3 04/14] rxrpc: Fix packet encryption error handling ---
+commit 01fc73762a5a2162d360f4b9e10f752440ebbd67
+Author: David Howells <dhowells@redhat.com>
 
-I would actually reference the highest register. It then becomes
-exactly clear where this number comes from. Better still, use the
-register #define in the test, along with this comment.
+rxrpc: Fix packet encryption error handling
 
-	 Andrew
+This commit modifies the error handling in rxrpc_send_data() when
+secure_packet() fails. It treats -ENOMEM as a retryable error and marks
+other errors as terminal by setting the RXRPC_CALL_TX_ERROR flag to abort
+the call.
+
+Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
+
+> diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+> --- a/net/rxrpc/sendmsg.c
+> +++ b/net/rxrpc/sendmsg.c
+[ ... ]
+> @@ -440,12 +446,21 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+>  		/* add the packet to the send queue if it's now full */
+>  		if (!txb->space ||
+>  		    (msg_data_left(msg) == 0 && !more)) {
+> -			if (msg_data_left(msg) == 0 && !more)
+> -				txb->flags |= RXRPC_LAST_PACKET;
+> -
+> +			/* Do any required crypto.  If this fails, it could
+> +			 * have corrupted the txbuf content with a partial
+> +			 * encrypt.  Assume that ENOMEM is retryable, but
+> +			 * everything else is terminal.
+> +			 */
+>  			ret = call->security->secure_packet(call, txb);
+> -			if (ret < 0)
+> +			if (ret < 0) {
+> +				if (ret == -ENOMEM)
+> +					goto maybe_error;
+
+[Severity: High]
+If secure_packet() fails with -ENOMEM, does this jump to maybe_error bypass
+rxrpc_queue_packet() but still return a successful write length?
+
+Looking at rxrpc_send_data(), the user data has already been copied into txb
+and 'copied' has been incremented. The maybe_error path handles this:
+
+maybe_error:
+	if (copied) {
+		...
+		goto success;
+	}
+
+Because copied > 0, it jumps to success and returns the number of bytes
+copied, including the data in the unqueued txb.
+
+Could this mislead userspace into thinking the data was sent when it was
+actually dropped, leaving the unencrypted packet permanently stuck in
+call->tx_pending and leading to an application hang?
+
+> +				set_bit(RXRPC_CALL_TX_ERROR, &call->flags);
+>  				goto out;
+> +			}
+> +
+> +			if (msg_data_left(msg) == 0 && !more)
+> +				txb->flags |= RXRPC_LAST_PACKET;
+>  			rxrpc_queue_packet(rx, call, txb, notify_end_tx);
+>  			txb = NULL;
+>  		}
