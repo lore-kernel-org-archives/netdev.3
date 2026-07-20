@@ -1,72 +1,44 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023C53CCA02
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770A63CC7CD;
+	Mon, 20 Jul 2026 08:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784535746; cv=none; b=J0C4LL9/LLLrKLIdMeza00DRL8sdgZNpWmgOghR3EIMIgVhiGhm5Ay+nOsnQckb38qWSuRrq63C7m0T9vevlPItBUz0FiEpDX05SPDhwPb8YrReHWjI2a6SR1JFydyNJvzek6SJxc9HylHRMpPxbf/o1meE5WkOrIOcToiMXE54=
+	t=1784535749; cv=none; b=UTRTDXs3DkInU3FgyP5qSB8ld9T29xkDJuseqf94G4gujlJ/mnLsNVOtLkLFVuL+Uq5iyzklvIDz5GL9cZ/Ixw9WUvJHKfxnKq6IsUhWiYBZXQFNvGG7El5Dnk9qltxSziPT0JglRnfvSCJOq8guBWZ1H/f8O1Tz1aTejJ92idc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784535746; c=relaxed/simple;
-	bh=0q1JjJT+NyJ3KoGJBvEOCOT0C4whnoSf+Mg9FkxS1XI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mPANhByJSu6LzoOWtI2iZp/cY9zqOBlJ8PTBjX1HmIb0j1iiAUz9Bgo+jshu0/bJ43OffmaGdiPBifCSmD5S78o1Gf1twqT1nOGlWU74ET45jpY+g2ewoOwYBqtmRELf1pDF4WfH6BXCOOenjo9iFT8GWJ6NkSdhNoQMoOGsALc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TczRQXsn; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784535749; c=relaxed/simple;
+	bh=ySEwroPRb5DHlyaq4soxUzkTKQt+T8Sec43Br85Lu5M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p/FuMtgZhd/M13x7hKW4qETvDNdr+y8mFJwHpUGfR3XLI4lc1tLFRtGXP8SnIBUGQ9GeX4oU2HqcwX3S6ZoKYW/WE1QxNaW54QYtzyWib9xo1KM0ZtRn6TVd8K9cfX2I2mHNZxfNfquejYJRJcXPRmY2ycNRV/5W5yeCgWZ5XZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CrlMW0M0; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TczRQXsn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784535745; x=1816071745;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0q1JjJT+NyJ3KoGJBvEOCOT0C4whnoSf+Mg9FkxS1XI=;
-  b=TczRQXsnyFseT2p4FFrG7GbhPPRkG7HurmqgfscagJtTQBNiVMWjx8s9
-   CKNaKoFDCe6IKOCttL9u6HW/Vcoo3ud8W5bMLLVT2mwaH6f4IthdU261x
-   qrkMm+Fmxg3r32sMB5Oj1cLxn4ZUILFhLzkOoHcgb8zwhnI0CYwxdhhi8
-   dDLwMt0dbptUQrQ55SCl/qnMt4j/81McoFaXda+M08M9ET7vGmmMlDmeT
-   2shcNCQkyMA1AfjorK9twz2u+bQbIL9CltTI6rayapy04bVxddTYKBfkq
-   6tzMtvYaFdK39XYpyH7McOAe8xeYtXUhUTU3ZCyA9HaKn9xmIcw/l9csx
-   Q==;
-X-CSE-ConnectionGUID: hAIxEc/gRU+AJyFjAyfQDQ==
-X-CSE-MsgGUID: NsBTmoKqTiCY+JbcI+ku5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="85228577"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="85228577"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:22:24 -0700
-X-CSE-ConnectionGUID: xFMmqMuHQjGxdpCWUBrHDg==
-X-CSE-MsgGUID: p68X0I5VQQ+yAaawjcofPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="258034723"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:22:20 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org
-Cc: aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CrlMW0M0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jc
+	wHsY5zypMELrWEKa1Ep6tVBSBTsXsnGhc31N6FYz0=; b=CrlMW0M01HTlIiij65
+	UHL8aGC2hXrF+dEtvVZFYPXp0ehPe+lR+q6SMMWaqRG3Mml8GpWxfSY5O5h8s+Jc
+	P07C8PpQh4EnzTtUyaVCKUa53E/u4hhALhvs/bnERTCz6t/b05aX48pUadxJ5wJV
+	NZG6lCbb0PtmwIPMv6UFte8Po=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnM1uZ2l1qpi5jKg--.47708S2;
+	Mon, 20 Jul 2026 16:21:46 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	simona.vetter@ffwll.ch,
-	airlied@gmail.com,
-	pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com,
-	ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com,
-	ravi.kishore.koppuravuri@intel.com,
-	raag.jadav@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mallesh.koujalagi@intel.com,
-	soham.purkait@intel.com,
-	Riana Tauro <riana.tauro@intel.com>
-Subject: [PATCH v5 0/3] Add drm_ras netlink error event support
-Date: Mon, 20 Jul 2026 13:52:09 +0530
-Message-ID: <20260720082208.2648279-5-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v4] sctp: socket: refactor sctp_skb_recv_datagram to use ERR_PTR
+Date: Mon, 20 Jul 2026 16:21:45 +0800
+Message-Id: <20260720082145.1072547-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,61 +46,133 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCnM1uZ2l1qpi5jKg--.47708S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw18ZryUCF4Duw4ruFyrtFb_yoWrGrW3pF
+	n8AFZ8JrWDJrW8uwnakFWkX3WrK3yrJ3y5Ca4rtw1Fyrs8Gr95tFyYgr4SkF45Cr4rCa4a
+	qr4qgw1akrnruFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UDxhJUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3hrOE2pd2poyVwAA3L
 
-Define a new netlink event 'error-event' and a new multicast group
-'error-report' in drm_-as. Each event contains device name, node and
-error information to identify the error triggering the event.
+From: Qing Luo <luoqing@kylinos.cn>
 
-Add drm_ras_nl_error_event() to trigger an event from the driver.
-Wire this support to xe_drm_ras to report to userspace whenever a
-correctable/uncorrectable error occurs on CRI.
+The err output parameter in sctp_skb_recv_datagram() is passed to
+callers but never validated, making error reporting unreliable.
+Remove it and use ERR_PTR to encode errors directly in the return
+value, which is the standard kernel pattern for this case.
 
-$ sudo ynl --family drm_ras --output-json --subscribe error-report
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ include/net/sctp/sctp.h |  2 +-
+ net/sctp/socket.c       | 20 ++++++++++----------
+ net/sctp/ulpevent.c     |  5 ++---
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
-{
-    "name": "error-event",
-     "msg": {
-         "device-name": "0000:03:00.0",
-         "node-id": 1,
-         "node-name": "uncorrectable-errors",
-         "error-id": 1,
-         "error-name": "core-compute",
-         "error-value": 1
-     }
-}
-
-Rev2: use ynl in document and commit message
-      fix cosmetic review comments
-      simplify caller
-
-Rev3: replace error-event with error-report
-      had has_drm_ras check
-      add support for correctable errors in CRI
-
-Rev4: send an event at most once per component for each interrupt
-      add xe_warn for unexpected values from firmware
-      fix sashiko reported issues
-
-Rev5: Remove has_listeners
-      send netlink event to all network namespaces
-
-Riana Tauro (3):
-  drm/drm_ras: Add drm_ras netlink error event
-  drm/xe/xe_ras: Report correctable error events to userspace
-  drm/xe/xe_ras: Report uncorrectable error events to userspace
-
- Documentation/gpu/drm-ras.rst            | 21 ++++++
- Documentation/netlink/specs/drm_ras.yaml | 48 ++++++++++++++
- drivers/gpu/drm/drm_ras.c                | 84 ++++++++++++++++++++++++
- drivers/gpu/drm/drm_ras_nl.c             |  6 ++
- drivers/gpu/drm/drm_ras_nl.h             |  4 ++
- drivers/gpu/drm/xe/xe_drm_ras.c          | 42 ++++++++++++
- drivers/gpu/drm/xe/xe_drm_ras.h          |  3 +
- drivers/gpu/drm/xe/xe_ras.c              | 74 +++++++++++++++++++++
- include/drm/drm_ras.h                    |  5 ++
- include/uapi/drm/drm_ras.h               | 15 +++++
- 10 files changed, 302 insertions(+)
-
+diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
+index d50c27812504..b86d50d6b146 100644
+--- a/include/net/sctp/sctp.h
++++ b/include/net/sctp/sctp.h
+@@ -97,7 +97,7 @@ void sctp_sock_rfree(struct sk_buff *skb);
+ 
+ extern struct percpu_counter sctp_sockets_allocated;
+ int sctp_asconf_mgmt(struct sctp_sock *, struct sctp_sockaddr_entry *);
+-struct sk_buff *sctp_skb_recv_datagram(struct sock *, int, int *);
++struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags);
+ 
+ typedef int (*sctp_callback_t)(struct sctp_endpoint *, struct sctp_transport *, void *);
+ void sctp_transport_walk_start(struct rhashtable_iter *iter);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325ec1c..2deaa498e6cf 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2123,9 +2123,11 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 		goto out;
+ 	}
+ 
+-	skb = sctp_skb_recv_datagram(sk, flags, &err);
+-	if (!skb)
++	skb = sctp_skb_recv_datagram(sk, flags);
++	if (IS_ERR(skb)) {
++		err = PTR_ERR(skb);
+ 		goto out;
++	}
+ 
+ 	/* Get the total length of the skb including any skb's in the
+ 	 * frag_list.
+@@ -9082,7 +9084,7 @@ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p)
+  * Note: This is pretty much the same routine as in core/datagram.c
+  * with a few changes to make lksctp work.
+  */
+-struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
++struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags)
+ {
+ 	int error;
+ 	struct sk_buff *skb;
+@@ -9117,21 +9119,19 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
+ 		if (error)
+ 			goto no_packet;
+ 
+-		if (sk->sk_shutdown & RCV_SHUTDOWN)
++		if (sk->sk_shutdown & RCV_SHUTDOWN) {
++			error = 0;
+ 			break;
+-
++		}
+ 
+ 		/* User doesn't want to wait.  */
+ 		error = -EAGAIN;
+ 		if (!timeo)
+ 			goto no_packet;
+-	} while (sctp_wait_for_packet(sk, err, &timeo) == 0);
+-
+-	return NULL;
++	} while (sctp_wait_for_packet(sk, &error, &timeo) == 0);
+ 
+ no_packet:
+-	*err = error;
+-	return NULL;
++	return ERR_PTR(error);
+ }
+ 
+ /* If sndbuf has changed, wake up per association sndbuf waiters.  */
+diff --git a/net/sctp/ulpevent.c b/net/sctp/ulpevent.c
+index 8920ca92a011..21ae0adbaeef 100644
+--- a/net/sctp/ulpevent.c
++++ b/net/sctp/ulpevent.c
+@@ -1061,10 +1061,9 @@ void sctp_ulpevent_read_nxtinfo(const struct sctp_ulpevent *event,
+ 				struct sock *sk)
+ {
+ 	struct sk_buff *skb;
+-	int err;
+ 
+-	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT, &err);
+-	if (skb != NULL) {
++	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT);
++	if (!IS_ERR_OR_NULL(skb)) {
+ 		__sctp_ulpevent_read_nxtinfo(sctp_skb2event(skb),
+ 					     msghdr, skb);
+ 		/* Just release refcount here. */
 -- 
-2.47.1
+2.25.1
+>> I think it's used at [1] in sctp_recvmsg():
+>>
+>>         skb = sctp_skb_recv_datagram(sk, flags, &err);
+>>         if (!skb)
+>>                 goto out;
+> Would it make more sense to ERR_PTR() etc ?
+>
+>
+> 	David
+
+Yes, you are right. The current implementation returns a negative error
+code directly via err, but it would be cleaner to use ERR_PTR() to
+unify the error path with other datagram receivers.
+
+I will refactor this part in v4:
+>
+>
+>> ...
+>>
+>> out:
+>>         release_sock(sk);
+>>         return err;   <------ [1]
 
