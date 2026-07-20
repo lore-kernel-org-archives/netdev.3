@@ -1,148 +1,337 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B5930F819;
-	Mon, 20 Jul 2026 23:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BA731F999
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 23:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784591543; cv=none; b=Z5YkkR13mqBVq4c4SVFB2Ep/4HG+dwfn4lP6fVfoWcpAosswoeYhGf21sdwHwO1x4wvfm6CSIpqvMTc05HEeJcvQ08SAvvXdC1Swl5VWSOKDJgEcmeuj64F0vVEB/YpBcz6xZMh/KtA3I44vNpbD0i/coQOwK5bcJgaNPRXwX1E=
+	t=1784591914; cv=none; b=lrObgwrPzGBXtAN312WBOwnjYIt9a8uF5m7L3evbYX4cEwYia0XTAtIOZ5mJMVduIBpGmmlmX9TnprJX40V/iT97HEPlljUT1KBUef3RJZU0F55l1kovicbiZaClRHrSw/EqvGYmZeIg4/J7REY/DSVXoX1TAEIqWxc2RHQy6GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784591543; c=relaxed/simple;
-	bh=Iz/Gfipdr5hArhEumhb5TwS7JVeRFRD15GV7IoEaks4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSRcRVKmnu6cqnXJZf7JttoWL+E/3QCccOp/vymA1S7fIJNyNS9rJpFbDaNjsLJ95FAI2emg1AXqObHmN3qGjRjc7vs3WPOmwyWZ5zdmN3iSEn1vrHhXDFePCPfUf2LOmeGfthQ4Fz4vYATWIg2kzYuLK3jwAES7Toy83F3YbEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0uVFJJ/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784591914; c=relaxed/simple;
+	bh=JxFGolTGFdvyAz36xQVGbPohwCObbW8ZVFsU579opKs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=td9T9JtGk/AdTj4lBkQOYqRbscQHyVy+mD3822ZLoRnKtUKJ9yomedDqS+ozeRXH1X4BanazrgQb1OGLukDf/pRluJEhLADzc8JosTB7ZSN1u1BfhRcf8UariAs9/yT788tEAc7sa36b/dZGeqMs+MaqtQCzW8rJ5roWjd+TCno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=Z+yQP4RT; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0uVFJJ/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD581F000E9;
-	Mon, 20 Jul 2026 23:52:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784591541;
-	bh=G13YaPFSd/V7bcK/XLiMvqxcb1M/pYEfqhH+hd66ERc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n0uVFJJ/FN8YKeEPmp+U1C9sNsU1h1d0O4IGy9pZPJLP3kZ/Q83k0bXuYSxZhuPBq
-	 i3oq3US1BeV2qoEMemhFkyX5ylOiwMkawtzVrohGIHadjyW8MgmsuclFr9i1bqrB1Y
-	 URrcw3xwm+MSws48TQw3X6P8EfU81s8xgzPooNDiBdgr3tkT0ZLGa5eKFMrtUA6zPP
-	 NB5l+bNrltznb+e2cGT8y8ar2eRSZ1sJm4MuAxpPyqyKJ6fysDpnzzN5ITCqeDAHwL
-	 cmVoH0utKgIS4lt3yQbvvvhT2G0S+L/1aWtZ9Xr82DUB2PaFUC4nyL3rMKPnKQDO0y
-	 +XrxN/KV72/CA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: joey@tinyisr.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	davem@davemloft.net,
-	olteanv@gmail.com,
-	andrew@lunn.ch,
-	devicetree@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	arinc.unal@arinc9.com,
-	Landen.Chao@mediatek.com,
-	dqfext@gmail.com,
-	sean.wang@mediatek.com,
-	daniel@makrotopia.org
-Subject: Re: [PATCH net-next v6 4/4] net: dsa: initial support for MT7628 embedded switch
-Date: Mon, 20 Jul 2026 16:52:19 -0700
-Message-ID: <20260720235219.466404-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260704105659.140970-5-joey@tinyisr.com>
-References: <20260704105659.140970-5-joey@tinyisr.com>
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="Z+yQP4RT"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cae1a3a744so80877375ad.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1784591911; x=1785196711; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zF+4d6/CcI+ikH/4L72pwhOHENVRkJB74Kt9/nH0fmo=;
+        b=Z+yQP4RTccHpQaqEDDLi++p5/+jHypvow9hZTtOa+py27Ao6UpvmsNYj0BN0B5dijQ
+         7mvKGvzFEscSJFOBicIGfduUAbbcYGUOIEiJIlfAj8/n98yBed+ZiQni1CgScdCVEC+G
+         +qY2vcT4QsTPj0TcmObT92lN87P6VeZ90DrMZvGyT3huAxU0umqjiBuCr8Vpu+odlIrB
+         Ndtlc3SLlpSEYdK7CnOw/SluOSPbecmkyEqbiNnKLyF9Sc92AQVoOG00sdYwjIGosaxd
+         jutLmk844PhbummIrM5R38Li4oKh12lZCqjhLtilUide74herlbOBFHZBV9WuVrrQJkb
+         7Dow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784591911; x=1785196711;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zF+4d6/CcI+ikH/4L72pwhOHENVRkJB74Kt9/nH0fmo=;
+        b=EiK+YZpUjNn/z7h8RR0vQTSp0af+j/+3NHBif7zzjUXiHeqWcNhFSKW9VkDZaIfjF1
+         wbq1ah+1xNrQiNEpWGS/r/3n6jqvcKTxaLsIwDPhkig8cyhfrvDoZFLJ4+H507HLwEvi
+         NIz1L1L5uZ4k9OmryNot6Lg7OcEoQE3AT7tbxqGV1F50B86Uq/ZAxzhgGB9ZBuAmCcmL
+         bJuueDaPwdPtYiD+E9GOpnPRUbmvubPFHHyzG+j9rV1FrrkydmnqHsr46g8T/yPmw61W
+         6UvwEQ6QzuR6b3wSDFr9FduyWCEmdiiUwCQ8Q6wAucC/0wedVOoKgiYz2rF3mqkFmJJW
+         +lnw==
+X-Forwarded-Encrypted: i=1; AHgh+Rope/+WF6RuZ3BzsUAPyIpAtdefwtDHcj7NWiupDdJ0q/TgH/giCoK/n8gm1SvDKxiS6vV5HOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVMJ5MGNU87sdAdMeCdam9uHJ8WTmYNVQbLTktjafw6RDolgKK
+	NWSR3Fl8cKWTcEbWmf8kJkA1H1E0yWmGr9hPVXhIb30SB9CgbxVfAfvLXoaU7Ml8zv8=
+X-Gm-Gg: AR+sD11XJBIze4TAqLnu3lJd0DFQOStJlmMxu2/QnYsqvE472AseR6c2S3PvsLx8e7y
+	PewxIjGE0Bz60mQr0oZCdSNqIl/5wdg379yYSrZ1TZs5sC5B2NwkF6rvlTBZsEeY4KPRbhtR5C0
+	9Iv37WdQ55ZB+KC5VIb7O3X2vbDVYf2WAexUC/xeX/bTX/Bp4SlG3hZwH3G5LWGtv3kLEIonMcB
+	jcbzMvHAcdqcngQA+5Gdl9/yLGA9o8Sv4Vn1g0mjPltdv38AxAfQXYdJr4T7AHyx/oxhFIUzDWm
+	1GEkGqP9kNKfYfudlgUV6ORmAkZuG7+XJlx66MHu9/Cfbma3KXNqiemYN5nCSGGAVaaPoUFmmJp
+	GbLOpIZptYFteN090S+em4XjB44uYBVoDyqx5Az8lHlDDBfnlH0sKpjLF1d51sLTCx4vX2qVLrS
+	+FccRe6UH/GHMrhRMwqKh+1yMgRtSE/i8=
+X-Received: by 2002:a17:903:288:b0:2c2:7baf:139f with SMTP id d9443c01a7336-2cf3496003dmr169103715ad.30.1784591910468;
+        Mon, 20 Jul 2026 16:58:30 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3448f91bsm64632745ad.8.2026.07.20.16.58.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 16:58:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Jul 2026 19:58:28 -0400
+Message-Id: <DK3T18YN2PIG.21FN4EV1MFYSD@etsalapatis.com>
+Cc: <bpf@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+ <horms@kernel.org>, <jakub@cloudflare.com>, <jiayuan.chen@linux.dev>,
+ <john.fastabend@gmail.com>, <kuba@kernel.org>, <kuniyu@google.com>,
+ <ncardwell@google.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+ <sashiko-reviews@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] bpf, sockmap: handle spurious
+ tcp_msg_wait_data() wakeup
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Nnamdi Onyeyiri" <nnamdio@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20260720171535.67867-1-nnamdio@gmail.com>
+ <20260720171535.67867-2-nnamdio@gmail.com>
+ <DK3PKY6RN5FI.4DKPSHWNEBHM@etsalapatis.com>
+ <al6iBv_Yn4YSCmWc@localhost.localdomain>
+In-Reply-To: <al6iBv_Yn4YSCmWc@localhost.localdomain>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: dsa: initial support for MT7628 embedded switch
+On Mon Jul 20, 2026 at 6:53 PM EDT, Nnamdi Onyeyiri wrote:
+> On Mon, Jul 20, 2026 at 05:16:08PM -0400, Emil Tsalapatis wrote:
+>> On Mon Jul 20, 2026 at 1:15 PM EDT, Nnamdi Onyeyiri wrote:
+>> > recvfrom()/recv() are documented as only returning EAGAIN for blocking=
+ sockets
+>> > when they have a receive timeout configured.  However, adding a blocki=
+ng
+>> > ipv4 tcp socket without a receive timeout to a sockmap will cause EAGA=
+IN errors
+>> > sporadically.  A socket with a receive timeout may return EAGAIN befor=
+e the
+>> > timeout expires.
+>> >
+>> > There are 2 code paths affected by this:
+>> >
+>> >   1. tcp_bpf_recvmsg() - Used when the socket has been added to a sock=
+map
+>> >      that has no verdict program attached.
+>> >
+>> >   2. tcp_bpf_recvmsg_parser() - Used when the socket has been added to=
+ a
+>> >      sockmap that has a verdict program.  To reproduce this issue, it =
+is
+>> >      enough for the verdict program to do nothing but return SK_PASS.
+>> >
+>> > In both cases this happens when tcp_msg_wait_data() wakes spuriously
+>> > (returning 0).  To fix it, we now loop back to msg_bytes_ready instead
+>> > of returning -EAGAIN on spurious wakeup.
+>> >
+>> > To ensure the looping does not cause sockets with a SO_RCVTIMEO set to
+>> > wait excessively long, tcp_msg_wait_data() now takes a pointer to time=
+o,
+>> > allowing sk_wait_event() to update it as appropriate.
+>> >
+>> > The logic in tcp_bpf_recvmsg_parser() that allow it to handle signals,
+>> > socket errors and closuers in its loop was also added to tcp_bpf_recvm=
+sg().
+>> >
+>> > Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
+>> > ---
+>> >  net/ipv4/tcp_bpf.c | 69 ++++++++++++++++++++++++++++++++++++++++-----=
+-
+>> >  1 file changed, 60 insertions(+), 9 deletions(-)
+>> >
+>> > diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+>> > index cc0bd73f36b6..aa5c5d741599 100644
+>> > --- a/net/ipv4/tcp_bpf.c
+>> > +++ b/net/ipv4/tcp_bpf.c
+>> > @@ -179,7 +179,7 @@ EXPORT_SYMBOL_GPL(tcp_bpf_sendmsg_redir);
+>> > =20
+>> >  #ifdef CONFIG_BPF_SYSCALL
+>> >  static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
+>> > -			     long timeo)
+>> > +			     long *timeo)
+>> >  {
+>> >  	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+>> >  	int ret =3D 0;
+>> > @@ -187,12 +187,12 @@ static int tcp_msg_wait_data(struct sock *sk, st=
+ruct sk_psock *psock,
+>> >  	if (sk->sk_shutdown & RCV_SHUTDOWN)
+>> >  		return 1;
+>> > =20
+>> > -	if (!timeo)
+>> > +	if (!*timeo)
+>> >  		return ret;
+>> > =20
+>> >  	add_wait_queue(sk_sleep(sk), &wait);
+>> >  	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+>> > -	ret =3D sk_wait_event(sk, &timeo,
+>> > +	ret =3D sk_wait_event(sk, timeo,
+>> >  			    !list_empty(&psock->ingress_msg) ||
+>> >  			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
+>> >  	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+>> > @@ -229,6 +229,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>> >  	int copied_from_self =3D 0;
+>> >  	int copied =3D 0;
+>> >  	u32 seq;
+>> > +	long timeo;
+>> > =20
+>> >  	if (unlikely(flags & MSG_ERRQUEUE))
+>> >  		return inet_recv_error(sk, msg, len);
+>> > @@ -262,6 +263,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>> >  		}
+>> >  	}
+>> > =20
+>> > +	timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>> > +
+>> >  msg_bytes_ready:
+>> >  	copied =3D __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from=
+_self);
+>> >  	/* The typical case for EFAULT is the socket was gracefully
+>> > @@ -280,7 +283,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>> >  	}
+>> >  	seq +=3D copied_from_self;
+>> >  	if (!copied) {
+>> > -		long timeo;
+>> >  		int data;
+>> > =20
+>> >  		if (sock_flag(sk, SOCK_DONE))
+>> > @@ -299,7 +301,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>> >  			goto out;
+>> >  		}
+>> > =20
+>> > -		timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>> >  		if (!timeo) {
+>> >  			copied =3D -EAGAIN;
+>> >  			goto out;
+>> > @@ -310,13 +311,15 @@ static int tcp_bpf_recvmsg_parser(struct sock *s=
+k,
+>> >  			goto out;
+>> >  		}
+>> > =20
+>> > -		data =3D tcp_msg_wait_data(sk, psock, timeo);
+>> > +		data =3D tcp_msg_wait_data(sk, psock, &timeo);
+>> >  		if (data < 0) {
+>> >  			copied =3D data;
+>> >  			goto unlock;
+>> >  		}
+>> >  		if (data && !sk_psock_queue_empty(psock))
+>> >  			goto msg_bytes_ready;
+>> > +		if (!data && timeo > 0)
+>> > +			goto msg_bytes_ready;
+>> >  		copied =3D -EAGAIN;
+>> >  	}
+>> >  out:
+>> > @@ -355,6 +358,7 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct=
+ msghdr *msg, size_t len,
+>> >  {
+>> >  	struct sk_psock *psock;
+>> >  	int copied, ret;
+>> > +	long timeo;
+>> > =20
+>> >  	if (unlikely(flags & MSG_ERRQUEUE))
+>> >  		return inet_recv_error(sk, msg, len);
+>> > @@ -371,14 +375,59 @@ static int tcp_bpf_recvmsg(struct sock *sk, stru=
+ct msghdr *msg, size_t len,
+>> >  		return tcp_recvmsg(sk, msg, len, flags);
+>> >  	}
+>> >  	lock_sock(sk);
+>> > +
+>> > +	timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>> > +
+>> >  msg_bytes_ready:
+>> >  	copied =3D sk_msg_recvmsg(sk, psock, msg, len, flags);
+>> >  	if (!copied) {
+>> > -		long timeo;
+>> >  		int data;
+>> > =20
+>> > -		timeo =3D sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>> > -		data =3D tcp_msg_wait_data(sk, psock, timeo);
+>> > +		if (sock_flag(sk, SOCK_DONE)) {
+>> > +			ret =3D 0;
+>> > +			goto unlock;
+>> > +		}
+>> > +
+>> > +		if (sk->sk_err) {
+>> > +			if (!sk_psock_queue_empty(psock))
+>> > +				goto msg_bytes_ready;
+>> > +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+>> > +				release_sock(sk);
+>> > +				sk_psock_put(sk, psock);
+>> > +				return tcp_recvmsg(sk, msg, len, flags);
+>> > +			}
+>> > +			ret =3D sock_error(sk);
+>> > +			goto unlock;
+>> > +		}
+>> > +
+>> > +		if (sk->sk_shutdown & RCV_SHUTDOWN) {
+>> > +			if (!sk_psock_queue_empty(psock))
+>> > +				goto msg_bytes_ready;
+>> > +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
+>> > +				release_sock(sk);
+>> > +				sk_psock_put(sk, psock);
+>> > +				return tcp_recvmsg(sk, msg, len, flags);
+>> > +			}
+>> > +			ret =3D 0;
+>> > +			goto unlock;
+>>=20
+>> These two error handling routines above look identical. Can you refactor
+>> them?
+>>
+>
+> Will do.  My understanding is the same logic is needed to address the
+> issue Sashiko raised with the SOCK_DONE check as well.
+>
+>> > +		}
+>> > +
+>> > +		if (sk->sk_state =3D=3D TCP_CLOSE) {
+>> > +			ret =3D -ENOTCONN;
+>> > +			goto unlock;
+>> > +		}
+>> > +
+>> > +		if (!timeo) {
+>> > +			ret =3D -EAGAIN;
+>> > +			goto unlock;
+>> > +		}
+>> > +
+>>=20
+>> Since this handling (which Sashiko flags by the way, correctly AFAICT)=
+=20
+>> are taken from tcp_bpf_recvmsg, there is obvious overlap between the two
+>> functions. Please factor those out so that they share the logic between
+>> them.
+>>=20
+>> pw-bot: cr
+>>=20
+>
+> Sashiko highlighted the "if (!timeo)" and signal_pending early returns
+> when MSG_DONTWAIT is set, but I think I'm missing part of the picture.
+> By the time we reach these branches, haven't we already checked for data
+> in sk_receive_queue (line 372, after the patch is applied to 7.2-rc2)
+> [copied below for ease of viewing]:
+>
+>     if (!skb_queue_empty(&sk->sk_receive_queue) &&
+>         sk_psock_queue_empty(psock)) {
+>         sk_psock_put(sk, psock);
+>         return tcp_recvmsg(sk, msg, len, flags);
+>     }
+>
+> and in the psock (line 382) [again copied below for viewing]:
+>
+>     copied =3D sk_msg_recvmsg(sk, psock, msg, len, flags);
 
-Add support for the MT7628 embedded switch. The switch has 5 built-in
-100Mbps user ports and one 1Gbps CPU port.
+If I'm understanding your question correctly, and AFAICT:
+sk_msg_recvmsg only drains the psock out of sk_msg data. If any data is
+still in the backing struct sock but has _not_ been drained into the psock
+it gets missed under the new code.
 
-> diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-> index 4ab567c5bbafc..daa1d3d4ba609 100644
-> --- a/drivers/net/dsa/Kconfig
-> +++ b/drivers/net/dsa/Kconfig
-> @@ -63,6 +63,14 @@ config NET_DSA_MT7530_MMIO
->  	  are directly mapped into the SoCs register space rather than being
->  	  accessible via MDIO.
->  
-> +config NET_DSA_MT7628
-> +	tristate "MediaTek MT7628 Embedded Ethernet switch support"
-> +	select NET_DSA_TAG_MT7628
-> +	select MEDIATEK_FE_SOC_PHY
-> +	help
+>
+>> > +		if (signal_pending(current)) {
+>> > +			ret =3D sock_intr_errno(timeo);
+>> > +			goto unlock;
+>> > +		}
+>> > +
+>> > +		data =3D tcp_msg_wait_data(sk, psock, &timeo);
+>> >  		if (data < 0) {
+>> >  			ret =3D data;
+>> >  			goto unlock;
+>> > @@ -390,6 +439,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct=
+ msghdr *msg, size_t len,
+>> >  			sk_psock_put(sk, psock);
+>> >  			return tcp_recvmsg(sk, msg, len, flags);
+>> >  		}
+>> > +		if (!data && timeo > 0)
+>> > +			goto msg_bytes_ready;
+>> >  		copied =3D -EAGAIN;
+>> >  	}
+>> >  	ret =3D copied;
+>>=20
 
-[Severity: Low]
-Can this lead to a build or link failure on randconfig? It looks like this
-is missing a select REGMAP_MMIO and depends on HAS_IOMEM, which might cause
-devm_regmap_init_mmio() to be unresolved when CONFIG_REGMAP_MMIO is not set.
-
-> diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mt7628.c
-> new file mode 100644
-> index 0000000000000..eccdb05fce9b7
-> --- /dev/null
-> +++ b/drivers/net/dsa/mt7628.c
-> @@ -0,0 +1,649 @@
-> [ ... ]
-> +static int mt7628_setup_internal_mdio(struct dsa_switch *ds)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +	struct device *dev = ds->dev;
-> +	struct mii_bus *bus;
-> +
-> +	bus = devm_mdiobus_alloc(dev);
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	bus->name = "MT7628 internal MDIO bus";
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mii", dev_name(dev));
-> +	bus->priv = esw;
-> +	bus->read = mt7628_mii_read;
-> +	bus->write = mt7628_mii_write;
-> +	bus->parent = dev;
-> +
-> +	ds->user_mii_bus = bus;
-> +	bus->phy_mask = ~ds->phys_mii_mask;
-> +
-> +	return devm_mdiobus_register(dev, bus);
-> +}
-
-[Severity: High]
-Does this cause a resource leak and sysfs name collision if the switch setup
-callback runs multiple times?
-
-If the DSA master device unbinds and rebinds, dsa_tree_teardown() and
-dsa_tree_setup() can be triggered again. Because devm_mdiobus_alloc() and
-devm_mdiobus_register() tie the resource to the platform device's lifetime
-rather than the DSA tree setup/teardown cycle, the first registration will
-leak, and the second might fail with -EEXIST.
-
-> [ ... ]
-> +static void mt7628_switch_init(struct dsa_switch *ds)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +
-> +	regmap_write(esw->regmap, MT7628_ESW_REG_FCT0,
-> +		     FIELD_PREP(MT7628_ESW_FCT0_DROP_SET_TH, 0x50) |
-> +		     FIELD_PREP(MT7628_ESW_FCT0_DROP_RLS_TH, 0x78) |
-> +		     FIELD_PREP(MT7628_ESW_FCT0_FC_SET_TH, 0xa0) |
-> +		     FIELD_PREP(MT7628_ESW_FCT0_FC_RLS_TH, 0xc8));
-
-[Severity: High]
-Can traffic leak across isolated ports (like WAN and LAN) during boot?
-
-It looks like mt7628_switch_init() resets the switch but fails to explicitly
-set the MT7628_ESW_POC0_PORT_DISABLE bits for the user ports. Since the
-DSA core relies on port_disable during ndo_close and doesn't automatically
-disable ports upon initialization, does the hardware default to acting as
-an unmanaged switch, bridging all networks until the interfaces are brought
-up administratively?
