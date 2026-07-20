@@ -1,138 +1,108 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E223D6CC3;
-	Mon, 20 Jul 2026 09:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86553D75C4
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784539926; cv=none; b=uVwm4aL3xisa5WE8ioYLJU8yvrSeAwlxYdzyJuLwIH9x0O1oXlYufAEyvcl0ndmGO7kvr6pbSlm7LCvdc46M9SymV9ZWzHp2NGBpQDbrqQKs/GGiNQLc2MRLkA+LHQC4JJX57Snlhr8iMWiZEIf5fQ/8D5PzqBR5onAKA8Vb5xc=
+	t=1784539998; cv=none; b=GKlM9hUoCTcGbv7Fnmha12h7hbsiXK8NQvtEGK4ye4aZgMK9FqSYBN8xud7NY853kR5p7qecfRDnNfFoaHV9+LKNK6Tz2JkgsRkRfgrP9Q80fy0E9CA0PStl2oyHqSDAa/Jq2KJb+7L1st21gnkwKEJ1zvFdhkB4/8CIyzBSh9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784539926; c=relaxed/simple;
-	bh=TbVvBEEtnyhSfHlg4arMCBn82aESOFCueGiZl/gSxbI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FZ7zY2G4i5OflZuhSTPWOf0kc84RJb6RUTEci3n/VGHdOYt0syGBm6KcQSNS6NVR152g3u/53aPwti/QbxQURsVmVneY+8L9WRTlJL/drjgOp0D4p9Eg+/9j5ttYlkQ/bYHtmgphnt5CDJJ+yDosgMo7GNbFCwNhDOEjpdoEhok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RPFIC0b3; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784539998; c=relaxed/simple;
+	bh=AJsT6yt24aehDoQOd5ntSHWVvQrwTxU1fX9ksnkaKVs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IX3R58W1lU9HOtexQEBgv31s13ziwGgETc5FbS5198hR6bG6JZ1JsoJmxfmQXbeQGFjPISs95kv2KVYTeMRm5dQpslQZDSU2tMcLRcHBSt8ha9TZIOyYefl2yg8Rpd3+6g7BWDqFcsl6uZyQWmIQyB6zoQlP31ktbNCp2kOlmRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lqgTOb7h; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RPFIC0b3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=Jwd400HCzMAajPxjHxQMbahtKfRi8j541vUlNmw7fjg=;
-	b=RPFIC0b3E4ZUwdGjz7OpS8ozxFre9yWbtn0ooZTLA5rn/ST9xpKM+Z3d1OqL+t
-	YyKgTLMuO9pUtuLTWQ9OYTJf4p+eRIq8YJlL6o4HygQp7QrsxWB4NMSEJtTxOqcK
-	34jAM/34sotSoNqKPFmLop0MQ9sgMlfDrZXRteWFBG6XI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDH417l6l1qF9ZsKg--.11715S3;
-	Mon, 20 Jul 2026 17:31:19 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 2/2] sctp: auth: verify auth requirement when auth_chunk is NULL
-Date: Mon, 20 Jul 2026 17:31:16 +0800
-Message-Id: <20260720093116.1266202-2-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260720093116.1266202-1-l1138897701@163.com>
-References: <20260720093116.1266202-1-l1138897701@163.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lqgTOb7h"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 00D181A110E;
+	Mon, 20 Jul 2026 09:33:14 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C46B060360;
+	Mon, 20 Jul 2026 09:33:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC54A11BD3CCE;
+	Mon, 20 Jul 2026 11:33:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784539992; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=4CQrISOl0BCVcY0P30M6vyCI4+NKDoGPEn3wN8pRNP8=;
+	b=lqgTOb7hGCPz4Bhuasua5vOcMC3VV8568buK9tnmi9N04rblfX1BC83fjsC2wruPtlCOTJ
+	OFsQKlwuR6/+LzFaEqf9hgGVWTJyiEVn7vcK0GNxUOb80IQvo8dlKHZlzZrZcPcWdreXoW
+	ugqvko4Eq09Xwz8U5ibOUx58cE71sdrye8OFMeAZISkMb/6Kvp6WGhEh8CbaTZEGgbd5HR
+	3f8W31rYeVcPvtf+ULh22yd0wS9mbiqgtKNwB8VwsXssU02wy06hBCdZOrnp0QjsoCMiek
+	EcvypwsBMERZx9HNElvb1p+941OtF65re8Qcg2/xLDhzkC5IkX7XPQ33UwuUZA==
+Message-ID: <5cc0d788-c78d-40f2-998f-235d40f567f2@bootlin.com>
+Date: Mon, 20 Jul 2026 11:33:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: dwmac4: mask interrupts before stopping DMA
+ in suspend
+To: Luis Lang <luis.la@mail.de>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Rohan G Thomas <rohan.g.thomas@altera.com>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
+ <20260718152802.83553-1-luis.la@mail.de>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260718152802.83553-1-luis.la@mail.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDH417l6l1qF9ZsKg--.11715S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAw4UXFW8Zryxtr4rJr17trb_yoW5uF13pF
-	WfCa1vy3WkJr4xAa97Aw15uay5uan7GrW3tFn5t3W5A3WDWF1YkrWrK3yaqw4jkr4rAa4j
-	q398Kw1SqF1DXFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UE0PhUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3QflKmpd6udqogAA3n
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Qing Luo <luoqing@kylinos.cn>
+Hi Luis,
 
-sctp_auth_chunk_verify() currently returns true unconditionally
-when chunk->auth_chunk is NULL, which means authentication is
-silently skipped. This is incorrect in two scenarios:
+On 7/18/26 17:27, Luis Lang wrote:
+> Since commit 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU
+> interrupts"), suspending causes an interrupt storm from the RPS
+> interrupt.
+> Fix this by adding a deinit_chan() op to stmmac_dma_ops, which
+> masks all default dma channel interrupts. This is called from
+> stmmac_stop_all_dma(), so interrupts don't trigger while suspending.
+> 
+> Fixes: 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU interrupts")
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Luis Lang <luis.la@mail.de>
 
-1. skb_clone() failed in the BH receive path, leaving auth_chunk
-   NULL. Although the previous fix avoids setting auth=1 in this
-   case, the chunk can still reach sctp_auth_chunk_verify() via
-   sctp_endpoint_bh_rcv() where asoc is NULL for new connections,
-   bypassing the early sctp_auth_recv_cid() check.
+This is almost perfect for a new submission, only 2 things to improve :
 
-2. No AUTH chunk precedes COOKIE-ECHO in the packet. In this case
-   skb_clone() is never called and auth_chunk remains NULL. Again,
-   in sctp_endpoint_bh_rcv() the early check cannot catch this
-   because asoc is NULL and sctp_auth_recv_cid() returns 0.
+ - you're missing the tree name in the patch subject. As this is a fix, it should be :
 
-Fix by checking sctp_auth_recv_cid() when auth_chunk is NULL:
-if authentication is required for this chunk type, return false
-to drop the chunk; otherwise, continue normally.
+   [PATCH net] net: stmmac: dwmac4: mask interrupts before stopping DMA in suspend
 
-Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
----
- net/sctp/sm_statefuns.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+   you can find instructions for this in the doc Andrew linked :
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index d23d935e128e..89ed618b1de3 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -642,7 +642,7 @@ static bool sctp_auth_chunk_verify(struct net *net, struct sctp_chunk *chunk,
- 	struct sctp_chunk auth;
- 
- 	if (!chunk->auth_chunk)
--		return true;
-+		return !sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc);
- 
- 	/* SCTP-AUTH:  auth_chunk pointer is only set when the cookie-echo
- 	 * is supposed to be authenticated and we have to do delayed
--- 
-2.25.1
->> A better fix would be:
->>
->> Add a check in sctp_auth_chunk_verify() at the point where the COOKIE-ECHO
->> chunk is actually being processed:
->>
->>
->>         if (!chunk->auth_chunk)
->>                 return !sctp_auth_recv_cid(chunk->chunk_hdr->type, asoc);
->>
->> This ensures that if chunk->auth_chunk is missing while authentication is
->> required for the COOKIE-ECHO chunk, the verification fails and the chunk is
->> dropped. Otherwise, when authentication is not required, processing can
->> continue normally.
->>
->> Please give it a try.
->>
-> Also, please add a extra Fixes tag in your next post:
->
-> Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification
-> of AUTH chunk")
->
-> which introduces chunk->auth_chunk and calls skb_clone() in
-> sctp_endpoint_bh_rcv().
-Hi,
+   https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Thanks for the review. I’ve reworked the fix into two patches:
+ - When submitting a patch, do so in a dedicated thread, and not in reply to
+   other threads.
 
-Patch 1/2: In sctp_assoc_bh_rcv() and sctp_endpoint_bh_rcv(), only set chunk->auth = 1 when skb_clone() succeeds.
+You should send a V2 addressing the tree name in the patch subject.
 
-Patch 2/2: In sctp_auth_chunk_verify(), when auth_chunk is NULL, check sctp_auth_recv_cid() to decide whether authentication is required. This covers both cases from the review.
+Sashiko noted something on the patch :
 
-I’d like to discuss whether Patch 1 is necessary. Patch 2 alone is sufficient for correctness — even with auth == 1 and auth_chunk == NULL, Patch 2 catches it at the verification point. Patch 1 only provides semantic cleanliness (not setting auth = 1 without a valid auth_chunk), but closes no additional gap.
+  https://sashiko.dev/#/patchset/20260718152802.83553-1-luis.la%40mail.de
 
-Should I keep Patch 1 as a defensive cleanup, or drop it and submit only Patch 2?
+It looks to me that sashiko is just wrong there though, I can't make sense
+of what it is saying.
 
-Best regards,
-
+Maxime
