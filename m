@@ -1,171 +1,355 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013032.outbound.protection.outlook.com [40.107.162.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D1328CF5D;
-	Mon, 20 Jul 2026 02:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784513606; cv=fail; b=qAPkeHtyFvfZNScD4kWVDkYhHmO4smzBgdarGJ1w5vm2T9Qc0INtdyGDYgOhhk5rlflMME53jAJM6qCBUq+Vge83vf3d+7gdRUn+xgTRUTBbs1Jv1ot1Rpo0SwImj2Apv5R4MItl3Frx8WU1T2Tkfr7mOEpg0KlRn4WV1CxYDmw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784513606; c=relaxed/simple;
-	bh=xs5XQR4GCTJgSYpvY0nM42qJl1+P3JkQUA1R73tXpik=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cCbDU1UQXqMZPo2W8K1mjWS4+NmFT/EsCCVNhHBbQ0MLzrO3UfTIm5bf59jT3gmib6Cfe/5KRltpnPemHRg1OkgrXE0xjsK5kBHktVN9oOvvXx0XPti1G+F1POGZS8wi25ePUMgdqpXqSpr9mik6L11Z0xKi9zZ+AIIdpyUKo9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uva8wlZI; arc=fail smtp.client-ip=40.107.162.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F82F23ED5B
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 02:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784513692; cv=none; b=JnX1KJx6qLto2QdBAORtTlE5mJbHGKI1OzeR6CXtiRqKXlfb8tPrHohbr0Cc5t7CI+PCb8j42akY8/qZDOZ+s/zfDiRa6v0Tc1b0XeLB3ewSF1kxl+iqDOK4gF/bmtqM0987vAE8mbmpk+F6Y7e+6UWIOgzYsUiwQdrPrQkAKIY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784513692; c=relaxed/simple;
+	bh=ZuZksV0V0PWzVpQCCxfoO9j4j0XTp3brRaQBrBzi05c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eltAfjjD2BeTKjSAXxFkyEnvWjS08uQrQowTqwcFKgImBdT5z8RMRE0rWhnFXgKhD9yEOi7sNa1wYLPV1bhSNxrKav4swhixSj4bm1Z/nc0ZJyeCvLULykMiSE5YwdYDhc7b+d2kwxiJE9pTco1cxc9jTUt7CBKtt2ZhQ3cXfOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=efkjCokg; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uva8wlZI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QMlPoNv17czUem73bcdDIM9yI6OvHjbJuNwzUGF8qIlYmDE/nDDBI82N7WcSJ448pXoUKiUiOr25arC0LN8HADipzc844+knIAIkJK83XWtQe2g1IIF9wg6IQ7eUa4FEtF7G+ggIn/DS6Gy+0HEJms4DXKVuphtjg7gACyPG7j3m1LZz/Zww3dXJdZCEqH5bXrnMVucCOoYPN+K7LfA5ssONhnbAyng8bFqDeV6o6uqqy2fR8JrYelKH3BpA/kJ+CjGxqpCtvkQ6skDOMEzt5PoOUAzvsTnXdETAag0zercNwlZl1fRLL6DtY91zksiMpvWBgTvsk7xQcQ49OPU4zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=W54RmA4sUmW7uNKjLDVfjHGvufcNGomAi5fUruoaL380REDSbQ4UJS15VwexQmKl/27Gfub7HV4OGO+aIBRIn8Vjmxu1S9z5KjXew6oPcGoXgyT8TO7GlLEZWPriGESKjBuuS+C1afF0azKXArKhZLz5J+kZ0YindLspI35fvy8GWiE4Z/SBfXBiirW9Vffw9cqUx7O3sq/U/odFJi0P+lY4ECj62yEHQl6ZSiaXQez9d1BWLt0ZAwkGcDyapoK1uNEKB4lUEbGOLLYdGYMxQ4OjQyZJ+qKFH9tWUByfZptLXKqS0MIcbZDDDZckNTtOgvauIkIAgEMe/86weZllpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=uva8wlZIenG37netasSWlcMx2l0ZdiGKVq3nnn/OGI7tncfcbY2gz8iaSNC4IN8bnh6LKHIaH73KYEWJ3RJ7zZ5ztv3eZ6+ySrZEPFuB2uWSwUy/Hdr3F2ZIlZAsqLb0Ufjm8GQ1rkiFRfMfKWTw5h3Tq0MuaNJ7gigRw9NO9OSVWUFoBRz6E1vTXPsKGkHlL/yAj4m8JDQT1JwEhKpHuHcRPwu0hQt/KvDvO/PDsLjB98fVDy8HlTjeXy9HTBfl1rjrZmMD0mA45grO3MgnTeBAkfyVXwBGgzZoLr8lPbwBGmY+86oIwnOd4rewbEQEFN1kuZZOCDgCK4BSJ6XS7A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by GV1PR04MB10872.eurprd04.prod.outlook.com (2603:10a6:150:20e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.13; Mon, 20 Jul
- 2026 02:13:22 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0223.015; Mon, 20 Jul 2026
- 02:13:22 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efkjCokg"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8485ef63b68so9264342b3a.1
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 19:14:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784513690; x=1785118490; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xuin/4iIlomllwvZ3BgFvtTQzDMeT1x4DbC0nERGOUo=;
+        b=efkjCokgGOeqa1glfh0msZM6JxRzzBxnac6t5QJWhfhvHyN3OXkpgBlwPpXNdoexdr
+         IedGmAC0wWggz0jesQRZYu5rH02e0XbdBOk02qPJCf3ChjNrgt3RTR9hI9K+cssn1v8f
+         aBFNORYeX261ncmaTUjo/wzh4vq+280Qe/17U1wWVl7Qx964fwksSl2gNcRUi6YIGLT5
+         le9DQ5JsfS7NIO0OayV4mf+YBbqOS3CutrxTsRuntWOSyohtfQ10Dly85ldfpOrWGEcD
+         mdIdcBLiVbimg2CE8tfI9IjrZK9ltpIpSKvMeiUVoh0hlY3yC80fLYpAzQcL4xBuEmcw
+         +ghQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784513690; x=1785118490;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xuin/4iIlomllwvZ3BgFvtTQzDMeT1x4DbC0nERGOUo=;
+        b=ZdHTb4EObsWPTHUhQHRrUkAmuHOH+/V7LDcAQ5aiDqpvwUgUZuo6JeHF5sd6wsfY+s
+         C8ClD8ljzpddbQUZHjjALfavxUA3QYasyKYOnZRwR+cXObmyy/zmqvKc3P+aU4fWwhy4
+         auuxAbHZRpBvSJPz5QRI0PZWPBkufGFLRQtidf1zzu6GT+Z2I67VOF3HzVsXPpA4fSnW
+         Rl3g2R7yTzOUCI/xKOMtKgvcDCjG00mpTip35U+y+030aIt9dC2JOjFYvUNyFPC2z6XS
+         eIJnvB6iQ/nGxitfmUgnNi38UPQCzIcxtVkwt/RDKn4+jtAae6So7P+r07SnuizMN3Jj
+         gxhA==
+X-Gm-Message-State: AOJu0YwiKIHtgHtxPiWY7QXFluuNkudvLUQUoEGY5FO88sgfj2NjyYsN
+	rCzJTztSCQJismmIrQDqvBSMWOmkvMHfWZmw7IiZBThIX51VSdKE3ibS9xoIg8pI
+X-Gm-Gg: AfdE7cn5loqFEJekHV6i/oAcLUT0ZttVnM1vqy+9hSQmr+RcTQbWm745yFJ2CnGH2va
+	vIewqTEGEP0QHsQW7xOqGTo7JTF4jj8OdKGlVFYVuI7n24aWMo7lfvo4Z21lKDB1yXarRPLTGuY
+	7g9iouAXYVZN2+Ri1AkD43eN8PaCCyEt7FqR+A0qfdU5akx5JDxrq/O9i4xvZFDsoGbSBz0S/5l
+	kdVdGaIFWjaNS23RmzpgxpqDgPFzpf0aVskJqZI30qTyT55mbXD13SmQ93kthkQvM0y+yVk9lua
+	f5o/BurWxxlRaC4iUadnYAyX/pocfFh71BUloIwLSHdo6wIrczMtEue4d5qn6a9pPQZahqNw9Z3
+	YLwWdhq8TtXee2NgF2kty8VBIJBxaplNfMWOSp6niKRwhFMLPQTQSG15n1KshV2tk7OgeH4p5nv
+	3d4n2ljXbn0lpIJyK0GOEb
+X-Received: by 2002:a05:6a00:2304:b0:848:2cb2:cd97 with SMTP id d2e1a72fcca58-84c294f822amr11896594b3a.52.1784513690384;
+        Sun, 19 Jul 2026 19:14:50 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([123.114.53.210])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adc33easm4884919b3a.13.2026.07.19.19.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 19:14:49 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org,
+	dev@openvswitch.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	wei.fang@nxp.com,
-	chleroy@kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH RESEND v4 net-next 14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-Date: Mon, 20 Jul 2026 09:43:16 +0800
-Message-Id: <20260720014317.1059359-15-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0038.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::15) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	horms@kernel.org,
+	pshelar@ovn.org,
+	yihung.wei@gmail.com,
+	vega@nebusec.ai,
+	tonanli66@gmail.com,
+	xuyuqiabc@gmail.com,
+	enjou1224z@gmail.com
+Subject: [PATCH net 1/1] openvswitch: Fix CT limit teardown use-after-free
+Date: Mon, 20 Jul 2026 10:14:16 +0800
+Message-ID: <aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784355642.git.xuyuqiabc@gmail.com>
+References: <cover.1784355642.git.xuyuqiabc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|GV1PR04MB10872:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ad3e2cd-fec9-4728-e092-08dee6047956
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|19092799006|921020|18002099003|22082099003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	fhURm5iB51l/uPObKs0z8mwcjfm6WSDzrhNufnaWAgz6A23DCIiai3tSGchw9KGXLjTtZAW+ce1KtwMiGryIOiW3P+LYwv0S7DJmLMi6WlWWxSlk4t1L1cm3FsX1wE0szWXpGMO2Ru9A6HWtYjm5x4C8/Xf6ZPYlGfhCxseT7T3KGlQ+p/UZTsZeFBOOl4b1V1Xxzz5eiIazELRaf/g4v086b89tNOiAN2RAhQQt3IPDJSzNWG7h9o4bN7BiTMkpVMs0HFWXz1kYo/nSpBzud0zAH4KJkVFoZNpYBOMSXtBPtwM2GHueYjyVxa9czldA6hIZCnrH6srdROTRYZ0aG533PkqJSkAhmiBhpjGXkr4uVYDxe2NVaAYVrWbZNxwlEv6NAk4pA3k2vEhnMglZ2BJN42IzFuP4UlqXpKbqBXM84Ljs3Z4GLMmxGRlJVleI5QHL3KKHMOjMMfwpWdRpfLmxEFcFsF1yuSv384U6MHVT67oAT42lIZBOQr9kmqqCkcNW/Tf9dff7JnPdtzruI9y2471Bs8Jfci3kn0XY+CephfseZKyRZa1pqY6KcSc0CG7WC0CfeZiciZK6+16kmq1V36qehHfr/TIfuiCrPNQROOG4IoKFE4MMxJwbBPAZ2VWhQ0Zl92MyEGWCqkcCJRwSCd6p+H3jk5+ee6J307CllPl6eVQ2daQ41b3IP8/lkY0Bi+0sGtxtE6qhMGfAog==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(19092799006)(921020)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uRxVTAuSW5BIADJr2i6Uq6dCKrnIB3fqvipS2p/gTtjISWr5HvkrJsjr//cr?=
- =?us-ascii?Q?SDjnjCPf0GyTSKHzZBVlfAjXRTM8TzWhb4ox1gYx+SsnLRVebSRD06fQpUcx?=
- =?us-ascii?Q?uES2IJ0R/IF08CQ5YbHJKpTe1nuC9TYIr3gUoDYQ4OuVLDBaSOKTayW9edqD?=
- =?us-ascii?Q?XKxlqymPZQ7DCMjUE1boPKmkMobtuT40PpXMi+zFAwjYvox+C96C7C0h8TYz?=
- =?us-ascii?Q?C1YWjBoNte70MmeRhxUCPNaGMrCk4Pt57SXpN8VCUGhK5E5JXYoS8oC2xPU/?=
- =?us-ascii?Q?40X/0Fp6K32LwQVoKRSd2+lVvq7kE/8M5wauzakYY7GOEL7EoyWl4vTRHhrX?=
- =?us-ascii?Q?3xH4APo1GtAnOo/8IU8rgmvmMrsZsYDOK85mNck4CsGAMPXSUALhYFQZ2yGX?=
- =?us-ascii?Q?/FT29kcTYsKqjbZxbIw4Bv2F07uZL2XK1kw8cF6F3XNNax8yBHQl7pePC84Q?=
- =?us-ascii?Q?qX7h/7fEnfqyH0HytQAKy/k7UzI7/Xa63JZhNXu89F2jat7eWgV4tCd9Unii?=
- =?us-ascii?Q?Av/tUEvq+2w7qZG++Tx5ueeV6uFIRq/J3LaqPyk4isS0TWIHoXSgmjC60g/N?=
- =?us-ascii?Q?iBTaD3lcEexmtA+hWDxvU4RAttZMSTnG4Uzi1fvyDxfDcqncwQPOQ1jQN5jS?=
- =?us-ascii?Q?jz+N59wgX6yV64VwhMrcjDeSLadFm0w8gGpDAKP1uBLZbyG6Q3hK0vaIGgL5?=
- =?us-ascii?Q?hyMwHAqtGRYQ0+w+NhJxV7+e6c0dFe5GIo9i5f4CT7Ys7LzhIJ6F7bAq2SW4?=
- =?us-ascii?Q?npQh9XFoAZIElhqSPIT6A7IXOALOthWYANjDUiHKLDxa7VCXNzvU2VbUwt1b?=
- =?us-ascii?Q?N8/gVB07ww3MYuGEyb5EkIPazWIeV0TCUYf1iCSQuDlVefIOf0VnP5exiyGd?=
- =?us-ascii?Q?DOCJDNhNwhrs+pBrbeTFrRK8HoZwE/txV209CUIH9KkCJgoAv8JRusti829s?=
- =?us-ascii?Q?P4wyPGeDFg2t1ztTa/HDuyTly/HjyAnHQ+Nw6774nXKaZRiO6SNbG/8PfIzK?=
- =?us-ascii?Q?821w6R9HqjsKrcygdY/nSI4imbTDu7bS3TZizTC/0CQkbfh1aIb635sw3YsJ?=
- =?us-ascii?Q?bE6lTrJJnX6GbU9z39RYA9hVVSBC7gCqU+nuQkP2yFy/HAa3yGhrmrQ9HtgP?=
- =?us-ascii?Q?cnXneGxsg+PNZwEurFGMJasaO3frHcGvTn6imPj28dxFt4kkcFSkh9fLCqLd?=
- =?us-ascii?Q?zu+f194l9IGMhnAeTyXcwcCbHTkV4PIMAcscabfOERbkl/pprrpdtgkmDlzl?=
- =?us-ascii?Q?KcBfT7ii8GF8SKv7TbDFnumQ3vrJeJZKHoWM+cOQdkj7MDe0fCXAZl768FMm?=
- =?us-ascii?Q?lXTDTVbEC2RLpDvu02aV+CGFSsnOKp4sSiM5ukS58or479N4CyJ6mwMirAWY?=
- =?us-ascii?Q?Col80wus7ycR+o5PuGYCt54Ywl/9LU1ODwDhafNORq9a687ouBkFEnT3/Ktl?=
- =?us-ascii?Q?nAdJuL8hOyethjMPACJuvFS7riqF916JGX7pS/w/f6VyWnrvPoKjno+aDXHQ?=
- =?us-ascii?Q?55bGVo60qb0JIsEumMcUN2VSaCBT+ice9QawDv21+tYuuLe8iKf29389mp7J?=
- =?us-ascii?Q?iBMCp7AMNUbfkjlDz59iwHWExbMLsIufdeFNUL3c0kfkc1NS/evBroFLbC06?=
- =?us-ascii?Q?ThsU1+X1HPTbFRipgyvjJWTRFg7XpidF4ph3Iw+VBsp4PMpegOW3QEb7Nnsu?=
- =?us-ascii?Q?li9saARqNssc9bV8tpclZdwP07VW1w6ZtBEBcxR57fOp1cebVmkUakvPxWIP?=
- =?us-ascii?Q?Turk7RgYrPfCYASIPU1tJ63TP4M1J0TXvpXiAvt4XVf31iGJjc37?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ad3e2cd-fec9-4728-e092-08dee6047956
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 02:13:22.4210
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CGteordaMbLmkufvgiEjWTlpOLd9aN2Vrou8GNhGUZoi8tscXHfZMwWBO8MoZqbX+ctZUedoIB1O86oGcm4dCm2dAzR5mE8sI3JzD+AvNqyLbBjKGtMkzShN9KaloV/1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10872
+Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-Replace the open-coded struct_size() + kzalloc() pattern with the
-kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-removes the intermediate entries_size local variable and makes the
-allocation site more concise.
+Packet processing uses CT limit state under RCU, while netns teardown
+frees that state under ovs_mutex. The CT limit pointer was neither removed
+from readers nor protected by a grace period, allowing packet processing to
+dereference the freed state.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Replace the pointer before freeing the CT limit state. Wait for in-flight
+RCU readers before freeing its contents. Serialize CT limit netlink
+operations with teardown for the full lifetime of their state accesses.
+
+Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:GPT-5.4
+Co-developed-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Reviewed-by: Ren Wei <enjou1224z@gmail.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/openvswitch/conntrack.c | 79 +++++++++++++++++++++++--------------
+ net/openvswitch/datapath.h  |  2 +-
+ 2 files changed, 51 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index 7b17bca24f26..2aa0fcaafcd2 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 	struct flow_action_entry *entry;
- 	struct action_gate_entry *e;
- 	u8 sfi_overwrite = 0;
--	int entries_size;
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 95697d4e1..d5c47127a 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -932,11 +932,15 @@ static int ovs_ct_check_limit(struct net *net,
+ 			      const struct sk_buff *skb,
+ 			      const struct ovs_conntrack_info *info)
+ {
++	const struct ovs_ct_limit_info *ct_limit_info;
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+-	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+ 	u32 per_zone_limit, connections;
+ 	u32 conncount_key;
+ 
++	ct_limit_info = rcu_dereference(ovs_net->ct_limit_info);
++	if (!ct_limit_info)
++		return 0;
++
+ 	conncount_key = info->zone.id;
+ 
+ 	per_zone_limit = ct_limit_get(ct_limit_info, info->zone.id);
+@@ -1585,40 +1589,47 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ static int ovs_ct_limit_init(struct net *net, struct ovs_net *ovs_net)
+ {
++	struct ovs_ct_limit_info *info;
  	int i, err;
  
- 	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
-@@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 		goto free_filter;
+-	ovs_net->ct_limit_info = kmalloc_obj(*ovs_net->ct_limit_info);
+-	if (!ovs_net->ct_limit_info)
++	info = kmalloc_obj(*info);
++	if (!info)
+ 		return -ENOMEM;
+ 
+-	ovs_net->ct_limit_info->default_limit = OVS_CT_LIMIT_DEFAULT;
+-	ovs_net->ct_limit_info->limits =
++	info->default_limit = OVS_CT_LIMIT_DEFAULT;
++	info->limits =
+ 		kmalloc_objs(struct hlist_head, CT_LIMIT_HASH_BUCKETS);
+-	if (!ovs_net->ct_limit_info->limits) {
+-		kfree(ovs_net->ct_limit_info);
++	if (!info->limits) {
++		kfree(info);
+ 		return -ENOMEM;
  	}
  
--	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
--	sgi = kzalloc(entries_size, GFP_KERNEL);
-+	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
- 	if (!sgi) {
- 		err = -ENOMEM;
- 		goto free_filter;
+ 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; i++)
+-		INIT_HLIST_HEAD(&ovs_net->ct_limit_info->limits[i]);
++		INIT_HLIST_HEAD(&info->limits[i]);
+ 
+-	ovs_net->ct_limit_info->data = nf_conncount_init(net, sizeof(u32));
++	info->data = nf_conncount_init(net, sizeof(u32));
+ 
+-	if (IS_ERR(ovs_net->ct_limit_info->data)) {
+-		err = PTR_ERR(ovs_net->ct_limit_info->data);
+-		kfree(ovs_net->ct_limit_info->limits);
+-		kfree(ovs_net->ct_limit_info);
++	if (IS_ERR(info->data)) {
++		err = PTR_ERR(info->data);
++		kfree(info->limits);
++		kfree(info);
+ 		pr_err("openvswitch: failed to init nf_conncount %d\n", err);
+ 		return err;
+ 	}
++	rcu_assign_pointer(ovs_net->ct_limit_info, info);
+ 	return 0;
+ }
+ 
+ static void ovs_ct_limit_exit(struct net *net, struct ovs_net *ovs_net)
+ {
+-	const struct ovs_ct_limit_info *info = ovs_net->ct_limit_info;
++	const struct ovs_ct_limit_info *info;
+ 	int i;
+ 
++	info = rcu_replace_pointer(ovs_net->ct_limit_info, NULL,
++				   lockdep_ovsl_is_held());
++	/* ovs_ct_check_limit() accesses the info under the datapath RCU lock. */
++	synchronize_rcu();
++
+ 	nf_conncount_destroy(net, info->data);
+ 	for (i = 0; i < CT_LIMIT_HASH_BUCKETS; ++i) {
+ 		struct hlist_head *head = &info->limits[i];
+@@ -1678,9 +1689,7 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+ 	while (rem >= sizeof(*zone_limit)) {
+ 		if (unlikely(zone_limit->zone_id ==
+ 				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+-			ovs_lock();
+ 			info->default_limit = zone_limit->limit;
+-			ovs_unlock();
+ 		} else if (unlikely(!check_zone_id(
+ 				zone_limit->zone_id, &zone))) {
+ 			OVS_NLERR(true, "zone id is out of range");
+@@ -1694,9 +1703,7 @@ static int ovs_ct_limit_set_zone_limit(struct nlattr *nla_zone_limit,
+ 			ct_limit->zone = zone;
+ 			ct_limit->limit = zone_limit->limit;
+ 
+-			ovs_lock();
+ 			ct_limit_set(info, ct_limit);
+-			ovs_unlock();
+ 		}
+ 		rem -= NLA_ALIGN(sizeof(*zone_limit));
+ 		zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
+@@ -1722,16 +1729,12 @@ static int ovs_ct_limit_del_zone_limit(struct nlattr *nla_zone_limit,
+ 	while (rem >= sizeof(*zone_limit)) {
+ 		if (unlikely(zone_limit->zone_id ==
+ 				OVS_ZONE_LIMIT_DEFAULT_ZONE)) {
+-			ovs_lock();
+ 			info->default_limit = OVS_CT_LIMIT_DEFAULT;
+-			ovs_unlock();
+ 		} else if (unlikely(!check_zone_id(
+ 				zone_limit->zone_id, &zone))) {
+ 			OVS_NLERR(true, "zone id is out of range");
+ 		} else {
+-			ovs_lock();
+ 			ct_limit_del(info, zone);
+-			ovs_unlock();
+ 		}
+ 		rem -= NLA_ALIGN(sizeof(*zone_limit));
+ 		zone_limit = (struct ovs_zone_limit *)((u8 *)zone_limit +
+@@ -1849,8 +1852,8 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
+ 	struct nlattr **a = info->attrs;
+ 	struct sk_buff *reply;
+ 	struct ovs_header *ovs_reply_header;
++	struct ovs_ct_limit_info *ct_limit_info;
+ 	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
+-	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+ 	int err;
+ 
+ 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_SET,
+@@ -1863,16 +1866,22 @@ static int ovs_ct_limit_cmd_set(struct sk_buff *skb, struct genl_info *info)
+ 		goto exit_err;
+ 	}
+ 
++	ovs_lock();
++	ct_limit_info = rcu_dereference_protected(ovs_net->ct_limit_info,
++						  lockdep_ovsl_is_held());
+ 	err = ovs_ct_limit_set_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
+ 					  ct_limit_info);
+ 	if (err)
+-		goto exit_err;
++		goto exit_unlock;
+ 
+ 	static_branch_enable(&ovs_ct_limit_enabled);
+ 
+ 	genlmsg_end(reply, ovs_reply_header);
++	ovs_unlock();
+ 	return genlmsg_reply(reply, info);
+ 
++exit_unlock:
++	ovs_unlock();
+ exit_err:
+ 	nlmsg_free(reply);
+ 	return err;
+@@ -1883,8 +1892,8 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
+ 	struct nlattr **a = info->attrs;
+ 	struct sk_buff *reply;
+ 	struct ovs_header *ovs_reply_header;
++	struct ovs_ct_limit_info *ct_limit_info;
+ 	struct ovs_net *ovs_net = net_generic(sock_net(skb->sk), ovs_net_id);
+-	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+ 	int err;
+ 
+ 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_DEL,
+@@ -1897,14 +1906,20 @@ static int ovs_ct_limit_cmd_del(struct sk_buff *skb, struct genl_info *info)
+ 		goto exit_err;
+ 	}
+ 
++	ovs_lock();
++	ct_limit_info = rcu_dereference_protected(ovs_net->ct_limit_info,
++						  lockdep_ovsl_is_held());
+ 	err = ovs_ct_limit_del_zone_limit(a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT],
+ 					  ct_limit_info);
+ 	if (err)
+-		goto exit_err;
++		goto exit_unlock;
+ 
+ 	genlmsg_end(reply, ovs_reply_header);
++	ovs_unlock();
+ 	return genlmsg_reply(reply, info);
+ 
++exit_unlock:
++	ovs_unlock();
+ exit_err:
+ 	nlmsg_free(reply);
+ 	return err;
+@@ -1917,8 +1932,8 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
+ 	struct sk_buff *reply;
+ 	struct ovs_header *ovs_reply_header;
+ 	struct net *net = sock_net(skb->sk);
++	struct ovs_ct_limit_info *ct_limit_info;
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+-	struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+ 	int err;
+ 
+ 	reply = ovs_ct_limit_cmd_reply_start(info, OVS_CT_LIMIT_CMD_GET,
+@@ -1932,23 +1947,29 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
+ 		goto exit_err;
+ 	}
+ 
++	ovs_lock();
++	ct_limit_info = rcu_dereference_protected(ovs_net->ct_limit_info,
++						  lockdep_ovsl_is_held());
+ 	if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
+ 		err = ovs_ct_limit_get_zone_limit(
+ 			net, a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT], ct_limit_info,
+ 			reply);
+ 		if (err)
+-			goto exit_err;
++			goto exit_unlock;
+ 	} else {
+ 		err = ovs_ct_limit_get_all_zone_limit(net, ct_limit_info,
+ 						      reply);
+ 		if (err)
+-			goto exit_err;
++			goto exit_unlock;
+ 	}
+ 
+ 	nla_nest_end(reply, nla_reply);
+ 	genlmsg_end(reply, ovs_reply_header);
++	ovs_unlock();
+ 	return genlmsg_reply(reply, info);
+ 
++exit_unlock:
++	ovs_unlock();
+ exit_err:
+ 	nlmsg_free(reply);
+ 	return err;
+diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+index db0c3e69d..355adf78b 100644
+--- a/net/openvswitch/datapath.h
++++ b/net/openvswitch/datapath.h
+@@ -172,7 +172,7 @@ struct ovs_net {
+ 	struct work_struct dp_notify_work;
+ 	struct delayed_work masks_rebalance;
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+-	struct ovs_ct_limit_info *ct_limit_info;
++	struct ovs_ct_limit_info __rcu *ct_limit_info;
+ #endif
+ 	bool xt_label;
+ };
 -- 
-2.34.1
-
+2.54.0
