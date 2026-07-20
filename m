@@ -1,221 +1,363 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7573B6BFA;
-	Mon, 20 Jul 2026 08:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784535203; cv=fail; b=i3WvladvFpphsWpEUxrusvrNte/U2OisC7+sqQGIg2aZLIUuxHgN9ulu5RwfhHRSm+8cAV4a9jyFBSiOHzNXpxjfLKArTYBHvqdQhpP16eL0+5fny6h5zcj0jfAw6jiXsMVpEdT89H0He4H+faNAScNT6cPNsgSz647ZebyLqrM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784535203; c=relaxed/simple;
-	bh=TdC1qghKwjCEcmNRIiwzVar9Nqj0d56OQXKjGLibDT4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=T0619N6+yht4Ifz17mpT/lPZvpzKyQ8TETgS8qNgKyFCUuTYEH9mQt0jVIGCxxsJnmwk1b8W8ol0qeelypELen8Ktxi+Gdr8680lHXGKT2ezNJa17i+ECPX9RmeEzLruoHIgEIwY7pBvBOZdjhtrc+nFZf2rjDQwBUW6U1mg5Xw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KXyOIAlO; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16BB34AB03
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784535362; cv=none; b=MfhtIQeHWRK/wbCPAko1f92nXZtYEE0z+b1pqZJobm7XVg3VJqCDenGGmJZCoRxOB19QNxIHlFPwIR+a13A/A7CTrcN+5Fb1k8V/OclFfQIavVi8hhzdSleU/8AuFBLZWHNpVEdGex95vj1E1hT+cUWzYHXEXIpVJXBp3kznv7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784535362; c=relaxed/simple;
+	bh=NwvisoGKc/wOBgvMGFlq4i0Z1hpIzUHHX1thQgmCedo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PfK77wKofBa+pYXMhYjT1vy4k3yKu3lZWqdaYfdh/Bsw8mmAdG5OCev7b5psf1s6K+Ki69x3uslCX+bsa09yB8L5GgSu6HFKinVa2tNy0CnJ1Q9s/iL8qYnAjmdn569P1Eo2R6xHjz/ijVBuBYnRDlIZ4+UmgUSfZoN4Aut5Vi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvXqnS8A; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KXyOIAlO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784535201; x=1816071201;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=TdC1qghKwjCEcmNRIiwzVar9Nqj0d56OQXKjGLibDT4=;
-  b=KXyOIAlOGPe5z9zqWuBJVdyXUrFek/v4yr7/LrgPSvDsXuRYfL0Qk9GU
-   HgsFhQywlNRMl/DXB+BiFDTVwCTnvrwxW17V9Q5ZAPCzTttX/6FaPzyws
-   RPrfUA0zdEG56TxuSAroo5K8SKMQyc9frAOF3wcuKcffb33SpXXf6lH2Y
-   B+rUWVfeOcMjoNciACJY6re3YSlJoV62NQERJcXM/nUJD/C/LgakeVV/q
-   KcJxNr6h6mOdnOHTZCdLUb6K84cD2cke2BMUwWqifVn8x9i9VzPIzZIgo
-   LN4RUuNBHjPJoQdjMLjBfT8okRUl+1NE6RemElTkr72kjyi6X3wTJ9gy7
-   g==;
-X-CSE-ConnectionGUID: l7HEZ0OkTXCa0ELA1unPLg==
-X-CSE-MsgGUID: lnqIVbb+TqGAxiV+i4MfWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="72645606"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="72645606"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:13:20 -0700
-X-CSE-ConnectionGUID: cp/PxkKUQFKdxIXKAua4/g==
-X-CSE-MsgGUID: Ldpub406QMmPJBFAr1w9CA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="253021540"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:13:20 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 01:13:20 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 01:13:20 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.34) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 01:13:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a7MxepK9nGxui+9CtNxfj9rvqOt6PCLLuO+bC7v1TlVnfgDvJjW95dlnACOviZnLu1fxdNjt9B+pslGM1C+RHnK8iHEn2grb+OD4V3Jn1OZaO0aYEJI89j6WYlEVOw3RGvtVFc0AcwtUob5uvzuivxNRCOPxIcBrmE0utEDKiR6b7nDX5Ijo0GBjanHyU9Lim7uUfvl9cpJ8I1c66cvr/H/oaI97El2WGwglmm5mr0B0raIVpYG/B0vBX3gBYT3a5Mku7TMcP0/AKjQQd2M+4f3pzaAzrcTi2K0PX4IECUvBlxJSfjrLsJ9+tZKoDX6AlLrvNpzLSWYfIwnOzgTakA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a5/0yKA5eRQd6obFnYAzxMXqs27lwdfUYTm2vjSHH5c=;
- b=fyNGpxYSyiq9ltMRy8xQ6qFk56LHKT1mEVi6wWnNl+L50a6hyGcus0OiO1xwpwkyBU3oCgzDL9KLvikO95dmpqf3vSq/Ts278IGm4/TpLJ9ez9XYXnGfCkeUKBV2y668kmR6MNOD1c6YVhW922P7JponGUCupGE/b+nH9L57QZ6hmuQ5FPJMGfTx/7+urIXlWGASYY4USEmTG0xesttsgb9A3gGuf6EeghnsMJwezjTPgodf/+y+qIB1lJTCzrs9LyB+sndq1GdVOvCHm4WOWKvWLOE+Fvw9P7GdNRAzv2yc+3S10RmcTAmu9xLSw7/h+lv4PQpFzuXDJAePdNDtGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB8448.namprd11.prod.outlook.com (2603:10b6:806:3a3::17)
- by SA0PR11MB4623.namprd11.prod.outlook.com (2603:10b6:806:95::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 08:13:16 +0000
-Received: from SA1PR11MB8448.namprd11.prod.outlook.com
- ([fe80::38f:6a4:ce6b:d5b8]) by SA1PR11MB8448.namprd11.prod.outlook.com
- ([fe80::38f:6a4:ce6b:d5b8%6]) with mapi id 15.21.0223.011; Mon, 20 Jul 2026
- 08:13:16 +0000
-Message-ID: <2f288130-0d79-4038-b7e8-8580c249c386@intel.com>
-Date: Mon, 20 Jul 2026 11:13:05 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH net] igc: remove napi_synchronize() in
- igc_down()
-To: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>, Maciej Fijalkowski
-	<maciej.fijalkowski@intel.com>, David Carlier <devnexen@gmail.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<aleksandr.loktionov@intel.com>, <advoretsky@gmail.com>,
-	<stable@vger.kernel.org>
-References: <20260712132242.223254-1-devnexen@gmail.com>
- <alSzCokS7scCoza7@boxer> <c477f099-c365-496a-bb5c-ae8d27d7916f@intel.com>
-Content-Language: en-US
-From: "Kadosh, MoriyaX" <moriyax.kadosh@intel.com>
-Organization: Intel Israel (74) Limited
-In-Reply-To: <c477f099-c365-496a-bb5c-ae8d27d7916f@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL2P290CA0007.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::9)
- To SA1PR11MB8448.namprd11.prod.outlook.com (2603:10b6:806:3a3::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvXqnS8A"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8486ac3f347so2816323b3a.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 01:16:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784535360; x=1785140160; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cbgTA/Fdi35MAcDt+VL5REq8VSaccpXMdCOmLmcj2D0=;
+        b=kvXqnS8Ad0VlNjFwWjrxD2EOFBOQi4go/jSe7BNwS3ncgU0y3DXClloVFBGk1nAiVx
+         vEx6mww+srWBOcrFyvKtuFlYzitmZxHbO7j0Se0nF0ufZLYT6X7V9Cs0rTzn3zInEF2p
+         iU735EWletXqxlMK0eXZrZQna6hJO8qOPpVIk7ABw3lUpWHRZ/eHdLbK6oyjmFM4LnAd
+         08YTZV78s4p/+URx243ZVA7+Q0xZSk/LcB/faahhWe2+Pp5YHqmSJRIwb+ofil6ARg0P
+         ndNTqs+7ckJj0pSu9dmK5MAPojWXMqLJucM6mmUTTqQ4c68iNHyIa1riUNlrd9uUc227
+         +onQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784535360; x=1785140160;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=cbgTA/Fdi35MAcDt+VL5REq8VSaccpXMdCOmLmcj2D0=;
+        b=YYd1eX9uh3gBOcHxwRKAhOqpE6bcgQs/K+DVYwN0M5jDxFKnScBMEuMZ8JteFEobiS
+         XJLzSoICSAhh+7HfgMPZiBKNbbkgP4xya7CZN4Qz8tK+1K8bwoqqX/F+MYPGzHTfJMA1
+         PpzGLxyBpnl0YsjvrEpHCQ3i9FII7akWuyo00hyEDXMc2WmIs2N4C8+oyJuvSEhxDBsE
+         pTwQ9LM/4NU9F12BDloxfkNxZrUJGFN+zKmc/SFbFo26Tanq5dq/WB5HdA0pBiNPVd3R
+         eyewVJVCYT5M9rOFO6nlIa0Zb81EMfgDc59BCoQ457P+j6B6UVcWTb8yH8AWKbNwL9WA
+         x/Tw==
+X-Gm-Message-State: AOJu0YxNH3KQHkQ0KXa9NlfnBtRJZS6TI4peUbaX/pZVwrjks8ZonFhi
+	M597+3lGIVWg+CWrza8mHFOjnGKpcz8mul1tvEFtznf9iXiZ7qLQHi5a8Xx8APl52HY=
+X-Gm-Gg: AfdE7ckZbUhymsvUUkJ+cP0lysvXDOYTgGaF0wfn+ngGBfHTj+cSapcJC8h4cvczFlc
+	wL6ITS1iGRrzdeKpsXsSHtJSEheZ+ysHtx2BQw3qVYT/qlTtd/WS93VGf9pR7uc6lgrhMP22zbP
+	13BPdHUCwzc/1iD9oBFItUDVqU55IBx1d8nm09+CtsHjWlnG/Qfcmqmdrac6+X8FaMf3wd6v+IP
+	hFwjyzGlrJzTnWrJBZf14H5ou1TWJK6qHlFXu4rHG39rZEEBHzWiROkn0MybBBIn4pD5+yMNHQz
+	bmCgAxwqgO7zl/3ubScCARfefEnhXzrnjV/7UhSZjtz5fTCcPTCwPdB4g+RPyELSRIuTGMwFMAN
+	e/l4Ak29QnKRtjv5Nu8OfRhMdJt4ykJP2avI2aSq0uijJTy0m46OkJRE/OqsB1eEbffOcfdhNa5
+	M=
+X-Received: by 2002:a05:6a20:918a:b0:3b4:b259:74e3 with SMTP id adf61e73a8af0-3c38dbc0b74mr19255850637.31.1784535360103;
+        Mon, 20 Jul 2026 01:16:00 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429fe1014sm33656404eec.7.2026.07.20.01.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 01:15:59 -0700 (PDT)
+From: Qiliang Yuan <realwujing@gmail.com>
+Date: Mon, 20 Jul 2026 16:15:48 +0800
+Subject: [PATCH v11] mm/page_alloc: boost watermarks on atomic allocation
+ failure
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB8448:EE_|SA0PR11MB4623:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4b742f4-9e20-4439-0dde-08dee636c011
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|22082099003|18002099003|4143699003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: XKOe9+taLA5A4L2SWuGy53e3jATdMRlNjFgBTqQ/45jSjBpXlhgHZ5tyamqORD1lNdUlHgh4xP5Vb2Ir/QeVBvJVhyEvjebrz63DxwI1LN/uqz1//5FLeBooVKsfBv5sOjIz/OfoDuD0QHKLHGmL9v5RKpro2poUUAb3rQNPf1wN9EfjxUxGbW6wEWKqMcMfnL4ercXz8q8egkMt2FukBykq7IWC5cwIC+HaY78sUXJbEGl9mcDBjDVF9D/u1YcAfEQT5MQj0APIKF/Cn0WajIx07q3UhClAAWo64UhuLrt3Gvxoujta1sztgML0Geg45QzJ3+219R9jzgMefj0lEbdHjwa4MUes/Jm6dVwwEcSfsUgVLa4chFNel9SB5d26zb13nJKgEP0BVlB+DX6Ye0kK7TO4sq6ElwV60kUY/EFbxlORWnP1EeTPPYa5iHlzyGDbQBHAFLq+WsUgmCnpWdyUujbu3/XHZDi6vT/l1c1QeA7oxPVrMnoJ6D8vjxYqtR1u22LJhQT6WMNzqV92PjzQ716CaSqlcI2FDAfA5I7WmdlfELo73lGH0T9c6Zvrvyd4nmTkBqA8bKiz7T2nzxhwwk/1Ydtw5sVCxHzZLsmi4DB9+xmEjKlgnjN2Q9Frm57Zkak9LUCrV+9aiitW3ypV30Tp8Dy5iwiufy+mo2k=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TnhTY2ovSlY0eEVpVW00UDZIR0hSaVpwRVZXOUNTa05obW9ycmtHSWh5ZnZD?=
- =?utf-8?B?em5JQ2d3Zy9XZE5XaVFFRlpDWFEvTDBVbklDT3JqSXgwL2JwR0FxKzZmN0p2?=
- =?utf-8?B?YlRKQWlLT0F4U2poWGRoZDA0WWpRLzJ1V3dTbjNEM1l3ejdVVS9FbTdmQnND?=
- =?utf-8?B?YWZOMHYySnExSGU3eXo5UGFWekVsS0tQSWRSRWREcXR1OWxWbHNLbEQzc25E?=
- =?utf-8?B?NHp1SFZRRzhOR1NndTJoOWVYNSttYzZiemFaWHlTaGltN0swMlBWalFpdHVF?=
- =?utf-8?B?TmVMSWgwc3F5b0FVN09BdEgrY3FKaHZnbGZTM1ZBOUN2VzgwRzgySDh0UjMr?=
- =?utf-8?B?eFgzMzNNRVlueHRMNUJicjBWeXZJVEZPRE9mc3VxODZLKzEwRXI2RGE4V1BP?=
- =?utf-8?B?U1BBWk9FRGZXR3VDQlRZTDlxMS9oc3AxOGdmOHoxS2FBamZMMVNSMEhmeXkx?=
- =?utf-8?B?YzMwYjFWenFaYXhBVkdyVWxZZWxLUEovT0NJc2hKWTZSenVITlgxV2pvRmJk?=
- =?utf-8?B?K0FWWVhQZWtxL1NpaUR4ajFQTnJ6Rmw1bnYxVmZoU204TzVNZk5Vc3dLYkZM?=
- =?utf-8?B?dzBNWmYrelRnTFVsRzRCWGhWQWpVMUhoNWg2cSt6ZTBGalRpSHRiQ0hLT21E?=
- =?utf-8?B?UDEyNEZrY2VVUUxzUU9UY2VvaVBvVVoyUnpXZ25KeU9JYldhanl0MnlOMzZs?=
- =?utf-8?B?dFZWdm5VbnYzTW40OUJqRFdKakVNVUxHSlA0d0pxWHNpUHQrWWNWVTM2NUpV?=
- =?utf-8?B?ZzlJNGRzUmVrZlZBN1FDL0ZNTlhRZ2VpWjdSQ2xHU3hTT3VHUk9wQWtjRUF2?=
- =?utf-8?B?NnNMYVZVZGFXaWZzSFdRSXY1ZmZwT1Nsc2JNUzR5Q01mdEFEcmhZbzMvdUFW?=
- =?utf-8?B?N3gzbGpFc2pIVmRpYlYrMEE2ajY5bk5SLzhJbTJReVR6Qm45RWZ5SzBobzI1?=
- =?utf-8?B?WEd5TFhxekNxOEV6M3h5MjVtWmFxbkllVjBwR1JZWThacEFUdTNnWVB4QVBx?=
- =?utf-8?B?UGNaeWh3V3B4cW55NHZNdUhvbVBiZy9PeGJPWDd4cmkyK1ZjSUFpVEREdHJn?=
- =?utf-8?B?bGp1bE5GaERDZzVoc2NYVUFCMkFyWmpoNk01c2JtRUVHaXQwQmpXVkpvN0Z4?=
- =?utf-8?B?T2ZGbHF0ZG1aMTVNUWdSSjFPYVR2bUtpQm1rNjgxalNNR2w1SkNvek14RjRE?=
- =?utf-8?B?T3R5OTNkWTAvb2pjejdKZ1RSTjNqLzl4d2hkWnk4WTI4RHE3NmxEUG8xSEh4?=
- =?utf-8?B?d1VKUDl0ZDZTbWpFaTdTeUcrZXpMRjN2d0hHNHhabkVRaTZhb2pDck4vdkdG?=
- =?utf-8?B?WTJnRHV5b3M3L2huWEdyMVY5SWZHVjNFVE4vQ3lYcHBHYUx6WW04U0JybHJa?=
- =?utf-8?B?M0UrZldrVFVEMEw1VkZQYWhDeEhsbWlxajRkZUt2clg0dXJaT2JUL3FPR1RP?=
- =?utf-8?B?Smd5TEtSWjNoWjJOMEFLNnJncTgraS9uQzRWeS9sM2ZJeklqWEVhNnhqYUJE?=
- =?utf-8?B?b2VrdS9HNlpLSnVXeEhuczVLMWVpU09EZlY4T0diVnlwb3VzKzJWZWJCUVM4?=
- =?utf-8?B?d2doUkUrRlo5V0dEN05VR0cxQ1FoVkNBUTlqSzYzQ1lNRHNDQVVGUnNHbUJH?=
- =?utf-8?B?QU42MVM0dVhwTFp1QjNTQkpJR2JMeXJpdHlpK3diQUdhaFdPV2dINE1qbmlE?=
- =?utf-8?B?NVR3TkpLNVF2bUpGS3Bnb0E1c3FtMmNIVksxQ05yYXBuMmFQbHJzcDk4ZTlj?=
- =?utf-8?B?dzE0OG9KZERVUW93TzRUVEtObnYwRTlGQTFhM29UemNVZitHM2gzN25TT2tW?=
- =?utf-8?B?bHpCWVNxSk1aRE9DV0xSeEtDczUyOFEzNVMreVo5NVdiTkFPSGV5UTNoN1ZN?=
- =?utf-8?B?MXVjOFJGZFZwZG0ycXJ6ekt0dnNGUlJNVllLeTFJZkdHVDA0dEtmNTcwOFhs?=
- =?utf-8?B?S05hRENMWndobitFdUlyQ2c4dUh2eGZ2SEdWUFVXRUhUZmQ5b2dleGU1WUs4?=
- =?utf-8?B?dnFTWE5PaTdUYy9NUGZWNS9UbTJrQzgwZGNzZ21ubEhyVFJrNVc1L0NFSGlW?=
- =?utf-8?B?MkhsNzlpQlJSb1U3Y0taZ2x1U2Zwdm9zRXZtcllYZ0pTeExvR0Iwb0lrTGRP?=
- =?utf-8?B?RGNscTJ0LzBDZDJGcGhQeGloWkpoZmF6aEFYV1NUcm9ubkJ1aW1RdklVYnNa?=
- =?utf-8?B?N2piTE1VR2tmLzNveWYrZEsxWnBNdlJmM0d3OVJUeUgvS3hIenVOaXYyQk1x?=
- =?utf-8?B?VGI2T1BZR0svQS8xYVZEdzFPY1NYQWtuZHVXUWFwMm9aQmFvVzVaSmVJNk9V?=
- =?utf-8?B?U2JUWGl6N25nYVlSZExxL0I4Sk55YWVQb2F5VE1aTjE1ZzAxdjVXVXhSK0RZ?=
- =?utf-8?Q?hSFDG8X+kV7WUXVQ=3D?=
-X-Exchange-RoutingPolicyChecked: R1n/JwCljTEp9f5mmEjDAumuMHXdSyroeDiyAuihJKcG3vdybEsIBJH5FVmoEaIyzBEddSR2VmLt7bG9c181fwf0nLrBxcZrc6UoMW1ANRhSR0Rhg3NojEac83CzEVvTKaLc8bnOFDgoISH0e8Q3Folzp0xq6CLWFYkyPerykNp2ZLRIH4VX1HHztBO2yDEnG7XoJWcNYosjU7gUf3z+unvBKQFES31bZtvM+C/WTBbOJo2eOUIVxg2V03gs72ufucd7sDfIKYLDy/krSZDI5Gk8x9jsQP6uFFOzEhNnjm0rpoDvFbfbOSKxuMYFXSdu89KQ6WPjQN41mBqmu9bJhQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4b742f4-9e20-4439-0dde-08dee636c011
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8448.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 08:13:16.2310
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /VbYZKyGJrjjEv8wQufmbhOu9YtR8ldB0Tdh99BY3++CM9iXzRS0pV3tORkgCYFVKm9q1j741vpuMi5Z0FgI9kpywjBbGlgNpI3SorE5t4Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4623
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260720-feat-mm-page_alloc-v11-v11-1-7376b02c27b3@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADTZXWoC/x2MSQqAMAwAvyI5G2iKC/gVEYmaasCNVoog/t3ic
+ QZmHgjiVQI02QNeogY99gREeQbjwvssqFMSYI2tTG0NOuELtw1PnqXndT1GjERYuoLKiQuWwUC
+ KTy9O7//cdu/7AcHMrXZpAAAA
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Brendan Jackman <jackmanb@google.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+ Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, 
+ Matthew Wilcox <willy@infradead.org>
+Cc: netdev@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>, 
+ Jing Wu <realwujing@gmail.com>
+X-Mailer: b4 0.13.0
 
+Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
+pressure as they cannot enter direct reclaim.
 
+Handle these failures by introducing a watermark boost mechanism for
+atomic requests. Refactor boost_watermark() using an internal helper to
+support both fragmentation and atomic paths. Apply zone-proportional
+boosts (~0.1% of managed pages) for atomic allocations, while
+decoupling it from watermark_boost_factor.
 
-On 20/07/2026 10:39, Ruinskiy, Dima wrote:
-> On 13/07/2026 12:42, Maciej Fijalkowski wrote:
->> On Sun, Jul 12, 2026 at 02:22:42PM +0100, David Carlier wrote:
->>> When an AF_XDP zero-copy application is killed abruptly, the XSK pool is
->>> torn down but NAPI keeps polling. igc_clean_rx_irq_zc() then returns the
->>> full budget on every poll, so napi_complete_done() never clears
->>> NAPI_STATE_SCHED.
->>>
->>> igc_down() calls napi_synchronize() before napi_disable(), so it spins
->>> forever waiting for that bit and the interface never goes down. Drop the
->>> napi_synchronize() and let napi_disable() do the job -- it sets
->>> NAPI_STATE_DISABLE, which forces the stuck poll to complete. Reorder it
->>> ahead of igc_set_queue_napi() so the NAPI mapping is cleared only after
->>> polling has stopped, matching the recent igb fix b1e067240379.
->>>
->>> Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
->>> Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: David Carlier <devnexen@gmail.com>
->>
->> Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
->>
->> This is a mirror of what Alex Dvoretsky did on igb, correct? Did you
->> reproduce the same issue on your side or is it a blind shot at this
->> driver?
->>
->> Regardless, I think it's a correct thing to do, but some clarification
->> would be nice.
->>
->>> ---
->>>   drivers/net/ethernet/intel/igc/igc_main.c | 3 +--
->>>   1 file changed, 1 insertion(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ 
->>> ethernet/intel/igc/igc_main.c
->>> index 2c9e2dfd8499..b3883a5a7d7a 100644
->>> --- a/drivers/net/ethernet/intel/igc/igc_main.c
->>> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
->>> @@ -5352,9 +5352,8 @@ void igc_down(struct igc_adapter *adapter)
->>>       for (i = 0; i < adapter->num_q_vectors; i++) {
->>>           if (adapter->q_vector[i]) {
->>> -            napi_synchronize(&adapter->q_vector[i]->napi);
->>> -            igc_set_queue_napi(adapter, i, NULL);
->>>               napi_disable(&adapter->q_vector[i]->napi);
->>> +            igc_set_queue_napi(adapter, i, NULL);
->>>           }
->>>       }
->>> -- 
->>> 2.53.0
->>>
-> Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Tested-by: Moriya Kadosh <moriyax.kadosh@intel.com>
+Implement boost_zones_for_atomic() to iterate through and boost all
+eligible zones in the zonelist, respecting nodemasks. Use a per-zone
+1-second debounce timer via last_boost_jiffies to prevent excessive
+boosting. Check and update the debounce timestamp under zone->lock,
+alongside the watermark modification, so concurrent callers on other
+CPUs cannot all observe a stale timestamp and pile onto the same zone
+within the same window. Verify with lockdep. Integrate the mechanism
+into the page allocation slowpath specifically for order-0 GFP_ATOMIC
+requests.
+
+This approach reuses existing infrastructure and ensures emergency
+reserves even if fragmentation boosting is disabled.
+
+The mechanism is bounded by construction. Each zone accepts at most
+one boost per second (the debounce timer), and zone->watermark_boost
+is clamped to zone->_watermark[WMARK_HIGH] / 10 regardless of how
+long the atomic pressure lasts or how many zones are boosted in a
+single slowpath call. Worst case, sustained atomic pressure across
+all zones in a zonelist adds at most one extra kswapd wakeup per zone
+per second, and the boost on any single zone cannot exceed 10% of
+that zone's high watermark. It cannot run away or starve unrelated
+allocations beyond that ceiling.
+
+This failure signature keeps recurring in production: a host running
+a downstream 4.19 kernel logged 144 order-0 GFP_ATOMIC failures over a
+4h15m window, all through the same NIC driver receive softirq path,
+across several unrelated network-facing services on the box. This
+confirms the underlying problem is real and ongoing. It does not by
+itself measure this patch's effect, since the fix has not been
+deployed on that fleet yet.
+
+Allocation failure logs:
+[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535649.655523] warn_alloc: 59 callbacks suppressed
+[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+Signed-off-by: Jing Wu <realwujing@gmail.com>
+Acked-by: SeongJae Park <sj@kernel.org>
+---
+V10 -> V11:
+- Fix a debounce race: last_boost_jiffies was checked and updated
+  outside zone->lock, so concurrent CPUs handling a multi-queue NIC
+  RX storm could all pass the once-per-second check for the same
+  zone before either updated the timestamp. Move the check-and-set
+  under zone->lock alongside the watermark update.
+- Add production evidence of the failure signature recurring (see
+  commit message) in response to Vlastimil's repeated request (v2,
+  v6, v10) for real-world data on whether this problem is real and
+  whether the fix helps.
+- Drop Vlastimil's Acked-by: he took it back in review of v10,
+  noting the v10 changes were not trivial. Not resending solely to
+  drop the tag, per his request; folding it into this update instead.
+- Cc netdev and add Matthew Wilcox, per Andrew Morton's (v1, v5) and
+  Wilcox's (v1) requests to involve the networking maintainers, which
+  never actually happened in v1-v10.
+
+V9 -> V10:
+- Refactor watermark boosting into mechanism (__boost_watermark) and
+  policy logic.
+- Decouple Atomic boost from watermark_boost_factor to ensure
+  emergency reserves.
+- Simplify Atomic boost calculation to ~0.1% of managed pages with a
+  10% high-WM cap.
+- Boost all eligible zones in the zonelist while respecting
+  nodemasks.
+
+V8 -> V9:
+- Use mult_frac() for boost calculation. (SJ)
+- Add !can_direct_reclaim check. (Vlastimil)
+- Code cleanup: naming, scope, and line limits. (SJ)
+- Update tags: Add Vlastimil's Acked-by.
+
+V7 -> V8:
+- Use spin_lock_irqsave() to prevent inconsistent lock state
+  (softirq-on vs in-softirq) as reported by LKP.
+
+V6 -> V7:
+- Use local variable for boost_amount to improve code readability.
+- Add zone->lock protection in boost_zones_for_atomic().
+- Add lockdep assertion in boost_watermark() to prevent locking
+  mistakes.
+- Remove redundant boost call at fail label due to 1-second
+  debounce.
+
+V5 -> V6:
+- Replace magic number ">> 10" with ATOMIC_BOOST_SCALE_SHIFT define.
+- Add documentation explaining 0.1% zone size boost rationale.
+
+V4 -> V5:
+- Simplify to use native boost_watermark() instead of custom logic.
+
+V3 -> V4:
+- Add watermark_scale_boost and gradual decay via balance_pgdat.
+
+V2 -> V3:
+- Move debounce timer to per-zone to avoid cross-node interference.
+- Optimize candidate zone selection to reduce global reclaim
+  pressure.
+
+V1 -> V2:
+- Add basic debounce logic and scale boosting strength based on zone
+  size.
+
+v10: https://lore.kernel.org/r/20260214-wujing-mm-page_alloc-v8-v10-1-bdfea431fd97@gmail.com
+v9: https://lore.kernel.org/r/20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com
+v8: https://lore.kernel.org/r/20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com
+v7: https://lore.kernel.org/all/20260123064231.250767-1-realwujing@gmail.com/
+v5: https://lore.kernel.org/all/20260121065740.35616-1-realwujing@gmail.com/
+v4: https://lore.kernel.org/all/tencent_D23BFCB69EA088C55AFAF89F926036743E0A@qq.com/
+v3: https://lore.kernel.org/all/tencent_44B556221480D8371FBC534ACCF3CE2C8707@qq.com/
+v2: https://lore.kernel.org/all/tencent_6FE67BA7BE8376AB038A71ACAD4FF8A90006@qq.com/
+v1: https://lore.kernel.org/all/tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com/
+---
+ include/linux/mmzone.h |  1 +
+ mm/page_alloc.c        | 80 ++++++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 72 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307f..8e37e4e6765b5 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -882,6 +882,7 @@ struct zone {
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+ 	unsigned long watermark_boost;
++	unsigned long last_boost_jiffies;
+ 
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7b..4517e2c1310ee 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2158,12 +2158,15 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
+ 
+ #endif /* CONFIG_MEMORY_ISOLATION */
+ 
+-static inline bool boost_watermark(struct zone *zone)
++/*
++ * Helper for boosting watermarks. Called with zone->lock held.
++ * Use max_boost to limit the boost to a percentage of the high watermark.
++ */
++static inline bool __boost_watermark(struct zone *zone, unsigned long amount,
++				     unsigned long max_boost)
+ {
+-	unsigned long max_boost;
++	lockdep_assert_held(&zone->lock);
+ 
+-	if (!watermark_boost_factor)
+-		return false;
+ 	/*
+ 	 * Don't bother in zones that are unlikely to produce results.
+ 	 * On small machines, including kdump capture kernels running
+@@ -2173,9 +2176,6 @@ static inline bool boost_watermark(struct zone *zone)
+ 	if ((pageblock_nr_pages * 4) > zone_managed_pages(zone))
+ 		return false;
+ 
+-	max_boost = mult_frac(zone->_watermark[WMARK_HIGH],
+-			watermark_boost_factor, 10000);
+-
+ 	/*
+ 	 * high watermark may be uninitialised if fragmentation occurs
+ 	 * very early in boot so do not boost. We do not fall
+@@ -2189,12 +2189,70 @@ static inline bool boost_watermark(struct zone *zone)
+ 
+ 	max_boost = max(pageblock_nr_pages, max_boost);
+ 
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
+-		max_boost);
++	zone->watermark_boost = min(zone->watermark_boost + amount,
++				    max_boost);
+ 
+ 	return true;
+ }
+ 
++/*
++ * Boost watermarks to increase reclaim pressure when fragmentation occurs
++ * and we fall back to other migratetypes.
++ */
++static inline bool boost_watermark(struct zone *zone)
++{
++	if (!watermark_boost_factor)
++		return false;
++
++	return __boost_watermark(zone, pageblock_nr_pages,
++			mult_frac(zone->_watermark[WMARK_HIGH],
++				  watermark_boost_factor, 10000));
++}
++
++/*
++ * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
++ * This provides zone-proportional safety buffers: ~1MB per 1GB of zone
++ * size. Max boost ceiling is fixed at ~10% of high watermark.
++ *
++ * This emergency reserve is independent of watermark_boost_factor.
++ */
++static inline bool boost_watermark_atomic(struct zone *zone)
++{
++	return __boost_watermark(zone,
++			max(pageblock_nr_pages, zone_managed_pages(zone) / 1000),
++			zone->_watermark[WMARK_HIGH] / 10);
++}
++
++static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
++{
++	struct zoneref *z;
++	struct zone *zone;
++	unsigned long now = jiffies;
++
++	for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
++					ac->highest_zoneidx, ac->nodemask) {
++		unsigned long flags;
++		bool should_wake = false;
++
++		/*
++		 * Check and update the per-zone debounce timestamp under
++		 * zone->lock so concurrent callers on other CPUs (e.g. a
++		 * multi-queue NIC spreading GFP_ATOMIC allocations across
++		 * several softirqs) cannot all observe a stale timestamp
++		 * and pile onto the same zone within the same window.
++		 */
++		spin_lock_irqsave(&zone->lock, flags);
++		if (time_after(now, zone->last_boost_jiffies + HZ)) {
++			zone->last_boost_jiffies = now;
++			should_wake = boost_watermark_atomic(zone);
++		}
++		spin_unlock_irqrestore(&zone->lock, flags);
++
++		if (should_wake)
++			wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++	}
++}
++
+ /*
+  * When we are falling back to another migratetype during allocation, should we
+  * try to claim an entire block to satisfy further allocations, instead of
+@@ -4742,6 +4800,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
+ 
++	/* Boost watermarks for atomic requests entering slowpath */
++	if (((gfp_mask & GFP_ATOMIC) == GFP_ATOMIC) && order == 0 && !can_direct_reclaim)
++		boost_zones_for_atomic(ac, gfp_mask);
++
+ 	/*
+ 	 * For costly allocations, try direct compaction first, as it's likely
+ 	 * that we have enough base pages and don't need to reclaim. For non-
+
+---
+base-commit: b54345928fa1dbde534e32ecaa138678fd5d2135
+change-id: 20260720-feat-mm-page_alloc-v11-5f415da4aeb0
+
+Best regards,
+-- 
+Jing Wu <realwujing@gmail.com>
+
