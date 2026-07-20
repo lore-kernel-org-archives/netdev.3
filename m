@@ -1,113 +1,144 @@
-Received: from shout01.mail.de (shout01.mail.de [62.201.172.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0F4342CB4;
-	Mon, 20 Jul 2026 11:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.201.172.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27EF33F584;
+	Mon, 20 Jul 2026 11:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784546672; cv=none; b=tiUKIRyXsATxsXCY+u5Ik6n3r4Lb2VTsGXiuBgAtJvpc2o6Zly9xncT9nn0kyZ1fxAXTvDWmTHmRdzcrM1uply2eC9Amj/28akOJ0x1B6j/C1VBFKuDpVU1Jecn8jyKXI3knipp2KufuGOC1m3DDV6BawbQYd7A+IcLwzIDkBXU=
+	t=1784546938; cv=none; b=p066qF7+xQJ6N6zFCK9kOHUYDrjugmnoOnQA6OG7W4/bqgaEliq10XIF8cSwUGUKlzytm4XkM6dxJJn8SKBFhKZ7UuoHndPxWCAGSuRn0PmRIMd2N3qSvlMSp+1lByPYTjWOpGICk10KWCtYUScl7/gDDbsW/x2+K49qQ9Uiyw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784546672; c=relaxed/simple;
-	bh=7W8Be4Q+aMUMH8sP5FmymS0/HjtVRdtikJu+5xOVoqs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I2hAeDIAgmu/hwfX6I+cyC2lJynPUzcoO0TV4KVJajki5kCAIXJrYOamf1z3prwTck3vNOGc5YdneqDu9fhKqVleHWRsutboIEwGuDH9qpPClkDkvewVWazaFJmakvIPZxMYAIZxx6kocLtj8q3nFJT0LAxU93ibs67t6NeW3No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de; spf=pass smtp.mailfrom=mail.de; dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b=qBQyp9dO; arc=none smtp.client-ip=62.201.172.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.de
+	s=arc-20240116; t=1784546938; c=relaxed/simple;
+	bh=lRwjyeC78WwIQHFKJlu5Fxy5cobWN2TgGxczpSf/QMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RMoh7fzS0dP6FwvaMKm2S/N4ca324Tsl+NUU/1KaaPWhTagfCAR8VxAkSzV6mF1/ii7ldxQXAKBp0Zj2YEgtoldKITdDpmsH4CiYK+eJy4oG7U5moG9GKvoqg6LqsqeQ2bPdy4y1ILHPMqM/9A8aH2U+11tjkRneivN4bzRMv7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSpNhcXb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.de header.i=@mail.de header.b="qBQyp9dO"
-Received: from postfix01.mail.de (postfix01.bt.mail.de [10.0.121.125])
-	by shout01.mail.de (Postfix) with ESMTP id 203C02407D7;
-	Mon, 20 Jul 2026 13:24:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
-	s=mailde202009; t=1784546664;
-	bh=7W8Be4Q+aMUMH8sP5FmymS0/HjtVRdtikJu+5xOVoqs=;
-	h=Message-ID:Date:Subject:To:Cc:From:From:To:CC:Subject:Reply-To;
-	b=qBQyp9dOT81x/mh7BONt6JyJMtF3kl/BzkEoN+sUFYIUN06rCN0mHwcKSy4mNb/sy
-	 xbqpSZfr1SvSFD7RKjdQXnMzCn6VsXy1qRe1i6H07t/SZ5iVTCqlPYH9GvEYUFCgI/
-	 110tolbNIfLQV0tOluTUNb44z1KlTTRGNPtJnRPAY7z4dJJkvxWzgcdd2jHLB6xusn
-	 LG148hRs6X8vFVvOW8uUphYXQjYFH/VHXk+ZU8Byu6GK65dZbPGN8lXamfeSUOXUgX
-	 p4RTWHsenuahnT8Td/cyKDaaWOMxORjIZMht/fZNlaCXhQWPdfr+0onxThkSq7UGbG
-	 XyLH4DchkSUpA==
-Received: from smtp01.mail.de (smtp03.bt.mail.de [10.0.121.213])
-	by postfix01.mail.de (Postfix) with ESMTP id ED54F2400B7;
-	Mon, 20 Jul 2026 13:24:23 +0200 (CEST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp01.mail.de (Postfix) with ESMTPSA id C49C6240A4A;
-	Mon, 20 Jul 2026 13:24:22 +0200 (CEST)
-Message-ID: <f141897b-6570-4a80-95bf-a8efd9d25785@mail.de>
-Date: Mon, 20 Jul 2026 13:24:21 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSpNhcXb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690E01F000E9;
+	Mon, 20 Jul 2026 11:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784546937;
+	bh=FWJJ/4THIjTyif9tXUvhqrEnOYPI3yjA1+xq1KQYUG0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LSpNhcXb+zuPy9rvHaEnnMSDSIKzdqb6lsFZep7Z62+WP9hUM4JLMJ72yRPnDYa7f
+	 LMCalCe6XMG0YnDYPL2Od+iBhCsNPNynjyqHoV2gZZa3VpFcPSy8mb/JspzHJEcduG
+	 fzcoCkm0+X2CAu2VOmdeAHQx+omXiZsB3HoAVmoEy/jRIf+L0eYiZCBUD1mCiDa8I0
+	 vzBm1pcu0fWLFec7odpCJZvJ1h8I2Q4clm0amP5VHSPz9D/+Nh/wBuLL44t2bpmxEL
+	 053sqDIIdcF6D2FrUPqvplaRSbGKftoj4MIegpVHJ+rezdVskoqj418Oss0P3BgR3n
+	 CMy0nJr1qjv1w==
+From: Simon Horman <horms@kernel.org>
+To: deepshah146@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	richardcochran@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 2/2] selftests: ptp: add a regression test for the frequency adjustment overflow
+Date: Mon, 20 Jul 2026 12:28:42 +0100
+Message-ID: <20260720112842.106914-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260712040922.6403-3-deepshah146@gmail.com>
+References: <20260712040922.6403-3-deepshah146@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] net: stmmac: dwmac4: mask interrupts before stopping DMA
- in suspend
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Rohan G Thomas <rohan.g.thomas@altera.com>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <7941d239-e5f5-43b5-ae0f-20398221e027@mail.de>
- <20260718152802.83553-1-luis.la@mail.de>
- <5cc0d788-c78d-40f2-998f-235d40f567f2@bootlin.com>
-Content-Language: en-US
-From: "luis.la@mail.de" <luis.la@mail.de>
-In-Reply-To: <5cc0d788-c78d-40f2-998f-235d40f567f2@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 1194
-X-purgate-ID: 154282::1784546663-A86FBC36-B0B68247/0/0
+Content-Transfer-Encoding: 8bit
 
-Hi Maxime,
-> This is almost perfect for a new submission, only 2 things to improve :
-> 
->  - you're missing the tree name in the patch subject. As this is a fix, it should be :
-> 
->    [PATCH net] net: stmmac: dwmac4: mask interrupts before stopping DMA in suspend
-> 
->    you can find instructions for this in the doc Andrew linked :
-> 
->    https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-> 
->  - When submitting a patch, do so in a dedicated thread, and not in reply to
->    other threads.
-> 
-> You should send a V2 addressing the tree name in the patch subject.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+https://sashiko.dev/#/patchset/20260712040922.6403-3-deepshah146@gmail.com?part=2
+---
+--- Patch [2]: [PATCH net 2/2] selftests: ptp: add a regression test for the frequency adjustment overflow ---
+commit be5629a2612f961645c213deea88db61fa06f083
+Author: Deep Shah <deepshah146@gmail.com>
 
-Thanks for the feedback, I addressed these changes and sent a v2 patch.
+selftests: ptp: add a regression test for the frequency adjustment overflow
+    
+This commit adds a regression test that crafts a struct timex.freq directly
+to verify if an overflowing frequency adjustment is correctly rejected by
+ptp_clock_adjtime() with -ERANGE.
 
-> Sashiko noted something on the patch :
-> 
->   https://sashiko.dev/#/patchset/20260718152802.83553-1-luis.la%40mail.de
-> 
-> It looks to me that sashiko is just wrong there though, I can't make sense
-> of what it is saying.
+> diff --git a/tools/testing/selftests/ptp/ptp_freq_overflow.c b/tools/testing/selftests/ptp/ptp_freq_overflow.c
+> new file mode 100644
+> index 0000000000000..342b22689f679
+> --- /dev/null
+> +++ b/tools/testing/selftests/ptp/ptp_freq_overflow.c
+[ ... ]
+> +
+> +#define FD_TO_CLOCKID(fd)	((~(clockid_t)(fd) << 3) | 3)
 
-This seems to be because strictly speaking the title of the commit was wrong,
-the interrupts don't get deactivated before stopping dma.
-I changed it, but only read after that it is discouraged to change the Subject, sorry...
-I hope the patch now meets the requirements,
-Luis
+[Severity: Medium]
+Does this macro left-shift a negative signed integer?
 
+Casting fd (a positive integer) to clockid_t (a signed 32-bit int), applying
+bitwise NOT, and left-shifting it by 3 yields a negative integer. Left-shifting
+a negative signed integer invokes undefined behavior in ISO C, which will
+trigger a runtime error if tests are run with Undefined Behavior Sanitizer
+(UBSan) enabled.
+
+Could the inverted value be cast to an unsigned integer prior to the shift,
+similar to how it is handled in testptp.c?
+
+[ ... ]
+> +	/*
+> +	 * (1 + 147573952589676412) * 125 == 2^64 + 9, which overflows s64 in
+> +	 * scaled_ppm_to_ppb() and wraps the result to a ppb of 0.  A kernel
+> +	 * that does not detect the overflow lets this absurd frequency past
+> +	 * the max_adj check; a fixed kernel rejects it with -ERANGE.
+> +	 */
+> +	tx.modes = ADJ_FREQUENCY;
+> +	tx.freq = 147573952589676412LL;
+
+[Severity: Low]
+Will this assignment cause a -Woverflow compiler warning on 32-bit
+architectures?
+
+On 32-bit platforms where tx.freq is a 32-bit long (without _TIME_BITS=64),
+assigning this 64-bit literal exceeds the maximum value of the signed integer
+type. Although a runtime check prevents execution, the compiler still parses
+the assignment and emits a -Woverflow warning during the build.
+
+> +
+> +	ret = clock_adjtime(clkid, &tx);
+
+[Severity: Medium]
+Does this test permanently disrupt the hardware clock frequency on vulnerable
+kernels without restoring it?
+
+If the kernel does not have the overflow fix, clock_adjtime() will bypass
+the max_adj check and push the corrupted frequency downstream to the driver
+via ops->adjfine(). Because the test exits immediately after verifying the
+error code, the original frequency is never restored, leaving time
+synchronization corrupted until a reboot or manual reset.
+
+Should the test read the initial dialed_frequency and restore it at the
+end of the test?
+
+> +	ksft_test_result(ret < 0 && errno == ERANGE,
+> +			 "overflowing frequency adjustment is rejected (ret=%d errno=%d)\n",
+> +			 ret, ret < 0 ? errno : 0);
+
+[Severity: Medium]
+Will this test incorrectly fail if the PTP clock is in free-running mode?
+
+If virtual clocks are active on the selected PTP device, ptp_clock_freerun()
+returns true and the kernel explicitly returns -EBUSY before evaluating the
+frequency overflow logic. Since the test expects -ERANGE, receiving -EBUSY
+will cause the KSFT assertion to fail.
+
+Should -EBUSY be accounted for as a valid condition to gracefully skip
+the test?
+
+> +
+> +	close(fd);
+> +	ksft_finished();
+> +}
