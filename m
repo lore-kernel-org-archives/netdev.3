@@ -1,193 +1,233 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DB537F75A
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 11:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409B33F4843
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 11:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784547092; cv=none; b=qb+sZb0rQQ47mKQ4aZUS+2dI1JKRf0jvP1hoQjiq7z9B2hb/bHHXP+ilmFoV2oVyFOYsT6ih7bkdzJgXnO+tWo5J5/WYqMg3u3ZRfTgzChk2CRLTTsffWsk8vXI2rylJoYGb1PhOG/XLE3H5VRbxsBcIdsZ8NmjB5/tnaBG7AgA=
+	t=1784547423; cv=none; b=WsaX+rH3kUGEOarWEnAYMZQ0JnHPAgGfQfJxsdO1E2R9BxVDAdt35z+WqDOCWJ1NXsY42suovIAB0yJ6V7ADkBljxw4OLGtE93ybLo/QJ+HPT4NQxSPeu0Pbd5DC69cnu5n77cMRa4XG6/ch0IXtroV8s0162isCpgXPUdHREPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784547092; c=relaxed/simple;
-	bh=9Ryl1qPOYFgFDJ1CxOWNCYl2FLMr2LVh3Deo2OWD3N0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=CaSxvKFJfZSO/+eTj7bl8P8kf0PneFdCVGqtHuGwkRhabmTYpen4IHkSZLGE8N6LRzjsDJgCQxlJsVFy5HouUocrMp5/uOsUYRerYXBFnjaYhos9drHliuwmQBoFtgylEhSb2UD1biRQSwKiZhDpFDQozF+Mn7QBXlSiVxm/prw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HV3L9s3I; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784547423; c=relaxed/simple;
+	bh=lfy9A+R4OT/C1WlI8cVp4JF5H+Np5KibUMak61dpVTE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gI42P2/B3Xi+H6JWrqmUJa2pSwFHg74eZOFDhr4BPGPyQNxzYpzO9wZ1yBeMinyGSSkP0biFABEbKtq9bMRSyFfKhCSkfMYBLZwylqsr6fZF6IEf4uJIvY9mspYS/xXzH2yhIqb8ia1wwz0upYcFFFF/j3FetS8JKt0o+zXX3oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dMgx/RDf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ggfiMnYw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HV3L9s3I"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-81ed2a06b9eso44758807b3.3
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 04:31:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dMgx/RDf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ggfiMnYw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784547421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OUFpV4FJ38LScM2pwHRa69/ZPwFLGHi3MGED0c5Hvbo=;
+	b=dMgx/RDf6W/GB5Vx43DNpF+mXTxzN0QNdOGbfI5nPezpu1iWzS20gholV6eKayw423BYUy
+	EjSIA6GFfzHud2nvOHodj92K7OmEmIzsHA59zdA1R3RBqdMQ+15/4o9+MtXHyqIaNVRbC0
+	020L/OUwc86+kfQYipawAX0J26poiJ4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-Nnrm0XrUOjOR6wCYYTCaxw-1; Mon, 20 Jul 2026 07:36:59 -0400
+X-MC-Unique: Nnrm0XrUOjOR6wCYYTCaxw-1
+X-Mimecast-MFC-AGG-ID: Nnrm0XrUOjOR6wCYYTCaxw_1784547419
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4955ce558d8so10588795e9.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 04:36:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784547089; x=1785151889; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NPWEZrRfY5rMao6IgbuSiFe2UoYl/a8XYmEbz/tZoRA=;
-        b=HV3L9s3IdPsw66FCN223qshp9DXKeNbCRmHokSdcCKa5Rau9U2LkMBPd571l8mtlmC
-         41myBvQBr+gQys+qXXY1h4SQVDr1niIX5/E0eg+o+RUjejhCI+BOQQcU9nw/HFg7dRYN
-         XhleUTNq6GlyyfCgE0hV4NjD24edwSPOz/8+4u/fXhUKG87p+Avf9WsOowJ8NSTfhbKp
-         18GxA/rkkTY9HJfoRUCuvHRlHk9uQ4zdl7RwoiTpsvJf3E8O5CJXSrt9RwYpdI7UhVAc
-         KPaC/MOCC8jkBLoRKXDkM2FZrjMu04UZ1a0yFGc4DPan+UYx+/MFxfm3cJHFTapp58Rs
-         ZTFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784547089; x=1785151889;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1784547418; x=1785152218; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NPWEZrRfY5rMao6IgbuSiFe2UoYl/a8XYmEbz/tZoRA=;
-        b=qj7xoThKYG4a0n6FbelYwNk9qc+SEDN5AFJu7qyRq1v+3haeN6tI8gt2J+n0YXX98p
-         t+etuNsoSKWBHn1n98U2sPWUJs+ZGeeZfP8sp1O0pRHgR5SpJeSZaPLJ8LLy9ccNqW/I
-         2J/+u+pGY2nADYrkprDBVCgzQKbvjk4cC5jDBmck7cQdHNAdH4ezKKWS1UB9/ZevfYC+
-         +zr5gw279Tt6yCmKzYFftzH0TCk+x7keFU8Ws78fmVIZhrFiRB3iVnpyMmNNAwGDsJOI
-         60HZUNoZ5y6v+nEVe9YO3h7NonlQtTEkuTmFM815Kf/mUGoirupui3y8bxYA8PsNhP4O
-         iaGg==
-X-Forwarded-Encrypted: i=1; AHgh+RqNTxGLBH0tHfJoe3fiR0eLChrFEog/9wMS8nonnx9Z2ysfpBhzQdmYkJ7T2rDLGRtN7pChnoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK1COi5x669tPelbGXk/h/46NhYsYnH0HcALDHJ6g2c1q0bw9H
-	r2/VWxzVikH/zb5HFao+IUFhDuprnDx5A7AF7qmUqTt+nFVVzKpdIPG9
-X-Gm-Gg: AR+sD12hLfow0PGkD5qfpMzq6iFGnKWj+gxnYDPwOvvYGDsWEjKKmy4nY3rFRLlYp7l
-	ESJrpm6Humm0UQ4584NCOZ4veZyl4Yzy1BxUgxYTBd2E9yL0cql/2RuQKICz7sb0FwMTTu+uQMD
-	QO6QN68DS57FOsKIPKn80lZmZhvD4p6dQwX1HFAlrLvF78rP5WLIFRUS/DUBWPO7W+46gBeIKPe
-	n7j/ZJ8GrwLLfUDJePLwjdQUO4xy2V3ds5QurVe4UufiTU+Qqy+kfmYRcHKLRKqk5N68lgjrKqh
-	mSZ7AZPKv08Ahfo3x8J3cqK9/+QBXPw2iBLNp2SOS7SYZdNfuL3FNCz9X+MbdkreAb9rzjuBBOo
-	PoBLuuGBx6wBa9coCdxfqPkEhIbDdW3IpRr6SI7bcfDKTpCxrxcTFZBkY0ua7l3NrEqLeClq2Yi
-	E+6hZrT1yO+IsrFaxWhO28xHwRimyf5S9urNOOHpWBx5Bxr8SwjGP4Xzs=
-X-Received: by 2002:a05:690c:4d47:b0:7ff:1e22:d187 with SMTP id 00721157ae682-81ef25bc619mr42302297b3.37.1784547088959;
-        Mon, 20 Jul 2026 04:31:28 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef42ae657sm48668367b3.35.2026.07.20.04.31.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 04:31:28 -0700 (PDT)
-Date: Mon, 20 Jul 2026 07:31:28 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ren Wei <enjou1224z@gmail.com>, 
- netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- vega@nebusec.ai, 
- xizh2024@lzu.edu.cn, 
- enjou1224z@gmail.com
-Message-ID: <willemdebruijn.kernel.27f52c79de4e@gmail.com>
-In-Reply-To: <24f7311aed0c9ff06b8ea982647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn>
-References: <cover.1784454541.git.xizh2024@lzu.edu.cn>
- <24f7311aed0c9ff06b8ea982647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn>
-Subject: Re: [PATCH net 1/1] packet: synchronize pressure clearing with ring
- reconfiguration
+        bh=OUFpV4FJ38LScM2pwHRa69/ZPwFLGHi3MGED0c5Hvbo=;
+        b=ggfiMnYwPIKbbNdU+hvwVavcBga8o520ODCyPsJT+7FgKVqFQySq8NDhU7gLbU5HdA
+         IMb+kjeV1OIHjL1WOWwCruXtv6sPVR3XsQjn/WQO1HRKGxOkf+m15GKdcMnhnK4vc+0v
+         h3b78MDqo8hUxA5zax8UVZ+JW+V8cdqSiZey15V8erYDIjfTGNQnxhlEN1HGFuBDjpgN
+         h0EgiTFOjwfg8+wsTj3ixhuceW2D1JPykH0TXdpj6+4IQUzZjAfF0WymdkfIol8oEvjG
+         B16m65xhD5+nJUKzdzQs+tPvF0wuwA/FgQmeJz8Y4w6W15+Oz4Y4IJhoRab8kSDzhY6B
+         BNCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784547418; x=1785152218;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OUFpV4FJ38LScM2pwHRa69/ZPwFLGHi3MGED0c5Hvbo=;
+        b=WIxXj2jP5PsMI4j5ovGvnxPFlrKtc9uEANh/8ayF45HNnpKshfxR384xT6r4jmoQqI
+         jnDW1EaF3uoYdlfBNel7R0JaV3jO6VQrsDtKF96/FlrvJEYsqzxdt6JprTcOtfwq42ek
+         avoYH21qJslM6eXI6FaMnqUbuF6sijmeQKtwCEcBU7KyrStE4pPOqIBWbxYINzPdWrXW
+         VwsaTeS+77rgLYtgfxa8yUWDgv8KAQDXwldw+/xjJ8zvC4Dv3Lg+ZH0riUjkR6b66OOW
+         rkrCx21+4o+kf1MXfDX1imxOkDvL7q2EjujD7+hLZ0sG0ZA60FUT7QWkejJDF9AVPCcv
+         m2DA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpzle37Yvif/JT6Sfv1UyTOBMc0NrqSjm9UbPQPxwRPtVw039RQQ7BGxq1il3fELkHok1BubQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFd1l8PYxZMY1TkIekJoa5sI1Zm2rNdKpsUz/5HypnMYhp70mg
+	qiSIeBXEPI8vuQHEafjfS08ivx7H2B4bnkTKjR5eBEgILq1yWxkmXgVK+th+QqQioqjtNu+8juG
+	Q3YKXH0UONB6RRTwVZVJeya24oYxKqSdagale3qApotlfhnbFNiU2K+TRmw==
+X-Gm-Gg: AfdE7clauvxhovsihb0/pCqO7ReRcVC0CCoFd7UQBvFhsIi96Y2PF3C5K70jQHyixad
+	qurusuuVhEIVVds3hkQfZbuYvbBTfVspTCZ/OxaMfaowpEN2RkuscutT/42UQZyCxqTcNrM0DHj
+	6922cxxWGV4tOCqbP8V4mBZPFHtULthYggcfgKh/TfZx5830l1nVYh6H2gR9vo93dqovVoGJcRV
+	NxLsqzADBRCygKBI4SxqPtXttX1wXEyin1ML1dg7908gN8vNN9hKcnUlp3MXTfFiEu6pWlAV57u
+	4ljh6U0mlFIzqLFHposHMes/MrKKsxn7A2G2yjg0aaSq0vbhqO8Golb2FqoEYBaLQI9I815rjNx
+	6kFj5cwHEiBXQ
+X-Received: by 2002:a05:600c:1f8c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-4954a3e6e29mr160745835e9.5.1784547418455;
+        Mon, 20 Jul 2026 04:36:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:1f8c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-4954a3e6e29mr160745305e9.5.1784547418036;
+        Mon, 20 Jul 2026 04:36:58 -0700 (PDT)
+Received: from [192.168.68.125] ([216.128.14.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4955fee64dasm57750365e9.10.2026.07.20.04.36.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 04:36:57 -0700 (PDT)
+Message-ID: <acb60edf-0be5-4719-8f13-00cdbd1bb491@redhat.com>
+Date: Mon, 20 Jul 2026 14:36:52 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v2 1/2] i40e: move ATR sample rate from ring to
+ PF level
+To: Simon Horman <horms@kernel.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, corbet@lwn.net, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch
+References: <20260701093830.948756-1-mheib@redhat.com>
+ <20260708143601.1491656-1-horms@kernel.org>
+Content-Language: en-US
+From: mohammad heib <mheib@redhat.com>
+In-Reply-To: <20260708143601.1491656-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Ren Wei wrote:
-> From: Zihan Xi <xizh2024@lzu.edu.cn>
-> 
-> packet_set_ring() updates the RX ring state under sk_receive_queue.lock,
-> but publishes the tpacket receive mode through po->prot_hook.func after
-> releasing that lock. packet_poll() and packet_recvmsg() can therefore run
-> the pressure clearing path after the ring has been cleared while still
-> seeing tpacket_rcv, causing __packet_rcv_has_room() to dereference stale
-> or NULL ring storage.
-> 
-> Serialize pressure clearing with RX ring reconfiguration and update the
-> receive hook while holding the same queue lock when changing the RX ring.
-> This keeps the receive hook decision consistent with the ring state used
-> by the tpacket room checks.
+Hi Simon
+Thank you for the review.
 
-Thanks for the report and proposed fix.
-
-Ideally we can avoid taking sk_receive_queue.lock an extra time in
-packet_recvmsg.
-
-packet_rcv_try_clear_pressure only accesses the ring if flag
-PACKET_SOCK_PRESSURE is set. One option may be to clear that in
-packet_set_ring, after detaching the socket (and thus after any input
-could set it again) and before swapping prot_hook.func (with a barrier
-to guarantee that). E.g.,:
-
-@@ -4528,6 +4528,7 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
-        WRITE_ONCE(po->num, 0);
-        if (was_running)
-                __unregister_prot_hook(sk, false);
-+       packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, false);
- 
-        spin_unlock(&po->bind_lock);
-
-
-> Fixes: 2ccdbaa6d55b ("packet: rollover lock contention avoidance")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
-> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+On 7/8/26 5:36 PM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
 > ---
->  net/packet/af_packet.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
+> i40e: move ATR sample rate from ring to PF level
 > 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 8e6f3a734ba0..b369f44b4065 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1315,13 +1315,22 @@ static int packet_rcv_has_room(struct packet_sock *po, struct sk_buff *skb)
->  	return ret;
->  }
->  
-> -static void packet_rcv_try_clear_pressure(struct packet_sock *po)
-> +static void __packet_rcv_try_clear_pressure(struct packet_sock *po)
->  {
->  	if (packet_sock_flag(po, PACKET_SOCK_PRESSURE) &&
->  	    __packet_rcv_has_room(po, NULL) == ROOM_NORMAL)
->  		packet_sock_flag_set(po, PACKET_SOCK_PRESSURE, false);
->  }
->  
-> +static void packet_rcv_try_clear_pressure(struct packet_sock *po)
-> +{
-> +	struct sock *sk = &po->sk;
-> +
-> +	spin_lock_bh(&sk->sk_receive_queue.lock);
-> +	__packet_rcv_try_clear_pressure(po);
-> +	spin_unlock_bh(&sk->sk_receive_queue.lock);
-> +}
-> +
->  static void packet_sock_destruct(struct sock *sk)
->  {
->  	skb_queue_purge(&sk->sk_error_queue);
-> @@ -4304,7 +4313,7 @@ static __poll_t packet_poll(struct file *file, struct socket *sock,
->  			TP_STATUS_KERNEL))
->  			mask |= EPOLLIN | EPOLLRDNORM;
->  	}
-> -	packet_rcv_try_clear_pressure(po);
-> +	__packet_rcv_try_clear_pressure(po);
->  	spin_unlock_bh(&sk->sk_receive_queue.lock);
->  	spin_lock_bh(&sk->sk_write_queue.lock);
->  	if (po->tx_ring.pg_vec) {
-> @@ -4544,14 +4553,15 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
->  		rb->frame_max = (req->tp_frame_nr - 1);
->  		rb->head = 0;
->  		rb->frame_size = req->tp_frame_size;
-> +		if (!tx_ring)
-> +			po->prot_hook.func = po->rx_ring.pg_vec ?
-> +						tpacket_rcv : packet_rcv;
->  		spin_unlock_bh(&rb_queue->lock);
->  
->  		swap(rb->pg_vec_order, order);
->  		swap(rb->pg_vec_len, req->tp_block_nr);
->  
->  		rb->pg_vec_pages = req->tp_block_size/PAGE_SIZE;
-> -		po->prot_hook.func = (po->rx_ring.pg_vec) ?
-> -						tpacket_rcv : packet_rcv;
->  		skb_queue_purge(rb_queue);
->  		if (atomic_long_read(&po->mapped))
->  			pr_err("packet_mmap: vma is busy: %ld\n",
-> -- 
-> 2.43.0
+> This commit moves the ATR sample rate configuration from the per-ring level
+> to the PF level. It initializes the sample rate globally during software init
+> and updates the fast path to reference the PF structure.
+> 
+>> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+>> index a04683004a567..4d4d4b07a0f3a 100644
+>> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+>> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> [ ... ]
+>> @@ -3454,12 +3454,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
+>>   		ring->xsk_pool = i40e_xsk_pool(ring);
+>>   
+>>   	/* some ATR related tx ring init */
+>> -	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags)) {
+>> -		ring->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
+>> -		ring->atr_count = 0;
+>> -	} else {
+>> -		ring->atr_sample_rate = 0;
+>> -	}
+>> +	ring->atr_count = 0;
+> 
+> [Severity: High]
+> Does removing this per-ring initialization remove the protection against
+> dynamic ethtool flag toggles?
+> 
+> Previously, if the ring was configured while Flow Director ATR was disabled,
+> the ring's sample rate was cached to 0 in i40e_configure_tx_ring(). This
+> prevented descriptor injection even if the PF flag was later toggled on
+> without a ring reset.
+> 
+
+The per-ring zeroing of atr_sample_rate was redundant. i40e_atr() 
+already checks I40E_FLAG_FD_ATR_ENA before it ever looks at atr_sample_rate:
+
+  /* make sure ATR is enabled */
+   if (!test_bit(I40E_FLAG_FD_ATR_ENA, pf->flags))
+       return;
+
+   if (test_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
+       return;
+
+   /* if sampling is disabled do nothing */
+   if (!pf->atr_sample_rate)
+       return;
+
+
+When ATR is disabled via ethtool private flags, the function bails out 
+at the I40E_FLAG_FD_ATR_ENA check regardless of what atr_sample_rate is 
+set to. The flag check is the real protection the per-ring sample rate 
+cache was never the thing providing protection against dynamic toggling.
+
+
+> [ ... ]
+>> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+>> index 894f2d06d39d0..b36e0fc9b31d2 100644
+>> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+>> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> [ ... ]
+>> @@ -2879,7 +2879,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
+>>   		return;
+>>   
+>>   	/* if sampling is disabled do nothing */
+>> -	if (!tx_ring->atr_sample_rate)
+>> +	if (!pf->atr_sample_rate)
+>>   		return;
+> 
+> [Severity: High]
+> Can this global check lead to a hardware Malicious Driver Detection (MDD)
+> event if ethtool flags are modified dynamically?
+> 
+> If an administrator performs the following sequence:
+> 
+> 1. Disables flow-director-atr via ethtool.
+> 2. Disables ntuple (which resets the ring and sets tx_ctx.fd_ena = 0).
+> 3. Re-enables flow-director-atr.
+> 
+> The final step does not trigger a ring reset, so fd_ena remains 0 in the
+> hardware queue context.
+> 
+> However, I40E_FLAG_FD_ATR_ENA is now true, and pf->atr_sample_rate is
+> globally set to a non-zero value.
+> 
+> Will i40e_atr() now proceed and inject FDIR descriptors into a TX queue
+> that is not configured for FDIR?
+> 
+> If so, does this cause the hardware to trigger an MDD event and hang the
+> TX queue?
+> 
+The scenario you described was already broken before this patch, walking 
+through the old code with the same sequence:
+
+   1. Disable ATR — flag cleared, __I40E_FD_ATR_AUTO_DISABLED set
+   2. Disable ntuple — ring reset happens, i40e_configure_tx_ring() runs 
+with ATR off, so ring->atr_sample_rate = 0 and fd_ena = 0
+   3. Re-enable ATR — flag set, no ring reset
+
+In the old code, ring->atr_sample_rate is stuck at 0 from step 2, so 
+i40e_atr() bails out at the sample rate check. That avoids the fd_ena 
+problem, but ATR is also silently non-functional
+   — the user re-enabled it but it doesn't actually work until something 
+triggers a ring reset.
+
+This patch changes how that failure looks, instead of silently doing 
+nothing, pf->atr_sample_rate is non-zero so i40e_atr() would proceed 
+but the root cause is the same:
+toggling ATR via ethtool private flags doesn't trigger a ring reset, so 
+fd_ena can be stale.
+
+Properly fixing this would mean triggering a reset when ATR is 
+re-enabled. The reset calls i40e_configure_tx_ring(), which re-evaluates 
+fd_ena based on the current flag state so fd_ena would be set to 1 since 
+I40E_FLAG_FD_ATR_ENA is now on.
+
+What do you think about addressing this as a follow-up patch on top of 
+this series? Since it's a pre-existing issue, it feels like it belongs 
+as a separate fix rather than being mixed into this refactor.
 
 
