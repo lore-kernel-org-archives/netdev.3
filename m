@@ -1,44 +1,81 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770A63CC7CD;
-	Mon, 20 Jul 2026 08:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2073D37E5CD
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784535749; cv=none; b=UTRTDXs3DkInU3FgyP5qSB8ld9T29xkDJuseqf94G4gujlJ/mnLsNVOtLkLFVuL+Uq5iyzklvIDz5GL9cZ/Ixw9WUvJHKfxnKq6IsUhWiYBZXQFNvGG7El5Dnk9qltxSziPT0JglRnfvSCJOq8guBWZ1H/f8O1Tz1aTejJ92idc=
+	t=1784535755; cv=none; b=caapxEKsKr0sHtpC0N9f1GWqi/J7ibFiNL9uhiGRc5RL7WNHF958t6HihtkTOYEROEkxJC0AFd+L5A9mlQejQC83qAtWpUGn32WP2AA28wFZJLhis4VW7RNMzTkOSdOHvih95Hwz08eApaJZBmZcm4dSL3jteJHsIYr64zu7vBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784535749; c=relaxed/simple;
-	bh=ySEwroPRb5DHlyaq4soxUzkTKQt+T8Sec43Br85Lu5M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p/FuMtgZhd/M13x7hKW4qETvDNdr+y8mFJwHpUGfR3XLI4lc1tLFRtGXP8SnIBUGQ9GeX4oU2HqcwX3S6ZoKYW/WE1QxNaW54QYtzyWib9xo1KM0ZtRn6TVd8K9cfX2I2mHNZxfNfquejYJRJcXPRmY2ycNRV/5W5yeCgWZ5XZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CrlMW0M0; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784535755; c=relaxed/simple;
+	bh=V/+8vVTnXMWD1uRZOC2IGFZRow/hsIK0zCZryso1STc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HVaa31l94JVOPumVlup6QLaA0Rirzllmmxy5HnnWqR/BTcJpkKf0w3Z5wtEiqVwfyE2U49EqbxG+nXdFqLUaylP71xzKo19jPeiAtAMfVgKdIDbzXlBzknhsPVZI90N5hqO3yl4nGbw32NwkxOLfDzC6hkdQBeu5HqifQ8P0QKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g/nEg/hj; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CrlMW0M0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jc
-	wHsY5zypMELrWEKa1Ep6tVBSBTsXsnGhc31N6FYz0=; b=CrlMW0M01HTlIiij65
-	UHL8aGC2hXrF+dEtvVZFYPXp0ehPe+lR+q6SMMWaqRG3Mml8GpWxfSY5O5h8s+Jc
-	P07C8PpQh4EnzTtUyaVCKUa53E/u4hhALhvs/bnERTCz6t/b05aX48pUadxJ5wJV
-	NZG6lCbb0PtmwIPMv6UFte8Po=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnM1uZ2l1qpi5jKg--.47708S2;
-	Mon, 20 Jul 2026 16:21:46 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g/nEg/hj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784535753; x=1816071753;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=V/+8vVTnXMWD1uRZOC2IGFZRow/hsIK0zCZryso1STc=;
+  b=g/nEg/hjw0MTwb1YjirleFgRWAxjTq/DCiMityphtYThAuy10gIx6kwy
+   juirUzGHLBlz/a5yILORBECgSwNEveHIuWX1BioBcqIEhczi0Ey19Sacs
+   mv6z45C3CR/VskcsvONSmYU8+sB+ZC/sCPILp0nB8pOJYhm3P6mXQhO39
+   PcZnsLqogC2yOAwplYKLLLSvYUTTfg2sagSsPt7QorDwqX868QXjYwNHy
+   2tt2SQOqFtsH70vj8pB26HWXGYTLXtP8LiYainvoMhGfUAY6l45HK5ACx
+   jSu5Mz52ALM20dGaQbVjTKkmnlvaQpDu2qZWfXuTWRE1MyDZAKpzMC8Kj
+   Q==;
+X-CSE-ConnectionGUID: x2fSMGa3SAK0Oewydd5qJA==
+X-CSE-MsgGUID: bZaMP9L9TNupLPLxsoPb7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="85228584"
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="85228584"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:22:32 -0700
+X-CSE-ConnectionGUID: HPkL3e/dRRCRae7mdBSRMg==
+X-CSE-MsgGUID: AYVAyfc+Rs206XJ4ZHMU8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="258034729"
+Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 01:22:27 -0700
+From: Riana Tauro <riana.tauro@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org
+Cc: aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com,
+	rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4] sctp: socket: refactor sctp_skb_recv_datagram to use ERR_PTR
-Date: Mon, 20 Jul 2026 16:21:45 +0800
-Message-Id: <20260720082145.1072547-1-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
+	simona.vetter@ffwll.ch,
+	airlied@gmail.com,
+	pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com,
+	ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com,
+	ravi.kishore.koppuravuri@intel.com,
+	raag.jadav@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com,
+	Riana Tauro <riana.tauro@intel.com>,
+	Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH v5 1/3] drm/drm_ras: Add drm_ras netlink error event
+Date: Mon, 20 Jul 2026 13:52:10 +0530
+Message-ID: <20260720082208.2648279-6-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260720082208.2648279-5-riana.tauro@intel.com>
+References: <20260720082208.2648279-5-riana.tauro@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,133 +83,346 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnM1uZ2l1qpi5jKg--.47708S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw18ZryUCF4Duw4ruFyrtFb_yoWrGrW3pF
-	n8AFZ8JrWDJrW8uwnakFWkX3WrK3yrJ3y5Ca4rtw1Fyrs8Gr95tFyYgr4SkF45Cr4rCa4a
-	qr4qgw1akrnruFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UDxhJUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3hrOE2pd2poyVwAA3L
 
-From: Qing Luo <luoqing@kylinos.cn>
+Define a new netlink event 'error-event' and a new multicast group
+'error-report' in drm_ras. Each event contains device name, node and
+error information to identify the error triggering the event.
 
-The err output parameter in sctp_skb_recv_datagram() is passed to
-callers but never validated, making error reporting unreliable.
-Remove it and use ERR_PTR to encode errors directly in the return
-value, which is the standard kernel pattern for this case.
+Add drm_ras_nl_error_event() to trigger an event from the driver.
+Userspace must subscribe to 'error-report' to receive 'error-event'
+notifications.
 
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+Usage:
+
+$ sudo ynl --family drm_ras --subscribe error-report
+
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Raag Jadav <raag.jadav@intel.com>
 ---
- include/net/sctp/sctp.h |  2 +-
- net/sctp/socket.c       | 20 ++++++++++----------
- net/sctp/ulpevent.c     |  5 ++---
- 3 files changed, 13 insertions(+), 14 deletions(-)
+v2: remove redundant initialization
+    remove unnecessary space
+    use ynl in commit message and doc (Raag)
+    simplify doc for error-event attrs
 
-diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
-index d50c27812504..b86d50d6b146 100644
---- a/include/net/sctp/sctp.h
-+++ b/include/net/sctp/sctp.h
-@@ -97,7 +97,7 @@ void sctp_sock_rfree(struct sk_buff *skb);
+v3: rename error-notify to error-report
+    Replace notify with report across the file (Raag)
+
+v4: send event to all network namespaces (Sashiko)
+    remove has_listeners check
+---
+ Documentation/gpu/drm-ras.rst            | 21 ++++++
+ Documentation/netlink/specs/drm_ras.yaml | 48 ++++++++++++++
+ drivers/gpu/drm/drm_ras.c                | 84 ++++++++++++++++++++++++
+ drivers/gpu/drm/drm_ras_nl.c             |  6 ++
+ drivers/gpu/drm/drm_ras_nl.h             |  4 ++
+ include/drm/drm_ras.h                    |  5 ++
+ include/uapi/drm/drm_ras.h               | 15 +++++
+ 7 files changed, 183 insertions(+)
+
+diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
+index 83c21853b74b..406e4c49bac1 100644
+--- a/Documentation/gpu/drm-ras.rst
++++ b/Documentation/gpu/drm-ras.rst
+@@ -56,6 +56,7 @@ User space tools can:
+   ``node-id`` and ``error-id`` as parameters.
+ * Clear specific error counters with the ``clear-error-counter`` command, using both
+   ``node-id`` and ``error-id`` as parameters.
++* Subscribe to the ``error-report`` multicast group to receive ``error-event``.
  
- extern struct percpu_counter sctp_sockets_allocated;
- int sctp_asconf_mgmt(struct sctp_sock *, struct sctp_sockaddr_entry *);
--struct sk_buff *sctp_skb_recv_datagram(struct sock *, int, int *);
-+struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags);
+ YAML-based Interface
+ --------------------
+@@ -111,3 +112,23 @@ Example: Clear an error counter for a given node
  
- typedef int (*sctp_callback_t)(struct sctp_endpoint *, struct sctp_transport *, void *);
- void sctp_transport_walk_start(struct rhashtable_iter *iter);
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..2deaa498e6cf 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2123,9 +2123,11 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		goto out;
- 	}
+     sudo ynl --family drm_ras --do clear-error-counter --json '{"node-id":0, "error-id":1}'
+     None
++
++Example: Subscribe to ``error-report`` multicast group
++
++.. code-block:: bash
++
++    sudo ynl --family drm_ras --output-json --subscribe error-report
++
++.. code-block:: json
++
++    {
++        "name": "error-event",
++        "msg": {
++            "device-name": "0000:03:00.0",
++            "node-id": 1,
++            "node-name": "uncorrectable-errors",
++            "error-id": 1,
++            "error-name": "error_name1",
++            "error-value": 1
++        }
++    }
+diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+index e113056f8c01..8aed3d4515e5 100644
+--- a/Documentation/netlink/specs/drm_ras.yaml
++++ b/Documentation/netlink/specs/drm_ras.yaml
+@@ -69,6 +69,33 @@ attribute-sets:
+         name: error-value
+         type: u32
+         doc: Current value of the requested error counter.
++  -
++    name: error-event-attrs
++    attributes:
++      -
++        name: device-name
++        type: string
++        doc: Device (PCI BDF, UUID) that reported the error.
++      -
++        name: node-id
++        type: u32
++        doc: ID of the node that reported the error.
++      -
++        name: node-name
++        type: string
++        doc: Name of the node that reported the error.
++      -
++        name: error-id
++        type: u32
++        doc: ID of the error counter.
++      -
++        name: error-name
++        type: string
++        doc: Name of the error.
++      -
++        name: error-value
++        type: u32
++        doc: Current value of the error counter.
  
--	skb = sctp_skb_recv_datagram(sk, flags, &err);
--	if (!skb)
-+	skb = sctp_skb_recv_datagram(sk, flags);
-+	if (IS_ERR(skb)) {
-+		err = PTR_ERR(skb);
- 		goto out;
-+	}
- 
- 	/* Get the total length of the skb including any skb's in the
- 	 * frag_list.
-@@ -9082,7 +9084,7 @@ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p)
-  * Note: This is pretty much the same routine as in core/datagram.c
-  * with a few changes to make lksctp work.
-  */
--struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
-+struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags)
- {
- 	int error;
- 	struct sk_buff *skb;
-@@ -9117,21 +9119,19 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
- 		if (error)
- 			goto no_packet;
- 
--		if (sk->sk_shutdown & RCV_SHUTDOWN)
-+		if (sk->sk_shutdown & RCV_SHUTDOWN) {
-+			error = 0;
- 			break;
--
-+		}
- 
- 		/* User doesn't want to wait.  */
- 		error = -EAGAIN;
- 		if (!timeo)
- 			goto no_packet;
--	} while (sctp_wait_for_packet(sk, err, &timeo) == 0);
--
--	return NULL;
-+	} while (sctp_wait_for_packet(sk, &error, &timeo) == 0);
- 
- no_packet:
--	*err = error;
--	return NULL;
-+	return ERR_PTR(error);
+ operations:
+   list:
+@@ -124,3 +151,24 @@ operations:
+       do:
+         request:
+           attributes: *id-attrs
++    -
++      name: error-event
++      doc: >-
++           Report an error event to userspace.
++           The event includes the device, node and error information
++           of the error that triggered the event.
++      attribute-set: error-event-attrs
++      mcgrp: error-report
++      event:
++        attributes:
++          - device-name
++          - node-id
++          - node-name
++          - error-id
++          - error-name
++          - error-value
++
++mcast-groups:
++  list:
++    -
++      name: error-report
+diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
+index d6eab29a1394..0b77e4358ea8 100644
+--- a/drivers/gpu/drm/drm_ras.c
++++ b/drivers/gpu/drm/drm_ras.c
+@@ -41,6 +41,11 @@
+  *    Userspace must provide Node ID, Error ID.
+  *    Clears specific error counter of a node if supported.
+  *
++ * 4. ERROR_REPORT: Subscribe to this multicast group to receive error events
++ *
++ * 5. ERROR_EVENT: Report an error event to userspace. The event contains device, node
++ *    and error information that triggered the event.
++ *
+  * Node registration:
+  *
+  * - drm_ras_node_register(): Registers a new node and assigns
+@@ -186,6 +191,34 @@ static int msg_reply_value(struct sk_buff *msg, u32 error_id,
+ 			   value);
  }
  
- /* If sndbuf has changed, wake up per association sndbuf waiters.  */
-diff --git a/net/sctp/ulpevent.c b/net/sctp/ulpevent.c
-index 8920ca92a011..21ae0adbaeef 100644
---- a/net/sctp/ulpevent.c
-+++ b/net/sctp/ulpevent.c
-@@ -1061,10 +1061,9 @@ void sctp_ulpevent_read_nxtinfo(const struct sctp_ulpevent *event,
- 				struct sock *sk)
++static int msg_put_error_event_attrs(struct sk_buff *msg, struct drm_ras_node *node,
++				     u32 error_id, const char *error_name, u32 value)
++{
++	int ret;
++
++	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME, node->device_name);
++	if (ret)
++		return ret;
++
++	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID, node->id);
++	if (ret)
++		return ret;
++
++	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME, node->node_name);
++	if (ret)
++		return ret;
++
++	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID, error_id);
++	if (ret)
++		return ret;
++
++	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME, error_name);
++	if (ret)
++		return ret;
++
++	return nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE, value);
++}
++
+ static int doit_reply_value(struct genl_info *info, u32 node_id,
+ 			    u32 error_id)
  {
- 	struct sk_buff *skb;
--	int err;
+@@ -222,6 +255,57 @@ static int doit_reply_value(struct genl_info *info, u32 node_id,
+ 	return genlmsg_reply(msg, info);
+ }
  
--	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT, &err);
--	if (skb != NULL) {
-+	skb = sctp_skb_recv_datagram(sk, MSG_PEEK | MSG_DONTWAIT);
-+	if (!IS_ERR_OR_NULL(skb)) {
- 		__sctp_ulpevent_read_nxtinfo(sctp_skb2event(skb),
- 					     msghdr, skb);
- 		/* Just release refcount here. */
++/**
++ * drm_ras_nl_error_event() - Report an error event
++ * @node: Node structure
++ * @error_id: ID of the error
++ * @error_name: Name of the error
++ * @value: Value associated with the error
++ *
++ * Report an error-event to userspace using the error-report multicast group.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
++			   u32 value)
++{
++	struct genl_info info;
++	struct sk_buff *msg;
++	struct nlattr *hdr;
++	int ret;
++
++	if (!error_name)
++		return -EINVAL;
++
++	genl_info_init_ntf(&info, &drm_ras_nl_family, DRM_RAS_CMD_ERROR_EVENT);
++
++	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
++	if (!msg)
++		return -ENOMEM;
++
++	hdr = genlmsg_iput(msg, &info);
++	if (!hdr) {
++		ret = -EMSGSIZE;
++		goto free_msg;
++	}
++
++	ret = msg_put_error_event_attrs(msg, node, error_id, error_name, value);
++	if (ret)
++		goto cancel_msg;
++
++	genlmsg_end(msg, hdr);
++	genlmsg_multicast_allns(&drm_ras_nl_family, msg, 0, DRM_RAS_NLGRP_ERROR_REPORT);
++
++	return 0;
++
++cancel_msg:
++	genlmsg_cancel(msg, hdr);
++free_msg:
++	nlmsg_free(msg);
++	return ret;
++}
++EXPORT_SYMBOL(drm_ras_nl_error_event);
++
+ /**
+  * drm_ras_nl_get_error_counter_dumpit() - Dump all Error Counters
+  * @skb: Netlink message buffer
+diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+index dea1c1b2494e..9d3123cc9f9c 100644
+--- a/drivers/gpu/drm/drm_ras_nl.c
++++ b/drivers/gpu/drm/drm_ras_nl.c
+@@ -58,6 +58,10 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
+ 	},
+ };
+ 
++static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
++	[DRM_RAS_NLGRP_ERROR_REPORT] = { "error-report", },
++};
++
+ struct genl_family drm_ras_nl_family __ro_after_init = {
+ 	.name		= DRM_RAS_FAMILY_NAME,
+ 	.version	= DRM_RAS_FAMILY_VERSION,
+@@ -66,4 +70,6 @@ struct genl_family drm_ras_nl_family __ro_after_init = {
+ 	.module		= THIS_MODULE,
+ 	.split_ops	= drm_ras_nl_ops,
+ 	.n_split_ops	= ARRAY_SIZE(drm_ras_nl_ops),
++	.mcgrps		= drm_ras_nl_mcgrps,
++	.n_mcgrps	= ARRAY_SIZE(drm_ras_nl_mcgrps),
+ };
+diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
+index a398643572a5..03ec275aca92 100644
+--- a/drivers/gpu/drm/drm_ras_nl.h
++++ b/drivers/gpu/drm/drm_ras_nl.h
+@@ -21,6 +21,10 @@ int drm_ras_nl_get_error_counter_dumpit(struct sk_buff *skb,
+ int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
+ 					struct genl_info *info);
+ 
++enum {
++	DRM_RAS_NLGRP_ERROR_REPORT,
++};
++
+ extern struct genl_family drm_ras_nl_family;
+ 
+ #endif /* _LINUX_DRM_RAS_GEN_H */
+diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
+index 0beede3ddc4e..ee2caa0edc6f 100644
+--- a/include/drm/drm_ras.h
++++ b/include/drm/drm_ras.h
+@@ -80,9 +80,14 @@ struct drm_device;
+ #if IS_ENABLED(CONFIG_DRM_RAS)
+ int drm_ras_node_register(struct drm_ras_node *node);
+ void drm_ras_node_unregister(struct drm_ras_node *node);
++int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
++			   u32 value);
+ #else
+ static inline int drm_ras_node_register(struct drm_ras_node *node) { return 0; }
+ static inline void drm_ras_node_unregister(struct drm_ras_node *node) { }
++static inline int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id,
++					 const char *error_name, u32 value)
++{ return 0; }
+ #endif
+ 
+ #endif
+diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
+index 218a3ee86805..eab8231aa87c 100644
+--- a/include/uapi/drm/drm_ras.h
++++ b/include/uapi/drm/drm_ras.h
+@@ -38,13 +38,28 @@ enum {
+ 	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
+ };
+ 
++enum {
++	DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME = 1,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE,
++
++	__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX,
++	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
++};
++
+ enum {
+ 	DRM_RAS_CMD_LIST_NODES = 1,
+ 	DRM_RAS_CMD_GET_ERROR_COUNTER,
+ 	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
++	DRM_RAS_CMD_ERROR_EVENT,
+ 
+ 	__DRM_RAS_CMD_MAX,
+ 	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
+ };
+ 
++#define DRM_RAS_MCGRP_ERROR_REPORT	"error-report"
++
+ #endif /* _UAPI_LINUX_DRM_RAS_H */
 -- 
-2.25.1
->> I think it's used at [1] in sctp_recvmsg():
->>
->>         skb = sctp_skb_recv_datagram(sk, flags, &err);
->>         if (!skb)
->>                 goto out;
-> Would it make more sense to ERR_PTR() etc ?
->
->
-> 	David
-
-Yes, you are right. The current implementation returns a negative error
-code directly via err, but it would be cleaner to use ERR_PTR() to
-unify the error path with other datagram receivers.
-
-I will refactor this part in v4:
->
->
->> ...
->>
->> out:
->>         release_sock(sk);
->>         return err;   <------ [1]
+2.47.1
 
