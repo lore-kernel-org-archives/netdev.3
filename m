@@ -1,208 +1,411 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DE43C3F5C
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784587701; cv=fail; b=ckGiRr/DScj5mc5OkgPXG7v646DyB2LttU8B93LKoMn5vf/4ub+pSpPg09rAXRxguzHK4blg/4adKwvKxz40oxqDrf6qRazZlvM32IN/hRqBighS3P/nqGK3SAN5PKIMz9OfS84OE1R8Rbloz4WMl7nMBjKbKy0G6F26mAoZrYs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784587701; c=relaxed/simple;
-	bh=ZeY3c0JMwXEyjiu5MJLEcoOgcKc6NEPAkAX46apFAAY=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=KXjw1TqVaSJbNBjzRIQsSTqBw/LdYhehOyb6K756Xjeh8FUSpEG3c7MC9FBuwN8+RJ//Y2L/pEHWy+yXnJTjtEFxypBpX16ZmH9Q0qKM5H0rgytdwZilsFLBg1O3Q5ZMp6H+4k5dy4lBm45Q8q0phMvDvJxHzrVGn9cDIwT2di4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AkRFp1h3; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AkRFp1h3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784587699; x=1816123699;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ZeY3c0JMwXEyjiu5MJLEcoOgcKc6NEPAkAX46apFAAY=;
-  b=AkRFp1h3ORv3uFpFNsVsW2Uqu8TsrxyOyVDH0R+a/Y13WwK/Prt7IxMX
-   jrIRdzkg509rgP3KqzJ0yDkLPYKC827MTljCy/zzLtQ40UeC+tdZM6qWi
-   9HaPQ313XzmhAWka5wsrbzOI3XJGcsmsMZzmOEdCUFKsV9pfh4q7WsBfX
-   6F/vqpPBI+3ztrCj2j035Pr1jeyXDuuv4FkP6v4z8yTPFZcyBWhOASEDX
-   G8hJgAes/UdjP5Zk95OxnEOcfMyR08hpsBlyauYRbk1lOCPzPrKMTpYXo
-   VoqbyIWcqSMG+8i+pelAmkJGUKqxJTx+n0V1CdIGNHemF85qKBJtRgn3x
-   A==;
-X-CSE-ConnectionGUID: EX6/Ty5XRp2XWyTUbwvsZw==
-X-CSE-MsgGUID: 106IQnY6T3OtHKAt+lwYsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85201433"
-X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
-   d="scan'208";a="85201433"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 15:48:19 -0700
-X-CSE-ConnectionGUID: tFjQZQGjT4+BOvVXDOZJ0Q==
-X-CSE-MsgGUID: MZiSv/JYTCK3R4U0qiZDuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
-   d="scan'208";a="259570393"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 15:48:18 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 15:48:18 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 15:48:18 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.12)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 15:48:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=im1HAtV93YDq0TfjYvhtMuG3xxcoHnOG6mlvwxqq6YmrWHT6EFmfOAftxDsOCqPnaOXrwZIKsynBYTgv6rDjJZ/9214EmuKgf73igS5MOFJea28Faf2GE/iQ513FjdMQfEtz01FocQdbEQ3q7AXoansdvs8fGDOnT3qrNj/C+VZ5i+3h3s3KLEtrCwYOMDE7IuES5SrYE3hgF3FjBQTtRgaEuXreeZ9ldgT5AQx65FJOKBMWE6aqLUwJ2dUgVXh6pK+dpLZhjSfEDZfIAuuQCCZeSLwNVKdr+0d/MLRnQxdu8+YPlY+F/0HkAksqfkxHYtRIcK/fJh6QupcoIt5M2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m14BpINJb623SiKHt8/tkPmWnRcVuET3vcWE52jiJ9w=;
- b=VGt2kTt0uGkna/dyDEUdAcBkguRsItgHuBX3vlB1GtxwMv712cUx3Xkw2xNIVIyboiqtXEHXBTb244zgMv5Boc4FJuh4Jnhwn/l0V2ykSjuNAuaxiKSDyx13RRg4biGJzOs4FCERG1Rm4q+fP6/jwKNxrlM3pUvrZnaX4K5s5NE5095IHZy8R4XfQZ3q1OeS5MwcivXCywH2COwIBGcZopyg8XAPBChlWEL/mChsuZo2ol/zLjmnXlyadbiP3pPNxWfh0Vh+Cm6TmnRJCsCjuoWLzPlUX6JK8z92GZber08qkVJ1yRhwwQ9Bli4hz4MGCJieKWgJe6hKz5T/Upp9EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by SJ0PR11MB8296.namprd11.prod.outlook.com (2603:10b6:a03:47a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
- 2026 22:48:15 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 22:48:14 +0000
-Message-ID: <5e0444bf-b258-4a6b-a1dc-fecc3419ebad@intel.com>
-Date: Mon, 20 Jul 2026 15:48:12 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 3/3] net: airoha: defer GDM3/GDM4 WAN mode and
- GDM2 loopback to QoS offload
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <netdev@vger.kernel.org>, "Madhur
- Agrawal" <madhur.agrawal@airoha.com>
-References: <20260721-airoha-ethtool-priv_flags-v9-0-9c15d8b71a56@kernel.org>
- <20260721-airoha-ethtool-priv_flags-v9-3-9c15d8b71a56@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260721-airoha-ethtool-priv_flags-v9-3-9c15d8b71a56@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0337.namprd03.prod.outlook.com
- (2603:10b6:303:dc::12) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224D83EB11C
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 22:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784587891; cv=none; b=YGzJevLzsdNFjjkeDV4dxAOqpooIrFeiDnbPQ2UYV5IrjZW5MPBF3gI3tBavzRMPpmR/55iPnDnVAcSzqvtNkr8DqvwLUH24RHuBcE1FJEze1cpdG6kill+JTkh4PjTDp/KPJBcJQPdh+E2vtOgeFJaaosSLcYi+u8QZY0Y7Grs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784587891; c=relaxed/simple;
+	bh=mzXkBKeMUHMrqLp8+yeu+sKDUWlHPQ/F9UGDYvUx4ik=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=L2p60qO1UbDtVh6zbbmcHDT1uO72RYWJHsxrBuXdWkFgSLhDpwJOCYIMul6+PL+wwSq+FNf+evs4jGbw9Z3KnDfayLDUoajUFrZOb6+qJG5in+vM1myVAeHzZYgomlOYER61acJh/YjxnelJuCtdmQgH5NFdj5jtzbCr4EC+ePg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-4a49f09233dso5941515b6e.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:51:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784587888; x=1785192688;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/4H/e5Xa9neimMWvXsSAb9oWXY/qj2xEbVw5H7rrwgw=;
+        b=Z6oniMzDSO3BpUo+bTgocPZhcxaQ2Z2csWiIbcdLVc71s3T+E5FoE38eGguECFyo9+
+         urLkZOvvGui53AguOXJB/mJcDCSjaZe9JAyfVhp4rInhLPC6wXd46pjLpQgwpqVr1UII
+         J8vlNOhiZ9NH0JoNLqk+ewHUI76A04EU4fDK4k1S7ndbG5dYVtexERI6LzdoeO89s46h
+         04IOt+jR6YtjGdNoZDFcDoF18zoxZtZf8wH5E6q/SpzToAqOLqTxdzDehjdoNiLDzfg9
+         s4/demduN1YKG121aeN728ZdkYdozIMe5pmo9zSO1xb+7KrIbgPmgAScMYvC9HoFMg90
+         0Edw==
+X-Forwarded-Encrypted: i=1; AHgh+RoL1xUdLGfnu/26x5N/UWlu3xLT0uAvZv4jO9WCposQyTGoPoO0rmM2mboc3HyfTItSe1GxZrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVm3e6WdLPCJKKN6f3MS24FZMCiSnYi03Q+qDnLfw34KMQSSEw
+	4sFMzenst4MNTc/wznNkCwx4GV6BpgOvF1bc+p1biGfEqgApcGhIS8IaM0aDMd39XNG18E1i2U4
+	pQeTBV0pmGTW1df2bpR/EUY+s08uzcVpc+OfI7+OOHRN/nIzk9RfaCP6ueZs=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|SJ0PR11MB8296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 805b59f1-7e53-4164-0650-08dee6b0fbe0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|6133799003|11063799006|10067099003|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: dtwKjaE/jYxq/n5eLKxjT8MCp9BuHXhvDGaVs5Hm4sk/ZCmlg3QBb9GrDTH69waUrmZrI/K33DF5Fw+ke1ow30PvQ3CRk8CPpOxFNTiecoGQI+fbBzTw4pIiGHpyROvvoJpGXyc8s60l48fUTTZVGZbSCQv49+SJ1xf6hkT/0PZG+/UZCsPa+iYUD9ViTt2eBkxO//jcb6GsLbIZJCNG9lpHR02p0YrHMKMTYZ0APTIwAG1kHwJCuwhe8ks8GoEo1P8RLb+E/XxXFo11PCx0GXfGpgCZUYH8BsrXGNZ0BGxRQGsYaeoogR+pHG4fWOQKWgj4MSs5b8V14UO9vn0FMV9r1AEQYNNC5Q2sGF9azmhu5S27XnYiINOtcbI02uVJUSnJovm+qMK/O8s7fT9TZPw4lKqe4MYAWKtX1Fdqj1BWDLLeYSjS7yhZRDw5a9T7G1NgVhSHAeDfGzMcDmid1pwRbKL0hSndzcVHnINaclArV+ze7l2lwO8aibOR8OVj6KHaeD6h585lYxFF9jaym8VpDHCMQCtE/jJBOQ7nPdsKIx18T7W5sjwNuFMMJG7JK/CEApI9IP4JshNpfv7MQ95AAQjMbCYeDU1euM+gjE7fYA1zW8JG5MGe69SUGCxc1DXhepMUHAaRtdxSEs1aIr68oWvq3M8lTE5mhph2KJU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(6133799003)(11063799006)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHVIaTE2RzBocWFMUGFTak9pUm5MdGJXUHZVV1FKcGl1cHNBaHhTcERzM213?=
- =?utf-8?B?eHpOcVdWUHBTdnplKzJodUpBS3J4bmlId0lSbXJUeGN3OXBCL1VGbzBQV0k4?=
- =?utf-8?B?QmJtNit5MmQ0T2JyNUQzbDMyc1dmK2h2U3czeHROZWVRcElzZ3Q0cHRtSzVP?=
- =?utf-8?B?UE94ZjBRWjJGWmZZN0lHS2FsYWVLcnpYbGtlVDBMRGhyM1lkdWo2NGFlenp5?=
- =?utf-8?B?bEZnRFVMZVZZbnlFR0hyN1ZzaHd3NHJHQWVhcDhVU0hsaStqZW5haDAyVmpp?=
- =?utf-8?B?S00ydXRCKzVTUlJGaUNFcWJzZXcxcE5kOXdpQ1J4MmRhczRiZ0xpRktQZVV5?=
- =?utf-8?B?dDlBc29DeUF2UHBPektqeW40YkdPem1lcW5UM1J0NCtOeGNDVkJ5b1NGZEZ3?=
- =?utf-8?B?NVlOYjVUdnM0YkZDeVBqRXJseitCemJUQndvRVordzFUSVRWUExWN0ZnNkN2?=
- =?utf-8?B?dmtyN0JoaWdzeTFnMloyWHpnZ2IxQzU5N1VkMkh2QVpMZVRoSDBOY0dVOWxC?=
- =?utf-8?B?RkhjNElIMVZ3NFRQSW9yNG1wNnJPNzRmUi9LckxpM2lJTmxuM250SHhvSTc0?=
- =?utf-8?B?VkQ5ZE1Zd2lYUWMzdGk3WVQvRzRIQXBzcjhCdXdVWlJncW45NXZHYUhwVzNV?=
- =?utf-8?B?Wis5VXBibVpZMlh2d3RJZ0xwelhXaXNUd0pMWjBRcFJQVk1jZWxrb3Ixalo5?=
- =?utf-8?B?N2Y5dTV4QVNMQmVaekhKQk9sa05hdXZKYmJlRWxULzEzRnNIWGptMzlBOFdm?=
- =?utf-8?B?b2hPQU1xdU1pMTFDbDNjak5mMHl4bkNtbnBac1BCeDgwM1dXYzRUWm5IRFFN?=
- =?utf-8?B?aXEySHovbysvMzIrT0FUMjE5OFFZQWdOUDNYd28wMTBMaFdyNWF0K3FDdUpw?=
- =?utf-8?B?aVpWZmdFTmNmVlBFaU5uVGZDb3RxSEVvR3VNTEhzY3ovQ3hRYWlmVEdkZ2ds?=
- =?utf-8?B?bnRqRlhZVHlDUFRnK3BXOEVvWER1cG5NZDdDOWtlL2Y5Z2M5MnQwNTl4MndB?=
- =?utf-8?B?SXRWaDB2eU9RWHp5dkxBNVhWamQwbG5vOUN2Vklta2pjTzBFZE5Ld2xwSHhi?=
- =?utf-8?B?SmYrb3J3ZGhBaTA1SnJkMW0xTFVFdVBGbndUS2hDNUg1dHgrNTArODJwamov?=
- =?utf-8?B?WWdHczlhNnJ6Z0pLS0JaK2k5bTQxTlg4ZC9wNFE2M1p1VzBPaGFQTlBFNHBj?=
- =?utf-8?B?czVaMW1sT0Q3N3hiWXpSdTlmMTV3ODVHVDk4NkhaNTNVNTQ5bmpjTEF2czA3?=
- =?utf-8?B?bzNXalRVL0ZWSThjTWtzZTFJWmRIdFZ4WmhHNmNyNVpkVHEvMEFFNnpPV1lm?=
- =?utf-8?B?ajNUMFkrZ3N3d0F0VVVFRmlEYW1tYUtQQi9XZ3VhT3U4SFBjVDZoVXN1WG9i?=
- =?utf-8?B?REtYOUtkaUJ6amV2VUN5WUR1VTIxMFd2MEY5bGx6Y0VHZ1NMOGxYWVZOZUc5?=
- =?utf-8?B?RVovVjdpMnJJa1pNSWVGTWtOVkJQNHI0aW5sMVVSQWtzbk5NL25tQ0Q5dm81?=
- =?utf-8?B?QWlpRGlkLzV2VzZQd2E1NTNRSTl0UDRTcmNmRUFnRUZlTktSVVN0VG9DRWlI?=
- =?utf-8?B?SS9UbVRsY1NEaDE3M29FSEk4QzhDY2xuZHZlTGU4MzErMnBldW45eVNoTk8z?=
- =?utf-8?B?OWIyUjBPVG9xcHB1M1R1QVpkREVDVGNKMkh5Y0ZIampCMDgzL1VUempXZFVP?=
- =?utf-8?B?Vi9xcnZSN2xlZnkwU1N2WUM1MG9maS9McUtQWkJBWkJOeHI2YkZOWlFmZ2RO?=
- =?utf-8?B?KzU0V29QMkxkV2dYelRYU3lYd2JuekxMekg5bDV1MVJmYkRhU1hlVUpMQU5U?=
- =?utf-8?B?RDlEdU1lT09jemc4MTB2OHdBZVZYSWhDN2J6TEJBaFhNTnBYcUVCREtXZDR0?=
- =?utf-8?B?eGpwbU4wTC9lRXZCN0dFNnc4bXdBa0o4cFU4SWVBWlZMWWJjRFlYZ3Y0TGZS?=
- =?utf-8?B?bVczcWY1OTdkenFnWUpZWjVnM0Yxd2llV3VNakpUYjhvRzVVcUNLRHYyem1z?=
- =?utf-8?B?NmRzOVZiMDgySHBSMVora3Y3OFgvUWx5c21weWRhT2pFQjAvUk5XZEozU3JV?=
- =?utf-8?B?WkVvRzE3emRRTjRHVTVQUlZsSXR2akFUZGVvajZjay9zZ0NVZHVOWEszNWdz?=
- =?utf-8?B?R3piK1F5R2lQUEJlaGxYZy8vczN0dTk5SE5JaXE2aGZERDFsWmJEazFqM1hp?=
- =?utf-8?B?WHJwYnZqdGczUjh3S0JaYVdFVlhQSFkremdkL1M0ZGpPSEVZeGVQOWx4RzNX?=
- =?utf-8?B?dm1Lcmt6dEpmNXdFL3ZhcXQzYnNJcDJyT0orckNwblhGdGlISENhUnZQd3BJ?=
- =?utf-8?B?V2p0VU56dkRWRGxnSjZTY2lDaHJ5R1IrbXFNSmdoRDl1d3dLYUJsQT09?=
-X-Exchange-RoutingPolicyChecked: CNThRi8FWkLHLVa5oclAymolDAE+r32sPPECoyWqmGv2MqkCltMp3Kjeu5ZK8Lf3hhvMDKjsoQhkB4+KxZ7j6ReMLgDo8hcx6ZVj/Yk7hnS0GvIYjmgGURDp/hkJ5k08ODiYYvwTmvl+EmTs+EkvlUCFQo83BLBC/wNPzYr6lz9BoaQOIWgTW7SrtxeJ2r3iH9UKjRict4sd1xBYCJc8XoA9T8m75KKj9t6YQ+jVtwYCKmchwJDpqTeWG8zQrARYIjd1+xRnuUdfMoRT5JR6ehEJLmG//UAaNcALUX4QLDVQaf3m44SySDptyEI6BuNK3vKm5geQaGaV2wCTsFnYIg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 805b59f1-7e53-4164-0650-08dee6b0fbe0
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 22:48:14.9156
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UPkY18lL1qyyZUK30HTRwLMKdeNR04Wah4/WvDZXzF1qB5TP/XSwX2sUV9WMyL3KYjR1awN8Rl66dYJlvdDFVTOiBG07d9y67xOu5aMPyfk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8296
-X-OriginatorOrg: intel.com
+X-Received: by 2002:a05:6808:15a3:b0:4a4:cf25:baf8 with SMTP id
+ 5614622812f47-4a4d039a6abmr8739278b6e.34.1784587888024; Mon, 20 Jul 2026
+ 15:51:28 -0700 (PDT)
+Date: Mon, 20 Jul 2026 15:51:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a5ea670.f1649fcc.2a4208.0576.GAE@google.com>
+Subject: [syzbot] [crypto?] possible deadlock in __alloc_workqueue (3)
+From: syzbot <syzbot+5f117b3024eab6a14c35@syzkaller.appspotmail.com>
+To: daniel.m.jordan@oracle.com, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/20/2026 3:03 PM, Lorenzo Bianconi wrote:
-> GDM3 and GDM4 ports require GDM2 loopback to be enabled for hardware
-> QoS offload to function. Without it, HTB and ETS offload on these ports
-> do not work.
-> Previously, GDM3/GDM4 ports were automatically configured as WAN with
-> GDM2 loopback enabled during ndo_init(). Add the capability to configure
-> GDM3/GDM4 as WAN/LAN on demand when QoS offload is created or destroyed.
-> Hook airoha_enable_qos_for_gdm34() into TC_HTB_CREATE so that requesting
-> HTB offload on a GDM3/GDM4 LAN port switches it to WAN mode and enables
-> GDM2 loopback, with proper rollback on failure. Introduce the
-> AIROHA_DEV_F_QOS flag to track whether a device has an active HTB
-> qdisc; clear it on TC_HTB_DESTROY. The device keeps its WAN role after
-> qdisc teardown so that its configuration is preserved until another
-> device explicitly needs the WAN role for QoS offload.
-> If another GDM3/GDM4 device already holds the WAN role without an active
-> QoS qdisc, demote it to LAN before promoting the requesting device. Skip
-> the demotion when the requesting device is itself already the WAN device.
-> Since airoha_dev_set_qdma() can now be called on a running device to
-> migrate between QDMA blocks, make dev->qdma an RCU pointer so the TX
-> path can safely dereference it without holding RTNL.
-> Hold flow_offload_mutex in airoha_enable_qos_for_gdm34() and
-> airoha_disable_qos_for_gdm34() around the dev->flags update,
-> airoha_dev_set_qdma() and GDM2 loopback configuration, serializing
-> against concurrent airoha_ppe_hw_init() in the TC_SETUP_CLSFLOWER
-> offload path.
-> Introduce airoha_qdma_deref() helper that wraps rcu_dereference_protected()
-> with a lockdep condition accepting either rtnl_lock or flow_offload_mutex,
-> and use it across all control-path dereferences of the RCU-protected
-> dev->qdma pointer.
-> Add airoha_disable_gdm2_loopback() to disable GDM2 hw loopback.
-> 
+Hello,
 
-A minor nit which may just be my personal preference/style:
-I had trouble following this commit message since it goes through a lot
-of detail about various problems with dereferencing and other changes
-related to allowing the defered configuration of WAN mode.
+syzbot found the following issue on:
 
-I do appreciate this detail as it helps understand the changes and
-motivations. However.. It might benefit from some additional line breaks
-for spacing to help readability.
+HEAD commit:    f6f3b36c15ed net: ethernet: qualcomm: remove unneeded 'fas..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=152cacb9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
+dashboard link: https://syzkaller.appspot.com/bug?extid=5f117b3024eab6a14c35
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/47ae09206bf6/disk-f6f3b36c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9e3daf94ae30/vmlinux-f6f3b36c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c266cfd24092/bzImage-f6f3b36c.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5f117b3024eab6a14c35@syzkaller.appspotmail.com
+
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+infiniband syz1: set down
+infiniband syz1: added wlan1
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.1.835/9438 is trying to acquire lock:
+ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
+ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4565 [inline]
+ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4925 [inline]
+ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __do_kmalloc_node mm/slub.c:5361 [inline]
+ffffffff8ec848a0 (fs_reclaim){+.+.}-{0:0}, at: __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
+
+but task is already holding lock:
+ffffffff8e9f6d00 (wq_pool_mutex){+.+.}-{4:4}, at: __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #7 (wq_pool_mutex){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
+       alloc_workqueue_va kernel/workqueue.c:5946 [inline]
+       alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
+       padata_alloc+0xbe/0x360 kernel/padata.c:964
+       pcrypt_init_padata+0x27/0x100 crypto/pcrypt.c:335
+       pcrypt_init+0x60/0xc0 crypto/pcrypt.c:360
+       do_one_initcall+0x250/0x870 init/main.c:1347
+       do_initcall_level+0x10a/0x1a0 init/main.c:1409
+       do_initcalls+0x59/0xa0 init/main.c:1425
+       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
+       kernel_init+0x1d/0x1d0 init/main.c:1548
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #6 (cpu_hotplug_lock){++++}-{0:0}:
+       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
+       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
+       cpus_read_lock+0x42/0x160 kernel/cpu.c:490
+       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
+       nbd_reconnect_socket drivers/block/nbd.c:1379 [inline]
+       nbd_genl_reconfigure+0x1301/0x1e80 drivers/block/nbd.c:2468
+       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+       __sock_sendmsg net/socket.c:790 [inline]
+       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+       __sys_sendmsg net/socket.c:2770 [inline]
+       __do_sys_sendmsg net/socket.c:2775 [inline]
+       __se_sys_sendmsg net/socket.c:2773 [inline]
+       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #5 (&nsock->tx_lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
+       nbd_queue_rq+0x373/0x1150 drivers/block/nbd.c:1207
+       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
+       process_one_work kernel/workqueue.c:3322 [inline]
+       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
+       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
+       kthread+0x388/0x470 kernel/kthread.c:436
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #4 (&cmd->lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       nbd_queue_rq+0xc1/0x1150 drivers/block/nbd.c:1199
+       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2117
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+       blk_mq_run_work_fn+0x16c/0x300 block/blk-mq.c:2532
+       process_one_work kernel/workqueue.c:3322 [inline]
+       process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
+       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3486
+       kthread+0x388/0x470 kernel/kthread.c:436
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #3 (set->srcu){.+.+}-{0:0}:
+       srcu_lock_sync include/linux/srcu.h:199 [inline]
+       __synchronize_srcu+0xc9/0x2f0 kernel/rcu/srcutree.c:1481
+       elevator_switch+0x1e8/0x7b0 block/elevator.c:576
+       elevator_change+0x2fa/0x480 block/elevator.c:681
+       elevator_set_default+0x375/0x440 block/elevator.c:754
+       blk_register_queue+0x3f3/0x4e0 block/blk-sysfs.c:992
+       __add_disk+0x6cb/0xe30 block/genhd.c:528
+       add_disk_fwnode+0xfb/0x4b0 block/genhd.c:597
+       add_disk include/linux/blkdev.h:800 [inline]
+       nbd_dev_add+0x733/0xb60 drivers/block/nbd.c:2021
+       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
+       do_one_initcall+0x250/0x870 init/main.c:1347
+       do_initcall_level+0x10a/0x1a0 init/main.c:1409
+       do_initcalls+0x59/0xa0 init/main.c:1425
+       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
+       kernel_init+0x1d/0x1d0 init/main.c:1548
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #2 (&q->elevator_lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       elevator_change+0x1af/0x480 block/elevator.c:679
+       elevator_set_none+0xb5/0x140 block/elevator.c:769
+       blk_mq_elv_switch_none block/blk-mq.c:5101 [inline]
+       __blk_mq_update_nr_hw_queues block/blk-mq.c:5146 [inline]
+       blk_mq_update_nr_hw_queues+0x5ef/0x19f0 block/blk-mq.c:5211
+       nbd_start_device+0x189/0xb30 drivers/block/nbd.c:1526
+       nbd_genl_connect+0x1597/0x1c10 drivers/block/nbd.c:2276
+       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+       __sock_sendmsg net/socket.c:790 [inline]
+       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+       __sys_sendmsg net/socket.c:2770 [inline]
+       __do_sys_sendmsg net/socket.c:2775 [inline]
+       __se_sys_sendmsg net/socket.c:2773 [inline]
+       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&q->q_usage_counter(io)#50){++++}-{0:0}:
+       blk_alloc_queue+0x544/0x690 block/blk-core.c:504
+       blk_mq_alloc_queue block/blk-mq.c:4420 [inline]
+       __blk_mq_alloc_disk+0x194/0x390 block/blk-mq.c:4467
+       nbd_dev_add+0x494/0xb60 drivers/block/nbd.c:1991
+       nbd_init+0x15f/0x1e0 drivers/block/nbd.c:2729
+       do_one_initcall+0x250/0x870 init/main.c:1347
+       do_initcall_level+0x10a/0x1a0 init/main.c:1409
+       do_initcalls+0x59/0xa0 init/main.c:1425
+       kernel_init_freeable+0x29d/0x3e0 init/main.c:1658
+       kernel_init+0x1d/0x1d0 init/main.c:1548
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain kernel/locking/lockdep.c:3908 [inline]
+       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
+       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
+       __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
+       fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
+       might_alloc include/linux/sched/mm.h:317 [inline]
+       slab_pre_alloc_hook mm/slub.c:4565 [inline]
+       slab_alloc_node mm/slub.c:4925 [inline]
+       __do_kmalloc_node mm/slub.c:5361 [inline]
+       __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
+       _kmalloc_noprof include/linux/slab.h:973 [inline]
+       _kzalloc_noprof include/linux/slab.h:1290 [inline]
+       apply_wqattrs_prepare+0xee/0xdc0 kernel/workqueue.c:5410
+       apply_workqueue_attrs_locked kernel/workqueue.c:5495 [inline]
+       alloc_and_link_pwqs kernel/workqueue.c:5645 [inline]
+       __alloc_workqueue+0x117c/0x2060 kernel/workqueue.c:5897
+       alloc_workqueue_va kernel/workqueue.c:5946 [inline]
+       alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
+       ib_mad_port_open drivers/infiniband/core/mad.c:3252 [inline]
+       ib_mad_init_device+0x993/0x2150 drivers/infiniband/core/mad.c:3339
+       add_client_context+0x37c/0x7b0 drivers/infiniband/core/device.c:732
+       enable_device_and_get+0x19c/0x3e0 drivers/infiniband/core/device.c:1341
+       ib_register_device+0x10af/0x1380 drivers/infiniband/core/device.c:1468
+       rxe_register_device+0x1e3/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1543
+       rxe_net_add+0x81/0x110 drivers/infiniband/sw/rxe/rxe_net.c:625
+       rxe_newlink+0xf4/0x1c0 drivers/infiniband/sw/rxe/rxe.c:243
+       nldev_newlink+0x5bc/0x650 drivers/infiniband/core/nldev.c:1816
+       rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
+       rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+       rdma_nl_rcv+0x6ef/0xa40 drivers/infiniband/core/netlink.c:259
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+       __sock_sendmsg net/socket.c:790 [inline]
+       ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+       __sys_sendmsg net/socket.c:2770 [inline]
+       __do_sys_sendmsg net/socket.c:2775 [inline]
+       __se_sys_sendmsg net/socket.c:2773 [inline]
+       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> cpu_hotplug_lock --> wq_pool_mutex
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(wq_pool_mutex);
+                               lock(cpu_hotplug_lock);
+                               lock(wq_pool_mutex);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+6 locks held by syz.1.835/9438:
+ #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:164 [inline]
+ #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ #0: ffffffff9ab1b1a8 (&rdma_nl_types[idx].sem){.+.+}-{4:4}, at: rdma_nl_rcv+0x33d/0xa40 drivers/infiniband/core/netlink.c:259
+ #1: ffffffff8fd8ae28 (link_ops_rwsem){++++}-{4:4}, at: nldev_newlink+0x429/0x650 drivers/infiniband/core/nldev.c:1806
+ #2: ffffffff8fd7c308 (devices_rwsem){++++}-{4:4}, at: enable_device_and_get+0xff/0x3e0 drivers/infiniband/core/device.c:1331
+ #3: ffffffff8fd7c608 (clients_rwsem){++++}-{4:4}, at: enable_device_and_get+0x165/0x3e0 drivers/infiniband/core/device.c:1339
+ #4: ffff888020ea0620 (&device->client_data_rwsem){++++}-{4:4}, at: add_client_context+0x33e/0x7b0 drivers/infiniband/core/device.c:730
+ #5: ffffffff8e9f6d00 (wq_pool_mutex){+.+.}-{4:4}, at: __alloc_workqueue+0xa9c/0x2060 kernel/workqueue.c:5895
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 9438 Comm: syz.1.835 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2043
+ check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain kernel/locking/lockdep.c:3908 [inline]
+ __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5237
+ lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
+ __fs_reclaim_acquire mm/page_alloc.c:4329 [inline]
+ fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4343
+ might_alloc include/linux/sched/mm.h:317 [inline]
+ slab_pre_alloc_hook mm/slub.c:4565 [inline]
+ slab_alloc_node mm/slub.c:4925 [inline]
+ __do_kmalloc_node mm/slub.c:5361 [inline]
+ __kmalloc_noprof+0xbc/0x720 mm/slub.c:5387
+ _kmalloc_noprof include/linux/slab.h:973 [inline]
+ _kzalloc_noprof include/linux/slab.h:1290 [inline]
+ apply_wqattrs_prepare+0xee/0xdc0 kernel/workqueue.c:5410
+ apply_workqueue_attrs_locked kernel/workqueue.c:5495 [inline]
+ alloc_and_link_pwqs kernel/workqueue.c:5645 [inline]
+ __alloc_workqueue+0x117c/0x2060 kernel/workqueue.c:5897
+ alloc_workqueue_va kernel/workqueue.c:5946 [inline]
+ alloc_workqueue_noprof+0xe3/0x210 kernel/workqueue.c:5962
+ ib_mad_port_open drivers/infiniband/core/mad.c:3252 [inline]
+ ib_mad_init_device+0x993/0x2150 drivers/infiniband/core/mad.c:3339
+ add_client_context+0x37c/0x7b0 drivers/infiniband/core/device.c:732
+ enable_device_and_get+0x19c/0x3e0 drivers/infiniband/core/device.c:1341
+ ib_register_device+0x10af/0x1380 drivers/infiniband/core/device.c:1468
+ rxe_register_device+0x1e3/0x350 drivers/infiniband/sw/rxe/rxe_verbs.c:1543
+ rxe_net_add+0x81/0x110 drivers/infiniband/sw/rxe/rxe_net.c:625
+ rxe_newlink+0xf4/0x1c0 drivers/infiniband/sw/rxe/rxe.c:243
+ nldev_newlink+0x5bc/0x650 drivers/infiniband/core/nldev.c:1816
+ rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
+ rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ rdma_nl_rcv+0x6ef/0xa40 drivers/infiniband/core/netlink.c:259
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8013f9de59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8014d82028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f8014225fa0 RCX: 00007f8013f9de59
+RDX: 0000000004000000 RSI: 00002000000002c0 RDI: 000000000000000d
+RBP: 00007f8014033e6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f8014226038 R14: 00007f8014225fa0 R15: 00007ffc03c3f938
+ </TASK>
+smbdirect: ib_dev[syz1]: added: IB_CA max_fast_reg_page_list_len=512 device_cap_flags=0x1c001223c76 kernel_cap_flags=0x14 page_size_cap=0xfffff000
+smbdirect: ib_dev[syz1]: num_ports=1 max_qp_rd_atom=128 max_qp_init_rd_atom=128 max_sgl_rd=0 max_sge_rd=32 max_cqe=32767 max_qp_wr=1048576 max_send_sge=32 max_recv_sge=32
+smbdirect: ib_dev[syz1]PORT[1]: iwarp=0 ib=0 roce=1 v1=0 v2=1 core_cap_flags=0x803005
+RDS/IB: syz1: added
+smc: adding ib device syz1 with port count 1
+smc:    ib device syz1 port 1 has no pnetid
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+wlan1 speed is unknown, defaulting to 1000
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
