@@ -1,91 +1,85 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF5441A933;
-	Mon, 20 Jul 2026 13:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674F141DEC8;
+	Mon, 20 Jul 2026 13:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784554596; cv=none; b=Fww/RVAXCNcm5b3TCEiS9b7oN0hUtlKBcu8miltzdck6uWjTDbmvepEd0tbQH+Dc103KE23plNnsixeMRQ2hknVFjUnIAE1+jEtZH55WkonbaYZ1Gv67Jfgav2kiJnP8f5i1ZG0SCZysfjvpwouDwcSUVO5cWJuoCxhgIZh+oN4=
+	t=1784554667; cv=none; b=HJtsCm4GLLIzN/bOJGoIoJbUSMtmr21hb8e/IV+kDIMK/3wkg1Fsp+pqfOgHd1gD8nmHwvIlXCYxOGGHXBzVrRa8UDt+UwCnCxhdTZgS/NSD8ba0cKM2NQd5LAGJAP49TftUtR2D9EcVjrON+zHCFCewJHUN8JNY8IZIsdS3ot8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784554596; c=relaxed/simple;
-	bh=AOlhl4AViQk+vETqKgDUwbm1EhmwBFbpPGO30Kz346w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DwlGci6ioSs/2LvsNDKJxnSEecjWfYJYw9WHkRwQH/ojLLp7S4nngq3m27Z8tLOjKHeiQkxPH1dv4Ikn2yiJyMbABhp/nPX8p4L7ExeckifNFs0tXQ+gDX+elyw9/W4f/Dlm/WkkftNzG77SqRzLUGNa0RLTiTrWvOstENybQgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=I//SSo4r; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1784554667; c=relaxed/simple;
+	bh=zlYwNl/Yy5M3XxmCQFaJEP2ezB3t1CAypx5HYeeAhGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m3Mzf2GwC/n6NFRus2039xnbGulXG3z/cDaHzzKMti7vk4SRyH3VDM05wDediqs3e9jM7KMBPysMwXeV5nqoLHlFP88UlB0hZrRxCSsYhO1S+Ys4H32FZHB/CpmZMOoBNo39ZZ+RTOUPKTrc4pB+C9kkbdmbhpqkGImtruM3kSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tiAFgYuN; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="I//SSo4r"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=TpmgnPnv5gIqPomnCHRu1qnIVw5opQrOTvHoS59GWyQ=;
-	b=I//SSo4rWlZXwek5Ynm1gX3MnDD9sLL0Nj1CwZt/AaNdp08A4etJkOuuKTaqriJTiWVqRWOkw
-	rZN69x/JtDCnwgATflatWtlR58E3x4qaNnYHOI4J17xWOCE5KnLYiVk3b8augwRo+JHftd0sPrE
-	kXs6Tm0kaOdk2e656wbcYws=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4h3hBQ4wQRz12LFy;
-	Mon, 20 Jul 2026 21:26:54 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A981202E6;
-	Mon, 20 Jul 2026 21:36:29 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 20 Jul 2026 21:36:28 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: <xuanqiang.luo@linux.dev>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <gur.stavi@huawei.com>,
-	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <luoxuanqiang@kylinos.cn>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <stable@vger.kernel.org>,
-	<wudi234@huawei.com>, <tengpeisen@huawei.com>, <shijing34@huawei.com>,
-	<wulike1@huawei.com>, <chiqijun@huawei.com>, <ducheng11@hisilicon.com>
-Subject: Re: [PATCH net v1 2/3] hinic3: fix use-after-free on DMA mapping failure
-Date: Mon, 20 Jul 2026 21:36:23 +0800
-Message-ID: <20260720133623.717-1-gongfan1@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260710090527.58354-3-xuanqiang.luo@linux.dev>
-References: <20260710090527.58354-3-xuanqiang.luo@linux.dev>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tiAFgYuN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=G2EGhsuaHVLZRl+o3u34XmMvktvgXy8Y7soaKygN/AM=; b=tiAFgYuNj+h49EDo6UghApL1Dk
+	79v6u85zceyiF4u+ZLYwuxjcO1Wy39Mg70jUL/8vxWBSSJAMQBpxGmjy1YYT2Nlcbh6X5nmzB3O+I
+	S7rsXZvdsjvfJVx4kw6XJdpw9sgBzd42r+Pc53zw/cLPP+eJ7OVa2AtI2werIu+Eq0Uo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wloBb-00DGeY-1L; Mon, 20 Jul 2026 15:37:35 +0200
+Date: Mon, 20 Jul 2026 15:37:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: Re: [Patch net-next v3] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+Message-ID: <f3b70dc6-95ff-4add-8b1d-6534fe4dc3f6@lunn.ch>
+References: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
+ <06a5b8d1-f3a5-40e9-af12-52c5c9fd99e6@lunn.ch>
+ <3d87f3d1-83c6-49b5-ac6f-59880c6a6c6c@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3d87f3d1-83c6-49b5-ac6f-59880c6a6c6c@motor-comm.com>
 
->  drivers/net/ethernet/huawei/hinic3/hinic3_tx.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-> index 9306bf0020caf..5739ecb08d0d3 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-> @@ -578,8 +578,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
->  		*wqe_combo.task = task;
->
->  	tx_info = &txq->tx_info[pi];
-> -	tx_info->skb = skb;
-> -	tx_info->wqebb_cnt = wqebb_cnt;
->
->  	err = hinic3_tx_map_skb(netdev, skb, txq, tx_info, &wqe_combo);
->  	if (err) {
-> @@ -589,6 +587,9 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
->  		goto err_drop_pkt;
->  	}
->
-> +	tx_info->skb = skb;
-> +	tx_info->wqebb_cnt = wqebb_cnt;
-> +
->  	netif_subqueue_sent(netdev, txq->sq->q_id, skb->len);
->  	netif_subqueue_maybe_stop(netdev, txq->sq->q_id,
->  				  hinic3_wq_free_wqebbs(&txq->sq->wq),
+> >> -static struct phy_driver motorcomm_phy_drvs[] = {
+> >> -	{
+> >> -		PHY_ID_MATCH_EXACT(PHY_ID_YT8511),
+> >> -		.name		= "YT8511 Gigabit Ethernet",
+> >> -		.config_init	= yt8511_config_init,
+> >> -		.suspend	= genphy_suspend,
+> >> -		.resume		= genphy_resume,
+> >> -		.read_page	= yt8511_read_page,
+> >> -		.write_page	= yt8511_write_page,
+> >> -	},
+> > 
+> > I still don't like this. Please stop diff deleting all these and
+> > putting them back later. It makes me thing something changed, maybe
+> > white space?
+> 
+> Ans: I tried to refactor this issue by hanging the position of the newly
+> added code. However, the same issue may still arise in other code segments, 
+> without modifying the existing code.
 
-Thanks for your fixes, the proposed modification of the hinic3 driver has been
-tested on hardware, and it works fine.
+Look at other patches on this list. Look at the diff generated. Do you
+see the same sort of issue? I'm pretty sure something is wrong here.
 
-Reviewed-by: Fan Gong <gongfan1@huawei.com>
+Try
+
+git reset HEAD~1
+git diff -w
+
+and see if you get a different diff. That would indicate there is a
+whitespace change you need to revert.
+
+	   Andrew
