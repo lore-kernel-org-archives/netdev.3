@@ -1,46 +1,46 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C7E1F4C8E;
-	Mon, 20 Jul 2026 01:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A1C35893;
+	Mon, 20 Jul 2026 01:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784510010; cv=none; b=r7uHjyVlcvNsFJ373zoVvWAeqE8VktB/+Mk+edCPBR8dQq8UavNaj3xza+sI8l4t/HR/s86U9P8xF8PnpkbVQZ7+GZn6ZrYe+U8VfXMTGVQxBHyLZptu+JXTRgxliqrGQwuEJbrogUsDfoYaPyAbNQT/s0wHdU2dV8MrSiWf/6w=
+	t=1784510229; cv=none; b=VekTYVP0hIUlg67qH354iPX3BGrIMzh4dGELOMDxnRD1KyfcaDvprwcdYlqNIQrGbqiJnwMOAOn3igu2H0SyJogVD9um4+p25LOgzXeIb+DT1z3YYoxiJlfEx0pYaz7TcSdNdSYbz+MYLP0sYMlNXF5xR6+ibd6KMDw0sWLB8Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784510010; c=relaxed/simple;
-	bh=mzhDYiU1OVoUhCqJyxPsSIsPxPKYmPT3KU6c5ZZyJhU=;
+	s=arc-20240116; t=1784510229; c=relaxed/simple;
+	bh=YMZYN4oUh9M4VmIDdGcNCJNcrqKTGFCQC3fWxEKsif4=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=UhDf0FQu7B6B/vYkEZ2rwNLUgS4OdO8f/9WyHMODY1DdEr328WtwrgIzjFRFco3bduxcpxyCq22caYVLigI+FpJuCHOfxvezXLnBsE/gRQT+GojueuE5pv61/F8QCmpcAKq5SLPZtFXV19n88ev2zwmIIquai7C1EJeiqtnLV3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=1dOyq9Vn; arc=none smtp.client-ip=216.154.215.154
+	 Message-Id:References:To; b=pxaMl+qsMVe1vYS4JWt9fIMHoDro764Na7qJVfjnhQ2aBMbTWmn6C1D23EEl63u4xOWEtmZTjJrIms3X5cugLyuHza8I+rA0IM5L7ZwmtvNREY/651Z/BuOGDstUFFOuv0K/AYT+DONyKTlHTHX0W0wH5Wyy12PqCLriNvnrQqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=d3VC6c8I; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="1dOyq9Vn"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="d3VC6c8I"
 Received: from smtpclient.apple (203-220-69-184.tpgi.com.au [203.220.69.184])
-	by us.padl.com (Postfix) with ESMTPSA id 0CDE26095A;
-	Sun, 19 Jul 2026 21:13:20 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id CC4BE6095A;
+	Sun, 19 Jul 2026 21:17:01 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1784510006; bh=mzhDYiU1OVoUhCqJyxPsSIsPxPKYmPT3KU6c5ZZyJhU=;
+	t=1784510226; bh=HbhwYN8xcTcVdqhsLQMhQ5+1ZMbWiGfwUJe/6FZSLao=;
 	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=1dOyq9Vncbw/08fJG0BWDgkJcHnrLAk3wQHHKuaNmYPDLV39Jabu8MAGHXnoqoPMn
-	 i3Hy4r3fqdrumPIgiJhT9uhLGHy0snrKtCA/HOznJvPpQBwxfTavm1UDvcB61ymu5/
-	 5Q+E3l3g9LCt8Z4tFcOm9lsh/u+BLtq2EBSbsxLZVzzId70OF3R4k3cTwDKa8sysf/
-	 kvhQHSbXbxnPWUDdPHthjDK5GSRj00hy2U21VI7DPqHoM/5awudQTl5QEylo+nHrLB
-	 pFdjdhwMIZy2n7WS8ayut8UQcFA/ptTUcFXLQ3cX5PzgWfC6hdJ7FfYoHV2+2J8kSi
-	 uQrZEYT+73wQA==
+	b=d3VC6c8IdoDNeTEpuxsbR3Fd0gVNHrEFusUTw/nJB/DqPWm6b0EweLpxN+ejR75pS
+	 X3vdMMTtBC2dmiMIBMiub7rhG0crgYB44Nst8aBzFdpiux3JqjTZc2SNC3Z+KGp0md
+	 8TwL9ZirxmnJdcv2ZXqU2SXSgo8QmJ+OfA2UYl1Y2uxodee3N6s+snWL/xl0SB4BZl
+	 taNKnxWMDvtqScWMrqXttxRzBSYUPCbyQAfUpJ++bHtP81vnlBHkmpRuCahQ0MrD3j
+	 Cl0rrwYXqxAND/gc1j9/GE9oEr4HXvbQ9SJvLwvntafwqhnBWOY8OqLC4glSDItszh
+	 TkOhDcmdmYvgA==
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: Re: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp
- fixes
+Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: embedded PTP
+ timestamp support
 From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <20260719225701.okkvl2uhgsuwydfi@skbuf>
-Date: Mon, 20 Jul 2026 11:13:06 +1000
+In-Reply-To: <20260719230455.eaf7a4mlkx5l2uzd@skbuf>
+Date: Mon, 20 Jul 2026 11:16:47 +1000
 Cc: "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>,
@@ -58,35 +58,29 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <537810DD-FAA6-4DF9-BC6D-36ED01093022@padl.com>
+Message-Id: <B3F288ED-50EA-4A3F-BD7B-C5461A475E4F@padl.com>
 References: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
- <0A7B1CC8-F5F6-487E-A14C-1F0C2D5ADC84@padl.com>
- <20260719095307.hwtnbrqdkjxntrcr@skbuf>
- <92B1BC3E-6976-478B-8B34-043EFE63C3DA@padl.com>
- <20260719225701.okkvl2uhgsuwydfi@skbuf>
+ <20260710-mv88e6xxx-ptp-fixes-v2-2-af97c38df247@padl.com>
+ <20260719101241.xs4nz7r5bonb3qys@skbuf>
+ <A59F16A0-6C6A-4CC3-A7F6-84B7DDAD14B2@padl.com>
+ <20260719230455.eaf7a4mlkx5l2uzd@skbuf>
 To: Vladimir Oltean <olteanv@gmail.com>
 X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
 
->> Good point. So perhaps processing the embedded timestamp inline
->> doesn=E2=80=99t confer much benefit. ptp4l (which we use) handles =
-out-of-order
->> messages fine.
->=20
-> If you're intending the in-band timestamps as a fix for gptp2d's
-> limitations, then no. As a general optimization - maybe.
+> I guess that would be fine, except:
+> - worth clarifying that you're talking about the Reserved2 field =
+(rather
+>  than Reserved1 or Reserved3)
 
-Delivering it inline makes more sense to me but it is a more intrusive =
-change. I don=E2=80=99t have a strong opinion either way. I=E2=80=99m =
-sure gptp2d could be fixed were someone motivated.
+Yes, well some Marvell chips can write at any offset, but Reserved2 is =
+the expected offset.
 
-> The only problem with timecounter/cyclecounter is that the hardware
-> clock remains free-running, which means you won't be able to apply a
-> time-synchronized taprio schedule (if the hw supports that).
+> - any reason justifying the introduction of "edsa-arrts-trailed", or
+>  would it be just for completeness? As a user, what would make me
+>  decide between "edsa-arrts-trailer" and "edsa-arrts-ptp-reserved2"?
 
-Yes, many Marvell switches support 802.1Qbv but there is no kernel =
-support at this time. For 802.1AS, you want both kernel and user =
-counters to be free running, so neighborRateRatio can be correctly =
-reported.
+No good reason, and the newer Marvell chips only document support for =
+Reserved2. Removing trailer support makes sense.
 
 Luke=
