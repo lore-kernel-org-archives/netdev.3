@@ -1,219 +1,177 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F63D810D;
-	Mon, 20 Jul 2026 10:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5CA3DB635
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784542052; cv=none; b=hlm6YOXN4MMIBEPNHxvJPLpYEC+zJNdaHgXg3UYe058elUznGTVgGqCVPNoRog0ED143cMboYUb4F00PM+eBoAjnKA9ltVGoz1O0GUkZWMj/rHukZf7Hr0RbjjtGVoC31WELA6f/RtMQoi5PbffWtEOUfwyFR17svF3WyPgqokI=
+	t=1784542160; cv=none; b=T99Sv95v2Y+AGzRYTHFXw9/Ta+T4bK6kDsdKoYWg/sYTGQOAxf+eSggngtpYVOJguZxc7R+jtihyqCsH1MUzav0KvnFG80Gxl5Brqwb9zq17xbEREiYhVYhxLGVH4K/kwicOU8husoeMmFjzVERJYCDBcx6jxh9RfEU34i7/kcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784542052; c=relaxed/simple;
-	bh=yHYO+cqaT3w+qa+Dxyz99VXXZgQfW9BPG9TeV9WX8iQ=;
-	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=HJodxi4JQfw+YSRDusED4FOh/ImGIfv+88P4Ur2afKpkC2LgU8Ca8WGejWXr+DPkcSjuo/96h+R5P3I0+Kn2UCXlorYQGe3hRYQX+Kk2uJdD/MxGDeKV+1O7jxIuKGPBn0ym7E38uk+5W7NH0iJyT0qCsqRcXzmCwIR4kbC7RUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h3blr29x3z4yjSh;
-	Mon, 20 Jul 2026 18:07:04 +0800 (CST)
-Received: from njy2app02.zte.com.cn ([10.40.13.116])
-	by mse-fl1.zte.com.cn with SMTP id 66KA6mci073773;
-	Mon, 20 Jul 2026 18:06:48 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app03[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Mon, 20 Jul 2026 18:06:51 +0800 (CST)
-X-Zmail-TransId: 2afb6a5df33b931-43f7e
-X-Mailer: Zmail v1.0
-Message-ID: <20260720180651288d3b9DAp__Lfvo2x2PkMfC@zte.com.cn>
-Date: Mon, 20 Jul 2026 18:06:51 +0800 (CST)
+	s=arc-20240116; t=1784542160; c=relaxed/simple;
+	bh=KcJJfuTcPZ42Gffl+oijDCOzJxqVQLs1QaqJvlj/W7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i+UWxLw/6t0VvFvt8+2MQU52Pny1DcZ21ZbSNOj8RuNYiwzm2MyIyexr1Mx2/LCeysZyMndeafr+xpgV0zPHkr6yd9yCpDVsnZKjOUx3tn0d2p/K4dbLWs3yGmVYD08GbqoDCn9MdMgVctN5KjhvE24fyNntegWca9o5QCtqK/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Aaq8p2F6; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Aaq8p2F6"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49558ce01afso9759095e9.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 03:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784542151; x=1785146951; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T+SPKWaxytnGRImorl+1NdLSvi5YBLe2qcoISSE03f0=;
+        b=Aaq8p2F6EfNHFK/19GbYqT8l1nN7cHp+4AjjJQnSUZMLdNyyhDvIXF9Iimid3jKKU6
+         QLZSKJu+grU8t3L9Cw04QcHxadnhUyc1kHO4yPJjOJ/eVwqAmqkT7Pg8uJDrk6GVVxYh
+         7+9NKWQ6CLTAreO9PcmcYL96kJSyx3sarucWf46jTrX9Eqi1UeHU4hAqVfxmOH4l60ce
+         b1YNWomH3BNJOeyhOsFN7WTKYw9PJECmSc5ceCR2pX6hN15EZMpl0bRKZYxNyGE2lhw5
+         bwKZ/m1PeTcyYMwEc1yyW10nWKWfx2kkapyufFXZX/JLFr/jIYJtmGSriKzjdZtZXXAO
+         I9lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784542151; x=1785146951;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T+SPKWaxytnGRImorl+1NdLSvi5YBLe2qcoISSE03f0=;
+        b=ae6xFdWRjsF1S+tIDoRRtfk287Epc9G9+viSTZf6FQk0DsupwDc0WWkeofFs612qy6
+         oDwcZf/34OFtsJuJkh2CTGvLBAKv6EjxGov6nwa9+hCPsO1FyW42h5gq/wI+ytsNtHpa
+         1EgvTE/8nuYq0v3HYb6JSHjb0WAalYYkyiW3MaD6ZLJUmX/Lvxu96bDEIy2drfi1koNB
+         cZrV2g823VaGfePwNMmr0Zmlv16kR44YBAnvVtOFyhdmFuLhOi3xlq4ooqesymdK9cwu
+         hP6l1Wu204BScujVp+pAO07IyzRPOkYX36pgp9rxXIcDUPrVqN1wrz1Iu1cszKuEg7LD
+         8k1g==
+X-Forwarded-Encrypted: i=1; AHgh+RoxBhLXF5RNcVoyjV5Rh4ROdx0Ic+S4xJNDmQadsebQQ28W6k9hMzwbzxixctBTn0tbcDYaJyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlGicubjELq/ivLPZhOFRezLZQw/MusTiA+kyCvwlBmMVh96rb
+	Hf33f6xARTVPMiIyD8Y9z8D6cIp3AtTljjOw2CVYgUgZQ9cg4McxzMu7F2CYEELxHbc=
+X-Gm-Gg: AfdE7ckL8+3wGrF2tSc2IsoVP5f5QFkX1ISNrUmbj5tSEiIgncRcuiwaRQ/N2RAKR2I
+	9MrSmflVe0Ggz9dx1GPOge3Giw3oSL99rXda2yI8IR1T95t316mPlFk4RwsxTfEudmkIw8p3M5X
+	9C4osumSTeniAGOmzs7glbPfT/YRNM2oSp2Z2NzEUOMWtTpd8+Tv4lM4gkPRXjRHTmG71DEW2+k
+	s9NyhFz0vSW6Txlyg7IuNJaNaBNUNImjE0E2u5C5yqEJueCavCSGHKcaLqEoBEcPa9hnKc2BYwD
+	nTjfEKgSEzND+O3+OL6TyW8hr+DPWItBW1LBEYSc91mFmFeEpkGwR5XckvccE2VNWAoQy26D9BO
+	y44wpTbsd86lxXDUQlu+iBys6AsCgA9Kb8hEyiZ4A5wXAnk2rMaUg8TNgFpu1/PmVNGeRG1Ekp0
+	JyQoO0pSZCbpz1aeWddbJS9DVInA==
+X-Received: by 2002:a05:600c:198e:b0:495:4f88:598a with SMTP id 5b1f17b1804b1-4954f885a12mr129671915e9.13.1784542150854;
+        Mon, 20 Jul 2026 03:09:10 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954a2a2504sm294792995e9.2.2026.07.20.03.09.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 03:09:10 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mika Westerberg <westeri@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Petko Manolov <petkan@nucleusys.com>,
+	Richard Cheng <icheng@nvidia.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>
+Subject: [PATCH v3 net-next 0/6] net: Move system_long_wq to system_dfl_long_wq
+Date: Mon, 20 Jul 2026 12:08:50 +0200
+Message-ID: <20260720100902.155605-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY5IDAvMl0gQWRkIFpURSBEaW5nSGFpIEV0aGVybmV0IFBGIGRyaXZlcg==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 66KA6mci073773
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 20 Jul 2026 18:07:04 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A5DF348.000/4h3blr29x3z4yjSh
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Junyang Han <han.junyang@zte.com.cn>
+Hello,
 
-This series adds initial support for the ZTE DingHai Ethernet controller,
-a high-performance PCIe Ethernet device supporting SR-IOV, hardware
-offloading, and advanced virtualization features.
+Currently the code uses the per-cpu workqueue system_long_wq to schedule
+long running works.
 
-Changes from v8:
-- Unify the three prefix variants (dh_core* / dh_pf* / zxdh_pf*)
-  on the vendor namespace zxdh_* .
-- Address the _dev / _device suffix inconsistency: zxdh_pf_device
-  -> zxdh_pf_dev, matching zxdh_core_dev and the upstream
-  pci_dev / net_dev / usb_dev convention.
-- Keep struct zxdh_core_dev and struct zxdh_pf_dev split, with
-  zxdh_pf_dev hung off zxdh_core_dev::priv via the container-of
-  pattern. The same zxdh_core_dev handle will be shared by the
-  SF (Sub-Function) driver queued for the next merge window,
-  and by MPF drivers further out. Each device type hangs its own
-  private struct off priv: PF -> zxdh_pf_dev, SF -> zxdh_sf_dev (planned).
-  Merging now would force a re-split when SF lands.
-- Address v8 review comment "introduce functions yet you never use
-  them".
-- Wire up zxdh_pf_modern_cfg_init() into the probe path and
-  zxdh_pf_modern_cfg_uninit() into the remove path.
-- Drop the ZXDH_CONFIG_S_* and ZXDH_MSI_NO_VECTOR macros from
-  dh_queue.h.
+Unbound works could benefit from scheduler task placement, to optimize
+performance and power consumption. Another good reason to have this unbound,
+is the "queue_delayed_work()" function, used to enqueue the work item.
+More details on this will follow in the next section.
 
-Changes from v7:
-- Remove the redundant depends on NET_VENDOR_ZTE
-  since it's already implied by the enclosing if NET_VENDOR_ZTE 
-  block in the parent Kconfig.
-- Check BAR 0 is an IORESOURCE_MEM resource before ioremap().
-- Rework .shutdown to quiesce hardware only. 
-- Add NULL guards in zxdh_set_mac() and zxdh_get_mac().
-- Zero the output buffer in zxdh_pf_get_vf_mac() up front.
+Recently, a new unbound workqueue specific for long running work has been
+added:
 
-- Two further AI-review points were investigated and require no
-  code change:
+    c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
 
-  (1) *len is written before the bounds check inside
-      zxdh_pf_map_capability. The two fields written through
-      *len and *bar_off are pf_dev->notify_len and
-      pf_dev->dev_cfg_bar_off, both populated from this
-      function. pf_dev->notify_len is only consulted when
-      pf_dev->notify_base != NULL, which only happens when
-      the corresponding map_capability() call returned a
-      non-NULL pointer; pf_dev->dev_cfg_bar_off is only
-      consumed by zxdh_pf_get_vf_mac and
-      zxdh_pf_set_vf_mac_reg, both of which gate their
-      access on pf_dev->pf_sriov_cap_base. So the early
-      *len / *bar_off writes cannot produce values that
-      end up consumed.
+~~~ Details about queue_delayed_work ~~~
 
-  (2) The expression off * notify_offset_multiplier is
-      u16 * u32; the overflow only triggers when
-      notify_offset_multiplier exceeds UINT_MAX / 65535
-      (≈ 65537), which is well beyond any value a PCI
-      config register would carry for this field. A
-      malformed multiplier of that magnitude would also
-      fail sane probing of the rest of the cap layout, so
-      it cannot reach this arithmetic. The boundaries in
-      practice are enforced by the 64-bit comparison at
-      the top of zxdh_pf_map_vq_notify's notify_base
-      branch, where off is promoted to u64 before the
-      multiply. The three subsequent 32-bit multiplies in
-      that function only feed pointer arithmetic against
-      pf_dev->notify_base; a wrong offset would resolve
-      to an address outside the mapped region and fail on
-      access rather than corrupt kernel state.
+system_long_wq is a per-cpu workqueue and it is used as a parameter of
+queue_delayed_work(). This function schedule an item that it will later
+be enqueued (once the timer will fire). __queue_delayed_work() does the job
+receiving as "cpu" WORK_CPU_UNBOUND:
 
+    if (housekeeping_enabled(HK_TYPE_TIMER)) {
+    //      [....]
+    } else {
+            if (likely(cpu == WORK_CPU_UNBOUND))
+                    add_timer_global(timer);
+            else
+                    add_timer_on(timer, cpu);
+    }
 
-Changes from v6:
-- Clean up PCI device ID table (drop `, 0`, use `{ }` sentinel)
-- Move dh_core_alloc_priv/dh_core_free_priv from header to .c,
-  they don't need to be `static inline`
-- Use `if (!x)` and drop the "%i, x" dev_err() messages in
-  common/notify cfg init.
+The timer is global, so can fire everywhere, and the work item will be
+enqueued where the timer fired.
 
-Changes from v5:
-- Drop dev_info() log spam.
-- Propagate the real error code from dh_pf_pci_init() in
-  dh_pf_probe() instead of hard-coding -ENOMEM.
-- Register devlink only after dh_pf_pci_init() succeeds, and
-  in dh_pf_remove()/dh_pf_shutdown() unregister devlink
-  before tearing down PCI/mutex/priv.
-- Drop the "dh_dev->priv = NULL" assignment from
-  dh_core_free_priv().
+Since the workqueue work doesn't rely on per-cpu variables, there is no
+obvious reason that justify the use of a per-cpu workqueue. So change the
+workqueue with the new system_dfl_long_wq, so that the used workqueue is
+now unbound and can benefit from scheduler task placement.
 
-Changes from v4:
-- Fix sparse warning: add __iomem annotation to priv pointer
-- Fix Clang format warning
-- Use "dinghai:" as patch subject prefix
-- Ensure proper patch threading
+Thanks!
 
-Note: Sent manually due to temporary git send-email unavailability
-in our environment. Will use git send-email or b4 for future
-submissions. Apologies for any inconvenience.
+---
+Changes in v3:
+- rebased on v7.2-rc4
 
-Changes from v3:
-- Merged patches 1 and 2: 
-  Combined initial framework with logging infrastructure
-  for better code organization and reduced patch count. This was done because
-  the logging infrastructure now uses Linux's built-in dev_err(), dev_info(),
-  dev_warn(), etc. macros instead of a custom logging system.
-- Removed unnecessary variable initialization: 
-  Fixed "don't initialise variables".
-- Fixed variable declaration order: 
-  Applied "Reverse Christmas tree" ordering with variables
-  declared from longest to shortest line length.
-- Code quality improvements:
-  Fixed all checkpatch.pl issues (alignment, formatting, etc.).
+- added "net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq"
 
-Changes from v2:
-- Address maintainer feedback from v2 review:
-  * Remove meaningless initialization
-  * Change dh_pf_pci_table to static const for better encapsulation
-  * Simplify MODULE_DESCRIPTION for brevity
-- Coding style improvements:
-  * Ensure all lines are within 80-column limit
-  * Use kernel types (u32/u8) consistently throughout
-  * Improve code readability with better formatting
+- changed also the workqueue in ibmvnic_reset().
 
+Link to v2: https://lore.kernel.org/all/20260706134033.244295-1-marco.crivellari@suse.com/
 
-Changes from v1 (addressing feedback from AndrewLunn):
-- Update copyright years to 2022-2026
-- Remove DRV_VERSION, MODULE_VERSION and related boilerplate
-- Fix MODULE_AUTHOR to use person with email address
-- Use module_pci_driver() instead of manual init/exit
-- Remove empty suspend/resume callbacks
-- Replace char priv[] flexible array with void *priv + kzalloc
-- Switch logging from printk wrappers to dev_*() based macros
-- Remove dh_helper.h and dh_log.c, simplify to dh_log.h only
-- Fix variable declaration ordering (reverse Christmas tree)
-- Remove unnecessary NULL check in remove and pf_dev=NULL in probe
-- Fix indentation and remove unnecessary type casts
-- Use kernel idiomatic "if (ret)" style
+Changes in v2:
+- rebased on v7.2-rc2
 
-This is the initial submission and only includes the PF (Physical Function)
-driver. The VF (Virtual Function) driver will be submitted separately.
+- dropped the RFC prefix, kept Ack and review tags
 
-Junyang Han (2):
-  dinghai: add ZTE network driver support
-  dinghai: add hardware register access and PCI capability scanning
+Link to v1: https://lore.kernel.org/all/20260511092846.120141-1-marco.crivellari@suse.com/
 
- MAINTAINERS                                 |   6 +
- drivers/net/ethernet/Kconfig                |   1 +
- drivers/net/ethernet/Makefile               |   1 +
- drivers/net/ethernet/zte/Kconfig            |  20 +
- drivers/net/ethernet/zte/Makefile           |   6 +
- drivers/net/ethernet/zte/dinghai/Kconfig    |  34 ++
- drivers/net/ethernet/zte/dinghai/Makefile   |   9 +
- drivers/net/ethernet/zte/dinghai/dh_queue.h |  54 +++
- drivers/net/ethernet/zte/dinghai/en_pf.c    | 465 ++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h    | 101 +++++
- 10 files changed, 697 insertions(+)
- create mode 100644 drivers/net/ethernet/zte/Kconfig
- create mode 100644 drivers/net/ethernet/zte/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
- create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/dh_queue.h
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
+Marco Crivellari (6):
+  ibmvnic: Move long delayed work on system_dfl_long_wq
+  net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
+  net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq
+  net: thunderbolt: Move long delayed work on system_dfl_long_wq
+  net: usb: pegasus: Move long delayed work on system_dfl_long_wq
+  net: usb: r8152: Move long delayed work on system_dfl_long_wq
+
+ drivers/net/ethernet/ibm/ibmvnic.c           | 6 +++---
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 2 +-
+ drivers/net/ethernet/ti/icssg/icssg_stats.c  | 2 +-
+ drivers/net/thunderbolt/main.c               | 7 ++++---
+ drivers/net/usb/pegasus.c                    | 9 +++++----
+ drivers/net/usb/r8152.c                      | 7 ++++---
+ 6 files changed, 18 insertions(+), 15 deletions(-)
 
 -- 
-2.27.0
+2.54.0
+
