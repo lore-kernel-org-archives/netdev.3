@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C823ACA41;
-	Mon, 20 Jul 2026 14:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1443BE144;
+	Mon, 20 Jul 2026 14:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784559383; cv=none; b=iFtEJVE5LdbLlphchzOjEvBKwV7aUjA/rdjiCVc9LoUgnHrLZISl+XoCOpexnftqcPQXpBNcHFAvrc2ErN/kzSTY4e4auqx6Qcaih+hRG7cILs0uIP491l4ajTzvtK+nlrn7+IzzzELcMQ7Ka6B1OJc/qEZSKVznbcFeGFtKpS4=
+	t=1784559491; cv=none; b=fZax0vyDQOcsQo8tPonvY1wDMZA+Xu6KMm3x1lwVjAd8tSM6sE0OTik7enXWsr4FWjDu8OrHzUXjxwKAScL1NYGX7Npb5O+9uBpNh8RJ/cCNE1w+AqDuMQdJgIfTLs/+XHGuHi2uLKkxeB4Z1+9uCq2GWXFgn3BIS8FJgI2u/2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784559383; c=relaxed/simple;
-	bh=NETP1+3tyE6dgBZ92DHW2hoY0kRsig+XMhV7skNcINQ=;
+	s=arc-20240116; t=1784559491; c=relaxed/simple;
+	bh=zoumzLEISNSSoXrwrXqvez2z49GpY4BWliGaz5MGMzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5JCXlFML0DjL0+OqZuXGXFL3fg4m2mmArQ4r9AziRVasEuIQBh2iKFR7x9pBtX9c0+SSOICg4Fj9NQ36qUfZPaFrMYCNtdhDH2xiAg4HkYMfISwdajadiiw3oU1U1BXuXRFd/3D8eJoNYm4RRktdlkUCLpOke+jOJUtd6mwh/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQnuB6sL; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=bSNXn2Zd78zoTAY7ubC2ptUaJKSLGZuakNOZglxYRT5Ry1kGjtiPR0R1X/PCdjPypx2aWp2N4nZTR85wDS8oW3ZuEk/nVHzyXMXm19tEE9vhbdvOtanUfArGuOMOT5LI4FgLYLBi24/ogKZBfWDNGObWgM39JLRReqjy6XlCEjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arR+V1q8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQnuB6sL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B584A1F000E9;
-	Mon, 20 Jul 2026 14:56:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arR+V1q8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7914A1F000E9;
+	Mon, 20 Jul 2026 14:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784559381;
-	bh=dbzHRhzW+ulGZerQ30J2qwBhBhYxhsNlqDw/nn5yzw8=;
+	s=k20260515; t=1784559490;
+	bh=wQ9RU38/rwClHmnas9Ebsb/6Uy1wdtR4ggVlodhzROM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WQnuB6sLBoTTYK/Qdu9whSgK96ICBI0XJr96lsyvkCbgZhul9xWBU65Aa7KHbbZ2d
-	 hdog8zpFhk5NiRkxvNcWP4EgkYcKTaFl6q09cghD+xxOcPolWVMWJ/Gkoak1ISSenQ
-	 DbqGWrKIKuq2CoQvQpRcrNh1LNuUHVR6+EFbYCAFZv26lEKBgB9GmBmmxncivEPo6s
-	 Ql+PXnYD0JHiOJ3T0V+rSM3/v1VpAdSvFug1fXV5zQFvTPWYL8SEJYZSUypvs4sA70
-	 KRKKSvCd0UQW9jtVTdjaFN8nZA75Udoc0SeNwPlnYiwg1VKJu6NtLjioKmrU3Imcf+
-	 xvYqwYd8xnVKQ==
+	b=arR+V1q8Uf7UEzf/ZvJedgbFz349KZ1yRen7me8jATh+UdwP7pH8YAkcv7E/vOA7y
+	 O/E3wHopsGl0J/R7HaOpjgEQP3gYuL0T8TjJ3gnNNf/tf52HxDHHDhMxqM40zEhPI6
+	 xXIFAcaeFyKv0WQDekw5ARDunYTiSY42p0EUgdyghGLimyiPcFqV9yn0vxmpLmQ2Sr
+	 wmUZMegT6x+S+Nv7glgwNHuL8Tc8Uy1XscbJ9FRzmkE0pieKqiFKT7XdXw5brLf8+L
+	 XHm+DdE33z/8ebVkFBQmA4A5jzeu02su0C1pOYPF28YcBPV7oQRfjZxTeMe+EppI8G
+	 O1tII4HAItnAQ==
 From: Simon Horman <horms@kernel.org>
 To: dhowells@redhat.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -38,12 +38,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@kernel.org
-Subject: Re: [PATCH net v3 13/14] rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE generation
-Date: Mon, 20 Jul 2026 15:54:23 +0100
-Message-ID: <20260720145422.195990-2-horms@kernel.org>
+Subject: Re: [PATCH net v3 14/14] rxrpc: Remove OOB challenge/response code
+Date: Mon, 20 Jul 2026 15:56:32 +0100
+Message-ID: <20260720145631.201053-2-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260713081022.2186481-14-dhowells@redhat.com>
-References: <20260713081022.2186481-14-dhowells@redhat.com>
+In-Reply-To: <20260713081022.2186481-15-dhowells@redhat.com>
+References: <20260713081022.2186481-15-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,112 +54,157 @@ Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-https://sashiko.dev/#/patchset/20260713081022.2186481-8-dhowells@redhat.com?part=13
+https://sashiko.dev/#/patchset/20260713081022.2186481-8-dhowells@redhat.com?part=14
 ---
---- Patch [13]: [PATCH net v3 13/14] rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE generation ---
-commit ebc5bb53c96c167e2d7c2726bed42c09fd3a97d1
+--- Patch [14]: [PATCH net v3 14/14] rxrpc: Remove OOB challenge/response code ---
+commit fd3c68debe8844700015aad0c42af18084298daa
 Author: David Howells <dhowells@redhat.com>
 
-rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE generation
+rxrpc: Remove OOB challenge/response code
 
-This commit removes the out-of-band queueing mechanism for rxrpc challenge
-packets, moving instead to a preemptively supplied application data key.
-The event processor now parses the challenge and generates the response
-directly using this key.
+This commit removes all the OOB communication stuff along with the UAPI
+elements related to them. The reason for this is that there is no actual
+limit on the capacity of the CHALLENGE queue, which could be abused
+remotely, and it is not actually necessary to generate the application
+data in response to the CHALLENGE.
 
 Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
 
-> --- a/net/rxrpc/recvmsg.c
-> +++ b/net/rxrpc/recvmsg.c
-> @@ -405,7 +405,7 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
->  
->  	trace_rxrpc_recvmsg(0, rxrpc_recvmsg_enter, 0);
->  
-> -	if (flags & (MSG_OOB | MSG_TRUNC))
-> +	if (flags & MSG_TRUNC)
->  		return -EOPNOTSUPP;
-
-[Severity: Medium]
-Does removing MSG_OOB from this check cause out-of-band requests to silently
-fall through and return in-band data?
-
-By not returning -EOPNOTSUPP for MSG_OOB, the socket might violate standard
-semantics by returning regular data when the caller explicitly requested
-out-of-band data.
-
-> --- a/net/rxrpc/rxgk.c
-> +++ b/net/rxrpc/rxgk.c
-> @@ -936,7 +937,7 @@ static int rxgk_construct_response(struct rxrpc_connection *conn,
->  	if (IS_ERR(gk))
->  		return PTR_ERR(gk);
->  
-> -	auth_len = 20 + (4 + appdata->len) + 12 + (1 + 4) * 4;
-> +	auth_len = 20 + (4 + appdata->datalen) + 12 + (1 + 4) * 4;
+> diff --git a/include/uapi/linux/rxrpc.h b/include/uapi/linux/rxrpc.h
+> index bcdfdf9c67a14..7d6a501519311 100644
+> --- a/include/uapi/linux/rxrpc.h
+> +++ b/include/uapi/linux/rxrpc.h
+> @@ -58,11 +58,6 @@ enum rxrpc_cmsg_type {
+>  	RXRPC_TX_LENGTH		= 12,	/* -s-: Total length of Tx data */
+>  	RXRPC_SET_CALL_TIMEOUT	= 13,	/* -s-: Set one or more call timeouts */
+>  	RXRPC_CHARGE_ACCEPT	= 14,	/* Ss-: Charge the accept pool with a user call ID */
+> -	RXRPC_OOB_ID		= 15,	/* -sr: OOB message ID */
+> -	RXRPC_CHALLENGED	= 16,	/* C-r: Info on a received CHALLENGE */
+> -	RXRPC_RESPOND		= 17,	/* Cs-: Respond to a challenge */
+> -	RXRPC_RESPONDED		= 18,	/* S-r: Data received in RESPONSE */
+> -	RXRPC_RESP_RXGK_APPDATA	= 19,	/* Cs-: RESPONSE: RxGK app data to include */
+>  	RXRPC_RESPONSE_APPDATA	= 20,	/* Cs-: User key holding app data for RESPONSE */
+>  	RXRPC__SUPPORTED
+>  };
 
 [Severity: Critical]
-Is auth_len calculated incorrectly here by missing the padding for
-appdata->datalen?
+Does removing these constants from the UAPI header violate the kernel's
+policy against breaking userspace?
 
-It looks like this unpadded length is used to calculate authx_len, which
-determines the size of the skb and the scatterlist allocation.
-
-Later, rxgk_construct_authenticator() uses rxgk_pad_out() to correctly
-round up the written bytes:
-
-ret = rxgk_pad_out(response, appdata->datalen, offset);
-
-Since the written padded size is larger than the unpadded alloc_len
-passed to rxgk_encrypt_authenticator(), will this cause the crypto layer
-to write past the end of the scatterlist and corrupt memory?
-
-[ ... ]
-
-> @@ -1011,24 +1012,36 @@ static int rxgk_construct_response(struct rxrpc_connection *conn,
->   * Respond to a challenge packet.
->   */
->  static int rxgk_respond_to_challenge(struct rxrpc_connection *conn,
-> -				     struct sk_buff *challenge,
-> -				     struct krb5_buffer *appdata)
-> +				     struct sk_buff *challenge)
->  {
-> -	_enter("{%d,%x}", conn->debug_id, key_serial(conn->key));
-> +	struct user_key_payload dummy = {}, *appdata = &dummy;
-> +	int ret;
-> +
-> +	_enter("{%d,%u,%x,%x}",
-> +	       conn->debug_id, conn->service_id,
-> +	       key_serial(conn->key), key_serial(conn->bundle->app_data));
->  
->  	if (key_validate(conn->key) < 0)
->  		return rxrpc_abort_conn(conn, NULL, RXGK_EXPIRED, -EPROTO,
->  					rxgk_abort_chall_key_expired);
->  
-> -	return rxgk_construct_response(conn, challenge, appdata);
-> -}
-> +	if (conn->bundle->app_data) {
-> +		rcu_read_lock();
-> +		appdata = (struct user_key_payload *)
-> +			user_key_payload_rcu(conn->bundle->app_data);
-> +		if (appdata && !refcount_inc_not_zero(&appdata->ref))
-> +			appdata = NULL;
-> +		rcu_read_unlock();
+Any userspace program that includes linux/rxrpc.h and references the
+removed RXRPC_OOB_ID or related constants will now fail to compile.
 
 [Severity: Critical]
-Is it safe to blindly cast the payload of conn->bundle->app_data to
-a struct user_key_payload here?
+Can this sequence cause memory corruption and an out-of-bounds information
+leak via RXRPC_RESPONSE_APPDATA?
 
-If a non-user key like a keyring or logon key was somehow attached to
-the call, this cast will interpret the alien key payload as a
-user_key_payload. For example, if rxrpc_sendmsg_cmsg() in
-net/rxrpc/sendmsg.c has an inverted type check that inadvertently accepts
-non-user keys:
+Looking at the remaining sendmsg code in net/rxrpc/sendmsg.c, an inverted
+check incorrectly rejects user keys but accepts the keyring:
 
-if (key_ref_to_ptr(key)->type == &key_type_user) {
-    key_ref_put(key);
-    return -EINVAL;
+net/rxrpc/sendmsg.c:rxrpc_sendmsg_cmsg() {
+...
+    if (key_ref_to_ptr(key)->type == &key_type_user) {
+        key_ref_put(key);
+        return -EINVAL;
+    }
+...
 }
 
-Calling refcount_inc_not_zero() on a mismatched type could corrupt memory
-by incrementing whatever happens to be at that offset. Furthermore, reading
-the data length from this corrupted structure could leak arbitrary kernel
-memory into the network via the response packet.
+If a local user calls sendmsg with RXRPC_RESPONSE_APPDATA to attach a
+keyring key, receiving a CHALLENGE packet triggers
+rxgk_respond_to_challenge(), which blindly casts the keyring payload to a
+user_key_payload:
+
+net/rxrpc/rxgk.c:rxgk_respond_to_challenge() {
+...
+    appdata = (struct user_key_payload *)
+        user_key_payload_rcu(conn->bundle->app_data);
+    if (appdata && !refcount_inc_not_zero(&appdata->ref))
+...
+}
+
+This yields a pointer to name_link, and incrementing appdata->ref (at
+offset 16) corrupts the keyring's keys.root pointer.
+
+Finally, rxgk_construct_authenticator() reads datalen and data from this
+corrupted offset and copies out-of-bounds kernel memory into the network
+response:
+
+net/rxrpc/rxgk.c:rxgk_construct_authenticator() {
+...
+    a.appdata_len = htonl(appdata->datalen);
+    if (appdata->datalen) {
+        ret = skb_store_bits(response, offset, appdata->data,
+                             appdata->datalen);
+...
+}
+
+Could this allow an unprivileged user to trigger memory corruption and
+kernel panic through an AF_RXRPC socket?
+
+> diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
+> index 9eb6ca3c5ebf5..9d5ce1c7ad0d2 100644
+> --- a/net/rxrpc/af_rxrpc.c
+> +++ b/net/rxrpc/af_rxrpc.c
+[ ... ]
+> @@ -710,23 +710,7 @@ static int rxrpc_setsockopt(struct socket *sock, int level, int optname,
+>  
+>  		case RXRPC_MANAGE_RESPONSE:
+>  			ret = -EINVAL;
+> -			if (optlen != sizeof(unsigned int))
+> -				goto error;
+> -			ret = -EISCONN;
+> -			if (rx->sk.sk_state != RXRPC_UNBOUND)
+> -				goto error;
+> -			ret = copy_safe_from_sockptr(&val, sizeof(val),
+> -						     optval, optlen);
+> -			if (ret)
+> -				goto error;
+> -			ret = -EINVAL;
+> -			if (val > 1)
+> -				goto error;
+> -			if (val)
+> -				set_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+> -			else
+> -				clear_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+> -			goto success;
+> +			goto error;
+>  
+>  		default:
+>  			break;
+
+[Severity: Critical]
+Does this change break backwards compatibility for existing applications?
+
+An application calling setsockopt with RXRPC_MANAGE_RESPONSE, which
+previously succeeded, will now unconditionally receive -EINVAL.
+
+> diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+> index 20c10428a50e0..1c6f4a279034f 100644
+> --- a/net/rxrpc/ar-internal.h
+> +++ b/net/rxrpc/ar-internal.h
+[ ... ]
+> @@ -310,13 +305,6 @@ struct rxrpc_security {
+>  	bool (*validate_challenge)(struct rxrpc_connection *conn,
+>  				   struct sk_buff *skb);
+>  
+> -	/* Fill out the cmsg for recvmsg() to pass on a challenge to userspace.
+> -	 * The security class gets to add additional information.
+> -	 */
+> -	int (*challenge_to_recvmsg)(struct rxrpc_connection *conn,
+> -				    struct sk_buff *challenge,
+> -				    struct msghdr *msg);
+> -
+>  	/* Parse sendmsg() control message and respond to challenge. */
+>  	int (*sendmsg_respond_to_challenge)(struct sk_buff *challenge,
+>  					    struct msghdr *msg);
+
+[Severity: Low]
+Is the sendmsg_respond_to_challenge function pointer left behind as dead
+code?
+
+It appears the OOB feature removal leaves this callback, along with
+notify_oob in struct rxrpc_kernel_ops (include/net/af_rxrpc.h), the
+rxrpc_skb_put_oob trace constant in include/trace/events/rxrpc.h, and dummy
+implementations like none_sendmsg_respond_to_challenge() in
+net/rxrpc/insecure.c.
