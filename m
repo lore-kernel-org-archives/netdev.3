@@ -1,121 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7EB3AFD18
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2793F58DC
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784563302; cv=none; b=dykS6KUHBeKUnGvco3Khu25ilrbWdi54X4NXIZH6wXC5CDbFNtFLMDncsmgvJHmwQJu3wk8MByX8e8+xhS89soSJH3y3iGHeHzyl2tapM28d1T+4feVBC9S15Velwq4aXXN0MouKUzwzqvfyBf+WCTZMc9knhTOFUsfjp3criQo=
+	t=1784563618; cv=none; b=hJ9F7K2wQfBdnz1iWnWmmm4QFsKXPCJxDcEOCvICF/gT2c08w3tEvA4ZVxQL6qwJ2NwaRPc8Neemq8f2ryXJ8sghnxNcPvyWIpCM7P/bma9B0J8+4z5Lb1xG7xnXpB9lFe4MLcqij192vQ7S3qjZqXx8TP88TVkePXwcLOQCZJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784563302; c=relaxed/simple;
-	bh=ikfWm5DL/5sYnkDYH488sa/zQcW6oHrRAu4seAl+qa4=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HQq4pm6TR/o/RFktMwKpzp63P4u3XT5YqmoZhxiQCq3nU54jA8DQ3LFhKeVK+co0dmIadrcvvSzmugxLSJZ33FfCdgmH6S4xycuqrtIvzqZO0UVzwpk+oOBc97+/nJOkbpkB2V33xFjDAJ6UrVdNf+6kixit5/m5pYUISJ5NEFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmI9exjG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784563618; c=relaxed/simple;
+	bh=uBKOtoSytIa87hb6P4JZ8OQ+rSgfkcaH5ESrlGek8bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J6Bh/LliIsxBp8JRQJs5pPrwni5Pu4Ha/n+vclWwLNFI+7GkYzjEY0O1pg+d25dAdE+xKplzbJeuH+wYAU3zQjOu4nr0B+Q2/V2bmEknmUaaoppb9jMg+nRcvE8nkxqDyPwTLPWOM2TTGDTz86E3M9NM+zHg9Em01/SOZtUERng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N5ROvZjv; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmI9exjG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF711F00ADB
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:01:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784563301;
-	bh=cy2ZkxCpNVSDLVTKtd8tQZtQMok6N80r7SDOQ9XS6Ps=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=CmI9exjGe/Q9lpN/jDKjGYcZAhE82h4JhNs/XWbdbT2QKOv9Vt/lJRkWSNzc2sTDK
-	 bT7H2HlxBn7PRd35GrUlcJXAkBZ/htEGpxajzqT8x+LQ9JKk55GrVmyrUIS+VwrASy
-	 ex7zrBxyL4kKER0PbZqRA66QIdxuVaYzzXmIP4+VcaHIcdtYLEOA+9DLMG2S+JTXPB
-	 7Dja9EFj7xhGycntJmC877y3Ph7X6yhMSvvn0ClkvGzRg4VXz75VMJGEj8vEBkESvB
-	 HWh8zfEm7bAVxCLzbZXYqaMpxHTM9TEEaYT8KSHa+fLKy+x1CPl/UGD5zTR0ZeiVqX
-	 P9CvaeVK0zUyg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b015532f7bso10154574e87.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:01:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq6+FVjtDTm9rn1xSFluGhID6RXJc/7ZlsqDte6u2xw1t5x9fapHf7oV8oheNLoCqVm6ZA0Hf4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5+8H1prJoi+h6Z17avTu8JV1XYvHGBIv1dSXXOD2StayfOFzR
-	wDoW3SjdrSvYk7xaE64HVrISY3ev6j5WA1q3aQPvFXSScb3B6f5mRVEdx56NBipbNhswnKqEWB5
-	71mbQMsDnwT7uRfuwn1wDA/rK/LR42MM7nYXEalK4ZQ==
-X-Received: by 2002:a05:6512:23a5:b0:5b0:1ab1:2640 with SMTP id
- 2adb3069b0e04-5b28f9a56f2mr2858457e87.41.1784563299555; Mon, 20 Jul 2026
- 09:01:39 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 20 Jul 2026 18:01:37 +0200
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 20 Jul 2026 18:01:37 +0200
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N5ROvZjv"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cacb8416a1so68728935ad.1
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:06:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784563617; x=1785168417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o1b/iXtthE0NdNXxVcrsPqsvYfRN7KhJFOgx8+/tTAY=;
+        b=N5ROvZjvLUG+mxv4q9w/WkYq5UYoiKm6vAD3xeToGIyIAinjJHV+B2shXH/E5hNB7b
+         aKTSdbd8b7AiJQD6yTnAsyUY3LXoiNSvYMw1Gqe9wTrn6sPbjVixth1OXYToAQqiUXmG
+         rCjQ7+TxuekQf+og+JGB60xYqPATzwev8efupdwxv1oC2RKeg/NdtpiXOkhoHdeeSV9s
+         TyNf/X/JthoZgjjQ5w9ZnmNlCfkEyx+PzIPN/ikDUnZ6rncXvPZ8wkPUBaycyroi2ZXl
+         M6VMlrymOMbKGhG8lmbHl5bTnOOfqg71VrRNWAiOPlIih1WyiCSHY6LD4knppw+lEbgK
+         odtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784563617; x=1785168417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o1b/iXtthE0NdNXxVcrsPqsvYfRN7KhJFOgx8+/tTAY=;
+        b=cNxMR48ZInNWJKBhKzn6dbOraTB3EUKd/sv++ESmY11b7RaHr6ihpHGPMTdZZIuBic
+         ubqjKFMpdv7fjuQKIYbs/yGZ+VCGz1x5NbkUHXJrQfYyi7eN2uMFyiec9Eik1f9UvQYQ
+         O7S9m4Uxmdpo7sveSAFn8hxSynYQ+/yquZB+q+9rGSDk8mSk9+9Vx7Zx6zrlvs2WLetH
+         uGg9tatvm8FOzBf3qu5d+5ypvezRmBAVidUyDdP5mHQo9KMtWk5YPNVfpgCkLc0mb1xW
+         njKRmVw1t5HwjvEY9VCAYV91GjXzzYId89r1/yrnV2B9MCMO6STMfIrdL+RoNAQSJahd
+         oLKg==
+X-Forwarded-Encrypted: i=1; AHgh+RphoPF4U8IUqjfJiUFcyqHfbYx/RtTRMIlcKOv9+tuYC34DgCFJuyiQUEvHCLxdpQVMzEtknT4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD0rFDrZhUM70pUeElFeFWBbo0TdzmgCHCu9xElrxYi0MF6gik
+	D0Blgig3ljQ4rvFXtAmrsYC20aQs38yao2GA6qPdHkwMgf4OdZw44zpl
+X-Gm-Gg: AR+sD10IycdZxu4Ta9Rnl4JaYKDerZnZA3bNP3wusl1qy1sXDkPG6VJ4djkqtgDCNkN
+	3DOPRn0iuGdYg3A6NppIyIMLVMCbSn4qHRWvcI7SjfyFayS7ESozINifOJt03CgM5EJECzODUQx
+	gXwIRXEaceV367Bzaua7dPhL1wNT6w3ufa0KIZtgxoVEmEv+tTx60W5a9MsJtLx/2l9pTwv11IB
+	7N5lILqb9uPe/XB0Y8AykHJYF99HVOK16lGY145o2d3Ujo8+R5+V0Hv3ZYIlDG0WXONTNSnrzRl
+	XFaW3Fdcs6cw8HSI5oFJAJ1qwQDKX2zlPOv1tjle4KwcTtARVOE0IHBkqlOzKr5FljrADnvvqpL
+	8hl0D+teyr3rKZBwsusZ1rinBH+vrh8LMfu+nzowgqASKao4XGzHxkNpxbh5uvuIwHkUivjyEpB
+	eRo9rNCIQ9m3lQ3V44Qn9MMOMTjle3kHg5yYqdww==
+X-Received: by 2002:a17:902:ebcb:b0:2c9:b48c:fdde with SMTP id d9443c01a7336-2cf3496cb62mr160713345ad.26.1784563616336;
+        Mon, 20 Jul 2026 09:06:56 -0700 (PDT)
+Received: from JRT-PC.. (bb116-15-8-251.singnet.com.sg. [116.15.8.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344b16d4sm59389985ad.20.2026.07.20.09.06.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 09:06:55 -0700 (PDT)
+From: James Raphael Tiovalen <jamestiotio@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: James Raphael Tiovalen <jamestiotio@gmail.com>,
+	stable@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] vxlan: mdb: Fix source list corruption on a failed replace
+Date: Tue, 21 Jul 2026 00:04:24 +0800
+Message-ID: <20260720160428.249356-1-jamestiotio@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
- <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch>
-Date: Mon, 20 Jul 2026 18:01:37 +0200
-X-Gmail-Original-Message-ID: <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
-X-Gm-Features: AUfX_mzoRVqC1tUK_OfVS-B_bFewvPArrOEoPGLWKm-p7iGJrfuSSI_-EnPQPN4
-Message-ID: <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
-Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, brgl@kernel.org, 
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 20 Jul 2026 16:43:40 +0200, Andrew Lunn <andrew@lunn.ch> said:
-> On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
->> Prefer the higher-level platform_device_set_fwnode() over the
->> OF-specific platform_device_set_of_node() for dynamically allocated
->> platform devices.
->>
->> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->> ---
->>  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
->> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
->> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
->>  		goto put_err;
->>  	}
->>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
->> -	platform_device_set_of_node(ppdev, pnp);
->> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
->
-> This is definitely an OF only driver. There are no other calls to
-> fwnode functions in this driver, so this is the wrong thing to do.
->
-> Sorry, NACK.
->
+When replacing the source list of an MDB remote entry, all existing
+sources are first marked for deletion and vxlan_mdb_remote_srcs_add()
+is then called to add the new source list. Sources present in the new
+list have their deletion mark cleared, and any sources left marked
+afterwards are removed.
 
-I'm not going to die on this hill but drivers are OF-only until they're not.
-For example, Qualcomm is now working on a hybrid ACPI-OF approach for
-laptops[1] and we may end up needing to start converting drivers to fwnode
-after all.
+If vxlan_mdb_remote_srcs_add() fails partway through, its error path
+deletes all entries on the remote's source list. That rollback is only
+correct for its other caller, vxlan_mdb_remote_add(), where the remote
+was just allocated and the list contains solely entries added during
+the call. On the replace path the list also holds pre-existing sources,
+so a failed replace tears them down together with their (S, G)
+forwarding entries instead of leaving the entry unchanged.
 
-There's no real benefit to sticking to OF-specific APIs unless you need to
-iterate over all properties of a node or use some other functionality not
-available in fwnode. The overhead is minimal and it's never a hot path.
+This is reachable from an existing (*, G) remote. An EXCLUDE filter
+that loses sources starts forwarding traffic that should be blocked,
+while an INCLUDE filter that loses sources drops traffic that should be
+forwarded.
 
-Thanks,
-Bartosz
+Mark entries created during the current pass with a new
+VXLAN_SGRP_F_NEW flag. On failure, delete only those entries and clear
+the deletion mark on the pre-existing ones, so a failed replace leaves
+the source list untouched. Retain the flag until the whole operation
+succeeds and then clear it. Also stop vxlan_mdb_remote_src_add() from
+deleting a pre-existing entry it only looked up when adding that
+entry's forwarding entry fails.
 
-[1] https://lore.kernel.org/all/20260623145225.143218-1-johannes.goede@oss.qualcomm.com/
+Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
+Cc: stable@vger.kernel.org
+Signed-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>
+---
+ drivers/net/vxlan/vxlan_mdb.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
+index 055a4969f593..af7a0d7f95a5 100644
+--- a/drivers/net/vxlan/vxlan_mdb.c
++++ b/drivers/net/vxlan/vxlan_mdb.c
+@@ -42,6 +42,7 @@ struct vxlan_mdb_remote {
+ };
+ 
+ #define VXLAN_SGRP_F_DELETE	BIT(0)
++#define VXLAN_SGRP_F_NEW	BIT(1)
+ 
+ struct vxlan_mdb_src_entry {
+ 	struct hlist_node node;
+@@ -844,6 +845,7 @@ vxlan_mdb_remote_src_add(const struct vxlan_mdb_config *cfg,
+ 		ent = vxlan_mdb_remote_src_entry_add(remote, &src->addr);
+ 		if (!ent)
+ 			return -ENOMEM;
++		ent->flags |= VXLAN_SGRP_F_NEW;
+ 	} else if (!(cfg->nlflags & NLM_F_REPLACE)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Source entry already exists");
+ 		return -EEXIST;
+@@ -853,15 +855,16 @@ vxlan_mdb_remote_src_add(const struct vxlan_mdb_config *cfg,
+ 	if (err)
+ 		goto err_src_del;
+ 
+-	/* Clear flags in case source entry was marked for deletion as part of
+-	 * replace flow.
++	/* Clear the deletion mark so the entry survives the replace sweep.
++	 * The new mark is retained until the whole operation succeeds.
+ 	 */
+-	ent->flags = 0;
++	ent->flags &= ~VXLAN_SGRP_F_DELETE;
+ 
+ 	return 0;
+ 
+ err_src_del:
+-	vxlan_mdb_remote_src_entry_del(ent);
++	if (ent->flags & VXLAN_SGRP_F_NEW)
++		vxlan_mdb_remote_src_entry_del(ent);
+ 	return err;
+ }
+ 
+@@ -889,11 +892,19 @@ static int vxlan_mdb_remote_srcs_add(const struct vxlan_mdb_config *cfg,
+ 			goto err_src_del;
+ 	}
+ 
++	hlist_for_each_entry(ent, &remote->src_list, node)
++		ent->flags &= ~VXLAN_SGRP_F_NEW;
++
+ 	return 0;
+ 
+ err_src_del:
+-	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node)
+-		vxlan_mdb_remote_src_del(cfg->vxlan, &cfg->group, remote, ent);
++	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node) {
++		if (ent->flags & VXLAN_SGRP_F_NEW)
++			vxlan_mdb_remote_src_del(cfg->vxlan, &cfg->group, remote,
++						 ent);
++		else
++			ent->flags &= ~VXLAN_SGRP_F_DELETE;
++	}
+ 	return err;
+ }
+ 
+@@ -1069,7 +1080,7 @@ vxlan_mdb_remote_srcs_replace(const struct vxlan_mdb_config *cfg,
+ 
+ 	err = vxlan_mdb_remote_srcs_add(cfg, remote, extack);
+ 	if (err)
+-		goto err_clear_delete;
++		return err;
+ 
+ 	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node) {
+ 		if (ent->flags & VXLAN_SGRP_F_DELETE)
+@@ -1078,11 +1089,6 @@ vxlan_mdb_remote_srcs_replace(const struct vxlan_mdb_config *cfg,
+ 	}
+ 
+ 	return 0;
+-
+-err_clear_delete:
+-	hlist_for_each_entry(ent, &remote->src_list, node)
+-		ent->flags &= ~VXLAN_SGRP_F_DELETE;
+-	return err;
+ }
+ 
+ static int vxlan_mdb_remote_replace(const struct vxlan_mdb_config *cfg,
+-- 
+2.43.0
+
