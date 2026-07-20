@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7AE42DA4E;
-	Mon, 20 Jul 2026 23:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17B23EF67D;
+	Mon, 20 Jul 2026 23:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784590645; cv=none; b=ok86vGS7k1gprb+mzzksRMgR+5bjcRyo9/NoOSQv6Fj9MwCZtUQt6AfQf5oNRlaFpmIj5lNDOs1K/0ork2RZqnWwAG/6XMIUUYGjXq55voR2Toc54MXFHuZxaeNkR7+nZXhtQcWDOqb6vdV+bUEGv6aIfwne1Yz8NsD7QtgZE/c=
+	t=1784590648; cv=none; b=gBmlrMZL0lyPddySGb8OFvJTR8Bo1EBfPKgXBIyBcbb0cYSxbeI9trp2IBOQqQFg6a8n77xy97mog8o4gbGzAaC2f+vTxBx2Zez2vnssoaEAOcEVL1EIjFzc3auj4IeegeBiOWTCCzRjMojxrEl/TQPdIoVNa1K4WOovdZ/wS5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784590645; c=relaxed/simple;
-	bh=GJRF2mmBwdo0U3u3pzVuExP4P/AKfXhC3ELjf7vqZN8=;
+	s=arc-20240116; t=1784590648; c=relaxed/simple;
+	bh=WXRldwChHYO5dRo4rLY2M8GHYoEvnr84xfitp+WXzTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdecc7AfWQ2cS0xpdPIbMRH1UbrxzUed27bO5VKlWC4NJJtxfKAd/SfOxUJB1X1VoGRVdr5UWZ2UDNFouTFQm/AWIPbYD5jV0YHJ5fk5LVv8WCcZfDj/G/DAdwPyLFbEIXH+TuUgplhquGMLhe2BCUxFBtW9jRjTy/U70Hlx4HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjDqOTIX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MklC/JxIzdI8kD/TXIAVnfOY43sC07hcc4B4I689/cvxFqcwcIIsWoDBObF8kANRFN0OAQLx3g9C+FIX3v9dizpLX7J1j0MiT9ExNPuN7nvhI9wZzn7sxq9lMTnUod8wRgxI+Eppfhmr9SapWTPS0lhmu6sd9IN+xr87DFsWuFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzA7Yy9c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjDqOTIX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BFE1F000E9;
-	Mon, 20 Jul 2026 23:37:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzA7Yy9c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EB61F000E9;
+	Mon, 20 Jul 2026 23:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784590644;
-	bh=pxhwRH3nN9dkYlZu+UEvAQ52anWMkDExFjppUiugAIw=;
+	s=k20260515; t=1784590646;
+	bh=lwOICG5i0pW3uN/3H1HBjIcrWrprzrVeHaysqFw9ans=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cjDqOTIXP/5WH1srAyZJDPS6KJSibF6J8n/G0SBTLUj1YsWG30BGe+RA5KS46IxG5
-	 L9wjVV4lND6vVAUylIJ/bG/GPRsrytIqXfSZS1AoAjOju1XL55/r7F6GyZhQVHrA4/
-	 DuHvqwgqznkPA2Ouid6MX/pxVRnYRefo/s4Ipw3ncEIOAjaLt7BKpO+gIM7pPgE9bx
-	 qu/0epFrBGunRDv0Rzn3+R6HATVlfQSTlXHXQlosEUuZv+glRrBdPYpmY6GGROc3Uh
-	 We6UfN7d2Q+NDC4I2FcYPTLjJlvYyId1b5Ly/ZV+7WMQfPbmlfxhxlPZH+pigzWb90
-	 reT2vvQb9lLEw==
+	b=TzA7Yy9cdbf4Xblvq+ahyanYkY/dNfjmAQ29pqN4rOpv1sC4JRncNFrrkvXyWm8iv
+	 7gi3fK2834PH53JrpJcCQdGwCR9c2GjyApKQPm5kLN24/EYYTT5fHEiA10/8SWEpKP
+	 OZ0dPoZaM3wmEuDdLbsFpVpjIYZI40Bk4+LtC0fcf8VX5HoDeMi00BVlYiveLZ+LFZ
+	 xWhfCKDe1iUor7ySnI1PmWu+ymzZwOvUy/1Ypbd9NazGEPVVXhH6cpR+C40UMlO47p
+	 YkCpKPwfwkqsU1AMItydppMXqzQI3rcqW9AIM+iT85h0BGPdfQTx1SWXWIcN54hV+K
+	 cmFT5qcR+tjEg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: lukeh@padl.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -49,12 +49,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	mattias.forsblad@gmail.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 04/12] net: dsa: qca8k: Drop replies with wrong sequence numbers
-Date: Mon, 20 Jul 2026 16:37:22 -0700
-Message-ID: <20260720233722.444585-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next 07/12] net: dsa: qca8k: Pass error code from reply decoder to requester
+Date: Mon, 20 Jul 2026 16:37:24 -0700
+Message-ID: <20260720233725.444651-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260703-net-next-dsa-rmu-v1-4-a03febf20bb4@padl.com>
-References: <20260703-net-next-dsa-rmu-v1-4-a03febf20bb4@padl.com>
+In-Reply-To: <20260703-net-next-dsa-rmu-v1-7-a03febf20bb4@padl.com>
+References: <20260703-net-next-dsa-rmu-v1-7-a03febf20bb4@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,63 +66,265 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-Subject: net: dsa: qca8k: Drop replies with wrong sequence numbers
+net: dsa: qca8k: Pass error code from reply decoder to requester
 
-The change makes qca8k_rw_reg_ack_handler() return early when the reply
-sequence number does not match, rather than only setting ack on match.
-The intent is to avoid signalling completion for a late reply that could
-be mistaken for the next genuine reply.
+This patch changes dsa_inband_complete() to accept a response buffer and
+error code, and updates dsa_inband_request() to return that error code to
+the caller. The qca8k driver call sites are updated to pass response
+buffers through the new API and to use the returned status directly.
 
 > diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-> index b0cbe72c15b4..3b3fe9601617 100644
+> index 499cc8ef5dde..ffa3b1ba23be 100644
 > --- a/drivers/net/dsa/qca/qca8k-8xxx.c
 > +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-> @@ -185,9 +185,9 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
->  	/* We can ignore odd value, we always round up them in the alloc function. */
->  	len *= sizeof(u16);
+> @@ -167,6 +167,8 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+>  	struct qca_mgmt_ethhdr *mgmt_ethhdr;
+>  	u32 command;
+>  	u8 len, cmd;
+> +	u32 data[4];
+> +	int err = 0;
+>  	int i;
 >  
-> -	/* Make sure the seq match the requested packet */
-> -	if (get_unaligned_le32(&mgmt_ethhdr->seq) == mgmt_eth_data->seq)
-> -		mgmt_eth_data->ack = true;
-> +	/* Make sure the seq match the requested packet. If not, drop. */
-> +	if (get_unaligned_le32(&mgmt_ethhdr->seq) != mgmt_eth_data->seq)
-> +		return;
+>  	mgmt_ethhdr = (struct qca_mgmt_ethhdr *)skb_mac_header(skb);
+> @@ -191,7 +193,7 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+>  		return;
+>  
+>  	if (cmd == MDIO_READ) {
+> -		u32 *val = mgmt_eth_data->data;
+> +		u32 *val = &data[0];
+>  
+>  		*val = get_unaligned_le32(&mgmt_ethhdr->mdio_data);
 
 [High]
-After this change, is mgmt_eth_data->ack ever assigned true anywhere in
-the driver?  A grep across drivers/net/dsa/qca/ shows five sites that
-initialise it to false before dsa_inband_request(), five sites that read
-it afterwards, and no remaining site that ever writes true.
+Can the decode loop overflow the on-stack data[4] buffer? The wire-supplied
+length in QCA_HDR_MGMT_LENGTH is a 4-bit field with a maximum value of 15;
+after this block in qca8k_rw_reg_ack_handler():
 
-The callers still do, for example in qca8k_read_eth():
+    if (len == 15)
+        len++;
+    len *= sizeof(u16);
 
-	mgmt_eth_data->ack = false;
+len can reach 32. Later the copy loop uses:
 
-	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
-				 QCA8K_ETHERNET_TIMEOUT);
-	...
-	ack = mgmt_eth_data->ack;
+    data_len = min_t(int, QCA_HDR_MGMT_DATA2_LEN /* 28 */,
+                     len - QCA_HDR_MGMT_DATA1_LEN /* 4 */);
+    ...
+    for (i = sizeof(u32); i <= data_len; i += sizeof(u32)) {
+        *val = get_unaligned_le32(data2);
+        val++;
+        data2++;
+    }
 
-	mutex_unlock(&mgmt_eth_data->mutex);
+which writes val[1]..val[7] (28 bytes past *val), overrunning the 16-byte
+u32 data[4] destination. This overflow existed in the previous storage
+(mgmt_eth_data->data[4] on the heap) and this patch relocates the sink onto
+the softirq call stack, where the overrun can clobber saved registers or
+the return address. The driver advertises .max_raw_read = 32 through its
+regmap, so a legitimate 32-byte bulk read is sufficient to reach this
+path; a malformed reply is not required. Should the ack handler bound the
+decode to sizeof(data)?
 
-	if (ret)
-		return ret;
+> @@ -213,7 +215,7 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+>  		}
+>  	}
+>  
+> -	dsa_inband_complete(&mgmt_eth_data->inband);
+> +	dsa_inband_complete(&mgmt_eth_data->inband, &data, sizeof(data), err);
+>  }
+>  
+>  static struct sk_buff *qca8k_alloc_mdio_header(enum mdio_cmd cmd, u32 reg, u32 *val,
+> @@ -314,7 +316,7 @@ static int qca8k_read_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+>  {
+>  	struct qca8k_mgmt_eth_data *mgmt_eth_data = &priv->mgmt_eth_data;
+>  	struct sk_buff *skb;
+> -	int err;
+> +	u32 data[4];
+>  	int ret;
+>  
+>  	skb = qca8k_alloc_mdio_header(MDIO_READ, reg, NULL,
+> @@ -335,30 +337,25 @@ static int qca8k_read_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+>  
+>  	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
+>  				 qca8k_mdio_header_fill_seq_num,
+> +				 data, sizeof(data),
+>  				 QCA8K_ETHERNET_TIMEOUT);
+> +	if (ret < 0)
+> +		goto out;
+>  
+> -	*val = mgmt_eth_data->data[0];
+> +	*val = data[0];
+>  	if (len > QCA_HDR_MGMT_DATA1_LEN)
+> -		memcpy(val + 1, mgmt_eth_data->data + 1, len - QCA_HDR_MGMT_DATA1_LEN);
+> -
+> -	err = mgmt_eth_data->err;
+> +		memcpy(val + 1, &data[1], len - QCA_HDR_MGMT_DATA1_LEN);
+>  
+> +out:
+>  	mutex_unlock(&mgmt_eth_data->mutex);
+>  
+> -	if (ret)
+> -		return ret;
+> -
+> -	if (err)
+> -		return err;
+> -
+> -	return 0;
+> +	return ret;
+>  }
 
-	if (!ack)
-		return -EINVAL;
+[Critical]
+Does qca8k_read_eth() now return a positive value on success? Looking at
+dsa_inband_complete() and dsa_inband_request() in net/dsa/dsa.c after this
+patch:
 
-With the assignment gone, does every successful reply now leave ack ==
-false and cause qca8k_read_eth(), qca8k_write_eth() and the read/write/
-clear paths in qca8k_phy_eth_command() to return -EINVAL on their fast
-path?
+net/dsa/dsa.c:dsa_inband_complete() {
+    ...
+    if (!err) {
+        spin_lock_bh(&inband->resp_lock);
+        resp_len = min(inband->resp_len, resp_len);
+        if (inband->resp && resp)
+            memcpy(inband->resp, resp, resp_len);
+        spin_unlock_bh(&inband->resp_lock);
+        inband->err = resp_len;
+    }
+    ...
+}
 
-The higher-level callers (qca8k_bulk_read(), qca8k_bulk_write(),
-qca8k_regmap_update_bits(), qca8k_internal_mdio_read() and
-qca8k_internal_mdio_write()) fall back to the slow MII path on error, so
-the device keeps functioning, but is the Ethernet management fast path
-effectively disabled between this patch and its follow-up cleanup?
+net/dsa/dsa.c:dsa_inband_request() {
+    ...
+    return inband->err;
+}
 
-Would it be cleaner to fold the removal of the ack field (and the
-matching if (!ack) return -EINVAL checks in every caller) into this same
-commit, so that each commit in the series is self-contained and bisects
-cleanly?
+so a successful read returns sizeof(data) = 16, not 0. qca8k_read_eth()
+propagates that positive value to its callers, but qca8k_regmap_update_bits_eth()
+still uses:
+
+    ret = qca8k_read_eth(priv, reg, &val, sizeof(val));
+    if (ret)
+        return ret;
+
+and qca8k_bulk_read() uses:
+
+    if (priv->mgmt_conduit && !qca8k_read_eth(...))
+        return 0;
+
+Would qca8k_regmap_update_bits_eth() then return 16 as an error to regmap,
+and would qca8k_bulk_read() unconditionally fall through to the MII path
+even after a successful ethernet read?
+
+>  static int qca8k_write_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+>  {
+
+[ ... ]
+
+> @@ -573,7 +563,7 @@ qca8k_phy_eth_busy_wait(struct qca8k_mgmt_eth_data *mgmt_eth_data,
+>  			struct sk_buff *read_skb, u32 *val)
+>  {
+>  	struct sk_buff *skb = skb_copy(read_skb, GFP_KERNEL);
+> -	int err;
+> +	u32 data[4];
+>  	int ret;
+>  
+>  	if (!skb)
+> @@ -581,17 +571,13 @@ qca8k_phy_eth_busy_wait(struct qca8k_mgmt_eth_data *mgmt_eth_data,
+>  
+>  	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
+>  				 qca8k_mdio_header_fill_seq_num,
+> +				 data, sizeof(data),
+>  				 QCA8K_ETHERNET_TIMEOUT);
+>  
+> -	err = mgmt_eth_data->err;
+> -
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (err)
+> -		return err;
+> -
+> -	*val = mgmt_eth_data->data[0];
+> +	*val = data[0];
+>  
+>  	return 0;
+>  }
+
+[Critical]
+With the new positive-on-success return from dsa_inband_request(), does
+qca8k_phy_eth_busy_wait() now return before writing *val on every
+successful transfer?
+
+    ret = dsa_inband_request(..., data, sizeof(data), ...);
+    if (ret)
+        return ret;
+    *val = data[0];
+
+ret is 16 on success, so the function returns without touching *val. The
+caller in qca8k_phy_eth_command() then feeds an uninitialised local into
+read_poll_timeout():
+
+drivers/net/dsa/qca/qca8k-8xxx.c:qca8k_phy_eth_command() {
+    ...
+    u32 write_val, clear_val = 0, val;
+    ...
+    ret = read_poll_timeout(qca8k_phy_eth_busy_wait, ret1,
+                            !(val & QCA8K_MDIO_MASTER_BUSY), 0,
+                            QCA8K_BUSY_WAIT_TIMEOUT * USEC_PER_MSEC, false,
+                            mgmt_eth_data, read_skb, &val);
+    ...
+}
+
+Does the busy-wait loop then read val uninitialised on the first
+iteration?
+
+> @@ -604,8 +590,8 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+>  	struct qca8k_mgmt_eth_data *mgmt_eth_data;
+>  	u32 write_val, clear_val = 0, val;
+>  	struct net_device *mgmt_conduit;
+> +	u32 resp_data[4];
+>  	int ret, ret1;
+> -	int err;
+>  
+>  	if (regnum >= QCA8K_MDIO_MASTER_MAX_REG)
+>  		return -EINVAL;
+
+[ ... ]
+
+> @@ -703,19 +682,13 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+>  	if (read) {
+>  		ret = dsa_inband_request(&mgmt_eth_data->inband, read_skb,
+>  					 qca8k_mdio_header_fill_seq_num,
+> +					 resp_data, sizeof(resp_data),
+>  					 QCA8K_ETHERNET_TIMEOUT);
+>  
+> -		err = mgmt_eth_data->err;
+> -
+>  		if (ret)
+>  			goto exit;
+>  
+> -		if (err) {
+> -			ret = err;
+> -			goto exit;
+> -		}
+> -
+> -		ret = mgmt_eth_data->data[0] & QCA8K_MDIO_MASTER_DATA_MASK;
+> +		ret = resp_data[0] & QCA8K_MDIO_MASTER_DATA_MASK;
+>  	} else {
+>  		kfree_skb(read_skb);
+>  	}
+
+[Critical]
+In this read branch dsa_inband_request() returns 16 on a successful
+response, so if (ret) goto exit; fires and the code never reaches:
+
+    ret = resp_data[0] & QCA8K_MDIO_MASTER_DATA_MASK;
+
+qca8k_phy_eth_command() therefore returns 16 (0x10) for every successful
+internal PHY read via the ethernet fast path. Is this the intended
+behaviour, given that the value is propagated as the register contents up
+through qca8k_internal_mdio_read() and qca8k_mdio_read()?
+
+The follow-up commit dacfa5deb518 ("net: dsa: qca8k: Update error
+handling") converts each of these if (ret) checks to if (ret < 0) and
+adds an explicit ret = 0; in qca8k_read_eth(). Would folding those changes
+into this commit make the series bisectable, since between these two
+commits every ethernet-fast-path MDIO read returns 16 and
+qca8k_phy_eth_busy_wait() leaves its output argument uninitialised?
