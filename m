@@ -1,508 +1,484 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013023.outbound.protection.outlook.com [40.107.162.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F6D432BD1;
-	Mon, 20 Jul 2026 15:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562108; cv=fail; b=T82JoZvnIT0KV6EsqX7+SvUmNNyWInR/gPvt4OoGFrcSobPicfSgnnXBUdp8bSwVXHLbVJhgjYp7THjvRqWh6XofDyNjbTbwZLh5OZqYwcTbwGBbe6N3BfdMXQushMZXv97Dab5APOguyz9zOqcnkDF8pAQ9+Yk7KSIPjUNgIX4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562108; c=relaxed/simple;
-	bh=WU4Y2fhKwGYf+T+Z4NvoLSwOs/5VhZhdZTgCVfEGHa4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CnY6YqeQUQueF8GuYj1l7O2VkKQJmPefy9h0ScZieFCDMhn0J8wMf72QVTlRgh0JzEdhDU+3SavDcP1i8zAKYYKN90XivnqClMClZwgEAwJr419h6UmoSWjRbQhp//g6pVPQqNeUxFe2U0WJDtXx+mQ8J4in+a8osFEIlchv1mc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=m7+93/mj; arc=fail smtp.client-ip=40.107.162.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8905E43079C
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 15:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784562211; cv=none; b=tiolLWI4O4Sl3vq6y5WfLnTBmUbgTR5LLP9TxUgShzgv4KiA7VciiapmU5AROAcjmeOQDcE6T8TveylVAgWgv1sthoMT9Bz/kYFpnJHvOVbk1DhWVYd+Hc8Yrta18alut6VDuWkxi1xa6cZiytBQqVcza0VYjOxaI4SxEiZsZNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784562211; c=relaxed/simple;
+	bh=j5SVGyCyRPpRSfX1vzsX5v1NdyNBTtAUNMm2v/AsdJ0=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mGNxXc4oNX+jf4l5M9PgqImvk5H6OjTRUjlVzgaOMh8tZ3YXldnfl1idCcsPpL0bX47/YE1CU+982n4XR7vlTVJJfOF5Xz3gfA2vX+JH4oFSQ3Xy/AD99BH39mkVGklfgZ69q7moIdJmdfB1zTdXlmRckQkC1Nr9YpVH5IvMLIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kJEhdWd2; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="m7+93/mj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qNPGlIF7U32CCwojlIj7oE7zMn9ljWW2XocmBRStI4qnp351RiWa4sln4m+YQegmYvhSMyUzrVqfCNAp+/a/chYrLgRY6m3Z2VVdy4a9iJloxNncqNmXJnbCt+8R+FjrNdiblUasqplyP+geAjlg9a08Q9ictIuaZIxTZM6Nq++EKQlJMcIWU8UBBsjLwr7GPnvP/r34Ap5vSF3xihuKCKho7uPy1ZlorYULmLH9J8SuSjfPEtjbuepskYqSQMpSMXlOU5lTwJ5ujzKZ2DvjS07puf/cByH7uS3l80nx0JdfiSYbX0vxyRNXsYcC+XRO+bhXD8UuZc2Tr72W/Ff/2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G39/Zzxtv5AtOnRWtxP3BY7khLcivR0M9/JnIKxvHBc=;
- b=A/EDzDvItp6XFkxwWBTERolCrXpFQkC7TNw8ymxnTAfDUFXgKmpI8puQp/Rwd4rx/J8J6cFp9ms3gz9kLRm2hPvpFtoTd+MnRplgs0loFJE2wcS9zXLVyP33AFi6Ye3Dr5bhh7KzqFIR5cqfMyO9L5PbCmXEY430gmeb0XPlrtI+qqVKgX+5F60UO34NP1np20X1Rgt8zezxaWHI0cUBGqTUpyyxECzkwa0AcbXfLdeyv9rMF+xCb2pQXflqlg5DCLXOdzdy9PwiIbdIJM4l9vpNpcwkooBWtmvdGSn2rAoF1R+ZjrzZVO/u8CcUcpdjbBPG4o0nuPLzNBh4UTM3YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G39/Zzxtv5AtOnRWtxP3BY7khLcivR0M9/JnIKxvHBc=;
- b=m7+93/mjd4z8FFs3umhPMilaAqEghLkWIGAME+R+teS7KLIm1yXrrnwrNhDpdeDXs0KXE09776b7T0LQ9v4WuvesMmby1ZcaqYHFwyz/iUrlBdgJ5SyHzM3PMcq9ZzwO2XxvprIhci8Occb5+DHuxfx5RT90Sph8+wF6AedZnoAtKrQg6m3LT6gwM+WRHX59TSHnczgR6vxykjjEgoxvREDYfsCvSvjGiwyLHbhhtKh+CgK4pN0/Gg6WBENr6paKCnFIafDDAio/Bs4wb01eeezWYWYu1ZVbj2aUHPTde6SnXITYWltM5c0E+9DodQnNtnX2qdItgJmQLdcD8ImpJA==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- VI2P189MB3562.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:2dd::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.10; Mon, 20 Jul 2026 15:41:39 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0245.009; Mon, 20 Jul 2026
- 15:41:39 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Weiming Shi <bestswngs@gmail.com>
-CC: Xiang Mei <xmei5@asu.edu>, kernel test robot <lkp@intel.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>
-Subject: RE: [PATCH net v8 1/3] tipc: fix NULL deref in tipc_named_node_up()
- on empty publication list
-Thread-Topic: [PATCH net v8 1/3] tipc: fix NULL deref in tipc_named_node_up()
- on empty publication list
-Thread-Index: AQHdFpdz5rod5J9+cEGekGyYwc7wpbZ2jdiw
-Date: Mon, 20 Jul 2026 15:41:39 +0000
-Message-ID:
- <GV1P189MB1988EC5A7F5CB5DD69F331AEC6C32@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260718092544.785289-1-bestswngs@gmail.com>
- <20260718092544.785289-2-bestswngs@gmail.com>
-In-Reply-To: <20260718092544.785289-2-bestswngs@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|VI2P189MB3562:EE_
-x-ms-office365-filtering-correlation-id: a738b837-3f33-4b22-07a1-08dee67563af
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|38070700021|6133799003|11063799006|56012099006|10067099003|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- WvMSGgSEblBxXPIBNyNhSLMjpjjBsEL/mA9V/LSG2VIZl3DoAMF2+vgw+qrWKnmzUbHh1jym+1sjpXH1VKLZOXJFEOBqIBsbk7KpPsMFu8ohG8vUeuvE74fQNjb/BfO5sXJmuIKN87t/WQ5HNPx5mzJS3fz18zS+dESZcTdcDTE1GqMq582FwalG5QPHNBD8vJZ8PATo0vPyTptEeXQf3byPCDaa7goZLx8m4e15nnlYJbGHma4C5oHkD/Fce1ra5LsbjQNS+aPYJVxNh/H8zlKYFzrruUssAGNlfiYZMZJRseYbcaem49kFZF97G2PbJSG4MguM24BUEGbA4Xni4EakscUzrvAwmYUJwfmkSRLZtRi6PEPAcuXBjPhzB8z/6hFPAqrGi57ce9RLL6VGEqhQhuMW1zbOf6AdexqWISwBtL0PekiumtjOL4svhEUTycLEufPk0Ms3/48X5C9tlL+OIhW2o1rTNVX8pRbfwpbFjTxyUoykr7p+GvSbCzHM/uwSaGUP/voozK+tH7S4Nt5X7TDvPRk7Jewih6dxWZOvcaVHNkh+SMtip5inicPYLEZ7tVRr8AuyQnTfb2KT3uIfZLrczvlTN3JmodbFuxk9BvhFcpODaCevF9Cc/hU70Lse0ni1VLDqv7zuCH4b6YwlWWq8dhqkaEXbL/TtrmU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(38070700021)(6133799003)(11063799006)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?qEBnVW6erDk39wAK9Dr7DOy1A3+6p8v99QP7x6du6MhOaUaCSiP1C1fwxWKV?=
- =?us-ascii?Q?gPGrveVxSA2OHPZ7X70sS8AGbGfBQkQHp7JQeaqFuO+za5Yfwv18rQZ6VSaG?=
- =?us-ascii?Q?zr7fMpjxc+9/YT7HIs43VGyY6lYYnum0aqlFKJxWUQB6LzAgl5yD8J3wn51g?=
- =?us-ascii?Q?tpk0B33x1JGDepBjKetVo02z5QU5HoW53qa+Sn3ePvILbHb74g6oZON0iXPR?=
- =?us-ascii?Q?UuP8p7Tadfuf2LH/Dv55sas5dvJvu6r35uws7wJFPuonLNq0zAQtC44Pw9rz?=
- =?us-ascii?Q?iujE0GkIhsGLi5zLhyDmMpwTrdyKNGjIuxXYBs3DFeZ94rYNcukLx5UUs3pZ?=
- =?us-ascii?Q?ZbKhjPyX9K76NYfaS7FjUv3D9HIIopI9ivvpJnR4IdN0oJZIwv48Q37t3ywc?=
- =?us-ascii?Q?qDv3Bxt8fCHvi4VL4+hwYP/Kg/lBzMk4IUJa9Wfab6Mu2jpjAfM0iCHiHLNR?=
- =?us-ascii?Q?o4LIH1GcpPBPeHk6WFeQjTmojknBbaxvm8pI3frYpXqL8hOXSVAf4JCG14kv?=
- =?us-ascii?Q?tGPjsEapJqVGvR8ozEiHSO0DSW6mbqOMgecf602CWC93/KSIoWZ/b0B0RTWq?=
- =?us-ascii?Q?Id3j6SKb3WVe34+AmEcLepy7aD3l58KpBO6C0Hbf7k1t/RIrk6ZfHIWQeK0P?=
- =?us-ascii?Q?tghzHHocF5GRxaMtmyjcSOxzXVEmYjULyXCS5b4CnfqFsyqkM0GEDZuYkVam?=
- =?us-ascii?Q?+l3gzNGIxJOGGAjm1njgzK3xuM4KLqOxj/rLxVslqL1q0IvjXp48Drgna6Xm?=
- =?us-ascii?Q?7aZrp0QfK0Z18hcxpg9Vt+AaiWu2AkwyW7y55rbTZ7OWNtdWPusrTItuihTu?=
- =?us-ascii?Q?koY9hWvz+/8XlD6jAszt1+/ijgkRKKu/zcXDFfDdqKzeGiLxDs8hv6xIN5AZ?=
- =?us-ascii?Q?Ie5BxtPU5kkr5QcYzOHUlpYTm59J+mua9YAHyXee6hEBivm7VPM96aPHe0yv?=
- =?us-ascii?Q?5WJjyrrCYVlA3ReyfvR4J17oQBVRacxI7oNA/5CrseM/Il0KsvWUITgDmULP?=
- =?us-ascii?Q?dR67rpjT231MqDDoTOQDCA9Jn8QGIPbsjgG4BrI8uqL/WR3ul5KH4xBboscW?=
- =?us-ascii?Q?GR1tHYzfqkNWF/go/JnUudwuz8G2C8bb5H6DXixK459dGyFFpyqUUAMR8lYk?=
- =?us-ascii?Q?yEXgqB9qi3aDcOITeikRWdq/9UNqFKkEr2axlvdaLfbqGO5gxOKVpbLbJZyQ?=
- =?us-ascii?Q?F5V1V3e0q/E5g663KZwby4zehXUv9BGffl0q6dokjUEqGBKa29AllqhsKtmP?=
- =?us-ascii?Q?fvLpIzIA5HEoayAz5c7x+ktk/mng4mls6XeGG8omRw9kHQY6u8AAGGDWryF2?=
- =?us-ascii?Q?LAMUlWic7sLsXglIMxCTkdtJYvRJFRldoBrAKSMdKqNHnQ5wQ6aZAWWEJ+v9?=
- =?us-ascii?Q?5mKHWIO+o+K3Z8DsfHzBphEpiYj3Wf7iegWdM8BHHg0KER/vL7YPpkn4dife?=
- =?us-ascii?Q?hc2uPDo7DEFMgCpFq9kbQEaW/xLbJzAOnPDQIuYf73cIuApoLNGdwUMkciWZ?=
- =?us-ascii?Q?K0KoEUOUnjQ97MFKRH0lkoKvoyzkRNDOPkXanRRnoIQ93Dj/9wlXgCKaFfTh?=
- =?us-ascii?Q?FnrM4SJ2Qi82L3H69OUOEtF5lyXDluIveLeak2kD+yxStAApuxUPc9dFbqvU?=
- =?us-ascii?Q?moCsVaN3dAF23SKPedVevIVr34HajVr3pcQp278/BdNIl01rmdvDKPbgZzmG?=
- =?us-ascii?Q?hg+Ok90cnbPku+9a0YHdWhRVuPPFgoFMIn01znL0BZnLqQeP2Yv64RA7xHH9?=
- =?us-ascii?Q?Pc5ymY9dnw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kJEhdWd2"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-472326ca506so7945082f8f.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 08:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784562207; x=1785167007; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=96sBccLuhfAamB65walQaZAlGWaFt0kDQVQYJZnpI9s=;
+        b=kJEhdWd21dkQrX4JG86nnCzzUBk6Q/QCcF8ZdUJ+nQrWSAVI6g4IEcOBc11Tp5DjZy
+         FPgatRe/T6va7qJyKOAB1q4IOEhUvZSW/NQlN83yEl5ns/nTV+kk7GGa4h129OwywH/7
+         ICiL+Z7GjqwB/y+TIcs0fwLomzeNxJEkoBJYzmr1ZmUz/zBP9ObZcCQkvYF31mbAos2X
+         sCaEthC4aCea50st3POjkT7hoOuKKlhry1LcPN5/GDLnIr8/HnTYQ+bj8msfMW/+F8t8
+         1wKyPGYJnZExiEDhXovxGhnrtlODF9+IM8QE9OztqLGzW90JwXvVy5oDsj0i29TEyCOP
+         VyMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784562207; x=1785167007;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=96sBccLuhfAamB65walQaZAlGWaFt0kDQVQYJZnpI9s=;
+        b=XodJPQLXBnpseP+eoX2LSkG/6xxKIvSKdh8GvucgcQUFOmFG4pMrDQZf/RdW4t/4lk
+         cbA70pvSiIn8VY2ghjBRVojBsqpS3fE4uvamQOUluJ5uoXUepDV3ps1PtABZmnNOzofd
+         oyLrlKbWVdlLcTKF/B22CjsjvQqq4hhHp0wIanFCYR0a/eGAdN1qDZaHrYC3EybB0NG3
+         ZC8x5DCVhyWkNl3njuqbLFjoNYmsJqo8WDYo60fA6jWhsARvr4sAugqEW0fkEiY4uyoM
+         DUaXbzHqm1TdcAwHy2XuspqCEK1JHLnoUn3xJeSaZnq+PsFqHxaOTC65XZCdd9OR8Ac6
+         aNbg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2gTFEEZyJD1B4cX7A0rDwTRuMT4wThQ0pTWDKK+p/pts3gi49RJB9GFwuLBMPx+zPnNnIYJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwPyxpizbjHZ4++eiJGgfn16MwbPwqzUJOfaMQyykVbiFr9lYY
+	IeCHf9AKSYxxQzEtmK256o+NqN4y/YUqa8yCz9ZEufjVr42m7Qx6buKi
+X-Gm-Gg: AR+sD10DimlSuJOWRf5R22djsYDchiq8sS9lHxK3PRYpzhdLY2RUNOKN+TG5pXPUeDh
+	MUOp2ebtOdU5TN2LM+9/i9Sx767szONFfVbGiOhQeEvQN5jHLfSf9Wd8N54D0JV5S+8RnL+8RiY
+	SKrQc1zcNUdgjMvOe69aqVVRiRnZ+rcKvyWhEb5JsxAVQO88IthW+L/PaavbwlPxOB61zsn7mpw
+	+0RsC707eS5+P0sJvcUuO9y1MneplNaKrepxFNp399rwoqiYcfMn6YZt1RFogj0wLGCDz94JcYc
+	oaoOPOKPyl8I8ItxabtPONapfDDYVWJvv4/UJNJ8krMtR7lv0tu1fOG89+9xHAkuQaZJbEnDz9+
+	WezL52VKds3/ZFpu1YPAYcn6k/Yu5RDVwQ8897skUeRgaq+6nophopUhQ5y1/O4iwPPgRxv7/kr
+	I/GRyIdI735ajWqc8aSc56NkFwqsQljDdjO+tmo7LZ+41nkyWPuw==
+X-Received: by 2002:a05:6000:40c5:b0:476:8a:5 with SMTP id ffacd0b85a97d-47f62326dbamr18346314f8f.34.1784562206551;
+        Mon, 20 Jul 2026 08:43:26 -0700 (PDT)
+Received: from Ansuel-XPS. (host-95-246-252-39.retail.telecomitalia.it. [95.246.252.39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ed1911sm32898027f8f.22.2026.07.20.08.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 08:43:25 -0700 (PDT)
+Message-ID: <6a5e421d.9099b29d.2f0302.1cf4@mx.google.com>
+X-Google-Original-Message-ID: <al5CFxJ4UFPENmBB@Ansuel-XPS.>
+Date: Mon, 20 Jul 2026 17:43:19 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v9 12/12] net: airoha: add phylink support
+References: <20260717065448.1498335-1-ansuelsmth@gmail.com>
+ <20260717065448.1498335-13-ansuelsmth@gmail.com>
+ <al5AVLxWRhnpGzJ1@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a738b837-3f33-4b22-07a1-08dee67563af
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2026 15:41:39.0973
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MsDBibCXIqHxyuKljbCd3yzMiSeCJTWGjEO1dx6SFnkSVfwnUWAGvFVVoHqF5+ZpIUtwkJB07iCUg7iGx55Ei8gLfMpzIM5bDm/ZdP0hNLE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2P189MB3562
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al5AVLxWRhnpGzJ1@lore-desk>
 
->Subject: [PATCH net v8 1/3] tipc: fix NULL deref in tipc_named_node_up() o=
-n
->empty publication list
->
->[The defer-to-workqueue approach is by Tung Nguyen. He posted it  on the
->thread and asked us to test it, as the replacement for the  item-less bulk
->approach. Since the RFC only exists as an inline  diff in the thread, it i=
-s folded
->into this series so the fix is  self-contained.]
->
->named_distribute() stamps the last_bulk flag on the tail skb of the public=
-ation
->list. When the list is empty no skb is enqueued and the tail access derefe=
-rences
->NULL. tipc_named_node_up() hits this on an empty cluster_scope, which
->happens with a node-id configuration where cluster_scope is populated only
->later by tipc_net_finalize(). It is reachable by an unprivileged user over=
- a UDP
->bearer in a user+net namespace. The reported crash:
->
-> KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-> RIP: 0010:tipc_named_node_up (net/tipc/name_distr.c:196)
->  tipc_named_node_up (net/tipc/name_distr.c:196 net/tipc/name_distr.c:221)
->  tipc_node_write_unlock (net/tipc/node.c:428)
->  tipc_rcv (net/tipc/node.c:2185)
->  tipc_udp_recv (net/tipc/udp_media.c:392)  Kernel panic - not syncing: Fa=
-tal
->exception in interrupt
->
->When cluster_scope is empty at node-up, defer the bulk distribution to a
->workqueue and wait for tipc_net_finalize() to publish the node-state name,=
- so
->named_distribute() always runs on a non-empty list. On allocation failure,
->purge the partially built queue and bring the link down so the bulk distri=
-bution
->restarts when the link comes up again.
->
->Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
->Reported-by: Xiang Mei <xmei5@asu.edu>
->Reported-by: kernel test robot <lkp@intel.com>
->Closes: https://lore.kernel.org/oe-kbuild-all/202607180730.TwVgASDI-
->lkp@intel.com/
->Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
->Tested-by: Weiming Shi <bestswngs@gmail.com>
->Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->---
-sashiko reports many critical/high issues: https://sashiko.dev/#/patchset/2=
-0260718092544.785289-1-bestswngs%40gmail.com
+On Mon, Jul 20, 2026 at 05:35:48PM +0200, Lorenzo Bianconi wrote:
+> > Add phylink support for each GDM port. For GDM1 add the internal interface
+> > mode as the only supported mode. For GDM2/3/4 add the required
+> > configuration of the PCS to make the external PHY or attached SFP cage
+> > work.
+> > 
+> > These needs to be defined in the GDM port node using the pcs-handle
+> > property.
+> > 
+> > Update and provide a .get/set_link_ksettings function that use phylink
+> > for ethtool OPs now that we fully support phylink.
+> > 
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> >  drivers/net/ethernet/airoha/Kconfig       |   1 +
+> >  drivers/net/ethernet/airoha/airoha_eth.c  | 194 +++++++++++++++++++++-
+> >  drivers/net/ethernet/airoha/airoha_eth.h  |   7 +-
+> >  drivers/net/ethernet/airoha/airoha_regs.h |  12 ++
+> >  4 files changed, 207 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/airoha/Kconfig b/drivers/net/ethernet/airoha/Kconfig
+> > index 1f6640a15fc9..789906516bf8 100644
+> > --- a/drivers/net/ethernet/airoha/Kconfig
+> > +++ b/drivers/net/ethernet/airoha/Kconfig
+> > @@ -20,6 +20,7 @@ config NET_AIROHA
+> >  	depends on NET_DSA || !NET_DSA
+> >  	select NET_AIROHA_NPU
+> >  	select PAGE_POOL
+> > +	select PHYLINK
+> >  	help
+> >  	  This driver supports the gigabit ethernet MACs in the
+> >  	  Airoha SoC family.
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+> > index 59001fd4b6f7..ed1ac032f337 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > @@ -8,6 +8,7 @@
+> >  #include <linux/of_reserved_mem.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/tcp.h>
+> > +#include <linux/pcs/pcs.h>
+> >  #include <linux/u64_stats_sync.h>
+> >  #include <net/dst_metadata.h>
+> >  #include <net/page_pool/helpers.h>
+> > @@ -1837,7 +1838,7 @@ static void airoha_update_hw_stats(struct airoha_gdm_dev *dev)
+> >  	struct airoha_gdm_port *port = dev->port;
+> >  	int i;
+> >  
+> > -	spin_lock(&port->stats_lock);
+> > +	spin_lock(&port->lock);
+> 
+> Hi Christian,
+> 
+> as pointed out in a previous email, I do not like the approach of reusing this
+> spin_lock for airoha_mac_link_up(). Can we use rtl_lock() (when necessary) as
+> pointed out before?
+> 
 
-I address all in below patch. Could you please test it ?
+For context, quoting from the previous series, the suggestion is to use
+rtnl_is_locked() and then lock accordingly but I didn't find other usage of
+that in other driver (aside from core net) and I don't like the use of
+is_locked. I can already see the BOT saying that in the timeframe of
+is_locked and writing the register another interface goes up causing a
+race.
 
----
- net/tipc/core.c       |  2 ++
- net/tipc/core.h       |  4 +++
- net/tipc/name_distr.c | 67 +++++++++++++++++++++++++++++++++++++------
- net/tipc/name_distr.h |  3 +-
- net/tipc/net.c        | 15 +++++++++-
- net/tipc/node.c       | 61 +++++++++++++++++++++++++++++++++++++--
- 6 files changed, 139 insertions(+), 13 deletions(-)
+Guess I will add a simple mutex for this case and the other.
 
-diff --git a/net/tipc/core.c b/net/tipc/core.c
-index 315975c3be81..52544b805dcc 100644
---- a/net/tipc/core.c
-+++ b/net/tipc/core.c
-@@ -61,6 +61,8 @@ static int __net_init tipc_init_net(struct net *net)
-        tn->trial_addr =3D 0;
-        tn->addr_trial_end =3D 0;
-        tn->capabilities =3D TIPC_NODE_CAPABILITIES;
-+       atomic_set(&tn->finalized, 0);
-+       atomic_set(&tn->work_rescheduled, 0);
-        INIT_WORK(&tn->work, tipc_net_finalize_work);
-        memset(tn->node_id, 0, sizeof(tn->node_id));
-        memset(tn->node_id_string, 0, sizeof(tn->node_id_string));
-diff --git a/net/tipc/core.h b/net/tipc/core.h
-index 9ce5f9ff6cc0..52fdb9189cc3 100644
---- a/net/tipc/core.h
-+++ b/net/tipc/core.h
-@@ -145,6 +145,10 @@ struct tipc_net {
-        struct work_struct work;
-        /* The numbers of work queues in schedule */
-        atomic_t wq_count;
-+       /* flag to indicate work has finished */
-+       atomic_t finalized;
-+       /* flag to reschedule work */
-+       atomic_t work_rescheduled;
- };
+> >  
+> >  	for (i = 0; i < ARRAY_SIZE(port->devs); i++) {
+> >  		if (port->devs[i])
+> > @@ -1848,7 +1849,7 @@ static void airoha_update_hw_stats(struct airoha_gdm_dev *dev)
+> >  	airoha_fe_set(dev->eth, REG_FE_GDM_MIB_CLEAR(port->id),
+> >  		      FE_GDM_MIB_RX_CLEAR_MASK | FE_GDM_MIB_TX_CLEAR_MASK);
+> >  
+> > -	spin_unlock(&port->stats_lock);
+> > +	spin_unlock(&port->lock);
+> >  }
+> >  
+> >  static void airoha_dev_set_xmit_frame_size(struct net_device *netdev)
+> > @@ -1870,6 +1871,14 @@ static int airoha_dev_open(struct net_device *netdev)
+> >  	u32 pse_port = FE_PSE_PORT_PPE1;
+> >  	int err;
+> >  
+> > +	err = phylink_of_phy_connect(dev->phylink, netdev->dev.of_node, 0);
+> > +	if (err) {
+> > +		netdev_err(netdev, "could not attach PHY: %d\n", err);
+> > +		return err;
+> > +	}
+> > +
+> > +	phylink_start(dev->phylink);
+> > +
+> >  	netif_tx_start_all_queues(netdev);
+> >  	err = airoha_set_vip_for_gdm_port(dev, true);
+> >  	if (err)
+> > @@ -1909,6 +1918,10 @@ static int airoha_dev_stop(struct net_device *netdev)
+> >  		airoha_set_gdm_port_fwd_cfg(qdma->eth,
+> >  					    REG_GDM_FWD_CFG(port->id),
+> >  					    FE_PSE_PORT_DROP);
+> > +
+> > +	phylink_stop(dev->phylink);
+> > +	phylink_disconnect_phy(dev->phylink);
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > @@ -2389,6 +2402,24 @@ airoha_ethtool_get_rmon_stats(struct net_device *netdev,
+> >  	} while (u64_stats_fetch_retry(&dev->stats.syncp, start));
+> >  }
+> >  
+> > +static int
+> > +airoha_ethtool_get_link_ksettings(struct net_device *netdev,
+> > +				  struct ethtool_link_ksettings *cmd)
+> > +{
+> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+> > +
+> > +	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
+> > +}
+> > +
+> > +static int
+> > +airoha_ethtool_set_link_ksettings(struct net_device *netdev,
+> > +				  const struct ethtool_link_ksettings *cmd)
+> > +{
+> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+> > +
+> > +	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
+> > +}
+> > +
+> >  static int airoha_qdma_set_chan_tx_sched(struct net_device *netdev,
+> >  					 int channel, enum tx_sched_mode mode,
+> >  					 const u16 *weights, u8 n_weights)
+> > @@ -3120,7 +3151,8 @@ static const struct ethtool_ops airoha_ethtool_ops = {
+> >  	.get_drvinfo		= airoha_ethtool_get_drvinfo,
+> >  	.get_eth_mac_stats      = airoha_ethtool_get_mac_stats,
+> >  	.get_rmon_stats		= airoha_ethtool_get_rmon_stats,
+> > -	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+> > +	.get_link_ksettings	= airoha_ethtool_get_link_ksettings,
+> > +	.set_link_ksettings	= airoha_ethtool_set_link_ksettings,
+> >  	.get_link		= ethtool_op_get_link,
+> >  };
+> >  
+> > @@ -3176,6 +3208,155 @@ bool airoha_is_valid_gdm_dev(struct airoha_eth *eth,
+> >  	return false;
+> >  }
+> >  
+> > +/* Nothing to do in MAC, everything is handled in PCS */
+> > +static void airoha_mac_config(struct phylink_config *config, unsigned int mode,
+> > +			      const struct phylink_link_state *state)
+> > +{
+> > +}
+> > +
+> > +static void airoha_mac_link_up(struct phylink_config *config, struct phy_device *phy,
+> > +			       unsigned int mode, phy_interface_t interface,
+> > +			       int speed, int duplex, bool tx_pause, bool rx_pause)
+> > +{
+> > +	struct airoha_gdm_dev *dev = container_of(config, struct airoha_gdm_dev,
+> > +						  phylink_config);
+> > +	struct airoha_gdm_port *port = dev->port;
+> > +	struct airoha_eth *eth = dev->eth;
+> > +	u32 frag_size_tx, frag_size_rx;
+> > +	u32 mask, val;
+> > +
+> > +	/* TX/RX frag is configured only for GDM4 */
+> > +	if (port->id != AIROHA_GDM4_IDX)
+> > +		return;
+> > +
+> > +	switch (speed) {
+> > +	case SPEED_10000:
+> > +	case SPEED_5000:
+> > +		frag_size_tx = 8;
+> > +		frag_size_rx = 8;
+> > +		break;
+> > +	case SPEED_2500:
+> > +		frag_size_tx = 2;
+> > +		frag_size_rx = 1;
+> > +		break;
+> > +	default:
+> > +		frag_size_tx = 1;
+> > +		frag_size_rx = 0;
+> > +	}
+> > +
+> > +	spin_lock(&port->lock);
+> > +
+> > +	/* Configure TX/RX frag based on speed */
+> > +	if (dev->nbq == 1) {
+> > +		mask = GDM4_SGMII1_TX_FRAG_SIZE_MASK;
+> > +		val = FIELD_PREP(GDM4_SGMII1_TX_FRAG_SIZE_MASK,
+> > +				 frag_size_tx);
+> > +	}  else {
+> > +		mask = GDM4_SGMII0_TX_FRAG_SIZE_MASK;
+> > +		val = FIELD_PREP(GDM4_SGMII0_TX_FRAG_SIZE_MASK,
+> > +				 frag_size_tx);
+> > +	}
+> > +	airoha_fe_rmw(eth, REG_FE_GDM4_TMBI_FRAG, mask, val);
+> > +
+> > +	if (dev->nbq == 1) {
+> > +		mask = GDM4_SGMII1_RX_FRAG_SIZE_MASK;
+> > +		val = FIELD_PREP(GDM4_SGMII1_RX_FRAG_SIZE_MASK,
+> > +				 frag_size_rx);
+> > +	} else {
+> > +		mask = GDM4_SGMII0_RX_FRAG_SIZE_MASK;
+> > +		val = FIELD_PREP(GDM4_SGMII0_RX_FRAG_SIZE_MASK,
+> > +				 frag_size_rx);
+> > +	}
+> > +	airoha_fe_rmw(eth, REG_FE_GDM4_RMBI_FRAG, mask, val);
+> > +
+> > +	spin_unlock(&port->lock);
+> > +}
+> > +
+> > +/* Nothing to do in MAC, everything is handled in PCS */
+> > +static void airoha_mac_link_down(struct phylink_config *config, unsigned int mode,
+> > +				 phy_interface_t interface)
+> > +{
+> > +}
+> > +
+> > +static const struct phylink_mac_ops airoha_phylink_ops = {
+> > +	.mac_config = airoha_mac_config,
+> > +	.mac_link_up = airoha_mac_link_up,
+> > +	.mac_link_down = airoha_mac_link_down,
+> > +};
+> > +
+> > +static int airoha_fill_available_pcs(struct phylink_config *config,
+> > +				     struct phylink_pcs **available_pcs,
+> > +				     unsigned int num_possible_pcs)
+> > +{
+> > +	struct device *dev = config->dev;
+> > +
+> > +	return fwnode_phylink_pcs_parse(dev_fwnode(dev), available_pcs,
+> > +					num_possible_pcs);
+> > +}
+> > +
+> > +static int airoha_setup_phylink(struct net_device *netdev)
+> > +{
+> > +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+> > +	struct device_node *np = netdev->dev.of_node;
+> > +	struct airoha_gdm_port *port = dev->port;
+> > +	struct phylink_config *config;
+> > +	phy_interface_t phy_mode;
+> > +	struct phylink *phylink;
+> > +	int err;
+> > +
+> > +	err = of_get_phy_mode(np, &phy_mode);
+> > +	if (err) {
+> > +		dev_err(&netdev->dev, "incorrect phy-mode\n");
+> > +		return err;
+> > +	}
+> > +
+> > +	config = &dev->phylink_config;
+> > +	config->dev = &netdev->dev;
+> > +	config->type = PHYLINK_NETDEV;
+> > +
+> > +	/*
+> > +	 * GDM1 only supports internal for Embedded Switch
+> > +	 * and doesn't require a PCS.
+> > +	 */
+> > +	if (port->id == AIROHA_GDM1_IDX) {
+> > +		config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> > +					   MAC_10000FD;
+> > +
+> > +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
+> > +			  config->supported_interfaces);
+> > +	} else {
+> > +		config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> > +					   MAC_10 | MAC_100 | MAC_1000 |
+> > +					   MAC_2500FD | MAC_5000FD | MAC_10000FD;
+> > +
+> > +		config->num_possible_pcs = fwnode_phylink_pcs_count(dev_fwnode(config->dev));
+> > +		config->fill_available_pcs = airoha_fill_available_pcs;
+> > +
+> > +		__set_bit(PHY_INTERFACE_MODE_SGMII,
+> > +			  config->supported_interfaces);
+> > +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> > +			  config->supported_interfaces);
+> > +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> > +			  config->supported_interfaces);
+> > +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
+> > +			  config->supported_interfaces);
+> > +		__set_bit(PHY_INTERFACE_MODE_USXGMII,
+> > +			  config->supported_interfaces);
+> > +
+> > +		phy_interface_copy(config->pcs_interfaces,
+> > +				   config->supported_interfaces);
+> > +	}
+> > +
+> > +	phylink = phylink_create(config, of_fwnode_handle(np),
+> > +				 phy_mode, &airoha_phylink_ops);
+> > +	if (IS_ERR(phylink))
+> > +		return PTR_ERR(phylink);
+> > +
+> > +	dev->phylink = phylink;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+> >  				   struct airoha_gdm_port *port,
+> >  				   int nbq, struct device_node *np)
+> > @@ -3239,7 +3420,7 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+> >  	dev->nbq = nbq;
+> >  	port->devs[index] = dev;
+> >  
+> > -	return 0;
+> > +	return airoha_setup_phylink(netdev);
+> >  }
+> >  
+> >  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> > @@ -3274,7 +3455,7 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> >  		return -ENOMEM;
+> >  
+> >  	port->id = id;
+> > -	spin_lock_init(&port->stats_lock);
+> > +	spin_lock_init(&port->lock);
+> >  	eth->ports[p] = port;
+> >  
+> >  	err = airoha_metadata_dst_alloc(port);
+> > @@ -3471,6 +3652,8 @@ static int airoha_probe(struct platform_device *pdev)
+> >  			netdev = netdev_from_priv(dev);
+> >  			if (netdev->reg_state == NETREG_REGISTERED)
+> >  				unregister_netdev(netdev);
+> > +			if (dev->phylink)
+> > +				phylink_destroy(dev->phylink);
+> >  			of_node_put(netdev->dev.of_node);
+> >  		}
+> >  		airoha_metadata_dst_free(port);
+> > @@ -3509,6 +3692,7 @@ static void airoha_remove(struct platform_device *pdev)
+> >  
+> >  			netdev = netdev_from_priv(dev);
+> >  			unregister_netdev(netdev);
+> > +			phylink_destroy(dev->phylink);
+> >  			of_node_put(netdev->dev.of_node);
+> >  		}
+> >  		airoha_metadata_dst_free(port);
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+> > index f6d01a8e8da1..b49fc5304b3a 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> > @@ -561,6 +561,9 @@ struct airoha_gdm_dev {
+> >  	int nbq;
+> >  
+> >  	struct airoha_hw_stats stats;
+> > +
+> > +	struct phylink *phylink;
+> > +	struct phylink_config phylink_config;
+> >  };
+> >  
+> >  struct airoha_gdm_port {
+> > @@ -568,8 +571,8 @@ struct airoha_gdm_port {
+> >  	int id;
+> >  	int users;
+> >  
+> > -	/* protect concurrent hw_stats accesses */
+> > -	spinlock_t stats_lock;
+> > +	/* protect concurrent hw_stats and frag register accesses */
+> > +	spinlock_t lock;
+> >  
+> >  	struct metadata_dst *dsa_meta[AIROHA_MAX_DSA_PORTS];
+> >  };
+> > diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+> > index 6fed63d013b4..8df02f51211c 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_regs.h
+> > +++ b/drivers/net/ethernet/airoha/airoha_regs.h
+> > @@ -357,6 +357,18 @@
+> >  #define IP_FRAGMENT_PORT_MASK		GENMASK(8, 5)
+> >  #define IP_FRAGMENT_NBQ_MASK		GENMASK(4, 0)
+> >  
+> > +#define REG_FE_GDM4_TMBI_FRAG		0x2028
+> > +#define GDM4_SGMII1_TX_WEIGHT_MASK	GENMASK(31, 26)
+> > +#define GDM4_SGMII1_TX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > +#define GDM4_SGMII0_TX_WEIGHT_MASK	GENMASK(15, 10)
+> > +#define GDM4_SGMII0_TX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > +
+> > +#define REG_FE_GDM4_RMBI_FRAG		0x202c
+> > +#define GDM4_SGMII1_RX_WEIGHT_MASK	GENMASK(31, 26)
+> > +#define GDM4_SGMII1_RX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > +#define GDM4_SGMII0_RX_WEIGHT_MASK	GENMASK(15, 10)
+> > +#define GDM4_SGMII0_RX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > +
+> >  #define REG_MC_VLAN_EN			0x2100
+> >  #define MC_VLAN_EN_MASK			BIT(0)
+> >  
+> > -- 
+> > 2.53.0
+> > 
 
- static inline struct tipc_net *tipc_net(struct net *net)
-diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index ba4f4906e13b..3e32445cfbd0 100644
---- a/net/tipc/name_distr.c
-+++ b/net/tipc/name_distr.c
-@@ -147,8 +147,8 @@ struct sk_buff *tipc_named_withdraw(struct net *net, st=
-ruct publication *p)
-  * @pls: linked list of publication items to be packed into buffer chain
-  * @seqno: sequence number for this message
-  */
--static void named_distribute(struct net *net, struct sk_buff_head *list,
--                            u32 dnode, struct list_head *pls, u16 seqno)
-+static int named_distribute(struct net *net, struct sk_buff_head *list,
-+                           u32 dnode, struct list_head *pls, u16 seqno)
- {
-        struct publication *publ;
-        struct sk_buff *skb =3D NULL;
-@@ -164,8 +164,9 @@ static void named_distribute(struct net *net, struct sk=
-_buff_head *list,
-                        skb =3D named_prepare_buf(net, PUBLICATION, msg_rem=
-,
-                                                dnode);
-                        if (!skb) {
-+                               __skb_queue_purge(list);
-                                pr_warn("Bulk publication failure\n");
--                               return;
-+                               return 1;
-                        }
-                        hdr =3D buf_msg(skb);
-                        msg_set_bc_ack_invalid(hdr, true);
-@@ -195,15 +196,16 @@ static void named_distribute(struct net *net, struct =
-sk_buff_head *list,
-        hdr =3D buf_msg(skb_peek_tail(list));
-        msg_set_last_bulk(hdr);
-        msg_set_named_seqno(hdr, seqno);
-+
-+       return 0;
- }
 
- /**
-- * tipc_named_node_up - tell specified node about all publications by this=
- node
-+ * tipc_named_distribute - distribute all publications to specified node
-  * @net: the associated network namespace
-  * @dnode: destination node
-- * @capabilities: peer node's capabilities
-  */
--void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
-+static int tipc_named_distribute(struct net *net, u32 dnode)
- {
-        struct name_table *nt =3D tipc_name_table(net);
-        struct tipc_net *tn =3D tipc_net(net);
-@@ -212,15 +214,62 @@ void tipc_named_node_up(struct net *net, u32 dnode, u=
-16 capabilities)
 
-        __skb_queue_head_init(&head);
-        spin_lock_bh(&tn->nametbl_lock);
--       if (!(capabilities & TIPC_NAMED_BCAST))
--               nt->rc_dests++;
-        seqno =3D nt->snd_nxt;
-        spin_unlock_bh(&tn->nametbl_lock);
-
-        read_lock_bh(&nt->cluster_scope_lock);
--       named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
-+       /* 1. tipc_net_finalize_work() is not scheduled because of namespac=
-e
-+        *    teardown.
-+        * 2. Or tipc_net_finalize() ---> tipc_nametbl_publish() has failed
-+        *    to insert node self address publication to nt->cluster_scope.
-+        * 3. Or tipc_net_finalize() ---> tipc_nametbl_publish() has not
-+        *    executed yet.
-+        */
-+       if (unlikely(list_empty(&nt->cluster_scope))) {
-+               read_unlock_bh(&nt->cluster_scope_lock);
-+               return 1;
-+       }
-+
-+       if (named_distribute(net, &head, dnode, &nt->cluster_scope, seqno))=
- {
-+               read_unlock_bh(&nt->cluster_scope_lock);
-+               return -ENOBUFS;
-+       }
-        tipc_node_xmit(net, &head, dnode, 0);
-        read_unlock_bh(&nt->cluster_scope_lock);
-+
-+       return 0;
-+}
-+
-+/**
-+ * tipc_named_node_up - tell specified node about all publications by this=
- node
-+ * @net: the associated network namespace
-+ * @dnode: destination node
-+ * @capabilities: peer node's capabilities
-+ */
-+int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
-+{
-+       struct name_table *nt =3D tipc_name_table(net);
-+       struct tipc_net *tn =3D tipc_net(net);
-+
-+       spin_lock_bh(&tn->nametbl_lock);
-+       if (!(capabilities & TIPC_NAMED_BCAST))
-+               nt->rc_dests++;
-+       spin_unlock_bh(&tn->nametbl_lock);
-+
-+       return tipc_named_distribute(net, dnode);
-+}
-+
-+/**
-+ * tipc_named_dist_cluster_scope - distribute all publications to specifie=
-d node
-+ * @net: the associated network namespace
-+ * @dnode: destination node
-+ */
-+int tipc_named_dist_cluster_scope(struct net *net, u32 dnode)
-+{
-+       struct tipc_net *tn =3D tipc_net(net);
-+
-+       wait_var_event(&tn->finalized, atomic_read(&tn->finalized));
-+       return tipc_named_distribute(net, dnode);
- }
-
- /**
-diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h
-index c677f6f082df..cadf4e8c3e66 100644
---- a/net/tipc/name_distr.h
-+++ b/net/tipc/name_distr.h
-@@ -69,7 +69,8 @@ struct distr_item {
-
- struct sk_buff *tipc_named_publish(struct net *net, struct publication *pu=
-bl);
- struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *p=
-ubl);
--void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
-+int tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
-+int tipc_named_dist_cluster_scope(struct net *net, u32 dnode);
- void tipc_named_rcv(struct net *net, struct sk_buff_head *namedq,
-                    u16 *rcv_nxt, bool *open);
- void tipc_named_reinit(struct net *net);
-diff --git a/net/tipc/net.c b/net/tipc/net.c
-index 7e65d0b0c4a8..78418515277e 100644
---- a/net/tipc/net.c
-+++ b/net/tipc/net.c
-@@ -132,13 +132,26 @@ static void tipc_net_finalize(struct net *net, u32 ad=
-dr)
-        tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
-                   TIPC_NODE_STATE, addr, addr);
-
-+       if (atomic_read(&tn->work_rescheduled))
-+               goto publish;
-+
-        if (cmpxchg(&tn->node_addr, 0, addr))
-                return;
-        tipc_set_node_addr(net, addr);
-        tipc_named_reinit(net);
-        tipc_sk_reinit(net);
-        tipc_mon_reinit_self(net);
--       tipc_nametbl_publish(net, &ua, &sk, addr);
-+
-+publish:
-+       if (!tipc_nametbl_publish(net, &ua, &sk, addr)) {
-+               tn->trial_addr =3D addr;
-+               atomic_set(&tn->work_rescheduled, 1);
-+               schedule_work(&tn->work);
-+               return;
-+       }
-+       atomic_set(&tn->work_rescheduled, 0);
-+       atomic_set(&tn->finalized, 1);
-+       wake_up_var(&tn->finalized);
- }
-
- void tipc_net_finalize_work(struct work_struct *work)
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 8e4ef2630ae4..afed72894722 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -111,6 +111,8 @@ struct tipc_bclink_entry {
-  * @peer_net: peer's net namespace
-  * @peer_hash_mix: hash for this peer (FIXME)
-  * @crypto_rx: RX crypto handler
-+ * @work: work item for bulk distribution of cluster scope publications
-+ * @work_scheduled: flag to indicate the work has been scheduled
-  */
- struct tipc_node {
-        u32 addr;
-@@ -145,6 +147,8 @@ struct tipc_node {
- #ifdef CONFIG_TIPC_CRYPTO
-        struct tipc_crypto *crypto_rx;
- #endif
-+       struct work_struct work;
-+       atomic_t work_scheduled;
- };
-
- /* Node FSM states and events:
-@@ -393,6 +397,27 @@ static void tipc_node_write_unlock_fast(struct tipc_no=
-de *n)
-        write_unlock_bh(&n->lock);
- }
-
-+static void tipc_node_down(struct tipc_node *n)
-+{
-+       u32 bearer_id, bearer_cnt;
-+
-+       tipc_node_read_lock(n);
-+       bearer_cnt =3D n->link_cnt;
-+       tipc_node_read_unlock(n);
-+       for (bearer_id =3D 0; bearer_id < bearer_cnt; bearer_id++)
-+               tipc_node_link_down(n, bearer_id, false);
-+}
-+
-+static void tipc_node_dist_bulk(struct work_struct *work)
-+{
-+       struct tipc_node *node =3D container_of(work, struct tipc_node, wor=
-k);
-+
-+       if (tipc_named_dist_cluster_scope(node->net, node->addr) < 0)
-+               tipc_node_down(node);
-+
-+       tipc_node_put(node);
-+}
-+
- static void tipc_node_write_unlock(struct tipc_node *n)
-        __releases(n->lock)
- {
-@@ -424,8 +449,23 @@ static void tipc_node_write_unlock(struct tipc_node *n=
-)
-        if (flags & TIPC_NOTIFY_NODE_DOWN)
-                tipc_publ_notify(net, publ_list, node, n->capabilities);
-
--       if (flags & TIPC_NOTIFY_NODE_UP)
--               tipc_named_node_up(net, node, n->capabilities);
-+       if (flags & TIPC_NOTIFY_NODE_UP) {
-+               int rc =3D 0;
-+
-+               rc =3D tipc_named_node_up(net, node, n->capabilities);
-+               /* Defer bulk distribution to work queue */
-+               if (rc > 0) {
-+                       atomic_set(&n->work_scheduled, 1);
-+                       tipc_node_get(n);
-+                       if (!schedule_work(&n->work))
-+                               tipc_node_put(n);
-+               } else if (rc < 0) {
-+                       /* Bring the node down to start over bulk distribut=
-ion
-+                        * when the first link is up again.
-+                        */
-+                       tipc_node_down(n);
-+               }
-+       }
-
-        if (flags & TIPC_NOTIFY_LINK_UP) {
-                tipc_mon_peer_up(net, node, bearer_id);
-@@ -564,6 +604,8 @@ struct tipc_node *tipc_node_create(struct net *net, u32=
- addr, u8 *peer_id,
-        INIT_LIST_HEAD(&n->list);
-        INIT_LIST_HEAD(&n->publ_list);
-        INIT_LIST_HEAD(&n->conn_sks);
-+       INIT_WORK(&n->work, tipc_node_dist_bulk);
-+       atomic_set(&n->work_scheduled, 0);
-        skb_queue_head_init(&n->bc_entry.namedq);
-        skb_queue_head_init(&n->bc_entry.inputq1);
-        __skb_queue_head_init(&n->bc_entry.arrvq);
-@@ -635,10 +677,25 @@ static void tipc_node_delete_from_list(struct tipc_no=
-de *node)
-
- static void tipc_node_delete(struct tipc_node *node)
- {
-+       struct tipc_net *tn =3D tipc_net(node->net);
-+
-        trace_tipc_node_delete(node, true, " ");
-        tipc_node_delete_from_list(node);
-
-        timer_delete_sync(&node->timer);
-+
-+       /* Wake up node work queue if tipc_net_finalize_work() is not
-+        * scheduled yet.
-+        */
-+       if (atomic_read(&node->work_scheduled)) {
-+               if (!atomic_read(&tn->finalized)) {
-+                       atomic_set(&tn->finalized, 1);
-+                       wake_up_var(&tn->finalized);
-+               }
-+
-+               cancel_work_sync(&node->work);
-+       }
-+
-        tipc_node_put(node);
- }
-
---=20
-2.43.0
+-- 
+	Ansuel
