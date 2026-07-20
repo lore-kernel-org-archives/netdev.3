@@ -1,219 +1,202 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013048.outbound.protection.outlook.com [40.107.162.48])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A3D42E8CD;
-	Mon, 20 Jul 2026 14:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784558378; cv=fail; b=AA516svOJ68Y4nSIri+7FHOnvT0enALh3Kt94b44x4ZqXsLUe3Qzx08L/JEw9Kb5qr+tmknwTtQxwUCKDxn3U2bm2KxT6IMqgxCUox4D2zrNfvwou3x8tD0KQMUaL75rtK7AbxwvKtJQ5xpti+XtDccYBqVRAo8UIN9/a2F6NNE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784558378; c=relaxed/simple;
-	bh=WADz2WeRb9f+19d1bZptZbRLIl975xVBKwgNvA5fQh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M37Kz3w3GryJW3eub6S0eeROPf6AlVwDzYEWyMcwug1TXDQxpEJ2xiocRbXWg/N7twzbMVPY8oHLRlQeSbJYkS0KApTz/LRKXREJ0qyINstNXb06cnq2jItB1GlUwmzAM0t6IM2AYA2WmxczANtqc1qOqwyu6zx2nhXdn6wIwCs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gD1W2t3y; arc=fail smtp.client-ip=40.107.162.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6504E431A3E
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 14:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784558424; cv=none; b=PTVOGi4lvYtBSI2xZPT3616aFV1KynjpAsnObF1KsWP0MJpXmK2C4ofPBnOZXQdxtAaVE7ip2Njeolv7nKbJ1ml6eA+otCU8FPNeyCyk0AIetXoChdc1OG7icl3bXxrKIDA8w4yW66R4flqpBM2dTFRnUag+63HglbJoJTlMBgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784558424; c=relaxed/simple;
+	bh=VD2zqeqJXw3ZrSsZzDxhNPyLWznk+NegqdqZguRC4gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P0RCQQxmqJufe+rGa8+/slD/66TmpZKc4mfo5GhOSEDKjzBkfYkyJj87QEjEtuxqsYmZ7e3FY4nBvUO9E6ADpwYA9bT6RwVoTc2ESCsU6QoGilQ/RaU5YZClmvjLI68MlPuqBp8N3SBuzYc/UQvfB7BtcZRn+Pk8WqQFYCH/ius=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R7bamHGD; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gD1W2t3y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JH2OqdcbXxteojvc04t0pWQPH3nmqNYmozTthEV7e2pxVigC9l1Fn3doxgB26PbaePaHUVt5LL/UeJFw3XEozzC87CppjP1Jf/Wdm2sWwB0IZ2ug2FeBSVUDGXGRIuTrJvviIrs1IRy0DAs6KoKhhL+YRXl95pafEYm1VFx5xAuhCxvo+cuW74FO8Q7cy5h2t7bCGY4UxYIfvKEFnpbAewG0+A9saKKhuspxbV48hKHcePKRGaOtQfn00VdaNBUtalow9SWHOFo9+Pa7BVlGJg8dZ3ZFEE8d/mFZXzd7eW2Ksn8+0J1w+qFJV1NfOljiPsgd5U+RpcSFNSfEz04Oqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gSecXEPGRFd/zl25jxCLYbBJ4nEmgNoEaHGj3LOGPeA=;
- b=bdGK7MIStNdLsqW+BZknKdpYxrsOo9BIAk1Tf9KDisuzLsUpNma0gdY+r+0Dh0vUU8FNxRcXHQxkyxxxPZmloQP9czS2bTVzYhARe22EYolvsoI9jupCxuDMZ2SSyyIl2A0RcvAKcIvX6n/6aliZI88CCmflFc7sCbj/gwqfSOYO4lHGrqLtCI41LlNokVAPDZI3NbbYhkAXzZpUnOQJEUuCogpyHtH5SuDRYwJjBdhkzepuLJi2SS0lrUN8FQdW6PukQBxvtLOoN/OIScXjUOPmobzWeJS4fVqIDg8A2OstFbcQxNiBazI6EXKZQ9IUihhUsCTnV2oKf2LuQSIWkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gSecXEPGRFd/zl25jxCLYbBJ4nEmgNoEaHGj3LOGPeA=;
- b=gD1W2t3yC5c/XsT8+/XhvpVpgYAggp89taDRmDvvWoa1I3S6YCIgnwxcV87JIS+4kuRp8ChgkR/mNBa1TKrhdu7FngYnBsM8Ooq2nphbUL3AoOdgNWOvG68Vj47SOny1WQ3qHLTHvHFarlTCQAV9MrPVvSyxRtIj3m0sYF7s5XH3o7ts30m0/rEpj323bBm8lZ4Je9wIQmeQgWSC4+k3L/Jstvx/GYPICY4fBCQsk6vHAGEHc4FrnXk7Om/fCoecuB0F/lPdVW4jmqzQLPsyT+4r2ukHxCDXGJNF3Iu7IbbGqDn1bPFN2aLd9b85utyziMxZffoVmVO2HWzM7yqg+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PA1PR04MB11360.eurprd04.prod.outlook.com (2603:10a6:102:4f2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 14:39:28 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0223.012; Mon, 20 Jul 2026
- 14:39:27 +0000
-Date: Mon, 20 Jul 2026 09:39:16 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Subasri S <subasris1210@gmail.com>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>,
-	Chas Williams <3chas3@gmail.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] usb: chipidea: Use %pe to print error pointers
-Message-ID: <al4zFG3zCD5FJ7eB@SMW015318>
-References: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
- <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com>
-X-ClientProxiedBy: PH7P221CA0068.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:328::17) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R7bamHGD"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DE2DF1A10C3;
+	Mon, 20 Jul 2026 14:40:17 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AD87560360;
+	Mon, 20 Jul 2026 14:40:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27F4311BD3D7F;
+	Mon, 20 Jul 2026 16:40:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784558415; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=QYtCIYb5UxFdCVyUP7gHIgoE53UyvbtqfxqBe9fHsqA=;
+	b=R7bamHGDq5ejMwKZ6s8SMmVuLuVk0hU9b2xLmL74byZ3w1266aWhFCnOPf2rvgxKKz4he8
+	+izN91RNWfQjE4N1dQtY5ZpgiR3qLxK/eut+ylZ14ORAnjBtgtQzS9Z5zQVVTCfHqZkMN8
+	F27y74XmXfrqV/ZmfKreojMBjGofULWjXuUi3wLYhRGLMJ0a8zWhTt+INcBe/ERDdHebOP
+	m/nE6tC9tPc1ykTnZQcvFkscFU/36HyUi4tdoHDspl4m/vspru77bfQaZwJm17FmcKfltk
+	xQmqNCctYFeEuB+4L/MVLoTbnnxPxqzwIS4vQVwBt4RX/h1MwjGNCl+LLsbigg==
+Message-ID: <d8a556c5-9403-48fa-8456-5451e576bae0@bootlin.com>
+Date: Mon, 20 Jul 2026 16:40:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PA1PR04MB11360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44b28cb2-24d4-4a65-d3da-08dee66cb37f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|376014|7416014|22082099003|18002099003|4143699003|10067099003|11063799006|56012099006|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	7y8itcQbTdIfWPPEVhyJgJ+pFrFT5MLYmL6RJ6zxzupEWiPgz6n2pklXFU5guC/D62jN4yRBVywX9AS03LYWuY1LivHrFdSS8HrtD+qaRb2R3pSs3Yn+xPLgHZi0D2PecT6U2g9HzDj6rdtgnOyWrFjxkzq7NeyZzujSiNqUvc9KDd3chIHKhLXSZ3OS8tCO9FWEL2xy+EU6jrC/0jDbR1Cbh+HgOOZak8oXLDZDE4eB+eMFWtsEfUXVVOL/y91n7MDRnybDiPb5LXn4/NBJAfC8JU/VCU3rwc1YKWD2GfIhYnwrv/96TTJMOmS+N0Vha+UpKHrKMni79g9paqSUQxP84fTbx7OWIWhzA3pHaK7k0f+ijH3aUf0TtCGtPcDg3v/O1v5dzJ/O8YwViXEq5g6nFPzrIq003DPxu/PHR4csRSgl1hNhCfV4xAY4jfUmVaCja1m3QZFgRhmS2l1Qeji/0rR/pB2iH20zUuvXT9PGg5B8N9oc3rkzRi7ma/tZglhwYycl56ZIy7d//JRmV4VCReD6Z6EcpOqdj3SLnOfLcoGVATgGUNRzckHpERA8GU3PWGGv3ise/6QWjkYvEcbmp9ySTomot+GftvZ+ZLdGMdKmj+gKY4biDdjmpjKy+u7V7mjQRsA/AQAA0IHfk6veiT/1r2+LSkz+SKgNV2EQszN8FyAVQYwt0IPOEspqxafPJmjEFPkmkhEs5cUxdAMAxjJ4e4DLnBaSra72X9g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(376014)(7416014)(22082099003)(18002099003)(4143699003)(10067099003)(11063799006)(56012099006)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vS/c7Zpqg+m4Vo8nR/8RBILmAeLsM+EcpqVO0cHNRiN/7sZnGMNm/ritZM58?=
- =?us-ascii?Q?UJIeezOoqrwvjj08huDhmBoRvtiM8bCtVNILMX5ZVA2ICt+BtZS3eDze6j9o?=
- =?us-ascii?Q?96Oa3QMyWFvyMBVt3Qw5qxrzjW4FB4GcHehUdJvnUM7xLyBlM/iw7DhwT1TG?=
- =?us-ascii?Q?fYpOULEZyEnvEgDeQyFNn1d1euYbK+dovRJnHO8X/sjQuABNe4zFAf9l2jA0?=
- =?us-ascii?Q?3E9SLCf5RqitwcKFj3UDhFvAres4jKH5NAuI9+fs9TMyCrYOT9oaID3j+I91?=
- =?us-ascii?Q?kxdIzvuW23cBvJfJ8E2E18UfOgOr6M4/WOZ2awL09XObWxJhWykGPDBlsi0g?=
- =?us-ascii?Q?TyYeYxqtJ4I+Ld8bUpFTNgI8p5M73Lha059swBIZ6+ydMnWBGm/DFp02SjQF?=
- =?us-ascii?Q?sQbdeYVUKx8qYNVGfCC9DVibj22nCrB012NUbhEbslu23/K01Rk02/v4zMyx?=
- =?us-ascii?Q?HGsvhpOHe0qDkdqL2OTdTMMpjW/WIKZwakM8HQpo2LXuumTfGjoWwrtIFc6F?=
- =?us-ascii?Q?zYka0GvWrSjp2SHPMH4sx1DEd6mMgxjiUzim1iXrSs2Y6Brgofkj2WOpXj0v?=
- =?us-ascii?Q?YGA6zJgO995XLT/LIj24rvQqIBzvZTHholpVxRIZGw670Opi68DLtX+IY9cZ?=
- =?us-ascii?Q?OsKOwO6w433vCusiZc0SoVvnw4e2eacuPbRd8rN6DVmz/ThHSayWEkZ5ESEh?=
- =?us-ascii?Q?gfrF/UfJDHwBVpOxRpoJgWS4GQqDVNzpRXC0Nod+bf37OZUOD9ib929t051Y?=
- =?us-ascii?Q?3LLBrdDYi5Pr5PFfGRX2C12JO5y2SX+0FsM1v2aFpH2BheDhQ0ADrBe5pTpu?=
- =?us-ascii?Q?qt1nlLjHb2oOtbfJkn5LaP2/CDnvmFA1LHwut39h8Z3w9ye1VW2mq8faSggX?=
- =?us-ascii?Q?D65zhbdlsH1cuKv6QeosoYPpaqvtUzj87ZElKXiKP/0cbNcCd1bN0ngBvJfn?=
- =?us-ascii?Q?x+wS+EiU8gnJJ/P5npRhinowAq2YYc++kLuoFqwhBnU1rSojyBKW/GL8d7Z5?=
- =?us-ascii?Q?LwZ72HubA2DNsWaaMQ/b0E8tFFBaLa6A5BgBAbPJqUi3jxZl04laqF+2Ouw5?=
- =?us-ascii?Q?xdXC2MwxIlqbsnmRgdWfMwWT6hktLcVOLhlgTfhSVIvXuAtnoffs0OTitmSI?=
- =?us-ascii?Q?eMndTPUfTclQt5B40mULXuJK+l+Bn1VC8bqyJnjST/xQf5TvhRmz+a2sUZnC?=
- =?us-ascii?Q?/f/yY5y88Ioisyue3O9rgsH68yq42J2WpCabK3O+AeZ90RHMqCd9D2bOaSId?=
- =?us-ascii?Q?6hlUi+B1Yd39m4h+LE6D26xJ2yrhg4qcrro1G/RCz61C2iog0jnDzeZb6efe?=
- =?us-ascii?Q?aim+8YWQ2eCsEcIXaZBj/mFrg3zZqjky8aGdAPA5uH8jVxrIYMdbYO6FZZe1?=
- =?us-ascii?Q?QnlHFX0/iop4CctwJHmP8ddMYCCIThNUI32lKSIJaZVKA96sdJ9FxFtSw9al?=
- =?us-ascii?Q?Ws4aMMP9vlqTjecn/0wNzvkAlw2lJLdr7IRFLGEoF429sZJ/YZIdXdz3ki5k?=
- =?us-ascii?Q?Q2sLYqRGaBTvO1P4UoLz/CjvhpoH5u9BGijpGL+CYvCj4zDvrV8OwVHwL1Xc?=
- =?us-ascii?Q?sJZTC3k/0hH1QWFkjKdtdjCKR0Mp5Je+7v4tQZ1XlYqOWOmjvWB5bNfBxUnR?=
- =?us-ascii?Q?aoHO11sqxscIvzJK0uJuom1ylSNwLWSi+y9N3So5jhjy8JmgkYCwL4tHIQmC?=
- =?us-ascii?Q?QpwPOjuSp4UYwT4VcTaQC1rmFHzC6BU4i0nXKN4YWtdVD7Zmli99hw7eQDYd?=
- =?us-ascii?Q?C/cwI5xeK623EzLvvm61sTi96SqPrdBgsJccGJtSwy09OBH0znad?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44b28cb2-24d4-4a65-d3da-08dee66cb37f
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 14:39:27.8765
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AKVxxTPTBsE3v+zbnZqgpBOGj8NpwYs6QEmIuN34B8+9CJoW934Pt3T+4rBJ99iE6atCdl8Fs5Zzsd8yGYyiqj2knNQnbFJDzbpzILrSg+q0oHjNuJssjwt0L2oKGBsO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11360
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: stmmac: dwmac4: mask interrupts when stopping
+ DMA in suspend
+To: Luis Lang <luis.la@mail.de>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+ Rohan G Thomas <rohan.g.thomas@altera.com>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260720111534.163416-1-luis.la@mail.de>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260720111534.163416-1-luis.la@mail.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Jul 19, 2026 at 06:25:46PM +0530, Subasri S wrote:
->
-> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in imx_get_clks(), ci_hdrc_imx_probe(), and
-> ci_get_platdata(). This prints symbolic error names (e.g. -ENOMEM)
-> instead of errno numbers (e.g. -12), making error logs more readable.
->
-> This patch fixes coccinelle reported warnings:
+Hi Luis,
 
-Avoid use words "This patch", just
+On 7/20/26 13:15, Luis Lang wrote:
+> Since commit 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU
+> interrupts"), suspending causes an interrupt storm from the RPS
+> interrupt.
+> Fix this by adding a deinit_chan() op to stmmac_dma_ops, which
+> masks all default dma channel interrupts. This is called from
+> stmmac_stop_all_dma(), so interrupts don't trigger while suspending.
+> 
+> Fixes: 1b9707e6f1a9 ("net: stmmac: enable RPS and RBU interrupts")
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Luis Lang <luis.la@mail.de>
 
-Fix coccinelle reported warnings:
+I wasn't able to reproduce the original issue on dwmac4, however
+I could test that suspend/resume as well as WoL still works on a
+dwmac4 device with this patch applied.
 
-> ./chipidea/ci_hdrc_imx.c:452:5-12: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:468:5-12: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:222:4-11: WARNING: Consider using %pe to print PTR_ERR()
-> ./chipidea/ci_hdrc_imx.c:222:24-31: WARNING: Consider using %pe to print PTR_ERR()
+Thanks for the patch !
 
-keep one is enough
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-> ./chipidea/core.c:684:4-11: WARNING: Consider using %pe to print PTR_ERR()
->
-> Compile-tested only.
->
-> Signed-off-by: Subasri S <subasris1210@gmail.com>
+Maxime
+
 > ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 12 ++++++------
->  drivers/usb/chipidea/core.c        |  4 ++--
->  2 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index 56d2ba824a0b..7bfe37ed68ae 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -218,8 +218,8 @@ static int imx_get_clks(struct device *dev)
->                 if (IS_ERR(data->clk)) {
->                         ret = PTR_ERR(data->clk);
->                         dev_err(dev,
-> -                               "Failed to get clks, err=%ld,%ld\n",
-> -                               PTR_ERR(data->clk), PTR_ERR(data->clk_ipg));
-> +                               "Failed to get clks, err=%pe,%pe\n",
-> +                               data->clk, data->clk_ipg);
->                         return ret;
->                 }
->                 /* Get wakeup clock. Not all of the platforms need to
-> @@ -448,8 +448,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->                 pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
->                 if (IS_ERR(pinctrl_hsic_idle)) {
->                         dev_err(dev,
-> -                               "pinctrl_hsic_idle lookup failed, err=%ld\n",
-> -                                       PTR_ERR(pinctrl_hsic_idle));
-> +                               "pinctrl_hsic_idle lookup failed, err=%pe\n",
-> +                                       pinctrl_hsic_idle);
->                         ret = PTR_ERR(pinctrl_hsic_idle);
->                         goto err_put;
->                 }
-> @@ -464,8 +464,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->                                                                 "active");
->                 if (IS_ERR(data->pinctrl_hsic_active)) {
->                         dev_err(dev,
-> -                               "pinctrl_hsic_active lookup failed, err=%ld\n",
-> -                                       PTR_ERR(data->pinctrl_hsic_active));
-> +                               "pinctrl_hsic_active lookup failed, err=%pe\n",
-> +                                       data->pinctrl_hsic_active);
->                         ret = PTR_ERR(data->pinctrl_hsic_active);
->                         goto err_put;
->                 }
-> diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-> index 07563be0013f..09db8a4eace2 100644
-> --- a/drivers/usb/chipidea/core.c
-> +++ b/drivers/usb/chipidea/core.c
-> @@ -680,8 +680,8 @@ static int ci_get_platdata(struct device *dev,
->                         /* no vbus regulator is needed */
->                         platdata->reg_vbus = NULL;
->                 } else if (IS_ERR(platdata->reg_vbus)) {
-> -                       dev_err(dev, "Getting regulator error: %ld\n",
-> -                               PTR_ERR(platdata->reg_vbus));
-> +                       dev_err(dev, "Getting regulator error: %pe\n",
-> +                               platdata->reg_vbus);
->                         return PTR_ERR(platdata->reg_vbus);
->                 }
->                 /* Get TPL support */
->
-> --
-> 2.43.0
->
->
+>  .../net/ethernet/stmicro/stmmac/dwmac4_dma.c  | 24 +++++++++++++++++++
+>  drivers/net/ethernet/stmicro/stmmac/hwif.h    |  4 ++++
+>  .../net/ethernet/stmicro/stmmac/stmmac_main.c |  4 ++++
+>  3 files changed, 32 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+> index 829a23bdad01..23ffe1adcd0d 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+> @@ -106,6 +106,17 @@ static void dwmac4_dma_init_channel(struct stmmac_priv *priv,
+>  	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+>  }
+>  
+> +static void dwmac4_dma_deinit_channel(struct stmmac_priv *priv,
+> +				      void __iomem *ioaddr, u32 chan)
+> +{
+> +	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
+> +	u32 value;
+> +
+> +	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+> +	value &= ~DMA_CHAN_INTR_DEFAULT_MASK;
+> +	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+> +}
+> +
+>  static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
+>  				      void __iomem *ioaddr,
+>  				      struct stmmac_dma_cfg *dma_cfg, u32 chan)
+> @@ -125,6 +136,17 @@ static void dwmac410_dma_init_channel(struct stmmac_priv *priv,
+>  	       ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+>  }
+>  
+> +static void dwmac410_dma_deinit_channel(struct stmmac_priv *priv,
+> +					void __iomem *ioaddr, u32 chan)
+> +{
+> +	const struct dwmac4_addrs *dwmac4_addrs = priv->plat->dwmac4_addrs;
+> +	u32 value;
+> +
+> +	value = readl(ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+> +	value &= ~DMA_CHAN_INTR_DEFAULT_MASK_4_10;
+> +	writel(value, ioaddr + DMA_CHAN_INTR_ENA(dwmac4_addrs, chan));
+> +}
+> +
+>  static void dwmac4_dma_init(void __iomem *ioaddr,
+>  			    struct stmmac_dma_cfg *dma_cfg)
+>  {
+> @@ -548,6 +570,7 @@ const struct stmmac_dma_ops dwmac4_dma_ops = {
+>  	.reset = dwmac4_dma_reset,
+>  	.init = dwmac4_dma_init,
+>  	.init_chan = dwmac4_dma_init_channel,
+> +	.deinit_chan = dwmac4_dma_deinit_channel,
+>  	.init_rx_chan = dwmac4_dma_init_rx_chan,
+>  	.init_tx_chan = dwmac4_dma_init_tx_chan,
+>  	.axi = dwmac4_dma_axi,
+> @@ -577,6 +600,7 @@ const struct stmmac_dma_ops dwmac410_dma_ops = {
+>  	.reset = dwmac4_dma_reset,
+>  	.init = dwmac4_dma_init,
+>  	.init_chan = dwmac410_dma_init_channel,
+> +	.deinit_chan = dwmac410_dma_deinit_channel,
+>  	.init_rx_chan = dwmac4_dma_init_rx_chan,
+>  	.init_tx_chan = dwmac4_dma_init_tx_chan,
+>  	.axi = dwmac4_dma_axi,
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> index e6317b94fff7..04dafec021b4 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> @@ -170,6 +170,8 @@ struct stmmac_dma_ops {
+>  	void (*init)(void __iomem *ioaddr, struct stmmac_dma_cfg *dma_cfg);
+>  	void (*init_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
+>  			  struct stmmac_dma_cfg *dma_cfg, u32 chan);
+> +	void (*deinit_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
+> +			    u32 chan);
+>  	void (*init_rx_chan)(struct stmmac_priv *priv, void __iomem *ioaddr,
+>  			     struct stmmac_dma_cfg *dma_cfg,
+>  			     dma_addr_t phy, u32 chan);
+> @@ -235,6 +237,8 @@ struct stmmac_dma_ops {
+>  	stmmac_do_void_callback(__priv, dma, init, __args)
+>  #define stmmac_init_chan(__priv, __args...) \
+>  	stmmac_do_void_callback(__priv, dma, init_chan, __priv, __args)
+> +#define stmmac_deinit_chan(__priv, __args...) \
+> +	stmmac_do_void_callback(__priv, dma, deinit_chan, __priv, __args)
+>  #define stmmac_init_rx_chan(__priv, __args...) \
+>  	stmmac_do_void_callback(__priv, dma, init_rx_chan, __priv, __args)
+>  #define stmmac_init_tx_chan(__priv, __args...) \
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 2a0d7eff88d3..af29a50ddb89 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -2560,6 +2560,7 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
+>  {
+>  	u8 rx_channels_count = priv->plat->rx_queues_to_use;
+>  	u8 tx_channels_count = priv->plat->tx_queues_to_use;
+> +	u8 dma_csr_ch = max(rx_channels_count, tx_channels_count);
+>  	u8 chan;
+>  
+>  	for (chan = 0; chan < rx_channels_count; chan++)
+> @@ -2567,6 +2568,9 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
+>  
+>  	for (chan = 0; chan < tx_channels_count; chan++)
+>  		stmmac_stop_tx_dma(priv, chan);
+> +
+> +	for (chan = 0; chan < dma_csr_ch; chan++)
+> +		stmmac_deinit_chan(priv, priv->ioaddr, chan);
+>  }
+>  
+>  /**
+
