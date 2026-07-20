@@ -1,150 +1,164 @@
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D8C3D3002;
-	Mon, 20 Jul 2026 09:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68E73D1CAA;
+	Mon, 20 Jul 2026 09:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784538330; cv=none; b=i/4B0MFS4OyHiI7d3fzec4FzQ7F4VklxmUSY5ebNogd7gl00ONuBzGgnfNk1xVIR1FyVusi97DWpxt/fD5lO2keZvJOJo14rXQx4YIneg7sEigdt6rkoBrp6xEX2ByHPQGlBFn16xn25vzbD8X64iabijwBk7ecmEWqVINMtZ/A=
+	t=1784538598; cv=none; b=nNewFUXoNzf6faewNvZ32smRzsquhLhzC1wwSQBaciu0lfkGMtuLRhbcSwNpf006kXO26m2Jn5cOIe5XXNgFEOXr1G4CCipOUt/mwAmTZUDvjXgDdJ9ZQeBYN1YYiolQDhWI4bI0QCcMUznpNuOPXivEzjW3pPYN0UKgGxPCUbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784538330; c=relaxed/simple;
-	bh=enVSGgLWfyWsB6cuCxYYnUyxJmn5j+tbsUUgmkY9C68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IkvV5H0OZzt6zAzvRqrdAELDlK8kZceYezCZbzhwMZi8bg6s4XM5zrWQanBu+hlbv9KLl8JGAhY/k+rXMcwfrhAGcyIqMR9wOWk+dkMLaJ9joA6eFhk2unEe2SDcDBK81eTUzK+FJ+s2YQwSF4NSZclZ3YQ7Dt2lG3gPI8vHF2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438403|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.036001-0.00152048-0.962479;FP=14472166057743748263|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iQ3UBI1_1784538318;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iQ3UBI1_1784538318 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Jul 2026 17:05:21 +0800
-Message-ID: <3d87f3d1-83c6-49b5-ac6f-59880c6a6c6c@motor-comm.com>
-Date: Mon, 20 Jul 2026 17:05:17 +0800
+	s=arc-20240116; t=1784538598; c=relaxed/simple;
+	bh=XIpDfYnJ05eNWlqxselKhna0K/43rRte/9Sq2FiKZP8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=fvCSs4uhIbob0ougu2PMxly9GU2cMN/tU5y8WnAcJ8fJ0Dh3sRlEWVByhRmHYaE97XObWPz1mwtD/S0gvkMv8arxEd+v9FtbW3hCvgQ6MmwcqYHCw3pyTXSREFATqHJUf8mH2GSkswAV/PWYj0HKeuiw5fu7vc+pY9KC++dcCTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=P/wvii38; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="P/wvii38"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K6g2cA1382769;
+	Mon, 20 Jul 2026 09:09:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=zffkQeAE3OepcqCOQPyvER022f/4vLuIJlb1bxqsC
+	eQ=; b=P/wvii38+XplvrPWt1AroPg57eP00ZzP6cbh6Y14NqaOZTd1IN+wfTw2a
+	HhpmTzyxMCXQ4is6nBSOBBS2n0dioD6wMQTLvBlrrZKfEC8paop+yQkpqgB+lksM
+	wawG2Dghmmz+LJ3FkuC8GOrNXctW0Zh1i+6qJIycUJQMawVjm2t3RGbuTlTGRa1t
+	3pEn7FAYcdfhBnwwqpHkNw0StVbyb6yj47amhTjUnIKAbviK40FOSUd0dZKHunOl
+	tQkvbNbine+h1Ck1UeZchrsnBJ6lVRbkB3ps8CuSqcyoTkw5v69M0Uqc3DBj+qeu
+	PXMJYZ2XtoWmaUCZV/KKDNOjJHSlw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77jxee6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Jul 2026 09:09:49 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66K94aC5028048;
+	Mon, 20 Jul 2026 09:09:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtjmvhc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Jul 2026 09:09:48 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66K99isP45351314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Jul 2026 09:09:44 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C0402004E;
+	Mon, 20 Jul 2026 09:09:44 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 205CF2004D;
+	Mon, 20 Jul 2026 09:09:44 +0000 (GMT)
+Received: from li-fa2166e9-1f7d-4f1a-8ca5-7ccf0f022c25.ehn-de.ibm.com (unknown [9.224.79.183])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 20 Jul 2026 09:09:44 +0000 (GMT)
+From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+To: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        horms@kernel.org, bcodding@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, svens@linux.ibm.com,
+        brueckner@linux.ibm.com
+Subject: [PATCH] tls: don't abort the connection on signal-interrupted sends
+Date: Mon, 20 Jul 2026 11:08:47 +0200
+Message-ID: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch net-next v3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260717054807.1321374-1-kyle.switch@motor-comm.com>
- <06a5b8d1-f3a5-40e9-af12-52c5c9fd99e6@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <06a5b8d1-f3a5-40e9-af12-52c5c9fd99e6@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a5de5dd cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=DxUau5oYhKRh-3WaREIA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA5NiBTYWx0ZWRfXw3OzU7ZrRoXl
+ Oe4HSVpA4ouCRp6viItXfUlmRnph/WGO6VKHvWv+2XjsQTWLtBs4cHMeQJfZu5CzxTuSK2FjaBX
+ mW766PQWIudpXLVBHLHM71UZ7AG3YQa6A2NNmDmLYM6I7GwfsRIDs1OWRql9U9ckKJIntPs5jM7
+ PglXcVswYM+ZSYiS9+PROC9AWv0QuCri8Tz7L+6J7rg9CTmrMsgflBaLrv11it7F8zUNAD84z3d
+ 76S7KQg1MOkUG9teKlqKPJzUNPzPM+rnA2s07C2E3GTPX6KI9indfbosRX7fd2Pv8MgxKZGHhOg
+ TMhUpAgEnNpaW4CQZCGDoJnc8/4Kib0Nndi6p7GNyRir7lqOT7Vq6y4n6CdUlcke4rbYyPMm3V5
+ 9in3PuX9aRWJqp7m7x1cJXlQOiXqrWgEW0VJU8+eoFkfklRGlezdycDlzGlv5AOeHK7xQercLZx
+ PyJgfwyZYxfa5Fp5YqQ==
+X-Proofpoint-ORIG-GUID: 4RKV2FSJM-hY-ibnYAcpmUe7NVB4YMio
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDA5NiBTYWx0ZWRfX+cPyVMvtyMVh
+ nkwG6ySkraSrE023G4oY08+JjyHye5YSdSXyNTLk3Abu+swbvyiaYIFQj4l3csPlOLqWkKO/vf9
+ AUEYa6F4APxeXu2lUKwr6B5J2lMziW4=
+X-Proofpoint-GUID: i2ylfEYJvaQACEf2Gcz4FXR9oGQYYG_O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-20_01,2026-07-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 clxscore=1011 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607200096
 
+When a signal interrupts a blocking send, tls_tx_records() treats the
+resulting -ERESTARTSYS as a transmission failure and marks the socket
+errored via tls_err_abort() with the raw error code. Later syscalls
+return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
+signal it stems from is no longer pending during syscall exit and thus
+never translated.
 
+An interrupted send is not a connection error: the partially sent record
+stays queued and is resent later. Interrupt error codes are therefore
+excluded from the abort in the same way as -EAGAIN.
 
-On 7/17/26 23:11, Andrew Lunn wrote:
->> +/**
->> + * ytphy_read_top_ext() - read a PHY's top extended register for YT8824
->> + * @phydev: a pointer to a &struct phy_device
->> + * @regnum: register number to read
->> + *
->> + * NOTE:The caller must have taken the MDIO bus lock.
-> 
-> Didn't i request this is done in code, not comments?
+Fixes: b341ca51d267 ("tls: Fix tls_sw_sendmsg error handling")
+Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+---
+Tested on top of net commit 3f1f75536668 ("net: openvswitch: reject
+oversized nested action attrs").
 
-Ans: fix done in patch v4 by called lockdep_assert_held to make
-sure to hold the lock.
+Several subsystems contain static helper functions to classify these
+interrupt errnos. It might be worthwhile to refactor these static
+functions into a generic helper function.
+---
+ net/tls/tls_sw.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-> 
->> +static int ytphy_read_top_ext(struct phy_device *phydev, u16 regnum)
->> +{
->> +	struct yt8824_shared_priv *shared_priv;
->> +	unsigned int offset;
->> +	int ret;
->> +
->> +	shared_priv = phy_package_get_priv(phydev);
->> +	offset = shared_priv->offset;
->> +	ret = __phy_package_write(phydev, offset, YTPHY_PAGE_SELECT, regnum);
-> 
-> You look to be using the package wrongly.
-> 
-> https://elixir.bootlin.com/linux/v7.1.3/source/drivers/net/phy/phy_package.c#L192
-> 
->  * The base_addr parameter serves as cookie which has to have the same values
->  * for all members of one group and as the base PHY address of the PHY package
->  * for offset calculation to access generic registers of a PHY package.
->  * Usually, one of the PHY addresses of the different PHYs in the package
->  * provides access to these global registers.
->  * The address which is given here, will be used in the __phy_package_read()
->  * and __phy_package_write() convenience functions as base and added to the
->  * passed offset in those functions.
-> 
-> Although it is called base, it can be above all the others. So when
-> you create the package, set the cookie value to your top address. You
-> can then use __phy_package_write() directly, offset of 0.
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index d4afc90fd796..3c9e94069e82 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -405,6 +405,24 @@ static void tls_free_open_rec(struct sock *sk)
+ 	}
+ }
+ 
++static bool tls_is_non_restartable_err(int err)
++{
++	if (err >= 0)
++		return false;
++
++	switch (err) {
++	case -EAGAIN:
++	case -EINTR:
++	case -ERESTARTSYS:
++	case -ERESTARTNOINTR:
++	case -ERESTARTNOHAND:
++	case -ERESTART_RESTARTBLOCK:
++		return false;
++	default:
++		return true;
++	}
++}
++
+ int tls_tx_records(struct sock *sk, int flags)
+ {
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+@@ -458,7 +476,7 @@ int tls_tx_records(struct sock *sk, int flags)
+ 	}
+ 
+ tx_err:
+-	if (rc < 0 && rc != -EAGAIN)
++	if (tls_is_non_restartable_err(rc))
+ 		tls_err_abort(sk, rc);
+ 
+ 	return rc;
+-- 
+2.55.0
 
-Ans: fix done in patch v4, the base_addr is used to access to the top extend register
-for phy8824.
-
-> 
->> -static struct phy_driver motorcomm_phy_drvs[] = {
->> -	{
->> -		PHY_ID_MATCH_EXACT(PHY_ID_YT8511),
->> -		.name		= "YT8511 Gigabit Ethernet",
->> -		.config_init	= yt8511_config_init,
->> -		.suspend	= genphy_suspend,
->> -		.resume		= genphy_resume,
->> -		.read_page	= yt8511_read_page,
->> -		.write_page	= yt8511_write_page,
->> -	},
-> 
-> I still don't like this. Please stop diff deleting all these and
-> putting them back later. It makes me thing something changed, maybe
-> white space?
-
-Ans: I tried to refactor this issue by hanging the position of the newly
-added code. However, the same issue may still arise in other code segments, 
-without modifying the existing code.
-> 
->> +static int yt8824_utp_softreset_paged(struct phy_device *phydev,
->> +				      int reg_space)
->> +{
->> +	int old_page;
->> +	int ret = 0;
->> +	int val;
->> +
->> +	old_page = phy_select_page(phydev, reg_space);
->> +	if (old_page < 0)
->> +		goto err_restore_page;
->> +	if (reg_space == YT8824_RSSR_UTP_SPACE) {
->> +		ret = __phy_read(phydev, MII_BMCR);
->> +		if (ret < 0)
->> +			goto err_restore_page;
->> +		ret |= BMCR_RESET;
->> +		ret = __phy_write(phydev, MII_BMCR, ret);
-> 
-> So here you are using __phy_write() so it does not take the mdio lock.
-> 
->> +		if (ret < 0)
->> +			goto err_restore_page;
->> +		/* wait until softreset done. */
->> +		ret = phy_read_poll_timeout(phydev, MII_BMCR, val, !(val & BMCR_RESET),
->> +					    50000, 600000, true);
-> 
-> This uses phy_read(), so does take the lock.
-> 
-> How can this be correct?
-> 
-> Please take some time to think about locking. Please enable all the
-> locking debug options in the kernel and see if you get splats. And
-> also really do turn your locking comments into code.
-> 
-
-Ans: this issue fixed done in patch v4. The correct procedure might be to acquire the mdio lock 
-within this phy_select_page() and release it within phy_restore_page(). During this period, 
-all interfaces that involve acquiring the mdio lock are unacceptable and incorrect.
-
->     Andrew
