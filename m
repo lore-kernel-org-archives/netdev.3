@@ -1,94 +1,95 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED09442FDE
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AA139A05A
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 16:48:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784565959; cv=pass; b=BuC2yaKLXVt7VUWquLhYP0sKjqI/+GhusTjN/mqwd+aB5GY8800odoDWE6tFEvQYs9qjZ4+VPSGT2rOUHFe6/Wa4cCA0c6C8UYpfj4G+dKZhGW1WemMMVxkTiRc7y7nGISgGxSr8E5m0ji/an//xkUYNIh+jNAJWV5PLtsJYSvs=
+	t=1784566095; cv=pass; b=ZSCyKBzPTmO1ZMYQr0AITs2z799Ss+doXutoqg4Rlzr++weY2aliJhEMoJD+r4uRSqsx9h6QURPce23B5yY2HX1K5J9lss3Ec8ZFHoxVoRpLb6WQrlL+LzchpDsUzgGl7sFVaLRAC0BTpGYrzO0AgbRHzOHsiVaSAIgwr+WN3dY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784565959; c=relaxed/simple;
-	bh=cLC8ot5pIh8dTgfPfSXv0InXlRDbr7JPQ3f53NKUd7Q=;
+	s=arc-20240116; t=1784566095; c=relaxed/simple;
+	bh=OJWbazha46ug8hN55IrSBbZwd/jVhUCm0IDIJgtN/m0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZJpVieufe2mXNJQuDQwk9Tds7324D5mgyFnCRjGJ3zI7SkzB5ruHesmivtXQFa5yfhXokbmdZHB/EIhEc3/qwWwFHe+tAEPipVPCK8crhtSytwuMEhJyMIN0hoORIzSe/SnRqaAgDOdcwH/5h656pvuA0gIJdSIBW2Yv+scpbjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ef3RavDi; arc=pass smtp.client-ip=209.85.219.47
+	 To:Cc:Content-Type; b=f/YUrTdnSqE1BEdR3HSkssLoCwQ2thkZ30PfYcfeCn4zQvMQEM4zeNVycXALAetC0thXyeeaskLnS/2tfFQcmwC2HCOp6LCo6DZjxmbKGXDbEJX/A9nIdNu79obl+A7Ykw9XQGbOJKYaOgHMCQN03WuLB8Pbeav15TNYLcs58As=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LFewOWxn; arc=pass smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ef3RavDi"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8efcef23d21so102507916d6.2
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:45:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784565954; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LFewOWxn"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8efcef23d21so102534396d6.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 09:48:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784566093; cv=none;
         d=google.com; s=arc-20260327;
-        b=fPSvqbyhlbGQLL1vehMSuYfpikdQHBRgbE2oRvfzWTTQiBfCC/Jho4hVRCvfYdrvYg
-         MIzMCdqyIk7Y9SnwAcWzrcXQHHisIMnC9BVHHXqm5JTyoS2Z8wMAYW4xIl9onSqDEo+f
-         +vvLIK1ku0PMGLr+1wiM1Sa1sFEjYuZmTcDVXb7CfjsUQQKgjx4/4cCwWm4Cs2WZ8FDk
-         fexeNQ7VmA0N2n3Eq7HX6A3f8XRTUZrPu9wH3hsST8+OolOl2OhrfkfdXQ+DtVZcW1tL
-         XsoB9YpxJ1tZ+sE5XixBGKXEOZG/FIbRoWL9iiKDWMkE3n0tXTx6MPv3nCNvk/9X7biR
-         ORMQ==
+        b=CscXxbK3hR0ikw0iNCJIz200SlWq9lgr5CAsXCk9eL/ht/1ReJwtgsCMgH+bNsXSSe
+         HNMNJ7u62nPd6n9xFeR+0JipSlpgl048SHXJ/PfW3NeLWKQiQq/jPEEr5ohSfg5eHKn8
+         9rlgEanz9e1OlpFy9HtIXhbP8aBQ10FznHdGf4cK4GC+V68hCmchAn838EpiEcsHQvqF
+         jYgRW8DYFEjSKSml53Y/PSwNKfOQOmhLcBXkgwYisjdfDerssUl0JWeNgXXV1B6dGEPN
+         Bp/Y12wY5gJHojspO2Vhnw/Vx8Fmg0fKU9SA+i/kjGxUbGNgDCPPrNMgzLLZQ5opnxAn
+         QDXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GdwLLcl2D8Tg+THUNONwAYfn4D48wOZssB4/wTdyRPc=;
-        fh=ROZCR13GUqm/DnmvxwUeCob8K5Xhn9IKj4qE+YDSrM8=;
-        b=M78Qw0NQTP74FeWmJJ3dUU+ussgC73yOkMN/5br5GrltGQyiwdmYjqgTStCL8UEJyX
-         kTpoJDWD/V+EMFELcdTWsE4m15qa/E36yubvZvi/cAqYmS3UPja4D4Sp1shhoitadPf9
-         DhnkL+5LHXztxIFBp3q2DBYtWINoVPsb3vOdtvG4DnetQd2MGa9zCWAlFptoLcWG5Ji3
-         toWwkG41JpznLL+2n4ZzzKWAM0I8gLc/xuJiLFadn3DJ+zDhYYCSs/Z13t02z2TXhxJt
-         seeHMKQaZpTJ6oA4hHKLo/xHB9FJkadhwp4/Set/7LcBCinrDu5C6eRjYJ7PwuJN1g86
-         CzAg==;
+        bh=E990VIapzj8tuzMD1s5tgC9LyH+wMa65Oul4PHbwGUM=;
+        fh=hZ92S901x7d5Xj49T2vDGZz5rKGNfXRJc1DqSszAqTM=;
+        b=WaE1dyCy9YC5/Zpa3eC3w3YyCzJUugsDcvtyuoLTsGittG6b0xQmpM+UnPgGBW+/KG
+         DndzLuN9XEpR2TM/pY/P45+z5Uu/Z6rUH1/PJRNq3aKS8zDdu0g/Sn8myjkpFd4S4A1b
+         vxxa7gjw6B7faoVwX9gEcnpHPs7kPbhwV3ayhxQXZ2XqDTtuYrk7zpVzbHiuFQ4XCkaN
+         gMATA487iN1b1RrBVMlNuTV2xn4pZkJCdbnWO1H5FsnpQTY2ZLmZfpls6/INQS8eqZtQ
+         EadUVP7+sz5p+wtyGc9nquynmPMrPRtYyT2a5N7HMF8CH1FHjxguS5W3DQxwD4+oJDdu
+         GCYg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784565954; x=1785170754; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784566093; x=1785170893; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GdwLLcl2D8Tg+THUNONwAYfn4D48wOZssB4/wTdyRPc=;
-        b=ef3RavDi6HFd+z+zH3QM6jISvan9h8Cr2f6izcVbqNYfbAnOetyu0v5IroONtZSkFb
-         6Dm1YbNLisFXUgR2i3tq6YdUpZE/oAUJUqApejLJD4uwHlEhbXSvaEJs6GXqSgYxhnsp
-         PeKUQv/SVRwLZ1IKFIyRz6O8YMTtF70CjWZvEfo9nNC2dbNw4Mnpn72zXcc8XvL4ZyYM
-         R5Mbmt34oYBt5MhCiH2uRbIzP8jE4DqtoPnNZJAnlW72gs/9SoceHOZsSa3YmWTx6oV0
-         uxhxZk3q34YEK8JdrcVF9E8RIhGdD1uZ8GH4CDYFRuLy6DrW6FK/Uu23NZ2vSzDAx2TA
-         114g==
+        bh=E990VIapzj8tuzMD1s5tgC9LyH+wMa65Oul4PHbwGUM=;
+        b=LFewOWxntZVlAMSmgUrbU4ROKlDQLZqTy7QKBdrPdkKJTQSAEX/ZJU/Ad9Rfk+KQxp
+         mBSmmHksjAAnKgRnONcHhma0TigfhAtICSuzDGqP1EUTKFO90LKdqyCbZk7qb7dk6OrH
+         a1o1OFRDBT18mX7AvxRhQ7725kDV0f+tbYQ1j77D0rv4DkVjtlwHwdgzVovKQPMudeOQ
+         IvyuyED4EZn9ejLjLKJcDXaRuOsrsC2WcMpaWazjHRA/nuYbxmocPl0aHJ2jFqTlZL4i
+         jWwXd0OY9XxcgUXp/Yhd80X5yyNuTJ+gYzhqwsUyZCpvRFD6If1ri8b+O3qvKqPVgka/
+         TXnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784565954; x=1785170754;
+        d=1e100.net; s=20251104; t=1784566093; x=1785170893;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GdwLLcl2D8Tg+THUNONwAYfn4D48wOZssB4/wTdyRPc=;
-        b=PS3zVXtFuAi2Q902wuwWZtYBcaOAUGWKD97JFbKYjrpRCgDdvcKU5oBD4pelgSrxcJ
-         xc6iuBWGBjSdtufnjm5cdS4oL/jN9ly1LgMS4Ksv24JtTcewFiK7LWhNhO6r/ECxEUaX
-         067ffqcdz+GiFxMTM2kXL0zIQHO4YXyPdMcTjV7rENx4EWRAHriscnGuS3GnVRv9rvTD
-         SLdsAFC1nH4S1QVO0BmdaYRzsQbKoG0x+BYcxZiwYS1dPFNal65f5q09cbaSxP5xhmRs
-         QfxGIJ7nMyXMghszscv7YxfkUv4MlsYSBJZqMp4yJZIv+pf2ePQCP+E3ZLo1Nx42LFDe
-         7tEg==
-X-Gm-Message-State: AOJu0YxhAcpiZhFG8fj2hq4hXHy4tZwE6ZrWW0HE4CxQaKoG4XPDfHEt
-	H8gjPDC7QLri71IoBqyF0unrPZlJtWgPu/OoNnTM7Y87jzeHkw4EEPpYU8+HA9DcMoF1nEasbin
-	D3H3LClW8tr81moESOuH7Wzfoy6q5Ku6yr1BVYaJHqMlcsJdhe5LLjJNCYIQ=
-X-Gm-Gg: AfdE7cly0j3uPPztsV+AuVmCaGibCkSV1yRyRmOrLuOePQFePh4kbY9i4ns4mRrcMcK
-	TT7PRXuz6n7AS1IXDonaBxWASoXA0Qd3PxivhNrxl7RNYiS8JYjX26O3O2/ysRh3O0CtDd15QG4
-	4PfAR4It6tOqGeRyIne0ziDGZoAXCafonyzLC5us1lTfBpPkXCDEeq8ORf6WdaSju5X5JYSjsUg
-	6WlGV9gOjKOjoDIDaipF9EG0q/U+UzKaOXnyZe4OPI96R7RsWJk4wqbwm9RlxYiHSbmC7xuWhLj
-	1PPGkJ4ZIETsac/8ubhQlyp+wcjnchM2ba+1IajQ1iLyzwP2u4fbYGA9mCynrOwGviAIcMllMA=
+        bh=E990VIapzj8tuzMD1s5tgC9LyH+wMa65Oul4PHbwGUM=;
+        b=oyoHBWUJZnGYUAAg/h8I6SXg/qFimAFyiW/zSDtRXzN0D0YdD34/v0YIqEK0SjRw4f
+         Dw3crlU+TPesK+UDGU1eoDH2wWsA40UKJx3vEw5UgahqDiFvQ5dNofdH9xz82q6mx8KZ
+         D5EpPiCYj/jG7NpjYNx5hhSkV4WqAHHfMlmQVI76qh9y+XRX2MgzfWaRKUsTXCkL0Vv4
+         yKPQwwKT/aQcUQRIBU6ZwRU5KW1lE4biQTlXRrUNCGYDZ4pgl56LXy7F5qxJ65Crc91A
+         fKz0T43T7x2w5+TtPbJfEoGVBg6JQXaiuN+cCOBl8piuSspyGOMmTfTbyEA6x/sZXul5
+         RDdw==
+X-Gm-Message-State: AOJu0YxgSkLZ7NPTdoUbGCtWr09T9y1N3xUvOv9B+zt6IB8x9BPZUHVQ
+	ptrqJ8xvvq2hwkZOScNNiwDa9iXUnlO6RN4ROnJzsOjQ5RRciWwEDnuXUlAl2IGLohVoBTYOGnm
+	HPAflYv3fzw/jfZkKWwaM2IcN7a70ig2fGeJh2Nmc
+X-Gm-Gg: AfdE7cm4cYBPOJXdeTCagaovkb7JUeV+VNw0edKnPJhCFQUy9jPzV9v1ogyZJfYY2gb
+	exbmXHvc++NKpPEuZt5ypuDmbg+ol9pMtNfaXEFFxJ3gB9hs4Hf352ZXUoPHZIwR1q+ol78ZB68
+	xYu5/ZDSyoP9l+aHm7lY3EICDrdr8UkGDbHPO1Jfh1A7fRZwBEOxE71H8eFKR9XEuslS9V/s6BP
+	sE9oEc1679WxbxV1M4jKOgtAnz+9KIJqjyqCiRCiGzX12q1Hi4UAhHBsr31zlejVQJ9m4oIc/+g
+	XZWP6BUjTsKmytARvvLhzRs47e2rF9l0aL3rhl9udheZvERPkEJHss20HMI9sGkDXDvDlHz9xQ=
 	=
-X-Received: by 2002:a05:620a:1a01:b0:92e:fe10:3ef4 with SMTP id
- af79cd13be357-930b416cd6cmr1462059285a.45.1784565953237; Mon, 20 Jul 2026
- 09:45:53 -0700 (PDT)
+X-Received: by 2002:a05:620a:454d:b0:92e:f0a5:ac3e with SMTP id
+ af79cd13be357-930b3eb093fmr1435090885a.28.1784566092473; Mon, 20 Jul 2026
+ 09:48:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717081443.809393-1-yangyx22@mails.tsinghua.edu.cn> <20260717081443.809393-2-yangyx22@mails.tsinghua.edu.cn>
-In-Reply-To: <20260717081443.809393-2-yangyx22@mails.tsinghua.edu.cn>
+References: <20260717081443.809393-1-yangyx22@mails.tsinghua.edu.cn> <20260717081443.809393-3-yangyx22@mails.tsinghua.edu.cn>
+In-Reply-To: <20260717081443.809393-3-yangyx22@mails.tsinghua.edu.cn>
 From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 20 Jul 2026 18:45:41 +0200
-X-Gm-Features: AUfX_mx_QTBHnNcHo-EzNtIineQrXil4DzAF5RnVr3HpqgIh9UQ6m863CpRTp-A
-Message-ID: <CANn89i+TBXezN9MMoUZbig3F8DK+J+-MN+P3F74V=v04CXMMMA@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] tcp: challenge ACK for non-exact RST in SYN-RECEIVED
+Date: Mon, 20 Jul 2026 18:48:01 +0200
+X-Gm-Features: AUfX_mxP8PIp4yxhDb4hA3zkZgwpfcpK1so7ZTbdUqmesM2nikxx9tDMVtlcTyc
+Message-ID: <CANn89iLQLQNgNRxaRn9_PLPsBb-4nguM6qw=jFv0xjU41WUUgw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] selftests/net: packetdrill: cover RST validation
+ in SYN-RECEIVED
 To: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
@@ -96,41 +97,23 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
 	Shuah Khan <shuah@kernel.org>, Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>, 
 	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, 
-	Ke Xu <xuke@tsinghua.edu.cn>, stable@vger.kernel.org, yyxroy22@gmail.com
+	Ke Xu <xuke@tsinghua.edu.cn>, yyxroy22@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Jul 17, 2026 at 10:15=E2=80=AFAM Yuxiang Yang
 <yangyx22@mails.tsinghua.edu.cn> wrote:
 >
-> The SYN-RECEIVED request-socket path in tcp_check_req() accepts an
-> in-window RST without requiring SEG.SEQ to exactly match RCV.NXT.  A
-> non-exact RST therefore removes the request instead of eliciting a
-> challenge ACK.
+> Add packetdrill coverage for the RFC 9293 reset checks on request
+> sockets in SYN-RECEIVED.  Verify that an exact RST removes the request,
+> a non-exact in-window RST sends a challenge ACK without removing it,
+> and an out-of-window RST is silently discarded.
 >
-> RFC 9293 section 3.10.7.4 applies the RFC 5961 reset check in
-> SYN-RECEIVED: an exact RST resets the connection, while a non-exact
-> in-window RST must trigger a challenge ACK and be dropped.
+> Also cover an RST|ACK with an unacceptable ACK number to ensure RST
+> sequence validation runs before ACK-field validation.
 >
-> Apply that check before the ACK-field validation, following the RFC
-> sequence-number, RST, then ACK processing order.  Factor the per-netns
-> challenge ACK quota out of tcp_send_challenge_ack() so request sockets
-> can share it.  Use the request socket's send_ack() callback and its own
-> out-of-window ACK timestamp to send and rate-limit the response.
->
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Ao Wang <wangao@seu.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Fixes: 282f23c6ee34 ("tcp: implement RFC 5961 3.2")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
 
-Note : Please do not add a Reported-by: Yuxiang Yang
-<yangyx22@mails.tsinghua.edu.cn> if you are the patch author.
-
-The amount of noise in this patch footer is quite annoying.
-
 Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+Thanks!
