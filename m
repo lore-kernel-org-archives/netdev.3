@@ -1,123 +1,151 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mailrelay.tu-berlin.de (mailrelay.tu-berlin.de [130.149.7.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D843C3BF7;
-	Mon, 20 Jul 2026 20:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3F22236EB;
+	Mon, 20 Jul 2026 21:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.149.7.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784580814; cv=none; b=dZUTLgUeDP+NzCccW9AQXvl/lMfmVixvKulEBmzy9dByDC299CJ3RyXk9wOHzZ4mH7Io6PrlscZwXm6MzV3YRzfLXAISLmvEU+OgxkgzuAImQ3KBQRE5YMhm3TK7ehZO+JwrWcjpokN/9t9CbngsfElxVmdhyfNs506n3sWA0wU=
+	t=1784582124; cv=none; b=tCJaxo8VdL6Unf9goZoCvlzzv0sUGIgwc/lWYG+GWzWGqLrsvy008hUIpGb01e6paN6o7/MfJFf8O9yTSUbTREjlq3kkvz0ofDfidMRHpyR+vg9bVVOeNSmVRcjwccL3e8kngBhV9C0Pyn/Ydwdu8YCb5hdvQRfwHqR6g0on6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784580814; c=relaxed/simple;
-	bh=xNGHfZFJOSvi5ZB/bgCt2e5/PoA8SaVrwdd2Hji1bo4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GMV/Ue9J+6gQtftCUkL/FNh4tck1py1J4d2JQL/x/KhpNXmtt83+QP+UDnrjUPtBElJAODFa3DzKgwxJhcB09/nWFihsnz2BlagmNLpLZzjTnRgYygdaxXKobUO0NYP2dTyD4xy5Ldsbagod66CYdsurEoqJLC8K37jb3vO8V1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kWRD/WwS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784582124; c=relaxed/simple;
+	bh=WxVqK7f0WnYM6l2XP/pR4xbyWlHe9CYvhfQ6aAn+dxM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=cqgoqqG5ehWUWhciEOK4TSEvxsavFuvh/5g7JZu8HJ2chxkoPaouoXy+X1ruAc+iVIPiNMey3RHZonPDHqlDjP8xJnZyggLdFScjA7PM1cn9QSBFqV8KAVioqLHO3yrL7q2XQjcD8nLKW/DKvICe8WAr9oScU3vLfwkLdtV5gQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de; spf=pass smtp.mailfrom=tu-berlin.de; dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b=F4vrfrWb; arc=none smtp.client-ip=130.149.7.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-berlin.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kWRD/WwS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rLkNesRCYNFOq+ZuVFxEEhkM0txhhysUwpvEFeMD4Fw=; b=kWRD/WwSdH3oQGCu/bb2MqxLFt
-	GxxMAXajZYFA8mU3N1Pm9DTmh8P/j0xPt/6IE5Pei2n1jaMYNVOfrjUkv5qnofA/1mh5DxHW6vw6w
-	G6xJB9AiVVAZK+u8aHNV/3Pt2rqgYDi1iqaQ5Jt98DQbpEtpuFBvr45lX/W5wsB0Shy0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wluz9-00DK2K-VG; Mon, 20 Jul 2026 22:53:11 +0200
-Date: Mon, 20 Jul 2026 22:53:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Natalie Vock <nat@pixelcluster.dev>
-Cc: Taehee Yoo <ap420073@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alexei Starovoitov <ast@kernel.org>, amd-gfx@lists.freedesktop.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Bill Wendling <morbo@google.com>, bpf@vger.kernel.org,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	David Airlie <airlied@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Hoyeon Lee <hoyeon.rhee@gmail.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>, linaro-mm-sig@lists.linaro.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Nathan Chancellor <nathan@kernel.org>, netdev@vger.kernel.org,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@kernel.org>,
-	Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Yonghong Song <yonghong.song@linux.dev>
-Subject: Re: [RFC PATCH net-next 08/13] drm/amdkfd: add GPU instruction
- emitter and disassembler
-Message-ID: <8dfbef48-db20-4642-8f50-e37f46af6627@lunn.ch>
-References: <20260719175857.4071636-1-ap420073@gmail.com>
- <20260719175857.4071636-9-ap420073@gmail.com>
- <41e73be8-242a-4e7b-b085-439375303590@pixelcluster.dev>
+	dkim=pass (2048-bit key) header.d=tu-berlin.de header.i=@tu-berlin.de header.b="F4vrfrWb"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
+  d=tu-berlin.de; s=dkim-tub26; t=1784582120;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=jFz0rBRtd/CDluc+DiH0LYmRaRHZbo1Ob2zqF50rhyQ=;
+  b=F4vrfrWbgtf+tRQzDhywP9s7NR+ku7hI5mf/HqEJCAOjoEx48yYjHJ4a
+   4Q+DEtsxJ3HhPd4xvDObm+F8tuDDogxEo8dyAYruz25fC3mjRPbaSxI3V
+   OpMyiyqD/RXan0g/bCemtQGZS7AeyvpEwxCJaoe7h1hMh7QpttTNwYK2x
+   pOceB2b9AxuhosEhsX66tLbWYRYRagwkuW1D0YXDn5bWclus6OSErcOKr
+   a597HiUmwp+6UiPlzYqHthV3SB2ua3CN/cBqmwqKjt3enPyGVmbaEOo6Q
+   h/HSBuV0+i816VPwD7B1mjCCGfBZQTvqpEarQ87k9LKHkLJxJGAtwkb2z
+   w==;
+X-CSE-ConnectionGUID: IDiMJWlSRlmWvFyGo81f1w==
+X-CSE-MsgGUID: /xtZ2LA5SuyA681WUypZ+Q==
+X-IronPort-AV: E=Sophos;i="6.25,175,1779141600"; 
+   d="scan'208";a="64541735"
+Received: from bulkmail.tu-berlin.de (HELO mail.tu-berlin.de) ([141.23.12.143])
+  by mailrelay.tu-berlin.de with ESMTP; 20 Jul 2026 23:15:11 +0200
+From: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>
+Date: Mon, 20 Jul 2026 23:14:52 +0200
+Subject: [PATCH net-next v2] net/sched: sch_cake: skip clearing unused tins
+ during rate adjustment
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41e73be8-242a-4e7b-b085-439375303590@pixelcluster.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20260720-sch_cake-skip-clearing-tins-v2-1-e6a8b0275c73@tu-berlin.de>
+X-B4-Tracking: v=1; b=H4sIAMyPXmoC/42OUQqDMBBEryL73S0moKb96j2KFE1W3SpRkigW8
+ e6N9gL9HGbmzWzgyTF5uCcbOFrY82ijkJcEdFfZlpBN1CBTmaeFyNHr7qWrntD3PKEeqHJsWwx
+ sPaosV0JmKteGIBImRw2vJ/0JlgJaWgOUP8fP9Zt0OOBHtmMfRvc5jyzibPy1uQgUaG6FKkwjU
+ y3VI8xYkxvYXuOLct/3L+X15TjlAAAA
+X-Change-ID: 20260716-sch_cake-skip-clearing-tins-856812586cde
+To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, Jamal Hadi
+ Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <cake@lists.bufferbloat.net>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, =?utf-8?q?Jonas_K=C3=B6ppeler?=
+	<j.koeppeler@tu-berlin.de>, Mike Pham <mikepham4321@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784582110; l=3363;
+ i=j.koeppeler@tu-berlin.de; s=20260716; h=from:subject:message-id;
+ bh=WxVqK7f0WnYM6l2XP/pR4xbyWlHe9CYvhfQ6aAn+dxM=;
+ b=D4Wu0aS+EItsdywRf35Vq65lBwdex0RcjmDd+inNHw6Gqsfd2759xtQQZBBnKypAeYZ0wT4TP
+ FwxL2XvIyQeB/1rBLgjgtpqi6ypcmVaNZYrJFuN/lI5QIe2n3O5w8P8
+X-Developer-Key: i=j.koeppeler@tu-berlin.de; a=ed25519;
+ pk=gCux0rX5l27ZRzRDqTc0LtoO66uPAXTt/SX1DzcQoBk=
 
-On Mon, Jul 20, 2026 at 10:05:33PM +0200, Natalie Vock wrote:
-> On 7/19/26 19:58, Taehee Yoo wrote:
-> > Add the AMD GCN (gfx9/gfx10) instruction encoder used to build the GPU
-> > shaders that knod dispatches, plus a matching disassembler used for
-> > debugging the generated code.
-> 
-> Is it really necessary to have a full-on compiler and disassembler in the
-> kernel driver? This patch is massive and I'm wondering how much benefit it
-> really provides. Is there really no way to move GPU compilation out of the
-> kernel, one way or another? Could you get acceptable perf with a static
-> shader that interprets BPF programs at runtime? Such a shader can be
-> compiled beforehand and just embedded into the kernel - there's prior art
-> there with the CWSR trap handler in amdkfd.
-> 
-> In case you really, really need to compile the BPF to native ISA, could you
-> still have userspace take care of that in one way or another?
+When cake_configure_rates() is called from the dequeue path with
+rate_adjust=true, it only needs to update the rate parameters. The
+loop that clears the unused tins is both unnecessary and harmful in
+this path:
 
-There was a long and painful discussion about P4, and offloading it to
-hardware. The proponents of that wanted to do the compilation stage in
-user space to produce a binary blob, but it was hard to prove that the
-P4 passed to the kernel for software processing, and the binary blob
-passed to the hardware actually where the same. It opened up the path
-for closed source P4 where the kernel never got to see the actual P4
-code. So it was not really offload, but kernel bypass.
+ - cake_clear_tin() overwrites q->cur_tin and q->cur_flow, which are
+   actively used by cake_dequeue(), corrupting the dequeue state.
+ - iterating over the unused tins and their internal queues to purge
+   packets adds needless overhead to the hot path.
 
-So having a compiler in the kernel is probably the correct way to go,
-if you want to be friendly to open source.
+Skip the entire loop when rate_adjust is set, as neither
+cake_clear_tin() nor the mtu_time update are needed when only the
+rate changes.
 
-The other option is to get the GPU to do the compilation itself, so
-you pass BPF byte codes to the GPU and it generates its own native
-code. I've no idea if that is possible, but clang can target OpenMP,
-so maybe it is possible to move this compiler into the GPU?
+The clearing loop runs on every rate adjustment from the dequeue path,
+clearing (max_tins - cur_tins) tins each time, so the cost grows the
+fewer tins the configured mode actually uses. Testing cake_mq over veth
+(8 rx/tx queues, 2 Gbit limit) with flent's [1] rrul and tcp_nup tests and
+32 TCP upstreams shows a large drop in loaded latency and a throughput
+gain, restoring behaviour to pre-15c2715a5264 levels:
 
-      Andrew
+  +------------+------+------+-------+-------+---------+
+  | kernel     | mode | test |  base |  load |    tput |
+  |            |      |      |  (ms) |  (ms) |  (Mbit) |
+  +------------+------+------+-------+-------+---------+
+  | net-next   | be   | rrul | 0.810 | 11.78 | 1469.67 |
+  | net-next   | be   | nup  | 0.637 | 85.71 | 1243.15 |
+  | net-next   | ds3  | rrul | 0.397 | 15.28 | 1770.06 |
+  | net-next   | ds3  | nup  | 0.351 | 15.98 | 1799.39 |
+  +------------+------+------+-------+-------+---------+
+  | patched    | be   | rrul | 0.092 |  0.56 | 1873.40 |
+  | patched    | be   | nup  | 0.109 |  1.82 | 1869.12 |
+  | patched    | ds3  | rrul | 0.097 |  0.98 | 1866.10 |
+  | patched    | ds3  | nup  | 0.101 |  0.51 | 1861.79 |
+  +------------+------+------+-------+-------+---------+
+
+The same trend holds on real hardware (IPQ8074A, 4 rx/tx queues,
+OpenWrt): in besteffort mode the tcp_nup loaded latency drops from
+~470 ms to ~4 ms.
+
+[1] https://flent.org
+
+Fixes: 15c2715a5264 ("net/sched: sch_cake: fixup cake_mq rate adjustment for diffserv config")
+Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Tested-by: Mike Pham <mikepham4321@gmail.com>
+---
+Changes in v2:
+- added performance data to commit message, no code changes
+- Link to v1: https://patch.msgid.link/20260716-sch_cake-skip-clearing-tins-v1-1-d9787df20c28@tu-berlin.de
+---
+ net/sched/sch_cake.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index f78f8e950776..845e1c017714 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -2609,9 +2609,11 @@ static void cake_configure_rates(struct Qdisc *sch, u64 rate, bool rate_adjust)
+ 		break;
+ 	}
+ 
+-	for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
+-		cake_clear_tin(sch, c);
+-		qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
++	if (!rate_adjust) {
++		for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
++			cake_clear_tin(sch, c);
++			qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
++		}
+ 	}
+ 
+ 	qd->rate_ns   = qd->tins[ft].tin_rate_ns;
+
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260716-sch_cake-skip-clearing-tins-856812586cde
+
+Best regards,
+--  
+Jonas Köppeler <j.koeppeler@tu-berlin.de>
+
