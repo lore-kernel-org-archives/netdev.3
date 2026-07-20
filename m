@@ -1,194 +1,140 @@
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D143BFAD7
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 20:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784579081; cv=none; b=e6RyxB8y/IHsZ2F36pT1OoZkNTkxiQSk2dgqT421hywnX/CvBJkqKoEYtyDW2QsdqujQzyEt7bD7pA+cRvcF21oZfiBkvFx8H7UeFACCuY3tzpzOj331V5AcodpyHAplrRmZC+UGxKrQxFlPCkq+a0K/eJQlT4BVM/xWKkcjbp0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784579081; c=relaxed/simple;
-	bh=QM8Hkd0gMPdHJ/60YK8Qdb4OsDSzn4nGwT7SSTznQ4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qciKd+ILm4QPuyw6cBBwlsGLS1/AgsCyua4XjXfqLWKoZm2cTsr7fL65NLZ/WGzV+aNBHn/DPUEdER6ayBeulF8Y5R/k+RjlhFEPcLCiC1sR3Ge2VTZntNQTwp2O+s8Y6FmyHXx46ZjMWlkmCgImxtbOh/PKI0WCNa4838j9yTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SjHNde3w; arc=none smtp.client-ip=74.125.227.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2838F3C1973;
+	Mon, 20 Jul 2026 20:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784579280; cv=pass; b=dTi8kPiwmV1Axk3wN6knChNLdz0R1N2ienq/KGsTqxE2lBr3tFqkfLn0XCRC2bSdFZGwM4Q2r7r4Nk+vZLKHrSVf9e2kw8VTZZ0H+qrCVumrTiwwGZpLIqXub/MFjc/mQY+mmspNhk369qC+8ck3L40gA2Uk4Xy5FxhjhrzSH4w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784579280; c=relaxed/simple;
+	bh=0+P1VGSY+hJP7Pymn9l/OEI+Oj8haz7ONn+t4lUYDkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UFe2rANGXMPFAqdXQbh7EurEEwycBK57+tqQFuwJGrVHMN7tNz0X6Ygmk62a4gUl9O+V9HHlLqaGUYkIf2NB0wpPHizoDXJVjF+s/G44X/Uat5u/vuYt7AsZagn4YEQFepOSqG7dAiM2Ta7L5HtOoz73Bpg+cwKQz4ufDnl61h4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=sI9QGdNR; arc=pass smtp.client-ip=136.143.169.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auditcode.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SjHNde3w"
-Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-380feaa05dcso6183829a91.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 13:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784579078; x=1785183878; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DuxloEjMIUr3usgKrRgUoqh61BlU8RAK2e67hxqdRj8=;
-        b=SjHNde3wy9EDiajuErQyzpvkeaKM5SEtItxWkH6QNyaRFmQ4bLYdgufCGB/hsYDVnt
-         3bDlOLVNA6nTO3qD0CWnrFDdKTXAUnmc/1CSwilvSWWS5lP+AoPkvjjFOhsXz0GxZ4fq
-         9TQ4C2Pxudfi9WY7+dSMHPEbfcFX1UnhXJEXJ5azfSYe3t8ApMIrUgFs33gJHIyhmf8P
-         aGQBlx2ricP4dsh8EjNaXDukXGe7yFoYIDoOA/DrBO7/8mWKZB5U7a4QqJANnthpwdqP
-         5G5+hAiwKPDA4D7CnJf4hsW3RKIGyX++m8nFRgBwZRhCC01Za3JlR2pE52hH+Ai1Qoqc
-         E1lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784579078; x=1785183878;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DuxloEjMIUr3usgKrRgUoqh61BlU8RAK2e67hxqdRj8=;
-        b=iMjR3V3rcFTUqvJR4jlpDEqCf+m/DzVgRu0a6beJ0Kb4asNc3FjtG4cKNTyzuzheXW
-         UlBpwoi6BLzCpvWRWTdgTJgbuAbn/EvMcwiW2W6pa11Cvn7KmzHNMN7dmJl6r7LaT6n4
-         IJVVILi1aHinHO8w4NPVYC6o8LJMF9rhRpAcoH/QaGqs3IIlmiCHknlGXE7y3dJfpFAX
-         RaxpjKbeZehgDexAL7GTR0BvBUqhAW75qIKpYYwELE+nCJXjHNqiQ3r66BfvevxqVru7
-         IyohulwI5ViKtvwVpsLVACNivhAUyFAARRH4lkwRc0+tRAxt3dj/c5gUbOB5JXd5DTJj
-         xZFA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+o3FTmeqNd89u+4vMsIrt3LjOh3ZiA1FZSySzZj9r7FxzOdOX6i9CLg/7RxthBL11AA3n+mE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqhE8XM5moNTCiKy93O8Yj+eRgIt+2vw6S6L0uQmTUV/FLnmSr
-	SfbVL4/PSDrifze2wsu3DMLhKCv9JxJ4oRaa2AlTx9IcSnREwZBrScFB
-X-Gm-Gg: AR+sD12fgWWMNHh/sDTCUSRQV17NxmCbLPBURXlBXbx8LK9CjaK7NGRy5I8pad78flm
-	HAMrPNab06wnW/uWGpnIr7njgyRhSPxZ6Sk0aF1qPllKgYy0lOzR5db70nlx73v+1ShAj3PgI71
-	tLuOj1WGto2ltTPcqcFlnNk3vRfSQ9IuUstKxwj3BBEsexGvZMKtW7eAkBzqGv0oAJKteHmrzQQ
-	GX3BAtvoc7SfcF3g/p3CHF8sxgmbCPzUEsI8NtBMbStDSChwa1k5vk3BMFycjWwRDU2TsvrkyCY
-	VxyLmAYM+KY+sNHJzOKs3HT3kG50wdZ6INaqsunlsC+PHZxNV0kaqhv5bi6lyY9uUR9QTVnepbp
-	UI8T7x+Be/qyTH9DQFSRtOv5eqUnIo4mmhpg47UMV5nmdOoh1rWh4yFVbTxFyKpC5uK0me3a/wk
-	B7PfuSdw==
-X-Received: by 2002:a17:90b:1350:b0:38e:6a96:447b with SMTP id 98e67ed59e1d1-38e6a96490bmr10631437a91.25.1784579078316;
-        Mon, 20 Jul 2026 13:24:38 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:71::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e47fe75c1sm1737214a91.1.2026.07.20.13.24.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 13:24:37 -0700 (PDT)
-Date: Mon, 20 Jul 2026 13:24:32 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	sdf@fomichev.me, horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] xsk: reject tx_metadata_len smaller than struct
- xsk_tx_metadata
-Message-ID: <al6Czy7Gvhc41RsY@devvm7509.cco0.facebook.com>
-References: <20260720155210.34229-1-blbllhy@gmail.com>
+	dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b="sI9QGdNR"
+ARC-Seal: i=1; a=rsa-sha256; t=1784579244; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=OxOyDSwmjZBcu0pyWLgdBTBwgyDPgrbUxzLoMFPfhil8H0D5vEjBHOsJbyJ+n+DuGTkttv0922/AgMbNJ3Yiygm3UI+1/gyppfGMHtiNbLmBPX21+vIH3dgrWkdFN6C6gQ879dLx9qrvgMk7XNDzpuSQfHV/K6G3sdFwQjVWFGU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1784579244; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=zG85u2vJ0C015HdBuDt5gobU84Sb4xZS4i1DwuUb5PA=; 
+	b=UPnhxv2StD413/s64JKl6oAm+GOttlRjhoZzTUPatGMqIAO1fyz4p19srTg4TMKuMlXOSUyDfHXzGZHPLZmk6BEHcCagvBEG1S9hYftrBHVPwY5j4r7xr4DbjmnAmUt1VSZjGLeZxzXwsKaH+6PyDf275huHQG3Ahep62BnNtF8=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=auditcode.ai;
+	spf=pass  smtp.mailfrom=security@auditcode.ai;
+	dmarc=pass header.from=<security@auditcode.ai>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784579244;
+	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=zG85u2vJ0C015HdBuDt5gobU84Sb4xZS4i1DwuUb5PA=;
+	b=sI9QGdNRgj2NSilQAcnorl4xNxb8VP6z1seLJR416tRi6f0lmYpzdrbnwMAUI3Rr
+	U7M2bRaOhco2loIMDrO4qaxOfSU17dnjEZ8XkSRj9xTKJUWX2QNw6DelBpzj18hxLu/
+	qcvDNJnKp1iyTbTmpHy8Qua3V33CU2aa6XGRBjMQ=
+Received: by mx.zoho.eu with SMTPS id 1784579241321949.2792150117403;
+	Mon, 20 Jul 2026 22:27:21 +0200 (CEST)
+From: Ibrahim Hashimov <security@auditcode.ai>
+To: ms@dev.tdt.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	linma@zju.edu.cn,
+	duoming@zju.edu.cn,
+	linux-x25@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: x25: fix use-after-free in x25_kill_by_neigh()
+Date: Mon, 20 Jul 2026 22:27:18 +0200
+Message-ID: <20260720202718.13934-1-security@auditcode.ai>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260720155210.34229-1-blbllhy@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On 07/20, Cen Zhang (Microsoft) wrote:
-> xdp_umem_reg() validates tx_metadata_len for upper bound (<256) and
-> alignment (%8) but not a lower bound.  xsk_skb_metadata() computes
-> meta = buffer - pool->tx_metadata_len then unconditionally accesses
-> the full 24-byte struct xsk_tx_metadata, so any value less than
-> sizeof(struct xsk_tx_metadata) allows an out-of-bounds read.
-> 
-> KASAN reports this as:
-> 
->   BUG: KASAN: vmalloc-out-of-bounds in xsk_skb_metadata+0x4b2/0x500
->   Read of size 8 at addr ffffc90000f11000 by task exploit/148
-> 
->   xsk_skb_metadata (net/xdp/xsk.c:837)
->   xsk_build_skb (net/xdp/xsk.c)
->   __xsk_generic_xmit (net/xdp/xsk.c)
->   xsk_sendmsg (net/xdp/xsk.c)
-> 
-> Add a lower-bound check in xdp_umem_reg() to reject tx_metadata_len
-> values that cannot cover the full metadata struct.
-> 
-> Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> ---
->  net/xdp/xdp_umem.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
-> index 58da2f4f4397..d16ad9d8f919 100644
-> --- a/net/xdp/xdp_umem.c
-> +++ b/net/xdp/xdp_umem.c
-> @@ -208,7 +208,8 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
->  		return -EINVAL;
->  
->  	if (mr->flags & XDP_UMEM_TX_METADATA_LEN) {
-> -		if (mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
-> +		if (mr->tx_metadata_len < sizeof(struct xsk_tx_metadata) ||
-> +		    mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
->  			return -EINVAL;
->  		umem->tx_metadata_len = mr->tx_metadata_len;
->  	}
-> -- 
-> 2.53.0
-> 
+x25_kill_by_neigh() walks x25_list under x25_list_lock and, for each
+socket whose neighbour matches the one going down, drops the list lock,
+calls lock_sock()/x25_disconnect()/release_sock() on the socket
+(x25_disconnect() can sleep and must not be called with a bh-disabled
+spinlock held), and then re-acquires x25_list_lock before continuing the
+sk_for_each() walk. No reference is taken on the socket before the list
+lock is dropped.
 
-This will make adding new tx metadata types harder (and will require all
-userspace to be updated whenever we do so), will the following be
-a bit nicer? (but, obviously, paying more per-packet at runtime)
+A concurrent close() of that same socket runs x25_release() ->
+__x25_destroy_socket() -> x25_remove_socket() (unlinks it from x25_list)
+-> eventually the final sock_put(), which frees the kmalloc-2k sock
+object. If this happens while x25_kill_by_neigh() has dropped
+x25_list_lock, both the lock_sock(s) call right after the unlock and,
+once x25_list_lock is re-taken, the sk_for_each() walk's implicit read of
+s->sk_node.next can dereference the freed socket.
 
-(untested)
+Reproduced on a v6.19 KASAN kernel under -smp 4 with a killer thread
+free-running NETDEV_DOWN toggles (driving x25_device_event() ->
+x25_kill_by_neigh()) against several threads closing/recreating
+neighbour-bound AF_X25 sockets: KASAN slab-use-after-free in
+x25_kill_by_neigh()+0xfd/0x110, "Read of size 8" at offset 104 into a
+freed kmalloc-2k object -- exactly the sk->sk_node.next field of the
+socket concurrently freed by close(). 145 splats fired over roughly
+64,400 kill rounds in the racing configuration; a serialized control run
+(single kill, sockets closed sequentially, no concurrent free) produced
+zero KASAN reports. With this patch applied the same free-running
+reproducer no longer triggers the report.
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 46797645a0c2..b55b878949d5 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -260,9 +260,21 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	0)
- 
- static inline bool
--xsk_buff_valid_tx_metadata(const struct xsk_tx_metadata *meta)
-+xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
-+			   const struct xsk_tx_metadata *meta)
+Fix this the same way the rest of net/x25 protects a socket found by
+walking x25_list under x25_list_lock (see x25_find_listener() and
+__x25_find_socket(), which sock_hold() the socket before dropping the
+list lock): take a reference on the socket before dropping x25_list_lock,
+and release it with sock_put() once lock_sock() / x25_disconnect() /
+release_sock() are done. Since a concurrent x25_remove_socket() can still
+unlink the socket from x25_list (and reinitialize its list node) while
+the lock is dropped, simply re-acquiring x25_list_lock and resuming the
+sk_for_each() walk from the old s is not safe either way, so restart the
+scan from the head of x25_list instead of trying to resume it.
+x25_disconnect() clears x25_sk(s)->neighbour, so the just-handled socket
+will not match nb again and the restarted scan makes forward progress on
+each pass.
+
+Fixes: 7781607938c8 ("net/x25: Fix null-ptr-deref caused by x25_disconnect")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
+Assisted-by: AuditCode-AI:2026.07
+---
+ net/x25/af_x25.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
+index c31d2af5dd22..725d35596e3f 100644
+--- a/net/x25/af_x25.c
++++ b/net/x25/af_x25.c
+@@ -1768,15 +1768,18 @@ void x25_kill_by_neigh(struct x25_neigh *nb)
  {
--	return !(meta->flags & ~XDP_TXMD_FLAGS_VALID);
-+	/* covers flags, XDP_TXMD_FLAGS_CHECKSUM & XDP_TXMD_FLAGS_TIMESTAMP */
-+	if (unlikely(pool->tx_metadata_len < 16))
-+		return false;
-+
-+	if (unlikely(meta->flags & ~XDP_TXMD_FLAGS_VALID))
-+		return false;
-+
-+	if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
-+		if (unlikely(pool->tx_metadata_len < offsetofend(struct xsk_tx_metadata, launch_time)))
-+			return false;
-+
-+	return true;
- }
+ 	struct sock *s;
  
- static inline struct xsk_tx_metadata *
-@@ -274,7 +286,7 @@ __xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
- 		return NULL;
++restart:
+ 	write_lock_bh(&x25_list_lock);
  
- 	meta = data - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
-+	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
- 		return NULL; /* no way to signal the error to the user */
- 
- 	return meta;
-@@ -469,7 +481,8 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	return (struct xdp_desc_ctx){ };
- }
- 
--static inline bool xsk_buff_valid_tx_metadata(struct xsk_tx_metadata *meta)
-+static inline bool xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
-+					      struct xsk_tx_metadata *meta)
- {
- 	return false;
- }
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index b970f30ea9b9..75b2c97e41e4 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -809,7 +809,7 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 		return -EINVAL;
- 
- 	meta = buffer - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
-+	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
- 		return -EINVAL;
- 
- 	if (meta->flags & XDP_TXMD_FLAGS_CHECKSUM) {
+ 	sk_for_each(s, &x25_list) {
+ 		if (x25_sk(s)->neighbour == nb) {
++			sock_hold(s);
+ 			write_unlock_bh(&x25_list_lock);
+ 			lock_sock(s);
+ 			x25_disconnect(s, ENETUNREACH, 0, 0);
+ 			release_sock(s);
+-			write_lock_bh(&x25_list_lock);
++			sock_put(s);
++			goto restart;
+ 		}
+ 	}
+ 	write_unlock_bh(&x25_list_lock);
+-- 
+2.50.1 (Apple Git-155)
+
