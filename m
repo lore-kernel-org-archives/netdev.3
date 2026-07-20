@@ -1,170 +1,146 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF353EBF02
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 17:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFB144998D
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 17:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784568861; cv=none; b=kzL0NioGya1XAKRvJGDfxwf+BAAZHTVid+G0hVMnR9THWcV/pBTZS0bc3lBMkpEcjFurOCu9ovXPnp+XC2bX9eOU5xffeJm5Gs4+Y516gTJ6j+p1PXF11qgaS5xgyslF1BrUb0yMY+A3LKlycQ+8HJaCMe4MTIVaNsOXgSvftfo=
+	t=1784568971; cv=none; b=pEP33gU5sxvrDBIjK+IhMwnTgf9Hm3PETXoEp/ccjK8URCOUqhrRrks2JdQvTT26lrpx5sfx2R56398vH64BbERhpvS8rD44WFiJKWx7LYvQCdD8VikurDwylU4pqWnZHgoptRWSuh26M4JZN/FLrNHzRY4A4jSOCswNm7AC0No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784568861; c=relaxed/simple;
-	bh=9rPa7ILsFfD4wiBH1dl7enIOztDBOtxFqZVsoJxy5aM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z9/2+ZbwJwqb9P+yXJP6asFZ54EGVPcnuEt7nSF6PH90RU90yly9qTffRL1IE9myyYP6cT6/MPFBNGyEwQozAuzUfavxLhLRzqGcqJbT2Q+s1fCA7Ef9wGS/juzKaMbtVJbCZPKpfsmu8lNyi055nlM+kAaGO9Wb3bsFkINX+QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BY7HN9yU; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784568971; c=relaxed/simple;
+	bh=XvqjxVEYFtZM7+F4QxlCcaHs2r/6NKpbeEIcUhrpD3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fs7lnZZ4HbWOAJuY3TJr79hLZs34TwXntYpo4TVTubTssbMOzBEzMSgIgExvT88xxn+nJCEe+DULHL+Oc/2uzkAss3KzuveQS+iSFjB+zQSYvqpoIHhkQijt1ODjWcZZBZGuybAMqXGGcKyhJdmOD5Rlkw5EsQEcNeL1GJS/iNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=VnlFzEbz; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BY7HN9yU"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848882fdb18so7658397b3a.0
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:34:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="VnlFzEbz"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cad4170e8eso143798925ad.3
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 10:36:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784568849; x=1785173649; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tJrcjKpXVQnKLdbBW9eWHsb14u8QHsUOoad2GXTIGJA=;
-        b=BY7HN9yU98t4J8JzSrcOrb0y8//8gliY45iicAmuv4ddlm3kvHVHUrEyoyH1tH129z
-         YNjfE2OpIK69qQDZ2tOytSmWq163zbYhEZWnJQ5wDIVmeYxvlAtUYv7nuBa+ycSD9tB7
-         KdfGRvTX0LyO30hzHGr/Cwd5LkADjNIOPZwyaeNvrOhJRq7OQ1I/zKoVvKVGyTvD7Asg
-         KxDsyJ98FGv7BmaJBfekyA27M1qaYVE3Xh8AGIpfso9S7J9VWi7H4kqfOMVxof1QXMwr
-         sZ/tzS1oME661tpzgkHVq1wu5f+TQZZhrLwScDOg6eqooS6MV2SSlCbap0k8WLT1qRb8
-         shfQ==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784568964; x=1785173764; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bgJoRNuplp6eZlFzlFIl9nminZilm44pZn8iwP92+o4=;
+        b=VnlFzEbzskJ/bacskUnlb4FZGWRGaRAyDXCuagGpgBa+MLvoTuL9jss3gaEmi5DcMb
+         JIzkhejZpYG831mrGzA69IF52gQpnjd2Ps/R+62k5bE/vn0vKJmurHENou+cWtLDS8tj
+         WSpJ/Q7x5vwPs+U+Afg9hdzZ87uIt8ziSd4JwkBNlo/qLIHocclwTurWTd87fmQm82t3
+         UBLTIC+ELc6MlE300S+sL2Dalhnq1Lj1pAsx09itLsM2fUqDC2Bbmk59tyecHWA6MnbF
+         bhm2t5vScK+64uNVyGeUzsHCw4QxnWVWf17PB3wL/ooM0tEJJvZjCsElyg+kg9TA0jNV
+         V3lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784568849; x=1785173649;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tJrcjKpXVQnKLdbBW9eWHsb14u8QHsUOoad2GXTIGJA=;
-        b=gA1cBCgmcuDZwevVYnp+rsxgWIGXdB2ELMEHJ+6SkEVdt0Xd2xPEQShQDMnrqfTY0w
-         2wsANbPp5tOSuvAbivQIYqN7D/wPw6PuSFYg56q2AalifZZvztbFOCBbOKP6KLCZVl8Z
-         MilBd4X8sOqKJs3lyRjAHun6YXgayZAYhFWolzFgCod8tVPOYEnqLdH85YgsEgJqcJ7P
-         IOff6naGUjUeDuNZqzcv6axxF8KyJQKGvnE8VD1y8MJiL0Nvv3zCI9jf2E3SoAEqfzAM
-         oACf/wUu6QZPwrVUOv/kM1A1FUyjmMVzB/ly3mfDkPnipK1XDRhwqd3JQ/igjQFDpUBM
-         a01w==
-X-Forwarded-Encrypted: i=1; AHgh+RrwMzG8AJseBSScVd2FCe5ZGAdoGH/ecj7qgq0XJ5U8NvdgLVxFA25gLyx+/BzQfWwtMvtG/s4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2hloqzp307Ht6YQQbyxA5AgdyEj77K5vAK8E349eb6TKsrXYR
-	y/ZKGtC07+F64L3PvkYAGXLG7KyOcrrfDE8lqVjHI9839mHkxdBmQQOt
-X-Gm-Gg: AfdE7cklDfE6F314UMkCnCxTXF/5AJLRkrXIN6VhCpkktdesdevcPVsVHhBZSehh2Kl
-	gyb7q6TJ0wUh61X8SIdU2Imsy5g12OS1periE+kXdsWZh3/cDtLUHHyfNO9BjY+sPjlQNoWgxXQ
-	C8FByS79UhPJJ0WW1eSKRGwIZ5qc6Nce+EpeHudjxqBo2bJv+B1T160d0D4qhrMtHLccYo5JHyf
-	dULzK4BnaILsTUVHwOciYFwvjdERd0/U7kK4uUXD5UZLz0PAfrgQDadDsTnBxKmivuPL1Z2oWl1
-	XNPg/8mdp3W3QIJO7rKIxsP1pQ5J8OQbcVzRzwr9dx6mQ44nTEQSlOqpAOb6gt98AgedhgmMkJy
-	p/34RH2BtBLXbkFU+aSbC/gA3ihYlf39M+SUspZ1wVuJj62/4wJoJec3lU/ssOSyExF6/ls67o1
-	06v6YiQcAMebbAEyDFke4qI90dYe9n2ebYAqhu2lOvzjG7mbx8OpiRAHBT
-X-Received: by 2002:a05:6a21:6803:b0:3c3:4ab3:608f with SMTP id adf61e73a8af0-3c3ad81f240mr16989952637.29.1784568849345;
-        Mon, 20 Jul 2026 10:34:09 -0700 (PDT)
-Received: from ?IPV6:2406:3003:2007:2131:a42d:c0cf:43eb:f0ff? ([2406:3003:2007:2131:a42d:c0cf:43eb:f0ff])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31429f9bcd9sm39542802eec.3.2026.07.20.10.34.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jul 2026 10:34:08 -0700 (PDT)
-Message-ID: <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
-Date: Tue, 21 Jul 2026 01:34:03 +0800
+        d=1e100.net; s=20251104; t=1784568964; x=1785173764;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=bgJoRNuplp6eZlFzlFIl9nminZilm44pZn8iwP92+o4=;
+        b=WfPK0n5IiSLABuclc8LHLjLW3Av46nD5/9h26aYgIsO9WPsx1mpotlc/BlYEI/BoVz
+         B3IWuvZRtwFYfZ6Qwdwz744GZD2zq1/5seaUJ+piJOy2KxUMS/xk7CubuuEl/DFC1TyR
+         kiQspyIqkKjf0Y9GxSaSf93xDc5CRopyBWQi260S3DlJNSZaiGGoxmOS/ZZ9TSW/zrs9
+         anGWfH7+gGW1HkKnDxz5wEabZoUh2coIODDUOe6iyofJ2Nz1vJKs21eHaZijmvQ3vX/q
+         AJWVIop8YZe6ZZT21vopAC5ReCSiPsZGIgFPLbRJvKM7M3pmT19m1EvYbUZ0wgyq1/aR
+         H4Qg==
+X-Forwarded-Encrypted: i=1; AHgh+RrOENAf9tEt0ntCEgyMguPMJQWcc4B0It0ItI7O/GbLiAbxoWBqekZX3vRwu8w5f1qGELBO8yI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXPXCkilj6UAOu3rZvnZBe63bsrf5jBjd9asFGplBM7+n+bPnl
+	2SqEgOIU6d+sfku4mlkX/+XIE32RY74DKteVipue1rkW81a9sZl6Bg8w/+qcoQmMsreA+iTwX2T
+	Ay28+NQuXyfAI
+X-Gm-Gg: AR+sD11kAp0HFHT+UsLtjtGH541p6hEYj0kDmctOhA3EdAkQs8PJMQAe75+SLCsKOHX
+	9w+gJAbbycnyoVx9ABMOQpBj9kn3gpMpVEFTAPkOySWqPx8BKiTkw2N1KAkgOobWUzab3x3hCoX
+	1jZF+nIOJi6BbyDdZRkjs5KXHCfnc2bqwBeWYTQmcrMnI0b7BGLALQGoJB2xSjy31D20/kSJaWr
+	OP2SjbocUbz8hIoGdaV/Sgyarym0+eafzag88t01xFlRr4pLeCaPtDCxnwYxL7EtSoK1MGULRRG
+	nVNp1Ys+7Fs3kiwAQn+BgJ58NhkdZXo+kKHnNTyj4K/JcAkF6IC2G00E0CSyAD2TKDi8SAHPR7D
+	kd05avNDppLzKzl2nl1x4RzSxAHqCWxf64NhjQMnDZnO7VVo6DWnwFI+Y2vg=
+X-Received: by 2002:a17:903:986:b0:2ca:53e9:1277 with SMTP id d9443c01a7336-2cf348193e8mr159265115ad.1.1784568964287;
+        Mon, 20 Jul 2026 10:36:04 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:53::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476f70esm60110235ad.77.2026.07.20.10.36.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 10:36:03 -0700 (PDT)
+Date: Mon, 20 Jul 2026 10:36:02 -0700
+From: Joe Damato <joe@dama.to>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RESEND v4 net-next 13/14] net: enetc: use
+ alloc_etherdev_mqs() to create netdev for VF driver
+Message-ID: <al5cgs6CqVKsy/gh@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
+	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-14-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
- timeout
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260719220103.684489-1-phind.uet@gmail.com>
- <al3UuvBhfxp82krV@sgarzare-redhat>
-Content-Language: en-US
-From: Phi Nguyen <phind.uet@gmail.com>
-In-Reply-To: <al3UuvBhfxp82krV@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720014317.1059359-14-wei.fang@oss.nxp.com>
 
-On 7/20/2026 4:17 PM, Stefano Garzarella wrote:
-> On Mon, Jul 20, 2026 at 05:57:47AM +0800, Nguyen Dinh Phi wrote:
->> After vsock_connect() exits the wait loop due to sk->sk_err being
->> set, the error was read but not cleared. This left sk->sk_err set
->> for subsequent operations.
+On Mon, Jul 20, 2026 at 09:43:15AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
 > 
-> So, is this a fix? If yes, we should put a Fixes tag.
+> The VF driver uses alloc_etherdev_mq() with ENETC_MAX_NUM_TXQS as the
+> queue count, which forces the TX and RX queue counts to be equal and
+> uses a compile-time constant rather than the actual hardware capability.
 > 
-> Also, can you describe how to trigger the issue?
+> After enetc_get_si_caps() is called, si->num_tx_rings and
+> si->num_rx_rings reflect the actual number of rings assigned to the VF
+> by the PF. For the ENETC VF on LS1028A and the upcoming i.MX95/94, their
+> SoCs have no more than 6 CPUs, and the number of TX/RX rings allocated
+> to the VF is less than 8.
 > 
-> Because I see this in vsock_connect(), so I thought it was in some way 
-> already handled:
+> Therefore, switch to alloc_etherdev_mqs() so that the TX and RX queue
+> counts are set independently, each capped at ENETC_MAX_NUM_TXQS, based
+> on the actual number of rings assigned to the VF by the PF.
 > 
->          /* sk_err might have been set as a result of an earlier
->           * (failed) connect attempt.
->           */
->          sk->sk_err = 0;
+> Note that if future SoCs have more than 6 CPUs and more than 6 RX rings
+> allocated to VFs, the size of the int_vector array in struct
+> enetc_ndev_priv will need to be modified. Similarly, if more than 8 TX
+> rings are allocated to each int_vector, ENETC_MAX_NUM_TXQS will also
+> need to be modified.
 > 
-This only handles the case where the function following the failed 
-connect is another connect() call.
-
->> Switch to sock_error() which atomically reads and clears sk->sk_err,
->> so the error is consumed when returned.
->>
->> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> Can you explain how this patch fixes that issue?
-> (this should be the first information to be put in the commit message IMHO)
-> 
-> I'd like to understand better if this is a fix of real bug or just an 
-> improvement to the code (which is fine by me).
-> 
-> Thanks,
-> Stefano
-> 
-Here are the steps of the syzkaller reproducer:
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> index 9cdb0a4d6baf..7dcb4a0246f5 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -317,7 +317,14 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+>  
+>  	enetc_get_si_caps(si);
+>  
+> -	ndev = alloc_etherdev_mq(sizeof(*priv), ENETC_MAX_NUM_TXQS);
+> +	/* Currently, the supported SoCs have a max of 6 CPUs and the VFs
+> +	 * have less than 6 RX/TX rings. So no issues for these supported
+> +	 * SoCs, but for future SoCs which have more CPUs or more TX/RX
+> +	 * rings, all the related logic needs to be improved.
+> +	 */
+> +	ndev = alloc_etherdev_mqs(sizeof(*priv),
+> +				  min(si->num_tx_rings, ENETC_MAX_NUM_TXQS),
+> +				  min(si->num_rx_rings, ENETC_MAX_NUM_TXQS));
 
-   r0 = socket(AF_VSOCK, SOCK_STREAM, 0) 
+Code looks right, but looks almost like a typo. I guess it would read nicer if
+ENETC_MAX_NUM_RXQS existed?
 
-   bind(r0, {VMADDR_CID_ANY, PORT}) 
+That said:
 
-   connect(r0, {VMADDR_CID_LOCAL, PORT}) 
-
-   listen(r0, backlog)
-  
-
-   r1 = socket(AF_VSOCK, SOCK_STREAM, 0) 
-
-   connect(r1, {VMADDR_CID_LOCAL, PORT})
-
-   connect(r0 -> self) -> -1, EPROTO 
-
-   listen(r0)          -> 0 
-
-   connect(r1 -> r0)   -> 0 
-
-   accept(r0)          -> -1, EPROTO
-
-Basically, it creates a socket (r0) and triggers a self-connect after 
-binding it. This self-connect fails with EPROTO because it loops back to 
-r0 while the socket is still in the TCP_SYN_SENT state, causing it to be 
-incorrectly dispatched to the connecting-client path. The unexpected 
-packet type encountered there sets sk_err to EPROTO.
-
-After that, it invokes a listen() call on the same socket. This listen() 
-call succeeds because the kernel's listening path never inspects or 
-clears sk_err. Then, a new socket (r1) is created as a normal client and 
-connects to r0. However, vsock_accept() rejects this incoming connection 
-because the listener's sk_err still holds the EPROTO error from the 
-earlier failed self-connect.
-
-This rejection causes the child socket created for r1's connection to 
-never be freed on virtio or hyperv transports; only the VMCI transport 
-implements pending_work to revisit and clean up a rejected socket
-This patch will prevent the rejection branch to occur in this scenario.
-
-I think we might schedule the cleanup worker to run in the rejection 
-path for these transports as well.
-
-Thanks,
-Phi
+Reviewed-by: Joe Damato <joe@dama.to>
