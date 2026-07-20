@@ -1,200 +1,142 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C547083C
-	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BDE21D3F5
+	for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 06:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784529933; cv=none; b=mOD3Om7+kllLZ8hljLHMOskGpHMGn2k1GhpB0McQDM4jd7aXKunh7sLTH85L1pkTfaac7/1TI7CHRqbJeJNNMIiUa1KQV4ZRz8MV4S8WWF5nO5ygR/e7EsT0OJaU04dbfpKBMhYoNloEt3dC0+AIJRrcxRsrgHVSvJyXlUuif1Q=
+	t=1784530476; cv=none; b=q0hczYqfG27ViBKQ8oYlc+ceIwh5c3y+yN8VDdpSdWOQOl8GKCBJm7NYS3PHCQJ1JXH8uPWGRD0/P0PdGGbybbWj/y8gw686wnOjj3a+jq9l768c6K9ximpSqLSDMypqCFzu6oF8kO0OKXuWtgqBemSbGckDMwnvE1Yj7yzUwbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784529933; c=relaxed/simple;
-	bh=mglTaEO/sjtxNa6JCMEf2k62GqJxvdh5INi9EDcNquM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUszRMxUOXmDMj+Izk8GtppyAcyVoo8RMmjqfhfadIlgjvft3uMq0e/oRPmbY494lr7yRVjNh21a9FEe88qScRaH3uvslJqnpiqtgM0TMrX9ita1zvouW86Fu2F8fvYdO+/Qomo1fNQOL4gdYM0ob8MGTp29qirpHYr4yQr7i3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vsln3q2Z; arc=none smtp.client-ip=209.85.210.178
+	s=arc-20240116; t=1784530476; c=relaxed/simple;
+	bh=z3bbyhhhzQUxDfoECqZtOhTOVMYr6T9kQ00wdus9LjE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uUlT9YiaZmtP4ZNTvsLzVUvoRBp09S4a/ou7f447wjFM3cCmkn+oo9pgwyyyCw4ZJiDmWlWEquGP/V1xR3lAoFv7005bWthK8ndIidjI0dAoW5g8MuluZQFtM3N8kVo+ZLJdW4nu2qT07RUwVv0F6NazyhylrJWlxNSyMvLD8J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+wOWkAW; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vsln3q2Z"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so9749067b3a.3
-        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:45:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+wOWkAW"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-845c92bc464so5620188b3a.2
+        for <netdev@vger.kernel.org>; Sun, 19 Jul 2026 23:54:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784529931; x=1785134731; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o1e4L9nZHA7afCucBd/lusVP/X6FFvRw4ikQnLjY9jk=;
-        b=Vsln3q2ZyWxW9qjsOlQwwAGxUhwELiVJDLXyfwkvTydwLdDdhad6fkwzhCCVgj832O
-         PqwMrA+SmSwjqn40EWZqo3bU5B0zzv9ObkkXFhR7Dxct32Fc1BNoYlvIUpv5FSjQaKCt
-         jo8ASD3H9WTJLBqbaqw9ZYEICninoR0GT5tthXlCppSJdiw2Rb/jAkjDa4aXT41tVB8U
-         YVb8OU9u/9b7NV4vSHwnSKKmJbib+VJYW+1RYijnQc9jIxd1wjoxF5xTfoPCM/xVuHjo
-         z6XspfKRLPuGyHDdCSUGD9LXLOFocPHIuIVQEjK1iY9/Z6IBy1EYORHfDgfqg3D6M3QC
-         3bOg==
+        d=gmail.com; s=20251104; t=1784530474; x=1785135274; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pduYoUwdDsokgxOFp/drM7GxSBVCnkImfvtB1gPwtRk=;
+        b=H+wOWkAWkV5o5mWdXfOq6YUJ8MoTE7hk+I8ojy/mPfK7D7bmk6QIMXnfY+bhiAcUwr
+         HtxHQcqYAsFHqknTvVpGHO5ao6Jg0o/w2TgX+EA3bXqhp5zgf+CjJ0Hn8h1uXFYEtwv7
+         /ES4JImUsElWbOLF3nbhHU3pjGxOrxeZglCDNTCJ3Lfv7SlWIwhe8sHNwiQ2si7Po1Es
+         HNuqp3QW3IrKKn29zyGmDuweEjpt9A+c/ESb4NQ5NLkmTZXS/YCUnYjTB/5ayP4nEjGi
+         llc1kYar3i7+zI8NBq0y0HE/tC7InL1axfbla+9bzfdhp9+cmTtddeVWzCT+3giftacU
+         gu6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784529931; x=1785134731;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o1e4L9nZHA7afCucBd/lusVP/X6FFvRw4ikQnLjY9jk=;
-        b=Vabq6bzlEfgaow+3F4W3Txxjt9Y3UIDlt6PukaNtQQ6DN10pAkGaxXGTFib+qE5aP4
-         gw9ZdOafCLhkCBrPhpMLUFxADov6dmCCeVWwFNHiluBADIB+eGyOP7RiBVI9jQhr+BfE
-         JWIGTbBcCxixsU4lm/7PwQanzYaZY34z8gdkd7h3j70UjD1wWM/ynYZa6t39XCNVBlgA
-         H9kSrvq6CjqAOUc7TXjjjK7Bv0ncKd+Y7Zg3XPqqYtAfkg2Y64XQYaBdu8CchwVLXq2+
-         gp16F4TI1TLsY8YdSku6j30O5GdLrW1bjrL/6haFw3NR7PRkirEQAvjg0pR4gxDNzhDi
-         gXGg==
-X-Gm-Message-State: AOJu0YzZydJq23/k/fgL/00HvZ/PokzWj9yeV5ziuptQR64nBjPmlbAc
-	2s5OnTOC2D2bx0XUW6OWqqW39nY2/vYmRk6NxQ+WlHafOB+kK6XczbHrYmtpZFsG9us=
-X-Gm-Gg: AfdE7cn2DZyfJaM3qxHYokGMxTfqhouHYCX6uVf9HUMp5Pr4H07qEQalTuhEoFBdW3f
-	6DOjGwpJOuUWJE8oAQI8pZp+PqY+G5udUFWcy1gE7Okb663ESAWHKzIIrhM8XV7jHslWS9YhEZu
-	rMDqLETyIJB66ESWPMxfiraAg4IwsGVylOsb60r6rCbtkX8uFC6P28lpF/0z/1KxjGfLMAnVVsE
-	Z3yEG60WLr558l4SpwXwwaTG/0fHAWZKb4DHiMd4/GDImTWPgqwR8tO0Cr5Xtn2dc+h6kSwymKY
-	G8ZuyWfmhBQV9bz52eO/ZfGjPIonDzXB1Q6ou8ETqYMRMxMOSBBmwYzeEdGCdZ00rBcKhmtHDmv
-	o55pVHe4MOYUGQ/8ehxCkP1Bioppqw6JU+B2HaQ5rNZsogKr9gjt2sepBVzz29cmA7cd7RxvhxX
-	be4F39C+Uey2LKZERGf4EOobpj5g4s
-X-Received: by 2002:a05:6a00:2d92:b0:848:5cf5:5040 with SMTP id d2e1a72fcca58-84c292cfed0mr11662769b3a.10.1784529930683;
-        Sun, 19 Jul 2026 23:45:30 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af30c89sm5102834b3a.36.2026.07.19.23.45.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 23:45:30 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net
-Cc: jmaloy@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ying.xue@windriver.com,
-	tuong.t.lien@dektech.com.au,
-	vega@nebusec.ai,
-	xizh2024@lzu.edu.cn,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] tipc: avoid use-after-free in trace queue dumps
-Date: Mon, 20 Jul 2026 14:45:18 +0800
-Message-ID: <b261f5acabf7c07c971e024d0d78aa9ea34f2be6.1784443039.git.xizh2024@lzu.edu.cn>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784443039.git.xizh2024@lzu.edu.cn>
-References: <cover.1784443039.git.xizh2024@lzu.edu.cn>
+        d=1e100.net; s=20251104; t=1784530474; x=1785135274;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pduYoUwdDsokgxOFp/drM7GxSBVCnkImfvtB1gPwtRk=;
+        b=q82UQqRtNnB3jYnwyosiu1V1/hJ5cBs1iKmuCpL1zc11y2QtYC9ATZK+nU+MLm8QBG
+         FyqnXz/vIgsuhPRka3DNBitWRYf8SqlAJtvVaPwZWH/PVN61/KJBVbWqF4m6qZ6GW6KN
+         qz9dYajQDLo5d3GHF5cA0e1IPkpMvw3PxoRJ+9YsGRW1AVp1lKpD1ntT9qjQCpMQ4veh
+         zSCmZEIW3CimOwL9dktcRpQN1SXxn7Nl2VC2CGev/1sbaBlpyswu7ZBNNGZMW0cfp0R7
+         0/duaBNKOI0KYRdm+KC3HS0X62XhTKI4j/OflJjoSXkB+uDov8bGuurbkbIsD+6E01aQ
+         uqIQ==
+X-Gm-Message-State: AOJu0YwIVXlDYfMJsWlJW0iqcPPMOAOhZfl6mO3QMSA+V6rZJF40YKwy
+	bCz3ZhsM5mJpPNeA15SqPhBab1Ba5cK1jVqEKMFGtzCAsK950VVaOU8+
+X-Gm-Gg: AfdE7cngdRNs9IY66L8IkDqr02FZPiSFiBpqEQDiBDpxZvEWiITRwXtdjXnzmJn3eN/
+	sBU09HnsP5qyeVjFms3wBavo8mLM1ilfRiw2Ild9Xa7/e8LuNZyaFfUsIPjWBFXisG+BSMDpnxM
+	ly1TgNVOd6QqwUFLZiKMQ8YpsESkO5HfINzFHA0peSIqRs+PVSrGTT6Y7X2wdwXYGq3q9oAPd/Y
+	2G4PhHqcY4ccKdL/gJWASqACtXTF6g2TNqIh1ANYXIQKbuPE4cmFfsO3ZyvXszKaiScRCSaH2EA
+	4qMkfb11ZlEKFfEjUinoq2MJzLe7FRco+5V+v+VGJlSYJNtGGDleUvW9PL70sZ8JTL61i8dGMq8
+	r3PJX9+bugj1fYnuvbAjySTX8jDK1oW2gz8dvb7RJEZsN4MHHlEaBl/nORbPSxrZ6NYGTTmMKXL
+	+Y7Edmq8LX53eh3SXX7V3KnYb+AUxB2ycrgkf/6gOKAMi+LP+nrPV7+SEQl0s=
+X-Received: by 2002:a05:6a00:228f:b0:845:3fe5:cddd with SMTP id d2e1a72fcca58-84c29501125mr13089871b3a.36.1784530474395;
+        Sun, 19 Jul 2026 23:54:34 -0700 (PDT)
+Received: from [192.168.4.59] (c-73-93-246-205.hsd1.ca.comcast.net. [73.93.246.205])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af7acf4sm5057772b3a.51.2026.07.19.23.54.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Jul 2026 23:54:34 -0700 (PDT)
+Message-ID: <0c037f98-f219-4851-9a06-e83b25ca0f7e@gmail.com>
+Date: Sun, 19 Jul 2026 23:54:31 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] openvswitch: Fix CT limit teardown use-after-free
+To: Andrew Lunn <andrew@lunn.ch>, Ren Wei <enjou1224z@gmail.com>,
+ xuyuqiabc@gmail.com
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, pshelar@ovn.org,
+ yihung.wei@gmail.com, tonanli66@gmail.com, xuyuqiabc@gmail.com
+References: <cover.1784355642.git.xuyuqiabc@gmail.com>
+ <aa8a1d8dcbac8a13dbdf077a642a66f4c5d81e4b.1784355642.git.xuyuqiabc@gmail.com>
+ <c357f846-d42c-4b98-acc9-46b751818dca@lunn.ch>
+Content-Language: en-US
+From: Yuan Tan <yuantan098@gmail.com>
+In-Reply-To: <c357f846-d42c-4b98-acc9-46b751818dca@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Zihan Xi <xizh2024@lzu.edu.cn>
 
-TIPC trace helpers can dump live socket queues from contexts such as
-poll(). tipc_list_dump() walks the write and receive skb queues and dumps
-the head, tail or selected skb entries, while tipc_sk_dump() also dumps the
-socket backlog head and tail directly.
+On 7/19/26 19:52, Andrew Lunn wrote:
+> On Mon, Jul 20, 2026 at 10:14:16AM +0800, Ren Wei wrote:
+>> From: Yuqi Xu <xuyuqiabc@gmail.com>
+>>
+>> Packet processing uses CT limit state under RCU, while netns teardown
+>> frees that state under ovs_mutex. The CT limit pointer was neither removed
+>> from readers nor protected by a grace period, allowing packet processing to
+>> dereference the freed state.
+>>
+>> Replace the pointer before freeing the CT limit state. Wait for in-flight
+>> RCU readers before freeing its contents. Serialize CT limit netlink
+>> operations with teardown for the full lifetime of their state accesses.
+>>
+>> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Vega <vega@nebusec.ai>
+> Is Vega a person?
 
-Those trace paths do not have a reliable skb lifetime guarantee for every
-queue they inspect. TIPC socket queues are serialized by socket or other
-outer locks, and not all skb lists use the embedded sk_buff_head lock
-as the mutator lock. A concurrent dequeue/free can therefore leave the
-trace helper dereferencing a stale skb pointer.
+Hi Andrew,
 
-Avoid dereferencing queue members from the socket trace dump path. Keep the
-trace ABI and buffer sizing unchanged, but report only queue lengths
-for the write queue, receive queue, and backlog. This preserves useful
-queue state in trace output without pretending that the trace helper can
-safely pin or walk all caller-provided lists.
+Thank you very much for your review!
+For context, we had previously understood that using the tool name in
+the Reported-by tag was acceptable, based on examples such as
+Reported-by: AutonomousCodeSecurity@microsoft.com and Reported-by:
+Anthropic.
 
-Fixes: b4b9771bcbbd ("tipc: enable tracepoints in tipc")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
-Reviewed-by: Ren Wei <enjou1224z@gmail.com>
----
- net/tipc/socket.c | 12 +++---------
- net/tipc/trace.c  | 44 +++++---------------------------------------
- 2 files changed, 8 insertions(+), 48 deletions(-)
+https://lore.kernel.org/all/20260630171016.11c02dec@kernel.org/
 
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index e564341e0216..4b9eb0b401fe 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -4000,15 +4000,9 @@ int tipc_sk_dump(struct sock *sk, u16 dqueues, char *buf)
- 		i += tipc_list_dump(&sk->sk_receive_queue, false, buf + i);
- 	}
- 
--	if (dqueues & TIPC_DUMP_SK_BKLGQ) {
--		i += scnprintf(buf + i, sz - i, "sk_backlog:\n  head ");
--		i += tipc_skb_dump(sk->sk_backlog.head, false, buf + i);
--		if (sk->sk_backlog.tail != sk->sk_backlog.head) {
--			i += scnprintf(buf + i, sz - i, "  tail ");
--			i += tipc_skb_dump(sk->sk_backlog.tail, false,
--					   buf + i);
--		}
--	}
-+	if (dqueues & TIPC_DUMP_SK_BKLGQ)
-+		i += scnprintf(buf + i, sz - i, "sk_backlog: len = %d\n",
-+				       READ_ONCE(sk->sk_backlog.len));
- 
- 	return i;
- }
-diff --git a/net/tipc/trace.c b/net/tipc/trace.c
-index 7d2931521e0e..399538d0a369 100644
---- a/net/tipc/trace.c
-+++ b/net/tipc/trace.c
-@@ -158,49 +158,15 @@ int tipc_skb_dump(struct sk_buff *skb, bool more, char *buf)
- /**
-  * tipc_list_dump - dump TIPC skb list/queue
-  * @list: list of skbs to be dumped
-- * @more: dump more?
-- *        - false: dump only the head & tail skbs
-- *        - true: dump the first & last 5 skbs
-+ * @more: unused; kept for tracepoint ABI compatibility
-  * @buf: returned buffer of dump data in format
-  */
- int tipc_list_dump(struct sk_buff_head *list, bool more, char *buf)
- {
--	int i = 0;
--	size_t sz = (more) ? LIST_LMAX : LIST_LMIN;
--	u32 count, len;
--	struct sk_buff *hskb, *tskb, *skb, *tmp;
--
--	if (!list) {
--		i += scnprintf(buf, sz, "(null)\n");
--		return i;
--	}
-+	size_t sz = more ? LIST_LMAX : LIST_LMIN;
- 
--	len = skb_queue_len(list);
--	i += scnprintf(buf, sz, "len = %d\n", len);
-+	if (!list)
-+		return scnprintf(buf, sz, "(null)\n");
- 
--	if (!len)
--		return i;
--
--	if (!more) {
--		hskb = skb_peek(list);
--		i += scnprintf(buf + i, sz - i, "  head ");
--		i += tipc_skb_dump(hskb, false, buf + i);
--		if (len > 1) {
--			tskb = skb_peek_tail(list);
--			i += scnprintf(buf + i, sz - i, "  tail ");
--			i += tipc_skb_dump(tskb, false, buf + i);
--		}
--	} else {
--		count = 0;
--		skb_queue_walk_safe(list, skb, tmp) {
--			count++;
--			if (count == 6)
--				i += scnprintf(buf + i, sz - i, "  .\n  .\n");
--			if (count > 5 && count <= len - 5)
--				continue;
--			i += scnprintf(buf + i, sz - i, "  #%d ", count);
--			i += tipc_skb_dump(skb, false, buf + i);
--		}
--	}
--	return i;
-+	return scnprintf(buf, sz, "len = %u\n", skb_queue_len_lockless(list));
- }
--- 
-2.43.0
+Of course, we’re happy to adjust it if a different format is preferred.
+
+>> Assisted-by: Codex:GPT-5.4
+>> Co-developed-by: Nan Li <tonanli66@gmail.com>
+>> Signed-off-by: Nan Li <tonanli66@gmail.com>
+>> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+>> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+> Please take a look at
+> https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+> and the sections that follow. What is listed here does not follow the
+> rules.
+>
+>> @@ -932,11 +932,15 @@ static int ovs_ct_check_limit(struct net *net,
+>>  			      const struct sk_buff *skb,
+>>  			      const struct ovs_conntrack_info *info)
+>>  {
+>> +	const struct ovs_ct_limit_info *ct_limit_info;
+>>  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+>> -	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+>>  	u32 per_zone_limit, connections;
+>>  	u32 conncount_key;
+> Reverse Christmas tree. The lines should be sorted longest to
+> shortest. Yes, it was already wrong, but you can actually fix it here.
+>     Andrew
+>
+> ---
+> pw-bot: cr
