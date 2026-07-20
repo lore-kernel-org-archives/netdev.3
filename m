@@ -1,180 +1,261 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D8A41A772;
-	Mon, 20 Jul 2026 12:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784551850; cv=fail; b=RzCqx3MbLXLDay+/JvTPa1Zk/W9rPxOZEvyBCHlKoCRI924RtOdYqMFgICgr6UK1qZ40AIV0dQPaOPkzf48adiTc4aGBhnu0fF5+oai7WXj8ub+ptVCfiuS8kxlZHwT2KnhgKWDoXLX8f+5KsCLLzve6uQq+mpyXFOpf4syAWRk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784551850; c=relaxed/simple;
-	bh=WLEdHKhhasNjqaAc/4EUOKDBg3aMDDMmKfkKNTiYSMo=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kMUajIUj+mBsFJ+tvTFCrVjPlvhkbYDCknznqvx/ah2ioFTDWVOGEydDqouZ68+eJSSwQ6QBlGfzHWZM/of0n5yz2BVUXC36tReqkxu8c5b79ZSWXswW51AyHwCP47LyiFkYdzpHGyzRMUdg24938ztsBvphgQz7jdCBud0lfns=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NxtbwTgF; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F0A41167F;
+	Mon, 20 Jul 2026 12:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784552038; cv=none; b=KtzdMQvb3V+3L6e4b/hkHSVCCAlOzE3ny16UZlsZo8a2LeYkj0LiW01ROGEFYEJnVakhvbyhmt+zc8MA/d5M/ctQ5MukIkO69HUG0AtB9uEFHFNh8P2q/+JR4oovdPLBgAJtJBgyhDfRrvksP3+byb4h+Iq2gCGf5q2bcvtDmrM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784552038; c=relaxed/simple;
+	bh=iHsU9DNC0nb54/orsltsTMK8+S8DuOYjZvE5f8OM9Ug=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NqaMtCc8fLM/IAXODGiiYfhato+e1lVtjbbd0RJrsn/wrN03NA8DXJ5Iug9Ql3NsUTXj9VODY10shfNtZeXRo+dLAeweypv2qZjwUAZ7sC2f8ac0olsnTNpTbm1LmiRHWigquFUnBj0zDVsvV+cSHRId/ApmKPGn/eQLHTfxfIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=b99z0NKP; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NxtbwTgF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784551848; x=1816087848;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WLEdHKhhasNjqaAc/4EUOKDBg3aMDDMmKfkKNTiYSMo=;
-  b=NxtbwTgFYZQXyb798fTCzu+iifFNWAMFcifnbDRfw/YETqJptokDoQEz
-   RukiN7uNG/hbCQC66xk66NtUErjW0JthJuV8Q9TtYKdCmTOcq3IpKWRd0
-   9QgwOQIpd5mwhxvjThkGhdsxvhStyR/g8HqYFdmDZISzIVj1x9mBoFQLo
-   dwvPvzwaVYy+OPzeYpijEURx7NM61EgdFOC+Wz2XyEtNg4FeeWOJQWwsh
-   LhQ7TiunKbv8Lx2AynDCCJEWncC7n75fyUi2MzImcLWCzsutY1rYPf1Fz
-   ri+a3XqNRveRjtGNx3kGz68ltEhSHxQTxha8gVtHTX49XGhCFZeQTafuT
-   w==;
-X-CSE-ConnectionGUID: W6cc8lnzRziAXNQ0sp/MBA==
-X-CSE-MsgGUID: HU77SZJ2TsWRTxXmi0CUFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="84256995"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="84256995"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 05:50:46 -0700
-X-CSE-ConnectionGUID: LhyDQzwmTiiT1hGj5a7UOg==
-X-CSE-MsgGUID: wQDz9qGgRPG6ydA2s1/tsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="253074726"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 05:50:45 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="b99z0NKP"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3X92SnOeqcGGRqpG5aZ2OpeBPzY0WgQK194wq4p9i8o=;
+	b=b99z0NKPpUpnNROL/QTQ33W6VdkEzvuhGJOxCUgc5eQM/x4WpxHt0cdDYvHVAGmHLz42eLVBJ
+	VnF8zEp89hDvPcn2G03YtQjlCA9QNyVd4ptr33eKQvo9I75mTKmlM8FWTsxBc2XI1Zzonsm838B
+	dNAPYoyYec1unGt766AqIdA=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4h3gFL029pz1prKd;
+	Mon, 20 Jul 2026 20:44:22 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8EB3B4058F;
+	Mon, 20 Jul 2026 20:53:45 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 05:50:43 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 05:50:43 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.12) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 05:50:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t3AB1CPplpPKVf7esmc/ICfJGclL2/jlmhBWCEKe6qjJZZyWlZXpqEWJZz6VGgUrjA0/Dg+4SbS7B/yn7sp8KHO/9WMmGV6jyEJ8v9VNKjs/9QvZWNEnmd6EkzThsf7ApiUtX699AWMAY7ud5RgnJK9jTVC4cvT+6ksKTh/KapXu5sY9yvCfTArfgwcNiLNhhZruXmhqn+Ke0VnYaBAubyq5znM958LhQA1BymugwZ4y8vBbkSoPEDpA0oEhiYtPXnBqAv5zpANVbiJY9K3Lbl8DQsxMt6SYou6PjYjWe2YlwD8sI+FqwrASME6Sh0QoyEFGE86/XRN5wzk1kh/KfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U0OwhQEmRsP2XRm0LX3N58pXT23MBqA9cK3c58g0Ics=;
- b=qa5dvo/tD82itL3teFY4Bma+gZe1XNkT1znEGQhaGepvnpugm8wddSsNb35fl1j69AXBm1GPiiAYxQNmGYPe/5TFVilsPxkKXNo8DFARfxHUIBNUEdJqqwhBzg6BuSHYd83RNPv98xu5zaBaQ7uOZObDkq1We84DjFknkJeEcZR++uSunFPEJCteS9z8JR65ZBBYZvz3/9dzBz2hgaqbnF88vUGs1mOH+thz5M2gXmY1zT35RBLl+EZIDITQ8CAHxZhsnoyJWuVo/CTJ6Z4TA9T2h9Tkp4R1JJ0xOKrUwKNU0Fp6SSC70UQZd+frsBk2LGLSJutdcs/sA+my4bLCRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by PH3PPF5D8CD6E8B.namprd11.prod.outlook.com (2603:10b6:518:1::d25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 12:50:41 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 12:50:41 +0000
-Message-ID: <3b1e917d-52df-4b9c-8839-a4b65758b4e6@intel.com>
-Date: Mon, 20 Jul 2026 14:48:13 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] idpf: add flow-based XDP
- fallback for FWs without Tx FIFO support
-To: <intel-wired-lan@lists.osuosl.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <nxne.cnse.osdt.itp.upstreaming@intel.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260708151327.1091570-1-aleksander.lobakin@intel.com>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260708151327.1091570-1-aleksander.lobakin@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR04CA0133.eurprd04.prod.outlook.com
- (2603:10a6:803:f0::31) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+ 15.2.1544.36; Mon, 20 Jul 2026 20:53:44 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
+	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, Mohsin Bashir <mohsin.bashr@gmail.com>, Dimitri
+ Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
+	<hramamurthy@google.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v11 0/5] net: hinic3: PF initialization
+Date: Mon, 20 Jul 2026 20:53:33 +0800
+Message-ID: <cover.1784538912.git.root@localhost.localdomain>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH3PPF5D8CD6E8B:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9f2f83a-0b37-47f8-17d4-08dee65d812d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info: ghnpAAit2qo9EZl4zVG7CAj+1VEu2YXo/c7Uenxhbs1FXrPJiqaLe+PWvEFCpLyrOj+ac3xSmKZBhMuG/aWXrn12QRH8MYJhcS0h7tX19xyxyfdKvuYN+2+Pt/JferVe5flpkFSsVTnaQyWr+q0g4wvAz41TJ2taahykDGY+qi97hKTOXqMRlVTphS/RY6mS3n6qCQfSqaTcg+gRkNHDvwT95+ctjUTIfmq+bD8wXnTSY6NqxWRgtZNfjIC3aKYmptGiGfp6nTO/GUEpQoGxJH2tjYOllQzMxrL3RudjE1sqLQ/hCiBr2/ihy+5zwPd+VeOZDoTPj5013l/dMQGmTE5AQDBynX/JZAXuJq5mdqYEXWWHuTA/F9xDpOwb/hsed1HBniWCngpj4VAP/+CCAn+8aM4CkOuiy6dDGbAW5gX4bL/uKGWVzl8NNaxzD5RQfPx+Vrvd2H9+HzS1cVkMy9KG7vPb0sHZHLD95Ms70n6L2pmPZYo10xipGUkprY9zgRVpMvpTrmlj3vFyUW/nAWT4fJYy/EyfRZPJHl0DqXLJWd4QHFNdIxYwhvx6rXmK2ps8qw+9yryxAEUttf2S999nPM7MG7s+23HdadCQH7cWNiUnlA93aMuGNaWrM1O7MhHrmWSOTy7VCVw5DEeMAIlnsLaGw9fHr7Zc9vs6CCE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUJXYm5odVRKNGdDVVlpY3NqOFdPRFl5bzA1NzZIS0Q5TWZuMGNTMEdJVkFs?=
- =?utf-8?B?WG5MZEdMYkFrcU9zRldEUnRFQk1OV2hIaVlpMllxblVtaFRoOFkxQUlGZGlY?=
- =?utf-8?B?b2ZwWkU4R01PYjBKZ0tlRFdWYloyQVhNbzczaThZanZwZXBzaXlyS3hkYXVz?=
- =?utf-8?B?cTk5ejk2Y1JCL1BRcDBGeTV0TGtNcUxieEpuMTgya0Q0MmVSMXJDN1dpZG5N?=
- =?utf-8?B?bTF4YWZmOUtSRmVTdW1sZ3ZrVzc2WHRkaHAxTE1Cd0tDS1ZjUG9MRVQrdmI2?=
- =?utf-8?B?SEltYlRsY0ZmN3lNMzlqamtMT3NwbW1LWEtLbW9LcENtRXhvcmV6RHRCeVgx?=
- =?utf-8?B?VVBkeDZXd25DenRtTkdodVFSVlNQNUJtTHJGelNhQ3p4V3BiakJKWCtHVVRJ?=
- =?utf-8?B?YzVZeXJQbEJ5Z0FUN0tLUFJSbVZrc3FvREh6b0VseEtFY3VubllQdHBBMnR1?=
- =?utf-8?B?OUFrSHk4U1V3dzBybVE5WE1GVjJ4YU50aVNLSXlrSUdEaGV5WEQ0b3pmMG5v?=
- =?utf-8?B?WHFvWSt5SXJ6aFZpRGQzZ0xwYTdkUVRzaVRONlpVSVFMbGJyOXM0azZDMTZW?=
- =?utf-8?B?RXNYT1R5RWsvWDNHNjcxY1FCRW1wNGxHUk4yQU1BdjFFMy9Za0dQTGJ2M2JE?=
- =?utf-8?B?Z0w4K2o1RDVUTVplOXY0K002a1E0YnZvQkdyNDBUYk8reTVTSVRyWm00bkhV?=
- =?utf-8?B?ZE1PV2hUQTBhT0EyTnJ5VkwrTGkxWFN5SFpGd055RVJ0NmVrc0VhUllUSWZF?=
- =?utf-8?B?bVNhaDdReS9MZWE0dTBqYnZKMk5oZ3VUdEwrL1VURWZWUWRGVTlTMWdxZXpY?=
- =?utf-8?B?VEgzSzNweFJ1WXErNVFqT2toeEVhK1A2YnRlVUZpcEY0VjlTZHFZcVVjekxw?=
- =?utf-8?B?MHpzMFczUHMzZGI5K3RZYnpvajVCTVFIdmNWNG1QdGM4TXRzRUdYbVU4WVlh?=
- =?utf-8?B?TjAza2V2bmtDUlREZUxRbXNIVG5wLzhWenZQYytpTTVKd3pCUnJ1emVCb0po?=
- =?utf-8?B?ZGtKSVVqUlRwTHVvRUxSdXE3Mm4zdVo1cGNrNlVQSXhzTGtOSkRuc1lkaXhr?=
- =?utf-8?B?WXVhamlzRzNFYTJ5cVdUeXFQVk0vNUxxekIwRDRlU0xsM0lHa1JKR0NNdHlW?=
- =?utf-8?B?WVFhMzBBTnBHMjJCU3Qwb1hoRkE5ZlRrTmdLRHhLQW45NnpIOUlReXNNblEr?=
- =?utf-8?B?T1lOS0NGSDV4Wkk4WUxRRmVwY1kwOU83bHgvYm1QSUE2NEZ0VTNCWkxVcEt0?=
- =?utf-8?B?OE82bnc2S2I5ZldDcXhIb1BwNzhlV0NlZ3VKalpESFUxOXVHS3V1YVBkZFFN?=
- =?utf-8?B?eHIwWm9aM0NRNktDWE9aV1MwQVQ3d3BFd0VkU0JwVnJ4ZDA5d25jZXRKY3pP?=
- =?utf-8?B?a3R0SCtFazNYT2dhajBXQ2FXS1dzY0Y4UXRWaHNPRUJpMTlsTlE0YjVkUTJX?=
- =?utf-8?B?ZHh4VkpveG9NUWhFMFczT0txT3VmM0lSN3czQzROQXRiRzNsTytKeEZCbDhQ?=
- =?utf-8?B?S0ZWcVRhS2Q0b21TZFBSYXpTcnZ5Mm5DSzVuSmZlTjdnWTJUQnJqZDVXVlVS?=
- =?utf-8?B?RWJEV0hpR3laeFZnejhZSWNEb1ljdGpoYURVaWVhVEd2RzFLb1NPOGxoaU1l?=
- =?utf-8?B?Z0xKYnBkeTJSd0lZMkJWU1FvSWNpSjA5NXdzSVhsdTZwM0pvbGRGcnFKNDh0?=
- =?utf-8?B?a3dDeXFETExyL3BPNWo3MFhnblhXVDJmUDY4ZUZhQTV1V1pCdVF2dkJnOXJZ?=
- =?utf-8?B?NUwxK0NaV0lJdW8vTGdmdTU4MmNsblVjSXZ5WFBRellhRzBYNk1PQmQrQzY2?=
- =?utf-8?B?RHJOdVBCR2hXcmVBTEZlcTJRaEdTUzA3RXNhQXBDd2cvMzkyWmlSVm9Qc1hm?=
- =?utf-8?B?MnZob2wrL21aVTgyWm1pc3JiYm1qR1JRWndoTzRmeW9qb2ovVEdMYVNyL09m?=
- =?utf-8?B?NlRwWFZ0MVBsUXBVQlBqQWl6TkdTaGQ1VlI2aG5mMDh6aTgrNGlGcTRBanBa?=
- =?utf-8?B?dmQ3T2Q5NURvNDhjRFhsdFl5N2QxeUVobUdVVHhocGZvdmpmeGFzTTJkc0Nv?=
- =?utf-8?B?eDZEQVVnUDY5WnYyZmJ6OUlqeERHZmtxV0x5elRDdWhKeTc2RjVmc3JCVzVl?=
- =?utf-8?B?N3ZOcExtSE5FSDdHanZSb2hESnMvdnZNNHQ1WHRkSFBxQ1hqNnIrYzh2NXNV?=
- =?utf-8?B?MFBVOElib3JtR1pCVkl0NTQ1UVRrRmNCRGdDQndLRVNQWXZQYVY4UHdVUmIr?=
- =?utf-8?B?akl5UWNobG9kRjZ2ZG5lN2xiaVBEVEZZT0NTcWNmUXcxdEpPaDMrUE1zUWh3?=
- =?utf-8?B?TWxERTBNQ0dTRGxvYlJGUk9vT05aTzZKam9CVXc0YkxDYTZQRFRsYkFOUGhl?=
- =?utf-8?Q?gZnWagz8V6KohHj4=3D?=
-X-Exchange-RoutingPolicyChecked: q3JSYWkETATbwDjAiSZBAabQ7DmUr2IMfiLL943k8OGnzTjckwi2gK9RGxEfd45v6++gm9aoV3VNXkPxKV5NTtiGCwQ/A9zCc6zj2GCf4Fy1WZMylJG+NWZtfmv7MsjbKdP8o0PJukiuL3pgNJjCqC/YWsvdoCxD/EXql8nt5RqgB2no5977+q4uXjsXNb3exAQ0WR6wDXD+7h1exESclnvwxf7CDxGX6zjCAC94YnBuACMmmf+rekmGVEu89iCwS+DMtH7b5/63Vaf2hm/VIca4RJEjKjkzWiRwZLIpbV2uQPtIQUa48LiwveN+lNTxWsQIai6OYxkEOjV06ocJLQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9f2f83a-0b37-47f8-17d4-08dee65d812d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 12:50:40.9929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WPQj4SBiK7PcR5J6b07ahlGXACjSFRT7vPxP2XzGKvaxH3yx+9SvbBPQ4vpe5blvSZXkyBB2+yYRUai7PY+s9E1ARLxRlDAerQfg8ES2Ku8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF5D8CD6E8B
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Date: Wed,  8 Jul 2026 17:13:27 +0200
+From: Super User <root@localhost.localdomain>
 
-> From the first days of XDP implementation in idpf, it relied and
-> worked solely on top of the queue-based scheduling Tx mode, which
-> basically means simple FIFO. However, turned out not every firmware
-> supports this mode and XDP doesn't work there at all.
-Ok I'm back from the conferences.
+This is [3/3] part of hinic3 Ethernet driver second submission.
+With this patch hinic3 becomes a complete Ethernet driver with
+pf and vf.
 
-I need to take a look at Sashiko's feedback, some pieces seem to make sense.
+Add 20 ethtool ops for information of queue, rss, coalesce and eth data.
+Add MTU size validation
+Config netdev watchdog timeout.
+Remove unneed coalesce parameters.
 
-Thanks,
-Olek
+Changes:
+
+PATCH 03 V01: https://lore.kernel.org/netdev/cover.1773387649.git.zhuyikai1@h-partners.com/
+* Add rmon/pause/phy/mac/ctrl stats (Ioana Ciornei)
+
+PATCH 03 V02: https://lore.kernel.org/netdev/cover.1774684571.git.zhuyikai1@h-partners.com/
+* Modify "return -EINVAL" intension problem (AI review)
+* Use le16_to_cpu for rss_indir pair.out->buf (AI review)
+* Use u32 instead of int in coalesce_limits to avoid overflow (AI review)
+* Remove redundant u64_stats_update_begin/end when reading stats without
+  concurrent reader (AI review)
+* Modify nic_dev->stats.syncp logic (AI review)
+* Complete rxq/txq stats stats fileds in hinic3_rx/txq_get_stats (AI review)
+* Remove statistics values in rtnl_link_stats64 from ethtool statistics
+  values (AI review)
+* Add channel_cfg_lock & channel_res_lock to protect resources access (AI review)
+* Remove OutOfRangeLengthField, FrameToolong and InRangeLengthErrors (Ioana Ciornei)
+* Remove redundant mtu commit (Maxime Chevialler)
+
+PATCH 03 V03: https://lore.kernel.org/netdev/cover.1774940117.git.zhuyikai1@h-partners.com/
+* Change unnedd to unneeded (AI review)
+* Remove packets,bytes,errors and dropped in hinic3_rx/tx_queue_stats (AI review)
+* Remove duplicated entried in hinic3_port_stats[] (AI review)
+* change stats_info.head.status to ps->head.status (AI review)
+
+PATCH 03 V04: https://lore.kernel.org/netdev/cover.1775618797.git.zhuyikai1@h-partners.com/
+* Remove restore_drop_sge in hinic3_rx_queue_stats (AI review)
+* Remove hinic3_nic_stats (AI review)
+* Use old_q_param to store old config and use it in error handling (Mohsin Bashir)
+* Add netdev_info to inform the user that depth is trimmed (Mohsin Bashir)
+* Remove const in hinic3_get_qp_stats_strings parameters (Mohsin Bashir)
+* Change EOPNOTSUPP to ERANGE in is_coalesce_exceed_limit (Mohsin Bashir)
+* Update nic_dev->rss_type after hinic3_set_rss_type (Mohsin Bashir)
+* Modify MGMT_STATUS_CMD_UNSUPPORTED to EOPNOTSUPP for complying with the
+  error code specifications (Mohsin Bashir)
+
+PATCH 03 V05: https://lore.kernel.org/netdev/cover.1775711066.git.zhuyikai1@h-partners.com/
+* Clear HINIC3_CHANGE_RES_INVALID bit in error handling (AI review)
+* Use low >= high to avoid low=high in is_coalesce_legal (AI review)
+* As tx and rx share interrupts, we only use ETHTOOL_COALESCE_RX_USECS for
+user setting to avoid user misunderstanding. So we do not add
+ETHTOOL_COALESCE_TX_USECS. (Mohsin Bashir & AI review)
+
+PATCH 03 V06: https://lore.kernel.org/netdev/cover.1779867397.git.zhuyikai1@h-partners.com/
+* Remove redundant rx_jumbo_pending and rx_mini_pending judgement (Jakub Kicinski)
+* Remove redundant max tx_pending judgement when .get_ringparam already got the
+   max value (Jakub Kicinski)
+* Use extack instead of netdev_err/netdev_info/netdev_warning (Jakub Kicinski)
+* Remove HINIC3_CHANNEL_RES_VALID and only use HINIC3_CHANGE_RES_INVALID
+  bit (Jakub Kicinski)
+* Deference freed pointers in hinic3_change_channel_settings error
+  handling (Jakub Kicinski)
+* Modify hinic3_open_channel (Jakub Kicinski)
+
+PATCH 03 V07: https://lore.kernel.org/netdev/cover.1779940072.git.zhuyikai1@h-partners.com/
+* Remove the trailing '\n' in NL_SET_ERR_MSG* (Jakub Kicinski)
+
+PATCH 03 V08: https://lore.kernel.org/netdev/cover.1780907605.git.wudi234@huawei.com/
+* Update patch commit to be more accurate for change information (AI review)
+* Modify <net/devlink.h> to <linux/netlink.h> (AI review)
+* Use sq/rq_depth instead of rx/txqs[0].q_depth (AI review)
+* hinic3_change_channel_settings() runs under change_res_mutex
+  to protect dynamic channel updates (AI review)
+* hinic3_close() serializes close and channel reconfiguration paths (AI review)
+* Remove useless u64_stats_init in hinic3_get_drv_queue_stats() (AI review)
+* hinic3_get_drv_queue_stats() fills rxq stats at correct idx
+  when txq is null (AI review)
+* Remove unnecessary semicolons after the closing bracket of
+  static inline functions (AI review)
+* Disable preemption in hinic3_rx_fill_buffers() (AI review)
+* Add spinlock to protect per-queue coalesce parameters from
+  concurrent access (AI review)
+* Reject static coalesce config when adaptive RX coalesce is
+  enabled (AI review)
+* Validate interface state and queue ID before modifying coalesce
+  parameters (AI review)
+* Differentiate get_coalesce output for adaptive/static modes and
+  zero-fill the struct (AI review)
+* Return -ERANGE for invalid coalesce frame limits and simplify
+  error message (AI review)
+* Remove unused watchdog timeout definition and assignment (AI review)
+* Return -EOPNOTSUPP when RSS type query is unsupported by firmware (AI review)
+* Reject L4 hash bits for pure L3 flow types (AI review)
+* Split RSS type conversion to correctly handle L3-only flows (AI review)
+* Reprogram RSS indir table and HW parameters after channel count
+  changes (AI review)
+* Propagate exact error code from channel parameter validation (AI review)
+* Update SW RSS indir copy only after HW programming succeeds (AI review)
+* Program RSS hash type to HW before updating SW state to prevent
+  inconsistency (AI review)
+
+PATCH 03 V09: https://lore.kernel.org/netdev/cover.1781062575.git.wudi234@huawei.com/
+* Remove useless messages in hinic3_set_ringparam() (Jakub Kicinski)
+* Solve the big-endian and little-endian issue (Jakub Kicinski)
+
+PATCH 03 V10: https://lore.kernel.org/netdev/cover.1782718232.git.wudi234@huawei.com/
+* Unify 3 mutex in struct hinic3_nic_dev: port_state_mutex, change_res_mutex,
+  coal_lock.
+* Correct copy-paste error in hinic3_get_ringparam() (AI Review and
+  Harshitha Ramamurthy)
+* hinic3_set_interrupt_moder() now compare q_id and num_qps inside mutex lock
+  (AI Review)
+* Error branches in hinic3_link_status_change() goto unlock mutex before return
+  (AI Review)
+* In hinic3_change_channel_settings(), hinic3_config_num_qps() and
+  hinic3_alloc_channel_resources() now run inside mutex lock. (AI Review)
+* Call hinic3_free_qp_ctxts() in error paths of hinic3_open_channel(),
+  thus hinic3_change_channel_settings() don't call it in error path (AI Review)
+* Unset HINIC3_INTF_UP during close and reopen in hinic3_change_channel_settings
+* hinic3_change_channel_settings() restore previous resources before freeing
+  new_qp_params (AI Review)
+* Delete unused macro HINIC3_LRO_PKT_HDR_LEN (AI Review)
+* Drop packets when skb_checksum_help() return error (AI Review)
+* Use rxq->q_mask instead of rxq->q_depth - 1 in hinic3_configure_rxqs()
+  (Dimitri Daskalakis)
+* Clarify extack error message in hinic3_check_ringparam_valid()
+  (Harshitha Ramamurthy)
+* Use rounddown_pow_of_two() instead of 1U << ilog2() in hinic3_set_ringparam()
+  for readability. (Harshitha Ramamurthy)
+* Protect interrupt coalesce parameter reads with state_lock to prevent data
+  races(AI Review)
+* Restore previous coalesce parameters on HW configuration failure (AI Review)
+* Always report all coalesce parameters regardless of adaptive mode (AI Review)
+* Safely stop DIM work when disabling adaptive RX coalescing (AI Review)
+* Change coalesce disabled message from extack error to info log (AI Review)
+* Implement dedicated get_rx_ring_count ethtool operation (Dimitri Daskalakis)
+* Pass new RSS hash type to HW instead of the old one (AI Review)
+* Initialize default RSS indirection table before HW programming when not
+  user-configured(AI Review)
+* Revert queue count on RSS reprogramming failure (AI Review)
+* Use sizeof for RSS indirection table copy to prevent size mismatch (AI Review)
+
+PATCH 03 V11:
+* Remove state_lock in hinic3_set_interrupt_moder() and
+  hinic3_link_status_change() (Andrew Lunn and AI Review)
+* In hinic3_change_channel_settings(), cur_trxq_params is read after taking lock,
+  and get symmetrically restored when alloc resources failed. (AI Review)
+* Remove preempt_disable()/preempt_enable() pairs in hinic3_rx_fill_buffers().
+  (AI Review)
+* Add a comment about csum_err, and rewrite its judgement in hinic3_rx_csum().
+  (AI Review)
+* Rollback hash function type to previous state if setting RSS indirection
+  table or key fails (AI Review)
+* Allow users to disable L3 hashing for IPV4/IPV6 flows by properly handling
+  empty hash tuple in ethtool (AI Review)
+* Update software queue coalesce state only after successful hardware
+  configuration to avoid manual rollback (AI Review)
+* Use READ_ONCE and WRITE_ONCE for adaptive_rx_coal to ensure safe
+  concurrent memory access (AI Review)
+* Reset RX queue DIM state to DIM_START_MEASURE when canceling
+  adaptive RX coalescing work (AI Review)
+* Remove unnecessary state_lock mutexes when reading queue coalesce
+  parameters in IRQ and update paths (AI Review)
+* Rename is_coalesce_legal to hinic3_validate_coalesce for better code
+  readability and naming consistency (AI Review)
+
+Fan Gong (5):
+  hinic3: Add ethtool queue ops
+  hinic3: Add ethtool statistic ops
+  hinic3: Add ethtool coalesce ops
+  hinic3: Add ethtool rss ops
+  hinic3: Remove unneeded coalesce parameters
+
+ .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 870 +++++++++++++++++-
+ .../ethernet/huawei/hinic3/hinic3_hw_intf.h   |  11 +
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   |  18 +-
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |   6 +-
+ .../huawei/hinic3/hinic3_mgmt_interface.h     |  39 +
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 106 ++-
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  64 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 109 +++
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |  11 +-
+ .../ethernet/huawei/hinic3/hinic3_nic_io.c    |   4 +-
+ .../ethernet/huawei/hinic3/hinic3_nic_io.h    |   8 +-
+ .../net/ethernet/huawei/hinic3/hinic3_rss.c   | 561 ++++++++++-
+ .../net/ethernet/huawei/hinic3/hinic3_rss.h   |  20 +
+ .../net/ethernet/huawei/hinic3/hinic3_rx.c    |  71 +-
+ .../net/ethernet/huawei/hinic3/hinic3_rx.h    |  18 +-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    |  69 +-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.h    |   2 +
+ 17 files changed, 1942 insertions(+), 45 deletions(-)
+
+
+base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
+-- 
+2.54.0
+
