@@ -1,142 +1,300 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159325742F
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 08:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058C63BB677;
+	Tue, 21 Jul 2026 09:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784624372; cv=none; b=C0r9rxzjL/84SgJfzz3SdmJffWszgZzDa136ACGpC4h+JeA9cuRF14WUxXYP4jodKcy7tq/ul1uX5fkdJ00f91Qo3ej4UBpbqMZJPv95m2a5j97wln5HYIvxZ1Cd/6UcwhvMSNiTW7XU4BcZjHrUHVdXHxLeASv/immVU0hIh7E=
+	t=1784624427; cv=none; b=ikx7Lne1rMXqXPWwo/viOj3pwXoeI8tHOQccOR6/XnobYkyKHF5w9fW4NYvEYzxSZ/5shMzdz6MymuQin3G4x62ugv8iie2Chl6XkyMT/S/F5hpz3WV/vkWWNddeV5uD3Z+pV7GovJIXtHLTGJsF12C4eWelc2OX0Ax8pT3ZCf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784624372; c=relaxed/simple;
-	bh=k0f45oBFvTFVQ7DC9wNPB7+X1+zqtJC1vUVZ0bQIPco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HZlS9u6QBStwnDMVuETngFbhAxf/9QAEBmPkJsjZIa2ZKE3RiJDmNdegJKcyL3j+Oxwnan6iIr5lrUi4y5J1Er0WsRvp2q8woJ1P8xkVoktBF4JFSmRVwg0sjfDgdHJf8FobrIZi34B/LrGlb3nJOLJBgjSeSc4o7/XcZHhSnLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jHP4cCHj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JAgQxPVp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784624427; c=relaxed/simple;
+	bh=SfgpNjJBpGOAUA1VWA4sklyoOuwx62du8iHNp5+NBiQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=s2o0zUdyl4F78IoAWEHrFtVNMzTyYNatd6ctHh3x6zyCfvR+ZcXhh4IP3vHGJpnz6y3LhxpYhYJOFZmOo20/Rv0IQ3zpES1foZdGTpRj7FHBGiR7oCrX7OpKyOltuDey9WRLnqZDTaF58eaBxn+US7Jey6OPXaKiwP5hpDslcAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=SOsGojSc; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jHP4cCHj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JAgQxPVp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784624369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J3gpPYDHGVj6XHuBG4h3W49mnL8L+Vd3EyCXTTEn/KM=;
-	b=jHP4cCHj9MwRLZpgVK40ai7CUpAoKJ1MqUlmyS4d3vAkzhnqo16qywKgI1fqDOXVif3n6A
-	k5ceto0baZiJc83QoQe0ZXJYWjl/x6v9piebkRVeuUL2BsffK/E7AT5/kZc6aqv0ZYH/tv
-	mq9v7dtIDpML2LFRsvg4Z0zr3Sj7Fyc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-xiunKhlmOoqeYIt-lea46g-1; Tue, 21 Jul 2026 04:59:27 -0400
-X-MC-Unique: xiunKhlmOoqeYIt-lea46g-1
-X-Mimecast-MFC-AGG-ID: xiunKhlmOoqeYIt-lea46g_1784624366
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4954fd771baso15744305e9.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:59:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784624366; x=1785229166; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J3gpPYDHGVj6XHuBG4h3W49mnL8L+Vd3EyCXTTEn/KM=;
-        b=JAgQxPVphPi0SPde7V3cKMRvK0/hjhVL8THVps549OrLUkhozeqH2qJUGIffq+1R1E
-         h+epYYz7HkQuuGiI4/ywsIam/DfEp8BwHHhJ/Lb7PcLTSWcMVqHLFpIA1dQFo9tlZ5D/
-         xAIX24xrpD92g/P+c0+o2jDijDRoKtaiJbsa+j/diQ6X7M20wsphi0Rt/vflhAYkSk+z
-         3zIJm/mbNfP3l50xRhZTCxII/c0tystjRUeEknMSqkHkWlVBvGa7cOaWUmjuy+wFaBEg
-         eiE3efZ64hDvR3bVGPsWEalyPF38BptV/7JwIqN2Jy2nDiXBfUaQHE5vT6MXkyGqyERZ
-         Gu8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784624366; x=1785229166;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J3gpPYDHGVj6XHuBG4h3W49mnL8L+Vd3EyCXTTEn/KM=;
-        b=SxGdcqh16VBWwghRecgibinQ1BbRdb8SFgVwLQIe/SQRBYlZB2s2nTntEKJk89JlVd
-         oYb9UL60hQCtNzeVvF9H6vlbguJEVnjQjfYvoL4nhDGaPkuvMVTiA0cP3KctMpXmG3ie
-         esed7mxDHO6UHK5TcD0zZXnn5Qk0zfDaXv72Vg6wAwkS6U5EsuH7uyPb9bIEoK/+7kEF
-         gX+GBCQyi4EZOSvrn46NEUGh1GPvllN6Sk8hjE3RR85GVuEoIDGWa19zt+VIK6VgHaxV
-         2uq6BTJU4Mw9b2VBzLGvxM6ePwBSmKPwiYpE36O63sn/beeDPsX6l08eLUMPibl7uyVn
-         9pxA==
-X-Forwarded-Encrypted: i=1; AHgh+RrFwTqLMlb7ZQmWCq160pB7q+C0xh8E1GmfsIB/2cS7pMUlz7i+2ff7tq9z0WuQ4wEYs6+oW64=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0gG7Qs/MVtbHjtKWJxJjDGaBd1eZT7mERDdLhcgIRBulXIVur
-	nwjzKryzJSObBrjbbPKvZlPPg3bbqDXpOPGffww2bS3a5HSU4zt3rJZpbBBwWf1jut9hksEuR52
-	fa+d10AeaPbmBM1HonKm/670becm4uutHIhr4px8joIiewPlNBmeoWoF+DA==
-X-Gm-Gg: AfdE7cnC8bMwQSda09lWQGdCMrjcJQUJB2mDzIQ2zBgs5EJBQmILHNi4kuO/OX42NBu
-	KsxE9VbOxTTvi7Au59Rn0RuZSUlabljt8AXuCvVAnHH/QSaKxN2tpZNNKK3/QMT4cfQmIGmh3rO
-	wjTO/bsyxH8LU2//ONMOSfs36fS5fUBfkZl7Us75U+K5YjWCd1HWm8RCsQMeO90eWA0f7n52nd9
-	90QIlV4tpVKO8d50Azdhv0+FsVwRAdLxbKOJ75zId8WdSjc+nH1XoOVsgcHvt8uJ1j2rRV5XLrx
-	2ZClbZCEiS5HJwLGlRyWMfpcdvXtcSoQiTaSkIcPGoBXlkXw0pkELMh2KbL401KhAOsPWZu8hUD
-	9QxK/05Ztsn9yxUPQbVvMsTTY5oDUFhWY89EI9FxKUz4FwjANLnNBbItw5KukUdTumCryQimDGL
-	DBfg==
-X-Received: by 2002:a05:600c:b8a:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-4954a33dc55mr185849405e9.16.1784624366486;
-        Tue, 21 Jul 2026 01:59:26 -0700 (PDT)
-X-Received: by 2002:a05:600c:b8a:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-4954a33dc55mr185849115e9.16.1784624365992;
-        Tue, 21 Jul 2026 01:59:25 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49565373200sm51129795e9.5.2026.07.21.01.59.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 01:59:25 -0700 (PDT)
-Message-ID: <0db18429-58f5-46de-8cb4-0a934ff4d650@redhat.com>
-Date: Tue, 21 Jul 2026 10:59:24 +0200
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="SOsGojSc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784624370;
+	bh=kolMI9/8OMm8eQLS5pVy6hbx4v4QIt3/T+M/ew+F7b0=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=SOsGojScWPKfABsXGlcttoWj5ksqGK1lM94CYGNq4r/8+wTCxuM18y/knqYtPw75a
+	 q83qziX4TKX5poEHO3UeDutDIoK7ZpCxpUlA5INiQLXyFJukPEHnUW99/TU4ul9ue/
+	 fW1EHvxN3SMXzH8oanQrSdKCinaQqOMX2LS3liho=
+X-QQ-mid: esmtpsz16t1784624350t8097b608
+X-QQ-Originating-IP: sjP3PXbugXavF8Gchw0r7oXDnXxIofN9aUZczEtshfM=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 21 Jul 2026 16:59:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 723668688038499813
+EX-QQ-RecipientCnt: 11
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: horms@kernel.org,
+	madalin.bucur@nxp.com,
+	sean.anderson@linux.dev
+Cc: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	ZhaoJinming <zhaojinming@uniontech.com>
+Subject: [PATCH net v2 1/2] net: fman: move IRQ registration after init to prevent NULL deref and UAF
+Date: Tue, 21 Jul 2026 16:58:40 +0800
+Message-Id: <20260721085841.488088-2-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260721085841.488088-1-zhaojinming@uniontech.com>
+References: <20260709145221.1564906-3-horms@kernel.org>
+ <20260721085841.488088-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: hsr: fix memory leak on slave unregistration by
- removing synced VLANs
-To: Jakub Kicinski <kuba@kernel.org>,
- Fernando Fernandez Mancera <fmancera@suse.de>,
- Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Simon Horman
- <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+456957213f32970c0762@syzkaller.appspotmail.com
-References: <20260707082327.3238690-1-edumazet@google.com>
- <178406192459.16306.5204629050926533917.b4-review@b4>
- <20260720181259.4e5f976f@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260720181259.4e5f976f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: MZChPk4K8ikNuhSGWHG563dFJYOCBYIhJDDiOm+k6mh/lQl07/3mZ3M1
+	BvKsR4bsbs/qIsow9fXnnIh5FIuPgR94gEYC9FForLW2obtP4t2FtBQyQka9GUnZjxStQ2c
+	3N+6noJaGCZGdndHdsDkBFF+LT9i2ALzk6X/sivmHdE9AngKzeHZ9m9HuEId78UllCfJudo
+	SWM7pf8vmHnaRw2ofjP9DutDVKp6rA+RLPSiY95L78ghkC9++D9GF0jw9mKqaOD1SAf9M2+
+	VWo8pYGHb8bq1TFc5mHthSmza7BvCmYkGywkFLlZo+yzRRX8qRUcEG07r4LpWt8uUSQWfO2
+	AKS53D/HI0rch0uCVkG1ajNhRgHhBM+M9u2ZENNVOqqdQ4vqEWdoMwin1u44hYIOxIL+0xs
+	1fcWxOaPg8CcPnSngcwGNb1XDHxDgiEUgT/JdPVYdkbTJ0+LuhkLuvdqs+u657cUOTlShhQ
+	IC0tncZ5G0q9KJ+5Lvv/XdO5Hzd0LDthGATgD4LEyXbZ1hjZP54lJnZqV4djZ5uiJiWSrzs
+	dDoUPt8i9aD4DGjlbjZ8/PyyudDzbBdqWQ0lrGTcjFvuVqHgaKx70jY0UZNLybfAfen76d5
+	i3TRomQ8XD/3viyBiVNtgGWQtLNBD+p6UAmjHPEoOdDbDV+J0FmltSvmdtBIZ2AQdVVbJHJ
+	foKyxBM0Eq7zBc4aDlMpIlVEi09+XDxmBlVk9itTBHaL7f9k62sLTX6JGOAR167hWzSa0Jt
+	3GblCcf/2+g0L0T/I40dGv9IUzS0/hFeYZPcPejRJR0b0JexQJwbGuoNlkXrIKCmlerDFyj
+	xJCA9jJx2TWrODoFaDzEWGqdojlKNI6fC6TV2na6S+MBhRAJQoYyU2vqWUgywXPybYYNWeS
+	WXAglRR3Ei07teUHKeE9PWsV/5EpIetRK3j9zZFLi9mNqvkWWuiF47Sw9w1n+jPXvMWQ91h
+	WFVTK9GMF5N9hH9GU/DSRUfJLOtsCzz+pfmammvL5NoHTdPv5u+5+MIIBb7C3YT1ScpnsdZ
+	WqTzeKoQPpe+Vk3tP5qYqDR/PGOWKJHq5/LlMBD6ZUay13VEIH+FELXt3UfwqbRVY+pSZxo
+	A==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 
-On 7/21/26 3:12 AM, Jakub Kicinski wrote:
-> On Tue, 14 Jul 2026 22:45:24 +0200 Fernando Fernandez Mancera wrote:
->>> When an HSR master device is brought UP, it auto-adds VLAN 0 via
->>> vlan_vid0_add(), which propagates VID 0 to its slave devices.
->>>
->>> If a slave device is later unregistered while HSR is active (e.g., during
->>> netns cleanup or interface destruction), hsr_del_port() is called to
->>> detach the slave port from the HSR master. However, hsr_del_port() currently
->>> does not delete the VLAN IDs that were synced to the slave device by HSR.
->>>
->>> As a result, the slave device retains a refcount on VID 0 (and any other
->>> synced VLANs). When the slave device is destroyed, its vlan_info /
->>> vlan_vid_info structure remains allocated, leading to a memory leak.
->>>
->>> Fix this by calling vlan_vids_del_by_dev(port->dev, master->dev) in
->>> hsr_del_port() before unlinking the slave device, matching the cleanup
->>> behavior in bonding and team drivers.
->>>
->>> Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
->>> Reported-by: syzbot+456957213f32970c0762@syzkaller.appspotmail.com
->>> Closes: https://lore.kernel.org/netdev/6a4cb6ca.57639fcc.86d58.000b.GAE@google.com/T/#u
->>> Signed-off-by: Eric Dumazet <edumazet@google.com>
->>
->> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> 
-> Just to confirm - is the sashiko review a false positive?
-> https://sashiko.dev/#/patchset/20260707082327.3238690-1-edumazet%40google.com
+read_dts_node() registers shared interrupt handlers via
+devm_request_irq() with fman as dev_id. Two bugs exist in the
+current code:
 
-I'm sorry, meanwhile PW archived the patch; a repost is needed.
+1) Pre-init NULL dereference: at registration time fman is only
+partially initialized -- kzalloc_obj() zero-initializes all fields,
+so fman->cfg and fman->fpm_regs are NULL. The handlers check
+is_init_done(fman->cfg) to guard against incomplete init, but
+is_init_done(NULL) returns true (intended to mean cfg was freed
+after successful init), so the guard is bypassed and fpm_regs is
+dereferenced. If another device on the same shared IRQ line fires
+during the window between devm_request_irq() and fman_init(), the
+handler accesses NULL fpm_regs via ioread32be(), causing a crash.
 
-Thanks,
+2) Use-after-free on probe failure: fman is allocated with
+kzalloc_obj() (not devm), so on error paths in read_dts_node()
+(ioremap failure, of_platform_populate failure) and fman_config(),
+kfree(fman) is called while the devm IRQ handlers remain
+registered. The driver core's subsequent devres_release_all() frees
+the IRQ handlers, but during the window between kfree(fman) and
+devm_free_irq(), a shared-IRQ spurious firing will dereference
+the already-freed fman.
 
-Paolo
+A previous attempt to fix issue #1 with an irq_ready flag protected
+by READ_ONCE()/WRITE_ONCE() is insufficient on weakly-ordered
+architectures. READ_ONCE()/WRITE_ONCE() only prevent compiler
+optimization; they do not provide the memory ordering guarantees
+(e.g., smp_store_release/smp_load_acquire) needed to ensure that
+writes to register pointers are visible to the IRQ handler before
+it observes the flag as true.
+
+Fix both issues by moving devm_request_irq() out of read_dts_node()
+and into fman_probe(), after both fman_config() and fman_init()
+have completed. This eliminates both race windows: by the time the
+handlers are registered, all register pointers are initialized
+(preventing the NULL dereference), and since fman is never freed
+after this point, the use-after-free cannot occur either.
+
+Additionally, defer the hardware enable() call to after IRQ
+registration to prevent a potential interrupt storm on the shared
+IRQ line. Previously, fman_init() called enable() to activate the
+hardware before the IRQ handler was registered. If the hardware
+asserted an interrupt in this window, no handler would be present
+to clear it, potentially causing the shared IRQ line to be
+permanently disabled. Now, enable() is called after all handlers
+are registered and the is_init_done guard is valid, so the handler
+is always ready to service interrupts when the hardware is active.
+
+Change enable() to read qmi_def_tnums_thresh from fman->state
+instead of fman->cfg, since cfg is freed before enable() is called.
+
+Add an 'irq' field to struct fman_dts_params so that the primary IRQ
+number parsed in read_dts_node() is available to fman_probe().
+
+v2:
+- move devm_request_irq() to fman_probe() after init (replaces
+  irq_ready + READ_ONCE approach from v1)
+- defer enable() to after IRQ registration to prevent interrupt
+  storm on shared IRQ line
+- supersede the separate UAF fix patch (v3), as this patch
+  resolves both issues in a single change
+
+Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
+Link: https://lore.kernel.org/netdev/20260626162323.GE1310988@horms.kernel.org/
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+---
+ drivers/net/ethernet/freescale/fman/fman.c | 78 +++++++++++++---------
+ drivers/net/ethernet/freescale/fman/fman.h |  1 +
+ 2 files changed, 49 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index 299bab043175..13913f152147 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -924,7 +924,7 @@ static void hwp_init(struct fman_hwp_regs __iomem *hwp_rg)
+ 	iowrite32be(HWP_RPIMAC_PEN, &hwp_rg->fmprrpimac);
+ }
+ 
+-static int enable(struct fman *fman, struct fman_cfg *cfg)
++static int enable(struct fman *fman)
+ {
+ 	u32 cfg_reg = 0;
+ 
+@@ -936,7 +936,8 @@ static int enable(struct fman *fman, struct fman_cfg *cfg)
+ 	cfg_reg = QMI_CFG_EN_COUNTERS;
+ 
+ 	/* Set enqueue and dequeue thresholds */
+-	cfg_reg |= (cfg->qmi_def_tnums_thresh << 8) | cfg->qmi_def_tnums_thresh;
++	cfg_reg |= (fman->state->qmi_def_tnums_thresh << 8) |
++		   fman->state->qmi_def_tnums_thresh;
+ 
+ 	iowrite32be(BMI_INIT_START, &fman->bmi_regs->fmbm_init);
+ 	iowrite32be(cfg_reg | QMI_CFG_ENQ_EN | QMI_CFG_DEQ_EN,
+@@ -2000,15 +2001,8 @@ static int fman_init(struct fman *fman)
+ 		return -EINVAL;
+ 	}
+ 
+-	err = enable(fman, cfg);
+-	if (err != 0)
+-		return err;
+-
+ 	enable_time_stamp(fman);
+ 
+-	kfree(fman->cfg);
+-	fman->cfg = NULL;
+-
+ 	return 0;
+ }
+ 
+@@ -2695,7 +2689,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
+ 	void __iomem *base_addr;
+ 	struct resource *res;
+ 	u32 val, range[2];
+-	int err, irq;
++	int err;
+ 	struct clk *clk;
+ 	u32 clk_rate;
+ 
+@@ -2717,7 +2711,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
+ 	err = platform_get_irq(of_dev, 0);
+ 	if (err < 0)
+ 		goto fman_node_put;
+-	irq = err;
++	fman->dts_params.irq = err;
+ 
+ 	/* Get the FM error interrupt */
+ 	err = platform_get_irq(of_dev, 1);
+@@ -2773,25 +2767,6 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
+ 
+ 	of_node_put(muram_node);
+ 
+-	err = devm_request_irq(&of_dev->dev, irq, fman_irq, IRQF_SHARED,
+-			       "fman", fman);
+-	if (err < 0) {
+-		dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
+-			__func__, irq, err);
+-		goto fman_free;
+-	}
+-
+-	if (fman->dts_params.err_irq != 0) {
+-		err = devm_request_irq(&of_dev->dev, fman->dts_params.err_irq,
+-				       fman_err_irq, IRQF_SHARED,
+-				       "fman-err", fman);
+-		if (err < 0) {
+-			dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
+-				__func__, fman->dts_params.err_irq, err);
+-			goto fman_free;
+-		}
+-	}
+-
+ 	base_addr = devm_platform_get_and_ioremap_resource(of_dev, 0, &res);
+ 	if (IS_ERR(base_addr)) {
+ 		err = PTR_ERR(base_addr);
+@@ -2848,6 +2823,49 @@ static int fman_probe(struct platform_device *of_dev)
+ 		return -EINVAL;
+ 	}
+ 
++	/* Register IRQ handlers only after initialization is complete.
++	 * This prevents two issues:
++	 * 1) Pre-init NULL dereference: is_init_done(NULL) returns true,
++	 *    so a shared-IRQ spurious firing before fpm_regs is set would
++	 *    dereference NULL.
++	 * 2) Use-after-free on probe failure: fman was kzalloc'd (not devm),
++	 *    so on error paths kfree(fman) ran before devm_free_irq, leaving
++	 *    a window where the handler could fire with a freed dev_id.
++	 * By registering here, both problems are eliminated.
++	 */
++	err = devm_request_irq(dev, fman->dts_params.irq, fman_irq,
++			       IRQF_SHARED, "fman", fman);
++	if (err < 0) {
++		dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
++			__func__, fman->dts_params.irq, err);
++		return err;
++	}
++
++	if (fman->dts_params.err_irq != 0) {
++		err = devm_request_irq(dev, fman->dts_params.err_irq,
++				       fman_err_irq, IRQF_SHARED,
++				       "fman-err", fman);
++		if (err < 0) {
++			dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
++				__func__, fman->dts_params.err_irq, err);
++			return err;
++		}
++	}
++
++	/* Free the config structure before enabling the hardware.
++	 * is_init_done() uses cfg == NULL to indicate init is complete,
++	 * so the IRQ handlers will properly process interrupts once
++	 * the hardware is enabled below.
++	 */
++	kfree(fman->cfg);
++	fman->cfg = NULL;
++
++	err = enable(fman);
++	if (err != 0) {
++		dev_err(dev, "%s: FMan enable failed\n", __func__);
++		return err;
++	}
++
+ 	if (fman->dts_params.err_irq == 0) {
+ 		fman_set_exception(fman, FMAN_EX_DMA_BUS_ERROR, false);
+ 		fman_set_exception(fman, FMAN_EX_DMA_READ_ECC, false);
+diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
+index 74eb62eba0d7..630d57c3144c 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.h
++++ b/drivers/net/ethernet/freescale/fman/fman.h
+@@ -286,6 +286,7 @@ struct fman_dts_params {
+ 	struct resource *res;                   /* FMan memory resource */
+ 	u8 id;                                  /* FMan ID */
+ 
++	int irq;                                /* FMan IRQ */
+ 	int err_irq;                            /* FMan Error IRQ */
+ 
+ 	u16 clk_freq;                           /* FMan clock freq (In Mhz) */
+-- 
+2.20.1
 
