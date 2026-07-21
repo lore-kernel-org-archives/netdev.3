@@ -1,170 +1,148 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5862435E950
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618943784C
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620656; cv=none; b=Y47pM6BryA/YaOp/PWgOxOpYRj601JPAYdLWfCmumNMM1ePrInN3e7TOljD++li0mQoujFVxZVpk5xCKWaG/y8jTbxVzMLlbLU4jLSjKNktGlzsbbHPqFuwjKFhA4bPYvsbahCqXPE8AwV2QyiLJA6whauOmB9q+hLezs3w/WrQ=
+	t=1784620681; cv=none; b=cT94s92v8YUbMS8odtVTudEYeWhb+JWCC8UIg3IeUIPErC3hgRgmTKJp/nfQtq8O0jo121uyYT/89sNJhZfXHjh8Y9DcFcgu0inMT1hGv0XZM8FTsYKIyU+aeGiJdaqI4yReTFj//Lim5kAT5Wi8RGT2uVHvWQ2sedpyUdhOh3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620656; c=relaxed/simple;
-	bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=J+jxFOWkjlXxk8ALLpaiYDchPl5Q18HQO4vNwEiDyRRBGxABqbSGgfc6mZNFzaJYpO36/OT9M6WAZSH7hqQFhy7n5WGuvJOQ+CAcHPFXZ+3CpPF/iKxvvH8lWp65uf95Xg58Yv+5+kaR4OWzBsp5Ma95oEH5jBATSmgfhokTdIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Im/3Yq8Y; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784620681; c=relaxed/simple;
+	bh=Qu6V/jFa3L0ra7v1UlZyzgbe/1V/e5d4AsjK/MKCp8c=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hUlFwQ4WdKbOK6BeU4SWAb3rajFgVrCBZOHNnmtG9QZ47/i5UmpCSvoRaAxT1fYv/zrp/yZnyBEA5LRsUroyELOD0xgAcTrTrSov4HsPC5hj9pLrE6UUWL3W1HKstDmFwt1uZIjN83bVAuzQPxZZt5W8YtQWvs9PTMimviub7J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVmvwJVT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Im/3Yq8Y"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81ea0b7d137so90476197b3.2
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:57:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784620654; x=1785225454; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
-        b=Im/3Yq8YNgjN3+jJAPjCb+1ItOBAXQ+LCWCnbAG9W+jY/f7F35kTZ7aqIWsJRtZZBk
-         sOujkOyjCfe5tRMzjHnNKBF82doodcB9Hj6xDTyRCooqGhLprg5tN+sJrrjFob3P1o3+
-         iklmZJz4GWeNQ4a6G3zZyNqgGTZOtU28sMiVpcIAYveB1Zz5bTIQC3nNyPgV5SvSNd04
-         6w4oY8wJNqvxcroifDteUAUGUQGe2kXuQcpaKvwXwHgG9mIR1x2AmKgXo+S5bEbODMp4
-         bjB8nFU74gwl0PAeMqmzf23+HQV0cvMiPsMEgbfBV3OcS9XqLmle6Xe8+MLvOV+KqL9e
-         mC1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784620654; x=1785225454;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
-        b=BFi0fZsW2WhkLmgxWkeWHW5szX40lLaokLCL88vtA09JAj0MnjaVcIaSPYspXCW5Qo
-         IMDikjfstH4OVu+Nu6UmdkANAw16c5/emteymqNE48oAPAhzgya3wRcqyE8l4Ji2/QtL
-         1Ohcdv/2d+m73uxb4evCwgXdYGBvNno+550kwsvUwpVo0Qq0fdivZdDmGE2zLjZ19S6Y
-         oW1lWA/HLk9vKU41q0Pt+9FP/0VbDh6E5GHWaqC3aG6rAbLFii8U4srpV0pEdK0DsiwG
-         ttN/d2C4BbVcbsHCvRhT/V3JYwFO24wIPij5mRa1J30bGSn75hyXJmiQ1y9dXVLiDDDe
-         jU0A==
-X-Gm-Message-State: AOJu0YzD2efqr+P9n4PpX+7bfridG/kBDgC9pk3xcdX46BHmW9evrB9S
-	uzm7on1eVgpdJHwJEl3bNOrHv/WFqxKXbk6XWRVWjLWkgt6Nx7javNKw
-X-Gm-Gg: AR+sD10P/vePJiitG3LV/CKXi1lRH2br2CU2+f00jLSO7jAeua3uTt6G5RIc8KyQDet
-	qzCwsDdByWsXve+IBnFXK/JO7rE5TAdM7/0M6nwq1/gRWnxKqq0FnPWl3IV5nuvCNRctfAuE1W4
-	Zr3VInQ4IHYIAobyg2N+96u+qv8GmPbqSW2NkTQ5SlBdmWFsABaKxjIdtkZoraDEBEn+TfMFRiZ
-	chw2EUWMGqrBQeVzAA6dWFkWcxZSdqs8KOfYQ9cP9oB2PIcFBKigkiMnYSnZCTZ81QPSYhfRhNb
-	Jjh0N5+zCISxGVVYkkTndbxk3hMN9HC8MUiX87+8wYlCUK9ZsI4fK6mMr1Q5+PeJCA7UGIgmWRp
-	yRiXmsrhdkWK1IP4RCc4yfXYQWeeQ2KJ3hgJw290XrHiiWRTGQkY17ez822FTfVdqJK92/Uv74K
-	zZcJa0VT9R6uT3yjkn/DX4KeO68MOktr4oaF6hOYTDZUj+ZgqXRllV1iiQDDVlwt4W2w==
-X-Received: by 2002:a05:690c:e0c:b0:81e:6a1c:e30b with SMTP id 00721157ae682-81ef28da7b0mr55091677b3.67.1784620654359;
-        Tue, 21 Jul 2026 00:57:34 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef4018658sm60555887b3.10.2026.07.21.00.57.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 00:57:33 -0700 (PDT)
-Date: Tue, 21 Jul 2026 03:57:33 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@google.com>, 
- Kyle Zeng <kylebot@openai.com>
-Cc: netdev@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.e6569ba76bb@gmail.com>
-In-Reply-To: <CANn89i+YuuBJ1J8CGD0Eo3JKeNjEd=5tT-3h=6stE5QoYczYXw@mail.gmail.com>
-References: <20260721015824.45829-1-kylebot@openai.com>
- <CANn89i+YuuBJ1J8CGD0Eo3JKeNjEd=5tT-3h=6stE5QoYczYXw@mail.gmail.com>
-Subject: Re: [PATCH net] net/packet: defer vmalloc TX_RING free until skbs
- finish
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVmvwJVT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBC21F0156A
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784620679;
+	bh=y8ZQiTN586DKOzGjE0xQTVjSc0oG6CWcbCqpe2Jy2M4=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=YVmvwJVT9Qyay4HbMhb49B9CjDlZz7ft+lQj9lbS0gACumnC1Iv2/dsdm1MV9mu4c
+	 zAFU0hI7Xau7B4/YM37CP9pXGedF5Cl9Ux1RfADSqooiQWl5++I9UPNLx9bYcxW1m8
+	 dWwOXXbyLjJgKyY5IIabDL3n7y2Qbv9FbuP/aoVu6GwF4dZ4uDwHKNeaHY0jS2eqLz
+	 RXoTf9r6Ejv9blA7uC5ei4TYzAeV966wu8kwI6AZd0WBupxsdSKzxFL2wT4iB1WSxL
+	 qBk3K/JlKeou8FmssItan6rHnzpwi6jaVlRe/TmBqMy6lmtyvBR91Q78CeI2qT2hly
+	 ZQt1jND0CNHjw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b2a4359d16so860358e87.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:57:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrDlWySRN7nzGUok9KZNEb2hSQruzdErEM5rqrtdCBKM1TISaQ41DCIpwC7suUIu1u94zv3N/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOQRlcYMQ8I4+1C/4XPnlOOnGRrNc7r3kQghCJb6hbIYZEx66B
+	95dCRWqdJBtr0bRRWFUP3T1Vi6CoFY/3zAMpxKlLMp3DGuxH4sNIWn+8YRrmgH6b4CDe4w3ph+8
+	gBdzVO93AJGz98C1Yq40gmVjrsffRsGP5wRTQ0GNyDQ==
+X-Received: by 2002:ac2:554c:0:b0:5ae:bcf8:e7d0 with SMTP id
+ 2adb3069b0e04-5b28f9bd551mr2209166e87.55.1784620678478; Tue, 21 Jul 2026
+ 00:57:58 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 00:57:57 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 21 Jul 2026 00:57:56 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
+ <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
+ <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch> <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
+ <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
+Date: Tue, 21 Jul 2026 00:57:56 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxrzWF5f1w8uOBbvKVmYCYI9DGFBZVEBrX2uI1sc7agH6iCfKo0CQST8Mw
+Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
+Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, 
+	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-sound@vger.kernel.org, Bartosz Golaszewski <brgl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Eric Dumazet wrote:
-> On Tue, Jul 21, 2026 at 3:58=E2=80=AFAM Kyle Zeng <kylebot@openai.com> =
-wrote:
-> >
-> > AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The sk=
-b
-> > page references preserve page-backed ring blocks after pg_vec is free=
-d,
-> > but they do not preserve a vmalloc mapping.
-> >
-> > tpacket_destruct_skb() currently drops the pending reference before
-> > writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
-> > decrement after those stores. The smp_wmb() in __packet_set_status()
-> > orders the frame stores before the decrement.
-> >
-> > On socket close, scan every pg_vec entry because allocation can produ=
-ce
-> > a mixture of page-backed and vmalloc-backed blocks. If any block is
-> > vmalloc-backed and TX skbs remain pending, defer the whole vector to
-> > system_long_wq.
-> >
-> > After pg_vec is detached, a late destructor can skip the pending
-> > decrement. Use socket write-memory accounting as the deferred lifetim=
-e
-> > gate instead: an skb remains charged through its final sock_wfree(),
-> > after all ring-frame accesses. The delayed work retains a socket
-> > reference and reschedules itself until no TX skbs remain. Fall back t=
-o
-> > a synchronous wait if the work allocation fails.
-> >
-> > Move pending_refcnt release to packet_sock_destruct() so late skb
-> > destructors and deferred cleanup can safely use it after
-> > packet_release(). Page-backed teardown remains synchronous, and no lo=
-ck
-> > is added to the TX completion hot path.
-> >
-> > Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcou=
-nt")
-> > Cc: stable@vger.kernel.org
-> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> > Assisted-by: Codex:gpt-5.6
-> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> > ---
-> =
+On Mon, 20 Jul 2026 20:28:39 +0200, Andrew Lunn <andrew@lunn.ch> said:
+> On Mon, Jul 20, 2026 at 06:01:37PM +0200, Bartosz Golaszewski wrote:
+>> On Mon, 20 Jul 2026 16:43:40 +0200, Andrew Lunn <andrew@lunn.ch> said:
+>> > On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
+>> >> Prefer the higher-level platform_device_set_fwnode() over the
+>> >> OF-specific platform_device_set_of_node() for dynamically allocated
+>> >> platform devices.
+>> >>
+>> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+>> >> ---
+>> >>  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
+>> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >>
+>> >> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
+>> >> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+>> >> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+>> >>  		goto put_err;
+>> >>  	}
+>> >>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+>> >> -	platform_device_set_of_node(ppdev, pnp);
+>> >> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
+>> >
+>> > This is definitely an OF only driver. There are no other calls to
+>> > fwnode functions in this driver, so this is the wrong thing to do.
+>> >
+>> > Sorry, NACK.
+>> >
+>>
+>> I'm not going to die on this hill but drivers are OF-only until they're not.
+>> For example, Qualcomm is now working on a hybrid ACPI-OF approach for
+>> laptops[1] and we may end up needing to start converting drivers to fwnode
+>> after all.
+>>
+>> There's no real benefit to sticking to OF-specific APIs unless you need to
+>> iterate over all properties of a node or use some other functionality not
+>> available in fwnode. The overhead is minimal and it's never a hot path.
+>
+> There is a lot of benefit to sticking to OF specific APIs, because
+> within the kernel OF is well maintained, has active maintainers, there
+> are tools to validate bindings, etc. ACPI is a Wild West, each driver
+> is a snow flake, there is no review, no binding documentation, no
+> validation tools etc.
+>
+> I hope you allow plenty of time to convert any networking drivers,
+> where Linux is driving the hardware, to ACPI. Your first stop will be
+> the UEFI forum making a proposal for MDIO busses, because that
+> currently is not part of ACPI. You will then need to spend time
+> understanding the DT bindings, and figuring out which properties are
+> deprecated so need to stay OF only, and which can be converted to dual
+> OF/ACPI. I've seen too many naive attempts which blindly convert
+> everything, copying all the past errors in the DT binding into the
+> brand new ACPI binding. That will get NACKed.
+>
+> OF != ACPI
+>
 
-> Hi Kyle,
-> =
+I've never said that and ACPI is actually irrelevant to this discussion. Fwnode
+is the abstraction layer and OF happens to implement it. Unless you need
+fine-grained control (only exposed by the lower-level abstraction) or
+performance - neither of which is the case here - you should use the top-level
+API. As I said: there's no good reason to stick to OF-specific interfaces for
+drivers that don't really require it - and even then, we should strive to fill
+the gaps in the fwnode API instead.
 
-> Rather than doing kmalloc() inside free_pg_vec() during socket teardown=
-/close,
-> would it be better to pre-allocate the deferred work storage at ring se=
-tup
-> time (in alloc_pg_vec / packet_set_ring)?
-
-Probably superfluous, but: only if vmalloc was used.
-
-Neat secondary feature will be that the non-NULL status of that
-pointer can be used to detect use of vmalloc at teardown, without
-having to iterate over all the pgvec entries.
- =
-
-> Pre-allocating at ring setup has a few advantages:
-> =
-
-> 1) If allocation fails, setsockopt(PACKET_TX_RING) fails early with -EN=
-OMEM,
-> avoiding allocation failures during socket close/teardown.
-> =
-
-> 2) Teardown becomes deterministic: free_pg_vec() is guaranteed to have
-> the storage available to queue work.
-> =
-
-> 3) We can drop the extra fallback logic (packet_wait_for_tx_skbs(),
-> po->skb_completion, and the 1-jiffy fallback polling loop).
-> =
-
-> You could embed a struct delayed_work (or a header struct) into the all=
-ocation
-> returned by alloc_pg_vec().
-> =
-
-> Thanks,
-
-
+Bart
