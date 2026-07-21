@@ -1,108 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6D5382F23;
-	Tue, 21 Jul 2026 09:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645333BB12F
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784625483; cv=none; b=YExiGxURo1m/bVZVOXwahrEu4rxds5/iZJV8VCGq1Cjm4LOMcfZzsZUfqQ00p9NtXiyUT7PqF0jEjTEqpG0cdSYPT8CNjNihkembjBiViwpmXpm/LId1ojCtRdzyX+m04O4+xoWHp1ocZoXs6dHBQa16p+EbIVOtF6vOflI+R1Q=
+	t=1784625636; cv=none; b=GAoolZptRH5U/haXY8sToQ4O0mrdyLGgcxlY3X+RhnP+cOSJEd6g6/f17WSZqtWzysoNO2xFWJKDcLYmd8iAb/PvqozE/hzKPJKoGre4wow6WP8i/z2TyjqET5Am5LXJIFHxYxv29C/Rc8OcMVbhseCfhrRyVhZAqs2PbsxpOYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784625483; c=relaxed/simple;
-	bh=+oA2cuF0pgO8hD5DwEmAMQwDYo+aTo7GYRHUS6/36KY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f/hsNfwJI8TGeyUMP9GyxDIAdIMOvxC3XF4frg76muX2u/0TJwFJXq4vPjOKX+M/+HKDTEp0F0oSKkfgmEh/Qha86xTK5its+YTFX+PMb5BD6X80w4fBTeEHMzAymP3Q2rLLE4uxLtcg0z2i57XXRcSw9f6UHSQjBLuAuqt1yo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRFd9YYO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784625636; c=relaxed/simple;
+	bh=19t6tDgfhafrqzphj8qt1vDke8Hlh+/LBwsqnk/Vzx4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=exRkf1no4bRSosA4b7qaa/u+s5z5gnuXDGPPQCkFTs2sj94m8qgugSL6jsVOlSqJU5i5758o9YXsHJZYnkC6WMDS06NIVKinrVU2NwmuOwVljQv6Auw8e2WXZ4XDWkb4s0ZLGVfvNK7BiHTdsSOf+JltVp9j1iGljw3cZzY1eSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLhAsxaU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRFd9YYO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD131F000E9;
-	Tue, 21 Jul 2026 09:18:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLhAsxaU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169EC1F00A3D;
+	Tue, 21 Jul 2026 09:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784625482;
-	bh=Xt4yV4EitGY1p1/xtPkwZqzWeeR4gGCYF5kEL6DKGIU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LRFd9YYOC3TY3CeNGbu261AvGsH1yHX/ZWb1u1U79S3TjITdAhsXpcoz8ZNol/Pf/
-	 lfr5zLwTgCGayF/khtE16uKhf7LTTNl9rpHaf65E05zkkRBe+/vC3mop8fOiqAn/Qr
-	 Vky2//GIHm3cj2yl+X1oVa/aFSz4sPMvRSOzjWlXjkg0KJ2jWNajz+mCVPst/TjqqY
-	 jYV6lJgyaQOxtkQgZxVW79+Zz4efi34jSRicF9L9LUSJfijEV/kkdM9xdYyBH3UMRh
-	 H9tBNQRKmKhRIZmrWnJiIqqe9fuY8nBLM5W+jnNHDF6WREC+8+lemPu9GkwVX1JS94
-	 VaCiSPm0xa72Q==
-Date: Tue, 21 Jul 2026 11:17:59 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-Cc: Stephan Gerhold <stephan@gerhold.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, chris.lew@oss.qualcomm.com, 
-	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-Subject: Re: [PATCH 1/2] dt-bindings: net: qcom,bam-dmux: Add
- qcom,shikra-bam-dmux compatible
-Message-ID: <20260721-spotted-spicy-skua-cca66e@quoll>
-References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
- <20260714-qcom-bam-dmux-vmid-ext-v1-1-3f29da7cca76@oss.qualcomm.com>
+	s=k20260515; t=1784625635;
+	bh=E5nCzcXfgPYLGPZzEw6cPlcQ/mQuOOMXGu+liuhWdHo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=dLhAsxaUBgXAMKrH/yv3nbmsmphDtMvoaQlPDn45f1htiDmWNu8snKwgAak226Eyk
+	 dKb2+xX4Tx5+i7WYQdt39BbkQLlZEN4EoOk8WWqYbLhiV9jnC3AE7mU/2Vf0/dziAy
+	 TW2+qXgr/wnX3OweIMqUJilPCfVonmaMA/M4VXKVA8mnQFJGyadTgtU2r8mtCs724T
+	 uhQ7z7b/Au9bblAeHiQb3Xa7Cv5zkZDO1blwY19xik4UcjBICJfoeUaXrL425BmRvW
+	 xIUXVDOojTph5tGB4YUSuQphCwLH6hbU7BAnlEpFdojLSW1NMNs0vjReTt3oGQHCRJ
+	 lSGKOYQ5OV5HQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199EE3924A46;
+	Tue, 21 Jul 2026 09:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260714-qcom-bam-dmux-vmid-ext-v1-1-3f29da7cca76@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] rds: drop incoming messages that cross network
+ namespace
+ boundaries
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178462560490.179594.14113048072554037021.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 09:20:04 +0000
+References: <20260708024314.601139-1-achender@kernel.org>
+In-Reply-To: <20260708024314.601139-1-achender@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ kuba@kernel.org, horms@kernel.org, qwe.aldo@gmail.com
 
-On Tue, Jul 14, 2026 at 11:02:31AM +0530, Vishnu Santhosh wrote:
-> On platforms where the modem DMAs into the BAM-DMUX RX data buffers and
-> the XPU enforces per-region access control, each individually
-> DMA-mapped RX buffer consumes an XPU resource group. With only ~16
-> groups available, the per-buffer mappings exhaust the table and inbound
-> transfers fault.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue,  7 Jul 2026 19:43:14 -0700 you wrote:
+> From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
 > 
-> Add qcom,shikra-bam-dmux as an additional compatible for the Shikra SoC,
-> paired with the generic qcom,bam-dmux fallback, so the driver can match
-> on it via its of_device_id table.
-
-Drop, redundant. What is not redundant, why you claim it is compatible
-but driver code suggests it is not incompatible.
-
+> rds_find_bound() looks up the destination socket using a global
+> rhashtable keyed solely on (addr, port, scope_id).  Network namespaces
+> are not part of the key, so a sender in netns A can deliver an incoming
+> message (inc) to a socket that lives in a different netns B.
 > 
-> Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-> Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-> Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-> ---
->  Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
-> index 33746c238513d72366bc52359fb10f275475b331..27f0fdf285c17d6bfdecd5e59cad09912a5e821b 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
-> @@ -22,7 +22,13 @@ description: |
->  
->  properties:
->    compatible:
-> -    const: qcom,bam-dmux
-> +    oneOf:
-> +      - const: qcom,bam-dmux
-> +      - items:
-> +          - enum:
-> +              # Shikra
+> [...]
 
-Please do not write redundant code or commit msgs. Look:
+Here is the summary with links:
+  - [net] rds: drop incoming messages that cross network namespace boundaries
+    https://git.kernel.org/netdev/net/c/5521ae71e32a
 
-> +              - qcom,shikra-bam-dmux
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-It has word "shikra". Can qcom,shikra-bam-dmux be anything else than
-"Shikra"? Then why adding such comment?
-
-> +          - const: qcom,bam-dmux
-
-Anyway, the generic compatible was added to cover all possible use
-cases, right? So why it is not generic enough here? One more example of
-generic compatibles failure.
-
-Best regards,
-Krzysztof
 
