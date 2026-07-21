@@ -1,52 +1,42 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D505401492;
-	Tue, 21 Jul 2026 02:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B708399892
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 02:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784601330; cv=none; b=bivHSVTOL7o29Finkas6Hz0zJ3XYeSnkayHumqU6PsAsNG1KcrNF47mMtI61yKee6UjU8VDyjv9u43LQwEneieUW61brwcD+uN75QNELanFgRKJWM3Pd9lud1SYmPJI6nV4b++J33scvTK1yiU25sXrokNn88DFUIqguYtRp/rM=
+	t=1784601568; cv=none; b=sv1BDK39uH4VMvYnqjQd2aozIQ/ZJzuqmPjOyUqnnTk5YvrxV0pkkPQMVJvUYpDzDQ9LODTCpamtH4Yub3H0iHrUTRXEYOuuzqbEqXfVtDva2ZBX8q9pb5fPhLFY+G1Jwk2ehAqV/1Q4oG/5xuiTwwszB21YHVvkZqGEzM0Cco8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784601330; c=relaxed/simple;
-	bh=JJj5o37i385985F1b/QZFIFJxt3DXc5e1rLS5CNGjhY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AGPKbMmPySB/PDPeBjxDrfBj4JuRcHj6W8914a/WzfGV2f1zCNu1r/tB7PCYFgxoUauJGdCUeK+q2W0v5LRn0DBjfyDnFmIE3PAnGcUchC2QAqJUTfVVvOK81C0fkUxNJi3wSONBaikehlS4O8/8Ss/5NGPTNB7clOk/deHOrHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: d2d52a9084ac11f1aa26b74ffac11d73-20260721
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:9df154ce-bb56-4648-a308-6211d9759bdc,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:9cecef36158ac82cb24a66f026585700,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d2d52a9084ac11f1aa26b74ffac11d73-20260721
-X-User: lilinmao@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <lilinmao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 692568123; Tue, 21 Jul 2026 10:35:23 +0800
-From: Linmao Li <lilinmao@kylinos.cn>
-To: David Heidelberg <david@ixit.cz>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linmao Li <lilinmao@kylinos.cn>
-Subject: [PATCH net] nfc: nci: free destination parameters when closing a connection
-Date: Tue, 21 Jul 2026 10:35:18 +0800
-Message-Id: <20260721023518.1697625-1-lilinmao@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1784601568; c=relaxed/simple;
+	bh=qKSHhVdoJD801B4KF7UfypZpenDEgYwc440zDFLMz14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kx2iYc9JD5Rz52GaIZ5+JJ9mvwq68uZk2GKonl+bMwFnbyw/8eY5SRcrihf87rZlvzVkXcX59XsFvoXWQRXGPp0kuwaWv7r6L5pyrZg8C9ZaUc7nb50AkhJVsDNBRS0q6mhjkminXUhYCNuTvx8oV3BtnM1aMhFJ8cSW7Tuoax0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S57f1If3; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S57f1If3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Uy
+	n/Lka8S3gM+4HEByvvtvMTl4Ui6G/FFpRbBF0ufTU=; b=S57f1If3/GXyRwyyOu
+	je0QSvb+8JA8e4SnFM/5d7dcetoBKHrzZIqiRcYaMZD8HGmvz5OKxTqb7stenXBn
+	AqfQUjCpSB3KtIJBWwGc4Nenh/2rB1rvJZNYfTMXTMMIKcRP+xELJFd5WY3kG6bk
+	3noaHQHyGf72r/L+i71wIfoPA=
+Received: from kylin-ERAZER-H610M.. (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCH7yys215q7xSBHA--.9530S2;
+	Tue, 21 Jul 2026 10:38:36 +0800 (CST)
+From: Yun Lu <luyun_611@163.com>
+To: justinlai0215@realtek.com,
+	larry.chiu@realtek.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org
+Subject: [PATCH] rtase: fix double free of multi-frag skb on DMA map failure
+Date: Tue, 21 Jul 2026 10:38:36 +0800
+Message-ID: <20260721023836.6691-1-luyun_611@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,30 +44,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCH7yys215q7xSBHA--.9530S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw17CrW7Zr1xGry5AFWDJwb_yoW8GF47pa
+	y5C39rCFs3Gw4UXan2gw4IqF4rtwn3trWYgFWFk3y5Zwn8Ars7CFZ8Ka9Fqry7trWkCayS
+	yr1Yy345u3Z8KFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5Ef5UUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC6wxUI2pe26wa2QAA3Q
 
-When a connection is closed, nci_core_conn_close_rsp_packet() frees
-conn_info but not conn_info->dest_params, which is a separate devm
-allocation. Each connect/close cycle leaks one dest_params until the
-NFC device is removed. Free dest_params along with conn_info.
+From: Yun Lu <luyun@kylinos.cn>
 
-Fixes: 9b8d1a4cf2aa ("nfc: nci: Add an additional parameter to identify a connection id")
-Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+In rtase_start_xmit(), when the head buffer DMA mapping fails after
+rtase_xmit_frags() has mapped all fragments, the error path clears
+the fragment descriptors with rtase_tx_clear_range(), which frees
+the skb through the last-frag slot and accounts tx_dropped. Control
+then falls through to the common error label, which frees the same
+skb a second time and counts it again.
+
+Return right after clearing the fragments when the skb owns frags;
+the no-frag case still drops through and frees the head skb once.
+
+Fixes: d6e882b89fdf ("rtase: Implement .ndo_start_xmit function")
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
 ---
- net/nfc/nci/rsp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/realtek/rtase/rtase_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
-index 6b2fa6bdbd14..21c2fe64490e 100644
---- a/net/nfc/nci/rsp.c
-+++ b/net/nfc/nci/rsp.c
-@@ -360,6 +360,7 @@ static void nci_core_conn_close_rsp_packet(struct nci_dev *ndev,
- 			list_del(&conn_info->list);
- 			if (conn_info == ndev->rf_conn_info)
- 				ndev->rf_conn_info = NULL;
-+			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
- 			devm_kfree(&ndev->nfc_dev->dev, conn_info);
- 		}
- 	}
+diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+index 255667775f0e..67f7fdada119 100644
+--- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
++++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+@@ -1426,6 +1426,9 @@ static netdev_tx_t rtase_start_xmit(struct sk_buff *skb,
+ err_dma_1:
+ 	ring->skbuff[entry] = NULL;
+ 	rtase_tx_clear_range(ring, ring->cur_idx + 1, frags);
++	if (frags)
++		/* the frags were cleared above, along with the skb */
++		return NETDEV_TX_OK;
+ 
+ err_dma_0:
+ 	tp->stats.tx_dropped++;
 -- 
-2.25.1
+2.43.0
 
