@@ -1,102 +1,109 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74C746C4C9
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9749546C4B4
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784649708; cv=none; b=SUYjEo8hwInd93qCYMc0rWkPHWJZgL5Yc5teyDKmfhFjLxskPXhWaLO6NddxVRnFgUyydakdSiOV6tabu5X5+kiTgJ8dtcZTJSW1/pa1rD1Hc9CRikAOTVk7gDJreNAoDYIdvNd9HbJR8B57tuWxIKWQOEY0o++UUSe/IT9CYTk=
+	t=1784649773; cv=none; b=mRfRbTDrEYz7t9314WrEFvThtREcHAIiabB6LMyWxNeh42XwjR92rm12byAe6UG6NezKPJkm6njNcYWS2iLUr2e2bGPw6KuwKGBquW8FyJ70+NwlUvhcvdQSfA6bZpSZhUVqXX14iulKwZQvVlyQSMrycKZdCkH9TD+T2MqXMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784649708; c=relaxed/simple;
-	bh=Yw7gXVTpHGxoY7yJEfIsDmK02NOZo3M96XvsnBu4N3o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MrEz/hwF30AydikupiSI9+Mc0jFST+OsLJ1hC4zSlf/nmjp1RlUVmfNpaXufRE/dh6nBf+l+fQk/3Z0UKFs9CKyJbTw1os+bbGqvjqYBDMr8fXXv3TsDf76s1cDBTEAVcKvbNdMKySVA7UmczAEkQ9pE6TC6VvDzsOtxiTMhkCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0PYrRUR; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1784649773; c=relaxed/simple;
+	bh=vhhWzyN+I0N7rNZjufC3YRpB5qa/zvBfQPTyWRUEH6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B1sz88v/a6FN7/5hqXSN7AIAupYhl9QjB7zTjpqUMkROoaB1cn8+qT+MjGX28j0tXhzwvt+ouY5ZefcbrwKKOjs931F+oIntmzVgeeuLyDsjoRMIYxamxyj2mi05VxXgHv/Hk/3zNjkKJpMLMZePHqM7f+xBjcFfsJNrD5ZsZ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XaKWe8Ut; arc=none smtp.client-ip=209.85.222.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0PYrRUR"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c04bf4711so7061771cf.2
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:01:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XaKWe8Ut"
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-97715c7df46so333025241.0
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784649706; x=1785254506; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CCsMWHiy8lvPYOE+m0FXhgzrH3sURDkHCgMUoZjYcmg=;
-        b=Z0PYrRURp/Vur1z1THGf/K4iA+z3IhJIo6jdpyikFyRbG7wmL87+FF+ch8VtXFvZq+
-         BRuS/vGg2HMCsQ2P5RGbSlpJy6bnIFjuv77+HG8YY9hKszZ15rqbfHHtKNm2+VZSkjPu
-         DdIMlIJoPiBtY2uTn3aA33nuYLW/48OQdH6KWeg1sEi8AqmX9X0yj+JRUfGl/O9pzczE
-         IG5/ay4Kw/kbVTiN1weLSa03iC/o2BikVHnQOiI5yZFdcOoHqOLiErBDfGC5pp1XA2J9
-         pnTu3IjQ/pSj1L+/3F7Tyy1iRZtkBF1QakcyVZARY0n+3jNwA2BMrW9eBnUY3Y+yOs++
-         Fcpg==
+        d=gmail.com; s=20251104; t=1784649770; x=1785254570; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wE5VX25D0QUPiT5vUwaJH5UHOU0aSZrWQyQNqql837I=;
+        b=XaKWe8UtPYvooOlORnjrklQYM4/qHBwoyuJ4a9WPP73LKEQ7e5xmAdXiCccBgFW6Mi
+         LKqzAUSxd96RLiVuFmxS7LegG5ZvH3EmItV/ruYT/s0t14mJIng9E/WPzR1fPZuR1W4F
+         gt7DuTtgRw9SuDp9Ksh89K7zmg8KEW8RZbkVfXUSvJMiVQd3GoJuLJ7rj/411Ft0SVO+
+         FoypJc3v6jFxUKwFF/5GACHnb7abPC7oqJCOUivgZhq8etwhN89iZ6xM1V60diLRSgSx
+         f5kI1qdEVw4eZbPLMbraTktqJBIQwYoJjUij0KRXkkU6Vl4DK/DIwzviZ647gsP+cIkh
+         BsIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784649706; x=1785254506;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784649770; x=1785254570;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CCsMWHiy8lvPYOE+m0FXhgzrH3sURDkHCgMUoZjYcmg=;
-        b=dOMqJdEcitDTO/yrHvMA4ifahvJ5QiMXUiYupoWhyP9LXLuWX5ODzom6FjCZILQVOQ
-         NfMDvbzMboWCyXX7BMdOeIZ3KdsoODX850OCkQFIdVPsK2uxQ3MB9lpecflqnQOdzN0q
-         Yj26PNBT+0hyqAk/slbdLQYLv3ezuH06PzEZRaVSuKwZAOnZ2ERqRUXHZQN5CAKG3wsq
-         Uu7igvaB+2bHa+U/nFmpzIiEVC2JaVIrsKkSw66XuvCCwAZFcrPHF/8LjS/dV/Ni4/bz
-         a7hvfiGIkzRfebSVJHqowZJ0u2NmFe856n6uxfGXiyIhyWuA0Go6GpuIOvWW+K4See6x
-         jmdA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7qWDR6piJ3Ws96Nediks9vWci0I4Y2CG5xyxYAH0cD8EAGNKArEwGe8rj85wWqRr0J3+0CqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDQMLtA9IE5y+HrPFrDYSTJ/gArIvjteOQcIRVfhX1n23Z1a/p
-	OJKJRuPipqcN8jKVRYneyqTAGDZSGNzq4NTU3cjaX3O4iPTBsNXq8SNo
-X-Gm-Gg: AfdE7cn0+posarpOMJM1x+Nz+dc3cenkcVsH9xEBzOs2sTC45GSgIfQPINVqbNLPpXQ
-	KoLvY3Z777zuEgHHjujPkibrD8sIPnNoV/zUIxmBbD/d76rsF5lgf+181D3rJC+hQQu5vBeOo+Q
-	ihTzOSdoXnEI8ZRo7w52YO830iwDTArnXvBZSJe/3rWqyJjvYYUad7o/PS5gguAeB8GowPMgyQ4
-	+g9S6VNDaaWDhk4zJzpc+vYORTg7FzmpFxmqi3Dopu7JS087nxpfx5iHtMU6087R6Db3IH8RgQU
-	XcgPA4EiFXAH0ovqMVFqjEpGDYWuwRU05SStlaWJfOEoxX/Ro/PePb+1wK5jag3Zmgrhjttq+YF
-	ldcm7/NF1PJ7hTYAbQBbvSgwXJw9IyXF8oBLSVr1hQfA3Ksgf458zARRava4w9E5r1yHnF6zRPL
-	AFnYTaVr64P+fZYN4rFn4nhwZZEfQMdSYUag==
-X-Received: by 2002:ac8:5d49:0:b0:51b:f98f:ea5e with SMTP id d75a77b69052e-5213a97367fmr190789071cf.22.1784649705533;
-        Tue, 21 Jul 2026 09:01:45 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1145:4:9e60:fa04:7d21:c1b0? ([2620:10d:c091:500::2:19e3])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-521500c552dsm100014701cf.28.2026.07.21.09.01.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 09:01:45 -0700 (PDT)
-Message-ID: <3e4b1552-57d4-42ad-a244-a91b74b8dae1@gmail.com>
-Date: Tue, 21 Jul 2026 12:01:44 -0400
+        bh=wE5VX25D0QUPiT5vUwaJH5UHOU0aSZrWQyQNqql837I=;
+        b=fwa1J0qOzdbGwZIi6C8p/9jGZkd/+L0fPIjMZHiARHrD7F6tCgetY7h2trRLFe/eUg
+         GmucKm1xeIQSwVwM8mHYxAkF9za75I6xl4s3wXZixLany1SmC1XHxPiKKTDZ7wJBydIz
+         dYtZw186db/fnDYkYfQQW9KfPOqPQ90EziRbIpqkZdCmQeZEHXTDweExBRcdAFX/RYgM
+         c8D0PfwE7g8QvQiCrXHuFdkMAGOdKua8QP9BouNDRovcbvoxQPMecJ4psEbEgebTopvG
+         FbW0z3yG3G2L5WZPIwyZmThIXZYztHQZpQ5plpp0K2Xi/ZzUPvP5mFtNGaM4QM4Gu8n3
+         5WKA==
+X-Forwarded-Encrypted: i=1; AHgh+RovZfRNWXBzemGdyM4q5g8EaB1Z6u238/phzkxOrt5D03HOYTYT0CATKGEijdUNTgYjDfzpQW0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz23ll0JLeem7xQ7jkaXaJDNczLmbvzall7+u/6Ne85MJKkeW4B
+	cUpUr7A5NNNvGibm6NiqWHgCHKJLTvezaHbxFMeqS9tPKN4cs8uT5tXvJH3yRfPILk0CRg==
+X-Gm-Gg: AR+sD11fEUyzH5Ndw/QMI6xz6w/4+r9XfnM/cl2F6ZknTTaJ6wStHV4+2tApHNdjrJM
+	5/p9RYCm5d9mFUeafacAReCrD89Nd2eQlIZXsmUFtqcxJV0dfcXRGQh80i/CP3jspsyWzk3BfyR
+	EoHpPJCzpwYxO3Fc/LH37GlHySrIbzR2O//XVcmsFzxWBZuclZCZiHXTvIlf1LzMskK66XuDcCs
+	EOWL1zMb0UWwdfUpHBOphoQSbzgSryDxabqKIAQJqBV6Sh//bnGfHOP/SOrHIfQqHnVfxXvhPDE
+	pkS1cSv0x2tg7D2dPBqFz2ZVEnAxjJwrBpE3BzDSXSosFbcoFuzi4VoMVhivId06EL65SvQiVuL
+	ohXvZXZpyqp/ozQHOweqvNCvPU8lb83QUNGjkUtgGqcnDdqiS/J7d4j4bWLJhhhLpgI5fdcjNPR
+	W7+DNR5/9s2L67RAn2sNj/8MJVsUbQj9/zCTNEXKwgtAh1a+m5xy0Js7rnNFUPVa+vNG9tHm2m9
+	eGeFaM=
+X-Received: by 2002:a05:6102:4486:b0:739:4fa1:50af with SMTP id ada2fe7eead31-74753469470mr5448540137.2.1784649767844;
+        Tue, 21 Jul 2026 09:02:47 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-74757fad039sm12389612137.5.2026.07.21.09.02.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 09:02:47 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth 2026-07-21
+Date: Tue, 21 Jul 2026 12:02:40 -0400
+Message-ID: <20260721160240.884274-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] packet: use a consistent hard_header_len in send
- paths
-To: Qihang <q.h.hack.winter@gmail.com>, netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stable@vger.kernel.org
-References: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
-Content-Language: en-US
-From: Daniel Zahka <daniel.zahka@gmail.com>
-In-Reply-To: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+The following changes since commit e13caf1c26587434f0b768193100440939c0fb91:
 
+  Merge tag 'net-7.2-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-17 10:25:13 -0700)
 
-On 7/21/26 4:49 AM, Qihang wrote:
-> packet_snd() and tpacket_snd() read dev->hard_header_len multiple times
-> while building an skb. Device reconfiguration can change this value
-> concurrently, for example through bonding device type changes.
-> 
-> For SOCK_RAW, packet_snd() stores the first value in reserve, later
-> allocates headroom using LL_RESERVED_SPACE(dev), and then subtracts
-> reserve from the skb headroom. If hard_header_len decreases between the
-> reads, the skb can be allocated with less headroom than reserve, moving
-> skb->data before skb->head. The subsequent skb_copy_datagram_from_iter()
-> can then attempt an out-of-bounds copy. Hardened usercopy catches this as
-> a kernel memory overwrite attempt.
-> 
+are available in the Git repository at:
 
-Wouldn't there be a similar issue in the SOCK_DGRAM path with 
-dev_hard_header() calling skb_push() after packet_alloc_skb()?
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-07-21
+
+for you to fetch changes up to df541cd485ff80a5ddc579d99687bc7506df9851:
+
+  Bluetooth: btusb: validate Realtek vendor event length (2026-07-20 17:41:28 -0400)
+
+----------------------------------------------------------------
+bluetooth pull request for net:
+
+ - hci_sync: Protect UUID list traversal
+ - RFCOMM: Fix session UAF in set_termios
+ - btusb: validate Realtek vendor event length
+
+----------------------------------------------------------------
+Chengfeng Ye (2):
+      Bluetooth: hci_sync: Protect UUID list traversal
+      Bluetooth: RFCOMM: Fix session UAF in set_termios
+
+Pengpeng Hou (1):
+      Bluetooth: btusb: validate Realtek vendor event length
+
+ drivers/bluetooth/btusb.c      |  4 +++-
+ include/net/bluetooth/rfcomm.h |  3 +++
+ net/bluetooth/hci_sync.c       | 13 +++++++++++--
+ net/bluetooth/rfcomm/core.c    | 17 +++++++++++++++++
+ net/bluetooth/rfcomm/tty.c     |  7 +++----
+ 5 files changed, 37 insertions(+), 7 deletions(-)
