@@ -1,99 +1,59 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1EC471425
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 19:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BE3265606
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 19:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784663513; cv=none; b=fO889aswHJYNV6/Fy63/3PqB+ENdk7CZ36OAGlVxFNitKsY1OxZvMEYq6xwz9IBpU3km61oQ35CchTSaQe1fhdGgnZ4m3pUG5Fot279yoVFU7DvQ8v09kSm6ti3cs93z7j/gtZz/gTDJtQ49KDZmWlOkrVSNSFiLmLCqABw2SWo=
+	t=1784663654; cv=none; b=t8ZRt+4QNhWulOn1qktoRmFhiQ+FzHTvDhmQ0m1IYwou0Rc3avh41ctubs0Qw2WfpYem+alZAoaAqOqHMAFjHScEGJnZxLsz8fL7IXJFf3wO8A0K4C/AzjTNRWBFy3NZJOs0PjxHXvubHxEnKC9n8PKeENM/8LZTHOV7Z+OF78c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784663513; c=relaxed/simple;
-	bh=pcfYZsW5GJxrppNfg2PPv6QOtuIwDObGnm8vEwV4bSI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=dIyx0aNJYTNqeiCl6FI7JpC8WhhoxJE9C0ZTD2z1Dcs8WySaq/jC6awOEZWKYyKWmLG+k+l3fL13nNydyVH76/AjmItEtLy7B47slTMUpvAML6vsa4mWZITayb1GRoIEZPqAkFbzJB6U6mjjgZA9fFH0RYO+pUcuHNqNtG5Cqw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MAHIUbAy; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784663654; c=relaxed/simple;
+	bh=qwgz0f8/IU1ut/lPs3TrwB/LWjqZRO6gDHloiYWiCDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sPKxoZzjZRo09T0I0hQKEfgfrNB4RXiWSLwQflTc5mZ9uKJACq93NbC87cLlxDYdIxbR3r3lMFcMg7bRHF07v2mXcp+q99KnTiqcgY8qElNZK6PGxCqdkkXLBExC5ZI/RzZSMCODIxG3mEX07ojDOb093BPu0aRDafUrrTPX4ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaQgeZFZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MAHIUbAy"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-81ef11a0972so55226377b3.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 12:51:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784663511; x=1785268311; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1hwK9utK8maH1goNHBFSjyplyEXYS61mGZKNHEb4ShY=;
-        b=MAHIUbAyXVcunjvWuaQAN3mLZg1RIvE+A5wNwKH/2knkPsDnIB1mKz29wtKCtXagoy
-         ambMGuR4MQSkn3c0gyy8GtA1VRKNtvwOrLOjQkUUz+gEYZMjl4s2GOHGBHdUCS8HaPQ0
-         bVg5vYZWqYRBlSD3Cxt4xhnluF9Bjgwh+bHrSt3g42W6Gzj2lkFkEtohImE6TL7WUMhC
-         SfYpU8lMnoTufLTYdndFijNYMh9ws+ucZbdXnk7T8m23YrHtbOq9x+BlzIK6IEez/VLQ
-         6QW0G2dFF9gu8vNfoQBBGz81SjmvGkQrB1iWL/FajQ3A8OHmG6zTcf2hd0z4ZLQEt3wI
-         c6YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784663511; x=1785268311;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1hwK9utK8maH1goNHBFSjyplyEXYS61mGZKNHEb4ShY=;
-        b=L901ku9AhDX+l536EOgQ7eW3RJUkHqywEMAxJo2ODNAubvo/l/biZ8p/z/bVWHCCoE
-         s6RetDWkZ+Tw79JxpUnG+MiqFjLezCUKiq9f2xYJQ9lTNMSN8v6fg2bcUZrl4W++D41w
-         26qeR60a/p3ZfZCMsFJCwHaDgkzat5F4DuPBslqmkaDSYP52TV12e8IxPV1iDdZc8JMd
-         BnTvVfpaub5OICpkQeS6+lRZJHBb6UT0R1kLzkm6WfCKNLAw3ZaQsIqcpekCWD7UqXb/
-         KwWNUoS7zS5OzNOyxi1C4iC/vRt15Nv43YBhnBhwOmCjBlplIiuNd+WJYovZLBMS1cUQ
-         kZQA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrtw3xWJgv8IgqDreGT7ejioLQYCCRoykLxDXHJhznEo+DRiFFEFKVy9QmHE6+gNZfPVtxkd2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCfczOKteE/kIwJ1pElQQCrW7TteQWnhlD7Y2A0P6xp9zli8mD
-	uJ3RjOXtKOkJDSRljoJtGjb1+Tvqy0L/wfOllxQ+XVMCs1sQOlSsG/JZ
-X-Gm-Gg: AR+sD11/4J9bGfBrlxnaAxO+cwcz1gCNu+U0hflvDqgRsX/UBjjFebXWrA0rDCMyhvO
-	IZS9HzDwMnGezXKMwSvDvhsapBODwjkV+TZ8ejBbu9rBRf4c06oxA1M4ZfdTCOVUIz0Jmm1FbbH
-	JZmcNwUBd7VhX01XIPqxr9qjkFjp9QLG9wzL4htWSBD6uUsXLL500qGAJbRlGrLdEj5Rj4SoCCn
-	kWrtfo1Pd9Xny5s8rftEzAsuSiV99uptPs9lkAvOEjTo6K8yPKe9wKk/YEVx3btdjOp3mSlTLYj
-	uBEn2C3OqHuFYGWdhRu2wrYkvO3rs6mDUk6Diq2goVnKX4xmLwu8LN5HOh9iRyaNw5NICClQGhe
-	iK7sMJVEWo7faQD6NeVPafqQa9PkZ3/a5Duv9KqpW9aARNpioezIgMZW+tijAV8K0ZNoTK0nHbZ
-	BRWM0s6eRGa1owpakz0wUZeIknY+7bdsIP6KaJwBe/SvyvhXiVZUDznO4=
-X-Received: by 2002:a05:690c:4801:b0:80c:85c6:897f with SMTP id 00721157ae682-81ef263285dmr61224177b3.62.1784663511458;
-        Tue, 21 Jul 2026 12:51:51 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33ef0a40sm2741587b3.39.2026.07.21.12.51.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 12:51:50 -0700 (PDT)
-Date: Tue, 21 Jul 2026 15:51:50 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Joe Damato <joe@dama.to>, 
- netdev@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: andrew+netdev@lunn.ch, 
- willemb@google.com, 
- linux-kselftest@vger.kernel.org, 
- Joe Damato <joe@dama.to>, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1c390169c9796@gmail.com>
-In-Reply-To: <20260720122714.759175-3-joe@dama.to>
-References: <20260720122714.759175-1-joe@dama.to>
- <20260720122714.759175-3-joe@dama.to>
-Subject: Re: [PATCH net-next v3 2/3] selftests/net: Test PACKET_STATISTICS
- drops
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaQgeZFZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFC81F00A3A;
+	Tue, 21 Jul 2026 19:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784663653;
+	bh=qwgz0f8/IU1ut/lPs3TrwB/LWjqZRO6gDHloiYWiCDw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kaQgeZFZjoeCy4gsNI20lisFOQZeA6L0EMmOdnG4yWSFv3meLCljICgwH6Zu61xQ/
+	 CR4CzbQo0IE62fUi1Ci2v0UWbnRsPNW/aJmOn82t1rebK9ypnY9zm2oJ3yTJqiqMmT
+	 D6ywQlfOmcRtOfqixmDCzU3N4oWISYgNrECa1rjDAUQkIZ+R/5HcuZsRBAZVmPk8nm
+	 7bjgPrk+8EoyTzAG8jVMxK9aPFA5jvth7XtkaOqV3tAZaGbB58dSaZ75bkA2Un6Zju
+	 THeR70SQxM68v2XKsCl3ygMrs+arrynx9pGwlFonvF4p0gW8fGCqyZPK8Wp37PQkLa
+	 N8Tt6RDSXR8Hg==
+Date: Tue, 21 Jul 2026 12:54:12 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Nikhil P. Rao" <nikhil.rao@amd.com>
+Cc: <netdev@vger.kernel.org>, <brett.creeley@amd.com>,
+ <eric.joyner@amd.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+ <edumazet@google.com>, <pabeni@redhat.com>
+Subject: Re: [PATCH net] pds_core: keep the health thread stopped during
+ reset
+Message-ID: <20260721125412.7390651e@kernel.org>
+In-Reply-To: <20260721162141.162153-1-nikhil.rao@amd.com>
+References: <20260721162141.162153-1-nikhil.rao@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Joe Damato wrote:
-> Extend psock_snd to test drops by setting a tiny receive buffer and
-> sending a large burst of packets.
-> 
-> Signed-off-by: Joe Damato <joe@dama.to>
+On Tue, 21 Jul 2026 16:21:41 +0000 Nikhil P. Rao wrote:
+> Commit d9407ff11809 ("pds_core: Prevent health thread from running
+> during reset/remove") stops the health thread with cancel_work_sync()
+> before a reset, but a devcmd timeout during pdsc_fw_down() re-queues
+> health_work, so pdsc_health_thread() runs again mid-reset and double
+> allocates the core DMA queues via pdsc_fw_up().
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Would using disable_work instead of cancel_work fix this without
+the extra state? The patch reads a bit racy, IIUC the cancel work
+can't be trusted, which in turn puts in question calling it in the
+first place.
