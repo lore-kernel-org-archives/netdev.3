@@ -1,137 +1,139 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A191538CFE1
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 14:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784642972; cv=none; b=GBmvxMiVv5POUkLY03jYnpiohVBBlIAAfVR3T+tZDpBsVl0GXggviu7f6GygVk+IQPObyY/nyEjDhLXift+RVuGqkuAaTebAF7m35MMdGeyZ8Mo1DL3d3UPm+lJCq8S2GjObpBDIygXLCVrgi+cwO+LPTGmVfCLO7O9SUu6GbXE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784642972; c=relaxed/simple;
-	bh=Sy2dQIDfTn0vvrCxCW0E3gAUSF0oXL12B/CyzEPp41Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtpU6zRwrDUsMXM79yTPM2e/GzIYiCzJGEwVQATtSmbK2W3WoRmpJINMHyAuMahhoiHNDA2/eSer40DTtYFEvwUe8ykl8yV8ak0c/+hPd5xzwassVWM53QAUYDzFksq/V+Odc+zVTJKPJgwUXZcLM8lV+N4zH7OgL82jRvMQYfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=VSFIf0uG; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C7039E6F8
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 14:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784643503; cv=pass; b=Fta4s13AAEtmgtBHwRoqsPWutB8FSNStQtPlnCEK8CVtc7G3WJ3iSiYpGoCLdHtOkBoz7XdpqwVPwLel8DGnuhFVSIZkGfunr5BZRtSUbnIWgNQCuBiSHoQCyckMnSMH0EU4v9BgpsH3L6MvQWjEBJeC1tr7tOfjd3SB+POd090=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784643503; c=relaxed/simple;
+	bh=NVV3+XDFCbVbD84ghmSXs0xAXUmYE6494NLi6qq1uFE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qiNw8BRrJJjwS0ZRQ39NfMH9Wx54APK/QQKS0fth9bHiSgnRTERoNVVr3nTHvfi5Rcw7C30Hiqqbv0ASiqa1fV2FoF2TYEVnR48jyOTqW+TnLuWp6t2p5u8y8o/V4Q/E7hzS4mdjcUcM5SnlI5b1uXHwewGWcygSyjj5aQoC9OY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSMb7bK6; arc=pass smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="VSFIf0uG"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so27005305e9.3
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:09:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSMb7bK6"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c0a81d286so45345901cf.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:18:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784643501; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dsK6Sm9vMRGqIwgedoMc4Bl3A0lVCyOYjczWXPyMYxrTHBYPL41xxuCaTqMOuxF0dV
+         2KlW2LjRquhWakAlqxsuUpT+KaATJfTnNyhmUimFyANS9SwamggyHp26l4L6fx3+BF1c
+         MYcVNlJBX1PK92o0r9WT5QrEerXOpsJyQYwrbFQJlWznoU+vYKIYCtDFtMJ8DqJqHJTE
+         lQJHe4BQD4/X7IldSn6S5ze0pMTAA/L3fE86q86n76dnhxcTTu/eHVc2qiTMqL0RvgWY
+         UeVIPS8DjjLyY0enjTFjU70xguewesFgkMdD1Wt2UCTi07Yx+btdi0AotuaO7ZsDWonF
+         5N9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZRhP5ACQsrCIUXo6VjCCwsValOT8tY41FIY4pxKlbkA=;
+        fh=RxnvesgU0U5UxN6RLiefUk32FLLJZI+cHe08jav5tSE=;
+        b=PJqf+ouQAW4hangttKF07aRC7BNXQVGVE6IbrrehOCSRIZAfXOobBT7DOdi4jBwO6d
+         8U24kTw5AboPjYq3YwPwrxErWfdE1Snjz05v0PalJka35uG0v2vw9CPMnSHPXPutEqlI
+         pg5vpqPbtQybAdkHTqkED7jkyVI8OlXS75muBqiYv8WLJF3/OEhWdp+6f4D0pITDEmJ6
+         gzyBrEVqiS94mrqTSPbYDKDHjYEXHJQMv78iGOzFV9B+eBtbQShHMvZwGwX02lODA3Wq
+         /lP2eBPzqWxbldqnRytwAh4/Kwc8jVIHQ4/Cjf4NTvgwPw/7Jy70Scb3RirQzicBeboz
+         CMBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1784642969; x=1785247769; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UfL6iUrlxMqA1SULmpcqd51oivcgiX3MCBlh/k4Gk/k=;
-        b=VSFIf0uGwNeuRUCPnPQqgtgZ/nzigUGU+1iw1WT8PpehCbv66g5igOfKacQRFnvPdk
-         156KHKz2m1KEJ2nTnGNQVGtWItG0qVxLubthiq/bI0ijTy0kESWPPPe860IH4+oRvJlz
-         /9HZEtDmKc2+oE6eOmmG/q9NWzS/WC7nH3S42KwQIf03qCSiXlrURJtFswlmTWYLLA3h
-         Hc9yYUS5OFVlSAJHIVpOe+VC3FmxnREcbSzGtCPMNweb+qWRolIfZl498NTWxxy9RN6A
-         yxSH5u9X05YLlHnTaMQLxrt6Z4H2nlgs3GLcLozOdcWnUnqRGeI/WqH7Av1b1bthC1Tw
-         oihg==
+        d=google.com; s=20251104; t=1784643501; x=1785248301; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZRhP5ACQsrCIUXo6VjCCwsValOT8tY41FIY4pxKlbkA=;
+        b=JSMb7bK6p/TG7RWEv83WKT0A7YRt6KDZSUKm0LQbE5GhcIMK8lYcjukFwZemJtGiUK
+         /bl2mcrqXNJeC3Q71rGRA7seVejD5zYrUDLkf/wiLcwA5EDfcsqKG0uQhjjThTineNn4
+         y/n31fMpiLqv1S6OsTkTuBQ90V9qdb/WtQng1CzEDjmhWgN69qUBXt5NUoKV0/ZO3XPZ
+         37decJx8R1e1HwpeBvxzKqZArNBv0lWqyFqVEobtH3eoWMO3Ft+blZpyWpTAdpuqbwF4
+         Y+GLmYQy1YcK3FtJS/6VjpeHdIm4YY8PEwffcxhj8+qQdNyCgxrP/QW2FZ6X016+/HRL
+         c55w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784642969; x=1785247769;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UfL6iUrlxMqA1SULmpcqd51oivcgiX3MCBlh/k4Gk/k=;
-        b=cc7/5eQODJMXithouLq5LcUPcoyriIozE9T7caPXw45hdBCEUPirpWO2DYoRFoLgXM
-         r7PO1I9X+rQ4gFauplLsfETxfCiHjoVmgStTX9FyU84SCGCE2OPI8JSBRzUrVesY4a7m
-         3FtCGN45+3RLbtDwCksExjMl2EgzvIY4XUx1/ZYJE3O3t5S8/Ab3hF4MyGiAyku0Qdel
-         IcUuve9yvrA2Et65RoZaAmqPTbolGa/lV7Z5NUdQj2AXydgP1yaex+xhvxbIFQW0eOPo
-         nT9383VOuRLVgUk0RRTIKwQlyV0YpOFr1TVGKGiOFKksDgiGBbuOqAmNyteIOLdJ2bxl
-         jNxA==
-X-Gm-Message-State: AOJu0Yw78NtnSI4VfPG964jT9fPeaHdXpoabsxw7Jb2Ebm98hqvneSVa
-	tZZbqJyQuin+LvtprYEbW+SWvltaGK7hDZ373p+LyhzXEPjUX3D27JQDUVO0UKc8zIEAd5yV+Jm
-	IOfTCb7g=
-X-Gm-Gg: AfdE7cmhGyZP19666KIU5Frgh3MPE8vOHJcWz+PsW/8uV3q/2WDwwkhImVCdWkodLjX
-	tQ35rzMI1iU9bcVP+ZAJVfSROfLOOTRn7j8L2XS7NjAlpVMHVs3SCkCdzzAP7linprKPTJgwita
-	YmLRpf6QC/rAUdav0TL3x1mTbXIPmYDXAycGBekfeZ42D8C7Is4Vtb1iueDvjKjN+9LABjFvcWv
-	JnhDUF0Fa+RE8Wgjfoinl024H56zg04jKZqKuUzwqQjjZn8NVVdMl8JkFLhlPi9gF7PDFgVufsd
-	XKDZd3wSfTyiIwPnCN5JmdTMOOyAXZ91OukCSAc3/EDR2+opvRD9Sr5C12T9AKTgHfeB5JyRche
-	xVgaC0rtmGgdvNdxLKdMsJ6XgJsLtspFJPIBUy2rqEyCZ+FSR3cPWQXmZOe2X5PMQcnxA3TH9Ip
-	RdXVSPB7uGd6MBX9ya+hYy9Gww
-X-Received: by 2002:a05:600c:4ecb:b0:495:4c73:3d59 with SMTP id 5b1f17b1804b1-4954c733e07mr193457475e9.23.1784642968727;
-        Tue, 21 Jul 2026 07:09:28 -0700 (PDT)
-Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-495653698bcsm65138255e9.2.2026.07.21.07.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 07:09:28 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net 2/2] selftests: net: bridge: test ranges with PVID VLAN
-Date: Tue, 21 Jul 2026 17:09:22 +0300
-Message-ID: <20260721140922.682265-3-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260721140922.682265-1-razor@blackwall.org>
-References: <20260721140922.682265-1-razor@blackwall.org>
+        d=1e100.net; s=20251104; t=1784643501; x=1785248301;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZRhP5ACQsrCIUXo6VjCCwsValOT8tY41FIY4pxKlbkA=;
+        b=fKQHOrrYGWcNnYFQyS0qrCq8X2uufloKj82CZvuN2FQSNq4aTRvQYVLkmaspgvz514
+         5cHnBX8LcW0OE5ojJ9pH4gFoXg3B6arki0UTzbhFKAFM5g27h3Qh+q0Xj8aNQsNI8Ons
+         i8Y5nfzoS8jalR9aYkxRb/X3n38uJGhdnJxFfysj9I2g8TGlLLBTHlo9oJkIpULNzSs6
+         nrULPnsvez8Zer4g81GpuE5lc9Eh1VEp89nw7e2aIzYryTO6+9HdSfQjZ5hKcgH3Xp1G
+         RXcJZycbDMU7fO3Yx7//vMePHJuLhDdvB16xPP0tcHLdR1AY810xQ5YmbDxdasDitkcY
+         yL+g==
+X-Forwarded-Encrypted: i=1; AHgh+RpWz3WlXplSWdJd/rRNrOnQm4l2Oq9jlj4i6JDe2fR0SVaoSaFD/HrJwGgoAdVQ/4S36P2F6dg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze+POKEIu2mZ/BH1YYtoDhGwCnTkhbeeK2zfGrLkjjnmoSOSrJ
+	grO6QJ+QF8nFCNnS6D1jEWmhfQMIkNK8sUcUXuFoTO9PWg9/mBAd9F1PHrh0Ndq4ppwnknaCvuN
+	vLSfoaGua0hVDqp8zFsNQ0QPO/30NVZDiL2rhcthQ
+X-Gm-Gg: AfdE7ckxTKzItGVUKLQDhpXtM9dnXUauaV945xUcVUxX0RGSSyunB2yqGpvlE67kAqd
+	pXQJT6+uCZ4txFe/Dy2X36X7CXhB5va4Bb8VKAVfNWZrK3t7fxUMpSPTy4M9xUvP+11rd1BqcwI
+	LByuoEsym8Q2FvFZ1IZ5f4SDMOmuJuqr/gmJnfL98WVgcA4lvI0Muw8QmoE9TwVQ6b5J29hctMP
+	Zpv0wAO8YH1Ir6iUzbEIqQlQi0LNbUNRTSrXh11+q54209TmikJijur0bt8qjhhu8nNyn8letxB
+	iw45GwxIH2fyDusvHwuiEtqyAbVpu+Muyt6rBjDhgGbRr7uBlIHDlsg0+GTnnve17duJinMGOg=
+	=
+X-Received: by 2002:a05:622a:2586:b0:516:ca56:a44d with SMTP id
+ d75a77b69052e-51fbeeb311amr230976181cf.6.1784643500180; Tue, 21 Jul 2026
+ 07:18:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260708180837.9507-1-emil@etsalapatis.com> <6c01c713-14a8-43c2-aaaf-2fcf622f7e4f@redhat.com>
+In-Reply-To: <6c01c713-14a8-43c2-aaaf-2fcf622f7e4f@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 21 Jul 2026 16:18:06 +0200
+X-Gm-Features: AUfX_myMdfGpwIg699dlzD79bXwYZGcMlxQz1zT8a0S0_8lW6OzhsmCLSDWqtqc
+Message-ID: <CANn89iK6JBjGcbf_AAKGO-wkR2mjAdnSBFxwu_ExNE5dRnv+Zw@mail.gmail.com>
+Subject: Re: [PATCH net-next] net/tcp: Prevent inlining tcp_syn_ack_timeout()
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Emil Tsalapatis <emil@etsalapatis.com>, netdev@vger.kernel.org, ncardwell@google.com, 
+	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a test with PVID VLAN that matches the flags of the VLAN following it
-and check if the range is properly dumped. PVID VLAN should be on its own
-and all VLANs should be present in the dump.
+On Tue, Jul 21, 2026 at 3:24=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 7/8/26 8:08 PM, Emil Tsalapatis wrote:
+> > The tcp_syn_ack_timeout() function gets inlined by Clang,
+> > preventing tracing. Since the call is not in the fast
+> > path, prevent it from being inlined.
+> >
+> > Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+> > ---
+> >  net/ipv4/tcp_timer.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+> > index bf171b5e1eb3..f7215d53bbda 100644
+> > --- a/net/ipv4/tcp_timer.c
+> > +++ b/net/ipv4/tcp_timer.c
+> > @@ -748,7 +748,7 @@ static void tcp_write_timer(struct timer_list *t)
+> >       sock_put(sk);
+> >  }
+> >
+> > -void tcp_syn_ack_timeout(const struct request_sock *req)
+> > +noinline_for_tracing void tcp_syn_ack_timeout(const struct request_soc=
+k *req)
+> >  {
+> >       struct net *net =3D read_pnet(&inet_rsk(req)->ireq_net);
+> >
+>
+> What's the point of tracing such function? It just increment a mib. If
+> you want to discriminate between TFO and non TFO syn ack timeout,
+> possibly adding another MIB counter and incrementing it in
+> tcp_fastopen_synack_timer() would be better???
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
----
- .../testing/selftests/net/bridge_vlan_dump.sh | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Tracing has some merits that a MIB counter can not replace :)
 
-diff --git a/tools/testing/selftests/net/bridge_vlan_dump.sh b/tools/testing/selftests/net/bridge_vlan_dump.sh
-index ad66731d2a6f..90e18e2104e3 100755
---- a/tools/testing/selftests/net/bridge_vlan_dump.sh
-+++ b/tools/testing/selftests/net/bridge_vlan_dump.sh
-@@ -13,6 +13,7 @@ ALL_TESTS="
- 	vlan_range_mcast_max_groups
- 	vlan_range_mcast_n_groups
- 	vlan_range_mcast_enabled
-+	vlan_range_pvid
- "
- 
- setup_prepare()
-@@ -191,6 +192,28 @@ vlan_range_mcast_enabled()
- 	log_test "VLAN range grouping with mcast_enabled"
- }
- 
-+vlan_range_pvid()
-+{
-+	RET=0
-+
-+	ip -n "$NS" link set dev br0 type bridge vlan_default_pvid 1
-+	check_err $? "Failed to configure default PVID"
-+	defer ip -n "$NS" link set dev br0 type bridge vlan_default_pvid 0
-+
-+	bridge -n "$NS" vlan add vid 2 dev dummy0 untagged
-+	check_err $? "Failed to add VLAN 2"
-+	defer bridge -n "$NS" vlan del vid 2 dev dummy0
-+
-+	bridge -n "$NS" -d vlan show dev dummy0 |
-+		grep -Eq '(^|[[:space:]])2([[:space:]]|$)'
-+	check_err $? "VLAN following PVID is missing from detailed dump"
-+
-+	bridge -n "$NS" -d vlan show dev dummy0 | grep -q "1-2"
-+	check_fail $? "PVID was incorrectly included in a VLAN range"
-+
-+	log_test "PVID is isolated from VLAN dump ranges"
-+}
-+
- # Verify the newest tested option is supported
- if ! bridge vlan help 2>&1 | grep -q "neigh_suppress"; then
- 	echo "SKIP: iproute2 too old, missing per-VLAN neighbor suppression support"
--- 
-2.47.3
+Emil, next time add a link to the V1, this would have helped to
+understand the motivation.
 
+https://mail-archive.com/linux-trace-kernel@vger.kernel.org/msg24624.html
+
+Reviewed-by: Eric Dumazet <edumazet@google.com>
