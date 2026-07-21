@@ -1,132 +1,192 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDEF42DFEC
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 23:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784676502; cv=none; b=t3AsmACO50vGGdJtPlvgoFDckkp95iD1opWDX003f+tPzWALNLikxDP2RBRn86EMdk/jYvrWAJWqS3SboKzBcfmMtDVM2PUASowbwOYOWqK/7Xw8vXU6pyCSsidph/y4UE6BzsjcbPF6krt6Dknj8sQfAdQ07AudePQ5gTAL9Fg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784676502; c=relaxed/simple;
-	bh=irVTV74mVuOuLu8jU6nhDyNRWI0SVtaJWyZgTsXu7us=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=apvqGKKDTdZ6e2ShQ0S6xk6j+AjE2aR/hnHzlAiBFvQEe6aBGYxeA66SfdyaQbcyEugsy8bjQypLFVMLeuPDZvdMDI2hQ/38rVlTHoA0FOIkq/VOGqy02yuyPPF/o2sumpi2xgXYTpWtAhbc7N9C6EbcugGyT9dtxfNT/MG8iXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Z9viuVl+; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0F5403AE9
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 23:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784676562; cv=fail; b=lvhBX8ifD8dtTZI84ih16FwCIJpK514QyB9DopVEDIbmiamRxDkRsPQmg7Em7jaqMM/gV6r9PrN85XIPz9Vt9J+FGudg8LWnZa+6TJpBSlZBJ3JQoovtmd59iS7Zl4ilAQiIcOKxa5wxaQYDxqexEACgq0f18PtXcpxXUw/DXGI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784676562; c=relaxed/simple;
+	bh=jLarzqtQ/Caquu0s/sl4MPKYLdXIXhcVh9IS1bCVrh8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=GPHFu37MU+hrfyRXVKSKOW9TI4dbDDhZKKa1aaU4ABP3uBAjPHbYqAmgu+0WhnaAY7nx7aQqS2Fja3PRkBxkVqt4OpmW9Ws4HAfsM7if+DZSQxGvwhV9lGHxPK5eJsC+vn+gAyhi0F7I3k+HXVgHj/e495fRbrbKT854fShY3IA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MkQMSeIK; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Z9viuVl+"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so109015315ad.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1784676492; x=1785281292; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3qrZVVtwbHqwgSrHi3jW4izH2aGoGZ3Oe5m0UJ7ploA=;
-        b=Z9viuVl+LIZP5fXAcmuVIl9pvUs2+oljzkQeayt4Uz53vC3LaDDWRpHsn6slOB23TE
-         9s3Vl5CUUoEtRF70b1QWFLw8H8xupiL6UpmoueY/pZLGD3WvF9K49S28fG5gbreXtkis
-         REb1wy403Q0k78l7+/+BeJRN+GitgHZgc7ROjJBB00/u444E23+hYS/qaLCOGcmKm/st
-         mmO/NT8BkH+a8xM4/etjvOcQcBYJeCG36i07UqbUfsB9t0vSLjna4ke13GS2xvnFbaJD
-         bfiGjdAIUtbmb0KWAoGuP4tNoMpg1OdU05ahSS5tzl7SsJjm+40wsYVlHE9FkseSTrBo
-         hMSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784676492; x=1785281292;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3qrZVVtwbHqwgSrHi3jW4izH2aGoGZ3Oe5m0UJ7ploA=;
-        b=eQIaPbdKZl5+pSEv5ndif+5H3gHCJVxzwGjuLmur1x9eVua+0QDBBdyO7B/x6nF5AP
-         gLPAewcCSygfJSuw3NPWobA2PPgrEyfmGFVK/Rr0TuI1vWeZphQfqkWSRXe1XdtFzEXC
-         bUrOlzzdU2TaK8adTV8N92MPDA5o+s2yDo+KcYt28+wiHQTVD2KTLh0TXMj58VmLrlnJ
-         5tfPWBauYWX11+3MkxKZejgM63iikJIqwATgdGu4mG6nnpoVSlUpZNlAi/5fjDyKdob2
-         bSgYT+hBO3T2hwOazSQ4BRfojVyjwKPJHbmTaUVjG4eZ1/w+2jLYjcOyRUZb64iy67wj
-         opcA==
-X-Gm-Message-State: AOJu0Yw6AN8Ek+x+RLSM867mwG4YvdNrL3IoCFnYAjRn4g9ZBsz8ddU7
-	acUwC2Bj8NfE1M8Hn3jD2WaQSJuwQdk+o0mcvBGE3mLQ/q8hD/9vgoB2uXMZvrLvGg==
-X-Gm-Gg: AR+sD11KI4wOFBYgFEOBlt9kam88+3DbdYDJglyN+0z7ZsoWtwloSNhh1xvARGTjfXk
-	BVVu2xBfL2SkuMdVSsirxvyx1qBWy8emSmrmG/G9kMfQ0YaCpdtUWRm7av00FK5/i/zxE2HMOMQ
-	B5AuoFidgovps3OM2nwi/Eog2/2MHkkBSDdJiv8EikozTcVNG9q4h3vem6kqNjNIQC4boL+kLLF
-	K7dNvDeJqN/c7IrU5qllpEZlxRkU/sVgS1tIqQb1/jRArGlz2lfRM9XX5nfpo3ID2F5RBvlmePG
-	LbkPq6Cvce8vdJ2Pr7O3wKt3g+xcJoSumWkoMC4/Ukv115Bo12V05M3Xhg3zM7VdCcJRS+yZZNI
-	91AwEe3bXM+k6/LgcvFHuPRW5DUQgsqjHNzNe2UHHJFbsNR8Ix5Eghm8KxTF7WA2YEoJ6PNFxSH
-	DwMxAaDZc=
-X-Received: by 2002:a17:902:d491:b0:2ca:bb7e:29a7 with SMTP id d9443c01a7336-2cf34a76fe0mr238495075ad.41.1784676492429;
-        Tue, 21 Jul 2026 16:28:12 -0700 (PDT)
-Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e1c7ff4sm2633629eec.27.2026.07.21.16.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 16:28:12 -0700 (PDT)
-From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-To: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH net] amt: linearize skb in amt_rcv() to fix use-after-free of cached headers
-Date: Tue, 21 Jul 2026 23:28:05 +0000
-Message-ID: <20260721232805.2451198-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkQMSeIK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784676561; x=1816212561;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=jLarzqtQ/Caquu0s/sl4MPKYLdXIXhcVh9IS1bCVrh8=;
+  b=MkQMSeIKc5PgSBWo3x6cKLXpvMwqiCBx3EBpguscyXLXfwIDqHgUV9Qd
+   qYZb4l6pWewnuP/JlVUwqZEwLNCXmITMTSga+XVXoCEao72tzSHjRGuR8
+   fsLHZjk0UYyprfxVzwXSytjiuNoy/RSEQFpufoseidXqgqFzqtZAYBg0H
+   gZAhvVnRMV2E1E9RxypAeah35eRZevyFgzL8JVQeDhVZjaPTNPEt0Ecq1
+   gC/2ofD7l541entodrQehPzRRb1erBQN1QHNQR1DDQvdkMuRtZVpgZkxy
+   REYCHVJ1L2U1amhazX8w0s/UreEJxXm4C6SoV/WNp/tvaZDDhwQZ2YCwU
+   g==;
+X-CSE-ConnectionGUID: LG3pySb8T/qGCsUJUUkyEw==
+X-CSE-MsgGUID: cvUItM18Qx+j7KnSV8uojQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="102846264"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="102846264"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 16:29:20 -0700
+X-CSE-ConnectionGUID: rHcgaXb5TAWb+3fMCKoj1w==
+X-CSE-MsgGUID: GtS3Do3eSLmHFHqW9f5Y0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="296121321"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 16:29:14 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 16:29:11 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 21 Jul 2026 16:29:11 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.58) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 16:29:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vpv0W9o7/GmzXPady4V42GojWBwjfwPtT8LK0nR/RqJDKoQqMmEyYTpvAL6XK6ajUGOtkUVWSkaar17CNaAzkf3/NojTOo+OPidNkUiWO/O5W2TEYxTPa8VJPuTtBYZhH9x/2II4d4Rmch/IWLzyzKS9EGy8BLQRnHCTP2gHQDFLcCcdJnjZRYGfE656/ma4Kq1frmeMGu+3kYht+6BjnR5+SMjnDs2J0gdaEs004vSEOh9CQ041qswjBRqlX9ZNQhyD4B1XIQN3YEbfv1KxAEliKVYw/Kd9WtxJDOXYSfdeio6WleD2LoEdVURS/lfljxc27Z5bs7XnnnL7H9g9lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E7tFnv+3vvM1piVsaSg37r7eS7u1FgRc4mtQkcwUk5w=;
+ b=MWsm4gB/iFHreVYXwUXEWma1Mg/tpHcQwAWUEaTJ0WZQIM2mxfaznK82qcG0Fo/f9aj/owhlVNlQL/3w4dK2pFbwfnl8O4qHhC7mXolnDDg5QQuRDPrrtXUHipmRWVAc4j2Sk8pCkTvM0XZwVkvlxpStk4KOgceB9P0eOkiGgiaEi83erfytOpxy2FMMfs+cxAMEcDK+kYD/vBsRQqHLZtHv0OF0yagNXeU6rZfgbF4RiqPWD056L5VunH9VwR1xX/2uEuuYW2fnbW3r/OxvnmflpLhJr1NWRsSEqJL/prP+p03FiRXL4T89tzB0MPDkJQx0qagKSd+M66gAX9AR4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL3PR11MB6385.namprd11.prod.outlook.com (2603:10b6:208:3b5::20)
+ by SA1PR11MB5874.namprd11.prod.outlook.com (2603:10b6:806:229::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Tue, 21 Jul
+ 2026 23:29:06 +0000
+Received: from BL3PR11MB6385.namprd11.prod.outlook.com
+ ([fe80::a731:24a9:6c0f:2440]) by BL3PR11MB6385.namprd11.prod.outlook.com
+ ([fe80::a731:24a9:6c0f:2440%6]) with mapi id 15.21.0245.009; Tue, 21 Jul 2026
+ 23:29:06 +0000
+From: "Srinivasan, Vijay" <vijay.srinivasan@intel.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "D H, Siddaraju" <siddaraju.dh@intel.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, David Laight <david.laight.linux@gmail.com>,
+	Michal Kubecek <mkubecek@suse.cz>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "Chintalapalle, Balaji"
+	<balaji.chintalapalle@intel.com>, "Das, Shubham" <shubham.das@intel.com>,
+	"Samudrala, Sridhar" <sridhar.samudrala@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"singhai.anjali55@gmail.com" <singhai.anjali55@gmail.com>, "Brandeburg,
+ Jesse" <jbrandeburg@cloudflare.com>
+Subject: Re: Ethtool is missing C2C link modes
+Thread-Topic: Ethtool is missing C2C link modes
+Thread-Index: Ad0QtH9BbirxMb3HQge7zku6IKXccwACn/MAAA/6EgAABI/OgAB9dWZAADCGeIABZfngqgABXDYAAABB1Mo=
+Date: Tue, 21 Jul 2026 23:29:05 +0000
+Message-ID: <BL3PR11MB63856413FCFB7F30D30E469688C22@BL3PR11MB6385.namprd11.prod.outlook.com>
+References: <SN7PR11MB6900E94E718175AACB2309109AFD2@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <e3dd8e06-97d1-4943-b54c-fdd0d0e6ecaa@lunn.ch>
+ <20260711073128.7f94e0ac@pumpkin>
+ <bb7bb5c6-5643-4e5b-b26b-9363127bb2d8@bootlin.com>
+ <SN7PR11MB6900984B5FBD60B71B3B8F329AF92@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <20dde8ba-5429-45e2-8071-ce83f1c2d6c0@lunn.ch>
+ <DS0PR11MB6397D3B945CFF9FA501AC6F688C22@DS0PR11MB6397.namprd11.prod.outlook.com>
+ <a70dc967-6656-4eef-beea-d1894e983fde@lunn.ch>
+In-Reply-To: <a70dc967-6656-4eef-beea-d1894e983fde@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL3PR11MB6385:EE_|SA1PR11MB5874:EE_
+x-ms-office365-filtering-correlation-id: 4eb21cb6-c528-4c22-1770-08dee77fdb5c
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|10067099003|4143699003|11063799006|56012099006|6133799003|38070700021|18002099003|22082099003;
+x-microsoft-antispam-message-info: KNwCTKl0quURKDvZYahVlMoCRJOk2AHPbZKY5Izmvy0JeaJlx7HH0KFPSWKGofMK0Nt9TK+xsFMbdzIhkL3epoYcbWj570X2N+fl/hH21CD6YVyTpr6LEHm9gCjPIejs7geqe7XIBp+8CexCo69qyRqHBIwxm1Le0i1uOFkoDyHd/P++keqXxvD60TbV0TCq8DWjuRuwp2AGKtdAxVU/1QzVe0FjctI0g7ENUVsnY/ffXzA9RgdNhWC/Glp5QA2t9F7ui4iqtg/P2v998FsAEIQ42bzzgHiBhVW88HlS/zN2VmKCLWeBQXeu+95zY9mIn8HgxifAvJTYIs+HoxF32sp62uZZ1VcYBxg1fsjiVrR3+l10AuY6mnSXKeM8z4C52l0UjmxAbWH613XyuqPHVKGts4gqqd0KC60YAWb9r9XjdSm+2lOQs9mha02icdTXxnCgALcRzkth41yZ1SRmrhQ8ifWFeCtnjXtUa/Rw3/imuFYXJ4MNGnmggOvumE8UEoJb3czWxfON0xqJBJ07oIK9NRBoIrY9DUxAeZiaGcc5HU0g7KrvmbO8R9NHjMoCTbl6uwrhnwxRk2tA+uxT7SHUy+LXE/A19fzp3iFp+rhZdPWpdrZuy6dlp/quSmSicELlPlXz2AbJX0FwWRtqz5lspDFHrxLpwiiy+FwuS3Bm3PVbi2flWrCjVnh90Lpy29xghck6BGaXrFggxnR8F6AUMP/Mo0fPEDY/Bnd3GQM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6385.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(10067099003)(4143699003)(11063799006)(56012099006)(6133799003)(38070700021)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?eZElsWk+hyDECQ1+SAZKDIsz1JPqEcv6d4wV2+zD9Kg1Thco/RKAJlCMSv?=
+ =?iso-8859-1?Q?8/jv87La2TjJ0rpLjQnWm+pSH6tZ2GwF1grP5X1q5ZRDBIRhXvFkJfBJDS?=
+ =?iso-8859-1?Q?Dm8EDidcBu7KkJ5K6Gr37MXR7nAOFCgEUOQ69hSI4RvgFS4U336vwt4oAg?=
+ =?iso-8859-1?Q?kisdGVXWsvWiN5a0yN7YfrcGt6X04eQo/6C4KM8Ll1LqmD9WMj/QEDTKaB?=
+ =?iso-8859-1?Q?ffXitBBMPiIYwPVgrjltmGOokQN+FS3Q4A++sqZOZtAl0AKJ4RMJH7mhin?=
+ =?iso-8859-1?Q?MWKudb7pp++QFlGDJ09dBQurH6wIWUNTuVB3bYRRMzc+Fpiwn1TRHeKbvx?=
+ =?iso-8859-1?Q?Oqw5RF/yi76U300rrYDPwp98fRGztK+SfuuITbx2T62dkAUVsRKkBoxMdY?=
+ =?iso-8859-1?Q?EnnEPIxyaOJ7inI6NdR3vFoSBwdwjHJUumpZD8BvW9fy4n36PoPxb5d/oC?=
+ =?iso-8859-1?Q?JXJAnnHyKzWU+PQyaMkTbzYVTuGaOQJ77T6uk3aE6eeaBhI0Etl2b6pYn8?=
+ =?iso-8859-1?Q?eO6uyXsmAKLiwT6yb1kB/UWwjkdP8KZMWunRlRakAY6xhNCHgiJfAFa1oA?=
+ =?iso-8859-1?Q?LcbEOAflpRtSewW9SGHyU+9O7k331/kFuJeQ93dZ4vxHre++yLLK0VwW8e?=
+ =?iso-8859-1?Q?5aNR92X1HjiIFZmRzi/guz32mtiNXSiaq6srBI8NK6cW81luBRdhjIGy0m?=
+ =?iso-8859-1?Q?eSXKX2uvBFXL+VF5DEmpV/k2T/XJYjPNz5oKDpP6YfR9K5MXLVOlcOhg4L?=
+ =?iso-8859-1?Q?pZSuKZpb4ek7xWqSJwaYxoEunJ5KLxn+AlUtvmxMvseq+XPvlTRVdOg8xB?=
+ =?iso-8859-1?Q?wKe9cF0sjwj9hUgY3An9vRF1OceH6EMaEy8DdqMXMYXLPEJi1CQX1P+E9a?=
+ =?iso-8859-1?Q?tHKSrkqbB+YFob1ZlSDkSIsJKQuCNcOcInMw9ex+QKkY9LIo8pMusWgiOz?=
+ =?iso-8859-1?Q?opTUWGkmTvaz9dsUxwuPos15MZG0+zep6QmZqMqC7OrcaJDk1BoUFyukhy?=
+ =?iso-8859-1?Q?CLHjHCUypBtv0IItnwHYNvypMitTesht23qGip6KyfD2aTa+SLPeXz3kq7?=
+ =?iso-8859-1?Q?J7jnJSVJL7olw88iEKQA3cZ2KHUwfgOd5AXKfR8NGIT6x5ik8Yvf8hbiC8?=
+ =?iso-8859-1?Q?dIBU2FPLbtl069SEcqkb7hCiCoSNL95GKgEvyPcihmOwM1j42JSp5BzCXU?=
+ =?iso-8859-1?Q?7SRTJgAX6/WpmmSvoAi9CC+NGCZpkhakxdmSmyGIRuuIGPOYMQpaN6XMC4?=
+ =?iso-8859-1?Q?JSlkrMebxfREzyZs9lYHA6IuBweO8kf/MhZee9qI1uo0wB37jmf5AoubmB?=
+ =?iso-8859-1?Q?b5QQWXytHWUkO63k2PEYj/Pz9EdDbbUHvMdODa1EV6qcdNlpOQfS1LfLD3?=
+ =?iso-8859-1?Q?olnYnVHWIg7QSyEr859279Z9/bS+deJ3xz7dV+etRhV7oMOCHTWkYpQnu6?=
+ =?iso-8859-1?Q?+4Er1kuLryRFXM6mWDCCrgKUUD2hv6bwcickMpcge0+GWCD/ys4ZODucrb?=
+ =?iso-8859-1?Q?gNerFqjF218SuqjVaCsOVs7+QLnlfO2AiXQNTi0cHi3AFmlb1kYjeNeTae?=
+ =?iso-8859-1?Q?F6R3QlsG5wE+eGxswpVdF3FMj6i7ROZY/GS4VbifD1RwLufSakkQaNIz3h?=
+ =?iso-8859-1?Q?AGewoGTAngoUXfpcw/WIYLaSYypnOAMsQDXUphZRi2LsyY3DoRGfmJwTic?=
+ =?iso-8859-1?Q?fTFOo+hRK+gJmyYwrWTR/BoVj5JGrA9FMdA4URw51b0Cx3yaDLfmYxplD5?=
+ =?iso-8859-1?Q?mIzUbt2nJZaffXh4DkTJ6hHKnRFR7HzghOZwCBTQoAzxZqSCiaFVlQz+V7?=
+ =?iso-8859-1?Q?rCiTrdA/Hw=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: G464qGVhOu28o46+U57NJaDoN/vwWhhN0RZnUSFtFNtt5Fxy3EvwKmCP3mCM9w+Sj534+UziwGo35x+TVDl73W6nKXXBouOPwysGc5ialXuXhHJytD1lr3mzLcpvpIeUV5fTDJeXt9nfq7/iksI5Sf6nH6SAUte9kSA+HA9DisYDbLmodARo9MTmJkgc9X/naK2BP2sVDwLAwTDChTocxOk8r+crg3d/zRR7N/ZyS64P4dXDC1BBTSnB5UuR3ykA/VyCFOEfIuniB3bSyGRQaoNrL8CHlTKEeNnXQH1L8hcp5hkb2g/EtgMh4Vn1Ieqy6eRwWdopuQAA9iklYpJJ/w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6385.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4eb21cb6-c528-4c22-1770-08dee77fdb5c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jul 2026 23:29:05.9041
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: N6SspycUSPytPHgptSxJTxa3w6BTv0vbaQ5z1sGu1UBDNWwx3QEWQIRncFjz0Teiv5J48dlx/k85szwwOu67gtnAgq3vIyyHGx2842xnMSM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5874
+X-OriginatorOrg: intel.com
 
-The AMT message handlers cache pointers into the skb linear area (grec,
-iph, ip6h, eth) and keep using them across ip_mc_may_pull() /
-pskb_may_pull(). On a non-linear skb (e.g. a reassembled fragmented AMT
-membership update) such a pull can reallocate skb->head via
-pskb_expand_head(), leaving those pointers dangling into freed memory.
-
-Linearize the skb on entry to amt_rcv() so no later pull reallocates the
-head. This is a no-op for the common linear skb, and covers all handlers
-at once. Drop the packet if linearization fails.
-
-  BUG: KASAN: slab-use-after-free in amt_igmpv3_report_handler (drivers/net/amt.c:2023)
-  Read of size 4 at addr ffff888013fdd71c by task exploit
-  Call Trace:
-   <IRQ>
-   amt_igmpv3_report_handler (drivers/net/amt.c:2023)
-   amt_update_handler (drivers/net/amt.c:2503)
-   amt_rcv (drivers/net/amt.c:2846)
-   udp_queue_rcv_one_skb (net/ipv4/udp.c:2389)
-   udp_unicast_rcv_skb (net/ipv4/udp.c:2580)
-   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
-   ip_local_deliver_finish (net/ipv4/ip_input.c:242)
-   ip_local_deliver (net/ipv4/ip_input.c:262)
-   ip_rcv (net/ipv4/ip_input.c:612)
-   __netif_receive_skb_one_core (net/core/dev.c:6212)
-
-Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
----
- drivers/net/amt.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 951dd10e192b..2bce99d45d2c 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -2785,6 +2785,10 @@ static int amt_rcv(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	skb->dev = amt->dev;
-+	if (skb_linearize(skb)) {
-+		err = true;
-+		goto drop;
-+	}
- 	iph = ip_hdr(skb);
- 	type = amt_parse_type(skb);
- 	if (type == -1) {
--- 
-2.43.0
-
+> As for your comment/question about FW vs linux controiling the HW, the in=
+tent here=0A=
+> is to use linux to tell FW where to go based on user input.=0A=
+> How the link is eventually achieved is all in FW.=A0 =0A=
+=0A=
+> I don't see how that works. ethtool has no APIs around=0A=
+> phy_interface_t.=A0 All ethtool offers is link modes. How do you see=0A=
+> this working?=0A=
+=0A=
+Correct me if I am wrong but isn't that the role of the driver?  =0A=
+I expect device driver to translate Ethtool link mode argument and pass it =
+to =0A=
+FW via driver-FW handshake (device specific SET/GET functions). =0A=
+MAC and PHY config. which includes phy_interface_t for that specific link s=
+peed =0A=
+is then implicitly handled by FW. No other intervention from user should be=
+ =0A=
+required.=0A=
+=0A=
+=A0Vijay=0A=
+=0A=
+=0A=
