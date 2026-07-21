@@ -1,63 +1,63 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE73FF886
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62B13FF897
 	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784598186; cv=none; b=axsXwxxKnWHi+UqOdZjKXocnteJajvG9MX+XCYPGZde9ZeMuMAoTh1iafJzAi7Lk9jpzJ5vfT3M2Kx1UgqN/0tLCBqrXUnsSKXX7jagdGU7LV26guuiEH5FjaShIkF6zuFiyA8fDGGrIORia+MpX9X3TjYkb322WXITa2gjxbwA=
+	t=1784598187; cv=none; b=TewL+RAoALFU0noP75TBW0mj6Sfl+pWPmxcFhBMuh0uutKRpGppYTfaXZ+vXPjhVdMc+CvlBhzt5lY9YMKjeTcFaWV98W5m7pIGOxrU0YiO7zykG0ulIJLDDc8v63d5LcVXcGZHJMQbiSrIWJI09+fMD7Hp0ra/bxDYVXDoHU2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784598186; c=relaxed/simple;
-	bh=1rIoBB/Hj7ieSJ/Og+6Ie/CT2YnBkpcryhJf4qTc/Wo=;
+	s=arc-20240116; t=1784598187; c=relaxed/simple;
+	bh=Cvd62BSbfK1YUoNmu2cB4JDmKSrIffYs7NUg+4REHIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwUgU39z+zkui3FEoQTNjLsu9Lj76QBd0EYHPyw23pIBc4BisTI7MJH9xWxQUEVqJjwr3cck6vt9cFem1wtk79r3GSpLDAEWTDZNeF6I8Efv/RP015+QL69NYo+CBkSVonrxYmocEP5JV+OuXZysKZLYczJucWg/mRwik/GStBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndVOhet3; arc=none smtp.client-ip=209.85.219.53
+	 MIME-Version; b=qAB+CIVLEI/a8gIJBry2yzLmhl4J+9p9g+N3E2F20/cdzbxnrrNKlphlzPsb8fo/zjBjrqokWxChTNx9y3RfWPmDXRXxtyuzpY1L5cdWDzCHyv/nitqroTldNcWqdaKNmCCMBFRLn6F22aLf4cOsafP4R8dV6u3oCk/hPiD0a9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QqUNzFHZ; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndVOhet3"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-9034b6b7674so88556856d6.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QqUNzFHZ"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8efb708b1a0so105819116d6.3
         for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784598183; x=1785202983; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784598184; x=1785202984; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4imDhb+13AEPLffOEeCuWK/Th0FJ7Kuf5u7NQv38orc=;
-        b=ndVOhet3urzYZNmDWYYKSI181wEk/ZLbIqHNh0CLGNUHh0JIgp7/O+r6K/W+JGkKwi
-         AehwQIztwUGEzYiXe/QmFBw0hfYwTyXIGjtUKBqorfi0y/IqkttdteyoPQJIgjnTikyb
-         jVngBYqnvso0arM8+snXcc1DDl/rrQbiIE17OSONT6gOTAWCmvS/Z58IWXjZbKotxz7D
-         tBoNnl8PaSwoOCeCZb2fohdyMO2aGFPQ6phIbISkaPUGcQvAcYCOzkcD2yN2JcjijJ/i
-         jzmbqbziq608/AHMN2CgQEq2zOl4mxafGjRtG4ck0vJThw2Y4ZdAX7NQ5pnG3djxfC4q
-         0p2Q==
+        bh=13+pPfiHFxOsE9sDGlKpSdwFAptP38k5m91XQ1ijMSw=;
+        b=QqUNzFHZPzCG3pDpkkATGqBqa6u+IZ99mdtBjCquUHRCYlnlX97GWpgOD+vNDlehgt
+         qI5PCOCWiBcWYPk2StSsk9ZcwxD6v8JQvbeb/+kLpmIuHj27AZ3B91+NsFK5Qa+W7QbB
+         27/1jFpsKrnxsIgLmO4wji95cSANXGwfvc5ioL2Nk6dxzeSC9xTcHBMWWlodQF6EEhv/
+         p4CR/zKXjOTsglJJyw6Wha81teM634eFSsWmtKQs+6RLiLOAQElyxiPu16z1N268G4wI
+         bHDP4j9iwM7YoH9YtlR4ebowGSb3vqft1rDxuJrkVeVuXWTHPuRPyMsZ8+zEvv46Z70r
+         HN+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784598183; x=1785202983;
+        d=1e100.net; s=20251104; t=1784598184; x=1785202984;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4imDhb+13AEPLffOEeCuWK/Th0FJ7Kuf5u7NQv38orc=;
-        b=CLK+gItdiYVYb2khwKPxhm2mHODGX676ykO9zpPPZV1rEnHyJmE6Ml8dJw0K+OBbnK
-         2ko5Sg7Nb+eTv9oaCBPneNkpcbE0jbm/1wE9o35Pe07D9+DEgxztsScIg6Ywa6cgwXDy
-         LrOyOqdknLHTTof0dhAAPhtH5Jlpv7oRgaz6ekzHICCj/rxfWSZTHXt1v7yWGbEUMFnJ
-         ylYnEBNpZpNAm9BqXGMAaXZm3oxqdF249HFbZvuF7FKOzOwT7qBYB56+lGDzsCsp6Tro
-         t7h52Z6Vy7tgCJt35PYFducnlbqy92kn/DN7i6ZDgL/k+vmFLeXaJjqtfJGwvlWfJwSk
-         111g==
-X-Gm-Message-State: AOJu0YwM5gnxY7K7b2hoCrFRtQSrdqZAXus2/JseBylyZ3pqyMNyPrvk
-	TEqE4/qMRv6gl8MK4G3jFa2nFM0mkGpCdzuctH35njFegCIJ2aHSSBADoPJIb1ScOsU=
-X-Gm-Gg: AR+sD105Wd+sqHQ/yIBZUgwR1MlYlvhDxwjj/cMqNHeliHnLtHiqrVG/xzaesdPlmTW
-	NmSCPVXrNVcdiQ1l9JhS+jvQRn/PKKFIaNHPX0wuQ2rE8lkewhAxJnurjkUxl9/1+3gV72sbLou
-	1U2hvGlsz6x6VXskrNsREK5HGFaIjoW4UOi8VWouAbyFZDyX+BbmU+8TgO2EVUwzdxjCmepiQPT
-	Q5vsOVqQnAxvN8tuTfN2LTPricemNrVZhMU28npaOZo7TJDW1VaNYCXjpDSWwNoQ6/fhl1ZQemF
-	shaHxUKIeIrwYZI5SPGpzZL3AeHhxSq6GB4awEbX//JP0GIDnB6mtq3owoq3s16O8BRIRUwGvap
-	BrnJXqecJA1xpnI/OU+3dFntPE2HoLrzxTa0iED+i/CZt899ScsoqK0I/iS21jdLzblLHC+tADk
-	CDoRxmoudHQw8/2XYMykiousS6pIYpdvATNhc9cLCSNBiItDgm3E7b60cY9u8WL/vK+flfPMtB6
-	P9jDztkAVTmtTugbqafr+pWqURpFJb9TpkvV2ku2+s07zFN
-X-Received: by 2002:a05:6214:500f:b0:8cc:ee2e:8d9c with SMTP id 6a1803df08f44-907783184b2mr167578256d6.5.1784598182984;
-        Mon, 20 Jul 2026 18:43:02 -0700 (PDT)
+        bh=13+pPfiHFxOsE9sDGlKpSdwFAptP38k5m91XQ1ijMSw=;
+        b=ft6EWuA9ROv0iKMVefPe6Cw8y7ey4QIbGIjWJslvAeZvY6A620aXK+FJYF2dO59E4C
+         8Jz2FbV48VSV1q3GEPYFGXfb0ymKS0Cfi3HTXBoVcQLTDPWCYdH1L2gwc9zx33fmJnP7
+         CCEONcAy2csKqT7jJwzUMopv0MlMZd+2GYb2AkfVljB/uD1vkdTHF+A4p35y4xtvDEFI
+         rCNUa7UfuCOBhX+VvZKGUmoz7HvIGq7KAZA+L7i+HBkU7IJ2LOB1DurU55WbiA274q9C
+         HMe/PzRxXL+u4imfbPF1SIjhWZ+HOnP6DViOxe/xe/Bf6hFvOxZ+vup9eBjpU23/DweW
+         PX5w==
+X-Gm-Message-State: AOJu0YxbBF6IGmF/2TXLxLlXPhWqufruHwOvC+R+jXyQe5tQ1xI/IcDC
+	4bTc/JFyQwenBCrwERe9yzZZpC2L5khIuN/HH/RrCgnFzn0GzrdfuvYkBInGUtvo5v4=
+X-Gm-Gg: AR+sD102jqWeKeiIjwcTu2ol7aPGnNlwe47hTC3eLPw2T72hB8hdoyKcnoWpo4dceRj
+	nyCyesCGXKm2+cQEbYhsQATDkAWpWSC7sLhPtoFnPcIFOlcM390pf/eDhiGt31OqcXQAPEkq9o2
+	813eoGEX2ugXTi4sg4jnrl3vvcUFZ+xQXsabhQSS5FQWv9BWs2EvHoi/lpjsfKHbBL1dot1/Heh
+	h/wxCe5wSUrsgTm2tKdj8kdP85m1BC977LOaugpxw+rAL2LNUokcnGIra/4VssHUE0Qcr3uyTUx
+	v+YOzvDXZwIx9IjhlVy++avfI1I30sxZJqH8c6lm+BZs1fYyq/O8UkdBbWEyttfKMNRhjBLmpdp
+	sdVDHPQV2L+MNvVDCm48zZTj9S2z4CXrIeJZRV/OSeB8zmIIrOndqdhk2JIFlGVLpOX232j4487
+	kE/cCMoRkZS0/5k1Qyh74NJsTle/f3BJ1e5fFlbYRQ810YI0CryMkEedfcynLoRFRfxgpQvxnMj
+	iVXQZL3sTS6bZWU449RrNCxYrc=
+X-Received: by 2002:ad4:5d63:0:b0:8ef:e857:c9d6 with SMTP id 6a1803df08f44-90778357dafmr156356076d6.22.1784598183672;
+        Mon, 20 Jul 2026 18:43:03 -0700 (PDT)
 Received: from ip-172-31-15-253.ec2.internal (ec2-13-222-20-6.compute-1.amazonaws.com. [13.222.20.6])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9077871f650sm104418266d6.45.2026.07.20.18.43.00
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9077871f650sm104418266d6.45.2026.07.20.18.43.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 18:43:01 -0700 (PDT)
+        Mon, 20 Jul 2026 18:43:03 -0700 (PDT)
 From: Deep Shah <deepshah146@gmail.com>
 To: netdev@vger.kernel.org,
 	Richard Cochran <richardcochran@gmail.com>,
@@ -72,9 +72,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Simon Horman <horms@kernel.org>,
 	Deep Shah <deepshah146@gmail.com>
-Subject: [PATCH v2 net 1/2] ptp: reject frequency adjustments that overflow scaled_ppm_to_ppb()
-Date: Tue, 21 Jul 2026 01:42:55 +0000
-Message-ID: <20260721014256.1876-2-deepshah146@gmail.com>
+Subject: [PATCH v2 net 2/2] selftests: ptp: add a regression test for the frequency adjustment overflow
+Date: Tue, 21 Jul 2026 01:42:56 +0000
+Message-ID: <20260721014256.1876-3-deepshah146@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260721014256.1876-1-deepshah146@gmail.com>
 References: <20260721014256.1876-1-deepshah146@gmail.com>
@@ -86,72 +86,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ptp_clock_adjtime() validates an ADJ_FREQUENCY request by converting the
-requested scaled ppm to ppb and comparing it against ops->max_adj:
+testptp's -f option stores the requested adjustment as an int ppb and
+converts it to scaled ppm, so it cannot express the 64-bit scaled-ppm
+values needed to overflow scaled_ppm_to_ppb() and bypass the max_adj
+check enforced by ptp_clock_adjtime().
 
-	long ppb = scaled_ppm_to_ppb(tx->freq);
-	if (ppb > ops->max_adj || ppb < -ops->max_adj)
-		return -ERANGE;
+Add a small test that crafts struct timex.freq directly and verifies that
+an overflowing frequency adjustment is rejected with -ERANGE.  The test
+skips when no frequency-adjustable PTP device is available.
 
-scaled_ppm_to_ppb() computes (1 + ppm) * 125 >> 13 in s64.  For a
-sufficiently large tx->freq the multiplication overflows s64 and wraps,
-so the resulting ppb can fall back within [-max_adj, max_adj] and pass
-the check.  The unclamped tx->freq is then handed to ->adjfine(), where
-drivers scale it again (e.g. scaled_ppm * 762939453125 in ptp_idt82p33)
-and program a bogus frequency word.
-
-For example tx->freq = 147573952589676412 makes (1 + ppm) * 125 equal
-2^64 + 9, which wraps to ppb == 0 and is accepted.
-
-The caller already has write access to the PHC, so this hardens the
-max_adj sanity check rather than crossing a privilege boundary, and
-well-behaved user space (e.g. ptp4l) never requests such values.  It is
-a follow-up to commit 475b92f93216 ("ptp: improve max_adj check against
-unreasonable values"), which handled the analogous s32 narrowing but not
-this multiplication overflow.
-
-Detect the overflow with check_*_overflow() and reject the request in
-ptp_clock_adjtime() instead of acting on the wrapped value.
-
-Fixes: d39a743511cd ("ptp: validate the requested frequency adjustment.")
 Signed-off-by: Deep Shah <deepshah146@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- drivers/ptp/ptp_clock.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/testing/selftests/ptp/Makefile          |  2 +-
+ .../testing/selftests/ptp/ptp_freq_overflow.c | 99 +++++++++++++++++++
+ 2 files changed, 100 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/ptp/ptp_freq_overflow.c
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index d6f54ccaf93b..4111342d64f0 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -9,6 +9,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/posix-clock.h>
- #include <linux/pps_kernel.h>
- #include <linux/property.h>
-@@ -159,7 +160,18 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 		delta = ktime_to_ns(kt);
- 		err = ops->adjtime(ops, delta);
- 	} else if (tx->modes & ADJ_FREQUENCY) {
--		long ppb = scaled_ppm_to_ppb(tx->freq);
-+		long ppb;
-+		s64 tmp;
+diff --git a/tools/testing/selftests/ptp/Makefile b/tools/testing/selftests/ptp/Makefile
+index 8f57f88ecadd..dd7376cc9bf5 100644
+--- a/tools/testing/selftests/ptp/Makefile
++++ b/tools/testing/selftests/ptp/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ CFLAGS += $(KHDR_INCLUDES)
+-TEST_GEN_PROGS := testptp
++TEST_GEN_PROGS := testptp ptp_freq_overflow
+ LDLIBS += -lrt
+ TEST_PROGS = phc.sh
+ 
+diff --git a/tools/testing/selftests/ptp/ptp_freq_overflow.c b/tools/testing/selftests/ptp/ptp_freq_overflow.c
+new file mode 100644
+index 000000000000..417c0516622d
+--- /dev/null
++++ b/tools/testing/selftests/ptp/ptp_freq_overflow.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Regression test for the scaled_ppm_to_ppb() integer overflow that allowed
++ * a crafted clock_adjtime(ADJ_FREQUENCY) to bypass the PTP max_adj check.
++ *
++ * testptp's -f option stores the adjustment as an int ppb and cannot express
++ * the 64-bit scaled-ppm values needed to overflow the conversion, so this
++ * test crafts struct timex.freq directly.
++ */
++#define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__
++#include <errno.h>
++#include <fcntl.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/timex.h>
++#include <time.h>
++#include <unistd.h>
++#include <linux/ptp_clock.h>
++#include "../kselftest.h"
 +
++#define FD_TO_CLOCKID(fd)	((clockid_t)((((unsigned int)~(fd)) << 3) | 3))
++
++/* clock_adjtime is not available in GLIBC < 2.14 */
++#if !__GLIBC_PREREQ(2, 14)
++#include <sys/syscall.h>
++static int clock_adjtime(clockid_t id, struct timex *tx)
++{
++	return syscall(__NR_clock_adjtime, id, tx);
++}
++#endif
++
++int main(int argc, char *argv[])
++{
++	const char *device = argc > 1 ? argv[1] : "/dev/ptp0";
++	struct ptp_clock_caps caps;
++	struct timex restore = { 0 };
++	struct timex tx = { 0 };
++	clockid_t clkid;
++	int fd, ret;
++
++	ksft_print_header();
++	ksft_set_plan(1);
++
++	if (sizeof(tx.freq) < 8)
++		ksft_exit_skip("the overflow only affects 64-bit kernels\n");
++
++	fd = open(device, O_RDWR);
++	if (fd < 0)
++		ksft_exit_skip("cannot open %s: %s\n", device, strerror(errno));
++
++	clkid = FD_TO_CLOCKID(fd);
++
++	if (ioctl(fd, PTP_CLOCK_GETCAPS, &caps))
++		ksft_exit_skip("PTP_CLOCK_GETCAPS on %s: %s\n", device, strerror(errno));
++	if (!caps.max_adj)
++		ksft_exit_skip("%s does not support frequency adjustment\n", device);
++
++	/*
++	 * Remember the current frequency.  A vulnerable kernel accepts the
++	 * bogus value below and programs it into the hardware, so restore the
++	 * original afterwards instead of leaving the clock corrupted.
++	 */
++	if (clock_adjtime(clkid, &restore))
++		ksft_exit_skip("clock_adjtime(get) on %s: %s\n", device, strerror(errno));
++	restore.modes = ADJ_FREQUENCY;
++
++	/*
++	 * (1 + 147573952589676412) * 125 == 2^64 + 9, which overflows s64 in
++	 * scaled_ppm_to_ppb() and wraps the result to a ppb of 0.  A kernel
++	 * that does not detect the overflow lets this absurd frequency past
++	 * the max_adj check; a fixed kernel rejects it with -ERANGE.
++	 */
++	tx.modes = ADJ_FREQUENCY;
++#if __SIZEOF_LONG__ >= 8
++	tx.freq = 147573952589676412L;
++#endif
++
++	ret = clock_adjtime(clkid, &tx);
++	if (ret < 0 && errno == EBUSY) {
 +		/*
-+		 * scaled_ppm_to_ppb() multiplies (1 + freq) by 125 in s64;
-+		 * reject a ->freq large enough to overflow that, which would
-+		 * otherwise wrap the result back into the max_adj range.
++		 * A free-running physical clock (virtual clocks active) rejects
++		 * frequency adjustment with -EBUSY before the overflow is even
++		 * evaluated, so the test cannot run here.
 +		 */
-+		if (check_add_overflow((s64)tx->freq, (s64)1, &tmp) ||
-+		    check_mul_overflow(tmp, (s64)125, &tmp))
-+			return -ERANGE;
-+		ppb = scaled_ppm_to_ppb(tx->freq);
- 		if (ppb > ops->max_adj || ppb < -ops->max_adj)
- 			return -ERANGE;
- 		err = ops->adjfine(ops, tx->freq);
++		ksft_test_result_skip("%s: frequency adjustment returned EBUSY, skipping\n",
++				      device);
++	} else {
++		ksft_test_result(ret < 0 && errno == ERANGE,
++				 "overflowing frequency adjustment is rejected (ret=%d errno=%d)\n",
++				 ret, ret < 0 ? errno : 0);
++	}
++
++	/* put the frequency back the way we found it */
++	clock_adjtime(clkid, &restore);
++
++	close(fd);
++	ksft_finished();
++}
 -- 
 2.43.0
 
