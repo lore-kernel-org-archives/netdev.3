@@ -1,221 +1,128 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAE93BF680;
-	Tue, 21 Jul 2026 08:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4383BFAEF
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 08:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784623914; cv=none; b=sOZSUFv2vrbH21eB9USoIof8Aj5W5sJsq0xqrwx9ZSOHUsFIusChFPi6QrYILHvWPbqiEuLwMgr6G5MvV5jlOHzETv8dYkujoYrb6fJdwuH3ProvVtwZ82f+0Ddvep4/uj2LjAonC9W7dcPhAK8+J/62bZmEL7H1DsE4wpUjqcY=
+	t=1784623985; cv=none; b=oxhZcdiS4SXuIbdvUxO9LmZg7vv2nBo7KRi66z1DjTwvpitsojorcdiKZd6eDnf/kCF99+oABVxajAwV+uIFP4Ij2O1+839BnWCLpCwKtj5KJx4JY7DX3erLq3Wwgi497NC08Rin0GWjCm4aszf8H3Xb//pgnicc/ChW1TsydxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784623914; c=relaxed/simple;
-	bh=SoLBNynEe6RP6GZr/WGkFJTkIsQZTYJOqotDsMfN56I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q+mDGMslZhRFJkgwnqWReRrCJeL5iRRe9ZvpWnJnVpCAjMzzo44EmagLt2CTUzInGPWRxaGIg63rm6kZdc5uUG3UyUyCsfSwOiX9TH10n8T5GMFJ3kuUV44q+CT+IRX/iRn1FhpkMX+Jsj1aWa+e+x1iOlUUU84uaDPFLZTsT5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=cYDp0lLx; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	s=arc-20240116; t=1784623985; c=relaxed/simple;
+	bh=1MHRIePTbHHk9xjWYi87u8AUAEPnxZmCw9kRQrxCc/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YFP4jUnsS2SvLLdpt+j5qqiLM/1yuQkIGqy3+/c9DWHNGCeuu7+eWDdWVHbq3FlDP+sPU/vKaWf/2xdRFHUw4j93zcIcj63ELbh4YDwmz3n6suyEzslTIC9GrBMZSup51EYgiSrl0/Oj9qD8MkuDurh2z7D8Z6r/blkGCh1W55E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SXMdEDLk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oL4BLraz; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="cYDp0lLx"
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66L8j8qW2119679;
-	Tue, 21 Jul 2026 01:50:40 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=FWA+m5ggl
-	nbyMH2Qe8AaTEJPWm8abKUsVXByjjyNNQI=; b=cYDp0lLxk82s1Gj1eYcTIxODh
-	T5Zs23876QDRzaNraXnHmzPw81CJmFk3KSoWwBS05RzNUrktEggqbPiHgmzwrXl+
-	tzJevAcqfRPbj18aI/vyLWcuwAlqP4mJXP5hyVGS4Wi9k7R7SsYKJw9tLHBp4Uvi
-	s1YfcKFP2/QATXfxD8mEdK5LJe2X5f/4s8gQEej3c3clb+loTRYPHqeXlOecWsf/
-	VuYe4YD159ca5cc1rculW6/UJ1ovwrx1EFj2DM2K3NJl3YZxYNxkLnMAfFICvnpD
-	6xgzQg2D7+SU8+DXMSgw1+ud8tqpz+/ssSZ6g+N1oPYNTpDci7wbY46k+jh5Q==
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [128.224.246.37])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4fg90cv3r3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 21 Jul 2026 01:50:39 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.61; Tue, 21 Jul 2026 01:50:39 -0700
-Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
- 15.1.2507.61 via Frontend Transport; Tue, 21 Jul 2026 01:50:36 -0700
-From: Yun Zhou <yun.zhou@windriver.com>
-To: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-        <socketcan@hartkopp.net>
-CC: <linux-serial@vger.kernel.org>, <mkl@pengutronix.de>,
-        <linux-can@vger.kernel.org>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <horms@kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <yun.zhou@windriver.com>
-Subject: [PATCH v2] tty: ldisc: fix deadlock between ldisc_sem and rtnl_mutex
-Date: Tue, 21 Jul 2026 16:50:35 +0800
-Message-ID: <20260721085035.2485657-1-yun.zhou@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SXMdEDLk";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oL4BLraz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784623982;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=motssK5KBh9ULfnUG/euYaWhuODun2kccAtLo6xRXEw=;
+	b=SXMdEDLkAYaeqX2bEGVt4MxCQjHAgEpWZbbWYw0oVd5VW0E3INk1c66e4OUjH6Q91GW4Y1
+	SvKB88o3bZzA0P/VbXXS1bOjnm5ioFmWMwBuKmS1oyBd1NaB2Kcx6Y3Z1Sses0D2rqn5Kg
+	WZmV0nApoMqqk4N1hLTXPXtmRCcbM9o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-464-wJiz4FflNmyVxW8p9b6scw-1; Tue, 21 Jul 2026 04:53:01 -0400
+X-MC-Unique: wJiz4FflNmyVxW8p9b6scw-1
+X-Mimecast-MFC-AGG-ID: wJiz4FflNmyVxW8p9b6scw_1784623980
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso26518145e9.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784623980; x=1785228780; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=motssK5KBh9ULfnUG/euYaWhuODun2kccAtLo6xRXEw=;
+        b=oL4BLrazkPAuEUYGRLa5AFFm+2RNBSIRl7r8e5KienT82BpkqpLZbbOdnyHEVQ8fJX
+         lxpE2X2o/WNbq+AIQ9Hi15X/m4m1XXWVjRkXhfbNj69lULVl+mkd4TT6dxJDU2ickzTF
+         GflATpaE+nFPIPukYESqJuQOVy1hSQu1TbjfeFjvrVaMzGfYcVZxCe1088kUrLPAtSFm
+         Lf6znKPKbUyX5CKjrO0WCsKysXDuDapjYLsUXjmNm1cJDL/yxOKTvcf07KuZ3Oulgi24
+         VLvzkfGpXwTLK2TOcPqmRuS2RGtA9H9go2q0bx4D24i/3sR3C4z3INDjBv6V6n1nKJoL
+         qhXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784623980; x=1785228780;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=motssK5KBh9ULfnUG/euYaWhuODun2kccAtLo6xRXEw=;
+        b=EmTX6p33srnuH5tzVFxz3PIbpTKQIyDokIzUFQqi/PUQ1LVHojvpt7kdEiLg5RltDk
+         +i4dhy9QUTCsx/5LqPKv4UNIyCGpYOhlgm6OkZsm9Yp1mPpauqGT9U/wf4mj7gLN116m
+         XIeLqDetOT/Rl1E/2uYcsuxbgMhQ5lFl4oMhRWPQgWpEXnN3i7nBZOSiFWinX/zTdpDW
+         aUBANoUEn+4SPTMsYlDAeJu62J5CzBltJaghgydG415uG7iOsNfTysUoiOiHVVb5FRbF
+         Dy0yg4j2TqgBxbQ0TIwQ0SFdDVrO2Go16z8WoMWBj8kMOrj1dVmjfkI+Z3TholYmJJ6C
+         4ifQ==
+X-Gm-Message-State: AOJu0YxlnYO+5XyFfeMF7JXtMTb13KG+F6ywsHJWBkXMZH8MoMp8Sj+p
+	F0vUs/NNb4Kz39YXCuQy+STgnstORs8/yw5rlpcXFHxMFyPa2tCykAdet9vCmxDWcFngkXMsya6
+	z7Y4HhUyuAVaTiEehzP3y1rFWKkQGrUybWMBeMbzt0ccTwM2vm7Evd6My1A==
+X-Gm-Gg: AfdE7clnNa1XGAOUp0046YdYOe3XkAT/HMI8lGFbCk4i0ZQLHUSQdUxXPYK6Clad7fe
+	42tiYb4kiSdileuMNnh677QJ9QKH3gmnEVA37Nt5UES47WJ8LDqJ+bKSzxL8uUXhlXMvSuzj/Pr
+	KXDGpkGkmWf4SgcPOk05ZlBzfyIJ6efZK1BYmjL/ir6TSYGy1cA5xZlcfgi+iLsBG5bv7NrCUsl
+	MR4NnxEWx/21mrPbBtRl+MbY7kECdWHr9MyXzYKrIkIIYHz1ZFb8Ivdpl/b5hUc8u8AuAw7qtQE
+	olMkEeVQU6Z1tDw/I7BLMBMU9fy7XSMeNH71b1G/PEWcLrtuStWrmeEI+njcqZx8IwmHx7sim1b
+	AYsGvZtlknXBBZ/1wjSX45qdiYvGlP+1XIJmWAXVst1+HSHY+OxkAuaym2+F+0UfQIDG8bu6Nmw
+	PxAg==
+X-Received: by 2002:a05:600c:1d1b:b0:493:f7c8:eae2 with SMTP id 5b1f17b1804b1-4954a3db7dbmr188111675e9.15.1784623980283;
+        Tue, 21 Jul 2026 01:53:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d1b:b0:493:f7c8:eae2 with SMTP id 5b1f17b1804b1-4954a3db7dbmr188111425e9.15.1784623979848;
+        Tue, 21 Jul 2026 01:52:59 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49563969482sm145264925e9.3.2026.07.21.01.52.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2026 01:52:59 -0700 (PDT)
+Message-ID: <4793fa8e-36d0-48fb-95a4-f22549b5e1cf@redhat.com>
+Date: Tue, 21 Jul 2026 10:52:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: -shmOVSADsceu_kZVrR9YOdRW5jNLI51
-X-Proofpoint-GUID: -shmOVSADsceu_kZVrR9YOdRW5jNLI51
-X-Authority-Analysis: v=2.4 cv=AOkSgtoa c=1 sm=1 tr=0 ts=6a5f32df cx=c_pps
- a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
- a=iKiJcTA2PjBS6x5JeXcw:22 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
- a=9RZP_3u8z-ZScuIyL4gA:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDA5MiBTYWx0ZWRfXwRTDOgvl04jm
- r/Q35WoMz7xywkeDyKWu4wubhVPpb7rAUDq3yLrab2rAcsL/7SaQvBhxmCubQNQm0o4114vEInm
- yDBi2jk4rM6J0AUPv95UacHR02d5oVgTAdxx22HVmvOe7oHi56tN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDA5MiBTYWx0ZWRfXxsw2uMeEE20J
- C2v4aaY6IqhD3xigZqhGrIrZhOLx4vrZSnbOJOAi+J5Qzmz04XvUxCtZoK/VApBgAx5zWXGXirm
- teN5SVv9YcCdZFLUWZkW5fnX5Mx+Y7fzg8nnu7/w44yGTQD59k9PIqIMcpzgRLlgFUGeX0cWB/o
- bdFX0HK0oI+6ZbeKhL6RtS1OEmHw4fSzCM6SN2RpqN22PeS+tTNdx4gAF6LGI7rA6DwJBvsoKYk
- W3XAcfaoCEYqH2cwQNm/OnLHEp2LtizG7sGy3aHZwhCavUzuJPDUFqL1fhLazo8aKscXlDT3gZe
- vFKY5f1aq3U54kkxWfnIRsgXWRToCDowtWz5L5+PGKXMYb27J4KBv0yvz+elrhQSfQd6uiQlp+i
- 4+pVNAVb9QENKT2VsSykw0hY64jF21IciAHGushy5z0FMe/cJOZpB7Agh39TBL3+4cv0IHPEzW3
- kwYuuBYqgJup6nXXvSA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_06,2026-07-20_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607210092
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 13/13] net: ethernet: adi: Add a driver for
+ the ADIN1140 MACPHY
+To: ciprian.regus@analog.com,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260708-adin1140-driver-v5-0-4aca7b51a58b@analog.com>
+ <20260708-adin1140-driver-v5-13-4aca7b51a58b@analog.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260708-adin1140-driver-v5-13-4aca7b51a58b@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot reported a circular lock dependency involving tty ldisc_sem and
-the networking rtnl_mutex. The full chain is:
+On 7/8/26 12:33 AM, Ciprian Regus via B4 Relay wrote:
+> +static void adin1140_get_eth_mac_stats(struct net_device *netdev,
+> +				       struct ethtool_eth_mac_stats *mac_stats)
+> +{
+> +	struct adin1140_priv *priv = netdev_priv(netdev);
+> +
+> +	scoped_guard(spinlock, &priv->stat_lock)
+> +		__adin1140_eth_mac_stats(priv, mac_stats);
 
-  rtnl_mutex --> nft_commit_mutex --> ... --> ep->mtx --> ldisc_sem --> rtnl_mutex
+I understand that past reviews suggested scoped_guard usage explicitly,
+but FYI this is not the netdev preference, especially in trivial case
+like the above, where it has very little - if any - advantages over
+plain spin_lock.
 
-The last edge (ldisc_sem -> rtnl_mutex) is created because tty line
-discipline .open() callbacks (slcan, slip) call register_netdev() which
-acquires rtnl_mutex, and .open() runs under ldisc_sem write lock in
-tty_set_ldisc().
+Not a blocker anyway, just a note for future submissions.
 
-Fix by moving the .open() call outside the ldisc_sem write lock. The
-ldisc .open() is initialization of the NEW discipline after the old one
-has been closed - there is no need for ldisc_sem protection at this
-point since:
-
- - tty_lock is held throughout, preventing concurrent tty_set_ldisc,
-   hangup, or close
- - tty->ldisc is set to NULL during the window. tty_ldisc_ref_wait()
-   waits for the transition to complete. tty_ldisc_ref() returns NULL
-   which callers already handle.
- - tty buffer data stays queued until the ldisc is installed
-
-The sequence becomes:
-  1. Hold ldisc_sem(write): close old ldisc, set tty->ldisc = NULL
-  2. Release ldisc_sem(write)
-  3. Call new_ldisc->ops->open() without ldisc_sem
-  4. Re-acquire ldisc_sem(write): install new ldisc (or restore old)
-  5. Release ldisc_sem(write)
-
-Reported-by: syzbot+de610eeef174bd59a8a3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=de610eeef174bd59a8a3
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
----
-v2:
- - Keep user-visible behavior unchanged: tty_ldisc_ref_wait() now waits
-   for the ldisc transition to complete instead of returning NULL (which
-   would cause spurious EOF/-EIO to concurrent readers).
- - Fix a race between tty_ldisc_ref_wait() and __tty_hangup() where a
-   reader could block forever if it observed ldisc==NULL before
-   TTY_HUPPED was set. Add wake_up() after set_bit(TTY_HUPPED).
-
- drivers/tty/tty_io.c    |  7 +++++++
- drivers/tty/tty_ldisc.c | 34 +++++++++++++++++++++++++++++++---
- 2 files changed, 38 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 6b283fd03ff8..e2f82e80f397 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -649,6 +649,13 @@ static void __tty_hangup(struct tty_struct *tty, int exit_session)
- 	 */
- 	set_bit(TTY_HUPPED, &tty->flags);
- 	clear_bit(TTY_HUPPING, &tty->flags);
-+
-+	/*
-+	 * Wake up readers blocked in tty_ldisc_ref_wait() that may have
-+	 * seen ldisc == NULL but not yet TTY_HUPPED.
-+	 */
-+	wake_up(&tty->read_wait);
-+
- 	tty_unlock(tty);
- 
- 	if (f)
-diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
-index 27fe8236f662..bd94a1f13c44 100644
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -242,8 +242,20 @@ struct tty_ldisc *tty_ldisc_ref_wait(struct tty_struct *tty)
- 
- 	ldsem_down_read(&tty->ldisc_sem, MAX_SCHEDULE_TIMEOUT);
- 	ld = tty->ldisc;
--	if (!ld)
-+	if (!ld) {
- 		ldsem_up_read(&tty->ldisc_sem);
-+
-+		/* ldisc may be NULL during a discipline switch; wait and retry */
-+		if (!test_bit(TTY_HUPPED, &tty->flags)) {
-+			wait_event(tty->read_wait,
-+				   READ_ONCE(tty->ldisc) != NULL ||
-+				   test_bit(TTY_HUPPED, &tty->flags));
-+			ldsem_down_read(&tty->ldisc_sem, MAX_SCHEDULE_TIMEOUT);
-+			ld = tty->ldisc;
-+			if (!ld)
-+				ldsem_up_read(&tty->ldisc_sem);
-+		}
-+	}
- 	return ld;
- }
- EXPORT_SYMBOL_GPL(tty_ldisc_ref_wait);
-@@ -556,15 +568,28 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- 	/* Shutdown the old discipline. */
- 	tty_ldisc_close(tty, old_ldisc);
- 
--	/* Now set up the new line discipline. */
--	tty->ldisc = new_ldisc;
-+	/* Clear tty->ldisc so concurrent readers back off during transition */
-+	tty->ldisc = NULL;
- 	tty_set_termios_ldisc(tty, disc);
-+	tty_ldisc_unlock(tty);
- 
-+	/*
-+	 * Open the new discipline outside ldisc_sem. The ldisc .open()
-+	 * may acquire locks (e.g., rtnl_mutex) that would create circular
-+	 * dependencies if taken under ldisc_sem. tty_lock is still held,
-+	 * preventing concurrent ldisc changes and hangup.
-+	 */
- 	retval = tty_ldisc_open(tty, new_ldisc);
-+
-+	tty_ldisc_lock(tty, MAX_SCHEDULE_TIMEOUT);
-+
- 	if (retval < 0) {
- 		/* Back to the old one or N_TTY if we can't */
- 		tty_ldisc_put(new_ldisc);
- 		tty_ldisc_restore(tty, old_ldisc);
-+	} else {
-+		/* Success - install new ldisc */
-+		tty->ldisc = new_ldisc;
- 	}
- 
- 	if (tty->ldisc->ops->num != old_ldisc->ops->num && tty->ops->set_ldisc) {
-@@ -584,6 +609,9 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- out:
- 	tty_ldisc_unlock(tty);
- 
-+	/* Wake up readers waiting for the ldisc transition to complete */
-+	wake_up(&tty->read_wait);
-+
- 	/*
- 	 * Restart the work queue in case no characters kick it off. Safe if
- 	 * already running
--- 
-2.43.0
+/P
 
