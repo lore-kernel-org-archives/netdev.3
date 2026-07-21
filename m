@@ -1,153 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC912D8762
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784618546; cv=none; b=IXn9BhyUoTIerX6H4YWuO5b4zANeq2+XXa+UfBbFy+kTVeI9OjjxS8xVqstJOCgDHoiWLkj/QlfS20dIAY7vIVa5LtMjp9DGebzoa6AExPAvZ2Y5nqbWFAnLxkM0tBWcQZliPHS+LpmViBfg6yelb8W3Wq+K/0GgpmLLJoALw7c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784618546; c=relaxed/simple;
-	bh=+UcZ8psnLF+IpdP85Yxo7cW+Mz/KS2qhLJ2rha4CNnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L5HTNxYEATCMuFkWucM8IanjXR78ZZbkF94OtGbCNzx/pTpTVSqB5dMZW5iM7jMfHQ/kxU6AklJyUaUgdEbHqgNzt2Cy/pPa0XRyTpVt9fh73vD1mCIuKSEwCnPQBLMtIg6pZiwNkAV7ACO+eo1WCEcdKngYNwTkcFpSiaAxSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NzbQXgP4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JUXjMMa7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276637A825
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784618779; cv=pass; b=ljeQC+JksUWaAOCiVCJP1Xk2YUl7AHdHC1nyehz0GqAiEN1y5kQqJpJcv7aDMKfyuYG7966MOX8TAKNz+ywTWuPCNMJZYcaJ2wuZrrOnzLAGl0nqMMtI2mE1nkTI/i5zNauXIFflqWQ6dqMhMiL1bK9Fw781q2Qxezqwxij1rvs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784618779; c=relaxed/simple;
+	bh=MzE7KXfZZvmR5yOWeMXJywazKBRUNEbDRhgMybpP/NA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hkNnGL+wE/YQR1gSE7xfVYkVd+lJkuSzrkNYWeKjpduWXOZ4F9iRINXNhvO9RJj26wNS+CQfAAJ92BOc99MUGxRPPSf8pm/E/tNPT3OkpFFk9dYFwCIm6jl0oy13dtocZtfLVkHqVZEb+zriubOsTsDHc6EBwcpgTfTqBFVGvjI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mzJszTdR; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NzbQXgP4";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JUXjMMa7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784618543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EpnAPb+szKsxLDLw8+sBnpML2P+PlPUb+adSl0ccDVc=;
-	b=NzbQXgP4SwXUnfIMz8zw8NTbBqP0RrnL489w9b8ZGO+tGzamFk6Y1CS9la1E8dFS1a4YP7
-	7VL5I1YSAdQHOn2wzU4Ty36b3gEUJSW4gYgxw7uy8roeScMm2BoGd8bIeCrvT91JyXxw87
-	CxVzU6usvJXTcc0WCZkZtefIYJXM+58=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-_4eQj-wdNvKhgMYY6NTWRA-1; Tue, 21 Jul 2026 03:22:22 -0400
-X-MC-Unique: _4eQj-wdNvKhgMYY6NTWRA-1
-X-Mimecast-MFC-AGG-ID: _4eQj-wdNvKhgMYY6NTWRA_1784618541
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-473e18559b2so5012374f8f.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:22:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mzJszTdR"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c0c68aa31so78046441cf.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:26:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784618777; cv=none;
+        d=google.com; s=arc-20260327;
+        b=feNiXI2BpAG0FX3hitwm/bCNUJUc9OyXBgUuXsKnpcUQqNhd0Fdtcz8frEwvSlMzf2
+         JiVYg/TzbIdQOKg1leN+PUHf/rBJiUSf0SV+/uQmQ1zQkr9hBMlMukaTNvdJSuF3RRYn
+         PhqQ83sKnjYk2XhUeEqRBgNTSjr9UrCtVweQvneSKc9bSXHW/bJBKLxHckPzJU3pAh/b
+         DokLhmkP31DP8fGA2+mnqMOY14K9xYzfqKQs6h8B/z7d3/9YScWfcb03BUc9b+ZNw2Ne
+         mv5QCpkUomhQxcuG4ADspcJqEeWt3aQxa4/yNh6AqnrjGv/xMZeQpIyDkaRvlFYWrYWd
+         iCzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MzE7KXfZZvmR5yOWeMXJywazKBRUNEbDRhgMybpP/NA=;
+        fh=3SqwHh/9GdWooIW1mOL6Gc0BRUJ7BxnT5bMSJM0+duc=;
+        b=pslIO9Db4H+1R2eTs+FUeHtHUKp6UHTrDFDUlWLmNBh8/+z0lRL08iKEqG4vBf743o
+         yPqHoaisqtR/X1EMS4K1zKqs/L2SFm30qGYD7PVtOp5xkF7LKg/M1NYNmP1adekoVnnq
+         7XgEW/7Iqu5Wb3DsTR3a6mn22nHKgpZNCNXbuixVqA+lW3hNaZnWVXow6+GX8In8HPwz
+         FF2vb6o7/NXZAXcCQji4Cg+t4hWJ6k9I+yl7IlAldeVMYVe4qglAwoqJCHXOyEJhFHoT
+         yPpvLt540Lbo2b4g1PyzCic+n4mjJiaWq8+l/7C9138S6D8GrHTUePR2DJEqKPWxY/jH
+         It/w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784618541; x=1785223341; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EpnAPb+szKsxLDLw8+sBnpML2P+PlPUb+adSl0ccDVc=;
-        b=JUXjMMa7kIOld3Hk1soDnL8j6aDUfJB8XVMEajyYO7gl3j1E2NH3pTUxWve0RFvJ7l
-         /UoeUa6X+bCZK2nKO/RMIXJUM6Jnke2vC0q0T+I49AqjF+/EC+vKYA8RfrJILj+OVJO2
-         6BzYAPMBJhQkirYQjRCfj3tKt1kaIkZIXALDhNIkUPuq/RRqsw2M24RASljBk963LzGx
-         LWERBu6gO4cA4BBeNVUPfM2tAjqGY8oueCB3X82mBnTAqNcrw+EFnVvgVMVSf25NwiAl
-         3DpIjfzo0PA4gkhse1Ct/dQVi/v04dogUAzRmmRNm0eGJfm3DSZ23/euPdBT+YRYk8Gr
-         WSiw==
+        d=google.com; s=20251104; t=1784618777; x=1785223577; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MzE7KXfZZvmR5yOWeMXJywazKBRUNEbDRhgMybpP/NA=;
+        b=mzJszTdRhJwPqbZ0VylPVx1nBwhJP1SrW2eR0Q75sBz8A5n6aXkP+xH1fFG4xY8yfh
+         7Q9J4lZrX4pAtRw8vjdGvs/LQP2Eczw3n52GUWoQ7j1hZMlRWfxtZ7tcN5M5aqlYZ3jP
+         XiKQcwhDbSswiJrzjHIdEwTiWRxvcNMAvLH/PJG+1oGktgP56kBuYTAUi1TjPamcAf05
+         VPg9m70+FLIdZXd6se9Ye74qv3tt50j2IY/MkfUcez8DgZYHdTHiB30m7mXzTCXbRp+3
+         ecJn01+kpgA/dA5rys1OCC5bP6E4ocQDezW2YTgAD7iwd/c9jb9IRgkKWXvpIPheXq7C
+         f2Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784618541; x=1785223341;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EpnAPb+szKsxLDLw8+sBnpML2P+PlPUb+adSl0ccDVc=;
-        b=Nj1uEnu8Tn8T5truqh5N4aTFSsDXWVUpMmWXENkpJ8Z4d5yWQ4+6Sw177o0y+aK9qC
-         COOTAlZM3Ncr2FKGhZzIeAN4l81gBkGme5NodA/BhXwpQaRJZ2AVQjgZG/M+SqqTk5hs
-         QgGX2gdvC6u0jjlnSpb8rKtAv22wFcdgdeSkUu4TNN+pGV1A1paci1cGmf5ljRUzz3xh
-         w7WFRFMgvW2nem+JjesPO3w5AsymJyUwG38l4HeRmSyCQwjiDqUlUKUQoTAge0JMH9dh
-         dH3YdGzDYv6VWqwepr8Yc5I4bTaAxEjWXIUowiXviVzoXnFbJd3cBlnQiXNguo4cMVmE
-         Fp2w==
-X-Forwarded-Encrypted: i=1; AHgh+RoTn1oQF4ZNE94kJLkzeo0bmJNrl0QoFh6wkBFx6qgDyqhhbqS+/+wUSPHVrYQWjarw3XVqbGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/uVDPTOA4yauy8aJlBP+1WcQSZWlaUz5ObaMyrtRe8H4sqJX2
-	NpkPMpdU8J37yGgbNPu1b7+SPbJBAqIthpinj0lbOTLMSiYqZpxD3ZpSPsjImO+m9yXNlPT3Un3
-	wmiij9WuzZYoEOTKo82YqGItNlIbb7o5yDlga2iOkdbnvc4ZWW/UZCTEt7Q==
-X-Gm-Gg: AR+sD11RTLq1knQJudFYK2oilp2dghkpmAW+ZrdmyYjydyM7+s2E5HA4KCuxzDQRmw7
-	4XQfe80y/n4m3e5sNlz2UDyR/bYE908Wfsow0n7CIoXTbI7aHvgeRsHH7s09OWB3TNe65ro3yWm
-	63aN7FU/8IjQOoaoGKG/7+R6Ik8j5NXeTcPOpiLoFVJuWkVzrMKi5dXdWL+QyQg2/syBgCRK6Mg
-	cZXLKsMyDfuud0QLzigHkSbBCA405rvyf5rhYwW82RLTPW8bvMR3mpfCuQaspDrWw8vU+1fuJxC
-	Ecu2IDhB3vvkNLmmETyfloAbDUtWNE+NbJC3qmKFU5tQYappOVdCJlWtSuv6nMNHcp4DkvLaMdp
-	JJh7PFNm9RFXbvi9R/cRGy+1js4xFf7KRasZzd7dThWTqVjUGXXDnt+WHixwwPMho24GyNZ/2EU
-	ZEaQ==
-X-Received: by 2002:a05:6000:1842:b0:47f:7067:395b with SMTP id ffacd0b85a97d-47f706739camr13726477f8f.10.1784618541076;
-        Tue, 21 Jul 2026 00:22:21 -0700 (PDT)
-X-Received: by 2002:a05:6000:1842:b0:47f:7067:395b with SMTP id ffacd0b85a97d-47f706739camr13726429f8f.10.1784618540671;
-        Tue, 21 Jul 2026 00:22:20 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ec7f55sm32452689f8f.18.2026.07.21.00.22.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 00:22:19 -0700 (PDT)
-Message-ID: <d3ce71f6-042c-4a5c-a4b4-8efbb451a449@redhat.com>
-Date: Tue, 21 Jul 2026 09:22:17 +0200
+        d=1e100.net; s=20251104; t=1784618777; x=1785223577;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MzE7KXfZZvmR5yOWeMXJywazKBRUNEbDRhgMybpP/NA=;
+        b=ZVwPcA2dpUkifY/ouSS+0nXDx1OxzhNHpy0qKln8r4oEj10uNBa04v8HuXaktAA/Jb
+         K5yyEL/0m+r4F+iLFMUtR1LqKhQtSFWPCN2Hg+G7WYkgJeYKbK0q01wPfM7Vwem8ffpe
+         nAW3YVyyuHJvaJubN5E4bIq83FHuURq23B7QBuvrXjGc9NZ99ke7TZGnW97i+pjr5GYv
+         vOv1x8lCGJrv1tgcRzcDep2A8QRYRqjmnjTqYiymW+CBnePTukwuG7+kJILY5mUiamlO
+         T6FTq4biVXgD4bCBccz1XcyKvAKo/efkirizyPcuYscyioWD3Ny7fuPtNsX6zigRM8No
+         UeIw==
+X-Gm-Message-State: AOJu0YyIyTUujSCvVoit3gAmS8x5yQgzOkrs4z3TmOeX4YYH4scvBudC
+	TX5LggsYFtmrnjWDM9CoxR4cd9PGatN3i/UWy1BdSLD5fpuEuvmvAdY01Td4858MQpqHflTXaQa
+	Kq7OSdD1WIh2UaFiQ0B69LGStgHN72niHFFtc+9Bu
+X-Gm-Gg: AfdE7cnQWPmvkx7LpHWvo0HczyUEqt2FoW/es4gzbBZ1uiMH2gPXetLK5M8EWuP8Hf6
+	g5aVAdN4A2YTDJ+j/wsj+6Sg4tN+gt+e8yos0jNTpguggpxrT1mM5EuCePqTcqOykXk9JBOpIM8
+	G2T+sZNC2nEx0t2lA9CNZ4e5GBYkvqrNTaXw0GvpSCo2tKHkXaugHziAXYzGWSrUmjTxWrYbAD2
+	FRaPdjqgu7e99oniS+BNEEPVrEQddh7Xl2QGsGLg6b//1sAQoNhQfJFdjDaqCplV4eGqNPXPPBo
+	RdrVQTxN3FkOvOHJzWPWxF9qcTbwY4PtGCCn5kNMuwCvG7YZCLuIQ1ISyd5wv2mNN8fMzaMu0Ss
+	XpuaoEPlk
+X-Received: by 2002:a05:622a:15d3:b0:51e:f4df:2898 with SMTP id
+ d75a77b69052e-5213d4b8bcamr159959241cf.72.1784618776678; Tue, 21 Jul 2026
+ 00:26:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 0/4] net: stmmac: eic7700: add eth1 variant
- support and update delay bindings
-To: lizhi2@eswincomputing.com, devicetree@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- maxime.chevallier@bootlin.com
-Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
- pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com,
- weishangjuan@eswincomputing.com, horms@kernel.org
-References: <20260707064033.1265-1-lizhi2@eswincomputing.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260707064033.1265-1-lizhi2@eswincomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260721015824.45829-1-kylebot@openai.com>
+In-Reply-To: <20260721015824.45829-1-kylebot@openai.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 21 Jul 2026 09:26:05 +0200
+X-Gm-Features: AUfX_mxqIm2PCbPMZavwj8QfyZoT8HMPVoojJD_2vUX--xC0B9_hkVqsDzEHamk
+Message-ID: <CANn89i+YuuBJ1J8CGD0Eo3JKeNjEd=5tT-3h=6stE5QoYczYXw@mail.gmail.com>
+Subject: Re: [PATCH net] net/packet: defer vmalloc TX_RING free until skbs finish
+To: Kyle Zeng <kylebot@openai.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/7/26 8:40 AM, lizhi2@eswincomputing.com wrote:
-> From: Zhi Li <lizhi2@eswincomputing.com>
-> 
-> This series updates Ethernet support for the ESWIN EIC7700 SoC,
-> including support for the eth1 MAC variant.
-> 
-> The series includes DT binding updates and stmmac glue driver updates
-> for the EIC7700 Ethernet controller.
-> 
-> The changes include:
->   - Update the tx-internal-delay-ps binding property from a fixed enum
->     list to a range-based definition, and make it optional with the
->     corresponding driver update.
-> 
->   - Add support for the EIC7700 eth1 MAC variant, which has
->     silicon-specific RX sampling behavior and TX timing characteristics.
->     A dedicated compatible string is introduced for this hardware variant,
->     and the driver applies the required RX clock inversion handling and
->     timing adjustments.
-> 
-> Due to silicon characteristics, the eth1 interface has a fixed TX
-> internal delay of approximately 2 ns and an RX sampling skew of 4-5 ns
-> that cannot be compensated solely by standard RGMII delay settings.
-> The binding models the effective TX delay range of this variant, while
-> the driver handles the required hardware-specific timing configuration.
-> 
-> Only the DT bindings and driver patches are included in this series. The
-> DTS changes are intentionally omitted for the following reasons:
->   - The HSP bus infrastructure is being introduced by Pinkesh Vaghela's
->     DT series [0], currently under review.
->   - The HSPCRG clock/reset series [1] provides additional infrastructure
->     for the HSP subsystem.
-> 
-> Once these dependencies are merged, a follow-up DT series will enable
-> Ethernet, USB, eMMC, and SD across the HSP bus.
-> 
-> Reference:
->   [0] https://lore.kernel.org/lkml/20260706081055.1126275-1-pinkesh.vaghela@einfochips.com/
->   [1] https://lore.kernel.org/all/20260605060730.1605-1-dongxuyang@eswincomputing.com/
-Applied, thanks!
+On Tue, Jul 21, 2026 at 3:58=E2=80=AFAM Kyle Zeng <kylebot@openai.com> wrot=
+e:
+>
+> AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The skb
+> page references preserve page-backed ring blocks after pg_vec is freed,
+> but they do not preserve a vmalloc mapping.
+>
+> tpacket_destruct_skb() currently drops the pending reference before
+> writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
+> decrement after those stores. The smp_wmb() in __packet_set_status()
+> orders the frame stores before the decrement.
+>
+> On socket close, scan every pg_vec entry because allocation can produce
+> a mixture of page-backed and vmalloc-backed blocks. If any block is
+> vmalloc-backed and TX skbs remain pending, defer the whole vector to
+> system_long_wq.
+>
+> After pg_vec is detached, a late destructor can skip the pending
+> decrement. Use socket write-memory accounting as the deferred lifetime
+> gate instead: an skb remains charged through its final sock_wfree(),
+> after all ring-frame accesses. The delayed work retains a socket
+> reference and reschedules itself until no TX skbs remain. Fall back to
+> a synchronous wait if the work allocation fails.
+>
+> Move pending_refcnt release to packet_sock_destruct() so late skb
+> destructors and deferred cleanup can safely use it after
+> packet_release(). Page-backed teardown remains synchronous, and no lock
+> is added to the TX completion hot path.
+>
+> Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> Assisted-by: Codex:gpt-5.6
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> ---
 
-/P
+Hi Kyle,
 
+Rather than doing kmalloc() inside free_pg_vec() during socket teardown/clo=
+se,
+would it be better to pre-allocate the deferred work storage at ring setup
+time (in alloc_pg_vec / packet_set_ring)?
+
+Pre-allocating at ring setup has a few advantages:
+
+1) If allocation fails, setsockopt(PACKET_TX_RING) fails early with -ENOMEM=
+,
+avoiding allocation failures during socket close/teardown.
+
+2) Teardown becomes deterministic: free_pg_vec() is guaranteed to have
+the storage available to queue work.
+
+3) We can drop the extra fallback logic (packet_wait_for_tx_skbs(),
+po->skb_completion, and the 1-jiffy fallback polling loop).
+
+You could embed a struct delayed_work (or a header struct) into the allocat=
+ion
+returned by alloc_pg_vec().
+
+Thanks,
