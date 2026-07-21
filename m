@@ -1,83 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFAF4343E7;
-	Tue, 21 Jul 2026 07:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5862435E950
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620237; cv=none; b=eH6JbaYXhHJWcRaFVFtG3M0cnakJDGV3mCfPqfAg7T9lTc71fQTJLz+4rdn+EiL1xN+OyjqlEo3fs8hWH/HTkKk/XGXzS2ONE5MblM+KlIxifFOPBK504c30DWWkYdzjebrLmL7I0MHHShpmL347HEjBnje/yTbRhoRgtODR5yk=
+	t=1784620656; cv=none; b=Y47pM6BryA/YaOp/PWgOxOpYRj601JPAYdLWfCmumNMM1ePrInN3e7TOljD++li0mQoujFVxZVpk5xCKWaG/y8jTbxVzMLlbLU4jLSjKNktGlzsbbHPqFuwjKFhA4bPYvsbahCqXPE8AwV2QyiLJA6whauOmB9q+hLezs3w/WrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620237; c=relaxed/simple;
-	bh=qYeUXPhCIrNtCSqEC9lsCooo4ozPQ1d9Bq8ODS/bMdc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=T8kQOYRX1csTfHv+FmRyAO8n0m4BGeBiwVAx56qf2BgpJ5JGPSDu5pE8QjEVjNNz/4HsPhthdtcxenRgPlfWdxFiJzFXSSWLnqhUpwD5k4Qc6gJyHz3QoD81phhd7zVDvKU9m66FSZ9936G9OK0+aBo2nGMFoak4ncP+6Zs7L1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oh0FPs+F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784620656; c=relaxed/simple;
+	bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=J+jxFOWkjlXxk8ALLpaiYDchPl5Q18HQO4vNwEiDyRRBGxABqbSGgfc6mZNFzaJYpO36/OT9M6WAZSH7hqQFhy7n5WGuvJOQ+CAcHPFXZ+3CpPF/iKxvvH8lWp65uf95Xg58Yv+5+kaR4OWzBsp5Ma95oEH5jBATSmgfhokTdIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Im/3Yq8Y; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oh0FPs+F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F901F000E9;
-	Tue, 21 Jul 2026 07:50:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620236;
-	bh=U7pmL1JiCQuKcTU9dY6vrebiTYaqi3TIxs//E0Ypwtc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Oh0FPs+FTlYST2EQ72ESSOHdE2ntqhwRfq/XQSw70OssMZE62IQl7xFQwLD271Ehp
-	 z7ibL7COJwD08Ai+Q0G2cBJZlcj3gk7KXdlGyQ+vZ0nQy7YR6SS0Xqfhpam7+/GI2B
-	 5uHACu5/47GrhzTEkDlkJDyylniDm7CzcL+MaKxDpcEaI1lB5sjIwn/H+z9YrpkX71
-	 31TXn+rSX0vEmE66z9tSdpl7yfhTKZd0q+r16sarWiejQVH6krpUlbxpTSpznXyQQs
-	 qH+UeY4SIwauJ1FewfBa3BB5mYla601RwVUp1J/AwNKj1kTklPHPe7QE+PSTrFbjOC
-	 5wogdagyX8gjg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568FD3924A28;
-	Tue, 21 Jul 2026 07:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Im/3Yq8Y"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81ea0b7d137so90476197b3.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:57:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784620654; x=1785225454; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
+        b=Im/3Yq8YNgjN3+jJAPjCb+1ItOBAXQ+LCWCnbAG9W+jY/f7F35kTZ7aqIWsJRtZZBk
+         sOujkOyjCfe5tRMzjHnNKBF82doodcB9Hj6xDTyRCooqGhLprg5tN+sJrrjFob3P1o3+
+         iklmZJz4GWeNQ4a6G3zZyNqgGTZOtU28sMiVpcIAYveB1Zz5bTIQC3nNyPgV5SvSNd04
+         6w4oY8wJNqvxcroifDteUAUGUQGe2kXuQcpaKvwXwHgG9mIR1x2AmKgXo+S5bEbODMp4
+         bjB8nFU74gwl0PAeMqmzf23+HQV0cvMiPsMEgbfBV3OcS9XqLmle6Xe8+MLvOV+KqL9e
+         mC1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784620654; x=1785225454;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rDNXPIByxIrbjW3rhLiD1IqcU+b4atnr92EWo+jTYYA=;
+        b=BFi0fZsW2WhkLmgxWkeWHW5szX40lLaokLCL88vtA09JAj0MnjaVcIaSPYspXCW5Qo
+         IMDikjfstH4OVu+Nu6UmdkANAw16c5/emteymqNE48oAPAhzgya3wRcqyE8l4Ji2/QtL
+         1Ohcdv/2d+m73uxb4evCwgXdYGBvNno+550kwsvUwpVo0Qq0fdivZdDmGE2zLjZ19S6Y
+         oW1lWA/HLk9vKU41q0Pt+9FP/0VbDh6E5GHWaqC3aG6rAbLFii8U4srpV0pEdK0DsiwG
+         ttN/d2C4BbVcbsHCvRhT/V3JYwFO24wIPij5mRa1J30bGSn75hyXJmiQ1y9dXVLiDDDe
+         jU0A==
+X-Gm-Message-State: AOJu0YzD2efqr+P9n4PpX+7bfridG/kBDgC9pk3xcdX46BHmW9evrB9S
+	uzm7on1eVgpdJHwJEl3bNOrHv/WFqxKXbk6XWRVWjLWkgt6Nx7javNKw
+X-Gm-Gg: AR+sD10P/vePJiitG3LV/CKXi1lRH2br2CU2+f00jLSO7jAeua3uTt6G5RIc8KyQDet
+	qzCwsDdByWsXve+IBnFXK/JO7rE5TAdM7/0M6nwq1/gRWnxKqq0FnPWl3IV5nuvCNRctfAuE1W4
+	Zr3VInQ4IHYIAobyg2N+96u+qv8GmPbqSW2NkTQ5SlBdmWFsABaKxjIdtkZoraDEBEn+TfMFRiZ
+	chw2EUWMGqrBQeVzAA6dWFkWcxZSdqs8KOfYQ9cP9oB2PIcFBKigkiMnYSnZCTZ81QPSYhfRhNb
+	Jjh0N5+zCISxGVVYkkTndbxk3hMN9HC8MUiX87+8wYlCUK9ZsI4fK6mMr1Q5+PeJCA7UGIgmWRp
+	yRiXmsrhdkWK1IP4RCc4yfXYQWeeQ2KJ3hgJw290XrHiiWRTGQkY17ez822FTfVdqJK92/Uv74K
+	zZcJa0VT9R6uT3yjkn/DX4KeO68MOktr4oaF6hOYTDZUj+ZgqXRllV1iiQDDVlwt4W2w==
+X-Received: by 2002:a05:690c:e0c:b0:81e:6a1c:e30b with SMTP id 00721157ae682-81ef28da7b0mr55091677b3.67.1784620654359;
+        Tue, 21 Jul 2026 00:57:34 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef4018658sm60555887b3.10.2026.07.21.00.57.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 00:57:33 -0700 (PDT)
+Date: Tue, 21 Jul 2026 03:57:33 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@google.com>, 
+ Kyle Zeng <kylebot@openai.com>
+Cc: netdev@vger.kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.e6569ba76bb@gmail.com>
+In-Reply-To: <CANn89i+YuuBJ1J8CGD0Eo3JKeNjEd=5tT-3h=6stE5QoYczYXw@mail.gmail.com>
+References: <20260721015824.45829-1-kylebot@openai.com>
+ <CANn89i+YuuBJ1J8CGD0Eo3JKeNjEd=5tT-3h=6stE5QoYczYXw@mail.gmail.com>
+Subject: Re: [PATCH net] net/packet: defer vmalloc TX_RING free until skbs
+ finish
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] net: airoha: fix MIB stats collection to be
- lossless
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178462020592.138517.6199339592479066921.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 07:50:05 +0000
-References: <20260707152639.105628-1-aniket.negi03@gmail.com>
-In-Reply-To: <20260707152639.105628-1-aniket.negi03@gmail.com>
-To: Aniket Negi <aniket.negi03@gmail.com>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, aniket.negi@airoha.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ansuelsmth@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+Eric Dumazet wrote:
+> On Tue, Jul 21, 2026 at 3:58=E2=80=AFAM Kyle Zeng <kylebot@openai.com> =
+wrote:
+> >
+> > AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The sk=
+b
+> > page references preserve page-backed ring blocks after pg_vec is free=
+d,
+> > but they do not preserve a vmalloc mapping.
+> >
+> > tpacket_destruct_skb() currently drops the pending reference before
+> > writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
+> > decrement after those stores. The smp_wmb() in __packet_set_status()
+> > orders the frame stores before the decrement.
+> >
+> > On socket close, scan every pg_vec entry because allocation can produ=
+ce
+> > a mixture of page-backed and vmalloc-backed blocks. If any block is
+> > vmalloc-backed and TX skbs remain pending, defer the whole vector to
+> > system_long_wq.
+> >
+> > After pg_vec is detached, a late destructor can skip the pending
+> > decrement. Use socket write-memory accounting as the deferred lifetim=
+e
+> > gate instead: an skb remains charged through its final sock_wfree(),
+> > after all ring-frame accesses. The delayed work retains a socket
+> > reference and reschedules itself until no TX skbs remain. Fall back t=
+o
+> > a synchronous wait if the work allocation fails.
+> >
+> > Move pending_refcnt release to packet_sock_destruct() so late skb
+> > destructors and deferred cleanup can safely use it after
+> > packet_release(). Page-backed teardown remains synchronous, and no lo=
+ck
+> > is added to the TX completion hot path.
+> >
+> > Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcou=
+nt")
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Assisted-by: Codex:gpt-5.6
+> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> > ---
+> =
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+> Hi Kyle,
+> =
 
-On Tue,  7 Jul 2026 20:56:39 +0530 you wrote:
-> REG_FE_GDM_MIB_CLEAR after every read creates a race window where
-> packets arriving between read and clear are lost from statistics.
-> 
-> Switch to a delta-based approach instead:
-> 
-> - 64-bit H+L registers (ok pkts/bytes, E64..L1023): read absolute
->   hardware total directly into a local variable; clamp with max(new, old)
->   to prevent torn-read regression when the counter carries between the
->   two reads.
-> 
-> [...]
+> Rather than doing kmalloc() inside free_pg_vec() during socket teardown=
+/close,
+> would it be better to pre-allocate the deferred work storage at ring se=
+tup
+> time (in alloc_pg_vec / packet_set_ring)?
 
-Here is the summary with links:
-  - [net,v5] net: airoha: fix MIB stats collection to be lossless
-    https://git.kernel.org/netdev/net/c/d163725af84a
+Probably superfluous, but: only if vmalloc was used.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Neat secondary feature will be that the non-NULL status of that
+pointer can be used to detect use of vmalloc at teardown, without
+having to iterate over all the pgvec entries.
+ =
+
+> Pre-allocating at ring setup has a few advantages:
+> =
+
+> 1) If allocation fails, setsockopt(PACKET_TX_RING) fails early with -EN=
+OMEM,
+> avoiding allocation failures during socket close/teardown.
+> =
+
+> 2) Teardown becomes deterministic: free_pg_vec() is guaranteed to have
+> the storage available to queue work.
+> =
+
+> 3) We can drop the extra fallback logic (packet_wait_for_tx_skbs(),
+> po->skb_completion, and the 1-jiffy fallback polling loop).
+> =
+
+> You could embed a struct delayed_work (or a header struct) into the all=
+ocation
+> returned by alloc_pg_vec().
+> =
+
+> Thanks,
 
 
