@@ -1,196 +1,106 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B20374A15
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B604B373C10;
+	Tue, 21 Jul 2026 13:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784641609; cv=none; b=BL0r7gQvhgsHH/RM3EydniY5ChucvbYNIgANaD+cHtJGp+zhG1kjWovE2iyNUDHS9Lz6aC6lAvHeHQ/QhAhdozfm0YL79vRzNZQFYe4roj5iyBa1d8rbXgRrb1USV+Hs9pPmJ/te78auJRyBmoU4+27ZZX/un0rLRohzvGkHpfM=
+	t=1784641752; cv=none; b=JAV0nZ7y5HM/PB/ZHHOr3PyGjBq8NyhEshzG5EWO77JJmigmG4BNwQZm4DcbU4OCdEKPc92bRq3+kqBpIuNprJHu+8gswLbHA/FBizQw94hcLgON7A8H82MG3s50Vlr9c8r94OUsnVJ/qXwqdmi7DCaX1lQchSx1c9mlxvt51yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784641609; c=relaxed/simple;
-	bh=q+xanD6YEoFZyVnBRsavSy1BfgyQB1vmB4lgVwYEizM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tVI1P4WM0kdHnFK1HXm92JwAwt3hSxxFmFAfN52fAz2uS7ptPdjnNLD1I1s5iW6gkNJBaU48sV3fIDpfxDb0jyiGI66kjarqypeN1oyFpR2qZUtftcCy4qB02DYkrJf8AFv2XBve0Nucg7uD5RDNPqUkd2Hsbizpc8ernfC4IF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D3y0rz4a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IoWn1+6H; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D3y0rz4a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IoWn1+6H; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784641752; c=relaxed/simple;
+	bh=2pMitxr8h3dju6qIefG3cMKyqO6M24/P9s7g9GHPrL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jbpLyI8h/ceJRWGugI0m7+Y4pZtG7n/JsYueQ0GCyMv1P+4ONIK7z8jaaJEBumkSEr+jjyEru803DnURC1VYG0Kc4L2REvNCIG83LpcMusbAOCSAAbeCrRRBHN+2G/kzQ1r7tQmgIvV9n7HVxBkJMXC3feT3C1NVBXlP/9kKh8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNiz+QHl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D3y0rz4a";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IoWn1+6H";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D3y0rz4a";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IoWn1+6H"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B4DED3E1D;
-	Tue, 21 Jul 2026 13:46:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784641605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hExJAmR4nU8M+iDToxbr9TsJPyomLt4NjBmlJ+ndyoM=;
-	b=D3y0rz4a1m2rOgKCldrfEtQ0ub3SrsnelVZo94z3vmSFAITrACVV/w/zo+jEwm1g7c9HT8
-	9e4mpPO4TYPJzk6kjYCB4vyg9vHzubCN5q/Xx0D1dEdDYZeb7hPGNmx+IrvcVQlQmx5RO4
-	aHq0iC0TJMKXfkoQZ7ZjjB3BpPaFu8s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784641605;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hExJAmR4nU8M+iDToxbr9TsJPyomLt4NjBmlJ+ndyoM=;
-	b=IoWn1+6HzJSC5eC+VC7ynjDT6NGtxsYZ4UekbJxKberBs91FxK8njS8hlwqbSu+ZxTYIXB
-	r6ClLCUbVPH7JPBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=D3y0rz4a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IoWn1+6H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784641605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hExJAmR4nU8M+iDToxbr9TsJPyomLt4NjBmlJ+ndyoM=;
-	b=D3y0rz4a1m2rOgKCldrfEtQ0ub3SrsnelVZo94z3vmSFAITrACVV/w/zo+jEwm1g7c9HT8
-	9e4mpPO4TYPJzk6kjYCB4vyg9vHzubCN5q/Xx0D1dEdDYZeb7hPGNmx+IrvcVQlQmx5RO4
-	aHq0iC0TJMKXfkoQZ7ZjjB3BpPaFu8s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784641605;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hExJAmR4nU8M+iDToxbr9TsJPyomLt4NjBmlJ+ndyoM=;
-	b=IoWn1+6HzJSC5eC+VC7ynjDT6NGtxsYZ4UekbJxKberBs91FxK8njS8hlwqbSu+ZxTYIXB
-	r6ClLCUbVPH7JPBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4856B779AA;
-	Tue, 21 Jul 2026 13:46:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nf/QDkV4X2ruHQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 21 Jul 2026 13:46:45 +0000
-Message-ID: <4087bf3c-90ac-40d3-9c46-f0f95a60284c@suse.de>
-Date: Tue, 21 Jul 2026 15:46:38 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNiz+QHl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32541F000E9;
+	Tue, 21 Jul 2026 13:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784641751;
+	bh=gt0r4eFtUYu9vgkUjUSOPX28KChsmWBAhEYVp38RFPo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dNiz+QHlmfkly9Br2iTanLPZcnhuYQIKomL6rhr2onP1AI3OkeBcBCPwmP1Q7Ar58
+	 U8iiZFr/chO/1x7tUtCU9Yzk9pBmZAHrYTnfrlgiIfllcHwDfdTyBLCWBOOejXxrT7
+	 GrhxE1rzXu8DfTl3/aDIdZbnb3ruIDqF8bV5Xyz9C2/f3g8/m6ZuGwSmvJnBVCOsXU
+	 tnA220FBOUMuO5OaaubMrrOyJu2ST7EIuEYUd3RzEBHKdnM/vGrCz5Hx8cc8dgI8/N
+	 OND8jmcxhGelADRhzD2iiBXWw/meaDcVwLB5ie0zaBnGXy+F8pOH1KYerruMY3WcqD
+	 5nhm1s5CAvj3w==
+Date: Tue, 21 Jul 2026 06:49:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Serge Semin <fancer.lancer@gmail.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: pcs: xpcs-plat: fix runtime PM initialization
+Message-ID: <20260721064910.217a6af7@kernel.org>
+In-Reply-To: <7BA9366A-3243-4A46-BA8F-BB170C8AD912@gmail.com>
+References: <20260704214808.1566710-1-coiaprant@gmail.com>
+	<20260720172433.77b83dc7@kernel.org>
+	<7BA9366A-3243-4A46-BA8F-BB170C8AD912@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3 net-next] ipv6: add CAP_NET_ADMIN check for forwarding
- and force_forwarding sysctl
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, davem@davemloft.net, dsahern@kernel.org
-References: <20260716203713.17392-1-fmancera@suse.de>
- <20260716203713.17392-4-fmancera@suse.de> <20260721122430.GC2592863@shredder>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260721122430.GC2592863@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: B4DED3E1D
-X-Spam-Score: -4.51
 
-On 7/21/26 2:24 PM, Ido Schimmel wrote:
-> On Thu, Jul 16, 2026 at 10:37:13PM +0200, Fernando Fernandez Mancera wrote:
->> As commit 8292d7f6e871 ("net: ipv4: add capability check for net
->> administration") did for IPv4, make sure that CAP_NET_ADMIN is required
->> to modify IPv6 forwarding and force_forwarding sysctl. This keep the
->> consistency of permission check logic between both protocols.
+On Tue, 21 Jul 2026 09:53:53 +0800 Coia Prant wrote:
+> I came across what looks like a runtime PM initialization issue while
+> using pcs-xpcs-plat.c as a reference for the Rockchip XPCS glue driver
+> (drivers/net/pcs/pcs-xpcs-rk.c).
 > 
-> What's the value beyond protocol consistency given that it creates
-> intra-protocol inconsistency (none of the other IPv6 sysctl handlers
-> have this check)? 8292d7f6e871 does not explain why only forwarding was
-> changed. As-is, I don't see much value in this change. Tested using
-> [1].
+> The current code in pcs-xpcs-plat.c does:
 > 
-
-Ideally, all IPv6 and IPv4 should require CAP_NET_ADMIN as they are 
-indeed configuring networking interface configuration. I thought 
-changing all of them all of a sudden would be too much so I went for 
-forwarding only.
-
-As to answer why it was done for IPv4 in first place, I guess it was 
-done because forwarding is the most popular option and also quite 
-relevant in terms of impact in the system behaviour.
-
-If we don't want to merge this as it is, I see 3 ways forward:
-
-1. drop this patch from the series
-2. drop the permission check in IPv4 forwarding sysctl
-3. extend the check to all sysctls of IPv4 and IPv6
-
-Ideally I would go for 3. if it isn't too much in your opinion. 
-Otherwise, likely 1.
-
-Thanks,
-Fernando.
-
-> Before:
+>     pm_runtime_set_active(dev);
+>     ret = devm_pm_runtime_enable(dev);
 > 
-> uid=0(root) gid=0(root) groups=0(root)
-> v4 fwd: 1
-> v4 rp_filter: 0
-> v6 fwd: 0
-> v6 accept_ra: 0
+> This sets the initial PM state to ACTIVE before runtime PM is fully
+> enabled, and before the clock is prepared and enabled.
 > 
-> After:
+> If the device is later suspended (e.g., during unbind), the suspend
+> callback may try to disable a clock that was never enabled, leading to:
 > 
-> uid=0(root) gid=0(root) groups=0(root)
-> v4 fwd: 1
-> v4 rp_filter: 0
-> v6 fwd: 1
-> v6 accept_ra: 0
+>     clk_csr already disabled
+>     clk_csr already unprepared
 > 
-> [1]
-> #!/bin/bash
-> 
-> id
-> capsh --drop=cap_net_admin -- -c '
-> 	sysctl -wq net.ipv4.conf.all.forwarding=1 &> /dev/null
-> 	echo "v4 fwd: $?"
-> 	sysctl -wq net.ipv4.conf.all.rp_filter=2 &> /dev/null
-> 	echo "v4 rp_filter: $?"
-> 	sysctl -wq net.ipv6.conf.all.forwarding=1 &> /dev/null
-> 	echo "v6 fwd: $?"
-> 	sysctl -wq net.ipv6.conf.all.accept_ra=2 &> /dev/null
-> 	echo "v6 accept_ra: $?"
-> '
-> 
+> On Rockchip platforms, the CSR clock (PCLK_XPCS) is required for register
+> access, and this pattern seems problematic when a clock is actually
+> provided.
 
+Thanks for a clear explanation! A couple of sentences to this effect in
+the commit msg could help backporters understand the severity of the
+issue.
+
+> I have a few questions:
+> 
+> 1. Is there a reason this hasn't been noticed before?
+>    As far as I can tell, there is currently no mainline device tree
+>    user that enables this driver on a platform with a real clock
+>    dependency. Out-of-tree users might be using it without any clock
+>    at all, or ACPI users might behave differently.
+
+Ditto. I think we should drop the Fixes / CC: stable and instead
+add a sentence that no upstream platform can currently trigger this.
+
+> 2. Should we select PM in Kconfig and drop __maybe_unused from the
+>    PM callbacks? Since this driver relies on runtime PM for clock
+>    management, it seems odd to allow !PM builds.
+
+I'm no PM expert but if it works for current users I don't see the need
+to force the dependency?
+
+> 3. Should we add a .remove callback to force suspend the device on
+>    unbind? Otherwise the clock might remain enabled if the driver is
+>    removed while active.
+
+Embedded experts would have to chime in on this one. AFAIK this is a bit
+of a gray area. Some users may want the link to stay up, eg to allow
+WoL or avoid link training, maybe?
+
+> I'm happy to send a follow-up patch addressing these points if you
+> agree with the direction. Let me know what you think.
