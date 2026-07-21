@@ -1,86 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E7C46D2B1;
-	Tue, 21 Jul 2026 16:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651443; cv=none; b=fWV5BFzhqtIOKHWVtvh1Ii/mFcYJ8O9SNpGpVcLrgmwWT8ZFm6hLmDM776GwCzt7HeXbVoCpQxQza7+cBOYqEtfM0E+WxpBCJXOZG6HKolcV7nlDZLNOrjTkhzV6Z80XK8atJcumw/QognXTvYBlFeFX5CzIMk8EcImCTgc0aMY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651443; c=relaxed/simple;
-	bh=dSWrJydcq2B9Bb228wamlwfeAr5CU+sUl1eOHJbIW+E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=J116jJ3WfxHpCRGfSTvqVQQSHcM9IndPx4YTaoDQmygxEMkTdVpgPF6go+8jTd+dVpk1LHPz7z54skTQN/TFogiQhwg1luUtYz/uI/Uh2Rw2ChGhVfYmvzEAyL3SAyBmz2OC5DOAjIN/RxFNKpNcY8z7iTq3veNX1E6r0/rZMlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2HC1Q82; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDF146D2A6
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784651797; cv=pass; b=Pkh012xYURtP1jLv4cJ2sknvd/Gfmhk9bv14gnJcfeXk8zNIl8V8j2fY99aH4HbHHNtc04/Dz/ZcN4Cj84Ib1T2bJnpP5SuNE+n2HPmiy7GKuVM75V1DEPybkiOT+ntthGKy0+uRiDnqX6dsnQPFvmfJ+cAPkN2awR8+PbTO4T4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784651797; c=relaxed/simple;
+	bh=CNPPoWv60vr6t7jcqE+3A/Q+NYsoUCXVG+74URQb7f8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qs3z2N1TLqaqcU4/amPqChnMpq8s92JNtBOLsp6ydsf6qXDivwgmsmfyzlBn7TmrUhPnjlzQ1Qa8UROfDFmp4tXBTi8Uw36QHYEAV3hv32egql07Cz3b9x6LHExiI9Cve0s2fZIT3BqUYy60KnQ48U2khn37A36aWk/zLEQIOpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeCBDNao; arc=pass smtp.client-ip=74.125.227.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2HC1Q82"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB481F000E9;
-	Tue, 21 Jul 2026 16:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784651442;
-	bh=hiZfSoTKTIHoVPMPzTv/3edn8TP3cK2ffEGhTMHhApQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=W2HC1Q82A5JRCVozDeNy7cIsGS2ZK9p2s3PknTUGV8YupKqrKNUCb3UpSD/sT6nx9
-	 gpvK9PHZ5H/Xm2BB5iS+UwuSTyfYOJabperrBXJrDd0Wg15BhLS8q6U/8Tllg4N7SM
-	 gGcnydR1DV+kQgPWSeCzRtTYcVu3OspFQkaNCUf7dchiVynbNHP28xFjFrhiMfZl/z
-	 Ggt3K07ra/R1NDNwuPV7/CoUAEe3/2E1FtOyK+LDOE2pUjGYBBkRrfAz6b04OkpqV0
-	 FWgXzxj0+LYoYEYx8Bq7fVmlAPw11ELvLGefRG5BUoov3cTvTyYn24TI9nHoM/NLwA
-	 C/uG0qtKk058A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CCD5E3924FFE;
-	Tue, 21 Jul 2026 16:30:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeCBDNao"
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ccbff2e6a7so67611985ad.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:36:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784651795; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K/a6cP0IvUuifx+7j+l7AmmL6rkvsgoh0SA87iyZJnC3DroxSpRdN8SzNGmQj9e2Cv
+         8yu6yTjBWpivFO30G/owhh8GJBROjgtNL03ajMHUAcbbTGkV70ZZ2IurRKntFiaEOzyb
+         v0cZMwwqRtpXuDQnDksELLseyZwobIpGCs0SZgom93RtToSqh7aqgJFNmj4K0jZlat1h
+         d59XhwTeUb/N+8TTpqU7svMkOJk8UWT5JRd/E+Pansxhg2VjG7y319W3UKhQZaSrDxXn
+         sQL/8f2Ka5gKNSfvXUibIIlZTDgY4n5+CJG27d0YaNuAJ+Ugyb8RSTb7GM41mteP2PvL
+         8G/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vVqgX84jQjtV56FO/L90fCXJ4uFy/82Ndepm6gSaM0k=;
+        fh=qBuqvWx9RiP8brjvZgtZbdgSXrr6dB3XUdkhcyWoAT4=;
+        b=cIi4gkxu0jm2yXbeuuzMZlraGGFMrnDNulAijFWa1DGnzFNjewjlQh1ZH5i7jSyH/l
+         mJmU2xTWVSiXEGc/8CdwjdaWnLdGh9jNh36f3EgIlpDBxsVNrS9N68s9QHDONcz1Xnvu
+         j4fFrs7hXZQparnigHy8xTHOoeLUTqhJZeaixPKAGj2/5Ncal77oqAZUtDnI98v7kEsF
+         Ra6KqWu8MSzCqG1MM11bSuysRUW+3zNTO+Hl88SqNfve8+SI/YBv565FHkrn8B6mDh8c
+         /wtNX4tj4DgYWmNCAr+rRA/YYkc3aVDjCIzGQXO/pSaNUQLDIeGNcxZKaq5oEBY/ik64
+         WNLQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784651795; x=1785256595; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vVqgX84jQjtV56FO/L90fCXJ4uFy/82Ndepm6gSaM0k=;
+        b=MeCBDNaoXaMR7/E6WTm29zajfwJvUzkQeShRomoG4sLt2lJBOlk11L8+JjaszypRPZ
+         sUveZShJmNGDOmpWe6x5wsVd4TPqc6tqC/jLcJOrlE8IjpYCQlpb7U/3cHz5o09JybYi
+         tXKP2lHk2QUkG0l2vd8wcurdOv4bA7klhEDRFl1vWLcifOqwVNCwJdfMCDi4mv2/MX9i
+         XBUH9Ffd5XS6ocmqt8Xbpf8ziHBkaJ9Pz624lzbEQ+xwtnWFymANB3pxbxfiR/IfmAkU
+         MfYuRGIrON6DXyIhBoQ/iU+ZYkOPyXRbQyWYTZ5HbTNOpYb5F/+ZxT48y57axU2IMIPP
+         56Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784651795; x=1785256595;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vVqgX84jQjtV56FO/L90fCXJ4uFy/82Ndepm6gSaM0k=;
+        b=Xc/XSDpkv5+sSlZaN6n/blxx3N3AZRo/yb4GnYikJFZ0C/u2Tgjny6hGe7C4ap3gMG
+         nRD2yyqR8j1r6XPJ0W0vV0erQePxLek+f43eSy/SSUiijLLH5rFJ0P7J0mQf7cANFIJv
+         BPY6R9CspvXxYckYVTylyyFFrA2JttFU8CXJm1Jj0oQSHvCWMWeeaD7inkutE+OZjKAU
+         mZD9PXWEZcY/ER4lk6jKVSiFjMyQCAD6C0xP1xWp4I/H0YKTWo8j8sF4EeeEE1oTbjSK
+         t53qGED4M7pzCiPdghSxCSbQ9THuRbQ81K9saWAopSAlsP3qD/FxoXN5KP4Okkt7kEeC
+         pL4w==
+X-Forwarded-Encrypted: i=1; AHgh+RrLEKuEN5+MdLd6Vcw6I80hbXLatbTj1a3WcoYGCiKVVzTOioFMkCJ10sUvhZ7MS4P5CKnTSow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfyxS8zdb8w9egYTHr2ZjKgMLdRuuIzkYxBZDBwObZQ18PF1f4
+	9Gu7+V1n0usSQrCcQjDLi5aDNIBAqXZsKYa8fElsptvxHN0/bETC3WrrOpN6lL60b78d1ERyOyL
+	puciyDP0hR5sN90+E4BhIeBCY8uET9Q==
+X-Gm-Gg: AR+sD12inGh978oX+Ly869vfpdVImlu5juSZFVXc0Cebqhr/A6rOJ1DvLwE1tyMnaOb
+	xWcRhP47+5ymduSFr3Lhk3ia4YVmu4vXOkGwkN+y/Xr9pA/egJLGaiGMoSkGKvZ3EUokWDkmd+W
+	KZk1MhXwVui6giTNaRvJhzL0jcBCKKYEDENdyvLXZVXBqF1KPgh1vD4mzBzQLq+f4Z99TGmo2xi
+	NObmKbGn/aOxwz62nqjNiK9QgauQ0nd5Axuf7tNs3SXuQboszdKWACgUUVh/d8iJo7jG8eTy84u
+	8d+kx26/2Xxz/zvTP7s=
+X-Received: by 2002:a17:903:3bcf:b0:2ca:ed41:d33d with SMTP id
+ d9443c01a7336-2cf34a80342mr224602735ad.45.1784651794678; Tue, 21 Jul 2026
+ 09:36:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] rndis_host: add overflow check in
- rndis_rx_fixup()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178465141140.391576.1666114427546952620.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 16:30:11 +0000
-References: <2026070900-denim-brook-52d4@gregkh>
-In-Reply-To: <2026070900-denim-brook-52d4@gregkh>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, griffin@kroah.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- shaoxul@foxmail.com
+References: <20260719175857.4071636-1-ap420073@gmail.com> <20260719175857.4071636-9-ap420073@gmail.com>
+ <41e73be8-242a-4e7b-b085-439375303590@pixelcluster.dev> <8dfbef48-db20-4642-8f50-e37f46af6627@lunn.ch>
+In-Reply-To: <8dfbef48-db20-4642-8f50-e37f46af6627@lunn.ch>
+From: Hoyeon Lee <hoyeon.rhee@gmail.com>
+Date: Wed, 22 Jul 2026 01:36:22 +0900
+X-Gm-Features: AUfX_myNLtLISc21KdgKa-JpkJ-v8hHK4oD3B4RXKoOMKPs4a14geDJhHunEcxY
+Message-ID: <CAJ=ss6_iUvP3Be735V6_dD0JTF96=NZWe5_G_p0nubdRvCZ==Q@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next 08/13] drm/amdkfd: add GPU instruction
+ emitter and disassembler
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Natalie Vock <nat@pixelcluster.dev>, Taehee Yoo <ap420073@gmail.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, Alexei Starovoitov <ast@kernel.org>, 
+	amd-gfx@lists.freedesktop.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Andrii Nakryiko <andrii@kernel.org>, Bill Wendling <morbo@google.com>, bpf@vger.kernel.org, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, David Airlie <airlied@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, 
+	dri-devel@lists.freedesktop.org, Eduard Zingerman <eddyz87@gmail.com>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Eric Dumazet <edumazet@google.com>, 
+	Felix Kuehling <Felix.Kuehling@amd.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <kees@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Leon Romanovsky <leon@kernel.org>, 
+	linaro-mm-sig@lists.linaro.org, linux-hardening@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-rdma@vger.kernel.org, llvm@lists.linux.dev, 
+	Mark Bloch <mbloch@nvidia.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Michael Chan <michael.chan@broadcom.com>, Nathan Chancellor <nathan@kernel.org>, netdev@vger.kernel.org, 
+	Nick Desaulniers <ndesaulniers@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Shuah Khan <shuah@kernel.org>, Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@kernel.org>, 
+	Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Yonghong Song <yonghong.song@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Tue, Jul 21, 2026 at 5:53=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Mon, Jul 20, 2026 at 10:05:33PM +0200, Natalie Vock wrote:
+> > On 7/19/26 19:58, Taehee Yoo wrote:
+> > > Add the AMD GCN (gfx9/gfx10) instruction encoder used to build the GP=
+U
+> > > shaders that knod dispatches, plus a matching disassembler used for
+> > > debugging the generated code.
+> >
+> > Is it really necessary to have a full-on compiler and disassembler in t=
+he
+> > kernel driver? This patch is massive and I'm wondering how much benefit=
+ it
+> > really provides. Is there really no way to move GPU compilation out of =
+the
+> > kernel, one way or another? Could you get acceptable perf with a static
+> > shader that interprets BPF programs at runtime? Such a shader can be
+> > compiled beforehand and just embedded into the kernel - there's prior a=
+rt
+> > there with the CWSR trap handler in amdkfd.
+> >
+> > In case you really, really need to compile the BPF to native ISA, could=
+ you
+> > still have userspace take care of that in one way or another?
+>
+> There was a long and painful discussion about P4, and offloading it to
+> hardware. The proponents of that wanted to do the compilation stage in
+> user space to produce a binary blob, but it was hard to prove that the
+> P4 passed to the kernel for software processing, and the binary blob
+> passed to the hardware actually where the same. It opened up the path
+> for closed source P4 where the kernel never got to see the actual P4
+> code. So it was not really offload, but kernel bypass.
+>
+> So having a compiler in the kernel is probably the correct way to go,
+> if you want to be friendly to open source.
+>
+> The other option is to get the GPU to do the compilation itself, so
+> you pass BPF byte codes to the GPU and it generates its own native
+> code. I've no idea if that is possible, but clang can target OpenMP,
+> so maybe it is possible to move this compiler into the GPU?
+>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi Natalie and Andrew,
+Thank you both for the review and suggestions.
 
-On Thu,  9 Jul 2026 14:24:01 +0200 you wrote:
-> From: Griffin Kroah-Hartman <griffin@kroah.com>
-> 
-> Add an overflow check to ensure that data_offset + data_len + 8 does not
-> wrap, which would enable an OOB read of the USB data buffer.
-> 
-> Assisted-by: gkh_clanker_1000
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Shaoxu Liu <shaoxul@foxmail.com>
-> Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> [...]
+We tried running a BPF interpreter on the GPU using OpenCL in an early
+prototype. The interpreter overhead dominated because each BPF
+instruction required many native GPU instructions, so the performance
+was not practical. Since this was only an early feasibility prototype,
+we do not have benchmark data suitable for a meaningful comparison.
 
-Here is the summary with links:
-  - [net-next] rndis_host: add overflow check in rndis_rx_fixup()
-    https://git.kernel.org/netdev/net-next/c/965a251f23ff
+Based on that result, we chose to compile BPF directly into native GPU
+instructions. Moving compilation to userspace would also raise the
+problem Andrew described: the kernel could no longer easily establish
+that the verified BPF program and the submitted GPU binary are
+equivalent. We have not tried compiling on the GPU itself, but that may
+be worth investigating separately.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The disassembler is only used for debugging the generated GPU
+instructions and is not required for execution. We can leave it out of
+the initial series and submit it separately if needed.
 
+Regards,
+Hoyeon Lee
 
+>       Andrew
