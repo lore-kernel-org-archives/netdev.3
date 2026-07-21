@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3553FD960;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2B53FC5C3;
 	Tue, 21 Jul 2026 02:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784600492; cv=none; b=NtyxXO61S4IYKGavWncWTpa6sfx3//J6VmcOGxYjE3nWKHeURXkvxJmu9QQmz/cDLkFMAFSDm56/a1clhYDEO7oXFkKIOAeV+1RtsvuG+JgC2/CzQmdWHxqd5PxH7/JDkuTzNUvzWsvs4gp3ILsJHskDNI+/T4sJWtYWrl3dhZw=
+	t=1784600492; cv=none; b=Qz4r30zkKRHHXcp4RCBGi1ELdYuzca37iY4Sfvrvk10/fn1NmXFRVfDAqA/0cf7t8zElrbfWLhugjtuAT83sS4MIbhRmnexVJlEb952BLcI5sJ+E89jgNVYMkpQXZB26m8I3yx/4P/rJ8tAawRf7u3KfJra0jzPErK6d9aBnepc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784600492; c=relaxed/simple;
-	bh=EVgsh6UMa3GTJAJhgZSNBxZRLmpDbQsr69w5Q+r3Lrw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nP8P+JygfAu5YBbZLgkKIiIvK1v36XXXtA/zYQMjbh+7SzzCr+OATHuIlf5dNBSTBFpnJPhCyqyEfqwX9jSU5MENOJuRHf2q+5MTVZcNuD8yyP+raEtT3QWGC6/uSReXf3S0SbDMj7Z6nUXu8SUh7WdNM6Gfkd6IfhYVCpgqcl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDgZJNfc; arc=none smtp.client-ip=10.30.226.201
+	bh=cpsPDNbTObDrhmsVuo4YfvMITcMiSGI6Oq8yYAd7T/E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PgYJtNFTe34Gd8y8SSJ9ieNxAhaiBCV58bqVv4eCLt4W6BPGNcOM9OV/zicsjJ1P3GX226nlHUVcso/GiuYw4vtITw7+zciLYD9qSXZhJ30qLH1hixqhkfE7lcOw+10pFRF9mqKOGvZuRohALeSVD5MRZelQS1KIdSF8tSMQxM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRi4SNM3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDgZJNfc"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AB64DC2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRi4SNM3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BCD44C2BCF7;
 	Tue, 21 Jul 2026 02:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784600491;
-	bh=EVgsh6UMa3GTJAJhgZSNBxZRLmpDbQsr69w5Q+r3Lrw=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=FDgZJNfcxC4AonPN1zqnuLnkukNyBEGYQCSQBVJE/ojAuXRLSyBSn3vjsv6wWSNbl
-	 EamGDbeLQJAwxyT/gzMZvt69EhC0T/kmhhxkg73+Vc9P6HKoyxYnAkPRoaMYis3V7M
-	 B1ULjHUnS4pVhiADwKYWL8IMPky4pqz+NqYQeWj22m4sCcKZDBuZWyAMaRhP5QcK82
-	 7ngL9BHZ4zsaX3x5RLBYmytQlyA3w09ZY6Kb3vNoDHXiiXkpRhUlkDK9jzGbGDJyE6
-	 RKNDzOYUfGguml9M0YacALxTJN1ujWPb62HZBBF9RwYsf4r9+ZFJVdDTzItYBROgSn
-	 8SFBlxe1vEryw==
+	bh=cpsPDNbTObDrhmsVuo4YfvMITcMiSGI6Oq8yYAd7T/E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BRi4SNM3bu4DYAD3lTBhsXpWpyBHNp9CjMQl2iukycipnGDZr7f+pStlDKaLzieMv
+	 7I/1Yd72Ky+o1j+MS4FlLR2bcGS5bgKMOEZUE62RUQsNkS8xMXj/ufPRXFO9Sa/aqD
+	 4ucPt11Lo7bMIEjo6ACqfgC5+CPQQRJqwS/fUeOAszFqjcZyeOHHPcduXlF2poUQgQ
+	 ePqhZlu0bpBG7oKt/cAgo8g3iGr/Ybobw4JZYk6hUxffMhwVnBtteEwq6fuunGau17
+	 eBPSQJ/53zLU4j8RVz0PyewKseGO0pQln3Gi9zJnd1zqkPGyfTPqn4xHXwxq8eChTy
+	 Unmh3a/6EtRgA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85BE2C44524;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B2D4C44520;
 	Tue, 21 Jul 2026 02:21:31 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Subject: [PATCH net v4 0/3] Fix to possible skb leak due to race condtion
- in tx path
-Date: Mon, 20 Jul 2026 19:20:34 -0700
-Message-Id: <20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com>
+Date: Mon, 20 Jul 2026 19:20:35 -0700
+Subject: [PATCH net v4 1/3] net: ethernet: oa_tc6: Protect skb pointer used
+ by two different kernel instances
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHLXXmoC/43QwQ7CIAwG4FdZOFsDDNjmyfcwHhA6x0EwsCyaZ
- e9us4saD/P4t3++Jp1ZwRywsEM1s4xTKCFFCmpXMTfYeEUInjKTXBpupIA+PCBbh+BS9GGkOtj
- owWVbBuiU51pbY7RTjIh7Ruqv/IlFHNmZhkMoY8rP9eQk1tV/+iSAQ9ug7Ljvat30xxQL3sLep
- dsqT/JTMxuaJO1inHaCo+HqV6vfWsP1hlaTVqMWrRJIX2i/tGVZXupOfBNqAQAA
+Message-Id: <20260720-fix-race-condition-and-crash-v4-1-8273e2f38a1f@onsemi.com>
+References: <20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com>
+In-Reply-To: <20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  Piergiorgio Beruto <pier.beruto@onsemi.com>, 
@@ -55,11 +54,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784600442; l=3567;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784600442; l=5762;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=EVgsh6UMa3GTJAJhgZSNBxZRLmpDbQsr69w5Q+r3Lrw=;
- b=zscnJa/K/qdSZAXt6eVsKKUYl6NvWTTdiCiUEYYBfZygZLEc8ScMQk9hwThDQ627EEaqBJeNu
- InC6I7e977bDoddw3xWTE/s2rv7VdUNCZMW9h5uCDSid8YcoK1ZOB/q
+ bh=PtJKXxiHIQ65kW4ADgjT422PMBMh9A+ziMoUoFppues=;
+ b=oJHhMqZ0P+P1VXVB3w7NrLpJoIFeXU+WdK75pJrqVkAFct8tSf3tI07VkThX5l9MlIa1HpOBd
+ rsVZkSUMVP0B9ohNDU2Wk+3VoYeyhhEf0/05hyafYEMZQbbtZzTnTwd
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -67,88 +66,200 @@ X-Endpoint-Received: by B4 Relay for
 X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 Reply-To: Selvamani.Rajagopal@onsemi.com
 
-Now the traffic is handled in threaded IRQ, and the
-disable_traffic flag is checked before handling the
-data, new race condition is exposed, in which
-buffer may leak, if threaded IRQ interrupts the
-trasmit path midway.
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-With this change, disable_traffic and waiting_tx_skb
-pointer are protected by spin lock/unlock pair.
+Threaded IRQ uses waiting_tx_skb. Transmit path also uses
+this pointer without any mutual exclusion protection. As a
+result, it might leak skb buffer, particularly threaded IRQ
+runs in the middle of tranmsmit path, near skb_linearize.
 
-This is highlighted in Sashiko review
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260611-level-trigger-v5-0-4533a9e85ce2%40onsemi.com
-
-Also on buffer overrun condition, probably due to loss of
-SPI data chunks, receive path doesn't see the expected
-data chunk with end_valid bit set. As a result, driver
-keeps adding data chunks to the skb before running out
-of space and kernel panic is seen.
-
-With this change, before adding data to the skb, if there
-is no space, skb is freed and driver starts looking for
-new frame by looking for a data chunk with start_valid
-bit set.
-
-[  705.405490] skbuff: skb_over_panic: text:ffffffd2eb72a264 len:1600 put:64 head:ffffff804e5cdc40 data:ffffff804e5cdc80 tail:0x680 end:0x640 dev:eth1
-[  705.405569] ------------[ cut here ]------------
-[  705.405575] kernel BUG at net/core/skbuff.c:214!
-[  705.405589] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-
-[ 6703.427690] Call trace:
-[  705.925157]  skb_panic+0x58/0x68 (P)
-[  705.928726]  skb_put+0x74/0x80
-[  705.931772]  oa_tc6_update_rx_skb+0x44/0x98 [oa_tc6_mod]
-[  705.937084]  oa_tc6_macphy_threaded_irq+0x3f4/0x900 [oa_tc6_mod]
-[  705.943084]  irq_thread_fn+0x34/0xb8
-[  705.946654]  irq_thread+0x1a0/0x300
-[  705.950134]  kthread+0x138/0x150
-[  705.953356]  ret_from_fork+0x10/0x20
-
+Fixes: b542d13fab0f ("net: ethernet: oa_tc6: Interrupt is active low, level triggered.")
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
----
-Changes in v4:
-  - As disable_traffic means device is uselss unless
-    driver re-loaded, all tx queues are turned off.
-  - Process all the received chunks on buffer overflow,
-    as long as data chunks doesn't have any error bits set
-    in their footer.
-  - Added spin lock protection in every place wait_tx_skb
-    is used.
-  - Carrier is not turned off on disable_traffic.
-
-- Link to v3: https://lore.kernel.org/r/20260705-fix-race-condition-and-crash-v3-0-3e51841e4d08@onsemi.com
-
-Changes in v3:
-- Cover all the instances of disable_traffic flag with
-  spin lock to serialize the access
-- Disabling the tx queue and mark the carrier off when
-  disable_traffic is set.
-- Continue processing received chunks on buffer overflow
-  error and "out of skb" error.
-- Link to v2: https://lore.kernel.org/r/20260626-fix-race-condition-and-crash-v2-0-b6c5c10e604f@onsemi.com
-
-Changes in v2:
-- Improvment to how error -EAGAIN is handled. Took care of
-  couple of use cases where start_bit and end_bit may be missing or
-  repeated due to lost data chunks.
-- Protected handling of waiting_tx_skb pointer with spin lock
-- Link to v1: https://lore.kernel.org/r/20260621-fix-race-condition-and-crash-v1-0-87e290d9357f@onsemi.com
 
 ---
-Selvamani Rajagopal (3):
-      net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
-      net: ethernet: oa_tc6: Improvements to error recovery
-      net: ethernet: oa_tc6: Disabled tx queues when disable_traffic is set
-
- drivers/net/ethernet/oa_tc6.c | 236 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 175 insertions(+), 61 deletions(-)
+changes in v4
+  - No change
+changes in v3
+  - Added the missed out spin lock protection for
+    waiting_tx_skb and disable_traffic flag
+changes in v2
+  - added the missing prefix to the title
 ---
-base-commit: 1c975de3343cdef506f2eecc833cc1f14b0401c4
-change-id: 20260621-fix-race-condition-and-crash-94d055a665c4
+ drivers/net/ethernet/oa_tc6.c | 100 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 70 insertions(+), 30 deletions(-)
 
-Best regards,
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 0727d53345a3..5b24cce4f9b5 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -652,6 +652,26 @@ static int oa_tc6_enable_data_transfer(struct oa_tc6 *tc6)
+ 	return oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, value);
+ }
+ 
++/* Called when a frame that is meant to be transmitted, is dropped. */
++static void oa_tc6_drop_tx_skb(struct oa_tc6 *tc6, struct sk_buff *skb)
++{
++	if (skb) {
++		tc6->netdev->stats.tx_dropped++;
++		dev_kfree_skb_any(skb);
++	}
++}
++
++static struct sk_buff *oa_tc6_detach_waiting_tx_skb(struct oa_tc6 *tc6)
++{
++	struct sk_buff *skb;
++
++	lockdep_assert_held(&tc6->tx_skb_lock);
++	skb = tc6->waiting_tx_skb;
++	tc6->waiting_tx_skb = NULL;
++
++	return skb;
++}
++
+ static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
+ {
+ 	if (tc6->rx_skb) {
+@@ -663,26 +683,30 @@ static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
+ 
+ static void oa_tc6_cleanup_ongoing_tx_skb(struct oa_tc6 *tc6)
+ {
+-	if (tc6->ongoing_tx_skb) {
+-		tc6->netdev->stats.tx_dropped++;
+-		kfree_skb(tc6->ongoing_tx_skb);
+-		tc6->ongoing_tx_skb = NULL;
+-	}
++	oa_tc6_drop_tx_skb(tc6, tc6->ongoing_tx_skb);
++	tc6->ongoing_tx_skb = NULL;
+ }
+ 
+ static void oa_tc6_cleanup_waiting_tx_skb(struct oa_tc6 *tc6)
+ {
+-	if (tc6->waiting_tx_skb) {
+-		tc6->netdev->stats.tx_dropped++;
+-		kfree_skb(tc6->waiting_tx_skb);
+-		tc6->waiting_tx_skb = NULL;
+-	}
++	struct sk_buff *skb;
++
++	spin_lock_bh(&tc6->tx_skb_lock);
++	skb = oa_tc6_detach_waiting_tx_skb(tc6);
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	oa_tc6_drop_tx_skb(tc6, skb);
+ }
+ 
+-static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
++static void oa_tc6_free_ongoing_skbs(struct oa_tc6 *tc6)
+ {
+ 	oa_tc6_cleanup_ongoing_tx_skb(tc6);
+ 	oa_tc6_cleanup_ongoing_rx_skb(tc6);
++}
++
++static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
++{
++	oa_tc6_free_ongoing_skbs(tc6);
+ 	oa_tc6_cleanup_waiting_tx_skb(tc6);
+ }
+ 
+@@ -693,9 +717,15 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
+ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+ {
+ 	u32 regval = INT_MASK0_ALL_INTERRUPTS;
++	struct sk_buff *skb;
+ 
++	spin_lock_bh(&tc6->tx_skb_lock);
+ 	tc6->disable_traffic = true;
+-	oa_tc6_free_pending_skbs(tc6);
++	skb = oa_tc6_detach_waiting_tx_skb(tc6);
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	oa_tc6_drop_tx_skb(tc6, skb);
++	oa_tc6_free_ongoing_skbs(tc6);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
+ 	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
+@@ -1136,8 +1166,7 @@ static int oa_tc6_try_spi_transfer(struct oa_tc6 *tc6)
+ 			if (ret == -EAGAIN)
+ 				continue;
+ 
+-			oa_tc6_cleanup_ongoing_tx_skb(tc6);
+-			oa_tc6_cleanup_ongoing_rx_skb(tc6);
++			oa_tc6_free_ongoing_skbs(tc6);
+ 			netdev_err(tc6->netdev, "Device error: %d\n", ret);
+ 			return ret;
+ 		}
+@@ -1159,15 +1188,20 @@ static irqreturn_t oa_tc6_macphy_threaded_irq(int irq, void *data)
+ 	 * no need to attempt spi transfer, once it fails. Pending skbs
+ 	 * are already freed.
+ 	 */
+-	if (!tc6->disable_traffic) {
+-		while (tc6->int_flag ||
+-		       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+-			ret = oa_tc6_try_spi_transfer(tc6);
+-			if (ret) {
+-				disable_irq_nosync(tc6->spi->irq);
+-				oa_tc6_disable_traffic(tc6);
+-				break;
+-			}
++	spin_lock_bh(&tc6->tx_skb_lock);
++	if (tc6->disable_traffic) {
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		return IRQ_HANDLED;
++	}
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	while (tc6->int_flag ||
++	       (tc6->waiting_tx_skb && tc6->tx_credits)) {
++		ret = oa_tc6_try_spi_transfer(tc6);
++		if (ret) {
++			disable_irq_nosync(tc6->spi->irq);
++			oa_tc6_disable_traffic(tc6);
++			break;
+ 		}
+ 	}
+ 
+@@ -1250,18 +1284,22 @@ EXPORT_SYMBOL_GPL(oa_tc6_zero_align_receive_frame_enable);
+  */
+ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb)
+ {
+-	if (tc6->disable_traffic || tc6->waiting_tx_skb) {
+-		netif_stop_queue(tc6->netdev);
+-		return NETDEV_TX_BUSY;
+-	}
+-
+ 	if (skb_linearize(skb)) {
+-		dev_kfree_skb_any(skb);
+-		tc6->netdev->stats.tx_dropped++;
++		oa_tc6_drop_tx_skb(tc6, skb);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+ 	spin_lock_bh(&tc6->tx_skb_lock);
++	if (tc6->waiting_tx_skb) {
++		netif_stop_queue(tc6->netdev);
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		return NETDEV_TX_BUSY;
++	}
++	if (tc6->disable_traffic) {
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		oa_tc6_drop_tx_skb(tc6, skb);
++		return NETDEV_TX_OK;
++	}
+ 	tc6->waiting_tx_skb = skb;
+ 	spin_unlock_bh(&tc6->tx_skb_lock);
+ 
+@@ -1393,7 +1431,9 @@ EXPORT_SYMBOL_GPL(oa_tc6_init);
+  */
+ void oa_tc6_exit(struct oa_tc6 *tc6)
+ {
++	spin_lock_bh(&tc6->tx_skb_lock);
+ 	tc6->disable_traffic = true;
++	spin_unlock_bh(&tc6->tx_skb_lock);
+ 	disable_irq(tc6->spi->irq);
+ 	oa_tc6_phy_exit(tc6);
+ 	oa_tc6_free_pending_skbs(tc6);
+
 -- 
-Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+2.43.0
 
 
