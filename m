@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B4B3B9930;
-	Tue, 21 Jul 2026 22:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BA7418A58;
+	Tue, 21 Jul 2026 22:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784671242; cv=none; b=bmUn9WSUn1Yp3h6MRJrQ8vEj/4P/CJ4TGxXAMyj5xW4ymKMaQzuZCiKn9aS5nBFdTT/wB3hG4yIN4PrAshPnXNuhrQkuDA3DRrnMsWafqqCT68db0128iroUhkDF9R5BGyWEgL+zhI69SC8EAap+G9YPsBE2ckcchAB66bvvIiI=
+	t=1784671855; cv=none; b=KafHI7mExJfD3typQ12hTr/IllxrT5X+iUIIO8cs52btXCniLCzPs/zj6MAgtPjNBi3HdE56MI4ZbSKCKVXq2bJk2SXGJWe01roY7TLJJp5rrp7fNgr5L0CNeVYKzGIQZ0fg66npVgbvNiURXelcQABT5FR+BvSH33MODPRPGHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784671242; c=relaxed/simple;
-	bh=0xVuYxZPON1oC4B+N576A69t5gUAAqL2FjxXLumQlic=;
+	s=arc-20240116; t=1784671855; c=relaxed/simple;
+	bh=VzSFI/A/mU1RFixF+N00ArXIvSfEOMKn/Kgg/596AU4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KC40VOM547AQGT31i1S70AbLP6tnutoBtjLvi7lWR2ufNObp9KgvW/pA83n89JKqCDlaKNxHvhD0HXr7ueS0RTOkTrWTw7Dh9eeq1ZZr/wjcG/FxLJdKkTzyNGV1Yv4F2tf0Zs3r8M7VjDr3O/RaTDefB3whi8Q/YlqlUR2tSOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nI6XvGn1; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=TyQqd4eDgteuLT4VRJs1ORWhQFg19p+mnSLbPwZQVLlO2MHqq12fO56upkuK2aIY34HFZv2KYl/JoEnXhNq5uOFAI3lf0A0GTmU1fzYws4iZJ4xg9MGH+QcwyZGWshbwR3homeEmbajZfhxcVQ1MBBEc2EE0WIxFfyZVPT3JLvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2BkNgBC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nI6XvGn1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B05B1F00A3D;
-	Tue, 21 Jul 2026 22:00:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2BkNgBC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19651F00A3A;
+	Tue, 21 Jul 2026 22:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784671241;
-	bh=MsEIGcspohxSKfWmv6M8XET8JahqnW8ojtQncthEbnM=;
+	s=k20260515; t=1784671854;
+	bh=6ghj0bAXJ7QM0jI0Z0cbalfZJOu7EbXC3apo2wHHgRc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nI6XvGn1txtQLNq46u6pD331/mmCFBOdhy52DXOKxx91rMqGQF/zR1ehilp92CPXX
-	 FZ66Uo5vegJQ602SKScfCgC2vTbvbhx6Vg3nH3YIp89KzsiJPkkK5nVfD3dmBfobBp
-	 HFXgygUBbK5ven3rRd9dYTE0HIWhAJnCFVrHETTAVWdYyDUBSRnrgD2OYIcXE0BpE3
-	 7JdMb+UgzXpWyi3JcQSpE0olSdkObsSaU4LinpHS4Ato3TusxCn3zh0jWlRSKW3i24
-	 7qXm/IgL9Um7/lB12v9oEDQc7WUulZVefG3oX3hRPAED4joNDUOPhOz5vlppfZ8/MU
-	 fz25o29+ghQ1g==
+	b=j2BkNgBCqE2rjYT68nNQ1r2DFARqy3UTnRM85Z6Vb6IMwcGo6+7JoJ+ctYwgtNFXm
+	 FBk2ZY2+MAbKSN/WEqMIiAbTVDvdZBJAnh7ld3EcvMK78SUz9bcSNgsP8wcw4IRIDG
+	 lLV2QIeJyiCylGkME6OBx1/qS897VWdSiqbFeWWis2+5oLQjMv1cgWSvZ6SGNC37NW
+	 Pg9KlGg7Hs7IGUyg3e/Bd4TNrmqomrS8DZX0gijZQBGAZr5f72kyBkck1I41+KXDrY
+	 sJkKiI2cfwT/HkeiyOxqjUQLByFuH763miOFJ5eZ5iXLOPCmlsmxxsgFHLKRu9z67a
+	 JvC+QDdmPI6CA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198E0380820D;
-	Tue, 21 Jul 2026 22:00:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B86380820D;
+	Tue, 21 Jul 2026 22:10:24 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
+Subject: Re: [PATCH net 0/7] selftests: net: add missing kconfig and settings
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178467121083.1102577.17257961368358653679.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 22:00:10 +0000
-References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, thomas.petazzoni@bootlin.com,
- alexis.lothore@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
+ <178467182339.1107545.10049647609744373439.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 22:10:23 +0000
+References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
+In-Reply-To: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kuniyu@google.com, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, dev@openvswitch.org,
+ antonio@openvpn.net, sd@queasysnail.net, andrew+netdev@lunn.ch,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, mohsin.bashr@gmail.com,
+ dw@davidwei.uk, weibunny@fb.com, bpf@vger.kernel.org, leitao@debian.org,
+ asantostc@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 18 Jul 2026 16:38:47 +0200 you wrote:
-> Now that timestamping is controlled through an NDO, we can simply
-> call phylink_mii_ioctl() to handle ioctls.
+On Fri, 10 Jul 2026 20:04:40 +0200 you wrote:
+> When trying to execute the same selftests targets as the ones executed
+> on NIPA, but using containers with minimal tools, I got some issues
+> with a few tests.
 > 
-> The only functional difference is that phylink_mii_ioctl() ->
-> phy_mii_ioctl() can handle SIOCSHWTSTAMP, but this no longer happens
-> as this ioctl is not longer dispatched to the ndo_eth_ioctl().
+> Most of these issues are due to missing kernel config, but also too
+> short timeout:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: stmmac: Simplify ioctl handling
-    https://git.kernel.org/netdev/net-next/c/357997831d0b
+  - [net,1/7] selftests: af_unix: add USER_NS config
+    https://git.kernel.org/netdev/net/c/f8b1abed7361
+  - [net,2/7] selftests: openvswitch: add config file
+    https://git.kernel.org/netdev/net/c/441a820ccef9
+  - [net,3/7] selftests: ovpn: add IPV6 and VETH configs
+    https://git.kernel.org/netdev/net/c/90c792681a37
+  - [net,4/7] selftests: ovpn: increase timeout
+    https://git.kernel.org/netdev/net/c/61ac7049aaa8
+  - [net,5/7] selftests: drv-net: increase timeout
+    https://git.kernel.org/netdev/net/c/3529d75d6741
+  - [net,6/7] selftests: drv-net: add missing kconfig for psp.py
+    https://git.kernel.org/netdev/net/c/c25dd7439f84
+  - [net,7/7] selftests: netconsole: ignore busywait errors
+    https://git.kernel.org/netdev/net/c/e6ad44a5b1d5
 
 You are awesome, thank you!
 -- 
