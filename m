@@ -1,52 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8301B415F0E;
-	Tue, 21 Jul 2026 19:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A931AF0BB;
+	Tue, 21 Jul 2026 19:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784662115; cv=none; b=pLdgJq+cctYNHyn9q6IokiMMKT16tDPLjTwT8cIa3v6WfEaDeABOCSJYFZ+pK1m5zYEobUFSVp/edYZ/EHB3yYVpdIkaITBuLY7AtuGxS0txyI0tT3Kw7T8ZpL50Ez2xp+h3V2hX6chGMg1ey2mp/DXuFH0QYhc0JCQ0JqZRDvg=
+	t=1784662250; cv=none; b=hzpj19/OJBkmnybrdI5A9Ro7ji9qrdtMRaT4kfKF6pOAPNC91sID5SWD4z6EPG1X+VA+zags+jXKa/PaViVOewL254nuVJWFy5OYiECM8cVeAwMQqmCQZb4J/Gfpf8DoU2woRG+ZDkcUltS/pKVwzm/YysLVTfZdUcBwrdNJJdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784662115; c=relaxed/simple;
-	bh=lgclJuk0CqxNxS/2ZM00UldPOzsTBKWl/vFU3Zpif3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSrr12IPj4lD9eFA2ujWrOfPNXpjKxxLsgmX2yK/EO96F6yc+uOjAgJLnMW2SNzPJ62t6gVKyaPMYmmvOOSdz3ewrAvl9hlLaAimNzzFxzWtZObOMk4D4eNhA67J9l7VOhW3U3dhYzRAf1LG/suP2fB3aFi/s/7gR+Bj4tTjmHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ch/kxbBu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784662250; c=relaxed/simple;
+	bh=LeZq21KAtmQ+4YYVlMjx+4SGdZKkpwLSKULiF9jlklQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=CmusoqamTM0TBAz/zqd+HqMoS0lgp1rSOSBclIPqNEXzm7/rO7sZDH6hafDH3kU2VQVRif7y31gDP6F0Zf73UyEd7mj502mBSj4/hU89v7xydDhtV/7ljo+KUpePB1c9Tja6v0pe4kl+3TzjLkTMV9JPBwCPN4Q0sDJOnVo9Ofs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPoITf4J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ch/kxbBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BCA1F00A3E;
-	Tue, 21 Jul 2026 19:28:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPoITf4J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67021F00A3D;
+	Tue, 21 Jul 2026 19:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784662114;
-	bh=xC8lvJvDUQ9mMy/yHy4cng0x19uXIMryBnv+mV/BtRo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ch/kxbBuOr35ZOfuV6AS8t6/kRvi5NNuti6hN3q0Jhgjudk5cB+LsvTJ9mEVCQ2/Z
-	 bCu99xy614UcbIIZCvnOhByuXJVEPQeeXNESxJhJuBV7o/7QrDAWwaqIl63EBblCKQ
-	 7Ku5XZRfU968q9H8p77wuV42kGH3TS4uET3CW+GxmGxUUiOnXTKc1oIweDhjL6hI87
-	 vEH8zQxWtKoZltfAyHwJTU+BwkrOQe7hIgqzr+k0xpmLF91sN88jf7r7VLEKRUscVg
-	 9W99CV7/nCkzXvMenWsG/gIx1mwKCQsyRv+h/Nb/3LDD9hi12Mw56keiu7rP5wW5N8
-	 hH+SCyEXFYgow==
-From: Jakub Kicinski <kuba@kernel.org>
-To: xmei5@asu.edu
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	edumazet@google.com,
-	kuniyu@google.com,
-	pabeni@redhat.com,
-	willemb@google.com,
-	davem@davemloft.net,
-	horms@kernel.org,
-	weiwan@google.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: Re: [PATCH net] net: sock: prevent integer overflow in sock_reserve_memory()
-Date: Tue, 21 Jul 2026 12:28:32 -0700
-Message-ID: <20260721192832.931173-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260711005955.1467140-1-xmei5@asu.edu>
-References: <20260711005955.1467140-1-xmei5@asu.edu>
+	s=k20260515; t=1784662248;
+	bh=AGzERM2SkKDls/FXLDQeUTzgCiAHckNLJwaStuLHoHE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YPoITf4JsQZT3WvPxRakMaPTTqxxAgr8FQ2j/LHzvTXm542pEDaE/Dka7WQ/FXLqY
+	 TMZIlttIzxddocV8Ga85gETUIQNXlPbXU1LbmFg2s9cHXJeUQVfumbNQtdyb7xIKfb
+	 P9Q4ymI15SNfOTATAZiZONlB5WCXj8uyQ4ey9Yer1PBvXg+Ql72ydnowT7YKndJskG
+	 WmUxHuRKM7lGCvVt9RbwtHw5WnLaaWlsKhK8UbYEL9C9+AjIak71t3EpW5IpfQR8Iq
+	 t/AtyhAK5IlOX8ZdcwdvkKsU02UOq4gC7B4e4aJQDvVhW0myPY0sc0F+IMnIL0+pwf
+	 BeRh0D5VAKxFA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A8F39253FB;
+	Tue, 21 Jul 2026 19:30:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,90 +37,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] rds: Fix inet6_addr_lst NULL dereference when IPv6
+ is
+ disabled
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178466221813.987340.12217737947871914296.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 19:30:18 +0000
+References: <20260709162723.367523-1-Ilia.Gavrilov@infotecs.ru>
+In-Reply-To: <20260709162723.367523-1-Ilia.Gavrilov@infotecs.ru>
+To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ka-cheong.poon@oracle.com, santosh.shilimkar@oracle.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
---- Patch [1]: [PATCH net] net: sock: prevent integer overflow in sock_reserve_memory() ---
-commit 16cb32b81c740c27028a52ef3c27a62623c808ad
-Author: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Hello:
 
-net: sock: prevent integer overflow in sock_reserve_memory()
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This commit attempts to prevent an integer overflow in sk_forward_alloc by
-computing the new value in u64 and rejecting allocations that exceed
-INT_MAX.
+On Thu, 9 Jul 2026 16:27:54 +0000 you wrote:
+> When booting with the 'ipv6.disable=1' parameter, inet6_addr_lst
+> is never initialized because inet6_init() exits before addrconf_init()
+> is called to initialize it. An attempt to bind an RDS socket to
+> an ipv6 address results in a crash in __ipv6_chk_addr_and_flags()
+> 
+> KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+> RIP: 0010:__ipv6_chk_addr_and_flags+0x1df/0x7e0
+> Call Trace:
+>  <TASK>
+>  ipv6_chk_addr+0x3b/0x50
+>  rds_tcp_laddr_check+0x155/0x3b0 [rds_tcp]
+>  rds_trans_get_preferred+0x15d/0x2d0 [rds]
+>  ? trace_hardirqs_on+0x2d/0x110
+>  rds_bind+0x1433/0x1d60 [rds]
+>  ? rds_remove_bound+0xd50/0xd50 [rds]
+>  ? aa_af_perm+0x250/0x250
+>  ? __might_fault+0xde/0x190
+>  ? __sys_bind+0x1dc/0x210
+>  __sys_bind+0x1dc/0x210
+>  ? __ia32_sys_socketpair+0x100/0x100
+>  ? restore_fpregs_from_fpstate+0x53/0x100
+>  __x64_sys_bind+0x73/0xb0
+>  ? syscall_enter_from_user_mode+0x1c/0x50
+>  do_syscall_64+0x34/0x80
+>  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> RIP: 0033:0x7f47f8269ea9
+>  </TASK>
+> 
+> [...]
 
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 8a59bfaa8096e..2ba95bead1aed 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1042,6 +1042,9 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
->  
->  	pages = sk_mem_pages(bytes);
->  
-> +	if ((u64)sk->sk_forward_alloc + ((u64)pages << PAGE_SHIFT) > INT_MAX)
-> +		return -EINVAL;
-> +
+Here is the summary with links:
+  - [net,v2] rds: Fix inet6_addr_lst NULL dereference when IPv6 is disabled
+    https://git.kernel.org/netdev/net/c/9c805e592a29
 
-[Severity: Medium]
-Does casting sk_forward_alloc to u64 sign-extend negative values?
-
-Since sk_forward_alloc is a signed int and can legitimately be negative
-(e.g., due to over-reclaim), casting it to u64 when negative produces a
-massive value (e.g., -4096 becomes 0xfffffffffffff000).
-
-If a user requests a small reservation such that sk_forward_alloc +
-(pages << PAGE_SHIFT) remains negative, the 64-bit sum remains a large
-unsigned value greater than INT_MAX.
-
-Does this falsely trigger the > INT_MAX check, rejecting valid reservations
-with -EINVAL and causing a functional denial of service for the socket?
-
-
-[Severity: High]
-This is a pre-existing issue, but does checking sk_forward_alloc allow
-a state-change (TOCTOU) bypass?
-
-sk_forward_alloc dynamically decreases when packets are queued on the
-socket, as memory is temporarily moved to sk_rmem_alloc or
-sk_wmem_queued.
-
-Could an attacker reserve memory near INT_MAX, queue packets to reduce
-sk_forward_alloc, and then call SO_RESERVE_MEM again? The temporarily
-reduced sk_forward_alloc allows the check to pass.
-
-When the attacker reads or drops the packets, sk_mem_uncharge()
-unconditionally adds the memory back, overflowing sk_forward_alloc past
-INT_MAX into a negative value.
-
-On socket destruction, this negative value bypasses sk_mem_reclaim(),
-leaving a non-zero balance that triggers a WARN_ON_ONCE kernel panic in
-inet_sock_destruct().
-
-Should this check use the total tracked sk->sk_reserved_mem instead of
-the fluctuating sk_forward_alloc?
-
-
-[Severity: High]
-This is a pre-existing issue, but does sk_forward_alloc modification in
-this function race with UDP receive paths?
-
-sock_reserve_memory() modifies sk_forward_alloc using the non-atomic
-WRITE_ONCE() helper via sk_forward_alloc_add() under lock_sock().
-
-For UDP sockets, receive-side modifications (like udp_rmem_release())
-occur in softirq without holding lock_sock() (using
-sk_receive_queue.lock).
-
-Can an unprivileged user repeatedly call setsockopt(SO_RESERVE_MEM) while
-receiving UDP packets, causing a read-modify-write data race?
-
-Could these lost updates corrupt socket memory accounting, leading to memory
-limit bypasses or triggering panics during socket destruction?
-
->  	/* pre-charge to memcg */
->  	charged = mem_cgroup_sk_charge(sk, pages,
->  				       GFP_KERNEL | __GFP_RETRY_MAYFAIL);
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
