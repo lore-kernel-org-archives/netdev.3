@@ -1,78 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106863655D1;
-	Tue, 21 Jul 2026 11:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC737C906
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 11:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784632838; cv=none; b=OibU8IyOH0s82DbON9UAxr3cxXOBTD7jN9mrgZnXZNhIgyMluuQoKr8l55r2OXO8pTnnYyN/z6ZWuYO6RtujmtENKcNvjGKRds+gIzY+iRc/q9IXKBgh7HhjWxuKL+t6TL+jbWkf5QXMgnJ4z5mQi9UGOqbprySKErpIatXBtqY=
+	t=1784633055; cv=none; b=RCEYXMbnQ+zavLZzCWGCUF9dV1Lo6lUHZyVq1Ta4/r4oKBAIr0jX3SHPEJm6lW3rocFJmJELxUPLADvEdfpl1LR5fBgl6GnFIE5HjQWb9JtKnGxByuLWaILFan3tE6KOchOc9zqmEanPafz4/UHJiles7/41NBxhM3OCtCrQBHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784632838; c=relaxed/simple;
-	bh=S/wevzEoJQvqGIkm2P0X8RL4VLSkcr/3udiT2Zo3tJk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=k8AcddRYwL8a3NxpHg3IMZyWCL0ck6gLAjOc+AmKNdDpahdETKyzfc3GY0Y5YmD+5PFSvO4BVjns+EbuDsy0GjOPXtH/4xXl8CmKaAjtgTa++2kw0lWn9cmxPjp21s3iJd5zxB4YowoROctTe8JWTRMnxHIZh7CKnYbxLRJD0lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lHmieMaF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784633055; c=relaxed/simple;
+	bh=vgYpR9II/x6F/rz8NWDIOzelFwbqtcGrOcKmNIPfS+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XgGy3u5SyUp7JLYLBZl8T3y6/omZ5U0gkHabXseW7KySMtxCR50Afi4vFyUiQInt0I157wvzuNGPSVzKSvdzqyu9T8fgLUzb7Ygm34cuFJ9QQkfz59Tz/NAbMl7xbpaY5HWHm0gwfFpafvx3yfzX0B2zGzi1sW+oJx/qo/EIkRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kxrShw+9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MH9P6MlP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kxrShw+9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MH9P6MlP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lHmieMaF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DAD1F000E9;
-	Tue, 21 Jul 2026 11:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784632836;
-	bh=Wh+HJb9GM14tFokmmCpbW6n5bKMmv4CN3/o1nkQ0M78=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lHmieMaFW/U9TxVbfBLGlatR1bCuYEYMLGosOumbL6fYinNqpMqCfwYr6GILsFkLt
-	 x4Ydh2fwoJ+6lxOMpYLkUBWMGJRYMMWnElPOhXtVb18zldykE3qVw3/ZLFsQMrApRZ
-	 tjcVY24DVC/ovu2xAUtxfjh3e2EYoUNTa3X5nwebxBRBs6A82PRGUNu02fdyO8HJL5
-	 Nys481HF9je7hNIvEj1ClHNDdQBDlDtEo7KOlnA6F/mfwglaGPYEKikxgR60rRskRC
-	 H4rfkHVdHyiP302edm9zyW1zXce1jAlzsaMYQL/hCdiNke/puuxg2YgNsOhRIoP/76
-	 PpFoUwugnmi1g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8C8873924FC0;
-	Tue, 21 Jul 2026 11:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kxrShw+9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MH9P6MlP";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kxrShw+9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MH9P6MlP"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F36523E09;
+	Tue, 21 Jul 2026 11:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784633052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
+	b=kxrShw+9ed9VMyDXXGddNlOek1eyFwJ4tRsIx0VTiYj0Z2TV+JFUABgRxSh7YD6uMjrWOE
+	/qee5hT/LIYH2BH5JIr3VZVITdkTtzLn5Ik9Znn2u7DHOfTn2ISD8jfdwKAIlnZ0TA5EC5
+	tIc6eA8xle2wQnZEmC4v9Re1twI82ng=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784633052;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
+	b=MH9P6MlPReWLuAbe5r88PbPi+qCiEy34M4ZV05wLL1q5S67nLP2y80fpjF0Nkhlg8qSNcH
+	uLJ8Ez90WpEuTrCA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kxrShw+9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MH9P6MlP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784633052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
+	b=kxrShw+9ed9VMyDXXGddNlOek1eyFwJ4tRsIx0VTiYj0Z2TV+JFUABgRxSh7YD6uMjrWOE
+	/qee5hT/LIYH2BH5JIr3VZVITdkTtzLn5Ik9Znn2u7DHOfTn2ISD8jfdwKAIlnZ0TA5EC5
+	tIc6eA8xle2wQnZEmC4v9Re1twI82ng=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784633052;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
+	b=MH9P6MlPReWLuAbe5r88PbPi+qCiEy34M4ZV05wLL1q5S67nLP2y80fpjF0Nkhlg8qSNcH
+	uLJ8Ez90WpEuTrCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B8A6779AA;
+	Tue, 21 Jul 2026 11:24:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DEdZG9tWX2qADQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 21 Jul 2026 11:24:11 +0000
+Message-ID: <1af37032-776b-4e1f-84d2-f69bef3ed75e@suse.de>
+Date: Tue, 21 Jul 2026 13:24:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] wan: wanxl: Only reset hardware after BAR mapping
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178463280640.237147.335286475786801784.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 11:20:06 +0000
-References: <20260708143415.3169358-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260708143415.3169358-1-ruoyuw560@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: khc@pm.waw.pl, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] net: hsr: fix memory leak on slave unregistration
+ by removing synced VLANs
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com,
+ syzbot+456957213f32970c0762@syzkaller.appspotmail.com,
+ Felix Maurer <fmaurer@redhat.com>
+References: <20260721101240.995597-1-edumazet@google.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260721101240.995597-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: F36523E09
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,syzkaller.appspotmail.com,redhat.com];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[456957213f32970c0762];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed,  8 Jul 2026 22:34:15 +0800 you wrote:
-> wanxl_pci_init_one() stores the freshly allocated card in driver data
-> before the PLX BAR is mapped.  Several early probe failures then unwind
-> through wanxl_pci_remove_one(), including failure to allocate the coherent
-> status area or to restore the DMA mask.
+On 7/21/26 12:12 PM, Eric Dumazet wrote:
+> When an HSR master device is brought UP, it auto-adds VLAN 0 via
+> vlan_vid0_add(), which propagates VID 0 to its slave devices (slave A and B).
 > 
-> wanxl_pci_remove_one() unconditionally calls wanxl_reset(), and
-> wanxl_reset() dereferences card->plx.  On those early failures card->plx
-> is still NULL, so the error path can dereference a NULL MMIO pointer.
+> If a slave device is later unregistered while HSR is active (e.g., during
+> netns cleanup or interface destruction), hsr_del_port() is called to
+> detach the slave port from the HSR master. However, hsr_del_port() currently
+> does not delete the VLAN IDs that were synced to the slave device by HSR.
 > 
-> [...]
+> As a result, the slave device retains a refcount on VID 0 (and any other
+> synced VLANs). When the slave device is destroyed, its vlan_info /
+> vlan_vid_info structure remains allocated, leading to a memory leak.
+> 
+> Fix this by calling vlan_vids_del_by_dev(port->dev, master->dev) in
+> hsr_del_port() before unlinking slave A or slave B ports, matching the
+> propagation logic in hsr_ndo_vlan_rx_add_vid() / hsr_ndo_vlan_rx_kill_vid()
+> and the cleanup behavior in bonding and team drivers.
+> 
+> Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
+> Reported-by: syzbot+456957213f32970c0762@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a4cb6ca.57639fcc.86d58.000b.GAE@google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Felix Maurer <fmaurer@redhat.com>
+> Cc: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Here is the summary with links:
-  - [net] wan: wanxl: Only reset hardware after BAR mapping
-    https://git.kernel.org/netdev/net/c/91957b89da99
+Nice catch on Sashiko's feedback, thanks.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
