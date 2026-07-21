@@ -1,127 +1,126 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3FE2DF3EA
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 18:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E49A403E9B
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 18:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784659165; cv=none; b=e4RG7mvmW7//4eQy3bKKCkCCDdqxEKP37/5b5Tqk/PrX3FTMFhdfx/lBKQkIS1rniAbZmwhJTka+373RBCeDWxeZZ0f/QOSuxHLg0uEOct0qQM6NYaj0XdpGCCEd0fumWdYtSLJAaIxvptHUvEWN+EE73inwj9em3TbdccY+U4E=
+	t=1784659238; cv=none; b=Znd7jLE6hn8uBLFfPOFAjJqPSRx44w7rU8+5ztLNBudGTzW9p+r3MIdQpz9bcpdoWOj32thew+HkID9gL6vgpeSeciApV9I+AL0TgG7ULbsPhyS715Y0+/dtTq1aTZqER1GUsm5qwMzPQgVrKQfogGcIhXu9MLQPIjbt3y6wYCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784659165; c=relaxed/simple;
-	bh=YyqUHAQufPap2wIBxW8yQO0iBXCogrSPdJZUjddL2yE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Ca8dkdEZYm2AH71VUF+M/9zTqrneY7YZY6zftAQe6gh57W7+ege44xBE98HbeWn7opc/7Y7Azdx2sChPwfApnucj6xbcsRUYmYsKY4oiNPco6oME7iuSbXMgRcffqaRWvKTZ0W3CXsDBi+7x22wNYUb2pbj/uNTKFtXm4fsKpGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ntIK7684; arc=none smtp.client-ip=74.125.228.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784659238; c=relaxed/simple;
+	bh=bpPNaauH/yOzYK6a9nhtjXkDAHrgKfv4q64NZhpBnIk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MS+ZN5FQXHOQ7MDE3zmb91JRpQ9z9CpcFJhFbhQeC+Pmjl6IPs9+qo9yf+onricJvagwysvyCuvFuL/7/UqVPJ9G1z5l673goFDw7Bf/mEsfavk4szTlMF8TU7zkJMDMTOOhKhSsVgilblbrZy6U9vMlDOAUujSsnuuWXXtJoZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J0h2PeDN; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ntIK7684"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca7a25cd87dso7029210a12.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 11:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784659163; x=1785263963; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=dD0DYUkH4io7g5v9/QnwJ9sas0tI0cyqhrv35uBUJNY=;
-        b=ntIK7684UqUgBSPRZlsCYZhuL8NBr4U9hCECsPEZbSOQg7bqEO9M0n7iBpJEROgLup
-         Fku9KmUKBgwN33KoXWARvF3TRQllhwF6VRNrAw8VLVFWiuzu7wFlDQ0R5ywQWrXpJdIt
-         +/Ev7bHCklEBhcZfqfhIdoaRUlbFGMQjzZIFGaiukt6AtmB7Hb42TSY+FesqKj4GgDQL
-         WJvN5Up7eFPOZ/057gnUnR+aXxwUZii6TAKQEE+0UDGrZ2PeTiVT1fSOZRZLexyKsZMH
-         SiqdWxSPsy3Sf1oejW5Ny4qp9Riu9fGYS3bhkqaGQzMbyxFSS3qa/0K3FwPuJPLSdGAa
-         5eQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784659163; x=1785263963;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dD0DYUkH4io7g5v9/QnwJ9sas0tI0cyqhrv35uBUJNY=;
-        b=Tj08wd0Lx52PKwH/3fFdZRpReipaq6qolGXL/27YhCOv+8BuauK6a8kXx9I8nQwElP
-         iGkpwIwHllai/hZZ5zPaP9zLp9nsnhTm/WQG8BOT3Wl31TCqg+jQJ3k7A9MkzoeS9Cqf
-         uSWJbHMAhtv0bXmqUrN+c0rfzzyhhW7tB3lR4fenGXbmFsu9Ivp6J4xUojqCAjk6zPvA
-         R/RPFgfgCiLQ/gi6OBUIu+JZHPhkfkSq6arx6wdOGGFK/EdsAxUOehAi9xN6Q6EAMckx
-         9PAYtelNchkFsEx4pYsopxUMIi0vijqtf9wX7uMouZnpiEO2n6qpkq3xtb/VIZlz3Z6Q
-         uKOQ==
-X-Gm-Message-State: AOJu0Yx7I/qF/GqlqDYWtPwdN89IcD4Hb+y+Fi1M1NF0pWlro+re9TVJ
-	LhiMentXGQK1uxR0oO2u3NeFFXUu8TrFM85eJU11QwxaUUABKlcrg4ij
-X-Gm-Gg: AR+sD10XjchmOvdFtHLlO6QNgTt0oG0t7mttuPPopjNPSxUwbOuHFNc+m1SYLjZJa40
-	+NEF30BqrygpyRyn1JYw56VkKmN2hwUHW3RUc4/klUXrCasx6DLbcHpRCf/OXWNiwqQsNPVnCuA
-	NBR+fANMigHVZud3/OYA67TEA/11nLGikPTHgxQ8zMH9nlZIDRV8rhbbXwRdFfRIGJn360CB0pm
-	HdSMDJyzN5de7og2PMH+M1MxgaA1ofPMbiE1cr2vr7ULUBsak6R8LLSFeaCOCR9K80Bup7DUufz
-	3HWDJDPkIOdl82rscP5VjYF+fN0TLIZAja2mDN2QezZ2cNQwDoZCy9oVYBeE5zguGiuNKsftZ8t
-	sqLrgvM29smQqKII/PyyHqO3eNxyjVLXLRLpJZbnny0nlMU2nuFeE/guZvjazkPBryutto0I=
-X-Received: by 2002:a05:6a00:9517:b0:848:2f77:e2dc with SMTP id d2e1a72fcca58-84c2952d1ddmr19433753b3a.69.1784659163088;
-        Tue, 21 Jul 2026 11:39:23 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([2401:5a0:1000:10:233::14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17604d76sm125835b3a.61.2026.07.21.11.39.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 11:39:22 -0700 (PDT)
-Date: Wed, 22 Jul 2026 02:39:18 +0800
-From: Coia Prant <coiaprant@gmail.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>
-CC: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Serge Semin <fancer.lancer@gmail.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: pcs: xpcs-plat: fix runtime PM initialization
-User-Agent: K-9 Mail for Android
-In-Reply-To: <c666a262-579c-4e23-9172-c35fc9b3f3c5@bootlin.com>
-References: <20260704214808.1566710-1-coiaprant@gmail.com> <20260720172433.77b83dc7@kernel.org> <7BA9366A-3243-4A46-BA8F-BB170C8AD912@gmail.com> <20260721064910.217a6af7@kernel.org> <c666a262-579c-4e23-9172-c35fc9b3f3c5@bootlin.com>
-Message-ID: <AE3574FD-4B74-411B-9213-1B95EB6BF3F2@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J0h2PeDN"
+Message-ID: <f136bfb9-1756-4668-acc3-68962cdc6069@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784659232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RZ0ot31OHK/yKHYfVophm/uoJcYCC1GLqv4iR7SGhWc=;
+	b=J0h2PeDNrV4mUL/lMSCWB3ozxfOmiFEAutGdpxwvDKiYXaM0yDnwqit3tFvdSpj3K7yQCR
+	btZijJ+cbjKfvXSiWNAiWf6J/zMY0eofH6cWcMIjnaLy/HuAxAWxYgN8LugnTZn4jeDq/5
+	FbNS02otY6qqcsd8SVL9Ud/Pu3VmyeU=
+Date: Tue, 21 Jul 2026 19:40:01 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net] ethtool: Embed FEC hist ranges as buffer in struct
+To: Eric Joyner <eric.joyner@amd.com>, netdev@vger.kernel.org
+Cc: Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Simon Horman <horms@kernel.org>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Brett Creeley <brett.creeley@amd.com>, Breno Leitao <leitao@debian.org>,
+ "Nikhil P. Rao" <nikhil.rao@amd.com>
+References: <20260710230026.47721-1-eric.joyner@amd.com>
+ <45d2be78-4e58-445e-81b2-75dbcd15402f@linux.dev>
+ <303a0166-efd5-48b1-8a52-39780095b7a1@amd.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <303a0166-efd5-48b1-8a52-39780095b7a1@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On July 21, 2026 11:00:23 PM GMT+08:00, Maxime Chevallier <maxime=2Echevall=
-ier@bootlin=2Ecom> wrote:
->
->>> 3=2E Should we add a =2Eremove callback to force suspend the device on
->>>    unbind? Otherwise the clock might remain enabled if the driver is
->>>    removed while active=2E
->>=20
->> Embedded experts would have to chime in on this one=2E AFAIK this is a =
-bit
->> of a gray area=2E Some users may want the link to stay up, eg to allow
->> WoL or avoid link training, maybe?
->
->Avoiding link flaps/training is mostly a concern at boot time if the
->bootloader set everything up beforehand, but I'd say for unbinding,
->this should be OK and would mirror the probe=2E
->
->Maxime
+On 13.07.2026 23:37, Eric Joyner wrote:
+> On 7/11/2026 2:03 PM, Vadim Fedorenko wrote:
+>> Caution: This message originated from an External Source. Use proper caution
+>> when opening attachments, clicking links, or responding.
+>>
+>>
+>> On 11/07/2026 00:00, Eric Joyner wrote:
+>>> When a driver's .get_fec_stats() handler is called and the driver
+>>> supports FEC histogram stats, the driver supplies the histogram bin
+>>> ranges via a pointer.  This pointer is assigned while under the netdev
+>>> ops lock in fec_prepare_data(), but the actual data is only read after
+>>> the lock is released; so this allows the driver to change the ranges
+>>> (e.g. from another .get_fec_stats() call) while the current call chain
+>>> is reading them in fec_fill_reply().
+>>>
+>>> Fix this by embedding a buffer for the driver-supplied ranges in struct
+>>> ethtool_fec_hist instead of using a pointer; this ensures there's an
+>>> ethtool core-owned consistent copy that can be used after the netdev ops
+>>> lock is dropped and later in fec_fill_reply(). While some drivers like
+>>> bnxt use a constant struct for their ranges and won't be affected by
+>>> this issue, others like mlx5 (and eventually ionic) will use a
+>>> dynamically constructed range struct and could potentially run into an
+>>> issue.
+>>
+>> I didn't like the idea of dynamic range, FEC is not changing while the
+>> link is UP, I don't see a reason to dynamically reconstruct histogram
+>> bins every single call. And the histogram itself is stable per HW per
+>> FEC, can be constant pre-defined struct in a driver, like in bnxt.
+>>
+>> But if dynamic allocation is the only option, then yes, we have to
+>> change this ABI.
+> 
+> We can discuss this more.
+> 
+> I think overall drivers aren't going to need to dynamically allocate a range; I
+> mention ionic but at the moment I think there's only going to be two possible
+> FEC ranges; the sixteen bin one for RS(544,514) and I think what should be a
+> reduced size eight bin one for low latency RS-FEC RS(272,258) (unlike the 802.3
+> spec the Ethernet Consortium Spec for LL RS-FEC doesn't talk about a histogram,
+> but FEC math says those parameters can only correct up to 7-bit errors).
+> 
+> So one option could be to have the pointer be required to point to static
+> memory; or possibly a pre-defined histogram range entry in the kernel? I don't
+> see any other drivers currently combining multiple bit-error counts into one bin
+> and I wasn't sure if that's something the mlx5 driver actually uses, too.
+> 
+> OTOH, doing this dynamic range calculation should be computationally pretty
+> cheap overall, and provides flexibility without keeping or adding new
+> concurrency problems (which is an important concern!), so I don't mind the
+> current approach even if it does look wasteful.
 
-Hi Maxime,
+After thinking a bit more, I don't like the idea of copying static constants
+over and over again in cases where we have pre-defined ranges. What about adding
+an array to the pointer, so drivers with dynamic range calculation can fill up
+array per query while others can simply put a static const pointer and don't do
+memcpy?
 
-Thanks for the feedback on the =2Eremove callback =E2=80=94 I'll include i=
-t in
-the next version=2E
+> 
+>>
+>>> Since the kernel API changed here, change the in-tree drivers that
+>>> report FEC histogram stats to copy their ranges instead of just
+>>> supplying a pointer.
+>>>
+>>> Fixes: cc2f08129925 ("ethtool: add FEC bins histogram report")
+>>> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+> 
 
-One more question regarding PM dependency: the current pcs-xpcs-plat
-driver uses runtime PM to manage the CSR clock, but the driver works
-fine without PM only if the platform doesn't have a CSR clock at all=2E
-
-On Rockchip, the CSR clock (PCLK_XPCS) is required for register access,
-and without PM enabled, the clock is never prepared/enabled, so the
-driver simply won't work=2E
-
-That said, I think in practice, almost no one disables CONFIG_PM in
-their kernel builds these days =E2=80=94 it's enabled by default on most
-architectures=2E So forcing the dependency (e=2Eg=2E, `select PM` or
-`depends on PM`) wouldn't really hurt anyone, and it would ensure
-the driver works correctly on platforms that do need the clock=2E
-
-Do you think it's worth adding `select PM` in Kconfig for
-pcs-xpcs-plat, or should we just leave it as-is since PM is almost
-always already enabled anyway?
-
-Thanks,
-Coia
