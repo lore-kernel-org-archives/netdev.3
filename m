@@ -1,154 +1,110 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C649D327BFC
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F57125392A
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651907; cv=none; b=MSgnRT7vixBDqb6FWgiRRYn5StxQFsQf/N7IslgE6kYBdoN88NLeCDZ75EABOJP/fQFrYenQrP95kYaV97Zy/ZBlrrq80Y9Uy71xZlETEE+eeGI/gBpjxlJ8jQ3fQiBMrXBox/OZz7DiDZyDg5YWW0GNjYHDiGdj1PYJEN/a7Uw=
+	t=1784651995; cv=none; b=ZxGHEyRZyof4/R88uUQKqKkw9Q/EsN42lvR9Ke2oJosTTs4/MsqkhO2GQqlZTayt5zfXa9CZD1tMEXe/7R2dQKBA+IUQuiGyPiGgxwuyMfZ7e6z4dUvaTJBI+i3ysDIqJNCb5fdMNALfoxQWiS/2cmJ6W/DVtFf23GbIPc64rk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651907; c=relaxed/simple;
-	bh=IIsg5LNJf5aQ0cLtyQoPoijCSzNNTN3r5SiNIC4aJic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pyQhmmORZMQlDtYEvAXBlnKBrC/7h2Q/Wi2dMwikzhUPSPZMiEmUXeOIBzo9vICL3tgGdnQHYfNPBO1BcJzFoz6Jslq4COYDF/wsdZ7tZ0yHT83PLsSf1PeHlYKHJBOR1FtliZAg/vcY3f8ng5cdEzj3hSDTP9RflCKv9u4Uu18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2FLJO+k; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784651995; c=relaxed/simple;
+	bh=/qjpJGrIfmHCq5Mj7sHf5syvJk05WVinZrublwWpFh0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=G/I+tM0ppvd1D0+B/SrYV31H9ftfxmDXFfj0al15QqjV4SsI4kMAvt+fRv7AxXuQiwjo6CkQSPSj4DFRnwbZFMjKClKoqwUkJ2bcXxNAbDM0w/7Ut2tVptv2RJjDEeMuecWOBq+xzNfwB9AisM6Kb8JWl6ssOBHsggmidbzFaA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YHEYMCgs; arc=none smtp.client-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2FLJO+k"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ceab75934dso122243545ad.2
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:38:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YHEYMCgs"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9308eafb465so1531965385a.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784651905; x=1785256705; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d5KmYNoNui/9hjo/Me1fX33BIrL3ENZ8CEuolPxOI8Y=;
-        b=i2FLJO+kTlfE60kdhQDcgjGae3WJjcOMUCjNdrOS1Tq+xj+cR/KXmgGWllBYXR4RZR
-         3054P+Harm9GIy3UPJ+keKDYqMXwFmUXl8jiC+tlmTV5C/WSAjwxqPr7NxIH7184Q9cI
-         1AyFAXj7qEroXoSGLMNzI5osGkEaJcwfb0HJBDwOnKlnNL4yD4D7zY/DWgSohZeQ0A5a
-         /R+ZmfmiN/7PGgMcuxXjcledjVI8sEzM7A1jswJzsSR4nCqk3W5RUBXg8XADUtVnaPMw
-         nvpk1zZpf5Ou+S7D2brt7gQqi+JgohwTHADMngJADVMPGOIYc7MnSYj8693l2vy96JNL
-         M+FA==
+        d=google.com; s=20251104; t=1784651993; x=1785256793; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8/zfJ9P7MdvLArlXJSKO3GtfybEZAAWoFc+UbZLGEkk=;
+        b=YHEYMCgsu+tR20PSO7m58mdq8DoZzPDudftrg1gIK50Ntgt5MOcw92bK/AgpN8bO8t
+         gGR0O4s1fBUBDDZmfFOiT1AhgHPQCmIb6xO1Auy+qWXwzYCdQOgeHz6jkwe6dxk8X21a
+         GC2FXp53O38gvI7kDIrCQLSqVveFrN8/ilxnrsr8UKu/oh0Y7zPXKettNapCSXY9cE0c
+         6tcFk7KgFQNEeSu55hlyFLDSkDNBlSI/kD2rybGv47MvcUwqkViPM9uCnLRsPWYVSkF3
+         HUAf9TB/pmzAnCZK88E2P1s5cABHkQS07aqBRZ9UCTCG5ipQTFWpAX7xcVHSAGBpFDcQ
+         lA4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784651905; x=1785256705;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=d5KmYNoNui/9hjo/Me1fX33BIrL3ENZ8CEuolPxOI8Y=;
-        b=siPViuAL5HAa/+yVvxPC6YQ9CfxZjB1u/ff9+akfYU5dXdOXvd885EBvdzpE7dKI52
-         QRmMiHFbVkpyKVjPzlW2oQhciGh3XmSlUZQU8c8zj+bGeuOt7ulmx1seTrkQ4VGFwlOn
-         YLA9kcv7Kl5bhDdLkvCYvQZ7X1SA2T2K9jQ9gszTNqN/zMCSUFIoaYdD/T49VEg+ZH1r
-         KMeN58il0tiTX8Si+UQJO1oQOrSRaCzup7HKTNl2/3tQH9m5P6bf3o4KmZV8KjDPNH0X
-         KQX/hpf+pJMnI5GLc9J5oAdO4/0K1BtOdjD3jrPRjzEjJbLQtR50wPLmohVJosFfARzt
-         QdXw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0VAEIPgiju4XQbcDYtvF2k0zXOTyKISRQhmH1hQFIUpsCNxPrP5wSamA2gaIdOf39CamC+FI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5Gte89//upqo5W64LCXCrqqyEH3ky0XHY+ftURLGYEcBAGiUw
-	3EG3BLQCH/pYSFdMXrTnHfK+f5gGCpt1MlwyE+OoHFzWUJeHEdbEspuY
-X-Gm-Gg: AR+sD13hV32r8BiGyCgielXFwd6M8UIQtTAVp5Npv4SuyBZ2RoJTXqPGh/KsZl1mgH0
-	2kVXgr9NnCT6sHhHFIjVpk2jFSiYeWStM+88CuHtP+YxxwImvZrj3wS8Fw7gq5ZeqpwWGJHbywN
-	ukyNvZEwl4ZxmZ3UGl8YbBtv6CxCeMUsDuKBIqrxYoQjn71+yslcTocKgB1D7Wea74oaNALBzzZ
-	md9ZiLGHmtAbiNcomqVxltICKC7S5UYbViLhsuvanHhZPzwZ3/LyeQRVmCZsTe5lR50Xv8LsPIp
-	va5i6j6+wjjV8reaMfs8TiH5uYDhpSXx/QvkJZHjZ//oMewXlaUK1UHjPa2xk6w1UbKz0yZ1AZg
-	ZNULBqje9GZSNKcYApFefT8JLOZdaVo0CDbwRKOj0/ph/fiIrKk01z27VYnINZblXbY+jSlEdhB
-	Q+QFJNRUEWdleeFNnfL5wnuJAMURBew5VngO3cAeX17tkGRyP+528SPEcYWg==
-X-Received: by 2002:a17:902:dad0:b0:2c9:97a8:afe5 with SMTP id d9443c01a7336-2cf349eee08mr204790805ad.40.1784651905156;
-        Tue, 21 Jul 2026 09:38:25 -0700 (PDT)
-Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e07000fsm1053708eec.21.2026.07.21.09.38.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 09:38:24 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: David Heidelberg <david@ixit.cz>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net-next] nfc: digital: fix use-after-free in nfc_digital_unregister_device()
-Date: Tue, 21 Jul 2026 09:36:32 -0700
-Message-ID: <20260721163632.1570651-1-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1784651993; x=1785256793;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8/zfJ9P7MdvLArlXJSKO3GtfybEZAAWoFc+UbZLGEkk=;
+        b=dBLSZN8n+BPBEXEg6fHjy9DEynpgELofBH7Mj3RXnoOYkOaddlVlVb0tE5n6X40FIr
+         5lxWkPWUC477I1nlDUZm+YEAQLNwquWN+1kaDdHwIjQbNdzqrJCYLrKd6I/2/vAIWcKm
+         dpTqGccVSUbmH+CQMaAkv3ZK+y1TTOOpUJXqvLvT+qD0gi3k55LwBZ1ko3vLKeYsRD6L
+         J/27pvF4zdhiUuS7eKLvLAP8q9T0SYU/FAQbr/c5DbhkMyeKmbfJtH9GKWY2VzrZIhgi
+         T87oJrPDB6pPBeXP+E2fYiNpH3ipYr8fO4FFWI7Ali9khL5SlLCvwC3nMLTT4q5GUm/z
+         JsPA==
+X-Forwarded-Encrypted: i=1; AHgh+RruZz9ZAOISUyd4QzETMbYUR9QP2N/CunyAEcESRgeGOASLfLi+VKQQSQZway9B+5HB5AFy2ds=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxA2QknuP6X4p+fHV7BJLPhdbzWRfj5HEnEm/K9mVOvhf9g0hjy
+	KtpesM0axEOwE3no7m6s1ViKRaCfb9oH8oPtVAzRFHA3T0JbIe2unyq0V/fR/gw22BNPNjvjuU9
+	NFOXgkpDSA0kyEw==
+X-Received: from qkkb23.prod.google.com ([2002:a05:620a:1197:b0:915:7e37:5cd])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4049:b0:915:745a:70fe with SMTP id af79cd13be357-930b3f45466mr1986225985a.28.1784651992239;
+ Tue, 21 Jul 2026 09:39:52 -0700 (PDT)
+Date: Tue, 21 Jul 2026 16:39:50 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260721163950.1483019-1-edumazet@google.com>
+Subject: [PATCH net-next] geneve: fix geneve_config leak on
+ register_netdevice() failure
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-nfc_digital_unregister_device() cancels cmd_work and cmd_complete_work
-once each and then frees the command queue.  The two works re-arm each
-other: digital_wq_cmd_complete() ends with schedule_work(&ddev->cmd_work),
-and digital_wq_cmd() hands a command to the driver whose asynchronous
-completion schedules cmd_complete_work.  cancel_work_sync() only waits for
-the instance it cancels; it does not stop the work from being queued again.
-A work re-armed after its cancel_work_sync() therefore runs concurrently
-with the cmd_queue cleanup and dereferences a digital_cmd the cleanup has
-already freed.  digital_wq_cmd() widens the window by dropping cmd_lock
-before using the command it took from the queue, while the cleanup loop
-frees the commands without holding cmd_lock.
+When geneve_configure() allocates a new geneve_config structure via
+geneve_config_alloc() and assigns it to geneve->cfg before calling
+register_netdevice(), if register_netdevice() fails early (for example,
+in dev_get_valid_name() due to an invalid or duplicate interface name),
+register_netdevice() exits without calling dev->priv_destructor.
 
-It is reproducible with the software NFC simulator (CONFIG_NFC_SIM): start
-an NFC-DEP exchange between the two nfcsim devices and unload the module
-while it is running.
+The caller (e.g. rtnl_newlink()) subsequently calls free_netdev(), which
+frees the net_device structure directly via kvfree() because reg_state is
+NETREG_UNINITIALIZED, bypassing dev->priv_destructor (geneve_free_dev()).
+As a result, the newly allocated geneve_config and its per-CPU dst_cache
+are leaked.
 
- BUG: KASAN: slab-use-after-free in digital_wq_cmd (net/nfc/digital_core.c:174)
- Read of size 1 by task kworker/1:5
- Workqueue: events digital_wq_cmd
-  digital_wq_cmd (net/nfc/digital_core.c:174)
-  process_one_work
-  worker_thread
-  kthread
+Fix this by invoking geneve_free_dev(dev) directly on the error path of
+register_netdevice(). Since geneve_free_dev() sets geneve->cfg to NULL,
+this call is fully idempotent and safe even if register_netdevice()
+failed on a later error path that already ran dev->priv_destructor.
 
- Allocated by task 5124:
-  digital_send_cmd (net/nfc/digital_core.c:234)
-  digital_in_send_sdd_req
-  digital_in_recv_sens_res
-  digital_wq_cmd_complete (net/nfc/digital_core.c:134)
-
- Freed by task 4994:
-  kfree
-  nfc_digital_unregister_device (net/nfc/digital_core.c:859)
-  nfcsim_device_free [nfcsim]
-  nfcsim_exit [nfcsim]
-  __do_sys_delete_module
-
-Use disable_work_sync() instead of cancel_work_sync() for the two command
-works.  disable_work_sync() cancels the work and disables it, so any later
-schedule_work() -- whether from the sibling work re-arming it or from the
-driver's completion callback -- becomes a no-op.  Once both works are
-disabled no work can run, and the cleanup loop frees the queue with no work
-able to reach a freed command.
-
-Fixes: 59ee2361c924 ("NFC Digital: Implement driver commands mechanism")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Fixes: 0ba269933f73 ("geneve: convert config to RCU-protected pointer")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/nfc/digital_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/geneve.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
-index 7cb1e6aaae90..6def5132a4a6 100644
---- a/net/nfc/digital_core.c
-+++ b/net/nfc/digital_core.c
-@@ -843,8 +843,8 @@ void nfc_digital_unregister_device(struct nfc_digital_dev *ddev)
- 	mutex_unlock(&ddev->poll_lock);
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 17bd3543d587a9e941737109df82b83023d23711..eb156f33b62751b655178ad4f37d2c66f909ffc7 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -2043,8 +2043,10 @@ static int geneve_configure(struct net *net, struct net_device *dev,
+ 	}
  
- 	cancel_delayed_work_sync(&ddev->poll_work);
--	cancel_work_sync(&ddev->cmd_work);
--	cancel_work_sync(&ddev->cmd_complete_work);
-+	disable_work_sync(&ddev->cmd_work);
-+	disable_work_sync(&ddev->cmd_complete_work);
+ 	err = register_netdevice(dev);
+-	if (err)
++	if (err) {
++		geneve_free_dev(dev);
+ 		return err;
++	}
  
- 	list_for_each_entry_safe(cmd, n, &ddev->cmd_queue, queue) {
- 		list_del(&cmd->queue);
-
-base-commit: d4932951a19a5f1ec93200260b85e1a4c080ff77
+ 	list_add(&geneve->next, &gn->geneve_list);
+ 	return 0;
 -- 
-2.43.0
+2.55.0.229.g6434b31f56-goog
 
