@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED43140683D;
-	Tue, 21 Jul 2026 19:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD5833ADB0;
+	Tue, 21 Jul 2026 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784660701; cv=none; b=hBzc6EJif4DNvBKwi5rHIY/N/8F/TW8rNdSyy+ehVH4funzYHYi8SoXBlBRC3RbWMbZoT9C3WJPVBIiSNqoXvlW1QUd5gH78VUrnvXF1hcjP6KjYppYhmOTByht3Vs+7jjfPpGo75GzYVb1hgkDHUIfEEeeZZ3qE7A7OkRjWIb0=
+	t=1784660848; cv=none; b=pGizuIs+3hc6X60XTfXSrk/wqs4x8mom3ZcGojTDCDBs54vQ1Z6HfggAyQVicxjMol4MHZoWZYfLLj1hwjVw/PyECWQXxRpR7igrgu23LJo164EWh3T7M105galg/Z2KPA1x36zk+X3JWb1c0b8L2IEXvQhk9ulwGQRWYORd988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784660701; c=relaxed/simple;
-	bh=a6HOKdcgjQ+ddk3LFmreXS/wdMI+bVKKMHV/nuDdqKo=;
+	s=arc-20240116; t=1784660848; c=relaxed/simple;
+	bh=+KQg+pZwYE4sqraS5TXh46zoyQVmI13i9tpp4N+2JhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eXjMwsVWyVZLYMz+RiNZpQ/NX0jHfoIawzn+gd9AW7OJlm59ITDP6ptrs7/aifv9upQlHDjUHtnfV3IsfnzTzlqxxkYhj0qqddqTKlG6gibKs0Hom2Gx+HrTODeW2b4btmtZM1FIFGrO6yC8Ya5IHn4yIvleVKfd/9dD5gLo1FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQDnR2IS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=osDq5LSLUXrJW8j/YRg8WwLdtAXbHLiEd3CuAoTPnWWBkosRUXLwdvcfaxSQ/6+POQ8ix/7yDeMQkckxLS4OIzQ+P42IDfa1mpyYLu/JzD17CoF/AkDlumKNAEBqbOISAzOO5w3GG22qK3yHIbbqZbDBImAsiihE7pGUN81gMe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AT2Alvvc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQDnR2IS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777F11F00A3A;
-	Tue, 21 Jul 2026 19:05:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AT2Alvvc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBFE1F000E9;
+	Tue, 21 Jul 2026 19:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784660700;
-	bh=a6HOKdcgjQ+ddk3LFmreXS/wdMI+bVKKMHV/nuDdqKo=;
+	s=k20260515; t=1784660847;
+	bh=zcWQu6JFj0Tmgs6mnau/+2f+mu1XCO65n74ilNsKkRM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UQDnR2ISwd1KINsT1uvC9LKZjBUDN8l7Svp71EcAb+kIWKsAfF7TPBI27pJ2FqI3A
-	 VYkuQKBc/Ud17skq6OHhaZFmmD/MNRIYb/gqw09wTg8LpeLaOw8W9PrSpxNphRkKq+
-	 iJgYvqUdX4gyoKPDZZJaOCYbVVeqTsubMPh3FGkG69Ao2k5Qb1fVnDuK20JoO+hZH9
-	 lUtFlAIfSbnTPsFyg+roDtnLNfoBAfQBTwDtO4Fat4D2TGZki0E31nBrSGUZVXtS4q
-	 AUywFoqUpT8UxW83u7Qb5+2Ygig4EnKyKfjT3iA8vo3ZstrDnUlGXmdpz5iJwF5Cf/
-	 lG1cZN2Gbkwtg==
-Date: Tue, 21 Jul 2026 12:04:59 -0700
+	b=AT2AlvvcAhz6uoW6kWaOvHTaLDIRumenJLIaaoz441E2vob1T5TilK6tY3lGp3ZuA
+	 Gf1ize5zyI/MiGV3Jevxl+/jxB6A+687TlZsI/mi/T+bQERhzjJjvG4xnXQod2Yba5
+	 3JJC/CFYutrypC3IsF+KRqPL6dMdFpslUkj9EuPoaAEVe+J/ASvGt+Qx3W1qUwQNMC
+	 7vGpdouffNEXYhxd//fhUZxXgMiOawFO+xpru1GOfHDVW5mnJlH+mNh8nDEiraYOiD
+	 9KO3qQxv3gd5ml6nwIB58+EMa5H0MFXYi2/TUGJKJKB6BBiLpBmSK+G19IY43huD38
+	 1sX3li+mlbH4A==
+Date: Tue, 21 Jul 2026 12:07:26 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ibrahim Hashimov <security@auditcode.ai>
-Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tipc: cap number of nodes per net namespace
-Message-ID: <20260721120459.17cae182@kernel.org>
-In-Reply-To: <20260714170306.71517-1-security@auditcode.ai>
-References: <GV1P189MB19881AB5829FF8B0B00EF158C6FA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-	<20260714170306.71517-1-security@auditcode.ai>
+To: Manuel Ebner <manuelebner@mailbox.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: net: microchip: fix bracket
+Message-ID: <20260721120726.287f7c81@kernel.org>
+In-Reply-To: <20260711134204.472841-7-manuelebner@mailbox.org>
+References: <20260711134204.472841-7-manuelebner@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,12 +48,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Jul 2026 19:03:06 +0200 Ibrahim Hashimov wrote:
-> That said, the bearer is a trusted-cluster segment by design. If your
-> position is that on-bearer discovery peers are inside the trust
-> boundary, that's fair enough and I'm happy to drop this. I only sent it
-> because neigh bounds the equivalent ARP/ND case, so it seemed worth
-> doing the same here.
+On Sat, 11 Jul 2026 15:42:09 +0200 Manuel Ebner wrote:
+> Remove needless ')'
+> 
+> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+> ---
+> I send this in a seperate patch, because there's a change the maintainers
+> wants a bracked added instead of removed.
+> ---
+>  Documentation/devicetree/bindings/net/microchip,lan95xx.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
+> index b9c394009040..f4d0929616a5 100644
+> --- a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
+> +++ b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
+> @@ -35,7 +35,7 @@ properties:
+>            - usb424,9906   # SMSC9505A USB Ethernet Device (HAL)
+>            - usb424,9907   # SMSC9500 USB Ethernet Device (Alternate ID)
+>            - usb424,9908   # SMSC9500A USB Ethernet Device (Alternate ID)
+> -          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device  ID)
+> +          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device ID
 
-Any thoughts Tung? Does it make sense to select a safe upper bound of
-some kind?
+This looks like someone left the ID) at the end of a copied line.
+The whole "  ID)" should be deleted AFAICT.
+-- 
+pw-bot: cr
