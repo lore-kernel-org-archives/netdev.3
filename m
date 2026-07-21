@@ -1,248 +1,147 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94244418F5
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 22:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173A343F4C0;
+	Tue, 21 Jul 2026 22:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784673005; cv=none; b=cCdf2CinZch2nND4SHEV/uIlwxRD6KF2PVFBqSKgrEwBPjAI7sSlMaC133oLEAtcwJyjRDMo3mkSyShj4b8ApD7uEAaEuBLAPQb+MKvKkvKPe71oJbq6WeaZxbSiTkJEu31avY1VQWDW4uFsTMF2h586Vnr0x7+dcMylbOIgiuE=
+	t=1784673050; cv=none; b=qY0eRNDFTdn9nt/tyup6cK0cSzZIk9pg02KKOo1BRAG5Ms+BMzp448Gm1OwxFuBMAinToR1tKFgGn76hcyKvMU1bwJ7YXFz7+kPmMXnIVo1yPQkaxwGtpNM7hDon4hVMTWxUMHGwTIHhAkbG6OkUUouSmd8etbq4RqAwZQQ+ewk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784673005; c=relaxed/simple;
-	bh=uZRZ2VN44Q5XzL/F2XgrEb/jhTB2g8aztDio6kTbBac=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YnHDkLbjXmy9P/FKAQeVYleitHpU43vjtG4adLXzepmPkzcZ+8IrEtoVd2S3beeZ7fwZOdI1tqe1WYwtAK5+icCn0RitroowBk+Wx6TwlCgMILyaJS8BkExG46wmuOp1n+ksD8mZIMCvIvEewfB8K8a4Ac2qpGNnuMwQ8l+LFkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OqcWIT40; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784673050; c=relaxed/simple;
+	bh=ATKi2XAXyV80dXc2EWq6ISvVM3/3F/VDwQXheYbZ9AQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=u1yyYxzy792bKXCTlExsQXK7nIIhllx9Q421f5qyscSMjmyHRIuv7Hj8FLLGpbKp+muRY0k/WZ50b3ElON9bPCW+OH1qpMvlPX/vOwGl+YdstNWbTKK80sZPcQPd4jo6Krj8w2Otf1NgOsvGFa/PjLnT/d93vpZNJ05V7VOaLH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DtGpsbMI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OqcWIT40"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so108515305ad.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 15:30:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784673003; x=1785277803; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SACM/ZkSy0Q+E/W2IAydC2E/hnHraYOT4Rhvc9t0KKg=;
-        b=OqcWIT40tDSudduOZs8F03lSCMn6UZ//ZYcJrqY9XoHSTtGJb//4Up/A2FTboQfQKV
-         nXmFjhfSVdKN9ToWdqiLo/qQ7piYtpdCdvCdJI/Ryc44j86vpIB/7LLwrB1QR9/vmhrF
-         gJs69+4A0wiBqq6giCoobd4PeYgm/DbCwBANs/GlQA/BEfbGGonRQmD2i0bdljlE3rtq
-         thDhy2N8sufPrwaAIWsGhFDCT0+d1zYJtjaMDTYytZLrWPc2XEhpJcbPillmjoRSL83+
-         Ya3lsxnLa9OUXp+oiftesrAaXRJElF6TfrO7Dx7RWT1xMgPReBIY8DYjBv0lqLutOMx5
-         V4vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784673003; x=1785277803;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SACM/ZkSy0Q+E/W2IAydC2E/hnHraYOT4Rhvc9t0KKg=;
-        b=CMNYMAQMFvgr0rkrUuIzwTZZVmyObOpNgoEeftRtgDlniCuJRD1WP9AKsgVHZXNVas
-         3DtdjMJrjT+yBW5vQS1D0YgqiiuomG0mKgP2KXtXBTbPjYv3c6RbXkFu7YQjm4ijiveg
-         6AumKVJwRjxQEg5SF5zqZiAODvuALgAFuFpcCGs4RVz4UQfQLbABZisrr2y84MJMka8H
-         51D/8mEluNJv/yvQMWhNhiOj6rxpK8y3aYIvgOZoqyh3lrK9HFD9lMDyQmld/8ak2yu5
-         MRzXgcl5vaqdj7yP/8sHCZANT6/Jqj8v2xgNjQQJK96Qq7l5w5jXXXWsgYBeTcYcYMZK
-         r+JA==
-X-Gm-Message-State: AOJu0YxljM1PNk1Kv3q8gFTuTESEOGXbnplwaIEM7bYdgGe0Zk9k4dY1
-	JcAGznjhyvTBwDKaNZoNXdJVTKkqr+HEbFfqKpaTWTq1yrJ+91YKVFwk
-X-Gm-Gg: AR+sD11K4K8doFpRBWUnGPtQXE/xTt+ZupUlnWVEOUE4EsXHeFZbipTuVo4M5ce1rwr
-	FBH5DiGAcGW+JqsAt/wXTJxWVbR0bQemoiUgknhVa3NOHnaAQYjA9Ee17a43BrzKCHTTUmI+LPl
-	yuprLAu1FnUjxD9lXwOJkZGrjYQtzNbShlhBr6GdBO38aSZNoYg5WKjLG3SgbLRenZVM7gikeLS
-	zttPWGb7jaCeu47QKVbkDltCIJTrTZXGiHhpvgyKrZZ91sYG38kKjMcJ8G2UH1fe5f4Fsp625Rg
-	qFDcu2QrtC4PvEW7Ol6aRsSc4VtnC6N5JQaAQjuNL5FkcRQGCIJNU65ctdopub9VYhhx2II/9Ia
-	rr4SsjOidhnKPMVXI1gH12Yhf/UwPN1mkzIAhUNImVX6wmj+Ue/elZ67rNUBMi+KZTKoBY2GJ2i
-	fbrc5oOw0/29KXzyA=
-X-Received: by 2002:a17:903:298c:b0:2ca:4b7a:4a02 with SMTP id d9443c01a7336-2cf34a7bfe4mr218688335ad.43.1784673003421;
-        Tue, 21 Jul 2026 15:30:03 -0700 (PDT)
-Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efde5cfsm3787685ad.31.2026.07.21.15.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 15:30:03 -0700 (PDT)
-From: Jack Ma <jack4it@gmail.com>
-Date: Tue, 21 Jul 2026 22:29:52 +0000
-Subject: [PATCH net-next v3 3/3] selftests: net: add coverage for fdb
- nexthop dst port
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DtGpsbMI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67EC1F000E9;
+	Tue, 21 Jul 2026 22:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784673048;
+	bh=n0ky1DYEFYEQIfECSmhtvkQAZsT3axmRZ/FY1Oisxv8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=DtGpsbMInwZaKFrcKnmjY3BR/jkGLaa8T4/I+Y3YLwngGGgLwovmu7FQmfRoZGLWe
+	 e8W2dMpmJzKf8v9Sc70V6XSymIY0MwmaNFEBGrREc5/nRZgDrM5EnYPEo5mf1qm+4u
+	 Jp/7MQAXMsznIY0loTrqvPzKCzw5y5gemX2eC8bggJj63uOB9swEu3zdTER2J3DJf2
+	 nJ6XK1iEFCi29f1gqQXhUONyPer9hWNZWIr2XN6+UgoLA6d/8v3kk5BMefYIwFAuKx
+	 4kEqhud2ywy9qxIY2rKn2GAyjrR7vD3TvvEm2INVadz63wd9dbvAUhjh515B3kWBqb
+	 yu1KbJPltS1Mg==
+Date: Tue, 21 Jul 2026 17:30:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Zhenzhong Duan <zhenzhong.duan@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	GOTO Masanori <gotom@debian.or.jp>,
+	YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+	Jens Taprogge <jens.taprogge@taprogge.org>,
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	industrypack-devel@lists.sourceforge.net, netdev@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v2 0/7] pci: fix UAF and TOCTOU related to dynamic ID
+Message-ID: <20260721223047.GA674520@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-b4-vxlan-fdb-port-v3-3-9aa0a543a78a@gmail.com>
-References: <20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com>
-In-Reply-To: <20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Jack Ma <jack4it@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784672999; l=6796;
- i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
- bh=uZRZ2VN44Q5XzL/F2XgrEb/jhTB2g8aztDio6kTbBac=;
- b=T+jPlHObpnglpfTY7pQTXNgn13M0Do7klKkxPmWXYTvfkPm/6VhFmmazfpfpWHkmg6H/Xpfx/
- 8CXZ7ADb1ziCllIrvcE3ycKiuFPJqv6nhGFMcr62tLZPIIZlMcbjVzo
-X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
- pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630-pci_id_fix-v2-0-b834a98c0af2@garyguo.net>
 
-Extend the existing fdb nexthop group tests with cases for the new
-per-nexthop VXLAN destination port (NHA_FDB_PORT).
+On Tue, Jun 30, 2026 at 12:09:00PM +0100, Gary Guo wrote:
+> While working on improving the Rust abstractions [1], Sashiko reported that
+> an existing UAF issue related to dynamic ID, which I find to be genuine.
+> When taking a look at the code I also find a TOCTOU issue where the
+> existence check of dynamic ID happens in a separate critical section as the
+> actual insertion. This series fix both issues.
+> 
+> There are two exported functions "pci_match_id" and "pci_add_dynid" which I
+> have to tweak to implement this cleanly; I created separate "do_xxx"
+> functions to keep the existing APIs because they all have multiple users.
+> 
+> There're a few existing users which stores their pci_device_id argument in
+> probe callback. This is a bad pattern because nothing except driver_data
+> inside pci_device_id is what they want. Actual ID information can be
+> retrieved from pci_dev instead. I've used the following coccinelle script
+> to find the cases where the argument is stored and converted them to stop
+> storing pci_device_id.
+> 
+> @store@
+> identifier fn;
+> identifier id;
+> expression E;
+> parameter list[n] ps;
+> @@
+>   fn(ps, struct pci_device_id *id, ...)
+>   {
+>     ...
+> *   E = id
+>     ...
+>   }
+> 
+> @cast@
+> identifier fn;
+> identifier id;
+> parameter list[n] ps;
+> @@
+>   fn(ps, struct pci_device_id *id, ...)
+>   {
+>     ...
+> *   (void *)id
+>     ...
+>   }
+> 
+> @in_struct@
+> identifier s, fld;
+> @@
+>   struct s {
+>     ...
+> *   struct pci_device_id *fld;
+>     ...
+>   };
+> 
+> Link: https://lore.kernel.org/all/20260618-id_info-v1-0-96af1e559ef9@garyguo.net/ [1]
+> Link: https://lore.kernel.org/all/20260619170503.518F61F00A3A@smtp.kernel.org/ [2]
+> 
+> ---
+> Changes in v2:
+> - Fix users which store pci_device_id.
+> - Clarify in probe documentation about the lifetime of pci_device_id
+>   parameter.
+> - Dynamic ID conflict check now ignores override_only. (Sashiko)
+> - Link to v1: https://patch.msgid.link/20260626-pci_id_fix-v1-0-a35c803f1b95@garyguo.net
+> 
+> ---
+> Gary Guo (7):
+>       ata: don't keep pci_device_id
+>       nsp32: don't keep pci_device_id
+>       ipack: tpci200: don't keep pci_device_id
+>       mlxsw: don't keep pci_device_id
+>       pci: make pci_match_one_device match on ID instead of device
+>       pci: fix dyn_id add TOCTOU
+>       pci: fix UAF when probe runs concurrent to dyn ID removal
 
-In fib_nexthops.sh, ipv4_fdb_grp_fcnal() and ipv6_fdb_grp_fcnal() now
-check that a port is accepted on an fdb nexthop that has a gateway and
-echoed back on dump, that it is rejected without a gateway and rejected
-when zero, that a group may hold legs that differ only in UDP port, and
-that a portless fdb nexthop omits the attribute.  The cases SKIP when
-iproute2 lacks the "port" keyword.
+Run "git log --oneline drivers/pci" and match style (capitalize "PCI:"
+and first word of subject).
 
-In test_vxlan_nh.sh, basic_tx_common() gains a second fdb nexthop group
-whose nexthop carries a destination port that differs from the VXLAN
-device default, plus a flower filter keyed on that port, to confirm the
-per-nexthop port is used on the wire.
+At least in the PCI patch commit logs and comments, add "()" after
+function names.
 
-Signed-off-by: Jack Ma <jack4it@gmail.com>
----
- tools/testing/selftests/net/fib_nexthops.sh  | 59 ++++++++++++++++++++++++++++
- tools/testing/selftests/net/test_vxlan_nh.sh | 31 +++++++++++++++
- 2 files changed, 90 insertions(+)
-
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index ac868a731694..1ce4f45fa651 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -432,6 +432,15 @@ check_nexthop_fdb_support()
- 	fi
- }
- 
-+check_nexthop_fdb_port_support()
-+{
-+	$IP nexthop help 2>&1 | grep -q "fdb \[ port"
-+	if [ $? -ne 0 ]; then
-+		echo "SKIP: iproute2 too old, missing fdb nexthop port support"
-+		return $ksft_skip
-+	fi
-+}
-+
- check_nexthop_res_support()
- {
- 	$IP nexthop help 2>&1 | grep -q resilient
-@@ -514,6 +523,31 @@ ipv6_fdb_grp_fcnal()
- 	run_cmd "$IP nexthop replace id 72 via 2001:db8:91::2 fdb"
- 	log_test $? 2 "Replace non-FDB nexthop to FDB nexthop while in a group"
- 
-+	# NHA_FDB_PORT: optional per-nexthop VXLAN destination UDP port,
-+	# letting an fdb nexthop group balance a flow across legs that share
-+	# an underlay IP but listen on different UDP ports.
-+	if check_nexthop_fdb_port_support; then
-+		run_cmd "$IP nexthop add id 80 via 2001:db8:91::2 fdb port 4790"
-+		check_nexthop "id 80" "id 80 via 2001:db8:91::2 scope link fdb port 4790"
-+		log_test $? 0 "Fdb nexthop with port"
-+
-+		run_cmd "$IP nexthop add id 81 fdb port 4790"
-+		log_test $? 2 "Fdb nexthop with port but no gateway"
-+
-+		run_cmd "$IP nexthop add id 81 via 2001:db8:91::2 fdb port 0"
-+		log_test $? 2 "Fdb nexthop with port 0"
-+
-+		run_cmd "$IP nexthop add id 82 via 2001:db8:91::2 fdb port 4789"
-+		run_cmd "$IP nexthop add id 83 via 2001:db8:91::3 fdb port 5789"
-+		run_cmd "$IP nexthop add id 106 group 82/83 fdb"
-+		check_nexthop "id 106" "id 106 group 82/83 fdb"
-+		log_test $? 0 "Fdb nexthop group with legs differing in port"
-+
-+		run_cmd "$IP nexthop add id 84 via 2001:db8:91::2 fdb"
-+		check_nexthop "id 84" "id 84 via 2001:db8:91::2 scope link fdb"
-+		log_test $? 0 "Fdb nexthop without port omits port"
-+	fi
-+
- 	run_cmd "$IP link add name vx10 type vxlan id 1010 local 2001:db8:91::9 remote 2001:db8:91::10 dstport 4789 nolearning noudpcsum tos inherit ttl 100"
- 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:13 dev vx10 nhid 102 self"
- 	log_test $? 0 "Fdb mac add with nexthop group"
-@@ -614,6 +648,31 @@ ipv4_fdb_grp_fcnal()
- 	run_cmd "$IP nexthop replace id 20 via 172.16.1.2 fdb"
- 	log_test $? 2 "Replace non-FDB nexthop to FDB nexthop while in a group"
- 
-+	# NHA_FDB_PORT: optional per-nexthop VXLAN destination UDP port,
-+	# letting an fdb nexthop group balance a flow across legs that share
-+	# an underlay IP but listen on different UDP ports.
-+	if check_nexthop_fdb_port_support; then
-+		run_cmd "$IP nexthop add id 30 via 172.16.1.2 fdb port 4790"
-+		check_nexthop "id 30" "id 30 via 172.16.1.2 scope link fdb port 4790"
-+		log_test $? 0 "Fdb nexthop with port"
-+
-+		run_cmd "$IP nexthop add id 31 fdb port 4790"
-+		log_test $? 2 "Fdb nexthop with port but no gateway"
-+
-+		run_cmd "$IP nexthop add id 31 via 172.16.1.2 fdb port 0"
-+		log_test $? 2 "Fdb nexthop with port 0"
-+
-+		run_cmd "$IP nexthop add id 32 via 172.16.1.2 fdb port 4789"
-+		run_cmd "$IP nexthop add id 33 via 172.16.1.3 fdb port 5789"
-+		run_cmd "$IP nexthop add id 105 group 32/33 fdb"
-+		check_nexthop "id 105" "id 105 group 32/33 fdb"
-+		log_test $? 0 "Fdb nexthop group with legs differing in port"
-+
-+		run_cmd "$IP nexthop add id 34 via 172.16.1.2 fdb"
-+		check_nexthop "id 34" "id 34 via 172.16.1.2 scope link fdb"
-+		log_test $? 0 "Fdb nexthop without port omits port"
-+	fi
-+
- 	run_cmd "$IP link add name vx10 type vxlan id 1010 local 10.0.0.1 remote 10.0.0.2 dstport 4789 nolearning noudpcsum tos inherit ttl 100"
- 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:13 dev vx10 nhid 102 self"
- 	log_test $? 0 "Fdb mac add with nexthop group"
-diff --git a/tools/testing/selftests/net/test_vxlan_nh.sh b/tools/testing/selftests/net/test_vxlan_nh.sh
-index 20f3369f776b..34a24a4f95bf 100755
---- a/tools/testing/selftests/net/test_vxlan_nh.sh
-+++ b/tools/testing/selftests/net/test_vxlan_nh.sh
-@@ -56,6 +56,16 @@ tc_stats_get()
- 	tc_rule_handle_stats_get "dev dummy1 egress" 101 ".packets" "-n $ns1"
- }
- 
-+nh_stats_get_port()
-+{
-+	ip -n "$ns1" -s -j nexthop show id 20 | jq ".[][\"group_stats\"][][\"packets\"]"
-+}
-+
-+tc_stats_get_port()
-+{
-+	tc_rule_handle_stats_get "dev dummy1 egress" 102 ".packets" "-n $ns1"
-+}
-+
- basic_tx_common()
- {
- 	local af_str=$1; shift
-@@ -90,6 +100,27 @@ basic_tx_common()
- 	busywait "$BUSYWAIT_TIMEOUT" until_counter_is "== 1" tc_stats_get > /dev/null
- 	check_err $? "tc filter stats did not increase"
- 
-+	# Add a second FDB nexthop group whose nexthop carries a per-nexthop
-+	# destination port (NHA_FDB_PORT) that differs from the VXLAN device
-+	# default. Matching outer traffic must egress with that port, so a
-+	# separate flower filter keyed on the new port catches it.
-+	if ip nexthop help 2>&1 | grep -q "fdb \[ port"; then
-+		run_cmd "tc -n $ns1 filter add dev dummy1 egress proto $proto pref 1 handle 102 flower ip_proto udp dst_ip $remote_addr dst_port 4790 action pass"
-+
-+		run_cmd "ip -n $ns1 nexthop add id 2 via $remote_addr fdb port 4790"
-+		run_cmd "ip -n $ns1 nexthop add id 20 group 2 fdb"
-+
-+		run_cmd "bridge -n $ns1 fdb add 00:11:22:33:44:66 dev vx0 self static nhid 20"
-+
-+		run_cmd "ip netns exec $ns1 mausezahn vx0 -a own -b 00:11:22:33:44:66 -c 1 -q"
-+
-+		busywait "$BUSYWAIT_TIMEOUT" until_counter_is "== 1" nh_stats_get_port > /dev/null
-+		check_err $? "FDB nexthop group stats did not increase (with port)"
-+
-+		busywait "$BUSYWAIT_TIMEOUT" until_counter_is "== 1" tc_stats_get_port > /dev/null
-+		check_err $? "tc filter stats did not increase (with port)"
-+	fi
-+
- 	log_test "VXLAN FDB nexthop: $af_str basic Tx"
- }
- 
-
--- 
-2.43.0
-
+s/id/ID/ throughout (it's currently inconsistent).
+s/pci/PCI/ throughout (ditto)
