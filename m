@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EAB46DFFC;
-	Tue, 21 Jul 2026 16:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFBA46DFFC;
+	Tue, 21 Jul 2026 16:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651008; cv=none; b=Ai1NNN5BuI+IamIPMLWLFO2AUCO4Zd5N75VRtOWwWH27zOGHLIa4aJlw9qSfoGqO8vVzPNGNgP50y1LQvTYZDmk6oLruntRYXUkvH8wQ9FA/Z/t0d4h1jJ5CxKGPQoLn+AWxbXNbv4dWs6NFuA1zr9ohaMHUV0Ih7B6DYgt18Lk=
+	t=1784651048; cv=none; b=J7IifE1PhlBaRlhoT2st6DRuDwJaVgMhrKOvUYhUOi4a0xiHubJHnAt3yiQ5neKmPthO2+kmdR4sINYjNtjwuaP+7MokBRYJPKLw2O1noxLjg/I4bi3OlSkkS0e2+FEv7tkfT0uhIrLU72xzH/orTrmgElobCKc0CCKr/Q/KA60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651008; c=relaxed/simple;
-	bh=Wsz8ilwWzdYrUhL+4ksROHyGwpcyo7lgbJeBIMxyyVM=;
+	s=arc-20240116; t=1784651048; c=relaxed/simple;
+	bh=pkC/EPtC6dmaa8Iy9cYbPWRO3F0g43wCfR/BxDR56WU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oR6w11E0T9NIiAQWRYfrq61RBK7O2YUvmVwT2h/8PfDrR0UeyprGhVHiXDZRJF/hqJXxWOoujtj1oyXuVud5q/dkHhW6E+AXVfzNtN10FZcGPdFcWRmHAqIKVZ8QL4L9wwc6BW5/lO4oA6+H8fukOVzGFurjXplBgfbBOPmfmWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZReO5y9J; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=mX2zlYoUiAkKGy+f32HsHg3OZASsROmc5ihUFEROrPi4lJEmOMyOwV19bEvVj6TEFnhShcwtt8pKFcPkxLK6Ev4gylKf4k0bdkH1546/2vVlwpeJdC92XMbgUgD1upDutq9iBBWjxfyw0isvE77AT7/oDooUVao89+m4zlWYTeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWL1LxLu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZReO5y9J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FB61F000E9;
-	Tue, 21 Jul 2026 16:23:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWL1LxLu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26E1F00A3A;
+	Tue, 21 Jul 2026 16:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784651007;
-	bh=Wsz8ilwWzdYrUhL+4ksROHyGwpcyo7lgbJeBIMxyyVM=;
+	s=k20260515; t=1784651047;
+	bh=L40TZbrm85Gv/POqF8y05yduPM9W3eoBoNRB+CSuKkw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZReO5y9JY/EcFNHqGu9F89tg8D67ik1UeFRgk2xllPoxJKDA10BH1+yJ9AzNx6SXv
-	 srvwrIxMC7xiZPeRJE1LsrX0AukcY0LC39+dGq7zp7HcWmkcaivFasdvIG15HeHbxR
-	 V9NudI+qj+F50rVmo1QGtfi+RagUPhr4DqBWvk71BIEg9AO5v1neKwmLXFaLuERgbD
-	 1SidNEkNh7xXCJjGDXqw5LyLX1Eq0R3IZ7oWWF3u7WR8DHOAC0JjMN9bLmYd3ekuDP
-	 cBoqYkdUUVIKkAvBMe9uhHLWuMCZBA7ldRHNpbrLaisYqPxLRuMuiBkdjhrvN7WSZ7
-	 fd53zsvpNjtRA==
-Date: Tue, 21 Jul 2026 09:23:26 -0700
+	b=gWL1LxLu/+0jYZavld98GNjHJCXVKFyq8jP6Fn9S9OSJk1y2WyZYTeC/6STzlnJ4d
+	 RX3X4n12CUDyEsUR0cCV5oPexEpeAZSuZuf30Ub6UrVCZW7HYXJAgEer8DT0fj49q8
+	 T1Jrtj6CGNtKQHZmcYvgWeDRXfYaG8sKAsSSt87Gu5jkHLjNIbhskEsJw/G1X88F8e
+	 ZiFxHwlkpdQb8DOQLEfwUdLm7g9uNWXRvpST42SdbyvHnDiX6O684V5EOiwJrFwi3K
+	 rgTC08cAfZL8TwTMIjylG3Dj4YdDFTWT9RR7iXc+WuXlnz3ZoUngGMN8U/TezsI3YO
+	 NrMwiGyx3wNwQ==
+Date: Tue, 21 Jul 2026 09:24:06 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Oliver Neukum <oneukum@suse.com>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  pabeni@redhat.com, manuelebner@mailbox.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 net-next 1/9] net: usb: move updating filter and
- status from cdc drivers to usbnet
-Message-ID: <20260721092326.4ffa30dc@kernel.org>
-In-Reply-To: <20260714114429.1073434-1-oneukum@suse.com>
+Subject: Re: [PATCHv3 net-next 6/9] net: usb: move exported symbols from
+ cdc_ether to usbnet
+Message-ID: <20260721092406.37ea770c@kernel.org>
+In-Reply-To: <20260714114429.1073434-6-oneukum@suse.com>
 References: <20260714114429.1073434-1-oneukum@suse.com>
+	<20260714114429.1073434-6-oneukum@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,14 +47,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Jul 2026 13:44:21 +0200 Oliver Neukum wrote:
-> These helpers are used by multiple drivers and do not depend
-> on the rest. For example rndis_host will also need cdc_ether.
-> Leaving them in a cdc driver means that additional drivers are loaded
-> just as a library, not to support hardware by themselves.
+On Tue, 14 Jul 2026 13:44:26 +0200 Oliver Neukum wrote:
+> --- a/include/linux/usb/usbnet.h
+> +++ b/include/linux/usb/usbnet.h
+> @@ -16,6 +16,11 @@
+>  #include <linux/usb.h>
+>  #include <linux/spinlock.h>
+>  
+> +static const u8 mbm_guid[16] = {
+> +	0xa3, 0x17, 0xa8, 0x8b, 0x04, 0x5e, 0x4f, 0x01,
+> +	0xa6, 0x07, 0xc0, 0xff, 0xcb, 0x7e, 0x39, 0x2a,
+> +};
+> +
+>  struct cdc_state {
+>  	struct usb_cdc_header_desc      *header;
+>  	struct usb_cdc_union_desc       *u;
+> @@ -304,4 +309,16 @@ extern void usbnet_status_stop(struct usbnet *dev);
+>  
+>  extern void usbnet_update_max_qlen(struct usbnet *dev);
+>  
+> +/* We need to override usbnet_*_link_ksettings in bind() */
+> +static const struct ethtool_ops cdc_ether_ethtool_ops = {
+> +	.get_link		= usbnet_get_link,
+> +	.nway_reset		= usbnet_nway_reset,
+> +	.get_drvinfo		= usbnet_get_drvinfo,
+> +	.get_msglevel		= usbnet_get_msglevel,
+> +	.set_msglevel		= usbnet_set_msglevel,
+> +	.get_ts_info		= ethtool_op_get_ts_info,
+> +	.get_link_ksettings	= usbnet_get_link_ksettings_internal,
+> +	.set_link_ksettings	= NULL,
+> +};
 
-checkpatch
-
-ERROR: trailing whitespace
-#169: FILE: drivers/net/usb/usbnet.c:2316:
-+^I^I/* we cannot assume the device is in sync with us*/ $
+spews a ton of defined but not used warnings
