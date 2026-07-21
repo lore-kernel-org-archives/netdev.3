@@ -1,69 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045723E95A0;
-	Tue, 21 Jul 2026 00:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6303E92BB;
+	Tue, 21 Jul 2026 00:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784594369; cv=none; b=HI1bp9J225U4wMWuJoNkCPAYP7rpiIAR4O+c5KGnvkhqrCtn6SCgqJpfGvz2EKOJEuhPC3RHyrrkKBa32Tp9ZCYZOn/35buys2k/2XwPSf3j9Qwh72h5wwUrbgXSutpSG/be5vY1Kt6E16poaSmm3pBKbLuXBYhoTMLdQNhWCms=
+	t=1784594383; cv=none; b=T5SeEZCSbIzDW77VwsA8WQ8du8Pw6IuWQguNUn0X2eWBQ2n0Adf+g6jkdJDGcSrHuzCS/lIJmF7DLjQ8QNrqItQCUrni0wHMyvCKv4c/W60P2DPuovn2ZHI3U72dzCXy2PQ7MTuXdWXljA1NqM/PYyn0UycoB5z/XwSn3+7eiLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784594369; c=relaxed/simple;
-	bh=xplnZIzfishlzyA4FPPfaGsQ4wjjS1a8iBqmxxR5QUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BtBhNSlpDqv2r43IUrkqVlv/wZsiQ+jvGm/ZNlk8AxHV3J1HdI7Fjh0EF4OUo3pJQCEO7EmZ9ktr5zsiehmMW9+VxeLrVwuTzCh+NRuMeCUkwg222p4zGJjzAnouipPft7tjPThWDpS0XOqq/10Yh8Pl1qV+NLm421lAbC5QIvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTED1Rah; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784594383; c=relaxed/simple;
+	bh=rrqiU9aNnX/sfiVLWEBvmepPhSM8FzUicLf7lZPW5sA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s2Ds1MshW+rKtHO0Obt/xQt/o3Syc7DuNxA7F7k8cRjAW/Jw5HxMTVfVw8wJCZsncEH4VKeYQ1vNXKNQA4H2mGcMsSKJUdzjZX61znEW+VyMYLu35EpCJukug1zgBBbZ7c/RdlHF+7HGd6YlNr2vhWonS8/kkOIXzvXO6/JgrY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fCT2cKty; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTED1Rah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028B61F000E9;
-	Tue, 21 Jul 2026 00:39:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784594368;
-	bh=xplnZIzfishlzyA4FPPfaGsQ4wjjS1a8iBqmxxR5QUI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HTED1RahDd2rGHu8Umo4BDRbQHQhJJ/1I/++kispKdTlq8QR3nhSd3ja2zvu1830Q
-	 yi7GnqqT5T9TLSK/tD3JsBk89uBArIbG1B/FtIpZ2VTnbP9Lnw+voK9zEyXESAq78A
-	 0vhcp80dPjPczWDYiA9nbGYvd4BCsPtrYdtotMBS9XqAVYlYP2vL06ulEngTCm9nX/
-	 hhX61X4eD33Juoec29/1EAS8sORibScnQt1ANimLLE7sN+bKFdbh/oMRIYa+kC6Sne
-	 hSV6MpAJo+lMshxow/o9FoUmuJZpm2HeoxR50AjnsfPp5CWPfCORbxnUNo/84RvI6K
-	 3/5x9IkNfUUKA==
-Date: Mon, 20 Jul 2026 17:39:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Kuniyuki Iwashima <kuniyu@google.com>, Marc
- Kleine-Budde <mkl@pengutronix.de>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Neal Cardwell <ncardwell@google.com>, Oliver
- Hartkopp <socketcan@hartkopp.net>, Paolo Abeni <pabeni@redhat.com>, Remi
- Denis-Courmont <courmisch@gmail.com>, Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Xin Long <lucien.xin@gmail.com>, Petr
- Mladek <pmladek@suse.com>, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <thomas.weissschuh@linutronix.de>, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH net-next] net: Convert %pK back to %p
-Message-ID: <20260720173926.766b2ddd@kernel.org>
-In-Reply-To: <20260706073824.xixrLxoD@linutronix.de>
-References: <20260706073824.xixrLxoD@linutronix.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fCT2cKty"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1CSkd1TSKu5JCz6BkVBLXlO8GJdhBnnjUKfmzFm6Rjo=; b=fCT2cKtyZSmrLbQJwl0quLDz4K
+	mbzneRcAfsrLdlsiYC3UNxkZYsv3tWj2XYkc0R44yJeJyb+SEk7HiAgimdtvVCBtgShFfKv+7w5aZ
+	Eg+if4EeduR6gQGXJ0F/fLOolhFCZ9NWGrd/2TNFmCXaUIZxIaPixwLGDGcwjTQAkEOQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wlyW7-00DLo9-0Z; Tue, 21 Jul 2026 02:39:27 +0200
+Date: Tue, 21 Jul 2026 02:39:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
+Message-ID: <6fa4cb27-20f8-4425-95c8-202d7c7f010a@lunn.ch>
+References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
+ <ae82997f-537e-4a2d-abce-d163fcf9d868@lunn.ch>
+ <6ac12388-60de-45aa-a8d0-62fcfaf7bea2@linux.dev>
+ <1e640dcb-43ce-4a3b-a74a-ed8e48706b86@lunn.ch>
+ <d4f606b9-d793-47c1-8c91-9c9da0e68b4a@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d4f606b9-d793-47c1-8c91-9c9da0e68b4a@linux.dev>
 
-On Mon, 6 Jul 2026 09:38:24 +0200 Sebastian Andrzej Siewior wrote:
-> This is a revert of commit 71338aa7d050c ("net: convert %p usage to
-> %pK") which is from 2011. Back then the default behaviour for %p was to
-> print the pointer. The %pK modifier was introduced to be able to control
-> the behaviour of specific pointer output without changing the behaviour
-> of %p for everyone. It was dedicated to avoid leaking pointers via
-> /proc.
-> There was also the idea to remove the check from formatting the string
-> and move to the open callback (of the /proc file) with some helpers but
-> this did not happen.
+> looks like it won't work now. we have to create helpers in phy to fix it.
+> I can work on it, but I don't have such HW combination to test. Do you have
+> some HW to test this combination?
 
-The netdev patch queue has overflown.
-If these patches are still relevant you'll have to repost them.
+I don't. You should ask Richard Cochran. He added this code.
+
+  Andrew
