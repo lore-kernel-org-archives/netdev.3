@@ -1,105 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C47C369D74;
-	Tue, 21 Jul 2026 13:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9150F377EA5;
+	Tue, 21 Jul 2026 13:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784641859; cv=none; b=kg1Nk5601/MtXxDCpXjOVwGrKeKZstTD3ArXOkQuZXA2ijqhx6MLioep52cFwQEdmsSoFjWXodTwgRlsK0yFCz3UVIBFFSSIjF19gDi7gelF8WtgwdbK8Ej+8l7O+UC7XkCahLZSZ9ncFnq0snKcU0x6/S33N1qRVy8V99BiGfQ=
+	t=1784642058; cv=none; b=oPqd44AyPj7A1NM60+0nqe8d4qHs8F2RSKeVVQM27Ulh5Q3mDZH6GyfgZRlyRxZnnw86tNBAlTK6cJIx9Cq58hCG6cLWTkicuTsNiyjVaYHPfRBsUpv3PxTLdPM1mKlGDr0ls+gS9riM3dzQjb4CUowQ6t7xktt0wlLFbw2DsCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784641859; c=relaxed/simple;
-	bh=J8G6Y7sMAm2Bfx3daJI65rV5YxrFj8fuSBsz6vRjiRg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uq6oAqSqjnGOtoxxQqZvLFc89ZhXacoETJr5nUgY0u68R/Pl0tMlyYhrwZ9ylx/7v0MLrmvfkne60jkOWOgzXRH0zuOTvesF9n2Sc4aFcrB/NGpUWKd5ycGPxgEW6nw152W8BeNI5jKHZB1DZyjsW51ViqoEV0PRfIyWkIl4Gq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiJhwPvN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784642058; c=relaxed/simple;
+	bh=veLGk4CcAAcJSmgOuAs5+j7FiC8KGBsfI6txWBX99s0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LZXdKUaESXkr5JmaGQS827wyVDa1Hu44wMyd7TtRnMUhRdB5oQ5qU3fPyHt8lIITp1Eq2wVH9qdgC/UGzZXp9F43wjUpwbE1DvQa2ZqNjLNTilHz1xxF2ItF+JsH2kPCs4ZH0luBPibf07cNH3FM2D8h2hrcihaR1kChOFKTzwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OL/zFHx1; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiJhwPvN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39A61F000E9;
-	Tue, 21 Jul 2026 13:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784641857;
-	bh=XMsV2RHX+b+350X4sElblljKrpETk4dW9a+/EmEks1k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CiJhwPvNcLKVAyHFeFR++fBeVuA/OwQSeE2WQB3vPBdRRRKAXL24MXSfeuS7u41Uq
-	 lbnrv1BomMo4DCSMI9JLraDwQz954vGMZapj8Tgt+d2F+M+ibA1YWZ7eEhjCewtmPo
-	 7BGjo16PGLyL97ARLnm6HLU2RkhmZNZiRD/UMCHulhkGWTqyeBfaFmPVzo11qfabfu
-	 RAxgAt5iey+pA8dWsETrJKtBWlJYrSC7ZSXEQrjksSsQsr9GSpckD8GEaFX1/TO3V9
-	 xEqs0BYeNpwma2OKepKOcJv/HmzpklZtXIbtw/5Yguj4ApN+mZpDP7bKK7fEcvokFK
-	 BG3tqIm8FPxyQ==
-From: Simon Horman <horms@kernel.org>
-To: equinox@diac24.net
-Cc: Simon Horman <horms@kernel.org>,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	idosch@nvidia.com,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	fmancera@suse.de,
-	lorenzo@google.com,
-	maze@google.com,
-	prohr@google.com,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	furry13@gmail.com
-Subject: Re: [PATCH net-next 8/9] selftests: net: RFC6724 rule 5.5 tests
-Date: Tue, 21 Jul 2026 14:50:51 +0100
-Message-ID: <20260721135051.388459-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260714094030.136317-9-equinox@diac24.net>
-References: <20260714094030.136317-9-equinox@diac24.net>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OL/zFHx1"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LDgewT1072675;
+	Tue, 21 Jul 2026 13:54:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FeTWme
+	EbhBkr4kRlTPXGcf8yx9t/qPxZA1IN/+Jp2ko=; b=OL/zFHx1bzifRSqUKKy8TQ
+	Uq1OeVYqXlU78ZU0V0M6oriI86EARsx4+eoQkIwAfPRxbo/X+/KF8XsvNSs4tpbl
+	rsOxUjZLs4+Oei3Z50+b8VvSd4mNRJsNvvcCuvy6xQo8M0t1Tsq26Lpj8WFPympx
+	rmrokWqq+iPr1osJn5wzM+kVohEREnj3hFYlqsVijcL/RT6f+7ZSB0BFWyJGTt6/
+	4X0dD4jaOBwm9nu3dItZbXDCFp5QS/QtP8529sLDd1rbHVuDkIhNe9ta3gr5D6dM
+	5slwCsZRTxEzWCQWAy2fm1ca1DRqlJH4Nbg4eG239KM2EfxsGZM2jyL45lOPKHFw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78g4ex7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 13:54:11 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66LDo58E008560;
+	Tue, 21 Jul 2026 13:54:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgpgya7qp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 13:54:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66LDs5NS44892664
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Jul 2026 13:54:05 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7EAD520043;
+	Tue, 21 Jul 2026 13:54:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4206220040;
+	Tue, 21 Jul 2026 13:54:05 +0000 (GMT)
+Received: from [9.224.94.95] (unknown [9.224.94.95])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Jul 2026 13:54:05 +0000 (GMT)
+Message-ID: <fff72695-88b5-4ba5-b1f4-f70a2b02ed1b@linux.ibm.com>
+Date: Tue, 21 Jul 2026 15:54:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/af_iucv: fix NULL deref in
+ afiucv_hs_callback_syn()
+To: Hidayath Khan <hidayath@linux.ibm.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: horms@kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, twinkler@linux.ibm.com,
+        heiko.carstens@de.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com
+References: <20260709191732.124092-1-hidayath@linux.ibm.com>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260709191732.124092-1-hidayath@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX3Id7GbH30hQK
+ 0rq7EbrBKaXUGRjuQ0cFYF7ddgWV3T2ejmRLRRkCICV0YhZ7vKsquh/pr1gqxsI7cKeeGShAKDH
+ pjOzEJRqhtf18DW813GzgkncoT6FYgILk4mEkdFOKBlrZxpR5UMr5AuOFGGPin5Pl6+h04HQqZb
+ ju8nbU/p+dE8locA6hr6cOGnYWavN5Ch1AP1dH6x8V39t2j0NYgk6e+KGo1F2h8bqNOfdrCaSAF
+ R+QJTtVrf1GWhwexOZoVXkVbiniiemcQ+tDGsszwD2cjck8syRUzeQ7hmPZabY5lSQ9m2CY1SvD
+ 6fX4hc2GeS6qQo8H5p761PgloxnYqGrv9I30gmi048qMf5LYwhRT0YB7/E5hMMFkONFraKOOl8/
+ rM3zKK9ZANjtV8JKefFt3+Zo07dNFZjz8mAuJEYJRq9of5zQVnbmBUb+W0DJ7kgYTI0kL/z9a4f
+ PxhJMPBi/3e/LWfMeLg==
+X-Proofpoint-GUID: hmV0od4ylTZNIsUsOE6oKtSOssaRWbM_
+X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a5f7a03 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=Pk9XwYpVuUtOZicstfYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX1ujsAeykVfZ7
+ WpxcQyAHYaR4iXTRBs1Qq+6bhQF9zd6jkJeLUU5fIG89GhhbNIIXzoIurfjql+culcbet4dWx+t
+ 9MOQIX3A06PlXiFKDt1zhA72cTQbPeI=
+X-Proofpoint-ORIG-GUID: Ku8r_xh8Tg1xYe3gED7H1XErBqnQPKLJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-21_03,2026-07-20_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607210145
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-https://sashiko.dev/#/patchset/20260714094030.136317-2-equinox@diac24.net?part=8
----
---- Patch [8]: [PATCH net-next 8/9] selftests: net: RFC6724 rule 5.5 tests ---
-commit ae975bc04160e9173acb7759f9db7580aa0ca14e
-Author: David 'equinox' Lamparter <equinox@diac24.net>
 
-selftests: net: RFC6724 rule 5.5 tests
 
-This commit introduces a new Python-based test script to verify IPv6 source
-address selection logic, focusing on RFC6724 rule 5.5. It also enables
-CONFIG_IPV6_SUBTREES in the net selftests config and wires up the script in
-the Makefile.
+On 09.07.26 21:17, Hidayath Khan wrote:
+> afiucv_hs_callback_syn() allocates the child socket with GFP_ATOMIC.
+> If the allocation fails, nsk is NULL.
+> 
+> The connection-refused path is entered when the listen state check
+> fails, the accept backlog is full, or nsk is NULL. The code
+> unconditionally calls iucv_sock_kill(nsk) in that path.
+> 
+> iucv_sock_kill() does not accept a NULL socket pointer and immediately
+> dereferences sk via sock_flag(sk, SOCK_ZAPPED). When nsk is NULL,
+> calling iucv_sock_kill(nsk) results in a NULL pointer dereference.
+> 
+> Only call iucv_sock_kill() when a child socket was successfully
+> allocated.
+> 
+> Fixes: 3881ac441f64 ("af_iucv: add HiperSockets transport")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+> Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+> ---
+>  net/iucv/af_iucv.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index fed240b453bd..f5b1ec44b6ae 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+> @@ -1872,7 +1872,8 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
+>  		afiucv_swap_src_dest(skb);
+>  		trans_hdr->flags = AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_FIN;
+>  		err = dev_queue_xmit(skb);
+> -		iucv_sock_kill(nsk);
+> +		if (nsk)
+> +			iucv_sock_kill(nsk);
+>  		bh_unlock_sock(sk);
+>  		goto out;
+>  	}
+> 
+> base-commit: 262b2eac463d880a664cf92af1107b4f9d84ad37
 
-> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-> index 708d960ae07d5..c07d2aebad695 100644
-> --- a/tools/testing/selftests/net/Makefile
-> +++ b/tools/testing/selftests/net/Makefile
-> @@ -53,6 +53,7 @@ TEST_PROGS := \
->  	ipv6_flowlabel.sh \
->  	ipv6_force_forwarding.sh \
->  	ipv6_route_update_soft_lockup.sh \
-> +	ipv6_saddr_rfc6724rule5p5.py \
->  	ipvtap_test.sh \
 
-[ ... ]
+Gentle ping to netdev maintainers:
+Did this one get lost in the overflow?
+It is all green in patchwork. Is there something you need us to do?
+Should we re-send it?
+I don't see this as urgent or especially dangerous.
 
-> diff --git a/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py b/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py
-> new file mode 100644
-
-[Severity: Medium]
-Since ipv6_saddr_rfc6724rule5p5.py is added to TEST_PROGS in the Makefile,
-the kselftest framework expects it to be directly executable. However, it is
-being created with mode 100644 instead of 100755. 
-
-Will this cause the test runner to skip the script or fail to execute it
-during automated testing?
-
-> index 0000000000000..682b39ba991da
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py
-> @@ -0,0 +1,231 @@
-> +#!/usr/bin/env python3
+Kind regards
+Alexandra
