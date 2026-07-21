@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0105470123
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 19:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880535DA40;
+	Tue, 21 Jul 2026 19:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784662847; cv=none; b=q12iJCc9zNXriGnmoXP3aYi7Vbsfpu7y7r6R6XaY+7ssrWkVzHlSQ7vmkyC8mD6noD96bmR8HiVjFG9cO4kO/vYdq9bQqMREacSR+uafpvooIgXE+E/cX5X9PngKQSC/N53pxEFO4VgtlZXQ026g6T6o/TxhnKh+YiPRzScWpGU=
+	t=1784662856; cv=none; b=GAi6iSuWEtPIa9YyJWwI3ftFupA/+ZshcsFDSE2Pptl26KuktmQvSM6T/bMZssMx7bkmmToOwSZbwzOcjpnvOnJBC8sE4JjcJ1+W6kHyfqH+Ex9Lo0uS4vWAntMF57rTP+u5YDLghNq+/wcQgOoZaBRdol5iGZxNGCgJNqG17eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784662847; c=relaxed/simple;
-	bh=sznzWvADSxv5gT3bdNf+J5HkQ99FMZVie8Ud8XW/aM4=;
+	s=arc-20240116; t=1784662856; c=relaxed/simple;
+	bh=mLndIzFzABmlklm5FdH4epA9skLmDxTmhuz2UM1/aAk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cHqz8qhjro3SyUhFgQNcOr6BSM2Yjfu3aVN8IJoUknrB6bUIsAcXWIkin/GetOX6XhgRoXk7EX0MF27+EO19w57OgRIE1NRXPfCprLHSDAmAspVo95aZG9bf9ozZqYb0GboBnC0VRbpWuyoHGkaLV9uFcpsHAswhuAg1VXVO00k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLzzehx9; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VRvt0Wkw8U9XQ0lCUXrisSBpjdEKh5PQj910+kjOllefSumHHTGxTwJmHxH6SUA9JI9lZoiH3XzqFNJBJzHIdjk9Md7Bvq9gaPr1IWyRnvE/9BXAhUKPgZAcDjm8oBM3B8xtyYx/B9NhlI0Pt7wZ3TiI0S3JgXjMfVMeSd/qJIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezzXYzWY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLzzehx9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8901F000E9;
-	Tue, 21 Jul 2026 19:40:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezzXYzWY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDBA1F000E9;
+	Tue, 21 Jul 2026 19:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784662846;
-	bh=V2NZbmYY/LRF+mQs7I/ehwqFeBVsl2fSZE/PaML5xXI=;
+	s=k20260515; t=1784662855;
+	bh=osUbJg5zacfOql4e5w3uR0b08xBhV45dDVnEgTWUGdE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LLzzehx9Wkti++EdX96xSLuhHlvvc4W/9NfrZ7cF8nqkpehgUuEXJ111L8kGeBzj/
-	 7cXD03/qsnMjs8jxX/tjK5HBatlmLJF0qvJriLGUZTl9SWlOde6QSN08uBEvT1g3W1
-	 /l8DfgEGfbBH3wuPPUY4UdZJ/1v2v35rGbZ2vAbcjw8T/ljxq+tsMAT1Y0mep8SApc
-	 1L6Egszk4x5hcZblTwEp3mXudrrCt+2Vd0mWXmwC8oT635fk+JMN5Vtnhc3fr047gJ
-	 yvXwOi1XKTlGChDH2tStl8Zz8ZTGDnAHpxMK0mj9dkLveNVKXN8m/zTpzySxvl8Fzo
-	 jK44hyZieAmpg==
+	b=ezzXYzWY8cPuBi1rf9oA/zwKRvNwOIzTpnTMrf9bL+SLDOvbJjn1WQCpeK2X/fNZ1
+	 snU1iWALahPLCdd7mpBsRDFrbd1ukYtipkSGeb5cL7FjmXtCyrGmWOFCKVrkbfaP1/
+	 g2G0hXrbSVWBQPCE/3shiuVzxVlR/9vfsvvyd0O4uYZteenmDduQfycLT/tzTMGsgC
+	 TramDRU8/yFlAR3q734EIZLZaa5a9Aoy41EcxBYnEpcW+ZJPsqOlqSKxSAwXMaXpWS
+	 v9maxsl/ANk1Z+zmHwcwYFv7jRdZhJ+/EePRT9eNMOdSu+vG1zQqBFg/lZDRzg74aY
+	 /BgsWtRMoCtcg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A0339253FD;
-	Tue, 21 Jul 2026 19:40:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B9739253FD;
+	Tue, 21 Jul 2026 19:40:26 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,34 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] mailmap: fix wrong canonical name for mgr@kernel.org
+Subject: Re: [PATCH net-next v2 0/3] align IPv4 teardown with IPv6 and fix
+ driver
+ regressions
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178466281588.1001510.16225654709028602176.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 19:40:15 +0000
-References: <20260713-mailmap-v1-1-cb40979cb190@kernel.org>
-In-Reply-To: <20260713-mailmap-v1-1-cb40979cb190@kernel.org>
-To: Michael Grzeschik <mgr@kernel.org>
-Cc: netdev@vger.kernel.org, kuba@kernel.org
+ <178466282488.1001510.7257007307370291814.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 19:40:24 +0000
+References: <20260711005405.2861680-1-yuyanghuang@google.com>
+In-Reply-To: <20260711005405.2861680-1-yuyanghuang@google.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: davem@davemloft.net, andrew+netdev@lunn.ch, dsahern@kernel.org,
+ enachman@marvell.com, edumazet@google.com, idosch@nvidia.com,
+ kuba@kernel.org, johannes@sipsolutions.net, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 13 Jul 2026 00:51:03 +0200 you wrote:
-> After picking up some pending patches for the kernel to work on, I
-> realized my name in the mailmap file somehow got mixed up. When
-> switching to my kernel.org Address some time ago, I had never the
-> intention to use a scrambled variant of Polish and German used for my
-> first name to be found in this file. However, so here we are. Lets fix
-> it for good.
+On Sat, 11 Jul 2026 09:54:01 +0900 you wrote:
+> This series aligns the IPv4 address teardown sequence with IPv6 by clearing
+> dev->ip_ptr early in inetdev_destroy() before freeing the multicast list and
+> individual IP addresses. This prevents RCU readers from accessing a partially
+> destroyed in_device structure.
+> 
+> However, clearing dev->ip_ptr early causes __in_dev_get_rtnl() to return NULL
+> during the notifier loop in inetdev_destroy(). This causes regressions in
+> some drivers (prestera and mac80211) that use this lookup helper in their
+> inetaddr notifier callbacks.
 > 
 > [...]
 
 Here is the summary with links:
-  - mailmap: fix wrong canonical name for mgr@kernel.org
-    https://git.kernel.org/netdev/net/c/defd52c1eab2
+  - [net-next,v2,1/3] net: prestera: ignore duplicate RIF destruction events
+    https://git.kernel.org/netdev/net-next/c/3cbbc9fa3338
+  - [net-next,v2,2/3] wifi: mac80211: use ifa_dev from event argument
+    https://git.kernel.org/netdev/net-next/c/e5b14e9ae82b
+  - [net-next,v2,3/3] net: ipv4: clear dev->ip_ptr before destroying inetdev
+    https://git.kernel.org/netdev/net-next/c/aa22336b76b7
 
 You are awesome, thank you!
 -- 
