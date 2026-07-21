@@ -1,72 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43C3E008A;
-	Tue, 21 Jul 2026 17:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1571F3D56
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 17:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784653637; cv=none; b=MGnZfdHamaX6lbChn3enIP1kb4HwMx7JzccTzMwVY55EdqFo8JiX0EQi8JB+YILWx+0Ui9ymD4BkXsElp2+m2W29a7ms6xvlchX7cicLj6UCVqrTKGDVUckV+MQmrYC9cKAicOC2zwCbl26ezEfJ/qeLKWcBWg7blXhzNlZR8UI=
+	t=1784653701; cv=none; b=J/7zp0pVQuPPJ5DqJAAIBO5MIeY2o8VGQLjIYHeBhA4bnRc6j9j8LGkmR/WZmulqB8vBPTr+vpYJVPg6SMM5swuFFVFUu30ERZqwRjW/G4K6H4PyZwuT8B3eYKxLBrXAImkGoXotHsyMw1K3SljHPtaRFb4qOFM+8OIPfX3SNSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784653637; c=relaxed/simple;
-	bh=4rZPySlm1kJx2jgOID9EdUExj2LM9FU2gvnkJtA8SN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J+/WL8ewqva5mw2LNaCl1EDxmbRn5V0kxX6xwoP9X4YQnUEbMiky18+OPzNwnUZMzEpAy7L1leKywbG18+u/PuPrSWxdd1ptY1fjBE0nGYAVXrc4manmDDM1MYmiLDHeT+SW7Hg4xif04KxcxiYhA67tF0wfdVomMYXvzXr/K7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWRj5Vad; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784653701; c=relaxed/simple;
+	bh=mVMWIWJnrBJufKkviFN2SwdHevpvpeFyKIUvsgpQLgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUgEksDUkYFT9V+XqzHdF1/SgyIHMdVOBczzOaVhu7LtSai+LgPPZsq4UHgrItvJqem4o1RzhDWQQxrnhj6+lEh5NLVMtvPEL7sL4kJY+JNJW/2GmgD/bysYc4TfqsRivv0xNOHkKXhiwHm2XlPI/kU8l9wdbCFfBKUphHo7gGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OT5ka03H; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWRj5Vad"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5371F000E9;
-	Tue, 21 Jul 2026 17:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784653636;
-	bh=No86Rgbsfe8g6CBup7wiU+il6SjDU6UqnELCDaKqTuc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=oWRj5VadivhKeCptOTEc5fBXR2+XHQra9EBMUrkjH0MyiXOqHUnabiWlcW8BkulnW
-	 OpAUtPRQZ+o/fXj+mJy+qBfmcPGAC+e0CbldIGD7Tub64UofhtKQ5P+6bvGdO7wof0
-	 yUM5oA2ulQWdoc1rI1AwWa86C3q5t0IKdPbAb2usbvOa8hPH9fqwEBVpgPKOTMBpzl
-	 cfLeQxH5zJn80gaCz/1cSfn4WdF9QwzSg8y15bNrvx1uuHwgPLPZPgdQY/Mm1RD8wo
-	 mR5fcRruLYTC1Vn3IV8VKefJwAFPB7OTWuzqAMPezyplhXLAnRamQ9vIGbxfZLNKOU
-	 fiPK/EiT5OcKA==
-Date: Tue, 21 Jul 2026 10:07:15 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Tim Gebauer <tim.gebauer@tu-dortmund.de>, Brett
- Sheffield <brett@librecast.net>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] tun/tap & vhost-net: make qdisc backpressure
- opt-in via IFF_BACKPRESSURE
-Message-ID: <20260721100715.5b43412d@kernel.org>
-In-Reply-To: <20260721105853-mutt-send-email-mst@kernel.org>
-References: <20260709095511.168235-1-simon.schippers@tu-dortmund.de>
-	<20260714092506-mutt-send-email-mst@kernel.org>
-	<5016ae84-7049-4a5f-91c9-ba0047b06ee3@tu-dortmund.de>
-	<5089fc5e-2fb8-41fb-9aab-42b22cc2c201@tu-dortmund.de>
-	<20260721105853-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OT5ka03H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784653699; x=1816189699;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mVMWIWJnrBJufKkviFN2SwdHevpvpeFyKIUvsgpQLgU=;
+  b=OT5ka03Hj4FpbByDGX+i+ohQC8nN0IQqqYCw1TXhz+HLx+oY/wLJ0CTi
+   NyNY5nUqYetr1xYUTD0e4lfas3ow3rQqPVLdrT38zW5vnVV2/e+hT1gky
+   5l0QA4Tb09PF3dNHbGlbwmrGt4NgZCrWawSbfUbIVSMT9XnyXMHIjE2Fz
+   nBoqHEdhoK8uDPhO5r52vdZjRCMtKLH3ELBFLWeRPpJtx1A8x/BghQm2z
+   2BBtWdNFHcBcjcdzYs6zbehTQVulXcFp2pcZOvoNMZHHbpA/KWEAhuvSB
+   yTo/sYvQ8jPCooeQYDIZjd4Hp5FdyukbV0GVP3DpPRGG4ftxVF+D/5Xho
+   w==;
+X-CSE-ConnectionGUID: xDfpbQJrSPO7hVxuFoEuOw==
+X-CSE-MsgGUID: 8u6X4jo+Qt+SZ05YlGE2Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="108052101"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="108052101"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 10:08:19 -0700
+X-CSE-ConnectionGUID: uZ/sfGZES5yTsDELOKMzAw==
+X-CSE-MsgGUID: H9ufHB3dR5qdCLemR5XmcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="261382897"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 10:08:14 -0700
+Date: Tue, 21 Jul 2026 19:08:11 +0200
+From: Raag Jadav <raag.jadav@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org, aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com, rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com, kuba@kernel.org,
+	simona.vetter@ffwll.ch, airlied@gmail.com, pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com, ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com, ravi.kishore.koppuravuri@intel.com,
+	maarten.lankhorst@linux.intel.com, mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>
+Subject: Re: [PATCH v5 2/3] drm/xe/xe_ras: Report correctable error events to
+ userspace
+Message-ID: <al-neyeoG873l1xX@black.igk.intel.com>
+References: <20260720082208.2648279-5-riana.tauro@intel.com>
+ <20260720082208.2648279-7-riana.tauro@intel.com>
+ <al8v2STXTiMhp5C5@black.igk.intel.com>
+ <0e842368-3bbf-436e-839d-cc7fec29b0cb@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0e842368-3bbf-436e-839d-cc7fec29b0cb@intel.com>
 
-On Tue, 21 Jul 2026 10:59:52 -0400 Michael S. Tsirkin wrote:
-> > > I prefer applying it, but you maintainers must decide that.
+On Tue, Jul 21, 2026 at 06:52:51PM +0530, Tauro, Riana wrote:
+> On 21-07-2026 14:07, Raag Jadav wrote:
+> > On Mon, Jul 20, 2026 at 01:52:11PM +0530, Riana Tauro wrote:
+> > > When an interrupt is received indicating that error counter has crossed
+> > > its threshold, read the current counter value and deliver a drm_ras error
+> > > event to userspace for each affected component.
+> > > 
+> > > To avoid sending duplicate events when the same component appears multiple
+> > > times in the response. Send the error-event once per component.
+> > ...
 > > 
-> > Hi,
-> > just a gentle ping.
-> > Has there been any decision on this patch?
+> > > +void xe_drm_ras_event(struct xe_device *xe, u8 component, u8 severity, u32 value)
+> > > +{
+> > > +	struct xe_drm_ras *ras = &xe->ras;
+> > > +	struct xe_drm_ras_counter *info;
+> > > +	struct drm_ras_node *node;
+> > > +	int ret;
+> > > +
+> > > +	/* Event is supported only if drm_ras is enabled */
+> > > +	if (!xe->info.has_drm_ras)
+> > > +		return;
+> > > +
+> > > +	if (component >= DRM_XE_RAS_ERR_COMP_MAX) {
+> > IIUC this is error_id and should be validated against first/last counter
+> > range in drm_ras layer (similar to registration code).
 > 
-> Hi netdev maintainers. Given there's a perf regression otherwise,
-> we should either take this or revert the original and reapply
-> in next.
+> This should be done before because we are accessing the nodes here.
+> The nodes anyway won't be available in xe_drm_ras if not registered with
+> drm_ras.
 
-Revert, please. We were AFK and are now working thru a backlog
-of 1k patches. The new IFF_* flag needs scrutiny we can't afford
-at present.
+Yes. We get the node from severity which we already validate here, but
+error_counter_range is the property of the node and unrelated to xe.
+Even if you prefer it here, these checks must be in core functions to
+make sure they are not abused.
+
+> > > +		drm_warn(&xe->drm, "unsupported component %u\n", component);
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	if (severity >= DRM_XE_RAS_ERR_SEV_MAX) {
+> > > +		drm_warn(&xe->drm, "unsupported severity %u\n", severity);
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	node = &ras->node[severity];
+> > > +	info = ras->info[severity];
+> > > +
+> > > +	if (!info || !info[component].name)
+> > > +		return;
+> > > +
+> > > +	ret = drm_ras_nl_error_event(node, component, info[component].name, value);
+> > > +	if (ret)
+> > > +		drm_err_ratelimited(&xe->drm, "drm_ras error-event failed: %d for %s %s\n", ret,
+> > > +				    info[component].name, error_severity[severity]);
+> > > +}
+> > ...
+> > 
+> > > +static void ras_send_error_event(struct xe_device *xe, u8 severity, u8 component)
+> > > +{
+> > > +	struct xe_ras_error_class counter = {0};
+> > > +	u8 drm_severity, drm_component;
+> > > +	u32 value;
+> > > +	int ret;
+> > > +
+> > > +	counter.common.severity = severity;
+> > > +	counter.common.component = component;
+> > > +
+> > > +	ret = get_counter(xe, &counter, &value);
+> > > +	if (ret)
+> > > +		return;
+> > > +
+> > > +	drm_severity = xe_to_drm_ras_severity(severity);
+> > > +	drm_component = xe_to_drm_ras_component(component);
+> > > +
+> > > +	xe_drm_ras_event(xe, drm_component, drm_severity, value);
+> > > +}
+> > This entire function can be dropped. See below.
+> 
+> We don't need to drop function. It's cleaner to have it in the function
+> than repeating it twice.
+
+I thought we'd lay the groundwork for cper which'll also need get_counter()
+in the same path, but upto you.
+
+Raag
