@@ -1,68 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592F35F19D
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C85328CF6F;
+	Tue, 21 Jul 2026 13:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784640344; cv=none; b=FENyadIv1OSJOKRnQi0W7ZmAb6BNuCbujTjJSwKcIMGTOTTsOducNM22ey4MNeDKs1FYtDUUgGl/nLnWll9777kUdOveQ+xWtCfreHwODpx5XW80TZhtuWjxmgvG2ND1zLwUJwcnrzPBzqwDMSVfoJC1p7u+ddXmqm8nRuohnHM=
+	t=1784640461; cv=none; b=WNVPa/obZYW3kjxwRStnuEXYabkDISST4AkLH2cI2Lw7B5mvGLMuYRRr1QnnE3lMb0RhWkKodlZUl1QT2RP6/gevJVELDsl9V3hHvy1EfTn7nfyE9XQgea0dcsBuXyoxS9SpvtuxSkolCy6+qyxTRePH/KGsWH/5VkQkC986cY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784640344; c=relaxed/simple;
-	bh=hg3r3rHhdHBLluXAp0WXBWlTRUfEV4ZufSgvWF2Rk+o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OE/7c3uS+e82Q/vy49I97itYOfTJqd3G43RKBzfkamEMYtcasKSSy5x1mv77w213U4gplvRJOVF+sC+IK42v12siPTSwOLPw8quHjjf0owiAzx/KiUtLboqm4MYxTHzubj/qd8FU9ZKiWAUiu5/qrAN2FgwD1U/vdhSnpFaJxGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOlFZBze; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784640461; c=relaxed/simple;
+	bh=o+m+j7OfD9GtGz131xFv3iAXEoiTrnCmM0xOl9s0FEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K3zrbbZLy0g/EXB87c+LEysoykjQC8wOkRg7s1qMr/iAo2iGrdun+P7AxTKcnrxMffeLIkA2kdse6DNlXu0IYuuGyHsEFmr3pCRqmuMgGsvmhIegn0NPjjdAHM8hoxqYv9t4glARlhMqg07UIr2i3lX6lmj+jOC7WAz655cZ0o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bso/0MVl; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOlFZBze"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABDB1F00A3E
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784640342;
-	bh=hg3r3rHhdHBLluXAp0WXBWlTRUfEV4ZufSgvWF2Rk+o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TOlFZBzeG/KSQgbMDkfUvLuxtiU0E835Yth5rBlPgp2Qik1xmWL4lkBvv9rxQOdLx
-	 xmvElpnRhAvX/gbgj4n823msNyY5u/tSrX0AZ8gDb51kwp9tR4j8RWx2fVahqRWS/W
-	 UnmUKbTz/2bITrHhL1Ix9hkWyK1NmdymeUt5jj9OCrGZygfyHYGbACyGKACCQOzN3D
-	 7X2iB7jHZwFg+VTswHZ36VQ41/xf49GYJw83bJYhHn/OOpdKFUp2wgp/xgS0MFRLDu
-	 A+XmHWaw3Lv9UZOPmuY/51uhcoDSg9gLNpLCeFfSBkIK16tZsaBEpETld2sOsUycFN
-	 cZOs/Qi0zMgKQ==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b2a44a3b66so1138612e87.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 06:25:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq8QPrINROE35IZLv4kfZ+bHreFXrDo66hJbgkLG6kDYrY5jzJHThHOh781DCOaJ6a4gAt3qAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnXUWVdvQWeMpg4+X6FsfNQU7GhHkNuJwnpsERfBhi7igL30S6
-	iIvGIpuYR9oM/9w174BJ+Mlwi10EW7Y7VeTfww6pctyS/z7RylqbpIvo3IIwy1qGWk5BaZcVcOu
-	/OlRXYqIQ9yr8LZW1TkicNhU0DiW43JM=
-X-Received: by 2002:a05:6512:39c7:b0:5b2:a328:cdd5 with SMTP id
- 2adb3069b0e04-5b2a328cef0mr1440639e87.49.1784640340999; Tue, 21 Jul 2026
- 06:25:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bso/0MVl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0vayxH9hJHp40zibUJV2MKtJ7hghiLqL+BwIbPIWnO0=; b=bso/0MVlAiYyVyo1ZUiVSzxNR/
+	JGdb7hgkR7DhU28Z5UTKJOSIfyfzwxmTWmtYcKbucF/y12UQpFHSGGICM+41cSBj4oHjSbmRQftwS
+	r+R1aK27aNUhjtEQT80RXOe9TStzuOy8t/qRhiic2iBsTQA44cVkNpN5yHRA7oEwwkj8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wmAVL-00DRbo-Ga; Tue, 21 Jul 2026 15:27:27 +0200
+Date: Tue, 21 Jul 2026 15:27:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+Message-ID: <038431aa-5aaa-4c9c-87dc-bb0c0a1ed847@lunn.ch>
+References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710053106.730399-1-rdunlap@infradead.org> <532f6e46-ee9f-4170-8ec4-72374e761cb0@lunn.ch>
-In-Reply-To: <532f6e46-ee9f-4170-8ec4-72374e761cb0@lunn.ch>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Tue, 21 Jul 2026 15:25:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hAMdafpPD0KL-OkNqw+1D5BJDbDd=rWgCR9-NTkovGgQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxXNh_iEn9L5HnP2L_qFMduzYLKmEhs93aMG1pc4wGHGSi8H6gqxV6ssxE
-Message-ID: <CAJZ5v0hAMdafpPD0KL-OkNqw+1D5BJDbDd=rWgCR9-NTkovGgQ@mail.gmail.com>
-Subject: Re: [PATCH] docs: ACPI: DSD: motorcomm: fix docs build error
-To: Andrew Lunn <andrew@lunn.ch>, Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, "chunzhi.lin" <linchunzhi0@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721114810.660718-1-kyle.switch@motor-comm.com>
 
-On Fri, Jul 10, 2026 at 6:37=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Thu, Jul 09, 2026 at 10:31:06PM -0700, Randy Dunlap wrote:
-> > Separate the title with commas (since they are all run togethe in the
->
-> nitpick: together.
+> +#define YT8824_UTP_TEMPLATE_MODE_CTRL		(0x84)
+> +#define YT8824_UTP_TEMPLATE_MODE_MASK		GENMASK(15, 13)
+> +#define YT8824_UTP_TEMPLATE_TEST_MODE1		BIT(13)
 
-Fixed up and applied as 7.3 material, thanks!
+Is this MultiGBASE-T test mode register (Register 1.132)?
+
+The test mode control is not a single bit, but three bits. So you
+should not be using BIT(13).
+
+Since this is a standard part of C45, please add a helper to phy-c45.c
+
+Another thing i want to take a look at is the locking. It is pretty
+ugly having to use so many __ functions, and not being able to use the
+helpers. I want to see if we can avoid this.
+
+    Andrew
+
+---
+pw-bot: cr
