@@ -1,111 +1,103 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8939379C36;
-	Tue, 21 Jul 2026 14:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D399379C36
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 14:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784642883; cv=none; b=sTT+oViaQD12nzcym3QoKjgzr3FNuAftQ7F+ZDODskwbXdpCQIGp97+K3tj/PRI+7NF2GrkGyA3AHA1xH2paPSTvEq2yPAaNYz09qyiSVroL8G3tPgHiQBUs5bcLxo22vc6QYGPrUnZ3aRF0F1tRGnG1+IvW8qx6N/Vf+TofWbo=
+	t=1784642969; cv=none; b=GKKD5d/ok1lo6CApWcv2Aq2kyFJJfRAMtr9arh5En69aIM72HmXtyl34ndfJ7QzTlh7cwU4aPmt08Ss8JEv7JRs8i0SY0dEHxlYelv3xnApk8XmpcmC5X+Xu/TcyszoY0ALcY3ZPiOZx32N+9U3s6XcVG6cFnom4ga1v8Gr4cYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784642883; c=relaxed/simple;
-	bh=N1LKOqLFTOBSOUTDuX/e0IyhD0wJrThFp1keQVautug=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=h2ZGVFSFkgsuD3Na1wa1Wao2RYyQL91J/sNXHFLa5+jMOCA5tt7mavrzm7mno55YJBFuuxqjpjWr8y2J+98c1X73xBVQN1ZUeLiJAWo77R6SN3MmN2p7iFIa8s2xr5+x7D3UgkkBNJ+qnmWZTsnrAUXOFClzfSGUUdaznvz/zmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from [129.217.186.204] ([129.217.186.204])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 66LE4XV1002729
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 21 Jul 2026 16:04:33 +0200 (CEST)
-Message-ID: <5089fc5e-2fb8-41fb-9aab-42b22cc2c201@tu-dortmund.de>
-Date: Tue, 21 Jul 2026 16:04:33 +0200
+	s=arc-20240116; t=1784642969; c=relaxed/simple;
+	bh=DtEzZV/8p1ax+Tms2T+d8b3c66vl40iyvkvQKRBD86g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tx1LI3dSTyqnjD+EuC86J+EIsU+Ow7L1+fmOKBO6H8I02F2pBMOXIGhHupESsfS8cTe44wdFGMdX3aAfi9OWrRwzjpMfoXQo14WmmT8mnfkmN060ZBD1kzXothWdQlaJ6T8VUH4LerB+LB2kWj6MVS24ljaXfYw0dNy2EgPB2rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=Nv7lUJ1c; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="Nv7lUJ1c"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so87350505e9.0
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1784642966; x=1785247766; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oMgr/GyC0oliwpxvZ7bfPAMw7Bu99ta4H5Xc1BeDdt4=;
+        b=Nv7lUJ1crMw2xYNjOkrNFet0YH+EJFJp8qybXogFeotJ6PDwlKuneks9qgV/r8A8TT
+         9Qhj3SG6SxsrROQeCsxWaZSm7gNI0ZGHSUIFK6sAJT+1L/Rv3KI6e4mJw8GxRsMYSO34
+         GM1aq5saywXvPtXN6NqtvmfG4o6Qdh5UMEzUYak8iLZ2PyhnMfB3So9WI5RmxFmgfeM8
+         vXIGbIaB9qxT8napa69sQTsMiswZBTVD8PR3PLhRsTkv3ORFemppJYQPAwd9Lnw1mqHn
+         Bj+cmOF3519nwmoar91KH2BMtpTEhGqHE+7z1cM2PY37KghtNz3Weebyp787BUve+dTG
+         DrwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784642966; x=1785247766;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oMgr/GyC0oliwpxvZ7bfPAMw7Bu99ta4H5Xc1BeDdt4=;
+        b=BUBU9vPA7VIFFJknybJaCzYZIaPbK6hmg5+742Y0N4V4SREKaNt67PgCPbfibKQIy4
+         BK5jk23exefPcNxBlQtciCXI2OmuWNJIJfkU4JkKbZEhBuBClw7IVO+dP6rBRR11u1WU
+         /0QRs9ffUyvaBZpdjA15JqfKxaa12yFPIrZoX22kCbJ4uwxjPjdYmi7JiWqWuM8V1ikb
+         QH8sOIdK5eagoDcZx1oAFC6L9JDY3b7AETBw/3j4687IblXwYnQFIxeLFLH0Cv2RFJSt
+         2b0AWb73wNC/sxzh4QcrA2EIlvhrCGMnGklngUYdRJRuOUIii63i4GFTMGP6KFMKFPQS
+         GQxw==
+X-Gm-Message-State: AOJu0Yy3B/5vfNz1yR5N+Wk4rGvqu/Na6mhd6VZqNHQ8jlUzy1vacAj1
+	+39GnphE/QcWshAl6pFf0rNmMwXzEjyowh+sccoq9MBHRCIVTq1T6MhwF//Qhq9h0IrqDAZE5Ao
+	uAkGTuKw=
+X-Gm-Gg: AfdE7cnAP68qO+prtyielK5fj09GuS+6YGVMy01iyDB7KHEdQQjQOQHwnjhRC1PVQhz
+	JEGPGYG8/9mgC+CMojKoJs6fiMSrGVUHioeQESaqrubixxlBoPCAL2NZleHmBglq5RyF2oFTtnY
+	JueeikoPEcrKIqMBJOWjFM25WJs+VqIu6IsWGReXjqx5e/bkYhe1hZ9u1m39wLNiR08zQrhsyZ6
+	ua3IV/psnLg7LlmpFyEWiKQgIoL/cukiSHksmdNtL6TUm/KEwQzofkzfYuo7aWUcj59hfvUjtaB
+	qR2Jj53hoQ34bKOG7H/Ai4RT5bOE/rD/PykaJC7CKqFBYRIeA7C69103OYxjgRKI+1sip7Wm93k
+	WSduKhcJACB0L6O3tYH5liYNqdDuHFkTwS62LaJvQXYhqS5tlLFwwOLLOb/nOisXxjltcXfeclK
+	rparq8RyHsCTgAuM2MGoRR/tWD
+X-Received: by 2002:a05:600c:4ed1:b0:495:4732:1eb9 with SMTP id 5b1f17b1804b1-4954a402df8mr166586545e9.21.1784642965806;
+        Tue, 21 Jul 2026 07:09:25 -0700 (PDT)
+Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49565482c5asm107807535e9.10.2026.07.21.07.09.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 07:09:25 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net 0/2] net: bridge: fix vlan range dumps starting with a PVID
+Date: Tue, 21 Jul 2026 17:09:20 +0300
+Message-ID: <20260721140922.682265-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] tun/tap & vhost-net: make qdisc backpressure
- opt-in via IFF_BACKPRESSURE
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Tim Gebauer <tim.gebauer@tu-dortmund.de>,
-        Brett Sheffield <brett@librecast.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260709095511.168235-1-simon.schippers@tu-dortmund.de>
- <20260714092506-mutt-send-email-mst@kernel.org>
- <5016ae84-7049-4a5f-91c9-ba0047b06ee3@tu-dortmund.de>
-Content-Language: en-US
-In-Reply-To: <5016ae84-7049-4a5f-91c9-ba0047b06ee3@tu-dortmund.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 7/14/26 18:50, Simon Schippers wrote:
-> On 7/14/26 15:40, Michael S. Tsirkin wrote:
->> On Thu, Jul 09, 2026 at 11:55:11AM +0200, Simon Schippers wrote:
->>> Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
->>> when a qdisc is present") did not show a relevant performance regression
->>> in my testing but on Brett Sheffield's librecast testbed it shows a
->>> significant performance drop in a IPv6 multicast testcase. The regression
->>> can be pinpointed when multiple iperf3 TCP threads are sending. For 8
->>> threads the performance dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is
->>> the reason why this patch makes the qdisc backpressure behavior opt-in.
->>>
->>> One option to accomplish the opt-in would be to set the default qdisc to
->>> noqueue at init. However this may also break userspace as users might
->>> have chosen a custom qdisc even though most of the qdiscs did nothing
->>> for tun/tap in the past due to missing backpressure...
->>>
->>> This is the reason why in this patch, the flag IFF_BACKPRESSURE is
->>> introduced instead which is required to enable the backpressure logic.
->>> This means the stopping logic in tun_net_xmit() and the waking logic in
->>> __tun_wake_queue() are skipped if the flag is disabled. Setting
->>> IFF_BACKPRESSURE makes an attached qdisc effective by stopping the queue
->>> instead of tail-dropping when the internal ring is full.
->>>
->>> To avoid a possible stall due to disabling IFF_BACKPRESSURE, the new
->>> helper tun_force_wake_queue() is implemented. The helper safely wakes the
->>> respective netdev queue and resets cons_cnt while the consumer_lock and
->>> the producer_lock of the ring are held. The helper is run in tun_attach()
->>> when a queue (re)attaches, in tun_set_iff() for attached tfiles, and
->>> in tun_queue_resize().
->>>
->>> The documentation in tuntap.rst is updated accordingly.
->>>
->>> Fixes: 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop when a qdisc is present")
->>> Reported-by: Brett Sheffield <brett@librecast.net>
->>> Closes: https://lore.kernel.org/netdev/akVnoOYQOrt8k-Gu@karahi.librecast.net/T/#u
->>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>
->>
->> The patch itself is fine:
->>
->> Acked-by: Michael S. Tsirkin <mst@redhat.com>
->>
->> What bothers me is the timing: we
->> are past freeze and this new interface hasn't been tested
->> much.
->>
->> We can either apply this, or revert the original patch for now
->> and reapply with this for next.
-> 
-> I prefer applying it, but you maintainers must decide that.
-> 
+Content-Transfer-Encoding: 8bit
 
 Hi,
-just a gentle ping.
-Has there been any decision on this patch?
+Patch 01 fixes a bug that can skip dumping VLANs which a part of a range
+starting with a PVID VLAN and share the same flags. PVID VLAN should be
+always on its own. Patch 02 adds a selftest for this case. More information
+can be found in the respective patches.
 
-Thanks!
+Thanks,
+ Nik
+
+Nikolay Aleksandrov (2):
+  net: bridge: vlan: fix vlan range dumps starting with pvid
+  selftests: net: bridge: test ranges with PVID VLAN
+
+ net/bridge/br_netlink_tunnel.c                |  3 ++-
+ net/bridge/br_private.h                       |  6 +++--
+ net/bridge/br_vlan.c                          | 10 ++++----
+ net/bridge/br_vlan_options.c                  |  3 +--
+ .../testing/selftests/net/bridge_vlan_dump.sh | 23 +++++++++++++++++++
+ 5 files changed, 36 insertions(+), 9 deletions(-)
+
+-- 
+2.47.3
 
