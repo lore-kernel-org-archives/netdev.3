@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648BA3B2D00;
-	Tue, 21 Jul 2026 20:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E2439012;
+	Tue, 21 Jul 2026 21:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667399; cv=none; b=EviRWk+leeRRGHRv3VdrEYuk2fKK+Nu0i3XIu+Yt3akf9rBwvCN/7Gq9DQwqXGzU2DCixkJmj6gkKmcM9hgCpvyYw0p4ZfCO6rpXALqPjW0YLCsyxrJnuIvUUx68lFHBwjM4bRQ9kNV4RrsZmhdAOcM8rnbtd9n8OjzXhzFUZ8c=
+	t=1784667639; cv=none; b=Nb9tOajLfsW+ur7QmJfzJQfvpfs0/ox+14JHcryLlWEXsUo86Es05JKbvOjPJt7RFUrrIoGt2buzaxpxu0nWxioVwm37MrftL5YqExLkhppNHGjnE0wURz90G5grwDfxQi4NoO+KRatnxRrJyLgraGUusDWT0OA558a97q+aUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667399; c=relaxed/simple;
-	bh=bB1VNYj1QNBVBmm58qAK2nccQGkRvTkpFlGuEahedZM=;
+	s=arc-20240116; t=1784667639; c=relaxed/simple;
+	bh=wDZAdfh4YitlwM5SYpXENkwHDSLF7ZaTMaIfmd9XjpU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sefav2CPW08PF+nK4iIXEmvp/kHMPd3RAhn5mxAkY0QYr/ffIkTRDHFlRGWkWbnURZ+dc9SirpgHfNEsvJyUIVSgmpqiLEiFkeN9lNi8U5IO2a07lFvYMpfMi1jFYa8qVee+bGGlU1bHQrnQekVvxlBn9T62UnYMIpIkWkfAqlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bARC/Yc3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=AUP25WdznuQGdtj283iDg8H9cGnhSP5T9vsiEG72hM11AryLA3lKo/5VaqUSG5zuB2HT9wHV8bsIBOaoxvQbwKKJppk34PDWX1HGhuYMlm/vrV2oVUheV8rJv5WNUCrc6rOF0ELZ4XmRcbdikKpEyb/481rr2HP2vRahogNLdx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THsdyW+1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bARC/Yc3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE3F1F00A3A;
-	Tue, 21 Jul 2026 20:56:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THsdyW+1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982211F00A3A;
+	Tue, 21 Jul 2026 21:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784667398;
-	bh=g5Fd2jM7aw+xFpo1T7JTnOjdu1gtY4/RonM2YJpRPuA=;
+	s=k20260515; t=1784667637;
+	bh=Y1Fqr3yD+eTJzYODUSrjqSjU2oxxaBaa6ty7X9vYvWs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bARC/Yc3m++5QBBMaTRPnJaoIq1a7rHMdIzf3K52MSvRPD+rjkwsJbjhjetRepYRP
-	 AsyC42i2YxRW3TW/MuuHv0QtnI7tnN7btSTG4IWRBQ9pViO5eY1sxc9Al4JfxIImOv
-	 0RGruqg9ROduBQGN2MmDSoWXr00h4wNWUvswJi7Zd/Da1D/TSJzQxKWaEWopPHQPPY
-	 kQQ1Ea96LBFOTi4qzCkpymcu9zXPoVLHpzxK6AmhuAVaXfiUjjtdx7cnnl16Up/KYP
-	 bzJzHtw+HcEKLgWBRAoZs8yut9MSkKzAWSKTFEFNKJb6uPOpXz3HqfJw4CZHA23wH0
-	 XiTbGY7okS8Sg==
-Date: Tue, 21 Jul 2026 13:56:37 -0700
+	b=THsdyW+1tbanf7hmz3l6Ni3GoM29oYpaQuIawLAHUbbD449orliOuz1sd4NLBMCDQ
+	 fjRjv87Z3RS55EK2+M8evnsfEDovJmsrLAjZCRgipBEx8G4gTVuANQHtZPSogfmEHn
+	 3pZ+0O5wobZnskkw9S6sFRRc8lfu6FmoUDlS+MMeJWA4mMTvABVIyeFL95IsfnX+/i
+	 IKKPOzLqtQKrLCplk/kl8OH/JsdQKZ/40khJ3w4/Mg7Iegg62127tt2NHdmvpG6UMF
+	 XgheDekd2KpIVFEc/Zt1R5TwizvSP932ubSJScLY2g/iYaQz/h7rHKiLAvJlVXKAqT
+	 ++GZgbx1ayZaw==
+Date: Tue, 21 Jul 2026 14:00:37 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Thomas Huth <thuth@redhat.com>, oe-linux-nfc@lists.linux.dev
-Cc: Bongsu Jeon <bongsu.jeon@samsung.com>, netdev@vger.kernel.org, Shuah
- Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: nci: Fix wrong size of status variables in
- nci_dev test
-Message-ID: <20260721135637.56b47743@kernel.org>
-In-Reply-To: <20260710112300.512433-1-thuth@redhat.com>
-References: <20260710112300.512433-1-thuth@redhat.com>
+To: Ibrahim Hashimov <security@auditcode.ai>
+Cc: alex.aring@gmail.com, miquel.raynal@bootlin.com,
+ stefan@datenfreihafen.org, linux-wpan@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] mac802154: hold an interface reference across the
+ scan worker
+Message-ID: <20260721140037.61bf4635@kernel.org>
+In-Reply-To: <20260717105810.26226-1-security@auditcode.ai>
+References: <20260710140927.13228-1-security@auditcode.ai>
+	<20260717105810.26226-1-security@auditcode.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,16 +48,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 10 Jul 2026 13:23:00 +0200 Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> pthread_join() stores the thread's return value (a "void *", i.e.
-> 8 bytes on 64 bit computers) into the address of "status", but the
-> "status" variable is declared as "int" with only 4 bytes. The extra
-> four bytes clobber whatever is adjacent on the stack, which could
-> silently corrupt other local variables. Use "intptr_t" to declare
-> the "status" variables with the correct size.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On Fri, 17 Jul 2026 12:58:09 +0200 Ibrahim Hashimov wrote:
+> +	/*
+> +	 * sdata->dev is dereferenced below after rcu_read_unlock() and outside
+> +	 * the rtnl, and a concurrent DEL_INTERFACE / PHY teardown can free it
+> +	 * asynchronously from netdev_run_todo(). Pin it with a reference taken
+> +	 * while the RCU read lock is still held, and drop it at every exit.
+> +	 */
+> +	dev_hold(sdata->dev);
 
-This should go via nfc, I just sent a patch to update MAINTAINERS.
+Please use netdev_hold() with a tracker on the stack.
+Please don't post new versions in reply to old ones.
