@@ -1,68 +1,58 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6303E92BB;
-	Tue, 21 Jul 2026 00:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6293449B12;
+	Tue, 21 Jul 2026 00:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784594383; cv=none; b=T5SeEZCSbIzDW77VwsA8WQ8du8Pw6IuWQguNUn0X2eWBQ2n0Adf+g6jkdJDGcSrHuzCS/lIJmF7DLjQ8QNrqItQCUrni0wHMyvCKv4c/W60P2DPuovn2ZHI3U72dzCXy2PQ7MTuXdWXljA1NqM/PYyn0UycoB5z/XwSn3+7eiLg=
+	t=1784594411; cv=none; b=GKJq9wl1O1NAO/Ih0G80JyMJzRPP1SL8Px2QgdBqS/ueV/5tJMR2LXj0LUpiT92ZeEr+UuPJ5jxQg6hVgaMky0L6L4hs475j+f7PL0oQ++3+w/YbyYegzCI6ZMHXEHoDB6J1EWWLtGqKfgXWcWKnXlHqo44FKKfCaA8K/LsbHzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784594383; c=relaxed/simple;
-	bh=rrqiU9aNnX/sfiVLWEBvmepPhSM8FzUicLf7lZPW5sA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s2Ds1MshW+rKtHO0Obt/xQt/o3Syc7DuNxA7F7k8cRjAW/Jw5HxMTVfVw8wJCZsncEH4VKeYQ1vNXKNQA4H2mGcMsSKJUdzjZX61znEW+VyMYLu35EpCJukug1zgBBbZ7c/RdlHF+7HGd6YlNr2vhWonS8/kkOIXzvXO6/JgrY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fCT2cKty; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784594411; c=relaxed/simple;
+	bh=e7CMAz0uFt8gST5OpazkZOf2jQL9aJGSIf1SGEvk5Vo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pwvDiYsifnt+C0UT6tFHVHA6X0AT3ztWHT8lA5ybYcsysxJ6uoM5Lo96qt6OsmaM9bF2BCJ1k84ADNa+5K4Dc8FTV/fnAueoxKtleWTTEibmaWtYE16cnbfY0OB2pOn7DjmH6TTuT1Jd1MO2uxb+aJsKn3TivOVyln60t9eEEaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPSljNpe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fCT2cKty"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=1CSkd1TSKu5JCz6BkVBLXlO8GJdhBnnjUKfmzFm6Rjo=; b=fCT2cKtyZSmrLbQJwl0quLDz4K
-	mbzneRcAfsrLdlsiYC3UNxkZYsv3tWj2XYkc0R44yJeJyb+SEk7HiAgimdtvVCBtgShFfKv+7w5aZ
-	Eg+if4EeduR6gQGXJ0F/fLOolhFCZ9NWGrd/2TNFmCXaUIZxIaPixwLGDGcwjTQAkEOQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wlyW7-00DLo9-0Z; Tue, 21 Jul 2026 02:39:27 +0200
-Date: Tue, 21 Jul 2026 02:39:26 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
-	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
-Message-ID: <6fa4cb27-20f8-4425-95c8-202d7c7f010a@lunn.ch>
-References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
- <ae82997f-537e-4a2d-abce-d163fcf9d868@lunn.ch>
- <6ac12388-60de-45aa-a8d0-62fcfaf7bea2@linux.dev>
- <1e640dcb-43ce-4a3b-a74a-ed8e48706b86@lunn.ch>
- <d4f606b9-d793-47c1-8c91-9c9da0e68b4a@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPSljNpe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0491F000E9;
+	Tue, 21 Jul 2026 00:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784594410;
+	bh=vfHbiAWr0oMS7soPdDm45cDiqHqVjWGCo8r/UXUVgWk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YPSljNpe/vabbbrUBwU0ZtrmuTg/Qk7bqbdjJvA6mA1CFKrz+5ORc3jqDphmQdYwP
+	 tRjuMvOYrjOdy2OJX3BtCJNVRfDc691D4jiW1wnm0eAunqf3AUGsSDJrY9EHXb13Ag
+	 G4fkBtdP+Atx1ZsTcJfjnA1raDVT1j76ELkooxpQ4Xpu7bzPrLVch2kDj5Y1Vb4w+g
+	 KO9SC/HCznq681cA4FDV+6ENWn9OZ64kyXPO6V6Mgc4pScUZGZOV9R3GciAcK44ZEx
+	 LbkKoOUlGzDCwuu475K0+TdS0QubE92XXiS+hyBbMfEufLO194FZLrNC4wrrNMlfrj
+	 VrSu1TLhcFTjw==
+Date: Mon, 20 Jul 2026 17:40:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Markus Breitenberger <bre@breiti.cc>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Choong Yong Liang
+ <yong.liang.choong@linux.intel.com>, stable@vger.kernel.org, Markus
+ Breitenberger <bre@keba.com>
+Subject: Re: [PATCH net] net: stmmac: intel: don't reconfigure SerDes on
+ unchanged mode
+Message-ID: <20260720174009.4a73cd84@kernel.org>
+In-Reply-To: <20260706061954.94842-1-bre@breiti.cc>
+References: <20260706061954.94842-1-bre@breiti.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d4f606b9-d793-47c1-8c91-9c9da0e68b4a@linux.dev>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> looks like it won't work now. we have to create helpers in phy to fix it.
-> I can work on it, but I don't have such HW combination to test. Do you have
-> some HW to test this combination?
+On Mon,  6 Jul 2026 08:19:54 +0200 Markus Breitenberger wrote:
+> intel_mac_finish() is registered as the phylink mac_finish() callback
+> for the Elkhart Lake SGMII ports. phylink calls mac_finish() at the end
+> of every major link reconfiguration, including the initial one during
+> probe, before any interface mode has actually changed.
 
-I don't. You should ask Richard Cochran. He added this code.
-
-  Andrew
+The netdev patch queue has overflown.
+If these patches are still relevant you'll have to repost them.
