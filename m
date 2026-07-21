@@ -1,153 +1,64 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC9F33A9FC;
-	Tue, 21 Jul 2026 20:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA563B0AC6;
+	Tue, 21 Jul 2026 20:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784666262; cv=none; b=RvvNlE0YJYiAHmV5Ed6EZXWbOl/IO4waxeDr6hYTQUAk/02TyWwDIPkRzV00shJJzYg1Esj96eFdT43fpoeIivRIu0b/y2WVvOYAKPuG7PZ/jW5ZVry4z5YgVeu9QBocK11PU+HgI9s3dg/3XKUgYMnW32cSEG5LAueaoKAOAKI=
+	t=1784666708; cv=none; b=FR3uFuy6KlFa1itdWZA0k11LtJ4YPa34uHok5DBCjakksW7eazLGhsMBrRJ8s/xUGZ4ZZ8YPPJdp/iQEKQSFzIN7qczu3iJqfqudK4lG3dpuYQWEDI/7ly/R89Up0HTITdiagY70LEjkjPzbQnDdjB29IKFo0HLaCQjo2WAyYlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784666262; c=relaxed/simple;
-	bh=CUEEDDXaie7jnJLUIUG9G07IerQuHzgiLcpNpNqYy3g=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=g4livfgOXygTwDsxh+B6D7sAhDyqI9/LVTlFrqCeIyNBtkSg2RDzUh72u6LQAoGId6WVJSu39k7OI5XTrVLoQg2hg/mC2vFfAAXbM86xqOE2AKeIHEwK+uNYnMamNZRkMG9b444dcFG28ZdtjHczh+0DEJ1WL1H+jAh3W3RUWOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me; spf=pass smtp.mailfrom=johnericson.me; dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b=YnRjIsmq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DxvAVzeW; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnericson.me
+	s=arc-20240116; t=1784666708; c=relaxed/simple;
+	bh=0U94faIDDS1woR5NOMfVeA6ynexCuUQFr9FBTZXjJ1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KoBTpS2mrgvotdr4LwUiEaDIh9CXU029qOdXVt3C/taOZsBsoqdwCSLo3AaBNImt4mfhhNq69r9bjDR7BZovl9/DnUCH437XxnI1u6kGxFQgZic5K5+epTl2itZGPd/ZNGnmQaK8RC+9lGvdeFkgHaRQw86IhfAImnqgzhQJS/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5AVCOhH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b="YnRjIsmq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DxvAVzeW"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2A5611D000C2;
-	Tue, 21 Jul 2026 16:37:39 -0400 (EDT)
-Received: from phl-imap-16 ([10.202.2.88])
-  by phl-compute-05.internal (MEProxy); Tue, 21 Jul 2026 16:37:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1784666259; x=1784752659; bh=NUMpJ2akCJMTRqhsXAU7yOxnT0Vbvmg/
-	or0Ox6PDqDY=; b=YnRjIsmq5fLPYEzJDvCsZzE+L5vE5nkCyE9gazO528vQuY71
-	on6UwrBcQ2U9PTW6JIeF5vnw2iRalDlFw9iDIcHuKzGY/TborrF6LW5ffwHg7CcM
-	Yz0ng64qWm8RQvGTxWjmq4Tb2biWu+4OCO89wE3ndEvIG+v7oqVQaz+S7XWRrtJj
-	V5EoY6WYK+Q+o/Yt0Eomn7/52bqLwEIqxOVRZEBJBdw716mRyEqV4dzqvdILx+Lc
-	5V6RGHSH5gT8EwtkmOW83AVBLxSoxpClAOiohMA2dNEqxQUdpqgqMuwFmKjQYH8H
-	fMJB5Ut/efco09K5zilPlOZVcYhsU+NnARSeyg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784666259; x=
-	1784752659; bh=NUMpJ2akCJMTRqhsXAU7yOxnT0Vbvmg/or0Ox6PDqDY=; b=D
-	xvAVzeWhotqohkFk2/HL/nbWoDZkXhmJwDyI2E++1pz55/xTglYl0DrVySqWvxw4
-	Qhs5FZtqYxMpuzcNJSVAHv/BruiT00bOjhh2XYYoIRrDwOAS9UDsFogMr4e1lnaV
-	xjk6v52pmW1FBmIT5XarNfqPJXualh7xZrDdLv2WLt7gAgnH4txUZ30L6pbvLpeQ
-	JuuKr8gcId5bgh+l7iVpwDvQy9UZgJxDObfP968xarMaiCakon3A/CPQ04y5TnZ2
-	eI8PK6pVUGVqJB6WZCb/q7eiCQc+Y60J2mNfU3FLMLvaO+rTbwF5Dno/1K60fSNh
-	ZODmIY1QWdaJhSPBx1d0Q==
-X-ME-Sender: <xms:kdhfavj9Oteuu2We5KWyaJwqaZ-hefGAh4uyfLVQcvSyPerGkZ8Dpw>
-    <xme:kdhfam3GebCSBvIy2HR38JE0HsgJejcgkPvslW0pfPv1oiWMbAIfBXuSY_QrVKhAg
-    kLGzvzJGuIpe1E0WiQ2m8_Mg-c74CX6T7qYU0sgTB2QtrfNDerPwj8>
-X-ME-Proxy-Cause: dmFkZTF3rXLCIiptege6YMZPKaRJIePD9MrJX4rMyB6sdBv93uLMJg8w25jzlbdoAhoQfl
-    l8lTcApXWr0rbELm6i72jMQkk2n8r57DQUjeyMhgRMiDkSjxvtNzyxoxEZo0qiZu6j2UJn
-    CPtD+8sCySgDBHQKR0NkiNDbpZ0xzcU+KjuOWuUA1Ko8qnw0QHBEQZaycN2WXNIfZ8Yj//
-    SG2uimGoHhjS0UVteX9xtjE8Vxx9m96W5AAaXA/GDzukWGh9bM5HKDYgI51FznvtpJrfv+
-    GnwEDWD23mKK2i6XB1uObnmL46M+QGIyYYaJ7RE1sM6fkqZI4kmIKNmcgmy0uRgzMZY4sB
-    XzyliDs2YDwNXmd3VRKipULW06OcH37pqBT66rTmE0+rbm95tJuq04e+wwr1QqTsvMs0+T
-    lKHZNv8NbFUgsbonmFJdSYpaTWu23pvBYD7SssPpttil5827GjXCMSaq+0/ZgE3Ev/W2zu
-    SX96lpJgmmxqXD/kyiv9MRdtsO/QiovT8Rm2kEn/sgFwIHrXbtzKKGekdJ7kTWBGvBzP2N
-    AP6htyxpNRdXNuhH6zZZ+nCIzR/bPDBBuFDJqzDAKBfJvlbkv5BkL26PqUFyZ1aPZ3BZRy
-    v+uj9NMsZLoZfvmY7Qmt/wUj+PzgS5uTPqWI14NOlKLy/NS6pMNcLFnvZPdQ
-X-ME-Proxy: <xmx:kdhfaiFYfk4gOD3qjBcz5pRv8WNFAWpEXJAYFoTG8Hpav494vWPaqA>
-    <xmx:kdhfasHHjWiTw6qwaElDprDgGUR3_i9Ud6zuLJ9gdqPA-8SHRZG2ig>
-    <xmx:kdhfaq2SYLRGXZUaXZMFUsm9chBF3NRu1DDLY_Ofjd3YpT9oX26dcA>
-    <xmx:kdhfaud4fDCgEuURzz7Tzobh6D8yNr32Icrs5NhQcHDvqakGkTNghQ>
-    <xmx:k9hfainLeNW-taYDJEY2d2vA1sawdjqZYpYXm7vLvfAL_NrJ09H8ATNP>
-Feedback-ID: ieb4144f1:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CA9BA2CC0083; Tue, 21 Jul 2026 16:37:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5AVCOhH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A731F000E9;
+	Tue, 21 Jul 2026 20:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784666706;
+	bh=w4dA4OBo/jCWkv3M2aNH4tpnEQVsUPkR9zfMNTrGbwg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=V5AVCOhHDbiskVq/Sy4NJht3OJF8SEL6OHLLexVNzPXeU0BNlEo6lpaNgnbyuVy0i
+	 bpqmE4Orzsq8gOK7v2wG0tE6zGRmDS/tVjSCeAtxmKeEbwIyvXOt7OyO6LbocvXAmR
+	 9s/yd98Ccgu5IuyeYSRtdqIbZtF7Ib1H9Bc0gQsEvsikE76jnGPKn6jgIfPs3WzJq3
+	 opeb4SSxEIBVLh3sI4S6EPNr/xeOPSuefzyvQuaa++p7J05w0Ek1wv11d+jQ3XFzcx
+	 i7t598CgZMrGGlAQAm+gLv/eeTFflZJO1Hn9sfvrJ23rVpj4qKdNLNf45EfC31ev0l
+	 i2jAOuMdyyPkA==
+Date: Tue, 21 Jul 2026 13:45:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Markus Stockhausen" <markus.stockhausen@gmx.de>
+Cc: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <netdev@vger.kernel.org>, <chris.packham@alliedtelesis.co.nz>,
+ <daniel@makrotopia.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 3/8] net: phy: add
+ (*notify_phy_attach/detach)() hooks to struct mii_bus
+Message-ID: <20260721134505.4aa7c62d@kernel.org>
+In-Reply-To: <009001dd194b$835acaf0$8a1060d0$@gmx.de>
+References: <20260709064157.2865063-4-markus.stockhausen@gmx.de>
+	<20260721181549.855625-1-kuba@kernel.org>
+	<009001dd194b$835acaf0$8a1060d0$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AudyXjUgQ8Ew
-Date: Tue, 21 Jul 2026 16:37:07 -0400
-From: "John Ericson" <mail@johnericson.me>
-To: "David Laight" <david.laight.linux@gmail.com>
-Cc: "Kuniyuki Iwashima" <kuniyu@google.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Cong Wang" <cwang@multikernel.io>,
- "Simon Horman" <horms@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- "David Rheinsberg" <david@readahead.eu>, "Andy Lutomirski" <luto@kernel.org>,
- "Sergei Zimmerman" <sergei@zimmerman.foo>,
- "network dev" <netdev@vger.kernel.org>,
- =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
- =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- "Paul Moore" <paul@paul-moore.com>, linux-security-module@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-Message-Id: <9c437c7c-7919-41e2-9161-fc94803a9b34@app.fastmail.com>
-In-Reply-To: <85991dc3-6fa5-4466-a0cb-b407291cdb44@app.fastmail.com>
-References: <20260703073948.2541875-1-John.Ericson@Obsidian.Systems>
- <20260703073948.2541875-3-John.Ericson@Obsidian.Systems>
- <e6f54c5b-2c92-4772-b2f9-5c21e2ec50a9@app.fastmail.com>
- <20260718215855.07284fb1@pumpkin>
- <85991dc3-6fa5-4466-a0cb-b407291cdb44@app.fastmail.com>
-Subject: Re: unix_stream_connect and socket address resolution
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-In case this is useful or interesting to anyone, I deep a some history
-spelunking, and the restart logic in question seems to date back to
-Import 2.2.4pre6:
+On Tue, 21 Jul 2026 21:59:54 +0200 Markus Stockhausen wrote:
+> > [Medium]
+> > Is the pairing between notify_phy_attach and notify_phy_detach
+> > symmetric on all failure paths?  
+> 
+> thanks for the check. I already asked for guidance on this [1]
+> but got no feedback yet. Maybe someone can assist what is
+> the best way to make these calls symmetrical.
 
-https://github.com/tbodt/linux-history/commit/7d4fc34b9bbc0a14d3e5f6b2f978373422e1ca8a#diff-0553d076c243e06ae312480cb8cb52f1cebe1d80fc099d3842593e12c9e0d4f3
-
----
-@@ -673,9 +703,25 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	   we will have to recheck all again in any case.
- 	 */
- 
-+restart:
- 	/*  Find listening sock */
- 	other=unix_find_other(sunaddr, addr_len, sk->type, hash, &err);
- 
-+	if (!other)
-+		return -ECONNREFUSED;
-+
-+	while (other->ack_backlog >= other->max_ack_backlog) {
-+		unix_unlock(other);
-+		if (other->dead || other->state != TCP_LISTEN)
-+			return -ECONNREFUSED;
-+		if (flags & O_NONBLOCK)
-+			return -EAGAIN;
-+		interruptible_sleep_on(&unix_ack_wqueue);
-+		if (signal_pending(current))
-+			return -ERESTARTSYS;
-+		goto restart;
-+        }
-+
- 	/* create new sock for complete connection */
- 	newsk = unix_create1(NULL, 1);
- 
-@@ -704,7 +750,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 
- 	/* Check that listener is in valid state. */
- 	err = -ECONNREFUSED;
--	if (other == NULL || other->dead || other->state != TCP_LISTEN)
-+	if (other->dead || other->state != TCP_LISTEN)
- 		goto out;
- 
- 	err = -ENOMEM;
----
-
-My question can be basically restated: why should the `restart` label
-not go *after* the `unix_find_other` call?
-
-Cheers,
-
-John
+With wide spread AI code generation the real contribution is not
+the typed code but the ability to design the system and answer such
+questions.
