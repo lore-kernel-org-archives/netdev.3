@@ -1,46 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB0F318EC7;
-	Tue, 21 Jul 2026 00:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8380E2FD1A5;
+	Tue, 21 Jul 2026 00:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784593510; cv=none; b=A1pA+tuxTWmxSDZHW9OogvFIhc0VfXgpOiS98HqVCee4H7iMJKEk3tI3Jit04nHRI0B4aFz0riiAh0qRUZYKzjWbF6D3vlgOcj57FJGiBFc08z+ngwDhleIvyjbgDskGq2a8BmlRv6bOK3oT0YKeqUiZjl75eiiGaD+SbWL6wQk=
+	t=1784593693; cv=none; b=lc7jzllDPWNXwOGzifbrpgnqlw3UhoZjCCgEccLFJqLUDxZgGZ/Tg/n0CqyA8n6PswPiqeowutZFTwFoftySrkeORfVZ+p6YqUNNIf4AqFDhLyiw0Bos8mWdCUGxPsbVmaQBLUNoSN1uLVh/9gWb2uD0CP4Xv2Jas2ThX6VLW1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784593510; c=relaxed/simple;
-	bh=6eXs6G6gkEkzEyNGMi584xQR5ev8lmYnIwlJeA6DiN0=;
+	s=arc-20240116; t=1784593693; c=relaxed/simple;
+	bh=c7lhteV67p9AWMJcWvD3z551MOUYGBrCWaCqcfp7Lss=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nnqkBXP+H499S6A8AMpWg3TihF1kP9tr+LY9NEO5R6fTil5fRN26q7xhzl2MEUlr5efYy+4i48iFtlYC0DXNeYpnzXdFg+RrRsx+F0G2F+vXNQVu4DiPL84V1TUHl6ccd7loJyTaOiHCNx5d2SoyPEOGo4r3kquA64bOWij9wuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ue2nqqKm; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=hQQ9jGhIyGg4F68SO1Up3g/DNwLUVDMAEUD3T2POV4Ia+0tkP8lXcwYZe/nZvRxDTNO3QkelCoSQ9OfliTmIM835ywYG7uuiMXRpzwaeA/hg/FAOtZDsHytCXwa6+JUsjMwDOB94825kdvqPzJV/FqaNw1vwmPkoxJrW+Wz0yBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3kWMAe8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ue2nqqKm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977201F000E9;
-	Tue, 21 Jul 2026 00:25:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3kWMAe8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F701F000E9;
+	Tue, 21 Jul 2026 00:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784593509;
-	bh=uXs4HxOpOEcxFtpQtGxbHyfqz3LtV9uXOZu7OKYdnjw=;
+	s=k20260515; t=1784593692;
+	bh=c7lhteV67p9AWMJcWvD3z551MOUYGBrCWaCqcfp7Lss=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Ue2nqqKmpFEJXEgUwDqOo82telPHwhvwMljcSeCISxKkeDvK4ayU550+GmrqQ+PCJ
-	 NtDGKgIyfLXB3GCJlsemaDViRW4tW92hNyouLRjO8HScYGFLUIktBDX6/b0aHBZtrD
-	 aKshypz7434mEpZqwdf4i5BLZs0gq7Fsm/NjrtluKLbi3EDPalhz8SUQJSc0rWlC94
-	 QVCq2ONk5sPgAkypPJG/fqjnBD86ChlY0xYHxKLJJc1Kt7rV0sUZFvGKnn7pFp8dhK
-	 uNA95x/5OY1lOcy+rPMnPW0jYGEYGnlSuFy1b9yYj0HcaDt+llPRjTehHoaZJs37WL
-	 9L433w6gj41Qw==
-Date: Mon, 20 Jul 2026 17:25:08 -0700
+	b=F3kWMAe8HEOlIzHY/R4G5ilAmyCC2bnEu/v2WHVk4qVt+OQP1ZeFhPHV2z6yCqm7c
+	 YVe8BP9HP3lK3hoLMVL0UhpjD1M5UKZSrODtPSa2tO5G2vppZNdqo5miWDDvswWZSx
+	 Ypt8kQjj/PNLkN8ZzzlNL47brU9knc2+UDnzd/cFwlbs35HmdF2wjSorAlSi0VMBTA
+	 YAHK99xI7mObk0JGnPghM53t++HUdMtCOwzV15yXbbBtHvqEXoTcMwLiwDfLzWGUpf
+	 zjXPihsDFwV3y1vSvHEiDWTaQDB9qqrP2RHRZkBT/k7jGCepCNWZgyHZ70KQQEyOgS
+	 aLlQIeFoSZImA==
+Date: Mon, 20 Jul 2026 17:28:10 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Xiang Mei <xmei5@asu.edu>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Roopa Prabhu <roopa@nvidia.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Petr Machata
- <petrm@nvidia.com>, Andy Roulin <aroulin@nvidia.com>, David Yang
- <mmyangfl@gmail.com>, Kees Cook <kees@kernel.org>, Weiming Shi
- <bestswngs@gmail.com>
-Subject: Re: [PATCH net] vxlan: vnifilter: enforce exact length of
- GROUP/GROUP6 attributes
-Message-ID: <20260720172508.6063f433@kernel.org>
-In-Reply-To: <20260704222254.914567-1-xmei5@asu.edu>
-References: <20260704222254.914567-1-xmei5@asu.edu>
+To: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Cc: hexlabsecurity@proton.me, Dust Li <dust.li@linux.alibaba.com>, "David S.
+ Miller" <davem@davemloft.net>, Sidraya Jayagond <sidraya@linux.ibm.com>,
+ Eric Dumazet <edumazet@google.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
+ Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, Paolo
+ Abeni <pabeni@redhat.com>, Stefan Raspl <raspl@linux.ibm.com>, Wen Gu
+ <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
+ <tonylu@linux.alibaba.com>, Ursula Braun <ubraun@linux.ibm.com>,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net v4 0/3] net/smc: bound wire-controlled CDC cursors
+ against the local buffers
+Message-ID: <20260720172810.347712b2@kernel.org>
+In-Reply-To: <20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me>
+References: <20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,18 +52,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  4 Jul 2026 15:22:54 -0700 Xiang Mei wrote:
-> The VXLAN VNI filter entry policy declares the GROUP/GROUP6 address
-> attributes as NLA_BINARY with only a maximum length, so validate_nla()
-> accepts a payload shorter than the address. The GROUP consumer reads it
-> with nla_get_in_addr(), an unconditional 4-byte load, so a short
-> attribute over-reads up to 3 bytes of uninitialised slab data, which are
-> stored into remote_ip and echoed back via RTM_GETTUNNEL, disclosing
-> kernel memory.
-> 
-> Switch both entries to NLA_POLICY_EXACT_LEN() so the validator rejects
-> any GROUP/GROUP6 that is not exactly 4 / 16 bytes; a valid address is
-> always sent at full width.
+On Sun, 05 Jul 2026 02:54:04 -0500 Bryam Vargas via B4 Relay wrote:
+> A peer's CDC producer/consumer cursors are copied from the wire and used,
+> without an upper bound against the local buffers, as (a) a raw index into the
+> RMB on the urgent path, (b) the receive length in smc_rx_recvmsg(), and (c) the
+> send length in smc_tx_sendmsg() on the SMC-D DMB-merge path. A malicious or
+> buggy peer can forge a cursor so each runs past the relevant buffer: an
+> out-of-bounds read of adjacent kernel memory (disclosed to the peer) on the
+> receive/urgent side, and, on the send side, an out-of-bounds write whose
+> length the peer controls and whose overflowing bytes are the local sender's
+> own outbound data.
 
-The netdev patch queue has overflown, if the patch is still needed
-you'll have to repost, sorry.
+The netdev patch queue has overflown.
+If these patches are still relevant you'll have to repost them.
