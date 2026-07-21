@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE75E1643B
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C07937756C;
+	Tue, 21 Jul 2026 01:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784596382; cv=none; b=REfkE2VMWCgVH0renRNRxV4wtxFZibGlqcnZOy1bFF2mkmxFmwZJv8SOX8TXxn5oyY6W/sOpnnag84mXNDzVxkcp/feaMgMLZhgi+37dz8BL+Q1n3uUTdOzWTiq/s65o5fCR/ju5STT5Q+OkrFnnZ8FDlK3DuVlDpgBpHC5hAbA=
+	t=1784596705; cv=none; b=Vnpgl0BDklqo+VlRULTCBSvGYscx2gskXUynlk5qpJJupDEdBaFRr/Z+wMOEfA6uaQ8uvBE63y3ukePleeRzNd591uWhsLNC0BLEZCTKRdIMtCRpDywqxay3CPQ29QUoliqqCvEOrlbB3ATXH7r+Sf4NY0VeGMXU9ZywFbT/CAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784596382; c=relaxed/simple;
-	bh=F6pW3Ewmar7TsFTg9YYa0oV4uHuWQ+Z9NmROLb2SWq4=;
+	s=arc-20240116; t=1784596705; c=relaxed/simple;
+	bh=c14T6QGvdi7yMWyZo64Srr+moyuzmONsZrib92hryTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EB9VKQHTcw89FRogrX7DDklqSQmv/kM42WWKZM5yJM5CP5t2/fRF21nos53bbfJtIMIYuAM40y/IBaEFRmWX2QQ0t75srtof5DawqVmDNa3y/PvW1ow4rSlbdavtvDTHqyvREWD5lz+/42rwbyMGBSUvV86EI0qEL1U8lBRmVs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmEsxL1s; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=nbxk2xCAWnDsP6lcesNjWkfia4BrAVm9BAmEonJCnp0e4hlfi4UHlOL2iQuHB5vvtTKrCEFSdPMMzKVQ4rWmlXsuTCKzt2NISiitAlImW1eRrCWboxWqK1S/SaQmQv941I8DWyDDq0q7hIhUq11+pGXe+/s4IxFyzurY1ZDu8rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zbsi1y/6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmEsxL1s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602011F000E9;
-	Tue, 21 Jul 2026 01:13:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zbsi1y/6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D3B1F000E9;
+	Tue, 21 Jul 2026 01:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784596381;
-	bh=LEdcsynDvv+UXK5WXaHCz3Ub7Hn/CbWK3Qd8EHqb8Hk=;
+	s=k20260515; t=1784596703;
+	bh=vAmfUNansB+D+6dNzfM7lM4oL9aUpkHY2hK7MJtk6oU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mmEsxL1sd0icUrbL8o2qiGSYQgFNtYQYd4nZf0WM+IPBMbynPyGgtxLsF4h0XGTIz
-	 1w6LZT6/Zpt11822xGWqNCpVDgdjMWsLGnjLYixyYo99ULojuCOa+CucE8lBzPXO74
-	 xkjLwzsBdopsJsdrxjoTUtSJ0+FzN5K9qWQ7u06LIqsHZ7NVW8Q9lb7jMUjQrwE7P9
-	 LcqPE1OXGdYHWVWkre5qaPQa1NwTz8ISQxQJ0U0DPN+UDjBjEZK2jHH9CBiTvbrM74
-	 8huCpcwz1FelPWsCK7kckyaez3uvSUnC8YcvTXxocM1YtUhtB9AQjaJAMqqmEUDDSa
-	 EMCQPzsey4rfw==
-Date: Mon, 20 Jul 2026 18:12:59 -0700
+	b=Zbsi1y/6GUgZVPc7N/P2bvBP3hNmSTTpvqOoMnvIzg6OztG50MTupcxhnpUAlfVeq
+	 RQA/7TZivuV49wapF4k92NFQ2lUtvT/+SM4uiAUd+n5+J9uyb6Vu9T4gr6VsjP0pKw
+	 GXAFQa5Jv3dalka5YiknPW9wowkD2D+uCz2yW0wqu9VWvXjsO39S/ajj8tbByJBtwG
+	 xPYuhgQFUz8HNu76EzCuN3uyZUOvBnE+mlCWhQpkyne+MtKbSdaSCirX92wLVKt7nh
+	 bnSO/lV385J5SgVOFfnurmWO3qfsKjehzibUP1Jn1Sb/ajfrK/wF6QeRK9/YF8pJIl
+	 k86q4Tb2mjKtw==
+Date: Mon, 20 Jul 2026 18:18:22 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+456957213f32970c0762@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] net: hsr: fix memory leak on slave unregistration
- by removing synced VLANs
-Message-ID: <20260720181259.4e5f976f@kernel.org>
-In-Reply-To: <178406192459.16306.5204629050926533917.b4-review@b4>
-References: <20260707082327.3238690-1-edumazet@google.com>
-	<178406192459.16306.5204629050926533917.b4-review@b4>
+To: zhangzl2013@126.com
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Hangbin Liu
+ <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Qianheng Peng <pengqh1@chinatelecom.cn>,
+ Zhaolong Zhang <zhangzl68@chinatelecom.cn>
+Subject: Re: [PATCH net] bonding: fix devconf_all NULL dereference when IPv6
+ is disabled
+Message-ID: <20260720181822.20b0456b@kernel.org>
+In-Reply-To: <20260707010622.487333-1-zhangzl2013@126.com>
+References: <20260707010622.487333-1-zhangzl2013@126.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,29 +49,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Jul 2026 22:45:24 +0200 Fernando Fernandez Mancera wrote:
-> > When an HSR master device is brought UP, it auto-adds VLAN 0 via
-> > vlan_vid0_add(), which propagates VID 0 to its slave devices.
-> > 
-> > If a slave device is later unregistered while HSR is active (e.g., during
-> > netns cleanup or interface destruction), hsr_del_port() is called to
-> > detach the slave port from the HSR master. However, hsr_del_port() currently
-> > does not delete the VLAN IDs that were synced to the slave device by HSR.
-> > 
-> > As a result, the slave device retains a refcount on VID 0 (and any other
-> > synced VLANs). When the slave device is destroyed, its vlan_info /
-> > vlan_vid_info structure remains allocated, leading to a memory leak.
-> > 
-> > Fix this by calling vlan_vids_del_by_dev(port->dev, master->dev) in
-> > hsr_del_port() before unlinking the slave device, matching the cleanup
-> > behavior in bonding and team drivers.
-> > 
-> > Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
-> > Reported-by: syzbot+456957213f32970c0762@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/netdev/6a4cb6ca.57639fcc.86d58.000b.GAE@google.com/T/#u
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> 
-> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+On Tue,  7 Jul 2026 09:06:22 +0800 zhangzl2013@126.com wrote:
+> When booting with the 'ipv6.disable=1' parameter, the devconf_all is
+> never initialized because inet6_init() exits before addrconf_init() is
+> called which initializes it. bond_send_validate(), however, will still
+> call bond_ns_send_all() even ipv6 is indeed disabled. It will lead to
+> NULL derefence of net->ipv6.devconf_all in ip6_pol_route().
 
-Just to confirm - is the sashiko review a false positive?
-https://sashiko.dev/#/patchset/20260707082327.3238690-1-edumazet%40google.com
+Applied, thanks.
