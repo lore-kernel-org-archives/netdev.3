@@ -1,109 +1,142 @@
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9749546C4B4
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BBB46A616
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784649773; cv=none; b=mRfRbTDrEYz7t9314WrEFvThtREcHAIiabB6LMyWxNeh42XwjR92rm12byAe6UG6NezKPJkm6njNcYWS2iLUr2e2bGPw6KuwKGBquW8FyJ70+NwlUvhcvdQSfA6bZpSZhUVqXX14iulKwZQvVlyQSMrycKZdCkH9TD+T2MqXMkk=
+	t=1784649800; cv=none; b=lDanu5HjA8Zis5lPTa4bfsK7PIcJA51suYMReRPqO3A5Gom/7+atvh1O7UlkCAWTBZ10ljcIf2rdO0Z5zZGeJMDYb/tlQ6DBJMnWWYJbyho/OiB7rq6xTDsH3GWFgF+2AytSOvhYw6r0bIpG0q0lJBpoSZ2bsBoZjgMaW9Wrcfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784649773; c=relaxed/simple;
-	bh=vhhWzyN+I0N7rNZjufC3YRpB5qa/zvBfQPTyWRUEH6Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B1sz88v/a6FN7/5hqXSN7AIAupYhl9QjB7zTjpqUMkROoaB1cn8+qT+MjGX28j0tXhzwvt+ouY5ZefcbrwKKOjs931F+oIntmzVgeeuLyDsjoRMIYxamxyj2mi05VxXgHv/Hk/3zNjkKJpMLMZePHqM7f+xBjcFfsJNrD5ZsZ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XaKWe8Ut; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784649800; c=relaxed/simple;
+	bh=c2ewRYXQ+Xw6aF2NE4gfaa+rkwXYCqzqT0g8wmMW7CI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NMlMq6tZkCrGYCFgbaapLtNuyk32EvofOOnisYN4ru1yloyKLUH6jXb5HXnjPoSjXxfHksH4SF657PgpurSv7BuRIpoIcBytqIcU0sqCL0zmXdcbxz48ajhzQr7dg7lWL4BrJlH17bUusINouqezZrymc1lEw4svtv2y6v5lqY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LkPrSVeD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GI1jll/R; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XaKWe8Ut"
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-97715c7df46so333025241.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:02:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LkPrSVeD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GI1jll/R"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784649797;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L2SwOfNDWEpMwWAcjkHwIVtdWNZTFYw1ucBElhTmnHs=;
+	b=LkPrSVeDJdcSQsnWBBO8HcEhYI4HNOERmFxK/TuIJItYDs0w2ho8yl5Jc3uJl9fB7mxNY/
+	nfOLAoYG/Z4thBd3RLtlXTA/BqB7xd+RdQi9l53vrZNgSyXmNluGGyqi3AetOBb/7S1ugm
+	xOXmgn/DkvtjPT47oNHaF2S+wgd6iaQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-277-ZtAPwApTMpOVBPenyhRwMg-1; Tue, 21 Jul 2026 12:03:14 -0400
+X-MC-Unique: ZtAPwApTMpOVBPenyhRwMg-1
+X-Mimecast-MFC-AGG-ID: ZtAPwApTMpOVBPenyhRwMg_1784649793
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6e658363so2415372f8f.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:03:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784649770; x=1785254570; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wE5VX25D0QUPiT5vUwaJH5UHOU0aSZrWQyQNqql837I=;
-        b=XaKWe8UtPYvooOlORnjrklQYM4/qHBwoyuJ4a9WPP73LKEQ7e5xmAdXiCccBgFW6Mi
-         LKqzAUSxd96RLiVuFmxS7LegG5ZvH3EmItV/ruYT/s0t14mJIng9E/WPzR1fPZuR1W4F
-         gt7DuTtgRw9SuDp9Ksh89K7zmg8KEW8RZbkVfXUSvJMiVQd3GoJuLJ7rj/411Ft0SVO+
-         FoypJc3v6jFxUKwFF/5GACHnb7abPC7oqJCOUivgZhq8etwhN89iZ6xM1V60diLRSgSx
-         f5kI1qdEVw4eZbPLMbraTktqJBIQwYoJjUij0KRXkkU6Vl4DK/DIwzviZ647gsP+cIkh
-         BsIg==
+        d=redhat.com; s=google; t=1784649793; x=1785254593; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L2SwOfNDWEpMwWAcjkHwIVtdWNZTFYw1ucBElhTmnHs=;
+        b=GI1jll/RR/ig383WJoJ4KrfOVoKQOXJx9L7gKbufzTODU8LHolRWAlDu3aURzhZxVM
+         /t44cgQ/1dRkMv0vspX5FNE7pJ3E4bSEJoUF1EfBQVlnz+qw/7BIcZgcb4X24lxDNlPq
+         95GRFEqe9AYKIdj+Lvx+t7gG5vTQiWCd9rJJotQgcDIfAM8nqXRTQyzCz78RQkDltkVy
+         uS9M8FOSUylm01gwQPWjbpZfsuOBW4yjw76aw5gTWLGCl4NbjhM8ExP9jf9bloT1O3jD
+         jrj70+sXu2wAFJ3KhI7pMFQfAffeulAN6yVKJI4Iv5FptjGXEeSYjHglTg+kKXBL+2Mp
+         AE6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784649770; x=1785254570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784649793; x=1785254593;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wE5VX25D0QUPiT5vUwaJH5UHOU0aSZrWQyQNqql837I=;
-        b=fwa1J0qOzdbGwZIi6C8p/9jGZkd/+L0fPIjMZHiARHrD7F6tCgetY7h2trRLFe/eUg
-         GmucKm1xeIQSwVwM8mHYxAkF9za75I6xl4s3wXZixLany1SmC1XHxPiKKTDZ7wJBydIz
-         dYtZw186db/fnDYkYfQQW9KfPOqPQ90EziRbIpqkZdCmQeZEHXTDweExBRcdAFX/RYgM
-         c8D0PfwE7g8QvQiCrXHuFdkMAGOdKua8QP9BouNDRovcbvoxQPMecJ4psEbEgebTopvG
-         FbW0z3yG3G2L5WZPIwyZmThIXZYztHQZpQ5plpp0K2Xi/ZzUPvP5mFtNGaM4QM4Gu8n3
-         5WKA==
-X-Forwarded-Encrypted: i=1; AHgh+RovZfRNWXBzemGdyM4q5g8EaB1Z6u238/phzkxOrt5D03HOYTYT0CATKGEijdUNTgYjDfzpQW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz23ll0JLeem7xQ7jkaXaJDNczLmbvzall7+u/6Ne85MJKkeW4B
-	cUpUr7A5NNNvGibm6NiqWHgCHKJLTvezaHbxFMeqS9tPKN4cs8uT5tXvJH3yRfPILk0CRg==
-X-Gm-Gg: AR+sD11fEUyzH5Ndw/QMI6xz6w/4+r9XfnM/cl2F6ZknTTaJ6wStHV4+2tApHNdjrJM
-	5/p9RYCm5d9mFUeafacAReCrD89Nd2eQlIZXsmUFtqcxJV0dfcXRGQh80i/CP3jspsyWzk3BfyR
-	EoHpPJCzpwYxO3Fc/LH37GlHySrIbzR2O//XVcmsFzxWBZuclZCZiHXTvIlf1LzMskK66XuDcCs
-	EOWL1zMb0UWwdfUpHBOphoQSbzgSryDxabqKIAQJqBV6Sh//bnGfHOP/SOrHIfQqHnVfxXvhPDE
-	pkS1cSv0x2tg7D2dPBqFz2ZVEnAxjJwrBpE3BzDSXSosFbcoFuzi4VoMVhivId06EL65SvQiVuL
-	ohXvZXZpyqp/ozQHOweqvNCvPU8lb83QUNGjkUtgGqcnDdqiS/J7d4j4bWLJhhhLpgI5fdcjNPR
-	W7+DNR5/9s2L67RAn2sNj/8MJVsUbQj9/zCTNEXKwgtAh1a+m5xy0Js7rnNFUPVa+vNG9tHm2m9
-	eGeFaM=
-X-Received: by 2002:a05:6102:4486:b0:739:4fa1:50af with SMTP id ada2fe7eead31-74753469470mr5448540137.2.1784649767844;
-        Tue, 21 Jul 2026 09:02:47 -0700 (PDT)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-74757fad039sm12389612137.5.2026.07.21.09.02.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 09:02:47 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-07-21
-Date: Tue, 21 Jul 2026 12:02:40 -0400
-Message-ID: <20260721160240.884274-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        bh=L2SwOfNDWEpMwWAcjkHwIVtdWNZTFYw1ucBElhTmnHs=;
+        b=H/+EmODG/2VsjQLtiAi9A6S21615byCBI7gb9VSk76dmL/wS51dOn+cvlBJOVDFss4
+         d2nMzLxHBUd332Y4x5saIfouGxVUkC0wtnbUxgNK4soSDBa0qfI+gOFCZs5AZGaxB1Pl
+         6NCDYSg8wYeK2kEYWLdGwi7nnOzKvrs4FQ+H7bZvzQK9EKhFBrjjUJzkCl5FCuJ0xxQn
+         hOHy87DxLYtofUup+lNti/ilwV94IgNAX4ywz0mjUqIG/+tgGt2X77zWJE3NMpaG6k0b
+         znoh4O0AUMhGoIcVfesdntiFg85Dej9hTJuPKFzIhVeW6FIdeNJAXJ7sFcx8QVtFr0Jg
+         nvMw==
+X-Forwarded-Encrypted: i=1; AHgh+RqqhwOhwYIisqSsOxf0GAZ1xt1NMf6lbpagprvqXVcW4u75v9VnBj3f6Ll9wMeFjpzLNm912lM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE3HCbCX2vZvZSUJIQWd99w8YOrwOdymOcwg7J7LUP+InHhIqk
+	dpoPEwlbsgXp8xyoCI2f2d5AgdWhns1syQAooJxDDw9QOc46FaJBcUjhZNK6c2v7s4EywXoi3bj
+	PKo+zW5VUieQeBajuNVhISvmums2chRoqJvzAxDcOyQ1W/xEbTh4Q40IxJA==
+X-Gm-Gg: AR+sD109FeYkWbvSwJm4cKL8qQQsW8ftNiRKJ6eJPVSYfMrfifIQ7gAzjpjKIjgMwCW
+	Kgr50klxXaG8vvO+egMtXRF6sogQIjQyvHa2O+lTIHMtM89ziY7iu8UEk6GM9iCK508q3NqV0yO
+	iDSRRUcTCoHhoFA3wrcG2bIRHDYzYMxFN/fJ3cdlNXhsQLVduj9iInlCqtq+ocuNEORJOLaq1Xc
+	rKzNmwMR+S1VBumdsILp+zj03OiZ0LR6f3gY1UirQ356UqqaujgpEk2M8VP7vh9NM2WRTPOs/sj
+	pLTWvMV7YLqdu0awfW7Oq7FxvKY0naTsskHNdZi05Z2VAuRiQTunq7rCwDs/MSLQfPFy4rU6lsE
+	RQ9VQJ4477HXzIM/KvE86nhtg6Glm6ZwqOyFsyWYMptz9SY8ufeIhXHBkKOBTEXIcS0xl+tAlVz
+	YAVA==
+X-Received: by 2002:a5d:5d0e:0:b0:472:7dce:d8c7 with SMTP id ffacd0b85a97d-47f62328198mr22722711f8f.36.1784649793217;
+        Tue, 21 Jul 2026 09:03:13 -0700 (PDT)
+X-Received: by 2002:a5d:5d0e:0:b0:472:7dce:d8c7 with SMTP id ffacd0b85a97d-47f62328198mr22722641f8f.36.1784649792662;
+        Tue, 21 Jul 2026 09:03:12 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f67466e09sm43781736f8f.21.2026.07.21.09.03.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2026 09:03:10 -0700 (PDT)
+Message-ID: <79cdf453-1569-4ae5-b317-2aace4258ecc@redhat.com>
+Date: Tue, 21 Jul 2026 18:03:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net/tcp: Prevent inlining tcp_syn_ack_timeout()
+To: Jakub Kicinski <kuba@kernel.org>, edumazet@google.com
+Cc: Emil Tsalapatis <emil@etsalapatis.com>, netdev@vger.kernel.org,
+ ncardwell@google.com, kuniyu@google.com, davem@davemloft.net
+References: <20260708180837.9507-1-emil@etsalapatis.com>
+ <6c01c713-14a8-43c2-aaaf-2fcf622f7e4f@redhat.com>
+ <20260721081240.1b88db50@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260721081240.1b88db50@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The following changes since commit e13caf1c26587434f0b768193100440939c0fb91:
+On 7/21/26 5:12 PM, Jakub Kicinski wrote:
+> On Tue, 21 Jul 2026 15:24:52 +0200 Paolo Abeni wrote:
+>> On 7/8/26 8:08 PM, Emil Tsalapatis wrote:
+>>> The tcp_syn_ack_timeout() function gets inlined by Clang,
+>>> preventing tracing. Since the call is not in the fast
+>>> path, prevent it from being inlined.
+>>>
+>>> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+>>> ---
+>>>  net/ipv4/tcp_timer.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+>>> index bf171b5e1eb3..f7215d53bbda 100644
+>>> --- a/net/ipv4/tcp_timer.c
+>>> +++ b/net/ipv4/tcp_timer.c
+>>> @@ -748,7 +748,7 @@ static void tcp_write_timer(struct timer_list *t)
+>>>  	sock_put(sk);
+>>>  }
+>>>  
+>>> -void tcp_syn_ack_timeout(const struct request_sock *req)
+>>> +noinline_for_tracing void tcp_syn_ack_timeout(const struct request_sock *req)
+>>>  {
+>>>  	struct net *net = read_pnet(&inet_rsk(req)->ireq_net);
+>>>    
+>>
+>> What's the point of tracing such function? It just increment a mib. If
+>> you want to discriminate between TFO and non TFO syn ack timeout,
+>> possibly adding another MIB counter and incrementing it in
+>> tcp_fastopen_synack_timer() would be better???
+> 
+> FWIW we seem to capture the 5 tuple when it happens, not just mib
+> counter. Internal commit (form 2019) just says we want to know when 
+> syn-ack is blackholed, unclear under what conditions this happens.
+Thanks for the context infos. I'm fine with the patch as-is.
 
-  Merge tag 'net-7.2-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-17 10:25:13 -0700)
+/P
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-07-21
-
-for you to fetch changes up to df541cd485ff80a5ddc579d99687bc7506df9851:
-
-  Bluetooth: btusb: validate Realtek vendor event length (2026-07-20 17:41:28 -0400)
-
-----------------------------------------------------------------
-bluetooth pull request for net:
-
- - hci_sync: Protect UUID list traversal
- - RFCOMM: Fix session UAF in set_termios
- - btusb: validate Realtek vendor event length
-
-----------------------------------------------------------------
-Chengfeng Ye (2):
-      Bluetooth: hci_sync: Protect UUID list traversal
-      Bluetooth: RFCOMM: Fix session UAF in set_termios
-
-Pengpeng Hou (1):
-      Bluetooth: btusb: validate Realtek vendor event length
-
- drivers/bluetooth/btusb.c      |  4 +++-
- include/net/bluetooth/rfcomm.h |  3 +++
- net/bluetooth/hci_sync.c       | 13 +++++++++++--
- net/bluetooth/rfcomm/core.c    | 17 +++++++++++++++++
- net/bluetooth/rfcomm/tty.c     |  7 +++----
- 5 files changed, 37 insertions(+), 7 deletions(-)
