@@ -1,79 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F4C30C144
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C5312825;
+	Tue, 21 Jul 2026 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784640040; cv=none; b=D1CnUsjnsXP4vFvs7boVN2OA1NoX5tFnGO0SXImT/luz/UvyhyUMg20F1JdBbfGy1Z2ogbZPuQz2c64feT31ouaycD1Vk2YI+03HkRKt2rXcqpVXffrRhHCEi2Lx5H6vxfY6ZANbHUorUOL/sD/3eGstmv2yjlLkWiEqnExhypg=
+	t=1784640175; cv=none; b=BIIU3rmUzcoEGBeJ6yql1RUIAgBLDoT354mJVaVyeJsMh0A43WK/g1Bk03M8HPnx7f/P1IoDP7k8essQva+wUm+edICcj8R4N42TP3haSri2Is8N4s2fspNzuiWc+PhU9pHDu+NEZbFcFmvQlYxLOYCTWZIh9G3cnGbSMVLAljA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784640040; c=relaxed/simple;
-	bh=telyvhsxZgH3kJd/7tS9veaJzbWRABa6C38tOiVp/kk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BMwJFpw5W0ksgtd0fsLGR+J3va2K5EyFCirGx+Ax2MrJ49ygp1zOmUgF59kTUSQx5U2NhDGWGNOJ98QOPoN3jB975CTw4D7njWrKgnrTefya/WU2zGF704gcINiIGIfZcm+VQBEpUmgEtXybdihP0DImrs4OmvtEmwJNIqwuxpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQdf/jm4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784640175; c=relaxed/simple;
+	bh=5YOzWK+khTkGJQ3jDlGpfQh7feWylJ2ODmdgu/ugXzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bNXj2x3C7zTPPqcoZd7tp1RKQhtxV+op9wtGRqEnPgK0nEr76ynsouOu+5CFws9X7zR9qkiaRLUFDT5DPvakFFiW5ldtEHacdfASuQQtgQXsgArDBozjPLN+HnOTVKjcD+G2hIGOUzJVfluF9QfQguMBOTmFfVeRaILGT2ld/FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIRR2YO8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQdf/jm4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75E41F000E9;
-	Tue, 21 Jul 2026 13:20:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIRR2YO8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A371F000E9;
+	Tue, 21 Jul 2026 13:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784640038;
-	bh=eyNq4JZWJyKQpnEEe9UgVMHmM3AtfPTqsy0xxEBYfaA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WQdf/jm4+/emceMU9HLVUuwJxTtyfmJvpXNIhRmKpu9EMINiiKzViZPFXAAjVUlTa
-	 ZG4ho2ApW+r8OwP9kBV0U3+M1bYwKnjANvMA3sDD80zEg4fExBZ96u5sGdiXYZUyDl
-	 +wjJFlITAAnPJ+PqLddCxG/ow0QrGelRbB/4lhPQcgSpMgMuEQ2/DylGL805o5zMH9
-	 klnWyMK32m1bGpKF9Ghc6FpJvobwNZigXks6XjqBliC0YLa0G/Pvm7ST0LKv2NhbDv
-	 ZYQTgqTgNPau5keKZBJ438n51s9TF9OARPfQcCQphVuzYLPtVUQLebCZW8kkbBOqL+
-	 cUQFfNnyQoIWA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09733924FDF;
-	Tue, 21 Jul 2026 13:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784640173;
+	bh=e04GOQXBNvml6utMGMyZDe57hLBIsWZEIxIS0FG7u50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cIRR2YO8LNjM8k10MPGMbwGpiTTEnSwGUf7VxKv0gpyMQyB9rW5O4InJArsW/MPjz
+	 1tqe7Qm2WrRCOM8CVBNOWt8HmtYkZvItlBA7ktns+ZiNNZrgycHxERwdklCL8IyifG
+	 dlji+J7czrkfC7Od//7cxvKiYr8732PMa5OOGpRdwrXpw3IuJTCKUMFBS1KJhCywCV
+	 UpZSj5wdBBj7Kb1QLa6tXb0Hdxd/hH41C4/icucb+FWbiDRUrHstJd5Y2GbnSjjsAw
+	 /pzEbnbTJ5zbBhYq5G/bV2qUY/m3qbGvYCZeN/dJiKe1WB0VScZn3eBLeoaUoRtj9R
+	 bU43MX5g3n3Dg==
+Date: Tue, 21 Jul 2026 14:22:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+Cc: jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrew@lunn.ch,
+	netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, vadim.fedorenko@linux.dev,
+	tung.quang.nguyen@est.tech, AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com, kys@microsoft.com
+Subject: Re: [PATCH net v5] tipc: fix u16 MTU truncation in media and bearer
+ MTU  validation
+Message-ID: <20260721132248.GI19108@horms.kernel.org>
+References: <20260714041541.307702-1-blbllhy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] pds_core: reject component parameter in legacy
- firmware
- update
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178464000839.281806.4250842208013027704.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 13:20:08 +0000
-References: <20260708163649.128620-1-nikhil.rao@amd.com>
-In-Reply-To: <20260708163649.128620-1-nikhil.rao@amd.com>
-To: Nikhil P. Rao <nikhil.rao@amd.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, brett.creeley@amd.com,
- eric.joyner@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714041541.307702-1-blbllhy@gmail.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed, 8 Jul 2026 16:36:49 +0000 you wrote:
-> The legacy firmware update path does not support per-component updates.
-> If a user specifies a component parameter with devlink flash, reject
-> the request with -EOPNOTSUPP rather than silently ignoring the component
-> parameter and flashing the entire firmware image.
+On Tue, Jul 14, 2026 at 12:15:41AM -0400, Cen Zhang (Microsoft) wrote:
+> Both TIPC_NL_MEDIA_SET and TIPC_NL_BEARER_SET accept user-supplied
+> MTU values but only enforce a minimum bound, not a maximum. When a user
+> sets the MTU to a value exceeding U16_MAX (65535), it passes validation
+> but is silently truncated when assigned to u16 fields l->mtu and
+> l->advertised_mtu in tipc_link_create(). Values like 65536 (0x10000)
+> truncate to 0, causing a division by zero in tipc_link_set_queue_limits()
+> which computes TIPC_MAX_PUBL / (l->mtu / ITEM_SIZE). Other overflowing
+> values (e.g. 65537-131071) produce small incorrect MTU values, resulting
+> in link malfunction behaviors.
 > 
-> Fixes: 49ce92fbee0b ("pds_core: add FW update feature to devlink")
-> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+> Crash stack (triggered as unprivileged user via user namespace):
 > 
-> [...]
+>   tipc_link_set_queue_limits  net/tipc/link.c:2531
+>   tipc_link_create            net/tipc/link.c:520
+>   tipc_node_check_dest        net/tipc/node.c:1279
+>   tipc_disc_rcv               net/tipc/discover.c:252
+>   tipc_rcv                    net/tipc/node.c:2129
+>   tipc_udp_recv               net/tipc/udp_media.c:392
+> 
+> Two independent paths lack the upper bound check:
+> 1. tipc_udp_mtu_bad() -- called from __tipc_nl_media_set() (MEDIA_SET)
+> 2. inline check in __tipc_nl_bearer_set() at bearer.c:1160 (BEARER_SET)
+> 
+> Fix both by rejecting MTU values above U16_MAX.
+> 
+> Fixes: 901271e0403a ("tipc: implement configuration of UDP media MTU")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Closes: https://lore.kernel.org/all/CAB8m9WgETt0AjmFwE=F-CKjGXsK6_WDv0=kbYRcC8-noo+amnA@mail.gmail.com
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+> v5: Drop .min from range struct (min check already in handler)
+> v4: Add .min check value
+> v3: Use nla_policy check to limit MTU max value as suggested by Vadim
+> v2: Solved format issue
+> Link: https://lore.kernel.org/all/CAB8m9WgETt0AjmFwE=F-CKjGXsK6_WDv0=kbYRcC8-noo+amnA@mail.gmail.com
 
-Here is the summary with links:
-  - [net] pds_core: reject component parameter in legacy firmware update
-    https://git.kernel.org/netdev/net/c/7be2552e601c
+Thanks,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I believe that v5 covers all the bases wrt review of earlier versions.
 
+Reviewed-by: Simon Horman <horms@kernel.org>
 
