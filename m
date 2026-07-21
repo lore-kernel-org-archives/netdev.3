@@ -1,47 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237A53EBF02;
-	Tue, 21 Jul 2026 17:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080873FFAD1;
+	Tue, 21 Jul 2026 17:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784655174; cv=none; b=JEFd7JU8fbRIg6LQmwBnmFQeez+TBNF08b9V0EtEDzpgBnXkJLkCQg85lgYGy170J6VqfSmt/1YEatWEZ+XS/VEjza5bzfjmMJ/MXjry/xV3h9rzhDqPKk9doVOTxdSECZQMZT4WxAOk+yQdhWN7YDFsG3nvY4rSsgQPYlt7miY=
+	t=1784655772; cv=none; b=tf0yQzUHOAVAjUsFa8AZKr34vpl2LusRgg+LpZ7UcWnlbaQ6FBlnIt0d/W9EBqzT/xtt0MiHG63MfkEZM/XAZtQB58FJdx/+yvDYgQe6/XoYSbk5r+znJrqPfifYI4T9R3aIktS1/UZsNQZyVbeSJrt2BPwuiBAZjufbu0dYM7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784655174; c=relaxed/simple;
-	bh=wkQayWJmLW5+KYmhUWqfY5VB6vy+t0BzTewB/Q29M8g=;
+	s=arc-20240116; t=1784655772; c=relaxed/simple;
+	bh=uX1TFoFmHp3s41wK4xd0cVaSj/v4V7louZzn5RsQkYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1mlSD8vJ45yGZeWGs5C9mp8ZXiCdeKJE0C5W/pNcFB2WVXAPCW9RKZddRaWoYIXBXMz/oeN2vnRlbkcuLKsp61dZRC39gFYNqR7AV3XuSYaQaKvZqw7H/Le9jDDruG1WkKA9QUsElNnH6uST3CevyN2kjCG37E2BiA8obmoGZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ht9poUj3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=LERdSnuCltnqQwkwt8szHYCdKEQJcm1LFpzE4DPzj3l3GtClqNhQyAxVUhlq0Atzb3GWaLnO5jMxHjjHZ6KwG24l2ybIVztYkX3gTnjuKLNCskm61SZ8DE+J/TKifPvneHW515cCgWGPw+8fw8oFjCvGF0mafD9kCcjRdZr6ZPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSv4mG9m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ht9poUj3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B142A1F00A3A;
-	Tue, 21 Jul 2026 17:32:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784655172;
-	bh=+tILezz2oFHtMjMEfFuO0XD7zeGAFF3vn5cDnbVb478=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSv4mG9m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238F11F00A3A;
+	Tue, 21 Jul 2026 17:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784655770;
+	bh=Qs5Gg6NQG5qgry7TO0mMYwc3Oul0GiK8K1O+spC+UyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ht9poUj3cIrVUC/apq8M3DGskPj2UkAJrCBnjgpSmv1yZ6gVtREM5ymKDyIeKUzA6
-	 gj1IjVCMYmUegmkiCPzeV6fBeXKm1WHgKI0btf9ijZCC3lEgvR0dFmWTR4p8fzIZZ5
-	 XwWJPakoE9vkxQZojOI0ayKDrr8GLfxKv6RlxKv0iBiro58KClzHhBQ3YJX+ZP95ab
-	 /ipB2bWVya4DtluuIE2N3fef+1o2JQ7HOGWqOeJywg+kXoFUmvaCN33dBoLnWwxakm
-	 /C7wn3VYnzR5Jx0Cm29VosmeOhORt2EoquHVAWIo1DCYZOZcuSnTLSTNrhNpJQCqWS
-	 oZIHVX9SuoY6g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mmyangfl@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
+	b=FSv4mG9mUQFAr5sS/AzRS6t9dXPzY9H/n8zXRKtdkGYE4Ksh60nZTc5xy9A/SPIX+
+	 SYW0ctYaAKjtcTRgVcJKxY5jgWZj9zNk6NYnMMVhicuxgcOfQL9jiHAHm107ZDCi2r
+	 o0ndpjhedyCgrWAV4sQaWaudG31mWVGpGPiYwxIw=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Dmitry Safonov <dima@arista.com>,
+	Francesco Ruggeri <fruggeri@arista.com>,
+	Salam Noureddine <noureddine@arista.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Michal Luczaj <mhal@rbox.co>,
+	David Wei <dw@davidwei.uk>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
 	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 3/3] net: dsa: motorcomm: Add LED support
-Date: Tue, 21 Jul 2026 10:32:48 -0700
-Message-ID: <20260721173248.815203-1-kuba@kernel.org>
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Aleksa Sarai <aleksa@amutable.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 0134/1611] uaccess: fix ignored_trailing logic in copy_struct_to_user()
+Date: Tue, 21 Jul 2026 17:04:10 +0200
+Message-ID: <20260721152517.888258701@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709014812.1158178-4-mmyangfl@gmail.com>
-References: <20260709014812.1158178-4-mmyangfl@gmail.com>
+In-Reply-To: <20260721152514.750365251@linuxfoundation.org>
+References: <20260721152514.750365251@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,246 +72,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+6.18-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Stefan Metzmacher <metze@samba.org>
+
+[ Upstream commit 4911de3145a797389577abfdf9a5185d36cc18d7 ]
+
+Currently all callers pass ignored_trailing=NULL, but I have
+code that will make use of.
+
+Now it actually behaves like documented:
+
+* If @usize < @ksize, then the kernel is trying to pass userspace a newer
+  struct than it supports. Thus we only copy the interoperable portions
+  (@usize) and ignore the rest (but @ignored_trailing is set to %true if
+  any of the trailing (@ksize - @usize) bytes are non-zero).
+
+Fixes: 424a55a4a908 ("uaccess: add copy_struct_to_user helper")
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
+Cc: Dmitry Safonov <dima@arista.com>
+Cc: Francesco Ruggeri <fruggeri@arista.com>
+Cc: Salam Noureddine <noureddine@arista.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Michal Luczaj <mhal@rbox.co>
+Cc: David Wei <dw@davidwei.uk>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>
+CC: Kees Cook <keescook@chromium.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-bluetooth@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Link: https://patch.msgid.link/71f69442410c1186ed8ce6d5b4b9d4a5a70edbad.1775576651.git.metze@samba.org
+Reviewed-by: Aleksa Sarai <aleksa@amutable.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-net: dsa: motorcomm: Add LED support
+ include/linux/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch adds LED support for the Motorcomm YT9215 DSA switch, allowing
-up to 3 LEDs per port to be described in the device tree using a format
-similar to qca8k. Only parallel mode and strict 1:1 mapping are supported.
-
-> diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
-> index 1fddd386f866..3438e0b14361 100644
-> --- a/drivers/net/dsa/motorcomm/Kconfig
-> +++ b/drivers/net/dsa/motorcomm/Kconfig
-> @@ -6,3 +6,12 @@ config NET_DSA_YT921X
->  	help
->  	  This enables support for the Motorcomm YT9215 ethernet switch
->  	  chip.
-> +
-> +config NET_DSA_YT921X_LEDS
-> +	bool "LED support for Motorcomm YT9215"
-> +	default y
-> +	depends on NET_DSA_YT921X
-> +	depends on LEDS_CLASS=y || LEDS_CLASS=NET_DSA_YT921X
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 6dee25b6754a..553efacd4f5e 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -4581,6 +4580,12 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
->  	if (res)
->  		return res;
->  
-> +#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-> +	res = yt921x_leds_setup(priv);
-> +	if (res)
-> +		dev_warn(dev, "Failed to setup LEDs: %d\n", res);
-> +#endif
-
-[Medium]
-When yt921x_leds_setup() fails, the current handling is a dev_warn plus
-continue. Looking at the error path inside yt921x_leds_setup():
-
-    for_each_child_of_node_scoped(leds_np, led_np) {
-            res = yt921x_led_setup(priv, port,
-                                   of_fwnode_handle(led_np),
-                                   &inv_mask, &inv_ctrl);
-            if (res) {
-                    of_node_put(leds_np);
-                    goto err;
-            }
-    }
-    ...
-err:
-    yt921x_leds_remove(priv);
-
-A single malformed subnode on any port (for example reg >= 3, both
-active-high and active-low set, or an LED entry attached to the MCU port)
-makes yt921x_led_setup() return non-zero, and yt921x_leds_setup() then
-tears down every LED that was previously registered on every port. From
-the user's perspective this appears as a single dev_warn followed by a
-switch that has no working LEDs at all, even on correctly-configured
-ports.
-
-Would it be preferable to log the failing LED and continue registering
-the rest, so a single DT typo does not disable the whole LED subsystem?
-
-> +#endif
->  
->  	return 0;
->  }
->  
-> @@ -4681,6 +4686,10 @@ static void yt921x_mdio_remove(struct mdio_device *mdiodev)
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/motorcomm/leds.c b/drivers/net/dsa/motorcomm/leds.c
-> new file mode 100644
-> index 000000000000..46749b57fee3
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/leds.c
-> @@ -0,0 +1,630 @@
-
-[ ... ]
-
-> +static const struct yt921x_led_trigger_map yt921x_led_trigger_maps[] = {
-> +	{BIT(TRIGGER_NETDEV_LINK),
-> +	 YT921X_LEDx_PORT_ACT_DUPLEX_HALF | YT921X_LEDx_PORT_ACT_DUPLEX_FULL},
-> +	{BIT(TRIGGER_NETDEV_LINK_10), YT921X_LEDx_PORT_ACT_10M},
-> +	{BIT(TRIGGER_NETDEV_LINK_100), YT921X_LEDx_PORT_ACT_100M},
-> +	{BIT(TRIGGER_NETDEV_LINK_1000), YT921X_LEDx_PORT_ACT_1000M},
-> +	{BIT(TRIGGER_NETDEV_HALF_DUPLEX), YT921X_LEDx_PORT_ACT_DUPLEX_HALF},
-> +	{BIT(TRIGGER_NETDEV_FULL_DUPLEX), YT921X_LEDx_PORT_ACT_DUPLEX_FULL},
-
-[ ... ]
-
-> +static int
-> +yt921x_led_trigger_get(struct yt921x_priv *priv, int port, int group,
-> +		       unsigned long *flagsp)
-> +{
-[ ... ]
-> +	*flagsp = 0;
-> +	for (unsigned int i = 0; i < ARRAY_SIZE(yt921x_led_trigger_maps); i++) {
-> +		const struct yt921x_led_trigger_map *map = &yt921x_led_trigger_maps[i];
-> +
-> +		if ((val & map->mask) == map->mask)
-> +			*flagsp |= map->flags;
-> +	}
-> +
-> +	return 0;
-> +}
-
-[Medium]
-Does this iteration over-report the flags for TRIGGER_NETDEV_LINK?
-
-The LINK entry in yt921x_led_trigger_maps sets both DUPLEX_HALF and
-DUPLEX_FULL bits. After yt921x_led_trigger_set(LINK) programs the
-register with those two bits, yt921x_led_trigger_get() scans every map
-entry without breaking:
-
-    /* LINK entry: (val & (HALF|FULL)) == (HALF|FULL)  -> match */
-    /* HALF_DUPLEX entry: (val & HALF) == HALF         -> match */
-    /* FULL_DUPLEX entry: (val & FULL) == FULL         -> match */
-
-So *flagsp ends up as LINK | HALF_DUPLEX | FULL_DUPLEX rather than just
-LINK. Should the map entries with overlapping masks be handled specially,
-or should the loop break/clear after a compound match like yt921x_led_
-trigger_set() does with flags &= ~map->flags?
-
-[ ... ]
-
-> +int yt921x_leds_setup(struct yt921x_priv *priv)
-> +{
-[ ... ]
-> +	dsa_switch_for_each_port(dp, ds) {
-[ ... ]
-> +		for_each_child_of_node_scoped(leds_np, led_np) {
-> +			res = yt921x_led_setup(priv, port,
-> +					       of_fwnode_handle(led_np),
-> +					       &inv_mask, &inv_ctrl);
-> +			if (res) {
-> +				of_node_put(leds_np);
-> +				goto err;
-> +			}
-> +		}
-> +
-> +		of_node_put(leds_np);
-> +	}
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +
-> +	mask = YT921X_LED_CTRL_MODE_M | YT921X_LED_CTRL_PORT_NUM_M |
-> +	       YT921X_LED_CTRL_EN;
-> +	ctrl = YT921X_LED_CTRL_MODE_PARALLEL |
-> +	       YT921X_LED_CTRL_PORT_NUM(YT921X_PORT_NUM - 1) |
-> +	       YT921X_LED_CTRL_EN;
-> +	res = yt921x_reg_update_bits(priv, YT921X_LED_CTRL, mask, ctrl);
-> +	if (res)
-> +		goto end;
-> +
-> +	/* Inversion is internal - force on will give low logic.
-> +	 * In the rest of the file, treat LEDs as if active-low.
-> +	 */
-> +	if (inv_mask)
-> +		res = yt921x_reg_update_bits(priv, YT921X_LED_PAR_INV, inv_mask,
-> +					     inv_ctrl);
-> +
-> +end:
-> +	mutex_unlock(&priv->reg_lock);
-
-[Medium]
-The commit message says "strict 1:1 mapping". Where is the port-to-LED
-mapping actually being programmed to identity?
-
-The header defines the field macros for these registers:
-
-    #define YT921X_LED_PAR_MAPn(port)	(0xd01d0 + 4 * (port))
-    #define  YT921X_LED_PAR_MAP_DSTn_PORT_M(grp)  ...
-    #define  YT921X_LED_PAR_MAP_DSTn_PORT(grp, x) ...
-    #define  YT921X_LED_PAR_MAP_DSTn_LED_M(grp)   ...
-    #define  YT921X_LED_PAR_MAP_DSTn_LED(grp, x)  ...
-
-but there is no writer for YT921X_LED_PAR_MAPn anywhere in the driver.
-The 1:1 mapping seems to rely on the reset / bootloader default. If those
-values are not identity for some reason, LED operations for port X would
-end up steering to a different pin.
-
-Should the driver write an identity mapping into YT921X_LED_PAR_MAPn, or
-should the commit message drop the "strict 1:1 mapping" claim?
-
-[Low]
-The order in which the LED controller is enabled versus the inversion
-register is programmed looks reversed:
-
-    /* enables LED controller first */
-    res = yt921x_reg_update_bits(priv, YT921X_LED_CTRL, mask, ctrl);
-    ...
-    /* programs inversion after */
-    if (inv_mask)
-            res = yt921x_reg_update_bits(priv, YT921X_LED_PAR_INV, ...);
-
-Per the comment "force on will give low logic", between LED_CTRL_EN
-being written and YT921X_LED_PAR_INV being programmed, every
-active-high LED with default-state=on would be driven low (LED off)
-and only flip to on once the inversion register is written.
-
-If the second write fails, yt921x_leds_remove() is called, which
-unregisters classdevs but leaves LED_CTRL_EN set with the wrong
-polarity on the physical pins.
-
-Would it be cleaner to program per-LED state and YT921X_LED_PAR_INV
-first, and set YT921X_LED_CTRL_EN last?
-
-[High]
-Are Documentation/devicetree/bindings updates missing for this change?
-
-The existing binding at
-Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml uses
-unevaluatedProperties: false and only references
-dsa.yaml#/$defs/ethernet-ports for the port schema, which does not
-describe a leds subnode. A device tree that uses the new LED feature
-would fail make dtbs_check with unevaluated property errors.
-
-Should the YAML be extended to describe the leds subnode and the
-per-LED properties reg, active-high, active-low, and default-state that
-the driver consumes here?
-
-[Medium]
-The driver reads active-high and active-low as boolean properties on
-each LED subnode:
-
-    force_high = fwnode_property_read_bool(fwnode, "active-high");
-    force_low = fwnode_property_read_bool(fwnode, "active-low");
-
-active-low is a well-established convention used elsewhere (for
-example as a GPIO flag), and the common LED subnode binding in
-leds/common.yaml does not define active-high/active-low booleans on an
-LED node. Since DT properties are ABI once shipped, would it be better
-to reuse an already-standard property, or to invent a driver-namespaced
-one, so the naming does not collide with existing conventions?
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 7657904c8db9c8..6973fee49f091c 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -499,7 +499,7 @@ copy_struct_to_user(void __user *dst, size_t usize, const void *src,
+ 			return -EFAULT;
+ 	}
+ 	if (ignored_trailing)
+-		*ignored_trailing = ksize < usize &&
++		*ignored_trailing = usize < ksize &&
+ 			memchr_inv(src + size, 0, rest) != NULL;
+ 	/* Copy the interoperable parts of the struct. */
+ 	if (copy_to_user(dst, src, size))
 -- 
-pw-bot: cr
+2.53.0
+
+
+
