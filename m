@@ -1,203 +1,289 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011012.outbound.protection.outlook.com [40.93.194.12])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1140D3C10B1;
-	Tue, 21 Jul 2026 09:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784624492; cv=fail; b=JCG6Arvz4z2p4ThR6uYqmZ4x/0MI3lOT11dFnuAI6YZO7/G+4D1keLStiGKvpQiGCrQFL6GHUtdyY4FVz2FYLCA+uAMpsL7ku1jRJtBglel/loMFGILbHxqkXAashPxR+IhZHvoUiWlrlccx8lUsC8564Xi8GeQFMg1/KgXT6jg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784624492; c=relaxed/simple;
-	bh=GSNa85SbFKZu9nwmb+BJMylI+lfmQfzl4dpdDyXOd6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iL0XEHt8bA+ouG3HT+IgqaDkqAnrR4MxWh4QGXobJwMQ4ly0iH4UPfB7M3SlHXOCZ2+mE63qsqG5XyYL5h1FyMw87JkHh3uYshngmwDASkby/LMNLebXrvK3aCOmEF3HRrmI9rRcoFTPBF4SNEwsj5giRjfeoCdBNkejxZh8HkY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sHvqt0hB; arc=fail smtp.client-ip=40.93.194.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F5E3C13F2;
+	Tue, 21 Jul 2026 09:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784624548; cv=none; b=Tn9kkTE4uFIJKCLF3gMghNbFKdRnTZT7t/S/ZVlcVGMqvjarsCxzD4ErmTwddVLrSFUde7hdl4a9uuADC8N5E88TlVjFtTCKwSr6PjacfUMt5XF5ScKg8t4qisPgCZKGpxiZKoDoetaV255Xa26WOYaa5lSKRWF/bYzu+0uq9RM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784624548; c=relaxed/simple;
+	bh=yj9Ytki6jbqTSBQqHgre1McRlfsxk9qonmt4PoM09+U=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WlwgX1/FVleyxhgoruNDr030EE4Q1UDmIenEo7BH+4VI0PSGyIJx0E+aihKVY06OOdBc2fTOWcUPdg2DFgk4p+PfkUqaU+/Bnp4dEa9oPDgEG62LxwZh+3SKMsmpKPj4+F5szUjLwAabxA/G8J+PMJb1CrvxxEm8BefNV68opB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=DYH3lddZ; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sHvqt0hB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NYjlyaWvQ1ifI16IQbj+x4x6nUvdPKXL00S3ezDYFNELPPEgV51KnVATLuTQSFbNipoTRTmu2zxvvGHsB6fOdnsEq5Ae6zbKPQm9nJ5lbxes5UyhIcXiKUyeJ9cS7/3KhDa0JsSZf54ewGZwQvwTPIlYvq16+HSFWdimbS7tNgIJu7vh+vzQBbE9pQovcuRyIb5bDrpRMgtOiFe9xAcm//vjLZuU2gC8dhVWkcFnQ64ZRqgriYZM/w62cl1v4L8Xb311+Mp1Hb55jCgeZIzJXkK0wHCZ1q+MGU9KRdsBrRwcnLkWDB4ttXxAjyMSOTzDw6LJBACJBwGpaUELf6ozHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jp/xtzfX3hcMcxndmH9XrQVVgUUH0t9TqqAzk3LTSvI=;
- b=skc2IRO6JiGOypi2ojJPbrisQd1idswnAHlmneidWK2aR2EvBs1CTJTa64bNAx/8iL0nUPUGxhOEr8SJUaHNQdhiy34jNxkqxZInTOTN1rdbb/hdJH4zjEtX0vDHMCfmi2WKIWUEqTxt8bsWfrqGPZw6C8lGSWf0AiKxuaH/jriF4ALrbShOqmYJpORgOkCLJ5ZIvdeSV/KAEajkqv/nU9xbx+R1wbHuzjqk9028k88OJZZc8RxecWN1s1pHL2lVUN29kfhaAG2BGbgFZt3mMPd4dZd36hy4DZbtFXb1TW3D+ubnEKEwsbMLQDEgQCMM5eBoJkJXQwPzVXZAXZLIrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jp/xtzfX3hcMcxndmH9XrQVVgUUH0t9TqqAzk3LTSvI=;
- b=sHvqt0hBrcjfeEUI4yHdkQ6bC1U5bQzeEN40ojjzGPx3NHfmpvaZcE7DhvamTfAiABxoRE4hPIC5IU5lNHNbmRDfFry5uwOC2hJm8ShWJROdDp7t77Sb7f0wVQxIRRZPg5j4rwPZla6nYFuo8UNvi3fQCq0oVRs2rzguYip/VTQ/kHESnbdeZx/XtBlg72NFyMFSL2Qy01nNQ9ksKLO8WXxubS36V4vDQHwz1vjHutif8/BUtWWIBI0OdPhIvNra4qTbvA7wiaFKoYFLxULkKBuZSBptQjXB5GNh3n3hvP7Wr45nNvdfgCfBqfvxKYzpzMwaPjapgG6F0VoOVPMDrA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DS0PR12MB6463.namprd12.prod.outlook.com (2603:10b6:8:c5::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Tue, 21 Jul
- 2026 09:01:24 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0223.017; Tue, 21 Jul 2026
- 09:01:24 +0000
-Date: Tue, 21 Jul 2026 12:01:14 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Tim Wong <kanman.wong@dish.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] ipv4: devinet: list global scope addresses
- before link scope addresses
-Message-ID: <20260721090114.GA2510713@shredder>
-References: <CAPT8rhu_NGbLd54RFWRxO+=7BHhJ0pS5yeOgo5kNmq4qtQ=t8w@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPT8rhu_NGbLd54RFWRxO+=7BHhJ0pS5yeOgo5kNmq4qtQ=t8w@mail.gmail.com>
-X-ClientProxiedBy: FR4P281CA0286.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e7::13) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="DYH3lddZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784624376;
+	bh=CBPXqxevhKA4kwEyyHEOiA1H+YDO/kYclhGiWCFx5vo=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=DYH3lddZNiNAALYRyZ1wtdCeEzjyFxnxVps7m78MjadzkETpuQau/icWl6Slx5YOQ
+	 hvo2Xsj9iFlL1Dj4dVnp8Ro/pqacUJ/Ta1pp2HYbPLsNa4InsyQ159zRVip3XwRf5u
+	 96MOkuCYbvLPO99b9XdZBA/vTESEZOJGGcxpPygQ=
+X-QQ-mid: esmtpsz16t1784624357tb49791a7
+X-QQ-Originating-IP: 1sOYBZEzcPlZiopgg0rFprzTZmF5mSoO/ojKXE+g/Pk=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 21 Jul 2026 16:59:13 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 1395446343565307657
+EX-QQ-RecipientCnt: 11
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: horms@kernel.org,
+	madalin.bucur@nxp.com,
+	sean.anderson@linux.dev
+Cc: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	ZhaoJinming <zhaojinming@uniontech.com>
+Subject: [PATCH net v2 2/2] net: fman: add error cleanup path in fman_probe
+Date: Tue, 21 Jul 2026 16:58:41 +0800
+Message-Id: <20260721085841.488088-3-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260721085841.488088-1-zhaojinming@uniontech.com>
+References: <20260709145221.1564906-3-horms@kernel.org>
+ <20260721085841.488088-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DS0PR12MB6463:EE_
-X-MS-Office365-Filtering-Correlation-Id: a82908a7-ec80-4495-2ad1-08dee706a43a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	hoTr7wxOT0HQ03sNpE2YrzEWyWCsWFQnfUmCksbxtjKAqzqSHShzPtvjHvLomPYvrw5Hg8pon0nISlV90AKB7JRNC5W//oItEZ5X9oklTis/d8Lk8v04V0SIyb5sBAVAkMccV0Cs3v7e1G6z/S/cO6DyjGYq7GpG/Kqvu3VrkLjNYPXy+8tRqOfQLfMlkIZlajiP0SPEpIRqqh+DOePtVG4tWjF21TNkJb6hWAojb/r8ZRHeWq0gH3c/JzfIefjdb9FqAvPjz30dCLClqnIVlFs/TxGbMnIRfskjubU3LcFznlmITlRCM1NsroE99szg7ZEiDeX7yM9fNjlnWpz/Yl0j78Nf4Bd3txL+ny9vZ02jxj5UAP8ihl+pBAIV8C38WcYNxOLZh7A9tiNC9Eow2K31d1Y3Do3/GYb3nfFznsmesmc37Z7pQKX+TUBtohGi5JfeNieEhH2LHl0oq6ohnL2DAayO/kgD4PmnzdB7vNd8JcIX2VaDk8CmF6dnGHhf/ccw/KiXL1zlVaG1VTQgePYFGDLFaooDKd564m5j1nc8QOyMe6q6biLylhTqfwTjgS9xl0QEkZWC/7cwLd5s5rV0yVwncgu2AjJ3h4qkEAXJ9P73wyudMW6Ywa5tVJaMrX+vw5Y0een4/mg2WTp0gXHGQuvVZicGmdSVc4TVvb8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XufQ/LRAFizbTndV778lb6VcE1G2Yj//Rt5PLpdWZ1/wyeKf2vgsLE0bYZTJ?=
- =?us-ascii?Q?2f03ip58ccNQypFSHUUNrFDfeLhuJClGZ0ajtq1JkuTyMBUXQaBOVglc+A7a?=
- =?us-ascii?Q?bx5C1IPB7DUe03Z4uIOWZ0+TSW/yFmmJNGC/xtterD6UOp8EYplN5kLhL4vL?=
- =?us-ascii?Q?UlNk/yIGGarTA8NH2M156bCuk8m355iqorivvJKXpC3vQy+3KM9TR9RXEFnU?=
- =?us-ascii?Q?ZqeSnC7GupOjdM0I3RjcgtuQ73bqc/n3V/eQR51K/XOIQeiUOeNd/xynoEfH?=
- =?us-ascii?Q?MWM9nYlTUIQ2DY9U88/TiBylitxT2OmyDHZRz08Yl06T6H6vvDry0F8Fr3H7?=
- =?us-ascii?Q?YShVLIGPdwyY+XwOyDCEvp+u8m6k6pLND03JVjQ2mXPoU3J8yfgg8GzU6Tx4?=
- =?us-ascii?Q?fFKFjTo67Xnhgn6RzkNYGDi56tuQd+QbM2xZN5UnBvVOmd0onnwXZtFV3tgi?=
- =?us-ascii?Q?1h+8SJGBvuDwHL1OU0Tvgx9mAP1B/op0ASfSUnYuH9O+dYMtrBN2/hFeA1ui?=
- =?us-ascii?Q?RTKAdgmmp8L5PEyNBLgcyqsN2oGsu86EhSgSJpTvH0PXxYgSp2DBDkJ3yvW+?=
- =?us-ascii?Q?VSKiFXgykpBXjG3c/tfmZCfeC8KnTAQsWshFZYSyhctrJKYBaHWRc+6eQ2tW?=
- =?us-ascii?Q?vv4R2sOF4N3eQaK1k2FNd0dIZrLlZSJW5e6QUnBa15aLteCEWw++bd79L/m1?=
- =?us-ascii?Q?uJiaSXorMCNCnosqPV7LBTsP1dzpfjwCD/kc1G3SNbCmRBqR7plh+9eRQfqa?=
- =?us-ascii?Q?/Csm1Z4YETIQLWcZC9Hnow0YqEq7Z17ZsCjBfpP97RL3H/bdn2C10hrGGP6O?=
- =?us-ascii?Q?I3tracmTIeUx9Kz8roFOIBjLPlvbBQN2XmtHvC9wd6cNJGxbApDMN/cLos+v?=
- =?us-ascii?Q?jR4IfEpjVN/XA7a9SNf0Q3dOLD7Y699+y+7GfV6OTEh1iyn7M64Hl08SAkhm?=
- =?us-ascii?Q?iCI+C1W2RMlQwRXEwXRQGYoYIeGZMTHyTn0ZxVYa/ejyyJmzpXr9LObJdvOe?=
- =?us-ascii?Q?tcYJO/DmlWMbzp0OOC8goPBSimyPJklAm9mZP0NPpKR2fLwVe6BNEdrzUqtp?=
- =?us-ascii?Q?RQa+BYe5pUnteqbmlr0HpMUTtbcLdFulZ/tW62hSlOBcTWTZrnUCo3nP7l0b?=
- =?us-ascii?Q?3hFjGgN1Gn5CDtquoheLc6qL3vIxKTrHZQ4Buk1SlTshOz2n4pyxAfGt00B7?=
- =?us-ascii?Q?OC7j9hY6AiRp8RtsiS5ROYxpuvU5EP+YtKj7UQY+VMMOIeODKWSeVPN2DtfY?=
- =?us-ascii?Q?f9T3BXLVALpmb5uzWXivICsGUYp6L5w8mMvRtBmxz5PMw5g0IcpTAALhbWeZ?=
- =?us-ascii?Q?Kv5J/0/7T02cwjpvuAT7xm89ssleUTqSjbgqlA0D5YC5DM4L0u9gJxkFO+yX?=
- =?us-ascii?Q?r6C13+xJGCyII9l735tSGCClnrXD0jJsdzVnTN8fBSlfpAOJKpuT7CHbR9vv?=
- =?us-ascii?Q?dvomG7D1q453uzp8dvrq4Il8SGLvT6dA80hJt8Sdl3crPVbLYFlasB+itkg2?=
- =?us-ascii?Q?XiAlN3uBs2CjEpCpeWoR6JyBYIQjD2DkB5QE4S3PRMR0+rWtFB/NjC+goqz2?=
- =?us-ascii?Q?dGt/UGknDH5B8bIym8wbvPZaa32XXy9TuirrvSwsDrgDX77Q0w4yQB2lTF6T?=
- =?us-ascii?Q?QP/HJIrM2DjLf3Xx05VsGYHMQ2pcJELz/wX+PNEQzdzgKijm4gGDaTnFK5Gm?=
- =?us-ascii?Q?UrS+LZS9XzM1eOr7xmVOYnzb4+h/uzG9UQJC9tGyLrEYBs0b0fG/zH3vK88j?=
- =?us-ascii?Q?i6EOyy0W7Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a82908a7-ec80-4495-2ad1-08dee706a43a
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 09:01:24.6188
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NbG6WEfyKZBVW7k172+JCIFm6fAaVs2dp6g2XmYOxlkXvHJIi6R6ENOnW6nmXBRN6qpBcFeG8kljgYTdoaOFKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6463
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: ObEYZLOwlZLan3dHRHc6MG3Pcz+epgWn28ejVH+GbA6rotbs6NAUU5Sr
+	3zfJgxAYnSIDeVlmwSvVr+w9qJiDO+L4fR16gNhdXGTTdB8sAsD7fBrcD6gqZ1LYhN0kWQU
+	medpibVtqRdLylSHoBxjJHVo7OYmpDta9NGC84mHs/xgFXup1GNtO0JM8mJF9fC8VZsCZ7a
+	9xHmCarCySndwBrLWZtih6vvmcZeK/W3UV89lWQJpjkXwqwp8sEfwmoIoObzRg/2D86FsWV
+	G6siNNZjFlMIIQkLAjTcZyFUr3xD4fD/Svk8Ze+tYrdGOcetiowOWac/WTQzla3v+wH8Rnb
+	Nti/Js5h1nO/XbVoJz3UY1TPZR1gQ5g4Ex04sDKaCffELnkw3zj8JlqDfNxcnmfWtvqvC2q
+	vSLFX3d0O3Z8Np8cKPqvih8jsRvnblVp3fNV3EzbW5eipUiqUsra75pGQHzMLrhXfcMioW+
+	+5UUA1MD8RzGuNbgVNFrGJQR4GmzLty4Ex0Gw6nQI+Nvw3IZOv8a+RntGpq9COv+1sCaRKi
+	Cy+YXd8OpXCq3ZA3Cl+NNVTxB0qilXa5++aXxe0I2JZkip5ALxKXjeR8Zb2GRZIfNY3tuae
+	pkvK6VGqY+7L0tsg0Cnwskg/jOJcvws9DUbgGYYwcg5ZKosvQVxdEmX6KImz331XHvP9Yqb
+	+khs8FYuBoZNqc1zOGXFgB5A6oYDvJ3t05FxaftwsZJdW+Q/4B6PilFVs744aXjx6Y0NIWe
+	ekhQav+19mzys3YYLqYFOKTbCYXPghAFj8THC55n/x5b+E3G6QvnCmcI8hrCbP3ve1UGrvt
+	x1xV6ogliZ1ah+Cy/v0hbWXmqc9IkE/MEeHLRMKJg+szDA/KX3v3Gq0qlx5EBo3FYqfedA7
+	1tDE1MRKb0hhyh2kqnBV5F8UQpuErafVSMtQD5GK8vygbNuaZljQx0XgvAkzcMIb9nTvcCr
+	gSS5+UaY3Bec0tJvh/L1uTka7/g/pLPsGZMHS5cHZhcM9OSVOIRuBUAB32pnZWF4YQiw4c+
+	YLjH5ohRFG6oWsfJk/PM/FgFBYL2dF+/xw6jIB8mtXVY3HUdCbr1PtIKE1QIa37h0CMve1S
+	QaEzk3EhRUI1WSYO/nuIfo=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-On Mon, Jul 20, 2026 at 12:16:23PM -0600, Tim Wong wrote:
-> __inet_insert_ifa() inserts a new primary address by advancing an
-> insertion pointer past every existing primary address whose scope
-> is >= the new address's scope. Because IPv4 scope values are
-> numerically smaller for wider scopes (RT_SCOPE_UNIVERSE < ... <
-> RT_SCOPE_LINK < RT_SCOPE_HOST), the comparison
-> 
->     ifa->ifa_scope <= ifa1->ifa_scope
-> 
-> is true for a global-scope new address against essentially every
-> existing entry, so the new address is pushed all the way to the
-> tail of the primary address list, ending up *after* any link-scope
-> addresses that were configured earlier.
-> 
-> On an interface carrying a mix of global- and link-scope IPv4
-> addresses (e.g. a routable address alongside an RFC 3927
-> 169.254.0.0/16 address, or any address explicitly assigned link
-> scope), this makes the resulting order in in_dev->ifa_list -- and
-> therefore the order addresses are reported via netlink
-> (RTM_GETADDR), ioctl (SIOCGIFCONF), and /proc/net -- depend on
-> configuration order rather than scope. Userspace consumers that
-> pick the first address returned for an interface (e.g. via
-> getifaddrs()) can end up preferring a link-scope address over a
-> global one.
+fman_init() and devm_request_irq() failure paths in fman_probe()
+do not free fman and its sub-resources (keygen, muram allocations,
+state, cfg), causing memory leaks on probe failure.
 
-It's a user space problem. The kernel provides all the needed
-information for user space to make an educated choice.
+Add fman_muram_finish() to properly tear down a MURAM partition
+(gen_pool_destroy + iounmap + kfree), complementing the existing
+fman_muram_init().
 
-There was already an attempt to change IPv6's intra-scope order to match
-IPv4's and it broke user space:
+Add fman_free_resources() that releases all fman sub-resources
+in the correct order:
+- devm_free_irq() for any already-registered IRQ handlers
+- kfree(fman->keygen)
+- free_init_resources() for MURAM CAM/FIFO allocations
+- kfree(fman->cfg)
+- fman_muram_finish(fman->muram) for the MURAM management object
+- kfree(fman->state)
+- kfree(fman)
 
-https://lore.kernel.org/all/20260529112357.5079-1-fmancera@suse.de/
+Use two goto labels in fman_probe():
+- err_irq: main IRQ registered but err_irq or enable() failed
+  -- free main IRQ then fall through to release resources
+- err_no_irq: no IRQ registered -- just release resources
 
-Now you propose changing IPv4's inter-scope order to match IPv6's. It
-will most likely break user space and kernel selftests. Please solve
-this in user space.
+The IRQ handlers must be explicitly freed before kfree(fman) to
+avoid a window where a shared-IRQ spurious firing could dereference
+the freed dev_id.
 
-> 
-> IPv6 already avoids this: ipv6_add_addr() keeps idev->addr_list
-> ordered so global-scope addresses precede link-local ones
-> regardless of configuration order.
+Clear fman->fifo_offset and fman->cam_offset after each
+free_init_resources() call in fman_init() to prevent a double-free
+when fman_free_resources() calls free_init_resources() again on the
+same error paths.
 
-I don't understand the point about configuration order. Only the
-intra-scope order is determined by configuration order, no?
+Note: fman_config() is not changed -- it already frees fman
+internally on all its error paths, so fman_probe() must not touch
+fman after fman_config() fails.
 
-> 
-> Fix the comparison so the insertion pointer only advances past
-> addresses that are at least as global as the new one:
-> 
->     ifa->ifa_scope >= ifa1->ifa_scope
-> 
-> This groups global-scope primary addresses ahead of link-scope
-> primary addresses in in_dev->ifa_list, preserving insertion order
-> within each scope group, and brings IPv4 address enumeration order
-> in line with existing IPv6 behavior.
-> 
-> Signed-off-by: kanman.wong <kanman.wong@dish.com>
-> ---
->  net/ipv4/devinet.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-> index a35b72662e43..056f2169c6a3 100644
-> --- a/net/ipv4/devinet.c
-> +++ b/net/ipv4/devinet.c
-> @@ -510,7 +510,7 @@ static int __inet_insert_ifa(struct in_ifaddr
-> *ifa, struct nlmsghdr *nlh,
-> 
->   while (ifa1) {
->   if (!(ifa1->ifa_flags & IFA_F_SECONDARY) &&
-> -     ifa->ifa_scope <= ifa1->ifa_scope)
-> +     ifa->ifa_scope >= ifa1->ifa_scope)
->   last_primary = &ifa1->ifa_next;
->   if (ifa1->ifa_mask == ifa->ifa_mask &&
->       inet_ifa_match(ifa1->ifa_address, ifa)) {
+v2:
+- add explicit devm_free_irq() before kfree(fman) to eliminate
+  a potential UAF window on the cleanup path
+- add fman_muram_finish() for complete MURAM teardown
+- add kfree(fman->cfg) to release config structure
+- clear fifo_offset/cam_offset after free_init_resources() in
+  fman_init() to prevent double-free
 
-The patch is whitespace-damaged.
+Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+---
+ drivers/net/ethernet/freescale/fman/fman.c    | 42 ++++++++++++++++---
+ .../net/ethernet/freescale/fman/fman_muram.c  | 15 +++++++
+ .../net/ethernet/freescale/fman/fman_muram.h  |  2 +
+ 3 files changed, 53 insertions(+), 6 deletions(-)
 
-> 
-> base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
-> -- 
-> 2.51.0
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index 13913f152147..374f5b7305f8 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -1190,10 +1190,10 @@ static bool is_init_done(struct fman_cfg *cfg)
+ 
+ static void free_init_resources(struct fman *fman)
+ {
+-	if (fman->cam_offset)
++	if (fman->cam_offset && !IS_ERR_VALUE(fman->cam_offset))
+ 		fman_muram_free_mem(fman->muram, fman->cam_offset,
+ 				    fman->cam_size);
+-	if (fman->fifo_offset)
++	if (fman->fifo_offset && !IS_ERR_VALUE(fman->fifo_offset))
+ 		fman_muram_free_mem(fman->muram, fman->fifo_offset,
+ 				    fman->fifo_size);
+ }
+@@ -1963,6 +1963,8 @@ static int fman_init(struct fman *fman)
+ 	err = dma_init(fman);
+ 	if (err != 0) {
+ 		free_init_resources(fman);
++		fman->fifo_offset = 0;
++		fman->cam_offset = 0;
+ 		return err;
+ 	}
+ 
+@@ -1975,6 +1977,8 @@ static int fman_init(struct fman *fman)
+ 					     fman->state->total_fifo_size);
+ 	if (IS_ERR_VALUE(fman->fifo_offset)) {
+ 		free_init_resources(fman);
++		fman->fifo_offset = 0;
++		fman->cam_offset = 0;
+ 		dev_err(fman->dev, "%s: MURAM alloc for BMI FIFO failed\n",
+ 			__func__);
+ 		return -ENOMEM;
+@@ -1998,6 +2002,8 @@ static int fman_init(struct fman *fman)
+ 	fman->keygen = keygen_init(fman->kg_regs);
+ 	if (!fman->keygen) {
+ 		free_init_resources(fman);
++		fman->fifo_offset = 0;
++		fman->cam_offset = 0;
+ 		return -EINVAL;
+ 	}
+ 
+@@ -2800,6 +2806,24 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
+ 	return ERR_PTR(err);
+ }
+ 
++static void fman_free_resources(struct fman *fman, struct device *dev,
++				bool irq_registered)
++{
++	/* Free IRQs first while fman is still valid */
++	if (irq_registered) {
++		if (fman->dts_params.err_irq != 0)
++			devm_free_irq(dev, fman->dts_params.err_irq, fman);
++		devm_free_irq(dev, fman->dts_params.irq, fman);
++	}
++
++	kfree(fman->keygen);
++	free_init_resources(fman);
++	kfree(fman->cfg);
++	fman_muram_finish(fman->muram);
++	kfree(fman->state);
++	kfree(fman);
++}
++
+ static int fman_probe(struct platform_device *of_dev)
+ {
+ 	struct fman *fman;
+@@ -2820,7 +2844,7 @@ static int fman_probe(struct platform_device *of_dev)
+ 
+ 	if (fman_init(fman) != 0) {
+ 		dev_err(dev, "%s: FMan init failed\n", __func__);
+-		return -EINVAL;
++		goto err_no_irq;
+ 	}
+ 
+ 	/* Register IRQ handlers only after initialization is complete.
+@@ -2838,7 +2862,7 @@ static int fman_probe(struct platform_device *of_dev)
+ 	if (err < 0) {
+ 		dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
+ 			__func__, fman->dts_params.irq, err);
+-		return err;
++		goto err_no_irq;
+ 	}
+ 
+ 	if (fman->dts_params.err_irq != 0) {
+@@ -2848,7 +2872,7 @@ static int fman_probe(struct platform_device *of_dev)
+ 		if (err < 0) {
+ 			dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
+ 				__func__, fman->dts_params.err_irq, err);
+-			return err;
++			goto err_irq;
+ 		}
+ 	}
+ 
+@@ -2863,7 +2887,7 @@ static int fman_probe(struct platform_device *of_dev)
+ 	err = enable(fman);
+ 	if (err != 0) {
+ 		dev_err(dev, "%s: FMan enable failed\n", __func__);
+-		return err;
++		goto err_irq;
+ 	}
+ 
+ 	if (fman->dts_params.err_irq == 0) {
+@@ -2891,6 +2915,12 @@ static int fman_probe(struct platform_device *of_dev)
+ 	dev_dbg(dev, "FMan%d probed\n", fman->dts_params.id);
+ 
+ 	return 0;
++
++err_irq:
++	devm_free_irq(dev, fman->dts_params.irq, fman);
++err_no_irq:
++	fman_free_resources(fman, dev, false);
++	return err ?: -EINVAL;
+ }
+ 
+ static const struct of_device_id fman_match[] = {
+diff --git a/drivers/net/ethernet/freescale/fman/fman_muram.c b/drivers/net/ethernet/freescale/fman/fman_muram.c
+index 6ac7c2b0cb19..6c2b4f7a02b8 100644
+--- a/drivers/net/ethernet/freescale/fman/fman_muram.c
++++ b/drivers/net/ethernet/freescale/fman/fman_muram.c
+@@ -129,3 +129,18 @@ void fman_muram_free_mem(struct muram_info *muram, unsigned long offset,
+ 
+ 	gen_pool_free(muram->pool, addr, size);
+ }
++
++/**
++ * fman_muram_finish
++ * @muram:	FM-MURAM module pointer.
++ *
++ * Frees all resources associated with a MURAM partition.
++ */
++void fman_muram_finish(struct muram_info *muram)
++{
++	if (!muram)
++		return;
++	iounmap(muram->vbase);
++	gen_pool_destroy(muram->pool);
++	kfree(muram);
++}
+diff --git a/drivers/net/ethernet/freescale/fman/fman_muram.h b/drivers/net/ethernet/freescale/fman/fman_muram.h
+index 3643af61bae2..a5cb544c0f08 100644
+--- a/drivers/net/ethernet/freescale/fman/fman_muram.h
++++ b/drivers/net/ethernet/freescale/fman/fman_muram.h
+@@ -23,4 +23,6 @@ unsigned long fman_muram_alloc(struct muram_info *muram, size_t size);
+ void fman_muram_free_mem(struct muram_info *muram, unsigned long offset,
+ 			 size_t size);
+ 
++void fman_muram_finish(struct muram_info *muram);
++
+ #endif /* __FM_MURAM_EXT */
+-- 
+2.20.1
+
