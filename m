@@ -1,144 +1,79 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FF73CB566;
-	Tue, 21 Jul 2026 09:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522EC42980C
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:48:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784626878; cv=none; b=bmGmuJUUXcB7zbLS8MqAwNUUTGxU3mYGEdejkp92wi31c+QRXE4O2S+zQVfB5PLubd/EhkiYU2w16QDcFUPi6K7WUJ1Hw0R+4xYeK0vBH7hvo95gquHnwAAqhXu1T0DmxAugeNvxPRXtw1z+bTQokVf0TpQGA6esp0GReaYhe7E=
+	t=1784627314; cv=none; b=BB6w1rGHsnPrFH7V7rtQ26rr9gSf3bA+vZstZkO4hGgROhjArItFtJ0jm10p5QnZIwav80CJ8eMaSr6jWYgBftwc5WkuFW6EYf7/6uEd1YAdJIAjmenEFfLERUkpZfCNHLnvMzRlpcGW/BAHcbqAA40Ary7Og7o9BWZn25pZCLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784626878; c=relaxed/simple;
-	bh=Z9zUjdQmnVnh6F+y5ZQ/fjEB3Fquth4/iGiJY6e5j+E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RqrodJ83xIOQtU3Q01pS6UHpObtBTlcdF3YDrmKhd3hVog5ojydemmLieIQ13mFQHqE0gSoNN8d/g4BMrPSfIliXEXhlzzh2kzF9L2WgD9t4anjBxhJSGtP6yo5LkgyFWTx/be/tDxHcLxfnOTghBKprpU4KrmRsbWKeXdqtPoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 4ca1a2aa84e811f1aa26b74ffac11d73-20260721
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:06517924-c0d4-48a2-96c4-68c4294d786c,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:db488cc252f9d2132e041d5d66a6770a,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
-	50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
-	I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 4ca1a2aa84e811f1aa26b74ffac11d73-20260721
-X-User: heminhong@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <heminhong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1472024747; Tue, 21 Jul 2026 17:41:07 +0800
-From: Minhong He <heminhong@kylinos.cn>
-To: courmisch@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	remi.denis-courmont@nokia.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Minhong He <heminhong@kylinos.cn>
-Subject: [PATCH net v4] phonet: check register_netdevice_notifier() error in phonet_device_init()
-Date: Tue, 21 Jul 2026 17:39:56 +0800
-Message-Id: <20260721093956.162617-1-heminhong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1784627314; c=relaxed/simple;
+	bh=ZR8tGn+UwgUsJBZEd8GIoUSyUM9byLcSp266a5IsPqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cbgLNedQ+bJAWEN9DBPT1FDfV/uueWN+V01gav9hiM7PbiqA/Zovo35xRrlfLpEUsbWplnPGpyxGAk4bqhfdF9/xnhX+830X4ZBVns5XrjvTR38Wq6S/GfD3JBfDHTIWi/jVnjWg0YjQonqK30wUfcdMqst36irh4ikJ2sjgzaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oP+ewIOa; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oP+ewIOa"
+Message-ID: <882f9018-30bc-41b9-ad18-1952ecf8c113@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784627300;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aMNwlLtLuVerZt0Q8EEv1h2+FsKt+8QdW2oDFQgLI40=;
+	b=oP+ewIOah5xX6rl1r4NE94+TJ9iKaDklNS5gKOrSCj5Rf4w8E/bk95QWRoej/2ERzdTJbF
+	eVpRR9LwBDdRskDjkklhNdY7HlQsXix/0RDgvSFXPfNggcb/PDxk9OzuEamujm4a3HQ8nl
+	xDbRxZyb8mm4QuHtR2bLsfmTaSTK3Og=
+Date: Tue, 21 Jul 2026 10:47:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] nfc: nci: free destination parameters when closing a
+ connection
+To: Linmao Li <lilinmao@kylinos.cn>, David Heidelberg <david@ixit.cz>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260721023518.1697625-1-lilinmao@kylinos.cn>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260721023518.1697625-1-lilinmao@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-phonet_device_init() registers a netdevice notifier before calling
-phonet_netlink_register(), but does not check whether notifier
-registration succeeded. On failure, netlink setup still proceeds and
-init may return success without the notifier in place.
+On 21/07/2026 03:35, Linmao Li wrote:
+> When a connection is closed, nci_core_conn_close_rsp_packet() frees
+> conn_info but not conn_info->dest_params, which is a separate devm
+> allocation. Each connect/close cycle leaks one dest_params until the
+> NFC device is removed. Free dest_params along with conn_info.
+> 
+> Fixes: 9b8d1a4cf2aa ("nfc: nci: Add an additional parameter to identify a connection id")
+> Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+> ---
+>   net/nfc/nci/rsp.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+> index 6b2fa6bdbd14..21c2fe64490e 100644
+> --- a/net/nfc/nci/rsp.c
+> +++ b/net/nfc/nci/rsp.c
+> @@ -360,6 +360,7 @@ static void nci_core_conn_close_rsp_packet(struct nci_dev *ndev,
+>   			list_del(&conn_info->list);
+>   			if (conn_info == ndev->rf_conn_info)
+>   				ndev->rf_conn_info = NULL;
+> +			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
+>   			devm_kfree(&ndev->nfc_dev->dev, conn_info);
+>   		}
+>   	}
 
-Also, the existing phonet_netlink_register() failure path called
-phonet_device_exit(), which runs rtnl_unregister_all() even though
-rtnl_register_many() already unwound any partial registration. Calling
-the full exit helper on a partial init is not correct.
-
-Check each registration error, including proc_create_net(), and unwind
-only the steps that have succeeded so far, in reverse order.
-
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
----
-v4:
-- Check proc_create_net() failure (-ENOMEM).
-- Unwind in reverse registration order with one label per step
-  (notifier -> proc -> pernet).
-- Match phonet_device_exit() teardown order to the same sequence.
-v3: https://lore.kernel.org/netdev/20260720070031.108248-1-heminhong@kylinos.cn/
-- Use goto-based unwind; do not call phonet_device_exit() on
-  phonet_netlink_register() failure.
-- Drop Fixes tag (theoretical init failure path).
-v2: https://lore.kernel.org/netdev/20260716101504.158387-1-heminhong@kylinos.cn/
-v1: https://lore.kernel.org/netdev/20260713075212.431455-1-heminhong@kylinos.cn/
-
- net/phonet/pn_dev.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
-index ad44831d6745..1272d49cd038 100644
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -350,16 +350,34 @@ static struct pernet_operations phonet_net_ops = {
- /* Initialize Phonet devices list */
- int __init phonet_device_init(void)
- {
--	int err = register_pernet_subsys(&phonet_net_ops);
-+	int err;
-+
-+	err = register_pernet_subsys(&phonet_net_ops);
- 	if (err)
- 		return err;
- 
--	proc_create_net("pnresource", 0, init_net.proc_net, &pn_res_seq_ops,
--			sizeof(struct seq_net_private));
--	register_netdevice_notifier(&phonet_device_notifier);
-+	if (!proc_create_net("pnresource", 0, init_net.proc_net,
-+			     &pn_res_seq_ops, sizeof(struct seq_net_private))) {
-+		err = -ENOMEM;
-+		goto err_pernet;
-+	}
-+
-+	err = register_netdevice_notifier(&phonet_device_notifier);
-+	if (err)
-+		goto err_proc;
-+
- 	err = phonet_netlink_register();
- 	if (err)
--		phonet_device_exit();
-+		goto err_notifier;
-+
-+	return 0;
-+
-+err_notifier:
-+	unregister_netdevice_notifier(&phonet_device_notifier);
-+err_proc:
-+	remove_proc_entry("pnresource", init_net.proc_net);
-+err_pernet:
-+	unregister_pernet_subsys(&phonet_net_ops);
- 	return err;
- }
- 
-@@ -367,8 +385,8 @@ void phonet_device_exit(void)
- {
- 	rtnl_unregister_all(PF_PHONET);
- 	unregister_netdevice_notifier(&phonet_device_notifier);
--	unregister_pernet_subsys(&phonet_net_ops);
- 	remove_proc_entry("pnresource", init_net.proc_net);
-+	unregister_pernet_subsys(&phonet_net_ops);
- }
- 
- int phonet_route_add(struct net_device *dev, u8 daddr)
--- 
-2.25.1
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
