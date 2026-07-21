@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDE8444712;
-	Tue, 21 Jul 2026 21:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EF846C4AD;
+	Tue, 21 Jul 2026 21:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667639; cv=none; b=MFyjB730laVJUGDTZmAPwK/rJ73qZgaaVaGYer7X/qDxVdBGfJZLLAnlz6FpH0I1yIH5KBu729L/nWw0o0Xs4CMapJQsTHf4fwpQTJT3Su6Tj1w+ZYhb6sZSc5ugWBM8KpUOafuSnbcU/AZT9BwWVcvJvtPnX+j97ctVWrWWRWA=
+	t=1784667641; cv=none; b=AZLRmv6f+u7VTf3XifG6Eb6RalbQ/chNPWi9yX4Q+4rkgZw2uJ4UWRtgK0VZnxee0DQjOBeM1YaUB/Hn4xBPZyokO3JYcGCj969c6KHkrZGui/Q9k64szNp6qZZ0zRlDanNNhS7YscNczs4X5oCu9SqN942AG1qzRn0jFoRM+50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667639; c=relaxed/simple;
-	bh=hE+OkTYqwLD7hAZW0LjYV3oyyW9iTlPpgCkp7cbnST4=;
+	s=arc-20240116; t=1784667641; c=relaxed/simple;
+	bh=tBbOIopgPoNNYfVy6uMuINUs+/R61BbzUyNdwrSRoyg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jB0vJs8jQGW0MSuEwlMDetlRWZpf6J4G6LdsZPY+5rziDcr9SEknwTkNoutzN7vpLfBKcd+mNntjZvMYMc1zMsVRNJjDzVOSAtkZ1HeHyQWRm0g7F/tvMOxciTPMjjPdRvZmeBlJUlwV0HLF2db+/TqZawmkZApJQgWZ7apCxN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6I6SApa; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=IJ3ibZdgoroUJXzLEv2ONwaUHwwnHeavkqaN0wm1RfCqOikFUDY+r9VS3aVLeyB2g1CfKaMqx48Y3KJezJJB0rUhbvN4pKsmp7ahNaEyOMcE+XD5iIy7MOOpkhS1tWubDdMTCTkTtwCLftVHlZjwNjnihZvbObIZh7Cr7fh0FmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btBmFyYo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6I6SApa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B671F000E9;
-	Tue, 21 Jul 2026 21:00:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btBmFyYo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89211F000E9;
+	Tue, 21 Jul 2026 21:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784667638;
-	bh=Fkcvo7wNnzkTejnQdc1UeimxuoKuaxcdxPYR7KPDPpo=;
+	s=k20260515; t=1784667639;
+	bh=39NGKFYfPZXO2YhPOxptOA1/twHwDAOMudVPLGsLaBQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=T6I6SApaRFq7MPrc3mIcsJi97L9TAfhcnUDDHqaaKq1NnS9pooBZTe/4UA3I0/SNh
-	 W9bq29L1WytKWjqTXusbudNtOhYZQfTBcQJVjnwpMQ7N34wc3qYo/qJB7JCGXvVCEg
-	 bIwGgDNNBZ7NzXMhWR2jTvan556sb7g8HiKBOjO+QJJMTGJN5wWbfwTH+F4tNwtEYX
-	 DYfUz661RXzll3engMUPi1UT01xwMT/zDrT1lzXCkWfo1Ni2l2W+H+i+Z9KMJajqaB
-	 4sczs0ViMw8wsMxyFOMIhssY0pTNfXMA7CKiILNqe36Hh79kb5nNnC+FKryQBQVrga
-	 hDjGbrAWkzlSA==
+	b=btBmFyYoA2vlv5yvaCbpiyfkZv5BAgZmO8mrEJw8JvS45NknRAYtg+7ecM30Q7Q69
+	 Wk5E7Tl+8iEA3LMiVu7JjTItPGKZ2lGUiXiHMUtV99VlABxe8Tqj5XkDWhquTK4H4d
+	 16ESb27TioEaEChs/iw+fUoM+27YvBulj+HdAzv0yhxTTUepsIaeEkZe/e4EJEi7wG
+	 tre2ueLqCCYaYt56mwA8DPpMBPturhc/tfiI9deS9TaBfRUDwGY3l/gCENqG/IlZ+6
+	 9ITD5yw0GeFKZAa+0bia/e2GrYmBvjoTpKiLMzLhxccw5lIvDhSC783cQmaYzUneNh
+	 zzElnTt2qR4KQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C7B3926249;
-	Tue, 21 Jul 2026 21:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569693926249;
+	Tue, 21 Jul 2026 21:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/af_iucv: fix NULL deref in
- afiucv_hs_callback_syn()
+Subject: Re: [PATCH net v2] sctp: validate stream count in
+ sctp_process_strreset_inreq()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178466760764.1059197.11934260585583972317.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 21:00:07 +0000
-References: <20260709191732.124092-1-hidayath@linux.ibm.com>
-In-Reply-To: <20260709191732.124092-1-hidayath@linux.ibm.com>
-To: Hidayathulla Khan I <hidayath@linux.ibm.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-s390@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, wintera@linux.ibm.com,
- twinkler@linux.ibm.com, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com
+ <178466760889.1059197.2799666690554843790.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 21:00:08 +0000
+References: <20260710010718.20318-1-blbllhy@gmail.com>
+In-Reply-To: <20260710010718.20318-1-blbllhy@gmail.com>
+To: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
+ tgopinath@linux.microsoft.com, kys@microsoft.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  9 Jul 2026 21:17:32 +0200 you wrote:
-> afiucv_hs_callback_syn() allocates the child socket with GFP_ATOMIC.
-> If the allocation fails, nsk is NULL.
+On Thu,  9 Jul 2026 21:07:18 -0400 you wrote:
+> When processing a RESET_IN_REQUEST from a peer,
+> sctp_process_strreset_inreq() derives the stream count from the
+> parameter length but does not check whether the resulting
+> RESET_OUT_REQUEST would exceed SCTP_MAX_CHUNK_LEN.
 > 
-> The connection-refused path is entered when the listen state check
-> fails, the accept backlog is full, or nsk is NULL. The code
-> unconditionally calls iucv_sock_kill(nsk) in that path.
+> The OUT request header (sctp_strreset_outreq, 16 bytes) is 8 bytes
+> larger than the IN request header (sctp_strreset_inreq, 8 bytes).
+> Generally, the IP payload is bounded to 65535 bytes, so the stream
+> list cannot be large enough to trigger the overflow. However, on
+> interfaces with MTU > 65535 (e.g., loopback with IPv6 jumbograms), a
+> stream list that fits within the incoming IN parameter can cause a
+> __u16 overflow in sctp_make_strreset_req() when computing the OUT
+> request size, leading to an undersized skb allocation and a kernel
+> BUG:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/af_iucv: fix NULL deref in afiucv_hs_callback_syn()
-    https://git.kernel.org/netdev/net/c/47a5116e56a6
+  - [net,v2] sctp: validate stream count in sctp_process_strreset_inreq()
+    https://git.kernel.org/netdev/net/c/18ae07691d43
 
 You are awesome, thank you!
 -- 
