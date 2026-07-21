@@ -1,108 +1,106 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97DC448383
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784627442; cv=pass; b=qi2CibQq49vENoNgMUbwixX1ysxROjIUTuNCaYBbqyHAc/h4AywHb0rI+WXWhd780shYdPd06ifEZTnaG5I6TQs5hGnCHHoyCO2AHGByKPA3kCyXIWTR/XMviTWQkyo1/Di2rojcCJcINh4QaB78GFDP6TxjYuxAtApcv/CQtGc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784627442; c=relaxed/simple;
-	bh=3KhgfGhG33n8XSEXtnim59QLFEx8zNRkmNvCLO70y14=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LhT8RFANMQs0SN9AL2/b4g+Hzjm91KGp5R/krYEGI4n8hkNZeHzM5d/8YdxPscbTVkh2vbmaGJlAEBVopq/EbohhnlvCwYyfJ2kxhKWnjulNzM2hksZovMPbhTDYwRibP1nm5qo/Er4SbnH6O0nK8urdfupM2uH6IHM5wJhLj8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+pnzIg0; arc=pass smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D3A3AB26B;
+	Tue, 21 Jul 2026 09:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784627633; cv=none; b=tiUivpTKHPkJqakCXirStZyc4d4VD+hvAUn2WGmSaHs6jVtAwsmp/wnT60ySN+JmZy8lbGh/Yw8os95DnNZWMeqCW1ELIq+s64V6ay0i4VgWc1JgSqbhoQWNplphgeK1ILSaqBabrLs5QrSyzO/JqkooR0tR75CDxyxTRv89VA4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784627633; c=relaxed/simple;
+	bh=EpHUgotz8m/VwBYix2PhBTYLXewj9q3NtHkqRIpmcIk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JP4Pb+FbnvEmc2npjzEZ+RD52avVC/cHXTQV826av0degGaImzjfG/x4wcIhbuFHwu5Ii48wbHKQccaHa7pae6ctzQtFK4NbxbivjYHarV8mo89ESzShO494RbgVEyFePxlkpIseYbSViFitsanChMa0H0henBDrgdCdpj5NCRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=LzPNQFi1; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+pnzIg0"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1600d040e4so721962166b.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 02:50:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784627439; cv=none;
-        d=google.com; s=arc-20260327;
-        b=U7c6qzGyKXPoNX1c4BqsjapTRysVI+/4c4Gflnc0qZYcTWE4FPRPQGlBPU8KH5GZTn
-         6/1pDTT2I5Gcsa9n1Q3qGya+xpTnKxedN3Mr9qCEWtHJW3iGZ6cyzfgDfKiBAZMzXBNI
-         B9LEQgX+3vEkBQTY6OG9HfdWGs8PciK20pB3kxS82CBmpWd6H/4QNqFfrEcdkvPimkfl
-         orOhCmxJjvASB/kLnc1LydcYKRkTWT3nVCPKuVcJRczziLWSIzzFKKcdKmUVce+s2SlH
-         0BWEvkFoCyrQmyRznG9Qi5fv4Qp03xCojbEfBzo67QJS4gGFBx1lFh0NmOuXWmyD4YtU
-         ezuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=3KhgfGhG33n8XSEXtnim59QLFEx8zNRkmNvCLO70y14=;
-        fh=W1aedOW0GuvFCjfLosAD/Q1s/KhX4I0skLIWXbPGU1U=;
-        b=YC0TkaDVak/Jmdv13x36+AMQc4jioHE2uZudg5LhyoabCfc5e8PALJgKaVcjM7HBoL
-         gMfjR2s0LhpeKQz1bwBpk4fZJsrjMFWmSJnxr1uDWD3LruTc6pd+197oThddjLthgHLz
-         htjRK7DdKq/8oPmAMUKzRxqG5CIXZEsVD7WqUDBje17b6hf9mGKJBpzr3WuP4XVUF4Uk
-         VfS7pilGGoKlRDeVRTJj3sTQ9JefqG/hJ7V/cZBbUEoA/weLO/+38CdpSJ87t5HHd8c8
-         NsnTw6fHD4nyjDeLZgGu3g4pGIbkuEnkO3yyMxcW+gdRbqUW8pZy8yZjlFMwX50D9mTW
-         vmfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784627439; x=1785232239; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3KhgfGhG33n8XSEXtnim59QLFEx8zNRkmNvCLO70y14=;
-        b=W+pnzIg0TXdr1stBVWinrWOoXcy7IHhOEw5P/5g4Ti1TtAMt0vkjSAqv+WEaoHuS2I
-         ZqBsQfgMg11Fzx+qCvVua0pAMMXtXn0xDNBfc/FK8wXDgJzYpEUUcsjoqiSI1vshGENJ
-         25k0aJkyNIdWxkDk6EVnzW7KyXpBm+/ujsk+7EcggoLWCMdLYAoEp96LCbskmHo1ornH
-         bu9U13BrtmMe7gMXk6KzC8L4T6adUK7Kj3Obhp/k7lOADizbVAC6mia8Rh2taFKIwSS3
-         SKKLgRn2C00i0W5Tw4tP9yaxhou6qMe0Iw0XQR0XUhm88LxoXOlJMR0OmToMYLLi93rN
-         GuxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784627439; x=1785232239;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3KhgfGhG33n8XSEXtnim59QLFEx8zNRkmNvCLO70y14=;
-        b=RNm5r0lhWEMU/iFsMxSBfYzVdFDQWgVCxcPaciInfssVPHp5Nx5o1KtaPNqxxDfT6Y
-         7KpUnGTPcNgE4rtuKNI34eMKR4NHl2Uol1cGW8jgKTRhMbFk5P/2e5z9gFNqJLLpVp0M
-         Jf7hQ5vJgZnyAZs4ar+9tuNcnrRFUa8GlP/KW8ZipXCAlTetwIxOomG9+g16TV0qwdTx
-         tYfzNU3GoJcp1dQ5ylCjByPzHHsgob/RRJO14kiwHiL2PG1eFtkiOQmXvV2kemd5S0S6
-         QfM8ssnE65py+6nHiythmepBjTpW6dgv25r7wnLCP+O6GSnfgiQvP35AY1v3OBB8e7g+
-         beng==
-X-Forwarded-Encrypted: i=1; AHgh+RpzanAzPbn2EPDOUKmoOIF6kO3R42186DPp74u9hvgZzsP80hFJ4n2kZhZyLwFXgx3dROy+1UQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLGMX2oVdFJur+KywQ7Oy4hnRf2KON5hsFP3xJyQgoVMYsfkeZ
-	Nlg1Nwbk2nYldwMtLgQi2stjC3EnIxUy3WUKRXrIFXN+UzdyTWeHmxtDfKZHn/hgdINNLi9fA/w
-	sb2kqZRg4Mb+tibu6zh/HBba8HIad9TA=
-X-Gm-Gg: AfdE7cmkudeXIpzTa0bHH5PMV5J2gNRoNgV8FNH0+XqZd4vqUDqM+MHraE2++bju7CM
-	tIvC+U58LCigYbNgUtrgGJcSzCSCDGQlwRwViLaQGaeA+Qh4RkCDEvZZz0xGQatFWICcFx2x5mB
-	xI/IOZ+YcstAWfkMPJmWYuFq/rWEBlAb/LkHD5P5iUlFcvZT6pjPcDiKJzWGhuYs49BSyBw+AN2
-	ubUJcy18l2ptXsQOW6a1iEkP4YZREU+WZ+q2sx3EqmO/KJ1EUhAX60V2ZXRhUvKx2F8dHM=
-X-Received: by 2002:a17:907:72c4:b0:c16:893d:b870 with SMTP id
- a640c23a62f3a-c16b416cacamr792581166b.30.1784627438745; Tue, 21 Jul 2026
- 02:50:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="LzPNQFi1"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66L9qlndF3096253, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1784627567;
+	bh=EpHUgotz8m/VwBYix2PhBTYLXewj9q3NtHkqRIpmcIk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=LzPNQFi14XZx9OxvhG1yY5t6LZar8O6+aVurwOC0de7JAeHDcQg+1EZ/KMIDHCHAZ
+	 aUsmMnqa3U8kav8XYRk/nbWl/rzrNCYb0fNu1/ocGfz7y0siN3MZQO4sD6/HruTQnO
+	 HfUj7IEIoQekWagRK2bREzz214lfSpvXNMCmxemfzO9NrtMFW7wm0Q18lF3wSJqqkC
+	 QRzITf+cDJgByoSR/StZv0gi82zKSMbujKVarHyRwojxohHd3OIqqYZ1m+bKAzfzsQ
+	 marX+5aBAJmx9kzE6Z+1UmuLuMOvcfstD8HFgJSv502VRHkiMgcfpSF9lft/BMzhQf
+	 OKsuqZjUvM8qg==
+Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66L9qlndF3096253
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 21 Jul 2026 17:52:47 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 21 Jul 2026 17:52:47 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Tue,
+ 21 Jul 2026 17:52:47 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, "hkallweit1@gmail.com"
+	<hkallweit1@gmail.com>, "nic_swsd@realtek.com" <nic_swsd@realtek.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: RE: [PATCH net-next v6 2/7] net: phy: phylink: add helper to modify
+ pause
+Thread-Topic: [PATCH net-next v6 2/7] net: phy: phylink: add helper to modify
+ pause
+Thread-Index: AQHdD4oZroBMux4FbUmVRxSq3rFPErZmAfkAgAUT7jCAASfegIALjzrw
+Date: Tue, 21 Jul 2026 09:52:47 +0000
+Message-ID: <ba61c475562f49c4a18038130f3508bc@realsil.com.cn>
+References: <20260709100237.541-1-javen_xu@realsil.com.cn>
+ <20260709100237.541-3-javen_xu@realsil.com.cn>
+ <0c188a7d-3637-4e08-9ac8-c1d824b461ed@bootlin.com>
+ <aeed474059bc4fd7b9c5e3074ef591a4@realsil.com.cn>
+ <044a9996-1cd0-49c4-892b-fb267037c568@bootlin.com>
+In-Reply-To: <044a9996-1cd0-49c4-892b-fb267037c568@bootlin.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260708042244.120898-1-running910@gmail.com> <CAMyuFdVWgvx4yafBQfbTt4Do535p3PF0LCpZ6Gma0WZ-De2kyA@mail.gmail.com>
- <d6cab50d-dd90-4022-ae15-50df05b85556@redhat.com>
-In-Reply-To: <d6cab50d-dd90-4022-ae15-50df05b85556@redhat.com>
-From: Zhixing Chen <running910@gmail.com>
-Date: Tue, 21 Jul 2026 17:50:27 +0800
-X-Gm-Features: AUfX_mxaLLpeb_9QB0bQATZeFIGw-F98stjYM1vsW3bo3ksqSrESwGgg26szuYs
-Message-ID: <CAMyuFdX8mnEnqt_1aL8+FfAqa=xpKwKxGQq080OnJS8hyJnfeQ@mail.gmail.com>
-Subject: Re: [PATCH net v3] gtp: parse extension headers before reading inner protocol
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Harald Welte <laforge@gnumonks.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-> season interruption reduce the available time. While the patch is alive
-> in PW and no comments from reviewer and/or sashiko are pending, no
-> additional action is needed.
-
-Thanks Pablo, understood. I just learned this workflow and will keep it in
-mind next time.
-
-I appreciate your review and help.
-
-Best regards,
-Zhixing
+SGkgTWF4aW1lLA0KDQo+DQo+SGkgSmF2ZW4sDQo+DQo+T24gNy8xMy8yNiAwOTo1MSwgSmF2ZW4g
+d3JvdGU6DQo+PiBIaSwNCj4+DQo+Pj4gVGhlcmUncyBhIGNoYW5nZSBpbiB0aGUgTUFDJ3MgYWJp
+bGl0eSB0byBzdXBwb3J0IFBhdXNlLCBzbyB3ZSBzaG91bGQgOg0KPj4+DQo+Pj4gLSBSZWNvbXB1
+dGUgdGhlIHBsLT5zdXBwb3J0ZWQgZmllbGQuIFVwZGF0ZSB0aGUNCj4+PiBjb25maWcubWFjX2Nh
+cGFiaWxpdGllcyB3aXRoIHRoZQ0KPj4+ICAgbmV3IHBhdXNlIHNldHRpbmdzLCBjYWxsaW5nIHBo
+eWxpbmtfdmFsaWRhdGUoKSBzaG91bGQgZG8gdGhlIHRyaWNrIEkgdGhpbmssDQo+dGhpcw0KPj4+
+ICAgd2lsbCByZWJ1aWxkIHRoZSBjYXBhYmlsaXR5IGxpc3Q6DQo+Pj4NCj4+PiAgIHBoeWxpbmtf
+dmFsaWRhdGUocGwsIHBsLT5zdXBwb3J0ZWQsICZwbC0+bGlua19jb25maWcpOw0KPj4+DQo+Pj4g
+LSBUaGVuIHVwZGF0ZSB0aGUgcGwtPmxpbmtfY29uZmlnLnBhdXNlLA0KPj4+DQo+Pj4gLSBUaGVu
+IHVwZGF0ZSB0aGUgcGF1c2UgYWR2ZXJ0aXNpbmcsIGxpa2UgZG9uZSBpbiBwaHlsaW5rX3NldHBh
+dXNlcGFyYW0NCj4+PiAgICggSSB0aGluaywgZXZlcnl0aGluZyB0aGF0IGNvbWVzIGFmdGVyIHBs
+LT5zdGF0ZV9tdXRleCBnZXRzIHJlbGVhc2VkIGluDQo+Pj4gICAgcGh5bGlua19ldGh0b29sX3Nl
+dF9wYXVzZXBhcmFtKQ0KPj4+DQo+Pj4gSWRlYWxseSwgdGhlIGxvZ2ljIHRvIHVwZGF0ZSB0aGUg
+YWR2ZXJ0aXNpbmcgYW5kIHJlLXRyaWdnZXIgYQ0KPj4+IG5lZ29jaWF0aW9uIHNob3VsZCBiZSBm
+YWN0b3JlZCBvdXQgaW4gYSBwcml2YXRlIGhlbHBlciwgdGhlbiByZXVzZWQNCj4+PiBmcm9tIGJv
+dGggdGhpcyBwYXRoIChNQUMgdXBkYXRlcyBwYXVzZSBzdXBwb3J0KSBhbmQgdGhlDQo+cGh5bGlu
+a19ldGh0b29sX3NldF9wYXVzZXBhcmFtIHBhdGguDQo+Pj4NCj4+PiBNYXhpbWUNCj4+DQo+PiBU
+aGFua3MgZm9yIHJldmlldyBhbmQgaGVscGZ1bCBzdWdnZXN0aW9ucy4NCj4+DQo+PiBJIGFncmVl
+IHdpdGggeW91ciBzdWdnZXN0aW9uIHRvIGZhY3RvciBvdXQgdGhlIGxvZ2ljIGludG8gYSBwcml2
+YXRlIGhlbHBlciBhbmQNCj5yZXVzZSBpdCBmb3IgYm90aCBwaHlsaW5rX2V0aHRvb2xfc2V0X3Bh
+dXNlcGFyYW0oKSBhbmQNCj5waHlsaW5rX3VwZGF0ZV9tYWNfcGF1c2VfY2FwYWJpbGl0aWVzKCku
+DQo+Pg0KPj4gSGVyZSBpcyB0aGUgcmVmYWN0b3JlZCBsb2dpYy4gSSB3YW50IHRvIHNoYXJlIHRo
+aXMgc3BlY2lmaWMgcGFydCB3aXRoIHlvdSBmb3IgYQ0KPnF1aWNrIGNoZWNrIGJlZm9yZSBJIHN1
+Ym1pdCB2NyBwYXRjaC4NCj4NCj5JJ20gY3VycmVudGx5IGF0dGVuZGluZyB0aGUgbmV0ZGV2IGNv
+bmZlcmVuY2UsIEl0J2xsIHRha2UgYSBmZXcgZGF5cyBmb3IgbWUgdG8NCj5sb29rIGF0IHRoaXMs
+IHNvcnJ5IGFib3V0IHRoYXQgOi8NCj4NCj5NYXhpbWUNCg0KSnVzdCBhIGdlbnRsZSBwaW5nIG9u
+IHRoaXMgdGhyZWFkLiBDb3VsZCB5b3UgcGxlYXNlIHRha2UgYSBxdWljayBsb29rIGF0IHRoaXMg
+cmVmYWN0b3JlZCBsb2dpYyB3aGVuZXZlciB5b3UgYXJlIGZyZWU/IEFueSBzdWdnZXN0aW9uIHdv
+dWxkIGJlIGdyZWF0bHkgYXBwcmVjaWF0ZWQuDQoNClRoYW5rcywNCkJScywNCkphdmVuDQoNCg==
