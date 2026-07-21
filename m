@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7712449B0B
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE62C21DD
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784650846; cv=none; b=Vl/nSzd+UDjv02meQ/NaDCH0xQItsjGEgBfXy4y3xgNTiAL6sPHRSLEFpRgMGqzNMoIgUUoVY92fULdn0bVABhGS/P+Yzkp1LqcBa7lnQ/MKjpc1co9HFRiyUPogDdUo2H90QHGayFJMIjZusSFw7CYkrNyoDdFrD+jhUCZGgQ8=
+	t=1784650853; cv=none; b=lnc95aKzZhRqSNdlpy6Y4SeXnTRPJnsqyP8Yp2j8v2Nx5d4QveOU1RP1NvnR+s5tpr+g+oxKeNSPk7e1HuaC/Pjy5M9wbuqF2mVNAI39HdYE30SY2EWI+LscFHyaUkPMFuYb5hOuer2R/nrTHrangKBge7FbA7XWuCX/T+KT868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784650846; c=relaxed/simple;
-	bh=XP/CKGoS9SNEdUmscwOeKIKPwP3U3K0ZeVG/mXIsS0A=;
+	s=arc-20240116; t=1784650853; c=relaxed/simple;
+	bh=U5U5TpUtZAlzQIUOWM3PKtXX5dztQyFbkPM46wvYDFo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SddeZYrUpDJmEUCrOUR3tDsXYP2Tc2GprTtLSsVhcQ/W5HStHwoGdcgIdWufVOt8uQPO5n/eVF1UvIEffA9z2x7Evp4AEFJ7kXtRexSYKY4l8jbLSRzrwMcWrcWkncUX17PJkGeQQeZBT9R1M47rc/qZxZv3QFGam7VFpQoQrH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTP8huxH; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=sOkoIXATECv/Tc7zgXh6GkndbnleHEgW+b5XUfyWtXuP79DqS5+lXxBCh7XtO7cxH/V7qnAkBLiFqJjvW/SZlHsCVF4p/S2L3VqG5zOn9JzVmIpybRUGSjS+ehsh3v4jNjbtWR8MaNpolVix3gBsWiPZEo1gmUGd/P/+FN1sRTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYkmwIFU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTP8huxH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832951F000E9;
-	Tue, 21 Jul 2026 16:20:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYkmwIFU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837461F00A3D;
+	Tue, 21 Jul 2026 16:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784650845;
-	bh=j1jkDMTWGKrYtyrvk5lUrlacV++MeFwo8wbU2TGICaE=;
+	s=k20260515; t=1784650852;
+	bh=oTrN+cvFZgvJDDVhXVNsiY2o3rd1JcA+mZxHWB/ZxR0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=bTP8huxHIBfVw4vpgcjI8W/GsnXcJTDI4kXJK8D+2U00yHPGpcA6Z4PyJAOWEfXQd
-	 Ejf+YnSF0SEK4jsWehRZJ2VSJbX3o1d+rPccJeSgrUVmybkfiCYmTwV4qvAhADCHFU
-	 ShK/JqQv2vPhRlHu55GJCSzFM3ns/1X5lefb8z6Lwa1p2eDofWeh/sUX98NUk55966
-	 sW3BOFo8QqEMV804oLl5mNKgNGBncTDEurxh1fJmBPXimGi7C5zb76ZA47Fbn1UU+g
-	 gqusuvEHBWsYq0ox4fLbGM42l2926UreigD7mTMgulkWo2UVDSbFqMs+DMiclvIYHh
-	 SJHG5xvpJVAiQ==
+	b=KYkmwIFU31xHWUo4Pj7U3x933mM4OS424iLJx1jqNuq/bSCDZTw4cEEl0cOzxOq07
+	 dR6AUAKc6eT4Hcza9gTYnQTHkwTJhzmGoPrR6t0FlexOfHvTS/Wyfl0vkqtFUL+rYo
+	 EE5BKWpOJecdwjcuBqTC6Mlqb3dtnXSeCiBdztIL2AVNtts5VEB/f+nEQoO9OiggfS
+	 /jREMVIycRtgRx1/Pylj3gisCYYIL18zMhWLwkmN6DkjifhlwzmlxzaXuKo8W/6KHp
+	 dDoyhYoVTdDnVjtAj1RvBHpvbQ3cikZWh1f8RyAVQ1Wn8H8MDxm1tNcYovA8Ph42MK
+	 uNmJE7dISzUgA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A703924FFE;
-	Tue, 21 Jul 2026 16:20:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568FC3924FFE;
+	Tue, 21 Jul 2026 16:20:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net 0/2] net: Fix two issues in sk_clone() error path.
+Subject: Re: [PATCH net-next] net/tcp: Prevent inlining tcp_syn_ack_timeout()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178465081488.386198.18204529491105935572.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 16:20:14 +0000
-References: <20260709183315.965751-1-kuniyu@google.com>
-In-Reply-To: <20260709183315.965751-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, willemb@google.com, horms@kernel.org, tavip@google.com,
- daniel@iogearbox.net, ast@kernel.org, martin.lau@linux.dev,
- kuni1840@gmail.com, netdev@vger.kernel.org
+ <178465082188.386198.1103713176802997297.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 16:20:21 +0000
+References: <20260708180837.9507-1-emil@etsalapatis.com>
+In-Reply-To: <20260708180837.9507-1-emil@etsalapatis.com>
+To: Emil Tsalapatis <emil@etsalapatis.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  9 Jul 2026 18:31:38 +0000 you wrote:
-> Sashiko reported issues in the sk_clone() error path.
+On Wed,  8 Jul 2026 14:08:37 -0400 you wrote:
+> The tcp_syn_ack_timeout() function gets inlined by Clang,
+> preventing tracing. Since the call is not in the fast
+> path, prevent it from being inlined.
 > 
->   https://lore.kernel.org/bpf/20260709032007.9E4D61F000E9@smtp.kernel.org/
-> 
-> This series fixes them.
-> 
-> Note that Sashiko may point out the same issue for sk_bpf_storage,
-> but the fix was already merged in the bpf tree:
-> 
-> [...]
+> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+> ---
+>  net/ipv4/tcp_timer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Here is the summary with links:
-  - [v1,net,1/2] soreuseport: Clear sk_reuseport_cb before failure in sk_clone().
-    https://git.kernel.org/netdev/net/c/98da8ce87dd5
-  - [v1,net,2/2] net: Call net_enable_timestamp() before failure in sk_clone().
-    https://git.kernel.org/netdev/net/c/d50557779257
+  - [net-next] net/tcp: Prevent inlining tcp_syn_ack_timeout()
+    https://git.kernel.org/netdev/net-next/c/d05338c1290e
 
 You are awesome, thank you!
 -- 
