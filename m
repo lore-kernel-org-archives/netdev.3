@@ -1,59 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B273B95F9
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749A03B2D00;
+	Tue, 21 Jul 2026 20:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667197; cv=none; b=LG98FcE6N4G4jTdOaPhsmrYxhAb1kQ3Rf3jnAGAKRht3l/Do4wVrW7to19mmjS66Ts+ec0U2+PjOaSOzFzfgbzOfQhog4A0O1OA6/ThKqkejS+C56fpOE2L+bAk2Qi8FT0c+FZujNbs0v3L5w0G0R7OBhyze9JPNLpq4sUTfYLs=
+	t=1784667364; cv=none; b=sKdIlIBKmcISbB+djCHefKCWBYr38TK7dPAaqw20R6RgGBUOnjCDgO/MR6q01ZY4MaiNm72I/uVkt5qh6/8Y7eaXq6YooPKW/xJgK/ifsP6IubspXV6VNvsDHBr02tuesU56K/ehLkIGSOvmaYEBKB+Wkhv2TsHruMhAJT4Ac4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667197; c=relaxed/simple;
-	bh=cqb6fn3qPYG6U7wZpGSLfqaUVnbPG24A+s6FO5pbYlY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhPjnlqNujPEiw2hXHG5bIM9IMgKwRbzh00k5cygROaehrwlXX3B8dDDBq7qjBTl/QwQC/p6phvRR7KyF5YKbxFImTBbO+ZLzR/Hm7GFk85UKP0CtgnFlJTkMCMK0XgAcXjKn8I9Xqwf2yU52UNoTyCdmfBxNSDipenGtUawh/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQav6trh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784667364; c=relaxed/simple;
+	bh=8WwZUZHgV6BKGjvURsafFo6Styzh3h63JJCfboaQHfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t5o8e1WhLbBQZYNxh0Upjjv2Q+f9iLKSb67FrBwG1F2eszu4YnTVyCBu5j+ejXt25xrc8LZMA1gGTj4FndFTOJP1WHIlInLU9KiU1J7bcMzRs7RxIkR7MY6GXn5kb0FR1fZXA/NQw9jBWMT1yY0RcM2iFgzuKbykZ42SE7dkutM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhNNjynq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQav6trh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0CD1F00A3D;
-	Tue, 21 Jul 2026 20:53:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhNNjynq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087A21F00A3A;
+	Tue, 21 Jul 2026 20:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784667196;
-	bh=M+vbEhNomgWsvX0xx1+0wzbB/AAojB8yVvZ1w8lBpQ4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JQav6trhgHNVki2mO5Vf2X9yZjD80kRPiR66itCbIBBpWqrHB+kg79HuqG/IqZxSh
-	 4Tr99CDV3Ji9oQLmMpamhHN5FdZNu15cR/YTsnvtBQUDfbKY+mgS6dx6fs2yj2qd38
-	 B+PKD47pabBU6+4f/cAoFQNzj/Qx8afSbi3N9vFwOwW1NCk2NMBaIFZqtj/GD2W7bk
-	 cz7nmx/y+fkHCEcZ+9aOZJ/4TZhyRpwGJih6lqg+qZe77Xr65PzfqZsqfJ1PnxQsss
-	 54bBW1J85Pf99L6HHja7Hpv4nm54LU+FSaVjuZ2tFmg8rVcmoDvWvVCwvib9AuKN3i
-	 wInH+yJyNN3ig==
-Date: Tue, 21 Jul 2026 13:53:15 -0700
+	s=k20260515; t=1784667363;
+	bh=G0ZJTgnfFz9Yp+8kiiiPakH+8l1ObaaD7R7zp/zYrJs=;
+	h=From:To:Cc:Subject:Date;
+	b=AhNNjynqui1xlYFXdJoyIFRCOTpLKD1eg2uNve/JFRctOy6XGPue+nHzkDziauRKA
+	 WS99Zdpx7fhkU8l1aLDmg3AbNSXfL0gqbkkaf65ukarIYRY6vPE1arstRVU40mtaJ0
+	 YyZu1qpAUt/C9AYXfkCCM+qnWj15jwOOaXJfdU+A01iUrwmRodKkE7+uHUJUiD7SK9
+	 p6f0VV93SV4upY29LdQmjgSTNNVKo/GOKPQ/a8upQdsqYqCuixy8Uvir8ezJVl1ncQ
+	 Ng22JFTyNIvO3V673PBe+qilBHw4to1Q70pl66HtKNzeGz3jy0PvAhJKQ2yNaWWj3F
+	 nAOk9F+aStaTw==
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Pielech, Adrian" <adrian.pielech@intel.com>
-Cc: <netdev@vger.kernel.org>, "Kitszel, Przemyslaw"
- <przemyslaw.kitszel@intel.com>, <intel-wired-lan@lists.osuosl.org>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, <pabeni@redhat.com>,
- <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
- <andrew+netdev@lunn.ch>
-Subject: Re: [ANN] E830 NIC join intel's netdev-ci
-Message-ID: <20260721135315.11db9f24@kernel.org>
-In-Reply-To: <2c5c3c03-7a4d-4020-84eb-825bd6ed1e78@intel.com>
-References: <2c5c3c03-7a4d-4020-84eb-825bd6ed1e78@intel.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	david@ixit.cz,
+	oe-linux-nfc@lists.linux.dev
+Subject: [PATCH net] MAINTAINERS: add nci tests to nfc
+Date: Tue, 21 Jul 2026 13:55:55 -0700
+Message-ID: <20260721205555.1020513-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 10 Jul 2026 13:20:40 +0200 Pielech, Adrian wrote:
-> I'm pleased to announce that E830-XXVDA2 NIC from Intel Ethernet E830 
-> product line joins the suite that tests ice driver against net-next-hw 
-> branch.
+NCI is part of NFC, so include its selftests under the NFC entry.
 
-Great to see! Any plans to split the MAINTAINERS entry for Intel
-drivers to claim the "Supported" status?
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: david@ixit.cz
+CC: oe-linux-nfc@lists.linux.dev
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-I think the coverage for i40e and ice is good enough, but the entry
-covers a ton of other drivers.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6940aa3d498b..ead6aaa95398 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19118,6 +19118,7 @@ F:	drivers/nfc/
+ F:	include/net/nfc/
+ F:	include/uapi/linux/nfc.h
+ F:	net/nfc/
++F:	tools/testing/selftests/nci/
+ 
+ NFC VIRTUAL NCI DEVICE DRIVER
+ M:	Bongsu Jeon <bongsu.jeon@samsung.com>
+-- 
+2.55.0
+
