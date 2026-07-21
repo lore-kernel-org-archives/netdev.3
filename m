@@ -1,79 +1,81 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522EC42980C
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6883F446BF2
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784627314; cv=none; b=BB6w1rGHsnPrFH7V7rtQ26rr9gSf3bA+vZstZkO4hGgROhjArItFtJ0jm10p5QnZIwav80CJ8eMaSr6jWYgBftwc5WkuFW6EYf7/6uEd1YAdJIAjmenEFfLERUkpZfCNHLnvMzRlpcGW/BAHcbqAA40Ary7Og7o9BWZn25pZCLk=
+	t=1784627438; cv=none; b=ESGIkCxTM2FeDytRjzR0x69D4fKH9UXNfgRiqkOM5LBjw7rsR6aPGpCFnGuTjjC7NYkpZRWYhB4KDYehpEilIXRqjHwU/3gRplpww3nk2WFvcy3cIkyio6dSeK1CQlZbq3RPkmaaQHEQO5GqYzmGIwqMLYQA5taopazpZqeuiQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784627314; c=relaxed/simple;
-	bh=ZR8tGn+UwgUsJBZEd8GIoUSyUM9byLcSp266a5IsPqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cbgLNedQ+bJAWEN9DBPT1FDfV/uueWN+V01gav9hiM7PbiqA/Zovo35xRrlfLpEUsbWplnPGpyxGAk4bqhfdF9/xnhX+830X4ZBVns5XrjvTR38Wq6S/GfD3JBfDHTIWi/jVnjWg0YjQonqK30wUfcdMqst36irh4ikJ2sjgzaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oP+ewIOa; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784627438; c=relaxed/simple;
+	bh=64wVYSusFqyoxioPaVKonxUPyisLtaTz0pS3JPiNKAM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=JtScxLn7F0Et4gUIrHn+QYJzOTP6UMn60KzKQV9T0BCrfIkphXT5xvA+xAixQBDq7mQbtdPUd8RxcbLP8rzM4dD8A06XciT61hNnL1VphEENHNTxWBPaDo0jnZwquhcmwPwsQbmOeL6CmbBkY1UKTc+uZjxceRt9vx9l9X3JlNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzH9ItDW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oP+ewIOa"
-Message-ID: <882f9018-30bc-41b9-ad18-1952ecf8c113@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784627300;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aMNwlLtLuVerZt0Q8EEv1h2+FsKt+8QdW2oDFQgLI40=;
-	b=oP+ewIOah5xX6rl1r4NE94+TJ9iKaDklNS5gKOrSCj5Rf4w8E/bk95QWRoej/2ERzdTJbF
-	eVpRR9LwBDdRskDjkklhNdY7HlQsXix/0RDgvSFXPfNggcb/PDxk9OzuEamujm4a3HQ8nl
-	xDbRxZyb8mm4QuHtR2bLsfmTaSTK3Og=
-Date: Tue, 21 Jul 2026 10:47:55 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzH9ItDW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179B01F00A3A;
+	Tue, 21 Jul 2026 09:50:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784627436;
+	bh=hGT5xoWrmiQ44gdhFXz3CwNKFTxADBc7Pi2WILPjmWc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YzH9ItDWCVM91Ge7zuWSoJyULu3a2mBPyXJMFxjSHn94XoNj97txJkkkEBieRspXT
+	 pRCF5iED29l22HFZagY/lzZA4/mtTpwDFQkNYYGfgEtZghNyzNaBdFuNNDQtOcMnMP
+	 WCOgxIXFLcwpUHPoS30Zr8wnPUDrh//s2RRcrk0RCrOFmKtybOcrfyn20A+2lRQe4P
+	 CytNCnCR+K5obx/Rb3DL4ez5bhuGKMbPSLRZwGTDYjI5lNmXGhZfN2yxMHN0pA37C3
+	 vjJmfq5OFDh0YDKG7tJ4peRF9gUFqim978SnnttcM5MmMb9ydZKozB8B+8IOr4DyiQ
+	 Fn5W+nlC/vEZQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199F93924A4C;
+	Tue, 21 Jul 2026 09:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] nfc: nci: free destination parameters when closing a
- connection
-To: Linmao Li <lilinmao@kylinos.cn>, David Heidelberg <david@ixit.cz>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260721023518.1697625-1-lilinmao@kylinos.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260721023518.1697625-1-lilinmao@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: skbuff: optimization of net_zcopy_get()
+ call
+ in pskb_carve helpers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178462740565.192123.6703104179588475034.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 09:50:05 +0000
+References: <20260708055454.9167-1-luyun_611@163.com>
+In-Reply-To: <20260708055454.9167-1-luyun_611@163.com>
+To: Yun Lu <luyun_611@163.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com,
+ kuniyu@google.com, willemdebruijn.kernel@gmail.com, mhal@rbox.co,
+ bjorn@kernel.org, jiayuan.chen@linux.dev, netdev@vger.kernel.org
 
-On 21/07/2026 03:35, Linmao Li wrote:
-> When a connection is closed, nci_core_conn_close_rsp_packet() frees
-> conn_info but not conn_info->dest_params, which is a separate devm
-> allocation. Each connect/close cycle leaks one dest_params until the
-> NFC device is removed. Free dest_params along with conn_info.
-> 
-> Fixes: 9b8d1a4cf2aa ("nfc: nci: Add an additional parameter to identify a connection id")
-> Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
-> ---
->   net/nfc/nci/rsp.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
-> index 6b2fa6bdbd14..21c2fe64490e 100644
-> --- a/net/nfc/nci/rsp.c
-> +++ b/net/nfc/nci/rsp.c
-> @@ -360,6 +360,7 @@ static void nci_core_conn_close_rsp_packet(struct nci_dev *ndev,
->   			list_del(&conn_info->list);
->   			if (conn_info == ndev->rf_conn_info)
->   				ndev->rf_conn_info = NULL;
-> +			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
->   			devm_kfree(&ndev->nfc_dev->dev, conn_info);
->   		}
->   	}
+Hello:
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed,  8 Jul 2026 13:54:54 +0800 you wrote:
+> From: Yun Lu <luyun@kylinos.cn>
+> 
+> Commit 98d0912e9f84 ("net: skbuff: fix missing zerocopy reference in
+> pskb_carve helpers") introduced two calls of net_zcopy_get(skb_zcopy(skb)).
+> In fact, skb_zcopy() has already been executed once before. When calling
+> net_zcopy_get(), skb_zcopy() always returns skb_uarg(skb), which results
+> in adding some unnecessary instructions in skb_zcopy. So, change these
+> two calls to directly use skb_uarg(skb) instead of skb_zcopy.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2] net: skbuff: optimization of net_zcopy_get() call in pskb_carve helpers
+    https://git.kernel.org/netdev/net-next/c/b9ecdfda4d48
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
