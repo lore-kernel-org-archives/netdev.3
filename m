@@ -1,81 +1,35 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C566045BD4E
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E7C46D2B1;
+	Tue, 21 Jul 2026 16:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651110; cv=none; b=NHW3rV+K/K1c6CHLlAh0VslUCODGLMTxOyNsZ46f87oZ07DhpxNi4Az5AqJ3RHfDwQcPRu5dkAeV7tsE67xodfh615foBcilADgM9Xe3bxcLTr1P+dD9Wh0qBo6S0Zma509Uooj8N587Bk77cbHrVj2Q67DX2z7AOOR0Ruk//Ts=
+	t=1784651443; cv=none; b=fWV5BFzhqtIOKHWVtvh1Ii/mFcYJ8O9SNpGpVcLrgmwWT8ZFm6hLmDM776GwCzt7HeXbVoCpQxQza7+cBOYqEtfM0E+WxpBCJXOZG6HKolcV7nlDZLNOrjTkhzV6Z80XK8atJcumw/QognXTvYBlFeFX5CzIMk8EcImCTgc0aMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651110; c=relaxed/simple;
-	bh=U7C784crcEPbDrh79YM3VK4c1Sg3otpD5Vp+xQPVcFA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWGKsYbdLjOZi08zP34ooqfHDVX1pW3W5uDnZ+VTNLKiZRlrLvk6bj70v+6adKqHKHEDe5A71CwcnaXX0Plf7rh61HocXLFv2BuVlAOuMVzi+RLt9y7NWab2dqAf8HmA4qaI3UbRCPfza40E9GLwCP0nCh7G96AVIpT0XcSGkL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L44nUZGo; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784651443; c=relaxed/simple;
+	bh=dSWrJydcq2B9Bb228wamlwfeAr5CU+sUl1eOHJbIW+E=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=J116jJ3WfxHpCRGfSTvqVQQSHcM9IndPx4YTaoDQmygxEMkTdVpgPF6go+8jTd+dVpk1LHPz7z54skTQN/TFogiQhwg1luUtYz/uI/Uh2Rw2ChGhVfYmvzEAyL3SAyBmz2OC5DOAjIN/RxFNKpNcY8z7iTq3veNX1E6r0/rZMlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2HC1Q82; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L44nUZGo"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cacf197759so133398705ad.2
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:25:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784651108; x=1785255908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Hwn3D3StrukneWS3ilqBxZ7Z391KBO37xUeJwrm2AX0=;
-        b=L44nUZGokIClfe9cZv/KB68PULPfE7QVcmxl8E9I7rQd0xFrG+EY4YL8c4UiJaEWrP
-         z+8GSp4Jt2F5IjrXwL0SpvO0tdDGdLB4DZ+Vy64vVCbAvk1DqsIkXMqrXktlg8wXvN4g
-         aNnLLnRkUWBUg7DicSvz0j8uohsinyoBE6e5T0H1OnWux3Mo2+xmtMYK7L4s7Weh68vl
-         L/YT+C1c9hdCGPFKL+tpx/T3di18u9OqrczTfed2gF4VYPr4rlKPyRfCWJPJ8DQPv2TE
-         NtBO11m5gvqj3gzeuYmPZViLFWPWkBKSQMghtrJgdKIpaFqQzz7x3UBvMuV5yIj6IjPz
-         XiTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784651108; x=1785255908;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Hwn3D3StrukneWS3ilqBxZ7Z391KBO37xUeJwrm2AX0=;
-        b=hy6oFY3X2pXmuXPnXCElwWSCcpYu17aoq9aXw7ShH+JYkZ3K4oLkHK11jnp+OLl1C0
-         6BuLmPa9IuG4+5WV8goH754NlkE0+oD9gZcI8cSpYtkXBEUtagiiUMdBIjmlJX/GAMs0
-         YRVJ61ik9GFLqsMYcciaMrbciySGitob7oms6gw6jlMsPK4PSCNpqA8xpTvx2AzhGMl3
-         qmsvn4LUpTgGF144FVj0hdgi9RVslfJXQDc+G3O7R4NR+RdCksLs3Ogr7sXjsDkO2oui
-         KDStv4/95v2N/d7NqAx2zLZes86d9YxDU61S/+ztmePmaDBoh5xsqmuBI0X4OJthmkGa
-         GSBQ==
-X-Gm-Message-State: AOJu0Yw9CfzjhNGWgtlUOiv/gaXdMQoY7vq9J5sPjFOvqzfyXn8oRE6N
-	XJrO/JklJNwDLAmLro3jh1auaBJy9WBwxgih5BOV1LqLO5dFDXicgjuOjGF0Y09e
-X-Gm-Gg: AR+sD11ww9+oRs56cCkT5plWBT/S+RD6sjX7C9fTfs7fRVMSjjazPY3h1zAiB9gRQG/
-	IVizgW9v5/jML71TasrnBtkdZ4y+ft5dUxyxBMPwtlKSp7K9D0QBZEDe/gKhbbQ2l1q/Fl6/FOZ
-	Muedd2+aL/6+VQNHmaDKVeSpxKmICk+h9dszQjge++l5jtq5jX46qBmtcDCi+MMVOIpCRSqlyWy
-	JsXhzMzik35Vt6Un1abgBgsgU1a5BlcuR4iRg96LHFiBPnUtr9DSxllpfrE55+hDLRocAfp7KzU
-	05KAKYni+F4bjubSJZWPsMhFTNQ/qpgDNPPhIDDTqcGGJe/koSrtpYQA2H+LDJOf/SouFPzQg0C
-	2iMCpJbpPhT+S4ENaOGgYTCyL5lB5oHyZG20Auwa9tklqjLH0mTwfIEU7Ie0lBCVbD8QPp9Cwm3
-	oDn5FO2yHsFlFsKL2a1w==
-X-Received: by 2002:a17:903:3807:b0:2ce:9439:59a5 with SMTP id d9443c01a7336-2cf349a15c6mr197282425ad.36.1784651108142;
-        Tue, 21 Jul 2026 09:25:08 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3471f42csm78836985ad.61.2026.07.21.09.25.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 09:25:07 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net
-Cc: jmaloy@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	tuong.t.lien@dektech.com.au,
-	ying.xue@windriver.com,
-	vega@nebusec.ai,
-	xizh2024@lzu.edu.cn,
-	enjou1224z@gmail.com
-Subject: [PATCH net v2 1/1] tipc: avoid use-after-free in poll trace queue dumps
-Date: Wed, 22 Jul 2026 00:24:54 +0800
-Message-ID: <b0e80e22320459e0f4a3afb30c0c02ab2df03003.1784642230.git.xizh2024@lzu.edu.cn>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784642230.git.xizh2024@lzu.edu.cn>
-References: <cover.1784642230.git.xizh2024@lzu.edu.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2HC1Q82"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB481F000E9;
+	Tue, 21 Jul 2026 16:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784651442;
+	bh=hiZfSoTKTIHoVPMPzTv/3edn8TP3cK2ffEGhTMHhApQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=W2HC1Q82A5JRCVozDeNy7cIsGS2ZK9p2s3PknTUGV8YupKqrKNUCb3UpSD/sT6nx9
+	 gpvK9PHZ5H/Xm2BB5iS+UwuSTyfYOJabperrBXJrDd0Wg15BhLS8q6U/8Tllg4N7SM
+	 gGcnydR1DV+kQgPWSeCzRtTYcVu3OspFQkaNCUf7dchiVynbNHP28xFjFrhiMfZl/z
+	 Ggt3K07ra/R1NDNwuPV7/CoUAEe3/2E1FtOyK+LDOE2pUjGYBBkRrfAz6b04OkpqV0
+	 FWgXzxj0+LYoYEYx8Bq7fVmlAPw11ELvLGefRG5BUoov3cTvTyYn24TI9nHoM/NLwA
+	 C/uG0qtKk058A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CCD5E3924FFE;
+	Tue, 21 Jul 2026 16:30:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,56 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] rndis_host: add overflow check in
+ rndis_rx_fixup()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178465141140.391576.1666114427546952620.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 16:30:11 +0000
+References: <2026070900-denim-brook-52d4@gregkh>
+In-Reply-To: <2026070900-denim-brook-52d4@gregkh>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, griffin@kroah.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shaoxul@foxmail.com
 
-From: Zihan Xi <xizh2024@lzu.edu.cn>
+Hello:
 
-TIPC socket tracepoints dump queue state through tipc_sk_dump(). Most
-queue-dump callsites already serialize that walk under the socket lock or
-sk->sk_lock.slock, but tipc_poll() calls trace_tipc_sk_poll(...,
-TIPC_DUMP_ALL, ...) without holding either lock.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-That lets the poll trace path reach tipc_list_dump() and backlog head/tail
-dumping while another context dequeues and frees an skb, leaving the trace
-helper dereferencing a stale queue entry.
+On Thu,  9 Jul 2026 14:24:01 +0200 you wrote:
+> From: Griffin Kroah-Hartman <griffin@kroah.com>
+> 
+> Add an overflow check to ensure that data_offset + data_len + 8 does not
+> wrap, which would enable an OOB read of the USB data buffer.
+> 
+> Assisted-by: gkh_clanker_1000
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Shaoxu Liu <shaoxul@foxmail.com>
+> Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> [...]
 
-Keep the existing trace output, but serialize the poll trace snapshot with
-the socket lock. Gate the locking on trace_tipc_sk_poll_enabled() so the
-hot poll path does not take the lock when the tracepoint is disabled.
+Here is the summary with links:
+  - [net-next] rndis_host: add overflow check in rndis_rx_fixup()
+    https://git.kernel.org/netdev/net-next/c/965a251f23ff
 
-Fixes: b4b9771bcbbd ("tipc: enable tracepoints in tipc")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
-changes in v2:
-  - Keep the existing queue and backlog trace output intact.
-  - Serialize the poll trace snapshot under the socket lock.
-  - Gate the new locking on trace_tipc_sk_poll_enabled().
-  - v1 Link: https://lore.kernel.org/all/24f7311aed0c9ff06b8ea982647b82bf543ec369.1784454542.git.xizh2024@lzu.edu.cn/
- net/tipc/socket.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index e564341e0216..51692c4a0e47 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -794,8 +794,14 @@ static __poll_t tipc_poll(struct file *file, struct socket *sock,
- 	struct tipc_sock *tsk = tipc_sk(sk);
- 	__poll_t revents = 0;
- 
-+	bool slow;
-+
- 	sock_poll_wait(file, sock, wait);
--	trace_tipc_sk_poll(sk, NULL, TIPC_DUMP_ALL, " ");
-+	if (trace_tipc_sk_poll_enabled()) {
-+		slow = lock_sock_fast(sk);
-+		trace_tipc_sk_poll(sk, NULL, TIPC_DUMP_ALL, " ");
-+		unlock_sock_fast(sk, slow);
-+	}
- 
- 	if (sk->sk_shutdown & RCV_SHUTDOWN)
- 		revents |= EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
