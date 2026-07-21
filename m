@@ -1,45 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1148442107;
-	Tue, 21 Jul 2026 21:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FFE35C68A
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784668021; cv=none; b=FwMc/dAGPAqouA7OXmcCHGR4jVX+YNYS870zpTYSGVegQhirUcy4AcNajqyKdhcB7EPux4dByR/zB4O2mzPpuh6qTWpgl9PcA2NOQDMatIjWgwbC2Vx2iuIpb0vw+sep6lvs9LHWiRfOXlgw882Y6ZegFKMyl4sxaXls21emUWM=
+	t=1784668153; cv=none; b=Z9QTQZUFT0+pzWgIxEJmzcVwsvif9njE4cCYoZhpAOxodd+Fp/UeP5HKOMGN01Z3fKD66Vn5BS3eYMT52YhvESWG3HI6Mrc3BhQv24Ue3A1S5uW4q3B/TuBfvbOqtyZFsGnlnmdHegUdhnoaxCKGsjAyCIijP4l+uDhRzMzzR9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784668021; c=relaxed/simple;
-	bh=JltIqwd2g4PZsbTsOlBMggkBKsK6QXyPs+p0vF/bQuE=;
+	s=arc-20240116; t=1784668153; c=relaxed/simple;
+	bh=HdH5SmJHwL7sYywdCK4BqyRyotvmOJ2Cdh/e52BoXOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ss08EtBOLq1LElXKOFnBer9G9G6ypAGRQEfhGUNrxRwuc4NG9oRVIIwnavAunKyyrEFzbPw2twET1gitocV7MGeVQbQ9BZIdBSWfR7DQRSmXp2JOTfoxEprPuDGpLmQwB6pkWheOrVDZVxzRlhGnbWlusoV9De74gnj0O3LaOPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ln2ByyT6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Jw09BuIVRinM9nqsFECNc0SZpnkdgsBqD9j11fOARKi3tomKp0+z+QM6EBKncy+rRWe5OW6zTlo3REwBA8TPuCA6baiKoRtFJNT4VszqlUwbUWSayTV423lJqaEA6/nw+yk3nce90RWsxlL+PdtkRMbUsJyCoBQeGrGVr+FMEn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNCLDS+a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ln2ByyT6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F601F00A3A;
-	Tue, 21 Jul 2026 21:06:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNCLDS+a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EA51F000E9;
+	Tue, 21 Jul 2026 21:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784668019;
-	bh=7abXyW5cA3rz+bga/ufpLUDWGqJKwYg+XMhDXnLdN1M=;
+	s=k20260515; t=1784668152;
+	bh=RIaQV6tMoa9LUnC46dI3d7MBiNCMMgLrvrWnt49KBD8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Ln2ByyT65k9ls7JpzavSEX+UODFqy0DYM9oXz+jXMpNyCIPwTzsIKxgUfG+sS74Dm
-	 +tXns42gZ/hCoNw4l2LlCJS6nJCWXbjffYNAvFy1/xwL9wIJ4AdGWcIChwSzrZWLRl
-	 vSuh0BpWfWuBcNfc9H3c92rRXRfakXZqc3xJgdRGwAjS1Am6KUpB7NFQObuR203HsJ
-	 Yi/E53Z0d/G1/8ZuBeR4SCdndhoHlo/X9kWizNOkXAjQtXw0HEEos2ejPjkuvofDhg
-	 HpRZJlNXQch1NefUsxOUHy7qnGOQ+Xviw9Q4UhXcdAU16OwCuNxPVOlpO7H1KWLiLV
-	 eOGmtC3KrtS8Q==
-Date: Tue, 21 Jul 2026 14:06:58 -0700
+	b=dNCLDS+aZAHRLfIf4eG1nq/FGuR4um71zNIOvXxxm7+Jhs9hVSOtuRg/rTNyPmwz7
+	 XT85/ahD3c1SHsEUKo35E71oNfO+rOlPs6+YSKUICKn67gcS/dPqZp40fDFDJklEzi
+	 RIGXt7F67SRgMbe+g3x0rsp2D3bJjPf+dQr90tEZ3si/ikKhYafsxHTf2I31vZA145
+	 x2VEUhG5eoPmx6nKItHQfnvbw8hLeidBY4VVliccdlorBAeLizpE12pLYNxL8UzZK7
+	 kb7cRepSTdkZydSYnEM6YEY32NmFPGDqtbJt0xTxK10xR5DKYekNBZwFTidYXkqW3C
+	 Yss3g1EM2U72g==
+Date: Tue, 21 Jul 2026 14:09:11 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: MingXuan <omeux327@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long
- <lucien.xin@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] sctp: diag: fix uninitialized stack leak via
- INET_DIAG_LOCALS/PEERS
-Message-ID: <20260721140658.21d898ef@kernel.org>
-In-Reply-To: <20260715033536.64963-1-omeux327@gmail.com>
-References: <20260715033536.64963-1-omeux327@gmail.com>
+To: Vimal Agrawal <avimalin@gmail.com>, kuniyu@google.com
+Cc: pabeni@redhat.com, netdev@vger.kernel.org, edumazet@google.com,
+ vimal.agrawal@sophos.com
+Subject: Re: [PATCH v4 net-next] net: neigh: avoid calling neigh_forced_gc
+ on every alloc when table is full
+Message-ID: <20260721140911.2e12e60c@kernel.org>
+In-Reply-To: <20260715055311.90403-1-vimal.agrawal@sophos.com>
+References: <20260714133909.82424-1-vimal.agrawal@sophos.com>
+	<20260715055311.90403-1-vimal.agrawal@sophos.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,35 +46,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 15 Jul 2026 11:35:36 +0800 MingXuan wrote:
-> Fixes: 8f840e47f190cbe61a96945c13e9551048d42cef ("sctp: add the sctp_diag.c file")
-
-Please trim the commit hash per recommended format of the Fixes tag
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: MingXuan <omeux327@gmail.com>
-> ---
->  net/sctp/diag.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
+On Wed, 15 Jul 2026 05:53:11 +0000 Vimal Agrawal wrote:
+> Once the neighbour table exceeds gc_thresh3, neigh_forced_gc() is called
+> on every allocation attempt with no rate limiting. In workloads with mostly
+> active/reachable entries, the GC walk traverses a large portion of the
+> neighbour table without reclaiming entries, holding tbl->lock for an
+> extended period. This causes severe lock contention and allocation
+> latencies exceeding 16ms under sustained neighbour creation.
 > 
-> diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-> index d758f5c3e06e..12557e924cc2 100644
-> --- a/net/sctp/diag.c
-> +++ b/net/sctp/diag.c
-> @@ -85,8 +85,12 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
->  	info = nla_data(attr);
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(laddr, address_list, list) {
-> -		memcpy(info, &laddr->a, sizeof(laddr->a));
-> -		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
-> +		size_t addr_len = laddr->a.sa.sa_family == AF_INET ?
-> +				  sizeof(struct sockaddr_in) :
-> +				  sizeof(struct sockaddr_in6);
-> +
-> +		memset(info, 0, addrlen);
-> +		memcpy(info, &laddr->a, addr_len);
+> Add a pre-lock check in neigh_forced_gc() to skip the GC run if one was
+> performed within the last 50 ms, but only when the table actually contains
+> NEIGH_FORCED_GC_LARGE_TABLE_THRESH (16384) or more entries. This avoids
+> repeated full table scans and lock acquisitions on the hot allocation path
+> while leaving tables with few entries completely unaffected regardless of
+> how gc_thresh3 is configured.
 
-Having a variables called addrlen and addr_len in the same context
-is quite confusing. Can you come up with a better name?
--- 
-pw-bot: cr
+Hi Kuniyuki, are you still unconvinced by this?
