@@ -1,108 +1,143 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC32246EC84
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 19:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8301B415F0E;
+	Tue, 21 Jul 2026 19:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784661696; cv=none; b=O4NqD0RI8vnS4hNZYZIcWyN3Rb8/waB4NaXC7XnF7ocTgMPDn3LGDHY1xkTn5TZGa2DKCA1xeLvlkf6AXmJnAg/3szjHDpC6A10iVodczHcpexB6p/dqr8MX47K6IbxAdmdzAqG/zhsj6u2YC5pFb3jxOC71GbVoXe086xeOjOo=
+	t=1784662115; cv=none; b=pLdgJq+cctYNHyn9q6IokiMMKT16tDPLjTwT8cIa3v6WfEaDeABOCSJYFZ+pK1m5zYEobUFSVp/edYZ/EHB3yYVpdIkaITBuLY7AtuGxS0txyI0tT3Kw7T8ZpL50Ez2xp+h3V2hX6chGMg1ey2mp/DXuFH0QYhc0JCQ0JqZRDvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784661696; c=relaxed/simple;
-	bh=Sotpip3gBeIy/JGRPKE+/sLPJK1PnV5DsQrli8bNikU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HqTno5cpHRPq4sn9t+3LQ+QuIHJ/t2nSOwAU3lWvCkHIGuF0rnNwOZNohNfIC6Ycal83PvcYhbLVaWDxDKQnFafUvdasAnvUW2uTItefGKKKU9UxSSnKI0w9gnsb/eApFajoyJT9J6isvb9V7QGF0nkCHqa8DXUdABvghg3coDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pDgBhLv3; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784662115; c=relaxed/simple;
+	bh=lgclJuk0CqxNxS/2ZM00UldPOzsTBKWl/vFU3Zpif3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pSrr12IPj4lD9eFA2ujWrOfPNXpjKxxLsgmX2yK/EO96F6yc+uOjAgJLnMW2SNzPJ62t6gVKyaPMYmmvOOSdz3ewrAvl9hlLaAimNzzFxzWtZObOMk4D4eNhA67J9l7VOhW3U3dhYzRAf1LG/suP2fB3aFi/s/7gR+Bj4tTjmHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ch/kxbBu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pDgBhLv3"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8eefd4a8057so75278916d6.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 12:21:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784661693; x=1785266493; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qAv/YlHa2VEFYt54c/rqc8dCQWbyXaL++Oe+Q4jkiPU=;
-        b=pDgBhLv3nDRyK3XHQLhVgBHSAmLf1Spd0hzk4Vxkxz5ENXLgtVcTm7/+ZC/SUAcCHN
-         JqJ4Tu9ycxn/Ts60Kn1biRyYIDNbEzRVH6Q//wKJ7858EVfLQa3DasdfA9JecZCpUcwX
-         qcn1o59bwmQgclIiUbS7+lv2dZoyti5SSYpg0dpZqh3hZLUQtSFRQxCLmL68pPcuA7AB
-         Jt+Ay0WJLMqAKLPhncC2XXYef1xZEUtqBDMb+9hfus+UVqeYct0hECeAIlvgnUYw+pyq
-         czmEivV8cX77SGbfEtp6k/AKmkiVi/+Z8NjTyD4CyCgOHQoctJa+LMhZhaMed5TgSnTZ
-         V9LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784661693; x=1785266493;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qAv/YlHa2VEFYt54c/rqc8dCQWbyXaL++Oe+Q4jkiPU=;
-        b=Nz+ejV6Zm1TC2M4CMbnPT4ay51rISIIbFin3VkByucSRoCh091FMh9vbsdZSjTgeGb
-         5K8WtpqMjbS7Cbc/sTytxfDcQBNwOu50ELKGFYPj9NhxYSnCT5KfJxkYlwZUREOx393m
-         Sopq07S6+8gXELLxv20WzdYcdQpNi2Y8lwJsy/Drh0UjpiwK9eLFa7GGcRR59Q1vlQy1
-         cbprjyEo1WNP1eiduvuwHItYPmxwveDQpaY38yBPxXPYeseEiMmIyaZCxY0bcD1wsWKd
-         D8DECfyK8VKvNwxEUlQbfO0KgfKf+0lOFCxJv/jyhRlloRZygVsszKblvuHDmjWDyGmd
-         Ch9w==
-X-Forwarded-Encrypted: i=1; AHgh+RqvTbHh+DkrI5E1JtwX1hv4S14dosL4zRQ2bCvDvs8AMZqfe23XGoiyajIqW4jAYsgw1rwMN40=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtMbyMA62j7TZTsyVyJgZfeG5z4X17cYANTmdh9VbbtTel/i/L
-	KwecklTbSS+aI8VSXCnyui7hn3RpwW03M84rvLPErGGgC82U5dXFAJs8
-X-Gm-Gg: AfdE7cn5mVP9X7Z3SkY0zAMR0GmuUne+FwxQIKrqioUx37sVuiIz6rALHAA7ebXWIVj
-	snK66gItoRp9XSjX1QD2M2JnC2B5SpKT8OsINwCAgfDOnn8TELm51PdWZS+kLESQ70ssYZhpyfb
-	8HLviqnHqK/md86B1rgxZguxOqkjgg2IIa/ilOL1nZ7yE4XgGj3pgA2Ye6cz1KMiC2Gn1uQZp0W
-	UinSE8O/5uSO8BXfJukWcjISlsq3/yjwyoCcx3myHGjIA1q1wZgUDUiLM/FzFu5VKYTRxRnK3d9
-	ADpRbaxyylW3IKg3m53ceV2Q4pI2SekdbWDOCHjXVd9bjBochFP0S6rV3jEF0//u9OgomNOfik1
-	iRJCrBmaUY8pCwKt8RaO12G6gbMCjMG+2P/JzUvyGTkZ7WjdTnJv/mI73e+dtpVTMSMA3By6x2t
-	VgQ3oId0I6rDIm9bewoLhgof/nAeZa0lqMuZGCn5g7E6bO5bpdx0Rp1pHZ50W4o0H7Wdxpn7A2S
-	pS4hnZhU3I+cGYrO28R
-X-Received: by 2002:a05:620a:690a:b0:92e:5444:9274 with SMTP id af79cd13be357-930b3ec8d65mr1909349685a.30.1784661693544;
-        Tue, 21 Jul 2026 12:21:33 -0700 (PDT)
-Received: from [192.168.86.61] (pool-71-191-208-38.washdc.fios.verizon.net. [71.191.208.38])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8b92c0sm3370866d6.6.2026.07.21.12.21.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 12:21:33 -0700 (PDT)
-Message-ID: <190879f9-2447-449d-acf8-9f9e26651b24@gmail.com>
-Date: Tue, 21 Jul 2026 15:21:32 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ch/kxbBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BCA1F00A3E;
+	Tue, 21 Jul 2026 19:28:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784662114;
+	bh=xC8lvJvDUQ9mMy/yHy4cng0x19uXIMryBnv+mV/BtRo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Ch/kxbBuOr35ZOfuV6AS8t6/kRvi5NNuti6hN3q0Jhgjudk5cB+LsvTJ9mEVCQ2/Z
+	 bCu99xy614UcbIIZCvnOhByuXJVEPQeeXNESxJhJuBV7o/7QrDAWwaqIl63EBblCKQ
+	 7Ku5XZRfU968q9H8p77wuV42kGH3TS4uET3CW+GxmGxUUiOnXTKc1oIweDhjL6hI87
+	 vEH8zQxWtKoZltfAyHwJTU+BwkrOQe7hIgqzr+k0xpmLF91sN88jf7r7VLEKRUscVg
+	 9W99CV7/nCkzXvMenWsG/gIx1mwKCQsyRv+h/Nb/3LDD9hi12Mw56keiu7rP5wW5N8
+	 hH+SCyEXFYgow==
+From: Jakub Kicinski <kuba@kernel.org>
+To: xmei5@asu.edu
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	edumazet@google.com,
+	kuniyu@google.com,
+	pabeni@redhat.com,
+	willemb@google.com,
+	davem@davemloft.net,
+	horms@kernel.org,
+	weiwan@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: Re: [PATCH net] net: sock: prevent integer overflow in sock_reserve_memory()
+Date: Tue, 21 Jul 2026 12:28:32 -0700
+Message-ID: <20260721192832.931173-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260711005955.1467140-1-xmei5@asu.edu>
+References: <20260711005955.1467140-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 2/5] hinic3: Add ethtool statistic ops
-To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>,
- Teng Peisen <tengpeisen@huawei.com>, netdev@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Mohsin Bashir
- <mohsin.bashr@gmail.com>, Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- luosifu <luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>,
- Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
- Shi Jing <shijing34@huawei.com>, Zheng Jiezhen
- <zhengjiezhen@h-partners.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-References: <cover.1784538912.git.root@localhost.localdomain>
- <e7bd2732afe29efdd23ce79c323bf91771cfed82.1784538912.git.root@localhost.localdomain>
-Content-Language: en-US
-From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-In-Reply-To: <e7bd2732afe29efdd23ce79c323bf91771cfed82.1784538912.git.root@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/20/26 8:53 AM, Fan Gong wrote:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+--- Patch [1]: [PATCH net] net: sock: prevent integer overflow in sock_reserve_memory() ---
+commit 16cb32b81c740c27028a52ef3c27a62623c808ad
+Author: Xiang Mei (Microsoft) <xmei5@asu.edu>
+
+net: sock: prevent integer overflow in sock_reserve_memory()
+
+This commit attempts to prevent an integer overflow in sk_forward_alloc by
+computing the new value in u64 and rejecting allocations that exceed
+INT_MAX.
+
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 8a59bfaa8096e..2ba95bead1aed 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -1042,6 +1042,9 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+>  
+>  	pages = sk_mem_pages(bytes);
+>  
+> +	if ((u64)sk->sk_forward_alloc + ((u64)pages << PAGE_SHIFT) > INT_MAX)
+> +		return -EINVAL;
 > +
-> +static u64 get_val_of_ptr(u32 size, const void *ptr)
-> +{
-> +	u64 ret = size == sizeof(u64) ? *(u64 *)ptr :
-> +		  size == sizeof(u32) ? *(u32 *)ptr :
-> +		  size == sizeof(u16) ? *(u16 *)ptr :
-> +		  *(u8 *)ptr;
-> +
-> +	return ret;
-> +}
-Why is this needed? It looks like all the counters in 
-hinic3_rx_queue_stats, hinic3_tx_queue_stats, and hinic3_port_stats are 
-u64.
+
+[Severity: Medium]
+Does casting sk_forward_alloc to u64 sign-extend negative values?
+
+Since sk_forward_alloc is a signed int and can legitimately be negative
+(e.g., due to over-reclaim), casting it to u64 when negative produces a
+massive value (e.g., -4096 becomes 0xfffffffffffff000).
+
+If a user requests a small reservation such that sk_forward_alloc +
+(pages << PAGE_SHIFT) remains negative, the 64-bit sum remains a large
+unsigned value greater than INT_MAX.
+
+Does this falsely trigger the > INT_MAX check, rejecting valid reservations
+with -EINVAL and causing a functional denial of service for the socket?
+
+
+[Severity: High]
+This is a pre-existing issue, but does checking sk_forward_alloc allow
+a state-change (TOCTOU) bypass?
+
+sk_forward_alloc dynamically decreases when packets are queued on the
+socket, as memory is temporarily moved to sk_rmem_alloc or
+sk_wmem_queued.
+
+Could an attacker reserve memory near INT_MAX, queue packets to reduce
+sk_forward_alloc, and then call SO_RESERVE_MEM again? The temporarily
+reduced sk_forward_alloc allows the check to pass.
+
+When the attacker reads or drops the packets, sk_mem_uncharge()
+unconditionally adds the memory back, overflowing sk_forward_alloc past
+INT_MAX into a negative value.
+
+On socket destruction, this negative value bypasses sk_mem_reclaim(),
+leaving a non-zero balance that triggers a WARN_ON_ONCE kernel panic in
+inet_sock_destruct().
+
+Should this check use the total tracked sk->sk_reserved_mem instead of
+the fluctuating sk_forward_alloc?
+
+
+[Severity: High]
+This is a pre-existing issue, but does sk_forward_alloc modification in
+this function race with UDP receive paths?
+
+sock_reserve_memory() modifies sk_forward_alloc using the non-atomic
+WRITE_ONCE() helper via sk_forward_alloc_add() under lock_sock().
+
+For UDP sockets, receive-side modifications (like udp_rmem_release())
+occur in softirq without holding lock_sock() (using
+sk_receive_queue.lock).
+
+Can an unprivileged user repeatedly call setsockopt(SO_RESERVE_MEM) while
+receiving UDP packets, causing a read-modify-write data race?
+
+Could these lost updates corrupt socket memory accounting, leading to memory
+limit bypasses or triggering panics during socket destruction?
+
+>  	/* pre-charge to memcg */
+>  	charged = mem_cgroup_sk_charge(sk, pages,
+>  				       GFP_KERNEL | __GFP_RETRY_MAYFAIL);
+-- 
+pw-bot: cr
