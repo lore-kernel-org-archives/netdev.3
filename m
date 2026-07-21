@@ -1,55 +1,35 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8933BB13A;
-	Tue, 21 Jul 2026 09:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75D034DB4A;
+	Tue, 21 Jul 2026 09:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784624432; cv=none; b=FhrQUJmP2tgXtj4C23l5B0AgTxG1ygdCke4GDcTZbcEDq2ZYmeEYemsUL6WPxceB+O6RYkI4bKTcP/fyv21flrmE4r4fw+KzLhSkoHs01ep4T4NmPGDDVCOT8SPDOD1+VuCxKJ5U4+9ZRz9Jmc/tZTVy7czZY+GAJokWu4rYDS0=
+	t=1784624455; cv=none; b=KT0IvQ5UwP0SJ2cKIO+bWMgV1h5XhgYtTzvR5NrSEwummTtRfCrm5PGfxSGTsHGdHme6aYvfTeaXyh+mWfFPBcxCMMud+Zm9PCkGHunifsImuTnhzaA60VkJ5u9SdSa9OFqdrIxe3xhNSR66YXvUTOgN89guGLk8c89e0hQRjUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784624432; c=relaxed/simple;
-	bh=wg2R0O9jIiz8XQD4zLwCh27qvRCLFqO7jRdAu55Kn3I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WTFJduYrJpcGQyeOefZXmFhfhD02jV/wR8hl4+uS8nYdZjbR2ujcys0/xRQ1+VkS4/LhL7gZ4hk+FgMiPR8mLj5UApZnvVp9BGvFfxpaNXVIMvVMOH1XkHs2Ykr1S/1smF8mYjQHP0uZ9CtA1fFSReqJnmXVd+jiBe3az11Crpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=nmEf+Yzb; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1784624455; c=relaxed/simple;
+	bh=Ce3TgVnFtM9NuJ9xl91qVQ2BBavQQ218Ymd+/A6JliQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Q4ZaSblRcXaoWel6+VU7yuUeqZobY8o/z7vaCSRY2OQ2mgzebBvGU/4GqaeRxUjWwC34wJ87H30aBLtfZFdQsLO/JPztVtJSZJNj22WHUFcFjgO+pkY7Mk2247GFlIX8TwJZiG2SmE0Woi1gHP7N80m/0YRS15CHDrbe/YBIdEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkdLiIqu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="nmEf+Yzb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784624358;
-	bh=3sdxPL8G7q4mqiuvAxDaYhVO3red+x5oG0NxOIHEf6A=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=nmEf+YzbjLSLQysiP4CCCgM1vhH0HDN6Bk4B9U0R7rC0PXWpiXKTYPXrGdX2/rH36
-	 paxN3hssDyvVlX+0sW5JW7n7H3ZMyu9Yhm/emuFlclUrajMSE1/aDohq1wb34wqazV
-	 n527U9FV63ipdmaUiPzY9rUfZK02XGjCpfW59bzc=
-X-QQ-mid: esmtpsz16t1784624340t9677e2c9
-X-QQ-Originating-IP: oSV6oG/FFee85rSGttmZ/xjMMQZMQdRO3/LuOAmF6V8=
-Received: from localhost.localdomain ( [124.126.19.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 21 Jul 2026 16:58:45 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 2477360243233712857
-EX-QQ-RecipientCnt: 11
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: horms@kernel.org,
-	madalin.bucur@nxp.com,
-	sean.anderson@linux.dev
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	ZhaoJinming <zhaojinming@uniontech.com>
-Subject: [PATCH net v2 0/2] net: fman: fix IRQ-related bugs and add probe cleanup
-Date: Tue, 21 Jul 2026 16:58:39 +0800
-Message-Id: <20260721085841.488088-1-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260709145221.1564906-3-horms@kernel.org>
-References: <20260709145221.1564906-3-horms@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkdLiIqu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500DF1F00A3A;
+	Tue, 21 Jul 2026 09:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784624454;
+	bh=kT+Q8kRcBsmrQIxq+3cEUACSAv9IYbo+YgFCNmr8RMg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ZkdLiIqueP2AZ/FKt7r4mv1kyFPSyDr2vcZc0iRJsNHKcN+jexQ9Jy0RR+KpPz7RW
+	 lUb3LheAgAP6FFPydYQxdbZudvJdQY5PO37x1+2vE10+/LncOAtXc7Fr3xUficKAW2
+	 nVbrRdU4gWBFTSykugHpLL0fVPdWP2bRr6nMdJBlGxBnpbsWbpHma7HyvkyWxsjOSq
+	 1g50hYeFAB7LaSZDPleHPnDvZf4ITFwrpI8PYLUHF1UP6zFYtyw4+UgGout0t2D0QU
+	 Ev7GGrkMm7H5LdH5VTblhXPhV6nuT6oHxdVhqJo5uJUGRc6zvu+a8IRK2Z+DzIvid4
+	 3M4AxxM9AHdmQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BC73924A44;
+	Tue, 21 Jul 2026 09:00:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,91 +37,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: Ncyz9M6n7cjdUjyWgeJqVcKQXWRXnAQu44AA7uh039z2i2wzWBuTUC2D
-	a5/dQ7A36qj7A6PlpToNe62x6HNZkzn5N9dSxlvUSfeJJ34R0WPPfcQgiFTyPTIBYK4CR/F
-	2Xn5OQQPQbSc33nd+xcLbNl15rm89U89nadMWOqqSkZu1LzTUGJVekBJl20Wvb/UsEiitsn
-	y1uyXVYuvCASustIsRkR2NRCqE+mkyjFyCAiNO6H7tDw5ARljDNSU+1RgSJvnqawcFAe6G1
-	x+OJrw9ewwXfMqHCIQB1vo1VV3QJkyFvoM1xLMGYiRSX+0848wtAoqeR/YGibW6WBzQIybA
-	awI9fT0yrHyKwI26fhTGRHjBHYeFL1V1W4p78z4JMsuAsdKJMoiMBxIwIbvyvyo1yO5vHiU
-	aEqax4wqpadpThgFCKvHLrcg5VRgGsKvAj02V3ZYy4Tvmrs+Mugd1/8YOWvQoArz5e6mmrt
-	qjqv9mDt8cZNwYAm/eAieXqCGoVdMNoBUxoWRKueaR+l6/Z5MkLbXHB1FwCP+AmWA6RyMAc
-	b0GMW+dsz5BZWmKIQodGqf+hRRFrZEU2Yg9Wk222Ujd8VuAHf0OYI8xE8BAURMuwFTWU6xs
-	JLuuy7HEG5UGuagSBd6SEFxbpUcSGzxY50/+388Qe20ypwKIQ3AVLIrl9u2cOkkdfePF99y
-	FAqC/dUxaZgyS9L9FLwg43maoGj0zs5tzzrZqzGe8sEOiT4h0AL7Fl/HUSupzLTSak8KeRv
-	4+DlgQzKQ3rgr5EmFx2ovxlwfLAfc+A9qw/g+Tfff1qGiZlwC1qaNa1sFhGpI8jr/Mi+pPI
-	eB035IJX3aQtcEpzquLj5DRN5CqTi4FGHLs9FUzlxdMBHcZ7VGaVJbu3O2S7L6mAzuXnvVQ
-	ZVa6p9R3aapILsIgw8eklavt4+8c6YXs5kTyl6lQWOGtNOj2mcDO5nO1V/eu1u0mhYjXuGl
-	5pXHEYOTsQYRuxZmxD6X0ZvdvuT4HNQfLHY8AU3jrUf6iIGDkIXCw5V4n9nLukYvhbthEY/
-	RoC/VFLUiXgORn3eN159GUnv9z/YrYUdZIEZ12DMMXXtUOpvHP7FTedi5jclE=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH net-next v5 00/13] net: Add ADIN1140 support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178462442388.169679.4872315897072342362.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 09:00:23 +0000
+References: <20260708-adin1140-driver-v5-0-4aca7b51a58b@analog.com>
+In-Reply-To: <20260708-adin1140-driver-v5-0-4aca7b51a58b@analog.com>
+To: Ciprian Regus <ciprian.regus@analog.com>
+Cc: parthiban.veerasooran@microchip.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, conor.dooley@microchip.com
 
-Hi all,
+Hello:
 
-This v2 series addresses the feedback from the previous irq_ready flag
-approach (v1) and the separate UAF fix patch (v3). It replaces both
-with a single root-cause fix: moving IRQ registration after driver
-initialization is complete.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Issues fixed in this series:
+On Wed, 08 Jul 2026 01:33:28 +0300 you wrote:
+> This series introduces support for the ADIN1140 (also called AD3306)
+> 10BASE-T1S single port MACPHY. The device integrates the MAC and PHY in
+> the same package. The communication with the host CPU is done through an
+> SPI interface, using the Open Alliance TC6 protocol for control and data
+> transactions. As a result, the oa_tc6 framework is used to implement
+> the communication with the device (register accesses and Ethernet frame
+> RX/TX).
+> 
+> [...]
 
-1. Pre-init NULL dereference (crash on shared IRQ): is_init_done(NULL)
-   returns true, so the guard in fman_irq()/fman_err_irq() is bypassed
-   when fman->cfg is NULL before fman_config() allocates it. Moving
-   devm_request_irq() to after fman_init() eliminates this window.
+Here is the summary with links:
+  - [net-next,v5,01/13] dt-bindings: net: Add ADIN1140
+    https://git.kernel.org/netdev/net-next/c/2aa955bc52e9
+  - [net-next,v5,02/13] net: ethernet: oa_tc6: Handle the OA TC6 SPI protected mode
+    https://git.kernel.org/netdev/net-next/c/7d0e4c4b8c85
+  - [net-next,v5,03/13] net: ethernet: oa_tc6: add OA_TC6_BROKEN_PHY quirk flag
+    https://git.kernel.org/netdev/net-next/c/1d030cdd52ee
+  - [net-next,v5,04/13] net: ethernet: oa_tc6: Export the C45 access functions
+    https://git.kernel.org/netdev/net-next/c/87ac7ea2153c
+  - [net-next,v5,05/13] net: ethernet: oa_tc6: Export standard defined registers
+    https://git.kernel.org/netdev/net-next/c/9210d402bdf5
+  - [net-next,v5,06/13] net: ethernet: oa_tc6: Add the OA_TC6_ prefix to standard registers
+    https://git.kernel.org/netdev/net-next/c/31bc75f17c1f
+  - [net-next,v5,07/13] net: ethernet: oa_tc6: Add read_mms/write_mms register access functions
+    https://git.kernel.org/netdev/net-next/c/6ad250179486
+  - [net-next,v5,08/13] net: ethernet: oa_tc6: Use the read_mms/write_mms functions for C45
+    https://git.kernel.org/netdev/net-next/c/92ec8d69ddb0
+  - [net-next,v5,09/13] net: ethernet: oa_tc6: Add new register address defines
+    https://git.kernel.org/netdev/net-next/c/638b41f770ad
+  - [net-next,v5,10/13] net: phy: add generic helpers for direct C45 MMD access
+    https://git.kernel.org/netdev/net-next/c/aa63217916e1
+  - [net-next,v5,11/13] net: phy: microchip-t1s: use generic C45 MMD access helpers
+    https://git.kernel.org/netdev/net-next/c/85032df227f9
+  - [net-next,v5,12/13] net: phy: Add support for the ADIN1140 PHY
+    https://git.kernel.org/netdev/net-next/c/0feaf415b782
+  - [net-next,v5,13/13] net: ethernet: adi: Add a driver for the ADIN1140 MACPHY
+    https://git.kernel.org/netdev/net-next/c/20e69e671070
 
-2. Use-after-free on probe failure (UAF): kfree(fman) was called in
-   read_dts_node() error paths while devm IRQ handlers were still
-   registered. Moving IRQ registration later eliminates this window.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-3. Interrupt storm risk on shared IRQ line: deferred enable() to after
-   IRQ registration, so the hardware is never active without a handler.
-
-4. Memory leaks on probe failure: added fman_free_resources() and
-   fman_muram_finish() to properly release all sub-resources on
-   error paths after fman_config() succeeds.
-
-5. Double-free in free_init_resources(): cleared fifo_offset and
-   cam_offset after each call in fman_init() error paths, and added
-   IS_ERR_VALUE() guards to prevent -ENOMEM from being treated as a
-   valid offset.
-
-Pre-existing issues NOT addressed in this series
-(suggested as follow-up patches):
-
-- Missing .remove callback: the driver has no remove/unbind path,
-  causing all kzalloc'd resources to leak on device removal. This
-  is a larger issue affecting the entire driver lifecycle.
-
-- Child device probe ordering: of_platform_populate() is called
-  before dev_set_drvdata(), so MAC drivers probing synchronously
-  will find no parent driver data. This is a pre-existing design
-  issue in the probe sequence.
-
-- Hardware not disabled on cleanup: if enable() or devm_request_irq()
-  fails after fman_init() completes, the hardware remains active
-  while all software structures are freed. The driver lacks a
-  disable/stop function.
-
-- fman_muram_alloc() failure stores -ENOMEM in fifo_offset: this is
-  a pre-existing issue that is now mitigated by the IS_ERR_VALUE()
-  guard in free_init_resources(), but the root cause (error code
-  stored in an unsigned long field) remains.
-
-v2 changes:
-- Move devm_request_irq() to fman_probe() after init (replaces
-  irq_ready + READ_ONCE approach from v1)
-- Defer enable() to after IRQ registration to prevent interrupt storm
-- Add proper error cleanup with fman_free_resources()
-- Add fman_muram_finish() for complete MURAM teardown
-- Clear fifo_offset/cam_offset after free_init_resources() to
-  prevent double-free
-- Add IS_ERR_VALUE() guards in free_init_resources()
-- Supersede the separate UAF fix patch (v3)
-
-v1: https://lore.kernel.org/netdev/20260629084529.3709393-1-zhaojinming@uniontech.com/
-
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
 
