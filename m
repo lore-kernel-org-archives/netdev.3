@@ -1,61 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E2439012;
-	Tue, 21 Jul 2026 21:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDE8444712;
+	Tue, 21 Jul 2026 21:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667639; cv=none; b=Nb9tOajLfsW+ur7QmJfzJQfvpfs0/ox+14JHcryLlWEXsUo86Es05JKbvOjPJt7RFUrrIoGt2buzaxpxu0nWxioVwm37MrftL5YqExLkhppNHGjnE0wURz90G5grwDfxQi4NoO+KRatnxRrJyLgraGUusDWT0OA558a97q+aUPA=
+	t=1784667639; cv=none; b=MFyjB730laVJUGDTZmAPwK/rJ73qZgaaVaGYer7X/qDxVdBGfJZLLAnlz6FpH0I1yIH5KBu729L/nWw0o0Xs4CMapJQsTHf4fwpQTJT3Su6Tj1w+ZYhb6sZSc5ugWBM8KpUOafuSnbcU/AZT9BwWVcvJvtPnX+j97ctVWrWWRWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784667639; c=relaxed/simple;
-	bh=wDZAdfh4YitlwM5SYpXENkwHDSLF7ZaTMaIfmd9XjpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AUP25WdznuQGdtj283iDg8H9cGnhSP5T9vsiEG72hM11AryLA3lKo/5VaqUSG5zuB2HT9wHV8bsIBOaoxvQbwKKJppk34PDWX1HGhuYMlm/vrV2oVUheV8rJv5WNUCrc6rOF0ELZ4XmRcbdikKpEyb/481rr2HP2vRahogNLdx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THsdyW+1; arc=none smtp.client-ip=100.103.45.18
+	bh=hE+OkTYqwLD7hAZW0LjYV3oyyW9iTlPpgCkp7cbnST4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jB0vJs8jQGW0MSuEwlMDetlRWZpf6J4G6LdsZPY+5rziDcr9SEknwTkNoutzN7vpLfBKcd+mNntjZvMYMc1zMsVRNJjDzVOSAtkZ1HeHyQWRm0g7F/tvMOxciTPMjjPdRvZmeBlJUlwV0HLF2db+/TqZawmkZApJQgWZ7apCxN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6I6SApa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THsdyW+1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982211F00A3A;
-	Tue, 21 Jul 2026 21:00:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6I6SApa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B671F000E9;
+	Tue, 21 Jul 2026 21:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784667637;
-	bh=Y1Fqr3yD+eTJzYODUSrjqSjU2oxxaBaa6ty7X9vYvWs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=THsdyW+1tbanf7hmz3l6Ni3GoM29oYpaQuIawLAHUbbD449orliOuz1sd4NLBMCDQ
-	 fjRjv87Z3RS55EK2+M8evnsfEDovJmsrLAjZCRgipBEx8G4gTVuANQHtZPSogfmEHn
-	 3pZ+0O5wobZnskkw9S6sFRRc8lfu6FmoUDlS+MMeJWA4mMTvABVIyeFL95IsfnX+/i
-	 IKKPOzLqtQKrLCplk/kl8OH/JsdQKZ/40khJ3w4/Mg7Iegg62127tt2NHdmvpG6UMF
-	 XgheDekd2KpIVFEc/Zt1R5TwizvSP932ubSJScLY2g/iYaQz/h7rHKiLAvJlVXKAqT
-	 ++GZgbx1ayZaw==
-Date: Tue, 21 Jul 2026 14:00:37 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ibrahim Hashimov <security@auditcode.ai>
-Cc: alex.aring@gmail.com, miquel.raynal@bootlin.com,
- stefan@datenfreihafen.org, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] mac802154: hold an interface reference across the
- scan worker
-Message-ID: <20260721140037.61bf4635@kernel.org>
-In-Reply-To: <20260717105810.26226-1-security@auditcode.ai>
-References: <20260710140927.13228-1-security@auditcode.ai>
-	<20260717105810.26226-1-security@auditcode.ai>
+	s=k20260515; t=1784667638;
+	bh=Fkcvo7wNnzkTejnQdc1UeimxuoKuaxcdxPYR7KPDPpo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=T6I6SApaRFq7MPrc3mIcsJi97L9TAfhcnUDDHqaaKq1NnS9pooBZTe/4UA3I0/SNh
+	 W9bq29L1WytKWjqTXusbudNtOhYZQfTBcQJVjnwpMQ7N34wc3qYo/qJB7JCGXvVCEg
+	 bIwGgDNNBZ7NzXMhWR2jTvan556sb7g8HiKBOjO+QJJMTGJN5wWbfwTH+F4tNwtEYX
+	 DYfUz661RXzll3engMUPi1UT01xwMT/zDrT1lzXCkWfo1Ni2l2W+H+i+Z9KMJajqaB
+	 4sczs0ViMw8wsMxyFOMIhssY0pTNfXMA7CKiILNqe36Hh79kb5nNnC+FKryQBQVrga
+	 hDjGbrAWkzlSA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C7B3926249;
+	Tue, 21 Jul 2026 21:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/af_iucv: fix NULL deref in
+ afiucv_hs_callback_syn()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178466760764.1059197.11934260585583972317.git-patchwork-notify@kernel.org>
+Date: Tue, 21 Jul 2026 21:00:07 +0000
+References: <20260709191732.124092-1-hidayath@linux.ibm.com>
+In-Reply-To: <20260709191732.124092-1-hidayath@linux.ibm.com>
+To: Hidayathulla Khan I <hidayath@linux.ibm.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, wintera@linux.ibm.com,
+ twinkler@linux.ibm.com, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com
 
-On Fri, 17 Jul 2026 12:58:09 +0200 Ibrahim Hashimov wrote:
-> +	/*
-> +	 * sdata->dev is dereferenced below after rcu_read_unlock() and outside
-> +	 * the rtnl, and a concurrent DEL_INTERFACE / PHY teardown can free it
-> +	 * asynchronously from netdev_run_todo(). Pin it with a reference taken
-> +	 * while the RCU read lock is still held, and drop it at every exit.
-> +	 */
-> +	dev_hold(sdata->dev);
+Hello:
 
-Please use netdev_hold() with a tracker on the stack.
-Please don't post new versions in reply to old ones.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu,  9 Jul 2026 21:17:32 +0200 you wrote:
+> afiucv_hs_callback_syn() allocates the child socket with GFP_ATOMIC.
+> If the allocation fails, nsk is NULL.
+> 
+> The connection-refused path is entered when the listen state check
+> fails, the accept backlog is full, or nsk is NULL. The code
+> unconditionally calls iucv_sock_kill(nsk) in that path.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net/af_iucv: fix NULL deref in afiucv_hs_callback_syn()
+    https://git.kernel.org/netdev/net/c/47a5116e56a6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
