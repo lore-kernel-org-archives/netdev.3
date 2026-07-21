@@ -1,137 +1,95 @@
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F48740A93C;
-	Tue, 21 Jul 2026 06:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D25B3F8896;
+	Tue, 21 Jul 2026 06:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784616817; cv=none; b=BJC3s5AognQdjQbeAtEi8Xo7RisjSjsL0M+87Y1ZlkJ//CQRDFT3aIHxbUqSZXqJS53oMbzJgq41HZzGFdtplat969DFNIZjn2BQ7mdwipvypXuKmhwC+kojPTtMz5DzbY3eiM9SYh5qsY6v7HTA6RqxEtPsBHiOHMHaIKSwOXc=
+	t=1784616930; cv=none; b=kEb978EVtezXtD9L9JW69I/P9apDFHtJaC+FBlEVVIpkdgBXxtuItmJWofQAc0erHkLjwWTsSmvw8qVWUORo5iElBIroeAh1r7tXDDxA8b7J7miruqV6JhOmpp+DghErkn3JQWmiY2DybGmBx5IbB8MuSaMhdNlu6509zZeMPtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784616817; c=relaxed/simple;
-	bh=1H5pqllZblUr52KKA8AljxJo8Z1XmG4v9EWbVYYJVbs=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=WNLMzs6LcKcOKGkB0bpoz41/DIy39EksAHdr2GmY6EnM3OKzDP+H8un8wwIRvgl2bFOLIZJq6Hi/G5UCbt2eVhvJkHaxY/Z5f13apPmsadNZm07eMytSoT7qmcQROZ8jXkdIUak3kwrZ1Qne7RDPlQDJY+aNXF0BfAqgh1CoNbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=AP9fYrjg; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="AP9fYrjg"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784616812; h=Message-ID:Subject:Date:From:To;
-	bh=GwUxUIkEzZjYeo7CnOnuqx+NN9QWfchYy3Y4FpqpBkk=;
-	b=AP9fYrjg0UnGWLqaZn2afpZJXwfDSouL/Z5CQpjYJEST8FwgRMJK4IE8nRFnrOTFqZ8AXfn3Ap7YmHH/FwxGDbpYXaOvfqcQQ4++4x+WtTK1wCXj3fVWqZqH6cRdnhQiW/60Ls1m0PC0W9js+eyHhYpmRllbp3hcNNsFytLo8J8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X7YtKGq_1784616811;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X7YtKGq_1784616811 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 21 Jul 2026 14:53:31 +0800
-Message-ID: <1784616803.159269-2-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH v3] virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
-Date: Tue, 21 Jul 2026 14:53:23 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Jinqian Yang <yangjinqian1@huawei.com>
-Cc: <netdev@vger.kernel.org>,
- <virtualization@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>,
- <liuyonglong@huawei.com>,
- <wangzhou1@hisilicon.com>,
- <linuxarm@huawei.com>,
- Jinqian Yang <yangjinqian1@huawei.com>,
- <mst@redhat.com>,
- <jasowang@redhat.com>,
- <xuanzhuo@linux.alibaba.com>,
- <eperezma@redhat.com>,
- <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>,
- <edumazet@google.com>,
- <kuba@kernel.org>,
- <pabeni@redhat.com>
-References: <20260716115940.394832-1-yangjinqian1@huawei.com>
-In-Reply-To: <20260716115940.394832-1-yangjinqian1@huawei.com>
+	s=arc-20240116; t=1784616930; c=relaxed/simple;
+	bh=FVg7IJymBwkNmSIMsOJBLrx2HJiDdOkYPbsqa0MNu00=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=kmeIIrGzYXvEQ9iWkLzdDd+vXJquEUfHHtvm+rh4duPH7npnbFuccFnyzaOWPy3odd0+OoGA8+OoJpmrhmmFhAI9dlRa2LCON9zWWwEuZyxErBxmKM4vNVAaTvT0p+4MLgR+Hoi/YLmrzs6riJ1mwiiHdjDr4McmjJ+AG8oK7Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: mail.toke.dk; dkim=none
+Date: Tue, 21 Jul 2026 08:55:23 +0200
+From: =?ISO-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@toke.dk>
+To: =?ISO-8859-1?Q?Jonas_K=F6ppeler?= <j.koeppeler@tu-berlin.de>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+CC: cake@lists.bufferbloat.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mike Pham <mikepham4321@gmail.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v2=5D_net/sched=3A_sch=5Fcake=3A_s?=
+ =?US-ASCII?Q?kip_clearing_unused_tins_during_rate_adjustment?=
+In-Reply-To: <20260720-sch_cake-skip-clearing-tins-v2-1-e6a8b0275c73@tu-berlin.de>
+References: <20260720-sch_cake-skip-clearing-tins-v2-1-e6a8b0275c73@tu-berlin.de>
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <D8203772-A5C3-480E-88E5-52098FA91AAB@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-
-On Thu, 16 Jul 2026 19:59:40 +0800, Jinqian Yang <yangjinqian1@huawei.com> wrote:
-> virtnet_poll_cleantx() contains a do-while loop that cleans up
-> transmitted TX buffers and calls virtqueue_enable_cb_delayed() to check
-> whether more buffers need processing. When the virtio backend stops
-> responding during guest reboot, used->idx is never updated, so
-> virtqueue_enable_cb_delayed() always returns false and the loop never
-> terminates. Then it will block reboot process, and the guest will hang.
->
-> The problem occurs during guest reboot under network traffic:
->
->   1. kernel_restart() -> device_shutdown() traverses the device list
->   2. virtio_dev_shutdown() calls virtio_break_device() which sets
->      vq->broken = true
->   3. virtio_dev_shutdown() then calls virtio_synchronize_cbs() to wait
->      for in-flight callbacks to complete
->   4. A virtio interrupt fires, softirq is deferred to ksoftirqd which
->      calls net_rx_action() -> virtnet_poll() -> virtnet_poll_cleantx()
->   5. virtnet_poll_cleantx() enters the do-while loop and never exits
->      because the QEMU backend has stopped updating used->idx, despite
->      vq->broken having been set to true in step 2.
->
-> Since the loop runs inside ksoftirqd (a SCHED_OTHER kthread), it is
-> visible to the scheduler and does not trigger a hard lockup. However,
-> the kthread never leaves the loop, so RCU detects it as a CPU stall
-> and reports it periodically. Meanwhile, the reboot process remains
-> blocked in device_shutdown() because virtio_dev_shutdown() cannot
-> complete its synchronization step, and the guest hangs permanently.
->
-> This can be reproduced on a guest with a virtio-net device: run iperf3
-> traffic in the guest, then trigger reboot. The reboot occasionally hangs
-> permanently with RCU stall on ksoftirqd.
->
-> Observed on ARM64 KVM guest:
->
->   CPU#1 RCU stall (ksoftirqd/1), repeated periodically:
->     virtqueue_enable_cb_delayed_split <- virtnet_poll <- __napi_poll <-
->     net_rx_action <- handle_softirqs <- run_ksoftirqd <-
->     smpboot_thread_fn <- kthread
->
-> Fix by adding a vq->broken check in virtqueue_enable_cb_delayed(), so
-> that the loop exits immediately when the device is broken, allowing
-> the device shutdown to proceed.
->
-> Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-> ---
-> Changes in v2:
->   - Moved vq->broken check to virtqueue_enable_cb_delayed().
-> Changes in v3:
->   - Updated the patch subject prefix.
+On 20 July 2026 23=2E14=2E52 CEST, "Jonas K=C3=B6ppeler" <j=2Ekoeppeler@tu=
+-berlin=2Ede> wrote:
+>When cake_configure_rates() is called from the dequeue path with
+>rate_adjust=3Dtrue, it only needs to update the rate parameters=2E The
+>loop that clears the unused tins is both unnecessary and harmful in
+>this path:
 >
-> v1: https://lore.kernel.org/lkml/20260713132025.703147-1-yangjinqian1@huawei.com/
-> v2: https://lore.kernel.org/lkml/20260716035201.3736582-1-yangjinqian1@huawei.com/
-> ---
->  drivers/virtio/virtio_ring.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> - cake_clear_tin() overwrites q->cur_tin and q->cur_flow, which are
+>   actively used by cake_dequeue(), corrupting the dequeue state=2E
+> - iterating over the unused tins and their internal queues to purge
+>   packets adds needless overhead to the hot path=2E
 >
-> diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-> index b438dc2ce1b8..5c169fbb418a 100644
-> --- a/drivers/virtio/virtio_ring.c
-> +++ b/drivers/virtio/virtio_ring.c
-> @@ -3233,6 +3233,14 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
->  {
->  	struct vring_virtqueue *vq = to_vvq(_vq);
+>Skip the entire loop when rate_adjust is set, as neither
+>cake_clear_tin() nor the mtu_time update are needed when only the
+>rate changes=2E
 >
-> +	/*
-> +	 * When the device is broken there is no point in polling used->idx,
-> +	 * the backend will never update it. Return true to let callers
-> +	 * exit their cleanup loops instead of spinning forever.
-> +	 */
-> +	if (unlikely(vq->broken))
-> +		return true;
-> +
->  	if (vq->event_triggered)
->  		data_race(vq->event_triggered = false);
+>The clearing loop runs on every rate adjustment from the dequeue path,
+>clearing (max_tins - cur_tins) tins each time, so the cost grows the
+>fewer tins the configured mode actually uses=2E Testing cake_mq over veth
+>(8 rx/tx queues, 2 Gbit limit) with flent's [1] rrul and tcp_nup tests an=
+d
+>32 TCP upstreams shows a large drop in loaded latency and a throughput
+>gain, restoring behaviour to pre-15c2715a5264 levels:
 >
-> --
-> 2.33.0
+>  +------------+------+------+-------+-------+---------+
+>  | kernel     | mode | test |  base |  load |    tput |
+>  |            |      |      |  (ms) |  (ms) |  (Mbit) |
+>  +------------+------+------+-------+-------+---------+
+>  | net-next   | be   | rrul | 0=2E810 | 11=2E78 | 1469=2E67 |
+>  | net-next   | be   | nup  | 0=2E637 | 85=2E71 | 1243=2E15 |
+>  | net-next   | ds3  | rrul | 0=2E397 | 15=2E28 | 1770=2E06 |
+>  | net-next   | ds3  | nup  | 0=2E351 | 15=2E98 | 1799=2E39 |
+>  +------------+------+------+-------+-------+---------+
+>  | patched    | be   | rrul | 0=2E092 |  0=2E56 | 1873=2E40 |
+>  | patched    | be   | nup  | 0=2E109 |  1=2E82 | 1869=2E12 |
+>  | patched    | ds3  | rrul | 0=2E097 |  0=2E98 | 1866=2E10 |
+>  | patched    | ds3  | nup  | 0=2E101 |  0=2E51 | 1861=2E79 |
+>  +------------+------+------+-------+-------+---------+
 >
+>The same trend holds on real hardware (IPQ8074A, 4 rx/tx queues,
+>OpenWrt): in besteffort mode the tcp_nup loaded latency drops from
+>~470 ms to ~4 ms=2E
+>
+>[1] https://flent=2Eorg
+>
+>Fixes: 15c2715a5264 ("net/sched: sch_cake: fixup cake_mq rate adjustment =
+for diffserv config")
+>Signed-off-by: Jonas K=C3=B6ppeler <j=2Ekoeppeler@tu-berlin=2Ede>
+>Tested-by: Mike Pham <mikepham4321@gmail=2Ecom>
+
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke=2Edk>
