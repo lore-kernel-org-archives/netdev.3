@@ -1,120 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACAF3242BC;
-	Tue, 21 Jul 2026 16:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C649D327BFC
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 16:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784651847; cv=none; b=BUKPsoNCrfEJgLmAZDlBqbMMYdKiBR6dVCWetkRmp7gwJENBNz2U2fenyRsqdnb043X3wg/toq5Aofn/1flv46jDjOxGNw31ADpTYfdw7HBGrIWvaDAD/L96nif7GiMIbzry/wts6OPiYgMGQFVlEi/lvsKDDzFnlYgSrG/nMRA=
+	t=1784651907; cv=none; b=MSgnRT7vixBDqb6FWgiRRYn5StxQFsQf/N7IslgE6kYBdoN88NLeCDZ75EABOJP/fQFrYenQrP95kYaV97Zy/ZBlrrq80Y9Uy71xZlETEE+eeGI/gBpjxlJ8jQ3fQiBMrXBox/OZz7DiDZyDg5YWW0GNjYHDiGdj1PYJEN/a7Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784651847; c=relaxed/simple;
-	bh=TGRXPFVgdEbdmkg0xf4c8T1CfMNAcqsktfaj8aD4Vkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W5UrY8g9XqxsPTYgrNMqcAyztQt9HAdZMlxA6mHI5y3fHPphahF6LEtOgd5rQi0RPPQgZ+wkazA5foQxrkZmpv5icUv2Kee5/HR+bUn93xqF63SZlfAT5wsbA+pDd9i9b+6bapJA4ANDuQEKpHsrroxXKEt7vVJyiFX8y+6B2d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXY/lMV5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784651907; c=relaxed/simple;
+	bh=IIsg5LNJf5aQ0cLtyQoPoijCSzNNTN3r5SiNIC4aJic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pyQhmmORZMQlDtYEvAXBlnKBrC/7h2Q/Wi2dMwikzhUPSPZMiEmUXeOIBzo9vICL3tgGdnQHYfNPBO1BcJzFoz6Jslq4COYDF/wsdZ7tZ0yHT83PLsSf1PeHlYKHJBOR1FtliZAg/vcY3f8ng5cdEzj3hSDTP9RflCKv9u4Uu18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2FLJO+k; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXY/lMV5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABEB1F000E9;
-	Tue, 21 Jul 2026 16:37:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784651846;
-	bh=+HFeLFiMpt2saQXzTckcp9zHr3aZ9dLPuWwmmJp0sqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GXY/lMV5LQKzNRnV+C077iSjTzm+1GjerEInR97FxIe3XvMmsBIsvMygiBO/8pQ7f
-	 usT47T6nokDReErxzN2SNoz1M64BSTrMxeubf4KASMqPo7CQCxjw17u3O70KSgV3WA
-	 mi3DmG0wdqkN5Oj0NPTFcPOpl4NPWHJn0O7S1W+/gUVmPP3scHKaTRuKU7ifc4P+tx
-	 4rJEiuKdLlbs6xM6aGTLV9XyVyUw2ZxUpZdH0aLCAY+Oix6JKa/PAL/Vrnxxr+0hHS
-	 zDmHv6WZdgNdqPyIVYEi/Y7ctQPrkpL+hjWsn/7MU05nZstbmgeqo/YOv4JpGw/PZm
-	 TdeYpLrSkJHUw==
-Date: Tue, 21 Jul 2026 17:37:21 +0100
-From: Simon Horman <horms@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2FLJO+k"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ceab75934dso122243545ad.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 09:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784651905; x=1785256705; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=d5KmYNoNui/9hjo/Me1fX33BIrL3ENZ8CEuolPxOI8Y=;
+        b=i2FLJO+kTlfE60kdhQDcgjGae3WJjcOMUCjNdrOS1Tq+xj+cR/KXmgGWllBYXR4RZR
+         3054P+Harm9GIy3UPJ+keKDYqMXwFmUXl8jiC+tlmTV5C/WSAjwxqPr7NxIH7184Q9cI
+         1AyFAXj7qEroXoSGLMNzI5osGkEaJcwfb0HJBDwOnKlnNL4yD4D7zY/DWgSohZeQ0A5a
+         /R+ZmfmiN/7PGgMcuxXjcledjVI8sEzM7A1jswJzsSR4nCqk3W5RUBXg8XADUtVnaPMw
+         nvpk1zZpf5Ou+S7D2brt7gQqi+JgohwTHADMngJADVMPGOIYc7MnSYj8693l2vy96JNL
+         M+FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784651905; x=1785256705;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=d5KmYNoNui/9hjo/Me1fX33BIrL3ENZ8CEuolPxOI8Y=;
+        b=siPViuAL5HAa/+yVvxPC6YQ9CfxZjB1u/ff9+akfYU5dXdOXvd885EBvdzpE7dKI52
+         QRmMiHFbVkpyKVjPzlW2oQhciGh3XmSlUZQU8c8zj+bGeuOt7ulmx1seTrkQ4VGFwlOn
+         YLA9kcv7Kl5bhDdLkvCYvQZ7X1SA2T2K9jQ9gszTNqN/zMCSUFIoaYdD/T49VEg+ZH1r
+         KMeN58il0tiTX8Si+UQJO1oQOrSRaCzup7HKTNl2/3tQH9m5P6bf3o4KmZV8KjDPNH0X
+         KQX/hpf+pJMnI5GLc9J5oAdO4/0K1BtOdjD3jrPRjzEjJbLQtR50wPLmohVJosFfARzt
+         QdXw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0VAEIPgiju4XQbcDYtvF2k0zXOTyKISRQhmH1hQFIUpsCNxPrP5wSamA2gaIdOf39CamC+FI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5Gte89//upqo5W64LCXCrqqyEH3ky0XHY+ftURLGYEcBAGiUw
+	3EG3BLQCH/pYSFdMXrTnHfK+f5gGCpt1MlwyE+OoHFzWUJeHEdbEspuY
+X-Gm-Gg: AR+sD13hV32r8BiGyCgielXFwd6M8UIQtTAVp5Npv4SuyBZ2RoJTXqPGh/KsZl1mgH0
+	2kVXgr9NnCT6sHhHFIjVpk2jFSiYeWStM+88CuHtP+YxxwImvZrj3wS8Fw7gq5ZeqpwWGJHbywN
+	ukyNvZEwl4ZxmZ3UGl8YbBtv6CxCeMUsDuKBIqrxYoQjn71+yslcTocKgB1D7Wea74oaNALBzzZ
+	md9ZiLGHmtAbiNcomqVxltICKC7S5UYbViLhsuvanHhZPzwZ3/LyeQRVmCZsTe5lR50Xv8LsPIp
+	va5i6j6+wjjV8reaMfs8TiH5uYDhpSXx/QvkJZHjZ//oMewXlaUK1UHjPa2xk6w1UbKz0yZ1AZg
+	ZNULBqje9GZSNKcYApFefT8JLOZdaVo0CDbwRKOj0/ph/fiIrKk01z27VYnINZblXbY+jSlEdhB
+	Q+QFJNRUEWdleeFNnfL5wnuJAMURBew5VngO3cAeX17tkGRyP+528SPEcYWg==
+X-Received: by 2002:a17:902:dad0:b0:2c9:97a8:afe5 with SMTP id d9443c01a7336-2cf349eee08mr204790805ad.40.1784651905156;
+        Tue, 21 Jul 2026 09:38:25 -0700 (PDT)
+Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e07000fsm1053708eec.21.2026.07.21.09.38.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 09:38:24 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: David Heidelberg <david@ixit.cz>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	Breno Leitao <leitao@debian.org>,
-	tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] tipc: clear sock->sk on the failed-insert path in
- tipc_sk_create()
-Message-ID: <20260721163721.GA418547@horms.kernel.org>
-References: <20260714131939.1255974-1-4ncienth@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net-next] nfc: digital: fix use-after-free in nfc_digital_unregister_device()
+Date: Tue, 21 Jul 2026 09:36:32 -0700
+Message-ID: <20260721163632.1570651-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714131939.1255974-1-4ncienth@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 14, 2026 at 10:19:39PM +0900, Daehyeon Ko wrote:
-> When tipc_sk_create() fails to insert the new socket (tipc_sk_insert()
-> returns non-zero), its error path frees the sk with sk_free() but leaves
-> sock->sk pointing at the freed object:
-> 
-> 	if (tipc_sk_insert(tsk)) {
-> 		sk_free(sk);
-> 		pr_warn("Socket create failed; port number exhausted\n");
-> 		return -EINVAL;
-> 	}
-> 
-> This is harmless for plain socket(): the syscall layer clears sock->ops
-> before releasing, so tipc_release() is never called. It is not harmless
-> on the accept() path. tipc_accept() creates the pre-allocated child
-> socket with tipc_sk_create(net, new_sock, 0, kern); on failure it leaves
-> new_sock->sk dangling and new_sock->ops non-NULL, and do_accept() then
-> fput()s the new file, so __sock_release() -> tipc_release() runs
-> lock_sock(new_sock->sk) on the freed sk -- a use-after-free write of the
-> sk_lock spinlock.
-> 
-> tipc_release() already guards this exact "failed accept() releases a
-> pre-allocated child" case with "if (sk == NULL) return 0;", but the
-> guard is bypassed because tipc_sk_create() left sock->sk non-NULL
-> (dangling) rather than NULL.
-> 
-> Clear sock->sk on the failed-insert path so the existing tipc_release()
-> NULL check fires and the use-after-free is avoided.
-> 
-> The tipc_sk_insert() failure is reached when the per-netns socket
-> rhashtable hits its max_size (tsk_rht_params.max_size = 1048576, ~2M
-> elements) -- i.e. once a netns holds ~2M TIPC sockets every insert
-> returns -E2BIG.
-> 
->   BUG: KASAN: slab-use-after-free in lock_sock_nested (net/core/sock.c:3839)
->   Write of size 8 at addr ffff8880047cdc38 by task init/1
->    lock_sock_nested (net/core/sock.c:3839)
->    tipc_release (net/tipc/socket.c:638)
->    __sock_release (net/socket.c:710)
->    sock_close (net/socket.c:1501)
->    __fput (fs/file_table.c:512)
->   Allocated by task 1:
->    sk_alloc (net/core/sock.c:2308)
->    tipc_sk_create (net/tipc/socket.c:487)
->    tipc_accept (net/tipc/socket.c:2744)
->    do_accept (net/socket.c:2034)
->   Freed by task 1:
->    __sk_destruct (net/core/sock.c:2391)
->    tipc_sk_create (net/tipc/socket.c:504)
->    tipc_accept (net/tipc/socket.c:2744)
->    do_accept (net/socket.c:2034)
-> 
-> Fixes: 00aff3590fc0 ("net: tipc: fix possible refcount leak in tipc_sk_create()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-> ---
-> v3: correct the Fixes: tag to 00aff3590fc0 ("net: tipc: fix possible
->     refcount leak in tipc_sk_create()") -- that commit added the sk_free()
->     on the insert-failure path; before it the path leaked sk rather than
->     freeing it, so the use-after-free only exists since then (v5.19+).
->     Thanks Breno. Collect Reviewed-by from Tung and Breno. No code change.
-> v2: https://lore.kernel.org/netdev/20260713082342.3803379-1-4ncienth@gmail.com/
-> v1: https://lore.kernel.org/netdev/20260710014440.2055584-1-4ncienth@gmail.com/
+nfc_digital_unregister_device() cancels cmd_work and cmd_complete_work
+once each and then frees the command queue.  The two works re-arm each
+other: digital_wq_cmd_complete() ends with schedule_work(&ddev->cmd_work),
+and digital_wq_cmd() hands a command to the driver whose asynchronous
+completion schedules cmd_complete_work.  cancel_work_sync() only waits for
+the instance it cancels; it does not stop the work from being queued again.
+A work re-armed after its cancel_work_sync() therefore runs concurrently
+with the cmd_queue cleanup and dereferences a digital_cmd the cleanup has
+already freed.  digital_wq_cmd() widens the window by dropping cmd_lock
+before using the command it took from the queue, while the cleanup loop
+frees the commands without holding cmd_lock.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+It is reproducible with the software NFC simulator (CONFIG_NFC_SIM): start
+an NFC-DEP exchange between the two nfcsim devices and unload the module
+while it is running.
+
+ BUG: KASAN: slab-use-after-free in digital_wq_cmd (net/nfc/digital_core.c:174)
+ Read of size 1 by task kworker/1:5
+ Workqueue: events digital_wq_cmd
+  digital_wq_cmd (net/nfc/digital_core.c:174)
+  process_one_work
+  worker_thread
+  kthread
+
+ Allocated by task 5124:
+  digital_send_cmd (net/nfc/digital_core.c:234)
+  digital_in_send_sdd_req
+  digital_in_recv_sens_res
+  digital_wq_cmd_complete (net/nfc/digital_core.c:134)
+
+ Freed by task 4994:
+  kfree
+  nfc_digital_unregister_device (net/nfc/digital_core.c:859)
+  nfcsim_device_free [nfcsim]
+  nfcsim_exit [nfcsim]
+  __do_sys_delete_module
+
+Use disable_work_sync() instead of cancel_work_sync() for the two command
+works.  disable_work_sync() cancels the work and disables it, so any later
+schedule_work() -- whether from the sibling work re-arming it or from the
+driver's completion callback -- becomes a no-op.  Once both works are
+disabled no work can run, and the cleanup loop frees the queue with no work
+able to reach a freed command.
+
+Fixes: 59ee2361c924 ("NFC Digital: Implement driver commands mechanism")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ net/nfc/digital_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
+index 7cb1e6aaae90..6def5132a4a6 100644
+--- a/net/nfc/digital_core.c
++++ b/net/nfc/digital_core.c
+@@ -843,8 +843,8 @@ void nfc_digital_unregister_device(struct nfc_digital_dev *ddev)
+ 	mutex_unlock(&ddev->poll_lock);
+ 
+ 	cancel_delayed_work_sync(&ddev->poll_work);
+-	cancel_work_sync(&ddev->cmd_work);
+-	cancel_work_sync(&ddev->cmd_complete_work);
++	disable_work_sync(&ddev->cmd_work);
++	disable_work_sync(&ddev->cmd_complete_work);
+ 
+ 	list_for_each_entry_safe(cmd, n, &ddev->cmd_queue, queue) {
+ 		list_del(&cmd->queue);
+
+base-commit: d4932951a19a5f1ec93200260b85e1a4c080ff77
+-- 
+2.43.0
 
