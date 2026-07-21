@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E743C332EBB
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A594A30BF6D
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 13:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784639875; cv=none; b=WkTvTed/2UudaqoCmxg0NY8Nck43+hrTKyStbTwfpYn3fLHmxvB4G/S7Q4n6eftK4AXSMbld17VNon3K1CH+SZip3SXfK1pzmPqCjny7hIOB8QeMnfLT6fnBTP0XawDyw21WoXCAN2w5G0HCAbN/ypui4/ef7psRFWjHdZ2cPnA=
+	t=1784639882; cv=none; b=u0FV8Ar48FsgT8r5YkPpCy5m18hIpP/WDp+qsBOxFBV+6VHBg/76WDRiX3k/p78bOR7tFn817J+9Ka2w4J+Knwo3O+VnAgmgxVtu9BbgYf6igw0AhyA9v/7fkd5Fx/SIxsGr+TYyfIeT/w7O0hHLLKRv24e1HP4D/cMtdiehvLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784639875; c=relaxed/simple;
-	bh=5RFn7v5QUR8GNDXctVy/lEodgrmgk7KvopC/QYo57ng=;
+	s=arc-20240116; t=1784639882; c=relaxed/simple;
+	bh=M7Q90cINlErpjYbTDf3+5FxyvKM0NvYQtkBRbNMMfQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H8mBb4kl+kcH0pqHSNTxKOm4sDftkxN86WZGXRmI8e7CZbNxm9enM7TDdG3bWmAaoU3o32C+XA/1IVzREgB1/bFs+LVvXd3/2D3KUQOInajfeuJsoyUlZ93qwaSfDHK74vEy5KAj0PUeftuTuuWz3KHcaWs7iS7nb0mECnbMZHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ayUtIvoc; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=kMf01pjyUQC4cQU5fwY3FHvmQM/W2G95hxEDQc0hFKfkhorz5YsPA/F5jblKuIkkdWKQNQJ0wmB2gSXuq2HGJd4Lv+M9QGWLSyYmlY8xOuVdtWc/n/2hortU3qErc+GVhpUnblu7mAXQom+Fg3XGHJJLPxaE2oHZcy9KVB+o/+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ONuVk86g; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ayUtIvoc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ONuVk86g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784639873;
+	s=mimecast20190719; t=1784639879;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HE2snwmNZhwwdbdZLQ/1vhOr0C0OXaSTwQ1XFnBOH58=;
-	b=ayUtIvoc9+qmvmsO7Y9Hr/ByVRUfxxrOHMt08lfu6rxqx1fnszOQXKji2avaVhqlOvxhpW
-	SAcg9PWYf14bCcS0tDBpsdwGp08OvgWFVUqdl7ITALQqZOYbAVnJvnu33QBwD364QSKbK2
-	kmkT/5rRROR7g+Ujcc0a8gOq0SUgRLQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=ctx4sjKDsVdSTnLDSoEtBNzrROWciIBUn40tQvWEcIw=;
+	b=ONuVk86gKMZYN/XIAAylZGUwQZcFMMrXx4TcOo4kPcLe3ber3SsSP6mr7QrwZERzFmL1Ho
+	VKs8oe8yHwIyT7FvWcrq4VLCCzYQOlf4Ckks7bgQxbPiC6cotQDlZycrGiSXK9qhVHlFiZ
+	pPVGZJs+Zm2UvKUFel25RDuAoYa28c0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-_CeHCgRbNiiSTHMmDQUA_A-1; Tue,
- 21 Jul 2026 09:17:47 -0400
-X-MC-Unique: _CeHCgRbNiiSTHMmDQUA_A-1
-X-Mimecast-MFC-AGG-ID: _CeHCgRbNiiSTHMmDQUA_A_1784639863
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-ZnocnqjyOKmloaSFyQ6oZQ-1; Tue,
+ 21 Jul 2026 09:17:56 -0400
+X-MC-Unique: ZnocnqjyOKmloaSFyQ6oZQ-1
+X-Mimecast-MFC-AGG-ID: ZnocnqjyOKmloaSFyQ6oZQ_1784639873
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0981C19774E9;
-	Tue, 21 Jul 2026 13:17:42 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06AAB19774FB;
+	Tue, 21 Jul 2026 13:17:53 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.32.106])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 24EF2424;
-	Tue, 21 Jul 2026 13:17:32 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C6F3A180029F;
+	Tue, 21 Jul 2026 13:17:45 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: Selvamani.Rajagopal@onsemi.com
 Cc: andrew@lunn.ch,
@@ -67,20 +67,19 @@ Cc: andrew@lunn.ch,
 	devicetree@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	jerry.ray@microchip.com
-Subject: Re: [PATCH net-next v7 08/15] net: ethernet: oa_tc6: Support for hardware timestamp
-Date: Tue, 21 Jul 2026 15:17:22 +0200
-Message-ID: <20260721131730.233755-1-pabeni@redhat.com>
-In-Reply-To: <20260708-s2500-mac-phy-support-v7-8-478c877aa1a9@onsemi.com>
-References: <20260708-s2500-mac-phy-support-v7-8-478c877aa1a9@onsemi.com>
+Subject: Re: [PATCH net-next v7 14/15] onsemi: s2500: Add driver support for TS2500 MAC-PHY
+Date: Tue, 21 Jul 2026 15:17:42 +0200
+Message-ID: <20260721131742.233773-1-pabeni@redhat.com>
+In-Reply-To: <20260708-s2500-mac-phy-support-v7-14-478c877aa1a9@onsemi.com>
+References: <20260708-s2500-mac-phy-support-v7-14-478c877aa1a9@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
 From: AI Reviewer <ai@example.com>
 
@@ -88,396 +87,502 @@ This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-net: ethernet: oa_tc6: Support for hardware timestamp
+onsemi: s2500: Add driver support for TS2500 MAC-PHY
 
-This adds hardware timestamping support to the OA TC6 MAC-PHY framework,
-splitting PTP registration and hwtstamp helpers into new oa_tc6_ptp.c and
-oa_tc6_tstamp.c files, and wiring TSC handling into the TX and RX chunk
-paths.
+This patch adds a driver for onsemi's S2500 10BASE-T1S MAC-PHY, built on
+top of the Open Alliance TC6 framework. It provides ndo_* callbacks,
+ethtool statistics/regdump/RMON support, and a PTP clock implementation
+including an in-driver adjtime that mixes adjfine-based slewing with
+settime.
 
-Thanks for the patch; a few questions inline.
+A few questions and observations below.
 
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
-> index bf96e8d1ccb9..939935cb170d 100644
-> --- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
-> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+> diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
+> new file mode 100644
+> index 000000000000..7e96d9ad563f
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
 
 [ ... ]
 
-> +static void oa_tc6_defer_for_hwtstamp(struct oa_tc6 *tc6,
-> +				      struct sk_buff *skb)
+> +static const char s2500_mac_stat_strings[][ETH_GSTRING_LEN] = {
+> +	"tx_bytes",
+> +	"tx_frames",
+> +	"tx_broadcast_frames",
+> +	"tx_multicast_frames",
+> +	"tx_underflow_errors",
+> +	"tx_single_collisions",
+> +	"tx_multiple_collisions",
+> +	"tx_excessive_collisions",
+> +	"tx_deferred_frames",
+> +	"tx_carrier_sense_errors",
+> +	"rx_bytes",
+> +	"rx_frames",
+> +	"rx_broadcast_frames",
+> +	"rx_multicast_frames",
+> +	"rx_runts",
+> +	"rx_oversize_frames",
+> +	"rx_crc_errors",
+> +	"rx_symbol_errors",
+> +	"rx_alignment_errors",
+> +	"rx_busy_drops",
+> +	"rx_mismatch_drops",
+> +};
+
+[Medium]
+Do these ethtool -S entries duplicate counters that have a standard uAPI?
+
+tx_bytes, tx_frames, rx_bytes, rx_frames, rx_broadcast_frames,
+rx_multicast_frames, rx_crc_errors, rx_alignment_errors (=rx_frame_errors),
+tx_carrier_sense_errors (=tx_carrier_errors), tx_underflow_errors
+(=tx_fifo_errors), tx_excessive_collisions (=tx_aborted_errors),
+rx_oversize_frames and rx_runts (=rx_length_errors) all appear to fall
+into rtnl_link_stats64 categories exposed via ip -s link show.
+
+The driver also does not implement ndo_get_stats64, so those standard
+counters are reported as zero.  Would it make sense to route these
+through ndo_get_stats64 and keep ethtool -S only for the truly
+driver-private counters (rx_busy_drops, rx_mismatch_drops, symbol
+errors, single/multiple collisions, deferred frames)?
+
+Documentation/networking/statistics.rst describes the expected hierarchy.
+
+[ ... ]
+
+> +static void s2500_rmon_stats(struct net_device *ndev,
+> +			     struct ethtool_rmon_stats *rmon_stats,
+> +			     const struct ethtool_rmon_hist_range **ranges)
 > +{
-> +	if (!tc6->hw_tstamp_enabled)
+> +	struct s2500_info *priv = netdev_priv(ndev);
+> +	u8 offset;
+> +	int i;
+> +
+> +	s2500_update_stats(priv);
+> +
+> +	memset(rmon_stats, 0, sizeof(*rmon_stats));
+> +	rmon_stats->src = ETHTOOL_MAC_STATS_SRC_AGGREGATE;
+> +	rmon_stats->undersize_pkts = priv->stats_data[S2500_MSTRUNTSERR_IDX];
+> +	rmon_stats->oversize_pkts = priv->stats_data[S2500_MSTRXTOOLONG_IDX];
+> +	rmon_stats->fragments = priv->stats_data[S2500_MSTFCSERRS_IDX];
+> +	rmon_stats->jabbers = priv->stats_data[S2500_MSTALIGNERRS_IDX];
+
+[Medium]
+Do fragments and jabbers here match the RFC 2819 / RMON MIB definitions?
+
+RMON defines fragments as undersized frames with a bad FCS/alignment and
+jabbers as oversized frames with a bad FCS/alignment, not the raw FCS or
+alignment error counters.
+
+If the hardware does not have dedicated fragment/jabber counters, would
+leaving these at zero avoid producing misleading data when compared
+across devices?
+
+[ ... ]
+
+> +static void s2500_get_regs(struct net_device *ndev,
+> +			   struct ethtool_regs *regs, void *p)
+> +{
+[ ... ]
+> +	for (i = 0; i < S2500_NUM_REGS; i++) {
+> +		val = 0;
+> +		reg = s2500_reg_map[i].reg;
+> +		mms = s2500_reg_map[i].mms;
+> +		ret = oa_tc6_read_register_mms(priv->tc6, reg, mms,
+> +					       &val);
+> +		if (ret)
+> +			continue;
+> +		*pbuff++ = cpu_to_be32(((u32)mms << 16) | reg);
+> +		*pbuff++ = cpu_to_be32(val);
+> +	}
+> +}
+
+[Medium]
+Why is the regdump written as big-endian u32 values via cpu_to_be32()?
+
+The ethtool -d convention (and every other in-tree driver's regdump) is
+to write host-native u32 values.  On little-endian hosts the current
+code produces byte-swapped mms/reg headers and register values, which
+generic decoders would misinterpret.  Would writing the values without
+the byte swap be more consistent with existing drivers?
+
+[ ... ]
+
+> +const struct ethtool_ops s2500_ethtool_ops = {
+[ ... ]
+> +	.get_sset_count = s2500_get_sset_count,
+> +	.get_strings = s2500_get_strings,
+[ ... ]
+> +	.self_test = net_selftest,
+> +};
+
+[Low]
+Since .self_test = net_selftest is wired up here, should get_sset_count
+also return net_selftest_get_count() for ETH_SS_TEST and should
+get_strings populate the strings via net_selftest_get_strings()?  Without
+those, ethtool cannot enumerate the tests.  The follow-up patch in the
+series adds this handling, but each patch typically needs to be
+self-contained.
+
+> diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_main.c b/drivers/net/ethernet/onsemi/s2500/s2500_main.c
+> new file mode 100644
+> index 000000000000..2d81b44f8c76
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/s2500/s2500_main.c
+
+[ ... ]
+
+> +static int s2500_init(struct s2500_info *priv)
+> +{
+[ ... ]
+> +	/* Program the source MAC address into the device */
+> +	ret = s2500_set_mac_filter(priv->ndev, priv->ndev->dev_addr);
+> +
+> +	val = S2500_MAC_CTRL_ADRF_BIT | S2500_MAC_CTRL_FCSA_BIT;
+> +
+> +	return s2500_mac_ctrl_modify_bits(priv, val, false);
+> +}
+
+[Medium]
+Is the return value of s2500_set_mac_filter() intentionally discarded
+here?  It is assigned to ret but then overwritten by
+s2500_mac_ctrl_modify_bits().  If any of the four SPI writes inside
+s2500_set_mac_filter() fails, the driver will still enable address
+filtering with a mis-programmed FILT0 register, which would silently
+drop all traffic.  Should the error be propagated?
+
+[ ... ]
+
+> +/* Deferred function for applying RX mode flags in non-atomic context */
+> +static int s2500_rx_mode_update(struct s2500_info *priv)
+[ ... ]
+
+> +static void s2500_set_rx_mode(struct net_device *ndev)
+> +{
+> +	struct s2500_info *priv = netdev_priv(ndev);
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +
+> +	priv->rx_flags_upd = true;
+> +	priv->ndev_flags = ndev->flags;
+> +
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	if (priv->thread)
+> +		wake_up_process(priv->thread);
+> +}
+
+[High, High]
+Can priv->thread be dereferenced when it is an ERR_PTR or a freed task?
+
+In s2500_open() on failure of kthread_run(), priv->thread is left as
+ERR_PTR(-errno):
+
+    priv->thread = kthread_run(s2500_thread_fun, priv, ...);
+    if (IS_ERR(priv->thread)) {
+        ret = PTR_ERR(priv->thread);
+    } else {
+        ...
+    }
+    return ret;
+
+An ERR_PTR is non-NULL, so a later s2500_set_rx_mode() would pass the
+if (priv->thread) check and hand the ERR_PTR to wake_up_process() as a
+task_struct pointer.  Would setting priv->thread = NULL on the failure
+branch be safer?
+
+There is also a window in s2500_stop():
+
+    kthread_stop(priv->thread);
+    priv->thread = NULL;
+
+kthread_stop() internally does put_task_struct() before it returns, so
+between the two statements priv->thread references freed memory.
+
+s2500_set_rx_mode() reads priv->thread without holding priv->lock, and
+ndo_set_rx_mode can be invoked from BH context via dev_mc_sync-like
+paths rather than under rtnl.  Would clearing priv->thread under
+priv->lock before calling kthread_stop() (or performing the check under
+priv->lock) close this race?
+
+[ ... ]
+
+> +static netdev_tx_t s2500_start_xmit(struct sk_buff *skb,
+[ ... ]
+> +static void s2500_process_events(struct s2500_info *priv)
+> +{
+> +	u32 val;
+> +	int ret;
+> +
+> +	if (!priv->event_pending)
 > +		return;
-> +	if (!skb || (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) == 0)
-> +		return;
-> +	if (tc6->ts_config.tx_type != HWTSTAMP_TX_ON) {
-> +		tc6->tx_hwtstamp_lost++;
+> +
+> +	priv->event_pending = false;
+> +
+> +	ret = oa_tc6_read_register(priv->tc6, S2500_REG_SPI_ST0, &val);
+> +	if (ret) {
+> +		dev_err(&priv->spi->dev, "Error reading ST0 register");
 > +		return;
 > +	}
-> +
-> +	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-> +	u8 ret = tc6->tx_ts_idx++;
-> +
-> +	if (ret == OA_TC6_TTSCC_REG_ID)
-> +		tc6->tx_ts_idx = OA_TC6_TTSCA_REG_ID;
-> +	oa_tc6_tsinfo_tx(skb)->tsc = ret;
-> +
-> +	list_add_tail(&skb->list, &tc6->tx_ts_skb_q);
 > +}
 
 [High]
-The hardware exposes three timestamp capture slots (TTSCA, TTSCB, TTSCC),
-but tx_ts_idx cycles through them unconditionally, with no check that
-the previous capture in a given slot has already been drained by the
-TTSCA/B/C completion IRQ.
+Should this handler write back the observed ST0 bits to acknowledge
+them?
 
-When tx_credits allows more than three timestamped skbs to be pipelined,
-the same tsc value is assigned to two skbs.  The earlier skb's TTSCx
-register is then overwritten by the later capture before
-oa_tc6_process_deferred_skb() reads it, and two skbs end up on
-tx_ts_skb_q with an identical tsc.
+The probe path treats ST0 as write-1-to-clear:
 
-Should this scheme track per-slot in-use state and either back-pressure
-or fall back to software timestamping when all three slots are pending?
+    /* Acknowledge all IRQ status bits */
+    ret = oa_tc6_read_register(priv->tc6, S2500_REG_SPI_ST0, &val);
+    if (!ret) {
+        u32 mask = S2500_STATUS0_MASK;
 
-[High]
-tc6->hw_tstamp_enabled and tc6->ts_config are written from the ioctl
-path through oa_tc6_hwtstamp_set()->oa_tc6_set_hwtstamp_settings() and
-read here on the threaded IRQ path with no lock, RCU, WRITE_ONCE, or
-memory barrier.  Is there some serialization not visible here?
+        val &= mask;
+        oa_tc6_write_register(priv->tc6, S2500_REG_SPI_ST0, val);
+    }
 
-On the disable path, oa_tc6_set_hwtstamp_settings() programs the
-hardware first and only afterwards clears hw_tstamp_enabled.  Can this
-happen:
+At runtime the read value is discarded and never written back, so any
+status bits latched later (TX FCS errors, buffer over/underflow, LOFE,
+header errors, reset-complete, timestamp captures) would remain set
+indefinitely.  Does the device gate further status changes or IRQs when
+bits are already asserted?
 
-  CPU0 (ioctl disable)          CPU1 (threaded IRQ)
-  write CONFIG0 (clear FTSE)
-  write INT_MASK0 (mask TTSCA)
-                                if (!tc6->hw_tstamp_enabled) /* still true */
-                                ...
-                                skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-                                list_add_tail(&skb->list, &tc6->tx_ts_skb_q);
-  tc6->hw_tstamp_enabled = false;
+[ ... ]
 
-At that point the TTSCA/B/C interrupts are already masked, so
-oa_tc6_process_deferred_skb() will never run for that tsc; the skb is
-stuck on tx_ts_skb_q, and because SKBTX_IN_PROGRESS was set the socket
-TX completion is also blocked.
+> +static int s2500_thread_fun(void *data)
+[ ... ]
 
-Would a mutex around the reconfiguration (plus draining tx_ts_skb_q)
-be more appropriate than the plain flag read?
-
-> +static int oa_tc6_process_deferred_skb(struct oa_tc6 *tc6, u8 tsc)
+> +static int s2500_open(struct net_device *ndev)
 > +{
-> +	struct skb_shared_hwtstamps tstamp;
-> +	struct oa_tc6_ts_info_tx *ski;
-> +	struct sk_buff *skb, *tmp;
-> +	bool found = false;
+> +	struct s2500_info *priv = netdev_priv(ndev);
 > +	int ret = 0;
+> +	u32 val;
 > +
-> +	/* Size of data must match OA_TC6_TSTAMP_SZ */
-> +	u32 data[2];
+> +	dev_dbg(&ndev->dev, "%s", "s2500_open");
+> +	phy_start(priv->ndev->phydev);
 > +
-> +	list_for_each_entry_safe(skb, tmp, &tc6->tx_ts_skb_q, list) {
-> +		ski = oa_tc6_tsinfo_tx(skb);
-> +		if (ski->tsc != tsc)
-> +			continue;
-> +		if (found) {
-> +			dev_warn_ratelimited(&tc6->spi->dev,
-> +					     "Multiple skbs. tsc = %d\n",
-> +					     tsc);
-> +			tc6->tx_hwtstamp_err++;
-> +		}
-> +		found = true;
-> +		list_del(&skb->list);
+> +	priv->thread = kthread_run(s2500_thread_fun, priv,
+> +				   DRV_NAME "/%s:%d",
+> +				   dev_name(&priv->spi->dev),
+> +				   spi_get_chipselect(priv->spi, 0));
 > +
-> +		/* Retrieve the timestamping info */
-> +		ret = oa_tc6_read_registers(tc6,
-> +					    OA_TC6_REG_TTSCA_HIGH +
-> +					    2 * (tsc - 1), &data[0], 2);
+> +	if (IS_ERR(priv->thread)) {
+> +		ret = PTR_ERR(priv->thread);
+> +	} else {
+> +		val = S2500_MAC_CTRL_TXEN_BIT | S2500_MAC_CTRL_RXEN_BIT;
+> +		ret = s2500_mac_ctrl_modify_bits(priv, val, false);
 > +
-> +		if (!ret) {
-> +			tstamp.hwtstamp = ktime_set(data[0], data[1]);
-> +			skb_tstamp_tx(skb, &tstamp);
-> +			tc6->tx_hwtstamp_pkts++;
-> +		}
-> +
-> +		dev_kfree_skb(skb);
+> +		netif_start_queue(priv->ndev);
 > +	}
 > +	return ret;
 > +}
 
 [Medium]
-When more than one skb matches the same tsc, this loop still calls
-skb_tstamp_tx() with the identical hardware timestamp for every match
-and increments tx_hwtstamp_pkts on each.
+If s2500_mac_ctrl_modify_bits() fails, should netif_start_queue() still
+be called and should ret still be returned as failure?
 
-Should only the first match report a timestamp, with the remaining
-matches freed as errors and neither reporting a bogus duplicate to
-userspace nor inflating tx_hwtstamp_pkts?
-
-> +static void oa_tc6_update_ts_in_rx_skb(struct oa_tc6 *tc6)
-> +{
-> +	struct sk_buff *skb = tc6->rx_skb;
-> +	struct oa_tc6_ts_info_rx *ski;
-> +	__be32 ts_val[2];
-> +	u32 ts[2];
-> +
-> +	if (!tc6->hw_tstamp_enabled)
-> +		return;
-> +	ski = oa_tc6_tsinfo_rx(skb);
-> +	if (!ski->rtsa)
-> +		return;
-> +
-> +	memcpy(&ts_val[0], skb->data, 4);
-> +	memcpy(&ts_val[1], (u32 *)skb->data + 1, 4);
-> +
-> +	ts[0] = be32_to_cpu(ts_val[0]);
-> +	ts[1] = be32_to_cpu(ts_val[1]);
-> +
-> +	/* Check parity */
-> +	if ((oa_tc6_get_parity(ts[0]) ^ oa_tc6_get_parity(ts[1])) ==
-> +	    !ski->rtsp) {
-> +		struct skb_shared_hwtstamps *hw_ts;
-> +
-> +		/* Report timestamp to the upper layers */
-> +		hw_ts = skb_hwtstamps(skb);
-> +		memset(hw_ts, 0, sizeof(*hw_ts));
-> +		hw_ts->hwtstamp = ktime_set(ts[0], ts[1]);
-> +	}
-> +	skb_pull(skb, sizeof(ts));
-> +}
+Right now the queue is started even when the MAC-CTRL write returned an
+error, and the function returns the error to the network stack.  Since
+ndo_open returned failure, s2500_stop() will not be called by the stack
+to unwind, leaving the kthread running and the queue started.
 
 [Medium]
-The two 4-byte memcpys and the skb_pull() assume the linear region
-holds at least 8 bytes, but skb->len is never checked.  If a short
-frame arrives with RTSA_VALID set in the footer, the memcpys read past
-the received payload (still inside the allocated buffer, so no OOB,
-but garbage becomes a "hardware timestamp"), and skb_pull() returns
-NULL without advancing skb->data.
+Is phy_start() balanced on every failure path from s2500_open()?
 
-The return value is ignored, so eth_type_trans() then parses the
-would-be timestamp bytes as the Ethernet header and delivers a corrupt
-frame upstream.
-
-Should this bail out early if skb->len < OA_TC6_TSTAMP_SZ, and check
-the return of skb_pull()?
+phy_start() is called unconditionally at the top.  If kthread_run() or
+s2500_mac_ctrl_modify_bits() fails, s2500_open returns an error without
+a matching phy_stop(), and because ndo_open failed the stack will not
+call s2500_stop().  Would a goto-based unwind be more appropriate?
 
 [ ... ]
 
-> @@ -887,12 +1060,18 @@ static void oa_tc6_add_tx_skb_to_spi_buf(struct oa_tc6 *tc6)
->  		tc6->tx_skb_offset = 0;
->  		tc6->netdev->stats.tx_bytes += tc6->ongoing_tx_skb->len;
->  		tc6->netdev->stats.tx_packets++;
-> -		kfree_skb(tc6->ongoing_tx_skb);
+> +static int s2500_probe(struct spi_device *spi)
+> +{
+[ ... ]
+> +	spi->dev.platform_data = priv;
+> +	spi_set_drvdata(spi, priv);
+
+[Low]
+Is overwriting spi->dev.platform_data intentional?
+
+platform_data is normally a channel for the platform layer to hand
+pre-populated data to a driver; drivers overwriting it can clobber data
+the DT/platform code placed there.  spi_set_drvdata() is already called
+on the next line, so s2500_remove() could use spi_get_drvdata() /
+dev_get_drvdata() instead of reading spi->dev.platform_data.
+
+[ ... ]
+
+> +	priv->tc6 = oa_tc6_init(spi, ndev);
+> +	if (!priv->tc6) {
+> +		dev_err(&spi->dev, "OA TC6 init failed");
+> +		return -ENODEV;
+> +	}
+> +	oa_tc6_set_vend1_mms(priv->tc6, OA_TC6_PHY_C45_VS_MMS12);
 > +
-> +		/* Free the ones that are not saved for later processing,
-> +		 * like timestamping.
-> +		 */
-> +		if (!(skb_shinfo(tc6->ongoing_tx_skb)->tx_flags &
-> +		    SKBTX_IN_PROGRESS))
-> +			kfree_skb(tc6->ongoing_tx_skb);
->  		tc6->ongoing_tx_skb = NULL;
->  	}
+> +	/* Clear RSTS, if set */
+> +	oa_tc6_read_register_mms(priv->tc6, S2500_REG_VS_MIIMIRQS,
+> +				 OA_TC6_PHY_C45_VS_MMS12, &val);
+> +	val &= MIIM_IRQ_STATUS_RSTS;
+> +	if (val != 0)
+> +		oa_tc6_write_register_mms(priv->tc6,
+> +					  S2500_REG_VS_MIIMIRQS,
+> +					  OA_TC6_PHY_C45_VS_MMS12,
+> +					  MIIM_IRQ_STATUS_RSTS);
+
+[Medium]
+Is val guaranteed to be initialized before the val &= ... read here?
+
+val is declared uninitialized above and oa_tc6_read_register_mms()'s
+return value is discarded.  If the underlying read returns early
+(e.g. -EINVAL) or fails on the SPI bus, *value is not written and the
+subsequent test acts on stack garbage, which could produce an
+unintended write to MIIMIRQS or skip a required RSTS acknowledgement.
+
+[ ... ]
+
+> +	ret = s2500_init(priv);
+> +	if (unlikely(ret)) {
+> +		dev_err(&spi->dev, "failed to s2500_init the device");
+> +		goto err_reg_read;
+> +	}
+> +
+> +	/* Configure PTP if the model supports it */
+> +	ret = s2500_ptp_register(priv);
+> +	if (unlikely(ret))
+> +		goto err_reg_read;
+> +
+> +	ret = register_netdev(ndev);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "failed to register netdev\n");
+> +		ret = -ENODEV;
+> +
+> +		goto err_reg_read;
+> +	}
+> +	return 0;
+> +
+> +err_reg_read:
+> +	dev_err(&spi->dev, "could not initialize macphy");
+> +	return ret;
+> +}
 
 [High]
-When SKBTX_IN_PROGRESS is set the ongoing_tx_skb reference is dropped
-without a free, leaving the skb owned solely by tx_ts_skb_q.  The only
-path that removes and frees these skbs is oa_tc6_process_deferred_skb()
-driven by the TTSCA/B/C interrupt.
+Does the err_reg_read path leak the resources acquired earlier in probe?
 
-Two lifetime questions:
+oa_tc6_init() installs a threaded IRQ, initializes the PHY and enables
+data transfer, and s2500_ptp_register() calls ptp_clock_register(),
+which is not devm-managed.  If register_netdev() fails after PTP
+registration, the ptp_clock (with its posix_clock device, debugfs
+entries and aux kworker) has no owner.
 
-On module unload/unbind, oa_tc6_free_pending_skbs() only touches
-ongoing_tx_skb, ongoing_rx_skb, and waiting_tx_skb.  What frees the
-skbs still linked on tx_ts_skb_q?
+Would the error path benefit from oa_tc6_ptp_unregister() and
+oa_tc6_exit() to unwind these in reverse order?
 
-When hwtstamp is disabled via SIOCSHWTSTAMP,
-oa_tc6_set_hwtstamp_settings() masks INT_MASK0_TTSCA_MASK.  Any skb
-already queued for a pending capture will not receive its completion
-IRQ.  What drains tx_ts_skb_q in that case?
-
-Because SKBTX_IN_PROGRESS is set on these skbs, their socket-level TX
-completion is also blocked until skb_tstamp_tx() or free happens, so a
-leak here stalls sockets in addition to leaking memory.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c b/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c
-> new file mode 100644
-> index 000000000000..0cde5545ee27
-> --- /dev/null
-> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c
-
-[ ... ]
-
-> +int oa_tc6_ptp_register(struct oa_tc6 *tc6, struct ptp_clock_info *info)
+> +static void s2500_remove(struct spi_device *spi)
 > +{
-> +	/* Not supporting hardware timestamp isn't an error */
-> +	if (!tc6->hw_tstamp_supported)
-> +		return 0;
+> +	struct s2500_info *priv = spi->dev.platform_data;
 > +
-> +	snprintf(info->name, sizeof(info->name), "%s",
-> +		 "OA TC6 PTP clock");
-
-[Low]
-This unconditionally overwrites the caller-provided info->name with a
-fixed string.  If a board hosts more than one OA TC6 MAC-PHY, all PTP
-clocks register under the identical name "OA TC6 PTP clock", making
-ptp4l/phc2sys logging and pinning ambiguous.
-
-Could the name be derived from dev_name(&spi->dev) or the netdev name,
-or left untouched so the vendor caller can set a unique value?
-
-> +	tc6->ptp_clock = ptp_clock_register(info, &tc6->spi->dev);
-> +	if (IS_ERR(tc6->ptp_clock)) {
-> +		dev_err(&tc6->spi->dev, "Registration of %s failed",
-> +			info->name);
-> +		return -EFAULT;
-> +	}
-
-[High, Low]
-Two questions about this failure path:
-
-On failure, tc6->ptp_clock retains the ERR_PTR value from
-ptp_clock_register().  oa_tc6_ptp_unregister() later guards on
-`if (tc6->ptp_clock)` and oa_tc6_get_ts_info() on `if (!tc6->ptp_clock)`.
-Both checks pass for an ERR_PTR, so ptp_clock_unregister() and
-ptp_clock_index() end up dereferencing an ERR_PTR.  Should tc6->ptp_clock
-be reset to NULL before returning here?
-
--EFAULT is documented for bad userspace addresses.  Would returning
-PTR_ERR(tc6->ptp_clock) preserve the real errno from ptp_clock_register()
-(typically -ENOMEM, -EBUSY, or -EINVAL)?
-
-[ ... ]
-
-> +MODULE_DESCRIPTION("OPEN Alliance 10BASE‑T1x MAC‑PHY Serial Interface Lib");
-> +MODULE_AUTHOR("Selva Rajagopal <selvamani.rajagopal@onsemi.com>");
-> +MODULE_LICENSE("GPL");
-
-[Low]
-All three .c files (oa_tc6.c, oa_tc6_ptp.c, oa_tc6_tstamp.c) link into
-the single oa_tc6_mod.ko per the Makefile change, yet each translation
-unit declares its own MODULE_DESCRIPTION/MODULE_AUTHOR/MODULE_LICENSE.
-This produces duplicate __UNIQUE_ID_license sections and duplicate
-modinfo strings.
-
-Would keeping the module metadata only in oa_tc6.c be cleaner?
-
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-
-[ ... ]
-
-> @@ -127,6 +147,17 @@ struct oa_tc6 {
->  	bool rx_buf_overflow;
->  	bool int_flag;
->  	bool disable_traffic;
-> +	struct ptp_clock_info ptp_clock_info;
-
-[Low]
-This ptp_clock_info field does not appear to be assigned or read
-anywhere in the series.  oa_tc6_ptp_register() takes a struct
-ptp_clock_info * argument and forwards it to ptp_clock_register()
-directly, and vendor drivers embed their own ptp_clock_info in their
-own state.  Is this field intended for future use, or can it be
-dropped?
-
-> +	struct hwtstamp_config ts_config;
-> +	struct list_head tx_ts_skb_q;
-> +	struct ptp_clock *ptp_clock;
-> +	bool hw_tstamp_supported;
-> +	bool hw_tstamp_enabled;
-> +	u32 tx_hwtstamp_pkts;
-> +	u32 tx_hwtstamp_lost;
-> +	u32 tx_hwtstamp_err;
-> +	int vend1_mms;
-> +	u8 tx_ts_idx;
->  };
-
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
-> new file mode 100644
-> index 000000000000..f80f1a4916a3
-> --- /dev/null
-> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
-
-[ ... ]
-
-> +static int oa_tc6_set_hwtstamp_settings(struct oa_tc6 *tc6)
-> +{
-> +	u32 cfg0, irqm, status0;
-> +	int ret;
+> +	dev_dbg(&priv->ndev->dev, "%s", "s2500_remove");
 > +
-> +	ret = oa_tc6_read_register(tc6, OA_TC6_REG_CONFIG0, &cfg0);
-> +	if (ret) {
-> +		dev_err(&tc6->spi->dev, "Failed to read CFG0 register\n");
-> +		goto out;
-> +	}
-[ ... ]
-> +	ret = oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, cfg0);
-
-[Medium]
-oa_tc6_read_register() and oa_tc6_write_register() each take
-spi_ctrl_lock individually, but the read-modify-write pair on CONFIG0
-(and on INT_MASK0) is not atomic across the two calls.
-oa_tc6_zero_align_receive_frame_enable() also RMWs CONFIG0.  Today
-that call comes only from vendor probe (single-threaded), but this
-function runs at runtime from ioctl.
-
-Would a dedicated register-state mutex covering the whole RMW sequence
-protect against a future runtime user of a different CONFIG0 bit
-losing an update?
-
-[ ... ]
-
-> +int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6,
-> +			struct kernel_hwtstamp_config *cfg)
-> +{
-[ ... ]
-> +	switch (cfg->rx_filter) {
-> +	case HWTSTAMP_FILTER_NONE:
-> +	case HWTSTAMP_FILTER_ALL:
-> +	case HWTSTAMP_FILTER_SOME:
-> +	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
-[ ... every PTP filter accepted ... ]
-> +	case HWTSTAMP_FILTER_NTP_ALL:
-> +		break;
-> +	default:
-> +		return -ERANGE;
-> +	}
-> +	hwtstamp_config_from_kernel(&tc6->ts_config, cfg);
-> +
-> +	/* Supports timestamping all traffic */
-> +	if (cfg->rx_filter != HWTSTAMP_FILTER_NONE)
-> +		tc6->ts_config.rx_filter = HWTSTAMP_FILTER_ALL;
-> +	return oa_tc6_set_hwtstamp_settings(tc6);
+> +	oa_tc6_ptp_unregister(priv->tc6);
+> +	unregister_netdev(priv->ndev);
+> +	oa_tc6_exit(priv->tc6);
 > +}
 
 [Medium]
-The coerced filter is written to tc6->ts_config.rx_filter but not
-back into the caller-supplied *cfg.  When this is wired to
-ndo_hwtstamp_set(), dev_set_hwtstamp() copies kernel_hwtstamp_config
-back to userspace unchanged, so userspace sees its original request
-(for example HWTSTAMP_FILTER_PTP_V2_L2_EVENT) reported as accepted
-while the hardware silently applies HWTSTAMP_FILTER_ALL.
+Is the teardown order in s2500_remove() safe against concurrent user
+API access?
 
-Should cfg->rx_filter be updated to HWTSTAMP_FILTER_ALL before returning,
-so userspace can observe the coercion the way other drivers signal it?
+While the netdev is still registered, userspace can still invoke
+ndo_hwtstamp_get/set via SIOCSHWTSTAMP and the ethtool get_ts_info /
+get_ts_stats callbacks, which reach into the OA-TC6 PTP state.  Calling
+oa_tc6_ptp_unregister() before unregister_netdev() looks like the
+reverse of registration order (oa_tc6_init -> s2500_ptp_register ->
+register_netdev).  Would unregister_netdev() first (which quiesces
+user-visible ops through rtnl) close this window?
+
+> diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c b/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c
+> new file mode 100644
+> index 000000000000..7da660cb5b19
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c
+
+[ ... ]
+
+>     adjtime callback is implemented using adjfine. If time
+>     delta is too big, bigger than 1 second, using adjtime
+>     would take long to reduce the delta. In those cases,
+>     settime callback is used to reduce the delta. Once delta
+>     becomes less than a second, it uses adjfine to reduce
+>     the drift further.
 
 [Medium]
-oa_tc6_get_ts_info() advertises rx_filters = BIT(HWTSTAMP_FILTER_ALL)
-alone, while this switch accepts every PTP-related filter and
-HWTSTAMP_FILTER_NTP_ALL.  ethtool -T therefore describes a different
-set of accepted filters than what oa_tc6_hwtstamp_set() actually takes.
+Does the implementation match this description?
 
-Additionally, cfg->flags is not validated on this path; only the ioctl
-wrapper oa_tc6_tstamp_ioctl() rejects a non-zero tscfg.flags.  Any
-HWTSTAMP_FLAG_* bits arriving via ndo_hwtstamp_set() are silently
-swallowed.
+For |delta| > 1s the code calls s2500_use_settime() which computes
+target = now + rem and calls ptp->settime64(target) - a full step, not
+a partial reduction down to below 1s followed by adjfine.  The claimed
+coarse-then-fine hybrid does not appear to be implemented.
 
-Should the advertised rx_filters mask reflect what is actually accepted
-here, and should cfg->flags be validated in this function too?
+Beyond the mismatch, is hiding a time step inside adjtime consistent
+with the PTP uAPI?  Step and slew are exposed as different ops so
+userspace daemons like phc2sys / ptp4l can choose the policy and audit
+time steps; conflating them inside a driver can confuse those consumers.
+
+[ ... ]
+
+> +static int s2500_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+> +{
+[ ... ]
+> +	if (mutex_lock_interruptible(&priv->ptp_adj_lock))
+> +		return -EINTR;
+> +
+> +	/* Try to slew the clock using adjfine for better accuracy.
+> +	 * For large adjustments fall back to setting time directly.
+> +	 */
+> +	rem = delta;
+> +
+> +	while (rem != 0 && max_iters--) {
+[ ... ]
+> +		/* Choose a slewing period depending on magnitude */
+> +		if (abs_delta <= 1000000LL) /* <= 1ms */
+> +			period_ms = 1000; /* 1 s */
+> +		else if (abs_delta <= 100000000LL) /* <= 100ms */
+> +			period_ms = 10000; /* 10 s */
+> +		else
+> +			period_ms = 60000; /* 60 s */
+[ ... ]
+> +		/* Apply frequency adjustment */
+> +		ret = ptp->adjfine(ptp, (long)scaled_ppm);
+> +		if (ret)
+> +			break;
+> +
+> +		/* Sleep for the slew period (interruptible). If
+> +		 * interrupted, clear the adjfine and return -EINTR.
+> +		 */
+> +		if (msleep_interruptible(period_ms)) {
+[ ... ]
+> +	mutex_unlock(&priv->ptp_adj_lock);
+> +	return ret;
+> +}
+
+[High]
+Should priv->ptp_adj_lock be held across msleep_interruptible() for up
+to ~180 seconds (3 iterations at 60s)?
+
+adjtime is invoked from userspace via PTP_CLOCK_ADJTIME, and the PTP
+core does not serialize adjfine/settime64/gettimex64 with adjtime.
+Holding the mutex across long sleeps blocks the calling task and any
+other adjtime caller for minutes.
+
+Also, s2500_ptp_adjfine() and s2500_ptp_set_time64() do not take
+ptp_adj_lock, so a concurrent userspace adjfine or settime64 can
+clobber (or be clobbered by) the writes to S2500_REG_VS_PTP_ADJ and the
+PTP SEC/NSEC registers that this loop performs.
+
+More broadly, would it be preferable to expose only the primitive ops
+(adjfine, settime64, adjphase where supported) and let userspace
+daemons implement any coarse-then-fine discipline?
 -- 
 This is an AI-generated review.
 
