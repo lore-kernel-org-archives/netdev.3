@@ -1,40 +1,86 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CFD38F24F
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 10:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE2342D763
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 10:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784628080; cv=none; b=bz5UoFghWTkYFp+tAZ+Yxs1IsZiYGbke5ndbsFSSFmzGa8/68bUOkrevPI00h551W6C0cq3QPdr5MQmo5nnB4O3n86nE3bWFeyDB6iuS3qsjCanMP5ItIkDPJdYuFy4XFMbCAQyLxIhSKNCfhsiSItyUMZ+CQgBmsUyTJnquQeY=
+	t=1784628174; cv=none; b=DdsfRYCtkxC0KVK6XEY3lU8yQKj7szxcUhoRq7URTksL7LP7TWjQ23z6ZtyKtRupyv8Dy6PhqMnyFWqmSC2HNnmQjTSGqrlNX2BrK6015Bl7Xq+M4fBmtOGjpWnx+MkAB2u2IKM8TGhGQuD2uG3HrWoOfbUpM3Vkbzl77ofKfxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784628080; c=relaxed/simple;
-	bh=va5lIycxnTKYt5HfD45SzBTgb4p72ZnN7bue4cjd3QM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ntk0FzvJGsnrOHebw/m1Go/oc8AtpXEU809YuJZmxntyYFzjAuz+KM333d+jfQVp28uzefXNUxZknpO8yYJPm1VnBI65rmk0a0UVYZ20fHzIKWF2j8f3Hqqwcunn5dRtlC8YDrDn3wHLTbUNNtVh0Ay+hVsp/KNYHjRe5V+FQLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=F09OQfoE; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784628174; c=relaxed/simple;
+	bh=p61gCRXFIm0NiiY2OG0adIIyMTBhQAMC79Dsy1XTIxE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=TjgyFJp1Wm32wK/00juCdCK3t9PaYRKXtk6EfCD0ZQ3acKs7UH0iVT5bimqng7cTT3z63Lu4iQtNyvrXurHQNXoBlvdAzw9UIprjIVmKQiAbyzzBl9dVR4uuvJx/PJhg7nJV/qXLnE4dlx+22CpjUmLkYQxTJuupWJ4v8YI1LKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fy40yyLX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Yk+y2m2V; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="F09OQfoE"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 287421A1131;
-	Tue, 21 Jul 2026 10:01:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E8E3860368;
-	Tue, 21 Jul 2026 10:01:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8A0411BD3B3C;
-	Tue, 21 Jul 2026 12:01:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784628073; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=jhh9IK+rT66VZNU2sloXw2cDlu3T2Nk4oei93xkVNBg=;
-	b=F09OQfoExNE31a1YryyV8pfFiNgrzdpiSUF2LVDjJtrCAny86c19c/Gs6OwlCwmO+dAUn5
-	zAS8YZs37USAxfFAwzJYtf5ght8ILp9BFMBE2/AUhtufiRjmKaUWZ1byCwzWFXTaniLgpg
-	sKDAzq7yEnV6CotZqOzRxZQB3348HbzdZRcpmwQY/HskpqW7/192T7OQahaZSV0Nfx+utf
-	MyRyERrGoBsi9J8Rv+9jYMfwWz9InI2PJ8WWele36JcaVZ4AwHwcz53iRByalWs97s/Gfa
-	lErZrhex34nQlcjdNrFD5anXCNekKjYgkyrI7vw5DucW1NMXmNrcnpOkJwRWBQ==
-Message-ID: <c1e3f0c6-89a7-42de-ad77-aede3cd93ea5@bootlin.com>
-Date: Tue, 21 Jul 2026 12:01:03 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fy40yyLX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Yk+y2m2V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784628172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FDdpB6ZYwZIlR+moMdqHy53xNfFlVy927sGzMiz2qu8=;
+	b=Fy40yyLXiSyK8FdCLzP7qSELmxhKlTKj5BvhDpUH7wQFdYskwzXfxJyLnAYDOoj6+rclzN
+	m1OvxA9fFUDx6oJz/YEJsW6CM+RiO33r3p39sGkWs0nTALkRMfn4/rsoQggKMrVmtiM982
+	YDWO74QLE0cqHk7JZF0q9fqsSsas6J4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-2wzgXSYPP3uJJ0vKwadbUw-1; Tue, 21 Jul 2026 06:02:50 -0400
+X-MC-Unique: 2wzgXSYPP3uJJ0vKwadbUw-1
+X-Mimecast-MFC-AGG-ID: 2wzgXSYPP3uJJ0vKwadbUw_1784628170
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f5a972b0eso4166492f8f.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 03:02:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784628169; x=1785232969; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FDdpB6ZYwZIlR+moMdqHy53xNfFlVy927sGzMiz2qu8=;
+        b=Yk+y2m2VTxisxxiK7KH6BYN8bIo5mb7/2ZWRb4ZgCKIeVNTdbFYpKh1kNMPhpT5hDM
+         ZbMiVX6PkOybpBZZhBaFD+4pZpqQpSdsihd6udkVEvYRWxOj6271SXBQq0qOQpyW7Cb5
+         He4TmGFyFp+/P9+wElnCgjx0IVKjYtPf+PL33wqmzTMF3MDt9dTiIdjpzBLMc5qSLUCN
+         N4jVntQuhta1SBZtZLcjjP7zorKJiIRmD6trKG6HfFmG5zjwBtomzCMygpyk2AtE4E5K
+         R6qYyYXCXWUd72BmOPjP2kRi9geOUBcO3/yFWRuXQToQfHMQuabAXwzn5fWjZCfN1AH7
+         UFCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784628169; x=1785232969;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FDdpB6ZYwZIlR+moMdqHy53xNfFlVy927sGzMiz2qu8=;
+        b=a0XezqmAT3gm6n+tAPhjQ2aFB1vxU/OnDcQ6CusHP3pZvhokBJnVMBvfJpezcNYl/H
+         uejkurGKadVvRVQ3vyw3TWJDClrZbPawjoGflD59NkE73SXk2I/S8gmCUt2tVfxbVM++
+         g/2QY79KvuIIlrsEaAL1PZusYtc1yUHgCNgp10W1Eqnpcbryje48AiXqWGEWJIRGz+YB
+         JzBGQELjhmV/ci+Weq+EnWwbx1VcsrZJVrL0bN0AKanjhIiTGe1ewCyLx9uzo8+RSIbX
+         /zJzZU1MsgbGd5aenHK507P5H4LfXdsggrwvsO/ss/yU89pJkEUAwcFSTOgRqeSfcMQ8
+         /Tqw==
+X-Forwarded-Encrypted: i=1; AHgh+RpaKWNl3z1wMbuvxz5rbOg+Gg7ZpABV/Z9I3EgUvVmThdmGdzbk+0Ai21PQPnk9MsYwkbWuOLM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEYPPJlBXNReYKfUbxI6zmSF9EJ1TEc1RMCsaWlEdSs9nZddv2
+	G5hHJDISfSSzOvkSZ/8dta6mfwsJo8DHUFEAa1Ed0/+jMgq65J03a2/zEdPWgTpdi0Le2NKVUI0
+	qmHmfL4dHJv2if8wM6TAgMwfBu9DaAeDTlqMffvk2nIO9lUjwAI7OHwTx2g==
+X-Gm-Gg: AR+sD109IDY6wMuN6kFoM08AMqEjzYuZBMJNvcr9mzLsKwtk+Zh8DxvfGDozrNrLKh6
+	LLQlfQ44mFv/iMBLlIjy9JBPmYPCEC2WDlWwE+l7LNLx6QKxK9hPOyuspa7uY2sWC/feo9oEp90
+	PwpR9DuXjk9BWG0CHK5175u/wV7G30mzn2P5nwdzSYmQgl1GnWDJ88JLldZXMnpiGsf8OPLK1cJ
+	tt4BM7NlxMYaJdbt/lttI4e1cQCFi0RL0QgJohb6k/NhRJ8SUUptNFUMgA4p1xVnb7NaGTkGnWv
+	kY08NYJoCPaGgUOnapp4WUb6+6i1ofVaAf0hj6dM8OtAZ3IJ1Lw+vQX3pyreBjcYPjveETdzx/I
+	Byb4bF6jeNpp8z4zBDyyn/1WPSv2B/0Occfh5J/WbGJc/r6dFDhZyhmIxyOdWM0zlDcbaUe2QzI
+	y+Uw==
+X-Received: by 2002:a5d:5848:0:b0:47f:71a6:79c5 with SMTP id ffacd0b85a97d-47f71a67a5amr12529388f8f.12.1784628169130;
+        Tue, 21 Jul 2026 03:02:49 -0700 (PDT)
+X-Received: by 2002:a5d:5848:0:b0:47f:71a6:79c5 with SMTP id ffacd0b85a97d-47f71a67a5amr12529309f8f.12.1784628168390;
+        Tue, 21 Jul 2026 03:02:48 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49ce4sm38099290f8f.8.2026.07.21.03.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2026 03:02:47 -0700 (PDT)
+Message-ID: <7e12f83c-2449-4618-bf43-acc533df3a36@redhat.com>
+Date: Tue, 21 Jul 2026 12:02:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,91 +88,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/7] net: phy: phylink: add helper to modify
- pause
-To: Javen <javen_xu@realsil.com.cn>,
- "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
- "nic_swsd@realtek.com" <nic_swsd@realtek.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "daniel@makrotopia.org" <daniel@makrotopia.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
- "daniel@thingy.jp" <daniel@thingy.jp>
-References: <20260709100237.541-1-javen_xu@realsil.com.cn>
- <20260709100237.541-3-javen_xu@realsil.com.cn>
- <0c188a7d-3637-4e08-9ac8-c1d824b461ed@bootlin.com>
- <aeed474059bc4fd7b9c5e3074ef591a4@realsil.com.cn>
- <044a9996-1cd0-49c4-892b-fb267037c568@bootlin.com>
- <ba61c475562f49c4a18038130f3508bc@realsil.com.cn>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next 4/5] net: phy: mediatek: add calibration logic
+ for AN7581
+To: Christian Marangi <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Daniel Golle <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>,
+ SkyLake Huang <SkyLake.Huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20260708102341.53919-1-ansuelsmth@gmail.com>
+ <20260708102341.53919-5-ansuelsmth@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-In-Reply-To: <ba61c475562f49c4a18038130f3508bc@realsil.com.cn>
+In-Reply-To: <20260708102341.53919-5-ansuelsmth@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Javen,
+On 7/8/26 12:23 PM, Christian Marangi wrote:
+> +static int airoha_cal_cycle(struct phy_device *phydev, int devad,
+> +			    u32 regnum, u16 mask, u16 cal_val)
+> +{
+> +	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
+> +	struct phy_device *phydev_p0;
+> +	int ret;
+> +
+> +	phydev_p0 = shared->phydev_p0;
+> +
+> +	phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
+> +
+> +	ret = mtk_cal_cycle_wait(phydev_p0);
 
-On 7/21/26 11:52, Javen wrote:
-> Hi Maxime,
-> 
->>
->> Hi Javen,
->>
->> On 7/13/26 09:51, Javen wrote:
->>> Hi,
->>>
->>>> There's a change in the MAC's ability to support Pause, so we should :
->>>>
->>>> - Recompute the pl->supported field. Update the
->>>> config.mac_capabilities with the
->>>>   new pause settings, calling phylink_validate() should do the trick I think,
->> this
->>>>   will rebuild the capability list:
->>>>
->>>>   phylink_validate(pl, pl->supported, &pl->link_config);
->>>>
->>>> - Then update the pl->link_config.pause,
->>>>
->>>> - Then update the pause advertising, like done in phylink_setpauseparam
->>>>   ( I think, everything that comes after pl->state_mutex gets released in
->>>>    phylink_ethtool_set_pauseparam)
->>>>
->>>> Ideally, the logic to update the advertising and re-trigger a
->>>> negociation should be factored out in a private helper, then reused
->>>> from both this path (MAC updates pause support) and the
->> phylink_ethtool_set_pauseparam path.
->>>>
->>>> Maxime
->>>
->>> Thanks for review and helpful suggestions.
->>>
->>> I agree with your suggestion to factor out the logic into a private helper and
->> reuse it for both phylink_ethtool_set_pauseparam() and
->> phylink_update_mac_pause_capabilities().
->>>
->>> Here is the refactored logic. I want to share this specific part with you for a
->> quick check before I submit v7 patch.
->>
->> I'm currently attending the netdev conference, It'll take a few days for me to
->> look at this, sorry about that :/
->>
->> Maxime
-> 
-> Just a gentle ping on this thread. Could you please take a quick look at this refactored logic whenever you are free? Any suggestion would be greatly appreciated.
+The above call causes a builder error at link time in allmodyes config:
 
-Thanks for the ping, I just looked at it from a high level and this is the
-thing I had in mind yes :)
+ERROR: modpost: "mtk_cal_cycle_wait"
+[drivers/net/phy/mediatek/airoha-ge-soc.ko] undefined!
 
-I think you can post a new revision then.
+Also sashiko gemini has a few points:
 
-Thanks for that work,
+https://sashiko.dev/#/patchset/20260708102341.53919-1-ansuelsmth%40gmail.com
 
-Maxime
+/P
 
