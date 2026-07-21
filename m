@@ -1,85 +1,152 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1513F7AA8
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DAB3F7AA8
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 01:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784598482; cv=none; b=nIoyTieOOx0DGE1pFK4jKAeu83CBRjGhTUKlePSgt0NnZSwHpK4+gnKcMtZi903ScFzOlW7aD9IahWhHYfi2qPy+8HAuLYe94w/hXceLEFUhjMN8ap/Jmfaf5bzwfO4GG44gUh2wCDO+el5ZOKF5aO6jYlxY/kMcmDKmHH9vhNg=
+	t=1784598902; cv=none; b=Uc2bAJFVK8WzPdHcKzuC29q3+DKhBIc1a6ZeaYuyNViNpPrw93VG6dcVIhffljW7PV69eryWMgBPieJXh6lBU+IYAJPuvUmGVREVeM5i2mna6m5mnxkOFxTA2Ha3t2h+FaltZ7/XIGIIsgt0H0TAbQtju3fY81keNLOOS8HcOFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784598482; c=relaxed/simple;
-	bh=dTVNk9f+ebsUE3FMkNKiqFCHr7hKIHI14NzUNt0oRP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfdVw2eRjKLtySKbLoXem+bnxIGepRA6w/pSFMFUu4Ow0EthcZaXrKl7DwakkRmDFJCSK6CSwj+MCsPxEgR/lsJrzag+IwUY/5m2Z/IEdolLFYPNxmelWfS30m/l0I+0RTps1sFLZi0uZiw469URaJIxYOBwfE5vHubQ/nBI9uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYMqiPoI; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1784598902; c=relaxed/simple;
+	bh=CmwH/B0PtnzgfGqG8j8e2Mypnvqls/YlFIwqIJNUr1I=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=WpnnhAKLIJU7hI9xIOZmJXqdNdimhc3B6AZYPqKjmTTCJV461LrBpI3tys2MQkN9lpDZkUzm5Qp5ggr7A36LJyHgcTxtg0NVk14912nbgH5dO6AyD49JA5HEKlO+i5zWXTEzT14jtGs2Srf/9xK0kyMkAlRmPwFc0f0kZY94Wgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GrvXjHlX; arc=none smtp.client-ip=74.125.227.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYMqiPoI"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8ee88fce572so84692716d6.1
-        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:48:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GrvXjHlX"
+Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc2c6e0688so90491085ad.0
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 18:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784598480; x=1785203280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dTVNk9f+ebsUE3FMkNKiqFCHr7hKIHI14NzUNt0oRP8=;
-        b=dYMqiPoIM12TTfM5LjzoQQZdRdlNqec8FwZaIujINebLnfzQUpWARroF1jVQFO4ObB
-         MOZ/TrbFH0TdwqupHq5EHCzB1Mej/NzD0hwkQHM8ohDNtpj7WMotQUG/dEC5RiHvvHfY
-         qgeu4SjTTNCo/LyDzWKYUxoTYxHQavSP+QDcjq5f7HH4ku+7almKscMS8qgZ65ysUE8l
-         voVghql5mmpZ3bPj9FQhPsZ/JFlEYsaOsxu4pd8OxtOsrkMCXl30W+a4pJym+5Sf8cHk
-         M0ibLg8JPFVu4KVETyagLtm59JPAe6GL+5gUMXCl+9iAb8SJh1hIb0Bi8AvxT6emsuyw
-         IIcw==
+        d=gmail.com; s=20251104; t=1784598900; x=1785203700; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ffAaSrXTHoX1nF2FpytraIRkGW9osx4fNIumZb54aqE=;
+        b=GrvXjHlX96cF/nN+KFdLoOZ+fxYBMYUTIhg9gYjxgWebsenRph3E6QaqDEVcsxkD7H
+         pbf26lyy4Ow0i+NU7fvww839p9SDSG0hTVjU4BG2Qp22xnA2FG0cAJx6ueZDIB9eU1dX
+         iOk7V6/C656CHz7euR7a5Nr0nbGLSXkUelY0a5r4737aHnhE7l71jY2wjrz5uEFzHYCY
+         iEDNOTHAVFRDj5EiUZEXllqhPI37cXxQMHd0puUhizsWSp1jgVFOWCj4eELcHO54gL4/
+         5sPsGV/V1FzTUWhOW7YCyPIz0PopymVADdfN7RBnLOUsNejEPve8JabGaEHSXCpmX9kp
+         9P8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784598480; x=1785203280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dTVNk9f+ebsUE3FMkNKiqFCHr7hKIHI14NzUNt0oRP8=;
-        b=mrWpVoT3shl54KoLDZNNIzUYKtve2hJl3wRNgZfkw6xLbhi9xw2ZtOy3RvJ24SjVJ7
-         H0doRyqfoFoIvy4D+/CvlJzpuMr+P0Ssa3ywp5EgF+OTgfi3lOLoeo0iFHP7zCroIbwR
-         BLzj87Q6Ujxz3kRc4z/gKm4sX1jQhslbBtUYpy4buAEXD1nkSwgza5Oofz3PUa9F4cI8
-         5Mx6Cm90v3p+KXjx0wPPfLs1p8jA6FXsI7J+c2Pfo6rTR4U1cEjETo3rQu59oUAAV+2O
-         Xk8NZX0WDeWv8L6lPDPLqQRrheT1bDqXQrvZK4sP0W4gcIH83cdeFbz7DCon7X9hKlx5
-         K5NA==
-X-Gm-Message-State: AOJu0Yxk/bA8qlB/pJY8JksLCh7ePF4ykEACEzPDM9dlQSI3F0EQ/JYf
-	yavc3XP8Rtaq18b4aD/33N4yMIqTNAkhVX1rO+69uSZ0yomVcNTQWYP0
-X-Gm-Gg: AfdE7cmOlTMkxUpeToR74EqeWXrLL15IZyi0IgiCu3UeKJLMsaTaEEoinWEfGj6+Jd+
-	vueYv3aGsCYn6CIfPedNhRerYIHaUOpj755aiqvKlUfDZaYirXtms6bqsOFlAcQgsCF3HJOu7EC
-	FEEeqC3imGjOyvkQcCyQ/V4Z6X3z15weQL1f8K9yOogjPsgqlsa00shH6mgpOFOSjI04PG2U4r1
-	fGm5/1TP0+uVobl5pkNAnrHkfKQG4OjdRYqZAplfMVYyA0ovjpoVxdbIXcXFm/OwejBwPLWDHTk
-	T1b3vMpN/y8PSymvxhSycvF+gsVEW72N0pGCU+aepBqrIXJxQdjKyFALDCjLETqHIH4JqxFnOp8
-	XCD363JiC0Fj1oDbmNoBmay0iOVb9hWFgihqZoreU36rUWcDoycrixchHAHNJ1xe5wtmHJs+AbC
-	7K4HfT0n7uTsEZXnUlOT2sTJjQy9hABHaXOOZxSJh80RasfAcHg97vCGwMd3wCxm1tsrkYZzCq7
-	s7bPBjvK0Q56t/I9Bo3ZmUCZ+o=
-X-Received: by 2002:a05:620a:224b:20b0:930:bd54:c073 with SMTP id af79cd13be357-930bd54c18dmr1012046885a.3.1784598479797;
-        Mon, 20 Jul 2026 18:47:59 -0700 (PDT)
-Received: from ip-172-31-15-253.ec2.internal (ec2-13-222-20-6.compute-1.amazonaws.com. [13.222.20.6])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm1016668785a.35.2026.07.20.18.47.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 18:47:59 -0700 (PDT)
-From: Deep Shah <deepshah146@gmail.com>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH net 2/2] selftests: ptp: add a regression test for the frequency adjustment overflow
-Date: Tue, 21 Jul 2026 01:47:58 +0000
-Message-ID: <20260721014758.2235-1-deepshah146@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260720112842.106914-1-horms@kernel.org>
-References: <20260720112842.106914-1-horms@kernel.org>
+        d=1e100.net; s=20251104; t=1784598900; x=1785203700;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ffAaSrXTHoX1nF2FpytraIRkGW9osx4fNIumZb54aqE=;
+        b=CmgAPcG3p0zJXxC8uE8ciRJhmAiCT8CDUgfs4Dw5unM4ojbQfKWlJHmE2ZV4ikoQXO
+         PlVDUOcP/uwR1Bdt461/FXJc6sKRYQ/wVfh8f/d6921MCEsU4tSZjALnfZWMfbKBm4ZY
+         5l6xuFJJQR0FcxdR3qtbUyN8b90G4h2QKfQLaAEnGFKeJuIQZwShqrJGBonI9IzR/z84
+         l7qOdtn7URG6lVnV4g45QkSIb6PxVgU1TiXsF5s4pvAADaaTYMenaZRgRSWQkm+gYv7i
+         +IPUqvojKS2wnbd8FruxRQ1R9QhsXgilVgw4lOyrjKmMKTfy8Ov7/zCqDdEmytwYhzvU
+         2wGw==
+X-Gm-Message-State: AOJu0Yx0URJ1+46VZ6e6DTtNGsa6lKxDXIHvAGSs/70GK1t8dkHlSm82
+	Q1K6OvcFrvivlSsoktbZyL+S0zRfwB0hAegMmXrRdYClYFopwq+jCpdc
+X-Gm-Gg: AR+sD11dQ/4RlIsrqo0hv1LlIsEkrC2O3p1corN6iUsr2hjoZdS8MBrapTC5um6QgLx
+	BwXs/tBKkUhwzC84AWaQ+Tmfz8q039/nocFhI4zfKEca3CtW+kByc5v97+bjiyou2jCdfcHmTlI
+	PNVs34rA/xIpzlpeUmbNImtgFKprB/4dqhXEg+CADHQqBVDAsPd37KgkLVNIx/LcRx8FaXaFWNo
+	sd+DSSgwlcJjvlPUj2OecGmHB/aXXpopgTYNFPUKD/Fcj7c0vH0Td2fGZqmNuicgQgh2jZqlPOp
+	SWU96Ym1WIadB2TAhBjac/QjUD0Z+Rl8Xi3ic61Cguz8J/4kDFPbyPqe/6ZctMscyO3I2yRtSm6
+	GpR+QHFvHKUJ0zst8xNSHLYLupMQ3k9Z9pz3lRzjTbGNuOLw+GcGc0xMJhXAxd6NVsLgPhqBYAw
+	w=
+X-Received: by 2002:a17:903:3c4e:b0:2cc:9179:335 with SMTP id d9443c01a7336-2cf3481b661mr171881705ad.8.1784598900381;
+        Mon, 20 Jul 2026 18:55:00 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([2603:c021:8000:9500:233::14])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344b1ef8sm68539495ad.21.2026.07.20.18.54.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 18:54:59 -0700 (PDT)
+Date: Tue, 21 Jul 2026 09:53:53 +0800
+From: Coia Prant <coiaprant@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Serge Semin <fancer.lancer@gmail.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: pcs: xpcs-plat: fix runtime PM initialization
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260720172433.77b83dc7@kernel.org>
+References: <20260704214808.1566710-1-coiaprant@gmail.com> <20260720172433.77b83dc7@kernel.org>
+Message-ID: <7BA9366A-3243-4A46-BA8F-BB170C8AD912@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thanks Simon. v2 addresses all four points:
-https://lore.kernel.org/netdev/20260721014256.1876-1-deepshah146@gmail.com/
+On July 21, 2026 8:24:33 AM GMT+08:00, Jakub Kicinski <kuba@kernel=2Eorg> w=
+rote:
+>On Sun,  5 Jul 2026 05:48:08 +0800 Coia Prant wrote:
+>> The driver calls `pm_runtime_set_active()` before runtime PM is enabled=
+,
+>> and before the clock is prepared and enabled=2E
+>>=20
+>> This causes the clock to be unprepared/disabled later in the suspend
+>> callback even though it was never prepared/enabled, resulting in warnin=
+gs:
+>>=20
+>> clk_csr already disabled
+>> clk_csr already unprepared
+>>=20
+>> Fix this by setting the initial runtime PM status to SUSPENDED instead
+>> of ACTIVE=2E
+>>=20
+>> The clock will be properly enabled when the device is first resumed
+>> via runtime PM (e=2Eg=2E, during MDIO access)=2E
+>
+>Seems a bit odd that this hasn't been discovered until now=2E
+>Could you add more details about your platform and maybe
+>a hypothesis why we haven't noticed?
+
+Hi,
+
+I came across what looks like a runtime PM initialization issue while
+using pcs-xpcs-plat=2Ec as a reference for the Rockchip XPCS glue driver
+(drivers/net/pcs/pcs-xpcs-rk=2Ec)=2E
+
+The current code in pcs-xpcs-plat=2Ec does:
+
+    pm_runtime_set_active(dev);
+    ret =3D devm_pm_runtime_enable(dev);
+
+This sets the initial PM state to ACTIVE before runtime PM is fully
+enabled, and before the clock is prepared and enabled=2E
+
+If the device is later suspended (e=2Eg=2E, during unbind), the suspend
+callback may try to disable a clock that was never enabled, leading to:
+
+    clk_csr already disabled
+    clk_csr already unprepared
+
+On Rockchip platforms, the CSR clock (PCLK_XPCS) is required for register
+access, and this pattern seems problematic when a clock is actually
+provided=2E
+
+I have a few questions:
+
+1=2E Is there a reason this hasn't been noticed before?
+   As far as I can tell, there is currently no mainline device tree
+   user that enables this driver on a platform with a real clock
+   dependency=2E Out-of-tree users might be using it without any clock
+   at all, or ACPI users might behave differently=2E
+
+2=2E Should we select PM in Kconfig and drop __maybe_unused from the
+   PM callbacks? Since this driver relies on runtime PM for clock
+   management, it seems odd to allow !PM builds=2E
+
+3=2E Should we add a =2Eremove callback to force suspend the device on
+   unbind? Otherwise the clock might remain enabled if the driver is
+   removed while active=2E
+
+I'm happy to send a follow-up patch addressing these points if you
+agree with the direction=2E Let me know what you think=2E
+
+Thanks,
+Coia
