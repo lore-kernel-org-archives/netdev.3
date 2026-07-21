@@ -1,50 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B873BB680;
-	Tue, 21 Jul 2026 10:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BD64534B7;
+	Tue, 21 Jul 2026 10:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784628349; cv=none; b=MVmf8ZlWmYkiPWEzi0V1seOPRBIorgiiyW8N959KWZ+0G728r+Mg7//AnEQgQtwhqk1JEOClvRwnd4E/6GntgueKJpL0utXeWXoUaZs6KROsjXPcNH62RQw1+XLrUj99VqXjsEARkgTV8HnRykVKw9mL2/PELc5jZeFVgutYitQ=
+	t=1784628634; cv=none; b=ga9+fTQ/JiYC8S69aIDQuu5cRr526FRwrp0K14VTqNe5j7yxCpJf0aekgtgBEOZIV2MNN4vMNDHWviMeG0AQzP7mUksTcCNliVI0SXX4kBXhnPJ6fQoqz+MFLDyiT+n9Qp1llD2BwZSuKdRNgVJJFtdhQryzPcaK9Y9Ce85GcPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784628349; c=relaxed/simple;
-	bh=NFhyskmRZPHldhrwwIzXa5ek/HEJ3Bg4EVvNXIK9xzU=;
+	s=arc-20240116; t=1784628634; c=relaxed/simple;
+	bh=YX7WrwxCQ6uvPTsLXu+iHgzHgSqYUbb9egO3prVgNbA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GehXvojQuw1SGHOK6ByzmMPwwCQi852vnOKFrhVb+f0b3GzytL+WM0cRyZvSA4Oc0nSg6RaFwz0oEli+9BnuRtM+v/UtIrrsk7KNjbWtEQCeWAtOv6WTsboBAgojPVss68jzgFsg+yXLc/OfgqblW35J3UsxeapLcOK0u4U+T54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id+EDO2F; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=A3DrVPonW8NtCs7CKUc2TcAFek1Jt6vTyHKIumhAV8LMhZfQFLxUstRTUcNlAu0kXXqHoZcSn1hlWQVSmEEDaGSHh13vZr8udX7Z7dodsCy70IpFnjrJSHV7B0qfPKVA8JkEG+tZ7+2NPP7x0gPb3EzeP0zJz2RV5oeogx0KZAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMzX5sZK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id+EDO2F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BAA1F000E9;
-	Tue, 21 Jul 2026 10:05:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMzX5sZK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8171F00A3F;
+	Tue, 21 Jul 2026 10:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784628348;
-	bh=eBBmPaMF2me330caw3najNlvU5OLEQJLv5nTlPJ9018=;
+	s=k20260515; t=1784628626;
+	bh=bFpA8mGHRTE8JTXE+qz4bQYtYnCWzIRNd4TREiK6hjo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Id+EDO2FTbKNxAswXaewsqA6pVfNpMaxyh1obnhv946ZrN66ZCIdW2hq24TrlZsT7
-	 vALVtQARYTsxs3gjsr6xCBXEYRFMN3MCZ4abvNwearAkA2VjfDwB2sIsXD0Gxlyzs6
-	 JjCkwWiBp8mHNJKHO3/bV9oAjKCUr554unjA89EHGa1pQfQ05JSFvNdMUEERbw9dOB
-	 ur4JetVhM9o1yubKDLZ4zHysRzzJoHBD+6L8cHvbZkozbN9EsPTxd/MApLwL7rOdJJ
-	 +8Bm99CHOfOeDwMBQRkZs/U0pe/05k23eSpX+ym8kGb74Ux6Fn2eK/+VLzNAoiXgQB
-	 RhDAtqWo/gPKA==
-Date: Tue, 21 Jul 2026 12:05:45 +0200
+	b=UMzX5sZK6PYDDfd9Og4lDRpgMFFNMXmFHVnUx+34JwuLQI9WDTjDMlpbkEUrRmBBp
+	 zeyzXAWyeJl204aw9gALvKJ6A92+uhAqs4dl6PnoOb/OGFX3NcgYQqZNfSozFM059y
+	 QGDRMyA1jBLwTOYsWbOG5eGkk+pm1BqRDI6GBrakpmP/eR3kkptfEEfpr08S/bQ3iR
+	 LWBQuL/QoIGjTs8hZ+Twh2JkE4z8jYG8YyKCCpQ6xIuav5Uv/cutUT6YSWJ/55m4yg
+	 PINC1FWgHu8LHsioLDySGgfPQYGDfrIsz7fPN9AgK/uDbx6uFzJO//iRQdUdNJSjht
+	 gCsZ9+gU9D06A==
+Date: Tue, 21 Jul 2026 12:10:23 +0200
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-	bpf@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
-	kernel-team@cloudflare.com, Matt Fleming <mfleming@cloudflare.com>
-Subject: Re: [PATCH bpf v2] veth: convert frag_list skbs before running XDP
-Message-ID: <al9EeXMW9Mi-YDZZ@lore-desk>
-References: <20260720140545.461747-1-matt@readmodwrite.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v9 12/12] net: airoha: add phylink support
+Message-ID: <al9Fj-dbbhnKUQMo@lore-desk>
+References: <20260717065448.1498335-1-ansuelsmth@gmail.com>
+ <20260717065448.1498335-13-ansuelsmth@gmail.com>
+ <al5AVLxWRhnpGzJ1@lore-desk>
+ <6a5e421d.9099b29d.2f0302.1cf4@mx.google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,124 +59,449 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VfY0+0HuWFiEeolm"
+	protocol="application/pgp-signature"; boundary="ld12OxyQIEnfIjS2"
 Content-Disposition: inline
-In-Reply-To: <20260720140545.461747-1-matt@readmodwrite.com>
+In-Reply-To: <6a5e421d.9099b29d.2f0302.1cf4@mx.google.com>
 
---VfY0+0HuWFiEeolm
+--ld12OxyQIEnfIjS2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> From: Matt Fleming <mfleming@cloudflare.com>
+> On Mon, Jul 20, 2026 at 05:35:48PM +0200, Lorenzo Bianconi wrote:
+> > > Add phylink support for each GDM port. For GDM1 add the internal inte=
+rface
+> > > mode as the only supported mode. For GDM2/3/4 add the required
+> > > configuration of the PCS to make the external PHY or attached SFP cage
+> > > work.
+> > >=20
+> > > These needs to be defined in the GDM port node using the pcs-handle
+> > > property.
+> > >=20
+> > > Update and provide a .get/set_link_ksettings function that use phylink
+> > > for ethtool OPs now that we fully support phylink.
+> > >=20
+> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > > ---
+> > >  drivers/net/ethernet/airoha/Kconfig       |   1 +
+> > >  drivers/net/ethernet/airoha/airoha_eth.c  | 194 ++++++++++++++++++++=
++-
+> > >  drivers/net/ethernet/airoha/airoha_eth.h  |   7 +-
+> > >  drivers/net/ethernet/airoha/airoha_regs.h |  12 ++
+> > >  4 files changed, 207 insertions(+), 7 deletions(-)
+> > >=20
+> > > diff --git a/drivers/net/ethernet/airoha/Kconfig b/drivers/net/ethern=
+et/airoha/Kconfig
+> > > index 1f6640a15fc9..789906516bf8 100644
+> > > --- a/drivers/net/ethernet/airoha/Kconfig
+> > > +++ b/drivers/net/ethernet/airoha/Kconfig
+> > > @@ -20,6 +20,7 @@ config NET_AIROHA
+> > >  	depends on NET_DSA || !NET_DSA
+> > >  	select NET_AIROHA_NPU
+> > >  	select PAGE_POOL
+> > > +	select PHYLINK
+> > >  	help
+> > >  	  This driver supports the gigabit ethernet MACs in the
+> > >  	  Airoha SoC family.
+> > > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/e=
+thernet/airoha/airoha_eth.c
+> > > index 59001fd4b6f7..ed1ac032f337 100644
+> > > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > > @@ -8,6 +8,7 @@
+> > >  #include <linux/of_reserved_mem.h>
+> > >  #include <linux/platform_device.h>
+> > >  #include <linux/tcp.h>
+> > > +#include <linux/pcs/pcs.h>
+> > >  #include <linux/u64_stats_sync.h>
+> > >  #include <net/dst_metadata.h>
+> > >  #include <net/page_pool/helpers.h>
+> > > @@ -1837,7 +1838,7 @@ static void airoha_update_hw_stats(struct airoh=
+a_gdm_dev *dev)
+> > >  	struct airoha_gdm_port *port =3D dev->port;
+> > >  	int i;
+> > > =20
+> > > -	spin_lock(&port->stats_lock);
+> > > +	spin_lock(&port->lock);
+> >=20
+> > Hi Christian,
+> >=20
+> > as pointed out in a previous email, I do not like the approach of reusi=
+ng this
+> > spin_lock for airoha_mac_link_up(). Can we use rtl_lock() (when necessa=
+ry) as
+> > pointed out before?
+> >=20
 >=20
-> A frag_list skb can reach veth with data_len set but nr_frags zero.
-> veth_convert_skb_to_xdp_buff() only converts skbs that are shared,
-> locked, have frags[], or do not have enough headroom. It later uses
-> skb_is_nonlinear() to decide whether to set XDP_FLAGS_HAS_FRAGS and
-> xdp_frags_size.
->=20
-> That exposes frag_list data to XDP as if it were stored in frags[], but
-> frags[] is empty. AF_XDP copy mode can then trust the bogus XDP fragment
-> metadata, walk an empty fragment entry, and crash in memcpy() from
-> __xsk_rcv().
->=20
-> Route non-linear skbs through skb_pp_cow_data() before exposing them to
-> XDP, and only advertise XDP frags when the resulting skb has frags[].
-> skb_copy_bits() already handles frag_list input, and skb_pp_cow_data()
-> builds frags[] output with skb_add_rx_frag(), which is the
-> representation XDP multi-buffer expects.
->=20
-> Fixes: 718a18a0c8a6 ("veth: Rework veth_xdp_rcv_skb in order to accept no=
-n-linear skb")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+> For context, quoting from the previous series, the suggestion is to use
+> rtnl_is_locked() and then lock accordingly but I didn't find other usage =
+of
+> that in other driver (aside from core net) and I don't like the use of
+> is_locked. I can already see the BOT saying that in the timeframe of
+> is_locked and writing the register another interface goes up causing a
+> race.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Can you please explain what is the problem of using rtnl_is_locked()?
 
-> ---
-> Changes in v2:
-> - Use skb_is_nonlinear() in veth_convert_skb_to_xdp_buff().
-> - Move the skb_pp_cow_data() comment into kerneldoc.
 >=20
->  drivers/net/veth.c |  4 ++--
->  net/core/skbuff.c  | 16 ++++++++++------
->  2 files changed, 12 insertions(+), 8 deletions(-)
+> Guess I will add a simple mutex for this case and the other.
+
+I do not have a strong opinion on it. I guess it is ok if you are
+planning to use it for future usage, otherwise I guess it is fine
+to rely on rtnl lock.
+
+Regards,
+Lorenzo
+
 >=20
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 1c5142149175..00e34afd858e 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -756,7 +756,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_r=
-q *rq,
->  	u32 frame_sz;
-> =20
->  	if (skb_shared(skb) || skb_head_is_locked(skb) ||
-> -	    skb_shinfo(skb)->nr_frags ||
-> +	    skb_is_nonlinear(skb) ||
->  	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
->  		if (skb_pp_cow_data(rq->page_pool, pskb, XDP_PACKET_HEADROOM))
->  			goto drop;
-> @@ -771,7 +771,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_r=
-q *rq,
->  	xdp_prepare_buff(xdp, skb->head, skb_headroom(skb),
->  			 skb_headlen(skb), true);
-> =20
-> -	if (skb_is_nonlinear(skb)) {
-> +	if (skb_shinfo(skb)->nr_frags) {
->  		skb_shinfo(skb)->xdp_frags_size =3D skb->data_len;
->  		xdp_buff_set_frags_flag(xdp);
->  	} else {
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 18dabb4e9cfa..66f57131633a 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -927,6 +927,16 @@ static void skb_clone_fraglist(struct sk_buff *skb)
->  		skb_get(list);
->  }
-> =20
-> +/**
-> + * skb_pp_cow_data() - copy skb data into page-pool backed storage
-> + * @pool: page pool to allocate from
-> + * @pskb: pointer to skb pointer, replaced with the copied skb on success
-> + * @headroom: headroom to reserve in the copied skb
-> + *
-> + * skb_copy_bits() handles both frags[] and frag_list input. If the copi=
-ed
-> + * skb remains non-linear, it uses frags[], which is the representation =
-used
-> + * by XDP multi-buffer.
-> + */
->  int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
->  		    unsigned int headroom)
->  {
-> @@ -936,12 +946,6 @@ int skb_pp_cow_data(struct page_pool *pool, struct s=
-k_buff **pskb,
->  	int err, i, head_off;
->  	void *data;
-> =20
-> -	/* XDP does not support fraglist so we need to linearize
-> -	 * the skb.
-> -	 */
-> -	if (skb_has_frag_list(skb))
-> -		return -EOPNOTSUPP;
-> -
->  	max_head_size =3D SKB_WITH_OVERHEAD(PAGE_SIZE - headroom);
->  	if (skb->len > max_head_size + MAX_SKB_FRAGS * PAGE_SIZE)
->  		return -ENOMEM;
+> > > =20
+> > >  	for (i =3D 0; i < ARRAY_SIZE(port->devs); i++) {
+> > >  		if (port->devs[i])
+> > > @@ -1848,7 +1849,7 @@ static void airoha_update_hw_stats(struct airoh=
+a_gdm_dev *dev)
+> > >  	airoha_fe_set(dev->eth, REG_FE_GDM_MIB_CLEAR(port->id),
+> > >  		      FE_GDM_MIB_RX_CLEAR_MASK | FE_GDM_MIB_TX_CLEAR_MASK);
+> > > =20
+> > > -	spin_unlock(&port->stats_lock);
+> > > +	spin_unlock(&port->lock);
+> > >  }
+> > > =20
+> > >  static void airoha_dev_set_xmit_frame_size(struct net_device *netdev)
+> > > @@ -1870,6 +1871,14 @@ static int airoha_dev_open(struct net_device *=
+netdev)
+> > >  	u32 pse_port =3D FE_PSE_PORT_PPE1;
+> > >  	int err;
+> > > =20
+> > > +	err =3D phylink_of_phy_connect(dev->phylink, netdev->dev.of_node, 0=
+);
+> > > +	if (err) {
+> > > +		netdev_err(netdev, "could not attach PHY: %d\n", err);
+> > > +		return err;
+> > > +	}
+> > > +
+> > > +	phylink_start(dev->phylink);
+> > > +
+> > >  	netif_tx_start_all_queues(netdev);
+> > >  	err =3D airoha_set_vip_for_gdm_port(dev, true);
+> > >  	if (err)
+> > > @@ -1909,6 +1918,10 @@ static int airoha_dev_stop(struct net_device *=
+netdev)
+> > >  		airoha_set_gdm_port_fwd_cfg(qdma->eth,
+> > >  					    REG_GDM_FWD_CFG(port->id),
+> > >  					    FE_PSE_PORT_DROP);
+> > > +
+> > > +	phylink_stop(dev->phylink);
+> > > +	phylink_disconnect_phy(dev->phylink);
+> > > +
+> > >  	return 0;
+> > >  }
+> > > =20
+> > > @@ -2389,6 +2402,24 @@ airoha_ethtool_get_rmon_stats(struct net_devic=
+e *netdev,
+> > >  	} while (u64_stats_fetch_retry(&dev->stats.syncp, start));
+> > >  }
+> > > =20
+> > > +static int
+> > > +airoha_ethtool_get_link_ksettings(struct net_device *netdev,
+> > > +				  struct ethtool_link_ksettings *cmd)
+> > > +{
+> > > +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > > +
+> > > +	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
+> > > +}
+> > > +
+> > > +static int
+> > > +airoha_ethtool_set_link_ksettings(struct net_device *netdev,
+> > > +				  const struct ethtool_link_ksettings *cmd)
+> > > +{
+> > > +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > > +
+> > > +	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
+> > > +}
+> > > +
+> > >  static int airoha_qdma_set_chan_tx_sched(struct net_device *netdev,
+> > >  					 int channel, enum tx_sched_mode mode,
+> > >  					 const u16 *weights, u8 n_weights)
+> > > @@ -3120,7 +3151,8 @@ static const struct ethtool_ops airoha_ethtool_=
+ops =3D {
+> > >  	.get_drvinfo		=3D airoha_ethtool_get_drvinfo,
+> > >  	.get_eth_mac_stats      =3D airoha_ethtool_get_mac_stats,
+> > >  	.get_rmon_stats		=3D airoha_ethtool_get_rmon_stats,
+> > > -	.get_link_ksettings	=3D phy_ethtool_get_link_ksettings,
+> > > +	.get_link_ksettings	=3D airoha_ethtool_get_link_ksettings,
+> > > +	.set_link_ksettings	=3D airoha_ethtool_set_link_ksettings,
+> > >  	.get_link		=3D ethtool_op_get_link,
+> > >  };
+> > > =20
+> > > @@ -3176,6 +3208,155 @@ bool airoha_is_valid_gdm_dev(struct airoha_et=
+h *eth,
+> > >  	return false;
+> > >  }
+> > > =20
+> > > +/* Nothing to do in MAC, everything is handled in PCS */
+> > > +static void airoha_mac_config(struct phylink_config *config, unsigne=
+d int mode,
+> > > +			      const struct phylink_link_state *state)
+> > > +{
+> > > +}
+> > > +
+> > > +static void airoha_mac_link_up(struct phylink_config *config, struct=
+ phy_device *phy,
+> > > +			       unsigned int mode, phy_interface_t interface,
+> > > +			       int speed, int duplex, bool tx_pause, bool rx_pause)
+> > > +{
+> > > +	struct airoha_gdm_dev *dev =3D container_of(config, struct airoha_g=
+dm_dev,
+> > > +						  phylink_config);
+> > > +	struct airoha_gdm_port *port =3D dev->port;
+> > > +	struct airoha_eth *eth =3D dev->eth;
+> > > +	u32 frag_size_tx, frag_size_rx;
+> > > +	u32 mask, val;
+> > > +
+> > > +	/* TX/RX frag is configured only for GDM4 */
+> > > +	if (port->id !=3D AIROHA_GDM4_IDX)
+> > > +		return;
+> > > +
+> > > +	switch (speed) {
+> > > +	case SPEED_10000:
+> > > +	case SPEED_5000:
+> > > +		frag_size_tx =3D 8;
+> > > +		frag_size_rx =3D 8;
+> > > +		break;
+> > > +	case SPEED_2500:
+> > > +		frag_size_tx =3D 2;
+> > > +		frag_size_rx =3D 1;
+> > > +		break;
+> > > +	default:
+> > > +		frag_size_tx =3D 1;
+> > > +		frag_size_rx =3D 0;
+> > > +	}
+> > > +
+> > > +	spin_lock(&port->lock);
+> > > +
+> > > +	/* Configure TX/RX frag based on speed */
+> > > +	if (dev->nbq =3D=3D 1) {
+> > > +		mask =3D GDM4_SGMII1_TX_FRAG_SIZE_MASK;
+> > > +		val =3D FIELD_PREP(GDM4_SGMII1_TX_FRAG_SIZE_MASK,
+> > > +				 frag_size_tx);
+> > > +	}  else {
+> > > +		mask =3D GDM4_SGMII0_TX_FRAG_SIZE_MASK;
+> > > +		val =3D FIELD_PREP(GDM4_SGMII0_TX_FRAG_SIZE_MASK,
+> > > +				 frag_size_tx);
+> > > +	}
+> > > +	airoha_fe_rmw(eth, REG_FE_GDM4_TMBI_FRAG, mask, val);
+> > > +
+> > > +	if (dev->nbq =3D=3D 1) {
+> > > +		mask =3D GDM4_SGMII1_RX_FRAG_SIZE_MASK;
+> > > +		val =3D FIELD_PREP(GDM4_SGMII1_RX_FRAG_SIZE_MASK,
+> > > +				 frag_size_rx);
+> > > +	} else {
+> > > +		mask =3D GDM4_SGMII0_RX_FRAG_SIZE_MASK;
+> > > +		val =3D FIELD_PREP(GDM4_SGMII0_RX_FRAG_SIZE_MASK,
+> > > +				 frag_size_rx);
+> > > +	}
+> > > +	airoha_fe_rmw(eth, REG_FE_GDM4_RMBI_FRAG, mask, val);
+> > > +
+> > > +	spin_unlock(&port->lock);
+> > > +}
+> > > +
+> > > +/* Nothing to do in MAC, everything is handled in PCS */
+> > > +static void airoha_mac_link_down(struct phylink_config *config, unsi=
+gned int mode,
+> > > +				 phy_interface_t interface)
+> > > +{
+> > > +}
+> > > +
+> > > +static const struct phylink_mac_ops airoha_phylink_ops =3D {
+> > > +	.mac_config =3D airoha_mac_config,
+> > > +	.mac_link_up =3D airoha_mac_link_up,
+> > > +	.mac_link_down =3D airoha_mac_link_down,
+> > > +};
+> > > +
+> > > +static int airoha_fill_available_pcs(struct phylink_config *config,
+> > > +				     struct phylink_pcs **available_pcs,
+> > > +				     unsigned int num_possible_pcs)
+> > > +{
+> > > +	struct device *dev =3D config->dev;
+> > > +
+> > > +	return fwnode_phylink_pcs_parse(dev_fwnode(dev), available_pcs,
+> > > +					num_possible_pcs);
+> > > +}
+> > > +
+> > > +static int airoha_setup_phylink(struct net_device *netdev)
+> > > +{
+> > > +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > > +	struct device_node *np =3D netdev->dev.of_node;
+> > > +	struct airoha_gdm_port *port =3D dev->port;
+> > > +	struct phylink_config *config;
+> > > +	phy_interface_t phy_mode;
+> > > +	struct phylink *phylink;
+> > > +	int err;
+> > > +
+> > > +	err =3D of_get_phy_mode(np, &phy_mode);
+> > > +	if (err) {
+> > > +		dev_err(&netdev->dev, "incorrect phy-mode\n");
+> > > +		return err;
+> > > +	}
+> > > +
+> > > +	config =3D &dev->phylink_config;
+> > > +	config->dev =3D &netdev->dev;
+> > > +	config->type =3D PHYLINK_NETDEV;
+> > > +
+> > > +	/*
+> > > +	 * GDM1 only supports internal for Embedded Switch
+> > > +	 * and doesn't require a PCS.
+> > > +	 */
+> > > +	if (port->id =3D=3D AIROHA_GDM1_IDX) {
+> > > +		config->mac_capabilities =3D MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> > > +					   MAC_10000FD;
+> > > +
+> > > +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
+> > > +			  config->supported_interfaces);
+> > > +	} else {
+> > > +		config->mac_capabilities =3D MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> > > +					   MAC_10 | MAC_100 | MAC_1000 |
+> > > +					   MAC_2500FD | MAC_5000FD | MAC_10000FD;
+> > > +
+> > > +		config->num_possible_pcs =3D fwnode_phylink_pcs_count(dev_fwnode(c=
+onfig->dev));
+> > > +		config->fill_available_pcs =3D airoha_fill_available_pcs;
+> > > +
+> > > +		__set_bit(PHY_INTERFACE_MODE_SGMII,
+> > > +			  config->supported_interfaces);
+> > > +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> > > +			  config->supported_interfaces);
+> > > +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> > > +			  config->supported_interfaces);
+> > > +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
+> > > +			  config->supported_interfaces);
+> > > +		__set_bit(PHY_INTERFACE_MODE_USXGMII,
+> > > +			  config->supported_interfaces);
+> > > +
+> > > +		phy_interface_copy(config->pcs_interfaces,
+> > > +				   config->supported_interfaces);
+> > > +	}
+> > > +
+> > > +	phylink =3D phylink_create(config, of_fwnode_handle(np),
+> > > +				 phy_mode, &airoha_phylink_ops);
+> > > +	if (IS_ERR(phylink))
+> > > +		return PTR_ERR(phylink);
+> > > +
+> > > +	dev->phylink =3D phylink;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+> > >  				   struct airoha_gdm_port *port,
+> > >  				   int nbq, struct device_node *np)
+> > > @@ -3239,7 +3420,7 @@ static int airoha_alloc_gdm_device(struct airoh=
+a_eth *eth,
+> > >  	dev->nbq =3D nbq;
+> > >  	port->devs[index] =3D dev;
+> > > =20
+> > > -	return 0;
+> > > +	return airoha_setup_phylink(netdev);
+> > >  }
+> > > =20
+> > >  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> > > @@ -3274,7 +3455,7 @@ static int airoha_alloc_gdm_port(struct airoha_=
+eth *eth,
+> > >  		return -ENOMEM;
+> > > =20
+> > >  	port->id =3D id;
+> > > -	spin_lock_init(&port->stats_lock);
+> > > +	spin_lock_init(&port->lock);
+> > >  	eth->ports[p] =3D port;
+> > > =20
+> > >  	err =3D airoha_metadata_dst_alloc(port);
+> > > @@ -3471,6 +3652,8 @@ static int airoha_probe(struct platform_device =
+*pdev)
+> > >  			netdev =3D netdev_from_priv(dev);
+> > >  			if (netdev->reg_state =3D=3D NETREG_REGISTERED)
+> > >  				unregister_netdev(netdev);
+> > > +			if (dev->phylink)
+> > > +				phylink_destroy(dev->phylink);
+> > >  			of_node_put(netdev->dev.of_node);
+> > >  		}
+> > >  		airoha_metadata_dst_free(port);
+> > > @@ -3509,6 +3692,7 @@ static void airoha_remove(struct platform_devic=
+e *pdev)
+> > > =20
+> > >  			netdev =3D netdev_from_priv(dev);
+> > >  			unregister_netdev(netdev);
+> > > +			phylink_destroy(dev->phylink);
+> > >  			of_node_put(netdev->dev.of_node);
+> > >  		}
+> > >  		airoha_metadata_dst_free(port);
+> > > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/e=
+thernet/airoha/airoha_eth.h
+> > > index f6d01a8e8da1..b49fc5304b3a 100644
+> > > --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> > > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> > > @@ -561,6 +561,9 @@ struct airoha_gdm_dev {
+> > >  	int nbq;
+> > > =20
+> > >  	struct airoha_hw_stats stats;
+> > > +
+> > > +	struct phylink *phylink;
+> > > +	struct phylink_config phylink_config;
+> > >  };
+> > > =20
+> > >  struct airoha_gdm_port {
+> > > @@ -568,8 +571,8 @@ struct airoha_gdm_port {
+> > >  	int id;
+> > >  	int users;
+> > > =20
+> > > -	/* protect concurrent hw_stats accesses */
+> > > -	spinlock_t stats_lock;
+> > > +	/* protect concurrent hw_stats and frag register accesses */
+> > > +	spinlock_t lock;
+> > > =20
+> > >  	struct metadata_dst *dsa_meta[AIROHA_MAX_DSA_PORTS];
+> > >  };
+> > > diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/=
+ethernet/airoha/airoha_regs.h
+> > > index 6fed63d013b4..8df02f51211c 100644
+> > > --- a/drivers/net/ethernet/airoha/airoha_regs.h
+> > > +++ b/drivers/net/ethernet/airoha/airoha_regs.h
+> > > @@ -357,6 +357,18 @@
+> > >  #define IP_FRAGMENT_PORT_MASK		GENMASK(8, 5)
+> > >  #define IP_FRAGMENT_NBQ_MASK		GENMASK(4, 0)
+> > > =20
+> > > +#define REG_FE_GDM4_TMBI_FRAG		0x2028
+> > > +#define GDM4_SGMII1_TX_WEIGHT_MASK	GENMASK(31, 26)
+> > > +#define GDM4_SGMII1_TX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > > +#define GDM4_SGMII0_TX_WEIGHT_MASK	GENMASK(15, 10)
+> > > +#define GDM4_SGMII0_TX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > > +
+> > > +#define REG_FE_GDM4_RMBI_FRAG		0x202c
+> > > +#define GDM4_SGMII1_RX_WEIGHT_MASK	GENMASK(31, 26)
+> > > +#define GDM4_SGMII1_RX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> > > +#define GDM4_SGMII0_RX_WEIGHT_MASK	GENMASK(15, 10)
+> > > +#define GDM4_SGMII0_RX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> > > +
+> > >  #define REG_MC_VLAN_EN			0x2100
+> > >  #define MC_VLAN_EN_MASK			BIT(0)
+> > > =20
+> > > --=20
+> > > 2.53.0
+> > >=20
+>=20
+>=20
+>=20
 > --=20
-> 2.43.0
->=20
+> 	Ansuel
 
---VfY0+0HuWFiEeolm
+--ld12OxyQIEnfIjS2
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCal9EeQAKCRA6cBh0uS2t
-rD64APwOVWC3bpQjfLEbGW15cSNK2rrmlYql0WRyioHpf0VPAwD+PQ8cyFnSbszt
-pjeKVOPsqPoDKwuVoBVLeR+MUy+GiAk=
-=Nvpn
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCal9FjwAKCRA6cBh0uS2t
+rPMWAP4yZE/0HKGgCARs9gAmYeuT1goEWpj4ZOlp0SGn2kJd1wD+NMg4Am4T/3D6
+Lzwg+yVHms4HuZdFX60BhZ3ZvptKbAw=
+=VNTa
 -----END PGP SIGNATURE-----
 
---VfY0+0HuWFiEeolm--
+--ld12OxyQIEnfIjS2--
