@@ -1,148 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618943784C
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD5942EEB8
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620681; cv=none; b=cT94s92v8YUbMS8odtVTudEYeWhb+JWCC8UIg3IeUIPErC3hgRgmTKJp/nfQtq8O0jo121uyYT/89sNJhZfXHjh8Y9DcFcgu0inMT1hGv0XZM8FTsYKIyU+aeGiJdaqI4yReTFj//Lim5kAT5Wi8RGT2uVHvWQ2sedpyUdhOh3A=
+	t=1784620799; cv=none; b=rg+M/hTgcSQS/Oi5tf4vOStqx/87Ydy6cLipZ5ecKUjiFEt7iNpFxmjAC8EbcCRveZ6xJMsXHJ/lFtBBhfngW+W2fyWy8LyB54qTB67uuc0YcqgFTXuAmwznZxWTBHDSdlQTKcN596+XLV8FN5/go0STNZQOp3x5y5asJlzcQ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620681; c=relaxed/simple;
-	bh=Qu6V/jFa3L0ra7v1UlZyzgbe/1V/e5d4AsjK/MKCp8c=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hUlFwQ4WdKbOK6BeU4SWAb3rajFgVrCBZOHNnmtG9QZ47/i5UmpCSvoRaAxT1fYv/zrp/yZnyBEA5LRsUroyELOD0xgAcTrTrSov4HsPC5hj9pLrE6UUWL3W1HKstDmFwt1uZIjN83bVAuzQPxZZt5W8YtQWvs9PTMimviub7J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVmvwJVT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784620799; c=relaxed/simple;
+	bh=nY4hiOLt9M2lA5xfsOzJOgTPXJLqJN9H1zlI03Dllj0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=bKS1Z3sJts6nZhOGsfOmdHPGRxSO1JWEcnumlmBSej4EuOSvsqyqqPS+Be2MsZAUjuZTYSiNYkftcYdoUqchrPba4owLilVjlW3ZqhG3Q6bbcj293EbWAieXZq2QvLRg9vX2f8iJa0tDWDG+h/D4xi8ORkkcrckTDPPniH8tcxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9TZuft7; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVmvwJVT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBC21F0156A
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 07:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620679;
-	bh=y8ZQiTN586DKOzGjE0xQTVjSc0oG6CWcbCqpe2Jy2M4=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=YVmvwJVT9Qyay4HbMhb49B9CjDlZz7ft+lQj9lbS0gACumnC1Iv2/dsdm1MV9mu4c
-	 zAFU0hI7Xau7B4/YM37CP9pXGedF5Cl9Ux1RfADSqooiQWl5++I9UPNLx9bYcxW1m8
-	 dWwOXXbyLjJgKyY5IIabDL3n7y2Qbv9FbuP/aoVu6GwF4dZ4uDwHKNeaHY0jS2eqLz
-	 RXoTf9r6Ejv9blA7uC5ei4TYzAeV966wu8kwI6AZd0WBupxsdSKzxFL2wT4iB1WSxL
-	 qBk3K/JlKeou8FmssItan6rHnzpwi6jaVlRe/TmBqMy6lmtyvBR91Q78CeI2qT2hly
-	 ZQt1jND0CNHjw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b2a4359d16so860358e87.3
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:57:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrDlWySRN7nzGUok9KZNEb2hSQruzdErEM5rqrtdCBKM1TISaQ41DCIpwC7suUIu1u94zv3N/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOQRlcYMQ8I4+1C/4XPnlOOnGRrNc7r3kQghCJb6hbIYZEx66B
-	95dCRWqdJBtr0bRRWFUP3T1Vi6CoFY/3zAMpxKlLMp3DGuxH4sNIWn+8YRrmgH6b4CDe4w3ph+8
-	gBdzVO93AJGz98C1Yq40gmVjrsffRsGP5wRTQ0GNyDQ==
-X-Received: by 2002:ac2:554c:0:b0:5ae:bcf8:e7d0 with SMTP id
- 2adb3069b0e04-5b28f9bd551mr2209166e87.55.1784620678478; Tue, 21 Jul 2026
- 00:57:58 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 00:57:57 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 21 Jul 2026 00:57:56 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9TZuft7"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81ed2a06b9eso55643747b3.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784620796; x=1785225596; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1pLcxRafIac0ct5C2xDEJsh+olMLWEs24eBrgjm69R4=;
+        b=T9TZuft7DOvwdDfiEeApr3VoX8p9dn1iiG3RRRE0uTuv6ehb/KzoO+FGoc6y2lamqf
+         mA3F0nloeW1ePBv8CkpSmEizmcafFoZWknil0wiMbaGQWaSwYybTW9ENUBNWG3LouJkh
+         koG/GzcHOGsfguMkbXD7Efu6OAhMPL9aFeTDiCqpSf5opJFZt+Uss668VYOFGtl7p3D6
+         bIj87xmgzyXMfEj6gLuC+2u3Qp7HapYIwpIGaAOHjoikFIA3eOB1/GNGes3+ccoW88Oz
+         YmNx9KQ4+Fl9y/zCVRv1aQDyzy8s6Hn+KfFbct/8Cp3hfMegZUKDd7wR6U+d5O1GALUj
+         AlvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784620796; x=1785225596;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1pLcxRafIac0ct5C2xDEJsh+olMLWEs24eBrgjm69R4=;
+        b=e2T1dRu30nelecj/S0RghSVD4s2basWkqeL2ovieYa9lq9ZM6E//NVg2soZlfn82t/
+         64bGosBJ6pUS6KWkEXydVcNWlbuM07jM3NZ2VPJj6C9b8J8ZIX1lT+2SOsMHT3QzbkKM
+         VdQ2IkrYbg1e0i8zo2SWlrUqJFDaoYHLPKS+BI2btgqe0WX/UC4vnR2yzc2fdgkIbBvL
+         ntzfNwTiD1ACRbB3Y/N28hOrfKvDlZGqEqFPYpYDtO2loY4gemrazF041tw/dGko74lt
+         S+Lc8d5EYvWLFwPL/FPmUTgTHk5bo7f8FiphxwHriyNNt6jVV3UzPptLHA8o0Wgfh8/Y
+         Ozlg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7c7Y83VTA56NnWmywgqtb4ByC2H7vo2aKkpgmE2V0AeD0iwBTULGTdrQvKlYagzBVkn928dc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG8s453L+XVO65j/JCZdXS0yVYoAH2dVG6lv5LRRYNnyQOfjmX
+	8dCcgMw3E/mYTubriTGKY0knW8vYzNoQun4FVeeFOcRnMr/8Vaj/enGA
+X-Gm-Gg: AR+sD13nyb4eqlbHAzCN0XHRs6SaAYWsshxuuGTIQfVpSwaw0WWYleS8FNqA7tSjmTb
+	MaC2hs3W2Prz9t4Mx2/29z0fj3nYH6Pw3T068Naw0Vf//2VvSKioBFOepBKLbSpZtJUDxmkvkXH
+	cY55ZAdmOzKlZKmD5z0EAjlL5O/i84Qy4UODlS8W0DZt0kAbLctXkjc2G+o5grMjl4KVMsVJaDF
+	+CF15D5tbrleWNNWmku4ryphYjPj3xCm5ksoG1vvFi9/JTaOvsTt/dAApP1Yfr/B11JsmBU5RR7
+	ix6Ue0WQJ2WP1t3XnSsmjfnj2K4GTT8M1kYCYA2RxPIHUb9MxEVVmyti7WR7/hUwMhR58XT+tOi
+	0Eon7yUPAnS6RcfvyNJaCdTvbtMFTKyru8PUfzrwH2K2lyNr+ZracIM+xD9qveTlKtRxtfoyX9d
+	BeWh6ihmLjopKrPlC7TCgIM4QN4rAZg1WShRK8bn5pI8Ox97/duY+k8ZQ=
+X-Received: by 2002:a05:690c:6a0c:b0:80b:bc16:8a2a with SMTP id 00721157ae682-81ef25bc642mr47914447b3.36.1784620796626;
+        Tue, 21 Jul 2026 00:59:56 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef42be12csm59727467b3.36.2026.07.21.00.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 00:59:55 -0700 (PDT)
+Date: Tue, 21 Jul 2026 03:59:55 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Asim Viladi Oglu Manizada <manizada@pm.me>, 
+ netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ daniel@iogearbox.net
+Message-ID: <willemdebruijn.kernel.1f0c43b9fce2d@gmail.com>
+In-Reply-To: <20260721014117.2234892-1-manizada@pm.me>
+References: <20260721014117.2234892-1-manizada@pm.me>
+Subject: Re: [PATCH net] tun: prevent underflow in rx headroom calculation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260720-pdev-set-fwnode-instead-of-of-node-v1-0-2dee93f42c54@oss.qualcomm.com>
- <20260720-pdev-set-fwnode-instead-of-of-node-v1-7-2dee93f42c54@oss.qualcomm.com>
- <86b2aba7-b049-47e6-bc94-6cb499b30ce4@lunn.ch> <CAMRc=Mduv_KiB42d4AZddTrFSHmKogd2wh6vBDXomW6ssdfq9A@mail.gmail.com>
- <3e14e41f-ecd5-432b-9f52-690a05b38a8a@lunn.ch>
-Date: Tue, 21 Jul 2026 00:57:56 -0700
-X-Gmail-Original-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxrzWF5f1w8uOBbvKVmYCYI9DGFBZVEBrX2uI1sc7agH6iCfKo0CQST8Mw
-Message-ID: <CAMRc=Md_zUwYW5KL+p=BRixSaf3Rrc5jnBA3x8Ze+fK+fAOctQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] net: mv643xx: use platform_device_set_fwnode()
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Srinivas Kandagatla <srini@kernel.org>, 
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-sound@vger.kernel.org, Bartosz Golaszewski <brgl@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, 20 Jul 2026 20:28:39 +0200, Andrew Lunn <andrew@lunn.ch> said:
-> On Mon, Jul 20, 2026 at 06:01:37PM +0200, Bartosz Golaszewski wrote:
->> On Mon, 20 Jul 2026 16:43:40 +0200, Andrew Lunn <andrew@lunn.ch> said:
->> > On Mon, Jul 20, 2026 at 11:24:54AM +0200, Bartosz Golaszewski wrote:
->> >> Prefer the higher-level platform_device_set_fwnode() over the
->> >> OF-specific platform_device_set_of_node() for dynamically allocated
->> >> platform devices.
->> >>
->> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->> >> ---
->> >>  drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
->> >>  1 file changed, 1 insertion(+), 1 deletion(-)
->> >>
->> >> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> index 9caa1e47c174c9d7a161b7f2e2ee12a829b813d4..2f2d6cce8d852b9ec3ab42678a04a7915d1f00cc 100644
->> >> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
->> >> @@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
->> >>  		goto put_err;
->> >>  	}
->> >>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
->> >> -	platform_device_set_of_node(ppdev, pnp);
->> >> +	platform_device_set_fwnode(ppdev, of_fwnode_handle(pnp));
->> >
->> > This is definitely an OF only driver. There are no other calls to
->> > fwnode functions in this driver, so this is the wrong thing to do.
->> >
->> > Sorry, NACK.
->> >
->>
->> I'm not going to die on this hill but drivers are OF-only until they're not.
->> For example, Qualcomm is now working on a hybrid ACPI-OF approach for
->> laptops[1] and we may end up needing to start converting drivers to fwnode
->> after all.
->>
->> There's no real benefit to sticking to OF-specific APIs unless you need to
->> iterate over all properties of a node or use some other functionality not
->> available in fwnode. The overhead is minimal and it's never a hot path.
->
-> There is a lot of benefit to sticking to OF specific APIs, because
-> within the kernel OF is well maintained, has active maintainers, there
-> are tools to validate bindings, etc. ACPI is a Wild West, each driver
-> is a snow flake, there is no review, no binding documentation, no
-> validation tools etc.
->
-> I hope you allow plenty of time to convert any networking drivers,
-> where Linux is driving the hardware, to ACPI. Your first stop will be
-> the UEFI forum making a proposal for MDIO busses, because that
-> currently is not part of ACPI. You will then need to spend time
-> understanding the DT bindings, and figuring out which properties are
-> deprecated so need to stay OF only, and which can be converted to dual
-> OF/ACPI. I've seen too many naive attempts which blindly convert
-> everything, copying all the past errors in the DT binding into the
-> brand new ACPI binding. That will get NACKed.
->
-> OF != ACPI
->
+Asim Viladi Oglu Manizada wrote:
+> tun_get_user() calculates good_linear with SKB_MAX_HEAD(align). The align
+> value comes from ndo_set_rx_headroom() and can be larger than the linear
+> space available in a one-page skb head.
+> 
+> OVS can reach this case by carrying headroom from a netkit/VXLAN port to a
+> TUN port. SKB_MAX_HEAD() then underflows, leaving good_linear negative.
 
-I've never said that and ACPI is actually irrelevant to this discussion. Fwnode
-is the abstraction layer and OF happens to implement it. Unless you need
-fine-grained control (only exposed by the lower-level abstraction) or
-performance - neither of which is the case here - you should use the top-level
-API. As I said: there's no good reason to stick to OF-specific interfaces for
-drivers that don't really require it - and even then, we should strive to fill
-the gaps in the fwnode API instead.
+Separate from protecting tun from such huge headroom, which is good:
 
-Bart
+Is cooking paths with such huge headroom itself incorrect? Should
+netkit have some reasonable upper bound on configurable headroom?
+Netkit is not the only path that can reach this, right?
+
+> Assigning that value to the size_t linear variable in tun_get_user()
+> converts it to a large positive value. The wrapped value is passed to
+> tun_alloc_skb(), where prepad + linear and len - linear wrap. skb->data can
+> then end up past the allocated head, and later packet processing can access
+> memory outside the skb.
+> 
+> Clamp good_linear to zero when SKB_MAX_HEAD() returns a negative value.
+> This lets tun_alloc_skb() allocate the requested headroom and place the
+> packet data linearly or in fragments without wrapping.
+> 
+> Fixes: eaea34b23c46 ("net/tun: implement ndo_set_rx_headroom")
+> Cc: stable@vger.kernel.org
+> Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+> Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
