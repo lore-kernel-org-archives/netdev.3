@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB57C36A017
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 00:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A0110F1;
+	Tue, 21 Jul 2026 00:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784593990; cv=none; b=nXLQ+fqk5Hl+dSlv3IZ+SqA9+4A4ygYQu4dvSC4AyWwEC3Dp0PNQ1KpimXRHbiVslITMqxIKsKctguz9l++MhfgeAA8fTO61KTZU1VgRH/in+0cf3ZFxak1QA5UD4bqsg+Kdbi3c8nygGYYf6dSiAGP1phiEDCXUBGbxVK8XsFM=
+	t=1784594160; cv=none; b=TkhJg35MG2+ZTOi0g3If4u2mt+66t8gLe/ZYEC1+UL3TSJ1UQ0FWQbeF3dkSo8lZ/0zVP18q632zEHLRq75nxoDt87/z+S7aS27YaX7U/IKsbxV3Gp0vPAShbbe4Mm6QoAhlWt2IC9cXJysJ3fsjsTjRM2yKm1xsZSuJ56H5Bf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784593990; c=relaxed/simple;
-	bh=MUBpS1XJH7zRX3wTBzgdXQDVOjb/+Jv/yFoVlhDV0HU=;
+	s=arc-20240116; t=1784594160; c=relaxed/simple;
+	bh=MDok9KVHR618PzvdBQVhmMe2pb6jbgGSXxiy31reXto=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hTjLV6Qi9aXKiSmgVtK3xav6u4KAFqNt48G2GvbC22Vtnfah+B8mdKK4d+ADyOZIqkwL2csLoeF4ohjVDsEWwEqmJ3v5rzy1nZOpMWM2jrKpw9Rzdiaur7Q3+3Br3nZC7wfyG3zMDCAXzyZjoGp4rb1Ov/YmfmEYoom32aA+Qdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xcgfqy2z; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ncTEeEsgPBj9Gygsd/7Vuj2a5+YMjtxH3mYrpu0rvOfxW9YYSXRd1tjwR+sAo++ExuhgbZxCZxFApm/PcUGMSmbsr0yz+aJdR9R3vb5KvGAPKUiHTyW/0EdXW0YuB1UdlCSyPKBAQ+NqpDho0QC3DTg3cRWtbEQybyjDa/rXySE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQb/sXUL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xcgfqy2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3139E1F00A3A;
-	Tue, 21 Jul 2026 00:33:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQb/sXUL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286641F000E9;
+	Tue, 21 Jul 2026 00:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784593989;
-	bh=/P62JBrvG20JFu7tRgq4YMcf2uKXTk1JTRsRYXdUoKo=;
+	s=k20260515; t=1784594159;
+	bh=MDok9KVHR618PzvdBQVhmMe2pb6jbgGSXxiy31reXto=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xcgfqy2zwfTlLCd8m5w2hg7tjmdF+/RxzKxkqp6Q1lqTRIZiu42/4MdPrErADG27g
-	 xZoogcNCKwl4gp6XW1TIhrP3FsiF2/S8fV16+PBjbzNfaK7xw4shzOLtRRsRgH1345
-	 vJLYW8siN9ZenuHjeHpoXgDs1aA4k3xbztfEqSrNEQI4CEiDeUy4Qo7bmpTO/1dSCI
-	 xXYzFobJ8PRRQDjNGDjkTVhsD8z0F/ux8cJPUIHXW8++BnaEM/WGYyhHH4CEasC9K/
-	 XQuecu4FKfCeDRWrLV4SaUO1QeCWzP3yE+aZtDj3rlE3URNlc9XXmtkO1mtYurc3MV
-	 4uqvl6zoCHA3Q==
-Date: Mon, 20 Jul 2026 17:33:08 -0700
+	b=nQb/sXULONrq2MhnnT3rxKO1eVgBqWrmAdNUa+6bbxrA+JzIeUWW6s9FaN8aecH6X
+	 EhBKWQf/7oJb5dqEMcC8UucfCNql494zhvwRrhDfTdgwhTqaZkSCzfFLN94Lp2Q7fh
+	 hX8wxg35rbOLNIHsQYlssOBRXVTK0R+ZAzyOpRXPHz4ymRwnTrr7cdNksj4E0qNawY
+	 hiK4yX6xzf3i5NO1l5wniO7Wo7k54PRByBsMYic9zrvNBsJalA26tek0ETjcmTbbFa
+	 L162G62ZfGJgK9clRw1ESppty99fndoezVtAVvwF3es6tkcEquLqG2Ccf0mSFgyvSo
+	 rmlJ6qxsGXr/A==
+Date: Mon, 20 Jul 2026 17:35:57 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Florian Westphal <fw@strlen.de>
-Cc: Dharmik Parmar <dharmikparmar2004@yahoo.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net] selftests: netfilter: conntrack_resize.sh: fix skip
- exit code
-Message-ID: <20260720173308.4a3bb77a@kernel.org>
-In-Reply-To: <aktQ5kLLtdG3pn3W@strlen.de>
-References: <20260705204252.630729-1-dharmikparmar2004.ref@yahoo.com>
-	<20260705204252.630729-1-dharmikparmar2004@yahoo.com>
-	<aktQ5kLLtdG3pn3W@strlen.de>
+To: Johan Alvarado <contact@c127.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ Jose.Abreu@synopsys.com, pavel@ucw.cz, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: stmmac: raise TX completion interrupt at the
+ end of an xmit burst
+Message-ID: <20260720173557.09e322d7@kernel.org>
+In-Reply-To: <0100019f35ea26e0-42ad009c-01ab-4a8f-b126-fa65fbacae5c-000000@email.amazonses.com>
+References: <0100019f35ea26e0-42ad009c-01ab-4a8f-b126-fa65fbacae5c-000000@email.amazonses.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,12 +48,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 6 Jul 2026 08:53:55 +0200 Florian Westphal wrote:
-> Dharmik Parmar <dharmikparmar2004@yahoo.com> wrote:
-> > When conntrack sysctls are unavailable, the test prints SKIP but exits
-> > with $KSFT_SKIP.  lib.sh defines ksft_skip instead, so the kselftest
-> > runner did not see a proper skip.  
-> 
-> Acked-by: Florian Westphal <fw@strlen.de>
+On Mon, 6 Jul 2026 05:32:45 +0000 Johan Alvarado wrote:
+> The TX mitigation logic only sets the Interrupt on Completion bit once
+> every tx_coal_frames descriptors (STMMAC_TX_FRAMES = 25), with the
+> tx_coal_timer hrtimer (STMMAC_COAL_TX_TIMER = 5000 us) as the only
+> fallback. TX skbs are freed exclusively from the TX completion path,
+> so any flow that keeps fewer than 25 frames in flight has all of its
+> skbs held for up to 5 ms after transmission.
 
-This is tagged for net but FWIW & AFAIU we haven't applied it.
+The netdev patch queue has overflown.
+If these patches are still relevant you'll have to repost them.
