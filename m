@@ -1,58 +1,98 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f225.google.com (mail-pf1-f225.google.com [209.85.210.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB5E409285;
-	Tue, 21 Jul 2026 06:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C23753E0B
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 06:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784615389; cv=none; b=uojOtU2TyPtZc+AMCE5Eu0+iXVo1WAD9W8bxubqN97LV72HeZ/6Qv/NoOl3Ye+Epqi7TP/cCZce/lF5WSxbANSlkwJdSNbnsDKSqcWVNfVtzxZNXEdGk/oR7z6m0nj6T32K8+EP/wnFzR2kq4QSwYZHnIhfFM1Odpit9gfpAOe8=
+	t=1784615876; cv=none; b=dBaQREx1Icy4Sq7peZ2oP+uy7eyvmIQkZI3vxXHP+V3j0sn1NM6bemEd0ZIJw1dIcpmjDnDjlhx1csBqUXQGzp6os52Hvc84j0/C2pMzU1muzv65vH+22UX1DX9P6XY/TgcaGWPDJYOlzsejetSFtoUARkQ2PXt+suAHP9A4cXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784615389; c=relaxed/simple;
-	bh=WVf3ZXO0jh5LzNjjYoYsc3WNYQ9011fd68dcIsRmKW0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WRp/Q8pWzN1JZs1U21rp+ccrldeP67ZoTXJQVFXFAztl7l5gzQzh2fZWooKahcZKsMBjo4NRSsDb7O2scJarFSg+VJ8ILCUJhhUkrXGiyp4LfyXNSWXkHTc18AT84gUHFwLK8TJenkYqUqKKehbf32yg6UYiOE5RTF0vLiwKBvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=jRulPnG4; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1784615876; c=relaxed/simple;
+	bh=MF356FYmqAPqsnv3R5+XhDjSKOa2Stcr8LVknqps+ps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXc6+Trba9v0SD4/RC+bW2DZWudMgL2ZPMTh/LTCAaGAcjO2GNOlTJlDyIaZMqBM+yz5OPXCVtDIfr74ACCl7LpY9V4++8gC1QC6CmBVVd6xmc5pMUOF54H6ae5EagI1Gmn8dqSj32gr8uKHLI8eFHyqSUShO1x1otxPHr5ho0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VXXrpQ0Q; arc=none smtp.client-ip=209.85.210.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="jRulPnG4"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KNcVuH3069951;
-	Mon, 20 Jul 2026 23:29:23 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=T3oK6c1wL5zEf9Xxtx+nKpk
-	Qxqx/sqxxaqW5VORIzR0=; b=jRulPnG4qOcquW5RVX126FpUqKlP7t4xSGuwBSv
-	cti00Y34BaBr4tOvqufWmusn3FmzH52HLIewKNVS5D2uS4qsmiKf1clI8jMud586
-	+hDHE4UMxpD9yjQeNPHX0ffjJJmXSIY074krISful90rIJh70Ep8BGmCO61IanPO
-	tsy3AWosjsNoPvqf2z8/O+K02O25Z4Q5Vrj2YFcu4HcSh+TQsv+Od2H2Pof8UyFy
-	8IXq5qV/+GQK5dvDlBlMStUmesUaolKNucs9ExpunnQ7vFKTn7loGS2+0m91sR8c
-	ieVNbuO3uKId7OxJSALyfUGsTCa4EDDhUyI2CjcT/ESNKSA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fhwdkgysn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 23:29:22 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 20 Jul 2026 23:29:21 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 20 Jul 2026 23:29:21 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 1A8243F7044;
-	Mon, 20 Jul 2026 23:29:17 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <davem@davemloft.net>, <gakula@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <sgoutham@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, Hariprasad Kelam <hkelam@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>
-Subject: [PATCH v4 net] octeontx2-af: Block VFs from clobbering special CGX PKIND state
-Date: Tue, 21 Jul 2026 11:59:06 +0530
-Message-ID: <20260721062907.784484-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VXXrpQ0Q"
+Received: by mail-pf1-f225.google.com with SMTP id d2e1a72fcca58-84867f07d63so12258870b3a.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 23:37:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784615874; x=1785220674;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=k73RfEOQfo4ax6BXcZ6U5eH0rL6RCpzM0IhZ+Cv0T20=;
+        b=cWK081vaCflcAPcihkkC6CHCseMtkoMgC8fg+l9y4YezY4c567xaJZyadnu0vvy0sh
+         JdjbP0acs5gidZ/HJP50Q/2t+2VDpMpXuFulRUrIWLJUcbovbpx2zbwUm10aCmKR0lGs
+         18Yd9t5M5CEIks2Rnbb75Jnnrlltxs7pQLCqMWUpKWsgN8vInlYTtMc83eJNFAvwdLvX
+         19LHlYxW1tIuyllukzUuhMRPiGIqO0w1KQvVYcqY+N2cwKtZIwOg30IVp0Rqmeq05yk7
+         2zU+MieMG3iKe6AZCBU01EcEiwRdBuC7wT6wKdx3duz//2BNBV4uupjdtyHhCoIv2dpf
+         DsTQ==
+X-Gm-Message-State: AOJu0YyLopyATTYpveWp5inqbIqaxxZ5386DQW/TjcajthLa8bvJLfNY
+	eizRlncPaszZOIGm0iuuXPLmTPDmpMWCD3GdPN9BnX+LbvXSdoni4dOzWX7rxKR78yZfPaXOSYd
+	bYJYGewRIbX39MTTVmhj+TFyajau45z4W+/JFSC5eYWTZqr+817xfrsIbpXWBZi7O0P/4PJBXc9
+	DInnEOWwm3gzFgo6SfWZHT556f08c+sIUP3cwFzcL4ErOwV2/rZgFPSty5t8vZ7dyiGqzLi3Ap+
+	BJx6trlsQ==
+X-Gm-Gg: AfdE7cnmAeYKMX2TLTcTCkIhbZuujHcWlBkaYy72WU7CeksPxw5hCVfnih+p3iTbVqj
+	d1WEFSCAIzUbqBfEx0jf5q3QdruaEWQix577iR+8CTiPBZkBTEaVx3JEx0XOyFO8b2QCyg4RYaL
+	I/3S4G98m6GipLX+uWoB3qISbEH4HBkk7ZDPALo5U+p0m+APguKn5aHz6VS4AT5jYmwcZhmj14P
+	d9Jnuka33YH3azCSSyukSMF8+RixPIrmBX/c8so2WsYzIASvl12Qe1Dcu971kiX5RcPSWA3X4oU
+	pU5QiK38ZW9FZ+QYpG40EK/zsfyK8lz9jklXqO+RCma6werp64F3/VCobahQmbKRoxkgP5opMLl
+	58K/Wf2EI8N1lrHQBKMe5ioLTyDjW7wrQULTTGoE79rf7A0XFaO5MuvyTsWBlnG9u+VMK6TR/Hb
+	uJKeijjT4u0Z6vnBxfWSmR/dK2cWwGMHYHAIMo
+X-Received: by 2002:a05:6a21:1506:b0:3b3:2703:115 with SMTP id adf61e73a8af0-3c3ad665a9fmr18556559637.16.1784615873654;
+        Mon, 20 Jul 2026 23:37:53 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
+        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-13ce29dc5d7sm171864c88.2.2026.07.20.23.37.53
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 20 Jul 2026 23:37:53 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cae455cf6dso157267575ad.2
+        for <netdev@vger.kernel.org>; Mon, 20 Jul 2026 23:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1784615871; x=1785220671; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k73RfEOQfo4ax6BXcZ6U5eH0rL6RCpzM0IhZ+Cv0T20=;
+        b=VXXrpQ0QUfjcSixdO9Qia7Su0VGFFBREg8b4agvgcpQFWS+8xbn4CfSaotnh0fQYYd
+         0+KncHoJ3aQmpAedmkBColsrH+D4xXp2a9g1KpVGZE8cPnw64oAu8OAiFFJONXtYzTD3
+         P2KDJhJDpGJSQGGvliR7nwvHZrdqezSm5HE0s=
+X-Received: by 2002:a17:902:fdae:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2cf3466a93fmr191626865ad.0.1784615871350;
+        Mon, 20 Jul 2026 23:37:51 -0700 (PDT)
+X-Received: by 2002:a17:902:fdae:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2cf3466a93fmr191626545ad.0.1784615870859;
+        Mon, 20 Jul 2026 23:37:50 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf346db04csm70094965ad.42.2026.07.20.23.37.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 23:37:50 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	leonro@nvidia.com,
+	jgg@nvidia.com,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Siva Reddy Kallam <siva.kallam@broadcom.com>,
+	Dharmender Garg <dharmender.garg@broadcom.com>,
+	Yendapally Reddy Dhananjaya Reddy <yendapally.reddy@broadcom.com>
+Subject: [PATCH net v3] bnge/bng_re: fix ring ID widths
+Date: Tue, 21 Jul 2026 12:07:31 +0530
+Message-ID: <20260721063731.2622500-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,313 +100,400 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: rjsORF-yGae0dtArdUyW7zS-4f-iHXYo
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDA2NiBTYWx0ZWRfX4swOdBFfhy0X
- hhG78Y7YMvIpMRhsVeNt93CIp3/6Dh13aNr0Sv4cEJue1cSXddM9h9kiMjnHDBW+KsKLcmzyTcA
- nOJARzUxdmcn2zoKHoH06DHgg4uGfMk=
-X-Authority-Analysis: v=2.4 cv=TrXWQjXh c=1 sm=1 tr=0 ts=6a5f11c2 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=t4iUwf73pONSdXt1NB0A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: rjsORF-yGae0dtArdUyW7zS-4f-iHXYo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDA2NiBTYWx0ZWRfX9j/DJOmSLKgw
- J7O6yNkHfaNxYq9MQM+UZZ1KCM6jhbgbzruzcjpF9H5sr9gGR67iquAVsNd++c1v7lt3gyjV6sz
- ZRqF2nAdJRetnyhNNKlbAO+1H1ebF9YZDziDvLyshz3pV63V3oBItG8cojsF3iQGFpbIwaLaonG
- di3iWJl2ql0Q7XdgPjqzdrY12k7OchgmCUevlclJ/vXl5p0B/hEvKbz5zZh9nxkNDXUo4vBMxcr
- HNR2iGhAlN7DwTzgvziPw2zDUPClUx0loaC3H1jWGVPWirwOvygaYjbdRcr9DlhglVx/KOrRvDj
- Qa8pnoTarm3RduHdKSw8TWEt2oJdVJVIuS4HZfj5OUbMx9WVj3PrkTUNtIIAsMzDRUTmW5IOW5h
- E+dpoxXmayyMc2SyYhqV3tnP1QMYI8n51EusdETHHArbZ38Wp9/wJt00T39vfjwpBVDCZQAVQf5
- YBHw8ZOt7nAGUP+ed8Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_06,2026-07-20_03,2025-10-01_01
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+Firmware requires more than 16 bits to address TX ring IDs for its
+internal QP management. Widen the associated HSI ring ID fields to
+32 bits. The values firmware assigns remain within 24 bits, bounded
+by the hardware doorbell XID field.
 
-PF and VF NIX LFs that share a CGX LMAC reuse the same hardware PKIND
-programming. When HiGig2 or EDSA parsing is enabled, a VF NIX LF alloc must
-not reset the LMAC RX PKIND or default TX parse config over the PF setup.
+The fw_ring_id field belongs to bnge_ring_struct, a common struct
+shared by all ring types, so widening it to u32 applies uniformly
+across TX, RX, CP, and NQ rings but firmware assigns values within
+16-bit range for all ring types except TX, which requires the wider
+field.
 
-Add cgx_get_pkind() and rvu_cgx_is_pkind_config_permitted() so VFs skip
-cgx_set_pkind(), rvu_npc_set_pkind(), and NIX_AF_LFX_TX_PARSE_CFG updates
-when the LMAC is using NPC_RX_HIGIG_PKIND or NPC_RX_EDSA_PKIND.
+Note that, Thor Ultra hardware has not yet been deployed and no
+firmware has been released to field, so backward compatibility
+is not a concern.
 
-Fixes: 94d942c5fb97 ("octeontx2-af: Config pkind for CGX mapped PFs")
-Cc: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
+Fixes: 42d1c54d6248 ("bnge/bng_re: Add a new HSI")
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Reviewed-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy@broadcom.com>
 ---
+v3:
+- Updated commit message as suggested by Przemek Kitszel.
+ https://lore.kernel.org/netdev/73e4895c-4d07-4841-92eb-2bcb61ca4d38@intel.com/
+  No code change in this version.
 
-v2 -> v3: Addressed simon comments
-    https://lore.kernel.org/netdev/20260713121902.3938875-1-rkannoth@marvell.com/
-v2 -> v3: Addressed simon comments
-    https://lore.kernel.org/netdev/20260709122648.1552103-2-horms@kernel.org/
-v1 -> v2: Addressed simon comments
-    https://lore.kernel.org/netdev/20260619041002.1773822-1-rkannoth@marvell.com/
----
- .../net/ethernet/marvell/octeontx2/af/cgx.c   | 12 +++
- .../net/ethernet/marvell/octeontx2/af/cgx.h   |  1 +
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  2 +
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   | 79 +++++++++++++++++++
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 23 ++++--
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 29 ++++---
- 6 files changed, 131 insertions(+), 15 deletions(-)
+v2:
+Sashiko review: 
+- Updated commit message only, no code change.
+- Sashiko's concern about XID overflow is valid in theory but is
+  handled by firmware, which guarantees TX ring IDs stay within the
+  24-bit hardware doorbell XID field.
+- Backward compatibility with older firmware is not a concern.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 2e94d5105016..f5fd6138c352 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -518,6 +518,18 @@ int cgx_set_pkind(void *cgxd, u8 lmac_id, int pkind)
+ drivers/infiniband/hw/bng_re/bng_dev.c        |  6 +--
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |  1 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  8 +--
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |  2 +-
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 50 +++++++++----------
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  4 +-
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    |  2 +-
+ include/linux/bnge/hsi.h                      |  7 ++-
+ 8 files changed, 39 insertions(+), 41 deletions(-)
+
+diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
+index 71a7ca2196ad..311c8bc93160 100644
+--- a/drivers/infiniband/hw/bng_re/bng_dev.c
++++ b/drivers/infiniband/hw/bng_re/bng_dev.c
+@@ -113,7 +113,7 @@ static void bng_re_fill_fw_msg(struct bnge_fw_msg *fw_msg, void *msg,
+ }
+ 
+ static int bng_re_net_ring_free(struct bng_re_dev *rdev,
+-				u16 fw_ring_id, int type)
++				u32 fw_ring_id, int type)
+ {
+ 	struct bnge_auxr_dev *aux_dev = rdev->aux_dev;
+ 	struct hwrm_ring_free_input req = {};
+@@ -123,7 +123,7 @@ static int bng_re_net_ring_free(struct bng_re_dev *rdev,
+ 
+ 	bng_re_init_hwrm_hdr((void *)&req, HWRM_RING_FREE);
+ 	req.ring_type = type;
+-	req.ring_id = cpu_to_le16(fw_ring_id);
++	req.ring_id = cpu_to_le32(fw_ring_id);
+ 	bng_re_fill_fw_msg(&fw_msg, (void *)&req, sizeof(req), (void *)&resp,
+ 			    sizeof(resp), BNGE_DFLT_HWRM_CMD_TIMEOUT);
+ 	rc = bnge_send_msg(aux_dev, &fw_msg);
+@@ -161,7 +161,7 @@ static int bng_re_net_ring_alloc(struct bng_re_dev *rdev,
+ 			   sizeof(resp), BNGE_DFLT_HWRM_CMD_TIMEOUT);
+ 	rc = bnge_send_msg(aux_dev, &fw_msg);
+ 	if (!rc)
+-		*fw_ring_id = le16_to_cpu(resp.ring_id);
++		*fw_ring_id = (u16)le32_to_cpu(resp.ring_id);
+ 
+ 	return rc;
+ }
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
+index f21cff651fd4..4479ccd071f5 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
+@@ -36,6 +36,7 @@ struct bnge_pf_info {
+ };
+ 
+ #define INVALID_HW_RING_ID      ((u16)-1)
++#define INVALID_HW_RING_ID_32BIT	(U32_MAX)
+ 
+ enum {
+ 	BNGE_FW_CAP_SHORT_CMD				= BIT_ULL(0),
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+index 1c9cfec1b633..651c5e783516 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+@@ -1283,7 +1283,7 @@ int bnge_hwrm_stat_ctx_alloc(struct bnge_net *bn)
+ 
+ int hwrm_ring_free_send_msg(struct bnge_net *bn,
+ 			    struct bnge_ring_struct *ring,
+-			    u32 ring_type, int cmpl_ring_id)
++			    u32 ring_type, u32 cmpl_ring_id)
+ {
+ 	struct hwrm_ring_free_input *req;
+ 	struct bnge_dev *bd = bn->bd;
+@@ -1295,7 +1295,7 @@ int hwrm_ring_free_send_msg(struct bnge_net *bn,
+ 
+ 	req->cmpl_ring = cpu_to_le16(cmpl_ring_id);
+ 	req->ring_type = ring_type;
+-	req->ring_id = cpu_to_le16(ring->fw_ring_id);
++	req->ring_id = cpu_to_le32(ring->fw_ring_id);
+ 
+ 	bnge_hwrm_req_hold(bd, req);
+ 	rc = bnge_hwrm_req_send(bd, req);
+@@ -1317,7 +1317,7 @@ int hwrm_ring_alloc_send_msg(struct bnge_net *bn,
+ 	struct hwrm_ring_alloc_output *resp;
+ 	struct hwrm_ring_alloc_input *req;
+ 	struct bnge_dev *bd = bn->bd;
+-	u16 ring_id, flags = 0;
++	u32 ring_id, flags = 0;
+ 	int rc;
+ 
+ 	rc = bnge_hwrm_req_init(bd, req, HWRM_RING_ALLOC);
+@@ -1401,7 +1401,7 @@ int hwrm_ring_alloc_send_msg(struct bnge_net *bn,
+ 
+ 	resp = bnge_hwrm_req_hold(bd, req);
+ 	rc = bnge_hwrm_req_send(bd, req);
+-	ring_id = le16_to_cpu(resp->ring_id);
++	ring_id = le32_to_cpu(resp->ring_id);
+ 	bnge_hwrm_req_drop(bd, req);
+ 
+ exit:
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.h b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.h
+index 3501de7a89b9..bf452e390d5b 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.h
+@@ -50,7 +50,7 @@ int bnge_hwrm_cfa_l2_set_rx_mask(struct bnge_dev *bd,
+ void bnge_hwrm_stat_ctx_free(struct bnge_net *bn);
+ int bnge_hwrm_stat_ctx_alloc(struct bnge_net *bn);
+ int hwrm_ring_free_send_msg(struct bnge_net *bn, struct bnge_ring_struct *ring,
+-			    u32 ring_type, int cmpl_ring_id);
++			    u32 ring_type, u32 cmpl_ring_id);
+ int hwrm_ring_alloc_send_msg(struct bnge_net *bn,
+ 			     struct bnge_ring_struct *ring,
+ 			     u32 ring_type, u32 map_index);
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+index 70768193004c..6f7ef506d4e1 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+@@ -1327,12 +1327,12 @@ static int bnge_alloc_core(struct bnge_net *bn)
+ 	return rc;
+ }
+ 
+-u16 bnge_cp_ring_for_rx(struct bnge_rx_ring_info *rxr)
++u32 bnge_cp_ring_for_rx(struct bnge_rx_ring_info *rxr)
+ {
+ 	return rxr->rx_cpr->ring_struct.fw_ring_id;
+ }
+ 
+-u16 bnge_cp_ring_for_tx(struct bnge_tx_ring_info *txr)
++u32 bnge_cp_ring_for_tx(struct bnge_tx_ring_info *txr)
+ {
+ 	return txr->tx_cpr->ring_struct.fw_ring_id;
+ }
+@@ -1375,12 +1375,12 @@ static void bnge_init_nq_tree(struct bnge_net *bn)
+ 		struct bnge_nq_ring_info *nqr = &bn->bnapi[i]->nq_ring;
+ 		struct bnge_ring_struct *ring = &nqr->ring_struct;
+ 
+-		ring->fw_ring_id = INVALID_HW_RING_ID;
++		ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 		for (j = 0; j < nqr->cp_ring_count; j++) {
+ 			struct bnge_cp_ring_info *cpr = &nqr->cp_ring_arr[j];
+ 
+ 			ring = &cpr->ring_struct;
+-			ring->fw_ring_id = INVALID_HW_RING_ID;
++			ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 		}
+ 	}
+ }
+@@ -1637,7 +1637,7 @@ static void bnge_init_one_rx_ring_rxbd(struct bnge_net *bn,
+ 
+ 	ring = &rxr->rx_ring_struct;
+ 	bnge_init_rxbd_pages(ring, type);
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ }
+ 
+ static void bnge_init_one_agg_ring_rxbd(struct bnge_net *bn,
+@@ -1647,7 +1647,7 @@ static void bnge_init_one_agg_ring_rxbd(struct bnge_net *bn,
+ 	u32 type;
+ 
+ 	ring = &rxr->rx_agg_ring_struct;
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 	if (bnge_is_agg_reqd(bn->bd)) {
+ 		type = ((u32)BNGE_RX_PAGE_SIZE << RX_BD_LEN_SHIFT) |
+ 			RX_BD_TYPE_RX_AGG_BD | RX_BD_FLAGS_SOP;
+@@ -1708,7 +1708,7 @@ static void bnge_init_tx_rings(struct bnge_net *bn)
+ 		struct bnge_tx_ring_info *txr = &bn->tx_ring[i];
+ 		struct bnge_ring_struct *ring = &txr->tx_ring_struct;
+ 
+-		ring->fw_ring_id = INVALID_HW_RING_ID;
++		ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 
+ 		netif_queue_set_napi(bn->netdev, i, NETDEV_QUEUE_TYPE_TX,
+ 				     &txr->bnapi->napi);
+@@ -1867,7 +1867,7 @@ static int bnge_hwrm_rx_agg_ring_alloc(struct bnge_net *bn,
+ 		    ring->fw_ring_id);
+ 	bnge_db_write(bn->bd, &rxr->rx_agg_db, rxr->rx_agg_prod);
+ 	bnge_db_write(bn->bd, &rxr->rx_db, rxr->rx_prod);
+-	bn->grp_info[grp_idx].agg_fw_ring_id = ring->fw_ring_id;
++	bn->grp_info[grp_idx].agg_fw_ring_id = (u16)ring->fw_ring_id;
+ 
  	return 0;
  }
+@@ -1886,7 +1886,7 @@ static int bnge_hwrm_rx_ring_alloc(struct bnge_net *bn,
+ 		return rc;
  
-+int cgx_get_pkind(void *cgxd, u8 lmac_id, int *pkind)
-+{
-+	struct cgx *cgx = cgxd;
-+
-+	if (!is_lmac_valid(cgx, lmac_id))
-+		return -ENODEV;
-+
-+	*pkind = cgx_read(cgx, lmac_id, cgx->mac_ops->rxid_map_offset);
-+	*pkind = *pkind & 0x3F;
-+	return 0;
-+}
-+
- static u8 cgx_get_lmac_type(void *cgxd, int lmac_id)
- {
- 	struct cgx *cgx = cgxd;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-index 92ccf343dfe0..8411a75dd723 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-@@ -141,6 +141,7 @@ int cgx_get_cgxid(void *cgxd);
- int cgx_get_lmac_cnt(void *cgxd);
- void *cgx_get_pdata(int cgx_id);
- int cgx_set_pkind(void *cgxd, u8 lmac_id, int pkind);
-+int cgx_get_pkind(void *cgxd, u8 lmac_id, int *pkind);
- int cgx_lmac_evh_register(struct cgx_event_cb *cb, void *cgxd, int lmac_id);
- int cgx_lmac_evh_unregister(void *cgxd, int lmac_id);
- int cgx_get_tx_stats(void *cgxd, int lmac_id, int idx, u64 *tx_stat);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 7f3505ae6860..9d5b7b51bdfa 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -1115,6 +1115,8 @@ void npc_read_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
- 			 u8 *intf, u8 *ena);
- int npc_config_cntr_default_entries(struct rvu *rvu, bool enable);
- bool is_cgx_config_permitted(struct rvu *rvu, u16 pcifunc);
-+bool rvu_cgx_check_permission_and_set_pkind(struct rvu *rvu, u16 pcifunc, int pkind);
-+bool rvu_cgx_is_pkind_config_permitted(struct rvu *rvu, u16 pcifunc);
- bool is_mac_feature_supported(struct rvu *rvu, int pf, int feature);
- u32  rvu_cgx_get_fifolen(struct rvu *rvu);
- void *rvu_first_cgx_pdata(struct rvu *rvu);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 4ff3935ed3fe..87d21889dc49 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -1355,3 +1355,82 @@ void rvu_mac_reset(struct rvu *rvu, u16 pcifunc)
- 	if (mac_ops->mac_reset(cgxd, lmac, !is_vf(pcifunc)))
- 		dev_err(rvu->dev, "Failed to reset MAC\n");
+ 	bnge_set_db(bn, &rxr->rx_db, type, map_idx, ring->fw_ring_id);
+-	bn->grp_info[map_idx].rx_fw_ring_id = ring->fw_ring_id;
++	bn->grp_info[map_idx].rx_fw_ring_id = (u16)ring->fw_ring_id;
+ 
+ 	return 0;
  }
-+
-+/* Do not allow CGX-mapped VFs to overwrite PKIND when special parse kinds
-+ * (HiGig, EDSA, etc.) are in use on the shared LMAC. VFs must not program
-+ * NPC_TX_DEF_PKIND on NIX_AF_LFX_TX_PARSE_CFG in that case: the PF owns
-+ * parse mode and no separate NPC_TX_HIGIG_PKIND is installed on the VF LF.
-+ * TX-parse callers skip the write when denied; rvu_lf_reset() clears each LF
-+ * before alloc so the next permitted owner programs NPC_TX_DEF_PKIND.
-+ */
-+bool rvu_cgx_is_pkind_config_permitted(struct rvu *rvu, u16 pcifunc)
-+{
-+	int pf, err, rxpkind;
-+	u8 cgx_id, lmac_id;
-+	void *cgxd;
-+
-+	pf = rvu_get_pf(rvu->pdev, pcifunc);
-+
-+	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
-+		return true;
-+
-+	if (!is_pf_cgxmapped(rvu, pf))
-+		return true;
-+
-+	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-+	cgxd = rvu_cgx_pdata(cgx_id, rvu);
-+	err = cgx_get_pkind(cgxd, lmac_id, &rxpkind);
-+	if (err)
-+		return false;
-+
-+	switch (rxpkind) {
-+	case NPC_RX_HIGIG_PKIND:
-+	case NPC_RX_EDSA_PKIND:
-+		return false;
-+	default:
-+		return true;
-+	}
-+}
-+
-+/* Do not allow CGX-mapped VFs to overwrite PKIND when special parse kinds
-+ * (HiGig, EDSA, etc.) are in use on the shared LMAC.
-+ */
-+bool rvu_cgx_check_permission_and_set_pkind(struct rvu *rvu, u16 pcifunc, int pkind)
-+{
-+	int pf, err, rxpkind;
-+	u8 cgx_id, lmac_id;
-+	struct cgx *cgxd;
-+
-+	pf = rvu_get_pf(rvu->pdev, pcifunc);
-+
-+	if (!is_pf_cgxmapped(rvu, pf))
-+		return false;
-+
-+	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-+	cgxd = rvu_cgx_pdata(cgx_id, rvu);
-+
-+	mutex_lock(&cgxd->lock);
-+	if (!is_vf(pcifunc))
-+		goto set;
-+
-+	err = cgx_get_pkind(cgxd, lmac_id, &rxpkind);
-+	if (err)
-+		goto err;
-+
-+	switch (rxpkind) {
-+	case NPC_RX_HIGIG_PKIND:
-+	case NPC_RX_EDSA_PKIND:
-+		goto err;
-+	default:
-+		break;
-+	}
-+
-+set:
-+	cgx_set_pkind(rvu_cgx_pdata(cgx_id, rvu), lmac_id, pkind);
-+	mutex_unlock(&cgxd->lock);
-+	return true;
-+
-+err:
-+	mutex_unlock(&cgxd->lock);
-+	return false;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 6a0ce2665031..d1de9c9894bd 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -363,8 +363,8 @@ static int nix_interface_init(struct rvu *rvu, u16 pcifunc, int type, int nixlf,
- 		pfvf->tx_chan_cnt = 1;
- 		rsp->tx_link = cgx_id * hw->lmac_per_cgx + lmac_id;
+@@ -1916,7 +1916,7 @@ static int bnge_hwrm_ring_alloc(struct bnge_net *bn)
+ 		bnge_set_db(bn, &nqr->nq_db, type, map_idx, ring->fw_ring_id);
+ 		bnge_db_nq(bn, &nqr->nq_db, nqr->nq_raw_cons);
+ 		enable_irq(vector);
+-		bn->grp_info[i].nq_fw_ring_id = ring->fw_ring_id;
++		bn->grp_info[i].nq_fw_ring_id = (u16)ring->fw_ring_id;
  
--		cgx_set_pkind(rvu_cgx_pdata(cgx_id, rvu), lmac_id, pkind);
--		rvu_npc_set_pkind(rvu, pkind, pfvf);
-+		if (rvu_cgx_check_permission_and_set_pkind(rvu, pcifunc, pkind))
-+			rvu_npc_set_pkind(rvu, pkind, pfvf);
- 		break;
- 	case NIX_INTF_TYPE_LBK:
- 		vf = (pcifunc & RVU_PFVF_FUNC_MASK) - 1;
-@@ -1505,13 +1505,15 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 				  struct nix_lf_alloc_req *req,
- 				  struct nix_lf_alloc_rsp *rsp)
- {
--	int nixlf, qints, hwctx_size, intf, rc = 0;
-+	int nixlf, qints, hwctx_size, intf, rc = 0, pf;
- 	u16 bcast, mcast, promisc, ucast;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u16 pcifunc = req->hdr.pcifunc;
-+	u8 cgx_id = 0, lmac_id = 0;
- 	bool rules_created = false;
- 	struct rvu_block *block;
- 	struct rvu_pfvf *pfvf;
-+	struct cgx *cgxd;
- 	u64 cfg, ctx_cfg;
- 	int blkaddr;
+ 		if (!i) {
+ 			rc = bnge_hwrm_set_async_event_cr(bd, ring->fw_ring_id);
+@@ -1986,15 +1986,13 @@ void bnge_fill_hw_rss_tbl(struct bnge_net *bn, struct bnge_vnic_info *vnic)
+ 	tbl_size = bnge_get_rxfh_indir_size(bd);
  
-@@ -1685,8 +1687,19 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_RX_CFG(nixlf), req->rx_cfg);
+ 	for (i = 0; i < tbl_size; i++) {
+-		u16 ring_id, j;
++		u32 j;
  
- 	/* Configure pkind for TX parse config */
--	cfg = NPC_TX_DEF_PKIND;
--	rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf), cfg);
-+
-+	pf = rvu_get_pf(rvu->pdev, pcifunc);
-+
-+	if (is_pf_cgxmapped(rvu, pf)) {
-+		rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-+		cgxd = rvu_cgx_pdata(cgx_id, rvu);
-+		mutex_lock(&cgxd->lock);
-+		if (rvu_cgx_is_pkind_config_permitted(rvu, pcifunc)) {
-+			cfg = NPC_TX_DEF_PKIND;
-+			rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf), cfg);
-+		}
-+		mutex_unlock(&cgxd->lock);
-+	}
+ 		j = bd->rss_indir_tbl[i];
+ 		rxr = &bn->rx_ring[j];
  
- 	if (is_rep_dev(rvu, pcifunc)) {
- 		pfvf->tx_chan_base = RVU_SWITCH_LBK_CHAN;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index c7bc0b3a29b9..38554d51164e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -19,6 +19,7 @@
- #include "cn20k/npc.h"
- #include "rvu_npc.h"
- #include "cn20k/reg.h"
-+#include "lmac_common.h"
- 
- #define RSVD_MCAM_ENTRIES_PER_PF	3 /* Broadcast, Promisc and AllMulticast */
- #define RSVD_MCAM_ENTRIES_PER_NIXLF	1 /* Ucast for LFs */
-@@ -4200,10 +4201,11 @@ int rvu_npc_set_parse_mode(struct rvu *rvu, u16 pcifunc, u64 mode, u8 dir,
- 
- {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
--	int blkaddr, nixlf, rc, intf_mode;
- 	int pf = rvu_get_pf(rvu->pdev, pcifunc);
-+	int blkaddr, nixlf, rc, intf_mode;
-+	u8 cgx_id = 0, lmac_id = 0;
- 	u64 rxpkind, txpkind;
--	u8 cgx_id, lmac_id;
-+	struct cgx *cgxd;
- 
- 	/* use default pkind to disable edsa/higig */
- 	rxpkind = rvu_npc_get_pkind(rvu, pf);
-@@ -4227,12 +4229,8 @@ int rvu_npc_set_parse_mode(struct rvu *rvu, u16 pcifunc, u64 mode, u8 dir,
- 		/* rx pkind set req valid only for cgx mapped PFs */
- 		if (!is_cgx_config_permitted(rvu, pcifunc))
- 			return 0;
--		rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
--
--		rc = cgx_set_pkind(rvu_cgx_pdata(cgx_id, rvu), lmac_id,
--				   rxpkind);
--		if (rc)
--			return rc;
-+		if (!rvu_cgx_check_permission_and_set_pkind(rvu, pcifunc, rxpkind))
-+			return -EINVAL;
+-		ring_id = rxr->rx_ring_struct.fw_ring_id;
+-		*ring_tbl++ = cpu_to_le16(ring_id);
+-		ring_id = bnge_cp_ring_for_rx(rxr);
+-		*ring_tbl++ = cpu_to_le16(ring_id);
++		*ring_tbl++ = cpu_to_le16(rxr->rx_ring_struct.fw_ring_id);
++		*ring_tbl++ = cpu_to_le16(bnge_cp_ring_for_rx(rxr));
  	}
+ }
  
- 	if (dir & PKIND_TX) {
-@@ -4241,8 +4239,19 @@ int rvu_npc_set_parse_mode(struct rvu *rvu, u16 pcifunc, u64 mode, u8 dir,
- 		if (rc)
- 			return rc;
+@@ -2285,7 +2283,7 @@ static void bnge_disable_int(struct bnge_net *bn)
+ 		nqr = &bnapi->nq_ring;
+ 		ring = &nqr->ring_struct;
  
--		rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf),
--			    txpkind);
-+		if (is_pf_cgxmapped(rvu, pf) && is_vf(pcifunc)) {
-+			rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id,
-+					    &lmac_id);
-+			cgxd = rvu_cgx_pdata(cgx_id, rvu);
-+			mutex_lock(&cgxd->lock);
-+			if (rvu_cgx_is_pkind_config_permitted(rvu, pcifunc))
-+				rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf),
-+					    txpkind);
-+			mutex_unlock(&cgxd->lock);
-+		} else {
-+			rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf),
-+				    txpkind);
-+		}
+-		if (ring->fw_ring_id != INVALID_HW_RING_ID)
++		if (ring->fw_ring_id != INVALID_HW_RING_ID_32BIT)
+ 			bnge_db_nq(bn, &nqr->nq_db, nqr->nq_raw_cons);
  	}
+ }
+@@ -2401,7 +2399,7 @@ static void bnge_hwrm_rx_ring_free(struct bnge_net *bn,
+ 	u32 grp_idx = rxr->bnapi->index;
+ 	u32 cmpl_ring_id;
  
- 	pfvf->intf_mode = intf_mode;
+-	if (ring->fw_ring_id == INVALID_HW_RING_ID)
++	if (ring->fw_ring_id == INVALID_HW_RING_ID_32BIT)
+ 		return;
+ 
+ 	cmpl_ring_id = bnge_cp_ring_for_rx(rxr);
+@@ -2409,7 +2407,7 @@ static void bnge_hwrm_rx_ring_free(struct bnge_net *bn,
+ 				RING_FREE_REQ_RING_TYPE_RX,
+ 				close_path ? cmpl_ring_id :
+ 				INVALID_HW_RING_ID);
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 	bn->grp_info[grp_idx].rx_fw_ring_id = INVALID_HW_RING_ID;
+ }
+ 
+@@ -2421,14 +2419,14 @@ static void bnge_hwrm_rx_agg_ring_free(struct bnge_net *bn,
+ 	u32 grp_idx = rxr->bnapi->index;
+ 	u32 cmpl_ring_id;
+ 
+-	if (ring->fw_ring_id == INVALID_HW_RING_ID)
++	if (ring->fw_ring_id == INVALID_HW_RING_ID_32BIT)
+ 		return;
+ 
+ 	cmpl_ring_id = bnge_cp_ring_for_rx(rxr);
+ 	hwrm_ring_free_send_msg(bn, ring, RING_FREE_REQ_RING_TYPE_RX_AGG,
+ 				close_path ? cmpl_ring_id :
+ 				INVALID_HW_RING_ID);
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 	bn->grp_info[grp_idx].agg_fw_ring_id = INVALID_HW_RING_ID;
+ }
+ 
+@@ -2439,14 +2437,14 @@ static void bnge_hwrm_tx_ring_free(struct bnge_net *bn,
+ 	struct bnge_ring_struct *ring = &txr->tx_ring_struct;
+ 	u32 cmpl_ring_id;
+ 
+-	if (ring->fw_ring_id == INVALID_HW_RING_ID)
++	if (ring->fw_ring_id == INVALID_HW_RING_ID_32BIT)
+ 		return;
+ 
+ 	cmpl_ring_id = close_path ? bnge_cp_ring_for_tx(txr) :
+ 		       INVALID_HW_RING_ID;
+ 	hwrm_ring_free_send_msg(bn, ring, RING_FREE_REQ_RING_TYPE_TX,
+ 				cmpl_ring_id);
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ }
+ 
+ static void bnge_hwrm_cp_ring_free(struct bnge_net *bn,
+@@ -2455,12 +2453,12 @@ static void bnge_hwrm_cp_ring_free(struct bnge_net *bn,
+ 	struct bnge_ring_struct *ring;
+ 
+ 	ring = &cpr->ring_struct;
+-	if (ring->fw_ring_id == INVALID_HW_RING_ID)
++	if (ring->fw_ring_id == INVALID_HW_RING_ID_32BIT)
+ 		return;
+ 
+ 	hwrm_ring_free_send_msg(bn, ring, RING_FREE_REQ_RING_TYPE_L2_CMPL,
+ 				INVALID_HW_RING_ID);
+-	ring->fw_ring_id = INVALID_HW_RING_ID;
++	ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ }
+ 
+ static void bnge_hwrm_ring_free(struct bnge_net *bn, bool close_path)
+@@ -2496,11 +2494,11 @@ static void bnge_hwrm_ring_free(struct bnge_net *bn, bool close_path)
+ 			bnge_hwrm_cp_ring_free(bn, &nqr->cp_ring_arr[j]);
+ 
+ 		ring = &nqr->ring_struct;
+-		if (ring->fw_ring_id != INVALID_HW_RING_ID) {
++		if (ring->fw_ring_id != INVALID_HW_RING_ID_32BIT) {
+ 			hwrm_ring_free_send_msg(bn, ring,
+ 						RING_FREE_REQ_RING_TYPE_NQ,
+ 						INVALID_HW_RING_ID);
+-			ring->fw_ring_id = INVALID_HW_RING_ID;
++			ring->fw_ring_id = INVALID_HW_RING_ID_32BIT;
+ 			bn->grp_info[i].nq_fw_ring_id = INVALID_HW_RING_ID;
+ 		}
+ 	}
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+index f4636b5b0cf3..d177919c2e11 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+@@ -630,8 +630,8 @@ struct bnge_l2_filter {
+ 	refcount_t		refcnt;
+ };
+ 
+-u16 bnge_cp_ring_for_rx(struct bnge_rx_ring_info *rxr);
+-u16 bnge_cp_ring_for_tx(struct bnge_tx_ring_info *txr);
++u32 bnge_cp_ring_for_rx(struct bnge_rx_ring_info *rxr);
++u32 bnge_cp_ring_for_tx(struct bnge_tx_ring_info *txr);
+ void bnge_fill_hw_rss_tbl(struct bnge_net *bn, struct bnge_vnic_info *vnic);
+ int bnge_alloc_rx_data(struct bnge_net *bn, struct bnge_rx_ring_info *rxr,
+ 		       u16 prod, gfp_t gfp);
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.h b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.h
+index 341c7f81ed09..bb0c79a1ee60 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.h
+@@ -184,7 +184,7 @@ struct bnge_ctx_mem_info {
+ struct bnge_ring_struct {
+ 	struct bnge_ring_mem_info	ring_mem;
+ 
+-	u16			fw_ring_id;
++	u32			fw_ring_id;
+ 	union {
+ 		u16		grp_idx;
+ 		u16		map_idx; /* Used by NQs */
+diff --git a/include/linux/bnge/hsi.h b/include/linux/bnge/hsi.h
+index 8ea13d5407ee..1f7bd96415a5 100644
+--- a/include/linux/bnge/hsi.h
++++ b/include/linux/bnge/hsi.h
+@@ -8317,8 +8317,7 @@ struct hwrm_ring_alloc_output {
+ 	__le16	req_type;
+ 	__le16	seq_id;
+ 	__le16	resp_len;
+-	__le16	ring_id;
+-	__le16	logical_ring_id;
++	__le32	ring_id;
+ 	u8	push_buffer_index;
+ 	#define RING_ALLOC_RESP_PUSH_BUFFER_INDEX_PING_BUFFER 0x0UL
+ 	#define RING_ALLOC_RESP_PUSH_BUFFER_INDEX_PONG_BUFFER 0x1UL
+@@ -8345,10 +8344,10 @@ struct hwrm_ring_free_input {
+ 	u8	flags;
+ 	#define RING_FREE_REQ_FLAGS_VIRTIO_RING_VALID 0x1UL
+ 	#define RING_FREE_REQ_FLAGS_LAST             RING_FREE_REQ_FLAGS_VIRTIO_RING_VALID
+-	__le16	ring_id;
++	__le16	unused_1;
+ 	__le32	prod_idx;
+ 	__le32	opaque;
+-	__le32	unused_1;
++	__le32	ring_id;
+ };
+ 
+ /* hwrm_ring_free_output (size:128b/16B) */
 -- 
-2.43.0
+2.47.1
 
