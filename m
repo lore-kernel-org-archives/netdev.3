@@ -1,80 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0F946D2AA;
-	Tue, 21 Jul 2026 16:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE1E25392A;
+	Tue, 21 Jul 2026 16:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784652637; cv=none; b=KpWc86xVlVduV4ohcALU+SQpr+5Q0gyNdlOMpB3EkMwDFL9q3BYbs0gooqoOoLVOtwuSZJhjke0W91/kkQKYtN4Nv7iEAx2uSzr91NqkwC5bS1Sd+/0FE7WZrg64NT2387WPbq/nibSlH0O3PQaVGy1dohtqYXE5uv692D/3uQ4=
+	t=1784652993; cv=none; b=j3yqI9er1Z1uY9DsE41T36QnQ3P2uJ1ITc7Zo+tzYxxvgaETIjuyw3T/zKOWnuGDMlfnOXoiPBatlOfFRZsLyB1Kb9ZsKUS0GHaQel67AkqVeZ/psplU7tCcuwvXl6JS1kxGMVM55udJS62eYQxZ3oXbXameVfUnDND9QQawu+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784652637; c=relaxed/simple;
-	bh=x5UXAZ9QERpg4LYeqQuXt7kA4KbUb5I6NrayvIGgDuE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KUdkky43/yGQpmdaA0mZuL/fzyu+ztRgCn9AljBwdHnFKBJkYD6qxlF/NDw6heduv8pUPZpxalTi3eV5E1DQRBzBYhiLxYvzEPMEi0xHuyJwtt7VIB+SEACR3Sy52r6EgRN9aUTHN2TyJZ5shgqocLIcg+0a64+dhkUXLA/nQkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jea8m3++; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784652993; c=relaxed/simple;
+	bh=OcLEASZqzXC/ec/Vtd5ntT3hIJ6NsImbJ9818xME0TQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pzJ3hpGI/wZCBq5FiIVUJ+eW+IMfDZUCYWkJXqcEpUzSSqZq9t6AwZ9jqRJq+NZRCOSeGmaE1QDQaP1XvZzjGzbzgRyABLq/Nbiru47JhZ15iIh9FdF7dydO5AaaOVMVK6OfZRY35yCR/gw0yEid2cEq4ePaG3gvNSQ3RbP2u9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SZ6IIp9O; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jea8m3++"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133361F000E9;
-	Tue, 21 Jul 2026 16:50:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784652636;
-	bh=1WST+8i8vmtdFREG4LjqX6DoxUJNBpudLQ+NMk06Ly4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Jea8m3++ppL5UFGy/2P3XSP0dp8UAJYXfaebnIpUCXWcb7Vta/yWNjDkcYUMqSEcW
-	 7GI1MIcdMuQ/dCH7qH79UoCq9HrmDnmGxMrrf4epm2y3JlzY2hryBK7lHOrkr69tFM
-	 lek+rWZmF/znHPKb9XGZ38lnFrCa7oGjUT0Gy9P2tAd+JmvX2eEvsjxL5NnWl/SPEy
-	 YPgxO0V7iiTF4FMJllgqiSUzSRjOrOnN4i7Dbwwk+zvBw9Uhiv7N2ZA+Jha15xg6ix
-	 8T4tttocduHYePuJVrKubTYdDsaNebmr3q5IpibutixNpNdhdHj78FsxslnwptuDYq
-	 BRZL5S/WKnXCw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D15FC39253C4;
-	Tue, 21 Jul 2026 16:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SZ6IIp9O"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ED20D1A1144;
+	Tue, 21 Jul 2026 16:56:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B802A60368;
+	Tue, 21 Jul 2026 16:56:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC35411BD065D;
+	Tue, 21 Jul 2026 18:56:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784652980; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=9pv9SMUYZxYtOR54qIKr4ZEfmnQ4N8zEKpjbxfSE8XM=;
+	b=SZ6IIp9OeT2QQW04KZo5K/cLsCO29ps0O0TO7dJJaps4fqZ6Vz+PBPWebQJGcSeZySX4i5
+	5v+pt7vNhwwnXW6zoeOFbQhzSqkcc92LHGwuHmmttAVueTHb1cuSRf0VNcIkpd5jvIv9Xl
+	wz+/N6SUByqtABcYZ0JwF8UrtRODFHjEbv/wrmuEvQlwWc68hUPLwz67nCuSqm1t2aaFLN
+	bAe8vGYEFpkIMANeWc3W4RZlu1VyCtkEtnJvV7rKtjJ7Wq/5oxVnNaJHbLPjxzed8RHJIq
+	YQPtSdteRz/OAl67qEULSSbwM1QtmBWTEoTFQmcmucUdAsgpBYWPxlOpzY5qkA==
+Message-ID: <83806c45-ebec-456d-9a48-76bed6bde8eb@bootlin.com>
+Date: Tue, 21 Jul 2026 18:56:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2] veth: convert frag_list skbs before running XDP
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178465260565.839953.7972365481675163007.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 16:50:05 +0000
-References: <20260720140545.461747-1-matt@readmodwrite.com>
-In-Reply-To: <20260720140545.461747-1-matt@readmodwrite.com>
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- lorenzo@kernel.org, toke@toke.dk, bpf@vger.kernel.org,
- netdev@vger.kernel.org, stable@vger.kernel.org, kernel-team@cloudflare.com,
- mfleming@cloudflare.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: stmmac: Simplify ioctl handling
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ thomas.petazzoni@bootlin.com, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20260718143848.677531-1-maxime.chevallier@bootlin.com>
+ <20260721094245.1b6aab2d@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260721094245.1b6aab2d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hi Jakub,
 
-This patch was applied to bpf/bpf.git (master)
-by Kumar Kartikeya Dwivedi <memxor@gmail.com>:
-
-On Mon, 20 Jul 2026 15:05:45 +0100 you wrote:
-> From: Matt Fleming <mfleming@cloudflare.com>
+On 7/21/26 18:42, Jakub Kicinski wrote:
+> On Sat, 18 Jul 2026 16:38:47 +0200 Maxime Chevallier wrote:
+>> Now that timestamping is controlled through an NDO, we can simply
+>> call phylink_mii_ioctl() to handle ioctls.
+>>
+>> The only functional difference is that phylink_mii_ioctl() ->
+>> phy_mii_ioctl() can handle SIOCSHWTSTAMP, but this no longer happens
+>> as this ioctl is not longer dispatched to the ndo_eth_ioctl().
 > 
-> A frag_list skb can reach veth with data_len set but nr_frags zero.
-> veth_convert_skb_to_xdp_buff() only converts skbs that are shared,
-> locked, have frags[], or do not have enough headroom. It later uses
-> skb_is_nonlinear() to decide whether to set XDP_FLAGS_HAS_FRAGS and
-> xdp_frags_size.
-> 
-> [...]
+> To double check - the discussion is orthogonal and this patch can be
+> applied as is?
 
-Here is the summary with links:
-  - [bpf,v2] veth: convert frag_list skbs before running XDP
-    https://git.kernel.org/bpf/bpf/c/c3e0e81eec96
+Indeed yes, the patch itself doesn't introduce any behaviour change.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+That's actually when I noticed that it doesn't introduce behaviour changes
+(as the SIOCSHWTSTAMP ioctl is masked and doesn't reach the .ndo_ioctl() in
+the first place) that I added the small comment that started this discussion :)
 
-
+Maxime
