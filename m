@@ -1,103 +1,106 @@
-Received: from sonic315-20.consmr.mail.ne1.yahoo.com (sonic315-20.consmr.mail.ne1.yahoo.com [66.163.190.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DE54CA266
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 15:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF3A3859EF
+	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 15:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784646219; cv=none; b=CQzYi7jlSoWIL/ZAWgd9ik9MNkCaxP+SBlpTLEAqkzVUow10Ug7+xZaLJV/XhnoVM8kf6DUfBUXFOrvhAD/zC5F7Tp0V69Qqs/q4Lo9SqjC+r+ZD9VxouL5vqEvw005Ywm6CJfuDibWPFpZtylzvR+JfPaZcDLEY+OK5fjzCnV0=
+	t=1784646424; cv=none; b=D1386aoQxeNBM8K+YGYluYLWpLsACqcowRQT/O1tOFSTQ5/cVXfQu3Od4Y45FoDo545/bFX0J5OGh6+JvOr5H5jH384d5HZivy0BLBhyoaSMa2wcwx7Zaaj3ZSX/JxOMtQrE0MQymoW9xvFugHapvayydlS6VWFN0DC0cYc9Fy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784646219; c=relaxed/simple;
-	bh=S5kzdFvZhX9EjQAwbrxx5lhdIGpyd27AqERIZutRh68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=btRYmYCBJ/BJxRv+3aAFiGfyKEFbNsS+Tm/i9HWegktFnHu7Y1zjAWd2ADHdrq22Xc7Po4VurrGJIUOyBt6buVG49hD3m/CtnllV0r87WVDm4VK/ZYhr9l8Q6bt/3A1VUjJq+oEC9X5WU8wwKkzBJMuf4S7aa9+i3ZO2fMNuTj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=YmP2XJFn; arc=none smtp.client-ip=66.163.190.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1784646424; c=relaxed/simple;
+	bh=YMxuhHJhwyQuhdGzdrv1FAUVqYLEZ+YKUP8/Q3R2J1k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=payVhNMqJJoclWuVp9weJxWKeZ6DgFZ1C4e1d4iV4gxGQ8Cik7ABEqC6jEFcRMqRUmWUCoyzUZdjiRiY/Yvl99WpqvQArzKFfVZGL4h2Yt8lgGd3pUdZOs4BUvzWjWvXUf/jadtrwo0niNdPTl1F7LoZaYfgCElml2k0IqXXC0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b052aZuP; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="YmP2XJFn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784646217; bh=2B6gY/9f9XbeGv7YU0rhCErE01zfoZL7/ZEl1LbDVjs=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=YmP2XJFnJB7TwGbEUQYcU7qVBkIQ4IEWkMkJYDw9Kqvypm21pZoNpcNIOyag/VAjx/efWjtdEJ5UGH1AvA8f323h6xWqN5+JsE/Van4NSBlnAkmKEZp4pcjLLowbJcFjXOT6vvfoN3tnDIctzl7NhzrHA08IvbSPmLgvof5jSpPGRn0B8tQb851sA2FWmaCzjSc9Bs8OqJoMT47qGNkXJgNnnNAVQoGtWoGvcxUqipD59cmINukxE3/UVOip61kQV3KvUdA2f26Yt0aOhiaCUoRZgsmO/4uVDrblT+ceSIBXF21fZuXkPkjQkvAbwoRL0RTjOjdwQVDSPz5m4avFLg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1784646217; bh=b9HddInWv6qJlNyeuRAhKVfO+JK32mEWaGL/0OJ5fg1=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=ouLF7DGkS/MYGj1vmcATw53orpFCeeWzsAUjQ2UDIe3WpI+NEoJo4wvmKr4HtWo41Y1DgwoD0S7q6FSnBJ6b4EWtYhHbvZBSPup3MVxrezmO/EPUgm/nVRrGyfVg/Q1fTbVit4zI7Kt2sJRMYgtz1TSeoGcMnAtCmfw6A09VKV9Gkk3KBfFEGwP+rjrTJgJqK7Khow+iB+f6lug+CkU6l3Ss8K03ybnffcJlycnGq5itZLHzbOW0BvgTnxtsBu04PXoMUWgu7f9lhZ/nnyEXlmCmhOryL49ssrP6gXQrK7VW2EPjq5Rit9n0cx32171Uww/EHloB+RJyTGatiIGCGg==
-X-YMail-OSG: EUloSt4VM1kBNc5LsXQG0Ivgxj6MShTT_qrIGif5YpyxG3ov8dRCGvS2n9a8k.G
- XXveZA6Eqk.fAY_1HOC3mpFqkSlH52vMYbuAzIyC_kuMMKtHskHGMxA_qDpg5jweFO9lHpHrcNob
- NFqu6TPZoHtpKwKSmGtqU.rlqAb5CFgbHMtBGXnGmpjOoXtgI1.vNNu_xguwKziRDvFjM6GIVDGT
- FD__pUHGsrkkwHC2IB4kDZi9wkP_I238ZRQOJsnEb0sZd7.fxhYfStHa7GytVfb4FJiycGBZ4c5T
- HLnLNWSOmJVqDkdh.x.ok8mk3ghRnuSxhcTWG7R.q5I9iFlCElfYc1pL2keQDPHyC9GSjxfQeIeM
- jgeJDYItepIB.dewytRjaEFousAptY7_jDuZxwLZ4dJxKUtIUC3i2hTuMppJgA55f0muvIKn2zep
- 1O6ojz7KBUyqz9Rk3ENbRUBNn1ufhhNQKArLWGy088YzrU6gzSz26T2kFO2T.JheNxQzasiHmvP3
- BYjXBS3qdHv_OIX3.SFPK7G3e3HxLdYVh8cVgzbQ_Nd93myIxpnEo4K3bV7_aXEMmfDacq5kMP.6
- fJq0Ff.IaNKOJgg15O84x2PNyIoNpXJ2Bmh3MsfMaFoAJm2oHap_EqK7LtEmUARmuHFzfi0Rjy6y
- IJRNfJRue1u4AHl8NrdfjoSQMfyTXYn8PMr.rNmaaSgZozLpAjy2sn0T7pQy_6NFvaPnRkwMUONP
- Ut22Qd8b6PHmeyxxhEiUYqFFsXgNW9SfTiflN9MLKFGCcfk8v5ScIeSjL.DHIsw06qWCeQ8YIGp.
- pJ0ETrukdgv3x_D4KjTesYSRdrjHFms3ayZHXxpMVXLhiS0lg.__zuTukcvfiztNjA7zttjyRyQn
- OcthVf7NnePyMBYGSt4BLoPxCPcb4JRKOr2E8TvYe_FWnSL1ZXLjvNq4o4ElpSL4LA0RwF.uoYgw
- NSSXMQApYdAOXkzkd2JaLCQTRLATMHJFcHK6YgTd.DXDluwyGPLQnISd0v3UMK4Ysp3C0LSx3TLR
- 3Oc9NP3zMD_zBJW1lOj06YIyjhoAuif4Gf0YEPE5uuuA00rAkUCbJ2QhbrcA5.7h3hbQAgzAozsK
- ZevZPhB1uBXnKRUcxnqCwyAe2VA2Y5XxZdtFhLWJnRIc3H57vvhJg8XQvXFfGUFMDQlW7bIgilhy
- ivyrsNhPfCqJiuN_eRFyzFDMBg7dozxmW.wAVdefLLvcpGLSIS.1gb1B8oTaJMHGi._yQ8FvRC2t
- 1AzAC_5ac1ZhNJPN9Od3F6kXo78jaCE8PlVUUxasOiZDeN_koW1xf7.m9vdeJqAiOPyqH7Q8XCmX
- pPMvMEJs6e6ZhjpUbFr3.JYIka36rk3.xcf8bi8ZBZQboE1VSBPSfkSlV9TC3sQt5_Jmo_mSgDrj
- xXqKGkvc0hJhTZf1vlaWmwSFvQt8oK1xF_l2i_ezaayEHQe488szHZftbByq2O8Y.EQYqxQq0J5Z
- 6JnIX5GI5.qaxPO486cKhcUdY4dq.wUgqRVBZLmKxl8E7uhFV2a9HS9SWRUxB4FnGIR1J7rrkyaC
- teKgGFg7sPZmf27wMgenMGgs.HhyjGkFT7K4qTb8kzO.3bIuYFj4cDLuVtsAhAZoW5ZjdDACWoZG
- NUyFIpN7G8KmNoGyACJWUuvGKd_mm4eX6CMyFk4VtnJYTjrfjejYj.gPBFij3tVBLH9ScKMvhsQI
- mbM6Q.J7MQro0Bu1mTFNkRh2Z1VQGpNY5JgJry_Eg8.TMkjhf17OPZKHTGsyfNzsxvFAXTpNcOBa
- ITZXLqDQnDb_hZb34lIJmIHwpMk_RjEM2wwmPpxPivB3FFt961aBnQt9QjV96wot8sOig0LwhnvX
- K2UeYwNoJOEfBgGfenKEnoUt_jXjEqDo8ZhBSIUap5TRYC4G87i6p4CnbubzwAH6jBFX3Hd3uDpL
- hAVLo8WmU2_RRXl7uO3EgyAOzT2Z3h3bCBeUOuRT03KCWDBaZLxmpvCRR_cz4ITg8LhIaxhWOjq6
- rNPpim7JMt5RvbSDv9ejNqAIEAyPz5yshuSwFZOPYWHBhKpW_qIr50QIBFIriqlGtEqEqwFMB6YZ
- 4YVQ.WDLIr4x6lrJVkMN1bQxrf2HWzlHnB1i3TQiIeMTpwsMiuwntzEStuVXsTUAiPfHf0J_U9y0
- BMOH.B3YjEiasoIGGntDmrCsof7vBWOj62x661QS_H5_yIxaY4D5lqjVtEYWe8shtP5tiqfezvVM
- Hv1aG0A7l2qWd52erQGO_cZ2okf0CYe4WRfJFSRyL7nvWyffk5WlpC.Q54JCieCEhwSYYvec17D0
- WKXt1Is6nB3bca5.e6hcwC_jrQuAoV2ctQQQIFv8s
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 8385ab2c-14ce-47b2-8667-104d1b3eb9df
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Tue, 21 Jul 2026 15:03:37 +0000
-Received: by hermes--production-ir2-7b48fcd765-kss9d (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2539361a5e1aa91d765b2766a7a56184;
-          Tue, 21 Jul 2026 14:32:16 +0000 (UTC)
-Message-ID: <2d04657b-80d3-4ed8-8ce1-de464aefb33e@yahoo.com>
-Date: Tue, 21 Jul 2026 16:32:10 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b052aZuP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784646422; x=1816182422;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YMxuhHJhwyQuhdGzdrv1FAUVqYLEZ+YKUP8/Q3R2J1k=;
+  b=b052aZuPnefgkVuSAza+aT8E5VVD585WP+Dnu5JbX4J8049sgoRgaJ0P
+   qdVDFjLJJh8lOhDl5EKHY/sbInLjSreQd59tVi1IyKoBboPXlTG83jJS2
+   4a+BTeXslmlE4aUSgmDAlyAIFxz8RXqyZCkHmC3+RdHbJetfft/Res8L8
+   gFDzZuVgsTwAeXGKJ0oKjV/Rs8ev7AJEk5UeCxuYHXs48gWWh3TkYIFIl
+   wuzyUkzx2TAZQkH/nK5NBiy2D8GNdGonlr02DM5xoNEzmTFGgec5qJNCs
+   K0YzZ2Rcv0E+2ctlxoYAmXwzg1J8W7pdJGC//nmYxnCwVMqkXLyzos+pw
+   A==;
+X-CSE-ConnectionGUID: bwPZBQanRqyNBKX6L99QVQ==
+X-CSE-MsgGUID: cflepWr6R1uhW+Z7RdWAFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="96614445"
+X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
+   d="scan'208";a="96614445"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 08:07:02 -0700
+X-CSE-ConnectionGUID: sx4UNRx2TsS0H+zjOt7NLg==
+X-CSE-MsgGUID: HhHrz/g+T7eIs89GwvUQaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
+   d="scan'208";a="282298686"
+Received: from axxiablr1.iind.intel.com (HELO axxiablr1.gar.corp.intel.com) ([10.190.162.100])
+  by fmviesa001.fm.intel.com with ESMTP; 21 Jul 2026 08:06:58 -0700
+From: Siddaraju DH <siddaraju.dh@intel.com>
+To: Michal Kubecek <mkubecek@suse.cz>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	kuba@kernel.org,
+	netdev@vger.kernel.org
+Cc: Shubham Das <Shubham.Das@intel.com>,
+	Balaji Chintalapalle <balaji.chintalapalle@intel.com>,
+	Vijay Srinivasan <vijay.srinivasan@intel.com>,
+	Magnus Lindberg <magnus.k.lindberg@ericsson.com>,
+	Niklas Damberg <niklas.damberg@ericsson.com>,
+	Jonas Wirandi <jonas.wirandi@ericsson.com>,
+	Siddaraju DH <siddarajudh@gmail.com>,
+	Siddaraju DH <siddaraju.dh@intel.com>
+Subject: [PATCH v3 net-next] ethtool: link 10000baseCR to SFF-8431, Appendix-E SFP+ DA
+Date: Tue, 21 Jul 2026 20:36:38 +0530
+Message-Id: <20260721150638.3084698-1-siddaraju.dh@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII
- support for RTL8367S
-To: contact@c127.dev, Linus Walleij <linusw@kernel.org>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
- <20260711-rtl8367s-sgmii-v6-1-88f7944ddca7@c127.dev>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260711-rtl8367s-sgmii-v6-1-88f7944ddca7@c127.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26180 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
 
+Add comment to clarify the physical media 10000baseCR follows.
 
-On 7/12/2026 6:31 AM, Johan Alvarado via B4 Relay wrote:
-> From: Johan Alvarado <contact@c127.dev>
-> 
-> The RTL8367S can mux its embedded SerDes to external interface 1,
-> which is typically used to connect the switch to a CPU port. The chip
-> info table already declares SGMII as a supported interface mode for
-> this chip, but the driver only implements RGMII so far.
-> 
-> Implement SGMII support as a phylink PCS, with the configuration
-> sequence derived from the GPL-licensed Realtek rtl8367c vendor driver
-> as distributed in the Mercusys MR80X GPL code drop:
-> 
+10000baseCR does not correspond to any IEEE 802.3 *base-CR PMD.
+It has no autonegotiation, no link training, and no mandatory FEC.
+The industry standard for this media type is SFF-8431 Appendix-E
+Direct Attach cable, also known as 10G_SFI_DA.
 
-[...]
+Link: https://lore.kernel.org/r/SN7PR11MB69003D33489DB1D6B17EF72A9AF52@SN7PR11MB6900.namprd11.prod.outlook.com
 
-Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Signed-off-by: Siddaraju DH <siddaraju.dh@intel.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ include/uapi/linux/ethtool.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
+index a2091d4e00f3..986d70caec33 100644
+--- a/include/uapi/linux/ethtool.h
++++ b/include/uapi/linux/ethtool.h
+@@ -2013,7 +2013,13 @@ enum ethtool_link_mode_bit_indices {
+ 	ETHTOOL_LINK_MODE_100000baseLR4_ER4_Full_BIT	= 39,
+ 	ETHTOOL_LINK_MODE_50000baseSR2_Full_BIT		= 40,
+ 	ETHTOOL_LINK_MODE_1000baseX_Full_BIT	= 41,
++
++	/* Despite the "baseCR" in 10000baseCR, this is not an IEEE 802.3 baseCR
++	 * It represents SFF-8431 Appendix-E SFP+ Direct Attach (10G-SFI-DA).
++	 * The name is kept as-is for uAPI backward compatibility.
++	 */
+ 	ETHTOOL_LINK_MODE_10000baseCR_Full_BIT	= 42,
++
+ 	ETHTOOL_LINK_MODE_10000baseSR_Full_BIT	= 43,
+ 	ETHTOOL_LINK_MODE_10000baseLR_Full_BIT	= 44,
+ 	ETHTOOL_LINK_MODE_10000baseLRM_Full_BIT	= 45,
+-- 
+2.25.1
+
