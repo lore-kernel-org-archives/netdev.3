@@ -1,78 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF0047010B
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 19:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95978388890;
+	Tue, 21 Jul 2026 19:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784662253; cv=none; b=ZCpDpAD3V53xNIDx7NOLziGHSWda2ZizV0sg4cHeB3hV1Wh6vdJePuykGFcw2dcqATsYckanr6IhAomSkmkahPGjv5kWYgDMLS2SGFX5NUv6mtmS3e/dwO3aCda69jAqQKE3YfNpyyBskSanBrDyiQ0PejzZ/Jb+uq7A30dfQ0w=
+	t=1784662394; cv=none; b=OR5j+dOS7bfr/ghuhHke/BVe9eGoMm+GMdufUs3S3YiJvMexy0td3kIY6+K+WCULoxM3kXlnNZOaCsoBr3aZLrN7pAdC/zA6pBjkA1YNLse/r2bIp1F+5wnlyK3PYZQPyL57CAHAOx5UZvoQQXO4jXMq8npZZoKUskImgXQTO/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784662253; c=relaxed/simple;
-	bh=EbpFO1EQ6f7lqQE4dKdLZQNfk6LjVCWroTjwcytWz+Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K9FeNnUfHc8V/Nr54Mi4slhssdoGnVBpibRQvV6IzutM03xiuzxMrgPnB867Npvs878OhYO+K/lZgT/o16QdKIJVE1V9H7cWdK6aauRxRflpEbqa8X3i4ATbdAG98kHttzO0/8EOTnHIq+csUWMGnYThZDpFcyCPI9Y8SOCngF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqZWIN0T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784662394; c=relaxed/simple;
+	bh=jdpMPEWJ0ewNhqI5WRa23p4FJZ08qG/AswIPidEhqeY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uLpQgnYds0m4yJFHiegU+1/CTkMAPKJT0ydXKAgFS5H+KDJEfcT1J6L3lzYfWmGSNNeZ/XmXY0B/YwRIFngSYw6gX85SjcZl0c6z1rwooTfrasthYZzANufLb0E6Q/vF92RdpzWPCRKjHtYOM8FHS9sfBmLW3NNRjtp2P1SUUj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njwLVRoE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqZWIN0T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D650D1F000E9;
-	Tue, 21 Jul 2026 19:30:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njwLVRoE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD231F000E9;
+	Tue, 21 Jul 2026 19:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784662251;
-	bh=0xvaMJ0ELDA5AjVRdeYV2DGrCyamLpVjH7Fug7b96YI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HqZWIN0TNFl1TFXKSEi2Vr7jcHzl7cq72G+m/1J2VQ4iLq2m+TldmJIoOgGor6W/r
-	 hBZmoYkVhxGGtbajnZ1kghLEa8XQDDiBlewaOM4PHRE+bSHCjYwWomLi5uXWU9+MbV
-	 QBs+Fep4OTR+fyNm+UT8BfXz0N1hiP7sCn3CtXjCUNHyLzlKNj8yKTptSfxJfM5y6/
-	 DFQPxr8FJ8qr5nUkVhEFs4TFyfbrmdnDPEXsDHAd5fG+avyAdcCP8NPBa+bH2WpacA
-	 4qaFRn61BJ5dTgsKbdxQOwN/yGCOTYYmyUWTs2hgHtoIgu0WiPB2v1fbdWZ/bi3XVK
-	 kTOrnu/oEsgPA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C139253FB;
-	Tue, 21 Jul 2026 19:30:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784662393;
+	bh=jdpMPEWJ0ewNhqI5WRa23p4FJZ08qG/AswIPidEhqeY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=njwLVRoEmfF/sBVQr9EgYkV7oPh3a03RQ9zYjL6cZeYFEK0G1Wb2tn5fMHByelcP8
+	 LXZCdIDVHs/hVM3+7nKzwq8MgO0AW8mazu6tVJZiTlvGYl56mKZELDMTGhDUZgB2ea
+	 3iFgABSA8+XAIltg/1NpcbFG61IgpSF+OAfWL2pKllxVbZ/Ah8omlt63YkX2g5fdKA
+	 aoqYah0qYFSl7kPkQ18nIQ38wmYhb3r2m6+Wo0/grHqhApD531JjWbJr/d47i+64q3
+	 IYpJDXHIrB3PCq27v+wwfrW/czeR/HGiHmXa5lLbwRxzp18CJhmsrocF55Ek+zG6Jr
+	 lKSnAity8hwmQ==
+Date: Tue, 21 Jul 2026 12:33:12 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, David Ahern <dsahern@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bestswngs@gmail.com
+Subject: Re: [PATCH net] mpls: fix NULL deref in mpls_valid_fib_dump_req()
+ on CONFIG_INET=n
+Message-ID: <20260721123312.66ff6a57@kernel.org>
+In-Reply-To: <20260712220903.3131568-1-xmei5@asu.edu>
+References: <20260712220903.3131568-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: txgbe: fix heap overflow when reading module
- EEPROM
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178466222113.987340.15917390639117400781.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 19:30:21 +0000
-References: <20260713085111.1481884-1-chenguang.zhao@linux.dev>
-In-Reply-To: <20260713085111.1481884-1-chenguang.zhao@linux.dev>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>
-Cc: jiawenwu@trustnetic.com, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
- zhaochenguang@kylinos.cn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 12 Jul 2026 15:09:03 -0700 Xiang Mei wrote:
+> On CONFIG_INET=n, mpls_valid_fib_dump_req()'s local strict-check loop
+> enters the RTA_OIF arm on the index alone and calls nla_get_u32(tb[i]).
+> Since nlmsg_parse_deprecated_strict() leaves tb[i] NULL for any omitted
+> attribute, a dump without RTA_OIF dereferences NULL and oopses.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 13 Jul 2026 16:51:11 +0800 you wrote:
-> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> 
-> txgbe_read_eeprom_hostif() always copies round_up(length, 4) bytes
-> into the caller buffer, which ethtool allocates with exactly 'length'
-> bytes. A non-4-aligned length therefore causes an out-of-bounds write.
-> Copy only the remaining bytes on the final dword instead.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net: txgbe: fix heap overflow when reading module EEPROM
-    https://git.kernel.org/netdev/net/c/6a905a71fd43
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Someone else already fixed this
