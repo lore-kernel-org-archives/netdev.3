@@ -1,81 +1,60 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC737C906
-	for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 11:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62FD3EF0BE;
+	Tue, 21 Jul 2026 11:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784633055; cv=none; b=RCEYXMbnQ+zavLZzCWGCUF9dV1Lo6lUHZyVq1Ta4/r4oKBAIr0jX3SHPEJm6lW3rocFJmJELxUPLADvEdfpl1LR5fBgl6GnFIE5HjQWb9JtKnGxByuLWaILFan3tE6KOchOc9zqmEanPafz4/UHJiles7/41NBxhM3OCtCrQBHc=
+	t=1784633866; cv=none; b=d3B0FMjO0w7IAO/LyjWbMej5F0ikZ6rGGeCKXNClbVrmIaOa6fZtlIVnf091sEUhoOBjKpkIIdUDU6DNz1fx3w2sEBX0L0APo6xZTjz5qfssG6hqnF8cjmQhvjbGamTjUtVfcF5LCofjgWOTkj6Y9zxhei+HN7V+slDzq5LOVgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784633055; c=relaxed/simple;
-	bh=vgYpR9II/x6F/rz8NWDIOzelFwbqtcGrOcKmNIPfS+Y=;
+	s=arc-20240116; t=1784633866; c=relaxed/simple;
+	bh=/tyVtJc0klLFcW61s8rugMX5EeAZGUSjMCRnsvx+GbI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XgGy3u5SyUp7JLYLBZl8T3y6/omZ5U0gkHabXseW7KySMtxCR50Afi4vFyUiQInt0I157wvzuNGPSVzKSvdzqyu9T8fgLUzb7Ygm34cuFJ9QQkfz59Tz/NAbMl7xbpaY5HWHm0gwfFpafvx3yfzX0B2zGzi1sW+oJx/qo/EIkRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kxrShw+9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MH9P6MlP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kxrShw+9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MH9P6MlP; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=IboV3aQV/yK1Vz5b/SNaxYW60/Zt0JPsISBPPKEBouWcLLabEA7QWub55ocrIzcl0ruH4/bg9rpxgEr/Jc5OYZC7FRFhWfr0/m4GBJcFBkacd5fIov2v0AIKhMifJ1eOJU5xbEaSIgnDVhtCKwdDKH8KhkU33w+wDHnmSradwGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=k1WOeL4i; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kxrShw+9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MH9P6MlP";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kxrShw+9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MH9P6MlP"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F36523E09;
-	Tue, 21 Jul 2026 11:24:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784633052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
-	b=kxrShw+9ed9VMyDXXGddNlOek1eyFwJ4tRsIx0VTiYj0Z2TV+JFUABgRxSh7YD6uMjrWOE
-	/qee5hT/LIYH2BH5JIr3VZVITdkTtzLn5Ik9Znn2u7DHOfTn2ISD8jfdwKAIlnZ0TA5EC5
-	tIc6eA8xle2wQnZEmC4v9Re1twI82ng=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784633052;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
-	b=MH9P6MlPReWLuAbe5r88PbPi+qCiEy34M4ZV05wLL1q5S67nLP2y80fpjF0Nkhlg8qSNcH
-	uLJ8Ez90WpEuTrCA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kxrShw+9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MH9P6MlP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784633052; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
-	b=kxrShw+9ed9VMyDXXGddNlOek1eyFwJ4tRsIx0VTiYj0Z2TV+JFUABgRxSh7YD6uMjrWOE
-	/qee5hT/LIYH2BH5JIr3VZVITdkTtzLn5Ik9Znn2u7DHOfTn2ISD8jfdwKAIlnZ0TA5EC5
-	tIc6eA8xle2wQnZEmC4v9Re1twI82ng=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784633052;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gyq5BOhPtqjIUrCpn+E5t12sTZJfRNLk8Spt2PZHq9w=;
-	b=MH9P6MlPReWLuAbe5r88PbPi+qCiEy34M4ZV05wLL1q5S67nLP2y80fpjF0Nkhlg8qSNcH
-	uLJ8Ez90WpEuTrCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B8A6779AA;
-	Tue, 21 Jul 2026 11:24:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DEdZG9tWX2qADQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 21 Jul 2026 11:24:11 +0000
-Message-ID: <1af37032-776b-4e1f-84d2-f69bef3ed75e@suse.de>
-Date: Tue, 21 Jul 2026 13:24:05 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="k1WOeL4i"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LAfgZK793208;
+	Tue, 21 Jul 2026 11:37:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aNRlgP
+	bK3zEmFdjyBI2O2RlvvV8/JFQWq8qGVZEFiag=; b=k1WOeL4ilg7HlF1rgbc/nh
+	zonZLNRjA+9w3gXhK6b0EhdoG3xVpjtnhFzv7mMUhP8B3qFILeJCo2kk04A9FrHV
+	Sjevczbj/aNPUh6hiw8D9YKmIcPhH1BJW4JgDrLTUQ+cJL4yedr6f53RRfu00Q/4
+	52zD7zD8mmQPA2d8kyR4JW+MG3/G/nlL/a/ZmpYtrfJRZQnuK954wy4VvuaL9Cis
+	8JxYDf8MAoGAts9MwlkqqzQC0lIstLgIL6CVclWgRcO7JsImssWXRLu2FhiuE1WT
+	kbeAx7uHc+fq8qWMtmsQscWCkessl4XvMhzWewd47h5HEaA/0FeP0DET+4EiJjCA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg790v94r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 11:37:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66LBYmjH024568;
+	Tue, 21 Jul 2026 11:37:33 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1g9uy6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 11:37:33 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66LBbTOH25100716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Jul 2026 11:37:29 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 216BA2004E;
+	Tue, 21 Jul 2026 11:37:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E515920040;
+	Tue, 21 Jul 2026 11:37:28 +0000 (GMT)
+Received: from [9.224.94.95] (unknown [9.224.94.95])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Jul 2026 11:37:28 +0000 (GMT)
+Message-ID: <3da353b3-a159-46ea-83fb-807a2a242e49@linux.ibm.com>
+Date: Tue, 21 Jul 2026 13:37:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,82 +62,135 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] net: hsr: fix memory leak on slave unregistration
- by removing synced VLANs
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com,
- syzbot+456957213f32970c0762@syzkaller.appspotmail.com,
- Felix Maurer <fmaurer@redhat.com>
-References: <20260721101240.995597-1-edumazet@google.com>
+Subject: Re: [PATCH net] net/iucv: fix use-after-free of a severed iucv_path
+To: patchwork-bot+netdevbpf@kernel.org,
+        Bryam Vargas <hexlabsecurity@proton.me>
+Cc: pabeni@redhat.com, twinkler@linux.ibm.com, kuba@kernel.org,
+        edumazet@google.com, davem@davemloft.net, linux-s390@vger.kernel.org,
+        hidayath@linux.ibm.com, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, horms@kernel.org, nagamani@linux.ibm.com
+References: <20260707-b4-disp-783fedbb-v1-1-463b9dbda2ea@proton.me>
+ <178461900540.131537.16161978052316384549.git-patchwork-notify@kernel.org>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260721101240.995597-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <178461900540.131537.16161978052316384549.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: F36523E09
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,syzkaller.appspotmail.com,redhat.com];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[456957213f32970c0762];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 3fBmCmFhyZqJIxct3h388N4trjsbq3hy
+X-Authority-Analysis: v=2.4 cv=V6RNF+ni c=1 sm=1 tr=0 ts=6a5f59fe cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=c92rfblmAAAA:8
+ a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=-x-WvX9gwJZ7GEVxNYoA:9 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDExOCBTYWx0ZWRfXw9vSMjf6Z8Pn
+ 7B7uemPnnwMB/zb1QLorl2Cjyg8s/gn3nF0hTlp2XGe5tqHOCGXmsk65k5HFqReVAtvoXtcWJWu
+ FfX9Uw6cSImwSTvLNUxYIMyqvRiRMyQ=
+X-Proofpoint-GUID: 65X9kMEfWxpvaJ17y6RDsQYhpVIRihwc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDExOCBTYWx0ZWRfX2f5R77v8QlZe
+ G2irt/85bK9OgYcEXgAEgAAfyvoWz7Ol8VMJwXrwXVe7QLhxP0jNQxJ6oPwc9JPqRUYLPeVNTNU
+ xng7FAnlRNjJbvBktUnUCzqZ/Xv9LLJ0sYN7yUNkTHVVarRvdrF3/trJZJSvfvrXxTNwCOtdkeT
+ 7AhJlIdADbAYzJrvRO2mEWMv0h/DrFREVxYaNg/yLHvj9skyl5bhzZZK9TUQlZIeb98ArlwNuyZ
+ 6HkXrVZTjL/0fxAyr1bFbqlEcDZJeX01cgYdGeOWkrNCHySE7iaQn1ni3jqFlp/r9uLY49r1eh3
+ L17tydVKEsOTKaT1s0cLNMjR0bbnSy9/v8zZf15ySElqTmjAJnkJ+OCSFkTXnVkmc9FA1zrwLbH
+ MmdI2LE3LSu0TR0Cmt4jlg5lFSlL9awqCl0wCjWEwD+6G6IN7H/T6YIn4k16KNN3mFldcIDmksH
+ DPI4pg5RD4ZCVLsAtcg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-21_01,2026-07-20_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607210118
 
-On 7/21/26 12:12 PM, Eric Dumazet wrote:
-> When an HSR master device is brought UP, it auto-adds VLAN 0 via
-> vlan_vid0_add(), which propagates VID 0 to its slave devices (slave A and B).
-> 
-> If a slave device is later unregistered while HSR is active (e.g., during
-> netns cleanup or interface destruction), hsr_del_port() is called to
-> detach the slave port from the HSR master. However, hsr_del_port() currently
-> does not delete the VLAN IDs that were synced to the slave device by HSR.
-> 
-> As a result, the slave device retains a refcount on VID 0 (and any other
-> synced VLANs). When the slave device is destroyed, its vlan_info /
-> vlan_vid_info structure remains allocated, leading to a memory leak.
-> 
-> Fix this by calling vlan_vids_del_by_dev(port->dev, master->dev) in
-> hsr_del_port() before unlinking slave A or slave B ports, matching the
-> propagation logic in hsr_ndo_vlan_rx_add_vid() / hsr_ndo_vlan_rx_kill_vid()
-> and the cleanup behavior in bonding and team drivers.
-> 
-> Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
-> Reported-by: syzbot+456957213f32970c0762@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/netdev/6a4cb6ca.57639fcc.86d58.000b.GAE@google.com/T/#u
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Felix Maurer <fmaurer@redhat.com>
-> Cc: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Nice catch on Sashiko's feedback, thanks.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+On 21.07.26 09:30, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
+> 
+> This patch was applied to netdev/net.git (main)
+> by Paolo Abeni <pabeni@redhat.com>:
+> 
+-- Original Patch for reference:  --
+> From: Bryam Vargas <hexlabsecurity@proton.me>
+>
+> af_iucv queues not-yet-received message notifications on iucv->message_q,
+> each holding a raw pointer to the connection's iucv_path.  When the peer
+> severs the connection, iucv_sever_path() frees that path with
+> iucv_path_free() but leaves the notifications queued.  A later recvmsg()
+> drains message_q via iucv_process_message_q() and hands the stale path to
+> message_receive() -- a use-after-free of the freed iucv_path.
+>
+> Drop the queued notifications when the path is severed; once the path is
+> gone they can no longer be received.  This also frees the notifications
+> leaked when a socket is closed with messages still queued.
+>
+> Fixes: f0703c80e515 ("[AF_IUCV]: postpone receival of iucv-packets")
+> Closes: https://sashiko.dev/#/patchset/20260705-b4-disp-fc79c0dc-v1-1-d2cdcb57afa9@proton.me?part=1
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+> ---
+>  net/iucv/af_iucv.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index fed240b453bd..2869a103f7fa 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+> @@ -337,6 +337,7 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+>  	unsigned char user_data[16];
+>  	struct iucv_sock *iucv = iucv_sk(sk);
+>  	struct iucv_path *path = iucv->path;
+> +	struct sock_msg_q *p, *n;
+>
+>  	/* Whoever resets the path pointer, must sever and free it. */
+>  	if (xchg(&iucv->path, NULL)) {
+> @@ -348,6 +349,19 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+>  		} else
+>  			pr_iucv->path_sever(path, NULL);
+>  		iucv_path_free(path);
+> +
+> +		/*
+> +		 * Message notifications queued on message_q still reference
+> +		 * the now freed path; drop them, otherwise a later recvmsg()
+> +		 * would pass the freed iucv_path to message_receive() via
+> +		 * iucv_process_message_q().
+> +		 */
+> +		spin_lock_bh(&iucv->message_q.lock);
+> +		list_for_each_entry_safe(p, n, &iucv->message_q.list, list) {
+> +			list_del(&p->list);
+> +			kfree(p);
+> +		}
+> +		spin_unlock_bh(&iucv->message_q.lock);
+>  	}
+>  }
+>
+>
+--- end of patch --
+
+> 
+> Here is the summary with links:
+>   - [net] net/iucv: fix use-after-free of a severed iucv_path
+>     https://git.kernel.org/netdev/net/c/be7cc4656eb1
+> 
+> You are awesome, thank you!
+
+
+Ah, Paolo was faster than me.
+
+@Bryam and for the records,
+this should not be a use-after-free. After iucv_server_path it should not be possible to call
+iucv_process_message_q() anymore. I agree that it is a message leak, the pending messages indicators
+in iucv->message_q are not freed anywhere. I would have preferred to do that in iucv_sock_close()
+instead of iucv_sever_path() for symmetry with iucv_sock_alloc(), but this should work as well.
+
+Having said that, as we discussed in [1] the socket locking in af_iucv wrt receive path has
+deficiencies, and we will follow up anyhow.
+
+[1] https://lore.kernel.org/all/20260711041119.12764-1-hexlabsecurity@proton.me/
+
+
+
