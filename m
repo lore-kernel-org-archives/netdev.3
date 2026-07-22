@@ -1,39 +1,42 @@
-Received: from outbound.ci.icloud.com (ci-2005i-snip4-1.eps.apple.com [57.103.89.212])
+Received: from outbound.ci.icloud.com (ci-2001b-snip4-1.eps.apple.com [57.103.91.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8AF4C77B5
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 10:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.89.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622894C77BA
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 10:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784715896; cv=none; b=sc+tSxQrIJXz3HVkSXz4n7gpYwO/prJtamcUA94uLV8Sv0EGUGRjwgHcehWwCpf1g2Inr8GSXij5nkiXYiJ+2bhWmtni1kDnZetFwTcqI2jlZ9tpOMb6Y/WD0BBymAqPWmlQuriE6g1hKiGJiHg6Y8AtoKhuYHSatewO2w4isZg=
+	t=1784715899; cv=none; b=jcdwJ0LFK4uP80yVCQa2hK2t6RjydO/FeAHXaCYETx07Et+Z6H57CWa4Oh3vlBNAJ/tBiUAhNJsC7GuQDplncZhrvDkYXEDHLUNLpRX+pK/8Bp570fanlJjsrg3nH+/LEEJSri/kSm7lwgXVHZhtmwkdgmtrvjBAga6op9l8ZZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784715896; c=relaxed/simple;
-	bh=v+ib2dRWpZc6cejiBpvWLhHBsW9p7G2032Ilkk/3G9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RnHBoliAZiKhrxPA/o/LKggzcHyeoPG45/cgkffOiXAkVUU1/f8ABwHGDH+4VuvhNbg2Xdo8NJyp7lJDEau2xhRJZ97eeWSBjIbU/x6MDFMebgUMBWUXlMWpMGids7FqA/iMANjpARO/tWETlJNDfxbmCZ122q0l4FwwXKKwqyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehaxbys.co.uk; spf=pass smtp.mailfrom=thehaxbys.co.uk; dkim=pass (2048-bit key) header.d=thehaxbys.co.uk header.i=@thehaxbys.co.uk header.b=x3wX2Eht; arc=none smtp.client-ip=57.103.89.212
+	s=arc-20240116; t=1784715899; c=relaxed/simple;
+	bh=3sPsVxDDwcmchVigTZ4/kEzLeFAvhaaf+wWSJh8iHQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Im4WS9lgfitzNu3eWAKqcpFty121SznkRIAeO0Ic61OYFKNXK+4VkA9x7gCOHtFA/ZCA59e2qqh0EhL+9Z5/Rab8vDJl8oxmbFTMr8PrtSOETf+vKVg6j78YTIY+EQryv4brS8A5LQYFkvWbuLc5fv90P7iNlwTDCGlVt1+pMJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehaxbys.co.uk; spf=pass smtp.mailfrom=thehaxbys.co.uk; dkim=pass (2048-bit key) header.d=thehaxbys.co.uk header.i=@thehaxbys.co.uk header.b=p2O3y1ql; arc=none smtp.client-ip=57.103.91.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehaxbys.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thehaxbys.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thehaxbys.co.uk header.i=@thehaxbys.co.uk header.b="x3wX2Eht"
+	dkim=pass (2048-bit key) header.d=thehaxbys.co.uk header.i=@thehaxbys.co.uk header.b="p2O3y1ql"
 Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-8 (Postfix) with ESMTPS id 6C4981800133;
-	Wed, 22 Jul 2026 10:24:50 +0000 (UTC)
-X-ICL-RepId: 019f895b-4e37-750a-92c3-01f450a07315
-X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQtJBEMGXgdeAFYCWgBLVxQEElAFdx9aFVEZSw9OGBwTVlZGBhcNVk1NEFYFVhNQCUpWUAIZHllQSxsOWRcDVxxWRVwYQwldBVccHQ5eRVsTVRdGCRkIXR0ZCEcfCjADQg5WA0MHRQAtGRxXUEMDVxhYAFEUREVRHxcNWE1aAlZNBUoDXwFbBUILSQNfA18DXgFPBV8aWh8aWhBzGV8OWhFBGkoeGQhdXkwTDU1DEkIVBBtGHkMEXy9dF14MXgU=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thehaxbys.co.uk; s=sig1; t=1784715892; x=1787307892; bh=Ym4CnQ83I9M1zT+uXLcZh8HICnLIvGZK5ngCQ19Iwi8=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=x3wX2EhtiKLDlhFNBgx7a3f3yJW+IOLZRvmbSlAnLaThGmBLxarcw2pcMIGXBSjo+0dbdrFG4/nbsNVPF5ISEmg27/dQBK8U3m7BKkDw2XFCsBLbd+BRIcNerLwg693zbJWVICmxMinvuaWyHZep/pY4L3zX4a7KDF3ebXnaT4jqeZoU71cXIqdZ1rxSKK0EdBkMetqkJRpNSr1AEfxpaAmc5Kdst2t8Y2Pk/8LMW7ggrr8lJ+iEX1V8WrmbzLp1E2tMyM5ZtUnnqGZAGD0GYGKKZY+cZrC0DCE+AxIQg246DMVeizG2ryC1E1Ku/eMUYMbXw7U8uKFCxP3wkO0eow==
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPS id 7250D18002B0;
+	Wed, 22 Jul 2026 10:24:53 +0000 (UTC)
+X-ICL-RepId: 019f895b-5a78-70e2-b906-14da267ed183
+X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQtJBEMGXgdeAFYCWgBLVxQEElAFdx9aFVEZSw9OGBwTVlZGBhcNVk1NEFYFVhNQCUpWUAIZHllQSxsOWRcDVxxWRVwYQwldBVccHQ5eRVsTVRdGCRkIXR0ZCEcfCjADQg5WA0MHRQAtGRxXUEMDVxhYAFEUREVRHxcNWE1aAlZNBUoDXwFbBUILSQNfA18DXgFPBV8aWR8aWhBzGV8OWhFBGkoeGQhdXkwTDU1DEkIVBBtGHkMEXy9dF14MXgU=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thehaxbys.co.uk; s=sig1; t=1784715895; x=1787307895; bh=8gbN00omLuFoqSqpFRA+32tb3Eth1TkeYwOTlWHvywI=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=p2O3y1ql3077MUSqf9pQ45G+mQkR9A0MbzyGNCq2xBQq/AtlsFi1JwdIMF59Mtqvl4X/HMVLsh3FWmelhAYzbuIuzjxtiyJCf1jOCDVzorFwnJPtoJer4jOSq0vdPJnZXroLfuu7U+OKnA7gBaYOjaTKsDfky9Cf0u8pVlaQAUkqftIklWML+8B5U1ZqADfTxjP5n738Hhc4KbUKjcBSDoPRdEzxeH+0EUgNN0g6Gnu3voOU7eXOcBGuq1XwcLKnKHlNTnxTjD/k0TCoNX71DlEEmg0SbFFBea9lLO/0UWzKcVcitKjuJ1ehjxhq4wn4t9kPPksD2TQ2ZYLZJc8ucw==
 mail-alias-created-date: 1318449231000
 Received: from localhost (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-8 (Postfix) with ESMTPSA id E25AD18004B6;
-	Wed, 22 Jul 2026 10:24:47 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPSA id 7B39618002AE;
+	Wed, 22 Jul 2026 10:24:52 +0000 (UTC)
 From: jch@thehaxbys.co.uk
 To: dsahern@kernel.org,
 	idosch@nvidia.com
 Cc: netdev@vger.kernel.org,
 	John Haxby <jch@thehaxbys.co.uk>
-Subject: [PATCH 0/1] net/ipv4: discard icmp timestamp requests
-Date: Wed, 22 Jul 2026 11:24:40 +0100
-Message-ID: <20260722102441.8762-1-jch@thehaxbys.co.uk>
+Subject: [PATCH 1/1] net/ipv4: discard icmp timestamp requests
+Date: Wed, 22 Jul 2026 11:24:41 +0100
+Message-ID: <20260722102441.8762-2-jch@thehaxbys.co.uk>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260722102441.8762-1-jch@thehaxbys.co.uk>
+References: <20260722102441.8762-1-jch@thehaxbys.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,42 +44,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: gkqW7uSvMpnXJC1_0RvsFHjKDoUEIkDS
-X-Proofpoint-ORIG-GUID: gkqW7uSvMpnXJC1_0RvsFHjKDoUEIkDS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDEwMCBTYWx0ZWRfX32alqj0hjoaR
- LyU+Da+SzOhtD/WYi73WXl4yQo5duB+Z3fO9F+1v604PHf2Jv+R8DdPdVLe6fplKYsuR4lCg9HU
- f5Ihl7SAyzstj/xvubPlDs9e1mEyVnWXSuYK9WxWFfnUGq0K3f1Xz9bpPSFWLw4D/aeQJ4PN1cV
- QvmRh3Vj6GJ0M6IdZ4cuqBcpZu+JlqFOgkm0ePM23+lq7ALKbyr1cBHRUgMG0jp/EN5A7JSaFM/
- jtNJd5Sn32xWMcomykpG3Nz9VSU3mGQwYROr8qIMXAo4FPZyGYZXVPqXiQDtjmNbkbZwz9wyYDB
- zgg+ONPLF1b4a4gBVkC
+X-Proofpoint-GUID: yE6leNymWf1WlVLnWovazkl838omj3qR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDEwMCBTYWx0ZWRfX5s3Fb6hfXKmN
+ N43bjxvzPavXkhdZLuD8ydAm+odQLlFnT1R20D+Q7AmVyybVAgiwR9wGz1DITcZ0FF0U6ZU4OKK
+ g0/kgriUXADIBkc+gn+GIPQwU/VfpVyWTqCae10MMcDwAknLKjj3t9GQObYyJUC8BVMTAEhW0cz
+ mHVLepm+tMYLoUla08YyMbT4XZf4OOst5KYCAPe221/UhJSYWmgzLS03rVi/5/w59DNHKGmLFEW
+ USY+tzrsuvYaw1/Br1D4WVARfuwvIntf9u7SE4wMxpeI87q2SIOoZNyShvuEyaEdZmTYkv2/A5e
+ jkaU9aro2X/RhYOjGmS
+X-Proofpoint-ORIG-GUID: yE6leNymWf1WlVLnWovazkl838omj3qR
 
-If you google "CVE-1999-0524 fix" you'll see quite a few comments along the
-lines "this recently showed up in vulnerability scans, this is how I fixed
-it".  It shows up because in late 2022, the CVSS score for that CVE changed
-from 0.0 to 2.1.  There are actually two part to this: one relates to
-disclosing address information (which is long gone from linux) and the
-other relates to disclosing timestamp information.
+An icmp timestamp request is classed a a minor security vulnerability
+(CVE-1999-0524) due to an information leak.  As pretty much everything
+uses NTP these days, it's not as though this is an actual problem but
+scanners flag this so for everyone's sake, let's just discard timestamp
+requests.
 
-This is regarded a a vulnerability because it allows you see the host's
-count of the number of milliseconds since midnight.  Indeed, according to
-RFC 0792, and back in 1981 it had a potential use for time synchronisation
-across hosts.  That early use-case has long since been supplanted by NTP so
-you know how many milliseconds there are since midnight: it's the same as
-on your host, your smartwatch, your phone and practically any other
-computer you care to mention.
-
-It's not as though the ICMP timestamp is an actual vulnerability, it's just
-a pain in the neck because world+dog wants to know how to configure
-iptables or nft to just discard this, so let's help everyone out by
-discarding it in the kernel.
-
-jch
-
-John Haxby (1):
-  net/ipv4: discard icmp timestamp requests
-
+Signed-off-by: John Haxby <jch@thehaxbys.co.uk>
+---
  net/ipv4/icmp.c | 42 +-----------------------------------------
  1 file changed, 1 insertion(+), 41 deletions(-)
 
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 23e921d313b3..ec0443424110 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1383,46 +1383,6 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
+ 	return true;
+ }
+ 
+-/*
+- *	Handle ICMP Timestamp requests.
+- *	RFC 1122: 3.2.2.8 MAY implement ICMP timestamp requests.
+- *		  SHOULD be in the kernel for minimum random latency.
+- *		  MUST be accurate to a few minutes.
+- *		  MUST be updated at least at 15Hz.
+- */
+-static enum skb_drop_reason icmp_timestamp(struct sk_buff *skb)
+-{
+-	DEFINE_RAW_FLEX(struct icmp_bxm, icmp_param, replyopts.opt.__data,
+-			IP_OPTIONS_DATA_FIXED_SIZE);
+-	/*
+-	 *	Too short.
+-	 */
+-	if (skb->len < 4)
+-		goto out_err;
+-
+-	/*
+-	 *	Fill in the current time as ms since midnight UT:
+-	 */
+-	icmp_param->data.times[1] = inet_current_timestamp();
+-	icmp_param->data.times[2] = icmp_param->data.times[1];
+-
+-	BUG_ON(skb_copy_bits(skb, 0, &icmp_param->data.times[0], 4));
+-
+-	icmp_param->data.icmph	   = *icmp_hdr(skb);
+-	icmp_param->data.icmph.type = ICMP_TIMESTAMPREPLY;
+-	icmp_param->data.icmph.code = 0;
+-	icmp_param->skb		   = skb;
+-	icmp_param->offset	   = 0;
+-	icmp_param->data_len	   = 0;
+-	icmp_param->head_len	   = sizeof(struct icmphdr) + 12;
+-	icmp_reply(icmp_param, skb);
+-	return SKB_NOT_DROPPED_YET;
+-
+-out_err:
+-	__ICMP_INC_STATS(skb_dst_dev_net_rcu(skb), ICMP_MIB_INERRORS);
+-	return SKB_DROP_REASON_PKT_TOO_SMALL;
+-}
+-
+ static enum skb_drop_reason icmp_discard(struct sk_buff *skb)
+ {
+ 	/* pretend it was a success */
+@@ -1685,7 +1645,7 @@ static const struct icmp_control icmp_pointers[NR_ICMP_TYPES + 1] = {
+ 		.error = 1,
+ 	},
+ 	[ICMP_TIMESTAMP] = {
+-		.handler = icmp_timestamp,
++		.handler = icmp_discard,
+ 	},
+ 	[ICMP_TIMESTAMPREPLY] = {
+ 		.handler = icmp_discard,
 -- 
 2.55.0
+
