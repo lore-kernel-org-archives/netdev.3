@@ -1,112 +1,168 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04B3404BFF
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 22:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0013845D3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 22:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784758605; cv=none; b=cF6G6trnWf67ECz5AaSa8TkDu2gLUTZNbO8R42ZyxUsPLHHDauI+sm+/xv5N2qDD9gSQidEXfe4ReZLf3+eAGqhuSN2N5wYv1JR4jJKQuR93zyKQJ/65ah4xHpmQtgNyaxDtmxQ1WCZ/Xp44xXvVmO/SDzimL30OzvyH1COOB9g=
+	t=1784759931; cv=none; b=mdOCnplj6NKbQ/CIL6zUC2CI5O/Lz4GQSItIg1gVFaDMKLKJAaluiQ3QLgXKh4W3VdYiAMCPECB2WP9etEGBuKmiBk1/1LvUGn7WHdcgR/iVJiHTg8Hl1/zvlwgcfSifdENILWpjrV53bL/0JAB9Z6bX2HUuJ+w4vl52hmTNOYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784758605; c=relaxed/simple;
-	bh=pmLr6Q0wrxaoiG0HC4cecGXvH0Y1btBIoJOHP4vTW9c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pS2L0HbtpHp9QboHxOFmxrw/vhbHHmVwOxfy4pMn2Rn4em8kss/OqS0s+rcGxkxS3Yu4HGAw13EhdrqNZc2KX42r9DAcIGZzUOWwTKNnNFD4CJr9fnPEa7MVIDzstT5v06V5O1qLJg59zFxcZy7JvzuUv24d4pppXAyE6GW8TAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PZd9F1ko; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+	s=arc-20240116; t=1784759931; c=relaxed/simple;
+	bh=ErJpjEQWDeZx+5Ukr3howqPNeHRsrbWj24/d7PrQaQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OeVZJJwTt5t+EoHEhKSdzvI/JBRKilLCMy0q9kZqbSIkJp+RH2IGFdhOc/95xzzqdXyD2sso3qVFQkTLRyg1h2T2z4iTwZtwLkyvKsKzO73WbNZTQFpyWg1+GavPvkSnAvOVpvcbGpW0yo95lg5LdfgZRpPE8sBEGVaH8otE3Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Rq6hTw6Z; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PZd9F1ko"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a3514f912so18423989b3a.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:16:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Rq6hTw6Z"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-383cb94f742so12305414a91.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784758604; x=1785363404; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nKju/xiraPUjvnNIoptLAwkfAEYgVko7uXam/THvrCc=;
-        b=PZd9F1koYhqdsVZtSzYENZf+OqmR/jW7O+s12PSSvdxJBmILnRcZG5vmeSc08BXzhw
-         a+CvaCM9s1LpFNv2p6IAxI6Wh8dQz2Aw3X9L9i2kEjg+t9SondbIeyU3hi/Gbx/XpctX
-         FCLUnYsS02tjfcnV+h5v3izCVliUUYaPv/5LWxYD4ecsAyN+swcVezxcoLsmBREIoaJB
-         SX/agzTKDIgvDR5X1wrEJIXpMwbJ3LQ8P5G8bHLowniD57esvj1AdmqI5AQtiuEtHdRf
-         3Hq56dIVq+I4F4LNnXG3p9ipGrHWsPfeDtfwfuZzCGL9EwABvEUTGd62ByiHza/ahZnz
-         Gj8w==
+        d=asu.edu; s=google; t=1784759929; x=1785364729; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0yGVB60xf7Pehiss9PEglYAbbqwJonda8iGQt4O0k6M=;
+        b=Rq6hTw6Z4f3OGzg0TZXmkGROhRK5wFWsfUUUHFbXycFpb3awolcFqFwM7MeFs7n2i9
+         e9w28x9dy/GagegvrqgtJsTLMndJojHnV3udZNQXO+WXvGN4fURaVHsLmdD3XnC+gT4e
+         M7NmAjxjgcLmEBhTf5iwZZykIOm7mjOGNhxfDltD1seAZvH6KMA1cyPHweqhJo8bNaiF
+         UyCRMzP/IaLd0kDyGCEh2a7QzBkfE6aEDWQSqRRukoTjlHBKZubtWi9NnLcXh+FcMRiX
+         AsAFxDSh0/iTUbVqLBkFonlI6xZlwaS99lJD6gkAykHZib7o2IuuWd2rXA3zA9wmRHmJ
+         v/FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784758604; x=1785363404;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784759929; x=1785364729;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nKju/xiraPUjvnNIoptLAwkfAEYgVko7uXam/THvrCc=;
-        b=RzD+OWa5/jLaOD0+16RYjYqfxkr7RV9+j0AGZXAkXQsLef6u+RhPDNSxM+Quy4MSdX
-         /LbQl3GVhNVCBa7HxNQfsKk6xe1gEbtd+ShxOT+3/2iFsR9+XQQPK1qrOAnlxmi8iVKM
-         y5fQWucYd801l3Xw1XcWXixcGLFnXW4ImV2nZabboMJiVPtTlPAGkHh/rRIquqQk1C97
-         eJ/8PhE7XKoGaYdyhNMQMdA4+EjD70EGTzHpAnVO0CAsCD/93++ZubZGp5l8GfFrLWjG
-         BraRPMPKduTc/CeQII6uHJ4zjWYb8WrdqFe/rFRiIPlBW3G4vnuapF7hawG2Or0w1Yoh
-         n+Mg==
-X-Gm-Message-State: AOJu0YzsGlsoNpr2IaBye8qYBZZBCJ3538h9XZIrYUm571KTcuKlOBBt
-	vvRC/pPO2jWLRcncRnFkO8+G9Eb7D/f8zwPapGGx+c/uFsq5M4tJlEGURHNdMJPweRZfYJsaPWM
-	2Euj9/vewJ+GYQg07HAmYbs5D3RiYfCqDeo46Y/V6zfk5jojra+y9v8b4cA/ariua4evBP0/7d7
-	Zqa+mXotku3eTxHCnbUWLEdKh/4n5In6HAouRhfIZtPuKbvSA=
-X-Received: from pfbde7.prod.google.com ([2002:a05:6a00:4687:b0:848:401c:994])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:cc9:b0:847:99b4:d011 with SMTP id d2e1a72fcca58-84e2c19f3e3mr648344b3a.39.1784758603545;
- Wed, 22 Jul 2026 15:16:43 -0700 (PDT)
-Date: Wed, 22 Jul 2026 15:16:34 -0700
-In-Reply-To: <20260722221634.186886-1-joshwash@google.com>
+        bh=0yGVB60xf7Pehiss9PEglYAbbqwJonda8iGQt4O0k6M=;
+        b=AaZUq9zewKRAer/JHCXhYrxNwOa2YkN7uU0mzgRJrP/Dp7XdN8EanCa6MpDnYSjNUF
+         h0RbMDSDAz9po61eXK2AlBBRN2HnUaEVE+p3cbJit15+Ipx7Pt0wSAm2+s6Lx3F5nZx8
+         +j/o2Mp5f03N5z4EwGF14+eRF9vdpipdM4DG+OYHclgnMUqfoBZkxa90x0s2Ku3M3kA+
+         QL4VESxzUtsJ6IhC6fhShNsbAxPs/EwyQHUuyE6DpRICR8a+Oo6xifaarnrBa60Tb4k5
+         ojhMZqro+90tNP1QB3K7yhppikGbIAZ0RCgg1HzEmJipKdWCMCENQyABlLxfqBqsGHkF
+         s4WA==
+X-Forwarded-Encrypted: i=1; AHgh+RqkG2HULFSqMj5uheWxHi/Q97yR3pqsc078ypjW5zgysc4t9kQAS+Y96iv2INRB8VVthXxKRls=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBdm2WEhJK6DCLxllvNf9jl+6C0CW7SkjBZqSK3n1GaKa2lyV6
+	PdpK4erxbg0h4et0y9Ig05R7HqWn5NpIfbXEDHgXrsf1W+m/lekT946F+hV1ja5ezQ==
+X-Gm-Gg: AR+sD10yZ2+6kAp4wf+ENt1/7mNcI2YFY1B2IVB6OOQ4CgDnAioCtRGqRLfQMmS3cuo
+	yQC7CNb8Tk9R+mP0qI9Q0QsGAyJJRua0K5K77tonCMCBRxrWgspTae+1DlfSA97b1N6VAUpWx4D
+	wWQg9cOqmBAITkR9SuGSVuTzdGHtuWn2QWyng5U9seve65ndccqi87S2VFaojgGDPL8e2M64cCQ
+	xzwBFzn3giGrbxVGvQVM504AfDamiX5ZbccKeH9cX9FRy5VtAR4oQYRW6ZBOVI9qPp3k45q721e
+	NsCvimP6GV1PcKCMRGma7p5dSXqmO+cset3SnfTUOPxBN7KSKegcomatlsat0HwfKMPiPTxIvZJ
+	t7YtZUnoGrufMZcXBFd97Y4BR2Jp/NU6/4m5VurLekLNAMhIgLaVmmj/QfEn+mXzXgYuP8hZ1Kt
+	DjxO1L48s=
+X-Received: by 2002:a05:6a20:9398:b0:3c3:bbe6:95de with SMTP id adf61e73a8af0-3c44afcd580mr443511637.6.1784759928377;
+        Wed, 22 Jul 2026 15:38:48 -0700 (PDT)
+Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e1cf8fasm13254741eec.31.2026.07.22.15.38.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 15:38:48 -0700 (PDT)
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Subject: [PATCH nf] netfilter: ipset: fix refcount race between list:set GC and swap
+Date: Wed, 22 Jul 2026 22:38:32 +0000
+Message-ID: <20260722223832.3524006-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260722221634.186886-1-joshwash@google.com>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260722221634.186886-3-joshwash@google.com>
-Subject: [PATCH net-next v3 2/2] gve: add XDP metadata support for DQ RDA
-From: Joshua Washington <joshwash@google.com>
-To: netdev@vger.kernel.org
-Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Jordan Rhee <jordanrhee@google.com>, 
-	Tim Hostetler <thostet@google.com>, Ankit Garg <nktgrg@google.com>, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Commit 1b42e07af1ee ("gve: Add Rx HWTS metadata to AF_XDP ZC mode")
-exposes support for the XDP RX timestamping metadata operation in the DQ
-RDA mode. While the operation works on its own, the intent was to enable
-XDP metadata support for the queue format as a whole along with it.
-Currently bpf_xdp_adjust_meta fails because meta_valid is set to false.
-This change updates xdp_buff preparation to set meta_valid to true, so
-metadata can be fully used by XDP programs.
+__ip_set_put_byindex() resolved the index to a set pointer under RCU,
+then took ip_set_ref_lock in __ip_set_put() to decrement set->ref.
+ip_set_swap() holds that same lock while swapping both the ip_set_list
+slots and the two sets' ref counters, so it can interleave between the
+dereference and the lock acquisition, leaving the caller to decrement a
+set whose reference already moved to the other index and hit
+BUG_ON(set->ref == 0). list_set_gc() reaches this from timer softirq,
+which the nfnl mutex does not serialize against swap: an expiring
+list:set member calls list_set_del() -> ip_set_put_byindex() while
+IPSET_CMD_SWAP runs on the referenced sets.
 
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
+Resolve the index and decrement under ip_set_ref_lock, as ip_set_swap()
+already does, keeping the refcount tied to the index rather than to a
+stale set pointer.
+
+  kernel BUG at net/netfilter/ipset/ip_set_core.c:685!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:ip_set_put_byindex (net/netfilter/ipset/ip_set_core.c:870)
+  Call Trace:
+   <IRQ>
+   list_set_del (net/netfilter/ipset/ip_set_list_set.c:159)
+   set_cleanup_entries (net/netfilter/ipset/ip_set_list_set.c:181)
+   list_set_gc (net/netfilter/ipset/ip_set_list_set.c:578)
+   call_timer_fn (kernel/time/timer.c:1748)
+   __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2374)
+   run_timer_softirq (kernel/time/timer.c:2405)
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+Fixes: 9076aea76538 ("netfilter: ipset: Increase the number of maximal sets automatically")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 ---
-v3:
-  - bfp -> bpf
-v2:
-  - Fix referenced commit in description
----
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_core.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 907a0c15bf30..329a2585489b 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -882,7 +882,7 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 				 buf_state->page_info.page_address +
- 				 buf_state->page_info.page_offset,
- 				 buf_state->page_info.pad,
--				 buf_len, false);
-+				 buf_len, true);
- 		gve_xdp.gve = priv;
- 		gve_xdp.compl_desc = compl_desc;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 6cfad152d7d1..16d33c3e28cf 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -679,11 +679,18 @@ __ip_set_get(struct ip_set *set)
+ }
  
+ static void
+-__ip_set_put(struct ip_set *set)
++__ip_set_put_locked(struct ip_set *set)
+ {
+-	write_lock_bh(&ip_set_ref_lock);
++	lockdep_assert_held(&ip_set_ref_lock);
+ 	BUG_ON(set->ref == 0);
+ 	set->ref--;
++}
++
++static void
++__ip_set_put(struct ip_set *set)
++{
++	write_lock_bh(&ip_set_ref_lock);
++	__ip_set_put_locked(set);
+ 	write_unlock_bh(&ip_set_ref_lock);
+ }
+ 
+@@ -854,11 +861,11 @@ __ip_set_put_byindex(struct ip_set_net *inst, ip_set_id_t index)
+ {
+ 	struct ip_set *set;
+ 
+-	rcu_read_lock();
+-	set = rcu_dereference(inst->ip_set_list)[index];
++	write_lock_bh(&ip_set_ref_lock);
++	set = ip_set(inst, index);
+ 	if (set)
+-		__ip_set_put(set);
+-	rcu_read_unlock();
++		__ip_set_put_locked(set);
++	write_unlock_bh(&ip_set_ref_lock);
+ }
+ 
+ void
 -- 
-2.55.0.229.g6434b31f56-goog
+2.43.0
 
