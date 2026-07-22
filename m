@@ -1,62 +1,62 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3DA3E557D
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC5D43B3E4
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711422; cv=none; b=ETfQgkPMAD9Ybe6NaF0D+vjcMnJ7lC/W3qgUyfUxNS+3LmKvzaWixvSADKs25zpIUH8KsHlvjwizc0Gg3+zgdOAu7FM5ClzKlw03yJDfJO+2SnxFdWGuYlk4runbaXzFkX72XnygQW+8t+HJqXQnlGK08BBmvIa9Oh/OeNstJug=
+	t=1784711431; cv=none; b=QtwChYIPzIRKBE5rEnMV1Jk6wROjD2bknRauJgJUwoJa68Pe/QfcI/QHttqLHUWefy0ieaUeIUU21YcWMTsrojXru1Dc+FxsHPAuFUF+NXB3r6RGvW1xyacCjyXzKL5gSe2kj0lUhi6RSRAHgq+6G+v3ejgLr9KbFZGT0U8Bxns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711422; c=relaxed/simple;
-	bh=GCaSfTxYhIVhXVN/pYobjhk2blhEMEHesKJ+mWBsncU=;
+	s=arc-20240116; t=1784711431; c=relaxed/simple;
+	bh=nJcFxXIvLPbkGK1QMBaARCqOIjn0L035Y4w8OrFc2Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdfUSonLn3N3TdpgK9Gp0e40u5kp8bjwXSrUsgnvDE2hCzkW/M42YgPJWYQzhFF0U/i/GruMDM2CKwTKRfwxuFymzYwhp6TdBO/NafX/+b8CPqd41v6Xgywx3TXvMwQgSninpyljjmMQoohCuP1u3OoeoYtTZaBJaPdJFw1bW9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iTexLXE2; arc=none smtp.client-ip=209.85.221.42
+	 MIME-Version; b=hM67glkF6ekF2PX9rtkzc94y+3MchITqMFNe0rQkKs4Fq3bd4mTKagj1BVRAAuPwMLixdsKAvMN48ecIQ9FrsYGlLSvqU7jGOSPKbH9P7su0rdZBIM7LE3UzULXq2EF9cbZUL6HDcnzYAJK4tClpHL8Dqvb29WPT3fGoT64Udac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Li6FIQYh; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iTexLXE2"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f703a9d05so2249319f8f.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:10:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Li6FIQYh"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47f752b3423so2537161f8f.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:10:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784711419; x=1785316219; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784711424; x=1785316224; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=obdd0SmjDbePrgaCTtUb1ov2QIwtkiLcmDHoVSpucnk=;
-        b=iTexLXE2MlIcmbRqE/EyMo6kf3JnBJgmAV9d/K9DjnbcOQNuGhussqTdO8ONANWvQ1
-         9BbmVM8BW120yhL6KQa0UE8M6p67eRsOJhOPOBs8FUspuZTTEaz2LXcGX0ubuCSu3wvg
-         hFQF0f2oaNbvOt5rslDC8Sg9bNOmhoP5SI0Bwfq3YB5YMbSMzOIV8JWOWSAMRHBihnNz
-         /v0Y25yS2ixDM0YW+kQkopzplw1y4RWzGKJ64X5Kp7SP8k1kC8F2lz4f3Ebrf3Jkoldd
-         KFxFdZZW6YonVhL8RZHLy82PiGzMAENtPDaoiMhmbp31flC9XosF7q58bVBUo0RFFhyz
-         YAnA==
+        bh=vdluEnbV/bjkMK1wXPlyO1mpDVHkDRFSt41DayM9cG0=;
+        b=Li6FIQYhdA+2f4uoB1qCbVkgXFrFNMa6NLNMMaQRXo5CnBAXdzfbOisx5o0/LmOe6E
+         GrCU5VPi2UIQWQ3dPytAxvGmSORpBAyFAV9Z9D7Smu6cKn7heM896z4iFxiOvsW/bjjj
+         WGywKh+GRApQyeL6ZapU7fGaTAicQo5mhYv8+xjCzKZKLuC9ZWGxcK2Bp+ledwr9S8TH
+         5jKMmMGLgL2f/Z/B1ZPHfI9l6S1pcJpTgYJ/xnl4oBMzUGxFqGgtZ8Qw/F6INfnNhPKh
+         0BxjWvK+2D0DZN9U3X1INJ37WnAxxFJNnH6ApKQhDPZfdS6hyFlrQth3LkGzIcPogYXk
+         +hvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784711419; x=1785316219;
+        d=1e100.net; s=20251104; t=1784711424; x=1785316224;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=obdd0SmjDbePrgaCTtUb1ov2QIwtkiLcmDHoVSpucnk=;
-        b=i9Fq1/mXQcq4GID0TSb5jB7RUWWGYRL+HRyUf+XAj4JtgtrDM4UHBCbbmMQOjckPxH
-         GM0LAXu7YRsD5IZbqfa0PthVQ3rfSvVS4ezk2WYifIgkjQkFJC+kWQlR8XlNwmr+Gi6A
-         FFsQKHvzOwjnCWUsdTrl8Y1PRQMAGH2gRxjXwVjBusxT1pdBWXt9MUTVN4OlI1B1frlJ
-         lyQaAQ+SpepI8dpHwf9Kv5wa+MA/WPOwha+BuEVZyQUiDFAEAvh9SOgVIaN4hSNWnCHY
-         USgXo1jxYALRdfQVJngAjQOU662SJS4H4gCeq0F6hu1tfhOCs2C92xv0edO2ZPGaVOk7
-         XvEA==
-X-Gm-Message-State: AOJu0Yz6uEN3Y0pBjPazmbFNEGwDZZJvAKJvGeelBPl4aZf7FBVXtXe0
-	VPFBv1RCMMjKME9ALJcc7P+yTpn7sk1+4tSqY9h7Pa2sVgczRw7MjTMK
-X-Gm-Gg: AR+sD11BdYceVf97igga7OhoaHdrpB5Wao4hSAlo2uHUp2yQyMpfAGWrGblB4lJJxcS
-	3EmTpg36xdOieXSjRq8iB3useTOcX1AKKWpw8iySXlDPVNVrl0uFZEU7g1vJ4DlfC23UXp5ONST
-	/wXJs1DYmwJVndtvgpYqwhyZLHq3KYuy+BJzRIO+l1Y+6fe8Hhofii7PAQwHQ0PBEVMjWO4C8uI
-	fJDfT9VzYgE3HQI8OL6e8UGCn9KDLClgKf7M/H6CX/O5sGy+yNWNcQ397AZenEqNfRjhEfb9R3P
-	TrGvmuLNHaU4SCTyt2oa9JplZ9la9NBwacM4h45Tz3eWSHeCP2a5qw9za4fqarGRKYv5UII1uGv
-	dcdgxCAvFgLSldgJprV4US4NtvXzUWwb/abYzqWXMtmQvrZb4gWndqtFVi9E4O+9dQFdZNt6diy
-	gVqONbqFgO0o0C6Thigd34/RqCbyCNlAUb
-X-Received: by 2002:a05:6000:480d:b0:47f:77dc:aaa2 with SMTP id ffacd0b85a97d-47f77dcac77mr16194164f8f.45.1784711418687;
-        Wed, 22 Jul 2026 02:10:18 -0700 (PDT)
+        bh=vdluEnbV/bjkMK1wXPlyO1mpDVHkDRFSt41DayM9cG0=;
+        b=RElAWJ/zYRttsslzX4454fc63Lsy0b3GhFfKZcxqqVVTM4B1PanjULrYyv46r+485H
+         5eITPuA+b6cItivs7r9skIFqqyrVxJ02f0cEWes1786TqANWqWs99QFSP1GpR6fHMBfX
+         j2H0LckHyirZ/ZPwQjl7R4FfpQmzUCF2iZvIl9VSSsZwyW8zavsbwEI0ScR+XPHeYnVm
+         lmjFq2Fcs78JlYnnp3g0PFI5VQPIJe1rjampeOZiZUro8ejWmrIYynIgN1Gz9axhPjTP
+         X15if3wZyq5IWy3Ykd3+gY1GkiYuyIatP/IeTYdDbwH0GKUlavbd1BgYwZ5WThCCHipV
+         85Tg==
+X-Gm-Message-State: AOJu0Ywgq++nosrXdkMoQMw7UdcaxhtnC9jBbQEOTwyqYuL47cpXQiOw
+	IINtq45leehFtiFjPmvdinO8P/o4EFeoUxfMVkyV1aFidDN6QpKL31neMa66nRPY
+X-Gm-Gg: AR+sD11cqNp6z9bpD0cqoj60tRsiJO/s9rNYJzxvwC/xsQgGgPtb2mTRjnpZnzu/QQo
+	CSBw2ykLHq/twUsNfpJS0ydN4kWXtqFj1J879qLbpNBf75baAlLqBOev4WL5jCz4vcY4T6rJ7Sz
+	JBKPWW5RgKlid9OMc8S25NQCdl7DtxHRjNoCevVwLfQa64OIT1GtAUUPEtKs2n9kF/GORstixew
+	hHDwH8g79TNDaLTzpsoM+NRvkzqehpdrrhi5ru/uF02HjfocFBoyVrId/RCXLqqux5K8rdZkhnx
+	VZtPIlQ5CMmF4NUg51bm6yx6rTjT1xeJawWOrlAkfdnowtaSodrkPyTQz6Ysb0fOk1fqH1CR0mz
+	MTdhWDG/SpN+8l7AkyUbGanU1N758ylY3H6LcwYfvsJgygxhx4gXnLep/neVbj0JMOics26Nj7k
+	/6UY++EN8oTZR75AL7vNGogw==
+X-Received: by 2002:a05:6000:ec7:b0:47f:77a8:7e20 with SMTP id ffacd0b85a97d-47f77a87e95mr11285574f8f.35.1784711423685;
+        Wed, 22 Jul 2026 02:10:23 -0700 (PDT)
 Received: from labdl-itc-sw10.tmt.telital.com ([2a01:7d0:4800:7:bc9c:3808:e25e:32ee])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bb5a46sm4406792f8f.9.2026.07.22.02.10.16
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bb5a46sm4406792f8f.9.2026.07.22.02.10.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 02:10:18 -0700 (PDT)
+        Wed, 22 Jul 2026 02:10:23 -0700 (PDT)
 From: Daniele Palmas <dnlplm@gmail.com>
 To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
 	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
@@ -68,9 +68,9 @@ To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org,
 	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH net-next v2 1/2] net: wwan: add minimalistic IOCTls support also to QCDM port
-Date: Wed, 22 Jul 2026 11:04:50 +0200
-Message-ID: <20260722090931.2637025-2-dnlplm@gmail.com>
+Subject: [PATCH net-next v2 2/2] net: wwan: add exclusive open mode capability to AT and QCDM ports
+Date: Wed, 22 Jul 2026 11:04:51 +0200
+Message-ID: <20260722090931.2637025-3-dnlplm@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260722090931.2637025-1-dnlplm@gmail.com>
 References: <20260722090931.2637025-1-dnlplm@gmail.com>
@@ -82,28 +82,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Upstream libqcdm requires IOCTLs support to work, so add the current
-AT minimalistic support also to the QCDM port.
+Add exclusive open mode capability to AT and QCDM ports to improve
+compatibility with user-space tools using the Qualcomm diagnostic
+device (e.g. libqcdm).
 
 Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
 ---
- drivers/net/wwan/wwan_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wwan/wwan_core.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index ccce2ad74128..8168239e52c3 100644
+index 8168239e52c3..8acb09dcb83a 100644
 --- a/drivers/net/wwan/wwan_core.c
 +++ b/drivers/net/wwan/wwan_core.c
-@@ -1046,7 +1046,8 @@ static long wwan_port_fops_ioctl(struct file *filp, unsigned int cmd,
- 	struct wwan_port *port = filp->private_data;
- 	int res;
+@@ -22,6 +22,7 @@
+ #include <linux/termios.h>
+ #include <linux/gnss.h>
+ #include <linux/wwan.h>
++#include <linux/tty.h>
+ #include <net/rtnetlink.h>
+ #include <uapi/linux/wwan.h>
  
--	if (port->type == WWAN_PORT_AT) {	/* AT port specific IOCTLs */
-+	if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) {
-+		/* AT and QCDM port specific IOCTLs */
- 		res = wwan_port_fops_at_ioctl(port, cmd, arg);
- 		if (res != -ENOIOCTLCMD)
- 			return res;
+@@ -79,7 +80,7 @@ struct wwan_device {
+  * @data_lock: Port specific data access serialization
+  * @headroom_len: SKB reserved headroom size
+  * @frag_len: Length to fragment packet
+- * @at_data: AT port specific data
++ * @at_data: AT/QCDM port specific data
+  * @gnss: Pointer to GNSS device associated with this port
+  */
+ struct wwan_port {
+@@ -98,6 +99,7 @@ struct wwan_port {
+ 		struct {
+ 			struct ktermios termios;
+ 			int mdmbits;
++			unsigned long flags;
+ 		} at_data;
+ 		struct gnss_device *gnss;
+ 	};
+@@ -748,6 +750,14 @@ static int wwan_port_op_start(struct wwan_port *port)
+ 		goto out_unlock;
+ 	}
+ 
++	/* Check exclusive open mode for AT and QCDM ports */
++	if ((port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) &&
++	    test_bit(TTY_EXCLUSIVE, &port->at_data.flags) &&
++	    !capable(CAP_SYS_ADMIN)) {
++		ret = -EBUSY;
++		goto out_unlock;
++	}
++
+ 	/* If port is already started, don't start again */
+ 	if (!port->start_count)
+ 		ret = port->ops->start(port);
+@@ -769,6 +779,8 @@ static void wwan_port_op_stop(struct wwan_port *port)
+ 		if (port->ops)
+ 			port->ops->stop(port);
+ 		skb_queue_purge(&port->rxq);
++		if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM)
++			clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
+ 	}
+ 	mutex_unlock(&port->ops_lock);
+ }
+@@ -1031,6 +1043,22 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+ 		break;
+ 	}
+ 
++	case TIOCEXCL:
++		set_bit(TTY_EXCLUSIVE, &port->at_data.flags);
++		break;
++
++	case TIOCNXCL:
++		clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
++		break;
++
++	case TIOCGEXCL:
++	{
++		int excl = test_bit(TTY_EXCLUSIVE, &port->at_data.flags);
++
++		ret = put_user(excl, (int __user *)arg);
++		break;
++	}
++
+ 	default:
+ 		ret = -ENOIOCTLCMD;
+ 	}
 -- 
 2.43.0
 
