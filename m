@@ -1,75 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5A437DE9B;
-	Wed, 22 Jul 2026 16:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA8F3AA4E9
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 16:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784736286; cv=none; b=pCWRhG4ZgjdY5ko6qWA/Bn3rOKJoZJ8I+k9enTKpgYieWFPc61Q/aCfexOZ4xfZ6nvocahXcH0NPMWMjazJLJjjVVf0VwILWtZ1UbD/Rhy5q2byw/KlLAPotcq5wPOPPq2yQm7kqdd28LpQR+bgf5jjJexuxV1uuu3lF6+iI2Eg=
+	t=1784736414; cv=none; b=fptcQfbVyQHjRNn72v43DrlQL0BgEPzGE109IHmGRUMtXp8hrGIQwzjIz7E968p8IpYAPftkGlSDx2+xZDrHMU0vD2pbJORMjA1Ub9yAiZLhEUKX4IS+yEeB80HgVdQMvLw5psXFCeYMSmaXfNKUOvgDdIBTKD3COEK8e4i0gog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784736286; c=relaxed/simple;
-	bh=Kvb5/f689LP/CXCjSl2rHmj+nmCwiqnc4dCuiJ2d+B0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4QV+O0ZXnLpLdn2icfivVeUudoVNOs6Dgj76K3UBi17Ec6s3baXTrykLQogSGd1Mt/iStemoQ31vYmx5c7OU+sS0PbCJCAqQ0oUhNkeBJg+O3CNDiq4GJSvX0cb5hIsjA3MaOnzsaDAsdi9fusVxKNDDIXhQbGD8ua2J1XhfYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkzphQo5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784736414; c=relaxed/simple;
+	bh=UE9vt7vskD4aIOjEdv/nBfnEWhKt8wLGmDJTYXZnNFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CuzLobLNtKEuwpR5RmD3PpsB4YThP6wcvU4kgGZvr7SUAglL4Pcr02HtJBxi/AgpRNwvsFPHa6p1kQ943gqbGRGxM0rWBXI5rzHjk+gfVyWiQVj7aYar96DDjqKe9bhaO1SiV5oPFVEwLqXkdPdg11S+XWHdrHAwEb6HwqUIe8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=RXJbeegS; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkzphQo5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27661F00A3A;
-	Wed, 22 Jul 2026 16:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784736285;
-	bh=V3styyTrJSgjSQ3qUzOGfoN+cNHukXJiKId23arjeZE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SkzphQo58kDAzKLyhhs4SgMDbLpGeGkKvV8oMJA4ZB2SjEMjBxbNG62AgYLNuuI4z
-	 1wWNDhoife1i662CgnpX+2Yv58WT2iYAw2KG9Cab8JIjVVCo7L31v71vEC6bLl5wNM
-	 Mo83ydoXAHKK4BFx8qqvlTnLLZwrvGXj1yYduZy1oiZ7ztnLcSrVpUGrwVU8NRDPMq
-	 FNKrIfPFUW9IeAI8Cfc6YtI5smWPqQUCuizFC6pbsiS1Qu3DRYns82BAKuAwZA1tIM
-	 ZhqY0NzfAZ5Dkwa6WXRW4m//mf3t/r5bNLBDOdRrIo4SDsgxyE7jPpM1rFCes3toqM
-	 mz75hJ0U/niAg==
-Date: Wed, 22 Jul 2026 09:04:43 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: Veerasenareddy Burru <vburru@marvell.com>, Sathesh Edara
- <sedara@marvell.com>, Satananda Burla <sburla@marvell.com>, Shinas Rasheed
- <srasheed@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Simon Horman <horms@kernel.org>, Guangshuo
- Li <lgs201920130244@gmail.com>, David Carlier <devnexen@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v6 0/4] octeon_ep, octeon_ep_vf: fix RX skb frags
- overflow and page leak
-Message-ID: <20260722090443.0c24a5df@kernel.org>
-In-Reply-To: <20260722155131.2017597-1-maoyixie.tju@gmail.com>
-References: <20260722155131.2017597-1-maoyixie.tju@gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="RXJbeegS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UE9vt7vskD4aIOjEdv/nBfnEWhKt8wLGmDJTYXZnNFU=; b=RXJbeegSEZXwFuHXcVf4TOaTfQ
+	58eTn0/2/JMallhe5JX32b7vWHUxDRnQH8EfE7cV0k453JuYosRYqhtZoyaj0TeJ1zx2Do/R4BPY9
+	wv+q4OA4CDU/a8/lI62IB7NWQ2MtETWRllOUOJwtRP2pBHePs2MKx+X5s+gKKjszXETkCrT49wcDm
+	ZMen2bPcA85j6EIPJXIwBEmWvLt7MPEjiG+m59xgPFFFd4s6s51rMwNCnJ9Hk55WIaZpTloZf+JDJ
+	U1GtZqFHou8/LIRY8Y1bNmC0NgIPCbYL6035C5IocvC0wHxo5CDG1uLMyyhn4QNw2raEt/SdXbWUR
+	fHilT3EA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wmZSy-003743-2t;
+	Wed, 22 Jul 2026 16:06:41 +0000
+Date: Wed, 22 Jul 2026 09:06:34 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Alice Mikityanska <alice.kernel@fastmail.im>, 
+	Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <stfomichev@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, 
+	netdev@vger.kernel.org, Alice Mikityanska <alice@isovalent.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Xin Long <lucien.xin@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>, 
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net-next v9 0/9] BIG TCP for UDP tunnels
+Message-ID: <amDqY3G3lPGEda2X@gmail.com>
+References: <20260710134242.216538-1-alice.kernel@fastmail.im>
+ <32f55932-e7b6-40ad-95f9-9daff98356c4@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <32f55932-e7b6-40ad-95f9-9daff98356c4@redhat.com>
+X-Debian-User: leitao
 
-On Wed, 22 Jul 2026 23:51:27 +0800 Maoyi Xie wrote:
-> The octeon_ep and octeon_ep_vf RX paths add one skb fragment per buffer
-> with no bound against MAX_SKB_FRAGS. buff_info->len comes from the device
-> response header. A long packet needs about 18 fragments. That is one past
-> the default MAX_SKB_FRAGS of 17. skb_add_rx_frag() then writes past
-> shinfo->frags[]. Patch 2 bounds octeon_ep. Patch 4 bounds octeon_ep_vf.
-> 
-> Both drivers also leak the pages of a dropped multi-buffer packet. The
-> drop path unmaps each buffer but never frees its page. Patch 1 fixes
-> octeon_ep. Patch 3 is Guangshuo Li's fix for octeon_ep_vf. The overflow
-> drops in patch 2 and patch 4 reuse those helpers. They free their pages
-> too.
-> 
-> The drop drain length derives from the device length. It had no bound
-> against the ring. Patch 1 and patch 4 stop the drain after MAX_SKB_FRAGS
-> fragments. A valid packet never holds more. This keeps a bad device length
-> from running the drain past the ring.
+On Wed, Jul 22, 2026 at 02:01:13PM +0200, Paolo Abeni wrote:
+>
+> @Breno:
+> a second pair of eyes on the resolution would be appreciated.
 
-I'm asking you for the second time - why are you working on this driver?
-Do you have HW to test this?
-This driver is orphaned, it's been nothing but bugs for years, if nobody
-has this HW we should just delete this crap.
+Ack. I will review it and let you know if there is any concern.
+
+thanks for the heads-up,
+--breno
