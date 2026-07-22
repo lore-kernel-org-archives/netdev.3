@@ -1,377 +1,223 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38CC471406
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A92471269
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706819; cv=none; b=n77f+rROg/KuU3mJOh8/lhUR9mZEFcQ4VCX2Hg45nCSTfjaHB5pv4LIMWPEx2lzhFKZKZMC9faOCC2wvjphryaTiasaBJijabzQmX9Hl52M8uO9rQXLxfU1CwmRCO78owUmi64u9RSRtegtLCQVh/iGykvPZAH4tPw9SpCpye6Q=
+	t=1784706939; cv=none; b=OswwU2ONkrnuPIlu+SY+07cWKgmt1Kw47ip9H3ZuyHIm0nqGpIqS4dhXougOkmdwNEMJueHI6QOsL3ZOwOwlzDwYgEcwHdiABsKXIQx/SrorDiVoG+yDXrREd9t2A1JCAtzMr2kVbXOZF7zjO4HRm1rrJeIS12m9dnhVgb6nBuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706819; c=relaxed/simple;
-	bh=8YYWS86LIPghP/+a436pk1H+CMz/AtiTmrpw4vjYIWA=;
+	s=arc-20240116; t=1784706939; c=relaxed/simple;
+	bh=Xx9sghwnKgI4fIxeF/d2xK09aWg3iZvHjBXrHQegByY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=idX4h9soFPwOUNmWM7Q6uAsY+aqnTCKuHPQJhfH1oMzmHRFRw1itKy8MCGH2Bo0mh+hroU9k8+h+w3Co44GIofxeRFztsq9tR2LEAbtWV80sVnaAPqS6CTbwkqChqekBrgrHg8eJdqtonKeHZM9Da0QUrFDhKgRskdPkCQs70BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VO9hbLZv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DF7Ji0pikXcsBVxszk/vhXO/PDVe1dJoVS9BxNx8MTrvJsyThQdG8tY6RJnXFKlsRcispgB0LqIvM4SJdiDsE9SIogiWb2UH+3+d3Jh73OxG5AnGl+vke8daijfJA1ZC+KRjVCq31dkqCFjjtG48G7patorAH+WkH2671DN+EKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KkybSBWJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kIW2Avl9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VO9hbLZv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDA51F000E9;
-	Wed, 22 Jul 2026 07:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784706817;
-	bh=ldiOu0jvM93MMRBMUA4UclrG9S1elbpCXRNWkwb22Ow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VO9hbLZv0S99hl0Pnsd1SVCqf6RH/PMDbsVT2KnQW5J/yfkmBaTHXNir2RwRzAcpR
-	 kujtgdHErUE23mJeeyMHKToKWo+XFjFV1MUylU2ULZF8LZK9esea2YiYmC2eVjUPvv
-	 +lQJxsBkliXGCn3HCvkkGIKZ9qQ/ScBTV+uhNaO6GkVBgmI+cnnqCHIyPNkngZo2Qy
-	 MCGIJc3rti7xJIa3u8oDaYn37PgmUUjizCgLJP2kHf8FKYFk1ykMtU2OBiThOLPhzH
-	 75oYAGeqOmjCVnZdQXuqqW8wikIFURTCcgICGwWU1eqZQATkT3dGIclUv3nUI5qUTg
-	 WxCEfMlNofLCQ==
-Date: Wed, 22 Jul 2026 09:53:35 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Madhur Agrawal <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v9 3/3] net: airoha: defer GDM3/GDM4 WAN mode
- and GDM2 loopback to QoS offload
-Message-ID: <amB2_xbuRqlQ31Lt@lore-desk>
-References: <20260721-airoha-ethtool-priv_flags-v9-0-9c15d8b71a56@kernel.org>
- <20260721-airoha-ethtool-priv_flags-v9-3-9c15d8b71a56@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KkybSBWJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kIW2Avl9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784706937;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BPG0rooSRzO/25F209RlQglMVA0XYnQGnrJRERDKE5k=;
+	b=KkybSBWJs+fii9VchAXBf5pqe86MJ6W+PfZtfKs3X+He7fRPWRLGlZotgk7iaxG1LdCuk8
+	lXu/eTYpJs91avdF6DG6Lzet6o9Gn6zrx2/AqnThQIUNVBWfuCp9HDEBG1HpRlPopISjJa
+	ZOye6nHG5RJ5yIpbgrVjZO6CyajheMs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-zVq3t4OYOZ6mkVLQJkHZCQ-1; Wed, 22 Jul 2026 03:55:33 -0400
+X-MC-Unique: zVq3t4OYOZ6mkVLQJkHZCQ-1
+X-Mimecast-MFC-AGG-ID: zVq3t4OYOZ6mkVLQJkHZCQ_1784706933
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49544a639e9so33955565e9.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784706932; x=1785311732; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BPG0rooSRzO/25F209RlQglMVA0XYnQGnrJRERDKE5k=;
+        b=kIW2Avl9jk0t8bbuVb8tpii3RM/aUDfhCSn00zWN2N1wLhDN8dkowq32zPVxrJ+kXm
+         G45+ZOc4EtUDcr1p8jySmHV1mZcgXDtAhF+TRZoNqgcJLEfR0x5e33P4FbBiF3gwjpUi
+         VJ9t41jtrcCK4UqA4Fx40I3PnTMz5a2Qe1iyrQHB91h1BTDWdBPjSttUmqaWpjrFAa7f
+         BQ7P/+38NNboHiyfViEnFqTv6HWyZI43MGpcLPxt8vDSaufwuxe7km/bEhKO6MUNPOoo
+         ymnj8/R7EypoWG5OJxMbaBWHd1iiBLLOVZzxSwiROj8BzqISxKT3ygUMTiqsHOd/wU6p
+         1qhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784706932; x=1785311732;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=BPG0rooSRzO/25F209RlQglMVA0XYnQGnrJRERDKE5k=;
+        b=XQeN0szqnNKJnwZzEhHTiGUsSsHIYLsCMXEQwSJT09QETs61xNAQlg3jJQhXJJlvZp
+         baj+zHzgh54N/8mCHSJOeVJjQsofvHrFArqaYDbv99XmUDOd2+u67iS22AQtDRDSo/Xm
+         DV4ci9NLCd/2qWpYQOgK8d9ZFgqkaPFq8ppauIiRRJQ0o9IEnZLEHpbCRh9ZdkDG4qg3
+         w2Vs4467q8li0PCyOQ607WhaX2Ilnc7WTnMMI4HLJxxvcipX11jusQIAnY7ckAJqpbnw
+         Wk3Z+nFSp9GI3VFa0Xg6OFRzLkuV6K1RPd0Nl8Aq5W1EWxz9ojOCSJ96GJYkH5BwaNpF
+         WoEw==
+X-Forwarded-Encrypted: i=1; AHgh+Rql06VdOtKAZkwqVgSy5QWm9e+N8oo0SLY8zj8R+ATMcQjLt1VqMsUrAhZItGMdLPcw13QE1Fk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxq8ukhXFviyjEjKPMZMnD2PecK23CQq22ke2ycdCCElz9NzwUf
+	sQcDf6902AkDd3dae8T54Y4gDm6tcEPKXPbgDkTrBu9vadmvZuGg71d8K89z2gHQ5+iadK5CEkO
+	T8iaJOI+c2I9ne7n2guyqmdN0CLxEsS1qnEQ9X8u/CWh8T/U6q9sAigtlJQ==
+X-Gm-Gg: AR+sD13uhfQ/tIZKAftBEfDI/KkvCtXNTBXi9ROPaYKqcCAymGa4/gCOyy9w0nyN514
+	HD3syHB/YLRMJgPj+vEjDJSY2F590fmkP2tIoLOqqUHT2A+PVwsEi5sBoctoor+8JZVeyX7nVS9
+	q2FI2/vDpjhuidq3XGI1zl57KE4LNwzqw3XHkZPfLUzL0g+3zSryMrDXwVsTGG2GZxbnWOhMKvD
+	lhB+UH0Q5Rvqe1CfZ7epFrXNtPhKD3UbkNJ+o01dTyEydMj0nGN+WOIGx+5HteVB3QrPGrTkIm5
+	mbJji0yA+Me/L+9ZXW9cMo6iAJiOPoRssSjcq6ytDKUqDrstURthvUMAkp0bVv41jAj1yQz+Ke0
+	zporemxk5nioGgseJGUmm7qd74vYdspTuzTM8O8oNy4bjXQlRRg==
+X-Received: by 2002:a05:600c:190b:b0:493:c77c:108a with SMTP id 5b1f17b1804b1-4954aa1a10amr234396265e9.36.1784706932519;
+        Wed, 22 Jul 2026 00:55:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:190b:b0:493:c77c:108a with SMTP id 5b1f17b1804b1-4954aa1a10amr234395945e9.36.1784706931995;
+        Wed, 22 Jul 2026 00:55:31 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b0571f5sm29377185e9.4.2026.07.22.00.55.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 00:55:31 -0700 (PDT)
+Date: Wed, 22 Jul 2026 09:55:25 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Phi Nguyen <phind.uet@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
+ timeout
+Message-ID: <amB15TdzPAEk9A9C@sgarzare-redhat>
+References: <20260719220103.684489-1-phind.uet@gmail.com>
+ <al3UuvBhfxp82krV@sgarzare-redhat>
+ <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="baVNLPjPy5onMVn8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260721-airoha-ethtool-priv_flags-v9-3-9c15d8b71a56@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
 
---baVNLPjPy5onMVn8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jul 21, 2026 at 01:34:03AM +0800, Phi Nguyen wrote:
+>On 7/20/2026 4:17 PM, Stefano Garzarella wrote:
+>>On Mon, Jul 20, 2026 at 05:57:47AM +0800, Nguyen Dinh Phi wrote:
+>>>After vsock_connect() exits the wait loop due to sk->sk_err being
+>>>set, the error was read but not cleared. This left sk->sk_err set
+>>>for subsequent operations.
+>>
+>>So, is this a fix? If yes, we should put a Fixes tag.
+>>
+>>Also, can you describe how to trigger the issue?
+>>
+>>Because I see this in vsock_connect(), so I thought it was in some 
+>>way already handled:
+>>
+>>         /* sk_err might have been set as a result of an earlier
+>>          * (failed) connect attempt.
+>>          */
+>>         sk->sk_err = 0;
+>>
+>This only handles the case where the function following the failed 
+>connect is another connect() call.
 
-On Jul 21, Lorenzo Bianconi wrote:
-> GDM3 and GDM4 ports require GDM2 loopback to be enabled for hardware
-> QoS offload to function. Without it, HTB and ETS offload on these ports
-> do not work.
-> Previously, GDM3/GDM4 ports were automatically configured as WAN with
-> GDM2 loopback enabled during ndo_init(). Add the capability to configure
-> GDM3/GDM4 as WAN/LAN on demand when QoS offload is created or destroyed.
-> Hook airoha_enable_qos_for_gdm34() into TC_HTB_CREATE so that requesting
-> HTB offload on a GDM3/GDM4 LAN port switches it to WAN mode and enables
-> GDM2 loopback, with proper rollback on failure. Introduce the
-> AIROHA_DEV_F_QOS flag to track whether a device has an active HTB
-> qdisc; clear it on TC_HTB_DESTROY. The device keeps its WAN role after
-> qdisc teardown so that its configuration is preserved until another
-> device explicitly needs the WAN role for QoS offload.
-> If another GDM3/GDM4 device already holds the WAN role without an active
-> QoS qdisc, demote it to LAN before promoting the requesting device. Skip
-> the demotion when the requesting device is itself already the WAN device.
-> Since airoha_dev_set_qdma() can now be called on a running device to
-> migrate between QDMA blocks, make dev->qdma an RCU pointer so the TX
-> path can safely dereference it without holding RTNL.
-> Hold flow_offload_mutex in airoha_enable_qos_for_gdm34() and
-> airoha_disable_qos_for_gdm34() around the dev->flags update,
-> airoha_dev_set_qdma() and GDM2 loopback configuration, serializing
-> against concurrent airoha_ppe_hw_init() in the TC_SETUP_CLSFLOWER
-> offload path.
-> Introduce airoha_qdma_deref() helper that wraps rcu_dereference_protected=
-()
-> with a lockdep condition accepting either rtnl_lock or flow_offload_mutex,
-> and use it across all control-path dereferences of the RCU-protected
-> dev->qdma pointer.
-> Add airoha_disable_gdm2_loopback() to disable GDM2 hw loopback.
->=20
-> Tested-by: Madhur Agrawal <madhur.agrawal@airoha.com>
-> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c  | 233 ++++++++++++++++++++++++=
-++----
->  drivers/net/ethernet/airoha/airoha_eth.h  |  13 +-
->  drivers/net/ethernet/airoha/airoha_ppe.c  |   9 +-
->  drivers/net/ethernet/airoha/airoha_regs.h |   1 +
->  4 files changed, 227 insertions(+), 29 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index aaf2a4717d12..fe2e2af67173 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+So, can we remove that with this patch, or better to leave as defensive
+action?
 
-[...]
+>
+>>>Switch to sock_error() which atomically reads and clears sk->sk_err,
+>>>so the error is consumed when returned.
+>>>
+>>>Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+>>>Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
+>>
+>>Can you explain how this patch fixes that issue?
+>>(this should be the first information to be put in the commit message IMHO)
+>>
+>>I'd like to understand better if this is a fix of real bug or just 
+>>an improvement to the code (which is fine by me).
+>>
+>>Thanks,
+>>Stefano
+>>
+>Here are the steps of the syzkaller reproducer:
+>
+>  r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>
+>  bind(r0, {VMADDR_CID_ANY, PORT})
+>
+>  connect(r0, {VMADDR_CID_LOCAL, PORT})
+>
+>  listen(r0, backlog)
+>
+>  r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
+>
+>  connect(r1, {VMADDR_CID_LOCAL, PORT})
+>
+>  connect(r0 -> self) -> -1, EPROTO
+>
+>  listen(r0)          -> 0
+>
+>  connect(r1 -> r0)   -> 0
+>
+>  accept(r0)          -> -1, EPROTO
+>
+>Basically, it creates a socket (r0) and triggers a self-connect after 
+>binding it. This self-connect fails with EPROTO because it loops back 
+>to r0 while the socket is still in the TCP_SYN_SENT state, causing it 
+>to be incorrectly dispatched to the connecting-client path. The 
+>unexpected packet type encountered there sets sk_err to EPROTO.
+>
+>After that, it invokes a listen() call on the same socket. This 
+>listen() call succeeds because the kernel's listening path never 
+>inspects or clears sk_err. Then, a new socket (r1) is created as a 
+>normal client and connects to r0. However, vsock_accept() rejects this 
+>incoming connection because the listener's sk_err still holds the 
+>EPROTO error from the earlier failed self-connect.
+>
+>This rejection causes the child socket created for r1's connection to 
+>never be freed on virtio or hyperv transports; only the VMCI transport 
+>implements pending_work to revisit and clean up a rejected socket
+>This patch will prevent the rejection branch to occur in this scenario.
 
-> +static int airoha_enable_qos_for_gdm34(struct net_device *netdev,
-> +				       struct netlink_ext_ack *extack)
-> +{
-> +	struct airoha_gdm_dev *wan_dev, *dev =3D netdev_priv(netdev);
-> +	struct airoha_gdm_port *port =3D dev->port;
-> +	struct airoha_eth *eth =3D dev->eth;
-> +	int err =3D -EBUSY;
-> +
-> +	if (port->id !=3D AIROHA_GDM3_IDX &&
-> +	    port->id !=3D AIROHA_GDM4_IDX) {
-> +		/* HW QoS is always supported by GDM1 and GDM2 */
-> +		return 0;
-> +	}
-> +
-> +	if (!airoha_is_lan_gdm_dev(dev)) /* Already enabled */
-> +		return 0;
-> +
-> +	mutex_lock(&flow_offload_mutex);
-> +
-> +	wan_dev =3D airoha_get_wan_gdm_dev(eth);
-> +	if (wan_dev) {
-> +		if ((wan_dev->flags & AIROHA_DEV_F_QOS) ||
-> +		    wan_dev->port->id =3D=3D AIROHA_GDM2_IDX) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "QoS configured for WAN device");
-> +			goto error_unlock;
-> +		}
-> +		airoha_disable_qos_for_gdm34(netdev_from_priv(wan_dev));
-> +	}
-> +
-> +	dev->flags |=3D AIROHA_DEV_F_WAN;
-> +	airoha_dev_set_qdma(dev);
-> +	err =3D airoha_enable_gdm2_loopback(dev);
-> +	if (err)
-> +		goto error_disable_wan;
-> +
-> +	err =3D airoha_set_macaddr(dev, netdev->dev_addr);
-> +	if (err)
-> +		goto error_disable_loopback;
-> +
-> +	airoha_dev_set_xmit_frame_size(netdev);
-> +	if (netif_running(netdev)) {
-> +		u32 pse_port;
-> +
-> +		pse_port =3D airoha_ppe_is_enabled(eth, 1) ? FE_PSE_PORT_PPE2
-> +							 : FE_PSE_PORT_PPE1;
-> +		airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(port->id),
-> +					    pse_port);
-> +	}
-> +
-> +	mutex_unlock(&flow_offload_mutex);
-> +
-> +	return 0;
-> +
-> +error_disable_loopback:
-> +	airoha_disable_gdm2_loopback(dev);
-> +error_disable_wan:
-> +	dev->flags &=3D ~AIROHA_DEV_F_WAN;
-> +	airoha_dev_set_qdma(dev);
-> +error_unlock:
-> +	mutex_unlock(&flow_offload_mutex);
-> +
-> +	return err;
+Okay, get it now, thanks! Please include a summary of this in the commit 
+description.
 
-commenting on sashiko's report:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260721-airoha-ethtool=
--priv_flags-v9-0-9c15d8b71a56%40kernel.org
+I understand that this resolves syzbot's specific test case, but it 
+would be best to handle rejected sockets more effectively in af_vsock.c 
+rather than in the transport layers (if possible). In any case, this can 
+be done in another patch.
 
-- When another GDM3/GDM4 device already holds the WAN role without an
-  active QoS qdisc, the code above calls airoha_disable_qos_for_gdm34() on
-  that wan_dev to demote it (clearing F_WAN, migrating dev->qdma to QDMA0,
-  disabling GDM2 loopback, resetting its fwd cfg to PPE1) before promoting
-  the requesting device.
-  If airoha_enable_gdm2_loopback(dev) or airoha_set_macaddr(dev, ...)
-  subsequently fails, the error paths only unwind the requesting dev:
-  +error_disable_loopback:
-  +	airoha_disable_gdm2_loopback(dev);
-  +error_disable_wan:
-  +	dev->flags &=3D ~AIROHA_DEV_F_WAN;
-  +	airoha_dev_set_qdma(dev);
-  +error_unlock:
-  +	mutex_unlock(&flow_offload_mutex);
-  +
-  +	return err;
-  None of those labels re-promote the previously demoted wan_dev. Is this
-  consistent with the commit message's claim of "proper rollback on
-  failure"?
-  - This issue has been reported and discussed in previous iterations.
-    If the promotion of the new device fails, the tc command returns an err=
-or to userspace,
-    the requested configuration was not applied. The system is still proces=
-sing
-    packets and the user can log and reapply the configuration.
-    Re-promoting the old WAN device on error would add complexity for failu=
-re cases that
-    do not really occur in practice since airoha_set_macaddr() and
-    airoha_enable_gdm2_loopback() fail only if the device is misconfigured.
+>
+>I think we might schedule the cleanup worker to run in the rejection 
+>path for these transports as well.
 
-- airoha_set_macaddr() failing with -EINVAL is reachable in practice
-  because it validates the new WAN device's MAC MSBs against other WAN
-  devices, and GDM2 is always WAN by design in airoha_dev_init(). If GDM2
-  and the requesting GDM3/GDM4 device have different MAC MSBs, TC HTB
-  CREATE returns -EINVAL, but wan_dev has already lost its WAN role, its
-  qdma pointer has been reassigned to QDMA0, GDM2 loopback has been torn
-  down, and its forwarding config has been reset to PPE1.
-  - This issue can't occur since we can't have just a single net_device
-    configured as WAN.
+Yeah, we need to handle that part better, I think it's a leftover when 
+we generalized AF_VSOCK to support more transport than vmci.
 
-Regards,
-Lorenzo
+Indeed this part is a bit confusing:
 
-> +}
-> +
->  static int airoha_tc_htb_destroy(struct net_device *netdev)
->  {
->  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
-> @@ -3048,6 +3220,8 @@ static int airoha_tc_htb_destroy(struct net_device =
-*netdev)
->  	for_each_set_bit(q, dev->qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS)
->  		airoha_tc_remove_htb_queue(netdev, q);
-> =20
-> +	dev->flags &=3D ~AIROHA_DEV_F_QOS;
-> +
->  	return 0;
->  }
-> =20
-> @@ -3067,24 +3241,33 @@ static int airoha_tc_get_htb_get_leaf_queue(struc=
-t net_device *netdev,
->  	return 0;
->  }
-> =20
-> -static int airoha_tc_setup_qdisc_htb(struct net_device *dev,
-> +static int airoha_tc_setup_qdisc_htb(struct net_device *netdev,
->  				     struct tc_htb_qopt_offload *opt)
->  {
->  	switch (opt->command) {
-> -	case TC_HTB_CREATE:
-> +	case TC_HTB_CREATE: {
-> +		struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
-> +		int err;
-> +
-> +		err =3D airoha_enable_qos_for_gdm34(netdev, opt->extack);
-> +		if (err)
-> +			return err;
-> +
-> +		dev->flags |=3D AIROHA_DEV_F_QOS;
->  		break;
-> +	}
->  	case TC_HTB_DESTROY:
-> -		return airoha_tc_htb_destroy(dev);
-> +		return airoha_tc_htb_destroy(netdev);
->  	case TC_HTB_NODE_MODIFY:
-> -		return airoha_tc_htb_modify_queue(dev, opt);
-> +		return airoha_tc_htb_modify_queue(netdev, opt);
->  	case TC_HTB_LEAF_ALLOC_QUEUE:
-> -		return airoha_tc_htb_alloc_leaf_queue(dev, opt);
-> +		return airoha_tc_htb_alloc_leaf_queue(netdev, opt);
->  	case TC_HTB_LEAF_DEL:
->  	case TC_HTB_LEAF_DEL_LAST:
->  	case TC_HTB_LEAF_DEL_LAST_FORCE:
-> -		return airoha_tc_htb_delete_leaf_queue(dev, opt);
-> +		return airoha_tc_htb_delete_leaf_queue(netdev, opt);
->  	case TC_HTB_LEAF_QUERY_QUEUE:
-> -		return airoha_tc_get_htb_get_leaf_queue(dev, opt);
-> +		return airoha_tc_get_htb_get_leaf_queue(netdev, opt);
->  	default:
->  		return -EOPNOTSUPP;
->  	}
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
-net/airoha/airoha_eth.h
-> index bf44be9f0954..4d03ebae1a2d 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -545,11 +545,12 @@ struct airoha_qdma {
-> =20
->  enum airoha_dev_flags {
->  	AIROHA_DEV_F_WAN =3D BIT(0),
-> +	AIROHA_DEV_F_QOS =3D BIT(1),
->  };
-> =20
->  struct airoha_gdm_dev {
-> +	struct airoha_qdma __rcu *qdma;
->  	struct airoha_gdm_port *port;
-> -	struct airoha_qdma *qdma;
->  	struct airoha_eth *eth;
-> =20
->  	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
-> @@ -685,6 +686,16 @@ int airoha_get_fe_port(struct airoha_gdm_dev *dev);
->  bool airoha_is_valid_gdm_dev(struct airoha_eth *eth,
->  			     struct airoha_gdm_dev *dev);
-> =20
-> +extern struct mutex flow_offload_mutex;
-> +
-> +static inline struct airoha_qdma *
-> +airoha_qdma_deref(struct airoha_gdm_dev *dev)
-> +{
-> +	return rcu_dereference_protected(dev->qdma,
-> +					 lockdep_rtnl_is_held() ||
-> +					 lockdep_is_held(&flow_offload_mutex));
-> +}
-> +
->  void airoha_ppe_set_xmit_frame_size(struct airoha_gdm_dev *dev);
->  void airoha_ppe_set_cpu_port(struct airoha_gdm_dev *dev, u8 ppe_id, u8 f=
-port);
->  bool airoha_ppe_is_enabled(struct airoha_eth *eth, int index);
-> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
-net/airoha/airoha_ppe.c
-> index fdb973fc779c..3ccdf9fccb4a 100644
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -15,7 +15,10 @@
->  #include "airoha_regs.h"
->  #include "airoha_eth.h"
-> =20
-> -static DEFINE_MUTEX(flow_offload_mutex);
-> +/* Serialize airoha_gdm_dev flags, QDMA pointer and PPE CPU port
-> + * configuration.
-> + */
-> +DEFINE_MUTEX(flow_offload_mutex);
->  static DEFINE_SPINLOCK(ppe_lock);
-> =20
->  static const struct rhashtable_params airoha_flow_table_params =3D {
-> @@ -86,8 +89,8 @@ static u32 airoha_ppe_get_timestamp(struct airoha_ppe *=
-ppe)
-> =20
->  void airoha_ppe_set_cpu_port(struct airoha_gdm_dev *dev, u8 ppe_id, u8 f=
-port)
->  {
-> -	struct airoha_qdma *qdma =3D dev->qdma;
-> -	struct airoha_eth *eth =3D qdma->eth;
-> +	struct airoha_qdma *qdma =3D airoha_qdma_deref(dev);
-> +	struct airoha_eth *eth =3D dev->eth;
->  	u8 qdma_id =3D qdma - &eth->qdma[0];
->  	u32 fe_cpu_port;
-> =20
-> diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethe=
-rnet/airoha/airoha_regs.h
-> index 6fed63d013b4..442b48c9b991 100644
-> --- a/drivers/net/ethernet/airoha/airoha_regs.h
-> +++ b/drivers/net/ethernet/airoha/airoha_regs.h
-> @@ -375,6 +375,7 @@
-> =20
->  #define REG_SRC_PORT_FC_MAP6		0x2298
->  #define FC_ID_OF_SRC_PORT_MASK(_n)	GENMASK(4 + ((_n) << 3), ((_n) << 3))
-> +#define FC_MAP6_DEF_VALUE		0x1b1a1918
-> =20
->  #define REG_WAN_MTU0			0x2300
->  #define WAN_MTU1_MASK			GENMASK(29, 16)
->=20
-> --=20
-> 2.55.0
->=20
+		/* If the listener socket has received an error, then we should
+		 * reject this socket and return.  Note that we simply mark the
+		 * socket rejected, drop our reference, and let the cleanup
+		 * function handle the cleanup; the fact that we found it in
+		 * the listener's accept queue guarantees that the cleanup
+		 * function hasn't run yet.
+		 */
+		if (err) {
+			vconnected->rejected = true;
+		} else {
 
---baVNLPjPy5onMVn8
-Content-Type: application/pgp-signature; name=signature.asc
 
------BEGIN PGP SIGNATURE-----
+Would be nice to handle everything in af_vsock.c in some way.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCamB2/wAKCRA6cBh0uS2t
-rPjzAP0YsUy0p8VCTUaUnMbwLebEOvEHZDKvPxiypTYu9UBxvAEAwX8ShMcrdqYm
-lQtt2pYQSdYvCzAYvBC/mxkVqJgyZg4=
-=AVMa
------END PGP SIGNATURE-----
+In conclusion, the patch LGTM, but please expand the commit description, 
+add the Fixes tag, and target the net tree in the v2.
 
---baVNLPjPy5onMVn8--
+Thanks,
+Stefano
+
