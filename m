@@ -1,185 +1,195 @@
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B222B3AFD1F
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784689915; cv=pass; b=nIo6B6jhKLTmX7VaFEIGZ9kX8clOyZtr/GGHcJxcMLmRJ0iXYmukH96gSYgUd19rUuCgeNElPtp/27no6iX2n8hbX9T6RT4eRnXz8B+8ihSCQ6mriQzaXdyfAholaVnOnec4rNYU5Jk8kJhBedt4i7oIvDwyWQic1CK7Iw2jwdo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784689915; c=relaxed/simple;
-	bh=2IKvzXaO9uMpxyS1C2Npnq+DgtbmEtwf3e+KCWvU/fA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DAEi3CVREnbHhiv4GWUz//UbHFbLq4wj1GMlwYRqbYTkOk9VT4JvngB9Q0jx8/+/GxYDUF9l5QgV2WsFpKSMQ5+0JmbGdvBvv0H09cT0Znkmnun7FSW4+xv39v8JpF0qmEkQD0TivzBUiYJ+TqEc0Y/zQRF+WYWmoS9G71LO1tE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oehEKalf; arc=pass smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E9138237F
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784690514; cv=none; b=MH8zx9zRlxcMfVOayAHIfICulUESz29OQrdrfvkUrHvBqYTgNKoVsjO/Z1Xvmd2aHeuqLHttcqB4jgU3u5tpXCUffliaO5xG/lgqQos/2vG3Tx5b9KzUPC0fTqJ1sXk+7BuRn/ruNp9b4DWNWMDX28J7JZAJaLxgT2YgRLIgSJw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784690514; c=relaxed/simple;
+	bh=sFodNQNR9FelTC1V333RYUxhuvQ/oSTjBnSufIdGqAQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ije5SZOSW5+1Ou6WfulBtqam6soyynBgKqrFyGbV2+GVdO1+T+VnnxpIFeLiXnwlDXa444GCCwRTsKJ9FigOcjIDLuDwSZN3pzRik7l4edKlDx6bnk7MwHpS+IBJGdYBQy0GM52AV/QWv9iAjZOl6LwKHVE7VvKGn3CaZSXt9NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pub/69r6; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oehEKalf"
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4a4cb36ae00so3475357b6e.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:11:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784689912; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g/EYgXYEgZz7PbATH0z407SRuKugYGYNewl0B06YLpLU8+nwwooK7yXjUeW7Aukhkg
-         PRleQJ1OgCoNrlEqevMyUKjyLWXrD6YyGiKSghrtEXQ0USvuFvu3G6kdmX3uevn46s3a
-         YFBDwSMEcB6bx+nxB1JWDbuF9HqWhYOzB1LvOE7GQae+A9MVOB0htInuklvqo5aI/kHv
-         pynrdo9rdlSe8qQo4fMP3P5CJ8B7aaslFEbfauYifqikRW0V1jmMRYRY4DZdkQLYVxdC
-         WY9rx8h6fQ5CeBlj/vn7KUx9kadt0b+8hGkPLCi6ECyiSGVqYynJ+G7juLXPOxAuoyJs
-         3Lhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=chfUw9fqz9z6+LOUntyqRjPEpkeMy95z4PB5Hlq+4fI=;
-        fh=hpSyv81AGHSohZYPanwOHB7hcXmy9jkbnNXTwfWlpb0=;
-        b=gThCw3+hZop1Cdbmbjp54Xr9/7OTvrw7sljZmZsTLbicQMsL/jENiO6IMXpVZBO9Xa
-         GvO7vg5w0mwNWIgN3wum7kX2AHL4j5maB5IA4UdMrokPGdwPF0soq/Hq5XpsfQ4yWmAj
-         apDMjp28S+b92WWgbHLIMguFFNf6RxPDlcW9W3whwJcOr3nliChg32OCQniUKPgPRGGD
-         IbOZi9XQXCWxOetbjSHRtPQabqGIQ2kYJuuuHbaEVhn1xChLxgQugQOeJK5aUC8j50ZS
-         IC/Gsr54vGfWzK0Jwc5R3gtVyLnWgyV6+p2ps5AOUzCw4+CCJh0JOnB3LF37BIt9T3KS
-         GKUw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pub/69r6"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ceb096e675so123373935ad.0
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:21:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784689912; x=1785294712; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=chfUw9fqz9z6+LOUntyqRjPEpkeMy95z4PB5Hlq+4fI=;
-        b=oehEKalf8EzJQZIgdWFQaAMuX36xllrD4TX9zHr3xMKea8KxsqIDYCZ6/WA7BUuVXa
-         UtFSn6qf0ROZ8uaG2IzLPQYadhBmmmX46Q35ksRPndta1h1KGRmJ85Hsc/j2pQ00TTeP
-         dQhrCoiXJQEQQbQBRQzIdx9CJlEe5lWE2pCXe4OfW11SIaUGMQq5mX7kgS6c5DkjT1Ut
-         BaT123uGeLkhEBjSnQxFgawwFSzCtNMGuNI3jGnb47aksaPRX1EHlkAQNGRGp1nCdkH3
-         n3A/kaLA/vzo+xkSO6HkpT9XvxXuGBP4XNOFZJRqEKqhsFYcKzJyZ1TME5Vsj3K/XaZJ
-         YXYg==
+        d=gmail.com; s=20251104; t=1784690513; x=1785295313; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=WqDTimtURahvRYngRj8g81rBzj87HYHBmMRGWInTPFo=;
+        b=pub/69r6FN0OL6oGoocEBKMCbf0+k9cGB4EfX1MCFlh/UxbLNuNfJjw7fHOGubMxGh
+         P9TbSUuBXAGJRpUgDO/VXp/g9pWD5YbPhzG7sxSjWuvnK8oryda4uR2GH5gdgh9OU9/B
+         a1ib5IAIbbX5y6CXlHqnduML16W3usgrYS0K/Tb2UKInBPKYlTYSECHqjwI8VnwN6QN7
+         mnZb0qlQJt09kA7nW13ubKHUCZLY408hBn+A+27TqtXTLzLettEIF5S1Cgw7245Uqs27
+         cfTQH0h7a97dN9VY846UIoOPv1nclg2OqiUOMskIV+LTVBqTCrzZo+19ZrIXKn6yXC/y
+         5iow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784689912; x=1785294712;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=chfUw9fqz9z6+LOUntyqRjPEpkeMy95z4PB5Hlq+4fI=;
-        b=BjBfpni0lEz2JR6iOcwOYVEB+xdyAXN3YsjA8heFo8BXOggoLQqi6L8cbsbZUPYpoc
-         dZfnKBU32LHk/8HN2sx4GeFwQzfUI1FNG3UGTGG4oGiH7XWSrMvc/Jw6RonQPNTI8tmX
-         NN9ygSFXPOIJzvxJA5bqEHTE+NIFVKzNdbgo3cAkR1sRBqkA2e/sPC9Yzp7nSDqXzitD
-         P4D+5ebPUfbqjgCyJmZgNyDAjOHQ5+jEa7pfOYy2zuYDkTxyC188wZIgvlhacM7fsXQG
-         B9MMX/pSHQXTLUy/xbRsI1HTDC/kdeYoPzNpqktt9mgNLmFCp9yLxZdfUa4EPP7fL+6H
-         2G8A==
-X-Gm-Message-State: AOJu0Yw2D56sykJ3vLoDoYqS4WsVLFv0STwxdt9HX1ga6q1X8l0qKN82
-	hKKtOLOwryQJW0t0rPMeZspaKLZ7wE3YymU+WqQrMIM2PuOvBwob+Shnv3loUVTVXv9YMHxldbL
-	xbhZb2dT2qaGlh095c397usdLUbawC6g=
-X-Gm-Gg: AR+sD13deJnGUECno+otj4SrVNShddAgWpK2Wr3lA6BTr38GvnFGf5Ts15/ZIOsClX5
-	3fj8pzfTPy9++o1uQ4Ho4ePx5kTcq2YRirRIyj1O/bd3ZZd0zXN3iJgmR/4HSkICHgUoLg6NsQZ
-	gHhT5NetUwktfNqUFCoVb5koaJ27zstnul2bsNFup6CDHOkp1KP03RiNQnh7wzSIB+dVWczsl5k
-	hxllw9rTfhwgf7sll1i3fw9VL6Bc7LlNoXuTwFb7K7I/gZeCNVJw2ys4Ho0ACkvlaEDkUZY9WlU
-	X49/vNQL8t3pS2Cv6Us=
-X-Received: by 2002:a05:6808:4f20:b0:496:2b3:ae70 with SMTP id
- 5614622812f47-4a4d0461b89mr13222288b6e.25.1784689912416; Tue, 21 Jul 2026
- 20:11:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784690513; x=1785295313;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=WqDTimtURahvRYngRj8g81rBzj87HYHBmMRGWInTPFo=;
+        b=T9Q4hGgrhqTkKfEg7gy+RxGhy6+uN9qFGDY7J71/6r1tQiIIigJj5FqzC+h9OkfsRH
+         UfaRsMe4FvAoeRrpZj8oaWSBj+XW8pR37l/xjjVEitl+gZnBkoezuGODuMtRZW2YjAPn
+         TMb32jgK1+Xpq1nMc0h8bMw5a9mPZwxyCDFBwvtHP/BEk6qOTnEieuBhO1ORbMeV76XV
+         sGUkkw2BIuMeOOOMAno3L4l5IjoIQF31fIaeFwGb+lmJIOAHMX3+7PUei21gbOsMVPE+
+         4ga4fHrzB6RN6bhHCuX6srvBVt09SOGGOqxs6p/xHZAOY1Ag93ai8s0BrZx06BiUhG6I
+         /FKg==
+X-Gm-Message-State: AOJu0Yz14/v9hHRPhMrs1vmUNLgaQpbZuTor4ocZUfhlB1LQq/vt1+Cz
+	KMHd1SRuoWxea2UScnxd5U8GfjAX0sgneNv9aTORggYu2PxNKDwPF7navbhLWQul
+X-Gm-Gg: AR+sD10gqM/Ln9oTEReR4mkXEBgQ2CEdpQM49+pwEcdzTxQwmOMNQPBUF9cgS4fqMJC
+	fYi64JO3ufhthifLZONU+JXCkkH2RIPtucNpUjKT5pshtz8aNMsk8QK0oVEbQCKYkVi8KjNTEEy
+	nq3UH355EGqCp55RMXR0ai9RSvhI7HU3D3RrtS+PIti7T4ya+JkiMrkteGqlK7xWtR7DcSaPeRF
+	pmc4sIHWMUM7zsa2AXWcVFJVSJER9nT2uzEy4eYjaxXq9Iswd5noEagItw0gvtrSWa1xhlu1GsV
+	oVCzzig3xC4zSjee/BrX2LkLuySnNd0RvFGAuQ/VwcvqYQ9EoPVRl9DHwsSd+nWB+bGJan84RUC
+	IAi8Mh0skmzF0aLWg36S8RHBflEJ25RMk85luOlYUx/P0o/5VZRZsx804uK6j9SxqdNpRFrBUt9
+	Gt6LYveUI5udZ6jjQ=
+X-Received: by 2002:a17:902:d4c3:b0:2cf:30a9:93fb with SMTP id d9443c01a7336-2cf349cf7a8mr231370725ad.34.1784690512761;
+        Tue, 21 Jul 2026 20:21:52 -0700 (PDT)
+Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2eb72csm6419635ad.46.2026.07.21.20.21.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 20:21:52 -0700 (PDT)
+From: Jack Ma <jack4it@gmail.com>
+Date: Wed, 22 Jul 2026 03:21:33 +0000
+Subject: [PATCH iproute2-next] ip nexthop: support fdb destination port
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709014812.1158178-1-mmyangfl@gmail.com> <20260709014812.1158178-4-mmyangfl@gmail.com>
- <20260721103228.0a90ace6@kernel.org>
-In-Reply-To: <20260721103228.0a90ace6@kernel.org>
-From: David Yang <mmyangfl@gmail.com>
-Date: Wed, 22 Jul 2026 11:11:16 +0800
-X-Gm-Features: AUfX_mxgoketuqRrY4TwVsn8zvXNyRmSLDyl9gTeF6HV5Up0uFGXgYaY3uJmE_I
-Message-ID: <CAAXyoMNEffojiBqWktPB57ohzAiMGfVo8beyazONzK2N2m+2=w@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 3/3] net: dsa: motorcomm: Add LED support
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADw3YGoC/z2NQQrCMBBFr1Jm7UATayJeRVwk7VRHJAmTtARK7
+ 25UcPl4n/c3yCRMGS7dBkIrZ46hgTp0MD5cuBPy1Bh0r01vtUY/4FpfLuA8eUxRCnKSuBTSqI7
+ KnM7WejcYaIEkNHP9xq/wXwWqBW4/nRf/pLF8DmDf386hx9CNAAAA
+X-Change-ID: 20260722-b4-vxlan-fdb-port-iproute2-13165877ba46
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>, 
+ Stephen Hemminger <stephen@networkplumber.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Jack Ma <jack4it@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784690511; l=3830;
+ i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
+ bh=sFodNQNR9FelTC1V333RYUxhuvQ/oSTjBnSufIdGqAQ=;
+ b=kEVIuAqsNAZ0mC0rJ8xZBNu695MajLL0dOdAjPKizhNZFAWoNbe+9zcvHhXy/6bMDGkMY+HF9
+ uGDfDz0XZ3nAe76KpEZi/56Fb35S1db2OTlUhdliUG1l0fR6k1L1VBX
+X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
+ pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
 
-On Wed, Jul 22, 2026 at 1:32=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Thu,  9 Jul 2026 09:47:47 +0800 David Yang wrote:
-> > LEDs can be described in the device tree using the same format as qca8k=
-.
-> > Each port can configure up to 3 LEDs.
-> >
-> > Currently, only parallel mode and strict 1:1 mapping are supported.
->
-> > +config NET_DSA_YT921X_LEDS
-> > +     bool "LED support for Motorcomm YT9215"
-> > +     default y
-> > +     depends on NET_DSA_YT921X
-> > +     depends on LEDS_CLASS=3Dy || LEDS_CLASS=3DNET_DSA_YT921X
->
-> is it really useful to prompt the user with this option?
-> Shouldn't this be a hidden option which gets auto-enabled
-> when dependencies are met?
+The kernel gained NHA_FDB_PORT, an optional per-nexthop UDP destination
+port for fdb nexthops.  VXLAN uses it to reach several receivers that
+share an underlay IP but listen on different ports, load-balancing a
+flow across (IP, port) legs of one nexthop group.
 
-NET_DSA_MV88E6XXX_LEDS, NET_DSA_QCA8K_LEDS_SUPPORT, and
-NET_DSA_REALTEK_RTL8366RB_LEDS. Better to align with others.
+Add the matching uapi value and wire it into `ip nexthop`:
 
-> > +static bool
-> > +yt921x_led_trigger_is_supported(const struct yt921x_priv *priv, int po=
-rt,
-> > +                             int group, unsigned long flags)
-> > +{
-> > +     if (!flags)
-> > +             return true;
-> > +
-> > +     for (unsigned int i =3D 0; i < ARRAY_SIZE(yt921x_led_trigger_maps=
-); i++) {
-> > +             const struct yt921x_led_trigger_map *map =3D &yt921x_led_=
-trigger_maps[i];
-> > +
-> > +             if ((flags & map->flags) =3D=3D map->flags) {
-> > +                     flags &=3D ~map->flags;
-> > +                     if (!flags)
-> > +                             return true;
-> > +             }
->
-> Isn't this conditions simply:
->
->                 if (flags =3D=3D map->flags)
->                         return true;
->
-> ?
+  ip nexthop add id 1 via 192.0.2.1 fdb port 4790
 
-LED_PORT_ACT are bit-masks, so we can have any additive combinations
-of trigger_map.flags.
+The port is parsed on add (sent as NHA_FDB_PORT, __be16, network order)
+and printed back on dump/get.
 
-> > +     }
-> > +
-> > +     return false;
->
->
-> > +#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-> > +
-> > +void yt921x_leds_remove(struct yt921x_priv *priv);
-> > +int yt921x_leds_setup(struct yt921x_priv *priv);
-> > +
-> > +#else
-> > +
-> > +static inline void yt921x_leds_remove(struct yt921x_priv *priv) {}
-> > +
-> > +static inline int yt921x_leds_setup(struct yt921x_priv *priv)
-> > +{
-> > +     return 0;
-> > +}
->
-> There are static inlines but I think you still protect the calls to
-> these functions with itdef?
->
-> +#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-> +       res =3D yt921x_leds_setup(priv);
-> +       if (res)
-> +               dev_warn(dev, "Failed to setup LEDs: %d\n", res);
-> +#endif
+Signed-off-by: Jack Ma <jack4it@gmail.com>
+---
+Kernel side (net-next), which adds NHA_FDB_PORT and is the reason for
+this change:
 
-Sure, but I want to play it safe since conditional availability of
-functions is kind of error-prone.
+  [PATCH net-next v3 0/3] net: nexthop: per-nexthop UDP dst port for fdb
+  (VXLAN) nexthops
+  https://lore.kernel.org/netdev/20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com/
+---
+ include/uapi/linux/nexthop.h |  2 ++
+ ip/ipnexthop.c               | 16 +++++++++++++++-
+ ip/nh_common.h               |  1 +
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-> > +#endif
-> > +
-> > +#endif
->
+diff --git a/include/uapi/linux/nexthop.h b/include/uapi/linux/nexthop.h
+index afbd064..e1e1a66 100644
+--- a/include/uapi/linux/nexthop.h
++++ b/include/uapi/linux/nexthop.h
+@@ -83,6 +83,8 @@ enum {
+ 	/* u32; read-only; whether any driver collects HW stats */
+ 	NHA_HW_STATS_USED,
+ 
++	NHA_FDB_PORT,	/* be16; UDP dst port for an fdb nexthop (VXLAN) */
++
+ 	__NHA_MAX,
+ };
+ 
+diff --git a/ip/ipnexthop.c b/ip/ipnexthop.c
+index 14b525a..4c33361 100644
+--- a/ip/ipnexthop.c
++++ b/ip/ipnexthop.c
+@@ -52,7 +52,7 @@ static void usage(void)
+ 		"SELECTOR := [ id ID ] [ dev DEV ] [ vrf NAME ] [ master DEV ]\n"
+ 		"            [ groups ] [ fdb ]\n"
+ 		"BUCKET_SELECTOR := SELECTOR | [ nhid ID ]\n"
+-		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ]\n"
++		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ] [ fdb [ port PORT ] ]\n"
+ 		"        [ encap ENCAPTYPE ENCAPHDR ] |\n"
+ 		"        group GROUP [ fdb ] [ type TYPE [ TYPE_ARGS ] ] }\n"
+ 		"GROUP := [ <id[,weight]>/<id[,weight]>/... ]\n"
+@@ -531,6 +531,8 @@ static int ipnh_parse_nhmsg(FILE *fp, const struct nhmsg *nhm, int len,
+ 
+ 	nhe->nh_blackhole = !!tb[NHA_BLACKHOLE];
+ 	nhe->nh_fdb = !!tb[NHA_FDB];
++	if (tb[NHA_FDB_PORT])
++		nhe->nh_fdb_port = rta_getattr_be16(tb[NHA_FDB_PORT]);
+ 
+ 	nhe->nh_family = nhm->nh_family;
+ 	nhe->nh_protocol = nhm->nh_protocol;
+@@ -595,6 +597,10 @@ static void __print_nexthop_entry(FILE *fp, const char *jsobj,
+ 	if (nhe->nh_fdb)
+ 		print_null(PRINT_ANY, "fdb", "fdb", NULL);
+ 
++	if (nhe->nh_fdb_port)
++		print_uint(PRINT_ANY, "port", " port %u",
++			   nhe->nh_fdb_port);
++
+ 	if ((show_details > 0 || show_stats) && nhe->nh_hw_stats_supported) {
+ 		open_json_object("hw_stats");
+ 		print_on_off(PRINT_ANY, "enabled", "hw_stats %s ",
+@@ -1112,6 +1118,14 @@ static int ipnh_modify(int cmd, unsigned int flags, int argc, char **argv)
+ 				req.nhm.nh_family = AF_INET;
+ 		} else if (!strcmp(*argv, "fdb")) {
+ 			addattr_l(&req.n, sizeof(req), NHA_FDB, NULL, 0);
++		} else if (!strcmp(*argv, "port")) {
++			__u16 port;
++
++			NEXT_ARG();
++			if (get_u16(&port, *argv, 0))
++				invarg("\"port\" value is invalid\n", *argv);
++			addattr16(&req.n, sizeof(req), NHA_FDB_PORT,
++				  htons(port));
+ 		} else if (!strcmp(*argv, "onlink")) {
+ 			nh_flags |= RTNH_F_ONLINK;
+ 		} else if (!strcmp(*argv, "group")) {
+diff --git a/ip/nh_common.h b/ip/nh_common.h
+index afbd16b..759c0c4 100644
+--- a/ip/nh_common.h
++++ b/ip/nh_common.h
+@@ -33,6 +33,7 @@ struct nh_entry {
+ 
+ 	bool			nh_blackhole;
+ 	bool			nh_fdb;
++	__u16			nh_fdb_port;
+ 
+ 	bool			nh_hw_stats_supported;
+ 	bool			nh_hw_stats_enabled;
+
+---
+base-commit: 35a237091c24858cac6c6679175bb6a628cbe400
+change-id: 20260722-b4-vxlan-fdb-port-iproute2-13165877ba46
+
+Best regards,
+--  
+Jack Ma <jack4it@gmail.com>
+
