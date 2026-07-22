@@ -1,43 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B135F165;
-	Wed, 22 Jul 2026 00:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF6E2E7387;
+	Wed, 22 Jul 2026 00:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784680995; cv=none; b=qOgsXxw3SqhA+28bUk5HuCHpVIrVLi3OWy2f7Po26Glr8qb1ZC+lxDuKcgRGD6ZVdvtRb/Qtfn9CmNg0mMUOAFaMZUfocezlt0vhUPM2bO80jltOMkCtTenfsDSPBF6LyQs/By2UBhi1SOCJEzOgxM5CEz4WNSMRPdZZphjHrR8=
+	t=1784681204; cv=none; b=CgL5jPNronzxUqy3Nnx6tVKJDOqbnQvEZuEp8jM81bRlb/prQB5+MJuOOvEdKvnlOmVfjRCGOtwrSik+C7dNCyojYqr2kaqoKBuNS8r5t8cli0JrNILPEoaEsVv5Z33gzch+zWqdWeAq4AclxS+6TsVOp6xsDeXyKkqChHUKqjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784680995; c=relaxed/simple;
-	bh=AkS2E37uHeoBzibaALQpAwwuZ9JWtV9S+hAP6bZKz1Y=;
+	s=arc-20240116; t=1784681204; c=relaxed/simple;
+	bh=2Is18EtYtwVs1jbSXEvasX13S7pZoiJ+bguClsADUJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O8rdL/SqG5sbJl5VBkvExoVi0X2X4w3JB8Q88uv8rXPG5AGARCkMYheNBjXk9gVeheexrc61ZaLNLDZg50CvWLAN6VcKActkc0prrZjdc1Ijg0NZ8u+6LiK11Beaf127BAW/iAH3x6XSZseltVQGuWk84+cIpo6fsubACZaVqD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VV+KOgE/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bUIAN7wfaodX8dyIjXUEhRf1tyzmfWCEjwAvLVSakUnTmmX+dHij4/+7D1yfgQB0GZUxjjw6r+TeZel0c0czCmHD3e377k4+czRClB27MDfkt73KuwMcu68Waqp9C4guZ+LHdU22w3SrSSVu4D3zp4pY+oZtRi7uem3bMlIwvkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcxYwQIs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VV+KOgE/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC4F1F000E9;
-	Wed, 22 Jul 2026 00:43:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcxYwQIs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1303D1F000E9;
+	Wed, 22 Jul 2026 00:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784680992;
-	bh=AkS2E37uHeoBzibaALQpAwwuZ9JWtV9S+hAP6bZKz1Y=;
+	s=k20260515; t=1784681203;
+	bh=2Is18EtYtwVs1jbSXEvasX13S7pZoiJ+bguClsADUJA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VV+KOgE/iDASVfwPN3OwERfoppBfo9CUhBUSKcfvBs7+zDbEGuNb4ntefh/Kuv+pe
-	 idoqn+5KGdm9xJMPo49C0R8QgNI+piB8TLxaag5N1Tbmh2pPGc972+weN6uGqazfT0
-	 Y6c8UVwKs0Crt4yI1L0Lb2Aan1MAMmRVS/sI5FffD+yehUevPNjViBxYuNKHCSsXAU
-	 5NHXtqSbOtFG06jbp6ZMuJYor/AkZgkjPoSqYZDYDkBn7Q1fiwICxZY+4dkZfIfItp
-	 W9ZbCPp5rxB3E+Nc6z7KJIWNl9mC+o8MFaD7Mkj6hir9UjA6Z5twgvOKo65TXllFua
-	 N/sqBpkIBVwpg==
-Date: Tue, 21 Jul 2026 17:43:11 -0700
+	b=mcxYwQIspZ8TVcZ4aS1jAVHlbfeHMppudvhM3fQRjxqlzbJuK9VjhvRqKWBKCkH/4
+	 9+3eOK7er+I5ApQvIQWzNieKgulbttp1YEKoi79OYyCFRdZT0ELnnFAieSAhDcE7Dl
+	 dZDbMjuV31ZSQX8OOzRsyBu6neqpbOA6CcE1cRK7z7B3SBGhwAjIdOc6UX6cAUaaOI
+	 9bj3/yGX6S+OpAD1s48W9OmhMhhn2leAUz8ekToOoRCdSsnjx8kPsFO+8iPqKDmsq3
+	 XyjufTbrI6U9ciubSVy2NVZe643vRPytwKLs1Oq+JqTs3BJlb/tnJe3iBowZVves8h
+	 FWYKLf6b3VfQg==
+Date: Tue, 21 Jul 2026 17:46:42 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Taehee Yoo <ap420073@gmail.com>
-Cc: Michael Bommarito <michael.bommarito@gmail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5 0/2] amt: fix use-after-free of the skb head
- across pulls
-Message-ID: <20260721174311.4a4b3028@kernel.org>
-In-Reply-To: <20260711151934.2955226-1-michael.bommarito@gmail.com>
-References: <20260711151934.2955226-1-michael.bommarito@gmail.com>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, intel-wired-lan@lists.osuosl.org, Milena
+ Olech <milena.olech@intel.com>, Emil Tantilov <emil.s.tantilov@intel.com>,
+ Mina Almasry <almasrymina@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Ijae Kim
+ <ae878000@gmail.com>
+Subject: Re: [PATCH v3 net] idpf: disable PTM on probe failure and on remove
+Message-ID: <20260721174642.7749143e@kernel.org>
+In-Reply-To: <20260720143511.43408-1-mhun512@gmail.com>
+References: <20260720143511.43408-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,9 +50,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 11 Jul 2026 11:19:32 -0400 Michael Bommarito wrote:
-> Several AMT receive and transmit paths cache a pointer into the skb head
-> and then call a helper that can reallocate that head before the cached
-> pointer is used again, so the later access reads or writes freed memory.
+On Mon, 20 Jul 2026 23:35:10 +0900 Myeonghun Pak wrote:
+> Subject: [PATCH v3 net] idpf: disable PTM on probe failure and on remove
 
-Taehee, please review?
+Please try not to change the subject of your patches when you respin.
+It breaks version tracking. Ideally you'd tag this as iwl not net.
+We don't apply intel NIC patches directly.
