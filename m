@@ -1,195 +1,134 @@
-Received: from mail3-166.sinamail.sina.com.cn (mail3-166.sinamail.sina.com.cn [202.108.3.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095B12D97B9
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4A525B09A
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784724991; cv=none; b=uAjRxh5WAtVj9FMHQb5830x6iWt+0Hbcn94ZWoqYkQalC7pefByoBUAOJU0xcCuZ5HwPM8kpPYcHu3wt9MwgQRdwVYJ1u07B2IfGxB6OkNFp1eoPWxyfwixKovu4cuvPiKymWlQdWWNBMjJ3hnTodYe/QuFlR/UenuSrR29f9iY=
+	t=1784725040; cv=none; b=DbL9HdSuTNlcWcbQJF27hoXRL8LHb84yjXUN6S42p7twi/8GIRXkz7KiObjvxfp10coLn+k0VzaiF/dLjhJouEGKLKMt+7tcWkSS/KcFXnmSw0ZXQtm3ZaSyfPy/zo4CQxGp4uVqDv/EQxtlGFQZKVnZu0qHLJzd0+AoBUzTI40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784724991; c=relaxed/simple;
-	bh=IgcOH20bdGsH9QeYJXFhiP7nhUP7lAbDOQsHz/vmrR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OvXje8UJUM9u98uSXJXNBcPjXol4Uo6/qaxp72PDeYxw/SJsUVCvycFjGXwM+HIgEghrRgfPUvjQsulUDUwkoZvkAON9uzMCQYlP790OvWNKaQI6JuBl6qI0iV7Ce5fGDIKFmhMXZUIeSH31TuJVrbEsQNSOfwOixl9vxQjPo6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=b2/jXr4z; arc=none smtp.client-ip=202.108.3.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1784725040; c=relaxed/simple;
+	bh=0juL770o7AYBx5qshZWKcpjN9zwA1c9uhtiLW3aAZv8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kgUxsb7lW84wjXdA7jyR7qkz9/oFmsudI+pzOVZVQlCgcljY0R+wczkz5jcv5vEqgLn9YE5GX0noU8cxLe38kK8Q4GPHsxCXDR5a4OGGYiDJ47D8mZ3flqRFXE2pc7X7l3vkN0JqP6AT98VDq5QLkE81DMANItRs9eBZsL6wyKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=em6FMAw8; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="b2/jXr4z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1784724986;
-	bh=i0SeIfWvKE8BRqBGZtZxo3wp6f+EfrFAfpHqRNSd+gk=;
-	h=From:Subject:Date:Message-ID;
-	b=b2/jXr4zdLGk1XzxLyQG1ZSXBnI97jfeuLZHoSx6tGaWKWqvG8kCWkW7AIpaBtkAd
-	 zZvYOAUXJj0TCToUWGNOM8aw3OrHwDrNC7ObIL3bYIiOLzab7sqVATgT2Cd/mzcwTc
-	 6o7RzaU9ATdLwlMztGFBkt33P5FrkWje7TEQGnTk=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([221.216.152.105])
-	by sina.com (10.54.253.31) with ESMTP
-	id 6A60BDED0000706E; Wed, 22 Jul 2026 20:56:16 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 4103836815950
-X-SMAIL-UIID: 30F5E33652204A6ABC524CE1E159B6AA-20260722-205616-1
-From: Hillf Danton <hdanton@sina.com>
-To: Nikolay Ivchenko <nivchenko.dev@gmail.com>
-Cc: syzbot+2ad5ec205a38c46522b3@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="em6FMAw8"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c999f162c9aso8071062a12.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 05:57:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784725038; x=1785329838; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=I2rB9Ndyno38tvnD2Ic7hgwBLudpITP00SlVTEt+t4E=;
+        b=em6FMAw8zJPjKVVTkU8IO7cwgaE14ywqzb5J80vLAEUlM1yFXrNXrAi8x7BxLoUw3S
+         XbCDGnLDMYkI1Um06LvilcSHHPaB9TJPMt2fy97QRL1b/UUckhHNJRyk8Uy0D0pTYGnJ
+         nW3ZsFRzcQ1da1OidkRbMRNYLrzB4IN8tu1IhySE3FNF1LNfqid6/eF4Za7U+9mMdtGo
+         AJ7PFtGvSglK67OqwyL/FAwbgr/dMADmlOWCk8AhjB7kVPtlNjUiwOR4aT/MvPXG66gw
+         nnx4w+cV9GSlvooCmk2G9yIXTheaQxFxrqh0etRnBnZi0p8uOQTHyun1d5paT3+y0ktG
+         yVJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784725038; x=1785329838;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I2rB9Ndyno38tvnD2Ic7hgwBLudpITP00SlVTEt+t4E=;
+        b=Dyb2Acz/IMxtr15oW8c2AF2h0ySjw1weo9qrmx104oodNFpVQ6qikM4XI87mqw+f0E
+         ODvfToFJESCF9Iv+HujvOvKeFuN5GfhSzZJZhhJYuTE8f/OccOLjKokFcDygKaTnVhtU
+         3DkOhM5YlH0/s/Hmtc4hqCJq7tpSXoGX1oYFNGpXDYB9K03Se2GV3cJMGT8maWTsY8tP
+         24VT+noigUockYvz568F1tHLQX+KZGS1fJ1b+oA66vOaxbi8MNSXo2/+WzsOAKQya6yH
+         k+yE1sK3Tqpdwv7ra62ovTPZizSICuVkENbXqbcJUsvfjGNwxfLP6I8EeRQK5dtVCQCH
+         Xagg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/4AkY7ymU5ngVECLPxDZCEpcw9jWgUQeCwgc7hUmMvr/WhovZIHuXqC+o5kAwpwdE60TNk8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYcRo68fpkj2UIctDYWorMlOGK3BonSEJRzXnFuLa++JtL22El
+	F1yfx/n6xhomyABYHpfNfOLq9kWQecuXmOVhsxpzr3C5sFVQvMtAg809Aa0HdJ8Z
+X-Gm-Gg: AR+sD13UuqpWQan+2mpBGhHpz3ZJuAotN+txrCZFT50K4eteqX+7YnV2zjrsBqmaC7L
+	AJiueVC6tsJKBRdl410/XXzerVyMwmNKUNnvoNY23IN3o5DDSd1wr6hG1nv1frr+BlmpGefpIJl
+	dDi9tf8U0h4XSWPcs3e6YlE7CAAWywKgNAyS/YcDWJRd8VuYv5bOKr2MOqiebsw+iY6f1aD/pY8
+	bqswBS4r17u7p8gHBmKaKcDCrrjkZW2bRwb6xKEOjomKlUPQ/KcdNfT5Avxl51PSmM32eZ5ww29
+	S0yfe+qP49eAW6geIqEP2KdnDf7WDwSIBp2pPEz5iFVLqDTPr52T4U1Ll8wzzQl71VB11PQ9LsK
+	XakIO6JQMegd6EdsgkvftKZv9g6xttI7yNpFo2ccNJmumI0h/S9BqFc3YOCWEVh2Y3FG60z0yM8
+	GzeQW85TvjctBKz15f9n0UUauf8jLj29i93ZhjamD2VVBXPhe81wKS
+X-Received: by 2002:a05:6a21:7008:b0:3b4:8ba9:4d8e with SMTP id adf61e73a8af0-3c3ad7a3d10mr26306035637.23.1784725038068;
+        Wed, 22 Jul 2026 05:57:18 -0700 (PDT)
+Received: from DESKTOP-L3Q0GIV.localdomain ([203.230.195.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f0d7acfsm1140282a12.3.2026.07.22.05.57.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 05:57:17 -0700 (PDT)
+From: Sangho Lee <kudo3228@gmail.com>
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
 	netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in unmap_region
-Date: Wed, 22 Jul 2026 20:56:02 +0800
-Message-ID: <20260722125604.664-1-hdanton@sina.com>
-In-Reply-To: <20260722071417.229890-1-nivchenko.dev@gmail.com>
-References: 
+	Sangho Lee <kudo3228@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] netfilter: nf_conntrack_h323: fix get_bitmap() overread
+Date: Wed, 22 Jul 2026 21:57:14 +0900
+Message-ID: <20260722125714.1389705-1-kudo3228@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Wed, 22 Jul 2026 10:14:16 +0300 Nikolay Ivchenko wrote:
-> On syzbot report, syzbot wrote:
-> > Hello,
-> >
-> > syzbot found the following issue on:
-> >
-> > HEAD commit:    32f1c2bbb26a net: airoha: dma map xmit frags with skb_frag..
-> > git tree:       net
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=116c2c0a580000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=86ba763b42fa66a
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=2ad5ec205a38c46522b3
-> > compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=132f5861580000
-> >
-> > Downloadable assets:
-> > disk image: https://storage.googleapis.com/syzbot-assets/7b7c3a22a8ed/disk-32f1c2bb.raw.xz
-> > vmlinux: https://storage.googleapis.com/syzbot-assets/168b43c87305/vmlinux-32f1c2bb.xz
-> > kernel image: https://storage.googleapis.com/syzbot-assets/70704720d284/bzImage-32f1c2bb.xz
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > Reported-by: syzbot+2ad5ec205a38c46522b3@syzkaller.appspotmail.com
-> >
-> > rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> > rcu: 	0-...!: (1 GPs behind) idle=6664/1/0x4000000000000000 softirq=17730/17732 fqs=2
-> > rcu: 	(detected by 1, t=10502 jiffies, g=17101, q=1895 ncpus=2)
-> > Sending NMI from CPU 1 to CPUs 0:
-> > NMI backtrace for cpu 0
-> > CPU: 0 UID: 0 PID: 6010 Comm: modprobe Not tainted syzkaller #0 PREEMPT(full)
-> > ...
-> > Call Trace:
-> > <IRQ>
-> > __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:176 [inline]
-> > _raw_spin_unlock_irqrestore+0x1b/0x80 kernel/locking/spinlock.c:198
-> > debug_hrtimer_deactivate kernel/time/hrtimer.c:490 [inline]
-> > __run_hrtimer kernel/time/hrtimer.c:2000 [inline]
-> > __hrtimer_run_queues+0x239/0xa10 kernel/time/hrtimer.c:2096
-> > hrtimer_interrupt+0x448/0x910 kernel/time/hrtimer.c:2215
-> > local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1051 [inline]
-> > __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1068
-> > instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
-> > sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1062
-> > </IRQ>
-> 
-> I have analyzed this issue in sch_taprio, and configuring extremely short
-> schedule entry intervals (e.g., 700 ns) in software mode
-> (!FULL_OFFLOAD_IS_ENABLED) seems to be the root cause, leading to an hrtimer
-> interrupt storm that locks up the CPU and results in RCU stalls and softlockups.
+get_bitmap() first consumes the complete bytes covered by the current bit
+offset and the requested bitmap length.  For totals below 32 bits, it then
+unconditionally reads one more byte for the partial-byte remainder.
 
-How many hours were spent?
+When the total is already byte aligned, there is no remainder.  The
+caller's boundary check correctly permits only the complete bytes, so the
+extra load reads one byte past the supplied PER buffer.  A crafted Q.931
+User-User IE reaches this with a 17-bit sequence extension bitmap starting
+at bit offset 7.  An AddressSanitizer build of the decoder reports:
 
-> When testing with larger intervals, the lockup completely disappeared.
-> Furthermore, no matter how many times I captured this stall, NMI backtraces
-> consistently showed the CPU trapped inside the timer handler
-> (advance_sched / hrtimer_interrupt).
-> 
-> Please note that this bug can show up in different execution contexts and with
-> various crash titles depending on what the CPU was doing when the interrupt
-> storm hit. As such, despite what the subject line of this report suggests, this
-> is not a memory management issue — the root cause is entirely in sch_taprio
-> (networking).
-> 
-> === Cause Analysis ===
-> 
-> Currently, fill_sched_entry() validates schedule intervals against a minimum
-> duration using length_to_duration(q, ETH_ZLEN):
-> 
->     int min_duration = length_to_duration(q, ETH_ZLEN);
-> 
->     [...]
-> 
->     if (interval < min_duration) {
->         NL_SET_ERR_MSG(extack, "Invalid interval for schedule entry");
->         return -EINVAL;
->     }
-> 
-> On high-speed interfaces (e.g., veth, which defaults to 10 Gbps),
-> transmitting 60 bytes (ETH_ZLEN) takes only ~48 ns. Consequently, an interval
-> such as 700 ns passes validation because 700 ns > 48 ns.
-> 
-> However, in software scheduling mode (!FULL_OFFLOAD_IS_ENABLED), the hrtimer
-> handling overhead easily exceeds 700 ns, particularly in virtualized
-> environments or on slower CPUs, leading to CPU lockups and RCU stalls.
-> 
-> === Minimal Reproducer ===
-> 
-> Based on the reproducer provided by syzbot, I have created a minimal shell
-> script reproducer:
-> 
-> #!/bin/bash
-> ip link del dev veth0 2>/dev/null
-> ip link add dev veth0 numtxqueues 4 type veth peer name veth1
-> ip link set dev veth0 up
-> 
-> # 700 ns interval passes validation on 10Gbps veth, causing softlockup:
-> tc qdisc add dev veth0 parent root handle 1: taprio \
->     num_tc 2 \
->     map 0 1 \
->     queues 1@0 1@1 \
->     sched-entry S 01 700 \
->     clockid CLOCK_TAI
-> 
-> Note that after running this script, you may need to wait about 20-30 seconds
-> before the RCU stall or softlockup warning appears in dmesg.
-> 
-> === Discussion ===
-> 
-> I would like to ask for opinions on how this problem should be addressed.
-> One approach is to enforce a minimum software interval threshold at
-> configuration time in fill_sched_entry() when
-> !FULL_OFFLOAD_IS_ENABLED(q->flags):
-> 
->     if (!FULL_OFFLOAD_IS_ENABLED(q->flags) && interval < NSEC_PER_USEC) {
->         NL_SET_ERR_MSG_MOD(extack, "Interval too small for software mode");
->         return -EINVAL;
->     }
-> 
-> However, I am doubtful whether this is the correct way to fix the issue.
-> Hardcoding a fixed lower bound (such as 1 us or NSEC_PER_USEC) is a heuristic.
-> An interval that works safely on high-performance hardware might still cause
-> softlockups on slower hardware or inside heavily loaded virtual machines, while
-> a conservative threshold might unnecessarily reject valid configurations.
-> 
-> Where should this problem ideally be solved? If it belongs at the input
-> validation level, how can we properly validate input data when we cannot know
-> in advance whether a given CPU will handle the processing load?
-> Conversely, if we should try to detect this issue at runtime, how exactly
-> should that be implemented?
-> 
-A known issue, feel free to grep broken in the 2025 report [1].
+  heap-buffer-overflow in get_bitmap
+  decode_seq
+  decode_seq
+  DecodeH323_UserInformation
+  DecodeQ931
 
-And my 2cents suggestion sounds like sit back with netflix on.
+The same condition also excludes a total of exactly 32 bits from the
+alignment shift, producing an incorrect bitmap for unaligned inputs.
 
-[1] Subject: Re: [syzbot] [net?] [mm?] INFO: rcu detected stall in inet_rtm_newaddr (2)
-https://lore.kernel.org/lkml/CANn89iLjjtXV3ZMxfQDb1bbsVJ6a_Chexu4FwqeejxGTwsR_kg@mail.gmail.com/
+Read a trailing byte only when there is a partial-byte remainder.  Include
+the 32-bit total in the alignment branch.  This makes all start offsets
+and bitmap lengths from 1 through 32 agree with a bit-by-bit reference
+decoder.
 
-> Best regards,
-> Nikolay Ivchenko
-> 
-> #syz set subsystems: net
+The same input reaches q931_help(), DecodeQ931(), and decode_seq() through
+an nftables Q.931 conntrack helper on current nf.git.  The helper's static
+scratch buffer has tailroom, so in-kernel KASAN does not report this logical
+packet-boundary overread.  A diagnostic check immediately before the load
+does observe bs->cur == bs->end.  No crash, disclosure, or corruption has
+been demonstrated.
+
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sangho Lee <kudo3228@gmail.com>
+---
+ net/netfilter/nf_conntrack_h323_asn1.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 6830c9da3..482860d2c 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -228,8 +228,9 @@ static unsigned int get_bitmap(struct bitstr *bs, unsigned int b)
+ 		     bytes--, shift -= 8)
+ 			v |= (unsigned int)(*bs->cur++) << shift;
+ 
+-		if (l < 32) {
+-			v |= (unsigned int)(*bs->cur) << shift;
++		if (l <= 32) {
++			if (l & 7)
++				v |= (unsigned int)(*bs->cur) << shift;
+ 			v <<= bs->bit;
+ 		} else if (l > 32) {
+ 			v <<= bs->bit;
+-- 
+2.43.0
