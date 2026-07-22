@@ -1,46 +1,46 @@
 Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4520533065D;
-	Wed, 22 Jul 2026 03:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FE63DBD5B;
+	Wed, 22 Jul 2026 03:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784691110; cv=none; b=FOE6FiffMZcWK1N4h7TDT+xE4nFnfItZN6v1IOsIVd71XRGl5Mx2kh1/WTRp5ReVvtb5vU0kJfAPLBgm8+Ma/zMZ5ZAbR7wZ9BbhqPilOlpIyXciQdaaUXcH5MlEmk+7U33v/h9qezyz8APTIs9oS/TYa+EJ1yKALYT0KGM7nK4=
+	t=1784691113; cv=none; b=PkpD/buPzpjsW+e+mJ804HZ9DwbyVgjUYP24lznLdYAeQurOGNHkeZxJ2jecbFw5QHVRyqjZaJ+GlqrAT3ME6984jL8lO53CyAUgrcrMwQj+eqo2/dN7QbEe5SZzeYnRYH5OemH6B5XCgVXz9WyeHwdJkXpuKRaGinrVevvz6Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784691110; c=relaxed/simple;
-	bh=ojbQadbeSqjTJ0jmN/K6CSt7HZAxMUg6r6Eq5hbUMRc=;
+	s=arc-20240116; t=1784691113; c=relaxed/simple;
+	bh=MfTcypu0xmgn6dV7pRLzNTXZ80KHazJgygRiUlYhcPo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EYIoPBJMjKpvU1vnqnSrxIcKoCwbPEVMbObN15K99gHrS1PeWSaqsAx1mTz4aERDsurBmjK9M8eXGGbRpqBB6nnElXo6FbbEFpNQ1ev8/t7PcvMNdKfkepjXQLjo+yEPclu2avk+6myGm+hChdygy+ICLmHrZ6z1TU3/zUXa9Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=oa27+A7U; arc=none smtp.client-ip=211.125.140.165
+	 In-Reply-To:To:Cc; b=Ag7xz8aTqFWGUWDJ+M9tdXO/yK16xKZ35dyfd1s5Npaoqy8nAaJHu2pyU7A8/uIVDIvI73cGLjyt8KUp+sr/xpDHd6PSlH27tues1U73cFd9lTpxEMjKkc4Y1JkHIc/IYESn6h9yh+QHoNsqFc+6KcXny4D0QocK+RpFE4Lv/xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=uz+/oE7R; arc=none smtp.client-ip=211.125.140.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="oa27+A7U"
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="uz+/oE7R"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1784691108; x=1816227108;
+  d=sony.com; s=s1jp; t=1784691111; x=1816227111;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=RWduDFciZbpwE+xzPcLgZdrOaRq58lmGj88C0MiHbXc=;
-  b=oa27+A7UpQ0+Hk0312KI1DLR04aH8MUxvR9i4bEluIu4JcGBkk5kF8L5
-   FmVkPRi9w2ZWGlZoHM/uyyqqKVKUZSXjiL5fvJCirNVrtrdhF4/om6fPb
-   eDY1dIIyaeiUHzpvTq2LYaIVDEv8+Cc2FAcD9AmTKUj5IwGsLgM8w/7y/
-   uZPiSUl/4FuHUTgsI//bN0fpwKTvlpJYBtVBIhwIQkmQR8V+pzIot7AWU
-   QS3A61LDZ6oy1mewosv7zojuC47xoOpkQyfdoib/NDDCgyWNVdNELXCeX
-   3L0rtEKnBKc6TJI1Gjy2PitN0itx/WzhnNil7uwb7QvhtvaAGOPxMNu2l
+  bh=caj1f0+EQ2UBY0cWiEaPgfnHr13PPMYZHTOfF6hNr3g=;
+  b=uz+/oE7RrhRF4EN7y9Lk+5G1IMHFZ3u4qLfznoNLqDawpiFeut02caFm
+   XnopeLI3ZgWK2h40UqtR+FBPfrMCZ1X79ipsh0UepKlh+z6FahcTjaTDQ
+   EeX6jh/rctVJAJshCfBR1RXdHmFxMGaqywxystGHLCiuU2P/t5LctkpG4
+   t/ysmwwbvkr9n/DuND0jrlzPQlnbumzJbjiViMgVhO2I94C1PESJ68Lmo
+   F87oEqOS+pXT9IYzqNFqSu9rCiSMCQQ41QKV9KvKjFZIaKuEEGTgb0iNq
+   bceJFovjMiOQG/FtZpHeJ7AqcdN9bUWr3XgiBWq2wi+jRt0u6trtf9sjs
    g==;
-X-CSE-ConnectionGUID: 9BoVPK9UTAOKNY25oOAw0w==
-X-CSE-MsgGUID: B7OvezifSUiM7/CA55YMzg==
+X-CSE-ConnectionGUID: Uqbz/TdySemtTC23GndMTg==
+X-CSE-MsgGUID: ww7wza9OS16tbuVEEpj5zQ==
 Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
   by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 22 Jul 2026 12:31:37 +0900
-X-CSE-ConnectionGUID: PvdEH5T2Q6WRlnnZQ7dmew==
-X-CSE-MsgGUID: 3qTt16CYTNS6ocxsYwwDcw==
+X-CSE-ConnectionGUID: AIyn8/KgS4u55ssiYoTicA==
+X-CSE-MsgGUID: c/wzc9eFTBKuNh3NpiIrUA==
 X-IronPort-AV: E=Sophos;i="6.25,177,1779116400"; 
-   d="scan'208";a="627327274"
+   d="scan'208";a="627327276"
 Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob02.noc.sony.co.jp with ESMTP; 22 Jul 2026 12:31:37 +0900
+  by jpmta-ob02.noc.sony.co.jp with ESMTP; 22 Jul 2026 12:31:38 +0900
 From: Shashank Balaji <shashank.mahadasyam@sony.com>
-Date: Wed, 22 Jul 2026 12:31:23 +0900
-Subject: [PATCH 3/4] usb: typec: set mod_name in driver registration
+Date: Wed, 22 Jul 2026 12:31:24 +0900
+Subject: [PATCH 4/4] usb: ulpi: set mod_name in driver registration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,7 +49,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-mod_name_usb-v1-3-96d781530f3f@sony.com>
+Message-Id: <20260722-mod_name_usb-v1-4-96d781530f3f@sony.com>
 References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
 In-Reply-To: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -66,13 +66,13 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-embedded@vger.kernel.org, 
  Shashank Balaji <shashank.mahadasyam@sony.com>
 X-Mailer: b4 0.16-dev-3bfbc
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2114;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2295;
  i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
- bh=ojbQadbeSqjTJ0jmN/K6CSt7HZAxMUg6r6Eq5hbUMRc=;
- b=owGbwMvMwCU2bX1+URVTXyjjabUkhqwEy+nbDeaXpHy755MtMmVzKGdafEmLdtZRuyAOhvQdi
- 7gNPmp2lLAwiHExyIopspQqVf/auyJoSc+Z14owc1iZQIYwcHEKwERuXGH4zH7vPsdZcUbzvPT7
- i6ZszdhlrO9YukGpl29V39/L8+MeMTKsn/vuMKfIfG57Uf7HksYHH2/eyvJxUeNyp0mill5nWXY
- yAQA=
+ bh=MfTcypu0xmgn6dV7pRLzNTXZ80KHazJgygRiUlYhcPo=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhqwEyxlyXvFC/kplQTx7+H9J5amv75otuOhuGuuZnbfWV
+ GZGl7B3lLIwiHExyIopspQqVf/auyJoSc+Z14owc1iZQIYwcHEKwEQWVzEyrLg57+jdt0Ic3w2X
+ 3lbz9m40nRL919pOJb1XyfHcW9fP1xj+J4ULzXnEfaioWequRa5px49ifds/mdaRaV223Yv+Ns/
+ iAQA=
 X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
  fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 
@@ -88,44 +88,46 @@ Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
 Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
 Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
 ---
- include/linux/usb/typec_altmode.h | 4 ++--
- drivers/usb/typec/bus.c           | 4 +++-
+ include/linux/ulpi/driver.h | 4 ++--
+ drivers/usb/common/ulpi.c   | 4 +++-
  2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-index ef21ead551be..92309b569c3a 100644
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -227,9 +227,9 @@ struct typec_altmode_driver {
-  * handle all SVID specific communication.
+diff --git a/include/linux/ulpi/driver.h b/include/linux/ulpi/driver.h
+index c668d9c8d876..c899197e0aa8 100644
+--- a/include/linux/ulpi/driver.h
++++ b/include/linux/ulpi/driver.h
+@@ -51,8 +51,8 @@ struct ulpi_driver {
+ /*
+  * use a macro to avoid include chaining to get THIS_MODULE
   */
- #define typec_altmode_register_driver(drv) \
--		__typec_altmode_register_driver(drv, THIS_MODULE)
-+		__typec_altmode_register_driver(drv, THIS_MODULE, KBUILD_MODNAME)
- int __typec_altmode_register_driver(struct typec_altmode_driver *drv,
--				    struct module *module);
-+				    struct module *module, const char *mod_name);
- /**
-  * typec_altmode_unregister_driver - unregisters a USB Type-C alternate mode
-  * 				     device driver
-diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-index e84b134a3381..587d3b06ee8d 100644
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -383,12 +383,14 @@ void typec_altmode_put_plug(struct typec_altmode *plug)
- EXPORT_SYMBOL_GPL(typec_altmode_put_plug);
+-#define ulpi_register_driver(drv) __ulpi_register_driver(drv, THIS_MODULE)
+-int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module);
++#define ulpi_register_driver(drv) __ulpi_register_driver(drv, THIS_MODULE, KBUILD_MODNAME)
++int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module, const char *mod_name);
+ void ulpi_unregister_driver(struct ulpi_driver *drv);
  
- int __typec_altmode_register_driver(struct typec_altmode_driver *drv,
--				    struct module *module)
-+				    struct module *module,
-+				    const char *mod_name)
+ #define module_ulpi_driver(__ulpi_driver) \
+diff --git a/drivers/usb/common/ulpi.c b/drivers/usb/common/ulpi.c
+index 7e43429e996e..dec4baca1c53 100644
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -147,15 +147,17 @@ static const struct device_type ulpi_dev_type = {
+  * __ulpi_register_driver - register a driver with the ULPI bus
+  * @drv: driver being registered
+  * @module: ends up being THIS_MODULE
++ * @mod_name: ends up being KBUILD_MODNAME
+  *
+  * Registers a driver with the ULPI bus.
+  */
+-int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module)
++int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module, const char *mod_name)
  {
  	if (!drv->probe)
  		return -EINVAL;
  
  	drv->driver.owner = module;
 +	drv->driver.mod_name = mod_name;
- 	drv->driver.bus = &typec_bus;
+ 	drv->driver.bus = &ulpi_bus;
  
  	return driver_register(&drv->driver);
 
