@@ -1,52 +1,86 @@
-Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62BC4DA531
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F3B26B2DA
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784721501; cv=none; b=baKRuQwKGiyIretXA0fOM2ZMja6vgfZox6mfVCOZW2M9lvMx8LymdiApv99YQL8bRfPhHr+fwwLUGYZvr4CMW2UB571haysWtZZhxf1SQ+4FsuIjxUXD0gijHGLIuaucOXVAMqe2V/j6OgQD5R5BL6ONRLJLI8yK6G+ZfWqMqAc=
+	t=1784721682; cv=none; b=TAkaj1mlCB91UE5YxgbG1/OjgpUokDV3Qf6zQ6tDGLNk/pshRxlLQxnpKOATt/vBCc/YJu4jB9Xy2apU0O211XFEKNLqSOtIerYpGn0I59IBXS0mCWUy1JU2e2Bon3SSn40KrhI8THor/b0zcJ7WDzsuGcvXzVVUkGeWltZV54E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784721501; c=relaxed/simple;
-	bh=RNAchHQ4qO/O72shiNlBmrd3K5EtTftrXSUsEz6u+fQ=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Ofh9x9ZsprTAvFvYNThAlw/2ZmZpDPkPwuBFobl5Hrykwozm5VzOtmkW2UP+upy3et00oUw29pWn8CEGmDSjP09w8PjAzM7x54MRpZ2+dcZzIkyKQT4jZEgR5ngG0wfPelq8FcXqtJCaj99vT09BRPBjfgzGLqs3KLyG6iOFDaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-47f6c54e841so1314108f8f.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:58:18 -0700 (PDT)
+	s=arc-20240116; t=1784721682; c=relaxed/simple;
+	bh=1iYzcSzBVszfquoB5Gao5ixYdfrJJeuKpOGKLbt9UfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lnA0GgX7vZo/+kXqy5e5+p7TNrlnCpnY7uUw7JzE2StLtO8ze4b4r4IMg0HmoQym9oDeX5HIl+mem0R6WNrv7Th8y39Iwl3hyNQdqiDJL008ZYzsi8pnHShuJwmJMCOp935Gj38R5XNjqbAwGUnp4vyDG6TkACpxHDB9nuMQHg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J30N8+Gp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FAUJ1ssJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J30N8+Gp";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FAUJ1ssJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784721680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gjw5fk6FJX7T3TM7SWdjeZeD5xQvuAq2f/Ljq1xib+Q=;
+	b=J30N8+GpNOVpIAA0Ywwf0Fre9XfwqpnC6fp2UZMGWFYx1N3OG6RlT3xJfMI1Vn4S3Do3Yp
+	+7T1VdsPCQzARxdACAqPoj1yugsfXA1d2vh+rM5mbrD8kGXCOw57hOfCIjVqk7yqQdPjjZ
+	efy+JtaItE3hyU1X/7nRA0RWvmvCQjc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-N3noiLP8ODCFb4eDxD4rDg-1; Wed, 22 Jul 2026 08:01:19 -0400
+X-MC-Unique: N3noiLP8ODCFb4eDxD4rDg-1
+X-Mimecast-MFC-AGG-ID: N3noiLP8ODCFb4eDxD4rDg_1784721678
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f24a50f0cso11499443f8f.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 05:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784721678; x=1785326478; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gjw5fk6FJX7T3TM7SWdjeZeD5xQvuAq2f/Ljq1xib+Q=;
+        b=FAUJ1ssJ1vspDqiICOTYo/T93BCI7NQWXLT8vAA9Wo9P+hDoeIqpS+Bjq1DAbxtaG1
+         LsEfTEj6pSgDYdzevXwY0IrZQSF4fUwx0TjUXrTHa0WAk5zqINi1hvYyY4lb6o7OTFoG
+         N3Wia73kzPA797IyubKolt3iAaOTEJuU8CD/B9b5Lx2ywjYqKQutiKeQeclftPavgkfS
+         Jpi1uG/7obrhYkVN4/K8PBTn7YrGs7WSmqT82UV6NXGA0QO8/NoIBpn91SLPgcBj57yi
+         sT1uPZVmOHzNQOlXRPeF9S9LACEKJjCR63jRT4g2k/DEjJry5JOq2C/VKYqbZsOHuV/h
+         k7Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784721496; x=1785326296;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784721678; x=1785326478;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gS6jluprUO+rrXshsNQM8faXcPKrMbgl9BWtnXNV8y8=;
-        b=Dju4UVh/bHsDGchDVqhFYs1vaseXuXLgQa1vnLjqnhLk4OySmIoDYTcyxGUYkGaGGa
-         6DkBgHaPj6+m2yHVRm3Lf3Ye35Db2rjXNLPc2vbzpZ1j/CZaxyo71IUrlza3Gd6K2Un3
-         KwBowH5jH62axrV2lk4MZzUDjm4BJnOjwo++GaGYiYhY9S6mKtn9IwPB+Nyphak5BVXB
-         A+HL1NV3To56nkbO16ppQJxI6yzFilWQ0Pyy3lKFJaWYvthzPFKFFHHU03XOZ3x5ZM5d
-         pHITwtk3BgpeAFkK/qFcUaxVZW3weBm65ib6+WpcoBRH9ap8pK2UILLg7oRTND+W6M34
-         9NoA==
-X-Forwarded-Encrypted: i=1; AHgh+RrWH8xN5VsAT+83YR5EeHByEQKqSEkAbJL9dHssvlvUiBsXjKXExBtDcdRWpOwKQNinDJnv2E0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUZ+X2OtAlt0BW8w+daYr32O8oUBL2JFEhf7nXvfxRwEXVu4Z7
-	2tInPb2Wwi9jM/pwush3s9of+qdULT2IjSNWzKMWDAl35Eqc8Q3S3az7
-X-Gm-Gg: AR+sD12fOVYbnj1VvAYD/PE+Xrixl4t/cUCMDNdPAEel+xxtH3ejU1RKdZ33Z+WqYB7
-	VsJOUuusHGpo4ip1Nod2EB7DLwly1mAMtGPftsvzvy/5V/2I8dAzmhKq1zVbtBoI/gCMNbh9xDL
-	/4W7Wf9op+mRpzTm/UjTjm8q2CPJkzRtf1nfpHN787Ofy+r+KrYhU98MlBa/Cdc/UzqwKv4wH0q
-	o+M24xnelpKJgKo+OpUDGjixUz2zo/EwUMYttaa2RMVt6xODrfWkwNhQfwByK21y872+EG7VXHX
-	BDvD+l5lDCcYmObYpfmkrNZqo4BQmQFhQxE6RpXhccLMMS2uDhdKbwAMQxfohfe5Q9d99G2nvLX
-	CZhkbb8mjLQO6pIai1Kc3IB3/nqjgkoQqufn+qcvTY0b8r8nzBF+bxIoP6VmSld8Fafowwx8eKv
-	RUwVkEOgcA+egxRwOGgqgOb4O3ECva7uAyE7nwK4w=
-X-Received: by 2002:adf:e186:0:b0:476:6bd4:82d0 with SMTP id ffacd0b85a97d-47f622feb94mr25810578f8f.2.1784721496183;
-        Wed, 22 Jul 2026 04:58:16 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-108-129.customers.tmcz.cz. [78.80.108.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6287csm5980178f8f.25.2026.07.22.04.58.14
+        bh=gjw5fk6FJX7T3TM7SWdjeZeD5xQvuAq2f/Ljq1xib+Q=;
+        b=bpez4ZW0gluoigwBidY67eVFExzKzig2oSbriA3cBfD0Uus08bM/wpbm1NKMvq5eAg
+         ZFaWrp2FHYWBcUKvLLa4M4g1Pipw2kj6AkuGgkiS2ptKpfy0XjZd+y9sSELT4EAyrAdd
+         Vwvj/4u5ovlM7br0C3neRBrXz1sJsI5RktvwHgqJcW8qZ0Tdwb1xt7I86t1DcZeHRZbf
+         vkfzlHzgiy3FjW1Dz04gYtmyxot/cJGxCb9p49y73I/l4MDlkAg5ox+5Bala4QwatpTc
+         9SA3HyHUjcMk0r3M86d4UbW2Bq7E3F9ypSfkQEikVM0IrajLfiEzoqH5Of3+ATN+jE1p
+         rfmQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoazNJE8u5OnQspHmFKyQiEae5LMMq5H3ZrP70iLYk11wl9DPGewUAxntFjepr4Yd+g1EYF/zY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfashO4eocNJKZQeYFzvZCdU0PfncB5e05L5ZCV/Lg/Kjtqbhg
+	dnT6nmbeDCZZX4QNRi6RV8dqwfnqZjmxhjVocMxGyqihjcSSWx/bfgvnvIy87VPQ4RgRI/qJzlc
+	Tcg25zVImKP4JzgE0K9/OqYz9d96BBTzpI0NxTAyeQ+vHktV4lsU0TdhAng==
+X-Gm-Gg: AR+sD13OKXtvJEHm6vqXqXb2brgc+t3K6RdqgHBs94roVwbL3TbkqLot7qcZJTQr6jx
+	/iMirxqe5Y+N/tKQe/ZwvP79JNaNeGxpPh7HuXwEC4xOkpioQRMPXhXFjTGq6oIXrsF2GUTjghH
+	SkD9Kj3GCTvfn+GTN1TAdI+Wzjn00uO4u8JJD5gMUt4S/dJMpuTPqDx8otCncz6vpfZdQ/H4lws
+	hdpTs36VtjWkmby9yYAyoXN6ZaTtVpY1dp9SpisNncWEDvS8HgYFFzEK4riYf49EFqn5tL6waaa
+	vNfJb6mRpNQc1qCczO+gMA9tDfk1Bouzosw4iQbrFqOFh+z6xnr31RJvgoayKnxZCaHoS1YkBi6
+	25XZoPGkt1xJEW3xu0nWhtRbL5PLWKU+SeWcL5Aw3ihBF8K0DJk4KkCwHQngCzidE01uKvYlsv5
+	HjGQ==
+X-Received: by 2002:a05:600c:6287:b0:493:e79e:da63 with SMTP id 5b1f17b1804b1-4954a51319dmr260289405e9.34.1784721677626;
+        Wed, 22 Jul 2026 05:01:17 -0700 (PDT)
+X-Received: by 2002:a05:600c:6287:b0:493:e79e:da63 with SMTP id 5b1f17b1804b1-4954a51319dmr260288815e9.34.1784721677119;
+        Wed, 22 Jul 2026 05:01:17 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a4aae16sm64553015e9.0.2026.07.22.05.01.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 04:58:15 -0700 (PDT)
-Message-ID: <71f4649d-2d94-4ae6-adc3-b3f12cc13bfe@ovn.org>
-Date: Wed, 22 Jul 2026 13:58:13 +0200
+        Wed, 22 Jul 2026 05:01:15 -0700 (PDT)
+Message-ID: <32f55932-e7b6-40ad-95f9-9daff98356c4@redhat.com>
+Date: Wed, 22 Jul 2026 14:01:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,105 +88,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
- tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] net/openvswitch: check Ethernet header length before
- key_extract()
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, aconole@redhat.com,
- echaudro@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-References: <20260721143602.64677-1-blbllhy@gmail.com>
+Subject: Re: [PATCH net-next v9 0/9] BIG TCP for UDP tunnels
+To: Alice Mikityanska <alice.kernel@fastmail.im>,
+ Breno Leitao <leitao@debian.org>
+Cc: Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <stfomichev@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+ Alice Mikityanska <alice@isovalent.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Xin Long <lucien.xin@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>,
+ Nikolay Aleksandrov <razor@blackwall.org>
+References: <20260710134242.216538-1-alice.kernel@fastmail.im>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260721143602.64677-1-blbllhy@gmail.com>
+In-Reply-To: <20260710134242.216538-1-alice.kernel@fastmail.im>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/21/26 4:36 PM, Cen Zhang (Microsoft) wrote:
-> When a packet arrives on an ARPHRD_NONE device (e.g. TUN),
-> ovs_flow_key_extract() trusts the user-provided skb->protocol field: if
-> it is ETH_P_TEB, the packet is classified as MAC_PROTO_ETHERNET and
-> key_extract() is called without ensuring the skb has ETH_HLEN (14) bytes
-> of linear data. key_extract() unconditionally pulls 2 * ETH_ALEN bytes
-> for MAC addresses and parse_ethertype() pulls 2 more, either of which
-> triggers a kernel BUG in __skb_pull() when the linear area is too small.
+On 7/10/26 3:42 PM, Alice Mikityanska wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
 > 
->   kernel BUG at include/linux/skbuff.h:2848!
->   RIP: 0010:key_extract+0xa7e/0xd90 net/openvswitch/flow.c:933
->   ovs_flow_key_extract+0x419/0xa70
->   ovs_vport_receive+0x222/0x390
->   netdev_frame_hook+0x3e0/0x630
->   tun_get_user+0x2d0c/0x38e0
+> This series is a follow-up to "BIG TCP without HBH in IPv6", and it adds
+> support for BIG TCP IPv4/IPv6 workloads in vxlan and geneve. Now that
+> IPv6 BIG TCP doesn't require stripping the HBH in all various
+> combinations in tunneled traffic, adding BIG TCP becomes feasible.
 > 
-> Fixed by adding check_header(skb, ETH_HLEN) in ovs_flow_key_extract()
-> before calling key_extract().
+> Patch 01 adds accessors for the length field in the UDP header, as
+> suggested by Paolo in review. The usage of udp_set_len is then added in
+> the following patches that start using length=0 in BIG TCP UDP packets.
 > 
-> Fixes: 217ac77a3c25 ("openvswitch: allow L3 netdev ports")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> ---
->  net/openvswitch/flow.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Patches 02-04 close the gaps that prevent BIG TCP packets from going
+> through UDP tunnel code.
 > 
-> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-> index 66366982f604..a0f9d788d284 100644
-> --- a/net/openvswitch/flow.c
-> +++ b/net/openvswitch/flow.c
-> @@ -1035,6 +1035,13 @@ int ovs_flow_key_extract(const struct ip_tunnel_info *tun_info,
->  		return res;
->  	key->mac_proto = res;
->  
-> +	if (res == MAC_PROTO_ETHERNET) {
-> +		int err = check_header(skb, ETH_HLEN);
-> +
-> +		if (unlikely(err))
-> +			return err;
-> +	}
-I'd suggest moving this check closer to the place where we're pulling
-the header, i.e. into the key_extract() function itself.
+> Patch 05 validates packets in udp_gro_receive to exclude packets with
+> length=0 from GRO aggregation.
+> 
+> Patch 06 is for proper formatting in tcpdump (set UDP len to 0 rather
+> than a trimmed value on overflow).
+> 
+> Patches 07-08 bump up tso_max_size for VXLAN and GENEVE.
+> 
+> Patch 09 adds selftests.
+Thanks for the effort and the persistence! I understand the frustration
+with AI review and discontinuous feedback, unfortunately the volume of
+patches on the ML makes such sloops more frequent than before.
 
-Best regards, Ilya Maximets.
+I merged this version, addressing an hopefully trivial conflict. @Breno:
+a second pair of eyes on the resolution would be appreciated.
+
+@Alice: please follow-up on the possible gso_segs overflow ASAP.
+
+Thanks,
+
+Paolo
+
