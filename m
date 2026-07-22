@@ -1,112 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A0C356779;
-	Wed, 22 Jul 2026 14:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA9E34DB56
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 14:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784730316; cv=none; b=O0i+8MOYt8ggP+/YZUChDmIbItD5pmisZlwJT2tyn+yaiHxCeCk/WBL13DLtxIvja3/2teQzwDcOkwuSYCnRFova83v5JTsqb8vsXbhCPH6FWofMS/HtH6dlkonZ4HoZQdjOL57HcAJ5oSx/b8jE739pgdNC/F8kNCg9AiQDFuI=
+	t=1784730387; cv=none; b=HvEeWB46UumYBUuBbdcgJdI/mGcXl/9MTlG697UfQI1CIt3G0b8bnUU+SDUUza1g9blAEhKly7pKY+G2MWfUMATa00m6PKiwZsd4TPX7lFYjQ5ApYh9x1fHfWGPw6HjgAVcFeFodKfuPfWhV0/t2GSJYCChN/zAkIDgNpSZDML4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784730316; c=relaxed/simple;
-	bh=rvVFbJC0SBWovebcwKkNtmPz8jY0IAaUYl1EDUqJFq0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=feU+KPHbt7FHdttdy0moQTGVIZC54n0EPlSrlypqc6U58wm6e8UDNrcIV96i1c6e5KtDPnkE4dsRhU8hYKuxEm6MvOWett57yeG0tu2rEkcCgkg+UPw3onYdRukiNbZ0hYT1Uh4B1KhBqHFVayAZ3iwcA6Ik3F0PsJEvVTuvrF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rdh8zzdw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784730387; c=relaxed/simple;
+	bh=CNNkdusfY/lRrHKdVYeQhOpPtVwzV0xhn1DWQAe6z84=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Knwj01TT5b8kT/W89MSdGUbdO2mpxWR5Yj/m0T1unUvLc6nuUb8fL4+YWJfcQIQ4mhaz0G1xJI+Ll0AIQJS+XXbn71H1bHQM//Zi1/3qKmhaAzTlpFl4jCfygnqlJD0B52oxxWtlya0mopNHivhnfkM31zgQBRtph4WQiuuEOkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2xsO7ic; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rdh8zzdw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FE01F000E9;
-	Wed, 22 Jul 2026 14:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784730314;
-	bh=P3BbqBs4nvdUXfbGK4wbn6Jj15KT5irl5Zh6F6BEwM0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rdh8zzdw89LftW36OnzmAcupcWZTgpc1iOxBCjzS3lHlffg94Dg401tpstbPeWLrW
-	 QD69hzbCwm17aUgCOzJFZwOb09rHv7aGiDycYMuqLukROGCTCj+8Z0J3XvcCuRjIdg
-	 hdT/NfYg0rp7lSLUB01Yj4lzXWdp32/oQgQzcMM+utLjP9EkMk2/2L8c5yTGx2Psk+
-	 Ix6XREvHTYdq9ZFpR4OteWnKP3Bim4v8WauSBVODJBrLgdSTzocHjDBHgwIh0y4pii
-	 j0DZEqP4BUzXUFW2wbDj/TNa0p6+p5b1LjNsOd/FboKef5aIm7tIkMUBjeL59LQSIk
-	 6mrlZF4YOrgvg==
-Message-ID: <247b84fb-ef11-4430-b529-9688d8a54e34@kernel.org>
-Date: Wed, 22 Jul 2026 16:25:08 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2xsO7ic"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-81062fdeaf5so56150587b3.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:26:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784730385; x=1785335185; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9ez1wKXPVVz9CC787BtK9o5+3qHfULm35B2v6t/xxeM=;
+        b=C2xsO7icbRp9nkCo0g2YfGZmMa/w86KbSL2jSJA1ay5Bz+dzGWCGQhvhjHQOjHG2TH
+         sDP4u+CNPlkaLMDp0UFPHdxf3IDmIK0ptqO8trNw1YBUMm/BV77qA5d0h0ObDv4WoBqK
+         n4dvxOTIpDa7oIe6sV+kCs2AgdMENBy0/T67tLUw4vBskg3MiFsN+0RzKBsgg6M1fI0t
+         OCZri0kdE8V8IXfog+unTMpn4ifQi2NX+Jge+wIpMaPQPSXJ07kxDSQE+lj55Vi8ZaEt
+         lPJY2GkuK33UpC/5DAXl+tuWSz9c76qMMQ2LdHrhu0AyUAabBfWgl1i/28MPpXYPNXy3
+         V4kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784730385; x=1785335185;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9ez1wKXPVVz9CC787BtK9o5+3qHfULm35B2v6t/xxeM=;
+        b=GuAS/45WxVobE3wbhcsLlVFZ9o9/LTZ7Q7NwB8qnAVUbKevoXZXAsDZ+Iu+EwkzVu7
+         Xo2uUMha9B6ZieOKWwLXdfTOb6JaHlODRiKG4QAHqg5KWCuvWH3OkAHXYZGuM2nZNLNx
+         SvGMl0TYUgCO9C/7vi0eU8aWRZRChmhoxMGaWzS2WuV7d1EHmgW7DTAsXyzYw/OpsbXN
+         uFkTOhUJgje6xIMd3qLWkVCDbSL9/sVyzAVGscV+MqrrPMZQndrgNHmQ16vF5NgxucY0
+         JTgMcKNhkVoLdTIXGb1xtJXatcQBigmBaYInPd0WODwZ/CizmkXhbYjVuAccvhmheNnW
+         4i4g==
+X-Forwarded-Encrypted: i=1; AHgh+RrUV5+NNJKAPXdYEe1gIUwp2p/OxtW/5VFtB57mCcoaZ9AKNIHorJmG41tdCnUP0hxBiAmFrJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOsumTTBc7lzh4sY97TSXJy0Yy2OQRXKEet55DGk7+kcprrbVM
+	UQCSRTBBgfYAK0oTMel/Tyn2MzWDT3UOvaM0LUdEF2dNdR8SyPBRP8Yi
+X-Gm-Gg: AR+sD11iOEGY5eyu4CBiwNkuRHrBY7lJPyu96ZtZRM83TAUXpYnJZMnv8b4gesd8RE7
+	lmrk7yF2QHumIoFZEcy1ayNydE+MtgOtdv5Ho7ho+vgj6E46kqfmRK2ej+2CJ2vVC1M5+zoIyj1
+	dSOXK8NQBKdoU6Oy22UyEUteG37b/ZfUPD5hwnbULKRY1bqt4zTH4A0R55S4pR1vxuGCukjbQvt
+	nxGhHOBitMl2qvmAi234e4+DMGJ6PyfK+OyWJOmsE1tG+xbJm0N9amKD5f3OugP3aNTwCyn4LJq
+	0kD7/y+dQ5Sz3eKpI1zODf+L8gfFjF6z/P49d5xeqB7K/tADWZXOnd+vHKJevBMBCp1NyhpQoRW
+	ObH4rpIB/ZSybPwtDs5XHXd8pAM7P8ySP2Eqt6jygqUG6WMKZTc98aucAC95E8+M5xq0DtnSDTu
+	XQIU/4IWl4Co7TZ7Y/OKbQGHjwwpyFkXcJVCobbvS11UNoZfviykC9hAIvofcAiVBDuw==
+X-Received: by 2002:a05:690c:c513:b0:81e:c38e:4bf3 with SMTP id 00721157ae682-81f33d34513mr11651637b3.26.1784730384744;
+        Wed, 22 Jul 2026 07:26:24 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33ee52a0sm13947347b3.36.2026.07.22.07.26.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 07:26:23 -0700 (PDT)
+Date: Wed, 22 Jul 2026 10:26:23 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>, 
+ Qihang <q.h.hack.winter@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.3e74e4fda69b@gmail.com>
+In-Reply-To: <3e4b1552-57d4-42ad-a244-a91b74b8dae1@gmail.com>
+References: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
+ <3e4b1552-57d4-42ad-a244-a91b74b8dae1@gmail.com>
+Subject: Re: [PATCH net] packet: use a consistent hard_header_len in send
+ paths
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH mptcp_net-next 1/1] mptcp: fastopen: only mark MPTFO
- subflows with SYN data
-Content-Language: fr
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- pabeni@redhat.com, dmytro@shytyi.net, yuantan098@gmail.com,
- yifanwucs@gmail.com, tomapufckgml@gmail.com, zcliangcn@gmail.com,
- bird@lzu.edu.cn, bronzed_45_vested@icloud.com
-References: <cover.1780458440.git.bronzed_45_vested@icloud.com>
- <81f26b8fddd59ebb6cecc417fb138d9ff5214e08.1780458440.git.bronzed_45_vested@icloud.com>
- <178471846217.973832.14121853580804517391.b4-review@b4>
- <20260722072239.4ea019fc@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260722072239.4ea019fc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On 22/07/2026 16:22, Jakub Kicinski wrote:
-> On Wed, 22 Jul 2026 13:07:42 +0200 Matthieu Baerts (NGI0) wrote:
->> @Netdev maintainers: this can be applied directly in net.
+Daniel Zahka wrote:
 > 
-> Too late, please take it.
+> 
+> On 7/21/26 4:49 AM, Qihang wrote:
+> > packet_snd() and tpacket_snd() read dev->hard_header_len multiple times
+> > while building an skb. Device reconfiguration can change this value
+> > concurrently, for example through bonding device type changes.
+> > 
+> > For SOCK_RAW, packet_snd() stores the first value in reserve, later
+> > allocates headroom using LL_RESERVED_SPACE(dev), and then subtracts
+> > reserve from the skb headroom. If hard_header_len decreases between the
+> > reads, the skb can be allocated with less headroom than reserve, moving
+> > skb->data before skb->head. The subsequent skb_copy_datagram_from_iter()
+> > can then attempt an out-of-bounds copy. Hardened usercopy catches this as
+> > a kernel memory overwrite attempt.
+> > 
+> 
+> Wouldn't there be a similar issue in the SOCK_DGRAM path with 
+> dev_hard_header() calling skb_push() after packet_alloc_skb()?
 
-No problem, I did take it, and I will send it with the next batch.
+Good point. this does not use hard_header_len directly, but e.g.,
+eth_header() assumes ETH_HLEN is available to push.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+Simply caching hard_header_len won't resolve this. dev->hard_header_len
+and dev->header_ops (incl .create) are not updated atomically.
+
+I missed this earlier, but besides packet_snd and tpacket_snd, the fix
+is also needed by packet_sendmsg_spkt.
 
