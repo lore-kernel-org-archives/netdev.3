@@ -1,131 +1,100 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466D34CFAB
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784702351; cv=pass; b=VqIQh47Py8ldSSRbng16aArtZUAHrSX7QOzVSZ+eijpUMWErLVk4fTbatIiBW0EsVZTVekcosb03E22UIYAMswds+9xOQhHa6SnFjfjmHWb6b09inwloqeOnv6U5mCHuLVybu9ueocuG5pTYaYGuDEIPGWyRLIO0+i2Kncdr2To=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784702351; c=relaxed/simple;
-	bh=HIE37KoHMHAXC854461zGzisSjmMaHFopPnXYPxgwAw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ae4uEisdKmD4M9D7NJECYBRc6naOs9qvTZMyb/YYMk6p8S99jvEEwc/dPS1LZTyx2i5mivEF7xKvvXK4QiH+UuohFZtB7Qtyhje0amJsvrPfYrct4gvpr9yeQIfcWwXOHXUtI3bxTmkCJ1Jd+r3ePdI/UdKgADX1oKHG1x9F7nI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vf4VhFu2; arc=pass smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EF3332EC5;
+	Wed, 22 Jul 2026 06:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784702589; cv=none; b=SRC1ozRl+8TlbKUwC8YngbefufHKgRjns77onWwSCKNSaXI7EkSdju0TWYIYkVrZYNDFr2y9yUz0EKhHY4ZrfNapFIzXWFSnJa09wfLwkdqCSkIo2WP+TDsbK7EWYlDJkQViX2lKAyYjBfug5bFHs5DxRApZqPxbQacDgNQkZ9Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784702589; c=relaxed/simple;
+	bh=fLliyUhfO9MEYoMPKNVzbH/pGortgBb+2gh2z+j1/7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LKm7PSl9MaRbRcXHqKPz0EEtsUeC0hQ1JmF0O8t18JpoCQiPzJnccP/TAvTG+yfGs2R0BRiuLdMeQgSRW4UF/NxYfMCIH2VIMT0d4XjEH6VP1Ni2nyoOJwmw+uUKzi4bE8JKG3vESZDz8TWrLac8o4a8GktOsNtwSLajRM3MWl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=sxox2WPe; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vf4VhFu2"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69c7ab350e9so15802627a12.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 23:39:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784702348; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FTZvinSuNyS8wKXpb5vxbYPKsoYk+NwfF4fv1K2HJyOx16CnLUmWSP6THxAqmHME6Y
-         2p96EM9VcJbQHpproAsiKoirIMaElaanitoU5SLMzH+/xK12a+bJdqDdTT7M6bjLmuei
-         BSxO5Kbs4/CoIR2PdBG6we9r71MIbTBti8nbUsyy9BSvgE0sgbJJYq6hWPSwF4zAoPSC
-         tqo0Gff/Zwnn4WMPtCRgBPHCylnp1hAnDFKtS7hToIchVuc1kMNoXYIstp90TAwhLHUw
-         xXDNOw92QyJjbQo42yasv3hOgEIjPZRlFTLf0QfLUpk9ew6xgVl0gMPVXfZpyb5TZkFh
-         DMqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HqcZEVXr35WoIysnsLw/6omkNUTAVW1DhB5S9YH6cUQ=;
-        fh=UfJuX3KYVXWOEJJKLELwebX8RPAzsvN+amLkoDrmnMU=;
-        b=GZadeiKSG5h4td01Fv+7dpMUhB1GF9U+gxM+AIRWV3LbjWycKZONPp3KkfOfHxrdcL
-         v2ZVkPBc1cQ4IO4U28DPRv9eYN/COn217AnVS0c6daYBbfYgjP0MWdKmqt8cdtlmhdnb
-         18JM+WwcZQ6Du7CVE9t4um2ajIoDcwpwHjn/rbGCimD2DEca8PN0uw5S/nwtp0LSiYaF
-         4dztTuNYIojL7eWAOnoGqZow04foogtrZXGw2qLntCmjI6kDy+E2j20ExyGGqYXA+Av0
-         9PA0DQka7zStfAgl7GGE/1tHWvFpPSDvHvdfrs69QRauHlVQYTx161wqahLHuDrVJ6uw
-         67nw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784702348; x=1785307148; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HqcZEVXr35WoIysnsLw/6omkNUTAVW1DhB5S9YH6cUQ=;
-        b=Vf4VhFu2UYMOUlcUPW/Ueh3XZj0uwJ3boFbffmWxUsPyCJig2tYwPLBW0GbPtriotq
-         Cm9wBA9ulcTH9HUBxQ1sz5MFR7M7TO0WhHadI7oiC1y/f4EQgpPLDG6AYXJsn956Ijmz
-         R+b2D+pG7dzByHXw4ksR616+rUEW0ZSqza9QCyY782fOhbkMn43eJIhYqn7yZ4y3JWM5
-         0LAHJNoqGNIulfnM6/LdAXD6IKVZGIZfWOEBD5jUwX+vxi0LaHpBdFLwU1nrhV9Yja7C
-         RNlrhUyT6t3HLnFt/TljniHi9x5E60tDEV2iDBziXqBrqaP/d7U3I9jzKxKeQu70iypk
-         oidw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784702348; x=1785307148;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HqcZEVXr35WoIysnsLw/6omkNUTAVW1DhB5S9YH6cUQ=;
-        b=dkbtrIWr719nPoQqaEEKxFTsHRl4VNtmAiRx1yU8wT0gPlv9FJ+dA0R7Yc09VQsXLP
-         w7Y6dQ6p3CF/l9jSsLEgDSlEoM5sL5DWRoB/kvpTa9Q4o8nlwrK0JIOtt6xYV1e5OPQU
-         LAKJ1he0gb97fdQju34Nfz28j7eREyb3x1/hUroP/IwC7/f+B61mdt+9lfwtptwUR+Yb
-         ZR9e1cmxGJGEQj8ARWiRPwPwFkkFasi1r7nJkecXGX34U45KGoQu+98ZFOwPIrUdShWE
-         8+lcMw2b39Q7t0VoAht9XXhOzC2m9oL3yyvhzi1r3XLgJuyMwAbZg8+583a5oC6/MnSq
-         Eo8A==
-X-Forwarded-Encrypted: i=1; AHgh+RrTYxjV6byOR2ec1eDsl+0b2E7iRcF9DjAecXe2En00cyfhz1tvn/cnGNp3OU2b6ONx+rOyWJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9Lxc5Jl3H5CeXZSqcvNp7o0UvdbZFcwVPGJJxCyq936Flfmaa
-	oOdqep8h/+MXFL/nkAxKR7+ibcNW52okDJGg44svjWlsjvafsQ1QOG843XoEbcFXcIJ3jTUH0zh
-	KvzZX4JxUKli4DuT2cgTV25HMR8L1/Lc=
-X-Gm-Gg: AR+sD10ghwYXW/xENDcTRhHc1NPQUG7S3NkYmrX2exdBfYl5oM7e9Z0onxx9uLbWxTf
-	8u8qwJBQhETE/FADAlO4mh2taxi7uhitcuqptBfwMzF/i9Y9hfQH7nwvD2KsX3DAlFOwdyA9Arf
-	vlUEvA001eHd0ok5ikeyZrj9EDDgU49IaDrXpGQhmZConmEOQn43L44czCDM41eBWCVXTJ+EL48
-	gzWRe2shtb5lFY5F2nXq/Tx9gpSUYj5Ii4esVqlibbqI+Lo7atpq0LMI2g4OFnS8rltyTdbjEIp
-	vWXBxbl6mL4FT7c=
-X-Received: by 2002:a17:907:3e9a:b0:c15:cccd:336b with SMTP id
- a640c23a62f3a-c16b477c675mr1073652166b.31.1784702348036; Tue, 21 Jul 2026
- 23:39:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="sxox2WPe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
+	s=unimail; t=1784702380;
+	bh=5JERmTqErEb4Ui1kJm+K8rgaXsXmw8kOVXyUKZCKmgM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=sxox2WPebn5ER7Ad+vojA86dQP8FUHdMFF0unSfDL3929Za5zjBog2iMzAdwHCbk7
+	 gZCvbtXJnSyNacSebhoIID0GL270k5KOL8FwCCHGU/OK4fpMIYZxCSAiYnDoctVF2h
+	 HgEdO8sNtQB3MFWMP3+WP0q+TAFUMl5ZvB7ClrJs=
+Received: from [129.217.186.87] ([129.217.186.87])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 66M6dc5X009437
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 08:39:38 +0200 (CEST)
+Message-ID: <8814700c-7549-4d12-b657-c990dfeec14f@tu-dortmund.de>
+Date: Wed, 22 Jul 2026 08:39:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709144718.64535-2-bestswngs@gmail.com> <20260721115912.7438f90d@kernel.org>
-In-Reply-To: <20260721115912.7438f90d@kernel.org>
-From: Weiming Shi <bestswngs@gmail.com>
-Date: Wed, 22 Jul 2026 14:38:31 +0800
-X-Gm-Features: AUfX_mw1GtdkaM2O1EvJgyJUI-NJthQRq6sSmKRvYnn_6H4g7HZ3GMMXKVK-0Qg
-Message-ID: <CANgPUi1zzByN=x8kNHMQm0Mo-_Py4E4OLX6VvNbPseNxunpKEg@mail.gmail.com>
-Subject: Re: [PATCH net v3] tipc: fix NULL deref in tipc_lxc_xmit() on node up
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jon Maloy <jmaloy@redhat.com>, Tung Quang Nguyen <tung.quang.nguyen@est.tech>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Xiang Mei <xmei5@asu.edu>, 
-	netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] tun/tap & vhost-net: make qdisc backpressure
+ opt-in via IFF_BACKPRESSURE
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jason Wang <jasowangio@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Tim Gebauer
+ <tim.gebauer@tu-dortmund.de>,
+        Brett Sheffield <brett@librecast.net>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260709095511.168235-1-simon.schippers@tu-dortmund.de>
+ <20260714092506-mutt-send-email-mst@kernel.org>
+ <5016ae84-7049-4a5f-91c9-ba0047b06ee3@tu-dortmund.de>
+ <5089fc5e-2fb8-41fb-9aab-42b22cc2c201@tu-dortmund.de>
+ <20260721105853-mutt-send-email-mst@kernel.org>
+ <20260721100715.5b43412d@kernel.org>
+ <20260722020611-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260722020611-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B47=E6=9C=8822=E6=97=
-=A5=E5=91=A8=E4=B8=89 02:59=E5=86=99=E9=81=93=EF=BC=9A
+On 7/22/26 08:07, Michael S. Tsirkin wrote:
+> On Tue, Jul 21, 2026 at 10:07:15AM -0700, Jakub Kicinski wrote:
+>> On Tue, 21 Jul 2026 10:59:52 -0400 Michael S. Tsirkin wrote:
+>>>>> I prefer applying it, but you maintainers must decide that.
+>>>>
+>>>> Hi,
+>>>> just a gentle ping.
+>>>> Has there been any decision on this patch?
+>>>
+>>> Hi netdev maintainers. Given there's a perf regression otherwise,
+>>> we should either take this or revert the original and reapply
+>>> in next.
+>>
+>> Revert, please. We were AFK and are now working thru a backlog
+>> of 1k patches. The new IFF_* flag needs scrutiny we can't afford
+>> at present.
+> 
+> okay. Simon can you post it pls or should I? And once merged post
+> re-apply for next with the flag included?
+> 
+> Thanks!
 >
-> On Thu,  9 Jul 2026 07:47:19 -0700 Weiming Shi wrote:
-> > tipc_named_node_up() builds a bulk of this node's cluster-scope service
-> > bindings for a peer that just came up and sends it with tipc_node_xmit(=
-).
-> > Neither step tolerates an empty skb chain: named_distribute() finishes
-> > with buf_msg(skb_peek_tail(list)) to tag the last message, and for a
-> > same-host peer tipc_node_xmit() routes into tipc_lxc_xmit(), which read=
-s
-> > buf_msg(skb_peek(list)). skb_peek*() returns NULL on an empty chain, so
-> > buf_msg(NULL) faults.
->
-> This patch has been sitting in PW for 2 weeks, due to maintainers being
-> on vacation. Please repost if it's still relevant.
-> --
-> pw-bot: defer
 
-Hi Jakub,
+Would be great if you could do the revert.
+I don't want to mess it up. :P
 
-Thanks for the ping. This is already being actively worked in another threa=
-d:
+For the re-apply:
+I can post a v13 to net-next soon with the flag included
+into the existing commits.
+Or would you rather take v12 plus this opt-in commit as-is?
 
-https://lore.kernel.org/all/GV1P189MB1988CB4E92D2BDFB80894B4BC6C22@GV1P189M=
-B1988.EURP189.PROD.OUTLOOK.COM/
+Thanks!
 
-No need to repost this v3 separatel.
-
-Thanks,
-Weiming
