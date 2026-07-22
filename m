@@ -1,91 +1,88 @@
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B2A41A519
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 16:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE49C17C203;
+	Wed, 22 Jul 2026 16:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784737298; cv=none; b=CIwfQDafUrnZ6Y74Et2haTS6qglOCHaOfSq1+cyWJJkdAXRVTZ9QfCRBKTOb8Glo6fM21jbqiYAYzPaRjDgSHqnbnjx9DCDYLsHog5I5GoGnVVvJvhjlZ3GbtMnkKxOgd38GsUUUW5aEgd9j65xFXgkJ6vtNG/zZqD71Cqg5uN4=
+	t=1784737311; cv=none; b=PmAw7g90cfYsMo33keeO0NtZHtz8nvQK83TjvBf3KkfC9k6Fcr2CEtWKnK36tGIYThC0cnNaWFHXVvUaxt+Beg2S9hB503sVGmhI3TK3Qm92el7cne8BO3LeBpgjgahpV5jq6gGBQjJ1irRV7/1P1VgNYSLTbHORfTnX8GvE6ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784737298; c=relaxed/simple;
-	bh=xxKyBPOd9PhQEIiuhI2I0kJjgACoLXtBzCwkT97oGSA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e5jWkbz2idbewHOi/rKbj14IY6m5RLXGuLTwjWVtgjOHaN16qYhpI6/7NZF5UiNh42RnKf6+4HnMfUv8N4rDwp2/NmfJ20FEpoZSU+vN99ZZnl9dbwPGvbVoJxokQrkqmNNBGZK0aXrXhS80ITV7x9XjBG+dBHQCnLFS7lxst90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o7hS+BKs; arc=none smtp.client-ip=209.85.222.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--thaisonphan.bounces.google.com
+	s=arc-20240116; t=1784737311; c=relaxed/simple;
+	bh=omm2nkvYVT2e7Kvy4LbP2okWMNimmvmsrgFo6mxCWqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NwyMxGPQoDDQB8IAk/ZVBJrVkNOuaH2Gsr96fT10RgIkw9urDKBGPVX/gLBV9g3HCSq18xKQzlQRuqxlzttom21lRnk7jwc6dcBgKD09wS+1Gfnrl2/b1T/J6JtR0vXpOKbjwBzRF9vIXHWG1hvBI7GMVuh6zjNKdC/fIqiKjSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1Yl/ye9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o7hS+BKs"
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-976cb36b375so1560978241.2
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784737296; x=1785342096; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xxKyBPOd9PhQEIiuhI2I0kJjgACoLXtBzCwkT97oGSA=;
-        b=o7hS+BKsgT8NLsXx/MC77lBBNC3MnT0nWrUBosXpBATLv0rsA7eGQcjpmea+UPVVbx
-         vR2vY6Lhuc20bBJDHQAXxFVv/6NI6Vvy2pfsvV2PtTQvm0UCtCOQVUlqcuCtZLJUZThr
-         GnviBoJD27UD6BIgolehLLVoZA3gx9V1BqbG9mDYo/mY7P2P9d6HZboNLXqpIOl2sPCZ
-         g0c0oSkA/OXfdj/d/3Ff4Y/udBwQiZC8V8l10ALqBfwRKNkR1OqDyMOlOj4L/4zFswA9
-         R6dIlTh13DAro0cIZovNYG+x7qWnbiUL2I+3D0+xRZPOoqblqayN0hC7w4Gwy+fBrPGN
-         jJjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784737296; x=1785342096;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xxKyBPOd9PhQEIiuhI2I0kJjgACoLXtBzCwkT97oGSA=;
-        b=Xq93BdxG2/CeTC6TvmhDj/+qeUORYzX8Qthu7WesvNNtXIeOx7bsMyRBMn1CfrazTI
-         QDuTk2dDuCzZ0gjoXejTrXMS+hbNKFnj02FPVpcon2Gyc1/SuK71BDCKnkhkcYRGg4y8
-         GLenERM7dmDn2wWlYVDU2iHqWagj30l04UwMflHTvU+FHMtlpKvFSYQOvNPFO8c+pTdI
-         uPqD4N1E9+OjOIElU8A0yQvwoWRxSAYwy3pdrBqANMOblTu/hSSs5JTG5qVcQFdu5FSS
-         g4uODF2fJR8YgQHk9W2Yb7q2Lw+YWPY3os1Rd/pkS+DK+SDEevig5o0vM8WKI+UZch59
-         8DkA==
-X-Forwarded-Encrypted: i=1; AHgh+Rra04lss8GgzX317jvv5C8onbqpQSUZIqT523EhC/u/7elFf5rXFflEMZKodOoo6Baf3N40S+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHTcszeXrxB7Gldt1cxb8HSpazmsd57zq5AWyaJ3HC02ZtEVxD
-	ZmTaXX+zpQWGBFSGDfk7KW5AY8v17932dKJgPg18LZa6R8wXoiugkCo2EgAX2FrGhoaDs4EsLhR
-	Tm72GUnHfxeSHq0Owaove5hWxJQ==
-X-Received: from vsbjq9.prod.google.com ([2002:a05:6102:6f09:b0:737:4dfb:a6e8])
- (user=thaisonphan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6102:61c7:10b0:74c:594:4847 with SMTP id ada2fe7eead31-74c0594668dmr725571137.25.1784737295957;
- Wed, 22 Jul 2026 09:21:35 -0700 (PDT)
-Date: Wed, 22 Jul 2026 16:21:35 +0000
-In-Reply-To: <20260721115339.09a3ea0e@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1Yl/ye9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F581F000E9;
+	Wed, 22 Jul 2026 16:21:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784737310;
+	bh=X4nlqSDTQfKgXnssLdmt4BpD3msEFfZZnZiCI8vkwJk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K1Yl/ye9GP5zGKTMMfFEQjKOVnbf06k9O6M9LFLkIXuL3qh8TZ4CE1JuxW+NQxlt7
+	 j6DdGu1sHJhsqKlIh/tvLdfemqB+/FJU+2jHRsbhCfmd2/RxFGIBRi7FQ21FqrJlLZ
+	 TWrVkMVfbhn5cv6lGEuM4mp0802PWhXMSIKzx6NU393U8iT7usXc41YoxRmbQNqRAK
+	 ZWau1UuybNFE2JOfF6ithDRuCR1LdESOauAZDApQWntLyTj6Hto12+L6kuGbX34yaM
+	 3ibRtv/kBrl9v1RCfklHGv5Ljsq+8D27BKJkzmOoW/LSloBTphcwdM8rrVADvm4V21
+	 giYYr9J77kX5Q==
+Date: Wed, 22 Jul 2026 18:21:31 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Alex Elder <elder@riscstar.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, 
+	rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, 
+	arnd@arndb.de, gregkh@linuxfoundation.org, daniel@riscstar.com, 
+	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com, alexandre.torgue@foss.st.com, 
+	ast@kernel.org, boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, 
+	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com, 
+	inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com, 
+	livelycarpet87@gmail.com, mcoquelin.stm32@gmail.com, me@ziyao.cc, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com, rohan.g.thomas@altera.com, 
+	sdf@fomichev.me, siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com, 
+	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 12/14] gpio: tc956x: add TC956x/QPS615 support
+Message-ID: <p5sfrfa5prxsuznqdjnuusgkj4vyl3aom7gorpdxb2iroxjpgp@7wyx4rceybac>
+References: <20260605010022.968612-1-elder@riscstar.com>
+ <20260605010022.968612-13-elder@riscstar.com>
+ <dhnylud7o5dhaaq6kvbes4vkml3ppa5ev542j2lyxdijibknzg@pfcy22wz6jav>
+ <df217d83-272a-4d4c-8aba-a87e4b8869fc@riscstar.com>
+ <z6fllvxd5r7bln6t6o5cacf2k35c47mnavvkmda6l4gnjaanin@52o34je2alxw>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260721115339.09a3ea0e@kernel.org>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260722162135.331826-1-thaisonphan@google.com>
-Subject: Re: [PATCH net-next] selftests: net: update wait mechanism for relocating
-From: Thaison Phan <thaisonphan@google.com>
-To: kuba@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, gfengyuan@google.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	petrm@nvidia.com, shuah@kernel.org, stani@google.com, thaisonphan@google.com, 
-	willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <z6fllvxd5r7bln6t6o5cacf2k35c47mnavvkmda6l4gnjaanin@52o34je2alxw>
 
-> I don't get it. I never saw it hang. And if the event is scoped udevadm settle
-> should return immediately, rather than hang. We generally run on latest
-> systemd udev in Fedora and CentOS. Please explain your problem better.
+On Tue, Jul 21, 2026 at 04:43:21PM +0200, Manivannan Sadhasivam wrote:
 
-Thanks for reviewing this. I looked into my issue further. I found out when I
-run into the hanging problem, the machine that I run on is using an internal
-Linux distro that turns out to be running an old version (182) of udev before it
-was merged to be a part of systemd. The source code for udev I was referencing
-was out of date where it looks like udevadm settle relied on an internal uevent
-sequence number to match up with a kernel uevent sequence number. At some point
-I think it was a known problem that these sequence numbers could become out of
-sync because udev would never get uevents not tied to the default namespace. I
-checked the upstream udev and saw that udevadm settle was refactored, so that
-sequence numbers are now deprecated. This patch is only applicable for versions of
-udev without the refactor, so there is probably no reason to upstream it.
+[...]
 
-> Should be a separate patch
-Sounds good. I'll create a separate patch for the exception fix.
+> > - Does the TC9563 chip have only *one* function on its embedded
+> >   endpoint, supporting just one Ethernet?
+> >     - If so, this driver will have to be modified to support
+> >       the second embedded function and Ethernet controller.
+> > 
+> 
+> The driver assumes only one endpoint, but the binding lists 2. So the driver is
+> not complying with its own binding now :/
+> 
+> So technically, the driver supports 2 integrated endpoints.
+> 
+
+I was wrong here. Driver supports only one endpoint and that's due to TC9563's
+hw limitation. I confused two functions defined in the binding with endpoints.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
