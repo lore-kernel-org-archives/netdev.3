@@ -1,136 +1,113 @@
-Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FE63DBD5B;
-	Wed, 22 Jul 2026 03:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5B23DA5B0
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784691113; cv=none; b=PkpD/buPzpjsW+e+mJ804HZ9DwbyVgjUYP24lznLdYAeQurOGNHkeZxJ2jecbFw5QHVRyqjZaJ+GlqrAT3ME6984jL8lO53CyAUgrcrMwQj+eqo2/dN7QbEe5SZzeYnRYH5OemH6B5XCgVXz9WyeHwdJkXpuKRaGinrVevvz6Dw=
+	t=1784691402; cv=none; b=t1/eZ1RYxIq69kw02sm8/ZL7F8YOuSKmSByYJMg+oronz6SsEHbqYVplY+qfbjFA/osZaBXnZHEW66MqM6KgUaJT3eW41E6u4nGsuOOoAZEpF9sEsOxxsAEnRqMcAQv8leRw+RHfl3g1tB3tP+PqzmKwRUcUM8nKd+muMVblGLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784691113; c=relaxed/simple;
-	bh=MfTcypu0xmgn6dV7pRLzNTXZ80KHazJgygRiUlYhcPo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ag7xz8aTqFWGUWDJ+M9tdXO/yK16xKZ35dyfd1s5Npaoqy8nAaJHu2pyU7A8/uIVDIvI73cGLjyt8KUp+sr/xpDHd6PSlH27tues1U73cFd9lTpxEMjKkc4Y1JkHIc/IYESn6h9yh+QHoNsqFc+6KcXny4D0QocK+RpFE4Lv/xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=uz+/oE7R; arc=none smtp.client-ip=211.125.140.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
+	s=arc-20240116; t=1784691402; c=relaxed/simple;
+	bh=1TltuWnybZZt+k74AbIku8Gr6n8qILGVs4/kgPzm7Ow=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iBODAoiRNmIurFIvytCTZih72gZKFH7Yowh1YKjVHRCnSVxX5lMMmTiuS0lDzYUpnwAcBeyOsWeFqG6agmg4kN5+7uX+Kxdn1iyldwwhTM+kQSrXqntqEjdbPaTUqfJ55TEywHZYEJV84QUJ3dLrJtVv41x5l26tNGKQzV6sMGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcBRGIMN; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="uz+/oE7R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcBRGIMN"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c9e30214d8fso8605671a12.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1784691111; x=1816227111;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=caj1f0+EQ2UBY0cWiEaPgfnHr13PPMYZHTOfF6hNr3g=;
-  b=uz+/oE7RrhRF4EN7y9Lk+5G1IMHFZ3u4qLfznoNLqDawpiFeut02caFm
-   XnopeLI3ZgWK2h40UqtR+FBPfrMCZ1X79ipsh0UepKlh+z6FahcTjaTDQ
-   EeX6jh/rctVJAJshCfBR1RXdHmFxMGaqywxystGHLCiuU2P/t5LctkpG4
-   t/ysmwwbvkr9n/DuND0jrlzPQlnbumzJbjiViMgVhO2I94C1PESJ68Lmo
-   F87oEqOS+pXT9IYzqNFqSu9rCiSMCQQ41QKV9KvKjFZIaKuEEGTgb0iNq
-   bceJFovjMiOQG/FtZpHeJ7AqcdN9bUWr3XgiBWq2wi+jRt0u6trtf9sjs
-   g==;
-X-CSE-ConnectionGUID: Uqbz/TdySemtTC23GndMTg==
-X-CSE-MsgGUID: ww7wza9OS16tbuVEEpj5zQ==
-Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
-  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 22 Jul 2026 12:31:37 +0900
-X-CSE-ConnectionGUID: AIyn8/KgS4u55ssiYoTicA==
-X-CSE-MsgGUID: c/wzc9eFTBKuNh3NpiIrUA==
-X-IronPort-AV: E=Sophos;i="6.25,177,1779116400"; 
-   d="scan'208";a="627327276"
-Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob02.noc.sony.co.jp with ESMTP; 22 Jul 2026 12:31:38 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-Date: Wed, 22 Jul 2026 12:31:24 +0900
-Subject: [PATCH 4/4] usb: ulpi: set mod_name in driver registration
+        d=gmail.com; s=20251104; t=1784691400; x=1785296200; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7NHyhDTZjnyF9Jy1uHqpnZ3KtVUroBokJdvpUJqEFWk=;
+        b=lcBRGIMNPxfANXX1Xs3OSvTSapkcv77+mMRJyknb57Cs33NeRTjfWvdNjFxyTQ5+FQ
+         pgVPx4epqhDG0Q9G2ekfGWhCa48e39fBPqVwM9TzllSHM6bht9f1yhXpWPgUMxJYpHpU
+         kdBFeQLoLW76Gf2b4nTfKnVYg5BT1TubDJvQJLwtytMGh+LG0NLTpRK6nAdJTJlwhDdR
+         nrWrKHMwTLRB2kv4mtuv3xdFwRtaev9f58PBf9QdVtEn8mN0R19gFvCo1RURTuF1DG5a
+         PL3o31Xgkdb6hPrxq/F5gDEtotcEJdA9yiFZB9bipOPyBuwUWlU3xddd5u7o/hajicpY
+         c7Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784691400; x=1785296200;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7NHyhDTZjnyF9Jy1uHqpnZ3KtVUroBokJdvpUJqEFWk=;
+        b=dE/mRtVqL/1nE0zwsjw/Z1YZ9t1vM2OSc1gXpM+4/cFXH8uio1dL0/g/jT3tPvCAAd
+         rlGbAFPrYyysm/vvMb3BdoDzSjwrUK45P8dMqPWUiEJkJCeODovT7l/65MxmG/QIv/a3
+         eEDGZ54jm/rPyjAYZFSFqsL46rf2Mz/CErcorNSiz/hHDL5uvYIdnsQYkwLFg86Rxzla
+         XJaZ9197TcGCFC2TieLLBxx0ypyT211tI7eH49r6zIziz5ef1M8vfXOtb/uRwglhccwm
+         p9O+KSOT027G5Te8geQh/QvI/UxPp9IqYEL7c8B54Pa0+KczWKaUzsu7aaTl0B38BOGv
+         2qVQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrIr9CWSJXf6HxP9YdezyM39Z5J0EtwAen5oYpsIXVSxOZ9d/6t1e7ly6R0Xlo674tNrXOUAUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSwjoRzVeHe5ISF7XtIkiZM4rZMHVXMYo7yO4LDJx4Pjtckxol
+	Xt1lNIzLDNuA/rtn5mQ5IXcbCl0agwBwQIVMttJH1wNtyimOXX9NM90=
+X-Gm-Gg: AR+sD11fN2+SQnTWpKo4it9F1aVhu9ATFdo+zNb/Wjkt8JzuYwMMhOb9nWrNwnkDZY9
+	1aSsE0cNyDFC9mna5WXGId+GSEMcSBsz5FyAcf253rIcylyyDR/QxPA3GrexzwC0CwbAfkXqr6D
+	vILOT3DVUb2B2vsvbPEeHZ2iS9HMj2eOwBSSeWrDZJy3EDcOyWScrghYl4FRcxMZZ99yNILF432
+	7zWcwyX2Rpvub+aU3kUhyjpeTCSOoK7AN8s2FRnAXT6b/64TvDx6bjc6kyP4at9NxVOeieTaIm6
+	DmQ7uzNWrq3vEz4+8eAR2pUZQ+/ZvmO4F3lcS+1oow5e4ImdgNg/bNxolGWaKiWtkc9NqE6B5g2
+	bEv7QvmhaLeDwB1LDdLQAg3K6+yfFiOO1wyel1o+SoeLEUGx5ND88/sPOzVTC7H9GRS8kGzX4Tk
+	RglWZgFIIUwdmuWiEM7unYI+ScDzc=
+X-Received: by 2002:a05:6300:808c:b0:3c4:2cf9:28a1 with SMTP id adf61e73a8af0-3c42cf93a4fmr1420862637.46.1784691400038;
+        Tue, 21 Jul 2026 20:36:40 -0700 (PDT)
+Received: from t-rex ([2401:4900:adaa:53ec:4dd9:f3bc:714a:d631])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d13015052sm1561599c88.5.2026.07.21.20.36.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 20:36:39 -0700 (PDT)
+From: kr494167@gmail.com
+To: ioana.ciornei@nxp.com,
+	vladimir.oltean@nxp.com,
+	vkoul@kernel.org
+Cc: neil.armstrong@linaro.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	surendra <kr494167@gmail.com>
+Subject: [PATCH] phy: fsl-lynx-28g: propagate PCVT enable errors
+Date: Wed, 22 Jul 2026 09:06:19 +0530
+Message-ID: <20260722033619.10647-1-kr494167@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-mod_name_usb-v1-4-96d781530f3f@sony.com>
-References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
-In-Reply-To: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Bastien Nocera <hadess@hadess.net>, Matthias Kaehlcke <mka@chromium.org>, 
- Valentina Manea <valentina.manea.m@gmail.com>, 
- Shuah Khan <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>, 
- Rahul Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>, 
- linux-embedded@vger.kernel.org, 
- Shashank Balaji <shashank.mahadasyam@sony.com>
-X-Mailer: b4 0.16-dev-3bfbc
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2295;
- i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
- bh=MfTcypu0xmgn6dV7pRLzNTXZ80KHazJgygRiUlYhcPo=;
- b=owGbwMvMwCU2bX1+URVTXyjjabUkhqwEyxlyXvFC/kplQTx7+H9J5amv75otuOhuGuuZnbfWV
- GZGl7B3lLIwiHExyIopspQqVf/auyJoSc+Z14owc1iZQIYwcHEKwEQWVzEyrLg57+jdt0Ic3w2X
- 3lbz9m40nRL919pOJb1XyfHcW9fP1xj+J4ULzXnEfaioWequRa5px49ifds/mdaRaV223Yv+Ns/
- iAQA=
-X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
- fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
+Content-Transfer-Encoding: 8bit
 
-The driver core only creates the sysfs "module" symlink for a built-in
-driver when its struct device_driver has mod_name set (see
-module_add_driver()). This driver left mod_name unset, so its built-in
-form had no such symlink.
+From: surendra <kr494167@gmail.com>
 
-Set mod_name to KBUILD_MODNAME during driver registration. Built-in
-drivers now gain the symlink, while loadable modules are unaffected.
+lynx_28g_set_mode() currently ignores failures from
+lynx_28g_lane_enable_pcvt(). It then updates the lane mode and reports
+success even though the protocol converter may remain disabled.
 
-Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Propagate the error and leave the previous lane mode intact so the caller
+can handle the failed reconfiguration.
+
+Fixes: 8f73b37cf3fb ("phy: add support for the Layerscape SerDes 28G")
+Signed-off-by: surendra <kr494167@gmail.com>
 ---
- include/linux/ulpi/driver.h | 4 ++--
- drivers/usb/common/ulpi.c   | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/phy/freescale/phy-fsl-lynx-28g.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ulpi/driver.h b/include/linux/ulpi/driver.h
-index c668d9c8d876..c899197e0aa8 100644
---- a/include/linux/ulpi/driver.h
-+++ b/include/linux/ulpi/driver.h
-@@ -51,8 +51,8 @@ struct ulpi_driver {
- /*
-  * use a macro to avoid include chaining to get THIS_MODULE
-  */
--#define ulpi_register_driver(drv) __ulpi_register_driver(drv, THIS_MODULE)
--int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module);
-+#define ulpi_register_driver(drv) __ulpi_register_driver(drv, THIS_MODULE, KBUILD_MODNAME)
-+int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module, const char *mod_name);
- void ulpi_unregister_driver(struct ulpi_driver *drv);
+diff --git a/drivers/phy/freescale/phy-fsl-lynx-28g.c b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+index 38afcd081a2a..1fe406adc83c 100644
+--- a/drivers/phy/freescale/phy-fsl-lynx-28g.c
++++ b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+@@ -1003,7 +1003,9 @@ static int lynx_28g_set_mode(struct phy *phy, enum phy_mode mode, int submode)
  
- #define module_ulpi_driver(__ulpi_driver) \
-diff --git a/drivers/usb/common/ulpi.c b/drivers/usb/common/ulpi.c
-index 7e43429e996e..dec4baca1c53 100644
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -147,15 +147,17 @@ static const struct device_type ulpi_dev_type = {
-  * __ulpi_register_driver - register a driver with the ULPI bus
-  * @drv: driver being registered
-  * @module: ends up being THIS_MODULE
-+ * @mod_name: ends up being KBUILD_MODNAME
-  *
-  * Registers a driver with the ULPI bus.
-  */
--int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module)
-+int __ulpi_register_driver(struct ulpi_driver *drv, struct module *module, const char *mod_name)
- {
- 	if (!drv->probe)
- 		return -EINVAL;
+ 	lynx_28g_lane_change_proto_conf(lane, lane_mode);
+ 	lynx_28g_lane_remap_pll(lane, lane_mode);
+-	WARN_ON(lynx_28g_lane_enable_pcvt(lane, lane_mode));
++	err = lynx_28g_lane_enable_pcvt(lane, lane_mode);
++	if (err)
++		goto out;
  
- 	drv->driver.owner = module;
-+	drv->driver.mod_name = mod_name;
- 	drv->driver.bus = &ulpi_bus;
+ 	lane->mode = lane_mode;
  
- 	return driver_register(&drv->driver);
-
 -- 
-2.43.0
+2.55.0
 
