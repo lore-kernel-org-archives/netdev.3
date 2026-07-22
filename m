@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B6A339719;
-	Wed, 22 Jul 2026 18:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD7826CE05;
+	Wed, 22 Jul 2026 18:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784746522; cv=none; b=itqGV/PzI7JAuA8O/2FrpezvjBqnPQZuX+VKBZQ5jqZ9uBRsHdnPypoqrc3Qjl6AB0P3w88MFDrwpM3UaGgcyaYjce2/qPpdVnv23MhECPchkxf8prEMDzgEFQCj+utWmlq89WgsNgDYp6/klF310GB6gVOLoCB5SuM+qEvAt9o=
+	t=1784746551; cv=none; b=EweYPnw/7TVECfQ/bB0ibPoRTIH2qxB7q1IUiUViNISKAQe3dVC/gAeRbpnNgoO5/Mr0OUuAx+9nYphsAWXiweGIjJAm3SOKcwehs2Ektzi/VLvAl9hBauJgYgYQs135Vl8sIV2wr4U/X4+qfkts8tA99AXlxl01wI21b6PiyyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784746522; c=relaxed/simple;
-	bh=wBPR01weQAKYgxAQ6hyM6O+jrseXqzNcFbMjfoAfUwA=;
+	s=arc-20240116; t=1784746551; c=relaxed/simple;
+	bh=WIw2zOYFjwpDd4MmwdNc/avZf1l5P0jjXnu6r60Eo8k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WyDQWNG4p7IPCGdx/u7XWQp7O/2rtOsF12Bit+ETmYkIHBkMyPUb1LGNCnCe0P1755TZYTiNsDSK1SskjtqVBru5hUQCzgmnAM943t9nU5VqidI0RP/gzAn9U2zzeDHXea6RwTXx98FJfQcss5/+AqExXdVBQvssehkJfStylRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=07Ifc+Lz; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=K08av141QwSjkhoxezWQ6Z5yK2eB07cyD1leCBsHA/HWomAeejd1GcRfAUiTmT6QDeuHU4ij3+Pf1Ncvx2pgTJIcv+R9m/dCtsjU1WBnfeP1OR+xt8hXylNK/CJDLXR4zFTKS2nghFb4VOcT05Y7Rn/O2whMBFWhQQxPHzR8YY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0diCQlGU; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="07Ifc+Lz"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0diCQlGU"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IRRf4RjqprLBFyO/CvewMlu3Q3CmE1RtwRPVTHJwe0c=; b=07Ifc+Lza9CeFNxbP7V/ipqP++
-	vq/U44sADFSncZIYU1vC7nEVjs4NCoUeNz+KC+874i9yFqLTrol+gv+vajYOl8soiwZwUZ4iFD/Nn
-	WAXwYqAk+mrx1Z5RwtRI0YErxntozcLKzJRfJz6qZh/e1bYPnVe9aljgSUgG6DR/QLSI=;
+	bh=auVQqnjDEe2OKzsdZZl9cUluqYl5Ja+s/usvSDWVVmg=; b=0diCQlGUvJrUy3YakeA7IIq8kE
+	xSFD1vzFRJcXNZnGCKENJhl23B4pZs8cyFbEhTYmtTkL/4yZLZbnVXpwA0x9bvAWdnKF0NYVcyl+e
+	2uNGYcC1Sifedj/ZbavHlCOUg8yscd48lxgthKheXVdappBgVH2yoKk5/UZZl1gReLRo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wmc5z-00DgBF-4V; Wed, 22 Jul 2026 20:55:07 +0200
-Date: Wed, 22 Jul 2026 20:55:07 +0200
+	id 1wmc6T-00DgBn-QU; Wed, 22 Jul 2026 20:55:37 +0200
+Date: Wed, 22 Jul 2026 20:55:37 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Markus Stockhausen <markus.stockhausen@gmx.de>
 Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
@@ -35,11 +35,11 @@ Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
 	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
 	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v5 5/8] net: mdio: realtek-rtl9300: Add page
- tracking
-Message-ID: <71452233-8325-4db1-9c32-cb85d3396217@lunn.ch>
+Subject: Re: [PATCH net-next v5 6/8] net: mdio: realtek-rtl9300: Increase
+ MDIO timeout
+Message-ID: <5d1cb81a-9497-4fbb-8bd9-5890c6dd5ff2@lunn.ch>
 References: <20260722062356.12291-1-markus.stockhausen@gmx.de>
- <20260722062356.12291-6-markus.stockhausen@gmx.de>
+ <20260722062356.12291-7-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,50 +48,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260722062356.12291-6-markus.stockhausen@gmx.de>
+In-Reply-To: <20260722062356.12291-7-markus.stockhausen@gmx.de>
 
-On Wed, Jul 22, 2026 at 08:23:53AM +0200, Markus Stockhausen wrote:
-> The hardware polling unit of the Realtek switches has a very special
-> handling for PHY register 31 (aka Realtek page register) in place.
+On Wed, Jul 22, 2026 at 08:23:54AM +0200, Markus Stockhausen wrote:
+> RTL838x devices with 28 ports produce PHY access timeout errors during
+> one of three boots while waiting for MDIO command completion. This is
+> currently set to 1ms.
 > 
-> - On the RTL838x it is permanently reset to zero.
-> - On other devices there is some magic saving/restoring (aka parking)
->   in the background in place.
+> Background: Access to the Realtek Otto ethernet MDIO bus must wait for
+> a free slot between two hardware polls. The polling sequence consists
+> of at least 17 commands on the RTL838x devices. This delay can be nicely
+> seen when disabling polling completely. The following times are measured
+> on a bus running on the default 2.5MHz. Time measured is from the last
+> register write that sets the command-start-bit until the hardware
+> responds with the command-finished-bit set.
 > 
-> This makes access to PHYs a gamble.
+> - average c22 read with polling enabled on all ports: ~380us
+> - average c22 read with polling enabled on one port: ~380us
+> - average c22 read with polling completely disabled: ~180us
 > 
-> As of now all known existing hardware designs have Realtek PHYs for 1G
-> connectivity. Otherwise the polling engine and the MAC status update
-> will not work at all and the vendor SDK would fail totally.
+> For this bus frequency the bare hardware runtime for a single command
+> (32 bit preamble + 32 bit data) is ~25us. So the hardware adds quite
+> some overhead. On top of this comes the fact that the RTL838x devices
+> are low on resources (500Mhz 4Kec core with 16K cache).
 > 
-> This driver differentiates clearly between C22 and C45 buses. During
-> probing it enables only one of the protocols for a bus. So it is safe
-> to assume that any C22 access will only target a Realtek based 1G PHY.
-> For safety reasons block any non-Realtek PHY on a C22 bus.
+> Increase the timeout to 10ms to be on the safe side.
 > 
-> Intercept access to register 31 and handle it internally. Store the
-> desired value for each port in the driver. When issuing hardware access
-> to other registers add the page to the command towards the controller.
-> This given, the hardware will run two consecutive c22 commands that are
-> not interrupted by polling.
+> Remark! In a future patch the bus clock frequency will be made
+> configurable with a minimum frequency of 1.25MHz. Setting this
+> (e.g. for debugging purposes) doubles the command run times but
+> will safely stay below 10ms.
 > 
->   ... hardware poll ...
->   phy_write(phy, 31, page)
->   phy_write(phy, reg, value)
->   ... hardware poll ...
-> 
-> Remark! To keep this simple, writes to register 31 are only accepted if
-> they are lower than the device specific raw page - 0..4094/8190.
-> Otherwise -EINVAL is returned. Under the above assumption (Only 1G
-> Realtek PHYs on c22 bus) this is no limitation.
+> Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-I still think this is the wrong fix, and it is very specific to
-Realtek PHYs. There have been comments from other about boards using
-Non Realtek PHYs, and they can have their page registers somewhere
-else.
-
-I still think you should be disabling polling when the mdio bus lock
-is taken, and re-enabled when the lock is released. That should also
-fix C45 over C22.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
     Andrew
