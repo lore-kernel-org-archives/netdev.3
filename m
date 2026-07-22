@@ -1,132 +1,155 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA11628C2A1
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784725300; cv=none; b=QVgHXkVEk+1/riwVAVd9/sO1naFxm6ITbO+jb/9qki3Ut2OgNn44YPSiIwgdW3Zk4rmpsT1d/6HSuRTY7/Gf6y5LzUZ+BO0U3FJ2mgNSLmmEIrhJY+XjLLpI2xeIb5mfqRELXEPjqM2CVw+UkwwXSm1T7wqOXtcUPfDQ8tWxEGQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784725300; c=relaxed/simple;
-	bh=wQrqwaqAAAHfV06ufuWJnrTQGXAusn8DdkbMG8nkRrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DQ72gefPrixIMY1JmusUYnS5uslmlTaJ1a4dir7Uz9j26QYb6oojEdSNeESu6wrKDmYzaedNo78KP4tDS5Ej8X3PnVUPlc8pyt2pBnZx694L0FFaampntGPTQeGVIwVKQKgQIA1rUx1S4nKlBu+sCqahedgUVuGPIHj30bSNuts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=lSwOyNcO; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60FF2C3251
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784725343; cv=pass; b=hrclrCoWdQqODCIm7U2y1yd3oegJyO7HIQWdKeyWrZSUoO43HthUnN2GvF0w3DLAvNBbUARKX+Hz/NvokOGGMKwz+nEbNzKQx8NudqS5gW3dqNt/ApcAwlFy37X/iTKwl3ObRf504WAhmoj05ffSw4FbmfHDFH16/r6Rz13MsxM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784725343; c=relaxed/simple;
+	bh=OZnNnqgFsHkCRqKfrQSFXiPDZYX9e7tBQg6s8Ob3PWM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YQzGkvEFYfgSc17CR3qfPWByHM/yX1qlfFUjGBK2o1iIR92wOIx7dxISzpqciqkCwnnNj/wJD1aBB4PqoH5i8KlgdR2bKSS41pIdKlhbA12Byd1satUsnV/m7joH6MHNLYcoRtGc3HEw7aIz03mKqHjj7aa5/Ddz/p70mi2F/7w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=wYuNoTUw; arc=pass smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="lSwOyNcO"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b015b2d792so14075191e87.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:01:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="wYuNoTUw"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84874b52eabso12050711b3a.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:02:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784725341; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YXvDqjlkIPprQ2PyqtKIWAq+2XJU1s8motCbLPvncQNLaFhkIpxSs0+At/pVJPvdBT
+         s4R5r4r3RUKKWDs7FPea6cokcQ6Jzo3zUj7pGHzMwqfJyoUSGJeorAjnyzJB8E1eWFLb
+         prWfBlO0DkzVxw7ylwCjFoAItQaqGpYc6/45Wo5Q6kW81cro7q41ELHxQgdRbcPGVIuO
+         AIE9f88doGnapmpkfTpB2aTSF8VV2zwnBJqiClIoN0aNSUJlcqK1VwRWaQ574TH9AWW4
+         bqAWtYi6ukLhJEb7z4JfEBcPCuXDkJs6OEx5pZY/4mXeNpo3Ui6OFr08kLukT2gaSGJ0
+         2I1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x1WK+OR6h3Wjb+QfkdL+cr1HegHl7fq2gHDqi9EV3po=;
+        fh=ywueJp2z/xmnQCDpyYG0TeYRVEnOEmEmMxl+4fVgMe4=;
+        b=ANFGyqmOeFmj5DU4nwuXsijuq7KpuG6aObEgOf/+sx49F4s7+U9GlMEw7EpUVKPg/C
+         szIsmo0DHKL6CB8XfeSFwT+qNcFLC5L3lD6HiY/74ZYgDbe5WqMSqFbsdlxkspx1GB4b
+         R/IB8u+2os2ETQUmVNFehwyMeQheG5XpV1bhEIjKsPRwL3PZCMEX9ZPp0bPPqa3rSrx0
+         kkoW6WH+yhVIVRQdoug7N4dlpqIS3NRI3QJ9swZtmar2ltp+vD94P1+lknYdm2Xb1BvG
+         acqO9tFGeIdHZfS80aBcle0dSH3Wi6N90fwN+hordYyLPGeOsbfX2eZIOf7eWSb6mbEl
+         xtMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784725295; x=1785330095; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=mojatatu.com; s=google; t=1784725341; x=1785330141; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1S07zOcIxbdMXlT+EiHelCK8nLPptceTFpPa+ZORBrc=;
-        b=lSwOyNcOHc/w7R3T8cuA3HUrsb5sm0KVk3Zgf/bHte8+MsvMQWOu/k6YYNsknhN+eJ
-         x/ak3a6Sdq/54Y/gjWURvy1djNP28eRYLaclncqhM9M0+S4k2e8SvzCNiw/+80J3qseg
-         8UKphu7S/SNXYeLTd7psvuPqXFPN2uLreJhNZxWnUr9kkE0qc8F/kwZZrBru0kn9+o0/
-         CbPWFHan74qCCeeWiTtik2vovy5iTo/jqqR70oPHpDas0g+fB5lOm/m0PZvJTTEkxeed
-         rieaAXRpnYz1CB2oCPMn0nRhjdF14S20w/5lSobcVPvuofdK13l7ekrq4bz24Ab3FeCP
-         m8sg==
+        bh=x1WK+OR6h3Wjb+QfkdL+cr1HegHl7fq2gHDqi9EV3po=;
+        b=wYuNoTUwUUOhjMUWEfhP+Kj1FdbLGoJqyg2s62UmmbwAWKwhYAVmqHDaQdCBwTR2M2
+         i7Tq9chNJ7AOKtzTef0H2JxsMWm4ZCfMOybjTzrNpjgSThBzqKH9kihEavhhLTIjtmyY
+         /jb1NcyCCTBFPpl9i94Vog9dnkIa6Pp8C9KGs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784725295; x=1785330095;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784725341; x=1785330141;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1S07zOcIxbdMXlT+EiHelCK8nLPptceTFpPa+ZORBrc=;
-        b=fTP+OfStCdKvEEuuRLdz89h5z2Pgby0lXKKsJYhdy1F6QO8/zk0GPxErrldMVb8IeZ
-         pWpGUkM0AIHdoz4Rn6y5ilOAH2WLBk4/R7AenDToknXxP6AnAiejoLNYrFmq8pRfklby
-         lOZ/yEfa6K77SdcNp6TE5eRveM1H7yoByWZ/CtghO9IVnz8TJZwvOylmCUYC+SU8pZxe
-         9iM/SeoqyiXdguL3LjUJOMwVPT8LiB6QM2I4NvfP8F5NVNrQVglJNLDzwIWHzAcxaRZy
-         z/qq8nIHOL4UoEigUITjf7DfuwjRcWsY5kdv9ufs9UnI/AeURDIVbZ66/MkTgqr3gXeQ
-         chKg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrd69ZtmbxmZRfdiFWOTrveRm15+gQCDZit3gJ0dzqdDnO5Bn9qwsKaEaDWZudW62N2rJKWDds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY6d/tGzOJjUnGAHi+HfDUplZtWtO4NHS+bylXVJVtyvkwpWW1
-	4ZZlZSPaCp3Lc7jNBfQ2kgWryZrAvjhZ1pGI+MHlIwA9tIsLIq5TrJt2f4h9AB/UCnA=
-X-Gm-Gg: AR+sD10Y4twryMIG3K/v3iz8g45s3mWOQGYdbWqxLKzsww4wnyr+lqpVQkkYFlThAI9
-	VS58DvJ2e4JciF1kbjIF7pV5TlVnyjr++6Ysa683SOeYG2NYN3W+gZ+Hk+IRnZlILlEWyx52OCZ
-	XoUVBG0oAmDfKmpf+qD2J54NRHp+RPiNUg0CoB2e2mdCQZxZ0v+h5KTyrubWs8xBrHNr2LDMvfp
-	mROuW2lHrYIEwFAPoLQBTl1c+50ChLQcmv6vmAi9OnJxXaMrOiobWiRXVhpvX5fFylS2Putke2u
-	L9OclTnnhjEA/vSaIewxIP9PKc17Lo4cfcvAC/SYngW1J+5iGEzMOuH1glViZAUyhWmXcQBlHBU
-	9rICSDb0e2v6hUtmRYNWoNlwKRqkARvJni9FaMcS3F2/x2uZhlZolEWo5c9VqnbdKMPBBVipVyd
-	UEKqy2RJ1vTA40
-X-Received: by 2002:a05:6512:10d2:b0:5ae:c34c:aefe with SMTP id 2adb3069b0e04-5b28fad60c6mr5115853e87.62.1784725294622;
-        Wed, 22 Jul 2026 06:01:34 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2a9e45344sm451183e87.64.2026.07.22.06.01.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 06:01:33 -0700 (PDT)
-Date: Wed, 22 Jul 2026 15:01:30 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: linux-rdma@vger.kernel.org, cgroups@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	jgg@ziepe.ca, parav@nvidia.com, mbloch@nvidia.com, cmeiohas@nvidia.com, 
-	roman.gushchin@linux.dev, bvanassche@acm.org, zyjzyj2000@gmail.com, shuah@kernel.org, 
-	tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org, alibuda@linux.alibaba.com, 
-	dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com, 
-	yanjun.zhu@linux.dev, cui.tao@linux.dev
-Subject: Re: [PATCH rdma-next v3 00/14] RDMA: Make device names unique per
- net namespace
-Message-ID: <amC-_-7QZCPckp6e@FV6GYCPJ69>
-References: <20260716132316.1495242-1-jiri@resnulli.us>
- <amCm6nW8IttsHGgY@FV6GYCPJ69>
- <20260722115323.GY110966@unreal>
+        bh=x1WK+OR6h3Wjb+QfkdL+cr1HegHl7fq2gHDqi9EV3po=;
+        b=PwCddlOq6VV94DdVCnvK0DkuZ990/VLke4FdLWkrCbmWt2DbzEYPsM65kEMF9fYMqT
+         eIy+oMQySPadUQckd4InzdNFvmtowfFAp6SXEKYEdZSH7wtYpGU5hO/K27mDJ3vV4oWB
+         YBQAFH3YShm1WkzAnpRNMkKyZRuEJibIpeMEklXlWATqX9iFIVeoHxTxpG7Lyqan7BqF
+         ROnfYw7437T2PTzltoPteqIYxsCQnT/1fJak7rrxXe2fqvtBqIc663IXSo9NWPwmK32Y
+         Kk3txeOy5IQGwT+1lRS17tKNv705fo3s2LZBQ1nHeI9F6EiAbx/DwQMI49hwLZYje3QS
+         wSwg==
+X-Forwarded-Encrypted: i=1; AHgh+Rorjwx/uBrlRVYdnfjp7AgI+BTYyrXdmZvU3lpyDCHGoSaO9SuqTqCc2cwQKUjWpHJ1l3rjICI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8J3RowQknZgtAMPJX17k+iqfh+NdqPy+PU+5l7jfZplwmTC01
+	XbgMpebFZRbHjXG5fsqzlxw3Ko3w6FPStqHfofguFpqGujBR/Y8gxuGZarES6C2s30BRK4JNzKB
+	OVLIW92/WSNjHcHExiQ8198h02FX2qvKMnu7Bccnf
+X-Gm-Gg: AR+sD128Q+fqO58a3fkNYhj+GkRVtvAW5pbkaZysMmj/8yEEgihRxQPkLhJE7H9gwT9
+	WLHdpmNsWqm801SwC+Qn5q/t8fbMCU74mRearuo94YrleqrT6qTNNjlHpeuHz+/JlQ/SfjUWpmk
+	b5OWFpczUiOPbkbROvcvOQvucECSFfmjBYySL0BqVtifY+Re+HYN0e6xjulJDIJA4cbi33fU7Gt
+	FIZ6ySuPYVGYHToONeedcZNASRqn2GXwP5ezB+Qc7eL/RxOJzr+dAygHrBXAiw=
+X-Received: by 2002:a05:6a00:3e13:b0:845:4d71:8d15 with SMTP id
+ d2e1a72fcca58-84c294d4123mr23854118b3a.37.1784725341085; Wed, 22 Jul 2026
+ 06:02:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722115323.GY110966@unreal>
+References: <20260720034514.23053-1-blbllhy@gmail.com>
+In-Reply-To: <20260720034514.23053-1-blbllhy@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 22 Jul 2026 09:02:09 -0400
+X-Gm-Features: AUfX_my0C0KHqyMOZgzByQsBTKPe8yiG-Ut5JoGHQ0amBUxtv5oVWrD_6PYXlto
+Message-ID: <CAM0EoMkDb2tV7gQ3=CixSd4iZz29jNyGdbSSq9-QgZKny6UB=g@mail.gmail.com>
+Subject: Re: [PATCH] net/sched: cls_u32: validate offshift to prevent shift-out-of-bounds
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
+	tgopinath@linux.microsoft.com, kys@microsoft.com, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Wed, Jul 22, 2026 at 01:53:23PM +0200, leon@kernel.org wrote:
->On Wed, Jul 22, 2026 at 01:19:00PM +0200, Jiri Pirko wrote:
->> Thu, Jul 16, 2026 at 03:23:01PM +0200, jiri@resnulli.us wrote:
->> >From: Jiri Pirko <jiri@nvidia.com>
->> >
->> >RDMA device names are unique system-wide today:
->> >__ib_device_get_by_name() checks a requested name against every
->> >registered device regardless of the network namespace it lives in.
->> >A device in one network namespace therefore cannot use a name already
->> >taken in another, even in exclusive netns mode (netns_mode=0) where
->> >the two are otherwise isolated. Net devices have no such restriction -
->> >their names only need to be unique within a network namespace.
->> >
->> >This series makes RDMA device names unique per network namespace,
->> >matching net device semantics, and adapts the users that assumed
->> >system-wide unique names.
->> >
->> >Scoping reuses the existing rdma_dev_access_netns() predicate, so
->> >behavior only changes in exclusive mode:
->> >  - shared mode (default): names stay unique system-wide, no change;
->> >  - exclusive mode: names only need to be unique within a namespace;
->> >  - CONFIG_NET_NS=n: everything is init_net, names stay system-wide
->> >    unique.
->> >
->> >There are two users that cannot be made per-namespace and are
->> >documented as known limitations instead of changed:
->> >  - the rdma_cm configfs tree: configfs has no network namespace
->> >    support, so it cannot represent two same-named devices;
->> >  - SELinux ibendport labelling: endports are labelled by (device
->> >    name, port) from a global policy; distinguishing same-named
->> >    devices would need net namespace support in the SELinux policy
->> >    language and tooling.
->> >
->> >Tested with the new rxe_netns_names kselftest added in the last patch.
->> 
->> This looks like good to go. All Sashiko findings are false positive or
->> unrelated. Care to merge? Thanks!
+On Sun, Jul 19, 2026 at 11:45=E2=80=AFPM Cen Zhang (Microsoft)
+<blbllhy@gmail.com> wrote:
 >
->We usually take extra time before merging complex changes touching
->core or UAPI code.
+> u32_change() copies the user-provided tc_u32_sel.offshift (unsigned char,
+> 0-255) into the kernel knode object without bounds validation. When a
+> packet later hits u32_classify() with TC_U32_VAROFFSET set, it evaluates
+> `ntohs(offmask & *data) >> offshift` where the left operand is a 16-bit
+> value promoted to a 32-bit int. Any offshift >=3D 32 is undefined behavio=
+r
+> per C11 =C2=A76.5.7, triggerable by an unprivileged user via user/network
+> namespaces.
+>
+> UBSAN: shift-out-of-bounds in net/sched/cls_u32.c:236:43
+> shift exponent 32 is too large for 32-bit type int
+>
+> Fix this by rejecting offshift >=3D 16 during filter creation in
+> u32_change().
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+>  net/sched/cls_u32.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index 8f30cc82181d..e7a9a49353f9 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -1107,6 +1107,13 @@ static int u32_change(struct net *net, struct sk_b=
+uff *in_skb,
+>                 goto erridr;
+>         }
+>
+> +       if (s->flags & TC_U32_VAROFFSET && s->offshift >=3D 16) {
 
-Sure, I just wanted to let you know the ball is on your side. Take your
-time of course :)
+Remove this VAROFFSET flag test.
+It is possible that someone could make a call from user space without
+this flag and use skip_sw and it ends up in a driver which doesnt
+check for this boundary.
 
-Thanks!
+Otherwise both Victor and myself tested with POC and were able to
+verify the bug and the fix.
+Please add Victor's tested by and my acked-by when you resubmit.
+
+cheers,
+jamal
+> +               NL_SET_ERR_MSG_MOD(extack,
+> +                                  "offshift must be less than 16");
+> +               err =3D -EINVAL;
+> +               goto erridr;
+> +       }
+> +
+>         n =3D kzalloc_flex(*n, sel.keys, s->nkeys);
+>         if (n =3D=3D NULL) {
+>                 err =3D -ENOBUFS;
+> --
+> 2.53.0
+>
