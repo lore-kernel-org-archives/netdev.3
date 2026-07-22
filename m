@@ -1,55 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C4D470E81;
-	Wed, 22 Jul 2026 19:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784748997; cv=none; b=NShILm5KMpaFc5PTZ6EKNMxgogIhgPIQxOv1IK7RWf1iMlTZypuTbHkYsV9BAzb/fzzN8LjlGNP9U/Txv7UdIYs9Nbs1QSUo0vndRSIWN7CZyEHRR7HtK7+jXwWu0PPXBlwDEkHnSrwxxsgzH2t2gh8Hpf8rzgtztycXxGSS8DQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8C836CDF3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 19:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784748997; cv=pass; b=pZLeNjzNr/12zryMs0zJ0sCaKaOBkLlwYqJuWidVSw1PTsjGRxlCNofm5t0CaNJf0KsY6+nSJ5sSUJN7RUjNVRs83KhU+2GU+HBkg6hWUMtqIyO9FyOKIs1j7mF4kpRxAxPSIJyribiD3YKKFbqfdd/u8ozWTMmouKJcn4q9pW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784748997; c=relaxed/simple;
-	bh=jlF+vCBoAlCmeGlgFSc6OkjYL/7WgdlsNs5KgKBqT8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z58tVWYuS+mI3L3lZEw2Bcrw6jwELrtDBul7QftQ3K+YKQeMNE7PZJpe1shYEPQ0wZjRsWGvzPU+sX5ahg1sQC2K26JFZ9RvEs22iFZwuIR5mip88V/R6xTQcYgnQgBddgwoERuTxoWSJjqhc+dVSyZnp2JITvb5eHUTMZ/R8fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gufLkL/7; arc=none smtp.client-ip=100.103.45.18
+	bh=EiJruLiXHTfayUASqh6hHsZKhodXxKj9AET02kAAvEE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i9vEdEYlqiI3T3nwcz41bMwioaRn/e5KCbAXk6M2ujC+1HjgQy+W2sx21S5zJjTp2zxmaUXYdMyTNkobQij0JeOq6VN8W8zum/6F7OHbZft1lE+928MXbhKYTDpb0y3KyaXkaYuKDq1MkGxzIBxt2rbXVJpypPH3jRK+8qNjzk4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mt+rTJbn; arc=pass smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gufLkL/7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195C01F000E9;
-	Wed, 22 Jul 2026 19:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784748995;
-	bh=kIZGWeSUbmnp52+auLFMSKFWUog47SeIfvsOQwlBJbA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gufLkL/7bu55mTAVunJt8Bvo/k1kv5RXR02oEiWlZEZ2spzoKe7kVJ+ielNiEmxIX
-	 sYoIT8a8ZSDFdNCiLEzjY/mrhe3rF53jAK5VBFbDBnuqUD6hlpaVVR6/jOIHfmj5EP
-	 nDFrPnEbP6gO74ccYX+8DKiacQupE3m5QQbORpNIr9/A2/mwB+npKNq/WGwhXUItAv
-	 LSquOZ+ANPK0/+jP7aWRs7HbdyI8avobC2kWfCeRHWG38cifRldTnsqgQRMnRjuxT4
-	 DINW+Xd2u6/X1Sdln6CbIvEHOqL1JkRG9vo8Q3Y0enznAGrS6/XImZVpfO+JqEnu3Y
-	 H3kkA9a62NlHw==
-Date: Wed, 22 Jul 2026 12:36:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: longlong yan <yanlonglong@kylinos.cn>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/net: use ARRAY_SIZE macro in skf_net_off.c
-Message-ID: <20260722123634.65ef3704@kernel.org>
-In-Reply-To: <20260717062502.1016-1-yanlonglong@kylinos.cn>
-References: <20260717062502.1016-1-yanlonglong@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mt+rTJbn"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ccdf36f63dso18355ad.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:36:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784748996; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fXSIGVSwsRLLWzacDTFRGvypMRvqi0+JEWN2wxGgWNfWdf9SkfFL6VdNF/zmwlP5Mj
+         zfKRVPepCf4p3DEyaz7k3atdOK0AuvIh+ShGmjdKoOGShiShjnGUTTdjfANoUctZYcFz
+         NUliQ2ujXSA83ArIbg61wNeLxPw+jC5zdddZRVF+sbL8eCx4zXM07/aodzBiXbyKPgyP
+         OAguShHwijeAdGOqMQ69Ec4dNYFgyB9b53Y2l5EDwTDTB2tPuNfqjB/ZJacVRGhu30VL
+         KpvZIatWemf0BoO7umTqYX/US/nZjD/Ea0o7ggtWAYbZDu8Q6MzuI7T9sb0+JnJOV2jL
+         8ukg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EiJruLiXHTfayUASqh6hHsZKhodXxKj9AET02kAAvEE=;
+        fh=bcKy/GiNFFEKblLozVWUe+9ePgoCjUvPhUCZcCfeIko=;
+        b=eTQYt+RMV4WLTC6etQrDESMWHuTAE26EfBbpl8KGFmO9g2Cdmjpx3Hbb1EOnLAqiD6
+         FDH0A1qIJcNFv7swUx7AVWMLRKxLGVwymskJDUHtsLF0rOWGklEXNZrGsezWfQJPjriK
+         LmIF3esLKnUWNgRjdkQpxNksj32dcZAtS91xjKDlrHBn2ueUmZCMABmeqtMsZ2yxT7yp
+         rAQE6Tpfc6Syv/OAWMtkpYM06ZcKnbz25LrNLxa1ISxFd+TdFhQJNOXRchXhzyn3hZmx
+         y4OX2i8k6LYtUeXYIHZKkTWONdEBlDgv+Y1m6r7ee+kWmGQz5y1FCAtkhS7JBFpsEI9T
+         tx3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784748996; x=1785353796; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EiJruLiXHTfayUASqh6hHsZKhodXxKj9AET02kAAvEE=;
+        b=Mt+rTJbneJ8KMDAOmOQFQIOfb3epyDddyOzbPUtq6ZCK6J8rffp9e9DyD0Vw9BKd4K
+         GNOtRNtwrBz14vebfVOd/iK8mAhpIGJ0bBbfbkdd+YWvwfkRO7uMz+Ol+3MhWL7PKr+c
+         EcYxZgNaZp2A2NhpcnM99xtimwpGXpOKk+sPVjxAjLPJrYDD5w9AD1koPWsrcoXeT+Es
+         adsMLNuV7pmELIix1+vOswMMpzit83Ca6HDAMEJgzpg08M1LG3vGkbqa1p3wBAt363ok
+         JJvS2z1c3Q+WDqUUyaWHfDoqFIKU971RKwwdOnMF0bUQdmSk7caDWWbhohURmKvwI/Rb
+         7yDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784748996; x=1785353796;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EiJruLiXHTfayUASqh6hHsZKhodXxKj9AET02kAAvEE=;
+        b=myQZuFiM32b88yxas6KxEHIX20fhLPhsoAJ2z78+EvH4/BgDfDw+zkE0k85G8rctKe
+         9Uw2MtalJr2M/no0N3YpxUU7FwTvrFFXf76mSsdohgiDMRYgxV6HYNOXRjePGzWHMopk
+         26P/DZcr7rLC0vdrpDSTwqFoOnA62hWRJwVjmj2acvGbDaG20Fz7SYTDv0i44rBclWbP
+         36Tfmx7eEo6pTaQRFjT9REpXwpylQy4AxM68keHU0Czlu7ZD0HDxT41KAf3IL7wjl7zx
+         b550pvCG2epUHZdZYTg9dO4W04Y+6RzTSXBsTuaMIv++1TUONXjZ0XKD34paYgrp3mFn
+         FTVQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpg+WOnQwz2fP6Az8r535DgqwxEOJwkpERSVpimkSiITmMx9KsOF+u1FxsjOx4EHswmVJLkCwo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrbCR8bYoWPJij0QQ5fU+s0ZFX68RHjW2c2A6KwZceXGrHCsZV
+	jbgHzucvinHTxvwftUsb0fozHcjqBf/aRUBKP+YwohItuKdHavfYUM/1P5kD7oj5CXrldksLdN8
+	FIwpQn+PZFfWcBt9rJYY3bfQCseoWZhO8Gvnca4du
+X-Gm-Gg: AR+sD12Xlzq/7NgUFdAGuCL/ubjyGvKBvzUHAeCwtQPfPuZEyic3fc1mP2whRpylEaK
+	AMON2jHIVZqN2M29+t6oxKGdTgBQR/GABZZ3ZgkAn84n3EJZX6laEbzvXtJ3o28JfW/g0txOXLL
+	zPLFmL/QVhXJw5hsK53SAbfPGO4K60nhUvQffP8A3WCaTbUqQrvFicrvf0bvivN/oK4U6MpMhNl
+	ctG3mlsrjEumxmfFpEz4kYjliXw7Boc8zNRB3WFWG/kOJWbGlUTPaAmjI0/jd/P1TEJRYqX3tXN
+	aZ11d/dpyzmGRZWO
+X-Received: by 2002:a17:903:1aaf:b0:2c9:b404:b55 with SMTP id
+ d9443c01a7336-2cfa4ceb478mr1045345ad.6.1784748995228; Wed, 22 Jul 2026
+ 12:36:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1784726895.git.asml.silence@gmail.com> <29bd4fc069bc89691868beba0627ffbe570c2722.1784726895.git.asml.silence@gmail.com>
+In-Reply-To: <29bd4fc069bc89691868beba0627ffbe570c2722.1784726895.git.asml.silence@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 22 Jul 2026 12:36:22 -0700
+X-Gm-Features: AUfX_mzcuelw9SCeU9LLkBiRe_JuM68jGvxrXASgyh-gCe9WcYipjorhBZQSx8Q
+Message-ID: <CAHS8izPxL_YP7jrwGESHpcEQChqYo-ehNr4_RygcUbeHBF7D9g@mail.gmail.com>
+Subject: Re: [PATCH io_uring-7.2 2/3] io_uring/zcrx: rename ZCRX_NOTIF_NO_BUFFERS
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 17 Jul 2026 14:25:02 +0800 longlong yan wrote:
-> The ARRAY_SIZE macro is more compact and more formal in linux source.
-> 
-> Fixes: fcd7132cb1f9 ("selftests/net: test sk_filter support for SKF_NET_OFF on frags")
-> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
+On Wed, Jul 22, 2026 at 6:50=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
+com> wrote:
+>
+> ZCRX_NOTIF_NO_BUFFERS tells when page pool fails to allocate memory from
+> zcrx. "No buffers" could be more confusing, rename it to
+> ZCRX_NOTIF_ALLOC_FAIL.
+>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 
-Waste of time. Please don't send any more networking patches in this
-release.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+--=20
+Thanks,
+Mina
