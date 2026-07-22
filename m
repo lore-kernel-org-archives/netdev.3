@@ -1,94 +1,93 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36143E3DBE
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A5C432BD3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711673; cv=none; b=cYDaK03dxZP1uK2mrEPNok5vJVGsatcR5slTHkWPfFnNtjQDCmCutrs7IkZ6QyAzSnCIyeNCzKppex/sYbKHgoxDagmCYV94U52zo4yNNnsqoXaoCdDcT7l4uRVpZ1ZE/NT4NJHFPP/1Q7c5fMkByTMuAiDvROzNOQCIGbYmFDU=
+	t=1784711703; cv=none; b=IWkMIAj+NrCLcHBayMzw1yR63jNITRzCkaPRVOKmqcNrY0dRoDeoRTQk23I0uNIVe8im5kIrEhIva2UmQbIzQl5zDtVLH8cjfeh4NbAZ2Qi5ywyQpZ511VuO2Z1JL7H+ctNkm8kbmCpXVITiVcuIDyGaZvf+E77rwlOEHvFtt1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711673; c=relaxed/simple;
-	bh=sHMU9orKt+3dFz7svwzy6sHxokwx9yHspoPZi9pCSqA=;
+	s=arc-20240116; t=1784711703; c=relaxed/simple;
+	bh=ij0mEyGqqpAB+MTW4VTiY1ayxaymUfWl8B5riM+q6+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVPcp6nbkYCKZH4r6yznCBih1kt31TroFfCT7oXqsNmhmM17640PIRceone+rA/aoFpfc4vctMyqMwscO7H6TUHPWDH+vIhlwXTmH5WbOJKD8rFD3UWo/cupcN5TlidHOhWypCBjuWy3c3SOZIusKu4nEjmUttOX0pmhyE/mkr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OWoqrEje; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hWPNkyaD; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=fOKaSqIn1/oMKrbRpR7bx5Ora2kgWGFbCCpcRyE46Y0fPhXU5RVqAf/nxb5GnLQKgi+rC5/yl2VWhSRQVWzo07wavAqxVfUxAYDiYeTVW5ni+L45k832w5VgJZVNIf/1sISP2LRZTO2rTo5McK6TAemXJwziqyhWP7aRB1Jf5S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bDXmR97/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ju3Y1aLa; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OWoqrEje";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hWPNkyaD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bDXmR97/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ju3Y1aLa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784711670;
+	s=mimecast20190719; t=1784711699;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
-	b=OWoqrEjezHL3Tj8vluIiW5nbZ2c4syPaDnUMa/welSn2ixzN3Lhm84b8jtZUBfjyP1O93T
-	IrsV2oyL7jGSCbANWMIyuT0g+wQCj4pP0wsT3p0Dwx0ByujfHtYP5IRAPG6ltyBcgyOfEz
-	pt+7jhgzjXuGih2f3giBIrEfmzBDahA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
+	b=bDXmR97/02T5m9tfQoKol8Ijy7/iXiPZPZd8sBTNeu/rkeyfr9MMw5YZvNu1mcaW+hDXnE
+	aDNGzg3v7A8Nkn7NMjPFkmzjW0DTmU0GOzQTAyH04hfA2BDtoi1um5BDp9aHe8/ODhTiJ1
+	/+oVJr/PSCgWzh+acSGsP84UW8grTEE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-nmlXUYm1NKiWz4VB9Asx5A-1; Wed, 22 Jul 2026 05:14:28 -0400
-X-MC-Unique: nmlXUYm1NKiWz4VB9Asx5A-1
-X-Mimecast-MFC-AGG-ID: nmlXUYm1NKiWz4VB9Asx5A_1784711667
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-474170b59dfso7419403f8f.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:14:28 -0700 (PDT)
+ us-mta-480-MW-0hASQPkCOPQbHZu96sg-1; Wed, 22 Jul 2026 05:14:58 -0400
+X-MC-Unique: MW-0hASQPkCOPQbHZu96sg-1
+X-Mimecast-MFC-AGG-ID: MW-0hASQPkCOPQbHZu96sg_1784711697
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-492714d002cso61736605e9.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:14:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784711667; x=1785316467; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1784711697; x=1785316497; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
-        b=hWPNkyaDEFJEKapwJ9fmMDKRMqZvCAauA7pN2YDBaiQccPZSS587ZAX3WOkkvWRKNl
-         FcgCGdcrOvp0+h4dyM3vhPPV8lkr2Ybd4SnxfP2EQIEde/fvM5GnjCzeIIkD8rhjUTHe
-         kWZcyn10bSU5XSdU37Ozp8EfeSIL6s4N3zAA0Jrj1gJ3ji/3e6uRQEcCo6i9O/luCRsE
-         loCJ6FpMHTXza/4MaZIja4eJcJUHJOkypf3F4OxHznF6VnoS82phR1RHhFuspmtK+Wq7
-         WKWACUOkgCamqUTCNmi5P3nmjs4h+Ftgt1LlrHEGvJMSWBDozaeILE5LwIAwSbcQsMjk
-         JX+w==
+        bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
+        b=ju3Y1aLawBaMMVfs/ZLzxOnwO0n1saNR4knTivWHhkgJYKxDWmNa/O2oltXez9JxzL
+         t0sZXTMd0CUz6f7Ok0o78sjY/251lEP2GcshHK3sXsnhxzaSy2UX98nGjZ/xHYsOgTtI
+         WU5PrZTpkyrldUw889vCpaBkG0madjYOGubeqNXoFjozVE2+V0MvJ8FJuXoEpCKaPP8Z
+         9o7oc68ZehDRRZKFsLqU9y8otG88Gj+azOJfllUi26Rsa4AJuKrMrYLqjxImCHdj0S+A
+         KxVEt189zOLN+W/pWFayYicB/sjzcZe0Xxpup9MFYEBgmjddfRsrUIwgY8fqKGrTC/ti
+         AkIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784711667; x=1785316467;
+        d=1e100.net; s=20251104; t=1784711697; x=1785316497;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
-        b=GPcPMUp+nqcc2IvSxhUabfsXdXJTjXdz9tGJLjef+Dm92xmN20Is448s31HsH1M7iZ
-         7iy7DLIx+fZCeOgn85i2F9/nYkSC5O33stxZnt3nGSV89uwTHA994Rp+tSwoHTlqT3Vb
-         e3fiQgIjVA7fBpPLkN2lrYgnlzMKATnEcVCsjINBsy5gY1cET56LFBTpUQcI5ojC22cP
-         SVqWxhCM0iUAfcLptHHgYeEsDQjxu7QUW8rrKunas4gDYB8J/9ILz3jkEtcMr7EpKqwc
-         SBa+ZlMqHg7Foeh9L18Edx/UrlX2JR7uhZBtBJtaKYsh95NMgIPLXJDJBADVcALTODt4
-         vKWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpQgf6CaxdSrif1oILAJi3d8LvGtt2YtxNS1P8Ivo0ih1ympFMTaoisLeE7X0UPHowD7IBszM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp24VHHdj/t3bJEN1morOwl9mPTgAqKy3A2P17fPBlygl7oyMG
-	o8PG+Sdib38HeJBupTqfEi/h7AT9W2LCASRcWixcCl7dqZcLjQpSuowIteiQ6lOG5UOh+ZG0gl2
-	j65/rK1o+pZPYCWY23xB9X4gdnV+R/8U13qx7VyLF2GbOIFZtUx3zbNyoMA==
-X-Gm-Gg: AR+sD10mZyT/PXH/TEvDxL2WtR2dpMRfrKC4G//QJa5b7Unif+0MaGXOyxukSt2re8s
-	aVL3uhxDlbppjtPTT2rfuLAepr0r8+otNqt7YyW9VzIiJScVk3zMunlQuEkaFCj1he/FG9z+g2K
-	RD0mqpcWOxA1Wg3EiWCbAYuE/x7KSHmc0SRKRolXeQeSC8dnxg95gLSCnbubgNZNBBMhwt6gFZA
-	o+C+rXXDOfl6dp3SR1ogT2ej3qVWtsraKxaBg0wUCSmRJToDN0yYpqNI082MbVZFREuSerlewP0
-	v03mHxfl+PeeG8jTclAIbEc2rcamr0+2egrtcGzOK7C9q9VhsUT2bJ8Ih+OgMHHmzy3MHfOQkfF
-	VurJR9vTAomfrBzEZYo070IwGAyWoPUtWmSASJvw+HK4SzaIEuw==
-X-Received: by 2002:a05:6000:402c:b0:47f:7759:89df with SMTP id ffacd0b85a97d-47f77598aeamr15702380f8f.3.1784711667421;
-        Wed, 22 Jul 2026 02:14:27 -0700 (PDT)
-X-Received: by 2002:a05:6000:402c:b0:47f:7759:89df with SMTP id ffacd0b85a97d-47f77598aeamr15702319f8f.3.1784711666793;
-        Wed, 22 Jul 2026 02:14:26 -0700 (PDT)
+        bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
+        b=ZHywHTwwyzBHIG6LMKD0Sb6OmKm60Xiz74BUBrsPleENwaVuCfWyc3DXJATw6uqrGj
+         yNj46wp9XaVcLVdrA8Z6cOFcexGDNUcokY7+++ahygfTI/paf7ZW0qXqzCySsQF32lxl
+         /HhhCcsXvp+5ZdFJ7fZgrRt+S78pMepLmCWAvryjQtv3tTvCK4yI/3sH1kP1V3tFq+FT
+         jYlcpurAcSXxkrl8Lqz+pD9Au/fMEYiTJ6S4otqeHLA3E8c3WiOs+LOMxKXehJhANqKl
+         bmG/jui0oOpuAqunyqqv9JBgu7rB67WWYvUxLe/6yA78mMilF8QjHkVCm82QnAxIaUep
+         aDWA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6RJojKmWXLLdFkHeVX9cb20yLaYXpJMwmTQ9dIu3YNrRf+49pAhUK3UorivMpK34+yZ4/3cQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxh7gkDN4W68ma4XpqxXKm3y38pRrndUVj8w+jAjpTGv9E7slO/
+	Ebf23lGZhDMN8Q83LV5JW4/xIgnQ02GN9GWq3r8v1iZfQE1uVhGQcPQhmWVZXLyIb4zI1K1/oqK
+	SYHIWRbeXxcbkpi4Zwy1SB13zPFi1QnYX/TCq8eAgBfGvXvKfzvT2W/Ybmw==
+X-Gm-Gg: AR+sD12hQv4PAB84Y+kdvYzlDkPkMZXeABIoJY0ls55BWRrdbGl1FwILnHiaFgHBob6
+	Ro1TAUI/L1HlVYIr+BnUrN71olqfgrtrjV0Xs4GTr9dZB0JF/8YSBj2pU4XgqWiM1Sum+k+3NZP
+	8/hi4jK02U0Lj/rJ9ZrMDiDETrIh3nVyBWvDWVbYwErAaxpg9spHGZwgHGnp978L1gwRTEBkf3q
+	1HbYMUQQLm4nuQmM4sa9J0iLinBO06DBdfFMD8Bo3ef6n+fZ2edQSEj2men58VtEGAibpwBQTlm
+	rF/o++K9WPYitKEGMeZUMyLmh7hzglPB3vz14qBcEBhEGoBJ/uibqodBs0mrbI5NOg/b54l4aFp
+	KM94/qIshMKtk0znDXbx2DuLLD2xYYDiKYN5vt9lYtvpLTbbjdw==
+X-Received: by 2002:a05:6000:178c:b0:47f:71dc:d848 with SMTP id ffacd0b85a97d-47f71dcd8d9mr16850979f8f.12.1784711696918;
+        Wed, 22 Jul 2026 02:14:56 -0700 (PDT)
+X-Received: by 2002:a05:6000:178c:b0:47f:71dc:d848 with SMTP id ffacd0b85a97d-47f71dcd8d9mr16850922f8f.12.1784711696414;
+        Wed, 22 Jul 2026 02:14:56 -0700 (PDT)
 Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f8635c8d7sm3212686f8f.21.2026.07.22.02.14.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5a2sm4619604f8f.7.2026.07.22.02.14.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 02:14:26 -0700 (PDT)
-Date: Wed, 22 Jul 2026 11:14:23 +0200
+        Wed, 22 Jul 2026 02:14:55 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:14:53 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
 	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
 	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
 	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 2/5] vhost/vsock: suppress EHOSTUNREACH fast-fail
- during CPR pause
-Message-ID: <amCJ4x8EGtHjVRM7@sgarzare-redhat>
+Subject: Re: [PATCH v5 3/5] vhost/vsock: re-scan TX virtqueue on device start
+Message-ID: <amCKAp08S68JWXRf@sgarzare-redhat>
 References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-3-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-4-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,47 +96,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260720102241.371610-3-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20260720102241.371610-4-andrey.drobyshev@virtuozzo.com>
 
-On Mon, Jul 20, 2026 at 01:22:38PM +0300, Andrey Drobyshev wrote:
->Earlier commit bb26ed5f3a8b ("vhost/vsock: Refuse the connection
->immediately when guest isn't ready") added a fast-fail in
->vhost_transport_send_pkt().  It rejects every host send with -EHOSTUNREACH
->until the destination calls SET_RUNNING(1).  The fast-fail condition checks
->whether device's backends are dropped, and if they're, the guest is
->considered to be not ready.
+On Mon, Jul 20, 2026 at 01:22:39PM +0300, Andrey Drobyshev wrote:
+>During QEMU CPR live-update (and VHOST_RESET_OWNER in general) the guest
+>keeps running while the host drops and later re-attaches vhost backends.
+>If the guest adds a buffer to the TX virtqueue (guest->host) and kicks
+>while the backend is temporarily NULL (between vhost_vsock_drop_backends()
+>and the next vhost_vsock_start()), then the kick is delivered to the
+>vhost worker, handle_tx_kick() sees a NULL backend and returns, and the
+>kick signal is consumed.  The buffer is then left in the ring.
 >
->However, there might be other reasons for backends to be nulled.  In
->particular, when QEMU is performing CPR (checkpoint-restore) migration,
->device ownership is being RESET and SET again, which leads to backends
->drop and reattach.  If we end up connecting during this window, an
->AF_VSOCK client gets -EHOSTUNREACH, which is wrong.
+>Then upon device start vhost_vsock_start() only re-kicks the RX send
+>worker, never the TX VQ, so the buffer is processed only if the guest
+>happens to kick again.  But if the guest itself is now waiting for data
+>from the host, it will never kick TX VQ again, and we end up in a
+>deadlock.
 >
->Add an 'ever_started' flag which is set once in vhost_vsock_start() and is
->never cleared.  The behaviour changes to:
+>The issue itself is pre-existing, but it only manifests during a device
+>pause caused by VHOST_RESET_OWNER.  Namely, the deadlock is reproduced
+>during active host->guest socat data transfer under multiple consecutive
+>CPR live-update's.
 >
->  * When device was never started -> flag is unset -> no listener can
->    exist yet -> fast-fail;
->  * Once the device starts -> flag is set -> we don't fast-fail ->
->    we queue and preserve during any later stop / CPR pause.
+>To fix this, in vhost_vsock_start(), after kicking the RX send worker, also
+>queue the TX vq poll so any buffers the guest enqueued while we were paused
+>get scanned.
 >
->The VHOST_RESET_OWNER ioctl is implemented in a following patch, and
->without RESET_OWNER the problem we fix here isn't manifesting - thus
->this patch is a preparation to support RESET_OWNER.
+>The VHOST_RESET_OWNER ioctl itself is implemented in the following
+>patch, thus this patch is a preparation to support VHOST_RESET_OWNER.
 >
->Important caveat: after the first start, a connect during any stopped
->window is queued instead of fast-failed.  That was the behaviour before
->the patch bb26ed5f3a8b, and we're restoring it now.  However we still
->keep the behaviour originally intended by that commit (i.e. fast-fail if
->there's no real listener yet) while fixing the CPR path.
->
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Denis V. Lunev <den@openvz.org>
 >Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 >Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 >---
-> drivers/vhost/vsock.c | 22 ++++++++++++----------
-> 1 file changed, 12 insertions(+), 10 deletions(-)
+> drivers/vhost/vsock.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
 
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
