@@ -1,219 +1,214 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012017.outbound.protection.outlook.com [52.101.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AD5338936
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784733369; cv=none; b=T3VgikvQqbQoQq3LMyRLnYw0VI2Qf7xTm55OcHqNPxsKs9O0fqBOpOZWPDfW4WpG+uEcl4kkmYc0rMT3uTmt2j2TZIRzNPXv9V7KXRRs/2FV71ZyRsKx4LgkRtluRiHP+owC+2ldGECOKp+IhnEGtsWvOsk0L1wsp2hFbB81Y9M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784733369; c=relaxed/simple;
-	bh=pZqfDNtrlt4xKRG3c0BiAsT2DXo0fiEXSQUodX9iZ3w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=oNNj0Zb7lI9//x4QZUPBbz2q8T9AxUaFvudHKbvK0sPQMzFSV/XE0Bd6R3XR9EaChKxTgotyaHi5VllkHRo1/ujTmA3SStOfxlVPGRxoamMBvvUreJqTOjQjfNVqjYlqHKZPIVvNWVL7tnUGom7E3IhNBAo/8hHCKA0V1V/cHKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bW3PreC0; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E1A64
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784733559; cv=fail; b=hzyGkMCEQOCJtuAujPk5mDX9sXyJDzLgXAgkLt3yS9ci114RxC1i3FsCfXiiG0tPE56o7JckfGo8R5qFKQQIzDZlN6EilwTkST5+RDZaYlOcib4tNgwcHz8kanQ5NW842H8BrNtJk2nIin5ywVUeN2hx5BY3rGkkFHiBQSX/KsA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784733559; c=relaxed/simple;
+	bh=8wPHQp74OifCMEYJ/ZZCQRfUADFmqOGjm3rO4cLWl/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dfGQqHX8LO+FDD+XdvQCz9hq2a7FqKXjjkuoqIxzqemnR4dodtbVzEsDXYXPJNIWoyAOL3x2w3GGSa16x7T+yD0XznIc6iaiEjkPrjGGz72yQHZiFUq/WJ3lNxgdqjIlWsz9dxHnKZuMprSvzbKp7VQe4x2EAaSHm3hrplbY+1E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hufrVRqR; arc=fail smtp.client-ip=52.101.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bW3PreC0"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hufrVRqR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I5wd3QcsgEF9SbWXG1j0jEhheRrUmCBy3Xzpje9asJKKmdozC7h7mF59uvw2A3qfni3FklTN6g+D90nS/+pH5UxcL3g28B9pvFsWmswtQugqMJZF3eNHDNeJ8z0mFm+oPTCZkPjrxTKS6leRJRLI4cNii8i21oB73oubm9xR/6g/3SkztJR7Di9mVNz3m8rN8Ue/j6vDvSer/SqjnbrvhFmZNezpiq+qjPcDH7ygys6KmtiRIh+q5fkaq4YgBg1WlY9+wHZAGAKo8G36EiyO5K9XE6fnANjx8RKu9MT3HGa56KWXnRkxMyklgaY8wFuT4fJXsUSjv38oretQLOVacQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0JQz4i/1hKPPuoOuSmaMLEHJ9L6A3u7tO57uSCgDfxA=;
+ b=sKEHaUuNA/U/GKcLtzn5hVrtzD73vTNZZ6bDUYEfyvg0XAhso8UC527Rp9P8lsktYUHdJeFJEcvxrq6MyU1a2h4mskOXKi1Jx4B/mGBEQ6JGeJ+ejch1ePEp/Czurz4XZL5hC4HIKBRdDUOr3acEe6m5e9Irrx+2nUv5wpF27IfGaxVEEvFLDVLa9o3MWw9aqAjbsJ+ABU3/huZGP50qrAyc+lj2PZTg9bxBgzxjmBQomxOcPWFDyVpqVeWC4lITBsgNLUAUUettDic7b2Kyqj4QC2J3GUTklShBix4pLY3zyOZa5xmUnM6E6/WBWG1OfApC808Hpmis5XF/m5zwnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0JQz4i/1hKPPuoOuSmaMLEHJ9L6A3u7tO57uSCgDfxA=;
+ b=hufrVRqRFCG4BtzZ8vKwE8ATfRTD9RLYKURw6r4rgHzNni4jNIBHXNRK3VBe3GNkttYcheEtxXJUaCpzmQmDTWulpeDPErZHXxQF+iujUTd9DyGwGUUY9w7h4dlKLIMCBAvcinuF+4xVjpreUZHHkEdrS5njR+dudTRmkY2W+8sTUkIlWfR0w0LaV7PuGs/zf5kiREUU4hP4IuQJyBvpPi7QA82XmgLmzwCXx5+wEnrj2jKqLTB0SZKkJSvJcXuSBxoEuH//IU0FQoNrG7B07Uf1YbsDrosUd8RRyfkLfWdlE2noJBZjDiuHwaB1+RWss26PO1vPhZtMtzys6uCZkA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by PH0PR12MB7861.namprd12.prod.outlook.com (2603:10b6:510:26e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
+ 2026 15:19:13 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 15:19:13 +0000
+Date: Wed, 22 Jul 2026 18:19:04 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Jack Ma <jack4it@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH iproute2-next] ip nexthop: support fdb destination port
+Message-ID: <20260722151904.GA3022830@shredder>
+References: <20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com>
+X-ClientProxiedBy: FR4P281CA0058.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cc::8) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784733365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9xnLf5kCYeKS0y9dx48KGdZi3PUN8z8TKfUOdx3pcY=;
-	b=bW3PreC0YSLDGRKBpNSz9D3HV9IBx4wlSIMZcxjKlW2NgHj/d2JJNShI5MXv07j8MqQQS+
-	NPjHWhOdZSBYQK8zlzTLb67RaU+lo+jSdYPczWGuvi2XKtwcuonThN72rQpi4GauyQiL7a
-	183xUjaWt/QyKalqhxboM/IvbhPi1ME=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Jul 2026 15:15:52 +0000
-Message-Id: <DK5767A146ZW.3LV5JXS7T4W1C@linux.dev>
-Cc: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Jan Kara" <jack@suse.cz>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park"
- <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Hugh Dickins" <hughd@google.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Chris Li" <chrisl@kernel.org>, "Kairui
- Song" <kasong@tencent.com>, "Kemeng Shi" <shikemeng@huaweicloud.com>, "Nhat
- Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, "Barry
- Song" <baohua@kernel.org>, "Youngjun Park" <youngjun.park@lge.com>, "Joerg
- Roedel (AMD)" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin
- Murphy" <robin.murphy@arm.com>, "Huacai Chen" <chenhuacai@kernel.org>,
- "WANG Xuerui" <kernel@xen0n.name>, "Thomas Gleixner" <tglx@kernel.org>,
- "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- "NeilBrown" <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>, "Trond
- Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
- <iommu@lists.linux.dev>, <loongarch@lists.linux.dev>,
- <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Matthew Wilcox"
- <willy@infradead.org>, "Brendan Jackman" <brendan.jackman@linux.dev>
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
- <alkLSzQvzT9zJbY1@casper.infradead.org>
- <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
- <al5gQgnBCjNCSD_4@casper.infradead.org>
- <51810eba-2a60-49f9-b879-7f806546e600@kernel.org>
-In-Reply-To: <51810eba-2a60-49f9-b879-7f806546e600@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH0PR12MB7861:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4293f642-4d5b-44ed-fff0-08dee804965d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|11063799006|56012099006|6133799003|10067099003|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	6SrmiR13QlfVV9smN7W4FYgYAtnI9NbXLfO43w4sm1ScY8vBkE3siihPI7oO18Wbv/7nlLvrZivzhxQtnSywEGXax+wcx0tf4YajiEnS9Dq+1udjfor23llOfHPs3tOyKCEpRRsSuUauQ20j++5B9ulv98vag1VOwuN3QSH+hY4CTg6IiUsg+jbSKwKdh0EKyx9UTpw+5ExrmBQ7k6K1zA/uJABnzBbk+BZWejKmFX2pmlUQ6O9BoeD22MJltlyj9mKzkSTJPGc+SsUGf7miRNu4TRNp66THUtV/iOqX4rV363ZCqcO4s3/9E/nn3jltbOSBEBB8Jcgr6U5vxJr7MKJcuQfSvz3+9ZGqd1kJh7lqR0QThrojDuzaFbBhvId6QD6exoSP7fXyw2Dq77GF8OZBlweh8mpGr/lXewDq9KtP4DZqtN+fJhm41U6qlce3Iy923sSfKqYt8eOqhYfEIPwSed68i496LTFByQ6IYQ1F7EhDdwHKXAyXT6p1FiOlmvgFhyejf/wejAmEEYnNyyfcKUaPOm2oscjEcG1eTFskatdKbSDPBQtQxIIIogRRdIpetsmZG9W3ApNUeNvMKw/4ei/sLURzkJO0WFeJJkdXzXfFLt79f2jHa+LQWrK9IAlWu/nv3IFuJyErJbcnjBv2xABgdbZjFFFApZJyEe0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(11063799006)(56012099006)(6133799003)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yhcf1Ehrpxv/SUB5WvVx2mEhzNWDxoPEb80n9dd1NBS7t+eHGHJzwINILfqv?=
+ =?us-ascii?Q?ObMs0sCVU0cQGjlufMeZJ9jOoOS6G4OSRHqh20wfaEXzQXFa3fo8/JKafwyw?=
+ =?us-ascii?Q?bQb0TVzTsGEkl6vEvLDZEN7bBPj1b+0G8LmL/cutaegVaSnSSx9EOe6aU0m6?=
+ =?us-ascii?Q?ohHyW/SUJMMDFzw6kmbS7PLSs0l868Afm9A//372ijRlc/Uios/vbNivBA5J?=
+ =?us-ascii?Q?uqqWZPnOWQQexLVW5AbcyS8odWQg/JvhN03dRp7fD57xHNy3W5CNGeKR5Qua?=
+ =?us-ascii?Q?M+VKI8j9dnRBADTeVRjwIjheI6u+NffnuBuyEksfD+ZgvuhtdC0Z3rua83Xw?=
+ =?us-ascii?Q?HvxUtmcq6dp4OjbrOk3Ya254I/sK106y0bz2x8uG0PEdNXafWkhL8OeuzApn?=
+ =?us-ascii?Q?FA+3miHxSRYJy21C5/8FAOHr24srNoBGQ3fAJ/+E+7zDAxviyIUZprI/USYU?=
+ =?us-ascii?Q?84AJzGKDsno8S9Tt94emJwHonGKmGMsf0U+HD0+g1DuLrmx7CHf0r9z8QcIg?=
+ =?us-ascii?Q?uK+d+RZs1HkHr9yJ69zPoHk5rpADi+1Rif6NQmjmqkpl5a66DnfGT6YtWQ+B?=
+ =?us-ascii?Q?pjrDPJdUrqZmd8qiKgEFy+OHZt6N2/OXT8Zyf5JXx8Yt0jGENthpRZTuR5wl?=
+ =?us-ascii?Q?uETA/FmJClxWY0neaoadvZwMMoQm7mwN8Zezco+SfdCMnJ/YSUFDlbiDVql3?=
+ =?us-ascii?Q?Yvt52pF7X5xIABS58HjX5ipTadUCGv4rfqv0ukCUvyIOPw1fmaRRwgwhlgfS?=
+ =?us-ascii?Q?spylGnoXSlVipU2B+SKHvj3eLJvQwHgwG/3dHkcKtcvU2i2NvVM2Qg5vCAI2?=
+ =?us-ascii?Q?A+wMb1rb9x8vrXBgtC/BzIs+20AOUCdNiezwowtyEhXFDMs/sfQRl9tyGgG2?=
+ =?us-ascii?Q?BAob5ZL5GPLHxrwBKCgsV70V8wq2D7XBs56qSwpc1sphb5JwV9jAEBi2kinF?=
+ =?us-ascii?Q?Fe5bns1x5b9zFeLQeNINEB5+v236slVS2bUSDSEbDa0PIE30nM+/FKyunYsu?=
+ =?us-ascii?Q?PTgxY1C2ZqEnANLhKNkx+WSK3VVt5Tt81zXz3+Aol93D59IH5wmdyQD5NNN9?=
+ =?us-ascii?Q?j1SxaQlERIHRtGquN2Ly54xFzkbQkzjcjRdLQWrBQ6ApBwuBfH4pf8hTup3Y?=
+ =?us-ascii?Q?KiO9IyeDmqM8Z2zkQN9qJI85TofszZMGvRRkbOXXkufqJ/kzmyHcKjEZc8aV?=
+ =?us-ascii?Q?hiV9gTTgeG0999N5ReUhCyAUtTXvj/Z0gGN22iWtEiFh95erBNGVdqVXtduL?=
+ =?us-ascii?Q?2o3eD6ZCr0UUN+abw8qn4p+vWqmgucC4qRuQYNFtUqj/DliUAmJDHRJZfGxL?=
+ =?us-ascii?Q?xCYkROcuNZfixPZHTUgf68cyEAsiT8YnowZKLM7/4DOLI++0STouMJiZqVcU?=
+ =?us-ascii?Q?7OmoP3IRuA+Aqq0AcdOWCccgaP6taOdy+nBOhCp2zzzJcAYhZUSDTmYHOOBT?=
+ =?us-ascii?Q?muJsEN2kADZV97zO+u1pLzWlRV67cP7OJa08ySVuARp86tZGbufJIO/LZcor?=
+ =?us-ascii?Q?q8vCPAyIe74mgqfzOtSZLk4zihl2xzhU0ctVPT5QN/XbRk0ZXbAwd4ReRdUG?=
+ =?us-ascii?Q?nd4my8RlEykoqjlu41QHJUBv5rxe6s2ZozQFmqx+hwCLqlju2Ff5jdNFzBPC?=
+ =?us-ascii?Q?w21Y8690QM4WDmYV4Zr0AwWg9Sg/CpnZUTNcfxLP6OPVNJn666iNmQnNUP9/?=
+ =?us-ascii?Q?qznAwCJ6rj5RBZes6HXFJuzcgxwFLEZRlXq1NQeE/Ge7KksA?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4293f642-4d5b-44ed-fff0-08dee804965d
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 15:19:13.5941
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nseWy6lMG/dnTiHDcXkd0yNp0QWSzBMk2Uw3S8c/J4qh/3ZsGVcrbA43EupPOa5WSYS9s4lITL9kYDRLf4WFOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7861
 
-On Mon Jul 20, 2026 at 6:34 PM UTC, Vlastimil Babka (SUSE) wrote:
-> On 7/20/26 19:52, Matthew Wilcox wrote:
->> On Thu, Jul 16, 2026 at 04:57:37PM +0000, Brendan Jackman wrote:
->>> On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
->>> > On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
->>> >> There are no external users for this surface, reduce the scope.
->>> >> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order=
-,
->>> >> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
->>> >
->>> > Hm.  So what we're saying is that allocations which respect mempolicy=
- are
->>> > only for core mm and not for, eg, device drivers to do.  Is that real=
-ly
->>> > what we want to say?  I don't think so, because that's inconsistent
->>> > with having just widened __filemap_get_folio_mpol to allow guest_memf=
-d
->>> > to specify a mempolicy.
->
-> guest_memfd is practically mm internal though, IMHO.
->
->>> Yeah I agree, mempolicy definitely seems like a "public concept".=C2=A0=
- All
->>> I'm saying here is this specific function doesn't have any external
->>> users so it doesn't need to be an external header.=20
->>=20
->> I don't think that should be the metric for moving things to internal.h.
->> To me, internal.h is a signifier that these interfaces should only be
->> used by the MM.  Not that "all current users are within the MM".
->
-> Perhaps. It can be also useful to move them outside only when someone ask=
-s.
+On Wed, Jul 22, 2026 at 03:21:33AM +0000, Jack Ma wrote:
+> The kernel gained NHA_FDB_PORT, an optional per-nexthop UDP destination
+> port for fdb nexthops.  VXLAN uses it to reach several receivers that
+> share an underlay IP but listen on different ports, load-balancing a
+> flow across (IP, port) legs of one nexthop group.
+> 
+> Add the matching uapi value and wire it into `ip nexthop`:
+> 
+>   ip nexthop add id 1 via 192.0.2.1 fdb port 4790
+> 
+> The port is parsed on add (sent as NHA_FDB_PORT, __be16, network order)
+> and printed back on dump/get.
 
-Yeah I can see this both ways. It makes sense to only expose functions
-to the scope that currently needs them, but I think Matthew's right that
-moving it to internal.h does kinda signal "this is private, don't touch
-this" which isn't intended.
+FWIW, I don't post iproute2 changes before the kernel changes are
+accepted. I put a link in the kernel cover letter to the repo where I
+have the iproute2 patches.
 
->>> ... With the ulterior motive that I want to add a new parameter to it
->>> that actually _is_ mm-internal. Namely, alloc_flags, so I can add
->>> ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration o=
-f
->>> [0]. So basically this is
->>> about trying to extend the allocator without creating a GFP flag.
->>=20
->> Yeah.  I'm not sold on the whole alloc_flags thing, but I'm too busy to
->> sit down and think it through properly to get involved in a proper
->> argument about how it should work.
->
-> Well it's basically a workaround for limited gfp flags space. So we can
-> extend it without making that a cost for everybody, as long as those that
-> need the new functionality are limited.
->
->> My entirely unresearched and ill-considered opinion is that the __GFP
->> flags should _be_ the ALLOC flags.  We shoudn't be translating GFP flags
->> into ALLOC flags that are what the allocator actually uses, the
->
-> It uses both.
->
->> translation should be done at compile time.  So if GFP_KERNEL and
->
-> That would assume the gfp flags are also known at compile time, which is =
-not
-> always the case.
->
->> GFP_ATOMIC need to be composed of different flags with different
->
-> The flags we are adding/considering to add are not about GFP_KERNEL vs
-> GFP_ATOMIC context, however.
->
->> semantics, then we should do that, not invent a different set of flags
->> that special people can use for special purposes.
->
-> Yep it's ugly and pragmatic, as usual. At least it's not immortalized as =
-an
-> UAPI, so we can deal with exploring in a wrong direction and fixing it la=
-ter.
+> 
+> Signed-off-by: Jack Ma <jack4it@gmail.com>
+> ---
+> Kernel side (net-next), which adds NHA_FDB_PORT and is the reason for
+> this change:
+> 
+>   [PATCH net-next v3 0/3] net: nexthop: per-nexthop UDP dst port for fdb
+>   (VXLAN) nexthops
+>   https://lore.kernel.org/netdev/20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com/
+> ---
+>  include/uapi/linux/nexthop.h |  2 ++
 
-FWIW I suspect the "proper" design requirements are something like:
+You need to perform this change in a separate patch. Example:
 
-1. We want some flags that we can happily squeeze into places like
-   struct xa_node, and other flags that we can add bits to relatively
-   freely.
+https://lore.kernel.org/netdev/20260320140847.1730633-2-justin.iurman@6wind.com/
 
-2. We want some flags that are "public" and some that are "private",
-   although this is intentionally vaguely defined.
+>  ip/ipnexthop.c               | 16 +++++++++++++++-
+>  ip/nh_common.h               |  1 +
+>  3 files changed, 18 insertions(+), 1 deletion(-)
 
-The current ALLOC_/GFP_ flags split is something that kinda inelegantly
-attempts to solve both at once even though they are actually probably
-orthogonal requirements. Do we care about this inelegance? I think it's
-pretty harmless.
+Missing update to the man page
 
-Another thing that's pretty inelegant about it is that both sets of
-flags percolate into the allocator at once. This is quite
-confusing/tiresome when you are reading page_alloc.c (I tried to
-ameliorate that with [0]) but I don't think it has much of an
-architectural impact?
+> 
+> diff --git a/include/uapi/linux/nexthop.h b/include/uapi/linux/nexthop.h
+> index afbd064..e1e1a66 100644
+> --- a/include/uapi/linux/nexthop.h
+> +++ b/include/uapi/linux/nexthop.h
+> @@ -83,6 +83,8 @@ enum {
+>  	/* u32; read-only; whether any driver collects HW stats */
+>  	NHA_HW_STATS_USED,
+>  
+> +	NHA_FDB_PORT,	/* be16; UDP dst port for an fdb nexthop (VXLAN) */
+> +
+>  	__NHA_MAX,
+>  };
+>  
+> diff --git a/ip/ipnexthop.c b/ip/ipnexthop.c
+> index 14b525a..4c33361 100644
+> --- a/ip/ipnexthop.c
+> +++ b/ip/ipnexthop.c
+> @@ -52,7 +52,7 @@ static void usage(void)
+>  		"SELECTOR := [ id ID ] [ dev DEV ] [ vrf NAME ] [ master DEV ]\n"
+>  		"            [ groups ] [ fdb ]\n"
+>  		"BUCKET_SELECTOR := SELECTOR | [ nhid ID ]\n"
+> -		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ]\n"
+> +		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ] [ fdb [ port PORT ] ]\n"
 
-[0]: https://lore.kernel.org/all/20260703-alloc-trylock-v5-2-c87b714e19d3@g=
-oogle.com/
+Assuming we go with "dst_port", you can drop "fdb". Only the kernel will
+validate that "dst_port" is provided together with "fdb".
 
-In the back of my mind I suspect the "neat and tidy" solution would be
-something like: a single flags namespace that is split into two separate
-enums, one "public" and one "private", and then a separate mechanism to
-"compress" these flags into a small number of bits. But yeah I'm just
-not sure working on that nice elegant cleanup would really unlock
-anything of practical value. Boring little cleanups like "split out this
-API from internal.h into its own header" seem like more useful ways to
-spend refactoring energy in this space.
+>  		"        [ encap ENCAPTYPE ENCAPHDR ] |\n"
+>  		"        group GROUP [ fdb ] [ type TYPE [ TYPE_ARGS ] ] }\n"
+>  		"GROUP := [ <id[,weight]>/<id[,weight]>/... ]\n"
+> @@ -531,6 +531,8 @@ static int ipnh_parse_nhmsg(FILE *fp, const struct nhmsg *nhm, int len,
+>  
+>  	nhe->nh_blackhole = !!tb[NHA_BLACKHOLE];
+>  	nhe->nh_fdb = !!tb[NHA_FDB];
+> +	if (tb[NHA_FDB_PORT])
+> +		nhe->nh_fdb_port = rta_getattr_be16(tb[NHA_FDB_PORT]);
+>  
+>  	nhe->nh_family = nhm->nh_family;
+>  	nhe->nh_protocol = nhm->nh_protocol;
+> @@ -595,6 +597,10 @@ static void __print_nexthop_entry(FILE *fp, const char *jsobj,
+>  	if (nhe->nh_fdb)
+>  		print_null(PRINT_ANY, "fdb", "fdb", NULL);
+>  
+> +	if (nhe->nh_fdb_port)
+> +		print_uint(PRINT_ANY, "port", " port %u",
 
-Quite likely I'm missing potential unlocks though. E.g. maybe there's
-some place we currently put a gfp_t that could benefit from a "separate
-compression mechanism" that could usefully shrink it to 8 bits or
-whatever.
+The convention here is "port %u ", not " port %u". I think you added it
+like that because there's a missing space in "fdb" above. Fix it while
+you are at it.
 
->>> So I'm envisaging if an external user arises for it later, we'd slap tw=
-o
->>> underscores on the beginning of the internal one, (with the alloc_flags
->>> arg), and then bring back the public one as a wrapper.
->>>=20
->>> Does that make sense?
->>=20
->> We have a long history of people just moving stuff around in patches
->> without knowing what the intent was if it should be moved.
->
-> I guess this patch is not critical to the rest, if that's an issue.
-
-Well, for ALLOC_UNMAPPED we really do need an alloc_flags arg for this
-function, but we can always just go straight to what I described above.
-I.e. I can create the __ variant + wrapper from the start. It's just a
-question of whether we prefer:
-
-- "Yuck, there's a public wrapper here that we don't actually need", or
-
-- "We hid this mempolicy API and people might think we'd NACK a patch to
-  un-hide it".0
-
-  https://lore.kernel.org/all/20260703-alloc-trylock-v5-2-c87b714e19d3@goog=
-le.com/
+> +			   nhe->nh_fdb_port);
+> +
+>  	if ((show_details > 0 || show_stats) && nhe->nh_hw_stats_supported) {
+>  		open_json_object("hw_stats");
+>  		print_on_off(PRINT_ANY, "enabled", "hw_stats %s ",
