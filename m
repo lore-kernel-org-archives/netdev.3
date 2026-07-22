@@ -1,63 +1,67 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C712C35676A
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 14:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3000035AC14
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 14:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784729868; cv=none; b=JuNLa89pY//HxxTaOVPNsxMuA6ADhI6SsedPvwiGQyAEFKaP4Zkn2pl1WD63GIVPWFXi6qW75jUylsKm6qIgCY5gFpZo6fwC5FGuJjgR/Oigvp1NbwwTAMN1FoDueaBw0YZyrje5oyzVqZ5TCo3qZXWIGbcbdnJvG+cBpAxZdvo=
+	t=1784729869; cv=none; b=d2sNyk6jarKzvZNMKwoBZ6Y5eQNCCEEBVNQuFcpMaTlEUm0oZd3x1YlHj+Oa4BwwmMMsLHYdHu8AS/BvrktZNfWPJrRctQZQ1tz+RFU35Llq78I2wXPNA7j3d3ugF/1ayqu3FGOlk4GEEVuy0yfJpRMxBmC/euW1cigDmT3pRec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784729868; c=relaxed/simple;
-	bh=aH8UcjszgIBrGeBMhwyqf+X3ZD47i9IrgoA+orYyiLM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XlqFnyJUsLOOX/9otNz7jiHS8Hof0SnBIzjMY49FZnFN3WNUOvKNH4gLWRLtVbA5c+ljARn7am2wLftfJdzsaQWJKRPZ3Ay+rVphejL/Gq0kzJan0QmE5En4/ofm3Xpe4kz9SuY9QRQv0eEk0vPYuchHhbNSmie1UpNbXVB8qe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MyVWbxtb; arc=none smtp.client-ip=209.85.222.200
+	s=arc-20240116; t=1784729869; c=relaxed/simple;
+	bh=OJ8K3uO2J5MpBBDiNAFjJ2NgKTrzqWJXwfrSHE36eEw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jBbCEzhRxHPByT+3JWDd2j5G5pVVjfZcv18U2QxSST7RScALYSBM5br+lHdi4U1r4GTNUXg271HwOLxHhTBYEclMfR9vqLYOt5z27EilDBHKdRaJ3nctDQoaVmr50ymmbAyY5u4O223xbkT3sXMpMPZK5nmctzoRRnkDrz1YRrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DQsFn9ul; arc=none smtp.client-ip=209.85.160.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MyVWbxtb"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92e62e3459fso2191167085a.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:17:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DQsFn9ul"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51c1c7f135bso189878051cf.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784729865; x=1785334665; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i1YDknR4M2L6eaOXoyl8YhUpJHW9LlyoLKbniSckgdw=;
-        b=MyVWbxtbOvCArbS3x9R2iJKnOrP+oVzcl8k+fRca5iUcLP5KGzElR4U8eMS76zDQgH
-         PZiBfZvEWu+Po26KchqIFAm05unSqx4zBQgLyAnG1BIm/Nyh6UbcJJyA/X2n+djnljT6
-         uTrRjm1/VlAoxHfHyQDiVpunv6kw/et/ihtt1g6HeyV5L/79RtpJiO4fQxhChOBQMCJP
-         aRtOdZAzyB4ohClG6XM+PdFwP1AheopOYouCxf8IOo1Kj69gEoUvSY9nJMJ5ryDAHao7
-         qm36NgfFBh3x5YCde3u1HGgH28+83mUvxjALcQRbbvfTtOqakKvh6tp3Ru5Eu6TPqIXD
-         cYcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784729865; x=1785334665;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784729867; x=1785334667; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i1YDknR4M2L6eaOXoyl8YhUpJHW9LlyoLKbniSckgdw=;
-        b=joUCv6U+t9EsxlOBIwxMSJ3A6/GXDydPNDBtttnMpRs3sW+iERp/V7rG9MOQqG87L4
-         UZGN1Zm2K07fpItamS4qeS6ka1X7Ju1kAkmEHThCl5Pptsms7iKhs24O4+ZFUkGfWOkK
-         d5KxSBwz/0QmK/JUqLJOZYOQoWJjdiB1ZyM1bN+YWMdgXLYKMjiyqfEatATux5CmllG5
-         2tFDprMpbv5XU4DlkP1aAB9em2HtEnRKKXn9JKDYSZ/kWlfzRldRYT0BrwrM4l2esowH
-         onJQsNebgaYnLxuLOPSsoVBFE5y8utezg4c6s/ulZDhc0vUtRBdanzp32ml+TIybjW84
-         Og3A==
-X-Forwarded-Encrypted: i=1; AHgh+RohYUVnGWXRY/gDdbXYZ7AhrvAfuI6mMg8n3B2coAt1bRxPD7QoUAJC18Wd4yYYvJkTEnAG4wU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHL8sfCCzMN/7vDH8fSHFjswOjOEI+lTd0smtkb4eV0JnKX8Gu
-	9qzx+A6wdiOw/TdA5tvi0sAWH9eac0kweBpimFAR79pCd1B6mARXNSwrf3DGj2gS56xRHxTJ5tT
-	eU1rg68YRNfRUmA==
-X-Received: from qkaw4-n2.prod.google.com ([2002:a05:620a:a2c4:20b0:92e:6af1:b53e])
+        bh=CC+UCmOoVHVObH3rec+a2txjD1M7EoVw5X2+Q0ebe+M=;
+        b=DQsFn9ul6JrLJ5XKdexaxmk+mZJLLgbH4zwSl8Rhe5BlUFmD4x56o5XbH3K9vf1OMt
+         JAPP4O1Y30++YM9AwPupKCVTBk01OvDeWHNtgdhbqGsZKZoUQykYubDcCsJfnhk6Xot+
+         7OU2+/ydH2B24x3xD10yvAUnX3fROjdnqr/G8rOUPMwGr9DHhKbUBsRglnYZf/2InjUZ
+         P5PGtklfrMvvGmHvZvqqn43y5hvRlQt84cGRzNvfAMqo85t0RSa6B3FuiCX95d1IJlSZ
+         TsSXhxH68WvbCSfGutBkvvr+GJaatmN6RaHY0RUUhpoPCK/sCKnUNJFX7eHPFOKGcKfZ
+         7cOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784729867; x=1785334667;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CC+UCmOoVHVObH3rec+a2txjD1M7EoVw5X2+Q0ebe+M=;
+        b=RD/5hf500KUSlQKrO+MtKsz0kZCXt17Ps4bUuADf4WzHXZxSRuzkd/5fiR0oqXnyHJ
+         tiuabuSQc5DZvQWoHiH0qz5TjbnNgorIfDj1HCUHE+mg2JeECWU+3aHN7GchvpKSWKKU
+         +N8FGmWn2ypC4dskgH3o3+4/sA2kE3ddZ/o+yvZhn6Rv5jMuP3b1etUPNFIYvBZ0/VIO
+         pOnuJgCHFnZULbkWHmjRrNz9w+cd8MfSyq1jQzuTM0pVfPbHNnrCIsovRwMJiTq+krQa
+         gG3KJ0PtlqgAPh4qaiGceWoPTsKK7/Lf2p5G6Sk+S9LSrs5/Zp2BrI04yGgjdW1aGmex
+         4Zkw==
+X-Forwarded-Encrypted: i=1; AHgh+RpdgE+bE1mp/oFvGaTQYLIuFrq4PKPgiSJVSmGDX5oCqoCiNeR8Di9z/mFpE0qqSQCUmOucV0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYvi/CqucUgsIFbydpLW5bWnyFjhpcCFNAoblkL9dvoiiE71u0
+	sJ18Hu4CjPNpae4vklMXLQERkqmu+92ccFC/xqFtSV4q7FWEjuAQBWLXuUu+CFg2mJ0N8B8Dhhx
+	TZQUl3w/ZtmOKcQ==
+X-Received: from qtbe13-n1.prod.google.com ([2002:a05:622a:e14d:10b0:526:627e:6435])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:318a:b0:92e:6a33:7118 with SMTP id af79cd13be357-930b3ee734dmr2185676285a.30.1784729864909;
- Wed, 22 Jul 2026 07:17:44 -0700 (PDT)
-Date: Wed, 22 Jul 2026 14:17:41 +0000
+ 2002:a05:622a:94:b0:517:c6b1:bffa with SMTP id d75a77b69052e-5213f66b3a8mr223593161cf.48.1784729866528;
+ Wed, 22 Jul 2026 07:17:46 -0700 (PDT)
+Date: Wed, 22 Jul 2026 14:17:42 +0000
+In-Reply-To: <20260722141743.3266924-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260722141743.3266924-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260722141743.3266924-1-edumazet@google.com>
-Subject: [PATCH v2 net 0/2] drop_monitor: take care of 32bit kernels
+Message-ID: <20260722141743.3266924-2-edumazet@google.com>
+Subject: [PATCH v2 net 1/2] drop_monitor: fix size calculations for 64-bit attributes
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -65,23 +69,59 @@ Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vg
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This series fixes two drop_monitor issues on 32-bit architectures:
+net_dm_packet_report_fill() and net_dm_hw_packet_report_fill() use
+nla_put_u64_64bit() to append 64-bit attributes (NET_DM_ATTR_PC and
+NET_DM_ATTR_TIMESTAMP).
 
-- Patch 1 uses nla_total_size_64bit() for PC and TIMESTAMP attributes to
-  account for alignment padding added by nla_put_u64_64bit(), avoiding
-  potential skb_over_panic() crashes.
+On 32-bit architectures without CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS,
+nla_put_u64_64bit() may append a 4-byte NET_DM_ATTR_PAD attribute for
+64-bit alignment.
 
-- Patch 2 moves u64_stats updates before spin_unlock_irqrestore(), ensuring
-  local interrupts are disabled to prevent seqcount corruption from nested
-  interrupts in probe context.
+However, net_dm_packet_report_size() and net_dm_hw_packet_report_size()
+used nla_total_size(sizeof(u64)) instead of nla_total_size_64bit(sizeof(u64)),
+budgeting 12 bytes instead of up to 16 bytes.
 
-Eric Dumazet (2):
-  drop_monitor: fix size calculations for 64-bit attributes
-  drop_monitor: perform u64_stats updates under IRQ-disabled section
+This under-estimation of SKB size can lead to an skb_over_panic() when
+__nla_reserve() or skb_put() is subsequently called.
 
- net/core/drop_monitor.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Fix this by using nla_total_size_64bit(sizeof(u64)) in both size calculations.
 
+Fixes: ca30707dee2b ("drop_monitor: Add packet alert mode")
+Fixes: 5e58109b1ea4 ("drop_monitor: Add support for packet alert mode for hardware drops")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/core/drop_monitor.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index 2bf3cab5e557a15dd3fa7197098d6b0abcc01fab..5d63cf2c230b4368e8a84e52413d37da26fb279a 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -566,13 +566,13 @@ static size_t net_dm_packet_report_size(size_t payload_len)
+ 	       /* NET_DM_ATTR_ORIGIN */
+ 	       nla_total_size(sizeof(u16)) +
+ 	       /* NET_DM_ATTR_PC */
+-	       nla_total_size(sizeof(u64)) +
++	       nla_total_size_64bit(sizeof(u64)) +
+ 	       /* NET_DM_ATTR_SYMBOL */
+ 	       nla_total_size(NET_DM_MAX_SYMBOL_LEN + 1) +
+ 	       /* NET_DM_ATTR_IN_PORT */
+ 	       net_dm_in_port_size() +
+ 	       /* NET_DM_ATTR_TIMESTAMP */
+-	       nla_total_size(sizeof(u64)) +
++	       nla_total_size_64bit(sizeof(u64)) +
+ 	       /* NET_DM_ATTR_ORIG_LEN */
+ 	       nla_total_size(sizeof(u32)) +
+ 	       /* NET_DM_ATTR_PROTO */
+@@ -768,7 +768,7 @@ net_dm_hw_packet_report_size(size_t payload_len,
+ 	       /* NET_DM_ATTR_FLOW_ACTION_COOKIE */
+ 	       net_dm_flow_action_cookie_size(hw_metadata) +
+ 	       /* NET_DM_ATTR_TIMESTAMP */
+-	       nla_total_size(sizeof(u64)) +
++	       nla_total_size_64bit(sizeof(u64)) +
+ 	       /* NET_DM_ATTR_ORIG_LEN */
+ 	       nla_total_size(sizeof(u32)) +
+ 	       /* NET_DM_ATTR_PROTO */
 -- 
 2.55.0.229.g6434b31f56-goog
 
