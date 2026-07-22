@@ -1,131 +1,118 @@
-Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A0833A033
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 17:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.241.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD293019DC;
+	Wed, 22 Jul 2026 17:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784742609; cv=none; b=rWxz0zww574n8jSsT2O5sNlpOQJvXKnktLeyDg6enlYDj7XwkO/xIs7rnQ7XsVf6s0Ct0imtGRdAc5Jjw0luSW2KRkZYeArYeBvZJ5G15tbxum32dXKk+0NXQVrGS9SgxyMr4kgDWrQb06kPVZWxrWDtjKyFzgbQbcrTuziZIDo=
+	t=1784742610; cv=none; b=uE8h3oaPapVWRaRiQUkRR6V8EYHev9E+7r0P3dTEIJlVf29g+UltnqYGAO3gy/ELC2iO2HJBKr3oGJ+ROt5+gXWMs3oVfC/wsbs10c5YSVDyxAi2pvr+JTR/VPVlmUb60mody5SAnlzVqHmgKJFCPD1zHnCBIVoUcHyWPu9bpFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784742609; c=relaxed/simple;
-	bh=nRQ/aD3XYpzRz8LEbqqQRQO2RwdvFU+/hkHzzROftdA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=He+WiFLbmVJJL3X4ZDZPMfhE2RWMXxvTTfyPq87yhAXR0gAKCzmJUJxeXWy7P1Rq5hIZtPrl8evxneTXUheME2/50bhrhrwcAzhgkv8OVESgpdWvqJJS9UbYb8tMZ4S5YZjG8/mAp1jAhMEhOayh4BHB70NJcP6YvlTy/K1nMrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=cB2r6/Q7; arc=none smtp.client-ip=84.16.241.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
+	s=arc-20240116; t=1784742610; c=relaxed/simple;
+	bh=vYSkYRGt8h2yoWMXvjdTusgv90Y5E3oNYSfcefK1ToU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rxfH+fis6Pgi9TnK9BmRiCN/vsqEfyiKPYau6SW4NLBI0BpNyYoxq1JsRLwiJgpWLYwYKiflWm8oS5RoqhO0nsFY1uBbUAet8+sCZC3HCQqvT3RqxKNlTWfyYiyvIOfuuG5jBfzgxQR9QCG4/fvsTUzqOr2HwdvBNPRIHTFCoz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=sTYj0mr0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c9BP10YW; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="cB2r6/Q7"
-Received: from [IPv6:2a02:1812:162d:3d00:c381:7255:a866:916d] (2a02-1812-162d-3d00-c381-7255-a866-916d.ip6.access.telenet.be [IPv6:2a02:1812:162d:3d00:c381:7255:a866:916d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sander@svanheule.net)
-	by polaris.svanheule.net (Postfix) with ESMTPSA id BDC657CE97A;
-	Wed, 22 Jul 2026 19:49:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
-	s=mail1707; t=1784742598;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b77cc/ns2yf7BVwHqBgWMOjJlS+SvngLLADUbWvll5k=;
-	b=cB2r6/Q7KYc6dw0r+pc/7mNHpm/Hz7OBIah3DrKNmh4Ys4B0uz+tV7w/y5TWNGGa0LyVVT
-	Vk0DXPNCqSUI9rwo6Z/MAd6S0UMRKcVmh3dfHd+k0bI+mXQtWypmGWAZpU+At8ifKcPgam
-	ky4vrb0Q7TehcZydjzIi16H6j/yDtHTKPNagVLh4rFhy2RXjx0adqH7PmDTE3dlayQaLB0
-	BauDdZXU54g5YkEkjD9hSv2AYjOtGiwuQZnG1bRn3D2mWCe05B5L58o0PzVVdjeXDzj1ZX
-	7V/GlxoX7ZQz74LZ90KcnOzFheyx40F77EPwjkwQ21DiesmUOPD0noSLf3JStg==
-Message-ID: <b3456b41152613ed45bcfde92aff89d0c33fa243.camel@svanheule.net>
-Subject: Re: [PATCH net-next v8 1/4] dt-bindings: net: pse-pd: add bindings
- for Realtek PSE MCU
-From: Sander Vanheule <sander@svanheule.net>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>, Oleksij Rempel	
- <o.rempel@pengutronix.de>, Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet	 <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>, 
- =?ISO-8859-1?Q?Bj=F8rn?= Mork
-	 <bjorn@mork.no>, Conor Dooley <conor.dooley@microchip.com>
-Date: Wed, 22 Jul 2026 19:49:56 +0200
-In-Reply-To: <20260715075530.2491534-2-jelonek.jonas@gmail.com>
-References: <20260715075530.2491534-1-jelonek.jonas@gmail.com>
-	 <20260715075530.2491534-2-jelonek.jonas@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="sTYj0mr0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c9BP10YW"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id C0600EC01A7;
+	Wed, 22 Jul 2026 13:50:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 22 Jul 2026 13:50:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1784742606; x=1784829006; bh=Vj
+	eBbgf7TivvZDY2fpAlYlAUdw568fh+LoeNLjGrRpc=; b=sTYj0mr0UPDFN7nydR
+	I9bl7QzdspDuWCJqIQDQ8X9nl4H2f+XRezgcaq7JJJiJgzvEFZOuXWMb+s0V2YoE
+	1tzZnuuWI3T0kXp1ISu+VFrSs8Py5V/wnKSjeQ83JzgzC1+kLy0ypTp3Pgf0jAZm
+	Tatzz0dfuNOvR9YPeBfNQYlvSXiYAScL2/bl2WLcAXRKB8KCqgqhHy0hZS8tSEp0
+	xFtBhc6lETq+kOv6cuicjkJ2slyHz8YK/3KaWNDL8oma7szq0zmYoMCpeUr0YHJG
+	hhqmldPANpiaEiquSglWq1jgAHTU7t+dB2mRIr618Fh24vIUKk7vdbp1luAQHI4c
+	sqfw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1784742606; x=1784829006; bh=VjeBbgf7TivvZDY2fpAlYlAUdw56
+	8fh+LoeNLjGrRpc=; b=c9BP10YW0w5cpjp3Ja4g3DAzV12qWuMMnQUijEFfFPIT
+	hg6VbOAIKfmLwSUpAh2WLzh/FWpUaMy8upvxIt4OFkR/lLuvWQXrkEDVavc/OQsJ
+	P9p9a9BNChOfl2FxhBonPbaU0gpO70vX5P1U1BJ8Dmm/jo9JOvOlO2KBrbQnS7uU
+	r/isbKv6xfkqCUSHbMf2sAhXvmA9teR/S2MTSNl0MCmD8sQ6kEeZ0PBxUE0zavyo
+	hIg+3ytrW3JU94IFAOVx00pGO9FRaCtKA2TWTNDCdxprWL7MG6yiriIDXrWPFgvE
+	B+ZDjWB6T054/dte9Qrm4MxN8W48ImPov6cFif8+gg==
+X-ME-Sender: <xms:zgJhaqRJwsxuFbs_8ASz_83FQldblafrBUw7rtd2QQp8cv7FFdPp5g>
+    <xme:zgJhauA4izrCdFgm8qgWvKl8jWPN7C8cYvXFhhenxDCr1bg17Pf7OpPTkJBC9tI0X
+    HfFNmYBVqy_dQcQ6PdZuEJosHTME1R4Vente9atRrRaKCWX6wlumP0>
+X-ME-Received: <xmr:zgJhahK7LqhyUKdgfXs_rV57xRxyXmDxV4WI-fZ_QqTZDL5JhhGUPcI3BPRnNximoX8KN4HyjSeiwQFfaguRNpfDSUA6pzM>
+X-ME-Proxy-Cause: dmFkZTF6wa05MuJGMx25qrIop1Vsd0JU3WMHun7XneUnnGpQah/hX6WX9AUODZG8NSinPG
+    SZwL14EnUK1FbAmVcX2wA6U8JKmFqtTpSJS4zpMw3LwxQT5mPK+GjzaTSy8UMsumOCAxX/
+    O057XSe0mAve/xfcRjg9Ow5EkcGl9010T8slvApxOVou39b2MepbiZrZXFis63cW5Vc3Ad
+    8piK9hhFBPomLXUPKsL3KjwhQF2M3C1aE+ngA1GqSc9Gyezlk//VTHbZJl0de76mwI/cx6
+    2UVudRWddsozAEqSe6W8UisC3R3bvUAK140femIyLBi7bto2hD3K+Cd9UVAJU+TVkulCZT
+    jue/PNGG3iqAC8x4qKIlv+BsD67G1UUvqz8fRpG+tuqclwj59TzcShXvYPZQxZvvB35Soq
+    nYWbVPTvqsSYqvwuFvbNCgug5AgyMARLcO2GJjjqimn7oNpY/hPuEtqJNE9uy7fDO91tOU
+    sK8g2fdL0jlxOYSq3PJsavyXJaIcq97wgZ/l3XSQE+djrLsNRWnFTPsX2z9tMBQJZn7p5k
+    JjsmKCQH8c+p9diEPSVbE1KlaK8RFWKZ/IubuISqRD/jzAuJ/oDI5vaSfjHJ3S7tbE9UOH
+    T1PHta7g83aN2VrJ06zbxFMqyGqOauepoXhNDxAlRRVM/5EdTNKvhokTrL+A
+X-ME-Proxy: <xmx:zgJhapCldJ9B0LO5q7CiDTVSQaMQNc-nw-n3R11LbGEkFrZkMZjdMg>
+    <xmx:zgJhamv59AHoERKLt0L8wuJUhR6b6evLFqPhzko2kK8rwEkHL4AFHw>
+    <xmx:zgJhanS_OWPRYaaV-wifjVhX4Ryr8JG5o81gFl_XPRZi0jXFlHXI_A>
+    <xmx:zgJhatL12QAlDlN48yckdcaAiCKqvzqJfluowFfgECiQQJwhxTpejQ>
+    <xmx:zgJhasozlUF-P1DC-8sdVxdPKqYJ6mMKJt-R2puJnRQJQnwM5nSlzMJG>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Jul 2026 13:50:05 -0400 (EDT)
+From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Subject: [PATCH net-next] net: dsa: microchip: Fix log typo in error path
+Date: Wed, 22 Jul 2026 19:48:53 +0200
+Message-ID: <20260722174853.2316333-1-niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+All other log messages in the driver prefix hex values with 0x, add it
+in the one missing message. While at it also add the missing opening
+parenthesis in the same log message.
 
-On Wed, 2026-07-15 at 07:55 +0000, Jonas Jelonek wrote:
-> Add a binding for the microcontroller (MCU) that fronts the PSE silicon
-> on a range of managed Realtek-based switches. The host talks only to the
-> MCU, over I2C/SMBus or UART, using a fixed message-based protocol; the
-> PSE chips behind it never appear on the bus.
->=20
-> The device is the MCU together with its Realtek firmware: the firmware
-> and its host protocol are what the binding describes, not the
-> general-purpose microcontroller they run on. The PSE silicon behind the
-> MCU (Realtek or Broadcom) is reported by the MCU and detected at runtime,
-> so it is not described here - hence the 'realtek' vendor prefix.
->=20
-> Two protocol generations exist, both Realtek's, selected by the
-> compatible: gen1 on older boards (fronting Broadcom PSE silicon) and gen2=
-,
-> the altered protocol used with Realtek's own PSE silicon. On an I2C
-> attachment the framing the MCU firmware expects is part of the compatible
-> as well - '-smbus' or raw '-i2c'; a UART attachment carries no framing
-> suffix, as the transport is given by the parent serial node.
->=20
-> Each board additionally carries a device-specific compatible that falls
-> back to one of the protocol compatibles above. Drivers bind on the
-> protocol compatible; the device-specific string identifies the board and
-> reserves a place for a future per-board quirk without having to retrofit
-> device trees already in the field.
->=20
-> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
-[...]
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +=C2=A0 power-supply:
-> +=C2=A0=C2=A0=C2=A0 description: Regulator supplying the PoE power rail.
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 67ab6ddb9e53..ff4dd51f6cb0 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2994,7 +2994,7 @@ static int ksz_switch_detect(struct ksz_device *dev)
+ 			break;
+ 		default:
+ 			dev_err(dev->dev,
+-				"unsupported switch detected %x)\n", id32);
++				"unsupported switch detected (0x%x)\n", id32);
+ 			return -ENODEV;
+ 		}
+ 	}
+-- 
+2.55.0
 
-As I reported to Jonas earlier [1], I used this property to define a power
-supply for the 54V rail. While everything was working nicely, I still got t=
-his
-warning for the missing vpwr-supply property on the PSE-PI nodes:
-
-regulator regulator.2: supply vpwr not found, using dummy regulator
-Of course I don't like seeing warnings when everything is seemingly working
-fine, but I was also wondering if this duplicated way of providing the PoE =
-power
-rail is a good way to go forward and if the generic pse-pi@n/vpwr-supply
-shouldn't just be used instead. The latter is admittedly more verbose, with=
- a
-property on every node, but going forward offers a few advantages IMHO:
- * Being able to reserve "power-supply" on the main node for the MCU's actu=
-al
-   3.3V regulator (not needed anywhere at the moment AFAIK)
- * Being able to take advantage of the generic pse-pi framework evolving to=
- take
-   into account more properties of the parent regulator, such as requesting=
- more
-   power, or ensuring the parent supply is not overdrawn by the combined PS=
-E-PI
-   outputs.
-
-[1] https://github.com/openwrt/openwrt/pull/23222#issuecomment-5032841546
-
-Best,
-Sander
