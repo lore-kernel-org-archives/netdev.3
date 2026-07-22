@@ -1,63 +1,63 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C1A43C054
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FA737206B
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784753107; cv=none; b=meXSdKK49PTOEgLd2PoiDniCm+riRqulBKhrfpJZE3nB9X6LNunWUNXL0+7Mxcd9ylBaYyJzpPGtgMRWhlBSWZu6SxqOS8BCkDK78vKA0V13sPMC6sRAWMnVUAhvhp63aq3SG507Kp8rrRLgYVbFa6jXuSuzLvpHl7Fs1LVqe8U=
+	t=1784753108; cv=none; b=S3V8GdYwOoyd/hCnnx4PnRi2LRVSvFG1Q5GRZFP17B7cZIKkuzPnwI74ML9Yw+GonJXf/APui9pHLmMiy4nZHGv9JwSbn40VGms+H8hOjrdhPdaZIG9/ozTHN2+6xoDaeEFL8gGEQpaQvdru1LgFxS9wA11epjFpgLEM64lGBzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784753107; c=relaxed/simple;
-	bh=0ckXo2GuDUqUsvz+wGWoTuYkxw6HW4MHwQs2lbrrwyc=;
+	s=arc-20240116; t=1784753108; c=relaxed/simple;
+	bh=fa2j+MJ+bu4AjgNuEiLJ6fFIQwaR906hlBCiYLeLbZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyIBZXV2eHAehXlTqCGdkpinNfTg/oGkA5nF4l4G/DT3XFNHWnSf++QsxwnxesDRLZ38lOlhB0eYE34QEhkWnbbTgCuvcOYEWBwWsg39k1o58kW0/PfCsRzRqzdHHTDqJOK5aV4/B6HCWtXAQVhSPSnIGZVO9ZbcJSaCFUSD09s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pxnbcPbf; arc=none smtp.client-ip=209.85.128.176
+	 MIME-Version; b=Kr1Rq1Q8Hlmk9+DIZXeXnuVhJ8hpB1pT/S1M+29hd4p1IzbSfFkdLRx9HNnN7tu+a91jk4Ulwg4dU0bSyXrCTVpG08U+egHn8z8+i0RW8dZZXMjL5avYb5w7rr6GETXJdrFJ+PtKYWHs7Cm3J8/z+l0BY+joHtPrMWP6CS9sycE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r1cM0hks; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pxnbcPbf"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81eaf3709b4so109538497b3.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:45:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r1cM0hks"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-81e6f2ee60bso49211217b3.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:45:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784753105; x=1785357905; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784753106; x=1785357906; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KGkDEu6T7GmWPqo1WDqQr5U8lZAudgCZAQVUJZdhVNo=;
-        b=pxnbcPbfhCKVGwqcQ3Sp9W8C2WD+EGbE2iMR7JCspTah/mwaO4L+bZojoqL/6c0bgU
-         fGQ/qzmRaVuuUGlRfr1Ef6f/kzkwZphZ/YwwSrlzSZqGCSFzABI/ucFuSMhHp+oic/0/
-         EJKnuPcON58BWPKmV1phV+ZdMK7K9YeDV4vT/IrnXMmgx5UUXVbWLTr5+vWaNWQBrZj0
-         K+t0Cw9H2TZP1o0gkYMq0VIGKgh0fbNz8RdUfXPaICPNh75xPPRoNpBn8p350WK9s0Gp
-         P4UjL9nmt4yasBbn2IOQO2AaiA0xEs/x//fEcK93WuIwWQFvtTz4qi49fWueNsyOtWZx
-         4Llg==
+        bh=qJXpjUmJG9CghmfT96uCE3JAmfSW2+wlpQUq8BR3Ndw=;
+        b=r1cM0hks9HHdmI4KGGEaj22YzOW4I4j6nKggiR+JumFqyujGxXYAuwqc8EAMoPBM6j
+         V52486d7KU1H9cr1Q7+4ArzwAkDB2i8gHDDOj6UIwvYEyCnaQ7zT1XBIWZmVnHfU4DuZ
+         8/B7kKR2EOap35Mw5KhGM6qBeSZVYCg3talEzHuJp8tXBfXm4eVUBTdLCX/mkp8zQMFL
+         XOshyFSj+mPNqshaAmpI5llq1bnhyqjOjJc1uaVGLPCdxuMIV9rENgejo4IbQfKpIVJc
+         tXVdOR65uiHz9a4QFiK3lJU971dr8bSHqmSPLLHE6HCMjlT+wapLdQFnp19Arw41kDC7
+         AStA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784753105; x=1785357905;
+        d=1e100.net; s=20251104; t=1784753106; x=1785357906;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KGkDEu6T7GmWPqo1WDqQr5U8lZAudgCZAQVUJZdhVNo=;
-        b=nNFp7HpOSbFSlfOjTDEi8d2mFqpW7wtNnTLk8y81d5TSZ/iknrj8VDahduz9PMeuTF
-         3mOUTqF/ULIjwflydFx7+b/3RfDqmsfuLY6TRiy9ZGh5Z3U3vg9opfO+effjaGq9RoMD
-         yFKS/VtaD/bCmefEJoF5eOlGpkhouFVizH0mrHcdMUudHAEYAecMQ6tYVDRSJFs87NIN
-         Bv5J0QmAikKGobdgPhjcHAEbpJCrFHTxvd/qvPtPM8qh/YBhW0EWfPwnfYEgTt6eunQr
-         TNU7dw+SqjMxlacFPx/3J2NnMzol+FYvGtTmqOJYFPTnBfaftQkj7QzBRyt1q/+vhvGO
-         AFfg==
-X-Gm-Message-State: AOJu0Yyn+7cCvwnUacNoKnrFDk8AMo7coF49tJ7z9sTZBE9hK91uzXhx
-	ZOa3hYxG4vAuA24H05f8XrqaCfgfuZijCz+9+DqZ+r1L1sa3LYvfksc09MmJeT9q
-X-Gm-Gg: AR+sD13b+N9FERRNz6fJ7Efsbs9GHlLi4iBym4oAX9nHFfiPdz96vVFDIY38sffdXZZ
-	hTYcnK4bsNZgSnyL+wA6RtWaszK2ehCzKeSvqi12xpm5o/vlYssCe9mK/XwBdtXsuyDgdukkdXH
-	noyYr3enlToHXFCLQSHGSxOxuvdX+Kw/ukRyhiH+NaODrTd38LypprC3kAFvLMG0qGR5ZvIgoW0
-	K+QeNbdRQRuqotQr7y7IZDJbSO+rNdDxQ8LOGvzJvduzzEgkcqOQrTPUpA1HvUY6cIz2pXI9OXy
-	Gy+p+4oAkPcDKn9rzzPViDWHum56M2q11IozJWes0n4rnqn6pMJ+5Qx3T7BY8hvudLcoNNJL669
-	u+p8cb2+4JWA+4+BDQKu3baEnzYyFcJisGKf7SK6EHq4rRhnebcLnVkCJnfGMB+Pgipkryw7QbB
-	NAavypUjDu2aA+Q8EVhUtIYSAic59fQAfaJEuJe6NO4+h7ymfDTZdu8qtKlze7pW1oC/I4ZjMg2
-	NW95sP++bmkUZr9
-X-Received: by 2002:a05:690c:480c:b0:81e:79f0:48b8 with SMTP id 00721157ae682-81f4c140332mr676957b3.7.1784753104498;
-        Wed, 22 Jul 2026 13:45:04 -0700 (PDT)
+        bh=qJXpjUmJG9CghmfT96uCE3JAmfSW2+wlpQUq8BR3Ndw=;
+        b=rxHS5yIxpKkVnnNHuYlDjwD3VEVKzw2/U0xQUPON9xZppwS7Mmy+j8rp2erRIgsxnX
+         NEJh95Xx7bQVfkmmNs/BjlOQ3DEK/+G+3ND3iM/IbNa6b2UcZ0dGLlgqpCZshhNRNyFm
+         jilH7H8YfvWdvCPefDNPsRBxc2ch7j0hE4TwcuWcnTYnhiR8hC1K1alqhJYqa1VBmjnJ
+         8i0961um9tJBse7FvanVL4yq3Jogdm+TN8xeQ63+LTR7YetascIPvik6NvkTI2DJej+I
+         gwJ2n9555eHHuvsW8P6UPeUmAObOeXQhkXxR8MS1lu62vQsOYDp8oq9m0c1Y1qAc2lWs
+         sdbw==
+X-Gm-Message-State: AOJu0Ywa7TfJmI8rBwHiU6Pc8H4tA6nf0X3UtEfKTkzhsjXRObQnFl0a
+	z8s0L43kEXx0nCcjsZOxqYznqMiHRtOgAxQtlUl+S/UnRSBKCDU3Toj/4pzffv2w
+X-Gm-Gg: AR+sD11RmYuUY+NYIbO5ESS2PxVUU/4diUw+4jBwAE1xo3XSSqViM2Jepbuv3GZPH/r
+	pJd0mpltGcdOcKcY8hq2GLHUV+5mx5H0zAPc/oZj+5joyxcoTdAAaFP3H7ztq9FyCLi4A2c9yTa
+	0beTGyHLmgNV2bBPmgEfHs1JSX+cmnvuo6/1E77wqY8FDUoZ2qRgjsWVZBkZNkjLNzN+PVelKLG
+	L3TWlmAQCVSj5eo3jdcX/GjKD5zctddf4W5mCFijlLAuTldo1k9ccavrXpW0CTrYTeI3bZDyPt7
+	C2/mkrK3/87vi5K7q7bm6t+plsn4AoWLYzEwjDuvLxBHbYh+qf6UiKZfOJ+6dbDlVSEWT0mvwQi
+	HaOZ4+r2GGmDP7lfWfn7Jq4BoAgCqu4sDbzsfYSZ5pXBoKtErOiEDEh2GCf71/Xaq9oNJWb30bM
+	lBhD7JNeD5OHtHQzuErB2Gc1DKWa0iCPfSv7no+bHZkP/fXsorV62PWjS++WPDTokbK2flqs7yz
+	njijbczrtOJkhqrv2mujuydGu0=
+X-Received: by 2002:a05:690c:d8a:b0:81e:bc7a:df50 with SMTP id 00721157ae682-81f3398e12bmr19347497b3.3.1784753105545;
+        Wed, 22 Jul 2026 13:45:05 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33bf2df0sm19506797b3.6.2026.07.22.13.45.03
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33bf2df0sm19506797b3.6.2026.07.22.13.45.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 13:45:04 -0700 (PDT)
+        Wed, 22 Jul 2026 13:45:05 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -66,12 +66,10 @@ Cc: davem@davemloft.net,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	andrew@lunn.ch,
-	Willem de Bruijn <willemb@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Joshua A Hay <joshua.a.hay@intel.com>
-Subject: [PATCH net-next v2 3/7] idpf: support pacing offload
-Date: Wed, 22 Jul 2026 16:43:49 -0400
-Message-ID: <20260722204454.3234605-4-willemdebruijn.kernel@gmail.com>
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net-next v2 4/7] selftests: drv-net: refactor so_txtime errqueue handling
+Date: Wed, 22 Jul 2026 16:43:50 -0400
+Message-ID: <20260722204454.3234605-5-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
 References: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
@@ -85,200 +83,128 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-If skb->tstamp is in the future, program this future delivery txtime
-in the transmit descriptor.
+Prepare error queue handling for upcoming SO_EE_ORIGIN_TIMESTAMPING
+messages in the next patch in this series.
 
-TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
-the FQ offload_horizon is configured.
+Convert do_recv_errqueue_timeout into dispatcher do_recv_errqueue
+and move SO_EE_ORIGIN_TXTIME specific code into a separate helper.
 
-But device support for pacing offload must be more robust. It can also
-be reached through SO_TXTIME.
+This will make the next patch a lot more readable.
 
-Bound check txtime. Only packets with timestamp between now and the
-horizon (max_pacing_offload_horizon) are offloaded.
+No functional changes.
 
-Support only in splitq mode, where tx and tx completion queues are
-separate and so completions can be returned out of order.
-
-Assume that the NIC clock is PTP synchronized to CLOCK_TAI. This
-can later be refined, e.g., to a custom CLOCK_AUX.
-
-Disable if in netpoll. It does not need the feature, and the ktime
-functions are not safe to call in this context.
-
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Joshua A Hay <joshua.a.hay@intel.com>
 Signed-off-by: Willem de Bruijn <willemb@google.com>
-
 ---
+ .../testing/selftests/drivers/net/so_txtime.c | 66 ++++++++++---------
+ 1 file changed, 36 insertions(+), 30 deletions(-)
 
-Changes
-  v1 -> v2
-    - move special zero case up and return early
-  v1: https://lore.kernel.org/netdev/20260706133433.3142805-4-willemdebruijn.kernel@gmail.com/
-
-Sashiko, ignore pre-existing issues.
-
-Sashiko, ignore that idpf_tx_splitq_set_txtime may have a benign race
-by calling ktime_mono_to_any twice to get TAI to REALTIME offset.
-
-fixup idpf
----
- .../net/ethernet/intel/idpf/idpf_ethtool.c    |  3 +-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  5 ++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 65 ++++++++++++++++++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  2 +
- 4 files changed, 73 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index bb99d9e7c65d..5ddf347927dc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -1801,7 +1801,8 @@ static void idpf_get_ts_stats(struct net_device *netdev,
- static const struct ethtool_ops idpf_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_USE_ADAPTIVE,
--	.supported_ring_params	= ETHTOOL_RING_USE_TCP_DATA_SPLIT,
-+	.supported_ring_params	= ETHTOOL_RING_USE_TCP_DATA_SPLIT |
-+				  ETHTOOL_RING_USE_PACING_OFFLOAD_HORIZON,
- 	.get_msglevel		= idpf_get_msglevel,
- 	.set_msglevel		= idpf_set_msglevel,
- 	.get_link		= ethtool_op_get_link,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index cf966fe6c759..de4170c2aa3b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -888,6 +888,11 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
- 	netdev->min_mtu = ETH_MIN_MTU;
- 	netdev->max_mtu = vport->max_mtu;
- 
-+	if (idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
-+	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
-+			    VIRTCHNL2_CAP_SPLITQ_QSCHED))
-+		netdev->max_pacing_offload_horizon = 128000;
-+
- 	dflt_features = NETIF_F_SG	|
- 			NETIF_F_HIGHDMA;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 566b08ca3a6c..1ccfaeb35193 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /* Copyright (C) 2023 Intel Corporation */
- 
-+#include <linux/netpoll.h>
-+
- #include "idpf.h"
- #include "idpf_ptp.h"
- #include "idpf_virtchnl.h"
-@@ -2408,9 +2410,13 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 				    struct idpf_tx_splitq_params *params,
- 				    u16 td_cmd, u16 size)
- {
--	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
-+	*(__le32 *)&desc->flow.qw1.cmd_dtype = cpu_to_le32((u8)(params->dtype | td_cmd));
- 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
-+
-+	desc->flow.qw1.ts[0] = params->offload.desc_ts[0];
-+	desc->flow.qw1.ts[1] = params->offload.desc_ts[1];
-+	desc->flow.qw1.ts[2] = params->offload.desc_ts[2];
+diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
+index 55a386f3d1b9..7364ce2bec0b 100644
+--- a/tools/testing/selftests/drivers/net/so_txtime.c
++++ b/tools/testing/selftests/drivers/net/so_txtime.c
+@@ -158,7 +158,40 @@ static void do_recv_verify_empty(int fdr)
+ 		error(1, 0, "recv: not empty as expected (%d, %d)", ret, errno);
  }
  
- /**
-@@ -3011,6 +3017,59 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
- 	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
- }
- 
-+static void idpf_tx_splitq_set_txtime(const struct idpf_tx_queue *tx_q,
-+				      const struct sk_buff *skb,
-+				      struct idpf_tx_splitq_params *tx_params)
+-static int do_recv_errqueue_timeout(int fdt)
++static int do_recv_errqueue_timeout(struct sock_extended_err *err,
++				    const char payload_char)
 +{
-+	const int ts_gran_pow2 = 9;
-+	u64 ts, now;
++	const char *reason = NULL;
++	int64_t tstamp = 0;
 +
-+	/* Skip if netpoll: not needed and not safe to call ktime helpers */
-+	if (netpoll_tx_running(skb->dev))
-+		return;
-+
-+	switch (skb->tstamp_type) {
-+	case SKB_CLOCK_REALTIME:
-+		ts = ktime_to_ns(ktime_add(skb->tstamp,
-+					   ktime_mono_to_any(0, TK_OFFS_TAI) -
-+					   ktime_mono_to_any(0, TK_OFFS_REAL)));
-+		break;
-+	case SKB_CLOCK_MONOTONIC:
-+		ts = ktime_to_ns(ktime_mono_to_any(skb->tstamp, TK_OFFS_TAI));
-+		break;
-+	case SKB_CLOCK_TAI:
-+		ts = ktime_to_ns(skb->tstamp);
-+		break;
++	switch (err->ee_errno) {
++	case ECANCELED:
++		if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
++			error(1, 0, "errqueue: unknown ECANCELED %u\n",
++			      err->ee_code);
++		reason = "missed txtime";
++	break;
++	case EINVAL:
++		if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
++			error(1, 0, "errqueue: unknown EINVAL %u\n",
++			      err->ee_code);
++		reason = "invalid txtime";
++	break;
 +	default:
-+		WARN_ON_ONCE(1);
-+		return;
++		error(1, 0, "errqueue: errno %u code %u\n",
++		      err->ee_errno, err->ee_code);
 +	}
 +
-+	now = ktime_get_clocktai_ns();
-+	if (ts < now)
-+		return;
++	tstamp = ((int64_t)err->ee_data) << 32 | err->ee_info;
++	tstamp -= (int64_t)glob_tstart;
++	tstamp /= 1000 * 1000;
++	fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
++		payload_char, tstamp, reason);
 +
-+	/* beyond offload horizon? set overflow bit only */
-+	if (ts > now + ((u64)skb->dev->pacing_offload_horizon * NSEC_PER_USEC)) {
-+		tx_params->offload.desc_ts[2] = 1 << 7;
-+		return;
-+	}
-+
-+	ts >>= ts_gran_pow2;
-+
-+	/* 0 is valid 24b timestamp, but also means field unset.
-+	 * Add 512 ns (ts_gran_pow2) to avoid this case
-+	 */
-+	if ((ts & 0x7fffff) == 0) {
-+		tx_params->offload.desc_ts[0] = 1;
-+		return;
-+	}
-+
-+	tx_params->offload.desc_ts[0] = ts & 0xff;
-+	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
-+	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
++	return 1;
 +}
 +
- /**
-  * idpf_tx_splitq_frame - Sends buffer on Tx ring using flex descriptors
-  * @skb: send buffer
-@@ -3097,6 +3156,10 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
++static int do_recv_errqueue(int fdt)
+ {
+ 	char control[CMSG_SPACE(sizeof(struct sock_extended_err)) +
+ 		     CMSG_SPACE(sizeof(struct sockaddr_in6))] = {0};
+@@ -169,7 +202,6 @@ static int do_recv_errqueue_timeout(int fdt)
+ 	struct msghdr msg = {0};
+ 	struct iovec iov = {0};
+ 	struct cmsghdr *cm;
+-	int64_t tstamp = 0;
  
- 		tx_params.dtype = IDPF_TX_DESC_DTYPE_FLEX_FLOW_SCHE;
- 		tx_params.eop_cmd = IDPF_TXD_FLEX_FLOW_CMD_EOP;
-+
-+		if (skb->tstamp && skb->dev->pacing_offload_horizon)
-+			idpf_tx_splitq_set_txtime(tx_q, skb, &tx_params);
-+
- 		/* Set the RE bit to periodically "clean" the descriptor ring.
- 		 * MIN_GAP is set to MIN_RING size to ensure it will be set at
- 		 * least once each time around the ring.
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 4be5b3b6d3ed..865408b57b0d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -161,6 +161,7 @@ union idpf_tx_flex_desc {
-  * @tso_segs: Number of segments to be sent
-  * @tso_hdr_len: Length of headers to be duplicated
-  * @td_cmd: Command field to be inserted into descriptor
-+ * @desc_ts: Flow scheduling offload timestamp
-  */
- struct idpf_tx_offload_params {
- 	u32 tx_flags;
-@@ -174,6 +175,7 @@ struct idpf_tx_offload_params {
- 	u16 tso_hdr_len;
+ 	iov.iov_base = data;
+ 	iov.iov_len = sizeof(data);
+@@ -181,8 +213,6 @@ static int do_recv_errqueue_timeout(int fdt)
+ 	msg.msg_controllen = sizeof(control);
  
- 	u16 td_cmd;
-+	u8 desc_ts[3];
- };
+ 	while (1) {
+-		const char *reason = NULL;
+-
+ 		ret = recvmsg(fdt, &msg, MSG_ERRQUEUE);
+ 		if (ret == -1 && errno == EAGAIN)
+ 			break;
+@@ -201,33 +231,9 @@ static int do_recv_errqueue_timeout(int fdt)
+ 		if (err->ee_origin != SO_EE_ORIGIN_TXTIME)
+ 			error(1, 0, "errqueue: origin 0x%x\n", err->ee_origin);
  
- /**
+-		switch (err->ee_errno) {
+-		case ECANCELED:
+-			if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
+-				error(1, 0, "errqueue: unknown ECANCELED %u\n",
+-				      err->ee_code);
+-			reason = "missed txtime";
+-		break;
+-		case EINVAL:
+-			if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
+-				error(1, 0, "errqueue: unknown EINVAL %u\n",
+-				      err->ee_code);
+-			reason = "invalid txtime";
+-		break;
+-		default:
+-			error(1, 0, "errqueue: errno %u code %u\n",
+-			      err->ee_errno, err->ee_code);
+-		}
+-
+-		tstamp = ((int64_t) err->ee_data) << 32 | err->ee_info;
+-		tstamp -= (int64_t) glob_tstart;
+-		tstamp /= 1000 * 1000;
+-		fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
+-			data[ret - 1], tstamp, reason);
+-
++		num_tstamp += do_recv_errqueue_timeout(err, data[ret - 1]);
+ 		msg.msg_flags = 0;
+ 		msg.msg_controllen = sizeof(control);
+-		num_tstamp++;
+ 	}
+ 
+ 	return num_tstamp;
+@@ -245,7 +251,7 @@ static void recv_errqueue_msgs(int fdt)
+ 			error(1, errno, "poll");
+ 
+ 		if (ret && (pfd.revents & POLLERR))
+-			num_tstamp += do_recv_errqueue_timeout(fdt);
++			num_tstamp += do_recv_errqueue(fdt);
+ 
+ 		if (num_tstamp == cfg_num_pkt)
+ 			break;
 -- 
 2.55.0.229.g6434b31f56-goog
 
