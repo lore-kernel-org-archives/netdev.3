@@ -1,53 +1,59 @@
 Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCA647043D;
-	Wed, 22 Jul 2026 10:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F548A2AA;
+	Wed, 22 Jul 2026 10:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784715403; cv=pass; b=tnRdV+0J4D2epF1NyagTmVgdlNhM/iFTQkv1c5U6yhpBiJzfTiPBE7WEjKVYv0U9EVMJbwg9Ir7rh9q0t8G9UgwgS73UL5J1O2Q5E94XQMQnG6YIKyEcbtVbk8wZx4h6LaCRnc4tJ1pXjEkRwH4NZLp+btyorKErfGZNaS2WRDM=
+	t=1784715515; cv=pass; b=SISVsBq7KsDctZYcAPGFSYplzowpfB42B8BnDce0C4m1+UxZ3glLtrmD4VWn2EVwB+RIWsbo4GP5HReomDhMbVhxejaq0TvJgpuqUYjsegkCmRYXmOaORLVoAKRJM/H6iz78bkQyznmOsj5KMV3Qd1L2mBejOelJ63ACM9kBe88=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784715403; c=relaxed/simple;
-	bh=yex1mJd/ERybZlo3clQpmxfMFCjnG0UtBmfZ5Sunt4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=boAwks4KxhUye/VzGWDcw/uT8C74Tv27FgzwynBEiR1pvKPQ8y7Akf67+uqp3RrvJAtuvpbXDoLFs1XN6/YqdIbZItia+8wQPSE+rebhFzD1i/Xd036xomUI+GqUAoiBCg5tQ2QWsPvLgxbxjwVpBHB7hlEPVL32ki38Ys73DkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=pIiTsw8t; arc=pass smtp.client-ip=136.143.169.17
+	s=arc-20240116; t=1784715515; c=relaxed/simple;
+	bh=5IK0E5VfLWQFyv9kEBje5gPPeAhXHabQJOyuDTyUoxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JyIMVflHSPefINXEEXYjoAqqcH1jzb4ATj8hhXVa2jI5olLatJdb0Wln6krfDMBmCpd7MS+Gprt9SCo2ZWAb3r3T6t5zu4C9IscXHCufF215lh1uWSjk8jFYtCm3WVQNNi4na0wencHo6mxjzjieTAQVHyPl57rFnQKhC2A1Clw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=ucwSM2pr; arc=pass smtp.client-ip=136.143.169.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auditcode.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b="pIiTsw8t"
-ARC-Seal: i=1; a=rsa-sha256; t=1784715373; cv=none; 
+	dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b="ucwSM2pr"
+ARC-Seal: i=1; a=rsa-sha256; t=1784715482; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=WIS/wT/kK7IgMUD2SSX6PUE9vzUeT+a/QCz8sRxsirHCfbZ4M05mgpFQxCDZ8hPYL48lOC/umvjgmBbxpVF2vlWffArrcteBxYIsk5Wj6PK0gdjL3RdcITiWWsYsNSxrpd1GOzRooaucgOxxw84X+SS3G3h0E2jun3ln77QH924=
+	b=DSPBifPtK3vXBuHvG7IsIfm3DkRgbzHB9rnx63XMWvqW4AWajEZWQPAfIbIBdtZL69uHifpsI0DD2MiuATPpSpl00R9n41y0z1y5Lf16FCNfKvpsSlWyujpNsEsDGHzdXQaD2/Y/H6HF1a1RZbo85Qp6G8Y0nTUsK1TYw3RJca4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1784715373; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=C4lOxytgR0KsOyq/Jp7BHXLZa/gFViZEf2t1LUgKwts=; 
-	b=fH2Eq3UHchQdb/3vkVOoI09OV1ox6ITHTpsSkRVKPwbRI/8eapXFOA1I82EWtnJSgxAqjeuLU5quJ+d0Ixnu+nyPwQJF78kCr89EK0uTjMOxDyj9dUfMy2aZGYxveGZfRKYxvclG4a7EGyHkXbRpYrNUm5uPYDMm7LoFrFUdlv4=
+	t=1784715482; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=nPfVdwY5n496Gpr+RRe/9aJXt3Vr8Qe8AO0w56laRGY=; 
+	b=ItZiXlRcq02UXd4YmFVJrpBGBX28KkAUQTcC5U3Vp2lBIQD2UXUyVUAica3mAixhhtwP1IdxGtCtMPLRJa1pEXRoIamBdvXrm+hY27AQ1UgZI58gRNA3U/qcGkpVP3FSSSh3KbUjxVsbmwLfoAYqhA7glGkgrBsvaNINYZeYnJk=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=auditcode.ai;
 	spf=pass  smtp.mailfrom=security@auditcode.ai;
 	dmarc=pass header.from=<security@auditcode.ai>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784715373;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784715482;
 	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=C4lOxytgR0KsOyq/Jp7BHXLZa/gFViZEf2t1LUgKwts=;
-	b=pIiTsw8tTO3olnPxPzhcjZmbTP49KA9VwEEgJvetQ6WwcSUkUSIL6YyED7XyIRIz
-	ZX/ypoJgqs2sBOGHRPNu6QNs27eyBCbSVeVbYtyvS7HzpI+g4T57TxAlBiY3FdNmFt7
-	SEMc23+49r3ijbttV9HA9opK7kaMl32oIP7fY//Q=
-Received: by mx.zoho.eu with SMTPS id 1784715371230952.2475580867131;
-	Wed, 22 Jul 2026 12:16:11 +0200 (CEST)
+	bh=nPfVdwY5n496Gpr+RRe/9aJXt3Vr8Qe8AO0w56laRGY=;
+	b=ucwSM2prSzCBzAPtI10YAsZmkbHF9NV2mvNBE1AQrDsukjdg5PJ0ZlVMIupkmdTH
+	OiZNoyPKrzcSZZDw/1XJiREHoHS/5fF3WRCHA/vvgKvd9eMa41EIL8RjBdlrukAFC/Y
+	+Y96KGCEt5Xrc2eLVaK2ud2SqZbyf+LD9+ASABGw=
+Received: by mx.zoho.eu with SMTPS id 1784715480713346.6775599105855;
+	Wed, 22 Jul 2026 12:18:00 +0200 (CEST)
 From: Ibrahim Hashimov <security@auditcode.ai>
-To: alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com
-Cc: horms@kernel.org,
+To: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	wenjia@linux.ibm.com,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	linux-wpan@vger.kernel.org,
+	pabeni@redhat.com
+Cc: tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	horms@kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v2] mac802154: lock rx_mac_cmd_list and drain it before freeing sdata
-Date: Wed, 22 Jul 2026 12:16:08 +0200
-Message-ID: <20260722101608.37744-1-security@auditcode.ai>
+Subject: [PATCH net v2] net/smc: validate peer CDC cursor against RMBE size before accepting it
+Date: Wed, 22 Jul 2026 12:17:58 +0200
+Message-ID: <20260722101758.37817-1-security@auditcode.ai>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,183 +64,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 
-rx_mac_cmd_list has no locking. The RX softirq producer in
-ieee802154_subif_frame() list_add_tail()s while the mac_wq worker
-list_del()s, and the worker dereferences mac_pkt->sdata with no
-liveness check.
+smc_cdc_cursor_to_host() converts the wire-format producer/consumer
+cursor of an incoming CDC message into a host smc_host_cursor. It rejects
+a cursor that goes backwards, but never checks that the cursor stays
+inside the buffer it indexes. Per smc_host_cursor ("an offset in an
+RMBE") and the invariant smc_curs_add() enforces for every local advance
+(0 <= count < size), a valid cursor count must be < size and a single
+advance can be at most one bufferful; the wire cursor is peer-controlled
+and was never checked against either.
 
-Removing an interface (or the phy) thus frees its sdata while a queued
-packet still points at it, and a later worker run reads freed memory: a
-KASAN use-after-free, reproduced by flooding a victim interface with MAC
-command frames and deleting it. Meanwhile sibling interfaces on the same
-phy keep adding to the list, corrupting it.
+smcr_cdc_msg_to_host() accepts the producer and consumer cursors, and the
+unbounded value feeds smc_curs_diff() in smc_cdc_msg_recv_action(), which
+computes the advance without clamping against size. A peer can inflate it
+two ways: an out-of-range prod.count (e.g. 0x7fffffff), or -- since on a
+wrap increment smc_curs_diff() returns (size - old.count) + new.count --
+a cursor with a bumped wrap and new.count above old.count. Either drives
+bytes_to_rcv far past rmb_desc->len, the very invariant the comment above
+the atomic_add() claims but does not enforce.
 
-Add rx_mac_cmd_lock around every access -- producer, worker (which now
-dequeues under the lock and processes the packet after) and the new
-mac802154_flush_queued_mac_cmds(). Drain the queue before the sdata is
-freed: from ieee802154_if_remove() after the RCU grace period (filtered
-to that sdata) and from ieee802154_unregister_hw(). The drain precedes
-cancel_work_sync() so a run that already dequeued a matching packet is
-waited out while its sdata is still alive.
+smc_rx_recvmsg() then trusts bytes_to_rcv as the amount of valid RMB
+data. Its first copy chunk is safely bounded by rmb_desc->len -
+cons.count, but the second chunk copies (copylen - chunk_len) bytes from
+offset 0, and copylen came from the inflated readable -- an out-of-bounds
+read of the RMB's backing (v)malloc allocation, copied straight to the
+receiving process via _copy_to_iter(). This is a remote kernel-memory
+disclosure driven by a malicious SMC-R peer, needing no local privilege
+on the victim. The same unbounded count also reaches
+smc_cdc_handle_urg_data_arrival() (base + urg_curs.count - 1) -- a
+second, narrower OOB read.
 
-Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+Reject the bad cursor at ingress, mirroring the cursor-sanity idiom two
+lines above: drop any incoming cursor whose count is outside the buffer
+(>= size), and any whose advance from the last accepted cursor exceeds
+one bufferful (smc_curs_diff() > size), which catches the wrap case.
+smc_cdc_cursor_to_host() gains a size parameter; smcr_cdc_msg_to_host()
+passes conn->rmb_desc->len for the producer cursor and
+conn->peer_rmbe_size for the consumer cursor, bounding it at its single
+origin instead of patching every downstream consumer. SMC-D
+(smcd_cdc_msg_to_host()) does not use this helper and is a separate,
+out-of-scope gap.
+
+Reproduced on a v6.19 KASAN kernel (SMC-Rv2 over soft-RoCE): a peer
+emitting prod.count=0x7fffffff triggers a vmalloc-out-of-bounds read in
+_copy_to_iter() via smc_rx_recvmsg(), returning ~960 KB of RMB-adjacent
+kernel heap to userspace; an in-range cursor transfers cleanly. With the
+fix the out-of-range cursor is dropped before it reaches
+conn->local_rx_ctrl.prod, and the reproducer returns rc=0 with no report.
+
+Fixes: 5f08318f617b ("smc: connection data control (CDC)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
 Assisted-by: AuditCode-AI:2026.07
 ---
-v2: v1 only added mac802154_flush_queued_mac_cmds() guarded by
-    cancel_work_sync(), which cannot fix a race whose corrupting party is
-    the lockless softirq producer (not a work item), as the review of v1
-    pointed out. Add rx_mac_cmd_lock around every list access and drain
-    before cancel_work_sync(). rx_beacon_list has the same lockless
-    pattern, but its worker never dereferences sdata, so it is left as a
-    separate follow-up to keep this fix minimal.
+v2: also bound the cursor *advance* (smc_curs_diff() <= size), not just
+    the count. A wrap increment with new.count above old.count passes the
+    count check yet still inflates bytes_to_rcv past the buffer -- thanks
+    to sashiko-bot for spotting the count-only gap. Resent standalone.
 
-diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
-index 8f2bff268392..b497b5abab0a 100644
---- a/net/mac802154/ieee802154_i.h
-+++ b/net/mac802154/ieee802154_i.h
-@@ -74,6 +74,10 @@ struct ieee802154_local {
- 	struct work_struct rx_beacon_work;
- 	struct list_head rx_mac_cmd_list;
- 	struct work_struct rx_mac_cmd_work;
-+	/* protects rx_mac_cmd_list against the RX softirq producer, the
-+	 * mac_wq worker and the teardown flush running concurrently
-+	 */
-+	spinlock_t rx_mac_cmd_lock;
+ net/smc/smc_cdc.h | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
+index 696cc11f2303..b0ae4d43b017 100644
+--- a/net/smc/smc_cdc.h
++++ b/net/smc/smc_cdc.h
+@@ -221,6 +221,7 @@ static inline void smc_host_msg_to_cdc(struct smc_cdc_msg *peer,
  
- 	/* Association */
- 	struct ieee802154_pan_device *assoc_dev;
-@@ -300,6 +304,8 @@ static inline bool mac802154_is_beaconing(struct ieee802154_local *local)
- }
- 
- void mac802154_rx_mac_cmd_worker(struct work_struct *work);
-+void mac802154_flush_queued_mac_cmds(struct ieee802154_local *local,
-+				     struct ieee802154_sub_if_data *sdata);
- 
- int mac802154_perform_association(struct ieee802154_sub_if_data *sdata,
- 				  struct ieee802154_pan_device *coord,
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index b823720630e7..82c86f253b5d 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -694,6 +694,13 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->iflist_mtx);
- 
- 	synchronize_rcu();
-+
-+	/* After the grace period no new rx_mac_cmd_list entry can point at
-+	 * @sdata; drop the ones already queued before it is freed below, as
-+	 * the mac_wq worker derefs mac_pkt->sdata with no liveness check.
-+	 */
-+	mac802154_flush_queued_mac_cmds(sdata->local, sdata);
-+
- 	unregister_netdevice(sdata->dev);
- }
- 
-diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-index ea1efef3572a..24d1e398d3d9 100644
---- a/net/mac802154/main.c
-+++ b/net/mac802154/main.c
-@@ -91,6 +91,7 @@ ieee802154_alloc_hw(size_t priv_data_len, const struct ieee802154_ops *ops)
- 	INIT_LIST_HEAD(&local->interfaces);
- 	INIT_LIST_HEAD(&local->rx_beacon_list);
- 	INIT_LIST_HEAD(&local->rx_mac_cmd_list);
-+	spin_lock_init(&local->rx_mac_cmd_lock);
- 	mutex_init(&local->iflist_mtx);
- 
- 	tasklet_setup(&local->tasklet, ieee802154_tasklet_handler);
-@@ -277,6 +278,12 @@ void ieee802154_unregister_hw(struct ieee802154_hw *hw)
- 	tasklet_kill(&local->tasklet);
- 	flush_workqueue(local->workqueue);
- 
-+	/* Drain rx_mac_cmd_list before ieee802154_remove_interfaces()
-+	 * frees every sdata: the mac_wq worker derefs mac_pkt->sdata and
-+	 * is not covered by the flush above (that is the data workqueue).
-+	 */
-+	mac802154_flush_queued_mac_cmds(local, NULL);
-+
- 	rtnl_lock();
- 
- 	ieee802154_remove_interfaces(local);
-diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
-index cd8f2a11920d..c869c1c0c65f 100644
---- a/net/mac802154/rx.c
-+++ b/net/mac802154/rx.c
-@@ -76,8 +76,12 @@ void mac802154_rx_mac_cmd_worker(struct work_struct *work)
- 	u8 mac_cmd;
- 	int rc;
- 
-+	spin_lock_bh(&local->rx_mac_cmd_lock);
- 	mac_pkt = list_first_entry_or_null(&local->rx_mac_cmd_list,
- 					   struct cfg802154_mac_pkt, node);
-+	if (mac_pkt)
-+		list_del(&mac_pkt->node);
-+	spin_unlock_bh(&local->rx_mac_cmd_lock);
- 	if (!mac_pkt)
+ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+ 					  union smc_cdc_cursor *peer,
++					  unsigned int size,
+ 					  struct smc_connection *conn)
+ {
+ 	union smc_host_cursor temp, old;
+@@ -235,6 +236,21 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+ 	if ((old.wrap == temp.wrap) &&
+ 	    (old.count > temp.count))
  		return;
- 
-@@ -123,11 +127,48 @@ void mac802154_rx_mac_cmd_worker(struct work_struct *work)
- 	}
- 
- out:
--	list_del(&mac_pkt->node);
- 	kfree_skb(mac_pkt->skb);
- 	kfree(mac_pkt);
++	/* count is an offset into the RMBE and must always stay inside
++	 * it (see smc_curs_add()); the peer is untrusted, so reject an
++	 * out-of-range wire cursor the same way an out-of-order one is
++	 * already rejected above, instead of letting it drive
++	 * bytes_to_rcv / the urgent-byte offset past the buffer end
++	 */
++	if (temp.count >= size)
++		return;
++	/* Bound the advance too: a wrap increment with temp.count above
++	 * old.count makes smc_curs_diff() report more than one bufferful,
++	 * which would inflate bytes_to_rcv / peer_rmbe_space past the buffer
++	 * in smc_cdc_msg_recv_action(). Reject such a cursor.
++	 */
++	if (smc_curs_diff(size, &old, &temp) > size)
++		return;
+ 	smc_curs_copy(local, &temp, conn);
  }
  
-+/**
-+ * mac802154_flush_queued_mac_cmds - drop pending rx_mac_cmd_list work
-+ * @local: the mac802154 device the queue belongs to
-+ * @sdata: interface being torn down, or %NULL to flush unconditionally
-+ *
-+ * Each queued &struct cfg802154_mac_pkt stashes a raw pointer to the
-+ * interface it was received on, which mac802154_rx_mac_cmd_worker() later
-+ * dereferences without checking whether that interface is still alive.
-+ * Callers must invoke this before freeing @sdata (or before freeing every
-+ * interface, when @sdata is %NULL) so the worker never runs against freed
-+ * memory. The list is drained under rx_mac_cmd_lock, then cancel_work_sync()
-+ * waits out a run that already dequeued a matching packet before the drain.
-+ */
-+void mac802154_flush_queued_mac_cmds(struct ieee802154_local *local,
-+				     struct ieee802154_sub_if_data *sdata)
-+{
-+	struct cfg802154_mac_pkt *mac_pkt, *tmp;
-+
-+	spin_lock_bh(&local->rx_mac_cmd_lock);
-+	list_for_each_entry_safe(mac_pkt, tmp, &local->rx_mac_cmd_list, node) {
-+		if (sdata && mac_pkt->sdata != sdata)
-+			continue;
-+
-+		list_del(&mac_pkt->node);
-+		kfree_skb(mac_pkt->skb);
-+		kfree(mac_pkt);
-+	}
-+	spin_unlock_bh(&local->rx_mac_cmd_lock);
-+
-+	cancel_work_sync(&local->rx_mac_cmd_work);
-+
-+	/* Other interfaces on @local may still have entries pending. */
-+	spin_lock_bh(&local->rx_mac_cmd_lock);
-+	if (!list_empty(&local->rx_mac_cmd_list))
-+		queue_work(local->mac_wq, &local->rx_mac_cmd_work);
-+	spin_unlock_bh(&local->rx_mac_cmd_lock);
-+}
-+
- static int
- ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 		       struct sk_buff *skb, const struct ieee802154_hdr *hdr)
-@@ -233,7 +274,11 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 
- 		mac_pkt->skb = skb_get(skb);
- 		mac_pkt->sdata = sdata;
-+
-+		spin_lock(&sdata->local->rx_mac_cmd_lock);
- 		list_add_tail(&mac_pkt->node, &sdata->local->rx_mac_cmd_list);
-+		spin_unlock(&sdata->local->rx_mac_cmd_lock);
-+
- 		queue_work(sdata->local->mac_wq, &sdata->local->rx_mac_cmd_work);
- 		return NET_RX_SUCCESS;
- 
+@@ -246,8 +262,10 @@ static inline void smcr_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+ 	local->len = peer->len;
+ 	local->seqno = ntohs(peer->seqno);
+ 	local->token = ntohl(peer->token);
+-	smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
+-	smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
++	smc_cdc_cursor_to_host(&local->prod, &peer->prod,
++			       conn->rmb_desc->len, conn);
++	smc_cdc_cursor_to_host(&local->cons, &peer->cons,
++			       conn->peer_rmbe_size, conn);
+ 	local->prod_flags = peer->prod_flags;
+ 	local->conn_state_flags = peer->conn_state_flags;
+ }
 -- 
 2.50.1 (Apple Git-155)
