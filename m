@@ -1,56 +1,56 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278DD420E89
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 22:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04B3404BFF
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 22:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784758603; cv=none; b=P1L/f8bD90VIytzc1VAp8AaUT0RapU9ENDsWcUuaUgUXzjyKhx1bVRnLWWWCSDA5t9M5IGa0PMsy+lw0Ym1QW902zVKqgP2Obh0cILM3rbVaJ85aEmjhvmPBZcJzz5DVENRTI8ojsxXYaRuuOQ10uCPXG5YQJc/r92Vrgy/tbSo=
+	t=1784758605; cv=none; b=cF6G6trnWf67ECz5AaSa8TkDu2gLUTZNbO8R42ZyxUsPLHHDauI+sm+/xv5N2qDD9gSQidEXfe4ReZLf3+eAGqhuSN2N5wYv1JR4jJKQuR93zyKQJ/65ah4xHpmQtgNyaxDtmxQ1WCZ/Xp44xXvVmO/SDzimL30OzvyH1COOB9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784758603; c=relaxed/simple;
-	bh=KRo8BqXZbY7QVPrkWY+7m9Y76muhXbcl9oTt8JcSLZY=;
+	s=arc-20240116; t=1784758605; c=relaxed/simple;
+	bh=pmLr6Q0wrxaoiG0HC4cecGXvH0Y1btBIoJOHP4vTW9c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X0k6d+1GbbONCxX0pa02U6AEaPEHouKkIOpsFK3QPz2qlC7Pm5tVRVx2RvxQyziUrrDsMu7mZY4m1x9xr6it91GfkQ3YKNVnphlm4Ayo/c3h7zPfAle1JE9F37O3+qsarqi4VT3mLTAF8GkLXGA6C8P982Hy6OfuNYxBcKYJPyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rLknt0+9; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=pS2L0HbtpHp9QboHxOFmxrw/vhbHHmVwOxfy4pMn2Rn4em8kss/OqS0s+rcGxkxS3Yu4HGAw13EhdrqNZc2KX42r9DAcIGZzUOWwTKNnNFD4CJr9fnPEa7MVIDzstT5v06V5O1qLJg59zFxcZy7JvzuUv24d4pppXAyE6GW8TAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PZd9F1ko; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rLknt0+9"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848474825ffso7950760b3a.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:16:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PZd9F1ko"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a3514f912so18423989b3a.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784758602; x=1785363402; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784758604; x=1785363404; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lP2vHby1eDwBtKihRSSnShKlcm4qY1KhKGcFEWBrgR0=;
-        b=rLknt0+9IGYdFi31Q9DxuHWB+q7mcpWCMSjG+ysPxGv5BwsALp7YLdovhBeJe5gywT
-         8EFiwEuHCHTdSTnsmbHxVY8VbMb4zI6n+DJbUcEEmzTKy1FzGHMe198B3ENf/1XPlDlK
-         y5VgwTUXTp7AICSlGEUQ+hyJmwbCCFJZ3Mne1KPw7BKHOSVSZ3ngOaSabmiw0zo9TXDi
-         L651/ybc/VKDr5uIQiZ+mOFEdRyQ4VWfxScG2AKF0O25QOGEygsUY5KZ42jv8jGCf2ae
-         MhPVfQVz0u3Gthx6EZpAj3UvHiAYdfBVzgfZb2HFv29YZ4+v+AYyKyhj55zVuPIMVZmt
-         bqZw==
+        bh=nKju/xiraPUjvnNIoptLAwkfAEYgVko7uXam/THvrCc=;
+        b=PZd9F1koYhqdsVZtSzYENZf+OqmR/jW7O+s12PSSvdxJBmILnRcZG5vmeSc08BXzhw
+         a+CvaCM9s1LpFNv2p6IAxI6Wh8dQz2Aw3X9L9i2kEjg+t9SondbIeyU3hi/Gbx/XpctX
+         FCLUnYsS02tjfcnV+h5v3izCVliUUYaPv/5LWxYD4ecsAyN+swcVezxcoLsmBREIoaJB
+         SX/agzTKDIgvDR5X1wrEJIXpMwbJ3LQ8P5G8bHLowniD57esvj1AdmqI5AQtiuEtHdRf
+         3Hq56dIVq+I4F4LNnXG3p9ipGrHWsPfeDtfwfuZzCGL9EwABvEUTGd62ByiHza/ahZnz
+         Gj8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784758602; x=1785363402;
+        d=1e100.net; s=20251104; t=1784758604; x=1785363404;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lP2vHby1eDwBtKihRSSnShKlcm4qY1KhKGcFEWBrgR0=;
-        b=a5vYDJ+47P/q3uq8v8H44pcqdBeWrWlvtXL8KGNl/Tg2xvsuYHAN00Ux7xDmSqa3Qk
-         jK0Imw9wEIPXEqqHZupAoEa4cWgFvqwpjlzzMZWCb0Uo/YksA7sDL4aRYZaWYn7ysUAb
-         l1irW7G4rWiS0GBDYC2UUD/L2/ATqjqNP4rJOKV+CE6LNeX/URRe2kh9DixAy3ilKwXF
-         Ps7aI1gr49GanBOAF+ECqlte4saBbcmmlXbqlqr2ApWt/umunF2mouFcMuKP9ZzykBAt
-         zGtLEkictHekg5imOhFZ01TCKjEj2fBQiA8iYmUP7A2AEyvq9mrwq65DUbTL4Ac2m5An
-         4vRw==
-X-Gm-Message-State: AOJu0YxYLZowEarrrnOSMJGLE6Qvk54cz8evsZFx6o1DfehcE8yHnNvu
-	ltUXcghHv8GMsJV/SFum6YQi51vrw4pjFS8bwKQhtpOAPzaW5stlxi9jLUQdvz6n5meoUGPYAF6
-	r1ljQnPlgMj195pHr+SJ8lc4i4lTxFNWsVhWRpe1tJTa1OXexUGDwswLKsPAOiXeEkwBw3ei/nE
-	yL+W/YKdJIksPaWzxGLLK7MHPK3uWqndSKLcGb6jp50uS0qfw=
-X-Received: from pfbcb7.prod.google.com ([2002:a05:6a00:4307:b0:84b:9a71:ba78])
+        bh=nKju/xiraPUjvnNIoptLAwkfAEYgVko7uXam/THvrCc=;
+        b=RzD+OWa5/jLaOD0+16RYjYqfxkr7RV9+j0AGZXAkXQsLef6u+RhPDNSxM+Quy4MSdX
+         /LbQl3GVhNVCBa7HxNQfsKk6xe1gEbtd+ShxOT+3/2iFsR9+XQQPK1qrOAnlxmi8iVKM
+         y5fQWucYd801l3Xw1XcWXixcGLFnXW4ImV2nZabboMJiVPtTlPAGkHh/rRIquqQk1C97
+         eJ/8PhE7XKoGaYdyhNMQMdA4+EjD70EGTzHpAnVO0CAsCD/93++ZubZGp5l8GfFrLWjG
+         BraRPMPKduTc/CeQII6uHJ4zjWYb8WrdqFe/rFRiIPlBW3G4vnuapF7hawG2Or0w1Yoh
+         n+Mg==
+X-Gm-Message-State: AOJu0YzsGlsoNpr2IaBye8qYBZZBCJ3538h9XZIrYUm571KTcuKlOBBt
+	vvRC/pPO2jWLRcncRnFkO8+G9Eb7D/f8zwPapGGx+c/uFsq5M4tJlEGURHNdMJPweRZfYJsaPWM
+	2Euj9/vewJ+GYQg07HAmYbs5D3RiYfCqDeo46Y/V6zfk5jojra+y9v8b4cA/ariua4evBP0/7d7
+	Zqa+mXotku3eTxHCnbUWLEdKh/4n5In6HAouRhfIZtPuKbvSA=
+X-Received: from pfbde7.prod.google.com ([2002:a05:6a00:4687:b0:848:401c:994])
  (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:8889:0:b0:845:dcc8:9da with SMTP id d2e1a72fcca58-84e2e92aa9cmr122192b3a.22.1784758601149;
- Wed, 22 Jul 2026 15:16:41 -0700 (PDT)
-Date: Wed, 22 Jul 2026 15:16:33 -0700
+ 2002:a05:6a00:cc9:b0:847:99b4:d011 with SMTP id d2e1a72fcca58-84e2c19f3e3mr648344b3a.39.1784758603545;
+ Wed, 22 Jul 2026 15:16:43 -0700 (PDT)
+Date: Wed, 22 Jul 2026 15:16:34 -0700
 In-Reply-To: <20260722221634.186886-1-joshwash@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260722221634.186886-1-joshwash@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260722221634.186886-2-joshwash@google.com>
-Subject: [PATCH net-next v3 1/2] gve: use xdp_build_skb methods for XDP_PASS case
+Message-ID: <20260722221634.186886-3-joshwash@google.com>
+Subject: [PATCH net-next v3 2/2] gve: add XDP metadata support for DQ RDA
 From: Joshua Washington <joshwash@google.com>
 To: netdev@vger.kernel.org
 Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
@@ -74,63 +74,39 @@ Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@g
 	bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Newer common methods have been introduced to construct SKBs in the
-event of XDP_PASS because many drivers replicated very similar
-functionality. Update GVE to use these common methods for copy mode and
-zero-copy mode.
+Commit 1b42e07af1ee ("gve: Add Rx HWTS metadata to AF_XDP ZC mode")
+exposes support for the XDP RX timestamping metadata operation in the DQ
+RDA mode. While the operation works on its own, the intent was to enable
+XDP metadata support for the queue format as a whole along with it.
+Currently bpf_xdp_adjust_meta fails because meta_valid is set to false.
+This change updates xdp_buff preparation to set meta_valid to true, so
+metadata can be fully used by XDP programs.
 
 Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
 Reviewed-by: Jordan Rhee <jordanrhee@google.com>
 Signed-off-by: Joshua Washington <joshwash@google.com>
 ---
 v3:
-  - Newly introduced. Ensures that XDP metadata is passed onto SKB in
-    XDP_PASS case.
+  - bfp -> bpf
+v2:
+  - Fix referenced commit in description
 ---
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 02cba280d81a..907a0c15bf30 100644
+index 907a0c15bf30..329a2585489b 100644
 --- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
 +++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -736,8 +736,7 @@ static int gve_rx_xsk_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 	}
+@@ -882,7 +882,7 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
+ 				 buf_state->page_info.page_address +
+ 				 buf_state->page_info.page_offset,
+ 				 buf_state->page_info.pad,
+-				 buf_len, false);
++				 buf_len, true);
+ 		gve_xdp.gve = priv;
+ 		gve_xdp.compl_desc = compl_desc;
  
- 	/* Copy the data to skb */
--	rx->ctx.skb_head = gve_rx_copy_data(priv->dev, napi,
--					    xdp->data, buf_len);
-+	rx->ctx.skb_head = xdp_build_skb_from_zc(xdp);
- 	if (unlikely(!rx->ctx.skb_head)) {
- 		xsk_buff_free(xdp);
- 		gve_free_buf_state(rx, buf_state);
-@@ -745,8 +744,6 @@ static int gve_rx_xsk_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 	}
- 	rx->ctx.skb_tail = rx->ctx.skb_head;
- 
--	/* Free XSK buffer and Buffer state */
--	xsk_buff_free(xdp);
- 	gve_free_buf_state(rx, buf_state);
- 
- 	/* Update Stats */
-@@ -899,9 +896,17 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 			return 0;
- 		}
- 
-+		rx->ctx.skb_head = xdp_build_skb_from_buff(&gve_xdp.xdp);
-+		if (unlikely(!rx->ctx.skb_head))
-+			goto error;
-+		rx->ctx.skb_tail = rx->ctx.skb_head;
-+
-+		gve_reuse_buffer(rx, buf_state);
-+
- 		u64_stats_update_begin(&rx->statss);
- 		rx->xdp_actions[XDP_PASS]++;
- 		u64_stats_update_end(&rx->statss);
-+		return 0;
- 	}
- 
- 	if (eop && buf_len <= priv->rx_copybreak &&
 -- 
 2.55.0.229.g6434b31f56-goog
 
