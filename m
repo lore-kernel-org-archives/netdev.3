@@ -1,35 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E5A43B4A4;
-	Wed, 22 Jul 2026 21:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFB137FF5D;
+	Wed, 22 Jul 2026 21:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784754649; cv=none; b=aafHINNWL7DLl0WJTJ2zqn+mC9AGPp1Nw+yqj+tCtNjS8xaDILfYn5UHN7aXkKHZNTsWpmVk/Iw8r+JEeYJISP2+RCdsXUJBGT1X6KUMMk3iEXcQvGOjzctwZUvHgU+e0KNrQDwGIRLRE22y7lwbVv3vYSqSATYjOsqNDTi6M6s=
+	t=1784754877; cv=none; b=J7ogYchoegjda1guAp4/Xd/7Gca+C2bog7qa/x17g30W9UYmwDirMpGQOuRM/2sulSzr814+rezqRc+qafvnV+kf0cL3MhddwdRFosylk6k5kIyaxvUtOk/8YXmg6yAG82fOgz1IOeN0bajUlcD68UXgoNWZFwN3sec46IKcpCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784754649; c=relaxed/simple;
-	bh=91QkwlH84kwOsivgexosS7JomgWKksFy1e0LnV/Rs60=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HnOMxc5wxWiM/jJiwbAePpzsDiVCSsaq27lT+We5Z5dYiZksAmMvn49gFqm2D+kIdAPhu8OlVRbnaWliHh1tkjUujD7mnwdcqlCQwQgha49sylkbyQOhOBzFo+JzvDPYtyY58l02GQNJBojXePfJxfwvoGN7ubDn4avKmN3dgtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mR2D/xcz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784754877; c=relaxed/simple;
+	bh=mDSz1MIjzMyz31vnMoXV/s9vbmmmSstcq2hWrptWMyo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f421Ac7p6FFLNzj3n/ISa5WAJGiV+6GpTe8x43NGaD2pTqPp1BxIxPeK93t4tEpW9d09Te5imBk+M6ZjV3Msi0rSPBoMUj2njTbWkVGFP+awq7KgwyKITfOynBEJ209mqH3/qEeyKdV6zdPyxdjDkjEN072Pxzm41q7/qyXnd3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=E4BCpwWo; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mR2D/xcz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92311F00A3D;
-	Wed, 22 Jul 2026 21:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784754648;
-	bh=oqwN6GnLhIgG98t5IE9dAVJBJGSQc58h99VPxss3bww=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mR2D/xczyCbI2UrfuFEHRadzyhx7smT0S+PGxmdlh/nq4DWmVLHfJ3GpGfaFRk10b
-	 Cd2nU/Rkl9+Sgk1GPmQQiN2fLsQPnng/vk4/owsbLgaS9kEfxQOeRj9afwVozck1Au
-	 /yDp/KrT3/2kmnpB3IKMyU84c/967Gs2QY6TDbVBTVWQcdQssoGrWTyu7Md59EQwXu
-	 AmHRNQeJqmhdD/xjoJhyezYZH55vITmkKIHxFBEYTfEUdILOAQuKNUI7a7/C57XjI7
-	 tUMo8qQ5rXoVhgdCBkcYWbcsFZWfus3iaKiijYw2TrbSRN7ocN6gneAPWylvrfxQEH
-	 ucHf/mjJgDh9A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0E15380CED5;
-	Wed, 22 Jul 2026 21:10:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="E4BCpwWo"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 976206019F;
+	Wed, 22 Jul 2026 23:14:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1784754873;
+	bh=71NVPj8I43azYiGvGocLyKoevF+eWOgg9UZ2QBwWOPA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E4BCpwWo2hNdWGvoq77Ab40bQAOuL7uhjMtkB76ZpQ1R0HWyXqJjs4XftNurP7aKD
+	 seC3CwFOoD6XqG/HjRB6cItqeUEEthwL//UAygutsnm+A8D110aOWqnTziEYEfJWso
+	 ngQn11ZvSTlKaiqAg5bz73AwKOkpAsVykThxWeP8Ryd7B4GLRvEua+LIiN8VQK5kmZ
+	 TzguiLbOyP1ulkJHHMluHlJXDFRIfg89+gbB6RopBKlpqct9lUuhdV/gbCpjlj0UBq
+	 v8t/jBqxDf2dbiF/1dv9LMZwbPzJ+Mn0CccZfCfvDt2BRmE/Sh73eW4zedIwQwBeZp
+	 Ao2EWRxtDjKAg==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net 04/13] netfilter: ipset: do not update comments from kernel-side hash adds
+Date: Wed, 22 Jul 2026 23:14:11 +0200
+Message-ID: <20260722211420.153933-5-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260722211420.153933-1-pablo@netfilter.org>
+References: <20260722211420.153933-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,51 +51,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] net: dsa: mt7530: add EcoNet EN7528
- built-in
- switch support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178475461638.2026851.7452354596103866220.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Jul 2026 21:10:16 +0000
-References: <cover.1783770059.git.naseefkm@gmail.com>
-In-Reply-To: <cover.1783770059.git.naseefkm@gmail.com>
-To: Ahmed Naseef <naseefkm@gmail.com>
-Cc: netdev@vger.kernel.org, arinc.unal@arinc9.com, chester.a.unal@arinc9.com,
- davem@davemloft.net, andrew@lunn.ch, angelogioacchino.delregno@collabora.com,
- conor+dt@kernel.org, dqfext@gmail.com, daniel@makrotopia.org,
- edumazet@google.com, kuba@kernel.org, krzk+dt@kernel.org,
- Landen.Chao@mediatek.com, matthias.bgg@gmail.com, pabeni@redhat.com,
- robh@kernel.org, linux@armlinux.org.uk, sean.wang@mediatek.com,
- olteanv@gmail.com, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org
 
-Hello:
+From: David Lee <david.lee@trailofbits.com>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+mtype_resize() copies comment pointers with memcpy(), not the comment objects
+themselves. During the window after an entry has been copied but before the
+table swap and backlog replay, the old table is still published for
+packet-side updates while the replacement-table entry already holds the same
+ip_set_comment_rcu pointer.
 
-On Sat, 11 Jul 2026 15:40:59 +0400 you wrote:
-> The EcoNet EN7528 is a MIPS SoC whose platform support is already
-> upstream. It integrates an MT7530 switch, memory-mapped like the built-in
-> switches of the MediaTek MT7988 and Airoha EN7581/AN7583 SoCs, but with a
-> true MT7530 core, four Gigabit PHYs on ports 1-4 and a CPU port at a fixed
-> 1000 Mbps full duplex link.
-> 
-> Patch 1 documents the compatible, patch 2 adds the driver support.
-> 
-> [...]
+If xt_SET --add-set ... --exist hits that old entry in this window,
+mtype_add() calls ip_set_init_comment() even though packet-side adds carry no
+comment payload. That call frees the shared comment through the old entry, so
+the replacement-table entry now holds a stale pointer. When the queued add is
+replayed on the new table, mtype_add() calls ip_set_init_comment() again and
+strlen() dereferences the stale pointer.
 
-Here is the summary with links:
-  - [net-next,v2,1/2] dt-bindings: net: dsa: mediatek,mt7530: add econet,en7528-switch
-    https://git.kernel.org/netdev/net-next/c/886f928a7849
-  - [net-next,v2,2/2] net: dsa: mt7530: add EN7528 support
-    https://git.kernel.org/netdev/net-next/c/cf23fcc9437e
+Fix this in mtype_add() by skipping ip_set_init_comment() when ext->target
+marks a packet-side add. Userspace adds still update comments, while
+packet-side adds can no longer free comment storage shared with a resize copy.
 
-You are awesome, thank you!
+Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Lee <david.lee@trailofbits.com>
+Assisted-by: Codex:gpt-5.5
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 8231317b0f1f..b2d77973272d 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -1005,7 +1005,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ #endif
+ 	if (SET_WITH_COUNTER(set))
+ 		ip_set_init_counter(ext_counter(data, set), ext);
+-	if (SET_WITH_COMMENT(set))
++	if (SET_WITH_COMMENT(set) && !ext->target)
+ 		ip_set_init_comment(set, ext_comment(data, set), ext);
+ 	if (SET_WITH_SKBINFO(set))
+ 		ip_set_init_skbinfo(ext_skbinfo(data, set), ext);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 
