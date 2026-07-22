@@ -1,148 +1,162 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011016.outbound.protection.outlook.com [52.101.70.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE06E47A0A9;
-	Wed, 22 Jul 2026 07:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706980; cv=none; b=fwAbF5/FfV7EtDF2C5XLDkHEJamvnhYxM79BFz3ysH3W91H0CGdrwm9tY45UGRmg1sDyPuGo6yt4RKq7A03kWkrL6NeBkyQgjrNCjilVaYuJceo0hYW71PoDjmAqJwHpbPDk7pINx1B1/ca29QFEBUK/Hx+vb9w1+sNMi4GPUKc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706980; c=relaxed/simple;
-	bh=nukePEXqRfDAirUZoE0va78p8gJc5818cc+LNWzBdFU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g/5nDQeIWak1BV8QBTaC9rPKw3QWlO2shOrA1/hqFebCi3uP4ENiBHCVSS+ikcybOEYk3BFOB9C4EGQuMMQOt9glXGHDdVnZZ1iZ54dtYht2eqrqKmKP6bIkPgz+sWpcCjdzJpQRJ3Ed3+viDll8iH/qu0LpW2FN1o2lbwB4O4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Hm2yTEa+; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395193644B3;
+	Wed, 22 Jul 2026 08:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784707266; cv=fail; b=L2bdxOMvDz4hc9D8oKIqJgMb/tClWjp4eN0XU/HGuomCfYkSPjl2VrD8jZOju4Uhgj/0dPQ7/8iu6LseWe3J7s/37Alb3KfFb6rFUwWr3FdMBhS+IXSqU8yW8GM46+jd88qP8I5gaWI7xp7k/He9K++q4LM7qkNQWj/JQ6f9+Nw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784707266; c=relaxed/simple;
+	bh=x5fjM8ZchegrJmBzcv8ow3ryrznBS9AbPHYgpGR0Yd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=q5pzD+KyfG+lIPQPXvSMP/fItbhFGFBs4JCJ++HwHEQufBw+VA0+WHLOKJEwlJBG9Ea7p9950IbkQ2XylNTaoUePTSW7KC26f0LyG81ycsM6kSwPMYmIGhHi7Guh/u/4Sh8fI/wQSx7KGaS2ykrwAaji0XGwHmwiWE0cK7o624o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B4Jf+sV5; arc=fail smtp.client-ip=52.101.70.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Hm2yTEa+"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66M6BNRW2154352;
-	Wed, 22 Jul 2026 00:56:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=O5DuKBO9EFqg8PY77nZVdAx1A
-	FeCxwU7Cj1Qm2fay98=; b=Hm2yTEa+0ac6ZRc9ICeBB62Cw7EvmSx4zIja6Mctk
-	pfSuNE5vfJ4028gNnRsZJQx317KzlPi2mOCyN+c3yDRV+EncF+O3JkyXMTDH9Vae
-	/x8njc4UT6iRooyIuNkMxhi88po5/lf9QaRFdXNCu7HE3t8q1t/CALaQO9nb3NFB
-	Fo0x7/u+IYyCUb7TOcG8PkT5hpItORzL4URJ4wuNSZAMCCpcxa9GAWdGC2H3B9pn
-	2Arl2hr7To+YqCWfKwLgAElLA8Vf6rv6aslbzsWIrwR6j+vuVt4ppXlW2/MBfp9r
-	53IfrMbL4zDQvQqI5OyEklbEZ2FfJld8KNkNMzJ/5eiOg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fjjf88ys3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jul 2026 00:56:10 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 22 Jul 2026 00:56:09 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 22 Jul 2026 00:56:09 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id E62C73F704B;
-	Wed, 22 Jul 2026 00:56:06 -0700 (PDT)
-Date: Wed, 22 Jul 2026 13:26:05 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Hariprasad
- Kelam" <hkelam@marvell.com>
-Subject: Re: [PATCH v2 net-next] octeontx2-af: npc: Warn on NPC_IPSEC_SPI key
- overlap
-Message-ID: <amB3lUrldQhP64xa@rkannoth-OptiPlex-7090>
-References: <20260721070303.986740-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B4Jf+sV5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pojh4VEyG10DygKq+HrzCuPc4CPWC5TbwVggbe5L7FFQDzs/MCiyAdV5GpNGU8sEtn8xho04Usj670pBeJnntvEqq9A8T8saFyT8IuScSxjtSFWmJw7JV530vqnSgrPMhOZCnIdzuiH7+fb7eMsaXFj04HLxlSJMiwvrY/RpCSk6HaxCPsYzWQnysy+a9U253Ko0X3QMGobqKzBUEeRVJBlX6tjlCZ7rJ0Wdu2so2p5hkWiHqyPvDEuG+sTbutaaTAvQMot6umS1OBSCgmpZ8IBMuHWmLo10t8h5PrIe/22cNHlOMxSHGgsxtQAT3zcHBFlC30Gx8kwmxAuQLJ6mxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Oj1QmheiAyIOYxau45ixCtS0+gTaSJCMXCxO5PzkMTw=;
+ b=MveYZdomQcWMg2xivHe8ozgk3EcSvm6p/tqN7+PO2Xcc/0Dcfhp+rpTWQ+PtbjvBfPKLEhvNY2iULTWEwdn2wba18ZCiRytcAbeieG+baqd0pAVb6MQ6lQly1qmrE4n8IQP0/kPmZy0fcyLYkrk0DNTQCmRLK5zBkdf/8DJ1GR0Ca4E4IUGC99zfbMGhOfzTJNosEovM37eJJaa7AZnF5WFj2n3NPU+TXK90RVuo78lD0jfBcm54c/JACDlYACs3lEYY5FQkz3AVJmoYbrHfZxDaLVIZHo6/GyCoJpWQS1JSpdrRap8SEXljDht7Q/vsaa0GJ2UJ31eg92wDdff+cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Oj1QmheiAyIOYxau45ixCtS0+gTaSJCMXCxO5PzkMTw=;
+ b=B4Jf+sV5/rET+ZsOoEHWiEhMZW+j6KqRnXFQJYgdhdGuebjglQxxEpbKBSE3IF6bUaNpz+KTbwrJEUm9b/07mEEtyrmX0ItrhvpisCGTCzpJxj9qJoW2yT+PEVSrvAE0YhjDSru6dqZNH9Azs6aaA8yfisdx9WI52RXlkKU0hkmmoXsmTqz0VpjoO6kUmw3TtNa4ZJurTKHybj/CAXbARnXuXD/gG9D6HNoblFPCL6wJgSeepZ9CWqrWmT6GjNDyxjDanfg43dOxBgrvujRB4PUUtwKoBZbvwGBw2e2J1P5T6AMPTh1PEIJZMMOuwfAkEcwQkg99z7QdF7o9SCdH6Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by GVXPR04MB12105.eurprd04.prod.outlook.com (2603:10a6:150:335::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Wed, 22 Jul
+ 2026 08:01:00 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%5]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 08:00:59 +0000
+Date: Wed, 22 Jul 2026 11:00:56 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: kr494167@gmail.com
+Cc: ioana.ciornei@nxp.com, vkoul@kernel.org, neil.armstrong@linaro.org,
+	davem@davemloft.net, netdev@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] phy: fsl-lynx-28g: propagate PCVT enable errors
+Message-ID: <20260722080056.vd6eni74tscmxtpb@skbuf>
+References: <20260722033619.10647-1-kr494167@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722033619.10647-1-kr494167@gmail.com>
+X-ClientProxiedBy: WA3PEPF00000525.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d8::679) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260721070303.986740-1-rkannoth@marvell.com>
-X-Proofpoint-GUID: KPVWFY4b_iMO02Ypel1jnK439GMYim-n
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIyMDA3MyBTYWx0ZWRfX55zl53Odeox5
- 2MPc+tqrqaU1GWC3lUmO4TQRgXEcr/C4fv6QRTHOVeZ75oZKdiOgTjI7Kt+ZpJf7w8X7C6fi/Z7
- 8Cyb9fIT+XzVxbJKs5c/5htwnjyraOM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDA3MyBTYWx0ZWRfX4Tx5IabRTv7q
- 75nXfiEorTuDvp8gcPoxCIImtG54uYe/Od+BObL0abUHVh19lE+lfNnkEzBi0oIqx7iRYFjEik0
- i+1J57OmwhF27vgEqBqv10CptAFwTMF9SMbCsUc4/oBQ3f5iCJf0eMesvExnbX+xp6P+cFbjxfz
- JPBkTKjX8NwCnKqBMU9DEn2lUUzYKh3vR1HoeKCQbD+m/tCX8iuq//Lu4ziYDRQOS2Y3WG7+dK/
- FULK5w0Xma5mt5cT3DLOvhSuPUtsAYSJAK5Fzkw586ukBtirjiS4JPrLuySmS7C32ASLJn8xo5a
- ZyQxOFl8jlYccQSUWJIpkp0VjgjT06QWEuaGIUI135quX9S7nyR6FmVR9kYVRvUqyvVhj6iyzDS
- HvOmDdi0iyXc52J05Xgyrim0GoRIbX8hoByUGwWCvA1f+wLFX3SMcaQoQWzKlFALf54BDWmHPF+
- HdtTPM796I62YxtDyzw==
-X-Authority-Analysis: v=2.4 cv=Rov16imK c=1 sm=1 tr=0 ts=6a60779a cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22 a=c92rfblmAAAA:8
- a=M5GUcnROAAAA:8 a=r3grigIuxABfADZXa-wA:9 a=CjuIK1q_8ugA:10
- a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: KPVWFY4b_iMO02Ypel1jnK439GMYim-n
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-22_02,2026-07-21_01,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|GVXPR04MB12105:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed3ed8dd-2c48-48aa-308f-08dee7c75e12
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|376014|1800799024|23010399003|10070799003|11063799006|56012099006|10067099003|3023799007|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	lDScj+ewYuIsJLP3bXIVopsCTV0CpMztLzUsCLUAgLe+nrDeEIcPhMdABqhxzrwV4HmymbvUGwVGry0NH+V17f/pD/MS/By/6QKgg8tuKEImuAA+Iff0e5kqlhBjlXQo8eTW5u/hwC7Bs1fPxNIAlBN7PRichlJAJ2z4Z4mQsGFj5Tvkc6PAfo1rrBSH7keHwQrUX8ddEGA24SOarpctwciCvoW1ubIbIMi7xbY84Eze5rixkal78Uwlzx7c6sKDy3L3qa+MYVylrZZgD0mHrks5pI0xCWDb22KGTDY+I8yjOVnjG0wtv1ZiJOkBrKcrASmo6RM44TT25TsU0zPoxDKzReXp7rY0pFShUouD1YK3aw6ML8S3BwgWYJfWwJHvW3pjZkIvFUiVgkTnWGxBBk5bNk/6zxnDkDf/LqcyJCeiulhD905nBIJuIVwsT5Cno99xiiX5ETPuMg8gIyK5siQyMfhWE/XCypwqXsmnVrTnIcWSPuxE4USroCD5ax7sIC0QK2T4xYY04rqAd6Sr2U8NV342W+WhxKHIiHTT23IqxCcKaDjYVfomcoAL09aXiNchztb3A3kryJbJDkKGhaELONoqbJPKuNLLUlOpVEjYkkZzZt3LdKVZ3KfNOoXBLHs3xSkafG1L4iPQpFWe/08rMOvc0SlOo2XAgoQwOgw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(1800799024)(23010399003)(10070799003)(11063799006)(56012099006)(10067099003)(3023799007)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KmjOTdz8b6VnkRBXtACmHBo1/z3z9oAvDdCrLsHsngTI3y6cL/q0i/2BJ7C9?=
+ =?us-ascii?Q?LwJRvP22qzXdbdZylxLQxQ/qxmwfaKb84IID4IMeABwo+sP/L/EE57OgGOTP?=
+ =?us-ascii?Q?KylNvYSR/fm0+TX6TjYt31IXPJnmN0O1PwClAEK/e1XM08U3LcTDkIUYeYuq?=
+ =?us-ascii?Q?Wh86IDqIhOGK7BFHd1MsW3ZikMKiErTFgsW/Aqkv5Kt8wujVgaf+J6QZ5EZH?=
+ =?us-ascii?Q?793eVDVkqVlbKZuUXln5WZK8sZ7WumxV7QAHfLQdJeACPtRdBXm+Eqn2dRTi?=
+ =?us-ascii?Q?Li+MHV1oJv8fnIiMRx5llMEYwFEuyykga+ubvaRoJ89mh8a/rLfNabZoYoYa?=
+ =?us-ascii?Q?CZL9lOWqD9ODYzBHXYIETos79LgEnn3SQPbcycc5FjZEmYti1/7yaOPiTD94?=
+ =?us-ascii?Q?KyPoCt3YpoT2LtCkWRogr1XQhuvDRB//YvhcNoivQxQ/UfOvcLMEP6GTkOy5?=
+ =?us-ascii?Q?BgMy9Q5Cqe8AL2pR5FBazisqLLotKioGzhXr/Zi6d5HulUr3M99Eg7zQPpEt?=
+ =?us-ascii?Q?Pw0byZa8js35SHoDZn6eB8yUupSFIUpR57ZgX5BhISJcdXiOsAhjdV8CkKZL?=
+ =?us-ascii?Q?V3UVO+E03O5s8RzgRSbg8eaLGMdf++7aJGNLy5dbM/Gfvd3xHuYtQ9eh/fD8?=
+ =?us-ascii?Q?KLNG54y97b/QLFlZlssxROdTYMmLYcnZu0lsR/4H1w1daxm4LrOUlD0kMNoB?=
+ =?us-ascii?Q?fioaGl07bBZjcjGwOacs+4rYY7n8LeqnxY6AGF+PN6WVYaSxEMs4q51/t6Nn?=
+ =?us-ascii?Q?HU7XWFC5sb5hlZCjAuFYuJfiPGegRyM22KQWmXS54aChGozu0588X4fK1Qg8?=
+ =?us-ascii?Q?DYaN3qfa3GGEeYKExsDnIx9ogtXcoSmkWwqY6er3NWiFop8SQyaIWfbqL2kC?=
+ =?us-ascii?Q?Gr03Ny/vRs323YXAA0v2pnczOL+6/OAjfB08kjNee4NkemescrO/DN2eAWSg?=
+ =?us-ascii?Q?uawVSfSkyTuVHw8E82n26G5vYYk1d5HaoA+JPAmmBPgq/H0MHU0HJAhTPBhC?=
+ =?us-ascii?Q?p8+7+W36KpDsBMQFkQ/trJAwboOC7M0V/hhLvYkLJvhld7SgkhxMfhjYf8Ox?=
+ =?us-ascii?Q?JtHppMQDnGj0MAblfuB3+rfEOkM5fYEz1KC3CYoBZs4DdHSja1kTSgp30Bcy?=
+ =?us-ascii?Q?NdcvYjoF8J6BcyjUpgFmb1DZX9UcTy3XCKRYTEqHbGxb9E+yfay6CvGSRkUP?=
+ =?us-ascii?Q?x3oCBJ543ekl0oce7sWy6LYmQGXmxNEeyfAVvc8//GIjM37HEkx50d1ZahpS?=
+ =?us-ascii?Q?CpxURXEmneTXycWw4Sz/AGxznk6tEDucGKjgyfwqcSkeFPwEAaZASQCOe4uv?=
+ =?us-ascii?Q?2n4b5zzE/lcwRo9s7Yoc0N2B5yNqcoWqkrNWOsyEiWfy7N84XsDrATRVs9NG?=
+ =?us-ascii?Q?owd7pvCkoRSxt/5f1eRoRSVqUooYzsg+Iot21dEkG4edaUFl5v456lpU9wm9?=
+ =?us-ascii?Q?RoRhlKIIuVNJIG9lFmFEhbBZLXrkfUbMkl0l7pq1Mj0V1CXc8AP5fY3BUz/7?=
+ =?us-ascii?Q?esfIdb9g+bZs6JaRsimkJtHTQqsgM14Y93v96TOloK6/Bo2PtejSnrq1D8yV?=
+ =?us-ascii?Q?hpA/5rCHQcTU7rTM04jGu2pLZt0Zkg0iBkWLDkSLdEYoXeEkZV726BXkiTYa?=
+ =?us-ascii?Q?BkTOpTrto/1tfVXtEkRKv1sgFtvfWo4wAzea+BWu3nBs3yFwoBYsgVX3a0jQ?=
+ =?us-ascii?Q?Gsks2a1reQARCEMM+3XPxMEtEI+ZuUlYHWdMKSj8VTrSMUOwOD/NPWeIK2vo?=
+ =?us-ascii?Q?VihKUuIJXOPS6Dml8IowL/U95/UCZgGZqsOAEqXoshA7ofl82jxC4jgmgW/M?=
+X-MS-Exchange-AntiSpam-MessageData-1: yGkXGHg033JFk1LpZIw09e3qFCgsQcPmATM=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed3ed8dd-2c48-48aa-308f-08dee7c75e12
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 08:00:59.9242
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lndivna6Azh6KbGFnIhV9BunXAZ06EicMuNM5BVBpsjJo626nrXUlibavlW2se7kkvlHefbW8Drng2yQwdfK9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB12105
 
-On 2026-07-21 at 12:33:03, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> From: Hariprasad Kelam <hkelam@marvell.com>
->
-> When scanning the MKEX profile to determine supported NPC features, warn
-> if the SPI extraction field overlaps with other key fields. AH and ESP
-> may legitimately use the same key offset for SPI, so continue to
-> advertise NPC_IPSEC_SPI via npc_is_field_present() instead of treating
-> the overlap as a hard failure.
->
-> Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Hi Surendra,
 
-https://sashiko.dev/#/patchset/20260721070303.986740-1-rkannoth%40marvell.com wrote
+On Wed, Jul 22, 2026 at 09:06:19AM +0530, kr494167@gmail.com wrote:
+> From: surendra <kr494167@gmail.com>
+> 
+> lynx_28g_set_mode() currently ignores failures from
+> lynx_28g_lane_enable_pcvt(). It then updates the lane mode and reports
+> success even though the protocol converter may remain disabled.
+> 
+> Propagate the error and leave the previous lane mode intact so the caller
+> can handle the failed reconfiguration.
+> 
+> Fixes: 8f73b37cf3fb ("phy: add support for the Layerscape SerDes 28G")
+> Signed-off-by: surendra <kr494167@gmail.com>
+> ---
+>  drivers/phy/freescale/phy-fsl-lynx-28g.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/phy/freescale/phy-fsl-lynx-28g.c b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> index 38afcd081a2a..1fe406adc83c 100644
+> --- a/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> +++ b/drivers/phy/freescale/phy-fsl-lynx-28g.c
+> @@ -1003,7 +1003,9 @@ static int lynx_28g_set_mode(struct phy *phy, enum phy_mode mode, int submode)
+> 
+>         lynx_28g_lane_change_proto_conf(lane, lane_mode);
+>         lynx_28g_lane_remap_pll(lane, lane_mode);
+> -       WARN_ON(lynx_28g_lane_enable_pcvt(lane, lane_mode));
+> +       err = lynx_28g_lane_enable_pcvt(lane, lane_mode);
+> +       if (err)
+> +               goto out;
+> 
+>         lane->mode = lane_mode;
+> 
+> --
+> 2.55.0
+>
 
->> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
->> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
->> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
->[ ... ]
->> -	/* Allow extracting SPI field from AH and ESP headers at same offset */
->> +	/* Warn on unrelated MKEX fields colliding with SPI key bits.  AH/ESP
->> +	 * sharing the same SPI key offset is valid; use npc_is_field_present(),
->> +	 * not npc_check_field(), to advertise the feature.
->> +	 */
->> +	if (npc_check_overlap(rvu, blkaddr, NPC_IPSEC_SPI, 0, intf))
->> +		dev_warn(rvu->dev, "Overlap detected the field NPC_IPSEC_SPI\n");
->
->Will this warning spuriously trigger for valid AH and ESP configurations?
->
->The NPC_IPSEC_SPI field extracts data from two different layers, NPC_LID_LD for
->AH and NPC_LID_LE for ESP. However, rx_key_fields[NPC_IPSEC_SPI].layer_mdata
->only stores the metadata of the last scanned layer.
->
->When npc_check_overlap() processes the AH layer, npc_is_same() evaluates to
->false because the LIDs differ. Then npc_check_overlap_fields() compares
->their kw_masks, which intersect because the SPI kw_mask accumulated both AH
->and ESP extraction bits.
->
->This appears to cause npc_check_overlap() to return true for its own layer
->component, warning unconditionally on valid profiles and contradicting the
->goal of ignoring legitimate AH/ESP overlap.
+Did you draw any conclusions from the feedback you received on the
+lynx-10g patch and decided that it doesn't apply to lynx-28g?
+https://lore.kernel.org/linux-phy/20260720101906.80584-1-kr494167@gmail.com/
 
-npc_check_overlap() is to check whether there is an overlap for the extracted key in meta data.
-We can ignore sashiko comment.
-
->
->>  	if (npc_is_field_present(rvu, NPC_IPSEC_SPI, intf) &&
->>  	    (*features & (BIT_ULL(NPC_IPPROTO_ESP) | BIT_ULL(NPC_IPPROTO_AH))))
->>  		*features |= BIT_ULL(NPC_IPSEC_SPI);
->
->Does bypassing the overlap check here allow corrupted key extraction?
->
->If npc_check_overlap() detects a true collision with a completely unrelated
->MKEX field, such as VLAN or DMAC, this logic merely prints the warning above
->but still continues to set the NPC_IPSEC_SPI feature bit.
->
->This seems to advertise support for the feature even when the hardware MKEX
->profile has genuinely overlapping extraction keys that could misclassify
->packets and incorrectly steer IPsec traffic.
-
-Evenif overlap detected, system functions for most of the traffic, so print warning and continue.
-We can ignore sashiko comment.
+Hint: it does.
