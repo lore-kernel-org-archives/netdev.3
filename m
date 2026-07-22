@@ -1,106 +1,147 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC7234BA28;
-	Wed, 22 Jul 2026 13:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F68D348C4C
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784727624; cv=none; b=tMTCI5UNfbcKGN/XCrwn35Zz8DlKUSPUy8kOmWU3zvErfSxv/3gnC5oQs0fIC8Jq0zW2n3Khr041/kAeX00Phgjb4LKx8qrIkAF/AXG7sFbHuAwpQrnNjCtEBa8W5bYyjJggESUgrF6jdSZ+m+AEL7PAiUEwQtKRdMimqxqct+s=
+	t=1784727638; cv=none; b=YwQh8Z2E7bcL1u3GxQUv+OErgJp9g0K0KwwmlFvJHsAS/JPKHevfOXCCaOyzkI+D97qglpBXWRUmltL8yMmK5FfjA59vfkSmXgGO8ydgDGweqcHikvZzoFKmeBwlPHilS8op9g13o1f8RGf2T19GKrnGPHtIkH3kiuKm0HWQ1j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784727624; c=relaxed/simple;
-	bh=ZQuVDc/+OBaWXo/Gi2DEdPXXuHY0SoJ+sR65W5z1oaM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h2PeU25wud15IhaLtZQFjTapN3tLcLk1f/QQBnbL7KRWwT/qFAKe4Liqe4M9iGbbfC8keP0KptnE5lGpv/E9kvQLIHa5FNDVs0p98gYGbc7QW1UgRkIBhjeXU9bQ2GFjIrDnZOW+3/JlRmw1hPlYGP2fbLeV5d1cWhXgVAoik1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OOO99RNA; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784727638; c=relaxed/simple;
+	bh=gui0VHTSLLwEHTPJ7tc1ugqJNcqEWciy6Fvv6kb8FpI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dhnRLEKey/UFxE6qCZ6RnEvPt2BLdTJK0CzfJyrmvYqhUJA9Qzfe8dvKKCmqBjoBrQgI0gpLpZvgyZ8IiqB/bJRGoYS4tY0+JxLlo2VDvgVFB5NAJf9upaEFEYLXfkZIQbPnHyz/MXWEGwxbhDtoNgeVNYj9WraegppfiSfci/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=ftS+fLD0; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OOO99RNA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DDF581A116B;
-	Wed, 22 Jul 2026 13:40:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AF3F360388;
-	Wed, 22 Jul 2026 13:40:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A6DF11BD03C7;
-	Wed, 22 Jul 2026 15:40:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784727617; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=wr+ewd5waDN6ADYJpilEPIvuynye3ldhe8wIwOoFlp0=;
-	b=OOO99RNAiChT0FMMosou7lSmLXLDP2UqgctMVht4RjYFcfQT7iyB40FxEX3mU5geMkypIb
-	DfHxt/nFmORYZW78euYSK+LtlO7jR+8+WCMRCIQScXtCGzq8cCer3VmZlefHDrPVq2lWv3
-	HbHK14gYV7Ep0bfNoyAuhcS/h5J7hkLpoWXrO7sUh+PeomdeGuVibTTtxdF2MuHWDfEsBW
-	O/dxLhbSoT518ME6bO3dNotb5WdC8As/hP8tF9qL8zxysD7/ly/B2Xww4nwVrZto7Yr2bA
-	xm+rp+LruZ5H1Bo65teOA3GqnS/hNg+6E4MvNDvreYCI1cLHfmH7OXuKXMDiBQ==
-Message-ID: <b8f125be-e91f-4b44-8664-5746edb28f33@bootlin.com>
-Date: Wed, 22 Jul 2026 15:40:08 +0200
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="ftS+fLD0"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso12609266a91.2
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:40:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784727636; x=1785332436; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9feiKeFcTEnJsnOt+AVgxkROZ++OwVZ0S00dQJw9vl8=;
+        b=ftS+fLD0qv/usuDVM+ESN4XKOBsoTKL2Df1skMTcrKJpPs/FYnGILEECIUyN4Y0dmJ
+         hSAdny02ZivrrvoI1DRt+zq4G7RKhWYAC+zQsHGBJI5RJ7cCeKv+djO/MItHWvbRloR4
+         T7y8A8oxGiY4z7xW/njiWXG+OekQH2kFNYnUWVNcZOrJvCiP0ik4dUPJVl+7l/ReGaLh
+         cJ6axA5npjVn5KXrA7GtBVQsRiol13yVhAWEMoQb/hyTN52XgiHHre96VwRBSBU7IMwB
+         oVul2VZqDOWUDGAEG96NPQseqNkl5C/+LNvt4iCPVmJ5vwVAJE9IxyPoPJ3W4wXpNxBx
+         oG3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784727636; x=1785332436;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9feiKeFcTEnJsnOt+AVgxkROZ++OwVZ0S00dQJw9vl8=;
+        b=qQGQQ4wQJveUeAjedq8ngwylsTfignq5j4RdAl7oufZawTLfqPYWWVlvxmoZ4iFQZy
+         zBXRHBQ0YPAf495s0QljAjLxxqV/HteKdfoNsCyGj6XhsT+O7NQwwWE+FfY8f7edu4vV
+         pSCxoCoDnHbTTfsoa0/jNE7RxYSxSKv3Q3/aOErx5aR0NajttoR4P/oygV5rMDaFB/qI
+         x3vuvW6wMjVDDKyQ4Ov8Q1vq6Y2s9+42iVubWYYMYnmePvCHq/Whz8c8PkO+rgYNr75v
+         VG6/Y23f/t927CIcBmEq8VvnLok/di2XWjXEnkkQ80ecB6RVYipvux367B2Bwcu2hQkn
+         cPOQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp9ZeUCfcqeND+KQoL7Mjdff+OjUcR9aeCXD8hG6WjvZBeZryTz8BidnM2cWnSPP5BORUgNKo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8S13mBlAUuc6eEQid/idHA5y247YG0bW5mrloOawjMEwwNBjG
+	Pnq+xvjSyYJmT5J4zX3GV5PNAU8x9ZjGsYVQJpm7dBPUkhaRxCPl+GLpSV32hw1SJxI=
+X-Gm-Gg: AR+sD12sjafQJ4NMPzjzxNA52lUmlv2ML4tfwlbX7m1ckuMcG5G6dTNLP4NEpCklBaB
+	RsQ5aD6J5Jtrwrutd10bAdL6Mq6ojlgClYuIH1Uw3X+V7BtVWakeKqvz9yKO4GrgEdLAFg16u2g
+	idCmnjXvc4iubAj6VS8mBVNT8Ivk4/gepZDbYdKA7a1WepvZB4szPKDw74DyWCA09z6IJuEpiyv
+	yCIX6+klHeMNxwAg3cbLjphYrxzKgx5UPeudQh6W2tG+3ld26tViF2BV31c9K+/T1nwuCvRsTZu
+	lzwFvxI0FglDZXsmxZuBv3GkvqnFbc7RC9b53yS/J9UFXiZA25k7WZ8lLYefjZl9byWimhEjJZr
+	eqFvkZPvz++Ni7W0pJpwgYJTMAYViBE/ggnhub6VM60cI60tTwWiOARGw6QWrFp5k5aV67g==
+X-Received: by 2002:a17:90b:3dce:b0:38e:7f1b:f01 with SMTP id 98e67ed59e1d1-38e7f1b144cmr11954633a91.36.1784727635713;
+        Wed, 22 Jul 2026 06:40:35 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:44::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea7aa8c97sm1110409a91.9.2026.07.22.06.40.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 06:40:35 -0700 (PDT)
+Date: Wed, 22 Jul 2026 06:40:34 -0700
+From: Joe Damato <joe@dama.to>
+To: Breno Leitao <leitao@debian.org>
+Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Remi Denis-Courmont <courmisch@gmail.com>,
+	=?iso-8859-1?Q?R=E9mi?= Denis-Courmont <remi.denis-courmont@nokia.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 3/7] ieee802154: convert dgram getsockopt to
+ sockopt_t
+Message-ID: <amDIUv4Sa/i7MfEq@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Breno Leitao <leitao@debian.org>, sdf@fomichev.me,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Remi Denis-Courmont <courmisch@gmail.com>,
+	=?iso-8859-1?Q?R=E9mi?= Denis-Courmont <remi.denis-courmont@nokia.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wpan@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+References: <20260720-getsockopt_phase4-v2-0-8a08fcfa0d72@debian.org>
+ <20260720-getsockopt_phase4-v2-3-8a08fcfa0d72@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: Skip PHY attach if custom PCS is in use
-To: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Serge Semin <fancer.lancer@gmail.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Hariprasad Kelam <hkelam@marvell.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-References: <20260722131918.685761-1-zxyan0222@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260722131918.685761-1-zxyan0222@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720-getsockopt_phase4-v2-3-8a08fcfa0d72@debian.org>
 
-Hi,
-
-+Mohd
-
-On 7/22/26 15:19, Zxyan Zhu wrote:
-> When a platform provides a custom PCS via the pcs_init callback
-> (e.g., for USXGMII with in-band autoneg), the MAC's phylink_pcs
-> is already configured. In this case, phylink validates against
-> the PCS's supported interfaces and manages link state through
-> the PCS, so no traditional PHY device is needed.
+On Mon, Jul 20, 2026 at 09:17:44AM -0700, Breno Leitao wrote:
+> Continue converting the proto-layer getsockopt callbacks to the sockopt_t
+> interface, splitting dgram_getsockopt() into a do_dgram_getsockopt() helper
+> that takes a sockopt_t.
 > 
-> Without this, stmmac_init_phy() falls through to the
-> no-phy-node path and errors out with "no phy found" when
-> the DT has no phy-handle for such interfaces.
+> No functional change.
 > 
-> Skip the PHY attach when priv->hw->phylink_pcs is already set
-> and no phy-handle is specified in the device tree, allowing
-> platform PCS implementations to handle the link autonomously.
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  net/ieee802154/socket.c | 38 ++++++++++++++++++++++++++------------
+>  1 file changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+> index 85dce296d7513..763f63e48afe4 100644
+> --- a/net/ieee802154/socket.c
+> +++ b/net/ieee802154/socket.c
+> @@ -831,20 +831,12 @@ static int ieee802154_dgram_deliver(struct net_device *dev, struct sk_buff *skb)
+>  	return ret;
+>  }
+>  
+> -static int dgram_getsockopt(struct sock *sk, int level, int optname,
+> -			    char __user *optval, int __user *optlen)
+> +static int do_dgram_getsockopt(struct sock *sk, int optname, sockopt_t *opt)
+>  {
+>  	struct dgram_sock *ro = dgram_sk(sk);
+> -
+>  	int val, len;
+>  
+> -	if (level != SOL_IEEE802154)
+> -		return -EOPNOTSUPP;
+> -
+> -	if (get_user(len, optlen))
+> -		return -EFAULT;
+> -
+> -	len = min_t(unsigned int, len, sizeof(int));
+> +	len = min_t(unsigned int, opt->optlen, sizeof(int));
 
-Hmpf this bug again...
-
-There have been multiple attempts at solving this, cf this thread :
-
-https://lore.kernel.org/netdev/E1w66jW-0000000E3qS-23fW@rmk-PC.armlinux.org.uk/
-
-Now, there wasn't any conclusion on that, but I _think_ the proper
-solution is to re-apply Russell's original patch (the one in the link above)
-and to add this current patch on top of it.
-
-Russell states that this may (will ?) break qcom-ethqos, but OTOH
-we're in need for a solution here, and with the pace of PCS-related
-work that impacts stmmac, there's going to be a point where we may
-need to think about compatibility.
-
-TBF I don't understand the qcom-ethqos issue, maybe Mohd can help
-with testing here ?
-
-Maxime
-
+Does the same min() feedback David gave on the last revision apply here as
+well?
