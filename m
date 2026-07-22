@@ -1,175 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCE11DDC35;
-	Wed, 22 Jul 2026 08:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7BD32B125
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 08:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784708710; cv=none; b=g0NVOGeWZkoVe9Vxf9eUHfsw83b0W9nfxvTTn6VZCvyhQdMGzmJVPiXIkMJFqJNV+3e223eGmzZdq4WaD3wXU3UltwRsA+za9FXiN3aliQLds1eR8RBtKYHqLHoVxveyHWsX/J1xlnbuipk6joegE9JK3ApTMsxn/3z2lIZbE4k=
+	t=1784708997; cv=none; b=q7hTsSwS5CBSSmW8LLFuihqIKuOIG4j7Zj13bV4/2yfYd/xM0oQoToHO+CeimOHVM4jFaihXVnG1aXm8vyK5QvYyxR4OpUBHgPw3dBAVphn9OBiDtmYCuGLzaa8qLJ7ljsOsT4Fxczoq+RSd5O+CV0RsKPUzYjeAFV5BODFD2ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784708710; c=relaxed/simple;
-	bh=8Fm1NhxEv4ThFGfFigKRHL10dAlyTCC6pNNg8Ntn/4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U6J6q3MHsFDNOQyK6avB4FxH2YPJNN3RVCePK6bvntbbx8PIxCLyH9/yaFP2/XDF1YIH/TqbAG+fh19eCaUw3CSfFGncUNHxvSwtpgPF3yFbW6xcYdfd0dJzLRZfGnVScEZbefauIu4eK4FRrHZLYZDWjJhenbiX+pfFaDOcksQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSpVWTMe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784708997; c=relaxed/simple;
+	bh=D/zlSFd1H5gthfkgYjTudpTd+BpF8ExOfLFelpBdujo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q3qUBFgKqMFmhvvG01i4TeJIOZKhzab/GY/mBgCRdGf+TQVnMwRcL7pAXZSMWzVlxAwG6I2K6Kb0K5OvfIax5HuwiLYuFGloMqB3EGBDCpBiLHgVm4dvCalkLIwY3DlQAQTXmASec2osgUjZt6nLFr9Ik2LoKaA1ZrsKXWgtEK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TCQU/kgm; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XSpVWTMe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF491F00A3D;
-	Wed, 22 Jul 2026 08:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784708709;
-	bh=Vlk1XgoQCSbQxn/T8Z8FjUzrB0XKs9ddJy6TAd1zdxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XSpVWTMetwsRR7nK315yCCO3rHjzzLMmdMVRUR9UHlIlsxBLb8C/vqnpzrBMdglFY
-	 WxkGvD0LLNeNtzsB+lTY6kQSjiXaJuNHLhAtSZShOS1TUSBe0upZZF8Mf4SkspMY1p
-	 eh/A0BcCHo86NgarXl9pUYxNbeYsNLj4+utbe5vB7emqQwsTmCFyKAuesPxCIvA35c
-	 XpQXzjOgFaOFCY24fzh3daE06/Sdue1rHT6vG0w+el7oYi7Fb1QOK0+P1Hf1ALcV51
-	 QIdbhp+pZ/fY5tB71coxSfQsVMepewtcCIwUfAtmNgps6k7QkXwci1HwMS3JXUYR+v
-	 /MxFKtrpQ0Sow==
-Date: Wed, 22 Jul 2026 10:25:03 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: James Raphael Tiovalen <jamestiotio@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	stable@vger.kernel.org, Kees Cook <kees@kernel.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vxlan: mdb: Fix source list corruption on a failed
- replace
-Message-ID: <amB-O8v0P2AfY9Oh@kwain>
-References: <20260720160428.249356-1-jamestiotio@gmail.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TCQU/kgm"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47c6e9a694bso6934860f8f.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 01:29:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784708993; x=1785313793; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+o5BhmpQGUXsPUn94swQ8qdBGf076Q7ku70v+i3VIFk=;
+        b=TCQU/kgmUtjBnO3/OVGBkly+eRHPH5Yj4ojhiQFFa67sCF3OdqZNFyhSvA3sdLSm4q
+         fMLPjmhPHEoH3OjZRP2R7toYmHad1jV4aw6CpknluP/By6xFw8GXN9mwrA2hFt1NVikn
+         xpnu2twp4iTztmjldTVnEBx2fm/Jfkqtt/pQOyE9SmWqoXlG4sW7rpMTL3Yz8noVNNaz
+         nDr66oYrVSnDWcHmm8+EDAh6FBG16cO0jyvn3ducg65fXPggWn+oBAV/+hKQxkitXrJi
+         KQhxh6zMY7j4wCrK86bVckPq9ko2mjOmRd8lQxq0nY6SeR9qS3Si2HcQY7Qf9ZDffc5g
+         oK8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784708993; x=1785313793;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+o5BhmpQGUXsPUn94swQ8qdBGf076Q7ku70v+i3VIFk=;
+        b=X4JjvWQ9pQyDMrU6mnNJyXAI0DkpEIvop5rN5bWf6vJVsIXaDqCLUxWuem62J9x5r4
+         pppHOhvwkpoKPuOkgB662MLetvpQDh7cSUrKUMt1KYOMq/8naK0ML5W4YrH9OWgNeyG3
+         v91Yn5OOYiUGQZG38cJkbNxGHWUmJxbRSdGyuSDa0HvmSp8OT8Ccsp50FjtBXPfX2Lec
+         XTynvBBUQUokpUUEqi2XO0uNgU3shEI0Pv9Vx1CHmGDWt9UV4Y+BuuXIc5z2X6+wMazg
+         QG/5CuWd3nXPTPe0Jg75gK1We0r82syk0COji1zMIEZRcoCdHjakNZEW2Spw94chwxZB
+         nB+g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/9Zd5e/2LOvQtTpUCTYM6pyhkqKa6bpd61CLJ9ImYfCcHLq4POqo2AzOUuVx7I7rvhTB1iAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDOGC2piFaY+lBtDw/DfnGPRQPsLO41u1y7w8RQDVqh+zsftpS
+	4EzslKb/f1dCFwEMaesRrVgofLS7Z4wQbKNbxtZhKPJVcG5kkyRZgXh4XqGpQTv/bqY=
+X-Gm-Gg: AR+sD13yhty5a1QeJCj/5DwXq7fa+X0sMlgW1fwGM8ylhb7yr/S97aAtfZxg8T10wbT
+	jFBwzqJcpRTYL/x96myOuKaaWIHukmRZ92/71rOb5zB8SxBiRngLMt9IelAmHzIZpO80dMkN0Wy
+	j+vwK7EcPro7sNQ+DAB8IS2AyRw/Qoi9ejgQ9+/fxTqNobDO1OyY4OmtEZROZhR17NIW//NwKyO
+	hx1UgEolDSMCAMZHb3gl2YbAzNyJyevCY0cFD3UbzUqYm+gsBIUMFHLLxIwHDQpn2o4FMlNOKwz
+	7KefHE4aj2wu53bC1IM0Cj9wT6qVwo1t91FmsLz+ns9n5sxiq9WFahtHevUajRCYLc2V44/8jBm
+	cfGf2wMXzdgMLLk9HmrcIZ2rXzruN6EYwVhvNUnnnj/7KMqLfsSLSSfIWZeqBcSHcpihinnEkZZ
+	r+pnAIfjPF642o1ndziTBeAUayy5APcTgh2nQw6I1UU8s=
+X-Received: by 2002:a05:6000:240f:b0:47f:83a1:6b7 with SMTP id ffacd0b85a97d-47f83a1070fmr4754652f8f.21.1784708992834;
+        Wed, 22 Jul 2026 01:29:52 -0700 (PDT)
+Received: from ?IPV6:2a02:3033:6c0:905:69de:a6ba:2af3:1ea6? ([2a02:3033:6c0:905:69de:a6ba:2af3:1ea6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6dc25sm4148066f8f.33.2026.07.22.01.29.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jul 2026 01:29:52 -0700 (PDT)
+Message-ID: <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+Date: Wed, 22 Jul 2026 10:29:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720160428.249356-1-jamestiotio@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed work
+ on system_dfl_long_wq
+To: Marco Crivellari <marco.crivellari@suse.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Petko Manolov <petkan@nucleusys.com>,
+ linux-usb@vger.kernel.org
+References: <20260720100902.155605-1-marco.crivellari@suse.com>
+ <20260720100902.155605-6-marco.crivellari@suse.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20260720100902.155605-6-marco.crivellari@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 21, 2026 at 12:04:24AM +0800, James Raphael Tiovalen wrote:
-> When replacing the source list of an MDB remote entry, all existing
-> sources are first marked for deletion and vxlan_mdb_remote_srcs_add()
-> is then called to add the new source list. Sources present in the new
-> list have their deletion mark cleared, and any sources left marked
-> afterwards are removed.
-> 
-> If vxlan_mdb_remote_srcs_add() fails partway through, its error path
-> deletes all entries on the remote's source list. That rollback is only
-> correct for its other caller, vxlan_mdb_remote_add(), where the remote
-> was just allocated and the list contains solely entries added during
-> the call. On the replace path the list also holds pre-existing sources,
-> so a failed replace tears them down together with their (S, G)
-> forwarding entries instead of leaving the entry unchanged.
-> 
-> This is reachable from an existing (*, G) remote. An EXCLUDE filter
-> that loses sources starts forwarding traffic that should be blocked,
-> while an INCLUDE filter that loses sources drops traffic that should be
-> forwarded.
-> 
-> Mark entries created during the current pass with a new
-> VXLAN_SGRP_F_NEW flag. On failure, delete only those entries and clear
-> the deletion mark on the pre-existing ones, so a failed replace leaves
-> the source list untouched. Retain the flag until the whole operation
-> succeeds and then clear it. Also stop vxlan_mdb_remote_src_add() from
-> deleting a pre-existing entry it only looked up when adding that
-> entry's forwarding entry fails.
-> 
-> Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>
+On 20.07.26 12:08, Marco Crivellari wrote:
+Hi,
 
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
+> 
+> Since the workqueue work doesn't rely on per-cpu variables, there is no
+> obvious reason that justify the use of a per-cpu workqueue. So change
+> system_long_wq with system_dfl_long_wq so that the work may benefit from
+> scheduler task placement.
 
-> ---
->  drivers/net/vxlan/vxlan_mdb.c | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
-> index 055a4969f593..af7a0d7f95a5 100644
-> --- a/drivers/net/vxlan/vxlan_mdb.c
-> +++ b/drivers/net/vxlan/vxlan_mdb.c
-> @@ -42,6 +42,7 @@ struct vxlan_mdb_remote {
->  };
->  
->  #define VXLAN_SGRP_F_DELETE	BIT(0)
-> +#define VXLAN_SGRP_F_NEW	BIT(1)
->  
->  struct vxlan_mdb_src_entry {
->  	struct hlist_node node;
-> @@ -844,6 +845,7 @@ vxlan_mdb_remote_src_add(const struct vxlan_mdb_config *cfg,
->  		ent = vxlan_mdb_remote_src_entry_add(remote, &src->addr);
->  		if (!ent)
->  			return -ENOMEM;
-> +		ent->flags |= VXLAN_SGRP_F_NEW;
->  	} else if (!(cfg->nlflags & NLM_F_REPLACE)) {
->  		NL_SET_ERR_MSG_MOD(extack, "Source entry already exists");
->  		return -EEXIST;
-> @@ -853,15 +855,16 @@ vxlan_mdb_remote_src_add(const struct vxlan_mdb_config *cfg,
->  	if (err)
->  		goto err_src_del;
->  
-> -	/* Clear flags in case source entry was marked for deletion as part of
-> -	 * replace flow.
-> +	/* Clear the deletion mark so the entry survives the replace sweep.
-> +	 * The new mark is retained until the whole operation succeeds.
->  	 */
-> -	ent->flags = 0;
-> +	ent->flags &= ~VXLAN_SGRP_F_DELETE;
->  
->  	return 0;
->  
->  err_src_del:
-> -	vxlan_mdb_remote_src_entry_del(ent);
-> +	if (ent->flags & VXLAN_SGRP_F_NEW)
-> +		vxlan_mdb_remote_src_entry_del(ent);
->  	return err;
->  }
->  
-> @@ -889,11 +892,19 @@ static int vxlan_mdb_remote_srcs_add(const struct vxlan_mdb_config *cfg,
->  			goto err_src_del;
->  	}
->  
-> +	hlist_for_each_entry(ent, &remote->src_list, node)
-> +		ent->flags &= ~VXLAN_SGRP_F_NEW;
-> +
->  	return 0;
->  
->  err_src_del:
-> -	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node)
-> -		vxlan_mdb_remote_src_del(cfg->vxlan, &cfg->group, remote, ent);
-> +	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node) {
-> +		if (ent->flags & VXLAN_SGRP_F_NEW)
-> +			vxlan_mdb_remote_src_del(cfg->vxlan, &cfg->group, remote,
-> +						 ent);
-> +		else
-> +			ent->flags &= ~VXLAN_SGRP_F_DELETE;
-> +	}
->  	return err;
->  }
->  
-> @@ -1069,7 +1080,7 @@ vxlan_mdb_remote_srcs_replace(const struct vxlan_mdb_config *cfg,
->  
->  	err = vxlan_mdb_remote_srcs_add(cfg, remote, extack);
->  	if (err)
-> -		goto err_clear_delete;
-> +		return err;
->  
->  	hlist_for_each_entry_safe(ent, tmp, &remote->src_list, node) {
->  		if (ent->flags & VXLAN_SGRP_F_DELETE)
-> @@ -1078,11 +1089,6 @@ vxlan_mdb_remote_srcs_replace(const struct vxlan_mdb_config *cfg,
->  	}
->  
->  	return 0;
-> -
-> -err_clear_delete:
-> -	hlist_for_each_entry(ent, &remote->src_list, node)
-> -		ent->flags &= ~VXLAN_SGRP_F_DELETE;
-> -	return err;
->  }
->  
->  static int vxlan_mdb_remote_replace(const struct vxlan_mdb_config *cfg,
-> -- 
-> 2.43.0
-> 
+these changes are problematic, although they look like a good cleanup
+in first place. But the test you are using to determine whether USB
+devices need their own work queue is incomplete because you are not
+considering the reason they allocate their own work queues.
+
+These drivers have their own work queues because they are part of the block layer.
+USB devices can share a device with a block device (storage & UAS) and
+USB devices have common, per device operations, in particular reset
+and runtime power management and disconnect handling. Because these operations
+can be necessary to complete block IO neither they nor anything
+they depend on can use IO to allocate memory. That is they need to
+perform any memory allocation with GFP_NOIO or GFP_ATOMIC.
+
+That is also true for any operation on a work queue they need to wait
+for to make progress. That means you cannot limit your check to per-cpu
+variables. You also need to check for such dependencies. In particular
+any usage of flush_work() on such queues can deadlock, if you use
+common queues.
+
+Please refrain from making such changes unless you have fully analyzed
+the dependencies.
+
+	Regards
+		Oliver
+
