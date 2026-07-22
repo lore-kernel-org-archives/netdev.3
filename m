@@ -1,93 +1,185 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E12B470E96;
-	Wed, 22 Jul 2026 19:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55286470E8F
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 19:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784747368; cv=none; b=s1qh630liQvxTwtaWNjdMODIvZMzWp02Rhx+lW+KrdZCjlnYw40GPX4PMq8H/VMSPRncDOsh16eN83bnGlQkTbJOlUaL5oEQpOz3tscW1NupercleVMbpXwc3fRg822LG/Jan7Y6KvMy5ivmmkOiO1FTLpceJrLBoppbfOXFctM=
+	t=1784747973; cv=none; b=fo9Ri+3eH0LbrpYzRBG/i0DGos11nVNaSMp91Po+cSJzFY6fVFVRDJoVb+yKmMY9gd5I+X85kQUL3vIq9rSWOYKfxOAnrIyGcKcuVut5+U2X2sEMuHI9wApX/4Xsz/QI/k9UsC4qZrzFtQ5F9OzjBwPJs/Bf/mjMJAcu7Q0csMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784747368; c=relaxed/simple;
-	bh=jGczeFLd3lJJ2NFajy0wYg4HkdEDYycx/snivlN1ScY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayT9UG96paqz8wAcrLa9+vCEXvdvFcUyw37o8qfOr/V826x1X/1UFNxttLZNeFt8sFYgojd8/vWqEajB0Kfrs/zWg9yY5/XSb+JTD2DTk5FknrG/RppiIxr9b+hAXbdwFgAvRdoIRN3qFm3XxwzsBsdrPiDQqZDvTxc6gXfb5Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1lqGc+Pg; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784747973; c=relaxed/simple;
+	bh=Jb9J5bSOSje9FMdG7C+lQp/nEJBkbTNQ6Tu3vF6YLm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s3LUG1t4J5ndLhOZ+ego47Yx9jGNBUxZlkvd/hYcQRenjwR2Eq3ZD0r61KK4dospvfmyv5dm/Z7DqkSHYuI1KAXpL58/ZuNgzb5O0lGK8zEpwvPsIOtpneiUOqBd6wV++RyD8dwOvTEobIaCUXCPsPF1ouNITC9B2KV8Lh9gHBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=KWnoGLja; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=readmodwrite.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1lqGc+Pg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=lp7xAXjrSqTcd731tOPr+hjOYjdeU3wnP4D7LeHfmx8=; b=1lqGc+PgNRqh8yfzUImsXfSR7w
-	12fYuZI9IvBr+FLAE/ieZSgNpVwNbPfQn6c4NqnEwmI+UYXzSDc+n3iS8V4Gwv+bNK7NzDClyO5ZH
-	Yt3fqNF2gTjJbsC9LSH4hvPZ5fgWfTa1vaECYYfSZ2IOR0wP0QRz7eRXcsjGCbzdtkP8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wmcJb-00DgGL-Oz; Wed, 22 Jul 2026 21:09:11 +0200
-Date: Wed, 22 Jul 2026 21:09:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/8] net: mdio: realtek-rtl9300: Add polling
- documentation
-Message-ID: <ef41a5bc-804e-4a5f-863d-7221fc1ef1ac@lunn.ch>
-References: <20260722062356.12291-1-markus.stockhausen@gmx.de>
- <20260722062356.12291-3-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b="KWnoGLja"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47db714766aso3884787f8f.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1784747969; x=1785352769; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pnInvCDAwEksrdCAmMtd6TY5IpoNHnNiOOgeViffG5c=;
+        b=KWnoGLjaztBwfvaNzv3hM8DLIpDdS0MGN/bpFMCS1lIM0PYf7kzJqsX+d3kMWptqx5
+         hLRpjsTf0oAnwAdEBRiBpMMc1lbIYRv5diN4U4M/vhYcbiQxWwqajKEvzttN3xsP4hRe
+         sRYh1ngrIyxB+MnZP9/yqnDzzqHs0XjYMlhAJ04MbHikJ6X/wGNmHmsmt3QuJ4wyUWAB
+         phk0hH873T4tdw8Kr6aoFHL6us7YTvrlzIvYBLLWUg41ZYpqW1WkHuVDyjrrELXGfBEI
+         3kNWiRGjJMAtluPcKd/Aa+2pZhg6NUC0+u9IscRiRmRRReF1nuQ5bMtrqtGBbTQTSfD2
+         efBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784747969; x=1785352769;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pnInvCDAwEksrdCAmMtd6TY5IpoNHnNiOOgeViffG5c=;
+        b=NjLUiHkFV9S3T5cGfQH0H5SeSVLqQ4Ci/dxgHEfCCpXQnOsWNgYAa4S830LtkgM5fe
+         IMhq7pFv5NIPRly/jOSvwWeUpkG60DcqIQ2+d1Lt+kCkiwYFnXTD8yY+MskF9EgFfTgE
+         MeIOEgRwCBaPFu1AGazrzVY/JJ33e00vb9ftshT1Y0lvGRpnR6lMtcaBZwPd7oUQjUuw
+         BpmN8sBjSEJYwLV7rmKHJW3s7eeqN2IAW+/M6UhveZblPthoWZyHVoHM50OuCQ2d0Dod
+         bCBcOcUvhFawVrqhSQEMCcjIuKnqjfbn4sl6+zMQQwNZ3cIUmSMNdY2ObJYxaYWBIqPO
+         9YRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqNfqvI9ZqH9IqEfSBEScSOix0lxTo9qixbBw/AN11jTu9PAx2Gl2qpx+/3o5Z0dZ63tSD3t9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdwOdmFqyJHChRqGXty1RwMztv1tIFQvcApurABvhIXQgc9fmH
+	ieGrU3/PbZjatD0xk6T8WW6ObifkKitVm2VGu3/tw+0nvFaVVq8sUke4e/G8dzBkpQ4=
+X-Gm-Gg: AR+sD125JpGXTDUPBJ50eeO9gj/eSXJJ4KvwPhDRD0rW2iEdnykBAqR6/A/49Bw2ONt
+	L0LxFJScfNdgh0oJtoa1OZnfOl3Rjwn0ywc8cDVkFnRqsfYQZdNaD+3e/QF8VdAPgM8NHBDsoZE
+	yf/MqYEQoj4hIixWa84o2RyDt7Nbe+033gmc/Jp7+PXO/4are6bOBup5pZF4NGffQB7jCaib6re
+	aFw2zWdO3o76DUKxAMuKfNH+I6UKIu2IndaQppetKrZwQWwDH9TjLO3A+WeJ9EUh4kOroEmb3PE
+	GO4wzhsetPLNX/N3bah0CU4GqGqF4/fsuRLn0ZmavH8omwqDd0Xy1/NIJrJzXflktrb4WIKwDQI
+	6assPtAQdr8EJVYZhy9CbRJ0BjkQtRAQdt51oeAFt5Eiy38+Jeo+spdS/AVtiFmSOab2T5C50TC
+	lESjbS
+X-Received: by 2002:a05:6000:25e2:b0:47f:537b:d5d0 with SMTP id ffacd0b85a97d-47f840c95admr7850328f8f.28.1784747969382;
+        Wed, 22 Jul 2026 12:19:29 -0700 (PDT)
+Received: from matt-Precision-5490.. ([2a09:bac6:37a8:26dc::3df:4d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c67339sm8862982f8f.31.2026.07.22.12.19.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 12:19:28 -0700 (PDT)
+From: Matt Fleming <matt@readmodwrite.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: [PATCH net v3] veth: convert frag_list skbs before running XDP
+Date: Wed, 22 Jul 2026 20:19:25 +0100
+Message-ID: <20260722191925.2192070-1-matt@readmodwrite.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722062356.12291-3-markus.stockhausen@gmx.de>
+Content-Transfer-Encoding: 8bit
 
-> + * Each device has a SMI_POLL_CTRL register. A per-port bitmask decides if the hardware polling of
-> + * the associated bus/address is active or not. The hardware runs a tight loop over this and for
-> + * each set polling bit it issues a status check for the PHY. Attaching a logic analyzer to the
-> + * MDIO bus of an RTL8380 and RTL8393 gives the following commands (in kernel notation):
-> + *
-> + *	RTL8380				RTL8393
-> + *	---------------------------	---------------------------
-> + *	phy_write(phy, 31, 0x0);	phy_read(phy, 0);
-> + *	phy_write(phy, 13, 0x7);	phy_read(phy, 1);
-> + *	phy_write(phy, 14, 0x3c);	phy_read(phy, 4);
-> + *	phy_write(phy, 13, 0x8007);	phy_read(phy, 5);
-> + *	phy_read(phy, 14);		phy_read(phy, 6);
-> + *	phy_write(phy, 13, 0x7);	phy_read(phy, 9);
-> + *	phy_write(phy, 14, 0x3d);	phy_read(phy, 10);
-> + *	phy_write(phy, 13, 0x8007);	phy_read(phy, 15);
-> + *	phy_read(phy, 14);		phy_write(phy, 13, 0x7);
-> + *	phy_read(phy, 9);		phy_write(phy, 14, 0x3c);
-> + *	phy_read(phy, 10);		phy_write(phy, 13, 0x4007);
-> + *	phy_read(phy, 15);		phy_read(phy, 14);
-> + *	phy_read(phy, 0);		phy_write(phy, 13, 0x7);
-> + *	phy_read(phy, 1);		phy_write(phy, 14, 0x3d);
-> + *	phy_read(phy, 4);		phy_write(phy, 13, 0x4007);
-> + *	phy_read(phy, 5);		phy_read(phy, 14);
-> + *	phy_read(phy, 6);
+From: Matt Fleming <mfleming@cloudflare.com>
 
-I've not seen anything about what you intend to do with the fact the
-hardware is polling the wrong registers.
+A frag_list skb can reach veth with data_len set but nr_frags zero.
+veth_convert_skb_to_xdp_buff() only converts skbs that are shared,
+locked, have frags[], or do not have enough headroom. It later uses
+skb_is_nonlinear() to decide whether to set XDP_FLAGS_HAS_FRAGS and
+xdp_frags_size.
 
-The link speed is in register 0x1a, which the polling is not looking
-at. The PHY will indicate the media side is doing 100Mbps, but the MAC
-polling register 10 probably thinks it is 1G. I expect bad things will
-then happen.
+That exposes frag_list data to XDP as if it were stored in frags[], but
+frags[] is empty. AF_XDP copy mode can then trust the bogus XDP fragment
+metadata, walk an empty fragment entry, and crash in memcpy() from
+__xsk_rcv().
 
-I know it is not possible to configure the MAC, but can you at least
-see how it has configured the MAC? You can then make the mac_link_up()
-callback check what the phylib driver says against what the broken
-polling says, and when they are different force the interface down and
-report the hardware design is broken.
+Route non-linear skbs through skb_pp_cow_data() before exposing them to
+XDP, and only advertise XDP frags when the resulting skb has frags[].
+skb_copy_bits() already handles frag_list input, and skb_pp_cow_data()
+builds frags[] output with skb_add_rx_frag(), which is the
+representation XDP multi-buffer expects.
 
-       Andrew
+Fixes: 718a18a0c8a6 ("veth: Rework veth_xdp_rcv_skb in order to accept non-linear skb")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+---
+Changes in v3:
+- Target net instead of bpf.
+- Add Return: to the skb_pp_cow_data() kerneldoc.
+
+Changes in v2:
+- Use skb_is_nonlinear() in veth_convert_skb_to_xdp_buff().
+- Move the skb_pp_cow_data() comment into kerneldoc.
+
+ drivers/net/veth.c |  4 ++--
+ net/core/skbuff.c  | 18 ++++++++++++------
+ 2 files changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 1c5142149175..00e34afd858e 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -756,7 +756,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+ 	u32 frame_sz;
+ 
+ 	if (skb_shared(skb) || skb_head_is_locked(skb) ||
+-	    skb_shinfo(skb)->nr_frags ||
++	    skb_is_nonlinear(skb) ||
+ 	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
+ 		if (skb_pp_cow_data(rq->page_pool, pskb, XDP_PACKET_HEADROOM))
+ 			goto drop;
+@@ -771,7 +771,7 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
+ 	xdp_prepare_buff(xdp, skb->head, skb_headroom(skb),
+ 			 skb_headlen(skb), true);
+ 
+-	if (skb_is_nonlinear(skb)) {
++	if (skb_shinfo(skb)->nr_frags) {
+ 		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
+ 		xdp_buff_set_frags_flag(xdp);
+ 	} else {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 18dabb4e9cfa..ba3dbac80fb4 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -927,6 +927,18 @@ static void skb_clone_fraglist(struct sk_buff *skb)
+ 		skb_get(list);
+ }
+ 
++/**
++ * skb_pp_cow_data() - copy skb data into page-pool backed storage
++ * @pool: page pool to allocate from
++ * @pskb: pointer to skb pointer, replaced with the copied skb on success
++ * @headroom: headroom to reserve in the copied skb
++ *
++ * skb_copy_bits() handles both frags[] and frag_list input. If the copied
++ * skb remains non-linear, it uses frags[], which is the representation used
++ * by XDP multi-buffer.
++ *
++ * Return: 0 on success or a negative errno on failure.
++ */
+ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+ 		    unsigned int headroom)
+ {
+@@ -936,12 +948,6 @@ int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
+ 	int err, i, head_off;
+ 	void *data;
+ 
+-	/* XDP does not support fraglist so we need to linearize
+-	 * the skb.
+-	 */
+-	if (skb_has_frag_list(skb))
+-		return -EOPNOTSUPP;
+-
+ 	max_head_size = SKB_WITH_OVERHEAD(PAGE_SIZE - headroom);
+ 	if (skb->len > max_head_size + MAX_SKB_FRAGS * PAGE_SIZE)
+ 		return -ENOMEM;
+-- 
+2.43.0
 
