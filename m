@@ -1,28 +1,28 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020137.outbound.protection.outlook.com [52.101.193.137])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021092.outbound.protection.outlook.com [52.101.62.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98080416844;
-	Wed, 22 Jul 2026 17:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BEA43CE60;
+	Wed, 22 Jul 2026 17:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784739880; cv=fail; b=a5aPzIc/yuqw8o/IVkvHNemFard21seOvfaWIEHUUgQ4eTnIO/hrjIr4uNpobAJyZUFxZXCV3T/nvxRpi2Y0YqaTmUFGAWW4Cxoqm6+WVjKbKLXSbl8YpDvoFPqsv7rGTZlAbJeLFY9AYRmc2YZaIeCTAZhdaOKh9sXVcyxw5BY=
+	t=1784740031; cv=fail; b=Skm9BNL2Ez5xFaNtV2qvghr+spOsKT03Wr+KQJ2+kPtCRuSSgFkgy8XuCdvxJwNuBY4EHpJNtNMgv6Zjn2DQPSxxNZiHZfHG/4Ifb1nYObBe4+gyvrtjGb0KeSFUBiOp78+CSXDhk7LskFgq9XulNp4MYdQUccDrvdtcC7efZOg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784739880; c=relaxed/simple;
-	bh=XhAtEG+Lm8KoGztHOeyjIxu2H+zkq0FQF90SrjvAXAk=;
+	s=arc-20240116; t=1784740031; c=relaxed/simple;
+	bh=1dMVA6beOCLMajf9aGepgbKjgGzleE8dR6h9Zs4FrLw=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kRIqehCORtlL/qnvdIijyF7SSNUEO2ZiSW1K91xczI9aWMKBmP2FXXT5N4ZLo50JDhqfTGoIUt0C3NlNKUgoW7Y+6YI5ruWs0nBsUP1A9kH6jnyicBnWctFvbpbn5zVAWYztvMGDur/4XDtArDWQ43GACy5EjfyThDuk1k7UnSk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=FRkp3QQM reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.193.137
+	 Content-Type:MIME-Version; b=OezD6WqbOR6lqTNqBzK+xottxXfklGYiFpJOzJE2266L0fvDlX3HRrHEh3rOfuUJmAshUNEn4MU0B0aDYFWXE/3WAB1S3OqokfRlh5lGZXkTU1bqBCvwEGa89ho+/Vfvf/5ugaLqSD/h6NK9CQD3OG/eaC6IbMAqf9Vynh2a8LM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=KzsBbuLJ reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.62.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="FRkp3QQM"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="KzsBbuLJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aDI1Z3YGzdVBgKtSRsD+F3XF2ggL4fvdVQd509NwNj3/Cq43n2i7z7q46isxX35RhZuzFIixD6RmLc07S096+wNjORjWqpamsjr7olpH4h86yKO2lmPKyWOPmv5+2VYqLQ+55wR4PlsTu7M1EWYqylxhRpfvMFLONh1IX7GrX038/273kntNx4RRitMlRYbdlW6k6u9u6zluqRawKwWDn8CpdKkfCKV2QESXf0ZGVfR69AS27w5Gb2jRtVN3rQV1kByztrn4MmAryrQICLXLa817JCzdRurU2wCWReQz2Wdu9xtX/NDXuQ/sadGu/RxTFy5mrRSryhzcnMdNDijBAg==
+ b=EKTNvcYaNtv7LX+PXjM3ALvyqrIS+H6mBrvnq9YW4WAvPesQYFESzwvlpuskzoo8L+MOL5thEGNxmTeaKy+KNFUSWzgGfFAL+00Sai5nj+fhVmbo60T9cj8TTIIH0c6C0d+BcaZ9YsarM/TJ6zMbYyjoZ77733CovzpTCZI3p/zSTvpPj30VMOnFHEfPtxwwMDk59BYZA6PRvX6Bj6jdAsHFk8S2m4KYQODsKu9wkcxAEqmlSC2nag2Bpsf+7Lf4XoyM5BtQPAVbIySz83WA0/m5q2xbxUe8a7yeuAAO+w6YELq73sAhCUqiwdvCSltsIPn4HfvK8mZ2GWFs8I5KZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kKfLtErdRUbxDkCMcTZBMxMZguylTC0fjjDBiqdJMKY=;
- b=QwzNNLNSgBKbXvXqu753hgqq22vj8u8931/Mz9t6u+CfWzYSxHFdnQwtarrd6DxKR1FgrXHNYPU+R8O3IGeSATGX5RNN4ji+Y8StOnGLCiQycw99tfrMdOq7acetxRupfymrGc2n5JUMfHG4pRmNSX46DEqLmNYLSXD1ixa5H0DWm9RVZ642h6lmSUfjcQgNI00ps9L2Q2tQwGwFiR8Emzkr6yAzyGc4mnfecy+Qyai7PQwvWsKKcmrJxs33ifWUt+K1gzkngcf583e62Sx0k+gGOYseFsKUG2cjqX0a9s7i1gXhk4U6S16J0fVrvwYa3PzNJzJGBDM9mXgD8TX/YQ==
+ bh=dW4Q8TVNaQpESl8b1OEHiWF8RW/t5XS/vjcPIlX6gTg=;
+ b=dqQl+Ly8jn9iLCqrVf6HUPuoff6TyG86w/gVSADwnymn+6SGuI40tGVm1jpt52Xz4rDFJmloWknCJ6AJlN6u3COIzxDO66CuHqzWoH4ntRnzp7Xna2MZ36PfbFRTP81dGC9iQKMgTiPILFQMaRc/CR8hrwEfi9scEA0vLzbztHTAVsINjS0A546oaqB8zF3P+35LHWWkA+M3dS19FI9w1A5PWugIuhEnqI+qcpTbcGPoeu/J5hgVupmwZSLhHwcmb21ZEnXljloSLWvcfqNtZcYE2SSRyY9MF5+PsoEIzW2MuSesTikzvNBNGgtoucqRoFZEcDZ3YxJ81dE/0MOX+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=amperemail.onmicrosoft.com; dkim=pass
@@ -30,22 +30,22 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kKfLtErdRUbxDkCMcTZBMxMZguylTC0fjjDBiqdJMKY=;
- b=FRkp3QQMymew4H8nQ7qOQLvzGCDO/NOulVJBCmzNpXFBW8RBa00kNHkEux8TgGbTdlwfTqN/4V70E9VmeDgmlmi8vExWHZwVOOJB1YSRD1khDZcZF8Y1sKBNiBFik6wyzk5TvznG3FzvCr3CLjgL528WLV6iJf+My/t4Rz/Txec=
+ bh=dW4Q8TVNaQpESl8b1OEHiWF8RW/t5XS/vjcPIlX6gTg=;
+ b=KzsBbuLJ551hyalOFU5zhp92Uz/A8FYJ3zCYSDVODk71oAACvZ4261PVCD3GDOmZeCN9xUCsOb54d+ggUzb6sThKFLDsHze0DgPB/fSyzQpzF/xy0pHhakbbgoHY0H+ePZAy7cTuLEf44JymCs6yoMeLJBGZ+uxQyQtYJJ0Elp4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
 Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
- IA3PR01MB8724.prod.exchangelabs.com (2603:10b6:208:532::5) with Microsoft
+ BY3PR01MB6611.prod.exchangelabs.com (2603:10b6:a03:36a::5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.10; Wed, 22 Jul 2026 17:04:32 +0000
+ 15.21.245.10; Wed, 22 Jul 2026 17:07:06 +0000
 Received: from BN3PR01MB9212.prod.exchangelabs.com
  ([fe80::44f3:1050:dce8:1ea9]) by BN3PR01MB9212.prod.exchangelabs.com
  ([fe80::44f3:1050:dce8:1ea9%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 17:04:32 +0000
-Message-ID: <de0d8a0f-7f08-4654-b9e0-b8a3c8abb349@amperemail.onmicrosoft.com>
-Date: Wed, 22 Jul 2026 13:04:29 -0400
+ 17:07:04 +0000
+Message-ID: <901c66d2-4286-4ad6-b1e4-d971f4a52805@amperemail.onmicrosoft.com>
+Date: Wed, 22 Jul 2026 13:07:01 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v45 2/7] mailbox/pcc.c: ignore errors on type 4 channels.
+Subject: Re: [PATCH v45 3/7] mailbox/pcc.c: report errors for PCC clients
 To: Sudeep Holla <sudeep.holla@kernel.org>,
  Adam Young <admiyo@os.amperecomputing.com>
 Cc: Jassi Brar <jassisinghbrar@gmail.com>, netdev@vger.kernel.org,
@@ -57,15 +57,15 @@ Cc: Jassi Brar <jassisinghbrar@gmail.com>, netdev@vger.kernel.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Huisong Li <lihuisong@huawei.com>
 References: <20260721175258.87600-1-admiyo@os.amperecomputing.com>
- <20260721175258.87600-3-admiyo@os.amperecomputing.com>
- <20260722-rustling-taupe-sawfly-83c3ac@sudeepholla>
+ <20260721175258.87600-4-admiyo@os.amperecomputing.com>
+ <20260722-quantum-efficient-loris-adb10e@sudeepholla>
 Content-Language: en-US
 From: Adam Young <admiyo@amperemail.onmicrosoft.com>
-In-Reply-To: <20260722-rustling-taupe-sawfly-83c3ac@sudeepholla>
+In-Reply-To: <20260722-quantum-efficient-loris-adb10e@sudeepholla>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0079.namprd03.prod.outlook.com
- (2603:10b6:610:cc::24) To BN3PR01MB9212.prod.exchangelabs.com
+X-ClientProxiedBy: CH2PR11CA0006.namprd11.prod.outlook.com
+ (2603:10b6:610:54::16) To BN3PR01MB9212.prod.exchangelabs.com
  (2603:10b6:408:2cb::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -74,93 +74,208 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|IA3PR01MB8724:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7a588e7-1e06-48ad-a24d-08dee8134cb7
+X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|BY3PR01MB6611:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed5b4d69-1acb-43b0-9f4e-08dee813a74b
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|10070799003|1800799024|6133799003|56012099006|11063799006|10067099003|4143699003|55112099003|3023799007|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|10070799003|6133799003|55112099003|22082099003|18002099003|4143699003|56012099006|11063799006|5023799004|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	pxTpv4HcMK1Hv+hJX6WB2gm9iWO2YoOBo89Ii7gRs3hPnw3RiHvxbTmFK9cQm/oNWBxIeCvcymaGAUverT4v3HePguAdOFDYQ4uiF8rwctjPM2pN649HxLKTaNAzxheUxfMe+XzpvwqdcU/5K4/AyYdHVxlLPVQiQ+i6mFaIW1kLXJLnHhW1zL+5kOlM4pYqtyLYuZc8BQXGtKKq35DgoXNTXnJ8mKYdAhsdd8j+aQ/fgOZWuHtdsUSPIaSrNdqHGvMWZZbMQ34DxawgGbViPNa3QygaH18Ft9gQcvw7EzjhlqC8cDzGn7QkzSTT80CU+hooOP4hgKUpFIhvhmstMZEz+14NBe2M2o/o/Nm46JPRUS5wO4kk0xTkNGMz035wj6EMZ9VeqLuX6h8sCD76s3m5j0Y4uovC2FT12K17iB2odSaYr3T2oNqqkqo8D0V9i/omidmexIZJengmbnqD9LPt58uos1e9vHfGeoEthHZxmhTDFSl8WlYDyFyDQ6+jJgCnJfuLmoZ4LuDQJXxZ/16Fp0vobh9YTivmGdAjtd+Qh4j5v8QI6Rc8vf+XDCwRXnSNQdI5D1M2tZAwQu9xzLyADUt4GWtw1hWJHCJyjWU2CgVBbDfjhOlGf1FUd0cGfnsob0Sm/WsVsrQ6AgynZEoIIi4ELLMoAe2lsGmk0EM=
+	IU0XjLau6M0RQj0KtnHOg9Ytzixt0zFiJAqaAN+dGi2O0zM3OAADfGBwzTpkbi7zzuOGzoAqxNJqmfsI2apoa33im9BsYt4hNUtm8Xi5G4ytcDvi/PyrD9NRH8u/8joRkDPdfDCgQSuXdm/SXobaX1XWSDfh4tjPzB9agkMQi1ks1WMIHK/Li240aPYcxIon15FVyja7VyoIG/Rq25ET4hWsbzgEm5sOv/MLYHF1HZI3257vF8VeCL6D2PlADpuNlik1L93xpXciNgKbfD0oPFzWxXN4WRHyH3ILBbnta6ctq+3dOoeUBB8FTXPWvLgIGxYfOazSGL0OQXhhq1JWavvl+zXn5tOtJnstO6J2NQHNxktcWahkeaHABjIxvgni4DzuqxsFyNNPbpF+tWZxnhdzk9ncU7HJvRBugF7SuBAaLxlRoepXBIXBAqoQMWi771EdnhLrvUYmBxDfBzMHVN8R8RquNNlNiFVAjQ/XN5xSKX2ZGr/GADYwqkldA5yLnmTeTKCC9GmxVP71OeTKjOo0h3MGrMcq9FIKFuIctbFVU+b/R5wkYSEx6IjFmYXSvTJiumbVaZh16WIw/Xyx8aOO75yzCxkzcaWIkPPQI/WFxy3+jm04eDLSDz9EBf40MKhKmpQoPJR41VGmT6PQkzPKZJyzmhyrzsNPfAeEDwg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(10070799003)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(55112099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(10070799003)(6133799003)(55112099003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(5023799004)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RWc2SXBCZG5NNjB6b0dhcUFKZTNGZUlWdDVTTEl6OWczZXVFU2FldUd0WCtO?=
- =?utf-8?B?azlVV2Q4dngzVDNsbkhLc0k4bU13YkRwc0N0SFg5SnVRQlFENCtUTWRtZWI5?=
- =?utf-8?B?bklWY2o1a1hBWHJWSGV0dDl3OGJUOEFIa000eUhzMHNHMXROZ1VLTlVqS0lM?=
- =?utf-8?B?ekFoN1RsS0JwQnlxaUU0U3I4RHI0UW1Gd3EvS2gyRDRlcFdTaUk3NXlrc3gw?=
- =?utf-8?B?UW5ZVHRjV1pnTVAzRk9GNmJaTkpuODUyU0hhd2tlVExOeXYzOEpLSzVQcXdY?=
- =?utf-8?B?VTA4bkZQMjRxN1RvZU10WTYzdEV5YUNucXk2czVGV3JGRmkza0VrUWN2SnVj?=
- =?utf-8?B?Nzl4MWlra1g1Vk9kazRIODFBSVM0c1JQVnZuT1BjQUtaYU5GUjIxMWQ0dW9G?=
- =?utf-8?B?ZHpQbU5RcmZNNldGTDhnbzAybEVRWFhSNzhwNnJ1eEhEbndRNzEzdnorRTVV?=
- =?utf-8?B?aS96Sk9LaEtPZzEwNm9YclZjUmJIQi9UR1d0K1VXWElOdTlqaUY5cnRWYjBa?=
- =?utf-8?B?c0dFNVJpSERHT1MvMi9TKzZtRHBQbkxRRXV1eXJWV2ROQUFhZzN6ODg0TUF1?=
- =?utf-8?B?S3libVZYRXNTU0F6U0ZZbHBUVG5LWDV3QTg2YVNQSjhSR0JJa0kxckVKdmxo?=
- =?utf-8?B?Y3lvQTFVRmRpd3pRTVk2d0xSUi8yWU5DWFQ3S1BYZkRMNjBPQWdPc2xIVnBI?=
- =?utf-8?B?bmRLTXRiT0hrS0NUc3ljeklnVng0YUtUZ1BBNFZMLzliUEwzOUlNTEZkWDRr?=
- =?utf-8?B?N2wvcFRyTTVJQ0VNYWJmZHZBT0V3Ym9wd3gxemc2b0k3M2NvOGljZjl3cmRL?=
- =?utf-8?B?WklHa1B0NlNVRzd3c0R2c0dpMXRteVMrbnFROGI4VkpBSjB4aWFtdWNJUy9z?=
- =?utf-8?B?MVYzaEU5QjJ2d2l0bDhGb3J3ZDJQSVROdnlLNzNMbWwyYktLekNuT256YTZZ?=
- =?utf-8?B?NWVWbkRkclc2N29vV29BbXNBdTE4RnNTeXVvMmRaZGdDSXlJckQ2am92TGZi?=
- =?utf-8?B?eXpWSmM2SUsyeUQ1dUs4SS9KSlRBRW91MjlHWlAyZnpmcElzcEFob0o3WU1T?=
- =?utf-8?B?Nk96NExOb0NwcUluR0Z2eC8reFRDZWZDYmN6aSttV2E5V0I4TGpGUnpYaGl2?=
- =?utf-8?B?WlNEOWd6b3I0aHJUY3VRTUhVTVY3TmpxbjZCbXNCbTRmcFZHTis1cXVBdG8w?=
- =?utf-8?B?cFNRZlBTekJUQjlIUUR2bmZJTkJMRk9IbGVBZ3UrbS8xeDN2cDFNRlE0QXFl?=
- =?utf-8?B?dDVyV3IyWmozU1RLM1dMMmxvZkJZQVEwM1ZXaXBkZnc0S0d2Y1E3Z3NKbTBa?=
- =?utf-8?B?bnZJb1JsZk1pdXczV2VzZENmK1ZGYnczVXJrSEdqYzlZWDhNZ1RnYXI2ZmY2?=
- =?utf-8?B?eTFLOTEraXZmdEFLMDRib0lXM3JhZ0xNVFZUYms4MUJqOUxmU01TYVRZSi9y?=
- =?utf-8?B?VlNWWHBuZmVXK2FLM3dnSHFQM1FtaGRDZ3djcmtGbm9Zb21MUkRSQi95RTZR?=
- =?utf-8?B?SW02Rk4vYUUvdmJYQk1LV1N2WUZzS29Iay8yVTFOaS96NGdVcXozSlQ0bXRX?=
- =?utf-8?B?M1lOUUtQMmVDeDlkTGdZZXk3MWl3dVVyS3dMUXZ3WmxTRUx5OEMwUjNnSjMr?=
- =?utf-8?B?Y2loZ0plUVF5TnlDZ05YSUovdHhEWmw5VXdlV1gwMnBHTjBGajVYcXFZeGNk?=
- =?utf-8?B?RDY0Ny9ua3d0Ym5teDBwK2pKQTl4YVBIZXhzb1JCb1M5NjkvME9lOUhrMmV1?=
- =?utf-8?B?L3VFZmRkUVE5a1ozNkNEVTNtc3Jlc0xQODZEZzYyRHFzK0x1SFZXOVhnSVhU?=
- =?utf-8?B?YmI3OXZ0eEtweGZsaDFleXFHejRHMy9rTDhqa1ZVMUgzTHVkdlN5L2dBeGJS?=
- =?utf-8?B?dGIzVzZla0lWZVhRUW9vdUcvdkJkNEN2a29LK29PMGNaUFg4SU5uMDV2dXBR?=
- =?utf-8?B?SlY2cEViejNJb1ZvL0VtZzYwVk8zL0g2T2xhK3VuSDgyMGhZVzJIT3dnM3Nn?=
- =?utf-8?B?SVV3ZGtzMjJ1MUdUZWUyYnZwdksxenRFaXNFa25nNE92cldjMldqbjk3dDF3?=
- =?utf-8?B?QjBsM1E1U3dpRHV3Y0RNVU53MHhWdHlTVVIvR3ZtbUxlTTdoQ0d3clc0TjBm?=
- =?utf-8?B?UUU0andDWHgvMk1BYU9ndlV2Zk5kcWVMMmlNME1NOGUzVXREeTVGbVBPVDNI?=
- =?utf-8?B?OHl5cFI4ckM3WEphV1loaVdyODllNks3MHVuVVRqbEI1Z056Yk0zbWswdUVl?=
- =?utf-8?B?Q0JqeVNpOUprYXJFZnlwNlQ2d3VhWVEyQXYrcU1KZGhBVWlrWWR1MkVhcXdC?=
- =?utf-8?B?b3VPRjhUcGZwYy9JelN2RjVxZmIwd1JzSWtQbWRjcEtnZk1kRWVHajlmSmRD?=
- =?utf-8?Q?CkuMz4jfupbkHeyx8HK0sONA+jhtx5ySjxI+tLqlYYv4c?=
+	=?utf-8?B?UjNNZ2U4eVVTc2c3czhCWE5QSTdSZjRZZlJxaGc5VkhncmYwcUtKL3hNSlNu?=
+ =?utf-8?B?TWE1MXVwM3VhUGVHaGlSdDFrdlRvK2JzVmlUVHlKbFA1RUt4YlFnYUhvUHNo?=
+ =?utf-8?B?OTlySk9zTm8xdlUwR21PMkUvcm85TEVhRVZXYVdXdVVXR0FtWHBtRURlNjkr?=
+ =?utf-8?B?UGtMelZhUDVpSWdxSDU0dWd2bkhoendQTHIrWDNwTXFrOGpsVC9vS2tnNTVJ?=
+ =?utf-8?B?bGxyQ0pDYnhnNUhGUzQrcDdVNkxweWwvdCtFWGIzNGw3Z2l6RmRkZzVtTmxo?=
+ =?utf-8?B?SFNuWHFZL1lOT2M4V0FjdTdsTTc1L1hJUzdBZm1Cc1J3ek15UTFyMk1iNG1x?=
+ =?utf-8?B?RW5EQzY4L0RKdm1HTFVXM2R6NVllWE01cjRkL21FaUZOUDJrWkFmS0xBSldO?=
+ =?utf-8?B?WUxBM0F3WkJjMEplY3BlYjdUdEM3MlJpR3ZEV3h3Q2dFVlhVbmVTRXF1UGdn?=
+ =?utf-8?B?ZzBkaTdxVVZFbEVqMEgwNzV1TTdYL2JmdG9kQjdqajl4VFZMcEZaQ3VRRHJI?=
+ =?utf-8?B?WG1aL3A5clFVSkZsbzdHZHZOVjRMNm9ENE5DYWJZbWpYL0FPRlZtR3A3WWdJ?=
+ =?utf-8?B?UnJCTWlVZDJua0l6L3FnQXAyUDg1ZUI4UDRkRi9aOHh6Tms5NUMzUVB5ZU4z?=
+ =?utf-8?B?ZjgrL0F0enVsRHNWS1hCdDZjenlmQ1pHdzcwVEdxb0VONFFRQU9XMnZFN3My?=
+ =?utf-8?B?dTBsaFpIL1lUZUpmbFRLTmlKOWc3Yk1tZkJ5VWxwWHNCNmdrcnZyY2t5RjBw?=
+ =?utf-8?B?L2l3YWsrNnRtZXdHQzJXbTZwaCtxZGhWWlIzOWduWU9TaE4wRGMxUnBIbUFC?=
+ =?utf-8?B?VmEzRkYvNytsQVNiV2hGaFdlS2lRQmJVVUFaTmUwendkVVdnQ285bGFXSjFH?=
+ =?utf-8?B?YTdsekI3M0RDVG92UWxEVkZ3ek1KeDVEM0lrdXBvNnNDeCtXdVNvQ2ZLVWJI?=
+ =?utf-8?B?RWZveEZRSUtNU3I5N3l3TEd0Mk0rcjlPMDZxbDJwaTBMdUdyalBpRGRsWHZu?=
+ =?utf-8?B?ZjJyNTBkNlRubTBiZjhNMFJTMEJHTm9UbGtUYWVwRC9sMXl5bDBEQ1BGcVFz?=
+ =?utf-8?B?QXNKb2RsNHgyWVliYjNHeWZRdFliakthdEo1YWFkYjRqRWswdVg1UUdWMEMz?=
+ =?utf-8?B?WWFJY2JNUlZta09HdGJOSWd6MGlpMG95OWdHU2s5dG4vaWpUZUtPZkJmV3h0?=
+ =?utf-8?B?TVltQ3hWUmdGbFI4MDJsQ2FWS05nZG1zNFl0Z3dHaTI2U3dNdCtaTlZXZkFj?=
+ =?utf-8?B?ZWF5Z0tCQ2w3SGJtKzJnekxQWCtvNk9DZkxCQXNsNmxaV2Y5NllZSHhVenht?=
+ =?utf-8?B?QlFYcjFJclBXM3pBMGt2NzBVamdKcHlMdUVYdjl5cE94bjA3TFBIUGNmb0E0?=
+ =?utf-8?B?NTRlMFNrVmhhdFZWN3YySEZZVXFIbEpvWmpmMFAycDJ3Vm9zenZxejZnQit6?=
+ =?utf-8?B?WUN5MXpJVEN2Tnk0b0RTUFZVZGJTNW12cEV6VEVoTVJqZWZ4RWYrUWlocEpL?=
+ =?utf-8?B?dHdYMjBjOTE4aVVyRzdjcjhuejdaUkFCV1ZyK2RnL2h5Zzk2UUMrUHNmWFZM?=
+ =?utf-8?B?dGJpMUlrVVE3TmlmRDlzTlVlSmxWdXZ0SmtqVEFtS2g5dHFEMHFYTnl3MlNt?=
+ =?utf-8?B?bitKNVlUNllpV0lLUjJ1b1A3aDRvQjZwK3VBV0pHa0pFYmZnU2g5aG9hNi9L?=
+ =?utf-8?B?eUVJV3pHdGQrN3ZBL3h4NERLVEthaUN5dGhPYURIVFJxaEFmWWpPZnhEdkcz?=
+ =?utf-8?B?NnZGMzNVYnF1V05SZDRMbmNHcjFhd3NDVENWZ2JyNkN4eU1QeFRBSUNjQmc2?=
+ =?utf-8?B?TGVkclRpSnhtL1FHQTFtdkJobUY1OHlRVEp2Mkt3d0F3L1RIVXpFMXZzTlVM?=
+ =?utf-8?B?d0VpT2VEY0RaR1hTNjQvb0N0YmF5d0RSUlA0SkM1Wkduc3M4RUhBSTIxcW1u?=
+ =?utf-8?B?RS9MNXMvU1dycytNanAvT20yRG81T0kyY0U0VkN1cFdxR1lvMXdsSksvUExn?=
+ =?utf-8?B?SUpybUpkbzJTK1hidlRJK0xmdC9yZm12by9pekJLczVZMFVOV25vVDZqK3RD?=
+ =?utf-8?B?Y2puRGo0Q1ZoTXNFRTkxaVdKQVhyWjZCcmdPNldkN1JjQkdHZ2VYWXhWOEwr?=
+ =?utf-8?B?QWFQUSt4QXBrKy9lMTV1UE5nSEk3VnIxZnhKNjM0QWV0VGlFVW9CUlVCRDVu?=
+ =?utf-8?B?bjNrTzlONFZBVndLVGpPMitaTFNtZG05U2UzaThoWGplbTV4bHlPcGExblk3?=
+ =?utf-8?B?NWhLcFkydmJVUUtVMDB1RllDZWovelA1RGVqaXh5aWRFRHI0YnpKWm10dGFE?=
+ =?utf-8?B?Si9wdmkraUFNcHJLZHlsaVRvTllidFl3YTkrZVVHblhsb3p1TXR1RW9idzRy?=
+ =?utf-8?Q?2AtrhfoLIKDD/fTbAsTUKe0bY8GCayVey7eCJnGOatWrB?=
 X-MS-Exchange-AntiSpam-MessageData-1:
-	78RZZvoSnnNZkGMqY7CVNQco3OJERWKnwlzKHHyV9DJwU3p81nw5udjy
+	hJoRyJ1cF1q8uZ2XmeEtm1mGSGJ8EAF4YwDo28KEjMX+gTQnjbUItSwR
 X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7a588e7-1e06-48ad-a24d-08dee8134cb7
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed5b4d69-1acb-43b0-9f4e-08dee813a74b
 X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 17:04:32.4305
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 17:07:04.3198
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Yx0+0xnGWFj85kR9vTY2Qu+ztE69h0OBH+TWx7SY4iwXkAi/+W2Adgg2zfYD966hugsgYxe9Df1kRLyrYps4C1FvaZd6vQGXRP6HeDel99etY8v8/qHK8ltI1BlbCW0O
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR01MB8724
+X-MS-Exchange-CrossTenant-UserPrincipalName: CjBFyZkt3vIdV9lnHgufpS4LRT2qCcSg1wbTL9Aeca8aEMIT9eTCfPwhh1y5XaLZu7/r1mo98r4xXtEpqRmG2vTL76y/Xb25YK4UmJZeqrLgArBegCmegY7CLgtFDNih
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR01MB6611
 
 
-On 7/22/26 04:55, Sudeep Holla wrote:
-> On Tue, Jul 21, 2026 at 01:52:51PM -0400, Adam Young wrote:
->> THE ACPI spec states:
+On 7/22/26 05:07, Sudeep Holla wrote:
+> On Tue, Jul 21, 2026 at 01:52:52PM -0400, Adam Young wrote:
+>> The tx_done callback function has a return code (rc) parameter
+>> that the tx_done callback can use to determine how to handle an error.
+>> However the IRQ handler was not setting that value if there is an error.
 >>
->> "[The Error status register] Contains the processor relative address,
->> represented in Generic Address Structure (GAS) format, of the Error status
->> register. This field is ignored by the OSPM on slave channels"
+>> The following clients are affected:
 >>
-> Does anyone have these error status register for Type 4 ? If not it can
-> be optimised with that check rather than channel type check. I would rather
-> avoiding adding checks on the type of the channel everywhere in the code.
+>> drivers/acpi/cppc_acpi.c
+>> drivers/i2c/busses/i2c-xgene-slimpro.c
+>> drivers/hwmon/xgene-hwmon.c
+>> drivers/soc/hisilicon/kunpeng_hccs.c
+>> drivers/devfreq/hisi_uncore_freq.c
+>>
+>> All of these only use the error code to report, so they
+>> are expecting an error code to come thorugh, but they
+>> do not modify behavior based on this code.
+>>
+>> In the case of an error code in the IRQ, the handler was returning
+>> IRQ_NONE which is not correct:  the IRQ handler was matched
+>> to the IRQ.  This mean that multiple error codes returned from
+>> a PCC triggered interrupt would end up disabling the device.
+>>
+>> In addition, if the error code IRQ was coming from a Type4 Device that was
+>> expecting an IRQ response, that device would then be hung.
+>>
+> I recall reviewing something similar and may have had comments, although I
+> cannot locate them at the moment, thanks to your random patch inclusion
+> exclusion scheme in this MCTP over PCC.
+
+That was Re: [PATCH v02] mailbox: pcc: report errors for PCC clients
+
+
 >
-The requirement that errors are ignored is strange and I have no 
-visibility into why it is included.  It may be completely safe to ignore 
-this rule. We have not tripped over it in our hardware, which is why I 
-did not address it before. I cannot speak for any other 
-implementations.  However, I think the exclusion needs to be here for 
-compliance with the protocol, otherwise we might end up with a case that 
-we cannot support.  If you can suggest an alternate way to implement the 
-specification, please let me know and I will try to encode it.
+> Could you please avoid continuing the MCTP-over-PCC series in its current
+> form? In the previous v44 revisions, PCC changes appeared to be removed in
+> some versions and replaced with unrelated changes in others, which has made
+> the series difficult to follow and review.
+>
+> Please post PCC changes that are independent of MCTP as a separate series.
+> Where the MCTP implementation depends directly on those PCC changes, they may
+> be posted together. However, the current series appears to include several
+> unrelated cleanups described as part of the MCTP-over-PCC work.
+>
+> To keep the review manageable, please separate those changes going forward. I
+> may need to NACK future revisions if unrelated PCC cleanups continue to be
+> bundled into this series. I will be away and would like to review any PCC
+> code, so your patience will be much appreciated.
+
+Everything here is related to, and required by, MCTP over PCC.  I had 
+posted some of the PCC patches in stand alone changes, but got feedback 
+from the network  reviewers that MCTP over PCC could not go in until 
+these were fixed.  MCTP over PCC seems to be one of the first drivers, 
+if not the first to make use of the Type 4 interface, and getting fixes 
+in place to make that work is prerequisite.
+
+So, apologies for the earlier separate of patches.  I am trying to 
+follow the guidelines for getting the patch into the kernel, but this 
+spans two very different subsystems with different maintainers and 
+guidelines. This is one of the reasons this patch series is at version 
+45, and why I am still working on this 2+ years after the initial 
+submission.
+
+I am going to keep all of this work together.  It is the only way I can 
+be sure that all of the work is reviewed end to end, and maintain any 
+semblance of order in managing the patches.
+
+The inclusion of AI in the review process has brought a sereis of new 
+issues to light.  Before the kernel started producing automated AI 
+reviews, the set of reviewers had reduced their concerns to fixes within 
+the MCTP Driver.  That expanded earlier this year to numerous changes 
+required in the PCC mailbox.  Some of those changes will have the added 
+benefit of fixing corresponding bugs that have not been triggered 
+elsewhere in the PCC drivers.  Her's a brief synopsis:
+
+shmem map/unmap was added to the PCC layer for the MCTP Driver over a 
+year ago.  It was based on a change I suggested for MCTP driver 
+start/stop.  These operations are much more likely to be called in a 
+network device that will likely be brought up and down on a running 
+server, than most HW devices that are only started at machine bringup 
+and stopped when the machine turns down.
+
+The changes to  ignore errors on type 4 channels was based on your 
+feedback on a different patch. MCTP over PCC will depend on the Type 4 
+device functioning correctly, to include error reporting.
+
+In the message Re: [PATCH v02] mailbox: pcc: report errors for PCC clients
+
+The discussion  was:
+
+>> I think we may have to skip the check inside 
+>> pcc_mbox_error_check_and_clear()
+>> for Type 4 channel as the spec expects OSPM to ignore it. It is a 
+>> separate
+>> fix, just noting that here.
+>
+> I think that should be in this patch, for correctness.  It is a small 
+> enough change.  I'll update.
+>
+
+Actually, it is a fix in its own right, and can be merged regardless of 
+this patch, so:
+https://lore.kernel.org/lkml/20260604163306.160017-1-admiyo@os.amperecomputing.com/ 
+
+
+Which got no feedback.
+
+
+The query channel patch is required for MCTP.  While no other driver 
+will need it yet, it does prevent a false-start situation that may help 
+other drivers.
+
+I did order the patches to post a couple fixes to PCC after the MCTP 
+driver, as they are fixes that affect all drivers, under the general 
+idea that general fixes for a subsystem should not hold up bugs in the 
+subsystem.  Those are synchronize-IRQ-before-releasing-shared-memory and 
+wrap-pchan-chan_in_use-in-READ-WRITE_ONCE.  Again, these were exposed by 
+AI code review during the MCTP process, and me splitting them out 
+elsewhere would really make it hard for me to track.  A network 
+maintainer could argue that the sync IRQ fix really should go in before 
+the MCTP driver.
+
+So, while I do appreciate the additional load this puts on you, I think 
+you will agree that this set of changes needs to be kept together for 
+the larger reviewer community to be able to see.  It is hard  to make 
+things easy for everyone.  I appreciate your patience and diligence in 
+the review process. I hope you can get to these reviews before you 
+disappear.
+
+
+
+
+
+
+
 
 
