@@ -1,125 +1,96 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7BD32B125
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 08:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACB230ACF2
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 08:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784708997; cv=none; b=q7hTsSwS5CBSSmW8LLFuihqIKuOIG4j7Zj13bV4/2yfYd/xM0oQoToHO+CeimOHVM4jFaihXVnG1aXm8vyK5QvYyxR4OpUBHgPw3dBAVphn9OBiDtmYCuGLzaa8qLJ7ljsOsT4Fxczoq+RSd5O+CV0RsKPUzYjeAFV5BODFD2ZE=
+	t=1784709634; cv=none; b=TpkMOpUJUCsoX2EvpJgtquTFZJ0m3TFYJW7+OgrwmAtE8WRbC1Pejzp2ikOViHeXLyQmuNqU3hXAZHl8K7pxD440Pfw0XWuzni4WC+c3CPb9OWzBhlU6LZxo5MAH0G5IH5N24jbZA6HGm25OCVTUdfAFDkU68eiAPBt8lSRlspA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784708997; c=relaxed/simple;
-	bh=D/zlSFd1H5gthfkgYjTudpTd+BpF8ExOfLFelpBdujo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q3qUBFgKqMFmhvvG01i4TeJIOZKhzab/GY/mBgCRdGf+TQVnMwRcL7pAXZSMWzVlxAwG6I2K6Kb0K5OvfIax5HuwiLYuFGloMqB3EGBDCpBiLHgVm4dvCalkLIwY3DlQAQTXmASec2osgUjZt6nLFr9Ik2LoKaA1ZrsKXWgtEK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TCQU/kgm; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784709634; c=relaxed/simple;
+	bh=HX5Nl4e2E/LxL4JXJQQ9MtBDtBHJ0k1zH/XUfeue/O0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VvZ/+3gwkCEKE1Ry3WJJeRMnfS5PenO/Wka4wFplN0F8ZyhyZtrDSxjO1/OC/1jA32XXHGJyO4I61htPA1rvDsBqfVj229qvhWy9SY2pynTpmYU9YggcD3ItsKQYWvE8wVowRzVBH+j/4L92AB/GL2aa8F6cAcOJ7XAzdRa5u+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=I/dJ7PzN; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TCQU/kgm"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47c6e9a694bso6934860f8f.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 01:29:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784708993; x=1785313793; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+o5BhmpQGUXsPUn94swQ8qdBGf076Q7ku70v+i3VIFk=;
-        b=TCQU/kgmUtjBnO3/OVGBkly+eRHPH5Yj4ojhiQFFa67sCF3OdqZNFyhSvA3sdLSm4q
-         fMLPjmhPHEoH3OjZRP2R7toYmHad1jV4aw6CpknluP/By6xFw8GXN9mwrA2hFt1NVikn
-         xpnu2twp4iTztmjldTVnEBx2fm/Jfkqtt/pQOyE9SmWqoXlG4sW7rpMTL3Yz8noVNNaz
-         nDr66oYrVSnDWcHmm8+EDAh6FBG16cO0jyvn3ducg65fXPggWn+oBAV/+hKQxkitXrJi
-         KQhxh6zMY7j4wCrK86bVckPq9ko2mjOmRd8lQxq0nY6SeR9qS3Si2HcQY7Qf9ZDffc5g
-         oK8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784708993; x=1785313793;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+o5BhmpQGUXsPUn94swQ8qdBGf076Q7ku70v+i3VIFk=;
-        b=X4JjvWQ9pQyDMrU6mnNJyXAI0DkpEIvop5rN5bWf6vJVsIXaDqCLUxWuem62J9x5r4
-         pppHOhvwkpoKPuOkgB662MLetvpQDh7cSUrKUMt1KYOMq/8naK0ML5W4YrH9OWgNeyG3
-         v91Yn5OOYiUGQZG38cJkbNxGHWUmJxbRSdGyuSDa0HvmSp8OT8Ccsp50FjtBXPfX2Lec
-         XTynvBBUQUokpUUEqi2XO0uNgU3shEI0Pv9Vx1CHmGDWt9UV4Y+BuuXIc5z2X6+wMazg
-         QG/5CuWd3nXPTPe0Jg75gK1We0r82syk0COji1zMIEZRcoCdHjakNZEW2Spw94chwxZB
-         nB+g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/9Zd5e/2LOvQtTpUCTYM6pyhkqKa6bpd61CLJ9ImYfCcHLq4POqo2AzOUuVx7I7rvhTB1iAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDOGC2piFaY+lBtDw/DfnGPRQPsLO41u1y7w8RQDVqh+zsftpS
-	4EzslKb/f1dCFwEMaesRrVgofLS7Z4wQbKNbxtZhKPJVcG5kkyRZgXh4XqGpQTv/bqY=
-X-Gm-Gg: AR+sD13yhty5a1QeJCj/5DwXq7fa+X0sMlgW1fwGM8ylhb7yr/S97aAtfZxg8T10wbT
-	jFBwzqJcpRTYL/x96myOuKaaWIHukmRZ92/71rOb5zB8SxBiRngLMt9IelAmHzIZpO80dMkN0Wy
-	j+vwK7EcPro7sNQ+DAB8IS2AyRw/Qoi9ejgQ9+/fxTqNobDO1OyY4OmtEZROZhR17NIW//NwKyO
-	hx1UgEolDSMCAMZHb3gl2YbAzNyJyevCY0cFD3UbzUqYm+gsBIUMFHLLxIwHDQpn2o4FMlNOKwz
-	7KefHE4aj2wu53bC1IM0Cj9wT6qVwo1t91FmsLz+ns9n5sxiq9WFahtHevUajRCYLc2V44/8jBm
-	cfGf2wMXzdgMLLk9HmrcIZ2rXzruN6EYwVhvNUnnnj/7KMqLfsSLSSfIWZeqBcSHcpihinnEkZZ
-	r+pnAIfjPF642o1ndziTBeAUayy5APcTgh2nQw6I1UU8s=
-X-Received: by 2002:a05:6000:240f:b0:47f:83a1:6b7 with SMTP id ffacd0b85a97d-47f83a1070fmr4754652f8f.21.1784708992834;
-        Wed, 22 Jul 2026 01:29:52 -0700 (PDT)
-Received: from ?IPV6:2a02:3033:6c0:905:69de:a6ba:2af3:1ea6? ([2a02:3033:6c0:905:69de:a6ba:2af3:1ea6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6dc25sm4148066f8f.33.2026.07.22.01.29.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 01:29:52 -0700 (PDT)
-Message-ID: <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
-Date: Wed, 22 Jul 2026 10:29:50 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="I/dJ7PzN"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784709629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mF7ikNFrNNC6k6eWd8Jf2SRHYFj6WIMA/yRnEJXoBo4=;
+	b=I/dJ7PzNv3AofpFgywvaG8jGskJ1P3831fmYNBX+lv2k2Q5/34AXPaAPTQukvh5csw+IJD
+	kHzhqsdZqyOr/ZFBpEG58KBRaOgQtX9dKAWvizwYDLjkYCjHrku0BXvP4o3rNLvuFcmi35
+	o87ZEB5aqXdGisuwvp+FcOI+K1EwDLI=
+From: xuanqiang.luo@linux.dev
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kuniyu@google.com,
+	idosch@nvidia.com,
+	therbert@google.com,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v1] fou: Fix use-after-free in fou_create()
+Date: Wed, 22 Jul 2026 16:38:58 +0800
+Message-ID: <20260722083858.182506-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed work
- on system_dfl_long_wq
-To: Marco Crivellari <marco.crivellari@suse.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Petko Manolov <petkan@nucleusys.com>,
- linux-usb@vger.kernel.org
-References: <20260720100902.155605-1-marco.crivellari@suse.com>
- <20260720100902.155605-6-marco.crivellari@suse.com>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <20260720100902.155605-6-marco.crivellari@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 20.07.26 12:08, Marco Crivellari wrote:
-Hi,
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-> 
-> Since the workqueue work doesn't rely on per-cpu variables, there is no
-> obvious reason that justify the use of a per-cpu workqueue. So change
-> system_long_wq with system_dfl_long_wq so that the work may benefit from
-> scheduler task placement.
+fou_create() publishes struct fou through sk_user_data before adding the
+new FOU port to the per-netns list.  If fou_add_to_port_list() fails,
+the error path frees fou while it is still reachable through
+sk_user_data.  A concurrent receive can then dereference the freed
+object in fou_from_sock().
 
-these changes are problematic, although they look like a good cleanup
-in first place. But the test you are using to determine whether USB
-devices need their own work queue is incomplete because you are not
-considering the reason they allocate their own work queues.
+This ordering issue was previously noted in the linked discussion.
 
-These drivers have their own work queues because they are part of the block layer.
-USB devices can share a device with a block device (storage & UAS) and
-USB devices have common, per device operations, in particular reset
-and runtime power management and disconnect handling. Because these operations
-can be necessary to complete block IO neither they nor anything
-they depend on can use IO to allocate memory. That is they need to
-perform any memory allocation with GFP_NOIO or GFP_ATOMIC.
+The failure is reachable when local port 0 is requested.  Each socket
+binds to a different ephemeral port, but fou_cfg_cmp() compares the
+requested port 0 and reports -EALREADY once an entry already exists.
 
-That is also true for any operation on a work queue they need to wait
-for to make progress. That means you cannot limit your check to per-cpu
-variables. You also need to check for such dependencies. In particular
-any usage of flush_work() on such queues can deadlock, if you use
-common queues.
+Release the tunnel socket before freeing fou so sk_user_data is cleared
+first, and defer reclamation with kfree_rcu() to protect concurrent RCU
+readers.  This matches the lifetime handling in fou_release().
 
-Please refrain from making such changes unless you have fully analyzed
-the dependencies.
+Fixes: 23461551c006 ("fou: Support for foo-over-udp RX path")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://lore.kernel.org/netdev/20260502031401.3557229-12-kuniyu@google.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ net/ipv4/fou_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Regards
-		Oliver
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 865bd7205122d..ab09dfcdecbd5 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -629,9 +629,9 @@ static int fou_create(struct net *net, struct fou_cfg *cfg,
+ 	return 0;
+ 
+ error:
+-	kfree(fou);
+ 	if (sock)
+ 		udp_tunnel_sock_release(sock->sk);
++	kfree_rcu(fou, rcu);
+ 
+ 	return err;
+ }
+-- 
+2.43.0
 
