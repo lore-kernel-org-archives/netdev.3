@@ -1,83 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204BA34BA5A;
-	Wed, 22 Jul 2026 15:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65C4315A;
+	Wed, 22 Jul 2026 15:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784733046; cv=none; b=cm6bttVfSbDpWctITD/B1P5gDFAdeRuR5zJSTvA61uZDzYV3WKKYMKt9nEiRrF2vkRK+xSGjwn22cJcTFSK31NVsqDfXt+TmFTooEIt96m+VlGLKD5WhENu7NcGeA4eo2GaH190YZ5Te36nHymp7iGGhwMgpdIQRb69l+UlOY3c=
+	t=1784733188; cv=none; b=ISfbJz0PwuoVlSroN27J6cP9PBSXTu2ackCe81ZflaRzV8X46aNqmfNPBKyjMHAPtKUJO9oc1TWyjXIfDtTbWhXl6lvzvl0TKF94sW1NBzA/m7fKKtfSCKjt9ZI6//S9UGprxYg9TAZN6FRdANHuMSBc4P4GnXXhW49Q8t7owBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784733046; c=relaxed/simple;
-	bh=n7caGpxCXP/wVhclGf+FpBpgY1f2y+CLLUvMOF1Z+cI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XCxMx8EwDWCY9psMco1kf7m12dmPK2Gon4G14IuuyJULoyt6fzvY5aUJVzqkms11lkHc6kPo4fQdPerM8urBINYQXM0yNbwDw1FYPdTF1u+AK7cHFrkGheW8Smn3ze16sRQwDnEwMF8p0sE9IE+NHVflnuzXJp+/FnduFfZVd48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDbAKJRI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784733188; c=relaxed/simple;
+	bh=m9trUnR4dBBYxmRnQU/Yv79OKE5xa7ig6bqgKmqOEyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u+eSs2XXSWUUG02q+E21pe++UJJM90PNWBvBPb/iIAtUfT3EKFM2wWEGmY2ZJgtW0runIX5iUtwciKffGmBt9zGEFiUKpuHIHGOrFA6Uz2LL1StSGehSBTutcigjhw3RDEBjWfvqZQavzx3uJjKo1Go7tGEzuOCmCeSHvx6aJI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlsJFjOE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDbAKJRI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40EC1F00A3A;
-	Wed, 22 Jul 2026 15:10:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlsJFjOE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FBF1F000E9;
+	Wed, 22 Jul 2026 15:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784733045;
-	bh=RftAxEfh6auBpwR0QTYp1eKRQIF63akuT4VbFvJLxiY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fDbAKJRIXbHlxqQMiS2dOPQ6kwhbLxhuxwdWLHhA6EUJOHx3N84Ooxt4zPCGrkHoY
-	 VAUSrIA/80r5jXKaY1IqhpArq1S7as3b0j/kx8BuQadRl0UgpzTkldfmp3Ij5NuP0q
-	 1tPxv5R+awDIkeQVqOOxhRAKqpfTsdpQOq3z1zEnll6pAnTODp3wTtaL+qK638bILL
-	 liLZOAa4sguzcATu99RQvJrB5yPhq8cdha+T+XuaDQZBprPp3TQER/F1DeU30pcaLG
-	 JFy30uuyOCEB5WXkL3ojQmUgfcumF1abteKFBAriZZlDGcTaiI1VnyufF+QsO8/SnE
-	 I8gD/7iF2Lopw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A83380AA5D;
-	Wed, 22 Jul 2026 15:10:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784733186;
+	bh=CdvrZC3DTk1xoDygI32uKfJ+XHbG+XPHXKdsPWJkktw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZlsJFjOEqgoYZe3107NxweDyYZlJBBv/VAqKctNP3Bhgab10RBi/veineZ1QhWIaB
+	 oj9Mck53nZ1/pA5lebemP4DJ4RVWNW9BRDZ/fQLBFcUECRdrfprojSPBHBQNnJoezN
+	 imDGjDHQkGjPQ5rM7ogtRGDX2z2SyIhuAUWZv42Wo3/8iY2pLsvybytPB2vJ1XJleN
+	 D5jOAFHhCMrXFBTuLlfOq6hMvDc9KiyIKz+FpUgDfEYNgUJycSmUUhrC517B/XSTyp
+	 6MvahAgC0wnie2lbl9+DQxb5h04rMDDRW4gEoCx07O9Fpv+3FBtA7ZYhjhg/yK2VjQ
+	 YyDMnt2S/Ty1g==
+Date: Wed, 22 Jul 2026 16:13:02 +0100
+From: Simon Horman <horms@kernel.org>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] mctp: serial: handle zero-length frames to
+ prevent rx buffer overflow
+Message-ID: <20260722151302.GE418547@horms.kernel.org>
+References: <20260715082021.46315-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] seg6: add FIB table attribute for post-encap
- SID
- route lookup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178473301364.1448721.2497452827952748866.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Jul 2026 15:10:13 +0000
-References: <20260711162907.6521-1-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260711162907.6521-1-andrea.mayer@uniroma2.it>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, shuah@kernel.org,
- nicolas.dichtel@6wind.com, justin.iurman@6wind.com,
- anthony.doeraene@uclouvain.be, stefano.salsano@uniroma2.it,
- ahabdels@cisco.com, paolo.lungaroni@uniroma2.it, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715082021.46315-1-doruk@0sec.ai>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 11 Jul 2026 18:29:05 +0200 you wrote:
-> After SRv6 encapsulation the kernel looks up the route for the first SID,
-> the outer IPv6 destination of the encapsulated packet. This post-encap SID
-> route lookup uses the FIB table of the current routing context. When the
-> encap route is installed in a VRF, the VRF's table may not have a route for
-> the SID, which should be handled by another table, e.g. one used for
-> underlay connectivity.
+On Wed, Jul 15, 2026 at 10:20:21AM +0200, Doruk Tan Ozturk wrote:
+> The MCTP serial receive state machine reads a frame length byte in
+> mctp_serial_push_header() case 2 and validates it upper-bound-only:
 > 
-> [...]
+> 	if (c > MCTP_SERIAL_FRAME_MTU) {
+> 		dev->rxstate = STATE_ERR;
+> 	} else {
+> 		dev->rxlen = c;
+> 		dev->rxpos = 0;
+> 		dev->rxstate = STATE_DATA;
+> 		...
+> 	}
+> 
+> A length of zero passes this check, so rxlen is set to 0 and the state
+> machine advances to STATE_DATA. In mctp_serial_push() STATE_DATA, the
+> incoming byte is stored and rxpos incremented before the terminator is
+> tested:
+> 
+> 	dev->rxbuf[dev->rxpos] = c;
+> 	dev->rxpos++;
+> 	dev->rxstate = STATE_DATA;
+> 	if (dev->rxpos == dev->rxlen) {
+> 		dev->rxpos = 0;
+> 		dev->rxstate = STATE_TRAILER;
+> 	}
+> 
+> With rxlen == 0 the "rxpos == rxlen" terminator can never fire (rxpos is
+> already 1 on the first data byte), so subsequent bytes are written past
+> the end of the fixed 74-byte rxbuf, which is the last member of the
+> netdev private area. Every following data byte is an attacker-controlled
+> 1-byte out-of-bounds heap write, and the overflow continues until a
+> frame (0x7e) or escape byte resets the parser -- effectively unbounded.
+> 
+> Reaching this requires CAP_NET_ADMIN to attach the N_MCTP line
+> discipline and bring the resulting mctpserialN netdev up, after which
+> the bytes arrive via the tty receive path.
+> 
+> Route a zero-length frame straight to STATE_TRAILER instead of
+> STATE_DATA. The trailer/framing bytes are still consumed, and the frame
+> resolves to a zero-length skb that the MCTP core rejects; the parser
+> never enters STATE_DATA with rxlen == 0, so the out-of-bounds write can
+> no longer occur.
+> 
+> KASAN, on a frame of 0x7e 0x01 0x00 followed by data bytes (before this
+> change):
+> 
+>   UBSAN: array-index-out-of-bounds in drivers/net/mctp/mctp-serial.c:370
+>   index 74 is out of range for type 'u8 [74]'
+>   BUG: KASAN: slab-out-of-bounds in mctp_serial_tty_receive_buf
+>   Write of size 1 at addr ... by task kworker/u16:0
+>    mctp_serial_tty_receive_buf
+>    tty_ldisc_receive_buf
+>    flush_to_ldisc
+>   Allocated by task 152:
+>    alloc_netdev_mqs
+>    mctp_serial_open
+> 
+> v2: route zero-length frames to STATE_TRAILER instead of STATE_ERR so
+>     the trailer/framing bytes are still consumed (Jeremy Kerr).
+> 
+> Found by 0sec automated security-research tooling (https://0sec.ai).
+> Fixes: a0c2ccd9b5ad ("mctp: Add MCTP-over-serial transport binding")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jeremy Kerr <jk@codeconstruct.com.au>
+> Assisted-by: 0sec:multi-model
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 
-Here is the summary with links:
-  - [net-next,1/2] seg6: add FIB table attribute for post-encap SID route lookup
-    https://git.kernel.org/netdev/net-next/c/ffdc1ee2d6d6
-  - [net-next,2/2] selftests: seg6: add test for post-encap SID route lookup
-    https://git.kernel.org/netdev/net-next/c/1016a547c685
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
