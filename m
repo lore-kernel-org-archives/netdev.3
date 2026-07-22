@@ -1,164 +1,353 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D69283FC4
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784678468; cv=pass; b=cUPbPsRMPIUoSj6w8YNrSJMiSlFOY6zzG0C9Eg5MNTdT2dbZABZMK3oGv1m38EmxpBMIHt0JPFZkH2cIbbXJwuW+jugKSpO8mV82HfxykhSJsxVclbunGt4WqW3wTi6KIRbshm2/s/UJF6xWBqwpqhZbX6VQv+fnB367nvfSSow=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784678468; c=relaxed/simple;
-	bh=zPlV3ytA9mYq182TVv8ShHtMlUg4BGn040Ng/0SYAO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GSzWRUZME/rBUFimntqSpnSCPIApGTEMbzscUGjUq4MgjR6TKvItNOeG97ODilhqoWW2njScWk8LClJE+uQIDI4M30mH3bY4S6Map1/TOwJXyqFdKbYyVzgF9uGUplJOsFsNy85ZH/RVU3XXr3+QgUzawxJXOFZ/9MHmEWSlo9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eBsuswPm; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eBsuswPm"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c0c68aa31so86722491cf.3
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 17:01:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784678463; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lZSVRNaDr9l6fnVBlCBy68UVqBjd5Uhh6Avf1IkFc4d468NyDQX5yXh1ohmVqReMlu
-         Do0YJti3kq5q1fLxAIE86eZ/f6JKTVVQGD+cs9EFDdzeT3IualcHX50EWUnFnSr9/J2j
-         0FrBHKRa9ZTtWCDkAOzg+F37cOxhAs7VlbjnchdTspzayvE8Eq2MFc1tkXlfbIewkmiD
-         lJl589lWIwAqKCkW+m8tUlsHXINxcTcIPdrHqaOnvVzVkPiyxnmiGicnzxN8jZDKL1/2
-         bK4/hh1/B58fwNwiAjVna6ZjRCAx8YZX1V6il+i2l8+8C9SJ9P4fJ47yE4o8JboznkUg
-         MF3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AlnEHI8kT91AydctQLRHbmFtJAyusQQDosMCUEGHLXI=;
-        fh=NvtM+JLqUOPk+sFjPMqF/U60POOS1NekYfifrK/rk9Y=;
-        b=S0MElpjcpZPQISntay9GjUCVBnnuNxqDVGrmmG8iof30/OCO/U4hO45w067ifzg2Kc
-         i7IO0jiOsgk0B2u4AMbNmn89PiEiuZO/ChxdJ6/1uhPcel+LdWWOgkJHfo8WMAoXiF5k
-         G9k+IJvxlX0+5D8CMzCxD2qr8uLV8nEq80AM6SZKvpXTSSsurtIBsJuBEPOhwooqrXn5
-         4atxhZ3Gf8WPDWS2zDpjuqF+EN68caA7GVt28uBCjI9x6Q85T4UJ0wkB9M5QDBEdOfS8
-         j28qGxGBdfG5yT1lz6+82VH+vSiweQbxltZI5F8qYgW6gnLcGTaf+vBEt4WlndIwIdIV
-         uXwA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784678463; x=1785283263; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AlnEHI8kT91AydctQLRHbmFtJAyusQQDosMCUEGHLXI=;
-        b=eBsuswPm+a2QFmNq59I/Fi/2NnNcQ2SR12pF84ijjQXuVIz5rZiE78NDaqXtYP1p3x
-         TdnVcQRpPrvm79xQOPyg2jnqM5DV1vnT7usJtwx5qYhFN0McFP9+RaegbUbrchAk3UK1
-         Qct2A1vQi59crFaFTfz1VvdPEyj1Ap9I5PVR7LVyFqrQIyK/1lvJY9ojGMlphOLBz9WW
-         pGyEaGc3Gh5a+Qz4To9//MZerbL6STKsNxt3VVBG/Cz3/vG6dV3COWkQdh05PnfFvbgq
-         5KrnD3aQ9vpm45z4tGITpAwJQqu+q4r4gRIBuPQe1J4mJE34Dxi1aDcr45DZ5tmAgkFP
-         WvdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784678463; x=1785283263;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AlnEHI8kT91AydctQLRHbmFtJAyusQQDosMCUEGHLXI=;
-        b=DW7ERQwrcnXb5m9edayScmVmDQtsbga/Bj/fZnvqelzuKFQcILOd3R/wUEtPMlu7Xa
-         f6DdTa5sn1hvn6RYOQDVtPhykmkOPEPZFCrU5IJtR9HpCdiNh4WQsLysQ6Tnh2ZvyRFL
-         wQU3f/n9LQ1ZizHoBXLI+JwFvO7Q2UmVnWH6A9sDsXDHpjbAbzp5vMcARIow6Ego/rVY
-         oZqx3v9qz4qmuL5k7iQ9w0YFBiPTWTS8wLvOPZPhwsb7kkElZq7kkDwooBZ+QjYODohl
-         JnOKowQYa+Z6yoPlB2iPdKrFi1lokS26W2AqMjm405tjyOQirMwqMPcuBUmW7QmjOlA3
-         BUtQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrXTAPR4+LA05k6hbF8B/HIdN6xIQF8FbPC+ClYryxHOh30Mx/JBu0WXC4TYZE77NZFq+0W6wY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS3bnlD+2f5QIVelgwNnouD3AqpX7ChpsYW7d8Us7hlVivNFFS
-	icjv/iTc/KOZB7Rq325FMhiga0v0AuK17DpGC738ieL4+r8edvNcIN7GmoY1gYzYWf7QfmZfptg
-	P/ij5+haMLeRL5XHWIoc5lUYa1+Gdn5+TYF+4fgUa
-X-Gm-Gg: AR+sD13kssbXR/PZFwFCQ73zvLOCGuEga+6m1gIlJcL5vG4DmlQvvLnjvbp05YPFP1s
-	6eUrZAAphZniC/wViMWEomtWNxlc1VnWgIB8InO+hTE4PfjAQAWYpwgujQbfkn1UZJqYs8PVgwy
-	wEJ26kTJX1MrZ+WvjddiW/dOygNV8vCatBhO4q1f9WqGSYU1H5KpSVuYHfFyaYFjnUMqSX7DeLR
-	xXlKFxVlOEVlkQXeOItJ5wutl4rMn++0a+VWjoq2ujDLn8NZngh2V4QBQt00uVJsjmzv6spDKRM
-	ixU2gCf9QjNsL/RZ/1LruAH/nUX3EmjkhKHC2cgn6ar87l3JEj+HZrSCbequ1+ODh/+jpCj7
-X-Received: by 2002:a05:622a:1b9e:b0:51c:b900:513f with SMTP id
- d75a77b69052e-5213aa6d821mr199345281cf.10.1784678462197; Tue, 21 Jul 2026
- 17:01:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13C92F532F;
+	Wed, 22 Jul 2026 00:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784678498; cv=none; b=a2KYRNmHq9bRthA2lx7/7dXguFKcuugJaSNbhxI6iE2EQukwhymcxbr4vrHHtMrpwnrAcMr7RYZwdHoH7cbUwQSMjhfGulmjM6FFCd7by6Iw//I0BbdTSOm3y66mhdY1eEkRESXEnvlv24c20MsOe0FSovjNWzh6sfIbbabSzsc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784678498; c=relaxed/simple;
+	bh=tSqeWAZIS+l75+mPxOypqCyuyYqRs8RDFWKXADvnFxY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=usdNFJv4qkVlHPBnMZEk0BttWxFlGYcR3LFIv5nXMTFGcJTgBfxBF89tcEjX9RUwaVOzd08nlRXNAUvNbEuXmHfGywuBaV/r2BFdpGvkPk6yk+PZjkr76b6804Kkfia/5JCriL9Gv+iQYcs+Pxe9uUbt260U1gRxeUWrPKuBlGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wmKOw-000000000dK-0PS5;
+	Wed, 22 Jul 2026 00:01:30 +0000
+Date: Wed, 22 Jul 2026 01:01:27 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v4 4/4] net: dsa: mxl862xx: recover switch stuck in
+ MCUboot rescue mode
+Message-ID: <67171f553478c82d8299712879adedf35986016d.1784665017.git.daniel@makrotopia.org>
+References: <cover.1784665017.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAP48HfvFnArD5hDW8gCAWrp4Hz8Pbh7m3A8F6DiPtLYq45WOBg@mail.gmail.com>
- <CAM0EoMntb24oXpBW-pAYVX1WYTNnTU9eJLe-cvoiD-GGdW-Rkw@mail.gmail.com>
- <CANn89iK63bSCL3MPBQKiYEwYfioNYkvTBYVL8cavM2THQbPyhA@mail.gmail.com>
- <CANn89i+6K3TrAx0Jq_6Z+OtLBt6DhV6_dNjU5U6m6epucPzVVg@mail.gmail.com>
- <CANn89iLFBPHjjOZg5p7b=-vA++17oBLCJtGi8aJXnfJ3j67J1g@mail.gmail.com>
- <20260715114114.446841-1-qwe.aldo@gmail.com> <CAM0EoM=gikondXD5GAun3p8S_fjmUgBucD0dJriUQhJ5U48E=A@mail.gmail.com>
-In-Reply-To: <CAM0EoM=gikondXD5GAun3p8S_fjmUgBucD0dJriUQhJ5U48E=A@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 22 Jul 2026 02:00:50 +0200
-X-Gm-Features: AUfX_mxYti_u9g3TaEGTEw3d3yXuJoEdcw2O7vlKVcWTjrg4Z9P97FYbNcOSxd0
-Message-ID: <CANn89iJoE1ES0P+dbsPczCwV4bkXTZGQ0YtvrHDiHgzkWtkoQg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/sched: serialize qdisc_rtab_list against
- concurrent get/put
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Aldo Ariel Panzardo <qwe.aldo@gmail.com>, netdev@vger.kernel.org, 
-	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1784665017.git.daniel@makrotopia.org>
 
-On Wed, Jul 22, 2026 at 1:47=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Wed, Jul 15, 2026 at 7:41=E2=80=AFAM Aldo Ariel Panzardo <qwe.aldo@gma=
-il.com> wrote:
-> >
-> > qdisc_get_rtab() and qdisc_put_rtab() mutate the process-global singly
-> > linked list qdisc_rtab_list and a plain non-atomic 'int refcnt' with no
-> > lock. This was only safe because every caller historically held the RTN=
-L
-> > mutex, which serialized all rate-table lookups, inserts and frees.
-> >
-> > That invariant no longer holds. cls_flower sets
-> > TCF_PROTO_OPS_DOIT_UNLOCKED, so tc_new_tfilter() keeps rtnl_held =3D=3D=
- false
-> > for it and sets TCA_ACT_FLAGS_NO_RTNL. That flag propagates through
-> > tcf_exts_validate_ex() -> tcf_action_init() -> tcf_action_init_1() ->
-> > tcf_police_init(), which calls qdisc_get_rtab()/qdisc_put_rtab() with t=
-he
-> > RTNL mutex NOT held. Two RTM_NEWTFILTER requests on different CPUs, eac=
-h
-> > adding a flower filter with a police action carrying the same rate, the=
-n
-> > race on qdisc_rtab_list and on the non-atomic refcnt, leading to a
-> > use-after-free / double-free of the kmalloc-2k struct qdisc_rate_table.
-> > qdisc_rtab_list is a single global (not per-netns), so the corrupted
-> > object is shared system-wide.
-> >
-> >   BUG: KASAN: slab-use-after-free in qdisc_put_rtab+0x12f/0x160
-> >    qdisc_put_rtab+0x12f/0x160
-> >    tcf_police_init+0xda9/0x1590
-> >    tcf_action_init_1+0x460/0x6b0
-> >    tcf_action_init+0x439/0xa40
-> >    tcf_exts_validate_ex+0x42d/0x550
-> >    fl_change+0xddd/0x7da0
-> >    tc_new_tfilter+0xaa7/0x2420
-> >    rtnetlink_rcv_msg+0x95e/0xe90
-> >   which belongs to the cache kmalloc-2k of size 2048
-> >
-> > Protect qdisc_rtab_list and the refcount with a dedicated spinlock. The
-> > (sleeping, GFP_KERNEL) allocation in qdisc_get_rtab() is performed befo=
-re
-> > taking the lock; if a concurrent inserter added an identical table in t=
-he
-> > meantime the freshly allocated one is freed under the lock, so no
-> > duplicate is leaked. qdisc_put_rtab() now decrements the refcount and
-> > unlinks under the same lock.
-> >
-> > Fixes: 470502de5bdb ("net: sched: unlock rules update API")
-> > Suggested-by: Eric Dumazet <edumazet@google.com>
-> > Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
->
-> The fix looks reasonable to me. I also tested the poc
->  So:
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+When the application firmware image is broken (e.g. after an
+interrupted flash update) or the sticky rescue flag is set, the
+switch stays in MCUboot which only exposes the clause-22 SMDIO
+interface used for firmware download. The clause-45 MMD API never
+becomes ready, probe fails with -ETIMEDOUT and the user is left
+without any way to install a working firmware image other than
+physical access to the UART console of the switch.
 
-Same here, thanks!
+Detect this state during setup by reading the SB PDI STAT register
+via SMDIO: MCUboot signals readiness for a firmware download with
+the ready magic. Probe this register first to avoid pointlessly
+waiting for the MMD API on a switch sitting in rescue mode, and
+probe it again after a ready timeout to catch firmware which was
+still alive enough to accept the reset command but then fell into
+rescue mode due to a broken image on flash. An SMDIO bus error
+during detection logs its own diagnostic, distinct from the MMD
+ready timeout on a live bus, and counts as not in rescue mode.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+In rescue mode, complete the switch registration without any user
+interfaces so that devlink is available: user ports fail port_setup
+with -ENODEV which makes the DSA core re-register them as unused
+ports, while shared and unused ports succeed as their setup must not
+fail for the tree to register. The CPU port works without firmware
+access since it uses a fixed link and the phylink MAC ops do not
+touch the hardware; mac_select_pcs returns no PCS in rescue mode.
+Firmware API commands fail fast with -ENODEV instead of running
+into the MDIO poll timeout, and the port enable/disable and STP
+callbacks invoked by the DSA core during registration and teardown
+become no-ops.
+
+devlink dev info reports the running firmware version as the
+canonical null version "0.0.0" in rescue mode. An operational switch
+can never report this version since the major version of any
+released firmware is non-zero. Version-comparing update tools like
+fwupd thus treat every available release as an upgrade and offer to
+install it, so the switch can be recovered through the regular
+update flow. devlink flash update skips the FW_UPDATE command in
+rescue mode as MCUboot is already waiting for a download, and
+proceeds directly with the SB PDI handshake. After a successful
+transfer the usual reprobe cycle restores normal operation; after a
+failed one rescue mode is detected again and the user can simply
+retry.
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+v4:
+ - log a distinct diagnostic when rescue mode detection fails on an
+   SMDIO bus error instead of silently treating it as "not in
+   rescue mode"
+ - clear the rescue_mode flag under the MDIO bus lock, following
+   the flag write locking in the previous patch
+
+v3:
+ - report the canonical null version "0.0.0" instead of
+   "mcuboot-rescue" so that version-comparing update tools like
+   fwupd offer any available release as an upgrade for recovery
+ - check the rescue_mode flag under the MDIO bus lock, following
+   the block_host/skip_teardown change in the previous patch
+
+v2: new patch, allowing recovery from a failed or interrupted update
+    without having to use a special recovery OS image (Andrew Lunn)
+
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.c      | 58 +++++++++++++++++----
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.h      |  3 ++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c    |  5 ++
+ drivers/net/dsa/mxl862xx/mxl862xx-phylink.c |  2 +
+ drivers/net/dsa/mxl862xx/mxl862xx.c         | 38 ++++++++++++--
+ drivers/net/dsa/mxl862xx/mxl862xx.h         |  3 ++
+ 6 files changed, 96 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+index 4cd8231c7eca..a3f941580852 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+@@ -111,6 +111,29 @@ static void mxl862xx_flash_notify(struct devlink *dl, const char *status,
+ 	devlink_flash_update_status_notify(dl, status, NULL, done, total);
+ }
+ 
++/**
++ * mxl862xx_rescue_mode_detect - check whether the switch sits in MCUboot
++ * @priv: driver private data
++ *
++ * MCUboot signals readiness for a firmware download with the SB PDI
++ * ready magic; only the clause-22 SMDIO interface works in this state.
++ *
++ * Return: true if MCUboot is waiting for a firmware download.
++ */
++bool mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv)
++{
++	int ret;
++
++	ret = mxl862xx_smdio_read(priv, MXL862XX_SB_PDI_STAT);
++	if (ret < 0) {
++		dev_err(&priv->mdiodev->dev,
++			"rescue mode detection failed: %pe\n", ERR_PTR(ret));
++		return false;
++	}
++
++	return ret == MXL862XX_SB_PDI_READY;
++}
++
+ /* device_reprobe() -> remove() frees priv while the thread runs, so
+  * the thread must not dereference priv; it drops its module reference
+  * without returning to module code afterwards.
+@@ -201,13 +224,15 @@ static int mxl862xx_flash_firmware(struct mxl862xx_priv *priv,
+ 	int ret, i;
+ 
+ 	/* Step 1: reboot the firmware into MCUboot rescue mode */
+-	ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
+-				false, false);
+-	if (ret) {
+-		dev_err(&priv->mdiodev->dev,
+-			"flash: FW_UPDATE command failed: %pe\n",
+-			ERR_PTR(ret));
+-		return ret;
++	if (!priv->rescue_mode) {
++		ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
++					false, false);
++		if (ret) {
++			dev_err(&priv->mdiodev->dev,
++				"flash: FW_UPDATE command failed: %pe\n",
++				ERR_PTR(ret));
++			return ret;
++		}
+ 	}
+ 
+ 	/* Failures from here on must go through end_magic so MCUboot
+@@ -391,6 +416,10 @@ int mxl862xx_devlink_info_get(struct dsa_switch *ds,
+ 			return ret;
+ 	}
+ 
++	/* canonical null version: no operational firmware on the switch */
++	if (priv->rescue_mode)
++		return devlink_info_version_running_put(req, "fw", "0.0.0");
++
+ 	snprintf(ver_str, sizeof(ver_str), "%u.%u.%u",
+ 		 priv->fw_version.major, priv->fw_version.minor,
+ 		 priv->fw_version.revision);
+@@ -436,9 +465,13 @@ int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+ 
+ 	get_device(ds->dev);
+ 
+-	dev_info(ds->dev, "flash: running firmware %u.%u.%u\n",
+-		 priv->fw_version.major, priv->fw_version.minor,
+-		 priv->fw_version.revision);
++	if (priv->rescue_mode)
++		dev_info(ds->dev,
++			 "flash: recovering switch from MCUboot rescue mode\n");
++	else
++		dev_info(ds->dev, "flash: running firmware %u.%u.%u\n",
++			 priv->fw_version.major, priv->fw_version.minor,
++			 priv->fw_version.revision);
+ 
+ 	/* Close ports while the firmware is still alive so the DSA
+ 	 * core's MDB/FDB tracking is drained, and detach user ports
+@@ -476,6 +509,11 @@ int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+ 		NL_SET_ERR_MSG_MOD(extack, "firmware transfer failed");
+ 
+ 	if (!ret) {
++		mutex_lock_nested(&priv->mdiodev->bus->mdio_lock,
++				  MDIO_MUTEX_NESTED);
++		priv->rescue_mode = false;
++		mutex_unlock(&priv->mdiodev->bus->mdio_lock);
++
+ 		/* SYS_MISC_FW_VERSION is exempt from block_host, so the
+ 		 * new version can be queried with the block still up.
+ 		 */
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.h b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
+index a1b60fbacebf..57c2000cfee5 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
+@@ -5,6 +5,9 @@
+ 
+ #include <net/dsa.h>
+ 
++struct mxl862xx_priv;
++
++bool mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv);
+ int mxl862xx_devlink_info_get(struct dsa_switch *ds,
+ 			      struct devlink_info_req *req,
+ 			      struct netlink_ext_ack *extack);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 2b69eac24b31..4c61820f05ee 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -346,6 +346,11 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+ 		goto out;
+ 	}
+ 
++	if (priv->rescue_mode) {
++		ret = -ENODEV;
++		goto out;
++	}
++
+ 	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
+ 	    cmd != SYS_MISC_FW_VERSION) {
+ 		ret = -EBUSY;
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c b/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
+index b689652aa9b9..a5b6940b552e 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
+@@ -406,6 +406,8 @@ mxl862xx_phylink_mac_select_pcs(struct phylink_config *config,
+ 
+ 	switch (port) {
+ 	case 9 ... 16:
++		if (priv->rescue_mode)
++			return NULL;
+ 		if (!MXL862XX_FW_VER_MIN(priv, 1, 0, 84)) {
+ 			dev_warn_once(dp->ds->dev,
+ 				      "SerDes PCS unsupported on old firmware.\n");
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+index bf0f2264a931..7a2ea580e6f0 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -629,9 +629,22 @@ static int mxl862xx_setup(struct dsa_switch *ds)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = mxl862xx_wait_ready(ds);
+-	if (ret)
+-		return ret;
++	priv->rescue_mode = mxl862xx_rescue_mode_detect(priv);
++	if (!priv->rescue_mode) {
++		ret = mxl862xx_wait_ready(ds);
++		if (ret) {
++			/* the reset may only now have triggered rescue mode */
++			priv->rescue_mode = mxl862xx_rescue_mode_detect(priv);
++			if (!priv->rescue_mode)
++				return ret;
++		}
++	}
++
++	if (priv->rescue_mode) {
++		dev_warn(ds->dev,
++			 "switch stuck in MCUboot rescue mode, use devlink to flash new firmware\n");
++		return 0;
++	}
+ 
+ 	mutex_init(&priv->serdes_lock);
+ 	for (i = 0; i < ARRAY_SIZE(priv->serdes_ports); i++)
+@@ -716,11 +729,21 @@ static int mxl862xx_port_state(struct dsa_switch *ds, int port, bool enable)
+ static int mxl862xx_port_enable(struct dsa_switch *ds, int port,
+ 				struct phy_device *phydev)
+ {
++	struct mxl862xx_priv *priv = ds->priv;
++
++	if (priv->rescue_mode)
++		return 0;
++
+ 	return mxl862xx_port_state(ds, port, true);
+ }
+ 
+ static void mxl862xx_port_disable(struct dsa_switch *ds, int port)
+ {
++	struct mxl862xx_priv *priv = ds->priv;
++
++	if (priv->rescue_mode)
++		return;
++
+ 	if (mxl862xx_port_state(ds, port, false))
+ 		dev_err(ds->dev, "failed to disable port %d\n", port);
+ }
+@@ -1338,6 +1361,12 @@ static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
+ 	bool is_cpu_port = dsa_port_is_cpu(dp);
+ 	int ret;
+ 
++	/* DSA reinits failed user ports as unused; shared ports must
++	 * succeed for the tree to register.
++	 */
++	if (priv->rescue_mode)
++		return dsa_port_is_user(dp) ? -ENODEV : 0;
++
+ 	ret = mxl862xx_port_state(ds, port, false);
+ 	if (ret)
+ 		return ret;
+@@ -1634,6 +1663,9 @@ static void mxl862xx_port_stp_state_set(struct dsa_switch *ds, int port,
+ 	struct mxl862xx_priv *priv = ds->priv;
+ 	int ret;
+ 
++	if (priv->rescue_mode)
++		return;
++
+ 	switch (state) {
+ 	case BR_STATE_DISABLED:
+ 		param.port_state = cpu_to_le32(MXL862XX_STP_PORT_STATE_DISABLE);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
+index 64d91ad51936..5d21296561e3 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
+@@ -323,6 +323,8 @@ struct mxl862xx_fw_version {
+  *                      during a firmware flash
+  * @skip_teardown:      discard firmware API commands during the teardown
+  *                      triggered by the post-flash reprobe
++ * @rescue_mode:        switch is stuck in MCUboot; firmware API commands
++ *                      fail fast, only clause-22 SMDIO works
+  * @stats_work:         periodic work item that polls RMON hardware counters
+  *                      and accumulates them into 64-bit per-port stats
+  */
+@@ -343,6 +345,7 @@ struct mxl862xx_priv {
+ 	u16 vf_block_size;
+ 	bool block_host;
+ 	bool skip_teardown;
++	bool rescue_mode;
+ 	struct delayed_work stats_work;
+ };
+ 
+-- 
+2.55.0
