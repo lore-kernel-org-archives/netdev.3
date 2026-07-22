@@ -1,79 +1,47 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EB51F94F
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7594E257824;
+	Wed, 22 Jul 2026 13:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784726129; cv=none; b=FwQP2x1BGF8GWAf7l3NJ+syfVjW43j/PQPRMH+n3kttN5BuuJKp18Bnj7khsCC70kZKz50UGbs36tJzWO867pKQVv6Kz8E4Ikc+dLJ5GERRvPZ08GUj+sVVDQ00Vb6lNGTPcnmtb7eSmhPqEIyrrR/IQmuMslphC527QEwrY/k0=
+	t=1784726315; cv=none; b=IM3yA/wkxa42eEBVUOAXfbIyRMaSROIXRlMNGuPmr5awKw1mdOVCLBUJu/AFNMW6UgilApuRa74e/V6fs8l7sNCZAcq1IEVLHsUyu1Vf9qGzFbvRd9aT7DWjHCvS/h2kdsxUjsv0zGY2EVS67YDHOwJaBfjbWiLCmlKgHE7xtgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784726129; c=relaxed/simple;
-	bh=/byUoJ/WMc6UHqgCYQepUc84g2a8J34F7f8DVdRPKCU=;
+	s=arc-20240116; t=1784726315; c=relaxed/simple;
+	bh=+EdcaJeky4HNlvH4RO2kxLsdC4osjNnk5t08G+Jtozo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GuPNsHZDwc7/AiWJqDq3xbw6iBwU2X+LNAvYejs0HlInxbVGCYxdM03YsjNQolECzUpXVJ83fCi1usyEhdzzu8cjn9GLioghaqvAmqoTOs2i0vwVKyS8pbxycs2WXKdKV1DWndOEmWqGajB3pNYcEQuoT1BWjBA9JYBASUKTIgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=TKj5EqlQ; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQ3l6+6plJvTusm/CtovyislApCkKcQk5JPP1/hxIX189t+DJQlqaKb8yI49JEjssB+eQ/giy9IUVI+sTjsPFyh8aiubp0yZupVcPc9axod1qdp1ituWHl9nOsaRDU56+36d3EEotBLMjlLgfAGXVjelEq5Sa42BNPDcB0sTY7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tx0vAGNN; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="TKj5EqlQ"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84e27035206so5969b3a.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:15:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784726123; x=1785330923; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iD1PTipWdU3DcXEKR2UtQxdCuq75xUopzE+YD6AEWUQ=;
-        b=TKj5EqlQauPSMcV3lkbsLaqOqCU0dreLTWV0TdHRTt+02xdTm7Rtrl4JsV6BdmnwTS
-         8S9r8H49DY+9bzJvw1nBTXznXnw1k7RqNpvQTg451qs3/viOtJ3eLezErYcel9Fbr0lE
-         I4m1+uCRVMTavGlDzdlSxVYWmSCJ8xRFG91CePilPhQDK8p3qvq0RwQfjM7e2Ims0nQH
-         sbUbGeNP6MG5bDCNhKu34N74mpDvWs1pKQjNpQwz6Z/1VkZn4LoXs1xD4kfNXcHdZPih
-         SRWW3Pnz12LgJLy6S9/TdvISE9N8xAGFN6VuxFVf9jgK2fE5mcGxZxY64WRDlKujNE7q
-         b3wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784726124; x=1785330924;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=iD1PTipWdU3DcXEKR2UtQxdCuq75xUopzE+YD6AEWUQ=;
-        b=cXl5Ufk1+KwKUx2co8YZyIVjxFsSWYG2gkwuNqEDwFPzi+nl6KsT8BFwwLREWWSMpE
-         QXO3aeOoqMDHSgdVGj1Z72Yn7+c9OSnaOT9+kRYp2yxP96d6kOVnPEvMRqxlXfZAcZes
-         2+281AoRKVOoiUWBwqExsupYZXMGG6zOJLjDGW7bmfrXPZ/8U8KPW0l285c0HjJuB36a
-         k93g2Ctji7H9kAZ3aSywXnfRapUeoWzTRxKh/P/TlgoOzZuNCtGLghcGJZzJ94ZKEhXc
-         qN8erZl0HHzY+HAQItD1g3WKTlQg7mktartChKYqs64lErb7FyNL/rhxi9WhC+k0+TwI
-         mJig==
-X-Forwarded-Encrypted: i=1; AHgh+RpxDkYQPlIgpfxevBzx6fFLwqgDkqabOdCCmaU4K8AH3SK80sO1Hq+YIsy0F+aGbo3kF71BIpk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS5jUmUqUU2zft+5rPFMJZu+cu197cRkUSfnXPVbM1Lp5n5h5X
-	2NebxjXXJQY0PyncwJNOD+cfabP+um8v7riG70RjDxeWrrbdG6s50tzOuu0B0VSPT2s=
-X-Gm-Gg: AR+sD10eLdZDieFoIUwOsPvboTE38e7TSOA9pBjT0D+IG+74WHLvJwJE2MdE+5qf1I5
-	Er0VEYZNopJclIgdSGfSkrth++pqGIFLH9OnSPN88LnaXQd7aizqQ18llqaFSCC+cfN4CwFMBdX
-	Ss70n6A2qwz+OTDoTOW6lXhhDioejJFpKmWQhbl7fjgL5DPKKzA+0SKryyv9Nqp3Mapq5Mkxs4T
-	5BiZTKAYKDNMCW0NHw+guxIvAYusKbDCQHBTxsmg7hk0m0cBUwsy8q3kVplUvswHPYw9eGI2PCt
-	4rEd443bwAQu4+LHjZU0R6WDK1uR7XPspPjHsJ1sAVd2b3irGc+CWFipvDxo8HoHGxlWxYP/m3g
-	ExetNq/K/7fOTnka7IB/9G+mUANkTZhTZZfUNVPt4zgfGFAXjQtFHKaryCLM=
-X-Received: by 2002:a05:6a00:3a21:b0:847:8d2d:712f with SMTP id d2e1a72fcca58-84c29239a02mr23869158b3a.10.1784726123466;
-        Wed, 22 Jul 2026 06:15:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:49::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17237c3fsm1368442b3a.9.2026.07.22.06.15.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 06:15:22 -0700 (PDT)
-Date: Wed, 22 Jul 2026 06:15:19 -0700
-From: Joe Damato <joe@dama.to>
-To: longlong yan <yanlonglong@kylinos.cn>
-Cc: pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net,
-	edumazet@google.com, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	shuah@kernel.org, horms@kernel.org
-Subject: Re: [PATCH] selftests/net: use MAP_FAILED instead of (void *)-1 in
- tcp_mmap
-Message-ID: <amDCZ5t8wDtqNAIe@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	longlong yan <yanlonglong@kylinos.cn>, pabeni@redhat.com,
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, shuah@kernel.org, horms@kernel.org
-References: <20260722015129.916-1-yanlonglong@kylinos.cn>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tx0vAGNN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+fuaOn5vTE7tEsgI1xMomla5QtJBugWlNkzCkhVMHi0=; b=tx0vAGNN+gn8r+R0Qkl8XU+3mR
+	VnEL9rRfrIgO4/YFv133ooz0V80mKkh8qGepayZKTV3YeLME/rbC9e7mZQLdGKKOO7kZpLMWn3srK
+	2yuAqOWsBkyVqZaR5yTQvsBekvqwB+IO0GUnW6E4UqbOWkco48+aBm8QrND4UUE5tI80=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wmWq1-00DdNK-6x; Wed, 22 Jul 2026 15:18:17 +0200
+Date: Wed, 22 Jul 2026 15:18:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+Message-ID: <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
+References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
+ <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
+ <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,24 +50,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260722015129.916-1-yanlonglong@kylinos.cn>
+In-Reply-To: <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
 
-On Wed, Jul 22, 2026 at 09:51:29AM +0800, longlong yan wrote:
-> mmap() is documented to return MAP_FAILED on error, but tcp_mmap.c
-> compares the return value against (void *)-1 and (unsigned char *)-1.
+On Wed, Jul 22, 2026 at 04:06:31PM +0800, Kyle Switch wrote:
 > 
-> Replace these with the standard MAP_FAILED macro for better readability
-> and type safety.
 > 
-> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
-> ---
->  tools/testing/selftests/net/tcp_mmap.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
+> On 7/21/26 22:18, Andrew Lunn wrote:
+> > Just checking something here....
+> > 
+> >> +/**
+> >> + * ytphy_write_top_ext() - write a PHY's top extended register for YT8824
+> >> + * @phydev: a pointer to a &struct phy_device
+> >> + * @regnum: register number to write
+> >> + * @val: register val to write
+> >> + *
+> >> + * Returns: the value of regnum reg or negative error code
+> >> + */
+> >> +static int ytphy_write_top_ext(struct phy_device *phydev, u16 regnum,
+> >> +			       u16 val)
+> >> +{
+> >> +	int ret;
+> >> +
+> >> +	lockdep_assert_held(&phydev->mdio.bus->mdio_lock);
+> >> +	ret = __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, regnum);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	return __phy_package_write(phydev, 0, YTPHY_PAGE_DATA, val);
+> > 
+> > The _top_ registers are in a different MDIO address, and are shared by
+> > all PHYs within one package. Correct?
+> 
+> Ans: yes, the understanding is correct. The top registers is shared by
+>      all PHYs.
+> 
+> > 
+> >> +static int yt8824_write_page(struct phy_device *phydev, int page)
+> >> +{
+> >> +	int old_page;
+> >> +	u16 data;
+> >> +
+> >> +	old_page = ytphy_read_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG);
+> >> +	data = old_page & (~YT8824_RSSR_SPACE_MASK);
+> >> +	data |= page;
+> >> +
+> >> +	return ytphy_write_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG, data);
+> > 
+> > The page register is in a top register. So when accessing a paged
+> > register, all other PHYs also get swapped to that page. And so it is
+> > necessary to block all other PHYs from accessing registers, until the
+> > paged access if completed?
+> > 
+> > If i have that right, that is an odd hardware design. Since this is an
+> > odd design, it deserves to be documented. Locking is hard, and it is
+> > made harder by not having good documentation about the design of the
+> > locking scheme. 
+> 
+> Ans: Yes, the current operation involves locking at the beginning of the phy8824 driver
+>      ops and unlocking at the end of the ops function, that is why so many __function 
+>      involved in this driver, but there are also some special cases that need to be reconsidered 
+>      such as using  phy_read_poll_timeout().Can you give me some suggestions on the lock scheme?
 
-Looks right to me. Not sure if it needs to be set with "net-next" in the
-subject line to make which tree this targets more explicit?
+So, that is a really bad design. As a software engineer you should go
+talk to your hardware engineers and tell them what is wrong with this
+design. Hopefully they will then fix it for the next generation, move
+the page register into the PHYs own address space, a page register per
+PHY so removing this locking.
 
-Either way:
+> >> +	old_page = phy_select_page(phydev, reg_space);
+> >> +	if (old_page < 0)
+> >> +		goto err_restore_page;
+> >> +
+> >> +	if (reg_space == YT8824_RSSR_UTP_SPACE) {
+> >> +		ret = __phy_read_mmd(phydev, 0x1,
+> >> +				     YT8824_UTP_TEMPLATE_MODE_CTRL);
+> > 
+> > What address spaces are paged? Every other design i've seen only has
+> > pages of C22 registers, since you only have 32 of them. But looking at
+> > this code, does this hardware also page C45?
+> > 
+> 
+> Ans: To access the mmd register of UTP, must first select the page as UTP. I'm not sure if this is 
+>      the answer you want.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+So it sounds like each MDIO address on the bus actually has two full
+PHYs on it, and this page register allows you to swap the accesses
+between the two. Are there two sets of MDI pins, one for each PHY?
+Can both FIBER and UTP be used at the same time? Could i configure
+both copper and fibre parts, see which gets link first, and then
+declare that the winner? Maybe you should actually be exposing both
+PHYs, with a mux between the MAC and the PHYs. This is something
+Maxime has been working on.
+
+This whole concept of one shared register controlling page access to
+all PHYs within the package sounds so wrong, i would go talk to the
+hardware engineers. Maybe you are missing something, the software is
+not doing what the hardware designer intended? Because this is so
+ugly.
+
+    Andrew
