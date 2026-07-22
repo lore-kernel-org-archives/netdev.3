@@ -1,45 +1,58 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73150C8EB;
-	Wed, 22 Jul 2026 12:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264E1339367
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784722703; cv=none; b=B8qW8xsS8Q1ptqzuh7cJRbgWJsHvYxG0RobqKByIPiWj24S+IlH/tSHj15VLKI9pyoayg+KRZysW/dQHI7HSNcmdAyS09G/0pzJAEV7u38I5xQ9hNS4OG7Vf5QvQQdIdSdwzVDn930jQSHnp4bxwiiBhUBl5s48edPwVKFKrGXI=
+	t=1784723112; cv=none; b=SSHg/HsYhpM5SHWQa8zktvGr/TLbwG9USWFU5JAqX1MAIeEniiw+joeYEU+gFFAQY1FTai1TGjmNc4q2S0eSUGH1F1n+GvqSuoHsQQrEythCq9MLPXFOTc2uQDnyU7cQduaWAnK0m+SGxk/D1hD28VseIC4Mzr5bP+9kefnoCOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784722703; c=relaxed/simple;
-	bh=l2BQQiUAZCFYQfFhXaTS0vJtj7V5SDFzmcxOKm9I/Fk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bCGIGB7fDx3zZRyys8YEBGrbPncbwlIcdySh7iem3PNa6O/6jJI4fZRHk0H4xh0d9yj4i7vhgtczTI0sDoF79MNUC1MME2UhzQc9fotUauDbNtSzjdZmOsj3+WAS/kVPiSjVXCQJ/+Ps6tx02meYxNIdYs8AjgVGkNCssE3CKyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn; spf=pass smtp.mailfrom=jmu.edu.cn; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
-Received: from Vostro-3710.. (unknown [113.80.141.55])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 472a0a9ad;
-	Wed, 22 Jul 2026 20:18:06 +0800 (GMT+08:00)
-From: Chukun Pan <amadeus@jmu.edu.cn>
-To: javen_xu@realsil.com.cn
-Cc: andrew@lunn.ch,
-	daniel@makrotopia.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	freddy_gu@realsil.com.cn,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	nb@tipi-net.de,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	vladimir.oltean@nxp.com,
-	Chukun Pan <amadeus@jmu.edu.cn>
-Subject: Re: [PATCH net-next v10 5/5] net: phy: realtek: add support for RTL8261D
-Date: Wed, 22 Jul 2026 20:18:01 +0800
-Message-Id: <20260722121801.655011-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260721022410.1391-6-javen_xu@realsil.com.cn>
-References: <20260721022410.1391-6-javen_xu@realsil.com.cn>
+	s=arc-20240116; t=1784723112; c=relaxed/simple;
+	bh=eUvzvKjnwhdV/VYZblJlJMHe8fUdWz5zwlhFuJdsWbk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h1D58ku71y9M3pgH4Q37jDrPx2iUgjboDj3YPAODjLspzv8i6CWNak3830tg41In3mTDrx2niO8NMJiJGVwbZ5tPbMkiKD2hPBc2WgjcuMMXmq4WiAblnfiQiO58RD9qz37j4opkBiZeTMWl8VReVlpoG0caU8RtPZUh9Dy6Dsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRvSJ0WG; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRvSJ0WG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784723110; x=1816259110;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eUvzvKjnwhdV/VYZblJlJMHe8fUdWz5zwlhFuJdsWbk=;
+  b=fRvSJ0WGkwMElPFeLVjsSoCsfpKjcUuPZvmQxivmaMtTxDGZsVy7i/Ml
+   i6NTeGPaSMI1JJNZduzIlcYrr18qgYtXQskxD4I/nnlEzhHJcszvs8p/o
+   iYB/8OWOyM5xxef+HjhChCE60khTiR2bjjicum82KAe6qkusX4WNswB3B
+   daLDx7Ve7II3Ti7s/zXJubgwipoHhsuCRvBP1lyrFFSaClxMJIP5eu9+8
+   33b6P1wd3FQXWGx3jOD182YQiAABdirZ7wQHtS+I0UZ1L29frCwoby2dg
+   +gC+Cm6NRH7rVQuoxZ0brQw1Ea6EWnT+65Dkjiiid49Z0yVwwojGOhSRp
+   g==;
+X-CSE-ConnectionGUID: htCY7XEeTUyoKdw6nVvxhA==
+X-CSE-MsgGUID: cr7aOnB4SrqZNZ6g0C2ZwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="72899664"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="72899664"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 05:25:09 -0700
+X-CSE-ConnectionGUID: YisQHugUQfKRHitPKF1K+w==
+X-CSE-MsgGUID: xPJzSEheTuiPyqiDI324CA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="253716935"
+Received: from os-delivery.igk.intel.com ([10.123.220.24])
+  by fmviesa006.fm.intel.com with ESMTP; 22 Jul 2026 05:25:08 -0700
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Jakub Kaminski <jakub.kaminski@intel.com>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tomasz Lichwala <tomasz.lichwala@intel.com>
+Subject: [PATCH iwl-net] ice: Fix "Unknown bps" during link events
+Date: Wed, 22 Jul 2026 14:24:48 +0200
+Message-ID: <20260722122448.2286008-1-lukasz.czapnik@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,18 +60,122 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f89c3012d03a2kunm0b4cf6501680b8
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSE1NVklJQxgfHxhJSRofHlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKSkhVQ0tVSk9KVU5OWVdZFhoPEhUdFFlBWU9LSFVKS0hKTk
-	xOVUpLS1VKQktLWQY+
 
-Hi,
+From: Jakub Kaminski <jakub.kaminski@intel.com>
 
->  		PHY_ID_MATCH_EXACT(RTL_8261C_CG),
-> -		.name			= "Realtek RTL8261C 10Gbps PHY",
-> +		.name			= "Realtek RTL8261 10Gbps PHY"
+The driver may display "NIC Link is up Unknown bps" messages during
+link state changes. This occurs when link status and link speed are
+read from different points in time.
 
-Given that the RTL8261 has multiple suffixes (B/C/D/N),
-this name change could be confusing.
+The driver processes link events by receiving an asynchronous ARQ event
+from firmware containing link_up and link_speed values, then performing
+a synchronous AQ query via ice_update_link_info() which overwrites the
+phy.link_info structure, and finally calling ice_link_event() with a
+link_speed parameter while ice_print_link_msg() read link_speed from
+phy.link_info directly.
+
+ice_print_link_msg() always read link_speed from the phy.link_info
+structure. This caused link status from the ARQ event to be combined
+with link_speed from the later AQ query, mixing information from two
+different points in time. When firmware state changed between these
+moments, inconsistent messages like "Link is up Unknown bps" appeared.
+
+Add a link_speed parameter to ice_print_link_msg() to ensure link
+status and speed are always taken from the same source and point in
+time.
+
+Fixes: c2a23e00613b ("ice: Refactor link event flow")
+Signed-off-by: Jakub Kaminski <jakub.kaminski@intel.com>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Tomasz Lichwala <tomasz.lichwala@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h         |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c |  2 +-
+ drivers/net/ethernet/intel/ice/ice_main.c    | 14 +++++++++-----
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index da679793b397..567058c28907 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -1006,7 +1006,7 @@ int ice_get_rss_key(struct ice_vsi *vsi, u8 *seed);
+ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc);
+ void ice_fill_rss_lut(u8 *lut, u16 rss_table_size, u16 rss_size);
+ int ice_schedule_reset(struct ice_pf *pf, enum ice_reset_req reset);
+-void ice_print_link_msg(struct ice_vsi *vsi, bool isup);
++void ice_print_link_msg(struct ice_vsi *vsi, bool isup, u16 link_speed);
+ int ice_plug_aux_dev(struct ice_pf *pf);
+ void ice_unplug_aux_dev(struct ice_pf *pf);
+ void ice_rdma_finalize_setup(struct ice_pf *pf);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 9ddd7e82a300..c37b72763ce5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -2814,7 +2814,7 @@ ice_set_link_ksettings(struct net_device *netdev,
+ 		/* Tell the OS link is going down, the link will go
+ 		 * back up when fw says it is ready asynchronously
+ 		 */
+-		ice_print_link_msg(np->vsi, false);
++		ice_print_link_msg(np->vsi, false, 0);
+ 		netif_carrier_off(netdev);
+ 		netif_tx_stop_all_queues(netdev);
+ 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 968a8e18d197..2ab5e2800c30 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -835,8 +835,9 @@ static void ice_print_topo_conflict(struct ice_vsi *vsi)
+  * ice_print_link_msg - print link up or down message
+  * @vsi: the VSI whose link status is being queried
+  * @isup: boolean for if the link is now up or down
++ * @link_speed: current link speed value to display
+  */
+-void ice_print_link_msg(struct ice_vsi *vsi, bool isup)
++void ice_print_link_msg(struct ice_vsi *vsi, bool isup, u16 link_speed)
+ {
+ 	struct ice_aqc_get_phy_caps_data *caps;
+ 	const char *an_advertised;
+@@ -860,7 +861,7 @@ void ice_print_link_msg(struct ice_vsi *vsi, bool isup)
+ 		return;
+ 	}
+ 
+-	switch (vsi->port_info->phy.link_info.link_speed) {
++	switch (link_speed) {
+ 	case ICE_AQ_LINK_SPEED_200GB:
+ 		speed = "200 G";
+ 		break;
+@@ -1193,8 +1194,10 @@ ice_link_event(struct ice_pf *pf, struct ice_port_info *pi, bool link_up,
+ 	/* Check if the link state is up after updating link info, and treat
+ 	 * this event as an UP event since the link is actually UP now.
+ 	 */
+-	if (phy_info->link_info.link_info & ICE_AQ_LINK_UP)
++	if (phy_info->link_info.link_info & ICE_AQ_LINK_UP) {
+ 		link_up = true;
++		link_speed = phy_info->link_info.link_speed;
++	}
+ 
+ 	vsi = ice_get_main_vsi(pf);
+ 	if (!vsi || !vsi->port_info)
+@@ -1224,7 +1227,7 @@ ice_link_event(struct ice_pf *pf, struct ice_port_info *pi, bool link_up,
+ 			ice_set_dflt_mib(pf);
+ 	}
+ 	ice_vsi_link_event(vsi, link_up);
+-	ice_print_link_msg(vsi, link_up);
++	ice_print_link_msg(vsi, link_up, link_speed);
+ 
+ 	ice_vc_notify_link_state(pf);
+ 
+@@ -6922,7 +6925,8 @@ static int ice_up_complete(struct ice_vsi *vsi)
+ 	    (vsi->port_info->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
+ 	    ((vsi->netdev && (vsi->type == ICE_VSI_PF ||
+ 			      vsi->type == ICE_VSI_SF)))) {
+-		ice_print_link_msg(vsi, true);
++		ice_print_link_msg(vsi, true,
++				   vsi->port_info->phy.link_info.link_speed);
+ 		netif_tx_start_all_queues(vsi->netdev);
+ 		netif_carrier_on(vsi->netdev);
+ 		ice_ptp_link_change(pf, true);
+-- 
+2.50.1
+
