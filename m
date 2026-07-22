@@ -1,148 +1,116 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012064.outbound.protection.outlook.com [52.101.48.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6FD314D06
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784679405; cv=fail; b=LeB0/8hF36rgvi93Fb1mmvdq/a5+TINu905a+vcwHdrsH9lNpxa118+kd1SmxkcPezgI7NkXSwcYpCE8r9mmxqF1d7lBpMaCiwmHhcBYp2FfkCqkZD1jqvbFKJ9Evatphakd+qAnwx3b5EkTnpz15nyjSMXmzvfzbzok8mDxMsU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784679405; c=relaxed/simple;
-	bh=qBfwjonooOKsnDIsEjkVC+d2dEUuxf9kOsuBEOLoh1Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qO/Ey3HaC9mpyDxU8si4EjrMTzFIKTLU18uXrBLKklMH+C/RHVQ5IQ1hUm6UQJi23MB5hx9s6HUZBFlcOSCQtXAXUlYZs101SxTvaV9B9djguwknHQgd9DTYjSgLOdUY1Zrz5S/h9rZNvWV+dJfow3HSAeEYonetBKW2SyP93HA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Kox0/B2w; arc=fail smtp.client-ip=52.101.48.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E4219644B
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784679736; cv=none; b=RvYZIzWR89C3SmaSR0y+FxA4IxFT9H0jVzzNRd0y0WakhCzfUspvzkkQIXVQjnkyE4MFA59dAJOIzcSYsgyPEmGbqZNNfMtpoSMOutPr/e28QHWOTuClip01ODvPTnPcoZam5WsY/93ZGgVDDLBG5m+3xAn2glLqzFZeoNBbe1U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784679736; c=relaxed/simple;
+	bh=xFMBO/tvDXeZ9ENOnwGVcMekf9MEIwoIn8N1zllBcuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rQZV5MdTpkeJnIFnz2yyNb7NwVA147AtgV4nik8eBDrRFlpYxyGJIhe0p+OAwXcFuhX/5xQC8sJFoKruVFdph1H+VJN1SRXLxDjNRklSW46v3w0Zt4qUnBCohCsHkvkeZmyN/AlSMLyZA7Ht5uZorUuTolnXbXXIBAjambhCy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHhbEshY; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Kox0/B2w"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Cl9w2P+9RCcZelVzFfE/bK+cpmVmCk2KKrjz766H91wvEskBTlaIG7e86ZRfsCcllaYJMuy+cVOf9CYWgFnONZA9mBDvZZpmHRmKl6vAM7g1zz/9Rz5dwU5GcNuGzO3Tona5L80lFMALV1y+WkVXUCeU0lmMl7CBf1fXhxoZjraujYRy9sMq/y9r0qPqClhOdQPsxNHak0d1CwxoyB9YlgHMZfl6k0LfSG2BTrJ1hxXITqlDyCUKIs3MgqdulBfQeVIrV+bHuBpHvp4/pNwk9nAkpIatn85ffRc7uxpqNvMQ4wUgDz++7QCQGIW3qkD2fgruU3lIfhBqH6dfnYkoxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ad8OMHGm8htEAMJyNJd9JwNAyKyNxPJYgkZ9kwgBAdQ=;
- b=G6BsPXXgWJrpf2M9gs5JG0KCUZwsKP7iH8pslxXmlLn6z/fOXcEgG4n5FgU5VnVHmRvj4QhvMBvEdgmJr5/cRiCuqS0JRCeyLCqK6tsDQ3IXa5YyuATh3Pu3CMNm9LbhlttdMLcn01VAaFL1F3VH2x9rgMu04gvisbk2awEIdB0QY4be0cBQNymCMTX8tmn8BthSF2DYfjo8KbDRovzgUAO4OS6ZmqH2VDaCbn58NJ7Ts65v+qZKxMtJ9TxP52W6lDBL8MKD2tZKnbiKGD4MeQWf8xAlJgBvc92QO/3tc6L0rNuTfyjAVU7sZ+4SesIFhmlFoz6CUM+H7WKCsA6cQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ad8OMHGm8htEAMJyNJd9JwNAyKyNxPJYgkZ9kwgBAdQ=;
- b=Kox0/B2wGMgM4J/ZPHi9PtmWdWe6C3U9KMToym4FxWYwW7WG/SodPW50WLJtIOzN6KSW1y8Q4ez0vPnHqS1MQ2wg3Czn+aLGFyqG2irzc9Cq2xJB7yPQ+TZ8deE1+MNEw3VW0pvTrkAsUT8E3VzRCEVLommOGOVKzDG7AUFXjoU=
-Received: from SA0PR11CA0074.namprd11.prod.outlook.com (2603:10b6:806:d2::19)
- by DS0PR12MB8814.namprd12.prod.outlook.com (2603:10b6:8:14e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 00:16:36 +0000
-Received: from SA2PEPF00003AEA.namprd02.prod.outlook.com
- (2603:10b6:806:d2:cafe::7) by SA0PR11CA0074.outlook.office365.com
- (2603:10b6:806:d2::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Wed,
- 22 Jul 2026 00:16:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AEA.mail.protection.outlook.com (10.167.248.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Wed, 22 Jul 2026 00:16:36 +0000
-Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 21 Jul
- 2026 19:16:35 -0500
-From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>
-Subject: [PATCH net v2] pds_core: keep the health thread stopped during reset
-Date: Wed, 22 Jul 2026 00:16:21 +0000
-Message-ID: <20260722001621.22527-1-nikhil.rao@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHhbEshY"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-848643382fcso12949825b3a.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 17:22:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784679732; x=1785284532; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6RV+pWPuLrWtGLHPRoHO6UZjcCN7SkNDZVxGG/ZxlKo=;
+        b=CHhbEshYoiYrgYa+X9Wlk7+xzrqSiHbJXvRJKFyPDjE6SEtbR5/B1iz004mrHV5RGm
+         H21UNWc9X/iWKWOIBQg67YnbNrjv4C7kS2Wil7Is1n74yXgICGnCD0O5A+MrHGuI5MHH
+         rPazIeJV/wCBYJrnIoZo7+lmCMikBDtUi/uB9Rlea+ROd31TbB32VgB3laMAO4bu9joH
+         QkR/KCljXtI6+Yl0mrxhfVZhIeKYOXeiK5xLAaOQIjd0jZi5a9L/Ghii/l8J3Cqp40vX
+         N7v/m73wBbJYm4sFzlBuQNcYe+MWHEs6rwj1g0bCSh/EvL9DaOTVjmlGZS+nMewgDfIa
+         92ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784679732; x=1785284532;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6RV+pWPuLrWtGLHPRoHO6UZjcCN7SkNDZVxGG/ZxlKo=;
+        b=D4dpc5nsRKLjdrpEBEbVjZ3kQZLg2X8X4ggjfg2ILevsQO0KBvxFS8eJtxIsoBnzub
+         p3SkFrfFMChhqrGn9a22acPQd90REwHXURL8hESJFRQQcnebKx8qLSQAnLNwUxYNHiWV
+         Scc6EosnX6qtdtemfTTOg723mbpJyEw6GVtMpIMqZE6CIgenRQ+Db3rdYXiqEJfn75Yv
+         Dqj2fCaTbU82x28VwnelLacU0b9bQFe4ELuW4YFvT7+LgqAUrWMpmHM3jKc4YJToEOF7
+         BTNm5YAd0JdCWDHlrQ9PTkLM7w0qU+nx5NwJtFQz7MCujsbgVsLlsubu0BqKStK1k7pe
+         fnZw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp9pH2fQC98HO1w3U7c+Mn8yTgFI+LkKp/3u6L8NQZRs9GcBnBClB0hq6vruH96SmxH3uykBqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypOj0N1SfAxBp13iQa/6ygjn2Xsu+knTRubuiFLvrCg+aOWdk8
+	2IYldx/t4hMBy0vWlMjO8CplPLNW7QljaiCFwyqzS+t3gFNCadqxkmyF
+X-Gm-Gg: AR+sD13aqglpxw5BXK1RGTf5F0HazDCNpa3wPkd1XZDlBNhqiojTp6yd1lTUlXqgz4W
+	0GxV0btDTvSB2G+DPP05TbsTkGT40uTg3IzBMzK7HYY4w8mT674MyHEib0NkzF8AEc4W/Yt6tRa
+	522nZils+Ge9ilORgHs+oJrq8K/kwlbdsXh9rHO5khi6dXWCFeWHyFxylgHJe++PUJBvkA2x9DW
+	N1nhO/mjnQy09z9iI6acdI/cvd97MuYH8f6jNff5mhLTljJA73df7J4RsD0EmTPlDd88xGQajt7
+	bWAilgDfCVGtjIyMjklUtAOikVKL0GoI89HkI8Zt+zxOEpP4jXRvm89EVYB0RnyZ27TLw4vZ2Dr
+	zVwWGPu0UV/YumLvmcS0R7ZJ9pNB/KOJfdUeXOSMubrLXcUv8VR3x34MZqstQfgWyg7seSCFrrq
+	gPFFqoYQbnusV0s8BHyyThBA==
+X-Received: by 2002:a05:6a00:a1b:b0:848:19f4:3b52 with SMTP id d2e1a72fcca58-84c294d431cmr20914841b3a.38.1784679731792;
+        Tue, 21 Jul 2026 17:22:11 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:2::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175b26bbsm406610b3a.46.2026.07.21.17.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 17:22:11 -0700 (PDT)
+Date: Tue, 21 Jul 2026 17:22:08 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <amANME8AVF7GN/ye@devvm29614.prn0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+ <20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
+ <20260721110903.34840531@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AEA:EE_|DS0PR12MB8814:EE_
-X-MS-Office365-Filtering-Correlation-Id: af3ac101-3b67-4ac3-d176-08dee7867e37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|82310400026|36860700016|13003099007|18002099003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	CJzZEr0Swt4dO3SMwHz00yyrcL/6JB0xleU3jbuy6t3CiEMtzHsv1i/gcoIwDeoV2htSFeFD/fJ1dtqqYeSis7b0hlce0EOGEkGIVq+/Eq7RyThkfBldl+vUAOMFZAQ+lQfXc9iRIZapL7IIVfILegjjouFQKYzF1MXiAtYJnlQgxzz26rVJsIH61TZzaNtVvM4x8oWcAFJc9qOP0jfMXJSnxdOzZCqjZ/AFxceoowGNDhCVcw28INUf3PZ5ojz8p8jFLGqD2L9swr1Adhu1no3Pjzg2OIa9wQtwyAx3Fd6Ap3JAB5FIDHgllP1OzIK8+NeE2qPNDvPqybElCsbY1NMHl7g8lhkqc4oL1Kg+tpEhqFlOg4fBQcWQ64PfxQq+wHOPoD+9vuUFw4KEUZ7SU7GRzaRea0neWQanx2PNnP6hP2fK0k5tkJvIEapwhsr6DcMh9DaZd8OQrvt49w3H6jV8SWaVLdz88myGmWAKoj0Z1ZaOvUXbjYnTEgXXmz6liLpfTQ7yC34rQNH67Poj8k+vlvaVKRtR2bFiwA4JF1nT/xXFoRAXsAwe3bzszLn1rDSkz9cmHspV861hncUgmLeQGfcO8XSSYrvV6bGLM53UwxTbWHcAdPUwezuwtKsKICiXLif9vCYDyU190gTV8w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(82310400026)(36860700016)(13003099007)(18002099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	V0P1X/IGjCGSIRLsuYUWhGWpqk4nigFJo+YFNGxy/WB2YKTD0XMLy77+0hkOpQI9EdLaE0x0/MDmC7ov8mKFo6GwzH/kQI0H5WYAxzA3Bxks0xyD6IfJqlvZ/ud+g2AoO0ZTXZMsJvzHNSjD8Q4w24eQueZucH5a+AfBwGPJtWR9IcMAHY7icED/o6RuJ0cYXtelEiCeMNdncyzkU24np7n+uk7F5WHuclBHrLuW+8LXcYNOb9NJUt4M2GlBb2+A2ZaNGTdKyPGJDWHIcNQW0Idv5cl1L9cfXDm0No3qFsh7bysq0XV8Nc8CWkkaXpRC/gp5khtaLVMUjz7cxVlyPv278wmTDrgvTbPCMsqv5HMbg4agHXnJDagqElKWpC9BMLdlBFQi0Ysm2wkeE7pnelCR3V3eHG+NsAJeMbF9tH5UQJO6g5sJUv6EzvCXFsvg
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 00:16:36.1741
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af3ac101-3b67-4ac3-d176-08dee7867e37
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AEA.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8814
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721110903.34840531@kernel.org>
 
-Commit d9407ff11809 ("pds_core: Prevent health thread from running
-during reset/remove") stops the health thread with cancel_work_sync()
-before a reset, but a devcmd timeout during pdsc_fw_down() re-queues
-health_work, so pdsc_health_thread() runs again mid-reset and double
-allocates the core DMA queues via pdsc_fw_up().
+On Tue, Jul 21, 2026 at 11:09:03AM -0700, Jakub Kicinski wrote:
+> On Wed, 08 Jul 2026 15:55:06 -0700 Bobby Eshleman wrote:
+> > +@ksft_disruptive
+> > +def check_rx_large_niov(cfg) -> None:
+> > +    """Run the devmem RX test with rx-buf-size = 16 KiB."""
+> > +    run_rx_large_niov(cfg)
+> 
+> Any idea why the devmem tests sprinkle disruptive everywhere?
+> Disruptive means we take the link down, I don't think this test 
+> does that.
+> 
 
-Only the reset path is affected. On remove, PDSC_S_STOPPING_DRIVER gates
-the health thread.
+Not sure... I don't think the link is ever taken down. If the worry is
+ssh, I think one non-devmem queue is always spared anyway, so ssh should
+stay up too, but I haven't tried this out.
 
-Use disable_work_sync() instead, it cancels the pending work and
-disables the item, so the pdsc_fw_down() re-queue becomes a no-op.
-pdsc_restart_health_thread() re-enables it with enable_work().
+I always forget to remove these decorators.
 
-Fixes: d9407ff11809 ("pds_core: Prevent health thread from running during reset/remove")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260629200358.2626129-1-nikhil.rao%40amd.com?part=2
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
----
- drivers/net/ethernet/amd/pds_core/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 22db78343eb0..3e34350b169b 100644
---- a/drivers/net/ethernet/amd/pds_core/main.c
-+++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -465,7 +465,7 @@ static void pdsc_stop_health_thread(struct pdsc *pdsc)
- 
- 	timer_shutdown_sync(&pdsc->wdtimer);
- 	if (pdsc->health_work.func)
--		cancel_work_sync(&pdsc->health_work);
-+		disable_work_sync(&pdsc->health_work);
- }
- 
- static void pdsc_restart_health_thread(struct pdsc *pdsc)
-@@ -473,6 +473,7 @@ static void pdsc_restart_health_thread(struct pdsc *pdsc)
- 	if (pdsc->pdev->is_virtfn)
- 		return;
- 
-+	enable_work(&pdsc->health_work);
- 	timer_setup(&pdsc->wdtimer, pdsc_wdtimer_cb, 0);
- 	mod_timer(&pdsc->wdtimer, jiffies + 1);
- }
--- 
-2.43.0
-
+Best,
+Bobby
