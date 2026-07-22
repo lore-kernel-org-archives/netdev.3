@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90B1356767
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 14:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E4F37881F;
+	Wed, 22 Jul 2026 14:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784731565; cv=none; b=l2qlzRvmOlEFC1DiSx0ITh11xca1m8PRi0JS5RDflXshrBRueAu7bl6ONsZ4vH8TlRwKcyU1QQlr5b5PjTUrFB3sIajQnM1OI7Cs3gyQxxqh/P4f656UhTser4IBSpCnBxtqBHeD80r3nf9ZWgRBm59JJniouP/uor5hp7BLRT4=
+	t=1784731728; cv=none; b=Ldxr4/xa8MI7vLJx6aHnw2Zqsf6BmU2sarAAgVnaBuwh8Ky7wmOFu0ZOkrwEGAKMF4g4Y2o0rJrFov86eTKzNi+kKyuQHevJw1sj1VB4FxPZqNELQxChkCBEb8o/5m7B5xv8tJa2XFrmVy6aTYfDU8DP/d9aj2NW0Hk56yha+3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784731565; c=relaxed/simple;
-	bh=T453eWVw3xXH5G6mT7t/ZqkyZAfTeiGIOlfGLscQLkE=;
+	s=arc-20240116; t=1784731728; c=relaxed/simple;
+	bh=dfgQxcF26A+u7BUNOweO93RY6+J3A6H3g34p49DmZQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GBRi9pN8GPu8mwqJy/dLprZb7sTaCN33nRxvuM6KlPCB2suo83R/5tVzwpLVT665AHKcHGrOqd4HVSSlVQ/2zeIHpv2zBT278w+e5MmJgGWh4whjbKSl5a+Qed2P3qIf9qe+AyWibKpwMiRTn+j+R4+jZ9fA4Qq90IDcUfFS53A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlwrxvOI; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=WDeKeGO4BOz/aTLgQzE1w6bUmsgOtqKQmJw1D51fGnj2S0JdCvqyQixos4LB5ECjb0kF1udWKh1MFqkz59uwComEj49Dt+1ZLQ5tcVWs1ypQzXL2KFYy25iJzZoUqmuokHx9B8pIDdOJM+kNhoqT4XpBIROClTiX9USavC32S6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCD8Vm0V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlwrxvOI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216C91F000E9;
-	Wed, 22 Jul 2026 14:46:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCD8Vm0V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99DF1F00ADE;
+	Wed, 22 Jul 2026 14:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784731564;
-	bh=T453eWVw3xXH5G6mT7t/ZqkyZAfTeiGIOlfGLscQLkE=;
+	s=k20260515; t=1784731727;
+	bh=6F2ZR1aQosy5Iq6JUlHAxXjgL1kPRnucYF8OOuqzH1s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AlwrxvOIIT6RKZx695m3Std999ItYA9k3FJG0UUyKWr/bVXKP17nphcMmcOu8VyFr
-	 qo26Oa8NAEwE1BAbPdPh/VUQ+YMQmUrwsripQHGQJBs3DUJnnot55eeu+3nDqziP4f
-	 L+IYUnwOCVkUAjIs/6l6XqOX6LFbAlb0vfPd0KSgp2neOxCzuZyYnL/syhIU3fnlJz
-	 iBp3NzuDlErrYjvt+Udlqi+dF053FTx+4A4O200egLEAxMdBxYY++v8Joe9m7AoJre
-	 qMq2IWG89Kxqc91+Fp0UVD1ZGopOgo2/TfFD/PUKJVZZPJ+A+cfBja1v7W4P3orWTn
-	 p3X/pYRoX+E5A==
-Date: Wed, 22 Jul 2026 07:46:03 -0700
+	b=PCD8Vm0VHwfNRFR68A+0+K+OCnHMqWvW+Buqvh/ckMMgKnB+N+fEZOcNwHNyw3AkX
+	 SHUhQUxuacaUaTr089wEho4AYNl+Wlh2eNRag1LUjmSeY5E97bowAaTiDA80s7cHWQ
+	 510O9YyBrBGvlLivhMFwUNc/yrcYz26sJOfFei1YzYPXVjsyR2d29E+BF8pvicqg5Y
+	 Z6+pshoFlAvQTqbjDAdmzHZ9cvzvzi1VmRMcPryVDccLAD/qUmCtounJzeW96ajNDH
+	 x4P0STDQBTja/b/Z4YomBENGNppYk7O5HJbWG1mJteo0TkCCJmTWH9HoNF61blqx/0
+	 xopmqE6+lNS2A==
+Date: Wed, 22 Jul 2026 07:48:46 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, pabeni@redhat.com,
- horms@kernel.org, yuantan098@gmail.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, bird@lzu.edu.cn, roxy520tt@gmail.com
-Subject: Re: [PATCH net v4 1/1] tcp: bound SYN-ACK timers to reqsk timeout
- range
-Message-ID: <20260722074603.1cf1c841@kernel.org>
-In-Reply-To: <b7d9784bea6e89d3366d4953e2b72cdbff5a4b20.1783671356.git.roxy520tt@gmail.com>
-References: <b7d9784bea6e89d3366d4953e2b72cdbff5a4b20.1783671356.git.roxy520tt@gmail.com>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: netdev@vger.kernel.org, shenjian15@huawei.com, salil.mehta@huawei.com,
+ dingtianhong@huawei.com, przemyslaw.kitszel@intel.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: hip04: fix tx coalesce timer and IRQ
+ teardown races
+Message-ID: <20260722074846.78587ed4@kernel.org>
+In-Reply-To: <20260711052922.1634837-1-fanwu01@zju.edu.cn>
+References: <20260711052922.1634837-1-fanwu01@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,11 +47,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 11 Jul 2026 15:27:48 +0800 Ren Wei wrote:
-> tcp_synack_retries supplies the SYN-ACK retry limit used by request
-> socket timers. The same effective limit can also come from TCP_SYNCNT
-> through icsk_syn_retries, while TCP_DEFER_ACCEPT can keep an ACKed
-> request alive until rskq_defer_accept is reached.
+On Sat, 11 Jul 2026 05:29:22 +0000 Fan Wu wrote:
+> This issue was found by an in-house static analysis tool.
 
-Looks like this got no replies in almost 2 weeks.
-Please repost if it's still relevant.
+Do you have the HW and were you able to test this patch?
+If yes please add this to the commit message.
+If no please leave this driver alone, it's old.
+-- 
+pw-bot: cr
