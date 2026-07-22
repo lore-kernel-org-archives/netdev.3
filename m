@@ -1,95 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5621A704B
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863DEEEC3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 12:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784724389; cv=none; b=Njr8ggAnWlS1HKH1V4pI2yW/ClsXuoTgfh/9s2nLRxU4paApj7We4l050oYQA45ymP/xubyN35H426KQU5AMcHIOyJTCRCQY7IMTza5yQSwhK9oXx9s5It7uQguUuJaGhDvGZw1GTiUfmPLDdbWHSLSz0kMYkTD5REa2d2KqPqI=
+	t=1784724731; cv=none; b=IkpFHHmvFCWWh+OHPkMZhBorQL+AUJIqVO2AWFpfX+Y583tHNhHdvMc9jB/ARO9G01KezI9Amm6uFjeXtF3yQtZjSMmQNCrh4lqGDRAvzaOQV/IBRny/QzpSvaL/Bk6m/sIHaX+DQFGLg1MpSHZt84h+m7r5IXvBkj8jvNTa3t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784724389; c=relaxed/simple;
-	bh=GcytzOvkZ+fFBksQpGn+O2s81foO/PcoGNDOOtkS+OY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W8c3FXJdMqS6mWIQS4TVi8EcidzIG68c1lQcBL95Ft/v6MiWXhjMWqC8U8xTZoi7ZOs5uSgNziblt9zeYfusrXnOK/1O1/obr95v7M69VfnSCav/ZNtGb0GCnDlapp9rzngOhu9ZA3OYlhcIbtJ2aG7tZ5y0yjDwWPdBLOOdikg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3DdvojL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784724731; c=relaxed/simple;
+	bh=ZIouS8X/r6cSZE6UX23DoR47D8oZoeQrevp6ddsm2PE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AnKWC6KapTnW5tgB2rWU9ffanI6gMDjuoiahbCyhbPGp0q9Z40Mjg+6rGBUcppMsqqIUC8MVvm+xXVi6SyxG0432mDA9ocAilWT6XY0C9ROyfzHKTtcXdFBr/8RiVB3xPVMcOloveD8ghxSnPjI9mqXke/oKBtoO1XUkYZ1z4CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CCrotnvx; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3DdvojL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7B41F000E9;
-	Wed, 22 Jul 2026 12:46:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784724387;
-	bh=Jifc5jTq5thwTUZMpOutJBMHTFRkO+SMycVl+jFOiuQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=M3DdvojLu0gtUehYJ4ArTmzSc9iIk/KXrQ95hVNYA28w2GYLTdr1Cg8hKJJBsNMHA
-	 FKARWnO9VxQ9sZ2jnaBTvSpC41408mc9Qvaq5r0A2aCDkF0n9/jyO7crYvuAFZTkOM
-	 GBl/2HWxUTMGjhWziI6lBO1QVQpAoteN/2BfFv5wzS1r7fSJP5q4frgru3Z81KoqKS
-	 0mmlqe6q34vkWqDZHmX5TA7AirhOghFWEEHtMnI+drsmgh5X6p+ImVLnAnECAVrl8l
-	 Q5ghQ9wjCBNTr+sGm+823h0KwemiQPyFqTML1oJgCvEQuuh/+C3u4ErY6cOS5/0Sv3
-	 y6gaK8WYblj8A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B4B380A979;
-	Wed, 22 Jul 2026 12:45:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CCrotnvx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=Eih44ikSC7XomY2WvttTAM/QMOPKbUAktu5vg4VzL5k=; b=CC
+	rotnvx22oF9gkmJViS+A1pSd7XY+2iDklz11zxXwfIHv+oUPu2dyBfw8OdJy0q02mce8uAapAttm7
+	9UiP16DBJSRDj2flolYMU7ZZT9YzbXei5c5xyNWVj7lUz5y5wGVElvYs80CPrYZ++w7qcUpgabsyQ
+	Oa3cEHJtg8OZzKg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wmWQe-00DdDx-PC; Wed, 22 Jul 2026 14:52:04 +0200
+Date: Wed, 22 Jul 2026 14:52:04 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Srinivasan, Vijay" <vijay.srinivasan@intel.com>
+Cc: "D H, Siddaraju" <siddaraju.dh@intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Michal Kubecek <mkubecek@suse.cz>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
+	"Das, Shubham" <shubham.das@intel.com>,
+	"Samudrala, Sridhar" <sridhar.samudrala@intel.com>,
+	"Keller, Jacob E" <jacob.e.keller@intel.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"singhai.anjali55@gmail.com" <singhai.anjali55@gmail.com>,
+	"Brandeburg, Jesse" <jbrandeburg@cloudflare.com>
+Subject: Re: Ethtool is missing C2C link modes
+Message-ID: <e1d14d88-dbe4-4e15-b794-6277f9df7e6d@lunn.ch>
+References: <SN7PR11MB6900E94E718175AACB2309109AFD2@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <e3dd8e06-97d1-4943-b54c-fdd0d0e6ecaa@lunn.ch>
+ <20260711073128.7f94e0ac@pumpkin>
+ <bb7bb5c6-5643-4e5b-b26b-9363127bb2d8@bootlin.com>
+ <SN7PR11MB6900984B5FBD60B71B3B8F329AF92@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <20dde8ba-5429-45e2-8071-ce83f1c2d6c0@lunn.ch>
+ <DS0PR11MB6397D3B945CFF9FA501AC6F688C22@DS0PR11MB6397.namprd11.prod.outlook.com>
+ <a70dc967-6656-4eef-beea-d1894e983fde@lunn.ch>
+ <BL3PR11MB63856413FCFB7F30D30E469688C22@BL3PR11MB6385.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v9 0/9] BIG TCP for UDP tunnels
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178472435613.1380662.9784266698703490139.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Jul 2026 12:45:56 +0000
-References: <20260710134242.216538-1-alice.kernel@fastmail.im>
-In-Reply-To: <20260710134242.216538-1-alice.kernel@fastmail.im>
-To: Alice Mikityanska <alice.kernel@fastmail.im>
-Cc: daniel@iogearbox.net, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, lucien.xin@gmail.com,
- willemdebruijn.kernel@gmail.com, willemb@google.com, dsahern@kernel.org,
- razor@blackwall.org, shuah@kernel.org, stfomichev@gmail.com,
- andrew+netdev@lunn.ch, horms@kernel.org, fw@strlen.de,
- netdev@vger.kernel.org, alice@isovalent.com
+In-Reply-To: <BL3PR11MB63856413FCFB7F30D30E469688C22@BL3PR11MB6385.namprd11.prod.outlook.com>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 10 Jul 2026 16:42:33 +0300 you wrote:
-> From: Alice Mikityanska <alice@isovalent.com>
+On Tue, Jul 21, 2026 at 11:29:05PM +0000, Srinivasan, Vijay wrote:
+> > As for your comment/question about FW vs linux controiling the HW, the intent here
+> > is to use linux to tell FW where to go based on user input.
+> > How the link is eventually achieved is all in FW.  
 > 
-> This series is a follow-up to "BIG TCP without HBH in IPv6", and it adds
-> support for BIG TCP IPv4/IPv6 workloads in vxlan and geneve. Now that
-> IPv6 BIG TCP doesn't require stripping the HBH in all various
-> combinations in tunneled traffic, adding BIG TCP becomes feasible.
+> > I don't see how that works. ethtool has no APIs around
+> > phy_interface_t.  All ethtool offers is link modes. How do you see
+> > this working?
 > 
-> [...]
+> Correct me if I am wrong but isn't that the role of the driver?  
+> I expect device driver to translate Ethtool link mode argument and pass it to 
+> FW via driver-FW handshake (device specific SET/GET functions). 
+> MAC and PHY config. which includes phy_interface_t for that specific link speed 
+> is then implicitly handled by FW. No other intervention from user should be 
+> required.
 
-Here is the summary with links:
-  - [net-next,v9,1/9] net: Use helpers to get/set UDP len tree-wide
-    https://git.kernel.org/netdev/net-next/c/5329647dad1b
-  - [net-next,v9,2/9] net: Enable BIG TCP with partial GSO
-    https://git.kernel.org/netdev/net-next/c/842870cdfa33
-  - [net-next,v9,3/9] udp: Support BIG TCP GSO packets where they can occur
-    https://git.kernel.org/netdev/net-next/c/47282504ad21
-  - [net-next,v9,4/9] udp: Support gro_ipv4_max_size > 65536
-    https://git.kernel.org/netdev/net-next/c/efbc1aa8ed54
-  - [net-next,v9,5/9] udp: Validate UDP length in udp_gro_receive
-    https://git.kernel.org/netdev/net-next/c/8475a3efe6e6
-  - [net-next,v9,6/9] udp: Set length in UDP header to 0 for big GSO packets
-    https://git.kernel.org/netdev/net-next/c/99ad24516295
-  - [net-next,v9,7/9] vxlan: Enable BIG TCP packets
-    https://git.kernel.org/netdev/net-next/c/f3d0f753f066
-  - [net-next,v9,8/9] geneve: Enable BIG TCP packets
-    https://git.kernel.org/netdev/net-next/c/03ebe91b0f61
-  - [net-next,v9,9/9] selftests: net: Add a test for BIG TCP in UDP tunnels
-    https://git.kernel.org/netdev/net-next/c/5cb53743e1ff
+It is. But if the driver is talking to firmware, it is using whatever
+proprietary values defined by the firmware.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+It only makes sense to use phy_interface_t for communication between
+different Linux components, or uAPI and a Linux component.
 
-
+	  Andrew
