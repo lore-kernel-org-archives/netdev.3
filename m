@@ -1,39 +1,39 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB0C358D00;
-	Wed, 22 Jul 2026 06:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B511C33F5B8;
+	Wed, 22 Jul 2026 06:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784701456; cv=none; b=b8pGkEdm3dtselygIxJha+uL7xi36tjIghSa9N1c8QMaLqZ1qnrApQT+U1NcEpwQUEyw+XeohA5lnzpWEPBIPaHY+ZIMX3phs6Faoz/LFkydqUbc1TCtjFGGB07lbTnOQMOLJO05pwPWoZhpXNd2ZwwAAI/gSiIEr43u+HIE/UI=
+	t=1784701457; cv=none; b=fS01AJxbFeX3uuFC7TKBDRXrxpmeNoNh/X1AJy27K1/WMmBrmXQLOwKGl+NMhTSH+DTSxC4/qD9XBMhHfdxZaSWRzrU1owudnfikzdsVKRuHVTNbZJb8wd1ZbshmdnBaFHiKFVt0cdQIL6YZA2SmEh35DH469GlHXg+OF/ik8fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784701456; c=relaxed/simple;
-	bh=FXTPn8htFc124U77ajJtcqZBuokkA6sg3gE5WnKnxko=;
+	s=arc-20240116; t=1784701457; c=relaxed/simple;
+	bh=NMLftYZhvuRqipkPYyQZNYV+dAwIQUm/keCnKCTuPY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4Y8zwqs8qg2Un0YQHtJbKnoOVISG36OHMvJUy5jTgWvPvyaSAhSsmsXA+w2p2uApAqtMxRJVkXs3roCk4NgXJj/7WLr0f61ce2Xxp0hV34Q6KrpGHlnBaekaQdzuOk0oBBZS8sl8LL5zAqU062/Jn8kxmsGxry1y9+6TLvDp9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=XBu5DEq1; arc=none smtp.client-ip=212.227.17.21
+	 MIME-Version; b=OqsL4vGO7OInfW7PEXdK5ZHvg/82HpT2yqRNJzMbGttXxQglZpKh+aZOatPNP/h6+M21v7qY50HzNY0Ae4EdWsznfNjk7SDKS5ZIhQzUVAGANWj/krDwBChmHj2zm6GrcPWOGlrbkb5AZuBd3WsbMRQXNgv0q+6BBzr/jvcKNQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=E104/3SI; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="XBu5DEq1"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="E104/3SI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
 	s=s31663417; t=1784701448; x=1785306248;
 	i=markus.stockhausen@gmx.de;
-	bh=SK4Hl1YKok0iuE9BgnelaLmANdbD1sHX+/J6pYgEN48=;
+	bh=mfA3WiQfpPHeR/HWP6XsZzRCY4IekBYoJStSr7xpgso=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=XBu5DEq15EOalVKfgUIWAh4aTlf+6SFE9gYZT2QyemfDHH4mN4nmkuZhiK7hjPhe
-	 7Qmr1lbw2Xi7WEko3l9U0RIXmduTzm2krVo9VS5G+iIo6A+Fjlfb5blZUPYfiR/Gn
-	 fRbuzaJjtWgkS2IycVRepXQ6Fc0zbUmWcMTwjnp5vZzHbYAL4H0UmnpXA8Sa2apcV
-	 RqrWYLX1Xb+Yk29BlGC1C4tW0ds+fQ7h+KYcWi4KfmrptkScJssG7H8G98vxVeSAd
-	 DHzCUSeZLfrxQo9WDQBW1i+8SXmTUPevsjVtB9CdXWpkxGXVisGE6glwyDD5LQgUa
-	 CCPc/46cMoAxGfdxnw==
+	b=E104/3SImM0iaCcX6Ok8vIboSKwV5a+7qoh6wblD8Xd3Kslo8NHWTuJzjS5gC4MK
+	 GlskRr+UyGhgZXY25loPc8C7fCAx2tYB5eeKo0B5djx9RHK2a3Vp4jMHn2yaQxTuC
+	 I3ZdlOAV8swAeXimQNdagCosTyKHy0NHa5CZ/ahYCvZcmYf12LsrfBsKqK+j8NyIk
+	 r7OErP3x2EB9xboM4TasqKLqaRFaOqEj+Tvw4jfnrdkRWmx37cBaa77BfvYkr9ywV
+	 fZEEc2JBQ1kPeFowseFKUFwTaqntEA0jF7QIHRFbNKkNvfRZecfYG7scufWz2iFHv
+	 E4iRotCglGasqyUsIg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3UV8-1wmyKz3WZW-003t1A; Wed, 22
- Jul 2026 08:24:07 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MoO24-1xJYHI1Oci-00nf2U; Wed, 22
+ Jul 2026 08:24:08 +0200
 From: Markus Stockhausen <markus.stockhausen@gmx.de>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -50,9 +50,9 @@ To: andrew@lunn.ch,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org
 Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v5 2/8] net: mdio: realtek-rtl9300: Add polling documentation
-Date: Wed, 22 Jul 2026 08:23:50 +0200
-Message-ID: <20260722062356.12291-3-markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v5 3/8] net: phy: add (*notify_phy_attach/detach)() hooks to struct mii_bus
+Date: Wed, 22 Jul 2026 08:23:51 +0200
+Message-ID: <20260722062356.12291-4-markus.stockhausen@gmx.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260722062356.12291-1-markus.stockhausen@gmx.de>
 References: <20260722062356.12291-1-markus.stockhausen@gmx.de>
@@ -63,207 +63,212 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xjhFj1Qc/3FKJIaz9EeIiCP5Oo3u+4mpCVuBWY9yeHmobXQK2Ev
- l43Wzc0vXldfmDKMiEwAyv7q8NZCVF6sIeb0h3M/S6HNnT0cLVAhERjkINm1Zv4vYzqwgGL
- nQ8G679N1w33eBOdEWPPYNjtakGb6w0FWfjNmZoDs/kL0kHFEMaFz4TeEZO/YUE6O37U/iN
- 6kAlefIHV2X/S9+kSTteQ==
+X-Provags-ID: V03:K1:Yi0QJjLF5/Xg/WCALYJ+AmXVwACALF7+RAwfv7BSF6ctmtGIY0K
+ NziBFgGcTc5kCwTRGATe5QusCS+KbcKa4p5+gjzqFWmPZCKrgZWG4/SnTYABYywPhQYV3x/
+ BC/Uou5fJe2OK3KwXkWP06Uq3gpFGsr4Fo04tYOt51HO89nvCf0v7oBfMGhErkgeoPhVk6j
+ yKDJsxjyVEL3gmZ0pWBxA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Uq/24iYRYQs=;n8VfSDXs9/Z1yUfIllCN62Xk78I
- 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
+UI-OutboundReport: notjunk:1;M01:P0:0y9AukyRYXM=;jlb56+Zy8fK3Og1C5t7vScKcdM3
+ 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
+ oEX4M4SW0zh+hu0myNHFip74M1Hl46ldRA==
 
-Add a detailed explanation how the hardware polling unit in the
-Realtek Otto switches works. This simplifies developing future
-patches and reviewing them.
+From: Daniel Golle <daniel@makrotopia.org>
 
+Some MDIO buses require to program PHY polling registers depending on
+the PHY type. RealTek switch SoCs are the most prominent example of a
+DSA switch which doesn't allow to program MAC speed, duplex and
+flow-control settings without using PHY polling to do so [1].
+
+Avoid a half-baked solution in the MDIO bus driver because
+
+- it must reinvent the bus scanning to determine the PHYs and
+- it must anticipate the right point in time (e.g. deferred PHYs).
+
+Hence there is a need to inform the MDIO bus driver that a PHY is
+being attached or detached. Provide two simple hooks in struct
+mii_bus which are called
+
+- right after a PHY has been attached
+- just before the PHY is going to be detached
+
+The implementation is symmetric so that the detach notifier is only
+called when the attach notification succeeded.
+
+Remark! A slightly different version of this patch was part of a
+former series [2]. The discussion already showed that an initialization
+hook should be placed somewhere late during the whole setup. This
+commit implants it right after phy_init_hw() as suggested. On top of
+this it adds the detach hook.
+
+[1] https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
+[2] https://lore.kernel.org/netdev/cover.1769053496.git.daniel@makrotopia.=
+org/
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 =2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 68 +++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ drivers/net/phy/phy_device.c | 11 +++++++++++
+ include/linux/phy.h          | 19 +++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
-io-realtek-rtl9300.c
-index afd52a1cd7f8..8269ec5c92c4 100644
-=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -35,6 +35,74 @@
-  *
-  * The driver works out the mapping based on the MDIO bus described in de=
-vice tree and phandles on
-  * the ethernet-ports property.
-+ *
-+ * The devices have a hardware polling unit that runs in the background w=
-ithout any CPU load. It
-+ * constantly scans the MDIO bus and the attached PHYs and updates the MA=
-C status registers.
-+ *
-+ * How does the polling work?
-+ *
-+ * Each device has a SMI_POLL_CTRL register. A per-port bitmask decides i=
-f the hardware polling of
-+ * the associated bus/address is active or not. The hardware runs a tight=
- loop over this and for
-+ * each set polling bit it issues a status check for the PHY. Attaching a=
- logic analyzer to the
-+ * MDIO bus of an RTL8380 and RTL8393 gives the following commands (in ke=
-rnel notation):
-+ *
-+ *	RTL8380				RTL8393
-+ *	---------------------------	---------------------------
-+ *	phy_write(phy, 31, 0x0);	phy_read(phy, 0);
-+ *	phy_write(phy, 13, 0x7);	phy_read(phy, 1);
-+ *	phy_write(phy, 14, 0x3c);	phy_read(phy, 4);
-+ *	phy_write(phy, 13, 0x8007);	phy_read(phy, 5);
-+ *	phy_read(phy, 14);		phy_read(phy, 6);
-+ *	phy_write(phy, 13, 0x7);	phy_read(phy, 9);
-+ *	phy_write(phy, 14, 0x3d);	phy_read(phy, 10);
-+ *	phy_write(phy, 13, 0x8007);	phy_read(phy, 15);
-+ *	phy_read(phy, 14);		phy_write(phy, 13, 0x7);
-+ *	phy_read(phy, 9);		phy_write(phy, 14, 0x3c);
-+ *	phy_read(phy, 10);		phy_write(phy, 13, 0x4007);
-+ *	phy_read(phy, 15);		phy_read(phy, 14);
-+ *	phy_read(phy, 0);		phy_write(phy, 13, 0x7);
-+ *	phy_read(phy, 1);		phy_write(phy, 14, 0x3d);
-+ *	phy_read(phy, 4);		phy_write(phy, 13, 0x4007);
-+ *	phy_read(phy, 5);		phy_read(phy, 14);
-+ *	phy_read(phy, 6);
-+ *
-+ * From the above snippets it polls MDIO_AN_EEE_ADV and MDIO_AN_EEE_LPABL=
-E via C45 over C22. As
-+ * of now it is unclear how the hardware decides if a PHY supports these =
-registers. After one PHY
-+ * status is read, the polling engine goes over to the next PHY. Basicall=
-y the bus is always busy
-+ * and the MAC status is updated in real-time.
-+ *
-+ * How does MDIO access from kernel work?
-+ *
-+ * When issuing MDIO accesses via an MMIO based interface the final write=
- to the command register
-+ * sets a "run command now" bit. Between two polling sequences for differ=
-ent PHYs the hardware
-+ * checks if a user command needs to run and sends it onto the bus. After=
-wards it simply continues
-+ * its polling work. Inspecting the command sequence for a paged read on =
-the logic analyzer gives:
-+ *
-+ *	RTL8380				RTL8393
-+ *	---------------------------	---------------------------
-+ *	phy_write(phy, 31, page);	phy_write(phy, 31, page);
-+ *	phy_write(phy, reg, value);	phy_write(phy, reg, value);
-+ *					phy_write(phy, 31, 0);
-+ *
-+ * What does this mean?
-+ *
-+ * There are slight differences in polling and PHY access between the mod=
-els but the challenge
-+ * stays the same. On the one hand that greatly simplifies the MAC layer,=
- on the other hand it
-+ * has some implications for the kernel PHY subsystem.
-+ *
-+ * - Without the polling and a proper MAC status, some of the link handli=
-ng features do not work.
-+ *   Especially an unpopulated MAC_LINK_STS register cancels operations t=
-o other MAC registers.
-+ * - The Realtek page register 31 is magically modified in the background=
- so that polling will
-+ *   read the right data. On the RTL838x polling simply resets it to zero=
-. Other devices seem
-+ *   to track the page access "magically" in the background.
-+ * - A C45 over C22 kernel access sequence is most likely to fail because=
- chances are high that
-+ *   the polling engine overwrites registers 13/14 in between.
-+ * - PHY firmware loading can have issues. Especially if a PHY is designe=
-d to expect a clean
-+ *   sequence of registers and values without deviation.
-+ * - An access to one PHY will need to wait for the next free slot of the=
- polling engine.
-+ *
-+ * Conclusion: The Realtek MDIO bus driver PHY access must know and handl=
-e any interference that
-+ * arises from the above described hardware polling.
-  */
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..a62c2ff6c2aa 100644
+=2D-- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1876,6 +1876,13 @@ int phy_attach_direct(struct net_device *dev, struc=
+t phy_device *phydev,
+ 	if (err)
+ 		goto error;
 =20
- #include <linux/bitfield.h>
++	if (phydev->mdio.bus->notify_phy_attach) {
++		err =3D phydev->mdio.bus->notify_phy_attach(phydev);
++		if (err)
++			goto error;
++		phydev->mdio_bus_notified =3D true;
++	}
++
+ 	phy_resume(phydev);
+=20
+ 	/**
+@@ -1919,6 +1926,10 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner =3D NULL;
+ 	struct mii_bus *bus;
+=20
++	if (phydev->mdio_bus_notified && phydev->mdio.bus->notify_phy_detach)
++		phydev->mdio.bus->notify_phy_detach(phydev);
++	phydev->mdio_bus_notified =3D false;
++
+ 	if (phydev->devlink) {
+ 		device_link_del(phydev->devlink);
+ 		phydev->devlink =3D NULL;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 11092c3175b3..2d30e087a233 100644
+=2D-- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -376,6 +376,23 @@ struct mii_bus {
+ 			 int regnum, u16 val);
+ 	/** @reset: Perform a reset of the bus */
+ 	int (*reset)(struct mii_bus *bus);
++	/**
++	 * @notify_phy_attach: Perform post-attach handling for MDIO bus
++	 *   drivers. Called in phy_attach_direct() right after phy_init_hw()
++	 *   and before phy_resume(). At this point, the PHY is still
++	 *   suspended, and @phydev->attached_dev may be NULL (e.g. for
++	 *   standalone PHYs). Runs in process context and may sleep. Return
++	 *   0 on success or a negative errno on failure (which aborts the
++	 *   attach sequence).
++	 */
++	int (*notify_phy_attach)(struct phy_device *phydev);
++	/**
++	 * @notify_phy_detach: Perform pre-detach handling for MDIO bus
++	 *   drivers. Called in phy_detach() before device links and resources
++	 *   are cleaned up. Runs in process context and may sleep. Only
++	 *   invoked if @notify_phy_attach was previously called and succeeded.
++	 */
++	void (*notify_phy_detach)(struct phy_device *phydev);
+=20
+ 	/** @stats: Statistic counters per device on the bus */
+ 	struct mdio_bus_stats stats[PHY_MAX_ADDR];
+@@ -574,6 +591,7 @@ struct phy_oatc14_sqi_capability {
+  * @has_fixups: Set to true if this PHY has fixups/quirks.
+  * @suspended: Set to true if this PHY has been suspended successfully.
+  * @suspended_by_mdio_bus: Set to true if this PHY was suspended by MDIO =
+bus.
++ * @mdio_bus_notified: Set to true if post-attach bus notificaton succeed=
+ed.
+  * @sysfs_links: Internal boolean tracking sysfs symbolic links setup/rem=
+oval.
+  * @loopback_enabled: Set true if this PHY has been loopbacked successful=
+ly.
+  * @downshifted_rate: Set true if link speed has been downshifted.
+@@ -685,6 +703,7 @@ struct phy_device {
+ 	unsigned has_fixups:1;
+ 	unsigned suspended:1;
+ 	unsigned suspended_by_mdio_bus:1;
++	unsigned mdio_bus_notified:1;
+ 	unsigned sysfs_links:1;
+ 	unsigned loopback_enabled:1;
+ 	unsigned downshifted_rate:1;
 =2D-=20
 2.55.0
 
