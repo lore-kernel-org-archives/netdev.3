@@ -1,91 +1,161 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6794BC025;
-	Wed, 22 Jul 2026 10:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871244949FA
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 10:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784714498; cv=none; b=E8ZSCjmY3hh2BR/pb0uRgOYaOqeCjj0c41WbIc6K6fsbBOGuhxcuHp/a3WDoAzmbFksmWx30+9c6ukP+f5KPODPYXsrDDsSFFMJf1Ga6Ie2kNtFoBeto6zHGyghL7EHMhIiT4q02jJ3jRABnuyVLeTiZBieQo6IzuLnXiFi1XZ0=
+	t=1784714728; cv=none; b=ZIgeTrPVQ5opAgEQSvnXSqa/vNocFyLcSKz4+SIJidSHAeCJalCyWexIolt/3/oN/oUcUsGSex9kqYknbUxturU4dNNIUM3/Jt/CqzRxgh17I4PiDEneDbLgzEMQ7UMzajUAuog5owPa8e1+pA3WXQFAshAhMRsG4h6KwJSDklg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784714498; c=relaxed/simple;
-	bh=6bm8PH7GH2yuUTm2Nin0BgK/504XyJRUWtKBCoCfaZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LuqEL/7ihsLOTts+EuBMvaylHaahYucXx8ET2SyNw6rOT2+uP/50tZ+zHW6jzPwJpPgyPoyWmto+rTTXBHFiDuXzVINhU4aGXaeRX9VzdMdX2eTEdsMx1kUUshJmtojVILtsIKPfBScLTgV5eTVBf/00Xbm2iX+u8dqWQTnA2T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UHp49h4+; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1784714728; c=relaxed/simple;
+	bh=GFOQA5ZaYIdLp7nDVuoMcdf1Qjw6plAGcxortgT6azo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y2EcFOZam5/vGBDkgriCqEGGK+NHtjzi4sudmXP2e7c+UWF1fzC9YVyUlQfAbrmhlYhlIITS6mzlCqVia+SnoQ+xSV4iBVA5Gmn1/ObtqU9QMVrx/YTelzHqR4qaCuy6tDkLtj5RGtlcQon8qZxxyOrCFIgMgF0X3Tfg774hGhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FoSPkqgq; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UHp49h4+"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3E0D74E40EC3;
-	Wed, 22 Jul 2026 10:01:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 10E5660388;
-	Wed, 22 Jul 2026 10:01:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA74911BD3A98;
-	Wed, 22 Jul 2026 12:01:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784714489; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6bm8PH7GH2yuUTm2Nin0BgK/504XyJRUWtKBCoCfaZI=;
-	b=UHp49h4+lvg0lNLwl2N7SuhIaBJZ9aHkfrWQV3hmMyPc+4iaoC2LPsBH5XAo/lHxegk8Di
-	oanY8YZxjVzDQ8B/SQNiEW3NXybt+CgYz9mmOoc++ZfudwXJ9+TTUp1Nz5haoGC/HVDv4o
-	0NeH5kNhv59V8id4prDVT7UQMcdn9INldcBEFBkh7oWyeDACZt5gPaXphVc8T+QqsF6nCS
-	M8FSNr5179HASOSKppOsIuwtd9ViHwKKMl1+VzrfUxS3n6Wb7CtdOX2Mf3bJDkW63jgI1X
-	/jNPmJ8CqCsEmyxlDhtF5fVlMySxOOxtCHJFt5MyVcBCi8x50KuR1ZmVTCE/Tg==
-Message-ID: <0972e0f2-4480-4668-8222-7a327a85f058@bootlin.com>
-Date: Wed, 22 Jul 2026 12:01:26 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FoSPkqgq"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47db714766aso3451196f8f.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784714725; x=1785319525; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KMj9zc3x6l5zmOsetNs8oaLqxVKGtYD0hQY1boXGGc8=;
+        b=FoSPkqgqMoWg1IC51NgGXYnL/YOjeOJ/+XXygkEsKAoZIstqxygamqXIo+ZWkPhZQc
+         ZeOwa4ihJlvmng/lVJDmwAXW9b0dGX+ft/1uNtnW0uPcOBGNOUlgnzDyHe5cKnhHw8ND
+         ozHUYwmgV+pm2jmbFWhzsOVJgJ6R2H8P51K+ILlefStMdsswp2jzx2SY6gWGTrSk4hH5
+         D3hXgMh6Vd23g8MxKthhhxrDMowNA1NZUbgymlNOCqYwhs+sPT1Q+Qbr0HZBVwjRNi5+
+         Wit7IukaQdZtGCUYTG13opK9UJi+okvXESBNvcSQuAM2zZuWu/hGnkSAo/8UygP+sO1J
+         7vfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784714725; x=1785319525;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KMj9zc3x6l5zmOsetNs8oaLqxVKGtYD0hQY1boXGGc8=;
+        b=jjf4HOKRSFFmyrU0fZHAoWLgjo/JEUIHIHlpnrtSGUlsvjq0DUIrUPtUZpSqREGiuy
+         YCLIVt4zDYlnJ1tfAMfILDbJPJeD42C1mO6xuMRjLsv3/7WZeirHfBTjWtR5hf9sDcam
+         v8iCUDJR7rqcUb8uaHwO0TlYIS3Ak795fGa5B2OyaexMUd9D0yfvIZrCWczR/eIbYUEC
+         48itSquBFrjXx/MvYragOe58hAnhLrwfYaiaFXTGpDE2orAncUCZiUGBMRKv1iYywGRj
+         reiAAHubXwdA2H6383oFfeb8ml/6nwGG655pmswEMyZv4XmYDhTuWWa/Q7h1fgIjDISb
+         wU7A==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/DHPXSmBJSgX/3hh3GNbJSC8E7ADdwy2KXulvBi0QwjcTp1zD4omGssvZzhEIpUPJ6ikW4zI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT3nNvDn6sWtn2XLB3IifFdWHP09tNWVpgQ0KBw3CggyoNqZfa
+	2ctNTInp2yO28YO+eXWXT7quU3IP2eRjjvuXL15R9rwQ7kAwsn80tIQU
+X-Gm-Gg: AR+sD10t2QPELGTkdW5MMeGAyPD6r7+2wxSqylarwUrp1cdHva7/lb5G+oAhSQQKhS1
+	sW7wVxmoxLdUruPky6qBi211cSsS0yLcBQxow5pIosWtk2bF/nfl3jggGDB4GOhBUDAFeeqBXGA
+	AOODkAmin31MPblis0BXjq98BYBPzZgtVW/kZPlDyqVBJp27afEm2KdsBlehDLBqKvacJSQNMvS
+	pZiv7ebvhppTDQnkzBdTHKIrjW1Tgx5auvFp1l/BT2HlLZ0Qf8gmbhLDeyUgLU9H8HJ79gUVvpW
+	0UN7s90rzk36TuOe1WwOwWZv6BBNM0uMABRRemJurmsqxXGOTAgOzpmW4CJnFrxIC1Zo5Jo3yMM
+	HXodycRd+DEHfjeWnObgairWQu86nRbaq5I6ljKSgMlKG1ruFLuVrbH6S0UqACiOF5rCtOlkQfr
+	0oPyOOA57TsHarLgiET71iyBurTxNDaeeJbn3s7jYCWAdxetWM2Q==
+X-Received: by 2002:a05:6000:25ef:b0:47f:7c8a:ede with SMTP id ffacd0b85a97d-47f840a007fmr4146900f8f.5.1784714724465;
+        Wed, 22 Jul 2026 03:05:24 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bdac28sm4582498f8f.16.2026.07.22.03.05.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 03:05:23 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:05:22 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "John Ericson" <mail@johnericson.me>
+Cc: "Kuniyuki Iwashima" <kuniyu@google.com>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Cong Wang"
+ <cwang@multikernel.io>, "Simon Horman" <horms@kernel.org>, "Christian
+ Brauner" <brauner@kernel.org>, "David Rheinsberg" <david@readahead.eu>,
+ "Andy Lutomirski" <luto@kernel.org>, "Sergei Zimmerman"
+ <sergei@zimmerman.foo>, "network dev" <netdev@vger.kernel.org>,
+ =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, =?UTF-8?B?R8O8?=
+ =?UTF-8?B?bnRoZXI=?= Noack <gnoack@google.com>, "Paul Moore"
+ <paul@paul-moore.com>, linux-security-module@vger.kernel.org, LKML
+ <linux-kernel@vger.kernel.org>
+Subject: Re: unix_stream_connect and socket address resolution
+Message-ID: <20260722110522.710ced10@pumpkin>
+In-Reply-To: <9c437c7c-7919-41e2-9161-fc94803a9b34@app.fastmail.com>
+References: <20260703073948.2541875-1-John.Ericson@Obsidian.Systems>
+	<20260703073948.2541875-3-John.Ericson@Obsidian.Systems>
+	<e6f54c5b-2c92-4772-b2f9-5c21e2ec50a9@app.fastmail.com>
+	<20260718215855.07284fb1@pumpkin>
+	<85991dc3-6fa5-4466-a0cb-b407291cdb44@app.fastmail.com>
+	<9c437c7c-7919-41e2-9161-fc94803a9b34@app.fastmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v14 09/10] net: ethtool: Introduce ethtool
- command to list ports
-To: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Romain Gantois <romain.gantois@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
- Frank Wunderlich <frank.wunderlich@linux.dev>,
- Pietro Ameruoso <p.ameruoso@live.it>
-References: <20260720174808.139573-1-maxime.chevallier@bootlin.com>
- <20260720174808.139573-10-maxime.chevallier@bootlin.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260720174808.139573-10-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+On Tue, 21 Jul 2026 16:37:07 -0400
+"John Ericson" <mail@johnericson.me> wrote:
 
-On 7/20/26 19:48, Maxime Chevallier wrote:
-> Expose the phy_port information to userspace, so that we can know how
-> many ports are available on a given interface, as well as their
-> capabilities. For MDI ports, we report the list of supported linkmodes
-> based on what the PHY that drives this port says.
-> For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
-> can output on this port.
+> In case this is useful or interesting to anyone, I deep a some history
+> spelunking, and the restart logic in question seems to date back to
+> Import 2.2.4pre6:
+> 
+> https://github.com/tbodt/linux-history/commit/7d4fc34b9bbc0a14d3e5f6b2f978373422e1ca8a#diff-0553d076c243e06ae312480cb8cb52f1cebe1d80fc099d3842593e12c9e0d4f3
+> 
+> ---
+> @@ -673,9 +703,25 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+>  	   we will have to recheck all again in any case.
+>  	 */
+>  
+> +restart:
+>  	/*  Find listening sock */
+>  	other=unix_find_other(sunaddr, addr_len, sk->type, hash, &err);
+>  
+> +	if (!other)
+> +		return -ECONNREFUSED;
+> +
+> +	while (other->ack_backlog >= other->max_ack_backlog) {
+> +		unix_unlock(other);
 
-Sashiko points the rtnl assert will fail on ops-locked netdevs, that's
-likely the case as I haven't tested on such a device.
+This unlocks the socket - I doubt it makes sense to sleep with it locked.
 
-I'll update for next round,
+> +		if (other->dead || other->state != TCP_LISTEN)
+> +			return -ECONNREFUSED;
 
-Maxime
+Those look like potential UAF.
+Hopefully changed in the current code!
+
+> +		if (flags & O_NONBLOCK)
+> +			return -EAGAIN;
+> +		interruptible_sleep_on(&unix_ack_wqueue);
+> +		if (signal_pending(current))
+> +			return -ERESTARTSYS;
+> +		goto restart;
+
+Since 'other' was unlocked the search must be repated.
+
+	David
+
+> +        }
+> +
+>  	/* create new sock for complete connection */
+>  	newsk = unix_create1(NULL, 1);
+>  
+> @@ -704,7 +750,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+>  
+>  	/* Check that listener is in valid state. */
+>  	err = -ECONNREFUSED;
+> -	if (other == NULL || other->dead || other->state != TCP_LISTEN)
+> +	if (other->dead || other->state != TCP_LISTEN)
+>  		goto out;
+>  
+>  	err = -ENOMEM;
+> ---
+> 
+> My question can be basically restated: why should the `restart` label
+> not go *after* the `unix_find_other` call?
+> 
+> Cheers,
+> 
+> John
+> 
 
