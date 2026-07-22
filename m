@@ -1,64 +1,87 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED3A23C8AE;
-	Wed, 22 Jul 2026 04:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9873E3150
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784693013; cv=none; b=mb3Q1MCKIv7VVofRuaUCO12Bwb6iq5hHPqPl9s8KZAVTXtWxhGbN1pS5g6lDNMg2qJ8WrgK6cfedWhcO+sv3Mrhj9qv14H8O62ANogSZ/u7iv5nIQmlHTE9ube8goz7V654Tp/mEPVEeX2T2t1S8MIYqR1XCdoqURDGa9Vv3Ado=
+	t=1784693466; cv=none; b=hHutcP2b5b9/RAttUS3XpJx0gSJxq6b/ph3r/4lxY/8T3DD+t399sP5Axiqs5nRSuUR27O7RXpYqN7gRJPZQNKEhUQp+avg3R8lmItsDbfU2907mg3vYwQY6JM74ggReVFfZN3m1CPVi+zQibqzCsh1xq9RCbE1kh9svU4uWaZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784693013; c=relaxed/simple;
-	bh=y/LSdUeDnWWFWVQ68Mi/8JsECuOOqZDPZDX+G1134uo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sppz8aRxGunGlR5/a8hXc+TLqMkP/27iVaUVWObCF7O8KK70Yl1jaN35qpsrfMGuJSfRADoxNdjjyzNKeJj8B9Rr1UKCbRWhT/uClMthlM3SYF1w1mjO1hsZoSlMg9aDIMalVYsg5gKHBQsOcD8Y3PU0CPAHLX5VRGJAX6L2x0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=CguN28dn; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1784693466; c=relaxed/simple;
+	bh=0tclznrSEJ9mothpL+7wlrrUS/OL1uTck8ooNWzuZaM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XTO3I0J3pB1IIlrI1RIzhAagozWS138B564ijYwQjLKTB0C3cKIxsXsjrQ6VxoUmO3JfoBGkY5XQdxvXeXIPsxzfBwGZ8ViAdaLW8+hiDt/JBuun5kJG3VgWBQvXwIQd42prg7AvVp2RsfM5fz4Pc0qv0nYdDLmf/zyP77EMBcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/W0XBOe; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="CguN28dn"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66M1FjB61622687;
-	Tue, 21 Jul 2026 21:03:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=q5Pkkigv/gR/ymyzxwgRJVJ
-	+WgbUfuq+vOStFuXyFM0=; b=CguN28dncB+UPx0Pm0EVI5BHivxchGfM1JZGWRX
-	MPyzQ1gE8ruMgkDuhroOYSclgwh0VYc6LK2e01/Nbg15ewMHEhYWQbQzrp7Xh/GZ
-	T4xlaqDWkVRUJI/pQBKixsF5vmAUNNIBMMhCizSsDKbgUJiwtanp7Rc8BrlmKLUx
-	vws9gWMmROx9pEr52SzPnQDQ3aVP724Xk3Ea6k666mS8Fw4fBfBAT3zn7Ye4I2FD
-	kAXXbnQGUnNiOn7Io1A4b4WddkCmoNijALCA11zdZ1ztGWw1U3Iv/PSG4BUCqrPE
-	U/DgbYu/PjH7bCygPYvsZodG8PqpV/H4npXn1a0gftk6FEg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fjjf88g5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jul 2026 21:03:16 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 21 Jul 2026 21:03:15 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 21 Jul 2026 21:03:15 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id BC3F93F7044;
-	Tue, 21 Jul 2026 21:03:11 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Hariprasad Kelam <hkelam@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2] octeontx2-af: Use LMAC_AF_ERR codes in CGX handlers
-Date: Wed, 22 Jul 2026 09:33:07 +0530
-Message-ID: <20260722040307.3393236-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/W0XBOe"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-80c5cb9a888so100847747b3.3
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784693464; x=1785298264; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0tclznrSEJ9mothpL+7wlrrUS/OL1uTck8ooNWzuZaM=;
+        b=P/W0XBOeoIvE5YMUDqG7GI/X2hSRClFzsS4RQszBItqjVjit4TrYEHm/gxF2XUaMmy
+         4jpN5fC2dT5JRMM3XtBEg7CszlSq4/oGXck4zz67tW76m52CLminBerbJqsxuqh0wzHT
+         O18tynxolHZnmPJKFYWKV8sJvNJgE0xVyjLx0OSRsFCVSh8UJxGBTMSEdJzkf5UHSLXg
+         ya0FnuqU9heDf6pqGdHWNLxC5hDyw3NOFl7ZJgumlkbv3i+HcJh4L0NQ6y1fd9sKgHw3
+         0q0s9VfLNF8XOQLutpS293ITbPTnLFnqiS5xte/P0QcQan7vY+AOhDrElARsHsssMCPx
+         g/Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784693464; x=1785298264;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0tclznrSEJ9mothpL+7wlrrUS/OL1uTck8ooNWzuZaM=;
+        b=Vap73emKds21YOgb7kRu81dlivhPYjVCpbt0HpYQS7I+4EfbfrnFfeik+RVF/6V/TV
+         ouaTzfDW1r9r5Hkac7Gf45jlJc/gM9PNQeXBgerfhwJigsUjNgOtC2mx0dr32oEFrSU1
+         9+SojDQ5FYQAGFqx1dYgebEa1k518gzZaZNAHnJKAaRR6C6O8BmmWKL/CybuNxQJWX1a
+         UxI/3uo4YPNayvUwF/PVvWkVaOH+0jZyd4btBfImYUzZR66NmU/njhJpWonuuuCmeQDf
+         UPdoTnVn+dIFxfgP/XlWu6J3iNQtB9LxpVg4rUZdVaPeg7on1gfY+JlkPH5noCzE1DY9
+         u3UA==
+X-Forwarded-Encrypted: i=1; AHgh+RobsjrSlJOSTfA1JpCotfMvNAF+NTtSb/Hf/JZD1pL4xhGYzp1dUOGstN3sQQAVxE2ANUhEUuY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr6hllDdDTlS86rmipm5Uhjl1VvpcIKt9Ti2Iz7y40P0YaiOqr
+	Nnth/q9HnwJZTxEP0SlHHjw9llj4DmVydp2Zjih8Cg56da6ZT22W0gFl
+X-Gm-Gg: AR+sD11cXxi4V0vZN8I3jSgmtCps877ek96GTM33UfRxbESaZXXVdYR4kgMLyQzsb6R
+	Hj+DGgx+u2YSKYJrqscQ5YhgJHZG4K1d0k+TbW6sH7jjMEnuW3BgZJtYkuQUtWw4Vv4H9UttADV
+	F0N948/Ld4feksP1xHCiOiNnH2rgTGs+v3m1Vm7BNn5UTmddI/pQmbwWR8sg4+hqMSzt0nk5SjU
+	DzngxhcNXVFfQEeFRexdHXb+qUWUe5n3GEpr7uyFIIs0GSG5r7eXwiic+F2v+mZsCxCWGr//B0/
+	Dc2imALk42P8VUkiXExtA+iGh9eYKVJE0L6+QNZzUPLz++FgbXM7MSs33UAlenxrobRmbU0C4pr
+	bkM6V0cF09U1x2XNKpX3hhB0MC+C0N32/csSw6LgSPh5Z/ZklIRzEXL5+MYqOKPxT0FQ5dPMIvP
+	pqXQylBd+TZWfZM+tP+TmGCA8t/kLWOx5/gjFebRFh75vAiEjYSWfnU+b0Hj0i54eE2k7LaME4x
+	DXMG9Om5jJxrA==
+X-Received: by 2002:a05:690c:690f:b0:81d:edf2:dad8 with SMTP id 00721157ae682-81ef26fdd86mr67929787b3.22.1784693464016;
+        Tue, 21 Jul 2026 21:11:04 -0700 (PDT)
+Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33c6432csm7930537b3.20.2026.07.21.21.11.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 21:11:03 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: sdf.kernel@gmail.com
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	bpf@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sdf@fomichev.me,
+	tgopinath@linux.microsoft.com
+Subject: Re: [PATCH net] xsk: reject tx_metadata_len smaller than struct xsk_tx_metadata
+Date: Wed, 22 Jul 2026 00:11:03 -0400
+Message-ID: <20260722041103.74925-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <al6Czy7Gvhc41RsY@devvm7509.cco0.facebook.com>
+References: <al6Czy7Gvhc41RsY@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,162 +89,6 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: YxKk8JAHpl4Ziqmak3NpAtf42e-EF9lb
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIyMDAzNCBTYWx0ZWRfXxYS3Qnhc29Nw
- erGOVNHp8AZzpsjCOVz36cEGBdX+Y+SzapehTcMJghJ7HjBqs97zVsdWkVrXNEn03qLsNsHoCnO
- XImlfzaHiBNUwd/Prxz6nTYXMONGiMI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDAzNCBTYWx0ZWRfXw38QrnjC86HJ
- Xf3yUyyQPY66HCuXRTWHwhZ61BKUWk8lRkU0Fo+UnMCIoiWwPHQHBRAY7ow468GU0nQzuYbmcr5
- CtTXM61vnvtxx6Xms9oLs0SJN+rRE6CnpqmuNZohrDz6bUzlyqKkVFYviJT94q9rqCCkqn8NOfG
- TKzsfnVe9Uut2ucXfJVqwsU8/8bKUh1e29mBW3OxjqBKBmMASJvzsupd7Og/5isHnMMQu0Xigym
- Kvd0D6VgyciwSX5WO8zkRmNLThugn2FXUsg9NOXG4SsDj1716h0r5YsotS6vso0zl7p0gT4PX8e
- peLLopnWziPYp7NqDujvmoLTlLajxb4ByVT6Psjvn4ou9K9XoSDSxO+57CmIRE4BBXWaaW2lCfn
- 3C4EmVd1oY4PO2XlCZCyCB2YlHCDN9Hm3wO7OHaU2rXth5APIDcOVorQaqqgux1EWx8dekwsW1c
- 6/Ndpf2qKk3h6hO+83Q==
-X-Authority-Analysis: v=2.4 cv=Rov16imK c=1 sm=1 tr=0 ts=6a604104 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=-5HDdqy3Crg6To4yp_AA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: YxKk8JAHpl4Ziqmak3NpAtf42e-EF9lb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-22_01,2026-07-21_01,2025-10-01_01
 
-From: Hariprasad Kelam <hkelam@marvell.com>
-
-When a netdev that is not mapped to a MAC block (cgx/rpm) requests a
-MAC feature, the AF driver currently returns generic errors like -EPERM.
-
-Replace these generic error codes with driver-specific LMAC_AF_ERR_*
-error codes to provide better debugging information.
-
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-
----
-v2:
- - Fix rvu_mbox_handler_cgx_start_linkevents() and
-   rvu_mbox_handler_cgx_stop_linkevents() to propagate the return value
-   of rvu_cgx_config_linkevents() to the caller instead of
-   unconditionally returning 0.
----
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   | 26 +++++++++----------
- 1 file changed, 12 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 4ff3935ed3fe..61126afefe2b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -709,7 +709,7 @@ int rvu_mbox_handler_cgx_mac_addr_add(struct rvu *rvu,
- 	int rc = 0;
- 
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	if (rvu_npc_exact_has_match_table(rvu))
- 		return rvu_npc_exact_mac_addr_add(rvu, req, rsp);
-@@ -732,7 +732,7 @@ int rvu_mbox_handler_cgx_mac_addr_del(struct rvu *rvu,
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	if (rvu_npc_exact_has_match_table(rvu))
- 		return rvu_npc_exact_mac_addr_del(rvu, req, rsp);
-@@ -789,7 +789,7 @@ int rvu_mbox_handler_cgx_promisc_enable(struct rvu *rvu, struct msg_req *req,
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	/* Disable drop on non hit rule */
- 	if (rvu_npc_exact_has_match_table(rvu))
-@@ -808,7 +808,7 @@ int rvu_mbox_handler_cgx_promisc_disable(struct rvu *rvu, struct msg_req *req,
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	/* Disable drop on non hit rule */
- 	if (rvu_npc_exact_has_match_table(rvu))
-@@ -877,7 +877,7 @@ static int rvu_cgx_config_linkevents(struct rvu *rvu, u16 pcifunc, bool en)
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_cgx_config_permitted(rvu, pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
- 
-@@ -895,15 +895,13 @@ static int rvu_cgx_config_linkevents(struct rvu *rvu, u16 pcifunc, bool en)
- int rvu_mbox_handler_cgx_start_linkevents(struct rvu *rvu, struct msg_req *req,
- 					  struct msg_rsp *rsp)
- {
--	rvu_cgx_config_linkevents(rvu, req->hdr.pcifunc, true);
--	return 0;
-+	return rvu_cgx_config_linkevents(rvu, req->hdr.pcifunc, true);
- }
- 
- int rvu_mbox_handler_cgx_stop_linkevents(struct rvu *rvu, struct msg_req *req,
- 					 struct msg_rsp *rsp)
- {
--	rvu_cgx_config_linkevents(rvu, req->hdr.pcifunc, false);
--	return 0;
-+	return rvu_cgx_config_linkevents(rvu, req->hdr.pcifunc, false);
- }
- 
- int rvu_mbox_handler_cgx_get_linkinfo(struct rvu *rvu, struct msg_req *req,
-@@ -915,7 +913,7 @@ int rvu_mbox_handler_cgx_get_linkinfo(struct rvu *rvu, struct msg_req *req,
- 	pf = rvu_get_pf(rvu->pdev, req->hdr.pcifunc);
- 
- 	if (!is_pf_cgxmapped(rvu, pf))
--		return -ENODEV;
-+		return LMAC_AF_ERR_PF_NOT_MAPPED;
- 
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
- 
-@@ -975,7 +973,7 @@ static int rvu_cgx_config_intlbk(struct rvu *rvu, u16 pcifunc, bool en)
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_cgx_config_permitted(rvu, pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
- 	mac_ops = get_mac_ops(rvu_cgx_pdata(cgx_id, rvu));
-@@ -1178,7 +1176,7 @@ int rvu_mbox_handler_cgx_set_fec_param(struct rvu *rvu,
- 	u8 cgx_id, lmac_id;
- 
- 	if (!is_pf_cgxmapped(rvu, pf))
--		return -EPERM;
-+		return LMAC_AF_ERR_PF_NOT_MAPPED;
- 
- 	if (req->fec == OTX2_FEC_OFF)
- 		req->fec = OTX2_FEC_NONE;
-@@ -1197,7 +1195,7 @@ int rvu_mbox_handler_cgx_get_aux_link_info(struct rvu *rvu, struct msg_req *req,
- 		return LMAC_AF_ERR_FIRMWARE_DATA_NOT_MAPPED;
- 
- 	if (!is_pf_cgxmapped(rvu, pf))
--		return -EPERM;
-+		return LMAC_AF_ERR_PF_NOT_MAPPED;
- 
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
- 
-@@ -1226,7 +1224,7 @@ int rvu_mbox_handler_cgx_set_link_mode(struct rvu *rvu,
- 		return LMAC_AF_ERR_FIRMWARE_DATA_NOT_MAPPED;
- 
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
--		return -EPERM;
-+		return LMAC_AF_ERR_PERM_DENIED;
- 
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_idx, &lmac);
- 	cgxd = rvu_cgx_pdata(cgx_idx, rvu);
--- 
-2.48.1
-
+Thanks for the suggestion. I've tested the proposed approach and will
+send v2 shortly.
