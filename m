@@ -1,104 +1,134 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648733D1CC5
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4520533065D;
+	Wed, 22 Jul 2026 03:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784690915; cv=none; b=lxjCmVretCYGR3dsIdzPMUFd+HAp18mozcDzS24K+Aj0qrRR1L3l6auUSUIyp35pHtyp0u4UlgU7B5skFnuKpmUpfgxD6NN22QqN01VT0maPI6HfBvaU47LdlNbPRNkU6xLQZAJfDFVlL5sMxAVRK4vrqt/cXWZJVN/MTQIH+Sg=
+	t=1784691110; cv=none; b=FOE6FiffMZcWK1N4h7TDT+xE4nFnfItZN6v1IOsIVd71XRGl5Mx2kh1/WTRp5ReVvtb5vU0kJfAPLBgm8+Ma/zMZ5ZAbR7wZ9BbhqPilOlpIyXciQdaaUXcH5MlEmk+7U33v/h9qezyz8APTIs9oS/TYa+EJ1yKALYT0KGM7nK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784690915; c=relaxed/simple;
-	bh=U24iLOn5ceW/2lhbjmUxhZCsfbLS5rY8hugeyKJcx5k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vGkEArZ3RN2xhmZL9FmsO0X/L/l04+t6m9EcPXTbJNno+c5BWFqo+CdU45PN4LNabAEJ20LKbjv9frXANbpU7qQP36wBoejcWf7bj2jazfdQpkHdRBrMDM2LvBSOZ5tYNSUQYxRfvn2ycAtD53wqQthxOQgVs0fC6JgrHDXVZEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fchduj1y; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784691110; c=relaxed/simple;
+	bh=ojbQadbeSqjTJ0jmN/K6CSt7HZAxMUg6r6Eq5hbUMRc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EYIoPBJMjKpvU1vnqnSrxIcKoCwbPEVMbObN15K99gHrS1PeWSaqsAx1mTz4aERDsurBmjK9M8eXGGbRpqBB6nnElXo6FbbEFpNQ1ev8/t7PcvMNdKfkepjXQLjo+yEPclu2avk+6myGm+hChdygy+ICLmHrZ6z1TU3/zUXa9Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=oa27+A7U; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fchduj1y"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso4707226a91.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:28:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="oa27+A7U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784690914; x=1785295714; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lqR1pQ6AMxguaF3FILwkKo0jVgND2IUORkim80828fE=;
-        b=fchduj1yGMDp4aPP3Za3+IcQiHKN23+1owRMB1OtNvjOJ8fnf37p+v3ZUjpEW/fucW
-         4UMdcg5k7CKStvGoe0WAZ6z0CBwBfUkCu8Prp1OqEdiUcUx1CHqGwQH5uCKpqAtMehs4
-         So+ILBoYO0m5/MK7vjrbUX8Rnp4WENxyOfcP4AVrbaWsqMBbcSHhqTwaibe0p8rWbrLG
-         K1w2x7plyP9grlqm/7/zBZOOd3bNDCOILIk9hIuCd4k0w6i1NOpbkmx5L+7BHzq5ul3D
-         PEePd1stkvJF7FaDCrsce+paH2PSCt8AfJpBzTs+IP6EdX1GPEythUKb5PWub+P57LdV
-         GvWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784690914; x=1785295714;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lqR1pQ6AMxguaF3FILwkKo0jVgND2IUORkim80828fE=;
-        b=P9oCM6ypHkilxf9S2Fv6PO3Xqftot729Ks6mxfEYgZ8RDCVkh6xLNY+HQ3grzvCH3/
-         uji/bSidYL8z9e63ev5j6QSVeZH9EHCCTm7jhzP2YvDT18mnOrvcVDiTKOqTjS/2H00u
-         MU0vgjbMb/0T91e7jNfv6Y3YGgEgH15yGbLa2pogv+SE0+XdA0yhJthA/DlQaZZKfp1p
-         i7XnYoJugAc3kDAp5vEOX7VUeVYpPOtOW2re1mfqHIDi1d/9mKsnScCinSMcLiqMnQqi
-         ArGfjT8ThtCpc/HUXHynerjaiyC4GVZJunGZxoRgNPsoipIJsc7QV1cvSSzB6h6J+vXs
-         RFLQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq3px4U4Lsyz6ziCl9sksQqGbUyFR9PFJQMrVFZsLWPu+7Lw6D2w2/qT1c30r7fBLYy0KqvU3E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdkAENwKAchdzz5nHxmzV5bZXUeEzTAm+76RFkEE+pZ28SqbAA
-	6q0fKDdEC/xIJ1N/Y74eLJjqxPwGHUdyFJVU93VVIJCoe/RkGaq3klH5
-X-Gm-Gg: AR+sD134n9ah+jVniMVgU+wAdpDqMRZUNAA+xO58yW6HDKKhH6IKwd4fKmoDAoB42mu
-	uUxHOTAbn0wM6qIcGcrgndqqGVeYarNmr93mOBvjb/tWnRJRIKmpuERLtVFuOPx9RNt5qnYXbe+
-	s1r+sohtXl8z3dDfpw+g/aGEOtGweyygAAtDvTUDlchWi1ybW9lkx+gFaewUU2HSwxHuUV4K18m
-	6FjA00lqTgmoPbun07jFtKDTqpTC1cONTVd07qPtMwTsfBpdLEAvo89d1p/a5L6YUPHchUKtgv3
-	JuhsjuBlo6h8+EBD/uOzLipiUoVt5vu7LLtFa7YVfjCbbjC79e89vzRPpgP6UDV1gci/U9IW3eh
-	Mn5rk1Sm202OW+6HaD7Dw0dpwG/1mxnEzphDOz8xYtoMlsTcJyEQOLyO3fVez5tRhlV/OmRMg9c
-	if6sI6bwKiOv3P4GQ2eLkGQSJek4Y+LF+KBFbwPaGeXYSSeQ==
-X-Received: by 2002:a17:90b:2805:b0:38e:6d55:b1a6 with SMTP id 98e67ed59e1d1-38ea33d3ebcmr1920262a91.3.1784690913704;
-        Tue, 21 Jul 2026 20:28:33 -0700 (PDT)
-Received: from CPC-mjac-HKWGEZ.redmond.corp.microsoft.com ([70.37.26.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea7b43214sm284134a91.16.2026.07.21.20.28.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 20:28:33 -0700 (PDT)
-From: Jack Ma <jack4it@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jack Ma <jack4it@gmail.com>
-Subject: Re: [PATCH net-next v3 0/3] net: nexthop: per-nexthop UDP dst port for fdb (VXLAN) nexthops
-Date: Wed, 22 Jul 2026 03:28:21 +0000
-Message-ID: <20260722032821.30166-1-jack4it@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260721180525.197d9a47@kernel.org>
-References: <20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com> <20260721180525.197d9a47@kernel.org>
+  d=sony.com; s=s1jp; t=1784691108; x=1816227108;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=RWduDFciZbpwE+xzPcLgZdrOaRq58lmGj88C0MiHbXc=;
+  b=oa27+A7UpQ0+Hk0312KI1DLR04aH8MUxvR9i4bEluIu4JcGBkk5kF8L5
+   FmVkPRi9w2ZWGlZoHM/uyyqqKVKUZSXjiL5fvJCirNVrtrdhF4/om6fPb
+   eDY1dIIyaeiUHzpvTq2LYaIVDEv8+Cc2FAcD9AmTKUj5IwGsLgM8w/7y/
+   uZPiSUl/4FuHUTgsI//bN0fpwKTvlpJYBtVBIhwIQkmQR8V+pzIot7AWU
+   QS3A61LDZ6oy1mewosv7zojuC47xoOpkQyfdoib/NDDCgyWNVdNELXCeX
+   3L0rtEKnBKc6TJI1Gjy2PitN0itx/WzhnNil7uwb7QvhtvaAGOPxMNu2l
+   g==;
+X-CSE-ConnectionGUID: 9BoVPK9UTAOKNY25oOAw0w==
+X-CSE-MsgGUID: B7OvezifSUiM7/CA55YMzg==
+Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 22 Jul 2026 12:31:37 +0900
+X-CSE-ConnectionGUID: PvdEH5T2Q6WRlnnZQ7dmew==
+X-CSE-MsgGUID: 3qTt16CYTNS6ocxsYwwDcw==
+X-IronPort-AV: E=Sophos;i="6.25,177,1779116400"; 
+   d="scan'208";a="627327274"
+Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob02.noc.sony.co.jp with ESMTP; 22 Jul 2026 12:31:37 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+Date: Wed, 22 Jul 2026 12:31:23 +0900
+Subject: [PATCH 3/4] usb: typec: set mod_name in driver registration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260722-mod_name_usb-v1-3-96d781530f3f@sony.com>
+References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
+In-Reply-To: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bastien Nocera <hadess@hadess.net>, Matthias Kaehlcke <mka@chromium.org>, 
+ Valentina Manea <valentina.manea.m@gmail.com>, 
+ Shuah Khan <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>, 
+ Rahul Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>, 
+ linux-embedded@vger.kernel.org, 
+ Shashank Balaji <shashank.mahadasyam@sony.com>
+X-Mailer: b4 0.16-dev-3bfbc
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2114;
+ i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
+ bh=ojbQadbeSqjTJ0jmN/K6CSt7HZAxMUg6r6Eq5hbUMRc=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhqwEy+nbDeaXpHy755MtMmVzKGdafEmLdtZRuyAOhvQdi
+ 7gNPmp2lLAwiHExyIopspQqVf/auyJoSc+Z14owc1iZQIYwcHEKwERuXGH4zH7vPsdZcUbzvPT7
+ i6ZszdhlrO9YukGpl29V39/L8+MeMTKsn/vuMKfIfG57Uf7HksYHH2/eyvJxUeNyp0mill5nWXY
+ yAQA=
+X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
+ fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 
-On Tue, 21 Jul 2026 18:05:25 -0700 Jakub Kicinski wrote:
-> On Tue, 21 Jul 2026 22:29:49 +0000 Jack Ma wrote:
-> > A matching iproute2 change (the `ip nexthop ... fdb port N` keyword) is posted
-> > separately to the iproute2 list.
->
-> Where is that?
+The driver core only creates the sysfs "module" symlink for a built-in
+driver when its struct device_driver has mod_name set (see
+module_add_driver()). This driver left mod_name unset, so its built-in
+form had no such symlink.
 
-Apologies -- that was premature wording in the cover letter; the iproute2
-patch had not actually gone out yet.  It is posted now:
+Set mod_name to KBUILD_MODNAME during driver registration. Built-in
+drivers now gain the symlink, while loadable modules are unaffected.
 
-  [PATCH iproute2-next] ip nexthop: support fdb destination port
-  https://lore.kernel.org/netdev/20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com/
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+---
+ include/linux/usb/typec_altmode.h | 4 ++--
+ drivers/usb/typec/bus.c           | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-Thanks,
-Jack
+diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
+index ef21ead551be..92309b569c3a 100644
+--- a/include/linux/usb/typec_altmode.h
++++ b/include/linux/usb/typec_altmode.h
+@@ -227,9 +227,9 @@ struct typec_altmode_driver {
+  * handle all SVID specific communication.
+  */
+ #define typec_altmode_register_driver(drv) \
+-		__typec_altmode_register_driver(drv, THIS_MODULE)
++		__typec_altmode_register_driver(drv, THIS_MODULE, KBUILD_MODNAME)
+ int __typec_altmode_register_driver(struct typec_altmode_driver *drv,
+-				    struct module *module);
++				    struct module *module, const char *mod_name);
+ /**
+  * typec_altmode_unregister_driver - unregisters a USB Type-C alternate mode
+  * 				     device driver
+diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
+index e84b134a3381..587d3b06ee8d 100644
+--- a/drivers/usb/typec/bus.c
++++ b/drivers/usb/typec/bus.c
+@@ -383,12 +383,14 @@ void typec_altmode_put_plug(struct typec_altmode *plug)
+ EXPORT_SYMBOL_GPL(typec_altmode_put_plug);
+ 
+ int __typec_altmode_register_driver(struct typec_altmode_driver *drv,
+-				    struct module *module)
++				    struct module *module,
++				    const char *mod_name)
+ {
+ 	if (!drv->probe)
+ 		return -EINVAL;
+ 
+ 	drv->driver.owner = module;
++	drv->driver.mod_name = mod_name;
+ 	drv->driver.bus = &typec_bus;
+ 
+ 	return driver_register(&drv->driver);
+
+-- 
+2.43.0
+
