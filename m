@@ -1,81 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7380449B1A
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 23:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D85C44CF29
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 23:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784761243; cv=none; b=dAMHovYpxJq33UV1tjUUX3L5VcHDw0usgtWo43+0hGjXqHEVH/my1FyCGrvpyeRyeRcCbpKAslvjVRzDwu9uIlWN7PJu5ku6Ew4EU2hszfFDHcpEIU2dIV67XQgDV35rKtAZXzDbmxtvy9iih8zrj54sUJriW7WTirgMuNSDoWo=
+	t=1784761582; cv=none; b=EPiGzmSugdI5JyQq36XDF5DS3Zo0Nv84ust5Y6GRvqe0nberODG4IDH3eJVa6L6EZq5tbmLcUjDAP0uRnO3A8Fz+hhCUo12MaKlmBVQvUP6vb5gYcu0c1ebU4qPoaZgclOyljzbwJ4uD3/oz6+Dvgu5NHObT+zu0H3c0/75ab2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784761243; c=relaxed/simple;
-	bh=INqukmZ8aZfP+I2HRL39PRE4jhggmv5V1EBBb5f/ZSc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W4y1Ok665Dyhr++nWDdCoMhivFO3U1+SKyICmwx9cqvIlUifWOgGdEL9+Aywwm+C8jo1I396R0zssxU//2Hf64Kka/ET9dR9UjLwHDP8icbai8orwXpYCTkn/cAxs9NZZfXi2JpBnXHJ86aKlXPJD0NfEiSFAOlGXXhPNiHwwNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi7kF0jT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784761582; c=relaxed/simple;
+	bh=9pyLXOsPYXEcv1QhaQxpIbjdnyUO75BxF3753KmLNts=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iKOiihTUL7X6mV6xDPH9v9sh091ytPBExDCeGrx2cKEF49gwa7oNOS00mWSRPWG2Ax/zcVeYhzE1usldaH41R+R3qovxOAgkakglOds/DHlCw8Yi+QtdJrg5oQst9Tz1DlETzTSmU+AxU4xhlJU7aEsfIU9J7FWwdQj/Ll71QC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+qoSGMS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi7kF0jT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B94A1F00A3A;
-	Wed, 22 Jul 2026 23:00:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+qoSGMS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99621F000E9;
+	Wed, 22 Jul 2026 23:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784761242;
-	bh=0J4fuqe+Mkc/TsI0lA0/jf2QcR0dr0D4//kjUzardKc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Pi7kF0jTV6gLhKFUREfnKytVXMtXXqWQNKoZvlZq7N49auc7vIKL0oC/TzI1X7ytw
-	 umGS19Sl5z3DFxN2s3jMc0BR6MM19nN8SIeJqm9wNWyn11wwSIeRLuPYchtkU2RWCn
-	 lihVFdYlBBxmX6yMWJ2UsgDc2WtuVjYdOCRAhq5sGcqTOrdpQ/muaSNJKGpKchVX5W
-	 mf2tbvFeDleAPD0yeqHPIHxxXcxDZDbUid8hp7vDFkDywYoHbPfkISPH1lY/wDgH4h
-	 2+rhXP4tFXs4BBWhabxRyUb/WGT6sl0S/SsdUJM5EvpiF69S9zbzr2amt3pgXPqa6r
-	 34452VT0xBgJQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56945380CED9;
-	Wed, 22 Jul 2026 23:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784761581;
+	bh=aDj59SHi8aglviZ18zmbBTcexGYq0SnhJZApE2QFOMs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=l+qoSGMSPAI0H0q9kscxxe2v5gQ3YEx3u9zSgFdQ7PKCpwiICf2F+7d1JhpiIwtDb
+	 r5F2YMgdtbbdwklxsTDclBKcKlxi/h/QVw79ielELkvhiCW5h9jR5lBfWT1ZwPGCtK
+	 I6XrX18LdJBQFI527ukOXUXAW6rqaSnj0r/yHIG1usvA/SiwvT6pBkgl6xKHAC8qYZ
+	 l0OEI87kGkm8NokIW/2klBEjWMZVpW5ZAAzP3Jnxk9uEYUuv53ILDDVKCw0z8l6kKb
+	 FvZkslLDrqrXVoHerU+51AazAgD/wrDH5bvaDDQxKG9eDaJFMRF5erbrVd3sCcVLCH
+	 2Q3WJJ4b0bt1A==
+Message-ID: <d61be2b8-a313-4957-9927-ec8c63221f59@kernel.org>
+Date: Wed, 22 Jul 2026 17:06:19 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2-next 0/2] seg6: add support for lookup attribute
- in
- SRv6 encap routes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178476121088.2053389.12322755825413389544.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Jul 2026 23:00:10 +0000
-References: <20260712021155.7621-1-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260712021155.7621-1-andrea.mayer@uniroma2.it>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: dsahern@kernel.org, netdev@vger.kernel.org, stephen@networkplumber.org,
- nicolas.dichtel@6wind.com, stefano.salsano@uniroma2.it, ahabdels@cisco.com,
- paolo.lungaroni@uniroma2.it, justin.iurman@6wind.com,
- anthony.doeraene@uclouvain.be
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] ipv4: icmp: fill flow parameters in
+ icmp_route_lookup decoy lookup
+Content-Language: en-US
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ Muhammad Ziad <muhzi100@gmail.com>
+References: <20260722104236.2938082-1-edumazet@google.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260722104236.2938082-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to iproute2/iproute2-next.git (main)
-by David Ahern <dsahern@kernel.org>:
-
-On Sun, 12 Jul 2026 04:11:53 +0200 you wrote:
-> This series adds the optional "lookup" attribute to seg6 encap routes.
-> It selects the FIB table used to look up the route for the first SID,
-> that is the outer IPv6 destination of the encapsulated packet. The
-> attribute accepts a table number or a table name.
+On 7/22/26 4:42 AM, Eric Dumazet wrote:
+> When Linux forwards a packet and needs to generate an ICMP error,
+> icmp_route_lookup() performs a reverse-path relookup. For non-local
+> destinations, it performs a decoy lookup to find the expected egress
+> interface (rt2->dst.dev) before validating the path with ip_route_input().
 > 
-> Examples:
+> Currently, the decoy flow structure (fl4_2) only sets .daddr = fl4_dec.saddr,
+> leaving .saddr, .flowi4_dscp, .flowi4_proto, .flowi4_mark, .flowi4_oif,
+> .fl4_sport, .fl4_dport, and .flowi4_uid zeroed out.
 > 
-> [...]
+> When policy routing rules (such as ip rule add from $SRC lookup 100, or
+> dscp/fwmark/ipproto/port rules, or VRF bindings) are configured:
+> 1. The decoy lookup fails to match the policy rule because saddr and other
+>    key flow selectors are missing in fl4_2.
+> 2. It resolves a route using the default table instead, returning an incorrect
+>    egress netdev.
+> 3. Passing the wrong netdev to ip_route_input() causes strict reverse-path
+>    filtering (rp_filter=1) to fail, logging false-positive "martian source"
+>    warnings and causing the relookup to fail.
+> 
+> Fix this by initializing fl4_2 from fl4_dec and:
+> - Swapping source/destination IP addresses.
+> - Swapping L4 ports for transport protocols with ports (TCP, UDP, SCTP, DCCP)
+>   so port-based policy routing matches correctly. Non-port protocols (such as
+>   ICMP or GRE) leave the flowi_uli union fields intact to prevent corruption.
+> - Setting .flowi4_oif = l3mdev_master_ifindex(route_lookup_dev) to ensure
+>   VRF routing tables are respected.
+> - Setting .flowi4_flags |= FLOWI_FLAG_ANYSRC to allow output route lookups
+>   for non-local source IP addresses.
+> - Using __ip_route_output_key() instead of ip_route_output_key() for fl4_2
+>   so that raw FIB routing is used without triggering spurious XFRM policy
+>   lookups on the decoy flow (the actual XFRM lookup is performed later using
+>   fl4_dec).
+> 
+> Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
+> Reported-by: Muhammad Ziad <muhzi100@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CAOAwikA60AYKdFr_UDLyja3oU4hqyAE7uFZWqum5uRdaQsgRYg@mail.gmail.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> v2: addressed Sashiko and Jakub feedback
+> v1: https://lore.kernel.org/netdev/20260716021049.2124921-1-edumazet@google.com/
+> 
+>  net/ipv4/icmp.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
 
-Here is the summary with links:
-  - [iproute2-next,1/2] seg6: add support for lookup attribute in SRv6 encap routes
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=144c45b656ad
-  - [iproute2-next,2/2] seg6: man: document the lookup attribute for SRv6 encap routes
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=ce0464ea1238
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
 
