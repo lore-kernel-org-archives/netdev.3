@@ -1,111 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979C3D4101
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9024F3DD508
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 15:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784734333; cv=none; b=JTov4tz9/BLxdeEwH7mK123bk/5emYU5YkcP4StLuZ7yNdKG2wYmimL+1UyK84TRo92nhXbtHsVSu+u4DqiB6FB8G8PnhT/PkcR3HZusxj0CsGWRLdotjQwSD9JUzCutr7qAq94+uXJMAIpLmbcD28JQQp3DTOmW89a3srGYvTE=
+	t=1784734949; cv=none; b=mY5j6F3vdWtmM3W9VmhH/22yhdYNUoXPt0OmEY/Vh5l+1ryVTWigVPFEiH55sCHuxX/AnQAtRzt6Ew2IBC/1Zz2EMgo418MFzracR41Ezm4LY0ettCNjIh5RRNQuMY1cZ6JQJcvu65Zyzv9+RmjQ3yXP5d7tchaNkPPuaB08qI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784734333; c=relaxed/simple;
-	bh=41vEcB7RyeIVCwqiNyAHT9hY3XiyyoOm779ExXEI0Bw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BQ2NNnoPGR7NqMoonUIK9PUDLXjKzV2lDoV5kzPMnwlA40UbgMMUhtDdSmVfvLI4k9s+AEfkwiS4a2uQhE8c/JbaXZl8xv7JBK0GL9yjdbGuGQBLePWCJu1o10zErpflNTeUsT2bSfC2AHQSsUGdoGzPqzkyDmhl1yW1HaHkNL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dw4DG3Ai; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dw4DG3Ai"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784734332; x=1816270332;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=41vEcB7RyeIVCwqiNyAHT9hY3XiyyoOm779ExXEI0Bw=;
-  b=Dw4DG3AiIr+eMJtWrRW6/R83ruLsBdKxOtFSKxgua4zkT33wJljTc3M0
-   1TT0MPIHfxRYLFbsLt5NYAAMiBjQj302ZzJpcxX3J9oSfTW0IpNj1mYZC
-   6AHG80mWOz4gUev9a9a5QUhFPeWuz+a1GfhBfjlSFG0Oh1v/ooIGH1mYL
-   CTAq5A/Fii69NTKPF7RNXynhusgFwmmddctIeceT9nWDGcyysz0L0vvq+
-   VSILBOhc9/LbVmrH0V8Rs8B0CcQ07ubkpPBLvKnocHA0TVmhx/J+n8Mwk
-   T+UtXhDLxkxE0seMmFlX+GFh8u3JrMwA+ZEqAXcBVRd1E5bYmzWoDJP2k
-   A==;
-X-CSE-ConnectionGUID: Qp1ajWoqTi6oxTzw1J+3WA==
-X-CSE-MsgGUID: /UKyFwieQBeRH/J/sWD0Nw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95961902"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="95961902"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 08:32:11 -0700
-X-CSE-ConnectionGUID: Nss9kMjmSa+WqTZwoXCJ9w==
-X-CSE-MsgGUID: GOPlwTiyTdi3EJgaEMXwcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="262422940"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 08:32:07 -0700
-Date: Wed, 22 Jul 2026 17:32:03 +0200
-From: Raag Jadav <raag.jadav@intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com, rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com, kuba@kernel.org,
-	simona.vetter@ffwll.ch, airlied@gmail.com, pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com, ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com, ravi.kishore.koppuravuri@intel.com,
-	maarten.lankhorst@linux.intel.com, mallesh.koujalagi@intel.com,
-	soham.purkait@intel.com,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>
-Subject: Re: [PATCH v6 2/2] drm/xe/xe_ras: Report correctable/uncorrectable
- error events to userspace
-Message-ID: <amDicxi7Bwuy1k2l@black.igk.intel.com>
-References: <20260722094134.3036087-4-riana.tauro@intel.com>
- <20260722094134.3036087-6-riana.tauro@intel.com>
- <amDglMC44EIWChvp@black.igk.intel.com>
+	s=arc-20240116; t=1784734949; c=relaxed/simple;
+	bh=V/CQbT4cG8PgvTKQzeaJ54oebvYZdOM4cDO7MD3EZ6E=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=KaaHLwlyfL+PboyLJ4YUdJhwT4nxxeMaFsUF0vhTehzGzhREAlcrV/JgHDpoew1+N0o+ihLeeJA9rGwVdGv4ovZiJPS8DMVyJTkgY0hbdUZasf1a1niE7528ssxGBF/h7fbVpFwZuHFKSd+AlOU/OQwnmxF3nTfOXYgw1QA3f20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6a37fb394d5so17281107eaf.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 08:42:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784734945; x=1785339745;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=G8kIQWvUiIWF94Q4aGyO9Xh0mRTexcHO5dZFZn3R9Jg=;
+        b=V9dZp1Qt1KXrHYDWhR5g8R+90WE1MOzjcXKcjaDoWMfZZ6Zrpq6npleSb7MSfo3iGS
+         VnkrEB6nZxyY4kmDcaVVZrlNqTdY6cp+uKc/yX3diyKwlD/MzuqbdgWlEJD+tzJtAXyI
+         lmps+dABn7iQoizJR97FIm14WfBAUxcmRq09rH8i2SwJsaaBnHeFudDJmvGKT10b6qpv
+         C9lKg6b/HR/dnoYAv0UyjlOJ3JhHlIix3tkVGiQdrzagP01dNzB72kbgbacD8UkjlXxI
+         ZYrSuj/zNz014XcAZO1RnDYIGkLapsvlmp3YvYlFzMILn1EunPvl3yoHEX7RBjSMW7Kf
+         pDWw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro325utVC1WeAXtHLAcSrfcJ3A3imyMzw9VdAzRi+hLCxI+TJqoBAEWIm3v37nSfTIqjP32a0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsUH5TtxtO+HzAnz1Oaz+4imNsYqn9RlFvCbQBGSezVTfbND1I
+	xcr818cwp1tkvvZSZmQfHqOLIald8avmQDiFRW37S3xP7HF9GCsMX8KWLu8uCbrahgWR3yaqK0C
+	C459dDW5XX4DXWAhctC64f6om68UwvCWbrOjSY1HYBcwIGUQmB04J6OUlHAo=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amDglMC44EIWChvp@black.igk.intel.com>
+X-Received: by 2002:a05:6820:198b:b0:6a1:7fa0:1151 with SMTP id
+ 006d021491bc7-6a536a8b1ffmr11337244eaf.66.1784734945067; Wed, 22 Jul 2026
+ 08:42:25 -0700 (PDT)
+Date: Wed, 22 Jul 2026 08:42:25 -0700
+In-Reply-To: <6877daee.a70a0220.693ce.002d.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a60e4e1.16bfb6d0.3c48cb.0003.GAE@google.com>
+Subject: Re: [syzbot] [bpf?] [sctp?] [tipc?] INFO: rcu detected stall in
+ sock_close (5)
+From: syzbot <syzbot+9a29e1dba699b6f46a03@syzkaller.appspotmail.com>
+To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, jmaloy@redhat.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, lucien.xin@gmail.com, 
+	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jul 22, 2026 at 05:24:11PM +0200, Raag Jadav wrote:
-> On Wed, Jul 22, 2026 at 03:11:37PM +0530, Riana Tauro wrote:
-> > When an interrupt is received for correctable errors indicating that error
-> > counter has crossed its threshold, read the current counter value and
-> > deliver a drm-ras error-event to userspace for each affected component.
-> > 
-> > Also send drm-ras error-event to userspace for uncorrectable errors on
-> > receiving an AER.
-> > 
-> > To avoid sending duplicate events when the same component appears multiple
-> > times in the response, Send the error-event once per component.
-> 
-> ...
-> 
-> > @@ -425,6 +487,12 @@ enum xe_ras_recovery_action xe_ras_process_errors(struct xe_device *xe)
-> >  			xe_info(xe, "[RAS]: %s %s detected\n", comp_to_str(component),
-> >  				sev_to_str(severity));
-> 
-> Similar to threshold crossed case, we should probably have a BUILD_BUG_ON()
-> against XE_RAS_NUM_ERROR_ARR.
+syzbot has found a reproducer for the following issue on:
 
-XE_RAS_COMP_MAX, missed it :)
+HEAD commit:    248951ddc14d Merge tag 'hwmon-for-v7.2-rc5' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15080ab9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=98da55a882774dfe
+dashboard link: https://syzkaller.appspot.com/bug?extid=9a29e1dba699b6f46a03
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=165d9746580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15ba2ab9580000
 
-> Reviewed-by: Raag Jadav <raag.jadav@intel.com>
-> 
-> > +			/* Send event once per component */
-> > +			if (!(sent & BIT(component))) {
-> > +				sent |= BIT(component);
-> > +				ras_send_error_event(xe, severity, component);
-> > +			}
-> > +
-> >  			switch (component) {
-> >  			case XE_RAS_COMP_CORE_COMPUTE:
-> >  				action = handle_core_compute_errors(arr);
-> > -- 
-> > 2.47.1
-> > 
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/cbba9d9c5929/disk-248951dd.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/84360c1cd7aa/vmlinux-248951dd.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c128dc7a62e1/bzImage-248951dd.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9a29e1dba699b6f46a03@syzkaller.appspotmail.com
+
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P5985
+rcu: 	(detected by 0, t=10502 jiffies, g=18453, q=4003 ncpus=2)
+task:syz.0.20        state:R  running task     stack:22176 pid:5985  tgid:5984  ppid:5819   task_flags:0x400040 flags:0x00080002
+Call Trace:
+ <IRQ>
+ sched_show_task+0x4aa/0x5f0 kernel/sched/core.c:8184
+ rcu_print_detail_task_stall_rnp kernel/rcu/tree_stall.h:292 [inline]
+ print_other_cpu_stall+0xf7b/0x1310 kernel/rcu/tree_stall.h:680
+ check_cpu_stall kernel/rcu/tree_stall.h:855 [inline]
+ rcu_pending kernel/rcu/tree.c:3708 [inline]
+ rcu_sched_clock_irq+0x93d/0x1050 kernel/rcu/tree.c:2744
+ update_process_times+0x234/0x2d0 kernel/time/timer.c:2475
+ tick_sched_handle kernel/time/tick-sched.c:296 [inline]
+ tick_nohz_handler+0x38f/0x6b0 kernel/time/tick-sched.c:317
+ __run_hrtimer kernel/time/hrtimer.c:2032 [inline]
+ __hrtimer_run_queues+0x3a0/0xaf0 kernel/time/hrtimer.c:2096
+ hrtimer_interrupt+0x44a/0x900 kernel/time/hrtimer.c:2215
+ local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1051 [inline]
+ __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1068
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:__local_bh_enable_ip+0x1c2/0x2b0 kernel/softirq.c:307
+Code: f7 89 df e8 60 01 00 00 41 f7 c4 00 02 00 00 74 05 e8 c2 9e 45 00 9c 58 a9 00 02 00 00 75 23 41 f7 c4 00 02 00 00 74 01 fb 5b <41> 5c 41 5d 41 5e 41 5f 5d e9 00 97 be 09 cc 90 0f 0b 90 e9 66 fe
+RSP: 0018:ffffc900040ee0f0 EFLAGS: 00000206
+RAX: 0000000000000006 RBX: dffffc0000000000 RCX: 0000000000000046
+RDX: 0000000000000002 RSI: ffffffff8d883356 RDI: ffffffff8bca6680
+RBP: 1ffff11005252d1e R08: ffffffff8faf8df7 R09: 1ffffffff1f5f1be
+R10: dffffc0000000000 R11: fffffbfff1f5f1bf R12: 0000000000000282
+R13: dffffc0000000000 R14: ffff8880292968f4 R15: 0000000000000001
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ spin_unlock_bh include/linux/spinlock_rt.h:116 [inline]
+ tipc_skb_peek_port net/tipc/msg.h:1235 [inline]
+ tipc_sk_rcv+0x44d/0x2b30 net/tipc/socket.c:2495
+ tipc_node_xmit+0x218/0xf10 net/tipc/node.c:1701
+ tipc_node_xmit_skb+0x139/0x1b0 net/tipc/node.c:1766
+ tipc_sk_rcv+0x2926/0x2b30 net/tipc/socket.c:2526
+ tipc_node_xmit+0x218/0xf10 net/tipc/node.c:1701
+ tipc_sk_push_backlog net/tipc/socket.c:1313 [inline]
+ tipc_sk_filter_connect net/tipc/socket.c:2259 [inline]
+ tipc_sk_filter_rcv+0x1811/0x3240 net/tipc/socket.c:2368
+ tipc_sk_enqueue net/tipc/socket.c:2449 [inline]
+ tipc_sk_rcv+0x8c4/0x2b30 net/tipc/socket.c:2501
+ tipc_node_xmit+0x218/0xf10 net/tipc/node.c:1701
+ tipc_node_xmit_skb net/tipc/node.c:1766 [inline]
+ tipc_node_distr_xmit+0x2da/0x420 net/tipc/node.c:1781
+ tipc_sk_backlog_rcv+0x1b6/0x280 net/tipc/socket.c:2416
+ sk_backlog_rcv include/net/sock.h:1190 [inline]
+ __release_sock+0x2b2/0x3d0 net/core/sock.c:3261
+ release_sock+0x1be/0x290 net/core/sock.c:3860
+ tipc_release+0x1abe/0x2500 net/tipc/socket.c:651
+ __sock_release net/socket.c:710 [inline]
+ sock_close+0xad/0x220 net/socket.c:1501
+ __fput+0x42a/0xa80 fs/file_table.c:512
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ __exit_to_user_mode_loop kernel/entry/common.c:70 [inline]
+ exit_to_user_mode_loop+0x1fa/0x730 kernel/entry/common.c:101
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:318 [inline]
+ do_syscall_64+0x353/0x580 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7460e5de99
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f74604be028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: 00000000000203a0 RBX: 00007f74610e5fa0 RCX: 00007f7460e5de99
+RDX: 0000000000000000 RSI: 00002000000003c0 RDI: 0000000000000003
+RBP: 00007f7460ef3eaf R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f74610e6038 R14: 00007f74610e5fa0 R15: 00007ffc753a57c8
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
