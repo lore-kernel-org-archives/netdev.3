@@ -1,207 +1,138 @@
-Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77439366049;
-	Wed, 22 Jul 2026 16:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459723E1208;
+	Wed, 22 Jul 2026 16:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784736741; cv=none; b=FZs4OLPPjWWW4mJWGTmGZQSrusLbuzZ2uGMvv6FmmCEXPEX9IBICZQOVPW24yWm9o6Z+59BzIa668UN1lF8bubLMvQmTaMwWCf5rQpEiFKYmQZ7/Ntii5ruWWI7+jUpI0QJfVJv4hcF+Zx9rjxk8VbqbRhUVl7S1ASx9SKSN93g=
+	t=1784736849; cv=none; b=e2Syt93i4aWQf0D19au4BUAcfeqsVa9LwosFcOZvNHPiVNIgI7eUMTchxPq1Zuob8B8yZ/W+HSIW8IDvf93qWatPiGIRDCfGbm+OCgmdQY/X4Bh7cKE5XNGGLXaSWi67zZecV4gs2y9USUoVjGooTjRQkRrFlK0oUo6WVBP4Yss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784736741; c=relaxed/simple;
-	bh=eJjuKKsjgWWdyXTxehS64GPkUy7EGaDO5AeTWOgfsxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iqaSSPVEemuAvaimcGuM6SAEekHFmRXrbbMnfrjZKO5huDk7+71VuaeaGjhL/tUkkelHrld0azCKGwUpwSqYfoHZ1WquDLud4EbEmgC6YuRzkx9YcDrXf13M92R0ceK6GZWG7GpAd7k9j/6vE/MnFarKYvfqZwWIc8RHjdlZrjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=Ne8DmMy3; arc=none smtp.client-ip=213.165.83.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
+	s=arc-20240116; t=1784736849; c=relaxed/simple;
+	bh=bFw3bpM1QD8jSICLtjnFV+3gOguyWkdvw1ecs87OGnA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HNx6Uio/gG5AOpoIrK5q+zpfHzfL7GQepdPdJ5KGuD4wySu/6KZhyOToTPynVIz8RTpoKOMtDrG7VkqyKXymAGV7vNfxzyoO6LBN4uths1lM8go0xfLEPo+fg/oDYyWeb5HSkefcNrSYisrYXd7trISbfqvKFA+eFLfYlilATsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtiBA9jL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="Ne8DmMy3"
-Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
-	by os-cillation.de (Postfix) with ESMTPSA id B40FFC063E;
-	Wed, 22 Jul 2026 18:12:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
-	s=202409; t=1784736736;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RtwCgKftCMaYUmCdplbepptu53yvpvEnd71jrue0up0=;
-	b=Ne8DmMy3uESdnbeBo1T1JNR4IbehobA5+dPArRgNlSYLnJPD4j6qCmAqO0+91Uaaa7pbSf
-	+ZxGZWZH2G8nno1Up8s/1K1OyR+evRt7IP51IBX05NqR7o+rQDc4w5FNQT3Gix0biLbG6/
-	c/U9lont7tlQLbe2VAyaWXhco8pe+OYJAc+woWHhvieHEcUHWgqa4IdOSom6bp13KThWiM
-	mkiIpzSvHnC4lr4bvKAiK2kKMHoOc6yEyFw+0kViVo5p0chw0l607aLrOo0/30weLpKSV0
-	0BCmcT5qyyrk5lpFBSX3AdNT2UC52aDmC0uMsTgPye7f4BikbgHb21vSRa8ZzQ==
-Authentication-Results: os-cillation.de;
-	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
-Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
-	by core2024.osc.gmbh (Postfix) with ESMTPSA id 5222D204EEB;
-	Wed, 22 Jul 2026 18:12:16 +0200 (CEST)
-Message-ID: <19613c3e-9756-45fc-84b6-b650ba3723a7@os-cillation.de>
-Date: Wed, 22 Jul 2026 18:12:16 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtiBA9jL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5D71F000E9;
+	Wed, 22 Jul 2026 16:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784736847;
+	bh=D+6sV+NUCOs4DK4/+6GxIwgp4J7Mrp+LAJofiqS5Owg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PtiBA9jLYMy9Zl2mm5BWlRJWsPoGorVaKQC1qM3wYW1Nqb43yJfVtyHAsPAamdYz/
+	 G/Hoivs4cD5I++sVehGTSZIMZDq+1Dg9f9eP5uRoPjGl8CO522S0mdNVZbtB7yZUXA
+	 nyvfV8GbOjK/8bY681T6ZYoFCvzUBgEgoUbwHRtOSF/T+XkgWNXzVkxzbuCTU6TbzM
+	 GXgOCOog139EALxgmmbPMSJHZn2nEfGew6Fh9Ukiz9KG6RnpOLGBnqfQpmjpsbSJrL
+	 Xoa5Z5OTx2qxf7e64Y2tfikaXtasT/OO1hUpgJl3UGtIv9I4VX7A91wPewaYziLJO3
+	 zpOVCeiETF6og==
+From: Simon Horman <horms@kernel.org>
+To: anthony.l.nguyen@intel.com
+Cc: Simon Horman <horms@kernel.org>,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org,
+	larysa.zaremba@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksander.lobakin@intel.com,
+	sridhar.samudrala@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	maciej.fijalkowski@intel.com,
+	emil.s.tantilov@intel.com,
+	madhu.chittim@intel.com,
+	joshua.a.hay@intel.com,
+	jacob.e.keller@intel.com,
+	jayaprakash.shanmugam@intel.com,
+	jiri@resnulli.us,
+	corbet@lwn.net,
+	richardcochran@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	Bharath.r@intel.com
+Subject: Re: [PATCH net-next v5 08/15] idpf: refactor idpf to use libie_pci APIs
+Date: Wed, 22 Jul 2026 17:13:52 +0100
+Message-ID: <20260722161352.543079-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260715180042.1972010-9-anthony.l.nguyen@intel.com>
+References: <20260715180042.1972010-9-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] crypto: pcrypt - Remove pcrypt
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20260713223234.24812-1-ebiggers@kernel.org>
- <20260713223234.24812-2-ebiggers@kernel.org>
- <37ecba68-947a-45ad-9ec4-361facc06a05@os-cillation.de>
- <20260721195004.GA3383223@google.com>
-Content-Language: en-US
-From: Hendrik Donner <hd@os-cillation.de>
-Autocrypt: addr=hd@os-cillation.de; keydata=
- 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 li+2
-In-Reply-To: <20260721195004.GA3383223@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hello,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+https://sashiko.dev/#/patchset/20260715180042.1972010-2-anthony.l.nguyen@intel.com?part=8
+---
+--- Patch [8]: [PATCH net-next v5 08/15] idpf: refactor idpf to use libie_pci APIs ---
+commit 131cbea6d4e2fb71f297aa7df605c1576a8704cf
+Author: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Subject: idpf: refactor idpf to use libie_pci APIs
 
-On 7/21/26 21:50, Eric Biggers wrote:
-> On Tue, Jul 21, 2026 at 08:59:21PM +0200, Hendrik Donner wrote:
->> Hello,
->>
->> On 7/14/26 00:32, Eric Biggers wrote:
->>> pcrypt was originally intended to improve IPsec performance.  However,
->>> it's no longer useful for that.  Reports from the rare cases that anyone
->>> has actually tried to use it over the years indicate that it actually
->>> reduces IPsec performance, e.g.:
->>>
->>> * https://github.com/libreswan/libreswan/wiki/Internals:-Cryptographic-Acceleration#obsoleted-ipsec-accelerations
->>> * https://users.strongswan.narkive.com/liqTaTq8/strongswan-problem-with-pcrypt
->>> * https://unix.stackexchange.com/questions/594336/ipsec-multithreading-via-pcrypt-worse-than-single-thread
->>>
->>> It's also undocumented and quite difficult to actually use.  Its design
->>> is also broken, in that any unprivileged program can enable pcrypt
->>> systemwide at any time (by instantiating it using AF_ALG).
->>>
->>> Meanwhile, pcrypt has been a regular source of bugs, including at least
->>> four that have received CVEs.
->>>
->>> Let's just remove it.  No one seems to care about it anymore other than
->>> people looking for vulnerabilities.
->>>
->>
->> my company is a user. We have a hardware platform based on an IMX6 SoC
->> using IPSec and configure pcrypt using crconf. Current performance
->> difference:
->>
->> iperf3 -c <IP> --time 60 -R
->>
->> pcrypt:
->> Download: 107 Mbits/sec
->>
->> No pcrypt:
->> Download: 59.3 Mbits/sec
->>
->> iperf3 -c <IP> --time 60
->>
->> pcrypt:
->> Upload: 65.9 Mbits/sec
->>
->> No pcrypt:
->> Upload: 52.0 Mbits/sec
->>
->> The relevant crypto templates are configured in early userspace and
->> since i got curious, that has been the case since 2017.
->>
->> Mostly using
->>
->> pcrypt(gcm_base(ctr-aes-neonbs,ghash-generic))
->>
->> nowadays, AES-CBC in the past/as a fallback option.
->>
->> So at least on some platforms there is still a significant performance
->> boots, at least for downloads in this case.
-> 
-> Thanks for bringing up your use case.
-> 
-> Have you looked into alternative solutions such as Receive Side Scaling
-> (https://docs.kernel.org/networking/scaling.html#rss-receive-side-scaling)?
-> AFAIK it's not just the crypto performance that makes pcrypt unnecessary
-> these days, but also the design of the networking layer.
+This commit refactors the idpf driver to use the libie_pci initialization
+and MMIO APIs. It updates register accesses across various components like
+control queues and virtchnl messages to rely on the libie_ctlq_ctx
+structure.
 
-I'm looking into this more, the IMX.6 is a bit limited with IRQ handling 
-and queue distribution.
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+> index c5e47e79a6411..92a120aadfcd2 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf.h
+> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
 
-> 
-> I understand that i.MX6 doesn't have the ARMv8 crypto extensions.
-> However, surely you could at least use the NEON-optimized GHASH code?
-> Is there a reason you're not using it?
+[ ... ]
 
-I think it was historically not working well for us, retested:
+> @@ -945,7 +884,8 @@ static inline bool idpf_is_reset_detected(struct idpf_adapter *adapter)
+>  	if (!adapter->hw.arq)
+>  		return true;
+>  
+> -	return !(readl(idpf_get_mbx_reg_addr(adapter, adapter->hw.arq->reg.len)) &
+> +	return !(readl(libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
+> +					       adapter->hw.arq->reg.len)) &
+>  		 adapter->hw.arq->reg.len_mask);
+>  }
 
-NEON GHASH with pcrypt:
+[Severity: High]
+This isn't a bug introduced by this patch, but does the transition to
+libie_pci_get_mmio_addr() expose us to linked-list corruption here?
 
-Download: 116 Mbits/sec
-Upload: 74.3 Mbits/sec
+The old code performed an array access, but libie_pci_get_mmio_addr()
+traverses the mmio_info->mmio_list. This traversal appears to be lockless
+in asynchronous paths like idpf_is_reset_detected() in idpf.h and
+idpf_ctlq_send() in idpf_controlq.c.
 
-NEON GHASH baseline:
+At the same time, driver teardown (idpf_remove) or hardware reset
+(idpf_init_hard_reset) can call idpf_decfg_lan_memory_regions(), which
+uses libie_pci_unmap_fltr_regs() to concurrently modify and free items
+from this same list using list_del() and kvfree().
 
-Download: 90.7 Mbits/sec
-Upload: 60.8 Mbits/sec
+Since idpf_vc_xn_shutdown() doesn't wait for in-flight transactions
+to drain, could a concurrent ethtool or interface operation preempt
+during this list traversal and cause a use-after-free or list corruption?
 
-Looks better, still a ~15 Mbit improvement with pcrypt.
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.h b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> index de4ece40c2ff3..acf595e9265f5 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> @@ -109,8 +109,6 @@ struct idpf_mmio_reg {
+>   * Align to ctlq_hw_info
+>   */
+>  struct idpf_hw {
+> -	struct idpf_mmio_reg mbx;
+> -	struct idpf_mmio_reg rstat;
+>  	/* Array of remaining LAN BAR regions */
+>  	int num_lan_regs;
+>  	struct idpf_mmio_reg *lan_regs;
 
-I want to point out that without IPSec our baseline is:
+[Severity: Low]
+Are these num_lan_regs and lan_regs fields still needed?
 
-Download: 942 Mbits/sec
-Upload: 942 Mbits/sec
-
-Intel IGB ethernet.
-
-Regards,
-Hendrik
-
-> 
-> - Eric
-
+It looks like the new libie_pci API uses 
+adapter->ctlq_ctx.mmio_info.mmio_list for LAN memory regions, and all
+allocations and references to these array fields have been successfully
+removed from the source files.
