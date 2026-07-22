@@ -1,100 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA4943CE49;
-	Wed, 22 Jul 2026 17:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784740492; cv=none; b=FeKJbqRdBv/vecLbADOS8D97bIArUHfU/TV0FyTyYqtVNFc9y3TU1vmC1i3Qo6G8W+D7rc4ueGfRvp+q43KUBDiH4ufu5LO1L4cGBGq5xKr/pgAp80edCY6RxeznerrKjf+AYTEI1tRH4A/GlN4F6EARjovmsTTXVY3/j302dnY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784740492; c=relaxed/simple;
-	bh=x9eOMkF29r6bTJZUTBpg0yL+NQKKJ0FnhkA0mrSlgNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WABMxyDq5U2d9Pr1hgi236kCB7oAyvHCKUTkngJNpFBl1Ls+SBq/1KEjRKZwD6tOW6ozLSjXFLe5TNLjeoMnKgfbj+Fd4x0/biF0tn+WsRenr4ymj07lMpZxkMpYwOcXIJ+e6rLMzLEGmM1A8t7wxXThJoUD8jnfBY4XkabfHlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lr9figoO; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4463342125A
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 17:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784740632; cv=pass; b=DetdttbAMDNUtNEm2ZoXJad48OK924JwmKj0H14fjD3hRrKdU8vps3rmyhjanjzosOgTZI4yyJCCoT7V1M3D1RpbVpYk3IMYzfM/tksbkQ/Egs0x093L/w5EYM8kuR2JaAwsZ+DvUyKVmk8UQH1hmHYCSavDOjQ32JDrRxdLC9M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784740632; c=relaxed/simple;
+	bh=quUFmWfi3Lva1MInTlYEMYMN5ra/5e9+GbC9BhKVMxY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uu7yVV/jgdkKWf7nnso0Soe/4UCKezX9idzvk2T5LHEUwchDaJsmBgX6Nb7/j3Ka+3BzwuGAo1izy9nHR5q/2uKWr+ivFVu1YNa//jetdJ5ABmuGMWoNUgUxgNAdjmss17kHgVZLZyM1411g23erP4kYqegdGhWuhw+ZTqtIXR4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lTm0gcnV; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lr9figoO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AA61F000E9;
-	Wed, 22 Jul 2026 17:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784740490;
-	bh=JwD8ujU4IUVS9rMmKchL74t4es9VLDaWpCnugp9LUZI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lr9figoOym8dshe/1H+GsL0l90tTWjLn+h2orHVHAoqkDgKsCAFBmvfhoGD1aZJDH
-	 hQ9rK9B06ayKVsCkv825eKR9ZEcOAeMfqNGe/JK9wMmIRX9KSwSk2zVSFLApWmisdX
-	 nk4M1EIE81PY0sQs7ByfDpySZj7xL+j3P9+yKCW5pqxSCvosiOwlEdypvRq9cRuVWQ
-	 N/vNFxWWDFG6Zqax/gE72BjeNhDjY1gvB/nOu1ZKL/Oyecre2om1yGN7t7Er20hGJ8
-	 nytc2UjwIs3AAnuGA/i3Jp5GcXhLo3kQAnJEHS4pg1dptZFfOAIa+Pmx9tHULNKzNR
-	 I3CQVBkkjTiRw==
-Date: Wed, 22 Jul 2026 10:14:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/4] net: dsa: mxl862xx: add devlink
- flash_update and info_get
-Message-ID: <20260722101449.43537aef@kernel.org>
-In-Reply-To: <alaKsBXSK9tP__O8@makrotopia.org>
-References: <cover.1783988826.git.daniel@makrotopia.org>
-	<5d1614d1cd6b99bf0f0635c6370bbed10736a7fa.1783988826.git.daniel@makrotopia.org>
-	<alaKsBXSK9tP__O8@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lTm0gcnV"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c5382806fso81348231cf.2
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 10:17:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784740630; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ydnr8GItk6K7eCltYf+pyS2wzKYg/CfLpoQUEudOcX7Iq/r4KH5/rPxtnLljXiKmtO
+         6DCEFkyBoJIQz21QU061D6OvCpgEbki2w7kVtCSDbxuROQcJD4LBt3G/3xQklKGba6mH
+         UZBhgXLHzlkrzRoklmipbHcykfhETjZp5SmEFl7tQXEYGS0kY7zEcQSB+yzNp0NziHsp
+         YiUeCRs0SXHz5OvSxdhM7idqfIkAyfI4kdmTN+9UxmP6UgV/W6dyaVxM0N0RH3UOqeCa
+         VGxmpbI5DtPh+NoJ8p7Y8HFNq8crb1RGmgWCwAy11SU+Z1U4fMRnbT+QOHEYETT1ZzLK
+         H9uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=quUFmWfi3Lva1MInTlYEMYMN5ra/5e9+GbC9BhKVMxY=;
+        fh=7RA3iE0ruWYgXZ0STgfO7QD2vXtSR1ZT/j6XRFcf7cs=;
+        b=dv8wWsKjfuVsqonlf7K7Ah/TB6FWI3ViNrwoorEaNxBitrcG8/MSF54vt2DvIdhRdG
+         zC6Vn13DFWiU2Cnhll3n5DzLHJCN5ixArPX50y5KN49XeAij04JKjkdeMXg5b4NLUYsJ
+         2PRGnadcAkHI8oprfj+irtYWNTslm1WzGb81J7h3WH5BtfJ+tLhWHlwizrvEDKqUokGG
+         lgIzsS6l16h6kaWZw0/mg8kvmnQCSTLY1uzFUtMnCkNjO2V+Hydt9WlV+DfinJ/+9a30
+         Zg7KGjm6PizdGiUCJJmepJzkSOVbQrd/13EBSrxD5dcrQYrYrTsyYiAN+Rvw/JjZMYgT
+         2YTg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784740630; x=1785345430; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=quUFmWfi3Lva1MInTlYEMYMN5ra/5e9+GbC9BhKVMxY=;
+        b=lTm0gcnVP5GA5kmbmlbgf30oa69Al/w/uJhL5VE5ONRA6hW7jLjDuyS2ETpwaEFmh4
+         IsYc4thDYwhWtRj84DJhnwLMPI2fpdTHhyA1AZ2rUEdjINwKMX+aBZ+vlO+GR/EiggJg
+         76KrRF0LlVFP3WjnGCKaemMJG80jZifjJn+a6867HyG4DvLTEW3uT9hIAzAd9M+8ESG7
+         8e7jDOH+ErFEMr1yuuEA8BIPZVwxfvEHP77sTZRD7me8MEP+3JAaoiBvdHZ6crzLMeMA
+         i+5xdRkf859GmLlVKZOOZE2cbhurDdYDN7z7ZkapRXF/0yCilu8wHwBjzIH/uT/z6D4k
+         P7GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784740630; x=1785345430;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=quUFmWfi3Lva1MInTlYEMYMN5ra/5e9+GbC9BhKVMxY=;
+        b=jk/zGeL5wQR1BSNcx6Vq0KdZc4fqueU9jCwEste/Dq+DQPxa7zwVJ/hae/MM4hz1ba
+         UIIgh2YUxnMTqIc7T6R3pPvWyzz59LaYX9QCCOqiQG7f7hN3k7kK44Og49oagRvTMCU3
+         RMJRL+fGUSFfOvPFWgP2Za/OKK6GClJQEnk2NNU92EKVzobARyAetE3W2OL9x0abKxkN
+         ccwKnD60FRdX16roq0fMjprjaMwWpUDVY0ZQuHLGN6vi4MUagt9+FeTgoZc/d2CHTZxN
+         i9rVMn40wngTBzINo0zPppbBQVZw4TdSAlhQf2UIWSFB64mMfw6OcfQT5NH0uz/3a3Jo
+         vbmA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq8uFzS20kR3Oo1ujZSQ5OB7C6I3Iv9Xo8/DoQA4HCxZvPIgn2Q0BMDczEiosC1IbimYoBXv6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymbZRCrJAiUWR6Umybw7JaxXAxMm7Gj7aX6MbwiwxlD2tHCLH0
+	AP7iW6PrlM9K+JlQyHcCIueZCetmoJSng7/BUt04IEaSEBKBTkajDfvI+rs6LdD+J/6MAppXrU2
+	uYDJJKQIcjy+FNLwzhmoN6GG+gEXlXtY=
+X-Gm-Gg: AR+sD13ZoeZOAahDIYjnWIRrvvZEu8S5l71IFdNbuUZVZwbWHTbW2SX3K6DstYs0CJQ
+	5L09RaXFnTCjCZxIuxf+pVtJq0Lg4vrppp0SYYhhmeZnmraNWFgxV6nt4QxVmoqfsrEtFkAZIKz
+	H0Hs9FrqHmKSK1Q1yZe9CEmUCm3GCRDRO6NxHa2VNwMjdTsDdY/ibLUjBI6XGO+Xrldv6uW0Jvu
+	YV3mkWLjyI0sKXF2X7WEMVZ17MYa4AQ1smlvacKOy3H+kha08HZTxCrqmYjpQ==
+X-Received: by 2002:a05:622a:153:b0:51a:8b64:69e2 with SMTP id
+ d75a77b69052e-5213d2b7276mr228515301cf.7.1784740629936; Wed, 22 Jul 2026
+ 10:17:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1782548651.git.bronzed_45_vested@icloud.com>
+ <3ab4a04fbab887238facc1792e02c33fd68190f7.1782548651.git.bronzed_45_vested@icloud.com>
+ <20260630171016.11c02dec@kernel.org> <20260630172027.5eaba39b@kernel.org>
+ <CAPuPA7KMdDSGKWJXEZzSpgbdUj4_BGGX2+CedgchoD77bPd8sg@mail.gmail.com> <20260721182245.50059a0d@kernel.org>
+In-Reply-To: <20260721182245.50059a0d@kernel.org>
+From: Yuan Tan <yuantan098@gmail.com>
+Date: Wed, 22 Jul 2026 10:16:58 -0700
+X-Gm-Features: AUfX_mzCk5eZ-iil-nSL57Kf4TsRHu-C4RyoXC6xDUl4tGcnzcbWIg8REePUudU
+Message-ID: <CAPuPA7KqBgzc4KQx7M=c15RJh7bKDKa9uGOuBoJ5KVi9OugPMA@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: act_skbmod: require an Ethernet header
+ for MAC rewrites
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org, jhs@mojatatu.com, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	horms@kernel.org, peilin.ye@bytedance.com, cong.wang@bytedance.com, 
+	gnault@redhat.com, yifanwucs@gmail.com, tomapufckgml@gmail.com, 
+	zcliangcn@gmail.com, bird@lzu.edu.cn, bronzed_45_vested@icloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 14 Jul 2026 20:14:56 +0100 Daniel Golle wrote:
-> On Tue, Jul 14, 2026 at 01:51:02AM +0100, Daniel Golle wrote:
-> [...]
-> > +	if (!of_property_read_string_index(ds->dev->of_node, "compatible", 0,
-> > +					   &compatible)) {
-> > +		ret = devlink_info_version_fixed_put(req,
-> > +						     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
-> > +						     compatible);  
-> 
-> Review of the fwupd counterpart of this series[1] made me reconsider
-> what the driver reports as the "asic.id" fixed version. The devicetree
-> compatible string used here ("maxlinear,mxl86252") turned out to be an
-> unfortunate choice as the comma is awkward for userspace consumers, so
-> for v3 I plan to follow the mv88e6xxx example and report a chip name
-> from a per-model info table instead:
-> 
->   fixed:
->     asic.id MaxLinear MxL86252
-> 
-> Before sending v3 I would like to clarify the preferred format of the
-> value. Existing implementations differ: mv88e6xxx reports for example
-> "Marvell 88E6085", including the vendor name and a space, sja1105
-> reports "SJA1105E", hellcreek reports "hellcreek", and bnxt and ionic
-> report bare chip identifiers.
-> 
-> Documentation/networking/devlink/devlink-info.rst only describes
-> "asic.id" as "ASIC design identifier" without any format constraints.
-> 
-> Userspace builds firmware matching identifiers from these values, in
-> the case of fwupd for example
-> 
->   MDIO_BUS\COMPONENT_fw&ASIC.ID_MaxLinear MxL86252
-> 
-> and while a space works there, such identifiers commonly avoid spaces
-> in favour of underscores, hyphens or dots.
-> 
-> Is there a preference for new drivers? Should the vendor name be part
-> of "asic.id" as done by mv88e6xxx, or would a single token such as
-> "MxL86252" be more appropriate?
-> 
-> [1] https://github.com/fwupd/fwupd/pull/10667
+On Tue, Jul 21, 2026 at 6:22=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue, 30 Jun 2026 23:46:46 -0700 Yuan Tan wrote:
+> > On Tue, Jun 30, 2026 at 5:20=E2=80=AFPM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+> > > On Tue, 30 Jun 2026 17:10:16 -0700 Jakub Kicinski wrote:
+> > > > On Mon, 29 Jun 2026 10:46:03 +0800 Ren Wei wrote:
+> > > > Let's do away with the 5 reported-by tags? You can use a tag for yo=
+ur
+> > > > tool or your team, it doesn't have to be a person. Look at sashiko =
+or
+> > > > syzbot reported-by tags.
+> > >
+> > > On second thought, if y'all work together maybe there should be no
+> > > reported-by tag at all? Can you explain the situation?
+> >
+> > Hi Jakub,
+> >
+> > Since February, our team's bug-finding tool has found hundreds of bugs
+> > and vulnerabilities. Several people have helped improve the tool to
+> > discover more bugs, and verify that they are real. I did not want
+> > their credit to be lost, so I added Reported-by tags based on whether
+> > they contributed to finding a particular bug.
+> >
+> > I agree, though, that having five Reported-by tags may not look ideal.
+> > Maybe using the tool name instead would be better. I will discuss this
+> > with the others.
+> >
+> > We also found many external volunteers to submit patches, instead of
+> > simply dumping bug reports on the community and leaving it at that. We
+> > were worried that too many reports might annoy maintainers. That said,
+> > it may be easier in some cases for maintainers to fix the issues
+> > themselves rather than review our patches, since we are not experts in
+> > every subsystem.
+>
+> Sorry, I was AFK for the last 2.5 weeks.
+> I expect you to make the changes I asked for.
+> There are multiple teams doing the same thing as you are,
+> and nobody else has so many tags.
 
-The embedded drivers are probably doing it wrong, I wasn't paying
-enough attention. devlink versions are supposed to be broken up into
-components, the vendor name does not belong in asic id.
+Hi Jakub,
 
-IIUC asic.id was supposed to be the numerical version of the design
-(excluding revision, which is asic.rev). Something that's usually read
-from a static CSR.
+I would like to sincerely apologize for the problems with our patch
+submission process.
+
+Because of some communication issues on our side, we did not handle
+the submission process correctly. One particularly embarrassing
+mistake is that I only recently realized that when you wrote last
+month, =E2=80=9CCan you not post these to the public list?=E2=80=9D, you me=
+ant that we
+should post cover to the public list. I had understood it as asking us
+not to post them publicly. This was entirely my misunderstanding of
+the English phrasing, and I am very sorry.
+
+Going forward, we will send the cover letters, including the PoCs and
+bug details, to the public mailing list. We will also use Reported-by:
+vega@nebusec.ai instead of using individual volunteer names.
+
+Besides, we will also be more careful about prioritizing fixes. We
+understand that some very minor or highly theoretical bugs may not be
+worth the maintainers=E2=80=99 review time. It is sometimes difficult for u=
+s
+to make this judgment correctly, and we are still trying to improve
+this part of our process. We will do our best to be more selective in
+the future.
+
+I am sorry for the confusion and frustration caused by our previous
+submissions. Thank you for your patience and for all the feedback you
+have given us.
+
+Best,
+Yuan
