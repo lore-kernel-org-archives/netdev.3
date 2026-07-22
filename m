@@ -1,261 +1,120 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1763E5A22
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784691711; cv=pass; b=aO9jf/FZdHftgtcblAzVDgp353/oa3X9uzY27m5YPHiDaTJq5t2S0u4gZ4q15nlmGzg1NC3yWX5efnJVfZVX6u0OLYFkHE+Ml93XAy0xvVssdo13l1uegkIMTN2RZ+wPuVf1RIWItAYYnAJaiggOMUwYympZWSjtC5QaUgXwZCA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784691711; c=relaxed/simple;
-	bh=XPk4KG2yV1Sq/VT6zvJRSogdN8ZorWtYCAyIVWHe3PI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QPB3CTimQLTwI/hiTtqRQ2FaPi6B1QidHXqNPQ9TcPApUV+DmIjPFxAaElkR3miJSlR+B4hZFznojSfG7v0kUd5RdpUMvwkIaEFN+vuNT5O58sJQhE66L6TR6KCdjuuZDEiq0AQh8HXiyCKMRLr/s7d+FmGY6yn2Of7QcIUTpvw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0Lzvn7+; arc=pass smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645503E49ED;
+	Wed, 22 Jul 2026 03:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784691712; cv=none; b=i1RDxNtHMeFvh1ilQCYCcoWEqvR+aXN2JMZwFdrczqWEYVKwDaMxfBBHVMXCMhDylcOieN7dlCGOho+lKmBxjLiC1WchE+tmzjeKRekZkLjtMfefEuRuqcbd+tlv8GEP2Tej4C28v1va0/eUnYHtzH4La1p0wrN86etuzjt/Nls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784691712; c=relaxed/simple;
+	bh=wFc01ky0wiC8TSKnf9eWcxVo+r/O03nRq6huFbYF7mw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z4X+dBZOqja7QUOz/W/ioxSdEAGhF7DcB+JE2cXawKqQJh0gDhMLLrnk9kMSF1EoefSsqc5YGgeTdm2t2X74QkiYjWLbXx82XqWF75YMDvxl5jP4RgTF0pdcUE7JUMzPIfrP9kldoXVThlPQr30brHjGK/WMwOQUltlplyogtwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=snBQADMl; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0Lzvn7+"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-45171f2f608so4599014fac.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:41:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784691706; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X2o1LmXruXwT6zqQMMWWCtVXvN5GXmcfBN7qjkl8iUtLBd91b6sAU21wCSUf79bOPx
-         D6wR5gYNTCvZGxemHjab2ap58MHy3reyB/Fa/wR38G2CJIVri/VYAbdKE0Komf6t8a+r
-         4ADWpjICbvPTCCtcu0mdniqEClKs7+jbdFZleiTuQ9Z42MmYdl2dmmpeBd3EwtioTOBE
-         6ttTQBhrOYxxYRZUGM168qUXe4g1S0p0m/Jrs6UDZNlIOFAiuDnahtJJQaPXZmEAOpFk
-         +KA1LUKdZHZonaeUmWcXjMnYN/IhEsIxI6/i1eG68Bigt7C32I/1eSfaAve3aSeq0UBJ
-         eBBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lIw+2wSbqfG24nAMmpJRj7C7axX4e8CQLw+DDu3G1Fc=;
-        fh=izd0Zb70QWdhHgL62L1esRUzleqX6U9/1T3I0BSMyIY=;
-        b=H50prEDx9MZXJYFy0LEDRXHqAPYoT1BVizSSBmfcJ76u3ZL81k6aUvZ4fpl9aQzHNy
-         7RE9D8Mr6j2Gs04xIKZjpPUS4aOT6eNE4jzNaSsxKaBAfzMlsIci32JFGSaUKRoM2BCv
-         rkBajwKbCMcFPt3z1qpJcKXEFz28YekLxJU84iLLn1CXQ5t3rrofWf+MZxywKcnkiw/C
-         yJ1n49Du5PgHUp19s5xmDTHyvtYapM+ymHWW+kzHTE7sXjWtIxFvxSB9cHi8dx8Ymhkx
-         SsuxOJG5/PDY4JD4v2yEQJA9R6HMSnCmZIxGO/Y9ljBYJYbahDd6FmH3Wgn2XPWxJbi8
-         y9Fg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="snBQADMl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784691706; x=1785296506; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lIw+2wSbqfG24nAMmpJRj7C7axX4e8CQLw+DDu3G1Fc=;
-        b=Z0Lzvn7+sz7K4gwuvJuuKXvL76YX8ChQvP3snDWvRk398YX4uYXo0LZdvCvSxFj0E3
-         7lSMSyZdOlMbgSD5iPJHQLJjdqQELInj4ZZUsBqvva2y5ixVy9X240bw8qpAUk6mykwo
-         a67MYBD+JMQ+ypw0VnoLFQXJv8yLTj+Kn/5elGfjVEvxKSIrxKYQ5Qs/i0iKZrmrG1zo
-         Q9BwIzFCIkK7aXNw23yXJLCeqaxFxvamUeXiFfgyyhIo2MCCFs1EHoGy8HExGEh+X9eU
-         bkwDWEfa9/x3g4TnZctfq30IVY0az4YSNjRirmhjFz5mdtBgYuvbcBgHWiLtjocLKfu3
-         09ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784691706; x=1785296506;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lIw+2wSbqfG24nAMmpJRj7C7axX4e8CQLw+DDu3G1Fc=;
-        b=djaK59mraZOKIFy1k++KeGUA0H2iZ216pAx6/JKGvvZAvm4lz78k7ivj94TLqn9X57
-         aAUlMBf+l14INQdd6ICLHJOZ5SKL4Kd2Ep+lm1CiPx5rceHt7dSG8mM83CGKpaeAQUtn
-         3QJJllu7ROUYoGCnfo7obQl0nXecXlsO1J3jG5dLYUJFIPftWWF/w9gjmCChnuEfkND2
-         yR9u8sOi0mu1UOQjlLJ95Ik5HuZzEM8NWkoc7VwWSkM5drOM4TOY39EeThDK9f1vc0Dq
-         T19/5KZ2TmxyWS/2q5ldDqWJL36dA9srn0a9EkekgSUG0F5T5wyNfZjs1l9NxobHTRts
-         Ingw==
-X-Gm-Message-State: AOJu0YziFZ+MyoNaBbyhviJ0jHv2ZrnRtWKCJG7gptC4ca/DOykZHLr9
-	H/kMhNJ51mvubQQ0nbQiX5T9kVGEeKkM4BNllmuhyQuOA8bHi9bEXGGaxBT2qY6f/oImnZI8WxI
-	qUo9NF+83+JODxQXUevAjL11ZrcgQzYA=
-X-Gm-Gg: AfdE7cmd7StpJv5H14LwvyuB4KZaaL919P2IRwkjTg8XA9du1zoyiq7dfJWj38GhW9m
-	Dxr6dQn2Ux7CueTZ2TEnFx3MVyyCu2OGKaZ7o7UmA9lUKRN8YIu0Wrqn4sduT9tNheDXs4Z6iaX
-	9uCHCK/UV1xi3zBrnjTrmmSNednyBW7zJjG0qKifRv3wXIhgkvKZiSnMofRcWpU0hbP5MrAWwzG
-	S9n9Y5kNweZSz5Gf7ElcI5E2sNM1XdhosT4X1Az18v0XWIrStOs6Fmg48qUHYdqBw9Zf+g1ypI/
-	GNFCEy3qErS3kbVpLrtdBqei14Ry0g==
-X-Received: by 2002:a05:6809:10c:10b0:4a4:ed9a:e793 with SMTP id
- 5614622812f47-4a4ed9aeab2mr6106094b6e.16.1784691706433; Tue, 21 Jul 2026
- 20:41:46 -0700 (PDT)
+  d=sony.com; s=s1jp; t=1784691708; x=1816227708;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=TB0Hvn5ONW8G0Wja7XMN/KwjPVP6Ai1KndzicZDnOgQ=;
+  b=snBQADMl7ZAGnaImHY5FzWjLXqXdjPp2Ms0J710PrdLH+EQ+TJMJlvth
+   Kb+zvZGbfLrJNpA5Tg5kDQ8TSsotsm3fkFYNbrS9rqn6buBRfJUKHxnZ5
+   CxIiVegeR9E2hIyiBdlWR6/O4BhAstOxPpvLDZmzboDmeB5tUjkUeEVl+
+   KMowI5+kKUTYRpIVsdXrxVDDk7utoRBeqJ0yS/U29fVwx7Ln3eW33OXxn
+   988K4YP7ECREbhd4+9tKLhcfybJCejt5IluoW3cGU3DhZ1u1K+lS1cRxd
+   YUs+E/Za3PLat9NSckr7fzkbiufIjcTUpMLer9AcVKKGLRxskkXMRrAMF
+   Q==;
+X-CSE-ConnectionGUID: qYD/RAJWSjOmXXIRyhrsOQ==
+X-CSE-MsgGUID: PINgkoPGRUO1+hVlv3cvNw==
+Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 22 Jul 2026 12:31:37 +0900
+X-CSE-ConnectionGUID: me/Eo/F5TzCEp2AisWN2Fw==
+X-CSE-MsgGUID: rOfehimtQqWz7B+ZeRWvgg==
+X-IronPort-AV: E=Sophos;i="6.25,177,1779116400"; 
+   d="scan'208";a="627327270"
+Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob02.noc.sony.co.jp with ESMTP; 22 Jul 2026 12:31:37 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+Subject: [PATCH 0/4] usb: enable sysfs module symlink for more built-in
+ drivers
+Date: Wed, 22 Jul 2026 12:31:20 +0900
+Message-Id: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709014812.1158178-4-mmyangfl@gmail.com> <20260721173248.815203-1-kuba@kernel.org>
-In-Reply-To: <20260721173248.815203-1-kuba@kernel.org>
-From: David Yang <mmyangfl@gmail.com>
-Date: Wed, 22 Jul 2026 11:41:09 +0800
-X-Gm-Features: AUfX_my6rTmYDOVe8gL_pDPk5gWZTQI90nD982a1paC3wVRsSYaIiYU-khPjFgo
-Message-ID: <CAAXyoMPBD9Y2CMeOaDzdRPmwN=yrbR03ck8mduE8SzXSUwsyVg@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 3/3] net: dsa: motorcomm: Add LED support
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIg5YGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcyMj3dz8lPi8xNzU+NLiJN1U46TENFOLVEMgVAJqKShKTcusABsXHQv
+ hF5cmZaUml4DMUKqtBQDfksW3cAAAAA==
+X-Change-ID: 20260722-mod_name_usb-e3baf58e1e1e
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bastien Nocera <hadess@hadess.net>, Matthias Kaehlcke <mka@chromium.org>, 
+ Valentina Manea <valentina.manea.m@gmail.com>, 
+ Shuah Khan <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Daniel Palmer <daniel.palmer@sony.com>, 
+ Rahul Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>, 
+ linux-embedded@vger.kernel.org, 
+ Shashank Balaji <shashank.mahadasyam@sony.com>
+X-Mailer: b4 0.16-dev-3bfbc
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1655;
+ i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
+ bh=wFc01ky0wiC8TSKnf9eWcxVo+r/O03nRq6huFbYF7mw=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhqwEy2lBBgX3E3+JMjjHsTiK3O09cf9Fl88XMVEVxhR3j
+ wknuXZ3lLIwiHExyIopspQqVf/auyJoSc+Z14owc1iZQIYwcHEKwERytjD8Zkt4VjEl9XLAi0kp
+ Qj3HK4/56nq8rM62XOjRcXbSROYtPAz/wwLvqByd6KqwvXh1Ku+tP0+1zs5/ecokJl9rpwJLV2Y
+ PGwA=
+X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
+ fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 
-On Wed, Jul 22, 2026 at 1:32=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> > +static int
-> > +yt921x_led_trigger_get(struct yt921x_priv *priv, int port, int group,
-> > +                    unsigned long *flagsp)
-> > +{
-> [ ... ]
-> > +     *flagsp =3D 0;
-> > +     for (unsigned int i =3D 0; i < ARRAY_SIZE(yt921x_led_trigger_maps=
-); i++) {
-> > +             const struct yt921x_led_trigger_map *map =3D &yt921x_led_=
-trigger_maps[i];
-> > +
-> > +             if ((val & map->mask) =3D=3D map->mask)
-> > +                     *flagsp |=3D map->flags;
-> > +     }
-> > +
-> > +     return 0;
-> > +}
->
-> [Medium]
-> Does this iteration over-report the flags for TRIGGER_NETDEV_LINK?
->
-> The LINK entry in yt921x_led_trigger_maps sets both DUPLEX_HALF and
-> DUPLEX_FULL bits. After yt921x_led_trigger_set(LINK) programs the
-> register with those two bits, yt921x_led_trigger_get() scans every map
-> entry without breaking:
->
->     /* LINK entry: (val & (HALF|FULL)) =3D=3D (HALF|FULL)  -> match */
->     /* HALF_DUPLEX entry: (val & HALF) =3D=3D HALF         -> match */
->     /* FULL_DUPLEX entry: (val & FULL) =3D=3D FULL         -> match */
->
-> So *flagsp ends up as LINK | HALF_DUPLEX | FULL_DUPLEX rather than just
-> LINK. Should the map entries with overlapping masks be handled specially,
-> or should the loop break/clear after a compound match like yt921x_led_
-> trigger_set() does with flags &=3D ~map->flags?
+This is in continuation to [1].
 
-It's semantically consistent. The led will be turned on on LINK or
-HALF_DUPLEX or FULL_DUPLEX.
+struct device_driver's mod_name is not set by a number of bus' driver registration
+functions. Without that, built-in drivers don't have the module symlink in sysfs.
+We want this to go from unbound driver name -> module name -> kernel config name.
+This is useful on embedded platforms to minimize kernel config, reduce kernel size,
+and reduce boot time.
 
-> > +int yt921x_leds_setup(struct yt921x_priv *priv)
-> > +{
-> [ ... ]
-> > +     dsa_switch_for_each_port(dp, ds) {
-> [ ... ]
-> > +             for_each_child_of_node_scoped(leds_np, led_np) {
-> > +                     res =3D yt921x_led_setup(priv, port,
-> > +                                            of_fwnode_handle(led_np),
-> > +                                            &inv_mask, &inv_ctrl);
-> > +                     if (res) {
-> > +                             of_node_put(leds_np);
-> > +                             goto err;
-> > +                     }
-> > +             }
-> > +
-> > +             of_node_put(leds_np);
-> > +     }
-> > +
-> > +     mutex_lock(&priv->reg_lock);
-> > +
-> > +     mask =3D YT921X_LED_CTRL_MODE_M | YT921X_LED_CTRL_PORT_NUM_M |
-> > +            YT921X_LED_CTRL_EN;
-> > +     ctrl =3D YT921X_LED_CTRL_MODE_PARALLEL |
-> > +            YT921X_LED_CTRL_PORT_NUM(YT921X_PORT_NUM - 1) |
-> > +            YT921X_LED_CTRL_EN;
-> > +     res =3D yt921x_reg_update_bits(priv, YT921X_LED_CTRL, mask, ctrl)=
-;
-> > +     if (res)
-> > +             goto end;
-> > +
-> > +     /* Inversion is internal - force on will give low logic.
-> > +      * In the rest of the file, treat LEDs as if active-low.
-> > +      */
-> > +     if (inv_mask)
-> > +             res =3D yt921x_reg_update_bits(priv, YT921X_LED_PAR_INV, =
-inv_mask,
-> > +                                          inv_ctrl);
-> > +
-> > +end:
-> > +     mutex_unlock(&priv->reg_lock);
->
-> [Medium]
-> The commit message says "strict 1:1 mapping". Where is the port-to-LED
-> mapping actually being programmed to identity?
->
-> The header defines the field macros for these registers:
->
->     #define YT921X_LED_PAR_MAPn(port)   (0xd01d0 + 4 * (port))
->     #define  YT921X_LED_PAR_MAP_DSTn_PORT_M(grp)  ...
->     #define  YT921X_LED_PAR_MAP_DSTn_PORT(grp, x) ...
->     #define  YT921X_LED_PAR_MAP_DSTn_LED_M(grp)   ...
->     #define  YT921X_LED_PAR_MAP_DSTn_LED(grp, x)  ...
->
-> but there is no writer for YT921X_LED_PAR_MAPn anywhere in the driver.
-> The 1:1 mapping seems to rely on the reset / bootloader default. If those
-> values are not identity for some reason, LED operations for port X would
-> end up steering to a different pin.
->
-> Should the driver write an identity mapping into YT921X_LED_PAR_MAPn, or
-> should the commit message drop the "strict 1:1 mapping" claim?
+This patchset adds mod_name to usb-related drivers.
 
-It's the HW default, and we always perform a hard reset on device init.
+[1] https://lore.kernel.org/all/20260518-acpi_mod_name-v5-0-705ccc430885@sony.com/
 
-> [Low]
-> The order in which the LED controller is enabled versus the inversion
-> register is programmed looks reversed:
->
->     /* enables LED controller first */
->     res =3D yt921x_reg_update_bits(priv, YT921X_LED_CTRL, mask, ctrl);
->     ...
->     /* programs inversion after */
->     if (inv_mask)
->             res =3D yt921x_reg_update_bits(priv, YT921X_LED_PAR_INV, ...)=
-;
->
-> Per the comment "force on will give low logic", between LED_CTRL_EN
-> being written and YT921X_LED_PAR_INV being programmed, every
-> active-high LED with default-state=3Don would be driven low (LED off)
-> and only flip to on once the inversion register is written.
->
-> If the second write fails, yt921x_leds_remove() is called, which
-> unregisters classdevs but leaves LED_CTRL_EN set with the wrong
-> polarity on the physical pins.
->
-> Would it be cleaner to program per-LED state and YT921X_LED_PAR_INV
-> first, and set YT921X_LED_CTRL_EN last?
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+---
+Shashank Balaji (4):
+      usb: core: pass THIS_MODULE implicitly through a macro
+      usb: core: set mod_name in driver registration
+      usb: typec: set mod_name in driver registration
+      usb: ulpi: set mod_name in driver registration
 
-LED_CTRL_EN is actually kind of no-op, LEDs are always enabled even if
-!LED_CTRL_EN.
+ include/linux/ulpi/driver.h             |  4 ++--
+ include/linux/usb.h                     |  6 ++++--
+ include/linux/usb/typec_altmode.h       |  4 ++--
+ drivers/net/usb/r8152.c                 |  2 +-
+ drivers/usb/common/ulpi.c               |  4 +++-
+ drivers/usb/core/driver.c               | 10 ++++++----
+ drivers/usb/core/usb.c                  |  2 +-
+ drivers/usb/misc/apple-mfi-fastcharge.c |  2 +-
+ drivers/usb/misc/onboard_usb_dev.c      |  2 +-
+ drivers/usb/typec/bus.c                 |  4 +++-
+ drivers/usb/usbip/stub_main.c           |  2 +-
+ 11 files changed, 25 insertions(+), 17 deletions(-)
+---
+base-commit: 248951ddc14de84de3910f9b13f51491a8cd91df
+change-id: 20260722-mod_name_usb-e3baf58e1e1e
 
-> [High]
-> Are Documentation/devicetree/bindings updates missing for this change?
->
-> The existing binding at
-> Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml uses
-> unevaluatedProperties: false and only references
-> dsa.yaml#/$defs/ethernet-ports for the port schema, which does not
-> describe a leds subnode. A device tree that uses the new LED feature
-> would fail make dtbs_check with unevaluated property errors.
->
-> Should the YAML be extended to describe the leds subnode and the
-> per-LED properties reg, active-high, active-low, and default-state that
-> the driver consumes here?
+Best regards,
+--  
+Shashank Balaji <shashank.mahadasyam@sony.com>
 
-https://elixir.bootlin.com/linux/v7.1.4/source/Documentation/devicetree/bin=
-dings/net/ethernet-controller.yaml#L206
-, and such leds subnode can pass dt_binding_check.
-
-> [Medium]
-> The driver reads active-high and active-low as boolean properties on
-> each LED subnode:
->
->     force_high =3D fwnode_property_read_bool(fwnode, "active-high");
->     force_low =3D fwnode_property_read_bool(fwnode, "active-low");
->
-> active-low is a well-established convention used elsewhere (for
-> example as a GPIO flag), and the common LED subnode binding in
-> leds/common.yaml does not define active-high/active-low booleans on an
-> LED node. Since DT properties are ABI once shipped, would it be better
-> to reuse an already-standard property, or to invent a driver-namespaced
-> one, so the naming does not collide with existing conventions?
-
-Pure slop, https://elixir.bootlin.com/linux/v7.1.4/source/Documentation/dev=
-icetree/bindings/leds/common.yaml#L213
