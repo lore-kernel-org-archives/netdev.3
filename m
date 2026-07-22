@@ -1,161 +1,224 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9F94457C2;
-	Wed, 22 Jul 2026 18:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784745863; cv=none; b=ECqn00zZcyK3UEdbYTBIGogHmBZcQUnd66Pz2AdUsEKSAL/8lTC5url21kjtlN3QRupRJ/nsDs08+LMMckHLtfT93hNewkx2mToQNGCWYoN5y27rMlfZaYG+p/TX4WfLLptC1ynMLi4G3hPVNp6moUdUNDQsAlR/bdu8ec3N8Y4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784745863; c=relaxed/simple;
-	bh=3nH9saLZ18RFCsQfSJql80tdJ0vsONDbRsbB7IH2j5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/4BU3LfNqTUULeZF1Qq0d4ylGI59b2r7ye8uPlNR3vEKN+BIe3c+jN3+/InOiT0ahT4xSz3c6qVuj2EYrPlI/rn6bGERHlkLJ1nbICIHeMGDB4oUGu1YTPQoGMG0RO0Ut2XAYwIC7r+EGokMKP5nEqJISkboXPPqYnRmOvJntY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EI414KpC; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A863730F548
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784746214; cv=pass; b=DRncwsOPEyWsofjlg+oD3xKhwZxgUBUeUeSE/eOO6EbQMCxZo0U8Rs5UDcXSgyJCPYocl5dw87904435v1UJU5xPcFEuIjCoDBlsXd1/nN++J23JDep7eJijKQwTwrdkNHVTctcaXD6feL6OU5eM/wcqVUQmM1gfhpwA4fiacEk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784746214; c=relaxed/simple;
+	bh=LpzHZjjw9WWzYVr2KkbWNQpkV9bpn8GytcGc6ODCG0c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fm403mzkE9gSNCpVQWbT8mQcxwzyysF4ZHY5hDVpCbsMxVzzkT3a88R7IqEkLFuflGzrN+uV9j1ytTm0Pxp7JXZkpRcxB7OHFwnMaSaAqFGu1kKfgpyHEuVcHUkAd7Qlx1py0ujDQsaiSCbqLt7+RFamKJMokiFFb//NoNKcRZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TwRLDPSl; arc=pass smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EI414KpC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B141F000E9;
-	Wed, 22 Jul 2026 18:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784745862;
-	bh=fg6TkAjDxFRHs44IEzWoVJKPbz4qlnAAPW4Jc5CEMK4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EI414KpCTU1ZICWxIzlX65cOmDrvF2sieTRgBqzW43gRp1fvZOXhYwoXpkMr06hSj
-	 nVmPBhH42VXH2GoJ7Kjrj7h2GYXk/fkrIQRzBR/tm/k5Fbb9lPbuobxiVOQxjZN442
-	 K9wGZr9qS894dPIiHYsVsWf3A+8mohUzxVJj8zeorKJX+qdy5FJxr6P12fkOke+zCf
-	 KM8SBxh48uhZixBtUlkVjAo1pdWauVtyDD7i39W9vBLEBYT95zNRbCj34ZR2ldAa0D
-	 oi4afCiv9t+TWDIpEeM/LMJknxquy++iea4AgS4io4ahIap0sndcZku8aS/GomESgX
-	 ikZOd7qpipB5g==
-From: Jakub Kicinski <kuba@kernel.org>
-To: maimon.sagi@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	jonathan.lemon@gmail.com,
-	vadim.fedorenko@linux.dev,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-Date: Wed, 22 Jul 2026 11:44:18 -0700
-Message-ID: <20260722184418.266546-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260716132939.5377-1-maimon.sagi@gmail.com>
-References: <20260716132939.5377-1-maimon.sagi@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TwRLDPSl"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-930c0f9c1b1so498712285a.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:50:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784746211; cv=none;
+        d=google.com; s=arc-20260327;
+        b=C5F7LCAzxW3ZhI9XwlioSFMU/MD+HLnScUEMZ2emEw7YuBiNtkyudErJm19mnDDlFU
+         XKNG0CQKOGm92ySK2w1mpwlWCnW26W1hZu5UImYB5Y50LvGTpYB+Ujq6dzj6w84KFLsV
+         HTorQX+CTpUxmhd1zlo08AAKS2cLDbQVmOhl5uJlC6jEKTq4mQ3q2Zux6OdLlskGR//W
+         bGpof57u2h+rpih8GZYhPnCIIYauepSgnt4T0mPhF/W6dZM/KASBc+qw2UwycEJWv05K
+         tqSlBCV9KJUIY3+oLohD+eHk/njBKx9rizUHBNQUtCZ4hypHuzi+dWqn1XGl5RDUAjPC
+         tDXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=81PqcakE3vFqwcrUKH8WKjOfwB48ApktmKwcHNXwN8w=;
+        fh=C+I1VaeQ9mAbxqpVuHm7PuNlUTo4HR0d2SqJrS3jR/0=;
+        b=TVvJJlusCX5JG+UVW84NtC434rraqFiU+fnepIM6oxPSfC+DKZyF3Br3bk7JKe/jjP
+         b3En87DNXflAA0gx3yD7u2WfP3ubCkrHKu55HQOXjT52EI/mB8RXAu1Fjibj8Yqq6Uyo
+         kDlvXzqbDt1aeI2PyX/CoK/nMOzCDr6K9Ao9mXhMa42wIDZIvuWEzQpXAy/iMpZfoDgc
+         bq2kt4KNur5QD9FPN1XP+Pri5I2yvSZ8pJh0yiZ9FW9z/H3CXgC49P0U2UhuCWq54hwT
+         Bg+GBbdl/fKYE2rKmG54RNZpdgXCv0F2LQZ9bXW/Ctvy+zw0TAM8XJxl7l3hm0B27ZK0
+         I2EA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784746211; x=1785351011; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=81PqcakE3vFqwcrUKH8WKjOfwB48ApktmKwcHNXwN8w=;
+        b=TwRLDPSlaqKU0KTwYCWF45jMW5DZy9g9q0wP1M4K2l95JKX7p6gpHEKrMu7LYoe0/O
+         XWTxPsO99B52ZaJD0d6YH1MbVhYO+8PNUDnrKP/53zlhjsc8kEbFZXdc7Op0K+TPjrJy
+         sd1k37lE1LibVdk9GR1EH2B+mDIQecfIo9+KbonwbO8v7aKqWfT5QfOJt85vxhW7aSU0
+         KQGQtxG+WgQnRCbSnYTgmo+YrRE+Q1v1TiK2xWzaNKPL24TirIGAVOSVfL+qmuo/PURY
+         9adM9Cwl97B4NotDScBIBFZcxl/eppm78HqPzzdAMZmcB7q8oHT6KOhyY3p5pxHzqxVD
+         A8Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784746211; x=1785351011;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=81PqcakE3vFqwcrUKH8WKjOfwB48ApktmKwcHNXwN8w=;
+        b=rLfJzPYBOwJlKZY/s+6kece7F+gxezBF07zEWWTUwx7b8pYtM5mZHvbyPetudXmMQb
+         xgIWmTNte+OSk9rbAxEaeKkyep0Aq8eLeNabBKvTFI2x2Vv/xgBQWX77c8pyBfI3q0bm
+         zq6Ex4vr5MDYRgEEKYyidAgUXmLAg8uJpsani1jPINqNdBv+4XSm9HOO5luEYzzdDvql
+         yKIs+8u3+L1bFY62JZp9L8rMKL3I2JVVRv3uWLSgArNWhLgBGIlhdbnblw14/GG3DcJF
+         yVKLMpNPprZ1N1ZIRXurjUWWcz8MM2iO4uRQbJ67aAc9g8dGxvNuACX9S2ibDN0qYzcI
+         pq+A==
+X-Forwarded-Encrypted: i=1; AHgh+RrjOhSMoOvEswUYYkBQwSo10cQ8k5ToVrqMD+3dgfm8mq4rHAkHUEwdwnHAu495QB5VCOXEqB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykDCqIo4ssaFhUF7HwSm/YHuEyVaaqe0mmDhhZJ6oZdlptXQQP
+	p/Dc/E101tN83MXopm50jBY7IND0yL+4YmZKAGYDb3HptmYbkjMdxULN/kpvC43/LzrIejX734g
+	WxTSJYqmIIZogt4uzjEn3LNqqRmPOmBSbUcFa9BhU
+X-Gm-Gg: AR+sD11L6iI0xu8MzOV67wo6WZdli/VNnmFcmqxdkd+TTOTvbvHpQbORcVySr+zmRcV
+	xt62YgW/RSZY9f2R9bckCBZxNbjt3Mv/VQnPAMmMjJQ5Kp9EsC1Xj0UftO1Cmq/oI2sEKs/2kwb
+	w2kp+w2gZclPYhx/yfE6K4mXuHXVHtTVVSC+cifrQuw6NYFppzTOFF9UliFrhtMNTikhe9isKhY
+	wpK8fuXzXCrGqmMNi0K7hJIKKjVmWz4fG3F3IK7/0kmhA+Cw4Anxyf/13kjPUqel7Gk5TY8itSL
+	wIDhODszlltTzRPnNL3ueyI23tBGrEK+f+pyhI+eqdlpMEp968bMFlbZJ/lVEPTalI70571BwXa
+	lNS4JcY8=
+X-Received: by 2002:a05:620a:2781:b0:930:a3f9:93be with SMTP id
+ af79cd13be357-930b41e3f78mr2166588085a.45.1784746210540; Wed, 22 Jul 2026
+ 11:50:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260722170033.2763794-1-tejasbirajdar@meta.com>
+In-Reply-To: <20260722170033.2763794-1-tejasbirajdar@meta.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 22 Jul 2026 20:49:58 +0200
+X-Gm-Features: AUfX_my4Md1AiO3X81lIV1evIfaK05NsCXHOiqWRa_MlvfcNKZaAVltr3zCh0w4
+Message-ID: <CANn89i+WLbtLYNjYipH+8=6nrq-XmdYY9TgHHNpeLLeuuvbEUQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] tcp: honor BPF_SOCK_OPS_RWND_INIT on the active
+ connect path
+To: Tejas Birajdar <tejasbirajdar@meta.com>
+Cc: Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
+On Wed, Jul 22, 2026 at 7:01=E2=80=AFPM Tejas Birajdar <tejasbirajdar@meta.=
+com> wrote:
+>
+> BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
+> receive window, e.g. to advertise a larger window up front in environment=
+s
+> where that is known to be safe. Today it is only effective for the passiv=
+e
+> (listener) side; on the active (connect) side the value is computed and
+> then silently discarded.
+>
+> On the passive path tcp_openreq_init_rwin() inflates full_space when the
+> program returns a non-zero window, so tcp_select_initial_window() can off=
+er
+> it:
+>
+>         else if (full_space < rcv_wnd * mss)
+>                 full_space =3D rcv_wnd * mss;
+>
+> tcp_select_initial_window() only clamps the requested window *down* to th=
+e
+> available space, so without inflating the space first the BPF reply can
+> never raise the offered window above tcp_full_space(sk).
+>
+> tcp_connect_init() calls tcp_rwnd_init_bpf() but never inflates full_spac=
+e,
+> so on connect() the requested window is clamped back to tcp_full_space(sk=
+)
+> (~64KB at the default rcvbuf) and the program's value is ignored.
+>
+> Mirror the listener-side inflation in tcp_connect_init() so both directio=
+ns
+> behave the same. tp->advmss is the mss the listener path uses as well (bo=
+th
+> are tcp_mss_clamp(tp, dst_metric_advmss(dst))).
+>
+> Fixes: 13d3b1ebe287 ("bpf: Support for setting initial receive window")
+> Signed-off-by: Tejas Birajdar <tejasbirajdar@meta.com>
+> ---
+> Functional test: attached a cgroup sockops BPF program that sets
+> skops->reply for BPF_SOCK_OPS_RWND_INIT on the connecting socket, and
+> drove it with packetdrill on the active-open (connect) path (wscale 11,
+> advmss 1440). On the patched kernel the advertised receive window on the
+> first post-handshake ACK now reflects the requested value; unpatched it
+> stays clamped at ~64 KB:
+>
+>   req_segs   unpatched   patched
+>   256        ~64 KB      360 KB   (256  * 1440)
+>   1024       ~64 KB      1.41 MB  (1024 * 1440)
+>   4096       ~64 KB      5.63 MB  (4096 * 1440)
+>
+> (The SYN window itself is unscaled/capped; the offered window appears on
+> the first scaled post-handshake ACK.)
+>
+> Regression: tools/testing/selftests/net/packetdrill run under virtme-ng
+> on this commit vs its parent produces an identical pass/fail set (no
+> newly failing tests).
+>
+>  net/ipv4/tcp_output.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index d7c1444b5e30..478e4951140f 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -4101,6 +4101,7 @@ static void tcp_ca_dst_init(struct sock *sk, const =
+struct dst_entry *dst)
+>  static void tcp_connect_init(struct sock *sk)
+>  {
+>         const struct dst_entry *dst =3D __sk_dst_get(sk);
+> +       int full_space =3D tcp_full_space(sk);
+>         struct tcp_sock *tp =3D tcp_sk(sk);
+>         __u8 rcv_wscale;
+>         u16 user_mss;
+> @@ -4133,14 +4134,16 @@ static void tcp_connect_init(struct sock *sk)
+>
+>         /* limit the window selection if the user enforce a smaller rx bu=
+ffer */
+>         if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
+> -           (tp->window_clamp > tcp_full_space(sk) || tp->window_clamp =
+=3D=3D 0))
+> -               WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
+> +           (tp->window_clamp > full_space || tp->window_clamp =3D=3D 0))
+> +               WRITE_ONCE(tp->window_clamp, full_space);
+>
+>         rcv_wnd =3D tcp_rwnd_init_bpf(sk);
+>         if (rcv_wnd =3D=3D 0)
+>                 rcv_wnd =3D dst_metric(dst, RTAX_INITRWND);
+> +       else if (full_space < rcv_wnd * tp->advmss)
+> +               full_space =3D rcv_wnd * tp->advmss;
+>
+> -       tcp_select_initial_window(sk, tcp_full_space(sk),
+> +       tcp_select_initial_window(sk, full_space,
+>                                   tp->advmss - (tp->rx_opt.ts_recent_stam=
+p ? tp->tcp_header_len - sizeof(struct tcphdr) : 0),
+>                                   &tp->rcv_wnd,
+>                                   &tp->window_clamp,
+> --
 
-This patch adds sysfs interfaces (i2c_bus_ctrl and cpld_i2c_xfer) on the
-ADVA TimeCard X1 variant so userspace can program the Lattice MachXO3
-CPLD over a shared I2C bus.  A new mutex, adapter-number cache and
-response buffer are added to struct ptp_ocp for the passthrough path.
 
-A few questions inline.
+LGTM, but it seems "rcv_wnd * tp->advmss" could overflow
 
-> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 35e911f1ad78..91fa06f0e44c 100644
-> --- a/drivers/ptp/ptp_ocp.c
-> +++ b/drivers/ptp/ptp_ocp.c
+I would suggest squashing to your patch the following fix to current code,
+and apply the same logic to your added code.
 
-[ ... ]
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index ddc4b17a826b52afa967e17d482403f373f2f72a..f8c1123aba433713f60b30fd4e1=
+df7fe4f1860bc
+100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -453,8 +453,8 @@ void tcp_openreq_init_rwin(struct request_sock *req,
+        rcv_wnd =3D tcp_rwnd_init_bpf((struct sock *)req);
+        if (rcv_wnd =3D=3D 0)
+                rcv_wnd =3D dst_metric(dst, RTAX_INITRWND);
+-       else if (full_space < rcv_wnd * mss)
+-               full_space =3D rcv_wnd * mss;
++       else if (full_space < (u64)rcv_wnd * mss)
++               full_space =3D min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
 
-> @@ -4224,6 +4230,205 @@ static const struct ocp_attr_group art_timecard_groups[] = {
->  	{ },
->  };
->  
-> +/*
-> + * i2c_bus_ctrl exposes the MicroBlaze I2C bus arbitration register.
-
-[Low]
-Should Documentation/ABI/testing/sysfs-timecard grow entries for the two
-new attributes added here (i2c_bus_ctrl and cpld_i2c_xfer)?  The other
-timecard sysfs files are described there, and cpld_i2c_xfer in
-particular defines a private binary protocol (header layout, allowed
-slave addresses, response-buffer semantics) that userspace cannot
-discover from the filesystem alone.
-
-[ ... ]
-
-> @@ -4902,6 +5114,7 @@ ptp_ocp_detach(struct ptp_ocp *bp)
->  		clk_hw_unregister_fixed_rate(bp->i2c_clk);
->  	if (bp->n_irqs)
->  		pci_free_irq_vectors(bp->pdev);
-> +	mutex_destroy(&bp->tap_i2c_lock);
->  	device_unregister(&bp->dev);
->  }
-
-[Medium]
-Is mutex_destroy() here always called on an initialised mutex?
-
-Looking at ptp_ocp_probe() below, mutex_init(&bp->tap_i2c_lock) runs
-only after pci_alloc_irq_vectors() succeeds:
-
-	err = pci_alloc_irq_vectors(pdev, 1, 17, PCI_IRQ_MSI | PCI_IRQ_MSIX);
-	if (err < 0) {
-		dev_err(&pdev->dev, "alloc_irq_vectors err: %d\n", err);
-		goto out;
-	}
-	bp->n_irqs = err;
-	pci_set_master(pdev);
-
-	mutex_init(&bp->tap_i2c_lock);
-	bp->tap_i2c_adap_nr = -1;
-
-If pci_alloc_irq_vectors() fails, the "goto out" reaches
-ptp_ocp_detach(), which now unconditionally calls
-mutex_destroy(&bp->tap_i2c_lock) on a bp that was zero-initialised by
-devlink_alloc().
-
-With CONFIG_DEBUG_MUTEXES=y, mutex_destroy() checks lock->magic and
-would splat via DEBUG_LOCKS_WARN_ON(lock->magic != lock) on that error
-path.
-
-Would it be simpler to move the mutex_init() (and the tap_i2c_adap_nr
-= -1 assignment) earlier, e.g. right after ptp_ocp_device_init()
-succeeds, so every path that reaches ptp_ocp_detach() sees an
-initialised mutex?
-
-> @@ -5093,6 +5306,14 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	bp->n_irqs = err;
->  	pci_set_master(pdev);
->  
-> +	/* Initialise before ptp_ocp_register_resources() so that the I2C bus
-> +	 * notifier (ptp_ocp_i2c_notifier_call) cannot fire and write
-> +	 * tap_i2c_adap_nr before ptp_ocp_adva_board_init() overwrites it
-> +	 * with -1, leaving the adapter number lost for the device lifetime.
-> +	 */
-> +	mutex_init(&bp->tap_i2c_lock);
-> +	bp->tap_i2c_adap_nr = -1;
-> +
->  	err = ptp_ocp_register_resources(bp, id->driver_data);
->  	if (err)
->  		goto out;
-
-[Low]
-Does this comment describe what the code actually does?
-
-The comment says the ordering matters because
-ptp_ocp_adva_board_init() would otherwise overwrite tap_i2c_adap_nr
-with -1.  Looking at ptp_ocp_adva_board_init(), it only touches
-flash_start, eeprom_map, sma_op, signals_nr, freq_in_nr, fw_tag,
-fw_version, fw_cap and calls a couple of sub-init routines.  The -1
-assignment is done here in ptp_ocp_probe() directly, not in
-ptp_ocp_adva_board_init().
-
-Should the comment be reworded to refer to the actual initialiser?
-
-[ ... ]
--- 
-pw-bot: cr
+        /* tcp_full_space because it is guaranteed to be the first packet *=
+/
+        tcp_select_initial_window(sk_listener, full_space,
