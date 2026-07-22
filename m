@@ -1,135 +1,84 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A3A351C27
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3958240B0E0
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784693839; cv=none; b=GiVIBZljh2P7Mnf5tpRqWtZtXXGMqqNQKC4+8BrwqoBiZGbJDRM7XYNh5fc8BnmZ0llpOEPd9HeUH35XEIFSci0m77VTe8YbQ5f2cT/3GDEUHsExlk+QRkFXMP1ZUeEDz+b5jDz5RKi17X+kZ9FHAUSvJ/FgJeqfvwlvGpqJO98=
+	t=1784694758; cv=none; b=e8QnJS01ToowRcn0Mi0wp9RlncRCHFAIWKTKs6uymojX+DPepJYCIzuRAcMqw++HoYoc6k6hVB0cq1vl+m374BnaSdYxHAyFk7i5/LCf9OySLGfvVwtPfMl/sxYiqZ2J2ksjg3VuTDSNqgYXfiMD6XIlJAeBOEpuSU5rPv/NQko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784693839; c=relaxed/simple;
-	bh=XKcgQN1LwcPd7oBDnlN27f9Psf7Jl0a4T9D3l0TEfJI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mi5wPim3b9js/iEtOLNtKzieX/Cz/4w1VH1DkS1aboaHC5Kh6QrtTY+V/2+QTzz1pjRhXDEu5e5L/vUVe1Y2o9qiwSzstXOtNc8tdl3CcfMGd7IP/TPoMdj26NpiYlROyJ4a43YCe9jJQibtVWH7OAbLCstMLI8VkR+CLHmXmQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvDKQ5XT; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvDKQ5XT"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc73e322dbso143884225ad.1
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784693833; x=1785298633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FnX5uAxhdj7zkkHTRkiZpGious/56DxOlSP5Pxob66I=;
-        b=DvDKQ5XT5tuMvjeE35+c/4fthXhiqLoN/nXLrUjKiKj5mAUq2D91aB5CoYF7oIugyY
-         xDUnO/iy7cedVQxX+RX+FdjcsvHl7WiDa+QIjRvgbZ28ZxMhAcK2G+xSLw7nQfEpcZQR
-         brguwWZqGpgNhWAWsgTtN2sJMsxlZDty4wHnZRd8cHiv5HNWV0cnd8ptR7ETvq4Sl4OY
-         KWJQvEOUNg/Kyz9SUt+xBxzfaMWU5CQps4RiOZHb0/23bmjQMmQO6Q4QpFWP27rqmO8w
-         UJa6cxJccP0a3+wa1siMPfW7OL0AtoQbBXg/H9taKBlxDPuFUPtWwj5F9/vFVtLNLffV
-         WFhw==
+	s=arc-20240116; t=1784694758; c=relaxed/simple;
+	bh=R78yZC7h9/xU3lSWAkeIh9aiMH2kNHeXMBzNZMwTBWE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BZliUB85E0vpfcHfqIwSQ6MLek1KHhOmRQQNsSIkJ2KFiVKG2xM1gjcvAbAUYT98WTiMZQaEFutjEK+e5rSqFDscJoJ3BYlt92ZaGo9T5Zfn4O2flfgFkZ+fo1vKpKfjPmXVhFZDy16vauCGHOeG71dyUHm98CmSYyg3D/di7s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6aac4d49374so77867eaf.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:32:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784693833; x=1785298633;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FnX5uAxhdj7zkkHTRkiZpGious/56DxOlSP5Pxob66I=;
-        b=murGYZdyDPMaGimchdw0dijCkvN06dwu6bAGBMSjL2I2nHSdoV78B57+ytlvZzLsNl
-         xzQRGU4kar+cNnBtj0FVKgTUBGCVGfh2kuqd00UhApswch5KiXECgLD9tD4zrgnlMaLc
-         NvT57pUjtk+ai9PBoBD06++1l5uE9tFx3a78RnUKdJ44lHBisEqMfd6P9nW1HA1tyPip
-         lL+18RwJFA0EC2+jliq5H2mpeNsMg3sAM7+HyMTrqRLuI3H2P3r4r8Cy7y+J6FX7OlH4
-         uW7nP7/5rP9Chvxf/6JOhtTEh0eDWYshBD2daT06JXFpdKi15vCoNmHpo+wmseMh1iqM
-         NNLw==
-X-Gm-Message-State: AOJu0YwURFRMXf14Z6SwjbiIibyubcjcXaUqeeYQ5KxxA1nsz7qG43QQ
-	5TkpLyYl3SRhW7GW1lVGZEGQngJL6ifwG7idG5aH9BHRQikFdEp0FTReGGy+fhnfCcg=
-X-Gm-Gg: AR+sD12XbluH0yt1OqtoAx4wce0cyla/scLZpaWxaHiXmvLr4XYFI+2KenEPXCAGeSK
-	o8GGZOHXE4oCeM4mUkORL71DkuV7jg9S892W8+4WLn3H0uN8bThT1KWwYuVBAPo3wgIgWwaLVRa
-	ZmqvGymMCqAjOGg7aDUTE2cIZLC7TuvTP2DLEeNgFYMZpSRDahoTUItemCI/4A7QfwZxf+ZYAlN
-	DFy88WwbyORIBwAO1nUlpdxpqyK7jC8jZhqlXmJo//5XCfaLdIYjsDtBjjhyFhOOZYyFQZ595mn
-	8Y9oDuqIm9gCaftCqbONJA1vd7WaUhQLG3fSJHHk8AWd3ZiAC0t33JoZNCFgwu3vw2/vByGq2Qx
-	f73bGYJIvwXBQFBpoOT3JPflCnEsgyOOzmlNJ4Bp0QDiALXsWuVXr3AlH3aDJfebmt/MADt3RrT
-	9Dj93Q4SyW8FvlaK2+NnZP
-X-Received: by 2002:a17:902:ce84:b0:2ca:6c8:abde with SMTP id d9443c01a7336-2cf348b2527mr225232625ad.18.1784693832780;
-        Tue, 21 Jul 2026 21:17:12 -0700 (PDT)
-Received: from localhost.localdomain ([122.187.83.42])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147dc1a689sm4342950eec.4.2026.07.21.21.17.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 21:17:12 -0700 (PDT)
-From: Aravind Krishna <aravindkrishhna@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	davem@davemloft.net,
-	linux-kernel@vger.kernel.org,
-	Aravind Krishna <aravindkrishhna@gmail.com>
-Subject: [PATCH] hsr: prp: honor master promisc mode for local delivery with macvlan
-Date: Wed, 22 Jul 2026 09:46:29 +0530
-Message-Id: <20260722041629.657330-1-aravindkrishhna@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1784694756; x=1785299556;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bVEcysjyANulZeq0nxTjurMz3tbyU8RZzMqI5g7i3gM=;
+        b=QwsRl8DkdiLrWvrODBuQywEJOmr7YyrmfFaknHxZzMtaD7tI65iHj9l8UovqZojW86
+         x/bcjPeJr1AWIpe27c+pFjWMjvJsKtEVBMW3qsSeZVV1ZWOqm3xkOUq2IbMozwdisDgL
+         UaSVWHgMNQlYl8vUF7x82pp+3Vv0MO4KcVPRgbVjI5YriBLEltudD9JsVbm40QaSnTUt
+         04/L0iBSOKIB3aHps5yzh3gONsEX4Ufa+AEOIyFBxpq1ulFa6pfjN0jTivucOC2EGO4n
+         eeUzx+zvT4VkcrjIiVx71tRms4PWdQHyGprBm81fNU6UkHn9oOy1WUXp+URuxV+zLKhP
+         ylqA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7HCjjuAqUDEFX/9biet3ejBNK0O916VFN5dnSoW8Duw97qe1eaD1ltAXaUHn36uAA9FqUyMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvXbBX/EO6TalsBSsmSmMf75bPTHNIkMWt83N90QNcyvs9c8QV
+	k0GF1bS7olg9khFRdokHAuIR7SFReBMR2Az1PvOZgLbaZH8PZ+AGIox1WY0hxytcX4U1uUOjgRs
+	GmgfJclGedAL5imq41Rt69KhtadxpR8pDWsbC18eS9dKQ5W8GdLgXZo/sZos=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:2910:b0:6a3:8e51:7a4b with SMTP id
+ 006d021491bc7-6a536680360mr10411979eaf.10.1784694756067; Tue, 21 Jul 2026
+ 21:32:36 -0700 (PDT)
+Date: Tue, 21 Jul 2026 21:32:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a6047e4.42649fcc.22d900.000f.GAE@google.com>
+Subject: [syzbot] Monthly tipc report (Jul 2026)
+From: syzbot <syzbot+list96675b6135a78e9ddecc@syzkaller.appspotmail.com>
+To: jmaloy@redhat.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
 
-When running MACVLAN over PRP, packets can be expected to be delivered
-to the local stack when the PRP/HSR master is in promiscuous mode.
+Hello tipc maintainers/developers,
 
-Update local destination handling in check_local_dest() so that if the
-master device exists and has IFF_PROMISC set, the packet is marked
-PACKET_HOST and treated as local destination.
+This is a 31-day syzbot report for the tipc subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/tipc
 
-This enables expected receive behavior for MACVLAN over PRP setups.
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 4 issues are still open and 87 have already been fixed.
+There is also 1 low-priority issue.
 
-Signed-off-by: Aravind-kris <aravindkrishhna@gmail.com>
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 124     Yes   BUG: soft lockup in do_sock_setsockopt
+                  https://syzkaller.appspot.com/bug?extid=10a41dc44eef71aa9450
+<2> 58      Yes   BUG: soft lockup in sys_sendmsg (2)
+                  https://syzkaller.appspot.com/bug?extid=4032319a6a907f69e985
+<3> 86      Yes   INFO: rcu detected stall in sock_close (5)
+                  https://syzkaller.appspot.com/bug?extid=9a29e1dba699b6f46a03
+
 ---
- net/hsr/hsr_forward.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 0774981a65c1..38ed6b09fc4a 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -589,6 +589,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
- static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
- 			     struct hsr_frame_info *frame)
- {
-+	struct hsr_port *master;
-+
- 	if (hsr_addr_is_self(hsr, eth_hdr(skb)->h_dest)) {
- 		frame->is_local_exclusive = true;
- 		skb->pkt_type = PACKET_HOST;
-@@ -600,8 +602,24 @@ static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
- 	    skb->pkt_type == PACKET_MULTICAST ||
- 	    skb->pkt_type == PACKET_BROADCAST) {
- 		frame->is_local_dest = true;
--	} else {
--		frame->is_local_dest = false;
-+	}
-+	else
-+	{
-+		master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
-+
-+		if (!master || !master->dev)
-+		{
-+        		frame->is_local_dest = false;
-+		}
-+		else if (master->dev->flags & IFF_PROMISC)
-+		{
-+        		skb->pkt_type = PACKET_HOST;
-+        		frame->is_local_dest = true;
-+		}
-+		else
-+		{
-+			frame->is_local_dest = false;
-+		}
- 	}
- }
- 
--- 
-2.34.1
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
