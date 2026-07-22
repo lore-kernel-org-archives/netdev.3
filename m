@@ -1,121 +1,134 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4E44C77D9
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6DC368D4D
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784719148; cv=none; b=jwrEiOFDwAm1M8i2lArImUwJi+w9EVpSrNaamSeCToC5qCch4QsnIZt14vZhiGPhWsbT3ZqmjsDf6t1FynD9nd0ZD1V8vnPQXqG2oPhJuZcICe0+Zgrvye6NoJ38HKBngHm9NwwUFqrDKHzQkx79k/Bf/U/7MtqtpbKwBRj1+fA=
+	t=1784719232; cv=none; b=Rh7L3mv6/5+ye5g9HuIZ2WiO4TD2J42tFVi4Qfssw042TEOWtHvORJ3zpqctUi38xpGeREkMVDt5gpugdNQhusv0P5zBbCzCfQG+chWDygDJn2MvmdzU984gtfoNS47MDLWBcmAqCjMyrb6bajNAOkIo7KKOr7FEG/0kaRFDtT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784719148; c=relaxed/simple;
-	bh=K0lJdomABA220xXQvjPrABsUyrol06jwDg0S6PXXfsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V6b5Je6Lu3a79YLxk69S9L1xlTEYz0WI2KnLlPmt0tA6s+gwtq4ARb6HWu17/VZdpNkpUhjT8WXMHVL1gl/gd1XN9HAPdTsCYOfcIbXL4lqFNQMe4frhOpeLJib/519z4Xwjy3AelDPqdrq1tMR7CzDWlTjnKlSUDiykeQC/ljo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=oh6xSitz; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1784719232; c=relaxed/simple;
+	bh=W2TdeQNeq7i+/uyTAxS+2kWrb/b6vdQWxchYtKqEbLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B1pXxkf11lVxuQPkXvmv1QCzZ8Jvx0Dqzv7Gz5Wzd6ImCaF1R8jN8TDMhYIH7ME0kiXACEUJdyLZ0rSBw6chg7CymyfaSd5XO3esI/eB0ZQpwicU1cPWAgxgmu3qmvdX7cQtZYIXQIoQ+E3zAVRiODq6TcGYgzoTb9mDxLydtJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FdPr9QcI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JC+I6ipV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="oh6xSitz"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso40141995e9.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:19:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FdPr9QcI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JC+I6ipV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784719230;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZyQNVRyVBho1vLKLkGI/Hhy5gfGBh50MnFg8zsHdAYU=;
+	b=FdPr9QcI6/k4kYIK42R5YY73+5MsAGzsaK1eG+lgNL76HXCeb1Pl/grPO0D+Fk5q3sqzfp
+	MrLj64LJ/Fm4hn1u6/uzCerA7FJvEkB90Av7O6tQf4H6nkJDPmDTW4NXWhyz1jEvZYzDK/
+	Msqyw3LAn0PKtQx/nSxXLxEOidUMdZA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-255-sjaEOIY8OWmd81n75EvLvQ-1; Wed, 22 Jul 2026 07:20:28 -0400
+X-MC-Unique: sjaEOIY8OWmd81n75EvLvQ-1
+X-Mimecast-MFC-AGG-ID: sjaEOIY8OWmd81n75EvLvQ_1784719227
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso39723655e9.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:20:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1784719145; x=1785323945; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LRmXc9ZZ35HbKO4lnkGdwQFDA/KG04ApnL+4+6Y1E0E=;
-        b=oh6xSitzv14cXiEehnSpN/lNNwBLwRIos7nCfJe57HvhwV3Miu90A81J+FmVquFNeg
-         WZnf8kOuLCwtrpALmFC30uyKE36wRSwYfzjjcEIK+85FnFPpEgKTrlESpGNO8E93IqWT
-         iihMO0kPefOqHw7l0c+5fhZeMkKP20CON2O6UFEulprF03uO0lrJvBQrX/QYK3//ajlj
-         ECSFmXjhGAVuhRgrWYcsh9X7nHkCtxk0itlQpc0DHkrcqEFKmBKnEBeBIh6ZVWPI76Zv
-         dZq0q3WNs9FFUeopq+8FxcJKGS4CsiPB1bV3nq7jGX2rhhM7xBBVWpVP87+EnTxph9Jn
-         Tc7A==
+        d=redhat.com; s=google; t=1784719227; x=1785324027; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZyQNVRyVBho1vLKLkGI/Hhy5gfGBh50MnFg8zsHdAYU=;
+        b=JC+I6ipVjDXt1qKuSiJXu1KwvDsMC79waBsNND5CUtY3RREsl5DlFEZrYqC6oE2Uq8
+         PQNP48QOLXSLUIn+syyEObjLqZ4sBme3dh/XSsjVFb/1rU08ZCFZH18tzLRM1FwiHCAW
+         d04N0dH76V1RaVw8m7AIst6FHktLtjvXO/0dvej0ls9tWx7abQaqt2EIuaDgbdH/VHft
+         5DtR//fdS57mvA7usOz/K6paeo0lYVmiZobdn8Rq3a01oQ5lf6jXTndqHPil2Wb66q39
+         as8wF+DcgOHA7D9Z6g/17S76b7szkQZSzhSviTJVQfmze9qg+AEb8RHkwzRunrZ3QxmL
+         hStQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784719145; x=1785323945;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LRmXc9ZZ35HbKO4lnkGdwQFDA/KG04ApnL+4+6Y1E0E=;
-        b=krUsyhzL2S5iCtyItTnPRhx/AWQK4yqLjJCRaXAuOanBY5d9HBcMmXDFcCCh6yx0Zp
-         kOcve1vmyehZLRqA01H1u08lMZssaayNBEZu54I0TqF81if4j//0zQunzfcGzx85J4uw
-         5Tr2zYfWreF+R2wzrZwr3GYO2VXw/TUcmb4QT2vCeAkW+hX03HTWqirxWcUTAd2Zo6la
-         B7NmeAhimyvNfwH+2NwwVUWIhpSw+9gw2E8OVGzCOITBD1OrDe+D5JwPN/YKd+rP2i4F
-         zuj6XjD+z8MkX/cT/MoIfHy3GYsMy7gGzhVtMufgvffxpTAmYR/j79RJKU2scmw3oxHi
-         P4Pg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrnalruqm0EA+wS1O4//lvVb8fnAjHxKK4YOYS7h1pmmkTysAqlLnwB66KdreX/dRhU0H1s5KU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHJomCkUJLj8lju2hC070KAwWkfcOVJ0dsVOe1I4bDjNYHXkQE
-	1fJqb9IX+XBYypPF8mNVjGq9b8E/dojSt7ARaBBxt7p8c2+yYTfCY54DsQGtp14x6uTfcUKG4p6
-	+T021
-X-Gm-Gg: AR+sD13rI6fpOiM9oUIy12Q6cN2M9ese55e6i1jeesCssE221rR/OpzWmUgVRERKN4m
-	xgxxeXftAo638hVmzxKUVBzTuZAKcBJEh5BBe5mXCD4oDjop5kxaHD4EoI8H6GD/fe2vzu3kcfK
-	8j32hop9MlNyJI3G1m+XYwKqV14Curjk/4mdITX5XvgGmFma9lZHtGVrqYpKQNVs65O/91CucGz
-	aAbMiOJqhZASfO+Ydkx8e3V2g5oZdLLWe0df2I5uVzIwUMRFBQckaFzt/NoBK+3YwnPQWiibNBP
-	lfTxMVMgntD0zaBUDV4nLcGAiJeCDqXeyrOOeQntGBDOraN3e893gfd0WQz47RzGRXYLqvbUPrk
-	niYAQcTTJ6y9pHvXMna9gB8+s53HG5A7Nr/rca/W3/VLugdusLlPJ6hQjEAxKf1O/+cauFAGeHP
-	lDYCeaYkrR9f1WurM4fyzypQ==
-X-Received: by 2002:a05:600c:4ed1:b0:495:6485:226b with SMTP id 5b1f17b1804b1-49566a820aamr70694565e9.22.1784719145296;
-        Wed, 22 Jul 2026 04:19:05 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b72fac1sm43347075e9.1.2026.07.22.04.19.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 04:19:04 -0700 (PDT)
-Date: Wed, 22 Jul 2026 13:19:00 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: linux-rdma@vger.kernel.org
-Cc: cgroups@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, jgg@ziepe.ca, leon@kernel.org, 
-	parav@nvidia.com, mbloch@nvidia.com, cmeiohas@nvidia.com, roman.gushchin@linux.dev, 
-	bvanassche@acm.org, zyjzyj2000@gmail.com, shuah@kernel.org, tj@kernel.org, 
-	mkoutny@suse.com, hannes@cmpxchg.org, alibuda@linux.alibaba.com, 
-	dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com, 
-	yanjun.zhu@linux.dev, cui.tao@linux.dev
-Subject: Re: [PATCH rdma-next v3 00/14] RDMA: Make device names unique per
- net namespace
-Message-ID: <amCm6nW8IttsHGgY@FV6GYCPJ69>
-References: <20260716132316.1495242-1-jiri@resnulli.us>
+        d=1e100.net; s=20251104; t=1784719227; x=1785324027;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZyQNVRyVBho1vLKLkGI/Hhy5gfGBh50MnFg8zsHdAYU=;
+        b=RWyprcw3gWERdcTw4BAJ0UsLUvVs8VUC88gYhhXkxlgIQ6GO10AJWJnpeEdGqX5kRz
+         Ofg0b7IXRLbJd+XTw2bd4h/zO4yGw6agYjyXWXNDzqgFvAQ/RZGiCOxIYH9xI642zdUT
+         OPnBsq8fC4+XUeGsyeK3yEqSm0neG3iNIZNIzPsnbZTN/JaiZy3BQXlrB0RmJctMh6D7
+         RoYQXlJmQxNBkwTM9KsIu637KOlhhSo67BolCJnpf6TYmk+i2ReWS9BZ0RVe6txiJvYC
+         BJ470hRHVTu5RLbGaqTvmXmlAD3/ZOOe2jONEnQ+39yal1ZYtmOKj5MnqaWSXFIdLBnr
+         beRw==
+X-Forwarded-Encrypted: i=1; AHgh+RrMEywzSIzRVS+eaJ/FYAI2vFm+OqEUtt1Yr4L7p7Cbp4ySLAAEM6urm2H5lDFpCc00mY6twRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI69kVuxJ7blonVA5tTU7kru8Rwk0nHxvNfeCY0cyg3TfeI3Tq
+	b41kd897ieqwQbMuFdB1HVgtaBgqG3Hca7aV+dftlN/4aZwCVlZBiGXdtSOZwV12kedVP/fzZF7
+	mfQ0bw5Dgv3z1fANWTZtV+z+06IFmNqH+7LUlDfRExT3OavBnE+GCvEoxtw==
+X-Gm-Gg: AR+sD11dXXoVqSY2DKSww5slJnwM+4Z8XQBXqBlXT3lqwP5NsefyUeslcpg9vwRFxPb
+	6h9q2e6/3hTusThgZy9wFNCAcQymzS52I64kGq2nlH77vTKBOW8Jv/io0YFtTbnJMK42jQmE8JE
+	RipL2juUAbSoKajuq4wP7vu2PlVxCIpLsQ7hfLfb8Z1Fgaz396rlJEBHI5/Nrmhoz0zi0oIKZHi
+	uBjUwk980gXP7B8v6lnIEmKGHgY7M8B5rQrH9ySipSN2HaTzCHmR7wGao55jyCylfVQRgU1z/80
+	1a82ryBC0IL60Z3J85hVqLQYAGc7uETuHdBI4oWJYPqRJXtwEtKBjIojDAgkxuORO0bYFgg//gV
+	zluGvwMTuypnP8o5VupVtne84F9Sq64uFHjRH1gE8mzeSSxZyOBRlf1wJfZ+YR/6cAigjPi6SkA
+	LfsQ==
+X-Received: by 2002:a05:600c:4685:b0:495:4a77:1327 with SMTP id 5b1f17b1804b1-4954a771521mr268353905e9.33.1784719227335;
+        Wed, 22 Jul 2026 04:20:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:4685:b0:495:4a77:1327 with SMTP id 5b1f17b1804b1-4954a771521mr268353355e9.33.1784719226924;
+        Wed, 22 Jul 2026 04:20:26 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5a2sm5592723f8f.7.2026.07.22.04.20.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jul 2026 04:20:26 -0700 (PDT)
+Message-ID: <d66c1cb5-6201-4390-a7e7-0a8461bc069b@redhat.com>
+Date: Wed, 22 Jul 2026 13:20:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716132316.1495242-1-jiri@resnulli.us>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 9/9] selftests: net: Add a test for BIG TCP in
+ UDP tunnels
+To: Alice Mikityanska <alice.kernel@fastmail.im>,
+ Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Xin Long <lucien.xin@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>,
+ Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <stfomichev@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+ Alice Mikityanska <alice@isovalent.com>
+References: <20260710134242.216538-1-alice.kernel@fastmail.im>
+ <20260710134242.216538-10-alice.kernel@fastmail.im>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260710134242.216538-10-alice.kernel@fastmail.im>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thu, Jul 16, 2026 at 03:23:01PM +0200, jiri@resnulli.us wrote:
->From: Jiri Pirko <jiri@nvidia.com>
->
->RDMA device names are unique system-wide today:
->__ib_device_get_by_name() checks a requested name against every
->registered device regardless of the network namespace it lives in.
->A device in one network namespace therefore cannot use a name already
->taken in another, even in exclusive netns mode (netns_mode=0) where
->the two are otherwise isolated. Net devices have no such restriction -
->their names only need to be unique within a network namespace.
->
->This series makes RDMA device names unique per network namespace,
->matching net device semantics, and adapts the users that assumed
->system-wide unique names.
->
->Scoping reuses the existing rdma_dev_access_netns() predicate, so
->behavior only changes in exclusive mode:
->  - shared mode (default): names stay unique system-wide, no change;
->  - exclusive mode: names only need to be unique within a namespace;
->  - CONFIG_NET_NS=n: everything is init_net, names stay system-wide
->    unique.
->
->There are two users that cannot be made per-namespace and are
->documented as known limitations instead of changed:
->  - the rdma_cm configfs tree: configfs has no network namespace
->    support, so it cannot represent two same-named devices;
->  - SELinux ibendport labelling: endports are labelled by (device
->    name, port) from a global policy; distinguishing same-named
->    devices would need net namespace support in the SELinux policy
->    language and tooling.
->
->Tested with the new rxe_netns_names kselftest added in the last patch.
+On 7/10/26 3:42 PM, Alice Mikityanska wrote:
+> +WORKDIR=$(mktemp -d)
+> +trap cleanup EXIT
+> +setup
+> +for tunnel in vxlan geneve; do
+> +	for tun_family in 4 6; do
+> +		for traffic_family in 4 6; do
+> +			for csum_offload in on off; do
+> +				setup_tunnel "$tunnel" "$tun_family" "$csum_offload" || exit "$?"
+> +				do_test "$tun_family" "$traffic_family" "$csum_offload" || exit "$?"
+> +				cleanup_tunnel
+> +			done
+> +		done
+> +	done
+> +done
 
-This looks like good to go. All Sashiko findings are false positive or
-unrelated. Care to merge? Thanks!
+Not a blocker, but a possible follow-up: in the past a few GRO/GSO bugs
+were detected only when performing GSO, GRO and again segmentation on
+the same data before actual reception, see the "GSO after GRO" test-case
+in udpgro_fwd.sh.
+
+/P
+
