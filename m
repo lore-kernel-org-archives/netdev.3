@@ -1,54 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DDA43CE40;
-	Wed, 22 Jul 2026 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA4943CE49;
+	Wed, 22 Jul 2026 17:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784740125; cv=none; b=usd15Y2PyqkZwdQyru3Rz2k8hBZRyrbgwdczDwq30hHMXB1jHElrwO+rJsokvk1et2IgYooMdGLmsWkQEd42odfB93GNW+sGB7H40P81coDcG7vNoLz4058S77YNTugmjRfwN7RyhfP6Hy4MPbTEgu8m9Oudx8tnKgSf00wrCK4=
+	t=1784740492; cv=none; b=FeKJbqRdBv/vecLbADOS8D97bIArUHfU/TV0FyTyYqtVNFc9y3TU1vmC1i3Qo6G8W+D7rc4ueGfRvp+q43KUBDiH4ufu5LO1L4cGBGq5xKr/pgAp80edCY6RxeznerrKjf+AYTEI1tRH4A/GlN4F6EARjovmsTTXVY3/j302dnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784740125; c=relaxed/simple;
-	bh=68ukbvbjFlDS/553huav/930plS/q2o/5U9lI2XyouE=;
+	s=arc-20240116; t=1784740492; c=relaxed/simple;
+	bh=x9eOMkF29r6bTJZUTBpg0yL+NQKKJ0FnhkA0mrSlgNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r5JqPOvwbfjeSYXqUbgaIdL6LxdItoQ2yMVoTJWxk5sJUiB1AF/583+VpO2FCed5lb11MyOsCj+1RbpsGhAgixm/TwuYbT2S3qa2A8T0rG9r15OOPtGU95EcX8Pl3CKfoUDe+SGEfeIB5oUVy0mBs07sITmoYlPNU3ImJbu0mGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J54G4Kve; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=WABMxyDq5U2d9Pr1hgi236kCB7oAyvHCKUTkngJNpFBl1Ls+SBq/1KEjRKZwD6tOW6ozLSjXFLe5TNLjeoMnKgfbj+Fd4x0/biF0tn+WsRenr4ymj07lMpZxkMpYwOcXIJ+e6rLMzLEGmM1A8t7wxXThJoUD8jnfBY4XkabfHlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lr9figoO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J54G4Kve"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978C81F000E9;
-	Wed, 22 Jul 2026 17:08:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lr9figoO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AA61F000E9;
+	Wed, 22 Jul 2026 17:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784740124;
-	bh=CcpgTqz4oSwMtZriogIaHP0XtQXhQt1wXGdQRPgtt84=;
+	s=k20260515; t=1784740490;
+	bh=JwD8ujU4IUVS9rMmKchL74t4es9VLDaWpCnugp9LUZI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=J54G4KveKJlg/9nm4Q7BPWv4G9Q+5qwARXdHuftgngZauhWCB2GywsHpE8ickiAsA
-	 f0IO+nn0Q0m6sg/fithGFWAU5njbriTUpxix/WJdEji02jNbyZTdEVa8una1Y99YuD
-	 yrqWDEuH04gatxyrYlUf+6yTzIZ635NNEjwCpNr9CJmijDqeKiRh3JCFIWtVtRezn6
-	 9pLetVgxpg5Rn7Zf34Ch92Gn7LaOZr5+1UIZHCFPOwN1Qwksc+kv/w/7yiXZXDI4sh
-	 7L2NgBboUNn5qTHHnJZ1EENqNWTlipwITVY+qS2E+LdqEebrvOHGZ15S/QVLwtlRcy
-	 8x0ExmSO7uzqg==
-Date: Wed, 22 Jul 2026 10:08:42 -0700
+	b=lr9figoOym8dshe/1H+GsL0l90tTWjLn+h2orHVHAoqkDgKsCAFBmvfhoGD1aZJDH
+	 hQ9rK9B06ayKVsCkv825eKR9ZEcOAeMfqNGe/JK9wMmIRX9KSwSk2zVSFLApWmisdX
+	 nk4M1EIE81PY0sQs7ByfDpySZj7xL+j3P9+yKCW5pqxSCvosiOwlEdypvRq9cRuVWQ
+	 N/vNFxWWDFG6Zqax/gE72BjeNhDjY1gvB/nOu1ZKL/Oyecre2om1yGN7t7Er20hGJ8
+	 nytc2UjwIs3AAnuGA/i3Jp5GcXhLo3kQAnJEHS4pg1dptZFfOAIa+Pmx9tHULNKzNR
+	 I3CQVBkkjTiRw==
+Date: Wed, 22 Jul 2026 10:14:49 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Srikar Dronamraju <srikar@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, David S
- Miller <davem@davemloft.net>, Ingo Molnar <mingo@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Dust Li <dust.li@linux.alibaba.com>, D Wythe
- <alibuda@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, Jon Maloy
- <jmaloy@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- linux-sctp@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Paolo Abeni
- <pabeni@redhat.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Simon Horman
- <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>, Wen Gu
- <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>, Willem de
- Bruijn <willemb@google.com>, Xin Long <lucien.xin@gmail.com>, Shrikanth
- Hegde <sshegde@linux.ibm.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, Ben
- Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH 0/2] net: Use synchronous wakeups selectively
-Message-ID: <20260722100842.602fd5d2@kernel.org>
-In-Reply-To: <20260714013940.4068189-4-srikar@linux.ibm.com>
-References: <20260714013940.4068189-4-srikar@linux.ibm.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/4] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
+Message-ID: <20260722101449.43537aef@kernel.org>
+In-Reply-To: <alaKsBXSK9tP__O8@makrotopia.org>
+References: <cover.1783988826.git.daniel@makrotopia.org>
+	<5d1614d1cd6b99bf0f0635c6370bbed10736a7fa.1783988826.git.daniel@makrotopia.org>
+	<alaKsBXSK9tP__O8@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,34 +49,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Jul 2026 07:09:41 +0530 Srikar Dronamraju wrote:
-> The scheduler assumes in several wakeup paths that a task using WF_SYNC
-> is likely to yield the CPU shortly. However several networking wakeup
-> paths unconditionally use synchronous wakeups even when the waking task
-> continues execution.
+On Tue, 14 Jul 2026 20:14:56 +0100 Daniel Golle wrote:
+> On Tue, Jul 14, 2026 at 01:51:02AM +0100, Daniel Golle wrote:
+> [...]
+> > +	if (!of_property_read_string_index(ds->dev->of_node, "compatible", 0,
+> > +					   &compatible)) {
+> > +		ret = devlink_info_version_fixed_put(req,
+> > +						     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
+> > +						     compatible);  
 > 
-> During wakeup, with WF_SYNC flag set, because of the assumption that
-> current thread is ready to give up, the wakee thread will be migrated
-> from any core within the chip to the current LLC. If these operations
-> are frequent, and wakers are actually not going away, then it will lead
-> to load imbalance and hurt performance. This is especially true in
-> architectures where LLCs are small and number of LLCs per chip are more.
+> Review of the fwupd counterpart of this series[1] made me reconsider
+> what the driver reports as the "asic.id" fixed version. The devicetree
+> compatible string used here ("maxlinear,mxl86252") turned out to be an
+> unfortunate choice as the comma is awkward for userspace consumers, so
+> for v3 I plan to follow the mv88e6xxx example and report a chip name
+> from a per-model info table instead:
 > 
-> Running vllm workload was run on Power10 system
->                                   No patch      with patch %diff
-> Inference Time (sec)              17.84         16.35     -8.35%
-> llm query bandwidth (tokens/sec)  14.78         16.21     +9.68%
+>   fixed:
+>     asic.id MaxLinear MxL86252
 > 
-> Lower inference time and higher tokens/sec is better.
+> Before sending v3 I would like to clarify the preferred format of the
+> value. Existing implementations differ: mv88e6xxx reports for example
+> "Marvell 88E6085", including the vendor name and a space, sja1105
+> reports "SJA1105E", hellcreek reports "hellcreek", and bnxt and ionic
+> report bare chip identifiers.
+> 
+> Documentation/networking/devlink/devlink-info.rst only describes
+> "asic.id" as "ASIC design identifier" without any format constraints.
+> 
+> Userspace builds firmware matching identifiers from these values, in
+> the case of fwupd for example
+> 
+>   MDIO_BUS\COMPONENT_fw&ASIC.ID_MaxLinear MxL86252
+> 
+> and while a space works there, such identifiers commonly avoid spaces
+> in favour of underscores, hyphens or dots.
+> 
+> Is there a preference for new drivers? Should the vendor name be part
+> of "asic.id" as done by mv88e6xxx, or would a single token such as
+> "MxL86252" be more appropriate?
+> 
+> [1] https://github.com/fwupd/fwupd/pull/10667
 
-Somewhat related recent patch:
+The embedded drivers are probably doing it wrong, I wasn't paying
+enough attention. devlink versions are supposed to be broken up into
+components, the vendor name does not belong in asic id.
 
-https://lore.kernel.org/all/20260708133815.3419465-1-usama.arif@linux.dev/
-
-Maybe other maintainers will chime in, but I'm not convinced 
-by the heuristics you're adding. The behavior will be workload
-specific. The extent of networking involvement should be letting
-the scheduler know that we're waking from IO, not leaking scheduler
-heuristics into networking.
--- 
-pw-bot: cr
+IIUC asic.id was supposed to be the numerical version of the design
+(excluding revision, which is asic.rev). Something that's usually read
+from a static CSR.
