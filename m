@@ -1,67 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838DB339386;
-	Wed, 22 Jul 2026 11:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA2C276038
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784719045; cv=none; b=Zpc7vlrJXIyXXtEaVbHXgBCRsEcN68klfezHdspRZ8PrWTQ/trZjaL9P2dquK0kpjhvIx+EkQQCnj4II3i0OOtp6o/4k2jBmZi56ZbSVTCNY0vjzk7ThPQ7hmVPJZVFchKMdEbpWIqJCjmQRjAfa2aQXRxoiFqGk1G27Fjvmjq4=
+	t=1784719065; cv=none; b=G/aQyYHLt5EgFr+aNwS35I74k+xXoon7yMrMWdBTOvT9+rIOEs3OjPHC4qDhVCFHl+ErdFTydMcpPmhyD+O825kwRJPbiTLpDHa4NvtQVnNd7YRe1fWNhqE18bnOnKs/HZVJkVWjDuT3w5p9jSP9ju/VpMpfB1W7dLdWaKSjZ+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784719045; c=relaxed/simple;
-	bh=mLBmad2IF7zwsxQIOXJbBcNiq/+f+c1asyvo2iE1cKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTb9PeOBCqVj6p+tHAB6Lpl3GWUO6hvpnwNckjfXCnhWUmlNVIQxAowX+ptumbNu9CQUQaoBaj6RojJkDa+6yXf0j0NRmiY8oDKJVvDSWo2qV5TMTdz5XnCiRIKj0/cDIvZlkl0rTUWFJQzjtdeV/kxVX6Y0eSPsVfVpDpvdGpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxcK4iiH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784719065; c=relaxed/simple;
+	bh=KFLx0weyFeuaqhv+jOKb1efGACZ+efDr9NO/LhLEdrk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ph8humHeLEDToL8bTzSTTfjihJ+NCm+RV8I4HNeob1ulLeQOBlXVgrwuBFuS05AmIcg/mM6svBLLhp3Ew2wvUhBA1UA9Dubv8yJphx2qnzo2SiovFA0RgMRmAtI4th9N7p9Ml4EKAAozgJEhZcouDV4twsMro3INmFp5pVIfL3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vlNvL3Tm; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxcK4iiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD051F000E9;
-	Wed, 22 Jul 2026 11:17:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784719044;
-	bh=W1P65/mJsa9J39SKh4UHgjj2odfTeCzXi03yQh9FyBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VxcK4iiHJ3gSdcRW158uH6wYsHetp5V/l9h08RA4Tl318X1UmfF9nlOSrfccI57cV
-	 kbqVMn9Hl1/qVsV1i3NP1tv2oi6zLf3IT/g0O2w97YBg20t/yW/Xx4jmj6jzRglNNq
-	 FsCzk4ApvRSt6qfUXz8UZhpDlVGRJywCqcxC+dec+mOt12cBiXT9hrhz/1k6JfEJQZ
-	 A39lBkmUuJMsVcq612mjvSxCS1yymtgpgfryMnnPyH52iFjXhNIltfueE/9AJh/i0K
-	 NI2o2besPIWwllq2LiiWpSYBcWJUwgC6AibEkgLQ9kN1HOZSKhpSsf3dYY5AYghmW3
-	 Q/DEKxmNX4RwA==
-Date: Wed, 22 Jul 2026 12:17:18 +0100
-From: Simon Horman <horms@kernel.org>
-To: David 'equinox' Lamparter <equinox@diac24.net>
-Cc: pabeni@redhat.com, kuba@kernel.org, idosch@nvidia.com,
-	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	corbet@lwn.net, skhan@linuxfoundation.org, fmancera@suse.de,
-	lorenzo@google.com, maze@google.com, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	furry13@gmail.com
-Subject: Re: [PATCH net-next 7/9] net/ipv6: support RFC6724 rule 5.5 via
- subtrees
-Message-ID: <20260722111718.GB418547@horms.kernel.org>
-References: <20260714094030.136317-8-equinox@diac24.net>
- <20260721135013.387122-2-horms@kernel.org>
- <al-EPInqzpka3zi6@eidolon.nox.tf>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vlNvL3Tm"
+Message-ID: <2c8655e9-208a-440e-bbeb-d72019e0131e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784719052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MTFYlM5TMHOGxBuJ3oIMVbQVAThzWkHvJw3n8CpzWmc=;
+	b=vlNvL3Tm9Kr68ex3dS89EhVubli2c3VWYZ471xZAwC7iC6dPFz1qm0y94OlBuNKHZfSNJw
+	RnTHs3FNMN6GnVnw+A4ZE0+u1xoJB3c3SrHhgqOnmWlJdUce+sslQUdnoO0OoQmZCkA395
+	A0ZrRXBbgXnerAaikZk+tN2Ry/IBlBo=
+Date: Wed, 22 Jul 2026 12:17:28 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <al-EPInqzpka3zi6@eidolon.nox.tf>
+Subject: Re: [PATCH net] pppoe: reload header pointer after dev_hard_header()
+To: Asim Viladi Oglu Manizada <manizada@pm.me>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org
+References: <20260722093814.3017176-1-manizada@pm.me>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260722093814.3017176-1-manizada@pm.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jul 21, 2026 at 04:37:48PM +0200, David 'equinox' Lamparter wrote:
-> Hi Simon,
+On 22/07/2026 10:38, Asim Viladi Oglu Manizada wrote:
+> pppoe_sendmsg() saves a pointer to the PPPoE header before calling
+> dev_hard_header(). Device header callbacks are allowed to reallocate the
+> skb head, invalidating pointers into it.
 > 
+> This can happen when a send is blocked in copy_from_user() while the first
+> non-Ethernet port is added to an empty team device. The team's delegated
+> GRE header callback then expands the skb head. PPPoE subsequently writes
+> six bytes through the stale pointer into the freed head.
 > 
-> On Tue, Jul 21, 2026 at 02:50:14PM +0100, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > https://sashiko.dev/#/patchset/20260714094030.136317-2-equinox@diac24.net?part=7
+> Reload the PPPoE header through the skb's network-header offset after
+> device header creation. pskb_expand_head() updates that offset when it
+> relocates the head.
 > 
-> Thanks for forwarding the Sashiko reports, I was already aware of them & am almost done addressing them.  The external nexthop stuff is "inapplicable" since the kernel refuses subtree routes with nexthop objects, but I've made that more explicit.  Other than that it's relatively simple oversights on my end.
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+> Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+> ---
+>   drivers/net/ppp/pppoe.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> I just need to make it pretty & hit send, I'll hopefully get to it tomorrow.
-
-Thanks, much appreciated on all counts.
+> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+> index 4a018acb5..6874a1a8e 100644
+> --- a/drivers/net/ppp/pppoe.c
+> +++ b/drivers/net/ppp/pppoe.c
+> @@ -825,6 +825,7 @@ static int pppoe_sendmsg(struct socket *sock, struct msghdr *m,
+>   	dev_hard_header(skb, dev, ETH_P_PPP_SES,
+>   			po->pppoe_pa.remote, NULL, total_len);
+>   
+> +	ph = pppoe_hdr(skb);
+>   	memcpy(ph, &hdr, sizeof(struct pppoe_hdr));
+>   
+>   	ph->length = htons(total_len);
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
