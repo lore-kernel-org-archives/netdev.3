@@ -1,608 +1,214 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A44411F82
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 17:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745E33F4DF3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 17:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784741463; cv=fail; b=jBpjNND2aXMlz1kxTtBSv0NusMHDTYiGFdEEh8aa8DQx+4s7jQlzYhMF29YTnH0j2ZHvVAluHvgk9A8q+rBw/6P7eCb9sfqVktW16swdvVVG9KLgLCrPT9HiZYV8JQ6WS2gFzzuFJqvvz0rQ4/kwdtQoFtFQPqMTloQdxXt20L0=
+	t=1784741777; cv=fail; b=TdngVTvoJMw6s4KXMLOk7NsvhWThAxX+f1E2ALU/tcRfgETIM7tXNNvdT3aE4C72YUCm/pWQPOLsp5DA+4TYjoHmlPzjUO1/hr6J9HxdVI/dHk7QIqe0XIFY94wmT0qEWCOLnJcRLoSVM7u1Zqh8UmhqOvIbg9uN8ekXh81JkIQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784741463; c=relaxed/simple;
-	bh=k8CVVmY+MQRPAsrA9jIUoO38wY1Hm3rWoqXveC5/vw0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=h5Z1/z+in5BIjJth7fcV0j0OB+jxfEws4+Rrn868v8M7dDCqQPeG08eZ2LnKr3hMcJN7vCUhBUekmX5Zaw6+KPGlo4NGMC4q12+IK2memTMTqpWZ88iT/D79LaPq0cwj76GFrJhdVigZ8fZF+v7dwPvxh+k9pguH8x2iEn7Nr34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FixZ62Qy; arc=fail smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1784741777; c=relaxed/simple;
+	bh=RuRkvK6TON8U40xp2Jb1aWmuWGnKpCiIpVnFn7Lc1sY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rrJ3gvuTbCtqyJganZVM5aJAq3dQ3MgpIPNH9Of8S1vrwq+Vd/mdiecCXVuaBSS08mUh3uM2aFUks+8bRTeCLNv3qWN623n8myUhb2ufbQOpB1Vza2agegbDtGZWlx/3sL+tfjYKmAeWEDIo1a0plr9bDHjhvG08erZz8IC4OLQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NitLHaT3; arc=fail smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FixZ62Qy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NitLHaT3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784741461; x=1816277461;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=k8CVVmY+MQRPAsrA9jIUoO38wY1Hm3rWoqXveC5/vw0=;
-  b=FixZ62QyNrf5gQSlW2V1ci55CVOKfMIZp1IlD/m38uvjBQtlNd/imUXI
-   ZORTcy4x/83HATVZUYYd5tl8SaII9b8DXeov5yRJKR3lyieLQrPibKpg2
-   leP47lXVTxIR5+yLw9N4kP5Sg1o8mJztvmMjaf0snkB8ZglzWRl+2mVGG
-   KN9E58+9gB9/cqFwvoV6frRXgmnSnbU2l5H8DjmQQCEFn5cgcLWwkK7MM
-   ajyyvA3a6fuJ9/DWdTTDtHzFYQO+uhD5ZYirNZsUYrditXXD8LX+KOFe8
-   +ptxuTf8nnqTup1Q4/VsQs5BQrAJhZWMSJ01a5hNEEqPvVTgSMLRvCxud
-   Q==;
-X-CSE-ConnectionGUID: 3lo+wlj1T9+hd6tmTgerJA==
-X-CSE-MsgGUID: bKgEnisbQ3WdOpeOWghdmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85330622"
+  t=1784741777; x=1816277777;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=RuRkvK6TON8U40xp2Jb1aWmuWGnKpCiIpVnFn7Lc1sY=;
+  b=NitLHaT3oQI84/bvQXFlVRXPLQLtFVhjI6Fp+XndkanY3xTVuWIFGse1
+   3g2llOBrhsjoBuxxwDEKj9VJ2MT0yCX/D1WKC9+U3PC1RwesO1h7VQwmz
+   3ooa4MOVK7Nrp+EE0vWLeqd3lCfTHI2G+np8zku4jMpsUYx/7intcVx1S
+   0WqmeCoMxksVTAPn5/5iHr4UPXnltwWck1j2YNB/yo0wCKAD/ywRHOjuG
+   5Wbn0ds5W6k0kWazQXM1+gBGw67uVv/TLJ35jNJd2Ibp3+5Uj3ffNyJfm
+   ALCWAFqR9froN/hsRopeaiJwcqq5IGxKkcSBL/wSEo5GFWBuDaxBEACEK
+   g==;
+X-CSE-ConnectionGUID: hdC42xCmSY6Hp+QCTmYtbw==
+X-CSE-MsgGUID: nekV/nPQRsmhG9bhQCQMYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85239882"
 X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="85330622"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:30:59 -0700
-X-CSE-ConnectionGUID: GR+ifr9dSsS3tcg7qG0EzQ==
-X-CSE-MsgGUID: Cp9WFHZfQ66wIaOEr2Tx8g==
+   d="scan'208";a="85239882"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:36:16 -0700
+X-CSE-ConnectionGUID: Ns2tI89mSA2JfNQAPBkxmQ==
+X-CSE-MsgGUID: q+kRcTI9Q+uwl3/+eO52aA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="281443180"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:30:58 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+   d="scan'208";a="251848003"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:36:15 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 22 Jul 2026 10:30:58 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.43; Wed, 22 Jul 2026 10:36:15 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Wed, 22 Jul 2026 10:30:58 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.24) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.43 via Frontend Transport; Wed, 22 Jul 2026 10:36:15 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.9) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 22 Jul 2026 10:30:58 -0700
+ 15.2.2562.43; Wed, 22 Jul 2026 10:36:15 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VjsehdVRBYt48Ms85NUwkYLKHGq69qxRCtIn/4n1gNTe6Z9aEY04DRzcZyueqvaQptbWAsx9UjXEjg9rQ7/pMRxzpbLAvnuSmoxdJOVBY9lEwcfo3DIi7Neg7BNOJquPDw0yF5bgoqCFViXMf7EL4DGMiA+t8kQifjhcf20QVhTmN/wyuyQGaqhoMTMaIzwn16S2IIIi2rrTLiwOI0yi/udFBGpOLtxWbP+nShxLh9NFP/b8wB3Jke6PScEA1eBSjoy6HKL7K2EDtoB71MaIYH21VqWnOwbffY8o6kpGXJO5w1MzIx70kafcc7J1hqlzFdACIBCUteO1IywEu7zAmw==
+ b=gY8in90JEysCkm6G/zqJ29bxi9njtXvY+JI4/L0EJ+ZLTmLlSTaY4KikTea2DVxW7RiwjZu6FcCsn5de1MSU+ZK6tTHLbPEde1w4SwjHvfEvjOpQ7b2GRch+limuDMpKXIOnDoPqkvyPqupbfzqvxqbDTMVL0JHe2Kqw+Bx2kWQKAuzImreJBw+sW9aRT3d0ueldzASJFFj6MDVIuAnmCDK8wJfxgAPfuP1CLEKh+SFyiKlpoU2zFUwr8yNDmIQcbjMg8Zmr28ULOuKW9pD8eJ1yY7s62hR9ofbX5YXbUQUwSe6HYeWbZNRA5LiwBu2qIJ5nqn2cYMWY3q+0q9L9cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jYXq15BrAqlN+QZEZQ8dGCBXj4v1qrUz1Jyx3AdygL4=;
- b=JcWWjmEU8K3PfdmwR9URfOWrVFpnb2F6Bi35x9/JIhYEfPMTHObwyWnDaf8VuTGzaEqaTpDXlst2T2Sg27LbDINQ/oUdC5N8BhINUx7a00FY2MCAUowtwGU5lHZF5/yf8wVkvdVCPQy4n9vRhXsO8/xYA66qy0Ey+QeaDjEob3e6YmbCPlF/PqZsukolvDyQm2L0w+6vTe1IeNYPJuyjTil7PwHUjrnZt07GPtd0WreS175eBB9iw+0B1CkdcR4iBOLNTelIUZkhngMkQPdTnZtfTEXTgXTekhdYdNwcVhCxW8zeLvh/GyWPeJGEt4gOQYNPZObg7fCaXpiz2zPWHQ==
+ bh=RuRkvK6TON8U40xp2Jb1aWmuWGnKpCiIpVnFn7Lc1sY=;
+ b=jKIL2F8sblCt2td0Ppjmf1ViCLoYcBG0uXHM0+NGUFc3CWw17FXI8Q0OrpgxcE9iKWQC9GdENhID9c5ZBu4fH0RSNFUqCv2bq8GGlb8FOXkEC9MT9q4lfqYxXsQ8MJFen6qiOy6dmpMZ1VnlmZJAF2ayj5cnvi/nNBoRJW1/+49+EcTtXqvRZX1I4wZPo+9b1l6gbSi/X+pzBIB2PFH7yihZm2Kg1ftatwWeMowVEJdowCtBH9/n5z3JeBeWLC2Eh4Aiyi98wa+o18nCz5rJZhCKHFhElK9s9Cr1gCLst2dz2AbzXLDr0GrWpDaPofhxYs9L2cAA312Nxz+CBXqk8w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5073.namprd11.prod.outlook.com (2603:10b6:303:92::23)
- by IA1PR11MB8099.namprd11.prod.outlook.com (2603:10b6:208:448::12) with
+Received: from BL3PR11MB6385.namprd11.prod.outlook.com (2603:10b6:208:3b5::20)
+ by LV3PR11MB8601.namprd11.prod.outlook.com (2603:10b6:408:1b8::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 17:30:55 +0000
-Received: from CO1PR11MB5073.namprd11.prod.outlook.com
- ([fe80::a153:939c:df8c:f4fe]) by CO1PR11MB5073.namprd11.prod.outlook.com
- ([fe80::a153:939c:df8c:f4fe%4]) with mapi id 15.21.0223.017; Wed, 22 Jul 2026
- 17:30:54 +0000
-Date: Wed, 22 Jul 2026 13:30:49 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Raag Jadav <raag.jadav@intel.com>, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, "Donald
- Hunter" <donald.hunter@gmail.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<netdev@vger.kernel.org>, <simona.vetter@ffwll.ch>, <airlied@gmail.com>,
-	<kuba@kernel.org>, <lijo.lazar@amd.com>, <Hawking.Zhang@amd.com>,
-	<davem@davemloft.net>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dev@lankhorst.se>, <zachary.mckevitt@oss.qualcomm.com>,
-	<riana.tauro@intel.com>, <michal.wajdeczko@intel.com>,
-	<matthew.d.roper@intel.com>, <mallesh.koujalagi@intel.com>
-Subject: Re: [PATCH v5 2/5] drm/ras: Introduce error threshold
-Message-ID: <amD-SVMRhA0SsW1t@intel.com>
-References: <20260722034228.662746-1-raag.jadav@intel.com>
- <20260722034228.662746-3-raag.jadav@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260722034228.662746-3-raag.jadav@intel.com>
-X-ClientProxiedBy: BY1P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::11) To CO1PR11MB5073.namprd11.prod.outlook.com
- (2603:10b6:303:92::23)
+ 2026 17:36:09 +0000
+Received: from BL3PR11MB6385.namprd11.prod.outlook.com
+ ([fe80::a731:24a9:6c0f:2440]) by BL3PR11MB6385.namprd11.prod.outlook.com
+ ([fe80::a731:24a9:6c0f:2440%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 17:36:09 +0000
+From: "Srinivasan, Vijay" <vijay.srinivasan@intel.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "D H, Siddaraju" <siddaraju.dh@intel.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, David Laight <david.laight.linux@gmail.com>,
+	Michal Kubecek <mkubecek@suse.cz>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "Chintalapalle, Balaji"
+	<balaji.chintalapalle@intel.com>, "Das, Shubham" <shubham.das@intel.com>,
+	"Samudrala, Sridhar" <sridhar.samudrala@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"singhai.anjali55@gmail.com" <singhai.anjali55@gmail.com>, "Brandeburg,
+ Jesse" <jbrandeburg@cloudflare.com>
+Subject: Re: Ethtool is missing C2C link modes
+Thread-Topic: Ethtool is missing C2C link modes
+Thread-Index: Ad0QtH9BbirxMb3HQge7zku6IKXccwACn/MAAA/6EgAABI/OgAB9dWZAADCGeIABZfngqgABXDYAAABB1MoAHFvhAAAJXdzP
+Date: Wed, 22 Jul 2026 17:36:08 +0000
+Message-ID: <BL3PR11MB63853AC8E50396A1B95E127988C12@BL3PR11MB6385.namprd11.prod.outlook.com>
+References: <SN7PR11MB6900E94E718175AACB2309109AFD2@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <e3dd8e06-97d1-4943-b54c-fdd0d0e6ecaa@lunn.ch>
+ <20260711073128.7f94e0ac@pumpkin>
+ <bb7bb5c6-5643-4e5b-b26b-9363127bb2d8@bootlin.com>
+ <SN7PR11MB6900984B5FBD60B71B3B8F329AF92@SN7PR11MB6900.namprd11.prod.outlook.com>
+ <20dde8ba-5429-45e2-8071-ce83f1c2d6c0@lunn.ch>
+ <DS0PR11MB6397D3B945CFF9FA501AC6F688C22@DS0PR11MB6397.namprd11.prod.outlook.com>
+ <a70dc967-6656-4eef-beea-d1894e983fde@lunn.ch>
+ <BL3PR11MB63856413FCFB7F30D30E469688C22@BL3PR11MB6385.namprd11.prod.outlook.com>
+ <e1d14d88-dbe4-4e15-b794-6277f9df7e6d@lunn.ch>
+In-Reply-To: <e1d14d88-dbe4-4e15-b794-6277f9df7e6d@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL3PR11MB6385:EE_|LV3PR11MB8601:EE_
+x-ms-office365-filtering-correlation-id: 5290d595-8c87-40f1-3961-08dee817b764
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|11063799006|56012099006|4143699003|10067099003|6133799003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: mH2xue/9bswFfwTUozQRWNtTOfZPeCLrwkC6wIxhq+f9VQ+jt7fSLdg/8pCB5vC72FjS7kyRcG/QZ2Sft9vLh7VEbr/GOzCEQ0uYLyQFslMGYW3MoagX5sQwA+DweeDRfGseVoKY7dZ26XU4l381W+6kSH4fmkAW+PK3ntLrTuNuXJhUokqbHNlRG+TNGQJOAo25DYRmlRw/zMG5CsXdBMamtmKp7J+RGCwjZLdUwqDOu5wpx+fPtdc9RrkizuKnlYiTLHym4EzwJUsnDoRsvTFjw4qpTT/bFW32T9fmYxr50wpFUdJc9SZ+pOdNCloKC5Nl/+VbLqqvZ9Rj0JTInH0VOPHU3BdYdp6LaQZgsgurp9iNmSFY/HWBErEzuANSGSoRQtLq3OufaOtPvtKyPlz63GWLEuo5/A6QxkNnYDw8MPArVWPsH/zwfibYsSMAHMtmzJaARxbW/2uhlgl99e+AfkHAAaR01rAivz60taxjm+FFVKDGCo3uHKbwPY8M1nWgvVZgUm4cpkeDBBbpuBuXALqTi3zxM14vb+6RC4PRMioqJzupleyfiRn2O63nZMlGXIYR8JbYI7t7vMDzibPtcqtGQV1zBxN0G/op4wYG1QDxXD5AFmv8jgCy8KYGJByPJNCr04UiZ70CVL5i8cEDpu4pbWAg9tn8wNXhbJmWGIXznk0f4AcFBX7hjP9u4AyVtBLc3jlYmUB66h/egqow+2axyLzRB+GCWdsOjWI=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6385.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?WLsIPLA6V3Yd6oqHwYKCdGWvlG7DJj7fQpPNYmRdC+Tuqsu6qBYTuYzP2D?=
+ =?iso-8859-1?Q?pP6g48a19nGhm2GooNSB8SXA5kGXaFNU4DfiHrqAJ7QPswh2Spi2UL9AKE?=
+ =?iso-8859-1?Q?lNkPczrgXH911LCWHoGUogROlXjbZylApyWIvWKeP2TYML1fuUe+9vAE4c?=
+ =?iso-8859-1?Q?dxXsFjQeDA9MByHpk6Kw+LdJZwyoG8XsNCslbSv9woJJW9W4j39gZJl4tP?=
+ =?iso-8859-1?Q?DytPjnhD1s48V3kcU/8msHwBDRdF7sqYJSK+3tv95MAWuHYVTPeeo1d7f7?=
+ =?iso-8859-1?Q?WTkVTD5pAI65A9gp9r6ahxHaqTH6udOLIAK0mLAJPcMiSs3dXBMdLRx7x4?=
+ =?iso-8859-1?Q?0BaZ8TIEIRiKJuJLqDmQzSfoG4CEYELVkiR9tn7dcNohUZAV00iqUPLSKG?=
+ =?iso-8859-1?Q?bQqqpN7e+wIIL6ou7yL6BDW6yHF/G3gYDw9t8+ZfI0KCth/CT9iDpfn4JZ?=
+ =?iso-8859-1?Q?Rxwo/HdYjzfLdKXF+gOUNhJCftqDWXCjWc6hAroX1h6nXro+1x8QcYP2in?=
+ =?iso-8859-1?Q?l3g314yu3BvNZ89odnuh/XCtMRrg9mOyAxZDSj9Udn+PHSoSUaR87wdLRh?=
+ =?iso-8859-1?Q?AILkbqyir3kDTb/JIdpEe+3m462D6bw+DFec1Pr/ONu/cHCymF/S6XsdHF?=
+ =?iso-8859-1?Q?fb7/g0Ns8lSv54r0lsHRT2yDWRbdjjc5vJ++FglJ2q1JzyYV7qLqtfsZaN?=
+ =?iso-8859-1?Q?r3MNQhVQmI5Cbmh2sm6ICEIGaepYuTMOBmQ8UD4HhLahzpbf1o7qCAI5JC?=
+ =?iso-8859-1?Q?/MKutCPy0yJ7nVrhEkXH3koUP7rSWoOsQHELPDry4VdR+J+My0FmG/qyvN?=
+ =?iso-8859-1?Q?Py+dWxvYJnxVDaWHmlBg9LfkbYxnAkkm69gicjXH3nLqSj4LqbTHa908JV?=
+ =?iso-8859-1?Q?bnoqbZLHlNQEO97IbLMJsnpXc3PLr/h/lZJJ/2lkRw6Q06PglFL7k7A6r1?=
+ =?iso-8859-1?Q?Row5eCTCmqKdDRagDY5wo2kYs6o25jh38EkLGzg9Wo5w4MErtvRjrNBg11?=
+ =?iso-8859-1?Q?TxBKZyo2RgrKoJIo7C5wGLVa2wrFyweC1gR06V8XZdX5tkZd8r1ihbTNPp?=
+ =?iso-8859-1?Q?DbL06Pjlk+JpkQEHPHV51GmKGUX3XUsNLzkXrEfuW5doITca+jkTjPj9Ie?=
+ =?iso-8859-1?Q?icVpZ0ZtDB8uvQD6dvmXKEj2HG+HB6q4cAYLb6ZMy3PmAABEX/ai6NE8l0?=
+ =?iso-8859-1?Q?YtlweEZnaV/giQZEt4fwUI3vQ2JPTVrtCuQbeVzwtBXbQEz7hkDCbWODi5?=
+ =?iso-8859-1?Q?WqU0zSXFL5JukXwo/4xkZ1ZOVfxcVGDmzQDeAfffiIdzT18UD71nSc3uF4?=
+ =?iso-8859-1?Q?aQ+4jIiTNJTvPE1qTGTUIhB8giyf5iZGToPux8Ksl/UGHktTCF5Sx6as7L?=
+ =?iso-8859-1?Q?mbFjD1VKGhvZnnAfz7ikfcWDEtMdWdPk3AQGhaD8c22wMIC3DioL/dLZ/+?=
+ =?iso-8859-1?Q?ShlkQ0Ks/P7Fchlgb8HPRefzJhAxY9z43WQwbG8xgXahg57UtOgq/6I5CE?=
+ =?iso-8859-1?Q?bnNa6UUx2sLxGaxUw7dIg+yalCowymhGf9YzWBkBW96ASCfKc191fcaouj?=
+ =?iso-8859-1?Q?+bKcJuL2XPM9IJLFTDQjiVWAiQiSF9aG0Gng+lony3aseA36uBMhw9Rd5+?=
+ =?iso-8859-1?Q?nrDSUVVokufLEAK4fKqFNxi4E9DGUxaLJ8pe+gu278+9YAdSDRvH/jjVPc?=
+ =?iso-8859-1?Q?sKjSkq5BPkv6ra/shRsQLTBFWI6w+Alv8SySBCHVXNddT5Jisd8nBdElyW?=
+ =?iso-8859-1?Q?iNkBidmszxeVa+xyzngcVWLpdAgtLSGZxjVfF9nj7xtEpKtqf9UCL9dkbY?=
+ =?iso-8859-1?Q?EdgsugrxLA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5073:EE_|IA1PR11MB8099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33670bda-1c1b-4abb-146a-08dee816fbbb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|6133799003|4143699003|11063799006|56012099006|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info: EoYi28L5FVPP5hQSa9K+ttVsnUJAtu0v/AQZz2bM/2PUUp/vP5JUmYzrHTouQD+EDPvs45D9ayam+hHRBfxSjRGxb+cy+FT86QGz3cS+eKts8Sf3SILZU42pXkj8C+3ZT56yPvyX/WyxHm7TVWoNnzh2Axmxtipz6huLiZFLklKFo8BWXlxX8k/xJv5zzMWCxxlpItVSr95sr+WlNZRIeQjg5ZcS5lReOHyxwT9WyyVnhvowkN9c4tROwQSssS4HrZzwuh9Iti1MWCm2RrCpweqvGnKe3EjvMiHFch01l+ztGCC9nWeNcrWEnBgu+QoeMt3dsP85Wckaegk6ehtZ/idO9aDAAj6Js3542A4dT/zF5qd8nTXJpaxgzgN5lkWa+18QDNRdQjrLeJNYTqe9TDqMPqPCyl5VKDiHCJJAGWpZZkbaFPlaQriurtDgtLxdgibHVSSTVoljeetnLlnWm7POsT/NcWTlazcDEv0BTtbaAOOb1tkIiYQsz2M79aqKFOc3sqAozs8cgLameKEend5ZJYZKaXA80IapZtS8HlKDPC3R6tcIZkH+SWI2htB6Ff8IV6EYnpLvI6KTr7DfRBuqCkp56+gem/Je3R0aCEpoldoLW54Zo3xxebz+qO6nT5JpCORF5XIVD6f83DRAocVJ0OsYGbT8VuxBunRVft0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5073.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(6133799003)(4143699003)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Wc9+zgOXUNl+yJZSqRZxyCYuCXoV2sxU8UrhyN0ZAwIeX5V8joLNdG2oohCw?=
- =?us-ascii?Q?Q9ofXuyevTzDG6HozaW4X/Se5DRdj7GfSkNfZIZnfN3ZFHNRSgPU/2VnDmJf?=
- =?us-ascii?Q?V9pcAD1299823nDp2MNOlxcFlLyqmRn36fBRgTpEOQHmzszR5rdfGbpDsNqA?=
- =?us-ascii?Q?xbrwNVtapn0sMSqyq1rvIbFss0t6xa/FSDkC3TZUPbTbOcXMldG30Av+DTo/?=
- =?us-ascii?Q?Ljfs0KbxRUb/WWWknaGITfYfsNR22Ap9Zhe6foaH4ymnlAUTt8Z640ILg079?=
- =?us-ascii?Q?cMOMEBKL0oHG8P/Vl+jsFUL1Xa/IjfjyMwyDjViMUwRQ5GgKfwYJ2bV9Ddqe?=
- =?us-ascii?Q?Qt6SsQXwjQkj9XYB9kBLB7P31qyiWJPv4NurUHOSoGBbA9tb0P9o4TwcyHgA?=
- =?us-ascii?Q?/Q0NP1CvfoLc00Ofdw9pLMKQ8RQUMdb2gpQo/f3qFHihTiwsVvsqhzIn1DGn?=
- =?us-ascii?Q?CjgAgXdG4a1x5vf8ycTLv142UTB4T5JqeQJK7rbrfYB8SxuXrDmBeGepd8Uf?=
- =?us-ascii?Q?yg+HXsnXOgm3UWpl8DMoy/9w9fICBFb/GvY1/rMVwd5Hgj8WwYKM+a9xtdK9?=
- =?us-ascii?Q?pn5Y0noEwgkLCkZCHy7w0qPmSbxpnESkYeMe+gbK+oI0qYC5Phq+8LeB6INz?=
- =?us-ascii?Q?tcxbV1wmuiGPtmkQD+SlPJ786/j0pnCPs9dbeXkDAj6cYB4V27r8bho33mUq?=
- =?us-ascii?Q?nPnVRs1V/8t5wLWREUJjmVb08c+NZhEDzJVepYyHszMud2nfnhiHV7KA7HKZ?=
- =?us-ascii?Q?TxDqvu6YOVkA/zbGGFHAUFGr89FIZwhtlqsNDn3eYuwazNJh++1MpYkhtA/E?=
- =?us-ascii?Q?QeYEXJWJE38FWy4TQ8pOIapbO2uF2pIuMV7MJrHuAurqiwTUCMehbyr8oNCs?=
- =?us-ascii?Q?AnJvddDvzooFZjqYbGF6l5oEp0pqnWvyUPcuWogJagcuYs9tHNyHDlWFe+29?=
- =?us-ascii?Q?hTnaPsVZ/SN9V5BVgu44iyFXggjfgmXWW9NyuoWYv82GMHLUKiIqX6/Trt43?=
- =?us-ascii?Q?3qP+FRRu1/7u37Gy+K6E5RoeOlWKW/W+4eYFaFwlcXwm21jFc8SifrQcZmRu?=
- =?us-ascii?Q?FP9pTrjkSQU4wKeKgYAEAJY0TPsPYFcLlthNO8xzRkEPzOcdYzGxHbg3Aa+4?=
- =?us-ascii?Q?jdFWJDhCwI5NNYyMhZwTDLfIaIFOA5/ozySi/ZvSFxPCVm1hQqVWB+KWSWup?=
- =?us-ascii?Q?ApC0DHtEptNlSh0WgIovWFCPhFB24yIZlJttlwWiQpbh6pQe9RxQ/aqWZja0?=
- =?us-ascii?Q?qqMzV+HDy5tVHUWh+sQ+ToXgAGWYd/ZeCGBhIgZQjViY6TpdRjklV95w6l+X?=
- =?us-ascii?Q?V3Bws1l3aYge1SEKN05RM49TVMSt0vxOYYUkItGsfpD1yOIxNKQRFeg4idqZ?=
- =?us-ascii?Q?3RaV996yXhQPSVY2uWFNeQenA/u+2soFKgPbYJvlAPZPLhCGkVrDJRO1Hdek?=
- =?us-ascii?Q?JluAjgrbNlKNCzk+Dp3WdPVxNh3PfoMnYTJPjAhCDrnvyDiwg7jBVVsZdVOw?=
- =?us-ascii?Q?Qbty2AqS4arV26wN95Dz0296qoFgru8/NNCduaCVnodLMzY5iB1fitYG8tfZ?=
- =?us-ascii?Q?6e1pGWKBbDgrfG6rFhRgEEGh+9FWzynKxQaJ5lpQEJnUaVfgV6I6Q6Qno5iG?=
- =?us-ascii?Q?LZQHE3kWqrjAob5lZxir8XC0rP53tdja38CMll977+7zmDirYY2zBlpD33Ap?=
- =?us-ascii?Q?J+ZTlVCncnALQ04+ndhNaGdMMn6EePVJ6vXmOWCPQgsg5uIEzL38Xvb4Fc1A?=
- =?us-ascii?Q?UfQjKYShXA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: N9wwykdbRFI/1vLJZvrHH0IjKcPSl8l7kcmSGJruD2l9RPIiLaskVWSpxFsuBMA+vgQLFqdJZ3eJrTk1pGFAUW2B517j3tI8eQPJ0Yuqfj/Sw5C8+fCRVen80Xc1Qn2mJM1V9VokJdMfW4deCpLUC9CLGkynOzqaOHI59zyyK6ulyrtuxo/LesgmhTVCQ3Uom8Xpx6mzypZxxOcQCdjG8J+c7hvlf4guAOtkvSaHA88MOSrzH8psTsU1nrji/pYzPbPnBwVYYPllJ2FsDvSo0aDpCJOklDRoGSSjPiO6fozSy/+i2B4MZLemohUYmrbeq/BY8iCmZ2y9TenLxQU/Ew==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33670bda-1c1b-4abb-146a-08dee816fbbb
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5073.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: AgVDBx1IlzFkVa4V6oWPoZAFyvHnPv7HDJ8Z1jP8TBR0SISgXukcWtQ9YAORxYDThdJsV5ORIaX3RmkI0lOV+9kfsjfSbmZrVHvOND7zmtgl6dESzKLWi4NA5OyTpzDSsxuJ34ZZyuP3x5bkVIxcqbY7Th5GnH6CJZdtnItrV3Z259xFEITk5aUfzkLlPOj+4sHcJME81jvNv67FuLDBM8Dqmexy95UD+jIx4ojjYZ8RHt3hcCY5yvTw8oDeiuBLJ37vm1M9qWnGLvm677IpWXike/HpcIgwaOyZJrkYCUtZdl9ehIQ8qqyNMnz+48S0s046ycXKCYUYoFn/C+GQqQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 17:30:54.5675
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6385.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5290d595-8c87-40f1-3961-08dee817b764
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jul 2026 17:36:08.9596
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6maGL6lKA7QPpVVlNfw7D7qCeQOHpX8R14VRghmd3fAHi50fkPbQl42Vo8wH6VkvWfuPXp+NEfylYjHYHJkuCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8099
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1PN4Yxr3eRRmuczFgirwfn1U0c0AsPIxm15COSmSCe0ucp0pQ7vIf1LppdG2rJl+yl166sIrbzsQPbVRmJH/SYyJvvJnZXgOxbsFwUqjjgA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8601
 X-OriginatorOrg: intel.com
 
-On Wed, Jul 22, 2026 at 09:11:12AM +0530, Raag Jadav wrote:
-> Add get-error-threshold and set-error-threshold command support which
-> allows querying/setting error threshold of the counter. Threshold in RAS
-> context means the number of errors the hardware is expected to accumulate
-> before it raises them to software. This is to have a fine grained control
-> over error notifications that are raised by the hardware.
-> 
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-> ---
-> v2: Document threshold definition (Riana)
->     Return -EOPNOTSUPP on threshold callbacks absence (Riana)
->     Cancel and free genlmsg on failure (Riana)
->     Document threshold bounds checking responsibility (Riana)
-> v3: Move documentation from yaml to rst file (Riana)
->     s/value/threshold (Riana)
->     Use goto for error handling (Riana)
-> v4: Clarify 0 threshold expectations (Riana)
->     Drop redundant wrapping (Riana)
-> v5: Drop redundant documentation (Riana)
->     Aesthetic adjustment (Riana)
-> ---
->  Documentation/gpu/drm-ras.rst            |  18 +++
->  Documentation/netlink/specs/drm_ras.yaml |  32 +++++
-
-Jakub and other net maintainers, ack on getting this through drm trees?
-
->  drivers/gpu/drm/drm_ras.c                | 158 +++++++++++++++++++++++
->  drivers/gpu/drm/drm_ras_nl.c             |  27 ++++
->  drivers/gpu/drm/drm_ras_nl.h             |   4 +
->  include/drm/drm_ras.h                    |  29 +++++
->  include/uapi/drm/drm_ras.h               |   3 +
->  7 files changed, 271 insertions(+)
-> 
-> diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
-> index 83c21853b74b..2718f8aee09d 100644
-> --- a/Documentation/gpu/drm-ras.rst
-> +++ b/Documentation/gpu/drm-ras.rst
-> @@ -56,6 +56,10 @@ User space tools can:
->    ``node-id`` and ``error-id`` as parameters.
->  * Clear specific error counters with the ``clear-error-counter`` command, using both
->    ``node-id`` and ``error-id`` as parameters.
-> +* Query specific error counter threshold with the ``get-error-threshold`` command, using both
-> +  ``node-id`` and ``error-id`` as parameters.
-> +* Set specific error counter threshold with the ``set-error-threshold`` command, using
-> +  ``node-id``, ``error-id`` and ``error-threshold`` as parameters.
->  
->  YAML-based Interface
->  --------------------
-> @@ -111,3 +115,17 @@ Example: Clear an error counter for a given node
->  
->      sudo ynl --family drm_ras --do clear-error-counter --json '{"node-id":0, "error-id":1}'
->      None
-> +
-> +Example: Query error threshold of a given counter
-> +
-> +.. code-block:: bash
-> +
-> +    sudo ynl --family drm_ras --do get-error-threshold --json '{"node-id":0, "error-id":1}'
-> +    {'error-id': 1, 'error-name': 'error_name1', 'error-threshold': 16}
-> +
-> +Example: Set error threshold of a given counter
-> +
-> +.. code-block:: bash
-> +
-> +    sudo ynl --family drm_ras --do set-error-threshold --json '{"node-id":0, "error-id":1, "error-threshold":8}'
-> +    None
-> diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
-> index e113056f8c01..9cf7f9cde242 100644
-> --- a/Documentation/netlink/specs/drm_ras.yaml
-> +++ b/Documentation/netlink/specs/drm_ras.yaml
-> @@ -69,6 +69,10 @@ attribute-sets:
->          name: error-value
->          type: u32
->          doc: Current value of the requested error counter.
-> +      -
-> +        name: error-threshold
-> +        type: u32
-> +        doc: Error threshold of the counter.
->  
->  operations:
->    list:
-> @@ -124,3 +128,31 @@ operations:
->        do:
->          request:
->            attributes: *id-attrs
-> +    -
-> +      name: get-error-threshold
-> +      doc: >-
-> +           Retrieve error threshold of a given counter.
-> +           The response includes the id, the name, and current threshold
-> +           of the counter.
-> +      attribute-set: error-counter-attrs
-> +      flags: [admin-perm]
-> +      do:
-> +        request:
-> +          attributes: *id-attrs
-> +        reply:
-> +          attributes:
-> +            - error-id
-> +            - error-name
-> +            - error-threshold
-> +    -
-> +      name: set-error-threshold
-> +      doc: >-
-> +           Set error threshold of a given counter.
-> +      attribute-set: error-counter-attrs
-> +      flags: [admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - node-id
-> +            - error-id
-> +            - error-threshold
-> diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
-> index 467a169026fc..9a7b3d2acd25 100644
-> --- a/drivers/gpu/drm/drm_ras.c
-> +++ b/drivers/gpu/drm/drm_ras.c
-> @@ -41,6 +41,13 @@
->   *    Userspace must provide Node ID, Error ID.
->   *    Clears specific error counter of a node if supported.
->   *
-> + * 4. GET_ERROR_THRESHOLD: Query error threshold of a given counter.
-> + *    Userspace must provide Node ID and Error ID.
-> + *    Returns the error threshold of a specific counter.
-> + *
-> + * 5. SET_ERROR_THRESHOLD: Set error threshold of a given counter.
-> + *    Userspace must provide Node ID, Error ID and threshold to be set.
-> + *
->   * Node registration:
->   *
->   * - drm_ras_node_register(): Registers a new node and assigns
-> @@ -61,6 +68,13 @@
->   *     + The error counters in the driver doesn't need to be contiguous, but the
->   *       driver must return -ENOENT to the query_error_counter as an indication
->   *       that the ID should be skipped and not listed in the netlink API.
-> + *     + The driver can optionally implement query_error_threshold() and
-> + *       set_error_threshold() callbacks to facilitate getting/setting error
-> + *       threshold of the counter. Threshold in RAS context means the number of
-> + *       errors the hardware is expected to accumulate before it raises them to
-> + *       software. This is to have a fine grained control over error notifications
-> + *       that are raised by the hardware.
-> + *     + The driver is responsible for error threshold bounds checking.
->   *
->   * Netlink handlers:
->   *
-> @@ -72,6 +86,10 @@
->   *   operation, fetching a counter value from a specific node.
->   * - drm_ras_nl_clear_error_counter_doit(): Implements the CLEAR_ERROR_COUNTER doit
->   *   operation, clearing a counter value from a specific node.
-> + * - drm_ras_nl_get_error_threshold_doit(): Implements the GET_ERROR_THRESHOLD doit
-> + *   operation, fetching the error threshold of a specific counter.
-> + * - drm_ras_nl_set_error_threshold_doit(): Implements the SET_ERROR_THRESHOLD doit
-> + *   operation, setting the error threshold of a specific counter.
->   */
->  
->  static DEFINE_XARRAY_ALLOC(drm_ras_xa);
-> @@ -168,6 +186,40 @@ static int get_node_error_counter(u32 node_id, u32 error_id,
->  	return node->query_error_counter(node, error_id, name, value);
->  }
->  
-> +static int get_node_error_threshold(u32 node_id, u32 error_id, const char **name, u32 *threshold)
-> +{
-> +	struct drm_ras_node *node;
-> +
-> +	node = xa_load(&drm_ras_xa, node_id);
-> +	if (!node)
-> +		return -ENOENT;
-> +
-> +	if (!node->query_error_threshold)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (error_id < node->error_counter_range.first || error_id > node->error_counter_range.last)
-> +		return -EINVAL;
-> +
-> +	return node->query_error_threshold(node, error_id, name, threshold);
-> +}
-> +
-> +static int set_node_error_threshold(u32 node_id, u32 error_id, u32 threshold)
-> +{
-> +	struct drm_ras_node *node;
-> +
-> +	node = xa_load(&drm_ras_xa, node_id);
-> +	if (!node)
-> +		return -ENOENT;
-> +
-> +	if (!node->set_error_threshold)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (error_id < node->error_counter_range.first || error_id > node->error_counter_range.last)
-> +		return -EINVAL;
-> +
-> +	return node->set_error_threshold(node, error_id, threshold);
-> +}
-> +
->  static int msg_reply_value(struct sk_buff *msg, u32 error_id,
->  			   const char *error_name, u32 value)
->  {
-> @@ -186,6 +238,22 @@ static int msg_reply_value(struct sk_buff *msg, u32 error_id,
->  			   value);
->  }
->  
-> +static int msg_reply_threshold(struct sk_buff *msg, u32 error_id, const char *error_name,
-> +			       u32 threshold)
-> +{
-> +	int ret;
-> +
-> +	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID, error_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = nla_put_string(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME, error_name);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD, threshold);
-> +}
-> +
->  static int doit_reply_value(struct genl_info *info, u32 node_id,
->  			    u32 error_id)
->  {
-> @@ -225,6 +293,43 @@ static int doit_reply_value(struct genl_info *info, u32 node_id,
->  	return ret;
->  }
->  
-> +static int doit_reply_threshold(struct genl_info *info, u32 node_id, u32 error_id)
-> +{
-> +	const char *error_name;
-> +	struct sk_buff *msg;
-> +	struct nlattr *hdr;
-> +	u32 threshold;
-> +	int ret;
-> +
-> +	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
-> +	if (!msg)
-> +		return -ENOMEM;
-> +
-> +	hdr = genlmsg_iput(msg, info);
-> +	if (!hdr) {
-> +		ret = -EMSGSIZE;
-> +		goto free_msg;
-> +	}
-> +
-> +	ret = get_node_error_threshold(node_id, error_id, &error_name, &threshold);
-> +	if (ret)
-> +		goto cancel_msg;
-> +
-> +	ret = msg_reply_threshold(msg, error_id, error_name, threshold);
-> +	if (ret)
-> +		goto cancel_msg;
-> +
-> +	genlmsg_end(msg, hdr);
-> +
-> +	return genlmsg_reply(msg, info);
-> +
-> +cancel_msg:
-> +	genlmsg_cancel(msg, hdr);
-> +free_msg:
-> +	nlmsg_free(msg);
-> +	return ret;
-> +}
-> +
->  /**
->   * drm_ras_nl_get_error_counter_dumpit() - Dump all Error Counters
->   * @skb: Netlink message buffer
-> @@ -358,6 +463,59 @@ int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
->  	return node->clear_error_counter(node, error_id);
->  }
->  
-> +/**
-> + * drm_ras_nl_get_error_threshold_doit() - Query error threshold of a counter
-> + * @skb: Netlink message buffer
-> + * @info: Generic Netlink info containing attributes of the request
-> + *
-> + * Extracts the Node ID and Error ID from the netlink attributes and retrieves
-> + * the error threshold of the corresponding counter. Sends the result back to
-> + * the requesting user via the standard Genl reply.
-> + *
-> + * Return: 0 on success, or negative errno on failure.
-> + */
-> +int drm_ras_nl_get_error_threshold_doit(struct sk_buff *skb, struct genl_info *info)
-> +{
-> +	u32 node_id, error_id;
-> +
-> +	if (!info->attrs ||
-> +	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID) ||
-> +	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID))
-> +		return -EINVAL;
-> +
-> +	node_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID]);
-> +	error_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID]);
-> +
-> +	return doit_reply_threshold(info, node_id, error_id);
-> +}
-> +
-> +/**
-> + * drm_ras_nl_set_error_threshold_doit() - Set error threshold of a counter
-> + * @skb: Netlink message buffer
-> + * @info: Generic Netlink info containing attributes of the request
-> + *
-> + * Extracts the Node ID, Error ID and threshold from the netlink attributes and
-> + * sets the error threshold of the corresponding counter.
-> + *
-> + * Return: 0 on success, or negative errno on failure.
-> + */
-> +int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb, struct genl_info *info)
-> +{
-> +	u32 node_id, error_id, threshold;
-> +
-> +	if (!info->attrs ||
-> +	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID) ||
-> +	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID) ||
-> +	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD))
-> +		return -EINVAL;
-> +
-> +	node_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID]);
-> +	error_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID]);
-> +	threshold = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
-> +
-> +	return set_node_error_threshold(node_id, error_id, threshold);
-> +}
-> +
->  /**
->   * drm_ras_node_register() - Register a new RAS node
->   * @node: Node structure to register
-> diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
-> index dea1c1b2494e..02e8e5054d05 100644
-> --- a/drivers/gpu/drm/drm_ras_nl.c
-> +++ b/drivers/gpu/drm/drm_ras_nl.c
-> @@ -28,6 +28,19 @@ static const struct nla_policy drm_ras_clear_error_counter_nl_policy[DRM_RAS_A_E
->  	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID] = { .type = NLA_U32, },
->  };
->  
-> +/* DRM_RAS_CMD_GET_ERROR_THRESHOLD - do */
-> +static const struct nla_policy drm_ras_get_error_threshold_nl_policy[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID + 1] = {
-> +	[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID] = { .type = NLA_U32, },
-> +	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID] = { .type = NLA_U32, },
-> +};
-> +
-> +/* DRM_RAS_CMD_SET_ERROR_THRESHOLD - do */
-> +static const struct nla_policy drm_ras_set_error_threshold_nl_policy[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD + 1] = {
-> +	[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID] = { .type = NLA_U32, },
-> +	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID] = { .type = NLA_U32, },
-> +	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD] = { .type = NLA_U32, },
-> +};
-> +
->  /* Ops table for drm_ras */
->  static const struct genl_split_ops drm_ras_nl_ops[] = {
->  	{
-> @@ -56,6 +69,20 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
->  		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
->  		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
->  	},
-> +	{
-> +		.cmd		= DRM_RAS_CMD_GET_ERROR_THRESHOLD,
-> +		.doit		= drm_ras_nl_get_error_threshold_doit,
-> +		.policy		= drm_ras_get_error_threshold_nl_policy,
-> +		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-> +		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-> +	},
-> +	{
-> +		.cmd		= DRM_RAS_CMD_SET_ERROR_THRESHOLD,
-> +		.doit		= drm_ras_nl_set_error_threshold_doit,
-> +		.policy		= drm_ras_set_error_threshold_nl_policy,
-> +		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
-> +		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-> +	},
->  };
->  
->  struct genl_family drm_ras_nl_family __ro_after_init = {
-> diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
-> index a398643572a5..57b1e647d833 100644
-> --- a/drivers/gpu/drm/drm_ras_nl.h
-> +++ b/drivers/gpu/drm/drm_ras_nl.h
-> @@ -20,6 +20,10 @@ int drm_ras_nl_get_error_counter_dumpit(struct sk_buff *skb,
->  					struct netlink_callback *cb);
->  int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
->  					struct genl_info *info);
-> +int drm_ras_nl_get_error_threshold_doit(struct sk_buff *skb,
-> +					struct genl_info *info);
-> +int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb,
-> +					struct genl_info *info);
->  
->  extern struct genl_family drm_ras_nl_family;
->  
-> diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
-> index 0beede3ddc4e..b1fa87975cc5 100644
-> --- a/include/drm/drm_ras.h
-> +++ b/include/drm/drm_ras.h
-> @@ -71,6 +71,35 @@ struct drm_ras_node {
->  	 */
->  	int (*clear_error_counter)(struct drm_ras_node *node, u32 error_id);
->  
-> +	/**
-> +	 * @query_error_threshold:
-> +	 *
-> +	 * This callback is used by drm-ras to query error threshold of a
-> +	 * specific counter.
-> +	 *
-> +	 * Driver should expect query_error_threshold() to be called with
-> +	 * error_id from `error_counter_range.first` to
-> +	 * `error_counter_range.last`.
-> +	 *
-> +	 * Returns: 0 on success, negative error code on failure.
-> +	 */
-> +	int (*query_error_threshold)(struct drm_ras_node *node, u32 error_id, const char **name,
-> +				     u32 *threshold);
-> +
-> +	/**
-> +	 * @set_error_threshold:
-> +	 *
-> +	 * This callback is used by drm-ras to set error threshold of a specific
-> +	 * counter.
-> +	 *
-> +	 * Driver should expect set_error_threshold() to be called with error_id
-> +	 * from `error_counter_range.first` to `error_counter_range.last`.
-> +	 * Driver is responsible for error threshold bounds checking.
-> +	 *
-> +	 * Returns: 0 on success, negative error code on failure.
-> +	 */
-> +	int (*set_error_threshold)(struct drm_ras_node *node, u32 error_id, u32 threshold);
-> +
->  	/** @priv: Driver private data */
->  	void *priv;
->  };
-> diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
-> index 218a3ee86805..27c68956495f 100644
-> --- a/include/uapi/drm/drm_ras.h
-> +++ b/include/uapi/drm/drm_ras.h
-> @@ -33,6 +33,7 @@ enum {
->  	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
->  	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
->  	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
->  
->  	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
->  	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
-> @@ -42,6 +43,8 @@ enum {
->  	DRM_RAS_CMD_LIST_NODES = 1,
->  	DRM_RAS_CMD_GET_ERROR_COUNTER,
->  	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
-> +	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
-> +	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
->  
->  	__DRM_RAS_CMD_MAX,
->  	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
-> -- 
-> 2.43.0
-> 
+> > As for your comment/question about FW vs linux controiling the HW, the =
+intent here=0A=
+> > is to use linux to tell FW where to go based on user input.=0A=
+> > How the link is eventually achieved is all in FW.=A0 =0A=
+> =0A=
+> > I don't see how that works. ethtool has no APIs around=0A=
+> > phy_interface_t.=A0 All ethtool offers is link modes. How do you see=0A=
+> > this working?=0A=
+> =0A=
+> Correct me if I am wrong but isn't that the role of the driver?=A0 =0A=
+> I expect device driver to translate Ethtool link mode argument and pass i=
+t to =0A=
+> FW via driver-FW handshake (device specific SET/GET functions). =0A=
+> MAC and PHY config. which includes phy_interface_t for that specific link=
+ speed =0A=
+> is then implicitly handled by FW. No other intervention from user should =
+be =0A=
+> required.=0A=
+=0A=
+> It is. But if the driver is talking to firmware, it is using whatever=0A=
+> proprietary values defined by the firmware.=0A=
+=0A=
+> It only makes sense to use phy_interface_t for communication between=0A=
+> different Linux components, or uAPI and a Linux component.=0A=
+=0A=
+To be precise, what I meant by FW will handle phy_interface_t implicitly is=
+ that the=0A=
+*MII selection (from long list I included in a prior post) is automatically=
+ done by =0A=
+device FW and not via Linux components or APIs. This step of *MII selection=
+ or=0A=
+configuration may have been handled by Linux components historically (legac=
+y =0A=
+implementations) but it is no longer the case with device FW capabilities t=
+o manage=0A=
+link we have today (as someone alluded to in a prior post this being the ca=
+se=0A=
+even at the onset of 10G era >20 years ago). =0A=
+=0A=
+Vijay=0A=
+=0A=
+=0A=
