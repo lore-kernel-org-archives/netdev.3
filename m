@@ -1,172 +1,143 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC5D43B3E4
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36143E3DBE
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711431; cv=none; b=QtwChYIPzIRKBE5rEnMV1Jk6wROjD2bknRauJgJUwoJa68Pe/QfcI/QHttqLHUWefy0ieaUeIUU21YcWMTsrojXru1Dc+FxsHPAuFUF+NXB3r6RGvW1xyacCjyXzKL5gSe2kj0lUhi6RSRAHgq+6G+v3ejgLr9KbFZGT0U8Bxns=
+	t=1784711673; cv=none; b=cYDaK03dxZP1uK2mrEPNok5vJVGsatcR5slTHkWPfFnNtjQDCmCutrs7IkZ6QyAzSnCIyeNCzKppex/sYbKHgoxDagmCYV94U52zo4yNNnsqoXaoCdDcT7l4uRVpZ1ZE/NT4NJHFPP/1Q7c5fMkByTMuAiDvROzNOQCIGbYmFDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711431; c=relaxed/simple;
-	bh=nJcFxXIvLPbkGK1QMBaARCqOIjn0L035Y4w8OrFc2Jg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM67glkF6ekF2PX9rtkzc94y+3MchITqMFNe0rQkKs4Fq3bd4mTKagj1BVRAAuPwMLixdsKAvMN48ecIQ9FrsYGlLSvqU7jGOSPKbH9P7su0rdZBIM7LE3UzULXq2EF9cbZUL6HDcnzYAJK4tClpHL8Dqvb29WPT3fGoT64Udac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Li6FIQYh; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784711673; c=relaxed/simple;
+	bh=sHMU9orKt+3dFz7svwzy6sHxokwx9yHspoPZi9pCSqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nVPcp6nbkYCKZH4r6yznCBih1kt31TroFfCT7oXqsNmhmM17640PIRceone+rA/aoFpfc4vctMyqMwscO7H6TUHPWDH+vIhlwXTmH5WbOJKD8rFD3UWo/cupcN5TlidHOhWypCBjuWy3c3SOZIusKu4nEjmUttOX0pmhyE/mkr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OWoqrEje; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hWPNkyaD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Li6FIQYh"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47f752b3423so2537161f8f.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:10:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OWoqrEje";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hWPNkyaD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784711670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
+	b=OWoqrEjezHL3Tj8vluIiW5nbZ2c4syPaDnUMa/welSn2ixzN3Lhm84b8jtZUBfjyP1O93T
+	IrsV2oyL7jGSCbANWMIyuT0g+wQCj4pP0wsT3p0Dwx0ByujfHtYP5IRAPG6ltyBcgyOfEz
+	pt+7jhgzjXuGih2f3giBIrEfmzBDahA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-nmlXUYm1NKiWz4VB9Asx5A-1; Wed, 22 Jul 2026 05:14:28 -0400
+X-MC-Unique: nmlXUYm1NKiWz4VB9Asx5A-1
+X-Mimecast-MFC-AGG-ID: nmlXUYm1NKiWz4VB9Asx5A_1784711667
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-474170b59dfso7419403f8f.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784711424; x=1785316224; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vdluEnbV/bjkMK1wXPlyO1mpDVHkDRFSt41DayM9cG0=;
-        b=Li6FIQYhdA+2f4uoB1qCbVkgXFrFNMa6NLNMMaQRXo5CnBAXdzfbOisx5o0/LmOe6E
-         GrCU5VPi2UIQWQ3dPytAxvGmSORpBAyFAV9Z9D7Smu6cKn7heM896z4iFxiOvsW/bjjj
-         WGywKh+GRApQyeL6ZapU7fGaTAicQo5mhYv8+xjCzKZKLuC9ZWGxcK2Bp+ledwr9S8TH
-         5jKMmMGLgL2f/Z/B1ZPHfI9l6S1pcJpTgYJ/xnl4oBMzUGxFqGgtZ8Qw/F6INfnNhPKh
-         0BxjWvK+2D0DZN9U3X1INJ37WnAxxFJNnH6ApKQhDPZfdS6hyFlrQth3LkGzIcPogYXk
-         +hvA==
+        d=redhat.com; s=google; t=1784711667; x=1785316467; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
+        b=hWPNkyaDEFJEKapwJ9fmMDKRMqZvCAauA7pN2YDBaiQccPZSS587ZAX3WOkkvWRKNl
+         FcgCGdcrOvp0+h4dyM3vhPPV8lkr2Ybd4SnxfP2EQIEde/fvM5GnjCzeIIkD8rhjUTHe
+         kWZcyn10bSU5XSdU37Ozp8EfeSIL6s4N3zAA0Jrj1gJ3ji/3e6uRQEcCo6i9O/luCRsE
+         loCJ6FpMHTXza/4MaZIja4eJcJUHJOkypf3F4OxHznF6VnoS82phR1RHhFuspmtK+Wq7
+         WKWACUOkgCamqUTCNmi5P3nmjs4h+Ftgt1LlrHEGvJMSWBDozaeILE5LwIAwSbcQsMjk
+         JX+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784711424; x=1785316224;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vdluEnbV/bjkMK1wXPlyO1mpDVHkDRFSt41DayM9cG0=;
-        b=RElAWJ/zYRttsslzX4454fc63Lsy0b3GhFfKZcxqqVVTM4B1PanjULrYyv46r+485H
-         5eITPuA+b6cItivs7r9skIFqqyrVxJ02f0cEWes1786TqANWqWs99QFSP1GpR6fHMBfX
-         j2H0LckHyirZ/ZPwQjl7R4FfpQmzUCF2iZvIl9VSSsZwyW8zavsbwEI0ScR+XPHeYnVm
-         lmjFq2Fcs78JlYnnp3g0PFI5VQPIJe1rjampeOZiZUro8ejWmrIYynIgN1Gz9axhPjTP
-         X15if3wZyq5IWy3Ykd3+gY1GkiYuyIatP/IeTYdDbwH0GKUlavbd1BgYwZ5WThCCHipV
-         85Tg==
-X-Gm-Message-State: AOJu0Ywgq++nosrXdkMoQMw7UdcaxhtnC9jBbQEOTwyqYuL47cpXQiOw
-	IINtq45leehFtiFjPmvdinO8P/o4EFeoUxfMVkyV1aFidDN6QpKL31neMa66nRPY
-X-Gm-Gg: AR+sD11cqNp6z9bpD0cqoj60tRsiJO/s9rNYJzxvwC/xsQgGgPtb2mTRjnpZnzu/QQo
-	CSBw2ykLHq/twUsNfpJS0ydN4kWXtqFj1J879qLbpNBf75baAlLqBOev4WL5jCz4vcY4T6rJ7Sz
-	JBKPWW5RgKlid9OMc8S25NQCdl7DtxHRjNoCevVwLfQa64OIT1GtAUUPEtKs2n9kF/GORstixew
-	hHDwH8g79TNDaLTzpsoM+NRvkzqehpdrrhi5ru/uF02HjfocFBoyVrId/RCXLqqux5K8rdZkhnx
-	VZtPIlQ5CMmF4NUg51bm6yx6rTjT1xeJawWOrlAkfdnowtaSodrkPyTQz6Ysb0fOk1fqH1CR0mz
-	MTdhWDG/SpN+8l7AkyUbGanU1N758ylY3H6LcwYfvsJgygxhx4gXnLep/neVbj0JMOics26Nj7k
-	/6UY++EN8oTZR75AL7vNGogw==
-X-Received: by 2002:a05:6000:ec7:b0:47f:77a8:7e20 with SMTP id ffacd0b85a97d-47f77a87e95mr11285574f8f.35.1784711423685;
-        Wed, 22 Jul 2026 02:10:23 -0700 (PDT)
-Received: from labdl-itc-sw10.tmt.telital.com ([2a01:7d0:4800:7:bc9c:3808:e25e:32ee])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bb5a46sm4406792f8f.9.2026.07.22.02.10.20
+        d=1e100.net; s=20251104; t=1784711667; x=1785316467;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=COubnejOb/3v47cpwE+v+WjurVSix4Lp7TgAJigf9YY=;
+        b=GPcPMUp+nqcc2IvSxhUabfsXdXJTjXdz9tGJLjef+Dm92xmN20Is448s31HsH1M7iZ
+         7iy7DLIx+fZCeOgn85i2F9/nYkSC5O33stxZnt3nGSV89uwTHA994Rp+tSwoHTlqT3Vb
+         e3fiQgIjVA7fBpPLkN2lrYgnlzMKATnEcVCsjINBsy5gY1cET56LFBTpUQcI5ojC22cP
+         SVqWxhCM0iUAfcLptHHgYeEsDQjxu7QUW8rrKunas4gDYB8J/9ILz3jkEtcMr7EpKqwc
+         SBa+ZlMqHg7Foeh9L18Edx/UrlX2JR7uhZBtBJtaKYsh95NMgIPLXJDJBADVcALTODt4
+         vKWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpQgf6CaxdSrif1oILAJi3d8LvGtt2YtxNS1P8Ivo0ih1ympFMTaoisLeE7X0UPHowD7IBszM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzp24VHHdj/t3bJEN1morOwl9mPTgAqKy3A2P17fPBlygl7oyMG
+	o8PG+Sdib38HeJBupTqfEi/h7AT9W2LCASRcWixcCl7dqZcLjQpSuowIteiQ6lOG5UOh+ZG0gl2
+	j65/rK1o+pZPYCWY23xB9X4gdnV+R/8U13qx7VyLF2GbOIFZtUx3zbNyoMA==
+X-Gm-Gg: AR+sD10mZyT/PXH/TEvDxL2WtR2dpMRfrKC4G//QJa5b7Unif+0MaGXOyxukSt2re8s
+	aVL3uhxDlbppjtPTT2rfuLAepr0r8+otNqt7YyW9VzIiJScVk3zMunlQuEkaFCj1he/FG9z+g2K
+	RD0mqpcWOxA1Wg3EiWCbAYuE/x7KSHmc0SRKRolXeQeSC8dnxg95gLSCnbubgNZNBBMhwt6gFZA
+	o+C+rXXDOfl6dp3SR1ogT2ej3qVWtsraKxaBg0wUCSmRJToDN0yYpqNI082MbVZFREuSerlewP0
+	v03mHxfl+PeeG8jTclAIbEc2rcamr0+2egrtcGzOK7C9q9VhsUT2bJ8Ih+OgMHHmzy3MHfOQkfF
+	VurJR9vTAomfrBzEZYo070IwGAyWoPUtWmSASJvw+HK4SzaIEuw==
+X-Received: by 2002:a05:6000:402c:b0:47f:7759:89df with SMTP id ffacd0b85a97d-47f77598aeamr15702380f8f.3.1784711667421;
+        Wed, 22 Jul 2026 02:14:27 -0700 (PDT)
+X-Received: by 2002:a05:6000:402c:b0:47f:7759:89df with SMTP id ffacd0b85a97d-47f77598aeamr15702319f8f.3.1784711666793;
+        Wed, 22 Jul 2026 02:14:26 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f8635c8d7sm3212686f8f.21.2026.07.22.02.14.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 02:10:23 -0700 (PDT)
-From: Daniele Palmas <dnlplm@gmail.com>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH net-next v2 2/2] net: wwan: add exclusive open mode capability to AT and QCDM ports
-Date: Wed, 22 Jul 2026 11:04:51 +0200
-Message-ID: <20260722090931.2637025-3-dnlplm@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260722090931.2637025-1-dnlplm@gmail.com>
-References: <20260722090931.2637025-1-dnlplm@gmail.com>
+        Wed, 22 Jul 2026 02:14:26 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:14:23 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v5 2/5] vhost/vsock: suppress EHOSTUNREACH fast-fail
+ during CPR pause
+Message-ID: <amCJ4x8EGtHjVRM7@sgarzare-redhat>
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-3-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260720102241.371610-3-andrey.drobyshev@virtuozzo.com>
 
-Add exclusive open mode capability to AT and QCDM ports to improve
-compatibility with user-space tools using the Qualcomm diagnostic
-device (e.g. libqcdm).
+On Mon, Jul 20, 2026 at 01:22:38PM +0300, Andrey Drobyshev wrote:
+>Earlier commit bb26ed5f3a8b ("vhost/vsock: Refuse the connection
+>immediately when guest isn't ready") added a fast-fail in
+>vhost_transport_send_pkt().  It rejects every host send with -EHOSTUNREACH
+>until the destination calls SET_RUNNING(1).  The fast-fail condition checks
+>whether device's backends are dropped, and if they're, the guest is
+>considered to be not ready.
+>
+>However, there might be other reasons for backends to be nulled.  In
+>particular, when QEMU is performing CPR (checkpoint-restore) migration,
+>device ownership is being RESET and SET again, which leads to backends
+>drop and reattach.  If we end up connecting during this window, an
+>AF_VSOCK client gets -EHOSTUNREACH, which is wrong.
+>
+>Add an 'ever_started' flag which is set once in vhost_vsock_start() and is
+>never cleared.  The behaviour changes to:
+>
+>  * When device was never started -> flag is unset -> no listener can
+>    exist yet -> fast-fail;
+>  * Once the device starts -> flag is set -> we don't fast-fail ->
+>    we queue and preserve during any later stop / CPR pause.
+>
+>The VHOST_RESET_OWNER ioctl is implemented in a following patch, and
+>without RESET_OWNER the problem we fix here isn't manifesting - thus
+>this patch is a preparation to support RESET_OWNER.
+>
+>Important caveat: after the first start, a connect during any stopped
+>window is queued instead of fast-failed.  That was the behaviour before
+>the patch bb26ed5f3a8b, and we're restoring it now.  However we still
+>keep the behaviour originally intended by that commit (i.e. fast-fail if
+>there's no real listener yet) while fixing the CPR path.
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Denis V. Lunev <den@openvz.org>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+>---
+> drivers/vhost/vsock.c | 22 ++++++++++++----------
+> 1 file changed, 12 insertions(+), 10 deletions(-)
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
----
- drivers/net/wwan/wwan_core.c | 30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 8168239e52c3..8acb09dcb83a 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -22,6 +22,7 @@
- #include <linux/termios.h>
- #include <linux/gnss.h>
- #include <linux/wwan.h>
-+#include <linux/tty.h>
- #include <net/rtnetlink.h>
- #include <uapi/linux/wwan.h>
- 
-@@ -79,7 +80,7 @@ struct wwan_device {
-  * @data_lock: Port specific data access serialization
-  * @headroom_len: SKB reserved headroom size
-  * @frag_len: Length to fragment packet
-- * @at_data: AT port specific data
-+ * @at_data: AT/QCDM port specific data
-  * @gnss: Pointer to GNSS device associated with this port
-  */
- struct wwan_port {
-@@ -98,6 +99,7 @@ struct wwan_port {
- 		struct {
- 			struct ktermios termios;
- 			int mdmbits;
-+			unsigned long flags;
- 		} at_data;
- 		struct gnss_device *gnss;
- 	};
-@@ -748,6 +750,14 @@ static int wwan_port_op_start(struct wwan_port *port)
- 		goto out_unlock;
- 	}
- 
-+	/* Check exclusive open mode for AT and QCDM ports */
-+	if ((port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) &&
-+	    test_bit(TTY_EXCLUSIVE, &port->at_data.flags) &&
-+	    !capable(CAP_SYS_ADMIN)) {
-+		ret = -EBUSY;
-+		goto out_unlock;
-+	}
-+
- 	/* If port is already started, don't start again */
- 	if (!port->start_count)
- 		ret = port->ops->start(port);
-@@ -769,6 +779,8 @@ static void wwan_port_op_stop(struct wwan_port *port)
- 		if (port->ops)
- 			port->ops->stop(port);
- 		skb_queue_purge(&port->rxq);
-+		if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM)
-+			clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
- 	}
- 	mutex_unlock(&port->ops_lock);
- }
-@@ -1031,6 +1043,22 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
- 		break;
- 	}
- 
-+	case TIOCEXCL:
-+		set_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+		break;
-+
-+	case TIOCNXCL:
-+		clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+		break;
-+
-+	case TIOCGEXCL:
-+	{
-+		int excl = test_bit(TTY_EXCLUSIVE, &port->at_data.flags);
-+
-+		ret = put_user(excl, (int __user *)arg);
-+		break;
-+	}
-+
- 	default:
- 		ret = -ENOIOCTLCMD;
- 	}
--- 
-2.43.0
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
