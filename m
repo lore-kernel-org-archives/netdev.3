@@ -1,448 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA69388E61
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4693C1974
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 09:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784713357; cv=none; b=rP3dUmj5O/rTIhM37Mp66BuGDzgHgILJfsqFRnvylyFiKhF8J1iZ+G8DNunYT0hFGlZPKtDzzHElLqpCEJcGgWwDREEJJ+X5PvFwlLAhAYIgiKhiSb40fjOTxpcdmaEQE7bcSKf5LTSsS2A4obPac+vH2rfGt+DYTCMUezxBa2E=
+	t=1784713424; cv=none; b=epb1jdEOfypiBV5hGoY5zl+ByDQvAZW/op1FnfDSkD7Qv0hjaXUsJ5QpVm6pP3y60Dy696ViZkwBNDGMDff2D0RHpowjYeI0S5rQhF4HS3rcTxhbKNXiBbm2OhjpSZqMid7SdkspBENzbPJuSxwKuDUZAc7rMRFZLQmcgtRF8g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784713357; c=relaxed/simple;
-	bh=V9UnnDW17fAVgxSyicNTBj6I6Eu3bQq2w4UGzKPEsXs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4Da4j8QqrP6TtlX7ALvVf6b81zyknz61G2LoidPJn0M5EtiqbVZw82S2nphdjzZseJ1oCpvLnaYNZBSIHaGZist9DnU1tc5MRZyUX/nV1BFWP0pA2qfXTDp1xiCJOX5iSCyB7wF+dsQywTeaxY0ERyt+HjJcHUvbuIHzp9VuRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=avIpk01o; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784713424; c=relaxed/simple;
+	bh=0Yu4rlSKE6ROlYI+xvQFCojN8cuCLeFtTpz/TZVKheI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xklh6O60DBvZabxiwYtS1kvc/2JzJ0AZ5xMatQEz9RVB/6wF1fvzX4SkzYYjgyxcfduSaP3CyyV9VaG0Hoa8yTGbmj0UoqdxjQFhbT5DaBDxdLyzjKj9rVNg5Z/IqalX5FUsiwC06FDt5sRgIlY6S6ZFARtQhQj7knxB9x5NNB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DlEBd4UO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=m4iGIw4f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="avIpk01o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784713347; x=1816249347;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=V9UnnDW17fAVgxSyicNTBj6I6Eu3bQq2w4UGzKPEsXs=;
-  b=avIpk01ov6hCuJJOtKCMlZjeZGSad+0gNYn9VtgoGesLlglcBhrPq1It
-   yZYo1L6OKlv4cLxzIgtQ+jdtmoRSVnkyGKKcVPyWfFtbj8MJb/5a1iz9H
-   bG2ZSuBX+GPQdFQ9Gla4kPOorpeqIh2hUBgIWklvbcgjmQw77jHhTRd9H
-   5Aix+JQDm1gg9KWXOLgUfL1HwtMMle2r3DH5G/XEqK5ZuhWoRzKCYaFpE
-   VmoeiPU9dqTDG/cSl2d/ZtF10lifQ1sUof/qRlRGwF2gY1Irr1QRS1oil
-   lwzK8LNSbM4QnnIxkvAf4yZanMAWp1tMGOrpAdv6ZwgnwCn32cwpNNt0b
-   Q==;
-X-CSE-ConnectionGUID: WBq6KT2WRM6/mCVbiOx24w==
-X-CSE-MsgGUID: JWWuyZgiQdWQ9v+71wvwyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="95706079"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="95706079"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 02:42:23 -0700
-X-CSE-ConnectionGUID: 3tCAdoqPQ8+s84EwyHIAOw==
-X-CSE-MsgGUID: AcgoeWpLTxyiyQQ0DO/sTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="254647412"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 02:42:15 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org
-Cc: aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	kuba@kernel.org,
-	simona.vetter@ffwll.ch,
-	airlied@gmail.com,
-	pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com,
-	ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com,
-	ravi.kishore.koppuravuri@intel.com,
-	raag.jadav@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mallesh.koujalagi@intel.com,
-	soham.purkait@intel.com,
-	Riana Tauro <riana.tauro@intel.com>,
-	Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH v6 1/2] drm/drm_ras: Add drm_ras netlink error event
-Date: Wed, 22 Jul 2026 15:11:36 +0530
-Message-ID: <20260722094134.3036087-5-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260722094134.3036087-4-riana.tauro@intel.com>
-References: <20260722094134.3036087-4-riana.tauro@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DlEBd4UO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="m4iGIw4f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784713418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+	b=DlEBd4UOWy1JooXFCICfErUOmkGX2kNPeWuWyvk6DC/XjhUK5Ed4o5wS148UP+xZW+oxZQ
+	gcxelNvAMDRSXNMnxWbfY+AIVNgzJ+gCe4LMwKOK5mopjszjOdZfo5d9QKMkVki+IV/0e+
+	GNJofbLDZ/pIsGqVyzK9RR5xJf9GY7I=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-CuolMbsjNFW28dpMg1J8cQ-1; Wed, 22 Jul 2026 05:43:37 -0400
+X-MC-Unique: CuolMbsjNFW28dpMg1J8cQ-1
+X-Mimecast-MFC-AGG-ID: CuolMbsjNFW28dpMg1J8cQ_1784713416
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493e94719e7so84543295e9.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 02:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784713416; x=1785318216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+        b=m4iGIw4fwMJ4eClSg4VQcJJ7nO0RUDgRRwOgdEklc68gUDuxiMNbBggNaIsUPuK8fR
+         8USwE3AvOROPdKhxhfDEgtIkOC0gpkcPqe9nABLTRuGbDjcqz9U7Tj8s+swjAlFSv8qX
+         uatAXgHpoe40T2A3OkRaWEsQNHZZrD+vhkXmAkY4bfZUqS/fYKAwcrlX4NNhDGssPpNc
+         LZSpGwzDfjNrFgwJzl/hhAspG1Gy14/J0Ynum6kSD3CQLi47dMqdiEszi5FNl9gJ4Qgm
+         FpjJI1i0t+8ctJnGxUtxfIYFGFePXmotNFCCZC1XYjWIY9X+UKXu9h8V0t4k3cXxie0P
+         1jEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784713416; x=1785318216;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+        b=BUplBU+IaKXPiJC/7+2yGcPvbzgeq0HeHefodA2/Sot8CnCREw1+2TBN1sZq3hwpHC
+         p8o/aDC6yc3oLsIAG8JYWxOydbtgc4qRWG8JcotQPw3fYM0JoamlpWfEfXfZ24F1IOmg
+         Ipm1ePFNqqOFXTrk9MeMlH+69XsFyOixmfkA8iQQQfwA3jbYXaxLhsW3dnxyYklP5Vnh
+         L0lsytc0W3Swlz8IQupLzrTwdwCtTw1vcVMXL9rHZ79c8sdytrhc4tX9WalNvRjaYLhe
+         5b+OpmKsMakv+RvWPZfQFcq6j4JELJxtDF1T5DC0yxSXDft5C7Y3enIrbSg+c1Ou0ddW
+         v9SQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpyOw/Q7qmbfHnoR7PgGYIfkvgwSV3IZ3NuR8kfG5SkRFDKCqKTPKHcK8GRGUAPoAKdoSQdbRs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrqQV4hekh1CsBDFfSkNOdxVkMHbEhbKiVVOmrsmlKP16MftrU
+	O+PwKWgRg4gFVeOQSZk0PcVzMoad5uCzsxYZi4pENpxjVYQ0bvlCA/K9ZxmfaS9TVySfwCYbTf1
+	zF6w5Clej2WJyw90db1N6VvLYTpxvBRQQRcouUSkF3LGJ0fmmkUt4aec2ew==
+X-Gm-Gg: AR+sD10p9Ge/RN72MYrE+FRNV4QYvyfYDoNtkmcupnDOSOz7UpkFZqHeG2BLQ48/+R2
+	w3K4zFWchbnoYbEuJM6JdQnKnoZEehdgZgKXMA+LjKaCKCEzEMkESJMBOFgMdoCXAZEnW120Cj8
+	4+elg4jHHQBvAJKb2ijsvUo0H/1ituir728HOwbKbZ72+tem7q74tu+s7wWUsJfCjLGRrq6UQet
+	QPPREu9puYUHildKNEuqSXQgVqtBtjchHj/ecvcajatGCuKYADgX1Q8Qt6G71XM4jZzpuL/3O0K
+	IPkuOYEcOytTMgs9lEfYFUqY9VlACgw83KiGqosyfZ6IUE0aCbZ1NRCm1Q9MMpzEIvUAwtS2oGj
+	VdlX2jEwWECh+zEL/xatGCBt8aegD4cu+XnnCfx3rgMTaKB2geg==
+X-Received: by 2002:a05:600c:42c6:b0:495:4182:4456 with SMTP id 5b1f17b1804b1-4954a4104e1mr155441605e9.29.1784713416061;
+        Wed, 22 Jul 2026 02:43:36 -0700 (PDT)
+X-Received: by 2002:a05:600c:42c6:b0:495:4182:4456 with SMTP id 5b1f17b1804b1-4954a4104e1mr155441405e9.29.1784713415638;
+        Wed, 22 Jul 2026 02:43:35 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bb81dcsm4825813f8f.12.2026.07.22.02.43.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 02:43:34 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:43:29 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <amCPLOrnpYmr5n0p@sgarzare-redhat>
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
 
-Define a new netlink event 'error-event' and a new multicast group
-'error-report' in drm_ras. Each event contains device name, node and
-error information to identify the error triggering the event.
+On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>vq->worker and queues work on it.  vhost_workers_free() however clears
+>the vq->worker pointers and immediately frees the workers, without
+>waiting for a grace period.  A caller that fetched the worker right
+>before the pointer was cleared can therefore still be queueing work on
+>it while it is freed.  And even when the queueing itself wins the race,
+>the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>future attempts to queue it are silently skipped.
+>
+>None of the current callers can actually hit this: net and scsi stop
+>their virtqueues before the workers are freed, and vsock unhashes the
+>device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>in vhost-vsock keeps the device hashed while its workers are freed, so
+>the lockless send/cancel paths become able to race with the teardown.
+>
+>Fix this by clearing the vq->worker pointers, waiting for a grace
+>period, and then flushing the workers so any work the last readers
+>queued runs before the workers are freed.
+>
+>Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vhost.c | 11 +++++++++++
+> 1 file changed, 11 insertions(+)
 
-Add drm_ras_nl_error_event() to trigger an event from the driver.
-Userspace must subscribe to 'error-report' to receive 'error-event'
-notifications.
+Sashiko reported some potential issues here:
+https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
 
-Usage:
+IMO the first one is pre-existing, but not really sure it is a real 
+issue since happening when the worker/vmm is going to be killed.
 
-$ sudo ynl --family drm_ras --subscribe error-report
+The second one also not sure if it's an issue since the sender is not 
+lockless IIUC.
 
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
-Cc: Lijo Lazar <lijo.lazar@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
----
-v2: remove redundant initialization
-    remove unnecessary space
-    use ynl in commit message and doc (Raag)
-    simplify doc for error-event attrs
+But, please can you double check them?
 
-v3: rename error-notify to error-report
-    Replace notify with report across the file (Raag)
+Thanks,
+Stefano
 
-v4: send event to all network namespaces (Sashiko)
-    remove has_listeners check
-
-v5: add context in function for choosing GFP_KERNEL (Sashiko)
-    add additional checks for node registration, range checks (Raag)
----
- Documentation/gpu/drm-ras.rst            |  21 +++++
- Documentation/netlink/specs/drm_ras.yaml |  48 +++++++++++
- drivers/gpu/drm/drm_ras.c                | 101 +++++++++++++++++++++++
- drivers/gpu/drm/drm_ras_nl.c             |   6 ++
- drivers/gpu/drm/drm_ras_nl.h             |   4 +
- include/drm/drm_ras.h                    |   5 ++
- include/uapi/drm/drm_ras.h               |  15 ++++
- 7 files changed, 200 insertions(+)
-
-diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
-index 83c21853b74b..406e4c49bac1 100644
---- a/Documentation/gpu/drm-ras.rst
-+++ b/Documentation/gpu/drm-ras.rst
-@@ -56,6 +56,7 @@ User space tools can:
-   ``node-id`` and ``error-id`` as parameters.
- * Clear specific error counters with the ``clear-error-counter`` command, using both
-   ``node-id`` and ``error-id`` as parameters.
-+* Subscribe to the ``error-report`` multicast group to receive ``error-event``.
- 
- YAML-based Interface
- --------------------
-@@ -111,3 +112,23 @@ Example: Clear an error counter for a given node
- 
-     sudo ynl --family drm_ras --do clear-error-counter --json '{"node-id":0, "error-id":1}'
-     None
-+
-+Example: Subscribe to ``error-report`` multicast group
-+
-+.. code-block:: bash
-+
-+    sudo ynl --family drm_ras --output-json --subscribe error-report
-+
-+.. code-block:: json
-+
-+    {
-+        "name": "error-event",
-+        "msg": {
-+            "device-name": "0000:03:00.0",
-+            "node-id": 1,
-+            "node-name": "uncorrectable-errors",
-+            "error-id": 1,
-+            "error-name": "error_name1",
-+            "error-value": 1
-+        }
-+    }
-diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
-index e113056f8c01..8aed3d4515e5 100644
---- a/Documentation/netlink/specs/drm_ras.yaml
-+++ b/Documentation/netlink/specs/drm_ras.yaml
-@@ -69,6 +69,33 @@ attribute-sets:
-         name: error-value
-         type: u32
-         doc: Current value of the requested error counter.
-+  -
-+    name: error-event-attrs
-+    attributes:
-+      -
-+        name: device-name
-+        type: string
-+        doc: Device (PCI BDF, UUID) that reported the error.
-+      -
-+        name: node-id
-+        type: u32
-+        doc: ID of the node that reported the error.
-+      -
-+        name: node-name
-+        type: string
-+        doc: Name of the node that reported the error.
-+      -
-+        name: error-id
-+        type: u32
-+        doc: ID of the error counter.
-+      -
-+        name: error-name
-+        type: string
-+        doc: Name of the error.
-+      -
-+        name: error-value
-+        type: u32
-+        doc: Current value of the error counter.
- 
- operations:
-   list:
-@@ -124,3 +151,24 @@ operations:
-       do:
-         request:
-           attributes: *id-attrs
-+    -
-+      name: error-event
-+      doc: >-
-+           Report an error event to userspace.
-+           The event includes the device, node and error information
-+           of the error that triggered the event.
-+      attribute-set: error-event-attrs
-+      mcgrp: error-report
-+      event:
-+        attributes:
-+          - device-name
-+          - node-id
-+          - node-name
-+          - error-id
-+          - error-name
-+          - error-value
-+
-+mcast-groups:
-+  list:
-+    -
-+      name: error-report
-diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
-index d6eab29a1394..39155fb514de 100644
---- a/drivers/gpu/drm/drm_ras.c
-+++ b/drivers/gpu/drm/drm_ras.c
-@@ -41,6 +41,11 @@
-  *    Userspace must provide Node ID, Error ID.
-  *    Clears specific error counter of a node if supported.
-  *
-+ * 4. ERROR_REPORT: Subscribe to this multicast group to receive error events
-+ *
-+ * 5. ERROR_EVENT: Report an error event to userspace. The event contains device, node
-+ *    and error information that triggered the event.
-+ *
-  * Node registration:
-  *
-  * - drm_ras_node_register(): Registers a new node and assigns
-@@ -186,6 +191,34 @@ static int msg_reply_value(struct sk_buff *msg, u32 error_id,
- 			   value);
- }
- 
-+static int msg_put_error_event_attrs(struct sk_buff *msg, struct drm_ras_node *node,
-+				     u32 error_id, const char *error_name, u32 value)
-+{
-+	int ret;
-+
-+	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME, node->device_name);
-+	if (ret)
-+		return ret;
-+
-+	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID, node->id);
-+	if (ret)
-+		return ret;
-+
-+	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME, node->node_name);
-+	if (ret)
-+		return ret;
-+
-+	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID, error_id);
-+	if (ret)
-+		return ret;
-+
-+	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME, error_name);
-+	if (ret)
-+		return ret;
-+
-+	return nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE, value);
-+}
-+
- static int doit_reply_value(struct genl_info *info, u32 node_id,
- 			    u32 error_id)
- {
-@@ -222,6 +255,74 @@ static int doit_reply_value(struct genl_info *info, u32 node_id,
- 	return genlmsg_reply(msg, info);
- }
- 
-+/**
-+ * drm_ras_nl_error_event() - Report an error event
-+ * @node: Node structure
-+ * @error_id: ID of the error
-+ * @error_name: Name of the error
-+ * @value: Value of the error counter
-+ *
-+ * Report an error-event to userspace using the error-report multicast group.
-+ *
-+ * Context: Process context only. Uses %GFP_KERNEL and multicasts to all
-+ *          netns, which is unbounded work; callers in interrupt handlers
-+ *          or other atomic context must defer event.
-+ *
-+ * Return: 0 on success, or negative errno on failure.
-+ */
-+int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
-+			   u32 value)
-+{
-+	struct genl_info info;
-+	struct sk_buff *msg;
-+	struct nlattr *hdr;
-+	int ret;
-+
-+	if (!node || !error_name)
-+		return -EINVAL;
-+
-+	/* Check the node is currently registered */
-+	if (xa_load(&drm_ras_xa, node->id) != node)
-+		return -ENOENT;
-+
-+	/* Currently only Error Counter events are supported */
-+	if (node->type != DRM_RAS_NODE_TYPE_ERROR_COUNTER)
-+		return -EOPNOTSUPP;
-+
-+	/* Check the error ID is within the valid range */
-+	if (error_id < node->error_counter_range.first ||
-+	    error_id > node->error_counter_range.last)
-+		return -EINVAL;
-+
-+	genl_info_init_ntf(&info, &drm_ras_nl_family, DRM_RAS_CMD_ERROR_EVENT);
-+
-+	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	hdr = genlmsg_iput(msg, &info);
-+	if (!hdr) {
-+		ret = -EMSGSIZE;
-+		goto free_msg;
-+	}
-+
-+	ret = msg_put_error_event_attrs(msg, node, error_id, error_name, value);
-+	if (ret)
-+		goto cancel_msg;
-+
-+	genlmsg_end(msg, hdr);
-+	genlmsg_multicast_allns(&drm_ras_nl_family, msg, 0, DRM_RAS_NLGRP_ERROR_REPORT);
-+
-+	return 0;
-+
-+cancel_msg:
-+	genlmsg_cancel(msg, hdr);
-+free_msg:
-+	nlmsg_free(msg);
-+	return ret;
-+}
-+EXPORT_SYMBOL(drm_ras_nl_error_event);
-+
- /**
-  * drm_ras_nl_get_error_counter_dumpit() - Dump all Error Counters
-  * @skb: Netlink message buffer
-diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
-index dea1c1b2494e..9d3123cc9f9c 100644
---- a/drivers/gpu/drm/drm_ras_nl.c
-+++ b/drivers/gpu/drm/drm_ras_nl.c
-@@ -58,6 +58,10 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
- 	},
- };
- 
-+static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
-+	[DRM_RAS_NLGRP_ERROR_REPORT] = { "error-report", },
-+};
-+
- struct genl_family drm_ras_nl_family __ro_after_init = {
- 	.name		= DRM_RAS_FAMILY_NAME,
- 	.version	= DRM_RAS_FAMILY_VERSION,
-@@ -66,4 +70,6 @@ struct genl_family drm_ras_nl_family __ro_after_init = {
- 	.module		= THIS_MODULE,
- 	.split_ops	= drm_ras_nl_ops,
- 	.n_split_ops	= ARRAY_SIZE(drm_ras_nl_ops),
-+	.mcgrps		= drm_ras_nl_mcgrps,
-+	.n_mcgrps	= ARRAY_SIZE(drm_ras_nl_mcgrps),
- };
-diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
-index a398643572a5..03ec275aca92 100644
---- a/drivers/gpu/drm/drm_ras_nl.h
-+++ b/drivers/gpu/drm/drm_ras_nl.h
-@@ -21,6 +21,10 @@ int drm_ras_nl_get_error_counter_dumpit(struct sk_buff *skb,
- int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
- 					struct genl_info *info);
- 
-+enum {
-+	DRM_RAS_NLGRP_ERROR_REPORT,
-+};
-+
- extern struct genl_family drm_ras_nl_family;
- 
- #endif /* _LINUX_DRM_RAS_GEN_H */
-diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
-index 0beede3ddc4e..ee2caa0edc6f 100644
---- a/include/drm/drm_ras.h
-+++ b/include/drm/drm_ras.h
-@@ -80,9 +80,14 @@ struct drm_device;
- #if IS_ENABLED(CONFIG_DRM_RAS)
- int drm_ras_node_register(struct drm_ras_node *node);
- void drm_ras_node_unregister(struct drm_ras_node *node);
-+int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
-+			   u32 value);
- #else
- static inline int drm_ras_node_register(struct drm_ras_node *node) { return 0; }
- static inline void drm_ras_node_unregister(struct drm_ras_node *node) { }
-+static inline int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id,
-+					 const char *error_name, u32 value)
-+{ return 0; }
- #endif
- 
- #endif
-diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
-index 218a3ee86805..eab8231aa87c 100644
---- a/include/uapi/drm/drm_ras.h
-+++ b/include/uapi/drm/drm_ras.h
-@@ -38,13 +38,28 @@ enum {
- 	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
- };
- 
-+enum {
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME = 1,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE,
-+
-+	__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX,
-+	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
-+};
-+
- enum {
- 	DRM_RAS_CMD_LIST_NODES = 1,
- 	DRM_RAS_CMD_GET_ERROR_COUNTER,
- 	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
-+	DRM_RAS_CMD_ERROR_EVENT,
- 
- 	__DRM_RAS_CMD_MAX,
- 	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
- };
- 
-+#define DRM_RAS_MCGRP_ERROR_REPORT	"error-report"
-+
- #endif /* _UAPI_LINUX_DRM_RAS_H */
--- 
-2.47.1
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..d6e235c25254 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>
+> 	for (i = 0; i < dev->nvqs; i++)
+> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+
+>+	/*
+>+	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>+	 * reader that fetched a worker before we cleared the pointers above
+>+	 * may still be queueing work on it.  Wait for those readers to
+>+	 * finish, then flush so any work they queued runs (clearing
+>+	 * VHOST_WORK_QUEUED) before the workers are freed.
+>+	 */
+>+	synchronize_rcu();
+>+	vhost_dev_flush(dev);
+>+
+> 	/*
+> 	 * Free the default worker we created and cleanup workers userspace
+> 	 * created but couldn't clean up (it forgot or crashed).
+>-- 
+>2.47.1
+>
 
