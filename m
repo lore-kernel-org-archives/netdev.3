@@ -1,295 +1,165 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8229C44213F
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF5481AAE;
+	Wed, 22 Jul 2026 11:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784718074; cv=none; b=O/3S7e4KBJ2P7JzKZt1UtqgAe1N+0xQ2JNz8POIYTzlr3kSliEQdkmtDJTtE5tRiMeCQ3xr/yFKA9eHc3H/or8RuLdWPAUgDHAq5li8Lilb5cM1MMu73s12KNTdxm2BJNqsAlYvtByvRsC5UlvQgjX/EHDch/AY7hvNVbxlTdgE=
+	t=1784718104; cv=none; b=L0IrM111snrul3OPHLbF6aMYWu7cNSomPU8RXvBwULHTxcUk3mLaTo4H05i2UnFfSRVKJSRE6yZUwvQYt91eh8HwGOW0+w0icDXEO2ZbEyZb98BtJgkosrQkph53fcfMfV9ftHCUyACAZh9DXlZKm1nbUZIAMv0fuMKDdO4F/Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784718074; c=relaxed/simple;
-	bh=l4IZePHQHB+DScCVirb0CXs9ouX5UNF/MLRitQsNMSI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RzVtAWoKtQGT0xhN04oiyzrZtvE4J1o6kI5lmaaB5bc6ESlqJGube8asktBeoVOWVES5TTDpWD9vkoeP2cYw1Pvmcfg9xs+zlemW5JdabjwSkAmKPCLTKTrjILLUCOVVLFThA61POG2GoabyS6VG1iZ/sNEUSv2HZlTdHYDEe/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=TwLD5H7K; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1784718104; c=relaxed/simple;
+	bh=9YaNevITp5zziLKtTkueKQrfLGXZmMVSfB0pQXoOJI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTnvWxNSSjRLDHL29SM8Af5kqcuQUlz3CW1+ld3FRIPqnBruZ7r4QquZO+OKn5gthWTuqkIdJpsdHQWAdC9OIMyeNSdNzTEz2j+Sa4JZ6u4Uu8ecB6By9EYu0+4JDyQW1jgKgbb4s3VQS6yKakqbNrdKxBeX72Zvi8LrRDfOqUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=j/IMPHnd; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="TwLD5H7K"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15f020a223so1613134166b.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1784718071; x=1785322871; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cO+kmpUCCioIC76CwN3tZnRU7YIi9lxZbY59h36dT8U=;
-        b=TwLD5H7K0LIoVZC5JqYE/z4rnjsX86zgga0Ws3d94y+pg3If3cR7khx0kk84nxa/8G
-         Z4e91wseKkwY6kfj2Z3191Bta+RqjKFAeCQ2uJqQNYhY/sl4fCZMtKbmx/SwPyU40KAk
-         IOLmL/0LbQX+1JZcFzxhrMHp2f7x+ttBqrlcW89VrXhSAftHwXhKv+uWpYHVCTFv+N4q
-         pu9avxrz5CTHftQxm+lR1IUttibQwBYcEfs8tiudP7VgrzzgcdVHQNc+jX6Rhj/Fw0xX
-         dqqqDhsmWYXyFayFstLdV/ADW7iILzPJBv04dAkQR45JLeWDyYlVAeVc09EU/dBjI+Rx
-         yf4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784718071; x=1785322871;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=cO+kmpUCCioIC76CwN3tZnRU7YIi9lxZbY59h36dT8U=;
-        b=LomDmL/LEwEBXBSIr7gFOleTIuKEb1oqBno8roTjSqT6ZTB1916SdFFeth+HiX8+zX
-         u+U9IAfYdJXN2JDkvCUikFiodLznmyEdxEJ7A3+sI5KLypWDk5ZiE+xP65EZ5tab6zti
-         8C6o5oZ+NNrGMptDIIY0Rdh0K6VD7jpHydiHxnQXOWE+ZwuxzBD9OgBwTlB9p9J5uvHv
-         F43aA/gihFaqtfYxqiUlsnOg+ajZQp5ko7Yzc3MnkEZcNLLBGhl4Idge4JyYJCgGk2aK
-         TnwqKZFpHWDMmJAhBnD0beagTEtY8gdLhhNmVnlUN5spOR/osDKW3i3UUmG2zwb0D9Fk
-         GfSA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/4an3cMhatDA08tRZkRYn5Kvc/AepoZYhG6/eF91Ui1DEUPXeQdwQf+a60QY7IFeMmp+eGZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRwXHb7in0mmoB2TZGBn/HfZtVXi3SEmV3ZEpwX6+H1CPKjlLR
-	cVitZ7vF4siYxk+nCC2v3Vc/yuoaN4iwY83YSItYoUqiAgBLRVf3+6BCykR77RtwDto=
-X-Gm-Gg: AR+sD13QxGOShxDqNcq0wuvCB4fQYB6Lt7cn/oPku/v3H7O16oZo5NHG4KzuXP2ZJ/d
-	yMp0uwTsqNN3vdfV88+sh7y/NeTOnY3/P32g+5+RTfbGwDg+5yQ1n3amK1u1kZoR4BOa4hLdvL8
-	4sA7coF2bUltTtCUD84llBal3cJQhpa0Uc1rvedc+ur0iCmmo+0Ld5r/eQ2FIXqqxIEETotHEh8
-	MxmmE7/qu9DMcH5kcOCKWNHDJXeDZ0plhMYqfJTbkVBfU0ybCeVosx56DUOM4upQjxpIwmjHSno
-	qvof9Gv6JLZy7vpaADosOxyT1bQIG57S9ZDYjUt7TVAaw8J/CMPq3A19HVFWR2zDuuZynYCCXj6
-	39nri/7VieSVVDsrsSzchCCDoR+4nZKvl5m9eYQX9i6kVqqXThBu/24fCHsnBAI3pida5Pq290b
-	vgLnUg
-X-Received: by 2002:a17:907:8b92:b0:c15:a9a8:66b with SMTP id a640c23a62f3a-c16b48a6687mr854852866b.63.1784718070571;
-        Wed, 22 Jul 2026 04:01:10 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32a78e0fsm84807466b.2.2026.07.22.04.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 04:01:10 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Nnamdi Onyeyiri <nnamdio@gmail.com>
-Cc: bpf@vger.kernel.org,  davem@davemloft.net,  edumazet@google.com,
-  horms@kernel.org,  jiayuan.chen@linux.dev,  john.fastabend@gmail.com,
-  kuba@kernel.org,  kuniyu@google.com,  ncardwell@google.com,
-  netdev@vger.kernel.org,  pabeni@redhat.com,
-  sashiko-reviews@lists.linux.dev,  linux-kernel@vger.kernel.org,
-  emil@etsalapatis.com
-Subject: Re: [PATCH v7 1/2] bpf, sockmap: handle spurious
- tcp_msg_wait_data() wakeup
-In-Reply-To: <20260721223807.75101-2-nnamdio@gmail.com> (Nnamdi Onyeyiri's
-	message of "Tue, 21 Jul 2026 23:38:06 +0100")
-References: <20260721223807.75101-1-nnamdio@gmail.com>
-	<20260721223807.75101-2-nnamdio@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Wed, 22 Jul 2026 13:01:09 +0200
-Message-ID: <87tsprl24q.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="j/IMPHnd"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66M9C1ml3592016;
+	Wed, 22 Jul 2026 11:01:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UvcPnd
+	rlYMa8S35/lSIPRT5TPd5cMCuiLuFhgPF5ijo=; b=j/IMPHnd3VJXMBPfwqI/xq
+	34frzBiFJQSjrBjy2rI++6RdHVBwjtE6CebGaRBkcY7+AVaCf8/6z8MapyFMSglc
+	9OeOJmyHZqa0A5UiZpCdfCD99xj+mha5Nt008vkCaM5HHt4ahqBKHt5vbWFPoqmp
+	KNldde9YVVsPod+km3RXGJ46e3TPunqt4loyUzs01gF6PlaL7UHvrXfFgycWv3ey
+	m8+zWQruxDU3Dg9sgqMnSadwMEmHwsFF8z7RvcInYLDzxq15WEnCmhS3reQHKzU+
+	0iBXQsOUMwNbynBp71rJMWnEIMiFkeb+WLCZcdNreuLVrPZUZ+93+DSsumoRpyYw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77k9asg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 11:01:34 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66MAngBr032515;
+	Wed, 22 Jul 2026 11:01:33 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktq751u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 11:01:33 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66MB1WNC16057018
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jul 2026 11:01:32 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD11D5808A;
+	Wed, 22 Jul 2026 11:01:32 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0BF235808D;
+	Wed, 22 Jul 2026 11:01:26 +0000 (GMT)
+Received: from [9.39.18.174] (unknown [9.39.18.174])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jul 2026 11:01:25 +0000 (GMT)
+Message-ID: <ea854b04-82c2-42af-a75f-2b2eec2ac224@linux.ibm.com>
+Date: Wed, 22 Jul 2026 16:31:24 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] MAINTAINERS: Update SHARED MEMORY COMMUNICATIONS
+ (SMC) maintainer entries
+To: Wenjia Zhang <wenjia@linux.ibm.com>, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux390-list@tuxmaker.boeblingen.de.ibm.com,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>, aswin@linux.ibm.com,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>
+References: <20260722085705.56755-1-wenjia@linux.ibm.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260722085705.56755-1-wenjia@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a60a30e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=SRrdq9N9AAAA:8 a=VwQbUJbxAAAA:8 a=gUIg_fxKUUYeLYk5HKsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDEwMyBTYWx0ZWRfX3cwNjSiVZuc7
+ 2EbGoinfLbEACTvBviRDMbWILue6VjEiiD4bzxVwvN5rKyMSAZMixf6yzLwW8ApgVql7R+RYRVF
+ 3BX5NJBEu3g5TuvhW/LKHVcRcPe0Kbf6TfIlwgZZB2IC7KZ1ItWDQpUyidh0wW/vyL6LgYYiT9T
+ XnjrZOVO8RH0nYpLk+fPjhOo72Wl2bj67xyMPZOv3M65CHvsoHtlkvOqeJ9zGAGQ8LEOrfAenIi
+ saeByChyUyboymHuIOBpGu7/lUKs25+RF9pl8uk8EfXAYGFfGtlIpiwu37l0PuqP419FZ3IFZeK
+ XPKGyM0VQ3fZsMRGDwKNB1/CgBMd+7/rREq9+qPd4/UB/CZPgyYiBFxLaJkn6GcsE1D5C3jFmts
+ k4GhdOrXLEG789GTbxk9Z2dXg/UHEbOvV76yROpwP3oVHAC2IgW5A8XGrD6nBOdKZWOCm0D2pw5
+ NzCkjtppYUSeaLgphyg==
+X-Proofpoint-ORIG-GUID: GEAo77438hLwA3xtFpg0yfSs0kKSZ8r7
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIyMDEwMyBTYWx0ZWRfX8A99qo/ECPbi
+ KbPB59c02UTDjCxEuXVutcYpVNbtdw3AjRgF7NkAGhNnC326aLNX6rjW/gEZhNx5u6fTbWrums7
+ QWisZanbB1/dIH7oVCD6us5POs3cpG8=
+X-Proofpoint-GUID: 5Djy9ADd-gmZI3y6yLyjYdpt53BQxtqv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-22_03,2026-07-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607220103
 
-On Tue, Jul 21, 2026 at 11:38 PM +01, Nnamdi Onyeyiri wrote:
-> recvfrom()/recv() are documented as only returning EAGAIN for blocking
-> sockets when they have a receive timeout configured.  However, adding a
-> blocking ipv4 tcp socket without a receive timeout to a sockmap will cause
-> EAGAIN errors sporadically.  A socket with a receive timeout may return
-> EAGAIN before the timeout expires.
->
-> There are 2 code paths affected by this:
->
->   1. tcp_bpf_recvmsg() - Used when the socket has been added to a sockmap
->      that has no verdict program attached.
->
->   2. tcp_bpf_recvmsg_parser() - Used when the socket has been added to a
->      sockmap that has a verdict program.  To reproduce this issue, it is
->      enough for the verdict program to do nothing but return SK_PASS.
->
-> In both cases this happens when tcp_msg_wait_data() wakes spuriously
-> (returning 0).  To fix it, we now loop back to msg_bytes_ready instead
-> of returning -EAGAIN on spurious wakeup.
->
-> To ensure the looping does not cause sockets with a SO_RCVTIMEO set to
-> wait excessively long, tcp_msg_wait_data() now takes a pointer to timeo,
-> allowing sk_wait_event() to update it as appropriate.
->
-> The logic in tcp_bpf_recvmsg_parser() that allow it to handle signals,
-> socket errors and closuers in its loop was also added to tcp_bpf_recvmsg().
->
-> Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
+
+
+On 22/07/26 2:27 pm, Wenjia Zhang wrote:
+> Due to a change in responsibilities, I can no longer serve as an SMC
+> maintainer and need to be removed from the MAINTAINERS list.
+> 
+> To reflect these organizational changes, promote Mahanta Jambigi
+> <mjambigi@linux.ibm.com> from reviewer to maintainer.
+
+Acked-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+
+> 
+> Signed-off-by: Wenjia Zhang <wenjia@linux.ibm.com>
 > ---
->  net/ipv4/tcp_bpf.c | 72 ++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 63 insertions(+), 9 deletions(-)
->
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index cc0bd73f36b6..1755fcf726fc 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -179,7 +179,7 @@ EXPORT_SYMBOL_GPL(tcp_bpf_sendmsg_redir);
->  
->  #ifdef CONFIG_BPF_SYSCALL
->  static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
-> -			     long timeo)
-> +			     long *timeo)
->  {
->  	DEFINE_WAIT_FUNC(wait, woken_wake_function);
->  	int ret = 0;
-> @@ -187,12 +187,12 @@ static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
->  	if (sk->sk_shutdown & RCV_SHUTDOWN)
->  		return 1;
->  
-> -	if (!timeo)
-> +	if (!*timeo)
->  		return ret;
->  
->  	add_wait_queue(sk_sleep(sk), &wait);
->  	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-> -	ret = sk_wait_event(sk, &timeo,
-> +	ret = sk_wait_event(sk, timeo,
->  			    !list_empty(&psock->ingress_msg) ||
->  			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
->  	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-> @@ -229,6 +229,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  	int copied_from_self = 0;
->  	int copied = 0;
->  	u32 seq;
-> +	long timeo;
->  
->  	if (unlikely(flags & MSG_ERRQUEUE))
->  		return inet_recv_error(sk, msg, len);
-> @@ -262,6 +263,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  		}
->  	}
->  
-> +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> +
->  msg_bytes_ready:
->  	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
->  	/* The typical case for EFAULT is the socket was gracefully
-> @@ -280,7 +283,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  	}
->  	seq += copied_from_self;
->  	if (!copied) {
-> -		long timeo;
->  		int data;
->  
->  		if (sock_flag(sk, SOCK_DONE))
-> @@ -299,7 +301,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  			goto out;
->  		}
->  
-> -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
->  		if (!timeo) {
->  			copied = -EAGAIN;
->  			goto out;
-> @@ -310,13 +311,15 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  			goto out;
->  		}
->  
-> -		data = tcp_msg_wait_data(sk, psock, timeo);
-> +		data = tcp_msg_wait_data(sk, psock, &timeo);
->  		if (data < 0) {
->  			copied = data;
->  			goto unlock;
->  		}
->  		if (data && !sk_psock_queue_empty(psock))
->  			goto msg_bytes_ready;
-> +		if (!data && timeo > 0)
-> +			goto msg_bytes_ready;
->  		copied = -EAGAIN;
->  	}
->  out:
-> @@ -355,6 +358,7 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  {
->  	struct sk_psock *psock;
->  	int copied, ret;
-> +	long timeo;
->  
->  	if (unlikely(flags & MSG_ERRQUEUE))
->  		return inet_recv_error(sk, msg, len);
-> @@ -371,14 +375,52 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  		return tcp_recvmsg(sk, msg, len, flags);
->  	}
->  	lock_sock(sk);
-> +
-> +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> +
->  msg_bytes_ready:
->  	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
->  	if (!copied) {
-> -		long timeo;
->  		int data;
->  
-> -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> -		data = tcp_msg_wait_data(sk, psock, timeo);
-> +		if (sock_flag(sk, SOCK_DONE)) {
-> +			ret = 0;
-> +			goto check_queues;
-> +		}
-> +
-> +		if (sk->sk_err) {
-> +			if (!sk_psock_queue_empty(psock))
-> +				goto msg_bytes_ready;
-> +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
-> +				release_sock(sk);
-> +				sk_psock_put(sk, psock);
-> +				return tcp_recvmsg(sk, msg, len, flags);
-> +			}
-> +			ret = sock_error(sk);
-> +			goto unlock;
-> +		}
+>  Kernels.code-workspace | 1 +
+>  MAINTAINERS            | 3 +--
+>  file                   | 0
+>  3 files changed, 2 insertions(+), 2 deletions(-)
+>  create mode 100644 Kernels.code-workspace
+>  create mode 100644 file
+> 
+> diff --git a/Kernels.code-workspace b/Kernels.code-workspace
+> new file mode 100644
+> index 000000000000..9e26dfeeb6e6
+> --- /dev/null
+> +++ b/Kernels.code-workspace
+> @@ -0,0 +1 @@
+> +{}
 
-Isn't that branch the same as:
+I believe this change happened by mistake. If yes, please remove it.
 
-        if (sk->sk_err) {
-                ret = sock_error(sk);
-                goto check_queues;
-        }
+> \ No newline at end of file
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 1ab8736850ea..f60ccc62e710 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24631,8 +24631,7 @@ SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS
+>  M:	D. Wythe <alibuda@linux.alibaba.com>
+>  M:	Dust Li <dust.li@linux.alibaba.com>
+>  M:	Sidraya Jayagond <sidraya@linux.ibm.com>
+> -M:	Wenjia Zhang <wenjia@linux.ibm.com>
+> -R:	Mahanta Jambigi <mjambigi@linux.ibm.com>
+> +M:	Mahanta Jambigi <mjambigi@linux.ibm.com>
+>  R:	Tony Lu <tonylu@linux.alibaba.com>
+>  R:	Wen Gu <guwen@linux.alibaba.com>
+>  L:	linux-rdma@vger.kernel.org
+> diff --git a/file b/file
+> new file mode 100644
+> index 000000000000..e69de29bb2d1
 
-?
-
-> +
-> +		if (sk->sk_shutdown & RCV_SHUTDOWN) {
-> +			ret = 0;
-> +			goto check_queues;
-> +		}
-> +
-> +		if (sk->sk_state == TCP_CLOSE) {
-> +			ret = -ENOTCONN;
-> +			goto check_queues;
-> +		}
-> +
-> +		if (!timeo) {
-> +			ret = -EAGAIN;
-> +			goto check_queues;
-> +		}
-> +
-> +		if (signal_pending(current)) {
-> +			ret = sock_intr_errno(timeo);
-> +			goto check_queues;
-> +		}
-> +
-> +		data = tcp_msg_wait_data(sk, psock, &timeo);
->  		if (data < 0) {
->  			ret = data;
->  			goto unlock;
-> @@ -390,6 +432,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  			sk_psock_put(sk, psock);
->  			return tcp_recvmsg(sk, msg, len, flags);
->  		}
-> +		if (!data && timeo > 0)
-> +			goto msg_bytes_ready;
->  		copied = -EAGAIN;
->  	}
->  	ret = copied;
-> @@ -398,6 +442,16 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  	release_sock(sk);
->  	sk_psock_put(sk, psock);
->  	return ret;
-> +
-> +check_queues:
-> +	if (!sk_psock_queue_empty(psock))
-> +		goto msg_bytes_ready;
-> +	if (!skb_queue_empty(&sk->sk_receive_queue)) {
-> +		release_sock(sk);
-> +		sk_psock_put(sk, psock);
-> +		return tcp_recvmsg(sk, msg, len, flags);
-> +	}
-> +	goto unlock;
->  }
->  
->  static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
