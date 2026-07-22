@@ -1,300 +1,159 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF8C3D410C
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784719379; cv=none; b=MB2mSRX6Q9JpSLIEPdp2tf5OvM1izj2zGAwQMAPbNFctTIj35x8ekR4htKvb91WbY1s+TeQ2AFaEQ9CAFcRNxXwitnzFYksybneEjy2aN8y5ujco34z/k2HbWtAg30ea7q9ini2enWuo8K8GsmAtqDehePs6EaV9xoWQYYkWxug=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784719379; c=relaxed/simple;
-	bh=wraTTlefdkdHPNlnRf6WJaDafAqE/c8Ugv2o/ebCXDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJtIyncKHjP2B8X4ruEFS1RTqZoPFckkUr76ix98rMIkp+bKZmJc1ONwqI4w29By99shJ8y7uDoGMPzqzqFRpYT+doebhP0HtoMgrI0Zc3/soHQGsQ3YLtWha1azCXSnoZxA+JYTLTzclLW4MEHCHlIdDAOCwk6JEikXCrK9Tzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RqHpui6S; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2220A2D7DF1
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784719898; cv=pass; b=Q+D7uaMj3hyuUEuCUcuH0Kmjdthcd51upGrqNEqiqURx903a/C4LE5p5ihnTIKxetjEAV1EM73GlAvS2R7I2YYlFAihnfxBHSHIFHRUvjSOnLKhm6AmBkIX1K0u9WT8+WC0MS+rxShck2lrGBYwgeqTRgigAEmTYEKx32iTzbdk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784719898; c=relaxed/simple;
+	bh=xBxSszPrdvyPtWwG/4+6rb+5HbJaMyzlQVfk8xogBCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aJLWfPhXCTDNh+iBifAeHwCT6LEWAQ6z7TqkefX84a4Vb3+fuw4xtGR/cYa2Pdg6hh3PmbHyOM8n3mBLXSpvL6Fk/tNpr17zGW8bjeAcs3eIq5c+o5S4Xgo3kdjLo2AyePuQt19jq30mqEMZyxVnZ+fhTPrzobDm1/BIF7N2eWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDlEduFg; arc=pass smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RqHpui6S"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47f703a9d05so2355449f8f.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:22:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDlEduFg"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e57a753f9so1135432685a.2
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:31:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784719892; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TEFXZ3RSV1FPF4E8a744dNzP+htWCo665b845ljqffBFuD1+Vlq5ctvUsXfdc0f7NX
+         bRCQW57YO/sBezalZTvuc+2fc31RI6cAa1C8bOlZa7jk65YlE+QiJxBqja3baCghKQBT
+         +7onwiI1LaHEUuYpT/bXTnP+C/ZkDsaHouTY7VeET7s+6XxATMuUQ+VGJUHDRAAsjasp
+         XFnw/hGfxk6uElIkBVZSu1II0jpubbSQ6Dm85Eel5m9VByn6eAlUo83NmLf3fPyoPlRs
+         wh9OFzwSyjXYBcd60DavvTchefmWip0KIbJQMl420jGj/OheEmeEMses01jAytuVOXsJ
+         xMRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+AjNNGtU2rNOL7AfWz0JeUtzDJD3qx/w0PKZLpgVujE=;
+        fh=gBmikqasyjvO6V//5AphK3IFux+Vq33YTyjbq3GAIyU=;
+        b=PMajM5HtdX/rhATIbKtNf5czLSsLj08MyREL3os/2N8+VrdN5QsuprMBue96FspxBJ
+         rFZ+v+MfeRZlL2ZsufSjMZ6gyDZ0iTqs3PXbNxvo8KMX/xbAyC2TWci/fGfzq77zyUfH
+         ntcQsgeghnVSISydmpM7HcTs+rQ9HkLP4twpzwfFAaWS9MuMq3GMG9b0lNmtFiM9OmXR
+         WWcwlisvzrIDtWDnl1rNSiqQnCYSxoHFsY99MiJNuC+b7XVvQerUUajm6zhdhuSQcxTK
+         fmn5Qldw5b/IcUr9M6kfSBFh6vKBfFTzyUQ1FFMGYxbs1Y1zJoekvlnJTT4Ak9K6rv2c
+         LVJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784719375; x=1785324175; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1784719892; x=1785324692; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=O8RdAVocnPl+oK0nJeH+3MqB3h/AEEqzf4DD+36yYw4=;
-        b=RqHpui6SFLpH3wpo/v8QKyh12bgVBrQwg3fYgq0zAmALR3LXqQKw/ySybgeTeC7U1s
-         0UO66s3YsyH8yaMEc+GK/Ljz+/ytHqb/+PcSp3ue5px1TNu4Pp0qSzpyjEp45uX64z2t
-         Tl74b8Ah9Yn+LriGI2nc4pDWeA6b6nurd0RquMFxdvkDA+/hJLJAhjeYZfKKsn2z4GBI
-         O4z5g+yy8Bowc5ef8koThP98ZKE/FS9CyVquevzPXilbP0O62C9WtX7I1rzbfenAsA9L
-         dWeOEz8lxP2odOm2Aps9F8+ZjDUBqfcQ9K/YABmOo3dH626EQ5HY0rDwN8iXRFbEnzVi
-         /ERg==
+        bh=+AjNNGtU2rNOL7AfWz0JeUtzDJD3qx/w0PKZLpgVujE=;
+        b=gDlEduFg580BRWayZR7u2B7XnkVuf2HrGfXpZfR0Hzt6w0JNuhRnajfp7Tng/tsPUz
+         Z0B2t6a5OXtFAWqvEFr+RRGknQNqck26r1Tbhoz3myitX8k368/XtAEz26n4rwT71oiD
+         +1z3DJBf4n5WuEH2uqrrLMdqkFUVJtu4RBXxBPBz0zBFVd8OhpSgGFDwUTbabfIwicgx
+         OG7yj9n0qvR3nNWqXdik3gqvpHS8PlEAPFIengCzH4eqq4midZmSXqBuRHcHVjoDc08x
+         fnnvtfLJOJEDx5AjPu2qD9prA4n+5LssfxIb7NSFvQ1Ey0+JvIAvp5LQfFGRJ35mzgdW
+         /XKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784719375; x=1785324175;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784719892; x=1785324692;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O8RdAVocnPl+oK0nJeH+3MqB3h/AEEqzf4DD+36yYw4=;
-        b=lAlGLUg0gNoDly3461eEduMihG9qJKVb3b0XXGDmUy1plE3uWYTzKukUukbdXU9Hos
-         GPyXkszIJki3Q42bfAN5X2qTRIOOYRKn8WRlRgkqNUcWEXJ88djpspMIijKINrKKABRW
-         lZ2e6So9IqKrnnISWc2nBUImrKMonrFNxcHM0g8HUaCMmwBQ1M6B4UeXYvlX94RFOsyL
-         2Lx9bMJZL6pLrBRRaRZpR6Y86EB0YHu38vrp517m0Q+PeKPVIVEldKnWs8D4DUEXD4gL
-         AmiyemTJKOhfHi2J6x4rvfAQ3NK05pgkWHxJOkI3xnJjjQHsf2cII9eUuxdziuMt6/Zv
-         lhEg==
-X-Forwarded-Encrypted: i=1; AHgh+RrsuDfE9QOxPwM/PJcIgedCXjGWf/dV0uxkwCjXl48Un2SF3O4csYNekqQ0/9JUZjm/FeguvDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfdX1YyPU19bkVocn9d4qYlIuAaLYMq82AppHoFGCI4ShBWsWg
-	hl3qWvrHSVini8ZfgiYZoiRPASCRBXkE3wubP6Nf0SID+PtyQRT0t9QA
-X-Gm-Gg: AR+sD10KIvnF7PrwRX6QAG9C70EfxaY4ZZxMr5Lpiy4lgS+7BDH7DybNzpEU4RfRdxz
-	HtBGmUVrO800FK1aMRAw15fnXNzrw2YjwzztiSCzYzPFrmQf5A9DhIKPH7FhFnUcjSeT6xfjIgs
-	UfPFBsH8q22Q8EzGisaaMqTC1auqCyFvz//IuUmDnnDfyDz4hwbP8+1iAm3xsJGNCzCBSHQ33PI
-	zk74CqjJXgyiSLG6edCW3WnUUDztX6v+e0l5Fk1P9HLliNACu2a/+3+SgIxmVpTZdQUxjWvwnYE
-	EuBu8luJIt2U6O4CrWYNO8eBqlyC4KXQEqvngYzlAdizuJKgLSijjonKSSrWX9REEUta/1jmHV2
-	FPUW7s0AhFhqnYUOJJnV0BEXpfL9bR7GNSaZYRnum2adQjXLMHF1p4wvQwbVrz4YHEscr0iHAld
-	1+Fj2WA3K4+65O0vNUl41+Df+Pe2Ctjz4ZQg85fwEf8zPFsNRazzipZOl0rrSgaBUagQ==
-X-Received: by 2002:a05:6000:400f:b0:47f:8152:e568 with SMTP id ffacd0b85a97d-47f8152e595mr7876397f8f.60.1784719374568;
-        Wed, 22 Jul 2026 04:22:54 -0700 (PDT)
-Received: from localhost.localdomain (host86-153-201-25.range86-153.btcentralplus.com. [86.153.201.25])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c531afsm4884918f8f.24.2026.07.22.04.22.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 04:22:53 -0700 (PDT)
-Date: Wed, 22 Jul 2026 12:22:52 +0100
-From: Nnamdi Onyeyiri <nnamdio@gmail.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: bpf@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, jiayuan.chen@linux.dev, john.fastabend@gmail.com, 
-	kuba@kernel.org, kuniyu@google.com, ncardwell@google.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, sashiko-reviews@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	emil@etsalapatis.com
-Subject: Re: [PATCH v7 1/2] bpf, sockmap: handle spurious tcp_msg_wait_data()
- wakeup
-Message-ID: <amCnMPJ1gVoNCbfY@localhost.localdomain>
-References: <20260721223807.75101-1-nnamdio@gmail.com>
- <20260721223807.75101-2-nnamdio@gmail.com>
- <87tsprl24q.fsf@cloudflare.com>
+        bh=+AjNNGtU2rNOL7AfWz0JeUtzDJD3qx/w0PKZLpgVujE=;
+        b=RoyKlEhlW+ZBI0vdBwJ9cEtWxGDuL86/u0nHitNKUi82steIkWrDrReg2skoPKuJ6n
+         f20hwykziwg+e885ujmfurlWuZnHf8Syz76ZPOPFpUrsdFPVJ0fYXtQ0td0Vr/RGM7If
+         BzZKr0cDBfdjtPgXottUh05iv/2fvjJbzGpaddDpqrBEPtK+6JPW6RF7/wP3F8HIhE0B
+         hjG9/OJlqaBIaNd08jh0/y3R6oMFONCP21aA7mApcrZcX+9ypW83B6NwUglr+i0F9JmO
+         9LdWDy7GfCmgGkuL6U5fTiGWsgR256tZ+pArJcKGUPfYCP4Y2R3mA4QizKuMseDIILCf
+         JgTg==
+X-Forwarded-Encrypted: i=1; AHgh+RqB1zVdirALky1cpA5K5+B4T3Nj9Zbzx5939WsKMEtPZjQqHp1bG8ksauF5Y+I3lELbRj6i9pw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk7HDlSKn2yJfIqQn0m0Lpql8O26hkTOnXC/EHYY2USG+MkGVP
+	pgnZrSyx0Ghnx8/TZaYAFxxYiPD0Xw9tEjIvOUR6u4ba4y9knwsdUyi0m0kf/aswaCPhuS038do
+	emxtBIal4/mnOZvkIvJuanWepJhUlI+k=
+X-Gm-Gg: AR+sD10hlFGia68WzZJbeQAv7wAb6SMGzizOx6QcAQDcHAOkvZdvHf+wgSOc7GbA7Sd
+	GS57exOc7/pyQcadYMuGDj1hqm4sCRadCwQgeIhp5u/oVsqKeYZtDP+QMNTbvPKamMz3lQLGDq/
+	pWCs27Cm4EDHY0O6W2/BD7SpbQ5MFHYOnCclPi24cS7BZwG9Zc1qM26b+33m7ZQ4dV+FXX4mB9l
+	+nw+MgmzO99Dkgg17Mxi+hXlis07UpuZDIeXYuJzy3hf+Y1ifywYVGpw8zAJoFmqfYA0gxu
+X-Received: by 2002:a05:620a:6187:b0:92e:c117:9ea7 with SMTP id
+ af79cd13be357-930b4393bf8mr2076258285a.85.1784719892325; Wed, 22 Jul 2026
+ 04:31:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tsprl24q.fsf@cloudflare.com>
+References: <cover.1780458440.git.bronzed_45_vested@icloud.com>
+ <81f26b8fddd59ebb6cecc417fb138d9ff5214e08.1780458440.git.bronzed_45_vested@icloud.com>
+ <178471846217.973832.14121853580804517391.b4-review@b4>
+In-Reply-To: <178471846217.973832.14121853580804517391.b4-review@b4>
+From: Yuan Tan <yuantan098@gmail.com>
+Date: Wed, 22 Jul 2026 04:31:21 -0700
+X-Gm-Features: AUfX_mx8xqt1uALeyrzL7k_-AEqvUGxzYUcmdR3JYr4FcqhIKM2SAr55rEAlxo4
+Message-ID: <CAPuPA7KaNrGZBO0LpgHJ=cwSH882D-Gs6bCVput3gyrhTubTFQ@mail.gmail.com>
+Subject: Re: [PATCH mptcp_net-next 1/1] mptcp: fastopen: only mark MPTFO
+ subflows with SYN data
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	martineau@kernel.org, geliang@kernel.org, pabeni@redhat.com, kuba@kernel.org, 
+	dmytro@shytyi.net, yifanwucs@gmail.com, tomapufckgml@gmail.com, 
+	zcliangcn@gmail.com, bird@lzu.edu.cn, bronzed_45_vested@icloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 01:01:09PM +0200, Jakub Sitnicki wrote:
-> On Tue, Jul 21, 2026 at 11:38 PM +01, Nnamdi Onyeyiri wrote:
-> > recvfrom()/recv() are documented as only returning EAGAIN for blocking
-> > sockets when they have a receive timeout configured.  However, adding a
-> > blocking ipv4 tcp socket without a receive timeout to a sockmap will cause
-> > EAGAIN errors sporadically.  A socket with a receive timeout may return
-> > EAGAIN before the timeout expires.
+On Wed, Jul 22, 2026 at 4:07=E2=80=AFAM Matthieu Baerts (NGI0)
+<matttbe@kernel.org> wrote:
+>
+> Hi Ren, Wyatt, Yuan,
+>
+> > Passive TCP Fast Open accepts a valid-cookie SYN even when it carries
+> > no data. In that case the child socket's receive queue is intentionally
+> > left empty.
 > >
-> > There are 2 code paths affected by this:
+> > mptcp_fastopen_subflow_synack_set_params() set is_mptfo before checking
+> > for queued SYN data. That made data-less TFO SYNs hit a WARN and, if
+> > the warning was non-fatal, left stale MPTFO state behind. The stale
+> > flag could later trigger a state-confusion bug in
+> > check_fully_established().
 > >
-> >   1. tcp_bpf_recvmsg() - Used when the socket has been added to a sockmap
-> >      that has no verdict program attached.
-> >
-> >   2. tcp_bpf_recvmsg_parser() - Used when the socket has been added to a
-> >      sockmap that has a verdict program.  To reproduce this issue, it is
-> >      enough for the verdict program to do nothing but return SK_PASS.
-> >
-> > In both cases this happens when tcp_msg_wait_data() wakes spuriously
-> > (returning 0).  To fix it, we now loop back to msg_bytes_ready instead
-> > of returning -EAGAIN on spurious wakeup.
-> >
-> > To ensure the looping does not cause sockets with a SO_RCVTIMEO set to
-> > wait excessively long, tcp_msg_wait_data() now takes a pointer to timeo,
-> > allowing sk_wait_event() to update it as appropriate.
-> >
-> > The logic in tcp_bpf_recvmsg_parser() that allow it to handle signals,
-> > socket errors and closuers in its loop was also added to tcp_bpf_recvmsg().
-> >
-> > Signed-off-by: Nnamdi Onyeyiri <nnamdio@gmail.com>
-> > ---
-> >  net/ipv4/tcp_bpf.c | 72 ++++++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 63 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> > index cc0bd73f36b6..1755fcf726fc 100644
-> > --- a/net/ipv4/tcp_bpf.c
-> > +++ b/net/ipv4/tcp_bpf.c
-> > @@ -179,7 +179,7 @@ EXPORT_SYMBOL_GPL(tcp_bpf_sendmsg_redir);
-> >  
-> >  #ifdef CONFIG_BPF_SYSCALL
-> >  static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
-> > -			     long timeo)
-> > +			     long *timeo)
-> >  {
-> >  	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-> >  	int ret = 0;
-> > @@ -187,12 +187,12 @@ static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
-> >  	if (sk->sk_shutdown & RCV_SHUTDOWN)
-> >  		return 1;
-> >  
-> > -	if (!timeo)
-> > +	if (!*timeo)
-> >  		return ret;
-> >  
-> >  	add_wait_queue(sk_sleep(sk), &wait);
-> >  	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-> > -	ret = sk_wait_event(sk, &timeo,
-> > +	ret = sk_wait_event(sk, timeo,
-> >  			    !list_empty(&psock->ingress_msg) ||
-> >  			    !skb_queue_empty_lockless(&sk->sk_receive_queue), &wait);
-> >  	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-> > @@ -229,6 +229,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
-> >  	int copied_from_self = 0;
-> >  	int copied = 0;
-> >  	u32 seq;
-> > +	long timeo;
-> >  
-> >  	if (unlikely(flags & MSG_ERRQUEUE))
-> >  		return inet_recv_error(sk, msg, len);
-> > @@ -262,6 +263,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
-> >  		}
-> >  	}
-> >  
-> > +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> > +
-> >  msg_bytes_ready:
-> >  	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
-> >  	/* The typical case for EFAULT is the socket was gracefully
-> > @@ -280,7 +283,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
-> >  	}
-> >  	seq += copied_from_self;
-> >  	if (!copied) {
-> > -		long timeo;
-> >  		int data;
-> >  
-> >  		if (sock_flag(sk, SOCK_DONE))
-> > @@ -299,7 +301,6 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
-> >  			goto out;
-> >  		}
-> >  
-> > -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> >  		if (!timeo) {
-> >  			copied = -EAGAIN;
-> >  			goto out;
-> > @@ -310,13 +311,15 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
-> >  			goto out;
-> >  		}
-> >  
-> > -		data = tcp_msg_wait_data(sk, psock, timeo);
-> > +		data = tcp_msg_wait_data(sk, psock, &timeo);
-> >  		if (data < 0) {
-> >  			copied = data;
-> >  			goto unlock;
-> >  		}
-> >  		if (data && !sk_psock_queue_empty(psock))
-> >  			goto msg_bytes_ready;
-> > +		if (!data && timeo > 0)
-> > +			goto msg_bytes_ready;
-> >  		copied = -EAGAIN;
-> >  	}
-> >  out:
-> > @@ -355,6 +358,7 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
-> >  {
-> >  	struct sk_psock *psock;
-> >  	int copied, ret;
-> > +	long timeo;
-> >  
-> >  	if (unlikely(flags & MSG_ERRQUEUE))
-> >  		return inet_recv_error(sk, msg, len);
-> > @@ -371,14 +375,52 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
-> >  		return tcp_recvmsg(sk, msg, len, flags);
-> >  	}
-> >  	lock_sock(sk);
-> > +
-> > +	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> > +
-> >  msg_bytes_ready:
-> >  	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
-> >  	if (!copied) {
-> > -		long timeo;
-> >  		int data;
-> >  
-> > -		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> > -		data = tcp_msg_wait_data(sk, psock, timeo);
-> > +		if (sock_flag(sk, SOCK_DONE)) {
-> > +			ret = 0;
-> > +			goto check_queues;
-> > +		}
-> > +
-> > +		if (sk->sk_err) {
-> > +			if (!sk_psock_queue_empty(psock))
-> > +				goto msg_bytes_ready;
-> > +			if (!skb_queue_empty(&sk->sk_receive_queue)) {
-> > +				release_sock(sk);
-> > +				sk_psock_put(sk, psock);
-> > +				return tcp_recvmsg(sk, msg, len, flags);
-> > +			}
-> > +			ret = sock_error(sk);
-> > +			goto unlock;
-> > +		}
-> 
-> Isn't that branch the same as:
-> 
->         if (sk->sk_err) {
->                 ret = sock_error(sk);
->                 goto check_queues;
->         }
-> 
-> ?
-> 
+> > Only mark the subflow as MPTFO after confirming that a SYN-data skb is
+> > present. Return quietly when the receive queue is empty.
+>
+> Thank you for the fix, it looks good to me:
+>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>
+> @Netdev maintainers: this can be applied directly in net.
+>
+>
+> Sorry for the delay, I initially wanted to understand the reproducer,
+> then wrote a small packetdrill script, then I lost track of this patch.
+>
+> As I mentioned to Yuan last week at NetdevConf, it would be great if the
+> PoC could first try to use Packetdrill when it is doable. For example,
+> in this case, this packetdrill script appears to be far more readable
+> than the .c files generated by AI:
+>
+>   https://github.com/multipath-tcp/packetdrill/pull/202/changes
+>
+> =3D> It is easy to read the syscalls, the injected packets (<) and the
+> expected ones (>) with an output similar to the one from tcpdump.
+>
+> Note that for MPTCP, this fork should be used:
+>
+>   https://github.com/multipath-tcp/packetdrill
+>
+> Otherwise, the official repo can be used:
+>
+>   https://github.com/google/packetdrill
+>
+> --
+> Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-sock_error clears the error in sk->sk_err.  using check_queues means
-tcp_recvmsg would not see it.  is that ok?
+Thank you very much for your review. After receiving your suggestions,
+I asked Wyatt to prepare a packetdrill version of the PoC for this
+bug, but it is not ready yet. I apologize for taking up some of your
+time on this review.
 
-> > +
-> > +		if (sk->sk_shutdown & RCV_SHUTDOWN) {
-> > +			ret = 0;
-> > +			goto check_queues;
-> > +		}
-> > +
-> > +		if (sk->sk_state == TCP_CLOSE) {
-> > +			ret = -ENOTCONN;
-> > +			goto check_queues;
-> > +		}
-> > +
-> > +		if (!timeo) {
-> > +			ret = -EAGAIN;
-> > +			goto check_queues;
-> > +		}
-> > +
-> > +		if (signal_pending(current)) {
-> > +			ret = sock_intr_errno(timeo);
-> > +			goto check_queues;
-> > +		}
-> > +
-> > +		data = tcp_msg_wait_data(sk, psock, &timeo);
-> >  		if (data < 0) {
-> >  			ret = data;
-> >  			goto unlock;
-> > @@ -390,6 +432,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
-> >  			sk_psock_put(sk, psock);
-> >  			return tcp_recvmsg(sk, msg, len, flags);
-> >  		}
-> > +		if (!data && timeo > 0)
-> > +			goto msg_bytes_ready;
-> >  		copied = -EAGAIN;
-> >  	}
-> >  	ret = copied;
-> > @@ -398,6 +442,16 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
-> >  	release_sock(sk);
-> >  	sk_psock_put(sk, psock);
-> >  	return ret;
-> > +
-> > +check_queues:
-> > +	if (!sk_psock_queue_empty(psock))
-> > +		goto msg_bytes_ready;
-> > +	if (!skb_queue_empty(&sk->sk_receive_queue)) {
-> > +		release_sock(sk);
-> > +		sk_psock_put(sk, psock);
-> > +		return tcp_recvmsg(sk, msg, len, flags);
-> > +	}
-> > +	goto unlock;
-> >  }
-> >  
-> >  static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+For future patches, whenever possible, we will include a packetdrill
+PoC in the cover letter and send it to the public mailing list. We
+will also use a new Reported-by: Vega tag instead of the tag we are
+currently using.
