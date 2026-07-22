@@ -1,68 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7DB407570;
-	Wed, 22 Jul 2026 18:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD87B4457A9;
+	Wed, 22 Jul 2026 18:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784745330; cv=none; b=tRTMdRrJR6MG1zvR+mb9WlfRPq7HXQRXofRWH70SY0ivSGQolIK9DSeFvQh8oUP9UNkoqGWe54KuxOkEVneomJIez2CkqyTILDs9vyKIsvY/43GycyrPnPXxR9LInoxiWNG4padM5TnDovQwog114XSkSmOzbDX65N2fiBAISsg=
+	t=1784745525; cv=none; b=ZLo6KihuYVI2dFd832vaRbaPZlEPKIU++QYpiom6q0tfV5vvTXrFLLTRgctCASVTQBDctQAACk81lXciBsMuHXQ7fwGDtWhctEQWCIZnlJsa14cgDKFx0FO1PFd8XuBsVaHB7ljCfw9F/GngV75m9HnOPvsnpuXYmzLVhssJjdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784745330; c=relaxed/simple;
-	bh=dSlnlKe07hlOR23uhYPBh8ZTHKH8iB8wQID+iaO+xXo=;
+	s=arc-20240116; t=1784745525; c=relaxed/simple;
+	bh=KqeVKvUmP2JF05QpkawW/sSGD+s1jeXGRcoLfrAHLcI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hbttmt6bzJ+qz87tSjj9nn9pSwITKXiQZuChare3AfCLELk6YzoNowcBIfUZNvMpDcbcVzmjmwCBwiAlCkN2Nk+C1AWS5Hs6Tm+evZGXOA0r3V1OYHgsxbhL7Zby5QY7SXftqJk10+onzvZraiqUPUZAv7sabBzImeGGJJjLvVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6LTxb6M; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=tWG7I52EkYdxYeOCdABbWspV2N7ZyvMpN2L4c2qGc0PHYy7k+3w8k8yDHrp8hmESVk9caDV5QwG0H0PWgQ0DPpChi+iCB2h9yQ+rSkCr1NCzPAwkWg3QpeEinMZ96kL5ZUzBNzbrGKoaNHswh5Sai+z1552cx3Ivg1cWQW1kBUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+GTNjOT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6LTxb6M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4751F00A3A;
-	Wed, 22 Jul 2026 18:35:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+GTNjOT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996381F000E9;
+	Wed, 22 Jul 2026 18:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784745328;
-	bh=670ICVCxpkbIIsTKMOsa+I+z+C4FgJRDQNs6RF7SdGI=;
+	s=k20260515; t=1784745524;
+	bh=KqeVKvUmP2JF05QpkawW/sSGD+s1jeXGRcoLfrAHLcI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=a6LTxb6Me6mG2aUNvx62hRLaJopZgj2ogTsG8vH+9nTrF7phHbWJSmGpvev0Mxvvt
-	 3c8U84ok5cF/v+rxZT6PsnyNEZnEti27oSLMZ9CjBWQ14jQOM+KjpEdYKOjUnyscea
-	 bD75r9/q7UDGNM7PAAcphCZ39vlipGyeAoYzQ+fLUEH8VNtac1NbFbz50FqsCzoChy
-	 yx4Eo3Q4/fyiLdyQPCRVfHlVSFX0DNSbXI2sqB0ToGN4AG0xOBFEB1dtrm4HHoicKc
-	 Z1YlaRTqCujzVsoH4VJYq92fziN8WHTbT/wc//wfZW0o1XGNXS+uwZmLenI7DcjKu+
-	 iVpXtEUew6/mw==
-Date: Wed, 22 Jul 2026 11:35:25 -0700
+	b=X+GTNjOTWxxedhkot+QIcqTCSSTg3WsNkYWLRs5cAufTui6Z9MQ5W6ExphBYULcpd
+	 ppeC/tOp3DDS0aaM0crOqKcJ1lbqJOgJIFqZzH1TkhT/1uVoxKw6VV9fBmqvpW6QIa
+	 QMo3+XPJI79Ca/gHIYLOCy0Nm4PmuP/x6sYm+OEZGniuXmH3YjYNvormMT2yWbO395
+	 Y0j7NmF1Dzcq3HOIFw1+L00cMSOjk7uqWIxvW59XjXmlQYn/nJbqCXiy5/oRfm0doF
+	 Pvlkfuv1y91WJADn3AOdyNgjqSOy4VaIGoixl22IpESRTozTD7Pfdnta4YFmJXw9RG
+	 2HQ8b5elT2QOw==
+Date: Wed, 22 Jul 2026 11:38:42 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Alexander Lobakin
- <aleksander.lobakin@intel.com>, Andrii Nakryiko <andrii@kernel.org>, Martin
- KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
- Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Jonathan Corbet <corbet@lwn.net>, Shuah
- Khan <skhan@linuxfoundation.org>, Kumar Kartikeya Dwivedi
- <memxor@gmail.com>, Emil Tsalapatis <emil@etsalapatis.com>, Vladimir Vdovin
- <deliran@verdict.gg>, Jakub Sitnicki <jakub@cloudflare.com>,
- netdev@vger.kernel.org, bpf@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH bpf-next v5 8/8] selftests: net: add test for XDP_PASS
- skb checksum invalidation
-Message-ID: <20260722113525.34092660@kernel.org>
-In-Reply-To: <amEEEohxmC8hkBvY@devvm7509.cco0.facebook.com>
-References: <20260715-bpf-xdp-meta-rxcksum-v5-0-623d5c0d0ab7@kernel.org>
-	<20260715-bpf-xdp-meta-rxcksum-v5-8-623d5c0d0ab7@kernel.org>
-	<aljNR2sf8qJVKFgb@devvm7509.cco0.facebook.com>
-	<alkBnI3XcH0XGjEo@lore-desk>
-	<al53WS9FMTnu7tBI@devvm7509.cco0.facebook.com>
-	<20260721082728.74142e6c@kernel.org>
-	<al_4VWS_EyyZLe8z@devvm7509.cco0.facebook.com>
-	<20260721183256.6f49d6e1@kernel.org>
-	<amEEEohxmC8hkBvY@devvm7509.cco0.facebook.com>
+To: luoqing <l1138897701@163.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, luoqing@kylinos.cn
+Subject: Re: [PATCH 2/2] sctp: auth: Fix safety issue when skb_clone fails
+ in auth_chunk handling
+Message-ID: <20260722113842.631d51fa@kernel.org>
+In-Reply-To: <20260716065259.872235-2-l1138897701@163.com>
+References: <20260716065259.872235-1-l1138897701@163.com>
+	<20260716065259.872235-2-l1138897701@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,25 +48,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Jul 2026 11:00:07 -0700 Stanislav Fomichev wrote:
-> > > This is about current drivers that only report UNNECESSARY with xdp: the xdp
-> > > prog has to maintain in-packet checksum if it changes the payload. I think
-> > > it's a fair assumption?  
-> > 
-> > What about decap? If we decap the header that device validated 
-> > as UNNECESSARY there's no possibility of maintaining the checksum
-> > (by which IIUC you mean correcting it in along the payload changes).
-> > 
-> > I think we'd need some API to "decrement the csum level" ?
-> > Or some heuristic in the drivers to decrement if the head moved
-> > by at least len(IP+UDP) into the packet ?  
-> 
-> True :-/ I guess one more case to document?
+On Thu, 16 Jul 2026 14:52:59 +0800 luoqing wrote:
+> When processing AUTH + COOKIE-ECHO packets, if skb_clone fails due to
+> memory pressure, chunk->auth_chunk is set to NULL but chunk->auth is
+> still set to 1. This causes sctp_auth_chunk_verify to skip the AUTH
+> validation (since auth_chunk is NULL), allowing unauthenticated
+> COOKIE-ECHO packets to be accepted.
 
-What would we be documenting? That it's a known bug and we have no idea
-how to address it? Or am I missing something?
-
-Again: 
- .. the ask was to sketch out the plan of explicitly
- updating/invalidating the checksum even if we don't 
- implement it today
+Fixes need Fixes tags; do not send patches in replies to existing
+threads.
