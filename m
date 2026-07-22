@@ -1,262 +1,177 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715A442B36
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5F4399DB
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784744998; cv=pass; b=iv/EfBskfy30Uc/mCrA3YYoFybdhl0TXYyfaj79MDtkDcdsFOI9XlUHG30iG3qx/ADKhu9QfNjx4rRXp+U+DjLcbPaFYsBrsYdV7hsAGhfdHQOP6A0FvJxwhsUnlCJa1Oo06VnY5r34B7tmDPcVYjOHDaydFYPhWTo1yKwXRHfY=
+	t=1784745104; cv=pass; b=QtTtYuU4qrOna/cQvyPc50dX+nZ/3Ry34X2zjtfiuwYQaubVC1nj5VsOfh0P25rz6RI8u9LfaRLru6tTJgF7biFotdsr+cqIZjsyCW2jr0baqGorIBkGqqj9ApdnL3/Jhcd3hTv+bBtaU7nJAhaqvtNX193fp8UsTqgfMiDfAdQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784744998; c=relaxed/simple;
-	bh=/l71NXez5IBHg2o5uvalxHKgKhdxiODPMlFk8RG5G6M=;
+	s=arc-20240116; t=1784745104; c=relaxed/simple;
+	bh=IA7G2u2vV6NVKEZyHe3wo12TA7/PxKbDJFi3T4dwUg8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UM/3ekRqRt0qgV+LhhxOOSo5FyxNZcU0AG15Z9p3UxCAjDogEpPBL30M0rCNhvo9iZSP7CtZCZDqcenNym6qWjjoMmBjfC0NpUYZ8j+03678FFbXDwbTP+dZWFssYFdS6jfC/Pwg0TnDovTA26SrIZt2zfqE2cb5jW8IWI1Xh20=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qLv9dXbu; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=t+QmD5apCO5Rn1zZMC6obscgWPGZI8x+7euH0CjIiZE0HY3RMqti6dY2MXQnYMBFwyZcHTOSSjWUnbioFHeqpA86JdZvJR+wppOk706W3W63/maXMtMGg5Clvy007e7ECyXec/JTPYnWkkRflwP6BvOrJtEQrp0TBdZVShakV14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YzUCiH3h; arc=pass smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qLv9dXbu"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cab97c86bdso7855ad.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:29:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784744996; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YzUCiH3h"
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-736eea06c3eso3705757137.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:31:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784745100; cv=none;
         d=google.com; s=arc-20260327;
-        b=GM08uQEWBMvHQUFGKCCtkW1lJsHkwqsFYCRuJ/JO3gmc/dp8VcmS0yHe9zPHyxgX4n
-         wy7weft7WXL2yr9CyOg72igkT0wdFBDbAIkedQfNe05o2mGzbQEYLEkUzN5GDXhGBytW
-         A7bPjnDXJYPJe5QyCKy+8qQsMcsoLBNgiYzwrR1iorewbybyolHV0ywPtJTPz3R8uDf4
-         P1alvgFyd6xNzz2I/uI1Zmhu/6u3pDAZCNAKShger/JmB8walOMVYd06z2M6PKDUfvLT
-         NseyTSe/7y9dL3GcmQbmhMxG7rSEUrYSTIfuLgnBLSwuCf0rTdHpPMEFNHHY3zyGHd9P
-         F1yA==
+        b=rfnS/5rdjzoG8fnUNUrhk9poN4K3aD85gDoD3EY2XkV7BNP/jaUq7EduFmo/0PbO6b
+         ERn6HZdbPwsktUNyDhnGj2fq+d3dZfzqzrPLKU2ZVPcVQ6PcjoDxlm7bknQtWqKhUHdf
+         z/r7UGhnIcIcIFb+JSPr2xeiuaSZtwqDd7CgBMHxEQcExKDimFYM7b5nteq+uA547WzL
+         K+RU1eCqIi8cuC3wMeS32vp0A5yxq0PWx/z23+DtkCuZdzmZpSgiaYK3lpGOKmK9sqD7
+         774x/P4Uk9y/LXEBr/eMUEh/cJZZMc7Bx635VDcVTbwF3LhcKKFacJS5WhmvuIdzgo7G
+         Xlcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=EFjIw+YHhZOGu9EHRZwkadgAAA6y6Xc2ZzPm9AMLH64=;
-        fh=ZxkG14nNxLC8PKIgCmf1/c8fDJxwkaVpJYsrwqXsrzc=;
-        b=UemctPywtsxbWmNN/GpPesOm1+Lec+R0NtLjiqTM3i7D/bhbIY5/mBUKZo0Fhx3zEG
-         b6wNEdXSdZGbmgIxm8/pPU0n/1XAwNcNiTDNH3gfj6XiXzqvr4ur0N506dHkxE/OZEm6
-         o8RQ7P4pjX7yTJbEy98UraEzG4KWh/xkaEz5Pa9eXh4EePvJ84T/FVochHgH/3+HMifz
-         iasExyuIRehKc3Hm+LKomTkqaYxBULonTj0ZSCjv2Re0ak/aCU3UBTQwG0AWvQwd+KxV
-         GP7rMZ9XjQgSKPWxAy3OFeuZYtp/J6wjhJ7Xfq69OPOVjlVIyXmGOfNwHbtV4SikcRPy
-         desw==;
+        bh=q/hMBR9xdLLcYOtadOuetEIVcftCz2uVEGlsfy4vyWE=;
+        fh=USywc9ZgLwoXn8pXs3EFCgjgIG78UKeXx/ujv3Dfs8A=;
+        b=pLinIIgmjhTPXWZp33CoqLB/uoY4WnM7mKempFYJLMM+1Mn4gm8BLuyjYCGxCg3Ipj
+         dmThxvo0kKMTQwvPNUWbPZyYM38dYM96j/Pe+tbXs8SAP7UjiXJul9Q/IGffjnGExZka
+         asJyHb+3a8DqEgtF21q6QWQy6ScF8lrQMRXyEGPDVrFzt18TIwritIDLBFvBXZcIg1Dt
+         676uJvPPMK8O+HNGVpo02VaiG0si1/Odbf2ODzk4IcJbCIelCQrDEPycwj3sG9fSBQfX
+         exfrXXatHuAHJx6QAF6Fv1FnNfZWU57X7kfQgUsSjQJFem+RdLFV8jHpwn0LyZ8HISyx
+         cfSw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784744996; x=1785349796; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784745100; x=1785349900; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EFjIw+YHhZOGu9EHRZwkadgAAA6y6Xc2ZzPm9AMLH64=;
-        b=qLv9dXbuiZs4OgRQjTHMs60lWeLrqtl8W0Kj3quzkzcueC5owi6iTnLsPCTpDf8jlT
-         HOcrs1ggqQmLOIALs+r9cgKfuzzb6c95qD44Akl0V+d6/9vvsDn3sGZgFpbhCQMm4zGo
-         luw2bl3TGlHYoGDtHCX0zI2vzHQa8OJwytkMUW6hfb08+ULpZh/WOGkmNs4VphUMtWTQ
-         BgujSYZgalBUWPkOnSh6Tz1GkFkLY16XzQAQkBhELvzG762l2YukaAheyWPCZZaS/n5+
-         6B8LFpllAD4MLAq5dgUkJDydxwudYLyM5Ho8Ie0rAet2K9uS0OM4lnPDJDQTypQ9Q8Qz
-         lsmw==
+        bh=q/hMBR9xdLLcYOtadOuetEIVcftCz2uVEGlsfy4vyWE=;
+        b=YzUCiH3hSfkRGHFlshF0edqY7kbscGdIzXEJcUIhu6g8guZkPI6/YP5qp574S2CtOM
+         QNySgEXtju9t6NOlNYfRaNxliqNv5yRIahQ3PmUQwKu/v/1otn84i9riVVWxQ/O88T2a
+         7KtodXS05WbBnwyyEJkDqQrb+4pK3i0asoYw7MCs3Jz/Lf7oj5VRUhyNfx6yd8HLbcDU
+         EXtlqXuU64mnPwNpy1WG/snBijS9mv7GGwQii1E580vs/pvgZ+55WZYfEGVDc7s3j+01
+         X6iMNeoeeZPv0n6/yyno8pAn1pP93GALEjXabfvNA/R6CuDp9fJWhsX/lT3Uh/8PTLn3
+         TrBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784744996; x=1785349796;
+        d=1e100.net; s=20251104; t=1784745100; x=1785349900;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EFjIw+YHhZOGu9EHRZwkadgAAA6y6Xc2ZzPm9AMLH64=;
-        b=KiRRSG8YtmkTnQ8bz29m3zDAXFk+FKXEQxyjnOmDyHTtfTCYieyzupR1Tvr8lCZPXa
-         6Z6gWFVNEMlr19qhB4p6u4/AxDr8ZqiJHqxGPiFSmiTDJAOlZ+NKSvqv+c1OyKeN0pZ7
-         jrDIonwY4hGMyQeBUwHV0FWGei73UjlAcOR8LV+vxQcqjs8vQYfRMD6Mce9RWgrezaEZ
-         FpXXGPIeb4iZRS0WBPdxOiynwIYB1jR1yf8KlcF8KZds8xbuq4bfDi1ASF0QsMUVFgRO
-         K7rpV0LftAQAMoSTz5n8CikyCKIaKaJwFysXIV25dJh7uZKqWYH2tJqD/uwBijm+sUdD
-         KyjA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7t6V7v9HNW7gohoNbg1xyqpb2hHXGcwm3zFttAFWV1dibrlJ2Q/Zf92vRVCIQd99MrcjN6rc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyehDLl4qCHPS+KrOHFeWSa+y7II7wAfN5JbF8Em3qxk7ukS2cX
-	/y2QbdadmfxWBakx9+zwTPraqeS6lO8lu1p/Poup7r9nc35nb8GiMiKMk1kl0udau6lxzTWs7+H
-	BmjVIqpflm8tJ50SV4slQbmVbliAvd5YwA17G40WI
-X-Gm-Gg: AR+sD105MU73crXn39ADYpsU19l464R8EgvsXqk4qT8pF6nvEp0GYh0PuPHrB4BygRS
-	RexOfq5Uj+79mKClNbp03wTgERgSBRhkWwRuyW0ANZ29GhTYsxc1YzmWj1buyFIx9KRuw/N1Z0g
-	flzlIl4K7u5SsIvNaaAhgCoxdlbZe0mHuU0FW52mie9964THu5gbXd+dm/Rq/r4k54x5klZDEH7
-	3zqLv3KpuldZdUzz3fHECfoIHzWRxf8ncAbClDh5xynPJMDPFZwvvqyepTzVhncs3C314sUB+xN
-	w08ixZ5+JhdEhWv0
-X-Received: by 2002:a17:902:f60e:b0:2c1:ee6e:4e49 with SMTP id
- d9443c01a7336-2cfa53828bcmr546965ad.26.1784744995317; Wed, 22 Jul 2026
- 11:29:55 -0700 (PDT)
+        bh=q/hMBR9xdLLcYOtadOuetEIVcftCz2uVEGlsfy4vyWE=;
+        b=fqabJLrvX80KFJHrst8ZQrNOzpe9jJe5utrcZ+UJsiB9SNpcaog2Q/7kdWz7tmKHpP
+         HG4D59DoDKnv7dC6FvUyn/2Ei7LbdCBlwl1sxz6Z2T+qdZ3/0j8K0c31VRhkSMNgWYfW
+         VybR/1YIEFi7qyHGqDNm0XoEM1MLVPCjIq+bc6enl9bamrDu61SGdTGCyQfElHVey08l
+         /OZd7901fw+ly3Lnffrtm2mWtmBrxjFtM4rNU00YNjKLTSXbHzY97bnF9zLm+bGgJ4Vz
+         eZMFX2xSihwSq+E0Kt9aSUa15wL9xYZjv1Sn2Fh2UM1FtC3yWIz/nr9Vo+ZwhAFN9XMw
+         pyEg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp38RoN86ZJy3OfQnJhB7bKYq57hscraOOlDRPGkmJRxDG/Y5Z2dZp8iUlqxI4HZsUT1F2+Q2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3emNxMXgGNMYvOT2T1/r5Z1FnYOLjgX603+b9IhSKwW9VsmxS
+	ljiPbWm7u7JQ5wZqyHR5p1XUCPzS51wmUETwc2tzLfXets51ZRWbLhMSMcAMwlcYFsvlrOyyhXX
+	LmRotu44zv3ph6NLpZ+s9H/4dvPmLFHk=
+X-Gm-Gg: AR+sD12hHBrAlpt+2iQt9VJ39WCoVgXQMz8z5wd+Xj3tYMn0mMLAIuWJ4K5qK6LvrBN
+	DN8Gv6jV29w6qT/N88zt2lsIc9c71WyQioPV/7sb7uelnH0PbU4Vq9VlN0C6+vVinLriMlLFTZx
+	I/u4z2vKL6xOF2P+KsMl1lEZg3Gi1IhhSx5eYN/OBQC9BtPtsf6FapsTAarZx4EaXoPBSuIiouF
+	EyEUjpYP1WKJB97Q/ap56CY6A2XDEvz7CeI8ouGdw5IKCnawy3RPI3Zrts+k0LCdpVHuT4fhk/2
+	AXucQmdRinLalQh+BnfvY52aCy+h01RfNARBpy1VM6rujiqZ0RCzOEa0RqTg
+X-Received: by 2002:a05:6102:3f55:b0:745:6721:8c2e with SMTP id
+ ada2fe7eead31-74753465622mr8799641137.2.1784745100524; Wed, 22 Jul 2026
+ 11:31:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_7DB01BE7F8FA056BB5F11D3570CF636C4309@qq.com> <tencent_8FE30FDFA32089B69BA3112E4A4C5E886D06@qq.com>
-In-Reply-To: <tencent_8FE30FDFA32089B69BA3112E4A4C5E886D06@qq.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 22 Jul 2026 11:29:42 -0700
-X-Gm-Features: AUfX_mzS7_PqfH6KstmDgOCBUlGwA2ixyTSez2IFSShyi5JJI7ari5NvR-MmgQI
-Message-ID: <CAHS8izPBvv4ENCcnSpsbcL9+TEMj9nBE6CAj4fg9_aDBdhrBaQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] net: atlantic: free stranded TX buffers on
- ring deinit
-To: Yangyu Chen <cyy@cyyself.name>
-Cc: Sukhdeep Singh <sukhdeeps@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
-	Lino Sanfilippo <LinoSanfilippo@gmx.de>
+References: <20260721015532.120157-1-l1138897701@163.com>
+In-Reply-To: <20260721015532.120157-1-l1138897701@163.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 22 Jul 2026 14:31:26 -0400
+X-Gm-Features: AUfX_mzhvOZLH9_yULd7m7gfTrtt0JvuYGRzvviB9G2wTum39x2hRL_f91lWRpw
+Message-ID: <CADvbK_cb8Q=9nv5Z5eR3cf=NLb=5=wSg_HKHrtCtPU_bAN=qvg@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next] sctp: auth: break when skb_clone fails for auth_chunk
+To: luoqing <l1138897701@163.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 9, 2026 at 10:41=E2=80=AFAM Yangyu Chen <cyy@cyyself.name> wrot=
-e:
+On Mon, Jul 20, 2026 at 9:56=E2=80=AFPM luoqing <l1138897701@163.com> wrote=
+:
 >
-> aq_vec_deinit() drains the TX rings with a single aq_ring_tx_clean()
-> call, which frees at most AQ_CFG_TX_CLEAN_BUDGET (256) descriptors and
-> stops at hw_head, which no longer moves once aq_vec_stop() has stopped
-> the hardware and NAPI. Completed descriptors beyond the budget and
-> everything still posted in [hw_head, sw_tail) keep their skb or
-> xdp_frame when the interface goes down: aq_vec_ring_free() then frees
-> the buffer ring and the references are lost for good.
+> From: Qing Luo <luoqing@kylinos.cn>
 >
-> Today this is a silent memory leak on every interface down under
-> TX/XDP_TX load. With the following conversion of the RX path to
-> page_pool it becomes much more visible: XDP_TX frames carry fragment
-> references on the RX ring's page_pool, so a single stranded frame
-> keeps the pool's inflight count above zero forever. page_pool_destroy()
-> then never completes, the pool is leaked together with its pages, and
-> "page_pool_release_retry() stalled pool shutdown" is warned every 60
-> seconds from that point on, on every ifdown, XDP detach or ring resize
-> under XDP_TX load.
+> When processing AUTH + COOKIE-ECHO packets, if skb_clone() fails
+> due to memory pressure, chunk->auth_chunk is NULL. The original
+> code still sets chunk->auth =3D 1 and continues, leaving the
+> COOKIE-ECHO to be processed without a valid auth_chunk for
+> deferred verification.
 >
-> Bring back aq_ring_tx_deinit() as it was before the removal and use it
-> for teardown again, with one extension: TX rings can hold xdp_frames
-> nowadays, so release those too. They are returned with
-> xdp_return_frame() since this runs in process context.
+> The intent of not setting auth was to drop the chunk earlier,
+> but in sctp_endpoint_bh_rcv() asoc is NULL for new connections,
+> so sctp_auth_recv_cid() returns 0 and the early check is
+> ineffective.
 >
-> Fixes: eb36bedf28be ("net: aquantia: remove function aq_ring_tx_deinit")
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Yangyu Chen <cyy@cyyself.name>
-
-Looks fine as far as I can tell, but don't you want this sent to net as a f=
-ix?
-
+> Fix by breaking out of the receive loop when skb_clone() fails,
+> dropping the entire packet since the AUTH data needed for
+> COOKIE-ECHO verification cannot be preserved.
+>
+> Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of A=
+UTH chunk")
+> Signed-off-by: Qing Luo <luoqing@kylinos.cn>
 > ---
+>  net/sctp/associola.c   | 2 ++
+>  net/sctp/endpointola.c | 2 ++
+>  2 files changed, 4 insertions(+)
 >
-> Notes:
->     Without this fix, converting the RX path to page_pool (next patch)
->     turns the stranded XDP_TX frames into leaked page_pool fragments, so
->     page_pool_destroy() can never drain and the shutdown stalls forever.
->
->     Reproduced on an AQC100 with this patch dropped from the series (i.e.
->     page_pool applied without the tx-deinit fix):
->
->       # reflect received frames back out through XDP_TX
->       xdp-bench tx enp99s0                    # or any trivial XDP_TX pro=
-g
->       # from a peer on the same link, flood RX so frames are in flight, t=
-hen
->       ip link set enp99s0 down
->
->     The pool is destroyed with frames still stranded on the TX ring, and
->     page_pool_release_retry() warns every 60s with the same id and inflig=
-ht
->     count and a growing age, indefinitely:
->
->       [161110.753385] page_pool_release_retry() stalled pool shutdown: id=
- 361, 12 inflight 60 sec
->       [161171.170756] page_pool_release_retry() stalled pool shutdown: id=
- 361, 12 inflight 120 sec
->       [161231.588685] page_pool_release_retry() stalled pool shutdown: id=
- 361, 12 inflight 181 sec
->       [161292.005886] page_pool_release_retry() stalled pool shutdown: id=
- 361, 12 inflight 241 sec
->
->     With this patch the stranded buffers are freed at deinit, inflight
->     drops to zero and the pool drains cleanly.
->
->  .../net/ethernet/aquantia/atlantic/aq_ring.c  | 30 +++++++++++++++++++
->  .../net/ethernet/aquantia/atlantic/aq_ring.h  |  1 +
->  .../net/ethernet/aquantia/atlantic/aq_vec.c   |  2 +-
->  3 files changed, 32 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/n=
-et/ethernet/aquantia/atlantic/aq_ring.c
-> index 8ff07de2bd52..c59b6c0b37f1 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-> @@ -360,6 +360,36 @@ bool aq_ring_tx_clean(struct aq_ring_s *self)
->         return !!budget;
->  }
->
-> +void aq_ring_tx_deinit(struct aq_ring_s *self)
-> +{
-> +       if (!self)
-> +               goto err_exit;
-
-return; here and delete label?
-
-> +
-> +       for (; self->sw_head !=3D self->sw_tail;
-> +               self->sw_head =3D aq_ring_next_dx(self, self->sw_head)) {
-> +               struct aq_ring_buff_s *buff =3D &self->buff_ring[self->sw=
-_head];
-> +               struct device *ndev =3D aq_nic_get_dev(self->aq_nic);
-> +
-> +               if (likely(buff->is_mapped)) {
-> +                       if (unlikely(buff->is_sop)) {
-> +                               dma_unmap_single(ndev, buff->pa, buff->le=
-n,
-> +                                                DMA_TO_DEVICE);
-> +                       } else {
-> +                               dma_unmap_page(ndev, buff->pa, buff->len,
-> +                                              DMA_TO_DEVICE);
-> +                       }
-
-I would remove the unlikelys that seem unnecassry to me. This is a
-reconfig path and the unlikely is probably not improving perf.
-
-> +               }
-> +
-> +               if (unlikely(buff->is_eop)) {
-> +                       if (buff->skb)
-> +                               dev_kfree_skb_any(buff->skb);
-> +                       else if (buff->xdpf)
-> +                               xdp_return_frame(buff->xdpf);
-> +               }
-> +       }
-> +err_exit:;
-> +}
-> +
->  static void aq_rx_checksum(struct aq_ring_s *self,
->                            struct aq_ring_buff_s *buff,
->                            struct sk_buff *skb)
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/n=
-et/ethernet/aquantia/atlantic/aq_ring.h
-> index a70b880ada67..6431cc62962f 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
-> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
-> @@ -202,6 +202,7 @@ void aq_ring_update_queue_state(struct aq_ring_s *rin=
-g);
->  void aq_ring_queue_wake(struct aq_ring_s *ring);
->  void aq_ring_queue_stop(struct aq_ring_s *ring);
->  bool aq_ring_tx_clean(struct aq_ring_s *self);
-> +void aq_ring_tx_deinit(struct aq_ring_s *self);
->  int aq_xdp_xmit(struct net_device *dev, int num_frames,
->                 struct xdp_frame **frames, u32 flags);
->  int aq_ring_rx_clean(struct aq_ring_s *self,
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c b/drivers/ne=
-t/ethernet/aquantia/atlantic/aq_vec.c
-> index 2f9033ceed8c..05814fea0f5f 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
-> @@ -275,7 +275,7 @@ void aq_vec_deinit(struct aq_vec_s *self)
->
->         for (i =3D 0U; self->tx_rings > i; ++i) {
->                 ring =3D self->ring[i];
-> -               aq_ring_tx_clean(&ring[AQ_VEC_TX_ID]);
-> +               aq_ring_tx_deinit(&ring[AQ_VEC_TX_ID]);
->                 aq_ring_rx_deinit(&ring[AQ_VEC_RX_ID]);
->         }
->
+> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> index 62d3cc155809..7741f982e368 100644
+> --- a/net/sctp/associola.c
+> +++ b/net/sctp/associola.c
+> @@ -999,6 +999,8 @@ static void sctp_assoc_bh_rcv(struct work_struct *wor=
+k)
+>                         if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
+>                                 chunk->auth_chunk =3D skb_clone(chunk->sk=
+b,
+>                                                               GFP_ATOMIC)=
+;
+> +                               if (!chunk->auth_chunk)
+> +                                       break;
+>                                 chunk->auth =3D 1;
+>                                 continue;
+>                         }
+> diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
+> index dfb1719275db..9675370a46da 100644
+> --- a/net/sctp/endpointola.c
+> +++ b/net/sctp/endpointola.c
+> @@ -368,6 +368,8 @@ static void sctp_endpoint_bh_rcv(struct work_struct *=
+work)
+>                         if (next_hdr->type =3D=3D SCTP_CID_COOKIE_ECHO) {
+>                                 chunk->auth_chunk =3D skb_clone(chunk->sk=
+b,
+>                                                                 GFP_ATOMI=
+C);
+> +                               if (!chunk->auth_chunk)
+> +                                       break;
+>                                 chunk->auth =3D 1;
+>                                 continue;
+>                         }
 > --
-> 2.47.3
+> 2.25.1
 >
 >
 
+The sashiko suggests adding chunk->pdiscard =3D 1 and continue to avoid
+stalling the queue.
 
---=20
-Thanks,
-Mina
+                                if (!chunk->auth_chunk) {
+                                        chunk->pdiscard =3D 1;
+                                        continue;
+                                }
+
+Also, as the original issue was already addressed in the other patch,
+you should delete the "Fixes:" tag from this patch. This patch is more
+like to discard the packet early if the skb_clone() fails.
+
+Thanks.
