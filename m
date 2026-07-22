@@ -1,76 +1,93 @@
 Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063E94749CF
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F5F44AB77
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784743236; cv=none; b=qfiKoUwSic8c0Tu0PMcUMkLGjbD5KOkHmyj39GV6CB2vMJc6Vvszx8w27jyU3yJXXHxVougCA19DZ3JM9jGt5uALmLe//fYJRC2HYdz6AmH9tFz1NPSfANjD/bU+zXGWokPmAn21B0jdZTuoYdHzlOZPoYXuH66Q8K0bH5DQcTk=
+	t=1784743237; cv=none; b=KYqWnXtJJ5I4NqadJan+rlgBrxNngtTxOQLKXQzBY/jb02MEq7lyTZl8na7IDVXE9XVRRpDbT7irLCVJtnLKJy+EgMSfDH55GJR7YfmDyHKxcut21RDQwg+J8SRggXhqsvCSOjyyLpkaZ1q6QX2DEL+50biSc71jDy7BngljogY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784743236; c=relaxed/simple;
-	bh=vkmMMSfEVfKjCsYxYnqoa8Dbu5CQcYm0Ucx4nKWpc20=;
+	s=arc-20240116; t=1784743237; c=relaxed/simple;
+	bh=Vm9pdnoQiEjS5jrO+VcZAmAh4KLL2aDUZZ2ez/tDOZU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PrPkrTFxvK/YzzoEYbo8dPrHgXJtey3yA5I7Hb3L/jr/98LscYt2gh7Uln66DOLVlvn5R3IX3JB3vnkwWjbSx6xHVpueWXHGjiEr3sUTAkxAHgvG4uD31EsyEiOwYvNgWdpGzqG6MbjWdMEh6dx8g3njOK/Y5g8w0pMeIijrjRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a46eIdug; arc=none smtp.client-ip=74.125.227.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=kfjqDM7mDrgmDZ91CgNC/PEHYaBKwnsxa9F0aGtTPcUP6ANLKoEqDe0f9gPX6+9UIMJtA315b6apmtnMQXLglt002PdRIHPfDCZ32aAH+23nVlLqSHaG8jbgVq+wx+yw5Qa7YWUqpFLnNkpaWNTRV6StNWfTzgk6hhfVwR6kUjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOvIcX3K; arc=none smtp.client-ip=74.125.227.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a46eIdug"
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-38111ea8a88so8574798a91.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:00:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOvIcX3K"
+Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2cc7ef596c6so110013555ad.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 11:00:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784743233; x=1785348033; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784743235; x=1785348035; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=455QrxqnsisFydYmxFbkhDq8b3Ie23cEcUJG/V3TVHA=;
-        b=a46eIdugsuduTGrsB11SIePM/Jov5Sn06dyFxJPktuCR7RWhM0Py7Iec/918y7m4KS
-         8iFKOHWNmcNypEZrWUU3ZVh/vvozlPuS0ev5N10+Mnsb2IZMLaWgAOa1ogvOzGn5HG7t
-         4uobGjpQkMFTMwnE+QyVIELY+90sIbX09AXUsF+9sMN6X5J5ML6na+vsRkold4UnNP/G
-         MQY6qfhahqPJeFv+sNApJLKGQt58HgadSYjCFdIjP/wYeflMf1OfvkJvJBxneB820Bvz
-         bqJ8fKxmp5X3YL9eQdZ2jsEzfNY5P8GEeAIr+A87o0h5nABppNOBOag45tBxIA3Eihbg
-         6rkA==
+        bh=HnNlfSj3fIGtu585qe6eLWjGneo6zvxtz8A2jHYq8n0=;
+        b=KOvIcX3Ki/9DH/Q+5M2g+Sn5rSwVtABWmBNsDuFWR0iN8/nAaKDq1BIVv+5v2kctGs
+         QnaOKR6zj/PJMwdhPNjmaUEJLPvyigqHaG48exG2TfywbyG7wuXNvSlJlQ5RMd4CPRqG
+         Sd1lgzPEP5trV5+qGfahIqOenKW+OAXMxHEWGpJJiyfFi8a+hnR6sBNl/LJdXPWhBP3b
+         /Nw5J1LIyBArYTTVINrTlXaeIJKIUi9ErdnjxwBKsxf4Y3ptGISvdSGF3QdIkeaLsH7h
+         7pPLxyM6t4uXy8cTP0QvoNCjtHZUzdcP/bzvrxpIvIeWsCTgPEaPV5Dr1Haz5hTM9v4/
+         pasw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784743233; x=1785348033;
+        d=1e100.net; s=20251104; t=1784743235; x=1785348035;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=455QrxqnsisFydYmxFbkhDq8b3Ie23cEcUJG/V3TVHA=;
-        b=qkxKpuf51pZ2BFLGFogjgwYY92RYp7Qy5k39zbCV1pQOxKitVLFJxYxMNCwvTkGNbY
-         +puHltGc/q+1Vk1JnSq63wIMoG/95HDQ0YOOvQoQRVVGR/d+kPQi3V4RlNe7NvIFnk29
-         NFZG+bAyWppY5nfR0tkr3RTWq80NCRmmGSdKuKtTEyk0kLBWwFAjdL94QadMMFfX2dDU
-         OBH8eWDRxbcT4hdMAawsx0fZ6QQRntujPWoXvckrBgsC5bCRKDc9Nf9RkByUk4Mu6s9G
-         J/fHa/btINlFOCPUT1QP77rErzHiKOcg+jX7cIE216gQJqMWnC0+RNn+zsp3ZjCbLMNR
-         KRUA==
-X-Forwarded-Encrypted: i=1; AHgh+RpqmXcNVcFb52PvP5K8o7NtQxtFKoJyI2GxcoXLnQaja325K4WsPmA95+7cZlLXBhMiJYtm/PQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaHy2s+WRD940m9jaaw8+PAfXGh0IqJYVvr+Z6GiDjGvencAJj
-	UTKNhwbCpGGdDkyB0XzgbcYjW3JpWG4aqKNh/mwIjfpAHky8HLUaYEUk
-X-Gm-Gg: AR+sD11vhyfaG72RktHQGJA1G7hJKedNgIrs1j2VWuU/dVTjEkWn5MP5DH7RhiEJLFD
-	wEjrzdmBZnqRNA45k8q30zk/tRq+hC0P2dZcQsYy+Uhztk7AEDtBJtj8R/xJJXAf+RjJ6EvKyOz
-	hMDVYqoT+oLpt/KzHBSoCr+jBPrhw0cDz90XfkX5b3s7tktLnEdVxqvjHOxBjcfbRvy9xbqmZL/
-	UcNkeyd7hZdZGTeczGbK4AfWrME/fmCUI/cLgfOSp5fiOVHNHZDwP4EW5fUCir13tlQ4C7zl+9d
-	hBN6/qJIXcNQBbHmHmWmiIot8iaj0SNue7FUbTqi/dmKgCOT4smlSvePWeuohJ3WfTzOUhoMMdj
-	3OP4QQSadQ6r8svdKUqJVcnvtsGB2NLzIbo2UsLwszvCX2P7sZ5QuPuQXmHS5yjw8WnIKEqvN0z
-	HXXU3HYg==
-X-Received: by 2002:a17:90b:6cc:b0:387:e0cb:c8da with SMTP id 98e67ed59e1d1-38e4b56bbc3mr23417439a91.35.1784743232483;
-        Wed, 22 Jul 2026 11:00:32 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:54::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea59459a6sm1069785a91.2.2026.07.22.11.00.30
+        bh=HnNlfSj3fIGtu585qe6eLWjGneo6zvxtz8A2jHYq8n0=;
+        b=sw5O1zMyj2J2ftikUpKi56Jl6SSjh70YLizT/AWEQy3q+guJu+2sSRHXiyZrgodwVV
+         nLvTi//o0tTqkbyzx1d4/yZ/9Pxzdb/D5xfh5MFIaBKZkCFA2MJrixhO0P9fcMv3jsji
+         OR1qnZccRXabGnZZw3XruPygb6ZGdr05aAA5ES/NZwSIwtbm3Db/3m6c86i2C3hP4l2t
+         F/1AuSp8MFUTXjlnV68Opd9JzmcxCEgymBTzFxzD40+Qzep+MjwtDLpzx1aKElEDbtL9
+         OZyEfh7wCrOxCh5eazi+FsVKFbU3jFncwZ7/QiWUGozPzOrXNaoMLtA8pTLO509vak9E
+         Q5QA==
+X-Forwarded-Encrypted: i=1; AHgh+Rox6UKBK05yFcQuPLJT/lrTUfqFGROhghfNBnuydZ4jV14mLek07YQCVkmaws9cWbiUWX2vqBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX5d8y6duCeeHHiiIpSEf5z3I9Xzezw2fwHzZ9j1hDusAoxhd5
+	77UfnV5+DuqdTvh/xS0/Xl6IQTNXkp68Ex45Lca2i2Uw6s3cfPKPPUcu
+X-Gm-Gg: AR+sD11MRcIRReV6ueuO+jYEQkMbMJ5KutrYvE3nTeLFMgeItZvZtdt9F0Kladkhjdl
+	urY2d47nvnRinfEdqlhH3IoJfVl9E//z+BzdMTrnEoGtORMz1O2JJxLBcUGl6migjJVQcZ+PU1z
+	1Wu6+JZWtrbcu/RJsgiaQC4LzCxyN2mzACPPJVE1H4w+PuRZ2jPKOnAnvR0KZQTsvFhXNOtTdhV
+	TzsSjmT/8z7yhLFGjk1jK33xypqIH8XUgms+IUEjxB/SOXWBRIoNbNTyBRq7gm0rnmrsFJ6uIxm
+	UPkfz+Kw6ZESNaB5DazDJ9mqITvIoYAhdOfpgc/0LdznkCQzef7sLMAAawZNWegcxWHlYbc1lrP
+	nWnOqBmevRvuU/1ktXsspwXX7/mrRP8vreIcwzdat92bi9xEf3wQu0bHFDhDo2vkfavQfBw==
+X-Received: by 2002:aa7:8744:0:b0:84e:89a:b8ed with SMTP id d2e1a72fcca58-84e089ab9d8mr6443533b3a.70.1784743234973;
+        Wed, 22 Jul 2026 11:00:34 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17266107sm1750442b3a.17.2026.07.22.11.00.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 11:00:30 -0700 (PDT)
-Date: Wed, 22 Jul 2026 10:55:17 -0700
+        Wed, 22 Jul 2026 11:00:33 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:00:07 -0700
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	sdf@fomichev.me, horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net v2] xsk: reject undersized tx_metadata at runtime
- validation
-Message-ID: <amEBJTKhUJHaAsBG@devvm7509.cco0.facebook.com>
-References: <20260722041326.75199-1-blbllhy@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Vladimir Vdovin <deliran@verdict.gg>, 
+	Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH bpf-next v5 8/8] selftests: net: add test for XDP_PASS
+ skb checksum invalidation
+Message-ID: <amEEEohxmC8hkBvY@devvm7509.cco0.facebook.com>
+References: <20260715-bpf-xdp-meta-rxcksum-v5-0-623d5c0d0ab7@kernel.org>
+ <20260715-bpf-xdp-meta-rxcksum-v5-8-623d5c0d0ab7@kernel.org>
+ <aljNR2sf8qJVKFgb@devvm7509.cco0.facebook.com>
+ <alkBnI3XcH0XGjEo@lore-desk>
+ <al53WS9FMTnu7tBI@devvm7509.cco0.facebook.com>
+ <20260721082728.74142e6c@kernel.org>
+ <al_4VWS_EyyZLe8z@devvm7509.cco0.facebook.com>
+ <20260721183256.6f49d6e1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,380 +96,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260722041326.75199-1-blbllhy@gmail.com>
+In-Reply-To: <20260721183256.6f49d6e1@kernel.org>
 
-On 07/22, Cen Zhang (Microsoft) wrote:
-> There is no metadata length check before accessing struct xsk_tx_metadata
-> fields in both xdp_umem_reg() (registration) and
-> xsk_buff_valid_tx_metadata() (runtime).  Thus, an invalid small
-> tx_metadata_len (e.g. 8 bytes) passes registration and later causes an
-> out-of-bounds read when xsk_skb_metadata() accesses fields beyond the
-> declared metadata region.
+On 07/21, Jakub Kicinski wrote:
+> On Tue, 21 Jul 2026 16:03:37 -0700 Stanislav Fomichev wrote:
+> > > > For unnecessary, I think the safe expectation is that the bpf program
+> > > > will update the value of the checksum in the packet if it touches the data?  
+> > > 
+> > > Documenting as expected behavior which no driver currently follows 
+> > > is a bit silly. I thought the ask was to sketch out the plan of
+> > > explicitly updating/invalidating the checksum even if we don't
+> > > implement it today?  
+> > 
+> > This is about current drivers that only report UNNECESSARY with xdp: the xdp
+> > prog has to maintain in-packet checksum if it changes the payload. I think
+> > it's a fair assumption?
 > 
-> KASAN reports this as:
+> What about decap? If we decap the header that device validated 
+> as UNNECESSARY there's no possibility of maintaining the checksum
+> (by which IIUC you mean correcting it in along the payload changes).
 > 
->   BUG: KASAN: vmalloc-out-of-bounds in xsk_skb_metadata+0x4b2/0x500
->   Read of size 8 at addr ffffc90000f11000 by task exploit/148
-> 
->   xsk_skb_metadata (net/xdp/xsk.c:837)
->   xsk_build_skb (net/xdp/xsk.c)
->   __xsk_generic_xmit (net/xdp/xsk.c)
->   xsk_sendmsg (net/xdp/xsk.c)
-> 
-> Fixing at registration time would break backward compatibility with older
-> userspace applications, so apply a runtime length check in
-> xsk_buff_valid_tx_metadata() that validates tx_metadata_len against the
-> fields required by the enabled flags.
-> 
-> Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Link: https://lore.kernel.org/all/20260720155210.34229-1-blbllhy@gmail.com/
-> Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> ---
-> V2:
->  - Change to runtime per-flag length check as suggested by Stanislav.
+> I think we'd need some API to "decrement the csum level" ?
+> Or some heuristic in the drivers to decrement if the head moved
+> by at least len(IP+UDP) into the packet ?
 
-Hmm, the AI review points out another set of TOCTOU issues :-/ I wonder
-whether want to go all in and rewrite the users to have a copy
-of metadata? Something like the following below, build tested only,
-any issues with that?
+True :-/ I guess one more case to document?
 
-(xsk_tx_metadata_to_compl (!meta) check is still buggy? not sure)
+> > In terms of documentation, here is what I have on my side, lmk if that makes
+> > sense, roughly:
+> > 
+> > - TODAY
+> >   - some drivers (correctly) disable reporting COMPLETE when XDP is attached
+> >     - the xdp program has to modify the packet checksum value if it
+> >       changes the payload
+> >   - some drivers (incorrectly?) report COMPLETE for xdp-to-skb path -> unsafe,
+> >     needs to be fixed
+> >     - updating the payload doesn't update skb->csum, so the safest
+> >       option right now is to only do UNNECESSARY with xdp for all drivers
+> 
+> Yes, that sounds fair.
+> 
+> >   - the hw test needs to make sure that the csum is either
+> >     NONE or UNNECESSARY, and will error out on COMPLETE
+> 
+> Driver can report COMPLETE to XDP, just not to the stack.
+> I think we can use a tracepoint (bpftrace) or attach in TCP
+> to check the skb state?
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index 17f213cc93e4..94f2a32917d2 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -604,7 +604,7 @@ struct igc_xdp_buff {
- 
- struct igc_metadata_request {
- 	struct igc_tx_buffer *tx_buffer;
--	struct xsk_tx_metadata *meta;
-+	struct xsk_tx_metadata meta;
- 	struct igc_ring *tx_ring;
- 	u32 cmd_type;
- 	u16 used_desc;
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e6e9441fc3d4..ec51a5b1051d 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2961,7 +2961,7 @@ static void igc_xsk_request_timestamp(void *_priv)
- 		 * metadata area. It is the location to store the value of
- 		 * tx hardware timestamp.
- 		 */
--		xsk_tx_metadata_to_compl(meta_req->meta, &tstamp->xsk_meta);
-+		xsk_tx_metadata_to_compl(&meta_req->meta, &tstamp->xsk_meta);
- 
- 		/* Set timestamp bit based on the _TSTAMP(_X) bit. */
- 		tx_flags |= tstamp->flags;
-@@ -3059,7 +3059,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 	 */
- 	while (budget >= 4 && xsk_tx_peek_desc(pool, &xdp_desc)) {
- 		struct igc_metadata_request meta_req;
--		struct xsk_tx_metadata *meta = NULL;
-+		struct xsk_tx_metadata meta = {};
- 		struct igc_tx_buffer *bi;
- 		u32 olinfo_status;
- 		dma_addr_t dma;
-@@ -3071,7 +3071,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 		olinfo_status = xdp_desc.len << IGC_ADVTXD_PAYLEN_SHIFT;
- 
- 		dma = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
--		meta = xsk_buff_get_metadata(pool, xdp_desc.addr);
-+		xsk_buff_read_metadata(pool, xdp_desc.addr, &meta);
- 		xsk_buff_raw_dma_sync_for_device(pool, dma, xdp_desc.len);
- 		bi = &ring->tx_buffer_info[ntu];
- 
-@@ -3079,7 +3079,7 @@ static void igc_xdp_xmit_zc(struct igc_ring *ring)
- 		meta_req.tx_buffer = bi;
- 		meta_req.meta = meta;
- 		meta_req.used_desc = 0;
--		xsk_tx_metadata_request(meta, &igc_xsk_tx_metadata_ops,
-+		xsk_tx_metadata_request(&meta, &igc_xsk_tx_metadata_ops,
- 					&meta_req);
- 
- 		/* xsk_tx_metadata_request() may have updated next_to_use */
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
-index 8aeab4b21035..1721a0a9220a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/tx.c
-@@ -66,7 +66,7 @@ static void mlx5e_xsk_tx_post_err(struct mlx5e_xdpsq *sq,
- bool mlx5e_xsk_tx(struct mlx5e_xdpsq *sq, unsigned int budget)
- {
- 	struct xsk_buff_pool *pool = sq->xsk_pool;
--	struct xsk_tx_metadata *meta = NULL;
-+	struct xsk_tx_metadata meta = {};
- 	union mlx5e_xdp_info xdpi;
- 	bool work_done = true;
- 	bool flush = false;
-@@ -99,13 +99,13 @@ bool mlx5e_xsk_tx(struct mlx5e_xdpsq *sq, unsigned int budget)
- 		xdptxd.dma_addr = xsk_buff_raw_get_dma(pool, desc.addr);
- 		xdptxd.data = xsk_buff_raw_get_data(pool, desc.addr);
- 		xdptxd.len = desc.len;
--		meta = xsk_buff_get_metadata(pool, desc.addr);
-+		xsk_buff_read_metadata(pool, desc.addr, &meta);
- 
- 		xsk_buff_raw_dma_sync_for_device(pool, xdptxd.dma_addr, xdptxd.len);
- 
- 		ret = INDIRECT_CALL_2(sq->xmit_xdp_frame, mlx5e_xmit_xdp_frame_mpwqe,
- 				      mlx5e_xmit_xdp_frame, sq, &xdptxd,
--				      check_result, meta);
-+				      check_result, &meta);
- 		if (unlikely(!ret)) {
- 			if (sq->mpwqe.wqe)
- 				mlx5e_xdp_mpwqe_complete(sq);
-@@ -116,7 +116,7 @@ bool mlx5e_xsk_tx(struct mlx5e_xdpsq *sq, unsigned int budget)
- 			if (xp_tx_metadata_enabled(sq->xsk_pool)) {
- 				struct xsk_tx_metadata_compl compl;
- 
--				xsk_tx_metadata_to_compl(meta, &compl);
-+				xsk_tx_metadata_to_compl(&meta, &compl);
- 				XSK_TX_COMPL_FITS(void *);
- 
- 				mlx5e_xdpi_fifo_push(&sq->db.xdpi_fifo,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 562d20830b94..217134559d41 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2707,7 +2707,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 
- 	for (; budget > 0; budget--) {
- 		struct stmmac_metadata_request meta_req;
--		struct xsk_tx_metadata *meta = NULL;
-+		struct xsk_tx_metadata meta = {};
- 		dma_addr_t dma_addr;
- 		bool set_ic;
- 
-@@ -2732,7 +2732,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 
- 		tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
- 		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
--		meta = xsk_buff_get_metadata(pool, xdp_desc.addr);
-+		xsk_buff_read_metadata(pool, xdp_desc.addr, &meta);
- 		xsk_buff_raw_dma_sync_for_device(pool, dma_addr, xdp_desc.len);
- 
- 		/* To return XDP buffer to XSK pool, we simple call
-@@ -2761,7 +2761,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 		meta_req.set_ic = &set_ic;
- 		meta_req.tbs = tx_q->tbs;
- 		meta_req.edesc = &tx_q->dma_entx[entry];
--		xsk_tx_metadata_request(meta, &stmmac_xsk_tx_metadata_ops,
-+		xsk_tx_metadata_request(&meta, &stmmac_xsk_tx_metadata_ops,
- 					&meta_req);
- 		if (set_ic) {
- 			tx_q->tx_count_frames = 0;
-@@ -2775,7 +2775,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 
- 		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
- 
--		xsk_tx_metadata_to_compl(meta,
-+		xsk_tx_metadata_to_compl(&meta,
- 					 &tx_q->tx_skbuff_dma[entry].xsk_meta);
- 
- 		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-diff --git a/include/net/libeth/xsk.h b/include/net/libeth/xsk.h
-index 82b5d21aae87..e2fa6bf6b1b3 100644
---- a/include/net/libeth/xsk.h
-+++ b/include/net/libeth/xsk.h
-@@ -205,7 +205,7 @@ __libeth_xsk_xmit_fill_buf_md(const struct xdp_desc *xdesc,
- 	BUILD_BUG_ON(!__builtin_constant_p(tmo == libeth_xsktmo));
- 	tmo = tmo == libeth_xsktmo ? &__libeth_xsktmo : tmo;
- 
--	xsk_tx_metadata_request(ctx.meta, tmo, &desc);
-+	xsk_tx_metadata_request(&ctx.meta, tmo, &desc);
- 
- 	return desc;
- }
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index ebac60a3d8a1..eb2645a88934 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -163,7 +163,7 @@ static inline void xsk_tx_metadata_request(const struct xsk_tx_metadata *meta,
- 					   const struct xsk_tx_metadata_ops *ops,
- 					   void *priv)
- {
--	if (!meta)
-+	if (!meta || !meta->flags)
- 		return;
- 
- 	if (ops->tmo_request_launch_time)
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 46797645a0c2..925c25bad57c 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -259,31 +259,42 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 		XDP_TXMD_FLAGS_LAUNCH_TIME | \
- 	0)
- 
--static inline bool
--xsk_buff_valid_tx_metadata(const struct xsk_tx_metadata *meta)
-+static inline int
-+xsk_buff_read_tx_metadata(const struct xsk_buff_pool *pool,
-+			  void *data,
-+			  struct xsk_tx_metadata *meta)
- {
--	return !(meta->flags & ~XDP_TXMD_FLAGS_VALID);
--}
--
--static inline struct xsk_tx_metadata *
--__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
--{
--	struct xsk_tx_metadata *meta;
-+	struct xsk_tx_metadata *p;
-+	u64 flags = 0;
- 
- 	if (!pool->tx_metadata_len)
--		return NULL;
-+		return 0;
-+
-+	/* covers flags, XDP_TXMD_FLAGS_CHECKSUM & XDP_TXMD_FLAGS_TIMESTAMP */
-+	if (unlikely(pool->tx_metadata_len < 16))
-+		return -EINVAL;
-+
-+	p = data - pool->tx_metadata_len;
-+	flags = READ_ONCE(p->flags);
-+
-+	if (flags & ~XDP_TXMD_FLAGS_VALID)
-+		return -EINVAL;
- 
--	meta = data - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
--		return NULL; /* no way to signal the error to the user */
-+	if (flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
-+		if (pool->tx_metadata_len < offsetofend(struct xsk_tx_metadata, request.launch_time))
-+			return -EINVAL;
- 
--	return meta;
-+	memcpy(meta, p, min(pool->tx_metadata_len, sizeof(struct xsk_tx_metadata)));
-+	meta->flags = flags;
-+	return 0;
- }
- 
--static inline struct xsk_tx_metadata *
--xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr)
-+static inline void xsk_buff_read_metadata(const struct xsk_buff_pool *pool,
-+					  u64 addr,
-+					  struct xsk_tx_metadata *meta)
- {
--	return __xsk_buff_get_metadata(pool, xp_raw_get_data(pool, addr));
-+	if (xsk_buff_read_tx_metadata(pool, xp_raw_get_data(pool, addr), meta) < 0)
-+		meta->flags = 0;
- }
- 
- static inline void xsk_buff_dma_sync_for_cpu(struct xdp_buff *xdp)
-@@ -469,21 +480,18 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	return (struct xdp_desc_ctx){ };
- }
- 
--static inline bool xsk_buff_valid_tx_metadata(struct xsk_tx_metadata *meta)
-+static inline int
-+xsk_buff_read_tx_metadata(const struct xsk_buff_pool *pool,
-+			  void *data,
-+			  struct xsk_tx_metadata *meta)
- {
- 	return false;
- }
- 
--static inline struct xsk_tx_metadata *
--__xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
--{
--	return NULL;
--}
--
--static inline struct xsk_tx_metadata *
--xsk_buff_get_metadata(struct xsk_buff_pool *pool, u64 addr)
-+static inline void xsk_buff_read_metadata(const struct xsk_buff_pool *pool,
-+					  u64 addr,
-+					  struct xsk_tx_metadata *meta)
- {
--	return NULL;
- }
- 
- static inline void xsk_buff_dma_sync_for_cpu(struct xdp_buff *xdp)
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index ccb3b350001f..71992b9e680d 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -141,12 +141,12 @@ void xp_dma_unmap(struct xsk_buff_pool *pool, unsigned long attrs);
- struct xdp_buff *xp_alloc(struct xsk_buff_pool *pool);
- u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max);
- bool xp_can_alloc(struct xsk_buff_pool *pool, u32 count);
--void *xp_raw_get_data(struct xsk_buff_pool *pool, u64 addr);
-+void *xp_raw_get_data(const struct xsk_buff_pool *pool, u64 addr);
- dma_addr_t xp_raw_get_dma(struct xsk_buff_pool *pool, u64 addr);
- 
- struct xdp_desc_ctx {
- 	dma_addr_t dma;
--	struct xsk_tx_metadata *meta;
-+	struct xsk_tx_metadata meta;
- };
- 
- struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index b970f30ea9b9..dbe4ddae30e8 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -802,19 +802,17 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 			    struct xdp_desc *desc, struct xsk_buff_pool *pool,
- 			    u32 hr)
- {
--	struct xsk_tx_metadata *meta = NULL;
-+	struct xsk_tx_metadata meta = {};
- 	u16 csum_start, csum_offset;
-+	int ret;
- 
--	if (unlikely(pool->tx_metadata_len == 0))
--		return -EINVAL;
--
--	meta = buffer - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
--		return -EINVAL;
-+	ret = xsk_buff_read_tx_metadata(pool, buffer, &meta);
-+	if (ret < 0)
-+		return ret;
- 
--	if (meta->flags & XDP_TXMD_FLAGS_CHECKSUM) {
--		csum_start = READ_ONCE(meta->request.csum_start);
--		csum_offset = READ_ONCE(meta->request.csum_offset);
-+	if (meta.flags & XDP_TXMD_FLAGS_CHECKSUM) {
-+		csum_start = READ_ONCE(meta.request.csum_start);
-+		csum_offset = READ_ONCE(meta.request.csum_offset);
- 
- 		if (unlikely(csum_start + csum_offset +
- 			     sizeof(__sum16) > desc->len))
-@@ -833,9 +831,9 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 		}
- 	}
- 
--	if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
--		skb->skb_mstamp_ns = meta->request.launch_time;
--	xsk_tx_metadata_to_compl(meta, &skb_shinfo(skb)->xsk_meta);
-+	if (meta.flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
-+		skb->skb_mstamp_ns = meta.request.launch_time;
-+	xsk_tx_metadata_to_compl(&meta, &skb_shinfo(skb)->xsk_meta);
- 
- 	return 0;
- }
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 1f28a9641571..c9f05835e433 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -735,7 +735,7 @@ static void *__xp_raw_get_data(const struct xsk_buff_pool *pool, u64 addr)
- 	return pool->addrs + addr;
- }
- 
--void *xp_raw_get_data(struct xsk_buff_pool *pool, u64 addr)
-+void *xp_raw_get_data(const struct xsk_buff_pool *pool, u64 addr)
- {
- 	return __xp_raw_get_data(pool, __xp_raw_get_addr(pool, addr));
- }
-@@ -773,7 +773,7 @@ struct xdp_desc_ctx xp_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	addr = __xp_raw_get_addr(pool, addr);
- 
- 	ret.dma = __xp_raw_get_dma(pool, addr);
--	ret.meta = __xsk_buff_get_metadata(pool, __xp_raw_get_data(pool, addr));
-+	xsk_buff_read_metadata(pool, addr, &ret.meta);
- 
- 	return ret;
- }
+No strong opinion on this, it seems easier to report the same to both
+xdp and bpf (at least initially)
