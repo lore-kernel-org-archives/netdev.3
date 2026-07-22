@@ -1,126 +1,134 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E10430ACF1
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326CD33F8A3
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784726400; cv=none; b=imafiWIgG5wXE6jVmuehUEMJqEhqZy7r2dopRoyiGVcD8rdNYlfIwcpTCK6nPDrL83w6CiOVIpdKJi2WPnNj5y+nAWKkkvymMOentdkZXV50V7EFCMCE1/LA3e6ynbfSKovh2bSr1xHbiKJtq4K5SPWu3t1dRH7uxSv9PZcX2Eg=
+	t=1784726712; cv=none; b=BX4b+S0Ar2c5ocw8nSiOkPloIiwhlriowfHjaX+jo+thzpJ4KJmNwlwcsGGhqi4QC8qB+k2DY+gZBh4Kb68TIxcfNiVOZONghqrPG96XPj1JbTrZ+3shT5YPhedCHitdqPriHxrHyjAf+ouAUrFk/Cbiw7wkG+9ALOGzH1M7ikY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784726400; c=relaxed/simple;
-	bh=BqjtnbOXG4Fh7SFEObLdm4QiDsMOAdXbHDJBsl4pjd0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SmAE2GI+BIiem5ePA62fo41DWAv9egEz9eorF2Yuh4KUCW4/wF6+CZ5psi2FGgjPz/UrG2cYh2rsKwuzY0UKakbmFi/TPvaj6rpyNqqBfg5MYX1SXTOKqSu1Ezc8wQSBeXwGRfd4QZxoSsKacEkU0tduHmbYhhw42l3kJ9ETams=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQI/c251; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784726712; c=relaxed/simple;
+	bh=Pg2VRxd7gCM6h+IJ8Y41+glwBqp8kgUUHbMEbqXsK7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qLd7hEK9v5y86sSxDctqK14RlLEvJbeqNhpBJfZn9hjSLwH1Elugmno0ZTwrb1Nd3O6BMBhTP6iZKzzYFGUYg1L2Vrsp5bDkMWlrTaL2X7SK4n1klF2J87SNsZhwk3s3nPsphe+kiw9qHhnPOI2pyJ17seHQ5yFrl/zYqvvPy7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=I7PQ7eX6; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQI/c251"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso8338624a12.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:19:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="I7PQ7eX6"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84874b52eabso12092141b3a.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:25:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784726398; x=1785331198; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YkleSo/mHT7B7/DelUTKo1SDFA3O4GZirFnblobGSyk=;
-        b=TQI/c251tn0BVfrClJ8asm5qWDTE4YfgtA+VeR5TC92UsapdSmHoxjHxXwgLoqNtAm
-         Jk/y2s210YqOhfv3t2DrvQ+4QhwRdrcIkROC1r+05TnYLDmKFzDwXpy4f5CkV7QvUsGa
-         tIdnOyIxLMfBUscdA0grM2+RdExYFnvjyFnnnl8rB3STnMG3Q232SFu5mQlpxFjVq1Wf
-         virjuvcigRzFIozNlJJFZqIIQ6L1nevB1CaGSXp3WWhFIWT3Hul+I0SJuUOrtkAWPElo
-         Ncj107c0yvyryRV0CL4Np0W37uVE2KBbu2nZHUy6ukMqpieEu1sHnganQCHNbCO2mCEn
-         FWZQ==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1784726709; x=1785331509; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1m9B3TqTXQp52+cm2Y/AlOog6dUAN0pTGZwsxsnFWrM=;
+        b=I7PQ7eX6/Rb/83fhiCREmP0Nq9eXv/8ZYLxK6ztSl6OrAv+aqnt6f9STu3Vq1k2KL+
+         bU1TKP+7O+loIusmFCQZXOM0p3NC/iZ9zOW0HKBJHalGGDC1YGMbBwQRPvqRP6CPXmu/
+         2HnwYRYOHUCS1/e4NG798Y4uR3KXwN8QJMO79AT0YzGCPQxv2oCCVMSuM7+hKAQY5bpI
+         PpaWIx9Dv4d34ftuVsUjC0IrpiwbzOJ5mrIqJWn4tSWWFJqcd/t5GUZFRFfT0jPvV2X1
+         lgWsmcfGHW4F13bun7avMbYMkVOgP+/QMXRxXgYKbfCWNyftbySmKuXIuOvbV3rtq4Zw
+         JpfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784726398; x=1785331198;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YkleSo/mHT7B7/DelUTKo1SDFA3O4GZirFnblobGSyk=;
-        b=LKa3PSu3nZc4+qm9Ibge1mkMOZKrG7jImiIipYRqWlnPEv4+PWQGhmJgdqvIcATDU8
-         Y2snbIYTiA3UibGAFzURv6qoyrxFsy8YtI9KMgfB2EBFLxBL3ktQTp3AVTYFKH7ELQXh
-         6oUlxYi80jKJj0m1bw1DnbZtPcXDg0k5VUadK6Sxt1YbPX0cUTmL5Z0ETMuaT5vfL7dW
-         uvI8LQc072fVVaZSwv8gXG3W8F873q2I5cStbiUl11z0XbAaulQyerS8LprPVIxfdwBp
-         RAS2QxVsuFFYNaSSDbwUkeA+Rmyv7d8ygN6FmjAjVXu4WqkK0rvkyz7rRJdYQYO6mVZD
-         4Qmw==
-X-Gm-Message-State: AOJu0Yya7tS46p6MfcG5ice+2XovrDfsYj++B0uizmNEkyXD5fswnkU2
-	NzlYaCKKoWKNqXuqfgF6A0v50EqWkXgFjpat4y8jdPQCRwanKm0VihRkn6D4pZDC
-X-Gm-Gg: AR+sD10xtWQzoh790HhmJsEPkkGfXcCkeqGY3uR+JYgE960eP9LZFkWz7c3unAIPEFJ
-	woXTxecJtJ/bsjxyWz0bfhxeHBqey0KVVTDlnybMsZ1oe281gdF8TartifpCAz0xFtoxlH+jm7C
-	7xbxae2ql+R0DZg4hYl26kMoTpDycp2J7o2DB6k+0AOvvlJBRjfYzvwJq+xdn2wSYLkLG6qgkj9
-	8DDkjlo+xNdht15fj5DXyXr5cv0U/3wn/SKY6s2f7+/IPt9VVEjRp0hiCTdsoPskcS+6CskJJyc
-	dPvVHjz3TjQfpLdYWZmb9TTyGl922oZbOYk3rQKW+UGDiqfdH7RS58lEcO2loDwlqQL4aQOeb3j
-	13pKPaIlTJMZC6kA1l2AZegGUhByj0lMe/lMGBIOXR0Jjpt6zniT1t2Opj+rzEMECUtUd9vc023
-	OH
-X-Received: by 2002:a05:6a21:6110:b0:3c3:a140:938a with SMTP id adf61e73a8af0-3c3ad947db0mr26030102637.45.1784726397859;
-        Wed, 22 Jul 2026 06:19:57 -0700 (PDT)
-Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f18ba96sm1112292a12.17.2026.07.22.06.19.51
+        d=1e100.net; s=20251104; t=1784726709; x=1785331509;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1m9B3TqTXQp52+cm2Y/AlOog6dUAN0pTGZwsxsnFWrM=;
+        b=cKlu3M2wHzflCtTuuL7toc8+B/MYmXK9UaIoPY+S0t1yTXonnyUYDvaAvTqUYCum9L
+         0PdquigLe0RcckkarcPoKVpSdeUMnrP9o3FXB8cKihezpTw01s2E4iKZEI89IHBrG8H/
+         3qV4Yjtq3MRAKZ0JdP2qAyJ0k+yx6VKuWzLuBfbuErEl6HfVCbiJ84S5XWprTcLvfbD/
+         n+NxgShnOd2C2B6GT2Lcz6qIDXJ5iGmj5bO79/65abg0P1Osfk6fRN/k8LKhR9bLuOZD
+         hqooTLtJKRp5NzEQLsNQeEV5sS67YI710+u6fCJSHx+S8vx/LeyCQKIbYc6u47cQCyMN
+         IL0w==
+X-Forwarded-Encrypted: i=1; AHgh+Roh0guqPunKYu+KBR+3lMHyF8l/Cml20OSvaTCCb3Y0XirGRXRBqbHvmh1j4aTB2nePagM3p+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEtXQIg8oyMSZY8V4ATttbpHK6pvhp2g/JUMhl5xc3BspNK5N5
+	96A4u+XTFRaWETSRUbMRulYZ5WW8ysVGJuz8vROV8kHpkl3wNIwa5B4I9GAZeXxuZlc=
+X-Gm-Gg: AR+sD11GQ+Umc0b2sNCrhWiiee3lbrDmNuC/83cKG6WK/fB44xB7CxJ165rrerbjR1G
+	1x1fT7WPSftWgpcMGmx+svD1SyeakkPHO3JyBc04NIjyhfHZnU4IRgk+nbjeiqzgua4EmvyQpXp
+	qkDpmgzhB2ULIsFo4jX1XiEh+jkJAiZVn0Xq181sbhFVhRQt9ebmhyNM5+dCPA4N1VwWLO4w/CJ
+	SiMzE2S8j7xX/uYpRZInmbY1jrf38X31GTuoRlliGUZA18vQxbGxCCX6+GNjmTBVrI0AD2GIJXj
+	y0Lg6FTKSyTgf2ZtPqAMYhgne+8QVTopbzwzV5Drld7aglt6R+lSTRHUmBrd90K1cVZeSM/mgXd
+	qQfvmSVFQUrXOy22sTRUnpUI6zCdOiCkMQ7INNaPGaMLSFRp5KAVMs8uGjhk=
+X-Received: by 2002:a05:6a00:13aa:b0:84a:2ec8:fac1 with SMTP id d2e1a72fcca58-84c29545550mr24635234b3a.72.1784726709431;
+        Wed, 22 Jul 2026 06:25:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4f::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17602046sm1332323b3a.59.2026.07.22.06.25.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 06:19:57 -0700 (PDT)
-From: Zxyan Zhu <zxyan0222@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Zxyan Zhu <zxyan0222@gmail.com>
-Subject: [PATCH net] net: stmmac: Skip PHY attach if custom PCS is in use
-Date: Wed, 22 Jul 2026 21:19:18 +0800
-Message-Id: <20260722131918.685761-1-zxyan0222@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Wed, 22 Jul 2026 06:25:08 -0700 (PDT)
+Date: Wed, 22 Jul 2026 06:25:08 -0700
+From: Joe Damato <joe@dama.to>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	wei.fang@nxp.com, chleroy@kernel.org, maxime.chevallier@bootlin.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RESEND v4 net-next 10/14] net: enetc: refactor SI VLAN
+ promiscuous mode configuration
+Message-ID: <amDEtJmcET788Lls@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, wei.fang@oss.nxp.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, chleroy@kernel.org,
+	maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
+ <20260720014317.1059359-11-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720014317.1059359-11-wei.fang@oss.nxp.com>
 
-When a platform provides a custom PCS via the pcs_init callback
-(e.g., for USXGMII with in-band autoneg), the MAC's phylink_pcs
-is already configured. In this case, phylink validates against
-the PCS's supported interfaces and manages link state through
-the PCS, so no traditional PHY device is needed.
+On Mon, Jul 20, 2026 at 09:43:12AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> Remove the enetc_set_vlan_promisc(), enetc_enable_si_vlan_promisc() and
+> enetc_disable_si_vlan_promisc() functions, and introduce a new unified
+> function enetc_set_si_vlan_promisc() to enable or disable VLAN
+> promiscuous mode for a specific SI. This simplifies the logic and makes
+> the interface more straightforward. The vlan_promisc_simap field in
+> struct enetc_pf is no longer needed to track the current state.
+> 
+> As ENETC V4 only changes the address offset of PSIPVMR register compared
+> to V1 without any functional difference, enetc_set_si_vlan_promisc() can
+> be moved to enetc_pf_common.c in the future with minor adjustments to be
+> reused by the ENETC V4 driver
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  .../net/ethernet/freescale/enetc/enetc_hw.h   |  5 ++-
+>  .../net/ethernet/freescale/enetc/enetc_pf.c   | 36 ++++++++-----------
+>  .../net/ethernet/freescale/enetc/enetc_pf.h   |  1 -
+>  3 files changed, 16 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> index 66bfda60da9c..16da732dc5de 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+> @@ -185,9 +185,8 @@ enum enetc_bdr_type {TX, RX};
+>  #define  PSIPMMR_SI_MAC_MP(n)	BIT((n) + 16)
+>  
+>  #define ENETC_PSIPVMR		0x001c
+> -#define ENETC_VLAN_PROMISC_MAP_ALL	0x7
+> -#define ENETC_PSIPVMR_SET_VP(simap)	((simap) & 0x7)
+> -#define ENETC_PSIPVMR_SET_VUTA(simap)	(((simap) & 0x7) << 16)
+> +#define  PSIPVMR_SI_VLAN_P(n)	BIT(n) /* n = SI index */
 
-Without this, stmmac_init_phy() falls through to the
-no-phy-node path and errors out with "no phy found" when
-the DT has no phy-handle for such interfaces.
+I suppose it would have been nice to only have a single space after #define
+above.
 
-Skip the PHY attach when priv->hw->phylink_pcs is already set
-and no phy-handle is specified in the device tree, allowing
-platform PCS implementations to handle the link autonomously.
+The rest of the code looks right and I think the promisc logic is clearer, so:
 
-Fixes: f0ef433fc264 ("net: stmmac: introduce pcs_init/pcs_exit stmmac operations")
-Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2a0d7eff88d3..54c5281e91ab 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1346,6 +1346,10 @@ static int stmmac_init_phy(struct net_device *dev)
- 		int addr = priv->plat->phy_addr;
- 		struct phy_device *phydev;
- 
-+		/* If a custom PCS is in use, no PHY is needed */
-+		if (priv->hw->phylink_pcs)
-+			return 0;
-+
- 		if (addr < 0) {
- 			netdev_err(priv->dev, "no phy found\n");
- 			return -ENODEV;
--- 
-2.34.1
-
+Reviewed-by: Joe Damato <joe@dama.to>
