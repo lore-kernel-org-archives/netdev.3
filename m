@@ -1,61 +1,61 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FA737206B
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E70142E8F1
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784753108; cv=none; b=S3V8GdYwOoyd/hCnnx4PnRi2LRVSvFG1Q5GRZFP17B7cZIKkuzPnwI74ML9Yw+GonJXf/APui9pHLmMiy4nZHGv9JwSbn40VGms+H8hOjrdhPdaZIG9/ozTHN2+6xoDaeEFL8gGEQpaQvdru1LgFxS9wA11epjFpgLEM64lGBzk=
+	t=1784753109; cv=none; b=YHOgQXoau5tP9MKPILMrl6I4SYFtmSr1DZDOKf1qW6nYxQL1Zty61s9ngHWzRao5/oGeWJgicafvrCGXQFGlzaBdc+vveTBC1DL1ktj6SpYs12wxkrWLj4dzIahOUxtuIduZdtVE105X7Aity6OP1lfsapHgEPFrZCpf43W8nPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784753108; c=relaxed/simple;
-	bh=fa2j+MJ+bu4AjgNuEiLJ6fFIQwaR906hlBCiYLeLbZI=;
+	s=arc-20240116; t=1784753109; c=relaxed/simple;
+	bh=ualrFxAJy1W5bMR758u7WUxfqrNPotQ4bZrqQRXG+NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kr1Rq1Q8Hlmk9+DIZXeXnuVhJ8hpB1pT/S1M+29hd4p1IzbSfFkdLRx9HNnN7tu+a91jk4Ulwg4dU0bSyXrCTVpG08U+egHn8z8+i0RW8dZZXMjL5avYb5w7rr6GETXJdrFJ+PtKYWHs7Cm3J8/z+l0BY+joHtPrMWP6CS9sycE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r1cM0hks; arc=none smtp.client-ip=209.85.128.175
+	 MIME-Version; b=AQ9AX5sbjTdTxFlPd8/YfSmEu1PpXPTz5cSi7nyrMIOwniBfUN3hERkusjsBOb860poxeGXqL7YnHf1jXoBWyCreH/R7DOXtnJ+70eQNRyjsJILdg9opQ8sOFaWdllWYeyiRUUL2IPWGOtZJ/Ok0Vb1lwEiOphAvFeu++C4/WcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYESJTrQ; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r1cM0hks"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-81e6f2ee60bso49211217b3.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:45:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYESJTrQ"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-81ee41aaec1so71868597b3.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:45:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1784753106; x=1785357906; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qJXpjUmJG9CghmfT96uCE3JAmfSW2+wlpQUq8BR3Ndw=;
-        b=r1cM0hks9HHdmI4KGGEaj22YzOW4I4j6nKggiR+JumFqyujGxXYAuwqc8EAMoPBM6j
-         V52486d7KU1H9cr1Q7+4ArzwAkDB2i8gHDDOj6UIwvYEyCnaQ7zT1XBIWZmVnHfU4DuZ
-         8/B7kKR2EOap35Mw5KhGM6qBeSZVYCg3talEzHuJp8tXBfXm4eVUBTdLCX/mkp8zQMFL
-         XOshyFSj+mPNqshaAmpI5llq1bnhyqjOjJc1uaVGLPCdxuMIV9rENgejo4IbQfKpIVJc
-         tXVdOR65uiHz9a4QFiK3lJU971dr8bSHqmSPLLHE6HCMjlT+wapLdQFnp19Arw41kDC7
-         AStA==
+        bh=GafyVlzH7EDgm5ibwIIRkoiXMQm85aGHNK/M7ty7ih8=;
+        b=RYESJTrQGEJieBAwx7pJv2U1415dLSoTcDFwCtaTa/rMW9HGZxbU17zk3RWO2Lr7kv
+         qt4KXVMAb4wbFOOHtYgH/Rie7EEwIIL0wvqeSuBvpwNZXtQpFg4UXblDVdKelC7kCgbD
+         jTTBdbEjz8S8SssRk+DPwqbhnyV9tFcjXOVIGKXBZNucDMP4f5QHyJGZOBbXk3rj87KA
+         xJ8On3OmQHf3pP68mUgsuVf9ytwq08CsxLpOqQvke7aMEKP6r3Pkha8hYfL2Yo0Va1Ll
+         3sqBMoB+Y3UGUTFBl8Bkxw1/PWVzvRmthtz33vyuPmxhjiFFFJE23Pb4yY+lLbuwDkjw
+         rapA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1784753106; x=1785357906;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qJXpjUmJG9CghmfT96uCE3JAmfSW2+wlpQUq8BR3Ndw=;
-        b=rxHS5yIxpKkVnnNHuYlDjwD3VEVKzw2/U0xQUPON9xZppwS7Mmy+j8rp2erRIgsxnX
-         NEJh95Xx7bQVfkmmNs/BjlOQ3DEK/+G+3ND3iM/IbNa6b2UcZ0dGLlgqpCZshhNRNyFm
-         jilH7H8YfvWdvCPefDNPsRBxc2ch7j0hE4TwcuWcnTYnhiR8hC1K1alqhJYqa1VBmjnJ
-         8i0961um9tJBse7FvanVL4yq3Jogdm+TN8xeQ63+LTR7YetascIPvik6NvkTI2DJej+I
-         gwJ2n9555eHHuvsW8P6UPeUmAObOeXQhkXxR8MS1lu62vQsOYDp8oq9m0c1Y1qAc2lWs
-         sdbw==
-X-Gm-Message-State: AOJu0Ywa7TfJmI8rBwHiU6Pc8H4tA6nf0X3UtEfKTkzhsjXRObQnFl0a
-	z8s0L43kEXx0nCcjsZOxqYznqMiHRtOgAxQtlUl+S/UnRSBKCDU3Toj/4pzffv2w
-X-Gm-Gg: AR+sD11RmYuUY+NYIbO5ESS2PxVUU/4diUw+4jBwAE1xo3XSSqViM2Jepbuv3GZPH/r
-	pJd0mpltGcdOcKcY8hq2GLHUV+5mx5H0zAPc/oZj+5joyxcoTdAAaFP3H7ztq9FyCLi4A2c9yTa
-	0beTGyHLmgNV2bBPmgEfHs1JSX+cmnvuo6/1E77wqY8FDUoZ2qRgjsWVZBkZNkjLNzN+PVelKLG
-	L3TWlmAQCVSj5eo3jdcX/GjKD5zctddf4W5mCFijlLAuTldo1k9ccavrXpW0CTrYTeI3bZDyPt7
-	C2/mkrK3/87vi5K7q7bm6t+plsn4AoWLYzEwjDuvLxBHbYh+qf6UiKZfOJ+6dbDlVSEWT0mvwQi
-	HaOZ4+r2GGmDP7lfWfn7Jq4BoAgCqu4sDbzsfYSZ5pXBoKtErOiEDEh2GCf71/Xaq9oNJWb30bM
-	lBhD7JNeD5OHtHQzuErB2Gc1DKWa0iCPfSv7no+bHZkP/fXsorV62PWjS++WPDTokbK2flqs7yz
-	njijbczrtOJkhqrv2mujuydGu0=
-X-Received: by 2002:a05:690c:d8a:b0:81e:bc7a:df50 with SMTP id 00721157ae682-81f3398e12bmr19347497b3.3.1784753105545;
-        Wed, 22 Jul 2026 13:45:05 -0700 (PDT)
+        bh=GafyVlzH7EDgm5ibwIIRkoiXMQm85aGHNK/M7ty7ih8=;
+        b=HZrTCS2OtBYh5iq38SzxMQOvmHk0NYiMsIgsvABrd4le8YSj81BR7Pgb1zkZt42hWs
+         lIm2zVMMcoVBmaueCwFU1J184cwxDUKvhJXoiEGl0QdnLOZG3yad9LfklWygTmp2u791
+         cEOpasOkE2ksuFhOpsNu/BdUkPq+A0OjHW9a57jawSUgb4mLtjX0h+JT9Q0BENtwhybg
+         fbigD5ZqwcwCG7aqcnqTkxsVqm4i96/NIA4OJs9gzJswWmDbdQzri+K8LByk8GzvHR6H
+         vYBP9J+CVrjlhfxADnkAbB3KYRi5h332igJMyOqlNQ4s87X8AZWJamiuZPFN7jrMJtpc
+         AHsw==
+X-Gm-Message-State: AOJu0YysWfofa4895fKuqRYdhrqzH0TO9zaRfeRMu+0QDWDPWAC2ibeR
+	JG9IAmQleWO6EePscWa+8NDs5gOJT/e947Ni8L2Zm7hrJOa7rPRgFJl6L9e29mWI
+X-Gm-Gg: AR+sD10aNOO31jjGk0BYk8u6k4u7gRK4mYixOgqFy2BXzKpykZo6XWMiN8Qttv0//y8
+	nXihozth50kcRM0oIsVDtR2VMOUA6W6Z7pn2xs64w1k2u/HW0KUk2M2VJ6AJNsWsUiEpk/iQCp5
+	RVi3OAHMjQgV2kb5syE1wsOUf2/EskklAlootz4uh2Fo/P3wsSs1NJkkyWNGWbxzB4MIZEru82m
+	nRQBoZ/0oK7O/E9S43kPwNyaCI4U/5/w1j5cMwruFRhcNAlEH6cz4xuJ/DNwy6NyWG+LkyM0e1o
+	YtDdBt0inKg7RdXx9axN4BeDCuWS7CngP4KG6W03QcMVIBa5SiEPSLqm4shtWaDD9nlDuqlbsII
+	1+IFerFfDKtMUymUT/xDLaRLk/+B270vPC9Uhd0/ngtan9DDGIPaySYOK385p2H7Z5fjDhbV8GH
+	IJl7GTBZn8pe98Gkf+PZd9Rj9qs2I3i/gcDbaKWV7tOF60JLqwM3X7tGukqBfYEVF5J7pEBrB/z
+	1OUZFsW5PHOXcPx
+X-Received: by 2002:a05:690c:670f:b0:81e:6fd:7ca5 with SMTP id 00721157ae682-81f4c2c90cdmr578017b3.44.1784753106417;
+        Wed, 22 Jul 2026 13:45:06 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33bf2df0sm19506797b3.6.2026.07.22.13.45.04
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33bf2df0sm19506797b3.6.2026.07.22.13.45.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 22 Jul 2026 13:45:05 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
@@ -67,9 +67,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	andrew@lunn.ch,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v2 4/7] selftests: drv-net: refactor so_txtime errqueue handling
-Date: Wed, 22 Jul 2026 16:43:50 -0400
-Message-ID: <20260722204454.3234605-5-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next v2 5/7] selftests: drv-net: in so_txtime tell apart sw from hw pacing
+Date: Wed, 22 Jul 2026 16:43:51 -0400
+Message-ID: <20260722204454.3234605-6-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
 References: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
@@ -83,128 +83,202 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-Prepare error queue handling for upcoming SO_EE_ORIGIN_TIMESTAMPING
-messages in the next patch in this series.
+Detect software pacing in so_txtime.c using SO_TIMESTAMPING.
 
-Convert do_recv_errqueue_timeout into dispatcher do_recv_errqueue
-and move SO_EE_ORIGIN_TXTIME specific code into a separate helper.
+If '-h' (hw) is passed
 
-This will make the next patch a lot more readable.
+1. measure sw tx delay with SOF_TIMESTAMPING_TX_SOFTWARE, and
+2. fail if delay exceeds a threshold, indicating pacing
 
-No functional changes.
+Also reorder getopt parameters to make them alphabetical.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 ---
- .../testing/selftests/drivers/net/so_txtime.c | 66 ++++++++++---------
- 1 file changed, 36 insertions(+), 30 deletions(-)
+ .../testing/selftests/drivers/net/so_txtime.c | 81 ++++++++++++++++---
+ 1 file changed, 69 insertions(+), 12 deletions(-)
 
 diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
-index 55a386f3d1b9..7364ce2bec0b 100644
+index 7364ce2bec0b..5900ca97957c 100644
 --- a/tools/testing/selftests/drivers/net/so_txtime.c
 +++ b/tools/testing/selftests/drivers/net/so_txtime.c
-@@ -158,7 +158,40 @@ static void do_recv_verify_empty(int fdr)
- 		error(1, 0, "recv: not empty as expected (%d, %d)", ret, errno);
+@@ -42,8 +42,10 @@ static bool	cfg_machine_slow;
+ static uint64_t	cfg_start_time_ns;
+ static int	cfg_mark;
+ static bool	cfg_rx;
++static bool	cfg_verify_hw_offload;
+ 
+ static uint64_t glob_tstart;
++static uint64_t glob_tstart_real;
+ static uint64_t tdeliver_max;
+ 
+ static int errors;
+@@ -191,12 +193,32 @@ static int do_recv_errqueue_timeout(struct sock_extended_err *err,
+ 	return 1;
  }
  
--static int do_recv_errqueue_timeout(int fdt)
-+static int do_recv_errqueue_timeout(struct sock_extended_err *err,
-+				    const char payload_char)
++static void do_recv_errqueue_timestamping(struct sock_extended_err *err,
++					  struct scm_timestamping *tss)
 +{
-+	const char *reason = NULL;
-+	int64_t tstamp = 0;
++	int64_t ts;
 +
-+	switch (err->ee_errno) {
-+	case ECANCELED:
-+		if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
-+			error(1, 0, "errqueue: unknown ECANCELED %u\n",
-+			      err->ee_code);
-+		reason = "missed txtime";
-+	break;
-+	case EINVAL:
-+		if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
-+			error(1, 0, "errqueue: unknown EINVAL %u\n",
-+			      err->ee_code);
-+		reason = "invalid txtime";
-+	break;
-+	default:
-+		error(1, 0, "errqueue: errno %u code %u\n",
-+		      err->ee_errno, err->ee_code);
++	ts = tss->ts[0].tv_sec;
++	ts *= 1000ULL * 1000 * 1000;
++	ts += tss->ts[0].tv_nsec;
++	ts -= glob_tstart_real;
++	ts /= 1000;
++
++	if (ts > cfg_variance_us) {
++		fprintf(stderr, "sw delay %" PRId64 "us exceeds bounds\n", ts);
++		if (!cfg_machine_slow)
++			errors++;
 +	}
-+
-+	tstamp = ((int64_t)err->ee_data) << 32 | err->ee_info;
-+	tstamp -= (int64_t)glob_tstart;
-+	tstamp /= 1000 * 1000;
-+	fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
-+		payload_char, tstamp, reason);
-+
-+	return 1;
 +}
 +
-+static int do_recv_errqueue(int fdt)
+ static int do_recv_errqueue(int fdt)
  {
  	char control[CMSG_SPACE(sizeof(struct sock_extended_err)) +
++		     CMSG_SPACE(sizeof(struct scm_timestamping)) +
  		     CMSG_SPACE(sizeof(struct sockaddr_in6))] = {0};
-@@ -169,7 +202,6 @@ static int do_recv_errqueue_timeout(int fdt)
+ 	char data[sizeof(struct ethhdr) + sizeof(struct ipv6hdr) +
+ 		  sizeof(struct udphdr) + 1];
++	struct scm_timestamping *tss;
+ 	struct sock_extended_err *err;
+ 	int ret, num_tstamp = 0;
  	struct msghdr msg = {0};
- 	struct iovec iov = {0};
- 	struct cmsghdr *cm;
--	int64_t tstamp = 0;
+@@ -222,16 +244,30 @@ static int do_recv_errqueue(int fdt)
+ 			error(1, 0, "errqueue: flags 0x%x\n", msg.msg_flags);
  
- 	iov.iov_base = data;
- 	iov.iov_len = sizeof(data);
-@@ -181,8 +213,6 @@ static int do_recv_errqueue_timeout(int fdt)
- 	msg.msg_controllen = sizeof(control);
+ 		cm = CMSG_FIRSTHDR(&msg);
++		tss = NULL;
++
++		if (cm->cmsg_level == SOL_SOCKET &&
++		    cm->cmsg_type == SCM_TIMESTAMPING) {
++			tss = (void *)CMSG_DATA(cm);
++			cm = CMSG_NXTHDR(&msg, cm);
++			if (!cm)
++				error(1, 0, "timestamp missing ip err\n");
++		}
++
+ 		if (cm->cmsg_level != cfg_errq_level ||
+ 		    cm->cmsg_type != cfg_errq_type)
+ 			error(1, 0, "errqueue: type 0x%x.0x%x\n",
+ 				    cm->cmsg_level, cm->cmsg_type);
  
- 	while (1) {
--		const char *reason = NULL;
--
- 		ret = recvmsg(fdt, &msg, MSG_ERRQUEUE);
- 		if (ret == -1 && errno == EAGAIN)
- 			break;
-@@ -201,33 +231,9 @@ static int do_recv_errqueue_timeout(int fdt)
- 		if (err->ee_origin != SO_EE_ORIGIN_TXTIME)
+ 		err = (struct sock_extended_err *)CMSG_DATA(cm);
+-		if (err->ee_origin != SO_EE_ORIGIN_TXTIME)
++		if (err->ee_origin == SO_EE_ORIGIN_TXTIME)
++			num_tstamp += do_recv_errqueue_timeout(err,
++							       data[ret - 1]);
++		else if (err->ee_origin == SO_EE_ORIGIN_TIMESTAMPING && tss)
++			do_recv_errqueue_timestamping(err, tss);
++		else
  			error(1, 0, "errqueue: origin 0x%x\n", err->ee_origin);
  
--		switch (err->ee_errno) {
--		case ECANCELED:
--			if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
--				error(1, 0, "errqueue: unknown ECANCELED %u\n",
--				      err->ee_code);
--			reason = "missed txtime";
--		break;
--		case EINVAL:
--			if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
--				error(1, 0, "errqueue: unknown EINVAL %u\n",
--				      err->ee_code);
--			reason = "invalid txtime";
--		break;
--		default:
--			error(1, 0, "errqueue: errno %u code %u\n",
--			      err->ee_errno, err->ee_code);
--		}
--
--		tstamp = ((int64_t) err->ee_data) << 32 | err->ee_info;
--		tstamp -= (int64_t) glob_tstart;
--		tstamp /= 1000 * 1000;
--		fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
--			data[ret - 1], tstamp, reason);
--
-+		num_tstamp += do_recv_errqueue_timeout(err, data[ret - 1]);
+-		num_tstamp += do_recv_errqueue_timeout(err, data[ret - 1]);
  		msg.msg_flags = 0;
  		msg.msg_controllen = sizeof(control);
--		num_tstamp++;
  	}
- 
- 	return num_tstamp;
-@@ -245,7 +251,7 @@ static void recv_errqueue_msgs(int fdt)
- 			error(1, errno, "poll");
- 
- 		if (ret && (pfd.revents & POLLERR))
--			num_tstamp += do_recv_errqueue_timeout(fdt);
-+			num_tstamp += do_recv_errqueue(fdt);
- 
+@@ -256,7 +292,8 @@ static void recv_errqueue_msgs(int fdt)
  		if (num_tstamp == cfg_num_pkt)
  			break;
+ 
+-	} while (gettime_ns(cfg_clockid) < tdeliver_max);
++	} while (gettime_ns(cfg_clockid) <
++		 tdeliver_max + (cfg_variance_us * 1000));
+ }
+ 
+ static void start_time_wait(void)
+@@ -301,6 +338,18 @@ static void setsockopt_txtime(int fd)
+ 		error(1, 0, "getsockopt txtime: mismatch");
+ }
+ 
++static void setsockopt_txtimestamping(int fd)
++{
++	int val = SOF_TIMESTAMPING_TX_SOFTWARE |
++		  SOF_TIMESTAMPING_SOFTWARE |
++		  SOF_TIMESTAMPING_OPT_ID |
++		  SOF_TIMESTAMPING_OPT_TSONLY;
++
++	if (setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING,
++		       &val, sizeof(val)))
++		error(1, errno, "setsockopt timestamping");
++}
++
+ static int setup_tx(struct sockaddr *addr, socklen_t alen)
+ {
+ 	int fd;
+@@ -314,6 +363,9 @@ static int setup_tx(struct sockaddr *addr, socklen_t alen)
+ 
+ 	setsockopt_txtime(fd);
+ 
++	if (cfg_verify_hw_offload)
++		setsockopt_txtimestamping(fd);
++
+ 	if (cfg_mark &&
+ 	    setsockopt(fd, SOL_SOCKET, SO_MARK, &cfg_mark, sizeof(cfg_mark)))
+ 		error(1, errno, "setsockopt mark");
+@@ -354,6 +406,7 @@ static void do_test_tx(struct sockaddr *addr, socklen_t alen)
+ 
+ 	start_time_wait();
+ 	glob_tstart = gettime_ns(cfg_clockid);
++	glob_tstart_real = gettime_ns(CLOCK_REALTIME);
+ 
+ 	for (i = 0; i < cfg_num_pkt; i++)
+ 		do_send_one(fdt, &cfg_buf[i]);
+@@ -446,10 +499,11 @@ static void usage(const char *progname)
+ 			"  -6            only IPv6\n"
+ 			"  -c <clock>    monotonic or tai (default)\n"
+ 			"  -D <addr>     destination IP address (server)\n"
+-			"  -S <addr>     source IP address (client)\n"
++			"  -h            verify hardware offload (tx)\n"
++			"  -m <mark>     socket mark\n"
+ 			"  -r            run rx mode\n"
++			"  -S <addr>     source IP address (client)\n"
+ 			"  -t <nsec>     start time (UTC nanoseconds)\n"
+-			"  -m <mark>     socket mark\n"
+ 			"\n",
+ 			progname);
+ 	exit(1);
+@@ -461,7 +515,7 @@ static void parse_opts(int argc, char **argv)
+ 	int domain = PF_UNSPEC;
+ 	int c;
+ 
+-	while ((c = getopt(argc, argv, "46c:S:D:rt:m:")) != -1) {
++	while ((c = getopt(argc, argv, "46c:D:hm:rS:t:")) != -1) {
+ 		switch (c) {
+ 		case '4':
+ 			if (domain != PF_UNSPEC)
+@@ -488,21 +542,24 @@ static void parse_opts(int argc, char **argv)
+ 			else
+ 				error(1, 0, "unknown clock id %s", optarg);
+ 			break;
+-		case 'S':
+-			saddr = optarg;
+-			break;
+ 		case 'D':
+ 			daddr = optarg;
+ 			break;
++		case 'h':
++			cfg_verify_hw_offload = true;
++			break;
++		case 'm':
++			cfg_mark = strtol(optarg, NULL, 0);
++			break;
+ 		case 'r':
+ 			cfg_rx = true;
+ 			break;
++		case 'S':
++			saddr = optarg;
++			break;
+ 		case 't':
+ 			cfg_start_time_ns = strtoll(optarg, NULL, 0);
+ 			break;
+-		case 'm':
+-			cfg_mark = strtol(optarg, NULL, 0);
+-			break;
+ 		default:
+ 			usage(argv[0]);
+ 		}
 -- 
 2.55.0.229.g6434b31f56-goog
 
