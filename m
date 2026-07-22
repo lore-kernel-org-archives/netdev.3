@@ -1,61 +1,63 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DFE31DDBB
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969F175A9D
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784680198; cv=none; b=f+DJJrCSCXkCaXSiv036ULB4jwKIXIAOPGNoQuKOXlugO26NpPGQ6nsyGMUA2L435mzW8V7nVwJQhaxJloeCTqVXHbBQZQ5+EcNhdZXQIrPunndqyYX4NVNcbrwlpti7rqpGFyDswbx1MXtbiYQ0yJ0Kq36bT2pVhOaB1Lhc3vo=
+	t=1784680200; cv=none; b=Qi0a9cOE0gEe7UxM6fe/tyYQoAgQ5hOcZwq3pTREi1A2MesrhEyZpstwO+HFs7rNdU1/xz3gmktb30b/ToAkIHfWqm/+Am/ucRjtXCGVc3XPj4GCnF29NGxm5NLHc3ox/cGBICsG5joXcOvSJuRnzdrVkVZ4SoygL+S6dmBG0Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784680198; c=relaxed/simple;
-	bh=7vDHYv30wJHT/6LezK03SZspW8RG2aPdp5QyQsiXGSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R+slHQxumpcFioCFEumaKSWRYPLO5EC2j8iOi0pGvDxA9mmB2lQIGatyL0U6UAz+TrncGsFYn6+Q7hclCX+VkoAOAVT8JbXVSNUHJTeMQTHL6aLpRUtSpaeiid/XbrNutGXKQRncnL8lSHlkUIGrhmPllnJ3tM4Uh290SJXUWow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=sOjr64dK; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1784680200; c=relaxed/simple;
+	bh=/J/yN54WgHwgySAyBEJg13poFEdB2VzJ4/P7xp7qFOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CxLs+SrPWhxg6YFr/Ss+njp6EqpWpjcZTHH25SONM+GRN6dVlk1x0d9kpV24rWbmUxGdN4IUwL9rcuuOYIfLKG6novej3z9VS61JNq9Ggz8plZz6q3TKpUbgHhDilYOH7Kvv/okcdRZ8iIDFYBSarGqckHVHF+JgswQGiy+te5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=ZB3pD47K; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="sOjr64dK"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e3617ba36so6414870a91.3
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 17:29:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="ZB3pD47K"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e58034d05so4020482a91.2
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 17:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1784680194; x=1785284994; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hvjGXQh7PPsiiZLRJglIcvVKWgOE/daorW5Ue+wTsgw=;
-        b=sOjr64dKGx9UgA8TulDyC6td4EUMx3oOS2/gcb6Kt9O9f8XpwTywWGzgWasWqoIrzG
-         Jo99K0DY1wOrYJVWK22w/w6L96AJuvuDcfVHa1ySmlxm9vRbAKP7BdpYai6151HoZTWv
-         IzFd+5Nk8xMUX6p1w/4QBOe5Am+TYJIU6xnRc0bZZNSUTb1ZK6MGnaUA3WIimVR3vcbB
-         ENbaqozxA/l4CXRr8k2xNlTAxxw1Cbj73mmDQS0Asz3tmmIh2Sy6XPqzGsLvnPocyMkw
-         KbuSJqMANT4KKmhe/nMdSaKMz3kBDIVj+tzw6cXI3Eux2xuTTSMpttjOtRJ8WkG1d7w/
-         kEZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784680194; x=1785284994;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=asu.edu; s=google; t=1784680195; x=1785284995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hvjGXQh7PPsiiZLRJglIcvVKWgOE/daorW5Ue+wTsgw=;
-        b=aZIaa+hFZfMvIX2nCqk4kpEMYppn8X0AGgzZXAgl0O6tHGo+6f/Ky/p3EjQUsrnx/M
-         WDOIWqo41j5SYa65WlYQspubrkJ5a017JInfoHBkrEq89cRymvSvuP+nLGv7aUGkOp0C
-         AbObDz/tzfQZW19sNSD0dreRRVHMRNBfKJ7SgRVsL2eiQ4ySi3J8pn1qGjmGZ2XpdzvQ
-         HIkYYblb3bibVgueMry/LME2InmDkN8hgxnk42wz1MdmVA4qZgMFx8XVOCxNjIiOVSBB
-         gUTWoNbXRWFZzI27pgQzOOXNtPoXL2ioDgIrJUzCIJnRJ8CJ1LB3WFFbLbweE+uftpB0
-         busw==
-X-Forwarded-Encrypted: i=1; AHgh+Rooh//9zFDpDthLBoEcqfcMS532rFBIGJ4ijJNib7sQDigZihB0AmE37uYC/nibWb3eYazc+Do=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+BZVrLBuLfPKZBk1DV6KfhV6s7nC0rvSotV6dyvWb6gx4pfHX
-	UbXBCtuMEetngC+CGw5aUQBxCHeJ7g3FJNRMcbKvn8tM7asJlV60xLZ+Zk9jbTa8aw==
-X-Gm-Gg: AR+sD10yGBpBz2AP4ccZEJi5bT+AeyMBwl+PBdgUZ7exkWvLymdSokSjiVepve0hk3o
-	EnLL1xmiOC6z+V2b1LaVDI/rEkCkiYjLkgFbr9frO1m+WcxO/z9/zeGBNxChTzzWc6s2JGp7sT6
-	Z5Cf+unXRFz7IltuD3P90Wo/Ol5utzJ8d21fJsEtNqKsuMx69fcfaC+Y03hV4U0oAtv8Q/NQ83S
-	caxL+SSI0KaN0QLghAQxKh/9ztqugPYFE7+OdP/aZuhhVlGL4L1BX/c0+GwJNo8mT1cyt5o1/jj
-	irrCtt8PqvLzSEfzFIFFIe9WMYOTvsepEVhkKWqDPoe1fJ8JxeeZa/PLv/pudyIgbnmFAhOoVWS
-	ad0WQdl+SGiuyrsZAi3nehFVabhnnJTj9HcyBTRGVw0aT4a14tFy/4YzjVPcE+o1Yoia4F2Miiy
-	TvPcrVHpQ=
-X-Received: by 2002:a17:90b:2b4c:b0:36d:9e0b:3801 with SMTP id 98e67ed59e1d1-38e4b3e1313mr21403938a91.8.1784680193843;
-        Tue, 21 Jul 2026 17:29:53 -0700 (PDT)
+        bh=z23U5EtP10fE0FYpT7HwjmLAZ3cbLvFSK1Bs2GYzQ9U=;
+        b=ZB3pD47KiTe4UqAimZqAVtKVFCcnPEhYyjdDMWiCdB95KzJPGPxKIRbVnTKmfOuVOc
+         9oKCA+FclrBl/7Kw6c9NzAslZSE1pjwIlJgq4lRk5t4EvKNBjYIaXjoRz9vqwc5sxsRG
+         GDjlmHKmEP+7QS8IXpFPdmuZUddwS0KyMWHuU67auM3Lbid1fW4znG8699Q+cwYnKtLn
+         4eJA0vOY1LYYdI8IFAq76K4w+FdPFyYwqNzgM+WjsN+UnlVQcpkecujHfkvWr4NMrZEF
+         16KqYoOb+VXfKfYHqmUzyQJftvhzFcjza5hC5vwUgVOspMa7XV3YFZHUVEmIGKMbpQ2L
+         /T7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784680195; x=1785284995;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z23U5EtP10fE0FYpT7HwjmLAZ3cbLvFSK1Bs2GYzQ9U=;
+        b=elq3Me+EiUu0gKl/uuEtvOTZRzpaW6LTBlSBZy2rRPnzqi9ubcN5HFdSKE8sjCcbO5
+         bFOyQursaXmestVLnCV3W/e1FtoJqROQvt5A26OSkun+wmUK87OrvBhFehXhg87CnM5M
+         FUvDoBX2iOhtKplEEEyBn0W5AmnyYNJ5EvRUuD1PgYmVI3i8+w7FBTJeRrhH+Z8Qydtm
+         KjEFN5gZqB8jfZXV3R3sDrWNawCiQZDLfyyxh7f+Lmt4Dq5waJYYsZtu+kjFf2i0a2Sa
+         rQ21EumabfdLv7EfO3ATCvqNH2P1lMdTTXcEWFDeK07QECuE8iYobMVaeu4ltH4fmyTM
+         f5AQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrPuzX+lQQSe6cUHBJcwEHJvEuoDgrKAb4+0r4fGZ3sdzF0QbsnJuF77dMmCBzDwMIFENyw604=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1e8qrGDep7mF3TuZQkbyNH5ZnX44Zb1jOIp24bMoV5BkGUA3b
+	IXioyT8lOngBHBKVjl/7mfG3s++leo4Kv7M65xV5lCJgqPxDB9x4l2Ss19CQf4A0mA==
+X-Gm-Gg: AR+sD11jy80ciz9cnpBYmStH5HkQNbbK1gfATXWbqljLOsnTzzYDjpfZwqO0TrkuZZX
+	1rBmjpEf9p0EZF0PFGpnaLsb+/IDGwmVOynq1R0QY93edsT3CEjcJYEzaSrrMd/nQNOIatQFSN4
+	KQPkSVgnWaQUIh+20sxzGKX1/+IabEPg7kSoVoOtCn3EqDmS8HRrdWlm2Rmd225oH0DxbuzRd/W
+	x40Ybo8Ru0m6nAE0VT4cAjrCn9zpiYmOprxvbRQHKB86LQ7ByjziwF0ASD7CuSm9+FXrcbRUoqc
+	ArG1idKGcN2Mrt63uZdTrwbu+JuiRZwJJgldtGvvA2A+XVNVIjbABgb5DwHJCCi2hJNe3NV1S80
+	hXX6+nvpa6req1ylQxDLk4YV1IK3fLG4wIXSJhEnD4c8XQy7/C2oXXSXQqpPqyNjxXhpg/I7fGU
+	B0tOc0cYA=
+X-Received: by 2002:a17:90a:d646:b0:381:50ab:1594 with SMTP id 98e67ed59e1d1-38e4b51be59mr21943047a91.27.1784680195529;
+        Tue, 21 Jul 2026 17:29:55 -0700 (PDT)
 Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130a8421sm558863c88.10.2026.07.21.17.29.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130a8421sm558863c88.10.2026.07.21.17.29.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 17:29:53 -0700 (PDT)
+        Tue, 21 Jul 2026 17:29:55 -0700 (PDT)
 From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
@@ -71,10 +73,12 @@ Cc: Kuniyuki Iwashima <kuniyu@google.com>,
 	tgopinath@linux.microsoft.com,
 	kys@microsoft.com,
 	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH net 1/2] nexthop: take nh->lock for f6i_list walks in replace check and notify
-Date: Wed, 22 Jul 2026 00:29:50 +0000
-Message-ID: <20260722002951.2614721-1-xmei5@asu.edu>
+Subject: [PATCH net 2/2] nexthop: avoid unlocked f6i_list walk in nh_rt_cache_flush
+Date: Wed, 22 Jul 2026 00:29:51 +0000
+Message-ID: <20260722002951.2614721-2-xmei5@asu.edu>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260722002951.2614721-1-xmei5@asu.edu>
+References: <20260722002951.2614721-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,76 +87,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fib6_check_nh_list() and __nexthop_replace_notify() walk nh->f6i_list
-during an RTNL-serialized nexthop replace without holding nh->lock. IPv6
-RTM_NEWROUTE/RTM_DELROUTE run without RTNL and mutate that list under
-nh->lock (fib6_add_rt2node_nh(), fib6_purge_rt()), so both walks race a
-concurrent route delete that unlinks and frees a fib6_info:
+nh_rt_cache_flush() walks nh->f6i_list during an RTNL-serialized nexthop
+replace without holding nh->lock, racing the unlocked IPv6 route
+add/delete that mutate the list under nh->lock and free fib6_info
+entries (nh_rt_cache_flush() is inlined into rtm_new_nexthop()):
 
-  BUG: KASAN: slab-use-after-free in rt6_fill_node.isra.0 (net/ipv6/route.c:5799)
-  Read of size 4 at addr ffff888014607e64 by task exploit/143
-   rt6_fill_node.isra.0 (net/ipv6/route.c:5799)
-   fib6_rt_update (net/ipv6/route.c:6412)
-   __nexthop_replace_notify (net/ipv4/nexthop.c:2542)
-   rtm_new_nexthop (net/ipv4/nexthop.c:2554)
+  BUG: KASAN: slab-use-after-free in nh_rt_cache_flush (net/ipv4/nexthop.c:2243)
+  Read of size 8 at addr ffff888012953e18 by task exploit/146
+   nh_rt_cache_flush (net/ipv4/nexthop.c:2243)
+   replace_nexthop (net/ipv4/nexthop.c:2610)
+   rtm_new_nexthop (net/ipv4/nexthop.c:3323)
    rtnetlink_rcv_msg (net/core/rtnetlink.c:7076)
 
-  BUG: KASAN: slab-use-after-free in fib6_check_nh_list (net/ipv4/nexthop.c:1605)
-  Read of size 8 at addr ffff888014a7d068 by task exploit/142
-   fib6_check_nh_list (net/ipv4/nexthop.c:1605)
-   rtm_new_nexthop (net/ipv4/nexthop.c:2575)
-   rtnetlink_rcv_msg (net/core/rtnetlink.c:7076)
-
-Both walks only read the entries and take no tb6_lock, so protect them
-with nh->lock; fib6_rt_update() uses gfp_any(), which returns GFP_ATOMIC
-under the lock.
+Unlike the other f6i_list walks, this one bumps each route's sernum via
+fib6_update_sernum_upto_root(), which needs tb6_lock; taking nh->lock
+around it would invert the established tb6_lock -> nh->lock order and
+deadlock. As the only purpose is to invalidate cached dsts, bump the
+IPv6 sernum for the whole netns with rt_genid_bump_ipv6() instead,
+mirroring the rt_cache_flush() already done for IPv4 just above.
 
 Fixes: 081efd18326e ("ipv6: Protect nh->f6i_list with spinlock and flag.")
 Reported-by: AutonomousCodeSecurity@microsoft.com
 Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 ---
- net/ipv4/nexthop.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/ipv4/nexthop.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 6205bd57aa85..c1d3b7d7100d 100644
+index c1d3b7d7100d..1e9ccac6bf0f 100644
 --- a/net/ipv4/nexthop.c
 +++ b/net/ipv4/nexthop.c
-@@ -1597,14 +1597,21 @@ static int fib6_check_nh_list(struct nexthop *old, struct nexthop *new,
- 			      struct netlink_ext_ack *extack)
+@@ -2240,18 +2240,18 @@ static void remove_one_nexthop(struct net *net, struct nexthop *nh,
+ static void nh_rt_cache_flush(struct net *net, struct nexthop *nh,
+ 			      struct nexthop *replaced_nh)
  {
- 	struct fib6_info *f6i;
-+	int err = 0;
+-	struct fib6_info *f6i;
+ 	struct nh_group *nhg;
++	bool have_f6i;
+ 	int i;
  
- 	if (list_empty(&old->f6i_list))
- 		return 0;
+ 	if (!list_empty(&nh->fi_list))
+ 		rt_cache_flush(net);
  
-+	spin_lock_bh(&old->lock);
- 	list_for_each_entry(f6i, &old->f6i_list, nh_list) {
--		if (check_src_addr(&f6i->fib6_src.addr, extack) < 0)
--			return -EINVAL;
-+		err = check_src_addr(&f6i->fib6_src.addr, extack);
-+		if (err)
-+			break;
- 	}
-+	spin_unlock_bh(&old->lock);
-+
-+	if (err)
-+		return err;
- 
- 	return fib6_check_nexthop(new, NULL, extack);
- }
-@@ -2538,8 +2545,10 @@ static void __nexthop_replace_notify(struct net *net, struct nexthop *nh,
- 			fi->nh_updated = false;
- 	}
- 
+-	list_for_each_entry(f6i, &nh->f6i_list, nh_list) {
+-		spin_lock_bh(&f6i->fib6_table->tb6_lock);
+-		fib6_update_sernum_upto_root(net, f6i);
+-		spin_unlock_bh(&f6i->fib6_table->tb6_lock);
+-	}
 +	spin_lock_bh(&nh->lock);
- 	list_for_each_entry(f6i, &nh->f6i_list, nh_list)
- 		fib6_rt_update(net, f6i, info);
++	have_f6i = !list_empty(&nh->f6i_list);
 +	spin_unlock_bh(&nh->lock);
- }
++	if (have_f6i)
++		rt_genid_bump_ipv6(net);
  
- /* send RTM_NEWROUTE with REPLACE flag set for all FIB entries
+ 	/* if an IPv6 group was replaced, we have to release all old
+ 	 * dsts to make sure all refcounts are released
 -- 
 2.43.0
 
