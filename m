@@ -1,177 +1,142 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96D2BE033
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C564399C8
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784752950; cv=none; b=MTI+SU0civ2N6xguMlYIynK3FBFJcUnvltEnpPgZXTMewr7eHJtAmCYpgn8sfhuuvJSWqs5d9GXDMzVe0li+XVeWKhj9bxi3KLll7qhkLIqBOLKb43OMoNjH6mDMYcvxe/QhtVI+ev83uKOh+pQYfOMhQ7+n+Z2JbqlfJnThDoI=
+	t=1784753060; cv=none; b=PZOq4gXMJc1xpyToWBW1wATj4s4l4qTvsCqzVraNLPgPfb4CGHvjIEWxkUOVr822JaU0IW9jmCUzYRenYSbrHO+cgPrHV8b9YC03dDSge8KwF9Bna8HkFBDusL4xCr9PmEYqxCDp6QduXhi8SSrwENSVn+PM1qyHIByjuXbW4ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784752950; c=relaxed/simple;
-	bh=nmQpy4V0JZKM4zeCA7VJGgcP5pfJW8ehy+S6KrylEvk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=os97lgPgypfss7i4T5m1fE4F6puK5R9S24LLKUDu4q3RHxEHH/ejzbXRqdCjfVwDhYll2JW66MZNpTwmw+RpWROllPOLaNFBUIV2Qvm66QVLh7g7sNqYCGLCfhjltlqYjf8r7JgulKPnCWyZ/WNTwr6DkXBmBGCyW1J6I77OG1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=HVmVE6eM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GgKE1ihM; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+	s=arc-20240116; t=1784753060; c=relaxed/simple;
+	bh=+GAiPqi9ucC/aN8wdlHuUQWN+puaio11WAXKJNliJNw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QrQcY2CZ9+VTH7xkJSTC8tFs1ZkHta+aHHoqb1cubXEVxaXY/D2u/5eskX9G5b4fQcWZE2WAResq9/XABVj0+ipXekJW2+mBjaLrt3WdqkDXSKamFxJMxTXpFpjCs/m+Qpo+j8oFisFzDES5IQy7faKnUUEH5RYOX7FEmLr1zT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYk0EA9P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="HVmVE6eM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GgKE1ihM"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 952971D000D9;
-	Wed, 22 Jul 2026 16:42:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 22 Jul 2026 16:42:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1784752948; x=
-	1784839348; bh=rUXQ68jqK+qT2e+BpN0YkWa6DGok6NmF3uSM0/21VJ4=; b=H
-	VmVE6eMrLIH08TNwir43eeuoJtaXfQrobygAw358o+RYRRTCMX88VnFM/XDcemIk
-	f7jgI7sxeV+IE66iPc4u6TrVdbsmnOScKIg841h1dpmLKRG5u9/NpORh37zgC6jY
-	E4ZcbusNj7/EyfwSlx6pQgAFe/bBG3EPW9erQ3kmCT1vsMNYHsEt0f4v3+Tplggd
-	O60bdi4NulO6cZSiYvtZLV1Q5kJjGoAUyDwNjyBcVb6QVJENm4TrxXHMiwSxADsy
-	gAb4enx/UTa8/9fKBzrBj/EDATLhUQMVmt3vPpV9KK+RA/mmMw1QLve6rOgi20jG
-	KsCqLjOD2vSOAN9pfIbvw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1784752948; x=1784839348; bh=r
-	UXQ68jqK+qT2e+BpN0YkWa6DGok6NmF3uSM0/21VJ4=; b=GgKE1ihMhq1sMI5cS
-	pTfsbWSQAJSubrFBr/Fas/PFUngpiKMK7d08kM9XIP29FbktLbOLYGcoOuQhEsEG
-	xK9nNUZEe/C0ol3ksYJ/ROXVTE4qqIJHJ/VNhQvLfnFIh7ZpMVlX1aR7aVHtBr1I
-	sXUJvYrX5vxgV8VdsvMij6ASS/WpzTZLkQu7HrV7W/NV5bjpfjMogD2xOzTN2/Up
-	FQ2L6ftcVHE38w/81OBXV9J7I2dg/OF5Cg38qQzf7tw/6d9Qz2+fIUM68lz9MV3H
-	E5lRieI/chzOl0J7r3YLGqsgX2Qfxk8ebIcNiIeJZq0rqeWcg7Pifvi8m7MeXRBe
-	Ysf2g==
-X-ME-Sender: <xms:NCthaqDdpFES902c_Lk495uJf_XFKKsWLnNDqWoaWykRb4ZPKmWScw>
-    <xme:NCtharYD_Qx6NJ3aoeNQovfudyt0azjLXQun2vEhXBiUliUcSKaq78isSer9w9oO0
-    TC7nGKab_3Y-VBPtAOO14jNUszuZJcjxJXP4P0FJYotCeqg2gH4cv4>
-X-ME-Received: <xmr:NCthal6r6rs2ugu7L6wmMrPYCjh0jCt75K9Mi6WdFTOpYPG5apAtxlhoGueXpzYUK5mar4mGkhjEadklxexHnw>
-X-ME-Proxy-Cause: dmFkZTElkBiwG5cIhOPJZ8aQ7X5cAdGPqZBNVDJCUNRy0mD9Oc/iqcQxNWQRTcVWxNeXeK
-    hb9mo56V6acb1wu6pEODO1csMhIVfAurfOZMPNWy09rHnDjuuGiQDfMPUyhefHkcsZPJe2
-    QDzpYB3UxcgUVIhu9WlP4w58PjwxegjsBXRyLZMwxik596AtZDOdsXNAXjPgVLBzhU02GA
-    uZBPQ9pQLNio4heUffFko5NMQNOXT+MSEpF2OYZBbYeLH8/tpcCqBd/BzsEVtbeKr4o6bL
-    znxDXK3nG8jddPlBMyzWw4jQEkaRCa6dbQkY4Z5XVuLTmS87+B/SQ0HOWCQIkXQJnCZtEI
-    ztu8kVBnF++gLuoLjghBDfeD5A03xMYhfRR5Qt6+0O1SsNjQmQKM7ONqHSbrLN52rP1GD7
-    gt+a9VF2lpnrW0yoA57Ec3+Jh+IredV097sA4xoj/XV6jpavyaSK59cjF3mh9r86YFn5kS
-    6WYfnKbHCgf/rJTZP2zOW3MeRKbUSHhkD/IK3BJ+rLvUs2LYRCQNfGhZpROolqR3GoZtDn
-    BDQA2bhZzSzKVVWfnagpT3AQKkkvC5+ekFexAPf9+pj9Bn8zauEyfoNuTALdWjiOOjJHF/
-    RgcpOrTyuhxUORc/J5ZJK8HXWksMlCEv3cqBKqAFODwUi3Y1Ga/uNoT+jJeQ
-X-ME-Proxy: <xmx:NCthakaVKt1zSNDW0lD1dLoBb2kIeG4oBQAE1enuluxAFNIz2UosOQ>
-    <xmx:NCthasgv3PIOp8s4DGfUlSlKGLOyuH1uHmt_yXFMqPi2OhWn4mBXnA>
-    <xmx:NCthat9hCrsfQr1K-SGhfE6gZWWkLJLKiq_XnTlNqwrHmUit9fYy3Q>
-    <xmx:NCthavpNJ-nG2oirO9m-LgKsG8j_kMFOZpQC6D0bWjjo1549A1oTRw>
-    <xmx:NCthaj7yptzKbVAIqDXSFhBYm0NwdV-2cMEopD8TMgGwf0W1v4SqwhV1>
-Feedback-ID: i80b64ba7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jul 2026 16:42:27 -0400 (EDT)
-From: Juanlu Herrero <juanlu@fastmail.com>
-To: David Wei <dw@davidwei.uk>,
-	netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Juanlu Herrero <juanlu@fastmail.com>
-Subject: [PATCH net-next v3 6/6] selftests: net: add rss_multiqueue test variant to iou-zcrx
-Date: Wed, 22 Jul 2026 15:39:50 -0500
-Message-ID: <20260722203950.58550-7-juanlu@fastmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260722203950.58550-1-juanlu@fastmail.com>
-References: <20260722203950.58550-1-juanlu@fastmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYk0EA9P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940771F00A3D;
+	Wed, 22 Jul 2026 20:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784753059;
+	bh=Zztw9dliJ8CpVCPBMITrdBqyBV3IdyTXCICScSVRTF0=;
+	h=From:Subject:Date:To:Cc;
+	b=eYk0EA9PiwzK+JZ/AU+PF91SmVSKKHHpjucfjA0mvDORmw6zRC7MfdsjNiwZSAuyH
+	 Z6hrgA7hsKLT+ZrNskVvsbOYpcr4feAIisPO9zuZUlDowQZuMZ1KAZJ/+M4FQP/yfU
+	 LiX+eCYUskhbn51HawadM5dbuJ70wbrBShvRx2uWwlBjqzdP22p4UACrDsGAFxE0F+
+	 rW19rNcyS+lTuXxzEXzdcwqY0U3mtc9c+6S8/ecZSt9EsmsuPkuxVvz+oNr1pxFoIV
+	 p+0St/cE12qmvNQ7JFARaN85qASNMxQ5xXBCCq69AKwb0z0j3lHbFWYhf8TAX5OtAP
+	 ZJq5RSOLAwqzQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH net-next v10 0/3] airoha: add the capability to configure
+ GDM3/GDM4 as WAN/LAN on demand
+Date: Wed, 22 Jul 2026 22:43:59 +0200
+Message-Id: <20260722-airoha-ethtool-priv_flags-v10-0-d2562c5dd942@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43Q22rDMAwA0F8pfp6H5bv7tP8YY/iiNGYlKU4IH
+ aX/PpOXeQTMMAgsoSOhB1mwZFzI+fQgBbe85HmqH2AvJxJHP12Q5lQThDOuWX3U5zKPnuI6rvN
+ 8pbeSt8/h6i8LDdp7w2INlpHafys45PuOv5MJVzrhfSUftTLmZZ3L9z51g73+D38DClQyCDy6A
+ d0Ab19YJry+zuWysxtvKdOjeKWM5NF4DwiWHyjRUrZHiUoJtChSFIMBdaBkQwHrUZIyqhlaFwd
+ uB/QHSrUU9ChVqQiQkFlpdTreSjcUdz1KV8rqEDVjSUCIB8r8UoZ1tzKVChKUCElKye2Bsi0le
+ pStFAMVvPLROsQD5RqKd7dylXIRVLLBgFf6D/V8Pn8AmhyGzyYDAAA=
+X-Change-ID: 20260606-airoha-ethtool-priv_flags-b6aa70caa780
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Madhur Agrawal <madhur.agrawal@airoha.com>
+X-Mailer: b4 0.14.3
 
-Add a rss_multiqueue Python test variant that exercises multi-queue
-zero-copy receive on a single listening socket.
+Add the capability to configure GDM3/GDM4 as WAN/LAN on demand when QoS
+offload is created or destroyed.
+Make dev->qdma an RCU pointer so the TX path can safely dereference it
+without holding RTNL.
+Introduce airoha_qdma_start() and airoha_qdma_stop() helpers.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
 ---
- .../selftests/drivers/net/hw/iou-zcrx.py      | 48 ++++++++++++++++++-
- 1 file changed, 46 insertions(+), 2 deletions(-)
+Changes in v10:
+- Fix a theoretical race condition between tx completion NAPIs moving the
+  net_device between different QDMA.
+- Rebase on top of next-next main branch
+- Link to v9: https://lore.kernel.org/r/20260721-airoha-ethtool-priv_flags-v9-0-9c15d8b71a56@kernel.org
 
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-index b7a225fe4beae..1f6083d8b05c4 100755
---- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-@@ -30,6 +30,12 @@ def create_rss_ctx(cfg):
-     return int(values)
- 
- 
-+def create_rss_ctx_multi(cfg, start, count):
-+    output = ethtool(f"-X {cfg.ifname} context new start {start} equal {count}").stdout
-+    values = re.search(r'New RSS context is (\d+)', output).group(1)
-+    return int(values)
-+
-+
- def set_flow_rule(cfg):
-     output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {cfg.target}").stdout
-     values = re.search(r'ID (\d+)', output).group(1)
-@@ -127,17 +133,55 @@ def _require_ntuple(cfg):
-         defer(ethtool, f"-K {cfg.ifname} ntuple-filters off")
- 
- 
-+def rss_multiqueue(cfg):
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    channels = channels['combined-count']
-+    if channels < 3:
-+        raise KsftSkipEx('Test requires NETIF with at least 3 combined channels')
-+
-+    rings = cfg.ethnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    rx_rings = rings['rx']
-+    hds_thresh = rings.get('hds-thresh', 0)
-+
-+    cfg.ethnl.rings_set({'header': {'dev-index': cfg.ifindex},
-+                         'tcp-data-split': 'enabled',
-+                         'hds-thresh': 0,
-+                         'rx': 64})
-+    defer(cfg.ethnl.rings_set, {'header': {'dev-index': cfg.ifindex},
-+                                'tcp-data-split': 'unknown',
-+                                'hds-thresh': hds_thresh,
-+                                'rx': rx_rings})
-+    defer(mp_clear_wait, cfg)
-+
-+    cfg.num_threads = 2
-+    cfg.target = channels - cfg.num_threads
-+    ethtool(f"-X {cfg.ifname} equal {cfg.target}")
-+    defer(ethtool, f"-X {cfg.ifname} default")
-+
-+    rss_ctx_id = create_rss_ctx_multi(cfg, cfg.target, cfg.num_threads)
-+    defer(ethtool, f"-X {cfg.ifname} delete context {rss_ctx_id}")
-+
-+    flow_rule_id = set_flow_rule_rss(cfg, rss_ctx_id)
-+    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
-+
-+
- @ksft_variants([
-     KsftNamedVariant("single", single),
-     KsftNamedVariant("rss", rss),
-+    KsftNamedVariant("rss_multiqueue", rss_multiqueue),
- ])
- def test_zcrx(cfg, setup) -> None:
-     cfg.require_ipver('6')
-     _require_ntuple(cfg)
- 
-+    cfg.num_threads = 1
-+
-     setup(cfg)
--    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.target}"
--    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
-+
-+    rx_cmd = (f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} "
-+              f"-q {cfg.target} -t {cfg.num_threads}")
-+    tx_cmd = (f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} "
-+              f"-l 12840 -t {cfg.num_threads}")
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp")
-         cmd(tx_cmd, host=cfg.remote)
+Changes in v9:
+- Rebase on top of next-next main branch
+- Link to v8: https://lore.kernel.org/r/20260703-airoha-ethtool-priv_flags-v8-0-015ba5ac89ee@kernel.org
+
+Changes in v8:
+- Rebase on top of next-next to fix conflicts.
+- Link to v7: https://lore.kernel.org/r/20260701-airoha-ethtool-priv_flags-v7-0-b4153bd44428@kernel.org
+
+Changes in v7:
+- Fix ETS stats accounting in patch 2/3
+- Reset ETS stats accounting in airoha_dev_set_qdma().
+- Link to v6: https://lore.kernel.org/r/20260629-airoha-ethtool-priv_flags-v6-0-86bc600d31bc@kernel.org
+
+Changes in v6:
+- Rebase on top of next-next
+- Add patch 1/3: "rename airoha_priv_flags to airoha_dev_flags"
+- Drop patch 2/3: "refactor QDMA start/stop into reusable helpers"
+- Link to v5: https://lore.kernel.org/r/20260611-airoha-ethtool-priv_flags-v5-0-c11de08486d1@kernel.org
+
+Changes in v5:
+- Add patch 1/3: use int instead of atomic_t for qdma users counter
+- Protect dev->flags with flow_offload_mutex mutex.
+- Introduce AIROHA_PRIV_F_QOS in order to handle better WAN/LAN
+  switching.
+- Link to v4: https://lore.kernel.org/r/20260610-airoha-ethtool-priv_flags-v4-0-60e89cf28fea@kernel.org
+
+Changes in v4:
+- Move back QDMA TX/RX DMA enable to airoha_dev_open()/airoha_dev_stop().
+- Configure GDM3/4 as WAN if GDM2 is not available in ndo_init()
+  callback.
+- Protect qdma pointer in airoha_gdm_dev struct using RCU.
+- Rely on rtnl_dereference() to access qdma pointer in the control path.
+- Add airoha_qdma_start() and airoha_qdma_stop() utility routines in
+  patch 1/2
+- Link to v3: https://lore.kernel.org/r/20260608-airoha-ethtool-priv_flags-v3-1-3e8e3dc3f715@kernel.org
+
+Changes in v3:
+- Do not introduce ethtool private flags support to configure LAN/WAN
+  for GDM3/4 and rely on tc qdisc offload for it instead.
+- Set GDM3/4 ports as LAN by default.
+- Move QDMA TX/RX DMA enable from airoha_dev_open() to airoha_probe()
+  and the corresponding disable from airoha_dev_stop() to airoha_qdma_cleanup().
+- Link to v2: https://lore.kernel.org/r/20260607-airoha-ethtool-priv_flags-v2-1-742c7aa1e182@kernel.org
+
+Changes in v2:
+- Rework airoha_dev_set_wan_flag routine
+- Enable GDM_STRIP_CRC_MASK in airoha_disable_gdm2_loopback()
+- Do not always reset REG_SRC_PORT_FC_MAP6 in
+  airoha_disable_gdm2_loopback() but use the same condition used in
+  airoha_enable_gdm2_loopback().
+- Link to v1: https://lore.kernel.org/r/20260606-airoha-ethtool-priv_flags-v1-1-401b2c9fe9f1@kernel.org
+
+---
+Lorenzo Bianconi (3):
+      net: airoha: rename airoha_priv_flags to airoha_dev_flags
+      net: airoha: fix ETS QoS stats counter underflow and cross-channel corruption
+      net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loopback to QoS offload
+
+ drivers/net/ethernet/airoha/airoha_eth.c  | 268 ++++++++++++++++++++++++++----
+ drivers/net/ethernet/airoha/airoha_eth.h  |  26 ++-
+ drivers/net/ethernet/airoha/airoha_ppe.c  |   9 +-
+ drivers/net/ethernet/airoha/airoha_regs.h |   1 +
+ 4 files changed, 261 insertions(+), 43 deletions(-)
+---
+base-commit: 88f380ef2304db4c68bc4bf14fc6c1604f6dd15c
+change-id: 20260606-airoha-ethtool-priv_flags-b6aa70caa780
+
+Best regards,
 -- 
-2.53.0-Meta
+Lorenzo Bianconi <lorenzo@kernel.org>
 
