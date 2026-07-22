@@ -1,204 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557EF350A35;
-	Wed, 22 Jul 2026 20:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0CD350A35
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784753683; cv=none; b=nllT/jgrZfLwKBRqSxtUqVglnxxqYYPKzCRi6S9RTYhcP1v0j21eDHmsDY8gcizvYALbfss+xQhbgiaNGJt0kYT8se37OoIalE2sI4u/PsOe34ROSgasv2NAPldJzK4ibsFZ4I8PZuqOsmMQF6+ADgXeZPxhGD+gJLHAHzNZmfs=
+	t=1784753694; cv=none; b=ntPwssXzCnYSSAQBc4iiDQb9+M+PcOJkI3BIEmsxBEjbOFJ/klOr6/Y7vNXp8Xph/BwDRoSIggDlXitS7hyL7cZgZaW36wCnndWrDUK+zdVOPQKukp9L/esq8zghIglUtczTYZmARfN8xtKVyE2FRcQqzG88saEhsrE6ESepRug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784753683; c=relaxed/simple;
-	bh=69IbI2Kk/XnoLSVTOaqCyk4ju4V9qqX3hOycRK2d1rg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIMkNkYpWbbefoxHAz4bsLWrc6y+0PKJC7Qdl/vB9FojT7MSUyoncF93vhBPYwEbO1fJb2Vgm+2NyFNXMOUqcOx2RJsQZ8uy04xU/1cc7XRP67MQYq7gm2s8Gam71a1zTaZx5Ygc6pmA2hiYlWIJsjvpc0DSI6kkAkug020L4v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=db0nH/RE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784753694; c=relaxed/simple;
+	bh=aP9eg7JNMr+Sqf8a4611CWNsVBnZSrZOf6AsEfqwacc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sc+qKbddnetQu5VuY/zobOoQ/XnatASos2rkYrMtcfnMAyyknj5zd9BWmPRtsINHi5pT50l80wsowC2x4Mx2Kx+TFKDBxtbOQ03GU66xjOBVPjFXEP6YwbcuBLwTwl19tcXuvuNF4oFSV72VaKGnvThjdzskpq1SJ9JLpTaVYpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btm8F3fg; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="db0nH/RE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71971F000E9;
-	Wed, 22 Jul 2026 20:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784753682;
-	bh=bQfXBRUXbjqh//8saXkb/n/f7dVGrUFiIarwOBQg3vk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=db0nH/REsstKsepoHGYXZFwucbafeEvF3iDBReUCwQDUbrgETsrm3LEZ0nIDtjtVh
-	 MnHCKGmeK38ZYhfydFJP735MRWGu8S3ljAuxzuBw+ywlbX78c5ZJJys2dgZtfseS3C
-	 KTs3ErthbookKdbHmDlHefbeisY0rC1icmJILT4+L3z7qiZ2xz8CZv6hwORusJkizn
-	 rqm4ojLkdNy7oVus/e8rmOqbSV9xL5IlIA4pqhyuOBa/GEt91V+SDxeAbyjYiX32SV
-	 QABnlqxwQcTKkTx2vpPF0/Nn2Alpby9h8bRdrZFbePL2eSBQYZqZ8M1xquTGJRqTPf
-	 zcSGxtOLyUYig==
-From: Jakub Kicinski <kuba@kernel.org>
-To: ivecera@redhat.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	Chris.duQuesnay@microchip.com,
-	arkadiusz.kubalewski@intel.com,
-	davem@davemloft.net,
-	jiri@resnulli.us,
-	mschmidt@redhat.com,
-	pabeni@redhat.com,
-	pvaanane@redhat.com,
-	poros@redhat.com,
-	Prathosh.Satish@microchip.com,
-	richardcochran@gmail.com,
-	horms@kernel.org,
-	vadim.fedorenko@linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] dpll: zl3073x: add channel ToD, phase step and TIE operations
-Date: Wed, 22 Jul 2026 13:54:40 -0700
-Message-ID: <20260722205440.385494-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260713103739.1553284-2-ivecera@redhat.com>
-References: <20260713103739.1553284-2-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btm8F3fg"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so10295930a91.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784753693; x=1785358493; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NVoj/2YG159LTraVREbVbsYae4F1QoabgYd8//PdHa4=;
+        b=btm8F3fg6l1Dynid2Rq43QzJNN7vLq140tsr8vCA6+SWqq0PFyHZ1tVI7TxVkyLUeu
+         OXBR+SEIkexWYEmKp+3WsfMiiI5gCVXL3jWAhsKcyk3ibSWLwdUG0vgknddXafvs0Zpy
+         viADIVxivzmPlFM08fboV1ouHsjRxEtXkSAXGyHZpBWS4P+/496ZP6h4UjE/bmPe2eHj
+         yJ4GD0XgsSdsYjrgkkfxCjEJsFYxyNrQJHSRsfVLsmu5oKDlDLpsMNKRvr7z0fYtraKf
+         aGSiKRqzx2VWEB2t3Ig3d6AAXkh2evaPf2l62YIxZDhAJuhfc94OFnlyiPJz6xqZn5yi
+         aFfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784753693; x=1785358493;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NVoj/2YG159LTraVREbVbsYae4F1QoabgYd8//PdHa4=;
+        b=pQdf0U4ORNkg2T4pzf/KbGKrrIYaNzgyE8/IIu+6KlNUpbwbp1H48rmuUsaiqnhdYJ
+         gqS+N0LFQl4SjdD8Pvz6VJbgIcPHq2Ej70wwMeCgVexJdTZi7Y4Xt02usEuTjMTfzKKK
+         TNqzGMF0KC8+sm0tTB7ctHWpgqAmMKBrh+D5FXhRJ2WWqzthq2iGoqWcZdtOsXxfSqdI
+         ydWXnQst/jaFWFzj5Ycm0DxH6zClIVgB/SjXgwQVyzQmlrHTgV34Oq+wIXEH6uQJ2540
+         e4fZ5QSE9cawKEcJuOVKFHrDDRd0KrhNpXIXxJEO/2qYW1dz4iN4ODkAa1Gh404IfUQs
+         D2Gg==
+X-Gm-Message-State: AOJu0YzQNa5nAnIwVglpHIDL/5fHZQ51pxSUgduJV78tmPk4q5ZScvqD
+	+elX6f5JyqYqyOF7Gp8WW0QyqfzDsdd3JR/xCDnkVyTnRK7A2TKujzsULFh3O2K8rau8AhGvECF
+	aXS5w94bNuPywNdUUEg==
+X-Received: from pjblr2.prod.google.com ([2002:a17:90b:4b82:b0:381:11e5:d204])
+ (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:4c0e:b0:38e:6aa7:68ad with SMTP id 98e67ed59e1d1-38ec648ac8amr292295a91.5.1784753692538;
+ Wed, 22 Jul 2026 13:54:52 -0700 (PDT)
+Date: Wed, 22 Jul 2026 13:54:42 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260722205442.1894665-1-tjmercier@google.com>
+Subject: [PATCH net-next] selftests: drv-net: ncdevmem: Open /dev/udmabuf O_RDONLY
+From: "T.J. Mercier" <tjmercier@google.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bobbyeshleman@meta.com, "T.J. Mercier" <tjmercier@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Write permissions on the /dev/udmabuf device file are not required to
+issue ioctls and allocate udmabufs. Applications should be opening this
+file as O_RDONLY. The BPF dmabuf_iter selftest already does this. [1]
+
+Users are pointing to these selftests as examples of how use udmabuf,
+and encountering permission errors on systems where write permissions
+are not available on /dev/udmabuf. Apply the principle of least
+privilege to selftests which use udmabuf by removing the write access
+mode from drivers/dma-buf/udmabuf.c and drivers/net/hw/ncdevmem.c.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/bpf/prog_tests/dmabuf_iter.c?h=v7.1#n49
+
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
---- Patch [1]: [PATCH net-next v2 1/2] dpll: zl3073x: add channel ToD, phase step and TIE operations ---
-commit 4829f83428b4a90e412f8bc573a84b3869b68edb
-Author: Ivan Vecera <ivecera@redhat.com>
+ tools/testing/selftests/drivers/net/hw/ncdevmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-dpll: zl3073x: add channel ToD, phase step and TIE operations
-
-Add low-level DPLL channel operations for ToD read/write/adjust, output phase
-step, delta frequency offset write and TIE write. These serve as building
-blocks for the PTP clock callbacks.
-
-> diff --git a/drivers/dpll/zl3073x/chan.c b/drivers/dpll/zl3073x/chan.c
-> index 4ec2cf53dad46..53032e782fd4a 100644
-> --- a/drivers/dpll/zl3073x/chan.c
-> +++ b/drivers/dpll/zl3073x/chan.c
-[ ... ]
-> @@ -234,6 +240,307 @@ const struct zl3073x_chan *zl3073x_chan_state_get(struct zl3073x_dev *zldev,
-[ ... ]
-> +int zl3073x_chan_tod_read(struct zl3073x_dev *zldev, u8 ch,
-> +			  bool next_hz, struct timespec64 *ts,
-> +			  struct ptp_system_timestamp *sts)
-> +{
-[ ... ]
-> +	ptp_read_system_prets(sts);
-> +	rc = zl3073x_chan_tod_ctrl(zldev, ch, cmd);
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = zl3073x_chan_tod_ready_wait(zldev, ch);
-> +	if (rc)
-> +		return rc;
-> +	ptp_read_system_postts(sts);
-
-[Severity: High]
-Does this artificially inflate the cross-timestamp window?
-
-For accurate PTP cross-timestamping, the prets and postts must closely bound
-the exact moment the hardware latches the timestamp. The postts is captured
-after zl3073x_chan_tod_ready_wait(), which can poll the device over I2C/SPI
-for up to 30ms.
-
-Including this transaction and polling delay inside the timestamping bracket
-introduces significant jitter, destroying the precision of the
-cross-timestamp.
-
-[ ... ]
-> +int zl3073x_chan_tod_adjust(struct zl3073x_dev *zldev, u8 ch,
-> +			    struct timespec64 delta)
-> +{
-[ ... ]
-> +	/* Read current ToD to determine remaining margin */
-> +	rc = zl3073x_chan_tod_read(zldev, ch, false, &ts_cur, NULL);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* If too close to (or past) the next rollover, wait it out */
-> +	diff = timespec64_sub(ts_next, ts_cur);
-> +	if (diff.tv_sec < 0 || (!diff.tv_sec && diff.tv_nsec < threshold_ns)) {
-> +		if (!diff.tv_sec && diff.tv_nsec)
-> +			fsleep((unsigned long)diff.tv_nsec / NSEC_PER_USEC + 1);
-> +		ts_next.tv_sec++;
-> +	}
-
-[Severity: High]
-Is this adjustment vulnerable to thread preemption?
-
-The code assumes exactly one 1Hz rollover occurred between reading ts_next and
-ts_cur, and simply increments ts_next.tv_sec by 1. If the thread is preempted
-for multiple seconds between the reads or before writing, multiple rollovers
-will have occurred.
-
-Incrementing by just 1 would leave the target ToD in the past, and writing it
-back could cause the DPLL ToD to abruptly jump backwards, breaking PTP
-synchronization.
-
-[ ... ]
-> +int zl3073x_chan_df_offset_set(struct zl3073x_dev *zldev, u8 ch, s64 offset)
-> +{
-> +	int rc;
-> +
-> +	rc = zl3073x_write_u48(zldev, ZL_REG_DPLL_DF_OFFSET(ch), offset);
-> +	if (!rc)
-> +		zldev->chan[ch].df_offset = offset;
-
-[Severity: Medium]
-Can this lead to torn reads on 32-bit platforms?
-
-The 64-bit chan->df_offset is updated locklessly here, and can be read
-concurrently by the driver's background monitor thread via
-zl3073x_chan_df_offset_get().
-
-Since 64-bit reads and writes are not atomic on 32-bit architectures, a torn
-read could result in incorrect frequency offset calculations and spurious
-netlink notifications.
-
-[ ... ]
-> +int zl3073x_chan_tie_write(struct zl3073x_dev *zldev, u8 ch, s64 delta_ns)
-> +{
-[ ... ]
-> +	/* Convert ns to TIE units (0.01 ps = 10^-14 s) */
-> +	tie_data = delta_ns * 100000LL;
-> +
-> +	rc = zl3073x_write_u48(zldev, ZL_REG_DPLL_TIE_DATA(ch), tie_data);
-
-[Severity: High]
-Does this calculation overflow the 48-bit signed hardware register for large
-positive phase adjustments?
-
-There is no programmatic bounds check enforcing the +-1s limit on delta_ns.
-A positive phase adjustment exceeding ~1.4 seconds will produce a tie_data
-value that exceeds the maximum positive 48-bit signed integer.
-
-This sets bit 47 to 1. Because the value still fits within an unsigned 48-bit
-integer, it bypasses the bounds check in zl3073x_write_u48(). The hardware
-treats bit 47 as a sign bit, which would cause a massive negative phase jump
-instead of a positive adjustment.
-
-[ ... ]
-> diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
-> index 78dc208f3eea2..2dc836d0c8f6b 100644
-> --- a/drivers/dpll/zl3073x/core.h
-> +++ b/drivers/dpll/zl3073x/core.h
-> @@ -26,6 +26,10 @@ struct zl3073x_dpll;
->  #define ZL_POLL_HWREG_TIMEOUT_US	(50 * USEC_PER_MSEC)
->  #define ZL_POLL_MB_TIMEOUT_US		(30 * USEC_PER_MSEC)
->  #define ZL_POLL_PHASE_ERR_TIMEOUT_US	(50 * USEC_PER_MSEC)
-> +#define ZL_POLL_PHASE_STEP_TIMEOUT_US	(3000 * USEC_PER_MSEC)
-> +#define ZL_POLL_TIE_WR_TIMEOUT_US	(1000 * USEC_PER_MSEC)
-> +#define ZL_POLL_TOD_RD_TIMEOUT_US	(30 * USEC_PER_MSEC)
-> +#define ZL_POLL_TOD_WR_TIMEOUT_US	(1000 * USEC_PER_MSEC)
-
-[Severity: High]
-Will these multi-second timeouts flood the communication bus and stall the CPU?
-
-These timeout values are passed to zl3073x_poll_zero_u8(), which uses
-regmap_read_poll_timeout() with a hardcoded sleep interval of 10 microseconds.
-
-A sleep of 10us typically translates to a busy-wait via udelay(10) or triggers
-extremely rapid back-to-back I2C/SPI transactions. Looping like this for up to
-3 seconds will completely flood the communication bus and cause a massive CPU
-stall for the duration of the timeout.
+diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+index d96e8a3b5a65..ffe1d5c1fa4e 100644
+--- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
++++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+@@ -150,7 +150,7 @@ static struct memory_buffer *udmabuf_alloc(size_t size)
+ 
+ 	ctx->size = size;
+ 
+-	ctx->devfd = open("/dev/udmabuf", O_RDWR);
++	ctx->devfd = open("/dev/udmabuf", O_RDONLY);
+ 	if (ctx->devfd < 0) {
+ 		pr_err("[skip,no-udmabuf: Unable to access DMA buffer device file]");
+ 		goto err_free_ctx;
 -- 
-pw-bot: cr
+2.55.0.229.g6434b31f56-goog
+
