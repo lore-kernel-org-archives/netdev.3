@@ -1,50 +1,50 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2A740D565;
-	Wed, 22 Jul 2026 10:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCB749690C;
+	Wed, 22 Jul 2026 10:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784714960; cv=none; b=KRNxzvUVr4PlOBYZ6Sd9oCp+kiOVuaUG+MwLfM1F0T6Fw/U52ykHZnDToQdR+lJN2gBOc3z046nMbapVpDL58RaMWS/QhUrU/Mkw5EMG3ku/Nj9jiLslPl6GWrHl8QPhIoZGCeaXC9RgQ4Lmr+NVLbJKfoiwI7IIUGnYpeBs44c=
+	t=1784714990; cv=none; b=O0ofLAbGxMqvcYDIGp9/pUwjoFpnDZBEAGISFjDYSb0w4wBJc9AHi7T0Lakp1o9oF7G++DJCtjZFrEDWBr9DrlJnv2fyuVxdKy5cmThUffh3uSvwp6qNLecxAP6tTgDzaWQ/S4d7MvAVpm4446ouuCYlhJ3UmL4x7wWq53zLRws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784714960; c=relaxed/simple;
-	bh=iSlsbaDWd9q/gkV1TiLHZvf8KO5b0kdEb2eoZw9N7wI=;
+	s=arc-20240116; t=1784714990; c=relaxed/simple;
+	bh=C/g0FCT8/6BVpjY5mBrYqjavJ0k0jfr3iQ2wKIc5Auk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=clH6xtAnJl2Z9d7kY9DLQ7//91XBXGS5PEvMoXyl5lEu/jYG2Br3QGcm1qhYkBUqc65bnRSE1en+IwovMsUnFI/YF8oNUHn+Q7s3rirJrV68gKZmaM6YJt2/l9VMcGbf8zVHDooHzPZ3kRxgPcvNs5lWpHTIU71+fC+6jLo0ZSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=XGr8J6A1; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:Content-Type; b=vC7uHicazNhFiX2Ny1UIKPNhxyizkuVvvgoBvLIHMZtvkHO0vW3iEtxFTwbbwTRxw62TYwpReyyTtEpiqC6C6L8/ZxWdPmihj3PRfKkasnUJY+jGIzBLJCFb1WLzO5U/G9mAteEsk7IamSLSMao0O7R+soJHc4qOzglw0o1wTsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=pGM7EhnV; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="XGr8J6A1"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="pGM7EhnV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1784714957; x=1816250957;
+  t=1784714987; x=1816250987;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=iSlsbaDWd9q/gkV1TiLHZvf8KO5b0kdEb2eoZw9N7wI=;
-  b=XGr8J6A1EVNA2YCW63vs/3j7sdYc8mpDbr4VT7BnK3VqMeBOGdh2+c+J
-   udXtWOvj6XS1WViC2MDREPWojcPJwakbHZIncz21K0vPEgerP/tSxFY+f
-   lCvIsIY/KvwY8i721LY1r4gqkhfM5hJWsAh5CGCy5RLe0rFVUprlXMb9S
-   MwH6rLfgHvqvbL8ZVozBL5QO1+4nrVvd6CabrENxaMoKUy05YtvNRzzNf
-   E5+aJ4rsP94gAsmZEmqkBX7EKZOjCfYMfPpMj0aqLTIfPNsacJcAqK4VH
-   TU65esUsmkAzKBU0sDzw9Bs4yB3o6ai0G8ntbKfNC0vyL78bPkfeQ1EwU
+  bh=C/g0FCT8/6BVpjY5mBrYqjavJ0k0jfr3iQ2wKIc5Auk=;
+  b=pGM7EhnVjzscQWAO6ASiygosVwCItktlQkaNKsCqT/WesW8323djDUCn
+   dvKQ72ObcrSKMvd9sz5xsyX/aQLIGWwpdvK2ujtKmEnJPbPQ+Uve9NfpP
+   +7F7LRBJHivPFl7TRkfClRSIs71zXdoV5eASs4yl0Z2hOQ+0Bl3vD86og
+   tHAsNMSGHiNdNyoN9+hjey+ctWCE3z4YH/5mmsZa3tuHZgYFekLsKk5PQ
+   j28wxILLBpCc6mqpA2zD3VJ3P956UfmPI6jffXUS20AcvNlGWhoKh4Arf
+   5nHYjw8QKt+nW6o22XVm9FUHavp1Qz2xW+vwQfw1gor52CL34Y2x28tC3
    g==;
-X-CSE-ConnectionGUID: ctCHj+czQluVn7k3SWLUjg==
-X-CSE-MsgGUID: qFWvq3/yTGuCO5/FCA33pA==
+X-CSE-ConnectionGUID: 4UUhkR1eSmCzM/jVqS1HTA==
+X-CSE-MsgGUID: eYcBRZ76RQunyFwCGWLRRA==
 X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="228144423"
+   d="scan'208";a="60995226"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Jul 2026 03:09:16 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Jul 2026 03:09:39 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 22 Jul 2026 03:09:16 -0700
-Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 22 Jul 2026 03:09:12 -0700
-Message-ID: <419bb6ee-297c-4b88-8306-bc6a286c2e54@microchip.com>
-Date: Wed, 22 Jul 2026 15:39:11 +0530
+ 15.1.2507.58; Wed, 22 Jul 2026 03:09:39 -0700
+Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Wed, 22 Jul 2026 03:09:35 -0700
+Message-ID: <b6524b93-593f-49c5-88f2-393297ed86fd@microchip.com>
+Date: Wed, 22 Jul 2026 15:39:34 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 2/3] net: ethernet: oa_tc6: Improvements to error
- recovery
+Subject: Re: [PATCH net v4 3/3] net: ethernet: oa_tc6: Disabled tx queues when
+ disable_traffic is set
 To: <Selvamani.Rajagopal@onsemi.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Lunn
 	<andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, Piergiorgio Beruto
@@ -61,57 +61,69 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Lunn
  Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>
 References: <20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com>
- <20260720-fix-race-condition-and-crash-v4-2-8273e2f38a1f@onsemi.com>
+ <20260720-fix-race-condition-and-crash-v4-3-8273e2f38a1f@onsemi.com>
 Content-Language: en-US
 From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-In-Reply-To: <20260720-fix-race-condition-and-crash-v4-2-8273e2f38a1f@onsemi.com>
+In-Reply-To: <20260720-fix-race-condition-and-crash-v4-3-8273e2f38a1f@onsemi.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Imperative mood for the subject: "Improve error recovery" (netdev 
-convention).
+Imperative mood for the subject: "Disable tx queues when disable_traffic 
+is set" (netdev convention).
 
 On 21/07/26 7:50 am, Selvamani Rajagopal via B4 Relay wrote:
->   static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
-> @@ -931,8 +966,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
->          /* Process the chunk with only rx frame end */
->          if (end_valid && !start_valid) {
->                  size = end_byte_offset + 1;
-> -               oa_tc6_prcs_rx_frame_end(tc6, data, size);
-> -               return 0;
-> +               return oa_tc6_prcs_rx_frame_end(tc6, data, size);
->          }
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
 > 
->          /* Process the chunk with previous rx frame end and next rx frame
-> @@ -946,6 +980,14 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
->                  if (tc6->rx_skb) {
->                          size = end_byte_offset + 1;
->                          oa_tc6_prcs_rx_frame_end(tc6, data, size);
-oa_tc6_prcs_rx_frame_end() now returns int, but this drops the return — 
-every other call in this patch propagates it. Is it deliberate?
-> +
-> +                       /* Purpose of rx_buf_overflow is make the
-> +                        * code to look for new frame. At this
-> +                        * stage, we have a new frame to process.
-> +                        * So, making it false, in case it is set
-> +                        * to true by oa_tc6_prcs_rx_frame_end.
-> +                        */
-> +                       tc6->rx_buf_overflow = false;
->                  }
->                  size = OA_TC6_CHUNK_PAYLOAD_SIZE - start_byte_offset;
->                  return oa_tc6_prcs_rx_frame_start(tc6,
-> @@ -954,9 +996,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
->          }
+> From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 > 
->          /* Process the chunk with ongoing rx frame data */
-> -       oa_tc6_prcs_ongoing_rx_frame(tc6, data, footer);
-> -
-> -       return 0;
-> +       return oa_tc6_prcs_ongoing_rx_frame(tc6, data, footer);
-footer is unused here. Either drop the unused parameter or a note why it
-stays.
+> Previously, TX queue interface was stopped when
+> disable_traffic flag was set. It is more appropriate to
+> disable the queue as there is no recovery, once
+> disable_traffic is set. Carrier is also marked off
+"Carrier is also marked off" contradicts both the code and your own v4 
+changelog: the patch only adds netif_tx_disable(), there is no 
+netif_carrier_off(), and v4 says you reverted the carrier change. Please 
+drop this sentence — the message currently describes behavior the patch 
+doesn't implement.
+> 
+> Fixes: b542d13fab0f ("net: ethernet: oa_tc6: Interrupt is active low, level triggered.")
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+> 
+--- is missing
+> changes in v4
+>    - Reverted the the statement that turned carrier off on
+typo.
+>      disble_traffic, as it may have side effects
+typo.
+> changes in v3
+>    - New patch. Carrier marked off once disable_traffic is set
+> ---
+>   drivers/net/ethernet/oa_tc6.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+> index 9e6850ccfe6c..4b8f6280be51 100644
+> --- a/drivers/net/ethernet/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6.c
+> @@ -730,6 +730,11 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+>          skb = oa_tc6_detach_waiting_tx_skb(tc6);
+>          spin_unlock_bh(&tc6->tx_skb_lock);
+> 
+> +       /* disable_traffic, when set, is a point of no
+> +        * return to working state. TX queues are
+> +        * disabled.
+> +        */
+Comment wraps at ~40 columns; fill to ~80 like the rest of the file.
 
 Best regards,
 Parthiban V
->   }
+> +       netif_tx_disable(tc6->netdev);
+>          oa_tc6_drop_tx_skb(tc6, skb);
+>          oa_tc6_free_ongoing_skbs(tc6);
+>          oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
 > 
+> --
+> 2.43.0
+> 
+> 
+
