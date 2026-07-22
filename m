@@ -1,111 +1,137 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13A40D560;
-	Wed, 22 Jul 2026 04:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18402E737D
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784696324; cv=none; b=lbL8SKVxAVhQaWJndF6l9Te0STb0ctgkuPnQ0bzHMmIYgkL48+SIJ2BV7/zllXUlLS4u+M8wDwxmflLcSVpbwRQXcp/2WUj5EMtSBMbw3V7CCAX7jVfJ6ksUgnMe0XsNLbpCRKxw/GYR6HDd53h6OoQ5EOJ+qaF4e7oGeZ/cK88=
+	t=1784700463; cv=none; b=UKc10mzhvP0+SIiQgRdJAkPx3FWhJWsaJouChMnEGmJmRU9Nrq3D0GJZ+L4xaU4zoJDq8hdyhI98gL2HCAIJL0aKwYRrJvBwttxpzFtugH7ggIPlTXI0OZEz2XMXP86sef72sRm1Y9GNYWW37YvE2Pf8dZmRpfbuySyRAIvRLVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784696324; c=relaxed/simple;
-	bh=HUe35KNPbQG6UTm94YXfKkvkEkYbODFEHu83ivASSr4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=nQMKP7Oe0Zo8eBobGd6ShuM/mLZh5uQIYdc6M1/XvLrob9XiLRcqszohL9Kfuxbb41hyj1ZM06SmqLDKVLA+/jV06LoMRuDPSVmlyEWWitKHceMEAs5jSJtL8+cPpOv2lrQKGyTWgU9/89AXoEMK+svmSv4k5VKzxGqMXfvoluc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Yo3lnR5f; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1784700463; c=relaxed/simple;
+	bh=EItOFMrzD5J0dUaznC9Hvz0SZ+f4YhpCUrgg2lIJKqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kk7pS492zRIlO8b/wzOO8JmoBz+GsUP/5fkaPLYXdws61jnTmy6logYsH0MoJVuVA3me+QthRs1mQm/JR3GVX1FGZ9bmoBB0YpWF207V512WcrjKuZosGVVHP7lPGFePrcFq9dG5jDCLnVC+/96L7q9cnmkun2LgXH6BD1lAx5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QeTW8BnX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=h/Wp+vW5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Yo3lnR5f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1784696323; x=1816232323;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HUe35KNPbQG6UTm94YXfKkvkEkYbODFEHu83ivASSr4=;
-  b=Yo3lnR5f1OVFqyT/nha7XFHRtBaPILuwnw5S3pbgPI3vXcMuTaXby2b6
-   07yCKu05j04zGWGwGms8QSL8FcrVm/ydnxa2Y1jlMBxHcPH63tofApMG0
-   V1BeIRLKoZ6yA5OD3uFk6FvfgLdwH2BfmUnLDZZKWWV91VxEYZY+Tgz3r
-   E8d3dCrYZAZY6B8UXoKIHl5HQv42cGneKIMoslFjmGEF+wXgyuwzEZCCR
-   YB71oNs8fiEa7NQ/DFzaY8Rec3pGy43N0SnwhtM74ymbZO46pwcDFWXKJ
-   BCDgQDHIm8deQWgXLaXmuWLJmlXdAEfExcEwA4oHElmrY+k7KiCFb4mjA
-   A==;
-X-CSE-ConnectionGUID: 8M4SxKmVQ/WYKq5NJd2O8g==
-X-CSE-MsgGUID: WU4Ns3efRwWfu82lyG5bPQ==
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="61304965"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:58:42 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.43; Tue, 21 Jul 2026 21:58:42 -0700
-Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 21 Jul 2026 21:58:37 -0700
-Message-ID: <d8cdbaf9-193a-4d23-b5dc-f8262983146b@microchip.com>
-Date: Wed, 22 Jul 2026 10:28:36 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QeTW8BnX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="h/Wp+vW5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784700460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UATT60izd8r2IgiySOiquvvuPaRo1zLjW77cpIyRqiE=;
+	b=QeTW8BnXemlsVYNXa/vg6wKL1Mf1mdI8zNaeIPJh9ixqcDJt8VjuhwXNS78eiNOS8NnTEz
+	yNaxRZ6sIzUNJPA38y8Xt7RYmBzlLTYtJ7sqPAo25z/eJ/Ak7GR6eQnBjGxfOoT5Y7iBuk
+	tTemGsSwvpKxnVcyTOFAGOIWTChAmXg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-JbUbU8GmNG2k9VNOf1WZrA-1; Wed, 22 Jul 2026 02:07:39 -0400
+X-MC-Unique: JbUbU8GmNG2k9VNOf1WZrA-1
+X-Mimecast-MFC-AGG-ID: JbUbU8GmNG2k9VNOf1WZrA_1784700458
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-492714d002cso59877555e9.0
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 23:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784700458; x=1785305258; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UATT60izd8r2IgiySOiquvvuPaRo1zLjW77cpIyRqiE=;
+        b=h/Wp+vW5PudxTWiZxuIoXlOF46duDDOL0Ukzv+PmMlrr/7LaW+Dl4X294Hjn8u+OP+
+         vojr52ke9FpXPpmX4R2pVNaJkVcZL8PG9UAIovPn5Ao+1OWWfLQFGWP4wFxYcK6Vbt8u
+         lzYzBBiH9SugOgskSgb6y+XLvGzaNE1VPPKntCmYDRwFcZ0u1S5EHmG0DBwaCb8PEVDN
+         VDaYnxJehUq1XZlS+Jb+aZlIDVev4Snl0WuwiEE0fAzCYPJ+NUUUFXl3TdbNNz95/hRQ
+         jZgueGBo8R3+WoeXE1RG3Ot7diKJjhuvdbEYN7t9/BIORwX98+WlMdNxzayolOqIAXwj
+         XLuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784700458; x=1785305258;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UATT60izd8r2IgiySOiquvvuPaRo1zLjW77cpIyRqiE=;
+        b=lwcRgeB13wtNgHDbxU4ITbYnRVHKpv9uWzZsIf94emnaCkUfB6LE2WiyU6b+OSW9Dw
+         jE4jGKGn16xL0n7igBGXykL134Uw/zgvVsKCfgER2tfIMfy2CrJX9ZfgwYGmJPalY8gN
+         lAZNWNfO17N6MVXwOczM8tiG9+xz3lXcSW2i8EZmYsvBt376HT+UHRlAkLTWGuvhCnzt
+         xe1lZExh8c90K5Zo6aUs8LLgawEKGWAZ2zg5R45FGdd6XkKh1l9qmWZvm14fmt3y2OtN
+         CunxQcRMZHMDy5V5rpWQqqYyF3+j+eZ037SB0qbE8ehVZIMMbB8UXwXSlIvpnckZI713
+         f98A==
+X-Forwarded-Encrypted: i=1; AHgh+RoSPo/n3mkRgMaLzAA5CrQYxIZKA/7eoYmzArDlkLq7FwDYfbx17c/CZ+irs0T4zs6bfiCX3gg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEBxghsCKUgWfSGxV1ebDCyYKn9r97qrXjS6acXmfTXasssjsb
+	Y44BEV6XOUyzOcPV3e8nRZuVWlSspyRcovUlZ4ZiRJNk23ooRiFUEzp1spvWT6nJXm0NhFNWR2j
+	VR0AwdKsvFbWujFeg8bHud1UdOYxrscsjFdc6Sz9OO3EXW51h9cq4DWCFeA==
+X-Gm-Gg: AR+sD11ZcpeNgIFXXYQKtznfKqFoM4GugdLkAveP80WMz7NC25U6yi/93EDUcomZGQw
+	CNdWVrBSzBV7wH26IetnJk9zbQnc8Pa6GGKwyGv7aAYLTKVDFrdaFiu8qFKmn72zT10VH1ODoWj
+	Uwe0qWQEMOB7yw/Wv1nQj/TNqJBqtvd23FxZ73Ot+ecKTLDgpcCzEgH95AjeBBoJbJ5cIuXP/G8
+	O1VB/V01ndaOa6ZMMSouuBriGb+dHzHWRj5+98g/Melfl47hZ8X0XWVpdlDDiuZAlga+O3lK96L
+	r0/8hTD6piHWJuyJ0PkUgDfal9cTZuouAEbG5IOHxGOfmwV0WuK52aiQLntw7TlzvNS9Gsx0C9w
+	DXGQ0NChmrYTft19Tx8yIkQ==
+X-Received: by 2002:a05:600c:6a0c:b0:493:a5d0:d1a1 with SMTP id 5b1f17b1804b1-4954a40bd0fmr180569885e9.31.1784700457515;
+        Tue, 21 Jul 2026 23:07:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:6a0c:b0:493:a5d0:d1a1 with SMTP id 5b1f17b1804b1-4954a40bd0fmr180569565e9.31.1784700456958;
+        Tue, 21 Jul 2026 23:07:36 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653c9d99sm123740345e9.12.2026.07.21.23.07.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 23:07:36 -0700 (PDT)
+Date: Wed, 22 Jul 2026 02:07:33 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Schippers <simon.schippers@tu-dortmund.de>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Tim Gebauer <tim.gebauer@tu-dortmund.de>,
+	Brett Sheffield <brett@librecast.net>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] tun/tap & vhost-net: make qdisc backpressure
+ opt-in via IFF_BACKPRESSURE
+Message-ID: <20260722020611-mutt-send-email-mst@kernel.org>
+References: <20260709095511.168235-1-simon.schippers@tu-dortmund.de>
+ <20260714092506-mutt-send-email-mst@kernel.org>
+ <5016ae84-7049-4a5f-91c9-ba0047b06ee3@tu-dortmund.de>
+ <5089fc5e-2fb8-41fb-9aab-42b22cc2c201@tu-dortmund.de>
+ <20260721105853-mutt-send-email-mst@kernel.org>
+ <20260721100715.5b43412d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/3] net: ethernet: oa_tc6: Improvement in buffer
- overflow handling
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>, Andrew Lunn
-	<andrew@lunn.ch>, "ciprian.regus@analog.com" <ciprian.regus@analog.com>
-CC: Simon Horman <horms@kernel.org>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-References: <20260705-fix-race-condition-and-crash-v3-2-3e51841e4d08@onsemi.com>
- <20260710142019.1619159-1-horms@kernel.org>
- <DM5PR02MB33693344BE338A70BC70FDD283C32@DM5PR02MB3369.namprd02.prod.outlook.com>
- <b86c8bff-6f78-42c6-8de9-ae280df5c18b@lunn.ch>
- <DM5PR02MB33694B53700F25B78E40E65683C22@DM5PR02MB3369.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-In-Reply-To: <DM5PR02MB33694B53700F25B78E40E65683C22@DM5PR02MB3369.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721100715.5b43412d@kernel.org>
 
-Hi Selvamani,
+On Tue, Jul 21, 2026 at 10:07:15AM -0700, Jakub Kicinski wrote:
+> On Tue, 21 Jul 2026 10:59:52 -0400 Michael S. Tsirkin wrote:
+> > > > I prefer applying it, but you maintainers must decide that.
+> > > 
+> > > Hi,
+> > > just a gentle ping.
+> > > Has there been any decision on this patch?
+> > 
+> > Hi netdev maintainers. Given there's a perf regression otherwise,
+> > we should either take this or revert the original and reapply
+> > in next.
+> 
+> Revert, please. We were AFK and are now working thru a backlog
+> of 1k patches. The new IFF_* flag needs scrutiny we can't afford
+> at present.
 
-On 21/07/26 7:57 am, Selvamani Rajagopal wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> 
->> Subject: Re: [PATCH net v3 2/3] net: ethernet: oa_tc6: Improvement in buffer overflow
->> handling
->>
->> You should probably repost it.
-> 
-> Thanks. I had follow-up one line change + comments. So, I submitted newer version.
-> 
->>
->> The last couple of weeks things have been falling through the cracks
->> due to vacation and conferences. Reviewer time has been limited.
->>
->> It might also help if all the TC6 developers work together and review
->> each others patches. Patchset having Reviewed-by: is more likely to
->> get accepted without one of "big" reviewers looking at it.
-> 
-> Agree with you.
-> 
-> Parthiban, Ciprian,
-> 
-> Please add your review comments, if any, when you find some time as changes are in common code.
-> https://patchwork.kernel.org/project/netdevbpf/cover/20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com/
-Sure will share the feedback as soon as possible.
+okay. Simon can you post it pls or should I? And once merged post
+re-apply for next with the flag included?
 
-Best regards,
-Parthiban V
-> 
->>
->> Andrew
-> 
+Thanks!
+
+-- 
+MST
 
