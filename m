@@ -1,117 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE37386441;
-	Wed, 22 Jul 2026 08:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050D21DDC35
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 08:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784708268; cv=none; b=T/NyXCzrYoT9cmL7ikb4BHb/WEqdjYArU4LNJthiGO2p4fC0tWqdIadMUkmFmj+Ox5uyCYTUK1MIsVUedmVH/I6hosNYHORcuS3NonjO/rB6r/qQ5nlBG7pQSXWkBmnkehCmIHX1Ughn+4cC38TPAEXsKlAbcH+YO2Fg7avlk6Y=
+	t=1784708610; cv=none; b=sz6g7RwMxV/jmpHrGshU1azojFLm2ekDvTmRjMqrHnYHQqWJ0zqx5yFzVF2gCOVYFNX4vY3bZrVXxeZj+hH0oRTX12G8RmMt82UWQ5jT3J4Pn/CEf6CvyCu7iR8jsRjxz41eTxmwWyhR4gL+BDLZCbmAqG8+saRUEqJf8Rb3fcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784708268; c=relaxed/simple;
-	bh=oPunUo4NuERE6JB7Xnp0b6B9e1YqemM0s1+ddG2KFXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqXmEAa/GoPgU+xKm0KqS/VdZesb/OmGhdtU4PAdF9rcgc03hdbMELgJVge0lkBwNCidhhSMNRONeTvRa9usyMYzlJvII1dmIorH+7jUXTYtOKyCocZI/uKS/aMT0rwKSKue0cukwFb+mfzO47uR17c0QNZ8ZON5zwtYvvJC/T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zi3uxyFu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784708610; c=relaxed/simple;
+	bh=L3Z8i3FOorkEh185dcAB5RM0vQHvkliZbf8ekHkOM40=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YQp60k5JevKfnNa29pa0xFjfsR3E/0MxZNGRuMRV//cLc08XDf91HZygiB9Z6mkqe6IRTsVuh0CAHv8vNHZ/s9N3vihaeMFF5YuEpzGCZvXMd+xIyMUt59n5HSQYJWQLx7WSBCw9iJ5Uk/wX5dK+h25k1SbNekeMIBZKAEY3c7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hr4Tl5JB; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zi3uxyFu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11471F000E9;
-	Wed, 22 Jul 2026 08:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784708266;
-	bh=QaRcpLEUdF6IoGbFgJIRkWkgaVhzZCRkbBhXpj4gKLw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Zi3uxyFuFk1JS+9CA2TDVFJ8FSsPVn4G9xnAj31FoaUTCqyrTO9NWUYWyKo4jeYx5
-	 dTEN3jFNGR1qstghZrZxhkPmKwsea283HCJe//Zz5GDFLQN25YDSpIvp/oIE+mT18R
-	 Ony7bnRVFfIrWl1CI88b+WM9mQLd8z2TqV6P0QBq8lwDiKMZxIbABKZMTiIBFYibN5
-	 uHa+zZpv0erx8bAHUfyXRLsMZ95H3HQDY95uy5K/3KfbHAP5PxGkYUtwDKJikdwbmS
-	 W3QiKzpkhnzpHCavN9fFp+67kZVigjPVd3HXJ3iE/hl53jDlviMABhqHpNYJK3jmJo
-	 MVwvvBOrikW6A==
-Date: Wed, 22 Jul 2026 10:17:43 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: zhaoping.shu@mediatek.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, willemb@google.com, 
-	alice@isovalent.com, sd@queasysnail.net, eilaimemedsnaimel@gmail.com, 
-	imv4bel@gmail.com, hw.he@mediatek.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, haijun.liu@mediatek.com, xiayu.zhang@mediatek.com, 
-	lambert.wang@mediatek.com
-Subject: Re: [PATCH net v1] net: gro: avoid nesting GSO skbs in
- skb_gro_receive_list()
-Message-ID: <amB7wb1A2Oo2dv5d@kwain>
-References: <20260722024214.24845-1-zhaoping.shu@mediatek.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hr4Tl5JB"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49548aebcd8so34412665e9.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 01:23:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784708607; x=1785313407; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L3Z8i3FOorkEh185dcAB5RM0vQHvkliZbf8ekHkOM40=;
+        b=hr4Tl5JBvAOqrf/4PFzrFkbb0aZjTub2Z8a7iFnq/vWLS0XKEmWCgkjFs7Nauc6XH6
+         SOPkcJDanwCIua8+LJbX3EGJGPy6sdl/nQFX/oJkWQl/P+Sh7WgF/F+r8NQUo87AQM+r
+         aF80jJICZTps6PFdjuvsCwuzzrr/neDOb4KMIrSDgX1DE/1qoK9mRXQT1gcE6hT4/6Gv
+         Ztq1flyrT/8pBiewI3AzM1C+glVJ8O3BEeQcfyzX4i8zfVa2b6bj9uBz1Tc+k5h1NdkB
+         68zgfNCSAs6Ll/EUONVa8NWrpSsJfri1MH4BopwRH/mfIw8r/3pN4QLUVSbB/RncRfxE
+         S/0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784708607; x=1785313407;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L3Z8i3FOorkEh185dcAB5RM0vQHvkliZbf8ekHkOM40=;
+        b=iXj3Y41A0dmylKZ3QrDOmjcmmVrVdZzdXQUesNTIm5H+zXkohxwZ7NzJ00/T78jV8B
+         U0gZIchrHNKkikMhF8xrQy8mBG4dtxDqKwpMZLInfG1zGuQi76rDoZPkcZLTjEBDd+xV
+         vp/6+Q83gZ0cklvzRcFZvBoXefM8L8Gxk6jrtETf8AP7fajFwi6QyMZX5AFKVwZjU7qx
+         gC62zQXNfX43vQi9plndM6nQ2/9O5up5uMSGb4v6sm+fkVF3xncpbyBmjr1BD6z4Pe8g
+         a094Q80dEoLkjDu3BwOY+/hKKW5YXeZX7LZi7Ss2Yw2BnoZnwpjPSJo8qgssbBlX5wgH
+         2IIw==
+X-Forwarded-Encrypted: i=1; AHgh+RrMoeFCoWvoKlZYWhMaMwMS96nmWvHsWi6VI/1yR+kD6yovpA/tNUug+ERwZXFpfuk/Kf/N82o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqNYGeTdRNm+/rQGOQM4To2flB2BYO+/U1kBvdO4EzynwqrLkR
+	n+cLSk5U9RcKA3LeEcNAluSjccIxlTsrsfX3nE/VyNQdxnHMYFUBWP9+
+X-Gm-Gg: AR+sD13xKhDUBcscVVZd334ODijLwUMfZSlUjBTD6GGp+MCirk3nGAZsFcrakvCjB+m
+	KBDthbYYtotV5LJ+edS10ZSWReZYS8+LbbBNgN9lCdHXQVauVroxgpOpwhLdfgbEmk73dcutqM5
+	0rkEREtR4fhiOoNdROPitU7PnmIPE8Lnm67jSw7HLk3XdwRenHUf8BtK7yirY9Oe08lRXn8jzpo
+	AUzeS6OoLYqTH2kawfmBpOKud+AizXs2dZCXT121/4V6E93Xkit0vJPqFqrlW2JDk+NwQz5Aj7e
+	couPGu1S/Gb2nbpnX/X43UzeJs3683D+xZVBogRPi8zEiyPISWr5PolTJCGao9v2GD5Cti6f+VM
+	x2WFsquxbl1WmUzk7d7fiLiiyNUeeuT4pkrn1maes6jANbM3oaf3zH696YdbEdqjWiCrjnzBQnC
+	kDEVhtvGUWr1OFHfMCwaTrtFRXdOOdDnEF3L4P8OiKSvU49++V1M0THA==
+X-Received: by 2002:a05:600c:3b91:b0:490:c6c2:52 with SMTP id 5b1f17b1804b1-4954a3d0065mr296436935e9.3.1784708606780;
+        Wed, 22 Jul 2026 01:23:26 -0700 (PDT)
+Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs192625.centertel.pl. [46.134.91.178])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653bfabesm142309565e9.10.2026.07.22.01.23.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 01:23:26 -0700 (PDT)
+From: Stanislaw Pal <kuncy7@gmail.com>
+To: Johan Alvarado <contact@c127.dev>,
+	Linus Walleij <linusw@kernel.org>,
+	Alvin Sipraga <alsi@bang-olufsen.dk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 0/2] net: dsa: realtek: rtl8365mb: add SGMII/HSGMII support for RTL8367S
+Date: Wed, 22 Jul 2026 10:23:21 +0200
+Message-ID: <20260722082321.13802-1-kuncy7@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
+References: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722024214.24845-1-zhaoping.shu@mediatek.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 22, 2026 at 10:42:14AM +0800, zhaoping.shu@mediatek.com wrote:
-> From: HW He <hw.he@mediatek.com>
-> 
-> On devices that support both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST,
-> the hardware or driver may deliver packets that have already been
-> aggregated into a GSO skb, either with frags[] or frag_list. GRO may
-> then
-> aggregate the skb again in skb_gro_receive_list().
-> 
-> This can create a nested GSO skb, which is not handled correctly by the
-> later GSO segmentation paths. When the skb is segmented by
-> skb_segment_list(), it not be fully restored to the original packets.
-> 
-> If the skb is marked with SKB_GSO_DODGY before segmentation, for example
-> after a protocol change from IPv6 to IPv4, the nested GSO skb is
-> segmented
-> by skb_segment(), which may hit a NULL pointer dereference when the skb
-> contains a nested frag_list.
-> 
-> Avoid this by setting NAPI_GRO_CB(skb)->flush for GSO skbs before
-> aggregation and by checking the flush flag in skb_gro_receive_list(),
-> following the existing logic in skb_gro_receive().
-> 
-> Signed-off-by: HW He <hw.he@mediatek.com>
-> Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
-> ---
->  net/core/gro.c         | 2 +-
->  net/ipv4/tcp_offload.c | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/gro.c b/net/core/gro.c
-> index 35f2f708f010..27c9813495f3 100644
-> --- a/net/core/gro.c
-> +++ b/net/core/gro.c
-> @@ -229,7 +229,7 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
->  
->  int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
->  {
-> -	if (unlikely(p->len + skb->len >= 65536))
-> +	if (unlikely(p->len + skb->len >= 65536 || NAPI_GRO_CB(skb)->flush))
->  		return -E2BIG;
+Hi Johan, Luiz,
 
-This was already fixed in e751256486d0 ("net: gro: fix double
-aggregation of flush-marked skbs").
->  
->  	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
-> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-> index 3b1fdcd3cb29..c363434a5646 100644
-> --- a/net/ipv4/tcp_offload.c
-> +++ b/net/ipv4/tcp_offload.c
-> @@ -332,6 +332,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
->  		flush |= skb->ip_summed != p->ip_summed;
->  		flush |= skb->csum_level != p->csum_level;
->  		flush |= NAPI_GRO_CB(p)->count >= 64;
-> +		NAPI_GRO_CB(skb)->flush |= skb_is_gso(skb);
->  		skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
->  
->  		if (flush || skb_gro_receive_list(p, skb))
+Here is the tag, as offered.
 
-I haven't looked closely but this looks like a second issue and would
-need its own patch with a proper description.
+The board is a TP-Link Archer AX55 v1 (IPQ5018 + RTL8367S). Its
+CPU-facing port runs fixed 2500base-x, so what this exercises is the
+HSGMII path of 2/2 on top of the SerDes plumbing added by 1/2; the
+1000base-x path is not reachable on this hardware. The trunk has been
+carrying traffic continuously for days, with zero FCS errors and zero
+drop events on either side of it.
 
-Thanks,
-Antoine
+The final cold soak on the healthy power supply came out clean this
+morning as well, so the cold-start failure I reported earlier in this
+thread is settled as a failing PSU rather than anything in the driver.
+
+Tested-by: Stanislaw Pal <kuncy7@gmail.com>
+
+Best regards,
+Stanislaw
