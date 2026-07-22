@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AE443D4E9
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71EC43E9D5
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784753063; cv=none; b=lyQz6C94x2QWWnoG5T3WcZwjeb07lmjJSUWY1P96cmlOAZT13LJ8CTwYS7oCcC3X7B+Hq9OzHHVgT1E53Y4Betm5Hv0+WN4cDKadvuQ02I0gmYGUNZPtm8ldaFdAfjUkbZoMEWjSepSimS1v9YObeDYApnEDJhg92f8fgnFaKow=
+	t=1784753065; cv=none; b=ZHkrcIn09KbxD5CFT6MdXAdpFuNC+v3rZvrEMRQGSsvYRuKQE9Xq7m+MRZU7bbpkOTrSbO9o5uwQpJJwG9sSuHzfSg0Wel+J2Yf1/dH/vr8Og0gP0BncNC8bpZL+t8VnSLIPi+ZHENrj8vpIb8VvsMOkg9KzD2H8vKUYrcWDdYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784753063; c=relaxed/simple;
-	bh=0Zlmhninie/D9TRflmLm+EsRF+kAisYvD/lFxeS76Qs=;
+	s=arc-20240116; t=1784753065; c=relaxed/simple;
+	bh=a+vTWuS0jG9dMpPd0SE7aoNw0AQcC9M8SKAmAuS0Ics=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H/uFkW3FHEOus7XlK4pRJvcQYmgu87eoDX9SR39ro51sGNMoaHMa9Lvb1ZnNuWBnapNQr9CXdT+0Ed6ZlRDGM0CfQcFak/X05ZhVrb731d9AbiIJUxb/iPL2FRKWk13coHVee/lSY7mC12Fe/zLvv5Fii6aEFYIXZnhlEQBD1Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TClIpQjP; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=FCnbyFvBMOMvP0ttYOAlHp3/giSsvTu3AuJ711l12Z7v8unbJZn66v7yTN3ayn0v+qTIxAh3fTMXpoQ1gizpCxQ2Yn0ARY7wu7AJc38xIkEibCwLEWceF/EhBktZX+LQJYaAM7ARTsnOjWD9tfkwwTA957qwbvcSiMk6FtaFNZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/RiO+AC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TClIpQjP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242031F000E9;
-	Wed, 22 Jul 2026 20:44:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/RiO+AC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33DE1F000E9;
+	Wed, 22 Jul 2026 20:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784753061;
-	bh=B3rErr10p9wOACNt+wLol9UrYf5v0rNYumxMy4SRbfs=;
+	s=k20260515; t=1784753064;
+	bh=5xR9lfxVBp+1iWG64wonKPk1rj2cn2xQhAXOALOb208=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TClIpQjPHfNb2UC+86DccO1ZrMk2+zy5rLUTHbdUN31XdnfQmEyzF0g00UYVJvCt4
-	 FXhV4YAcs5lWiKtyTP2/gpdsVZW7ab/ZGgLSaH0Q2SUFy141vcrOpLy6haasxqnace
-	 6hhwS6L9eGbDYygci9yZTfTRBGHXkgZpaJcVmMhumYjv07vi2jDBbTYnEGPhr/JYiA
-	 AiFqAUMG4h1dchH/GhbOXm4fscuN2vH0YcCHEUJpkTTtubdQ3HFcREsOzPasDqLqG0
-	 MaMTXTfHgA9P07wMsqz+1DaUoobIBHqX3iXyFQ8EbvjqU0/peqdI1ZCDe5rMPbRuP7
-	 ez0lmxyiPoqZQ==
+	b=b/RiO+ACph5jy/GuoCKfUzOkaOZhf103zUoAvFgpXzNXOgiCLE5PprER53Pk0s2Y/
+	 kYp/0IdU2XD6WedoeFXNSe0LfcH5xkezKfx8vUmWUG1mlfjOJcU/SkXirOnFrBS5Qz
+	 8KZ6Ds1n5j1XiggVmhLGCSQgBRycJL+oz9dOhJ60sjWV+aOXLGafX2VijnnyvChDHF
+	 P0/DWHVnV6NQXXawLGjYazMboFdXNvsa1NMxpQb7DeqVqhO+0o7kTgKG0tOHurqGMZ
+	 jqF6LenxvIsq+3kxg5Q9nKK15yIqyOmHbMZwZ9M0bvRdjl1gcEbHKHZjFZZ+7s88Rn
+	 7Z3ymiUYJ4LcQ==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 22 Jul 2026 22:44:00 +0200
-Subject: [PATCH net-next v10 1/3] net: airoha: rename airoha_priv_flags to
- airoha_dev_flags
+Date: Wed, 22 Jul 2026 22:44:01 +0200
+Subject: [PATCH net-next v10 2/3] net: airoha: fix ETS QoS stats counter
+ underflow and cross-channel corruption
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-airoha-ethtool-priv_flags-v10-1-d2562c5dd942@kernel.org>
+Message-Id: <20260722-airoha-ethtool-priv_flags-v10-2-d2562c5dd942@kernel.org>
 References: <20260722-airoha-ethtool-priv_flags-v10-0-d2562c5dd942@kernel.org>
 In-Reply-To: <20260722-airoha-ethtool-priv_flags-v10-0-d2562c5dd942@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -51,59 +51,86 @@ Cc: Simon Horman <horms@kernel.org>,
  netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.14.3
 
-Rename the airoha_priv_flags enum to airoha_dev_flags and the
-AIROHA_PRIV_F_WAN flag to AIROHA_DEV_F_WAN. The "priv_flags" naming
-dates back to an earlier design that used ethtool private flags; since
-this series switched to tc qdisc offload for LAN/WAN configuration,
-align the naming to reflect that these are per-device flags rather than
-ethtool private flags. No functional change.
+airoha_qdma_get_tx_ets_stats() has two bugs:
+- The hardware counters read via airoha_qdma_rr() are 32-bit values
+  but are stored in u64 locals and subtracted from u64 baselines. When
+  a 32-bit hardware counter wraps around, the subtraction produces a
+  large underflow value passed to _bstats_update().
+- The baseline counters (cpu_tx_packets, fwd_tx_packets) are stored as
+  single per-device fields, but airoha_qdma_get_tx_ets_stats() is
+  called with different channel values (0-3). Each call reads a
+  different channel's hardware counter but overwrites the same
+  baseline, corrupting the delta computation for other channels.
 
+Fix both by:
+- Narrowing the counter locals and baselines to u32 so that 32-bit
+  unsigned subtraction handles wrap-around naturally.
+- Grouping the baselines into a per-channel qos_stats array so each
+  channel tracks its own previous counter value independently.
+- Splitting the delta addition into two statements so the first u32
+  delta is widened to u64 on assignment and the second is added in
+  u64 arithmetic, preventing overflow when both deltas are large.
+
+Fixes: 20bf7d07c956 ("net: airoha: Add sched ETS offload support")
 Reviewed-by: Simon Horman <horms@kernel.org>
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
- drivers/net/ethernet/airoha/airoha_eth.h | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 18 +++++++++++-------
+ drivers/net/ethernet/airoha/airoha_eth.h |  7 ++++---
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 59001fd4b6f7..41c1a0ffbdd8 100644
+index 41c1a0ffbdd8..aaf2a4717d12 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2039,7 +2039,7 @@ static int airoha_dev_init(struct net_device *netdev)
- 		fallthrough;
- 	case AIROHA_GDM2_IDX:
- 		/* GDM2 is always used as wan */
--		dev->flags |= AIROHA_PRIV_F_WAN;
-+		dev->flags |= AIROHA_DEV_F_WAN;
- 		break;
- 	default:
- 		break;
+@@ -2482,16 +2482,20 @@ static int airoha_qdma_get_tx_ets_stats(struct net_device *netdev, int channel,
+ {
+ 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+ 	struct airoha_qdma *qdma = dev->qdma;
++	u32 cpu_tx_packets, fwd_tx_packets;
++	u64 tx_packets;
+ 
+-	u64 cpu_tx_packets = airoha_qdma_rr(qdma, REG_CNTR_VAL(channel << 1));
+-	u64 fwd_tx_packets = airoha_qdma_rr(qdma,
+-					    REG_CNTR_VAL((channel << 1) + 1));
+-	u64 tx_packets = (cpu_tx_packets - dev->cpu_tx_packets) +
+-			 (fwd_tx_packets - dev->fwd_tx_packets);
++	cpu_tx_packets = airoha_qdma_rr(qdma, REG_CNTR_VAL(channel << 1));
++	fwd_tx_packets = airoha_qdma_rr(qdma,
++					REG_CNTR_VAL((channel << 1) + 1));
++	tx_packets = (u32)(cpu_tx_packets -
++			   dev->qos_stats[channel].cpu_tx_packets);
++	tx_packets += (u32)(fwd_tx_packets -
++			    dev->qos_stats[channel].fwd_tx_packets);
+ 
+ 	_bstats_update(opt->stats.bstats, 0, tx_packets);
+-	dev->cpu_tx_packets = cpu_tx_packets;
+-	dev->fwd_tx_packets = fwd_tx_packets;
++	dev->qos_stats[channel].cpu_tx_packets = cpu_tx_packets;
++	dev->qos_stats[channel].fwd_tx_packets = fwd_tx_packets;
+ 
+ 	return 0;
+ }
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index f6d01a8e8da1..bf1c249255bd 100644
+index bf1c249255bd..bf44be9f0954 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.h
 +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -543,8 +543,8 @@ struct airoha_qdma {
- 	DECLARE_BITMAP(qos_channel_map, AIROHA_NUM_QOS_CHANNELS);
- };
+@@ -553,9 +553,10 @@ struct airoha_gdm_dev {
+ 	struct airoha_eth *eth;
  
--enum airoha_priv_flags {
--	AIROHA_PRIV_F_WAN = BIT(0),
-+enum airoha_dev_flags {
-+	AIROHA_DEV_F_WAN = BIT(0),
- };
+ 	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
+-	/* qos stats counters */
+-	u64 cpu_tx_packets;
+-	u64 fwd_tx_packets;
++	struct {
++		u32 cpu_tx_packets;
++		u32 fwd_tx_packets;
++	} qos_stats[AIROHA_NUM_QOS_CHANNELS];
  
- struct airoha_gdm_dev {
-@@ -667,7 +667,7 @@ static inline u16 airoha_qdma_get_txq(struct airoha_qdma *qdma, u16 qid)
- 
- static inline bool airoha_is_lan_gdm_dev(struct airoha_gdm_dev *dev)
- {
--	return !(dev->flags & AIROHA_PRIV_F_WAN);
-+	return !(dev->flags & AIROHA_DEV_F_WAN);
- }
- 
- static inline bool airoha_is_7581(struct airoha_eth *eth)
+ 	u32 flags;
+ 	int nbq;
 
 -- 
 2.55.0
