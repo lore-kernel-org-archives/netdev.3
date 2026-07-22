@@ -1,119 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315E436728F;
-	Wed, 22 Jul 2026 01:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFEE35E958
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 01:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784683980; cv=none; b=oz/NMlyZzDjj7ffzCxLsgOoecVkJqicd7URVQZt0AxSSf/rsv1qBqss8VJBf1kDGe1w2aUa4LhGgLI36QJ5xHIi5l+lWM6MqnpacHLj0/FmgA9GqVSDx9HbXBqdm8M02pUyhSEnedQdHLpKFOQ/T0J344lgF4HgHpwD3PdJS+z8=
+	t=1784684283; cv=none; b=FZguR5PJTOZAYuC/gVDPVPeTF8CXCLFQ1ZcRO5o20sPIY8tOHueZ/aJ13vDdHcwNvcQDYIwra1LxGg07C6LI75PpYyq3jGD0L+n8XOu5hsazfthgfpLeJGNNl3AAPVkbV+klz5vO1+R8ZkQVISwKU9tQFjVxLZQHEQDJX+OGuio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784683980; c=relaxed/simple;
-	bh=9sDrFwvxE57IkdRWhuaYlahBSyNttENsNpW2bvMavxQ=;
+	s=arc-20240116; t=1784684283; c=relaxed/simple;
+	bh=cac/C5oCBvM43JEJP2GI3KnFD6g9DhWPrPULyTyMXa8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJ+R2QxtE6AZVdPATS24qxqfMRJ39MLu7zIS/G35sviXWMBvW1awbnJNEke91A+1EZS04oUAaLCIW2qWbR8EUDPCO6SG/YH/i4Se0LttBAVxbDTGsjlI6cqOh/Ni7RAOTZzQlif8DOSo9x60lPKnN/TEv7an8G8SIt4BXqj6Dgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxXhpc0M; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=cUxTKNDztC5PR97rAF03MAib3+WAXxx18tHqgjJclSpcZsEL8GCuYvQa9F14hfrwkqxzbwbTmQXAv80hKvRiaDhFS2e/H2MY4lq0rupbGS7ZhrjfrzscZRJ065/Uxmleu7zOS8G0AsnJjFscmCjdQDeu4eqQ8J+tUUFeSVSrBqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlLQx/E2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxXhpc0M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F301F000E9;
-	Wed, 22 Jul 2026 01:32:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlLQx/E2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53511F000E9;
+	Wed, 22 Jul 2026 01:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784683978;
-	bh=GJ0tXnBlUAMTn2vLq/Edg9l+cM0LotSgg3TuWENMbdk=;
+	s=k20260515; t=1784684281;
+	bh=0QyA7hUTWJ16dxx9ve/DbIx2Rsezxg2GSELB3/GgzbY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AxXhpc0MAuyw11QvJ3ZWa+7FkgiGGgOwhWYp0NRErDBuIeb050T1pQu21yVnOOIN/
-	 iTO+l+Po6Ckw6SKbDkBL0Z2dFqJJtItMYTQhRNaweADU3UtXDtCwo8gHqbssv0/Pgf
-	 D0NS+PQO2v/p6oeBN/rQgz0OkEAxlHX/Ctaccap0Mts6dH2e4F80WW92/+hS7EUfTF
-	 7P4xoed3eUGomJSJcMH4o9zz3eiz0p7Hw57A12GI6iPVx4CfYl4fH5YhbVwNgx0iJF
-	 DXHH3+BodXak7EzcRKAlWLYF0WztavTDILn8g9LMQd5/9cpaxFFPdoD6UY9tMi1bOm
-	 VB8XBeLvS7Ezg==
-Date: Tue, 21 Jul 2026 18:32:56 -0700
+	b=JlLQx/E27AVNORRIePeJS1jewhLbIpqL5iV9InCpSXG3YqKImFCB/SUGgR4LOAPoM
+	 sfdBEbBHg3CXPXqlxcH9QhZRBZcgCXQz08Pr8dbrH+JUDHOVKlxLSy7groHd8LJ5E9
+	 Luqtm72OtJr+tiyfytAw+xHhReb8iZO/AY8p7y0NHC6wLX6/kjjrr00DLGFoutmUMa
+	 zZqQfuT53v9bqvwU5F+xBpY5yifcc0gmV87YZZoWUlg+DCKH1Ecj2hD+lZQh2lXdZX
+	 tIVJtxWzzRKSZpqzj6aP6F89qxXpHj99TXIW0i9c08Ww3ygv7mjXprheh4YfjaoyCr
+	 W3i4mmhRd6dqA==
+Date: Tue, 21 Jul 2026 18:38:00 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Alexander Lobakin
- <aleksander.lobakin@intel.com>, Andrii Nakryiko <andrii@kernel.org>, Martin
- KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
- Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Jonathan Corbet <corbet@lwn.net>, Shuah
- Khan <skhan@linuxfoundation.org>, Kumar Kartikeya Dwivedi
- <memxor@gmail.com>, Emil Tsalapatis <emil@etsalapatis.com>, Vladimir Vdovin
- <deliran@verdict.gg>, Jakub Sitnicki <jakub@cloudflare.com>,
- netdev@vger.kernel.org, bpf@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH bpf-next v5 8/8] selftests: net: add test for XDP_PASS
- skb checksum invalidation
-Message-ID: <20260721183256.6f49d6e1@kernel.org>
-In-Reply-To: <al_4VWS_EyyZLe8z@devvm7509.cco0.facebook.com>
-References: <20260715-bpf-xdp-meta-rxcksum-v5-0-623d5c0d0ab7@kernel.org>
-	<20260715-bpf-xdp-meta-rxcksum-v5-8-623d5c0d0ab7@kernel.org>
-	<aljNR2sf8qJVKFgb@devvm7509.cco0.facebook.com>
-	<alkBnI3XcH0XGjEo@lore-desk>
-	<al53WS9FMTnu7tBI@devvm7509.cco0.facebook.com>
-	<20260721082728.74142e6c@kernel.org>
-	<al_4VWS_EyyZLe8z@devvm7509.cco0.facebook.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, Muhammad Ziad
+ <muhzi100@gmail.com>
+Subject: Re: [PATCH net] ipv4: icmp: fill flow parameters in
+ icmp_route_lookup decoy lookup
+Message-ID: <20260721183800.3bb3fc5e@kernel.org>
+In-Reply-To: <20260716021049.2124921-1-edumazet@google.com>
+References: <20260716021049.2124921-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 21 Jul 2026 16:03:37 -0700 Stanislav Fomichev wrote:
-> > > For unnecessary, I think the safe expectation is that the bpf program
-> > > will update the value of the checksum in the packet if it touches the data?  
-> > 
-> > Documenting as expected behavior which no driver currently follows 
-> > is a bit silly. I thought the ask was to sketch out the plan of
-> > explicitly updating/invalidating the checksum even if we don't
-> > implement it today?  
-> 
-> This is about current drivers that only report UNNECESSARY with xdp: the xdp
-> prog has to maintain in-packet checksum if it changes the payload. I think
-> it's a fair assumption?
+On Thu, 16 Jul 2026 02:10:49 +0000 Eric Dumazet wrote:
+> When Linux forwards a packet and needs to generate an ICMP error,
+> icmp_route_lookup() performs a reverse-path relookup. For non-local
+> destinations, it performs a decoy lookup via ip_route_output_key() to
+> find the expected egress interface (rt2->dst.dev) before validating the
+> path with ip_route_input().
+>=20
+> Currently, the decoy flow structure (fl4_2) only sets .daddr =3D fl4_dec.=
+saddr,
+> leaving .saddr, .flowi4_dscp, .flowi4_proto, .flowi4_mark, and
+> .flowi4_uid zeroed out.
+>=20
+> When policy routing rules (such as ip rule add from $SRC lookup 100, or
+> dscp/fwmark/ipproto rules) are configured:
+> 1. ip_route_output_key() fails to match the policy rule because saddr and
+>    other key flow selectors are missing in fl4_2.
+> 2. It resolves a route using the default table instead, returning an inco=
+rrect
+>    egress netdev.
+> 3. Passing the wrong netdev to ip_route_input() causes strict reverse-path
+>    filtering (rp_filter=3D1) to fail, logging false-positive "martian sou=
+rce"
+>    warnings and causing the relookup to fail.
+>=20
+> Fix this by populating fl4_2 with .saddr =3D fl4_dec.daddr, .flowi4_dscp,
+> .flowi4_proto =3D IPPROTO_ICMP, .flowi4_mark, and .flowi4_uid so that
+> ip_route_output_key() selects the correct egress interface matching policy
+> routing rules.
 
-What about decap? If we decap the header that device validated 
-as UNNECESSARY there's no possibility of maintaining the checksum
-(by which IIUC you mean correcting it in along the payload changes).
+Hi Eric!
 
-I think we'd need some API to "decrement the csum level" ?
-Or some heuristic in the drivers to decrement if the head moved
-by at least len(IP+UDP) into the packet ?
+This got auto-discarded due to bad interaction with the xfrm test:
 
-> In terms of documentation, here is what I have on my side, lmk if that makes
-> sense, roughly:
-> 
-> - TODAY
->   - some drivers (correctly) disable reporting COMPLETE when XDP is attached
->     - the xdp program has to modify the packet checksum value if it
->       changes the payload
->   - some drivers (incorrectly?) report COMPLETE for xdp-to-skb path -> unsafe,
->     needs to be fixed
->     - updating the payload doesn't update skb->csum, so the safest
->       option right now is to only do UNNECESSARY with xdp for all drivers
+https://netdev-ctrl.bots.linux.dev/logview.html?f=3D/logs/vmksft/net/result=
+s/736183/28-xfrm-state-sh/stdout
 
-Yes, that sounds fair.
+AI bot says:
 
->   - the hw test needs to make sure that the csum is either
->     NONE or UNNECESSARY, and will error out on COMPLETE
+The NIPA CI system flagged a regression in the selftests/net/xfrm_state.sh
+test on both the normal and debug kernel configurations after this patch was
+applied. The failures are consistent across retries.
 
-Driver can report COMPLETE to XDP, just not to the stack.
-I think we can use a tracepoint (bpftrace) or attach in TCP
-to check the skb state?
+Two IPv4 sub-tests fail; the IPv6 equivalents pass:
 
-> - TOMORROW
->   - if we want to properly support COMPLETE, we need a new set of kfuncs
->     to update skb->csum value in the skb
-> 
-> Does that make sense?
+  TEST: IPv4 unreachable from IPsec gateway s2   [ FAIL ]  unreachable_gw_i=
+pv4
+    ip netns exec ns_a ping -W 5 -w 4 -c 1 10.1.5.3
+    4 packets transmitted, 0 received, 100% packet loss
+
+  TEST: IPv4 MTU exceeded from IPsec gateway s2  [ FAIL ]  mtu_ipv4_s2
+    ip netns exec ns_a ping -M do -s 1350 -W 5 -w 4 -c 1 10.1.5.2
+    4 packets transmitted, 0 received, 100% packet loss
+
+The test topology uses an IPsec (ESP tunnel) gateway that should generate a=
+nd
+return IPv4 ICMP error messages (host unreachable / fragmentation needed) to
+the originating host.
+
+The regression is in the IPv4 path only, which points to the change in
+icmp_route_lookup() in net/ipv4/icmp.c.
+
+Specifically, the newly added `.flowi4_proto =3D IPPROTO_ICMP` field in the
+decoy `fl4_2` structure may be causing ip_route_output_key() to select a
+different (possibly IPsec-encapsulated) egress interface than expected in
+the xfrm gateway scenario. When the wrong interface is passed to
+ip_route_input(), reverse-path filtering appears to reject the lookup,
+causing the ICMP error reply to be silently dropped rather than forwarded
+back to the sender.
+
+The patch's stated intent =E2=80=94 fixing policy routing scenarios where .=
+saddr and
+other selectors are needed =E2=80=94 is correct in principle, but the addit=
+ion of
+.flowi4_proto =3D IPPROTO_ICMP seems to interact poorly with xfrm policy
+matching during the decoy lookup.
+
+Could you take a look?
