@@ -1,113 +1,179 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2B042DFEC
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F8846EF6D
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784705387; cv=none; b=uhryFTTMv6di8/23BErtnEwozRv9WqTViBGdJLGSFmhiwzwhLnFA9LuzGemfVexuHwBjNtoG0JxzaC23UgvcoWSFFmtp09ctRvMJAqR3MoUCaTKdxcODLv+pGjaPblqYsoa/RQLqrOq/yM9xR5w/vQAW6RUkA4bWptv8bIPDllE=
+	t=1784705627; cv=none; b=oD0oGf6XmgizL2/TQ/3ost+K5OnG1oxxP8kDVwBEHcO3NnO2961Rp+tMVP9R5sawohB3rAYd50dfqFrrBRNvNhoNndITWyKLrftIfs4out27t9UksEEgpwi6iDVANiaiIvHzciIoRB3expN1ERnyEWqNckiLpTO+9f5yyBrjg+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784705387; c=relaxed/simple;
-	bh=B/b6NZPXWjZ4ZUBjxDFyKQ2VsdKInaH6taZRJY5DHzM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jjYd3D5jxT1orYZkQm3UBitA+HOiGwxKzCxzJgxbf9Y6hMldfU043s3CPjzm8P02jUZoRXLuPbX75PXMj20mx61ue1P/Hy7lUDyPuyqg/jWritwWkC+tHpP/JtCPhbqZwCKS+ru4AVyMxTWc3M/TjUpHm/8x7kxT/IojxhtwdQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nMtTyXBr; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784705627; c=relaxed/simple;
+	bh=B4GaeW7vjgD1N5Fr6ncvo7PoGFY050NnvVB1+oZQX4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr/mPtnh4qEBNyLWHXuvgAlIdJg/B9nJBoUhFkc+yjs+eRxFJukvAPtVLAQQtHLOmLW5qpS4hk/IA/Kf5KqTNAkNc+hpcJleXSJRj4VFNr4euJlHBdS/Z4iEe2dMscNLZvJwAvaiK9f9bmrNRQPAIbH544eRsxermZ683F6VC5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctqulXM+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nMtTyXBr"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso8214341a91.3
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784705375; x=1785310175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=12eYBnmRPs6XDaKWNCAEegubsqjIFXOjPNFE7WXNNDU=;
-        b=nMtTyXBrEKEHzzHtA5t+dD6kV9TQkaXLEXBREhl9NLfqPjAJoC2ZL8k0R3B9pfvyDX
-         6+IGyCJShFMwNDSVC0ykZLNSkUzF7/YY+r9UYexAI1k9L1xW8kDLdZ2Tgf6/7sivarc5
-         9u9178LUVbvwFsbovlx815N1DbBoBBnaqQyvjlY8zP8mrPm4v3HHPEIjkpiybrXwhTBB
-         vJnocD+eiWUTiZkrHmrdBWJCWHaq7qLfYf6peJXbeBzh8SsCG+kNmxiLGbI77YmVk89/
-         /Wnd3yUPdm/2gQK36UleLouexHsSD9kO9cDX2+Nm1aJyIC2D7QcadI52siHTPW9aCTIE
-         tcGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784705375; x=1785310175;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=12eYBnmRPs6XDaKWNCAEegubsqjIFXOjPNFE7WXNNDU=;
-        b=O2TaU402vT42qbhsGPnZYqqzUgpPEIqZpl1skcG+JGlLAO3SkjZZD+6G7pDiPuzHED
-         0OueIlBhyAoBygb2Wy7jdLH0EYzVslRv6WBqBMUe0I4PtsAPqZsTd2v9WYGBxhlYusuZ
-         tbtRyhcBfIoH0sDBu5ZuSP0HpCqTNzYV9FYyt0Wy8RoDybM6zHeFMGEuSJXLJm/2Z79O
-         Ahd6YJpoCG9u8vw3GWhlWaSdfNfSyeujdLYrmxMqhBrmdCPDzyust3rNPPwXCK3K9Yjy
-         7zlAh7MKCSPGv/c9DkrA0PVf2HCGTGwzC3glMEG9KSG5s6nAVS2FsaCosPdAKNonPRA3
-         KkTg==
-X-Forwarded-Encrypted: i=1; AHgh+RrH7LTs/HFBr9O6tmFrn3vgVvvlYXZvTRi3U5pBM99HsQNk30Q/6KHi6fRFFv2s3YIYoeB0dhY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm6iUxVkVV0sXvmyVV+nNan+jVZan1r+bMTI6ckFSVfb2Naf1y
-	mXQIVy3V0QZhF9CVus4ahtx/1x7DuW+PXf7KzH4r0qvr8lOkWAkGDNth
-X-Gm-Gg: AR+sD12AqFV6LBEZY2kHZTdDjCaRgCnWcCHzbh1PZVPVWjIa9CD2GmK/YFZsaPbZ5TL
-	Gi8HcMdVJ6hkxTjfiGke6hJ+dOjyZasxN20qPx+K/E3cBOjT1zKNERmcPHH7fcvEsjz6wSMwMTc
-	xGPghgwELZYprEf4MSqSW+YL4muen8vwuISWTie59DABunKoBdGxq8jMlxbxdwgBcgXcdAd3K7l
-	NvPYFrnb3DDZgfJjQZQwfdsxTpSGcY5759BCmI0mH4YoNa4u6ZR9cMA6qaVG9KGY3x0fo17eo42
-	vY+DgzCmKW65E/PR9bbSwUtszB5yEcQcAtQy1CVhFXYl125dvwoonAK9x9zBT/stUGjy6KPViva
-	0+lFRMxeYO4NuiFKUO0gX47B0QXHZNdzQV39syZIq0fAa7S10guZP4fofwxDUoyLqQvjdroyW70
-	rQ9ol0VX8KD3Xyt1xmIrcZR5DTbKmsLLoDuTBhXZXxuRNOycJ2S8ajgNnRtRYkhw0p2A==
-X-Received: by 2002:a17:90b:3ccd:b0:38d:a8be:a597 with SMTP id 98e67ed59e1d1-38e4b5c98afmr23897459a91.37.1784705375435;
-        Wed, 22 Jul 2026 00:29:35 -0700 (PDT)
-Received: from secrnd-cstp.tailb7f510.ts.net ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea78e296fsm575673a91.8.2026.07.22.00.29.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 00:29:34 -0700 (PDT)
-From: Sanghyun Park <sanghyun.park.cnu@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Sanghyun Park <sanghyun.park.cnu@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctqulXM+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CC01F000E9;
+	Wed, 22 Jul 2026 07:33:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784705623;
+	bh=cXRr0vMJv2NEmYtLVWvskxehewcxKuQFa+zT3/TfT3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ctqulXM+zEU87cc9+q+bk/CJSsTVSm27SbrgR2ocn6ckhVEIeLviYX4/su7ah3ZJd
+	 nr9qOrNRWbTohPRKJkepB1Xovpz/ylJOO+DmxDb4zLqDWU7/cnve6XdTnnINdfEIk4
+	 D1A5fjVFJoPTqwZMk14ylxpCtJJMvfhtGyWpu7drcozQBhUoPszIFXWGiJ051BzUVU
+	 sl2Zyu47JYuGKLMhgO7Jx7H1vzmES3VWmN6U+fG2LMmX+kSX9sxl8I9S2apg2UqEWn
+	 S3YYSTcZVrJ3L4J/2Paf6o2K7M5AIMH3g2KP3h67t4YY4+KATJI7sMt1ajHyaiAPsj
+	 RqFfj9DwyEK7A==
+Date: Wed, 22 Jul 2026 09:33:41 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alexandre Cassen <acassen@corp.free.fr>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] xfrm: Fix skb double-free in xfrm_dev_direct_output()
-Date: Wed, 22 Jul 2026 16:28:38 +0900
-Message-ID: <20260722072837.2011916-2-sanghyun.park.cnu@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v9 2/3] net: airoha: fix ETS QoS stats counter
+ underflow and cross-channel corruption
+Message-ID: <amByVU4m8YuCphO2@lore-desk>
+References: <20260721-airoha-ethtool-priv_flags-v9-0-9c15d8b71a56@kernel.org>
+ <20260721-airoha-ethtool-priv_flags-v9-2-9c15d8b71a56@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2rgjgGmCcATn9c72"
+Content-Disposition: inline
+In-Reply-To: <20260721-airoha-ethtool-priv_flags-v9-2-9c15d8b71a56@kernel.org>
 
-A return value other than 1 from local_out() means that the skb has been
-consumed or its ownership was transferred. xfrm_dev_direct_output()
-nevertheless frees the skb on this path, causing a double-free when
-netfilter drops the packet and invalidating any other owner.
+--2rgjgGmCcATn9c72
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Return the local_out() result directly, matching the ownership handling
-in xfrm_output_resume().
+> airoha_qdma_get_tx_ets_stats() has two bugs:
+> - The hardware counters read via airoha_qdma_rr() are 32-bit values
+>   but are stored in u64 locals and subtracted from u64 baselines. When
+>   a 32-bit hardware counter wraps around, the subtraction produces a
+>   large underflow value passed to _bstats_update().
+> - The baseline counters (cpu_tx_packets, fwd_tx_packets) are stored as
+>   single per-device fields, but airoha_qdma_get_tx_ets_stats() is
+>   called with different channel values (0-3). Each call reads a
+>   different channel's hardware counter but overwrites the same
+>   baseline, corrupting the delta computation for other channels.
+>=20
+> Fix both by:
+> - Narrowing the counter locals and baselines to u32 so that 32-bit
+>   unsigned subtraction handles wrap-around naturally.
+> - Grouping the baselines into a per-channel qos_stats array so each
+>   channel tracks its own previous counter value independently.
+> - Splitting the delta addition into two statements so the first u32
+>   delta is widened to u64 on assignment and the second is added in
+>   u64 arithmetic, preventing overflow when both deltas are large.
+>=20
+> Fixes: 20bf7d07c956 ("net: airoha: Add sched ETS offload support")
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 18 +++++++++++-------
+>  drivers/net/ethernet/airoha/airoha_eth.h |  7 ++++---
+>  2 files changed, 15 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 41c1a0ffbdd8..aaf2a4717d12 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -2482,16 +2482,20 @@ static int airoha_qdma_get_tx_ets_stats(struct ne=
+t_device *netdev, int channel,
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_qdma *qdma =3D dev->qdma;
+> +	u32 cpu_tx_packets, fwd_tx_packets;
+> +	u64 tx_packets;
+> =20
+> -	u64 cpu_tx_packets =3D airoha_qdma_rr(qdma, REG_CNTR_VAL(channel << 1));
+> -	u64 fwd_tx_packets =3D airoha_qdma_rr(qdma,
+> -					    REG_CNTR_VAL((channel << 1) + 1));
+> -	u64 tx_packets =3D (cpu_tx_packets - dev->cpu_tx_packets) +
+> -			 (fwd_tx_packets - dev->fwd_tx_packets);
+> +	cpu_tx_packets =3D airoha_qdma_rr(qdma, REG_CNTR_VAL(channel << 1));
+> +	fwd_tx_packets =3D airoha_qdma_rr(qdma,
+> +					REG_CNTR_VAL((channel << 1) + 1));
+> +	tx_packets =3D (u32)(cpu_tx_packets -
+> +			   dev->qos_stats[channel].cpu_tx_packets);
+> +	tx_packets +=3D (u32)(fwd_tx_packets -
+> +			    dev->qos_stats[channel].fwd_tx_packets);
+> =20
+>  	_bstats_update(opt->stats.bstats, 0, tx_packets);
+> -	dev->cpu_tx_packets =3D cpu_tx_packets;
+> -	dev->fwd_tx_packets =3D fwd_tx_packets;
+> +	dev->qos_stats[channel].cpu_tx_packets =3D cpu_tx_packets;
+> +	dev->qos_stats[channel].fwd_tx_packets =3D fwd_tx_packets;
 
-Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
-Signed-off-by: Sanghyun Park <sanghyun.park.cnu@gmail.com>
----
- net/xfrm/xfrm_output.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+commenting on sashiko's report:
+https://sashiko.dev/#/patchset/20260721-airoha-ethtool-priv_flags-v9-0-9c15=
+d8b71a56%40kernel.org
+- This is a pre-existing issue, but does calling _bstats_update() here from
+  the netlink dump path (process context) without holding qdisc_lock() or
+  disabling bottom-halves risk a seqcount deadlock?
+  On 32-bit platforms, _bstats_update() uses a seqcount_t write lock via
+  u64_stats_update_begin(). If this path is preempted by a softirq on the s=
+ame
+  CPU that updates the same shared opt->stats.bstats (e.g., during a softwa=
+re
+  packet dequeue), will the softirq spin forever attempting to acquire the
+  same seqcount lock?
+  - As pointed out by sashiko, this issue has not been introduced by this
+    patch. Moreover, since airoha_eth is available just on 64bit system, I
+    guess this is not a real issue.
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index cc35c2fcbbe09..e305ba32e356b 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -636,10 +636,8 @@ static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
- 	nf_reset_ct(skb);
- 
- 	err = skb_dst(skb)->ops->local_out(net, sk, skb);
--	if (unlikely(err != 1)) {
--		kfree_skb(skb);
-+	if (unlikely(err != 1))
- 		return err;
--	}
- 
- 	/* In transport mode, network destination is
- 	 * directly reachable, while in tunnel mode,
+Regards,
+Lorenzo
+
+> =20
+>  	return 0;
+>  }
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index bf1c249255bd..bf44be9f0954 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -553,9 +553,10 @@ struct airoha_gdm_dev {
+>  	struct airoha_eth *eth;
+> =20
+>  	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
+> -	/* qos stats counters */
+> -	u64 cpu_tx_packets;
+> -	u64 fwd_tx_packets;
+> +	struct {
+> +		u32 cpu_tx_packets;
+> +		u32 fwd_tx_packets;
+> +	} qos_stats[AIROHA_NUM_QOS_CHANNELS];
+> =20
+>  	u32 flags;
+>  	int nbq;
+>=20
+> --=20
+> 2.55.0
+>=20
+
+--2rgjgGmCcATn9c72
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCamByVQAKCRA6cBh0uS2t
+rEeCAP9oauJEsmnW2DxM567A3ateWe95l4O9RA67X8/ppn06vwEAhEQQijbawDmV
+M+opV8dtSOGZsMLViinpM3cZiPy5sA0=
+=d7yO
+-----END PGP SIGNATURE-----
+
+--2rgjgGmCcATn9c72--
