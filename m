@@ -1,195 +1,104 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E9138237F
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648733D1CC5
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 03:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784690514; cv=none; b=MH8zx9zRlxcMfVOayAHIfICulUESz29OQrdrfvkUrHvBqYTgNKoVsjO/Z1Xvmd2aHeuqLHttcqB4jgU3u5tpXCUffliaO5xG/lgqQos/2vG3Tx5b9KzUPC0fTqJ1sXk+7BuRn/ruNp9b4DWNWMDX28J7JZAJaLxgT2YgRLIgSJw=
+	t=1784690915; cv=none; b=lxjCmVretCYGR3dsIdzPMUFd+HAp18mozcDzS24K+Aj0qrRR1L3l6auUSUIyp35pHtyp0u4UlgU7B5skFnuKpmUpfgxD6NN22QqN01VT0maPI6HfBvaU47LdlNbPRNkU6xLQZAJfDFVlL5sMxAVRK4vrqt/cXWZJVN/MTQIH+Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784690514; c=relaxed/simple;
-	bh=sFodNQNR9FelTC1V333RYUxhuvQ/oSTjBnSufIdGqAQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ije5SZOSW5+1Ou6WfulBtqam6soyynBgKqrFyGbV2+GVdO1+T+VnnxpIFeLiXnwlDXa444GCCwRTsKJ9FigOcjIDLuDwSZN3pzRik7l4edKlDx6bnk7MwHpS+IBJGdYBQy0GM52AV/QWv9iAjZOl6LwKHVE7VvKGn3CaZSXt9NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pub/69r6; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1784690915; c=relaxed/simple;
+	bh=U24iLOn5ceW/2lhbjmUxhZCsfbLS5rY8hugeyKJcx5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vGkEArZ3RN2xhmZL9FmsO0X/L/l04+t6m9EcPXTbJNno+c5BWFqo+CdU45PN4LNabAEJ20LKbjv9frXANbpU7qQP36wBoejcWf7bj2jazfdQpkHdRBrMDM2LvBSOZ5tYNSUQYxRfvn2ycAtD53wqQthxOQgVs0fC6JgrHDXVZEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fchduj1y; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pub/69r6"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ceb096e675so123373935ad.0
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:21:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fchduj1y"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso4707226a91.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 20:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784690513; x=1785295313; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=WqDTimtURahvRYngRj8g81rBzj87HYHBmMRGWInTPFo=;
-        b=pub/69r6FN0OL6oGoocEBKMCbf0+k9cGB4EfX1MCFlh/UxbLNuNfJjw7fHOGubMxGh
-         P9TbSUuBXAGJRpUgDO/VXp/g9pWD5YbPhzG7sxSjWuvnK8oryda4uR2GH5gdgh9OU9/B
-         a1ib5IAIbbX5y6CXlHqnduML16W3usgrYS0K/Tb2UKInBPKYlTYSECHqjwI8VnwN6QN7
-         mnZb0qlQJt09kA7nW13ubKHUCZLY408hBn+A+27TqtXTLzLettEIF5S1Cgw7245Uqs27
-         cfTQH0h7a97dN9VY846UIoOPv1nclg2OqiUOMskIV+LTVBqTCrzZo+19ZrIXKn6yXC/y
-         5iow==
+        d=gmail.com; s=20251104; t=1784690914; x=1785295714; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lqR1pQ6AMxguaF3FILwkKo0jVgND2IUORkim80828fE=;
+        b=fchduj1yGMDp4aPP3Za3+IcQiHKN23+1owRMB1OtNvjOJ8fnf37p+v3ZUjpEW/fucW
+         4UMdcg5k7CKStvGoe0WAZ6z0CBwBfUkCu8Prp1OqEdiUcUx1CHqGwQH5uCKpqAtMehs4
+         So+ILBoYO0m5/MK7vjrbUX8Rnp4WENxyOfcP4AVrbaWsqMBbcSHhqTwaibe0p8rWbrLG
+         K1w2x7plyP9grlqm/7/zBZOOd3bNDCOILIk9hIuCd4k0w6i1NOpbkmx5L+7BHzq5ul3D
+         PEePd1stkvJF7FaDCrsce+paH2PSCt8AfJpBzTs+IP6EdX1GPEythUKb5PWub+P57LdV
+         GvWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784690513; x=1785295313;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=WqDTimtURahvRYngRj8g81rBzj87HYHBmMRGWInTPFo=;
-        b=T9Q4hGgrhqTkKfEg7gy+RxGhy6+uN9qFGDY7J71/6r1tQiIIigJj5FqzC+h9OkfsRH
-         UfaRsMe4FvAoeRrpZj8oaWSBj+XW8pR37l/xjjVEitl+gZnBkoezuGODuMtRZW2YjAPn
-         TMb32jgK1+Xpq1nMc0h8bMw5a9mPZwxyCDFBwvtHP/BEk6qOTnEieuBhO1ORbMeV76XV
-         sGUkkw2BIuMeOOOMAno3L4l5IjoIQF31fIaeFwGb+lmJIOAHMX3+7PUei21gbOsMVPE+
-         4ga4fHrzB6RN6bhHCuX6srvBVt09SOGGOqxs6p/xHZAOY1Ag93ai8s0BrZx06BiUhG6I
-         /FKg==
-X-Gm-Message-State: AOJu0Yz14/v9hHRPhMrs1vmUNLgaQpbZuTor4ocZUfhlB1LQq/vt1+Cz
-	KMHd1SRuoWxea2UScnxd5U8GfjAX0sgneNv9aTORggYu2PxNKDwPF7navbhLWQul
-X-Gm-Gg: AR+sD10gqM/Ln9oTEReR4mkXEBgQ2CEdpQM49+pwEcdzTxQwmOMNQPBUF9cgS4fqMJC
-	fYi64JO3ufhthifLZONU+JXCkkH2RIPtucNpUjKT5pshtz8aNMsk8QK0oVEbQCKYkVi8KjNTEEy
-	nq3UH355EGqCp55RMXR0ai9RSvhI7HU3D3RrtS+PIti7T4ya+JkiMrkteGqlK7xWtR7DcSaPeRF
-	pmc4sIHWMUM7zsa2AXWcVFJVSJER9nT2uzEy4eYjaxXq9Iswd5noEagItw0gvtrSWa1xhlu1GsV
-	oVCzzig3xC4zSjee/BrX2LkLuySnNd0RvFGAuQ/VwcvqYQ9EoPVRl9DHwsSd+nWB+bGJan84RUC
-	IAi8Mh0skmzF0aLWg36S8RHBflEJ25RMk85luOlYUx/P0o/5VZRZsx804uK6j9SxqdNpRFrBUt9
-	Gt6LYveUI5udZ6jjQ=
-X-Received: by 2002:a17:902:d4c3:b0:2cf:30a9:93fb with SMTP id d9443c01a7336-2cf349cf7a8mr231370725ad.34.1784690512761;
-        Tue, 21 Jul 2026 20:21:52 -0700 (PDT)
-Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2eb72csm6419635ad.46.2026.07.21.20.21.51
+        d=1e100.net; s=20251104; t=1784690914; x=1785295714;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lqR1pQ6AMxguaF3FILwkKo0jVgND2IUORkim80828fE=;
+        b=P9oCM6ypHkilxf9S2Fv6PO3Xqftot729Ks6mxfEYgZ8RDCVkh6xLNY+HQ3grzvCH3/
+         uji/bSidYL8z9e63ev5j6QSVeZH9EHCCTm7jhzP2YvDT18mnOrvcVDiTKOqTjS/2H00u
+         MU0vgjbMb/0T91e7jNfv6Y3YGgEgH15yGbLa2pogv+SE0+XdA0yhJthA/DlQaZZKfp1p
+         i7XnYoJugAc3kDAp5vEOX7VUeVYpPOtOW2re1mfqHIDi1d/9mKsnScCinSMcLiqMnQqi
+         ArGfjT8ThtCpc/HUXHynerjaiyC4GVZJunGZxoRgNPsoipIJsc7QV1cvSSzB6h6J+vXs
+         RFLQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3px4U4Lsyz6ziCl9sksQqGbUyFR9PFJQMrVFZsLWPu+7Lw6D2w2/qT1c30r7fBLYy0KqvU3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdkAENwKAchdzz5nHxmzV5bZXUeEzTAm+76RFkEE+pZ28SqbAA
+	6q0fKDdEC/xIJ1N/Y74eLJjqxPwGHUdyFJVU93VVIJCoe/RkGaq3klH5
+X-Gm-Gg: AR+sD134n9ah+jVniMVgU+wAdpDqMRZUNAA+xO58yW6HDKKhH6IKwd4fKmoDAoB42mu
+	uUxHOTAbn0wM6qIcGcrgndqqGVeYarNmr93mOBvjb/tWnRJRIKmpuERLtVFuOPx9RNt5qnYXbe+
+	s1r+sohtXl8z3dDfpw+g/aGEOtGweyygAAtDvTUDlchWi1ybW9lkx+gFaewUU2HSwxHuUV4K18m
+	6FjA00lqTgmoPbun07jFtKDTqpTC1cONTVd07qPtMwTsfBpdLEAvo89d1p/a5L6YUPHchUKtgv3
+	JuhsjuBlo6h8+EBD/uOzLipiUoVt5vu7LLtFa7YVfjCbbjC79e89vzRPpgP6UDV1gci/U9IW3eh
+	Mn5rk1Sm202OW+6HaD7Dw0dpwG/1mxnEzphDOz8xYtoMlsTcJyEQOLyO3fVez5tRhlV/OmRMg9c
+	if6sI6bwKiOv3P4GQ2eLkGQSJek4Y+LF+KBFbwPaGeXYSSeQ==
+X-Received: by 2002:a17:90b:2805:b0:38e:6d55:b1a6 with SMTP id 98e67ed59e1d1-38ea33d3ebcmr1920262a91.3.1784690913704;
+        Tue, 21 Jul 2026 20:28:33 -0700 (PDT)
+Received: from CPC-mjac-HKWGEZ.redmond.corp.microsoft.com ([70.37.26.41])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea7b43214sm284134a91.16.2026.07.21.20.28.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 20:21:52 -0700 (PDT)
+        Tue, 21 Jul 2026 20:28:33 -0700 (PDT)
 From: Jack Ma <jack4it@gmail.com>
-Date: Wed, 22 Jul 2026 03:21:33 +0000
-Subject: [PATCH iproute2-next] ip nexthop: support fdb destination port
+To: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jack Ma <jack4it@gmail.com>
+Subject: Re: [PATCH net-next v3 0/3] net: nexthop: per-nexthop UDP dst port for fdb (VXLAN) nexthops
+Date: Wed, 22 Jul 2026 03:28:21 +0000
+Message-ID: <20260722032821.30166-1-jack4it@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260721180525.197d9a47@kernel.org>
+References: <20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com> <20260721180525.197d9a47@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADw3YGoC/z2NQQrCMBBFr1Jm7UATayJeRVwk7VRHJAmTtARK7
- 25UcPl4n/c3yCRMGS7dBkIrZ46hgTp0MD5cuBPy1Bh0r01vtUY/4FpfLuA8eUxRCnKSuBTSqI7
- KnM7WejcYaIEkNHP9xq/wXwWqBW4/nRf/pLF8DmDf386hx9CNAAAA
-X-Change-ID: 20260722-b4-vxlan-fdb-port-iproute2-13165877ba46
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>, 
- Stephen Hemminger <stephen@networkplumber.org>, 
- Jakub Kicinski <kuba@kernel.org>, Jack Ma <jack4it@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784690511; l=3830;
- i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
- bh=sFodNQNR9FelTC1V333RYUxhuvQ/oSTjBnSufIdGqAQ=;
- b=kEVIuAqsNAZ0mC0rJ8xZBNu695MajLL0dOdAjPKizhNZFAWoNbe+9zcvHhXy/6bMDGkMY+HF9
- uGDfDz0XZ3nAe76KpEZi/56Fb35S1db2OTlUhdliUG1l0fR6k1L1VBX
-X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
- pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The kernel gained NHA_FDB_PORT, an optional per-nexthop UDP destination
-port for fdb nexthops.  VXLAN uses it to reach several receivers that
-share an underlay IP but listen on different ports, load-balancing a
-flow across (IP, port) legs of one nexthop group.
+On Tue, 21 Jul 2026 18:05:25 -0700 Jakub Kicinski wrote:
+> On Tue, 21 Jul 2026 22:29:49 +0000 Jack Ma wrote:
+> > A matching iproute2 change (the `ip nexthop ... fdb port N` keyword) is posted
+> > separately to the iproute2 list.
+>
+> Where is that?
 
-Add the matching uapi value and wire it into `ip nexthop`:
+Apologies -- that was premature wording in the cover letter; the iproute2
+patch had not actually gone out yet.  It is posted now:
 
-  ip nexthop add id 1 via 192.0.2.1 fdb port 4790
+  [PATCH iproute2-next] ip nexthop: support fdb destination port
+  https://lore.kernel.org/netdev/20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com/
 
-The port is parsed on add (sent as NHA_FDB_PORT, __be16, network order)
-and printed back on dump/get.
-
-Signed-off-by: Jack Ma <jack4it@gmail.com>
----
-Kernel side (net-next), which adds NHA_FDB_PORT and is the reason for
-this change:
-
-  [PATCH net-next v3 0/3] net: nexthop: per-nexthop UDP dst port for fdb
-  (VXLAN) nexthops
-  https://lore.kernel.org/netdev/20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com/
----
- include/uapi/linux/nexthop.h |  2 ++
- ip/ipnexthop.c               | 16 +++++++++++++++-
- ip/nh_common.h               |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/uapi/linux/nexthop.h b/include/uapi/linux/nexthop.h
-index afbd064..e1e1a66 100644
---- a/include/uapi/linux/nexthop.h
-+++ b/include/uapi/linux/nexthop.h
-@@ -83,6 +83,8 @@ enum {
- 	/* u32; read-only; whether any driver collects HW stats */
- 	NHA_HW_STATS_USED,
- 
-+	NHA_FDB_PORT,	/* be16; UDP dst port for an fdb nexthop (VXLAN) */
-+
- 	__NHA_MAX,
- };
- 
-diff --git a/ip/ipnexthop.c b/ip/ipnexthop.c
-index 14b525a..4c33361 100644
---- a/ip/ipnexthop.c
-+++ b/ip/ipnexthop.c
-@@ -52,7 +52,7 @@ static void usage(void)
- 		"SELECTOR := [ id ID ] [ dev DEV ] [ vrf NAME ] [ master DEV ]\n"
- 		"            [ groups ] [ fdb ]\n"
- 		"BUCKET_SELECTOR := SELECTOR | [ nhid ID ]\n"
--		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ]\n"
-+		"NH := { blackhole | [ via ADDRESS ] [ dev DEV ] [ onlink ] [ fdb [ port PORT ] ]\n"
- 		"        [ encap ENCAPTYPE ENCAPHDR ] |\n"
- 		"        group GROUP [ fdb ] [ type TYPE [ TYPE_ARGS ] ] }\n"
- 		"GROUP := [ <id[,weight]>/<id[,weight]>/... ]\n"
-@@ -531,6 +531,8 @@ static int ipnh_parse_nhmsg(FILE *fp, const struct nhmsg *nhm, int len,
- 
- 	nhe->nh_blackhole = !!tb[NHA_BLACKHOLE];
- 	nhe->nh_fdb = !!tb[NHA_FDB];
-+	if (tb[NHA_FDB_PORT])
-+		nhe->nh_fdb_port = rta_getattr_be16(tb[NHA_FDB_PORT]);
- 
- 	nhe->nh_family = nhm->nh_family;
- 	nhe->nh_protocol = nhm->nh_protocol;
-@@ -595,6 +597,10 @@ static void __print_nexthop_entry(FILE *fp, const char *jsobj,
- 	if (nhe->nh_fdb)
- 		print_null(PRINT_ANY, "fdb", "fdb", NULL);
- 
-+	if (nhe->nh_fdb_port)
-+		print_uint(PRINT_ANY, "port", " port %u",
-+			   nhe->nh_fdb_port);
-+
- 	if ((show_details > 0 || show_stats) && nhe->nh_hw_stats_supported) {
- 		open_json_object("hw_stats");
- 		print_on_off(PRINT_ANY, "enabled", "hw_stats %s ",
-@@ -1112,6 +1118,14 @@ static int ipnh_modify(int cmd, unsigned int flags, int argc, char **argv)
- 				req.nhm.nh_family = AF_INET;
- 		} else if (!strcmp(*argv, "fdb")) {
- 			addattr_l(&req.n, sizeof(req), NHA_FDB, NULL, 0);
-+		} else if (!strcmp(*argv, "port")) {
-+			__u16 port;
-+
-+			NEXT_ARG();
-+			if (get_u16(&port, *argv, 0))
-+				invarg("\"port\" value is invalid\n", *argv);
-+			addattr16(&req.n, sizeof(req), NHA_FDB_PORT,
-+				  htons(port));
- 		} else if (!strcmp(*argv, "onlink")) {
- 			nh_flags |= RTNH_F_ONLINK;
- 		} else if (!strcmp(*argv, "group")) {
-diff --git a/ip/nh_common.h b/ip/nh_common.h
-index afbd16b..759c0c4 100644
---- a/ip/nh_common.h
-+++ b/ip/nh_common.h
-@@ -33,6 +33,7 @@ struct nh_entry {
- 
- 	bool			nh_blackhole;
- 	bool			nh_fdb;
-+	__u16			nh_fdb_port;
- 
- 	bool			nh_hw_stats_supported;
- 	bool			nh_hw_stats_enabled;
-
----
-base-commit: 35a237091c24858cac6c6679175bb6a628cbe400
-change-id: 20260722-b4-vxlan-fdb-port-iproute2-13165877ba46
-
-Best regards,
---  
-Jack Ma <jack4it@gmail.com>
-
+Thanks,
+Jack
