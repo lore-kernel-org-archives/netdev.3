@@ -1,82 +1,73 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3483E2AB6
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A3A351C27
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 04:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784693627; cv=none; b=XIqczeVwzXSQDvHv1kL5Re4PN6TAlMaMb2rg9mMu+xdddAJ1crqErq8YBjFxOvBKbsPT5vTUc5NrLCDhQxYruSVLJlL/sLeAuMfndhFPEXKrwDvebrOtj0YWKyOeSDk5Rl9/JPkubpJ04KWlJzkaIp5YsA/c+B3raIGrdUQwJu4=
+	t=1784693839; cv=none; b=GiVIBZljh2P7Mnf5tpRqWtZtXXGMqqNQKC4+8BrwqoBiZGbJDRM7XYNh5fc8BnmZ0llpOEPd9HeUH35XEIFSci0m77VTe8YbQ5f2cT/3GDEUHsExlk+QRkFXMP1ZUeEDz+b5jDz5RKi17X+kZ9FHAUSvJ/FgJeqfvwlvGpqJO98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784693627; c=relaxed/simple;
-	bh=5Rlfb7IRvyZACUul8AbTPsLZ7MmRN3ZjmLL+2cCwNFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kn+7SbV+KZ5RRez5J3YsCDcG70WnnXwK8E4+tMLVZZeLvFMUpTmYtQsYUXDcDWQXHKPrkTX8vr9YsW9YYZqrXqymNZK7zqRJn/M9LrY23aQjc9cLyGKZBmRi3bs9OhwLZiVE3pCqb90ruPLtFXg621QZ9qQivM2s1rJSKAPGhbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcKZCk1h; arc=none smtp.client-ip=209.85.128.179
+	s=arc-20240116; t=1784693839; c=relaxed/simple;
+	bh=XKcgQN1LwcPd7oBDnlN27f9Psf7Jl0a4T9D3l0TEfJI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mi5wPim3b9js/iEtOLNtKzieX/Cz/4w1VH1DkS1aboaHC5Kh6QrtTY+V/2+QTzz1pjRhXDEu5e5L/vUVe1Y2o9qiwSzstXOtNc8tdl3CcfMGd7IP/TPoMdj26NpiYlROyJ4a43YCe9jJQibtVWH7OAbLCstMLI8VkR+CLHmXmQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvDKQ5XT; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcKZCk1h"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-80c5cb9a888so100859257b3.3
-        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:13:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvDKQ5XT"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc73e322dbso143884225ad.1
+        for <netdev@vger.kernel.org>; Tue, 21 Jul 2026 21:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784693625; x=1785298425; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784693833; x=1785298633; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eDoqtaAb2RoFtg3L+fFmgGxjGOb//nGgM08klsidJzA=;
-        b=YcKZCk1hn1zXVP1UW/o/SIICTVOYCBa7YsiJUIuEXR3OCh9U8JpzOi+pCORrMY+gzo
-         wWAicts28VTewRs+J3JaRIffwiP4YgZZIY9PkuBqdQWXaOME3ABymY3qXhyqwvLjpeYZ
-         C9eG/V3yNYjz5PaJzYaqoVw5KO/dbJytGej0HgOBfaP+gES7yISnd8BOnHxNC6wUGhnd
-         /HM2nyk5LWj358nxd5+PHymCa+wo2iO5gvkTSHHBRTCgVLORqkQm/Ltxe/PXNsiunsbQ
-         vEQ5cxRGWZRVTKCrFLuS23fwTc8zFCGfj2Z2LLfbn8B8A1EXKMMLS/cHTp384sq5xYBe
-         iLAg==
+        bh=FnX5uAxhdj7zkkHTRkiZpGious/56DxOlSP5Pxob66I=;
+        b=DvDKQ5XT5tuMvjeE35+c/4fthXhiqLoN/nXLrUjKiKj5mAUq2D91aB5CoYF7oIugyY
+         xDUnO/iy7cedVQxX+RX+FdjcsvHl7WiDa+QIjRvgbZ28ZxMhAcK2G+xSLw7nQfEpcZQR
+         brguwWZqGpgNhWAWsgTtN2sJMsxlZDty4wHnZRd8cHiv5HNWV0cnd8ptR7ETvq4Sl4OY
+         KWJQvEOUNg/Kyz9SUt+xBxzfaMWU5CQps4RiOZHb0/23bmjQMmQO6Q4QpFWP27rqmO8w
+         UJa6cxJccP0a3+wa1siMPfW7OL0AtoQbBXg/H9taKBlxDPuFUPtWwj5F9/vFVtLNLffV
+         WFhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784693625; x=1785298425;
+        d=1e100.net; s=20251104; t=1784693833; x=1785298633;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eDoqtaAb2RoFtg3L+fFmgGxjGOb//nGgM08klsidJzA=;
-        b=hgYSOM3WuMt+0U3jyyJlJpHlUNfMo2aMesikAcivOvYD8h+IdCVa0+eywFuKldb46V
-         +g+p0swvwwc3MpxN6GgCzEoGo2EO9ANb9qkcWDUmemdxuZvxR1Yio+3Rw5TWp+wM6/NO
-         xo/QJXqVzCnh67HH3y4aAvC9Vzd623T2EI8+mY18HgyHcssd/9ETHinwrbIqk2t55Fb8
-         c8uGi18AXXLX5bAEZ3ftic+XjfgDElZIP6PmFerG6wa0x7Lv+TjUaqZ8mis6PKEoGEWt
-         y5anfv8uT3Tksm6/6c0LuVJ+1eL7V8yreFJO03uxmRCNovJXB3jPDSwND5Z3yGGSzsj0
-         FHOw==
-X-Forwarded-Encrypted: i=1; AHgh+RrJAsGrlK2iJceS+iqNB4WGdqtzf+ZREfWhnCmCUlcyfhzJUX4qvPyBtMsR9f8igNwo/YPpOu4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXqknU5m6tYSPrhworUEZGquZRo4+5yZ++PYJoMmwuBiwwyoZu
-	OaRn/B0GGCV399bm6jJn9FFI3aJdtQkIitOgLVFsp8D1Y962fj9arf54
-X-Gm-Gg: AR+sD13mKhKlKqdJQSbAhM77j467njzi2HN2rOAwAWUcZ/bgUmcwNpmCtr5563VFL5Y
-	qLGoTbRoimFxExcdj/38pDNK3HNCP0SV4syBg13SsqOwaBoVGPaOvV2wIVELYC6zBwyi8flvNGi
-	1+aFMP6+egC4BXHNy5zSjH33wKSiHYvT3k36QWK3wXisTuLKpJZh5JyCWlEWkbPtWsC4BqZckSz
-	Z9SOr+5F+dLjLSGSapuvxdSR4gsMmtPtoeXFw6G0L9PapPDw1GxvvZhQcdbqNHNMY4u0vvsH/h/
-	RIZLl/o+NZZ+SLxDuHvhqkzI6byS9eaBYQ2vmgxNGDF/xjstVMCmhYw0G+evce+rDeB1EyQVAod
-	RdRDEhgOTcYsA/5nRt/49GtM1V0eAWBNKWM5gQzmg3Jw/Yh7Q1MkADbhvdhQ/gklBYQXV7k7G1X
-	YVwTgFCJhBuF36mTMUn+MGi7kDSCwrcywQ2ASvJtGgJSct/YNH4RjtLXzxh0BwtYMZ4dQp3QtI8
-	GJCLyUbHbIbmw==
-X-Received: by 2002:a05:690c:9b01:b0:816:a321:5629 with SMTP id 00721157ae682-81ef287498dmr60481117b3.71.1784693624931;
-        Tue, 21 Jul 2026 21:13:44 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33c2df04sm7882287b3.12.2026.07.21.21.13.44
+        bh=FnX5uAxhdj7zkkHTRkiZpGious/56DxOlSP5Pxob66I=;
+        b=murGYZdyDPMaGimchdw0dijCkvN06dwu6bAGBMSjL2I2nHSdoV78B57+ytlvZzLsNl
+         xzQRGU4kar+cNnBtj0FVKgTUBGCVGfh2kuqd00UhApswch5KiXECgLD9tD4zrgnlMaLc
+         NvT57pUjtk+ai9PBoBD06++1l5uE9tFx3a78RnUKdJ44lHBisEqMfd6P9nW1HA1tyPip
+         lL+18RwJFA0EC2+jliq5H2mpeNsMg3sAM7+HyMTrqRLuI3H2P3r4r8Cy7y+J6FX7OlH4
+         uW7nP7/5rP9Chvxf/6JOhtTEh0eDWYshBD2daT06JXFpdKi15vCoNmHpo+wmseMh1iqM
+         NNLw==
+X-Gm-Message-State: AOJu0YwURFRMXf14Z6SwjbiIibyubcjcXaUqeeYQ5KxxA1nsz7qG43QQ
+	5TkpLyYl3SRhW7GW1lVGZEGQngJL6ifwG7idG5aH9BHRQikFdEp0FTReGGy+fhnfCcg=
+X-Gm-Gg: AR+sD12XbluH0yt1OqtoAx4wce0cyla/scLZpaWxaHiXmvLr4XYFI+2KenEPXCAGeSK
+	o8GGZOHXE4oCeM4mUkORL71DkuV7jg9S892W8+4WLn3H0uN8bThT1KWwYuVBAPo3wgIgWwaLVRa
+	ZmqvGymMCqAjOGg7aDUTE2cIZLC7TuvTP2DLEeNgFYMZpSRDahoTUItemCI/4A7QfwZxf+ZYAlN
+	DFy88WwbyORIBwAO1nUlpdxpqyK7jC8jZhqlXmJo//5XCfaLdIYjsDtBjjhyFhOOZYyFQZ595mn
+	8Y9oDuqIm9gCaftCqbONJA1vd7WaUhQLG3fSJHHk8AWd3ZiAC0t33JoZNCFgwu3vw2/vByGq2Qx
+	f73bGYJIvwXBQFBpoOT3JPflCnEsgyOOzmlNJ4Bp0QDiALXsWuVXr3AlH3aDJfebmt/MADt3RrT
+	9Dj93Q4SyW8FvlaK2+NnZP
+X-Received: by 2002:a17:902:ce84:b0:2ca:6c8:abde with SMTP id d9443c01a7336-2cf348b2527mr225232625ad.18.1784693832780;
+        Tue, 21 Jul 2026 21:17:12 -0700 (PDT)
+Received: from localhost.localdomain ([122.187.83.42])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147dc1a689sm4342950eec.4.2026.07.21.21.17.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 21:13:44 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	davem@davemloft.net,
+        Tue, 21 Jul 2026 21:17:12 -0700 (PDT)
+From: Aravind Krishna <aravindkrishhna@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	pabeni@redhat.com,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: sdf@fomichev.me,
 	horms@kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
+	davem@davemloft.net,
 	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net v2] xsk: reject undersized tx_metadata at runtime validation
-Date: Wed, 22 Jul 2026 00:13:26 -0400
-Message-ID: <20260722041326.75199-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Aravind Krishna <aravindkrishhna@gmail.com>
+Subject: [PATCH] hsr: prp: honor master promisc mode for local delivery with macvlan
+Date: Wed, 22 Jul 2026 09:46:29 +0530
+Message-Id: <20260722041629.657330-1-aravindkrishhna@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,102 +76,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There is no metadata length check before accessing struct xsk_tx_metadata
-fields in both xdp_umem_reg() (registration) and
-xsk_buff_valid_tx_metadata() (runtime).  Thus, an invalid small
-tx_metadata_len (e.g. 8 bytes) passes registration and later causes an
-out-of-bounds read when xsk_skb_metadata() accesses fields beyond the
-declared metadata region.
+When running MACVLAN over PRP, packets can be expected to be delivered
+to the local stack when the PRP/HSR master is in promiscuous mode.
 
-KASAN reports this as:
+Update local destination handling in check_local_dest() so that if the
+master device exists and has IFF_PROMISC set, the packet is marked
+PACKET_HOST and treated as local destination.
 
-  BUG: KASAN: vmalloc-out-of-bounds in xsk_skb_metadata+0x4b2/0x500
-  Read of size 8 at addr ffffc90000f11000 by task exploit/148
+This enables expected receive behavior for MACVLAN over PRP setups.
 
-  xsk_skb_metadata (net/xdp/xsk.c:837)
-  xsk_build_skb (net/xdp/xsk.c)
-  __xsk_generic_xmit (net/xdp/xsk.c)
-  xsk_sendmsg (net/xdp/xsk.c)
-
-Fixing at registration time would break backward compatibility with older
-userspace applications, so apply a runtime length check in
-xsk_buff_valid_tx_metadata() that validates tx_metadata_len against the
-fields required by the enabled flags.
-
-Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Link: https://lore.kernel.org/all/20260720155210.34229-1-blbllhy@gmail.com/
-Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Signed-off-by: Aravind-kris <aravindkrishhna@gmail.com>
 ---
-V2:
- - Change to runtime per-flag length check as suggested by Stanislav.
+ net/hsr/hsr_forward.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
- include/net/xdp_sock_drv.h | 22 ++++++++++++++++++----
- net/xdp/xsk.c              |  2 +-
- 2 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 46797645a0c2..5c54c7462c45 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -260,9 +260,22 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	0)
- 
- static inline bool
--xsk_buff_valid_tx_metadata(const struct xsk_tx_metadata *meta)
-+xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
-+			   const struct xsk_tx_metadata *meta)
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 0774981a65c1..38ed6b09fc4a 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -589,6 +589,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
+ static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
+ 			     struct hsr_frame_info *frame)
  {
--	return !(meta->flags & ~XDP_TXMD_FLAGS_VALID);
-+	/* covers flags, XDP_TXMD_FLAGS_CHECKSUM & XDP_TXMD_FLAGS_TIMESTAMP */
-+	if (unlikely(pool->tx_metadata_len < 16))
-+		return false;
++	struct hsr_port *master;
 +
-+	if (unlikely(meta->flags & ~XDP_TXMD_FLAGS_VALID))
-+		return false;
+ 	if (hsr_addr_is_self(hsr, eth_hdr(skb)->h_dest)) {
+ 		frame->is_local_exclusive = true;
+ 		skb->pkt_type = PACKET_HOST;
+@@ -600,8 +602,24 @@ static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
+ 	    skb->pkt_type == PACKET_MULTICAST ||
+ 	    skb->pkt_type == PACKET_BROADCAST) {
+ 		frame->is_local_dest = true;
+-	} else {
+-		frame->is_local_dest = false;
++	}
++	else
++	{
++		master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
 +
-+	if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
-+		if (unlikely(pool->tx_metadata_len <
-+			     offsetofend(struct xsk_tx_metadata, request.launch_time)))
-+			return false;
-+
-+	return true;
++		if (!master || !master->dev)
++		{
++        		frame->is_local_dest = false;
++		}
++		else if (master->dev->flags & IFF_PROMISC)
++		{
++        		skb->pkt_type = PACKET_HOST;
++        		frame->is_local_dest = true;
++		}
++		else
++		{
++			frame->is_local_dest = false;
++		}
+ 	}
  }
  
- static inline struct xsk_tx_metadata *
-@@ -274,7 +287,7 @@ __xsk_buff_get_metadata(const struct xsk_buff_pool *pool, void *data)
- 		return NULL;
- 
- 	meta = data - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
-+	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
- 		return NULL; /* no way to signal the error to the user */
- 
- 	return meta;
-@@ -469,7 +482,8 @@ xsk_buff_raw_get_ctx(const struct xsk_buff_pool *pool, u64 addr)
- 	return (struct xdp_desc_ctx){ };
- }
- 
--static inline bool xsk_buff_valid_tx_metadata(struct xsk_tx_metadata *meta)
-+static inline bool xsk_buff_valid_tx_metadata(const struct xsk_buff_pool *pool,
-+					      struct xsk_tx_metadata *meta)
- {
- 	return false;
- }
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index b970f30ea9b9..75b2c97e41e4 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -809,7 +809,7 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 		return -EINVAL;
- 
- 	meta = buffer - pool->tx_metadata_len;
--	if (unlikely(!xsk_buff_valid_tx_metadata(meta)))
-+	if (unlikely(!xsk_buff_valid_tx_metadata(pool, meta)))
- 		return -EINVAL;
- 
- 	if (meta->flags & XDP_TXMD_FLAGS_CHECKSUM) {
 -- 
-2.53.0
+2.34.1
 
