@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C224399EC;
-	Wed, 22 Jul 2026 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2994399FE;
+	Wed, 22 Jul 2026 18:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784743851; cv=none; b=H8uY39MYqBn4AP4KWbxbWjlHt5oYpAHm3u0kuh8r9Ye8xPsJOHAJADUHdBSQsap6oeOd++FpOJT9Gzbvn3PkXowSbWt8YRufmSrT+/QTl798tjdNjGy8OQtaHb+5yJDVnta/CXrGmwlOY2XyHYNK4+cjs0JDYej+LkZX9bnBP9k=
+	t=1784743851; cv=none; b=EgecEIMalep8ikg6OJRydWGGEMPP4QEdCK09h4Kqk1PEo7r8R15jflksyb7NqsvquYV7tflx1opNg5ojVxrWpyrSttE+GSqi/lujJURrp9ePSzy8pt7xfXwZjWMUHEwpKUWILPvS2zy9u5jLtIjcXtpLRmBa5M4If9bvLthTwhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784743851; c=relaxed/simple;
-	bh=UxqbpF4Sw/731SzGa6mp3YbLHSt/qsWz1Ll+hinJsUQ=;
+	bh=T7jpaxdaXft/l/GEEgAyQ/HgTv4ytAHEZ6kNb6mC76s=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RFCFydDDgEgdbXtPEHagAVXHZcYgPc/KLf595zH4wWYS55gp3RIMI8KFaKi3C/7bu0iHSJCvPVkJKDYXFQ+AuZNWNrh/vy5BsNdkk48unjjkUVb914zU1P+Ctzt9Znp7tjyCluSboJgW/2+F7AAcE8D6gUQQfpHAuwCNOaGxOFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ka5C5sjd; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=rYeayXVgFr7CiRPMOBYNA7J5WXzfeGY49IXkLHLy0O75c9yZXMIm2n/u0zxFAkpy41GwxEY/hwFCsUQHn/H4neQ9VEwFhPzB6ypZ3+113DiAoHpIxl8deHcfdjG73WuDMnOJ4hTatUK4NHa8vJa3gTY0UmpL5Ei6sdL5f9ok07o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfXfJucj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ka5C5sjd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDFF1F00A3A;
-	Wed, 22 Jul 2026 18:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfXfJucj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B881F000E9;
+	Wed, 22 Jul 2026 18:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784743848;
-	bh=eOs5HWI9a+XXBnh4WHZwGc/BCX5Km6Rs5/Ajch2DzeE=;
+	s=k20260515; t=1784743850;
+	bh=AUJm0nyFPLHXAKLdamD46tE620hs68Hsh0E9wkian00=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ka5C5sjdN3dQ9gS1DtPaL2oY1yIvx1CfrKGswc8Xe6kJrEgXPd5C70rsZdrpcVEBP
-	 pugB4acu8lUHiMShprRbttSVBfgZD3F2+mlmySD3HcVVKnX/Vps0YdRiuyCMM0RKjI
-	 0+rmxISI7QFDrEw7pnnNW2wNYHiE1WczUEYEnmHFzQEKDGBEqygaywir23ILDwcZSp
-	 Fy9hLGZTBCxSQkrft692XPWW/jnl3leHBK4wSQkODBqGwaw4drXVyWmzeRHYoSUiTL
-	 ghDdIzBg5UfJ9TAoGejiuniBK6H+6bj/Ou25jhucKOKjfDus+PEBOW2btZJoKE0SPQ
-	 jDBfCNrvXgPvw==
+	b=bfXfJucjmwpS079WadrAxFRWILWP6D6P/5jHjNJ7cNA23cTXbWFh66vXE8lUNCV2Q
+	 lksHvTYXAW83AmJL7roXcxcPpUbfKe46TKb70M9DoToJKEAJ6PbZltPm8LdJqVpU1S
+	 cnBEDPkoiBgrBsumZnnMxr9fF/PRZyadHrssdtG25akrDn59X1e33yIvZO5OheGKK+
+	 jGuVanTSjoeQTBUe4ZBHs1IdsUAm5pr9gP18UKaGcyHOHBU/FqusIzDbeLwwY+a3S/
+	 3fTAwQytJs3iftLZG87h9latY+Eer+e1W8oXX0lP8npSePUM00ji7v22livO3mQ+6u
+	 pc/CNW1/UDFRg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9395B380CECD;
-	Wed, 22 Jul 2026 18:10:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198E1380CECD;
+	Wed, 22 Jul 2026 18:10:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2026-07-21
+Subject: Re: [PATCH net 0/2] net: bridge: fix vlan range dumps starting with a
+ PVID
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178474381713.1967992.9082410954194468399.git-patchwork-notify@kernel.org>
-Date: Wed, 22 Jul 2026 18:10:17 +0000
-References: <20260721160240.884274-1-luiz.dentz@gmail.com>
-In-Reply-To: <20260721160240.884274-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+ <178474381863.1967992.14565089382183026274.git-patchwork-notify@kernel.org>
+Date: Wed, 22 Jul 2026 18:10:18 +0000
+References: <20260721140922.682265-1-razor@blackwall.org>
+In-Reply-To: <20260721140922.682265-1-razor@blackwall.org>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 21 Jul 2026 12:02:40 -0400 you wrote:
-> The following changes since commit e13caf1c26587434f0b768193100440939c0fb91:
+On Tue, 21 Jul 2026 17:09:20 +0300 you wrote:
+> Hi,
+> Patch 01 fixes a bug that can skip dumping VLANs which a part of a range
+> starting with a PVID VLAN and share the same flags. PVID VLAN should be
+> always on its own. Patch 02 adds a selftest for this case. More information
+> can be found in the respective patches.
 > 
->   Merge tag 'net-7.2-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-17 10:25:13 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-07-21
+> Thanks,
+>  Nik
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] bluetooth 2026-07-21
-    https://git.kernel.org/netdev/net/c/9a67bbfe48ee
+  - [net,1/2] net: bridge: vlan: fix vlan range dumps starting with pvid
+    https://git.kernel.org/netdev/net/c/43171c97e471
+  - [net,2/2] selftests: net: bridge: test ranges with PVID VLAN
+    https://git.kernel.org/netdev/net/c/679eb1e32d2c
 
 You are awesome, thank you!
 -- 
