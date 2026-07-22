@@ -1,67 +1,32 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A805471270
-	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A904A470106
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 07:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784705740; cv=none; b=EsSQj7+gLFdsmPmQJpc7ZzKW6kAo2NgokqS6UEAlnmaRIPl0xgw2CnMJ2HBHUnXzQ8LVuYvsOqjxLN6IK+jjb6TkCJ/a9VRhSeI8BO2VuQM5hZtKk0zcxKAD29cRSbv9MnHGOI+6Ov+lfkyGP0kldZiZ/0SoNCnjkvss3vvU3Sk=
+	t=1784705876; cv=none; b=idb2j7AclAsnamclvyqzkVz+mDWRAjsPqtIa5h1yP4duVvZ2p3Rg/6PW6wAtK+DB56uDUYlklCLB61dt3+zZrbQM/aJh4KaX833lsJIKhqB87ufVqJVPE+U2NF+3NJGd6nOdgmYbFrFlE4WRKuJuB8muBWzdD6KAKNr9TM8pWIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784705740; c=relaxed/simple;
-	bh=NzaLpCbVr+WpUWdGU1r/uprVlE+cNyid29E0Cpbjtb8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WI2u9/FlzP88ZWz5QOurjj5jeAvRZiuOG4vFE80QZoKk51kS9CjTiFmKUvp6ChBpd3zlpb7hvlCYMSf+APMDyalMeuuMVdkyBIzbL+0K4A1zwMdG5VVJcdl9bO9YmLZHpw4ndJQSrON6V1ac4vrgb/hdRGgzSVTe3XDpRFW58LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZmsPsDN; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784705876; c=relaxed/simple;
+	bh=dlrz+Z9u90xfxHvOqJSUYMwYB8pU1c6ILctpKrvGjUs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=buAJGDb1HQUHqusija+1qd8ytOf/v6FMIowpe4JHckLYn+KE1fnyk2sQNa8zBy1R92I7TQIj/+LdxCZh7eeirLYKu4MB7qAdstHMs7/wc3SnxSwOHs0maTv3I01d/VklrP5nIkvzTUtQL/7MUrsN3VjNwDK6ONuYy1mK1s+KA7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QgJ/zlKH; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZmsPsDN"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8143daf89c7so83854007b3.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 00:35:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784705734; x=1785310534; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MjAn08LMgZdcLrgugv1HWMEjLz40TQ45oEq4cOcP7cI=;
-        b=aZmsPsDNAskn3ahL+L0BwXkDZRKqkWlm79C11d4WJ07/CdImoW6MWqgPkcTGL6QjHC
-         oSJ5SucmgB2WpQHaXtGTTwoMa6F5YwwBS1Cu2hHWUTt4DK5FDNbq6B9N6ObtLm1dPRnS
-         3eXgtM323CDNBUjHquaZsf8sTcvex3jnK6PXjmBWvik/JD4PPSDbP2K79+Mz15Bz2WDD
-         rAzX7TzspfuFpj0+iD4jbNjcvJi3vadQc4s+urrGOYRQ1+qwrUrjmMXMb1mZZICvEC9v
-         0f6KFX38AY0omXrQncfCS7jrG8s1UJk/mmUpdmS6NlmbTtC8S5bwl+i8buJHjGZD7vuF
-         ypow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784705734; x=1785310534;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MjAn08LMgZdcLrgugv1HWMEjLz40TQ45oEq4cOcP7cI=;
-        b=D3DhTH/MlX6RYmXmR8rpA4mI1mMr2U8xF2owMRVBiFbCv/GiB6sZpKbtezHifR1vpJ
-         FehzPqxHvU3pznRHhy+0jmQ6BKQJoXRf/Ixc3CzwWG7bOoKcZiBw+gvE18/x9SehH5Cl
-         cnzxcPaVkg/EBupuRBGwthHv5A7ntYiGWE2fTDTNfklLQcHhg+jkV188Vh0Dbcd/r6zE
-         M6IO+A7EZY8T5302JIeqnqSPJ9xgVslQ//Nr4CruJzuTglT/VrLSfUmAWes0lUhIl+9T
-         o38BecNeqMQQHmqrlDPHziSCoHXwNn/WLOGa2b0td130cEGdF3Ckpfaf6zAxoUNMmTKk
-         286g==
-X-Forwarded-Encrypted: i=1; AHgh+RodgeRm/nEmMnwdBkgbHJKs9qgU/gXxydFb0KPp8ZhSSOt+TiYcgZVPXecisUwYwhwncWDGnGw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCeeFxsLpvWzd2OQ2an3O+t4IluHIksFPYiMJF/EbwHWGHVeRu
-	/002Tg8I32SAM1vA58SJl2gxRMs28v6xjjNkNb4HRFCFH/cvKmuvh+J7
-X-Gm-Gg: AR+sD104h4LB5aS9Gip49igpF33moxgWGA4ACHS4RmvlFui6OqTTViLuYydQGUzLeLw
-	i999dCbRpdooDkRDuX0JLqRa5k1rVLydrlTbBwPfjGX7kFrMYsboUJJv2NSArBmjr+sITKn9QNN
-	FSwU1loRPQo8OmI5Js+LaESIxuQDLb+NbJAlSo8y8MkRSROPeLCrRTA7EDNGtSWdUXSJwN/AvdP
-	/zAtpZFMdMYKD16aYeCgxQSKLeFx5Na3hRLFHf4SaR6N6pr0uUxflyNm8UM1KIjM+O0u3HzrUpn
-	Yyl6tdRaXa90WVWyU0xEwPjyaJkWC0LRrE6X5USTEjKviCyZHZszyqXGl64FU2IO/FJsLvcnyr0
-	72ube5UlFI7z2/CTSGiMbQKt2HLN2OgKx/2cvYacu6bkMCWl2w3DqtAgJlBrHNfOlBAj32OTjyZ
-	XWIWR6gd5wHs4bthaoNJbN
-X-Received: by 2002:a05:690c:7408:b0:81e:a471:e893 with SMTP id 00721157ae682-81ef23f6d0fmr69358347b3.24.1784705734677;
-        Wed, 22 Jul 2026 00:35:34 -0700 (PDT)
-Received: from [141.223.124.60] ([141.223.124.60])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33bf2df0sm9706647b3.6.2026.07.22.00.35.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 00:35:33 -0700 (PDT)
-Message-ID: <f9c6bf99-28df-498e-99d2-efd7d2b303c2@gmail.com>
-Date: Wed, 22 Jul 2026 16:35:29 +0900
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QgJ/zlKH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:To:
+	Content-Type; bh=/MCglywllKbwduRxD/1kZ34U7Dm60ws86ArABKfGdAE=;
+	b=QgJ/zlKHaD1u9Im2CezyaBtqWQ1ISdKUops15S3h1SYzv+TvnS44Sw/qPdzuEp
+	DQQIN7Pfs7SxKiEyIQcGsncti+rb2KhitGqAjse8D31XxEpbkMBT8f1a/oYA4HD9
+	PxUFqxhlilhJ0VLm20I+xs7ic5YXNEsNN0AFh6H6ZjyKA=
+Received: from [172.21.20.151] (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3ovAec2BqYlO8Jg--.118S2;
+	Wed, 22 Jul 2026 15:37:06 +0800 (CST)
+Message-ID: <43379065-5916-42a7-8ecc-4b875ea53d22@163.com>
+Date: Wed, 22 Jul 2026 15:37:02 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,31 +34,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] nfc: llcp: race between nfc_llcp_send_ui_frame() and
- llcp_sock_bind() dereferences NULL sock->dev
-To: David Heidelberg <david@ixit.cz>
-Cc: krzk@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <a89d0419-8bcf-40a2-b52d-3e5d911f11da@gmail.com>
- <93f2ff92-a7d6-4521-9273-2e84fa37337d@ixit.cz>
+Subject: Re: [PATCH 01/13] 8139cp: fix DMA mapping unwind on TX frag map
+ failure
+From: luyun <luyun_611@163.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org
+References: <20260717103724.13971-1-luyun_611@163.com>
+ <20260717103724.13971-2-luyun_611@163.com>
 Content-Language: en-US
-From: Junwoong Doh <jdoh.kernel@gmail.com>
-In-Reply-To: <93f2ff92-a7d6-4521-9273-2e84fa37337d@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260717103724.13971-2-luyun_611@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3ovAec2BqYlO8Jg--.118S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGr1xZrW5Zr4fuw48CF17Wrg_yoW5AryDpa
+	1Yya4YkFs5Xr1qv3WxJay2qr45Z3Wrt34Y9FyrC3s5ursxZF1SqFWxWFy5ArWDGFW8WFWx
+	trs0yFyfCF15trDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRhIDxUUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC6wKXZmpgcyITWgAA3K
 
-On 7/19/26 23:24, David Heidelberg wrote:
-> 
-> Hello Junwoong,
-> 
-> thank you for the report. Would you be willing to try preparing a patch against
-> the NFC for-next or for-linus tree to fix the issue?
+Hi,
 
-Yes, I'd be happy to.
-Since this is a bug that's already in mainline, I'll base the patch on for-linus.
-I'll send it by the end of the week.
+A gentle ping for this series, the number of patches is 2, not 13. I made a mistake
+when generating the patches. Please ignore it.
+
+Any comments or reviews would be greatly appreciated.
 
 Thanks,
-Junwoong
+Yun
+
+在 2026/7/17 18:37, Yun Lu 写道:
+> From: Yun Lu <luyun@kylinos.cn>
+>
+> When dma_map_single() fails for one of the TX fragments in
+> cp_start_xmit(), unwind_tx_frag_mapping() is supposed to drop the
+> DMA mappings that have been established so far. The current code
+> gets this wrong in three ways:
+>
+> - it unmaps the DMA address read from the descriptor of the head
+>    slot, but the head descriptor is only written after the fragment
+>    loop, so a stale address of a previously completed (and already
+>    unmapped) packet gets unmapped again;
+> - the unmap sizes are off by one slot: slot first_entry + 1 + k
+>    holds frags[k], but is unmapped with the size of frags[k + 1];
+> - the head buffer mapping (first_mapping) is never unmapped at all,
+>    leaking one DMA mapping on every failure.
+>
+> Pass the head mapping and its length to the unwind helper, unmap it
+> explicitly, and unmap the successfully mapped fragments with their
+> matching sizes.
+>
+> Fixes: cf3c4c03060b ("8139cp: Add dma_mapping_error checking")
+> Signed-off-by: Yun Lu <luyun@kylinos.cn>
+> ---
+>   drivers/net/ethernet/realtek/8139cp.c | 23 ++++++++++++++++++-----
+>   1 file changed, 18 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
+> index 5652da8a178c..03929bb0bd79 100644
+> --- a/drivers/net/ethernet/realtek/8139cp.c
+> +++ b/drivers/net/ethernet/realtek/8139cp.c
+> @@ -713,13 +713,24 @@ static inline u32 cp_tx_vlan_tag(struct sk_buff *skb)
+>   }
+>   
+>   static void unwind_tx_frag_mapping(struct cp_private *cp, struct sk_buff *skb,
+> +				   dma_addr_t first_mapping, u32 first_len,
+>   				   int first, int entry_last)
+>   {
+>   	int frag, index;
+> -	struct cp_desc *txd;
+> -	skb_frag_t *this_frag;
+> -	for (frag = 0; frag+first < entry_last; frag++) {
+> -		index = first+frag;
+> +
+> +	/* The head mapping was never written to the ring, unmap it
+> +	 * using the saved address.
+> +	 */
+> +	dma_unmap_single(&cp->pdev->dev, first_mapping, first_len,
+> +			 DMA_TO_DEVICE);
+> +	cp->tx_skb[first] = NULL;
+> +
+> +	/* Unmap the frags that were successfully mapped. */
+> +	for (frag = 0; first + 1 + frag < entry_last; frag++) {
+> +		struct cp_desc *txd;
+> +		skb_frag_t *this_frag;
+> +
+> +		index = first + 1 + frag;
+>   		cp->tx_skb[index] = NULL;
+>   		txd = &cp->tx_ring[index];
+>   		this_frag = &skb_shinfo(skb)->frags[frag];
+> @@ -828,7 +839,9 @@ static netdev_tx_t cp_start_xmit (struct sk_buff *skb,
+>   						 skb_frag_address(this_frag),
+>   						 len, DMA_TO_DEVICE);
+>   			if (dma_mapping_error(&cp->pdev->dev, mapping)) {
+> -				unwind_tx_frag_mapping(cp, skb, first_entry, entry);
+> +				unwind_tx_frag_mapping(cp, skb, first_mapping,
+> +						       first_len, first_entry,
+> +						       entry);
+>   				goto out_dma_error;
+>   			}
+>   
+
