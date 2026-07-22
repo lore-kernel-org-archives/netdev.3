@@ -1,151 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7594E257824;
-	Wed, 22 Jul 2026 13:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E10430ACF1
+	for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 13:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784726315; cv=none; b=IM3yA/wkxa42eEBVUOAXfbIyRMaSROIXRlMNGuPmr5awKw1mdOVCLBUJu/AFNMW6UgilApuRa74e/V6fs8l7sNCZAcq1IEVLHsUyu1Vf9qGzFbvRd9aT7DWjHCvS/h2kdsxUjsv0zGY2EVS67YDHOwJaBfjbWiLCmlKgHE7xtgs=
+	t=1784726400; cv=none; b=imafiWIgG5wXE6jVmuehUEMJqEhqZy7r2dopRoyiGVcD8rdNYlfIwcpTCK6nPDrL83w6CiOVIpdKJi2WPnNj5y+nAWKkkvymMOentdkZXV50V7EFCMCE1/LA3e6ynbfSKovh2bSr1xHbiKJtq4K5SPWu3t1dRH7uxSv9PZcX2Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784726315; c=relaxed/simple;
-	bh=+EdcaJeky4HNlvH4RO2kxLsdC4osjNnk5t08G+Jtozo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQ3l6+6plJvTusm/CtovyislApCkKcQk5JPP1/hxIX189t+DJQlqaKb8yI49JEjssB+eQ/giy9IUVI+sTjsPFyh8aiubp0yZupVcPc9axod1qdp1ituWHl9nOsaRDU56+36d3EEotBLMjlLgfAGXVjelEq5Sa42BNPDcB0sTY7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tx0vAGNN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784726400; c=relaxed/simple;
+	bh=BqjtnbOXG4Fh7SFEObLdm4QiDsMOAdXbHDJBsl4pjd0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SmAE2GI+BIiem5ePA62fo41DWAv9egEz9eorF2Yuh4KUCW4/wF6+CZ5psi2FGgjPz/UrG2cYh2rsKwuzY0UKakbmFi/TPvaj6rpyNqqBfg5MYX1SXTOKqSu1Ezc8wQSBeXwGRfd4QZxoSsKacEkU0tduHmbYhhw42l3kJ9ETams=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQI/c251; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tx0vAGNN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+fuaOn5vTE7tEsgI1xMomla5QtJBugWlNkzCkhVMHi0=; b=tx0vAGNN+gn8r+R0Qkl8XU+3mR
-	VnEL9rRfrIgO4/YFv133ooz0V80mKkh8qGepayZKTV3YeLME/rbC9e7mZQLdGKKOO7kZpLMWn3srK
-	2yuAqOWsBkyVqZaR5yTQvsBekvqwB+IO0GUnW6E4UqbOWkco48+aBm8QrND4UUE5tI80=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wmWq1-00DdNK-6x; Wed, 22 Jul 2026 15:18:17 +0200
-Date: Wed, 22 Jul 2026 15:18:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
-References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
- <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
- <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQI/c251"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso8338624a12.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 06:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784726398; x=1785331198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YkleSo/mHT7B7/DelUTKo1SDFA3O4GZirFnblobGSyk=;
+        b=TQI/c251tn0BVfrClJ8asm5qWDTE4YfgtA+VeR5TC92UsapdSmHoxjHxXwgLoqNtAm
+         Jk/y2s210YqOhfv3t2DrvQ+4QhwRdrcIkROC1r+05TnYLDmKFzDwXpy4f5CkV7QvUsGa
+         tIdnOyIxLMfBUscdA0grM2+RdExYFnvjyFnnnl8rB3STnMG3Q232SFu5mQlpxFjVq1Wf
+         virjuvcigRzFIozNlJJFZqIIQ6L1nevB1CaGSXp3WWhFIWT3Hul+I0SJuUOrtkAWPElo
+         Ncj107c0yvyryRV0CL4Np0W37uVE2KBbu2nZHUy6ukMqpieEu1sHnganQCHNbCO2mCEn
+         FWZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784726398; x=1785331198;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YkleSo/mHT7B7/DelUTKo1SDFA3O4GZirFnblobGSyk=;
+        b=LKa3PSu3nZc4+qm9Ibge1mkMOZKrG7jImiIipYRqWlnPEv4+PWQGhmJgdqvIcATDU8
+         Y2snbIYTiA3UibGAFzURv6qoyrxFsy8YtI9KMgfB2EBFLxBL3ktQTp3AVTYFKH7ELQXh
+         6oUlxYi80jKJj0m1bw1DnbZtPcXDg0k5VUadK6Sxt1YbPX0cUTmL5Z0ETMuaT5vfL7dW
+         uvI8LQc072fVVaZSwv8gXG3W8F873q2I5cStbiUl11z0XbAaulQyerS8LprPVIxfdwBp
+         RAS2QxVsuFFYNaSSDbwUkeA+Rmyv7d8ygN6FmjAjVXu4WqkK0rvkyz7rRJdYQYO6mVZD
+         4Qmw==
+X-Gm-Message-State: AOJu0Yya7tS46p6MfcG5ice+2XovrDfsYj++B0uizmNEkyXD5fswnkU2
+	NzlYaCKKoWKNqXuqfgF6A0v50EqWkXgFjpat4y8jdPQCRwanKm0VihRkn6D4pZDC
+X-Gm-Gg: AR+sD10xtWQzoh790HhmJsEPkkGfXcCkeqGY3uR+JYgE960eP9LZFkWz7c3unAIPEFJ
+	woXTxecJtJ/bsjxyWz0bfhxeHBqey0KVVTDlnybMsZ1oe281gdF8TartifpCAz0xFtoxlH+jm7C
+	7xbxae2ql+R0DZg4hYl26kMoTpDycp2J7o2DB6k+0AOvvlJBRjfYzvwJq+xdn2wSYLkLG6qgkj9
+	8DDkjlo+xNdht15fj5DXyXr5cv0U/3wn/SKY6s2f7+/IPt9VVEjRp0hiCTdsoPskcS+6CskJJyc
+	dPvVHjz3TjQfpLdYWZmb9TTyGl922oZbOYk3rQKW+UGDiqfdH7RS58lEcO2loDwlqQL4aQOeb3j
+	13pKPaIlTJMZC6kA1l2AZegGUhByj0lMe/lMGBIOXR0Jjpt6zniT1t2Opj+rzEMECUtUd9vc023
+	OH
+X-Received: by 2002:a05:6a21:6110:b0:3c3:a140:938a with SMTP id adf61e73a8af0-3c3ad947db0mr26030102637.45.1784726397859;
+        Wed, 22 Jul 2026 06:19:57 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f18ba96sm1112292a12.17.2026.07.22.06.19.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 06:19:57 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net] net: stmmac: Skip PHY attach if custom PCS is in use
+Date: Wed, 22 Jul 2026 21:19:18 +0800
+Message-Id: <20260722131918.685761-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 22, 2026 at 04:06:31PM +0800, Kyle Switch wrote:
-> 
-> 
-> On 7/21/26 22:18, Andrew Lunn wrote:
-> > Just checking something here....
-> > 
-> >> +/**
-> >> + * ytphy_write_top_ext() - write a PHY's top extended register for YT8824
-> >> + * @phydev: a pointer to a &struct phy_device
-> >> + * @regnum: register number to write
-> >> + * @val: register val to write
-> >> + *
-> >> + * Returns: the value of regnum reg or negative error code
-> >> + */
-> >> +static int ytphy_write_top_ext(struct phy_device *phydev, u16 regnum,
-> >> +			       u16 val)
-> >> +{
-> >> +	int ret;
-> >> +
-> >> +	lockdep_assert_held(&phydev->mdio.bus->mdio_lock);
-> >> +	ret = __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, regnum);
-> >> +	if (ret < 0)
-> >> +		return ret;
-> >> +
-> >> +	return __phy_package_write(phydev, 0, YTPHY_PAGE_DATA, val);
-> > 
-> > The _top_ registers are in a different MDIO address, and are shared by
-> > all PHYs within one package. Correct?
-> 
-> Ans: yes, the understanding is correct. The top registers is shared by
->      all PHYs.
-> 
-> > 
-> >> +static int yt8824_write_page(struct phy_device *phydev, int page)
-> >> +{
-> >> +	int old_page;
-> >> +	u16 data;
-> >> +
-> >> +	old_page = ytphy_read_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG);
-> >> +	data = old_page & (~YT8824_RSSR_SPACE_MASK);
-> >> +	data |= page;
-> >> +
-> >> +	return ytphy_write_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG, data);
-> > 
-> > The page register is in a top register. So when accessing a paged
-> > register, all other PHYs also get swapped to that page. And so it is
-> > necessary to block all other PHYs from accessing registers, until the
-> > paged access if completed?
-> > 
-> > If i have that right, that is an odd hardware design. Since this is an
-> > odd design, it deserves to be documented. Locking is hard, and it is
-> > made harder by not having good documentation about the design of the
-> > locking scheme. 
-> 
-> Ans: Yes, the current operation involves locking at the beginning of the phy8824 driver
->      ops and unlocking at the end of the ops function, that is why so many __function 
->      involved in this driver, but there are also some special cases that need to be reconsidered 
->      such as using  phy_read_poll_timeout().Can you give me some suggestions on the lock scheme?
+When a platform provides a custom PCS via the pcs_init callback
+(e.g., for USXGMII with in-band autoneg), the MAC's phylink_pcs
+is already configured. In this case, phylink validates against
+the PCS's supported interfaces and manages link state through
+the PCS, so no traditional PHY device is needed.
 
-So, that is a really bad design. As a software engineer you should go
-talk to your hardware engineers and tell them what is wrong with this
-design. Hopefully they will then fix it for the next generation, move
-the page register into the PHYs own address space, a page register per
-PHY so removing this locking.
+Without this, stmmac_init_phy() falls through to the
+no-phy-node path and errors out with "no phy found" when
+the DT has no phy-handle for such interfaces.
 
-> >> +	old_page = phy_select_page(phydev, reg_space);
-> >> +	if (old_page < 0)
-> >> +		goto err_restore_page;
-> >> +
-> >> +	if (reg_space == YT8824_RSSR_UTP_SPACE) {
-> >> +		ret = __phy_read_mmd(phydev, 0x1,
-> >> +				     YT8824_UTP_TEMPLATE_MODE_CTRL);
-> > 
-> > What address spaces are paged? Every other design i've seen only has
-> > pages of C22 registers, since you only have 32 of them. But looking at
-> > this code, does this hardware also page C45?
-> > 
-> 
-> Ans: To access the mmd register of UTP, must first select the page as UTP. I'm not sure if this is 
->      the answer you want.
+Skip the PHY attach when priv->hw->phylink_pcs is already set
+and no phy-handle is specified in the device tree, allowing
+platform PCS implementations to handle the link autonomously.
 
-So it sounds like each MDIO address on the bus actually has two full
-PHYs on it, and this page register allows you to swap the accesses
-between the two. Are there two sets of MDI pins, one for each PHY?
-Can both FIBER and UTP be used at the same time? Could i configure
-both copper and fibre parts, see which gets link first, and then
-declare that the winner? Maybe you should actually be exposing both
-PHYs, with a mux between the MAC and the PHYs. This is something
-Maxime has been working on.
+Fixes: f0ef433fc264 ("net: stmmac: introduce pcs_init/pcs_exit stmmac operations")
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-This whole concept of one shared register controlling page access to
-all PHYs within the package sounds so wrong, i would go talk to the
-hardware engineers. Maybe you are missing something, the software is
-not doing what the hardware designer intended? Because this is so
-ugly.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2a0d7eff88d3..54c5281e91ab 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1346,6 +1346,10 @@ static int stmmac_init_phy(struct net_device *dev)
+ 		int addr = priv->plat->phy_addr;
+ 		struct phy_device *phydev;
+ 
++		/* If a custom PCS is in use, no PHY is needed */
++		if (priv->hw->phylink_pcs)
++			return 0;
++
+ 		if (addr < 0) {
+ 			netdev_err(priv->dev, "no phy found\n");
+ 			return -ENODEV;
+-- 
+2.34.1
 
-    Andrew
