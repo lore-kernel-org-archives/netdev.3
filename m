@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEB4374A1E;
-	Thu, 23 Jul 2026 17:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFB47D448;
+	Thu, 23 Jul 2026 17:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784828443; cv=none; b=cGw3FtWETVPVh/IZpc8SXHR6kanT5JRFit8HJt4GZxr7YylLnfybe6gilUZUB7P/XngUorspXZ42wHVJbUdtx+5ehJ8bvdCd+YX8ugK9vt5MGbxDTtNZmEoDzTD6NB/qNUF7bl80rgrtCdlX3VLSiikoIC6EKQhNGWNTPjzV6R0=
+	t=1784828445; cv=none; b=CELAgOyoZOSSXuFSjee6wsCOGwvndwYUnuOBDW6eKgifJvM50nOQRIGKaN8B/7wmXqn9idoRinCSjJzZdCKMCx1mRBi5lU83c0dImlfsrrEZ2U5LmOD6oTGDsRvHLvO5S3zGLJVWMv50PGA/vbGI42nMl9sxW+FJlG0TiD/qnHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784828443; c=relaxed/simple;
-	bh=SnFlvyaseEncJm2aLtYY+o5ev+phymTzaCYxZHe7roA=;
+	s=arc-20240116; t=1784828445; c=relaxed/simple;
+	bh=YNfm8hZl2b/NKJKpWmMhe1wgEsUpRbnanwOw75XkVvo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HdA5d5sRImJb1nlyjz3BPD1+bbPdPJHnlxPnE5N3TWI5ZyKw+2ZnocM32OPcj0V6XHQbRBqY3xJ86r03K6J0OowcNh0jZZKxF27Ct+TOFYIQg5NBfxXKSZ241YiS0NkzE2qXNNRWPiWxFo737v5PCyRFniPm8MnHtS9Q4PdDwQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+jq+xza; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=mz+SR4GZjcQSe9Ko5kN2UQKEpAd9GuHXXq2zT/GlvrF7Xq0dvr6SJjndDrVIjc3jbaHAP7xOo0MAIIOZftDF+DnYAU9N/8inv/gySP7NiApLIiUV2NDjC9YOaOkGaX9Xdlx2Be8wsbwSyQK2Q5t//7+qkOqvAEVVr90ddbCw2OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwJKEcAs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+jq+xza"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A859D1F000E9;
-	Thu, 23 Jul 2026 17:40:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwJKEcAs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69E71F00A3A;
+	Thu, 23 Jul 2026 17:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784828439;
-	bh=KK9sSOVTD/vTJ9FSoose45zkXPuXl2YBf0g+LbFukLI=;
+	s=k20260515; t=1784828440;
+	bh=OrXvV0qF0Jj37tCljb6zqgeFqTaRxTIDpWTIiD0NyMI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=b+jq+xzavsJd9IJ3MFHuYti7vRYVSbum1hiP1LGFAy/t0se0PIP5vD5wZuMbOMEDX
-	 6qrVc99g2ThqQJRDyZjdEfpzlbFoIpmwi07fI4iNwenJCUjX75dykIXfCTHgwnXEK3
-	 o4qtSoWb0QvKeBczikqJey3xheyi5XpK69ZqR71F/KrV862bYaRhQ+syZJ9hcKnNCZ
-	 NS7CRBm2giKg2ZDkUvtB2ORE09qOs20YvgPDw/qE06+SeCWUBja8O7+/vZN9kAzM5N
-	 JLHajK1/iGROcOwworgCYygX3RzMsXsFWJKywLmj2BWJXkhDSe82wYNlVzPh0pDT7f
-	 jmHCFBYFuDEzA==
+	b=cwJKEcAsBFowyKrxDzXZLaUo1X/ZeX030GBsj+nOMMz8jUC189I8i2BkqZ6wQjAMq
+	 8z6PH1yJp4ZL0XPnQSOTTVuDMFX/s6J8TJ116Z975oI9aB9ftGrIzNYig/YCts49HP
+	 G+UsNkzB96B3Uq/1OaYM9xBno7oHBxr5buby2F4PtvNtVjygrShXm6YRD51oWrauTk
+	 QBtlDD19yGktD/agDTvk6UAetDxexyMMPfWiCCPDnhPmaGvimnhZlnJfOqN+WbFwVG
+	 s1g7vIkayV0TejrsWgxj0kn1oRJeBH8Os1DKxFMDGtafKMZzAWgmZKV4nOiRmdVwhg
+	 OEzdfFaB/kA4A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EA3DB39244CA;
-	Thu, 23 Jul 2026 17:40:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3484B39244CA;
+	Thu, 23 Jul 2026 17:40:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] sctp: don't free the ASCONF's own transport in
- DEL-IP
- processing
+Subject: Re: [PATCH net v3] mac802154: hold an interface reference across the
+ scan
+ worker
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178482840779.2802214.4496095044368060549.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 17:40:07 +0000
-References: <tencent_73762ED1DF08CC9D5F5F61954B01350CFE0A@qq.com>
-In-Reply-To: <tencent_73762ED1DF08CC9D5F5F61954B01350CFE0A@qq.com>
-To: Jun Yang <1753810072@qq.com>
-Cc: netdev@vger.kernel.org, marcelo.leitner@gmail.com, lucien.xin@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-sctp@vger.kernel.org, linux-kernel@vger.kernel.org,
- junvyyang@tencent.com, stable@kernel.org
+ <178482840899.2802214.3672009527883372357.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 17:40:08 +0000
+References: <20260721211228.34578-1-security@auditcode.ai>
+In-Reply-To: <20260721211228.34578-1-security@auditcode.ai>
+To: Ibrahim Hashimov <security@auditcode.ai>
+Cc: alex.aring@gmail.com, miquel.raynal@bootlin.com,
+ stefan@datenfreihafen.org, kuba@kernel.org, linux-wpan@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 21 Jul 2026 21:14:05 +0800 you wrote:
-> From: Jun Yang <junvyyang@tencent.com>
-> 
-> sctp_process_asconf() caches the transport the ASCONF chunk is processed
-> against in asconf->transport (== chunk->transport, set once in sctp_rcv()).
-> For an ASCONF located through its Address Parameter by
-> __sctp_rcv_asconf_lookup(), that cached transport corresponds to the
-> Address Parameter, which need not be the packet's source address.
+On Tue, 21 Jul 2026 23:12:28 +0200 you wrote:
+> mac802154_scan_worker() captures the scanning sub-interface under RCU
+> and then keeps dereferencing sdata->dev after rcu_read_unlock() and
+> outside the rtnl -- in the failure traces, in
+> mac802154_transmit_beacon_req() (skb->dev = sdata->dev), and in the
+> end_scan cleanup. Nothing keeps that netdev alive across the worker
+> iteration.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] sctp: don't free the ASCONF's own transport in DEL-IP processing
-    https://git.kernel.org/netdev/net/c/9b2854f86f0b
+  - [net,v3] mac802154: hold an interface reference across the scan worker
+    https://git.kernel.org/netdev/net/c/234e5e898b71
 
 You are awesome, thank you!
 -- 
