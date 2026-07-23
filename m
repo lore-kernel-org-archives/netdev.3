@@ -1,49 +1,76 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34B3470E92;
-	Thu, 23 Jul 2026 17:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BCE377574
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827378; cv=none; b=mPNHTZXPcRLsTx6KhrUApdbgPbAUq7IKg/2oy1iklp1Bj0XOqRT6dSiskGZpZLesJ0dpyseUECOvd1lDg5tLNU0W1FnE9NbtM+lTBmV9iOcQsX2tL4Z/5kDv3E1Viz+f4CCM2Q6BiUKj5ijd2xFb8x19u9J9L166LU9krXdmLB4=
+	t=1784827489; cv=none; b=eTy1fPULF7Fjg1BIKnYZtjsf5DuEOtmnnELWZD1QSJwAP9Re8l5ea/nv00EiU3F6sAfwHaig+yg/m5OqJXk7pjITF0BlHrI7h/mswvHxGUKoa4FvVY71+yABAXYqaTbjWILHH4uqyPTAeVGFINsMLnXtzB3+G41qYkBH4k9nPks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827378; c=relaxed/simple;
-	bh=+GBoG1iFHFbXN1UA+4JYNqN5y5vwhyogQ/aT8iRwUvg=;
+	s=arc-20240116; t=1784827489; c=relaxed/simple;
+	bh=xq8/CV7bWeFFqHzhD3QccJyR+ORblh9hqoRJJiehiP8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XK25c1/gOz/ZSo7SxhmHXPMC+r1E6/GinJNQMOReS6MAKi0QVIvCUUT7n1jtqVZmpxA4Bz9rVdyGuHL6IVjIURltFk/q+EHPiw8ifrvljMCHpdfSIvt0hlVEx/iQD9QvxdiKg9WE9UiLxzvrPrpou+2S+rtLMtatMeLoN1TrOuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=sD9KUK48; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=YHMmtK1TpHBbWPLY3iB3w+yYNNbxCxyQoh6edNTlxjTf6iekIt88TALlAJ5fp5jsVN5atkzIzcSNBNotYaGmTASrSIlEiN1K7yTW3G2k8PAficjVKsBUn9f8mbPrOHK5H9At+ya4tO/5ASzboy9sRJ4/i2sVLGFoDLV8UZHRfVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtv4iWf+; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="sD9KUK48"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id C5D5760191;
-	Thu, 23 Jul 2026 19:22:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1784827373;
-	bh=5xzz4IwMvyGPIBEam+MyTsNSIxFkfzg9bsnh9V0M1yM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sD9KUK48mcWLsF5ObDzp64Ul2NMQIx6GfQmdS/QYRPN97EJIR4M5NFK7hO1lJ1zis
-	 Wmg543uDy9dW/jcWa78osGQ5+SPKMsYCDyBkPcW/EAvS7ogY8FnJX52Y17miikTyV0
-	 /CE4qwhRy3u49NRICaXCv+6Kau+Ll/sTkWlpV8rY3vFEiM35VH4UCh2M6dHZ8P8dG9
-	 1fEJkV1WAWxyuklgUdrkUA1tFpp5zmOch1W3OK47mzcBp7W4mxTRq/LTDpThzYwqdL
-	 3frfnVJPGbfLAT/zkphnXXVbIcS/JbgQ1isN3M6NP/ic3UFizZre0F8CUUs7r+k5gk
-	 9Sq6EEl+8CgQQ==
-Date: Thu, 23 Jul 2026 19:22:51 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtv4iWf+"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso2434715ad.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:24:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784827487; x=1785432287; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gwIkS8hgFx2QMlyHA6OHo3V+xp+5HZic5vpfeP5mT0w=;
+        b=dtv4iWf+pyJNgwkaB5Zz+yTjDg4dznT+xQpA5MfcyTXvtBQMk9MQi9CHCf2yE9PnIo
+         KJaM8JmoAzabduGHYeaAT2JHRgrZt7rzwa0j33/YjFXmenhPXLAvjFQsg25nBIX4mSUw
+         +PcuxKr7MOKqp0/UdUqf73yiOOEpK+DsoKI5X2OPagQMVXEGTygj+fkrmLYkOXYowCcj
+         SeMGXSI6zBsYQ0IqTawmq08uUCmbIqxwaXhaQCMiQS6S8k5hHa//5e0vmD944C38xrrD
+         QvGqhkayFpFSpG1C03aDLJz1GMTxaZUF27E6OpOMR+p4nqjjtexG0qUaq3ZykzCwe5An
+         RymQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784827487; x=1785432287;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gwIkS8hgFx2QMlyHA6OHo3V+xp+5HZic5vpfeP5mT0w=;
+        b=QQKFMm1RRWHLLjNnr7mCM2lXhqwWRdZ3SgksyNVYXdp5xN+yF5JCVDZFb6BeoPj6Zz
+         488pVSSbMWPjkiRleqnR4sEzSDvthPP80xC8sdLBqDukstZxj1BDpnQPkuftOY2qt/kE
+         0GQemjV1RTO5Ci6RcTJqrZOH8YmtRg8ARSISToeK2FSIYkQU9+C08cgW2NmcMJYXIMrP
+         Faiiv1sQ/JgJ46LNhII9TElCp81480mhvdIVXjRqo6zkrWnTr5GH0GBQPwrB6dAdIMQE
+         weWVBkLbS/2pIByyPU5eRSEcmhnb6VyfSuuqklu6xD4BuiBj8z+8Vj/aiGT3WarWn/Hi
+         pwUQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrqonoMQ8udpUBKBfRzvrCsZoLV874L9ek9szQT2WtErwSmBnSDueTb7SqiTblBJNN4geJqZak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzG1q2dPWRXl3fiyOt3LtmxgM/s7SEYr3DbWWDRZuz42fG0jQcT
+	rIGFVyJ7dbR6J0U1eTk6qm4ugp7/cILfgR4CNonZHmkMqEbFicikx2tJ
+X-Gm-Gg: AR+sD12W0I2/BpXrrkgQFId3B5lhlTAwWbmDaBW6qjzviuPXDipU6wwMPFfZ7/Dnlct
+	qeI3H9PmWmETk/V4nurALhNK30Y2BqvJBgAgEURcnvpe8wKEJnk9IKd1ajormpMu4TOkniOE5Ac
+	XyrVKRHqI8CdlDnGvSXjxctRoEU7+6c3UeI1AezPcCHCmh/npKt7EzyJioIjCo4pAS3fRsjjMce
+	IsoRrMh0zBu+QzHAcDZ28ZBGQ0S8D1KwoDmcILwqvPijTP1fAsg0gr1Ub36Rh/MvL+qy9M7sG/A
+	2vZ3lmoZnvSJ+QvEz73dYhdKx2l/jBSmW2+BOQUFu19fyftsi6VehYp3/WC2AIVKxJbgZhgm6ST
+	BzzavrUQSkYoxz5CacGO0Gg2xFkK7TwrUo239JgnxBGYNmec92ds3lo5lbtFAP/jR+um3MBhsjC
+	0W+XgJWRFSatYCeCYFyMdiDUe0q96fCleSgyu2K4v4vC3b
+X-Received: by 2002:a17:903:1a4c:b0:2ca:cde5:29c4 with SMTP id d9443c01a7336-2cfa709813amr48848825ad.47.1784827486844;
+        Thu, 23 Jul 2026 10:24:46 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:49::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2e5e8esm38119995ad.49.2026.07.23.10.24.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:24:46 -0700 (PDT)
+Date: Thu, 23 Jul 2026 10:24:44 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Ryoga Saito <contact@proelbtn.com>,
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: Re: [PATCH net] seg6: fix NULL deref in
- input_action_end_dx{4,6}_finish() after nf hook
-Message-ID: <amJN67Vtl0atkj7H@chamomile>
-References: <20260720204430.1886091-1-xmei5@asu.edu>
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: devmem: prevent net-iov / page mixing
+Message-ID: <amJOXKql1nbskGZJ@devvm29614.prn0.facebook.com>
+References: <06f0d5ce07dd8593a69239cfa56745cb9c7d957c.1784717791.git.asml.silence@gmail.com>
+ <CAHS8izPiZ_1aysWG-up6eW285+MzJN17L9QREfVWgRLkdqL5sQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,79 +79,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260720204430.1886091-1-xmei5@asu.edu>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izPiZ_1aysWG-up6eW285+MzJN17L9QREfVWgRLkdqL5sQ@mail.gmail.com>
 
-On Mon, Jul 20, 2026 at 08:44:29PM +0000, Xiang Mei (Microsoft) wrote:
-> When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
-> the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chain
-> with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
-> the lwtunnel state via orig_dst = skb_dst(skb) and dereference
-> orig_dst->lwtstate.
+On Wed, Jul 22, 2026 at 12:49:07PM -0700, Mina Almasry wrote:
+> On Wed, Jul 22, 2026 at 3:59 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+> >
+> > We should either have net_iov or page backed frags in a single skb,
+> > otherwise it blows up down the stack. Don't allow mixing in
+> > zerocopy_fill_skb_from_devmem().
+> >
+> > Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 > 
-> A hook in that chain can legitimately drop the dst: nf_nat_ipv{4,6}_in()
-> calls skb_dst_drop(skb) when a DNAT rule rewrites the destination
-> address, leaving skb_dst(skb) NULL. The okfn then dereferences a NULL
-> orig_dst, causing a general protection fault and a panic (the fault
-> happens in softirq NAPI receive context).
+> It's true that we don't support mixing niov types and doing so would
+> blow up, but this is an unnecessary defensive check imo. The calling
+> code should not (and does not, I hope) have an edge case where it
+> tries to mix and match niov types.
 > 
-> Free the skb and bail out when the dst was dropped, instead of
-> proceeding with a lost lwtunnel state.
+> Maybe a DEBUG_NET_WARN_ON check to help catch bugs in the calling code
+> may be fine?
 > 
->   Oops: general protection fault, probably for non-canonical address...
->   KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
->   RIP: 0010:input_action_end_dx6_finish (net/ipv6/seg6_local.c:912)
->   Call Trace:
->    input_action_end_dx6 (net/ipv6/seg6_local.c:946)
->    seg6_local_input_core (net/ipv6/seg6_local.c:1621)
->    seg6_local_input (net/ipv6/seg6_local.c:1643)
->    lwtunnel_input (net/core/lwtunnel.c:465)
->    ipv6_rcv (net/ipv6/ip6_input.c:351)
->    __netif_receive_skb_core.constprop.0 (net/core/dev.c:6165)
->   Kernel panic - not syncing: Fatal exception in interrupt
+> Also we don't really support mixing different niov sub-types in an skb
+> (like IO_URING + DMABUF) afaict, so might as well go the extra mile
+> and check that it's all devmem niovs specifically.
 > 
-> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> ---
->  net/ipv6/seg6_local.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 2b41e4c0dddd..45e66ba306ca 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -909,6 +909,11 @@ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
->  	struct in6_addr *nhaddr = NULL;
->  	struct seg6_local_lwt *slwt;
->  
-> +	if (!orig_dst) {
+> And might as well put the check in skb_add_rx_frag_netmem. It's the
+> same situation on RX, we don't support mixing there (and I hope no
+> code path leads to mixing today).
 
-This should be:
+Hey Mina and Pavel,
 
-        if (!skb_valid_dst(orig_dst)) {
+I was able to confirm this mixing case does exist.
 
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
-> +
->  	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
->  
->  	/* The inner packet is not associated to any local interface,
-> @@ -962,6 +967,11 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
->  	struct iphdr *iph;
->  	__be32 nhaddr;
->  
-> +	if (!orig_dst) {
+It looks like in tcp_sendmsg_locked() when new message is non-devmem (zc
+== 0) and tcp_write_queue_tail is devmem, the skb collapsing is allowed
+(though same-frag merge is disallowed).
 
-Same here.
+Adding a mode to ncdevmem that sends mixed devmem and non-devmem
+messages, it can be caught hacking this in:
 
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
-> +
->  	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
->  
->  	iph = ip_hdr(skb);
-> -- 
-> 2.43.0
-> 
+/* DEBUG (DROP ME): detect a TX skb that mixes devmem (net_iov, unreadable)
+ * and non-devmem (page, readable) fragments. Such an skb must never exist.
+ */
+static bool tcp_dbg_skb_frags_mixed(const struct sk_buff *skb)
+{
+	bool readable = false, unreadable = false;
+	int i;
+
+	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+		if (skb_frag_is_net_iov(&skb_shinfo(skb)->frags[i]))
+			unreadable = true;
+		else
+			readable = true;
+	}
+	return readable && unreadable;
+}
+
+static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, ...)
+{
+	...
+	BUG_ON(!skb || !tcp_skb_pcount(skb));
+
+	WARN_ONCE(tcp_dbg_skb_frags_mixed(skb),
+		  "DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=%u len=%u)\n",
+		  skb_shinfo(skb)->nr_frags, skb->len);
+	...
+}
+
+
+Resulting in:
+
+[   85.908005] DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=2 len=24)
+[   85.908342] WARNING: net/ipv4/tcp_output.c:1570 at __tcp_transmit_skb+0x9bb/0x1030, CPU#2: ncdevmem/278
+[   85.910646] RIP: 0010:__tcp_transmit_skb+0x9c2/0x1030
+   ...
+[   85.915617]  tcp_write_xmit+0x47b/0x17d0
+[   85.915802]  __tcp_push_pending_frames+0x38/0x100
+[   85.916025]  tcp_sendmsg_locked+0xe51/0x1280
+[   85.916244]  tcp_sendmsg+0x2c/0x50
+[   85.916903]  do_syscall_64+0x11c/0x610
+
+
+My feeling is that we should guard against this when
+tcp_sendmsg_locked() is doing its "new segment or not" calculus.  In the
+zc == 0 case, I think we need to check if the queue tail is unreadable
+and 'goto new_segment' if it is?
+
+This is a different case than Pavel's patch addresses though, where the
+new sendmsg is devmem and write queue tail is readable.
+
+Best,
+Bobby
