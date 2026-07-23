@@ -1,80 +1,35 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9063612F3
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7EC39150E;
+	Thu, 23 Jul 2026 17:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827770; cv=none; b=HFGnGCCU3XTbE7SsbH0dzkoe1SzFPC49FrQUnP+kLRcsFaOQpX043TY0jWalOCfxYRq/yizIbChlqyflH+cBQMRZ29XZGvKyJ5i4zcSyqxZ9Vgx88XgodxkXW5OjE7WmVzfcLeCWTgBgNXMXMA0cc7Qe/JU1OZNMzubbQgBT5ks=
+	t=1784827841; cv=none; b=KJlACFaKR04dfFhPvlc7v/D9UYcH9+kUidhA2S+ByoLAfeiYzBl2MZFK7IojUk5EpI2iYe3MfMJbAqSoc/9/ZaOJ8nFkebn9t60XvQrDTSaGsNiRiAfqBQCpDd4ZONSME4GUg6YPKXduetVsInYakbdsk/s5b5UWijaKSElKrn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827770; c=relaxed/simple;
-	bh=aiAo/V3guZ18jP0VXbJ0M0cftnxQocvyM2ecRUkZLwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkIKu/5SuLlvvBZQ89LSj3Gbt9M/uXDxrT4zgazRUGNuem13Yp+XiPUJNjW7xf6BJgFCdBWapjXeshKIvXIAki6sRZYeS07IqzbmGoBkBSxN4SNmwQ6JcGFOsWTjFkspPiMam9j359c5MRDmx8ZFMXbEG5SVXN8P2AnWkpyXp1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLPdjocN; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784827841; c=relaxed/simple;
+	bh=nbFdrOcqbg/t8ERm3fB9k0ShcBAhIoRkQqmqMotUCvE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QP/azxTMgeMKQC4WVRFTeqGYzpU6tMMCDuQ9c/TLzthpLFZ+ewE40xHvkEg0azMW/15qeWA1uCr8M4OpgScN2XFeVx8iumsuxddr1SdT1CsCt3derflc2a9EVJuSvC1UX2N06z/NieW/hTTmCO74ky3IHKA1YP6bj/vmfivdejo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYSm1rBk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLPdjocN"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8486672f03cso960592b3a.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:29:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784827769; x=1785432569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/w8qNJy/Z6X5B0+ftqwMYJq9aZyi5qiwMaO/rqFlYig=;
-        b=kLPdjocNonWUZrXZv4lZZWkRQ4q8A2Rh1HNmIQi1+SMmxvzI9pz4KJnYFfHqthX8Zk
-         bc20HY9mfiec8SJUaU7QoR/8Xvrzc1Q8P7OQ18N+HuXPVWL3tefZkineLUo/9J2Q2n6f
-         ibd02K1zs+YtOEjAFdbS2bp9sxbcUPBO2ysSqfqLYl3QbK3TNO4gprjjJEqR7LKHy/o7
-         /2VkVOme2sLio4Z4tR0vthztjK2Uf6iwEig0bY0A8RVptcx7OsjTW6GGVLCInDBZ05x6
-         6zpfo6Atax1uqDj5ktYaIRoDpAUTYL01YOKNf/DLKoH1UGUDEb1IAUeTvqB5qyn4tpJC
-         QxiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784827769; x=1785432569;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/w8qNJy/Z6X5B0+ftqwMYJq9aZyi5qiwMaO/rqFlYig=;
-        b=ZaZvbna2uygWLQv7jM31h9ZMail8gmlCjNihCoytAv9PXFF0B+Mi0t8AP1Wmv/wrNV
-         nC2p/eiwWybOmr8J31/ZOgJxVHQTFZ8kcB1iLqogfzum5Sf9oeQaFwEvIHD3gnpKrhDK
-         IhatIVrM2AiA0rQuNJ1bCyMMpnCEBjvsAF1QA7amk8Xb/+Yb7IdyxRjscyd9tIfh3/1w
-         pghzRrV3ezrQLU1i7juPbFw4a1U3ClmFsjuWOpjnacnoDmNrGLIc2FTKLKTWL+cVFrJ8
-         7etDDiEVo8e/lKGQdx1wU5ZgHIU8o76/F80j81bKTaKnxgP3r44uaZpOXkmkOyrEfJin
-         XVMw==
-X-Gm-Message-State: AOJu0YxSikoh68/W6Ix409S6FuUh2lPMj2AOlWZjPNLmLx83cpmHPN16
-	MctYACBewWsZ7k9Sl0YKalMnxWGxMaZMKCbELeB1WKhiORhAor0cqppshTSuMNtjHNM=
-X-Gm-Gg: AR+sD10FyLhTY8eX3qpw1LVgbQc/wiJCAMiMw1kF/7ZbL/ZKUmvNBg/FAdephmX9+se
-	2Osp/XbEK1bihwj6XOC2HsUmqqExZLZ7ep5SB21du944ZZ2mdxXjqoAX7+RPw1OqkiyXsvDE7gg
-	8Ysdnc69VsDCKdKAf5JQzoJ4or2yfxXB4LBOPARmOpaLBHffIuyYqk4zflxp0gqjJ7SNyPE4ibn
-	EExU35e0kUkaWVBlWbf7CI0q4qByu1frfq4IBZ2U2ZRzb/zcVJIF+IXcZyVk0xzVEbnHnYA3nhc
-	wdBkz97iYFgBXveSqHsv8S1CBJTZk7Hx1b736ba6TXuKSp4xF5earKZYS8GeyU+yV4ZV0q/IhIE
-	N0oD3TOymNr4WrESYdKI5Cs801kgu47sGMxMivON/MwB3zog6M6CTMGKrWqeo24r9sz/zM3yENM
-	L2e7PJ3iV7PNCpkwHeJSY=
-X-Received: by 2002:a05:6a00:1d95:b0:842:2a81:4c63 with SMTP id d2e1a72fcca58-84e2b858da6mr4690869b3a.25.1784827768784;
-        Thu, 23 Jul 2026 10:29:28 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17237704sm3446098b3a.2.2026.07.23.10.29.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:29:28 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	luoxuanqiang@kylinos.cn,
-	tim.bird@sony.com,
-	acme@mandriva.com,
-	vega@nebusec.ai,
-	xizh2024@lzu.edu.cn,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] llc: fix listener child socket leak on non-SABME frames
-Date: Fri, 24 Jul 2026 01:29:09 +0800
-Message-ID: <631a34bdb0c1e1ab47ba75a4be94b5129b7a122f.1784725007.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784725007.git.zihanx@nebusec.ai>
-References: <cover.1784725007.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYSm1rBk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5125D1F000E9;
+	Thu, 23 Jul 2026 17:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784827840;
+	bh=Tfzpjqyvjx7nfJVdPfBzDaZbT9I+gZXmcJMQKmkgvyQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FYSm1rBkg+DXycG/blmG99gl9MaOe/hxXaPsyG8ZzRBZqcdHmrpGoygUDGYyz+5y2
+	 LO0Pr2/aRgh9dleh8KLcRxnHHb8Ac+UtwR8ZAmndoi+FfUbrKHSeSnIt1Clz60KsPb
+	 uex3OHUO2mh95n3RPVAi8hXTf+pZSObtHpz7Ia9NGnvotgVWhg+ACqllrAqpGW7E1v
+	 jMlVlH2hscJNwvu9I+gaOF22s2HhBUp88/wpv92ivChHMMzoMu9dqLxOqD4iZrDz4t
+	 YkLp5b1JrF4y1X9ce7uV+B4DaskPNJNFh0hh7akPA4ZKmWWev5CiqzFk8j3+MjhSLZ
+	 xwo+HU0dBFeMA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9398739244C6;
+	Thu, 23 Jul 2026 17:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,46 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] bnge/bng_re: fix ring ID widths
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178482780815.2797885.10912755981565020942.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 17:30:08 +0000
+References: <20260721063731.2622500-1-vikas.gupta@broadcom.com>
+In-Reply-To: <20260721063731.2622500-1-vikas.gupta@broadcom.com>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, leonro@nvidia.com, jgg@nvidia.com,
+ bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
+ vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
+ ajit.khaparde@broadcom.com, siva.kallam@broadcom.com,
+ dharmender.garg@broadcom.com, yendapally.reddy@broadcom.com
 
-From: Zihan Xi <xizh2024@lzu.edu.cn>
+Hello:
 
-llc_conn_handler() allocates an incoming child socket for any frame
-received by a listening LLC socket before the frame is validated as a
-real passive-open request.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Non-SABME traffic, such as DISC commands, can therefore create a child
-socket that is immediately driven through the ADM state tables instead
-of the passive-open path. The child remains hashed in the LLC SAP tables
-and keeps its device reference, so repeating such frames leaks sockets
-and memory until the host runs out of memory.
+On Tue, 21 Jul 2026 12:07:31 +0530 you wrote:
+> Firmware requires more than 16 bits to address TX ring IDs for its
+> internal QP management. Widen the associated HSI ring ID fields to
+> 32 bits. The values firmware assigns remain within 24 bits, bounded
+> by the hardware doorbell XID field.
+> 
+> The fw_ring_id field belongs to bnge_ring_struct, a common struct
+> shared by all ring types, so widening it to u32 applies uniformly
+> across TX, RX, CP, and NQ rings but firmware assigns values within
+> 16-bit range for all ring types except TX, which requires the wider
+> field.
+> 
+> [...]
 
-Only create an incoming child socket when the listener actually receives
-a SABME command. Non-passive-open traffic then stays on the listening
-socket path and no orphan child socket is created.
+Here is the summary with links:
+  - [net,v3] bnge/bng_re: fix ring ID widths
+    https://git.kernel.org/netdev/net/c/b9e558976bb9
 
-Fixes: d389424e00f9 ("[LLC]: Fix the accept path")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
- net/llc/llc_conn.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 0a3f5e0bec0..a235748e36d 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -801,7 +801,8 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 	 * the originator of the new connection, and this state has to be
- 	 * in the newly created struct sock private area. -acme
- 	 */
--	if (unlikely(sk->sk_state == TCP_LISTEN)) {
-+	if (unlikely(sk->sk_state == TCP_LISTEN) &&
-+	    !llc_conn_ev_rx_sabme_cmd_pbit_set_x(sk, skb)) {
- 		struct sock *newsk = llc_create_incoming_sock(sk, skb->dev,
- 							      &saddr, &daddr);
- 		if (!newsk)
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
