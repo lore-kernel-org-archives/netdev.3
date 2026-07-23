@@ -1,142 +1,115 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D354399E7
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815373; cv=pass; b=FTzQYMYZoga/nyq2n+klVgca8tQCViNy+OLqiRrOIzlljk7OmymnHVGFl8QxL/Iw/1e6fU98Biuw1fuG7KGmwA6i9KRwUNkdqqMUo/wzwIhfS9/wKF/c3nlU4U6WP8voSmKeDAqgeWbxA5Ali6cvGwC6cGSybvZMzX15iJkol60=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815373; c=relaxed/simple;
-	bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YGlgwdDpMx6MByMNiFye0fT11fB9M2cv3K4nBvCgJhQmqI36U3a4OqdoujGLuiYj8c97SI3d5AEezrCN1oOLf1CqPjFamzi2ZqQR6r4YS4PkfU7yfuUbc9zb3m6Gj0B9lH5tMF5cgBa+1Q989RsrjN5AXey+wCyXSt9XBig7ps8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ix5CUWj1; arc=pass smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB38284883;
+	Thu, 23 Jul 2026 14:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784815411; cv=none; b=cxi3ucRqd3h3JDcPdDHCdB3N3dbLHBAU9QR6ypqEHfa2J/B1W4KSOq/lbhSOn0bwe7W57+3uozljwMhBKJJAWHwS1L3A0JlUZCS2z34jUswgdDe1H1DWjwVrEfH5l4SU99cCIV575pCpkjKJwl2q9r7k64GW0j+Rm3LkQvnFkOs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784815411; c=relaxed/simple;
+	bh=BCM0Kgc2C4k4GDJaoDD4yA2c6ucWqVNTuKLpETMh4Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EYfl+k8I2k8Bzyor14SKy0V9ml3bm2ftVG1Zim9bY3yxp0CWcq39LnTprJNwfA1md9/uQyJXC4TRXoKieNnVLqYEKUV+VKE9H3otJWk4rsqRsOYTA3xLrpB5uFlFX5Ooyn+zkBnZCy6ta2C0cTKVwXej/7kA9pnBbT9hdhOTra4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=sehjEHIb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jJc27GHH; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ix5CUWj1"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aeba09900bso479982e87.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:02:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784815367; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hGyEodCUlM3DZc2rvVSohEN9RRvdWk6ynR/ETuXlSVrJrOnvrMmkg8ocaZmVmJBxPn
-         j8JKA7WUzcIu8TlzfBFfgDtWd8SnTPz7u8IP6Qs7hqyDgLnhyUBAj9cCB/P7phV4xhUA
-         gi2rSu4ly3aZGZ437CVSctaqQ1sKE8Z27qF6A7jNdC8j4bGGUMN6ruu2ADrLvqTTczkq
-         pkMAbbuJSXn/WmeoXghxbkipzqBqBFlKiXFTX7B4rKM3Vb9Pmv1RJwaCiR7Bz16cbc5a
-         uEsggoOPVjZmzNW7/rDL+L25jQ6+5Cnms+5Kd1Ol43GeGZKnrj33Dx6D1Mmu10gnHfKA
-         xZSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
-        fh=UAgbJirQpvb0/zIGO9iQIhX9TOQQzx1zytJQTAohSMQ=;
-        b=G51dJMvSRdfJrsfzitJwK7ZzTPTQAIrKprI1ihX5Kvjmz+dFX8gHnTVYqY+rEnyBwH
-         ZsUwPRdpDFAmTKheaJbYqt0/2fBea/it9JWCcao7RoI+qiraQjeqDGisvqBQ+AyvIlxA
-         idh+ZfWpJt6DZ23RnRI746WdvgHizk39bC622kcp7lQ2Zs+uX/tf+bmV13O7DH77RZ+8
-         HEdV39jnFLLjsDseGKssJO3IYojC/Wmr1Z67LuMNGHJY3XX0Bbh/JZ1BnF7k525PEh/4
-         isszjneL+n/dJKXNflZYEs7UMrDDNGIsIMnq+hTo4BSV/EpU7/Cc+a6JVrgPBtLMPH7B
-         Jiyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784815367; x=1785420167; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
-        b=ix5CUWj17QGmaQIuQYs/zWYWgdcB7o5PZrJL7unVZXwlDM8EYrpv/K4GETrOFZygDW
-         K4VSnEqQEw+jpIDHjNippbxFfHS9uA+BlYavxFJ5dXs8sD37itCILcY2yRedELn2XRVF
-         tRx2pZjayj6nSWaHmA3ACOsdDJRegdmii05eOJJmdnUZQNOM/R8cQYUTEzOyQNrr3xlY
-         d7LTlMgazZeVjKyqo8TRHFKltzFH06nCiGn7sqdksLpkntzDyVIQSts8cUbQKRCn88GK
-         DOh+sf+YSKMn37S/ayUztaK6VUgyC1gihJJSA7sl/2Ffj1qt3NEADCNU+QiWTb7lNUUJ
-         79Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784815367; x=1785420167;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
-        b=J+uVfznkqAm8wUN9wrfeDmqEKzCi9jOx+3F3Je49QxFslkaPK9RkUoyBNxastL/tSY
-         H4JHrXFQidyBS1zAln4709K4JwHkQMZE1YQ6s02OlZi7JefjV3UEPG1Y++4IdtOg8YmE
-         c+baKv6x+pxazRobAYsyHcpXQ7/E3syVZofdadsFhPkwVXLwi4DMQetL6QhvEtXF6p6T
-         OUA9dBL1cQV39Vh2x+mwC0ImGJSWPBrOrD5JYe4JZ3X4G8T5EDpJZMwpzwFLuYRwKdO7
-         20KdZilT0DPJMMXdWdKsqiI4EVbygRLbuxlGy6x0RGoqfHy1+vTOKKGTl9yQpc4/2Wkv
-         sVzg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpat+EM9Spun/wSjqiPej8OdpLl/TYKQVpj9f8C1VXPk0EfcuHGMj1qMEm0KppIp2iw+YFDZcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlbV0fxLS5IDO0PSeht7RmaNUy+tuTagbn7s4BugxKfGgW8qWe
-	av1o+YOVVdgVJ80HQWarHtTy6ylY6Tst8S69/b1e/4hdwKEKXURm72v2zNGNTy+5JYTE/ilMn4m
-	FT2jTk8wqbc0fE6u4mZODVVorHkbtThzNJ278XRd0
-X-Gm-Gg: AR+sD10mNrQyajY/vKS8UC7STOgDVn9OH6XQXFctPJvUUbrXFxcVX5QXU9CYEDBoSjT
-	WTmr+0bo5eg/B7uC/akqHyuMc+W62YrLsEp1Pzmopgf6tj+jL/L8ncxhvh9Tsyu86X12j1rmfiW
-	UfDVZxAwad3eKmnpcua64ivmF5cVr0F3NQrIzFzQlZg9ecycu155CJWWSrV08LRY6Qu3UP/wUZf
-	genQrazmAVLa+Vg7oy8+jasinUQK+JhQ4Qh57N9KqnL+Nc1rv6b+xaomzVokIADrq6utJn6ogVp
-	v+YP1a412TbYX8AxjZlL2UvMt61JxGUmSFOa6e2I5vN9AhY=
-X-Received: by 2002:a05:6512:6c9:b0:5b0:1dd0:f20b with SMTP id
- 2adb3069b0e04-5b2b2e4b2d4mr696890e87.6.1784815366922; Thu, 23 Jul 2026
- 07:02:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="sehjEHIb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jJc27GHH"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 24FA37A012E;
+	Thu, 23 Jul 2026 10:03:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 23 Jul 2026 10:03:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1784815407; x=1784901807; bh=FGpthCba0yb539wjtBDWA
+	MNPRlzkbQT0A+NI/ZxZ0TU=; b=sehjEHIbF3yZ6irJcd/n42KLlvYOgL+nB12m5
+	gqjAmJcg/i4Kd4RU5O/FR0CaIU9SkzMmOW5C+9aCxn/SsxLsEiiX78wDMNWqY0+5
+	BGJnU4zuOngcVnwsTtZ6rACWilmdcDzxGqOueI72ZuQ+tOZX6BMczos1BKYwWHTh
+	8l+1C9sgEdFMJAhdj2WqYZ/5xNvp76i58I3dNX31WKSeK+wJAZEOlxks9WqL4dgK
+	pa8cyotFbnDCvYEL+oYZGeSMGFRPpqsvaMkTGhjfS9ixeWEZ/vMZ1CnMJ2EDtRQH
+	QLCLjYNqeVqRt4KgI3Vb7W66dVOU+rsLy7HeKveySc9xOn/Sw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784815407; x=1784901807; bh=FGpthCba0yb539wjtBDWAMNPRlzkbQT0A+N
+	I/ZxZ0TU=; b=jJc27GHHbM05+csjO5qsQAFaiH31p61cOBWJ0TzyRXh0xp00M/O
+	japccjhF7x/w4yWU8kcvmrBpzixyxFo46/tjLnJ2y1j8oRfg6kaoOc2V+Boz7KoA
+	1mKrNjFroBcydK4xejNHZr1chc52m2lbYZBMUhc8dxxe+E/z+aP4LPZMjKrxd3U+
+	oqaUi95/+2LHY5D0fl0WWA+bqk+YQSHjYeBFI9sh33JvE3xxhvCh14/NDfYpMywN
+	lfM02n/xsyac2L34qNBH//XAMuQnZYJQ9lYWfJgS2CG8xj/MuyxtW8ePW2d7z9bQ
+	lnlX9UW2nCqAhZhrLK+lzQxDyTwhZnIjFag==
+X-ME-Sender: <xms:Lx9iagJkTv4-XrOcSFEoEXudcqIcR85ECHUy4KCeMaQKZSm1PaqGmw>
+    <xme:Lx9ialEWn7AX_6Fh13Ysobu-quMJ3loIbu1FNhkTPGorohCE4J_Obl6Gx8uNlQH7w
+    8l7sI5-TQb2p1yTdnzp6-zSbd0Rfhr_gbAVecrDORECdE0WaHvzXYY>
+X-ME-Received: <xmr:Lx9iak929XNSfBmaMFDEdcvMkcK8BoZDaQyxMfMN3hscafZI0W_Og3qEABQ>
+X-ME-Proxy-Cause: dmFkZTGywutbRDH+nuJS1FCcOkle0DSR+g1KzxZE2aBdtpqKvP5BuwIZZOUL7w9CT0g3eS
+    MA/zg888aC7u/yiHiq2TqfnVDMa1OuVLV4OjOhmNW/J6uEhJC8lrhER2QKsQUcKGBk5lxV
+    lGvSLQAKCLlc5v4lbMcYm173fE1ycTWTR+aOPz85n4u624+/s9R4Z6E4pPOdYKly/0BLCK
+    /veXVgs3ZTJUDGUKcXktVygLQJVBjornnl5dt7FW6mWeG+P6n7xeXw+GG9YeYa/q3GUXSQ
+    OteBMEkBNXxLMwInl1+5Bn7rANY8Q2ct6OVTQarlKVtVIMwXnwQxtxxfEld8N5XIBnd4gh
+    9woWaqv/zb26qnkEneT8XXm/0hsmwVGeF55b7rYiDEJ437g7RWT573zVfa6u/3fnk3NZun
+    n4SYEnUQ/WV/gs+MbBMjN+sNTXi5XntMVTGxHGCy8irJbUy6QGjO6UUBzNa4lEdLSUuu3w
+    V4uy9G9ms64mflXhj25C03cq8ErMzDe8PIGVCSL6tj+U3bh0crlTyJC6v311i9dv8vp7n+
+    f/qFQbJS0LKzd0Eb8APzIEA4g11JjMfSu49Xv6Lx3XoKVVibyo30ZNBYAQbIFY1YZOOBjj
+    RqzPe/aG1s18uhx/el4dkhDa6vUNloTZM6J7KylNDwPp7ynP+Das5T+KvMLw
+X-ME-Proxy: <xmx:Lx9iatIPRIzauEoa-SurjcVqSHUf5pj_hNfh1INCXEZiJFxx45DUvQ>
+    <xmx:Lx9iaqtk0FnSyDWN2nQK2It4SLxtMPnelm7U1XliuSr1vGnr7KeNeg>
+    <xmx:Lx9iasBlnAfq_GalCjwi5rLlsIVdgBR4fL7s06zvdQz2nLNRhEW2sg>
+    <xmx:Lx9iaqMLqIEUJzoGxb20SKpZg97A8qTxJaM1ted2vpQxAHM_wHeivA>
+    <xmx:Lx9ialwa2x1jzHvOm_U6K-CoEanZOtan-KmJfcF4qL-fpHtxyG5GjoXg>
+Feedback-ID: i559e4809:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 Jul 2026 10:03:26 -0400 (EDT)
+From: Alice Mikityanska <alice.kernel@fastmail.im>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Alice Mikityanska <alice@isovalent.com>
+Subject: [PATCH net-next] selftests: net: Add a missing config option
+Date: Thu, 23 Jul 2026 17:02:41 +0300
+Message-ID: <20260723140241.132120-1-alice.kernel@fastmail.im>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723091601.72103-1-zhaoping.shu@mediatek.com> <20260723063935.75bf55e3@kernel.org>
-In-Reply-To: <20260723063935.75bf55e3@kernel.org>
-From: Willem de Bruijn <willemb@google.com>
-Date: Thu, 23 Jul 2026 16:02:09 +0200
-X-Gm-Features: AUfX_mzhMSefwo5xw0q7T6LspWMg8-GnaTmUAQUYLYyQ56qOjHskx1_zLVTsEoY
-Message-ID: <CA+FuTSfgBbPkdLanqEgbDq-jLVQJax4fUxQ-tuzTuFwQANwxBA@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: gro: avoid nesting TCP GSO skbs in skb_gro_receive_list()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: zhaoping.shu@mediatek.com, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	alice@isovalent.com, sd@queasysnail.net, eilaimemedsnaimel@gmail.com, 
-	imv4bel@gmail.com, hw.he@mediatek.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, haijun.liu@mediatek.com, 
-	xiayu.zhang@mediatek.com, lambert.wang@mediatek.com, Iven.Yang@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 23, 2026 at 3:39=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Thu, 23 Jul 2026 17:16:01 +0800 zhaoping.shu@mediatek.com wrote:
-> > From: HW He <hw.he@mediatek.com>
-> >
-> > On devices that support both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST,
->
-> "devices that support FRAGLIST"? Isn't it a software feature?
->
-> > the hardware or driver may deliver packets that have already been
->
-> If you have a driver in mind please name it.
->
-> > aggregated into a TCP GSO skb with frags[]. GRO may then
-> > aggregate the skb again in skb_gro_receive_list().
-> >
-> > This can create a nested GSO skb, which is not handled correctly by the
-> > later GSO segmentation paths. When the skb is segmented by
-> > skb_segment_list(), it not be fully restored to the original packets.
-> >
-> > Avoid this by setting NAPI_GRO_CB(skb)->flush for GSO skbs before
-> > aggregation.
->
-> I don't think we can do this. For GRO_HW devices re-aggregating
-> in SW is quite helpful, HW often runs out of contexts or times
-> out too soon, generating skbs with 16kB..32kB of data, the SW
-> can help bring it up to full TSO.
+From: Alice Mikityanska <alice@isovalent.com>
 
-Also, after e751256486d0 ("net: gro: fix double aggregation of
-flush-marked skbs"), it's not clear an another bug remains.
+Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
+tunnels") used iptables match comment, which was missed from the CI
+kernel config. Add the missing config option.
 
-If it is: as said "nested GRO" of hw + sw GRO is intentional, e.g., for BIG=
--TCP.
+Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+---
+ tools/testing/selftests/net/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-But it may not be anticipated for skb_gro_receive_list. One option
-would be to skip the fraglist GSO optimization for such packets.
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 96fffca6547c..a2d14ec9df1a 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -82,6 +82,7 @@ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+ CONFIG_NETFILTER_XTABLES_LEGACY=y
+ CONFIG_NETFILTER_XT_MATCH_BPF=m
++CONFIG_NETFILTER_XT_MATCH_COMMENT=y
+ CONFIG_NETFILTER_XT_MATCH_LENGTH=m
+ CONFIG_NETFILTER_XT_MATCH_POLICY=m
+ CONFIG_NETFILTER_XT_NAT=m
+-- 
+2.55.0
 
-First I'd like to understand better what exact bug remains.
