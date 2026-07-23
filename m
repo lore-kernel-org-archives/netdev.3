@@ -1,143 +1,195 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0A93CBE6D
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 06:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784789301; cv=pass; b=gnnf+bgIEM4g3cfD/btVHo1/ukOK0KmauY3bWzHDYxjq7Tj2Ixf+lSvxg2gGbGcPD3pIo37IANp5z6vu0bZu6ItzAA2QDavhOQqaIq8HkJWvFgbAp91h0erGzlw7z7hLFJvJKDfNfUUypRrZ+WsE8+S8naNau+EaheSgJAzp5xo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784789301; c=relaxed/simple;
-	bh=4c3hYEcHpyqPmegtbKtV7D8WgaaAL1Hn5tKhB9WAczE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C8PfmVfv/yQMcYHnD8Ut3etcokCWFlEFFj1UrRMsYsnTdxLNlt3bJn6+ufzd0U0CFL3B0hhv9rNOYchjgllrfTmMtuEq2NneOhK+IFsW+K+rt8pq6SwLT4fVxqnUVAkavkRBwikSxvxTTg92vKD7JgazvD5emm5Fbw7mO0WLZzA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SIEDlx3D; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11B83D5C1D
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 06:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784789704; cv=none; b=uBpzLhYGEO08bl4TWnIVK7mlUhSDZiam2BhdTVC/udCfzGuIvfu9bXfhFk7gLItqfPnJLNwMYevU3SVQhmDopRc9F3qJ3glQZhhKQy1yLWfbxGWH2YyMvU6Wq9jmhtjJga65TnckXOsbyZQnhKrN7NuRU8kb+b3GtLc8quTFG/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784789704; c=relaxed/simple;
+	bh=MdSXyYAsOoLOBGcvOWfpvc3qfz93fatlLaVqLMDXGwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FHVeQhpn2cHco91nNGN0+cwZR1YJbGJ5oKCT7h1HQHXk6es+lOwl+alLGoSlireRQWc75wrBGnD9NIDh6sM+5Y5fTxZAdDRQ2/4jUY3RTf7ghUiY9Dw8rV4z1Ebbzwo+IHB8HIUj5liqijmhXJj9IqmDM40d4dOGDvYuSORRV8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Car0MeFc; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SIEDlx3D"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bfa429aa6so1166301cf.0
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 23:48:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784789298; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HIrqP1ueQAPwDgqEKJqvPsDVyVxR9MGYwbvET3EKRd5IBNr5OK+e9dkHJZrh1lbV4E
-         7G8JIFOQXSA7xikGYhHGPQn3zv/Fsfl15idXbFHI2/o9QrAycZL74mfXv2tsNiVtcFF9
-         wLBDDldl3mK1ClCfw5nsl6LZm7yrMzluL9vvr18PCIQSezoSOLo+UVGbr2egs59AB6fP
-         uNTVKT4P/6F4vpQAJhbT0hzkR7GF9pRfF5GFVLn7ymUQdEafcdfoHLpFOCw2iL6SYB6Z
-         1FHhOfd/G0NDHKgQ/qoFaFlPWsP1CxQTBAbJxuSKf942YwWq1kKuynELHkw9atZTmM6G
-         53ZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
-        fh=097hxZa6Q531Vxep85A19v3J3rMoCG6S0uz/jNX+wrQ=;
-        b=EWjC1UPh30F9jsQ2sOX26t3Pv3msuT9xA+Hw+LnxEOkL/6hyTHyv1fxW2e9BZsDm8Y
-         ZWcZ6rk2p6kuEra00HSaZSlRWZGv1hzdE89699O/Y1PSMU6ygDs4wlbe9DYe3OcWeIZg
-         +Iv/62CbSh1het2xHYsoIj2J4l0oBNYmJ4ajZgR1ht/Cw33CAM/ZnQX7fkT2Tb12bNH0
-         BQOc0c/5Ah9qayEamZqqmELBBMqfBSdJddbGJUGaxnqputb941FkuZ7hpu9kgEkdZ9Vd
-         xKNOa40F+GG1WfzsgDmlwQ3SOQbdBwKOZi4Z8R/UDqYORtxDRvHOD4KANGXXkT0M+5Cm
-         StcQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Car0MeFc"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-845b6d9bf39so141434b3a.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 23:55:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784789298; x=1785394098; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
-        b=SIEDlx3DgmAi6WhptnT0MjczshdWCyyjJeERZbmF4Yz+Z+TlJLzBhO02GWPmLRoOfu
-         4/OFPmvoTH6odaTETpuecDSvVCAixS1tRUbcytuWg2YUkI9YP5XP6nj/gTjFopB6YXYa
-         jqv+LPm0EyXHGopL8uQDycQdVMSmGINfhUeVaT5nAjn2HU1qcA1THPmdM1Hy6/NLjEzR
-         6LYFzcJ76YbB3dxsRJiQPIRYfd1kUD36TC6NnV8bb8SUPXvORnNK0dthvJz2IBRUH4IS
-         UrPB+r1zBhi61C1asGvaoRRCU4yTcfv+/DCAHtlvRvlIK/bcHPG1NXiwBglOCu1dJc+G
-         ticA==
+        d=gmail.com; s=20251104; t=1784789702; x=1785394502; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XYF6IhJVH4t/ih25pWa4y8XjdHM5r8QHzlFhQEmGoNg=;
+        b=Car0MeFcAT/tVxKScU5ZhwSmwTYaSVFwNbqX76fuYoLVYlvL2OCJMOlYGb7i3vQwiv
+         nYGpysubd/i92Ep69VepM8vW4lN0D/v1twNkQ+FqbfATCHlvaiUk11Pyeea0aQYcXmn9
+         WLvxPZotY1zOvZjdNKufA9+wvzufdjHhkRJAnqgfviuHVnHaOXJ0nadwqinccLIZwNFY
+         cNi5WHcVKiUl2ojmWNaJQ7KX5AU5TDXsVV9n8z1x/pZvCUBZh93XCSsRafEdmjU5lTZt
+         4PExcQ8wgVf6L9sRSd5QqT5TxYroSICEzWYTRmL4ALGKT0myD22R1gq3vOG3eUVB+dvP
+         tD2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784789298; x=1785394098;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
-        b=aFk5lJVY9VDqfhkqRa15nGqX2wC2DI0FE5oEUd59QwbBYuf3aL6W7b3x5e9fW/iDZD
-         kEXr7xdfykfeFOPlgdUyVr2a7yuoQ1ZKFXzPPFTXDyuWwS57kCb23Q4B7R4gz+R1OE1w
-         zH9GFClcAOaMulr4PLcCLZW3RGEFdnmcCmIEfYFQJoxsCVFKHX8Hezo1coRtCHBhdGon
-         7qzEZL8jId7t7NG9F32V0i5wyIQSO6wBa6nnX0ta5BZ2SWeWSl7zaqPtmHtc9kifsFCp
-         WD/c0eZXrbMKekyWh5jigmB2S/7G5T3ztqvzyLs3lvggTsi0MQAI0XOo++4yq1WopaYY
-         KOHA==
-X-Forwarded-Encrypted: i=1; AHgh+RpUaIgk6Mk1kHpqMo+N1EV6FVk0O5GwkCuSWPW7EKFKm+Xl/R5RwOKIBLv2iQ8JZNDA4pv2PjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw69bimgJJSZLFKnP+IfYZNzxmS6DicaC7PhDJviYjdN38klCMf
-	AoVy27cVWTzNd7wvqcD/BBpAtVgfhRRk/FWESdoLXHPv3/nqVovmIbJvKXDaiVuZ4r9z18TxPtd
-	OrVqZXn40WqZfmK2nbMBuk5Ea5o3lvP78aI/XyMjM
-X-Gm-Gg: AR+sD12zlVaYgUeOr3zQAdmDLgJ+F6D6nBEvLoGKV9lXar6lzZa7aA45wdxOz4y0KRR
-	1u7qrFkk+8Cp7d3YdZtrmhgec1KM1pIW8cNuE4Z9B3OU88W4Qd+LtfCDL9ZzkXzOlwAfpFLqY7K
-	XExk2dRPF7lUzWsGIZJ9RoOUAhREugrP3WU9ULGjM90Q4l9SQHMkdL/XFCcjWUIuLKKJcrZ3UL+
-	kuikrbSrqVfcEfUKD21M3LlVMbpFiF8GTMu/zGjF7mpjCDQJCz6posAYw2yDS+hZR2m5/OxPpnr
-	53EHRDhxgeI5gtc/pR8AcNY8M7o/ELZjdcFUuEN2tlhasFs7FPeUSsSdGQmvxndEZMpWeeDFhfG
-	gcv0nbw==
-X-Received: by 2002:a05:622a:588f:b0:51c:7aa7:e0eb with SMTP id
- d75a77b69052e-5283ee29359mr11912951cf.40.1784789297090; Wed, 22 Jul 2026
- 23:48:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784789702; x=1785394502;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XYF6IhJVH4t/ih25pWa4y8XjdHM5r8QHzlFhQEmGoNg=;
+        b=E1NiH/iDKOXv6b7buc0L09VVSpG9+th7hB9jRszWD5zD881W1f++AV5wg7hCQay6L/
+         3P1Jf0YkXaPQkFAJ0PUQGbuPSIfvK8i/DqsZBgFhznaEX63aoZGcCNf3H2gcr7eQ/bu7
+         BcsSJdVfI3UjRNbAucPjdvqn97BeX4tYOcy5S6UNS7Bh3A4jGJfc5B1wogP2HxpFWwyS
+         EjrUrXjBNdnHnYVFjHzNJJJKOCiqPXUv5qtz9OFv4cMDldM9fVhmkVr8RXtWJD5Zc68D
+         sXvkazXGY0glDireMCcNyQRpgEextZUEMdfRRa5AK16vXbqvOyzNjlhCtxSGP8ER2twa
+         ut1g==
+X-Forwarded-Encrypted: i=1; AHgh+RpRb098P4ZFWZ+c5OvCFfnju2bTOUnjAy9UEQr7QqEd2vl3KoXpQnXZZZtNe2gqd3LxgnOzqYc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSMKlh/vRgXZZyGZLTZM7l4kuLqLJyoNGlH6fwT9xwSVKuonGU
+	LReuxbt2EFMbQk1BpC57tboZwQiLY113VhzTcYH9Dtjbz2z6lL+g4qv/
+X-Gm-Gg: AR+sD10YMtguOJ+NK8ExaYUsi4CqKYzVtIkL78dyQnIMGSKyTZ5oJBl9JtfyOjCb6zz
+	vGDkPw5f0v88wyk3+pYypYYI1FdiTeIg3Pe8WNipSm95oShX+4lHCPvs7+Oy0si5+KjEZk+5iXc
+	V03AEb9Ck8DfRTL811elui9E0WtMoRxWlBU6fX0k7KvRG8LBY25c6deonC0MEowT9le2bTkgkfr
+	86LGR4KJ3vFwEja5CIIT8HOryeYsxGv3gSv7k2yxgsKj/7UHXc+vpx36RCzlwY09Y+e7T43ySl/
+	X11U5w6rfVq9KZbGbRObDWsYhT8fuQFhBUfNFtNdHBaV6v+NvAZoFPBcwocxcNux4Byx5psZbnH
+	MdJ7qnhcaOoORFdZJtp6cxS3vdXfZKjqgV1p1iv4JNWJ3hRiG17XbWU1VCQ61csWsGK7jBBEo
+X-Received: by 2002:a05:6a00:a17:b0:847:8bd0:1b96 with SMTP id d2e1a72fcca58-84e2e8776e3mr1427666b3a.23.1784789702145;
+        Wed, 22 Jul 2026 23:55:02 -0700 (PDT)
+Received: from omen-arch ([147.46.174.207])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17292c31sm2445472b3a.26.2026.07.22.23.54.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 23:55:01 -0700 (PDT)
+From: Junseo Lim <zirajs7@gmail.com>
+To: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Junseo Lim <zirajs7@gmail.com>
+Subject: [PATCH bpf] bpf, sockmap: fix page_counter underflow in strparser SK_PASS
+Date: Thu, 23 Jul 2026 15:52:44 +0900
+Message-ID: <20260723065244.186916-1-zirajs7@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260722101605.2868548-1-edumazet@google.com> <b16aec0f-a90f-4132-820e-239ddadbe8f0@linux.dev>
-In-Reply-To: <b16aec0f-a90f-4132-820e-239ddadbe8f0@linux.dev>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 23 Jul 2026 08:48:06 +0200
-X-Gm-Features: AUfX_mzfwjmTNyJFDDWM3usED32OxNE4Kw8gwv9kJEeTjMZwSCqsswLX5fagY3Y
-Message-ID: <CANn89i+E=JBRGj3cK+6mfVEX+PUjYrpkkWk1dB3VswnW4X_KGw@mail.gmail.com>
-Subject: Re: [PATCH net] ppp: annotate data races in ppp_generic
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	linux-ppp@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 23, 2026 at 8:24=E2=80=AFAM Qingfang Deng <qingfang.deng@linux.=
-dev> wrote:
->
-> Hi,
->
-> On 2026/7/22 18:16, Eric Dumazet wrote:
-> > diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generi=
-c.c
-> > index ef54e0a0462a175bb989db8dda895e9ae755965f..cacc4c3a37d2cda0aea2e17=
-6e5d0638f959e18a3 100644
-> > --- a/drivers/net/ppp/ppp_generic.c
-> > +++ b/drivers/net/ppp/ppp_generic.c
-> > @@ -866,16 +870,16 @@ static long ppp_ioctl(struct file *file, unsigned=
- int cmd, unsigned long arg)
-> >               break;
-> >
-> >       case PPPIOCGIDLE32:
-> > -                idle32.xmit_idle =3D (jiffies - ppp->last_xmit) / HZ;
-> > -                idle32.recv_idle =3D (jiffies - ppp->last_recv) / HZ;
-> > -                if (copy_to_user(argp, &idle32, sizeof(idle32)))
-> > +             idle32.xmit_idle =3D max(0L, (long)(jiffies - READ_ONCE(p=
-pp->last_xmit))) / HZ;
-> > +             idle32.recv_idle =3D max(0L, (long)(jiffies - READ_ONCE(p=
-pp->last_recv))) / HZ;
-> In the original code, the difference will wrap around on a 32-bit kernel
-> with HZ=3D1000 if the session sits idle for 4,294,967.295 seconds
-> (approximately 49.7 days). With this change, as the difference is cast
-> to a long, it will be negative after 2,147,483.647 seconds
-> (approximately 24.9 days) and then clamped to zero by max(), making the
-> situation worse.
+tcp_bpf_strp_read_sock() delays cleanup of SK_PASS bytes by
+subtracting psock->ingress_bytes from the amount passed to
+__tcp_cleanup_rbuf(). But when sk_psock_verdict_apply() queues the skb
+directly through sk_psock_skb_ingress_self(), skb_set_owner_r() is called
+unconditionally and charges the skb again.
 
-I do not think the code was ready to handle long idle sessions to begin wit=
-h.
+The duplicated charge is later released independently and can trigger a
+page_counter underflow.
 
-Can you elaborate on the 'worse' part, because I do not get it,
+Add a charge_skb argument to sk_psock_skb_ingress_self() and skip
+skb_set_owner_r() only for the direct strparser SK_PASS path. Keep existing
+accounting for the other self-ingress caller and for non-strparser SK_PASS.
 
-We perform a max(0L, delta) quite often in the kernel, in lockless contexts=
-.
+Fixes: 36b62df5683c ("bpf: Fix wrong copied_seq calculation")
+Signed-off-by: Junseo Lim <zirajs7@gmail.com>
+---
+Crash reproduced on Linux tree 94515f3a7d4256a5062176b7d6ed0471938cd51a
+with KASAN, MEMCG, panic_on_warn=1, and oops=panic.
 
-delta =3D jiffies - ppp->last_recv ; can be ~0UL if another cpu was able
-to update last_recv to (jiffies+1).
+Reproducer/log/config: https://gist.github.com/ZirAjs/16c95c89972ace73910d9b5ac78a5807
 
-We prefer in this case returning 0 instead of ~infinity.
+The reproducer drives the strparser SK_PASS path until teardown reports:
+
+  page_counter underflow
+  Workqueue: events sk_psock_destroy
+  Kernel panic - not syncing: kernel: panic_on_warn set ...
+
+ net/core/skmsg.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2521b643fa05..17260681479a 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -586,7 +586,8 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ }
+ 
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len, bool take_ref);
++				     u32 off, u32 len, bool take_ref,
++				     bool charge_skb);
+ 
+ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 				u32 off, u32 len)
+@@ -595,12 +596,9 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	struct sk_msg *msg;
+ 	int err;
+ 
+-	/* If we are receiving on the same sock skb->sk is already assigned,
+-	 * skip memory accounting and owner transition seeing it already set
+-	 * correctly.
+-	 */
+ 	if (unlikely(skb->sk == sk))
+-		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
++		return sk_psock_skb_ingress_self(psock, skb, off, len, true,
++						 true);
+ 	msg = sk_psock_create_ingress_msg(sk, skb);
+ 	if (!msg)
+ 		return -EAGAIN;
+@@ -618,12 +616,14 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	return err;
+ }
+ 
+-/* Puts an skb on the ingress queue of the socket already assigned to the
+- * skb. In this case we do not need to check memory limits or skb_set_owner_r
+- * because the skb is already accounted for here.
++/* Puts an skb on the ingress queue for psock->sk.
++ *
++ * When charge_skb is false, the direct strparser SK_PASS path keeps the TCP
++ * receive queue accounting in place and must not call skb_set_owner_r().
+  */
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len, bool take_ref)
++				     u32 off, u32 len, bool take_ref,
++				     bool charge_skb)
+ {
+ 	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
+ 	struct sock *sk = psock->sk;
+@@ -631,7 +631,8 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ 
+ 	if (unlikely(!msg))
+ 		return -EAGAIN;
+-	skb_set_owner_r(skb, sk);
++	if (charge_skb)
++		skb_set_owner_r(skb, sk);
+ 
+ 	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
+ 	 * data originates from the socket's own protocol stack. No need to
+@@ -1017,6 +1018,8 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+ 		 * retrying later from workqueue.
+ 		 */
+ 		if (skb_queue_empty(&psock->ingress_skb)) {
++			bool charge_skb = true;
++
+ 			len = skb->len;
+ 			off = 0;
+ 			if (skb_bpf_strparser(skb)) {
+@@ -1024,8 +1027,10 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+ 
+ 				off = stm->offset;
+ 				len = stm->full_len;
++				charge_skb = false;
+ 			}
+-			err = sk_psock_skb_ingress_self(psock, skb, off, len, false);
++			err = sk_psock_skb_ingress_self(psock, skb, off, len,
++							false, charge_skb);
+ 		}
+ 		if (err < 0) {
+ 			spin_lock_bh(&psock->ingress_lock);
+-- 
+2.55.0
