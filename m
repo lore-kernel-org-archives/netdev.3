@@ -1,295 +1,118 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8921D456DFB
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F144641D238;
+	Thu, 23 Jul 2026 16:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784823980; cv=none; b=nuNrQzbnbgu+1wZRIK2Nh2+6zxUEPFcrUctLVmFLhoRgSH/mJDRUAUDOdjWXHBDR3cm/idoLuTYLG7/IKiyS5sj+tzyIs4T2T3fsky13h8WERZ4jtXiYRg4l2dfawyrF65+AzW/r3IQw0/GqSkz4d01gj7ty08A4hOdXsvwfMLc=
+	t=1784824005; cv=none; b=rnxaDD8tVLb0hdmgY0D/JBWDgwnS4YNnhvtTIXxSZJqvFVO+ImZFCsxcxOWxz8ay67ugSr4t1Y8CsGVoM6w4lPnp6E5GRsKsBQJwDHRyDx3WmeLUh1Kj0dqm4cn+dDi1hYoLwLaVqdB2fplruTf7XQmoEBw7wCIuilgzGH0UcEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784823980; c=relaxed/simple;
-	bh=TCOlassBQx9ySoijfMz1l85P5sgTBaeOOaOHQV89RSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8kbHfZJ48EVwc+dSJ4P7MEaos5GYvUXa02MSdBFN8zriAOTlOviE6Tq1L36VKyiR94UK0I4zR8NezeT1kfFoNHZqQanPkUIO/yCGYgdD4UhrHmXpOkpfIp9JWhhyJkUwpVeAlbjNATHuQGXxU+1JEAiydxVO1HSQg0JwdCmN6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qAFVHmav; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784824005; c=relaxed/simple;
+	bh=BQoYUP/AFIR8KukaOienCGe5QHk9qn+ZU3eIAVrGbqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rwIb5eowGO+FnqRU5X/M/RT1diFT3mhOMgmvbqJweypCj9TSLoepQBJi3qBSOph5Kdov2w7DNvM2FhT17wRP/x4KQrWkHuUFsXBYtimxqDU/npd6lAIDvL/WTld2JDarfhizwXgEkf17QN9PQZrl6z0B6KwCceW6XDNwVue9NLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVu+wo9a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qAFVHmav"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3856d4015e0so109047a91.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784823973; x=1785428773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3cZoKc9FwZgZIi/HTgzAkALIT6yFSGhhHDxBwZd3grk=;
-        b=qAFVHmav779Mjsvl/j/pjkexhKI8wvQPiJcUVy3iZzNWqp4aP0oq76Xs0/CX3E2uAA
-         5B1LB0guEisj9yH7IQUFV40rmIw63OfnliHdqRTjkAUsySaT7swNp7lY8J8sdLs+7PDm
-         bLcDC8ZqmKVqzgfOjFFKAIAjXjQoLt6rr11u8ttXRBYhR6aGLiN0WqNlsgnwICgHxr7b
-         Vz7qeqgGK2JyLxxs+7ETINPqM3lbjWvjmvekDedPFaIUvImnD02VepQyHQZH6rH6lJJ+
-         yMT2HGRJXCuf9YdraEz4tdyCuPqAvxKao91wg4tIjVjXGQJHIVuZzi2QUFtaCJBNSNuF
-         +uEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784823973; x=1785428773;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3cZoKc9FwZgZIi/HTgzAkALIT6yFSGhhHDxBwZd3grk=;
-        b=NASYkkrwgfwIMHSf79uUZIGg25MqQCfxTAILdWA/znh2Wxc+46AWlNRXDDSQ6c01ze
-         imPHsBUIFLz53wubZn/1T2dyDCfA6+Z0NifpqZhHT9c8G7XuKsRSPLtR/V2wqXpFLeuC
-         /mvQNkE8NPn3KodXOX4bsSOfYBs6nssDxd9eN5lrdlql7+s/Jrkafb9cwWQxJD699khf
-         I6prUxz9f7i2n1vCdb/gGA1G3YRH9fjdcSn7W/T8xnPhGuuYmNRuRViKXYningqja0Mc
-         bHwzF4p8/yH9A4IX3MLOYNQJbwNbipW4khwoW/nU7RBZEQJRdhhXHRiO7/wHrGvzuwTJ
-         w0ng==
-X-Gm-Message-State: AOJu0YxcQZCZmWwXyNf6gCAozoLcMx9nmDgyjpYlbAqIL2xhlvUG+Wb1
-	3saIfkKCmuE7pFeMutrCB+lstlt+nCfQA11Seq1sBdi66STbuzOU/vlX
-X-Gm-Gg: AR+sD13ZB76oLj1d/SexzV7s/MMWV9qZ/9Juvj0vU5GHnMYbshEPRA3EDERXXdPjIIi
-	E7dcIVSJG/TdhGRp9lZ9bCRoxGASicwfGadFW4+J6nPlCnkp/6zMsRuTUpO8+RGB0ED3PjzdruQ
-	SriMqL1jC1UE0/YV3ath6R89OZTnx8LJ1X0s3ngCrTVmXeYUSUOrTmqcfQh5jmEXmTwtOGoRDqR
-	4awQbnlbmBy6N32oa1n9ohNysqKVpSHvQZXaJ6IM/FfqE/ZYW/fgvAiB9TrxG6w9zxiahXmOu3W
-	2AqAuTILXGgTi8Fv7IqosfBv4dSKrL7RWTtqO6hTFieO41Z+Fi1MSxLJjfqFEQBi9p2yQuIoqcR
-	U9IZpywETi/+ay7TeSwWEq5PVobsdEuT6oJEaPAXPLWNhCSEqeAq+xi79azyy4hG4fNZK/P0tkG
-	eZ8H637jg4Rvs7WRn4xkHkJ1XvyhO+mqxweaC6bJOFCoytIn0WmbZIkkQQQADqrRoIN8O4
-X-Received: by 2002:a17:90a:c88b:b0:38e:ab3f:2c99 with SMTP id 98e67ed59e1d1-38f02945ac9mr361904a91.2.1784823973168;
-        Thu, 23 Jul 2026 09:26:13 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d12f267fdsm17536546c88.0.2026.07.23.09.26.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 09:26:12 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Emil Tsalapatis <emil@etsalapatis.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] bpf, sockmap: Fix cork ownership in tcp_bpf_sendmsg()
-Date: Fri, 24 Jul 2026 00:26:02 +0800
-Message-ID: <20260723162602.3275661-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
-References: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVu+wo9a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F80E1F00A3D;
+	Thu, 23 Jul 2026 16:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784823995;
+	bh=LDeSsTLzv1Tc7tfKsPfIo0p1m5cUwZ/ShQ7uxEDtfwI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jVu+wo9av+maq+zRSN5PuApOLveOjhiZ2MJkylAoE59mVXa8XDKhj0M9ZI7Opm+RG
+	 3/cUgoCKirEwNw2h8H1iHzj8A+osgyGnnoAAqWQ1vEDHiTcnPImayBRoakkx9+FM/L
+	 +9yIkc60PN8oRjJpgtHc3SLAHUL6RROTVCmvaHz3xHe3X3YdRzYTxPjL/fpAVT6eFO
+	 v5P+bwV9ulUvbXJVg+oesdrqI7SMA6ONpptZuSeNzTx9dEkTN6NtyYb+krNYTY8yqM
+	 HxPrDLnG+nWJ1blmxJUvFjjsyRqnJ5fb6HtjXKq54scDXZtevF7Id0mtKdwsJNbqDV
+	 TWrzD4PP3LXiQ==
+Date: Thu, 23 Jul 2026 09:26:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ bcodding@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ svens@linux.ibm.com, brueckner@linux.ibm.com
+Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
+ sends
+Message-ID: <20260723092630.1a1c9b4e@kernel.org>
+In-Reply-To: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which drops
-and reacquires the socket lock.  Its error path used the current value of
-psock->cork to decide whether msg_tx named the stack-local temporary
-message.
+On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner wrote:
+> When a signal interrupts a blocking send, tls_tx_records() treats the
+> resulting -ERESTARTSYS as a transmission failure and marks the socket
+> errored via tls_err_abort() with the raw error code. Later syscalls
+> return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
+> signal it stems from is no longer pending during syscall exit and thus
+> never translated.
 
-Two senders can therefore interleave as follows:
+Can we just add ERESTARTSYS handling? I never heard of the other codes
+you're checking TBH, can they actually surface?
 
-  Thread A                         Thread B
-  msg_tx = psock->cork
-  sk_msg_alloc() fails
-  sk_stream_wait_memory()
-    releases the socket lock      acquires the socket lock
-                                  completes the cork
-                                  psock->cork = NULL
-                                  frees the cork
-    reacquires the socket lock
-  msg_tx != psock->cork
-  sk_msg_free(msg_tx)
+> An interrupted send is not a connection error: the partially sent record
+> stays queued and is resent later. Interrupt error codes are therefore
+> excluded from the abort in the same way as -EAGAIN.
+> 
+> Fixes: b341ca51d267 ("tls: Fix tls_sw_sendmsg error handling")
+> Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+> ---
+> Tested on top of net commit 3f1f75536668 ("net: openvswitch: reject
+> oversized nested action attrs").
+> 
+> Several subsystems contain static helper functions to classify these
+> interrupt errnos. It might be worthwhile to refactor these static
+> functions into a generic helper function.
 
-The stale cork is mistaken for the local temporary message and freed again.
-KASAN reported:
+Yes, please.
 
-  BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
-  Read of size 4 at addr ffff88810c908800 by task poc/90
-  Call Trace:
-   sk_msg_free+0x49/0x50
-   tcp_bpf_sendmsg+0x14f5/0x1cc0
-   __sys_sendto+0x32c/0x3a0
-   __x64_sys_sendto+0xdb/0x1b0
-  Allocated by task 89:
-   __kasan_kmalloc+0x8f/0xa0
-   tcp_bpf_sendmsg+0x16b3/0x1cc0
-  Freed by task 91:
-   __kasan_slab_free+0x43/0x70
-   kfree+0x131/0x3c0
-   tcp_bpf_sendmsg+0xec3/0x1cc0
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index d4afc90fd796..3c9e94069e82 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
+> @@ -405,6 +405,24 @@ static void tls_free_open_rec(struct sock *sk)
+>  	}
+>  }
+>  
+> +static bool tls_is_non_restartable_err(int err)
+> +{
+> +	if (err >= 0)
+> +		return false;
 
-Make temporary ownership explicit by freeing only the stack-local message
-at the common exit.  When a verdict moves that message into the persistent
-cork, use sk_msg_xfer_full() to clear the source and record the persistent
-cork as the current owner.
+This doesn't belong in a helper for classifying errors.
 
-The related failure paths must also distinguish bytes in the current
-message from bytes sent by earlier loop iterations.  Track the former in
-msg_copied.  If cork allocation or redirect fails, subtract only the
-unsent bytes belonging to that message, preserving the syscall-wide count
-for data already sent.  Also reset cork_bytes after allocation failure,
-skip a self-transfer of an existing cork, and propagate iterator errors.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Cc: stable@vger.kernel.org
-Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-
-Changes in v3:
-- Transfer the temporary message into the persistent cork with
-  sk_msg_xfer_full(), leaving the source empty at the common exit.
-- Track the current message contribution separately so cork failures retain
-  the count of bytes sent by earlier iterations.
-- Address the two ownership and return-value issues reported by Sashiko.
-
-Changes in v2:
-- Address Sashiko review findings for stale cork state, iterator-error
-  propagation, cork self-copy, and masked redirect failures.
-- Keep the original stale-cork use-after-free fix.
-
-Sashiko: https://sashiko.dev/#/patchset/20260719161630.2901208-1-nicoyip.dev%40gmail.com
-Link: https://lore.kernel.org/netdev/20260719161630.2901208-1-nicoyip.dev@gmail.com/ [v1]
-
- net/ipv4/tcp_bpf.c | 41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
-
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 8e905b50dead..fbb11b5abcd4 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -416,7 +416,9 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- }
- 
- static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
--				struct sk_msg *msg, int *copied, int flags)
-+				struct sk_msg *msg, int *copied,
-+				u32 msg_copied, bool *corked,
-+				int flags)
- {
- 	bool cork = false, enospc = sk_msg_full(msg), redir_ingress;
- 	struct sock *sk_redir;
-@@ -443,12 +445,18 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 			psock->cork = kzalloc_obj(*psock->cork,
- 						  GFP_ATOMIC | __GFP_NOWARN);
- 			if (!psock->cork) {
--				sk_msg_free(sk, msg);
--				*copied = 0;
-+				int free;
-+
-+				psock->cork_bytes = 0;
-+				free = sk_msg_free(sk, msg);
-+				*copied -= min_t(u32, msg_copied, free);
- 				return -ENOMEM;
- 			}
- 		}
--		memcpy(psock->cork, msg, sizeof(*msg));
-+		if (psock->cork != msg) {
-+			sk_msg_xfer_full(psock->cork, msg);
-+			*corked = true;
-+		}
- 		return 0;
- 	}
- 
-@@ -495,14 +503,15 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 		if (unlikely(ret < 0)) {
- 			int free = sk_msg_free(sk, msg);
- 
--			if (!cork)
-+			if (cork)
-+				*copied -= min_t(u32, msg_copied, free);
-+			else
- 				*copied -= free;
- 		}
- 		if (cork) {
- 			sk_msg_free(sk, msg);
- 			kfree(msg);
- 			msg = NULL;
--			ret = 0;
- 		}
- 		break;
- 	case __SK_DROP:
-@@ -534,6 +543,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	struct sk_msg tmp, *msg_tx = NULL;
- 	int copied = 0, err = 0, ret = 0;
- 	struct sk_psock *psock;
-+	u32 msg_copied = 0;
- 	long timeo;
- 	int flags;
- 
-@@ -548,7 +558,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	lock_sock(sk);
- 	timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
- 	while (msg_data_left(msg)) {
--		bool enospc = false;
-+		bool corked = false, enospc = false;
- 		u32 copy, osize;
- 
- 		if (sk->sk_err) {
-@@ -560,9 +570,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 		if (!sk_stream_memory_free(sk))
- 			goto wait_for_sndbuf;
- 		if (psock->cork) {
-+			if (msg_tx != psock->cork)
-+				msg_copied = 0;
- 			msg_tx = psock->cork;
- 		} else {
- 			msg_tx = &tmp;
-+			msg_copied = 0;
- 			sk_msg_init(msg_tx);
- 		}
- 
-@@ -579,10 +592,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 					       copy);
- 		if (ret < 0) {
- 			sk_msg_trim(sk, msg_tx, osize);
-+			err = ret;
- 			goto out_err;
- 		}
- 
- 		copied += ret;
-+		msg_copied += ret;
- 		if (psock->cork_bytes) {
- 			if (size > psock->cork_bytes)
- 				psock->cork_bytes = 0;
-@@ -595,21 +610,23 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 			psock->cork_bytes = 0;
- 		}
- 
--		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied, flags);
-+		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied,
-+					   msg_copied, &corked, flags);
- 		if (unlikely(err < 0))
- 			goto out_err;
-+		if (corked)
-+			msg_tx = psock->cork;
- 		continue;
- wait_for_sndbuf:
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- wait_for_memory:
- 		err = sk_stream_wait_memory(sk, &timeo);
--		if (err) {
--			if (msg_tx && msg_tx != psock->cork)
--				sk_msg_free(sk, msg_tx);
-+		if (err)
- 			goto out_err;
--		}
- 	}
- out_err:
-+	if (msg_tx == &tmp)
-+		sk_msg_free(sk, msg_tx);
- 	if (err < 0)
- 		err = sk_stream_error(sk, msg->msg_flags, err);
- 	release_sock(sk);
+> +	switch (err) {
+> +	case -EAGAIN:
+> +	case -EINTR:
+> +	case -ERESTARTSYS:
+> +	case -ERESTARTNOINTR:
+> +	case -ERESTARTNOHAND:
+> +	case -ERESTART_RESTARTBLOCK:
+> +		return false;
+> +	default:
+> +		return true;
+> +	}
+> +}
+> +
+>  int tls_tx_records(struct sock *sk, int flags)
+>  {
+>  	struct tls_context *tls_ctx = tls_get_ctx(sk);
+> @@ -458,7 +476,7 @@ int tls_tx_records(struct sock *sk, int flags)
+>  	}
+>  
+>  tx_err:
+> -	if (rc < 0 && rc != -EAGAIN)
+> +	if (tls_is_non_restartable_err(rc))
+>  		tls_err_abort(sk, rc);
+>  
+>  	return rc;
 -- 
-2.43.0
-
+pw-bot: cr
