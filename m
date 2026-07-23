@@ -1,155 +1,171 @@
-Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.50])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0843054E4;
-	Thu, 23 Jul 2026 07:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411B43E0255;
+	Thu, 23 Jul 2026 07:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784791987; cv=none; b=D/382WSoMkiVu7enOz6bQ2HjQb6p7uxa2R3IFOovth6euIkCjlRvAX6qB8Hj+QAm2FmV16t7KDR2tM1Pas3Gx/cc+XkbPTDrpif9JdI6G6z/ltrBkwJmAwYdkOsLvlKlygJx/JH4cYIY+czZNTEVztmQvYCxF5UBU4f9nd8+oIA=
+	t=1784792205; cv=none; b=joQ1gyiq8AIu+p1lNSuDS1oPPq8BATDd0/T1toqQ5E9MBQ2qGrXv5biKobSIULaCyxW6EGfO8i/jcwWLHVgtjo9l2L4cNttK+vmPEhiN2mLJMV1X8DDmqDXPKWmpilRrP7eXOEjnvqs/TV5LfH1XMJ+ImG02dfFpuTh1vZNjAds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784791987; c=relaxed/simple;
-	bh=z88kpxOsECs9l4oqBFZzOKwluNP3d/NLkQvaOVLzbNw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=dkFNGsUX3X2Rdd0zDp0JkR2TP4fAEivqJfal17odYx2W0R0RuE+h/ycvfE+5lfwgYwecVmZbgTEu2O//MTuen4JikFvNjBsM95wgigoAKfn1Q3LN0PLUuJR9KGreIEVyI4WKxrLZpUpylqI0WOo6rNBwCgT2oDrcvg3sPFAS6R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=tpDWvC4+; arc=none smtp.client-ip=148.6.0.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="tpDWvC4+"
-Received: from localhost (localhost [127.0.0.1])
-	by smtp1.kfki.hu (Postfix) with ESMTP id 4h5NBb1xtNzGFDSd;
-	Thu, 23 Jul 2026 09:32:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	blackhole.kfki.hu; h=mime-version:references:message-id
-	:in-reply-to:from:from:date:date:received:received:received
-	:received; s=20151130; t=1784791973; x=1786606374; bh=HefT0Bdgxr
-	rPUweBq36PrXGzdVDS+bmFrL4j/Y/5O8w=; b=tpDWvC4+xkKzS5XBGBLZT6fKb/
-	h3K0teIxCG5zg1NqgJfkKyjlefuaG5l65rXQRIhdCJMMoTepmUlwLfcyavz2pgX0
-	hRojuXnJfx7f7/TzyiObKiPU8Zc8snfs2BpsRtP3EKuAvPZs0d82YWa/r1fwxUld
-	kgsvOT715pfmFWtp4=
-X-Virus-Scanned: Debian amavis at smtp1.kfki.hu
-Received: from smtp1.kfki.hu ([127.0.0.1])
- by localhost (smtp1.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
- id heTxlvTmL4RU; Thu, 23 Jul 2026 09:32:53 +0200 (CEST)
-Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [148.6.240.2])
-	by smtp1.kfki.hu (Postfix) with ESMTP id 4h5NBW65M2zGFDSW;
-	Thu, 23 Jul 2026 09:32:51 +0200 (CEST)
-Received: by blackhole.kfki.hu (Postfix, from userid 1000)
-	id 82CB034316E; Thu, 23 Jul 2026 09:32:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by blackhole.kfki.hu (Postfix) with ESMTP id 813C634316D;
-	Thu, 23 Jul 2026 09:32:51 +0200 (CEST)
-Date: Thu, 23 Jul 2026 09:32:51 +0200 (CEST)
-From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
-To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
-    Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-    Jozsef Kadlecsik <kadlec@netfilter.org>, netfilter-devel@vger.kernel.org, 
-    coreteam@netfilter.org, netdev@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-    tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH nf] netfilter: ipset: fix refcount race between list:set
- GC and swap
-In-Reply-To: <20260722223832.3524006-1-xmei5@asu.edu>
-Message-ID: <fd5dcd37-c4f8-94de-6fa2-01d30427f63e@blackhole.kfki.hu>
-References: <20260722223832.3524006-1-xmei5@asu.edu>
+	s=arc-20240116; t=1784792205; c=relaxed/simple;
+	bh=peN5snx9+EybKzxAPqEgXnx7bGQZuE05wWcM/8O3528=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DrWruDodku49GqVFrBLGHbCaRxUSif5to7Wo+dU2TGmt0fB/CecsYuJ3nnM87fcmcNRhaXPYzfAvcW/60D6zq/lLYE/wTLV8llcAav1V7ywpikVSoQRT0sQSR3bBLvGJqr6n4URX01LI1n6Gk2um6WuG4PZR4QFtlNGSjPNQD/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B317C202459;
+	Thu, 23 Jul 2026 09:36:32 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wmnyq-000ra7-25;
+	Thu, 23 Jul 2026 09:36:32 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wmnyq-0000000EcbG-2AOx;
+	Thu, 23 Jul 2026 09:36:32 +0200
+Date: Thu, 23 Jul 2026 09:36:32 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Sander Vanheule <sander@svanheule.net>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH net-next v8 1/4] dt-bindings: net: pse-pd: add bindings
+ for Realtek PSE MCU
+Message-ID: <amHEgOAWYXYuZwnl@pengutronix.de>
+References: <20260715075530.2491534-1-jelonek.jonas@gmail.com>
+ <20260715075530.2491534-2-jelonek.jonas@gmail.com>
+ <b3456b41152613ed45bcfde92aff89d0c33fa243.camel@svanheule.net>
+ <3f71640b-9f22-4d0b-9c4d-dc64c397d286@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3f71640b-9f22-4d0b-9c4d-dc64c397d286@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On Wed, 22 Jul 2026, Xiang Mei (Microsoft) wrote:
+Hi Jonas,
 
-> __ip_set_put_byindex() resolved the index to a set pointer under RCU,
-> then took ip_set_ref_lock in __ip_set_put() to decrement set->ref.
-> ip_set_swap() holds that same lock while swapping both the ip_set_list
-> slots and the two sets' ref counters, so it can interleave between the
-> dereference and the lock acquisition, leaving the caller to decrement a
-> set whose reference already moved to the other index and hit
-> BUG_ON(set->ref == 0). list_set_gc() reaches this from timer softirq,
-> which the nfnl mutex does not serialize against swap: an expiring
-> list:set member calls list_set_del() -> ip_set_put_byindex() while
-> IPSET_CMD_SWAP runs on the referenced sets.
->
-> Resolve the index and decrement under ip_set_ref_lock, as ip_set_swap()
-> already does, keeping the refcount tied to the index rather than to a
-> stale set pointer.
->
->  kernel BUG at net/netfilter/ipset/ip_set_core.c:685!
->  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
->  RIP: 0010:ip_set_put_byindex (net/netfilter/ipset/ip_set_core.c:870)
->  Call Trace:
->   <IRQ>
->   list_set_del (net/netfilter/ipset/ip_set_list_set.c:159)
->   set_cleanup_entries (net/netfilter/ipset/ip_set_list_set.c:181)
->   list_set_gc (net/netfilter/ipset/ip_set_list_set.c:578)
->   call_timer_fn (kernel/time/timer.c:1748)
->   __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2374)
->   run_timer_softirq (kernel/time/timer.c:2405)
->   </IRQ>
->  Kernel panic - not syncing: Fatal exception in interrupt
->
-> Fixes: 9076aea76538 ("netfilter: ipset: Increase the number of maximal sets automatically")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+On Wed, Jul 22, 2026 at 09:49:24PM +0200, Jonas Jelonek wrote:
+> Hi,
+> 
+> On 22.07.26 19:49, Sander Vanheule wrote:
+> > [...]
+> >
+> >> +  power-supply:
+> >> +    description: Regulator supplying the PoE power rail.
+> > As I reported to Jonas earlier [1], I used this property to define a power
+> > supply for the 54V rail. While everything was working nicely, I still got this
+> > warning for the missing vpwr-supply property on the PSE-PI nodes:
+> >
+> > regulator regulator.2: supply vpwr not found, using dummy regulator
+> > Of course I don't like seeing warnings when everything is seemingly working
+> > fine, but I was also wondering if this duplicated way of providing the PoE power
+> > rail is a good way to go forward and if the generic pse-pi@n/vpwr-supply
+> > shouldn't just be used instead. The latter is admittedly more verbose, with a
+> > property on every node, but going forward offers a few advantages IMHO:
+> >  * Being able to reserve "power-supply" on the main node for the MCU's actual
+> >    3.3V regulator (not needed anywhere at the moment AFAIK)
+> 
+> I would probably rename this, mirroring the PD692x0 naming. "power" is actually
+> too blurry, leaving too much room for interpretation. Still keeping its purpose
+> to reference the supply that serves the PoE rail for this MCU with its downstream
+> PSE. Reasoning below.
+> 
+> >  * Being able to take advantage of the generic pse-pi framework evolving to take
+> >    into account more properties of the parent regulator, such as requesting more
+> >    power, or ensuring the parent supply is not overdrawn by the combined PSE-PI
+> >    outputs.
+> 
+> Correct me if I'm wrong but from what I see, most of that budgeting machinery
+> isn't used in dynamic budget evaluation strategy, which is used here because the
+> MCU does budgeting on it's own.
 
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Hm, I guess the wording in header is a bit confusing, I see now the
+misconception :)
 
-Best regards,
-Jozsef
+dynamic vs static means - haw available budget is calculated, not where.
+Dynamic can be implemented in the linux core too, but so far no one did.
+Static can be implement in the MCU firmware as well.
 
-> ---
-> net/netfilter/ipset/ip_set_core.c | 19 +++++++++++++------
-> 1 file changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-> index 6cfad152d7d1..16d33c3e28cf 100644
-> --- a/net/netfilter/ipset/ip_set_core.c
-> +++ b/net/netfilter/ipset/ip_set_core.c
-> @@ -679,11 +679,18 @@ __ip_set_get(struct ip_set *set)
-> }
->
-> static void
-> -__ip_set_put(struct ip_set *set)
-> +__ip_set_put_locked(struct ip_set *set)
-> {
-> -	write_lock_bh(&ip_set_ref_lock);
-> +	lockdep_assert_held(&ip_set_ref_lock);
-> 	BUG_ON(set->ref == 0);
-> 	set->ref--;
-> +}
-> +
-> +static void
-> +__ip_set_put(struct ip_set *set)
-> +{
-> +	write_lock_bh(&ip_set_ref_lock);
-> +	__ip_set_put_locked(set);
-> 	write_unlock_bh(&ip_set_ref_lock);
-> }
->
-> @@ -854,11 +861,11 @@ __ip_set_put_byindex(struct ip_set_net *inst, ip_set_id_t index)
-> {
-> 	struct ip_set *set;
->
-> -	rcu_read_lock();
-> -	set = rcu_dereference(inst->ip_set_list)[index];
-> +	write_lock_bh(&ip_set_ref_lock);
-> +	set = ip_set(inst, index);
-> 	if (set)
-> -		__ip_set_put(set);
-> -	rcu_read_unlock();
-> +		__ip_set_put_locked(set);
-> +	write_unlock_bh(&ip_set_ref_lock);
-> }
->
-> void
-> -- 
-> 2.43.0
->
->
->
+In static case - the Powered Device tells us haw much power budget we
+need to reserve for this device and it will be permanently accounted.
+Advantage - every device will get what it is requesting.
+Disadvantage - we do not use full capability of the power supply.
+
+In dynamic case - we do not fully trust the Powered Device, first we
+reserve requested budget and then start measuring the PD consumption.
+If real consumption is less as requested, the reservation will be
+reduced.
+Advantage - more PDs can be attached.
+Disadvantage - a spike in consumption of one PD, may kick out some low
+prio PDs.
+
+Since the dynamic case need a lot of measurements, it is usually
+implemented in the firmware. Both strategies have advantages and
+disadvantages and MCUs may allow to change the strategies, this is why we
+provide this information.
+
+In your case it is not documented, but it can be tested if you have
+enough PDs where you can influence the load.
+
+Not sure if we need an UNKNOWN flag to tell the user - we do not know
+what to expect, use it on your own risk.
+
+> Using vpwr-supply on each PI still buys that the
+> supply is enabled and ref-counted by PSE-PD core, and keeps potential for what
+> might come. But no requesting, allocation or deallocation of power.
+
+Ack, in many cases it is for diagnostic. Please note, a "manger" is in
+the practice a multi channel current limiter/regulator. It has maximal
+load per chip and different max load per port. This can be properly
+reflected with the regulators. 
+
+For example, RTL8238B-VB datasheet do not document maximal rating per
+chip, only per port. Calculating 8 ports, with 36W max, would result in
+288W. It feels like a lot of heat. Can it actually handle it?
+May be the MCU firmware has integrated maximal power limit do avoid HW
+damage. A proper information in the regulator tree would help user to
+understand why not all ports will get requested power.
+
+> Given that, I had a closer look at PD692x0 and it seems, this has a similar setup.
+> The difference here being just that there's no multi-manager concept. There is
+> also a manager-level supply reference "vmain-supply" which the driver reads
+> and applies to the hardware, which does budgeting also in hardware.
+
+According to RTL8238B documentation, it has same multi-manager concept.
+Since one manager RTL8238B supports max 8 ports, a switch with more PoE
+capable ports would need more chips.
+
+Since we already talk about power budgeting - all of this make sense if
+we have port priorities. For example PD692x0 firmware has default prios
+bound to port numbers. Is it the same with this firmware?
+
+pw-bot: changes-requested
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
