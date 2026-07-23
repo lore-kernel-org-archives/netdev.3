@@ -1,133 +1,392 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B97399356;
-	Thu, 23 Jul 2026 15:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784822285; cv=none; b=Sz/VqiwUpUAoCvGgPqHv+HBOWzpxqCliDIi1FGlgWixzX6hdZprz+f48+6e8O+o8bdoD8adqx0q1kOspyZXhzZzWUHMdBQRXiGcHElpSucrXwltF8t58BvAjh8oLujKBeC0ARGt8fcSDh2A6NA+EUwbYX5Yp20U5Q5NtMydmL/o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784822285; c=relaxed/simple;
-	bh=eKZl1BymiMrEuud9Nz3x/gcKPKZpSaZ1yTULfelVEq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t750XOFS2LtgrMSvgMk+qomMRoschk6ojxql/6horiSbjvetDcNATbK1hBhLYCwRyQjXZ80ZbdJ/MxBUp/dU0X3vqcOkxAws4ch5rgFNuOB5RF/FtvO22/3xWNzoA89fPtoZokAVMPhyuAop4ZP4IsRes7NebyG4suzj1jrA77A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKAr2JsS; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E035E35E1B0
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784822451; cv=pass; b=iHLyaAC+7XvZKuQDePtpISClJzxa4ryNy2l4NE7iqvsqd0xd3DZOV+W+L1XlS6CSKv2BQcIY+0RkeWu/DlGrMWcboN9rwGwyMbB+sxWbJjdzv16XMVbpj4N3ewC2qBcCe7N5qOGIXyJFJuwHtwf+GsyXuREKuJgIJ43Pdnjw1S8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784822451; c=relaxed/simple;
+	bh=mIOcMnGznkpO+pE9gOqEYAx4YJiEu4JTwR9t6IvJgV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=On8oy5ipCCAajnOYzIM1Ot5sPW2l/xWrwqf2f5sbHbkQ7S0ZzojkdxwUnJf7zBwEGq0HQc/ysPq3jpa660cednxnxJ2HlBNgGlp91V0kYQdhXQTPDBi5uOj3USt4XdwSv9uGTh67bxbg3QLWXiKpKGnDSAkev6D0OciBwpqTUFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhHCnkij; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKAr2JsS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604E61F000E9;
-	Thu, 23 Jul 2026 15:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784822280;
-	bh=fuxnJRqsWS6EgLQHxg5U8zfvVmbk3kTWrkWnV7H2sfg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IKAr2JsS5UsO9TaWJeyFf6h/2LyuH1swWhsl0OoD/mRzl+EBXQXtOUXFTleLZtYK2
-	 Pj+lAEwoQnUqjlBe8833JZ+qsosZPni6y2Qm5LHAICx3OSaXsU4UH8xKE6WemIEOPf
-	 3sZuoLv82ZS90wz5+eD/ds92WsHl96SgrEmN1JwwhYdu+qXzlEBES1jQk4CQjBxq7u
-	 8lAsjxgySLacgGym42wQl+J8DOJSoAfXKsf0KSkFsY4pxWXdDsS5e5wZnxm7ManG9G
-	 48Z1F9uZBX1qouXdj90GI9PyLy8Mh37nW2AGHnYutjy7w2HFXwbV+sBuOo/iyHk092
-	 QaFQiQt+i3TDQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	moonafterrain@outlook.com,
-	przemyslaw.kitszel@intel.com,
-	danisjiang@gmail.com,
-	stable@vger.kernel.org,
-	aleksandr.loktionov@intel.com,
-	horms@kernel.org,
-	rafal.romanowski@intel.com
-Subject: Re: [PATCH net 13/13] iavf: validate num_vsis in VIRTCHNL_OP_GET_VF_RESOURCES response
-Date: Thu, 23 Jul 2026 08:57:55 -0700
-Message-ID: <20260723155755.717968-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260717185340.3595286-14-anthony.l.nguyen@intel.com>
-References: <20260717185340.3595286-14-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhHCnkij"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-698a99b1c37so191972a12.1
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:00:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784822445; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qPlcwO4VhWclbwBhBQ2mhh15EhbvwIIkfmARp4bruJ6SWojLCce5gmmlyZRdiYn6v+
+         dDUsGWvt+0Nhn1GsBT7P15Q5lApMTHqOiUuqvHJ3wCDt9vrlc4MJ8VUe2s8je/rzs1eX
+         b2oenXe9p5QSRd3Z8Gaz5EIvASJstZb8citwz0m4KoYEty5nuAU92XunRelHLh6y2wAQ
+         p44I3XDUqQeQKKCO5bEqKWe5hwVzXV5H0ipnsgoZtOrlb/y0MAlS/6xiSMboQoUGkOCI
+         xez0uyyANW5/SklCPPCDmHiMNRllz1ni+nHj7eLNRwwCYq4EbzmtFn6TrjvCYgPXE9pl
+         Fk9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=j0HaNjjaDZuGEqReUR04EN3HbORPAqBe347i5g2FRzw=;
+        fh=WQCvMTmBY7+6FqTXNHDxyZtjCxGhDqJtCFZhM7OxJBc=;
+        b=rASHDrkXw4a8XwCHwlF90f1WDJWP8Ev768ciZpckPlz9zvcmhdvzJ0L0iGIfDsd7Om
+         kgN/qquJgLS5MVjcU/b+q5aj/ueTAlLGUIglrhhSPxvFLbpKbGPab8ZLkuq57iVu773d
+         tG6+LhtkE1o0nixemwIj/CrGlhMTGNPargPO1IB1zH+Fn0/N4xMbl7XSyCPHV9VWsyGe
+         j0DTBMy4UXUVAcRhKGzMEACt2ZINTRs6J4MDZMCTGFuVZBdJeh4TiJ5eq4r1cgAEsZP6
+         7ksS2JtjCxCtRXmGe8JZG+PlVTn787iecotnXmydsvuIjNSseZBblA9+W/CEUfXOt0SW
+         IMdw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784822445; x=1785427245; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=j0HaNjjaDZuGEqReUR04EN3HbORPAqBe347i5g2FRzw=;
+        b=NhHCnkijesLh9GzDO3sSS/jvzc+ZGwcU/LG241p36pRx3Ad0m+N/kqrXZaAiQInuYv
+         a2KvGEwJysHoWhAmwUGjUW+D3DB9UzO9a5Frl5XKlzeyUfM3k6ZGr+HgJmv+1xME1uLS
+         /WW2vuiRKJIqBHrEqqQ9+T2Z39gzWdxMsQd+A8qhJ9/B7C83YBZT2ekA+czZvRTm+Yo7
+         galfgGIkq0EMYwgv8SJPa0libJJKs1GS1qXnP3/dhARNmK7p8r3LT/EPHNjVzwxoX4HK
+         5TqQFuNzeKu4XKYMqQOEZO90vtPL7Mu95MAw79xvFY4o3EXeg2BUNLG3wkF0psHwURKg
+         lt5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784822445; x=1785427245;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j0HaNjjaDZuGEqReUR04EN3HbORPAqBe347i5g2FRzw=;
+        b=gQVSHjg+g9znI39gkFwr3Vzuo88ZuX3CIdc5ZGz2F2G+TRTUEaJQj+7K9PZVbwahTe
+         /SlbVXeQ3lCAqJbi10uEF3+j19FoOQo3vnTigv3Zu4arwCmCAaf8Ext8XCsQPaLNGCAh
+         ggpIwwn4PIFyy2BkoA9PoS0s2yJ2LPyDTSIgLBPbrSz/VWdM3IHh3A6gJ0Svgba23v6C
+         qFdOLpqfw/8tBog6oFXg71uCUokeD3LPK3poLrJK2XT8ncBTrYVsoa2yckLyRBwss+mw
+         ORQbQ0OxOlFzAjkCNV78WplKmTTh9muWn0RSUEuewVDxtmXAOTX8JlOTVgrp3Zp9AjL9
+         PWbA==
+X-Forwarded-Encrypted: i=1; AHgh+RrMdwNwSwiD6a3Hza7QKeUIVcmdtnhlZUh/q8ZGEybknbJGRQSaijT1LbRl9ktG+53YPevELEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNxBp3RzvpZl/kJZvWA70IcnP9FjtkVVgvvq6yZDa9S8gbYPOs
+	taxs+vplcfmIu8OKGGFis9ob0r4jAU3JX09XCD37Rpq/+oz2mQatP6pn0y7e9O63TjZWhEGIyUg
+	YGWYpcOFHmRyKW9Rm9acjKCkORavWwk0=
+X-Gm-Gg: AR+sD128eSoBdELOs7eXCfWYf86OCSimFA/W/ErLln5BC4N9G8CmTHN+FjCM0oiHdKh
+	+JeFulrHxxFoZojZ7pjA11lLuuYL74TgQ1hl9/U7spKHsW5Jj1DYY+FkHLcI5Y5B3slYj6HhkoA
+	gCZe0ZTSQ9X4XDvl6dZ7sAsZYoPTNLpr/fLmNBS0l/gDaW9/+rbDgnLhTEbsamlosNg/lqGM7D3
+	A3F77metV/9UyAsCQyryZDFGS1milGTlwZDC2k16iKmO5rLw0H1eDOgoHzGFPT7a8FtGO1w49l4
+	SOK+1JNN82xO2CU=
+X-Received: by 2002:a05:6402:24a4:b0:69e:990f:5cb7 with SMTP id
+ 4fb4d7f45d1cf-69f8ddbc2ccmr47193a12.6.1784822444460; Thu, 23 Jul 2026
+ 09:00:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720184955.3008978-1-nicoyip.dev@gmail.com> <7768862e22c58c970e91010bbec21e9e2e3159ff.camel@kernel.org>
+In-Reply-To: <7768862e22c58c970e91010bbec21e9e2e3159ff.camel@kernel.org>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Fri, 24 Jul 2026 00:00:32 +0800
+X-Gm-Features: AUfX_mx9x_VSsTI5YGFbZxngUlzZTWfQdpdUq_aauOljCi50sgNtunnA8pBPZhw
+Message-ID: <CAAo+4rWJFMLQXmzmf-Ons9TjEGzit_ChmKsCrEMhJ1Zn2rgsOA@mail.gmail.com>
+Subject: Re: [PATCH] rds: synchronize info callbacks with connection teardown
+To: Allison Henderson <achender@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Santosh Shilimkar <santosh.shilimkar@oracle.com>, Ka-Cheong Poon <ka-cheong.poon@oracle.com>, 
+	Dan Carpenter <error27@gmail.com>, netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-iavf: validate num_vsis in VIRTCHNL_OP_GET_VF_RESOURCES response
+On Thu, Jul 23, 2026 at 12:20=E2=80=AFPM Allison Henderson <achender@kernel=
+.org> wrote:
+>
+> On Tue, 2026-07-21 at 02:49 +0800, Chengfeng Ye wrote:
+> > rds_info_getsockopt() reads an info callback without holding
+> > rds_info_lock across its invocation.  At the same time, rds_exit()
+> > destroys all connections before unregistering the socket info callbacks=
+.
+> >
+> > This permits the following interleaving:
+> >
+> >   CPU0                              CPU1
+> >   rds_info_getsockopt()
+> >     func =3D rds6_sock_inc_info
+> >                                     rds_exit()
+> >                                       rds_conn_exit()
+> >                                         rds_conn_destroy()
+> >                                           kmem_cache_free(conn)
+> >     func()
+> >       rds6_inc_info_copy()
+> >         inc->i_conn->c_tos
+> >
+> > The receive queue lock keeps the incoming message on its socket queue,
+> > but it does not keep inc->i_conn alive.  KASAN reports:
+> >
+> >   BUG: KASAN: slab-use-after-free in rds6_inc_info_copy+0x459/0x530 [rd=
+s]
+> >   Read of size 1 at addr ffff888106031c50 by task poc/101
+> >   Call Trace:
+> >    rds6_inc_info_copy+0x459/0x530 [rds]
+> >    rds6_sock_inc_info+0x2b9/0x3c0 [rds]
+> >    rds_info_getsockopt+0x19d/0x380 [rds]
+> >    do_sock_getsockopt+0x2ac/0x480
+> >    __sys_getsockopt+0x128/0x210
+> >   Allocated by task 99:
+> >    kmem_cache_alloc_noprof+0x11a/0x360
+> >    __rds_conn_create+0x7e/0xd60 [rds]
+> >    rds_conn_create_outgoing+0x61/0x80 [rds]
+> >    rds_sendmsg+0xb83/0x1d00 [rds]
+> >   Freed by task 102:
+> >    kmem_cache_free+0x1b5/0x3d0
+> >    rds_conn_destroy+0x484/0x600 [rds]
+> >    rds_loop_exit_net+0x32/0x50 [rds]
+> >    unregister_pernet_device+0x2c/0x50
+> >    rds_conn_exit+0x13/0xa0 [rds]
+> >    rds_exit+0x1a/0xc40 [rds]
+> >    __do_sys_delete_module+0x30a/0x4d0
+> >
+> > Publish and clear callback pointers with SRCU, and keep the SRCU read-s=
+ide
+> > critical section across callback execution. SRCU permits callbacks such=
+ as
+> > RDS_INFO_COUNTERS to sleep, unlike classic RCU. After clearing a slot,
+> > synchronize_srcu() waits for every in-flight callback.
+> > Move socket callback deregistration ahead of protocol and connection
+> > teardown. This prevents callbacks from reaching a connection after it i=
+s
+> > freed.
+>
+> Hi Chengfeng,
+>
+> Thanks for the report and the patch, this is a great start. The UAF
+> analysis is correct, but there are a few bumps to smooth out before
+> this can go in.  First, the build bots caught some sparse errors that
+> need to be addressed:
+>
+> https://netdev-ctrl.bots.linux.dev/logs/build/1131097/14698942/build_allm=
+odconfig_warn/stderr
+>
+> Sparse can't apply the __rcu notation through a function-pointer typedef,
+> so all of the rcu_*() macros trip over it.  The simplest fix is to drop
+> the __rcu annotation and just use smp_load_acquire/smp_store_release on
+> a plain array in register/deregister. Also, checkpatch warns about the
+> two BUG_ON()s you touched. We can clean those up by converting them to
+> a WARN_ON_ONCE().
+>
+> On to the fix itself: this patch has two separate changes going on that
+> I think would be better done as two separate patches.  Comments below:
+>
+>
+> >
+> > Fixes: 7d0a06586b26 ("net/rds: Fix info leak in rds6_inc_info_copy()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> > ---
+> >  net/rds/af_rds.c | 12 ++++++------
+> >  net/rds/info.c   | 20 ++++++++++++++------
+> >  2 files changed, 20 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+> > index d5defe9172e3..b3fe2bd6ea35 100644
+> > --- a/net/rds/af_rds.c
+> > +++ b/net/rds/af_rds.c
+>
+> First, the changes in af_rds.c changes don't quite work the way you might=
+ think.
+> net/rds builds as three separate modules: rds.ko, rds_tcp.ko and rds_rdma=
+.ko.
+> rds_exit() only runs for "rmmod rds". rds_tcp_exit() only runs for "rmmod
+> rds_tcp".
+>
+> "rmmod rds_tcp" deregisters RDS_INFO_TCP_SOCKETS, and then destroys and
+> frees all the TCP connections.  The rds module stays loaded with
+> RDS_INFO_RECV_MESSAGES still registered, so "rmmod rds_tcp" still reprodu=
+ces
+> the splat since rds_exit() never runs in that case.
+>
+> Ideally what we want here is a ref counting infrastructure that isn't ups=
+tream
+> yet.  The good news is, I've been working on one, so I can push a tag for=
+ you to
+> base a revised fix on.
+>
+>   https://github.com/allisonhenderson/rds_work/releases/tag/rds-conn-kref=
+-base-v1
+>
+> The branch may still see some review churn, but I'll leave this tag here =
+for
+> you to base your fix on.  On top of it, the fix is just to make every hol=
+der
+> of inc->i_conn own a reference.  Really what we're doing here is porting =
+a
+> small UEK patch:
+>
+>   https://github.com/oracle/linux-uek/commit/99b9a3715419
+>
+> Upstream's assignment sites differ a little from UEK's, but basically the
+> idea is to use rds_conn_get() everywhere i_conn is assigned.
+>
+> This can target net-next since every remaining trigger needs CAP_SYS_MODU=
+LE
+> or physical device removal.  So it isn't reachable by an unprivileged att=
+acker.
+>
+> Once you've worked out the patch, I'll carry it with yourself as the auth=
+or
+> as part of that series so it lands in the right order.  Alternately if yo=
+u'd
+> rather not take on a port, that's fine too, just let me know and I would =
+tag
+> you for the Reported-by.
+>
+>
+> > @@ -925,6 +925,12 @@ static void rds6_sock_info(struct socket *sock, un=
+signed int len,
+> >  static void rds_exit(void)
+> >  {
+> >       sock_unregister(rds_family_ops.family);
+> > +     rds_info_deregister_func(RDS_INFO_SOCKETS, rds_sock_info);
+> > +     rds_info_deregister_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_inf=
+o);
+> > +#if IS_ENABLED(CONFIG_IPV6)
+> > +     rds_info_deregister_func(RDS6_INFO_SOCKETS, rds6_sock_info);
+> > +     rds_info_deregister_func(RDS6_INFO_RECV_MESSAGES, rds6_sock_inc_i=
+nfo);
+> > +#endif
+> >       proto_unregister(&rds_proto);
+> >       rds_conn_exit();
+> >       rds_cong_exit();
+> > @@ -933,12 +939,6 @@ static void rds_exit(void)
+> >       rds_stats_exit();
+> >       rds_page_exit();
+> >       rds_bind_lock_destroy();
+> > -     rds_info_deregister_func(RDS_INFO_SOCKETS, rds_sock_info);
+> > -     rds_info_deregister_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_inf=
+o);
+> > -#if IS_ENABLED(CONFIG_IPV6)
+> > -     rds_info_deregister_func(RDS6_INFO_SOCKETS, rds6_sock_info);
+> > -     rds_info_deregister_func(RDS6_INFO_RECV_MESSAGES, rds6_sock_inc_i=
+nfo);
+> > -#endif
+> >  }
+> >  module_exit(rds_exit);
+> >
+> > diff --git a/net/rds/info.c b/net/rds/info.c
+> > index 21b32eb16559..7d6f3552d65b 100644
+> > --- a/net/rds/info.c
+> > +++ b/net/rds/info.c
+>
+> These SRCU conversions in info.c are actually fixing a completely separat=
+e bug
+> independent of the connections.   A getsockopt(RDS_INFO_TCP_SOCKETS)
+> racing against a "rmmod rds_tcp" could call the callback pointer of a fre=
+ed
+> module. Which this patch fixes. So please resend the info.c changes
+> against net-next, with the build fixes, and a commit message describing
+> that race.
+>
+> I think that about covers it.  Let me know if you get stuck or have quest=
+ions
+>
+> Thanks again, this was a good find.
+>
+> Allison
+>
+> > @@ -32,6 +32,7 @@
+> >   */
+> >  #include <linux/percpu.h>
+> >  #include <linux/seq_file.h>
+> > +#include <linux/srcu.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/proc_fs.h>
+> >  #include <linux/export.h>
+> > @@ -68,8 +69,9 @@ struct rds_info_iterator {
+> >       unsigned long offset;
+> >  };
+> >
+> > +DEFINE_STATIC_SRCU(rds_info_srcu);
+> >  static DEFINE_SPINLOCK(rds_info_lock);
+> > -static rds_info_func rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIRST + 1=
+];
+> > +static rds_info_func __rcu rds_info_funcs[RDS_INFO_LAST - RDS_INFO_FIR=
+ST + 1];
+> >
+> >  void rds_info_register_func(int optname, rds_info_func func)
+> >  {
+> > @@ -78,8 +80,8 @@ void rds_info_register_func(int optname, rds_info_fun=
+c func)
+> >       BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+> >
+> >       spin_lock(&rds_info_lock);
+> > -     BUG_ON(rds_info_funcs[offset]);
+> > -     rds_info_funcs[offset] =3D func;
+> > +     BUG_ON(rcu_access_pointer(rds_info_funcs[offset]));
+> > +     rcu_assign_pointer(rds_info_funcs[offset], func);
+> >       spin_unlock(&rds_info_lock);
+> >  }
+> >  EXPORT_SYMBOL_GPL(rds_info_register_func);
+> > @@ -91,9 +93,10 @@ void rds_info_deregister_func(int optname, rds_info_=
+func func)
+> >       BUG_ON(optname < RDS_INFO_FIRST || optname > RDS_INFO_LAST);
+> >
+> >       spin_lock(&rds_info_lock);
+> > -     BUG_ON(rds_info_funcs[offset] !=3D func);
+> > -     rds_info_funcs[offset] =3D NULL;
+> > +     BUG_ON(rcu_access_pointer(rds_info_funcs[offset]) !=3D func);
+> > +     RCU_INIT_POINTER(rds_info_funcs[offset], NULL);
+> >       spin_unlock(&rds_info_lock);
+> > +     synchronize_srcu(&rds_info_srcu);
+> >  }
+> >  EXPORT_SYMBOL_GPL(rds_info_deregister_func);
+> >
+> > @@ -165,6 +168,7 @@ int rds_info_getsockopt(struct socket *sock, int op=
+tname, sockopt_t *opt)
+> >       int npages =3D 0;
+> >       int ret;
+> >       int len;
+> > +     int srcu_idx;
+> >       int total;
+> >
+> >       len =3D opt->optlen;
+> > @@ -214,8 +218,11 @@ int rds_info_getsockopt(struct socket *sock, int o=
+ptname, sockopt_t *opt)
+> >       rdsdebug("len %d nr_pages %lu\n", len, nr_pages);
+> >
+> >  call_func:
+> > -     func =3D rds_info_funcs[optname - RDS_INFO_FIRST];
+> > +     srcu_idx =3D srcu_read_lock(&rds_info_srcu);
+> > +     func =3D srcu_dereference(rds_info_funcs[optname - RDS_INFO_FIRST=
+],
+> > +                             &rds_info_srcu);
+> >       if (!func) {
+> > +             srcu_read_unlock(&rds_info_srcu, srcu_idx);
+> >               ret =3D -ENOPROTOOPT;
+> >               goto out;
+> >       }
+> > @@ -225,6 +232,7 @@ int rds_info_getsockopt(struct socket *sock, int op=
+tname, sockopt_t *opt)
+> >       iter.offset =3D offset0;
+> >
+> >       func(sock, len, &iter, &lens);
+> > +     srcu_read_unlock(&rds_info_srcu, srcu_idx);
+> >       BUG_ON(lens.each =3D=3D 0);
+> >
+> >       total =3D lens.nr * lens.each;
+>
 
-This patch clamps the num_vsis field from the PF's
-VIRTCHNL_OP_GET_VF_RESOURCES response so that the loop bound used when
-iterating over the fixed-size vsi_res[] buffer cannot exceed what the
-received message length can cover.
+Hi Allison,
 
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-> index ec234cc8bd9d..c4039d2b24a4 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+Thank you for the detailed review and for confirming the bug.
 
-[ ... ]
+I would prefer to leave the connection-reference port to you, since it
+depends on the new refcounting infrastructure. Please feel free to carry
+the fix in your series with:
 
-> @@ -300,7 +316,7 @@ int iavf_get_vf_config(struct iavf_adapter *adapter)
->  	 * we aren't getting too many queues
->  	 */
->  	if (!err)
-> -		iavf_validate_num_queues(adapter);
-> +		iavf_validate_num_queues(adapter, min(event.msg_len, len));
->  	iavf_vf_parse_hw_config(hw, adapter->vf_res);
->  
->  	kfree(event.msg_buf);
+Reported-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 
-[High]
+I will resend the info.c changes against net-next.
 
-Does the error path in iavf_get_vf_config() still allow the
-out-of-bounds access on vsi_res[] that the commit message describes?
-
-Looking at the surrounding code:
-
-    err = iavf_poll_virtchnl_msg(hw, &event, VIRTCHNL_OP_GET_VF_RESOURCES);
-    memcpy(adapter->vf_res, event.msg_buf, min(event.msg_len, len));
-
-    /* some PFs send more queues than we should have so validate that
-     * we aren't getting too many queues
-     */
-    if (!err)
-        iavf_validate_num_queues(adapter, min(event.msg_len, len));
-    iavf_vf_parse_hw_config(hw, adapter->vf_res);
-
-The memcpy of the PF-supplied payload into adapter->vf_res runs
-unconditionally, but the new num_vsis clamp is only invoked when err is
-zero.
-
-iavf_poll_virtchnl_msg() returns virtchnl_status_to_errno(v_retval), so a
-PF response carrying a non-success v_retval together with an
-attacker-controlled msg_buf would still populate adapter->vf_res with the
-raw num_vsis value and then skip the clamp.
-
-iavf_vf_parse_hw_config() runs unconditionally after that and iterates
-based on the unclamped u16 num_vsis:
-
-    for (i = 0; i < msg->num_vsis; i++) {
-        if (vsi_res->vsi_type == VIRTCHNL_VSI_SRIOV) {
-            ether_addr_copy(hw->mac.perm_addr,
-                    vsi_res->default_mac_addr);
-            ether_addr_copy(hw->mac.addr,
-                    vsi_res->default_mac_addr);
-        }
-        vsi_res++;
-    }
-
-vsi_res[] is a fixed-size array of IAVF_MAX_VF_VSI (3) entries in the
-adapter->vf_res allocation, so num_vsis up to 65535 would walk far past
-that buffer, and any OOB slot whose vsi_type happens to equal
-VIRTCHNL_VSI_SRIOV would additionally copy six bytes of adjacent heap
-memory into hw->mac.perm_addr and hw->mac.addr.
-
-Would it make sense to either apply the num_vsis clamp unconditionally,
-or gate the memcpy and iavf_vf_parse_hw_config() behind the same
-if (!err) as the validation, so that the error path cannot reintroduce
-the out-of-bounds access this patch is meant to close?
+Best regards,
+Chengfeng
