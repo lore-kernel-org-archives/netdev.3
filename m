@@ -1,81 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC7841A93A
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41ED31F984
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815550; cv=none; b=FnVSuOWv6IbYlStRZybaVzeSZJPUcnrWrTKkdGEBW9d5ZrX5l9FWOm0Q7MaA2Aitma7xWF0DU1fQQ7HMkjup+QUCGkFXI6NJDlQLK9UnmoKQmBa5syj7yCt9s2PBYoD7idhnWyGnZaUqDchD8hNkTnDqJivp6Pqzr7ItRdJlabg=
+	t=1784815556; cv=none; b=tnoUls7U+D7/8j1P3G5JMWGCrHsqkvAQ/3iPVinZHLWH/MJDBmVg1nAlQyWV1zSpftvFdQSWX0wfXdFGyKTmu/wfVig3hT1HaTUffvenFYCU7qMjAyKzrdmJOtEkdSoZSdaiJVk7Kp9BsT1K7+6BBG8N2LT8EF5Wsa49Jk9g1nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815550; c=relaxed/simple;
-	bh=RQBKtPTBtX8ge1PNpwy60O/45C6MQ0xqp9gO/yr1nps=;
+	s=arc-20240116; t=1784815556; c=relaxed/simple;
+	bh=f5mefx920iVtjxAk8+at3HpcWineSSgdd/AOxpTL/U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTrOIe46GdFyvmKyNZ1+DqqkmtDvwNrJpplt5zXCUTpXq842TzUP+dlLdP1OFjze5RIlfGbLRBdTS1a/Ze2uFREU+lunoMYmB2lip+1NP1NTRXGoOvhrsH+mPS/r7nlBVK0UrvXurrNtkNcqzaJ9wKRlAnzhecp9LxQmxRgNXsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QyOlfuO1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EuvCYlc9; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=jCHUJsTHW6CJc1I2qMslIAcIuRo9jVxE0Bkqurc0UJYj3/i/dbN/o/ylZSO20ErrADvdyfQZLxkCCz2uXBdc8ki/bwjfOMLpV7EN8GaHKKMa3TMsGi7CQJHKoaMmnFRMS34zqotSzdx9/SdXDOIZoKMP9ZsxpEyuqUdPdKrX3Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PbnZzT6a; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FEchDZwl; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QyOlfuO1";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EuvCYlc9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PbnZzT6a";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FEchDZwl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784815547;
+	s=mimecast20190719; t=1784815553;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I880Ca0KXpdJ71lyMD7Z6ZxjAEzuDwA1b+elqzVFveY=;
-	b=QyOlfuO1b9vVTXDbBT8dGiSatlDofp4J1ClJEMGbj3fC4WH8DX8ytzBkA1B/NrDA6VHoDz
-	KCixIrOChJuhLehz3v7X9cQSHTL/UkP5dRw4IjQWF/sWLmruidkUufwECZ5jqWv2Qqp2nE
-	p0Wd9rbOZscIxPWi+ngVNkGIbC4Wljw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=EJSVbQzeC6WNvyzEAD2OPMeMq8tHisEcWft/tom9rFc=;
+	b=PbnZzT6aXCJazPlzXzSL80k2NnkFAMsgr24EI4J8z1hJbjLhNoEd0hH3VkXadSRa7h7Zxu
+	HwTguKn3zb/iNFeYcNklUAf8eNt3eTEQEm0HRa1deKpSzjSwcKbEolYB0qToryWGaRizBD
+	+/GrxS5oXpArK7tyoTnv3P0tNFumwH0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-meAPwCWVN9uoeLMeE-cKig-1; Thu, 23 Jul 2026 10:05:45 -0400
-X-MC-Unique: meAPwCWVN9uoeLMeE-cKig-1
-X-Mimecast-MFC-AGG-ID: meAPwCWVN9uoeLMeE-cKig_1784815544
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49553d98911so4153375e9.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:05:44 -0700 (PDT)
+ us-mta-381-sDpTwty5OfukggIA2wjFjQ-1; Thu, 23 Jul 2026 10:05:49 -0400
+X-MC-Unique: sDpTwty5OfukggIA2wjFjQ-1
+X-Mimecast-MFC-AGG-ID: sDpTwty5OfukggIA2wjFjQ_1784815548
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-492488f8583so7217015e9.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:05:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784815544; x=1785420344; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1784815548; x=1785420348; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=I880Ca0KXpdJ71lyMD7Z6ZxjAEzuDwA1b+elqzVFveY=;
-        b=EuvCYlc9kdgvGSokjec4chCj8pEn3KrPEAeWb+vz0gdKCHDhrgmvWraWeZoLPnOdmR
-         Eia/GrUUeoTb+m67jkLIL2Otclr2p/lpXe1ua3fsX6OzK0+LJ97K0PAh3xGN0qh/jQl2
-         +SJ+tnKDs+8gg8fMnGRy6Ix4EZ9vhSQpYt2ilXjCWJyxD3m6wBcVcBlS7JahS9qclKIf
-         pInraB032o8tzHYi+7GxnUUMBDxsuXG2ImIrKTQORzho71OzuoafaE7k2601DPgazEXC
-         oreaGJ5r9mMhKskuJWjqhiNkEwFAqxmnXp1g3QyM8WVN/3y4CBAHl5otsIn4OqDfTdcj
-         Hw9A==
+        bh=EJSVbQzeC6WNvyzEAD2OPMeMq8tHisEcWft/tom9rFc=;
+        b=FEchDZwlfCSOHCL/pNDJ8OQC9uxflSvRDwM5cz+5AmZHrTKbR7RiQ5QQ6uI2PXfJe7
+         9T3W+AXl9xWBL7/soZYxs6wrvIB+8NbSmfMVIsiBCOy76ihaEct04camzFlcPC2GaoIl
+         Vhi3KWxpjb36Rc2pgX7KRei7nNVF8EcKWFNRqZXxb7O6o5wd1YF0GyYuMKktVhIyF4s2
+         73sKPf4Wd+r/i3woNyUVfVndp2afoOqOeVqtHm7QdlEWsINIxoH9P5UcfYAXp+CQDh13
+         nBwDa/n8I0rHhb+3W7T48Hkw16sPi20qAQcdFOFWJ0maVx8xFgezZOst2HI0RKCUoZKa
+         TCiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784815544; x=1785420344;
+        d=1e100.net; s=20251104; t=1784815548; x=1785420348;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=I880Ca0KXpdJ71lyMD7Z6ZxjAEzuDwA1b+elqzVFveY=;
-        b=dSwHFKKLGOQWC33qh3lmTPnDZR4mOlxX9IhvAUKq/hLUzS0OxhprakyOw7pnjh4Aco
-         NhJ2DhcrIXAJDrZtQMo5x3hTGzk1s+caxMn0suFK97jMLgbPvnTe4AYOEpin4dDmoFiC
-         GCkhx/lBDT2FujoxIaQpVp30Yk/YECHqwoqLUJM/C2s/+kgp3kFJ6n9lHff7brAglpQX
-         7P5ahxNWlbmxdogf9q31bjbEzsUkLNmmWjHHG6OQiJZK4HhZ2IMx7GG2q6jD2d17V9lN
-         JeG6e0GjGi8V7ZLxtD9pHnq3w7//KhdJwLxc+lQX4s04TPYoIGkpDp+IjqANO8ESOChv
-         +DXw==
-X-Gm-Message-State: AOJu0YztBsw/PppbPjqvdSt3EBG3f6QWOBChaTrLV5acsygiDkfkVJE6
-	zF9T+JSZTEbYtoqBqITebW+/OrhKThD/LnM/SY/+WwLK+6eF5Avs9ouFGtk1Ph6omLEUjj2LwUp
-	HVS0A6ac0MxLrcZhZPHDxE9HtHoA3nOA03QwVweJE1LPlXvEiWF09+Q5MqQ==
-X-Gm-Gg: AR+sD11cbc//bqoMfaYZJiphs3pAFwLuYNVsPGSZ+SBUv0NzQagrQKwAex0z5HpjCXL
-	HsAvwUtKyevVNgcwRHGxkSCeO+Zr/aBr20/HteRPBe4xlF2H2FZxRO+9DKXB78GBOjdOddWlb6d
-	myCZA2nz9NhZquNCD0KYxNrvZYKjq15LBS/YJ/qSYM/hb0wWnk7kP3/WHEbTsyV1OXliXd0c9lH
-	HqoXVbGeKg6S0iIHogLP/BwYBhgRCFmJh8j8WYx8JkFRCHakqaUQJuWMpicNNNYyNxJdQQhKo+C
-	OCKGqCzCIvWRsX120+2wKttbErspWCcqklZsh8G/H9Ziq0LKS4FIE7LjZS2M1ei6YXx693k0tL2
-	Wi+rZfRBTfZUXog==
-X-Received: by 2002:a05:600c:1c1c:b0:493:ecf5:89fd with SMTP id 5b1f17b1804b1-495745ac487mr31796975e9.17.1784815543713;
-        Thu, 23 Jul 2026 07:05:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:1c1c:b0:493:ecf5:89fd with SMTP id 5b1f17b1804b1-495745ac487mr31796565e9.17.1784815543225;
-        Thu, 23 Jul 2026 07:05:43 -0700 (PDT)
+        bh=EJSVbQzeC6WNvyzEAD2OPMeMq8tHisEcWft/tom9rFc=;
+        b=Z4zzqZp1h0fxv0jo1Cqn/WgT3SgCpYnyi0DI6HUlpZEo7ZS9CJmjLyPkF9QFXwLfEU
+         hM439z5o9NkMjJI2TzZ4QL0vxneXKaK9agfH5JKHQ+67VIA7yxCqMmrz5Fue/qXD62Sr
+         D1BPgMgcoVuh5aY++1ocuMqgyP+/4wsUZ4gArO94DIEkvUYTvKyGIDwHYvaXXht/stYF
+         gUh2kItUHp5kc0Qgt5Iwf6ye/DJkLkfIyqZESnKSsDaf0l0z2H+Y7s5yBa2RdwmoNs1O
+         uyBz36q1vya/bzr5DIlr7skMdrioXl5pnE8gykHquRZiqi8GC33rF1bWfYcvRwDlUSBz
+         7SYQ==
+X-Gm-Message-State: AOJu0Yz/HII+qG+MEbzgz1gH0lYMd/q+vFbOnntM0e2ob381kOcpWsR2
+	vGXEJeMAcwv6ooMn8jdv8U/nxznTqka0pZplQL34XnvNf3t/mTuEhe1TBDbJ4+KjsktdhIL7wYL
+	3pVfPShxzFRfWeqMzB1dn8gF3BXcxLQXpobrmDQBZZ6I+5pyzQ2Gk6RJH8A==
+X-Gm-Gg: AR+sD10MOSwQZ72PlGB319RSgealSa3CdNAwuUcbjpM56RfFUmnol2FktpY/Kzvf6Dq
+	uksdfXexZvOtfHNUzpIddqv3WfovAMvQEHPRdKE/H96YmGQpivKxa7lA4cI+5WPni7TZz0lDsgq
+	0GL26cii1JXbhfrhqdN8TXWuZAOSdUXRz/txZCW82qRI4cj0OigKEO88LXqpMXpFCSCScYeE2Bx
+	VkvY3eXVXxXY+zphjAbwTlnkew05ArJqaalLxQpP4WeNGV+uZko5XbsP937vQWpHkOI2xaLh8Pz
+	EnqsgJGiMFVAA08B8PXh9NULgBUJ0pwl/oi7+dZdm9VsIpkpYE33AuudW7HwZO4cnmSV8oOYSyO
+	wF1e37HYp0Ln14g==
+X-Received: by 2002:a05:600c:8b41:b0:490:b8c0:d470 with SMTP id 5b1f17b1804b1-49573cfc9ffmr45276925e9.19.1784815547940;
+        Thu, 23 Jul 2026 07:05:47 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b41:b0:490:b8c0:d470 with SMTP id 5b1f17b1804b1-49573cfc9ffmr45276385e9.19.1784815547537;
+        Thu, 23 Jul 2026 07:05:47 -0700 (PDT)
 Received: from fedora.redhat.com ([216.128.14.205])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a4aae16sm154261685e9.0.2026.07.23.07.05.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a4aae16sm154261685e9.0.2026.07.23.07.05.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 07:05:42 -0700 (PDT)
+        Thu, 23 Jul 2026 07:05:46 -0700 (PDT)
 From: mheib@redhat.com
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -90,9 +90,9 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Mohammad Heib <mheib@redhat.com>
-Subject: [PATCH iwl-next v4 1/3] i40e: move ATR sample rate from ring to PF level
-Date: Thu, 23 Jul 2026 17:04:15 +0300
-Message-ID: <20260723140510.184819-2-mheib@redhat.com>
+Subject: [PATCH iwl-next v4 2/3] i40e: add devlink parameter for Flow Director ATR sample rate
+Date: Thu, 23 Jul 2026 17:04:16 +0300
+Message-ID: <20260723140510.184819-3-mheib@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260723140510.184819-1-mheib@redhat.com>
 References: <20260723140510.184819-1-mheib@redhat.com>
@@ -106,107 +106,117 @@ Content-Transfer-Encoding: 8bit
 
 From: Mohammad Heib <mheib@redhat.com>
 
-The ATR sample rate is currently stored per-ring and initialized when each
-TX ring is configured. Since the sample rate is a global policy that
-applies uniformly across all rings, it makes more sense to store it at
-the PF level.
+The i40e driver uses Flow Director ATR to periodically update flow
+steering information for active TCP flows. The update frequency is
+currently controlled by I40E_DEFAULT_ATR_SAMPLE_RATE and is fixed at
+driver build time.
 
-Move atr_sample_rate from struct i40e_ring to struct i40e_pf and initialize
-it once during i40e_sw_init(). Update i40e_atr() to reference the PF-level
-field. Change atr_count from u8 to u32 to match the sample rate type.
+On systems with a large number of queues and high-rate TCP workloads,
+the default sampling interval can result in frequent Flow Director
+reprogramming for long-lived flows.
+
+The amount of TCP packet reordering observed on some systems is
+sensitive to the ATR sampling interval. Increasing the interval reduces
+Flow Director programming activity and can significantly reduce the
+associated reordering.
+
+Since the optimal sampling interval depends on the workload and system
+configuration, a single fixed value is not suitable for all deployments.
+
+Add a devlink parameter to allow administrators to tune the ATR sample
+rate at runtime without rebuilding the driver or disabling ATR
+functionality entirely.
 
 Signed-off-by: Mohammad Heib <mheib@redhat.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c | 9 +++------
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 6 ++++--
- drivers/net/ethernet/intel/i40e/i40e_txrx.h | 3 +--
- 4 files changed, 9 insertions(+), 10 deletions(-)
+ Documentation/networking/devlink/i40e.rst     | 20 +++++++++++
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 36 +++++++++++++++++++
+ 2 files changed, 56 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 1b6a8fbaa648..88eb40ee45f0 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -487,6 +487,7 @@ struct i40e_pf {
- 	u16 rss_size_max;          /* HW defined max RSS queues */
- 	u16 fdir_pf_filter_count;  /* num of guaranteed filters for this PF */
- 	u16 num_alloc_vsi;         /* num VSIs this driver supports */
-+	u32 atr_sample_rate;
- 	bool wol_en;
+diff --git a/Documentation/networking/devlink/i40e.rst b/Documentation/networking/devlink/i40e.rst
+index 51c887f0dc83..2cea98b631ba 100644
+--- a/Documentation/networking/devlink/i40e.rst
++++ b/Documentation/networking/devlink/i40e.rst
+@@ -40,6 +40,26 @@ Parameters
  
- 	struct hlist_head fdir_filter_list;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 4e5307355484..22466460e40b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3457,12 +3457,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
- 		ring->xsk_pool = i40e_xsk_pool(ring);
+         The default value is ``0`` (internal calculation is used).
  
- 	/* some ATR related tx ring init */
--	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags)) {
--		ring->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
--		ring->atr_count = 0;
--	} else {
--		ring->atr_sample_rate = 0;
--	}
-+	ring->atr_count = 0;
- 
- 	/* configure XPS */
- 	i40e_config_xps_tx_ring(ring);
-@@ -12749,6 +12744,8 @@ static int i40e_sw_init(struct i40e_pf *pf)
- 		}
- 	}
- 
-+	pf->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
++.. list-table:: Driver specific parameters implemented
++    :widths: 5 5 90
 +
- 	if ((pf->hw.func_caps.fd_filters_guaranteed > 0) ||
- 	    (pf->hw.func_caps.fd_filters_best_effort > 0)) {
- 		set_bit(I40E_FLAG_FD_ATR_ENA, pf->flags);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 61525ab7d21e..48d05c2e698e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2871,6 +2871,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 	struct tcphdr *th;
- 	unsigned int hlen;
- 	u32 flex_ptype, dtype_cmd;
-+	u32 sample_rate;
- 	int l4_proto;
- 	u16 i;
++    * - Name
++      - Mode
++      - Description
++    * - ``atr_sample_rate``
++      - runtime
++      - Controls how frequently Flow Director ATR updates flow steering
++        information for active TCP flows.
++
++        ATR programs Flow Director entries based on sampled transmitted
++        packets. The sampling interval is specified as the number of
++        transmitted packets between ATR updates.
++
++        Lower values increase Flow Director programming activity, while
++        higher values reduce the update frequency.
++
++        Setting to ``0`` disables ATR sampling (no filters will be programmed)
++        The default value is ``20``.
  
-@@ -2882,7 +2883,8 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 		return;
+ Info versions
+ =============
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_devlink.c b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+index 229179ccc131..6df7eb217073 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_devlink.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+@@ -33,12 +33,48 @@ static int i40e_max_mac_per_vf_get(struct devlink *devlink,
+ 	return 0;
+ }
  
- 	/* if sampling is disabled do nothing */
--	if (!tx_ring->atr_sample_rate)
-+	sample_rate = READ_ONCE(pf->atr_sample_rate);
-+	if (!sample_rate)
- 		return;
++static int i40e_atr_sample_rate_set(struct devlink *devlink,
++				    u32 id,
++				    struct devlink_param_gset_ctx *ctx,
++				    struct netlink_ext_ack *extack)
++{
++	struct i40e_pf *pf = devlink_priv(devlink);
++	u32 sample_rate = ctx->val.vu32;
++
++	WRITE_ONCE(pf->atr_sample_rate, sample_rate);
++	return 0;
++}
++
++static int i40e_atr_sample_rate_get(struct devlink *devlink,
++				    u32 id,
++				    struct devlink_param_gset_ctx *ctx,
++				    struct netlink_ext_ack *extack)
++{
++	struct i40e_pf *pf = devlink_priv(devlink);
++
++	ctx->val.vu32 = READ_ONCE(pf->atr_sample_rate);
++
++	return 0;
++}
++
++enum i40e_dl_param_id {
++	I40E_DEVLINK_PARAM_ID_BASE = DEVLINK_PARAM_GENERIC_ID_MAX,
++	I40E_DEVLINK_PARAM_ID_ATR_SAMPLE_RATE,
++};
++
+ static const struct devlink_param i40e_dl_params[] = {
+ 	DEVLINK_PARAM_GENERIC(MAX_MAC_PER_VF,
+ 			      BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+ 			      i40e_max_mac_per_vf_get,
+ 			      i40e_max_mac_per_vf_set,
+ 			      NULL),
++	DEVLINK_PARAM_DRIVER(I40E_DEVLINK_PARAM_ID_ATR_SAMPLE_RATE,
++			     "atr_sample_rate",
++			     DEVLINK_PARAM_TYPE_U32,
++			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
++			     i40e_atr_sample_rate_get,
++			     i40e_atr_sample_rate_set,
++			     NULL),
+ };
  
- 	/* Currently only IPv4/IPv6 with TCP is supported */
-@@ -2934,7 +2936,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 	if (!th->fin &&
- 	    !th->syn &&
- 	    !th->rst &&
--	    (tx_ring->atr_count < tx_ring->atr_sample_rate))
-+	    (tx_ring->atr_count < sample_rate))
- 		return;
- 
- 	tx_ring->atr_count = 0;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-index bb741ff3e5f2..be587f804e7a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-@@ -372,8 +372,7 @@ struct i40e_ring {
- 	u16 next_to_clean;
- 	u16 xdp_tx_active;
- 
--	u8 atr_sample_rate;
--	u8 atr_count;
-+	u32 atr_count;
- 
- 	bool ring_active;		/* is ring online or not */
- 	bool arm_wb;		/* do something to arm write back */
+ static void i40e_info_get_dsn(struct i40e_pf *pf, char *buf, size_t len)
 -- 
 2.53.0
 
