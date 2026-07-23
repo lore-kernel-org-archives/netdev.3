@@ -1,230 +1,204 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034B14322ED
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E423E5EDB
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784799664; cv=none; b=M1wQaiTZN5zr5OgmANiAJuaku9dxXAKPhvidsP16Q4mLEMfKutGtBiknoB2nm+v1y2c9+hl150dayOtvOfDBR9nFuE3W4AVsHF4DTTx7sH3FjlJqYRw+7s0NUtbGj9ASiu11af+WTrNFUioLW+cNq6KpTAWI9lVmWzWhPI0xODQ=
+	t=1784799925; cv=none; b=kFRZZ4+AQLIHTFR2m/Uav3hy17lL463+8w/JptKP1UumTxa5MJnHWuFwbrDEFEtOoxnQxFrO1J9zUSM73JO9QEWkYTPXcqn1GycFHd3ltFV8jTllrUf2wZnvOd2PFJL/es6gT8d8PE4IVQC7rFOTocnNgYg/hGu9a/HsLkCk1no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784799664; c=relaxed/simple;
-	bh=g7PgbZxk0ZYEVAy5ZHU8r9/wH1xAU8siBXlCIHbfMFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QwA8g8TcosJatMBv0UN139jdE28/LJ7OKbDaNlf2kbYsFsnzWmrWcJioJAyHxOSSTBsNQzXMKLrpexSZHp+7woScoyf0M/c/9sXxfRsm5Mnj87XYVOt9A3252+OCXO+X+BfMrQrExBSm+fDx/Yhc4/5GN5HuGOA4pL+BM7YpGXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=z3d8qHA7; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	s=arc-20240116; t=1784799925; c=relaxed/simple;
+	bh=o6Lwomr9kCQRXkGx/1Vs5RaKg0u+FQqJS1OP3nbdFz4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qzJSpSjFolGcDhNQ6vl5Cj9jdXaPwjdNL9JvFFd8MPgwW9Gf2BCobk4J1C2Gwtd4E0Wrd73uB9FCUATJTsrOk6PBioQM2btB9ig2JSe0qi6feZyfOdOwwdmH3Hn7yLCZD0c0jyCsiLds64ecmUDm7C646AFIfu+2mPA47//sO/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bid0R0Oq; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="z3d8qHA7"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cedda2ce6fso3604235ad.1
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:40:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bid0R0Oq"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493f75f7172so3834175e9.1
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:45:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1784799659; x=1785404459; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DQ9bjv6SMDdqScWzoPZvoyCdrSvsUJw/PMPVLaeFbAo=;
-        b=z3d8qHA7s8cGiEDmIAY6TP68jcF0EGXtt3/3SK/JCyMFBpkZf0oXjZUgcAF5q/2/Xf
-         rba73Inepo0ggHooWA9oCilUG2zM0pw0lwIoQnBkboOhXWEe6wGTPPXKhXyrT8qAMjiU
-         /lwqJY6WyyLcZztY9cb/U+kMKw1eujTo/nlnwpKSGbDtHr9M7D6E4SJ573vad/PCoxKi
-         Xow8tAIUaaqAoqi/zEAqTVNjNUP9AhaPZHaFjCoF993fZjR+T2+GXjCfJjksuxITtPmP
-         drbvL2Dw4K5/NyZBWgciY1/4HBVkV2i0VdTfZfurutNiT6IJC13t8TnlJsK6ItV9LMOL
-         DDmA==
+        d=gmail.com; s=20251104; t=1784799922; x=1785404722; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i93T0tzgCY+DP8cUZolLm0O+1zIztO+HaXRQpxg7jVc=;
+        b=bid0R0OqyBRyZSFJUTZO3/rtufQncd33mF5APL3kH42rivUI88XuxtTIHFbBEuxxci
+         AD34gyxfG713Os4Anb44Rv2Qp0o4HVINv+XTty1IsniMP26o/XQ8NfFF3wCA88tZ9Lvw
+         fuX0LdgQhyYJrPtJ0mYZ5aRFxGV2OOisKpIekmGEdY9a1reOefNVM/XbpuFwftLAS1gv
+         DZ6F3x8y6p5z+SXLjTdmVU5iZf4c8fyTBN0VCB2UxSZ6swpqIr4v+0Cv56kQKZlSYIkr
+         tWwD9X0ZPN+3H6COlCu28NbzUxNDyeVxDqx/R+fBbMnHdkFLfaq1ZRg44J/joIJvatdy
+         LANw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784799659; x=1785404459;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1784799922; x=1785404722;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DQ9bjv6SMDdqScWzoPZvoyCdrSvsUJw/PMPVLaeFbAo=;
-        b=eluQGcTetJsexiiLp5g60Li1iQSavhCK07KRWzfIXy4TVjUMRapQfpWiIDfpUd7QHv
-         I73+ChGV9YQXM6p+J5vpd6CBb722RgobJIzWPEY/5O7b9zjg0rAl4NRqvD6k1z9qW6XF
-         uLVqCg35UNc0v2rZDoB2zRlw5q+w1ft4w24/sztRIPlMNyUA7Tc9TBgGreEo4x4gQ+qY
-         OOLk75d8lrqiza+GnDxIEq3O9FFDg0ur1x8IJ3tzvmkYPMjin5aXHzl+P++HE6GhaBEL
-         PM9VQvye+FgZYMI9JgqpZSqU+qO8GZ2QWmRVYycz3j2JjC0MqaW+/jLW5Bt0XnnYxhgS
-         AR3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqF0+hFqDO9hG54yvQTRQ7+dMek4Wjs3sIEP+U7FEc28vhKX/MWaDI+VhoKC1aqMCu/29SzMqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH/i873ET6ngYBHN5Ia3+YoyevG2JilLAFMNnj0E04LlEh7yY8
-	yr9AoNe3JOwzGmEiCzNxm3kUtckU8fXeS1nBS8muJ81vnt6r/FPXRHfvCs5/uWcZdb8=
-X-Gm-Gg: AR+sD12PUWHHfRnaN8/Oom3xJMau7sKxuUOgZfmBt9XYkfb6qtB6SA0Z7PI69nV5ugc
-	xxgZ7snyQvgeXGjXTevt/dGnTeqYQOMMG45EEnZb6v65bT3gwJMkU5GF4WM9r5fc1NHf/MQ6R7p
-	26XbTH/2CSRR1CvBwd3pG5Rc6czjLrSKfNoX7swXyhzgP6ChoPPG4hYk8K5XysMuM6wbOSEVd5a
-	X9x3zclRhMeuuPw+lIAkqAvGo8bo8xQSsiF5rNh44f0un001nocBe4QP75SoY90A2qbOrm5bbJs
-	FychYXL4FTHYwS6e6UDFR1wpQaHARGVwkvkEcUEhix16u+gvUioBgsw7MW5T/dHmkCXQJsdVFaP
-	VCokjNUqdQjqpXqLUixBOW9uBNI5k0KY1YEwBTvR1FUoXUqWnXDEwRUz15USlK614Y0g16WEkb/
-	qb3alg5c2+cQ==
-X-Received: by 2002:a17:903:b85:b0:2ce:9b49:d4a0 with SMTP id d9443c01a7336-2cfa6c7209amr25302105ad.35.1784799658989;
-        Thu, 23 Jul 2026 02:40:58 -0700 (PDT)
-Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efde5cfsm30259905ad.31.2026.07.23.02.40.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:40:58 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Subject: [PATCH net] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
-Date: Thu, 23 Jul 2026 18:40:26 +0900
-Message-ID: <20260723094027.391199-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
+        bh=i93T0tzgCY+DP8cUZolLm0O+1zIztO+HaXRQpxg7jVc=;
+        b=JlsbThICeUJbKGHHiF6Nvq4v3ziKML27XB6E+J+6pREHE/n/J4Ro1lCiIvxwisCrtk
+         tU60BGvfBaJa0bQJ9A8OUZDNjb0xgHX2ujhkOnUO90MAQ+LCCUL9PUCuyrjyq7qJ99I2
+         LeSv6U272eX7Ds7U/LReNuzxdiKTNrW0VDy4V0N+XysxA5b/dsWPfpScfIULKsMrNbNt
+         Kpd9h5Ljns5ES5g1FBj+gk6OMgHECHKA49ZIYrVZG1odV7mfjN7+MW/OEdgsI6fwSfhV
+         qkmCKMW8zQlOkhi+t3BiPcmMWLOA9NujFnPJohtz3PBxPMlT9x/AWeC/3S5Uih1PQSTM
+         S1/Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/evWrSsrlyZzTJDjoBO5U2tAMmv8nGjS+SKW0e1qzuKdhuRt8bMo78atXnuohtt/sGmHlN+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJLkEddBDhp4r4pYL7SNX3DtfzAWuHIxIRAUNeD1V6kNJK5MFa
+	GuiaiGPz0W2vzwYk5xFR7qyzFzAkf1XMp0R+ysWrTcDtt04GCWf3I359
+X-Gm-Gg: AR+sD13ZM2Ey18Z2K83R+4BfHHDTNGesdNxzflu8I/MmssyMs7O/F01Vq2ol6trO4rS
+	0BSiLIHVhxnVv59HaNGp0P8MF9/Y6rKW9AAWpyejizHXc/dO0dTksocoPKakTHmlVd1AorEIBKb
+	plL+lLmBt/DTYTcx3x6+c8hG7TSYb4PUEjQn1yjYbCbkQMHPJswJL9juRymuqw+3n+ej87o2gqE
+	5+m4sZXKIisIKPXFdo6B8ZoFYcSRIjNMpmu8j42QKvOwlcAAyACsrgBw7JIpY1A2h/anxJ5TFpv
+	j/1hzUdgZEomJKXb3J43amv/po1OVglMQv3nyWpg4AAGjJZsXvcatV38Q0H0yZ4oamy/VZisSYu
+	DWBTYXzXy3hx3iS5tfy8MflzJMMQFUWyPksv49LzjuQO6i+sMg2Llu1TX0st4rMu3n//4GR1UTx
+	vqsokALH9Oqjq+GnN5Fl8RPfqq/shr3kvUv2wOdTO0upVHEjv39pIykwGk+zN+D2ep0PR6wn401
+	fYaVkJIH6Je
+X-Received: by 2002:a05:600c:858c:b0:493:e57e:7aa5 with SMTP id 5b1f17b1804b1-49573cf6d48mr24942485e9.22.1784799921848;
+        Thu, 23 Jul 2026 02:45:21 -0700 (PDT)
+Received: from ?IPV6:2001:9e8:f11c:ec01:4d68:7f50:f537:5e2? ([2001:9e8:f11c:ec01:4d68:7f50:f537:5e2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b0395f7sm90229315e9.3.2026.07.23.02.45.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 02:45:21 -0700 (PDT)
+Message-ID: <beff7c47-ef14-4108-a350-fb07bd56e166@gmail.com>
+Date: Thu, 23 Jul 2026 11:45:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 1/4] dt-bindings: net: pse-pd: add bindings
+ for Realtek PSE MCU
+Content-Language: en-US
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Sander Vanheule <sander@svanheule.net>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Golle <daniel@makrotopia.org>, =?UTF-8?Q?Bj=C3=B8rn_Mork?=
+ <bjorn@mork.no>, Conor Dooley <conor.dooley@microchip.com>
+References: <20260715075530.2491534-1-jelonek.jonas@gmail.com>
+ <20260715075530.2491534-2-jelonek.jonas@gmail.com>
+ <b3456b41152613ed45bcfde92aff89d0c33fa243.camel@svanheule.net>
+ <3f71640b-9f22-4d0b-9c4d-dc64c397d286@gmail.com>
+ <amHEgOAWYXYuZwnl@pengutronix.de>
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+In-Reply-To: <amHEgOAWYXYuZwnl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SMC-Rv2 uses two receive-buffer layouts, selected by
-smc_link_shared_v2_rxbuf() (i.e. lnk->wr_rx_sge_cnt > 1):
+Hi Oleksij,
 
- - shared (device max_recv_sge >= 2): each receive work request posts a
-   small primary SGE plus a spillover SGE into the per-link-group
-   lgr->wr_rx_buf_v2 (SMC_WR_BUF_V2_SIZE = 8 KiB); a message larger than
-   SMC_WR_TX_SIZE lands with its body in wr_rx_buf_v2.
+On 23.07.26 09:36, Oleksij Rempel wrote:
+> [...]
+>> Correct me if I'm wrong but from what I see, most of that budgeting machinery
+>> isn't used in dynamic budget evaluation strategy, which is used here because the
+>> MCU does budgeting on it's own.
+> Hm, I guess the wording in header is a bit confusing, I see now the
+> misconception :)
+>
+> dynamic vs static means - haw available budget is calculated, not where.
+> Dynamic can be implemented in the linux core too, but so far no one did.
+> Static can be implement in the MCU firmware as well.
+>
+> In static case - the Powered Device tells us haw much power budget we
+> need to reserve for this device and it will be permanently accounted.
+> Advantage - every device will get what it is requesting.
+> Disadvantage - we do not use full capability of the power supply.
+>
+> In dynamic case - we do not fully trust the Powered Device, first we
+> reserve requested budget and then start measuring the PD consumption.
+> If real consumption is less as requested, the reservation will be
+> reduced.
+> Advantage - more PDs can be attached.
+> Disadvantage - a spike in consumption of one PD, may kick out some low
+> prio PDs.
+>
+> Since the dynamic case need a lot of measurements, it is usually
+> implemented in the firmware. Both strategies have advantages and
+> disadvantages and MCUs may allow to change the strategies, this is why we
+> provide this information.
+>
+> In your case it is not documented, but it can be tested if you have
+> enough PDs where you can influence the load.
 
- - non-shared (device max_recv_sge == 1): each receive work request posts
-   a single SGE of wr_rx_buflen == SMC_WR_BUF_V2_SIZE, so the whole
-   message lands in the per-WR receive buffer.
+Probably takes a bit of preparation to set up such a test.
 
-smc_llc_rx_handler() hands the received buffer to smc_llc_enqueue(),
-which copies only sizeof(union smc_llc_msg) bytes into the fixed-size
-qentry->msg and queues the request; the LLC request is then processed
-later from the llc_event_work work item, after smc_wr_rx_process_cqes()
-has already reposted (and thus recycled) the per-WR receive buffer.
+>
+> Not sure if we need an UNKNOWN flag to tell the user - we do not know
+> what to expect, use it on your own risk.
 
-For the shared layout the rkey array survives in wr_rx_buf_v2, and
-smc_llc_rmt_delete_rkey() and smc_llc_save_add_link_rkeys() read it from
-there. For the non-shared layout nothing preserves the message body: both
-functions instead read the rkey array from the truncated qentry copy
-((struct smc_llc_msg_delete_rkey_v2 *)llc, and (u8 *)add_llc +
-SMC_WR_TX_SIZE), running past the end of the ~72-byte qentry allocation.
-The loop bound num_rkeys comes straight off the wire and is only capped at
-SMC_LLC_RKEYS_PER_MSG_V2 (255), so a peer that sends a DELETE_RKEY or
-ADD_LINK message with an oversized rkey count triggers an out-of-bounds
-read of up to ~1 KiB (delete_rkey) or ~4 KiB (add_link) past a kmalloc-96
-object.
+So dynamic happens to be the suitable case here right now, because the core
+doesn't handle it yet and the MCU does it on it's own without the core
+disturbing that?
 
-  BUG: KASAN: slab-out-of-bounds in smc_llc_rmt_delete_rkey+0x6a4/0x780
-  Read of size 4 at addr ffff8880059ee748 by task kworker/0:0H/11
-  Workqueue: events_highpri smc_llc_event_work
-  Call Trace:
-   dump_stack_lvl+0x53/0x70
-   print_report+0xd0/0x630
-   kasan_report+0xce/0x100
-   smc_llc_rmt_delete_rkey+0x6a4/0x780
-   smc_llc_event_handler+0xa13/0xef0
-   smc_llc_event_work+0x189/0x260
-   process_one_work+0x633/0x1030
-   worker_thread+0x45b/0xd10
-   kthread+0x2c6/0x3b0
-   ret_from_fork+0x36e/0x5a0
-   ret_from_fork_asm+0x1a/0x30
-  Allocated by task 43:
-   __kmalloc_cache_noprof+0x158/0x370
-   smc_llc_enqueue+0x72/0x560
-   smc_wr_rx_tasklet_fn+0x474/0xa80
-   ...
-  The buggy address is located 0 bytes to the right of
-   allocated 72-byte region [ffff8880059ee700, ffff8880059ee748)
+I'd like to avoid dealing with that in this series as this seems at least to me
+like another deep rabbit hole. The MCU comes always in kind of a
+pre-configured state, having several limits set so it should behave safe
+and mostly as expected without the driver changing anything.
 
-Preserve the whole received message in wr_rx_buf_v2 for the non-shared
-layout as well, by copying it in smc_llc_rx_handler() before the receive
-work request is reposted, and read the rkey array from wr_rx_buf_v2 in
-both layouts. The reads are then bounded by the SMC_WR_BUF_V2_SIZE
-buffer. This also removes a latent use-after-free on the SMC-R server
-add-link path, where the non-shared code dereferenced add_llc after its
-qentry had been freed by smc_llc_flow_qentry_del().
+>> Using vpwr-supply on each PI still buys that the
+>> supply is enabled and ref-counted by PSE-PD core, and keeps potential for what
+>> might come. But no requesting, allocation or deallocation of power.
+> Ack, in many cases it is for diagnostic. Please note, a "manger" is in
+> the practice a multi channel current limiter/regulator. It has maximal
+> load per chip and different max load per port. This can be properly
+> reflected with the regulators. 
+>
+> For example, RTL8238B-VB datasheet do not document maximal rating per
+> chip, only per port. Calculating 8 ports, with 36W max, would result in
+> 288W. It feels like a lot of heat. Can it actually handle it?
 
-Triggering the bug requires a RoCE device that advertises
-max_recv_sge == 1 (a configuration the Fixes: change added support for)
-and a peer emitting an oversized rkey count. Reproduced under KASAN with
-soft-RoCE (rdma_rxe) after forcing wr_rx_sge_cnt = 1.
+I can't tell, but I would guess so. Several switches I have use a single PSE
+chip for 8 ports. Given the advertisment of 30W per port and staying within
+the overall budget, I might expect to be able to use it. Or the vendor hides
+some information.
 
-Fixes: 27ef6a9981fe ("net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1")
-Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
----
- net/smc/smc_llc.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+> May be the MCU firmware has integrated maximal power limit do avoid HW
+> damage. A proper information in the regulator tree would help user to
+> understand why not all ports will get requested power.
+>
+>> Given that, I had a closer look at PD692x0 and it seems, this has a similar setup.
+>> The difference here being just that there's no multi-manager concept. There is
+>> also a manager-level supply reference "vmain-supply" which the driver reads
+>> and applies to the hardware, which does budgeting also in hardware.
+> According to RTL8238B documentation, it has same multi-manager concept.
+> Since one manager RTL8238B supports max 8 ports, a switch with more PoE
+> capable ports would need more chips.
 
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 954b2ff1815c..1c32bf970098 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -1099,9 +1099,8 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- 	if (rc)
- 		goto out_clear_lnk;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
--		smc_llc_save_add_link_rkeys(link, lnk_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, lnk_new,
-+					    (u8 *)lgr->wr_rx_buf_v2);
- 	} else {
- 		rc = smc_llc_cli_rkey_exchange(link, lnk_new);
- 		if (rc) {
-@@ -1501,9 +1500,8 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	if (rc)
- 		goto out_err;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
--		smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, link_new,
-+					    (u8 *)lgr->wr_rx_buf_v2);
- 	} else {
- 		rc = smc_llc_srv_rkey_exchange(link, link_new);
- 		if (rc)
-@@ -1812,12 +1810,15 @@ static void smc_llc_rmt_delete_rkey(struct smc_link_group *lgr)
- 	if (lgr->smc_version == SMC_V2) {
- 		struct smc_llc_msg_delete_rkey_v2 *llcv2;
- 
--		if (smc_link_shared_v2_rxbuf(link)) {
-+		if (smc_link_shared_v2_rxbuf(link))
- 			memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
--		} else {
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
--		}
-+		/* The full message, including the rkey array, has been placed in
-+		 * wr_rx_buf_v2 for both rxbuf layouts (shared: header copy above
-+		 * + spillover DMA; non-shared: full copy in smc_llc_rx_handler()).
-+		 * Reading it from the fixed-size qentry copy would run past its
-+		 * end.
-+		 */
-+		llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
- 		llcv2->num_inval_rkeys = 0;
- 
- 		max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-@@ -2104,6 +2105,16 @@ static void smc_llc_rx_handler(struct ib_wc *wc, void *buf)
- 	} else {
- 		if (llc->raw.hdr.length_v2 < sizeof(*llc))
- 			return; /* invalid message */
-+		/* For the non-shared v2 rxbuf layout the received message lives
-+		 * only in the per-WR receive buffer, which is reposted as soon as
-+		 * this handler returns.  The LLC event handlers run later from a
-+		 * work item and read the message from wr_rx_buf_v2, so the whole
-+		 * message must be preserved there now, mirroring the shared-rxbuf
-+		 * layout where the body arrives in wr_rx_buf_v2 via spillover DMA.
-+		 */
-+		if (!smc_link_shared_v2_rxbuf(link))
-+			memcpy(link->lgr->wr_rx_buf_v2, llc,
-+			       min_t(u32, wc->byte_len, SMC_WR_BUF_V2_SIZE));
- 	}
- 
- 	smc_llc_enqueue(link, llc);
--- 
-2.43.0
+I see. I mixed up the terms and thought this "manager" is separate level in
+between. If "manager" == RTL823x PSE chip, then it's the same setup.
 
+What do you suggest? I would like to avoid doing any half-grounded claims
+or assumptions here while not fully overviewing the whole picture. At the same
+time, I have the feeling the datasheet and host command guide from Realtek
+are genuinely trying to fool me.
+
+The setup seems to be very similar to PD692x0, we have multiple managers,
+managed by a controller (the MCU). The MCU mostly does runtime discovery
+of the downstream managers, so right now there is no apparent need to
+have the same manager + port definitions in DT as PD692x0.
+
+In reality I haven't seen a board which has different power rails for different
+managers. So there's usually a single wire from the PSU going to the PoE
+daughterboard where everything lands on a single supply PCB trace. The MCU
+has a multi-bank concept, however it's usage right now is rather confusing.
+Managers seem to have strapping pins which tell which bank they use, and on
+the MCU side one can set power limit for each bank.
+
+> Since we already talk about power budgeting - all of this make sense if
+> we have port priorities. For example PD692x0 firmware has default prios
+> bound to port numbers. Is it the same with this firmware?
+
+Looking at several switches, by default all ports have a priority of 0 assigned.
+Thus, no pre-defined prioritisation, it's up to the user to set this.
+
+
+Best regards,
+Jonas
