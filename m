@@ -1,149 +1,109 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF73470E99
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 03:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784776642; cv=pass; b=rDbPiffJ5902GtCjm9SNSY7mAhTDMa7Cf8h1VVe3/WT5Y7pk8RlJgJ1410QzAu3bKrF7xzxxAlzEUa2yL3wK4CeXAHyQHFTgLIsEPEKEVkBCOSjxFisCsOfa4g33iY9fFAXcAJotshPfXUb8C2sJKxLg/afGrFJeeAIqhFkOlZg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784776642; c=relaxed/simple;
-	bh=/19X+XTfIBIuI9fO1VZJyXOTsfu9qbVPKVTHHFi6RYs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NzGmg5HfgKx9znwd/fiWYM80AH3NsN/kVn1H6fT1NnMI8MkRyZ3foQLpipxfw6w/rr4h9eEsw3epUEh9XHl46hcbYP6j3kdZv0SnGmdCo6n3vYymFhxBbT9SSaoUmBH6H111V5Adq8Ct2sKHha9DFw3UWFdVIjZXStWnflAGjEE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tynLym2r; arc=pass smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A611E5207;
+	Thu, 23 Jul 2026 03:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784776937; cv=none; b=CW/LSSPwNCYHkiaFWRKBmRlb5KWND8tlJ4UTEVx55x68G8048LWYiAN0TF7dMVny9lWfk6eMlL/WvwZnsW5+Tf6PJkNOGLTn2uZU//gr5ALCsu9oeOoheGPRFJyulX3AA/zTUbwMUVHLg1cwqIyfTr/tVVyBQa0BXu3luaPI3gI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784776937; c=relaxed/simple;
+	bh=AQzIh0BeMGOiGic2zaOCRN1Kg2vAqRJX9xy0q1ySwx4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=n5Syv59r0G/tNjMnYxFgGXcGtVxwT3yW90hpAFKUf0VVv0NhzM1G++qjsyzD5KT9IHAgCio6rZhO35Wk0mkNzLbY1+orcz4VcXjr4UIojzJsYbh7osw7b41WXtdPKc0Hebj76OJRF7hykDB+7Kx5eZPlSx0Jc6ank3EjCDe9Rg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=j96By/1Z; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tynLym2r"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92ed3993c1eso10016285a.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 20:17:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784776640; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gYMIzIpNfmbZg0xyITdkY4GYzzyf2fMMz/94RAPntfiFwczNMYjItBxARRUjUgc+uX
-         dM6C+nqnHn3h9002VodyATMl7Fba0CtrEOV1+2bjynw7EdfJT2hZeFHJk76Nf7ccVwMe
-         SPn+bXQh/0dJupx69Q1w07A76r6K93bDg2dQN7GKj8VaotJnHYWuZ2fiWQOK/8hseaIM
-         JGwZ5HPqBr74KQ2/efEwmyMbLhojr5DyqqpGbDncv1h74cOZg82FWW/0NENOjCuqJrv6
-         XRApeEi3VzZ4Wdc8K9giqagRd7gQ82LpeS3Lpz7J3h2sEB9ty8CNou8gh4vudmkXcMAC
-         f+5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lX/zr1mEWyW9mjUIKmJHBct3N8j18Lej+ugTKOX1vbw=;
-        fh=GkEpmcd3njw11WHYfxNi1kzLPF8hCO3HqXy2704SrX4=;
-        b=JC6DIakLLAJ64ulgpoc3zbuewqvnGOk9VELbK8FD+FCg1tePmon49xEgMWb7J9zCxQ
-         AEZKLBZB5y5wleutaAr2KQnbokqfl/DNWkkbwoykZK0uLu1TO1WXurIgAiBjVINh1ndj
-         yhaowZezdA3YmK70fDBfnX4KwYIG5/Re1I2Dr75e6OZUs+NajgF0UvQzxiuIL8DwYE03
-         uRqCi1jmpueekkYW94ReW4E6RcI1QRH+OHBfWq9fu9pYICucwyG2EH0GJ5u/t/zBRpE5
-         qhasCqrH/OUIVt3v+AjNfMynpMhUOPIBmRi/on6J/ul2Dnm2PZak73tpYpVhfca8M9c7
-         fYZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784776640; x=1785381440; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lX/zr1mEWyW9mjUIKmJHBct3N8j18Lej+ugTKOX1vbw=;
-        b=tynLym2rXllbv4sr6y9eWYtwW1m9/fi+fja+83UuQ+DjVDq9ulHX7Sy1I617dZYBbX
-         rcdDT5qWfkycs+3pjO4hJrFRl8WkCyC9V0VhQfmiPtTqi+S9owRO3w5aHhm7v6N4BQW/
-         sNZBckt9zdn68zvVglnuaheTn+oFOuXBuvIaco6CnPDR4YwdQFFwiCU5FXBSibtDD1L6
-         T9mLWro+ex5Fz20AUxrGGORWPpMpGfjDbYKni9T7fFGxqlm0IHnn2wLdBtT/mZar7hZO
-         0+Louh3yWffe15EECH0shU505jcHtdaW7yZMYkcdLLUqqUPetnsncxp4803YxLnkmJli
-         4XTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784776640; x=1785381440;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lX/zr1mEWyW9mjUIKmJHBct3N8j18Lej+ugTKOX1vbw=;
-        b=m6iMfyyyMqzxNFMxJuKu62BRsh6qjugyFr4YqiPGFCGmF0ddsRXtC5bdcO9Ovx4J4F
-         nW1QUhYMzZZBzBZ5c/WvRu6sFH0F17SGFU7XNbJaOFmec/uHqUlNenkQcxfkHfS/k+1m
-         Y4ob3cA7OdKfD9fC5/Ve8XUNK1YbjE/3PsPTcrJayO/c5J078SbquDGQm4a3EOPVYLwJ
-         SvW3PIvBD0Ch2QjkUOs1FDNUMlFZyfdAghARO6auIdrjLNuHQT/37wz6f1VMV8IV0tKt
-         WExKd7OO83qSZv8SCiEZq1JjNz80mpcYRAK0bQodsFeUwWNZPkbIir89RD4VdkoIRQPm
-         yc1g==
-X-Forwarded-Encrypted: i=1; AHgh+Rqn78gbeEF8xzRcUzTBz2TXVriUwDXCpZJAczyqKPxQbXZOGR9HGXYfE0RehgAjWcf6kvPHDFc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOpfxGcMTavhHOlYxMAi3edyFGGE8oj8RY2gEQ9XD58okKPw8Q
-	pG56qKp2P7pPk14ZlCWPXvdOrHDj8eprqn9r+y+D2jLgTlAc3uKwJUbv3Opls/bo8FY2KrfFlKh
-	i1Yw0V18ZrGVGfpmHPocSKUy6S0yK3bP5Yg2DTPW6qBmtVl2FP4S/hf2G
-X-Gm-Gg: AR+sD11pLMMzm+AFSC1rTpj2pLKI5nsUJQroui/Dot75OOdgTV2/AnVc+4KZWgu3n4k
-	fqM3WQuYmoVEpWKWMczmSkL/S+7r+9kYk/Miwihc/X0S32mTk7BiC/p/e6d+QfeslNAMgv9pnQE
-	+bHpRas5iPJtUs9HAqlffvIyiy4D13bjpf19RC5KJyk4l0MIo3l+dKuksNBHi3VUDuUGJfTFuC2
-	bd8ucAxdAJI9OWkjnj0yjjWRCcGIO847nmbBqjfXRExkPQu5ZWbhR3cDq/3if50d9yYcd16sXQT
-	JM6AO9U7JYrBA/ZZGAEqacRagWU1UYiL9iYaPQcBDpRJaVjrNoQVbFiWRDwlmL8MRyJCzVw=
-X-Received: by 2002:a05:620a:6310:10b0:92e:6338:cedb with SMTP id
- af79cd13be357-93103728115mr110555685a.73.1784776639229; Wed, 22 Jul 2026
- 20:17:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="j96By/1Z"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66N3LQGf8172944, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1784776886;
+	bh=jnsHUxvfdk5kvQ0mx2OYZgAJ0HAoVi6Km6w45vkF0zw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=j96By/1ZSdlcRCBPw5VIHAdUmXlhSd4vP4UKvNiyBflxradV+B59CiKkP32XJtxvo
+	 RXjq4fYW7o9FiFtHgKWye4WNvtgizS+C5DSnFqFbjJO9B7+bsGF/JtUi5t6aPK/hVv
+	 Nh5NdAWKiepOGfnrhzX7Fuik3pnPn+kCow2EPdJ2dsZ1BvU8WdJpIQCp/wdgj7BygS
+	 H1CstLsYEk89VceJ2ELM5ctgQ/1dIp/NB5QQkOuwm8Y8yo9lfk2aoG8SK5EkWVlBk9
+	 SIPPyDcpnQimJp8HTiqdZ/aKbMvvcvpZjfgMh3jKWp5KgIBfi4lXFtqwUpbbZJmeJb
+	 bKZKle8IP3knQ==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66N3LQGf8172944
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 23 Jul 2026 11:21:26 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 23 Jul 2026 11:21:26 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Thu,
+ 23 Jul 2026 11:21:26 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
+	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: RE: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Topic: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Index: AQHdGYHgECGgdwHRfk+In15lMVg2/7Z5x7IAgAClguA=
+Date: Thu, 23 Jul 2026 03:21:26 +0000
+Message-ID: <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
+References: <20260722022906.271-1-javen_xu@realsil.com.cn>
+ <20260722022906.271-5-javen_xu@realsil.com.cn>
+ <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
+In-Reply-To: <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714013940.4068189-4-srikar@linux.ibm.com> <20260722100842.602fd5d2@kernel.org>
-In-Reply-To: <20260722100842.602fd5d2@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 23 Jul 2026 05:17:08 +0200
-X-Gm-Features: AUfX_mzXeD6cj2fqrkt8d5aPZRvpbpGrPEZnPgET9lecz9ToCyfFIPgNk-oFujE
-Message-ID: <CANn89i+o3rT6Jnx_6SK2vdmeuHVkZwTJXD++Kua9ZCJb-wVFHg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] net: Use synchronous wakeups selectively
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, 
-	netdev@vger.kernel.org, David S Miller <davem@davemloft.net>, 
-	Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Dust Li <dust.li@linux.alibaba.com>, 
-	D Wythe <alibuda@linux.alibaba.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, linux-sctp@vger.kernel.org, 
-	Mahanta Jambigi <mjambigi@linux.ibm.com>, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Sidraya Jayagond <sidraya@linux.ibm.com>, Simon Horman <horms@kernel.org>, 
-	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
-	Wenjia Zhang <wenjia@linux.ibm.com>, Willem de Bruijn <willemb@google.com>, 
-	Xin Long <lucien.xin@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 7:08=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
 >
-> On Tue, 14 Jul 2026 07:09:41 +0530 Srikar Dronamraju wrote:
-> > The scheduler assumes in several wakeup paths that a task using WF_SYNC
-> > is likely to yield the CPU shortly. However several networking wakeup
-> > paths unconditionally use synchronous wakeups even when the waking task
-> > continues execution.
-> >
-> > During wakeup, with WF_SYNC flag set, because of the assumption that
-> > current thread is ready to give up, the wakee thread will be migrated
-> > from any core within the chip to the current LLC. If these operations
-> > are frequent, and wakers are actually not going away, then it will lead
-> > to load imbalance and hurt performance. This is especially true in
-> > architectures where LLCs are small and number of LLCs per chip are more=
-.
-> >
-> > Running vllm workload was run on Power10 system
-> >                                   No patch      with patch %diff
-> > Inference Time (sec)              17.84         16.35     -8.35%
-> > llm query bandwidth (tokens/sec)  14.78         16.21     +9.68%
-> >
-> > Lower inference time and higher tokens/sec is better.
+>>  static void rtl8169_init_phy(struct rtl8169_private *tp)  {
+>> +     phy_init_hw(tp->phydev);
+>> +     phy_resume(tp->phydev);
+>>       r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
+>>
+>>       if (tp->mac_version <=3D RTL_GIGA_MAC_VER_06) { @@ -2562,7 +2607,7
+>> @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
+>>           tp->pci_dev->subsystem_device =3D=3D 0xe000)
+>>               phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
+>>
+>> -     if (tp->sfp_mode)
+>> +     if (tp->sfp_mode =3D=3D RTL_SFP_8127_ATF)
+>>               rtl_sfp_init(tp);
 >
-> Somewhat related recent patch:
+>This could be diff getting me confused....
 >
-> https://lore.kernel.org/all/20260708133815.3419465-1-usama.arif@linux.dev=
-/
->
-> Maybe other maintainers will chime in, but I'm not convinced
-> by the heuristics you're adding. The behavior will be workload
-> specific. The extent of networking involvement should be letting
-> the scheduler know that we're waking from IO, not leaking scheduler
-> heuristics into networking.
-> --
-> pw-bot: cr
+>You unconditionally call phy_init_hw() and phy_resume(). And then if this
+>device should have an SFP you do something else. How can a device with an
+>SFP also have a PHY?
 
-In any case, adding code to the fast path in every network system call
-is undesirable.
+I totally agree that the SFP initialization logic does not belong in a func=
+tion meant for PHYs. But rtl_sfp_init() call was already located inside rtl=
+8169_init_phy() before my series. And it works well. This mainly because th=
+e patch which add support for RTL8127atf(commit id: fef0f545511f72223) assu=
+me that RTL8127atf has a dummy phy. So tp->phydev will not be NULL.
+
+And in patch 5/7 of this series which add phylink support for RTL8127atf, I=
+ remove it.
+
+BRs,
+Javen
+
+>
+>        Andrew
