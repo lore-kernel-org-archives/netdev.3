@@ -1,203 +1,178 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18AE3B71CC;
-	Thu, 23 Jul 2026 09:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784800291; cv=fail; b=RdfS3s20YonOyOCkJDUuDHNpxPQB0RuWdf1WjA7TPlyMz5LsULZwH6+2kKnFAQA8tpNXOqqzvqrTyZXlLjHb/EbGvjzcdz6WzajONIADzH76+n1gWauOHXRC/zXOewF6z5gX4rVFR87nr5GFgttxkpvi6W/i9CGK6Rmkjc82yMs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784800291; c=relaxed/simple;
-	bh=7Ypnoh56ea3rTNxxDea+W6u3v4aMR/cjSz+foR1H0hs=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=VHZ6ZsAA9oqyr0Og1DeVOwCcgICm9JtBIAiJyYGOFJHMAdWtQbsZ76Sh+UrjAyDA1km9dCFLbDmVpqh7n+VcnB2N1ntWjCEuffdvMZZBKaZ9PJYz2SjTt1OgO6jWJpKnPWXTw0RgBr4z4jFUTLKvzz8O2GBanbcFv5MNpiLGLlM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Wf+GK7Jd; arc=fail smtp.client-ip=40.93.196.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47CD3B71CC;
+	Thu, 23 Jul 2026 09:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784800312; cv=none; b=dh6ookw1yMEv1BKsgIdUQHw0gQFevAWxn/HgscJPdR+62oqF1j/is0gDWWnA2ccUd3c8vnlo3MWaBSTXfWKBYEYGzGZjYPzTtr56XMlEurezWLKLdVTy7EuWYwOTYY5qTh0tH/QOn2Bsh1HOvlJ9d57Cv8bCD58AMXlA+6jtWnE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784800312; c=relaxed/simple;
+	bh=P5Wh4TrkCW6ED8kocuAlEWyWAe4gq8kh82kYAh84Qiw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJla1IXsugVm54e9DKtytVQyZo5w6gRHzHnUGnPbjFognOzWfACQTwIVw+sc7fPjyMCDJxub9zkSS2QXj2PwOrGRUOOJ/xJgK/KTaWzEl27A5wbiazbLxY1BNeSqjTfshl+hYt7WlrDuTAIVxgkBvodwgMAkMrM6i+MKgzpVdas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=dg7X4k8j; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JR73Cea4; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Wf+GK7Jd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BirS2BzhkbvAwfVofvweDgu9Dud/I7vaI3fgiV1/SePhLlUXrleBKFJ6GUTxDdzx1Cb/9aR7o8wwA/n1HxynCmkR4wWpjwyIYg7PtJGGoXgVBB/AHWWHNoFdCQUF5m6BZZA6GGVkrCWwx8AAxp7JWGKAn4CZa1L2J+6I/XMPgagf70Gg8r4qlL6dhevikMaz48e6b/vW330npZDgRcCBF64K3/LpyROTAX2e1c3lO+9gHuhaYvPs1fkINO5PPga1A1z283QG/aMsaRAFWLRQpRM/szdg5AfPvL3IKkGXfsQD4IXMVfDsrm6a29X0lYPdnNEMLbqExZdi/PFypYnsMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tr9jqXwqCnW7TX6SWqKnJVyc0Wx6xdtohJQaAEkBmOM=;
- b=Jp2mwKXHgMeoyk1V2qe0WMTpDj+2h/6uPM4FUVVkRN2kORlekgCqDIirMKhmEyRv+Wokc3g9TMTwGp6DS6csb+fR4r4AUPPEt8wKatEPYI1SUi2geOTSZkT19SEv5rK10KvgkMmA4Asjry/OQempVFnU+Z2EDQ2CpkeBgj/TLXwtMXkh42u1SeCYwjCbY/Yy51eraWOpgf+DhLluQVfPmpKUcc+yULY1/8gtUxStGd5uGat2ahF5Ye76ZT0IAmzrG+4lOEmVm4RJ4UJrK1yeV3tpC3H+7aajWekkwmP+ki8iiYe/PiT7+lgfRN3rbSANobafsM0ScisYu23l439S9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tr9jqXwqCnW7TX6SWqKnJVyc0Wx6xdtohJQaAEkBmOM=;
- b=Wf+GK7Jd57VBvBiNzLX8hsw8WQXcp3Sw+Jz+Z1PP0zwpErhcLr8SZClk5rRhNB8y5L2nXUZTIgnUY6fXjmWI8X9YABK510EvJvrDmh9NxiGK73DUMSBqCzT35NccJKKqKkxYvn2q/4PgxPXe/LhNZkZAy4R24eYZTCYGPLCtFiRLXre9X7KJODfoP3eL/45efMm6KHqLCRwU1UKJkN8kQDSX2k7N33phSAlB5Ii/tVUCbjaCa4VsLJq3z4SPkASLvoKUeVisZ3FLcRIlC/FYzAMsIbAHIEvCsj4J+CdSwl+JqD59lSXX7WSoiE6qvAK8+NCIc4B18/MXX6/RYZQjtA==
-Received: from BL1PR13CA0342.namprd13.prod.outlook.com (2603:10b6:208:2c6::17)
- by DM6PR12MB4282.namprd12.prod.outlook.com (2603:10b6:5:223::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 09:51:24 +0000
-Received: from BL6PEPF00022570.namprd02.prod.outlook.com
- (2603:10b6:208:2c6:cafe::6b) by BL1PR13CA0342.outlook.office365.com
- (2603:10b6:208:2c6::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5 via Frontend Transport; Thu, 23
- Jul 2026 09:51:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 09:51:23 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
- 2026 02:51:08 -0700
-Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
- 2026 02:51:02 -0700
-References: <cover.1784463131.git.danieller@nvidia.com>
- <ad48b1da-50bd-4b79-943a-0a3331191b7c@blackwall.org>
- <SJ2PR12MB9008CFB1549DE9F3B7AC23F0D8C02@SJ2PR12MB9008.namprd12.prod.outlook.com>
- <d27e9e6d-351f-45e6-914b-3189fb6d3fd7@blackwall.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-CC: Danielle Ratson <danieller@nvidia.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "dsahern@kernel.org" <dsahern@kernel.org>, "Ido
- Schimmel" <idosch@nvidia.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "ja@ssi.bg" <ja@ssi.bg>, "Petr
- Machata" <petrm@nvidia.com>, "fw@strlen.de" <fw@strlen.de>,
-	"kuniyu@google.com" <kuniyu@google.com>, "bridge@lists.linux.dev"
-	<bridge@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 0/5] bridge: Validate and clean up IPv6
- neighbour suppression
-Date: Thu, 23 Jul 2026 11:49:31 +0200
-In-Reply-To: <d27e9e6d-351f-45e6-914b-3189fb6d3fd7@blackwall.org>
-Message-ID: <871pcu8265.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="dg7X4k8j";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JR73Cea4"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8E14A14000E8;
+	Thu, 23 Jul 2026 05:51:47 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 23 Jul 2026 05:51:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1784800307; x=
+	1784886707; bh=cL0CCyc/zlAc782RIGVb7q+r3hdXioHxIggZto+D5VI=; b=d
+	g7X4k8j3QU2Zq3Bs8i3PVaZabDbX/6M1/B5oWaeXC3AP/4CGDC7ekeL1/AeZlGes
+	3BGpQLV+9zjZ7LZVSKawbRcrkSfbj48cgLVm7vTrvc4ZVfspt02EwBRUSiSIdaP3
+	Bz2vjAoIa1Vz6le2zjNunptya43bO0yjnAHiRRKgUXLfqroyO0LO90LE9jM/TI2p
+	Ifx9/39ZZ2IyYQYjJBhPGa1Ce3yCXud7o7ZHowbL62cpSa+Lmfy9se7M135jWuYL
+	A8h/i9uxRj+D+knpZ0d5jLdXHBSsQNuhmonEF80m7KFNc6bqbwiIlGSmo4QAEfvP
+	0ndD9Z9iH/gSHELVKG8Xw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784800307; x=1784886707; bh=cL0CCyc/zlAc782RIGVb7q+r3hdXioHxIgg
+	Zto+D5VI=; b=JR73Cea4fEVVJevKKdCZ45PiHndpPMAYjoRgTOgEi+XGU7SN8ki
+	ws+IRmGMEMy63TXDsQGAkGyznBqJlIHdtejrZnz8msmZO95k9RfgE/Bm+zMuGcZN
+	IncL/YUfmWoMKcN/WTlCEOZam+CdEeuXahYsvAlxFUXGlrKBLdYBvzFGsjXrZdGy
+	SHJ0PhuLUNfEaWns/wGuRsFu5IJddZ+T0weqoWH47MfxaBQBD1AWxE/GzW0B9Q2u
+	fctfw+9gVAANsIDryN9IreUoPj2JhUwcKWBH8Nb3n68b8lDFrZwzvHGjdM6BsS+X
+	A3wHqqI2WJCVrmCL/SVMgHwHesfNaicP8Bg==
+X-ME-Sender: <xms:MuRhaoIiJHY0oLk08sc5qk997vdVcUBrqBlVukuDNpX3s48YNCBs5w>
+    <xme:MuRhavHaHmVmPEHviB-iE3rGLnCY8r3SGT2WUO0IhE0JMU6e_lqpYc20MD8UBSkfe
+    XBuGS7PIHwsG48BwMwHsvuq6O_2eFOWhkt3ahS2aYGqrqYCJEllzAA>
+X-ME-Received: <xmr:MuRhatwQ80zKpLHwPcXnHxGTlY62l0xhzFj8f3Nt43coMIS0V8Jf9cD7Ue8>
+X-ME-Proxy-Cause: dmFkZTFJy/Gm5y8scJPGCyO8SFCHrQCoW9oaAVAjG+x6/ktgCZg78o1KvxXp+KzmGOWmo+
+    eFlJnuALyWH3eJn2iK7RmWrd3yxs1/YXOCiG2LnUZnW2rATb1pi78l89nHehXzIL+wiqaR
+    ccIjdfWaUFcRaxwBPTiw+6dcFSIMmNbVOkCTOuttLY6a8gkXeWmD3Fo3rXTfx031A5LncR
+    uplBasemc4Ig2Ab4JLX1FQvUv0x9FGdLqEb8YgNJR7VCmyNHWsvUU1Zmox4JJYqRAlXycg
+    A1DwNGu7lg702cGxwtgQmxD75TeRVcFl8N7REOK0r+NbIkMh4gkUOPvhLo/eSyvZnnQji5
+    AgWiJ4BB0odhMhGT/B41ee+lHVY6gHoE1rY4smH3z7k/p61E30pBrIltsQf2y+io6ngIqq
+    7trJmM0ep+HcZ6GyeD29aKDiC4XwK3i0w3SHr57i/dYQ2zp7b7T2Ab9pafDcctm36lH0KI
+    RVBSMfkUoQiD/zo2Kv3ggwmXCuAcZPB/mYcqwFDynuuYW9qvFCjdyKJdynfsaoY5sZuPub
+    IFhMNaJbVC3Kg9yh2zU1zBXeGtZCwa7Mt0I/WklFZ8S8TQObXJ5Yb+btP1BkHFTx4/kFIK
+    4pL5eiqxnZMVnUJpGqc5ZPR4jnNDo13Jsp1jovqZyI589ox0tAWyhrA/XYFA
+X-ME-Proxy: <xmx:MuRhasgNKpwcCyYFI5ynHtz9P9uLZhoE5J5PEMBfrUzSJGdG8FQhOA>
+    <xmx:MuRhaqKCCIW9FpOe6kxUYCCQkVo8KldtIlskOK9sb4YTdRdqf2uDkw>
+    <xmx:MuRhanACJ7BuKwIc3Su74jp41_w4onYL3X5rOJNKBpSUMTD8ovhXfQ>
+    <xmx:MuRhajTyWJ9oCni52q6aXLuUHO1xZaZJLLSb7rzpj-BcGHWbcqcpeQ>
+    <xmx:M-RhamonwTVcE4_ZFN18rO2e5H-kSrlPsc6NsRvu8uvesW6Tf35-KEmO>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 Jul 2026 05:51:45 -0400 (EDT)
+Date: Thu, 23 Jul 2026 11:51:43 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Breno Leitao <leitao@debian.org>
+Cc: sdf@fomichev.me, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Remi Denis-Courmont <courmisch@gmail.com>,
+	=?utf-8?B?UsOpbWk=?= Denis-Courmont <remi.denis-courmont@nokia.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wpan@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 6/7] tls: convert getsockopt to sockopt_t
+Message-ID: <amHkLwihrCUx-_pk@krikkit>
+References: <20260720-getsockopt_phase4-v2-0-8a08fcfa0d72@debian.org>
+ <20260720-getsockopt_phase4-v2-6-8a08fcfa0d72@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|DM6PR12MB4282:EE_
-X-MS-Office365-Filtering-Correlation-Id: 218e4cdc-7eeb-4ef8-1065-08dee89ff4f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|1800799024|82310400026|23010399003|10067099003|11063799006|4143699003|6133799003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	6h0yftjHNokbRhvmv/a2TXB5aObR3IWJcT9o/WgHPBv2640UoHlWonU+hGN1Hh2GxB1fTrt22JaM6p2VYDX8txF3BpV3RphwlwFGQVCsoDry6uKFnNmpm739vs2uH5/87ceH3pRDfHv5dPU2u3XkuDWQEEr0BrRbjPCGe2OWm8E1Q1tLx3Y8kJMuxGnoNrm9T92qOLV/rHlGmtm3SQhMazRRHOaIPJST//m9DzPjtJLeaqtWqHJD4yBm6nrM3430dXZ3uPCuPjZtgsm660/zvdfl6tVktrW/ddxAREFYkuuvn0L+VGw82FKhrTCx4mfYQA50vC8s9k4QirxrJpi/o1rXwjHx2kfIAvQ15OcZsQif+FS9G/flEK42zLuztzo/kqO5MWOM1XUH+tbNOKQ76ax00YH33vtaUE4/qbHbTqzmpmYilW6hq+lehNuZNMfDa6CYBNsZ/y5o+Bm0VGd/LpoKR3Se6Vj8ATbTunt0IGwx/7jfaL/4X7ARtA1126JlRwx7gDMyUlEn0whjIajEBZkQ5w1O1/4zy2C6xeRVD+u68j9b/SGFYNUm51Rnv1aLDOosWLrmVtQ+xPoU0ph3MMUODDVxvhjRqVB1qm014u3SmhWhtHzdDilb0AUaPeawoU02pJYge33JffFdPc/32bzfrO/7vzVxCh1g/8cgmnYDphHG7IE6hU3ympBaHBQUAr3fTfOlRXnWxiQJp9ObAw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(1800799024)(82310400026)(23010399003)(10067099003)(11063799006)(4143699003)(6133799003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	dkgfnA78lDw4hfCcR+TAlE0h+RxofY2r2sr2RQTJ48pk6PYGVV1Ve400QdMuqqJWkNTVV5+usNG6wIwh8vcYEIx9UYAkuwzAO90eOFQ6iroE/9dEdQFAKv7jIJzpp1EfXf9HJRFPKmB7nbzynELF8caDC9jgt1j36JYYCFxofw2CXkSV29ET1smPwiupdCSK3MgDujWElTaOELWVVThuglzEV78KwVOzc4KTy6aO9vizjGM/fx6bSc5EI1cgn/kXXcjXBb2mCLzGv4MibXETYFr53AFEtu49Wo7SWgwuSP/chog3l3kUwCMHctmWr2PKwXVv4MlOFDiLlx5YfoiqDBI5d0ZAXkcAOH64XAY5UtFqM+OWYr5AP2M2WpfbEyF/ImWWvMRxcBoUCLvirW/qeSQmOWp8RdIGWSBw/YQeTV1m/fPy4FA9h3wduW3yTheF
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 09:51:23.8444
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 218e4cdc-7eeb-4ef8-1065-08dee89ff4f5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022570.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4282
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260720-getsockopt_phase4-v2-6-8a08fcfa0d72@debian.org>
 
-
-Nikolay Aleksandrov <razor@blackwall.org> writes:
-
-> On 23/07/2026 09:40, Danielle Ratson wrote:
->>> -----Original Message-----
->>> From: Nikolay Aleksandrov <razor@blackwall.org>
->>> Sent: Monday, 20 July 2026 12:31
->>> To: Danielle Ratson <danieller@nvidia.com>; netdev@vger.kernel.org
->>> Cc: dsahern@kernel.org; Ido Schimmel <idosch@nvidia.com>;
->>> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
->>> pabeni@redhat.com; horms@kernel.org; ja@ssi.bg; Petr Machata
->>> <petrm@nvidia.com>; fw@strlen.de; kuniyu@google.com;
->>> bridge@lists.linux.dev; linux-kernel@vger.kernel.org
->>> Subject: Re: [PATCH net-next 0/5] bridge: Validate and clean up IPv6
->>> neighbour suppression
->>>
->>> On 19/07/2026 16:34, Danielle Ratson wrote:
->>>> The bridge implements IPv6 neighbour suppression by snooping Neighbour
->>>> Solicitation and Neighbour Advertisement messages, but it previously
->>>> only checked the ICMPv6 type and code before acting on them. This
->>>> leaves it open to acting on malformed or spoofed packets that any RFC
->>>> 4861 compliant node should reject, and the option parsing in
->>>> br_nd_send() open-codes a loop that has historically been a source of bugs.
->>>>
->>>> This series hardens and cleans up that path:
->>>>
->>>> Add ndisc_check_ns_na(), a standalone NS/NA validator modeled after
->>>> ipv6_mc_check_mld(), implementing the RFC 4861 section 7.1.1 / 7.1.2
->>>> mandatory receive checks (hop limit, checksum, code, length, target
->>>> and option validation). Wire the bridge into it so NS/NA messages are
->>>> validated to the same standard MLD already enjoys.
->>>>
->>>> Replace the manual ND option parsing loop in br_nd_send() with
->>>> ndisc_parse_options() and ndisc_opt_addr_data(), and linearize the skb
->>>> once it has been validated as an NS/NA message so that this and any
->>>> future ND message handling operate on a linear buffer. The first patch
->>>> is a small preparatory cleanup that drops the now-unnecessary
->>>> skb_header_pointer() fallback from br_is_nd_neigh_msg().
->>>>
->>>> No functional change is intended for well-formed packets.
->>>>
->>>> Patchset overview:
->>>> Patch #1: drop the skb_header_pointer() fallback.
->>>> Patches #2-#3: add ndisc_check_ns_na() and validate NS/NA with it.
->>>> Patch #4: linearize once the ND message type is validated.
->>>> Patch #5: parse options via ndisc_parse_options().
->>>>
->>>> Danielle Ratson (5):
->>>>     bridge: Use direct pointer in br_is_nd_neigh_msg()
->>>>     ipv6: ndisc: Add ndisc_check_ns_na() validation helper
->>>>     bridge: Validate NS/NA messages using ndisc_check_ns_na()
->>>>     bridge: Linearize skb once the ND message type is validated
->>>>     bridge: Use ndisc_parse_options() to parse ND options in
->>>> br_nd_send()
->>>>
->>>>    include/net/ndisc.h          |   2 +
->>>>    net/bridge/br_arp_nd_proxy.c |  54 +++++-----
->>>>    net/bridge/br_device.c       |   4 +-
->>>>    net/bridge/br_input.c        |   4 +-
->>>>    net/bridge/br_private.h      |   2 +-
->>>>    net/ipv6/Makefile            |   2 +-
->>>>    net/ipv6/ndisc.c             |   1 +
->>>>    net/ipv6/ndisc_snoop.c       | 190
->>> +++++++++++++++++++++++++++++++++++
->>>>    8 files changed, 224 insertions(+), 35 deletions(-)
->>>>    create mode 100644 net/ipv6/ndisc_snoop.c
->>>>
->>>
->>> Nice set, but I'm curious - any reason not to use EXPORT_SYMBOL_GPL()
->>> instead?
->>>
->> I guess you are referring to ndisc_parse_options and ndisc_check_ns_na?
->> The reason is basically that other sibling functions used EXPORT_SYMBOL() rather than EXPORT_SYMBOL_GPL() (ndisc_send_skb, ndisc_ns_create, and the ndisc_check_ns_na() equivalent in mld, ipv6_mc_check_mld()).
->> However, ndisc_send_na() for example is newer and uses EXPORT_SYMBOL_GPL(). So it might make sense to use that in ndisc_parse_options(), if you prefer.
->> 
+2026-07-20, 09:17:47 -0700, Breno Leitao wrote:
+> Continue converting the proto-layer getsockopt callbacks to the sockopt_t
+> interface, converting do_tls_getsockopt() and its per-option helpers to
+> take a sockopt_t.
+> 
+> The thin tls_getsockopt() wrapper keeps its __user signature for now: it
+> builds a user-backed sockopt_t with sockopt_init_user(), calls the helper,
+> and writes the returned length back to optlen. The helpers use
+> copy_to_iter() instead of copy_to_user(); the NULL optval check in the
+> TLS_TX/TLS_RX path is preserved by testing the iterator user buffer.
+> 
+> No functional change.
 >
-> Yep, I was referring to those newly exported symbols.
-> Personally I'd always go for the _GPL variant when possible, but it's not a
-> strong preference, more a personal one. I was just curious if there was some
-> particular reason not to be. :)
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Yeah, I missed this during the review.
-I'm in favor of GPL as well.
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+
+Looks ok, just a few small comments:
+
+> -static int do_tls_getsockopt_conf(struct sock *sk, char __user *optval,
+> -				  int __user *optlen, int tx)
+> +static int do_tls_getsockopt_conf(struct sock *sk, sockopt_t *opt, int tx)
+>  {
+>  	int rc = 0;
+>  	const struct tls_cipher_desc *cipher_desc;
+>  	struct tls_context *ctx = tls_get_ctx(sk);
+>  	struct tls_crypto_info *crypto_info;
+>  	struct cipher_context *cctx;
+> -	int len;
+> +	int len = opt->optlen;
+>  
+> -	if (get_user(len, optlen))
+> -		return -EFAULT;
+> -
+> -	if (!optval || (len < sizeof(*crypto_info))) {
+> +	if (!opt->iter_out.ubuf || len < sizeof(*crypto_info)) {
+
+Not something about your patch but... I really wonder what this NULL
+check was trying to accomplish. The other getsockopts in tls don't
+have one, I don't think the rest of networkng does that either.
+
+
+> @@ -591,12 +574,25 @@ static int tls_getsockopt(struct sock *sk, int level, int optname,
+>  			  char __user *optval, int __user *optlen)
+>  {
+>  	struct tls_context *ctx = tls_get_ctx(sk);
+> +	sockopt_t opt;
+> +	int err;
+>  
+>  	if (level != SOL_TLS)
+>  		return ctx->sk_proto->getsockopt(sk, level,
+>  						 optname, optval, optlen);
+>  
+> -	return do_tls_getsockopt(sk, optname, optval, optlen);
+> +	err = sockopt_init_user(&opt, optval, optlen);
+> +	if (err)
+> +		return err;
+> +
+> +	err = do_tls_getsockopt(sk, optname, &opt);
+> +	if (err)
+> +		return err;
+> +
+> +	if (put_user(opt.optlen, optlen))
+> +		return -EFAULT;
+
+One of the sashikos complains that we're now writing the length with
+put_user in cases where we didn't before. I don't think we need to
+care, but if someone complains, we could make this conditional on
+optlen having been changed by the handler.
+
+It also complains that optlen was getting updated on EFAULT and now
+it's not. There's possibly some code out there that's crazy enough to
+pass a bogus buffer to get the size it should have provided?
+
+Also some complaints about "what if optlen is negative". I think we
+can ignore all of that.
+
+-- 
+Sabrina
