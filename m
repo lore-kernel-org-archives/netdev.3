@@ -1,155 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247ED4137AA;
-	Thu, 23 Jul 2026 16:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784822656; cv=none; b=Pio6MdvxcRmZm8McWjcplDCKT1NJ377cxxiG0XYjfR7BwcjKaLucP5msL7H6/S0drKupmGWzo6UIrP6zcbX/14HRryzRuR72PHxAwTx98jwkPbZvJN6P1jSGzv3lhAqlz7jBLYUr9ABRJ+e1JU+dN0Go0SJiLNfqjq8D8KeGbms=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784822656; c=relaxed/simple;
-	bh=qfK1tX9eEqUpJ2avN8XrkevNrjW6Xx9cUkhq69/1VEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyJDzGlrTZGZkVnAVeP0/vWqjhEm1S1NkC5fFwA9/3YbWOtmeJsVWGitS3oGowRsMmKE8bIdmPIZ3exbcfBKcJBp5CgXI7Oc6nogTh7bWUp0pVLi2xeak3zLCGGIUhWE12NAQviaLDSzzE/PRo6ZRrP1V/PYobtngf2WyhgbDAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu3hawyt; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA6947ACD5
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784822782; cv=pass; b=CZhy4sIjtaH0QQp2al/NMK13CbIT7YSfxUrIygP9rrPeOPxB/5PshIntgnIQn9I1oCuMHQxJC8297TSdBZWh3A/4c8ywwJLefNJBSGaFKJ2lRQyN6RrIH35RsDDlCJUQWGEZ9nCGc5JECxQKYjs+QTWTYgjinpPtH0hbB7e3sYY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784822782; c=relaxed/simple;
+	bh=FvYIfRYCEjjbVjLfQARMk6BLucVnGSuIJy4RHzRK1z0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o/GgyPozPrD83cxVtmRYGa3YFjSh1G1p2bbjTEy2TLRMQY1uJOzbmxOKt0Ef4vDqp8LafA/PzCQvYJoS5h0+QbOUv7MBlHuQGEB8D0WOb1J+Vg8ISd1xKRI+LcyHBcd3+uypZg+PP4TzZ9q6gdMDs+KlIBfTNGsFjccYIDMJcGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EUk2nRZj; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu3hawyt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0561F00A3A;
-	Thu, 23 Jul 2026 16:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784822653;
-	bh=cL1jbpIKPYsal4j07KMS5EI8X0/2GBgrtVs6E+OlpTw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tu3hawyt73p7grxhftqSFhn2xtH7m5YMu8XoXttqbRBpsyI9twbxkpRuP2rzTq5NL
-	 eR6ycEG7waNJvwjctd8BbnRadh+TDhtP8iRYsjMCGfcusxcEq826bEiVkaAtri9MVd
-	 acVhmqs6WMsWcJa9gPQjgaxad0MtNpxDVQOjzmAlGeg7d+F0Yw9iAsnhWBA25rCSRK
-	 f/0mAr/c0Ji2qK4G75WfaSnEiPxgjJybOkxORzKZOxl/6B8RjChc/Db4CAPWl7L6Yh
-	 aZ4c1byruP1GUYPsdpkItChNmzTNSjUjyaniB80lkZTQXkFn+SaQDG9fquuL3D+JaM
-	 579EyYdfApzYQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: shuangpeng.kernel@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	elic@nvidia.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: flow_offload: clean up indirect flow block on bind failure
-Date: Thu, 23 Jul 2026 09:03:50 -0700
-Message-ID: <20260723160350.721846-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260717194455.1734974-1-shuangpeng.kernel@gmail.com>
-References: <20260717194455.1734974-1-shuangpeng.kernel@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EUk2nRZj"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51a868b6962so10322621cf.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:06:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784822774; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MjwfgYJsQXluRCoV8yLIFBhFTh846hakq3WUXGF6uYcjeDSCjNi6QK0mm9N/ewEecP
+         kANDlX9Qz8zFGrMYNhYbrUdftQTV9r+gEzaqnrQCVT+IgCImH46RbX7SuGIdLid/EoE0
+         RSkIHlz4J3Ng9YIm73sSFbOCkdQ25CgfC/UhbeTHyKanCvlgSHjj74Yk5oDjYN34VqMZ
+         q2SPCiOduFPnZJF+5jwfk6x7drR+FBnctAegAvcgbfYplly6lCjnV9v2YnO4P1uQaBQ4
+         jZhKjVaiIYDfXyixelzawaAZbeBe1iHeU1/xPOx14HcKD52MCMTaOlFl9cjdcOUmocGI
+         78wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FvYIfRYCEjjbVjLfQARMk6BLucVnGSuIJy4RHzRK1z0=;
+        fh=9EKsElgjhGFEL/argVlSQAgRjQKtsZUu6yTvqIbD+1g=;
+        b=BojjaRJOscuF30m1B2WC+MF6uXUsXD1AlVTqKHnViTJUxjUSKXLe2bFBM1XOn8CHhj
+         GWsEZrUF3yXMendN35bMpyhySL351NCzkJynK0L5KfBldgK9nQBBuedCrnoCzbVFooFR
+         KFaLICH7CszTWRzTj3sg+9vZ/9JHdoqSoYALmC9E4IYb3yF8vfMean/pFM7L780HXKmE
+         dXPS7pAiaf0bl2YAUjDNCy78kHYu10OX1LXes9SOHZcsUOfcmwXk9V//yq8IH9G7K6JC
+         QtrC9msfoerhaGvK792FByJepyLgCOyBInNwV+egSpYyEr2uQZASDKnnC199hWNwBUvy
+         aQIg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784822774; x=1785427574; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FvYIfRYCEjjbVjLfQARMk6BLucVnGSuIJy4RHzRK1z0=;
+        b=EUk2nRZjD0r1xdASkZsNlXzm8UbFIl/S7l8BpOrOqkdrAB5BUX0IIgcFEBbwrvYnGM
+         ESszRYkTBd5mnly8seoaVciOErzTuBla9MF8LbVWrCgVlsT1V9F8GlTkHK6sk+WHy1pX
+         3ZaV+HhMQ256pE/SqiaJdRij/dK5azHLkLs/v3l+b2OT+8W8JHiqY+W3sHXrLluXMwyQ
+         iup3bjpHLW47m1fkYjjC348a4xkQGb8/h972+K6H5du9/5pHx/6m0V6ctb/f0tgeUg9h
+         wM+hJ0TF98srpt2DmUigMZSIfa6h/Fb1qzbqyTFM7aZ8FmhHQOb0iWVscAPJT4/E4MsU
+         UZjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784822774; x=1785427574;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FvYIfRYCEjjbVjLfQARMk6BLucVnGSuIJy4RHzRK1z0=;
+        b=nqpXw79gCtsBwrgh9YK6B/2GiXObp/ZHImIco7ggtbv8rxoxLdgrFhSwfNI/JthKhg
+         rNHdz8MzPCQoyU7GiOnnRGSWu+2bzgX/aqafhyKRuT9GUiS8EoHJplNj67Uhso5UEuJX
+         4j2Ri+4BPRcj2NlXPLOCm2aK122aEZ90KTY6kTm8RG1oExyLaSelraaWZpq6n31SClB7
+         Jbnixo9EQbgVvSReI0i0GXdhfwlg0D2m0WwsadK7IKXiIGoEnnpPfVuF8kLsLMrOp8md
+         Qj8/9avOYYkfDuFBcDVBAWvm82mo/0blJ4MY+RmUdyFwkWNIrchqpnb2+/OyjJ/UWrqb
+         1YPg==
+X-Forwarded-Encrypted: i=1; AHgh+RqJi/LXyUEPD/FVB1KBgkOyp5F/SGqxcJOEIy4hFofJ4LEjDLWxO95v2guj/X1RytLVGylF/5A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzsMLmqCXkqOq6L88zwyK/aux35t7N9LXtrbI/yJ9m83kF0R8p
+	YILX/i9ARk4im7vZDCpVLwtqhi/AA0dZtGpmnK2YpZNzW5J3iddJPiLcUVLK9NpnJC8O8cyi+Oc
+	EjVfNWnnxTN524fVCJHl2hQuirDC9PwIfswlgGuV9
+X-Gm-Gg: AR+sD117nHQO/P7mhuYrN/kH8lbepwpbEoXDoGzSiBCwwRWPXgjjKORN9ZTQ6E4HNLZ
+	cddCRuZe5KFa4C58PJ3NuJEaF+R7mTXwVaxZi+eUJ3ZzBq+gtXxqstT+UbQVgxkd2ittNmBZCXV
+	sjnuUG25fd8Udn0eVId1GcvGn4H/ZyOK+MXy6NqAf+BndhDZ7UmTTk09METRnjw++zDUCOgrr0H
+	ITkUXXIlqi02FWz02YmuwCBQTPki1zumS/Mzo+yXLrH/hP+v1jARK/Bzjyq9tnPTfYQiY6NHHI0
+	NCyxjpBcbrmX0jf2tkBqumgrAN6csJ5UpAusNlwrP/qUXEfCnGqvB0bjw0grscxgLToQ/E6uww=
+	=
+X-Received: by 2002:a05:622a:1aa2:b0:51c:7b11:41a9 with SMTP id
+ d75a77b69052e-5283dfde951mr35886241cf.86.1784822773528; Thu, 23 Jul 2026
+ 09:06:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260723155145.158572-1-alice.kernel@fastmail.im> <20260723155145.158572-3-alice.kernel@fastmail.im>
+In-Reply-To: <20260723155145.158572-3-alice.kernel@fastmail.im>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 23 Jul 2026 18:06:02 +0200
+X-Gm-Features: AUfX_mzxaShQqbFL8nzPH3k2r3U1gmFflr3ARoJhSg4viS2EXaoqKERNPsVNL_8
+Message-ID: <CANn89iJn=_iz239z3=4pRPH=XFPqHtM7Y7-_mjd+bP7t+4NAbg@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/3] virtio-net: Block malformed packets that
+ overflow gso_segs
+To: Alice Mikityanska <alice.kernel@fastmail.im>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	HanQuan <eilaimemedsnaimel@gmail.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
+	Alice Mikityanska <alice@isovalent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: flow_offload: clean up indirect flow block on bind failure
-
-This patch tries to fix a use-after-free in the nftables netdev offload
-path by removing the replay entry that flow_indr_dev_setup_offload()
-inserts into flow_indir_dev_list when no registered indirect provider
-binds the block and the call returns -EOPNOTSUPP.
-
-> diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
-> index 5071d7fe6ce2..5fbb1ae4679d 100644
-> --- a/net/core/flow_offload.c
-> +++ b/net/core/flow_offload.c
-> @@ -606,15 +606,20 @@ int flow_indr_dev_setup_offload(struct net_device *dev,	struct Qdisc *sch,
->  				void (*cleanup)(struct flow_block_cb *block_cb))
->  {
->  	struct flow_indr_dev *this;
-> +	bool replay_added = false;
->  	u32 count = 0;
->  	int err;
->  
->  	mutex_lock(&flow_indr_block_lock);
->  	if (bo) {
-> -		if (bo->command == FLOW_BLOCK_BIND)
-> -			indir_dev_add(data, dev, sch, type, cleanup, bo);
-> -		else if (bo->command == FLOW_BLOCK_UNBIND)
-> +		if (bo->command == FLOW_BLOCK_BIND) {
-> +			int add_err;
-> +
-> +			add_err = indir_dev_add(data, dev, sch, type, cleanup, bo);
-> +			replay_added = add_err == 0;
-> +		} else if (bo->command == FLOW_BLOCK_UNBIND) {
->  			indir_dev_remove(data);
-> +		}
->  	}
->  
->  	list_for_each_entry(this, &flow_block_indr_dev_list, list) {
-> @@ -623,9 +628,17 @@ int flow_indr_dev_setup_offload(struct net_device *dev,	struct Qdisc *sch,
->  			count++;
->  	}
->  
-> +	if (bo && list_empty(&bo->cb_list)) {
-> +		if (replay_added)
-> +			indir_dev_remove(data);
-> +		err = -EOPNOTSUPP;
-> +	} else {
-> +		err = count;
-> +	}
-
-[High]
-Does this change reintroduce the exact scenario that commit
-74fc4f828769 ("net: Fix offloading indirect devices dependency on qdisc
-order creation") was written to address?
-
-The purpose of flow_indir_dev_list is to remember BIND requests made
-when no indirect provider has registered yet, so that a driver
-registering later via flow_indr_dev_register() can replay them through
-existing_qdiscs_register().
-
-Consider a TC ingress qdisc on a device without ndo_setup_tc that is
-created before any indirect provider registers.  With this patch:
-
-  - indir_dev_add() succeeds, so replay_added = true
-  - flow_block_indr_dev_list is empty, so no cb runs
-  - bo->cb_list is therefore empty
-  - the newly-inserted replay entry is immediately removed via
-    indir_dev_remove(data)
-
-When a driver (for example mlx5/nfp/bnxt/ice/sfc) later calls
-flow_indr_dev_register(), existing_qdiscs_register() will not find the
-qdisc and the hardware offload will silently never happen.
-
-For the TC path, tcf_block_offload_cmd() calls
-flow_indr_dev_setup_offload() and its return value is effectively
-absorbed by tcf_block_offload_bind(), which treats -EOPNOTSUPP as
-"no offload yet" via the no_offload_dev_inc path; the tcf_block itself
-stays alive.  The replay entry it inserted is still valid state that
-future provider registrations depend on.
-
-Could the fix be scoped only to the caller that actually frees the
-block on -EOPNOTSUPP (nftables netdev), for example by having nft's
-abort path call indir_dev_remove() explicitly, or by adding an opt-in
-flag on flow_block_offload so that only callers that will free their
-state on failure request the cleanup?
-
-As written, the cleanup fires unconditionally for every BIND that
-produces -EOPNOTSUPP, including TC, tc actions and nf_flow_table paths
-that legitimately keep their state alive on -EOPNOTSUPP and rely on
-the replay entry being preserved.
-
->  
->  	mutex_unlock(&flow_indr_block_lock);
->  
-> -	return (bo && list_empty(&bo->cb_list)) ? -EOPNOTSUPP : count;
-> +	return err;
->  }
->  EXPORT_SYMBOL(flow_indr_dev_setup_offload);
+On Thu, Jul 23, 2026 at 5:52=E2=80=AFPM Alice Mikityanska
+<alice.kernel@fastmail.im> wrote:
 >
--- 
-pw-bot: cr
+> From: Alice Mikityanska <alice@isovalent.com>
+>
+> The user can specify any gso_size in a packet crafted with an AF_PACKET
+> PACKET_VNET_HDR socket, even smaller than TCP_MIN_GSO_SIZE =3D 8. At the
+> same time, GSO_MAX_SIZE =3D 8 * GSO_MAX_SEGS =3D 8 * 65535. When the user
+> crafts a packet with gso_size < 8, there is a risk for partial GSO to
+> overflow the 16-bit gso_segs field when dividing the SKB length by
+> gso_size.
+>
+> While the previous commit added a generic guard to skb_segment, block
+> such malformed packets in this commit altogether.
+
+Too much code in GRO fast path.
+
+Have you considered silently setting gso_size to max(TCP_MIN_GSO_SIZE, gso_=
+size)
