@@ -1,206 +1,119 @@
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A575440A3B
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B813D3486
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784803977; cv=none; b=F9bSIkzp8HyJSUzPDlHxxaQAdDbHsYn9X4x3yNnW+msbto5su25KWv8zvCBaRzUr8Uhlcam555fykTV4v1F582XRQlzFtUo3H45Trd1LIZ4IpehKzOny43ekzU0JU0+ohR6vZun4wxXhmT64IzlAobR2kTp4uucG+vO+kitmEhU=
+	t=1784804105; cv=none; b=tscQwMG8jgyn5fdg2AmJcfXMmsMgtD/fBHiqGD4HF6s7LZjDC97OcO97lFQhCabtHBQiYsIstK5+dFDQ5YGXSzweHOrkmUgzzdMJgGpz/eVZwVg5iXh5zJghsmIknfJ9oAbuIubyyFaGyVDtjySwz42qAfQ+bmkRMkAOdME4Bdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784803977; c=relaxed/simple;
-	bh=2GjEekfhsKHZU2DhsV5Bo35uprF/sY8GoPIsoM20T48=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X9Y7cjxlxLPcGJgh8QT97OOQAn2+e6Cr6uHKjctTRK4PwYkwCId864dn4KPd8meq8sIxNPiBswT12afzgu6HMD2rlc+P2NNp/gn/memsKMNQ83zJexTLFYr3+Xnj4fmwnWC+KzDCsFOOA4aAQtfiaQdQYIlaYGxJ0Eh23ANTadw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=cFAn7Ath; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1784804105; c=relaxed/simple;
+	bh=Pi44jNN1RheIU5jAZGrUDivLlSm9a01ego4YnZX5mxk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NEA7Y7bqy3HWT5+1gPsW8bs9m5tGSWaH7A0KUzrnfIoak566yGKC+Ki7Uuu14Yf1di0VU1Vc47C3czQUUMHBA4R0dklyQvw8vZ67vVTdeYecdSmap/toiSwkR0FNT2NKT4vBk5JKvIV0gJ7uRFLT0agbidXlvcavgYUWEzokTQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BocS+kbZ; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="cFAn7Ath"
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-966d70b9e1cso281254241.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 03:52:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BocS+kbZ"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-845c92bc464so325455b3a.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 03:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1784803970; x=1785408770; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hNsDmqf0L2DQ923uqfgdUFWg8JI20GGO2Glmu9J3hdA=;
-        b=cFAn7Ath6rFWrmGsm91NKjYqAGCL7LaIZSJokgoV6WGm4Kbxw5tMIi5pJy9n14b9Et
-         ZzjlQG0Nsv6dA7IltByQWRfPCcJv5OSvYSwuy1YEhTwIPQgfp5aGGXyK9el/E6Qj5IlN
-         9POGxCvNvKWpMRMY8CILYiWtXUIhIq5J4qHXo=
+        d=gmail.com; s=20251104; t=1784804103; x=1785408903; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Pi44jNN1RheIU5jAZGrUDivLlSm9a01ego4YnZX5mxk=;
+        b=BocS+kbZVk4ssW0CvgJniRPEI5HLvaVhleEU1mXbvyijA8m9jeGQaWJSvtM1yiHb3l
+         sECMGgvNiPq2XvhUIQOH3YE+t6fmA2TaVKmVVLQSlPQukb7DohEdHek3S3g7+3eUw8CT
+         JySBTTi0NXU1wO4eANwMuL2p7gcPoZVc9pncM0j+os9G0EKi3I7tJ9vFDHk4sZxtQOkX
+         0/EkAmhp1Iclb0Q2s98bsTtqjK5/EKWh9CwfZShCQO+ZGpTW3tSyLN1ub+lC8tn8FL+2
+         4KEE2IJElFRqwn+q9jTN6uOLTzZEJmFFpK7CBudY5i5UfFzR94tISm7tzGuO6JeoSTgJ
+         4kdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784803970; x=1785408770;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hNsDmqf0L2DQ923uqfgdUFWg8JI20GGO2Glmu9J3hdA=;
-        b=OaLamtb9m9HlmvgWVP5kJOGf6l1aH72QiSO+SSDx7qc/thggHBQ8BML1jd4xHV1Meg
-         PvKawDOWdnAFenh7EYjSb0qxyUXoNG5Twf/fmTxQIHq3l8pw/j2gXK8b/IDELFECUHly
-         ASJ2QChsIvtke3Z2+wBuzIWY/yPfZTu64W5vdc/2D/xVgBJtjalKj8KDVEJlKjM/ARk1
-         TcwugLcY4ZXN629SWbH/yp4K2/jnOqW6OI2EpBPSTZAjW7EirHOEWa+lKnnlA0qmTV9n
-         LiiEqBY+rLc917E8jApre8a7yInoMbnFQ8l4ghI3WSwbhWnw7ChUQBDYLAjwTm0wZqD1
-         D96Q==
-X-Gm-Message-State: AOJu0Yzl3L5CROkpGSBBJltCj2QVW6mIoc/6JWVydk+n44BET+o3w2jq
-	iT8iXeq8V+tNFOikGY81fI4TV2PyECOwHLmKWkI/9cPJnNg3hiBU0DdI+DYb+J72pi3NhnsFe6Y
-	YKiE=
-X-Gm-Gg: AR+sD11mT3SL3em+AmcA4hmz4HMrGPWTmmm/n8k7TvsFYF7zTb0kwgC8Ujl/4BdSPun
-	dgsObwjk5pNr85W/MGiFifwdxgYaQw/n+wK4P4s65v4G3qkiZeuz5GmgYzF2flr57mJIcniOHAr
-	avRC9hb5xBtw/tHjnheUMSC9Guh5FTfjYqMtU7iwNupMTRttNymCTLTsM7+YP+HCSwN1afOU5Xk
-	9BCptzToFBjcLshiM14scQO81I1kVeIx+F0ntajEBlxqswp48tthMyVrx0SpPqHZe2HQdqKChzI
-	dqqZOIwrlKtdEz9lC2c67qLtTz9c3zfcEzRUpZASHYyQm7zatZO9zJh5easYjN9BtKKildegj7q
-	d0q+q/lxuqbWJRVCM2+/s3EOcI2dHQLn0zhw0b3p82b1xWZDOQUFg1pZngnW/34gfiN6/a4XsH/
-	vlp6oanA==
-X-Received: by 2002:a05:6102:3f11:b0:738:472f:2cb3 with SMTP id ada2fe7eead31-74d5e3ce9a1mr1066069137.8.1784803970546;
-        Thu, 23 Jul 2026 03:52:50 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-74ad31c1fa4sm4675225137.1.2026.07.23.03.52.49
+        d=1e100.net; s=20251104; t=1784804103; x=1785408903;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pi44jNN1RheIU5jAZGrUDivLlSm9a01ego4YnZX5mxk=;
+        b=ZGLasgWqm/TvJMrJt3NvYCa1PncQS5AGlasIjY+9H/WmKUDUiLDwktZxWsXNvug9f5
+         zB8cFmyCpxkV/RMfVnt9HN/SLQbigyTBeRqJa2VWNYsOS0POppZ6ALOe2iASSog4OdSn
+         dISYRqZsHJUnw3ZqLi04GvUl+4eIxKR1I0gp6YghZLrMOnmBgwTtKfu8fIl7zEzm7TE5
+         w/rEQZUUGFdxCb43VjnMSdKbS2B2SYHjh7099RTBhPckk0wC4PVzjxT9LojPgwS4xHFG
+         F9kkFvrDCp9wizqomncwxu11/57Y1AUpYsArHo6v50cqfMmGth5L1tbP/vMLFUyVb7dx
+         AXRg==
+X-Forwarded-Encrypted: i=1; AHgh+RrVUvxlJi8P4hnMUHuxfUsRgAQhRZXXuzIG6p3p4QPpr/lHXFk3b6D4r7rCAp91JAQ6k8UlYhE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT5vPReRIO5F2XN0/IEPOiOA6IxXseNR3nIxcL/0h++Q6oICPL
+	n3YsupE4pvWqOdu3gEy08VxMJqxE+iMRMEZfsDKSD6Fi4rQTqchv/uvt
+X-Gm-Gg: AR+sD133xhE7VptYvwCbmAu7Brs/gRdE5RQKCNp51o2qnZ4nL/iToqfpWVWjdVnyP+d
+	YjvWEMaNm0+XSDzZ+NqIbp62ROY2x4+Uq+Nv55ylbQ9LLklsuo/SCFvzDTsRB3dxLkbJSjbOsax
+	IlHA9rPcyqhr1bKjYSqfomxKmcNpZhWXma+XrdsEnYv8HPC+WB9bAaj8TH918ElPG+eP09UVU4Q
+	FN3rAluyQ7B7xtJXq6UWCPx35PbHxjRSPLvu3eS49PlnrEs34ifg3FK4tvypgzGd+mGEDlrMpHH
+	9NkltisDNK0Bn4yOJmV6OHYNQPqV68ShliUTSrAvCsnkFSSn26CwlM74HQ+SvPyIsSHw3sPquAm
+	2PCaKEvGD/PKI8cmikTQHJAKy0CwDd/P8UsLpbcUaOq3w163qbhZMnY3bSiYYfS4dtEFkFnt6m/
+	eIO+T1
+X-Received: by 2002:a05:6a21:1519:b0:3c4:1c9f:d91 with SMTP id adf61e73a8af0-3c44b247352mr2773503637.59.1784804102681;
+        Thu, 23 Jul 2026 03:55:02 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e1cf8fasm19621764eec.31.2026.07.23.03.54.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 03:52:49 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	john.fastabend@gmail.com,
-	jiri@resnulli.us,
-	zdi-disclosures@trendmicro.com,
-	sh.kalluri129@gmail.com,
-	victor@mojatatu.com,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Santosh Kalluri <santosh.kalluri129@gmail.com>
-Subject: [PATCH net 1/1] net/sched: cls_route: fix fastmap use-after-free on filter
-Date: Thu, 23 Jul 2026 06:52:10 -0400
-Message-Id: <20260723105210.817079-1-jhs@mojatatu.com>
+        Thu, 23 Jul 2026 03:55:02 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: michael.christie@oracle.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: pbonzoni@redhat.com,
+	stefanha@redhat.com,
+	eperezma@redhat.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] vhost-scsi: flush backend after device ioctls
+Date: Thu, 23 Jul 2026 18:54:51 +0800
+Message-Id: <20260723105451.1563439-1-physicalmtea@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <3d2dfa19-42f8-4d1f-a411-c72669f4c4bc@oracle.com>
+References: <20260721073639.1532488-1-physicalmtea@gmail.com>
+ <3d2dfa19-42f8-4d1f-a411-c72669f4c4bc@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
 
-A case of partially rcu'ed structs.
-The route4 classifier maintains a 16-slot fastmap cache that stores raw
-struct route4_filter pointers indexed by (id, iif). The reader
-(route4_classify) populates this cache via route4_set_fastmap() for
-every classified packet that hits a filter. The writer
-(route4_delete, route4_change) clears the cache via
-route4_reset_fastmap() before RCU-deferred kfree of the filter.
+The changelog is too long. I wrote it incrementally while investigating
+the stale response-HVA case. English is not my first language, so some parts
+came out wrong. In particular, saying that the ioctl waits for pre-update
+commands may have suggested a full stop-new -> flush -> swap -> start-new
+sequence. That was not what I meant; sorry about the confusion. If the patch
+is otherwise acceptable, I will shorten the changelog in v2.
 
-This creates a UAF race:
- 1. Reader walks the RCU-protected bucket chain, finds filter f
- 2. Writer unlinks f, calls route4_reset_fastmap(), then tcf_queue_work()
- 3. Reader calls route4_set_fastmap() and writes f into the cache
-    *after* the writer's reset, caching a pointer about to be freed
- 4. After the RCU grace period, kfree(f) executes
- 5. Next classified packet on the same (id, iif) tuple hits the stale
-    fastmap entry and reads f->res from freed memory
+I wrote the patch myself. I used AI assistance only for notes and wording
+help; it did not author or submit the code.
 
-Reproduced with an mdelay(100) accelerator in route4_set_fastmap() and a
-concurrent add/delete stress test (provided by both zdi and Santosh) deletes
-the last filter on a tp. Both triggered KASAN slab-use-after-free reports
-in the route4 fastmap paths.
+For this specific stale-response-HVA issue, I believe the patch is correct.
+The patch is a return barrier: vhost_dev_ioctl() publishes the new memory
+table, and vhost_scsi_flush() switches each vhost virtqueue to a new
+inflight generation, flushes the vhost work, and waits for the old
+generation's references. The completion path copies the response through
+cmd->tvc_resp_iovs before releasing the old-generation reference. There is
+no separate stop-new phase or full quiesce.
 
-Fix:
-Move the fastmap flush to the writer side under RTNL, ordered after
-synchronize_rcu(). This ensures stale fastmap entries written by in-flight
-readers are visible (readers have finished) and no new readers can find the
-unlinked filter, so the subsequent route4_reset_fastmap(head) flushes them
-safely while head is valid under RTNL.
+A command can arrive after vhost_dev_ioctl() returns and before
+vhost_scsi_flush() switches that virtqueue's generation. It is assigned to the
+old generation and is included in the flush, but vhost_set_memory() has
+already updated that virtqueue's memory table, so its response iov uses the
+new table. It therefore does not introduce another stale-HVA case. This is
+why stopping new commands is not needed here.
 
-Note: This fix will slow down deletes and filter add/replace, since
-synchronize_rcu() is called under RTNL in route4_delete() and
-route4_change(). An alternative fix would have been to introduce refcnt
-to the head struct but that is a much bigger patch. We justify this as
-a reasonable fix.
-
-Fixes: 1109c00547fc ("net: sched: RCU cls_route")
-Reported-by: zdi-disclosures@trendmicro.com
-Reported-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Suggested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/cls_route.c | 42 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
-
-diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-index bd6f945bd388..700f878fc3cd 100644
---- a/net/sched/cls_route.c
-+++ b/net/sched/cls_route.c
-@@ -297,16 +297,29 @@ static void route4_destroy(struct tcf_proto *tp, bool rtnl_held,
- 					next = rtnl_dereference(f->next);
- 					RCU_INIT_POINTER(b->ht[h2], next);
- 					tcf_unbind_filter(tp, &f->res);
--					if (tcf_exts_get_net(&f->exts))
--						route4_queue_work(f);
--					else
--						__route4_delete_filter(f);
-+					/* Always defer the free.  The direct
-+					 * __route4_delete_filter() path has no
-+					 * grace period and races with readers
-+					 * that cached f in the fastmap.
-+					 */
-+					tcf_exts_get_net(&f->exts);
-+					route4_queue_work(f);
- 				}
- 			}
- 			RCU_INIT_POINTER(head->table[h1], NULL);
- 			kfree_rcu(b, rcu);
- 		}
- 	}
-+
-+	/* All filters are unlinked; no new reader can find them on the
-+	 * chain.  Wait for in-flight readers that may still hold a filter
-+	 * pointer and have published it into the fastmap after we unlinked.
-+	 * Then flush the stale entries while head is still valid under
-+	 * RTNL, matching the route4_delete() pattern.
-+	 */
-+	synchronize_rcu();
-+	route4_reset_fastmap(head);
-+
- 	kfree_rcu(head, rcu);
- }
- 
-@@ -334,10 +347,16 @@ static int route4_delete(struct tcf_proto *tp, void *arg, bool *last,
- 			/* unlink it */
- 			RCU_INIT_POINTER(*fp, rtnl_dereference(f->next));
- 
--			/* Remove any fastmap lookups that might ref filter
--			 * notice we unlink'd the filter so we can't get it
--			 * back in the fastmap.
-+			/* This code path assumes we have the RTNL lock.
-+			 * We wait for in-flight readers that may still hold
-+			 * the filter pointer and publish it into the fastmap
-+			 * after we unlinked it.
-+			 * Once done, no new reader can find the filter on the
-+			 * chain, so the only stale fastmap entries are the
-+			 * ones those readers just wrote. Flush them now
-+			 * while head is still valid.
- 			 */
-+			synchronize_rcu();
- 			route4_reset_fastmap(head);
- 
- 			/* Delete it */
-@@ -558,6 +577,15 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
- 		}
- 	}
- 
-+	/* Assuming RTNL lock. Wait for in-flight readers that may still
-+	 * hold a filter pointer and publish it into the fastmap after we
-+	 * inserted the new filter (or unlinked fold when replacing).
-+	 * Once they are done, flush the stale entries while head is still
-+	 * valid.  Needed on both the creation and replace paths: on
-+	 * creation, readers may have cached a ROUTE4_FAILURE entry for the
-+	 * (id, iif) tuple that the new filter now matches.
-+	 */
-+	synchronize_rcu();
- 	route4_reset_fastmap(head);
- 	*arg = f;
- 	if (fold) {
--- 
-2.34.1
-
+An old-generation command may complete while this ioctl is still running in
+the kernel, including while it is blocked in vhost_scsi_flush(); that is
+expected. The same userspace thread cannot perform the remap and follow-up
+TUR before this ioctl returns, because the thread is still blocked inside the
+ioctl. The owner must keep the old mappings valid until the ioctl returns.
+Remapping or dropping them from another userspace thread before then is
+outside the lifetime assumption of this transition barrier.
