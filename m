@@ -1,124 +1,101 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C157F3043BE
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D8D23E320
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784771039; cv=none; b=ArlzEYTyubAoPk71/BAibIYsMUXKNXoC/UiKa2i+KtoryAho/PrCtWPVvWChAP0KgoMdC6qelB2XQMjcTGY2wT6Fj6lElQXEDaSNmtMUexiHOzTIu/PxMzJruDcUnLysGtWahqn7s0Elze2yxbJ/HHbXs3ViGSJOzptS7zCQ4Kc=
+	t=1784771891; cv=none; b=cuRBcm9PpNZTdnLHUFlHnX2mSmz+d6Z8PsEMMI3N212u8Za8T8zRIBVLzdw7Y1HY4W7TkK0Ok/5AKzErtWuQybvfFAC6Kz96Ut44BGzzqpL8qxT89p0bpFYah4CUUpykq4rLokhWyfxeqkPm2d/Fh/h6iExTa7brHCVLIsHCR6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784771039; c=relaxed/simple;
-	bh=Jkt0CI5EuCxCpLKM8YEGGaFGwkakTl6hSnTK7Sz+CcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rh6FoFClJyGk1EoedBTMHd8yHHF1Nw3LzG5hp0zpGNSa1kr60elvYlCJQnpu8thdK160WaRhdv0b0lUEpfIP9ASAAB0hkqAW1dZy3lHseF/G0J4Mqi6gO7gSANF2Bt3mPRk/F2dZXpPskNR8l62fXXOfQHnFZFd4VvO0j1KVolo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iB82fXs5; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784771891; c=relaxed/simple;
+	bh=LYoHj0aZPGNOk+dFScXb1iL1VDdnRp9jX+D2s4r5hvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xmp99z6xYMpFmIziVdtBvpyVoYa5sRrRlhMBc8hsk36Kp+ExauJk1TvHCoFrmmufibRcVLlMlZik9uUyetROcPVGCA5mF5cY2uSGM8/0cgyotvUCWsqnJ8YUkNwpHAs9XCAYkNGT5/j9aKjFXXdF4nD4wlhmDSrQub16bc8qNGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RkJPRVV5; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iB82fXs5"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e08baf860so112424a91.2
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784771037; x=1785375837; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WTufOXWvACFic2l9ZCjyM5s9M1424nsnl2UpoTDMQGE=;
-        b=iB82fXs5o/e+uk6ww/SOfIasyzJsx2fhXhlaTQyin5C6emzSYkLGLL0HUyPRDC2Jdx
-         FskWq563q7TpNCSuamOIlrV7Q9lmsr3hL0IfVwohJ/nKYn1k3aps6BOr6McEp0kVcYeP
-         CEwL2rllC5IsAnbsqwGPS+XJLxbpNoCH1DQuwZjqDAyEzsQ7eaFOPFxu654G7pOIle8S
-         lpBAMoASYnYCSoVT2OtfGRhzEqJLJj6QWVDhcz9kxFSL0iUKz4nPXnkHPHZEAzk7hma1
-         6EHkuFNc9/HNC/iTIl8ebTq2u/p4AdQAZkPBBAUMCh0MQrAj27rexzCMlDgpXZksnV/3
-         NRBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784771037; x=1785375837;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WTufOXWvACFic2l9ZCjyM5s9M1424nsnl2UpoTDMQGE=;
-        b=P7YGwkYl2QGDoyyu/zchfXSCFHMyG7nVRlEHpsL0ngp51NaCWUuGlRRQX6hfv79xSw
-         GtMDzynCAmCq4BmV6oXw5XTXWRVvGrU34GbGjmDKpMATNc5S3P0JRAaLMKRTYNvE/hH2
-         nO2rqlgwfnaFfkL1EP+KW50lDWaIxgB0sfaAvsz/g63f+xXPNrCFfdrRckj8P6CgTiWi
-         r6EQyJWXmLQ12vRh+pQKyCXRuNr5phVSVcYpeofoDrGHDKZnqV4NOpL4KcS8jisVvNsM
-         9UEzrRfXrd0bjUVUaPGRHG9hTwISxy/7oZeTNOCilh3CcIKsFpJv+ba05c7SZ/GfT8IO
-         G9eA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpdlr2QpuNjkRDHvlaOkY2d9rXSI9bSRYPNHxcqWYKmjtpODinK+y4lmd33BGLs6mbeRIj+1J0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0+NwumOIidWLIxcZIFcSJoD4zcVvZ8yMyyrPBADCDkn2Y7xvi
-	6R4if9T3jX2T5OtReaQDz6awWEV8jLBivSr496G5ws6AD7kiEbXCi056PsGYdCBf
-X-Gm-Gg: AR+sD12ylvEMhc8SqhtCR6G7tBAxh5uFoC8PdXE8VQp9s6QvOxA3YilhjqQoBvKs6bZ
-	+ewbBrCJJwIoHt1RlzCNBVHtlnqQNnvh4J6Ut6qC4x5zYlcnY1O65CvTd6bUhXy75oAiOedKWPW
-	5UGAKtY8X0hW2QoRE/hvRowk5S1o3c662EnM5aeYGtBmIqIyU4jrVrcNrDruWv0uxEO8/8wwNkW
-	Gr3smlJ7FLKqnHypkIz40pC1CvPBmQjyPgztlcQGwAI2HUyiYT333malzU+86SiuLu7OZMg6kew
-	Hfg5d3XWVdqbtFBuSRN+xJBylz0xvtj/qy9pFy8PMPG+M7/Ka8XlI/gYfzGSe33S8038zl2o7qV
-	2AX/1fra74UvrugtOmUIRTuGgQtllIUNpWQdIecI2LESAH/7994CWJOjHVTchN//YWG3p+AfIfk
-	Klp9SjUeY+oBe+qUK+gdYT1BxGL0Vxg/rDYW8=
-X-Received: by 2002:a17:90b:1805:b0:38e:67e1:15b with SMTP id 98e67ed59e1d1-38ec6454eb1mr1040670a91.6.1784771037028;
-        Wed, 22 Jul 2026 18:43:57 -0700 (PDT)
-Received: from CPC-mjac-HKWGEZ.redmond.corp.microsoft.com ([70.37.26.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea5a5961bsm1145539a91.4.2026.07.22.18.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 18:43:55 -0700 (PDT)
-From: Jack Ma <jack4it@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jack Ma <jack4it@gmail.com>
-Subject: Re: [PATCH iproute2-next] ip nexthop: support fdb destination port
-Date: Thu, 23 Jul 2026 01:43:48 +0000
-Message-ID: <20260723014348.1249-1-jack4it@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260722151904.GA3022830@shredder>
-References: <20260722-b4-vxlan-fdb-port-iproute2-v1-1-45199b1ee240@gmail.com> <20260722151904.GA3022830@shredder>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RkJPRVV5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=LYoHj0aZPGNOk+dFScXb1iL1VDdnRp9jX+D2s4r5hvg=;
+	b=RkJPRVV5iZCWZxfw303eR0KBkZ0TMAj4D/VMYKMrEpIRLxNgLPCwB1j5D+UXQS
+	d+jhMCe8W83bKfwH3WK0bCB3oowoHHgBwwb9H+fbNrG4HO55sPFdDRnJ87zoz4Hp
+	FOoXBxRT9ZXrctWpMRxbG+hVNmVCCET/CaPSvSabyi9Vw=
+Received: from [172.21.20.151] (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgB3eDMMdWFqvPiiHQ--.48445S2;
+	Thu, 23 Jul 2026 09:57:34 +0800 (CST)
+Message-ID: <9fc1c459-f72c-4b94-bf1e-290920c68d23@163.com>
+Date: Thu, 23 Jul 2026 09:57:32 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] 8139cp: fix DMA mapping unwind on TX frag map
+ failure
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org
+References: <20260717103724.13971-1-luyun_611@163.com>
+ <20260717103724.13971-2-luyun_611@163.com>
+ <43379065-5916-42a7-8ecc-4b875ea53d22@163.com>
+ <20260722124349.0bad10cd@kernel.org>
+Content-Language: en-US
+From: luyun <luyun_611@163.com>
+In-Reply-To: <20260722124349.0bad10cd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgB3eDMMdWFqvPiiHQ--.48445S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWrJFykJw4kWryxCF45ZFb_yoW8Zr1xpF
+	Z5ta1YyFs5JFWqqw47X3WFvrySvr43ta47XryrJrZFvwn8CF1fKrWxta4jkasrCa18X3yI
+	9r4jv3yDuFW7Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR-dbnUUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbCxA5TImphdQ6EuAAA33
 
-On Wed, Jul 22, 2026 at 06:19:04PM +0300, Ido Schimmel wrote:
-> FWIW, I don't post iproute2 changes before the kernel changes are
-> accepted. I put a link in the kernel cover letter to the repo where I
-> have the iproute2 patches.
 
-Thanks, understood.  The kernel cover letter links this iproute2 series,
-and I posted it here only to make the userspace half easy to review
-alongside -- it shouldn't be applied before the kernel attribute is
-accepted.
+在 2026/7/23 03:43, Jakub Kicinski 写道:
+> On Wed, 22 Jul 2026 15:37:02 +0800 luyun wrote:
+>> A gentle ping for this series, the number of patches is 2, not 13. I made a mistake
+>> when generating the patches. Please ignore it.
+>>
+>> Any comments or reviews would be greatly appreciated.
+> You must describe how your discovered the issue and what HW you have
+> tested it on. We don't take LLM fixes to Orphaned drivers.
+Hi Jakub,
 
-> You need to perform this change in a separate patch. Example:
-> https://lore.kernel.org/netdev/20260320140847.1730633-2-justin.iurman@6wind.com/
+Thank you for taking the time to look at this, and sorry about the
+patch numbering mess in my first submission.
 
-Done in v2.  The uapi header sync is now its own patch ("uapi: add
-NHA_DST_PORT"), matching that example, with the ip nexthop changes in a
-second patch.
+On how the issue was found: it came out of a systematic audit of
+the driver's error handling paths. I should be transparent that the
+initial scan was assisted by AI tooling, but I then verified every
+finding myself line by line before writing any patch.
 
-> Missing update to the man page
+Both bugs are deterministic logic errors provable by inspection.
+Patch 1: in cp_start_xmit() the head descriptor is written only
+after the fragment loop, but on a fragment mapping failure
+unwind_tx_frag_mapping() unmaps the stale address still sitting in
+that slot (a double unmap), uses fragment sizes shifted by one
+slot, and never unmaps the head buffer mapping at all.
+Patch 2: when cp_init_rings() fails, cp_clean_rings() has already
+dropped all rx_skb entries, yet the hardware is restarted and NAPI
+is scheduled unconditionally, so cp_rx_poll() hits BUG_ON(!skb).
 
-Done in v2.  ip-nexthop.8 now documents dst_port in the synopsis and the
-attribute description, with an example.
+On testing: the series is compile-tested only (full kbuild, -Werror
+clean). I don't have RTL8139C+/RTL810x hardware, and QEMU's rtl8139
+model is driven by 8139too, so I have no way to runtime-test this
+driver. I want to be upfront about that.
 
-> Assuming we go with "dst_port", you can drop "fdb". Only the kernel will
-> validate that "dst_port" is provided together with "fdb".
-
-Done.  We did go with "dst_port" (NHA_DST_PORT) on the kernel side, so
-usage is now a standalone "[ dst_port PORT ]" -- the "fdb" nesting is
-gone and the kernel enforces the dst_port + fdb pairing.
-
-> The convention here is "port %u ", not " port %u". I think you added it
-> like that because there's a missing space in "fdb" above. Fix it while
-> you are at it.
-
-Done in v2.  Printing is now "dst_port %u " with the trailing space, and
-I fixed the pre-existing missing space in the "fdb" print above it too.
-
-v2:
-  https://lore.kernel.org/netdev/20260723-b4-vxlan-fdb-port-iproute2-v2-0-9012ac01b49e@gmail.com/
+I understand and respect the policy on orphaned drivers. I take
+full responsibility for these changes, but I'd rather ask than assume:
+are statically provable fixes like these acceptable for an orphaned
+driver without hardware testing, or should I look for someone with
+the hardware to confirm them first?
 
 Thanks,
-Jack
+Yun
+
+
