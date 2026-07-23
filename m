@@ -1,66 +1,67 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29B21FF30
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEF129992A
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784769494; cv=none; b=cUj9XCrTz/Xs/A/TBaLNEue3iV9IAtH1xHV5ZW2CKMDz99RH8L1ATaEjs3boqgr1pCcZ91D4mWvdArlVLZ2cIKuY4BgS6kmBzqpVe67QbmSgUUo3ypdXUQUr37g9YC47XdkSnpyr58u6ashngyPsZYdX2cKC07Tvj3a7hi8NeBQ=
+	t=1784769494; cv=none; b=uCVXJ7SfXhoLTyk2Oaj04Bl1/hSvQlk38VOIfbG1eI+udvWYzbXNvg00OHwaOBWnEZjh5QwRCS0TCdWiLGoFDPGyoDIRepdX3EwoIq2w/9HAZHRc1Vve3kljXN3Sy7X2zvEj4FZZgoytZ4zoUbiqCq8fARWpu2PfAYK/woIHWa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784769494; c=relaxed/simple;
-	bh=TrnjZo8ZAqSB67M3vMZFcmj593axNcgT2qUTDvpk8/w=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=c5Pfc/6N4K/695uvnwJibxtFl1S6w1p+a0jf9SDgR9n1DPQBaxmHLwMqZi8I47J/Rf5kQi2ExfRZkU20Tb4IBFKI40LrNhhgBg2V002GbxZz+/HyfKbdJ1Q7863wCn2J9cg7Yi7e3kWFn+5CJcT2jGlXgMRp4sN3hbQoxg82Oh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HBINnVza; arc=none smtp.client-ip=209.85.210.169
+	bh=Rp5wNPbGEoMLvDNy9Y0Os0AN018Ut17OejovDqyuNkI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=D40/TkPN3bOFAc+wnTpgJ5/O8o2blz3Lly+ek2dgQIKt+deaFxpmzxZf9J5gBzffQLCOYS/sXyhiVMI/1wISCKumIhniMa2EhZnITgC5X5kltthUpgHCcnrfnHyOENprJLivVhbQwClp/SvyC2W3uOPHEu9kmrfko94NRhsMBRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QNwVlL2n; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HBINnVza"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84830c774a0so74724b3a.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:18:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QNwVlL2n"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84a652535dcso51329b3a.3
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:18:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784769491; x=1785374291; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=l/H8JNU91r/Q1MfTAvhCTVsqDz/YYgbouanwk7Man0k=;
-        b=HBINnVzahv3RraEf9UAGSjbVWulJLJOfMUxB+hBARliZ56zOjh4KozWGC27ebBkBez
-         hFctxrAsHmRmN+UCfqNTGGXQobdUzMlmU4YmWPYQlI7DRJ43hr/mZP7j052brdsemptY
-         n7tW/B+G1Al7Q/R2FoBQV8Ugc8nN4pD9jMK5pdJBCVlPz0/wDGZ72TGgwuhdgDx8Opm5
-         9qq/LKyn3IKW9URnIiRQ2QBPfvDMqaevvB6PE16Muo6qPVxa2NY1fpUUVq3uFC8iaJIA
-         oWe56jT/rjtmTvX0U9esW73atygHkzPtTD6Rv+lLdEmo/Od2zd7X33rteyhohScj7R6W
-         l5fg==
+        d=gmail.com; s=20251104; t=1784769493; x=1785374293; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HqDIk+Slnk3pOQnmJk8DItcgvMwolBNT8qPRkL5HwoQ=;
+        b=QNwVlL2nKGi4c2p7vOkeUcf44ohGsg7aeN+NzknL2gqL8W3TQYPQsVjCSj9fQXb7LO
+         4k2Wv7vmLWxsiIpb3Vdskyh0IvVbvyfIUoThaBWgy5KCBIsweLYT/BCBWJUZLemHr1jM
+         J0CikRQDOMs42Knj93BbrcRSHuybputv5Dg4zT8lJX5/HUVQNJIBkRYoi0uTVUmxOU38
+         nL8bZkV+NFFc0WXCWcZ4mxvIOCEKgGRkWVxrg+7qGkCYewVa9bMfY2As/aPwVwT7imPe
+         GbOPAdzksGX88cC6HEKMNy/dlVMbkW8FUPWJw1jowcwTxp70gVuPZ3RnlPHyS4gC9DjM
+         8gFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784769491; x=1785374291;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=l/H8JNU91r/Q1MfTAvhCTVsqDz/YYgbouanwk7Man0k=;
-        b=mauPFT2WfrWzn/DzH4E4a+l5wkMxQJ0hsY+wnyXh2RvlySwt8bRvel2qcJEmtro91t
-         kJh2/WwTh8FwjuyawAKgwSrL7mEgT1PZ3v325KkEOctihKkXuxpB9/fSgJ/b9LSDv6gw
-         jo4YA1KzWngw9HFlbn6d3P6X383Nt/COkPrB+PZWBpZ0v3MUnL3hUiv2FAz7D+eTd/2E
-         CSjKeKow8cmFo4hsESz64Yesg27tX2hHcSrmzlZ/uk2Qhv860iSBlKP+PDslx77GjfDU
-         f8F7mB59OhGECsk+Q3o2JSbigb+qkGYFLdUurnX49akDZSaYXlLS81ZY1RT5efetegym
-         u0aA==
-X-Gm-Message-State: AOJu0YwBVpJkb4zSEU1H4L/uUB76xFpNQJ3+8tvyppfqpgne27S3a852
-	PioDD/Exxww+0jn43j8TIhWu6GCE2zmoYVuWXApe9LqmLqBmXT2kgfKx
-X-Gm-Gg: AR+sD125omlGSWyzsJRKIf0+qjByd2PUE1lbaag1P9xXvGfInecahJcKu69cGxhgRAv
-	kDmCNvb51fswnoJSjHh0YAD7Pl47Ibub5IpnDQqb7JihpplcnuFCablW15CgKkZ0a71SkVHEdxE
-	0bdt9y/wPpEn8Wx6/lEi/g1sm/TVLJlh+G9Yebz87/SgwryPg7YnJE22De7b1+Y5XpR5OAXmJ5g
-	2OQglzlgYUPNapRfZ5U5yOm7focV2SfwhhEcKEj4EnjtHyX61tKypJZh0MWWHHIE+RgN2Yf9vjt
-	FTlI5yccfNpX3y5ZkIdbl1m5hYzfGin9any7/5z4uLzamTvVuDmAcO9MjL+RTlerR2haCYDG9/H
-	1pcyI2wT5dQUUHYwfEmmBVLjCoPhPqgroX9xzeZKx+W38aQRStfL2Y3Mrqb1lplKYOgLv+LziCB
-	wozoYcKfyN4Xdcb8N0xJdOAKFkBA==
-X-Received: by 2002:a05:6a00:a20f:b0:845:2ff5:b66d with SMTP id d2e1a72fcca58-84e2bb37352mr1415809b3a.35.1784769491217;
-        Wed, 22 Jul 2026 18:18:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784769493; x=1785374293;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HqDIk+Slnk3pOQnmJk8DItcgvMwolBNT8qPRkL5HwoQ=;
+        b=in/sVgY1bkN+bHumu4OOKj0GKQe1yyjXcchGDtJLcQSRsVZg9e29YXGouNbAcBdFR0
+         ESWPGJ7VSGcczYjiXBdSFdepaoEUOIlvChJUiNjZFkGfO5QhklVY+JhCSp07GXEeknSK
+         C5ZVMIYoV+ZVkSZtBUDmRagfrAsrMYDKL7QoKFepETBHiPphPzAunTxfAWn1aLw+q+IW
+         BU3GshSF4FLhnrkOjgW562um5GzqRCcFXkfhowXjGkHeWSFTwvYE8x6h0k7sSPvan26Q
+         PJPXtxqwwawssrBonsdCuHNQW9hUPgZpK0efIY5IGsDqrwQmLb9YxPhtK3bjM4k5ud9z
+         Rm/g==
+X-Gm-Message-State: AOJu0YzykLcTzSClpO5LLM34tXQzYbQxXXWrSXJW7iv/zWCfKINxnHQp
+	PJTrWELor6BxmhdM1FSYWJOcP89NECp1obt2U42wSdJl9786dQE+BFhe
+X-Gm-Gg: AR+sD110mK5IWOaidAVWkll5Oe8znYafPu3Hs1HUw36kiaW+U++QRq5S8R7O9Gsu8Ja
+	x51nb55VdKHf0LakHANuB8ZrxyEVf9QK5x1Wf77ge7DCbVKfVW6e93DvhUly/rToZmfASIg6U6E
+	avSBuKMgkg5SQXXLjZ9nje112p+hlzSiuwC+/PlpGmHRDVZxqlY/xEJDTGSBA4JRLB/ibxRDVEj
+	zBb5UczAe5vPkB/ddGlsMRAKqhAHW07/INR504Jo0f+pEBRzB1gUjhx/tX99KbCMJOEcqFtjW1x
+	5vbG/qphNtG8OHKxtcO6GA8iIQgN9VWbgHjb7KonMKfmB/kk6jqbDOqXCl6KO92eVTvpv33jj55
+	EIaJAK11wBA8Z1Sn8+9jtfW71qRiyHsR14p4tZrDsjHnjQYZoqX2xWPqf2JRupDz9QabutUBOIZ
+	N1d0BqgaqQ2WMHHlg=
+X-Received: by 2002:a05:6a00:1302:b0:845:dffa:3740 with SMTP id d2e1a72fcca58-84e2b7e5966mr1309708b3a.4.1784769492666;
+        Wed, 22 Jul 2026 18:18:12 -0700 (PDT)
 Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.37])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175ea5c7sm2089045b3a.53.2026.07.22.18.18.08
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175ea5c7sm2089045b3a.53.2026.07.22.18.18.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 18:18:09 -0700 (PDT)
+        Wed, 22 Jul 2026 18:18:11 -0700 (PDT)
 From: Jack Ma <jack4it@gmail.com>
-Subject: [PATCH net-next v4 0/3] net: nexthop: per-nexthop UDP dst port for
- fdb (VXLAN) nexthops
-Date: Thu, 23 Jul 2026 01:17:52 +0000
-Message-Id: <20260723-b4-vxlan-fdb-port-v4-0-46e3a2dd88a3@gmail.com>
+Date: Thu, 23 Jul 2026 01:17:53 +0000
+Subject: [PATCH net-next v4 1/3] net: nexthop: add NHA_DST_PORT for fdb
+ nexthops
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,11 +70,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMBrYWoC/23NTQ6CMBAF4KuQrh0D5VdX3sO4mMIANdiStjYYw
- t0t6IIFy5eZ972ZWTKSLLtGMzPkpZVahZCdIlb3qDoC2YTMeMyLuEw4iAz8NKCCthEwauMgqwo
- heJITioKF3mioldNm3pkiB4omxx6/i32LJ9VuJdffXlqnzWeb93xr/JfKgyXPIYY27HGqWqqK8
- ta9UA7nWr8236c7gSdHQhqEC2KMeZZiWeFeWJblC2uwEnkQAQAA
-X-Change-ID: 20260712-b4-vxlan-fdb-port-486bb215eab6
+Message-Id: <20260723-b4-vxlan-fdb-port-v4-1-46e3a2dd88a3@gmail.com>
+References: <20260723-b4-vxlan-fdb-port-v4-0-46e3a2dd88a3@gmail.com>
+In-Reply-To: <20260723-b4-vxlan-fdb-port-v4-0-46e3a2dd88a3@gmail.com>
 To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -81,205 +80,135 @@ To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Jack Ma <jack4it@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784769488; l=10413;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784769488; l=4268;
  i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
- bh=TrnjZo8ZAqSB67M3vMZFcmj593axNcgT2qUTDvpk8/w=;
- b=O/xDmMeacYivCkFYFa+h3SXtl0E+SehCcpIix59zADLU8VbDvecNBAfpn3oQD++e5jabkcDw8
- Gd7zKyh0XJpA2VLuPDY9O6Dms0Q+jeSquEofYw9mkfq1fGPGPjgSqng
+ bh=Rp5wNPbGEoMLvDNy9Y0Os0AN018Ut17OejovDqyuNkI=;
+ b=J64lXUoNus6ikn25PnuBFee7hwyLnvyUa8eyxsGKOQSNGfO7bufTkdBgDhOAHXcU+sGI2Evl4
+ v8YwRuJ4ROdBwoGEWE8iu4xOtvtMeS1znId1EcojIjWV0eXCsTNe7om
 X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
  pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
 
-FDB nexthops let a VXLAN fdb entry point at a group of remote VTEPs, with the
-kernel flow-hashing across the group (commit 1274e1cc4226 ("vxlan: ecmp support
-for mac fdb entries")).  Each leg carries its own remote IP, but the UDP
-destination port is always taken from the VXLAN device (vxlan->cfg.dst_port)
-and cannot be set per leg.
+Commit 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries") lets a
+single inner MAC be reached through a group of remote VTEPs, with the
+kernel flow-hashing across the group members.  Each member carries its
+own remote IP, but the UDP destination port is always taken from the
+VXLAN device (vxlan->cfg.dst_port) and cannot be set per member.
 
-This series adds an optional per-nexthop UDP destination port for fdb nexthops,
-so a group's legs can share a remote IP and differ only in UDP port.
+Some deployments pack several receivers behind one underlay IP and tell
+them apart by UDP port, so they need a per-nexthop destination port to
+spread flows across (IP, port) tuples rather than IP alone.
 
-Motivation
-
-The deployment runs an overlay in which each tenant's traffic is terminated by
-a "forwarder": a pod that hosts the VXLAN VTEP, decapsulates the tenant's
-overlay, and relays it to and from that tenant's workload.  Forwarders for many
-different tenants are packed onto the same receiver node behind one
-mesh-routable underlay IP, and are demultiplexed purely by UDP destination
-port.  The host does a stateless outer-UDP demux by port; it never terminates
-the tunnel:
-
-  receiver node -- one mesh-routable underlay IP (NodeIP_A)
-  +----------------------------------------------------+
-  |  host netns: stateless outer-UDP demux by dst port |
-  |              (host does NOT terminate the tunnel)  |
-  |                                                    |
-  |     dst :40000        dst :40001        dst :40002 |
-  |         |                 |                 |      |
-  |   +-----v----+      +-----v----+      +-----v----+ |
-  |   | pod0 ns  |      | pod1 ns  |      | pod2 ns  | |
-  |   | vxlan    |      | vxlan    |      | vxlan    | |
-  |   | VTEP     |      | VTEP     |      | VTEP     | |
-  |   | decap    |      | decap    |      | decap    | |
-  |   +----------+      +----------+      +----------+ |
-  +----------------------------------------------------+
-  (up to ~10 forwarder pods packed per node)
-
-The packed pods are unrelated: each belongs to a different tenant on its own
-VXLAN VNI, so the per-pod UDP port is node-level demux, not an HA construct.
-The host, which only demuxes outer UDP, never has to reason about tenancy.
-
-A single forwarder is made highly available by running replicas.  The replicas
-of one forwarder share a single anycast overlay identity: one inner MAC and IP.
-Clients address that one identity, and a sender spreads flows across the live
-replicas with an fdb nexthop group.  Failover is transparent: a dead replica is
-just dropped from the group, with no client re-resolution or route change.  The
-single identity is deliberate; the endpoint is consumed one layer up as a
-single stable address, so giving each replica its own address would push
-multi-address handling and health-checking up into that consumer.
-
-Anti-affinity keeps the two replicas of one HA set on different nodes, so a
-group's legs land on distinct node IPs.  But each leg is still reachable only
-at (node IP, that pod's UDP port), so within one group the legs differ in IP
-*and* port.  A group can already carry a distinct IP per leg, but it takes the
-UDP port from the device (a single value), so it cannot send each leg to its
-own port.  That is the gap this series closes.
-
-Zooming into one forwarder pod, there is nothing for the host to load-balance:
-the tunnel terminates on a vxlan device inside the pod's own netns, and the pod
-reaches its tenant through a separate NIC:
-
-  one forwarder pod -- its own netns, tenant VNI X
-  +-------------------------------------------------+
-  |                                                 |
-  |   on/off-ramp NIC   <--- customer data plane    |
-  |   |   on-ramp (ingress) / off-ramp (egress)     |
-  |   |   inner packet                              |
-  |   vxlan (VTEP)   encap / decap for VNI X,       |
-  |   |              listens on this pod's UDP port |
-  |   |   outer VXLAN UDP                           |
-  |   eth0 (underlay)   NodeIP:port                 |
-  |   |   to peer VTEPs over the                    |
-  |   v   mesh underlay                             |
-  |                                                 |
-  +-------------------------------------------------+
-
-Existing mechanisms do not fit this shape:
-
-  - L3 multipath in the overlay needs each leg to be a distinct routable
-    nexthop with its own address.  Since an HA set is a single anycast address
-    by design, there are no distinct per-leg addresses to route over; the fdb
-    nexthop group bridging to that shared MAC is what load-balances.
-  - Host-side fan-out (XDP / TC / SO_REUSEPORT) assumes a shared host datapath
-    that is not there.  SO_REUSEPORT balances sockets within one netns, but the
-    receivers are in different netns (in fact different tenants).  An XDP/TC
-    fan-out would require the host to terminate the tunnel and re-dispatch
-    inner traffic across netns and VNI boundaries, i.e. become a VTEP, which
-    puts the host into the tenant datapath and largely duplicates what an fdb
-    nexthop group already does.
-  - Demuxing on VNI instead of port (one shared 4789 socket, multiple vxlan
-    devices differing only in VNI, moved into each pod's netns) works when the
-    co-located pods have different VNIs.  It does not help two same-VNI HA sets
-    on one node: their outer headers are identical, so the host would again
-    have to terminate the tunnel to tell them apart.  It also costs packing
-    density: with one shared underlay IP, VNI demux allows at most one VTEP per
-    (VNI, node), so N same-VNI HA sets of two replicas need 2N nodes, whereas a
-    per-pod port fits them on two nodes with anti-affinity preserved.
-
-This series adds the attribute:
-
-  - Patch 1 adds a netlink attribute NHA_DST_PORT (__be16, mirroring NDA_PORT),
-    stored in struct nh_info and echoed back on dump.  It is only accepted
-    together with NHA_FDB and NHA_GATEWAY.  Control-plane only; datapath
-    behaviour is unchanged.
-  - Patch 2 wires it into the VXLAN datapath: vxlan_fdb_nh_path_select() sets
-    rdst->remote_port to the selected leg's port.  vxlan_xmit_one() already
-    prefers rdst->remote_port when non-zero and otherwise falls back to the
-    device port, so nexthops without a port are unaffected (backward
-    compatible).
-  - Patch 3 extends the fdb nexthop selftests.
-
-On the uAPI: this does not add a new datapath concept.  A single fdb entry
-already carries a per-destination UDP port (NDA_PORT), and vxlan_xmit_one()
-already prefers rdst->remote_port when set.  NHA_DST_PORT is the nexthop analog
-of that existing attribute: control-plane only, no datapath change, and
-backward compatible (a leg with no port falls back to the device port as
-today).  It sits at the nexthop level rather than under NHA_ENCAP because fdb
-nexthops do not use the NHA_ENCAP / LWT infrastructure.
-
-Example:
-
-  ip nexthop add id 1  via 192.0.2.10 fdb dst_port 4789
-  ip nexthop add id 2  via 192.0.2.10 fdb dst_port 5789
-  ip nexthop add id 10 group 1/2 fdb
-  bridge fdb add 00:11:22:33:44:55 dev vxlan0 nhid 10
-
-Both legs share gateway 192.0.2.10 and differ only in UDP port; the kernel
-hashes flows across them.
-
-Testing: kernel and iproute2 built on net-next.  The fdb nexthop cases in
-fib_nexthops.sh pass, and the datapath test in test_vxlan_nh.sh confirms a
-per-nexthop port is used on the wire in place of the device default.  The
-series is bisectable: patches 1 and 2 each build individually.
-
-A matching iproute2 change adds the `dst_port` keyword to `ip nexthop`; it
-will be posted to the iproute2 list alongside this series.
-
-Changes in v4:
-- Rename NHA_FDB_PORT to the generic NHA_DST_PORT (struct field nh_dst_port,
-  nh_info.dst_port, iproute2 keyword dst_port).  Review noted "fdb port" is
-  too specific and can be confused with a bridge port; the attribute is now
-  named generically while validation stays fdb-only (Ido Schimmel, David
-  Ahern).
-- selftests: split the dst_port cases out of ipv4_fdb_grp_fcnal() /
-  ipv6_fdb_grp_fcnal() into dedicated ipv4_fdb_port_fcnal() /
-  ipv6_fdb_port_fcnal() tests, and require iproute2 dst_port support in
-  test_vxlan_nh.sh (Ido Schimmel).
-
-Changes in v3 (all addressing Ido Schimmel's review):
-- patch 1: type NHA_FDB_PORT with NLA_POLICY_MIN(NLA_BE16, 1) so the
-  attribute is big-endian and a zero port is rejected by the policy.
-- patch 1: reserve the NHA_FDB_PORT dump size based on nh_info->fdb_port
-  instead of fdb_nh, so only nexthops that carry a port account for it.
-- patch 2: fix the nexthop_path_fdb_result() continuation-line alignment
-  and drop the redundant fdb_port NULL check; its only caller always passes
-  a valid pointer.
-- patch 3: fold the control-plane checks into ipv4_fdb_grp_fcnal() and
-  ipv6_fdb_grp_fcnal() in fib_nexthops.sh rather than a standalone script,
-  and add datapath coverage to test_vxlan_nh.sh.
-
-Changes in v2:
-- Expand the cover letter with the deployment model and the
-  addressing-vs-load-balancing distinction that motivates the attribute, as
-  requested (Ido Schimmel).
-- Reword the problem statement: the UDP port is underlay demux (addressing),
-  not what distinguishes otherwise-interchangeable load-balancing targets.
-- Drop the speculative NHA_FDB_VNI follow-up note; there is no use case for a
-  per-leg VNI in an fdb nexthop group.
-- No functional change to the patches.
-
-v3: https://lore.kernel.org/netdev/20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com/
-v2: https://lore.kernel.org/netdev/20260717-b4-vxlan-fdb-port-v2-0-f4862e8fe867@gmail.com/
-v1: https://lore.kernel.org/netdev/20260712191218.236-1-jack4it@gmail.com/
+Add a netlink attribute NHA_DST_PORT (__be16, mirroring NDA_PORT) that
+carries an optional UDP destination port on an fdb nexthop.  It is only
+accepted together with NHA_FDB and NHA_GATEWAY; it is stored in struct
+nh_info and echoed back on dump.  The attribute is named generically
+rather than fdb-specific so it can be reused should another nexthop type
+ever need a destination port.  This patch is control-plane plumbing
+only; the VXLAN datapath is wired up in a follow-up patch, so behaviour
+is unchanged for now.
 
 Signed-off-by: Jack Ma <jack4it@gmail.com>
 ---
-Jack Ma (3):
-      net: nexthop: add NHA_DST_PORT for fdb nexthops
-      vxlan: honor per-nexthop fdb destination port
-      selftests: net: add coverage for fdb nexthop dst_port
+ include/net/nexthop.h        |  2 ++
+ include/uapi/linux/nexthop.h |  3 +++
+ net/ipv4/nexthop.c           | 20 +++++++++++++++++++-
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
- include/net/nexthop.h                        |  6 ++-
- include/net/vxlan.h                          |  5 +-
- include/uapi/linux/nexthop.h                 |  3 ++
- net/ipv4/nexthop.c                           | 20 ++++++-
- tools/testing/selftests/net/fib_nexthops.sh  | 81 ++++++++++++++++++++++++++++
- tools/testing/selftests/net/test_vxlan_nh.sh | 34 +++++++++++-
- 6 files changed, 144 insertions(+), 5 deletions(-)
----
-base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
-change-id: 20260712-b4-vxlan-fdb-port-486bb215eab6
+diff --git a/include/net/nexthop.h b/include/net/nexthop.h
+index 572e69cda4766..7673aaeff3e28 100644
+--- a/include/net/nexthop.h
++++ b/include/net/nexthop.h
+@@ -28,6 +28,7 @@ struct nh_config {
+ 	u8		nh_protocol;
+ 	u8		nh_blackhole;
+ 	u8		nh_fdb;
++	__be16		nh_dst_port;
+ 	u32		nh_flags;
+ 
+ 	int		nh_ifindex;
+@@ -63,6 +64,7 @@ struct nh_info {
+ 	u8			family;
+ 	bool			reject_nh;
+ 	bool			fdb_nh;
++	__be16			dst_port;
+ 
+ 	union {
+ 		struct fib_nh_common	fib_nhc;
+diff --git a/include/uapi/linux/nexthop.h b/include/uapi/linux/nexthop.h
+index bc49baf4a267f..59cf1cee93bd7 100644
+--- a/include/uapi/linux/nexthop.h
++++ b/include/uapi/linux/nexthop.h
+@@ -83,6 +83,9 @@ enum {
+ 	/* u32; read-only; whether any driver collects HW stats */
+ 	NHA_HW_STATS_USED,
+ 
++	/* be16; UDP destination port for an fdb nexthop (e.g. VXLAN) */
++	NHA_DST_PORT,
++
+ 	__NHA_MAX,
+ };
+ 
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 6205bd57aa852..0021380b8c1de 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -39,6 +39,7 @@ static const struct nla_policy rtm_nh_policy_new[] = {
+ 	[NHA_ENCAP_TYPE]	= { .type = NLA_U16 },
+ 	[NHA_ENCAP]		= { .type = NLA_NESTED },
+ 	[NHA_FDB]		= { .type = NLA_FLAG },
++	[NHA_DST_PORT]		= NLA_POLICY_MIN(NLA_BE16, 1),
+ 	[NHA_RES_GROUP]		= { .type = NLA_NESTED },
+ 	[NHA_HW_STATS_ENABLE]	= NLA_POLICY_MAX(NLA_U32, true),
+ };
+@@ -956,6 +957,9 @@ static int nh_fill_node(struct sk_buff *skb, struct nexthop *nh,
+ 	} else if (nhi->fdb_nh) {
+ 		if (nla_put_flag(skb, NHA_FDB))
+ 			goto nla_put_failure;
++		if (nhi->dst_port &&
++		    nla_put_be16(skb, NHA_DST_PORT, nhi->dst_port))
++			goto nla_put_failure;
+ 	} else {
+ 		const struct net_device *dev;
+ 
+@@ -1055,6 +1059,9 @@ static size_t nh_nlmsg_size_single(struct nexthop *nh)
+ 		break;
+ 	}
+ 
++	if (nhi->dst_port)
++		sz += nla_total_size(2);	/* NHA_DST_PORT */
++
+ 	if (nhi->fib_nhc.nhc_lwtstate) {
+ 		sz += lwtunnel_get_encap_size(nhi->fib_nhc.nhc_lwtstate);
+ 		sz += nla_total_size(2);  /* NHA_ENCAP_TYPE */
+@@ -2956,8 +2963,10 @@ static struct nexthop *nexthop_create(struct net *net, struct nh_config *cfg,
+ 	nhi->family = cfg->nh_family;
+ 	nhi->fib_nhc.nhc_scope = RT_SCOPE_LINK;
+ 
+-	if (cfg->nh_fdb)
++	if (cfg->nh_fdb) {
+ 		nhi->fdb_nh = 1;
++		nhi->dst_port = cfg->nh_dst_port;
++	}
+ 
+ 	if (cfg->nh_blackhole) {
+ 		nhi->reject_nh = 1;
+@@ -3147,6 +3156,15 @@ static int rtm_to_nh_config(struct net *net, struct sk_buff *skb,
+ 		cfg->nh_fdb = nla_get_flag(tb[NHA_FDB]);
+ 	}
+ 
++	if (tb[NHA_DST_PORT]) {
++		if (!tb[NHA_FDB] || !tb[NHA_GATEWAY]) {
++			NL_SET_ERR_MSG(extack,
++				       "Destination port can only be set on fdb nexthops that have a gateway");
++			goto out;
++		}
++		cfg->nh_dst_port = nla_get_be16(tb[NHA_DST_PORT]);
++	}
++
+ 	if (tb[NHA_GROUP]) {
+ 		if (nhm->nh_family != AF_UNSPEC) {
+ 			NL_SET_ERR_MSG(extack, "Invalid family for group");
 
-Best regards,
---  
-Jack Ma <jack4it@gmail.com>
+-- 
+2.43.0
 
