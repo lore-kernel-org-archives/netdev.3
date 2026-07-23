@@ -1,226 +1,65 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9881D2F363F
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 15:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A314133B97B;
+	Thu, 23 Jul 2026 15:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820913; cv=none; b=AfoeGflWPSG5m2FdfKPPumfqlUACPiODj8AugEKLICtXshHFoGRdUdcmAA3Qe1gErq42dkB3t8kxslSQHs5p/4T40cUrBQQhmEfixzNbrkRZURD5GZ6qYvB+L5emFuBnkhWzvzyK9gwsWZ4/6YyqxWTVt9ATBkEYGuxpufPwdiI=
+	t=1784821150; cv=none; b=fyusZIT0ZH6D7VD3D6bVqMFrdv/jnjVBVvgnldEeP8/z1U36exSdXCUcrGYuTysvOG+7elgHxMs3eSBgbDu5A487FN54G8HD7Sw+Tf5cd+cpsmuKeMHTCS7mWRhFq50R71SDFD1IN2FEKNdhKdvXtpkwigyYf+15WRjXSISm/xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820913; c=relaxed/simple;
-	bh=f/W56l8v8I4Z/bI4TUYNCd7jTn6u4MyWo43wLwwz+O4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drYVclDSRbhf8zUnKcQwFDA6UhMncZ6g2i0XkOl6VATY4MOT/nGpNyeh0sOnLz3SQL+fS9ehdZtIZFfjKUVcIXRaCohdkvBkp7CxKBtnXU37tfI7NOvf8s+sviN7eLnNdEoK+RKYwbsbW73EVvcv5xqquIYaV3qrDEmK06OGFd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lKNjJ7yz; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784821150; c=relaxed/simple;
+	bh=Kbvnhhex1XPhMur8ro3UlqwyX9TaYjvR952TUJBnnJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQrXOY5E0ZbJts3L6fUP7h7CFnsSDw7/PE8khFlMqIWrGzPYTNQ1PErclcWPyNG6Lc0a7P69bUdiNLBimbkElhIxnLJDulDT104OuT5WRa/H7+wgu133pHRJlqrWZWw4x4VdGae11l/ATGeOG4GsaKdbK6UYmuOp9E/HhHC3AFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=DTKnaItv; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lKNjJ7yz"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9b3f380006so102919a12.1
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 08:35:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784820902; x=1785425702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YUwFPXE0ARZ2U6TesCDMJktXSbqLTCmlCnjsBK9QtbM=;
-        b=lKNjJ7yzMjwjyP4JKop1k931LjF3By13vj8GM5YnBq5vk4uV0JzuCmSfYUadN3c8c1
-         1D1GguBOWOZeGZIAJg/um7xhS8RRYzIHTlYJgVGfD29MV/ztNJn/i+GgqmCGmayIGOEL
-         YnAxhUj8AvuVLpnBJ3PisxXTB6xwKZY+q8GDK0TPy0tYChfFFn5nv8fQmcK7Y8IdMlBT
-         Mov9ChiuVFVcsnjpTHjrcrg8v9iSCV1wVSQ5LtYYDYh3LU0shvWE5Aajp/vMUwhnQuoj
-         zewHYtInzS6RAmSRC+KRTh9xih7BnE2idfPh3OX+BsvGDDkItWJOVDK+2jZXUPvKgB4M
-         e5jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784820902; x=1785425702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YUwFPXE0ARZ2U6TesCDMJktXSbqLTCmlCnjsBK9QtbM=;
-        b=RuaSZMxE1HP3vQTiMrhX5nvTc26wyfH+wav74zhDKonKgmDXQAlpi1gceU1e+KfBkN
-         tETDk8JMmZOdamjyN8QOrUXik0BnCsNCn9+7+D337LgPUUmOkYWa32uG2kKpyv6IsJFD
-         p0I4QfZSON62p3JOxs8Il37yf2FMiSIzLgxej1JVRZJlKEbctDZ8LU6MT7p2gSXVR2VN
-         95KpZJ75HR1QlFyk7zkPltQx3hF8ITEZ1zLlCZHqbN/PW5ITPvi57ygRQtbnoSGo0wRT
-         U3b1AT6EC15YVxHE6YRaIOLKtVgVbaRlOSrGhRJb7027KPBSQX00JrOoupWtVvr4Md9J
-         vBnQ==
-X-Gm-Message-State: AOJu0YynOoY1olGV0+rBhxNgCmY3uf5GJ90SlZIAn1AISU3OVu4baHjq
-	Pt17k8JTikUjxcgyx4c0IjC8fuOFzGXLRE1DW9FqM024E8SvzNI6A3TG
-X-Gm-Gg: AR+sD129Ph7iJdIz54FUas9K7Rc74yWu2appIpaKHgH7jKailSldY5eIGmWoK1WbmYu
-	odRpnfMycuL7kvCXH3E+GVTxfVOJpGDdD5MqSx11TGMsk/D+m9LjgFGbWfxlW4qgYSmVu920nXf
-	3HxSNqBlD1E9swaksc7X8PnKpmRTD7HGei21SuuybJqAU3KFeiGm+sFur+8yIwvmxilgrwIkVCz
-	xC6em7SiepQ55EvtEokF4gGXH0octQnDTXW69QxgBV88izUf8zcHMMIsBUTj0jaLttWGefmDpRv
-	PZokWtlQREV3W8CCXNHdBUJzISDgovz9W1Ygd5CsDa+m24GrtuaidW7pf5iUCRyTix1Kg7fpWtL
-	cdZkNNod87evIt9YVsaw38izen3Y79Z2l4AFOBwE60Tf+wdREAioQnpMTAPMbbsF2mgW1/KI5Xq
-	7a+m2ZgHewiz2KTT/nODgt+HxlMOlrN4acuR01J/c9dWf5H+ocRtrFoa5bJ5sAPWiUC3Yf5npty
-	sMCaEs=
-X-Received: by 2002:a17:90b:254a:b0:36b:9323:c726 with SMTP id 98e67ed59e1d1-38f02f3b968mr153278a91.4.1784820901333;
-        Thu, 23 Jul 2026 08:35:01 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3149a62cf50sm7576718eec.5.2026.07.23.08.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 08:35:00 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org,
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH v2] bpf, sockmap: Fix cork ownership in tcp_bpf_sendmsg()
-Date: Thu, 23 Jul 2026 23:34:50 +0800
-Message-ID: <20260723153450.3224353-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
-References: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="DTKnaItv"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 8047660194;
+	Thu, 23 Jul 2026 17:39:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1784821144;
+	bh=8BlkqnvCtkhFsBoY+3pDrLLjU7ZZ8T5kbqf3qGsfHwU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DTKnaItvBJe5GTPi4UlG7Bj7geoSY2+JwLzYcOsVBdn6rWt0MSgREPCn8Jr/14tf5
+	 AiQJSvVSC4oe6Bn1HF8Ooac+1d7hp2RATZBp8XfJKiqM4DFBk7lXX4tlwKCBAQAw2g
+	 RrEOmZ1XkAWrynDvaxbdHm6OOLLtZZZNlHLFVi+43HB+33HCzmFx5SvfEu/mv31Hs4
+	 6vvkiiHQbX6PLV4HWrnlD+WTjwmIE0up/xcSZx8zqjxr58FvSjge0iSXJhGstkLqli
+	 +OEjRyAxBWJW7hs9ejkfc1GgeE7Ift45jljooqfgCyS87lzmKpXRtWFaK3DJSJxjvN
+	 HG9tl+rm4sAyQ==
+Date: Thu, 23 Jul 2026 17:39:02 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	fw@strlen.de, horms@kernel.org
+Subject: Re: [PATCH net 09/13] ipvs: fix the checksum validations
+Message-ID: <amI1logAep3vSkfF@chamomile>
+References: <20260722211420.153933-1-pablo@netfilter.org>
+ <20260722211420.153933-10-pablo@netfilter.org>
+ <20260723070845.7855a0f1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260723070845.7855a0f1@kernel.org>
 
-tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which drops
-and reacquires the socket lock.  Its error path used the current value of
-psock->cork to decide whether msg_tx named the stack-local temporary
-message.
+Hi,
 
-Two senders can therefore interleave as follows:
+On Thu, Jul 23, 2026 at 07:08:45AM -0700, Jakub Kicinski wrote:
+> On Wed, 22 Jul 2026 23:14:16 +0200 Pablo Neira Ayuso wrote:
+> > +/**
+> > + * ip_vs_checksum_common_check - validate checksum for TCP/UDP/ICMP
+> > + */
+> 
+> this not-really-kdoc comment causes a bunch of new warnings,
+> and this file was previously warning free. Which in turn
+> makes our AI reviewer ignore the series. Could you respin?
 
-  Thread A                         Thread B
-  msg_tx = psock->cork
-  sk_msg_alloc() fails
-  sk_stream_wait_memory()
-    releases the socket lock      acquires the socket lock
-                                  completes the cork
-                                  psock->cork = NULL
-                                  frees the cork
-    reacquires the socket lock
-  msg_tx != psock->cork
-  sk_msg_free(msg_tx)
-
-The stale cork is mistaken for the local temporary message and freed again.
-KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
-  Read of size 4 at addr ffff88810c908800 by task poc/90
-  Call Trace:
-   sk_msg_free+0x49/0x50
-   tcp_bpf_sendmsg+0x14f5/0x1cc0
-   __sys_sendto+0x32c/0x3a0
-   __x64_sys_sendto+0xdb/0x1b0
-  Allocated by task 89:
-   __kasan_kmalloc+0x8f/0xa0
-   tcp_bpf_sendmsg+0x16b3/0x1cc0
-  Freed by task 91:
-   __kasan_slab_free+0x43/0x70
-   kfree+0x131/0x3c0
-   tcp_bpf_sendmsg+0xec3/0x1cc0
-
-The same unclear ownership also leaves several error paths inconsistent.
-A failed cork allocation leaves cork_bytes armed, a subsequent temporary
-message can escape without releasing its pages, iterator errors are
-returned as success, and a failed redirect of a corked message discards
-data while reporting it as sent.  Re-evaluating an existing cork can also
-copy the object onto itself.
-
-Make temporary ownership explicit by freeing only &tmp at the common exit.
-Reset cork_bytes when allocating the persistent cork fails, propagate
-iterator errors, preserve redirect failures and clear the copied count
-when corked data is discarded.  Skip the copy when the message is already
-the persistent cork.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Cc: stable@vger.kernel.org
-Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-
-Changes in v2:
-- Address Sashiko review findings for stale cork state, iterator-error
-  propagation, cork self-copy, and masked redirect failures.
-- Keep the original stale-cork use-after-free fix.
-
-Sashiko: https://sashiko.dev/#/patchset/20260719161630.2901208-1-nicoyip.dev%40gmail.com
-Link: https://lore.kernel.org/netdev/20260719161630.2901208-1-nicoyip.dev@gmail.com/ [v1]
-
- net/ipv4/tcp_bpf.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 8e905b50dead..0594ee4013b0 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -443,12 +443,14 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 			psock->cork = kzalloc_obj(*psock->cork,
- 						  GFP_ATOMIC | __GFP_NOWARN);
- 			if (!psock->cork) {
-+				psock->cork_bytes = 0;
- 				sk_msg_free(sk, msg);
- 				*copied = 0;
- 				return -ENOMEM;
- 			}
- 		}
--		memcpy(psock->cork, msg, sizeof(*msg));
-+		if (psock->cork != msg)
-+			memcpy(psock->cork, msg, sizeof(*msg));
- 		return 0;
- 	}
- 
-@@ -495,14 +497,15 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 		if (unlikely(ret < 0)) {
- 			int free = sk_msg_free(sk, msg);
- 
--			if (!cork)
-+			if (cork)
-+				*copied = 0;
-+			else
- 				*copied -= free;
- 		}
- 		if (cork) {
- 			sk_msg_free(sk, msg);
- 			kfree(msg);
- 			msg = NULL;
--			ret = 0;
- 		}
- 		break;
- 	case __SK_DROP:
-@@ -579,6 +582,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 					       copy);
- 		if (ret < 0) {
- 			sk_msg_trim(sk, msg_tx, osize);
-+			err = ret;
- 			goto out_err;
- 		}
- 
-@@ -603,13 +607,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- wait_for_memory:
- 		err = sk_stream_wait_memory(sk, &timeo);
--		if (err) {
--			if (msg_tx && msg_tx != psock->cork)
--				sk_msg_free(sk, msg_tx);
-+		if (err)
- 			goto out_err;
--		}
- 	}
- out_err:
-+	if (msg_tx == &tmp)
-+		sk_msg_free(sk, msg_tx);
- 	if (err < 0)
- 		err = sk_stream_error(sk, msg->msg_flags, err);
- 	release_sock(sk);
--- 
-2.43.0
-
+Yes, I can drop the patches that have the kdoc issues and respin.
