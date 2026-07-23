@@ -1,118 +1,181 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CCD3E49E6;
-	Thu, 23 Jul 2026 20:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784838264; cv=none; b=kCsI/mUe87Yf6KJe5yOQ2C1WYE6nCMlV2QaDdyOBdSsil79HhCRXAN9Wa+phbWvEObgREMkqmqGSNDbfT7cZndAwCngkaCvgXIHpd3e6P0YlQ4wUl/IjW/u6Tl798iBfI3jzdUsNXBHOmkz5sttC1cKcSGcLnnd+DdOUAp3D3Po=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784838264; c=relaxed/simple;
-	bh=g2neCyLoLFNVrcLtSsHWhdIyxaxfjyUesBtMnhvXhuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mpjuRo763YqiIkdlMwoJaKI8IIN1w45gQ2qgmnZVZSJYTm/+PSwaRO7nJJlt+JKELNoT+7bwKwh3Pwq1zyAydPjIXJ2vS8CmDMpXjF+pNeDLX/YpWddkB2HuM4tcMPFo+/q8IldiIucC4cPAMF5P+JfQzawVqQyCg/3eEjbRWM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=vdPj8v66; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=O5B6/Eqi; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139B41A4E4;
+	Thu, 23 Jul 2026 20:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.42.203.116
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784838974; cv=fail; b=kOb6oOGQcJDtt+AdvPp8Fj5XEhqkgPkpfssZBXf5IDVyyPhJNG2+jM3d1jbp+UuRWyPNDx0ZTut0zCxdL/cFN6a+OeGTI2ygZ0AuKifeYvhDTPCErpQiJgTe4IqY38Mwd/1xihFcy/dHAXz3jlbXEFDKBZzQjaJ19PkMtpKDQRU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784838974; c=relaxed/simple;
+	bh=lqyMy6wFoJyB6ZsQUF5OUlCeuukP1CpKuPzy7REX2CY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uHrXOAvbuMNqSsF0fypu07oqo0hv0YpTuR9uwcVn1yX0d7dStVS8CqNLW2dtQ7K7a3CHb7iG/1AUP4Qbs/H2XAC35FUFpvYGtq16fUi4j3Z4mbU1RfYrbqvbocL1b6YCLCcXCZPf3YMaMbmBbPC09xPlFTwoFdL7tcdZ4Xr+YYc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=s05DvboF; arc=fail smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="vdPj8v66";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="O5B6/Eqi"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id DB9897A0220;
-	Thu, 23 Jul 2026 16:24:20 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 23 Jul 2026 16:24:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784838260;
-	 x=1784924660; bh=6aFnQXEm9TrsdDTj1E/xgPwhwGan4/+djoVhNQoCfeE=; b=
-	vdPj8v66IarCaLm0M5cXK9WpWEpg4H9SFCrUYzdZmfm50UEw58NqGV0k5JJRHNeN
-	c0xuspmiimWHO0XysN7+4iq8pBT06mwfbGbPoBiy2ks1j/0OMVzuodx8IbDfZz5R
-	zSIU8vjsHTck+KL0EuHSvQ2M0P3pyC3rvmP0ysvvd/4/jzRuOs1UcU6c7z5vNjC5
-	RtAKUkjF1cef02+XVtf8fVULBmizxW10TYQK+hxXp33/PC8iUCvvTy0vfId0YsaD
-	IN2FjnOvoVmx7WyPSAwT8bzMfXd65QmR8rVbDrEGxZLK0o0jELIByHZvXQngIci7
-	88wNZzARpYPZnie4K6C6PQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784838260; x=
-	1784924660; bh=6aFnQXEm9TrsdDTj1E/xgPwhwGan4/+djoVhNQoCfeE=; b=O
-	5B6/Eqi8AK1cSOlaVkxefKvXX00HWpBp2wGXXn+rtn35KsD50zK684s8IeWcXnZY
-	wcQdQxdBz0kc8cN/9Mh1Je8NBoqybhJkuNXX6N1jNtvGK1NlitD+QiioQWg7mZju
-	8D5gFBvqbv7UJN9eqZvF10ms5OTFNc0RxbhkYlD3K0mVtcOC1lRYXW+DAXbRJwgi
-	HbeBWR8tz42oqcG/mA5qtHNkmYOZvDpCl0uD7kMH9Cg+VZc31cQr3Zzk4RYLnNV9
-	p3EzjuIq74MYRWKnaNaIyoJMP3w69fyGLENx5kawdQGttkcU+76dzb2gF2kVnqfs
-	I9vojI4xXmqKoMPG7/FAA==
-X-ME-Sender: <xms:c3hiam342YGxZhdWLPJ7zpUVuDFw5YtVxXXYwbDKyaG8XkMpVOyRLQ>
-    <xme:c3hiagJL2GmU-8-BwhNiiibVfyhMseOhwbj5_3MwZ17cM6QkFxWT1SaOKJwrd2P3q
-    Q8GcHovkF5J05NQCoPDp30OAzy0ybeXnz9nfM7-7s-LgyZPlUo>
-X-ME-Received: <xmr:c3hiamndHVBET1X4u6SyitEjOwSnGiep7FvBF86jdKeFmFdAi4lR49e8L26hYK9pAswSYkJSpTVQQbSrQhfrK0rR6BF1cnI>
-X-ME-Proxy-Cause: dmFkZTGGMEev6dKv4UlCPj6XliuA/xQS1IWIXC6IlxAZ+QnJEaoji/7RoCIeC01ofKpxth
-    ohf8Nv+dO5poKFdV4crp0Gr2/tqJtucOlqVWHiFd1a8QjMJVqrlokVXUXIpmig454d2Qo+
-    vvmBOz7L7O/QeaMgWDD4JIZ9UyejEPJ4apV7ZEqnQm4E9HSPXbH9Jklc/2Gi6tGLIgQ8CB
-    zZG/Zuh2+YzEnhTnumOd//3hHX8puHAQmVpt1mz7x9Lwss76ekv4bgs6plE3vK4w4Z3IEp
-    /vM/EESSO7PBegwXKhXAYhh+idjD834+4Q4Ab70bRPVknovFAQYIEudIMzFB5gR3Fzn0PB
-    OXSSSutlBs2XxKk8nwGhMF0wZgJXHTe3TCVv7jFXNd5sflKc5ghq5UWFndPYWbcmnqypjf
-    oPRKnVgJKqLYzs0g0wH3iTejoLyZ/9GYJlyxLhmhVdbijsXh5C1pYfrX8So+OKUE24W2AS
-    DYoJKhIhN3i1TvvjG0uff/YI3iMfh8/TSrjSASgrCBz2I6wukQ8HQ6VesoRdgrfJ4cCD9B
-    FX4xFbGHsGX1JIPxJ0aZKPEd/KHAxX9FXNY4d3JoR+fv19acR6gRTPIzFLMtn+rjuDldjB
-    sn+f5iuWDcq8NUmTTxQMYI6J1WMLsWtexP0oMDtr/v5gYUlXTV8/TUwohnLw
-X-ME-Proxy: <xmx:c3hiauNPfuY0oppbemzAp3CORNwZMGXN3N1U0lDNPl01Z-2sX6PCTg>
-    <xmx:c3hialwDjJ1lb9PpOt07VeBUnrYcXykGjKuHLsPtKihqh9wxE4dEiA>
-    <xmx:c3hiamnHQ175QGVLQOmcKLn_fmx3lMrUDzZSIiXPa4GfxjfEifIPpg>
-    <xmx:c3hiaj9C_4WYsev1fBgHUeC6Wi3TnmwHAipTXhExdFmwHYYKn2cfSQ>
-    <xmx:dHhials9WoqpaRiRD7Qay-2oaZx60AJnFVa3cGsRbRp0Y5Mo6NVaqp8->
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Jul 2026 16:24:19 -0400 (EDT)
-Date: Thu, 23 Jul 2026 22:24:16 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Julia.Lawall@inria.fr, Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sukhdeep Singh <sukhdeeps@marvell.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Rahul Verma <rahulv@marvell.com>,
-	Shahed Shaikh <shshaikh@marvell.com>,
-	Sabrina Dubroca <sd@queasysnail.net>, cocci@inria.fr,
-	GR-Linux-NIC-Dev@marvell.com, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 07/36] net: ethernet: remove conditional return with no
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="s05DvboF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1784838968; x=1816374968;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=F8mhpmEDshmhrnJzOm0SjRPxlbbTONvQUQTaAO3cAYY=;
+  b=s05DvboF8aoKyYbmINhO4XTYXupu2n2RpTfisPTangSg+sZ25/3VnctK
+   7azP0LJddaO9DkZW8QBb/UOLRfvJccmJxt2Cj1kpjpu/x4/UOCAsWsC1Y
+   cE3GFfccCKmZszYGUeuwL0BhK1jIeMRFIklLXaXjJyji5B/FizHK2ADj0
+   U+tSL1z+P9yz7e/MOhOE6oTTWJ7rVIIIF7O147BqmXZ9j/Lzex33h8sNS
+   1do2u7RUXBr0/25RYdL/OJj+AQ5K2YAe9fke7Bxedgq1yBXJm6BXiSeU+
+   Iwqo5Dyrk7zkvHYLtEa7kfYgMp8NLYI1aXlN/w+g31AP1WS2v0yYJtG/S
+   Q==;
+X-CSE-ConnectionGUID: Af+hxQb8S2aFeNd8/1eKOw==
+X-CSE-MsgGUID: /hq+x+LYSc2guX7TX7KC9Q==
+X-IronPort-AV: E=Sophos;i="6.25,181,1779148800"; 
+   d="scan'208";a="24278323"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 20:36:00 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:23741]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.115:2525] with esmtp (Farcaster)
+ id 6ff998d2-62e3-453f-ab91-d57202915d59; Thu, 23 Jul 2026 20:36:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 6ff998d2-62e3-453f-ab91-d57202915d59
+Received: from EX19EXOUWC001.ant.amazon.com (10.250.64.135) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 23 Jul 2026 20:35:59 +0000
+Received: from EX19EXOUWA002.ant.amazon.com (10.250.64.216) by
+ EX19EXOUWC001.ant.amazon.com (10.250.64.135) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 23 Jul 2026 20:35:56 +0000
+Received: from CY3PR08CU001.outbound.protection.outlook.com (10.250.64.206) by
+ EX19EXOUWA002.ant.amazon.com (10.250.64.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43
+ via Frontend Transport; Thu, 23 Jul 2026 20:35:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tBInXKrVgWWNU0oS6qtdC9HZVw5LZr+02FEc3TE3m7hq3Kp8VJJhAjja85ehPcpYH3HyzhgHH05feJ/p1JRLcbEZsrnHI+eabbYyLcSHJuqLtF7CT2YPHx0z8OXAY0wTf8RhctWhxWr22b/VPDctGCLFXc7b6QeTesqGqF6n+TDq33OdlE22rdv3b4ViRmcQwUMQbQNYA6CEss286rNbDjYfjbO1sg5W5dwiPXbMN5E1o4ri2GjNVHbEmFl/XVjXK4slKldk8Jl84HyTGpSGZFak6TcjdOiv1lJ7YGFBrRwY7dytyFfDnIzKLXWN/z7MyO1yFyzCUX/wXBAq4vJr5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F8mhpmEDshmhrnJzOm0SjRPxlbbTONvQUQTaAO3cAYY=;
+ b=BZqlPKncAHuSjAMY25Qmf8MVhBsdvqg6FOYrMftig0wOzmFaCylkwRoFvl7K2iwRqT+/ZBJ6tfTJwjszX3E5h97OpX/LfEIS5bdEu3uwu8QnUPe0o7BLrUA8jnREfaLhKgHwXvdNH6L0Bsbw7APvw85fiEflxGI3SPqQkhS/NFZXx7T8u2yqgSYCWcXec4t7+FKWkRCJTlHKgfSx37wgcjNiqzGcsh/Sxp/QzoQZQZLTL/lgFgopJHzLDLC6oM6T+63HX1aSgMXEVPeG0oKnikuCm4YkBIyf+2CcKt/B9Jskw1ANJPWNaIzGIQtkTXygJ93UW0CjB8T9wOjqQopR3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
+ dkim=pass header.d=amazon.com; arc=none
+Received: from SA1PR18MB4664.namprd18.prod.outlook.com (2603:10b6:806:1d7::5)
+ by PH7PR18MB5703.namprd18.prod.outlook.com (2603:10b6:510:300::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 20:35:48 +0000
+Received: from SA1PR18MB4664.namprd18.prod.outlook.com
+ ([fe80::972c:f0e:7126:9112]) by SA1PR18MB4664.namprd18.prod.outlook.com
+ ([fe80::972c:f0e:7126:9112%6]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
+ 20:35:48 +0000
+From: "Kiyanovski, Arthur" <akiyano@amazon.com>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>, "Julia.Lawall@inria.fr"
+	<Julia.Lawall@inria.fr>, "Arinzon, David" <darinzon@amazon.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Sukhdeep Singh <sukhdeeps@marvell.com>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, "Manish
+ Chopra" <manishc@marvell.com>, Rahul Verma <rahulv@marvell.com>, "Shahed
+ Shaikh" <shshaikh@marvell.com>, =?iso-8859-1?Q?Niklas_S=F6derlund?=
+	<niklas.soderlund@ragnatech.se>, Sabrina Dubroca <sd@queasysnail.net>
+CC: "cocci@inria.fr" <cocci@inria.fr>, "GR-Linux-NIC-Dev@marvell.com"
+	<GR-Linux-NIC-Dev@marvell.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH 07/36] net: ethernet: remove conditional return with no
  effect
-Message-ID: <20260723202416.GD2273555@ragnatech.se>
+Thread-Topic: [PATCH 07/36] net: ethernet: remove conditional return with no
+ effect
+Thread-Index: AQHdGuLDHMLwqSGC80SEy6rJKdftmA==
+Date: Thu, 23 Jul 2026 20:35:20 +0000
+Deferred-Delivery: Thu, 23 Jul 2026 20:34:27 +0000
+Message-ID: <SA1PR18MB4664DA66B9EA117823E78D9AD9C02@SA1PR18MB4664.namprd18.prod.outlook.com>
 References: <20260723184538.3888637-1-ekffu200098@gmail.com>
  <20260723184538.3888637-8-ekffu200098@gmail.com>
+In-Reply-To: <20260723184538.3888637-8-ekffu200098@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amazon.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR18MB4664:EE_|PH7PR18MB5703:EE_
+x-ms-office365-filtering-correlation-id: 02fb406f-9a5a-48ae-a82d-08dee8f9fade
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|38070700021|56012099006|10067099003|921020|18002099003|22082099003|4143699003|11063799006;
+x-microsoft-antispam-message-info: 9mWKdtAmZRJiJeemqgQAmQdY+59Ms6Wg0cuwd1cTiU2LrTyn/ssn867XIuE9ork94RaVCbhFl2MC4yx9HT3oLeNI5B0zL+4KcS2gsDTRexUzaO13bmTASxe0v/jj/QJ4V2etb2v/yUBDaWmP4yH7Fg6oJWexAQjYcaEomgCfOUerBAGGlLwtbCL9SWt53niYDLNAsEQLVwZgoT11tXMTGDzpqXDFRNSuC4QE7154DlnhfNLyRQ2GWY/Nio/De3hOXUDbAZ5nc0ul6DZOH8OM+4MMjG71RduxQBODbug8uCzaTUD7mdygYByrt3EXqIcPDr6zKjQ7t5kDAWdNlmsBW4xLtVwTatiuokqcTmM+N74Awsil0IwjS9lLqLFmW0r+DGawvypV7l58OPv9T23rNvOVb/PYRxnMNnsUWPFI47cGNLxUDNKUoXLDth5ApjGHrpyO7/CZRWrR/zQi/eb2a91F4j6xW/nUGb0405hMxgaHXoqDkdi19zVGcs0mi/t6egvHy1b2eE3mLO+OQmZcTSczt/+krvvBELbZQv5xoGeCE1LvLJTDNHnLC6Nr+AbfU8RdcDqnY4bTpp8H5FP1Pk9ULjRr8X9VyOxF1TZXyK7xDq8fsp0ZmRP4lmGU1LSFnaOm+BUumuphOBwK9yHb0XYDQvEeE2JhucQlYwI4YQE5ISVmfxO0basYtYq/r0cKwMGtNEpvWKYCo24T9hHovCQKH9qN8DrolKDxLSzNAPQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR18MB4664.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(38070700021)(56012099006)(10067099003)(921020)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?JPSd5Ib6I/widKRAKgu3iQnmvLP3XeH5ZJUOiCmp8UgroS9N8njdNbKkH3?=
+ =?iso-8859-1?Q?5Hn5W3IlK+TDkNcJLz6dGxWYN6/NPjuAj48k1hl0NmUaFOeAsbqM6JLeqJ?=
+ =?iso-8859-1?Q?K153ug0GFo6sZs+olxwXddkLUnz36ZzuecIJEHA6TreTyUPsS8nHdovLMQ?=
+ =?iso-8859-1?Q?N2sukNUP0vDsIJq7yQKNMtTL8sd55jEXB/05VowKKvS9uELAvgnVNN/eKi?=
+ =?iso-8859-1?Q?rnMqJkJ0hIr0jkHkYLxFj9Ia9/bzLfMD0Em8Dnb8RFmarmXeVFBdXV3RwU?=
+ =?iso-8859-1?Q?RqbOKOI98mMIsPpgM15Vm1jpiTXwo6ManweGewhgmoFqUu1a5OUEWL7f/8?=
+ =?iso-8859-1?Q?MYZrya1fYuGuuUwnOC8Pz4Y9Bnt99thDHxdR2Vtjo4sf7Q9AOtiDf6p/6D?=
+ =?iso-8859-1?Q?ATLOHp31dOIpB/WxhTxtW+cQiQr2RU407jLqmpHVm8hMijI/9ct/GQoqe/?=
+ =?iso-8859-1?Q?bjS6tmmhgK6kdHGVthdGS0GYmYG8iCyX7rsHdgb+jNMz4WZxIHESwl7HHT?=
+ =?iso-8859-1?Q?JBjipeYPML0jiVjQXUe+oW3HnAW1Y+lj9hbf4KOw+LZzvoiff5UNQRHOSo?=
+ =?iso-8859-1?Q?iX+gMdhzRmzLz/SQZPL775DZnduOtFm1KWDk0TOCdGRTm4JaSLCZ1YdfFF?=
+ =?iso-8859-1?Q?mfzJZwuk3/r7R3sKvcoAYD5t5c19TJXx1dkIqEvXeKo/pGqGhXdjQKrhy1?=
+ =?iso-8859-1?Q?T+Dh4G/Ufs6zZUkrmcnTuLqnxd9YqNQwAp/SWXSu0I8TDdidPAJPBvCWsD?=
+ =?iso-8859-1?Q?NTQcSwRVAzlxrvjV3KhDDf7VO/V7PJ7mYaXf09WdfZXpCEeWS67X3qLkvI?=
+ =?iso-8859-1?Q?hueSlLhP2Eyf0mufwLXV1NGZTbXSHQGFU9OF6HtWMW53z1qtKgXn01gaI1?=
+ =?iso-8859-1?Q?TD03Qmu0UP1lLehTLzEVjpHLXbpgJRcTuOI83eJNjW0g/PYsnMMleGk3Qv?=
+ =?iso-8859-1?Q?RLFUc5A2MJzmaJCDw3oVozlzd7a7YmCj7Y+04s4JPNRlIvxYvbsU4rJ/R5?=
+ =?iso-8859-1?Q?C4fGfLe9BM7yfEvc4J3Ahm4nlEHR1l0TrDM0H9iHg3ozFVQcsjUmi8pAof?=
+ =?iso-8859-1?Q?moYkPi3uwwYFGLVloQNCLj54dM7MT8QAiUF/95Cse1chiSnyxVNxoc01Ra?=
+ =?iso-8859-1?Q?vGgwzhwxVNpmtmHfGRyge81oe5G9tj3pB3cCMFuKVH0bGGxQHZKNAtgX48?=
+ =?iso-8859-1?Q?le06l481azEe/p9f9sf1DI5+nnl2HaYMA4sTeWaqo0Twysw/HrqSEyxE4m?=
+ =?iso-8859-1?Q?sYdvni7c/+7paKIouSPBLmvr6HWbfwTj+2tF5ypRAjZ1WIZ/FwFtnydUWa?=
+ =?iso-8859-1?Q?Dl1JWcS7TvAAENqus4KEddUC9P5iAxSphhw6x+OkcRhlJghydl33VHmg75?=
+ =?iso-8859-1?Q?Kp+89QlrtXsGpn3BmxL90viZi+JssM7L3r91xlM2l9bsKjixuBkOwRmLSb?=
+ =?iso-8859-1?Q?NzMFuHGzapGfuaVDPl1oyat4H2O9Ife5hgClrndEJvDDfYXe05rWozRPWD?=
+ =?iso-8859-1?Q?7MmKKC2KuT3FAZhTANJGSvVnsLXJAE+22fOkkWhaBjCGv6cYsrqj9KLry0?=
+ =?iso-8859-1?Q?S9r3Scp/gVAftNe9SRtE+Lgo6J5zUutOXTchdsb20KH8md8xovnXygjrdo?=
+ =?iso-8859-1?Q?lZAeNFcbYEhMoqRziqcKDoA1WGnJSNOr3gEUfOIDr8tasKrEZHYXAwPRbo?=
+ =?iso-8859-1?Q?fJwBLlQD5z+J9fM/ar3l5fToTeu4hp16jkkWYui04TYepk5SLyWjwFZhwp?=
+ =?iso-8859-1?Q?ORafyrKV5OkEV+ex9zwL0ti0nRYEkyQoEGfdSKG9esWyXs?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260723184538.3888637-8-ekffu200098@gmail.com>
+X-Exchange-RoutingPolicyChecked: cxuaMegXaN3UXXlgEg2Nd06jphUR5hY0WzHxC6HSTTIn1VHIy4fLIqmMWiWSyNOwBMGZLLX/ZSGQ4XlrQqfAi+7Je8n9hWTFXZjWigIgOfTEz4mGTmOB/N6Fvc5AabmrdnoqT2lwnpXgCsT1dKYodvo18I/T8S25KKcow9QktW5vrmQWD1A0gj+MrFynwFdU/SpZznixI9ab7VbA9Y1miqMD3Bny/3xm3gBF2c1B9OLze/PQ3c3NQDcvrGNF6UMdsGY2egvkSDZja9fG632W9HWBeEoaYeZ6LnNpYlofM3vyWvs8N3xRIQBklU//ynGdSBgMawoUJj8avTWO6HHheA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR18MB4664.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02fb406f-9a5a-48ae-a82d-08dee8f9fade
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 20:35:48.6263
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: r8uMfMxZVKhZtGVUrp8AhyX8yRlBX505MRQB7UyWSh9rLqr4cYpuDUld8gDc3Tf7LpLacYAQzkwIMiQKvp7Jag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR18MB5703
+X-OriginatorOrg: amazon.com
 
-Hello Sang-Heon,
 
-Thanks for your work.
 
-On 2026-07-24 03:45:09 +0900, Sang-Heon Jeon wrote:
-> Both branches of the check return the same value, so the check has
-> no effect. Remove it and return the value directly.
-> 
+> -----Original Message-----
+> Subject: [EXTERNAL] [PATCH 07/36] net: ethernet: remove conditional retur=
+n
+> with no effect
+>=20
+> Both branches of the check return the same value, so the check has no eff=
+ect.
+> Remove it and return the value directly.
+>=20
 > This is the result of running the Coccinelle script from
 > scripts/coccinelle/misc/cond_return_no_effect.cocci.
-> 
+>=20
 > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 > ---
 >  drivers/net/ethernet/amazon/ena/ena_netdev.c          | 6 +-----
@@ -122,152 +185,28 @@ On 2026-07-24 03:45:09 +0900, Sang-Heon Jeon wrote:
 >  drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c    | 7 +------
 >  drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c | 6 +-----
 >  drivers/net/ethernet/renesas/rtsn.c                   | 7 +------
-
-For rtsn.c,
-
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-
 >  7 files changed, 7 insertions(+), 37 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+>=20
+> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c
+> b/drivers/net/ethernet/amazon/ena/ena_netdev.c
 > index 5d05020a6d05..ea89619039d8 100644
 > --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
 > +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
 > @@ -2303,11 +2303,7 @@ static int ena_open(struct net_device *netdev)
->  		return rc;
->  	}
->  
-> -	rc = ena_up(adapter);
-> -	if (rc)
-> -		return rc;
+>                 return rc;
+>         }
+>=20
+> -       rc =3D ena_up(adapter);
+> -       if (rc)
+> -               return rc;
 > -
-> -	return rc;
-> +	return ena_up(adapter);
+> -       return rc;
+> +       return ena_up(adapter);
 >  }
->  
->  /* ena_close - Disables a network interface
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_macsec.c b/drivers/net/ethernet/aquantia/atlantic/aq_macsec.c
-> index 3ca072360ec7..fd4ee6212234 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/aq_macsec.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_macsec.c
-> @@ -735,11 +735,7 @@ static int aq_set_rxsc(struct aq_nic_s *nic, const u32 rxsc_idx)
->  	sc_record.valid = 1;
->  	sc_record.fresh = 1;
->  
-> -	ret = aq_mss_set_ingress_sc_record(hw, &sc_record, hw_sc_idx);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return ret;
-> +	return aq_mss_set_ingress_sc_record(hw, &sc_record, hw_sc_idx);
->  }
->  
->  static int aq_mdo_add_rxsc(struct macsec_context *ctx)
-> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> index 33e7a99d3e49..79d4a77f72bd 100644
-> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> @@ -3935,11 +3935,7 @@ static int dpaa2_switch_port_init(struct ethsw_port_priv *port_priv, u16 port)
->  	if (err)
->  		return err;
->  
-> -	err = dpaa2_switch_port_trap_mac_addr(port_priv, ll_mac, ll_mask);
-> -	if (err)
-> -		return err;
-> -
-> -	return err;
-> +	return dpaa2_switch_port_trap_mac_addr(port_priv, ll_mac, ll_mask);
->  }
->  
->  static void dpaa2_switch_ctrl_if_teardown(struct ethsw_core *ethsw)
-> diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
-> index 89215e1ddc2d..cf636fc5aafa 100644
-> --- a/drivers/net/ethernet/freescale/gianfar.c
-> +++ b/drivers/net/ethernet/freescale/gianfar.c
-> @@ -2877,11 +2877,7 @@ static int gfar_enet_open(struct net_device *dev)
->  	if (err)
->  		return err;
->  
-> -	err = startup_gfar(dev);
-> -	if (err)
-> -		return err;
-> -
-> -	return err;
-> +	return startup_gfar(dev);
->  }
->  
->  /* Stops the kernel queue, and halts the controller */
-> diff --git a/drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c b/drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c
-> index fff8dc84212d..e96a268067f2 100644
-> --- a/drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c
-> +++ b/drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c
-> @@ -2478,7 +2478,6 @@ static int netxen_parse_md_template(struct netxen_adapter *adapter)
->  static int
->  netxen_collect_minidump(struct netxen_adapter *adapter)
->  {
-> -	int ret = 0;
->  	struct netxen_minidump_template_hdr *hdr;
->  	hdr = (struct netxen_minidump_template_hdr *)
->  				adapter->mdump.md_template;
-> @@ -2486,11 +2485,7 @@ netxen_collect_minidump(struct netxen_adapter *adapter)
->  	hdr->driver_timestamp = ktime_get_seconds();
->  	hdr->driver_info_word2 = adapter->fw_version;
->  	hdr->driver_info_word3 = NXRD32(adapter, CRB_DRIVER_VERSION);
-> -	ret = netxen_parse_md_template(adapter);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return ret;
-> +	return netxen_parse_md_template(adapter);
->  }
->  
->  
-> diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c
-> index 45ed8705c7ca..47cd9ec665ee 100644
-> --- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c
-> +++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c
-> @@ -1618,11 +1618,7 @@ static int qlcnic_83xx_check_hw_status(struct qlcnic_adapter *p_dev)
->  	if (err)
->  		return err;
->  
-> -	err = qlcnic_83xx_check_heartbeat(p_dev);
-> -	if (err)
-> -		return err;
-> -
-> -	return err;
-> +	return qlcnic_83xx_check_heartbeat(p_dev);
->  }
->  
->  static int qlcnic_83xx_poll_reg(struct qlcnic_adapter *p_dev, u32 addr,
-> diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
-> index ee8381b60b8d..f7beeb73eb16 100644
-> --- a/drivers/net/ethernet/renesas/rtsn.c
-> +++ b/drivers/net/ethernet/renesas/rtsn.c
-> @@ -685,7 +685,6 @@ static void rtsn_set_rate(struct rtsn_private *priv)
->  static int rtsn_rmac_init(struct rtsn_private *priv)
->  {
->  	const u8 *mac_addr = priv->ndev->dev_addr;
-> -	int ret;
->  
->  	/* Set MAC address */
->  	rtsn_write(priv, MRMAC0, (mac_addr[0] << 8) | mac_addr[1]);
-> @@ -702,11 +701,7 @@ static int rtsn_rmac_init(struct rtsn_private *priv)
->  
->  	/* Link verification */
->  	rtsn_modify(priv, MLVC, MLVC_PLV, MLVC_PLV);
-> -	ret = rtsn_reg_wait(priv, MLVC, MLVC_PLV, 0);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return ret;
-> +	return rtsn_reg_wait(priv, MLVC, MLVC_PLV, 0);
->  }
->  
->  static int rtsn_hw_init(struct rtsn_private *priv)
-> -- 
-> 2.43.0
-> 
+>=20
+>  /* ena_close - Disables a network interface diff --git
 
--- 
-Kind Regards,
-Niklas Söderlund
+Thank you for this patch.
+
+For ena_netdev.c:
+Reviewed-by: Arthur Kiyanovski <akiyano@amazon.com>
