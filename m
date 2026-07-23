@@ -1,49 +1,35 @@
-Received: from out03-fra1-mx.uberspace.de (out03-fra1-mx.uberspace.de [185.139.157.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627CD486BA8
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBD311967;
+	Thu, 23 Jul 2026 17:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784828754; cv=none; b=XA90kDA3aWTJKoX+kO4N0cyRynOHxC/CSgCuhYPGO8s59QzcrVS7z4b/leba4U1FKat6k2E5HSPTzatGcoLpfMu6lRgaMyuI3eqEwL7K4711X0kKZbgRf+sGiIaPPpOoMYCPD5+dmc3xNF+D70rF+047thedt68Ub+AICCsMMtM=
+	t=1784829050; cv=none; b=iShgIan9ygiQUP/qIKYLJuR1DAMUp5JVSOEMWHv7MJwIZAFEJq3rlZ44Ne31E3tzCgwf+VUunFX2zvI7sKzoWeFoLGvpLYnJZSwVXZPWuVhHR9GXUotPz5RTE3mazM+MTn/usIf47urcBWVc5XLS8YkA4k+r5RPgY5mDb2bEZ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784828754; c=relaxed/simple;
-	bh=WkgqZom9FrOLA9beH4/wEG4cpX75P3vhIUqURKaBGeE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRsO7xtMO1N84hsBSy20sAjP+lW4dF54FCyFxZ73FJ4Y/fpZSZ+LaLHskge0G8DsELnexAEbGHq1MioB+vAU7ExCd+oFO1902cq1xg9DvBz6tQMeaPhLDEa52x93n+S+0hI26NVRlY5jO7DSJc7LyWkbeMIJWXv6BQh4jAGIr/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=qMwPg1Gi; arc=none smtp.client-ip=185.139.157.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
+	s=arc-20240116; t=1784829050; c=relaxed/simple;
+	bh=UpXunTny8q0d+EBxnlGdpa6pw0AVIGMzh2A37PFI2J0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZXNYMcXJHEKGBEYL4bM3ddcMFQPW9u3AqBs8CiDpEItCvMaSmEMfIdViUq2PGGn/oov2hdMzBTv5odIlHxOD6XGzCF/p0Objob3ch1Y0f6dUJS5LnA1AjFtp4TxCCK+djoRFEUuzuQmT3EC9nfw3e7xZGnuUvF5A6pvWt/cytDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkPqWbZ4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="qMwPg1Gi"
-Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
-	by out03-fra1-mx.uberspace.de (Postfix) with ESMTPS id 972A9100065;
-	Thu, 23 Jul 2026 19:45:47 +0200 (CEST)
-From: Simon Dietz <simon.dietz@plantwatch.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
-	s=uberspace1; t=1784828747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WkgqZom9FrOLA9beH4/wEG4cpX75P3vhIUqURKaBGeE=;
-	b=qMwPg1Giz4PBDsu+QUL88Eatbacp6a1ldYNsgyCwNNlpHsgWUdJn4Xd4JMUszoZ2cNtlQG
-	a7aGDdp6fRDqQ7tysbuf405QtQ5uUFDf1xTV/r9tkQG5f9DSWsqnmpSZ8xismecxxVdnnA
-	Rn/YERdyecvbGpiFrXTFAYGMtsYGBKVdYPPKz4sGa0Xxu/634B7LcRH1o0jZQI+FLkQwyJ
-	9Hpv9Tm37xzgjuSlfBqJXslvAGcDDQ0XBaBaBAx1Dl+0Yd6PPCyVbbDAHrjy34XwbN8YRE
-	Igl+otSNhTBV8dSofhIqi5jOcKLm+S28+nvLMPQdLP1peIWI+Q2MTXdIvoGhJg==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
-To: andrew@lunn.ch
-Cc: andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	simon.dietz@plantwatch.de,
-	dietz23838@hs-ansbach.de
-Subject: Re: short description of GeoNetworking
-Date: Thu, 23 Jul 2026 19:43:47 +0200
-Message-ID: <20260723174347.2458082-1-simon.dietz@plantwatch.de>
-In-Reply-To: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
-References: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkPqWbZ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23F31F000E9;
+	Thu, 23 Jul 2026 17:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784829047;
+	bh=B+PqI29zSq149CkgteSgqs454iSy2RBnFhlJenHlt50=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=XkPqWbZ4KS2RpSbrn9WUl77D8MKR7MiCE0ay49yIJmx98p9saWbSzcBroPDAEo4qv
+	 pNl2TmrSbS4aS+mJ9XbTvedZwo7f3ZsJg7zAuLfQHVWWm2J2QB318rUkyOhPcQS9if
+	 ZhihgBGH0yp4HnE239dI6JMyzouSaJF7oh2Cbme7qnfey1ePXORxYOCLxbDFd5p2l8
+	 f+gnP+ZEWs/Ls/9pXzKWq4dwta16N2+j33tP3lhwrtlDN5RXyldzatJp9iTjUx4pzY
+	 lDVHZW3fuxlhlPuVC74WTm0GcSnHn1BDRQa6E4H9rCRAL1z0PX8yeNAeaAiq0MZGdl
+	 eUvKIRa8mhUtA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D095D39244D2;
+	Thu, 23 Jul 2026 17:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,49 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.89 / 999.00];
-	BAYES_HAM(-2.01)[95.12%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	LOCAL_OUTBOUND(0.00)[];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	HAS_WP_URI(0.00)[];
-	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_HAS_DN(0.00)[]
+Subject: Re: [pull-request] mlx5-next updates 2026-07-22
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178482900740.2806151.11446295939552946394.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 17:50:07 +0000
+References: <20260722071030.1693021-1-tariqt@nvidia.com>
+In-Reply-To: <20260722071030.1693021-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, leon@kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, saeedm@nvidia.com,
+ alazar@nvidia.com, valex@nvidia.com, cratiu@nvidia.com, dtatulea@nvidia.com,
+ feliu@nvidia.com, kees@kernel.org, linux-kernel@vger.kernel.org,
+ parav@nvidia.com, shayd@nvidia.com, horms@kernel.org, kliteyn@nvidia.com
 
-Hi Andrew,
+Hello:
 
-> That is another issue. It make no sense to merge without having at
-> least one wifi driver support the needed frequency bands.
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-In the V2V research community there are working out-of-tree patches
-for at least ath9k and proposed changes for ath10k. I think here applys
-the chicken and the egg problem. Why should 802.11p patches be merged
-upstream, when nothing is using them?
+On Wed, 22 Jul 2026 10:10:30 +0300 you wrote:
+> Hi,
+> 
+> The following pull-request contains common mlx5 updates
+> for your *net-next* tree.
+> Please pull and let me know of any problem.
+> 
+> Regards,
+> Tariq
+> 
+> [...]
 
-> how does the Linux Foundation Automotive Grade Linux fit in?
+Here is the summary with links:
+  - [pull-request] mlx5-next updates 2026-07-22
+    https://git.kernel.org/netdev/net-next/c/1324135c4167
 
-Up to now I didn't know such thing as Automotive Grade Linux exists.
-In a quick online search I only found stuff related to 5G [1], not to
-802.11p. In their mailing list there was one discussion regarding
-802.11p, which actually was about OCB and ath9k stuff [2] and an lwn
-article about it [3]. I think that is too less of discussion, if they
-had a working implementation.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Simon
 
-[1] https://lfedge.org/wp-content/uploads/sites/24/2025/12/lfe_cs_instantx_121225a-1.pdf
-[2] https://lists.automotivelinux.org/g/agl-dev-community/topic/open_source_wave_1609_x_stack/36365674#
-[3] https://lwn.net/Articles/611635/
