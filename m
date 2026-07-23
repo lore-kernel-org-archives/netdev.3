@@ -1,70 +1,73 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E522F363F
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 15:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910E8472F99
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 15:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784821962; cv=none; b=SG8x+BpGO0jo6U4iQWFjdwHFmA3iK4F0jMgWzWTdLLES1jz4pHrSykUdAHcYi5g7Jnxr9JHBCf2n06o2bAQrPrLzowJOOQdZuHhgUjHHzQKcc52LgsErR1kpcMwqNwaBkw/fH5Sn+i2/cgyMgSpBRYT4LdnCU4NN4akVt8Em7Yk=
+	t=1784821966; cv=none; b=UDTtHgXuCRwk/mCCpJ2oY1ZY8VhZvCa14ant+hKetZOxcHiQCSwMscAL64Dj9iF/WJbAlzKbL3vcF/7l3515F4O0YlDIkidAjxDnQgRCVfrzMVoqXeVci0LRAFwngAMOPki69WBK/d5+dNPlALo8tderNa8S0OxMRk1aTOxA3TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784821962; c=relaxed/simple;
-	bh=o9NP2P1uOmH63zmJRqoraPAg/xqNRahVkYyIMglxZ7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TUqZB3IRL57IqvOUtqqKjs5CEj28zsjjENwJ3pp3mspNwBhwOfLB7SytCJDfONm9+hKOineVXRajSBmnHSFEA2OhRk0S58Ia0m9fW6K4CGQe6DGkVL/qDhz7/cKiYPuLYL4OTUBg/Xkh7tdzXt1EYlJhn76vE+gK8C83g+IUCRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=qA3Zx1s2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IUjq0Fly; arc=none smtp.client-ip=202.12.124.144
+	s=arc-20240116; t=1784821966; c=relaxed/simple;
+	bh=3LJxdnMq3dIhVD2KlUZINgP6ymBHF1gq6LrGgQ70is0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qy8yt17QGLWW+oyj0Q2AW1z2hzvFRsYcdISidcfq3d5TN3d0ELjyDctBXbRfbIcvidx8ClYx0cwV+HsEYFlvazwZ6K33XroT3UaJMt1A2YVPtryej9Nl0Rc3bs0rVvIZNnGu7ivAKxINprMfuqI3XHs5wESl+bSWHoodOEER+7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=Kzaay0X6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Q5kMsRzZ; arc=none smtp.client-ip=202.12.124.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="qA3Zx1s2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IUjq0Fly"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id B5DF11D00103;
-	Thu, 23 Jul 2026 11:52:38 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="Kzaay0X6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Q5kMsRzZ"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5F9ED7A00CE;
+	Thu, 23 Jul 2026 11:52:43 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 23 Jul 2026 11:52:39 -0400
+  by phl-compute-06.internal (MEProxy); Thu, 23 Jul 2026 11:52:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1784821958; x=1784908358; bh=OQNX2NfvnfJxBpndSOaFo
-	bgsEh4H8cUsk8yd04XWkkI=; b=qA3Zx1s2iP6iIPD1PGqf8Lx7VKYrXYnGDp/LJ
-	1hvLopozp1doz6+mmQigGPMFKGUDgc6c53U+qWMcAc8UvmgdHn7Fh9GlcUOi94Jd
-	hBh2AfJXK7CuJxzc1rlYU/fRAO/9q3k/BR+opI9DfExMSxf3vzogr+DUhCga2saj
-	lF83EgBxc1edK6hVDoVThNs5HJOKgSZJeHJHi6tUSspSOOFrxUT4CTGojafZZpKL
-	AqFT9DrNL8Pur+rPERFiV9s63CfEVI0khApj7fMgHkZsPVAFOfqiDL76EdWSCZnP
-	D0V9tVYL/iJkQ6dji2zMq4Q/NI33VGEQXmN5Vvmxb52p6HdmQ==
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1784821963; x=
+	1784908363; bh=/s2o46y4Uk5NH0pLy01RjxXAtgKO5uRXNy5njznw6qE=; b=K
+	zaay0X6YS7QwK+JnOC7Wq/O0mm3Y3dtjliWD3LwUlOV/IDf45lRVpisf+7EzpGKU
+	WMtyV3TOybfAMmCHEJ7J4HLWH7J7VmMDQ/uqMf/6r8q4RSs9vbIcMQ7VNVAMHHvu
+	WH9d9f08+4eAJbTUcAUiQdEbwhkE5/3owd0BzJizfJoSINBunjyPG0Z2Rg3Xaa+8
+	vwOnFhpUvvs94FPe7Pb7Xr72TW96fLhozTm4jgeniVn3CCORQuWRwl/P/ZoQ5Wm8
+	zMNhBVlAS7HqthzOl+RdSAYja5nrc6XOp6IZLUTkmuX4cwnQtcAjw0x8ZDfgdIOu
+	xJ0XZUpFZONBStUDNPrDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784821958; x=1784908358; bh=OQNX2NfvnfJxBpndSOaFobgsEh4H8cUsk8y
-	d04XWkkI=; b=IUjq0Fly2LM7VHZF8PJewnck3wu7G4s8CjpSTxJOBcQFBKt+40c
-	V3ch9NnLlg/+MwEnIyamIk5CgTR68EFX+oskh8r5VIi2vd7gLZjeZBTPKOJwty5M
-	kDV9RtqxKxkaocsqwQO77BjWkogcW+y1y7P/K8thsEF7fi+SW0NB34SNEM7EBBMx
-	mNuIEdCjuqHV/vyzWclwDeIi4uVSu9+YSM66luAJNbVUJ1wjSCt0oZYnKbaMFa9k
-	K+H+PSZFXeOPkPUQJ3Udrai49bZkm8W+N0JJLHStjpfqOIr1xqDczN5MyLokjR+y
-	wMJtj1kzVeg2o6vKQ1xPLcFK6AppBNrWntQ==
-X-ME-Sender: <xms:xThiakoYjLpIS-YFRP_8AoJtU4FZ1imqzE-zZq6J6LLbaWQsm6SlNw>
-    <xme:xThiasBqyz2Ei1hUo2fiumsSydiUbR4JtAqUizKQfL6qtVOTEQEN-Bm4f6J9y80Je
-    dKRyxAeU4_zm1562RMEiwNn19i49g3KdqOAHyvErN0WG8tDqHC4HwWh>
-X-ME-Received: <xmr:xThiaiezO5bJMxmfIkIMK6mqINmY-pqpQad6P3nUwUJm4LGv9u-OSYfJRYcvOoeNSVgmoJxFGlJ5sTmYAngA4gGh>
-X-ME-Proxy-Cause: dmFkZTFUCOnSmfgs9CaJ/0VXpt0o0YmBTXqoBbpZoC2ykqKa1Qy8yx19nM8dfMsLykrLn6
-    mHYyincJltFDdePVqYtCP5xc/F7KSdS7lgxe2mVPYm7siaZcZViWBWROOR6d2DN81YTU84
-    Zj3HcU7wJGr+Uqo0BzVf/H3hW82I3hOZOHf9R5UjiORMc8kWjr2rNY3J/M89bsa+QrM90Z
-    kH+hOsJjlz3dTF/jm9oP6lprckaPn07KnNZrJXzrXEPJVqmuMXra8VZO/Z13dDkLP37PKi
-    438GPhKYZzkfHaBosdHxOnhZjfKfJO6YgLRpXvbJNEku1HBr2rRDRvDTsZyPnvRHFAjdEL
-    BGsesm4u3czfVcFvOM14RddzFEZIyUdTVi60oRnMT1qjZ33DBtxiAjq3Lz3l8iVBgZjlvY
-    DinRfHZP1+Luk/3AnXlPIq1FvfG0TuJDF/ipqexwsaF14+U61SspDqHVP5+nA5sKY6MBQE
-    /5TTGyI09gW8QJN4dwPMrY9P/L8nENwyhtEf8Wg8+1M0ZMSBUITQBtiuS2+X7hNGr4MP70
-    Jue69SbZhQNBbZ++FMcwn3p0hRc6PkwlMt8nxr3P6rYjGGkxywVcd6fAXHkV/7diuC4QNn
-    vgAXvZ+vK204kLwVTGLmHlJ4nQtnFeMJwWTl1HN6hF3AICX0umEDbF6CBP2g
-X-ME-Proxy: <xmx:xThiakIIS5hl5T21glCAL6sVlQhvffUuV28Myxhn8cnIJ9D8ZAJG_g>
-    <xmx:xThiaqvZ2y93P8hpqTz9d1CM6JvUrKkZxp1GAnlr7QkMXRyCSvlXCA>
-    <xmx:xThiamatsu5isnHI0lTfynCznh1RFwwkX8lg4RcRzy7ATg8yE3IZrw>
-    <xmx:xThiaq3K1CkyoLVJS3HuHiu_VAwJIA1bkC2IQBQ5gUqKSLPWLnBFWA>
-    <xmx:xjhialMO_A3Cd5RzKy99E1lo916mBa7OtRICWn3mJc24lI7UQ54i_cuz>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1784821963; x=1784908363; bh=/
+	s2o46y4Uk5NH0pLy01RjxXAtgKO5uRXNy5njznw6qE=; b=Q5kMsRzZ2Iizh2E7B
+	w9jobWYHeCTKfcSGaxnjKZE3w9vbkfTcMXhsvmz8mNv2G+Ope3wa+CPd9zBFxT3U
+	1MQDTOB9mtC3+Jtqxa+XuwzW5yOGKirLNPHi1DZJbf3TylQVQ1ysf3qlxCbt8LTv
+	/kuClnZ0aWP1x9aujBYGLRj7+ZODE2c8DhJ+rpcwmGRqxEtjdfcLWS71xd6hEHp8
+	61sZaKbhbAOaESy9qfLlkUtphf8fW1RocviuvVJzlogdsTkJqojPMxXrGL/3mNtg
+	zf4EzY5kFMEDuhWMcmzE1OHMj8+znz8tWnKRAQpuixSq54WzAEKF2Zk+rGsAf0MT
+	oArrA==
+X-ME-Sender: <xms:yjhiapnrxs8I0EHjgLkgf0Fz8XECS_iNMLZ2hlSTd7oo6cliVANYBg>
+    <xme:yjhiaoyFIKo--PPu_vAzmzR_vlj0ghuD1b-KpYsiRVcl5DzGbKtQCtKOjLc036eQS
+    an9aRtJqU2-2ZDJtnMmsxJUZ7QR4XhA77rm0slB93H1WYWH2s_KvG-7>
+X-ME-Received: <xmr:yjhiakNb2zDX9tCdc7hQZ1DCzRxMDAiLvaq6IC1qC0vBKXkwrvIvAjPvnrAtypV7Zj_Kb5EfIH8TBnu32DhHvlGk>
+X-ME-Proxy-Cause: dmFkZTG3huzurTGhLGHYJD4mCXAiubMRleDKkKJ5z5Ym8XpOzgnC/qnXNeXyXGyR3IG8go
+    40drBCZaB/uQiEM0PLYJIWjYztE/m6WmjMwqbVqmaAIVOJX9u49SE8mXu7lDna9o3YTvBC
+    BzdwKvzyfosmjHLzTO3HrrN/U/vlXi8NZpdg/YBW9GW3ulOp5L1lIKRsfzItzqHwPhaWys
+    8tPtVhYmk+ZFqrrnwJzO7ekbtmbqVwyBo4QC54NxZGqzW9uX2fJb/ThTrF3UkZFtp2z9Nm
+    RU7pTCaxQAEUu32HWirH4DiExkWzBrTkBvu4xqJ2lhrWiDaen1iNrgJUgQhHYDLJDS4aTH
+    M4manf2W3+cK+OKqbvRlgM2mhSqOK3XKmLvSgD6CC66cFtWW5vOmaaqle0KsqdCdKJqS3v
+    glHNLooXfpZwTxvczic6lIZhizfvi4rGQmUh3VBqjUuRFOKAfgpUHUMWv5Syhw1Zsz2uv0
+    eJdA2OEzcASVAiifIkPV8PJjgkuMr3NrFp3Apd0ZcPfSa2ktlEvzKzyNSN/Juzm4NPBKrF
+    Qh8bekUzWJt22/y9uJY4PuPM8b3XpuPCStaxerJh1PgicQ1YPRBQpfZma3IfTOcrRf0m8f
+    k7kE395HdpRMjD+AOfwMK963oQfTlXUTUkG+c7BMJvG/tGimv5dFybwCIIaw
+X-ME-Proxy: <xmx:yjhiahgXzjKkYsUJvxIlU9u9iZ1qG0ASIEYS-mXPnXwjNxMB4dcfTg>
+    <xmx:yjhias_CgvndVxvMSxDBrKaCdQMLMqdMsBC_q-vIyqxW92Z9J_h5Kw>
+    <xmx:yjhiamI-doKLZa3JZ5kIMqzafXVa32uKxXtjCVWUxwuTxC8WWvf67g>
+    <xmx:yjhiatbTcmuANqstclTi0z1VKm4HzESEGlvCrTtTdsHiPW5-UBIU_A>
+    <xmx:yzhiajXniD9gwI_SDVPHse4rmA3xA7B5SdbvxGVw0IYqROtAeVfDyljG>
 Feedback-ID: i559e4809:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Jul 2026 11:52:36 -0400 (EDT)
+ 23 Jul 2026 11:52:42 -0400 (EDT)
 From: Alice Mikityanska <alice.kernel@fastmail.im>
 To: Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -85,10 +88,12 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	netdev@vger.kernel.org,
 	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next 0/3] Guard against gso_segs overflows
-Date: Thu, 23 Jul 2026 18:51:42 +0300
-Message-ID: <20260723155145.158572-1-alice.kernel@fastmail.im>
+Subject: [PATCH net-next 1/3] net: Guard for gso_segs overflow in skb_segment
+Date: Thu, 23 Jul 2026 18:51:43 +0300
+Message-ID: <20260723155145.158572-2-alice.kernel@fastmail.im>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260723155145.158572-1-alice.kernel@fastmail.im>
+References: <20260723155145.158572-1-alice.kernel@fastmail.im>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,31 +104,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Alice Mikityanska <alice@isovalent.com>
 
-This series is a follow-up on the discussion:
+skb_segment calculates 32-bit partial_segs as len / gso_size, and then
+assigns it to the 16-bit gso_segs field. The division might overflow in
+some edge cases where the SKB is BIG TCP (65536 <= len <= 8*65535), and
+gso_size < TCP_MIN_GSO_SIZE = 8. While normally this can't happen due to
+TCP_MIN_GSO_SIZE, an AF_PACKET PACKET_VNET_HDR socket can generate such
+a malformed packet.
 
-https://lore.kernel.org/netdev/CAD0BsJWzSr2zduf5v3mVC4zd=Lj6ZAoC+V42-VBdg42aDY8XXw@mail.gmail.com/T/#m1e22fca273c36cc8844e516505d3251cc1418fea
+Blocking malformed virtio_net packets is implemented in the next patch,
+but this patch clamps partial_segs in skb_segment itself for more
+generic robustness. Should len / gso_size happen to be bigger than
+65535 in partial GSO, skb_segment will now just produce more than two
+output SKBs, all of which will be valid with gso_segs <= 65535.
 
-skb_segment is patched to avoid possible overflows in partial GSO. The
-possible sources of too many GSO segments are also addressed:
+Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+---
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- virtio-net blocks large packets (>64k) with extremely small (<8)
-  gso_size.
-- GRO aggregation checks the number of segments before extending the
-  chain.
-
-Feel free to drop patch 1 if you feel that patches 2 and 3 address all
-possible cases, and extra robustness in skb_segment is not needed.
-
-Alice Mikityanska (3):
-  net: Guard for gso_segs overflow in skb_segment
-  virtio-net: Block malformed packets that overflow gso_segs
-  net: Limit to GSO_MAX_SEGS in skb_gro_receive
-
- include/linux/virtio_net.h | 4 ++++
- net/core/gro.c             | 3 +++
- net/core/skbuff.c          | 2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
-
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index d7d53a7c58f6..da6f8342b619 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4854,7 +4854,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 		 * doesn't fit into an MSS sized block, so take care of that
+ 		 * now.
+ 		 */
+-		partial_segs = len / mss;
++		partial_segs = min(len / mss, GSO_MAX_SEGS);
+ 		if (partial_segs > 1)
+ 			mss *= partial_segs;
+ 		else
 -- 
 2.55.0
 
