@@ -1,115 +1,144 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C381B470EA9;
-	Thu, 23 Jul 2026 03:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B9335DA7F;
+	Thu, 23 Jul 2026 03:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784775973; cv=none; b=MGPurbbnm+yty70g/jPPBmtoz6qQ+lgA80mDKMBU8DSaRxE0pr9F3xU8Y/7jQaornvzhrx+OdHRRMx8R8BT1oJed2TzMxMN5js6F7fojYnBUqSQhDp4TkoOBFqc06pmDIJJhk1UCJjmcCfQsDJKmM7iI5pzJdXWk6C/J57eizLs=
+	t=1784776451; cv=none; b=i4pWx/clKnoOS2m+72RZcQGeSLizGlpCPWV9g7iborWUb9kiBeng1qKJ0BiIZNqhnaESyR4isRHnlKhgYOC8986dl0BiLjEMjjIi8b59Mcs/R1kdk3BzVnTvGt41i9f9XYlxt6nHYqMNA6ylycYGi3NJ0vU2V4G0YqEDsv2qTAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784775973; c=relaxed/simple;
-	bh=r8b9l6Ei/KaMuZZkiFdZBh+7ujzJG/BBNXND4OLPBGE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RdBlc7vePgcXI4fzcjMe1K6ZRoZVyUP28kEprrLxZYWM5ykQYxL0OvEcwwzdmjfqyh2P5u/k7j0//DaGZPTf1baNifilCq/txnlQTUzl623Kab7JmwKPpZfby3KuYwQXXwGDjKo7flroz8ksEOjCSBr3/uDMy4b6S+kcTf50iLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=eoZHFtgg; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1784776451; c=relaxed/simple;
+	bh=U+6X4Hn7v2FxBz0YWJ+3pn0gL2ifRjWnRb1e0elZgkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lltwXl2omWDfGZ4Gm3BFD/9j22mQ8HhWEJyPNVE7beUZNKl9iBylgexCPO4nKV4Rl/7LxsDBr1TXNLVFsOo5TY9JRRjOxKjvWcqJr4cxJneJIA8Y9f1NHm/K8MVpnhEEmIwwL1IeRPEcMmuDy2Ph6foOy+OF44742B9l+6UZM5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=DqCX6O0m; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="eoZHFtgg"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66N35JmzC167378, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1784775919;
-	bh=UDXOtRSkwR3vjd70Js3z68uAxJe0DoucDjW8mhnqa+Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=eoZHFtggGyauddNQNaFmmCW/H3L9/gkIkKnEh8epJmjXJkjTtS8ZsDJq14Bb4cnMN
-	 6alm8FDy1CxPRO7VKU75wzQkipyXwzjKvs1W//cmV+BtwRsEgcBuq4ptU5s4ib702Z
-	 6gKYQoYWTe9sZZeye/9m1TW/nrPOmrVd46HF6SMLsTwim/yekAVVj+q48gJwKA1RYV
-	 FokWqaRFczJi2nYwMHcIKYYWbvPitq/jHVFnBQ3GZG4KH3GtYCkNfPetX07qE7WCq5
-	 wH8JbD1hSID7P96VQ7t85/9neyUMoqBwIJ1SX2CC9VdnYUalKMZx1d1W2eLlbDsi2/
-	 C2N6AxaFOKsUw==
-Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66N35JmzC167378
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 23 Jul 2026 11:05:19 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 23 Jul 2026 11:05:19 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Thu,
- 23 Jul 2026 11:05:19 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
-	"daniel@thingy.jp" <daniel@thingy.jp>
-Subject: RE: [PATCH net-next v7 3/7] r8169: add support for phylink
-Thread-Topic: [PATCH net-next v7 3/7] r8169: add support for phylink
-Thread-Index: AQHdGYHgTFbpLkMdH0aFiTSnfzDH2rZ5xVaAgAClHYA=
-Date: Thu, 23 Jul 2026 03:05:19 +0000
-Message-ID: <70b8360675c744ebadb057b55ecf87df@realsil.com.cn>
-References: <20260722022906.271-1-javen_xu@realsil.com.cn>
- <20260722022906.271-4-javen_xu@realsil.com.cn>
- <bb3be7c9-2f7f-4871-9b3c-bc5958cdb6d6@lunn.ch>
-In-Reply-To: <bb3be7c9-2f7f-4871-9b3c-bc5958cdb6d6@lunn.ch>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="DqCX6O0m"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784776445; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=uh07OLumvbhKMHFzl/98Q4fWI+dA3VAJ3YKixuoHIBQ=;
+	b=DqCX6O0mwviE6O7RbV9ZvzoLWyqo8cRKrKAGnmfTjNKoxW5Dm5G1MaAxsgrI+EeXufD31rqRzf1CI7N+ucbtfhBlLvzEf6cpxiSLgQfODm+mDJW26wEXSPyu4fU1O/93H5wBU8u610Jyv0gio1wdxG1jCvygo1lMGPVoOvHGBfo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X7ejvXZ_1784776443;
+Received: from 30.221.147.55(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X7ejvXZ_1784776443 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Jul 2026 11:14:04 +0800
+Message-ID: <73c5bbf5-c9ed-4439-a76b-7f75c2c769f8@linux.alibaba.com>
+Date: Thu, 23 Jul 2026 11:14:03 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 2/3] net/smc: reduce TX slot contention with
+ exclusive wait
+To: "D. Wythe" <alibuda@linux.alibaba.com>, mjambigi@linux.ibm.com,
+ wenjia@linux.ibm.com, wintera@linux.ibm.com, dust.li@linux.alibaba.com,
+ tonylu@linux.alibaba.com
+Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, leonro@nvidia.com,
+ pabeni@redhat.com, edumazet@google.com, sidraya@linux.ibm.com,
+ jaka@linux.ibm.com, oliver.yang@linux.alibaba.com
+References: <20260716113745.65234-1-alibuda@linux.alibaba.com>
+ <20260716113745.65234-3-alibuda@linux.alibaba.com>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <20260716113745.65234-3-alibuda@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->
->> +     if (jumbo_before !=3D jumbo_after) {
->> +             unsigned long caps =3D
->> + tp->phylink_config.mac_capabilities;
->> +
->> +             if (jumbo_after)
->> +                     caps &=3D ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
->> +             else
->> +                     caps |=3D (MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
->> +
->> +             phylink_update_mac_pause_capabilities(tp->phylink,
->> + caps);
->
->The name suggests it only changes pause. So i would expect the caps
->parameter passed here to only cover MAC_SYM_PAUSE & MAC_ASYM_PAUSE.
->So i don't see a need to look at tp->phylink_config.mac_capabilities.
 
-In fact, I added a strict check inside phylink_update_mac_pause_capabilitie=
-s() to prevent non-pause bits from being modified.
 
-+	if (mac_pause & ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE)) {
-+		phylink_err(pl, "Attempted to dynamically change non-pause MAC capabilit=
-ies\n");
-+		return;
-+	}
+On 2026/7/16 19:37, D. Wythe wrote:
+> smc_wr_tx_get_free_slot() waits for a free TX slot with
+> wait_event_interruptible_timeout(). Since the wait_event family
+> enqueues waiters as non-exclusive, wake_up() may wake multiple
+> waiters even though only one can use the slot, causing
+> thundering-herd contention when slots are scarce.
+> 
+> Use an exclusive wait loop with prepare_to_wait_exclusive() so
+> wake_up() wakes only one waiter per freed slot.
+> smc_wr_wakeup_tx_wait() still uses wake_up_all() during link
+> teardown, so teardown behavior is unchanged.
+> 
+> This also corrects the return value on a pending signal: the previous
+> wait_event_interruptible_timeout() path fell through to the "no free
+> slot" case and returned -EPIPE, masking the signal as a connection
+> error. The open-coded loop now returns -ERESTARTSYS, matching the
+> standard interruptible-wait semantics and letting the syscall restart
+> machinery handle it.
+> 
+> Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> ---
 
-But I think you are right. I will fix the caller in v2 to only pass the spe=
-cific MAC_SYM_PAUSE and MAC_ASYM_PAUSE bits, which perfectly matches the fu=
-nction's name and its internal check.
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
 
-+ if (jumbo_before !=3D jumbo_after) {
-+ 	unsigned long mac_pause =3D 0;
-+
-+	if (!jumbo_after)
-+		mac_pause =3D MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
-+
-+	phylink_update_mac_pause_capabilities(tp->phylink, mac_pause);
-+ }
+Thanks.
 
->
->        Andrew
+>   net/smc/smc_wr.c | 36 ++++++++++++++++++++++++++----------
+>   1 file changed, 26 insertions(+), 10 deletions(-)
+> 
+> diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
+> index 6b5add922993..2cdd4063c13d 100644
+> --- a/net/smc/smc_wr.c
+> +++ b/net/smc/smc_wr.c
+> @@ -198,11 +198,13 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
+>   			    struct smc_rdma_wr **wr_rdma_buf,
+>   			    struct smc_wr_tx_pend_priv **wr_pend_priv)
+>   {
+> +	unsigned long timeout = SMC_WR_TX_WAIT_FREE_SLOT_TIME;
+>   	struct smc_link_group *lgr = smc_get_lgr(link);
+>   	struct smc_wr_tx_pend *wr_pend;
+>   	u32 idx = link->wr_tx_cnt;
+>   	struct ib_send_wr *wr_ib;
+>   	u64 wr_id;
+> +	DEFINE_WAIT(wait);
+>   	int rc;
+>   
+>   	*wr_buf = NULL;
+> @@ -212,17 +214,31 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
+>   		if (rc)
+>   			return rc;
+>   	} else {
+> -		rc = wait_event_interruptible_timeout(
+> -			link->wr_tx_wait,
+> -			!smc_link_sendable(link) ||
+> -			lgr->terminating ||
+> -			(smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY),
+> -			SMC_WR_TX_WAIT_FREE_SLOT_TIME);
+> -		if (!rc) {
+> -			/* timeout - terminate link */
+> -			smcr_link_down_cond_sched(link);
+> -			return -EPIPE;
+> +		rc = 0;
+> +		for (;;) {
+> +			prepare_to_wait_exclusive(&link->wr_tx_wait, &wait,
+> +						  TASK_INTERRUPTIBLE);
+> +			if (!smc_link_sendable(link) || lgr->terminating ||
+> +			    smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY)
+> +				break;
+> +			timeout = schedule_timeout(timeout);
+> +			/* re-check */
+> +			if (!smc_link_sendable(link) || lgr->terminating ||
+> +			    smc_wr_tx_get_free_slot_index(link, &idx) != -EBUSY)
+> +				break;
+> +			if (!timeout) {
+> +				/* timeout - terminate link */
+> +				smcr_link_down_cond_sched(link);
+> +				break;
+> +			}
+> +			if (signal_pending(current)) {
+> +				rc = -ERESTARTSYS;
+> +				break;
+> +			}
+>   		}
+> +		finish_wait(&link->wr_tx_wait, &wait);
+> +		if (rc)
+> +			return rc;
+>   		if (idx == link->wr_tx_cnt)
+>   			return -EPIPE;
+>   	}
+
