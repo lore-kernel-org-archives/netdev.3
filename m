@@ -1,218 +1,217 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021139.outbound.protection.outlook.com [52.101.70.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3580C382393;
-	Thu, 23 Jul 2026 16:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.139
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784825225; cv=fail; b=RkkgFujyYlOQppJZ8v5pxhXe4CgqKZwbs/ffUa/FHIv/BZoAHsKK/LPQHefqiZeGeykF8b0SFG4Knw9gOMPUtBTDu1NZPVycH8kAUTA8yQi8bVuYrLqnIQdu/ULi3ShGJ9veE30Z9N621Drps18WyMbcS/23lY9AnrbMejaHFWQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784825225; c=relaxed/simple;
-	bh=OwtE/9hYnBTN/CtLwgweSg0Es70axx1zZSGCKTG30c8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jJXR3UhruuJdBHIzbBYZ9ksS/7iQ3JV+9/JB/gaS75ekPzahIKEWWc/ZpamPfBeOgmAmDoR324TsKWpINhdEGU76QonpIHh5tjsyYQjZkA/IiY3p/4EM87to4iVbX1rPX5+fQAUEOfqqm+mu5oGrE2HiSMgNElrAZk72g9hOGEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=sGHShB1C; arc=fail smtp.client-ip=52.101.70.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62915385D7F
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784825366; cv=none; b=rA6mS/gY/oESuWT5VoFAOpb8uiXUBjq0WytB71ZFyXRZUsJ7aTMWFLNn0tY1KZycHgKSiZhVF4M3UB5vnN65oMfvuACjlAF2G8hQMJKCwMIWsveqjjyBKF8/spSRhww+YPW8DKHPiyFciu/9gagzgo2uikymIjROByy+e+pCRwY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784825366; c=relaxed/simple;
+	bh=ZMmghFhRRcQx2w2UkqEb5v4P+vXLd0z3kmdTC1B5cCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nrz+BJ4F7ueujCfYXIkQ/asLn1RC68TnN/Peht1OK8qKE88ATlYunI1I9LtrwWDPhrT7fDmPP1L8ebii+6M595qC0tphC93/b5+2F5t2K06qE8QrqzVqKCrJ3w54i/qLaHFQTKolDE/52IFEksF8/XZOHcqD56V89kGxIJjD/DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TEdU8sHS; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="sGHShB1C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xkUEGCs6yXjbhq07uleTkYf2kg3ZsPOCzPuGgNUw56AAC1xSPIOhIu0wY9djnvrlrbNiRRdZv1vNiZcxnorxAqppBTJVYygLpH2+HuOolks9gkyGpeBQZJ6aaOr9xfHtK7t7gKMdC2lc5zQCGXk0PrMB3Ob/uPu5KOG5Ha8IhcmCxCtatwaqSxjpkn1YTvBK01j6cLvxuIZUqH9emFzdWsBoZBPjAvNMsaVczwf5fLOUc431bBxJQpf1D7+GcbK7bs7cfPiKyLumDIgq7J1gEgWLNa2twaH+nkWIsmm1MlROM/inEaO5ktc0C04E/sqimWtTgq0hLTZUGgE/VoINFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ob+sXT3/dlSYBgiFKctNNNLfbnA4bi6cH6YspPslFHw=;
- b=ZAQjFQq0x1fL/0Q07ji7KJ9KwmIdTB0uGHZ7NnoBzUpbXSwwKsGf1uG38OSMxXMBpU+6seozIIWaGyrTVZkLue+qljhAs4lJCgl6BDH1NYZ7Gaf0/L4hQRR7LTNzmDBfFBc9e+XInlT0imz/tiFD//XvdGgFFy8j6NbRi1qPHRRQWHMgU2Esr0Kdwi1V7upjmastOelKiCze5jO10et0Nb/aCjr0CiO/32QUdyKr8MNB+ZKu2AS8jWek9MyGB+oI5v3WeEVrswq0BS84YWwbvlhv6kk6XGedPHrbWLo3lM+S36YfXQaJ6oNLT8mgX30YxjNAEzgCmyTQtca83qH3+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ob+sXT3/dlSYBgiFKctNNNLfbnA4bi6cH6YspPslFHw=;
- b=sGHShB1CNnwfc03TopRz5PoBouwAGnHIc+4S9VVj7YdV8jMHg8AUSDlQsixKLttveuRVhqYfvhvvufw8LHUyTIkccu63B1fDsxg+knfTUgDF7YsdYNQixiNTNlV5ujNdJTDUnSQ+uJ55TNdKntJ4eDqwn8SfQlrmZHy4IFyrTuNALh2V1/WQgBaPc2G6cJNP4DXX3Af/VTc70WjS9b+oxLLcgQbMj9wPY4uYbWEeCGbwV7uzg3U/Vf1WrGZQMYZ640V4j3PykrEtEoFpm/kNFc2dzQxOfa7J2v7JKAOyt78NI8CLSigcWWG8C06CHM4KCA65tow8bWiBp5fzDVt+uA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by DU0PR08MB9533.eurprd08.prod.outlook.com
- (2603:10a6:10:44f::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 16:47:00 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 16:47:00 +0000
-Message-ID: <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
-Date: Thu, 23 Jul 2026 19:46:58 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
- stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
- bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
- den@openvz.org
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
- <20260723111557-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20260723111557-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ZR0P278CA0088.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:22::21) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEdU8sHS"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8485bd28dd0so1002338b3a.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:49:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784825365; x=1785430165; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/QedI/yULZ2AnBhQ6b6gkzWgCVVwoBqUGjfXU/zu/sI=;
+        b=TEdU8sHSsICJs2IjE40C4lzryxAvlEp5eTGW9I/KcX4EdWRHK79zBW+Ff+HgF8+BUu
+         HNdHBj2t6fEm02O1WN+4guSQDpLtE8bVyGEkV6StwE0RFxLsswn+7mgaxLxUf/dqiOXF
+         2+uSTN/Pb+o+/uM2s7G5KyqCePh8rHGOMBdJgFzg0z0Z2Q8e5nht8CjdIT4aRnLulr4+
+         Pod/idnm0ACATX1WZVjqrdMWgikGooxaKbT+M9EZZkXXOKlbzG7v66x4OI98s9tCbp2a
+         GjiUDzhRFKm9MBsbMQpEpKdFdApHOtjNDM9fA0phz2K1zUUdXqsgYsvA3mVF7n9CH0FN
+         NHfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784825365; x=1785430165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/QedI/yULZ2AnBhQ6b6gkzWgCVVwoBqUGjfXU/zu/sI=;
+        b=rV+3X7pEALT/t9nzbG18QQxTBJUdMQ6iYUR1wxQYwR6KXKpHKP79/lejOHU6FfXPzJ
+         OjsTYjqpcCnwmSRKtCkG3+1ge91FudDThctUgK9qqPYZI4jbLZy8sO/YE4YWu0FnUUZF
+         3cgWBM6O9+Ww8+/YiqkpOuVk+k8zA4zPT7MAM53xlbs9uyZZQ1L+0SEYG2ZQlWJ+uShy
+         IHdyvHDCPCvsl068LhR2zzM/zUm1ZlPovWSir3hzbAm3RYk3CRTU40xqyDHjrxAkK/fc
+         sQscI5MFKjyAqY++iazvn1jbJUq3uSJQSbavoU3ru+EMx8hYlTHrQr0aqUXHC2iT92Uc
+         yelQ==
+X-Gm-Message-State: AOJu0YyFXIAI1OpmO13kLKhY6DUgK9UhpnL/DT1v3WdCvCY9+7+NGX+T
+	TV+tKyHeyn1CX+kn9BRfy2KjDhUd2jX7Y2oI4d4eGTTM59cC8WH/+57W8N8Yyrxdjck=
+X-Gm-Gg: AR+sD12ljdxEFm1SJd8dKOuacgsDcGZSXgikOYq1qrPFIswlGQt+9EQ2cCj5wJqbrir
+	zJJzJY6dFDVq6BCrhCvxSKhGEWbasMWuyLTq3OJ5EdvySY5UBAoAOk6mr9FLd/ync0RpBHMNMH+
+	EI1xV39KQ8M+gk9ESkhXmfn+xPmDRXe3CgSndgX+PelsqSafe9S5pyHgWsQ1rFf9DUR6Df4qU+9
+	Z7n+ccpXRiC2c50IXechI2GP+NYhu9xYEMQ0Wzu2iHJXsdaF26pO49Qj+iOXNzUh4S4Tya6x3DB
+	Zlbr4XzOVLwQavw7VpAjp4N7tcF/iPwBuQe19CJfF+ZkcZ9eqj1pA4m/7CmlcoQE/6hpLvYMfj4
+	5YtrATz20hXyMU9EovfNqV9XnN9qeXxX7b/MyMRC6dK9zrEmyaPNXRG2TGGBu3oO9Nf0/RTcDI5
+	9CojimL0W3zI+/78wmyjk=
+X-Received: by 2002:a05:6a21:2d4b:b0:3aa:c964:3c27 with SMTP id adf61e73a8af0-3c44b1c86a1mr4377172637.46.1784825364601;
+        Thu, 23 Jul 2026 09:49:24 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e088d3fsm22241096eec.25.2026.07.23.09.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 09:49:23 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Jason@zx2c4.com,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai,
+	enjou1224z@gmail.com
+Subject: [PATCH net 0/1] net: ipv6: clear suppressed fib6 rule result
+Date: Fri, 24 Jul 2026 00:48:51 +0800
+Message-ID: <cover.1784710966.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU0PR08MB9533:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5b881a5-b396-48af-146d-08dee8da0406
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|22082099003|18002099003|56012099006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	n4s3GH1fC4rPVQv+eKdtP8uQGoTRHHtuYc4ZyFbBsEdBZMDlelHgKvJwiLvJyg0GxV9PQaDFZ5vDjww/ar2NCCMIbiNprIEhGH1SRLD5l7fPmHVPbtu0y9ukdiuzkaLkABoAN/njsAkpVioGU0KOxNq6V271OcdnJPmBZLUQOtHEy12rgEpFu+XO1jDs4xW78E8tYoAjeTjQOyNIh6vsn3gX71pMgh12KBVZwUGKWQwac3D4QoG8sk4QlLoqqRwIjj5KV8y/iIrH9VtmSKLWaZuhJmKh+qwaN/F8E+XTNnE4TK69t5j9iNrityimumDwBjZ+YR76diQQboIy/qt5R+8zLcFsV94xYW+vpA40Ji+iYDO6zlIztxmhTK8OnlT/bLJ0+wZ+WQiv0Haz0JA493B5w8dn8q4JfsnntqptVVN+Tn0tyW3CVc9i1rVIs+ul/i0LGTinbADS5gc3iKjW0DuWmDz9eE85UP4ae+6Pu9ECv4bJEccAYMKq0sNDeqz9353CBejVJSbAxi6ep33QTI/1sWYFtzcTwxxVJrW5OBsjsxxeZHrM/KOJfmnG8eLh1uLDwm3aDQcBSbJKnYs/QkTMZtb9d4H5QF9ozn+1R7gJ+3wf6/MG5nFyrWPcmJ+p6thzfLzwQg/eCnRB5o1fcBCkxMZpxHlB2YKdm6BAthE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dEdxQzBQeTcxazhKQmhPS21yYmN2MlJmZFVHQ1crK005dS9yQXZaNGU4eitw?=
- =?utf-8?B?NWZNUUVrSmV3R2Z5ajhIQ0Ridk1FRkFIUXJHUmFYcXpWZUJjSWhEK0d0VWFN?=
- =?utf-8?B?TEorYWVLdzJmWXljQWFqWWhSdE9VaUF5VkpqV0hEYTVabmxTczdLWG41eVl3?=
- =?utf-8?B?MldqbVVIbTJiTTBPNnluYzlhVG1UbW4wUHVOOUZxZDRFNXpWbTRPbTlTR0dT?=
- =?utf-8?B?Rk1ITkcxZUQ5bVRjM3A0V2oraTdVeGF0UG1ocTJ6b2RiWTYwQ2VlaGpzTWlz?=
- =?utf-8?B?eTJkZVc0MUlML2Z2MXNoZ2dHNEY1QSt6TFJ4TUdLMUFiakFFTXBqUkVVN1Y3?=
- =?utf-8?B?WFJmelcvVVoxYXJvMk9mWlFVSVdrOGlDWW9HcE1telFMTjcyRDhJM29VMVpB?=
- =?utf-8?B?bHBYVnhDYXZlSTZsTW9YNStYOTA5STVwWGdIcHVaNlZEakU5dENiZVhMc0E4?=
- =?utf-8?B?U3dKN0R6dGl5R0lDL3hBamxJQlVBR2FQSkZPY1RHa285QzZ0bmZWbDhTMEM1?=
- =?utf-8?B?aGtsRGJDYUEva3oxK2JmQzQvZTQ2S2FMV0ZRRjlzNXlvMHBWTkhRMkpWZGFG?=
- =?utf-8?B?cHEvdUZueFBnRUtoNCtlZEFmUVFwMWlZaFFod3BXZmFFTUo5MXBWZnBsVmxJ?=
- =?utf-8?B?eDhsN0pOWkpyaDZBWkxsTWtiNnBFckhpOURrcCsvL0NwNnlHTjVKTVQ0eEZZ?=
- =?utf-8?B?YWVYSzNBY0tLMXdRUTNGdTZGYnpDMVp5NkRYTVZMTmFMZGxxRHZkc28ySzZ1?=
- =?utf-8?B?a3pJckVxR1NkU0kvSjM2MUlSVzBWaEN4YU9ZNVpFQzlvckthY0tlYTBrMjFm?=
- =?utf-8?B?TGJzcENacGs0WXBWViszZUU3d1FySXExUjlvZDNPR2gxbEU5bHhpRDdUcitP?=
- =?utf-8?B?S09XeiszZ3lZTDluYU1mUkcxL3A3QVVMWmRQdUlpSG4wRFdWcExrOWQ0T3cy?=
- =?utf-8?B?azlhL20yVlM0R1QwUWJHNEc1K1NUbityaXdOekhsNXBhczZSNFZlRFU4ZUlV?=
- =?utf-8?B?NkU3aXVpalZYZ0dOeGZXdTkySmRsQW5LNE9GL3VjaHdnM2Q4ZkFpcTVwaXkr?=
- =?utf-8?B?S1ZpdFU3Z3JBU24yMDhmWTBiRDI2cEJFNEhXamVaU0YzWThtKytDcjNaSlFU?=
- =?utf-8?B?TGRFY2ZnTDJzRTdGcFkvdU5MeVRua2lkSUlzWUhxbTM0dGxwUGdoNTRVYWtK?=
- =?utf-8?B?WFE0Z0Vnc2tzUlBjMm5GYXBLbk5aUnBtZHZ4eldTbTcyTHpGb3I1aHdvRURq?=
- =?utf-8?B?SXlPL2JLRGVPbk82c2RXV0VVUWlvcmFXWGl2RDh0S0M4R0tCL0gvMzAvNWhO?=
- =?utf-8?B?d3ZUbWlGc1Z3RlhhRHhzK2ZNelFlN3MvUERuaElJZEtlTWVvWUZSc0tSTnRk?=
- =?utf-8?B?akkrdlJuRk9mbnJZcXJoNWFtYmZKWER1SFkza1lOdmt3OTlVNTE4K1FTcEpB?=
- =?utf-8?B?SVprQW50NlBiaEpqS1crZ1ZLUXlxbDhIVjVqUHdrRlhkVFV6Ny9jRFo3UjFH?=
- =?utf-8?B?cERVOXdmUTgxSTJJbEg5OGlPYkVtT2JsWXdtNnp1bGNxVW04UmtQdlJzUTU2?=
- =?utf-8?B?SzNmVkV6ai9WZ3VPQndBeUZ2NlU4eDZQSTJKeHRCUWkxQXBRZkMxaG1xK3Yx?=
- =?utf-8?B?Z05ZOXNWejRRQWdWY3VUZHJnQ3pMbXZwbGhnMGk4WGFaOC9tci8yb1ZZcVlF?=
- =?utf-8?B?M2o0NGp3dE9kZE1hLzY5eThSRnBEOVBIdExiRm0vMURQVktTd2M5andXZTB6?=
- =?utf-8?B?bkd5b053TXRKaGhhNXZObTFmNHpaOGJWNWpIUGpVR2RvNkQrVzQvamhaS1V3?=
- =?utf-8?B?Y2JYQnBpS2Zsb1pNOTVIK0dGZWVsaWpaUm15eGlHSXI1bk9iR2cyWE03MEpE?=
- =?utf-8?B?N01KbEg5VjA3M1AxbGphby95QjFHajJncCtheURkc1VqRzJCZ004UFZqZkhn?=
- =?utf-8?B?ZGJ4WkN2Rnd1dkpGVVMwTC9tVzU4VjlrTDBXTm0za0JtK0JhSFpmVVZVZFli?=
- =?utf-8?B?cTZoNU5CYk82b0ErVDV6TnIrbkRLWlNLS2QrbWtwa3VwQy9xUUJRV01xb3Vt?=
- =?utf-8?B?dTFiZzhWczAzQnJRMytDZU1jMDRzS0QwaFp0YVVxUktmTE9YRWZ4YVFLaEJp?=
- =?utf-8?B?KzA1VzgzdjRtQ2VHTW9EVGxiVzRPZG9iNk9qUncwUnlnSENMSmNaWE5YN0h2?=
- =?utf-8?B?cmk1cjlIa0hoOHpyeG9GM1R5akEvMXI0TVc3YUlhbFVIYm94blpBR0FkL2VI?=
- =?utf-8?B?MENNZVFweFN1VUl6eWNxS0gzdXlMWTk1aFF4TWRiZURsUEpmVFBralFBcXR1?=
- =?utf-8?B?QklUcHVsenVpQWJNSFRoWUVkZnNEbTZLVXNMSlVyMWpFNXk1RmZjaUhTVzAy?=
- =?utf-8?Q?Q6LsfzL+WRtGNG94=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5b881a5-b396-48af-146d-08dee8da0406
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 16:47:00.2831
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WxIe7rdnggWXEEYFCVufoFJJZTm1s/KcK5qQ14q5g2t63i0C33IcxcOEKy3HEn26g+lHF6B8AOza64AmmFeZ0jaPfN4UN1vDh9vMhatT5aw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9533
+Content-Transfer-Encoding: 8bit
 
-On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
-> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
->> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->> vq->worker and queues work on it.  vhost_workers_free() however clears
->> the vq->worker pointers and immediately frees the workers, without
->> waiting for a grace period.  A caller that fetched the worker right
->> before the pointer was cleared can therefore still be queueing work on
->> it while it is freed.  And even when the queueing itself wins the race,
->> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->> future attempts to queue it are silently skipped.
->>
->> None of the current callers can actually hit this: net and scsi stop
->> their virtqueues before the workers are freed, and vsock unhashes the
->> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->> in vhost-vsock keeps the device hashed while its workers are freed, so
->> the lockless send/cancel paths become able to race with the teardown.
->>
->> Fix this by clearing the vq->worker pointers, waiting for a grace
->> period, and then flushing the workers so any work the last readers
->> queued runs before the workers are freed.
-> 
-> 
-> 
-> 
->> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
->> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> ---
->>  drivers/vhost/vhost.c | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index 4c525b3e16ea..d6e235c25254 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
->>  
->>  	for (i = 0; i < dev->nvqs; i++)
->>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->> +
->> +	/*
->> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
->> +	 * reader that fetched a worker before we cleared the pointers above
->> +	 * may still be queueing work on it.  Wait for those readers to
->> +	 * finish, then flush so any work they queued runs (clearing
->> +	 * VHOST_WORK_QUEUED) before the workers are freed.
->> +	 */
->> +	synchronize_rcu();
-> 
-> 
-> 
-> Any way not to add this for all devices that don't need it?
-> Or preferably, even for vsock in absense of the new ioctl?
->
+From: Zhiling Zou <zhilinz@nebusec.ai>
 
-This code was initially local to vsock, and was moved here in v3->v4
-after we discussed with Stefano that the issue looks more generic and
-should probably be fixed in vhost.c (see
-https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
+Hi Linux kernel maintainers,
 
-As a compromise, we can keep this code here, but only call it
-conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
-is always false, only set it to true on RESET_OWNER, and only call this
-code once it's set.  Clumsy, but this way no other code path would have
-to wait the full grace period.
+We found and validated a issue in net/ipv6/fib6_rules.c. The bug is
+reachable by a non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-What are your thoughts on that?
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Thanks,
-Andrey
-> 
->> +	vhost_dev_flush(dev);
->> +
->>  	/*
->>  	 * Free the default worker we created and cleanup workers userspace
->>  	 * created but couldn't clean up (it forgot or crashed).
->> -- 
->> 2.47.1
-> 
+---- details below ----
 
+Bug details:
+
+fib6_rule_suppress() drops a route that matches
+suppress_prefixlength, but leaves res->rt6 pointing at the released
+rt6_info.
+
+If no later IPv6 rule replaces that result, fib6_rule_lookup() still
+returns the stale dst because it only checks whether res.rt6 is
+non-NULL. With a final suppressing main-table rule, an unprivileged
+user can first observe the wrong lookup result with `ip -6 route get`,
+then trigger an imbalanced dst_release() by creating an ip6tnl device
+that reuses the stale route.
+
+The attached change clears res->rt6 when a suppressing rule rejects the
+route, so the lookup falls through to the null dst instead of reusing a
+released route.
+
+Reproducer:
+
+    chmod +x ./poc.sh
+    ./poc.sh
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.sh------
+
+#!/bin/sh
+set -eu
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+panic_on_warn="$(cat /proc/sys/kernel/panic_on_warn)"
+if [ "$panic_on_warn" != "1" ]; then
+	printf '%s\n' "warning: kernel.panic_on_warn=$panic_on_warn; the bug is still observable, but this setup may only WARN instead of panicking." >&2
+fi
+
+exec unshare -Urn /bin/sh -euxc '
+ip link set lo up
+ip link add dummy0 type dummy
+ip link set dummy0 up
+ip -6 addr add 2001:db8:1::1/64 dev dummy0 nodad
+ip -6 rule del pref 32766
+ip -6 rule add pref 32766 table main suppress_prefixlength 64
+ip -6 route get 2001:db8:1::2
+ip link add tun0 type ip6tnl local 2001:db8:1::1 remote 2001:db8:1::2 mode ip6ip6
+'
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+[   28.263573] Kernel panic - not syncing: kernel: panic_on_warn set ...
+[   28.264178] CPU: 3 UID: 1028 PID: 853 Comm: ip Not tainted 6.12.95 #1
+[   28.264734] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   28.265729] Call Trace:
+[   28.265964]  <TASK>
+[   28.266157]  panic+0x352/0x3e0
+[   28.266435]  ? rcuref_put_slowpath+0x67/0x70
+[   28.266817]  check_panic_on_warn+0x44/0x60
+[   28.267191]  __warn+0x91/0x120
+[   28.267462]  ? rcuref_put_slowpath+0x67/0x70
+[   28.267841]  report_bug+0x150/0x170
+[   28.268163]  handle_bug+0x10a/0x170
+[   28.268472]  exc_invalid_op+0x17/0x70
+[   28.268798]  asm_exc_invalid_op+0x1a/0x20
+[   28.269160] RIP: 0010:rcuref_put_slowpath+0x67/0x70
+[   28.269589] Code: 31 c0 eb f0 80 3d 29 bf cf 02 00 74 0a c7 03 00 00 00 e0 31 c0 eb dd 48 c7 c7 7d 36 7e 83 c6 05 0f bf cf 02 01 e8 39 95 62 ff <0f> 0b eb df 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90
+[   28.271193] RSP: 0018:ffffc900011cf810 EFLAGS: 00010286
+[   28.271648] RAX: 0000000000000000 RBX: ffff888106388e00 RCX: 0000000000000027
+[   28.272293] RDX: ffff88813bda1a08 RSI: 0000000000000001 RDI: ffff88813bda1a00
+[   28.272908] RBP: ffffc900011cf858 R08: 0000000000000000 R09: 0000000000000003
+[   28.273523] R10: ffffc900011cf6b0 R11: ffffffff84583688 R12: ffff88810aecc000
+[   28.274148] R13: ffff88810bcd1000 R14: ffff88810aecc9c8 R15: 0000000000000000
+[   28.274758]  dst_release+0x35/0x90
+[   28.275075]  ip6_tnl_link_config+0x150/0x1c0
+[   28.275452]  ip6_tnl_dev_init+0xdb/0x110
+[   28.275796]  register_netdevice+0x159/0x840
+[   28.276169]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   28.276586]  ? nla_memcpy+0x27/0x50
+[   28.276973]  ip6_tnl_create2+0x38/0x170
+[   28.277311]  ip6_tnl_newlink+0xa8/0x110
+[   28.277650]  __rtnl_newlink+0x761/0x9d0
+[   28.278001]  rtnl_newlink+0x47/0x70
+[   28.278295]  rtnetlink_rcv_msg+0x2ca/0x440
+[   28.278689]  ? ___slab_alloc+0x989/0xba0
+[   28.279058]  ? kmalloc_reserve+0x93/0x100
+[   28.279441]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+[   28.279833]  netlink_rcv_skb+0x58/0x110
+[   28.280138]  netlink_unicast+0x25d/0x390
+[   28.280429]  netlink_sendmsg+0x222/0x490
+[   28.280739]  __sock_sendmsg+0x83/0x90
+[   28.281105]  ____sys_sendmsg+0x28c/0x310
+[   28.281476]  ? copy_msghdr_from_user+0x7d/0xc0
+[   28.281909]  ___sys_sendmsg+0x9a/0xe0
+[   28.282254]  ? __handle_mm_fault+0x5ed/0x860
+[   28.282662]  ? __count_memcg_events+0x79/0x140
+[   28.283112]  __sys_sendmsg+0x87/0xe0
+[   28.283459]  do_syscall_64+0x58/0x120
+[   28.283815]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   28.284342] RIP: 0033:0x7d3d96dd8687
+[   28.284711] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+[   28.286534] RSP: 002b:00007ffcbfa96590 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[   28.287285] RAX: ffffffffffffffda RBX: 00007d3d96bab840 RCX: 00007d3d96dd8687
+[   28.288012] RDX: 0000000000000000 RSI: 00007ffcbfa96640 RDI: 0000000000000003
+[   28.288714] RBP: 00007ffcbfa96640 R08: 0000000000000000 R09: 0000000000000000
+[   28.289537] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffcbfa9674c
+[   28.290421] R13: 00005bb13a7ca920 R14: 00005bb13a7ca020 R15: 0000000000000000
+[   28.291350]  </TASK>
+[   28.292986] Kernel Offset: disabled
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  net: ipv6: clear suppressed fib6 rule result
+
+ net/ipv6/fib6_rules.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+-- 
+2.43.0
