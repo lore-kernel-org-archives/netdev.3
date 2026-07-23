@@ -1,130 +1,130 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B13379C28
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34B3470E92;
+	Thu, 23 Jul 2026 17:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827297; cv=none; b=UilhvyiVe/1NKx2Du58Js2u9qlOyG9qHkXFYbvLTaUWCe5MnRNCsKkILp0fyXPH4N71vFvp4CJ4RPAFS7FPHPv6SG+yZ1iafnI+f+a27EDz2nqC9MpYJTXtvgLwAP0lcxsBTk8Tiy/PlhmmePkZ5gya/zewQI1aGWlcXj5JZTWg=
+	t=1784827378; cv=none; b=mPNHTZXPcRLsTx6KhrUApdbgPbAUq7IKg/2oy1iklp1Bj0XOqRT6dSiskGZpZLesJ0dpyseUECOvd1lDg5tLNU0W1FnE9NbtM+lTBmV9iOcQsX2tL4Z/5kDv3E1Viz+f4CCM2Q6BiUKj5ijd2xFb8x19u9J9L166LU9krXdmLB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827297; c=relaxed/simple;
-	bh=k+4nMpcoQz97bn369q+zy/rYAZg95mHwCblqq+PQHkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDaa2RiDBzkNpmAjPno1ZN7PaZq5fa2tJ9BU22ae8GANiPLJkmBFNHzahxFnobjzZkbpzMkaCReJgFe8zay+RmdeAmTPDBz0T3JyKBivMa0f2ChVM6VuWb1d7QkW+uqcGKwoooZcNjgVOJ5KSjY2XwmXT3ZnSHEOmoZAhqmAWSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rRGWUqjO; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784827378; c=relaxed/simple;
+	bh=+GBoG1iFHFbXN1UA+4JYNqN5y5vwhyogQ/aT8iRwUvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XK25c1/gOz/ZSo7SxhmHXPMC+r1E6/GinJNQMOReS6MAKi0QVIvCUUT7n1jtqVZmpxA4Bz9rVdyGuHL6IVjIURltFk/q+EHPiw8ifrvljMCHpdfSIvt0hlVEx/iQD9QvxdiKg9WE9UiLxzvrPrpou+2S+rtLMtatMeLoN1TrOuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=sD9KUK48; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rRGWUqjO"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc61541f8cso8361735ad.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784827296; x=1785432096; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LJeMWpwJDiKmOBxcOAr9yxPeFdYnA9I6db3ePnFBGMA=;
-        b=rRGWUqjOmrGLCpoMGsM3zNMBBWfSZdp14bwWWlfUdJPY/xFZAT8Ym7iF0WKOHhbTN1
-         J0lSdOW2VrMsTOEkySNofGGq0SER2zvCV+pQzFMVPzly/2DTiwxJeQw1h2bMhk2gfLRa
-         y6GsqTTzMCayiH8FQygrnUm/VsA2YLWyHsimsRpoePN9pXsRo0q07lvkwMPFR3SfuqXF
-         CLin6A5LJYe+wOAeBEnpyo+9UhCr2v5LRdSe6F3ezNmb1tkgTrh4LlgJ2cMVb5gu41+w
-         3k6zipgwgLoetKHsqSM1AV6IKEwmnODpsVYYVTqKTd9cZnY14Bm+gzPQyiNwsb/ta0gK
-         BbIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784827296; x=1785432096;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LJeMWpwJDiKmOBxcOAr9yxPeFdYnA9I6db3ePnFBGMA=;
-        b=jBpdbqAiZNJnQHDEDmvXq+4b/M+XVqOsDl3AeFUvOZulCPwDMgJ/59f6zGnPVyPMZK
-         mgVsxbxHzuCQUkUsp4BiBYJ+RB1G1UNgEiyoDPyuGJjKo75ocF/oclvCTDseh+V/5dRb
-         2hnH4ZFKjG5/3fblNZ4BHfzozAHuos9Ey8Whrv8bN4mldeoMti/Vwk7FV+T7VPNKYTnX
-         sk9r2RgpqocEwwcIrGpjcWvRvx0omFR7ynhw5MAINFjc8FHBcp6CUXytk5KGiVGmrmpE
-         nmzSl0D18iqhl7AMrlmE3KXl1hyTBTXbZDE+0jK+2qpWjXzS0a7Nq2vegqH9TIQV/rW9
-         aZYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqYSvkd5uq+1LNXlH26SKMnV1ecV32h5ZeSxt7JKU5TrQA5Cjiz7+zj+RJCvK7seUWK1/sVzXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx12yUClA9NQKg11k2O7OoTDNEGpT4YaALOyTftqgkQ3OwWvetc
-	fQmVgB68TuxjGDymQU6/Z37xWzWRRnq6XM/8rrbqrHSuMV4ibouV3rNy
-X-Gm-Gg: AR+sD11mdDjzOSSYKqU/39Dwa17vrjZ7bUrOAEw+TwwAnhAx/GriYPYi/Uyryou0unU
-	rhpJPq/LoF/EYQ3yvY0pQMHe8O1PZSNz9zFxoeMVPDmtqjR0/f2kjiwMoRwX1QjT4l6gv2tXdlF
-	PyhCT6bUFp/srOUdKnKnBR6nvKHdczAEOJ/OdlQV8CVFy8kPKZNl+T2I1mt+INCW2w8sONYaRtO
-	sqXc3VZS7cZWdtqD/4Q3YHeIBMtEtX8cCxYdu52N4KUUZF9D//K4wukWINH9lR0HsjsvUI2sfEX
-	8qGXoGnLr1PO9dX0pOEoO4XE9pH4SxS66f+fijt5lcdaAb7sBt1FmCiUyDfM1Ug/f9juJ4F7ZLc
-	W8+BS3V3O/AJ5UzAW4L3nCcFUtnDrsFev7Br32XVeQ9ZybRI2VMPirS5OFj39ehKNgsbkzeCdBf
-	uHTO9aT8/HYw3nzvlv4l4=
-X-Received: by 2002:a17:902:c407:b0:2cb:402:70cc with SMTP id d9443c01a7336-2cfa95867b4mr41040635ad.28.1784827295640;
-        Thu, 23 Jul 2026 10:21:35 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147df09a9dsm20967373eec.19.2026.07.23.10.21.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:21:35 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Cc: sgarzare@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dtor@vmware.com,
-	georgezhang@vmware.com,
-	acking@vmware.com,
-	vega@nebusec.ai,
-	zihanx@nebusec.ai,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] vsock: clear stale sk_err before listen()
-Date: Fri, 24 Jul 2026 01:21:14 +0800
-Message-ID: <dfc66494f95ad847e58409a9fc4bcbb7b0d12766.1784649300.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784649300.git.zihanx@nebusec.ai>
-References: <cover.1784649300.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="sD9KUK48"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id C5D5760191;
+	Thu, 23 Jul 2026 19:22:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1784827373;
+	bh=5xzz4IwMvyGPIBEam+MyTsNSIxFkfzg9bsnh9V0M1yM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sD9KUK48mcWLsF5ObDzp64Ul2NMQIx6GfQmdS/QYRPN97EJIR4M5NFK7hO1lJ1zis
+	 Wmg543uDy9dW/jcWa78osGQ5+SPKMsYCDyBkPcW/EAvS7ogY8FnJX52Y17miikTyV0
+	 /CE4qwhRy3u49NRICaXCv+6Kau+Ll/sTkWlpV8rY3vFEiM35VH4UCh2M6dHZ8P8dG9
+	 1fEJkV1WAWxyuklgUdrkUA1tFpp5zmOch1W3OK47mzcBp7W4mxTRq/LTDpThzYwqdL
+	 3frfnVJPGbfLAT/zkphnXXVbIcS/JbgQ1isN3M6NP/ic3UFizZre0F8CUUs7r+k5gk
+	 9Sq6EEl+8CgQQ==
+Date: Thu, 23 Jul 2026 19:22:51 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Ryoga Saito <contact@proelbtn.com>,
+	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: Re: [PATCH net] seg6: fix NULL deref in
+ input_action_end_dx{4,6}_finish() after nf hook
+Message-ID: <amJN67Vtl0atkj7H@chamomile>
+References: <20260720204430.1886091-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260720204430.1886091-1-xmei5@asu.edu>
 
-From: Zihan Xi <zihanx@nebusec.ai>
+On Mon, Jul 20, 2026 at 08:44:29PM +0000, Xiang Mei (Microsoft) wrote:
+> When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
+> the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chain
+> with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
+> the lwtunnel state via orig_dst = skb_dst(skb) and dereference
+> orig_dst->lwtstate.
+> 
+> A hook in that chain can legitimately drop the dst: nf_nat_ipv{4,6}_in()
+> calls skb_dst_drop(skb) when a DNAT rule rewrites the destination
+> address, leaving skb_dst(skb) NULL. The okfn then dereferences a NULL
+> orig_dst, causing a general protection fault and a panic (the fault
+> happens in softirq NAPI receive context).
+> 
+> Free the skb and bail out when the dst was dropped, instead of
+> proceeding with a lost lwtunnel state.
+> 
+>   Oops: general protection fault, probably for non-canonical address...
+>   KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
+>   RIP: 0010:input_action_end_dx6_finish (net/ipv6/seg6_local.c:912)
+>   Call Trace:
+>    input_action_end_dx6 (net/ipv6/seg6_local.c:946)
+>    seg6_local_input_core (net/ipv6/seg6_local.c:1621)
+>    seg6_local_input (net/ipv6/seg6_local.c:1643)
+>    lwtunnel_input (net/core/lwtunnel.c:465)
+>    ipv6_rcv (net/ipv6/ip6_input.c:351)
+>    __netif_receive_skb_core.constprop.0 (net/core/dev.c:6165)
+>   Kernel panic - not syncing: Fatal exception in interrupt
+> 
+> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> ---
+>  net/ipv6/seg6_local.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 2b41e4c0dddd..45e66ba306ca 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -909,6 +909,11 @@ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
+>  	struct in6_addr *nhaddr = NULL;
+>  	struct seg6_local_lwt *slwt;
+>  
+> +	if (!orig_dst) {
 
-A failed loopback connect() can leave sk_err set on a reusable
-AF_VSOCK socket. If userspace then calls listen() on the same socket,
-the stale error remains attached to the listener. When a later child
-reaches vsock_accept(), the accept path sees listener->sk_err,
-rejects the child, and drops only the transient accept reference.
+This should be:
 
-On virtio-based loopback this can leave the rejected child orphaned in
-the vsock tables, so repeated iterations leak children and can
-ultimately drive the guest into OOM.
+        if (!skb_valid_dst(orig_dst)) {
 
-Clear sk_err when a socket is transitioned into TCP_LISTEN so an
-earlier failed connect() does not poison a new listening socket.
+> +		kfree_skb(skb);
+> +		return -EINVAL;
+> +	}
+> +
+>  	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+>  
+>  	/* The inner packet is not associated to any local interface,
+> @@ -962,6 +967,11 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+>  	struct iphdr *iph;
+>  	__be32 nhaddr;
+>  
+> +	if (!orig_dst) {
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
- net/vmw_vsock/af_vsock.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Same here.
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index a06f708f3..3482ba594 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1729,6 +1729,10 @@ static int vsock_listen(struct socket *sock, int backlog)
- 		goto out;
- 	}
- 
-+	/* sk_err might have been set as a result of an earlier
-+	 * (failed) connect attempt.
-+	 */
-+	sk->sk_err = 0;
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_state = TCP_LISTEN;
- 
--- 
-2.43.0
+> +		kfree_skb(skb);
+> +		return -EINVAL;
+> +	}
+> +
+>  	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+>  
+>  	iph = ip_hdr(skb);
+> -- 
+> 2.43.0
+> 
