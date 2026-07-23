@@ -1,22 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41943CE74;
-	Thu, 23 Jul 2026 11:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8935448D1D;
+	Thu, 23 Jul 2026 11:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784804447; cv=none; b=BYbn+bE/LRrhWTk34DPRTN6W6/ndA+h38dK3NB4b80fvMFW+yYU0EVFelkycn4MbksA7HJ/L55os5v6IM5WY7BkGiBb0Q3m5NcFZu1FpmSOL5HcNWCx+lkNMUbda8AH7zwJ95FWm5NJzdZGPuL9jKVtxtdsvYvp4ugP1RjY+Nx0=
+	t=1784804448; cv=none; b=kvdi/jN/DpQe7QNnFUC+sfC8PQ3SHL6bxwdAd1jmoMLZwA95ioM3hQMuQc+jwTlxjLsJOxr9Q+qPXt7Ag5LdYq708VOscjKeKYDageLVvUnEwj4d2ak9pouSenOy3oCPZ1BFlxBsTBQ04O1MqUHS9J9/pRjFjuY5SX4vEZdTVvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784804447; c=relaxed/simple;
-	bh=tkMLEGC/MOwX2flS0xOuIgSmy8VCce5NREFx2sg7QJY=;
+	s=arc-20240116; t=1784804448; c=relaxed/simple;
+	bh=AJYbyxGEU23cWrIj0Fus7zk9LeS+LflcAxSfPiPs/oA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nsMAQbkJ8iXai6yU4nmGUSCoCymujoG2199x3fJmVu1WQz3xovPBNKNsSC6eA6tKdGNv/kB3itOPubJyEzhA8hfMuJgvujOTGp7vSoNoyWrOjNPt6CpYINEQvzMnAIFLSLiHo358H4WW+iyCppOs9VXofI/MpKrOVYk/0HLw7Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A421F000E9;
-	Thu, 23 Jul 2026 11:00:45 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=tLN7Awl5VieuGpZS4xmDK52tYA7dLHU7Nn7Oe3Nn2jj7Yj5I4+X3+22XcDzu3LSz2ha+uam/GPY1kvailwr6kTMtX6g5XSbxbpgx/kGLFnL9y0Yy2qRnA9xipCjJmFccM2dUQQBGmv90wEKL8zEIlChCFHvXq4VLr6juj40Pifw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElP9k4cJ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElP9k4cJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77D71F00A3A;
+	Thu, 23 Jul 2026 11:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784804446;
+	bh=d63LXpVb2/FLNxAsKV/rh29mEJJJntNOnSkLXm8IGG4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ElP9k4cJYeIccgu/PEOZQnJK9suVC/0Ig3ZMRBqhaIY76MNkc2TebJNrXdnn5EdJx
+	 S/m8PAJt9sN78XrAhfNprLmePlF4Ufu7czrToleUIR7qseLiga/5b5+Q5AcZPPAq1X
+	 8F1WRnDVrRok5s6NN4tgl3jcnp1CzO0Qr23375Z9Vmlb26iigRs+x0E347ZXwcIwNv
+	 om6pZcJtOSeDx73+j5qdnzJbwOZVFobYTBSe4FHTUo+UNnyX6+AGQcrF19wqGuarZA
+	 nuX26vBNKcAiW6InJP5Refz6FtZ7LjdCknpHA2m0qfUxq8iPuzV9X7bkAYCSlFwit3
+	 hw5aOZryMz/WA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A77380DBFA;
-	Thu, 23 Jul 2026 11:00:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B5C380DBFA;
+	Thu, 23 Jul 2026 11:00:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -25,47 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/3] net: stmmac: L3/L4 filter bug fixes
+Subject: Re: [PATCH net v3] tipc: clear sock->sk on the failed-insert path in
+ tipc_sk_create()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178480441340.2227840.16089405252896069758.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 11:00:13 +0000
-References: 
- <20260714023716.29865-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-In-Reply-To: 
- <20260714023716.29865-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-To: Nazle@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Asmade@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Muhammad Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
- Jose.Abreu@synopsys.com, linux-kernel@vger.kernel.org
+ <178480441464.2227840.1009712427461521847.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 11:00:14 +0000
+References: <20260714131939.1255974-1-4ncienth@gmail.com>
+In-Reply-To: <20260714131939.1255974-1-4ncienth@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, jmaloy@redhat.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ tung.quang.nguyen@est.tech, leitao@debian.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Mon, 13 Jul 2026 19:37:12 -0700 you wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On Tue, 14 Jul 2026 22:19:39 +0900 you wrote:
+> When tipc_sk_create() fails to insert the new socket (tipc_sk_insert()
+> returns non-zero), its error path frees the sk with sk_free() but leaves
+> sock->sk pointing at the freed object:
 > 
-> This series fixes three bugs in the stmmac L3/L4 TC flower filter
-> implementation for the XGMAC2 core. All three patches target net.
-> 
-> The L3/L4 filter match count statistics patch (originally patch 4/4)
-> has been split out and will be sent separately against net-next per
-> Andrew Lunn's review of v1.
+> 	if (tipc_sk_insert(tsk)) {
+> 		sk_free(sk);
+> 		pr_warn("Socket create failed; port number exhausted\n");
+> 		return -EINVAL;
+> 	}
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/3] net: stmmac: xgmac: fix l4 filter port overwrite on register update
-    https://git.kernel.org/netdev/net/c/9fcf274d93af
-  - [net,v3,2/3] net: stmmac: fix l3l4 filter rejecting unsupported offload requests
-    https://git.kernel.org/netdev/net/c/5536d7c84363
-  - [net,v3,3/3] net: stmmac: reset residual action in L3L4 filters on delete
-    https://git.kernel.org/netdev/net/c/a448f8212899
+  - [net,v3] tipc: clear sock->sk on the failed-insert path in tipc_sk_create()
+    https://git.kernel.org/netdev/net/c/ba0533fc163f
 
 You are awesome, thank you!
 -- 
