@@ -1,62 +1,62 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C8C399892
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE6B25FA29
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784829311; cv=none; b=BXFYXSW/VmcRQmoIuU2FLawLtb19t1y582H9v8XePHVqzkSsETi1le+vuC3y8xZildgIU3F6y2YMWqCsHl7OUp3TjYiG9fP/0HioPaK8c+smTN8DKDzBmDPEa1VtG3J1BlvWjgo1D2mtqDJbjpN3CbgOs3ltDYBNL7vnM9ZHkg0=
+	t=1784829318; cv=none; b=OILttUSxW0giRWmbwHbXvR0aCoJk1xXw9uTCDZV1rRcAUBwzqOzqYRdq67olDw25KfNZU1WzCy6y8SYn9+rOSMSq/qOJFKUSW02r4UAirEgG41UuPAZ4aLScO9+i12eTzr8eIQOzCg4wlTnqPlTUnUBH2i3ZDZxnDqddjbFuZk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784829311; c=relaxed/simple;
-	bh=9BXmd5UbPJGt/0KOaPK6fNIhWXXaeM81IS4SqmRfuow=;
+	s=arc-20240116; t=1784829318; c=relaxed/simple;
+	bh=naQmjEb/FF5ML3YAjkcFraSoJxLpdbtln9MqFNO4PT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKO0ObX5aXHbiKrerAK/F3uZVl14WfLGlMXoVlR/nvBJtkXdE9HYWac8FKG6/WVdvuLrV87vf3phzpa0njz15kBVdMv1AFGG8mpVgRoDACa39F3ud4EWngGQIERDEQTI56Ot6kweYD0wQF94eNuoKKLOi/kyloaHO48mgjeJPsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QBwkql0+; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=U+OR6MBKcynRKwms+ZpshOYSerrmfmpx6CswSDR0Vz6k3D6qAg+p3bZO7MRboHd4oFu6J0djGUyXLfXg5Y7LzmA/7tkKhHYxL7BWJ5uCHTtI4LoLeOVAnKTf55Ta4nEbiKu+rQ0uWMFuF4QsEDUbn7T51fuzVYxqu/E+Gv51MBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pc83WvIr; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QBwkql0+"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso1027774a91.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:55:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pc83WvIr"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso1027896a91.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:55:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784829308; x=1785434108; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784829313; x=1785434113; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GIMpsUmHWaYqaztT29E06m7v8GokydsJhFwiKqXDKLQ=;
-        b=QBwkql0+ORfVqRMVGvJRdxYHzLWou6biAeaAd1MEM1ZpTKvNIGN9Vd8wioa47/cU94
-         ai2z5YopIFrDqx2uGdB7tWm2iYPfBdfKxL+AFQ2w313Rm5TT4vPc997O5jamKAAp0QKm
-         Bb6jWjL32roh1VPEs4OpAmconcLe20FY+8eVgMaInNtuaIDAxfQucZ+CWkfhHRtAzo6R
-         0xSHc3TxAvuyIT+XMDBorCoHb3frChJs1+bVdNYsxdtx3ooSR5+bVUaA8X8J3wIQMD8i
-         30gF0WgSrUkm7vNkvaLV+2FgoJUrgWFgssXqNNv8/V0v72/YUwIQc7AmuFlcrj9aB238
-         ESlA==
+        bh=T9pOdm/pCPYaCzGOYtfVb3PgMLIeG1DYk/sH1Fibdn0=;
+        b=pc83WvIrXTa39bpWonN1YDL+0IigT2+wtsNzJeV8gdlGUrMyFtkknMjnQga1V4ts06
+         3eSztPEAAJUHweZrm1TJZSMYoWzItLShhAvUGjOucCl+lyuTpn5GLl7V/3h9GuRXyN2B
+         8Nrg3crvtgs58mTfrnOPW89Ilz31OM09AYprYDUfXTuq7iWAtxm0EqjMyXsWreOK7b1f
+         CGorHzD0VPjy5otQqnu7uX/+VF2lZEPX7tKGEodDFOHsaG6rMaqoiYBG1rlKmIzSfXGX
+         Om9cdKyuUa0+tZnIcneB/0ucQoWseF2+nEA9xFIgGbwMRwiqGRIjqRhcAjsOVhVFLZOM
+         s2ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784829308; x=1785434108;
+        d=1e100.net; s=20251104; t=1784829313; x=1785434113;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GIMpsUmHWaYqaztT29E06m7v8GokydsJhFwiKqXDKLQ=;
-        b=UuSGt3hAs5qWsHo2FTCtieW46bzb/AFAlj+3FL46EozFvTi24knvRLdNgGg9CPa3IF
-         qpVVoZCN8VL3eDS+gzDIeoVq90Mkpf9MWeB3YDqRVSrWB3rtj89bNMD/cuU71V8dmcMc
-         HgjSRgnaA+892pwfxC7AtBDBgwljq2UelKXaJ/Iwg9O+okMU+tlaXwv8xUbTr3aknOOe
-         /wamMS2h+GkZEbd3En0cx8t1vGzQhMluGPLjkBdnyYotrSagGxJW/mxXPNZQKy20X4Bh
-         N+8/QTUFvfY2s/xJKq/VT3y2391oI4ftAcV4VA22OT53PJ14HxXovjM+Im2Gi7Cn84Zo
-         O4Uw==
-X-Gm-Message-State: AOJu0Yxjk93Tt9MdVE8jlHh60/qNUliWRo8H0sXOfPOT6HXcuDGLQExI
-	aL9+IhQpTAQRJX8uXZa/oGgjHs1xNkJR8A2xXRJcX0aYKMvNfJc2B1spG7BIfEdDUgE=
-X-Gm-Gg: AR+sD13+ECV+6b30YYcj60PHwScgw9Bidoeu5K2eSCc96nEQ8HsSb4y88zPSuu7HRun
-	IAT1914ZEJ3X4V9084H1SjUIAEXeGLjty5I2q0qfswBBFkjJTcUTObtCuCO3+nEpA3a7WfhZxCG
-	sU4/ppiCjrtxhm0Z+jrQ/j2Y/qIYqe+F5s4BZMfqTsiT9KFYUpxYdT49QG8IwG2/Fl0Bh4NwVga
-	rEKtN1K6lO8+gX7FNTzxhWrUYz1uoVYktAzU5xuiQs4vl+7Gm/VSjPlEyjRdxojStWiJK/ViTmn
-	KUJdDZQdw4Wy0elVUQ4d/A4hrwx4MuLEoHGvIkiBL50vIdVc61dVkBfzcWaanh5ZPeznIFs5SwY
-	egqgWnL//J1K6+aWAPiPApvdxUUW7kBuA5hjoduMfiJGAdvlvR3IA1aHfRvnWQxilKwi84pO8wg
-	JNwIgb0DhNACbNnDd9JQk=
-X-Received: by 2002:a17:90b:568b:b0:380:f34a:6ff1 with SMTP id 98e67ed59e1d1-38ec6440dc6mr4441973a91.17.1784829307666;
-        Thu, 23 Jul 2026 10:55:07 -0700 (PDT)
+        bh=T9pOdm/pCPYaCzGOYtfVb3PgMLIeG1DYk/sH1Fibdn0=;
+        b=I0yvSmoLYEHkLBad5K40FxoH6p5akOo8d+ZebKlAJ4mI1BtdNP+FiAfaSuMXne334d
+         cMNJf74bDOQcMXiChBBUGaGlME77Nr81kL7f+TfEyi33B5XFvU8LXXTh1vNkCXFXJWWD
+         2DXtycaFSff2MR0OuSeZ4JIvK+FGzGIhXAi9QxCzqFEWkjlsBjotlfE7k2jJXyQY2aIr
+         tkc1DdEaJG+gJ19e+N9kX+DQb4rc6PqRBB/8EOisUAjEM1+seBuPGtzixn3kocufaxaY
+         DyGHkk8tYuGJQjyJuiPC5PTBCNT/WTzpiyTZh+hvITirm9xJpVz9LeJ/ayseUST68JVL
+         U1qA==
+X-Gm-Message-State: AOJu0YwLODTnCmXExMv8SXL8LyHFW1q/VOLNKmbMm0thAPThYV93Z2Y1
+	zZwwlaaJKcA4yVMEseUYtO6ArUarSQJ4nie4VIucWpaRvK4LBCHa997lnm5rnkd/0IY=
+X-Gm-Gg: AR+sD13lyEzZqXynDxJ/YhnmRPQrq+7kdm2E4y3mXL98mO/QgWzjjPoa14Nj895QxxL
+	PXmyA8v84pVjYoij1ih8sAfOHnXJAXeD/+ZoeSli0RQatEv2IGhZN9bYxg+IM4J8PzUVCKhsZfG
+	L7mKpJHmTIBPNDshNXOSeMFYiKG92L/SMkF4eeGBNXaBJMtNjgnG5kJpZgYhGPwvqNe1r41F+ip
+	Iglq33D3KPJfvDgr1xtapDv1i6Fx+nZ52fuoTtznUKosBPQNRFbj1yMHyD8sg1Y+lBRbGvc5gM+
+	wFodX98q5S0w7gPVs/y/nl3lC7MlXWckHYWyiGAc81YNH+Mp2o5WrY4lSyNZ3NfXov2Ze7XIlO8
+	rTMzfx/gg67MDC7X0VEWSmNBG+/iPrDppq/4SYY/F1SpYKFjMqefOid8RnfM/ujkwrDdnDGKyU0
+	8LWwP+cgnWWcA1lslzehT0jXynHWHypw==
+X-Received: by 2002:a17:90b:38c8:b0:38e:b400:a860 with SMTP id 98e67ed59e1d1-38ec642bd98mr4661942a91.13.1784829313163;
+        Thu, 23 Jul 2026 10:55:13 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130262d2sm15943883c88.7.2026.07.23.10.54.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130262d2sm15943883c88.7.2026.07.23.10.55.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:55:07 -0700 (PDT)
+        Thu, 23 Jul 2026 10:55:12 -0700 (PDT)
 From: Ren Wei <enjou1224z@gmail.com>
 To: netdev@vger.kernel.org
 Cc: jhs@mojatatu.com,
@@ -71,9 +71,9 @@ Cc: jhs@mojatatu.com,
 	vega@nebusec.ai,
 	bronzed_45_vested@icloud.com,
 	enjou1224z@gmail.com
-Subject: [PATCH net v2 1/2] net/sched: act_skbmod: require a full Ethernet header for MAC rewrites
-Date: Fri, 24 Jul 2026 01:54:47 +0800
-Message-ID: <4c367ee0418b50fe3c3e4936d95e3b8a0c46daf5.1784709375.git.bronzed_45_vested@icloud.com>
+Subject: [PATCH net v2 2/2] net/sched: act_vlan: skip pop_eth on non-Ethernet devices
+Date: Fri, 24 Jul 2026 01:54:48 +0800
+Message-ID: <32c26661015715cb100df38180c81cc730d7c92e.1784709375.git.bronzed_45_vested@icloud.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1784709375.git.bronzed_45_vested@icloud.com>
 References: <cover.1784709375.git.bronzed_45_vested@icloud.com>
@@ -87,65 +87,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-tcf_skbmod_act() rewrites DMAC, SMAC, ETYPE and SWAPMAC through
-eth_hdr(skb), but it derives the writable length from
-skb_mac_header_len(skb). After a prior action strips or shortens the
-L2 header, skbmod can still attempt the Ethernet rewrite without a
-full Ethernet header being present.
+tcf_vlan_act() currently applies TCA_VLAN_ACT_POP_ETH on any device
+type. On loopback and other non-Ethernet devices, this can strip
+ETH_HLEN bytes that later paths still expect to be an Ethernet header.
 
-Reject non-ECN skbmod rewrites unless the skb is on an Ethernet
-device, the MAC header is set, and the MAC header length is at least
-ETH_HLEN. Also use ETH_HLEN as the writable length for these rewrites,
-which matches the bytes actually modified.
+Treat POP_ETH as an Ethernet-only action and leave non-Ethernet
+packets unchanged.
 
-This fixes a buffer-size length miscalculation that can corrupt
-short or non-linear packets.
+This fixes a short-packet handling bug that can trigger a BUG in
+__skb_pull().
 
-Fixes: 56af5e749f20 ("net/sched: act_skbmod: Add SKBMOD_F_ECN option support")
+Fixes: 19fbcb36a39e ("net/sched: act_vlan: Add {POP,PUSH}_ETH actions")
 Cc: stable@vger.kernel.org
 Reported-by: Vega <vega@nebusec.ai>
 Assisted-by: Codex:GPT-5.4
 Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
 Signed-off-by: Ren Wei <enjou1224z@gmail.com>
 ---
- net/sched/act_skbmod.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/sched/act_vlan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
-index a464b0a3c1b8..30c2eac17aff 100644
---- a/net/sched/act_skbmod.c
-+++ b/net/sched/act_skbmod.c
-@@ -38,7 +38,6 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
- 	if (unlikely(p->action == TC_ACT_SHOT))
- 		goto drop;
+diff --git a/net/sched/act_vlan.c b/net/sched/act_vlan.c
+index 6a375fdc63dd..b77f649ae204 100644
+--- a/net/sched/act_vlan.c
++++ b/net/sched/act_vlan.c
+@@ -4,6 +4,7 @@
+  */
  
--	max_edit_len = skb_mac_header_len(skb);
- 	flags = p->flags;
- 
- 	/* tcf_skbmod_init() guarantees "flags" to be one of the following:
-@@ -49,6 +48,8 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
- 	 * packets.
- 	 */
- 	if (flags == SKBMOD_F_ECN) {
-+		max_edit_len = skb_mac_header_len(skb);
+ #include <linux/module.h>
++#include <linux/if_arp.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/skbuff.h>
+@@ -76,6 +77,9 @@ TC_INDIRECT_SCOPE int tcf_vlan_act(struct sk_buff *skb,
+ 		__vlan_hwaccel_put_tag(skb, p->tcfv_push_proto, tci);
+ 		break;
+ 	case TCA_VLAN_ACT_POP_ETH:
++		if (!skb->dev || skb->dev->type != ARPHRD_ETHER)
++			goto out;
 +
- 		switch (skb_protocol(skb, true)) {
- 		case cpu_to_be16(ETH_P_IP):
- 		case cpu_to_be16(ETH_P_IPV6):
-@@ -57,8 +58,12 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
- 		default:
- 			goto out;
- 		}
--	} else if (!skb->dev || skb->dev->type != ARPHRD_ETHER) {
-+	} else if (!skb->dev || skb->dev->type != ARPHRD_ETHER ||
-+		   !skb_mac_header_was_set(skb) ||
-+		   skb_mac_header_len(skb) < ETH_HLEN) {
- 		goto out;
-+	} else {
-+		max_edit_len = ETH_HLEN;
- 	}
- 
- 	err = skb_ensure_writable(skb, max_edit_len);
+ 		err = skb_eth_pop(skb);
+ 		if (err)
+ 			goto drop;
 -- 
 2.47.3
 
