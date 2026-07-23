@@ -1,49 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E03D313547;
-	Thu, 23 Jul 2026 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2378B47D258;
+	Thu, 23 Jul 2026 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784826036; cv=none; b=PL6f8gtin6QXspEBuVryqn6A4aaiF6M3xA8XtyzIdE+658nQQhiJBmKyjDmcDmWmw0BRBP1dsMviZcKQefL+x+TKkhmlWijekrRepDyZunbBZjEL2rQdE8n5TDzW8ocxcEFlB2DD6Sk1q07LL322y2XE86YsyE/pv5Y9o+kuAKY=
+	t=1784826635; cv=none; b=ZhFjYbuvzd857gF9u+SHtnziv4ZpLg0sO1o2Js21C6CqGi+GdzeWjIl6rcnDtZ8n8dMHsM50LI9GukjEbLaHQGOc485MoE+YEWm0f5CQTqD5OvQGsDREQf6ylFLqxLEn7C+gjXsLxrfD56fYmd83aN2hz4p/fq/qDorkDjE4gfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784826036; c=relaxed/simple;
-	bh=4/WPPcLtQaNmiBTxz0XiP9q/NGGJRPYQovCMyuAy5hc=;
+	s=arc-20240116; t=1784826635; c=relaxed/simple;
+	bh=NQjlK5S3H0O7EyTxQRpZxGYM6cmRbEb6J7vbDLNM+3M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OizZtBQLWWFBQgc9/z/sGHgHAqZgeXLm82ZcmryvQ34auonGXXAwVx4WVbnjleV95A8dGWCn0x/h+RtstaZ06jHoBYJXlDh7jTO3DQtjDhlnSnre5x9O0Vh5ODEO2gJH9upU/m8p1ouo3gT1jiWxyN9zM5ufcO1ILiSz4r9Px3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLXWgp7C; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLXWgp7C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0B61F000E9;
-	Thu, 23 Jul 2026 17:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784826034;
-	bh=4/WPPcLtQaNmiBTxz0XiP9q/NGGJRPYQovCMyuAy5hc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jLXWgp7CPhrNf7fjr7I7seEEtw/vOn3szHTchl+R68NrNyh5ZTr3OppyswBHRCxBz
-	 fHuN6scPYa55z+RrfZDIOCSQ/D1umU/S0lYmqBML06pvzhfxBbkQvsKphhMtxQuUSB
-	 5o7WVU2N37T78FD8rMBszxcj2IekngeyZ+Qh3PId3hQCsmc5Sfir/h0vZDAz0i3fen
-	 7/XGGTpQ7XpmbCC9MWtmmolShtQIpw+GeY/SYWwYLsejL5qvTubIPWYqDZcHl5vxSZ
-	 g9EGye4MUVKXpfCn18e+nPcnRabCnIUX6rg3p9qPkKEvjsjC5ii3pzeno2HjPNJ+nn
-	 nUFvGwRjCH/yA==
-Date: Thu, 23 Jul 2026 10:00:30 -0700
+	 MIME-Version:Content-Type; b=E/j8YAalYN+QSEoAlTw5V+RTq196MBFcIfEEH89Px5V1IfTIv42ldWrOcgShiwO/xlITPOo4hGjkYLp4Dw7hCELl2rSyRFsWmMLRcUlZP1ZGFQmIacsh50Ezys+/5jKRnSdK922Rdzi5Aud/dTZYUNyvJPnmF07onXSvdn8Jom8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35AD1F00AC4;
+	Thu, 23 Jul 2026 17:10:20 +0000 (UTC)
+Date: Thu, 23 Jul 2026 10:09:49 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>, Eric Dumazet
- <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen
- <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3] bpf, sockmap: Fix cork ownership in
- tcp_bpf_sendmsg()
-Message-ID: <20260723100030.3eee6d51@kernel.org>
-In-Reply-To: <20260723162602.3275661-1-nicoyip.dev@gmail.com>
-References: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
-	<20260723162602.3275661-1-nicoyip.dev@gmail.com>
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Ryoga Saito <contact@proelbtn.com>,
+ AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+ kys@microsoft.com
+Subject: Re: [PATCH net] seg6: fix NULL deref in
+ input_action_end_dx{4,6}_finish() after nf hook
+Message-ID: <20260723100949.4443811e@kernel.org>
+In-Reply-To: <20260720204430.1886091-1-xmei5@asu.edu>
+References: <20260720204430.1886091-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,9 +38,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Jul 2026 00:26:02 +0800 Chengfeng Ye wrote:
-> Subject: [PATCH v3] bpf, sockmap: Fix cork ownership in tcp_bpf_sendmsg()
+On Mon, 20 Jul 2026 20:44:29 +0000 Xiang Mei (Microsoft) wrote:
+> When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
+> the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chain
+> with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
+> the lwtunnel state via orig_dst = skb_dst(skb) and dereference
+> orig_dst->lwtstate.
 
-Since you are spamming the list with the reposts of this could you
-please add [PATCH bpf] to the subject so that netdev CI is not confused
-into caring?
+Per Sashiko's feedback - we need to validate not only that the dst 
+is there but also that it is of the expected type, no?
+-- 
+pw-bot: cr
