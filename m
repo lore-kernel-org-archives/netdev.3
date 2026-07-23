@@ -1,148 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05397379960
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 08:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CE440B38A;
+	Thu, 23 Jul 2026 08:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784796464; cv=none; b=EEZcdy2CrxYrZ9ky33ds8ZRhoTMlNwbH345m7WMuWmyhAD4vDpaBMyqKCDRJY3378pn+/sWSj+mDCL13oI4VP7NEiIgY2CE0U61tkZ35chs2b4kJuVsvftbLrDngz0QB8qGEHSmu9eQnT0yxf2TtPlHCwFdzPOxQ7MCr/cu6xU0=
+	t=1784796650; cv=none; b=Cu5RXX7xDbgVT2Vjc33HCK7xexkgSQjeq3KKlSnTvgfcLB7GNPW1yeUewEfX7zn6vk826O4HPFmyY6U4oKp5hhrV4lmObU2uDCkbE3hyBHSTvSN3tD0fcF6Chx3P2S4NFAnYHI6HKVzTMi/sEI9qiNRbHBsvXYzdQ9zB3zDOK44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784796464; c=relaxed/simple;
-	bh=wJnYAeDJFcg7z47AiP2il6dpStvlAZdRAAiKPf2MdJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W9Urucz91dQtQ8ltqUW6M+zmU870HPPnuZ1d8PtwBnLWBBYDF9ZQIp9+Z2fngDy/JguQJHAcCCX8/QkdLIpM0B/k8HHMrF3YCmbLgcEqhMmJ/dIzfAGshGDnuUVKy3OtjJD8QcM/3oUD8DlO6JEyGI8ia7QVQ0ObXr5ME8uevy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RaAj+qii; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IZlLvRIP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784796650; c=relaxed/simple;
+	bh=pIoJJ+SvhA2scIPPdaE5gO9ZSsxtn74V5LEKtd+uCaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWduA74cnsYN1McEHGtf0FT4qMW1SZI5vtZkDkyTPrBvqvATep+1yUVOM5MV+mXw/QtGj86dWZ+VYUhly5Or3tlCXKmnncdPJNvLXfzMZcEp8QpDGWZ2JsvTGl1TEbOayL7uwVSm0jW+gWoUoZUgaACQ8vlGXNPc2/MruJHD7FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PO7qWhec; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RaAj+qii";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IZlLvRIP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784796461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UIn+hZ1YS4Hl1t0phWXq7iBXtPH0Wl15h+2OOcDUJZ8=;
-	b=RaAj+qiir55IL+bW5hJoPNwW02QK40PQVtTv8GrY9WAoi+Qkl4hh+0yDpoNoocV/TXlfUX
-	dbvj54O6j9IH2xsdwMV2upX8kN0EQ/VAn7/i4oFDD5w3z4dc8rnjb0Pc06vZ2c+BbnHRHl
-	LPmag05WbphabtOkjkVKBRqTSuXBk38=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-pmEH3PbiNKCxxcz9B-BFsQ-1; Thu, 23 Jul 2026 04:47:40 -0400
-X-MC-Unique: pmEH3PbiNKCxxcz9B-BFsQ-1
-X-Mimecast-MFC-AGG-ID: pmEH3PbiNKCxxcz9B-BFsQ_1784796459
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4954dcd6131so4181585e9.3
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:47:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784796459; x=1785401259; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UIn+hZ1YS4Hl1t0phWXq7iBXtPH0Wl15h+2OOcDUJZ8=;
-        b=IZlLvRIPkstPBElfWAsB2x/LTanUdY+4A1/KQCfQR6QZDKgXqa2zLR51liuNp2V2Mi
-         MY4+rPnEBvCh7VWjycHl0km9i/x+InIklOMxxXpVBIoJ2f42d5uAtnjs/rvmJ7gmySKB
-         nXZbga1Sl1F6cx4wU8gzQlBUDZGBQAB3zpyngKTyT2HodXzP4EEsLq+Uk6Nrgy1oWxhn
-         tZpWhN5kADrslUzGStkr2YlkTFboiWBRSW+xaTkNnx0YU82sBoD8ib9T/7vYaiGsLw++
-         zkC1QCk/IgvvSh3t+ciQ4xgQ2k4RzXlAhqJnkOY0tuQZxtpUONedT/BQrUIdElVNq04l
-         Eggg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784796459; x=1785401259;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UIn+hZ1YS4Hl1t0phWXq7iBXtPH0Wl15h+2OOcDUJZ8=;
-        b=FF3lpMbVhD1OzqJdxtv+4QOjR3fe47yLULWObXG7oL4A+bWCQ5aft//w9ef+HhXaaf
-         4x7+KxU+5FepEkLEI1SD3mhThIQjbUy7xtZNtUrzndaLgWbQD1Kk8d8xTK22ViPKgunE
-         o0+kyLvzVRTDGekEyrCNMC0NeDjGmUJxb0DGBX8+sWF8vH4JzOe1znZT9yceRdzoElY0
-         o6yBdeSp4nLkwQleAWJOBJxcoD9V3GovFMzz8DihhPaMG3xImIHkV5eOI0Rd3Qs/aFMw
-         ot+zYSfv/N7GSoW+MixEI9atevDP4c0Sg9bacjJm+DFtkXn9m0HG+71wbVdv4MgR/XMm
-         GURw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpuou812HCdRiHLEGFX8E/w2f+LATbQK06LcBsKo+KqEXYSZCRuwesxgOJlHNH040xqGvkuUOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7Y0fhsrEiFvmX8QaPn8bpbcN6xTw1+L1pMFpWyq4aZq0yDv4+
-	rfqc+ZgWt7lyhnJT8/jd3EXVdLw/DWS6ioC1ta0VdAIP/zYNUbh3YHzRR/ncnoKFae2DwTxS9Zr
-	yDR55w3RzzONUSO/itCitvNs7l8S9UquUP9MOBi4H4KxKRmO0YbVqRppa/Q==
-X-Gm-Gg: AR+sD13EpJAviahPr35zYDlDg7lsfjZWcVG/Ve4m0nUXvBnwpmji/vBT1oFx1BVHEXr
-	p4Op19BSP33kSpEmvlESGzm1A3iBX4h8OnXcOJqZs2EfCzOrDa9LsUjMOE+K4vLvdy++K2oP4JM
-	olF53hbKMI1szhB18jhLn7w8iyUhEP7PD//Nrype7S/lTHwWZhMC3ke53C1OrMJiKJA1tvj6e+K
-	OWa5aMHAjU5fKJfUYw3Tj4m4ahApPT4gYEgYsPp7v368ShADTljy9gD0meAUrP/FQsT60XkYy/y
-	ebwmYzeLfMFQueFznKtnAmNbrp8xjoNYRO+sH6/6fnI1zQaVqczmgEdWa9Dwm/fXlJOuXl4JqAZ
-	wk6j7NmJrjwCNU7enPVWPDi14moI3E7gAsEqObgPFJDpxkUIdoyjOrYuu3GP+B4o5en25n/DdUx
-	/hfw==
-X-Received: by 2002:a05:600c:8b4c:b0:495:472c:208d with SMTP id 5b1f17b1804b1-49573d25e87mr20143375e9.38.1784796458913;
-        Thu, 23 Jul 2026 01:47:38 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b4c:b0:495:472c:208d with SMTP id 5b1f17b1804b1-49573d25e87mr20143065e9.38.1784796458444;
-        Thu, 23 Jul 2026 01:47:38 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49574653f83sm22339255e9.0.2026.07.23.01.47.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 01:47:37 -0700 (PDT)
-Message-ID: <e8829e6d-977b-4aa5-b823-9bb723219746@redhat.com>
-Date: Thu, 23 Jul 2026 10:47:36 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PO7qWhec"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66N5CEEd2083549;
+	Thu, 23 Jul 2026 08:50:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
+	 bh=aG61y+rsu387gJEseZ9ne6+r183i+18z1QBwWqmKFR4=; b=PO7qWhecorUI
+	s6Gbmmn3ppa6g9hvgHQnb93ieXavc2vvj8b55PdSVwAvoEnUNoWjHwU0N5BAFOM4
+	Dw/jc5TO3QiIUthYDoEK3VxCrUoh3dKADMHaEx5OHniVr/rIv4XbewVJ+6YcJfHk
+	bq6kDHesmMDjN+a2h9tgcLWmYF7mlVWr7TE9lK0rhS3OZkkMZEE+aysQw8rhJbDT
+	fY5+vW2zuU9OF2lMpp+sZ7N745jxFZy9kRD5HV7xADNGwA7OxAJzFT8C3PiCp12a
+	ZBxxBM06z50qEUu+1bRr+iIljyUNs4F0cThxckqc/OuRGbhWsh+kk/1RbiIV6Uqj
+	bGbBCr+IXQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7916nbp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 08:50:21 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66N8nos7022595;
+	Thu, 23 Jul 2026 08:50:20 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1gk5f5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 08:50:19 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66N8oGuY16908722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 08:50:16 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 15C7320098;
+	Thu, 23 Jul 2026 08:50:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E413E2009E;
+	Thu, 23 Jul 2026 08:50:07 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.126.150.29])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 08:50:07 +0000 (GMT)
+Date: Thu, 23 Jul 2026 14:19:56 +0530
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org, David S Miller <davem@davemloft.net>,
+        Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        D Wythe <alibuda@linux.alibaba.com>, Jon Maloy <jmaloy@redhat.com>,
+        Kuniyuki Iwashima <kuniyu@google.com>, linux-sctp@vger.kernel.org,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+        Wen Gu <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>,
+        Willem de Bruijn <willemb@google.com>, Xin Long <lucien.xin@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH 0/2] net: Use synchronous wakeups selectively
+Message-ID: <amHVtLnO7R2snG4L@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
+References: <20260714013940.4068189-4-srikar@linux.ibm.com>
+ <20260722100842.602fd5d2@kernel.org>
+ <CANn89i+o3rT6Jnx_6SK2vdmeuHVkZwTJXD++Kua9ZCJb-wVFHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 3/9] tls: add TLS 1.3 hardware offload support
-To: Rishikesh Jethwani <rjethwani@purestorage.com>, netdev@vger.kernel.org
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- borisp@nvidia.com, john.fastabend@gmail.com, kuba@kernel.org,
- sd@queasysnail.net, davem@davemloft.net, edumazet@google.com,
- leon@kernel.org, andrew.gospodarek@broadcom.com
-References: <20260709205325.1591196-1-rjethwani@purestorage.com>
- <20260709205325.1591196-4-rjethwani@purestorage.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260709205325.1591196-4-rjethwani@purestorage.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89i+o3rT6Jnx_6SK2vdmeuHVkZwTJXD++Kua9ZCJb-wVFHg@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: BDBsCyZq3H0b3cjmSqe402FANmvFSrr-
+X-Authority-Analysis: v=2.4 cv=V6RNF+ni c=1 sm=1 tr=0 ts=6a61d5cd cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=1XWaLZrsAAAA:8 a=MzLsWxuSgiCLPq6Zp1UA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDA4NiBTYWx0ZWRfX8bmdL9T5rglM
+ afa4O3H1pSJfQYvDGVhYQKt56tyemfuy63ar65DM9hzaDktMFWQeuLDPBUhwNvLN2zGmgpgClmI
+ NgRWNA3yCT81dUS6T4ngZeR6l8X8hBg=
+X-Proofpoint-GUID: N9IEK1XpunVUWSBMyGEX440vpQlrKU-_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDA4NiBTYWx0ZWRfX3EBHpXRd66XD
+ 4bXWGFkCSZqBkMFRMgFiw1dl51nFRr6SY9bqXT3Tp0zlI7Eb4640s5Wffy042foWoQPCpjFEWgZ
+ XXm9NxWFgUQZO7o9hKc5kZDnW4q0oljpVrF5Bolg/WC0aa9CTisDMvrONlmyJZUOxiA0QSfMY4e
+ G9fGgwKbzr7HwzA2FCW1UmeT5TLsSDjs1q7+sjxrNr3HivfhJEHOgYRVAv8AQLpjZXYCXoP/98h
+ CNGRSUu6JDxNu8QFBhhnrq83dU0WkrbbKlIE8N+/j+BsOXrL8RwYyolO+wWs8wFp1J3Z+lc5lju
+ WEHPlOA+ORuP5K8vVQJuPlQ+c7HWcijyT340tEeqb2w74RPEZhytN6yqSPmmdJr/mCJsB+nRCy9
+ 9WJ0cayk8xNH7mt2xtE41ATh74HTmsRFU8uY2XV5b27EaGpdw+SOYi84NZVysZcYKNXHhuAIxwH
+ gYT24WToU/Pu2tJf3gA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_02,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230086
 
-On 7/9/26 10:53 PM, Rishikesh Jethwani wrote:
-> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-> index 8c588cdab733..c4c15c0e731a 100644
-> --- a/net/tls/tls_main.c
-> +++ b/net/tls/tls_main.c
-> @@ -714,49 +714,64 @@ static int do_tls_setsockopt_conf(struct sock *sk, sockptr_t optval,
->  	}
->  
->  	if (tx) {
-> -		rc = tls_set_device_offload(sk);
-> -		conf = TLS_HW;
-> -		if (!rc) {
-> -			TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSTXDEVICE);
-> -			TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXDEVICE);
-> -		} else {
-> -			rc = tls_set_sw_offload(sk, 1,
-> -						update ? crypto_info : NULL);
-> -			if (rc)
-> -				goto err_crypto_info;
-> -
-> -			if (update) {
-> -				TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSTXREKEYOK);
-> -			} else {
-> -				TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSTXSW);
-> -				TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXSW);
-> +		if (update && ctx->tx_conf == TLS_HW) {
-> +			rc = -EOPNOTSUPP;
-> +			goto err_crypto_info;
-> +		}
-> +
-> +		if (!update) {
-> +			rc = tls_set_device_offload(sk);
+* Eric Dumazet <edumazet@google.com> [2026-07-23 05:17:08]:
 
-This largish chunk changes the whole logic beyond offload update for
-_both_ TLS 1.2 and 1.3 with no obvious reasons and no explaination at
-all, nor in form of code comments nor in the commit message.
+> On Wed, Jul 22, 2026 at 7:08 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > On Tue, 14 Jul 2026 07:09:41 +0530 Srikar Dronamraju wrote:
+> > > The scheduler assumes in several wakeup paths that a task using WF_SYNC
+> > > is likely to yield the CPU shortly. However several networking wakeup
+> > > paths unconditionally use synchronous wakeups even when the waking task
+> > > continues execution.
+> >
+> > Somewhat related recent patch:
+> >
+> > https://lore.kernel.org/all/20260708133815.3419465-1-usama.arif@linux.dev/
+> >
+> > Maybe other maintainers will chime in, but I'm not convinced
+> > by the heuristics you're adding. The behavior will be workload
+> > specific. The extent of networking involvement should be letting
+> > the scheduler know that we're waking from IO, not leaking scheduler
+> > heuristics into networking.
+> > --
+> > pw-bot: cr
+> 
+> In any case, adding code to the fast path in every network system call
+> is undesirable.
 
-Among other things,  tls_set_device_offload() is now called
-conditionally. Is that an optimization? Was the call really unneeded
-even before to this patch? At very least such change should be in a
-separate patch, which reasonable documentation/explaination.
+Yes, I understand adding code in fast path is undesirable. However as
+mentioned previous reply, we need to differentiate between blocking and
+non-blocking API. Doing unconditional nonblocking, is probably even worse.
 
-/P
-
+-- 
+Thanks and Regards
+Srikar Dronamraju
