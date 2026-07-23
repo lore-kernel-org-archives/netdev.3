@@ -1,218 +1,295 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-218.mail.aliyun.com (out28-218.mail.aliyun.com [115.124.28.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0EF3769EF
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 04:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75EC37756A;
+	Thu, 23 Jul 2026 04:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784780099; cv=none; b=lFtr7xRLf2YgXGqqB9xO9sdT3tOLbHMLW2k4otvgfHnLrQCX0ZSAvObosTZkGQm3gT8s5v4Bc3+SBjjA4pgvOooV/MNLw+IgF/RDq5zQgO7t7qbF8Of5+DxTilMwGHo1KeaQEYucvtBbz84t24lRwVTV4WgOgxvMexPHoaHA+1Y=
+	t=1784780263; cv=none; b=BK0fQO+Bsz6CN9kmXpgOZ8QOxnj+BKe8pN30VkXZTEKV5X155smvltNnkC02/cbTy+4is2ARwzvcIO4/y+gU1sQHVoqMY5y2W8dEORNoISkf5gMmUAcoOFAYfOSSlb+26NhYNgbgjG1E/Y8txkb1xo3TAm9Fgml0vMvjJmJmAT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784780099; c=relaxed/simple;
-	bh=eLbfW63CJW0U5KMBsAlteJLD1uU59Z2xXAVfZF5vnbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nFHOZ31gWRGgeaH/UfxTVMxM0cJJxHGU0AqPq+Z/H7eRtMBA5W1+YMqdzeQPM+dVv1Rp81XvM+fF3/nLT2bSgmnim2nFi+aAoSfqeqDKEOGtHvgsbsACmQdHSzPkNX7LqQSk1LaBSAFEEvygo5QcBx6hetsfVCwYn5mhxzlxsok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4a/uQVe; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4a/uQVe"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so2231915ad.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 21:14:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784780071; x=1785384871; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aZBWgpdwomFlA7goEYUZgNUpcpQ2jgXmDN9Ar8IJzpw=;
-        b=O4a/uQVe5IgPQTDIp9S1w6gGLgXIC06N7dY9wo5yKE8bqfRaQGFR7oiYB+v+EN9X9j
-         qD8sVur2hGnm0JlBPLolk3JpI3HRbmI+Ip3QAOfDKC3oZu/AuEeAK40Q6cP62BOF8O1T
-         5PGl8qtSK6ZntEXLV107IRv1eHaZZWhxw+BB01uT+0U8BE/IYYdCUJ6RnSRTUGYVgCx3
-         LeiXU0Dt7xKBsJuc0tOzWFifqaUjsGP5e1MF8tO36xBFRjVwmtETUStN7art3Y2Qu+2j
-         U2iYrjS4esNphROjhGfZOnxn9ZCi5HhYtYywU7+jGnCYuqqjjWuwVW1wsZilCjle4Ms4
-         CN7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784780071; x=1785384871;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aZBWgpdwomFlA7goEYUZgNUpcpQ2jgXmDN9Ar8IJzpw=;
-        b=sDBAAax55LjKQR9TCwhnWYoB0VhBTvq+EOERtJG07CoN5rLb9U51XzwByGJDodJ520
-         hPJ+wpnbatleJerIQLOREq2CkX7EA3LvV8XGnfccrphWE7oqeDGVf+qOWg5lWAhZ3O2x
-         jPT28Drob35vVP0cqEbCLdXFQC6peh93FAskzqreDQbdDfvyM9a2XeYkXTZzO5+MhmwQ
-         fLKdj6hP+Kiojjn+ablNNl8AP9W8gcPPUDbkfwJjB8FEAGv9QmoRx8uATYMuFYkWAn9f
-         4AwTECkvyX2MGPuGcilL1Fle41xe5UybQtn3Vpu5mchmYZ4dY5/0xG2yR4EG0x0fvmwy
-         czoQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrJoX2InyfiX1j2glYIeE+I4z2oXfsdixuzt5c1fQafUjueuEG29cp5VGz/L5b50HFqWdfObfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXNGDldR/Ja2jNqR3FXy8iXuvoQ2AFecxA6VaP0W/IFVYG9O+/
-	7ui/fo/6gPTT4kClnSa2X4XW0rrjbpTv1Mxu/YEvEHkYlWl3O/kmmbC0
-X-Gm-Gg: AR+sD13N7d4hdTvFY+W+4HXQNCp8TeC2BO1G/NGo2Zexyo2cIY0CoXsFrOxzpSUT5mS
-	li9BugMfsileaEtg9aimhvv65H+C1Kn5dFt6w+qYhA1phiuOYPbM12VuAchldx8IKFVvc/wBvYI
-	G44MBl5QAe3A1gv9yxeUabr/6voB0pChgTyi5rGUqdxTvAI/BMNDbegjBAAk9wn0mEv3qv95tSt
-	QziMh7a/Bu5GjlqjgRMQPV0B2Zdc8wCepFJVoCfhh9UfuTi8lYVjd1yWun3Mq4fPE4YmXLYQwSx
-	J7HwU2UjyXP1rv5JCiwgIsJ+cb7vWFpMinBFamH4t8ogwr9xiAXKhuEUdFtQ1+rFxtT2nFOPZrj
-	PzezkOXNfsZ+FifdmFq97RiCkmiMnez7YY9dnDDO/UaH/f06R//4iehhB42gzQHbR7qtNtLDWUE
-	RuXozsAD53GLBvIy/2t9VB
-X-Received: by 2002:a17:902:e80e:b0:2cc:f5b8:4c2e with SMTP id d9443c01a7336-2cfa6b7d0e4mr19002335ad.9.1784780071120;
-        Wed, 22 Jul 2026 21:14:31 -0700 (PDT)
-Received: from [10.22.76.22] ([118.201.124.118])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2e5e9bsm24915255ad.50.2026.07.22.21.14.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 21:14:30 -0700 (PDT)
-Message-ID: <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
-Date: Thu, 23 Jul 2026 12:14:26 +0800
+	s=arc-20240116; t=1784780263; c=relaxed/simple;
+	bh=HZA5gfK+TY6lu5UZAc6pTm8PDeHPLtv7FOBe2GqTpIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pqo5GKoxXmm7l282Q4yVxuEBiAmIwpvBEiWzA11ouygL1a/B+W/vOUAKDoMHdZ7JDwksvIPg8t/mDt2G2EJMsVQPNlRACtpXGdY8BQb5fsxLncTbQ0XFabZinUIVv3RVwIMNMBf+gyO+n1hJrrZbDLBK71unFxS2KrSiKIvbT4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06913639|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.135897-0.0109408-0.853162;FP=2770274923443668498|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.iSkYuLV_1784779272;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.iSkYuLV_1784779272 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Jul 2026 12:01:13 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v22 net-next 00/12] nbl driver for Nebulamatrix NICs
+Date: Thu, 23 Jul 2026 12:00:52 +0800
+Message-ID: <20260723040110.91410-1-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
- timeout
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260719220103.684489-1-phind.uet@gmail.com>
- <al3UuvBhfxp82krV@sgarzare-redhat>
- <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
- <amB15TdzPAEk9A9C@sgarzare-redhat>
-Content-Language: en-GB
-From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
-In-Reply-To: <amB15TdzPAEk9A9C@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 22/7/26 15:55, Stefano Garzarella wrote:
-> On Tue, Jul 21, 2026 at 01:34:03AM +0800, Phi Nguyen wrote:
->> On 7/20/2026 4:17 PM, Stefano Garzarella wrote:
->>> On Mon, Jul 20, 2026 at 05:57:47AM +0800, Nguyen Dinh Phi wrote:
->>>> After vsock_connect() exits the wait loop due to sk->sk_err being
->>>> set, the error was read but not cleared. This left sk->sk_err set
->>>> for subsequent operations.
->>>
->>> So, is this a fix? If yes, we should put a Fixes tag.
->>>
->>> Also, can you describe how to trigger the issue?
->>>
->>> Because I see this in vsock_connect(), so I thought it was in some 
->>> way already handled:
->>>
->>>         /* sk_err might have been set as a result of an earlier
->>>          * (failed) connect attempt.
->>>          */
->>>         sk->sk_err = 0;
->>>
->> This only handles the case where the function following the failed 
->> connect is another connect() call.
-> 
-> So, can we remove that with this patch, or better to leave as defensive
-> action?
-> 
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-I prefer to keep it here as defensive action
+This patch series represents the first phase. We plan to integrate it in
+two phases: the first phase covers mailbox and chip configuration,
+while the second phase involves net dev configuration.
+Together, they will provide basic PF-based Ethernet port transmission and
+reception capabilities.
 
->>
->>>> Switch to sock_error() which atomically reads and clears sk->sk_err,
->>>> so the error is consumed when returned.
->>>>
->>>> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->>>> Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->>>
->>> Can you explain how this patch fixes that issue?
->>> (this should be the first information to be put in the commit message 
->>> IMHO)
->>>
->>> I'd like to understand better if this is a fix of real bug or just an 
->>> improvement to the code (which is fine by me).
->>>
->>> Thanks,
->>> Stefano
->>>
->> Here are the steps of the syzkaller reproducer:
->>
->>  r0 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>
->>  bind(r0, {VMADDR_CID_ANY, PORT})
->>
->>  connect(r0, {VMADDR_CID_LOCAL, PORT})
->>
->>  listen(r0, backlog)
->>
->>  r1 = socket(AF_VSOCK, SOCK_STREAM, 0)
->>
->>  connect(r1, {VMADDR_CID_LOCAL, PORT})
->>
->>  connect(r0 -> self) -> -1, EPROTO
->>
->>  listen(r0)          -> 0
->>
->>  connect(r1 -> r0)   -> 0
->>
->>  accept(r0)          -> -1, EPROTO
->>
->> Basically, it creates a socket (r0) and triggers a self-connect after 
->> binding it. This self-connect fails with EPROTO because it loops back 
->> to r0 while the socket is still in the TCP_SYN_SENT state, causing it 
->> to be incorrectly dispatched to the connecting-client path. The 
->> unexpected packet type encountered there sets sk_err to EPROTO.
->>
->> After that, it invokes a listen() call on the same socket. This 
->> listen() call succeeds because the kernel's listening path never 
->> inspects or clears sk_err. Then, a new socket (r1) is created as a 
->> normal client and connects to r0. However, vsock_accept() rejects this 
->> incoming connection because the listener's sk_err still holds the 
->> EPROTO error from the earlier failed self-connect.
->>
->> This rejection causes the child socket created for r1's connection to 
->> never be freed on virtio or hyperv transports; only the VMCI transport 
->> implements pending_work to revisit and clean up a rejected socket
->> This patch will prevent the rejection branch to occur in this scenario.
-> 
-> Okay, get it now, thanks! Please include a summary of this in the commit 
-> description.
-> 
-> I understand that this resolves syzbot's specific test case, but it 
-> would be best to handle rejected sockets more effectively in af_vsock.c 
-> rather than in the transport layers (if possible). In any case, this can 
-> be done in another patch.
-> 
->>
->> I think we might schedule the cleanup worker to run in the rejection 
->> path for these transports as well.
-> 
-> Yeah, we need to handle that part better, I think it's a leftover when 
-> we generalized AF_VSOCK to support more transport than vmci.
-> 
-> Indeed this part is a bit confusing:
-> 
->          /* If the listener socket has received an error, then we should
->           * reject this socket and return.  Note that we simply mark the
->           * socket rejected, drop our reference, and let the cleanup
->           * function handle the cleanup; the fact that we found it in
->           * the listener's accept queue guarantees that the cleanup
->           * function hasn't run yet.
->           */
->          if (err) {
->              vconnected->rejected = true;
->          } else {
-> 
-> 
-> Would be nice to handle everything in af_vsock.c in some way.
-> 
-> In conclusion, the patch LGTM, but please expand the commit description, 
-> add the Fixes tag, and target the net tree in the v2.
+After that, we will consider other features, such as ethtool support,
+flow management, adminq messaging, VF support, debugfs support, etc.
 
-I'll send a v2 with an expanded commit description and the Fixes tag.
+To ensure compatibility, our architecture is divided into the following
+layers:
 
-Regarding the rejected socket cleanup, I agree it would be cleaner to
-handle it entirely in af_vsock.c. I'll look at that as a follow-up.
+1. Dev Layer (Device Layer)
+The top-level business logic layer where all operations are
+device-centric. Every operation is performed relative to the device
+context. The intergration of base functions encompasses:
+management(ctrl only for leonis pf0), network(net_dev,this time not
+contained),common.
 
-Thanks,
-Phi
+2. Dispatch Layer
+The distribution from services to specific data operations is mainly
+divided into two types: direct pass-through and handling by the
+management PF. It shields the upper layer from the differences in
+specific underlying locations.
+It describes the processing locations and paths of the services.
+
+3. Resource Layer
+Handles tasks dispatched from Dispatch Layer. These tasks fall into two
+categories:
+3.1 Hardware control
+The Resource Layer further invokes the HW Layer when hardware access is
+needed, as only the HW Layer has OS-level privileges.
+3.2 Software resource management
+Operations like packet statistics collection that don't require hardware
+access.
+
+4. HW Layer (Hardware Layer)
+Serves the Resource Layer by interacting with different hardware
+chipsets.Writes to hardware registers to drive the hardware based on
+Resource Layer directives.
+
+5. Channel Layer
+
+Handle communication between PF0(has ctrl func) and other PF,and provide
+basic interaction channels.
+
+6. Common Layer
+Provides fundamental services
+
+chages v21->v22
+Link to v21:https://lore.kernel.org/netdev/20260708064742.35391-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+changes v20->v21
+Link to v20:https://lore.kernel.org/netdev/20260630010718.4346-1-illusion.wang@nebula-matrix.com/
+I have dropped the old Patch 2 titled "add our driver architecture"
+Add new Patch 2 "add core driver architecture and HW layer initialization".
+Split original patch8 into three separate patches as suggested
+
+changes v19->v20
+Link to v19:https://lore.kernel.org/netdev/20260617044702.2439-1-illusion.wang@nebula-matrix.com/
+Starting from V20, I have dropped the old Patch 3 titled "P4
+configuration invoked during chip initialization". This functionality
+will be reimplemented in next phase using the request_firmware() API
+with an external firmware blob.
+changes v18->v19
+Link to v18:https://lore.kernel.org/netdev/20260611044916.2383-1-illusion.wang@nebula-matrix.com/
+changes v17->v18
+Link to v17:https://lore.kernel.org/netdev/20260601093149.25905-1-illusion.wang@nebula-matrix.com/
+changes v16->v17
+Link to v16:https://lore.kernel.org/netdev/20260526035453.2359-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v15->v16
+Link to v15:https://lore.kernel.org/netdev/20260520032950.4874-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v14->v15
+Link to v14:https://lore.kernel.org/netdev/20260513011649.4404-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v13->v14
+Link to v13:https://lore.kernel.org/netdev/20260428114910.2616-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v12->v13
+Link to v12:https://lore.kernel.org/netdev/20260415033608.2438-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v11->v12
+Link to v11:https://lore.kernel.org/netdev/20260408093739.56001-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v10->v11
+Link to v10:https://lore.kernel.org/netdev/20260401022318.28550-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Mohsin
+2.AI review issues
+changes v9->v10
+Link to v9:https://lore.kernel.org/netdev/20260325040048.2313-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+changes v8->v9
+Link to v8:https://lore.kernel.org/netdev/20260317034533.5600-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+Changes v7→v8
+Link to v7:https://lore.kernel.org/netdev/20260310120959.22015-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Paolo
+Changes v6->v7
+Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
+1.Issue found by Jakub
+2.AI review issue
+Changes v5->v6
+Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
+1.put all standard linux includes files the .c file which needs it & others
+--Andrew
+2.AI review issue
+Changes v4->v5
+Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
+1.change nbl_core to nbl & change ** pointers to *pointers & others
+--Andrew
+2.AI review issue
+Changes v3->v4
+Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
+1.cut down to part of a mini driver(mailbox and chip init)
+--Jakub Kicinski Simon Horman(some sort of staged approached)
+2.modify issues found by ai.
+3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
+void type to real type/others
+--Andrew Lunn
+4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
+5.delete service layer
+6.the style of kconfig---Randy Dunlap
+7.add to Documentation/networking/device_drivers/ethernet/index.rst
+--Simon Horman
+Changes v2 →v3
+Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
+1.cut down to a mini driver:
+    delete vf support
+    use promisc mode to cut down flow management
+    drop patch15 in v2
+    delete adminq msg
+    delete abnormal handling
+    delete some unimportant interfaces
+2.modify issues found by ai review
+Changes v1->v2
+Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
+1.Format Issues and Compilation Issues
+- Paolo Abeni
+2.add sysfs patch and drop coexisting patch
+- Andrew Lunn
+3.delete some unimportant ndo operations
+4.add machine generated headers patch
+5.Modify the issues found in patch1-2 and apply the same fixes to other
+patches
+6.modify issues found by nipa
+
+illusion wang (12):
+  net/nebula-matrix: add minimum nbl build framework
+  net/nebula-matrix: add core driver architecture and HW layer
+    initialization
+  net/nebula-matrix: add channel wire opcode enum definitions
+  net/nebula-matrix: add channel layer
+  net/nebula-matrix: add common resource implementation
+  net/nebula-matrix: add intr resource implementation
+  net/nebula-matrix: add chip-wide hardware init/deinit implementation
+  net/nebula-matrix: dispatch: add control-level routing core
+    infrastructure
+  net/nebula-matrix: dispatch: add cross-version channel message
+    framework
+  net/nebula-matrix: dispatch: add mutual exclusion lock for shared
+    hardware resource ops
+  net/nebula-matrix: add common/ctrl dev init/remove operation
+  net/nebula-matrix: add common dev start/stop operation
+
+ .../device_drivers/ethernet/index.rst         |    1 +
+ .../ethernet/nebula-matrix/nbl.rst            |   28 +
+ MAINTAINERS                                   |   10 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |   34 +
+ drivers/net/ethernet/nebula-matrix/Makefile   |    6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   15 +
+ .../nbl/nbl_channel/nbl_channel.c             | 1095 +++++++++++++++++
+ .../nbl/nbl_channel/nbl_channel.h             |  174 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.c |  209 ++++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.h |   29 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   56 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  491 ++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   57 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  597 +++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   42 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   26 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.h       |   12 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 1015 +++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  367 ++++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  295 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |   12 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   73 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  335 +++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   21 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  148 +++
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  108 ++
+ .../nbl/nbl_include/nbl_def_channel.h         |  372 ++++++
+ .../nbl/nbl_include/nbl_def_common.h          |   71 ++
+ .../nbl/nbl_include/nbl_def_dev.h             |   16 +
+ .../nbl/nbl_include/nbl_def_dispatch.h        |   42 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   53 +
+ .../nbl/nbl_include/nbl_def_resource.h        |   38 +
+ .../nbl/nbl_include/nbl_include.h             |   70 ++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  255 ++++
+ 36 files changed, 6175 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+
+-- 
+2.47.3
 
