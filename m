@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049524C9571;
-	Thu, 23 Jul 2026 14:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55243BDAA
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815864; cv=none; b=o1VZuTkNhtQi2D5OG1D3c+fuZLn1mmV5+m0FasMBWhqGVS6SJ6rVxdYjA5+yhp4EDf8mqxnup+uGG6ZqsQeQItbdLPJ/a1qqp83vQgxAkNNUPke1fgyk3795DIdBpyDW/gS0wEveBMv8pZf8JscWpdo10Ekdryivip1/qsb1YyY=
+	t=1784815866; cv=none; b=MYciIvDMdu0xCLDESqPqQEC+VuFp/d2oR1GWPJLOIVY8VjH0PoJ2uzq3zOu8N3VuqLEVK6VCRJpTb2/wCB4/uHv4BGhSzLxWgQmcWDm8Aj1zOk4H0mdKkTsEObQtDnE6hhpqN6vGdaNDYfDDTQ19cDfT/OT8sV9r+aAHvTOx7mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815864; c=relaxed/simple;
-	bh=3l8MXE+VnTvlhYbID0R55vedMeYCsGmrzi4NOmUGOTk=;
+	s=arc-20240116; t=1784815866; c=relaxed/simple;
+	bh=7MhETeP1XSY+Wb4zpZisxXrCRgYlc0TPBfv2wVlVD80=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W7qPukvt5DOpOETSJXZhd6JXx+zsK7bhxgcnwt4mrfEfLJH1jyoF+m3LvathqKvNWskOZqlHaWgHxORD5s3gciAZ4mAQUl6p+80iSNc7OYLwcUM/oKDzLnEIW5T0RR8g2OE5i0UFz7oqrNFvwIYQlfRhjPJz2rcnCOgfYpcRjk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFg512lp; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CNDmmvizW5veU0aRte7u7I06sqxYbsSek/NGoF4IiOLLvdUoMYIlMmhZFuGVFYgQ/L2CbKwJ8v4jJqIkX3ROnFX+j2P8HVXwUGU2BrQD5LH2pE5PVtmJfatyIqud0pfMRngVBjg/ZzyZPY3ZsoPg1ONgHDjJcDA9LnXoIIpXdf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YaEGvTpv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFg512lp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774AC1F000E9;
-	Thu, 23 Jul 2026 14:10:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YaEGvTpv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1D41F00A3F;
+	Thu, 23 Jul 2026 14:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784815849;
-	bh=EzIxeln/K3o/FEGzSuu10C2BJ5FqTOjtJuNcPDwX018=;
+	s=k20260515; t=1784815855;
+	bh=pZ/Ya9dEE0WHV82pEdLRfwmqjhszpqTn2fP+xSyhiqQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EFg512lpa0xADYUuDWg5YGfUTOKtKCP8MUU1Fs2hg14aeIQiLEb7G7Yty7nfXjHc8
-	 3ndK5ogMP46asJjP0cdN0y7MvIueQb1LaD9iHetXyrob9eLc/nCt7+tZDP3GmYbkf7
-	 PpZRPxxQbtwyVI00UIq7gn2VA9/btY2AqEBUpJrXnPLoEDHmI+0SxcS98UKLRRdU8W
-	 jbXoKPo/wPUlTNji1lFSgujpEeT3g889Rrtu+nXzS/LiaqWRy5U6WW10S6To0UW5BC
-	 erm3K9h3kX/Jg7zwdV1kv/rFCnNhq4RlGseRgUzE30XPUkH4twLxNGsTqxMf2kX+9E
-	 rcMr7m8fQMUnQ==
+	b=YaEGvTpvFU3el1BPCAQ+/9FihQlpE68mS4TylLXQtP9JUK5NnA+ShvY3yI3FbEIkk
+	 C0s+MVbOaqzAujnI7H5ifwny7Af25n95/zStMzrSX0TcbW7U+qRwCEjFLFtji1atUm
+	 gWu0t0NXaeqztZ8BDoHGVrNpA5jDG0FqTF1V58pxMI/bFCqW5juDuef+Lid4LP6EyF
+	 EN3dfXIeMJgVYr7UarPfciDBa0bTe5pQETBvfds+WPJwYRfY0qxj1CEPwL30W38shI
+	 2uq8dVaCeCbr4gg3yX6FzRjH1zqRmYIdn56MGQzsADjGAKnt0ivinBg3W++qZgglQJ
+	 /sipV0eba6heg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B9E380CFD4;
-	Thu, 23 Jul 2026 14:10:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D1F8A380CFD4;
+	Thu, 23 Jul 2026 14:10:24 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] MAINTAINERS: remove Rengarajan Sundararajan from
- LAN78XX
+Subject: Re: [PATCH v2 net] ipv4: icmp: fill flow parameters in
+ icmp_route_lookup
+ decoy lookup
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178481581765.2248593.858642503736967572.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 14:10:17 +0000
-References: <20260722134143.4141579-1-nb@tipi-net.de>
-In-Reply-To: <20260722134143.4141579-1-nb@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178481582339.2248593.10815527521271473030.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 14:10:23 +0000
+References: <20260722104236.2938082-1-edumazet@google.com>
+In-Reply-To: <20260722104236.2938082-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ idosch@nvidia.com, dsahern@kernel.org, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, muhzi100@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 22 Jul 2026 15:41:43 +0200 you wrote:
-> Rengarajan has left Microchip and mails to his address bounce. Remove
-> him from the USB LAN78XX entry.
+On Wed, 22 Jul 2026 10:42:36 +0000 you wrote:
+> When Linux forwards a packet and needs to generate an ICMP error,
+> icmp_route_lookup() performs a reverse-path relookup. For non-local
+> destinations, it performs a decoy lookup to find the expected egress
+> interface (rt2->dst.dev) before validating the path with ip_route_input().
 > 
-> Link: https://lore.kernel.org/netdev/DSWPR11MB971547088066C2CA91638F3BECF42@DSWPR11MB9715.namprd11.prod.outlook.com/
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
+> Currently, the decoy flow structure (fl4_2) only sets .daddr = fl4_dec.saddr,
+> leaving .saddr, .flowi4_dscp, .flowi4_proto, .flowi4_mark, .flowi4_oif,
+> .fl4_sport, .fl4_dport, and .flowi4_uid zeroed out.
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] MAINTAINERS: remove Rengarajan Sundararajan from LAN78XX
-    https://git.kernel.org/netdev/net/c/249447ff8396
+  - [v2,net] ipv4: icmp: fill flow parameters in icmp_route_lookup decoy lookup
+    https://git.kernel.org/netdev/net/c/853e164c2b32
 
 You are awesome, thank you!
 -- 
