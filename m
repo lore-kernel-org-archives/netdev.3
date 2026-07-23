@@ -1,135 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB026470E8F;
-	Thu, 23 Jul 2026 10:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA5F421258
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784801583; cv=none; b=D2A/Whg8hce3/S7bBfOx44cMjyv/Fe5IF9Nkes3XYFj0D8z+wBLoxMdJvfF/uLJN1Eg5jnPfa7D921zsZGozkzch8v3Je5Cf8H1DAE/pC+hlPIIbFi4e2v508MtWLkClWW1s7XB0n+UPnXhY2Cq750ZMrtFAh5rIgrLDVSl9zNA=
+	t=1784801597; cv=none; b=EL/qCjmNBuaC1Oxlw5fggmMZdfLc1LkKTHbmoE7mNgaqyIeUFO+dTfTl3zzBQ4IQ6aDtALwnImxMVu++cHmyupJoD/EAMcpyxlfV3yjgozDG+x7x2qlDe++6g+AgoIEignbmD1YiQntftKShOH+Fnq29nbNABJ3y+bBdAwXtSF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784801583; c=relaxed/simple;
-	bh=GiktL62H5OWU3TSce5mzV0wZIpcHwr6k0iFxnw2TvvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hamreU+ig8w031wabAjS9clV6Gf5SJutj/NntG96lYTKGdv5jtEbuzCWlYQTfrAHCztRN7thwvPj45bGse8qQCXLby1OeSOwY6xrb2WNMgdIIUoB5JQyEN2WVt6GPJInzPitAqeQ7XfYPhDTitA4pjQKyLIuAEU1OOhBqF6mOaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD6D1F000E9;
-	Thu, 23 Jul 2026 10:13:01 +0000 (UTC)
-Date: Thu, 23 Jul 2026 13:12:55 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Mark Bloch <mbloch@nvidia.com>, Nimrod Oren <noren@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>
-Subject: Re: [PATCH net-next 3/3] net/mlx5: add debugfs stats for doorbell
- dma pools
-Message-ID: <20260723101255.GG110966@unreal>
-References: <20260723072222.1863558-1-tariqt@nvidia.com>
- <20260723072222.1863558-4-tariqt@nvidia.com>
+	s=arc-20240116; t=1784801597; c=relaxed/simple;
+	bh=QUmWNrfJPV3h6yQlOEmKYm3RHff9hVLdSnNIHdqzioI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H/LftMspXQsr+GSbelN0+m1jeOPWYfov7IIe+V+NX7wc28Zm1rkgI0+1Anhd+HCA1T+KuJWF48/WigS3GWn+b0kZ/NN52LOEU4xJfGto17HSo8kxdE4bRBxkzpX4HT0DyTdvBDsxVqlkr7cFx0j3vAK3psV+/zODCE7l8MSw47w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VdNDmcdU; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VdNDmcdU"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 534CA4E40EFE;
+	Thu, 23 Jul 2026 10:13:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1A0AC602B8;
+	Thu, 23 Jul 2026 10:13:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0BC1011C10347;
+	Thu, 23 Jul 2026 12:12:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784801585; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=VNFAl0Ps/0Lpqn58MByzCTpu39+p5k3mV4XvCe/TpWU=;
+	b=VdNDmcdUDeC0kEd6Q9nUVbVIS6aaolkA1dKa9qlhNrSogTbakukPElTxrbuBlmm2EvdibA
+	aAiqXodCmq75vg5ZfyqnG0WqKYVjlHSZEx5lG3FUqABr5vodFppYJNf/k2/Y7HzoFtNsQ6
+	jok/XSEP7xQEDsFJ4MUCwmsy1OgIhUvy+jvAx/4JlX9wmz6lmPoXTU/mgE5Cw4Ja3pGWBm
+	1D3/zB8+Mh0Oxj4v2SjxgGWQe0FwBYmnjnpUVmMHZzEfBUZG0fq5Pob7DFbeoslf40QcOD
+	660EGZC45lVJYJ/E4HxqCvic2X5rzAdmdVYufhoTWsK4YwMOL2BWaJ2rpNFiMw==
+Message-ID: <a04f0a2f-40b0-4391-a912-1205b83ee1e5@bootlin.com>
+Date: Thu, 23 Jul 2026 12:12:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723072222.1863558-4-tariqt@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 08/10] net: dsa: microchip: add KSZ8463 tail
+ tag handling
+To: Simon Horman <horms@kernel.org>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
+ pascal.eberhard@se.com, miquel.raynal@bootlin.com,
+ thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260713-ksz-new-ptp-v2-8-7209c05058ef@bootlin.com>
+ <20260720140729.166722-1-horms@kernel.org>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260720140729.166722-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 23, 2026 at 10:22:22AM +0300, Tariq Toukan wrote:
-> From: Nimrod Oren <noren@nvidia.com>
-> 
-> Add a debugfs file exposing per-node DMA pool usage for doorbell
-> allocations.
-> 
->   # cat /sys/kernel/debug/mlx5/<dev>/db_dma_pools
->   node  block_size  used_blocks  allocated_blocks
->      0          64            0                 0
->      1          64            0                 0
-> 
-> Signed-off-by: Nimrod Oren <noren@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Hi Simon,
+
+On 7/20/26 4:07 PM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> https://sashiko.dev/#/patchset/20260713-ksz-new-ptp-v2-1-7209c05058ef@bootlin.com?part=8
 > ---
->  .../net/ethernet/mellanox/mlx5/core/alloc.c   | 30 +++++++++++++++++++
->  include/linux/mlx5/driver.h                   |  1 +
->  2 files changed, 31 insertions(+)
+> --- Patch [8]: [PATCH net-next v2 08/10] net: dsa: microchip: add KSZ8463 tail tag handling ---
+> commit bc95662a9488a7827d30f83890008a818f0a5228
+> Author: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> index 3975c726d35c..60ff413999f7 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> @@ -437,11 +437,37 @@ void mlx5_frag_buf_free(struct mlx5_core_dev *dev, struct mlx5_frag_buf *buf)
->  }
->  EXPORT_SYMBOL_GPL(mlx5_frag_buf_free);
->  
-> +static int mlx5_db_dma_pools_debugfs_show(struct seq_file *file, void *priv)
-> +{
-> +	struct mlx5_core_dev *dev = file->private;
-> +	int node;
-> +
-> +	mlx5_dma_pools_debugfs_print_header(file);
-> +
-> +	if (!dev->priv.db_node_pools)
-> +		return 0;
-
-According to patch #1, this check is useless. You are failing mlx5 probe
-function if DMA pools initialization failed.
-
-Thanks
-
-> +
-> +	for_each_node_state(node, N_POSSIBLE) {
-> +		struct mlx5_dma_pool *pool = dev->priv.db_node_pools[node];
-> +
-> +		if (!pool)
-> +			continue;
-> +
-> +		mlx5_dma_pool_debugfs_stats_print(file, pool);
-> +	}
-> +
-> +	return 0;
-> +}
-> +DEFINE_SHOW_ATTRIBUTE(mlx5_db_dma_pools_debugfs);
-> +
->  void mlx5_db_pools_cleanup(struct mlx5_core_dev *dev)
->  {
->  	struct mlx5_priv *priv = &dev->priv;
->  	int node;
->  
-> +	debugfs_remove(priv->dbg.db_dma_pools_debugfs);
-> +	priv->dbg.db_dma_pools_debugfs = NULL;
-> +
->  	for_each_node_state(node, N_POSSIBLE)
->  		if (priv->db_node_pools[node])
->  			mlx5_dma_pool_destroy(priv->db_node_pools[node]);
-> @@ -471,6 +497,10 @@ int mlx5_db_pools_init(struct mlx5_core_dev *dev)
->  		priv->db_node_pools[node] = pool;
->  	}
->  
-> +	priv->dbg.db_dma_pools_debugfs =
-> +		debugfs_create_file("db_dma_pools", 0444, priv->dbg.dbg_root,
-> +				    dev, &mlx5_db_dma_pools_debugfs_fops);
-> +
->  	return 0;
->  }
->  
-> diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-> index 2c56bb1d676d..83d0a83bbfbc 100644
-> --- a/include/linux/mlx5/driver.h
-> +++ b/include/linux/mlx5/driver.h
-> @@ -548,6 +548,7 @@ struct mlx5_debugfs_entries {
->  	struct dentry *cq_debugfs;
->  	struct dentry *cmdif_debugfs;
->  	struct dentry *frag_buf_dma_pools_debugfs;
-> +	struct dentry *db_dma_pools_debugfs;
->  	struct dentry *pages_debugfs;
->  	struct dentry *lag_debugfs;
->  };
-> -- 
-> 2.44.0
+> net: dsa: microchip: add KSZ8463 tail tag handling
 > 
+> KSZ8463 uses the KSZ9893 DSA TAG driver, but uses reserved fields in the PTP
+> header for timestamps instead of the tail tag. This commit adds a
+> KSZ8463-specific DSA_TAG driver to handle KSZ8463 timestamps.
+> 
+>> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+>> index f8b40437c5fa4..477f2997c1a34 100644
+>> --- a/net/dsa/tag_ksz.c
+>> +++ b/net/dsa/tag_ksz.c
+> 
+> [ ... ]
+> 
+>> +static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
+>> +{
+>> +	unsigned int len = KSZ_EGRESS_TAG_LEN;
+>> +	struct ptp_header *ptp_hdr;
+>> +	unsigned int ptp_class;
+>> +	unsigned int port;
+>> +	ktime_t ts;
+>> +	u8 *tag;
+>> +
+>> +	if (skb_linearize(skb)) {
+>> +		kfree_skb(skb);
+>> +		return NULL;
+>> +	}
+>> +
+>> +	/* Tag decoding */
+>> +	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+>> +	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
+>> +
+>> +	__skb_push(skb, ETH_HLEN);
+>> +	ptp_class = ptp_classify_raw(skb);
+>> +	__skb_pull(skb, ETH_HLEN);
+>> +	if (ptp_class == PTP_CLASS_NONE)
+>> +		goto common_rcv;
+>> +
+>> +	ptp_hdr = ptp_parse_header(skb, ptp_class);
+>> +	if (ptp_hdr) {
+>> +		ts = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
+>> +		KSZ_SKB_CB(skb)->tstamp = ts;
+>> +		ptp_hdr->reserved2 = 0;
+>> +		skb->ip_summed = CHECKSUM_NONE;
+> 
+> [Severity: High]
+> Does this unconditionally modify the payload of all PTP packets?
+> 
+> If a PTPv1 packet is received, ptp_classify_raw() identifies it as PTP, but
+> the PTPv1 header structure is different. Blindly casting and zeroing
+> ptp_hdr->reserved2 aliases bytes 16-19, which corrupts the subdomain string.
+> Should this check that ptp_class includes PTP_CLASS_V2?
+> 
+
+I don't find in the code a different PTP header for the PTP_CLASS_V1. So 
+my guess is that the reserved2 field is also reserved for V1, so setting 
+it to zero shouldn't matter IMO.
+
+> Additionally, altering the UDP payload without updating the UDP checksum and
+> setting skb->ip_summed = CHECKSUM_NONE forces the network stack to verify the
+> now-invalid checksum, which causes the packet to be dropped.
+> 
+
+I think I misunderstood Sashiko comment on the previous series and 
+shouldn't have added the skb->ip_summed = CHECKSUM_NONE line in this one.
+
+The switch uses the reserved2 field to convey the frame timestamp. 
+Datasheet doesn't say whether or not it updates the UDP checksum when 
+doing so. What I'm sure of is that packets aren't dropped as the PTP 
+synchronization is successful, so I think the UDP checksum isn't touched 
+by the switch.
+I'm not sure to understand how the skb->ip_summed field is supposed to 
+be used so any guideline here would be welcome.
+
+>> +	}
+> 
+> [Severity: High]
+> Can this leak uninitialized memory to userspace if a truncated PTP packet is
+> received?
+> 
+> If ptp_parse_header() returns NULL, KSZ_SKB_CB(skb)->tstamp is left
+> uninitialized. Later, when the DSA core calls dsa_skb_defer_rx_timestamp(),
+> this uninitialized value is read and exposed to userspace:
+> 
+Ack, I'll initialize KSZ_SKB_CB(skb)->tstamp to 0 before.
+
+
+Best regards,
+Bastien
