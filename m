@@ -1,247 +1,217 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021123.outbound.protection.outlook.com [52.101.65.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE9A486B95;
-	Thu, 23 Jul 2026 17:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827052; cv=fail; b=rVAlYquWgVFAtQy+HLbpX4z4lU8QdAGKeqLUgJSaEl4ovmbcHWaDe5rSE5znNiq2N5rTSOluU6sXlO0lEQt9Ani8D1U+q+EGEcP4JCjRWLy17PSKAONej04oZ0kUZcOix+B4zootMYt9W7ihcqYYLYNgnlqPJsrRVvwRemT1uQE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827052; c=relaxed/simple;
-	bh=R52vt49SM0lAR2+iE2+RguLJvcVojGNTU5cbK7MjDb4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SS4bVoGNnMIA02Plw0gMZ6ThjM642NFO/2CDCVT2yvmpsFEyCDpIUtXpaPFuE6OG+1ECd+WxJf1EDp6klFRiB6omVjusuQavlm1oF0jSu/Xar4g65QjpA+bJZQiiHWV2ksLr+SCYz/juPyHEhsToowDrDoGWBjzJ/wA0KRT9PQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=X0+NaVxW; arc=fail smtp.client-ip=52.101.65.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E408135DA75
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784827238; cv=none; b=f95XGCTK6XmCugQXO7s2rYULO9WSVj+ghEy7hGoGWcWRzBcqF5nOjadhYsHjXzNT3ZIasrcN5usCO75oYIyO7KPYFfV3lKoP+5MmGorQ/L8OeFjeuo4DwtlI6+DhWvqG7PW3CBEvXXDt+uISSZg7B6y51d4a8ojg/eF7X1KRRgE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784827238; c=relaxed/simple;
+	bh=XoQ9SMGHKRlAcWNao7eabHoHNtipIK8O7CpPB+fAowk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rxn+NMWrmKrK2sQFre8i1qVFePaJHYfZleoztC+Ye9QDxaeXPRY2ffaxQu8hvGUx0Or9xNmEAR4dAVGKGlax54FhfUXWFRxhsV1mb396RVYrfrF+opUazyoJiR9ejx/2LTXmf0sPMN1WQW6dOaH27xaj2CZ2MGIy3OEHVR4NdJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XyMI+ZWC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BNV1KtNR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="X0+NaVxW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rt1VOuqmp8E/TY/uFobqPwDx+7xQkhRQ+15+SLr5NksHHtUzlSMmhXTKu2d49/EnOZ9fMa+dzb9wNP4rWL43teoFRPtRpMIe4esjbJlEguEe7nI/Ol+PiIh93MN68tSJ5hFK8Mtkutw/RHCU7JzfIX+VAjR/3kL/5ofDGll2rhDzcwji1zk7gsJN/dTivNowyWMOr6HwmmMbWjLLfPx6LgKq6zvQIdhOQ539OE8X3/xP9WXOOUxD8+8ZQVRrJO08nZ28hsvyp3rqEjG9RX62CABPNZYp1kVObZy5uDiy9tuPFEfmVBMeuab8enAYsUGxKcahklCMyxDY8oVxE6GpIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
- b=FvkqkHg2GyWyZe3DqlYPWKxKfn4qN6DOQPdevZWmnhnn3QyQdN1uEpRhR+cpiOC5+DhoTjhTaU3fuAuQkgC/8hngyZZg0CtyIl3ut16IySRxQEMgXsE+34G+Xied5naXGZ/dl8KTmkM+l4b7oUQKY5T5e4mZVgpmQZ6C4awrDmL4jUlF2yijeKDxsz5k9XpN7hudzIeOnAU7dor0aDsUmOgR5WGLs3sQqGcLsDHmy5QOo4TjOqcMGr//anOAjlWHSVxJP7MuT6qst9Z/SF6oKoiRm50CCmm7govJBYcrcWKgBzhiy6MWfMRhlh5lna5ZmcAfelGRU0euniPLE99LtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
- b=X0+NaVxWFKmmEaF6vXsOkTRdPDmCnsMQK7H6GqmZknDHM1XuFAqZUpIAR/yY69MpX8KNDJmrpIyRvqELXLMJIATFXdZ8kcctULOaCrXHbQN0BYtB6xfP4gJkLWwtxi8z9VaNc5bYHn9KqUk/bjDfO3w1J5yyZ74UZiEeAtkKlO9E9mH5oRZpcAv9+pfAA9BaucJKHefC2tuqA7d7uQlz1LE0cPzQMr6EB9on1zmKSVR7monw0ykOmQGg0c04w6T1UfPUp8sGcgHdwnD2rMlJ2r9dl6O/oJQi90iveKLQU9vXkc91tUFoNimli4li3Yo/zHbWo53+yZi7+d52J4GifQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by PAVPR08MB8942.eurprd08.prod.outlook.com
- (2603:10a6:102:320::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 17:17:23 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 17:17:23 +0000
-Message-ID: <b324f558-e46a-47e5-b75c-b66938379c2f@virtuozzo.com>
-Date: Thu, 23 Jul 2026 20:17:21 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
- stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
- bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
- den@openvz.org
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
- <20260723111557-mutt-send-email-mst@kernel.org>
- <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
- <20260723124908-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20260723124908-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0225.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ac::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XyMI+ZWC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BNV1KtNR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784827235;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pNKM/CFXhzcr03tjBSyarPY9m/3xGjvipxMTkjqn5eU=;
+	b=XyMI+ZWClG8Kou59aEQrkPIGB6z1sKpGyjZOf5pf3e1PTKSA1Z3jYMq7dKUUoPTLppPShD
+	3eIQGa2iUL701kocv+2OGOt/UHj8KZbar0acdBn9PU99mef7zKvAnrrQTH7Y848oLfSN5G
+	pyHs5NO8d5p6BDyb8o+tpAvERF6sSx4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-220-OBsCcp1vOwaAdVQXT_R0GQ-1; Thu, 23 Jul 2026 13:20:33 -0400
+X-MC-Unique: OBsCcp1vOwaAdVQXT_R0GQ-1
+X-Mimecast-MFC-AGG-ID: OBsCcp1vOwaAdVQXT_R0GQ_1784827233
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4954dcd6131so9388045e9.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784827233; x=1785432033; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pNKM/CFXhzcr03tjBSyarPY9m/3xGjvipxMTkjqn5eU=;
+        b=BNV1KtNRzLeOnUZlNlz8o4uzzwchE03NCAD/qLKl+8mZk4dqdzp36KFivSEz7vgLON
+         kMPkTZXFVVOs59aDq4mbjob57PK7ls0gW2S6v2t1xeExJ0y9fmANcGamsTQXOCGBA4RD
+         Pnr3b5ijJz7JTsP2Jwev0V38vHOrEqhfKGZPEuVx681ZyMXbpjWYT3FeaYRjT4S52WPr
+         yzq5thcDvexgHGN8t3oR6qwnzXCxn19BqjGB5fSJuK5ChJ2zmBrmx3N4DeVQuWcM7N2s
+         h8Sty27pj3Cm0Ucy7IFWlFWi6rayYJIlV9pXRGtabB795P3p+ivHswNmvVWhVQo16z97
+         Vxbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784827233; x=1785432033;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pNKM/CFXhzcr03tjBSyarPY9m/3xGjvipxMTkjqn5eU=;
+        b=rC6BPUWsmrnZrEE/cD/GDK8pTkeNWg0h9uYL1gKAgmf8+M3T11B1M0VCTfyY8sJA7M
+         94qKlNiDxY1eW9cYEWXEvWMiJ+UdbSEDYsQiMv8xvtG/apGBKEUc+DUB0G6JYfL/Nbh3
+         0sOkMf5KmW7CM5ZveBq+Wr+AMYlKwyewgTBcgYueXAe4fxtclsgh49PaS/jFOgx9Nv+w
+         Vi+Uqa8+sK/nbteSngnIwvGFalAeiIOAJJHfIzgORYMhL3qdTzcU7wr/CkcmTzwX4fYH
+         q47OiRYRLRGZzn1L2O26yI9empR0Exj+bL65TKEeDSL3K25j/dHV9ocnNQlOC3rB3Q6U
+         XxNw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrkt91F9/It6cswtXK+hLLzQ6i3YJWlCx9a1pNXt1r1ske0EpUJXY/bwFAkLBJD99JGs+ZsZCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhAQ+b6e1CqySrRt89CLDZnBA6cnZUbTnDQK+YH5nmlYErNBl0
+	2ZZnRfP36PfkBj4awOBe9XLRCZ04TPWP77KhpVQmj9tJOD3yCfuT38QR8T09A4THDrV5H7fPsZl
+	JnxaOkiNZQ0Xbw82wiWPs2KYuNjUziifM2efZt+p+GoCYjFzGDdng1mT19Q==
+X-Gm-Gg: AR+sD13z0FY7qmaJOkx5xlUGTMfTPcH6t0wx7nXtmo5rGAVCe0CLcN99oGbu52n059f
+	AJRsFzFNCn5T3y5xceh78sDdAb5WBMUr+PBjL1SVaBDBRWYm/HDzFLyT86/0X/4hFEY5fQq0qNI
+	2+fBsngh6Q/PG8D2ZIGazQhxCCU7jZ0T9//ZPbZsTzNttMfPocYlmQBz0W+hKH79nWZIJao8Gal
+	t9pWRCPx9HEi4gS3bawDvJsb7StV4KK5dmNIAuhG8cdTdn27CFfT8FqNiNEgzQDwga2TE89XWTz
+	mE3WMtsCtg1vLUWR8atar1szZ6LDByAalXt/58TA869AsnRGgdbYwHmmPMmHCZcpTeoWvxfbXX5
+	Zm0DCUwMB71DDQ52G2xfFnm8zKnndOFWtFauimYk=
+X-Received: by 2002:a05:600c:3b82:b0:493:a570:df7d with SMTP id 5b1f17b1804b1-49573cffad3mr46054555e9.20.1784827232712;
+        Thu, 23 Jul 2026 10:20:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b82:b0:493:a570:df7d with SMTP id 5b1f17b1804b1-49573cffad3mr46054355e9.20.1784827232312;
+        Thu, 23 Jul 2026 10:20:32 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c? ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957b846e43sm1635425e9.3.2026.07.23.10.20.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 10:20:31 -0700 (PDT)
+Message-ID: <ce31de54-d46c-4738-909c-91ef229b7d9e@redhat.com>
+Date: Thu, 23 Jul 2026 19:20:30 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PAVPR08MB8942:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|56012099006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	gYgNlL+fhZNbS8qtfhvmvf2zamIFqE+O4tRE62ajQlDKZ1iIdx9YnxLKeak2Cqmu4FSyC4h1rq6IA07ILa2ehaOlpNu8+RVdOiWGb1yyFI0T27YElSFq31dY47QgID7Gnw3gwDXT7m93CcTi8L5I6tobG/R3cfhSRVtz3iSjmebQM55GGAy+J9anDbx29OEnrfV6F5NKxxh3nOl2ZSZtLp28LB56pv224vYXYI0WzRrIUKZZKmpZJJON2Y6nBwB+X0qo62TZjH0WnngUHpqOV6yP2zMHjhg6I08XivnIln0BTtd9wqwT+mPIsomIFY6KB2kcVhpa698JVmCZTpliGvaeU2UQcFBvhgL+/WZvkst+REUIH77HMB2dUcz/EfFjkXOPMwbr0Jxr46+wS0nxrx7WA6BkpLkdL5JSzgDQi9+Ujn72at/gG9Yd5cKWm5GgK9krA1LqcKmNK+fyppaqYpWlyW2YOkqql/oq53VLVw/QoB4WRRIjSeV0mOhOy+dZciH+3JDmiKGKksOcrdWBZIy3yv30TCMNJ5QVQz7Og8xN+3TBYW4s58U9HteyG244x4HkYNWH0eOMfAU+6j7RmviqVIDgiCfIVoLxLzGIOcD33+RxhN8tCXAUuOpiFAJF5vDcLMPOspI3xzvZBcVLIvEkkkB9jLAPpjeN5EJlHMg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzMzcUNyUlBUMzZWdzI2WDVubFEvb0U0UTdFd2JVUmVscndSMlhSN2RwTjVJ?=
- =?utf-8?B?c0duZVpnS2tjS2M2ZkdqNExzdloySDVIQzN2UXZQeTVOVk9meU5xckV4bnp3?=
- =?utf-8?B?T0hsVG9UcFlOa25RQnJldVJOVDl6Sk84cC9VTVVDU3VqNCtlOVBweDlSak1y?=
- =?utf-8?B?ajYzSVBmbmpic1QvZ3B5WTN4azdlQ3c4ZmNvKytPVW5LcXdySnkvdGR2RXYx?=
- =?utf-8?B?M0F4N2ZqbjJDTUVJZXRuMjdGVkpMemlYalRveGdQYWt4RDZEazNmWUhHcGx0?=
- =?utf-8?B?c0tpeE5vYlJKejVMeDdRWG9tcWV6aFloRkdaaHQ1RHBYZXRZcTgwa2dySWVw?=
- =?utf-8?B?Uk12SnRNUndjVDJJUERVdnBRSXhjMnVtOThoREJTeVRXT2tJYUlhQ25sb203?=
- =?utf-8?B?Qmp3enhTUUtFdENDanhHaWlULzNHM1l5QnRBbEtiZGF4a2dmdURPd0xBV3BJ?=
- =?utf-8?B?c0JTTTNTVHhiU3ZlaW1hamRuSGdyaW0zOVZmNjNrQUlyZjFIR2F1MXo5cW5o?=
- =?utf-8?B?TjlxOUpWMGxaWkVGNGVDamNRR2RRcXhDOFJWV3JDeHorT0VUeDc1ZG1NVTBD?=
- =?utf-8?B?cnZlZ2FBMFFhaXFKSTVTaU83Q1ZrT0dMSlF0eW9LbUd6eGhuaThFVlU0Nndm?=
- =?utf-8?B?SGNRSENNU2lmNnFoc0N6b2Z6dVgrd2JrTjF5dTdQMG1JTjlzTEw2Q21kSWhn?=
- =?utf-8?B?U2Y3eERab0syWXNscm5FOEhvOHQzajhnTlpxb1ZEQUhmTUdiZVN0TkhjMFNy?=
- =?utf-8?B?OGtwRHIzcEs3YVBVekZ4UG9aUTY5YUZxS1ZpMjVUMEVTNTlObWdVQ1J0MDFn?=
- =?utf-8?B?cjlZS3AwN3VDK0JadjE2ZWtadFJ5b3Bhc1FmUHlySGhSdG5EazZaZkRaWlNK?=
- =?utf-8?B?TWJKeEpJMWlVWm44SjgzNkR2MldaUFZNdnBjTVhOMU5kZGZ4WnpVK1h2bGJQ?=
- =?utf-8?B?WGJOOEt0UXp6RURUcjl2YURrNzFtVkRFTDRoeUcyVFZGZklDMVFjVThOTVV1?=
- =?utf-8?B?TlZuc05zbGpiazZhTUhSVUJjd2ZDdkFGd1d6Ukc1d2cvU2dONi9BYmdEc2Jn?=
- =?utf-8?B?b09HTkNaazBFOWFTR1d1eEllTzJ0NEZIKzBnK05nTVFVd0NtRi9JbCs5Nkd6?=
- =?utf-8?B?SElFbHllbjRzNG9SMGlmMlIrSHFHbko5Mi9yOUdTTFhQMTlOak5OV0ZOK011?=
- =?utf-8?B?aDRZTERrTC9aR3VzSGlIa0loOVZCN2puT1pEOG4vcTRzWXM5NHYwOGxjUE05?=
- =?utf-8?B?dlJnR2lrZjJFU2pMbXFqUFUrVUJia1hqQ01sRlgxQm1RK0VDSUVVV0ZFM1ZD?=
- =?utf-8?B?RG4xOWlqK1dLbmFFOTM2WDM1WkxadzB5OG5KZHRsaGxMQk0vMTFaYUZyZ0Qx?=
- =?utf-8?B?RHhDbHlJeU5zRHIwNWxUN21lRVJBTWtuWWxRcUEzQ2VhUnAyc2FXeGlkSWJq?=
- =?utf-8?B?WEl1MHdwckNLMTlSUVhpSVZ0NlJkMnNrNUVyOVozdFE0ZXVHVzN0WWI2SWF2?=
- =?utf-8?B?SmhiZHNYcmxQUjlVL0tpQ3FCWFNjeU9GN3VHbWlJdjZjelFnWFJ6d1BBSDBZ?=
- =?utf-8?B?NnBxczVndDlYelVWVjcxeHZ6b1g5d2JOYjRoQU1kMDc2Z0ltWFNVakNzZHlx?=
- =?utf-8?B?MkkxcWtuclRLaVhnSmh1VDNtNXFZZTA1ZUN1UkFFZHFWSitvQU1nYUlocDMy?=
- =?utf-8?B?aWMyNEdBWkovQlFaSGgvUDE0U2tKT28vRnNHaEpJMitqNHZVNy95RVFuNTZk?=
- =?utf-8?B?di9xcGFSSHNXZE1NWDhaOWtxVURGMUl4TzNvNFd3L1p1VHQzZ3BRNks0dkZk?=
- =?utf-8?B?NTVDTE9sODR1ZTVMRCt3T2NWZnpBNklxWmsyNmxWKytaRHNOUWVEZTBGMVdH?=
- =?utf-8?B?T253Y0d3N1NBS1dQeVgwUHNRSFR6KzNPVHloNCtnd0l0MmtJUWdNNjNxeWhZ?=
- =?utf-8?B?eXF0cFppcllDZGdSTk1LenQ3MEhwWTFqd1B4bzVEc01oMWpZZ3NWdC9QVXFS?=
- =?utf-8?B?ZlZYZmJEdjF6bWhET2FXbzNaTVdIdE1Hbk9ZKy9TczVpejFaTExpTFpRZGp6?=
- =?utf-8?B?eGozYkVEMCtkM1VGYVNLV2Y2UEp1cExKRVF3TVJIVmY0eDMyUlUxZlNHaTli?=
- =?utf-8?B?dFFjTEh3RkVUenZvZ2xkaU9zekhOVisyWnBIT1Jac3Rud1dHWDNjNFZSMHhB?=
- =?utf-8?B?S3FyK0tCbWpoenhQSmpXOXh3Zm5HdmRBQUE3Wk5telo5M2xIcU9sM2hCcVdo?=
- =?utf-8?B?NFUwd2J3WmNJLzkydTBCMk1RamZTZEl0ZllqdFVucjlPQTd0QnFoQSt4d0ZZ?=
- =?utf-8?B?YW9mOGFRakExWFdUQWdZMks5aDlUdmNtOG8vTnBHK0tYb0E5cWpBK1dGWFcz?=
- =?utf-8?Q?GzJJADSHQRAenLpo=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:17:23.0749
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nuXCrao0DEauVUlWpSRSFDTcV9twjahSY9kc96Xi1yc1HsBuJM/mSq2xUmM5G9XeIKISWH+QNohBPDzY4IxdO1696yzNqN90m2QSIDODUrQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8942
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] usbnet: cap max_mtu for drivers without bind callback
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, Stefano Brivio <sbrivio@redhat.com>,
+ Oliver Neukum <oneukum@suse.com>, stable@vger.kernel.org
+References: <20260717151626.2913171-1-lvivier@redhat.com>
+ <20260723084319.40fee97f@kernel.org>
+Content-Language: en-US
+From: Laurent Vivier <lvivier@redhat.com>
+Autocrypt: addr=lvivier@redhat.com; keydata=
+ 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
+In-Reply-To: <20260723084319.40fee97f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 7/23/26 7:50 PM, Michael S. Tsirkin wrote:
-> On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
->> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
->>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
->>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->>>> vq->worker and queues work on it.  vhost_workers_free() however clears
->>>> the vq->worker pointers and immediately frees the workers, without
->>>> waiting for a grace period.  A caller that fetched the worker right
->>>> before the pointer was cleared can therefore still be queueing work on
->>>> it while it is freed.  And even when the queueing itself wins the race,
->>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->>>> future attempts to queue it are silently skipped.
->>>>
->>>> None of the current callers can actually hit this: net and scsi stop
->>>> their virtqueues before the workers are freed, and vsock unhashes the
->>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->>>> in vhost-vsock keeps the device hashed while its workers are freed, so
->>>> the lockless send/cancel paths become able to race with the teardown.
->>>>
->>>> Fix this by clearing the vq->worker pointers, waiting for a grace
->>>> period, and then flushing the workers so any work the last readers
->>>> queued runs before the workers are freed.
->>>
->>>
->>>
->>>
->>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
->>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->>>> ---
->>>>  drivers/vhost/vhost.c | 11 +++++++++++
->>>>  1 file changed, 11 insertions(+)
->>>>
->>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->>>> index 4c525b3e16ea..d6e235c25254 100644
->>>> --- a/drivers/vhost/vhost.c
->>>> +++ b/drivers/vhost/vhost.c
->>>> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
->>>>  
->>>>  	for (i = 0; i < dev->nvqs; i++)
->>>>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->>>> +
->>>> +	/*
->>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
->>>> +	 * reader that fetched a worker before we cleared the pointers above
->>>> +	 * may still be queueing work on it.  Wait for those readers to
->>>> +	 * finish, then flush so any work they queued runs (clearing
->>>> +	 * VHOST_WORK_QUEUED) before the workers are freed.
->>>> +	 */
->>>> +	synchronize_rcu();
->>>
->>>
->>>
->>> Any way not to add this for all devices that don't need it?
->>> Or preferably, even for vsock in absense of the new ioctl?
->>>
->>
->> This code was initially local to vsock, and was moved here in v3->v4
->> after we discussed with Stefano that the issue looks more generic and
->> should probably be fixed in vhost.c (see
->> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
->>
->> As a compromise, we can keep this code here, but only call it
->> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
->> is always false, only set it to true on RESET_OWNER, and only call this
->> code once it's set.  Clumsy, but this way no other code path would have
->> to wait the full grace period.
->>
->> What are your thoughts on that?
->>
->> Thanks,
->> Andrey
+On 7/23/26 17:43, Jakub Kicinski wrote:
+> On Fri, 17 Jul 2026 17:16:26 +0200 Laurent Vivier wrote:
+>> Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+>> caps max_mtu inside the if (info->bind) block in usbnet_probe().
 > 
-> Or just thread a bool parameter to it?
->
+> Okay... but before that commit the logic was also missing,
+> and that commit only refines the condition. I don't think
+> that's the right commit for Fixes.
 
-Yep, that should work as well.  So we'll have to do:
+So it's:
 
-vhost_dev_cleanup(struct vhost_dev *dev, bool sync)
-  vhost_workers_free(struct vhost_dev *dev, bool sync)
-    if (sync) {
-      synchronize_rcu();
-      vhost_dev_flush(dev);
-    }
+Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
+Cc: jarod@redhat.com
 
-And then vhost_dev_reset_owner() will call vhost_dev_cleanup() with
-sync=true, while everybody else (net_release, scsi_release, even
-vhost_vsock_dev_release) will call it with sync=false.
+> 
+>> Drivers without a bind callback never enter this block, so max_mtu
+>> stays at ETH_MAX_MTU.
+>>
+>> QEMU's usb-net device (0x0525/0xa4a2) is claimed by the cdc_subset
+>> driver which has no bind callback. The guest accepts any MTU from DHCP
+>> (e.g. 65520 from passt), leading to TCP segments that exceed the
+>> device's 2048-byte receive buffer and are silently dropped.
+>>
+>> Move the max_mtu capping after the if/else block so it applies to all
+>> usbnet drivers.
+> 
+> A short explanation here why the changes was made under the bind would
+> be quite useful (presumably it was done there because that's where the
+> existing MTU check was, and the existing MTU check only mattered if the
+> device specific callback could modify the state etc.)
 
-I'll squash it all into the same 4th commit and resend, unless you have
-any objections.
+Yes, I put max_mtu here because the existing mtu check was here.
+
+> 
+> It feels like we should update the max_mtu instead of capping it later
+> for devices without bind (note that only a device with bind sets
+> NOMAXMTU, too)
+
+What do you think of:
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 25518635b7b7..9ec038a1b6f5 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1794,7 +1794,7 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id 
+*prod)
+  	 */
+  	dev->hard_mtu = net->mtu + net->hard_header_len;
+  	net->min_mtu = 0;
+-	net->max_mtu = ETH_MAX_MTU;
++	net->max_mtu = dev->hard_mtu - net->hard_header_len;
+
+  	net->netdev_ops = &usbnet_netdev_ops;
+  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
+@@ -1825,8 +1825,9 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id 
+*prod)
+  		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+  			net->flags |= IFF_NOARP;
+
+-		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
+-		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
++		if (dev->driver_info->flags & FLAG_NOMAXMTU) == 0)
++			net->max_mtu = ETH_MAX_MTU;
++		else
+  			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+
+  		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
 
 Thanks,
-Andrey
+Laurent
 
-
->>>
->>>> +	vhost_dev_flush(dev);
->>>> +
->>>>  	/*
->>>>  	 * Free the default worker we created and cleanup workers userspace
->>>>  	 * created but couldn't clean up (it forgot or crashed).
->>>> -- 
->>>> 2.47.1
->>>
-> 
 
