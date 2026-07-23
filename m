@@ -1,100 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E789745D1B5;
-	Thu, 23 Jul 2026 15:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9064B4756C1;
+	Thu, 23 Jul 2026 15:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820335; cv=none; b=O025aLgcgNUNFE2qNb+BzJiqkJYLwqpCH2HzmN7FCw5Nyk3h5nGnrAELpoL4YE8StM28TmUygRk1qQosyuc0KTpZe/890NtPydv8r0y7h4pcaIEnicJwnuU4CnFN5CgEWcol1+6LvyWZ5nSBY4Ag55DNw5h8FoJHekbf6pMpG7c=
+	t=1784820658; cv=none; b=Mk5SaDPZRQnfjrjmqaPrLXvzcrh9EKe1veHGBhUnIuzIi3B/4XSwGOYd/AbsH/7BiLBAtrPsyUEmSHiTJZec2aQurRJV9qs0TMrXlmAvUl0i4Pbvx9hxdujvzMILhi/eqzOMYE4EK6BPFpwq2ZM/PrUAsWbxVhV01tI6Tnm3hu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820335; c=relaxed/simple;
-	bh=IZqZx1cm+KLT1HA3GZYkzGFwwH8dcV9HhusSswW3hCE=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=EIWp6aiC9Y0UipKswBl64LO7KGRBQrRZFlygm7BICa2uCbn1l+gzoe/C8cOM9+ykFQ6KUZlsOn8OemQla52VjXc3d4IMYN8j/mriLyYlrQtUUtRyW5+3W9bPbdZp7pMBX1Lfb7nULfClOs3YVkqHRrMsZzp1C5lWK7R5JeRmNVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWwtVpDM; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWwtVpDM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827DB1F00A3A;
-	Thu, 23 Jul 2026 15:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784820333;
-	bh=sO5eI7KvFIdN3ilwtmjIJQv0l0USR2hOkOJFvcL9u4U=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=fWwtVpDMqj6ZFdyZg6V0rcahAYz1Huk7C6+xHReKFwcasWOSw97KY0rVDn4sYXocD
-	 kYW8UuUJK3MtiZvYSVxPTuGIcJ5USbtuadKInF0IQ78RDD+7H2nCylgaEvknMIxuVn
-	 mWmc33d+K+TVEX/h+rc+tl3ycsxJbRipXhrBBqPDKukdHwVLOqy2iuYz1eTKuwcHEc
-	 iaMu1zTajZbYAnL6rxNAE9a8pwpgQwMWDExiDewUp+jU8CBL7ebmyoamkDf6KWgiG2
-	 Puu1r/z/QUfqNtfAoX8H2IssHAYAzpilIMJ16IxOCgp5JAD6JwpaEh5mHb4LnzhgvY
-	 E3n6GZuMKxRuQ==
-Content-Type: multipart/mixed; boundary="===============2073702956910006606=="
+	s=arc-20240116; t=1784820658; c=relaxed/simple;
+	bh=cKgVEDwOnfVrADGb5RAxRHoxxeRAc94JeGVOhpswPIQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EVpH8g1Yr9stywHq+FVuh+TUUn2xKj+jupvPz49J94Ikk14YsHzroas6QpMYXbvEOOe3k6oBgTZaUN6zBoYzduSLxAjwuvAzwkI2/S6cHubg7puajw7jCBYlEemZxO4M34nss+Io5vHiCVGpU11+SpANTuhNvkgnPa+iO9lx8HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69DD1F000E9;
+	Thu, 23 Jul 2026 15:30:55 +0000 (UTC)
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AF8392444F;
+	Thu, 23 Jul 2026 15:30:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <65b8f11245f3ec3b3444f701a84f749d8172b5cfcc0afb3c1f1f3ad6340f7a97@mail.kernel.org>
-In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
-References: <20260723-sockmap-lookup-tcp-leak-v1-3-1bbdc58ce514@rbox.co>
-Subject: Re: [PATCH bpf 3/3] bpf: Unconditionally take socket references in lookup helpers
-From: bot+bpf-ci@kernel.org
-To: mhal@rbox.co,edumazet@google.com,kuniyu@google.com,pabeni@redhat.com,willemb@google.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,davem@davemloft.net,kuba@kernel.org,horms@kernel.org,daniel@iogearbox.net,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,joe@wand.net.nz
-Cc: netdev@vger.kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,mhal@rbox.co,sashiko-bot@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Thu, 23 Jul 2026 15:25:31 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] usb: atm: ueagle-atm: reject descriptors that confuse
+ probe
+ and disconnect
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178482061640.2321119.12288067082123578966.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 15:30:16 +0000
+References: <20260717080704.1264-1-diegomancera.dev@gmail.com>
+In-Reply-To: <20260717080704.1264-1-diegomancera.dev@gmail.com>
+To: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
+Cc: castet.matthieu@free.fr, stf_xl@wp.pl, 3chas3@gmail.com,
+ gregkh@linuxfoundation.org, mfo@igalia.com, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org,
+ syzbot+e62a973f8322b3bbe3ac@syzkaller.appspotmail.com
 
---===============2073702956910006606==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hello:
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 403aba3ce891..4bc0b59668fa 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -7027,6 +7027,13 @@ static struct sock *sk_lookup(struct net *net, struct bpf_sock_tuple *tuple,
->  		WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
->  		sk = NULL;
->  	}
-> +
-> +	/* Always take a reference, even if the lookup skipped one;
-> +	 * bpf_sk_release() always puts one.
-> +	 */
-> +	if (sk && !refcounted && !refcount_inc_not_zero(&sk->sk_refcnt))
-> +		sk = NULL;
-> +
->  	return sk;
->  }
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The BPF subsystem guide specifies that multi-line comments under
-net/core/filter.c should have the opening '/*' on its own line. Could these
-comments follow that format?
+On Fri, 17 Jul 2026 02:07:04 -0600 you wrote:
+> uea_probe() distinguishes a pre-firmware device from a post-firmware one
+> using the USB id (UEA_IS_PREFIRM()), and stores a different object as the
+> interface data in each case: a 'struct completion' for a pre-firmware
+> device (to be waited on in .disconnect()), or a 'struct usbatm_data' for a
+> post-firmware one.
+> 
+> uea_disconnect() instead tells the two apart by the number of interfaces
+> of the active configuration (a pre-firmware device exposes a single
+> interface, ADI930 has 2 and eagle has 3), and casts the interface data
+> accordingly.
+> 
+> [...]
 
-[ ... ]
+Here is the summary with links:
+  - usb: atm: ueagle-atm: reject descriptors that confuse probe and disconnect
+    https://git.kernel.org/netdev/net/c/9dfd800b374c
 
-> @@ -7084,11 +7091,15 @@ bpf_sk_lookup_full_sk(struct sock *sk)
->  	 */
->  	if (sk2 != sk) {
->  		sock_gen_put(sk);
-> -		/* Ensure there is no need to bump sk2 refcnt. */
->  		if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
->  			WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
->  			return NULL;
->  		}
-> +		/* sk2 is RCU-free, but take a reference anyway;
-> +		 * bpf_sk_release() puts.
-> +		 */
-> +		if (sk2 && !refcount_inc_not_zero(&sk2->sk_refcnt))
-> +			sk2 = NULL;
->  		sk = sk2;
->  	}
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The same multi-line comment style appears here as well.
 
-[ ... ]
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30016591832
---===============2073702956910006606==--
