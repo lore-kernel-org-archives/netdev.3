@@ -1,131 +1,272 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011030.outbound.protection.outlook.com [40.107.130.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5D9379C39
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 04:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784780613; cv=none; b=iSaNZ8QKfHFlneQLVrqvvvHQpWTK3qs329oYoneYiDCxCTeFKhAPmhcd5EeGfJbF+9bg03Wr4flsPWu0E5hjETh2bGeIpKLHCnvCtXFYs+SOOyw9/aPabg3TkYMtITSFPOGXYDYt+AG1ByyLxvHZQbARbq2KdosOhH7/tMtwxDY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784780613; c=relaxed/simple;
-	bh=aa5JpoxyiiIszoUJIXjj6mrtfIfrRBPmusHtb58OjJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jp2Ps3CQvqkDNf9lsAibNdNAAm2dzemHMTXS9+cElevN3LR66yq9GbCWfrwVNHEqAWqu1fd7drImgyb8WpJvseqkKsidBq56LhmKTYjD6I1S3xTv5OmojRp+NxEvXDQssndUmBLXrC9uAIpYERzG5hhSEea14/bnOgsPVSyCAbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4np3G9f; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91C238F64E
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 04:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784782130; cv=fail; b=tGG/4p8eTpXM9gQiRS3iTvCiqgMFtlv5rtjLXDKJatUEQc6BFiC/MkxcwkkIwiRUO3gDu+ncYT5uPgjfxDqMbxM+D4O3XEXz2v9zMwwrQY8GdKpGWefLw0uqyFQq802n9cdB/Cd8dpkQa4NhvaymJqiIy5dwfIgIT3NcSq+x2ww=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784782130; c=relaxed/simple;
+	bh=ur+znVNYUXPQkUaPaEu9F/74IjKN+LYF17LzBS5KiKs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=kghQFPt5faAEfsUdLN6gHfRsq3Qx5l3o0kIvPejoqrGKzZBrI+6z+AmPi4GUbHQbtPaW9lpb7xz8qz7fJotDYxxtSExHANS5qwXml9DnzPeVrZhmtGZJFIYQnXvTzcrVLcEG2BWOf7Ep/FfYcZ57UwUqQskrOXGT2ZjCh1gyT70=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=dU4zxtU8; arc=fail smtp.client-ip=40.107.130.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4np3G9f"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8143daf89c7so2041787b3.1
-        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 21:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784780587; x=1785385387; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0Iu9ZA5UsRHXZ0k9a3suZoz0cbH3TgLB+kgHy6PNqKU=;
-        b=A4np3G9fx57IlwJCUo9oEadiZzsuZ9+aO5yC+281EV5MECkdkBR/7/8XJrv5J/zAxb
-         2OhA3+w07YFtfg3dF2FDPnQ+eXkb27PzV7cOxBuBmUedEAYBMCJPEJrvh/yWCGoIzDL1
-         ZieIMdvpnwdU2cUNds68H3tpEx8HmiXL3cqOxlLtWLz1JN3N7svXjk9ZJsoUdDVGVGHv
-         n4Ub0DBqSEubG3SYvg0OqSlgCA36SLJiUolVRHAhbIVb59z75Bw+9J0z9VwROM/Qdpd0
-         46QSJ+rmSMrDxvqu0z+0RDokAXrSDTf6DvWL1i1ONs/5Asf8QwTYK99s6WRk31vONKGn
-         UUbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784780587; x=1785385387;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0Iu9ZA5UsRHXZ0k9a3suZoz0cbH3TgLB+kgHy6PNqKU=;
-        b=pZK3z3oxz2uGE44qwJkFvmbFVtfNWBzg77LvBeyqBI1qEf2UIDjr6+NTzvKwxRuW0D
-         CetEdbgqvNLqIG8Es42/3nSy52knkdgD4YFMU/ghEQvXXe/9+AV3D9fmHiWE4fvIuFJt
-         G+GXRn7FFMTfAMJFpm59tULiCGRQNf7npevZeP+BdtJAz1pepi1EJ+9vd2SmZt728ItO
-         1IzvV0gugEauM6LrgAc1dAsw+RDxYL45rujyUkN9aYB4boeLj6J/4fujqChELzBHTWIk
-         nL7+QaXVrpNI0IcjoPvTTN9fNkRcWJ67/2gRJa8XHFdNGYXZZQMandNdlmsg2b+riz+Z
-         67QA==
-X-Gm-Message-State: AOJu0YxyZGKjE6SK/B0rJhe3uEb05gDSzd2XeMOwH0eTMyJZxGGWmYaX
-	bw9C74HmzeM/ZJQY+s4sDwv13pkSV44HlEMAf16yVQctQ3gvzweugYJk
-X-Gm-Gg: AR+sD13eNMOa9UYlRUYVOYWQRWkUMi0pHxIHqDybkkMQBaf83mwx8pHYmL1KKQanV0P
-	u7qVhocaP9qMBrg+6jHqaHca8gKeXjR1EGFcXNjvt+dpVGVp3w7ksOU5c+pnt0Si4YgMNQz8X4a
-	bRKOsfvK1kmbpCOMfkk7UWrHrbWKX2Wc9Z3uR1DphWhHwU7aq1rnAYLQzZlBF5DYfIT59g2e6Tv
-	c/kqLBCiw5c142JwQStjlrRA1hHzLxY0OBgJppVMZA37NaUmv4YBUoejKMIx4/XjMf9YHtEW363
-	K5gw2kQ55DUkibBcCUeIGE4UqlijntRxaK/V4f8rTVwbjv+PUNv1Xltvvr45LLvE4HemUsCgNZE
-	v4ONOSl0FGWPwPRDvnXyFMbSERbhmogjIl8IgnBcz13nrL62vV/XlL+wS7Zj0qh9JDfyFXroj+H
-	yxpRTxGcxnyFWyJh1ZmuZ6qb/a6AWlb+K0p12EqyM0eLBaRR3d0eAnKPpiqM4fhvzo58Ku05b1g
-	W+LDPFxefzQJg==
-X-Received: by 2002:a05:690c:6c87:b0:81c:fc30:a35c with SMTP id 00721157ae682-81f4c281ce8mr4429137b3.42.1784780586767;
-        Wed, 22 Jul 2026 21:23:06 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33da4122sm23388037b3.32.2026.07.22.21.23.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 21:23:06 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH v2] net/openvswitch: check Ethernet header length before  key_extract()
-Date: Thu, 23 Jul 2026 00:23:04 -0400
-Message-ID: <20260723042304.88332-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="dU4zxtU8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SQYQozN4Qqmdc1S5GHHn2iaE2uObx+bmAlkgPYnmC8U8wkALufdRD9rRxttkxnHuy2fXijEEwT8TcUVHnn9Peqfen8XoG5wCk5uMbNje57JnLIKjg28rkMLndc9QnongEF78yW5V21vPgwxF5HBkr+5ZFJzO90zD2ojzd1OGOFCXz0LaqsCb+I2eVjCzZHfxlK7mB/mB+/WnwibtVcQlJkZgIfD76mMk7pCaAxlUdCX4m5gIJUrC6zFRnocKK0qtHmUQGIY0+Px3NtCiSw4X7EPick2pW23OmAvrLkumq0+kHdU8auhApwjNwEHO4a+P4zJVJoJF73YcGwabr8iCuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c4KqWcNSz36Vl6E+8ZxqVLXmxTJrwULd8IGj5IW61w0=;
+ b=k/9nVOmB4o0xrwxwWN7Vt9wbGWNJlhrmSMAclS8iYjvZRKg1CDgLjuQqFmrOtcwjDI1pkSGcY9FkjfoLJSENdE4yEEM1OT2IR2tS1XqSz5oYzjl2EHQb0696NfhBYw56zECNlcuLBy3IZpEzfcZ2z8Dgpr5e1Tagb9cVvGJT8lDUo08w1Bg4POGe4oVXwPfH9HqHMZbu0Oo8eHFJcxK54MB2bVhOPAdKEOdjdP0WgtLhwPzX1poEzEq4ttEpuXK/Qlq49nDmKNM82UftEXhfOyDdAta+FSXOPvOk4PH46qsaIAMOEH9Ni0SADsXlIGm+B7G1schHE8gu+oFrXYoCyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c4KqWcNSz36Vl6E+8ZxqVLXmxTJrwULd8IGj5IW61w0=;
+ b=dU4zxtU8GZV0syz3CSxRAQPmRsknypqiI7dWQgoxjnOpZJKBzLYtpwvA8THoY5wN1+PVC3VuaGn5C1Bm9zIAJvoB6DDY3HfL5bL0c6KPuUCF1FT9Pm9fZPhaoZ5/VgfEYVQGf3NTZwMjZ2D5mGt8jd6JJAD45/rFUyeZbCpfnrm4mp6ucVL88ubCO8vXWDJJCMOinTCj2HMQ8PnG6W2fqlzO5Da1nwNhroZyI4ne/6rxfojsGuNlTHH+spGB8JTdmawa8CUrnag5enCtabg2GONhc0bM9BQ6TiR3z12e1bwLgKzC4hbTEJetIMsMltKSvH7rT5xUq8ZYhO1Xroo2QQ==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ AS8P189MB2578.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:632::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5; Thu, 23 Jul 2026 04:48:26 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0270.004; Thu, 23 Jul 2026
+ 04:48:25 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Ren Wei <enjou1224z@gmail.com>
+CC: "jmaloy@redhat.com" <jmaloy@redhat.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "vega@nebusec.ai" <vega@nebusec.ai>,
+	"xizh2024@lzu.edu.cn" <xizh2024@lzu.edu.cn>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>
+Subject: RE: [PATCH net v2 1/1] tipc: avoid use-after-free in poll trace queue
+ dumps
+Thread-Topic: [PATCH net v2 1/1] tipc: avoid use-after-free in poll trace
+ queue dumps
+Thread-Index: AQHdGS+DR1r9/aX9IkOZXO7a3111h7Z6fi6g
+Date: Thu, 23 Jul 2026 04:48:25 +0000
+Message-ID:
+ <GV1P189MB198899830101F43A05F8FD78C6C02@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <cover.1784642230.git.xizh2024@lzu.edu.cn>
+ <b0e80e22320459e0f4a3afb30c0c02ab2df03003.1784642230.git.xizh2024@lzu.edu.cn>
+In-Reply-To:
+ <b0e80e22320459e0f4a3afb30c0c02ab2df03003.1784642230.git.xizh2024@lzu.edu.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|AS8P189MB2578:EE_
+x-ms-office365-filtering-correlation-id: f8614a09-6359-49a7-0955-08dee875a1cf
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|11063799006|56012099006|38070700021|10067099003|4143699003|3023799007|6133799003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ JAzZowmK02CFbKim36sOW9ZRUvirQahDB9TxBGq86T+QQSamvpfPwbPJN2tSDdJ/QTMQ9V7cxjOzzHHAYK8p0yELuiPPq0HirEmqvjJ8aAfzZTcXR4/3TgWEA4ADiaeJgCmjMhv+OjLNSTi7yElPcmY7r1wSSXaD1GH7JKeOAdP85FvJtXwEk6kHYoifq5p6PFZh3RjzL/psEpTz7ayFamK43Zdta9yQEkbD9auRYu1c7rXu6bEoydtSPdUJqnzKPljmRjB8Cd1WDy9zpLzvJ6A0pQuaC1Mht7LjXfeMqYIcJqhJJaM6pNBm8iuNi2Vig6RwOEEo/7KFg2a8dAeQ0FdSa5Bi4uXO8T9aJRAr+SmTolzZ6p6rlC8TB6drRawNM2eIbOvt2EZYZ3tfAf/QOm0cbhZI55u5QMwI2gizpAwzg4LSlmqXm5rDRTFVWvwSGTe30vlkxgyhehfg32aOjPVU+jXc1JkFGR97OV0Nm11IExrca/lCM+//5usurvA36MvH53IuQ0fEcwj2r3ThF80AmTfUp6zdacY6+duims4BcoDk3Ux44DVo2i3nVcGH5BFrxXdq1Wu5eQ2JMt9V/6LklAjI7Z+cwnOg8GodCIa2oLDkXIGzpuCyVNk15wRVka7MEpa0cMVQmPhHChxYu1bXmsjAB/3LzVaaAgYkQo6OcTeUWNc/T7h8fXC5G9SzoFDOw3quSQffJ1prRWg5vr/4ogwK1bGF5+190CNYcqs=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(11063799006)(56012099006)(38070700021)(10067099003)(4143699003)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?n1vOSkLW+hETLKc5fuVyCfhWplY+gMKuWwHKt67/wYTyYSWauFRwbaYqamg/?=
+ =?us-ascii?Q?lPtqvwCMZVIHxsFWAr/amyvZMYy+G+GOhdQ6h4iyIbMr/y8FwG7t9JWPg829?=
+ =?us-ascii?Q?0/Pp22IoXAN9mRk1fb35/ImC47Rdi2S+Jm1m+FJ9BbEKkhghYKLTvLadkjiO?=
+ =?us-ascii?Q?OTZayc7AbDTD0tJh41cgQMdU1SxGWal7jVTL9Z04KhIKkKrjVHK/DhPhWl4Q?=
+ =?us-ascii?Q?dq/d+ZMnRgoXSW2HDW7MDjQk35YRc1tvWZk2O01Y1xFw7vOS1/7Q9fnFYMj7?=
+ =?us-ascii?Q?s9NiSS+kz+9Pd0arI00YXrnonmCqphSrQsuEn/bwfDhGwxTgPfTxTuCnnzH2?=
+ =?us-ascii?Q?ihlMWanLvkzqiHQaGlCXr16u+4l9HfjWTHx631xrt8sx67shJwu+zA4EiETc?=
+ =?us-ascii?Q?A1KsvgP8j8vQhI7fmRWMqdSxpK/TGi4XVeb3RjEd3JquKEUPJ0StPCjhpEFJ?=
+ =?us-ascii?Q?dy62IVJxeF+bODxNR8VsuiZbPZdKO/e3UgiSTtJVSzF62s58jvUcf0GrCjQZ?=
+ =?us-ascii?Q?+c87BE1ydXsySMlBpVgiSoKDZClL6Ank5tAsUUlcIr8aVGNhqZw2U7xcetWX?=
+ =?us-ascii?Q?EvUvXs0/7WCjrMrDE15YaAlQFBswf4KZcR8vBZKQA2Gjh4USHNr3qNJnpcrp?=
+ =?us-ascii?Q?fQ+EXxMw/TGMjKDf7nGEiAiPbp4AY3R5hGUJmKLK6fYndcNzVzRGmrwV52XO?=
+ =?us-ascii?Q?RHVbHoD9AvxBISObtVZuW/3waZEbF4ykeD9pgilms7QGklTvLvwVc4Sdv2EE?=
+ =?us-ascii?Q?EV2ExJ233sNcNZ+J7akbcNGmp+LKosiWNCU7PaKdE+XlL5Bh0QrO8/xQiBsI?=
+ =?us-ascii?Q?vCPaRuTD8C/gKCR16fwQd/vCHnwLQiraR5O/8S+47ngskYoVuFJxV1t/lOz3?=
+ =?us-ascii?Q?fFQd5VjKtFiMtprIb7WGa7sMMYncq1p7Oe+2ab25PXaKEV+n33zrP6uA+vLV?=
+ =?us-ascii?Q?dSuJ2XYkqlgZSMUtd+bJ3uPNDqpRQPojreXfrmebpW59KCgPvqxICVAlJgEg?=
+ =?us-ascii?Q?PX5MgNcMx/rd2INfJpyDQPcuOjFoqtY7Xytk25vWaBCseJV9ZN70ZNeBQnoc?=
+ =?us-ascii?Q?e/f7RLvS6MHPztQVV7f68bCZ2KCq1k1qy2azarbC+9SngOJklcJWHwkS0WsY?=
+ =?us-ascii?Q?RfwjYz1TIRkkU6v8qNJ2W+ktgNlyma+TXKIu9uLowrWxrmLL6yrYBUcP2i08?=
+ =?us-ascii?Q?htMo5t+CtJkB/dP877vWgpQJh0aLy2K9FeMX4kBPo4esp9AusxQ1mYEFFN1P?=
+ =?us-ascii?Q?6FMUSHKtCMGykxvtcvGnbtbUWSWf8O8nDWtCHrLbLxwQYABtNwwmtOgC8e0n?=
+ =?us-ascii?Q?GT84xMlZMjKxy2Lqt95ooxsAJKuyk83KYcoodMNbjlQVMvFXlD/PkVj0/Qvo?=
+ =?us-ascii?Q?x62XRZdZ2BYx1vH5ncjdPpHAt5W/A0aLTQ9XFMwvUdy/SnY+q7BXRRRybbkw?=
+ =?us-ascii?Q?qbB1PvJgGt7mtmI0uFrybcQhcVzDrA3IxcJq0oWFfyjfTlRyXJn8sfyPDr6O?=
+ =?us-ascii?Q?sjIBSc/JxeeU5pr+NilOjwJYfQJgrfr1P3wa7W/3TIHrv4/3bZB+8Xsiy92h?=
+ =?us-ascii?Q?q/zMRq9+Www9S0X7eA/qm1k4Ng771gJQkLd1xKgKj9U7NT2nYYd6DHxBr4U9?=
+ =?us-ascii?Q?vJs1jyCrCa33FcIoATEY3bM+xsWcmPINJUx8h34sDjqKyoLqD/l+PwREQ6gz?=
+ =?us-ascii?Q?k3YP8gxs2F/KpRkal+Vml20eqsU6oYUMho7fbtOHj9yHCIiRLJsqjjcKcDJn?=
+ =?us-ascii?Q?MD6EXda8UA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8614a09-6359-49a7-0955-08dee875a1cf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 04:48:25.6648
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JUWNfZs94zuPXRYVwGLuv09MxT1WeUxpw6EYMn2O4E2c5ppfSkSjzFL/OBN46O0nSkonMT2MHEZNB1T0Qxd1VCEfQ1QNl8g50BxtsMCEMEg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P189MB2578
 
-When a packet arrives on an ARPHRD_NONE device (e.g. TUN),
-ovs_flow_key_extract() trusts the user-provided skb->protocol field: if
-it is ETH_P_TEB, the packet is classified as MAC_PROTO_ETHERNET and
-key_extract() is called without ensuring the skb has ETH_HLEN (14) bytes
-of linear data. key_extract() unconditionally pulls 2 * ETH_ALEN bytes
-for MAC addresses and parse_ethertype() pulls 2 more, either of which
-triggers a kernel BUG in __skb_pull() when the linear area is too small.
+>Subject: [PATCH net v2 1/1] tipc: avoid use-after-free in poll trace queue=
+ dumps
+>
+>From: Zihan Xi <xizh2024@lzu.edu.cn>
+>
+>TIPC socket tracepoints dump queue state through tipc_sk_dump(). Most
+>queue-dump callsites already serialize that walk under the socket lock or
+>sk->sk_lock.slock, but tipc_poll() calls trace_tipc_sk_poll(...,
+>TIPC_DUMP_ALL, ...) without holding either lock.
+>
+>That lets the poll trace path reach tipc_list_dump() and backlog head/tail
+>dumping while another context dequeues and frees an skb, leaving the trace
+>helper dereferencing a stale queue entry.
+>
+>Keep the existing trace output, but serialize the poll trace snapshot with=
+ the
+>socket lock. Gate the locking on trace_tipc_sk_poll_enabled() so the hot p=
+oll
+>path does not take the lock when the tracepoint is disabled.
+>
+>Fixes: b4b9771bcbbd ("tipc: enable tracepoints in tipc")
+>Cc: stable@vger.kernel.org
+>Reported-by: Vega <vega@nebusec.ai>
+>Assisted-by: Codex:gpt-5.4
+>Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
+>Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+>---
+>changes in v2:
+>  - Keep the existing queue and backlog trace output intact.
+>  - Serialize the poll trace snapshot under the socket lock.
+>  - Gate the new locking on trace_tipc_sk_poll_enabled().
+>  - v1 Link:
+>https://lore.kernel.org/all/24f7311aed0c9ff06b8ea982647b82bf543ec369.1784
+>454542.git.xizh2024@lzu.edu.cn/
+> net/tipc/socket.c | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/tipc/socket.c b/net/tipc/socket.c index
+>e564341e0216..51692c4a0e47 100644
+>--- a/net/tipc/socket.c
+>+++ b/net/tipc/socket.c
+>@@ -794,8 +794,14 @@ static __poll_t tipc_poll(struct file *file, struct s=
+ocket
+>*sock,
+> 	struct tipc_sock *tsk =3D tipc_sk(sk);
+> 	__poll_t revents =3D 0;
+>
+>+	bool slow;
+>+
+> 	sock_poll_wait(file, sock, wait);
+>-	trace_tipc_sk_poll(sk, NULL, TIPC_DUMP_ALL, " ");
+>+	if (trace_tipc_sk_poll_enabled()) {
+>+		slow =3D lock_sock_fast(sk);
+>+		trace_tipc_sk_poll(sk, NULL, TIPC_DUMP_ALL, " ");
+>+		unlock_sock_fast(sk, slow);
+>+	}
 
-  kernel BUG at include/linux/skbuff.h:2848!
-  RIP: 0010:key_extract+0xa7e/0xd90 net/openvswitch/flow.c:933
-  ovs_flow_key_extract+0x419/0xa70
-  ovs_vport_receive+0x222/0x390
-  netdev_frame_hook+0x3e0/0x630
-  tun_get_user+0x2d0c/0x38e0
+No lock should be held in tipc_poll() even only if trace event is enabled b=
+ecause it affects performance.
+See below throughput regression after applying your patch.
 
-Fixed by adding checks in key_extract() before pulling the Ethernet
-header.
+trace event is enabled:
+node1 ~ # client_bench -c 50 -p tipc -t -n
 
-Fixes: 217ac77a3c25 ("openvswitch: allow L3 netdev ports")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Link: https://lore.kernel.org/all/20260721143602.64677-1-blbllhy@gmail.com
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
----
-v2: Moved the check into key_extract() per Ilya Maximets.
+Before patch:
++--------------------------------------------------------------------------=
+----------------------------------------------+
+|  Msg Size  | #          |  # Msgs/  |  Elapsed  |                    Thro=
+ughput                                           |
+|  [octets]    | Conns |    Conn     |  [ms]       +-----------------------=
+----------------------------------------+
+|                   |             |                   |                 | T=
+otal [Msg/s] | Total [Mb/s] | Per Conn [Mb/s] |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|        64      |   50      |    64000   |     5654    |       565899    |=
+         289         |              5               |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|       256     |   50     |    32000   |     3010    |       531423    |  =
+      1088        |             21              |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|      1024    |   50     |    16000   |     1974    |       405193    |   =
+     3319        |             66             |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|      4096    |   50     |     8000    |     1366    |       292728    |  =
+      9592      |            191              |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|     16384   |   50     |     4000    |     2166    |        92321     |  =
+     12100     |            242              |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|     65536  |   50      |     2000    |     4765    |        20984     |  =
+     11001     |            220              |
++--------------------------------------------------------------------------=
+---------------------------------------------+
 
- net/openvswitch/flow.c | 3 +++
- 1 file changed, 3 insertions(+)
+After patch:
++--------------------------------------------------------------------------=
+----------------------------------------------+
+|  Msg Size  | #          |  # Msgs/  |  Elapsed  |                    Thro=
+ughput                                           |
+|  [octets]    | Conns |    Conn     |  [ms]       +-----------------------=
+----------------------------------------+
+|                   |             |                   |                 | T=
+otal [Msg/s] | Total [Mb/s] | Per Conn [Mb/s] |
++--------------------------------------------------------------------------=
+----------------------------------------------+
+|        64      |   50     |    64000   |     5711    |       560231      =
+|         286        |              5               |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|       256     |   50     |    32000   |     3046    |       525207     | =
+       1075        |             21             |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|      1024    |   50     |    16000   |     2209    |       362152     |  =
+      2966      |             59              |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|      4096    |   50     |     8000    |     1544    |       258934     | =
+       8484      |            169             |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|     16384   |   50     |     4000    |     2549    |        78452     |  =
+     10282      |            205             |
++--------------------------------------------------------------------------=
+---------------------------------------------+
+|     65536   |   50     |     2000    |     5449    |        18350     |  =
+      9620       |            192             |
++--------------------------------------------------------------------------=
+---------------------------------------------+
 
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index 66366982f604..de7b77d6702a 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -926,6 +926,9 @@ static int key_extract(struct sk_buff *skb, struct sw_flow_key *key)
- 		skb_reset_network_header(skb);
- 		key->eth.type = skb->protocol;
- 	} else {
-+		if (unlikely(!pskb_may_pull(skb, ETH_HLEN)))
-+			return -EINVAL;
-+
- 		eth = eth_hdr(skb);
- 		ether_addr_copy(key->eth.src, eth->h_source);
- 		ether_addr_copy(key->eth.dst, eth->h_dest);
--- 
-2.53.0
+>
+> 	if (sk->sk_shutdown & RCV_SHUTDOWN)
+> 		revents |=3D EPOLLRDHUP | EPOLLIN | EPOLLRDNORM;
+>--
+>2.43.0
 
