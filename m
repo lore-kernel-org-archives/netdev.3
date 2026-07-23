@@ -1,192 +1,221 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022122.outbound.protection.outlook.com [52.101.96.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BDB34D4D6;
-	Thu, 23 Jul 2026 21:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784842958; cv=none; b=s9WEgqS0/xMGbMXyuCoMFU0JuUoLUBha9czj8sfN7Qh8pqAhJ9eDQ1kazYEYU0yssUteGyM7ajYGurPlyJmiyufr6q51lBOhAvBcFaWYIw2t1Wa1+W9waRd38aS7ROYvQt5OoLqqFfg2mHYSaHRR/L6XcFRjrh+WEQWJzHMId5o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784842958; c=relaxed/simple;
-	bh=8Y1UtNu54q11AGiCHnRvtMpeusV9otKE2ExphqBK9MM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DLfyvRHJJLZYiFhrrKjvmjXOBvoqHlogkDqkBW7tAMfh2xxi7sLukuyC3VH/m7W6Wprw0kdhW1kkDqheUY611tHJXT4qNy197zm/LqMoEZx0xZ2eLetGUk8IcYkTec6KjnHlEf0haYX+Qw+2MG5lYN1JOc9LMFUMw3qfc8Vq7OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=TZoz7OvO; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DB6350D74;
+	Thu, 23 Jul 2026 22:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784844081; cv=fail; b=q9bHABPXn5uqe2BWjYKQMDhJ+Oa81rX6PFNSGqio0olRIMwMGBc7/iVHN2CutfIsONNo2hIPJefavSKjMk0BLRm7ZNmg1ivM4ZFtn1Kk6sW9dvoxM8yhj8HRofiJgtGFIxg6fiMmDP/RDa+DhiGPC39F48Brsjt/Qev0UjyJ9gA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784844081; c=relaxed/simple;
+	bh=8gJVnailyzMYXVEeFt/Vs6x7yjYC1eVNKx3NdE39Fcg=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=igHhgbJWFvUAP2huL2nCZyda2oa1t2B7queuYU2oGupoGPFYr6QwHj4T2KWbio4CABgHaE/AcoL3961SGZQJ8KHEfR6w3WqBflLWWBjBq41GXlleDYE55oZwO+mkZWikRVBJrgACLdEPN1Sgf/G3OfSS3YgwwEUsYcqFjGiy+bU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LvM2Vqib; arc=fail smtp.client-ip=52.101.96.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="TZoz7OvO"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NLbZGG3966303;
-	Thu, 23 Jul 2026 14:42:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=bClYz55JI4YoEPtD7v
-	ZekWZmKyXf36wzY4xyuyrOxY0=; b=TZoz7OvOVtjgQEkcuBSRRNEgWuNuy4uE0C
-	QLj9/cLqS5WzsRlIlxUjzbJAj27dvv24CTDSpg4gM1pfK2ZGMhfQhXA6dIWIeHa2
-	ZrgiNvQOmp/mFEXynlGPdBdR1HlEeQUMzXlPZWWOdIbKu6HNe3/fJJ7kYCSQO7ne
-	yjpBO+ibUth4jpgBYiWaPkH2n/0RH74IWeOxfEig3meeAhsKHM8huX3OFCWLYwc2
-	GbzhAmzcbyqGgyJEF2CoxpUdIlVeuNQWPP7TbLOgsaiiayt6KasXrB8bmRN/sGw2
-	B0g/Yu82nODZ5h+uyTdcWui/6BJAaP8dW6nhKZnlAWPHaTIWXijw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fjdmk88p6-7
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 23 Jul 2026 14:42:29 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1c::1b) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.41; Thu, 23 Jul
- 2026 21:42:26 +0000
-From: Tejas Birajdar <tejasbirajdar@meta.com>
-To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
-        <netdev@vger.kernel.org>
-CC: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        "David
- S . Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@kernel.org>, <bpf@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Tejas Birajdar
-	<tejasbirajdar@meta.com>
-Subject: [PATCH net-next v2] tcp: honor BPF_SOCK_OPS_RWND_INIT on the active connect path
-Date: Thu, 23 Jul 2026 14:42:08 -0700
-Message-ID: <20260723214208.3655474-1-tejasbirajdar@meta.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LvM2Vqib"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NhnNX9sXl26WB4qUfrL9QXLd0Kce6+g5da49eA+o1o5vJ1ihFtlQkRmbOL265IMYn7RWa5BGs4I0+wZu8jtPqZcfEfrigwPml2CMY/wyQZb4tzJwOcnhd0cmAhe7B95t+N78rENQb0Nylw8nJ2Nu7HA0ODniAOXXujpKC4M/uGP4Mj+C5/6y+SpC7Mfl8R2cBdcMRlxveUT32bvhzazmW4JnaPph64GNuLm1bjaYL30LBF5xDLKf+QP1tz1wkt4LPyZqvO0/b2WzriTQKymrlDcmiykQ9eik2kyLNyvFaaoHHB92cmV138S/JJUKiYQXv0kH9FA6VVzizO4wRtYqHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xq9AjxX3EhxMdox1zaGtdiqE4DTflnHv8h5VPtjrvBQ=;
+ b=vCK6ni/ihXEM9h1ZtrJgzGrbmCIuxyq6cBOoVg9B/mffKn23ZD1qgxlF59f4g0T8D129LEgMSjRLei2HEpVnsvG7vwgs/Du+vdsl08O38pnWHTXqxitLvuQVU2F8Mswzgln7vJXN8+scbpCIvhbMUu/H9nQhdImEANkTBFJNsfffnLfs4Xhk6Ucu09fRpQE+GMzKvzV6NrSwIam+Q5v8Riy2NyZHmZr1fbjp+sZWA2iyUE3wmktJOMEpeg0CyVILBxeQUjnHgW+/SbqXvFkBBH62bzCE/xX5HMsQi1+obKZY0+k/GQEVH0CD2xVVlh98HY6eZNXwOs6fCWDMbY0ZGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xq9AjxX3EhxMdox1zaGtdiqE4DTflnHv8h5VPtjrvBQ=;
+ b=LvM2VqibrDmaBZkVLKbRLphHMgzQA5A6cjWO8mUIksTESeSEnZtd8l7b//jJOmiZBkvDR5XEsgRLvdLMFDid2mJWedqrqqayeX3DbpUQ0e8KVDnqfJWMwNirlxgZ2WWK2SwJZchxqBXVcE0IksjkzZWboTpeZe927k7u9lvdkBc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB2635.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:14c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 22:01:08 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 22:01:08 +0000
+From: Gary Guo <gary@garyguo.net>
+Date: Thu, 23 Jul 2026 23:00:41 +0100
+Subject: [PATCH v4 2/9] scsi: nsp32: don't store pci_device_id
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260723-pci_id_fix-v4-2-3580726844e1@garyguo.net>
+References: <20260723-pci_id_fix-v4-0-3580726844e1@garyguo.net>
+In-Reply-To: <20260723-pci_id_fix-v4-0-3580726844e1@garyguo.net>
+To: Bjorn Helgaas <bhelgaas@google.com>, 
+ Zhenzhong Duan <zhenzhong.duan@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ GOTO Masanori <gotom@debian.or.jp>, 
+ YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Vaibhav Gupta <vaibhavgupta40@gmail.com>, 
+ Jens Taprogge <jens.taprogge@taprogge.org>, 
+ Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ David Airlie <airlied@redhat.com>
+Cc: linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, industrypack-devel@lists.sourceforge.net, 
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ Gary Guo <gary@garyguo.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784844066; l=2148;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=8gJVnailyzMYXVEeFt/Vs6x7yjYC1eVNKx3NdE39Fcg=;
+ b=+Y+fiGQUF5x/hbvd3vvEL3to+g6aAWun5gT/qaiQ64JweWsJ3wp9j9C5yS6BaYpiuQqXRxemS
+ 6U4y96CakbKB4N5eQRmmZDdSo9vrXiJizoriNzEYw/xeztOELvxLcgS
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+X-ClientProxiedBy: LO4P123CA0115.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: wSzx9XMAni5hDcA-znLEdqos--3SUixB
-X-Proofpoint-ORIG-GUID: wSzx9XMAni5hDcA-znLEdqos--3SUixB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDIwOSBTYWx0ZWRfX02lWiVO4KPHd
- xALxxdH4qV4nVt5Z3lalREAumvyWJ43yoOlnQbaz3EgQoG7cT+SEqc9Tja7mUyvDvRSr7cJxHZf
- bKGiqBsnJUwU36geOgSOVxdqeRVY8+r8zRYKdDhW6Mxnr/i8SbLiKNT6ixGuXAKZ2Yj0RTANNut
- xowtG7NCyJKWas4PzN9jZLP3LOZ20Dfdyf+VeiHZlmqmD+OSPjN2I+BTvdO7YtPbY+g4BFlAC6t
- RfSr6i7UkJXDgIwQ3JRqvNHphMt4FwSz9EZs4xXz6m9cHAM+8AoHQCVnGi55V869I1XBCO39oGE
- B5gaCLMpCZJNu4QOwS3eQZ7oyJsvRDhykhqoQPPsJbrLtrVQKEJj2Y7YXL2Zia8bbqo77eJzP2a
- Sc8x/EtjDK98i0l/8AK80YQbbxsi0rS2hBiK1PthGp0rcjbXFUJpzOdGiXRVIcOHJrg8kGDH6xR
- GQTFDb4UepVNjv8DBiQ==
-X-Authority-Analysis: v=2.4 cv=CKEamxrD c=1 sm=1 tr=0 ts=6a628ac5 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=JnKecZnUtZousrUlYMGU:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=1XWaLZrsAAAA:8
- a=4XeK37IC55s43dnOpu4A:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDIwOSBTYWx0ZWRfX0kfLhcrnukPQ
- pk2LXwvEWr1ih0g5DziOXV8l9v4qdcYPhElclyZK0kh7s0YjRHQXKrTvBnCddS5DknUNq6hGklh
- DQpBsx8fN9e544UKwhVJAqyDp4zEUE8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_07,2026-07-22_02,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a64cd77-66d5-49c8-abf1-08dee905e638
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|10070799003|1800799024|921020|22082099003|18002099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	btJc6/u4K18qirAM0S1yJV1b5uaM4dGG8/OAEuJ1h0D3A52vkkOuSmBsWVG88/j8nOfMXuw5eUdewsMSbN6pU/uoY4Fp/1srjPa4fbGvx7ARdnDiSs8/DcASSmm2Bxsr2tv7tGOImWTayRVVsTHkeoEdfVLVqSxHmCGm4EnMJ7yqtxCB5WS5YHNr5QsZfhdW7hFc9Ds7f6PRkL4QDHSUmam+Fbu7dAq+SqP04KcmDN37V8v1pzF/ttNAxYFcOtxzsihega+ARcnJP/qeJT/2Zr1mu9yl+fN085izilbkCEaKhch3LBpYBB2u8/njMdFylRxkgOyeHovvUjvy5x7NkFO3KucUr02jlgn9yecBxZ2alE68Z4qRkMfL6HyKQ1XYMqTAESgtgdLzX/u5fhPKHPZZhyeEd1mQN+QEHExvtQ60jWc1QtYaV6CAWsl0Vgz825/nEwybgSgBYHHqTCB9ZE5V9JbGhxlWE79ftA0Uqb856/QxZrj7PWkZCkj9NhilruP/iFViOxj2xlWL94NHK/rMF7sgmC02bbAzmScspMx4XjMeRjHtC1lCm8nJEiGMGD4IeOzyFolvds+te98F+XxrvT5aLeYqKKs4yWhYtAlWz44XfBjriiu1jgkHV8Z5hVltbVATKAozg4WU91gu/njq/R64OSBu2/NeCU08PsCgCMzbW6vf5CD62BP1Rh6DUyOUludaNSRRGqrY6Ig45A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(10070799003)(1800799024)(921020)(22082099003)(18002099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZEVtL0R2bVdpMVBVVWJYdnZFT3hiOGZNdmhQSGFvTHRnb3VRaTR5Rk9nQ2p1?=
+ =?utf-8?B?OXE4M245eG10aG5NYjhNS3Mvd0gzZFJzNk5BREpOSlBiZFlBeU5udzFDSk03?=
+ =?utf-8?B?RFFTRU1PbWtrd3Y3ZitMb21LUGZyTGZRRTRLeHd1RHc0ckFvbGRhV2ZVV2lk?=
+ =?utf-8?B?cUp3Uit4NEIrcW14Mk1pdnRxeDUxNE93ZGhOSzRMZTI4OW93YVpDaTRkL1dy?=
+ =?utf-8?B?cFhNV0FZUDdmSzhpZDhBeGQ5OXJZUlR5TUUzbU1TaWc3R1lFZk5xRFNBTC9T?=
+ =?utf-8?B?UHpBWURRY2JrMWJPck15b05YZGNOTFdYRkp6aWd6bnhiN1ZiMFV2RTJNNVd3?=
+ =?utf-8?B?L1o5WFBjYkZ0TFd5Y1Y1QitoK3VRRXNKYzRXakVrY2xSang4T29LRllHc3ZC?=
+ =?utf-8?B?TzNWN0tZK0d2SGw3d001b1ZaOW50MkZiaGRaL29iTW93YU5xTDhxVUQvYThv?=
+ =?utf-8?B?cUpnVCtBVVlSNlZBTXVpRlpZT0dxZ0pLLytwWVBvUzdjRHJrUHM0akdydUJp?=
+ =?utf-8?B?Q0xHRHI0YlBPMGJLbXBEdmVhMlo3a0tPVVJRMDBLTlhmTTlhb0VicSt5QlUy?=
+ =?utf-8?B?cFc5MnpmSGRFeDlmZGFUVk4xMURqSE5BTnlxR1ZrVFdnTDF1RllmSG9lajhV?=
+ =?utf-8?B?ejl4eXBHS3VXRmlpNVN5SGNhTnNydFRNanZYY2dSeUFOTUtBbkpBazRtR2Nz?=
+ =?utf-8?B?Mms4K2Q0Yk1BZlpUMW1ISkJTT3pLYW5iMVNyR0loRU9FSnNRdGhzSnA1dTh2?=
+ =?utf-8?B?U3pFbDBoMmxzaEJPTVRKUjZPbGtzb3VnNFdlR2dRTXlKTUswYktZUGF5UEZ5?=
+ =?utf-8?B?aHpkaGdXZnJ6bTlBVnlYUm1mb1BBMDlvU0VZR2pTdWx2MTRVbDFCd3UrQmJ6?=
+ =?utf-8?B?S0dlZU5Rbjg4eE9rV3hENkM0YXdIZUV3bE5OdWliMERoU01XbjFiZVFQWjhj?=
+ =?utf-8?B?dENNRmNGeUR0UnRheSsycU5LQjByZ1kySWZlckdsbjN0ZFovaGVxNWI0UTZQ?=
+ =?utf-8?B?M1ltelJVV09sQUkvTjF4ZFlnNHN3c1NMbEt1WnVQZmNjSHJ1ZkVwT0lqcVR1?=
+ =?utf-8?B?YzBaWE1RZFVDbmhKTmtneWdPbXJMS2dnQkRER0NZUWl5bUZyYnRNMitrYTRx?=
+ =?utf-8?B?bWVtQ3NyQW0vR1BnN2NIcUtZTE1oMWdVbWhPeEg3cUsxLzFkdzdRNXphNTZZ?=
+ =?utf-8?B?bjIxV3RpbG1CMExNK0dLSk92OXRyd3RJa3pzQ25vazVoSTJJaE95WlA5ZW1B?=
+ =?utf-8?B?V0ZuZkp4NEtIR3d6QVplaVg5a3JkS1lDQmlORWxjcE03eE5iZFF0SW9KVStn?=
+ =?utf-8?B?QWRjLzl5djNza2FmZzN5YVRqWlFnK0VPQnU3SlFsV21ETzJjOUZQbUM2SHR0?=
+ =?utf-8?B?b0wyRnVGSkVUM2U2eTZJS012cmw1YlVNV1VOb2tPQWhiSU44Z1gyc0k4T3hU?=
+ =?utf-8?B?VU5BVC9ULzVXckpBN2sza0c2ZkZucHVCb1BxeWpXanl3N1E5akduaTVJYUtV?=
+ =?utf-8?B?anp2ajFMQ0Y5ZkROeXhFc2RUMHo2WXRkRys3SnZEL0NWRWZNdXA5Mng1UmRk?=
+ =?utf-8?B?UWxmT3BHbEZMV09ZOFhuWE5ob3E0ZzhzdDg5aVBpY2pMY1dkNVllSVJ0aFNI?=
+ =?utf-8?B?akNEY1NLQjFuRWRUeWRWWlc1QVk4WG9Ha09wQ0VJR2FSdjFCUDY2VnR1K2hk?=
+ =?utf-8?B?ZEtGWXJQODVuR2FvUHdIaGdyUC9RQ3VRbU9oWmxlVm9uYWVPYkh4YmhWaWpI?=
+ =?utf-8?B?MDZlbFp5emZDRjl6NVVUMjRnWjJwWDhsWlRHNjRuK3ZoN3g3KzJudVVSMk96?=
+ =?utf-8?B?NFppZGhTcHBTWnM5L1NnbGpqUm9sYVF5ZlpXNXpQOURLanFoN1RIblVrRzVQ?=
+ =?utf-8?B?UmxDVC96VDZXS3JXL1pKVUcrUitweUhINGZRa0tnRWdZSkZuK1lTcm5uL2Jy?=
+ =?utf-8?B?ck51SFpvT1V4MjIxLy9TaS80SE0ra3Y2YnI2OTc2SHp6cDhVRm1BaUx4aVA1?=
+ =?utf-8?B?TE9HckErRWx2M2VyMWRxRjFxZ1B1dHcvUjZCSGlxK2l5R2M4Qm5Rd1VkWUhQ?=
+ =?utf-8?B?V2p6VFhvZHJXZDg0R3djRVpPWVBnNC9tdWhWVXExRFkwSzg4ci9mL2ptYm5m?=
+ =?utf-8?B?aDNVWlNRV0NhNkkrbmpzTm9XU1lzOGJQSzZ1SVhWMXpORmgyQkRBdVNNcnhU?=
+ =?utf-8?B?UkxGa1c5TENuNkc4TUFsclRXR3UzWGg2U1ZNczVTQnlrckRabVJkenY2QkxT?=
+ =?utf-8?B?Mk92UHRPWmhtbDl1d3ZmeUxBQlVMUVQzbHdiT0lVNk1ia2t1ekRVa05ybE1H?=
+ =?utf-8?B?V2EzNGZsazN1NytLbjZkY0N2dkRuTFhXdVZnTDNTN0NRZEM0NkR2Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a64cd77-66d5-49c8-abf1-08dee905e638
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 22:01:08.0352
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X1mVLXb4p3g2xhuef8MsKIs+iZHx270Lv7FeHAniV3BHJAufNbubx6+M26t/Z5ax4ibP38yfdpUCP8em/f5g7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2635
 
-BPF_SOCK_OPS_RWND_INIT lets a sockops BPF program pick the initial TCP
-receive window, e.g. to advertise a larger window up front in environments
-where that is known to be safe. Today it is only effective for the passive
-(listener) side; on the active (connect) side the value is computed and
-then silently discarded.
+pci_device_id is not guaranteed to live longer than probe due to presence
+of dynamic ID. All information apart from driver_data can be easily
+retrieved from pci_dev, so just store driver_data.
 
-On the passive path tcp_openreq_init_rwin() inflates full_space when the
-program returns a non-zero window, so tcp_select_initial_window() can offer
-it:
-
-	else if (full_space < (u64)rcv_wnd * mss)
-		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
-
-tcp_select_initial_window() only clamps the requested window *down* to the
-available space, so without inflating the space first the BPF reply can
-never raise the offered window above tcp_full_space(sk).
-
-tcp_connect_init() calls tcp_rwnd_init_bpf() but never inflates full_space,
-so on connect() the requested window is clamped back to tcp_full_space(sk)
-(~64KB at the default rcvbuf) and the program's value is ignored.
-
-Inflate full_space in tcp_connect_init() as well; tp->advmss is the mss the
-listener path uses (both are tcp_mss_clamp(tp, dst_metric_advmss(dst))).
-Read full_space after tcp_rwnd_init_bpf() so a program that also adjusts
-SO_RCVBUF is still reflected. Compute the inflated value in u64 and clamp
-to INT_MAX to avoid overflow (full_space is int, rcv_wnd is u32), and
-apply the same overflow fix to the existing listener-side computation.
-
-Fixes: 13d3b1ebe287 ("bpf: Support for setting initial receive window")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Tejas Birajdar <tejasbirajdar@meta.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-v2:
-  - Do the inflated full_space arithmetic in u64 and clamp to INT_MAX to
-    avoid overflow, and apply the same fix to the existing listener path
-    in tcp_openreq_init_rwin().
-  - Read full_space after tcp_rwnd_init_bpf() so a program that also raises
-    SO_RCVBUF via bpf_setsockopt() is reflected in the offered window.
-  - Re-ran the sockops BPF/RWND functional test and the full in-tree
-    packetdrill regression suite on the revised code (details below).
-v1: https://lore.kernel.org/netdev/20260722170033.2763794-1-tejasbirajdar@meta.com/
+ drivers/scsi/nsp32.c | 8 ++++----
+ drivers/scsi/nsp32.h | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-Functional test: a cgroup sockops BPF program returning
-skops->reply = N for BPF_SOCK_OPS_RWND_INIT was attached to the
-connecting socket and driven with packetdrill on the active-open
-(connect) path (advmss 1460, negotiated wscale 8). The offered window on
-the first post-handshake ACK now tracks the requested value:
-
-  req_segs   offered window (bytes)   = req_segs * advmss
-  256        373760
-  1024       1495040  (~1.43 MB)
-  4096       5980160  (~5.7 MB)
-
-Without an attached program the window stays at the default (~262 KB);
-before this patch the requested value was discarded on connect() and the
-default was advertised regardless.
-
-Regression: the in-tree tools/testing/selftests/net/packetdrill suite
-(471 test cases across ipv4/ipv6/ipv4-mapped-ipv6) was run under
-virtme-ng on this commit and on its parent; both produce an identical
-pass/fail set, so this patch introduces no newly failing tests.
-
- net/ipv4/tcp_minisocks.c | 4 ++--
- net/ipv4/tcp_output.c    | 6 +++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index ddc4b17a826b..f8c1123aba43 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -453,8 +453,8 @@ void tcp_openreq_init_rwin(struct request_sock *req,
- 	rcv_wnd = tcp_rwnd_init_bpf((struct sock *)req);
- 	if (rcv_wnd == 0)
- 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
--	else if (full_space < rcv_wnd * mss)
--		full_space = rcv_wnd * mss;
-+	else if (full_space < (u64)rcv_wnd * mss)
-+		full_space = min_t(u64, (u64)rcv_wnd * mss, INT_MAX);
+diff --git a/drivers/scsi/nsp32.c b/drivers/scsi/nsp32.c
+index e893d5677241..9c9281222a0a 100644
+--- a/drivers/scsi/nsp32.c
++++ b/drivers/scsi/nsp32.c
+@@ -1470,7 +1470,7 @@ static int nsp32_show_info(struct seq_file *m, struct Scsi_Host *host)
+ 		   (nsp32_read2(base, INDEX_REG) >> 8) & 0xff);
  
- 	/* tcp_full_space because it is guaranteed to be the first packet */
- 	tcp_select_initial_window(sk_listener, full_space,
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index d7c1444b5e30..ffa28c98c211 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -4103,6 +4103,7 @@ static void tcp_connect_init(struct sock *sk)
- 	const struct dst_entry *dst = __sk_dst_get(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	__u8 rcv_wscale;
-+	int full_space;
- 	u16 user_mss;
- 	u32 rcv_wnd;
+ 	mode_reg = nsp32_index_read1(base, CHIP_MODE);
+-	model    = data->pci_devid->driver_data;
++	model    = data->model;
  
-@@ -4137,10 +4138,13 @@ static void tcp_connect_init(struct sock *sk)
- 		WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
+ #ifdef CONFIG_PM
+ 	seq_printf(m, "Power Management:      %s\n",
+@@ -2907,8 +2907,8 @@ static int nsp32_eh_host_reset(struct scsi_cmnd *SCpnt)
+  */
+ static int nsp32_getprom_param(nsp32_hw_data *data)
+ {
+-	int vendor = data->pci_devid->vendor;
+-	int device = data->pci_devid->device;
++	int vendor = data->Pci->vendor;
++	int device = data->Pci->device;
+ 	int ret, i;
+ 	int __maybe_unused val;
  
- 	rcv_wnd = tcp_rwnd_init_bpf(sk);
-+	full_space = tcp_full_space(sk);
- 	if (rcv_wnd == 0)
- 		rcv_wnd = dst_metric(dst, RTAX_INITRWND);
-+	else if (full_space < (u64)rcv_wnd * tp->advmss)
-+		full_space = min_t(u64, (u64)rcv_wnd * tp->advmss, INT_MAX);
+@@ -3340,7 +3340,7 @@ static int nsp32_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	}
  
--	tcp_select_initial_window(sk, tcp_full_space(sk),
-+	tcp_select_initial_window(sk, full_space,
- 				  tp->advmss - (tp->rx_opt.ts_recent_stamp ? tp->tcp_header_len - sizeof(struct tcphdr) : 0),
- 				  &tp->rcv_wnd,
- 				  &tp->window_clamp,
+ 	data->Pci	  = pdev;
+-	data->pci_devid   = id;
++	data->model       = id->driver_data;
+ 	data->IrqNumber   = pdev->irq;
+ 	data->BaseAddress = pci_resource_start(pdev, 0);
+ 	data->NumAddress  = pci_resource_len  (pdev, 0);
+diff --git a/drivers/scsi/nsp32.h b/drivers/scsi/nsp32.h
+index 924889f8bd37..9e65771cb592 100644
+--- a/drivers/scsi/nsp32.h
++++ b/drivers/scsi/nsp32.h
+@@ -564,10 +564,10 @@ typedef struct _nsp32_hw_data {
+ 
+ 	struct scsi_cmnd *CurrentSC;
+ 
+-	struct pci_dev             *Pci;
+-	const struct pci_device_id *pci_devid;
+-	struct Scsi_Host           *Host;
+-	spinlock_t                  Lock;
++	struct pci_dev    *Pci;
++	int                model;
++	struct Scsi_Host  *Host;
++	spinlock_t         Lock;
+ 
+ 	char info_str[100];
+ 
+
 -- 
-2.53.0-Meta
+2.54.0
 
