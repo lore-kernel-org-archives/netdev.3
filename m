@@ -1,108 +1,217 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584B32D7386;
-	Thu, 23 Jul 2026 09:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784798177; cv=none; b=nyAoxnMuTcIMRwJVwnrpeHJFTKgJYzv151gr2SQ2otnuTX/jUXGKx8w7lH1JketGeHA/7yQo69ZsDkpJMXNDWql/YUhhDq129MPmB02dkfvvr4x0wFye40kXnM0P3AbxU+VzDy5mz1zjk5/f9KO+K/1+pQGIo6uCz3HB8KAMO14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784798177; c=relaxed/simple;
-	bh=ZNZca9q7oIuQIk0TjnWuv+7+cXeSoMqf9t4GrDwoDI4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RUywFz34RisTUIFBaHPoRUpGz/YZw/EQHjTnbMHwuDHX1c2DTudsu2Cu0BT1bhXmcKH4NjCwLJ5yMIIjSUp6/F5ZXStfPIIfDXZEtwp+rMTMCHV+QFAvm+ZVCQqZcImm0WsK29KjA9/UvtejlsbuTtulp4G5iV1xuF1zSkCn7zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=rJRf+0q3; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4B23DEAC6;
+	Thu, 23 Jul 2026 09:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784798191; cv=fail; b=YmI/vtd+1FJy5/Oacv88Jf2qiQZZVdcEX/7C6UQ34aH0xBbbuiFKX+FSZ0c30C1dCXWIlihAGfpE4BSCqZQ2bzDaEEfrwdhISr/IZ37STxHxUkGnqMh00a41GvMZAW2ltPtdl7zSGrlhetuBsiC83A4v70iMkq4CkCQaQxB4Ty4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784798191; c=relaxed/simple;
+	bh=wX1JgAUUiBlsH7ZDDUK5PgRCBtYBkMPpibvC5M/+F2I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eAF/CuG6F7AbdBS6dWYJh60cLnXbxiiHMxNky/y2f7TAeefz4W/gPT4qCDhAKIt4JYFxFPZ3nqUuh0n72w+h/nhZt2ukfHYiM82BnZXL6vLasshn8DvIRENZgNrkIOGBQXIKjexHKc0Jq8vtZmVCPA1TBu83rplS2VnbsA+hEGY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gBM5t42z; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="rJRf+0q3"
-X-UUID: 22e9cae2867711f1b1788b6acf885367-20260723
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=FF3CQzDN2xFla8uEGiPnMoAn7bZknuWf8Lkei7xVdww=;
-	b=rJRf+0q3Wg7NVFVGhL5r+U2UFGGdy4CAWJKBVXNU+COj2vLdPvVruSoJ1mRsUm6z8xYIKkPaZAfCIPAt47STz4TDovz5GRp2LPJ1LTrCRg+IoBT9Pfi4y3lSvScpl3OHTaESPKX30lHuTKqW4u6Zb2lSCIcqwQ8Ls7RmEaFiDck=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.18,REQID:61b2da62-6deb-4969-b767-57d630263602,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:8a735a6,CLOUDID:9b457719-ab14-4403-9336-76696324c5a8,B
-	ulkID:nil,BulkQuantity:0,SF:102|123|836|865|888|898,TC:-5,Content:0|15|50|
-	99|100|101|123,EDM:-3,IP:nil,URL:1,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 22e9cae2867711f1b1788b6acf885367-20260723
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-	(envelope-from <zhaoping.shu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1497837608; Thu, 23 Jul 2026 17:16:07 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gBM5t42z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784798187; x=1816334187;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=wX1JgAUUiBlsH7ZDDUK5PgRCBtYBkMPpibvC5M/+F2I=;
+  b=gBM5t42z3gT4cPFUHo7qncibDDUSvGjkGnr7jr79OwIKgAoTG4HaM0Ba
+   Y1eZX7EcLEDg5UWrnhf/U+YWBVXMHCIWMvWbXzbIE1pDzaJmGael04tTa
+   OvA2bCdw80EGPJ5h9R8rEmo+VNPV+s2t9TtvJ9UFvsXVf+FZer2O20Efv
+   LGgvJadMk2L8qdW72BsbUIQrTG9rLSVpuO6g09ZEKYUCo+602MrwKR9gm
+   oTO+vNfzOGW5gQwnjogSVqv7aAFfu8LmMBFLRD08RFfqWqz909SqCB494
+   t+hwNgjz83IgD1PRBgs6CDuHWHVjkS5XQVxkVqzu0tAqjTLuHxRMJX8F8
+   A==;
+X-CSE-ConnectionGUID: V48HtK9TS66X3g8kaEbxAA==
+X-CSE-MsgGUID: OiYIX0PXR7GmcHPfCkGCmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="72990896"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="72990896"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 02:16:23 -0700
+X-CSE-ConnectionGUID: 8bPdaGtrSoWklttrEGyPow==
+X-CSE-MsgGUID: qWRyW9mrRlmG3bnC7fLCxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="254006596"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 02:16:23 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 23 Jul 2026 17:16:06 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 23 Jul 2026 17:16:04 +0800
-From: <zhaoping.shu@mediatek.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <ncardwell@google.com>,
-	<kuniyu@google.com>, <matthias.bgg@gmail.com>,
-	<angelogioacchino.delregno@collabora.com>, <willemb@google.com>,
-	<alice@isovalent.com>, <sd@queasysnail.net>, <eilaimemedsnaimel@gmail.com>,
-	<imv4bel@gmail.com>, <hw.he@mediatek.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: <haijun.liu@mediatek.com>, <xiayu.zhang@mediatek.com>,
-	<lambert.wang@mediatek.com>, <Iven.Yang@mediatek.com>, Zhaoping Shu
-	<zhaoping.shu@mediatek.com>
-Subject: [PATCH net v2] net: gro: avoid nesting TCP GSO skbs in skb_gro_receive_list()
-Date: Thu, 23 Jul 2026 17:16:01 +0800
-Message-ID: <20260723091601.72103-1-zhaoping.shu@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+ 15.2.2562.43; Thu, 23 Jul 2026 02:16:23 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 02:16:23 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.7) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 23 Jul 2026 02:16:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y9r9mdbAzdyHndVtru3JTOzfA0NjVYqyL3Guf8wrqjGIqVgwBJ/bXsTVZhDKrFJY5znGT6qhPlJU4/Ud1Z5UOsJ6fTisDTjP4ZQGwrPYWnV5iyDbkSma5ETbYP/sX+nhBzAH/dzh1qTNp/oiwsCkYdjgtznii2CgMGx1oyZIZlrHSdJIGP+PunmHTzVsIpXyM8xIPXiHU+T6qbb4en3XdBGRI+Gr1rWqidMDkm40Rhxt1w3YtQuiaZYywsNDK40tK32rWVrtqBVrLhxXD2Te3LoXapG4BdR+Mof3ZM2OS47HSy9t9Vjp0WSccvCht9AYAPMUwH4GE+bS9uAPo8bNnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N/QlqrCGENffoQMhsl2zUtKaH2ePvD8H0ClaIAFAzmo=;
+ b=JVU65kuV3x9baDqTyRGuzEWoY5wnHX2rursqD6kfcRIDpuEaDYQ3zIsDGdrs19Cegpb3qRDnRDTpvYWF3WEkzDKNz7PxYzUpE1SYvVeE1vQT4pT05qBTvmsWqzqP8DHluXNoUR7NeiGBXJOjKzAFrhOMe/paX/C00hOPW5UEjAaJiyPjk2Sk10IzIAt+DL9RApmseA+3A0yTG0xDd0d9ReVgi90VkcNKuK4RCGn8l94I5+JXJ3adhAuXWgYaopBCgiLm5+Sa1sCwlET8BfFICYOlpGdcioIzgFBbiPAAV7rUO6mBIG4CtxmURnqKPxMUC24JIx3nufZCMeL29vxZTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SA1PR11MB9633.namprd11.prod.outlook.com (2603:10b6:806:4dc::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 09:16:21 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0223.017; Thu, 23 Jul 2026
+ 09:16:21 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "xuanqiang.luo@linux.dev" <xuanqiang.luo@linux.dev>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"roel.kluin@gmail.com" <roel.kluin@gmail.com>, "tactii@gmail.com"
+	<tactii@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net v1] igbvf: fix DMA mapping leak
+ on Tx error
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v1] igbvf: fix DMA mapping leak
+ on Tx error
+Thread-Index: AQHdGPLYzl7rsj8140KWgBobvdMKKrZ61eLg
+Date: Thu, 23 Jul 2026 09:16:21 +0000
+Message-ID: <IA3PR11MB8986476BDAE21FAC38BE45EFE5C02@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260721092323.39372-1-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260721092323.39372-1-xuanqiang.luo@linux.dev>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA1PR11MB9633:EE_
+x-ms-office365-filtering-correlation-id: acbef284-b213-4a17-e063-08dee89b0fb6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|11063799006|56012099006|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: C7yAxL+NYMWqHke9QQBdp5DRim2fYaXt5QA8UPUcmUi+4VeEioYH2/w76zAIbIcR/FncLstjJmOBDpdHcoccC9QdRWTWO2UVAasEPIzXAP2U3fdMA25c/xMpLp2twEm61zYa80CE2eIZZbFFQXnU8B5cZW/xDJWg8yBMp64gnnc+uFn+PeDpJ/o73OgBz/M5BW0PHX3t1JkzP2kBy9sXFco4VAkfpQ2iv4khkK9QZMlmkMTszItD0e+g4e07X4XTBDf+NinPJxJO8IIzNTpzBn5PfPB8lVE7grU+kIfMeZ7q8HGwYgPdM91BTsrQjP6eQD8C/HCMJ9+yKVxg4aduJDJzVt+EpSuQdP8UBUKvZ/vIYoA7DcTGeeO+NhbhHCtXwbtwxdywoRlr//QzGEj8cL7pOg5LyHd/fuP39/QwEjNx9mHVntit1a1Ez1HbCXqzL0nDydkq4mxcq+bT+S/L02l1Hlcvz7qo972sMZKcGjGT34By0M0MENU+ElXh0Kpc5kFxREtbMy3TFzw4s7giOsEKYT1Z4LQF7lUJbYJhGPG4bC8f82KthkC3I/9JpsPr9rbd/mQ+XWdQLySlzLFfF37EozDcGAtbBR4PkVNF0yiZK05xNlMp2HNkfaGclkHAT2FdNGciIFwzsws8OO26ce+upxgGJBw4H6tDHYtuEKOvELmli3Bi9jnp7ZL4DkvglxtQzyXdp2tGwU+HqFkhEXFvZstMFV6VuTPC5grnwLk=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MzaAfrwaZf9psZAR+zGf5gOw76C3lNiZ6hh0a5PZJZdSf4+wQ4f9CSHThb3/?=
+ =?us-ascii?Q?aAezImu/twoInWFjr96is2qvXpgf4WktZ20xzzWISTaT7ZP6/+AFe7ymq6XH?=
+ =?us-ascii?Q?weSa/+wIv/YBx9QLdLjUNldkar3XIGMt3bT60VzUAB+VcHM534Q9/k5+UvMn?=
+ =?us-ascii?Q?nmF/zAP1yGgUOVwpyQyqbXzcFI/IsxA/ZeLAsk2jbWB7VncnAdCV4qOc918v?=
+ =?us-ascii?Q?YUKjl/Mdx0J1/7kvAshNv93igbuNAWU7QSB9/+LD23H1VWPeAPRFBqWiFpxK?=
+ =?us-ascii?Q?6+VE8nMkFl1WEBFbF+Sd3UVyFqGwIKoOUEMnHPWHauzznppi3UjTFSopNyHl?=
+ =?us-ascii?Q?Pwb+MgC+zaIk38YWNYK5hFzbHO0OjyQuvIOovnUOQla/kF1VorAbbAUe/6Rv?=
+ =?us-ascii?Q?gH15Vt6sWQy4raqMFukbGWzRIrxOWzNpcKkrw/jIks/EVdKS7s+yBJUHipLU?=
+ =?us-ascii?Q?Bd3FGllsww1Xku/i/6KvE4V8tCZDtmcYftSPrufaKu1nk8aIKy+ETDxZjkmQ?=
+ =?us-ascii?Q?4ZsrYjuOJGuB489V+ddJV1FbmrZep8ZivzojYSKHl4rVTG4nDHd+hfqzFco4?=
+ =?us-ascii?Q?cMkk+hY7mRWgJmxcxq+G7l3OSyQWP6rdstZuGsmUPOHyYNWZ2kdBvPMmsYrS?=
+ =?us-ascii?Q?KgWXK2rv5BNym45BhZ1cKhky+2cNwPQgeiW1rZ5ZJg3l968OZUdn95ZA5U4S?=
+ =?us-ascii?Q?I8xUH2TfSmga7VhA1WX7IAfXwMLv9j/PmfHRncqncYkKPK2Sb5Duy3pxAP0X?=
+ =?us-ascii?Q?1NXuYBC795nrJVHG88gzUzEB9saXQMzN7ApHCPXzKcrA7HfZD1fNtnbG2yKZ?=
+ =?us-ascii?Q?wHYoCc1QIH2nLWzrDsWpG/6otxurSxin2NSuKgcFd0H9cxHh5n2kb0/QaStG?=
+ =?us-ascii?Q?gbtUScFhJGxAC4TgiO6Ji9HRAZRlArt85UIMSmWdC+unCGQ2E/fEWrZWi465?=
+ =?us-ascii?Q?iZywhtZ1HnTdSa8JPepEcy0rwtAQzQMQV7394gRQNIM7who6I79Qf5+dzTOO?=
+ =?us-ascii?Q?GxtQoZa2mRl0EI7Cjm3Zpz3Gr22SzGmx3Jrt2Y87NLGMuffXyGOuy0vDSiQv?=
+ =?us-ascii?Q?bR5+PTrF3I3KErTfsFmVbAMp83RrIwqkC627IhCtCmoekGtutB665bGFiE3m?=
+ =?us-ascii?Q?Eb8M5kXudhkM5YMZ8SYD901o01xGSM17YMtb9iZOs4/M5Lchka93u5aFgKf9?=
+ =?us-ascii?Q?kUfwCaiKqPgDfw1g5235BxbFaPPbT1ZoU2EI0fnerm9QeqanvX8La01x20ew?=
+ =?us-ascii?Q?vMunsAmkYbRMCPi+6uHAi8jXzEf0HlJGTVOzaYlg4IINrsudWW2re4aLuRlg?=
+ =?us-ascii?Q?03KwdkLvANt6vf7lF/Lz8rRFLT7uPKUPQaHfpPczf6nvg1r0t+3JZ0aablCR?=
+ =?us-ascii?Q?OzUe6ta9xWlvvJWCM8KgRrrY0E0+H3ahS7hn8YxDPkzXHGS/2Is6W2y+zjVr?=
+ =?us-ascii?Q?P6OcIciJUZ5z9RGat7SwJmt3qYaSyi5IKu6JQITgw0nBjQ0RSnpToE+Aht8A?=
+ =?us-ascii?Q?W3FuzYfvIjiLtVR6COD6h5mxg0cC0eSkv/WO7gT7lpoEHwXBM+xABo209iCe?=
+ =?us-ascii?Q?CgtXBIGmITRmCqL5VHdX12KLRIGD5qFCAo2Q9sojU2nyhtPa9OaZPAR8Rnpx?=
+ =?us-ascii?Q?ZiNb5HEXjESPmyY6dZt6k2ZsiLa1rih2TgZki0OdpoQKBoBaK6k2LzK0iHMK?=
+ =?us-ascii?Q?ZuMaIF8YPex9imhHPzdD5HfhMhCQL6cpbPSdGr1mzpRm9fO0jv9+V4LEP24A?=
+ =?us-ascii?Q?RsIYzs73nb/bXBN12l50yB4VLwbth6U=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+X-Exchange-RoutingPolicyChecked: WsDIFv5Y4X9QmcReOa+8n69eu3gkl0r/m0U4Hsb2NYr2sBMJeYMs54yb3+bB9wzSS7Z2hnKurdYY0RHYFyPoa9qW3urnsSXaJHtFe2aZNLFUKTzPgidC2vlVl7/q8nWRNLExzVFpvy+CBM25UwoLOr0i0KjP8lBNQ+utDsNZKh55BGVshvXjZgF89338HwbVpkpA3NZe3ntdl69ftO/HW66SzC8Nuu4yWbYdIfLYuYCv5QWirHj48HqGL3yL3mBvv5nlDmFDpL80iQaWB9dgg1delBIYFl6rBHx0OONVwlaH/RSNxV40jXkz+PjKFGNkPi5jsvmD4/3Ly3WwDwXQAA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: acbef284-b213-4a17-e063-08dee89b0fb6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 09:16:21.4195
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: F5fnEr6gzylrHeUXxQS9AieLdpeyTdwxs8xJwBRc6BRXyNwqsf4QGCK96iwsSbgqe+mBkH5paDvOeOLjLTR4KxD2EfnMb0NGdtRypgZ7/8s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9633
+X-OriginatorOrg: intel.com
 
-From: HW He <hw.he@mediatek.com>
 
-On devices that support both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST,
-the hardware or driver may deliver packets that have already been
-aggregated into a TCP GSO skb with frags[]. GRO may then
-aggregate the skb again in skb_gro_receive_list().
 
-This can create a nested GSO skb, which is not handled correctly by the
-later GSO segmentation paths. When the skb is segmented by
-skb_segment_list(), it not be fully restored to the original packets.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of xuanqiang.luo@linux.dev
+> Sent: Tuesday, July 21, 2026 11:23 AM
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; roel.kluin@gmail.com; tactii@gmail.com;
+> netdev@vger.kernel.org; Xuanqiang Luo <luoxuanqiang@kylinos.cn>;
+> stable@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH iwl-net v1] igbvf: fix DMA mapping
+> leak on Tx error
+>=20
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>=20
+> When mapping a fragmented skb fails, count already matches the number
+> of successful mappings that must be undone. Decrementing it before the
+> cleanup loop leaves one mapping active. Reusing the descriptor then
+> overwrites its DMA address and loses the mapping.
+>=20
+> Remove the extra decrement so the error path unmaps every successful
+> mapping.
+>=20
+> Fixes: c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of
+> unsigned in *_tx_map()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> ---
+>  drivers/net/ethernet/intel/igbvf/netdev.c | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/igbvf/netdev.c
+> b/drivers/net/ethernet/intel/igbvf/netdev.c
+> index c5ae15fcdca75..3d2aba5c3f126 100644
+> --- a/drivers/net/ethernet/intel/igbvf/netdev.c
+> +++ b/drivers/net/ethernet/intel/igbvf/netdev.c
+> @@ -2190,8 +2190,6 @@ static inline int igbvf_tx_map_adv(struct
+> igbvf_adapter *adapter,
+>  	buffer_info->time_stamp =3D 0;
+>  	buffer_info->length =3D 0;
+>  	buffer_info->mapped_as_page =3D false;
+> -	if (count)
+> -		count--;
+>=20
+>  	/* clear timestamp and dma mappings for remaining portion of
+> packet */
+>  	while (count--) {
+> --
+> 2.43.0
 
-Avoid this by setting NAPI_GRO_CB(skb)->flush for GSO skbs before
-aggregation.
-
-Signed-off-by: HW He <hw.he@mediatek.com>
-Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
----
-v2: Take Antoine Tenart's suggestion
-v1: https://lore.kernel.org/netdev/amB7wb1A2Oo2dv5d@kwain/
----
- net/ipv4/tcp_offload.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index 3b1fdcd3cb29..c363434a5646 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -332,6 +332,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
- 		flush |= skb->ip_summed != p->ip_summed;
- 		flush |= skb->csum_level != p->csum_level;
- 		flush |= NAPI_GRO_CB(p)->count >= 64;
-+		NAPI_GRO_CB(skb)->flush |= skb_is_gso(skb);
- 		skb_set_network_header(skb, skb_gro_receive_network_offset(skb));
- 
- 		if (flush || skb_gro_receive_list(p, skb))
--- 
-2.17.0
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
