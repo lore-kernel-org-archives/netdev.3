@@ -1,98 +1,66 @@
-Received: from out01-fra1-mx.uberspace.de (out01-fra1-mx.uberspace.de [185.139.157.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BE11448E0
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 18:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF33486E71;
+	Thu, 23 Jul 2026 18:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784832030; cv=none; b=q8q7XORMS1/lKnu78kBTfua6bRdg/BaxfKlYsJY+1B3j/KPWXJSmaIuU0m5BKOMV3BRwkSrKO0kYWHNlx3007SOgRO3PQBS5YdE39H68gvS4dS/WXi9OsiUJpdyR6BfULmvmA0f1UKHnm/5WAAQuwJVvxIbCxPiMsSmxVK721ZA=
+	t=1784832169; cv=none; b=Ev8COYjukfdenLFjNBL0nURrWCnQ17Vq7QJo56lnLi3aHQKU8GjntmHgfR0kV2rWy2kmMOXCAvGRwLJbu/y0Bo+hyrKHsNvlBeWfrZVSlExNvd6t/Z4DARDTncacnxPgBh+jV8+wPnqfmnOaWF82fTWkPpYq57O84GyttDy6sxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784832030; c=relaxed/simple;
-	bh=qAqmzyXTC9NvYGlDFaU0owkFxKPK107/2qy3dX3DHjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5guuHlnsV3R3aV92vyRAB2FsWQU/12a3a+XE1zqth9JYOU9FP6Ur6j7eLvywwjaZJQsEK0rkAwim3SrHB41b0WNGTb5GSxuC1INA8g1c6vOo5hDzmorp8JFrKCuYwe78V9wE0iR2LKGNid+4shDp7MStNA6C1VNr7Of7sSNiZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=RcTw5xHL; arc=none smtp.client-ip=185.139.157.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
+	s=arc-20240116; t=1784832169; c=relaxed/simple;
+	bh=ardEq7yeuDVzjAWmhKvljSKRY5cuItCxKLd2Lrcc7PI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d5rbw5mLwiNGQCIrC+LLVDzuEuhUTArmwQFepWlcqIvXu5GzcYIgV72O+SSmBRtwAzmuyzIHSk/j1rfkYR/CwfStLOCWaqiGTT6/2Kqyk/8WNHNPLOswJ5e8V7uRzB12Lo07zAcxynIHWBOPhsdFk/jYlO5kRg5t8j5vyws8RPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nG6UZfKe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="RcTw5xHL"
-Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
-	by out01-fra1-mx.uberspace.de (Postfix) with ESMTPS id 457F64029B;
-	Thu, 23 Jul 2026 20:40:20 +0200 (CEST)
-From: Simon Dietz <simon.dietz@plantwatch.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
-	s=uberspace1; t=1784832019;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qAqmzyXTC9NvYGlDFaU0owkFxKPK107/2qy3dX3DHjo=;
-	b=RcTw5xHLqU4BI2uDlpDkaUUOvehH0wQT++YOvHMGqI03TDOwmXTmu4IjOsrVunPDRW6ra2
-	SSGbj3OoG8awDeqaQQGTfHXtfT2hx/jV263jSKK6zNB2+ykCLl5BMaLVikVWnSES6NVaXQ
-	U2w4cEU2q0t1IuPa6jk5RrPOwjzmdMy7gM0NDtnf7wS4hCHuHu+FekmVxSlDbo1ssWa7MX
-	8Aqofaix3PZ7rEdt3wFbybbVkCWtWWczfpcOdlgTC0aJ0vuuPwN9UuUw6Z4ELu6db5Vhmi
-	C0MqAT7cvXANwsmdTS2FEJ66T/44YX/cftpwpTXRdXV8pMB837PYMof3pNMEEw==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
-To: andrew@lunn.ch
-Cc: andrew+netdev@lunn.ch,
-	dietz23838@hs-ansbach.de,
-	netdev@vger.kernel.org,
-	simon.dietz@plantwatch.de
-Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
-Date: Thu, 23 Jul 2026 20:38:19 +0200
-Message-ID: <20260723183819.2740024-1-simon.dietz@plantwatch.de>
-In-Reply-To: <7d4846fd-b997-4e74-b58e-42c3dd1de898@lunn.ch>
-References: <7d4846fd-b997-4e74-b58e-42c3dd1de898@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nG6UZfKe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78591F00A3A;
+	Thu, 23 Jul 2026 18:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784832160;
+	bh=6OrJ4LQv/v/rwfPFYr9xGGbCbOXjpbIbPh1WaZGU/mU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nG6UZfKey64+plhmre2Deoah5H6u1LVm/R6xWw45qqTdNMVWlOfRxr5Zn3apLOtvt
+	 Hs0L++wdaKAiSn8ZT0Cr22vgn1n2ACN629CeAjOWqBhIVHaNo741R6yheTy7SqfmLA
+	 pi0rw/7zk1dOabRqvCGCFa0HkSRE4Pb7STbkrZPtyk/7TSGhV1jgwCxz3cCa2NzZvM
+	 W9R6NQpjMwjKFW9nc7fXwSMTknBM2PXCT0bDMMZFaCiEKdjLSOJLH8/M/U/P/RExKd
+	 7G8CvVw4dzl+cQq0sswH7PP2YPTZ4k+ZDYQTo/y80hrXs5EirhWHCSDC9kQFaEk64y
+	 5vF8LsWf/byZA==
+Date: Thu, 23 Jul 2026 11:42:39 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, Stefano Brivio <sbrivio@redhat.com>, Oliver
+ Neukum <oneukum@suse.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] usbnet: cap max_mtu for drivers without bind
+ callback
+Message-ID: <20260723114239.709d2477@kernel.org>
+In-Reply-To: <ce31de54-d46c-4738-909c-91ef229b7d9e@redhat.com>
+References: <20260717151626.2913171-1-lvivier@redhat.com>
+	<20260723084319.40fee97f@kernel.org>
+	<ce31de54-d46c-4738-909c-91ef229b7d9e@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.45 / 999.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	BAYES_HAM(-1.45)[91.35%];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	LOCAL_OUTBOUND(0.00)[];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
-	ALIAS_RESOLVED(0.00)[];
-	FROM_HAS_DN(0.00)[]
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> Does 802.11p require these protocols?
+On Thu, 23 Jul 2026 19:20:30 +0200 Laurent Vivier wrote:
+>   	dev->hard_mtu = net->mtu + net->hard_header_len;
+>   	net->min_mtu = 0;
+> -	net->max_mtu = ETH_MAX_MTU;
+> +	net->max_mtu = dev->hard_mtu - net->hard_header_len;
 
-As far as my understanding of the standard goes, yes.
+But we assigned 
 
-> Are you allowed to use plain, boring, TCP/IP over 802.11p?
+	dev->hard_mtu = net->mtu + net->hard_header_len;
 
-I don't think so; the standard defines the option to transmit IPv6
-over GeoNetworking and the higher layer protocols (BTP, DNEM) kind of
-depend on the location, which is transmitted in the GeoNetworking layer
-and e.g. in case of BTP in GeoNetworking layer, only.
+two lines earlier, so this is just:
 
-> What quality are these patches? Hacks or mainline worthy? Is the
-> frequency management correctly done, which i guess means
-> wireless-regdb?
+	net->max_mtu = net->mtu;
 
-They are not too complex, mainly adding a few entries to a list (namely
-REG_RULEs). You may take a look at them, you'll find them, e.g. here
-[1]. Completely mainline worthy maybe not, because once world domain is
-used instead of the right one. But - at least I think - they are not
-too far away from mainline worthyness.
-
-Simon
-
-[1] https://gitlab.com/hpi-potsdam/osm/g5-on-linux/11p-on-linux/-/blob/master/patches/linux-6.12.patch
+is this the expected max_mtu for most USB adapters?
+I suppose so given the patch under discussion?
