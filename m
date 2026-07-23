@@ -1,130 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8805434E75A;
-	Thu, 23 Jul 2026 02:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525601F3BA4
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784772683; cv=none; b=GF/6uWv9GujnJ9qriFMBqHpxZ4xkf2HBbC+xoU6xvpZ3+EcGii1/fG9hvVLJZaQr2eJpfxFpm/TpRTW1Lb7We/2OjU2qdv/gBCDj6UTsT3CkLa5a+p0Qlho+WL2/xJ629mCwwv+/5Xen8fZz4K1SHGFa4CMCE/q1mvzFTGKdd48=
+	t=1784772763; cv=none; b=ictz2tZLTchgu2+FQmI/8l/QtboxRcsH3rpgTuTeMKV6pT6AkVWPGZ2kfrLOsi5jZmXWxnxo0uuGFsPun2GhsX90wC1Telxu9EyFnB0B8fv0KzKzLkqRdtBeWALMA4k1KemuUEU0bKElg2HvNGTkKvJ3ZIcz3c+TdZAQWK6HmmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784772683; c=relaxed/simple;
-	bh=b7bgA4GS9lfKOXMTzjt9PgQ7i+Hg/NN96aHcSylK5wQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pmVqimW+oL/2+CRAKVIt4EUpUK/VF3stfAjRz5iVxZXugTPrbOI+XS6MH6+MZnIp3hZRsTM7kUYjJjyP6SConX3KPyjsTjX4mdfIcKOa4Wo8VbYLLnoPtQXNpp9eXkP46VnxEXNtDMFjy63ux7J9N5YEzBbN1Zim5KAmeoOUU7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=trMrDaTU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1784772763; c=relaxed/simple;
+	bh=6RD5QV0ZyGDsCbjjxojg9DmVg9ScnIWENT8ewi6VM6Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ouCMGfKvza4vh3GFecl6H2vksK/eksgGAscuWXVxiD9VebJHqD3vXg3jA+wZcYAQMOyCkmwiPHuqyTjKOc2qCMAq7Ypj//MvyMfZ0h2lPzey1V07rf+EOUd0CQPI1TEkGlZwytJKpmmq19JU1KWfXY/SGOChhpa8Yw3MrwN4cTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M3k1Vlf7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="trMrDaTU"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0C57CC19425;
-	Thu, 23 Jul 2026 02:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1784772683; bh=b7bgA4GS9lfKOXMTzjt9PgQ7i+Hg/NN96aHcSylK5wQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=trMrDaTU9oGMpWKQv3StYauGZvFQGni9gGjJprxxwViNz+ngzk0i6E/qzFl21akXt
-	 Y5j9kkJ9OG1v5AmIe8T6sXWUiqc+H0XvHHitamFcknVTvuQwpsDXt9GkuRZkQM7L2x
-	 UpwINa+wnJFjarMDzhnBISO5zuIqy9lQXiRAYcuM=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA82DC531C7;
-	Thu, 23 Jul 2026 02:11:22 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Thu, 23 Jul 2026 10:10:32 +0800
-Subject: [PATCH v9 09/10] rust: macros: remove `THIS_MODULE` static from
- `module!`
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M3k1Vlf7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784772761;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/2Exbx18psvpECHHaE+xprlK5BZbn3LadFb5/XmWflU=;
+	b=M3k1Vlf7P4TrmC0UoNfFjbcomApVmNgHlmsIiVhmyk5pJipjJaNGyhaQUritCNmiEih6bi
+	7aKGea+Dfh8bD1xpaOVwilePysZqeU94exI2MSvbp6qZfBEOvcFFDBqS7PmnjBrNtYrU4B
+	TEIeXVDfAn/pW6jaNLLD0HA4lng20vI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-HqxeavqANvGXsyEsnXHC_g-1; Wed,
+ 22 Jul 2026 22:12:39 -0400
+X-MC-Unique: HqxeavqANvGXsyEsnXHC_g-1
+X-Mimecast-MFC-AGG-ID: HqxeavqANvGXsyEsnXHC_g_1784772758
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 493D61800661;
+	Thu, 23 Jul 2026 02:12:38 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02ACF1800258;
+	Thu, 23 Jul 2026 02:12:36 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  davem@davemloft.net,
+  edumazet@google.com,  pabeni@redhat.com,  i.maximets@ovn.org,
+  echaudro@redhat.com
+Subject: Re: [net-next,v4] selftests/net/openvswitch: add SCTP flow key test
+In-Reply-To: <20260722125528.0f192cca@kernel.org> (Jakub Kicinski's message of
+	"Wed, 22 Jul 2026 12:55:28 -0700")
+References: <20260719162657.3263089-1-houminxi@gmail.com>
+	<f7to6g1q1ct.fsf@redhat.com> <20260722125528.0f192cca@kernel.org>
+Date: Wed, 22 Jul 2026 22:12:35 -0400
+Message-ID: <f7tzezio3n0.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-fix-fops-owner-v9-9-c1c3af7f7bcb@linux.dev>
-References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
-In-Reply-To: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Igor Korotin <igor.korotin@linux.dev>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784772679; l=1856;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=b7bgA4GS9lfKOXMTzjt9PgQ7i+Hg/NN96aHcSylK5wQ=;
- b=XZI9XPcXFxW6ssnwu4RjhBeXuypNQUNTuRBLu+ygEQQcqK4O5f5EZ9xXYVaZ0tSYL3E4VYAqA
- kQqOLDz0hgIBLPSVtrfyYU82hXV4JZXZ6HWkCmNGPBS3X3KR6l5/Bur
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-All users have been migrated to `ModuleMetadata::THIS_MODULE` const or
-`this_module::<LocalModule>()` helper. The `static THIS_MODULE`
-generated by the `module!` macro is no longer referenced anywhere,
-so remove it to avoid having two sources of the same `ThisModule`
-pointer.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Assisted-by: opencode:glm-5.2
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/macros/module.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
+> On Mon, 20 Jul 2026 08:42:10 -0400 Aaron Conole wrote:
+>> > +# sctp_connect_v4 test
+>> > +# - sctp(dst=4443) matches client-to-server INIT
+>> > +# - sctp(src=4443) matches server-to-client INIT-ACK
+>> > +# - remove flows and verify connection fails, reinstall and recover
+>> > +test_sctp_connect_v4() {
+>> > +	local t="test_sctp_connect_v4"
+>> > +
+>> > +	which nc >/dev/null 2>&1 || return $ksft_skip
+>> > +	nc --sctp -z 127.0.0.1 1 </dev/null 2>/dev/null || return $ksft_skip  
+>> 
+>> This can probably be instead::
+>> 
+>>   nc --help 2>&1 | grep -q -- --sctp || return $ksft_skip
+>> 
+>> This reads nicer to detect SCTP support in 'nc' binary.
+>
+> Can we use socat ? nc incompatibilities are hard to deal with.
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index aa9a618d5d19e..23b6a1b456b80 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -497,22 +497,6 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-         /// Used by the printing macros, e.g. [`info!`].
-         const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
- 
--        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--        // freed until the module is unloaded.
--        #[cfg(MODULE)]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            extern "C" {
--                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
--            };
--
--            ::kernel::ThisModule::from_ptr(__this_module.get())
--        };
--
--        #[cfg(not(MODULE))]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
--        };
--
-         /// The `LocalModule` type is the type of the module created by `module!`,
-         /// `module_pci_driver!`, `module_platform_driver!`, etc.
-         type LocalModule = #type_;
-
--- 
-2.43.0
-
+Works for me
 
