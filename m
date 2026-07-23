@@ -1,75 +1,146 @@
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1E43EF0DC
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 21:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0FA3F6C22;
+	Thu, 23 Jul 2026 21:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784841026; cv=none; b=T3ge+2xV/Dw6HgAj/h7FLApp9bwSy9j1XrKqZ3LvI11e8ODJpks+WbfWEercMRabPvXVdTPYaLlGPJJ6wIbFtEGBa1QiTZCHgWgsdQl7/ZFV/cp4NwQc7vvyV40nNu+eZY2sdndDSVroOZitvmEbshKJHshBa7Ra0RAgte/7uHc=
+	t=1784841053; cv=none; b=iLcGvfKPA7H2ZzAZrhEeLzGB97BTxBqkp5UhSvVsTdWnRa3gYIXiJpSPs82k5rlK1t8mkoLTMhMkqQu0G+49LEzvN7TGeUxSsL2Bj4UjMhvboymE8IUTRANq7gD7Dpahu4r6or66+Z49XJ2nU9zWaqQC90C8a38ym5Hy18CBVCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784841026; c=relaxed/simple;
-	bh=+sRYIICTeDsWpxwN4rVMHGQi3H0f+n5S8Sb8FI0WAMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cl/PthVkp16jVjvimt2rcvSGjxE/BzNsGo12OckpoQiC9OZ6h95w7wc+0nmGmtpZO+4QzJYp7pQWys08O216hwZJ291FJ4Fug7Hqe4XM5bqjdGq377DM0pcmnBSLyGkyW42hygdTPRQNItaGc35T7HV4aRON6MOSXq9T680r9/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=pnXA2ruL; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1784841053; c=relaxed/simple;
+	bh=0onsvWqd3YLA8Ugz/XPAOOqHIJEj4tHBryHNYr362UI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=RIx63FPDHrQiZNVUHTISjKifq1Zo4WhpmphZPEBfj7xNYgcPqtYg5BWa5RBDnwJBbwMAKVAw1UYphmLeMCQ/TUNEidWmgV9fdPKWlK/3mW7Nm0j9L5+lZSAKh/2qxW8R1Oq+rhhO+yDLIUeGLuE4aJnNwbvI0Yuy9Uv6BckOq1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkODYz35; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="pnXA2ruL"
-Received: (wp-smtpd smtp.wp.pl 26550 invoked from network); 23 Jul 2026 23:10:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1784841018; bh=+sRYIICTeDsWpxwN4rVMHGQi3H0f+n5S8Sb8FI0WAMo=;
-          h=Subject:To:Cc:From;
-          b=pnXA2ruLzpqEf43x7MEG2p7jk/7e2pm4h+VcizEQfzkGFkWd3sBBCGEWFmdiw0ZPA
-           GYYN+PRCAXDpO2bxDTi2zoXY/w1ErVYE2zwPrHYTKsKUUM6qyH8FboUq7JlsU2VGJe
-           5EnpwC9yfbUPUhauPrSYjTTLSmYI+f0Gz123pS90U4Hq27wxgDNXifogNXh5p4JXfa
-           ga+eYiB+OZK8h1JPZggLa1YwB7WQUByBRtCm5QO7WvU8Mkr/+6m+KxWMFxFNAw1OaZ
-           HtGfUp0G6bI+t0+DKhQBSjS12sYT5nVmIxQR6zW0f5z1g5KNOKHT5bygXOA5wgsTTb
-           FtCA1ibO/2tGw==
-Received: from 83.24.141.3.ipv4.supernova.orange.pl (HELO [192.168.3.224]) (olek2@wp.pl@[83.24.141.3])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <andrew@lunn.ch>; 23 Jul 2026 23:10:18 +0200
-Message-ID: <d3665805-2084-432e-b438-4c0e5969ff80@wp.pl>
-Date: Thu, 23 Jul 2026 23:10:18 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkODYz35"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0881F000E9;
+	Thu, 23 Jul 2026 21:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784841049;
+	bh=5f9ZtsjVxvvVMvTLjI49xDxBHtnl7xTVDp8nqfIG+AU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=FkODYz35kP7ItLHXLj7+ej0aCz7/XB1I0nj2NlHbujPL2ltI3Mnx1VSjzH8o8y4rS
+	 E2ehk2LOEeW2IFH4HycAobCulyM6g9HO7sKrz77K80RYWQD39b/mZGOfsrpH1gw5hF
+	 by5G8VfCJllg0j3fdBRlmTF1q0AuFpnCqbPV7sILcHfy9sF0P/N25znpChnLHJkriy
+	 kZsOnBfAx15dpcU3r53MCTMobDleW9Yp//gn9AQdVMJqKrdMti1wprCiOnHuiPpcT4
+	 CbhpQe4ZfWYkjoRkAK/vlKML8N+cElkZ8nmm0sO8gqe3p2dVI/mV/mc7+WmvBXkM9U
+	 LEYm8WUGknPdQ==
+Date: Thu, 23 Jul 2026 16:10:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Zhenzhong Duan <zhenzhong.duan@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	GOTO Masanori <gotom@debian.or.jp>,
+	YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+	Jens Taprogge <jens.taprogge@taprogge.org>,
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Airlie <airlied@redhat.com>, linux-pci@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
+	industrypack-devel@lists.sourceforge.net, netdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v3 9/9] pci: fix UAF when probe runs concurrent to dyn ID
+ removal
+Message-ID: <20260723211048.GA857046@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ethtool-next v3 1/3] sfpid: print all implemented options
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: danieller@nvidia.com, mkubecek@suse.cz, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jbe@pengutronix.de,
- netdev@vger.kernel.org
-References: <20260719090458.659332-1-olek2@wp.pl>
- <419c2df7-6a46-47da-b4eb-e1a2f34a43cd@lunn.ch>
-Content-Language: pl
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-In-Reply-To: <419c2df7-6a46-47da-b4eb-e1a2f34a43cd@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: f91b0447c371369ad281fc19cf1ad848
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [4ZI8]                               
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK67INM1MX6H.1FA6WNE8RZ9R7@garyguo.net>
 
-Hi Andrew,
+On Thu, Jul 23, 2026 at 08:44:48PM +0100, Gary Guo wrote:
+> On Thu Jul 23, 2026 at 8:29 PM BST, Bjorn Helgaas wrote:
+> > On Thu, Jul 23, 2026 at 07:57:58PM +0100, Gary Guo wrote:
+> >> On Tue Jul 21, 2026 at 11:35 PM BST, Bjorn Helgaas wrote:
+> >> > On Mon, Jul 06, 2026 at 03:11:21PM +0100, Gary Guo wrote:
+> >> >> Dynamic IDs are only guaranteed to be valid when dynids.lock is held,
+> >> >> as remove_id_store can free the node. Thus, make a copy in
+> >> >> pci_match_device. Also, clarify that the id parameter is only valid during
+> >> >> probe.
+> >> >> 
+> >> >> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> >> >> Link: https://lore.kernel.org/all/20260619170503.518F61F00A3A@smtp.kernel.org/
+> >> >> Fixes: 0994375e9614 ("PCI: add remove_id sysfs entry")
+> >> >> Signed-off-by: Gary Guo <gary@garyguo.net>
+> >> >> ---
+> >> >>  drivers/pci/pci-driver.c | 28 +++++++++++++++-------------
+> >> >>  include/linux/pci.h      |  1 +
+> >> >>  2 files changed, 16 insertions(+), 13 deletions(-)
+> >> >> 
+> >> >> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> >> >> index 64b308b6e61c..92c17c116de6 100644
+> >> >> --- a/include/linux/pci.h
+> >> >> +++ b/include/linux/pci.h
+> >> >> @@ -979,6 +979,7 @@ struct module;
+> >> >>   *		function returns zero when the driver chooses to
+> >> >>   *		take "ownership" of the device or an error code
+> >> >>   *		(negative number) otherwise.
+> >> >> + *		The pci_device_id parameter is only valid during probe.
+> >> >
+> >> > The probe function takes a pointer to a struct pci_device_id,
+> >> > so I think the requirement is that the struct pci_device_id
+> >> > only *needs* to be valid during .probe(), right, i.e., the PCI
+> >> > core probe path makes its own copy of the ID and doesn't retain
+> >> > the pointer after .probe() returns, right?
+> >> >
+> >> > I assume the caller determines the struct pci_device_id
+> >> > lifetime, and it could be forever.
+> >> >
+> >> > Could say something like:
+> >> >
+> >> >   The pci_device_id parameter only needs to be valid during
+> >> >   probe.
+> >> 
+> >> As a contract on function parameter, the caller needs to
+> >> guarantee that it lives at least as long as documented (i.e.
+> >> during the whole probe) and the callee cannot assume that it will
+> >> be valid beyond what's guaranteed.
+> >> 
+> >> How about:
+> >> 
+> >>     The pci_device_id parameter is only guaranteed to be valid
+> >>     during probe.
+> >
+> > That's ok with me.  My only niggle is that this documentation is
+> > that the *consumer* end, and of course the consumer, i.e., the PCI
+> > core probe path, can't guarantee anything about the parameters it
+> > receives.  But I guess your point is that the *caller* must
+> > guarantee that the parameter remains valid during probe.
+> 
+> I'm not quite getting it, the PCI core probe path is pci-driver.c
+> which is the caller? Do you mean that the PCI *driver* probe path
+> cannot guarantee anything about the parameter it receives?
+> 
+> > The only thing the consumer can guarantee is that it doesn't
+> > depend on the pci_device_id parameter after the probe returns.
+> 
+> How about:
+> 
+>     The pci_device_id parameter may not be valid after the probe
+>     returns and must not be used afterwards.
 
-On 19/07/2026 17:54, Andrew Lunn wrote:
-> On Sun, Jul 19, 2026 at 11:00:35AM +0200, Aleksander Jan Bajkowski wrote:
->> SFP modules implement multiple options. Before the “json” option was
->> introduced, all options were listed.
-> Hi Aleksander
->
-> This is a common theme here, the json option. Are the three patches
-> for things you noticed for devices you have, or have you analysed
-> those json patches and think you have found all the places it broke?
+You're right, sorry, I had this all completely backwards.  I was
+thinking the pci_device_id came from a PCI endpoint driver, but of
+course that's not right.  The PCI core *supplies* it to the driver's
+.probe() function, and that .probe() shouldn't save the pointer.
 
-I think I’ve fixed all the broken places
+I think either your original text or your last proposal is fine.
 
-
-Best regards,
-Aleksander
-
+Sorry for confusing all this!
