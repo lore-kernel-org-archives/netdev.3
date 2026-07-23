@@ -1,148 +1,143 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013049.outbound.protection.outlook.com [40.93.201.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A05363C6C
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784800407; cv=none; b=VFU63JXJHZFKK5gQTuWZVy9EGzu1ke0WiJYmbgwha7IOx0YNYXpa2PPRHfK1IUpHUzPjUTZD1mm9iiK4V0UcY/Wa03P8/jzDPxpzQVLNrEkBxqNju6tqZwsDtnYqdY1rvqGkNmVCo0mRhVfyRVbY6wLXtcaYVp8LUlXzFsHxHLM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784800407; c=relaxed/simple;
-	bh=Elep9dk318qiFAULsOisrCYT4T7PWapJE4dhBhmOgSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rDW4x0G/dbYVVRnEXFG9MVXAaGuLSQJt/A+S/eTafGYAasNBQFL7ADJ5p7BXIvPIyXip+ZpdpRq1SyYf7NGZpBUtwCb6S8hLS+2iw3i3jwzYyME+2K9bS2QyKMPXOZNjAHFsi6cX4jIQGMLdy5TnbQE8doCpz1gHsxjy4eTPmaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bvEMhv1r; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F315B18D636;
+	Thu, 23 Jul 2026 09:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784800474; cv=fail; b=VAcIpl8jGQCltS0IZ6sph9NqTtgMsmC2vdPeMmOiKHg4wpSuK982LqQeYDl+6jhYyT5pLo1VjQII8SYmFRQ5wV8U9eoe+OGGoCjhwQgSFy0iYYvF7F9ixc2T8IfqAEewnBwz1dEIZgON4bN9xC2v0ptfOZWeTuukpdUmkUYNudY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784800474; c=relaxed/simple;
+	bh=MPWppvU7/Q+VZjakggjpMpe72+Th9iWjN68dXIJCH3M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bm+x6vAyoT3i3LXEgHCL3s7Qetj/uN+iJbJTBXm28EiZ2fIFOy6/RCv2ctOUKhPQeaLdeRskr2mry4S1+HnuCIUGS+t36yHF9LnuUCFGtl8X7xs2IWoeQsbFO/Zg6zCPvHlJLzbKB6DAAO9jj7dXnoc7mEKOwo3l5AeSg74WlC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mWKdHKNy; arc=fail smtp.client-ip=40.93.201.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bvEMhv1r"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4956242332dso4041295e9.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:53:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784800404; x=1785405204; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2UCbAtQQdcu6dcYCDB2RvhK675NVXdkkU/VK/UtSMAU=;
-        b=bvEMhv1rgsTdbbgSIv0NBvEg03ZUhwX21Ecp0i50Wc3sUFaiRqK3QKco+DRoCGNpX0
-         clfj3OkXxzO5a4iVVGxvDaAyCg5D+Zrb+uteOTg/Ms57LZtT0jOCx9ww/AeaMZ3F5dSL
-         NgFfj6SFyrOBAnfP7uuKYMKiRht0rW6HjPOzT2WBtLdJcDm0BvFhPyTvHnZCq+8Zq0LI
-         5uPkAH2FTUgEVUBDeLsn1W/zz2caHrxr/KVeQJ7OB1K/qtYZLpEqYCUP2086oSocUHJy
-         Tj5/0eqiBka5MwrsPbHCpswpm8jFbP0a3B+kxxAOOWjrKfrQHUHGbTy+iUfL+jxr1fB2
-         C3+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784800404; x=1785405204;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2UCbAtQQdcu6dcYCDB2RvhK675NVXdkkU/VK/UtSMAU=;
-        b=BMDTStNih85VuLu09MQgdkw3FFCcJreNB/rU0dnns1jJi3cdQDX9cwd+NxYEOb6kOF
-         yRQs9wVTuo47vUEr9xX/kX2shQ2PN3vECbygIGom4JUcdy0uGV4VNzJdAkqyEYjN8uIq
-         tVvyuIJm6C8j4s9GwvR09mMYiCyu95G86oXA7u+soP9Lkws2d7B8ZJ3r8bR4nGQtx5zD
-         dnloJ82GkgE3caATaiNV++xHCCFRW5M5SWP1eSvzIFEChiVjJKGqcrsKPoPBrPH3xKfh
-         b3L5t423lNXbxSyHVilKsUwXdI7G63lTEas2MgK87yeOAl7sWKbOMDb7LGnWz1Zlybnr
-         jjbg==
-X-Forwarded-Encrypted: i=1; AHgh+RpRHmFxaX1z7nhgjzjcCbqi8P0+EgAhRxSWOjA1O0xxxdCE2ONG39TIVoUvcpTagEB/sCYe+LQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwargeiYRsdoXs9Pv8f8w7CFgqobaNNM03gwCtiEDcfvVDiI66
-	tP3qqXhA0ZAqhF13tPaLlN3u/mBcYTBR/4+Stcuzpkg8CT98Lr27Nw8yFb2935dSpQ==
-X-Gm-Gg: AR+sD11QLY02EWIT6s4Hlc7iNkor6hHffggmhcrIQcJxkG5pKY/I/JmaMUKjCBTedJd
-	rIINStSJXqoSK1/WKQwKqyDxkQBsPimmTQjTw0zjpnS+u0SKuxCZkPKIaT198EGr1kceqQ3uql7
-	E6aNpSLcJwdZGjbUj37PJDcZn7C5DB8yrSWS1B18wYOhXNr0zrMWgoRSVr14ivM1BTUf8nmYTIm
-	KpW01aoRMUiL94jbyycQ0dls/uDZilTarmx1oMMn/kTHffkpGk8hFKOIZdB/fvnWhu5Xee2fU/8
-	b2iE0SxXSAEi+AwGAnw9ErMf/lrdR8HjXq+kA2WWmnCZcSHGWefLl8XbB5HLvmcWvamtVup7C6f
-	Xz7BpTbod7fuhxyAYD4XL+fxndPLLr4HnSgupMhli2mhTyKS5wNLZWRcfsraSBxGHIDQB5ycIgt
-	zKP2uVGbb75qVKSv+0ngVKZtKUoKgRvxY1
-X-Received: by 2002:a05:600c:1f92:b0:495:4fd5:570 with SMTP id 5b1f17b1804b1-49573cbe8b5mr24908135e9.4.1784800403454;
-        Thu, 23 Jul 2026 02:53:23 -0700 (PDT)
-Received: from google.com ([2a00:79e0:288a:8:a914:97a6:4219:66dc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956ab45df3sm99358965e9.1.2026.07.23.02.53.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:53:22 -0700 (PDT)
-Date: Thu, 23 Jul 2026 11:53:17 +0200
-From: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>
-To: John Ericson <mail@johnericson.me>
-Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Cong Wang <cwang@multikernel.io>, Simon Horman <horms@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Rheinsberg <david@readahead.eu>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sergei Zimmerman <sergei@zimmerman.foo>,
-	network dev <netdev@vger.kernel.org>,
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-	Paul Moore <paul@paul-moore.com>,
-	linux-security-module@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: unix_stream_connect and socket address resolution
-Message-ID: <amHkjcsSM80Hly1I@google.com>
-References: <20260703073948.2541875-1-John.Ericson@Obsidian.Systems>
- <20260703073948.2541875-3-John.Ericson@Obsidian.Systems>
- <e6f54c5b-2c92-4772-b2f9-5c21e2ec50a9@app.fastmail.com>
- <20260718215855.07284fb1@pumpkin>
- <85991dc3-6fa5-4466-a0cb-b407291cdb44@app.fastmail.com>
- <9c437c7c-7919-41e2-9161-fc94803a9b34@app.fastmail.com>
- <20260722.bfca37efd700@gnoack.org>
- <e4adebd8-181a-47b7-b82b-b6d9baa6b203@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mWKdHKNy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oLb6ZrxxSOG7aqIpMdY2XGAMQ8O3aHEQtPzE2LrJ9Su3NxxYWQzACMV7tV67BVkGaIxgsaLCwODG/IChMLRVsMC8NMvJPP7i8bjNf8BzIMrZdAj/YmNAuN9nGX/DyBzLzZ+DKQoFQiYTHM+E5IzXHOALygruCRl36+pM+UAizKDKJu7H0OPA3WHKztah0cTx9KHejzDM99KO3j88Cz8MRP6O+8G7TE7U/NIXaXtioaZo5bUR0AN9gfFTyJ114FDAsSCR/Ipd5SxVUPmD5+++w3ialYZjNXMlPzP5Bvt4ykLYyZs55NN9PtAXgtZuA+l89kl7KmdyppwbiHvF9jFuEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=or2fAtZ6XOmYgIK9BbTAp/74W/opCNK2yn7eznoPS/E=;
+ b=HycUj0nfv58wZsy5ZxS7fZDPXQPIFfG3+a+b+c+fse03WC7hVC7XlRb20bhzXRT7myb951x6AsS6grrCXMr5UsMcYa0K66iBVv50TG/mgZaDCPB2NWk+YLmDUN5pY7phfPBsO5k6ti58QfoKyuiCdHPdAQBfi/HDUY221CwUyxylX5UvnOZ3IRYfy8eLNaVj5ITUdSUoSBahi/+YCc/oXEUdVR22ljIXBMgrTg7jpDEC+BAREK6z1SyARbi1a8pvi2Y5u8MSBpJR4TU8oelXugWrJl0MR0TVwBMhh2WSFiVKYfLa8hXQqmPnmCW2DiP1RGpy1YO81+qQEJJtOQ4e3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=or2fAtZ6XOmYgIK9BbTAp/74W/opCNK2yn7eznoPS/E=;
+ b=mWKdHKNySP/4evUvjIL5yTT+LsUZ7HcI7mnIRuBTzjvk2rTfyMKYGcNIeFBE9zkPX13i8oZ8QOtcJrw2QX31qNvfjAp/u8TuOwrmU6d4a5rjRWzv/V14av+sw6MWAec/pvH6dfy+mArenYhbDN794Vz1AdWELO8Bask/x+GSxHkpDDPm8vycmersw9QzRuS+W3kS2fQmICeAHSEtRqzDLnqg1Tjz67jzSUb0ExZyeTe/VveCOYmW3XOXllQ1073SG6oh0/CGMyTr+2QKN4J4Bmdect3OcR3+L8zdxkOjDfGGpD7an6mShxQukPYiFoERyrK0OoEh7pBnFqPJuTNnXg==
+Received: from MN2PR06CA0005.namprd06.prod.outlook.com (2603:10b6:208:23d::10)
+ by IA1PR12MB8192.namprd12.prod.outlook.com (2603:10b6:208:3f9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 09:54:27 +0000
+Received: from BL6PEPF0002256F.namprd02.prod.outlook.com
+ (2603:10b6:208:23d:cafe::1d) by MN2PR06CA0005.outlook.office365.com
+ (2603:10b6:208:23d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
+ 23 Jul 2026 09:54:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0002256F.mail.protection.outlook.com (10.167.249.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 09:54:27 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 02:54:14 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 02:54:13 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 23
+ Jul 2026 02:54:07 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Akiva Goldberger <agoldberger@nvidia.com>, Alexei Lazar
+	<alazar@nvidia.com>, Alex Vesker <valex@nvidia.com>, Cosmin Ratiu
+	<cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Erez Shitrit
+	<erezsh@nvidia.com>, Feng Liu <feliu@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>, Kees Cook <kees@kernel.org>, Leon Romanovsky
+	<leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Parav Pandit <parav@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Simon Horman <horms@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Vlad Dogaru <vdogaru@nvidia.com>, Yevgeny Kliteynik
+	<kliteyn@nvidia.com>
+Subject: [PATCH net-next 0/5] net/mlx5: HWS misc enhancements
+Date: Thu, 23 Jul 2026 12:53:44 +0300
+Message-ID: <20260723095349.1890983-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e4adebd8-181a-47b7-b82b-b6d9baa6b203@app.fastmail.com>
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0002256F:EE_|IA1PR12MB8192:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5769525-cc71-4482-f3ae-08dee8a0625f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|7416014|36860700016|376014|11063799006|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Gj/B8/PTbfD+gBrntBBLT836H7pQJ80d+jpNVH7XSYpBLM+w9OUC5OxaBpm0nr8WGDjdldd6b2eobFtz1M3qifEAUV8HOAGebWHtTEneLVyuySXehxdRti1dm2Cuvg8txJVko77QLSlc1i/VjRHu81AYW3urG10Q0YixOeh/0QBnNMTiCjH0MW+ZFCZWSC4hrONjBh9DCaWtR1SNccrGbA/o3v6fLuuEzFHeCit9H12WI0MxsqblJTZBMNp97VRhDrHQ52Hbivo2dd9zUCnlq+7mhLp1qEUrXTUesQNymdRkFTpsr4xJoqZ2SrCDZNdcshT/irg/IDJ8O3GSFfVDW5xoF6Gclm8IrfBzhjOrbK4GIOJUcTtGKrxpM51b3ZY1K/nq/E3ZFlWu0wjJraVN6lARc96Fhtv2SNwUqZ41zpLy4Qwm9qaDJq/5L2+EmLc2yM2sHZgU/mHfFv9OdIY3pnYg06Cs3OI6IUaVX+9hk4HKl9WqW1H/8iCoTYebf3jfQE9q8mRPHsbz+uv+1AG91vO1/z8oDGnkTNiWsKNR8kZQSTda+IMXxwSTvrdU9wOOFhtPdDXG8FZmwGVIdTcI6fc4gvdvoEU5AK5VorTwiDCdD6EF14sZxhLUod02+OO3gbO1ATZw/yIYN3dagc8/qjNciznbEdWWCJw57EU71in7vM7BB71kGPQMmpCq+KEfXfW4TDQDfRtQk/K+QWQD/g==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(7416014)(36860700016)(376014)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	62aDxLOHj4wx3A+7zc2bHDoZZzesoVoEgng+enxzRZGpkq8j6B84lb7zQw3vZHP7vIG3SC0yEFaEZSrVZyOrNeiZHsdvuBWlIu2ksFbsRHp0Yr2ZU/IwLUU7GyT2bcVVdh3GPJTKelZo9dh8BC4MG+YTIgfSVY12XMaqsssVW4tbEUtSGRMh/p8Y7SobzuA7yYvV0TXT9ZYdz3wMFrqV127ds7KauEmP3wKXAARBpoqmd9PnHJGftH8j2eJZzB2Gl6RtaK0RgKeZblQTEZtp3BcdVKmdHKQj/nLTOBvfWWaeQ15+5fKRYXv+8JbAJkdYJh/VyKUqa3Ts4Bn1CTKXVvArog4jdWV78bEiuQH11G5WZPwoI/jKCjWsrfc0SnqyBmd6JB8ZFDQYTxmgk69tCnMjzA2fd1t09ya9j6m8GP/FfBkTeDpG5xmVDbufHhWl
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 09:54:27.4180
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5769525-cc71-4482-f3ae-08dee8a0625f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0002256F.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8192
 
-On Wed, Jul 22, 2026 at 12:02:24PM -0400, John Ericson wrote:
-> Thanks Günther!
-> 
-> This example makes sense to me. The behavior still feels a little odd to
-> me, but I can understand the practical benefit of what you describe, and
-> also why changing it would definitely cause breakage.
-> 
-> I have one addendum to ask then which is: what if before the loop we
-> pre-resolve the parent directory as a concrete `struct path`, and then
-> on each iteration of the loop resolve only the final path component to
-> the socket itself? (That is a single-component lookup relative to the
-> pre-resolved parent, to be clear.)
+Hi,
 
-I am not sure about that.  I think the difficult question here are the
-ordering guarantees on file system operations:
+This series by Yevgeny brings several misc improvements to the mlx5 HWS
+driver.
 
-The file system can be in a different state in the first and the second
-half of the path walk, and I'm not sure whether that wouldn't violate
-file system ordering guarantees.  If you intend to send such a patch,
-I'd recommend to loop in some file system experts (e.g. Christian
-Brauner).
+Regards,
+Tariq
 
-What is the underlying problem that such a patch would solve though?
-Do you think that the performance on retry is such a concern?
-(After all, you'd also have to do a "split" lookup in the happy case,
-and it sounds likely that that the retry improvement does not amortize
-the happy path penalty?)
+Yevgeny Kliteynik (5):
+  net/mlx5: HWS, Print more details for bad completion
+  net/mlx5: HWS, Log syndrome on STC modify failure
+  net/mlx5: HWS, Set the num of queues only when alloc succeeded
+  net/mlx5: HWS, Remove redundant MLX5_SET in RTC creation
+  net/mlx5: HWS, Remove redundant FW command when reading caps
 
-(This would have to be explained in the commit message as well, per [1])
+ .../mellanox/mlx5/core/steering/hws/cmd.c     | 15 ++--
+ .../mellanox/mlx5/core/steering/hws/send.c    | 72 +++++++++++++------
+ 2 files changed, 56 insertions(+), 31 deletions(-)
 
-[1] https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
 
-> Per your example, a legitimate server restart recreates the socket inode
-> in the same directory, so this still picks up the new socket and
-> reconnects, while avoiding the effect where a concurrent
-> ancestor-directory rename causes a wildly different socket to be
-> resolved. Hopefully this preserves the intended use-case.
-> 
-> Note that this does mean recreating the parent directory itself at the
-> same path would no longer be followed, and a rename/unlink of the pinned
-> parent would cause the lookup to fail rather than resolve elsewhere.
-> That seems like the intended, safer direction to me, but flagging it as
-> a deliberate semantic change rather than an accident.
-> 
-> If this sounds like an acceptable middle-ground to everyone, I'd be happy to implement it.
+base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
+-- 
+2.44.0
 
-—Günther
