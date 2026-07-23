@@ -1,394 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BD042BEA5
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33742B326
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784799459; cv=none; b=psdl94xlGclAZE9L3evpQFt31p04ibVnFeS7Ra4YmipWdVvzYYNZkiPcl6iC1E+jYNf3/GEAgAhay3GT6i2/W+6Jr6JtSvvKP+NJP/8GmFfLRWHOZ8WJMpQ9triYeg30aMYVvwW+N9gwtqLc2FZODfSvne/nSSOlES355j5IE1U=
+	t=1784799552; cv=none; b=ijuDpJViyMiaLy48bBneabkSeGD/8CUgGiQEzsDTlxUv3CCpR5Qi34unI1cXnb0K6CmXp5/VGBvwot8aXm0Vj8efsb1FEQZsvPL2uWYsikJOIIvzWWQaVvv32lLw4JoB2f15wYB8DVD3wIvHoBOETKIQe+7psfPgVzBLWuIlNhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784799459; c=relaxed/simple;
-	bh=uuroRO3PQNvIm4FISD9zq0ejBx0YM6M5SFjXrwLtniQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qCiWkuIPJnsvnCnaGXXKwwLzNuuK5eTVrhggCX2FAg8iTErSuhLO4vqlRygpD00h+XpJH0vlfjnjlsYxy6T1XXlsatOKtZKNLHmgEywrxJkWVaC9fzcR/pkdNNPJtCvGGR16GpOSYiIa492iwO2z3YlJyG4jQUMVy3+R1YIVc3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIGuOm0T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784799552; c=relaxed/simple;
+	bh=OZk86Nuk8QhbqXeqWRzYzNHQIe/fONDTO1JMIin17us=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Eu0Pr8+JCd0uostl1gI0j+GdDzSR8u/2riLgUUtKlnNQu+rB9yDncRwF5eOromNYkbebBoULgdSxQguXlAgbuF2XK9XghLSXMY9F4xOGW0rfQgLVsj6SzrrQoAl+dh0sqx/m2rLIFHcbWWqOoeHSpL6Divc8u01Y2rmav8Wn6r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y3M3ilpi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MnMWbCZs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIGuOm0T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B751F000E9;
-	Thu, 23 Jul 2026 09:37:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784799456;
-	bh=OxVk2+UVVLIVG8MOOK8n1Qk98G/VcJJx7+xhyJUmySQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nIGuOm0Tg3f+CtN29aoHhYMXP5ti0x1rKAOPXFEXWWjtYEchoeKUZkf5HKqItal1T
-	 ffLGF7BvvnVj61D3XscEiVHnVLiXXeC6WlgLqGsHs6KXwnj8+U4U2I3KOqmj+FBCHk
-	 3G8KUCFYe3gc1HNBT0wOjVk1HLWuXsWYl5DI2GedlZQWnDSpMP6ICwREyLUnoH1EjH
-	 dLyB00yN27O/dwWmHrel4In1c2Ro1qxLt12fcCXo2/pT8/1zRFTOSaTb+pcZa4QTGi
-	 0ptcAkJWizXXQCpgOJG1Di1W9Y7w/VLLH1OWXz1/6KNsXvzyvheRmvEYli2vK7VmKh
-	 CclwGiTmxIuhA==
-Date: Thu, 23 Jul 2026 10:37:22 +0100
-From: Simon Horman <horms@kernel.org>
-To: jiawenwu@trustnetic.com
-Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
-	linux@armlinux.org.uk, aleksandr.loktionov@intel.com,
-	jacob.e.keller@intel.com, michal.swiatkowski@linux.intel.com,
-	kees@kernel.org, larysa.zaremba@intel.com, leitao@debian.org,
-	joe@dama.to, u.kleine-koenig@baylibre.com, weirongguang@kylinos.cn,
-	fabio.baltieri@gmail.com
-Subject: Re: [PATCH net-next v11 5/5] net: wangxun: add pcie error handler
-Message-ID: <20260723093722.GF418547@horms.kernel.org>
-References: <20260716073822.24356-6-jiawenwu@trustnetic.com>
- <20260723091639.574355-2-horms@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y3M3ilpi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MnMWbCZs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784799549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z8L9jKqKY3esq3XP/zkPIB6l+yUZzZQXNNleYISjsJQ=;
+	b=Y3M3ilpifscZhMtPYbty+6jXECs0k3a81bL6nqNpZEdWjvLWaRjmjbn0vOZf7hTtFe16uP
+	M1nb8Dl+XxSFagaiVBsrEcG5V7MlAsyATNMDKYPFJ31NWKpuN3kqVOscA4LV4OAnTTtcJw
+	mTVDmZ3mX4IX28vxF2OTIrP9yk7Ny0c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-o88ApSMsP5Gef0Lt0-o7Ng-1; Thu, 23 Jul 2026 05:39:05 -0400
+X-MC-Unique: o88ApSMsP5Gef0Lt0-o7Ng-1
+X-Mimecast-MFC-AGG-ID: o88ApSMsP5Gef0Lt0-o7Ng_1784799544
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f8158485eso454215f8f.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784799544; x=1785404344; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z8L9jKqKY3esq3XP/zkPIB6l+yUZzZQXNNleYISjsJQ=;
+        b=MnMWbCZsBlyG8AMKj3sabRJQx11TZHMt05EfsbLrLru9T2uxIrXr9iMQtxAiOTd73B
+         EikmzV5bujs5NhRaDHE3bcOgNZH5MCFuwZ2UJnGqqs26dfn2gFKLHFXjE210TENpQyEN
+         lKFHHo4BoqlX8o9H3J8JeaCJTLJLidBVhBmBURjzgmRvP1N+Wnn6dTlaozUqJ8IaCGRB
+         6QoEZdkmOd94JHA8dUfs9L5d3u+330z1KQcBvrFvvd29JIOBXN28tXuiyNiEAdRA19D1
+         blvVP2bps8ALIL9kN/oUyXb7FM6xKjVJ6H0Y914xIrCbeGttdXMEs6CJh9b7Ukdh6AI3
+         YxRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784799544; x=1785404344;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z8L9jKqKY3esq3XP/zkPIB6l+yUZzZQXNNleYISjsJQ=;
+        b=YL8EOyKP3EI8Jn9a6NzpeOiksKZfp5TUxe/YfY/LSbF0kpd/U77OAfdE/4WdmIjsrg
+         +wSDLlMieQEaygGf0OJSZKDO1F6ScRxZ24HD59m52B7FDgmffczFTPPzTRRWXP5YFaTG
+         DIxw2nbdb0Fd68hHpyHKkiTWXA1/mrYE8HdDyAu3PL8teGtX7CbiTj0rkHMGBHwhHYLU
+         tHITshIA3R04zaNzvAX/LoY6bO0bth2Ma4bchEMYaJDhSVekDa3h7iK9hLmojK/7X+K1
+         5TLF62AloPurq7AEpUMCqFgE6dXUFKGPzH+XVOwcBQN6vpf1RNlBd/eRmMY1qkZzKkcI
+         zKcQ==
+X-Gm-Message-State: AOJu0Yyp2ML08SjaLPWmIGlSYNzyNmIiP1uLH1jUO5BMM8+UcW5c5bkg
+	NWDQ+hx8KibgJpClTp9D+nH/afclhbtvoX6uZ2l+TZ93kIvhewv1VtszmokaOK2TAMRtQ1G3XR9
+	RGiMdWCoxrZB8GrKmvFGGZnrgdBcepU3ReTpPqFQISeCaW4bdv6z50atkYQ==
+X-Gm-Gg: AR+sD11iZxDBZViFrnE1Dto6zRamWuOsDUh+mB2qoa0Z179DZMV1PLF2WRAPc3fNZ6F
+	F46CSWuqVASgC2M/Di5lEBkNcPThDHdEMeZM0UhsK7r4it65V2j71TbYmDS9CSRgGL0Nm0OSjjB
+	Z2h0iSFjuPz+xZNfFbRLSDs9lEbKC6351uKCb6hNJoWY+iDwBkaF/ykMaHRJ8I6bDi6y6WUxzEL
+	n8s15ov4NiCHLT63pIHPZWVorlGUm2qmlj0nBUow9m8U1SKQfSjfJWMQafe6toKqFmmOtbSXRq8
+	xIVtyXMU8dJ9tvxokhK/yOWDGo5/o+Fn+hyKjuhV/bUp/sUl9Qgo4PWPTnsbj8kNxV7srD8U4+o
+	yTFpql5LT2SVMFhMVuQbqs8ltCTUpgegJ9NLUgJS709IQc6LSf0+dIfRhLnHjmwRTewi+oLkYN6
+	Xm3g==
+X-Received: by 2002:a05:600c:5656:b0:495:5cda:52ec with SMTP id 5b1f17b1804b1-49573ccf784mr17578945e9.16.1784799543693;
+        Thu, 23 Jul 2026 02:39:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:5656:b0:495:5cda:52ec with SMTP id 5b1f17b1804b1-49573ccf784mr17578705e9.16.1784799543249;
+        Thu, 23 Jul 2026 02:39:03 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5c4sm13460775f8f.8.2026.07.23.02.39.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 02:39:02 -0700 (PDT)
+Message-ID: <7f8950cf-701a-495c-816c-b26fba328d83@redhat.com>
+Date: Thu, 23 Jul 2026 11:39:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260723091639.574355-2-horms@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 00/15] bnxt_en: Add kTLS TX offload support
+To: Michael Chan <michael.chan@broadcom.com>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, kuba@kernel.org,
+ andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com,
+ andrew.gospodarek@broadcom.com
+References: <20260629184921.3496727-1-michael.chan@broadcom.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260629184921.3496727-1-michael.chan@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 23, 2026 at 10:16:39AM +0100, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260716073822.24356-2-jiawenwu@trustnetic.com?part=5
+On 6/29/26 8:49 PM, Michael Chan wrote:
+> This patchset adds kTLS offload support for TX direction.  A number
+> of new files are added:
+> 
+> bnxt_mpc.[ch] handle midpath channels (MPCs) used to offload kTLS
+> connections to the chip's crypto blocks without going through FW.
+> 
+> bnxt_crypto.[ch] handle the crypto interface and resources.
+> 
+> bnxt_ktls.[ch] handle kTLS offload.
+> 
+> A new CONFIG_BNXT_TLS is added to enable all of the above.  The first 6
+> patches add the MPC logic including resource accounting and reservations.
+> The next 5 patches add the crypto logic to handle the crypto resources
+> and to send/receive control data using the MPCs.  The last 4 patches
+> add kTLS offload for the TX direction.
+> 
+> There will be a follow-on patchset to make the TX offload more complete
+> and to add the RX direction offload.
+> 
+> v4:
+> Fix kerneldoc prototype warning and uninitialized variable warnings reported
+> by Jakub.
+> 
+> Fix most valid Sashiko reported issues.
+Sashiko has still quite a bit to say on the series:
 
-Hi Jiawen,
+https://sashiko.dev/#/patchset/20260710042400.3996847-1-michael.chan%40broadcom.com
 
-I'm very sorry but my previous email was supposed to come with some
-commentary. Somehow it vanished between entering it and the email being
-dispatched.
+AFAICS genini feedback is a superset of nipa.
 
-Firstly, thanks for your updates since v4. Sashiko has still managed
-to flag some issues in v5. For the other patches of the series, 1/4 - 1/5,
-these all seem to have been rated as low or medium. So while I'd appreciate
-it if you could look over them, I'm only forwarding this review which
-has some more critical items.
+At least the cacheline consideration on patch 14 looks real. Bitfields
+are usually not the preferred choice for fast-path, but in this case
+could help.
 
-> ---
-> Subject: net: wangxun: add pcie error handler
-> 
-> This patch wires up pci_error_handlers callbacks (error_detected,
-> slot_reset, resume) for the ngbe and txgbe drivers, adds a
-> WX_FLAG_NEED_PCIE_RECOVERY flag plus a down_suspend op, and routes
-> ndo_tx_timeout through a check that inspects config space and defers
-> to the AER path when the device looks disconnected.
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > index ee27f96735dc..0cb99e456a1c 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > @@ -4,11 +4,120 @@
-> >
-> >  #include <linux/netdevice.h>
-> >  #include <linux/pci.h>
-> > +#include <linux/aer.h>
-> >
-> >  #include "wx_type.h"
-> >  #include "wx_lib.h"
-> >  #include "wx_err.h"
-> >
-> > +/**
-> > + * wx_io_error_detected - called when PCI error is detected
-> > + * @pdev: Pointer to PCI device
-> > + * @state: The current pci connection state
-> > + *
-> > + * Return: pci_ers_result_t.
-> > + *
-> > + * This function is called after a PCI bus error affecting
-> > + * this device has been detected.
-> > + */
-> > +static pci_ers_result_t wx_io_error_detected(struct pci_dev *pdev,
-> > +					     pci_channel_state_t state)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +	struct net_device *netdev;
-> > +
-> > +	if (!wx)
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +
-> > +	netdev = wx->netdev;
-> > +	if (!netif_device_present(netdev))
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +
-> > +	if (state == pci_channel_io_perm_failure)
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> 
-> [High]
-> Should the pci_channel_io_perm_failure branch perform teardown before
-> returning?  In this branch the device is guaranteed gone forever, yet no
-> netif_device_detach(), wx_soft_quiesce(), or pci_disable_device() runs.
-> 
-> The service_timer keeps firing every couple of seconds and
-> wx_check_hang_subtask()/wx_update_stats() will keep doing MMIO reads
-> against the disconnected device.  On arm64 an MMIO to a disconnected
-> device raises a synchronous external abort.  TX queues are also still up
-> and will keep taking skbs through ndo_start_xmit until remove() runs.
-> 
-> Compare with ixgbe_io_error_detected() in
-> drivers/net/ethernet/intel/ixgbe/ixgbe_main.c, which performs
-> rtnl_lock/netif_device_detach/ixgbe_close_suspend before the
-> perm_failure check.  Would applying the same ordering here work?
-> 
-> > +
-> > +	rtnl_lock();
-> > +	netif_device_detach(netdev);
-> > +	set_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +	wx_soft_quiesce(wx);
-> > +
-> > +	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-> > +		pci_disable_device(pdev);
-> > +	rtnl_unlock();
-> > +
-> > +	/* Request a slot reset. */
-> > +	return PCI_ERS_RESULT_NEED_RESET;
-> > +}
-> > +
-> > +/**
-> > + * wx_io_slot_reset - called after the pci bus has been reset.
-> > + * @pdev: Pointer to PCI device
-> > + *
-> > + * Return: pci_ers_result_t.
-> > + *
-> > + * Restart the card from scratch, as if from a cold-boot.
-> > + */
-> > +static pci_ers_result_t wx_io_slot_reset(struct pci_dev *pdev)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +
-> > +	if (pci_enable_device_mem(pdev)) {
-> > +		wx_err(wx, "Cannot re-enable PCI device after reset.\n");
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +	}
-> 
-> [Medium, Low]
-> When pci_enable_device_mem() fails here, does wx_io_slot_reset() need to
-> unwind the state set up by wx_io_error_detected()?  WX_STATE_DISABLED,
-> WX_STATE_DOWN (via wx_soft_quiesce), and WX_FLAG_NEED_PCIE_RECOVERY all
-> remain latched because the clear_bit() calls further down are never
-> reached.
-> 
-> If remove() runs later, ngbe_close()/txgbe_close() reach
-> ngbe_down()/txgbe_down() and call ngbe_disable_device()/
-> txgbe_disable_device(), which do:
-> 
->     if (test_and_set_bit(WX_STATE_DOWN, wx->state))
->         return;
-> 
-> so the queue/ring disable MMIO sequence is skipped.  Similarly
-> ngbe_reset()/txgbe_reset() early-return on WX_FLAG_NEED_PCIE_RECOVERY,
-> so wx_flush_sw_mac_table() and related MAC cleanup is skipped.  Is that
-> intended?
+Also the quite convoluted refcount/bit testing locking schema seams to
+foul the LLMs and is IMHO indeed hard to follow. Any chance to replace
+it with plain lock/spinlock?
 
-Simon says: The issue below seems to be a suggested clean-up.
-            I don't think it needs to impede progress of this patch-set.
+Finally but likely the most important point, the expectation is for you
+to address sashiko feedback alike any normal review feedback; you could
+debate it or you could address it, a reply on the ML is expected in both
+cases.
 
-> Separately, wx_err(wx, ...) here expands to
-> dev_err(&(wx)->pdev->dev, ...) and dereferences wx unconditionally,
-> while wx_io_error_detected() explicitly guards with
-> if (!wx) return PCI_ERS_RESULT_DISCONNECT.  Should the three callbacks
-> be consistent — either the guard in error_detected is dead code, or
-> slot_reset and resume are missing an intended check?
-> 
-> > +
-> > +	/* make all memory operations done before clearing the flag */
-> > +	smp_mb__before_atomic();
-> > +	clear_bit(WX_STATE_DISABLED, wx->state);
-> > +	clear_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +	pci_set_master(pdev);
-> > +	pci_restore_state(pdev);
-> > +	pci_wake_from_d3(pdev, false);
-> > +
-> > +	rtnl_lock();
-> > +	if (netif_running(wx->netdev) && wx->down_suspend)
-> > +		wx->down_suspend(wx);
-> > +	if (wx->do_reset)
-> > +		wx->do_reset(wx->netdev, false);
-> > +	rtnl_unlock();
-> > +
-> > +	return PCI_ERS_RESULT_RECOVERED;
-> > +}
-> > +
-> > +/**
-> > + * wx_io_resume - called when traffic can start flowing again.
-> > + * @pdev: Pointer to PCI device
-> > + *
-> > + * This callback is called when the error recovery driver tells us that
-> > + * its OK to resume normal operation.
-> > + */
-> > +static void wx_io_resume(struct pci_dev *pdev)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +	struct net_device *netdev;
-> > +	int err;
-> > +
-> > +	netdev = wx->netdev;
-> > +	rtnl_lock();
-> > +	if (netif_running(netdev)) {
-> > +		err = netdev->netdev_ops->ndo_open(netdev);
-> > +		if (err) {
-> > +			wx_err(wx, "Failed to open netdev after reset\n");
-> > +			goto out;
-> > +		}
-> > +	}
-> > +	netif_device_attach(netdev);
-> > +out:
-> > +	rtnl_unlock();
-> > +}
+Thanks,
 
-Simon says: I believe the issue was already discussed in the review of v10.
-            And we can pass on it going forward.
+Paolo
 
-> [High]
-> When ndo_open() fails in wx_io_resume(), the "out" path drops the rtnl
-> and returns without calling netif_device_attach(), without clearing
-> WX_STATE_DOWN, and without clearing WX_STATE_RES_FREED.
-> 
-> Because wx_io_error_detected() only cleared __LINK_STATE_PRESENT via
-> netif_device_detach(), __LINK_STATE_START is still set, so
-> netif_running() continues to return true.  WX_STATE_DOWN and
-> WX_STATE_RES_FREED (set earlier in the AER cycle by wx_soft_quiesce()
-> and down_suspend()) are only cleared inside ngbe_up_complete() /
-> txgbe_up_complete(), which are only reached if ndo_open() runs to
-> completion.
-> 
-> If open fails partway (wx_setup_resources, request_irq,
-> phylink_connect_phy, ...), the netdev is left detached but "running"
-> with WX_STATE_DOWN and WX_STATE_RES_FREED latched.  A subsequent
-> userspace "ip link set eth0 down" then hits the new short-circuit
-> early in ngbe_close()/txgbe_close():
-> 
->     if (test_bit(WX_STATE_RES_FREED, wx->state))
->         goto out;
->     ...
->     out:
->         wx_control_hw(wx, false);
-> 
-> Since ->resume returns void, there is no way to inform the AER core.
-> Is there a recovery path other than unbind/rebind if ndo_open() fails
-> here?
-> 
-> > +
-> > +const struct pci_error_handlers wx_err_handler = {
-> > +	.error_detected = wx_io_error_detected,
-> > +	.slot_reset = wx_io_slot_reset,
-> > +	.resume = wx_io_resume,
-> > +};
-> > +EXPORT_SYMBOL(wx_err_handler);
-> > +
-> 
-> [ ... ]
-> 
-> > @@ -139,6 +251,33 @@ void wx_check_hang_subtask(struct wx *wx)
-> >  }
-> >  EXPORT_SYMBOL(wx_check_hang_subtask);
-> >
-> > +static bool wx_check_pcie_error(struct wx *wx)
-> > +{
-> > +	u16 vid, pci_cmd;
-> > +
-> > +	pci_read_config_word(wx->pdev, PCI_VENDOR_ID, &vid);
-> > +	pci_read_config_word(wx->pdev, PCI_COMMAND, &pci_cmd);
-> > +
-> > +	/* PCIe link loss or memory space can't access */
-> > +	if (vid == U16_MAX || !(pci_cmd & PCI_COMMAND_MEMORY))
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> > +static void wx_tx_timeout_recovery(struct wx *wx)
-> > +{
-> > +	/*
-> > +	 * When a PCIe hardware error occurs, the driver should initiate a PCIe
-> > +	 * recovery mechanism. However, this recovery flow relies on the AER
-> > +	 * driver for current kernel policy. Therefore, a self-contained
-> > +	 * recovery mechanism is not implemented yet.
-> > +	 */
-> > +	set_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +	wx_err(wx, "PCIe error detected during tx timeout\n");
-> > +	queue_work(wx->reset_wq, &wx->reset_task);
-> > +}
-> 
-> [Medium]
-> What happens on a platform where AER never fires (AER disabled at boot,
-> firmware masks the event, or CONFIG_PCIEAER=n)?
-> 
-> wx_tx_timeout_recovery() only sets WX_FLAG_NEED_PCIE_RECOVERY and
-> queues reset_task.  WX_FLAG_NEED_PCIE_RECOVERY is only cleared in
-> wx_io_slot_reset(), so without AER the flag latches.
-> 
-> wx_reset_task() then does:
-> 
->     rtnl_lock();
->     if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
->         wx_soft_quiesce(wx);           /* sets WX_STATE_DOWN */
->     if (test_bit(WX_STATE_DOWN, wx->state) ||
->         test_bit(WX_STATE_RESETTING, wx->state))
->         goto out;                      /* always taken now */
->     wx_pf_reset_subtask(wx);           /* checks a different flag */
-> 
-> and ngbe_reset()/txgbe_reset() early-return on
-> WX_FLAG_NEED_PCIE_RECOVERY, so any future reset is a silent no-op.  Is
-> there an intended fallback recovery when AER is unavailable, or is the
-> interface expected to stay unusable until reboot?  The comment
-> acknowledges "a self-contained recovery mechanism is not implemented
-> yet" — should this be gated on IS_ENABLED(CONFIG_PCIEAER) or similar?
-> 
-> > +
-> >  static void wx_tx_timeout_reset(struct wx *wx)
-> >  {
-> >  	if (test_bit(WX_STATE_DOWN, wx->state))
-> > @@ -153,7 +292,10 @@ void wx_tx_timeout(struct net_device *netdev, unsigned int __always_unused txque
-> >  {
-> >  	struct wx *wx = netdev_priv(netdev);
-> >
-> > -	wx_tx_timeout_reset(wx);
-> > +	if (wx_check_pcie_error(wx))
-> > +		wx_tx_timeout_recovery(wx);
-> > +	else
-> > +		wx_tx_timeout_reset(wx);
-> >  }
-> >  EXPORT_SYMBOL(wx_tx_timeout);
-> 
-> [ ... ]
-
-Separately, the following issue was flagged in the AI-generated review
-on sashiko.dev [1]. I am concerned that it is exacerbated by this patch
-in the case where an AER recovery occurs and the module is subsequently
-removed without the device being opened.
-
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> index 7a05661b1d802..499f48619f000 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-[ ... ]
-> @@ -989,7 +1014,8 @@ static void txgbe_remove(struct pci_dev *pdev)
->  	kfree(wx->mac_table);
->  	wx_clear_interrupt_scheme(wx);
->  
-> -	pci_disable_device(pdev);
-> +	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-> +		pci_disable_device(pdev);
->  }
-This isn't a bug introduced by this patch, but does unloading the module
-without bringing the interface up cause memory corruption?
-In txgbe_remove() (just above this hunk), wx_free_isb_resources() is called
-unconditionally during module removal.
-drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_free_isb_resources() {
-	...
-	dma_free_coherent(&pdev->dev, sizeof(u32) * 4,
-			  wx->isb_mem, wx->isb_dma);
-	wx->isb_mem = NULL;
-}
-If the interface is never opened, wx->isb_mem remains NULL. Passing a NULL
-virtual address and 0 DMA handle to dma_free_coherent() can bypass normal NULL
-checks and free physical page 0, potentially causing silent memory corruption
-or panics. 
-Should there be a NULL check before calling dma_free_coherent()?
-
-[1] https://sashiko.dev/#/patchset/20260716073822.24356-1-jiawenwu%40trustnetic.com?part=5
