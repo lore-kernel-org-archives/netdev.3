@@ -1,70 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBD0432E7C;
-	Thu, 23 Jul 2026 13:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECC8374A1B;
+	Thu, 23 Jul 2026 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784813981; cv=none; b=qzVG3GjD8HkQoIn802Hy8ZMfTpFQfedZhkk65HvGyuB6WoHhPI7h2REVGRmGZUf7QW/cutbgKn31uXv9GpFvojeIEZFhNig5MJlr0vxTeeiWRIkiivQJTRI36Xh27FB9DYcdmF3vtYrgQQ92DVqt0n34vILvWFJYHUYySjA7yNM=
+	t=1784814066; cv=none; b=o9xxhLDLyCsJ+yF7+eATwz0LEasjLuX7uldpeix6ivq19HMNzWnw0PPuUVE5m7bvt2lRS4Zv10Mud5u13cBt/KVqDYm46hVVBJWss3HmRGlOhFPXrWH/wd77w8XN9n8Q/RzKRy0E5EEj0avJrvcLUOmvnpx+baXnL74ubUcvz00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784813981; c=relaxed/simple;
-	bh=zRYiwlNo7ebNzBLGnhfeLnmAgWlpBQFde8Kg0HUSf1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DK3cD0EXPS2DLZp26rVMPVXM+0lXojAeokiF1ySwUuamGA31GFclyX8MWRqbfQH4TFlXnkq/B+hQ7XaGe5WoCPYZWf2tIL35eg7VlcA/E5qpZaqmDpmzdqCBb1GB+AqU8WmhBwf1j6SkaxZTzdlThwevsIo7MTFU9vaLfCCLUsQ=
+	s=arc-20240116; t=1784814066; c=relaxed/simple;
+	bh=4QePoeH5D8LzpkD+m3cFVRrKH33PDwOjnxhMJMgzmC4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Ujj9GHRM0FexIPeVYSwgjwmHrEvIw00BT6yw+3WepsRk130RyQi5QQzWtK7sH1Zh6cJJvqq0Hd6yeLoTnmDiO3W9Nl3PW0rg6hlm68mvg5RrXtO+VgTKJt2VNJaIH5W9kqnRN/+lbrjM9j30tWrNcOayfql/g9zuesjyjzs6n+Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ACB1F000E9;
-	Thu, 23 Jul 2026 13:39:36 +0000 (UTC)
-Date: Thu, 23 Jul 2026 06:39:35 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: <zhaoping.shu@mediatek.com>
-Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <horms@kernel.org>, <ncardwell@google.com>, <kuniyu@google.com>,
- <matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
- <willemb@google.com>, <alice@isovalent.com>, <sd@queasysnail.net>,
- <eilaimemedsnaimel@gmail.com>, <imv4bel@gmail.com>, <hw.he@mediatek.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-mediatek@lists.infradead.org>, <haijun.liu@mediatek.com>,
- <xiayu.zhang@mediatek.com>, <lambert.wang@mediatek.com>,
- <Iven.Yang@mediatek.com>
-Subject: Re: [PATCH net v2] net: gro: avoid nesting TCP GSO skbs in
- skb_gro_receive_list()
-Message-ID: <20260723063935.75bf55e3@kernel.org>
-In-Reply-To: <20260723091601.72103-1-zhaoping.shu@mediatek.com>
-References: <20260723091601.72103-1-zhaoping.shu@mediatek.com>
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED7C1F00A3A;
+	Thu, 23 Jul 2026 13:41:02 +0000 (UTC)
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568ED3810908;
+	Thu, 23 Jul 2026 13:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] octeontx2-vf: set TC flower flag on MCAM entry
+ allocation
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178481400989.2245010.5449256971816905423.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 13:40:09 +0000
+References: <20260715052007.2099851-1-rkannoth@marvell.com>
+In-Reply-To: <20260715052007.2099851-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: davem@davemloft.net, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ sbhatta@marvell.com, sgoutham@marvell.com, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, sumang@marvell.com
 
-On Thu, 23 Jul 2026 17:16:01 +0800 zhaoping.shu@mediatek.com wrote:
-> From: HW He <hw.he@mediatek.com>
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 15 Jul 2026 10:50:07 +0530 you wrote:
+> From: Suman Ghosh <sumang@marvell.com>
 > 
-> On devices that support both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST,
-
-"devices that support FRAGLIST"? Isn't it a software feature?
-
-> the hardware or driver may deliver packets that have already been
-
-If you have a driver in mind please name it.
-
-> aggregated into a TCP GSO skb with frags[]. GRO may then
-> aggregate the skb again in skb_gro_receive_list().
+> When MCAM entries are allocated for a VF netdev via the devlink
+> mcam_count parameter, only OTX2_FLAG_NTUPLE_SUPPORT was set. That
+> enabled ethtool ntuple filters but not tc flower offload. Also set
+> OTX2_FLAG_TC_FLOWER_SUPPORT when entries are successfully allocated.
 > 
-> This can create a nested GSO skb, which is not handled correctly by the
-> later GSO segmentation paths. When the skb is segmented by
-> skb_segment_list(), it not be fully restored to the original packets.
-> 
-> Avoid this by setting NAPI_GRO_CB(skb)->flush for GSO skbs before
-> aggregation.
+> [...]
 
-I don't think we can do this. For GRO_HW devices re-aggregating
-in SW is quite helpful, HW often runs out of contexts or times
-out too soon, generating skbs with 16kB..32kB of data, the SW
-can help bring it up to full TSO.
+Here is the summary with links:
+  - [net] octeontx2-vf: set TC flower flag on MCAM entry allocation
+    https://git.kernel.org/netdev/net/c/0d4d31e3cc5d
 
-Also - you're missing a Fixes tag.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
