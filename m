@@ -1,167 +1,100 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362173D890D
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F833DE45C;
+	Thu, 23 Jul 2026 07:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784790891; cv=none; b=XLBkZH1M+oPWkTHUsLvDN/iTO8i7M41gscx79I2FdVlIoISQ0nhZhHhY/DiezEu5gx4GTPj7ACDeI32hziFGl6WWhRhkdX6BUz74dBX+7vHLnprS1hYvuXJdr8ROjeBPYNoFjjQkFszYHZmK3WiGfZbNayIh+V5lS+s+dkwyKjs=
+	t=1784791156; cv=none; b=Emp1lhdS2Zo9++5y27rrn8LAV0AeY+k79bK0+MzsQnEHYoSTMjbNhQBhKJRrus2Zu3LNHKUrZBEpdAbVddlhlOLUMQBKNfi86PJ1Nh6J8V3TE+gm1I3m5ke3kozuPebapTJ18TS3N9WDrxR2tUju6mGSSKlBheD4vGYcy/lOSTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784790891; c=relaxed/simple;
-	bh=t4I7dYPungufxr6o83XMm3iYpYFcGW1l+lz3kZoSxfM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hruVx9gHsvOM04TZLkaudlxT6aRiROMdYHAHBWkjeYcs5oCLZxGrtcV1V5LlbADU/LJuw6VjwSN98SYnTG/znx7z+2rCeovMLqInyU7xGuWOKmhiyTJ47iXtTl79tZssuPtxwTyk26beZhuNgg3UkAi/+7SA5KBo3Syc4qnz1Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EiLElavO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZMbARPrD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EiLElavO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZMbARPrD; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784791156; c=relaxed/simple;
+	bh=0//1bJhxa6lpGsjiaJTFOGmAKxIOxL0x4ZNp3zrBGys=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HFr9zmkdWxaetNBc0nFUNMVjQLGWDDcf/GF0BGZG1UXSt/jxwaGnKStU3gDNE30WdeCE8DndPyh0F1ebAbhs2pIsRr2TFcKj9vxZ33T5v1iycnEuPcP5MJFx5RLDubHl7cC2cOIgCFwHeiAthfwbrBIpz1MzNqOGpb+8IRHXF6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=K0YQr6nQ; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EiLElavO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZMbARPrD";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EiLElavO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZMbARPrD"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AA6B23E4C;
-	Thu, 23 Jul 2026 07:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784790887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Af0gSRg8u34XhddRbsZaot6XHDGEy5XbiB7n4KmuiEo=;
-	b=EiLElavO9c590fRwMgEb8HOVbkEednyhsB3V42S1EO+m16+21eUp49jIDRtYG6ZPsoI0A8
-	v/1PoLTCKYgyiJfmambU9pUX3zG3KeTIeiZB3griKTmy2+HF94xjXsBTykKGT7T1Pjz0X9
-	ExdleK7tjP1NjOOv4Pj/C45xG9JuRW0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784790887;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Af0gSRg8u34XhddRbsZaot6XHDGEy5XbiB7n4KmuiEo=;
-	b=ZMbARPrD1qdvf+NWZRQHXjKYwJL2VUOM8uckaGj8i/3HJrSy2DIUmzD09PiuUUkT6LOPLO
-	ioAAlsHufH7msfCQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EiLElavO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZMbARPrD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784790887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Af0gSRg8u34XhddRbsZaot6XHDGEy5XbiB7n4KmuiEo=;
-	b=EiLElavO9c590fRwMgEb8HOVbkEednyhsB3V42S1EO+m16+21eUp49jIDRtYG6ZPsoI0A8
-	v/1PoLTCKYgyiJfmambU9pUX3zG3KeTIeiZB3griKTmy2+HF94xjXsBTykKGT7T1Pjz0X9
-	ExdleK7tjP1NjOOv4Pj/C45xG9JuRW0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784790887;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Af0gSRg8u34XhddRbsZaot6XHDGEy5XbiB7n4KmuiEo=;
-	b=ZMbARPrD1qdvf+NWZRQHXjKYwJL2VUOM8uckaGj8i/3HJrSy2DIUmzD09PiuUUkT6LOPLO
-	ioAAlsHufH7msfCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 51D7C779B5;
-	Thu, 23 Jul 2026 07:14:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6sjPEme/YWr4OAAAD6G6ig
-	(envelope-from <hare@suse.de>); Thu, 23 Jul 2026 07:14:47 +0000
-Message-ID: <4038dcf8-bab8-48d1-864d-8dc7c978dcc6@suse.de>
-Date: Thu, 23 Jul 2026 09:14:46 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="K0YQr6nQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=kr
+	yMrCu4C1oSCLCeLEyxXWYdBtEs4BbxdSq2hr42r9Q=; b=K0YQr6nQoZLgmiq9rP
+	j0+j+liRgKL51/kD4VAEj2S6C3n/q9N7FiAuQ4uskFwJViSBjXIeaY8X2XEehk5Y
+	nqn/1/2VNwGvmzVgwFSfdoqTb6wPoVD7sLHxWQnJ/Vrmy4LUclkONtrSqjpCb5lL
+	+eVWJqawBiowkUyDAWAsxUi6g=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBH3fs7wGFqvSXGHw--.269S2;
+	Thu, 23 Jul 2026 15:18:21 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net] sctp: fix addip_serial increment on ASCONF_ACK allocation failure
+Date: Thu, 23 Jul 2026 15:18:18 +0800
+Message-Id: <20260723071818.459034-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 3/6] tls: Implement read_sock_rectype for kTLS
- software path
-To: Chuck Lever <cel@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>
-Cc: netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-nfs@vger.kernel.org
-References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
- <20260720-tcp-read-sock-v2-3-29545d034f3c@kernel.org>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260720-tcp-read-sock-v2-3-29545d034f3c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: AA6B23E4C
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[kernel.org,redhat.com,gmail.com,queasysnail.net,brown.name,oracle.com,talpey.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TAGGED_RCPT(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.de:dkim,oracle.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
+X-CM-TRANSID:PSgvCgBH3fs7wGFqvSXGHw--.269S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw15AF48uF1DCw15tr47urg_yoW8Aw17pr
+	Z3WF48trn3Zr1UArn5urWxGw1Ykan5Kw45Gr4YgrsYyanxJrySyry3Gw4Utw1jkFn5AFWj
+	gryYqr47JF1YvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U66wtUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3h0ydmphwD0a5wAA3M
 
-On 7/20/26 4:27 PM, Chuck Lever wrote:
-> From: Chuck Lever <chuck.lever@oracle.com>
-> 
-> tls_sw_read_sock() rejects non-data records (alerts, handshake
-> messages) with -EINVAL. Kernel consumers that need TLS alert
-> delivery, such as NFSD, NFS client, and NVMe target, must fall back
-> to the sock_recvmsg() API to receive control messages via CMSG.
-> 
-> Implement the new read_sock_rectype() method for these consumers,
-> delivering non-data records to a callback through the kTLS software
-> receive path.
-> 
-> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> ---
->   net/tls/tls.h      |  3 +++
->   net/tls/tls_main.c |  5 +++++
->   net/tls/tls_sw.c   | 41 ++++++++++++++++++++++++++++++++++++-----
->   3 files changed, 44 insertions(+), 5 deletions(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
+From: Qing Luo <luoqing@kylinos.cn>
 
-Cheers,
+In sctp_process_asconf(), when sctp_make_asconf_ack() fails to allocate
+the ASCONF_ACK chunk due to memory pressure, the code jumps to the
+done label where asoc->peer.addip_serial is unconditionally incremented.
 
-Hannes
+This leaves the peer's ASCONF (serial N) unacknowledged while the local
+endpoint now expects serial N+1. When the peer retransmits serial N, it
+falls into the serial < addip_serial + 1 branch ,
+which attempts to look up a cached ACK for serial N. No cached ACK
+exists since the allocation failed, so the retransmission is silently
+discarded. The peer eventually times out and ABORTs the association.
+
+Move the addip_serial increment inside the if (asconf_ack) block so that
+the serial number is only advanced when the ASCONF_ACK is successfully
+created and cached. This way, on allocation failure, the serial number
+is unchanged and the peer's retransmitted ASCONF will be correctly
+re-processed.
+
+Fixes: 1da177e4c3f4 (Linux-2.6.12-rc2)
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ net/sctp/sm_make_chunk.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 8adac9e0cd66..87b5d320977b 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -3321,12 +3321,11 @@ struct sctp_chunk *sctp_process_asconf(struct sctp_association *asoc,
+ 			goto done;
+ 	}
+ done:
+-	asoc->peer.addip_serial++;
+-
+ 	/* If we are sending a new ASCONF_ACK hold a reference to it in assoc
+ 	 * after freeing the reference to old asconf ack if any.
+ 	 */
+ 	if (asconf_ack) {
++		asoc->peer.addip_serial++;
+ 		sctp_chunk_hold(asconf_ack);
+ 		list_add_tail(&asconf_ack->transmitted_list,
+ 			      &asoc->asconf_ack_list);
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+2.25.1
+
