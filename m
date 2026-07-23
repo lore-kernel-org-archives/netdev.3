@@ -1,427 +1,159 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4F385D9F
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 23:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704A43C0634
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 23:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784850545; cv=none; b=lxgEnDJNOasn4vFllgdJy5MVRO3hvXGJpIH/4xaLu5rTiZVcdZS09EnDed8Y6XnR7XlHfEYSrenvhxiHh0DGoSJmZ0KNv1lDtkznDBBSe6fwejFQ98k3PDhhz/T4cjjXkML2S+03eVJH8plw5HkY01FT7NdbC1ZjWMSiPSf8ZkM=
+	t=1784851100; cv=none; b=sNaopRG97VgpGuFn8Ns66pydSjqWOofemtBO+hCvYGVpeWC1ELFlAAi6QunpEhNWHGH2BdYeHuVsTxoLpbCBpPtSnDfMneuyAl4OQ5OCY0Mfjnd2sFHFxQwb6wXQtJKz3PRhJUWQwguTK9l6SvApufqh4hbVu+GJZcxaQWASWk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784850545; c=relaxed/simple;
-	bh=JkKgwfbwSWE/W2vX/kkIONFlxUMWhEmRwOzG1inAE8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M6Nq+8eAlKFpAb4mpFfy060Uh4aLX6tavdFmQgLPJkfSv9BMRehktLNXnvJ8uYBpSDmTOf9vVSxCmdDNEsFsacyQV67zzg1SKoVJqO3Uw3Ybqm1kzHMg1bDcZkSGjYfNdJTpDrDVdkXYu6LZqsrFNF57WteVNVpdMB8+18jsv2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r0nP4WlM; arc=none smtp.client-ip=209.85.161.47
+	s=arc-20240116; t=1784851100; c=relaxed/simple;
+	bh=K0m0Bw+juA87MvkMrxX6h4japgSDmVkJYZY6q2X099U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ib66PuFLEipZY8AZ9BFy0WR8HAGXbMOrWmFC3P9FMQRLt48Bzt5v8jTlmwZfyELyzTVNd9ChXHr+LyyZkUfw9I04NBYoQ3Qdh5GgLP05c/E6ybqQbeEXmFRFSwfCTJmpPuOLoyC7rvURkwO5qMN7JxweCTnLDi4N8tRMlJRgLsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIxI5L7s; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r0nP4WlM"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6aae5eb0ee0so86261eaf.3
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:49:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIxI5L7s"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccf2360620so12455845ad.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:58:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784850541; x=1785455341; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8SM4Olva3UxHUMc0jHFquvfoKH+36uv2FSDslSJ2+uw=;
-        b=r0nP4WlMSrLXySNH1N0znE9yrdne0mhGmO5ZrFLzo8rdV0F2bP+Wx5RldOu+ANri2V
-         p33IrzxGR6vrJTELntNS01g1YE+WS29sZFaFWNx3mDUUBMDO6B/abAqtAI2CYOgWRAh6
-         +dPxJEGN7qsSjAIr+oL8GRUdOSm33n+wvNRRRefOJxz6TsdQA3cyClNY0ybbha1bwpB0
-         Q1nBAm4+9t8Usl/dHijqeAvZ6hPH+Y8BfwUgABvk4grd0o44UAzFlXZl30MFVaEypw01
-         fsBOTgF9iUNLuPmIznQy3OL0MTsSJVy6YQgRQsaFXWcSaIjBFqfm7lNtM4BEMav913n9
-         9jng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784850541; x=1785455341;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1784851098; x=1785455898; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8SM4Olva3UxHUMc0jHFquvfoKH+36uv2FSDslSJ2+uw=;
-        b=Ik7Srh0RBJuOOVaAME6TT4JOLzs0IRe0CfJp0UKvvE73mcJ/+35Y/UPcFIqyC/m+cR
-         u14PWbfY3WlDpVDabtoDR1sX6mbiGpaF0vlJMYtmEIUsY6/Y4HmkPPae5UuEVSeKAUJg
-         p+aukXWxGo9mwdGlU4gSZxeC4qTREv6A3GQDSW+o5SaLoYuMAcHDoYscFsI2wyNlftwE
-         ud+2CXA4d89vxH5uFVMNDHGhIB3QvZ75PoSe8l2jexoEVQ5qaYwLOaWDpWTb6uY4Soq6
-         DCeehfxjfyvdJU1cr++sk6C6MVtOhfV82VboHtzcTbXbWQGsZsalBzIyTfKD3qKIGjJQ
-         gKzA==
-X-Gm-Message-State: AOJu0Yyd0FtVPPhVbixv73J9HDH8Qd6M9SeNHjOfQwJ79+aLvLc5vRN6
-	GzxAQD6RKFYm3PeOxexjfA7GpM1zmhLeuaPK6hab8slpGpS+Hr4i2yVcQBslRA==
-X-Gm-Gg: AR+sD10oBJlr5HA83vM9wcS4Li4aCK/SDuCp4RTws4TO2r1R0vyCRhF2mcD2sDjGhyS
-	6KpdCs8v69wr3BrRBYZsEGTYqC98geWP3O1yGK5PL5R50qQ5HF5BPInna/q6SuJT+1GLMqWVLdN
-	3YjR0coS/O/qCkyaXoCgZ14VTsc46F7O0ee72bVRuPq4W9uKyhhfKLNoDFjiIt1B6YSbOXo4BwH
-	XkEQlsHG6UUMMeHmfdWVg4gK0chR/Y/bw8+d/oIfN70wpwXBXxoHAd/ZipYVFsAP5Frg+vZwf6x
-	zWEYv3yRSRIOli6DyaV8jn8jmdWnx/0w8Lm6G/DoOCJtyL6eNbpHGgmsNhj3H//oA4ewf8QgOC+
-	3BUZcLii7sZlhDRgutB997AvDVmqvnKQj57MM0UOHytcm3vYxaLWkGpNMT7y7pO6zS2O2rDgqYJ
-	k=
-X-Received: by 2002:a05:6820:4c14:b0:696:836e:ba2b with SMTP id 006d021491bc7-6aad3f4c0demr2535127eaf.11.1784850540853;
-        Thu, 23 Jul 2026 16:49:00 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:43::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-45766f16dfcsm5904191fac.7.2026.07.23.16.48.59
+        bh=o9MA5hxyHF+TVODI4Fw4gloLACgAEZ6Zp8N9Sn3aTq8=;
+        b=UIxI5L7sngoQnsTOl0k8ykJp+v4Q0IEGGCUJPD2hEH46hIp7oJU3w67FBqYvgs7Bit
+         cLrV8+J21fMubKmBoaEJjgjZgUvoHewJSetvAYTk968OXtf/QpHOaUt+eFV5TSGxoUre
+         /419Xfq6Kd2X+7OpLBqO/NDdsFRUd/SfXiwQe9+9P8ClFJ+KWsWX5g0sfdS/287/IDFs
+         s40RUaKG6Bfz4jWnnJXuxfHyM0p2rHZYW8Ypgjl6TNYYKrbB+7ug6WaQjPWpFuEVcGeB
+         4BdRbnldbR80AcNwiYIzouDoUmlyK7O7fNrQYMhzmuPQjy+6vkUbAIetIAJOjSWIh11f
+         Z/5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784851098; x=1785455898;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o9MA5hxyHF+TVODI4Fw4gloLACgAEZ6Zp8N9Sn3aTq8=;
+        b=XuxzSH9/diCeTSsikNAq2MX9TAjSOarMFv4tAAB+xgTsWTxcJgOoNnKPRIhlTnsfZC
+         +fVgJFtDKeMiIhNGiyuPx1UzRJt8H+IdMk6pfcVSyDqPfNED0iaKOEmjIUXXt0eaHynu
+         54rx08Xj5nKaY/3UYFCbX+uubxGN6hIBWyXQnuKaLPAh9SZDL2R/2Jtun2l5WlasNwZA
+         7D/VU4KmTTz7FcsyTud2GhIW7lw2Quaq/E20i/xT09pZDyhZJlaLhRljeU1hXFI1skzC
+         /8q/YfjZiLWGNcrVWh5UfBZBMJBwq2I0osObaeoqDsc+RyRYu27JN/K1fSSH9OpZ02JH
+         rn6A==
+X-Forwarded-Encrypted: i=1; AHgh+RpzHvR/CONp37EFJabA2K8nME1t3w9+bw2nJo+KaSt3+g+bCbpfCk9jlm+Xxkjtv2lb1AHj1S8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwixTzRKvbq/7BFc4a4Sh5S8Osn8GM2jWkVrupoqmXjRc2By/kP
+	CMctqYcM7GJcjmdV8Dgqw9qDF7Y7R4ezTDN0WeeXENzZRjJAIwnCmcNs
+X-Gm-Gg: AR+sD12fEdDTieBB1ZEVSsP5kTGPijupt+fLoDoQkRqafHk9fw+kR2xC3DhF+BOqLu0
+	JuC0i2HhDyXnhdUUZs5j2vValsGAtIY+WE4f+jhhATn+6r9znxYycAdEL+TgB0zk0Wzd4vbmE/G
+	1Tcm5tZA0Sz+Dy9ayL9hRtaG9ZLpOzBV0tDSUYToazzVR/m+JQhAi5HNFmYaw34ZjriO2/Upx4R
+	1EzctmatQiZVNATdrYeoAjNPpUGWrTX1zAHjWGeP2OJT7aVT7YU5gYIqzRucXJBmQCiVnmbUedZ
+	+/MLQU2ETr1pFXJ/STq2XSNbzB/di2VUhxJotrTW75kwJk/sWVBH/dTlS7LOanDuJrCTV3l8yHJ
+	5c98u/w4O/beeVe+XofJBu5dpYrq766CHjM8/9LKBOvp6CsYzGbx8cLf0dGGt23WFxBLHrCbqyO
+	vmKlm70dxPu03CfranJH8m7A==
+X-Received: by 2002:a17:903:1b07:b0:2ca:b8fd:f31 with SMTP id d9443c01a7336-2cfa6b77a8fmr64729945ad.15.1784851097746;
+        Thu, 23 Jul 2026 16:58:17 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:9::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f3131b0sm41548075ad.62.2026.07.23.16.58.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 16:49:00 -0700 (PDT)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	mohsin.bashr@gmail.com
-Subject: [PATCH net-next V3] selftests: drv-net: Test queue stall upon reconfig
-Date: Thu, 23 Jul 2026 16:48:55 -0700
-Message-ID: <20260723234857.2880270-1-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Thu, 23 Jul 2026 16:58:17 -0700 (PDT)
+Date: Thu, 23 Jul 2026 16:58:14 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 1/3] net: devmem: allow rx-buf-size >
+ PAGE_SIZE per dmabuf binding
+Message-ID: <amKqlqgfZipKjrii@devvm29614.prn0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+ <20260708-tcpdm-large-niovs-v5-1-34bf6fac941b@meta.com>
+ <20260721110713.325d36ba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721110713.325d36ba@kernel.org>
 
-From: Mohsin Bashir <hmohsin@meta.com>
+On Tue, Jul 21, 2026 at 11:07:13AM -0700, Jakub Kicinski wrote:
+> On Wed, 08 Jul 2026 15:55:04 -0700 Bobby Eshleman wrote:
+> > diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+> > index 5f143da7458c..70b902008bd3 100644
+> > --- a/Documentation/netlink/specs/netdev.yaml
+> > +++ b/Documentation/netlink/specs/netdev.yaml
+> > @@ -598,6 +598,13 @@ attribute-sets:
+> >          type: u32
+> >          checks:
+> >            min: 1
+> > +      -
+> > +        name: rx-buf-size
+> 
+> rx-page-size, we're modeling device pages.
+> rx-buf-len exists in ethtool and is something else.
+> 
+> > +	if (info->attrs[NETDEV_A_DMABUF_RX_BUF_SIZE]) {
+> > +		u32 rx_buf_size = nla_get_u32(info->attrs[NETDEV_A_DMABUF_RX_BUF_SIZE]);
+> > +
+> > +		if (!rx_buf_size || !is_power_of_2(rx_buf_size) ||
+> > +		    rx_buf_size < PAGE_SIZE) {
+> 
+> we should add a check: min: page-size in the Netlink policy?
 
-Add a reconfig_tx_stall test that detects the possibility of a TX stall
-after ring reconfiguration. The key observation is that drivers using
-netif_tx_start_all_queues() are prone to experiencing a stall when
-reconfiguration completes compared to drivers using
-netif_tx_wake_all_queues(). start_all_queues only clears DRV_XOFF, while
-wake_all_queues also calls __netif_schedule() to kick the qdisc. Without
-the kick, qdisc backlog present at reconfig time can stay stuck until a
-new trigger is issued.
+I played around with this adding:
 
-The test caps the TX ring at 64 entries so it fills quickly, then
-installs FQ on a target TX queue and sends UDP packets with SO_TXTIME
-scheduled in the future. With napi_defer_hard_irqs slowing completions,
-the small ring can fill when FQ releases the burst, leaving requeued
-qdisc backlog with no FQ timer to rescue it. A subsequent ring reconfig
-must wake the queues to drain the backlog. Simply starting the queues can
-leave it stuck.
+Documentation/netlink/specs/netdev.yaml:
+ definitions:
+ +  -
+ +    type: const
+ +    name: page-size
+ +    value: 4096  # dummy value, to pass ynl_gen_c.py checks
+ +    header: asm/page.h
+ +    scope: kernel
 
-On host with problematic driver:
- Sent 128 SO_TXTIME packets (+100ms)
- Sent 128 SO_TXTIME packets (+200ms)
- Backlog before reconfig: 52632 bytes
- Check| At /root/ksft-net-drv/./drivers/net/ring_reconfig.py, ...
- Check|     ksft_eq(0, backlog,
- Check failed 0 != 52632 qdisc backlog stuck on queue 1 after ring reconfig
-not ok 3 ring_reconfig.reconfig_tx_stall
+Generating:
 
-On host with fixed driver:
- Sent 128 SO_TXTIME packets (+100ms)
- Sent 128 SO_TXTIME packets (+200ms)
- Backlog before reconfig: 76024 bytes
-ok 3 ring_reconfig.reconfig_tx_stall
++static const struct netlink_range_validation
+netdev_a_dmabuf_rx_page_size_range = {
++       .min    = PAGE_SIZE,
++       .max    = U32_MAX,
++};
++
 
-Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-Changelog:
-V3:
-  - Preserve the device's existing TX/RX qdisc policy. On a device with a
-    previously-configured (addressable) mq, only the target queue's leaf is
-    swapped and restored. The default mq (unaddressable handle 0:) or a
-    noqueue root is temporarily given a real handle and restored to the
-    default mq on exit. Skip when the root is a non-mq qdisc rather than
-    disturb it.
-  - Request 2+ queues from NetDrvEpEnv via a new queue_count parameter so
-    the test runs under netdevsim.
-  - Fail instead of skip when the qdisc backlog cannot be built.
-  - Skip on devices without 2+ combined channels; bump combined-count to 2
-    (restored on exit) when supported but not currently configured.
+... but the dummy 4096 is kind of annoying. ynl_gen_c.py can't know the
+value of PAGE_SIZE but needs some value for its arithmetic checks (e.g.,
+confirm min < max is true).
 
-V2: https://lore.kernel.org/netdev/20260613014855.1717712-1-mohsin.bashr@gmail.com
+Should we stick with using a dummy value, or should we add a patch
+teaching ynl_gen_c.py to allow value-less consts (skip the arithmetic
+checks)? 
 
-V1: https://lore.kernel.org/netdev/20260612001754.2489868-1-mohsin.bashr@gmail.com
----
- tools/testing/selftests/drivers/net/config    |   3 +
- .../selftests/drivers/net/lib/py/env.py       |  11 +-
- .../selftests/drivers/net/ring_reconfig.py    | 207 +++++++++++++++++-
- 3 files changed, 215 insertions(+), 6 deletions(-)
+Best,
+Bobby
 
-diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
-index 2070e890e064..f3933cf3e6be 100644
---- a/tools/testing/selftests/drivers/net/config
-+++ b/tools/testing/selftests/drivers/net/config
-@@ -4,8 +4,11 @@ CONFIG_DEBUG_INFO_BTF_MODULES=n
- CONFIG_INET_PSP=y
- CONFIG_IPV6=y
- CONFIG_MACSEC=m
-+CONFIG_NET_ACT_SKBEDIT=m
- CONFIG_NET_CLS_ACT=y
- CONFIG_NET_CLS_BPF=y
-+CONFIG_NET_CLS_FLOWER=m
-+CONFIG_NET_CLS_MATCHALL=m
- CONFIG_NETCONSOLE=m
- CONFIG_NETCONSOLE_DYNAMIC=y
- CONFIG_NETCONSOLE_EXTENDED_LOG=y
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index e4acf3d8333f..b1c6f6cef7dd 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -114,10 +114,11 @@ class NetDrvEpEnv(NetDrvEnvBase):
-     nsim_v4_pfx = "192.0.2."
-     nsim_v6_pfx = "2001:db8::"
- 
--    def __init__(self, src_path, nsim_test=None):
-+    def __init__(self, src_path, nsim_test=None, queue_count=None):
-         super().__init__(src_path)
- 
-         self._stats_settle_time = None
-+        self._queue_count = queue_count
- 
-         # Things we try to destroy
-         self.remote = None
-@@ -173,9 +174,13 @@ class NetDrvEpEnv(NetDrvEnvBase):
-         self._required_cmd = {}
- 
-     def create_local(self):
-+        nsim_kwargs = {}
-+        if self._queue_count:
-+            nsim_kwargs["queue_count"] = self._queue_count
-+
-         self._netns = NetNS()
--        self._ns = NetdevSimDev()
--        self._ns_peer = NetdevSimDev(ns=self._netns)
-+        self._ns = NetdevSimDev(**nsim_kwargs)
-+        self._ns_peer = NetdevSimDev(ns=self._netns, **nsim_kwargs)
- 
-         with open("/proc/self/ns/net") as nsfd0, \
-              open("/var/run/netns/" + self._netns.name) as nsfd1:
-diff --git a/tools/testing/selftests/drivers/net/ring_reconfig.py b/tools/testing/selftests/drivers/net/ring_reconfig.py
-index f9530a8b0856..a5a2defc4fb1 100755
---- a/tools/testing/selftests/drivers/net/ring_reconfig.py
-+++ b/tools/testing/selftests/drivers/net/ring_reconfig.py
-@@ -5,10 +5,21 @@
- Test channel and ring size configuration via ethtool (-L / -G).
- """
- 
-+import socket
-+import struct
-+import time
-+
- from lib.py import ksft_run, ksft_exit, ksft_pr
- from lib.py import ksft_eq
-+from lib.py import KsftSkipEx, KsftFailEx
- from lib.py import NetDrvEpEnv, EthtoolFamily, GenerateTraffic
--from lib.py import defer, NlError
-+from lib.py import cmd, defer, rand_port, tc, NlError
-+
-+# Added in Python 3.13; fallback to 61 for x86/ARM/MIPS
-+SO_TXTIME = getattr(socket, "SO_TXTIME", 61)
-+
-+# TX ring size the test shrinks to so the ring fills quickly.
-+MIN_TX_RING = 64
- 
- 
- def channels(cfg) -> None:
-@@ -151,14 +162,204 @@ def ringparam(cfg) -> None:
-         GenerateTraffic(cfg).wait_pkts_and_stop(10000)
- 
- 
-+def _write_file(path, val):
-+    """Write val to a file."""
-+    with open(path, "w", encoding="utf-8") as fp:
-+        fp.write(str(val))
-+
-+
-+def _write_sysfs(path, val):
-+    """Write val to a sysfs file, restoring the original value on exit."""
-+    with open(path, "r", encoding="utf-8") as fp:
-+        orig_val = fp.read().strip()
-+    if str(val) == orig_val:
-+        return
-+    _write_file(path, val)
-+    defer(_write_file, path, orig_val)
-+
-+
-+def _get_qdisc_backlog(cfg, mq_handle, queue):
-+    """Return the qdisc backlog (bytes) for the given TX queue's leaf."""
-+    target_parent = f"{mq_handle}{queue + 1:x}"
-+    for q in tc(f"-s qdisc show dev {cfg.ifname}", json=True):
-+        if q.get("parent", "") == target_parent:
-+            return q.get("backlog") or 0
-+    return 0
-+
-+
-+def _setup_fq_qdisc(cfg, port, target_queue, other_queue):
-+    """Put an fq qdisc on target_queue's leaf and return the mq handle in use.
-+
-+    We must not disturb the device's existing TX/RX qdisc policy. On a real
-+    NIC the root mq already has an addressable handle, so we leave the root
-+    and every other queue alone and only swap this one leaf, restoring its
-+    original qdisc afterwards.
-+    """
-+    qdiscs = tc(f"qdisc show dev {cfg.ifname}", json=True)
-+    root = next((q for q in qdiscs if q.get("root")), None)
-+
-+    if root and root["kind"] == "mq" and root["handle"] != "0:":
-+        # Addressable mq (previously-configured): touch only the target queue's
-+        # leaf and restore its original qdisc afterwards.
-+        mq_handle = root["handle"]
-+        parent = f"{mq_handle}{target_queue + 1:x}"
-+        orig = next((q for q in qdiscs if q.get("parent") == parent), None)
-+        orig_kind = orig["kind"] if orig else \
-+            cmd("sysctl -n net.core.default_qdisc").stdout.strip()
-+        defer(tc, f"qdisc replace dev {cfg.ifname} parent {parent} {orig_kind}")
-+    elif root is None or root["kind"] in ("mq", "noqueue"):
-+        # The auto-attached root mq has handle 0: on any device (real or sim),
-+        # which the kernel rejects as a qdisc parent. A 0: handle means the mq
-+        # is the untouched kernel default - no custom child qdiscs can hang off
-+        # an unaddressable parent - so installing a real handle and restoring
-+        # the default mq on exit preserves the device's effective policy.
-+        mq_handle = "1:"
-+        tc(f"qdisc replace dev {cfg.ifname} root handle {mq_handle} mq")
-+        defer(tc, f"qdisc replace dev {cfg.ifname} root mq")
-+        parent = f"{mq_handle}{target_queue + 1:x}"
-+    else:
-+        raise KsftSkipEx(f"root qdisc '{root['kind']}' is not mq; "
-+                         "refusing to disturb existing qdisc policy")
-+
-+    try:
-+        tc(f"qdisc replace dev {cfg.ifname} parent {parent} fq")
-+    except Exception as exc:
-+        raise KsftSkipEx(
-+            f"fq not available (CONFIG_NET_SCH_FQ): {exc}") from exc
-+
-+    qdisc_j = tc(f"qdisc show dev {cfg.ifname}", json=True)
-+    has_clsact = any(q['kind'] == 'clsact' for q in qdisc_j)
-+    if not has_clsact:
-+        tc(f"qdisc add dev {cfg.ifname} clsact")
-+        defer(tc, f"qdisc del dev {cfg.ifname} clsact")
-+
-+    proto = "ipv6" if int(cfg.addr_ipver) == 6 else "ip"
-+    try:
-+        tc(f"filter add dev {cfg.ifname} egress protocol {proto} "
-+           f"pref 1 flower ip_proto udp dst_port {port} "
-+           f"action skbedit queue_mapping {target_queue}")
-+    except Exception as exc:
-+        raise KsftSkipEx("tc flower/act_skbedit not available") from exc
-+    defer(tc, f"filter del dev {cfg.ifname} egress pref 1")
-+
-+    tc(f"filter add dev {cfg.ifname} egress pref 100 "
-+       f"matchall action skbedit queue_mapping {other_queue}")
-+    defer(tc, f"filter del dev {cfg.ifname} egress pref 100")
-+
-+    return mq_handle
-+
-+
-+def _create_sotxtime_socket(cfg):
-+    """Create a UDP socket with SO_TXTIME enabled, bound to the test device."""
-+    sock = socket.socket(socket.AF_INET6 if cfg.addr_ipver == "6"
-+                         else socket.AF_INET, socket.SOCK_DGRAM)
-+    try:
-+        sock.setsockopt(socket.SOL_SOCKET, SO_TXTIME, struct.pack("Ii", 1, 0))
-+    except OSError as exc:
-+        sock.close()
-+        raise KsftSkipEx("SO_TXTIME not supported") from exc
-+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE,
-+                    cfg.ifname.encode())
-+    return sock
-+
-+
-+def _send_sotxtime_burst(cfg, sock, port, count, delay_ns):
-+    """Send count UDP packets scheduled delay_ns ahead using SO_TXTIME."""
-+    payload = b'\x00' * 1400
-+    txtime_ns = time.clock_gettime_ns(time.CLOCK_MONOTONIC) + delay_ns
-+
-+    ancdata = [(socket.SOL_SOCKET, SO_TXTIME, struct.pack("Q", txtime_ns))]
-+    if int(cfg.addr_ipver) == 6:
-+        dest = (cfg.remote_addr, port, 0, 0)
-+    else:
-+        dest = (cfg.remote_addr, port)
-+    for _ in range(count):
-+        sock.sendmsg([payload], ancdata, 0, dest)
-+
-+
-+def reconfig_tx_stall(cfg) -> None:
-+    """Test that qdisc backlog drains after ring reconfiguration."""
-+    target_queue = 1
-+    other_queue = 0
-+
-+    ehdr = {'header': {'dev-index': cfg.ifindex}}
-+    chans = cfg.eth.channels_get(ehdr)
-+
-+    if "combined-max" not in chans:
-+        raise KsftSkipEx("device does not support combined channels")
-+    if chans.get("combined-max", 0) < 2:
-+        raise KsftSkipEx("device does not support 2+ combined channels")
-+    if chans["combined-count"] < 2:
-+        defer(cfg.eth.channels_set,
-+              ehdr | {"combined-count": chans["combined-count"]})
-+        cfg.eth.channels_set(ehdr | {"combined-count": 2})
-+
-+    rings = cfg.eth.rings_get(ehdr)
-+    if 'rx' not in rings or 'tx' not in rings:
-+        raise KsftSkipEx("device does not expose rx/tx ring params")
-+    tx_cur = rings['tx']
-+    if tx_cur <= MIN_TX_RING:
-+        raise KsftSkipEx("tx ring size already at minimum")
-+    defer(cfg.eth.rings_set, ehdr | {'tx': tx_cur})
-+
-+    cfg.eth.rings_set(ehdr | {'tx': MIN_TX_RING})
-+
-+    # Slow completions so the ring stays full after FQ releases packets
-+    napi_defer = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
-+    gro_timeout = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
-+    _write_sysfs(napi_defer, 100)
-+    _write_sysfs(gro_timeout, 1000000000)
-+
-+    port = rand_port()
-+    mq_handle = _setup_fq_qdisc(cfg, port, target_queue, other_queue)
-+
-+    sock = _create_sotxtime_socket(cfg)
-+    defer(sock.close)
-+
-+    pkt_count = MIN_TX_RING * 2
-+
-+    for delay_ms in [100, 200, 500]:
-+        _send_sotxtime_burst(cfg, sock, port, pkt_count,
-+                             delay_ms * 1_000_000)
-+        ksft_pr(f"Sent {pkt_count} SO_TXTIME packets (+{delay_ms}ms)")
-+        time.sleep(delay_ms / 1000 + 0.3)
-+
-+        backlog = _get_qdisc_backlog(cfg, mq_handle, target_queue)
-+        if backlog:
-+            break
-+    else:
-+        raise KsftFailEx("failed to build qdisc backlog")
-+
-+    ksft_pr(f"Backlog before reconfig: {backlog} bytes")
-+
-+    # Trigger ring reconfig — driver should call wake, not just start
-+    cfg.eth.rings_set(ehdr | {'tx': tx_cur})
-+
-+    # Let completions proceed normally
-+    _write_sysfs(napi_defer, 0)
-+    _write_sysfs(gro_timeout, 0)
-+
-+    # Poll for backlog to drain
-+    for _ in range(100):
-+        backlog = _get_qdisc_backlog(cfg, mq_handle, target_queue)
-+        if not backlog:
-+            break
-+        time.sleep(0.1)
-+
-+    ksft_eq(0, backlog,
-+            comment=f"qdisc backlog stuck on queue {target_queue} "
-+                    f"after ring reconfig")
-+
-+
- def main() -> None:
-     """ Ksft boiler plate main """
- 
--    with NetDrvEpEnv(__file__) as cfg:
-+    with NetDrvEpEnv(__file__, queue_count=2) as cfg:
-         cfg.eth = EthtoolFamily()
- 
-         ksft_run([channels,
--                  ringparam],
-+                  ringparam,
-+                  reconfig_tx_stall],
-                  args=(cfg, ))
-     ksft_exit()
- 
--- 
-2.53.0-Meta
-
+> 
+> > +			NL_SET_ERR_MSG_FMT(info->extack,
+> > +					   "rx_buf_size %u must be a power of 2 >= page size (%lu)",
+> > +					   rx_buf_size, PAGE_SIZE);
+> 
+> This must point at _ATTR, the _FMT is unnecessary.
+> -- 
+> pw-bot: cr
