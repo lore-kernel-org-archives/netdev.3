@@ -1,117 +1,103 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4F63191D6;
-	Thu, 23 Jul 2026 06:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E866326D55;
+	Thu, 23 Jul 2026 06:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784787110; cv=none; b=qg6E54e8kmUDPfnnwlp1UPC+rv7cpZw4+5vyQBGa/fH2Dkx0GbCaCfe/vQRmhnjle3FR4+4+PDJ1JBOJqzu5h1taJtLXUzjfBjnz/Kwv/OseawpNZ0GqhV0985oqdiKb0il6FGcz3jABwiAcHOQBIlmz6XEdJKot7ahveunlGkQ=
+	t=1784787253; cv=none; b=btCWxw3dpThdU+9DI8MUewt8kDI/oMM40zFgrXv63rDkayXnN6B7ntq1MxsJzPwrIb3b+9oEc7h6LBxqRiiYYdtG5IyWgMjsQi8RT/0OSvNdMrhtoSbvf0LHAlB69q4Fi0nYc/iGam9t19Vf1KLiubLY7hpxZTKlmRnsd8EQ180=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784787110; c=relaxed/simple;
-	bh=LHmEKaYmWXGITCrasztQphx/8wabIM7erIyHH+/csag=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oniWThWdIH0t/eof+mu6C7W36tuCCtFObHtceXxfWQ6nEzPKWb4yJxDaS9BkF9JOWwwVrLnQZ21rRY1NJx7/HvMuhDwo8xs7IYwI3DL498xamTbqDdlks0IqQCTCvix7obDsS2sqg3l5obIhmRX2YoueaSK7BnKl9O8c3+yj8EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gXeZmHOs; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784787253; c=relaxed/simple;
+	bh=/m0FBXPE+D/plQKk8zEUT9sWzugq2uCOYDO5I7oW5k4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Scw1in/wap282Q3wcKIo+HE236xxCd/FRVRGrw32ePPlfxUBTuNptNYoHve05D7BiNw06GFwVRfU7l0K9GGsyQMeIavnkpcadPn+lhwBy7ElOSBZx/d3ByPotFcLJitCP2C+xXUffXENWuurzYQ5GBeYhU/sYZKI0TOlixFoiPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwNQ7X10; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gXeZmHOs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=eD
-	R89LDj3mQm3zPoiNOPEfeINdvP5bFqiYEXwnnrldg=; b=gXeZmHOszy85a+iZly
-	P7BEO2dCVwOeMPVLFNQg6p6xEA7uOQCiBd4k/+pKAV4OjbenbE1gsYjDmiPBALAe
-	G6xuLGu/7bgxHqHdOAH4yuZhpTdsvnplSYKBW8Mc0onswB4gdfDGawBIvGSzDmOq
-	2y9QUTDR8CV5+ky9RXvFfJDVY=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3P0V8sGFq3yyfKw--.38858S2;
-	Thu, 23 Jul 2026 14:11:09 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: lucien.xin@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	l1138897701@163.com,
-	linux-kernel@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	marcelo.leitner@gmail.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net-next v5] sctp: auth: discard auth_chunk when skb_clone fails
-Date: Thu, 23 Jul 2026 14:11:07 +0800
-Message-Id: <20260723061107.384106-1-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <CADvbK_cb8Q=9nv5Z5eR3cf=NLb=5=wSg_HKHrtCtPU_bAN=qvg@mail.gmail.com>
-References: <CADvbK_cb8Q=9nv5Z5eR3cf=NLb=5=wSg_HKHrtCtPU_bAN=qvg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwNQ7X10"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B45F1F000E9;
+	Thu, 23 Jul 2026 06:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784787251;
+	bh=9/tqbs6tenY/umv8FiyDc6kPp79zyuQiPNrAaQpcaPU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TwNQ7X10r6lrcakXNKwhQcY6XEqI/c+3BVpgff623P8PFu8c1nv66mXXqUn7+r0iP
+	 1DpJvCEhITql0Ui3LSnTz88sv5bYfevm7u1JBHDOt7ZDry2rtXRwm5R12bf7anMusy
+	 GjZUUfU0TX3oSI1bkMHE6/do4UaO/FHiELzGhrnwX8MwZibRqkNkHk7X7I4YwyFC+v
+	 u2zWLnrIt/l8P6YHA86RA5jeS7C9k5JO+1N/o9XOz9oUHrS6Tti1158y9wgOqdbRni
+	 288lYCShJWTdIYdLckuwXlRUOcs0dLvzzFwJ2rXu3wy6m3gClSERLav8UEgFpUDHZB
+	 YrvOmk9Y3pngA==
+Message-ID: <be0e47127d3f6081f05b0039d59d79d5b217bb4f.camel@kernel.org>
+Subject: Re: [PATCH net 1/3] net/rds: don't use
+ unpin_user_pages_dirty_lock() from atomic context
+From: Allison Henderson <achender@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
+	edumazet@google.com, horms@kernel.org
+Date: Wed, 22 Jul 2026 23:14:08 -0700
+In-Reply-To: <20260722094330.0486c26c@kernel.org>
+References: <20260711025118.2449428-1-achender@kernel.org>
+	 <20260711025118.2449428-2-achender@kernel.org>
+	 <20260722094330.0486c26c@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P0V8sGFq3yyfKw--.38858S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw1kGw4xKFW8XFyDtr4xWFg_yoW8CFy5pF
-	ZxK3W8tw4UJrnrJrZ7Awn5ua1Y9ws5Gay3CFW0ya1aya1DXryFyrW5t3W7Xw1UuF43u3WY
-	vw40ga1Y9a17CFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUxhdUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC+R4+gmphsH76jgAA3q
 
-From: Qing Luo <luoqing@kylinos.cn>
+On Wed, 2026-07-22 at 09:43 -0700, Jakub Kicinski wrote:
+> On Fri, 10 Jul 2026 19:51:16 -0700 Allison Henderson wrote:
+> > rds_rdma_free_op() and rds_atomic_free_op() are reached from the IB
+> > send completion path via
+> >=20
+> >   rds_ib_tasklet_fn_send()
+> >     rds_ib_send_cqe_handler()
+> >       rds_message_put()
+> >         rds_message_purge()
+> >           rds_rdma_free_op() / rds_atomic_free_op()
+>=20
+> Sashiko points out that this just moves the problem to the filesystem,
+> which also may have mutexes:
+>=20
+>   Does calling set_page_dirty() from softirq context introduce a
+>   potential deadlock?
+>=20
+>   If the user pages are file-backed, set_page_dirty() will route to files=
+ystem
+>   dirty callbacks like filemap_dirty_folio() or block_dirty_folio(). Thes=
+e
+>   callbacks acquire non-irq-safe spinlocks, such as inode->i_lock or
+>   mapping->i_private_lock. If the tasklet interrupts a process holding on=
+e of
+>   these locks, could the softirq spin forever?
+>=20
+>   Additionally, does calling set_page_dirty() here without holding the fo=
+lio
+>   lock or an active file reference risk a use-after-free?
+>=20
+>   If a concurrent file truncation removes the page from the page cache an=
+d
+>   frees its mapping, and set_page_dirty() reads folio->mapping just befor=
+e
+>   it is zeroed, could it dereference a freed pointer when calling the
+>   dirty_folio callback or __mark_inode_dirty()? Should this work be
+>   deferred to a process context workqueue instead?
+>=20
+> Is this not true, or not true in most cases? Otherwise we should find a
+> better fix?
 
-When processing AUTH + COOKIE-ECHO packets, if skb_clone() fails
-due to memory pressure, chunk->auth_chunk is NULL. The original
-code still sets chunk->auth = 1 and continues, leaving the
-COOKIE-ECHO to be processed without a valid auth_chunk for
-deferred verification.
+After a bit of digging, I think its uncommon, but true.  I'll see if I can =
+find
+come up with an alternate fix.  I think we can use a work item to defer the
+rds_message_purge() when needed.  Then the worker can use the correct locke=
+d
+variant unpin_user_pages_dirty_lock().  I'll send a v2 when I get it worked=
+ out.
 
-Discard the AUTH chunk early via pdiscard when skb_clone() fails,
-so that the receive loop can continue processing remaining chunks
-in the inqueue instead of stalling the entire packet.
+Thanks!
+Allison
 
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
----
- net/sctp/associola.c   | 4 ++++
- net/sctp/endpointola.c | 4 ++++
- 2 files changed, 8 insertions(+)
-
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index 62d3cc155809..a5f2835dbe0f 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -999,6 +999,10 @@ static void sctp_assoc_bh_rcv(struct work_struct *work)
- 			if (next_hdr->type == SCTP_CID_COOKIE_ECHO) {
- 				chunk->auth_chunk = skb_clone(chunk->skb,
- 							      GFP_ATOMIC);
-+				if (!chunk->auth_chunk) {
-+					chunk->pdiscard = 1;
-+					continue;
-+				}
- 				chunk->auth = 1;
- 				continue;
- 			}
-diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
-index dfb1719275db..a15b599b20b7 100644
---- a/net/sctp/endpointola.c
-+++ b/net/sctp/endpointola.c
-@@ -368,6 +368,10 @@ static void sctp_endpoint_bh_rcv(struct work_struct *work)
- 			if (next_hdr->type == SCTP_CID_COOKIE_ECHO) {
- 				chunk->auth_chunk = skb_clone(chunk->skb,
- 								GFP_ATOMIC);
-+				if (!chunk->auth_chunk) {
-+					chunk->pdiscard = 1;
-+					continue;
-+				}
- 				chunk->auth = 1;
- 				continue;
- 			}
--- 
-2.25.1
-
-Thank you for the review and the suggestion.
-
-I agree that using chunk->pdiscard = 1; continue; is better than break;. It avoids stalling the entire inqueue under memory pressure and follows the existing discard convention in SCTP. I will update the patch accordingly.
-
-Thanks,
-luoqing
 
