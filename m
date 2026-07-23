@@ -1,204 +1,142 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010060.outbound.protection.outlook.com [52.101.85.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E423E5EDB
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784799925; cv=none; b=kFRZZ4+AQLIHTFR2m/Uav3hy17lL463+8w/JptKP1UumTxa5MJnHWuFwbrDEFEtOoxnQxFrO1J9zUSM73JO9QEWkYTPXcqn1GycFHd3ltFV8jTllrUf2wZnvOd2PFJL/es6gT8d8PE4IVQC7rFOTocnNgYg/hGu9a/HsLkCk1no=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784799925; c=relaxed/simple;
-	bh=o6Lwomr9kCQRXkGx/1Vs5RaKg0u+FQqJS1OP3nbdFz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qzJSpSjFolGcDhNQ6vl5Cj9jdXaPwjdNL9JvFFd8MPgwW9Gf2BCobk4J1C2Gwtd4E0Wrd73uB9FCUATJTsrOk6PBioQM2btB9ig2JSe0qi6feZyfOdOwwdmH3Hn7yLCZD0c0jyCsiLds64ecmUDm7C646AFIfu+2mPA47//sO/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bid0R0Oq; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B045430783;
+	Thu, 23 Jul 2026 09:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784799936; cv=fail; b=L9+DJfS+8PljIzYZmg+YKqHYOW3ZfvtRVilhKrGztRkAyKgOSEtI7Nof10uYcy2ceSHasVZuON02AIadgDgxWzGwJm2aK7hBIETGprnDKwDCr+iQb8b2e3QjDzcXgwj55z5O9XVSuAWLyi1uzdkpvpwK9UlcL1qgz51BzrtgNdk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784799936; c=relaxed/simple;
+	bh=WKkVmMg7cKEnr/4rT1FgCR9V5D7hR/8I2FOjqhqFoAU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BC4NZ3dQpaJt6Z7JZV25I+zHRMKbeOajUCdS8f0TGkXxa/tPRTSzLc40yktG7jtrEN8uT1y2j6a3ny21lV8wTAfDvNtkOKg3/KsVPDKTCZ+EiSApW73bLckxfHhTnAQqVn4FrQSf0/+uoXalfAw8khe+kceqWOjxNsvXVO5XmMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=poGunALL; arc=fail smtp.client-ip=52.101.85.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bid0R0Oq"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493f75f7172so3834175e9.1
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:45:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784799922; x=1785404722; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i93T0tzgCY+DP8cUZolLm0O+1zIztO+HaXRQpxg7jVc=;
-        b=bid0R0OqyBRyZSFJUTZO3/rtufQncd33mF5APL3kH42rivUI88XuxtTIHFbBEuxxci
-         AD34gyxfG713Os4Anb44Rv2Qp0o4HVINv+XTty1IsniMP26o/XQ8NfFF3wCA88tZ9Lvw
-         fuX0LdgQhyYJrPtJ0mYZ5aRFxGV2OOisKpIekmGEdY9a1reOefNVM/XbpuFwftLAS1gv
-         DZ6F3x8y6p5z+SXLjTdmVU5iZf4c8fyTBN0VCB2UxSZ6swpqIr4v+0Cv56kQKZlSYIkr
-         tWwD9X0ZPN+3H6COlCu28NbzUxNDyeVxDqx/R+fBbMnHdkFLfaq1ZRg44J/joIJvatdy
-         LANw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784799922; x=1785404722;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=i93T0tzgCY+DP8cUZolLm0O+1zIztO+HaXRQpxg7jVc=;
-        b=JlsbThICeUJbKGHHiF6Nvq4v3ziKML27XB6E+J+6pREHE/n/J4Ro1lCiIvxwisCrtk
-         tU60BGvfBaJa0bQJ9A8OUZDNjb0xgHX2ujhkOnUO90MAQ+LCCUL9PUCuyrjyq7qJ99I2
-         LeSv6U272eX7Ds7U/LReNuzxdiKTNrW0VDy4V0N+XysxA5b/dsWPfpScfIULKsMrNbNt
-         Kpd9h5Ljns5ES5g1FBj+gk6OMgHECHKA49ZIYrVZG1odV7mfjN7+MW/OEdgsI6fwSfhV
-         qkmCKMW8zQlOkhi+t3BiPcmMWLOA9NujFnPJohtz3PBxPMlT9x/AWeC/3S5Uih1PQSTM
-         S1/Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/evWrSsrlyZzTJDjoBO5U2tAMmv8nGjS+SKW0e1qzuKdhuRt8bMo78atXnuohtt/sGmHlN+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJLkEddBDhp4r4pYL7SNX3DtfzAWuHIxIRAUNeD1V6kNJK5MFa
-	GuiaiGPz0W2vzwYk5xFR7qyzFzAkf1XMp0R+ysWrTcDtt04GCWf3I359
-X-Gm-Gg: AR+sD13ZM2Ey18Z2K83R+4BfHHDTNGesdNxzflu8I/MmssyMs7O/F01Vq2ol6trO4rS
-	0BSiLIHVhxnVv59HaNGp0P8MF9/Y6rKW9AAWpyejizHXc/dO0dTksocoPKakTHmlVd1AorEIBKb
-	plL+lLmBt/DTYTcx3x6+c8hG7TSYb4PUEjQn1yjYbCbkQMHPJswJL9juRymuqw+3n+ej87o2gqE
-	5+m4sZXKIisIKPXFdo6B8ZoFYcSRIjNMpmu8j42QKvOwlcAAyACsrgBw7JIpY1A2h/anxJ5TFpv
-	j/1hzUdgZEomJKXb3J43amv/po1OVglMQv3nyWpg4AAGjJZsXvcatV38Q0H0yZ4oamy/VZisSYu
-	DWBTYXzXy3hx3iS5tfy8MflzJMMQFUWyPksv49LzjuQO6i+sMg2Llu1TX0st4rMu3n//4GR1UTx
-	vqsokALH9Oqjq+GnN5Fl8RPfqq/shr3kvUv2wOdTO0upVHEjv39pIykwGk+zN+D2ep0PR6wn401
-	fYaVkJIH6Je
-X-Received: by 2002:a05:600c:858c:b0:493:e57e:7aa5 with SMTP id 5b1f17b1804b1-49573cf6d48mr24942485e9.22.1784799921848;
-        Thu, 23 Jul 2026 02:45:21 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f11c:ec01:4d68:7f50:f537:5e2? ([2001:9e8:f11c:ec01:4d68:7f50:f537:5e2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b0395f7sm90229315e9.3.2026.07.23.02.45.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 02:45:21 -0700 (PDT)
-Message-ID: <beff7c47-ef14-4108-a350-fb07bd56e166@gmail.com>
-Date: Thu, 23 Jul 2026 11:45:20 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="poGunALL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J6XbdlL4aQ5eYUt4ER1/A+jaERRyf9Hh9MpLaLCqxq85j2JuV6wArU5pEorkPiSCtJnRkoUaPC57t+9s/rG4I9Cyb420YqPpzZ2HNjd4rJRl6+Php6dBoyTtWB1/EXPf2O2IJLjRlNn3an4OEO/dDZUtINA9SB8i86MWn6whw+Vpjimkf3Y0DhyssDHAeOtTZaeyrtd4kfT/BP6k9/eu5St8DZ/zH1NBry25nZVZv4K1LddpcmPomCUiv+NFvEWs+dUebZRh6x+mYAC9L1yec1KDqwtSMmzM1q/paC1nlXmcRApz0FEQw3FphAFoNLVCJhx5UKUQi+TUI8RQjiz/PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aMNjHHmkZeFevICFdtsJud0mLLIi/W3xvWb2W9BNLtM=;
+ b=YAfMic6EgQcra2p5Fdcfs/k5qLhEqSmKwGLxYlNQ4FyyyeOU07m3JkE7DUnytCRybKjwGAWKouzg+DD7oLcAqnMe6QK5vc56Tryzi4RHJDJosg80JdlG7H3D8CU5/sM6QVfNuJGNtiS+P/7Yd3g2oKQst8j7sBd1jwNSWiUlzGpjh9ws8BmlmyrkP3mCADwaiPVpWIIY+KwbWTSNTtbY3ZCKy+mNnZetTExwJLWEJbVc2f6iPYm2Naj2n4WUbJU0E1ywbJ7NKk0hcr7Rn7s4tLN/QV/cJJ1FFAVvyT4x5qY5snbZ2nDl9Sx0uE4nw8si18N8m/VhaFmRxpaNZC3Lsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aMNjHHmkZeFevICFdtsJud0mLLIi/W3xvWb2W9BNLtM=;
+ b=poGunALL0MrUZJY7g5vDmDkjEYmRf9K3tN4OcYKioikoucf2tQrmHrti60SYiNZtgTD9Xm6yINz50Lg7sgTQKe84lbrGofU9BgzAyC+p6Hjk/futbYQj2rjb3+GzzXyQYDKv4uBVbx6BVPr8xfKCsXHbhZJRDUPfNzDGZtyzSJYdkmCED//OI5wmvoVysfg6f46juP5zGWOQQTRlp/MlS8wjG4xPiiSlnPdBpMIc75ZmsuR95oDMrbCM+7I6PaEDLSd0K2TOsu8aacCegVATArxki2bv+Sz4+VsUmYVStpC9y10CY89izSZl5IWheoppyMLBgAU/xqWXlrrqRAV0cw==
+Received: from PH2PEPF00003852.namprd17.prod.outlook.com (2603:10b6:518:1::77)
+ by MW4PR12MB7213.namprd12.prod.outlook.com (2603:10b6:303:22a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 09:45:28 +0000
+Received: from CY4PEPF0000FCC5.namprd03.prod.outlook.com
+ (2a01:111:f403:f910::) by PH2PEPF00003852.outlook.office365.com
+ (2603:1036:903:48::3) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
+ 23 Jul 2026 09:45:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000FCC5.mail.protection.outlook.com (10.167.242.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 09:45:27 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 02:45:10 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 02:45:09 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 23
+ Jul 2026 02:45:05 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>, kernel test robot <lkp@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net] net/mlx5e: Fix indentation in mlx5e_free_mpwqe_rq_drop_page()
+Date: Thu, 23 Jul 2026 12:44:52 +0300
+Message-ID: <20260723094452.1888786-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 1/4] dt-bindings: net: pse-pd: add bindings
- for Realtek PSE MCU
-Content-Language: en-US
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Sander Vanheule <sander@svanheule.net>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Daniel Golle <daniel@makrotopia.org>, =?UTF-8?Q?Bj=C3=B8rn_Mork?=
- <bjorn@mork.no>, Conor Dooley <conor.dooley@microchip.com>
-References: <20260715075530.2491534-1-jelonek.jonas@gmail.com>
- <20260715075530.2491534-2-jelonek.jonas@gmail.com>
- <b3456b41152613ed45bcfde92aff89d0c33fa243.camel@svanheule.net>
- <3f71640b-9f22-4d0b-9c4d-dc64c397d286@gmail.com>
- <amHEgOAWYXYuZwnl@pengutronix.de>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <amHEgOAWYXYuZwnl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC5:EE_|MW4PR12MB7213:EE_
+X-MS-Office365-Filtering-Correlation-Id: a079d9a8-84e9-40a3-5436-08dee89f205a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|7416014|1800799024|82310400026|23010399003|10067099003|11063799006|56012099006|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	kM8VWAZlLf3hEVg+ZWY/YAKSIdJZAcfbUBWxL3YGOW9uDhN/vmfNd72r1QkrveKV7K4mTdysc5h3tstb6DjtFS82mtrsP1715bQCxYr/cM6w89/gSNkIXnONmb9pggpoU2+sneIcOeT5ydx+URehvdHYN/48F1KdgDfgsn4ynC87oEhKSWEkUg1WtYvC15Pmp7AC3lW91h/CrlfaC5/Ykuu6Go5a9JK1UGdsyREiSU3nCmxE3OtCxdzpjR8cAeUd170FXzN/vZre2Gq1F9JdkIqO3C/MpLqb53uvYOxEqu23m7J0dabxTj+RIkG2H7vXcNyZBeiBCRDKFcyofC4YG2DGDX9CRgltvpt7oqoDhumRz6Cl8Rk+F48Qrk3DQMle7lbM1TBjMAP8lKeZg1d4+E+j/yKx0Ie0up+Djbx0wOs2NxNV8dm8nO1SQ6Qiyen1xVrlcMeUBj4FF0jV7eS+fdB9vcjq8ZVzCfnMEg2Wlg/ywJZ2Sufbk5XvN4vjkIWysOPjkofvMeR8Ebv/96Iao4yEPDKOjgMw0Nck1BkQB9JHS2r441lPD30YYNux8G+DBMFmrz74g2z6ykELKDookO0kGujEVnXn4Ku9/IDNkOvWCTVsfbXL6/0N1MZ+w5tXd4dCvcdTQxl/bfWToN1pG1HeWcNlTcAd6QyybMQrLueZep4SByxi5kITE3dlia5Cz8pPBE1pP6T1RVJhk8fFEA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(1800799024)(82310400026)(23010399003)(10067099003)(11063799006)(56012099006)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	0gL60mhK+0xArN5CPNL7PIi2m1oJP7EqKpKrLgaVPJtNIl6fjfa2lQIHt/S9EUNwEPR+sv9DOF8jZcD9YVIxy/7DHfTKZezurGcXcOVmcEPdIJVKhD9S4O94Suq0uBh4hIbaJdvihGgvCMZY4gbK72nz3NJSdSPxtMxf2cnQbekHN72r8VPgLSnspQuKVuzufk+GajqI5HG5T3tLBk2hk+Ps/EsMifpe7h41MiEBkeR3JbTjRh3G5EorJtiSbrWG6xpHl5GURvw5+6W7Af0U+APr5NZsfGUI04B+/KsgO8UORjfzqGaAmGMhDa3DpUAj59bev6HFaSGuj1m0l8tJD1TUDhIl51+OzAhWSfhKyEjpu1Ibpud67wMt4q8zCMsCKFVSqwbRn33IbTfgW42NEeISgSUIKqKWNeddajJreT/oFGnbaA3pMNcWuani1aRB
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 09:45:27.2300
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a079d9a8-84e9-40a3-5436-08dee89f205a
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCC5.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7213
 
-Hi Oleksij,
+Remove a stray leading space before __free_pages() call.
 
-On 23.07.26 09:36, Oleksij Rempel wrote:
-> [...]
->> Correct me if I'm wrong but from what I see, most of that budgeting machinery
->> isn't used in dynamic budget evaluation strategy, which is used here because the
->> MCU does budgeting on it's own.
-> Hm, I guess the wording in header is a bit confusing, I see now the
-> misconception :)
->
-> dynamic vs static means - haw available budget is calculated, not where.
-> Dynamic can be implemented in the linux core too, but so far no one did.
-> Static can be implement in the MCU firmware as well.
->
-> In static case - the Powered Device tells us haw much power budget we
-> need to reserve for this device and it will be permanently accounted.
-> Advantage - every device will get what it is requesting.
-> Disadvantage - we do not use full capability of the power supply.
->
-> In dynamic case - we do not fully trust the Powered Device, first we
-> reserve requested budget and then start measuring the PD consumption.
-> If real consumption is less as requested, the reservation will be
-> reduced.
-> Advantage - more PDs can be attached.
-> Disadvantage - a spike in consumption of one PD, may kick out some low
-> prio PDs.
->
-> Since the dynamic case need a lot of measurements, it is usually
-> implemented in the firmware. Both strategies have advantages and
-> disadvantages and MCUs may allow to change the strategies, this is why we
-> provide this information.
->
-> In your case it is not documented, but it can be tested if you have
-> enough PDs where you can influence the load.
+Fixes: 0285cc3dac1b ("net/mlx5e: Alloc rq drop page based on calculated page_shift")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202607142323.qm25Crps-lkp@intel.com/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Probably takes a bit of preparation to set up such a test.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index c1acb9012d3f..5ad8c67e4695 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -695,7 +695,7 @@ static void mlx5e_free_mpwqe_rq_drop_page(struct mlx5e_rq *rq)
+ 
+ 	dma_unmap_page(rq->pdev, rq->wqe_overflow.addr, page_size,
+ 		       rq->buff.map_dir);
+-	 __free_pages(rq->wqe_overflow.page, page_order);
++	__free_pages(rq->wqe_overflow.page, page_order);
+ }
+ 
+ static int mlx5e_init_rxq_rq(struct mlx5e_channel *c, struct mlx5e_params *params,
 
->
-> Not sure if we need an UNKNOWN flag to tell the user - we do not know
-> what to expect, use it on your own risk.
+base-commit: f43ee0c0730d6191629b5ee1ceae27b1ebfdc047
+-- 
+2.44.0
 
-So dynamic happens to be the suitable case here right now, because the core
-doesn't handle it yet and the MCU does it on it's own without the core
-disturbing that?
-
-I'd like to avoid dealing with that in this series as this seems at least to me
-like another deep rabbit hole. The MCU comes always in kind of a
-pre-configured state, having several limits set so it should behave safe
-and mostly as expected without the driver changing anything.
-
->> Using vpwr-supply on each PI still buys that the
->> supply is enabled and ref-counted by PSE-PD core, and keeps potential for what
->> might come. But no requesting, allocation or deallocation of power.
-> Ack, in many cases it is for diagnostic. Please note, a "manger" is in
-> the practice a multi channel current limiter/regulator. It has maximal
-> load per chip and different max load per port. This can be properly
-> reflected with the regulators. 
->
-> For example, RTL8238B-VB datasheet do not document maximal rating per
-> chip, only per port. Calculating 8 ports, with 36W max, would result in
-> 288W. It feels like a lot of heat. Can it actually handle it?
-
-I can't tell, but I would guess so. Several switches I have use a single PSE
-chip for 8 ports. Given the advertisment of 30W per port and staying within
-the overall budget, I might expect to be able to use it. Or the vendor hides
-some information.
-
-> May be the MCU firmware has integrated maximal power limit do avoid HW
-> damage. A proper information in the regulator tree would help user to
-> understand why not all ports will get requested power.
->
->> Given that, I had a closer look at PD692x0 and it seems, this has a similar setup.
->> The difference here being just that there's no multi-manager concept. There is
->> also a manager-level supply reference "vmain-supply" which the driver reads
->> and applies to the hardware, which does budgeting also in hardware.
-> According to RTL8238B documentation, it has same multi-manager concept.
-> Since one manager RTL8238B supports max 8 ports, a switch with more PoE
-> capable ports would need more chips.
-
-I see. I mixed up the terms and thought this "manager" is separate level in
-between. If "manager" == RTL823x PSE chip, then it's the same setup.
-
-What do you suggest? I would like to avoid doing any half-grounded claims
-or assumptions here while not fully overviewing the whole picture. At the same
-time, I have the feeling the datasheet and host command guide from Realtek
-are genuinely trying to fool me.
-
-The setup seems to be very similar to PD692x0, we have multiple managers,
-managed by a controller (the MCU). The MCU mostly does runtime discovery
-of the downstream managers, so right now there is no apparent need to
-have the same manager + port definitions in DT as PD692x0.
-
-In reality I haven't seen a board which has different power rails for different
-managers. So there's usually a single wire from the PSU going to the PoE
-daughterboard where everything lands on a single supply PCB trace. The MCU
-has a multi-bank concept, however it's usage right now is rather confusing.
-Managers seem to have strapping pins which tell which bank they use, and on
-the MCU side one can set power limit for each bank.
-
-> Since we already talk about power budgeting - all of this make sense if
-> we have port priorities. For example PD692x0 firmware has default prios
-> bound to port numbers. Is it the same with this firmware?
-
-Looking at several switches, by default all ports have a priority of 0 assigned.
-Thus, no pre-defined prioritisation, it's up to the user to set this.
-
-
-Best regards,
-Jonas
