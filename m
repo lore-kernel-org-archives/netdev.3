@@ -1,248 +1,228 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022120.outbound.protection.outlook.com [52.101.101.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541B23DBD57;
-	Thu, 23 Jul 2026 19:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784835826; cv=none; b=nZRaUhNhBCv2grGTRd22T6pUxvJvUbGmmpNEzVH/AsA+uNQTLtqMS+XjH2y2L3t55X/NlT1NGvWSgsqlKemE7J87GNwuyyP+0bx96GU/7n4si3izN+KqrLir1pTJSdqSVP6Jd37bD6v51OYSXozet7z4k4ngeE3TIjZH0aHT0ok=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784835826; c=relaxed/simple;
-	bh=iswGGNi6TcCJl3ezzYFIVHhUlEtDM5XP8pSG3SdhZww=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WbhgX1L1OQlgK+2UkIBpEUc0NmGaAlOWdHr5y+87OrQfLxv5kL+UYOjotd62g/XCQGvKMjHt5wLUc0ONUzT/eJ+CvVv34e+PYlDehdGiZ9uH7RJcivzBYdroU7f4esWykabtoGNaeN7qdProU0BdjMCC3A9SdSDYeMIGvJL3z7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=NtRuzlu1; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2B93D5229;
+	Thu, 23 Jul 2026 19:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.120
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784835898; cv=fail; b=p+x7EOxiPG9a76OQ4dVwOHiALT3n5a4ldnl9FkgDwpzexFKrXKwZhUYIy431Nfb2ypZoB54fSHPktOHI8QpgEk8IjAxvo96iMjymAB6wp1H9Zcc07fbX14Ziyp0ed3VacwBPPoZeNXuYy7QDvX4KwLZsXaWNwcrICR44r9iHW3Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784835898; c=relaxed/simple;
+	bh=8hhpdN1vcdI28kmA+3EqfwyF69z4Ub+TqygK3Zz174g=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=WuQzW2EarXAyOdfGjVATkyhqmBGj3/2HgrPVlNref+YwdFOg/7cnyfiOkfEWA1u5kHJYm6Tn/4QgMfElEj09sGruuwE14suvcFJNX7BJ3VHJSFyeLP0GLgOEq0HMEHvxosEojeYYbEzaj/BwCGgf6iZW8MAqfdrChToz0T+bKow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=L8HgI8tO; arc=fail smtp.client-ip=52.101.101.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="NtRuzlu1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1784835789; x=1785440589;
-	i=markus.stockhausen@gmx.de;
-	bh=yt0vY5wckX91qJDGAiKvp3b9MaPtgDfkmoixDCvwJZM=;
-	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
-	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NtRuzlu1vpo0FNR7eDTKTtkKCcI6c/j8owZx1lP7ZGVZY+l8V3dpsopW8IZgiAd+
-	 Mya164vo5Ed/c0SSFf2A6Ka9ePK9ce/FDrAiSC7c6P4ry00bxysUG6Yv1P8qFN+Yo
-	 TxqYCHzSzcGCJXVaL8/JCzWgYwO3Hulgmfh0+6bERRPlSTUa/4ZwtilEJfmvUTbop
-	 0vkg4ySi5plgRDgouTYv/KrnFHEPjPx3DKDwNAzsw+2oJay97861oYYdbP9ul1YhG
-	 YdB+NlIzU2EnsQIXfHNpf7cXLGA26uvFxfGzRZ36dqzk3JMXA3EcCUvLmmEmKRjCf
-	 ZQPi2CcGpCaVUr4Maw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N17Ye-1wxSbO42vq-00yiea; Thu, 23
- Jul 2026 21:43:09 +0200
-From: "Markus Stockhausen" <markus.stockhausen@gmx.de>
-To: "'Andrew Lunn'" <andrew@lunn.ch>
-Cc: <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<netdev@vger.kernel.org>,
-	<chris.packham@alliedtelesis.co.nz>,
-	<daniel@makrotopia.org>,
-	<robh@kernel.org>,
-	<krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>,
-	<devicetree@vger.kernel.org>
-References: <20260722062356.12291-1-markus.stockhausen@gmx.de> <20260722062356.12291-3-markus.stockhausen@gmx.de> <ef41a5bc-804e-4a5f-863d-7221fc1ef1ac@lunn.ch> <009e01dd1a6b$d9726a80$8c573f80$@gmx.de> <420dbb03-6a39-4ef3-9cb3-da78401fd4ce@lunn.ch>
-In-Reply-To: <420dbb03-6a39-4ef3-9cb3-da78401fd4ce@lunn.ch>
-Subject: AW: [PATCH net-next v5 2/8] net: mdio: realtek-rtl9300: Add polling documentation
-Date: Thu, 23 Jul 2026 21:43:02 +0200
-Message-ID: <005601dd1adb$7d1cc3a0$77564ae0$@gmx.de>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="L8HgI8tO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gyspf9s0T32bbbDCyJ/8nBgMhsRjJXAprdMbJkAXGterzHDOvBhrmSJa3O/H2hnAk1JrkBlJJJphbBg6IaIMC37XWnhpyMjUopENc9i5Bzum9/rkenQBw+O149WSNXzfWps5jqIPpbekxPwdk3iiORsbz2YkkSwhRixcoG/Aq5FU3YxPXjRrhkieJJ6epLCkGzd5d83lvg0vt67Db5bm7ofeZ+PCb54Nxy94AMjwdB5VX17BwGq4CF8MTeK2xuPODUQRyIzV/j6lCyfkWMukipnRQbI9BEII1Vx4g8PIgGQwcv3j/R3W0/4meSA9uIwxlvQeew9EpliVtzmdN0XC2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cOaNLZB0McQ3sghz2DY2ek9AWnK8rSxnnGvmFGwp804=;
+ b=U5/dkBAmBsNbJmOS184lH4Oj2MaUDjJ9/aRgwZ5BH7i0JZgyoQmM/RIlLVrDnaUDqF9NC118huvmgPwKcgv+Yw3fdgJmdUILA24pItEDNKZLYQQdQzroAQ6NwOBsApte9BCMMBPUiP6fZtRRxn+vOlFTxganPGocFq9pWiIA6ZuMEQFfBf5Mi5xLdhKvsaSv+CB/QhnnN4w98SR4YzXCAZuLHHN1YlN/PBVqjf1+RP4DstzfC3/CCkOyRmnyKCuYBJXcbXR5+KAMFTBnLN2zfy6afMIEZqUklJIz1GfG0F4nJVTVxgLo8BDrwv95X00QnKSQruazGF+YoowpntMKwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cOaNLZB0McQ3sghz2DY2ek9AWnK8rSxnnGvmFGwp804=;
+ b=L8HgI8tOhvTwMkkQJeXyOC3Aswd5SmW93pfWZMk0QJk8FuNiD7LGamyxce4aOkRc5D2JFR+bueuAQCUvOrj+vEzqeR5MAhxPkqVAJRC/ZMJiZ+ihXV2MgefW2doi5TCFFLTaixDb/UXKugAxxjffm1UyP8d8IGVf3KmusrvpXl4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB3686.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:f9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 19:44:49 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 19:44:48 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jul 2026 20:44:48 +0100
+Message-Id: <DK67INM1MX6H.1FA6WNE8RZ9R7@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Bjorn Helgaas" <helgaas@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: "Bjorn Helgaas" <bhelgaas@google.com>, "Zhenzhong Duan"
+ <zhenzhong.duan@gmail.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Damien Le Moal"
+ <dlemoal@kernel.org>, "Niklas Cassel" <cassel@kernel.org>, "GOTO Masanori"
+ <gotom@debian.or.jp>, "YOKOTA Hiroshi" <yokota@netlab.is.tsukuba.ac.jp>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, "Vaibhav Gupta"
+ <vaibhavgupta40@gmail.com>, "Jens Taprogge" <jens.taprogge@taprogge.org>,
+ "Ido Schimmel" <idosch@nvidia.com>, "Petr Machata" <petrm@nvidia.com>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "David
+ Airlie" <airlied@redhat.com>, <linux-pci@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-ide@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+ <industrypack-devel@lists.sourceforge.net>, <netdev@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, "Sashiko" <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v3 9/9] pci: fix UAF when probe runs concurrent to dyn
+ ID removal
+X-Mailer: aerc 0.21.0
+References: <20260706-pci_id_fix-v3-9-2d48fc025acc@garyguo.net>
+ <20260721223500.GA690676@bhelgaas> <DK66ISTEVM5H.3K5O68CW1F8ZB@garyguo.net>
+ <20260723192957.GA839273@bhelgaas>
+In-Reply-To: <20260723192957.GA839273@bhelgaas>
+X-ClientProxiedBy: LO4P123CA0641.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:296::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQK/Le43oqC7DF9RxGQXBKOvw8+FqAGoVyPIAknS77sCpcYhcQIdcjnstHGp1GA=
-Content-Language: de
-X-Provags-ID: V03:K1:Inxb2o4bu7NsbdH4lIuLiezCzItMk19BLe6KEY9o7oBYWiW8018
- TYSZ6gqknOW3hx+Jsh8dx6l8GwNTO21aAP7Zua/euE4ILDov73hnLQP9h/ZeFRyVt54aJ4x
- lx1hu/GSObUf0QkRziGIAR3dU/nAxy8HUBKV9RlpjrVmJrsnyOOi6JByHKqoDvbqgCoNNFX
- 4fRG0LTzjG0TqL8J+Tn9g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:qv65clQw4hk=;NHPAydwOXAKtdaOlkpro4iyp7JG
- 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
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3686:EE_
+X-MS-Office365-Filtering-Correlation-Id: 694f0370-89e0-4742-51a1-08dee8f2db09
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|10070799003|366016|56012099006|4143699003|10067099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	IXzwlFePMP0CFJ9B4HWqPAv8Tm7T1X4jlBWmo/y/lwGoeIusuE+gK0gFvm3owlw8oliGGCMcIv9slJ7H+JUfF3cZ4lR1O7KPbcuDyVxO/VTX3ufUoYQVIWV9ld+USSGaTpA/vO7ZpWsxXsCVZ46RvUJJfjyE/aw78qLCJi0Sv4OimshEVaKbLZPzH7LCLmQWfJBiJ2n24w19pNHMpeQIeaEzxBIqUVaD+jceySYUppDN52qOch0lEn07sh8uMGC6sHGnWXq+kFBjbKz+S+cuDf7evut6ECLciCeSScH0eoovQdPj0dw494JFKxNUstKMUzzh0GnzKvJ+qwkARk1Sdu2jVR5Dvy8mA8+y+af31dZfvKlc00Vp91ekfALCS0X19wqv0meOMbjGlqwA/yaRM72SOz7z1s4i1Fnmkxi+o446PaaQGWu+hVNrQ6lXxtfymKZRG8D7SR8bp9rD8fax2OqWAxTlVb2JTSS2kr+iOhQ9cc3r0qM1aWegxyI5tzTr0veO0Pl21I5gpuxaQspJngrZaD0BcrTGWyXjytAYWtT6sRjrfri+ZrwMpzFcmV2Wq7ulqX2RFTsSZmwfX6ZIZO9ptUAgwsbhNI8c6dvgcNHlf3zfXjheOvIALlV2ffGz5D03XJ6LcbjieITKxbY8IrGrFgFuoxqxxb5imapR8v0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(10070799003)(366016)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VUQzU1NXbk1pUjVGOWtCbDBQNzZGbzE3SnZCcWZzZklicDdZWXg2L3FYcFlu?=
+ =?utf-8?B?NVgyblpWZWRldE5wVFM4Q3R2YVpOdmZEa0phV29DU0s0eW1NK3ZUYXMxVFdK?=
+ =?utf-8?B?YU1FZUEvN1RWbnJvb3hndll6aG56eEZaWEhRdFhkU2g4YTlJZmZOQmZqdXZ1?=
+ =?utf-8?B?U0laT0FXSS95a1J5R0cwTWhSSkZkN2FCU0NoU1F5TTRTU0toYnliVmlmc09o?=
+ =?utf-8?B?TjIrK1VpalVabWdJdUFPU2NMZnE0VGVpSUowUzdzaXNqUXBEeUE1TzhHYjAr?=
+ =?utf-8?B?MjhPVG5ieGFGTjUzRWJkN3lKeWNLVGFFMkM1Q2drbWZXMmppS2VoeEZhWHp5?=
+ =?utf-8?B?cmlId1dlNWZpaWxZNitabklqc2VoQjVyZjI4UTRHbXprMTVKRGZuQjVSQitx?=
+ =?utf-8?B?UncwM0d0dmhKK1U1ZjdZa3NMWWRYZlRRT2s1ZzEvZWNLOGRkVVZleHdGZVd5?=
+ =?utf-8?B?VFFySzBPTU1yZTcrRjNnQVVYc3pLVWJ5R3lLcWc2ckNGY1R2WGhQUnU1SjVp?=
+ =?utf-8?B?V1VOSDFzMlJKNVljb1lvbG92Q3F0UjhORlFzVlArMGh6NnVJYmpGaEd0N2w3?=
+ =?utf-8?B?QUJOeUQxQ0tiMjMzMi9lVGZlcE1xMjVqdGZKdWpJLzhMWEg5a1lDZG1YSzZ3?=
+ =?utf-8?B?RFRVVnA5VXZqQldwT1BFZDllZnhNa0JBak1BUGFhMVJnem95VDlEMmxjVy80?=
+ =?utf-8?B?UEk0REpKMEdJT0lRd3MwM2RaN2s3bUFQUnZSME94VVRNd3dsV1hiY2daYTMv?=
+ =?utf-8?B?ZGtyQzVXUmtTQkZlS01kS3lMTFVxTm9POUZLVVRKbjhaNFNDUWdtNm5aKzZY?=
+ =?utf-8?B?MEJUVGl5b0phMzdaWFRQWVpPa3k0SEQyWUEreU1aazFibHoyNzRyK1ROWEtS?=
+ =?utf-8?B?MVRVVEJBYUluYmQ5VEJ2OGM5YWxoVFl2d2llUmNPR2lCVm03akxSNTBUbUQ2?=
+ =?utf-8?B?dEQyZ0tSSDMrekUyeW8yc0xOOUlUMVY2QXVWNHpvbERSa3FmS1FEMVlTeGJl?=
+ =?utf-8?B?VlUraTNESzRROUxmNndnTjZiT2NUcFcvZFF1RUk3NW1Xd0dpVlNTNkNlNk1G?=
+ =?utf-8?B?dzJrblg3ejBLRXFKdFdHaFhJYWJ4R1krLzYzcHY1MzFGdUxtdmEybmpUQm1p?=
+ =?utf-8?B?aG5BRlZnQVovSkRuU0ZES0lKcHY3bCtaMVI4RTF1L1V1WHNDT2hIYUFPeG04?=
+ =?utf-8?B?TFVSK25xNnhoWm9GaGxzbm15dGhscHBOc2V4OHB5Z1crQmwxOHkwS0t0ZEM0?=
+ =?utf-8?B?YzUwMFltTkdwTzFsUm85TXpCRER1by9KdHM5WmtqemY1TlF2SmFSelpVZVgx?=
+ =?utf-8?B?ejlPM24vL2NtRjJYRDVEMCs4Um5NN3ZvTmxQdFUxc0hMSy9hUVZxZUhhcldX?=
+ =?utf-8?B?UDl1Wlg0TDFBZ3hnbi9PVnl6V25FN2ZPeXpYSjJ2K081OXVDREZzalJlVSsx?=
+ =?utf-8?B?NWNuekM5QVptN0tDQjFVbU5mQWdMY1BaWkJvS2NLOVJFeEN5bkQvVnQ0aUV2?=
+ =?utf-8?B?RkdubXNyQ2oxMmQ3cGFoNWVjdUlLUHRvK1gzdzRITWlVZlZEZDJId2pONmJu?=
+ =?utf-8?B?UkFKaWZzcjRmeFFicFc0Q1hSVzVaZHB4U2puMmtXZjNaZHp4eGEwbVV0alZH?=
+ =?utf-8?B?cFlQYVJObktSdFBsMDh6ekFkQjJVcjZFZ2t6bThRRU4zN0M5ZWZ2ek9iR0Vx?=
+ =?utf-8?B?eEhLOXJ5NlZjd0FadklIcVNSMWNZTHpZS1U0Ti9qVlNXdEJFOW5kWVg3dFh4?=
+ =?utf-8?B?TFppQ1hHNU9YZzZIRVJQMEtWUjlmZ1U4Uk9EcVB0Ri9GNklwc1NNVkp2K3JG?=
+ =?utf-8?B?TDlHYW5NOS9tM3FGWnE3QUdBNDA1MjFlTEpjQmJNWGphVmQxWFZzSzJaMlpr?=
+ =?utf-8?B?ZUxDQUtraDdBeU5EOGVNNnhvb0lZMGdIVEl1cXJ1QlNEbHp4TUJHUktBcjFh?=
+ =?utf-8?B?TGE5SW84SHNBNWF3OWVzZFlnblVaSzh1K3I4VVBWTnUreUpLbXIxaC9DQWhB?=
+ =?utf-8?B?dGsxa3FkRGhiaXJoU0EydlBqWXRCR3ZqTGVVaVZ0RHpPWG14STFmS1cxTVZZ?=
+ =?utf-8?B?UktHTnpoSmNWcHp3dUV1elJnNHl4U2JoU1ZOU3lMVUw1UnBGU21hY1dFUG5G?=
+ =?utf-8?B?TzllcXIxWGQwTjJNaW1VOFBwNXdONHd1RTl6aDFYQkFHREZCUEo0M2hwZ0JE?=
+ =?utf-8?B?TTJzR3VoM2ZJUktqeUdOOVNMRmtxNGdMZ0dWWXhXRWtrS2dYbk9RemVTbkVy?=
+ =?utf-8?B?dUlaR0tUUnFXcE5VZG1kakl6TklPUzJkNXVuUVAvU1ZNQ1NzQ01iK0Y2ZnZi?=
+ =?utf-8?B?eGwzQzVHMmFjaW42aU5ENUpPTnNZZzBEY3N2a3pnd2kyRmFXTDRIUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 694f0370-89e0-4742-51a1-08dee8f2db09
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 19:44:48.8375
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: juNy8C80p3JHMyueDfsjHP7hkaYeNGVIRXLHlUlSNwUXL1kLqFCOnwFIhvdxT4Mr/ccsog4M5XAzU8ZT1iy5ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3686
 
-> Von: Andrew Lunn <andrew@lunn.ch>=20
-> Gesendet: Donnerstag, 23. Juli 2026 16:18
-> An: Markus Stockhausen <markus.stockhausen@gmx.de>
-> Betreff: Re: [PATCH net-next v5 2/8] net: mdio: realtek-rtl9300: Add
-polling documentation
-> ..
-> Just to be sure. You have a broken cable, so could trigger downshift?
+On Thu Jul 23, 2026 at 8:29 PM BST, Bjorn Helgaas wrote:
+> On Thu, Jul 23, 2026 at 07:57:58PM +0100, Gary Guo wrote:
+>> On Tue Jul 21, 2026 at 11:35 PM BST, Bjorn Helgaas wrote:
+>> > On Mon, Jul 06, 2026 at 03:11:21PM +0100, Gary Guo wrote:
+>> >> Dynamic IDs are only guaranteed to be valid when dynids.lock is held,
+>> >> as remove_id_store can free the node. Thus, make a copy in
+>> >> pci_match_device. Also, clarify that the id parameter is only valid d=
+uring
+>> >> probe.
+>> >>=20
+>> >> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> >> Link: https://lore.kernel.org/all/20260619170503.518F61F00A3A@smtp.ke=
+rnel.org/
+>> >> Fixes: 0994375e9614 ("PCI: add remove_id sysfs entry")
+>> >> Signed-off-by: Gary Guo <gary@garyguo.net>
+>> >> ---
+>> >>  drivers/pci/pci-driver.c | 28 +++++++++++++++-------------
+>> >>  include/linux/pci.h      |  1 +
+>> >>  2 files changed, 16 insertions(+), 13 deletions(-)
+>> >>=20
+>> >> diff --git a/include/linux/pci.h b/include/linux/pci.h
+>> >> index 64b308b6e61c..92c17c116de6 100644
+>> >> --- a/include/linux/pci.h
+>> >> +++ b/include/linux/pci.h
+>> >> @@ -979,6 +979,7 @@ struct module;
+>> >>   *		function returns zero when the driver chooses to
+>> >>   *		take "ownership" of the device or an error code
+>> >>   *		(negative number) otherwise.
+>> >> + *		The pci_device_id parameter is only valid during probe.
+>> >
+>> > The probe function takes a pointer to a struct pci_device_id, so I
+>> > think the requirement is that the struct pci_device_id only *needs* to
+>> > be valid during .probe(), right, i.e., the PCI core probe path makes
+>> > its own copy of the ID and doesn't retain the pointer after .probe()
+>> > returns, right?
+>> >
+>> > I assume the caller determines the struct pci_device_id lifetime, and
+>> > it could be forever.
+>> >
+>> > Could say something like:
+>> >
+>> >   The pci_device_id parameter only needs to be valid during probe.
+>>=20
+>> As a contract on function parameter, the caller needs to guarantee that =
+it lives
+>> at least as long as documented (i.e. during the whole probe) and the cal=
+lee
+>> cannot assume that it will be valid beyond what's guaranteed.
+>>=20
+>> How about:
+>>=20
+>>     The pci_device_id parameter is only guaranteed to be valid during pr=
+obe.
+>
+> That's ok with me.  My only niggle is that this documentation is that the
+> *consumer* end, and of course the consumer, i.e., the PCI core probe path=
+,
+> can't guarantee anything about the parameters it receives.  But I guess
+> your point is that the *caller* must guarantee that the parameter remains
+> valid during probe.
 
-I usually tape pin 8 for these kind of tests.
-RTL838x switch side gives (port 8 aka LAN1):
+I'm not quite getting it, the PCI core probe path is pci-driver.c which is =
+the
+caller? Do you mean that the PCI *driver* probe path cannot guarantee anyth=
+ing
+about the parameter it receives?
 
-MAC link status:
-root@OpenWrt:~# devmem 0x1b00a190
-0x00010000
+>
+> The only thing the consumer can guarantee is that it doesn't depend on th=
+e
+> pci_device_id parameter after the probe returns.
 
-So Port 8 =3D 100 Mbit
-see https://svanheule.net/realtek/maple/register/mac_link_spd_sts
+How about:
 
-MAC force mode for port 8:
-root@OpenWrt:~# devmem 0x1b00a124
-0x00D71EEC
+    The pci_device_id parameter may not be valid after the probe returns an=
+d
+    must not be used afterwards.
 
-So port 8: NWAY_EN=3D1 SPD_SEL=3D3 (aka 1000Mbit)
-See https://svanheule.net/realtek/maple/register/mac_force_mode_ctrl
-
-PHY view
-root@OpenWrt:~# ethtool lan1
-Settings for lan1:
-        Supported ports: [ TP MII ]
-        Supported link modes:   10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Supported pause frame use: Symmetric Receive-only
-        Supports auto-negotiation: Yes
-        Supported FEC modes: Not reported
-        Advertised link modes:  10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Advertised pause frame use: Symmetric Receive-only
-        Advertised auto-negotiation: Yes
-        Advertised FEC modes: Not reported
-        Link partner advertised link modes:  10baseT/Half 10baseT/Full
-                                             100baseT/Half 100baseT/Full
-        Link partner advertised pause frame use: No
-        Link partner advertised auto-negotiation: Yes
-        Link partner advertised FEC modes: Not reported
-        Speed: 100Mb/s
-        Duplex: Full
-        Port: Twisted Pair
-        PHYAD: 8
-        Transceiver: external
-        Auto-negotiation: on
-        MDI-X: Unknown
-        Supports Wake-on: d
-        Wake-on: d
-        Link detected: yes
-
-Nanopi R5S on other side gives:
-
-root@nanopi:~# ethtool eth2
-Settings for eth2:
-        Supported ports: [ TP MII ]
-        Supported link modes:   10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-                                2500baseT/Full
-        Supported pause frame use: Symmetric Receive-only
-        Supports auto-negotiation: Yes
-        Supported FEC modes: Not reported
-        Advertised link modes:  10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-                                2500baseT/Full
-        Advertised pause frame use: No
-        Advertised auto-negotiation: Yes
-        Advertised FEC modes: Not reported
-        Link partner advertised link modes:  10baseT/Half 10baseT/Full
-                                             100baseT/Half 100baseT/Full
-        Link partner advertised pause frame use: Symmetric Receive-only
-        Link partner advertised auto-negotiation: Yes
-        Link partner advertised FEC modes: Not reported
-        Speed: 100Mb/s
-        Duplex: Full
-        Port: Twisted Pair
-        PHYAD: 0
-        Transceiver: internal
-        Auto-negotiation: on
-        MDI-X: Unknown
-        Supports Wake-on: pumbg
-        Wake-on: d
-        Link detected: yes
-
+Best,
+Gary
