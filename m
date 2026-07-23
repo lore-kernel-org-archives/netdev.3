@@ -1,261 +1,217 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011001.outbound.protection.outlook.com [40.93.194.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2C0476CCC
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88A1448BA2;
+	Thu, 23 Jul 2026 15:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784818526; cv=pass; b=nGnwA51S9aCqkKE4Rr32wJrNbizD7NnLT7G3C6fVgeVn/6fQ4AfO01x1m+odGxxac4JKZFDBBXRVuo4t5iEU5ZJT3MjPiuZ70wOPNaxaJKimWo5DHCGuXtqsP/9Hw+Ou5o0ojbtuchVnemM7yQ2o1pNSkJsEL0K3MCbAav9haYQ=
+	t=1784818921; cv=fail; b=U1yy2ODPmTBrOPfVSWarvLpwtvaSb95s6U+HQXxCz0QJC4CJEz0jSIj+edIHHgzcELDSPwgXGXoe1gY08kffQrK8oW2h2DlQU6RobfImH/hzU4q4XDrxYR7ZNbpLCw9HHcCB5LKEtK65EzPmxLGPC3mHOI3ZeoSTDACoW6fDJCo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784818526; c=relaxed/simple;
-	bh=bvzchvlbWRbtbpWI65b+DUHjE3nGDJFevXw6NngY7so=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jdwZZyVFDBgoRGn322/bmjIXNigdrFVPku/RUEvKoyrtW0y9imv6JMiWQaUcycjHIxIs7rxnGT/zDw3+C8NWCKCc69OuYburHMAXAmoLx7tQpkkUk+jLej2RVmw0SoFCp2Psy4A0LLQXY1OLZaS/NtVSuKqWYWVjzpSLI5BNJPM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hRLRQzmz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tOot7o4y; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784818921; c=relaxed/simple;
+	bh=BomeWANZj/V8uwZhGhfPsrIPH7dGPQxe7I/4D//zTnw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=akC8ezASlH+x1lxLC3DMTLwvtsS7ZmtmvCOQZK55066cITYm9LZMm93RGfTR62O0KtHY4BCVB8epCnzV2jUdOcpmDdVMKpI/LPSLmwWhfIcmrOeEyApvLEclcowa8vViEbt5XUZfuHCbAAluQYU+BNxXoHX+nx5geOPwdXxGKrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TKFBo8GK; arc=fail smtp.client-ip=40.93.194.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hRLRQzmz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tOot7o4y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784818521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
-	b=hRLRQzmzLrN4cRU63Ujh3DWsycf6or/rXR8+ySkTO2ZpybEuyOYolRfM+c+kbq6IqbCyUJ
-	5bDSqdmBocq03+OM4SZ+Z5b0QFpUU0mhsIBIY/pitomtael925YEVBcTru4D3x+MVOCKBI
-	IQrZRLxx5UAVpkyFw5p1d2zsJJvgoPY=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-4GztjiixOleD5lWG7ooBug-1; Thu, 23 Jul 2026 10:55:19 -0400
-X-MC-Unique: 4GztjiixOleD5lWG7ooBug-1
-X-Mimecast-MFC-AGG-ID: 4GztjiixOleD5lWG7ooBug_1784818518
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cacf17c7e0so9681335ad.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:55:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784818518; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AV5zwCiNu6xSV+Bj5p/CQ4imHV5Dok6J7wNMtT6foCnYUNjtfEh2BrY9V1vz6kUwGa
-         G0/LP8ru0n6IKecc6dukG1fQuFEdUbiaYdX1lTSjHYP8uU/eBkHAGDdmN9ZIx/s5AcFi
-         EMZBPBSckc3/AAALmI2viryL3+mJNR/cJYKF0YyuMG92PpNQR1u0UFEQxBhWuFek1Kc8
-         jcMouH2nTe2m9K3nVzSIkCkQIAj/MAlilNoGF4Q4+xVnrotvW6O1jvx+JX1JOmPMj2cw
-         0NMv75w5f/zHSim2raXgIIOGNxD0U7dh4tzFFeXfXfDJAfZt7bFunIiy8o8J7DFIGXf4
-         AJ1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
-        fh=wuVrCOLz7CsDvZCaJ2K+c6mBP4aUXw0yLbax9Rqx4Ak=;
-        b=Em1NeMHo2JzDFcWAVieEF0cy+uPDCHrbLDzW0gpI8ySX3/b587WOgskX94QuPBcoUY
-         YKoQBYeaoZqzDuHY6TIk1LnBhtcrOrN9cP1SjVo+1xwC990VsjYSINObKN6g6LxmjjlL
-         5JCtFuSlgf3aoQrV8jQPVxbR14L6K72tklxvSUM+KEIh8mi3Ko5Ht9o4C8S27meieZVX
-         mD6UKTWEspLAgYnAvw1hlphhASjsEBdphDgMg6DdtDMfRzrVPxlUa/NpG5y/caRf2IO+
-         9CL3JG1m0eTx5UigrdiVs8M+MOrlVJSKO0sy6Efm1nM5aBqyNhNSN0eJVapyuZrKyuy7
-         vJsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784818518; x=1785423318; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
-        b=tOot7o4yaLsUKVv7Cp1JHTCmrOKDludthCydvvQJtZspyIiMXfvDQTDrG3sli7Vrq5
-         77M5JtqB+6PXdUPMNfCo3MrmAT5wxi+BtvOkvqAcgmFfKFrleTAU+AHmO5JQVc0k5mHu
-         HcOI6lcwKCT6p8FnT0pm3BA3fyeOlJetOHxg4RUOMBJkrO4jMW2gCWauCJFj1POlMEoC
-         1DoYpDpOWwmgld+FLdroNZSm0maIfoRCwFXhzXNrzj2h6WiG9uNwsm74k30ev3NifKxk
-         0scWeHJQtl5v+dAIsbFX1qjBTJIvEeeeOHBJBu01of53Lnz8MaVRiOJoH268ljn8h42y
-         u1oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784818518; x=1785423318;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
-        b=Vy8mruRbf9jZ7f56W8nTmKUgWJiWKkKfoJghZrI2cv8MYKI4FHm5VXDynuz/qs+Tmk
-         w1h5DAoXefF1cFhfvx0CHX2Z4Go3lT3cQAAZs/JrQsyteWcQ3+wt9jQatjdL9+kMGSGY
-         8B6MUPszNUR74DGXXGDF+gJozasnEbxmfA5ZEDjVs2/GrwdwbRUOCm0JcctM97kERVlu
-         ZKcUFtRb2z4nFMDogFExeLivVbaAbLxhv0YWfLIMVtKidrBHdbYKI8y1N1mF8z2PWUju
-         iAn232fnV5kVfNpHHzU6PiKl4YsaHfpvUYJfmSdNTyr+1LMODQJNUqJM4YdmsnqaBSer
-         cf+A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpvv4uCNoWJpz0zWNSM/6K4nQeYOGDysnIcXS5NapUpMQPojYNUhTT20vbeC6Hl00O0vduj5SA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQDDbtvaluDXMs2OFd/cyeDQf8CgKFdREDg2RlLAIubQ+u4Rnx
-	b95hbgMsDDn7o1KaIf4xgENh49/wwxFAWL0qz2Sn9husZpGqCMlCZxSvzx+inY2eNRw3OqS/7PZ
-	FvQSmpT2RU/FJkt40jODhCqIdtd+E6uBr33q0oBCxv5eLbimrjscWeu9U7qNc1Sf1T9MtYg8gq4
-	/cCdIAQY62Fy3LXaYA8C+DLqrFVfFm72Zsib7qoegI
-X-Gm-Gg: AR+sD10XHJyPS9yj6O7YDu9bXxvLD2AxQu0+T6qEgrykC4d7NqQ3nuhTG4WXgZKjItk
-	7Ao9O7RjSIv2YFrGoAX7SvAtOWlBZQNnWT0hxZKRfMTpMK607GFff1lCN+g/r3Zu+oXT2cVDPc0
-	t28CTOC76eMWIiRdDEk1hBlKEAheRwV47Q15O06XN+dieoAn8wJOk7pw0=
-X-Received: by 2002:a17:903:22cc:b0:2c1:ee75:56bb with SMTP id d9443c01a7336-2cfa6b9aefdmr42836425ad.20.1784818517949;
-        Thu, 23 Jul 2026 07:55:17 -0700 (PDT)
-X-Received: by 2002:a17:903:22cc:b0:2c1:ee75:56bb with SMTP id
- d9443c01a7336-2cfa6b9aefdmr42836035ad.20.1784818517333; Thu, 23 Jul 2026
- 07:55:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TKFBo8GK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bPv8ZSURBs052LEq+jiDGZYs84IjAiBij2wU+xVL27cN08qdQOf3DymNT/MQH4oKXyr+4Vs7WDCzwhcoZhqah/J6kNW2BpRJ/wBT/3sEM7s7O+7GXmFs4RGgWK5GD3jRiaGQ5I9gQJ6AAEMiQ15kOb2cUKlaH2CLg4wuGIkr+4/HEdklyOxypOHLif1j1qXDrPYcI0Vm7Egy2/VrKgO5GDwBt8UDIACfJ+xrpU22mhXEg+MbKfBeglKT1swVhzKZdqCjEirFIOwU52js+rtkWTgZSO5kDlCOz4tKcvyEMemX7QL7aRAY0z+ckCIE3la7CXC2bDnguZsnYhYb8xezZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qvyqKHlMo3TWajLiPIt74JMd5pXyOUaLry84Us77Sj0=;
+ b=ebLM1HGkGutqu581ot8bYpRfXt4zOg8KSNRi/404+XCEk7xSMCrNHPylV8kZ4ra0NXzyb5e/E1yTSVNuAZdg+Bq7TnlmKGaKsfWi5W+EUyl97FTOkPAhTOkGUA/0RMkeF5tmSsrUMFLeY+e+RNtSomFhMfsGfMcSP2pEXUN1M3IsVSq3OqgeKgEjSd+YC7VP7MEL4G1ttgaBaZTMGkgCFSNkbspQAfaAC0V6ePnbH8le2PzKgp6yM8QKrBavxJMmEGN00NDXs9HPs1aXNd9lD2BREFypJwJe8klWjNzXGl2WwNmQRqqoQcpO5OP/OXWUzTo3hJz60Ja0BA3/DGkV2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qvyqKHlMo3TWajLiPIt74JMd5pXyOUaLry84Us77Sj0=;
+ b=TKFBo8GKyEbjCcsjfGjJK+pn3FgYw25Sg1P2Ep4CRstZ1kVLjXe+0W8E4cA2vhgj9uLlpbEam/egd2X5yCl6WPxCyvGJ5eDQAIaIv1zbBCGvhXkGO6LoNzj0PTZAibT3Kp8Ajewolz5i3pmvP85GlGH1ngfu/VbV70DIc22KclSAC8cA940jmNUlBgWp0fvKBjwbBl3f+/61d0sX8rQt4fl1mU3EUZ5pBVm8PYQMJleikm0VXQHiX5wn/eBujQiaQ6FCzl0GC3ei6r9ET9eCgo8zXqmx9CKCtbHjh4IbZ106Onz0+OkPlhVw2CEU7nQ75O2I/DJivblvRCLpjRKyoQ==
+Received: from IA4P221CA0005.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:559::10)
+ by BL1PR12MB5970.namprd12.prod.outlook.com (2603:10b6:208:399::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 15:01:56 +0000
+Received: from MN1PEPF0000ECD6.namprd02.prod.outlook.com
+ (2603:10b6:208:559:cafe::4b) by IA4P221CA0005.outlook.office365.com
+ (2603:10b6:208:559::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
+ 23 Jul 2026 15:01:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MN1PEPF0000ECD6.mail.protection.outlook.com (10.167.242.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 15:01:55 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 23 Jul
+ 2026 08:01:30 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 23 Jul 2026 08:01:29 -0700
+Received: from [10.135.59.1] (10.127.8.10) by mail.nvidia.com (10.126.190.182)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 23
+ Jul 2026 08:01:27 -0700
+From: Edward Srouji <edwards@nvidia.com>
+Date: Thu, 23 Jul 2026 18:01:23 +0300
+Subject: [PATCH rdma-next] RDMA/mlx5: Deprecate latency-sensitive QPs
+ feature
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com> <amCPLOrnpYmr5n0p@sgarzare-redhat>
- <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com> <amIe79X3j7GxDBdO@sgarzare-redhat>
- <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com> <amInL2hPEG9ejUd0@sgarzare-redhat>
- <c631dabe-ebde-4b4d-b930-d78db4cbabc4@virtuozzo.com>
-In-Reply-To: <c631dabe-ebde-4b4d-b930-d78db4cbabc4@virtuozzo.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Thu, 23 Jul 2026 16:55:06 +0200
-X-Gm-Features: AUfX_myZK-p9FOGSszTUuAcpH5FI9O4QC0jIuPyjdxhWMen1SWqoFmAarrjhwt8
-Message-ID: <CAGxU2F7xaEgi3=2G_itbrGpBvFqOB2CTwB_W_f6c+t+wS2Y47g@mail.gmail.com>
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing workers
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, mst@redhat.com
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, stefanha@redhat.com, 
-	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260723-deprecate-lat-qps-v1-1-8bc8b8431520@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAMIsYmoC/x2MQQqEMAwAvyI5G9CsKPUr4iG0UQNatS2LIP7d4
+ nEYZm6IElQi9MUNQf4adfcZ6rIAu7CfBdVlBqqorTr6oZMjiOUkuHLC84houTYNEXWNMZC77Ce
+ 9vucAwW2MXq4E4/O8U2348m4AAAA=
+X-Change-ID: 20260723-deprecate-lat-qps-ca1942227499
+To: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>
+CC: <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, Michael Guralnik <michaelgur@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>, Edward Srouji <edwards@nvidia.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784818886; l=3586;
+ i=edwards@nvidia.com; s=20251029; h=from:subject:message-id;
+ bh=0iFMfNvYNEKQ65gM9KLPQlw2h1HCwakGMDCYyHbjT6M=;
+ b=Ed1ANQaHxooRXZ+/C0pTMcYp4l4WKfAMnpHG6T0GrUuXX/bxk/uynjkbPMsH8a7CsQx3Ko4M3
+ F9Izm5p5DfYCpsj39rxWjIyngnUnaBLRTe+iUZ100GK0uo5rU5MeYQ5
+X-Developer-Key: i=edwards@nvidia.com; a=ed25519;
+ pk=VME+d2WbMZT5AY+AolKh2XIdrnXWUwwzz/XLQ3jXgDM=
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD6:EE_|BL1PR12MB5970:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2c982f0-36a8-43fe-b3bd-08dee8cb5681
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|82310400026|376014|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	fmwtYzphdhaMbIqRS42nOQgINXDd0IIFImp99QFq8aSQ+N9X6IgFVifVfzRRTnURgN4+jU/VIpZ+V368ZV4ghmuSnj6fLBnIa83/z4oe3Adb06M+pW+JFVb3VpLam1CC3Xa7R5bbPnxHtBnmEu2fx/yK2atym8gdo4AbtU1GfSw4yY6uIJHtX01F1wxbWJy3qN/SlAJ9XGPq1pZlcHm4CSTOQOC8Knc2ukhXx+THJlicdQfWDpDluvP4fScQJnV9fu5ZynLQbvNiUPq4yy/12iTVhLfL4AWjDEbWz4GGqsD3yvNZrWtSBqJ+ZfysSk9zobwFs/f6UO969Gcc0s2jIqM9nGilU4KOCATtkal6p9FauKsGd/zNQLQ1fLs06/uYQvvHh2rSmI+rf9qJ5qxfgENoEfaRo/2oiSHmKsGlqx8mC5wddgkx5AF79YNb4G8uEmMpu3syT3mxLlwG9k2CDE3aA4QoTXi00NW0NzXj2uVuiVPF/B6Ykl92SfLXN+jpuHigKwvl28UovTp4YpBNEnwabLI8UH7T6fKI49b21xfxFtzDye/zuH3rYJMXiy/0Mi2yGXg3zHvkAnOh14C3YYiHeqo3hGJ872UZrYpYxFfVRTNT1IFaciH9+mJmxFjfN3q86GcupnpzjuJJ7i13jaGbYkyvBLIqMTp/jIRaF5gBbhkk+2IFvJyFITuhPKAv7rIwd/HzXY89I8fKdZiT9Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(82310400026)(376014)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	98fQ76PtbLeBv1IfcQ/PRFHomaCTPLgXr8LkRIyF1na+XDCplyr3fnUsWk3AA59snKqJs4zKi6agFZLDJIONXpeWY9/YRs6U/M6Pwo4MvlkIlrtkXTUR5/Z5/d5Tqg4A5C015BkHIBl0cKrHP84NYDOtStuTuR06XwFU3eodIAsEaJrkP3ScdKkfIG7dagWEX8LZhAKfZYHTGfnLaSO/QnN/LK1Id8pRLZqzz83r8o4JVTbyYEUqb/3rjhB63yusaeH8oMFS4Pa1yeSQaqB32uk2iZwFJ3yiVD2OA448DeOZO/pS2p0caswBC8jwOMtNHyb7cXweIfeTqxhE9DmiGZa4tVLHI5ZXDejzXnsa0evsAp2FqPe+sOXZhbIdg0rMNCOo2oL5dx580W+LsHzyL4uojE0n9aZdPCc97KBthlZlooBqJaxNGMmW1FBsHF3r
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 15:01:55.8086
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2c982f0-36a8-43fe-b3bd-08dee8cb5681
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD6.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5970
 
-On Thu, 23 Jul 2026 at 16:50, Andrey Drobyshev
-<andrey.drobyshev@virtuozzo.com> wrote:
->
-> On 7/23/26 5:39 PM, Stefano Garzarella wrote:
-> > On Thu, Jul 23, 2026 at 05:29:12PM +0300, Andrey Drobyshev wrote:
-> >> On 7/23/26 5:03 PM, Stefano Garzarella wrote:
-> >>> On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
-> >>>> On 7/22/26 12:43 PM, Stefano Garzarella wrote:
-> >>>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
-> >>>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
-> >>>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
-> >>>>>> the vq->worker pointers and immediately frees the workers, without
-> >>>>>> waiting for a grace period.  A caller that fetched the worker right
-> >>>>>> before the pointer was cleared can therefore still be queueing work on
-> >>>>>> it while it is freed.  And even when the queueing itself wins the race,
-> >>>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
-> >>>>>> future attempts to queue it are silently skipped.
-> >>>>>>
-> >>>>>> None of the current callers can actually hit this: net and scsi stop
-> >>>>>> their virtqueues before the workers are freed, and vsock unhashes the
-> >>>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
-> >>>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
-> >>>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
-> >>>>>> the lockless send/cancel paths become able to race with the teardown.
-> >>>>>>
-> >>>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
-> >>>>>> period, and then flushing the workers so any work the last readers
-> >>>>>> queued runs before the workers are freed.
-> >>>>>>
-> >>>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
-> >>>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> >>>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> >>>>>> ---
-> >>>>>> drivers/vhost/vhost.c | 11 +++++++++++
-> >>>>>> 1 file changed, 11 insertions(+)
-> >>>>>
-> >>>>> Sashiko reported some potential issues here:
-> >>>>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
-> >>>>>
-> >>>>> IMO the first one is pre-existing, but not really sure it is a real
-> >>>>> issue since happening when the worker/vmm is going to be killed.
-> >>>>>
-> >>>>
-> >>>> Sashiko claims:
-> >>>>
-> >>>>> Will this leave the queued work unexecuted and permanently break the
-> >>>> virtqueue by leaving VHOST_WORK_QUEUED set?
-> >>>>
-> >>>> I agree this issue is pre-existing and doesn't have much to do with our
-> >>>> series here.  It looks real, but in reality should be harmless since we
-> >>>> may only hit it while the device already dying.  Means there's no VQ
-> >>>> state to be saved.  The only potentially observable artifact I guess is
-> >>>> a warning here:
-> >>>>
-> >>>> vhost_workers_free()
-> >>>>  vhost_worker_destroy()
-> >>>>    WARN_ON(!llist_empty())
-> >>>>
-> >>>> So more of a cosmetic noise on a dying device.  Again, not relevant to
-> >>>> this series.  But one optional way to make it go away would be to clear
-> >>>> vq->worker under vq->mutex in vhost_workers_free() (mirroring
-> >>>> vhost_worker_killed()).
-> >>>>> The second one also not sure if it's an issue since the sender is not
-> >>>>> lockless IIUC.
-> >>>>>
-> >>>>
-> >>>> The term 'sender' is confusing here:
-> >>>>
-> >>>> * vhost_transport_send_pkt() is the .send_pkt() method of struct
-> >>>> virtio_transport.  It only stores skbs into the queue, doesn't process
-> >>>> them. It indeed is lockless as it doesn't take vq->mutex.
-> >>>>
-> >>>> * vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
-> >>>> It's called by the worker thread to process skbs in the queue, calls
-> >>>> vhost_transport_do_send_pkt() which does in turn take vq->mutex.
-> >>>>
-> >>>> I think sashiko points out to the former.  Still, I don't think it's an
-> >>>> actual bug.  Look:
-> >>>>
-> >>>> 1) By invoking flush, we wake the worker thread:
-> >>>> vhost_dev_flush()
-> >>>>  __vhost_worker_flush()
-> >>>>    vhost_worker_queue(flush.work)
-> >>>>      worker->ops->wakeup()
-> >>>>
-> >>>> 2) Then woken worker does:
-> >>>> vhost_run_work_list()
-> >>>>  llist_for_each_entry_safe(work) {
-> >>>>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
-> >>>>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
-> >>>>  }
-> >>>>
-> >>>> 3) And then in work->fn() (vhost_transport_send_pkt_work):
-> >>>> vhost_transport_send_pkt_work()
-> >>>>  vhost_transport_do_send_pkt()
-> >>>>    if (!vhost_vq_get_backend(vq))
-> >>>>      goto out;
-> >>>>
-> >>>> As you can see, we return early in case backend was unset.
-> >>>>
-> >>>> So after doing this flush, we have: 1) QUEUED bit is unset; that makes
-> >>>> send_pkt_work re-queueable. 2) But the queue doesn't actually get
-> >>>> processed, and VQ state isn't actually touched here - so I guess
-> >>>> Sashiko's conclusion is incorrect and there's no actual bug.
-> >>>>
-> >>>>> But, please can you double check them?
-> >>>>>
-> >>>>
-> >>>> In general I'd leave this patch as-is as Sashiko's complaints aren't
-> >>>> very convincing so far.  If you want I can add another patch which wraps
-> >>>> NULLifying workers in vhost_workers_free() in vq->mutex.
-> >>>>
-> >>>> WDYT?
-> >>>
-> >>> Yeah, I agree, about the other patch, up to you, but I'll eventually
-> >>> send it separately.
-> >>>
-> >>> Thanks,
-> >>> Stefano
-> >>>
-> >>
-> >> Alright, then let me resend it once more along with this 6th patch, so
-> >> that we don't have it uncovered.
-> >
-> > But why it should be part of this series?
-> >
-> > If there is no strong reason, I'd send it as a separate patch.
-> >
-> > E.g. even this patch in theory may be a separate one, but this is
-> > related to this series, so makes sense to have this included.
-> >
->
-> No particular reason, just while we're at it.  Alright, no respin, will
-> send it separately.  Then I'll consider this series reviewed - unless,
-> maybe, Michael will want to take a look as well?
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-Yep, I mean this should go with Michael's tree, so ... :-)
+New HW no longer implements a separate class for latency-sensitive QPs and
+advertises this by a new cap bit.
+REG_UMR is the only QP that used this feature, so gate its usage of the
+feature on this cap.
 
-I sent my R-b to all patches, so I'm fine with this version.
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+---
+ drivers/infiniband/hw/mlx5/main.c |  6 +++++-
+ drivers/infiniband/hw/mlx5/qp.c   | 12 +++++++-----
+ include/linux/mlx5/mlx5_ifc.h     |  3 ++-
+ 3 files changed, 14 insertions(+), 7 deletions(-)
 
-Thanks,
-Stefano
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index d65ebdef28234fe91ad4c24a5ded2d3af8bc646e..a0f5341f40ff1c0414939dba50301f0255825065 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -4950,6 +4950,9 @@ static int mlx5_ib_stage_bfrag_init(struct mlx5_ib_dev *dev)
+ 	if (err)
+ 		return err;
+ 
++	if (MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
++		return 0;
++
+ 	err = mlx5_alloc_bfreg(dev->mdev, &dev->fp_bfreg, false, true);
+ 	if (err)
+ 		mlx5_free_bfreg(dev->mdev, &dev->bfreg);
+@@ -4959,7 +4962,8 @@ static int mlx5_ib_stage_bfrag_init(struct mlx5_ib_dev *dev)
+ 
+ static void mlx5_ib_stage_bfrag_cleanup(struct mlx5_ib_dev *dev)
+ {
+-	mlx5_free_bfreg(dev->mdev, &dev->fp_bfreg);
++	if (!MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
++		mlx5_free_bfreg(dev->mdev, &dev->fp_bfreg);
+ 	mlx5_free_bfreg(dev->mdev, &dev->bfreg);
+ }
+ 
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 7ff02d89c31d5b4db4c94453efafc0fce212acea..9253402ed645c9985eed098d3b21bea638028218 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -1123,7 +1123,8 @@ static int _create_kernel_qp(struct mlx5_ib_dev *dev,
+ 	void *qpc;
+ 	int err;
+ 
+-	if (init_attr->qp_type == MLX5_IB_QPT_REG_UMR)
++	if (init_attr->qp_type == MLX5_IB_QPT_REG_UMR &&
++	    !MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
+ 		qp->bf.bfreg = &dev->fp_bfreg;
+ 	else
+ 		qp->bf.bfreg = &dev->bfreg;
+@@ -2509,11 +2510,12 @@ static int create_kernel_qp(struct mlx5_ib_dev *dev, struct ib_pd *pd,
+ 	MLX5_SET(qpc, qpc, st, mlx5_st);
+ 	MLX5_SET(qpc, qpc, pm_state, MLX5_QP_PM_MIGRATED);
+ 
+-	if (attr->qp_type != MLX5_IB_QPT_REG_UMR)
++	if (attr->qp_type == MLX5_IB_QPT_REG_UMR) {
++		if (!MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
++			MLX5_SET(qpc, qpc, latency_sensitive, 1);
++	} else {
+ 		MLX5_SET(qpc, qpc, pd, to_mpd(pd ? pd : devr->p0)->pdn);
+-	else
+-		MLX5_SET(qpc, qpc, latency_sensitive, 1);
+-
++	}
+ 
+ 	if (qp->flags & IB_QP_CREATE_BLOCK_MULTICAST_LOOPBACK)
+ 		MLX5_SET(qpc, qpc, block_lb_mc, 1);
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 695c86ee6d7a3f15945fe7af092f63d9121da47a..28582c4d94d4335283009595f6a278c4d17c7eaa 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -2005,7 +2005,8 @@ struct mlx5_ifc_cmd_hca_cap_bits {
+ 	u8         log_max_stride_sz_rq[0x5];
+ 	u8         reserved_at_3a8[0x3];
+ 	u8         log_min_stride_sz_rq[0x5];
+-	u8         reserved_at_3b0[0x3];
++	u8         reserved_at_3b0[0x2];
++	u8         qp_latency_sensitive_disable[0x1];
+ 	u8         log_max_stride_sz_sq[0x5];
+ 	u8         reserved_at_3b8[0x3];
+ 	u8         log_min_stride_sz_sq[0x5];
+
+---
+base-commit: 9b66c9af7172ffcf727214fa0ebe9a5e1ed6eb16
+change-id: 20260723-deprecate-lat-qps-ca1942227499
+
+Best regards,
+-- 
+Edward Srouji <edwards@nvidia.com>
 
