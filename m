@@ -1,81 +1,79 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F01D4F7981
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 18:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ED04F7994
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 18:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784832389; cv=none; b=GFWH0JiVa1ZbecqgRkBbvc8B1ZZQiGaPD6D9pHsB0y0xdCApwFyW6UVUykixInYp4GWDMCEga+1+paNb0lbcRs72b3t7GazqKv12m+mhmIT8/Eb8M5y4Tz8Ijl3Of73vUbXYXP/A39HlyM8OxL7+f/pXo2aOqR0Z7uZG0jPPeeo=
+	t=1784832391; cv=none; b=IrLw/YKAo+1S7eIJuRixd44Sj1sEECDh993frPpuH8EKt886cuSDF/100T4Oas6QjK9t2JFdsKyjy4aGJsMayiu0MPMWcqRt6P34fbEB00KIz4t525orjt10vYuN+B9teXpnlsFH498cuUTyxoaXiW6gaqBCEzGVWZxbk25RSn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784832389; c=relaxed/simple;
-	bh=pXLTAUkjCgRFuHbdlrm9wPCFAoCGzZnJNnZvsbZon1Q=;
+	s=arc-20240116; t=1784832391; c=relaxed/simple;
+	bh=urFPXC2bDGFRb3YEWf5ToWXnZVSrmuUPwVRzUD+dqlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOVyvxpuQftdgWAzNyUC3kMVS4o/KKfyIIxpCmDa0ypFw9GJ5hjzfMrLasJ8V4OUnkNPQJ0yZWlWXpqSkkTCzsqES5nFiV3TTWvgkEm3eZWnOh0nH6gSUa6f29A9pOcL/kvfdzlUqPEnw1A28BMMlyeYOL1uaMSm8N5mu7xyiFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2SybAu/; arc=none smtp.client-ip=209.85.216.54
+	 MIME-Version; b=h9/J0I8/1oymBnnHA5/jR//jIngzXUlVxD800yQvCNDJJHhQFKhltue6OYl3TXltAGZZ/Vd7ktTzOOY7gKRfJt0G4JM4wG6ETDXk15vBXdwxUyMVa7fpHnTVDnjusYx9n2J6r0yiiv/kb889ugQgwKDtYhU4J17ydEBswagVVhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZysxmINY; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2SybAu/"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso853208a91.3
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 11:46:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZysxmINY"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-381216921aaso940968a91.1
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 11:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784832379; x=1785437179; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784832382; x=1785437182; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mTuJvAzG5mLe5AUB4aEimify+WXcEx2MLUBwrRB2paE=;
-        b=I2SybAu/NbDXH3Ob+ZOTehOR3mWbaldDLvt3AnuUFR0g+clbZiHDKZ6XWlIb1aEfup
-         g9YEjPIQProUmTUm86KaLeJjNIdrB/v17gdBA7wRsqu+nx7dM/gL3W97BAqtkZg9Caka
-         HfOdyq8Bl7JXhGbNolima/104MJD8VXX+8Hu1bT8r6DQmzyNNf74VZSs5oplTgXUoUec
-         /tjZG4cFyY6AhbnT2l55Drdw8f6L2xfmuI/1HmTpdF1v/6VUISBmGokBAiddviP9n/n4
-         ozG5mxSJc6w16FvPgpg5qw0Ql8jq5J2nJb7G0wu9BRr2EWyY2mvWDRNTpdetldk2obNX
-         nGqQ==
+        bh=kxRvmx1wxGvV8pBQOXsif8sDMDGk8D/ZvwH0veNhWow=;
+        b=ZysxmINYypslLelTrq15Hxa7Cplwyi0Q2Wp5PFsML9nEo67/mprZWkssYVXYRM5uE8
+         b1Ygrr6BoX15S5asvEd1dKqykBZ9feWjescyheGSz8+UyYB6FMmlNtqK7IFI6gsENX9J
+         JE8ZOojtcEw9fsMFse7RB++GAIISb4Mm8w1Kf1x+GkVZ3xCqQiKBIAy3VddECBQRaujD
+         F1DrXRzMVu9lIZXaq/f20C7VUeLtB0w6bX42RKee0dDqZ4hHH5HOt8NBFbKbZwY0uwcd
+         eiaztjbBZfBJsYpWy85CSXF8dQ6ooancGhX0m0Vg4BbY2U1ypZ3Ap4JPbaT1bI5gF1n8
+         5qXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784832379; x=1785437179;
+        d=1e100.net; s=20251104; t=1784832382; x=1785437182;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mTuJvAzG5mLe5AUB4aEimify+WXcEx2MLUBwrRB2paE=;
-        b=o77v2lCoBJldNw5YSJE6u3vKsM64pFVq24KoaWxStkGul1TC13gOoKEW2EnFn4TmsX
-         9pYAneu+Y5cIS0F/U0mtZIstb6SwFZCldkTfnUieztLRKHty/bzfh+iPY5rxWveYcNtG
-         fbExLD/rWWe0H3tzckyEVDr/wdjTsyYb4ygUCT11FHFfflyNgCJOxTw/mnbENG3FDNzo
-         Ex3RCnZUDdnFM7JNimbFTUpe+XLPhebC0PlzB2511k4YAo4rOndCNgFYho4IzkoOT/t+
-         GGpJYgZ9gRRiy7V4dHX2lNx5znDdgXBA1Pac8vViOpLK60DrMeMXWH6HLud9lwCpBVbS
-         ywqw==
-X-Forwarded-Encrypted: i=1; AHgh+RonZon/68TSNxYrQ9mAmbGVcE/R6eOLHp1UpvnE+AaHwPt2Uz0mnDYE3LU9W89E8Pw6C7TzXKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzmoi5onzHb3W7mIdpKKQ3+7JNzuL2cv2q1mUzrhVb6pXIjhT5M
-	T8HMOM5YVjyFTJaEe8NIZU6D228lvqxqZJOH4XMIa608Nifad699XZ6/
-X-Gm-Gg: AR+sD130bLtZqNy/eFr/8sZsVjHUZgECMgqRXWGxNjrERs2Etsajw3p/ZeNmqsnkO+Y
-	JM08AMLnYMtQdztDWItLLc1VcDQ9XVQKTOhL6sxlKtBIgq08aXx6CQV2LNmUgGsolQB0lznETgz
-	aB73wJ5peDROns2sVoHiF3sKCbpOvRHarVe2FsmuwhwCUbGMgD9cXs4bgZ7uy4EB9zTO14OQUBs
-	oiUmItPRX5x+OKbAhDFAnkBhv6xX/gN5pS73riPyi6jp0iR07gBWt75oi/EmtxoLOLfF0acTmh/
-	2VorvVTNGwC05UUiCnOg5T1v0lEoZJLRLPB3Wjxnff19QEOB0D5exfjPxcCQ+oSpEfJd4pNl1Gu
-	jnnTnq3xv1/jhjZ0yxA7cuKr02UlZ0dAIQGeFnAToyW54EcltxKZJ7rvqy+OWsdpSTOTAsOdj
-X-Received: by 2002:a17:90b:50:b0:37e:a09:2640 with SMTP id 98e67ed59e1d1-38ec64958fcmr4523372a91.7.1784832379247;
-        Thu, 23 Jul 2026 11:46:19 -0700 (PDT)
+        bh=kxRvmx1wxGvV8pBQOXsif8sDMDGk8D/ZvwH0veNhWow=;
+        b=dKBPL1+J5BGEj5hk+Zgx5YjGUXMjeGy7ynbUnSqVkhuTnb8QJpw7BIzRb9ivY3GEwq
+         3BsKKFrirpDs7FQdU5D7R0tLuq9Cj4bvoR2zw6bt/4v1/PFHCJCxzpujrNenmXY3O9pB
+         cqOx7oTXnDle6UV9jQ7heTLVS8J2Lx7PH6rIGl/d6l2kswvP/zHSDBlU1HnDRNPt+Flm
+         O2+Rw23HZkI9HFXJGh6KrShR2DVelkVa5VUsj3GE81FKueHXa0lcAbgIHhHFH8h0cT2b
+         3/z8Q02/u1+I6jPP6pp25CQD/8O+Bff1d8ITCNl2tFoteiDBhJTovjDb7SfQS9DnZ5qH
+         Q/nA==
+X-Forwarded-Encrypted: i=1; AHgh+RrLRldQN5eu4pkG5pMcsTXWtSqmDB2XzVAOGDjbhOTZFB7w0WAYUJH2cWZjV9db8dtNE4k6tgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgH+oyl0M40gaJQem3v7QAvdR/ut+Mrrmxpehl0GDSho23GwD6
+	6HZO2HhAB4CqsQSwT/vhiioukuwYd7Rfy5xeNG3tA0k4GRcku2gEZZas
+X-Gm-Gg: AR+sD10gwA3UmVR8ioXEYet99m/EbaV+Y2uVgbyHWJXnOGe1cHtsOTIHjJDq4mo7GcJ
+	gFIxiSEjiyRFnv7N6nxTKRY+b1oPTR3kIIGWIHIbPbAV5qQ945cLrf1X6+j1Viz+J5NCz5LIllP
+	bcvkQwpohtMD4O50mKAIRm2gkGL0dTJ5OCeKVIdnwvulG6CV/+3SvLe8Ls+qT55rn+0+dwRyTTe
+	uku+wu1kutYhcIVci51p7zJte0jqonyQuxcs9wML2o6a4hlfQTz/YuqSr4oJUAGBYoIAXNFnXqQ
+	khroOq6rA6IKykOAD4zCbQGJHD1dKwvjS/l3MkoXCN0X+/hRWkS7DrAP3ecpcjpTLem/zOoT1bE
+	aCJ2WkKQbXn7vYS5/Zdm+icU9OgrUP8Do38YRiL1gUUC+2G9wUz/nvxizbZM3Y/bi+akSC0HIYQ
+	9VLyhsH2w=
+X-Received: by 2002:a17:90b:53c4:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-38ec64f3415mr4603537a91.14.1784832381937;
+        Thu, 23 Jul 2026 11:46:21 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f03af8a45sm308155a91.10.2026.07.23.11.46.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f03af8a45sm308155a91.10.2026.07.23.11.46.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 11:46:18 -0700 (PDT)
+        Thu, 23 Jul 2026 11:46:21 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: Julia.Lawall@inria.fr,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>
+	Paolo Abeni <pabeni@redhat.com>
 Cc: cocci@inria.fr,
+	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	UNGLinuxDriver@microchip.com
-Subject: [PATCH 08/36] net: remove conditional return with no effect
-Date: Fri, 24 Jul 2026 03:45:10 +0900
-Message-ID: <20260723184538.3888637-9-ekffu200098@gmail.com>
+	netdev@vger.kernel.org
+Subject: [PATCH 09/36] net: intel: remove conditional return with no effect
+Date: Fri, 24 Jul 2026 03:45:11 +0900
+Message-ID: <20260723184538.3888637-10-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
 References: <20260723184538.3888637-1-ekffu200098@gmail.com>
@@ -95,44 +93,67 @@ scripts/coccinelle/misc/cond_return_no_effect.cocci.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- drivers/net/phy/microchip_t1.c | 6 +-----
- drivers/net/pse-pd/tps23881.c  | 6 +-----
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 8 +-------
+ drivers/net/ethernet/intel/igb/e1000_i210.c | 6 +-----
+ drivers/net/ethernet/intel/igc/igc_phy.c    | 6 +-----
+ 3 files changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 62b36a318100..3292b2235c8f 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -1028,11 +1028,7 @@ static int lan87xx_read_status(struct phy_device *phydev)
- 	if (rc < 0)
- 		return rc;
- 
--	rc = genphy_read_status_fixed(phydev);
--	if (rc < 0)
--		return rc;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index a04683004a56..0cd0e5597c90 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -4864,16 +4864,10 @@ static void i40e_control_rx_q(struct i40e_pf *pf, int pf_q, bool enable)
+  **/
+ int i40e_control_wait_rx_q(struct i40e_pf *pf, int pf_q, bool enable)
+ {
+-	int ret = 0;
 -
--	return rc;
-+	return genphy_read_status_fixed(phydev);
- }
+ 	i40e_control_rx_q(pf, pf_q, enable);
  
- static int lan87xx_config_aneg(struct phy_device *phydev)
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 49d6389da067..8a3bbd623412 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -1520,11 +1520,7 @@ static int tps23881_i2c_probe(struct i2c_client *client)
- 				     "failed to register PSE controller\n");
- 	}
- 
--	ret = tps23881_setup_irq(priv, client->irq);
+ 	/* wait for the change to finish */
+-	ret = i40e_pf_rxq_wait(pf, pf_q, enable);
 -	if (ret)
 -		return ret;
 -
 -	return ret;
-+	return tps23881_setup_irq(priv, client->irq);
++	return i40e_pf_rxq_wait(pf, pf_q, enable);
  }
  
- static const struct i2c_device_id tps23881_id[] = {
+ /**
+diff --git a/drivers/net/ethernet/intel/igb/e1000_i210.c b/drivers/net/ethernet/intel/igb/e1000_i210.c
+index 9db29b231d6a..784f9a7bcbed 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_i210.c
++++ b/drivers/net/ethernet/intel/igb/e1000_i210.c
+@@ -756,11 +756,7 @@ static s32 __igb_access_xmdio_reg(struct e1000_hw *hw, u16 address,
+ 		return ret_val;
+ 
+ 	/* Recalibrate the device back to 0 */
+-	ret_val = hw->phy.ops.write_reg(hw, E1000_MMDAC, 0);
+-	if (ret_val)
+-		return ret_val;
+-
+-	return ret_val;
++	return hw->phy.ops.write_reg(hw, E1000_MMDAC, 0);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/igc/igc_phy.c b/drivers/net/ethernet/intel/igc/igc_phy.c
+index 4cf737fb3b21..b758a7e0f013 100644
+--- a/drivers/net/ethernet/intel/igc/igc_phy.c
++++ b/drivers/net/ethernet/intel/igc/igc_phy.c
+@@ -675,11 +675,7 @@ static s32 __igc_access_xmdio_reg(struct igc_hw *hw, u16 address,
+ 		return ret_val;
+ 
+ 	/* Recalibrate the device back to 0 */
+-	ret_val = hw->phy.ops.write_reg(hw, IGC_MMDAC, 0);
+-	if (ret_val)
+-		return ret_val;
+-
+-	return ret_val;
++	return hw->phy.ops.write_reg(hw, IGC_MMDAC, 0);
+ }
+ 
+ /**
 -- 
 2.43.0
 
