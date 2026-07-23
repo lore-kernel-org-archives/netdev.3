@@ -1,134 +1,142 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED36301004;
-	Thu, 23 Jul 2026 14:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815272; cv=none; b=qlThRwa+/5r2PEwY32oqnLSbp8dSdaCfjl0jyNWpmzU1IgsyW0O4NsfBxmyyyob0OyGONdQQ8L3wGlmT8szsq5FAB3kt+ql9m0ldYsaYiuoCmGZVh34OJzodve035ibgOBpyL9PVcvfVOb3cDVQ0t4WD9gxVPJWjCcloVG1tXs8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815272; c=relaxed/simple;
-	bh=svkWmH082FIs+NYzd9fVTUvrFOKjJq1MAswMvtlUvs4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qS/jfvKrF1RYHVELrzP0O5rZviNt4cGIA9AmylOdO43xuhP0Kv+3gimYclII8Duo4tTVru4cSn8n/KitPa1LTpC25F0MnNk0OrJjQ8Q6dmxUj8ihAiz2aeYYtgHODwJe37VcCSzIfpr+3zA+ltlYQMCrBBzlV2wm3CWSLjZt5/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AwdCoBAH; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D354399E7
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784815373; cv=pass; b=FTzQYMYZoga/nyq2n+klVgca8tQCViNy+OLqiRrOIzlljk7OmymnHVGFl8QxL/Iw/1e6fU98Biuw1fuG7KGmwA6i9KRwUNkdqqMUo/wzwIhfS9/wKF/c3nlU4U6WP8voSmKeDAqgeWbxA5Ali6cvGwC6cGSybvZMzX15iJkol60=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784815373; c=relaxed/simple;
+	bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YGlgwdDpMx6MByMNiFye0fT11fB9M2cv3K4nBvCgJhQmqI36U3a4OqdoujGLuiYj8c97SI3d5AEezrCN1oOLf1CqPjFamzi2ZqQR6r4YS4PkfU7yfuUbc9zb3m6Gj0B9lH5tMF5cgBa+1Q989RsrjN5AXey+wCyXSt9XBig7ps8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ix5CUWj1; arc=pass smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AwdCoBAH"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDBkXg1210645;
-	Thu, 23 Jul 2026 14:01:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=NUNFmQwVphrr+G5AC5Kp//AQwE7U/ugq8ao7jLrQH
-	c0=; b=AwdCoBAHY+FEbzw3kHm2abJfXYVk3UWYEBl3/6+uRVrZM1dPIKc09QmSU
-	qyrrqn8cfJAPMnMsOJz3bi2jUyxg5E5bFRbWIa4jEMgEaPBrWpFWhmaP9YqH459e
-	Jv4NDJ5tPA4HMmF5II0Bz+4O1hZg60PcBDqIxSDz0KWlGhzVsYFMPf9lA7kpJ4NC
-	NWNFb7g8Za3hzHxWSialx6eb3SOQuLIfMZnhIazmUrwWyjznnrbl8ftT/HyOiA0Q
-	px/d50l0EhhsRjeb+GQWd6Jk7X4CCuDpcrSZ0kIMbZE6YRXWol0DPdg5pk3nAoj7
-	lYzMJCe491el/EO4Oyy7LGFaYMMuw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77aqv4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 14:00:56 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NDnjKI006571;
-	Thu, 23 Jul 2026 14:00:55 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahcdcm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 14:00:54 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NE0oIi30409394
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jul 2026 14:00:50 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA224200E2;
-	Thu, 23 Jul 2026 14:00:50 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68336200E1;
-	Thu, 23 Jul 2026 14:00:50 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jul 2026 14:00:50 +0000 (GMT)
-From: Aswin Karuvally <aswin@linux.ibm.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        arnd@arndb.de, stable@vger.kernel.org
-Subject: [PATCH net] s390/qeth: Check CAP_NET_ADMIN for private ioctls
-Date: Thu, 23 Jul 2026 16:00:50 +0200
-Message-ID: <20260723140050.762991-1-aswin@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ix5CUWj1"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aeba09900bso479982e87.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:02:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784815367; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hGyEodCUlM3DZc2rvVSohEN9RRvdWk6ynR/ETuXlSVrJrOnvrMmkg8ocaZmVmJBxPn
+         j8JKA7WUzcIu8TlzfBFfgDtWd8SnTPz7u8IP6Qs7hqyDgLnhyUBAj9cCB/P7phV4xhUA
+         gi2rSu4ly3aZGZ437CVSctaqQ1sKE8Z27qF6A7jNdC8j4bGGUMN6ruu2ADrLvqTTczkq
+         pkMAbbuJSXn/WmeoXghxbkipzqBqBFlKiXFTX7B4rKM3Vb9Pmv1RJwaCiR7Bz16cbc5a
+         uEsggoOPVjZmzNW7/rDL+L25jQ6+5Cnms+5Kd1Ol43GeGZKnrj33Dx6D1Mmu10gnHfKA
+         xZSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
+        fh=UAgbJirQpvb0/zIGO9iQIhX9TOQQzx1zytJQTAohSMQ=;
+        b=G51dJMvSRdfJrsfzitJwK7ZzTPTQAIrKprI1ihX5Kvjmz+dFX8gHnTVYqY+rEnyBwH
+         ZsUwPRdpDFAmTKheaJbYqt0/2fBea/it9JWCcao7RoI+qiraQjeqDGisvqBQ+AyvIlxA
+         idh+ZfWpJt6DZ23RnRI746WdvgHizk39bC622kcp7lQ2Zs+uX/tf+bmV13O7DH77RZ+8
+         HEdV39jnFLLjsDseGKssJO3IYojC/Wmr1Z67LuMNGHJY3XX0Bbh/JZ1BnF7k525PEh/4
+         isszjneL+n/dJKXNflZYEs7UMrDDNGIsIMnq+hTo4BSV/EpU7/Cc+a6JVrgPBtLMPH7B
+         Jiyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784815367; x=1785420167; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
+        b=ix5CUWj17QGmaQIuQYs/zWYWgdcB7o5PZrJL7unVZXwlDM8EYrpv/K4GETrOFZygDW
+         K4VSnEqQEw+jpIDHjNippbxFfHS9uA+BlYavxFJ5dXs8sD37itCILcY2yRedELn2XRVF
+         tRx2pZjayj6nSWaHmA3ACOsdDJRegdmii05eOJJmdnUZQNOM/R8cQYUTEzOyQNrr3xlY
+         d7LTlMgazZeVjKyqo8TRHFKltzFH06nCiGn7sqdksLpkntzDyVIQSts8cUbQKRCn88GK
+         DOh+sf+YSKMn37S/ayUztaK6VUgyC1gihJJSA7sl/2Ffj1qt3NEADCNU+QiWTb7lNUUJ
+         79Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784815367; x=1785420167;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aSnnUvI2mi0NCU23ygzDYKRZyp/HiDYy1Aw3/z9yIt0=;
+        b=J+uVfznkqAm8wUN9wrfeDmqEKzCi9jOx+3F3Je49QxFslkaPK9RkUoyBNxastL/tSY
+         H4JHrXFQidyBS1zAln4709K4JwHkQMZE1YQ6s02OlZi7JefjV3UEPG1Y++4IdtOg8YmE
+         c+baKv6x+pxazRobAYsyHcpXQ7/E3syVZofdadsFhPkwVXLwi4DMQetL6QhvEtXF6p6T
+         OUA9dBL1cQV39Vh2x+mwC0ImGJSWPBrOrD5JYe4JZ3X4G8T5EDpJZMwpzwFLuYRwKdO7
+         20KdZilT0DPJMMXdWdKsqiI4EVbygRLbuxlGy6x0RGoqfHy1+vTOKKGTl9yQpc4/2Wkv
+         sVzg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpat+EM9Spun/wSjqiPej8OdpLl/TYKQVpj9f8C1VXPk0EfcuHGMj1qMEm0KppIp2iw+YFDZcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlbV0fxLS5IDO0PSeht7RmaNUy+tuTagbn7s4BugxKfGgW8qWe
+	av1o+YOVVdgVJ80HQWarHtTy6ylY6Tst8S69/b1e/4hdwKEKXURm72v2zNGNTy+5JYTE/ilMn4m
+	FT2jTk8wqbc0fE6u4mZODVVorHkbtThzNJ278XRd0
+X-Gm-Gg: AR+sD10mNrQyajY/vKS8UC7STOgDVn9OH6XQXFctPJvUUbrXFxcVX5QXU9CYEDBoSjT
+	WTmr+0bo5eg/B7uC/akqHyuMc+W62YrLsEp1Pzmopgf6tj+jL/L8ncxhvh9Tsyu86X12j1rmfiW
+	UfDVZxAwad3eKmnpcua64ivmF5cVr0F3NQrIzFzQlZg9ecycu155CJWWSrV08LRY6Qu3UP/wUZf
+	genQrazmAVLa+Vg7oy8+jasinUQK+JhQ4Qh57N9KqnL+Nc1rv6b+xaomzVokIADrq6utJn6ogVp
+	v+YP1a412TbYX8AxjZlL2UvMt61JxGUmSFOa6e2I5vN9AhY=
+X-Received: by 2002:a05:6512:6c9:b0:5b0:1dd0:f20b with SMTP id
+ 2adb3069b0e04-5b2b2e4b2d4mr696890e87.6.1784815366922; Thu, 23 Jul 2026
+ 07:02:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDEzNSBTYWx0ZWRfX6JSyPB09lWt+
- IrQMkj2Vap9skgl2xnlOljTLjPIWgw3QKOTGIOQZRVLP/6ZWhUxmrSTk0YguOV4jF2LKrvoBm1O
- 3B4gLuX0++gT8g+jB+f4aae7SAsUGrseeCUuF/bRTHSJfTphCanx0nEr27+ototDPGrKgzKygse
- UCBfgrC0ZOHz9da0+5HSe8+NldDDz81BZWntCvj3IeklOo2ByWFJavn3RdDq0rDTC5/bVfSn8zT
- +aiiuQ1Mpk5homtW1lp4ByAw4wngDIotuwFUDA2fdQqsbSPk9hr/HTdekuBtOH7tgnEHQGAcVtd
- qMboO+w7NxKeg29FgHHJjklMifn/wcn/n/Yfek08CmvJYuSU01OTbpsIZ01tbRhJUMcJYALw39j
- Pytxxhqq1tSDPbAHhUXxsdmvoCE1OQ==
-X-Authority-Analysis: v=2.4 cv=K7AS2SWI c=1 sm=1 tr=0 ts=6a621e98 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=_kRH_JVfn-j37NcTvyMA:9
-X-Proofpoint-ORIG-GUID: IE4Kdwab4VNdqIlyZF6k-76rXg56jAKc
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDEzNSBTYWx0ZWRfXwUUlnx3VuZV6
- wLPuX59shn3E5x19LWWOAHrFX9nyoCRUBf3HSEdH7dQZdozfyNkuwYJVwsC39cmUnUSvRNw0T5B
- lQFc8EQ4UkZwmSBDuVUgFtKFTpTnNo8=
-X-Proofpoint-GUID: jBqmKAVul1GehM0HkNAeNtAap1TJKi14
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0 phishscore=0
- malwarescore=0 adultscore=0 classifier=typeunknown authscore=0 authtc=
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.22.0-2606150000 definitions=main-2607230135
+References: <20260723091601.72103-1-zhaoping.shu@mediatek.com> <20260723063935.75bf55e3@kernel.org>
+In-Reply-To: <20260723063935.75bf55e3@kernel.org>
+From: Willem de Bruijn <willemb@google.com>
+Date: Thu, 23 Jul 2026 16:02:09 +0200
+X-Gm-Features: AUfX_mzhMSefwo5xw0q7T6LspWMg8-GnaTmUAQUYLYyQ56qOjHskx1_zLVTsEoY
+Message-ID: <CA+FuTSfgBbPkdLanqEgbDq-jLVQJax4fUxQ-tuzTuFwQANwxBA@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: gro: avoid nesting TCP GSO skbs in skb_gro_receive_list()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: zhaoping.shu@mediatek.com, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
+	alice@isovalent.com, sd@queasysnail.net, eilaimemedsnaimel@gmail.com, 
+	imv4bel@gmail.com, hw.he@mediatek.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, haijun.liu@mediatek.com, 
+	xiayu.zhang@mediatek.com, lambert.wang@mediatek.com, Iven.Yang@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Gate the SIOCDEVPRIVATE ioctl commands SIOC_QETH_ADP_SET_SNMP_CONTROL,
-SIOC_QETH_GET_CARD_TYPE and SIOC_QETH_QUERY_OAT with CAP_NET_ADMIN
-capable check to ensure unprivileged users cannot invoke them.
+On Thu, Jul 23, 2026 at 3:39=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Thu, 23 Jul 2026 17:16:01 +0800 zhaoping.shu@mediatek.com wrote:
+> > From: HW He <hw.he@mediatek.com>
+> >
+> > On devices that support both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST,
+>
+> "devices that support FRAGLIST"? Isn't it a software feature?
+>
+> > the hardware or driver may deliver packets that have already been
+>
+> If you have a driver in mind please name it.
+>
+> > aggregated into a TCP GSO skb with frags[]. GRO may then
+> > aggregate the skb again in skb_gro_receive_list().
+> >
+> > This can create a nested GSO skb, which is not handled correctly by the
+> > later GSO segmentation paths. When the skb is segmented by
+> > skb_segment_list(), it not be fully restored to the original packets.
+> >
+> > Avoid this by setting NAPI_GRO_CB(skb)->flush for GSO skbs before
+> > aggregation.
+>
+> I don't think we can do this. For GRO_HW devices re-aggregating
+> in SW is quite helpful, HW often runs out of contexts or times
+> out too soon, generating skbs with 16kB..32kB of data, the SW
+> can help bring it up to full TSO.
 
-Fixes: 18787eeebd71 ("qeth: use ndo_siocdevprivate")
-Cc: stable@vger.kernel.org
-Suggested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
----
- drivers/s390/net/qeth_core_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+Also, after e751256486d0 ("net: gro: fix double aggregation of
+flush-marked skbs"), it's not clear an another bug remains.
 
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index 20fb0d2e02a9..f18eed9df3c7 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -6525,6 +6525,9 @@ int qeth_siocdevprivate(struct net_device *dev, struct ifreq *rq, void __user *d
- 	struct qeth_card *card = dev->ml_priv;
- 	int rc = 0;
- 
-+	if (!capable(CAP_NET_ADMIN))
-+		return -EPERM;
-+
- 	switch (cmd) {
- 	case SIOC_QETH_ADP_SET_SNMP_CONTROL:
- 		rc = qeth_snmp_command(card, data);
--- 
-2.53.0
+If it is: as said "nested GRO" of hw + sw GRO is intentional, e.g., for BIG=
+-TCP.
 
+But it may not be anticipated for skb_gro_receive_list. One option
+would be to skip the fraglist GSO optimization for such packets.
+
+First I'd like to understand better what exact bug remains.
