@@ -1,185 +1,285 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010018.outbound.protection.outlook.com [52.101.84.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129B21C84A2;
-	Thu, 23 Jul 2026 01:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784769492; cv=fail; b=fE2L1JZYQw8rus0HzqjpIVjkqWvzXiEWrGhuEfltqJA0+hCtGVTwgk6ykwb1RBNhyCwTtyiinAW/wxwWY+vY+JY0xoX+XMcwZNT3ZAJSVRoK6TSkHBhoYdc0m0ms32nVBK8kCc7KLT47Spg3KGSaJHVR2rjxMo6WZwFTtqv7dpY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784769492; c=relaxed/simple;
-	bh=1aN9acHJ+9dPgzxERHRh8LvcTYnuw+/+tvUZwmnLh1g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JP7PFstII3OKurrJKfIsdgVNRFwm/JCiwiBkThD026mjqgYCW4e1Nv0dC9AW4iUAJyIMH689o8D4ac8YGMfYV6KN2AtzlGDGgUYtm00HORjCQl1SJuJwFNNq+neg/eM8RD+EvL7FJI5DGxWwrBeDqp4x4wY0dY9EPT52MZBZBE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KbYWCBH/; arc=fail smtp.client-ip=52.101.84.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29B21FF30
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784769494; cv=none; b=cUj9XCrTz/Xs/A/TBaLNEue3iV9IAtH1xHV5ZW2CKMDz99RH8L1ATaEjs3boqgr1pCcZ91D4mWvdArlVLZ2cIKuY4BgS6kmBzqpVe67QbmSgUUo3ypdXUQUr37g9YC47XdkSnpyr58u6ashngyPsZYdX2cKC07Tvj3a7hi8NeBQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784769494; c=relaxed/simple;
+	bh=TrnjZo8ZAqSB67M3vMZFcmj593axNcgT2qUTDvpk8/w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=c5Pfc/6N4K/695uvnwJibxtFl1S6w1p+a0jf9SDgR9n1DPQBaxmHLwMqZi8I47J/Rf5kQi2ExfRZkU20Tb4IBFKI40LrNhhgBg2V002GbxZz+/HyfKbdJ1Q7863wCn2J9cg7Yi7e3kWFn+5CJcT2jGlXgMRp4sN3hbQoxg82Oh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HBINnVza; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KbYWCBH/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WL7J8zuZsL9n3I9LR+CtDuj6dh/r/1BeVHLefv7eE1juyvjW36uWcWRu2HdqX/z6jwUN4xXj/tTNMg3MjqBzf+pL9k9QlO4pXaNwox2l+kBcxjyZWyjcI/sculti7PNrYJPtQftY3q99OACdE3nEJcWfEbxjxjTFktyrD4ghbaxCvCkyIoSUC67YZUJUyvxWqV6Lq39JxeClK6yU+kjbBwmURPM+u9tUer75zs+DYHikKc2Cw9Iui8CHeF2KhcO2Sq9XW96GdBFb4ZC4YhPNQtTZD3DJtBbiHqBdK2EbDSR0sQjXFX8zjNeVSBl21kXyr9wWpN6ae/0LJKoBpr49RA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=klKU2GZtPXRyCh6iQm3N3OfLMwTD8mTqyzJhp1lf/8E=;
- b=y2huGvwn2402c8kseIreWg/+DEQQAH8HC+3HJw1piW0d1K9tNy2VQL3msgLiFSsnO8A+AL7zuB/u9FWGzeG6aOx2x75Ardgy4xO01fJjpoJOBLySax9h7XHmhsw378PSpVHeJJXB6MiC482o2dZl+RuhrWG7o0ksb11wsK23KiHc7+hKwu2KfLmm8z+Ohky76ESXfDx/fWLaYhDvbZqP7ugZ8aVWVyXD/Or5JQ8vP/exhgXn+B0f1/LhFgoLGPNq6rxx6C1BVA8WaKXeQqNM5mjAkXQLmOsvW5x/0hNRv3R8yVuaKqwoCE3KWtIut+ImvUmvEcQmt7F9SKlkRMCOmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=klKU2GZtPXRyCh6iQm3N3OfLMwTD8mTqyzJhp1lf/8E=;
- b=KbYWCBH/F5rsnJWtm29PBtHedIlCkKlr2PA8MW3DYOUgr5xk96RDKMM5CuFgIkO41UuZWe65kXkG5q3dpTeL5iCfGe1dhtW/lIjVV9vHMnTHil+ix7a1jBWJSxC22AsrfsfFTX2nM6z0SIDqN3MjXXqR0i2EgCtbqEZxwv/EcXNKHkcExTdv8PQCqf3j9LxvPtCOnXzOxnj0RbMXxpNxv2E2Dj3PHZFhQ2UBchGBtA7CQcdtO6TBok662UGsSJtvvjwvXMNXsDEp9Ttfa7nRUr8KyWUybmhmS66zwvVyAy40xgz/kBpfTl0vinpozm1WYm6bDzFHdmZZgvx83QHOrA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by DB9PR04MB9991.eurprd04.prod.outlook.com
- (2603:10a6:10:4c4::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Thu, 23 Jul
- 2026 01:18:06 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 01:18:05 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Joe Damato <joe@dama.to>, "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "chleroy@kernel.org"
-	<chleroy@kernel.org>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH RESEND v4 net-next 10/14] net: enetc: refactor SI VLAN
- promiscuous mode configuration
-Thread-Topic: [PATCH RESEND v4 net-next 10/14] net: enetc: refactor SI VLAN
- promiscuous mode configuration
-Thread-Index: AQHdF+1I8fWr44qhJkG8IHPkqQ1oArZ5iywAgADG9dA=
-Date: Thu, 23 Jul 2026 01:18:05 +0000
-Message-ID:
- <GV2PR04MB1173938AA2F6026E023B8476588C02@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260720014317.1059359-1-wei.fang@oss.nxp.com>
- <20260720014317.1059359-11-wei.fang@oss.nxp.com>
- <amDEtJmcET788Lls@devvm20253.cco0.facebook.com>
-In-Reply-To: <amDEtJmcET788Lls@devvm20253.cco0.facebook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|DB9PR04MB9991:EE_
-x-ms-office365-filtering-correlation-id: ead0d4a2-cbc5-4d74-f937-08dee8583f98
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|23010399003|376014|22082099003|18002099003|38070700021|10067099003|5023799004|56012099006|4143699003|11063799006|6133799003;
-x-microsoft-antispam-message-info:
- wf1QCvX5Y8X4rqzJr0o451PMzNU6Bve5d6sPjQjHtF2utdy6qBBGDqAJO6cqRllsSUheEcBqOBqWmeiyE/cZTAy68cj5vIpg8Z5p7lTtwPVQ3rwKu2QldCMoagkhr3wkYbRdM22sHGflJ+2C9w7+fu8lUhfDcNnaCQR3KgJ9F6kRSjnhJj2JHMKttIzkmIF2gN9Hiyi1H4xHj5yruTJpz0NLtKXNa8BP1KMxAwI7Vry507jNXmeqtjqkCRVQjtAf22K1MaeU5m7uZhU6JNHtx5dQtuUJ4eGNoDJeGjjDClM7Y3oe9+h0p5H63QugiXGWU0CpmpYghzlfmKV4g8W5CTRl97yoxiAsWrszHSsLl2Kkabgayldz9e3bAFkbpfyoOyNY8zdu9F0ctVwqdv9ub/ImxvrEu7KEK+iiQjCqHf9Z4613Q6xXE+nEtzXapszz3uBoRKepGZLthvjmS6jJMBeS5VDHqtM+SnIa4ZTG1dgbpBe7GyQKldbcPCb/gNmx0iyxFGqOYwh6HR31zDN89Tz+LNXZmDv7CuQi1b4RQlPZkFWzEAuaHtp89XH2MkHoBZJkgdAtlkx7Ve5IpcqH4e4MfUpWsXBjxxipp6RQlHT5iNbotWKFdJf92a/JrELSIAr7Z4CmUwxVWP/ynRHzwlBc8ypyDfY374UpiSP9oOXyXyOYB6GK0BOiiKmZL6kYE3F7qfK1lfEDgrQeYTZZ/P8oMak/YQnborAYHyx/f1Q=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(23010399003)(376014)(22082099003)(18002099003)(38070700021)(10067099003)(5023799004)(56012099006)(4143699003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cshZouDiUGd7q14uOvRy3hY2UAmv8/ACs685XIeIMNlFvDC0T5Ni1zEcz4lv?=
- =?us-ascii?Q?uX4nnDqV2/jx1lXW7QYGmUb7RsdscsfFkmTl2n/mMhqRvlFh14EkiRnKQgs3?=
- =?us-ascii?Q?D94HgDmS1t18e/j54QWWQREXGEhZJNovGPdY/EhfBeG2SozvgBAq3SsfuQq4?=
- =?us-ascii?Q?WoA8l5KXeW9UiQiXfVlV32sttxajdT/yoNvfgL6RqQHOJ641dpKKgRMwFNau?=
- =?us-ascii?Q?FQLUZiCY4J0ZO/uPiyCXRHagdWcF8aHhWwrVzl4j5fECshWH6yWUZsnX77yf?=
- =?us-ascii?Q?MdjT+l++qB/C5alOGF9V7KaAMW2pjsFbs6aSetU1IKaHvV/FktdwUXAIQQcS?=
- =?us-ascii?Q?AU6xfWjdMRcpUX2pK8/EZz5dhTQ06bjL6AT0VV8M6vvvFwTYrmZNRiTb+kv8?=
- =?us-ascii?Q?ZHPkikX1L35TJIJiRm6cUjPdE4mLKd1W8+acdGOEpLQDbk6AQcGuTBNcrnAn?=
- =?us-ascii?Q?jsnD0DMIQP+Q4PMq5OnS56cu39hTVWpodtJ7fc+P1QTU6gXOsLv9KbiEqtxt?=
- =?us-ascii?Q?tlqv3RMOLVeq8N16fntxf1HAP50kU6y3zQd80Uba1Qp9TSm8qlNDEtOvcZAW?=
- =?us-ascii?Q?t+s8GD5QeD4NfvyBw7nMqQ3sHXMPqcPOSlVSQGETetVpMId6hdIZ+GjoocDz?=
- =?us-ascii?Q?9rpJnwuKHPfhhWCgIscG0jP1qBz3JoXX2OIIboYjWjSEwg0UB1kasSZ/Xrxm?=
- =?us-ascii?Q?utm+fwq5xOMqKUtwXp1Kw1OVFpHhuV2RJarBXfektqsW1Foxrcf9oLH8InVo?=
- =?us-ascii?Q?luiu/kHGkDz82u35sXC/I8enIkR0D9GqmufhZwW+5bpsM1XTWQHWogb1vlh7?=
- =?us-ascii?Q?v9dsJj0YN6YKz1mdnQ//SDauYsO1BuvdodzkpzT/lO9KWIaEolehXrWiOIYk?=
- =?us-ascii?Q?6LJ2E/XKUYtKKkjdZQRl4747JNhWrMF98gZQ9yywVmDpgxecfebeLS5xoxNd?=
- =?us-ascii?Q?pUQPKwrLNLbqmppTkrZIsHzlUiwwDE0m9vpH0qm5wAziAyMFJXQGXOC+VBmS?=
- =?us-ascii?Q?zVUrymi/juyiTEr18jaMkBPANG+Qlqx9UQt60o8Syi5zslaWf/UcDMcWntM0?=
- =?us-ascii?Q?7wOqbDSkLk/lJb1DVucPidj+cyHHtxWjZBNLpv1ik/Aq417p+GG43rnPh/4K?=
- =?us-ascii?Q?09hMxCZcvZ6itNQlTAkTU6pzmC42+uciWdtVf68R+weViVMRqvmhSwWvlppi?=
- =?us-ascii?Q?8S1FKupdVpoWUMuBWv638Us97cLVX41fTAHfrHUeImlOEELk+8sVPuTtDdZX?=
- =?us-ascii?Q?ZFfARjjmtidiVfkls4b5Lqug+Qf0e7i4U596jos36JBldWlVFxkEzLIavTrJ?=
- =?us-ascii?Q?oFHKmNaYBr49eQdrqVYgZf9MXcR1wW/d7XpHLCGC3k5Toc8jtyue1kuideCO?=
- =?us-ascii?Q?+gqgpbXWAGJJ5qrr+dUzCjrBEC1nXX0RKat6+cMeVsViaYT8bR7VPjknTj2R?=
- =?us-ascii?Q?Hh/sMNwRytDzruVPCimJ5dhTyEVYsUZ/0a8SFH9fA+CHrnGHbjd/hqka15NS?=
- =?us-ascii?Q?v+MKVjH4lIXkwN3yrrLT6pHP6TI3f3kLRolMzFs24yVQs+3E7rkyTKAacNZ+?=
- =?us-ascii?Q?huz6UCEh2w+ZscKq8IismD7tqHLDYGv1zW5igNT8p5sTTtp2aYbzn0aJP5h8?=
- =?us-ascii?Q?/Ay8qb6PhH/ZhD8pxGtKfMM9BvOce0smFEa90yf2BNfWzNzbzvDwHMVDbu57?=
- =?us-ascii?Q?7P0pKbAwfTwKUI9QukfAi/iR8lwgoTZcWN2/EFtOyV/A0+Rx?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HBINnVza"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84830c774a0so74724b3a.1
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 18:18:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784769491; x=1785374291; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=l/H8JNU91r/Q1MfTAvhCTVsqDz/YYgbouanwk7Man0k=;
+        b=HBINnVzahv3RraEf9UAGSjbVWulJLJOfMUxB+hBARliZ56zOjh4KozWGC27ebBkBez
+         hFctxrAsHmRmN+UCfqNTGGXQobdUzMlmU4YmWPYQlI7DRJ43hr/mZP7j052brdsemptY
+         n7tW/B+G1Al7Q/R2FoBQV8Ugc8nN4pD9jMK5pdJBCVlPz0/wDGZ72TGgwuhdgDx8Opm5
+         9qq/LKyn3IKW9URnIiRQ2QBPfvDMqaevvB6PE16Muo6qPVxa2NY1fpUUVq3uFC8iaJIA
+         oWe56jT/rjtmTvX0U9esW73atygHkzPtTD6Rv+lLdEmo/Od2zd7X33rteyhohScj7R6W
+         l5fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784769491; x=1785374291;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=l/H8JNU91r/Q1MfTAvhCTVsqDz/YYgbouanwk7Man0k=;
+        b=mauPFT2WfrWzn/DzH4E4a+l5wkMxQJ0hsY+wnyXh2RvlySwt8bRvel2qcJEmtro91t
+         kJh2/WwTh8FwjuyawAKgwSrL7mEgT1PZ3v325KkEOctihKkXuxpB9/fSgJ/b9LSDv6gw
+         jo4YA1KzWngw9HFlbn6d3P6X383Nt/COkPrB+PZWBpZ0v3MUnL3hUiv2FAz7D+eTd/2E
+         CSjKeKow8cmFo4hsESz64Yesg27tX2hHcSrmzlZ/uk2Qhv860iSBlKP+PDslx77GjfDU
+         f8F7mB59OhGECsk+Q3o2JSbigb+qkGYFLdUurnX49akDZSaYXlLS81ZY1RT5efetegym
+         u0aA==
+X-Gm-Message-State: AOJu0YwBVpJkb4zSEU1H4L/uUB76xFpNQJ3+8tvyppfqpgne27S3a852
+	PioDD/Exxww+0jn43j8TIhWu6GCE2zmoYVuWXApe9LqmLqBmXT2kgfKx
+X-Gm-Gg: AR+sD125omlGSWyzsJRKIf0+qjByd2PUE1lbaag1P9xXvGfInecahJcKu69cGxhgRAv
+	kDmCNvb51fswnoJSjHh0YAD7Pl47Ibub5IpnDQqb7JihpplcnuFCablW15CgKkZ0a71SkVHEdxE
+	0bdt9y/wPpEn8Wx6/lEi/g1sm/TVLJlh+G9Yebz87/SgwryPg7YnJE22De7b1+Y5XpR5OAXmJ5g
+	2OQglzlgYUPNapRfZ5U5yOm7focV2SfwhhEcKEj4EnjtHyX61tKypJZh0MWWHHIE+RgN2Yf9vjt
+	FTlI5yccfNpX3y5ZkIdbl1m5hYzfGin9any7/5z4uLzamTvVuDmAcO9MjL+RTlerR2haCYDG9/H
+	1pcyI2wT5dQUUHYwfEmmBVLjCoPhPqgroX9xzeZKx+W38aQRStfL2Y3Mrqb1lplKYOgLv+LziCB
+	wozoYcKfyN4Xdcb8N0xJdOAKFkBA==
+X-Received: by 2002:a05:6a00:a20f:b0:845:2ff5:b66d with SMTP id d2e1a72fcca58-84e2bb37352mr1415809b3a.35.1784769491217;
+        Wed, 22 Jul 2026 18:18:11 -0700 (PDT)
+Received: from CPC-mjac-HKWGEZ.localdomain ([70.37.26.37])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175ea5c7sm2089045b3a.53.2026.07.22.18.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 18:18:09 -0700 (PDT)
+From: Jack Ma <jack4it@gmail.com>
+Subject: [PATCH net-next v4 0/3] net: nexthop: per-nexthop UDP dst port for
+ fdb (VXLAN) nexthops
+Date: Thu, 23 Jul 2026 01:17:52 +0000
+Message-Id: <20260723-b4-vxlan-fdb-port-v4-0-46e3a2dd88a3@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ead0d4a2-cbc5-4d74-f937-08dee8583f98
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 01:18:05.4307
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HTcVK1OUKWFAwFErFPmoFjGeljhCMDBMehQoGjuy3w7905O3aBBJPvE0F91VjWZZSyw7upp+zlESNNMjuqs90Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9991
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMBrYWoC/23NTQ6CMBAF4KuQrh0D5VdX3sO4mMIANdiStjYYw
+ t0t6IIFy5eZ972ZWTKSLLtGMzPkpZVahZCdIlb3qDoC2YTMeMyLuEw4iAz8NKCCthEwauMgqwo
+ heJITioKF3mioldNm3pkiB4omxx6/i32LJ9VuJdffXlqnzWeb93xr/JfKgyXPIYY27HGqWqqK8
+ ta9UA7nWr8236c7gSdHQhqEC2KMeZZiWeFeWJblC2uwEnkQAQAA
+X-Change-ID: 20260712-b4-vxlan-fdb-port-486bb215eab6
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Jack Ma <jack4it@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784769488; l=10413;
+ i=jack4it@gmail.com; s=20260712; h=from:subject:message-id;
+ bh=TrnjZo8ZAqSB67M3vMZFcmj593axNcgT2qUTDvpk8/w=;
+ b=O/xDmMeacYivCkFYFa+h3SXtl0E+SehCcpIix59zADLU8VbDvecNBAfpn3oQD++e5jabkcDw8
+ Gd7zKyh0XJpA2VLuPDY9O6Dms0Q+jeSquEofYw9mkfq1fGPGPjgSqng
+X-Developer-Key: i=jack4it@gmail.com; a=ed25519;
+ pk=x8xh2Md9yNDil0xBOA9WA/oqC3O4Eg4rdlIul4YUktU=
 
-> > Remove the enetc_set_vlan_promisc(), enetc_enable_si_vlan_promisc() and
-> > enetc_disable_si_vlan_promisc() functions, and introduce a new unified
-> > function enetc_set_si_vlan_promisc() to enable or disable VLAN
-> > promiscuous mode for a specific SI. This simplifies the logic and makes
-> > the interface more straightforward. The vlan_promisc_simap field in
-> > struct enetc_pf is no longer needed to track the current state.
-> >
-> > As ENETC V4 only changes the address offset of PSIPVMR register compare=
-d
-> > to V1 without any functional difference, enetc_set_si_vlan_promisc() ca=
-n
-> > be moved to enetc_pf_common.c in the future with minor adjustments to b=
-e
-> > reused by the ENETC V4 driver
-> >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  .../net/ethernet/freescale/enetc/enetc_hw.h   |  5 ++-
-> >  .../net/ethernet/freescale/enetc/enetc_pf.c   | 36 ++++++++-----------
-> >  .../net/ethernet/freescale/enetc/enetc_pf.h   |  1 -
-> >  3 files changed, 16 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > index 66bfda60da9c..16da732dc5de 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > @@ -185,9 +185,8 @@ enum enetc_bdr_type {TX, RX};
-> >  #define  PSIPMMR_SI_MAC_MP(n)	BIT((n) + 16)
-> >
-> >  #define ENETC_PSIPVMR		0x001c
-> > -#define ENETC_VLAN_PROMISC_MAP_ALL	0x7
-> > -#define ENETC_PSIPVMR_SET_VP(simap)	((simap) & 0x7)
-> > -#define ENETC_PSIPVMR_SET_VUTA(simap)	(((simap) & 0x7) << 16)
-> > +#define  PSIPVMR_SI_VLAN_P(n)	BIT(n) /* n =3D SI index */
->=20
-> I suppose it would have been nice to only have a single space after #defi=
-ne
-> above.
+FDB nexthops let a VXLAN fdb entry point at a group of remote VTEPs, with the
+kernel flow-hashing across the group (commit 1274e1cc4226 ("vxlan: ecmp support
+for mac fdb entries")).  Each leg carries its own remote IP, but the UDP
+destination port is always taken from the VXLAN device (vxlan->cfg.dst_port)
+and cannot be set per leg.
 
-I intentionally used two spaces for the macros that define the new register
-bit fields to distinguish them from the macros that define the register off=
-sets,
-making the hierarchy clearer. :)
+This series adds an optional per-nexthop UDP destination port for fdb nexthops,
+so a group's legs can share a remote IP and differ only in UDP port.
 
->=20
-> The rest of the code looks right and I think the promisc logic is clearer=
-, so:
->=20
-> Reviewed-by: Joe Damato <joe@dama.to>
+Motivation
+
+The deployment runs an overlay in which each tenant's traffic is terminated by
+a "forwarder": a pod that hosts the VXLAN VTEP, decapsulates the tenant's
+overlay, and relays it to and from that tenant's workload.  Forwarders for many
+different tenants are packed onto the same receiver node behind one
+mesh-routable underlay IP, and are demultiplexed purely by UDP destination
+port.  The host does a stateless outer-UDP demux by port; it never terminates
+the tunnel:
+
+  receiver node -- one mesh-routable underlay IP (NodeIP_A)
+  +----------------------------------------------------+
+  |  host netns: stateless outer-UDP demux by dst port |
+  |              (host does NOT terminate the tunnel)  |
+  |                                                    |
+  |     dst :40000        dst :40001        dst :40002 |
+  |         |                 |                 |      |
+  |   +-----v----+      +-----v----+      +-----v----+ |
+  |   | pod0 ns  |      | pod1 ns  |      | pod2 ns  | |
+  |   | vxlan    |      | vxlan    |      | vxlan    | |
+  |   | VTEP     |      | VTEP     |      | VTEP     | |
+  |   | decap    |      | decap    |      | decap    | |
+  |   +----------+      +----------+      +----------+ |
+  +----------------------------------------------------+
+  (up to ~10 forwarder pods packed per node)
+
+The packed pods are unrelated: each belongs to a different tenant on its own
+VXLAN VNI, so the per-pod UDP port is node-level demux, not an HA construct.
+The host, which only demuxes outer UDP, never has to reason about tenancy.
+
+A single forwarder is made highly available by running replicas.  The replicas
+of one forwarder share a single anycast overlay identity: one inner MAC and IP.
+Clients address that one identity, and a sender spreads flows across the live
+replicas with an fdb nexthop group.  Failover is transparent: a dead replica is
+just dropped from the group, with no client re-resolution or route change.  The
+single identity is deliberate; the endpoint is consumed one layer up as a
+single stable address, so giving each replica its own address would push
+multi-address handling and health-checking up into that consumer.
+
+Anti-affinity keeps the two replicas of one HA set on different nodes, so a
+group's legs land on distinct node IPs.  But each leg is still reachable only
+at (node IP, that pod's UDP port), so within one group the legs differ in IP
+*and* port.  A group can already carry a distinct IP per leg, but it takes the
+UDP port from the device (a single value), so it cannot send each leg to its
+own port.  That is the gap this series closes.
+
+Zooming into one forwarder pod, there is nothing for the host to load-balance:
+the tunnel terminates on a vxlan device inside the pod's own netns, and the pod
+reaches its tenant through a separate NIC:
+
+  one forwarder pod -- its own netns, tenant VNI X
+  +-------------------------------------------------+
+  |                                                 |
+  |   on/off-ramp NIC   <--- customer data plane    |
+  |   |   on-ramp (ingress) / off-ramp (egress)     |
+  |   |   inner packet                              |
+  |   vxlan (VTEP)   encap / decap for VNI X,       |
+  |   |              listens on this pod's UDP port |
+  |   |   outer VXLAN UDP                           |
+  |   eth0 (underlay)   NodeIP:port                 |
+  |   |   to peer VTEPs over the                    |
+  |   v   mesh underlay                             |
+  |                                                 |
+  +-------------------------------------------------+
+
+Existing mechanisms do not fit this shape:
+
+  - L3 multipath in the overlay needs each leg to be a distinct routable
+    nexthop with its own address.  Since an HA set is a single anycast address
+    by design, there are no distinct per-leg addresses to route over; the fdb
+    nexthop group bridging to that shared MAC is what load-balances.
+  - Host-side fan-out (XDP / TC / SO_REUSEPORT) assumes a shared host datapath
+    that is not there.  SO_REUSEPORT balances sockets within one netns, but the
+    receivers are in different netns (in fact different tenants).  An XDP/TC
+    fan-out would require the host to terminate the tunnel and re-dispatch
+    inner traffic across netns and VNI boundaries, i.e. become a VTEP, which
+    puts the host into the tenant datapath and largely duplicates what an fdb
+    nexthop group already does.
+  - Demuxing on VNI instead of port (one shared 4789 socket, multiple vxlan
+    devices differing only in VNI, moved into each pod's netns) works when the
+    co-located pods have different VNIs.  It does not help two same-VNI HA sets
+    on one node: their outer headers are identical, so the host would again
+    have to terminate the tunnel to tell them apart.  It also costs packing
+    density: with one shared underlay IP, VNI demux allows at most one VTEP per
+    (VNI, node), so N same-VNI HA sets of two replicas need 2N nodes, whereas a
+    per-pod port fits them on two nodes with anti-affinity preserved.
+
+This series adds the attribute:
+
+  - Patch 1 adds a netlink attribute NHA_DST_PORT (__be16, mirroring NDA_PORT),
+    stored in struct nh_info and echoed back on dump.  It is only accepted
+    together with NHA_FDB and NHA_GATEWAY.  Control-plane only; datapath
+    behaviour is unchanged.
+  - Patch 2 wires it into the VXLAN datapath: vxlan_fdb_nh_path_select() sets
+    rdst->remote_port to the selected leg's port.  vxlan_xmit_one() already
+    prefers rdst->remote_port when non-zero and otherwise falls back to the
+    device port, so nexthops without a port are unaffected (backward
+    compatible).
+  - Patch 3 extends the fdb nexthop selftests.
+
+On the uAPI: this does not add a new datapath concept.  A single fdb entry
+already carries a per-destination UDP port (NDA_PORT), and vxlan_xmit_one()
+already prefers rdst->remote_port when set.  NHA_DST_PORT is the nexthop analog
+of that existing attribute: control-plane only, no datapath change, and
+backward compatible (a leg with no port falls back to the device port as
+today).  It sits at the nexthop level rather than under NHA_ENCAP because fdb
+nexthops do not use the NHA_ENCAP / LWT infrastructure.
+
+Example:
+
+  ip nexthop add id 1  via 192.0.2.10 fdb dst_port 4789
+  ip nexthop add id 2  via 192.0.2.10 fdb dst_port 5789
+  ip nexthop add id 10 group 1/2 fdb
+  bridge fdb add 00:11:22:33:44:55 dev vxlan0 nhid 10
+
+Both legs share gateway 192.0.2.10 and differ only in UDP port; the kernel
+hashes flows across them.
+
+Testing: kernel and iproute2 built on net-next.  The fdb nexthop cases in
+fib_nexthops.sh pass, and the datapath test in test_vxlan_nh.sh confirms a
+per-nexthop port is used on the wire in place of the device default.  The
+series is bisectable: patches 1 and 2 each build individually.
+
+A matching iproute2 change adds the `dst_port` keyword to `ip nexthop`; it
+will be posted to the iproute2 list alongside this series.
+
+Changes in v4:
+- Rename NHA_FDB_PORT to the generic NHA_DST_PORT (struct field nh_dst_port,
+  nh_info.dst_port, iproute2 keyword dst_port).  Review noted "fdb port" is
+  too specific and can be confused with a bridge port; the attribute is now
+  named generically while validation stays fdb-only (Ido Schimmel, David
+  Ahern).
+- selftests: split the dst_port cases out of ipv4_fdb_grp_fcnal() /
+  ipv6_fdb_grp_fcnal() into dedicated ipv4_fdb_port_fcnal() /
+  ipv6_fdb_port_fcnal() tests, and require iproute2 dst_port support in
+  test_vxlan_nh.sh (Ido Schimmel).
+
+Changes in v3 (all addressing Ido Schimmel's review):
+- patch 1: type NHA_FDB_PORT with NLA_POLICY_MIN(NLA_BE16, 1) so the
+  attribute is big-endian and a zero port is rejected by the policy.
+- patch 1: reserve the NHA_FDB_PORT dump size based on nh_info->fdb_port
+  instead of fdb_nh, so only nexthops that carry a port account for it.
+- patch 2: fix the nexthop_path_fdb_result() continuation-line alignment
+  and drop the redundant fdb_port NULL check; its only caller always passes
+  a valid pointer.
+- patch 3: fold the control-plane checks into ipv4_fdb_grp_fcnal() and
+  ipv6_fdb_grp_fcnal() in fib_nexthops.sh rather than a standalone script,
+  and add datapath coverage to test_vxlan_nh.sh.
+
+Changes in v2:
+- Expand the cover letter with the deployment model and the
+  addressing-vs-load-balancing distinction that motivates the attribute, as
+  requested (Ido Schimmel).
+- Reword the problem statement: the UDP port is underlay demux (addressing),
+  not what distinguishes otherwise-interchangeable load-balancing targets.
+- Drop the speculative NHA_FDB_VNI follow-up note; there is no use case for a
+  per-leg VNI in an fdb nexthop group.
+- No functional change to the patches.
+
+v3: https://lore.kernel.org/netdev/20260721-b4-vxlan-fdb-port-v3-0-9aa0a543a78a@gmail.com/
+v2: https://lore.kernel.org/netdev/20260717-b4-vxlan-fdb-port-v2-0-f4862e8fe867@gmail.com/
+v1: https://lore.kernel.org/netdev/20260712191218.236-1-jack4it@gmail.com/
+
+Signed-off-by: Jack Ma <jack4it@gmail.com>
+---
+Jack Ma (3):
+      net: nexthop: add NHA_DST_PORT for fdb nexthops
+      vxlan: honor per-nexthop fdb destination port
+      selftests: net: add coverage for fdb nexthop dst_port
+
+ include/net/nexthop.h                        |  6 ++-
+ include/net/vxlan.h                          |  5 +-
+ include/uapi/linux/nexthop.h                 |  3 ++
+ net/ipv4/nexthop.c                           | 20 ++++++-
+ tools/testing/selftests/net/fib_nexthops.sh  | 81 ++++++++++++++++++++++++++++
+ tools/testing/selftests/net/test_vxlan_nh.sh | 34 +++++++++++-
+ 6 files changed, 144 insertions(+), 5 deletions(-)
+---
+base-commit: f6f3b36c15ed44de1fbb44e645e4fae8c4a4453e
+change-id: 20260712-b4-vxlan-fdb-port-486bb215eab6
+
+Best regards,
+--  
+Jack Ma <jack4it@gmail.com>
+
