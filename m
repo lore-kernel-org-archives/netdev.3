@@ -1,53 +1,23 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891DF440A20
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41943CE74;
+	Thu, 23 Jul 2026 11:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784804167; cv=none; b=BtAXGmsQmiRuHbD5Iq6uCAwQqRmeHlNPzuL6KrUrrZgdnsSEut09iMy9YeoQKJd8o7j30rBgBUssDFe/SnjFe9keSaHbXIpqwpBcEearYFrUvKVNOky52YsChzDhz9cu74otHQkXarRK4KPfnA7EPeA0OYhFrfgGPrJ4AxxEhok=
+	t=1784804447; cv=none; b=BYbn+bE/LRrhWTk34DPRTN6W6/ndA+h38dK3NB4b80fvMFW+yYU0EVFelkycn4MbksA7HJ/L55os5v6IM5WY7BkGiBb0Q3m5NcFZu1FpmSOL5HcNWCx+lkNMUbda8AH7zwJ95FWm5NJzdZGPuL9jKVtxtdsvYvp4ugP1RjY+Nx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784804167; c=relaxed/simple;
-	bh=9rxoLCRqSNVSSHw6DC195I+0fKa72nHj18A2Wle8798=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i2jVenTs7GC2DK7dMEuMBKpm89odAJFrRH3Vd7h37SvEhuDE6LPV8k5FNh9syZbat3LmxcsaD9SRrh2CSKCd72cUV5APkZP0fQEUjRLsRkKWQSkQu4VVzw1Lktob0h+Mh4H9XaHa/1GHT/0iDwD8hzLBM5bCoRWvpUuE6axQywk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VEF1xN6R; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VEF1xN6R"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784804160;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bgp1gURqCnNNv68p8sCgcv9sqD4HO0W1reMIZt6kLWk=;
-	b=VEF1xN6RMmwKqy1WaP6GOqkOLEQZVoaWbermIcDIbiLn3ZDO0fw/jCNIINZA9ysDauNskb
-	K92CC921g3aIyPur+32K2ynO17pZDXhxXwxot4xJJUKtYerwIUvM3+aBGapBIhQ6y4HuiD
-	ieGrffugbF1psKApp20b28m3NVeTpmE=
-From: xuanqiang.luo@linux.dev
-To: netdev@vger.kernel.org
-Cc: alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	mjambigi@linux.ibm.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kgraul@linux.ibm.com,
-	ubraun@linux.ibm.com,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v1] net/smc: fix socket use-after-free during link group termination
-Date: Thu, 23 Jul 2026 18:54:54 +0800
-Message-ID: <20260723105454.87016-1-xuanqiang.luo@linux.dev>
+	s=arc-20240116; t=1784804447; c=relaxed/simple;
+	bh=tkMLEGC/MOwX2flS0xOuIgSmy8VCce5NREFx2sg7QJY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nsMAQbkJ8iXai6yU4nmGUSCoCymujoG2199x3fJmVu1WQz3xovPBNKNsSC6eA6tKdGNv/kB3itOPubJyEzhA8hfMuJgvujOTGp7vSoNoyWrOjNPt6CpYINEQvzMnAIFLSLiHo358H4WW+iyCppOs9VXofI/MpKrOVYk/0HLw7Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A421F000E9;
+	Thu, 23 Jul 2026 11:00:45 +0000 (UTC)
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A77380DBFA;
+	Thu, 23 Jul 2026 11:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,59 +25,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net v3 0/3] net: stmmac: L3/L4 filter bug fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178480441340.2227840.16089405252896069758.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 11:00:13 +0000
+References: 
+ <20260714023716.29865-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+In-Reply-To: 
+ <20260714023716.29865-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: Nazle@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Asmade@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Muhammad Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
+ Jose.Abreu@synopsys.com, linux-kernel@vger.kernel.org
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Hello:
 
-__smc_lgr_terminate() drops conns_lock after finding a connection in
-lgr->conns_all, but before taking a reference on its socket. The connection
-is embedded in the socket, and its registration reference protects it only
-while the connection remains in the tree.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-A concurrent close can unregister the connection and drop that reference,
-freeing the socket before the termination worker reaches sock_hold().
+On Mon, 13 Jul 2026 19:37:12 -0700 you wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> This series fixes three bugs in the stmmac L3/L4 TC flower filter
+> implementation for the XGMAC2 core. All three patches target net.
+> 
+> The L3/L4 filter match count statistics patch (originally patch 4/4)
+> has been split out and will be sent separately against net-next per
+> Andrew Lunn's review of v1.
+> 
+> [...]
 
-The race is reachable when close overlaps link group termination.
-Local stress testing reproduced the use-after-free and KASAN reported:
+Here is the summary with links:
+  - [net,v3,1/3] net: stmmac: xgmac: fix l4 filter port overwrite on register update
+    https://git.kernel.org/netdev/net/c/9fcf274d93af
+  - [net,v3,2/3] net: stmmac: fix l3l4 filter rejecting unsupported offload requests
+    https://git.kernel.org/netdev/net/c/5536d7c84363
+  - [net,v3,3/3] net: stmmac: reset residual action in L3L4 filters on delete
+    https://git.kernel.org/netdev/net/c/a448f8212899
 
-  BUG: KASAN: slab-use-after-free in __smc_lgr_terminate.part.0 [smc]
-  Write of size 4 by task kworker/3:3
-  Workqueue: events smc_lgr_terminate_work [smc]
-  __smc_lgr_terminate.part.0 [smc]
-
-The socket was allocated by smc_create(), freed through
-slab_free_after_rcu_debug(), and was followed by:
-
-  refcount_t: addition on 0; use-after-free.
-  __smc_lgr_terminate.part.0 [smc]
-
-Take the socket reference while conns_lock still protects the tree entry.
-The unregister path then cannot drop the last reference until termination
-has finished using the socket.
-
-Fixes: 69318b5215f2 ("net/smc: improve abnormal termination locking")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- net/smc/smc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index cf6b620fef05f..b4208cb186c5e 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1572,10 +1572,10 @@ static void __smc_lgr_terminate(struct smc_link_group *lgr, bool soft)
- 	read_lock_bh(&lgr->conns_lock);
- 	node = rb_first(&lgr->conns_all);
- 	while (node) {
--		read_unlock_bh(&lgr->conns_lock);
- 		conn = rb_entry(node, struct smc_connection, alert_node);
- 		smc = container_of(conn, struct smc_sock, conn);
- 		sock_hold(&smc->sk); /* sock_put below */
-+		read_unlock_bh(&lgr->conns_lock);
- 		lock_sock(&smc->sk);
- 		smc_conn_kill(conn, soft);
- 		release_sock(&smc->sk);
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
