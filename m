@@ -1,212 +1,194 @@
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139B41A4E4;
-	Thu, 23 Jul 2026 20:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.42.203.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784838974; cv=fail; b=kOb6oOGQcJDtt+AdvPp8Fj5XEhqkgPkpfssZBXf5IDVyyPhJNG2+jM3d1jbp+UuRWyPNDx0ZTut0zCxdL/cFN6a+OeGTI2ygZ0AuKifeYvhDTPCErpQiJgTe4IqY38Mwd/1xihFcy/dHAXz3jlbXEFDKBZzQjaJ19PkMtpKDQRU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784838974; c=relaxed/simple;
-	bh=lqyMy6wFoJyB6ZsQUF5OUlCeuukP1CpKuPzy7REX2CY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uHrXOAvbuMNqSsF0fypu07oqo0hv0YpTuR9uwcVn1yX0d7dStVS8CqNLW2dtQ7K7a3CHb7iG/1AUP4Qbs/H2XAC35FUFpvYGtq16fUi4j3Z4mbU1RfYrbqvbocL1b6YCLCcXCZPf3YMaMbmBbPC09xPlFTwoFdL7tcdZ4Xr+YYc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=s05DvboF; arc=fail smtp.client-ip=52.42.203.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF72C1C84DC
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 20:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784839934; cv=none; b=Ot+xSsFk5aECYDVRGF7AFbxFHsXKmOCzxBP/UT5Jae1Lzg2WeDezNWq4QIJYU+nxgVBlraismIFNkydmkk4tAFAT1LwvQU+p39fe0LgeyqSvXWQJhqYOh7z4YwxAx+mV1/DRloSy2qA1wn1N5/7sNGxkiNHf8azfGVUsnH83CAQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784839934; c=relaxed/simple;
+	bh=8FzMKVurMX96eBmO7rvDjkl8IBJD91E4fy3Zy7Ke1uA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=l1owbAXn4Prk6W2evs1MS3r+ZXZoJzVlQHh3xSDqfXLcaMm6heGvSdujdcTdKANboB+ULkufyi38kKR8z3QMfPHI9wSROAEEcw7UDm/uxlt2quCv2hYH54EKfz/kCllrGA4fsNHgszR/xAYeGOC7EuCs0CLgbqc6kDcJYbaHHcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e9uYKNyj; arc=none smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="s05DvboF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e9uYKNyj"
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-668432fe416so1029256d50.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 13:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1784838968; x=1816374968;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=F8mhpmEDshmhrnJzOm0SjRPxlbbTONvQUQTaAO3cAYY=;
-  b=s05DvboF8aoKyYbmINhO4XTYXupu2n2RpTfisPTangSg+sZ25/3VnctK
-   7azP0LJddaO9DkZW8QBb/UOLRfvJccmJxt2Cj1kpjpu/x4/UOCAsWsC1Y
-   cE3GFfccCKmZszYGUeuwL0BhK1jIeMRFIklLXaXjJyji5B/FizHK2ADj0
-   U+tSL1z+P9yz7e/MOhOE6oTTWJ7rVIIIF7O147BqmXZ9j/Lzex33h8sNS
-   1do2u7RUXBr0/25RYdL/OJj+AQ5K2YAe9fke7Bxedgq1yBXJm6BXiSeU+
-   Iwqo5Dyrk7zkvHYLtEa7kfYgMp8NLYI1aXlN/w+g31AP1WS2v0yYJtG/S
-   Q==;
-X-CSE-ConnectionGUID: Af+hxQb8S2aFeNd8/1eKOw==
-X-CSE-MsgGUID: /hq+x+LYSc2guX7TX7KC9Q==
-X-IronPort-AV: E=Sophos;i="6.25,181,1779148800"; 
-   d="scan'208";a="24278323"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 20:36:00 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:23741]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.115:2525] with esmtp (Farcaster)
- id 6ff998d2-62e3-453f-ab91-d57202915d59; Thu, 23 Jul 2026 20:36:00 +0000 (UTC)
-X-Farcaster-Flow-ID: 6ff998d2-62e3-453f-ab91-d57202915d59
-Received: from EX19EXOUWC001.ant.amazon.com (10.250.64.135) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 23 Jul 2026 20:35:59 +0000
-Received: from EX19EXOUWA002.ant.amazon.com (10.250.64.216) by
- EX19EXOUWC001.ant.amazon.com (10.250.64.135) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 23 Jul 2026 20:35:56 +0000
-Received: from CY3PR08CU001.outbound.protection.outlook.com (10.250.64.206) by
- EX19EXOUWA002.ant.amazon.com (10.250.64.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43
- via Frontend Transport; Thu, 23 Jul 2026 20:35:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tBInXKrVgWWNU0oS6qtdC9HZVw5LZr+02FEc3TE3m7hq3Kp8VJJhAjja85ehPcpYH3HyzhgHH05feJ/p1JRLcbEZsrnHI+eabbYyLcSHJuqLtF7CT2YPHx0z8OXAY0wTf8RhctWhxWr22b/VPDctGCLFXc7b6QeTesqGqF6n+TDq33OdlE22rdv3b4ViRmcQwUMQbQNYA6CEss286rNbDjYfjbO1sg5W5dwiPXbMN5E1o4ri2GjNVHbEmFl/XVjXK4slKldk8Jl84HyTGpSGZFak6TcjdOiv1lJ7YGFBrRwY7dytyFfDnIzKLXWN/z7MyO1yFyzCUX/wXBAq4vJr5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F8mhpmEDshmhrnJzOm0SjRPxlbbTONvQUQTaAO3cAYY=;
- b=BZqlPKncAHuSjAMY25Qmf8MVhBsdvqg6FOYrMftig0wOzmFaCylkwRoFvl7K2iwRqT+/ZBJ6tfTJwjszX3E5h97OpX/LfEIS5bdEu3uwu8QnUPe0o7BLrUA8jnREfaLhKgHwXvdNH6L0Bsbw7APvw85fiEflxGI3SPqQkhS/NFZXx7T8u2yqgSYCWcXec4t7+FKWkRCJTlHKgfSx37wgcjNiqzGcsh/Sxp/QzoQZQZLTL/lgFgopJHzLDLC6oM6T+63HX1aSgMXEVPeG0oKnikuCm4YkBIyf+2CcKt/B9Jskw1ANJPWNaIzGIQtkTXygJ93UW0CjB8T9wOjqQopR3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from SA1PR18MB4664.namprd18.prod.outlook.com (2603:10b6:806:1d7::5)
- by PH7PR18MB5703.namprd18.prod.outlook.com (2603:10b6:510:300::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 20:35:48 +0000
-Received: from SA1PR18MB4664.namprd18.prod.outlook.com
- ([fe80::972c:f0e:7126:9112]) by SA1PR18MB4664.namprd18.prod.outlook.com
- ([fe80::972c:f0e:7126:9112%6]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
- 20:35:48 +0000
-From: "Kiyanovski, Arthur" <akiyano@amazon.com>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>, "Julia.Lawall@inria.fr"
-	<Julia.Lawall@inria.fr>, "Arinzon, David" <darinzon@amazon.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Sukhdeep Singh <sukhdeeps@marvell.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, "Manish
- Chopra" <manishc@marvell.com>, Rahul Verma <rahulv@marvell.com>, "Shahed
- Shaikh" <shshaikh@marvell.com>, =?iso-8859-1?Q?Niklas_S=F6derlund?=
-	<niklas.soderlund@ragnatech.se>, Sabrina Dubroca <sd@queasysnail.net>
-CC: "cocci@inria.fr" <cocci@inria.fr>, "GR-Linux-NIC-Dev@marvell.com"
-	<GR-Linux-NIC-Dev@marvell.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH 07/36] net: ethernet: remove conditional return with no
- effect
-Thread-Topic: [PATCH 07/36] net: ethernet: remove conditional return with no
- effect
-Thread-Index: AQHdGuLDHMLwqSGC80SEy6rJKdftmA==
-Date: Thu, 23 Jul 2026 20:35:20 +0000
-Deferred-Delivery: Thu, 23 Jul 2026 20:34:27 +0000
-Message-ID: <SA1PR18MB4664DA66B9EA117823E78D9AD9C02@SA1PR18MB4664.namprd18.prod.outlook.com>
-References: <20260723184538.3888637-1-ekffu200098@gmail.com>
- <20260723184538.3888637-8-ekffu200098@gmail.com>
-In-Reply-To: <20260723184538.3888637-8-ekffu200098@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amazon.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR18MB4664:EE_|PH7PR18MB5703:EE_
-x-ms-office365-filtering-correlation-id: 02fb406f-9a5a-48ae-a82d-08dee8f9fade
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|38070700021|56012099006|10067099003|921020|18002099003|22082099003|4143699003|11063799006;
-x-microsoft-antispam-message-info: 9mWKdtAmZRJiJeemqgQAmQdY+59Ms6Wg0cuwd1cTiU2LrTyn/ssn867XIuE9ork94RaVCbhFl2MC4yx9HT3oLeNI5B0zL+4KcS2gsDTRexUzaO13bmTASxe0v/jj/QJ4V2etb2v/yUBDaWmP4yH7Fg6oJWexAQjYcaEomgCfOUerBAGGlLwtbCL9SWt53niYDLNAsEQLVwZgoT11tXMTGDzpqXDFRNSuC4QE7154DlnhfNLyRQ2GWY/Nio/De3hOXUDbAZ5nc0ul6DZOH8OM+4MMjG71RduxQBODbug8uCzaTUD7mdygYByrt3EXqIcPDr6zKjQ7t5kDAWdNlmsBW4xLtVwTatiuokqcTmM+N74Awsil0IwjS9lLqLFmW0r+DGawvypV7l58OPv9T23rNvOVb/PYRxnMNnsUWPFI47cGNLxUDNKUoXLDth5ApjGHrpyO7/CZRWrR/zQi/eb2a91F4j6xW/nUGb0405hMxgaHXoqDkdi19zVGcs0mi/t6egvHy1b2eE3mLO+OQmZcTSczt/+krvvBELbZQv5xoGeCE1LvLJTDNHnLC6Nr+AbfU8RdcDqnY4bTpp8H5FP1Pk9ULjRr8X9VyOxF1TZXyK7xDq8fsp0ZmRP4lmGU1LSFnaOm+BUumuphOBwK9yHb0XYDQvEeE2JhucQlYwI4YQE5ISVmfxO0basYtYq/r0cKwMGtNEpvWKYCo24T9hHovCQKH9qN8DrolKDxLSzNAPQ=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR18MB4664.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(38070700021)(56012099006)(10067099003)(921020)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?JPSd5Ib6I/widKRAKgu3iQnmvLP3XeH5ZJUOiCmp8UgroS9N8njdNbKkH3?=
- =?iso-8859-1?Q?5Hn5W3IlK+TDkNcJLz6dGxWYN6/NPjuAj48k1hl0NmUaFOeAsbqM6JLeqJ?=
- =?iso-8859-1?Q?K153ug0GFo6sZs+olxwXddkLUnz36ZzuecIJEHA6TreTyUPsS8nHdovLMQ?=
- =?iso-8859-1?Q?N2sukNUP0vDsIJq7yQKNMtTL8sd55jEXB/05VowKKvS9uELAvgnVNN/eKi?=
- =?iso-8859-1?Q?rnMqJkJ0hIr0jkHkYLxFj9Ia9/bzLfMD0Em8Dnb8RFmarmXeVFBdXV3RwU?=
- =?iso-8859-1?Q?RqbOKOI98mMIsPpgM15Vm1jpiTXwo6ManweGewhgmoFqUu1a5OUEWL7f/8?=
- =?iso-8859-1?Q?MYZrya1fYuGuuUwnOC8Pz4Y9Bnt99thDHxdR2Vtjo4sf7Q9AOtiDf6p/6D?=
- =?iso-8859-1?Q?ATLOHp31dOIpB/WxhTxtW+cQiQr2RU407jLqmpHVm8hMijI/9ct/GQoqe/?=
- =?iso-8859-1?Q?bjS6tmmhgK6kdHGVthdGS0GYmYG8iCyX7rsHdgb+jNMz4WZxIHESwl7HHT?=
- =?iso-8859-1?Q?JBjipeYPML0jiVjQXUe+oW3HnAW1Y+lj9hbf4KOw+LZzvoiff5UNQRHOSo?=
- =?iso-8859-1?Q?iX+gMdhzRmzLz/SQZPL775DZnduOtFm1KWDk0TOCdGRTm4JaSLCZ1YdfFF?=
- =?iso-8859-1?Q?mfzJZwuk3/r7R3sKvcoAYD5t5c19TJXx1dkIqEvXeKo/pGqGhXdjQKrhy1?=
- =?iso-8859-1?Q?T+Dh4G/Ufs6zZUkrmcnTuLqnxd9YqNQwAp/SWXSu0I8TDdidPAJPBvCWsD?=
- =?iso-8859-1?Q?NTQcSwRVAzlxrvjV3KhDDf7VO/V7PJ7mYaXf09WdfZXpCEeWS67X3qLkvI?=
- =?iso-8859-1?Q?hueSlLhP2Eyf0mufwLXV1NGZTbXSHQGFU9OF6HtWMW53z1qtKgXn01gaI1?=
- =?iso-8859-1?Q?TD03Qmu0UP1lLehTLzEVjpHLXbpgJRcTuOI83eJNjW0g/PYsnMMleGk3Qv?=
- =?iso-8859-1?Q?RLFUc5A2MJzmaJCDw3oVozlzd7a7YmCj7Y+04s4JPNRlIvxYvbsU4rJ/R5?=
- =?iso-8859-1?Q?C4fGfLe9BM7yfEvc4J3Ahm4nlEHR1l0TrDM0H9iHg3ozFVQcsjUmi8pAof?=
- =?iso-8859-1?Q?moYkPi3uwwYFGLVloQNCLj54dM7MT8QAiUF/95Cse1chiSnyxVNxoc01Ra?=
- =?iso-8859-1?Q?vGgwzhwxVNpmtmHfGRyge81oe5G9tj3pB3cCMFuKVH0bGGxQHZKNAtgX48?=
- =?iso-8859-1?Q?le06l481azEe/p9f9sf1DI5+nnl2HaYMA4sTeWaqo0Twysw/HrqSEyxE4m?=
- =?iso-8859-1?Q?sYdvni7c/+7paKIouSPBLmvr6HWbfwTj+2tF5ypRAjZ1WIZ/FwFtnydUWa?=
- =?iso-8859-1?Q?Dl1JWcS7TvAAENqus4KEddUC9P5iAxSphhw6x+OkcRhlJghydl33VHmg75?=
- =?iso-8859-1?Q?Kp+89QlrtXsGpn3BmxL90viZi+JssM7L3r91xlM2l9bsKjixuBkOwRmLSb?=
- =?iso-8859-1?Q?NzMFuHGzapGfuaVDPl1oyat4H2O9Ife5hgClrndEJvDDfYXe05rWozRPWD?=
- =?iso-8859-1?Q?7MmKKC2KuT3FAZhTANJGSvVnsLXJAE+22fOkkWhaBjCGv6cYsrqj9KLry0?=
- =?iso-8859-1?Q?S9r3Scp/gVAftNe9SRtE+Lgo6J5zUutOXTchdsb20KH8md8xovnXygjrdo?=
- =?iso-8859-1?Q?lZAeNFcbYEhMoqRziqcKDoA1WGnJSNOr3gEUfOIDr8tasKrEZHYXAwPRbo?=
- =?iso-8859-1?Q?fJwBLlQD5z+J9fM/ar3l5fToTeu4hp16jkkWYui04TYepk5SLyWjwFZhwp?=
- =?iso-8859-1?Q?ORafyrKV5OkEV+ex9zwL0ti0nRYEkyQoEGfdSKG9esWyXs?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20251104; t=1784839932; x=1785444732; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ITRYudtWCLKdCLtF65U0D/VRCHaXKkiHBj5IzKVLDcE=;
+        b=e9uYKNyjTwkRx4UTdwfLnNm/idXh8JRCXdch3ts0bNsZ43u18haSwIUgUW4Py19oI9
+         eMeF/l1zIQVe7FRWeeaM8U/pQ+6juxP4PW3PwJSPkbonv5xB42PjgWKOcvTsrVEXKNTk
+         TWCU+nalP7B/H2J76E9VYyXLsJFncTthvBtKHZE6jZPyyTLIbdvEHL7oiGS70yAkFdlR
+         eE70DJG8c/+oX09uANluI3GelLZcRpO/Z4xwVxvM8vFkV+SS6q4xJ35scNfcJNED2fUF
+         3ygJMFXZFXteOg7dKfGhQ9YoqOqqUrSnippdzlA8c5lbRx0IXYquisR2J4xjX2lmrZPQ
+         J7mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784839932; x=1785444732;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ITRYudtWCLKdCLtF65U0D/VRCHaXKkiHBj5IzKVLDcE=;
+        b=jIrvcPweO/emtOb2CpQdtNqLHk9tz0lO5wD5HJ0jkk5lwxkjx16RRPsmmC/K/hYtfi
+         z1UFXkWlbu8Ghv5LViD1/KRLdTOlxNa1IqB1ZhFsBqwHqGuZ7JT8tFqnThI40L3f2KJb
+         WoZQMKV7g/ntA9eVQ8beTQ97SggMNAs6dT2NFXNzEhwI8QcdFSl8TnR2uCUknNUUdvGZ
+         O7hn8G8xvTNzoBveyuImg/M5bACsTGb1bAvT/22UIqDZ4G5K3hPJUZu/kduDg9TrmwqR
+         d9b9UTsXWFwPEENm7m5etlH8el6lNTuB5T+efMXWJXlIOQL9LmXYBr6I8geOYtR9nRLh
+         4wsQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrb0jut+T+Q4CEnTf7P6Repil+RePimhPMdTTUE6OcUswO56AaGUZBuK3GYL7MhCyJYwKIkXzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjtYHnZpZeOkTv43SeYDoX2LgxiSJW5h1m0EzUWapo4wzzmMhG
+	RlUgnJpXajUAmcgTTFFLZ4Kztgrt1Wwib7z/XsZhi19va2ycyZ9ThHAa
+X-Gm-Gg: AR+sD11fU1lMJTCNtgOEy5EaR2AzPMV54tkRrOt8pQeIPqG8d/tyPpkT87ZzB0OvFm4
+	WOyVyte+2RTAZK1ZtaWgMUkhRK4gvmpsRDKmWLiVhm6+IgUh8JNHJCRb97OOFNWnaH9RZR1TDQC
+	pTuZ2cybvIeL4+2GNfXX/BxfHn+gWg91fWdBKCF3UG1fLD/8KtpmNjHgks3ScTzaJlaXtVm8OJs
+	RVepP6+aOXHXM5Z7OFPgVOkBXr2UN9qrB8pg/14WnmsD3JUTFanftoXia5yozudu5+NIvhUagpo
+	4RhPvpUu81GtQjABLPIM9h8GtRlYYHSwd9IpaVikQ3YicxppeEy7Gu5KLbYXSaFX+32o5gUgDGv
+	bu3W/nd4C1tjhRyCs1TXeeYF7beFlCRYxNN5uvM9P2ksy1VIjA/xE1KDMDLvQaP1uroXzdwwd22
+	Q8svwE69qZgLVbgCDysYA/J5Uz5pKmDcHBcUudr+xweF/qsCBcD+iq6pk=
+X-Received: by 2002:a05:690e:b8b:b0:667:b645:530a with SMTP id 956f58d0204a3-668a5001e8dmr1235095d50.83.1784839931719;
+        Thu, 23 Jul 2026 13:52:11 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66890523c01sm3800327d50.2.2026.07.23.13.52.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 13:52:10 -0700 (PDT)
+Date: Thu, 23 Jul 2026 16:52:10 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Doruk Tan Ozturk <doruk@0sec.ai>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, 
+ Sabrina Dubroca <sd@queasysnail.net>, 
+ Vladimir Oltean <olteanv@gmail.com>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Doruk Tan Ozturk <doruk@0sec.ai>
+Message-ID: <willemdebruijn.kernel.4957260f765a@gmail.com>
+In-Reply-To: <20260723020337.19040-1-doruk@0sec.ai>
+References: <20260723020337.19040-1-doruk@0sec.ai>
+Subject: Re: [PATCH net] net/packet: reset the MAC header on the packet-socket
+ transmit path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: cxuaMegXaN3UXXlgEg2Nd06jphUR5hY0WzHxC6HSTTIn1VHIy4fLIqmMWiWSyNOwBMGZLLX/ZSGQ4XlrQqfAi+7Je8n9hWTFXZjWigIgOfTEz4mGTmOB/N6Fvc5AabmrdnoqT2lwnpXgCsT1dKYodvo18I/T8S25KKcow9QktW5vrmQWD1A0gj+MrFynwFdU/SpZznixI9ab7VbA9Y1miqMD3Bny/3xm3gBF2c1B9OLze/PQ3c3NQDcvrGNF6UMdsGY2egvkSDZja9fG632W9HWBeEoaYeZ6LnNpYlofM3vyWvs8N3xRIQBklU//ynGdSBgMawoUJj8avTWO6HHheA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR18MB4664.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02fb406f-9a5a-48ae-a82d-08dee8f9fade
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2026 20:35:48.6263
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: r8uMfMxZVKhZtGVUrp8AhyX8yRlBX505MRQB7UyWSh9rLqr4cYpuDUld8gDc3Tf7LpLacYAQzkwIMiQKvp7Jag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR18MB5703
-X-OriginatorOrg: amazon.com
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
+Doruk Tan Ozturk wrote:
+> packet_parse_headers() resets the MAC header only for a SOCK_RAW frame
+> whose socket did not bind a protocol:
+> 
+> 	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
+> 	    sock->type == SOCK_RAW) {
+> 		skb_reset_mac_header(skb);
+> 		skb->protocol = dev_parse_header_protocol(skb);
+> 	}
+> 
+> Every other outgoing packet-socket frame therefore reaches
+> ndo_start_xmit() with the MAC header unset: a SOCK_RAW socket bound to a
 
+The normal __dev_queue_xmit calls skb_reset_mac_header.
 
-> -----Original Message-----
-> Subject: [EXTERNAL] [PATCH 07/36] net: ethernet: remove conditional retur=
-n
-> with no effect
->=20
-> Both branches of the check return the same value, so the check has no eff=
-ect.
-> Remove it and return the value directly.
->=20
-> This is the result of running the Coccinelle script from
-> scripts/coccinelle/misc/cond_return_no_effect.cocci.
->=20
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+This therefore only applies to the dev_direct_xmit path.
+
+> specific protocol (for example socket(AF_PACKET, SOCK_RAW,
+> htons(ETH_P_IP))), any SOCK_DGRAM frame (its header is built by
+> dev_hard_header(), which does not set mac_header), and the legacy
+> SOCK_PACKET path. A driver that reads eth_hdr(skb) on transmit then
+> dereferences skb->head + (u16)~0, an out-of-bounds access about 64 KiB
+> past the head.
+
+This is not currently an expected invariant, but I see from a comment
+below the --- that this approach is proposed instead of fixing up the
+buggy drivers.
+
+> 
+> This is the same class fixed for one consumer in commit f5089008f90c
+> ("macsec: do not read an unset MAC header in macsec_encrypt()"); other
+> TX .xmit paths that read eth_hdr(skb)->h_dest (several DSA taggers,
+> ibmveth, sja1105, the atlantic PTP path) have the same problem.
+> 
+> packet_parse_headers() runs only on the transmit path
+> (packet_sendmsg_spkt(), tpacket_fill_skb(), packet_snd()), and there
+> skb->data is the start of the L2 header for every packet-socket type.
+
+There are some subtle points with variable length L2 protocols that
+need to be reviewed.
+
+> Reset the MAC header unconditionally so it is anchored for all of them,
+> fixing the class at the source rather than hardening each consumer.
+> 
+> The protocol probe is unchanged. A CONFIG_DEBUG_NET build stops warning
+> about an unset mac header in skb_mac_header() on these paths, and the
+> out-of-bounds eth_hdr() read no longer occurs.
+> 
+> Found by 0sec (https://0sec.ai) using automated source analysis;
+> verified against source and matched to the macsec KASAN report in
+> f5089008f90c. Compile-tested.
+> 
+> Fixes: 75c65772c3d1 ("net/packet: Ask driver for protocol if not provided by user")
+> Cc: stable@vger.kernel.org
+> Assisted-by: 0sec:multi-model
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 > ---
->  drivers/net/ethernet/amazon/ena/ena_netdev.c          | 6 +-----
->  drivers/net/ethernet/aquantia/atlantic/aq_macsec.c    | 6 +-----
->  drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c   | 6 +-----
->  drivers/net/ethernet/freescale/gianfar.c              | 6 +-----
->  drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c    | 7 +------
->  drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c | 6 +-----
->  drivers/net/ethernet/renesas/rtsn.c                   | 7 +------
->  7 files changed, 7 insertions(+), 37 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> index 5d05020a6d05..ea89619039d8 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> @@ -2303,11 +2303,7 @@ static int ena_open(struct net_device *netdev)
->                 return rc;
->         }
->=20
-> -       rc =3D ena_up(adapter);
-> -       if (rc)
-> -               return rc;
-> -
-> -       return rc;
-> +       return ena_up(adapter);
->  }
->=20
->  /* ena_close - Disables a network interface diff --git
+> This supersedes the per-consumer series "[PATCH net 0/3] net: dont read
+> an unset MAC header on the raw/qdisc-bypass TX path"
+> (https://lore.kernel.org/netdev/20260713194010.54642-1-doruk@0sec.ai/),
+> per Jakubs suggestion to fix the problem at the source rather than
+> hardening each driver.  Vladimir Oltean had reviewed 2/3 of that series;
+> this is a different (source) fix, so I have not carried the tags.
+>  net/packet/af_packet.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index e75d2932475a..adfb9c19a3ca 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -1924,11 +1924,21 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
+>  {
+>  	int depth;
+>  
+> +	/*
+> +	 * packet_parse_headers() runs only on the transmit path
+> +	 * (packet_sendmsg_spkt(), tpacket_fill_skb(), packet_snd()), where
+> +	 * skb->data is the start of the L2 header for every packet-socket
+> +	 * type: SOCK_RAW and SOCK_PACKET carry a user-supplied header and
+> +	 * SOCK_DGRAM has one built by dev_hard_header(). Anchor the MAC
+> +	 * header for all of them so a frame does not reach ndo_start_xmit()
+> +	 * with the MAC header unset, where a driver reading eth_hdr(skb) on
+> +	 * TX would dereference an out-of-bounds offset (skb->head + (u16)~0).
+> +	 */
 
-Thank you for this patch.
+This is too verbose. Better captured in the commit message.
 
-For ena_netdev.c:
-Reviewed-by: Arthur Kiyanovski <akiyano@amazon.com>
+> +	skb_reset_mac_header(skb);
+> +
+>  	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
+> -	    sock->type == SOCK_RAW) {
+> -		skb_reset_mac_header(skb);
+> +	    sock->type == SOCK_RAW)
+>  		skb->protocol = dev_parse_header_protocol(skb);
+> -	}
+>  
+>  	/* Move network header to the right position for VLAN tagged packets */
+>  	if (likely(skb->dev->type == ARPHRD_ETHER) &&
+> -- 
+> 2.43.0
+> 
+
+
