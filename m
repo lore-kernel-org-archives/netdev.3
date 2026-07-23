@@ -1,135 +1,139 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650084137B8
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815921; cv=pass; b=PlchBUW//M3TaLE6XLwhEm6ynVDqMbiwKg3yPIjp/sxL5mqtdg6f8WBCdHqJ7/h9sL87GRb80US8Oqw8uEY4/kv5HimUGOuYXoWgFJ/EbmbkW4jo3R29kBOKpOJMhfoQMELMyX/aQX87M36z5dtLyp1nBTgd6FZ4TO48ZdW161Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815921; c=relaxed/simple;
-	bh=xeRbYF6M2YtLy2I7DOnIWmckXXjjpJclqaG6wylcrk0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qBH+Cd5jJ/UebMmpc2NIneaktXHC2Ik3JNEbd0NKrow07Yge6nrK3fmyM7FljX+k9JnNRBc+2dIOVM68XGiq/Hk4SuB4zxURZE02CGvJIP/8MxGMJTI0Y4TVw18s+fy+dS2lBX0Q7lgmnhwsanL8LX4kZovk29m5Lz2MsLqPaGg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=aeT69Igq; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF8E42AFB2
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784815980; cv=none; b=ZkYMy1+8V5GkddBTOd4IUgfxpbbAMcnrPNCeRbK3j2xfSnpW05GombVdCo0TudLxxXs6x5HrW+9NCeq3k8Ypeh6exLKdhCcNvS8aNfJ+w4Nx2rrU4NNXidBeQsXJcnb9BsMoAwzgiWJKtFQQ+IptAjexUlgi4hFVYDx44eKE4J4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784815980; c=relaxed/simple;
+	bh=RvA1+CXHpz+XeH5m2e5ys4iiJ5g2DwMHECAho1Z6Bv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XpGEy9e7A4rPUMPyd+7kBxmHn+ECJmq6dCvmvn2jVvUug+3T5u/aE30jConaVQM1VqV6PTDpH9f2dbpQ/oCXnyP1OU258Zy/8vutCSltQbJD3oCxiRdCCokMcGM16QTexTR8NColKewXRh7aoHVLdQbme8fpd2T9/h/E1sNJyHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8F/QHVl; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="aeT69Igq"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-664ce3000e6so584282d50.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:11:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784815914; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iscZaF4fpJLfqzvITu5Z122dIZFPTtYY3m35Zon3YPeqCRtzRnALT1rQiHoKEzCUQm
-         ZJm/hu25R4gQ0IYuL1xO9HCsjjwjhn5kZvUbByG8KkgJwHltCQl3Ts4p63jlNLHn0r9F
-         zMk3h+bTlhTGClsY62GpfxE6lm/XIzV97UTRC3GbXYk5R/HwUMStYwFw4WEzZtle7DdY
-         koBEHU17Mw5H0DhOQCXmOpDhMDKQmK3UQyyilRBoSSdldDhAW5PI3mlgGhYm49t4+ya7
-         uYNbcN+zq1crGMXVEXyB0j5Fm4IEIVVRQaVUNwNUAFSb6MlJAi0ZnW2xOAHzgy5yGBRj
-         qMgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0PLAHDIkan+UTOVwGQkBhU541O00b8RwDfkzkNMOwo8=;
-        fh=F1C530ZTeKDEKNXOFNOChXLiqaXhmqmqYxHXk/+9tEI=;
-        b=pdwgXnqFeRrTwZaqPQ0HrJlzd5zn1qCxZEglS+nVfyrWBBJtIXWHs1/t/vSH+jSBN8
-         XYVbHJyZ3FN+nc1n6yG+zN3Y6BnFtBUOJbRhxGP3s0Y9xZNneKns2foi8vr81/1c7/Nl
-         W4Ov5qV+TI2fPl9lGaj+n/xEjk5zOT7q1UGj2MCUKL7/G7Hr08+bPvaDDUZfyOu2yldq
-         xzD/FiaEZGPSm994P4mQjQ5YJB/mrr11WrWPkAoWlFelResC7D61ucHx/5+NlLc3I5WO
-         Vv7tGpH1721WcIx2JzJ8jRoB4zsGsO/Acu9ZetOdKehkdnGETUrRN5RYGFEQvfl8xWFT
-         KOdQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8F/QHVl"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7e9f1f24cbcso421924a34.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1784815914; x=1785420714; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1784815974; x=1785420774; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0PLAHDIkan+UTOVwGQkBhU541O00b8RwDfkzkNMOwo8=;
-        b=aeT69IgqAViSb8PAeox4RoxnpBC6/7lgfKFRkvpb/vUTpMz0Ft85bTNRG2bu9vm0QC
-         Tz3LzmU3oQwDwwu+fELpttRYaHX2KlWsPsDiL/ItYh4mwP9F+cNG8LyZHxR84hLu66f8
-         /elsdmfw2VMKErkbHCJDGgFqfqIh4E3k1k0lD0PYkAtzApG0p4wpzINPhswvJgn1wDXe
-         nP8YDcAbVeYdtdIDegm2zdGjspLxv2qQWYj8lc8zDcRF3gQzRucVFqCP61sB8FT7Hy9+
-         +DCaIXLFOvxPClR86wz8fItxAthaCEzBXeiwOQfuu+3zGl/y56SDnh6ayFJIx+CN0QKw
-         LtBA==
+        bh=yH40SRIUlQ4Wwh60WsdpxlUjQfkhuEARTuWzh2fWHOQ=;
+        b=b8F/QHVlz3TVaCE4QYV5oec/VDXr03F6Eu1/fpcovfcsdDUwEuPt8atnQb0Xb9SffT
+         49okZx/Njg1cx0vVHOwQpqdofE3HVTjBPb16lzMb2n/EdtbtXgi5vlBuOZigAJ/1mLEh
+         AipcKhT1ZVtq39zTPRz6ExYYNrsDFUcpeg+fuWK1NjtMlCamivJsGusESDvD33yzPLl+
+         W4Rbgpcn7xk2es7MGXvSW2TKTAQeC4Q8/ZetTwBBpdH/TkudNnnHCj0tqL0Kb8FTEirO
+         5KEZDofLuti0d89PPfVJSRep28FbQhnwUn6SLRR6Jfezzup6eF537jD80ltHUq9jVSx0
+         euBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784815914; x=1785420714;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0PLAHDIkan+UTOVwGQkBhU541O00b8RwDfkzkNMOwo8=;
-        b=WlMuEHOjnapmIPJOA6Sb7/eqR3X/kt2n9tAzv3RTbM5SaWBypvqxN9GKC/ahd8Vmo5
-         mz3zfXLuLo6ILl+SDmu2Fpu7Oo6j1E+IRuEXlai4ZBpiJDZ7WKjcTFmqgMKE/AHIGIK8
-         Dn8DwiMn0sGz4z8kNwC5AHs1nKmBXEeNQw7QD5coVTYezofMBAI1m+uhPgzHbjNZ6+EQ
-         Mui70meaTbcPCnS6L7fvI8N5MKivqBJVuYCf4o+9W8hxQEAjACosNU8ygLVt7ti+PEuB
-         HH+z9gn9gKyWJta+uxhAqJwI3nlejjXZrFvhvE0FLtJaGJp2Kn/4Fc3f0/52pqTK0Qms
-         LXLw==
-X-Forwarded-Encrypted: i=1; AHgh+RqPTqs3LS+mFzelwEBA+yzXmmYnUZbFcMTVE3JN8+5i7XDrkM4ET0NEWHKgGFecbQEygKevfJA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCO1q5+LbKY2ZTvRGbWUPlhLkaoecrJFUtpoFHYVX98avYyOaQ
-	TPIZdDQVdKxQG0enl2LOlQjS2q+7NqdA0HCQuWZmkEm8vOS04Jvbu07Vbns67tiMeYvBvhGXWdX
-	tzPl4cVr8JbeTzcd/UDDyhYTXhZJY5AdWsF0Su/FBKQ==
-X-Gm-Gg: AR+sD13jrveyu1BVbY9dG8s2trqsdmeehz1vvGDqA/p4QRK+3E8rjcK/g/5OcRN3V5g
-	x8272siGW69Ub3mSmaBbP7cw2G5eMvfgUVgBz0nLDN+rtBZzrs3LO5aMs8SQS9PSW5bK6+w7vaH
-	ST2piAeBGHKJanTeCfjqWjyKo3iyYWQUqrOuyAl+ImH5lcX9xAzj5PDePnmMnNI5lPliw7WXvAR
-	gDgnSbNNxScjgaMGIAAG4tfv7zewyXiOnrRaHb4snBf5v1enXUZZZZVSSjbfoyvD412Ch+s6u6s
-	MXDl46pmxAFC5fsmn7V6IYw5gdxRs4WWZYX+AXWYVcqjKLfd9iP+JudLyE8=
-X-Received: by 2002:a05:690e:e05:b0:668:9f36:5497 with SMTP id
- 956f58d0204a3-668a4d7391fmr552495d50.61.1784815914269; Thu, 23 Jul 2026
- 07:11:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784815974; x=1785420774;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yH40SRIUlQ4Wwh60WsdpxlUjQfkhuEARTuWzh2fWHOQ=;
+        b=BAHh8SVHfJmnCmzwRb8FmBNqjAxBM6nnAW4piqZiluNcZWqRCaNmz1cGiFDi4EXu1D
+         TPawVIGG85fL/j42yGNyJz2a36Gxq7Id1uSJ0FgGtfxGvSUKQ0YkJow0D0h/sIg2DoNM
+         gDX8KIGXgbP0LcBLXuL8QIXgeZvcKw3uMmxme+0nAcoZAK+uZ90/b1bO2RCAMRCMmYFn
+         An7HhOwPVCdUonpbvgPLdAxS7WxCV+FLHWPTTGjRwKQG5isajBWtXIDbTaZ+o94+r1PQ
+         faed9E4wyprdMQR4cbP6g9p/cvELjSpCkaROlGptWGegLlsH5/ZwJLb7ZB5VLropzq6e
+         6pTQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9KtMeS4pczNq80VeKfqC0yGVuFVZ68o7p0H0JE7r7wKK9q7CQU4PCXhsaK8l/XCbQZxgZyAM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ3oylevxAcjjWfehl+INRcOFuYW8A961kTQxBE1aVgwHhDAUm
+	ORweIAjZebo3ImO1DO7oVy5aQu0BFldAoohb9iL3CjlQgdkv9dUTJ0MN
+X-Gm-Gg: AR+sD12FJFR7hM9cT8sOTPIkc6294HGSfc8gdo1DX3yaigvoWybcSQZTzqBdh6chr+f
+	kUV8y6iw+Y4YN95yDA+GKoBL2r2L5+kZglk+TMOjveXNvVUfH6zBuzPYEGiDw5onRAq0rOctnhS
+	fvMt8y2oJehd1txQa/q0sU0Gh/o2UfBrDA7K6tFHEGryK2A0/1GWWrIj9g5DTpFsB6EcPlUrv3s
+	v78kPS0vSFfNeyA6MqtsRh2fQ3/mlYIYRDXuasKAQ+gi0H2E//K5h2SzXtJasn47wo4/qX7tbrn
+	nlVYFNbVITQ4AGodFZ7gkEQS2PIxxkKbqhYjFMGctlO+NA0fnD77Cw7p1FRTMfPM2gjvj4LnpCb
+	RIs8h8EaMlhf9pAWSToWEWB2ynodmVr7x22RqTcRzNxgiITIasVEjAK0E4CZeXZbaaqRlBGzaJi
+	r1MJudaP9pfPrYzMr7S3D9KrDrZUlk08PEITeXxBcRYXyVyxuaMw==
+X-Received: by 2002:a05:6830:1e8e:b0:7e9:e288:5d45 with SMTP id 46e09a7af769-7ee471e9725mr894527a34.18.1784815973643;
+        Thu, 23 Jul 2026 07:12:53 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c085:21e1::10db? ([2620:10d:c090:400::5:1ca2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ee2a03d316sm3740471a34.15.2026.07.23.07.12.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 07:12:53 -0700 (PDT)
+Message-ID: <dfb1615c-18b3-4d05-990a-7c4db3139524@gmail.com>
+Date: Thu, 23 Jul 2026 07:12:51 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710134242.216538-1-alice.kernel@fastmail.im> <20260722111522.569fc202@kernel.org>
-In-Reply-To: <20260722111522.569fc202@kernel.org>
-From: Alice Mikityanska <alice@isovalent.com>
-Date: Thu, 23 Jul 2026 17:11:37 +0300
-X-Gm-Features: AUfX_mxARLnemHA9xOUvlAHG80AyPBpE0y5Zt1zejlaZ8W0FL3Xc9ujjvWLb5Yg
-Message-ID: <CAD0BsJWzSr2zduf5v3mVC4zd=Lj6ZAoC+V42-VBdg42aDY8XXw@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 0/9] BIG TCP for UDP tunnels
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Alice Mikityanska <alice.kernel@fastmail.im>, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Xin Long <lucien.xin@gmail.com>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Willem de Bruijn <willemb@google.com>, 
-	David Ahern <dsahern@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Shuah Khan <shuah@kernel.org>, 
-	Stanislav Fomichev <stfomichev@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/7] hardware pacing offload
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
+ Willem de Bruijn <willemb@google.com>
+References: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
+Content-Language: en-US
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+In-Reply-To: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Jul 2026 at 21:15, Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Fri, 10 Jul 2026 16:42:33 +0300 Alice Mikityanska wrote:
-> > Patch 09 adds selftests.
->
-> Seems to fail:
->
-> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net/results/745543/157-big-tcp-tunnels-sh/stdout
->
-> # selftests: net: big_tcp_tunnels.sh
-> # 0.05 [+0.05] Setting up VXLAN over IPv4, veth tx csum offload on
-> # 0.11 [+0.06] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 0.13 [+0.01] iptables v1.8.11 (nf_tables):  RULE_INSERT failed (No such file or directory): rule in chain PREROUTING
-> # 0.14 [+0.02] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 0.16 [+0.02] iptables v1.8.11 (nf_tables):  RULE_INSERT failed (No such file or directory): rule in chain OUTPUT
-> # 0.18 [+0.02] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 0.20 [+0.02] iptables v1.8.11 (nf_tables):  RULE_INSERT failed (No such file or directory): rule in chain OUTPUT
-> # 0.20 [+0.01] Running IPv4 traffic in the tunnel
-> # 5.24 [+5.04] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 5.24 [+0.00] iptables: Bad rule (does a matching rule exist in that chain?).
-> # 5.26 [+0.01] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 5.26 [+0.00] iptables: Bad rule (does a matching rule exist in that chain?).
-> # 5.27 [+0.01] Warning: Extension comment revision 0 not supported, missing kernel module?
-> # 5.28 [+0.00] iptables: Bad rule (does a matching rule exist in that chain?).
-> # 5.28 [+0.00] Captured BIG TCP RX packets:
-> # 5.28 [+0.00] Captured BIG TCP TX packets:
-> # 5.29 [+0.00] Captured TCP SACK packets:
-> # 5.29 [+0.00] ./big_tcp_tunnels.sh: line 150: [: : integer expected
-> not ok 1 selftests: net: big_tcp_tunnels.sh # exit=1
->
-> Sounds like we're missing some iptables options from the config?
 
-Sorry about that! Just sent a quick fix, hopefully it will suffice:
 
-https://lore.kernel.org/netdev/20260723140241.132120-1-alice.kernel@fastmail.im/T/#u
+On 7/22/26 1:43 PM, Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> Enable safe hardware pacing offload on a first device (idpf), plus support.
+> 
+> - Add ethtool support for admin control over the device feature
+> - Add device support to the idpf driver
+> 
+> Besides the main feature, also
+> 
+> - Small optimization to FQ offload: avoid unnecessary ktime_.._get().
+> - Expand so_txtime drv-net test with hw offload testcases.
+> - Expand pktgen with txtime feature.
+> 
+> Details in the individual patches.
+
+Hi Willem,
+Thanks for this. It'll definitely be useful for other drivers with 
+native device EDT support. I left a few minor comments on the individual 
+patches.
+> 
+> v1: https://lore.kernel.org/netdev/20260706133433.3142805-1-willemdebruijn.kernel@gmail.com/
+> 
+> Willem de Bruijn (7):
+>    net: ethtool: add hardware pacing offload support to rings
+>    net_sched: sch_fq: clear past skb->tstamp if offloading pacing
+>    idpf: support pacing offload
+>    selftests: drv-net: refactor so_txtime errqueue handling
+>    selftests: drv-net: in so_txtime tell apart sw from hw pacing
+>    selftests: drv-net: extend so_txtime with hw offload
+>    net: pktgen: add support for SO_TXTIME
+> 
+>   Documentation/netlink/specs/ethtool.yaml      |   6 +
+>   .../networking/net_cachelines/net_device.rst  |   3 +-
+>   .../net/ethernet/intel/idpf/idpf_ethtool.c    |   3 +-
+>   drivers/net/ethernet/intel/idpf/idpf_lib.c    |   5 +
+>   drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  65 +++++++-
+>   drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   2 +
+>   include/linux/ethtool.h                       |   6 +
+>   include/linux/netdevice.h                     |   6 +-
+>   .../uapi/linux/ethtool_netlink_generated.h    |   2 +
+>   net/core/pktgen.c                             |  93 ++++++++++-
+>   net/core/rtnetlink.c                          |   2 +-
+>   net/ethtool/common.c                          |   3 +
+>   net/ethtool/netlink.h                         |   2 +-
+>   net/ethtool/rings.c                           |  30 +++-
+>   net/sched/sch_fq.c                            |  21 ++-
+>   tools/testing/selftests/drivers/net/settings  |   1 +
+>   .../testing/selftests/drivers/net/so_txtime.c | 147 +++++++++++++-----
+>   .../selftests/drivers/net/so_txtime.py        |  72 ++++++++-
+>   18 files changed, 408 insertions(+), 61 deletions(-)
+>   create mode 100644 tools/testing/selftests/drivers/net/settings
+> 
+
