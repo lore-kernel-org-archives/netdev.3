@@ -1,166 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8053630AF;
-	Thu, 23 Jul 2026 13:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3B041D223;
+	Thu, 23 Jul 2026 13:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784814435; cv=none; b=j8fwBink/SMblObeBVmGyImrhBzs9nHZNzng3EB2E8bOXV+f3qISI5Nkqo1Ix6B+v2+1n5vH539wc5Es/wnd3I/nR3hRfXQpTE6cj4AFSJiDVz5e7x35hyBf/D3cpuVsz5D47/2mWXKTirFACsE0rhF8inPh1C7o3XcA3CHte5I=
+	t=1784814660; cv=none; b=ZX7vzRjZ5YETlIKvufLLMfUH5KlPWy6ZPb4z58QIk4ljfHQvpC/UzQAk2IyMVf6umTwf8OroKTbNVAOsKGvcBThd6fPSpUyzIwbB0nNTyU2LTy5UjevY5xlRyOpGWI1s8KHd1VGkgFMpEmPZ8Tckk18ONfhW0JgVWrIUK5knAso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784814435; c=relaxed/simple;
-	bh=TTOiuNpKd3ZCkUsJNnXQtcBfFIarUNgpz9bYK41z5To=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=joh7u196R+FLRvMD3K1Q9hPCGzyINAyfDmU6S/WWcL2t8h4A6G8t1XHGKm5iuPDRTgg4jklSojskmsZp4Gl6uvEJjp/RPnt6bHvZEIVMR1gBHoO1FIPumi1WsAKNs/p6G5+D37+8A6QjFSEuTx8R2wpZiaYyA/4BS2Pmrorym8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QJfmqszm; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784814660; c=relaxed/simple;
+	bh=NpEdA24+3neR/QPLWIzPRHER7UTlUX4EjHDjSQi5ISM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hM7F719wTEinj9J8RUVxPvQaTFQbOtmHqNoQEMAKABMxiDCN77zew3XE/QxhYYDcXlJqwmb+aC4UWr/dBZuY4/00F36/U0yXjU/F+WnAxk7djNnug0oc7KRAiY54yWLG5UTcSYqV7fjYT53DfwwZEcBKYhE+NG285xRXYwxgg4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A7KGBBGY; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJfmqszm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784814433; x=1816350433;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=TTOiuNpKd3ZCkUsJNnXQtcBfFIarUNgpz9bYK41z5To=;
-  b=QJfmqszmoazUO4TQ/refWGwArlf6IJPRlRFK0xkl/SMmu/MyHpA1fZLZ
-   J6KPIMvKuZJnjTMRZLVYWn3jOKQ5pK+TMOYIwxcIdc6S9dx5KzUcF3jnB
-   wqi5GC2CTUQ3beFpsJRBvV4bWjww1EEzeJrKT1DJSfc3S8xjd8kGqPvpp
-   IRn7RJdwsNvCh/8IFDIHm0ALH9bw8Bm5K/BxscfpLH4n2C4PnUL5qtSEn
-   XNjaixnWuz22MwRdkgxhYbbn8u11KGwm7URWqPJgsnPiDPk+a6ae+ycYP
-   Z9X3jmZPOIlyVMItHNX/wwNl0sic+1pqbp1V9DvU1AbBYPRG2gvXH+KpY
-   A==;
-X-CSE-ConnectionGUID: hiYwjM9US0GVdBYAznH/3A==
-X-CSE-MsgGUID: +qWTSrdSR2Oep9xtgrq7uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="88008518"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="88008518"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 06:47:07 -0700
-X-CSE-ConnectionGUID: 5I8g06L0RzW2DP7JqA5g0A==
-X-CSE-MsgGUID: b1+2gPZ+TkuUBaWrc2aoow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="261962172"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 06:47:07 -0700
-Date: Thu, 23 Jul 2026 06:47:00 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: acpica-devel@lists.linux.dev, bpf@vger.kernel.org,
-	coresight@lists.linaro.org, kvm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
-	netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Christian =?iso-8859-1?Q?Borntr=E4ger?= <borntraeger@linux.ibm.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Crystal Wood <crwood@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Geliang Tang <geliang@kernel.org>, Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>, Joe Damato <joe@dama.to>,
-	John Garry <john.g.garry@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Kent Gibson <warthog618@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Len Brown <lenb@kernel.org>, Leo Yan <leo.yan@linux.dev>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Mike Leach <mike.leach@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Mykyta Yatsenko <yatsenko@meta.com>, Nam Cao <namcao@linutronix.de>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Pawel Chmielewski <pawel.chmielewski@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Wander Lairson Costa <wander@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willy Tarreau <w@1wt.eu>, Yonghong Song <yonghong.song@linux.dev>,
-	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-Message-ID: <amIbVOIsOeZgcBZF@tassilo>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A7KGBBGY"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4A8664E40F09;
+	Thu, 23 Jul 2026 13:50:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 00B66602B8;
+	Thu, 23 Jul 2026 13:50:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1352B11C10ECC;
+	Thu, 23 Jul 2026 15:50:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784814655; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=v8GlylfMh56lSH0MmJr4csaHcuWkam1QB5X0FqSvV7A=;
+	b=A7KGBBGYy3n9pJkxfsWBfVjnRhgmh1GJA6tTN/o9At4egKV/WSrjcRiiIJ8K/ThQ4/2RJ0
+	U7ZpXsD/YrckZnoV8dcpoWenZcZcRoo1FftjwYu3PH0tL0xaMbjfeVWJku2EhGHl6zzDW2
+	TJRyvVfTlVzR/DlQigZcFtd5VjuipZbAnYQxAbFsLSjjGOcnQGoYjU4+SOOEkzvPu3nbVs
+	JBz2Ha3VXnCyhlTRa+mKLeYwkSLeArfQhNLbiHu+mrK5MYWwtgQgryax+qQIhQ7szZvXik
+	drw9WqeHHzIW1uTNLqh6VaPzQkZjGXp2ZaSY/vJjcpArRHfcmQCVBlz7UkZj3A==
+Message-ID: <f979a974-a9ad-4f4d-9e57-9f88900298a2@bootlin.com>
+Date: Thu, 23 Jul 2026 15:50:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: stmmac: dwxgmac2: configure INTM for
+ per-channel interrupt routing
+To: Zxyan Zhu <zxyan0222@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260723132457.3061337-1-zxyan0222@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260723132457.3061337-1-zxyan0222@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 23, 2026 at 12:25:25PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 23 Jul 2026 11:13:30 +0200
-> Subject: [PATCH] tools: Use fputc() calls in some functions
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=UTF-8
-> Content-Transfer-Encoding: 8bit
-> 
-> Single characters should occasionally be transferred into the output.
-> Thus use the corresponding function “fputc” (or even “putchar”).
-> 
-> The source code was transformed by using the Coccinelle software.
+Hi,
 
-gcc already does this transformation automatically.
+On 7/23/26 15:24, Zxyan Zhu wrote:
+> The XGMAC DMA_MODE register has an INTM field (bits 13:12) that
+> controls interrupt routing behavior for DMA transfer completion
+> events:
+> 
+>   00 (default): sbd_perch_* are pulse signals, sbd_intr_o is also
+>                 asserted for each completion event.
+>   01:          sbd_perch_* are level signals, sbd_intr_o is NOT
+>                 asserted for packet transfer completion events.
+> 
+> When multi-MSI is enabled (dma_cfg->multi_msi_en), per-channel TX/RX
+> interrupts are expected to arrive on their dedicated lines
+> (sbd_perch_tx_intr_o / sbd_perch_rx_intr_o).  In the default INTM=00
+> mode, sbd_intr_o also fires for DMA completion events, but the
+> multi-MSI handler stmmac_mac_interrupt() only processes MAC-layer
+> events (LPI, PMT, timestamps) and does not service DMA channels,
+> silently dropping the interrupt.
+> 
+> Set INTM to mode 1 when multi-MSI is enabled, following the same
+> pattern as the GMAC4 DMA_BUS_MODE_INTM configuration in commit
+> 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for multi-MSI").
+> 
+> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+
+Same logic as in dwmac4, this looks good to me,
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
