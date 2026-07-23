@@ -1,115 +1,217 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB38284883;
-	Thu, 23 Jul 2026 14:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F003339847
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815411; cv=none; b=cxi3ucRqd3h3JDcPdDHCdB3N3dbLHBAU9QR6ypqEHfa2J/B1W4KSOq/lbhSOn0bwe7W57+3uozljwMhBKJJAWHwS1L3A0JlUZCS2z34jUswgdDe1H1DWjwVrEfH5l4SU99cCIV575pCpkjKJwl2q9r7k64GW0j+Rm3LkQvnFkOs=
+	t=1784815414; cv=none; b=hBn5HAByG78f58mT6corFhHPh5tFjneXSIbvq99sg03om9SqkNlm/YNdEMmFL/908a7ou1gfSnPJVK5jimNkVDW91B6vwhch1Pv2pL9sWMj7wlmOW3C2lXIdGfXn5JUf6cZnQWa9QKgKM5aaLEiZPf4ujt44QBeYS5jnFHnKl8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815411; c=relaxed/simple;
-	bh=BCM0Kgc2C4k4GDJaoDD4yA2c6ucWqVNTuKLpETMh4Yk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EYfl+k8I2k8Bzyor14SKy0V9ml3bm2ftVG1Zim9bY3yxp0CWcq39LnTprJNwfA1md9/uQyJXC4TRXoKieNnVLqYEKUV+VKE9H3otJWk4rsqRsOYTA3xLrpB5uFlFX5Ooyn+zkBnZCy6ta2C0cTKVwXej/7kA9pnBbT9hdhOTra4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=sehjEHIb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jJc27GHH; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1784815414; c=relaxed/simple;
+	bh=EVWutf23s/oOQfhofJPqDNYbR+2MaeOSPLVgIc90TwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jG8jKlkEZnTRhPAO5bmOX+bVlpZRDTafBCXgubBvrzw0HucCRwp8WLn90bE8DvotN1jLvoyJLoWEGApFvHZiP5XSHLyEC+c3p5N85154qB8jc1srsOzs6YmTgTY6kbFZm33TpBPFJ2xwjGkG4osx38DOTNA2GFgv6I67pr4HVkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cnD9hTrG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LIk+ceNl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="sehjEHIb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jJc27GHH"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 24FA37A012E;
-	Thu, 23 Jul 2026 10:03:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 23 Jul 2026 10:03:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1784815407; x=1784901807; bh=FGpthCba0yb539wjtBDWA
-	MNPRlzkbQT0A+NI/ZxZ0TU=; b=sehjEHIbF3yZ6irJcd/n42KLlvYOgL+nB12m5
-	gqjAmJcg/i4Kd4RU5O/FR0CaIU9SkzMmOW5C+9aCxn/SsxLsEiiX78wDMNWqY0+5
-	BGJnU4zuOngcVnwsTtZ6rACWilmdcDzxGqOueI72ZuQ+tOZX6BMczos1BKYwWHTh
-	8l+1C9sgEdFMJAhdj2WqYZ/5xNvp76i58I3dNX31WKSeK+wJAZEOlxks9WqL4dgK
-	pa8cyotFbnDCvYEL+oYZGeSMGFRPpqsvaMkTGhjfS9ixeWEZ/vMZ1CnMJ2EDtRQH
-	QLCLjYNqeVqRt4KgI3Vb7W66dVOU+rsLy7HeKveySc9xOn/Sw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784815407; x=1784901807; bh=FGpthCba0yb539wjtBDWAMNPRlzkbQT0A+N
-	I/ZxZ0TU=; b=jJc27GHHbM05+csjO5qsQAFaiH31p61cOBWJ0TzyRXh0xp00M/O
-	japccjhF7x/w4yWU8kcvmrBpzixyxFo46/tjLnJ2y1j8oRfg6kaoOc2V+Boz7KoA
-	1mKrNjFroBcydK4xejNHZr1chc52m2lbYZBMUhc8dxxe+E/z+aP4LPZMjKrxd3U+
-	oqaUi95/+2LHY5D0fl0WWA+bqk+YQSHjYeBFI9sh33JvE3xxhvCh14/NDfYpMywN
-	lfM02n/xsyac2L34qNBH//XAMuQnZYJQ9lYWfJgS2CG8xj/MuyxtW8ePW2d7z9bQ
-	lnlX9UW2nCqAhZhrLK+lzQxDyTwhZnIjFag==
-X-ME-Sender: <xms:Lx9iagJkTv4-XrOcSFEoEXudcqIcR85ECHUy4KCeMaQKZSm1PaqGmw>
-    <xme:Lx9ialEWn7AX_6Fh13Ysobu-quMJ3loIbu1FNhkTPGorohCE4J_Obl6Gx8uNlQH7w
-    8l7sI5-TQb2p1yTdnzp6-zSbd0Rfhr_gbAVecrDORECdE0WaHvzXYY>
-X-ME-Received: <xmr:Lx9iak929XNSfBmaMFDEdcvMkcK8BoZDaQyxMfMN3hscafZI0W_Og3qEABQ>
-X-ME-Proxy-Cause: dmFkZTGywutbRDH+nuJS1FCcOkle0DSR+g1KzxZE2aBdtpqKvP5BuwIZZOUL7w9CT0g3eS
-    MA/zg888aC7u/yiHiq2TqfnVDMa1OuVLV4OjOhmNW/J6uEhJC8lrhER2QKsQUcKGBk5lxV
-    lGvSLQAKCLlc5v4lbMcYm173fE1ycTWTR+aOPz85n4u624+/s9R4Z6E4pPOdYKly/0BLCK
-    /veXVgs3ZTJUDGUKcXktVygLQJVBjornnl5dt7FW6mWeG+P6n7xeXw+GG9YeYa/q3GUXSQ
-    OteBMEkBNXxLMwInl1+5Bn7rANY8Q2ct6OVTQarlKVtVIMwXnwQxtxxfEld8N5XIBnd4gh
-    9woWaqv/zb26qnkEneT8XXm/0hsmwVGeF55b7rYiDEJ437g7RWT573zVfa6u/3fnk3NZun
-    n4SYEnUQ/WV/gs+MbBMjN+sNTXi5XntMVTGxHGCy8irJbUy6QGjO6UUBzNa4lEdLSUuu3w
-    V4uy9G9ms64mflXhj25C03cq8ErMzDe8PIGVCSL6tj+U3bh0crlTyJC6v311i9dv8vp7n+
-    f/qFQbJS0LKzd0Eb8APzIEA4g11JjMfSu49Xv6Lx3XoKVVibyo30ZNBYAQbIFY1YZOOBjj
-    RqzPe/aG1s18uhx/el4dkhDa6vUNloTZM6J7KylNDwPp7ynP+Das5T+KvMLw
-X-ME-Proxy: <xmx:Lx9iatIPRIzauEoa-SurjcVqSHUf5pj_hNfh1INCXEZiJFxx45DUvQ>
-    <xmx:Lx9iaqtk0FnSyDWN2nQK2It4SLxtMPnelm7U1XliuSr1vGnr7KeNeg>
-    <xmx:Lx9iasBlnAfq_GalCjwi5rLlsIVdgBR4fL7s06zvdQz2nLNRhEW2sg>
-    <xmx:Lx9iaqMLqIEUJzoGxb20SKpZg97A8qTxJaM1ted2vpQxAHM_wHeivA>
-    <xmx:Lx9ialwa2x1jzHvOm_U6K-CoEanZOtan-KmJfcF4qL-fpHtxyG5GjoXg>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Jul 2026 10:03:26 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next] selftests: net: Add a missing config option
-Date: Thu, 23 Jul 2026 17:02:41 +0300
-Message-ID: <20260723140241.132120-1-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cnD9hTrG";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LIk+ceNl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784815411;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0KHv44vLStOGdeWCOIZDC6gv5b89UGcYrbfGwIxzvwo=;
+	b=cnD9hTrGJX6x4xuI0VHTEikp3F+plGjKZ/7cuu1NHqK7NJnFFCTa9XXahObY2TL8BsBmSR
+	Tcm1ZtB+55yzKqLV9qPvQsGxWjC3fmKFJmkXK4ghoheoKiH58N1/WyVBl/bnJ7gz75rzyj
+	RZqQp/4YC1nocqUO8lyFM6gUgYYho58=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-JeIvQctNNLOx5T6JWnSwjg-1; Thu, 23 Jul 2026 10:03:30 -0400
+X-MC-Unique: JeIvQctNNLOx5T6JWnSwjg-1
+X-Mimecast-MFC-AGG-ID: JeIvQctNNLOx5T6JWnSwjg_1784815409
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493bfc3b84aso5130375e9.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:03:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784815409; x=1785420209; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0KHv44vLStOGdeWCOIZDC6gv5b89UGcYrbfGwIxzvwo=;
+        b=LIk+ceNlWnMDMUQycCheZZ+CBsfGI9HSlxO1cOJG2UVkVwQSJOM3tLfWdpbIi1LP91
+         kJ9OtiWCq3RumUKZDXezjagNB0SG43RA5WSzSlKMNQ+JQMwQrVp67gMtqmnhwqD5R6vM
+         DyP6fL0rzTDCCCW3gJD5sjgGwPwzhLnIS1PIzolj+KvqVOapb4N8Q/oQV0DKCiUBdEZh
+         iqxBTm084ZGCClwzCH6yXtQhBJ8nm77/+63Akq4hljYCfrZEE+84gQ0fifyJbLYgjEBT
+         J3g7OB3jkCzcir+4rPEJCrgZbSuSvpU9jTf2s2KzizO7zLw6mMQst4+Pwbhf5vJ61pFA
+         xHGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784815409; x=1785420209;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0KHv44vLStOGdeWCOIZDC6gv5b89UGcYrbfGwIxzvwo=;
+        b=otswxV4/UUq3a4qH+Mt+0x3aRF41h3sN9p/oVz+wfJ7fdX2rnF2QKw6cV4vjSVHaeh
+         siedYH0vsiy42/4I6luPrhG4GMLjms3fh5t0PXZu37vyfYpdKVsJbouyzqPBkKJsXejN
+         4Xbz4QM1tuROaMCXaJl+TLiVMdwG3DIBy4yjWdAGgF/yB9Ysu2++657ZIVz+cQaSkyy9
+         lbc4lK+WLTWd6CBT0tM64QGlNDjCG2AXITO9u/BYqX77kTQ10cyAynsv4gcMluN660J0
+         Fr2pL/Q36rMh/1PiSyWNgxlsPBECu23fFtelMzBu599VuGY/0FqFm7O2OlgUnVcz3NGC
+         3mfA==
+X-Forwarded-Encrypted: i=1; AHgh+RrUhvDK0gzLcNxyRetqnGyyC8qnCKLtk3aXatlWsh6G8eUGOjew9XCHjkHVcayxg7sCXQxYk5c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYuaOn4Mgn7CW175HpqNpE68PU136iIIoiAlw0DnCjyaU8nUnw
+	qApzMt4r11vUAnvZM1N95fWPpVB/6UcZmVr1TkdxmDN+QHLv85qyTvBBPmRg7VJo6lpOND++HzB
+	cQNctuiseK5LimEQXJkPf7oT819yq1JhifIXaLPW143vHl+ZX3fW8Kj7Ghg==
+X-Gm-Gg: AR+sD12c9F3wuUCNTZdplrfZLD3f2ejICoyqWHcTKVrsjaCZptjJX+HQnkdS3+qOSN0
+	VcpxIZ8V/XA9SOAlKAz2A660KnKoFxxR7NFQxjRQwj9QWCWYiP7jhNdwxT39O6IS/B2gqFBRwJM
+	YK/9Q5T16cSnBHNnOZs47PHgrwd8yH4SXiIUVeNXLmD5Jw6oCruliYUrgPe7kLKd+1nj2Zr4wFC
+	6dtB7wusMgBd5RCv3o4h+eMdv4rR8dtLjCcRZZfRN+1XXeWJokAPmUN6S92hASU0NktWg1TS5p8
+	zPyQ6UpPDDuOzgYS6k+UCXtS8+wl6uIXKrSckvoe/PIXaQx0N/OeGOBGJ+Va79mW/YIHxK7vnoN
+	ZGCUfnsUHHpHP+cQYZ+b7jKXaiD6acleSHPgTApZEd4DiFuE5kQ==
+X-Received: by 2002:a05:600c:8b83:b0:495:515a:dad9 with SMTP id 5b1f17b1804b1-49573cf8131mr35830915e9.37.1784815408690;
+        Thu, 23 Jul 2026 07:03:28 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b83:b0:495:515a:dad9 with SMTP id 5b1f17b1804b1-49573cf8131mr35829775e9.37.1784815407871;
+        Thu, 23 Jul 2026 07:03:27 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956536870esm228444165e9.3.2026.07.23.07.03.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 07:03:26 -0700 (PDT)
+Date: Thu, 23 Jul 2026 16:03:22 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <amIe79X3j7GxDBdO@sgarzare-redhat>
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <amCPLOrnpYmr5n0p@sgarzare-redhat>
+ <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com>
 
-From: Alice Mikityanska <alice@isovalent.com>
+On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
+>On 7/22/26 12:43 PM, Stefano Garzarella wrote:
+>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>> the vq->worker pointers and immediately frees the workers, without
+>>> waiting for a grace period.  A caller that fetched the worker right
+>>> before the pointer was cleared can therefore still be queueing work on
+>>> it while it is freed.  And even when the queueing itself wins the race,
+>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>> future attempts to queue it are silently skipped.
+>>>
+>>> None of the current callers can actually hit this: net and scsi stop
+>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>> the lockless send/cancel paths become able to race with the teardown.
+>>>
+>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+>>> period, and then flushing the workers so any work the last readers
+>>> queued runs before the workers are freed.
+>>>
+>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>> ---
+>>> drivers/vhost/vhost.c | 11 +++++++++++
+>>> 1 file changed, 11 insertions(+)
+>>
+>> Sashiko reported some potential issues here:
+>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
+>>
+>> IMO the first one is pre-existing, but not really sure it is a real
+>> issue since happening when the worker/vmm is going to be killed.
+>>
+>
+>Sashiko claims:
+>
+>> Will this leave the queued work unexecuted and permanently break the
+>virtqueue by leaving VHOST_WORK_QUEUED set?
+>
+>I agree this issue is pre-existing and doesn't have much to do with our
+>series here.  It looks real, but in reality should be harmless since we
+>may only hit it while the device already dying.  Means there's no VQ
+>state to be saved.  The only potentially observable artifact I guess is
+>a warning here:
+>
+>vhost_workers_free()
+>  vhost_worker_destroy()
+>    WARN_ON(!llist_empty())
+>
+>So more of a cosmetic noise on a dying device.  Again, not relevant to
+>this series.  But one optional way to make it go away would be to clear
+>vq->worker under vq->mutex in vhost_workers_free() (mirroring
+>vhost_worker_killed()).
+>> The second one also not sure if it's an issue since the sender is not
+>> lockless IIUC.
+>>
+>
+>The term 'sender' is confusing here:
+>
+>* vhost_transport_send_pkt() is the .send_pkt() method of struct
+>virtio_transport.  It only stores skbs into the queue, doesn't process
+>them. It indeed is lockless as it doesn't take vq->mutex.
+>
+>* vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
+>It's called by the worker thread to process skbs in the queue, calls
+>vhost_transport_do_send_pkt() which does in turn take vq->mutex.
+>
+>I think sashiko points out to the former.  Still, I don't think it's an
+>actual bug.  Look:
+>
+>1) By invoking flush, we wake the worker thread:
+>vhost_dev_flush()
+>  __vhost_worker_flush()
+>    vhost_worker_queue(flush.work)
+>      worker->ops->wakeup()
+>
+>2) Then woken worker does:
+>vhost_run_work_list()
+>  llist_for_each_entry_safe(work) {
+>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
+>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
+>  }
+>
+>3) And then in work->fn() (vhost_transport_send_pkt_work):
+>vhost_transport_send_pkt_work()
+>  vhost_transport_do_send_pkt()
+>    if (!vhost_vq_get_backend(vq))
+>      goto out;
+>
+>As you can see, we return early in case backend was unset.
+>
+>So after doing this flush, we have: 1) QUEUED bit is unset; that makes
+>send_pkt_work re-queueable. 2) But the queue doesn't actually get
+>processed, and VQ state isn't actually touched here - so I guess
+>Sashiko's conclusion is incorrect and there's no actual bug.
+>
+>> But, please can you double check them?
+>>
+>
+>In general I'd leave this patch as-is as Sashiko's complaints aren't
+>very convincing so far.  If you want I can add another patch which wraps
+>NULLifying workers in vhost_workers_free() in vq->mutex.
+>
+>WDYT?
 
-Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
-tunnels") used iptables match comment, which was missed from the CI
-kernel config. Add the missing config option.
+Yeah, I agree, about the other patch, up to you, but I'll eventually 
+send it separately.
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
----
- tools/testing/selftests/net/config | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 96fffca6547c..a2d14ec9df1a 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -82,6 +82,7 @@ CONFIG_NETFILTER=y
- CONFIG_NETFILTER_ADVANCED=y
- CONFIG_NETFILTER_XTABLES_LEGACY=y
- CONFIG_NETFILTER_XT_MATCH_BPF=m
-+CONFIG_NETFILTER_XT_MATCH_COMMENT=y
- CONFIG_NETFILTER_XT_MATCH_LENGTH=m
- CONFIG_NETFILTER_XT_MATCH_POLICY=m
- CONFIG_NETFILTER_XT_NAT=m
--- 
-2.55.0
+Thanks,
+Stefano
 
