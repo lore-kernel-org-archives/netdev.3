@@ -1,78 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADA443CE79;
-	Thu, 23 Jul 2026 14:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784818243; cv=none; b=qDaMVgDGt9/mEjTasWdmclNtPv6pIn2R43iJwD7qVXLManwXNTCAuMhXBesTLK5s6K3V3TQOMuvEmFpGEq7zcDL0IMTkNf+mIvcnOiWq6W9DjzBUgIfyHXQKH6ilZLbmZ3zwhKt5ymXpoQKJYrovlNnGR8cL9lWQi2I/Mgxuon0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784818243; c=relaxed/simple;
-	bh=OIaH+x8H/BYvoLJVn507YmFcX+yOVgWu8XcQQ20hCnU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=aAzBTHQgsPAJxjHr36kU8YJ2oJxqYsb1xJjxl2p2hd7q0CB7kxRwfGAWfVTuRjz6QXBXnCZVsyKRQ7qjI0zosS7557PhRaFEXnrnFdM423hlUWoKEUWqSJgm6MCLC7DRPOIBWMAw/1N+pcBDvSxUY5q3X+6KaLMKfI7huAkGTNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXp+4Dzb; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2C0476CCC
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784818526; cv=pass; b=nGnwA51S9aCqkKE4Rr32wJrNbizD7NnLT7G3C6fVgeVn/6fQ4AfO01x1m+odGxxac4JKZFDBBXRVuo4t5iEU5ZJT3MjPiuZ70wOPNaxaJKimWo5DHCGuXtqsP/9Hw+Ou5o0ojbtuchVnemM7yQ2o1pNSkJsEL0K3MCbAav9haYQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784818526; c=relaxed/simple;
+	bh=bvzchvlbWRbtbpWI65b+DUHjE3nGDJFevXw6NngY7so=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jdwZZyVFDBgoRGn322/bmjIXNigdrFVPku/RUEvKoyrtW0y9imv6JMiWQaUcycjHIxIs7rxnGT/zDw3+C8NWCKCc69OuYburHMAXAmoLx7tQpkkUk+jLej2RVmw0SoFCp2Psy4A0LLQXY1OLZaS/NtVSuKqWYWVjzpSLI5BNJPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hRLRQzmz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tOot7o4y; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXp+4Dzb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53ADE1F000E9;
-	Thu, 23 Jul 2026 14:50:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784818242;
-	bh=82cI42zGu8QyHbopoESEt9egvuNUUJz+qVZKRKZGIJo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NXp+4Dzbkbi22eXg+Pqkwsb1PW9nRhdp4zBid4eReZZmUFFsJ5RD2jEqWm6mlSYvz
-	 s7AhednzEUDl5HJVJ68eN5WUOxcjUCu3jfxuB2UbJpQKnj89KsME3E/krjsmycRKwX
-	 845+f2PVtwCZ1nbO4gk4mizWBHjmKuTHhvm8+VNQA0hRwan4YrinTZykSPDFYy26Af
-	 /QvQy1HkjjZlibhPybVd0JkqRWcZLKPViQDEwa62VS48h6f51olXgZHbW1LVaUBJ48
-	 woEX2Yk6s5uaVgDFHyIcU1AnRkKQ2WLe/y5amUlagyHer9BN5HTjDXsb1WEH1ccZ+Q
-	 CFGzcZLOxAj+A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199BE3924441;
-	Thu, 23 Jul 2026 14:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hRLRQzmz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tOot7o4y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784818521;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
+	b=hRLRQzmzLrN4cRU63Ujh3DWsycf6or/rXR8+ySkTO2ZpybEuyOYolRfM+c+kbq6IqbCyUJ
+	5bDSqdmBocq03+OM4SZ+Z5b0QFpUU0mhsIBIY/pitomtael925YEVBcTru4D3x+MVOCKBI
+	IQrZRLxx5UAVpkyFw5p1d2zsJJvgoPY=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-4GztjiixOleD5lWG7ooBug-1; Thu, 23 Jul 2026 10:55:19 -0400
+X-MC-Unique: 4GztjiixOleD5lWG7ooBug-1
+X-Mimecast-MFC-AGG-ID: 4GztjiixOleD5lWG7ooBug_1784818518
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cacf17c7e0so9681335ad.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:55:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784818518; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AV5zwCiNu6xSV+Bj5p/CQ4imHV5Dok6J7wNMtT6foCnYUNjtfEh2BrY9V1vz6kUwGa
+         G0/LP8ru0n6IKecc6dukG1fQuFEdUbiaYdX1lTSjHYP8uU/eBkHAGDdmN9ZIx/s5AcFi
+         EMZBPBSckc3/AAALmI2viryL3+mJNR/cJYKF0YyuMG92PpNQR1u0UFEQxBhWuFek1Kc8
+         jcMouH2nTe2m9K3nVzSIkCkQIAj/MAlilNoGF4Q4+xVnrotvW6O1jvx+JX1JOmPMj2cw
+         0NMv75w5f/zHSim2raXgIIOGNxD0U7dh4tzFFeXfXfDJAfZt7bFunIiy8o8J7DFIGXf4
+         AJ1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
+        fh=wuVrCOLz7CsDvZCaJ2K+c6mBP4aUXw0yLbax9Rqx4Ak=;
+        b=Em1NeMHo2JzDFcWAVieEF0cy+uPDCHrbLDzW0gpI8ySX3/b587WOgskX94QuPBcoUY
+         YKoQBYeaoZqzDuHY6TIk1LnBhtcrOrN9cP1SjVo+1xwC990VsjYSINObKN6g6LxmjjlL
+         5JCtFuSlgf3aoQrV8jQPVxbR14L6K72tklxvSUM+KEIh8mi3Ko5Ht9o4C8S27meieZVX
+         mD6UKTWEspLAgYnAvw1hlphhASjsEBdphDgMg6DdtDMfRzrVPxlUa/NpG5y/caRf2IO+
+         9CL3JG1m0eTx5UigrdiVs8M+MOrlVJSKO0sy6Efm1nM5aBqyNhNSN0eJVapyuZrKyuy7
+         vJsg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784818518; x=1785423318; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
+        b=tOot7o4yaLsUKVv7Cp1JHTCmrOKDludthCydvvQJtZspyIiMXfvDQTDrG3sli7Vrq5
+         77M5JtqB+6PXdUPMNfCo3MrmAT5wxi+BtvOkvqAcgmFfKFrleTAU+AHmO5JQVc0k5mHu
+         HcOI6lcwKCT6p8FnT0pm3BA3fyeOlJetOHxg4RUOMBJkrO4jMW2gCWauCJFj1POlMEoC
+         1DoYpDpOWwmgld+FLdroNZSm0maIfoRCwFXhzXNrzj2h6WiG9uNwsm74k30ev3NifKxk
+         0scWeHJQtl5v+dAIsbFX1qjBTJIvEeeeOHBJBu01of53Lnz8MaVRiOJoH268ljn8h42y
+         u1oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784818518; x=1785423318;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bvRd2eLeia2aUi9lVvFJVxAc4QDqtKWTlVyNMMnyTyE=;
+        b=Vy8mruRbf9jZ7f56W8nTmKUgWJiWKkKfoJghZrI2cv8MYKI4FHm5VXDynuz/qs+Tmk
+         w1h5DAoXefF1cFhfvx0CHX2Z4Go3lT3cQAAZs/JrQsyteWcQ3+wt9jQatjdL9+kMGSGY
+         8B6MUPszNUR74DGXXGDF+gJozasnEbxmfA5ZEDjVs2/GrwdwbRUOCm0JcctM97kERVlu
+         ZKcUFtRb2z4nFMDogFExeLivVbaAbLxhv0YWfLIMVtKidrBHdbYKI8y1N1mF8z2PWUju
+         iAn232fnV5kVfNpHHzU6PiKl4YsaHfpvUYJfmSdNTyr+1LMODQJNUqJM4YdmsnqaBSer
+         cf+A==
+X-Forwarded-Encrypted: i=1; AHgh+Rpvv4uCNoWJpz0zWNSM/6K4nQeYOGDysnIcXS5NapUpMQPojYNUhTT20vbeC6Hl00O0vduj5SA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQDDbtvaluDXMs2OFd/cyeDQf8CgKFdREDg2RlLAIubQ+u4Rnx
+	b95hbgMsDDn7o1KaIf4xgENh49/wwxFAWL0qz2Sn9husZpGqCMlCZxSvzx+inY2eNRw3OqS/7PZ
+	FvQSmpT2RU/FJkt40jODhCqIdtd+E6uBr33q0oBCxv5eLbimrjscWeu9U7qNc1Sf1T9MtYg8gq4
+	/cCdIAQY62Fy3LXaYA8C+DLqrFVfFm72Zsib7qoegI
+X-Gm-Gg: AR+sD10XHJyPS9yj6O7YDu9bXxvLD2AxQu0+T6qEgrykC4d7NqQ3nuhTG4WXgZKjItk
+	7Ao9O7RjSIv2YFrGoAX7SvAtOWlBZQNnWT0hxZKRfMTpMK607GFff1lCN+g/r3Zu+oXT2cVDPc0
+	t28CTOC76eMWIiRdDEk1hBlKEAheRwV47Q15O06XN+dieoAn8wJOk7pw0=
+X-Received: by 2002:a17:903:22cc:b0:2c1:ee75:56bb with SMTP id d9443c01a7336-2cfa6b9aefdmr42836425ad.20.1784818517949;
+        Thu, 23 Jul 2026 07:55:17 -0700 (PDT)
+X-Received: by 2002:a17:903:22cc:b0:2c1:ee75:56bb with SMTP id
+ d9443c01a7336-2cfa6b9aefdmr42836035ad.20.1784818517333; Thu, 23 Jul 2026
+ 07:55:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: qrtr: restrict socket creation to the initial
- network namespace
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178481820665.2303439.3370268777197256291.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 14:50:06 +0000
-References: <20260716154319.3297699-1-qwe.aldo@gmail.com>
-In-Reply-To: <20260716154319.3297699-1-qwe.aldo@gmail.com>
-To: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Cc: mani@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andersson@kernel.org,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com> <amCPLOrnpYmr5n0p@sgarzare-redhat>
+ <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com> <amIe79X3j7GxDBdO@sgarzare-redhat>
+ <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com> <amInL2hPEG9ejUd0@sgarzare-redhat>
+ <c631dabe-ebde-4b4d-b930-d78db4cbabc4@virtuozzo.com>
+In-Reply-To: <c631dabe-ebde-4b4d-b930-d78db4cbabc4@virtuozzo.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Thu, 23 Jul 2026 16:55:06 +0200
+X-Gm-Features: AUfX_myZK-p9FOGSszTUuAcpH5FI9O4QC0jIuPyjdxhWMen1SWqoFmAarrjhwt8
+Message-ID: <CAGxU2F7xaEgi3=2G_itbrGpBvFqOB2CTwB_W_f6c+t+wS2Y47g@mail.gmail.com>
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing workers
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, mst@redhat.com
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+On Thu, 23 Jul 2026 at 16:50, Andrey Drobyshev
+<andrey.drobyshev@virtuozzo.com> wrote:
+>
+> On 7/23/26 5:39 PM, Stefano Garzarella wrote:
+> > On Thu, Jul 23, 2026 at 05:29:12PM +0300, Andrey Drobyshev wrote:
+> >> On 7/23/26 5:03 PM, Stefano Garzarella wrote:
+> >>> On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
+> >>>> On 7/22/26 12:43 PM, Stefano Garzarella wrote:
+> >>>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+> >>>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+> >>>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+> >>>>>> the vq->worker pointers and immediately frees the workers, without
+> >>>>>> waiting for a grace period.  A caller that fetched the worker right
+> >>>>>> before the pointer was cleared can therefore still be queueing work on
+> >>>>>> it while it is freed.  And even when the queueing itself wins the race,
+> >>>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+> >>>>>> future attempts to queue it are silently skipped.
+> >>>>>>
+> >>>>>> None of the current callers can actually hit this: net and scsi stop
+> >>>>>> their virtqueues before the workers are freed, and vsock unhashes the
+> >>>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+> >>>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+> >>>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+> >>>>>> the lockless send/cancel paths become able to race with the teardown.
+> >>>>>>
+> >>>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+> >>>>>> period, and then flushing the workers so any work the last readers
+> >>>>>> queued runs before the workers are freed.
+> >>>>>>
+> >>>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+> >>>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> >>>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> >>>>>> ---
+> >>>>>> drivers/vhost/vhost.c | 11 +++++++++++
+> >>>>>> 1 file changed, 11 insertions(+)
+> >>>>>
+> >>>>> Sashiko reported some potential issues here:
+> >>>>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
+> >>>>>
+> >>>>> IMO the first one is pre-existing, but not really sure it is a real
+> >>>>> issue since happening when the worker/vmm is going to be killed.
+> >>>>>
+> >>>>
+> >>>> Sashiko claims:
+> >>>>
+> >>>>> Will this leave the queued work unexecuted and permanently break the
+> >>>> virtqueue by leaving VHOST_WORK_QUEUED set?
+> >>>>
+> >>>> I agree this issue is pre-existing and doesn't have much to do with our
+> >>>> series here.  It looks real, but in reality should be harmless since we
+> >>>> may only hit it while the device already dying.  Means there's no VQ
+> >>>> state to be saved.  The only potentially observable artifact I guess is
+> >>>> a warning here:
+> >>>>
+> >>>> vhost_workers_free()
+> >>>>  vhost_worker_destroy()
+> >>>>    WARN_ON(!llist_empty())
+> >>>>
+> >>>> So more of a cosmetic noise on a dying device.  Again, not relevant to
+> >>>> this series.  But one optional way to make it go away would be to clear
+> >>>> vq->worker under vq->mutex in vhost_workers_free() (mirroring
+> >>>> vhost_worker_killed()).
+> >>>>> The second one also not sure if it's an issue since the sender is not
+> >>>>> lockless IIUC.
+> >>>>>
+> >>>>
+> >>>> The term 'sender' is confusing here:
+> >>>>
+> >>>> * vhost_transport_send_pkt() is the .send_pkt() method of struct
+> >>>> virtio_transport.  It only stores skbs into the queue, doesn't process
+> >>>> them. It indeed is lockless as it doesn't take vq->mutex.
+> >>>>
+> >>>> * vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
+> >>>> It's called by the worker thread to process skbs in the queue, calls
+> >>>> vhost_transport_do_send_pkt() which does in turn take vq->mutex.
+> >>>>
+> >>>> I think sashiko points out to the former.  Still, I don't think it's an
+> >>>> actual bug.  Look:
+> >>>>
+> >>>> 1) By invoking flush, we wake the worker thread:
+> >>>> vhost_dev_flush()
+> >>>>  __vhost_worker_flush()
+> >>>>    vhost_worker_queue(flush.work)
+> >>>>      worker->ops->wakeup()
+> >>>>
+> >>>> 2) Then woken worker does:
+> >>>> vhost_run_work_list()
+> >>>>  llist_for_each_entry_safe(work) {
+> >>>>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
+> >>>>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
+> >>>>  }
+> >>>>
+> >>>> 3) And then in work->fn() (vhost_transport_send_pkt_work):
+> >>>> vhost_transport_send_pkt_work()
+> >>>>  vhost_transport_do_send_pkt()
+> >>>>    if (!vhost_vq_get_backend(vq))
+> >>>>      goto out;
+> >>>>
+> >>>> As you can see, we return early in case backend was unset.
+> >>>>
+> >>>> So after doing this flush, we have: 1) QUEUED bit is unset; that makes
+> >>>> send_pkt_work re-queueable. 2) But the queue doesn't actually get
+> >>>> processed, and VQ state isn't actually touched here - so I guess
+> >>>> Sashiko's conclusion is incorrect and there's no actual bug.
+> >>>>
+> >>>>> But, please can you double check them?
+> >>>>>
+> >>>>
+> >>>> In general I'd leave this patch as-is as Sashiko's complaints aren't
+> >>>> very convincing so far.  If you want I can add another patch which wraps
+> >>>> NULLifying workers in vhost_workers_free() in vq->mutex.
+> >>>>
+> >>>> WDYT?
+> >>>
+> >>> Yeah, I agree, about the other patch, up to you, but I'll eventually
+> >>> send it separately.
+> >>>
+> >>> Thanks,
+> >>> Stefano
+> >>>
+> >>
+> >> Alright, then let me resend it once more along with this 6th patch, so
+> >> that we don't have it uncovered.
+> >
+> > But why it should be part of this series?
+> >
+> > If there is no strong reason, I'd send it as a separate patch.
+> >
+> > E.g. even this patch in theory may be a separate one, but this is
+> > related to this series, so makes sense to have this included.
+> >
+>
+> No particular reason, just while we're at it.  Alright, no respin, will
+> send it separately.  Then I'll consider this series reviewed - unless,
+> maybe, Michael will want to take a look as well?
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Yep, I mean this should go with Michael's tree, so ... :-)
 
-On Thu, 16 Jul 2026 12:43:19 -0300 you wrote:
-> QRTR keeps its entire port and node state in module-global variables
-> that are not partitioned per network namespace: qrtr_local_nid is a
-> single global node id (always 1) and qrtr_ports is a single global
-> xarray. qrtr_port_lookup() and qrtr_local_enqueue() operate on that
-> global state with no network-namespace check, and qrtr_create() places
-> no restriction on the namespace a socket is created in.
-> 
-> [...]
+I sent my R-b to all patches, so I'm fine with this version.
 
-Here is the summary with links:
-  - [net] net: qrtr: restrict socket creation to the initial network namespace
-    https://git.kernel.org/netdev/net/c/3b536db8fb32
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks,
+Stefano
 
