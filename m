@@ -1,211 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3CA43B495
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 15:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784819109; cv=fail; b=b94JQ4XmQLqTd3WSIE0KEvYfwbMQdzAzlVKaSc01VfEAcDQj4FKecldJS7ypxPWy0yreX8C0t8dcbsDcW6LVS7PMSI0dUGm6vkiUfMePckhdIrb/cD++/bHmdq8SjlVUsvwwA9TGNQzu6geLw5eNVYmnkryXg88xvsFAe1Raobg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784819109; c=relaxed/simple;
-	bh=IP6TJCaGS7sLPITn0lffLKCLcEZYRTE6IykS6SS/Pkw=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=t9REbtlXZb1xCV8w98hsDSk71qk5ycZPOPNz/EkpiB1kWcWDxrqWJjTzh9XGpLy6Bi4kbmIUSDUHcZw5736KBb1cNnC+WtazgmrNV/8/0uI3Skmj1bhPSHIe9CrgHKYnagD2LIxvgTfr3RRRvNMA6g9sTmmOWzoyj2gwnGntqtc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nh98EHUh; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAB744AB67
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 15:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784819241; cv=none; b=QGdCB0AEKdtQQq+5d3T2bwKpIyUsF8zT67vwsCjj7/39G8/tfW1w8ZkqT7J4JlM6z+KuHFlcXQLhobzh5QIR4Rnql6mEbiGOZDYUm92VKECv3Ovcta4jmbRXVBgLnr0N3Mf7dV9h2PfhcWl5bqjteKhqufSnWAvMm2qss1hnlmI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784819241; c=relaxed/simple;
+	bh=gJU52AIZeQMvjxeiwPlASTAak6CN26/MY4Kg2MG9P5M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ROpkdDgrAB83PmgA+UZkI+lJWkv2xgRKfM7AXAsaWv8pnbPNcOeT4J3vPLuJJjAxbye+0oR/LMUaX1DCFC47Q4sDEbBZmnEYcQv4oaCz02EZz4NEfhJv+a3rjyk6VWF29EHNtgKqP+aFw5Xcs6eLvbWhrEqKulUZ3NQpemVj/rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=o2h/Vi9z; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nh98EHUh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784819108; x=1816355108;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=IP6TJCaGS7sLPITn0lffLKCLcEZYRTE6IykS6SS/Pkw=;
-  b=Nh98EHUh/uyJGxbjHotCskUlUvTlrVT2V+qVhNWQMCJu6A0H0XoZWgL0
-   CzvER7bzztRK+T07UkMdkgUyJn234w0evIr6gGMEN97dycwhhaDQwI3PE
-   InbiEN+uccW7Q3U3zEc+UeuZY1ssOrAmwVrKrXQPCuGSExakowpO1csRw
-   8UX825gVA4swb6RJY01Sa1A1OoznhIhAJ+6WZid208FRyR0XN/lp+rWoI
-   yPEXGMx7VaA41UKxt4VCIP6ZZnX8OMCB6UO8+V2umhS/4Bm7gMybGPTiT
-   +k4LiR7M0AZWOZW3OSv+/nTn//qEDjCnV39gNg7mBRe55vFCb8ROZ2jWu
-   Q==;
-X-CSE-ConnectionGUID: 4z6f1cxgSU+GIIIeSZcVOQ==
-X-CSE-MsgGUID: rByQ94IMQaaQrGO9ybusUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95831458"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="95831458"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 08:05:07 -0700
-X-CSE-ConnectionGUID: VNyshCiVTqmcPwMUmpldCA==
-X-CSE-MsgGUID: sGejLgKvT4KUqZRuTcJTzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="257907537"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 08:05:07 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 08:05:06 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 08:05:06 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.57) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 08:05:04 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sySBqit/zVIW0/uU7Kv91sBcLC/+PesPkmFer3TPPO28v6xF0lBuWDPlZG8vuKfJJ7cnePgXA1sOk7pRkg3svjfDTFvUOsDx8cSj2GW9UWzmf+rMwkdQlRx6Q6NMR+UpKISMXxzm4+qh9Oa+gpAFhhaaMvIOXWwvjEmY/6aX5wy/c0T1Pm6lyc49eboWyyCstlkisCwiEa+3Cou+IH5owyLwu9vc9NLKu/loMJmeMOtfcn/+2mBWdVkQrH7njKc/cPmWR3Bwl+jH8v/EwCgEAKb/4P0HaDVz9BCYNHSZYdU5L4u41ZFs8ic3R8BYDRY/rIT7+LzhQZ+HjM3Fwfh7Wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lz4h+ZGVN5dB65daWv420Dm0495I5nDK2k+wqQK6CBA=;
- b=BDgg7DZef1/5rZNn1U7LoZK2MhUozbfQVo6eCo0DM4pw2z/WiLFMB7Rh4N9gqBYnvvxTewuiHEGT8hS/GI52ARwuGuPlBzYKr+MHGfLC0uHP/0YPKamT8VcJraA/FyiOXG3VwrdM2Q+irXyWJ9rJIbf9I2uycDoTB5ptgmhud/1ztkqoZFIFLi3/9WAfaX6yN//t+S+K/07rhw1hEhL2AnVztv9/9oTjpiDgwqNYd1qJZ62fUou2ZFPGVl9+kyYpke4fPtdcrPpG1cOPVBidYT0/+61IJpiFjBJEUMqvHrP4nHJ/VMEdT6lfnvI1dIOgdKaiyNvhTWnFiZYZTIx7Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- IA4PR11MB9057.namprd11.prod.outlook.com (2603:10b6:208:55d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 15:05:01 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
- 15:05:01 +0000
-Message-ID: <f08a30a8-afca-4cad-8353-5c3ce091a9ef@intel.com>
-Date: Thu, 23 Jul 2026 20:34:39 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] drm/xe/xe_ras: Report correctable/uncorrectable
- error events to userspace
-To: Raag Jadav <raag.jadav@intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<netdev@vger.kernel.org>, <aravind.iddamsetty@linux.intel.com>,
-	<anshuman.gupta@intel.com>, <rodrigo.vivi@intel.com>,
-	<joonas.lahtinen@linux.intel.com>, <kuba@kernel.org>,
-	<simona.vetter@ffwll.ch>, <airlied@gmail.com>, <pratik.bari@intel.com>,
-	<joshua.santosh.ranjan@intel.com>, <ashwin.kumar.kulkarni@intel.com>,
-	<shubham.kumar@intel.com>, <ravi.kishore.koppuravuri@intel.com>,
-	<maarten.lankhorst@linux.intel.com>, <mallesh.koujalagi@intel.com>,
-	<soham.purkait@intel.com>, Michal Wajdeczko <michal.wajdeczko@intel.com>
-References: <20260722094134.3036087-4-riana.tauro@intel.com>
- <20260722094134.3036087-6-riana.tauro@intel.com>
- <amDglMC44EIWChvp@black.igk.intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <amDglMC44EIWChvp@black.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0200.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b2::15) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="o2h/Vi9z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1784819230; x=1785078430;
+	bh=hiriv5oyXkj1MDtxZ7SOw0a+kLK8duw42mVdlkPtHiU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=o2h/Vi9zOj1DnwRj0rejmBcZ5RNqNc7m/ceG82hpiaqdJcWeJ8DCUBIWOSuw0B88m
+	 /pPLglIjHj9WJakhixzco7SuL7z/6r2ORtDLgUuUXtwwavAEXbuJ4DR5lgnI95X/yP
+	 hjOPXdigBsI/38KsXWYvf7M0mXhXsmxevcf7+h96f+93kPZUnuaRfFY8nopXPIvTZi
+	 wVsmVNXdRdxy31hUcvhclm24QE5NiQi1Z3lB9jJPnXGRF7kDdxO+4pjdKEBQVH4VZD
+	 8h/zLz0HcKg0ywXcZ6XvKGN4lXvDlxKjy/NXBkJzrTObT/yoRhIKHLDXNRTV+FcpEM
+	 yVA/s9+N2S2sg==
+Date: Thu, 23 Jul 2026 15:07:02 +0000
+To: Steffen Klassert <steffen.klassert@secunet.com>
+From: manizada <manizada@pm.me>
+Cc: netdev@vger.kernel.org, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Subject: Re: [PATCH ipsec] xfrm: ah6: validate routing header segments_left
+Message-ID: <OHPSZSplt8qJ_rw0BR7DtOk3YyWzNTMMKdgYcqZrSQTfN31lqZZ1YG6rah-DI5mEv_gL7tPkJ8PZuJlp8P7nGcXulENJ0SVD-Ey-EQUEMn8=@pm.me>
+In-Reply-To: <amHLS3bIJ0NVnvKW@secunet.com>
+References: <20260721222824.2508529-1-manizada@pm.me> <amHLS3bIJ0NVnvKW@secunet.com>
+Feedback-ID: 37265593:user:proton
+X-Pm-Message-ID: 9f9de9513cb4c27ae6f4f0b9b4914764d9b855ea
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|IA4PR11MB9057:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdad415d-b414-411c-3c4f-08dee8cbc507
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: DVcm7EqtaoTZSS31AI9erMSUwk3wIrRq6s/0ILqN9+s7wRClQyvbFB14v12Ehn2XTRJ87TuN9xvc1iFvvFIRoZeott+hGs544y+fahGN1cAopJrsEH7pxPKJckrV5MCg1uWKMEB3C7zKDrOEuJjpvJ4adoioUeABWMOMKb1F031Vkikqt7P9uGigdld/DyHS20l6PVf24TOe4sMf0IjELVs3Ubn7UI6nttc6Rj0o//WufqJYDISIQznMvYFpfz3IXesGxFwvbB9wxhbfGPMAl6IxS8u20x1WvgctIlzpDveBtKFFp6kiv0N2FTkb9iBZiQglquB7iK26LEyJvwSGAzP9RGhc6ChU8zKOgfvFkP5az4qlk6H54pXSl+i5Rdu/giy6/Vk10Pgkoa2UTJoyiSZBnT4mA5zbPRU8LlPrlYjqNDpSA0/Sq+ElJWfJyNeovi8Ohsmo0NWahBagiLcbSP8GYHst2o/x80ob/AVCIi5X2jo3mXNdYTPNm3WRBVgBUQgnEObjqTT2m0MoSeJz/FTt5g8ERjXw16sfcCAX3es9u8ZBfaKvqJRZsxdGh7cddDZp1vCe+ntNHHW3NW1MiiSWaJiFqEJ7xM3j1S9WkWLfGk0ogsl3v5882i5CCbEHSptwy0lpV7//7koT/1xJ1bIZl5s8lGLJAX1GOK30PPo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WTBQYkpldHRBczI1eHY3Tkl6NlE1YXFQUndIL0o1Vy9lTlJGcEplT2x0Z3E5?=
- =?utf-8?B?a0xTWGZ5d01oVDJZdmVBTzZ4K0VVUmR1WSttWnUzS0J4QTY4R0t6ZTBVN3la?=
- =?utf-8?B?d3UyRC9rOHdEbGk1cWtNM2k4UXlQK1pZbkxDWFFpVlFZSFZlMDVMZHpjMy81?=
- =?utf-8?B?SlMrNXQ0T1lHcExjZ2Q4TEdzZnNBb3JyakI2ajhuNElVeGJ6U1Bwa3dUdHVJ?=
- =?utf-8?B?d0FOTkJnOFRkUDlTUi9xNGQ4ZGFQdmREUFRRbmNLNzhrZE0wY2lpMUZZRndB?=
- =?utf-8?B?Mmg3Uk53NkJUb2Y1emZra0N2dEdGd0UydDJLVHMxQTlBbHc1THErdlM5Z2U2?=
- =?utf-8?B?NXVQQ1RQRFhpVDVSWitOODNwYUw1OEd2UkI2VGcrNXFoMlMvZ0Z0a2h4cTFw?=
- =?utf-8?B?bHdCeFBHcnVQTXpWRjllME9McUFFTUlLM2dhbG9zRDRUcWNESXRCWTdKdU9U?=
- =?utf-8?B?WEVwRVlYRktxcWtLZlhWa2xjZDFrN0dRb05vMGZJY09BN0JYeTUrUlhSVG14?=
- =?utf-8?B?WEZweGdmT2NWaWY4SmZXV05kaFo3MllKYlg1UVB0QjBCMExBYUVPc2NCWS9D?=
- =?utf-8?B?ZnVEZ04waERRcXpyVDJzdENSMElvdzBvNk54d1NFN1pVaVN4SWxSeWN2WVlF?=
- =?utf-8?B?N2M0QnV4dzhVSktFbldlMVVsV1VsMEI2ZEVmZ3ByMGJoSUpVWFlkR2Z5eDQ2?=
- =?utf-8?B?RkE5eTZoc0pJenc4bUlzUWt4Um9sVCtyZ09nd2xjdWhIZHZnYmQyRkxCYWJJ?=
- =?utf-8?B?M2YzclFJUUNscXlqM3ZydHMwMzBCS25uYXA0a3cwQ25sNUUzNTlPZ3R1TnJ2?=
- =?utf-8?B?NUZtTXNQaG5PSytjdUJGTDY0RzJIcURmbTBmSUxGZWRGemo2QXhjVjJqT1JW?=
- =?utf-8?B?RW15WmlEdE1MZjlwVk9VbnNiWTZiZ0RQQXFGZE9wRDVNa3k2amUxR2tKVDZM?=
- =?utf-8?B?SkhsejZhK1JrTVg4VDdtRjVkLzhidUxCd3RqRlRHOW9ybmZpYXhYUVJvODVU?=
- =?utf-8?B?a20yM1ZxU0RYZXR0MVVXZkF6UUg0RHhBTjJGbENsWTJBTE9HYlpraTc2K2kr?=
- =?utf-8?B?U1BvK2V3TklaRmZnbDhuWFJHYVdINHR3b2Jmdkw1NnF4QUR3dTY1ejBsam96?=
- =?utf-8?B?YVZpRUZCZkZkd1lKSWJBS2N4RW5FdnUyWW5RSnkwZG1aU3JSQmxHdkhMWUpt?=
- =?utf-8?B?MjZYMTdxKzFscUtSaTdpSEtBUHFpQW1uU3lSbHE2YThENVg0STNmT3JOVU5W?=
- =?utf-8?B?QnRKWGJ0bWJqRXpwUmJETGtSOGJUVGpUamphNzJCUUdrRzd2ZmNwdlpUWHRB?=
- =?utf-8?B?bklnRGFkcTR3cmJ1Nzg4RTMybFByWTBLVnJ3cDU0WEhzMllnTlNkSlMvNDV2?=
- =?utf-8?B?SjR2blNLcmc0ZytoblFiYWFkWFdnODlveFRiQ2xqY2N2ZFZsZUtCb1hySGFU?=
- =?utf-8?B?ZVV3QmZoZ0ZyRG1rakg4UG5MY2g5L0NGL3RuRlRLRFBXbDlzNVluSThKdlha?=
- =?utf-8?B?SWVLYXpQbUozYm50TzhvZ0V6YXd4amtvTk4xMDBXYVRpbUI3enhIT2ExUlU4?=
- =?utf-8?B?andFMldTVEw3TkdmSXdHTm53aXNaSFdqTXArMzZ2TDdvS1M2QURtTDcrdGlw?=
- =?utf-8?B?MHU5dk1xVlVLKzdOT0ZEcmpNS0hUL2FZQ0l6U2xPL0VVYzFoUEpYTU92MTN5?=
- =?utf-8?B?dC92N2d2c2drbjF1K2ZKYkVLSTNoRCtpc3ExOGljdHozSTNTdTk0RlRHb3JF?=
- =?utf-8?B?TkRNMHo5UlEyQlArTVpjaGxUVFRUQ2trWnl6UGEvVXhmS3RXRWlrWlBoMUJP?=
- =?utf-8?B?c2U3azZrYWJNUndvMVY4SkdEQmN6MVF1S2ZHNWtlMnVCa1NmbmFRQ0p6QzhX?=
- =?utf-8?B?YjEvaFZwUU5lYTJScHNwaTkySWdxVzVSMTlDN2tlR0I2UEdsSkhZYlFUYVgy?=
- =?utf-8?B?UWw5NDJ1aDlNQ3o3VVZhUk1oS0NaQmV2VGE1TVZSVm9BeHpVY3JPTGlxYTRl?=
- =?utf-8?B?QTlsZUpkR3RCOExiNFpzK1EzWmJ0WkVQeHNENnRlaENvMmlNem1USmlPaXd3?=
- =?utf-8?B?MnZHMEhaZ1M5ZGlNSS9BUW5BancwT1UyNUxaWDRmYjBkQjhCcCt1YmxTc2ZR?=
- =?utf-8?B?a1RjSlNVWnlielE2NHp1VXNZVFl3cjNUa2xhMFBGaWZFNUQ0RnRDNzI2WHYy?=
- =?utf-8?B?Z2FjbXMrWWxQVm1GZHBhb2NIS0RLWWZIdHZUUmcvSFMrc3NXRitiNmFIMjVN?=
- =?utf-8?B?MFhWNjFSaHFPUWJUd3FBWC9KRUlIKzRCaWJ1VS9keU94Q3QvM2llaEtwWG5o?=
- =?utf-8?B?N0xXZWMvQnZ4QzBHVVdjTnBPS0xsN2QySWU2TzR2NEs1TkJsNzZlZz09?=
-X-Exchange-RoutingPolicyChecked: ludUkaUJQ2vfmm4N1JPb5XLFi+ZIrClOEcLJQDsM12JaGJdqOFKhPVWwUblqhcerr7CcC1ssx9jbVZUBK7hcmpIx2VDPljGYyeJjODkB03p0IJ9ZjVjbvw8Nx3UKUohDDh8d38Mvv3UH4EX3/zK8DskBBYy4JhctvYmeGZ9w7YFnBdM2LBSL4JszkzsFGQ3wy7Te6a0abD6eILREpwLZL2EdBfkAwWf3sJJsJIN4HwUZ9PQvSd4YZXS3XEkTyuiJoBOxl6bH1p/8SeM9Kag9leyIVa/5fqWncowIqLQt8DvmpgplTNwsy48nSaW5ds/IGwW/zWKgDZfAuX1aaJvyFQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdad415d-b414-411c-3c4f-08dee8cbc507
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 15:05:01.6256
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gKW3CHaePh0r1NQTu5WHOZG2QQpLr64F+5Hk5L1ixfuUHrEOqQc1fCuGR8VZwJF0hKXjlAim+Ew2TYGVvB3SIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9057
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 22-07-2026 20:54, Raag Jadav wrote:
-> On Wed, Jul 22, 2026 at 03:11:37PM +0530, Riana Tauro wrote:
->> When an interrupt is received for correctable errors indicating that error
->> counter has crossed its threshold, read the current counter value and
->> deliver a drm-ras error-event to userspace for each affected component.
->>
->> Also send drm-ras error-event to userspace for uncorrectable errors on
->> receiving an AER.
->>
->> To avoid sending duplicate events when the same component appears multiple
->> times in the response, Send the error-event once per component.
-> ...
->
->> @@ -425,6 +487,12 @@ enum xe_ras_recovery_action xe_ras_process_errors(struct xe_device *xe)
->>   			xe_info(xe, "[RAS]: %s %s detected\n", comp_to_str(component),
->>   				sev_to_str(severity));
-> Similar to threshold crossed case, we should probably have a BUILD_BUG_ON()
-> against XE_RAS_NUM_ERROR_ARR.
 
-This is already added part of correctable. Seems unnecessary to add it twice
 
->
-> Reviewed-by: Raag Jadav <raag.jadav@intel.com>
 
-Thank you for the review.
+On Thursday, July 23rd, 2026 at 1:05 AM, Steffen Klassert <steffen.klassert=
+@secunet.com> wrote:
 
->
->> +			/* Send event once per component */
->> +			if (!(sent & BIT(component))) {
->> +				sent |= BIT(component);
->> +				ras_send_error_event(xe, severity, component);
->> +			}
->> +
->>   			switch (component) {
->>   			case XE_RAS_COMP_CORE_COMPUTE:
->>   				action = handle_core_compute_errors(arr);
->> -- 
->> 2.47.1
->>
+> On Tue, Jul 21, 2026 at 10:28:52PM +0000, Asim Viladi Oglu Manizada wrote=
+:
+> > AH6 rearranges routing-header addresses before computing or verifying t=
+he
+> > ICV. ipv6_rearrange_rthdr() assumes that segments_left is not larger th=
+an
+> > the number of addresses described by the routing header's hdrlen field.
+> >
+> > That assumption does not hold for raw IPv6 HDRINCL packets. A packet wi=
+th
+> > hdrlen equal to 2 describes one address, but can carry an arbitrary
+> > segments_left value. With segments_left equal to 255, the function move=
+s
+> > its address pointer 4,064 bytes backwards and passes a 4,064-byte lengt=
+h to
+> > memmove(), resulting in an out-of-bounds access.
+> >
+> > Validate the invariant locally before modifying the routing header or
+> > performing any address-pointer arithmetic, and propagate malformed-head=
+er
+> > errors to the existing AH6 input and output error paths.
+> >
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+> > Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+> > ---
+> >  net/ipv6/ah6.c | 26 +++++++++++++++-----------
+> >  1 file changed, 15 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+> > index 76f7a2de9108..0f01db802f35 100644
+> > --- a/net/ipv6/ah6.c
+> > +++ b/net/ipv6/ah6.c
+> > @@ -233,25 +233,24 @@ static void ipv6_rearrange_destopt(struct ipv6hdr=
+ *iph, struct ipv6_opt_hdr *des
+> >   *=09so that they appear in the order they will at the final destinati=
+on.
+> >   *=09See Appendix A2 of RFC 2402 for details.
+> >   */
+> > -static void ipv6_rearrange_rthdr(struct ipv6hdr *iph, struct ipv6_rt_h=
+dr *rthdr)
+> > +static int ipv6_rearrange_rthdr(struct ipv6hdr *iph, struct ipv6_rt_hd=
+r *rthdr)
+>=20
+> You changed the return of this function from void to int. Please update
+> the comment on that function to reflect this. See:
+>=20
+> https://netdev-ctrl.bots.linux.dev/logs/build/1131973/14702013/kdoc/summa=
+ry
+
+Thanks, this is now at https://lore.kernel.org/netdev/20260723093524.367251=
+2-1-manizada@pm.me/=20
+
+> 
