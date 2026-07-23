@@ -1,366 +1,466 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BAD43CED7
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784801083; cv=fail; b=fpdf1ZF8wNlToBXA+7K75ULU//DOtJnCBBR9O+LLHK6h14yq73noTXbICX2YApviI+zB3N3xAAlomlJ7A/ICa/SaEwXPAm0fQXpKXK3SkfbA6pbkwG8WEuCywBw5nr7NEVhiwCz+qN6kxtxGE8zXnZytzt1UI+N2sicTGnwnqwc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784801083; c=relaxed/simple;
-	bh=TjDSpO+YDJuulvjXN6QVlSoxrmiGG04dp0pUZSjtDYE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Xra/Rvns0Iz72pqXtnEdDcPSqXNLIJbRPCyjCbEt9A2TandE/foH1c+t4vUL8Vcvuyl9l060l3KcZOq8Ygwp0CDN1I2D11iPiCTYpYczMSLyB2c84lG5N34bB+IJ/1z5Ibs6GJGvMnkg4WBUVgKsecwPPBkx0/srO3aFfyroR34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wkhu4gn/; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C61430CC1
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784801165; cv=none; b=JIlFSBbjxyvf0H8V77Dj9wpiq9MhsRjWNtsnWj9XmYTplTB1tobPl2gzE0HLMT1Kj/uMzhPGu0lRxJRbJn+mrpncFbP/aXc9ARn6OqEAecAi3hx7MkVD2pB5D0xMS4ZSbf0ZejSqinN8Avh/WdJQBZjpEECmlmqgcp62vmBqRaY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784801165; c=relaxed/simple;
+	bh=UU58n+VwYeDW1RPVQcgUSWBKkk1X7ljbPAivDXAMMks=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XsNxx0Rli74paOxkFD/+a+gDKKA2IL3OT1bzeK2LsSIacdDjfmci663jMf4GkpLnZvOke3FV+8cgwxfN+9aucDzmDeI93UtJIU92jY+12NRf8U6lAnw3bWuqDsxxVo1JUIZPWWukCN/C/6LpSC8bRmbvnKcrZdxp3qt+EQDsD6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eO9V92X+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wkhu4gn/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784801081; x=1816337081;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=TjDSpO+YDJuulvjXN6QVlSoxrmiGG04dp0pUZSjtDYE=;
-  b=Wkhu4gn/wEWY9exJMSrfAvNjdLcU4hdISeJs7ew8MICO4/aSk3cdf5tD
-   DRoFVW+CYNsgWS3M6xhd32wsBdvaQgMMxMvzrwmTvzXtNZZS0ZjtiaWAz
-   nM4e3ZSGAxeRYQREgpw0kDXfIBfa4rhf7G+1YuMWEPd0Rs1tI87JSSXqo
-   t9acaBb+R19xeGyvf1CVTm9ndMrezCxANghHSfL53b/GtnwDilrN1L4Wm
-   u8ocm/H9djVhjiqSGqqOTLLaXT8KdodGEyKehROt/uY+39yQ1uCBGlmGg
-   ROnzramx5s1Marpy7Z8V1S+a0+W52WP2I9VmXpw1ESO0GAnyS/E3V7UhJ
-   w==;
-X-CSE-ConnectionGUID: tzOErGdIT5CTooTKk2Uk/g==
-X-CSE-MsgGUID: fe0vjKAIR2ejoj+K3zBomA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85571591"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="85571591"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:04:40 -0700
-X-CSE-ConnectionGUID: 5hhM2fZwR6q89OALdILmsA==
-X-CSE-MsgGUID: xNV60zH4SYi3YzUZPL9FHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="252051682"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:04:40 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 03:04:39 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 03:04:39 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.16) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 03:04:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQ4tGDv1cUNW6muHrg3SbsqcloJjW2tmsvG6bcdMKSvSRx1PrzOEuQpWlMx4G4YlT6UKp3Ve51m7f2q0VHbDz7zZm5BkkvUCZ4H5eg+ytkh9EWATJiCihdX9hUJQItsrjADRTSeRT/R+6yirGA1L0E66O8MrzCtku3pY9bvPp7r6GjvWrjdsRc/hPZsYGKTFMpcZeGZ/kTynF7d7XIWuqTOGZLV572goFMv7+Fy+9EZTz/Ae0h6PnIUkq89IejzkO3cY1kaX4EoADw+cnIEJhEWIn1xGIrK31ssgfrRqhh2dAYQaEM8g44uupEfltPxLgk3JKcIne1wd7FUMgxB3vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tDH0PtbtjSR10zpkAgtJpJK0/2yrCfE8qVTYCw1+Ta0=;
- b=mei2sQmAzwxZxP8naJkdneucONGLpdjOXsiXt8ISFksvMv+AUR1+ZgdcQkADPnzszJEP7mcMid35Moli92p1Kv/3g3w2ZPUfH2B8HBhEbjwoj0uGIgiWmkXNvL342PJWIh2PSu/pa8WfxGhc/T7oJJaGW8j8kBv6vwyqotQ6R1fhmKuixQoyRQhCcBW0R1q2XJybCA7bMSJgp6HSHpozBO9ONyfFQbE1B3TzYVTSEmwOwYun99dTFGUx6A9W/PftCXmfcgxCZCrV9VkttCoVTijWYlKIylXPyd2EHvaav4G6n1xFN0mqKGIRRvWT8GMy3uIVjYU+fMGc0QStpiXsyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- CY8PR11MB7797.namprd11.prod.outlook.com (2603:10b6:930:76::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.11; Thu, 23 Jul 2026 10:04:36 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
- 10:04:35 +0000
-Date: Thu, 23 Jul 2026 12:04:28 +0200
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Jason Xing <kerneljasonxing@gmail.com>
-CC: Chenguang Zhao <chenguang.zhao@linux.dev>, <anthony.l.nguyen@intel.com>,
-	<przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>, Chenguang Zhao <zhaochenguang@kylinos.cn>
-Subject: Re: [PATCH net v2] i40e: xsk: fix multi-buffer XDP_PASS skb
- construction
-Message-ID: <amHnLHrb0eQI9C3D@boxer>
-References: <20260717012416.168107-1-chenguang.zhao@linux.dev>
- <CAL+tcoCdbjC4cHjm5C9mDTc05biiJfCRB=e0r0Ssp1qTwdxeJQ@mail.gmail.com>
- <20f83ab8-d99f-4b10-bab1-cd5c6202937c@linux.dev>
- <CAL+tcoAtn_eg0qwGf+6BJJGvKztNAgBm7tjY44H183=ZOw7zbA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL+tcoAtn_eg0qwGf+6BJJGvKztNAgBm7tjY44H183=ZOw7zbA@mail.gmail.com>
-X-ClientProxiedBy: VIUP296CA0069.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:337::6) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eO9V92X+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784801162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xDDRK6Ahwysest8LRbUEt737BjEIvnPFKIwIiy6xC7E=;
+	b=eO9V92X+tQnv+P9uLjq4WpzQCADltHlJj/V14x1MeUYXAJ4u2cLC0KezFuBrJ0ruZ9EFUr
+	kjlmAn7zJimuInW+8ND5KVcDziszYrCxB+3Fy2p7peNLv5pw94xTm5W9kQvGAKmmMs9aRI
+	iRW4/Vf9DOdrY6dwND6jjCpNow1kvtA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-J8Lqg76RN3aTuPmoENVRkg-1; Thu,
+ 23 Jul 2026 06:03:54 -0400
+X-MC-Unique: J8Lqg76RN3aTuPmoENVRkg-1
+X-Mimecast-MFC-AGG-ID: J8Lqg76RN3aTuPmoENVRkg_1784801032
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F0911955F31;
+	Thu, 23 Jul 2026 10:03:52 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.159])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5E5353000225;
+	Thu, 23 Jul 2026 10:03:48 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	stable@kernel.org
+Subject: [PATCH net v4 7/9] rxrpc: Pass appdata key to rxrpc_call and thence to rxrpc_bundle
+Date: Thu, 23 Jul 2026 11:03:03 +0100
+Message-ID: <20260723100309.530157-8-dhowells@redhat.com>
+In-Reply-To: <20260723100309.530157-1-dhowells@redhat.com>
+References: <20260723100309.530157-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|CY8PR11MB7797:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27fe9a8e-2231-4d24-aef2-08dee8a1cc77
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|13003099007|6133799003|11063799006|4143699003|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 3AAAc96DfFPd3JEkADthZDTJ1k+/5G7+8c5Z+LmncqgBUYlCq2M7R2jjd9a94G41dKj6E6CZGsCiIH2wS/NFhYZN50vAV/dbLcNsUaXOS/z7oY/T1mNaQxFxt1uqxvQgsHyG2sxdE2jdqcibiNW8pGrfA+svj+Xhl4LzbkkpQYcTddVAzILXW7qiKtQjzelQI3mNx6EgC+9k61chaSMNxpEDW3zYVodSaqp51a43Gk6d8eYTT8f4Muwbu2ig5W5DKMCEv+1rlORxC80Z9XyzVhcJEj6EEhAxIQfrNjnyrguRL21y8/OdSIRLeqE8Mk6k8MPo3sWNZhTF5PbT0CD19kjy8ph3ErL4WBNpbsAk27n+6Din3Hn9H2xv7zo5lhV2oKFivrjKSbuM2RWN2peGN/tuJbGRx733jmZkxATOSm3S5WHtW8BKFkLzPfedHiinQfM+jANQiImT7Hh1yEGzCrGqkK4wQ8FJfK7lCcOxi7caTmV+QOnAa5ApH9Uj8xOn0oE5hcvoTH2pAKJZG4/kjNkxG9t8vIoWHcCjoYvSQtN2e8/ulc8PRXwYqKiL4k29nMcQ8LPuVxod5x5WZsgxgwbBoNiSdWuWVOlU4DMIjSc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(13003099007)(6133799003)(11063799006)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NExUQlRYYTZVTmZ0NWtsbWhYUWF6WDNUSGxlZWhlbk01VC9BWWJYUFdkQ3Ux?=
- =?utf-8?B?aDcreVJpVHljTW1Hc2cxNHhzZjlSc0dkSlpZa2d1ZG13SThYLzF3NGVNUkVx?=
- =?utf-8?B?S0pLZlRWZ24yRnl5RnJOV2tSTnhyRkJ1OVpFM2xGanE1Y1FoZFBMdVlhUEdr?=
- =?utf-8?B?ajU1WCsySFJPMWpXODAvYUpBa3JYaUczTDJkSDhKd1FyanFzT3czUnkxcnRB?=
- =?utf-8?B?aFNFdTB6aVhLVGs3Q1VMYWtlY2VWenp2MU1nakZSb3hVODZ6WUlpa3V6UUwz?=
- =?utf-8?B?Z3AwOVRsYWFRNzd4R1VhZFJJdW44WHhWbHh2K3M1d1JydGN1VFdPemdNbTRY?=
- =?utf-8?B?NWU2VlNDc3lVVFQzeS83ZTkzTWhycXdSZVEzN3lMU1NUdXQ5WGRBR1p5dGFZ?=
- =?utf-8?B?M3RrSE0wK1lXU0JwdW5Zeml2dUM0UFU1emxRM1U1MVNYN3ZDRFV4OEVGMmpt?=
- =?utf-8?B?Y0JXVVFkYk9Cc2YrS1k1d1FGY2Y5SWZYZXJETUFrWlR5T0dTNmFvTTRNTjFX?=
- =?utf-8?B?Qmh3STJ2eUJrMEN3WENNOC9wak5OSkNWRDNnVGZadVFPN3V6MHpwTkFkaXpV?=
- =?utf-8?B?ZkVwZlkvR281aGhjWElQR0pTNlZUY3pUVDViMGc3eHBZMnpLUHVqeFBhcDJQ?=
- =?utf-8?B?Q3lZeEEyTkl3cUoxckhMWDg5dGR2SnM2dDBIV0ZMRmlmY2Era0tEWlNhaUtI?=
- =?utf-8?B?SUh2anZ3R21keHMwWjhvQXRCaXBQQ2F4RUYzdDM1czdJR2tTYk5CZGY3SGlQ?=
- =?utf-8?B?YWFsVGFvd1JSUkRMVzBHYUFWek1xOFhDUTFwdi81bnc5ckJMdzNmMUpGNU5q?=
- =?utf-8?B?cmxWMzJTcUNIMTUzQ1MrTHROOGtseEN0M1RiZndtanZ0TDl2emJ4dktRWWYz?=
- =?utf-8?B?ZkFxM2tzV2RRdVNlT3ROSFNyU2I3VWFRdllHeTNucTlxVlJBc090MGlPSzA0?=
- =?utf-8?B?aC9ud212TXVhcDNLWCtKMW14dnpKV0lWNEdTZUhmY0ZpT3lhZlh1cCtvRzJu?=
- =?utf-8?B?NmtpQXMwTS9XM1pwQjlVc0ErUXNTMmhKL2lTNVZqdnYwS2Fpa3NZR1FHWVdv?=
- =?utf-8?B?TzJtanBzQUtsazMwczRubUtJY0NGZThiV25HNFhrS3NoQjREcEdDaGluMnpK?=
- =?utf-8?B?Z0lLbFdBVDJpenp3Vi9tdS93VmhEanBpaVZoUE1YTE1pSFhDcjdieUZQVS9G?=
- =?utf-8?B?STROL255eDlDeHBHMlBBU0pEN2IwR1ZUOFhOY1VPVXJvSGl3NmdiblZ6UGlY?=
- =?utf-8?B?UmxpeUZZcVcwQjgzWTI5N3FUeDVXcURQTlN4QWZLMzFFVFFqdjVraG5nMDFz?=
- =?utf-8?B?eXBINksrVDUrc1NIblFBSm14MU05OUY3enhjWjF1N09DekdJN2dGTmF0WllO?=
- =?utf-8?B?VllOck8yMGVRZ2wxN04rT2pHbnowUVI0MlZaRlRVbGlra3djRWlGeWJvN1Rx?=
- =?utf-8?B?WDVTN1dETW9sWVNITW9jekdjUGZlRXNKdWxaYnBieUM5d3EzUWhoc0NEMGRP?=
- =?utf-8?B?ZFFMbmQyRmRXdlRRR1lCcE5uSGVYeVpPRktNR09idGlwQzVDbE5tSFcrS1R3?=
- =?utf-8?B?SmM3eVdLR3Y5cE5NVFNHM0dER2VZUnRYdXloQkYyVWhBcnR4N0FIcXFPRTg4?=
- =?utf-8?B?dUNpQ3NaRFJ2Vk1aMFBGS1RPaFZXUnkrZEFNTjNLOGVKcVNncEZxZFltM2o1?=
- =?utf-8?B?L2hnVWRxSnZnbENjRWRYUFJjK3h0WlJLZ0JYRy9GdERWUEx1RS9nR0dGTnQ3?=
- =?utf-8?B?RjhnZ1Z2Vy8yQjhVaGhHbWJvaUUzRGZlMW8vRmM3K2psbmhHT3psZ2tjQnhT?=
- =?utf-8?B?UWY4bEpCL3FYbGd6aFFlNUtqS2o1a1hkVWI1ODUwN3JTMmJ0bUpGRlllaTNp?=
- =?utf-8?B?enFJSzJEZkNaODAxdzFCV1VoWlBvVHFGM2VPTmZVdUo3dzVMcTJTOGxGYWNw?=
- =?utf-8?B?UVdzMlRRdnRUalRoekpSMXFEWk9XTDVUU2VSTXZBbGExNXBUbUsxV3NiVEh2?=
- =?utf-8?B?UkpiRHJYalRLUlBLRXJWRFdOK0ViZEg4ZHpLbzIwVkZPdEZLNmdLa0tNVU82?=
- =?utf-8?B?b2NNRDBoV1h1aEE2Ynp0cFMxUVFNMnlYSXhZRUszVURkU09qR2FJVXBJZEJI?=
- =?utf-8?B?N21tS1BibkcrcGFTQU1iSVhXamxLM2tvSkZTS1hKVExSN2tCWkM4cUFHeXVV?=
- =?utf-8?B?emdiYWFOQzhLLzFsVVcyNXc5enVrajdKakFBcEFvQ20raGt5ZWV6REtqb1g0?=
- =?utf-8?B?Lzl6T3VXZkowZ0hTWFR6eitOcXc1SU5FRjEvMFpWNVdDMnhOMUVHN2c0cTFP?=
- =?utf-8?B?WFI5STFIZnhHZUl5WmEyekh2NXkrWU5JWllndDRNSmI4Y2s5WENRR2NNVU5Q?=
- =?utf-8?Q?uc7f8yQi3HY2uEuM=3D?=
-X-Exchange-RoutingPolicyChecked: CqtkhoIsFSnx8GfPquLQ8GIoCIp8mSGDqUE3zYRYvbxBQiktGRzfm4qV8HSKHSzCTxu6sCUpEmf5N2nGjwTbrs4ajH1274VVluhW0PFQYRWYhZY9SjTFHzM9NmKSMEksplI3p18rPZBy07AhQoo0ELrmVGj7sypm+nSZfm1uwY9119fZ2J5U7xeCB8TeosDxYjJbgLiIBK7eM1lYNiMcUFE+fq1ATGMF9Ey3Uiwe8W7CCVV8Mk4ABkGogQuRsEsQJIXQMfpYcKrD3EXvjtK47FFmKGUQ1a+xaUQ+cplCItYYL1zoDK5eGf1LqcyDZqjaG0ipxbD7tC5rvKhRvE8u9w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27fe9a8e-2231-4d24-aef2-08dee8a1cc77
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 10:04:35.5679
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iRx1LlWmCzOdodAPSdZxOYy7EvqrWWIXhgoUUkYDwubgonc5stPDd9oJNostTgxTr7g4pU7kiiNwmkJajszGr0WeyIwru3iT5nF040SJ4so=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7797
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Thu, Jul 23, 2026 at 03:59:44PM +0800, Jason Xing wrote:
-> On Thu, Jul 23, 2026 at 3:02 PM Chenguang Zhao <chenguang.zhao@linux.dev> wrote:
-> >
-> > Thanks for the clarification.
-> 
-> Please do not top-post.
-> 
-> >
-> > I agree: the minimal bugfix belongs in -net for stable backportability, and the conversion to xdp_build_skb_from_zc() belongs in -next.
-> 
-> Right. That's what I meant. But I will let Maciej/Tony/Olek make the decision.
+Currently, when a CHALLENGE packet comes in, it's queued in an OOB queue on
+the AF_RXRPC socket that generated one of the calls on that connection for
+the application (which might be in userspace) to service.  The application
+then picks up the CHALLENGE and requests a RESPONSE packet be generated,
+allowing the app to include app-specific data in it if appropriate.  There
+is, however, no actual limit on the capacity of the CHALLENGE queue, and
+this could be abused remotely - and also getting the OOB mechanism right
+has proven tricky.
 
-Thanks Jason - agree with the logistics you are proposing.
+Further, by analogy with other AFS codebases, it's not actually necessary
+to generate the application data in response to the CHALLENGE.  The reason
+I did this was to set the encryption on the app-data to be the same as that
+specified in the CHALLENGE as the server must be able to handle that.
+However, it's sufficient to use the encoding type set in the token that is
+going to be sent to the server; presumably the kerberos server knows that
+the fileserver can handle that type - otherwise why tell the client to use
+it?
 
-> 
-> >
-> > Please apply the existing v1 bugfix to -net:
-> >
-> >      https://lore.kernel.org/all/20260714025112.284724-1-chenguang.zhao@linux.dev/
-> 
-> If we eventually need this patch, then you will send a v3 patch
-> instead of asking maintainers to pick it up :)
-> 
-> And feel free to add:
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-> 
-> >
-> > It already has :
-> >
-> >     Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> >
-> > I will drop v2 as a Fixes candidate.
-> >
-> > In parallel, I will send a separate net-next series (as v1) that replaces
-> >
-> > i40e_construct_skb_zc() with xdp_build_skb_from_zc(), based on
-> >
-> > net-next. That patch will not carry a Fixes tag.
-> 
-> As to this version, my tag still holds:
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-> 
-> Thanks,
-> Jason
-> 
-> >
-> >
-> > Thanks,
-> >
-> > Chenguang
-> >
-> >
-> > 在 2026/7/22 07:15, Jason Xing 写道:
-> > > On Fri, Jul 17, 2026 at 9:24 AM Chenguang Zhao <chenguang.zhao@linux.dev> wrote:
-> > >> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > >>
-> > >> When AF_XDP ZC receives a multi-buffer frame and XDP returns XDP_PASS,
-> > >> i40e_construct_skb_zc() copied frags incorrectly: memcpy used
-> > >> skb_frag_page() (page metadata) and __skb_fill_page_desc_noacc() was
-> > >> given a virtual address instead of a struct page *.
-> > >>
-> > >> Drop the custom helper and use xdp_build_skb_from_zc() instead. On
-> > >> failure, free the xdp buff in the caller. Push the Ethernet header
-> > >> back before eth_skb_pad()/i40e_process_skb_fields() because
-> > >> xdp_build_skb_from_zc() already called eth_type_trans().
-> > >>
-> > >> Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
-> > >> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > >> ---
-> > >> Revised as suggested by Maciej:
-> > >>  - Replace i40e_construct_skb_zc() with xdp_build_skb_from_zc()
-> > > I might have a different opinion on this patch: yes, it actually
-> > > belongs to -next material. The process should be like: 1) fix the
-> > > issues by v1, 2) refactor it by v2. The reason behind that is the
-> > > helper was introduced in 2024 while the home-grown part was in 2023,
-> > > which means it doesn't help for stable steam to cherry-pick the patch
-> > > in older kernels like 6.6[1].
-> > >
-> > > [1]: https://www.kernel.org/
-> > >
-> > > Thanks,
-> > > Jason
-> > >
-> > >> v1:
-> > >>  https://lore.kernel.org/all/20260714025112.284724-1-chenguang.zhao@linux.dev/
-> > >>
-> > >>  drivers/net/ethernet/intel/i40e/i40e_xsk.c | 73 +++-------------------
-> > >>  1 file changed, 8 insertions(+), 65 deletions(-)
-> > >>
-> > >> diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> > >> index 9f47388eaba5..1319a5c22625 100644
-> > >> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> > >> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> > >> @@ -3,6 +3,7 @@
-> > >>
-> > >>  #include <linux/bpf_trace.h>
-> > >>  #include <linux/unroll.h>
-> > >> +#include <net/xdp.h>
-> > >>  #include <net/xdp_sock_drv.h>
-> > >>  #include "i40e_txrx_common.h"
-> > >>  #include "i40e_xsk.h"
-> > >> @@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring *rx_ring, u16 count)
-> > >>         return count == nb_buffs;
-> > >>  }
-> > >>
-> > >> -/**
-> > >> - * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
-> > >> - * @rx_ring: Rx ring
-> > >> - * @xdp: xdp_buff
-> > >> - *
-> > >> - * This functions allocates a new skb from a zero-copy Rx buffer.
-> > >> - *
-> > >> - * Returns the skb, or NULL on failure.
-> > >> - **/
-> > >> -static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
-> > >> -                                            struct xdp_buff *xdp)
-> > >> -{
-> > >> -       unsigned int totalsize = xdp->data_end - xdp->data_meta;
-> > >> -       unsigned int metasize = xdp->data - xdp->data_meta;
-> > >> -       struct skb_shared_info *sinfo = NULL;
-> > >> -       struct sk_buff *skb;
-> > >> -       u32 nr_frags = 0;
-> > >> -
-> > >> -       if (unlikely(xdp_buff_has_frags(xdp))) {
-> > >> -               sinfo = xdp_get_shared_info_from_buff(xdp);
-> > >> -               nr_frags = sinfo->nr_frags;
-> > >> -       }
-> > >> -       net_prefetch(xdp->data_meta);
-> > >> -
-> > >> -       /* allocate a skb to store the frags */
-> > >> -       skb = napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
-> > >> -       if (unlikely(!skb))
-> > >> -               goto out;
-> > >> -
-> > >> -       memcpy(__skb_put(skb, totalsize), xdp->data_meta,
-> > >> -              ALIGN(totalsize, sizeof(long)));
-> > >> -
-> > >> -       if (metasize) {
-> > >> -               skb_metadata_set(skb, metasize);
-> > >> -               __skb_pull(skb, metasize);
-> > >> -       }
-> > >> -
-> > >> -       if (likely(!xdp_buff_has_frags(xdp)))
-> > >> -               goto out;
-> > >> -
-> > >> -       for (int i = 0; i < nr_frags; i++) {
-> > >> -               struct skb_shared_info *skinfo = skb_shinfo(skb);
-> > >> -               skb_frag_t *frag = &sinfo->frags[i];
-> > >> -               struct page *page;
-> > >> -               void *addr;
-> > >> -
-> > >> -               page = dev_alloc_page();
-> > >> -               if (!page) {
-> > >> -                       dev_kfree_skb(skb);
-> > >> -                       return NULL;
-> > >> -               }
-> > >> -               addr = page_to_virt(page);
-> > >> -
-> > >> -               memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
-> > >> -
-> > >> -               __skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
-> > >> -                                          addr, 0, skb_frag_size(frag));
-> > >> -       }
-> > >> -
-> > >> -out:
-> > >> -       xsk_buff_free(xdp);
-> > >> -       return skb;
-> > >> -}
-> > >> -
-> > >>  static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
-> > >>                                       struct xdp_buff *xdp_buff,
-> > >>                                       union i40e_rx_desc *rx_desc,
-> > >> @@ -372,14 +309,20 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
-> > >>                  * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
-> > >>                  * SBP is *not* set in PRT_SBPVSI (default not set).
-> > >>                  */
-> > >> -               skb = i40e_construct_skb_zc(rx_ring, xdp_buff);
-> > >> +               skb = xdp_build_skb_from_zc(xdp_buff);
-> > >>                 if (!skb) {
-> > >> +                       xsk_buff_free(xdp_buff);
-> > >>                         rx_ring->rx_stats.alloc_buff_failed++;
-> > >>                         *rx_packets = 0;
-> > >>                         *rx_bytes = 0;
-> > >>                         return;
-> > >>                 }
-> > >>
-> > >> +               /* xdp_build_skb_from_zc() already ran eth_type_trans();
-> > >> +                * restore the header for eth_skb_pad()/process_skb_fields().
-> > >> +                */
-> > >> +               __skb_push(skb, skb->data - skb_mac_header(skb));
-> > >> +
-> > >>                 if (eth_skb_pad(skb)) {
-> > >>                         *rx_packets = 0;
-> > >>                         *rx_bytes = 0;
-> > >> --
-> > >> 2.25.1
-> > >>
-> > >>
-> 
+This is a part of the fix.  With this, the appdata key created by the AFS
+filesystem or passed in via sendmsg CMSG to a user AF_RXRPC socket is added
+to an rxrpc_call struct and will then be added to an rxrpc_bundle struct.
+
+Note that afs_make_op_call() has to be moved so that it can call
+afs_use_server().  afs_operation-based calls did not heretofore 'use' the
+server and server will be 'un-used' by afs_free_call().
+
+Fixes: 5800b1cf3fd8 ("rxrpc: Allow CHALLENGEs to the passed to the app for a RESPONSE")
+Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: Jarkko Sakkinen <jarkko@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: keyrings@vger.kernel.org
+cc: stable@kernel.org
+---
+ fs/afs/internal.h          | 31 ++++++++++++++++---------------
+ fs/afs/rxrpc.c             | 21 ++++++++++++++++++++-
+ include/net/af_rxrpc.h     |  1 +
+ include/trace/events/afs.h |  1 +
+ include/uapi/linux/rxrpc.h |  1 +
+ net/rxrpc/af_rxrpc.c       |  3 +++
+ net/rxrpc/ar-internal.h    |  3 +++
+ net/rxrpc/call_object.c    |  2 ++
+ net/rxrpc/conn_client.c    |  4 ++++
+ net/rxrpc/proc.c           |  5 +++--
+ net/rxrpc/sendmsg.c        | 26 +++++++++++++++++++++++++-
+ 11 files changed, 79 insertions(+), 19 deletions(-)
+
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index a8f303c20ef7..f75e007e483e 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -1418,21 +1418,6 @@ static inline void afs_see_call(struct afs_call *call, enum afs_call_trace why)
+ 		       __builtin_return_address(0));
+ }
+ 
+-static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
+-				    gfp_t gfp)
+-{
+-	struct afs_addr_list *alist = op->estate->addresses;
+-
+-	op->call	= call;
+-	op->type	= call->type;
+-	call->op	= op;
+-	call->key	= op->key;
+-	call->intr	= !(op->flags & AFS_OPERATION_UNINTR);
+-	call->peer	= rxrpc_kernel_get_peer(alist->addrs[op->addr_index].peer);
+-	call->service_id = op->server->service_id;
+-	afs_make_call(call, gfp);
+-}
+-
+ static inline void afs_extract_begin(struct afs_call *call, void *buf, size_t size)
+ {
+ 	call->iov_len = size;
+@@ -1764,6 +1749,22 @@ static inline struct inode *AFS_VNODE_TO_I(struct afs_vnode *vnode)
+ 	return &vnode->netfs.inode;
+ }
+ 
++static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
++				    gfp_t gfp)
++{
++	struct afs_addr_list *alist = op->estate->addresses;
++
++	op->call	= call;
++	op->type	= call->type;
++	call->op	= op;
++	call->server	= afs_use_server(op->server, false, afs_server_trace_use_call);
++	call->key	= op->key;
++	call->intr	= !(op->flags & AFS_OPERATION_UNINTR);
++	call->peer	= rxrpc_kernel_get_peer(alist->addrs[op->addr_index].peer);
++	call->service_id = op->server->service_id;
++	afs_make_call(call, gfp);
++}
++
+ /*
+  * Note that a dentry got changed.  We need to set d_fsdata to the data version
+  * number derived from the result of the operation.  It doesn't matter if
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index d82916657a3d..c25d0bc25517 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -347,6 +347,7 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	struct rxrpc_call *rxcall;
+ 	struct msghdr msg;
+ 	struct kvec iov[1];
++	struct key *app_data = NULL;
+ 	size_t len;
+ 	s64 tx_total_len;
+ 	int ret;
+@@ -378,8 +379,26 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 		call->drop_ref = true;
+ 	}
+ 
++	if (call->key && call->server) {
++		u32 krb5_enctype = 0;
++		u8 security_index = 0;
++
++		rxrpc_kernel_query_key(call->key, &security_index, &krb5_enctype);
++		switch (security_index) {
++#ifdef CONFIG_RXGK
++		case RXRPC_SECURITY_YFS_RXGK:
++			/* Read the key pointer before the appdata */
++			app_data = smp_load_acquire(&call->server->yfs_rxgk_appdata);
++			break;
++#endif
++		default:
++			break;
++		}
++	}
++
+ 	/* create a call */
+-	rxcall = rxrpc_kernel_begin_call(call->net->socket, call->peer, call->key,
++	rxcall = rxrpc_kernel_begin_call(call->net->socket, call->peer,
++					 call->key, app_data,
+ 					 (unsigned long)call,
+ 					 tx_total_len,
+ 					 call->max_lifespan,
+diff --git a/include/net/af_rxrpc.h b/include/net/af_rxrpc.h
+index c4b68049c06f..19c61a2f5af3 100644
+--- a/include/net/af_rxrpc.h
++++ b/include/net/af_rxrpc.h
+@@ -55,6 +55,7 @@ void rxrpc_kernel_set_notifications(struct socket *sock,
+ struct rxrpc_call *rxrpc_kernel_begin_call(struct socket *sock,
+ 					   struct rxrpc_peer *peer,
+ 					   struct key *key,
++					   struct key *app_data,
+ 					   unsigned long user_call_ID,
+ 					   s64 tx_total_len,
+ 					   u32 hard_timeout,
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index 1b3c48b5591d..04b0bb682b81 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -148,6 +148,7 @@ enum yfs_cm_operation {
+ 	EM(afs_server_trace_unuse_slist_isort,	"UNU isort") \
+ 	EM(afs_server_trace_update,		"UPDATE   ") \
+ 	EM(afs_server_trace_use_by_uuid,	"USE uuid ") \
++	EM(afs_server_trace_use_call,		"USE call ") \
+ 	EM(afs_server_trace_use_cm_call,	"USE cm-cl") \
+ 	EM(afs_server_trace_use_get_caps,	"USE gcaps") \
+ 	EM(afs_server_trace_use_give_up_cb,	"USE gvupc") \
+diff --git a/include/uapi/linux/rxrpc.h b/include/uapi/linux/rxrpc.h
+index d9735abd4c79..bcdfdf9c67a1 100644
+--- a/include/uapi/linux/rxrpc.h
++++ b/include/uapi/linux/rxrpc.h
+@@ -63,6 +63,7 @@ enum rxrpc_cmsg_type {
+ 	RXRPC_RESPOND		= 17,	/* Cs-: Respond to a challenge */
+ 	RXRPC_RESPONDED		= 18,	/* S-r: Data received in RESPONSE */
+ 	RXRPC_RESP_RXGK_APPDATA	= 19,	/* Cs-: RESPONSE: RxGK app data to include */
++	RXRPC_RESPONSE_APPDATA	= 20,	/* Cs-: User key holding app data for RESPONSE */
+ 	RXRPC__SUPPORTED
+ };
+ 
+diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
+index 9ab0f22c881e..a19c0fd3c51a 100644
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -318,6 +318,7 @@ EXPORT_SYMBOL(rxrpc_kernel_put_peer);
+  * @sock: The socket on which to make the call
+  * @peer: The peer to contact
+  * @key: The security context to use (defaults to socket setting)
++ * @app_data: The security response application data (or NULL)
+  * @user_call_ID: The ID to use
+  * @tx_total_len: Total length of data to transmit during the call (or -1)
+  * @hard_timeout: The maximum lifespan of the call in sec
+@@ -340,6 +341,7 @@ EXPORT_SYMBOL(rxrpc_kernel_put_peer);
+ struct rxrpc_call *rxrpc_kernel_begin_call(struct socket *sock,
+ 					   struct rxrpc_peer *peer,
+ 					   struct key *key,
++					   struct key *app_data,
+ 					   unsigned long user_call_ID,
+ 					   s64 tx_total_len,
+ 					   u32 hard_timeout,
+@@ -368,6 +370,7 @@ struct rxrpc_call *rxrpc_kernel_begin_call(struct socket *sock,
+ 		key = NULL; /* a no-security key */
+ 
+ 	memset(&p, 0, sizeof(p));
++	p.app_data		= app_data;
+ 	p.user_call_ID		= user_call_ID;
+ 	p.tx_total_len		= tx_total_len;
+ 	p.interruptibility	= interruptibility;
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index a6f830c1621f..6e16df7173d3 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -516,6 +516,7 @@ struct rxrpc_bundle {
+ 	struct rxrpc_local	*local;		/* Representation of local endpoint */
+ 	struct rxrpc_peer	*peer;		/* Remote endpoint */
+ 	struct key		*key;		/* Security details */
++	struct key		*app_data;	/* Security response app data */
+ 	struct list_head	proc_link;	/* Link in net->bundle_proc_list */
+ 	const struct rxrpc_security *security;	/* applied security module */
+ 	refcount_t		ref;
+@@ -720,6 +721,7 @@ struct rxrpc_call {
+ 	struct rxrpc_sock __rcu	*socket;	/* socket responsible */
+ 	struct rxrpc_net	*rxnet;		/* Network namespace to which call belongs */
+ 	struct key		*key;		/* Security details */
++	struct key		*app_data;	/* Security response app data */
+ 	const struct rxrpc_security *security;	/* applied security module */
+ 	struct mutex		user_mutex;	/* User access mutex */
+ 	struct sockaddr_rxrpc	dest_srx;	/* Destination address */
+@@ -914,6 +916,7 @@ enum rxrpc_command {
+ };
+ 
+ struct rxrpc_call_params {
++	struct key		*app_data;	/* Security response app data */
+ 	s64			tx_total_len;	/* Total Tx data length (if send data) */
+ 	unsigned long		user_call_ID;	/* User's call ID */
+ 	struct {
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 817ed9acb91e..9f6130d90c4c 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -211,6 +211,7 @@ static struct rxrpc_call *rxrpc_alloc_client_call(struct rxrpc_sock *rx,
+ 	call->interruptibility	= p->interruptibility;
+ 	call->tx_total_len	= p->tx_total_len;
+ 	call->key		= key_get(cp->key);
++	call->app_data		= key_get(p->app_data);
+ 	call->peer		= rxrpc_get_peer(cp->peer, rxrpc_peer_get_call);
+ 	call->local		= rxrpc_get_local(cp->local, rxrpc_local_get_call);
+ 	call->security_level	= cp->security_level;
+@@ -697,6 +698,7 @@ static void rxrpc_destroy_call(struct work_struct *work)
+ 	rxrpc_put_peer(call->peer, rxrpc_peer_put_call);
+ 	rxrpc_put_local(call->local, rxrpc_local_put_call);
+ 	key_put(call->key);
++	key_put(call->app_data);
+ 	call_rcu(&call->rcu, rxrpc_rcu_free_call);
+ }
+ 
+diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
+index 48519f0de185..dd79630d3066 100644
+--- a/net/rxrpc/conn_client.c
++++ b/net/rxrpc/conn_client.c
+@@ -81,6 +81,7 @@ static struct rxrpc_bundle *rxrpc_alloc_bundle(struct rxrpc_call *call,
+ 		bundle->local		= call->local;
+ 		bundle->peer		= rxrpc_get_peer(call->peer, rxrpc_peer_get_bundle);
+ 		bundle->key		= key_get(call->key);
++		bundle->app_data	= key_get(call->app_data);
+ 		bundle->security	= call->security;
+ 		bundle->exclusive	= test_bit(RXRPC_CALL_EXCLUSIVE, &call->flags);
+ 		bundle->upgrade		= test_bit(RXRPC_CALL_UPGRADE, &call->flags);
+@@ -118,6 +119,7 @@ static void rxrpc_free_bundle(struct rxrpc_bundle *bundle)
+ 	write_unlock(&bundle->local->rxnet->conn_lock);
+ 	rxrpc_put_peer(bundle->peer, rxrpc_peer_put_bundle);
+ 	key_put(bundle->key);
++	key_put(bundle->app_data);
+ 	kfree(bundle);
+ }
+ 
+@@ -274,6 +276,7 @@ int rxrpc_look_up_bundle(struct rxrpc_call *call, gfp_t gfp)
+ #define cmp(X, Y) ((long)(X) - (long)(Y))
+ 		diff = (cmp(bundle->peer, call->peer) ?:
+ 			cmp(bundle->key, call->key) ?:
++			cmp(bundle->app_data, call->app_data) ?:
+ 			cmp(bundle->security_level, call->security_level) ?:
+ 			cmp(bundle->upgrade, upgrade));
+ #undef cmp
+@@ -303,6 +306,7 @@ int rxrpc_look_up_bundle(struct rxrpc_call *call, gfp_t gfp)
+ #define cmp(X, Y) ((long)(X) - (long)(Y))
+ 		diff = (cmp(bundle->peer, call->peer) ?:
+ 			cmp(bundle->key, call->key) ?:
++			cmp(bundle->app_data, call->app_data) ?:
+ 			cmp(bundle->security_level, call->security_level) ?:
+ 			cmp(bundle->upgrade, upgrade));
+ #undef cmp
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index e9a27fa7b25d..f300491b06bd 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -238,7 +238,7 @@ static int rxrpc_bundle_seq_show(struct seq_file *seq, void *v)
+ 		seq_puts(seq,
+ 			 "Proto Local                                          "
+ 			 " Remote                                         "
+-			 " SvID Ref Act Flg Key      |"
++			 " SvID Ref Act Flg Key      AppData  |"
+ 			 " Bundle   Conn_0   Conn_1   Conn_2   Conn_3\n"
+ 			 );
+ 		return 0;
+@@ -250,7 +250,7 @@ static int rxrpc_bundle_seq_show(struct seq_file *seq, void *v)
+ 	scnprintf(rbuff, sizeof(rbuff), "%pISpc", &bundle->peer->srx.transport);
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %4x %3u %3d"
+-		   " %c%c%c %08x | %08x %08x %08x %08x %08x\n",
++		   " %c%c%c %08x %08x | %08x %08x %08x %08x %08x\n",
+ 		   lbuff,
+ 		   rbuff,
+ 		   bundle->service_id,
+@@ -260,6 +260,7 @@ static int rxrpc_bundle_seq_show(struct seq_file *seq, void *v)
+ 		   bundle->exclusive ? 'e' : '-',
+ 		   bundle->upgrade ? 'u' : '-',
+ 		   key_serial(bundle->key),
++		   key_serial(bundle->app_data),
+ 		   bundle->debug_id,
+ 		   bundle->conn_ids[0],
+ 		   bundle->conn_ids[1],
+diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+index df7dc1c942a3..b3f765fd41bc 100644
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -12,6 +12,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/export.h>
+ #include <linux/sched/signal.h>
++#include <keys/user-type.h>
+ 
+ #include <net/sock.h>
+ #include <net/af_rxrpc.h>
+@@ -544,6 +545,8 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+ static int rxrpc_sendmsg_cmsg(struct msghdr *msg, struct rxrpc_send_params *p)
+ {
+ 	struct cmsghdr *cmsg;
++	key_serial_t key_id;
++	key_ref_t key;
+ 	bool got_user_ID = false;
+ 	int len;
+ 
+@@ -628,6 +631,23 @@ static int rxrpc_sendmsg_cmsg(struct msghdr *msg, struct rxrpc_send_params *p)
+ 				return -ERANGE;
+ 			break;
+ 
++		case RXRPC_RESPONSE_APPDATA:
++			if (len != sizeof(key_serial_t))
++				return -EINVAL;
++			if (p->call.app_data)
++				return -EINVAL;
++			key_id = *(key_serial_t *)CMSG_DATA(cmsg);
++			key = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
++			if (IS_ERR(key))
++				return PTR_ERR(key);
++			if (key_ref_to_ptr(key)->type != &key_type_user &&
++			    key_ref_to_ptr(key)->type != &key_type_logon) {
++				key_ref_put(key);
++				return -EINVAL;
++			}
++			p->call.app_data = key_ref_to_ptr(key);
++			break;
++
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -736,8 +756,10 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+ 			goto error_release_sock;
+ 		call = rxrpc_new_client_call_for_sendmsg(rx, msg, &p);
+ 		/* The socket is now unlocked... */
+-		if (IS_ERR(call))
++		if (IS_ERR(call)) {
++			key_put(p.call.app_data);
+ 			return PTR_ERR(call);
++		}
+ 		/* ... and we have the call lock. */
+ 		p.call.nr_timeouts = 0;
+ 		ret = 0;
+@@ -822,11 +844,13 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+ 		mutex_unlock(&call->user_mutex);
+ error_put:
+ 	rxrpc_put_call(call, rxrpc_call_put_sendmsg);
++	key_put(p.call.app_data);
+ 	_leave(" = %d", ret);
+ 	return ret;
+ 
+ error_release_sock:
+ 	release_sock(&rx->sk);
++	key_put(p.call.app_data);
+ 	return ret;
+ }
+ 
+
