@@ -1,84 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349603612F3;
-	Thu, 23 Jul 2026 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58A4476683;
+	Thu, 23 Jul 2026 17:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827843; cv=none; b=JBeAi0J6nV1bD1aDfX030yXDLItdPo40xbYzjmwGqHg3WwXW0Zzi1INVwrkVC7z6JE8Nv2WChzvJb5Jasko0UKW9n06bMtIMmKks969mZLlFiDiCkuZJ9wvygWIALvPgrClnobkGBQyqED2E1wgWMtBobgkQJVaWKFzBQC21Brs=
+	t=1784828118; cv=none; b=rg8Fj5txMuYwGP42Y3wpVZgA6WhUAaLyBrdPFwE7PWQuQCzKBxF3aK4jGRklu7LEAxPOLO2pwlsoT3QtBakZRNlGDyu607j1Bg2Im+KorVoFFqsIQI+yPpRmA+z3R0P6iAj2ShDvXeOyYdInD4UEjDf2jf0ikLA4N1elgt6mfd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827843; c=relaxed/simple;
-	bh=EhkPXcaWHqfkLc8Bw2AnjM/eZzUNUz7KcwVW+Zr55nc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eV+Xg64+r7+XYnXZ+QJUoQyN2WW0Nd24JMe0POm/GRlG2nX9ks/LJEhtNAtAeoSfXALxDROuXFw9Fwei9fzhsxiUKOH1vKw76+pC4TFhFHoEUYel6GZJLxyH3CbY2By9qkhEpRWZD/N2rX7rwEWBjZz/JTcs7yN3qWeeT7tPFr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtEzjkHV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784828118; c=relaxed/simple;
+	bh=hwYkFA9PmV36Y59djeb2A8n0ZG+KGIq27JcB5qEKDkk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eZzJEF40SusZZgo2BrnMhFxdB0kgoLIiKYMUfINCSTNJh8J/drNVN/0mX5yDR9RfOlHiDXymENkQbO2OyYFZobB+rRjDRRHBjOfbAp6t5OYDk8cbkV1996pZ4t1j0taR/+etTDlYq5rPFjCIYFPSP6a/3Rpuqn7Uv9nHJOdFafo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1gOqKna; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtEzjkHV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB59B1F000E9;
-	Thu, 23 Jul 2026 17:30:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1gOqKna"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EC41F000E9;
+	Thu, 23 Jul 2026 17:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784827841;
-	bh=sFjB4cztRoztsgQjY76DRZh6+AU7bFekMTTKOZnbDeA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KtEzjkHVQdDR/SeWgKfsTNKsINAjBlglCPylzkndTCfV6nlX26U2HJdeggLtzb/dN
-	 lv9lHi+i8LTXk3kByFvbOlyis55WEr1be08E6s9MYvzD7EfpmXWvgrA2Aex2+hkBYD
-	 +7FCOViXJB3PvgCIP7hlkOboL2bvQnFB5ozbiyTUQuBzoI8mtJKixl9LBxIaLL7dbQ
-	 AlNkyRwIzyvfaGU5EwYaffsTnejEJqfwU2NVsSMDCe9A8frTbhMjNU5yXgKXetZ+EL
-	 Z9buxqOyW8+kcW+RBjMuxIEKIyF1MbFkOnK6kr27DvkxorIYlPrrm950n9kJMiJWWX
-	 0E5yjcwoYlfKg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1986639244C6;
-	Thu, 23 Jul 2026 17:30:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784828116;
+	bh=hwYkFA9PmV36Y59djeb2A8n0ZG+KGIq27JcB5qEKDkk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=h1gOqKna/suqeipdwQ8jNPKww5cNCKo5orZl33s/ivROnDX51C7cNAyDOx0kLlWde
+	 fyxVieZSIgU+drqGfAUFfcg5oEpAbxviqJudylxXzpMalBajm/jGfbHvASBE8Jjfw6
+	 MDupXhWRZq7u/K3aqVszSv14wqhol3WKEJxWif9JeDTHkGatKg+E2/+4AgiAQvZLoc
+	 Q42TWzMW2mUT5MuOvnsaWvfVB4lxyN4ew1Pdpc353XumBONozgMiBNuMSl78jwbZ28
+	 wFkBWLEXzmdcTL8utYLujseRvP89jvvHnRWbvj6fyqSEjnpyrIkeHoc12NvV7RS9EQ
+	 0tTh8PZnQe8tw==
+Date: Thu, 23 Jul 2026 10:35:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Jun Yang <1753810072@qq.com>, netdev@vger.kernel.org, Marcelo Ricardo
+ Leitner <marcelo.leitner@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-sctp@vger.kernel.org, linux-kernel@vger.kernel.org, Jun Yang
+ <junvyyang@tencent.com>, stable@kernel.org
+Subject: Re: [PATCH net v3] sctp: don't free the ASCONF's own transport in
+ DEL-IP processing
+Message-ID: <20260723103515.0059802b@kernel.org>
+In-Reply-To: <CADvbK_fjH_XGMVjZGXAk_Zj6_GOHu3u2bj9wOSMRymwNMK-k5g@mail.gmail.com>
+References: <tencent_73762ED1DF08CC9D5F5F61954B01350CFE0A@qq.com>
+	<20260723072924.7db6b065@kernel.org>
+	<CADvbK_fjH_XGMVjZGXAk_Zj6_GOHu3u2bj9wOSMRymwNMK-k5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] phonet: pep: fix use-after-free in pep_get_sb()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178482780964.2797885.9364408026538103530.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 17:30:09 +0000
-References: <20260721-phonet_get_sb_uaf-v1-1-95fd7881cc4e@debian.org>
-In-Reply-To: <20260721-phonet_get_sb_uaf-v1-1-95fd7881cc4e@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- remi.denis-courmont@nokia.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, 23 Jul 2026 11:33:27 -0400 Xin Long wrote:
+> On Thu, Jul 23, 2026 at 10:29=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
+ wrote:
+> >
+> > On Tue, 21 Jul 2026 21:14:05 +0800 Jun Yang wrote: =20
+> > > Acked-by: Xin Long <lucien.xin@gmail.com> =20
+> >
+> > Could you point me to where Xin Long acked this?
+> > I don't see the ack in replies to v1 or v2. =20
+>=20
+> He initially sent the patch to security@kernel.org, and I asked him to
+> submit it to netdev with my Ack.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Got it, thanks!
 
-On Tue, 21 Jul 2026 01:58:45 -0700 you wrote:
-> pep_get_sb() doesn't consider that pskb_may_pull() might have relocated
-> the skb data, and continue to access the older pointer, causing UAF.
-> 
-> Reproduced under KASAN:
-> 
->   BUG: KASAN: slab-use-after-free in pep_get_sb+0x234/0x3b0
->   Read of size 1 at addr ff11000105510f50 by task repro/157
->    pep_get_sb+0x234/0x3b0
->    pipe_handler_do_rcv+0x5f7/0xa10
->    pep_do_rcv+0x203/0x410
->    __sk_receive_skb+0x471/0x4a0
->    phonet_rcv+0x5b3/0x6c0
->    __netif_receive_skb+0xcc/0x1d0
-> 
-> [...]
+> By the way, there's a question about whether patches for security fixes
+> should include the PoC in the patch/cover-letter when they're posted to
+> the netdev ML?
 
-Here is the summary with links:
-  - [net] phonet: pep: fix use-after-free in pep_get_sb()
-    https://git.kernel.org/netdev/net/c/0f71f852a96a
+Not sure if there's an official policy on this but IMHO they should be
+easily accessible to reviewers / maintainers. If a frontier LLM can
+generate an exploit for the problem based on the patch, hiding the
+repro buys us nothing. And often the repro is useful during review.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+For me an ideal submission would contain just a description of how the
+bug was triggered in testing in the commit message, and a link to the
+repro / PoC under the --- marker.
