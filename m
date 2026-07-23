@@ -1,257 +1,143 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012071.outbound.protection.outlook.com [40.107.200.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02223BA253;
-	Thu, 23 Jul 2026 06:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0A93CBE6D
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 06:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784789153; cv=fail; b=WLxpnvSDhzXX/u4JXPZjOjBvrKp1+kqS70Wp2CnH9Xphbed8Cmarxok6l03CS0wqfrxlpPr125EUEaSgeA2ByptstZ83NZG/eVbwBmgJjvcSyHIP2Cw2L4hfaFB4D39wjNf/cDGNiOvhZzP0Yw9fjnrMu1TJTmJh2j0qp4a0iog=
+	t=1784789301; cv=pass; b=gnnf+bgIEM4g3cfD/btVHo1/ukOK0KmauY3bWzHDYxjq7Tj2Ixf+lSvxg2gGbGcPD3pIo37IANp5z6vu0bZu6ItzAA2QDavhOQqaIq8HkJWvFgbAp91h0erGzlw7z7hLFJvJKDfNfUUypRrZ+WsE8+S8naNau+EaheSgJAzp5xo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784789153; c=relaxed/simple;
-	bh=6ei+6H1TztlVCpCPpTVV9BouOE7rcag9tutfmWVZHis=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y+gznx5Ab4VnFB/gCqawBZzoGnwvUPSZfLm32bzMYfl/Rp/tz/6ZfqEJ1TKdQXy8l1/vw0jULCXULzTLrJUUjnQPRUcDX3Ysw10B0/qVdGp7eKcTsqQqDnuQ33Y3KyLWKQh6osH+0IREhereA3/rfdnYZHdmOD0K5mfQk9vnKvg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X0ikFzxI; arc=fail smtp.client-ip=40.107.200.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1784789301; c=relaxed/simple;
+	bh=4c3hYEcHpyqPmegtbKtV7D8WgaaAL1Hn5tKhB9WAczE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C8PfmVfv/yQMcYHnD8Ut3etcokCWFlEFFj1UrRMsYsnTdxLNlt3bJn6+ufzd0U0CFL3B0hhv9rNOYchjgllrfTmMtuEq2NneOhK+IFsW+K+rt8pq6SwLT4fVxqnUVAkavkRBwikSxvxTTg92vKD7JgazvD5emm5Fbw7mO0WLZzA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SIEDlx3D; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X0ikFzxI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GKj0b/hxrMug8/hzir2G5UHcSt98KMj9T7cb0nh0ILksf/4T3/CA+CD7fAeOBjgflrcDXDqlb0HOW6Mx4pLuw2rSvasC0eFYFKunrEYk+RTYpuMb5dzX7wI8r5iAAj8zToet1pf6uRxhk8BXB/TtFm/1KhyLahR0awi96ET1AAXZLG/yNW8vdhx5SkaIQjwSop8aX3BnexsuQunyYRRYCCVhFnyHSuIU6ofZfyZQS/LBViEHB39xI4trT0oevxNuqnzr7gPP4BZ4F540CN4KQtnhNDn4xBpl+AAzyYdnpAQIwG1dYWAq3Kd6g3Z2bSEKk02SeGiClOVMDjarS0gCfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OKWULD5ntcqDpx46mkQ8198GjUi2uZgOI2caLWzroAI=;
- b=ykF/tUQRAob7f0jYByYQrDRgCJm66bkDZ57hfze57kOLVcxw4KBlH39I2XxuUOvdQhCDtiVT1c1EvjYpErZzVoEeTUnlUNH6KQMxSFtvw9jHa2eixw5EHMildHT4oSCKMiYSNbKZ/od1pjA2TWZV4kKyTeVYR2y3kOeroBCQx0DzsaYMztS5xSV8e3Mgu9MyO7BNm9cenqG+CLpD9QnuXAKPEe+56QYVZoiw75T2+pNFTbs1JXzyGZZa+UvZmkwia9orzV1bDiz7vKqkwB3V3QdsnOgTQSfPaF7s/LSGbkrWWHz+A+w8/FcSG9AQH0mJv5T6Xh0bxY/5pfhAPkJiXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OKWULD5ntcqDpx46mkQ8198GjUi2uZgOI2caLWzroAI=;
- b=X0ikFzxISSnlBNmA9U0qFXhQHOVMQbR7keCjo8gWf2oHqkRTx8jbA+rshmYERqmFYzs8wxpMSPwaDSQnuWQyTBd+xC7eavXHnEIPdCyBvHyjjGGiGxbQ3ozA2cQ4fFRVW8VBdFcwTM2bG2BP84zsWGJ/NE9ur4QJO4wo2e2oXqvhYOsEmwFPtlfT1DAnDyaVrfGZF6nIUsSVTifox1UcEQ+wDVu1LqjMrEsZxT3BwqdNUgNTMBo1XXIKqt07B2Pg7xPSWgMj/v7OjBAUidq1uPn6fUWRhGayG9aHz/CmLoDfHzuTsxvFRplHbFp3PP/2KK8xP83JV8KVYM74oAhvug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
- by SN7PR12MB7345.namprd12.prod.outlook.com (2603:10b6:806:298::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 06:45:45 +0000
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e]) by MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e%6]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 06:45:45 +0000
-Message-ID: <ee358aca-dfcb-40a8-9dfe-dce1ebb9c063@nvidia.com>
-Date: Thu, 23 Jul 2026 09:45:39 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5: Use unique names for software steering
- caches
-To: Leon Romanovsky <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alex Vesker <valex@nvidia.com>, Yevgeny Kliteynik <kliteyn@nvidia.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20260715-kmem-dupliate-name-v1-1-85551c328155@nvidia.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20260715-kmem-dupliate-name-v1-1-85551c328155@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0433.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:d1::15) To MW6PR12MB7086.namprd12.prod.outlook.com
- (2603:10b6:303:238::20)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SIEDlx3D"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bfa429aa6so1166301cf.0
+        for <netdev@vger.kernel.org>; Wed, 22 Jul 2026 23:48:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784789298; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HIrqP1ueQAPwDgqEKJqvPsDVyVxR9MGYwbvET3EKRd5IBNr5OK+e9dkHJZrh1lbV4E
+         7G8JIFOQXSA7xikGYhHGPQn3zv/Fsfl15idXbFHI2/o9QrAycZL74mfXv2tsNiVtcFF9
+         wLBDDldl3mK1ClCfw5nsl6LZm7yrMzluL9vvr18PCIQSezoSOLo+UVGbr2egs59AB6fP
+         uNTVKT4P/6F4vpQAJhbT0hzkR7GF9pRfF5GFVLn7ymUQdEafcdfoHLpFOCw2iL6SYB6Z
+         1FHhOfd/G0NDHKgQ/qoFaFlPWsP1CxQTBAbJxuSKf942YwWq1kKuynELHkw9atZTmM6G
+         53ZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
+        fh=097hxZa6Q531Vxep85A19v3J3rMoCG6S0uz/jNX+wrQ=;
+        b=EWjC1UPh30F9jsQ2sOX26t3Pv3msuT9xA+Hw+LnxEOkL/6hyTHyv1fxW2e9BZsDm8Y
+         ZWcZ6rk2p6kuEra00HSaZSlRWZGv1hzdE89699O/Y1PSMU6ygDs4wlbe9DYe3OcWeIZg
+         +Iv/62CbSh1het2xHYsoIj2J4l0oBNYmJ4ajZgR1ht/Cw33CAM/ZnQX7fkT2Tb12bNH0
+         BQOc0c/5Ah9qayEamZqqmELBBMqfBSdJddbGJUGaxnqputb941FkuZ7hpu9kgEkdZ9Vd
+         xKNOa40F+GG1WfzsgDmlwQ3SOQbdBwKOZi4Z8R/UDqYORtxDRvHOD4KANGXXkT0M+5Cm
+         StcQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784789298; x=1785394098; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
+        b=SIEDlx3DgmAi6WhptnT0MjczshdWCyyjJeERZbmF4Yz+Z+TlJLzBhO02GWPmLRoOfu
+         4/OFPmvoTH6odaTETpuecDSvVCAixS1tRUbcytuWg2YUkI9YP5XP6nj/gTjFopB6YXYa
+         jqv+LPm0EyXHGopL8uQDycQdVMSmGINfhUeVaT5nAjn2HU1qcA1THPmdM1Hy6/NLjEzR
+         6LYFzcJ76YbB3dxsRJiQPIRYfd1kUD36TC6NnV8bb8SUPXvORnNK0dthvJz2IBRUH4IS
+         UrPB+r1zBhi61C1asGvaoRRCU4yTcfv+/DCAHtlvRvlIK/bcHPG1NXiwBglOCu1dJc+G
+         ticA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784789298; x=1785394098;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Fopt4fHG6AZ8ylrJsUtfBCilhZJrwdqtqno3S8Vh420=;
+        b=aFk5lJVY9VDqfhkqRa15nGqX2wC2DI0FE5oEUd59QwbBYuf3aL6W7b3x5e9fW/iDZD
+         kEXr7xdfykfeFOPlgdUyVr2a7yuoQ1ZKFXzPPFTXDyuWwS57kCb23Q4B7R4gz+R1OE1w
+         zH9GFClcAOaMulr4PLcCLZW3RGEFdnmcCmIEfYFQJoxsCVFKHX8Hezo1coRtCHBhdGon
+         7qzEZL8jId7t7NG9F32V0i5wyIQSO6wBa6nnX0ta5BZ2SWeWSl7zaqPtmHtc9kifsFCp
+         WD/c0eZXrbMKekyWh5jigmB2S/7G5T3ztqvzyLs3lvggTsi0MQAI0XOo++4yq1WopaYY
+         KOHA==
+X-Forwarded-Encrypted: i=1; AHgh+RpUaIgk6Mk1kHpqMo+N1EV6FVk0O5GwkCuSWPW7EKFKm+Xl/R5RwOKIBLv2iQ8JZNDA4pv2PjA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw69bimgJJSZLFKnP+IfYZNzxmS6DicaC7PhDJviYjdN38klCMf
+	AoVy27cVWTzNd7wvqcD/BBpAtVgfhRRk/FWESdoLXHPv3/nqVovmIbJvKXDaiVuZ4r9z18TxPtd
+	OrVqZXn40WqZfmK2nbMBuk5Ea5o3lvP78aI/XyMjM
+X-Gm-Gg: AR+sD12zlVaYgUeOr3zQAdmDLgJ+F6D6nBEvLoGKV9lXar6lzZa7aA45wdxOz4y0KRR
+	1u7qrFkk+8Cp7d3YdZtrmhgec1KM1pIW8cNuE4Z9B3OU88W4Qd+LtfCDL9ZzkXzOlwAfpFLqY7K
+	XExk2dRPF7lUzWsGIZJ9RoOUAhREugrP3WU9ULGjM90Q4l9SQHMkdL/XFCcjWUIuLKKJcrZ3UL+
+	kuikrbSrqVfcEfUKD21M3LlVMbpFiF8GTMu/zGjF7mpjCDQJCz6posAYw2yDS+hZR2m5/OxPpnr
+	53EHRDhxgeI5gtc/pR8AcNY8M7o/ELZjdcFUuEN2tlhasFs7FPeUSsSdGQmvxndEZMpWeeDFhfG
+	gcv0nbw==
+X-Received: by 2002:a05:622a:588f:b0:51c:7aa7:e0eb with SMTP id
+ d75a77b69052e-5283ee29359mr11912951cf.40.1784789297090; Wed, 22 Jul 2026
+ 23:48:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB7086:EE_|SN7PR12MB7345:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61b5152a-87a0-49a3-ccb2-08dee886056e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|10067099003|11063799006|6133799003|56012099006|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	XT5fWrEUMhELDezDGdUnjLAIcjIqpnX3KITMEGw0yKMQxsniV5rghRXsxt6ZBQvXYLV2x3QCxPd8yaUYFdDVCb8xD8DIZTijyZ4UFG+9JdsDk+H+VOlzDc9TIFyoxxsSaZJ5i1RlvXtFZj5KdUJ1Z3A8RwPdiN61PGIXMfx9ZT5oe2ZvuyVIQ0F366Jxd8zqGkgAVmINvrOag3k3hNzBt1k58J66Ekl+N+tS8cPq4xSgMcjFYa3fCznCQDCeR9P/tPk8oB4HAb0n1WTY7q5Y4QAka5Py4Q8OrQ9+ScjRwHWd7aspd/mEm9ibFajgUOna3FX66XsDNHHwYq6mTC8EShixVS0xy4wUomHVN8whY7IXV2KE1Jb2IJV/JM68ogctuElfonlDcO2SphuF0YlnT8o1txGHX4hnnr1NX1h4mJlCW6aaWvsHp6a50s3DAIn0ALyGf0EENRaiBPDvdua7vxwXpu4uSx2e0P57a+m2+pYeJ+a6Pk/2W+Y2X5MYp5c2pDaxsJcPNa6jVQi52T3swecMBxfTThh5KBRArZK/bM/HKWdUnKWyAjXL2tEvfriPbsZLPI32us1c5wljmnARFDN6dWsMZdbnipXLG98NVz49LelC/cfUtonQk8JkL5C3K0jT1tLVqhexBL6dAdere7WyGn3HqzZOY7sK8739L3XxSXd+rrl/dwl0tz3sh/viy4Xi67XnYYtBkwkcZILYcw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB7086.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(10067099003)(11063799006)(6133799003)(56012099006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0pkY1pmNkFHdG9uTDlTYnR2eUJ2RHpGT0xwdk5XcWlQSHZUZUF6Y1pDSXdl?=
- =?utf-8?B?SGtKdnpKOG5YVE5ZYkhDMjBxY015OE9TVk5uUWJ5LzJ0cWtGUFIrSVdvVmx6?=
- =?utf-8?B?Y2tKdUU2N3p3SG5Ha1ZTS2RJU2FUWWlYVkU5elJsRkEzR2d3QTJmNG5tNysv?=
- =?utf-8?B?cjlSUWdFTU1Cb2ZvY0lCb09qdVlJR0RESHhCa3E4c2JRVnkwRHNVZzNselpk?=
- =?utf-8?B?eHRDVGpRV0luYnF6cG9OYXZVNGRxaGt5dUF0M1FGamVlMVhzendFR0wrcWRr?=
- =?utf-8?B?b0wwU0NRbW5UZ1NtUDh5SFk2SGgvcVBnSFczOVJsckFMemhCMTd1QU5oelBw?=
- =?utf-8?B?Ry9Gakw3anBvbjk2TXdhOXJlaFlKQkF3MlE4eWNEdVB2SU1MaWR0Wm1vVU4y?=
- =?utf-8?B?Wkh6akVoaW1rdFk3VUt1R3FndFYrdXdCY0ZNdU9YYkJhaVdrRzRDWEUvVDJj?=
- =?utf-8?B?UGxsSWRTT1NZR2FwaittbW0zOTRnNERhS1loK2Z5NVBLOEROL1ZiaHpEb2tt?=
- =?utf-8?B?OEVmRkxqY3JQWldjL0MyMWZhVWhRU29LTGRiRDZWYlRBYThteEpRc1YySkFE?=
- =?utf-8?B?WENYUUt2ZGZRdllyNzlZaTk4V1oyaGlGT0szeDcyK2JWWndnNFBSNS9lbU9I?=
- =?utf-8?B?K2VGRTFtTGkwZDVuSFlGV0Y1aUUvaEg1Z0srU1o5ZiswREo5L2t2cFBlY0cv?=
- =?utf-8?B?OGl1ZDdNQkxDMlVBdmlSanpkM0tYeHBsM3VOVjZ6dXZwblFpejR5ckRSQlFq?=
- =?utf-8?B?cG1qM2xRSG5ROUJNNy9WRG5raXJLSkpvbzNFT3ZtMkcyUzczclhxalJvV25Y?=
- =?utf-8?B?NUlxRWtwei9vWGhpMXhvQWxOWTl6MHVrMFZaOSswY2dYNGU1RU5GTkJsdUYv?=
- =?utf-8?B?TndBMEZPY3Z6YkU3cWlFKzg5RjU2MUJsSml6UTBlSUMwQVByN1J5c2huUk5C?=
- =?utf-8?B?dTQ3Mk4xYkFKazk2cXZMZjVJOU44ZC9wUGpCRzFKSWFEaVpFYXhlK1RZRW1I?=
- =?utf-8?B?eWcxa2dQYjdTazIraEtmZUJwMkt6OVQ3ampaQzFBVTFzeE0zWlIrcjV3d2Ry?=
- =?utf-8?B?cmZ1WGRBMnk0YlRjQUxZV0pOMEhWdGwxOHY5eTV0eUZqRGpUd1QzYzhHZUpp?=
- =?utf-8?B?TVZwK3gzUWhVeThqczJ2NllxU01PMUxZczQraGt3Z292NEYyTEdTTTlkc0x0?=
- =?utf-8?B?TG8ySXVWZnBpYnFqUDRSaTVXZkhvYW5XTWx6VndLdlhLSDJ2ZUZqc2p4NjNS?=
- =?utf-8?B?WGF6cHhERVVFYVFic0N6R2xpazVXYWVzcUZITzZDYW54dllNL3hqWG9DdEtr?=
- =?utf-8?B?YWNGVHFPZjRsaUNRQlNYaU5vMFRrV0xaWU5tTHVtelZ3WEpiOVdiNlhuVFd3?=
- =?utf-8?B?eFJjUWh2Y01DSGtoM1V0Z2FwSTd1NUhteWtoait1Undvc0JPY0JaYmVCQTBm?=
- =?utf-8?B?RnBySmlqQjM4WE81ek5JNkZFbFF5YkQvRVFTWWlNRytTUGM2Q1VRaWRnWUN2?=
- =?utf-8?B?Sk9lOG9tQzM4UldSUXpMVk95QXhMRVBlUUxyaHVEWXc4Rlk2ZkVqUk1iZzdj?=
- =?utf-8?B?Rk5SQWpaZkhQTHM3dVFoWnBVQ2pRV3dhdGpFMXYxdzNRYXJsTE9iQ1NrdEgy?=
- =?utf-8?B?RGIzUFFZRGZ6MlB0UncxM25YN0NxYVlicWdvOUlsM09uQXhSRG5uWDJHN0h4?=
- =?utf-8?B?azVMMkwvVHBVVWQwWlk0REJSeUpTYXJxWHZ5ZVg5MEE4aHloY01MazVNVGFE?=
- =?utf-8?B?bkYzdTdxV1M0V0FpMmZnT3NQRG5Id3paNlZaOEt4VllndjdrL2g1czlkTWhW?=
- =?utf-8?B?Y0UzT2E0cVNSTjloeUZsUGFYVkg5dGptbUtuc0ZIVWpXUGRZUDdMUElmS2JH?=
- =?utf-8?B?WCs5Yy9vcFZUeDlNam90SGx5RTgvSnlncGRzdE02RElsWHJhTE1Kc05ySnp5?=
- =?utf-8?B?NXhBYU4zRjVNd2ZrTHZNNkNWc2ltWjU0L3FENzdYT20rTlRnaHBpRVczU3VH?=
- =?utf-8?B?Z2p0cUFHTmtzNTRqbitTVlhmRlorMFpLM2oweEl1ckVlRlJyWEN4UDJrZm1J?=
- =?utf-8?B?U2I2aVQ5cGR6R3pMQnZ4RGY5cDJNT0RSTjl2RnRiTlk5YnZ6NjlRQzRGZW9n?=
- =?utf-8?B?aE1zV1MrMzFEK1RGejF5U05lSXAyL3JjOS9KVlFXUi83TysxdXZ6WVFmN3JG?=
- =?utf-8?B?RU1obGFsbUJmRmhDTGYwNlhCZEJkVkwyWnp1VjdxcHZISFJKYmx0b1VPNFR3?=
- =?utf-8?B?OXhqZldDSjhFMkVZdDNGVWp4YTZqa2t5ZnBRNzlkYkpZeVRxWVF6UnBhT3p1?=
- =?utf-8?B?c0xQKzd1bEpPQVFyNUIrUkVwZkRoWFR5UUZCZURpa09nbVRzekgvZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61b5152a-87a0-49a3-ccb2-08dee886056e
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB7086.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 06:45:44.9072
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FY6g8mAoQPJLvQjR/2YO0YBXAeI8MK8/BKxYJ/HBBINvycPFMRQX7sOW1td0gpps3lCtjlsOyjT6p3fZmgmLQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7345
+References: <20260722101605.2868548-1-edumazet@google.com> <b16aec0f-a90f-4132-820e-239ddadbe8f0@linux.dev>
+In-Reply-To: <b16aec0f-a90f-4132-820e-239ddadbe8f0@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 23 Jul 2026 08:48:06 +0200
+X-Gm-Features: AUfX_mzfwjmTNyJFDDWM3usED32OxNE4Kw8gwv9kJEeTjMZwSCqsswLX5fagY3Y
+Message-ID: <CANn89i+E=JBRGj3cK+6mfVEX+PUjYrpkkWk1dB3VswnW4X_KGw@mail.gmail.com>
+Subject: Re: [PATCH net] ppp: annotate data races in ppp_generic
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	linux-ppp@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jul 23, 2026 at 8:24=E2=80=AFAM Qingfang Deng <qingfang.deng@linux.=
+dev> wrote:
+>
+> Hi,
+>
+> On 2026/7/22 18:16, Eric Dumazet wrote:
+> > diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generi=
+c.c
+> > index ef54e0a0462a175bb989db8dda895e9ae755965f..cacc4c3a37d2cda0aea2e17=
+6e5d0638f959e18a3 100644
+> > --- a/drivers/net/ppp/ppp_generic.c
+> > +++ b/drivers/net/ppp/ppp_generic.c
+> > @@ -866,16 +870,16 @@ static long ppp_ioctl(struct file *file, unsigned=
+ int cmd, unsigned long arg)
+> >               break;
+> >
+> >       case PPPIOCGIDLE32:
+> > -                idle32.xmit_idle =3D (jiffies - ppp->last_xmit) / HZ;
+> > -                idle32.recv_idle =3D (jiffies - ppp->last_recv) / HZ;
+> > -                if (copy_to_user(argp, &idle32, sizeof(idle32)))
+> > +             idle32.xmit_idle =3D max(0L, (long)(jiffies - READ_ONCE(p=
+pp->last_xmit))) / HZ;
+> > +             idle32.recv_idle =3D max(0L, (long)(jiffies - READ_ONCE(p=
+pp->last_recv))) / HZ;
+> In the original code, the difference will wrap around on a 32-bit kernel
+> with HZ=3D1000 if the session sits idle for 4,294,967.295 seconds
+> (approximately 49.7 days). With this change, as the difference is cast
+> to a long, it will be negative after 2,147,483.647 seconds
+> (approximately 24.9 days) and then clamped to zero by max(), making the
+> situation worse.
 
+I do not think the code was ready to handle long idle sessions to begin wit=
+h.
 
-On 15/07/2026 11:22, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Each software steering domain creates its own slab caches, but all
-> domains use the same names. When domains for two devices are alive at
-> once, the second kmem_cache_create() triggers the following splat:
-> 
-> WARNING: mm/slab_common.c:111 at __kmem_cache_create_args+0xca/0x480, CPU#18: devlink/331372
-> Modules linked in: act_mirred act_skbedit cls_matchall act_gact cls_flower sch_ingress
-> vhost_vdpa veth nfnetlink_cttimeout openvswitch macvtap macvlan vfio_ap kvm nf_nat_tftp
-> nf_conntrack_tftp nsh nf_conncount vfio_pci_core irqbypass scsi_debug vhost_net tap tun
-> vhost_vsock vmw_vsock_virtio_transport_common vsock vhost nft_masq nft_reject_ipv4 act_csum
-> cls_u32 sch_htb smc_diag smc ppp_deflate bsd_comp ppp_async crc_ccitt ppp_generic slhc loop
-> algif_hash af_alg nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4
-> nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-> nf_tables mlx5_vdpa vdpa mlx5_ib dm_service_time ib_uverbs_support vringh ib_core vhost_iotlb
-> mlx5_core s390_trng eadm_sch vfio_ccw mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core
-> dm_multipath drm_panel_orientation_quirks uvdevice diag288_wdt watchdog hmac_s390 prng aes_s390
-> zfcp scsi_transport_fc pkey_pckmo pkey_cca pkey_ep11 zcrypt paes_s390 phmac_s390 rng_core
-> scsi_dh_alua pkey scsi_dh_rdac scsi_dh_emc crypto_engine autofs4 ecdsa_generic ecc sha512 [last unloaded: openvswitch]
-> CPU: 18 UID: 0 PID: 331372 Comm: devlink Tainted: G        W           7.2.0-20260712.rc2.git0.e3321fa3034d.300.fc44.s390x+debug #1 PREEMPT
-> Tainted: [W]=WARN
-> Hardware name: IBM 9175 ME1 701 (LPAR)
-> Krnl PSW : 0704c00180000000 0000038139a6771a (__kmem_cache_create_args+0xda/0x480)
->              R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-> Krnl GPRS: 0000000000000000 0000000000000000 000003813b7de578 00000380b9eb8974
->              00000276c417f690 00000380b9eb8974 0000030144623348 00000277234a1660
->              0000000000000020 00000380b9eb8974 00000277234a1600 000003813b686d30
->              0000000000000000 00000380b9e9a810 0000038139a6771a 0000030144623238
-> Krnl Code: 0000038139a6770a: c02000ebb737       larl    %r2,000003813b7de578
->              0000038139a67710: b9040039           lgr     %r3,%r9
->             *0000038139a67714: c0e5006e2eb2       brasl   %r14,000003813a82d478
->             >0000038139a6771a: a7390020           lghi    %r3,32
->              0000038139a6771e: b9040029           lgr     %r2,%r9
->              0000038139a67722: c0e5006cf98f       brasl   %r14,000003813a806a40
->              0000038139a67728: ec26018e007c       cgij    %r2,0,6,0000038139a67a44
->              0000038139a6772e: 58d0f0a4           l       %r13,164(%r15)
-> Call Trace:
->    [<0000038139a6771a>] __kmem_cache_create_args+0xda/0x480
-> ([<0000038139a676a2>] __kmem_cache_create_args+0x62/0x480)
->    [<00000380b9da1c70>] dr_domain_init_mem_resources+0x80/0x240 [mlx5_core]
->    [<00000380b9da226e>] dr_domain_init_resources.constprop.0+0x7e/0x2c0 [mlx5_core]
->    [<00000380b9da28b2>] mlx5dr_domain_create+0x132/0x250 [mlx5_core]
->    [<00000380b9dc1e20>] mlx5_cmd_dr_create_ns+0x30/0x90 [mlx5_core]
->    [<00000380b9cd8dbe>] mlx5_flow_namespace_set_mode+0x6e/0x130 [mlx5_core]
->    [<00000380b9d846ec>] esw_create_offloads_fdb_tables+0xac/0x5a0 [mlx5_core]
->    [<00000380b9d865b6>] esw_offloads_steering_init+0x1c6/0x480 [mlx5_core]
->    [<00000380b9d86e8e>] esw_offloads_enable+0x13e/0x410 [mlx5_core]
->    [<00000380b9d7b04a>] mlx5_eswitch_enable_locked+0x36a/0x540 [mlx5_core]
->    [<00000380b9d84ff0>] esw_offloads_start+0x50/0x1d0 [mlx5_core]
->    [<00000380b9d8774a>] mlx5_devlink_eswitch_mode_set+0x35a/0x3f0 [mlx5_core]
->    [<000003813a791e68>] devlink_nl_eswitch_set_doit+0x88/0x120
->    [<000003813a5b93ea>] genl_family_rcv_msg_doit+0xea/0x150
->    [<000003813a5b95c2>] genl_family_rcv_msg+0x172/0x210
->    [<000003813a5b96c2>] genl_rcv_msg+0x62/0xc0
->    [<000003813a5b7cac>] netlink_rcv_skb+0x5c/0x120
->    [<000003813a5b8f0c>] genl_rcv+0x3c/0x50
->    [<000003813a5b74a4>] netlink_unicast+0x1f4/0x2b0
->    [<000003813a5b783c>] netlink_sendmsg+0x2dc/0x460
->    [<000003813a4c9764>] __sock_sendmsg+0x64/0xd0
->    [<000003813a4cc878>] __sys_sendto+0x108/0x160
->    [<000003813a4cdf50>] __do_sys_socketcall+0x350/0x460
->    [<000003813a8184d2>] __do_syscall+0x172/0x750
->    [<000003813a82d5d2>] system_call+0x72/0x90
-> 
-> Prefix each cache name with the device name to make it unique.
-> 
-> Fixes: fd785e5213f0 ("net/mlx5: DR, Allocate icm_chunks from their own slab allocator")
-> Fixes: fb628b71fb2a ("net/mlx5: DR, Allocate htbl from its own slab allocator")
-> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/a3cea501-4d1f-47d5-b6d0-fcda9a0aab16@linux.ibm.com/
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_domain.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_domain.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_domain.c
-> index fedefb565a21..c9f20a9033eb 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_domain.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_domain.c
-> @@ -98,9 +98,12 @@ int mlx5dr_domain_get_recalc_cs_ft_addr(struct mlx5dr_domain *dmn,
->   
->   static int dr_domain_init_mem_resources(struct mlx5dr_domain *dmn)
->   {
-> +	char name[80];
->   	int ret;
->   
-> -	dmn->chunks_kmem_cache = kmem_cache_create("mlx5_dr_chunks",
-> +	snprintf(name, sizeof(name), "%s-mlx5_dr_chunks",
-> +		 dev_name(dmn->mdev->device));
-> +	dmn->chunks_kmem_cache = kmem_cache_create(name,
->   						   sizeof(struct mlx5dr_icm_chunk), 0,
->   						   SLAB_HWCACHE_ALIGN, NULL);
->   	if (!dmn->chunks_kmem_cache) {
-> @@ -108,7 +111,9 @@ static int dr_domain_init_mem_resources(struct mlx5dr_domain *dmn)
->   		return -ENOMEM;
->   	}
->   
-> -	dmn->htbls_kmem_cache = kmem_cache_create("mlx5_dr_htbls",
-> +	snprintf(name, sizeof(name), "%s-mlx5_dr_htbls",
-> +		 dev_name(dmn->mdev->device));
-> +	dmn->htbls_kmem_cache = kmem_cache_create(name,
->   						  sizeof(struct mlx5dr_ste_htbl), 0,
->   						  SLAB_HWCACHE_ALIGN, NULL);
->   	if (!dmn->htbls_kmem_cache) {
-> 
-> ---
-> base-commit: f8d04b0c74e989c515e0fa17bf779b730077f63e
-> change-id: 20260715-kmem-dupliate-name-b151167f5119
-> 
-> Best regards,
-> --
-> Leon Romanovsky <leonro@nvidia.com>
-> 
-> 
+Can you elaborate on the 'worse' part, because I do not get it,
 
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
+We perform a max(0L, delta) quite often in the kernel, in lockless contexts=
+.
 
+delta =3D jiffies - ppp->last_recv ; can be ~0UL if another cpu was able
+to update last_recv to (jiffies+1).
+
+We prefer in this case returning 0 instead of ~infinity.
