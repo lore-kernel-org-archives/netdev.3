@@ -1,100 +1,101 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D20F370AF1;
-	Thu, 23 Jul 2026 16:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50133E95A4
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784824794; cv=none; b=u7zL0lOZQEAQnRfZcbb9du9afEpXNSaNKcaEC3k0zVZi9q30amDjHtyOTrRGMwAo409BKZJlx0durl/FXN5vWFY1iLS/8uBj3bTT3REHPYtG3KACPFkn1kLhOTY9ZX1wDXOxVR4o1topYuYUXu3sA+Lyb5z+TI3a+zjBgXYAq/g=
+	t=1784824872; cv=none; b=o2+Mr5K26nYvFwO4KAhieWacQ/OF6rSsGuu/Gcqe0MOomC1YdBtbMWShgdmIZgF4FAtIT9O4/DSCfspQeKyxW7oQ3VldSmYfvbY6Z4MGn+GDRKD4zM0xZFnt+ObOUn1iBPfe7N6GcFh5ys5wrkSE7ml7gX+rlk9lOWG3kZgMkWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784824794; c=relaxed/simple;
-	bh=Yp8cNqYd17Jb/kBRxFFBwlf9eVaWwTXzX/nahnjLd28=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooYsF44/LP40/d3mxMdGeL5Uudp9TL5sNNY3VUCWhMx+6Rf9+SEjqqaDsTYzogeIfaG7s4/ULXsFg/6y4bjcd+PGymsBqmkTTPiJkouduzFDFZHTlLHYcMzj0S3WSPxrCo3kkSuV0NngrXj6OW3y02MTXaLquFND3UXnmlLjsMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=talq+/bd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1784824872; c=relaxed/simple;
+	bh=fjKL20u3H7MJwfLBlBVYKcR7U31I3UVlkiS/UYwoUHc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U0OXYOgk6DzKMkz9SWpGi+ldZDgXRmsdBmqjH9bLA/o4ElCx89sSEz97s+UyIpc8cni4nyGsmc96SHLauH6PXm1vGGGYJ57dS7J7xi1gnoE0pq/zkonciie1VittHr8t4jK5xAw0PWSgIN/cRtbeR5png2qNjZs/xFi3KRHY5Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qccqKIbU; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="talq+/bd"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id BCD34601C5;
-	Thu, 23 Jul 2026 18:39:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1784824784;
-	bh=SJrk/1yGa8UKL6VEcejLUHbbfnxEEXZzE5ArnLEiLF4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=talq+/bdehpCk2U1FcGQoauf7V5CehO12RYa27GBrTYSYHTAk+KjJnyhG3PSqq+Li
-	 m1zstqOWu6vEXamwuc8tFbCc1SysmHh3yg1wi6KCbhYkU6yOCgnYo9WN6TWNWelJOq
-	 60lCSTIcvb5P8/Cn1Gmv+WANfPm6WEJm3nd6kwssvVD5rqUcrzs6/yzBa9BepKGWYt
-	 fjFYZAxpX87SzakVz2BprLRgdP2uONu8ShESWvBuQ5Zi37YH8yO+jnBIJzQk+QPdML
-	 aAbNz4wyW1NF9PGrHGSp7VtKbhJFPw4e4XunHp04r3hdHzXpGKswZJWu2BK6TignTf
-	 zoebJy1fjgSJg==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net 12/13] ipvs: clear the nfct flag under lock
-Date: Thu, 23 Jul 2026 18:39:09 +0200
-Message-ID: <20260723163910.274695-13-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260723163910.274695-1-pablo@netfilter.org>
-References: <20260723163910.274695-1-pablo@netfilter.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qccqKIbU"
+Message-ID: <0550c263-136b-4f50-8424-409ebd805503@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784824868;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G+gn24VVAAAi6zUEkzBGlUUubpWFgtnijncTWuNJRqc=;
+	b=qccqKIbUQSRqv4xWFnSdLSHC+MkTIwc99MfLERBd3csWZXzSElmq3RfTTBUevag0fVr17L
+	Phewy61L7Whi9mZPu5AAmcGLX9v/JfdLXyGaHTBwiq06nVnCARv1plOEILmfMB5RHaSsM3
+	AXR0NA5d7ZwXcc+3gXdPbrnDn5ALTME=
+Date: Thu, 23 Jul 2026 17:41:04 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 3/5] vxlan: use neigh_ha_snapshot() in
+ route_shortcircuit()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, stable@vger.kernel.org
+References: <20260723144249.759100-1-edumazet@google.com>
+ <20260723144249.759100-4-edumazet@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260723144249.759100-4-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Julian Anastasov <ja@ssi.bg>
+On 23/07/2026 15:42, Eric Dumazet wrote:
+> The neighbour hardware address n->ha can be updated asynchronously by the
+> neighbour subsystem, protected by n->ha_lock seqlock. Reading n->ha without
+> holding the seqlock loop can lead to torn reads or reading a partially updated
+> MAC address.
+> 
+> Use neigh_ha_snapshot() in route_shortcircuit() to safely copy n->ha under
+> read_seqbegin()/read_seqretry() lock protection before using it.
+> 
+> Note that arp_reduce() and neigh_reduce() seem to have the same issue
+> left for future patches.
+> 
+> Fixes: e4f67addf158 ("add DOVE extensions for VXLAN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>   drivers/net/vxlan/vxlan_core.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> index fb4a706cd5786d1937b1922acced31ffdb187c2f..10dd19eec09e266197ee51330a652f4e76c9643a 100644
+> --- a/drivers/net/vxlan/vxlan_core.c
+> +++ b/drivers/net/vxlan/vxlan_core.c
+> @@ -2159,9 +2159,11 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
+>   	}
+>   
+>   	if (n) {
+> +		u8 haddr[ETH_ALEN];
+>   		bool diff;
+>   
+> -		diff = !ether_addr_equal(eth_hdr(skb)->h_dest, n->ha);
+> +		neigh_ha_snapshot(haddr, n, dev);
+> +		diff = !ether_addr_equal_unaligned(eth_hdr(skb)->h_dest, haddr);
+>   		if (diff) {
+>   			if (skb_cow_head(skb, 0)) {
+>   				neigh_release(n);
+> @@ -2169,7 +2171,7 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
+>   			}
+>   			memcpy(eth_hdr(skb)->h_source, eth_hdr(skb)->h_dest,
+>   				dev->addr_len);
+> -			memcpy(eth_hdr(skb)->h_dest, n->ha, dev->addr_len);
+> +			memcpy(eth_hdr(skb)->h_dest, haddr, dev->addr_len);
+>   		}
+>   		neigh_release(n);
+>   		return diff;
 
-Sashiko warns that cp->flags should be changed under cp->lock
-
-Fixes: 35dfb013149f ("ipvs: queue delayed work to expire no destination connections if expire_nodest_conn=1")
-Fixes: f0a5e4d7a594 ("ipvs: allow connection reuse for unconfirmed conntrack")
-Link: https://sashiko.dev/#/patchset/CALMqdkR704S2BG_QD_bgHTFp2%2B1QCi7n0T4zoZyTo8mDZevYSA%40mail.gmail.com
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/ipvs/ip_vs_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-index 7efa209a517b..6b79e0c4d9e2 100644
---- a/net/netfilter/ipvs/ip_vs_core.c
-+++ b/net/netfilter/ipvs/ip_vs_core.c
-@@ -2194,8 +2194,11 @@ ip_vs_in_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state
- 		}
- 
- 		if (resched) {
--			if (!old_ct)
-+			if (!old_ct) {
-+				spin_lock_bh(&cp->lock);
- 				cp->flags &= ~IP_VS_CONN_F_NFCT;
-+				spin_unlock_bh(&cp->lock);
-+			}
- 			if (!atomic_read(&cp->n_control))
- 				ip_vs_conn_expire_now(cp);
- 			__ip_vs_conn_put(cp);
-@@ -2211,8 +2214,11 @@ ip_vs_in_hook(void *priv, struct sk_buff *skb, const struct nf_hook_state *state
- 		if (sysctl_expire_nodest_conn(ipvs)) {
- 			bool old_ct = ip_vs_conn_uses_old_conntrack(cp, skb);
- 
--			if (!old_ct)
-+			if (!old_ct) {
-+				spin_lock_bh(&cp->lock);
- 				cp->flags &= ~IP_VS_CONN_F_NFCT;
-+				spin_unlock_bh(&cp->lock);
-+			}
- 
- 			ip_vs_conn_expire_now(cp);
- 			__ip_vs_conn_put(cp);
--- 
-2.47.3
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
