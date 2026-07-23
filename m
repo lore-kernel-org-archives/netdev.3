@@ -1,22 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC3745D1B2;
-	Thu, 23 Jul 2026 15:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E94742AFBA;
+	Thu, 23 Jul 2026 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784821246; cv=none; b=pw3itcM0nGNUFizV79tU/PMauTorZrdpcxYQRsO2w7EEiVsGtV0lpWeg/2//NS5DFIj9yDsUw0z7bs3LsHPCH/SSykst+ftuacC5TnWOSta4J3Au2tSFRrkvKjg3Q+eLsCp6yQ9oNZRYIbVmy8ATmiLQoSk306NBKLvILZABkYs=
+	t=1784821259; cv=none; b=mF8fcRtufiuSV4lRXxJifHNWFmC8h20vf0msdZoFS7EaKIGLdpTVF15Mjko9vXY6Tf9pZI20QSoA4JA4ySU8i81U0YJqvR8YQVnb/TC/wLNTMe9T8OGpU4ihzHKgjyE0Y3C55iYapLF1Woc3mSCVVXFIS7SGVu0VZLLZqqndFWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784821246; c=relaxed/simple;
-	bh=gtToRZ7LCPow9Kyhulf+xB8no4IFdDA5XDCKAffU5dQ=;
+	s=arc-20240116; t=1784821259; c=relaxed/simple;
+	bh=0YIy1yBxyVM4rP3C7XOWEghR6o7eAg8m2hWT+kfNf7Y=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Q35fMPN0pwWugNyECJK6vWnL/LKbfjJjirGWgcf2u2KaaQD5xUwfT5OiH4/JHfuU1dKcfQW2eQIbrPsymcc8zaLoFUxH5zQukRKw4sYs3TajhbE5DqMYbzd44IVCjVYBug1HBaFAzKZLXNwA80Mm84gjL7NRUuYsrSqeTrEPPV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16FC1F000E9;
-	Thu, 23 Jul 2026 15:40:45 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=fu34Ndzh6ei3etdVGrEkzEQWjcWbWRa3JJV4lPn14e5q4qReOOItWozinSS2jx3IYgoqUsrBA35OXprN+vNMp/IqYuCq8JIANqcYhB5D5fICs+idmNrMQOi3+1CMjKieQd4SPXEFQAHByjtzoqRrHIOLS2oh/Lb+dZ1iL7IW8mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Adxw61dM; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Adxw61dM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AB01F000E9;
+	Thu, 23 Jul 2026 15:40:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784821257;
+	bh=aa7V7kV6u9RIhcBqtlxBXVYoo0CCm+Rs57nq8u9XUu0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Adxw61dM0fNWry+j+ItfMUg01IyXlLr3UFaR1yqhoq3H+3P9dEg2HixBSC9UbCDLN
+	 vubIcXWM1+r9im5t66R+6T9aydlOhU/R4W6hADp7VY6Jw90w+hOWEic+fgUV0M5nD8
+	 Q7jMahUeqWLkuOt5LQGOs0TA2SxcdOr8UV8IsHKs10RqPARAlmsok7fgO6ONbqKCI7
+	 Dmknumi7bGhDG34KkQUxdtKlIpL13xLfn4p5VE+Hht+g77uAB5snmMqgaehVs5fymP
+	 AEFgEWBi59lmSQ03Ro/PN6SJ3XXpllY8uUj5hbE8nYNI1+rAWDAdaI6E4JyRaFQjTL
+	 tamvatTA3TZ3Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9396B3924454;
-	Thu, 23 Jul 2026 15:40:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199033924456;
+	Thu, 23 Jul 2026 15:40:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -25,43 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] tcp: validate RST sequence in SYN-RECEIVED
+Subject: Re: [PATCH net] octeontx2-pf: tc: fix egress ratelimiting
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178482121114.2324960.1921837977854405537.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 15:40:11 +0000
-References: <20260717081443.809393-1-yangyx22@mails.tsinghua.edu.cn>
-In-Reply-To: <20260717081443.809393-1-yangyx22@mails.tsinghua.edu.cn>
-To: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, zhaoyz24@mails.tsinghua.edu.cn,
- wangao@seu.edu.cn, fengxw06@126.com, qli01@tsinghua.edu.cn,
- xuke@tsinghua.edu.cn, yyxroy22@gmail.com
+ <178482121264.2324960.7688882916467745838.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 15:40:12 +0000
+References: <20260717084349.2227796-1-nshettyj@marvell.com>
+In-Reply-To: <20260717084349.2227796-1-nshettyj@marvell.com>
+To: Nitin Shetty J <nshettyj@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, hkelam@marvell.com,
+ sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ naveenm@marvell.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 17 Jul 2026 08:14:41 +0000 you wrote:
-> The SYN-RECEIVED request-socket path accepts any in-window RST and
-> removes the request, even when SEG.SEQ does not exactly match RCV.NXT.
-> RFC 9293 requires a challenge ACK for a non-exact in-window RST.
+On Fri, 17 Jul 2026 14:13:49 +0530 you wrote:
+> From: Hariprasad Kelam <hkelam@marvell.com>
 > 
-> Patch 1 applies the RFC 5961 sequence check to request sockets and shares
-> the per-netns challenge ACK quota with the established-socket path.
-> Patch 2 adds a compact packetdrill regression test for exact, non-exact,
-> RST|ACK, and out-of-window cases.
+> The egress rate calculation computes an incorrect mantissa and exponent,
+> causing up to ~50% deviation from the configured rate at lower speeds.
+> 
+> Rework the computation to follow the hardware rate formula:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] tcp: challenge ACK for non-exact RST in SYN-RECEIVED
-    https://git.kernel.org/netdev/net/c/a28c4fcbf774
-  - [net,2/2] selftests/net: packetdrill: cover RST validation in SYN-RECEIVED
-    https://git.kernel.org/netdev/net/c/7bb18355e599
+  - [net] octeontx2-pf: tc: fix egress ratelimiting
+    https://git.kernel.org/netdev/net/c/bb0d96ebe5f4
 
 You are awesome, thank you!
 -- 
