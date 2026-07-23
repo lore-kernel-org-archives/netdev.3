@@ -1,37 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AAC471D14;
-	Thu, 23 Jul 2026 12:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBB0378814;
+	Thu, 23 Jul 2026 12:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784811084; cv=none; b=mnANVUKDw84WRiOO1bT5y50NCv8OzdFOnPm1TwbJEhsDVVGhL5ihSDuo72ZecV6fW49AJOoztwtpmYEChufOlPPlLgJf/RpsXSACLHYjzwRfoHAlCVcVuSrrDuOWmhZ0sawipCyJzlUd1U6Eo8v8JQBwDFe8LY3O+ugBpeAbfpU=
+	t=1784811293; cv=none; b=dtoLxwUxWE7hPfJGBeyMrnc3v5Rw/jf1CrvGujOn2Wt2TrUnaGM00+0Jbc3ls3zDTV+wyOn8K9TtFOKY5rF6xN261cwPDM0XaV2ByJMwieQBe9YWqvZ6UK5OStAx/1xCroTwQFzsn1HyhWvwcRPUHD18dG+oW+gu8qwZHcfi5uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784811084; c=relaxed/simple;
-	bh=jlAzOHs+rEj986blwMQ7jdXdsQsPiKBVoJ3nKBIOym8=;
+	s=arc-20240116; t=1784811293; c=relaxed/simple;
+	bh=1vWzpOrWZi4WpPRkzF28E9OEQ5ofdhKnGANZI7Pj6ho=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VdyOrKpNvu7lRrL+7Q6Iu1Gkk/eAcBJgjOPOJuOffZZatORJhQs67BzZmvnFrKF0tAT+rEDBMcox8IsyHDiQc9mC8VCA/vWz/FDMUrJnNDwi/k76iCgjHqLzL4jGIUYsU5ZTjIYDe+uw0JrdtZ3wp0FBMZoCk9e+8I6aS07yBs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70271F000E9;
-	Thu, 23 Jul 2026 12:51:14 +0000 (UTC)
-Date: Thu, 23 Jul 2026 13:51:11 +0100
-From: Simon Horman <horms@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: anthony.l.nguyen@intel.com, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org, larysa.zaremba@intel.com,
-	przemyslaw.kitszel@intel.com, aleksander.lobakin@intel.com,
-	sridhar.samudrala@intel.com, michal.swiatkowski@linux.intel.com,
-	emil.s.tantilov@intel.com, madhu.chittim@intel.com,
-	joshua.a.hay@intel.com, jacob.e.keller@intel.com,
-	jayaprakash.shanmugam@intel.com, jiri@resnulli.us, corbet@lwn.net,
-	richardcochran@gmail.com, skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org, Bharath.r@intel.com
-Subject: Re: [PATCH net-next v5 14/15] ixd: add the core initialization
-Message-ID: <20260723125111.GI418547@horms.kernel.org>
-References: <20260715180042.1972010-15-anthony.l.nguyen@intel.com>
- <20260722161836.544694-1-horms@kernel.org>
- <amHssLjVOoOz7FbB@boxer>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4ySheZuYUry7/mIT3xq31Gx+gTPnC2SRpEZd+yQHtWKirrWIa70UUbV3vD1UTE2aWpoN4IxFeI1DKxGLK9XPiOA9psm3I4OKcHb1HgL1Q0y8jlPgKXTUErNPG8hU9tkS4ut3XnWcQoT5Q3S+UT2kCUYfAqhzX0ccmlAqx+TRYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Xfn82e+8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Xfn82e+8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=JIdBUlLg6u2utQkKES9YdEQR6eSKfNdmf6JsFo/vprQ=; b=Xfn82e+8XUu7hNCZ64kqjPsWSc
+	IUipn3MdB67HJnkLdZxGapXm1zZPsesh06NN74Qur7EmkVxOAXJTJlHyRGf7DX1NLNUvGcCgdJOEm
+	rf01rCF83CdFQvtF8XI5wDvIwNs+59/69J37Uu/fTOQhzA/SVMf6ZM+hKD9ULb/3068w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wmswj-00Dof9-GP; Thu, 23 Jul 2026 14:54:41 +0200
+Date: Thu, 23 Jul 2026 14:54:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Javen <javen_xu@realsil.com.cn>
+Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"nic_swsd@realtek.com" <nic_swsd@realtek.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: Re: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Message-ID: <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
+References: <20260722022906.271-1-javen_xu@realsil.com.cn>
+ <20260722022906.271-5-javen_xu@realsil.com.cn>
+ <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
+ <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,17 +59,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amHssLjVOoOz7FbB@boxer>
+In-Reply-To: <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
 
-On Thu, Jul 23, 2026 at 12:28:00PM +0200, Maciej Fijalkowski wrote:
-> On Wed, Jul 22, 2026 at 05:18:36PM +0100, Simon Horman wrote:
+On Thu, Jul 23, 2026 at 03:21:26AM +0000, Javen wrote:
+> >
+> >>  static void rtl8169_init_phy(struct rtl8169_private *tp)  {
+> >> +     phy_init_hw(tp->phydev);
+> >> +     phy_resume(tp->phydev);
+> >>       r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
+> >>
+> >>       if (tp->mac_version <= RTL_GIGA_MAC_VER_06) { @@ -2562,7 +2607,7
+> >> @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
+> >>           tp->pci_dev->subsystem_device == 0xe000)
+> >>               phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
+> >>
+> >> -     if (tp->sfp_mode)
+> >> +     if (tp->sfp_mode == RTL_SFP_8127_ATF)
+> >>               rtl_sfp_init(tp);
+> >
+> >This could be diff getting me confused....
+> >
+> >You unconditionally call phy_init_hw() and phy_resume(). And then if this
+> >device should have an SFP you do something else. How can a device with an
+> >SFP also have a PHY?
 > 
-> Simon,
-> 
-> Larysa already responded to Sashiko comments. Did you miss this?
+> I totally agree that the SFP initialization logic does not belong in a function meant for PHYs. But rtl_sfp_init() call was already located inside rtl8169_init_phy() before my series. And it works well. This mainly because the patch which add support for RTL8127atf(commit id: fef0f545511f72223) assume that RTL8127atf has a dummy phy. So tp->phydev will not be NULL.
 
-Yes, I missed this. Sorry!
+[Goes and looks at what rtl_sfp_init() actually does]
 
-> Do you have a bot configured for that AI output forwarding?
+So it does not touch phydev making this function at least safe.
 
-No, I do not have a bot sending things to the ML on my behalf.
+> And in patch 5/7 of this series which add phylink support for RTL8127atf, I remove it.
+
+Yes, i did notice the dummy PHY getting deleted. I will look at that
+patch in more detail.
+
+      Thanks
+	Andrew
