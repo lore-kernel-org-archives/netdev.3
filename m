@@ -1,56 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8023E470430;
-	Thu, 23 Jul 2026 14:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30AE4582F6;
+	Thu, 23 Jul 2026 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784816967; cv=none; b=U3wpcQA3Qa3x1nZQesc6pUOyOoj7GTHxT5e8jXQPd6lSu3YOZMKAf6r18Gd17JvhQgpIOZCwY75bwY47UVt02yKLSOXBbfDDUftymmhMSDoIahuA283JEoUc4cgdxDW1itAeMAKraNW2iKSnArGaoQH2wD0jZv1Ds1ma6d7j834=
+	t=1784817024; cv=none; b=Dmp33tfLHLdwtjvDwbp3Gi2ZsR4V6r+62ELAWMR5hj8DAEYZOz+TtQ9z5ORWKAmE4k6FpeqxQPxmlXrs0ICQjTQxxvmyCQcx1lzU21mUdzHJkPHsnve9NlgBMWVwJsstllMT/Dvf1zXt8B2M7gh0Hvcbn9qnrD4hHQ1QUm8OO0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784816967; c=relaxed/simple;
-	bh=RDBKQM9xWLdZ7a6ZW8VV5ifHJkI3lf1A9xElNQIqGAk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kjm8mrIbH0lnsJa4WRPpGyjR37cjTyhAlw/80hO7gXqRa/bkeJssOPHhSIosq+9Oe14w0Q892pxUKNGhZbRGrbYPkG9wmBo6IyPPn0X4L1BZgMo6dMUuLUpQl426MMjSFB1Dh4cCBZXouz8VXLlb2unFvIpY2mPyv+tVZv/h1bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mOcGowdE; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mOcGowdE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BA31F000E9;
-	Thu, 23 Jul 2026 14:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784816966;
-	bh=RDBKQM9xWLdZ7a6ZW8VV5ifHJkI3lf1A9xElNQIqGAk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mOcGowdEsscWawawXc/dOgqzXQRsIEnkPqO8Qamyk4aHqmu6cGExapmy9qj4vt3x0
-	 7DD+IiEvCq8ctjoykoQShGG9TJ6JOUFLo2I7ZsmeEBKH9FJX2/OW7S+pceLi4ZSloF
-	 9WDlzHCo32dwTBH2YT4u2hs90GSb4MSM4K1HkwV8R6op3FSmjkOtdupm0QT9TA36Uz
-	 yYq8ALSBqy7bTBh1jpZAvQmamRLMEoqny3bwqbvj+EvrTFRQJoY4TykVCQmAxrYm1N
-	 wGms4FbJXQu5C1sBkkh1C/Wd7zXjMayYOIC2zGFp8FBcnjKrirVIxyUIBB/OG9lNW2
-	 UNMvpk9DGYwwg==
-Date: Thu, 23 Jul 2026 07:29:24 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jun Yang <1753810072@qq.com>, Xin Long <lucien.xin@gmail.com>
-Cc: netdev@vger.kernel.org, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, linux-sctp@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jun Yang <junvyyang@tencent.com>,
- stable@kernel.org
-Subject: Re: [PATCH net v3] sctp: don't free the ASCONF's own transport in
- DEL-IP processing
-Message-ID: <20260723072924.7db6b065@kernel.org>
-In-Reply-To: <tencent_73762ED1DF08CC9D5F5F61954B01350CFE0A@qq.com>
-References: <tencent_73762ED1DF08CC9D5F5F61954B01350CFE0A@qq.com>
+	s=arc-20240116; t=1784817024; c=relaxed/simple;
+	bh=F2s46wGOdPXKLgCIDws5nDZNONmvFp/+H2PhS2Z5czo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=gfPykao7VjEkGukZc3/+XcOeYNNbgUcJL+s2ds40lwDTPzxzMkAqNEfCpmjAciNOHHAgA/Nz4uDcbEJh3qrxwY+1pWxEcQStttBmkJS4XXM5y7UX+L5anzVLg+SUgSsNRUEDouHZAKk1z5yDAGSJqLw53MIdw7GHjpGVysa89MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85381F00A3D;
+	Thu, 23 Jul 2026 14:30:22 +0000 (UTC)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6D96AF40070;
+	Thu, 23 Jul 2026 10:30:15 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 23 Jul 2026 10:30:15 -0400
+X-ME-Sender: <xms:dyViatwpYRxNT02u_2BdszsfWlN12RRwUXvpN4Seqql8f1ay6M1CPA>
+    <xme:dyViaoFOWZtvf9wdOM0e0erX3Nz87Hv16tCtQKL5HmloQv58ILVrfGIrErwsvN5PM
+    UNYFyp6PbmiuSOCzNewAlKLf6DlEsk9NKRu0emWmuPGhN7ffuP0U9pj>
+X-ME-Proxy-Cause: dmFkZTEQAPoN18lgstHosNLPhj4kQ17L7UPJTbGO/hDZVLaKqmCDYBcvf5RQ0sv26awX0C
+    +Yvjj86QfeDKbjS0CY3Ab6vDDIssEhfOF1FsHOkYY4AbCHdVu61HU06vO2mzPWK0AX/yil
+    VwP6wk7ty+Slb5OOiEVt1iAFtw3/SmB0ftOG0IzUU6UijDTpgzsZe4QpV1rbYvn+JQaf0q
+    LiEMUPwgtSdLxSNRmk+k/vhcjS+7CUopIiyON+EIOawKNxpITdvBAuy/HZVKpDB7bUNkFu
+    VfR+9KIHMly7FKskG6dku65Tw2vqzJtY7k7aWdJ4lzFSOAYnIyh32IuJ8twGNQR9D6qSKC
+    nZ6CCbeHtLS53v5l7e0xsnec4chGSvfSuF3qD+m3eZWfVaaWFFYKgksmwekpxN6EaqthA8
+    mPexOTNBfzeK8Ru3A9dPiVrv/HtXxfHsWSK1tfWPawM9UIWlH/711w+1MZbU8anh51IxYS
+    C8PGHQ4mDfbLnHShB4QybmmZ4NQPHA8W7sgkwmF02eGYATIXdf/XcxmGnIpuzEE4rnOyHf
+    94qlHzdt8YhoWImkPNbSyVc7GAYTMqRmYe3nGZacKUPBot9O0s5FJCwaw9aW75DHLIPlsZ
+    /h959mtyW02LnfmZJwG5HbMWDvWpLTVZbjtxT3W81BIhOgtKn5bQfklGOzjg
+X-ME-Proxy: <xmx:dyViajXYGEfKb6J8SfGpeXdJ_WjoeaZ4oodkEgMSyyWaIcLnyLIvrg>
+    <xmx:dyViak_4FbBW0Yedy2tXYkqyApXGsvArHl3KGNVAyjYoSCHFHJbi3A>
+    <xmx:dyVian7xRPEWBmVWzoED-zGMlI3EiPAd7W-64frsRXwayLnjssQyUQ>
+    <xmx:dyViat2EssvHQ3gcmRjU8-w0hKF8w_PJYpYXP8gSbLZ191vfwxOJLg>
+    <xmx:dyViauwlyh5FspUBJCtXLxbz6jgN6pVOFMihwyyLnWktbwbzRTRoqeBS>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 413F1780070; Thu, 23 Jul 2026 10:30:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: AxBNoR0sEYLw
+Date: Thu, 23 Jul 2026 10:29:55 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Sabrina Dubroca" <sd@queasysnail.net>
+Cc: "Hannes Reinecke" <hare@suse.de>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Shuah Khan" <shuah@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, netdev@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Message-Id: <7a0f5521-3a44-4e8e-9a30-542b0ece448d@app.fastmail.com>
+In-Reply-To: <amIj_DG7SuWx8MeY@krikkit>
+References: <20260720-tcp-read-sock-v2-0-29545d034f3c@kernel.org>
+ <20260720-tcp-read-sock-v2-1-29545d034f3c@kernel.org>
+ <b9d60674-1ba7-4f23-beee-4ddfffd4dda9@suse.de>
+ <909e0132-5c0c-4c0c-b8c5-b90b88ad0231@app.fastmail.com>
+ <amIj_DG7SuWx8MeY@krikkit>
+Subject: Re: [PATCH net-next v2 1/6] net/tls: Bound consecutive no-data records in
+ tls_sw_read_sock()
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Tue, 21 Jul 2026 21:14:05 +0800 Jun Yang wrote:
-> Acked-by: Xin Long <lucien.xin@gmail.com>
 
-Could you point me to where Xin Long acked this?
-I don't see the ack in replies to v1 or v2.
+
+On Thu, Jul 23, 2026, at 10:23 AM, Sabrina Dubroca wrote:
+> 2026-07-23, 09:24:47 -0400, Chuck Lever wrote:
+>> 
+>> 
+>> On Thu, Jul 23, 2026, at 3:11 AM, Hannes Reinecke wrote:
+>> > On 7/20/26 4:27 PM, Chuck Lever wrote:
+>> >> A record that delivers no payload -- an empty TLS 1.3 data record
+>> >> today, a control record once read_sock_rectype() lands -- leaves
+>> >> tls_sw_read_sock() in its loop without advancing the caller's read
+>> >> descriptor. A peer that streams such records keeps the receive loop
+>> >> running, and the socket lock held, for as long as the records
+>> >> arrive.
+>> >> 
+>> >> Cap the number of consecutive no-data records consumed per call. The
+>> >> count resets on any record that delivers bytes, so a normal stream
+>> >> is unaffected; a peer supplying only empty records is bounded to
+>> >> TLS_RX_NODATA_LIMIT iterations before the call returns 0. read_sock
+>
+> Would a time-based limit be "better" than a packet count? For example
+> that's what net_rx_action() (net/core/dev.c) does.
+>
+>
+>> >> consumers treat that as "no progress, re-poll" rather than EOF, so
+>> >> the connection stays up and makes progress once real data arrives.
+>> >> 
+>> >> Only tls_sw_read_sock() needs this cap. Its consumers drive the receive
+>> >> loop from kernel context -- a work item or service thread holding the
+>> >> socket lock across the whole call with no return to userspace -- so an
+>> >> unbounded empty-record stream keeps that context and the lock pinned
+>> >> for as long as the flood lasts. The cap supplies the return boundary
+>> >> that a system call would otherwise provide. tls_sw_splice_read()
+>> >> and tls_sw_recvmsg() already have one: they run in the calling task's
+>> >> context, reschedule while draining the socket backlog (cond_resched()
+>> >> in __release_sock()),
+>
+> tls_sw_read_sock() would also do that via tls_rx_rec_wait(), no?
+>
+>> >> and drop the socket lock when the call returns. A
+>> >> flood there costs the caller only its own scheduler time, so the cap
+>> >> would add nothing.
+>> >> 
+>> >> Signed-off-by: Chuck Lever <cel@kernel.org>
+>> >> ---
+>> >>   net/tls/tls_sw.c | 13 +++++++++++++
+>> >>   1 file changed, 13 insertions(+)
+>> >> 
+>> > This is technically a fix, so it might be worthwhile sending it
+>> > on its own.
+>> 
+>> My impression is that the issue this patch addresses is not
+>> reachable until the subsequent patches in this series have
+>> been applied. Thus I positioned it as a pre-requisite patch
+>> in this series, and not as part of the earlier "fixes" series.
+>
+> It looks to me like a follow-up for 3be28e2c9cd0 ("net/tls: Consume
+> empty data records in tls_sw_read_sock()"). Control records only
+> become a problem after the rest of the series, but TLS 1.3 empty data
+> records would get there with the current code, no?
+
+It sounds like a change in presentation strategy might be
+needed: I have the other patches you suggested before but
+was planning on submitting them after this series goes in.
+
+But it could be sensible to post those first, along with
+1/6 of this series, destined for "net". Thoughts?
+
+
+-- 
+Chuck Lever
