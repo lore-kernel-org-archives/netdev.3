@@ -1,167 +1,239 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785B343B48C
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784802412; cv=none; b=q1744WVfXF2lJCmnyy3KNjcjYEMmuLSbcnCzF3p599+stlTRED4ZvyXTlMCvvU1e8Q5DSC/PdYAUzuNc/Yj5gx6sB1cw8osJMsOTJD+c5KZkN77vQi6E1fUnP9REf7/ljMWs9YWcLx6c1bv2rjcWAaMZ7IqZG7/hk/WLhS94y98=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784802412; c=relaxed/simple;
-	bh=gR+hILfs9JaVILip6p2fY59TZJegMJ+6aegMjs81qKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PhEIEyqwc6ZttX+YwCAbl5MHfMyumm5qtg5l1ee7IImrzWPzqmxCXNefIcH/lVmEDJMG//dvLCV5k4wHAEi5QFluPh9M1FcVU9kZodKOSWMfcU6EqQn5QdhttPpm81/oirzPqxMhUQcQdG7mrYYbrYAGteKso5AG4j2S49w4E/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pjGR1Ho9; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E720438000;
+	Thu, 23 Jul 2026 10:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784802548; cv=fail; b=ogk49LHv5GLBKhRfeaxx5HcsNvXr2hmesz4TrRyHMh60XrSr9RmB2OJQb+3gqG8QYPlg5Ox8SHMhBfMnNT/9YjhrI0Cw6fO2jPqLMzqzdl5Sw5lMypTiWyv/TbzPP2ein5TcfKrR+buNofBiz9iKijZL0Ta2PpoVDUzWcF/CuyE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784802548; c=relaxed/simple;
+	bh=nzi1U0ifFRHdEkTZYHSyFr775fMJbPvaSdhx3QHaBuI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gT7y+aECL+7cDfZQyJO3ihne8cCIUTeVn21E6A6e88l3458LmMyxlXDwWxtBfErWaRm3K5wbhwq9madbhhP6NQERnyFAnDi1JMzd5eMV+fFjGD/9XfwcozIFmL21fXljPzn0GUbDhCzgO2SiyICmUlvGp7Z5ZNxFwCzaD1F89ik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLNg0+++; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pjGR1Ho9"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc73e322dbso5290705ad.1
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 03:26:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784802410; x=1785407210; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=01n37iktC7STPimw6Zf4vYgQpw8EUgozHpcb0fjUKyc=;
-        b=pjGR1Ho9e4rCjb/iaSox5Jmy9puVU2Q1AXzQpqzdZVWtHD3JmE/Jh83VdRmg7KGyze
-         jItSFvNnt6vG75hmYG9qbI7wB5O2xvrhtyBo88ak1Wp8it+9sXdv7vbVhor2a40dMjot
-         ZrwXlKhI5+8ACM8/MPTT7FwDEazxblw+kcGb1gVQ+Tv3HC9yBMWGPGse5e1DqWGegyk0
-         ry+qCPMRymh/AGudqm6zTr/1++LElN2LGKQsWRccTBxUJ51bs/x9OiAEwnK46KgSE0wx
-         WfFhysVvbNAwhMD9md23/J8uVxVzoy27wH3r27sa11ew1u8kq4AijkGJy7phlBy9lpsB
-         C8sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784802410; x=1785407210;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=01n37iktC7STPimw6Zf4vYgQpw8EUgozHpcb0fjUKyc=;
-        b=OuHlN07lJs8kt291dj2fCtVgkECYCztOcBnfxotLFQta+CVhn1dn68+tldfzvbqKQd
-         uuZV59RLB78Acxbh/iP8vCkdgETvoYmaYfRJzujf5imKPXDW32mAdAydiDIXVK8y9Zld
-         NxOmej/V9VP4mBVAVGkEwY2/wg6zh/MHAvW99rw4ODApJrMxe056Mr+Csz9PzQJv0iwK
-         mkGd67+DbjmN801KIFDdamQTftYhmn+p6o1zfTAnYIG2erZ9C/vngvTqjKzsV8llaJks
-         8gj3wMxIwtrYy5psa1rcGg+8XI1kRl/3HGHAl9RTh8VsZqbOuw24/zvwNxvXSh7+4xpU
-         l2qg==
-X-Forwarded-Encrypted: i=1; AHgh+RqP41JraRY06XuTMEvvU5Skg/oejQDzizLAIZlNnuu5fJYeErkBEq12HfvcUxu/NTFtZhiqdGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUZ3BKE3iQJJ1fkR+2K30GyX9MvYIBamR5sD8rEHhcsjGEwMp2
-	LNHH1i3qbQ2Otdmmnbh7/tDaP0IOn8GiZbQB/Mh+2gxiSsclDdtbfpQo
-X-Gm-Gg: AR+sD13DLsdLYnllBpI59vrZeXET3V6S36/OF3M90ke9gpbCkqk+n2ulvUQlwf+cXSS
-	NhaDX5/hOUzw5ZULq5/L9sGsvjA5S88tvnwaXQcIrMsZQQTg7E2Hbh0oDtX98+fHQaXxEyb0NMH
-	yKj6ZImdMt+Xra1DVgo5b+ObzDjiMlRj8KJGuKNVUxdz3KISFabbjFecljz7M5tdPxsp+kI5y41
-	bSyZ2ywD4Vfa2/z9lyfY/bzftNzGCztLKFMBhsH0CSvu0MYpvDCjLP/YpuTaFes4YG6kb2vRHpE
-	eNVeGeUSMO6ARoioh8hHJxU/K2J/lmwAwmaDFHgLV0RsCm5SlcFbUstdxBxSS+GTkkTJiASuE0D
-	dI6eQaBCIs3GP4YS/u8zlwgS9ZW8VipryGDRQvGLrGDuj9uuyDfEHIfNb9iBfEJeT5OmdIs+2Fh
-	4DTAYlmwFjyqzT2SRs
-X-Received: by 2002:a17:902:f68b:b0:2cf:32bc:971e with SMTP id d9443c01a7336-2cfa6c66618mr27394975ad.29.1784802409495;
-        Thu, 23 Jul 2026 03:26:49 -0700 (PDT)
-Received: from [10.22.76.22] ([122.11.166.8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2e5effsm31822045ad.47.2026.07.23.03.26.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 03:26:48 -0700 (PDT)
-Message-ID: <27412e44-ab4b-4dd3-9685-481875683860@gmail.com>
-Date: Thu, 23 Jul 2026 18:26:44 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLNg0+++"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784802546; x=1816338546;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=nzi1U0ifFRHdEkTZYHSyFr775fMJbPvaSdhx3QHaBuI=;
+  b=CLNg0+++8WzCPx2cmF5I991OhmTV5MGje1KX5zgZdlyiOyqfq41zXr4C
+   qHo4FioeMOXY/9KPVi0fkZXVV+MiWWS21ciupsUbmVKyi15P17mNlF4nn
+   3eU2QPOCmATAZW6MMNYjEEh4F9WCZInu7YzO2fNNSuT/nkdjv+sVIJVM4
+   C4X6cHiFEqkgL9GF0z+KFA1jm2msb5hv4Q2siiX7vF/R7h2/pKiSutXwI
+   xKw1bh/lJNkjpE5lQa4zW8jstmhK4eIRooNjo2R1UiGDy2CDxxPS71ceS
+   cUqmnih+bR7Pqp25xp8mfZkEhZUXI+ub6K7YK81DmzQkM/AUxhtmdzWbj
+   A==;
+X-CSE-ConnectionGUID: FSEpThODSIO9JyPTUilNWA==
+X-CSE-MsgGUID: GUOVvM4rRbOCDaaeLDbziA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95809209"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="95809209"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:28:16 -0700
+X-CSE-ConnectionGUID: DeLgHuQVTfiY3Tm3LiDqvg==
+X-CSE-MsgGUID: +W9f9MUERiu0Y9PuON+mCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="263343539"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:28:16 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 23 Jul 2026 03:28:15 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 03:28:15 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.32) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 23 Jul 2026 03:28:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MlLTYmnwOPsxnI9l0uXNX/tJzt2s06ui8wgW1qmjB3UnizOSVMDbJkXpW9+hO33BhNU0bi29XAhJk01qI/S1nLhImR52vEqS1GP0qmTE0wJoh+yAHYPOGiLgYFnOx0MHg4gTdmk7oGvjDXFiKY2T/5naZ7zw429CK8magIoA26WJINZQD8Ya/uZfcpWkvZhI/mLxkgIpyCjKGvkIOrxCkipxdgX7oGW/cHuS9Ew51ppfhVHnMuAQBg/5i2njZOTR4/smTjdiCWVJIEWW09IvL+MVXm/EWgCCWzKUseLSPGqAnHltcLjs/RZiBQusiiSdh7Jnbo1i7vZyqYnFaf5spg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e8KG598RyQrXXWX+kFmHpzIobL887iwnFjV5PrxSHSs=;
+ b=eCd9YifP9fjV7cA2pk1UlCCOX7gia4MsUWXBcpZHlyjXVFJLmsFSSakM2ujMf/6NQin5u4O23GEXDg1OC/TeP7rhl6ku8J98aMr+fgram6iKTJMyub59Abb1tHlevMe/GEvl1kIxGBnUbUhFRXzX/lCFCXrH493PwGrdyYpI+rMGXAHPMxhyQwynQQLLD1HnmET+dUL0VWDXSd+TZBjac1DXhMLU2DL4bl5gTJQJ73HuEfEA/PMA5Diw9Uqc+Om//ppw5S5VhrtTmnJP0XHEt5ISQlM9tf9lIMgQ2Y/hq6zEIm2bsxB+Mmm6X0sU1D4Qk/IyZCWabibSDXtdlqPdFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ DSWPR11MB9738.namprd11.prod.outlook.com (2603:10b6:8:353::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.245.11; Thu, 23 Jul 2026 10:28:08 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0245.010; Thu, 23 Jul 2026
+ 10:28:08 +0000
+Date: Thu, 23 Jul 2026 12:28:00 +0200
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Simon Horman <horms@kernel.org>
+CC: <anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <edumazet@google.com>, <andrew+netdev@lunn.ch>,
+	<netdev@vger.kernel.org>, <larysa.zaremba@intel.com>,
+	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
+	<sridhar.samudrala@intel.com>, <michal.swiatkowski@linux.intel.com>,
+	<emil.s.tantilov@intel.com>, <madhu.chittim@intel.com>,
+	<joshua.a.hay@intel.com>, <jacob.e.keller@intel.com>,
+	<jayaprakash.shanmugam@intel.com>, <jiri@resnulli.us>, <corbet@lwn.net>,
+	<richardcochran@gmail.com>, <skhan@linuxfoundation.org>,
+	<linux-doc@vger.kernel.org>, <Bharath.r@intel.com>
+Subject: Re: [PATCH net-next v5 14/15] ixd: add the core initialization
+Message-ID: <amHssLjVOoOz7FbB@boxer>
+References: <20260715180042.1972010-15-anthony.l.nguyen@intel.com>
+ <20260722161836.544694-1-horms@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260722161836.544694-1-horms@kernel.org>
+X-ClientProxiedBy: AS4P192CA0001.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5da::15) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
- timeout
-Content-Language: en-GB
-To: Stefano Garzarella <sgarzare@redhat.com>, Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260719220103.684489-1-phind.uet@gmail.com>
- <al3UuvBhfxp82krV@sgarzare-redhat>
- <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
- <amB15TdzPAEk9A9C@sgarzare-redhat>
- <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
- <95cd0d4e-58c9-44ab-b94f-fcf57b88583b@rbox.co>
- <amHN9mOGj7oMak4-@sgarzare-redhat>
-From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
-In-Reply-To: <amHN9mOGj7oMak4-@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|DSWPR11MB9738:EE_
+X-MS-Office365-Filtering-Correlation-Id: eacab681-4114-4ce7-4a18-08dee8a51684
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|3023799007|4143699003|5023799004|11063799006|22082099003|18002099003|56012099006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info: hMTAOdlwnfRK3eQqmvoEziF6cZms3RJd88K22c54znu3C26NWo7I5jN17nan9u1m5CSKGMK7brlHYzxuswJqR46+Q4AupOLsgV7VXGi9G2+QEoIgSwPw4aaI2mUXggjgUFYPdMYoqyRkIVkhVtyHX2T1YiEJaqFDwOliTctL7rc5TYT15vQPtr/XQpJJzk/qiMoOAqJh4xToPeAPMGR/pI8ucgJwOGz5sIDjuUFkT1kErxRlXLEDvra7dLvWpAHm509tA+1q96SBo7/mpcrma7AYRwsnPGQbiymIFXjn3bo4ZthiRKGs6KUynJfjuqdCqcVX6en9NfOrIN9C23NstumzHrOoXfwMCg5HveX5pDJ1/XB/n4qcT9ZXmOWFHbQCSsyrLc60snIqIBnjMT1Bm7TyGVunc/oAdcGgsYBKLvmmOOeoAyOCy3e/qnOo5dfhKPFcZsAco9LBCPVcU6jLJGeeY9D1mxbxOgf6RC5gLu6Sv739+/MBfbSV6A548dpYHgwdBfEg+OVHA855+unhWhLHv7eiEKdkAUETS6Gys3DTP38AsqVv374QO2F8JQaOc3FkG1nJYS6b4NjTJmr5Yw6Uyj5x0Q+NOXx6N0iZZ6g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(3023799007)(4143699003)(5023799004)(11063799006)(22082099003)(18002099003)(56012099006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mJIKeoT5MbrTHznK9WpVBEQ8yA8uJRGRD+lVoy7IVXX+vsYu7CAQlJgjsJh/?=
+ =?us-ascii?Q?iIMj1iWI6ryVNpzD5WsYVbCrFdA2hFKyFwp4YbQrpw4DvxD5v2385QvXksvD?=
+ =?us-ascii?Q?31Psu0Rm2/H+k5F/TJcO8qrO4W1beqpV16U3yi3TncrVfsck35tCLdE8l7wz?=
+ =?us-ascii?Q?+RAWFSkbubbNmHXv2zSb8sUruB+Tn6ClkZl52Z3PK2wgbAtrGR+C1CruenUe?=
+ =?us-ascii?Q?Qo0rf5TTRTAkVwxV8WPu5UedbWl8MfjvuQR4jkXQHPphBR54XIlp+5bP1jrV?=
+ =?us-ascii?Q?9gcy9i5Ilo/RDsumnioZip5RO9OSdcNcyzw/cR18fKMZQhIqG0g4Jr6NZxpl?=
+ =?us-ascii?Q?qw9AwU27yNcRxJzuEsxyDZU40SniVee+gWFlGhLokew+RiooaY7RqLYe16m9?=
+ =?us-ascii?Q?Ntkp9y2v4WmcINuF//31EgZ82qOy2NQdXtKRviBEPGJXDOYvfU+q5c3taLik?=
+ =?us-ascii?Q?4GSDU2WavPkGpIbYHw1FzFy4bLtPadD+oP6thOEpG/Wa9Q5wOpBFzBLH8V9J?=
+ =?us-ascii?Q?b71u2Xb+8r/4QSVBDKbq56yesuPQh6hOTA5P6PqETnMDm5zt9mtTcpxubsU4?=
+ =?us-ascii?Q?2vtpEolvskndG+FcMT9Jw4uL/qCFB6nyhWMh3SKlt/c7cFsuvdIIhGcE+8sY?=
+ =?us-ascii?Q?bhNQQCko2jG12EzSuSL/Zaeyx6sYkdlSlOh24t9XFejN1jZa3tecYHLKoOXk?=
+ =?us-ascii?Q?ONBdxzCeyRiRDHvAcFdORCEBND8ni/vwPeFDzvwWQRoG2zy/U8a4l/zUd8+l?=
+ =?us-ascii?Q?F7/rUpPEr+KWXo2CneojTWLZiKgc1R616PgdDA6brAUmUH+Do3368O74kdNN?=
+ =?us-ascii?Q?eOTK3ui7HD9B2lYz2ljnC7VkenCkmhyTu6L+oczIr4w2i/HXhN6xQmo0wfTb?=
+ =?us-ascii?Q?4sR4k0Z5gR8+a/0nBiJEpt8hcepejFfRjjhf3t9thL+ztEUhFD59dZKtRXk/?=
+ =?us-ascii?Q?EWLoP4VPDJMDooxD+nFLZkLv58vYuc06CEF0Y3Ix7uanw2NlXJ9dnvAvL9+G?=
+ =?us-ascii?Q?mEqvSLO6VI2NdoprTe9tYqTSIkWXA62TM5BX+fRBlr46viD3JxbtiLT0v28+?=
+ =?us-ascii?Q?YbU8EYdLPjSorspKe4KTdxP4ssH5Uy26Zewr17ttb8393i2z8ywQ8+NrrheV?=
+ =?us-ascii?Q?zshOpGzZ8Wnfo4RM2c0nA+L8pfZYJ5WoJHIVXKKjBWxpq/JtY/QRCWRR3/EJ?=
+ =?us-ascii?Q?QuPYEYZh2C/NK58lg47Y9DEaCQOQP06xgvzDOTJiMmtK70cly+wfX/ZomkoY?=
+ =?us-ascii?Q?9MNo2VQJS1T5+PiY2uIZ31ni8ETe9v2aWa98qwh5dA7xTSbE4TGyibv1mUs2?=
+ =?us-ascii?Q?2MGG75qH0WOMmmJWM6kVZpjf6HMeGmjX4h55REwLzLY4+2dJmWhMUYaCCf6A?=
+ =?us-ascii?Q?c0M+6iXfAQu96ezUxO8u/ggUi7ZE20Q3X9gmh0LE2+vnUKEhwA/pS5xyISXI?=
+ =?us-ascii?Q?07AfI3vVspikYkc8GhNW34npWoKJ0gFVatqlYoP4B7uTMSG9/hvQhCVB67Pf?=
+ =?us-ascii?Q?Ol/d7qcxtSPiZpKUA1HVBJGoK2ryZLUZX7OpeaGxlAWuQBQG4r2/sNtxRLQG?=
+ =?us-ascii?Q?pRQFIYoMT442muXnbC9ROkN2gy10iwQ3kBqMg19ABGadtzc/p3AOmiz/LU0q?=
+ =?us-ascii?Q?QzNH/Wo4vvcHezDhT1fkeL99rcUpwiO0Sgud+7Zf8bI/emKewNBHNI8PBoH3?=
+ =?us-ascii?Q?HDQaXZp3z0cbt9r7asoKbT0Y8LwrpZBr/2nCE/Vy/rgKU5tQKMmIWYvFoW3F?=
+ =?us-ascii?Q?2girnN/Jhq59hMQrHknANDwIbPJtRHs=3D?=
+X-Exchange-RoutingPolicyChecked: RVruNVJhWGFqAyZM9udSKn477cuTA9WWHp2dMj+sPGH2obzEdEdD1JqDW+BuZHO8GJ23gHevkiiKTEdSrpQVHIbs7iwwa+fPy44L2MIltd6wlCMFBuYpyKtmrnyyDxvE2yKooWmNGR7IX2mZqTxo1IlIwszaW6tuEOOLe8rqwiBnUD1c81SPCnEzplqqmFrWQHFrTRpq7YWwjwvSSXGNyC8XrJOxH9p/ny4CKaY+/IdG/XVReVCGPE79PPzJjXQ3dHo2sqOnTbpKEw6P5qMxXbQrwGWIfGKs7F+QJhyx1/d/bD6G67gkvcNUXBXkF90pquVI0aOkKhK/9xvNIf+yfA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: eacab681-4114-4ce7-4a18-08dee8a51684
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 10:28:08.0950
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cU9PiFQYexag+Ll/sV4DtwAsZRDJP+o3NuTB11ZOuJsPR7Z1WyKTuTcBfSx0zZdxNyBEDsZyafUzbBs5mwvOHcWGUyDOAPboriKK9sSVMG8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9738
+X-OriginatorOrg: intel.com
 
-On 23/7/26 16:24, Stefano Garzarella wrote:
-> On Thu, Jul 23, 2026 at 08:00:31AM +0200, Michal Luczaj wrote:
->> On 7/23/26 06:14, Nguyen Dinh Phi [SG] wrote:
->>> On 22/7/26 15:55, Stefano Garzarella wrote:
->>>> On Tue, Jul 21, 2026 at 01:34:03AM +0800, Phi Nguyen wrote:
->>>>> On 7/20/2026 4:17 PM, Stefano Garzarella wrote:
->>>>>> On Mon, Jul 20, 2026 at 05:57:47AM +0800, Nguyen Dinh Phi wrote:
->>>>>>> After vsock_connect() exits the wait loop due to sk->sk_err being
->>>>>>> set, the error was read but not cleared. This left sk->sk_err set
->>>>>>> for subsequent operations.
->>>>>>
->>>>>> So, is this a fix? If yes, we should put a Fixes tag.
->>>>>>
->>>>>> Also, can you describe how to trigger the issue?
->>>>>>
->>>>>> Because I see this in vsock_connect(), so I thought it was in some
->>>>>> way already handled:
->>>>>>
->>>>>>         /* sk_err might have been set as a result of an earlier
->>>>>>          * (failed) connect attempt.
->>>>>>          */
->>>>>>         sk->sk_err = 0;
->>>>>>
->>>>> This only handles the case where the function following the failed
->>>>> connect is another connect() call.
->>>>
->>>> So, can we remove that with this patch, or better to leave as defensive
->>>> action?
->>>>
->>>
->>> I prefer to keep it here as defensive action
->>
->> Is changing how vsock_poll() behaves intended?
+On Wed, Jul 22, 2026 at 05:18:36PM +0100, Simon Horman wrote:
+
+Simon,
+
+Larysa already responded to Sashiko comments. Did you miss this?
+Do you have a bot configured for that AI output forwarding?
+
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> https://sashiko.dev/#/patchset/20260715180042.1972010-2-anthony.l.nguyen@intel.com?part=14
+> ---
+> --- Patch [14]: [PATCH net-next v5 14/15] ixd: add the core initialization ---
+> commit 43763d63c75ee5bcdd9189c20cf8b272997bdfec
+> Author: Larysa Zaremba <larysa.zaremba@intel.com>
 > 
-
-I think connect() already delivered the error directly to the
-caller when it returned -- there's no reason for poll() to keep
-reporting that same, already-handled error afterward.
-
-> Good point, but IIUC __inet_stream_connect() is also using consuming the 
-> error with sock_error().
+> ixd: add the core initialization
 > 
->>
->> I.e. if sk_err should be kept after a failed connect(), what about
->> `sk->sk_err = 0;` in vsock_listen() instead?
+> This patch initializes the core when the mailbox is set up. The driver
+> confirms the virtchnl version, requests necessary capabilities, and sets up
+> the message handling framework.
 > 
-> Yeah, maybe this is a bit less invasive.
+> > diff --git a/drivers/net/ethernet/intel/ixd/ixd_ctlq.c b/drivers/net/ethernet/intel/ixd/ixd_ctlq.c
+> > index 0000000000000..6d658be0695d4
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/intel/ixd/ixd_ctlq.c
 > 
-
-yes, __inet_stream_connect() does it, and actually, other protocols like 
-Bluetooth, TIPC, x25... are also consume sk_err with sock_error() after 
-their wait loop.
-
-I think it is an established pattern, so I'd rather keep sock_error() in 
-vsock_connect() than move it to vsock_listen(). vsock_listen() would 
-only protect the listen() path; I see other places in af_vsock.c use 
-this sk_err.
-
->>
->>>> ...
->>>> Yeah, we need to handle that part better, I think it's a leftover when
->>>> we generalized AF_VSOCK to support more transport than vmci.
->>
->> Speaking of leftovers, I have trouble understanding where does vsock set
->> sk_err on listener sockets anyway. If it doesn't, why vsock_accept() 
->> checks
->> for it?
+> [ ... ]
 > 
-> I can't also see where it can be set TBH. Should we remove it ?
-
-I couldn't find it for listener side too.
-
-Thanks,
-Phi.
-
+> > @@ -0,0 +1,146 @@
+> 
+> [ ... ]
+> 
+> > +void ixd_ctlq_rx_task(struct work_struct *work)
+> > +{
+> > +	struct ixd_adapter *adapter;
+> > +
+> > +	adapter = container_of(work, struct ixd_adapter, mbx_task.work);
+> > +
+> > +	queue_delayed_work(system_unbound_wq, &adapter->mbx_task,
+> > +			   msecs_to_jiffies(300));
+> > +
+> > +	ixd_ctlq_recv_mb_msg(adapter);
+> > +}
+> 
+> [Severity: High]
+> Does queueing the delayed work before executing the main logic create a race
+> condition? If cancel_delayed_work_sync() is called (for example, during
+> teardown in ixd_deinit_dflt_mbx()), try_to_grab_pending() could successfully
+> delete the newly queued timer and return immediately, assuming the work is
+> fully cancelled.
+> 
+> This would bypass flush_work() and allow the teardown path to free
+> adapter->xnm and set adapter->arq to NULL while ixd_ctlq_recv_mb_msg() is
+> still running, potentially causing a use-after-free or NULL pointer
+> dereference. Should the re-arming be moved to the end of the task?
+> 
+> > diff --git a/drivers/net/ethernet/intel/ixd/ixd_lib.c b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+> > index afc413d3650fb..ce870aba143d4 100644
+> > --- a/drivers/net/ethernet/intel/ixd/ixd_lib.c
+> > +++ b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+> 
+> [ ... ]
+> 
+> > @@ -136,8 +145,27 @@ void ixd_init_task(struct work_struct *work)
+> 
+> [ ... ]
+> 
+> > +	libie_ctlq_xn_shutdown(adapter->xnm);
+> > +	ixd_trigger_reset(adapter);
+> > +	ixd_deinit_dflt_mbx(adapter);
+> 
+> [Severity: High]
+> Is it safe to trigger a hardware reset before cancelling the mailbox polling
+> task? ixd_deinit_dflt_mbx() is responsible for cancelling the mbx_task, but
+> calling ixd_trigger_reset() first means the polling task could run while the
+> hardware is resetting.
+> 
+> During reset, MMIO reads or DMA ring memory might temporarily contain invalid
+> states, and the still-running mbx_task might process corrupted descriptors.
+> Should the polling task be cancelled before asserting the hardware reset here,
+> as well as in ixd_remove() in ixd_main.c?
