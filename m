@@ -1,487 +1,218 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012024.outbound.protection.outlook.com [52.101.48.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D007D3EEAD3
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 08:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784795229; cv=none; b=OEUQhuez1Iyy3lTFpqr6A+UHX5+ZppyYU856H46Jb6URvBytv/yiaqQbNll5cM3jbMG0W22gZ/aY8WEVtUt51rU+okJqrV2+6Bomb4bejkzk0Wz1hIlwejU1I2u6seg/ZbQM+vUSZ3dCpgV21awIHRCjlylu+SWAHpnagxPJ7FA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784795229; c=relaxed/simple;
-	bh=qF6F+aLTbTwoqZejAM7Ud+Kxi7agtmfFo0aUrMXKFek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sk7JX7J7GDkvH7yDfQctNKxiJXuqeyXBzcHf3FBmjUkMfV73B3bCTf2Rw31G6XDQm6FhhuKMk9h6MZ4Cj+wuJiLER1uPFI4tJ5PMGi4UCqurUGutKnlKRHvh6bHaoHXBHYg72HNFJ+MCOfvYDvDkFBrdYa0QmpVyjis3FR99DVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IuuaxhD6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iboMIXve; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52DE3F39C2;
+	Thu, 23 Jul 2026 08:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784795260; cv=fail; b=uM0tEnLE4HvuT8kiU3dZpt2fZGNwxKSNJxNpvrbMZkj41i28aFW6YHDmzPU9ptnUSN014mgWSyeFsKABQrWlwmsez1vRlk7Okj5RY7D81UQLhATTZxcwkK0pxltdz9J7/WUDEC4QKlOk3tcv4+p9k7UmbPblj3hdEoKRf/A3/uI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784795260; c=relaxed/simple;
+	bh=jx9/RW0h97vcsD/pwIFRGjet/uoOOi0Lt0GalptKAig=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hgAk842D7pGeRXlSBm0dCZV7k61/aruaJhtF1QRzF0U/xVgFEkH9D8TEU3iJms7nJp/fnXuRuTydgQ+S1Ux8WiSk1vfBoJm5JXpj+a7Zal5/GhZCO1Zm77I2MlR2mEIMfu6ZW1lsHcA/ZW6HvI01KlBBBYciWPNeL0wt3rt2xf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=p2nLLhpy; arc=fail smtp.client-ip=52.101.48.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IuuaxhD6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iboMIXve"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784795219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dctZDlC2XJVQXTcTGVVfbpBQOnBh4QfJjhWU5Wge13Y=;
-	b=IuuaxhD6C7vLm7C2wgzD1HWabreef9sBGLYlYHnc2iUgXPsHEaBKnNHkRh1Llw3V9pHN3t
-	HdOxg5hlydmjtMZHPmB2ZrYhkMyohbOIGaa97AcZ9wyIya3zY7x/TMI6c9TcWr/vrCktR+
-	uYphbpj1uy9Y7Wqbxj5boyO06ccx5OY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-oSMQAvMnPFa1a3wr7OILMg-1; Thu, 23 Jul 2026 04:26:58 -0400
-X-MC-Unique: oSMQAvMnPFa1a3wr7OILMg-1
-X-Mimecast-MFC-AGG-ID: oSMQAvMnPFa1a3wr7OILMg_1784795217
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49559af7b97so2505775e9.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 01:26:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784795217; x=1785400017; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dctZDlC2XJVQXTcTGVVfbpBQOnBh4QfJjhWU5Wge13Y=;
-        b=iboMIXveU3IeSEvDJRCQEIsU5LWpqHibJiGIKhjAgZz4ciO2qj6TDbOykv8ol5xAV2
-         GQfQpmj2iXZEkDe8fPbY8JeMkPk63x0eJ3lJ98zElG4uiolmlbMezllxrufzcjW2+xZE
-         t8cMF2X9wI+EQ2VqK+C6WI7o1iYuF/25dTmDvcxPC0Pk5VOg/F9NWPtslucn7g5/mf1n
-         DvEeMw1ZFLOz08V2feD1da+E7hOIp1faDMfCIPTBmYPktK12dnqTGa/l5HSKxFGka9Fx
-         TUJaJQ1w0hlvYKdyU2CdGKyCRCsGKRSJk759b7VXgENY8s/2Y7h4IhA8kwxWAqXPJJwD
-         Ge1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784795217; x=1785400017;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dctZDlC2XJVQXTcTGVVfbpBQOnBh4QfJjhWU5Wge13Y=;
-        b=mNyTG5VP0hJeXuk7bIH7Wvud40l8Gu4Ne3dRR3lOGUrxTPqScprzSHpWTJc/uyjQQt
-         s64elVMP0xzLtuQ+KfZ1cpQN7lx/i2RfqnclOw285iG00ngDMegLypy9YmRvvYsUVgAM
-         8dgBuVKmthktFRsLb+weRTOfIGqQys8Izk+4R1qVUaXSrCuhQm1U2BK9a4IBQCiI6L3t
-         /vyfHjbaU/7qBKk3YW0S3x6g/Yq6LxMlDu5njdyhrwbD5YoIB7jAxccDZGZRGE8yRyHz
-         qRKhDF2CJsD7KoD5Y/ESjaVmM5IcnmVm/U1ZPWiDPhk0XU9O3IEci5MV0d+fh86LTtA5
-         0WRA==
-X-Gm-Message-State: AOJu0YwjPMQV4wzb6oeG7etkSc9pCH/zS1ziTk027h1KL2xFWfE+2ln1
-	KLbXIE35DFt9MPbPhk8s7/SiZeItEl/zwMgYKi/mHtMvlNnYZLjX5Y7F9cJf13Y8v+XEzNDSPs/
-	QvonuLKGyhxzM6AzWRje6LKApsli3dtapEN+87HCu4qSfc7EtrrIwmVAUfz16vcOUDA==
-X-Gm-Gg: AR+sD125iqAi1rNLf8cfwf1AuZze0LFhdBkk0JwOizs0gebKckTiJcs/9L0joV9rc6L
-	DkMQrWugqi1iO0pIhyz9YvhwWgZ5WGy7Ia8M+NIykrt5ID66JK+tu3PSjSg9OANo5HZBeDIy33K
-	aSxH9Qxif85YCuXhE5oiYZUkGY9c13bB5AkOTmC3x8yvLU/oQ+eU0SEIWqkJVtgEwHM4H5ZaFp+
-	lAcx6DpKcbpnDRWWdK6Zf1LsZLkkXn3j0/MsBtma53RhVb8Ud50Qgx4VYMpJowg7yKITVr1Dmqr
-	l8nFTJQ9ZOQ5dTnlzjsxmX79qypVmdotEi60mm6NOQuADlBiVCwd/I9JCu35GOZ4VC36lpBtU8A
-	=
-X-Received: by 2002:a05:600c:1395:b0:495:4487:61af with SMTP id 5b1f17b1804b1-49573d36fddmr21981345e9.36.1784795216715;
-        Thu, 23 Jul 2026 01:26:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:1395:b0:495:4487:61af with SMTP id 5b1f17b1804b1-49573d36fddmr21980795e9.36.1784795216029;
-        Thu, 23 Jul 2026 01:26:56 -0700 (PDT)
-Received: from [192.168.2.83] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b72fac1sm105603625e9.1.2026.07.23.01.26.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 01:26:55 -0700 (PDT)
-Message-ID: <eea8692e-f8e9-4bae-beb8-e33f7508aa9b@redhat.com>
-Date: Thu, 23 Jul 2026 10:26:53 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="p2nLLhpy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nMBzktDt2vWp2MxW5pB4mXs+aZoDrVBEcsveQxGLDptrVeiVg9JMT32kffCA4nsOJKn8C0Y7VOLt3EjofEsqZ/3VZY76Sr3iO0g/TtPg8FhktpzWuMEQ9uTnBetbqn323UEgFC2n+v+EXasDOjyFkcC6FgT+NzyCYe3hrACCitm5t7O9xe0qRIhOCmKEuV+fVl9zl1Flail2NtZvjdtPJL/EeVHLpZt4D14gBiqBhmtsGb/YYXLjZvPlr/K82Ia5CgyNFqyeakIYKsoVt8IjhFE3+O2Voa4F7CWZTpCtLmASeH6Njkai+PgNd7NjN4UXZBubfOnx9Ti0bASDnPHe8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sbB5l4gI+FKyBitDKruP4Zjf86mr8J+u4Irbam21Fw4=;
+ b=k5Aq7MINGG87RTQcE78QhybFBRY5SkhHLTBwv8rEi2gPKGtW4sxh0eJVG+m1IOuPWglE2WJXwmxjxhillLVNbdETEoJwDr3E+B887O1lT1F45e5riOEw9+YF93gUkpijiD7h7GN27lGkgFM1d2P6I9uGBuSS8asLvkYEx6VBqAM6I7FEr1riU+4YsxHXXtmt/iZH7yDnAiAMIsOlifZZf7CWFD9kix8RzzNGT16mKKg/GW9dZSGsAJQs3m1j6s48sdS9Dn5ifkwHCpOaTa3EM04KA5Au/rFCefTL8uOBsheVtBe6Vf6nKv9ujMKOw4TDIkCzHesIvvChfDlkykZFGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sbB5l4gI+FKyBitDKruP4Zjf86mr8J+u4Irbam21Fw4=;
+ b=p2nLLhpygn6CGfiKlBwYplOoAWILzwFN9X46Gh9ZBMq2WfI08rSNTG0HzpsOLxTszBumwjpZbO+y2zNjlMNmPm6hIEk85dDYEWpGelVNxM6rKpmNWsXdGhuQQ4cGhzxIdjJqo19U+/H8d/eUx2E/Pe1bQQVBt0fjPxUZo/bVv629/m3U+wiOietzZr/rvBs23jbhS3pD5xCNP/PwkqfXrM5K9GUqmZSsUPIXCo1+lm6pjm9koURWbeaqys7EMqfLdAzROvf7FeOqtVTAPsVN5T5GZj63sghKj0Kt5mU8xRDXZwzXveIYJIcuXiV3+WItjs5PxuMeo2gHuntBwjIRuA==
+Received: from CH0PR03CA0359.namprd03.prod.outlook.com (2603:10b6:610:11a::19)
+ by SA1PR12MB7410.namprd12.prod.outlook.com (2603:10b6:806:2b4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 08:27:25 +0000
+Received: from CH1PEPF0000AD83.namprd04.prod.outlook.com
+ (2603:10b6:610:11a:cafe::67) by CH0PR03CA0359.outlook.office365.com
+ (2603:10b6:610:11a::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
+ 23 Jul 2026 08:27:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH1PEPF0000AD83.mail.protection.outlook.com (10.167.244.85) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.245.5 via Frontend Transport; Thu, 23 Jul 2026 08:27:24 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 01:27:11 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Jul
+ 2026 01:27:11 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 23
+ Jul 2026 01:27:04 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Arthur Kiyanovski <akiyano@amazon.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>, David Ahern <dsahern@kernel.org>, "Gal
+ Pressman" <gal@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Jiri Pirko
+	<jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky
+	<leon@kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
+	<mbloch@nvidia.com>, Nikolay Aleksandrov <nikolay@nvidia.com>, "Nikolay
+ Aleksandrov" <razor@blackwall.org>, Petr Machata <petrm@nvidia.com>, "Przemek
+ Kitszel" <przemyslaw.kitszel@intel.com>, Ratheesh Kannoth
+	<rkannoth@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
+	<skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Subject: [PATCH net-next V4 0/2] devlink: add generic device max_sfs parameter
+Date: Thu, 23 Jul 2026 11:26:41 +0300
+Message-ID: <20260723082643.1870844-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net 2/4] ice: clear unexpected Tx
- timestamp ready bits to prevent stuck PHY
-To: Przemyslaw Korba <przemyslaw.korba@intel.com>,
- intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, arkadiusz.kubalewski@intel.com,
- aleksandr.loktionov@intel.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, konstantin.ilichev@intel.com
-References: <20260720120151.2675206-1-przemyslaw.korba@intel.com>
- <20260720120151.2675206-3-przemyslaw.korba@intel.com>
-Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20260720120151.2675206-3-przemyslaw.korba@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD83:EE_|SA1PR12MB7410:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd03a744-f8b3-4d54-564a-08dee8943988
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700016|23010399003|1800799024|11063799006|56012099006|6133799003|10067099003|3023799007|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	IVnWixw+E6fdcGWwBkAg6Ps8otkqtGQFWwPQ4l6+ecSrSoTwB4adwm97218jL23DZxXhTQbKSWcwBbWl/ZADyPyZd51ww5zUt4xcjIx0PfbIInrdKsm9ygrqx3Sga+EG7Q1MNQ77DLdjx1twxYZLwgMku9dhpkHP1ySH4XmbtVWc0/FFCGckJLHBWFvfMQtWlVM7jFa4m3CTyNX+tm54d/QxnMHx0Ann666Fcr9arAYczGEXfu+soXbBXNjlJmxIquCHkjwZvxscAnmSBK0jNwF5FNBuzIlofN7pQZxPRkA2lx3ISUyoIXwRYUFD9GlL9wr2snv1MgWg31O6IJ92UDrEz2bK3d5ZEUL5nIHCkQ8KIjiUwsh737SS56wz5hQr17FA/88lFtmnvgVddpWbC91KXsVMYuoL0EUu3UXoowQ/8V3KWgAtAOYYyw3inCEO9J2nZKO/xDaTd17rHWzai0A6qEywGVLF45VCsY1wJB79o5Cf5GMVQjghSEc/v3ao0EVKFF5PexnFnW76iiyQBG12HD9Sligl1gOnlcj3WeoTVcPazAOKQ+/+2nbV9NmkxRwtB/1fH8yQxgB04fYkoX57pQPcL6XHwCUgpfH/XgwkttbHB43AJrH6zKol1fgf7OuKc+EqpUcGcgsivetrV1+n/mcBnU/llNay00KFhsG/cGhFWgiwA5YP94+AxYBsuDOjoKcOkNzny6GVjRtWQQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700016)(23010399003)(1800799024)(11063799006)(56012099006)(6133799003)(10067099003)(3023799007)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lh7GfwmWTnQGi2elgzgvBaVoSAFYHm4B3ZLYA4CJPU13py9Yaw5D2qQROLmzMxkSSIbLPHgYHs1Ygz9ANQH4tqprRLqdtZBJj/DP8RWxvwCHNAwL7U6wVBN1J1AaaODWDKFoDDiH7F37ui3YwYbdNNQQ/MPu7WMkU+LGFPmh7JfyEKGLNErjDLdN8NcFEGDUPz5YxQCkX/vWa3Sonya4eoWfyACcrWCkrij1zOoRO0Fz2na/U7A0YUcs4slagCGgTkWQKHCUeWU1yjf/Qm1v2Um2WVGTMFglkC8rLWtfne+qkyDpCVzajlWdjH8HSNp1zj8ch4GkpPw0e1B3I5FanVUCEfD4XyRapDgdAlHl0cd9Y8weHtjRpdIYzWWqVp6HOskQb2Ix82+qTYQwL/eGeMifwb0O+yuB2IecTluIeMntl70QfSM4ydZ0KT1eFYyW
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 08:27:24.9431
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd03a744-f8b3-4d54-564a-08dee8943988
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD83.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7410
 
+Hi,
 
-On 7/20/26 14:01, Przemyslaw Korba wrote:
-> From: Jacob Keller <jacob.e.keller@intel.com>
->
-> Clear orphaned timestamp ready bits left in the PHY when a packet is
-> timestamped just as the link goes down. The driver clears its software
-> in_use bits during link-down cleanup, but the PHY has already latched
-> the timestamp, so on the next link-up a stale ready bit from the
-> previous link cycle remains set with no matching in_use entry.
->
-> The PHY timestamp interrupt logic will not generate a new interrupt
-> until ALL outstanding ready bits have been read. ice_ptp_process_tx_
-> tstamp() only iterates slots set in the software in_use bitmap, so it
-> never reads these orphaned slots. The result is a permanent interrupt
-> deadlock:
->
-> 1. The PHY has ready bits set for slots with no in_use tracker entry
-> 2. The driver never reads those slots because in_use is clear
-> 3. The PHY refuses to generate new timestamp interrupts
-> 4. All future Tx timestamps permanently fail
-> 5. Only a power-on reset can recover the device
->
-> Clear these stale ready bits on link-up, in ice_ptp_link_change(),
-> before any new timestamp requests arrive, scoped to the affected port
-> only so timestamps still pending on other ports are left untouched. For
-> every affected MAC the clearing iterates the not-in_use slots with
-> for_each_clear_bit(), so a pending software request is never discarded
-> and tx->lock need not be held across the PHY access:
->
->    - E810 is skipped (guarded by tx->has_ready_bitmap) because
->      ice_get_phy_tx_tstamp_ready_e810() returns an all-ones bitmap rather
->      than a real ready status.
->    - E830 and E825/eth56g read the real Tx timestamp ready bitmap and
->      clear only the slots the PHY actually latched, via
->      ice_clear_phy_tstamp(). If the ready bitmap cannot be read, the
->      clear is skipped and a rate-limited warning is logged.
->
-> On every MAC the ready bit is cleared by reading the slot's timestamp
-> memory; the orphaned bits linger only because the normal processing path
-> never reads those not-in_use slots. The link-up recovery clears them by
-> reading the timestamp memory via ice_clear_phy_tstamp():
->
->    - E830: add ice_clear_phy_tstamp_e830(), which reads the
->      PRTTSYN_TXTIME_H/L registers to clear the entry, and add an
->      ICE_MAC_E830 case to the ice_clear_phy_tstamp() dispatch.
->    - eth56g: ice_clear_ptp_tstamp_eth56g() reads the timestamp memory
->      location, which per the PHY spec is the operation that clears the
->      entry's valid bit and its corresponding (read-only) ts_memory_status
->      bit. The ts_memory_status registers cannot be written to clear a
->      bit, so only reading the timestamp memory has any effect.
->
-> The new for_each_clear_bit() loop runs from the service task via link
-> events. During device removal, tx->in_use is freed before the service
-> task is stopped. Fix by stopping the service task at the start of
-> ice_unload(), before ice_ptp_release() frees tx->in_use.
->
-> Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-> ---
->   drivers/net/ethernet/intel/ice/ice_main.c   |  1 +
->   drivers/net/ethernet/intel/ice/ice_ptp.c    | 72 +++++++++++++++--
->   drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 89 +++++++++++++++++----
->   drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  1 +
->   drivers/net/ethernet/intel/ice/ice_type.h   |  7 ++
->   5 files changed, 149 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index e3d3810c791f..231d533309cb 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -5169,6 +5169,7 @@ void ice_unload(struct ice_pf *pf)
->   
->   	devl_assert_locked(priv_to_devlink(pf));
->   
-> +	ice_service_task_stop(pf);
->   	ice_unplug_aux_dev(pf);
->   	ice_deinit_rdma(pf);
->   	ice_deinit_features(pf);
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 1aa440b0639f..9d9d9958fe5c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -1372,15 +1372,73 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
->   	switch (hw->mac_type) {
->   	case ICE_MAC_E810:
->   	case ICE_MAC_E830:
-> -		/* Do not reconfigure E810 or E830 PHY */
-> +	case ICE_MAC_GENERIC_3K_E825:
-> +		/* Do not reconfigure E810 or E830 PHY, but on link-up clear
-> +		 * any stale timestamp ready bits left over from a previous
-> +		 * link cycle. The PHY may have latched timestamps for packets
-> +		 * in flight when the link went down; these must be cleared
-> +		 * before new timestamp requests arrive.
-> +		 *
-> +		 * E810 does not have a real ready bitmap
-> +		 * (ice_get_phy_tx_tstamp_ready_e810 returns all-ones), so
-> +		 * skip clearing on E810 to avoid unnecessary sideband queue
-> +		 * operations for every not-in-use slot on each link-up.
-> +		 */
-> +		if (linkup && ptp_port->tx.has_ready_bitmap) {
-> +			struct ice_ptp_tx *tx = &ptp_port->tx;
-> +			u64 tstamp_ready;
-> +			int i;
-> +
-> +			if (ice_get_phy_tx_tstamp_ready(hw, tx->block,
-> +							&tstamp_ready)) {
-> +				dev_warn_ratelimited(ice_pf_to_dev(pf),
-> +						     "PTP failed to read Tx timestamp ready bitmap on link-up; stale PHY timestamps may remain and stall Tx timestamping\n");
-> +			} else {
-> +				/* Only clear stale ready bits for slots that
-> +				 * have no in-flight software request. Iterating
-> +				 * the not-in-use slots skips any concurrent
-> +				 * ice_ptp_request_ts() allocation without
-> +				 * holding tx->lock across the PHY access. E830
-> +				 * and E825 reach this clear; E810 is filtered
-> +				 * out above by has_ready_bitmap.
-> +				 */
-> +				for_each_clear_bit(i, tx->in_use, tx->len) {
-> +					u8 phy_idx = i + tx->offset;
-> +
-> +					if (tstamp_ready & BIT_ULL(phy_idx))
-> +						ice_clear_phy_tstamp(hw,
-> +								     tx->block,
-> +								     phy_idx);
-> +				}
-> +			}
-> +		}
-> +
-> +		/* E810 and E830 need no further PHY reconfiguration */
-> +		if (hw->mac_type != ICE_MAC_GENERIC_3K_E825)
-> +			return;
-> +
-> +		/* E825 recovers its Tx path by soft resetting the PHY
-> +		 * timestamp block and restarting the port, but only on
-> +		 * link-up. The reset is a three-step register toggle; if it
-> +		 * fails partway through, the port can be left held in reset,
-> +		 * and programming a PHY that is stuck in reset via
-> +		 * ice_ptp_port_phy_restart() would leave Tx timestamping
-> +		 * permanently broken. So warn and skip the restart on
-> +		 * failure; the sequence is retried on the next link-up event.
-> +		 */
-> +		if (!linkup)
-> +			return;
-> +
-> +		if (ice_ptp_phy_soft_reset_eth56g(hw, ptp_port->port_num))
-> +			dev_warn(ice_pf_to_dev(pf),
-> +				 "PTP failed to soft reset PHY port %u on link-up; skipping restart, Tx timestamping may be stuck, try toggle a link to recover\n",
-> +				 ptp_port->port_num);
-> +		else
-> +			ice_ptp_port_phy_restart(ptp_port);
+This series by Nikolay introduces a new generic devlink device
+parameter, max_sfs, to control the number of light-weight NIC
+subfunctions (SFs) that can be created on a device.
 
-We hit a regression from this hunk while testing the series on an
-E825 T-BC system: after the soft reset the port no longer signals
-latched Tx timestamps. Nothing re-enables the port interrupt
-configuration (PHY_REG_TS_INT_CONFIG) afterwards, the only writers
-are the clock owner init and rebuild paths via
-ice_ptp_cfg_phy_interrupt(), and ice_ptp_port_phy_restart() does not
-touch it. So the first link-up that takes this path leaves the port
-without Tx timestamp interrupts until the next reset of the clock
-owner PF or a driver reload.
+The first patch adds the generic devlink parameter and infrastructure
+support.
+The second patch implements support for the parameter in the mlx5
+driver.
+
+With this addition, users can enable or disable SF creation directly via
+devlink, without relying on external vendor-specific tools.
 
 Regards,
+Tariq
 
-Petr
+Notes about a few items from a previous Sashiko review:
+ > Should there be a validate callback analogous to
+ > mlx5_devlink_total_vfs_validate() that reads the cap and rejects values
+ > above the device-reported maximum, so the documented "device-specific
+ > max" is actually enforced?
 
->   		return;
->   	case ICE_MAC_GENERIC:
->   		ice_ptp_port_phy_restart(ptp_port);
->   		return;
-> -	case ICE_MAC_GENERIC_3K_E825:
-> -		if (linkup)
-> -			ice_ptp_port_phy_restart(ptp_port);
-> -		return;
->   	default:
->   		dev_warn(ice_pf_to_dev(pf), "%s: Unknown PHY type\n", __func__);
->   	}
-> @@ -3380,6 +3438,7 @@ void ice_ptp_init(struct ice_pf *pf)
->   
->   	ptp->state = ICE_PTP_INITIALIZING;
->   
-> +	mutex_init(&hw->ptp.tx_tstamp_lock);
->   	if (hw->lane_num < 0) {
->   		err = hw->lane_num;
->   		goto err_exit;
-> @@ -3443,6 +3502,7 @@ void ice_ptp_init(struct ice_pf *pf)
->   
->   	ice_ptp_cleanup_adapter(pf);
->   err_exit:
-> +	mutex_destroy(&hw->ptp.tx_tstamp_lock);
->   	/* If we registered a PTP clock, release it */
->   	if (pf->ptp.clock) {
->   		ptp_clock_unregister(ptp->clock);
-> @@ -3469,6 +3529,7 @@ void ice_ptp_release(struct ice_pf *pf)
->   
->   	if (pf->ptp.state != ICE_PTP_READY) {
->   		mutex_destroy(&pf->ptp.port.ps_lock);
-> +		mutex_destroy(&pf->hw.ptp.tx_tstamp_lock);
->   		ice_ptp_cleanup_pf(pf);
->   		ice_ptp_cleanup_adapter(pf);
->   		if (pf->ptp.clock) {
-> @@ -3495,6 +3556,7 @@ void ice_ptp_release(struct ice_pf *pf)
->   
->   	ice_ptp_port_phy_stop(&pf->ptp.port);
->   	mutex_destroy(&pf->ptp.port.ps_lock);
-> +	mutex_destroy(&pf->hw.ptp.tx_tstamp_lock);
->   	if (pf->ptp.kworker) {
->   		kthread_destroy_worker(pf->ptp.kworker);
->   		pf->ptp.kworker = NULL;
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> index a1970a887c38..b23b68cd18ee 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> @@ -1160,11 +1160,15 @@ static int ice_read_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx,
->    *
->    * To directly clear the contents of the timestamp block entirely, discarding
->    * all timestamp data at once, software should instead use
-> - * ice_ptp_reset_ts_memory_quad_eth56g().
-> + * ice_ptp_reset_ts_memory_eth56g().
->    *
->    * This function should only be called on an idx whose bit is set according to
->    * ice_get_phy_tx_tstamp_ready().
->    *
-> + * Serialized against ice_ptp_clear_tx_memory_status_eth56g() via
-> + * tx_tstamp_lock so the two paths do not interleave their reads of the same
-> + * port's Tx timestamp memory.
-> + *
->    * Return:
->    * * %0     - success
->    * * %other - failed to write to PHY
-> @@ -1175,25 +1179,62 @@ static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
->   	u16 lo_addr;
->   	int err;
->   
-> -	/* Read the timestamp register to ensure the timestamp status bit is
-> -	 * cleared.
-> +	lo_addr = (u16)PHY_TSTAMP_L(idx);
-> +
-> +	mutex_lock(&hw->ptp.tx_tstamp_lock);
-> +
-> +	/* Per the PHY spec, reading the timestamp memory location is what
-> +	 * clears the entry's valid bit and its corresponding (read-only)
-> +	 * ts_memory_status bit. This clears only this index, leaving any
-> +	 * other in-flight timestamps on the port untouched.
->   	 */
->   	err = ice_read_ptp_tstamp_eth56g(hw, port, idx, &unused_tstamp);
-> -	if (err) {
-> +	if (err)
->   		ice_debug(hw, ICE_DBG_PTP, "Failed to read the PHY timestamp register for port %u, idx %u, err %d\n",
->   			  port, idx, err);
-> -	}
-> -
-> -	lo_addr = (u16)PHY_TSTAMP_L(idx);
->   
->   	err = ice_write_port_mem_eth56g(hw, port, lo_addr, 0);
-> -	if (err) {
-> +	if (err)
->   		ice_debug(hw, ICE_DBG_PTP, "Failed to clear low PTP timestamp register for port %u, idx %u, err %d\n",
->   			  port, idx, err);
-> -		return err;
-> +
-> +	mutex_unlock(&hw->ptp.tx_tstamp_lock);
-> +
-> +	return err;
-> +}
-> +
-> +/**
-> + * ice_ptp_clear_tx_memory_status_eth56g - Reset one port's Tx timestamp memory
-> + * @hw: pointer to the HW struct
-> + * @port: port number to clear
-> + *
-> + * Fully reset a single PHY port's Tx timestamp memory. Per the PHY spec, the
-> + * only way to clear a timestamp valid bit (and its read-only ts_memory_status
-> + * bit) is to read the timestamp memory location, so read every entry for the
-> + * port (two 32-bit reads each). This discards all timestamp data on the port,
-> + * so it must only be used for a full reset; callers that must preserve
-> + * in-flight timestamps clear individual indices via ice_clear_phy_tstamp().
-> + *
-> + * Holds tx_tstamp_lock so this full-port sweep does not interleave with the
-> + * per-index reads in ice_clear_ptp_tstamp_eth56g() on the same port.
-> + *
-> + * Return: 0 on success, negative error code on failure to read the PHY.
-> + */
-> +int ice_ptp_clear_tx_memory_status_eth56g(struct ice_hw *hw, u8 port)
-> +{
-> +	u64 unused_tstamp;
-> +	int err = 0;
-> +	u8 idx;
-> +
-> +	mutex_lock(&hw->ptp.tx_tstamp_lock);
-> +	for (idx = 0; idx < INDEX_PER_PORT; idx++) {
-> +		err = ice_read_ptp_tstamp_eth56g(hw, port, idx, &unused_tstamp);
-> +		if (err)
-> +			break;
->   	}
-> +	mutex_unlock(&hw->ptp.tx_tstamp_lock);
->   
-> -	return 0;
-> +	return err;
->   }
->   
->   /**
-> @@ -1204,12 +1245,8 @@ static void ice_ptp_reset_ts_memory_eth56g(struct ice_hw *hw)
->   {
->   	unsigned int port;
->   
-> -	for (port = 0; port < hw->ptp.num_lports; port++) {
-> -		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_L,
-> -					 0);
-> -		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_U,
-> -					 0);
-> -	}
-> +	for (port = 0; port < hw->ptp.num_lports; port++)
-> +		ice_ptp_clear_tx_memory_status_eth56g(hw, port);
->   }
->   
->   /**
-> @@ -5277,6 +5314,23 @@ static void ice_read_phy_tstamp_e830(const struct ice_hw *hw, u8 idx,
->   		  FIELD_PREP(PHY_EXT_40B_LOW_M, lo);
->   }
->   
-> +/**
-> + * ice_clear_phy_tstamp_e830 - Clear a timestamp from the E830 PHY
-> + * @hw: pointer to the HW struct
-> + * @idx: the timestamp index to clear
-> + *
-> + * Clear the valid bit for the given timestamp index in the Tx memory (TS_MEM).
-> + * On E830 devices the PRTMAC_TS_TX_MEM_VALID_L/H registers are read-only
-> + * mirrors of the per-entry TX_VALID bits and cannot be written. The actual
-> + * TS_MEM entry's TX_VALID bit is cleared by reading the corresponding
-> + * PRTTSYN_TXTIME_L/H registers (read-to-clear).
-> + */
-> +static void ice_clear_phy_tstamp_e830(const struct ice_hw *hw, u8 idx)
-> +{
-> +	rd32(hw, E830_PRTTSYN_TXTIME_H(idx));
-> +	rd32(hw, E830_PRTTSYN_TXTIME_L(idx));
-> +}
-> +
->   /**
->    * ice_get_phy_tx_tstamp_ready_e830 - Read Tx memory status register
->    * @hw: pointer to the HW struct
-> @@ -5772,6 +5826,9 @@ int ice_clear_phy_tstamp(struct ice_hw *hw, u8 block, u8 idx)
->   	switch (hw->mac_type) {
->   	case ICE_MAC_E810:
->   		return ice_clear_phy_tstamp_e810(hw, block, idx);
-> +	case ICE_MAC_E830:
-> +		ice_clear_phy_tstamp_e830(hw, idx);
-> +		return 0;
->   	case ICE_MAC_GENERIC:
->   		return ice_clear_phy_tstamp_e82x(hw, block, idx);
->   	case ICE_MAC_GENERIC_3K_E825:
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> index 16b1988e993d..b003e0aae8b1 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> @@ -304,6 +304,7 @@ int ice_ptp_clear_phy_offset_ready_e82x(struct ice_hw *hw);
->   int ice_read_phy_tstamp(struct ice_hw *hw, u8 block, u8 idx, u64 *tstamp);
->   int ice_clear_phy_tstamp(struct ice_hw *hw, u8 block, u8 idx);
->   void ice_ptp_reset_ts_memory(struct ice_hw *hw);
-> +int ice_ptp_clear_tx_memory_status_eth56g(struct ice_hw *hw, u8 port);
->   int ice_ptp_init_phc(struct ice_hw *hw);
->   void ice_ptp_init_hw(struct ice_hw *hw);
->   int ice_get_phy_tx_tstamp_ready(struct ice_hw *hw, u8 block, u64 *tstamp_ready);
-> diff --git a/drivers/net/ethernet/intel/ice/ice_type.h b/drivers/net/ethernet/intel/ice/ice_type.h
-> index 710c519d670d..d8c73fcafc25 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_type.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_type.h
-> @@ -888,6 +888,13 @@ enum ice_global_link_topo {
->   
->   struct ice_ptp_hw {
->   	union ice_phy_params phy;
-> +	/* Serializes eth56g Tx timestamp-memory reads (the per-index
-> +	 * timestamp entries, not the TX_MEMORY_STATUS registers). Reading an
-> +	 * entry auto-clears its ts_memory_status bit as a side effect, so the
-> +	 * per-index and full-port clear paths must not interleave on the same
-> +	 * port or a bit could re-latch the interrupt.
-> +	 */
-> +	struct mutex tx_tstamp_lock;
->   	u8 num_lports;
->   	u8 ports_per_phy;
->   };
+ N: I don't know of such cap, if there was I'd have added it.
+
+ > mlx5_devlink_total_vfs_set() rejects with -EOPNOTSUPP and an extack
+ > "SRIOV is not per PF on this device" when sriov_support or
+ > per_pf_total_vf_supported is clear, but no equivalent
+ > per_pf_num_sf_supported (or any SF-related) capability bit is added to
+ > nv_global_pci_cap_bits or queried here.  On hardware that lacks the
+ > feature, the user only sees the generic firmware error "Failed to
+ > change ... global PCI configuration".
+
+ N: I don't know of such bit, if there was such bit I'd have added it.
+
+ > At this point, a successful write of per_pf_num_sf has already been
+ > committed to non-volatile firmware storage.  If the subsequent
+ > mlx5_nv_param_read_per_host_pf_conf() or the second mlx5_nv_param_write()
+ > fails (for example, transient firmware/PCIe issue), is there a path that
+ > rolls back per_pf_num_sf?
+ >
+ > Because these are permanent parameters that "require a reboot to take
+ > effect", a half-applied state (e.g., per_pf_num_sf=1 but
+ > pf_total_sf_en=0/total_sf=0) appears to persist across reboots until
+ > the user issues another successful set.
+
+ N: That is expected and in line with the rest of the code.
+
+ > The commit message says max_sfs is to "control the total light-weight
+ > NIC subfunctions"; the BAR-size side-effect is not mentioned, and any
+ > previously configured log_sf_bar_size is overwritten on every
+ > max_sfs set.  Should that behavior be documented or split out from the
+ > count knob?
+
+ N: It should be documented when it is split out, at present time - no.
+
+V4:
+- rebase due to build failure because of commit:
+  d603517771d8 ("devlink: pass param values by pointer")
+  fixed in patch 02
+- added Alexander Lobakin's reviewed-by tags (please let me know
+  if that is not ok, the change in patch 02 is minor and mechanical
+  due to the commit above)
+
+V3, all changes are in patch 02 (mlx5 implementation):
+https://lore.kernel.org/netdev/b087dc20-7398-4ad3-9787-efef883d81b1@blackwall.org
+- Cap max_sfs at U16_MAX using a validate callback (sashiko)
+- Change the warning message to match the docs (sashiko)
+- On get verify that per_pf_num_sf & pf_total_sf_en are set
+  otherwise return 0 since it means SFs are not properly enabled (sashiko)
+- Define the default log bar size and use it instead of raw value (sashiko)
+
+V2:
+https://lore.kernel.org/netdev/20260519200436.353249-1-tariqt@nvidia.com/
+- Add missing ` (Aleksandr Loktionov).
+- Add review tag to patch 1.
+
+V1:
+https: //lore.kernel.org/all/20260517112700.343575-1-tariqt@nvidia.com/
+
+
+Nikolay Aleksandrov (2):
+  devlink: add generic device max_sfs parameter
+  net/mlx5: implement max_sfs parameter
+
+ .../networking/devlink/devlink-params.rst     |   6 +
+ Documentation/networking/devlink/mlx5.rst     |   7 +-
+ .../mellanox/mlx5/core/lib/nv_param.c         | 118 +++++++++++++++++-
+ include/net/devlink.h                         |   4 +
+ net/devlink/param.c                           |   5 +
+ 5 files changed, 136 insertions(+), 4 deletions(-)
+
+
+base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
+-- 
+2.44.0
 
