@@ -1,146 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021123.outbound.protection.outlook.com [52.101.65.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29CC3515F0;
-	Thu, 23 Jul 2026 17:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784826999; cv=none; b=Y9stU3UQo0BwkfUUcRVhG5NebU8qZgvoYb85UapTcKFCcWe9CWAAZAx39SOGkXloKRKWgEm9CsgBykqwZjWMLAgQsOVQDywzYYrx+IXw/KW0zx9PZcf17drQDe/vI9cBGJvlEB9/f4NYtmm04hDHlOUCRBBjKRVkGF2/Ew56AmI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784826999; c=relaxed/simple;
-	bh=2hfIwDWv+QCMWbengPePMi6tNVyFAhlpJ3TkP8URYgM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uh8tGhi3h03FHnjv5elVX9RalQ7kP7v1DMxF2WrtRQaQk+dIrGh80ylJlLgyGlnFF6XXIhP70c2boxsPRdDu8WqqW9I4pSJ/m+6DY3iGK0uV6tkppJ+JXUvOvrdTtWn2Arc0vKhfORSz4ha8rDE9i6wSOtnw4BPaENxMGIuIvo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rngsj5K2; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE9A486B95;
+	Thu, 23 Jul 2026 17:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.123
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784827052; cv=fail; b=rVAlYquWgVFAtQy+HLbpX4z4lU8QdAGKeqLUgJSaEl4ovmbcHWaDe5rSE5znNiq2N5rTSOluU6sXlO0lEQt9Ani8D1U+q+EGEcP4JCjRWLy17PSKAONej04oZ0kUZcOix+B4zootMYt9W7ihcqYYLYNgnlqPJsrRVvwRemT1uQE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784827052; c=relaxed/simple;
+	bh=R52vt49SM0lAR2+iE2+RguLJvcVojGNTU5cbK7MjDb4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=SS4bVoGNnMIA02Plw0gMZ6ThjM642NFO/2CDCVT2yvmpsFEyCDpIUtXpaPFuE6OG+1ECd+WxJf1EDp6klFRiB6omVjusuQavlm1oF0jSu/Xar4g65QjpA+bJZQiiHWV2ksLr+SCYz/juPyHEhsToowDrDoGWBjzJ/wA0KRT9PQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=X0+NaVxW; arc=fail smtp.client-ip=52.101.65.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rngsj5K2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3A41F000E9;
-	Thu, 23 Jul 2026 17:16:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784826997;
-	bh=hZlm14a0jvkl1938sGgad/LC/uOrsuMeOYYjhvzchB8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rngsj5K2v0qwrL9wGbnjUNl/LlaAzu+A7p8ld39tbVPU4VxQkpqNXtDh9w7z+DF94
-	 X+1123nHY16xYuih69abyAJl55J2VH7gv4ErzCk3MFhRX9sYbytO5dv4tOTxz81Mux
-	 L6zOKeJwQFSHl1/C9vF9uV1fU+hG8Zg2FKADPuI+uNHR0JAtzZHT9odJ+nsBJQVDtP
-	 T8iWTsX9CtVi1QgIZHqxrQT0r6osx/1PZm9SKc4UNzZBMoBN2r07eyYU6J/7ESJNL0
-	 7WUhva6tDCJQcDxjgSS4w5/enuhOldRXQymBA+yK+9Qxwxz6ENic7oLM27U9kbJyTc
-	 0jZJPVl7OIRmg==
-Message-ID: <e8847751-4186-4c72-88aa-9295bbcfabb3@kernel.org>
-Date: Thu, 23 Jul 2026 19:16:31 +0200
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="X0+NaVxW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rt1VOuqmp8E/TY/uFobqPwDx+7xQkhRQ+15+SLr5NksHHtUzlSMmhXTKu2d49/EnOZ9fMa+dzb9wNP4rWL43teoFRPtRpMIe4esjbJlEguEe7nI/Ol+PiIh93MN68tSJ5hFK8Mtkutw/RHCU7JzfIX+VAjR/3kL/5ofDGll2rhDzcwji1zk7gsJN/dTivNowyWMOr6HwmmMbWjLLfPx6LgKq6zvQIdhOQ539OE8X3/xP9WXOOUxD8+8ZQVRrJO08nZ28hsvyp3rqEjG9RX62CABPNZYp1kVObZy5uDiy9tuPFEfmVBMeuab8enAYsUGxKcahklCMyxDY8oVxE6GpIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
+ b=FvkqkHg2GyWyZe3DqlYPWKxKfn4qN6DOQPdevZWmnhnn3QyQdN1uEpRhR+cpiOC5+DhoTjhTaU3fuAuQkgC/8hngyZZg0CtyIl3ut16IySRxQEMgXsE+34G+Xied5naXGZ/dl8KTmkM+l4b7oUQKY5T5e4mZVgpmQZ6C4awrDmL4jUlF2yijeKDxsz5k9XpN7hudzIeOnAU7dor0aDsUmOgR5WGLs3sQqGcLsDHmy5QOo4TjOqcMGr//anOAjlWHSVxJP7MuT6qst9Z/SF6oKoiRm50CCmm7govJBYcrcWKgBzhiy6MWfMRhlh5lna5ZmcAfelGRU0euniPLE99LtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
+ b=X0+NaVxWFKmmEaF6vXsOkTRdPDmCnsMQK7H6GqmZknDHM1XuFAqZUpIAR/yY69MpX8KNDJmrpIyRvqELXLMJIATFXdZ8kcctULOaCrXHbQN0BYtB6xfP4gJkLWwtxi8z9VaNc5bYHn9KqUk/bjDfO3w1J5yyZ74UZiEeAtkKlO9E9mH5oRZpcAv9+pfAA9BaucJKHefC2tuqA7d7uQlz1LE0cPzQMr6EB9on1zmKSVR7monw0ykOmQGg0c04w6T1UfPUp8sGcgHdwnD2rMlJ2r9dl6O/oJQi90iveKLQU9vXkc91tUFoNimli4li3Yo/zHbWo53+yZi7+d52J4GifQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by PAVPR08MB8942.eurprd08.prod.outlook.com
+ (2603:10a6:102:320::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 17:17:23 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 17:17:23 +0000
+Message-ID: <b324f558-e46a-47e5-b75c-b66938379c2f@virtuozzo.com>
+Date: Thu, 23 Jul 2026 20:17:21 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
+ stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
+ bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
+ den@openvz.org
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <20260723111557-mutt-send-email-mst@kernel.org>
+ <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
+ <20260723124908-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20260723124908-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0225.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ac::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: linux-next: manual merge of the net-next tree with the net tree
-To: Mark Brown <broonie@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Michael Bommarito <michael.bommarito@gmail.com>,
- David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Networking <netdev@vger.kernel.org>
-References: <amIaJr3aOQNS_Fvl@sirena.org.uk>
-From: Matthieu Baerts <matttbe@kernel.org>
-Content-Language: fr
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <amIaJr3aOQNS_Fvl@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PAVPR08MB8942:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|56012099006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	gYgNlL+fhZNbS8qtfhvmvf2zamIFqE+O4tRE62ajQlDKZ1iIdx9YnxLKeak2Cqmu4FSyC4h1rq6IA07ILa2ehaOlpNu8+RVdOiWGb1yyFI0T27YElSFq31dY47QgID7Gnw3gwDXT7m93CcTi8L5I6tobG/R3cfhSRVtz3iSjmebQM55GGAy+J9anDbx29OEnrfV6F5NKxxh3nOl2ZSZtLp28LB56pv224vYXYI0WzRrIUKZZKmpZJJON2Y6nBwB+X0qo62TZjH0WnngUHpqOV6yP2zMHjhg6I08XivnIln0BTtd9wqwT+mPIsomIFY6KB2kcVhpa698JVmCZTpliGvaeU2UQcFBvhgL+/WZvkst+REUIH77HMB2dUcz/EfFjkXOPMwbr0Jxr46+wS0nxrx7WA6BkpLkdL5JSzgDQi9+Ujn72at/gG9Yd5cKWm5GgK9krA1LqcKmNK+fyppaqYpWlyW2YOkqql/oq53VLVw/QoB4WRRIjSeV0mOhOy+dZciH+3JDmiKGKksOcrdWBZIy3yv30TCMNJ5QVQz7Og8xN+3TBYW4s58U9HteyG244x4HkYNWH0eOMfAU+6j7RmviqVIDgiCfIVoLxLzGIOcD33+RxhN8tCXAUuOpiFAJF5vDcLMPOspI3xzvZBcVLIvEkkkB9jLAPpjeN5EJlHMg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzMzcUNyUlBUMzZWdzI2WDVubFEvb0U0UTdFd2JVUmVscndSMlhSN2RwTjVJ?=
+ =?utf-8?B?c0duZVpnS2tjS2M2ZkdqNExzdloySDVIQzN2UXZQeTVOVk9meU5xckV4bnp3?=
+ =?utf-8?B?T0hsVG9UcFlOa25RQnJldVJOVDl6Sk84cC9VTVVDU3VqNCtlOVBweDlSak1y?=
+ =?utf-8?B?ajYzSVBmbmpic1QvZ3B5WTN4azdlQ3c4ZmNvKytPVW5LcXdySnkvdGR2RXYx?=
+ =?utf-8?B?M0F4N2ZqbjJDTUVJZXRuMjdGVkpMemlYalRveGdQYWt4RDZEazNmWUhHcGx0?=
+ =?utf-8?B?c0tpeE5vYlJKejVMeDdRWG9tcWV6aFloRkdaaHQ1RHBYZXRZcTgwa2dySWVw?=
+ =?utf-8?B?Uk12SnRNUndjVDJJUERVdnBRSXhjMnVtOThoREJTeVRXT2tJYUlhQ25sb203?=
+ =?utf-8?B?Qmp3enhTUUtFdENDanhHaWlULzNHM1l5QnRBbEtiZGF4a2dmdURPd0xBV3BJ?=
+ =?utf-8?B?c0JTTTNTVHhiU3ZlaW1hamRuSGdyaW0zOVZmNjNrQUlyZjFIR2F1MXo5cW5o?=
+ =?utf-8?B?TjlxOUpWMGxaWkVGNGVDamNRR2RRcXhDOFJWV3JDeHorT0VUeDc1ZG1NVTBD?=
+ =?utf-8?B?cnZlZ2FBMFFhaXFKSTVTaU83Q1ZrT0dMSlF0eW9LbUd6eGhuaThFVlU0Nndm?=
+ =?utf-8?B?SGNRSENNU2lmNnFoc0N6b2Z6dVgrd2JrTjF5dTdQMG1JTjlzTEw2Q21kSWhn?=
+ =?utf-8?B?U2Y3eERab0syWXNscm5FOEhvOHQzajhnTlpxb1ZEQUhmTUdiZVN0TkhjMFNy?=
+ =?utf-8?B?OGtwRHIzcEs3YVBVekZ4UG9aUTY5YUZxS1ZpMjVUMEVTNTlObWdVQ1J0MDFn?=
+ =?utf-8?B?cjlZS3AwN3VDK0JadjE2ZWtadFJ5b3Bhc1FmUHlySGhSdG5EazZaZkRaWlNK?=
+ =?utf-8?B?TWJKeEpJMWlVWm44SjgzNkR2MldaUFZNdnBjTVhOMU5kZGZ4WnpVK1h2bGJQ?=
+ =?utf-8?B?WGJOOEt0UXp6RURUcjl2YURrNzFtVkRFTDRoeUcyVFZGZklDMVFjVThOTVV1?=
+ =?utf-8?B?TlZuc05zbGpiazZhTUhSVUJjd2ZDdkFGd1d6Ukc1d2cvU2dONi9BYmdEc2Jn?=
+ =?utf-8?B?b09HTkNaazBFOWFTR1d1eEllTzJ0NEZIKzBnK05nTVFVd0NtRi9JbCs5Nkd6?=
+ =?utf-8?B?SElFbHllbjRzNG9SMGlmMlIrSHFHbko5Mi9yOUdTTFhQMTlOak5OV0ZOK011?=
+ =?utf-8?B?aDRZTERrTC9aR3VzSGlIa0loOVZCN2puT1pEOG4vcTRzWXM5NHYwOGxjUE05?=
+ =?utf-8?B?dlJnR2lrZjJFU2pMbXFqUFUrVUJia1hqQ01sRlgxQm1RK0VDSUVVV0ZFM1ZD?=
+ =?utf-8?B?RG4xOWlqK1dLbmFFOTM2WDM1WkxadzB5OG5KZHRsaGxMQk0vMTFaYUZyZ0Qx?=
+ =?utf-8?B?RHhDbHlJeU5zRHIwNWxUN21lRVJBTWtuWWxRcUEzQ2VhUnAyc2FXeGlkSWJq?=
+ =?utf-8?B?WEl1MHdwckNLMTlSUVhpSVZ0NlJkMnNrNUVyOVozdFE0ZXVHVzN0WWI2SWF2?=
+ =?utf-8?B?SmhiZHNYcmxQUjlVL0tpQ3FCWFNjeU9GN3VHbWlJdjZjelFnWFJ6d1BBSDBZ?=
+ =?utf-8?B?NnBxczVndDlYelVWVjcxeHZ6b1g5d2JOYjRoQU1kMDc2Z0ltWFNVakNzZHlx?=
+ =?utf-8?B?MkkxcWtuclRLaVhnSmh1VDNtNXFZZTA1ZUN1UkFFZHFWSitvQU1nYUlocDMy?=
+ =?utf-8?B?aWMyNEdBWkovQlFaSGgvUDE0U2tKT28vRnNHaEpJMitqNHZVNy95RVFuNTZk?=
+ =?utf-8?B?di9xcGFSSHNXZE1NWDhaOWtxVURGMUl4TzNvNFd3L1p1VHQzZ3BRNks0dkZk?=
+ =?utf-8?B?NTVDTE9sODR1ZTVMRCt3T2NWZnpBNklxWmsyNmxWKytaRHNOUWVEZTBGMVdH?=
+ =?utf-8?B?T253Y0d3N1NBS1dQeVgwUHNRSFR6KzNPVHloNCtnd0l0MmtJUWdNNjNxeWhZ?=
+ =?utf-8?B?eXF0cFppcllDZGdSTk1LenQ3MEhwWTFqd1B4bzVEc01oMWpZZ3NWdC9QVXFS?=
+ =?utf-8?B?ZlZYZmJEdjF6bWhET2FXbzNaTVdIdE1Hbk9ZKy9TczVpejFaTExpTFpRZGp6?=
+ =?utf-8?B?eGozYkVEMCtkM1VGYVNLV2Y2UEp1cExKRVF3TVJIVmY0eDMyUlUxZlNHaTli?=
+ =?utf-8?B?dFFjTEh3RkVUenZvZ2xkaU9zekhOVisyWnBIT1Jac3Rud1dHWDNjNFZSMHhB?=
+ =?utf-8?B?S3FyK0tCbWpoenhQSmpXOXh3Zm5HdmRBQUE3Wk5telo5M2xIcU9sM2hCcVdo?=
+ =?utf-8?B?NFUwd2J3WmNJLzkydTBCMk1RamZTZEl0ZllqdFVucjlPQTd0QnFoQSt4d0ZZ?=
+ =?utf-8?B?YW9mOGFRakExWFdUQWdZMks5aDlUdmNtOG8vTnBHK0tYb0E5cWpBK1dGWFcz?=
+ =?utf-8?Q?GzJJADSHQRAenLpo=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:17:23.0749
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nuXCrao0DEauVUlWpSRSFDTcV9twjahSY9kc96Xi1yc1HsBuJM/mSq2xUmM5G9XeIKISWH+QNohBPDzY4IxdO1696yzNqN90m2QSIDODUrQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8942
 
-Hi Mark,
+On 7/23/26 7:50 PM, Michael S. Tsirkin wrote:
+> On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
+>> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
+>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>>> the vq->worker pointers and immediately frees the workers, without
+>>>> waiting for a grace period.  A caller that fetched the worker right
+>>>> before the pointer was cleared can therefore still be queueing work on
+>>>> it while it is freed.  And even when the queueing itself wins the race,
+>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>>> future attempts to queue it are silently skipped.
+>>>>
+>>>> None of the current callers can actually hit this: net and scsi stop
+>>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>>> the lockless send/cancel paths become able to race with the teardown.
+>>>>
+>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+>>>> period, and then flushing the workers so any work the last readers
+>>>> queued runs before the workers are freed.
+>>>
+>>>
+>>>
+>>>
+>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>>> ---
+>>>>  drivers/vhost/vhost.c | 11 +++++++++++
+>>>>  1 file changed, 11 insertions(+)
+>>>>
+>>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>>>> index 4c525b3e16ea..d6e235c25254 100644
+>>>> --- a/drivers/vhost/vhost.c
+>>>> +++ b/drivers/vhost/vhost.c
+>>>> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>>>>  
+>>>>  	for (i = 0; i < dev->nvqs; i++)
+>>>>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>>>> +
+>>>> +	/*
+>>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>>>> +	 * reader that fetched a worker before we cleared the pointers above
+>>>> +	 * may still be queueing work on it.  Wait for those readers to
+>>>> +	 * finish, then flush so any work they queued runs (clearing
+>>>> +	 * VHOST_WORK_QUEUED) before the workers are freed.
+>>>> +	 */
+>>>> +	synchronize_rcu();
+>>>
+>>>
+>>>
+>>> Any way not to add this for all devices that don't need it?
+>>> Or preferably, even for vsock in absense of the new ioctl?
+>>>
+>>
+>> This code was initially local to vsock, and was moved here in v3->v4
+>> after we discussed with Stefano that the issue looks more generic and
+>> should probably be fixed in vhost.c (see
+>> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
+>>
+>> As a compromise, we can keep this code here, but only call it
+>> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
+>> is always false, only set it to true on RESET_OWNER, and only call this
+>> code once it's set.  Clumsy, but this way no other code path would have
+>> to wait the full grace period.
+>>
+>> What are your thoughts on that?
+>>
+>> Thanks,
+>> Andrey
+> 
+> Or just thread a bool parameter to it?
+>
 
-On 23/07/2026 15:41, Mark Brown wrote:
-> Hi all,
-> 
-> Today's linux-next merge of the net-next tree got a conflict in:
-> 
->   drivers/net/amt.c
-> 
-> between commit:
-> 
->   3656a79f94c47 ("amt: re-read skb header pointers after every pull")
-> 
-> from the net tree and commit:
-> 
->   586c4dcf28eb6 ("amt: no longer rely on RTNL in amt_fill_info()")
-> 
-> from the net-next tree.
-> 
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-> 
-> diff --cc drivers/net/amt.c
-> index b733309b866ff,f8169c5512a59..0000000000000
-> --- a/drivers/net/amt.c
-> +++ b/drivers/net/amt.c
-> @@@ -2811,7 -2775,8 +2814,8 @@@ drop
->   static int amt_rcv(struct sock *sk, struct sk_buff *skb)
->   {
->   	struct amt_dev *amt;
->  -	struct iphdr *iph;
->  +	__be32 saddr;
-> + 	__be32 remote_ip;
-Thank you for the resolution, it looks good to me, except these lines:
-in the net subsystem, the local variables are declared following the
-reversed Xmas tree order [1]. So I suppose the Net maintainers will
-inverse these two lines when resolving this conflict.
+Yep, that should work as well.  So we'll have to do:
 
-[1]
-https://docs.kernel.org/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
+vhost_dev_cleanup(struct vhost_dev *dev, bool sync)
+  vhost_workers_free(struct vhost_dev *dev, bool sync)
+    if (sync) {
+      synchronize_rcu();
+      vhost_dev_flush(dev);
+    }
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+And then vhost_dev_reset_owner() will call vhost_dev_cleanup() with
+sync=true, while everybody else (net_release, scsi_release, even
+vhost_vsock_dev_release) will call it with sync=false.
+
+I'll squash it all into the same 4th commit and resend, unless you have
+any objections.
+
+Thanks,
+Andrey
+
+
+>>>
+>>>> +	vhost_dev_flush(dev);
+>>>> +
+>>>>  	/*
+>>>>  	 * Free the default worker we created and cleanup workers userspace
+>>>>  	 * created but couldn't clean up (it forgot or crashed).
+>>>> -- 
+>>>> 2.47.1
+>>>
+> 
 
