@@ -1,121 +1,89 @@
-Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37177495522;
-	Thu, 23 Jul 2026 12:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9683246D563
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 12:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784809348; cv=none; b=UbB6W0EMT1PteW8dPBBCZyHfZ71ZYocJZgwG/PVxr9fCXbxTRCOpZSy9y8KyYK6Kq1UZd8QqrzCqKFwuVyagcKjOe24IN2FAjHaIc4M7yZUZHVrIb8ucIuNT8km5lVzn5OQLc31X1mCbo02oZXdtmw4GSwwyY1q3lUxkjO5M+ec=
+	t=1784809422; cv=none; b=J8C3AW+uSw6lhR+a5H5lxkhsbyUXc6aCzioN/dDBayHXval4vQkB8JX5tsUCmL+o0E7vJ7G9UlzeFAkahpS9hnyk9TMVpM1gS/k1xHY372HMWhAlB31RgR7kbu1qCDAkcUmoliO+Y+MWF4JQKS/mek9kTx4HrxHExrm9zyjJNiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784809348; c=relaxed/simple;
-	bh=aEf+WTE/WscgBNRyK2TtMiVwG5OizbTiNWI2GO6HOxA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNFg2M3FjvS3ZwaLfIlkgSZLDfRM0kv42bXJe+by6IkVZL6Bp9VV9ifp3Yr0sgvfM8JyWjgs+LoA7zoeew74C6LHmXGGyOgLXZl2nOw2tu9FXMbqNoyJh+we8pZWKybpC18yWQVj2W1ZqW9S41uPCKAwR1xGz9JkPaRqCZLUTIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from [2001:67c:370:1998:30cb:b625:4f9:61b4] (helo=alea)
-	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wmsRR-00000003Wm6-0lty;
-	Thu, 23 Jul 2026 14:22:21 +0200
-Received: from equinox by alea with local (Exim 4.99.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wmsR4-00000000Q18-3INo;
-	Thu, 23 Jul 2026 14:21:58 +0200
-From: David 'equinox' Lamparter <equinox@diac24.net>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	David 'equinox' Lamparter <equinox@diac24.net>
-Subject: [PATCH net-next v2 04/10] net/ipv6: use ipv6_fl_get_saddr in output
-Date: Thu, 23 Jul 2026 14:19:30 +0200
-Message-ID: <20260723122106.99772-5-equinox@diac24.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260723122106.99772-1-equinox@diac24.net>
-References: <20260723122106.99772-1-equinox@diac24.net>
+	s=arc-20240116; t=1784809422; c=relaxed/simple;
+	bh=5/b0TtXzdtqfWWfg6M0ArLBMS5/qT/WO6t/bUEpG8rY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=eJUSO+vBrSqKXtn+uM7xihhZ97atyzxtsG/lSsm7cunOauZicmUAByyAi7BiSaDcSoirFamdHxhmY2ooZR8Gym/3Tak4bvAmuezAxDT9S/z1mlpiadvCzsPr/BKyWJm6VIc6iFay7kn16J6BGHoYoz5USlawTB/AKycqdk2I7Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=caOJtH7B; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="caOJtH7B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784809420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h6sLo2Oh1+AR7rTMKks8nXjJcufxaJIsKON8cMnqlYQ=;
+	b=caOJtH7BWe/amwI9aT2DqGxdwwcIo7lPD1Y5NweeTDnQmQyKpadugvP46yCnSDIbHanIao
+	n7QUS1oFasLU5rjdIfa1zcOxmplpuqnIhstbU8qfKkgvdfIEAN9fY2+vjKGtsd6zTFMdY0
+	JKlKNhYMgJritlAzzMUIPMknJcxp7Ag=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-M7yQQaqzNBWL9i1HuCz3cQ-1; Thu,
+ 23 Jul 2026 08:23:36 -0400
+X-MC-Unique: M7yQQaqzNBWL9i1HuCz3cQ-1
+X-Mimecast-MFC-AGG-ID: M7yQQaqzNBWL9i1HuCz3cQ_1784809415
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7B721830319;
+	Thu, 23 Jul 2026 12:23:34 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.159])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A3BDD1800361;
+	Thu, 23 Jul 2026 12:23:31 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260722-net-dns_resolver-v1-1-c3385898ccf9@manguebit.org>
+References: <20260722-net-dns_resolver-v1-1-c3385898ccf9@manguebit.org>
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: dhowells@redhat.com, "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+    Frank Sorenson <sorenson@redhat.com>, netdev@vger.kernel.org,
+    linux-cifs@vger.kernel.org, Pierguido Lambri <plambri@redhat.com>
+Subject: Re: [PATCH net-next] net: dns_resolver: allow shorter names in dns_query()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <615375.1784809410.1@warthog.procyon.org.uk>
+Date: Thu, 23 Jul 2026 13:23:30 +0100
+Message-ID: <615376.1784809410@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Flatten ip6_route_get_saddr() into ip6_dst_lookup_tail (which really
-just means handling fib6_prefsrc), and then replace ipv6_dev_get_saddr
-with ipv6_fl_get_saddr to pass down the flow information.
+Paulo Alcantara <pc@manguebit.org> wrote:
 
-Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
----
- net/ipv6/ip6_output.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+> Customer reported a problem with mounting CIFS shares where the server
+> hostname was 2 chars long.  Turned out that the CIFS client wasn't
+> able to resolve NetBIOS names shorter than 3 chars.
+> 
+> Fix this by allowing a minimum of one character per hostname in
+> dns_query().
+> 
+> Reproducer with samba server:
+> 
+>   # 'ab' and 'srv' hotnames resolve to same ip address
+>   $ ssh srv ln -s 'msdfs:\\ab\\share' /home/shares/dfs/link1
+>   $ mount.cifs //srv/dfs/link1 /mnt -o ... [EINVAL]
+> 
+> Reported-by: Pierguido Lambri <plambri@redhat.com>
+> Signed-off-by: Paulo Alcantara <pc@manguebit.org>
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 368e4fa3b43c..7fda0152945d 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1143,27 +1143,41 @@ static int ip6_dst_lookup_tail(struct net *net, const struct sock *sk,
- 	int flags = 0;
- 
- 	/* The correct way to handle this would be to do
--	 * ip6_route_get_saddr, and then ip6_route_output; however,
-+	 * ipv6_fl_get_saddr, and then ip6_route_output; however,
- 	 * the route-specific preferred source forces the
--	 * ip6_route_output call _before_ ip6_route_get_saddr.
-+	 * ip6_route_output call _before_ ipv6_fl_get_saddr.
- 	 *
- 	 * In source specific routing (no src=any default route),
- 	 * ip6_route_output will fail given src=any saddr, though, so
- 	 * that's why we try it again later.
- 	 */
- 	if (ipv6_addr_any(&fl6->saddr)) {
-+		struct net_device *l3mdev;
-+		struct net_device *dev;
- 		struct fib6_info *from;
- 		struct rt6_info *rt;
-+		bool same_vrf;
- 
- 		*dst = ip6_route_output(net, sk, fl6);
- 		rt = (*dst)->error ? NULL : dst_rt6_info(*dst);
- 
- 		rcu_read_lock();
- 		from = rt ? rcu_dereference(rt->from) : NULL;
--		err = ip6_route_get_saddr(net, from, &fl6->daddr,
--					  sk ? READ_ONCE(inet6_sk(sk)->srcprefs) : 0,
--					  fl6->flowi6_l3mdev,
--					  &fl6->saddr);
-+
-+		l3mdev = dev_get_by_index_rcu(net, fl6->flowi6_l3mdev);
-+		if (!from || !from->fib6_prefsrc.plen || l3mdev)
-+			dev = from ? fib6_info_nh_dev(from) : NULL;
-+		same_vrf = !l3mdev || l3mdev_master_dev_rcu(dev) == l3mdev;
-+		if (from && from->fib6_prefsrc.plen && same_vrf) {
-+			fl6->saddr = from->fib6_prefsrc.addr;
-+			err = 0;
-+		} else {
-+			err = ipv6_fl_get_saddr(net, *dst,
-+						same_vrf ? dev : l3mdev, sk,
-+						sk ? READ_ONCE(inet6_sk(sk)->srcprefs) : 0,
-+						fl6);
-+		}
-+
- 		rcu_read_unlock();
- 
- 		if (err)
--- 
-2.53.0
+Acked-by: David Howells <dhowells@redhat.com>
 
