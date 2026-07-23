@@ -1,35 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out03-fra1-mx.uberspace.de (out03-fra1-mx.uberspace.de [185.139.157.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C83647D479
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A02B33DEF9
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 17:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784826684; cv=none; b=QSVAVugZsSR8qpVYajR7mpa5Qq59qA0kyuAodgjPXQgtR+9NWlY0/JeK4iQQk6MwQhacYiXkWy6Uv03Bnrxo8PB7dwEHh1Us/rlSlswRHUayU0F8liNr/RXVefTMwmbkFFhDFkeyNsAIWHhOrDvT0ThMjoGlO4hs7FlcA69siLA=
+	t=1784826865; cv=none; b=aqS22L7q9ByqJHxbImT+mRpl5M/3xeUJWJw7n3sOALsBZ4AbMAeQ0+Sl3S6tCaSq3Qd/iMxExnBJg90ojdvq2IF+iG1H8rR0qsriQxBvYU7AiGawabJU/YEeHKLPrSTwwR2RyFwOmlCj9p34EqNckLkGODm5X0BzGAMALZxkWUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784826684; c=relaxed/simple;
-	bh=WSEK+gNoU0n9wbOxhXKW3aY/DCNtGpgs+2+Ssy7ni1E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=drRwGAG+FujpFImPXr/zDAAw8stahhnz97kdg18kYtK86HyOnFVYELermOfV8L66ib6P2s8uLja/nOWryxTxyMaEeP132+abzN738TRu8LmlnRi06DyGRZJsdb/IpLt18wNPiRbxUNVT+HtDoLy3kvXKl760PIUNhLf0NZkfuSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkZDckmF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784826865; c=relaxed/simple;
+	bh=r1kg2Mn6M5bgbo3/pHKPUZAuvTXPrpVHKXGYbtu+QQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dw2FUSa67K5FfuvtVPbNJx/ajrxdT4lOPVWtcvvfNylac2k6Js2kSGqukhcozKcY0dwvTtcEFAuBEDRccHZOeYhhDObtKVKC//E4e2ZLGgVaVJW61SoIbaNL4JN1If8sqwgw6AvO5aEkh1bV7MOab3XWhVcHeid2YlthkeZZ2K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=XUvmeHjF; arc=none smtp.client-ip=185.139.157.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkZDckmF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B411F000E9;
-	Thu, 23 Jul 2026 17:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784826674;
-	bh=jcyr5cfVSVZnMd1eGqSu3rlXNA5vkJxstTe9dicKFuI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=bkZDckmFFklJQJXUMfrweL33E8v4Wt1s1VnVZhsYZ3EsOl5VALKm3P+kFABgB/jTp
-	 O+3J4phbNx9fBaEpbWNWRji+NrCVl7e9VXM7Fo4A4GPKyeEoRigTjGqt8TL15PlIR4
-	 Ch3GRTD8Wm6/VO3oL6eY+Lzlp++fs0IMTwXJM5UhbOtWCVoO7O+fkwAL+Fg0M+LnVK
-	 5udgjJqucaG5MrmpPQBWXWqx0FW1J9E20PndQ7nS2J5cm41iukN0JEUyCBn+xp2pI2
-	 iKzzXVs2dv4xonpzN/QJhqdbtEvxi6THwk+KEc3AlA2k7cAjBWQLWOjaIqp9ifDzG/
-	 hBZrx+1VoZSrg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1997839244CB;
-	Thu, 23 Jul 2026 17:10:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="XUvmeHjF"
+Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
+	by out03-fra1-mx.uberspace.de (Postfix) with ESMTPS id 54F3D100065;
+	Thu, 23 Jul 2026 19:14:20 +0200 (CEST)
+From: Simon Dietz <simon.dietz@plantwatch.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
+	s=uberspace1; t=1784826860;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PZYkLj5FuhxQUhaqR7vuVjTgu0i12naoxSQr0yLvpYU=;
+	b=XUvmeHjFie6SVBc75oeLzRzCKIgOkfi0fFzfWEWdnFb5yPVDnRxRRw7HU1jtcMzbQXHAe2
+	x1QkdGNxIb1oIaP29QHHBvH9BT8IcvVOk2/QJRDYGPaK991BPuVpV75Dw8W/jaROYU84KI
+	ZzLuoRzGCahTMvd4kW3cvAW4OG/L2l0YBa7FOtEbHiFns6nNdlASBb2WK58BWwHFvDeYi5
+	gXMSzonpqPrRgcITiAjM31hUHFRW4a1Xf+4KvTBG0qYmg9q/kjs9G1l1sdwOBxzThhQocy
+	AVy5vRzT3XxRNuw4FNbNgwOnAaksFWL+tKzg/KGNHiP32nirt6dvkEykP4eYGw==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
+To: andrew@lunn.ch
+Cc: andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org,
+	simon.dietz@plantwatch.de,
+	dietz23838@hs-ansbach.de
+Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
+Date: Thu, 23 Jul 2026 19:12:19 +0200
+Message-ID: <20260723171219.2293282-1-simon.dietz@plantwatch.de>
+In-Reply-To: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
+References: <88182be4-f7c2-4012-8661-881415124a15@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +51,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] mctp: check register_netdevice_notifier() error in
- mctp_device_init()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178482661964.2789426.17876607896150059614.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Jul 2026 17:10:19 +0000
-References: <20260720072518.112614-1-heminhong@kylinos.cn>
-In-Reply-To: <20260720072518.112614-1-heminhong@kylinos.cn>
-To: Minhong He <heminhong@kylinos.cn>
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org
+X-Spamd-Result: default: False [2.32 / 999.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	BAYES_HAM(-0.58)[81.41%];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	LOCAL_OUTBOUND(0.00)[];
+	ARC_NA(0.00)[];
+	TAGGED_RCPT(0.00)[netdev];
+	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_HAS_DN(0.00)[]
 
-Hello:
+> Passing a binary structure as a netlink attribute is not going to fly.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+More like this (using generic netlink)?
 
-On Mon, 20 Jul 2026 15:25:18 +0800 you wrote:
-> mctp_device_init() handles errors from rtnl_af_register() and
-> rtnl_register_many(), but ignores the return value of
-> register_netdevice_notifier(). If notifier registration fails, init can
-> still return success while the module is only partially initialized.
-> 
-> Check the notifier registration error and fail module init early.
-> 
-> [...]
+static const struct nla_policy gn_coord_policy[GN_COORD_MAX + 1] = {
+	[GN_COORD_LAT] = { .type = NLA_S32 },
+	[GN_COORD_LON] = { .type = NLA_S32 },
+};
 
-Here is the summary with links:
-  - [net,v3] mctp: check register_netdevice_notifier() error in mctp_device_init()
-    https://git.kernel.org/netdev/net/c/d9a33cadc70a
+static const struct nla_policy gn_genl_policy[GN_ATTR_MAX + 1] = {
+	[GN_ATTR_COORD] = NLA_POLICY_NESTED(gn_coord_policy),
+};
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+static int gn_get_position(struct sk_buff *skb, struct genl_info *info)
+/* ... */
 
+    nest = nla_nest_start(reply_skb, GN_ATTR_COORD);
+	if (!nest) {
+		nlmsg_free(reply_skb);
+		return -EMSGSIZE;
+	}
 
+	if (nla_put_s32(reply_skb, GN_COORD_LAT, val.lat) ||
+	    nla_put_s32(reply_skb, GN_COORD_LON, val.lon)) {
+		nlmsg_free(reply_skb);
+		return -EMSGSIZE;
+	}
+	nla_nest_end(reply_skb, nest);
+
+/* ... */
+
+> This also does not feel correct. Why is location a property of an
+> interface? Can one machines interfaces be in different locations?
+
+I would answer: Unfortunately, yes. Consider a 700m long train (which
+is the upper limit of train length in europe, in US there may be even
+longer ones). It is one vehicle, but may have at least two gn (wifi)
+devices, one at the front and one at the back. That is a niche use case
+but it is one.
+
+That of course would make the implementation a bit more difficult
+because if the position is saved for each device, then the gn address
+must be passed along with the position so that the kernel is able to
+map the via netlink passed position to the right device, which affects
+the kernel / user space interface.
+
+In the version I am currently testing, the position is set for all
+devices to the same value, which can be changed both ways.
+
+Simon
