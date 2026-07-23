@@ -1,136 +1,108 @@
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC06B48094A;
-	Thu, 23 Jul 2026 14:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2DB4BC00B
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784817251; cv=none; b=Ee7xe17cnZLanVLAs+LpN3PODZmPsGaqvqRHe0QmNgA/H9WCRhQk75pPQI78kH60yBUdrj8uJYSb4kFFObQ315LJ3O+85/sujhReieo2ymoGOXNFvH163jA+hx0/eaAO6q52IAHyIP03ARzpiLgfEMf0bB38DRvX3VVh/rqgMAE=
+	t=1784817334; cv=none; b=J4kzIER244+pJolRdO81EFVI58ZgN8rrLFXGUNwj+qkkuw+rIaEI8SFeY9zsFtiwTJPyPCMGhJzNLQB5VphTbOfoAGixsSBf9JLXApYzskG4SCLJMsLHnCeH61Dk3qEhM93Bblk56q9Q7qkYIyAU398iF72uCmpyzhW1Aac9LXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784817251; c=relaxed/simple;
-	bh=rnzS3t2OB9mXDKCdXxoAM7rMpi7xvwiWGRBta5UVvXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W4286ReeLlbLgg6NSwPv/tAeBeUuPeRKPpD+63RxzXwhCBFKE3xeZsZk76exZjg9qxv/urKP5tSUor9FKWjpF9R47y7ooP9xMwd8Rn/V/VQKKbzUV9ljEC4ALALsnXn0mP0OfuoCn/tQtOa7MrzmemnmCVN9EyQswzHWJOhaYlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99A3DC04D7;
-	Thu, 23 Jul 2026 14:34:00 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 056E717;
-	Thu, 23 Jul 2026 14:33:13 +0000 (UTC)
-Date: Thu, 23 Jul 2026 10:33:36 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
- bpf@vger.kernel.org, coresight@lists.linaro.org, kvm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
- netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- virtualization@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
- Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>, Alexei Starovoitov
- <ast@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Morton
- <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, Ankur
- Arora <ankur.a.arora@oracle.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Bobby Eshleman
- <bobbyeshleman@meta.com>, Christian =?UTF-8?B?Qm9ybnRyw6RnZXI=?=
- <borntraeger@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>,
- Chun-Tse Shao <ctshao@google.com>, Claudio Imbrenda
- <imbrenda@linux.ibm.com>, Costa Shulyupin <costa.shul@redhat.com>, Crystal
- Wood <crwood@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, Daniel
- Lezcano <daniel.lezcano@kernel.org>, David Hildenbrand <david@kernel.org>,
- David Matlack <dmatlack@google.com>, "David S. Miller"
- <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, Eduard
- Zingerman <eddyz87@gmail.com>, Emil Tsalapatis <emil@etsalapatis.com>, Eric
- Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Geliang Tang <geliang@kernel.org>, Ian Rogers <irogers@google.com>, Ingo
- Molnar <mingo@redhat.com>, Ivan Pravdin <ipravdin.official@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, James Clark <james.clark@linaro.org>,
- Janosch Frank <frankja@linux.ibm.com>, Jason Xing
- <kerneljasonxing@gmail.com>, Jiri Olsa <jolsa@kernel.org>, Joe Damato
- <joe@dama.to>, John Garry <john.g.garry@oracle.com>, Josh Poimboeuf
- <jpoimboe@kernel.org>, Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
- Kent Gibson <warthog618@gmail.com>, Kumar Kartikeya Dwivedi
- <memxor@gmail.com>, Len Brown <lenb@kernel.org>, Leo Yan
- <leo.yan@linux.dev>, Lukasz Luba <lukasz.luba@arm.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Mark Rutland <mark.rutland@arm.com>, Martin KaFai
- Lau <martin.lau@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>, Mat
- Martineau <martineau@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Leach <mike.leach@arm.com>,
- Mina Almasry <almasrymina@google.com>, Mykyta Yatsenko <yatsenko@meta.com>,
- Nam Cao <namcao@linutronix.de>, Namhyung Kim <namhyung@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Pawel Chmielewski
- <pawel.chmielewski@intel.com>, Peter Zijlstra <peterz@infradead.org>,
- Quentin Monnet <qmo@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Raghavendra Rao Ananta <rananta@google.com>, Saket Dumbre
- <saket.dumbre@intel.com>, Shuah Khan <shuah@kernel.org>, Simon Horman
- <horms@kernel.org>, Song Liu <song@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Stefano Garzarella <sgarzare@redhat.com>, Suzuki K
- Poulose <suzuki.poulose@arm.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>,
- Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?= <linux@weissschuh.net>, Tomas Glozar
- <tglozar@redhat.com>, Vipin Sharma <vipinsh@google.com>, Wander Lairson
- Costa <wander@redhat.com>, Will Deacon <will@kernel.org>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Willy Tarreau <w@1wt.eu>, Yonghong Song
- <yonghong.song@linux.dev>, Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
- Zhang Rui <rui.zhang@intel.com>, LKML <linux-kernel@vger.kernel.org>,
- kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-Message-ID: <20260723103336.6593118b@gandalf.local.home>
-In-Reply-To: <amIbVOIsOeZgcBZF@tassilo>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
-	<amIbVOIsOeZgcBZF@tassilo>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1784817334; c=relaxed/simple;
+	bh=qZpKHd/gEAhbhxl22p+rtXj3FAZ+fWVXX66t6gD/AEY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DBHpW7bbFWfj93O64fbOH2OjTOVdvvIpBIRS4sSpKNk0MoDGqWfA5gqcQiZBvlt3xOAZImQn9LYYkuhYUJyGA+V7Pq+0bCHplg8MMm56SnYergj7bVcA29E18nfDjpzU+CGQ0uIMgDDXit1Qp4x9uMqPrmcWakJeb/Job5ZO0Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fvi9A+Pd; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fvi9A+Pd"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8efb708b1a0so6329716d6.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:35:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784817326; x=1785422126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qZpKHd/gEAhbhxl22p+rtXj3FAZ+fWVXX66t6gD/AEY=;
+        b=Fvi9A+PdqqPUOHxMm9NrjsgUnV7yoeTDYTFraItksHL2QE1lw+Ytxblms5jEceAt9q
+         Zm4ilzOFOYQ7MDvBXfGWItZ3HGrSyCbqEMELZf9wmKiIQRWMBdgS6gyNGB/Py2UsDnUV
+         IjoSYefQ3iHk8HYKO7WZAE0mN6Vl9+yU9+uGT6I9PKRM5R0qwLVklXpgQbwr0Z/CBupg
+         JAVcVFv4exz45ThLYTspjd73MvVLDBS3XTvSI3kbBGv9xL09RTN2PmQoact1eY1KmJh6
+         x9OJ3thEcvFLDH12QC/gD12m8lrxE431GeEnD/36Q8JPOGwDi0V8RLtA/tLr2qCER9qx
+         wzog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784817327; x=1785422127;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qZpKHd/gEAhbhxl22p+rtXj3FAZ+fWVXX66t6gD/AEY=;
+        b=bEKvx1ZhoCt+E731EGtKVsHlDfhOQt0q1ib4QUNIbXa9DAfd8Kmej9EMOCp0BHqNue
+         mDTGT5y/tCmIY2BFI4BFqQcfOMtPB6+02oM+3xmx6G+3EbvKAm15g2rEF+mD/2gluIUk
+         1TYnJzPG7drMhYfDB2W2NIcoq3nmB1K1YJhv0CwnJjz6mckIdw4Aip/OZxsIYEKZSqI8
+         3zqBJZaXL1o7k4/XKppT8ZGysSAyPw06hwC2QGPeSSDqb01hGIqRgTdyOGAVwm/GqR0V
+         FH5LpG//eTEPgXfy13LRzQQnzhcXgZgfcfwgnXiCFmQjWXu6TdTx6oDRlVCb0g8d02KD
+         LKAw==
+X-Forwarded-Encrypted: i=1; AHgh+RoFyvZZ3HIWvZWRrWlYqO8mv+rmNZI8RX50bTBE5EuN7aqDfHeLuMa9cS8TmW9DAVs5oC0B2XQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgmGU315ahnWnEJqtu/+KXRl2VSrmFYUHPTWs2b9Pz+dKU9pwz
+	rmcglGoTkfLq7mABv2DMtAdYfxU1Hs21XqHnUkdyVx3PFUt6PstkEDny
+X-Gm-Gg: AR+sD13vgP9I2XvXwlntZNcJRGL/9i3vLq7w90OBxO8wkSD5PvL/AQLoDb7b/5CGJm/
+	eT+nSnjudRgU0a4EirHFG92RmMIyGTXNcJW/Pbq2I3kVcPr+Ex26GRxVXXYDOjBBazeIRN0DoUm
+	Zl74nYzmohjgfPSv1F0BOIsPI2Vq6ONUY1/UASyrwJ6bpKcQxq7MVNXSdBrWLbeI7SXnYlUWBjv
+	ksoJs56jyr7jYCBHCs64njotOjiM/7NkukbImVH0bMw6327Yg0WgfEl75qQpNfFVsfyfDBvIEKJ
+	DnL2DTNIW62zTNCndHTT72Ksxen2UJVg5rFENnElxcrdAfX2btGU4BVWerFW7Mvooh+LmesDvDz
+	hyt7xCYBUFbzmV5OLrmEg1eryNYRp1RYohQUKbPYTfHBnbZXujbT7ZuEbE8CmGYZ1ZPQOLGJCI/
+	PByM1g
+X-Received: by 2002:a05:6214:2aa6:b0:907:5e97:b1de with SMTP id 6a1803df08f44-907ca5e77aamr36754956d6.41.1784817326510;
+        Thu, 23 Jul 2026 07:35:26 -0700 (PDT)
+Received: from Inspiron5409 ([138.199.21.246])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907baa2962csm46195786d6.48.2026.07.23.07.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 07:35:25 -0700 (PDT)
+From: Jianhui Xu <neuromoments@gmail.com>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 00/12] ax88179_178a: Add support for AX88179A-based chips
+Date: Thu, 23 Jul 2026 22:34:19 +0800
+Message-ID: <20260723143420.672680-1-neuromoments@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
+References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ncsjbmpq4hct7p4sj4iefr1r53tacukj
-X-Rspamd-Server: rspamout02
-X-Rspamd-Queue-Id: 056E717
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+f7u83oRUulG9XwKl2P+q3kHYGrSLtLJ0=
-X-HE-Tag: 1784817193-538669
-X-HE-Meta: U2FsdGVkX19mSJrQ4yCgpa5T21s3DOyupJQtrDkbhb4BdFNkpGoXwq/ibfVmVhXFNmqX8uwKJldaBwfXYwLpcFxk6WAoDZEXT/gOP4/87ir9dCPM++yAwBRZudspVL4fEcLJ8BQR+IIioDSpRN3BUfGiJrTRVS7/uta9AmYBpm0bV/zvbFblUCnE1I0vyxTsAPHkh0LX+JrCxO4Fb8yldd7jKVRG3hDwMmD/y539S+5vq64BAxIp9RMpMFz5panzgBl/T6DnlC5NF2X6cBflLJ9t5of1YaVukjrextWC1Mkdf4ypcuVGdK7IR4N2F6BEhF3E+awXwxrLnbww9pI6GrXPJih6633rwSWNy/mC4FmaOinac79jHA==
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 23 Jul 2026 06:47:00 -0700
-Andi Kleen <ak@linux.intel.com> wrote:
-
-> > The source code was transformed by using the Coccinelle software.  
-> 
-> gcc already does this transformation automatically.
-
-Yep, I showed this in my talk[1] that looked at what printf("Hello World!")
-does. Doing an objdump of:
-
-#include <stdio.h>
-
-int main(void) {
-	printf("Hello World!\n");
-	return 0;
-}
-
-has:
-
-0000000000001139 <main>:
-    1139:       55                      push   %rbp
-    113a:       48 89 e5                mov    %rsp,%rbp
-    113d:       48 8d 05 c0 0e 00 00    lea    0xec0(%rip),%rax        # 2004 <_IO_stdin_used+0x4>
-    1144:       48 89 c7                mov    %rax,%rdi
-    1147:       e8 e4 fe ff ff          call   1030 <puts@plt>  <<<--- puts and not printf
-    114c:       b8 00 00 00 00          mov    $0x0,%eax
-    1151:       5d                      pop    %rbp
-    1152:       c3                      ret
-
--- Steve
-
-[1] https://www.youtube.com/watch?v=JRyrhsx-L5Y
+Hi Birger,=0D
+=0D
+I tested this series on an ASIX AX88179B adapter (USB 0b95:1790,=0D
+bcdDevice 0x0200, firmware 1.3.0.0).=0D
+=0D
+I applied v2 on top of net-next commit=0D
+df13c1df8147675470213ffff29dd5762fa321f5 and tested the resulting=0D
+7.2.0-rc3 kernel in a Debian KVM guest, with the adapter passed=0D
+through via an emulated xHCI controller.=0D
+=0D
+The driver automatically switched the device to USB configuration 1=0D
+and bound it to ax88179_178a. It reported 1000 Mb/s, full duplex,=0D
+autonegotiation enabled, and link detected, matching the behavior of=0D
+the working vendor driver.=0D
+=0D
+DHCP and sustained pings over the USB interface worked. Bidirectional=0D
+iperf3 tests completed successfully, as did module unload/reload and=0D
+recovery after QEMU USB detach/reattach. I observed no probe or=0D
+register-read errors with the series applied.=0D
+=0D
+Tested-by: Jianhui Xu <neuromoments@gmail.com>=0D
+=0D
+Thanks,=0D
+Jianhui=0D
