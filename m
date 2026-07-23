@@ -1,118 +1,179 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F144641D238;
-	Thu, 23 Jul 2026 16:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5317F45D1A3;
+	Thu, 23 Jul 2026 16:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784824005; cv=none; b=rnxaDD8tVLb0hdmgY0D/JBWDgwnS4YNnhvtTIXxSZJqvFVO+ImZFCsxcxOWxz8ay67ugSr4t1Y8CsGVoM6w4lPnp6E5GRsKsBQJwDHRyDx3WmeLUh1Kj0dqm4cn+dDi1hYoLwLaVqdB2fplruTf7XQmoEBw7wCIuilgzGH0UcEs=
+	t=1784824197; cv=none; b=pMGQxajX2P9BbOCxnR8FMa8+QnqGQhUU2kS6J6CUJa/CvAvnkashTs3+v/1SBA4zasICJl7/KatlvkjzvKViMHEf+/fmaaPiqMb0TGToyq6QU3HKWPZgYFYxRtYcF27p8LSM4uGROmhnbWrIa9Jk/CPbdXq6GdnOqIHi8IuUYaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784824005; c=relaxed/simple;
-	bh=BQoYUP/AFIR8KukaOienCGe5QHk9qn+ZU3eIAVrGbqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rwIb5eowGO+FnqRU5X/M/RT1diFT3mhOMgmvbqJweypCj9TSLoepQBJi3qBSOph5Kdov2w7DNvM2FhT17wRP/x4KQrWkHuUFsXBYtimxqDU/npd6lAIDvL/WTld2JDarfhizwXgEkf17QN9PQZrl6z0B6KwCceW6XDNwVue9NLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVu+wo9a; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVu+wo9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F80E1F00A3D;
-	Thu, 23 Jul 2026 16:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784823995;
-	bh=LDeSsTLzv1Tc7tfKsPfIo0p1m5cUwZ/ShQ7uxEDtfwI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jVu+wo9av+maq+zRSN5PuApOLveOjhiZ2MJkylAoE59mVXa8XDKhj0M9ZI7Opm+RG
-	 3/cUgoCKirEwNw2h8H1iHzj8A+osgyGnnoAAqWQ1vEDHiTcnPImayBRoakkx9+FM/L
-	 +9yIkc60PN8oRjJpgtHc3SLAHUL6RROTVCmvaHz3xHe3X3YdRzYTxPjL/fpAVT6eFO
-	 v5P+bwV9ulUvbXJVg+oesdrqI7SMA6ONpptZuSeNzTx9dEkTN6NtyYb+krNYTY8yqM
-	 HxPrDLnG+nWJ1blmxJUvFjjsyRqnJ5fb6HtjXKq54scDXZtevF7Id0mtKdwsJNbqDV
-	 TWrzD4PP3LXiQ==
-Date: Thu, 23 Jul 2026 09:26:30 -0700
+	s=arc-20240116; t=1784824197; c=relaxed/simple;
+	bh=/cSrtwwDG/OeEv9j4ZM7vkFNdubrEiKmwU7mLoyt7Zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iOep5Vmy3FNHl+4dV0zGuGuyYAYRZ143W0l3iakxUDHBBLMsdLqmcid6aNMQNwB1eMLMBtrwHIHBLgyAzN1k7QJPXIx4mC4lxRPpnUG/ZDkdjicZ7bpDAj44frFOAtMMPN7hL/Enpp1PGh5vBS4dUzLIpoX7PhZh2UQtFPKDZ7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730571F000E9;
+	Thu, 23 Jul 2026 16:29:47 +0000 (UTC)
 From: Jakub Kicinski <kuba@kernel.org>
-To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- bcodding@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- svens@linux.ibm.com, brueckner@linux.ibm.com
-Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
- sends
-Message-ID: <20260723092630.1a1c9b4e@kernel.org>
-In-Reply-To: <20260720090940.1334523-1-maxbr@linux.ibm.com>
-References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+To: maciej.fijalkowski@intel.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bjorn@kernel.org,
+	kerneljasonxing@gmail.com,
+	kernelxing@tencent.com
+Subject: Re: [PATCH v4 net 2/6] xsk: drain continuation descs after overflow in xsk_build_skb()
+Date: Thu, 23 Jul 2026 09:29:43 -0700
+Message-ID: <20260723162943.747184-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260719135609.147823-3-maciej.fijalkowski@intel.com>
+References: <20260719135609.147823-3-maciej.fijalkowski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner wrote:
-> When a signal interrupts a blocking send, tls_tx_records() treats the
-> resulting -ERESTARTSYS as a transmission failure and marks the socket
-> errored via tls_err_abort() with the raw error code. Later syscalls
-> return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
-> signal it stems from is no longer pending during syscall exit and thus
-> never translated.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+xsk: drain continuation descs after overflow in xsk_build_skb()
 
-Can we just add ERESTARTSYS handling? I never heard of the other codes
-you're checking TBH, can they actually surface?
+This patch fixes the AF_XDP generic xmit path so that when a
+multi-buffer packet exceeds MAX_SKB_FRAGS or contains an invalid
+descriptor, the remaining continuation descriptors are drained onto
+the completion ring instead of being silently lost. A new
+xdp_sock::drain_cont flag tracks whether draining is in progress
+across sendmsg invocations.
 
-> An interrupted send is not a connection error: the partially sent record
-> stays queued and is resent later. Interrupt error codes are therefore
-> excluded from the abort in the same way as -EAGAIN.
-> 
-> Fixes: b341ca51d267 ("tls: Fix tls_sw_sendmsg error handling")
-> Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-> ---
-> Tested on top of net commit 3f1f75536668 ("net: openvswitch: reject
-> oversized nested action attrs").
-> 
-> Several subsystems contain static helper functions to classify these
-> interrupt errnos. It might be worthwhile to refactor these static
-> functions into a generic helper function.
+Link: https://lore.kernel.org/all/20260425041726.85FB3C2BCB2@smtp.kernel.org/
 
-Yes, please.
+> diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+> index ebac60a3d8a1..8b51876efbed 100644
+> --- a/include/net/xdp_sock.h
+> +++ b/include/net/xdp_sock.h
+> @@ -80,6 +80,7 @@ struct xdp_sock {
+>  	 * call of __xsk_generic_xmit().
+>  	 */
+>  	struct sk_buff *skb;
+> +	bool drain_cont;
 
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index d4afc90fd796..3c9e94069e82 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -405,6 +405,24 @@ static void tls_free_open_rec(struct sock *sk)
->  	}
->  }
+[Low]
+Would it be worth documenting drain_cont here in the same style as the
+preceding skb field? The semantics are non-trivial: the flag persists
+across sendmsg invocations, only clears when a non-CONTD descriptor is
+consumed, and can be transiently overwritten in the post-loop error
+path with the composed expression:
+
+    bool drain = xs->skb || xs->drain_cont || xp_mb_desc(&desc);
+
+Today those semantics can only be reconstructed by reading the four
+separate assignment sites in net/xdp/xsk.c. The options field is
+also user-influenceable (an invalid descriptor can still carry
+XDP_PKT_CONTD), which is worth calling out for future readers.
+
 >  
-> +static bool tls_is_non_restartable_err(int err)
-> +{
-> +	if (err >= 0)
-> +		return false;
+>  	struct list_head map_list;
+>  	/* Protects map_list */
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index a7a83dc4546a..12a845d012f6 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
 
-This doesn't belong in a helper for classifying errors.
+[ ... ]
 
-> +	switch (err) {
-> +	case -EAGAIN:
-> +	case -EINTR:
-> +	case -ERESTARTSYS:
-> +	case -ERESTARTNOINTR:
-> +	case -ERESTARTNOHAND:
-> +	case -ERESTART_RESTARTBLOCK:
-> +		return false;
-> +	default:
-> +		return true;
-> +	}
-> +}
+> @@ -1063,11 +1077,21 @@ static int __xsk_generic_xmit(struct sock *sk)
+>  			goto out;
+>  		}
+>  
+> +		if (unlikely(xs->drain_cont)) {
+> +			xsk_cq_submit_addr_single_locked(xs->pool, &desc);
+> +			xs->tx->invalid_descs++;
+> +			xskq_cons_release(xs->tx);
+> +			xs->drain_cont = xp_mb_desc(&desc);
+> +			continue;
+> +		}
 > +
->  int tls_tx_records(struct sock *sk, int flags)
->  {
->  	struct tls_context *tls_ctx = tls_get_ctx(sk);
-> @@ -458,7 +476,7 @@ int tls_tx_records(struct sock *sk, int flags)
+>  		skb = xsk_build_skb(xs, &desc);
+>  		if (IS_ERR(skb)) {
+>  			err = PTR_ERR(skb);
+>  			if (err != -EOVERFLOW)
+>  				goto out;
+> +			if (xp_mb_desc(&desc))
+> +				xs->drain_cont = true;
+
+[Low]
+Is the xp_mb_desc(&desc) check here ever false in practice? Looking at
+xsk_build_skb() in net/xdp/xsk.c, the only place -EOVERFLOW is returned
+is:
+
+    if (unlikely(nr_frags == (MAX_SKB_FRAGS - 1) && xp_mb_desc(desc)))
+            return ERR_PTR(-EOVERFLOW);
+
+so reaching this point already implies xp_mb_desc(&desc) is true, and
+the conditional appears to be a tautology.
+
+Would it read more clearly as an unconditional assignment with a
+comment noting the invariant, or alternatively a comment explaining
+that a future non-CONTD -EOVERFLOW return would also want draining?
+As written, adding a new -EOVERFLOW return site could silently
+bypass the drain machinery.
+
+>  			err = 0;
+>  			continue;
+>  		}
+> @@ -1096,18 +1120,33 @@ static int __xsk_generic_xmit(struct sock *sk)
+>  			goto out;
+>  		}
+>  
+> -		sent_frame = true;
+>  		xs->skb = NULL;
 >  	}
 >  
->  tx_err:
-> -	if (rc < 0 && rc != -EAGAIN)
-> +	if (tls_is_non_restartable_err(rc))
->  		tls_err_abort(sk, rc);
->  
->  	return rc;
--- 
-pw-bot: cr
+>  	if (xskq_has_descs(xs->tx)) {
+> +		bool drain = xs->skb || xs->drain_cont || xp_mb_desc(&desc);
+> +
+> +		err = xsk_cq_reserve_locked(xs->pool);
+> +		if (err) {
+> +			xs->tx->invalid_descs--;
+
+[Low]
+Can this decrement of xs->tx->invalid_descs be made less fragile?
+
+The value being cancelled here appears to be the increment performed
+inside xskq_cons_is_valid_desc() as called from
+xskq_cons_peek_desc(), which incremented invalid_descs before
+returning false and dropping out of the while loop. Nothing at the
+decrement site documents this cross-function dependency.
+
+invalid_descs is a u64 exposed to userspace through XDP_STATISTICS,
+so if the increment location is ever refactored, or if a future path
+lets xskq_has_descs() be true here without having gone through a
+validity-check failure, this decrement will underflow the counter to
+~2^64-1.
+
+Would a short comment naming the paired increment site, or an explicit
+save/restore around the peek, make the invariant more robust to future
+changes?
+
+> +			if (xs->skb)
+> +				xsk_drop_skb(xs->skb);
+> +			xs->drain_cont = drain;
+> +			err = -EAGAIN;
+> +			goto out;
+> +		}
+> +
+>  		if (xs->skb)
+>  			xsk_drop_skb(xs->skb);
+> +
+> +		xsk_cq_submit_addr_single_locked(xs->pool, &desc);
+> +
+>  		xskq_cons_release(xs->tx);
+> +		xs->drain_cont = xp_mb_desc(&desc);
+>  	}
