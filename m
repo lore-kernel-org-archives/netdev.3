@@ -1,121 +1,295 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8482747424C
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8921D456DFB
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784823725; cv=none; b=L81eB+Mvs4RXDmxT5wxOdsX5c9OuwdN8PXuAmc1OBYEX0IhNWEPQv+WLFo/Q+gjKiyh6SmwA8VW2p/ELiOExEGhBMrj9YONuXNzLUgpzA6sS/U+NZCSDttOzQ6Euy0LyHVgXU0qQBsGvGdK6wpivT2uMvrlDV8qBq7xWr81LNZQ=
+	t=1784823980; cv=none; b=nuNrQzbnbgu+1wZRIK2Nh2+6zxUEPFcrUctLVmFLhoRgSH/mJDRUAUDOdjWXHBDR3cm/idoLuTYLG7/IKiyS5sj+tzyIs4T2T3fsky13h8WERZ4jtXiYRg4l2dfawyrF65+AzW/r3IQw0/GqSkz4d01gj7ty08A4hOdXsvwfMLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784823725; c=relaxed/simple;
-	bh=NghrB147wDJP6UfR+Mb8KU2JaexQfx9i7gNM/0Bvrjw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HnJ1KANMPCXlKK2HcxiUvJg2UEVEbxRB4B07GI3a2MopxYtjRyoD/lSgFvXwl12HYYLF840kHGwghrxZIeb4HLt8Ncc+WZBTKHNH29t67lwQbAU7g+TS6OtLoljohJDOkL1KN7oSOuWKLhKSp7BTe5xd92bFNz56J4WYb37vR2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtmyfIa8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784823980; c=relaxed/simple;
+	bh=TCOlassBQx9ySoijfMz1l85P5sgTBaeOOaOHQV89RSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C8kbHfZJ48EVwc+dSJ4P7MEaos5GYvUXa02MSdBFN8zriAOTlOviE6Tq1L36VKyiR94UK0I4zR8NezeT1kfFoNHZqQanPkUIO/yCGYgdD4UhrHmXpOkpfIp9JWhhyJkUwpVeAlbjNATHuQGXxU+1JEAiydxVO1HSQg0JwdCmN6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qAFVHmav; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtmyfIa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72AE1F000E9;
-	Thu, 23 Jul 2026 16:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784823724;
-	bh=TavPUNRhP2sthDlOcfH12cbPSFnr3h6CiGWZbYUURgk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UtmyfIa8AunIUxGdzCFmiNgsqaOuyHcJPHCAYswgAi1MuaB/mazR0crWnBj8Tw5Wf
-	 ykOl55Cpfu+9BrjZeoJOXtgUKiKlnSiibWAN1HL0lvgGSeoBOOZeUJ3S/bn6bUTz3M
-	 M6dGJ/eNAEZOMQ1mjPRPn/9HUehxjKv/0Z0fiNbDDBJm8rhXUKgTrQOkyDjUh39P3n
-	 yFd71j7MkotUGl35570bDFMmRwZBuxgUfnUYkTMxhO2S9IEbKWuchbZGNUM5c3bMsB
-	 Kqwg49ftCI4EWR2qp5As+eOJsY2KjSnhAuUwz7kCzvzy44hLiqFOQNgN79CzEgymWq
-	 K4iBdbE/pWnKA==
-Date: Thu, 23 Jul 2026 09:22:03 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, Tangxin Xie
- <xietangxin@h-partners.com>
-Subject: Re: [PATCH net] vlan: fix skb_under_panic() and races when toggling
- HW VLAN offload
-Message-ID: <20260723092203.5b1470f5@kernel.org>
-In-Reply-To: <20260720072622.3541873-1-edumazet@google.com>
-References: <20260720072622.3541873-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qAFVHmav"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3856d4015e0so109047a91.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784823973; x=1785428773; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3cZoKc9FwZgZIi/HTgzAkALIT6yFSGhhHDxBwZd3grk=;
+        b=qAFVHmav779Mjsvl/j/pjkexhKI8wvQPiJcUVy3iZzNWqp4aP0oq76Xs0/CX3E2uAA
+         5B1LB0guEisj9yH7IQUFV40rmIw63OfnliHdqRTjkAUsySaT7swNp7lY8J8sdLs+7PDm
+         bLcDC8ZqmKVqzgfOjFFKAIAjXjQoLt6rr11u8ttXRBYhR6aGLiN0WqNlsgnwICgHxr7b
+         Vz7qeqgGK2JyLxxs+7ETINPqM3lbjWvjmvekDedPFaIUvImnD02VepQyHQZH6rH6lJJ+
+         yMT2HGRJXCuf9YdraEz4tdyCuPqAvxKao91wg4tIjVjXGQJHIVuZzi2QUFtaCJBNSNuF
+         +uEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784823973; x=1785428773;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3cZoKc9FwZgZIi/HTgzAkALIT6yFSGhhHDxBwZd3grk=;
+        b=NASYkkrwgfwIMHSf79uUZIGg25MqQCfxTAILdWA/znh2Wxc+46AWlNRXDDSQ6c01ze
+         imPHsBUIFLz53wubZn/1T2dyDCfA6+Z0NifpqZhHT9c8G7XuKsRSPLtR/V2wqXpFLeuC
+         /mvQNkE8NPn3KodXOX4bsSOfYBs6nssDxd9eN5lrdlql7+s/Jrkafb9cwWQxJD699khf
+         I6prUxz9f7i2n1vCdb/gGA1G3YRH9fjdcSn7W/T8xnPhGuuYmNRuRViKXYningqja0Mc
+         bHwzF4p8/yH9A4IX3MLOYNQJbwNbipW4khwoW/nU7RBZEQJRdhhXHRiO7/wHrGvzuwTJ
+         w0ng==
+X-Gm-Message-State: AOJu0YxcQZCZmWwXyNf6gCAozoLcMx9nmDgyjpYlbAqIL2xhlvUG+Wb1
+	3saIfkKCmuE7pFeMutrCB+lstlt+nCfQA11Seq1sBdi66STbuzOU/vlX
+X-Gm-Gg: AR+sD13ZB76oLj1d/SexzV7s/MMWV9qZ/9Juvj0vU5GHnMYbshEPRA3EDERXXdPjIIi
+	E7dcIVSJG/TdhGRp9lZ9bCRoxGASicwfGadFW4+J6nPlCnkp/6zMsRuTUpO8+RGB0ED3PjzdruQ
+	SriMqL1jC1UE0/YV3ath6R89OZTnx8LJ1X0s3ngCrTVmXeYUSUOrTmqcfQh5jmEXmTwtOGoRDqR
+	4awQbnlbmBy6N32oa1n9ohNysqKVpSHvQZXaJ6IM/FfqE/ZYW/fgvAiB9TrxG6w9zxiahXmOu3W
+	2AqAuTILXGgTi8Fv7IqosfBv4dSKrL7RWTtqO6hTFieO41Z+Fi1MSxLJjfqFEQBi9p2yQuIoqcR
+	U9IZpywETi/+ay7TeSwWEq5PVobsdEuT6oJEaPAXPLWNhCSEqeAq+xi79azyy4hG4fNZK/P0tkG
+	eZ8H637jg4Rvs7WRn4xkHkJ1XvyhO+mqxweaC6bJOFCoytIn0WmbZIkkQQQADqrRoIN8O4
+X-Received: by 2002:a17:90a:c88b:b0:38e:ab3f:2c99 with SMTP id 98e67ed59e1d1-38f02945ac9mr361904a91.2.1784823973168;
+        Thu, 23 Jul 2026 09:26:13 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d12f267fdsm17536546c88.0.2026.07.23.09.26.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 09:26:12 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Emil Tsalapatis <emil@etsalapatis.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] bpf, sockmap: Fix cork ownership in tcp_bpf_sendmsg()
+Date: Fri, 24 Jul 2026 00:26:02 +0800
+Message-ID: <20260723162602.3275661-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
+References: <20260719161630.2901208-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 20 Jul 2026 07:26:22 +0000 Eric Dumazet wrote:
-> Toggling hardware VLAN TX offload (NETIF_F_HW_VLAN_CTAG_TX or
-> NETIF_F_HW_VLAN_STAG_TX) on a lower device invokes vlan_transfer_features=
-(),
-> which dynamically changes vlandev->hard_header_len.
->=20
-> This causes two issues:
-> 1. Lockless TX paths (e.g. packet_snd in af_packet.c, ip6_finish_output2)
->    read dev->hard_header_len without holding RTNL lock. Mutating
->    hard_header_len dynamically under RTNL creates a data race where upper
->    layers reserve insufficient headroom based on a stale hard_header_len,
->    resulting in skb_under_panic when vlan_dev_hard_header() is called.
-> 2. In addition, vlan_transfer_features() updated hard_header_len without
->    updating header_ops, causing a mismatch between allocated headroom
->    and header creation.
->=20
-> A VLAN interface may require software VLAN header insertion at any point
-> (e.g., if reorder_hdr is disabled or HW offload is unavailable). Always
-> setting hard_header_len =3D real_dev->hard_header_len + VLAN_HLEN and usi=
-ng
-> vlan_header_ops unconditionally ensures sufficient headroom is reserved
-> by all upper layers and avoids any data race on hard_header_len during ET=
-HTOOL
-> feature changes.
+tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which drops
+and reacquires the socket lock.  Its error path used the current value of
+psock->cork to decide whether msg_tx named the stack-local temporary
+message.
 
-Hi Eric,
+Two senders can therefore interleave as follows:
 
-Looks like this broke VXLAN tests:
+  Thread A                         Thread B
+  msg_tx = psock->cork
+  sk_msg_alloc() fails
+  sk_stream_wait_memory()
+    releases the socket lock      acquires the socket lock
+                                  completes the cork
+                                  psock->cork = NULL
+                                  frees the cork
+    reacquires the socket lock
+  msg_tx != psock->cork
+  sk_msg_free(msg_tx)
 
-https://netdev-ctrl.bots.linux.dev/logview.html?f=3D/logs/vmksft/net/result=
-s/742304/2-test-vxlan-mdb-sh/stdout
+The stale cork is mistaken for the local temporary message and freed again.
+KASAN reported:
 
-AI bot says:
+  BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
+  Read of size 4 at addr ffff88810c908800 by task poc/90
+  Call Trace:
+   sk_msg_free+0x49/0x50
+   tcp_bpf_sendmsg+0x14f5/0x1cc0
+   __sys_sendto+0x32c/0x3a0
+   __x64_sys_sendto+0xdb/0x1b0
+  Allocated by task 89:
+   __kasan_kmalloc+0x8f/0xa0
+   tcp_bpf_sendmsg+0x16b3/0x1cc0
+  Freed by task 91:
+   __kasan_slab_free+0x43/0x70
+   kfree+0x131/0x3c0
+   tcp_bpf_sendmsg+0xec3/0x1cc0
 
-The NIPA CI detected a regression introduced by this patch in the VXLAN
-MDB selftest (tools/testing/selftests/net/test_vxlan_mdb.sh).
+Make temporary ownership explicit by freeing only the stack-local message
+at the common exit.  When a verdict moves that message into the persistent
+cork, use sk_msg_xfer_full() to clear the source and record the persistent
+cork as the current owner.
 
-All data path forwarding sub-tests fail on both normal and debug kernel
-builds, while the control path (MDB entry add/replace/delete) tests
-continue to pass. The failure is 100% reproducible across both runs.
+The related failure paths must also distinguish bytes in the current
+message from bytes sent by earlier loop iterations.  Track the former in
+msg_copied.  If cork allocation or redirect fails, subtract only the
+unsent bytes belonging to that message, preserving the syscall-wide count
+for data already sent.  Also reset cork_bytes after allocation failure,
+skip a self-transfer of an existing cork, and propagate iterator errors.
 
-The test topology uses VLAN subinterfaces (br0.10, br0.20) on a bridge
-that has a VXLAN device as a member. mausezahn injects multicast frames
-from the VLAN subinterface and tc ingress filters on the peer namespace
-count packet arrivals to verify forwarding.
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Cc: stable@vger.kernel.org
+Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
 
-With this patch, `vlan_passthru_header_ops` has been removed and all
-VLAN devices now unconditionally use `vlan_header_ops`, which calls
-`vlan_dev_hard_header()` and inserts an 802.1Q VLAN header in software.
-Previously, when the underlying device had `NETIF_F_HW_VLAN_CTAG_TX`
-set (as veth does), the passthrough header ops were used and no software
-VLAN tag was inserted.
+Changes in v3:
+- Transfer the temporary message into the persistent cork with
+  sk_msg_xfer_full(), leaving the source empty at the common exit.
+- Track the current message contribution separately so cork failures retain
+  the count of bytes sent by earlier iterations.
+- Address the two ownership and return-value issues reported by Sashiko.
 
-This change causes frames injected from VLAN subinterfaces in the test
-to arrive at the peer with an unexpected software-inserted VLAN tag,
-breaking the tc filter matches used to verify delivery. Tests that check
-frames are *dropped* still pass (the frames never arrive regardless),
-but tests that check frames are *forwarded* all fail.
+Changes in v2:
+- Address Sashiko review findings for stale cork state, iterator-error
+  propagation, cork self-copy, and masked redirect failures.
+- Keep the original stale-cork use-after-free fix.
 
-Failing test output excerpt:
-  TEST: Destination IP - match                                        [FAIL]
-  TEST: Destination IP - no match                                     [FAIL]
-  TEST: Forward valid source - first VTEP                             [FAIL]
-  TEST: Forward valid source - second VTEP                            [FAIL]
-  ...
+Sashiko: https://sashiko.dev/#/patchset/20260719161630.2901208-1-nicoyip.dev%40gmail.com
+Link: https://lore.kernel.org/netdev/20260719161630.2901208-1-nicoyip.dev@gmail.com/ [v1]
 
-The pattern holds for all four overlay/underlay combinations (IPv4/IPv6
-=C3=97 IPv4/IPv6).
+ net/ipv4/tcp_bpf.c | 41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-Could you please take a look? It seems the unconditional software VLAN
-insertion breaks the VXLAN MDB data path when veth (or similarly capable)
-devices are used as the underlay.
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 8e905b50dead..fbb11b5abcd4 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -416,7 +416,9 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ }
+ 
+ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+-				struct sk_msg *msg, int *copied, int flags)
++				struct sk_msg *msg, int *copied,
++				u32 msg_copied, bool *corked,
++				int flags)
+ {
+ 	bool cork = false, enospc = sk_msg_full(msg), redir_ingress;
+ 	struct sock *sk_redir;
+@@ -443,12 +445,18 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 			psock->cork = kzalloc_obj(*psock->cork,
+ 						  GFP_ATOMIC | __GFP_NOWARN);
+ 			if (!psock->cork) {
+-				sk_msg_free(sk, msg);
+-				*copied = 0;
++				int free;
++
++				psock->cork_bytes = 0;
++				free = sk_msg_free(sk, msg);
++				*copied -= min_t(u32, msg_copied, free);
+ 				return -ENOMEM;
+ 			}
+ 		}
+-		memcpy(psock->cork, msg, sizeof(*msg));
++		if (psock->cork != msg) {
++			sk_msg_xfer_full(psock->cork, msg);
++			*corked = true;
++		}
+ 		return 0;
+ 	}
+ 
+@@ -495,14 +503,15 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 		if (unlikely(ret < 0)) {
+ 			int free = sk_msg_free(sk, msg);
+ 
+-			if (!cork)
++			if (cork)
++				*copied -= min_t(u32, msg_copied, free);
++			else
+ 				*copied -= free;
+ 		}
+ 		if (cork) {
+ 			sk_msg_free(sk, msg);
+ 			kfree(msg);
+ 			msg = NULL;
+-			ret = 0;
+ 		}
+ 		break;
+ 	case __SK_DROP:
+@@ -534,6 +543,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 	struct sk_msg tmp, *msg_tx = NULL;
+ 	int copied = 0, err = 0, ret = 0;
+ 	struct sk_psock *psock;
++	u32 msg_copied = 0;
+ 	long timeo;
+ 	int flags;
+ 
+@@ -548,7 +558,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 	lock_sock(sk);
+ 	timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
+ 	while (msg_data_left(msg)) {
+-		bool enospc = false;
++		bool corked = false, enospc = false;
+ 		u32 copy, osize;
+ 
+ 		if (sk->sk_err) {
+@@ -560,9 +570,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 		if (!sk_stream_memory_free(sk))
+ 			goto wait_for_sndbuf;
+ 		if (psock->cork) {
++			if (msg_tx != psock->cork)
++				msg_copied = 0;
+ 			msg_tx = psock->cork;
+ 		} else {
+ 			msg_tx = &tmp;
++			msg_copied = 0;
+ 			sk_msg_init(msg_tx);
+ 		}
+ 
+@@ -579,10 +592,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 					       copy);
+ 		if (ret < 0) {
+ 			sk_msg_trim(sk, msg_tx, osize);
++			err = ret;
+ 			goto out_err;
+ 		}
+ 
+ 		copied += ret;
++		msg_copied += ret;
+ 		if (psock->cork_bytes) {
+ 			if (size > psock->cork_bytes)
+ 				psock->cork_bytes = 0;
+@@ -595,21 +610,23 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 			psock->cork_bytes = 0;
+ 		}
+ 
+-		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied, flags);
++		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied,
++					   msg_copied, &corked, flags);
+ 		if (unlikely(err < 0))
+ 			goto out_err;
++		if (corked)
++			msg_tx = psock->cork;
+ 		continue;
+ wait_for_sndbuf:
+ 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+ wait_for_memory:
+ 		err = sk_stream_wait_memory(sk, &timeo);
+-		if (err) {
+-			if (msg_tx && msg_tx != psock->cork)
+-				sk_msg_free(sk, msg_tx);
++		if (err)
+ 			goto out_err;
+-		}
+ 	}
+ out_err:
++	if (msg_tx == &tmp)
++		sk_msg_free(sk, msg_tx);
+ 	if (err < 0)
+ 		err = sk_stream_error(sk, msg->msg_flags, err);
+ 	release_sock(sk);
+-- 
+2.43.0
+
