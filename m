@@ -1,974 +1,251 @@
-Received: from out198-27.us.a.mail.aliyun.com (out198-27.us.a.mail.aliyun.com [47.90.198.27])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010013.outbound.protection.outlook.com [52.101.46.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E336F8E9;
-	Thu, 23 Jul 2026 04:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.27
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784779633; cv=none; b=RXrfdFXTV1NLEICM+ZFjAPunvjyo2MDA/dQQ8OveGJVdLg5QhPeXyBuC9PFCjNgzpMuLWXq/p/XWn9WByOdHjO5W8LFnz/keIyARYL8S35P7TZj1eJKLhHwO26yGWsMJHnOC5wFhAhJL9TdYWFmPZFOSSPZdHH2Dt9lztCKRK0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784779633; c=relaxed/simple;
-	bh=MsW5qI8kU8H7jQVK5HUt+mFHZP7WVMWH64yFWKerWKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KU/gw1JE4Ho18ZKZnAtm0x4twaGmdfGVoEch7B0lvg05GD6ePjKvg2Un23fg4Hc5civVOYylWGZxzixdlq8gnPLeXZ3UMd9SzLS3NJz/A/Pd68VIjz1yEIvKSgGyqtfAVZnlV1o79eOdKblEHy95qV0qR00u8ZcOJFYfHCi/bAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0534534-0.0015194-0.945027;FP=12060477597678067202|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.iSkYuRx_1784779278;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.iSkYuRx_1784779278 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Jul 2026 12:01:19 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	corbet@lwn.net,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-doc@vger.kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com,
-	edumazet@google.com,
-	enelsonmoore@gmail.com,
-	skhan@linuxfoundation.org,
-	hkallweit1@gmail.com,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v22 net-next 05/12] net/nebula-matrix: add common resource implementation
-Date: Thu, 23 Jul 2026 12:00:57 +0800
-Message-ID: <20260723040110.91410-6-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260723040110.91410-1-illusion.wang@nebula-matrix.com>
-References: <20260723040110.91410-1-illusion.wang@nebula-matrix.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A9B373C1D
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 04:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784780085; cv=fail; b=YTur4pwT+73IGpn5hAmIx8wxXGv75EgLMOgMckhMo3HYGLwD61ichxbMHvLTJqGrR8rOUES5wnymWHtnNwPlA+oM+bKIl31Vf3boC0GWgMuTWuB5E+7j76Dj1+G9SRd7DVN89FnOG5RPKjmWQdhknPH4ZTVe1RxHFTGM0Gyxw9A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784780085; c=relaxed/simple;
+	bh=RHNJXS8WFQ/xGVOT3qsoCzGal9E8sYZzt4ip0XiOFSw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WQ2sAGFDJFtidPE5vjh+Kzu8x4PoW3yuBNaI7fx5lyp/wdsKv2yAdCsMAFGeoCRvkjbORoossW06FrLqBg6C84bC5RyAvW/ujhD3eQnhKSrqa+5UARdyEShMJGN+FAJ4kS840garnbjdlrI/y9azXTD9OmgvI11wzW+iddKMMjg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SLjcPFlL; arc=fail smtp.client-ip=52.101.46.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SLjcPFlL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cfFfCPeH0YyrDPwGg3p6NXjwB3lmQZEYubNrw7iBkZjyt69BwYQPbN1dHUy9W9KZdim3dnz2qazX1Qc5rcTydr3otgK7VwOQ94k/Ld/4qTDUjPWc+ef5+CzlXHy5po5AZBfXb8nKeOFkdXRhnV/SKxLKe5No8qSOMekGQ2yJXu7HVe3lehVOW89rNpEfoqw3bs0B8+XIdzcNQGy/wFk1+M78xRquBhj991vMXCs8b7xTeLZ8UxGblrrjScOd+HcyDG0gE5UANBob2ckFxnq0kAdrdj/DRiFuiODzrLwL9awy4XddN16pVdFg1RilRUJ2co/SHYiU29ZQa8Uydaa9XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Tgr2AOONixejEcm+p4DPub8eW+TxbjOE1/HS5r7AwKw=;
+ b=ryYRQTqSgEYqRoo+iooGTviQC/fVzvjEp29r8HJTiXyhGq0DO4mtOrOqT7OEt4Vcnfv4Pz2u4vW1joIQh5t6W7Uis25iBnpWXQ7XbvMVSkv3Lfx8RU1vODwz91X4m+EgG19a5d9dYZ4bYi2Z89jAnz4Dodpl8BepSx2aF6r3hvGrVzPIT7C9Edz1kQdh8qWhaRmm8MM7fwK1yeImElra5yII+ItrNIInfHyE04FIhYZEdBpqDdvaTYS8Zf2ePtK+mujUH2jMIq6B05WN6TNSOFEvXfT/gvqlLI7xQ3Phcvkj1Wko7rNmNx1vegklRzMZWfiC7NvK42JGgIDjBMwp/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Tgr2AOONixejEcm+p4DPub8eW+TxbjOE1/HS5r7AwKw=;
+ b=SLjcPFlLN6AbLfjgX6mnW3gD58oykf2Bm/PHWp6r1VdrAYecLR2XwX+Rg6AcgDNFXlo9pOWUsqERFNT7qu6drSJl8H/yhlGjQAkhfi3x5I5+6AhVHBWhM9CosJY3JORm91KaCUF8pZkbbZyTRiMJOZxyHGi0gChJRxn3ssTx3JA=
+Received: from PH7PR13CA0001.namprd13.prod.outlook.com (2603:10b6:510:174::7)
+ by SN7PR12MB8129.namprd12.prod.outlook.com (2603:10b6:806:323::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 04:13:56 +0000
+Received: from CY4PEPF0000E9D1.namprd03.prod.outlook.com
+ (2603:10b6:510:174::4) by PH7PR13CA0001.outlook.office365.com
+ (2603:10b6:510:174::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5 via Frontend Transport; Thu, 23
+ Jul 2026 04:13:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D1.mail.protection.outlook.com (10.167.241.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 04:13:55 +0000
+Received: from driver-dev1.pensando.io (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 22 Jul
+ 2026 23:13:54 -0500
+From: Eric Joyner <eric.joyner@amd.com>
+To: <netdev@vger.kernel.org>
+CC: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
+	<pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Simon Horman
+	<horms@kernel.org>, Eric Joyner <eric.joyner@amd.com>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Brett Creeley <brett.creeley@amd.com>,
+	"Breno Leitao" <leitao@debian.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>
+Subject: [PATCH net v2] ethtool: Embed FEC hist ranges as buffer in struct
+Date: Wed, 22 Jul 2026 21:13:42 -0700
+Message-ID: <20260723041342.39238-1-eric.joyner@amd.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D1:EE_|SN7PR12MB8129:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fe2176c-3a3a-47c4-df0d-08dee870d02d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|82310400026|23010399003|376014|18002099003|13003099007|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	HTpRzGpYsfCwBK0xydwY5wj7PYsiqs0/D0oalYY4Yiy0SGrHKD+TgZ36LmkpBDFjcNfmRhtYrflZR4apnAtPxVG6o99BEOIrn3SF9idT6NSFmG+Hh0mLpcGuH7+jg2FHQL2p7uOVCkTpGEXvE10FSdPC41rbQeBR5RAr9554PTY8C8PI/XjJpE3yrhqHIwFzKF6/7qoR1kQMtKS+hJJb+y3IrAOcSUvGzol1SbYHMvnIFm+7LxPJb73xx/1Q1wUywTdSgOUGtW2UbsbtgN5IjIuZXyyzwCSJpVL+eWRUD+elFETB2UN323LfXoNGLs1RpjiC3rg+rz6JvK4L6/BUuWy2dJeLUvsK6kcMKVv4EIo1BjFh6NVFustL8VdW6T44pf4q+QS8ihsMz/j7Yg3MKMCP1oDpu/E6qP7aMw/B6oalFpugyofhd2E3BtroYjBMi8FogNjt34aMQRUalhjt8EoJi9pKvBtmy9qyqkR+4F8VvdBoo/z8rXM79wA1K7SfAsRuVDE3CTdn4NNL0Da29qE9EirB1DZCEuN7chQBHSmVMEbCZkEj41uzTMREWa9QDFLzi3MiDLD1Ex9/3Iv0Xn5tFh84oQVRjapDKsBydFjpmcBnoADjZNcls83aSUJaG0z7Vh/76cC6TZbGi1Ol7aHxrheQQ7dJXjKout8ONxKaxVsW+hMJ5IvOcS9S19mf201rf/PnQSKmSHdIoB1vLQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(82310400026)(23010399003)(376014)(18002099003)(13003099007)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Pwn1DKC9qLZFV2j3tPV8VkDRFOvQ+3kfpFKqrNQKkwNiBixLhnRjgFAmKsDkThHPlLmLnYykDxmCA6ynpst9o0ggcwdLw4vb0Jymb98OW38EEPDB4wjBysFgKwlAB/cAuEzRg4wxC8muBz8yFn84pZOWXI147OkkHC0cymF0iZ4t3DY/LVX2AVhJOBir/a5VDK3lpVf+yOqv4fJ3c4fj26G8Yfe+bToJACKJgTiDp2OxB0nxN8A+hCsFPmGyXLGcn66RBZtCm7sHuMn+4SPsuuByV2BWfpcOqUSkPHh7RzkvDfFcuR4YSJqrhH/umpKqs/R7rkHa/4ISInMXeymVa+JEJF3apHxzSinwvE30tuc3/z8VKYRKzDGGHjA269L4JgiobiHCWFUwJc45AR0om1qSs3X+OgwzYq1SWG3FfAQBXOCX+xX7V/rJlGNRrWoV
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 04:13:55.8963
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fe2176c-3a3a-47c4-df0d-08dee870d02d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D1.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8129
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+When a driver's .get_fec_stats() handler is called and the driver
+supports FEC histogram stats, the driver supplies the histogram bin
+ranges via a pointer.  This pointer is assigned while under the netdev
+ops lock in fec_prepare_data(), but the actual data is only read after
+the lock is released; so this allows the driver to change the ranges
+(e.g. from another .get_fec_stats() call) while the current call chain
+is reading them in fec_fill_reply().
 
-The Resource layer processes the entries/data of various modules within
-the processing chip to accomplish specific entry management operations,
-this describes the module business capabilities of the chip and the data
-it manages.
-The resource layer comprises the following sub-modules: common,
-interrupt, and vsi(txrx,queue not contained this time)
+Fix this by adding an ethtool core-owned buffer, ranges_buf, to struct
+ethtool_fec_hist. Drivers whose ranges are built dynamically (currently
+just mlx5) fill ranges_buf and then point the existing ranges pointer at
+it, giving ethtool a consistent copy that stays valid after the netdev
+ops lock is dropped and later in fec_fill_reply(). Drivers whose ranges
+are compile-time constants (bnxt, netdevsim) are unaffected by the
+potential race and keep setting the existing ranges pointer to their
+constant array, without making copies.
 
-This patch provides the common part, including the conversion
-relationships among vsi_id, func_id, eth_id, and pf_id. These
-relationships may be utilized in the upper layer or the resource layer.
-
-Key Assumptions:
-- nbl_res_start() initializes VSI/Eth/PF data structures **only for
-control devices** (`common->has_ctrl == true`).
-- APIs like nbl_res_func_id_to_vsi_id() **are guaranteed to be called
- only on control devices** by the framework's dispatch layer.
-
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+Fixes: cc2f08129925 ("ethtool: add FEC bins histogram report")
+Assisted-by: Claude:claude-sonnet-5
+Signed-off-by: Eric Joyner <eric.joyner@amd.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   2 +
- .../nebula-matrix/nbl/nbl_common/nbl_common.c |  16 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   4 +
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  47 +++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  14 +
- .../nbl_hw_leonis/nbl_resource_leonis.c       | 284 ++++++++++++++++++
- .../nbl_hw_leonis/nbl_resource_leonis.h       |  10 +
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   | 148 +++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  75 +++++
- .../nbl/nbl_include/nbl_def_common.h          |  19 ++
- .../nbl/nbl_include/nbl_def_hw.h              |   4 +
- .../nbl/nbl_include/nbl_def_resource.h        |  29 ++
- .../nbl/nbl_include/nbl_include.h             |   9 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   9 +
- 14 files changed, 670 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
+v2: Take Vadim Fedorenko's suggestion
+(https://lore.kernel.org/netdev/f136bfb9-1756-4668-acc3-68962cdc6069@linux.dev/)
+and keep the ranges pointer for drivers that use constant ranges arrays;
+only use the new memory for dynamically constructed ranges.
+This makes this patch mostly an mlx5 change.
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index 6dc1539cee1f..831b6cb51c37 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -6,4 +6,6 @@ obj-$(CONFIG_NBL) := nbl.o
- nbl-objs +=       nbl_common/nbl_common.o \
- 				nbl_channel/nbl_channel.o \
- 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
-+				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
-+				nbl_hw/nbl_resource.o \
- 				nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
-index ba6f94a36cde..f1cd8e7d8a7f 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
-@@ -6,6 +6,22 @@
- #include <linux/device.h>
- #include "nbl_common.h"
- 
-+u32 nbl_common_pf_id_subtraction_mgtpf_id(struct nbl_common_info *common,
-+					  u32 pf_id)
-+{
-+	u32 diff = U32_MAX;
-+
-+	/*
-+	 * Leonis hardware uses fixed mgt_pf=0, this range check + U32_MAX
-+	 * sentinel are reserved for future hardware platforms which may
-+	 * adopt non-zero management PF offset, keep unified conversion logic.
-+	 */
-+	if (pf_id >= common->mgt_pf)
-+		diff = pf_id - common->mgt_pf;
-+
-+	return diff;
-+}
-+
- #define FNV_PRIME_32 0x01000193
- #define FNV_OFFSET_32 0x811C9DC5
- static u32 nbl_common_calc_hash_key(void *key, u32 key_size, u32 bucket_size)
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index d6b7bfff3cc6..319d105436a1 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -12,6 +12,8 @@
- 
- struct nbl_hw_mgt;
- struct nbl_hw_ops_tbl;
-+struct nbl_resource_mgt;
-+struct nbl_resource_ops_tbl;
- struct nbl_channel_ops_tbl;
- struct nbl_channel_mgt;
- 
-@@ -22,11 +24,13 @@ enum {
- 
- struct nbl_interface {
- 	struct nbl_hw_ops_tbl *hw_ops_tbl;
-+	struct nbl_resource_ops_tbl *resource_ops_tbl;
- 	struct nbl_channel_ops_tbl *channel_ops_tbl;
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  |  1 -
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  7 -------
+ .../ethernet/mellanox/mlx5/core/en_stats.c    | 19 +++++++++----------
+ include/linux/ethtool.h                       |  1 +
+ 4 files changed, 10 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+index d507289096c2..6867a5aed42c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -984,7 +984,6 @@ struct mlx5e_priv {
+ 	struct mlx5e_mqprio_rl    *mqprio_rl;
+ 	struct dentry             *dfs_root;
+ 	struct mlx5_devcom_comp_dev *devcom;
+-	struct ethtool_fec_hist_range *fec_ranges;
  };
  
- struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
-+	struct nbl_resource_mgt *res_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
+ static inline u16 mlx5e_stats_nch_read(const struct mlx5e_priv *priv)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index c1acb9012d3f..7d47a1da8b6b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6415,14 +6415,8 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+ 	if (!priv->channel_stats)
+ 		goto err_free_tx_rates;
  
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-index b37df49f86c8..4c7eea24c70e 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -10,6 +10,18 @@
- #include <linux/bitfield.h>
- #include "nbl_hw_leonis.h"
+-	priv->fec_ranges = kzalloc_objs(*priv->fec_ranges, ETHTOOL_FEC_HIST_MAX);
+-	if (!priv->fec_ranges)
+-		goto err_free_channel_stats;
+-
+ 	return 0;
  
-+static void nbl_hw_read_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg, u32 *data,
-+				 u32 len)
-+{
-+	u32 i;
-+
-+	if (len % 4)
-+		return;
-+
-+	for (i = 0; i < len / 4; i++)
-+		data[i] = nbl_mbx_rd32(hw_mgt, reg + i * sizeof(u32));
-+}
-+
- static void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
- 				  const u32 *data, u32 len)
+-err_free_channel_stats:
+-	kfree(priv->channel_stats);
+ err_free_tx_rates:
+ 	kfree(priv->tx_rates);
+ err_free_txq2sq_stats:
+@@ -6447,7 +6441,6 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 	if (!priv->mdev)
+ 		return;
+ 
+-	kfree(priv->fec_ranges);
+ 	for (i = 0; i < priv->stats_nch; i++)
+ 		kvfree(priv->channel_stats[i]);
+ 	kfree(priv->channel_stats);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+index de38b60806c2..e7e6db7f6bf1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+@@ -1550,7 +1550,7 @@ static bool fec_rs_validate_hist_type(int mode, int hist_type)
+ 
+ static u8
+ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv, int mode,
+-			     const struct ethtool_fec_hist_range **ranges)
++			     struct ethtool_fec_hist_range *ranges)
  {
-@@ -52,6 +64,15 @@ static void nbl_hw_wr_regs_lock(struct nbl_hw_mgt *hw_mgt, u64 reg,
- 	spin_unlock(&hw_mgt->reg_lock);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u32 out[MLX5_ST_SZ_DW(pphcr_reg)] = {0};
+@@ -1558,8 +1558,6 @@ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv, int mode,
+ 	int sz = MLX5_ST_SZ_BYTES(pphcr_reg);
+ 	u8 hist_type, num_of_bins;
+ 
+-	memset(priv->fec_ranges, 0,
+-	       ETHTOOL_FEC_HIST_MAX * sizeof(*priv->fec_ranges));
+ 	MLX5_SET(pphcr_reg, in, local_port, 1);
+ 	if (mlx5_core_access_reg(mdev, in, sz, out, sz, MLX5_REG_PPHCR, 0, 0))
+ 		return 0;
+@@ -1575,12 +1573,11 @@ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv, int mode,
+ 	for (int i = 0; i < num_of_bins; i++) {
+ 		void *bin_range = MLX5_ADDR_OF(pphcr_reg, out, bin_range[i]);
+ 
+-		priv->fec_ranges[i].high = MLX5_GET(bin_range_layout, bin_range,
+-						    high_val);
+-		priv->fec_ranges[i].low = MLX5_GET(bin_range_layout, bin_range,
+-						   low_val);
++		ranges[i].high = MLX5_GET(bin_range_layout, bin_range,
++					  high_val);
++		ranges[i].low = MLX5_GET(bin_range_layout, bin_range,
++					 low_val);
+ 	}
+-	*ranges = priv->fec_ranges;
+ 
+ 	return num_of_bins;
  }
- 
-+static u32 nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt)
-+{
-+	u32 data;
-+
-+	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW6_OFFSET, &data,
-+			     sizeof(data));
-+	return FIELD_GET(NBL_FW_BOARD_DW6_ETH_BITMAP_MASK, data);
-+}
-+
- static void nbl_hw_update_mailbox_queue_tail_ptr(struct nbl_hw_mgt *hw_mgt,
- 						 u16 tail_ptr, u8 txrx)
- {
-@@ -133,6 +154,14 @@ static u32 nbl_hw_get_host_pf_mask(struct nbl_hw_mgt *hw_mgt)
- 	return data;
- }
- 
-+static u8 nbl_hw_get_real_bus(struct nbl_hw_mgt *hw_mgt)
-+{
-+	u32 data;
-+
-+	data = nbl_hw_rd32(hw_mgt, NBL_PCIE_HOST_TL_CFG_BUSDEV);
-+	return FIELD_GET(NBL_PCIE_BUS_MASK, data);
-+}
-+
- static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
- 				     u8 bus, u8 devid, u8 function)
- {
-@@ -146,6 +175,20 @@ static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
- 			    sizeof(data));
- }
- 
-+static void nbl_hw_get_board_info(struct nbl_hw_mgt *hw_mgt,
-+				  struct nbl_board_port_info *board_info)
-+{
-+	u32 data = 0;
-+
-+	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW3_OFFSET, &data,
-+			     sizeof(data));
-+	board_info->eth_num = FIELD_GET(NBL_FW_BOARD_DW3_PORT_NUM_MASK, data);
-+	board_info->eth_speed =
-+		FIELD_GET(NBL_FW_BOARD_DW3_PORT_SPEED_MASK, data);
-+	board_info->p4_version =
-+		FIELD_GET(NBL_FW_BOARD_DW3_P4_VERSION_MASK, data);
-+}
-+
- static struct nbl_hw_ops hw_ops = {
- 	.update_mailbox_queue_tail_ptr = nbl_hw_update_mailbox_queue_tail_ptr,
- 	.config_mailbox_rxq = nbl_hw_config_mailbox_rxq,
-@@ -153,8 +196,12 @@ static struct nbl_hw_ops hw_ops = {
- 	.stop_mailbox_rxq = nbl_hw_stop_mailbox_rxq,
- 	.stop_mailbox_txq = nbl_hw_stop_mailbox_txq,
- 	.get_host_pf_mask = nbl_hw_get_host_pf_mask,
-+	.get_real_bus = nbl_hw_get_real_bus,
-+
- 	.cfg_mailbox_qinfo = nbl_hw_cfg_mailbox_qinfo,
- 
-+	.get_fw_eth_map = nbl_hw_get_fw_eth_map,
-+	.get_board_info = nbl_hw_get_board_info,
- };
- 
- /* Structure starts here, adding an op should not modify anything below */
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-index 1d2dd10e6239..1dee07cb7156 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-@@ -67,4 +67,18 @@ struct nbl_mailbox_qinfo_cfg_table {
- #define NBL_PCIE_HOST_K_PF_MASK_REG (NBL_INTF_HOST_PCIE_BASE + 0x00001004)
- #define NBL_PCIE_HOST_TL_CFG_BUSDEV (NBL_INTF_HOST_PCIE_BASE + 0x11040)
- 
-+#define NBL_PCIE_BUS_MASK	GENMASK(12, 5)
-+#define NBL_FW_BOARD_CONFIG			0x200
-+#define NBL_FW_BOARD_DW3_OFFSET			(NBL_FW_BOARD_CONFIG + 12)
-+#define NBL_FW_BOARD_DW6_OFFSET			(NBL_FW_BOARD_CONFIG + 24)
-+
-+#define NBL_FW_BOARD_DW3_PORT_TYPE_MASK BIT(0)
-+#define NBL_FW_BOARD_DW3_PORT_NUM_MASK GENMASK(7, 1)
-+#define NBL_FW_BOARD_DW3_PORT_SPEED_MASK GENMASK(9, 8)
-+#define NBL_FW_BOARD_DW3_GPIO_TYPE_MASK GENMASK(12, 10)
-+#define NBL_FW_BOARD_DW3_P4_VERSION_MASK GENMASK(13, 13)
-+
-+#define NBL_FW_BOARD_DW6_LANE_BITMAP_MASK GENMASK(7, 0)
-+#define NBL_FW_BOARD_DW6_ETH_BITMAP_MASK GENMASK(15, 8)
-+
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-new file mode 100644
-index 000000000000..cd2d960df24b
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-@@ -0,0 +1,284 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include <linux/bits.h>
-+#include "nbl_resource_leonis.h"
-+
-+static struct nbl_resource_ops res_ops = {
-+	.get_vsi_id = nbl_res_func_id_to_vsi_id,
-+	.get_eth_id = nbl_res_get_eth_id,
-+};
-+
-+static struct nbl_resource_mgt *
-+nbl_res_setup_res_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_resource_info *resource_info;
-+	struct nbl_resource_mgt *res_mgt;
-+	struct device *dev = common->dev;
-+
-+	res_mgt = devm_kzalloc(dev, sizeof(*res_mgt), GFP_KERNEL);
-+	if (!res_mgt)
-+		return ERR_PTR(-ENOMEM);
-+	res_mgt->common = common;
-+
-+	resource_info =
-+		devm_kzalloc(dev, sizeof(*resource_info), GFP_KERNEL);
-+	if (!resource_info)
-+		return ERR_PTR(-ENOMEM);
-+	res_mgt->resource_info = resource_info;
-+
-+	return res_mgt;
-+}
-+
-+static struct nbl_resource_ops_tbl *
-+nbl_res_setup_ops(struct device *dev, struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_resource_ops_tbl *res_ops_tbl;
-+
-+	res_ops_tbl = devm_kzalloc(dev, sizeof(*res_ops_tbl), GFP_KERNEL);
-+	if (!res_ops_tbl)
-+		return ERR_PTR(-ENOMEM);
-+
-+	res_ops_tbl->ops = &res_ops;
-+	res_ops_tbl->priv = res_mgt;
-+
-+	return res_ops_tbl;
-+}
-+
-+static int nbl_res_ctrl_dev_setup_eth_info(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	struct device *dev = res_mgt->common->dev;
-+	struct nbl_eth_info *eth_info;
-+	u32 eth_bitmap, eth_id;
-+	u32 eth_num = 0;
-+	u32 fw_port_num;
-+	int i;
-+
-+	eth_info = devm_kzalloc(dev, sizeof(*eth_info), GFP_KERNEL);
-+	if (!eth_info)
-+		return -ENOMEM;
-+
-+	res_mgt->resource_info->eth_info = eth_info;
-+
-+	fw_port_num = res_mgt->resource_info->board_info.eth_num;
-+	eth_bitmap = hw_ops->get_fw_eth_map(res_mgt->hw_ops_tbl->priv);
-+	if (eth_bitmap & ~((1 << NBL_MAX_ETHERNET) - 1)) {
-+		dev_err(dev, "FW reported invalid eth_bitmap 0x%x\n",
-+			eth_bitmap);
-+		return -EINVAL;
-+	}
-+	if (fw_port_num !=  hweight32(eth_bitmap)) {
-+		dev_err(dev, "FW inconsistency: port_num=%u, bitmap=0x%x\n",
-+			fw_port_num, eth_bitmap);
-+		return -EINVAL;
-+	}
-+
-+	if (fw_port_num > NBL_MAX_ETHERNET || fw_port_num == 3) {
-+		dev_warn(dev, "FW reports %u Ethernet ports, not supported\n",
-+			 fw_port_num);
-+		return -EINVAL;
-+	}
-+	eth_info->eth_num = fw_port_num;
-+	/* Intentional design constraint: each PF maps to exactly one
-+	 * Ethernet port. This couples PF identity to port identity
-+	 * and is required by nbl_res_get_eth_id() which indexes
-+	 * eth_info->eth_id[] by relative PF id.
-+	 */
-+	if (res_mgt->resource_info->max_pf != eth_info->eth_num) {
-+		dev_err(dev, "Invalid PF-to-port topology: max_pf=%u, eth_num=%u\n",
-+			res_mgt->resource_info->max_pf, eth_info->eth_num);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * Original comment said dual-port board eth_id fixed to 0,2;
-+	 * Code accepts any contiguous valid bitmap bits (0/1 or 0/2 etc).
-+	 * Firmware only needs to report correct count of active ports,
-+	 * no hard-coded fixed bit positions required.
-+	 */
-+	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
-+		if ((1 << i) & eth_bitmap) {
-+			set_bit(i, eth_info->eth_bitmap);
-+			eth_info->eth_id[eth_num] = i;
-+			eth_info->logic_eth_id[i] = eth_num;
-+			eth_num++;
+@@ -1622,10 +1619,12 @@ static void fec_set_histograms_stats(struct mlx5e_priv *priv, int mode,
+ 	case MLX5E_FEC_LLRS_272_257_1:
+ 	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
+ 		num_of_bins =
+-			fec_rs_histogram_fill_ranges(priv, mode, &hist->ranges);
+-		if (num_of_bins)
++			fec_rs_histogram_fill_ranges(priv, mode, hist->ranges_buf);
++		if (num_of_bins) {
++			hist->ranges = hist->ranges_buf;
+ 			return fec_rs_histogram_fill_stats(priv, num_of_bins,
+ 							   hist);
 +		}
-+	}
-+
-+	for (i = 0; i < res_mgt->resource_info->max_pf; i++) {
-+		eth_id = eth_info->eth_id[i];
-+		eth_info->pf_bitmap[eth_id] |= BIT(i);
-+	}
-+
-+	return 0;
-+}
-+
-+static int nbl_res_ctrl_dev_sriov_info_init(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct nbl_sriov_info *sriov_info;
-+	struct device *dev = common->dev;
-+	u16 function;
-+	u16 func_id;
-+
-+	sriov_info = devm_kcalloc(dev, res_mgt->resource_info->max_pf,
-+				  sizeof(*sriov_info), GFP_KERNEL);
-+	if (!sriov_info)
-+		return -ENOMEM;
-+
-+	res_mgt->resource_info->sriov_info = sriov_info;
-+	common->hw_bus = hw_ops->get_real_bus(p);
-+	if (common->function + res_mgt->resource_info->max_pf > NBL_MAX_PF) {
-+		dev_err(dev, "PF count exceeds available function space\n");
-+		return -EINVAL;
-+	}
-+	for (func_id = 0; func_id < res_mgt->resource_info->max_pf; func_id++) {
-+		sriov_info = res_mgt->resource_info->sriov_info + func_id;
-+		function = common->function + func_id;
-+		sriov_info->bdf = PCI_DEVID(common->hw_bus,
-+					    PCI_DEVFN(common->devid, function));
-+	}
-+
-+	return 0;
-+}
-+
-+static int nbl_res_ctrl_dev_vsi_info_init(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = common->dev;
-+	struct nbl_vsi_info *vsi_info;
-+	int i;
-+
-+	vsi_info = devm_kzalloc(dev, sizeof(*vsi_info), GFP_KERNEL);
-+	if (!vsi_info)
-+		return -ENOMEM;
-+
-+	res_mgt->resource_info->vsi_info = vsi_info;
-+	/*
-+	 * case 1 one port(1pf)
-+	 * pf0 (NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0
-+	 * case 2 two port(2pf)
-+	 * pf0,pf1(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,512
-+	 * case 3 four port(4pf)
-+	 * pf0,pf1,pf2,pf3(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,256,512,768
-+	 */
-+
-+	vsi_info->num = eth_info->eth_num;
-+	/*
-+	 * eth_num can be 1/2/4:
-+	 * - 2/4 ports use dedicated gap constants;
-+	 * - 1 port falls back to NBL_DEFAULT_VSI_ID_GAP (1024).
-+	 * All three values produce valid base_id offsets.
-+	 */
-+	for (i = 0; i < vsi_info->num; i++) {
-+		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].base_id =
-+			i * NBL_VSI_ID_GAP(vsi_info->num);
-+		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].num = 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	u32 pf_num = 0;
-+	u32 pf_mask;
-+	int i;
-+
-+	pf_mask = hw_ops->get_host_pf_mask(res_mgt->hw_ops_tbl->priv);
-+	/*
-+	 * Hardware guarantees pf_mask has contiguous cleared bits
-+	 * starting from bit 0 (e.g., 0b11111100, not 0b01010101).
-+	 * This allows us to stop at the first set bit.
-+	 */
-+	for (i = 0; i < NBL_MAX_PF; i++) {
-+		if (!(pf_mask & (1 << i)))
-+			pf_num++;
-+		else
-+			break;
-+	}
-+	if (pf_num == 0 || pf_num > NBL_MAX_ETHERNET || pf_num == 3)
-+		return -EINVAL;
-+	res_mgt->resource_info->max_pf = pf_num;
-+
-+	return 0;
-+}
-+
-+static void nbl_res_init_board_info(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+
-+	hw_ops->get_board_info(res_mgt->hw_ops_tbl->priv,
-+			       &res_mgt->resource_info->board_info);
-+}
-+
-+static int nbl_res_start(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_common_info *common = res_mgt->common;
-+	int ret = 0;
-+
-+	if (common->has_ctrl) {
-+		nbl_res_init_board_info(res_mgt);
-+
-+		ret = nbl_res_init_pf_num(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_sriov_info_init(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_setup_eth_info(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_vsi_info_init(res_mgt);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+int nbl_res_init_leonis(struct nbl_adapter *adap)
-+{
-+	struct nbl_channel_ops_tbl *chan_ops_tbl = adap->intf.channel_ops_tbl;
-+	struct nbl_hw_ops_tbl *hw_ops_tbl = adap->intf.hw_ops_tbl;
-+	struct nbl_common_info *common = &adap->common;
-+	struct nbl_resource_ops_tbl *res_ops_tbl;
-+	struct device *dev = &adap->pdev->dev;
-+	struct nbl_resource_mgt *res_mgt;
-+	int ret;
-+
-+	res_mgt = nbl_res_setup_res_mgt(common);
-+	if (IS_ERR(res_mgt)) {
-+		ret = PTR_ERR(res_mgt);
-+		return ret;
-+	}
-+	res_mgt->chan_ops_tbl = chan_ops_tbl;
-+	res_mgt->hw_ops_tbl = hw_ops_tbl;
-+
-+	ret = nbl_res_start(res_mgt);
-+	if (ret)
-+		return ret;
-+
-+	res_ops_tbl = nbl_res_setup_ops(dev, res_mgt);
-+	if (IS_ERR(res_ops_tbl)) {
-+		ret = PTR_ERR(res_ops_tbl);
-+		return ret;
-+	}
-+	adap->intf.resource_ops_tbl = res_ops_tbl;
-+	adap->core.res_mgt = res_mgt;
-+	return 0;
-+}
-+
-+void nbl_res_remove_leonis(struct nbl_adapter *adap)
-+{
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
-new file mode 100644
-index 000000000000..4e61a5c141e5
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_RESOURCE_LEONIS_H_
-+#define _NBL_RESOURCE_LEONIS_H_
-+
-+#include "../nbl_resource.h"
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-new file mode 100644
-index 000000000000..b24a498de0cc
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-@@ -0,0 +1,148 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#include <linux/pci.h>
-+#include "nbl_resource.h"
-+
-+int nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			      u16 type, u16 *vsi_id)
-+{
-+	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-+	enum nbl_vsi_serv_type dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = res_mgt->common->dev;
-+	int pfid = func_id;
-+	u32 diff;
-+	int ret;
-+
-+	if (!common->has_ctrl || !vsi_id) {
-+		dev_dbg(dev, "No control plane or null vsi output ptr\n");
-+		return -EINVAL;
-+	}
-+	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-+	if (diff == U32_MAX) {
-+		dev_dbg(dev, "Invalid PF ID subtraction result\n");
-+		return -EINVAL;
-+	}
-+	if (diff >= vsi_info->num) {
-+		dev_err(dev, "PF %d (diff=%u) exceeds vsi_info->num (%u)\n",
-+			pfid, diff, vsi_info->num);
-+		return -EINVAL;
-+	}
-+
-+	ret = nbl_res_pf_dev_vsi_type_to_hw_vsi_type(type, &dst_type);
-+	if (ret) {
-+		dev_err(dev, "Invalid vsi type %u func_id %u\n", type, func_id);
-+		return ret;
-+	}
-+	*vsi_id = vsi_info->serv_info[diff][dst_type].base_id;
-+	return 0;
-+}
-+
-+int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
-+{
-+	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = res_mgt->common->dev;
-+	int j = NBL_VSI_SERV_PF_DATA_TYPE;
-+	int pf_id, i;
-+
-+	if (!common->has_ctrl) {
-+		dev_dbg(dev, "No control plane available\n");
-+		return -EINVAL;
-+	}
-+	for (i = 0; i < vsi_info->num; i++) {
-+		if (vsi_id >= vsi_info->serv_info[i][j].base_id &&
-+		    (vsi_id < vsi_info->serv_info[i][j].base_id +
-+					vsi_info->serv_info[i][j].num)) {
-+			pf_id = i + common->mgt_pf;
-+			if (pf_id >= NBL_MAX_PF) {
-+				dev_err(dev, "PF ID overflow\n");
-+				return -ERANGE;
-+			}
-+			return pf_id;
-+		}
-+	}
-+
-+	dev_dbg(dev, "VSI ID %u not found\n", vsi_id);
-+	return -ENOENT;
-+}
-+
-+int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			   u8 *bus, u8 *dev, u8 *function)
-+{
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct nbl_sriov_info *sriov_info;
-+	int pfid = func_id;
-+	u8 pf_bus, devfn;
-+	u32 diff;
-+
-+	if (!common->has_ctrl || !bus || !dev || !function)
-+		return -EINVAL;
-+	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-+	if (diff == U32_MAX)
-+		return -EINVAL;
-+	if (diff >= res_mgt->resource_info->max_pf) {
-+		dev_err(common->dev, "PF ID %u exceeds maximum supported PF count %u\n",
-+			pfid, res_mgt->resource_info->max_pf);
-+		return -ERANGE;
-+	}
-+	sriov_info = res_mgt->resource_info->sriov_info + diff;
-+	pf_bus = PCI_BUS_NUM(sriov_info->bdf);
-+	devfn = sriov_info->bdf & 0xff;
-+	*bus = pf_bus;
-+	*dev = PCI_SLOT(devfn);
-+	*function = PCI_FUNC(devfn);
-+
-+	return 0;
-+}
-+
-+int nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+		       u16 vsi_id, u8 *eth_num, u8 *eth_id, u8 *logic_eth_id)
-+{
-+	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = res_mgt->common->dev;
-+	int pfid = func_id;
-+	int rel_pf_id;
-+	int abs_pf_id;
-+
-+	if (!common->has_ctrl || !eth_num || !eth_id || !logic_eth_id)
-+		return -EINVAL;
-+	abs_pf_id = nbl_res_vsi_id_to_pf_id(res_mgt, vsi_id);
-+	if (abs_pf_id < 0) {
-+		dev_err(dev, "Failed to get PF ID from VSI ID %u\n", vsi_id);
-+		return -EINVAL;
-+	}
-+	if (abs_pf_id != pfid) {
-+		dev_err(dev, "invalid pf id %u\n", pfid);
-+		return -EINVAL;
-+	}
-+	rel_pf_id = abs_pf_id - common->mgt_pf;
-+
-+	if (rel_pf_id >= eth_info->eth_num) {
-+		dev_err(dev, "rel_pf_id %d out of range [0, %u)\n",
-+			rel_pf_id, eth_info->eth_num);
-+		return -ERANGE;
-+	}
-+
-+	*eth_num = eth_info->eth_num;
-+	*eth_id = eth_info->eth_id[rel_pf_id];
-+	*logic_eth_id = rel_pf_id;
-+	return 0;
-+}
-+
-+int nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-+					   enum nbl_vsi_serv_type *dst_type)
-+{
-+	switch (src_type) {
-+	case NBL_VSI_DATA:
-+		*dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
-+		return 0;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return -EINVAL;
-+	}
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-new file mode 100644
-index 000000000000..cd3fe480e5bc
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-@@ -0,0 +1,75 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_RESOURCE_H_
-+#define _NBL_RESOURCE_H_
-+
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_hw.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+struct nbl_resource_mgt;
-+
-+/* --------- INFO ---------- */
-+struct nbl_sriov_info {
-+	unsigned int bdf;
-+};
-+
-+struct nbl_eth_info {
-+	DECLARE_BITMAP(eth_bitmap, NBL_MAX_ETHERNET);
-+	u8 pf_bitmap[NBL_MAX_ETHERNET];
-+	u8 eth_num;
-+	u8 resv[3];
-+	u8 eth_id[NBL_MAX_PF];
-+	u8 logic_eth_id[NBL_MAX_PF];
-+};
-+
-+enum nbl_vsi_serv_type {
-+	NBL_VSI_SERV_PF_DATA_TYPE,
-+	NBL_VSI_SERV_MAX_TYPE,
-+};
-+
-+struct nbl_vsi_serv_info {
-+	u16 base_id;
-+	u16 num;
-+};
-+
-+struct nbl_vsi_info {
-+	u16 num;
-+	struct nbl_vsi_serv_info serv_info[NBL_MAX_ETHERNET]
-+					  [NBL_VSI_SERV_MAX_TYPE];
-+};
-+
-+struct nbl_resource_info {
-+	struct nbl_sriov_info *sriov_info;
-+	struct nbl_eth_info *eth_info;
-+	struct nbl_vsi_info *vsi_info;
-+	u8 max_pf;
-+	struct nbl_board_port_info board_info;
-+};
-+
-+struct nbl_resource_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_resource_info *resource_info;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_hw_ops_tbl *hw_ops_tbl;
-+	struct nbl_interrupt_mgt *intr_mgt;
-+};
-+
-+int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id);
-+int nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			      u16 type, u16 *vsi_id);
-+int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			   u8 *bus, u8 *dev, u8 *function);
-+int nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+		       u16 vsi_id, u8 *eth_num, u8 *eth_id, u8 *logic_eth_id);
-+int nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-+					   enum nbl_vsi_serv_type *dst_type);
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-index 282377bad257..0e0ea10e20c7 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-@@ -12,6 +12,21 @@
- #include "nbl_include.h"
- 
- struct nbl_hash_tbl_mgt;
-+#define NBL_TWO_ETHERNET_PORT			2
-+#define NBL_FOUR_ETHERNET_PORT			4
-+#define NBL_DEFAULT_VSI_ID_GAP			1024
-+#define NBL_TWO_ETHERNET_VSI_ID_GAP		512
-+#define NBL_FOUR_ETHERNET_VSI_ID_GAP		256
-+
-+#define NBL_VSI_ID_GAP(m)					\
-+	({							\
-+		typeof(m) _m = (m);				\
-+		_m == NBL_FOUR_ETHERNET_PORT ?			\
-+			NBL_FOUR_ETHERNET_VSI_ID_GAP :		\
-+			(_m == NBL_TWO_ETHERNET_PORT ?		\
-+				 NBL_TWO_ETHERNET_VSI_ID_GAP :	\
-+				 NBL_DEFAULT_VSI_ID_GAP);	\
-+	})
- 
- struct nbl_common_info {
- 	struct pci_dev *pdev;
-@@ -26,6 +41,7 @@ struct nbl_common_info {
- 	u8 devid;
- 	u8 bus;
- 	u8 hw_bus;
-+	u16 mgt_pf;
- 
- 	u8 has_ctrl;
- 	u8 has_net;
-@@ -39,6 +55,9 @@ struct nbl_hash_tbl_key {
- 	u16 resv;
+ 		break;
+ 	default:
+ 		return;
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 5d491a98265e..12683b5d125e 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -562,6 +562,7 @@ struct ethtool_fec_hist {
+ 		u64 per_lane[ETHTOOL_MAX_LANES];
+ 	} values[ETHTOOL_FEC_HIST_MAX];
+ 	const struct ethtool_fec_hist_range *ranges;
++	struct ethtool_fec_hist_range ranges_buf[ETHTOOL_FEC_HIST_MAX];
  };
- 
-+u32 nbl_common_pf_id_subtraction_mgtpf_id(struct nbl_common_info *common,
-+					  u32 pf_id);
-+
- struct nbl_hash_tbl_mgt *
- nbl_common_init_hash_table(struct nbl_hash_tbl_key *key);
- void nbl_common_remove_hash_table(struct nbl_hash_tbl_mgt *tbl_mgt);
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-index 08be57631453..b56b3c230c58 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-@@ -20,9 +20,13 @@ struct nbl_hw_ops {
- 	void (*stop_mailbox_rxq)(struct nbl_hw_mgt *hw_mgt);
- 	void (*stop_mailbox_txq)(struct nbl_hw_mgt *hw_mgt);
- 	u32 (*get_host_pf_mask)(struct nbl_hw_mgt *hw_mgt);
-+	u8 (*get_real_bus)(struct nbl_hw_mgt *hw_mgt);
- 
- 	void (*cfg_mailbox_qinfo)(struct nbl_hw_mgt *hw_mgt, u16 func_id,
- 				  u8 bus, u8 devid, u8 function);
-+	u32 (*get_fw_eth_map)(struct nbl_hw_mgt *hw_mgt);
-+	void (*get_board_info)(struct nbl_hw_mgt *hw_mgt,
-+			       struct nbl_board_port_info *board);
- };
- 
- struct nbl_hw_ops_tbl {
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-new file mode 100644
-index 000000000000..cf034ab589fd
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_RESOURCE_H_
-+#define _NBL_DEF_RESOURCE_H_
-+
-+#include <linux/types.h>
-+
-+struct nbl_resource_mgt;
-+struct nbl_adapter;
-+
-+struct nbl_resource_ops {
-+	int (*get_vsi_id)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			  u16 type, u16 *vsi_id);
-+	int (*get_eth_id)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			  u16 vsi_id, u8 *eth_num, u8 *eth_id,
-+			  u8 *logic_eth_id);
-+};
-+
-+struct nbl_resource_ops_tbl {
-+	struct nbl_resource_ops *ops;
-+	struct nbl_resource_mgt *priv;
-+};
-+
-+int nbl_res_init_leonis(struct nbl_adapter *adapter);
-+void nbl_res_remove_leonis(struct nbl_adapter *adapter);
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-index 0ea3e8551660..b0abbb2b58d2 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -16,6 +16,15 @@
- 		typeof(id) _id = (id);			\
- 		((_id) == (max) ? 0 : (_id) + 1);	\
- 	})
-+
-+#define NBL_MAX_FUNC					520
-+#define NBL_MAX_ETHERNET				4
-+
-+enum {
-+	NBL_VSI_DATA = 0,
-+	NBL_VSI_MAX,
-+};
-+
- struct nbl_func_caps {
- 	u32 has_ctrl:1;
- 	u32 has_net:1;
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 94884f388115..0e51dd65ee48 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -10,6 +10,7 @@
- #include "nbl_include/nbl_include.h"
- #include "nbl_include/nbl_def_channel.h"
- #include "nbl_include/nbl_def_hw.h"
-+#include "nbl_include/nbl_def_resource.h"
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-@@ -27,6 +28,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	adapter->pdev = pdev;
- 	common = &adapter->common;
- 
-+	common->mgt_pf = 0;
- 	common->pdev = pdev;
- 	common->dev = &pdev->dev;
- 	common->has_ctrl = param->caps.has_ctrl;
-@@ -42,7 +44,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_chan_init_common(adapter);
- 	if (ret)
- 		goto chan_init_fail;
-+
-+	ret = nbl_res_init_leonis(adapter);
-+	if (ret)
-+		goto res_init_fail;
- 	return adapter;
-+res_init_fail:
-+	nbl_chan_remove_common(adapter);
- chan_init_fail:
- 	nbl_hw_remove_leonis(adapter);
- hw_init_fail:
-@@ -51,6 +59,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 
- void nbl_core_remove(struct nbl_adapter *adapter)
- {
-+	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
- 	nbl_hw_remove_leonis(adapter);
- }
+ /**
+  * struct ethtool_fec_stats - statistics for IEEE 802.3 FEC
+
+base-commit: fca68249b6f5e84859b200b54cb5e0aef98f2b3a
 -- 
-2.47.3
+2.17.1
 
