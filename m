@@ -1,93 +1,135 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4453741F365
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 10:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB026470E8F;
+	Thu, 23 Jul 2026 10:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784801530; cv=none; b=WHzJ/dmFay+y/QcIyd7nEKTJSJ92vSAO6NMlTzzB18mtyvYE8d8GX2nQOTNxnyanY44UCnL0pmss6pDjC9rkVp5QDZlcddu/iyz40A9g9PxyT2lc8mg+GMrheFOW9ryMjLWAXI9CxYLQSWmbqFT9p+jrQWZpc6XBcfWpLU/B7YA=
+	t=1784801583; cv=none; b=D2A/Whg8hce3/S7bBfOx44cMjyv/Fe5IF9Nkes3XYFj0D8z+wBLoxMdJvfF/uLJN1Eg5jnPfa7D921zsZGozkzch8v3Je5Cf8H1DAE/pC+hlPIIbFi4e2v508MtWLkClWW1s7XB0n+UPnXhY2Cq750ZMrtFAh5rIgrLDVSl9zNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784801530; c=relaxed/simple;
-	bh=s8R1oLxd2gIIgWGwtYNS6mqoL+pvsJYIcUi6+9o+IK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZPSIGhfx94WwR1+8b/99s4N1dH/s2aVEmLn1D7Y6GJxybotVL0leCZtLrBi3Jgs4zWEEjid7p358N8myNo30BnXY7KzO/0lDuM4dDpDQxN3dm/8iF/KuytBTUgG7fEHEIVqYH4yM577fbYemmth4HUGikOjs2uxTpQFeWLt3xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=F2puuL5z; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="F2puuL5z"
-Message-ID: <805de3f6-8263-45d6-b6fe-e07d11d254b4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784801525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j1U+8mcZ4GUt99itgJDVO6aYiE8iYBw4lBNbt5LbW6A=;
-	b=F2puuL5zSsneB3TxjBHfNPICct0eosOm7K/KSSwY/dAG3YJta0fCoi/m85iojC/ylgeQe8
-	+DeSyn+EKKnowuvEpIklOk/JgO5hn+0E/ifLL7182K+2BHfEf4G06hk21jFqMUGEPMnLjM
-	VUVWtOEbuMVAhjdBUCWpLy6r4ErxbQc=
-Date: Thu, 23 Jul 2026 11:11:40 +0100
+	s=arc-20240116; t=1784801583; c=relaxed/simple;
+	bh=GiktL62H5OWU3TSce5mzV0wZIpcHwr6k0iFxnw2TvvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hamreU+ig8w031wabAjS9clV6Gf5SJutj/NntG96lYTKGdv5jtEbuzCWlYQTfrAHCztRN7thwvPj45bGse8qQCXLby1OeSOwY6xrb2WNMgdIIUoB5JQyEN2WVt6GPJInzPitAqeQ7XfYPhDTitA4pjQKyLIuAEU1OOhBqF6mOaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD6D1F000E9;
+	Thu, 23 Jul 2026 10:13:01 +0000 (UTC)
+Date: Thu, 23 Jul 2026 13:12:55 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+	Mark Bloch <mbloch@nvidia.com>, Nimrod Oren <noren@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>
+Subject: Re: [PATCH net-next 3/3] net/mlx5: add debugfs stats for doorbell
+ dma pools
+Message-ID: <20260723101255.GG110966@unreal>
+References: <20260723072222.1863558-1-tariqt@nvidia.com>
+ <20260723072222.1863558-4-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v3 2/2] net: sxgbe: check descriptor ring allocation
- failures
-To: Chenguang Zhao <chenguang.zhao@linux.dev>, bh74.an@samsung.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>
-References: <20260723021820.203960-1-chenguang.zhao@linux.dev>
- <20260723021820.203960-3-chenguang.zhao@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260723021820.203960-3-chenguang.zhao@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723072222.1863558-4-tariqt@nvidia.com>
 
-On 23/07/2026 03:18, Chenguang Zhao wrote:
-> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+On Thu, Jul 23, 2026 at 10:22:22AM +0300, Tariq Toukan wrote:
+> From: Nimrod Oren <noren@nvidia.com>
 > 
-> sxgbe_open() ignores the return value of init_dma_desc_rings() and
-> continues to program DMA with invalid ring addresses when allocation
-> fails. Check the return value and disconnect the PHY on failure.
+> Add a debugfs file exposing per-node DMA pool usage for doorbell
+> allocations.
 > 
-> Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
-> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+>   # cat /sys/kernel/debug/mlx5/<dev>/db_dma_pools
+>   node  block_size  used_blocks  allocated_blocks
+>      0          64            0                 0
+>      1          64            0                 0
+> 
+> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > ---
->   drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>  .../net/ethernet/mellanox/mlx5/core/alloc.c   | 30 +++++++++++++++++++
+>  include/linux/mlx5/driver.h                   |  1 +
+>  2 files changed, 31 insertions(+)
 > 
-> diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-> index 9b48a587d5c2..70cf3619555f 100644
-> --- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-> +++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-> @@ -1078,7 +1078,9 @@ static int sxgbe_open(struct net_device *dev)
->   	priv->dma_buf_sz = SXGBE_ALIGN(DMA_BUFFER_SIZE);
->   	priv->tx_tc = TC_DEFAULT;
->   	priv->rx_tc = TC_DEFAULT;
-> -	init_dma_desc_rings(dev);
-> +	ret = init_dma_desc_rings(dev);
-> +	if (ret)
-> +		goto init_phy_error;
->   
->   	/* DMA initialization and SW reset */
->   	ret = sxgbe_init_dma_engine(priv);
-> @@ -1187,6 +1189,7 @@ static int sxgbe_open(struct net_device *dev)
->   
->   init_error:
->   	free_dma_desc_resources(priv);
-> +init_phy_error:
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
+> index 3975c726d35c..60ff413999f7 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
+> @@ -437,11 +437,37 @@ void mlx5_frag_buf_free(struct mlx5_core_dev *dev, struct mlx5_frag_buf *buf)
+>  }
+>  EXPORT_SYMBOL_GPL(mlx5_frag_buf_free);
+>  
+> +static int mlx5_db_dma_pools_debugfs_show(struct seq_file *file, void *priv)
+> +{
+> +	struct mlx5_core_dev *dev = file->private;
+> +	int node;
+> +
+> +	mlx5_dma_pools_debugfs_print_header(file);
+> +
+> +	if (!dev->priv.db_node_pools)
+> +		return 0;
 
-nit: better to name it init_dma_error
+According to patch #1, this check is useless. You are failing mlx5 probe
+function if DMA pools initialization failed.
 
->   	if (dev->phydev)
->   		phy_disconnect(dev->phydev);
->   phy_error:
+Thanks
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> +
+> +	for_each_node_state(node, N_POSSIBLE) {
+> +		struct mlx5_dma_pool *pool = dev->priv.db_node_pools[node];
+> +
+> +		if (!pool)
+> +			continue;
+> +
+> +		mlx5_dma_pool_debugfs_stats_print(file, pool);
+> +	}
+> +
+> +	return 0;
+> +}
+> +DEFINE_SHOW_ATTRIBUTE(mlx5_db_dma_pools_debugfs);
+> +
+>  void mlx5_db_pools_cleanup(struct mlx5_core_dev *dev)
+>  {
+>  	struct mlx5_priv *priv = &dev->priv;
+>  	int node;
+>  
+> +	debugfs_remove(priv->dbg.db_dma_pools_debugfs);
+> +	priv->dbg.db_dma_pools_debugfs = NULL;
+> +
+>  	for_each_node_state(node, N_POSSIBLE)
+>  		if (priv->db_node_pools[node])
+>  			mlx5_dma_pool_destroy(priv->db_node_pools[node]);
+> @@ -471,6 +497,10 @@ int mlx5_db_pools_init(struct mlx5_core_dev *dev)
+>  		priv->db_node_pools[node] = pool;
+>  	}
+>  
+> +	priv->dbg.db_dma_pools_debugfs =
+> +		debugfs_create_file("db_dma_pools", 0444, priv->dbg.dbg_root,
+> +				    dev, &mlx5_db_dma_pools_debugfs_fops);
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+> index 2c56bb1d676d..83d0a83bbfbc 100644
+> --- a/include/linux/mlx5/driver.h
+> +++ b/include/linux/mlx5/driver.h
+> @@ -548,6 +548,7 @@ struct mlx5_debugfs_entries {
+>  	struct dentry *cq_debugfs;
+>  	struct dentry *cmdif_debugfs;
+>  	struct dentry *frag_buf_dma_pools_debugfs;
+> +	struct dentry *db_dma_pools_debugfs;
+>  	struct dentry *pages_debugfs;
+>  	struct dentry *lag_debugfs;
+>  };
+> -- 
+> 2.44.0
+> 
