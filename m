@@ -1,107 +1,94 @@
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A68625;
-	Thu, 23 Jul 2026 23:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D2D350D74;
+	Thu, 23 Jul 2026 23:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784848029; cv=none; b=IVP52pwQxaPT/aU3YTYpFZgPgiH2FA1RdQTkYZ4Tl7kk6YKs6ADU4ryvP9/w7zWVTuwElhXbgcJXiY2nL9dQql667+9CDyRS+gNDLVqRIJ6tcZZCQw4gRFv2KbObraYf+qyuv7o+FVbxHCPd42eDXHPyq1ZTZs+kHKGDqTGWJk4=
+	t=1784848156; cv=none; b=BOcGgr3s/zKLWWIqSQSgrFPnSDWkevp+7JUt0cEbFJYYxj+faW/jVXLfIUUykMftHWO56N69CllSpHRstad6wxCzXtY3OaWnzfU6bcEQ8qEs3kNCDW5jly9ckr8CmHBrKsv/fCL804OVxktWcxcopdTVsz7aoOco7eAl8pmYSsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784848029; c=relaxed/simple;
-	bh=Wz8cEJMRh2XH4EKMpWGFFOL268MKKJ3OPqAGSkvWQp8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pikhN06QUoXI2y/ZZRMWrNeNDuWMa6YoNHmTY513LNnsIXIG+DkdMalEHZT2VcsHsNulldmMZ/wEDgQDsvag35P06HLaqBuNE5PefD9VbAwFm3XtlF/i7wIuG02DW+4u8bb++sCJbUTdBfW2Chs+2T2AJUyf9MfIzVxNSDqqh9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GYds4gLZ; arc=none smtp.client-ip=185.70.43.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1784848156; c=relaxed/simple;
+	bh=jpExcFbAllSaU0H8zzsOMipgVwRjwhTGfY/9qx8vQKY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KquZmwrVYPQzb14PluoKSdEg1CQkEpMBs8/8mbgAoroVz9758YVCKsR4Ewdgs9vDvUMqBUxYanEz4KRrOBoXoniyo14G87yi17DbFeYJMW574vjTPj1x8rtlSA66CKcWlQmcK4yTV0q4G20UWtTw+mdj9KPkLqjbL6izCBnFtlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YyC36DKn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GYds4gLZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1784848021; x=1785107221;
-	bh=Wz8cEJMRh2XH4EKMpWGFFOL268MKKJ3OPqAGSkvWQp8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=GYds4gLZQceKAm0Ryyo+DhJj7I48HNy1Jw7aXVd77caC6eUz7uW5uDac6Yz98w9bn
-	 MmDitxiqfJV2XoJQ419oXDskOEBmQrExtxSsf9A5WlHUlIHMWdqUnOLAFjAu7bYLyk
-	 nyc8lU0LiS6BaxfuxnkpU5Lv7Kq0Lnvawora3K3kXRM+mvty5e0YlDot8VLtC8zFmR
-	 YB+PrrTvDwctqDF0CqHceUN55cIQsgNhZd8RtXqT9otqJ+6gKqXwRPW6LEZFFsUfwE
-	 H27SzL9hU7TkQ96XCaSdz377zmG53Mk4Kxbv/T5XMVFw9gCzE5XAparnkl2VitxQ4y
-	 v23+IZ/cDCMIQ==
-Date: Thu, 23 Jul 2026 23:06:56 +0000
-To: Ibrahim Hashimov <security@auditcode.ai>, Dust Li <dust.li@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>, "D. Wythe" <alibuda@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: validate peer CDC cursor against RMBE size before accepting it
-Message-ID: <20260723230647.138311-1-hexlabsecurity@proton.me>
-In-Reply-To: <20260722102929.38218-1-security@auditcode.ai>
-References: <amA9XGOWH3z4Z1fu@linux.alibaba.com> <20260722102929.38218-1-security@auditcode.ai>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 4bba3ea34234488ebd5e18be57079a17775b21e0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YyC36DKn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16601C2BCC7;
+	Thu, 23 Jul 2026 23:09:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784848156;
+	bh=jpExcFbAllSaU0H8zzsOMipgVwRjwhTGfY/9qx8vQKY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=YyC36DKnVpZchJmsaVDfJTAU3HMefQ9JOiyYpxUi2XFDuIpvYO8XgY7rIgbfUQ1aK
+	 RvZwBLQsD7T2kdLsCOTScqCcRqcalarlshmE6WIwyEmsV2MAwDvBU2JoM0FFM6/sec
+	 DoY7aF8YjC27xHFrm8cQHmkY7HDnjh43ITF7BhKkPDb/fD93CZaHjsdjMIkv66ZjKI
+	 Qsr2TEfYvADUfOE8VFv6SvHnA3AS9Y1L5k4Jc9w8N7SakdVCJhAoNzVcZo24qQI3eW
+	 W3biReraRwR0hkCku72oPFxLV5HUOxMyW/9BXZQpYF0dFI5vqJ97Y/ebq0PcmykBmJ
+	 31QOC3MhEDQvw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB717C531FA;
+	Thu, 23 Jul 2026 23:09:15 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Fri, 24 Jul 2026 01:09:12 +0200
+Subject: [PATCH 1/2] dt-bindings: dpll: zl3073x: add ZL30643 compatible
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260724-for-upstream-zl30643-v1-1-ea93ba4d85c8@free.fr>
+References: <20260724-for-upstream-zl30643-v1-0-ea93ba4d85c8@free.fr>
+In-Reply-To: <20260724-for-upstream-zl30643-v1-0-ea93ba4d85c8@free.fr>
+To: Ivan Vecera <ivecera@redhat.com>, 
+ Prathosh Satish <Prathosh.Satish@microchip.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784848154; l=819;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=Dlh4xhCfEnokysm2lyYGJyxT/l4Fz9ZHB7O0gaUNLfE=;
+ b=fYEvgmTReR29OMQGo4G0nw6hXS0kUMbVhtMfHuwyddR0FAMgXbtfyuDiUHybBbD/e4Cr0kysD
+ K+NeFJmlg1jBu0LZoVZjn13yS7w2dxoOKUn2dBNBcx7IdTWXjB6i/2b
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-Agreed, and thanks for dropping the competing one.
+From: Vincent Jardin <vjardin@free.fr>
 
-Patch 1/3 bounds only the cursor count, not the advance: smc_curs_diff()'s
-differing-wrap branch returns (len - old.count) + new.count, so prod(W,0) t=
-hen
-prod(W+1,len) is diff_prod =3D=3D 2*len with both counts in range, and
-smc_cdc_msg_recv_action() adds that to bytes_to_rcv unclamped. wrap++/count=
-=3D=3D0 does the
-same over several CDCs, so a per-cursor bound can't catch it.
+The Microchip ZL30643 (chip ID 0x0E3B) is a 3 DPLL channel member
+of the ZL3073x family. Add its compatible string to the binding enum.
 
-The out-of-bounds copy you point at is closed by patch 2/3, though. It boun=
-ds the
-derived readable length at the consumer:
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+ Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-=09if (readable < 0 || readable > conn->rmb_desc->len)
-=09=09readable =3D conn->rmb_desc->len;
+diff --git a/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml b/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
+index fa5a8f8e390c..13ea55c2c146 100644
+--- a/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
++++ b/Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
+@@ -18,6 +18,7 @@ description:
+ properties:
+   compatible:
+     enum:
++      - microchip,zl30643
+       - microchip,zl30731
+       - microchip,zl30732
+       - microchip,zl30733
 
-so copylen <=3D rmb_desc->len and smc_rx_recvmsg()'s second chunk (copylen =
-- first,
-offset 0) stays within the ring no matter how large bytes_to_rcv grew. I ra=
-n your
-wrap++/count=3D0 vector end to end on the real SMC-D path under KASAN: with=
- 1/3 alone it
-trips slab-out-of-bounds in smc_rx_recvmsg (bytes_to_rcv reaches 6*len, rea=
-d of size
-5*len); with 2/3 applied recv() is bounded to rmb_desc->len and it is clean=
-.
+-- 
+2.43.0
 
-What 2/3 does not fix is the accounting: bytes_to_rcv is left > rmb_desc->l=
-en (and can
-sign-overflow negative over many messages), so the documented
-0 <=3D bytes_to_rcv <=3D rmb_desc->len invariant is still violated at the p=
-roducer even
-though the copy is now bounded. I have a net-next follow-up that records an=
-d aborts on
-that. Your
-
-=09if (smc_curs_diff(size, &old, &temp) > size)
-=09=09return;
-
-catches the single-CDC 2*len advance cleanly; the wrap++/count=3D=3D0 form =
-slips it, since
-each CDC advances exactly len (diff =3D=3D len, not > len) and it is the ac=
-cumulated
-bytes_to_rcv that overruns. So I'll pair your advance-bound as an early cat=
-ch with a
-check on bytes_to_rcv after the atomic_add and abort+record there, which co=
-vers both.
-The insight is yours either way -- may I add your Suggested-by (or Co-devel=
-oped-by)?
-
-The v4 series otherwise stands as reviewed; I'll repost it for the netdev q=
-ueue and
-keep the accounting bound as the net-next follow-up.
-
-Thanks,
-Bryam
 
