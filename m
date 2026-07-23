@@ -1,75 +1,35 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14F5429CD1
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAD923393C;
+	Thu, 23 Jul 2026 10:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784800782; cv=none; b=XON/EaOCGz/eWfMXWS37CgPX5wZ5osyE8qseHcGtLyslEBBmtofx06mZm4K2AuG6rthT+qHz3tYQaiU8SPNuN2VTw87FaGl6rfqeNEkfM/S++3fba0kLS6Ul+r0hJ/F76CFEyFmT9sPxR954oPpwPQ7nFtevVL++HXjf3ShR6ik=
+	t=1784800841; cv=none; b=TgoXzhLbkPzyBblp62CWuFL4QN0HH6ukfCZHbiHzU3SpkNC9hXq+xXEFme5kiFNFvtPyokLeSKRqxoE79ztWUZrrgCMUtrxk/ApFvebxaMaRdYWFhBTDbQZ12lJ/d7ff8RcamaMRySumHbXBAas0KaZ+fCnW2u/qIxDsRsq8SQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784800782; c=relaxed/simple;
-	bh=GRrfxLRgNpKm6lsvifAkdPINzwR4tjY/umqSXWMqGeE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jvNb7Nf7viB62q6kPEQc5vv0DgZX4IMamUASfctOAuV+Fp0Ivi87bnr8T5hj/GdwtM4qG8ehFKN6t/MP98szPSkhgIJnrFEhw9j+16oYfj5CdoG5r99EhWldaJo/0gM0nLwjPyHda4+0vS5U/Mfo6SnavM/AFdK3RxavIq8EXxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n/iFvvXu; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784800841; c=relaxed/simple;
+	bh=yLwlWMjGlmNOvX2xqRqyDkGHLz5Mas6s2NWIMsRLzlM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MB04Vk8E2MguNLT89bqPe1m6tE4jmZz9O3uBYioyTjXRGTRJ1cryekum9NyDkNK5CF6bZSrXow93wiBlLfIap2YDBb46yw79y5EUcI0oThgCe1+8vl5cxbCDjCTK8o+Hc56NFa3+nklVhMcRvqx6D2G7asx3pnSLQlnQ3khJOa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fraicX4t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n/iFvvXu"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4956242332dso4086605e9.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 02:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784800779; x=1785405579; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BrBCr7AbLc/6xolx1/6dBK5OEwK/e0MsPXsWHktbVcI=;
-        b=n/iFvvXu9EBu14/PZpplrQX27zsaJuu2RfWmiJt5LiSvxKg7n92krtIY/pdE8FLxl1
-         ELjF/JjHRw0NBh/HfDAWmt1Yy+rl1YrCiH+hVXgLTAMbGCEdrR8sqE+I+RuBDkQX4SaD
-         rdEm02VpZEYlxTQ/T5mu7IrmmW+9A6InNvzUtwSdZxe+XWp3F2+Hf54pqtHUePQ1cbHr
-         HfjK/b8X9djInZk3ITxDS4S8sziZ9LJ6POEfA8rhRt68obO37jGZjVmoa+BEfZOA+Tw8
-         pBZNX+DBiYBSXeha9E/NQ8Z9rMczsms5gs1n/jZ7FPyd4km2LgVMos94qST5JtbsbI1a
-         9lfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784800779; x=1785405579;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BrBCr7AbLc/6xolx1/6dBK5OEwK/e0MsPXsWHktbVcI=;
-        b=dWtML9ehlNbzSVcKsDQPQfG1Gwv3J+VpL3TqAZcGrTB93xvWiPTHnnY+UJlSsy+ueT
-         XlgL/jtm+nua9PCJC1oj6wHwNf9b5ENdOsG/sR6KYtvoN6Ty2lLoDf5O77aWqgoixCk6
-         AHca4MxOpyIb/xxrNy6O5qD0zVUAEc/UJv62WF2vDT5mbeIJBCgSe7eIaKc27/dLyumz
-         MDa9761kmGbW9QZq8d+WPCQkXSERAiwAIdOoBYMbo+FFRiPOGpP4uaVXJD/ISEQ0reLg
-         mu3Y0vRNZcLIUTUxYgHXvd4sjwRfi4inhrxHzRjVu/YnJnQkSNJXsaHt2Mtvark/EoxO
-         qYmA==
-X-Forwarded-Encrypted: i=1; AHgh+RoBKKl4NNhypEeXOVgyUxDc059j/+MXFCdbz+8o3CGfzYlz5AN0Kj8Hrg7r3BXyFuta5R1CPwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdzCrZleqIMdjlewFfZmDk02OTQdbdlkwYyniRfp1Eb9jh8a82
-	JRvVMgo3A35zUGrtS1ePElSg08e+ORZo83ks8im6p+1SUkWsDempX7Qi
-X-Gm-Gg: AR+sD10RY2JG6FfnxRmuQRPlWsr2QVUp1Be2aTRCvyfFb6n4hUSm4VWTHDETcC6V8vc
-	tO3JCNIKWMb1mxFNpUkEdlo1iZfF8ytu9TMygmkyyzzARq4vjPt76NJBbZg277QTu4h1sICK45f
-	EngDbDY26LOmLxEj9SAKgivGarVmo11eZQjof7Db7fsF5Qf1sNFncHZ062UW0fndodb98KjspxT
-	kYEVtJHRfd3rkPJtv7YLBgnj1BxZkPP4nxbstqr5fFT/r1P+DoISFNDzOb7Cr8mO4H56u1DFT3Y
-	ixoaADCQyBxlokItxw7MGKylYybANzSnm8Sk4YGQusiF9dshNaanipqKUsZ66YOftuDRtop1tCQ
-	vuM9Rbv6F3IsLVz1WKnqvhEfe72MjO9AeSf3bCXXZz3VNF1lkr05nl0LtfKl1bWelYj0oMOFcql
-	R+d/dTv3Zv+1Fex+ttOOh7fro4dHk=
-X-Received: by 2002:a7b:cbda:0:b0:493:cd3f:d051 with SMTP id 5b1f17b1804b1-49573cffa67mr15330745e9.25.1784800778721;
-        Thu, 23 Jul 2026 02:59:38 -0700 (PDT)
-Received: from LAPTOP-AVI.taile24b5.ts.net ([2a00:a040:1b7:4f41:a638:2cd9:2446:f69e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653c9d99sm212315585e9.12.2026.07.23.02.59.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:59:38 -0700 (PDT)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: linux-can@vger.kernel.org
-Cc: Pavel Pisa <pisa@cmp.felk.cvut.cz>,
-	Ondrej Ille <ondrej.ille@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Martin Jerabek <martin.jerabek01@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH net] can: ctucanfd: unmap BAR0 using base address
-Date: Thu, 23 Jul 2026 12:59:34 +0300
-Message-ID: <20260723095934.181042-1-thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fraicX4t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C9F1F00A3A;
+	Thu, 23 Jul 2026 10:00:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784800839;
+	bh=64jLRdjGOV13XRhg3nTslFaj9ixO+K1fBIX/mLV6wSA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=fraicX4t3Ak5ud/2+rXGbx1bddS5khQ4jWvN/fbxh1Nsa0O5Tz/UfInzmWM2sg644
+	 xENnMZ2A9Tnxs4qyQpSF0XLLAJC5FzBnjnRw/jGgyXnbaQoOiLZG0kYc0T6nMZblok
+	 gfe3aVUM4uczcv67W9IOdeulcCYxdDFfIBo1KhYotcWwlYwXnusJSH3kcm889STN1s
+	 9AdctGuXyhKQ5l412vW5gbbX0nBEUN2P65mdkTQxxPimCGmJhHsAnmXHcyxY9K2uDl
+	 vsgh9fsTsF6f8B1zCz8vqPeAPNEQXx0jXvkzbC2ihv+htP8tYuxFcKMYIRZ8VCEw4e
+	 mmrKKZyes58Nw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939073810902;
+	Thu, 23 Jul 2026 10:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,32 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/x25: fix use-after-free in x25_kill_by_neigh()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178480080614.2220921.17021057508770530521.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Jul 2026 10:00:06 +0000
+References: <20260713104752.241175-1-david.lee@trailofbits.com>
+In-Reply-To: <20260713104752.241175-1-david.lee@trailofbits.com>
+To: David Lee <david.lee@trailofbits.com>
+Cc: ms@dev.tdt.de, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, dominik.czarnota@trailofbits.com,
+ linux-x25@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-BAR0 is mapped into bar0_base, while cra_addr points to an offset
-within that mapping and is used for other purposes.
+Hello:
 
-Pass bar0_base to pci_iounmap(), instead of cra_addr, on the probe error
-path so the address returned by pci_iomap() is used for unmapping.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Fixes: 792a5b678e81 ("can: ctucanfd: CTU CAN FD open-source IP core - PCI bus support.")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
----
- drivers/net/can/ctucanfd/ctucanfd_pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, 13 Jul 2026 10:47:50 +0000 you wrote:
+> x25_kill_by_neigh() walks the global X.25 socket list looking for sockets
+> attached to a terminating neighbour. x25_list_lock protects list membership
+> while the lookup is in progress, but it does not pin a socket's lifetime
+> after the lock is dropped.
+> 
+> The function currently drops x25_list_lock before calling lock_sock(s). A
+> concurrent close can run x25_release(), remove the same socket from
+> x25_list, and drop the last socket reference in that window. The neighbour
+> teardown path can then lock or inspect a freed struct sock/struct x25_sock.
+> 
+> [...]
 
-diff --git a/drivers/net/can/ctucanfd/ctucanfd_pci.c b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-index 625788fa8976..f845951c5d51 100644
---- a/drivers/net/can/ctucanfd/ctucanfd_pci.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-@@ -194,7 +194,7 @@ static int ctucan_pci_probe(struct pci_dev *pdev,
- 	pci_set_drvdata(pdev, NULL);
- 	kfree(bdata);
- err_pci_iounmap_bar0:
--	pci_iounmap(pdev, cra_addr);
-+	pci_iounmap(pdev, bar0_base);
- err_pci_iounmap_bar1:
- 	pci_iounmap(pdev, addr);
- err_release_regions:
+Here is the summary with links:
+  - [net] net/x25: fix use-after-free in x25_kill_by_neigh()
+    https://git.kernel.org/netdev/net/c/5499e0602d2f
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
