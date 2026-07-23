@@ -1,123 +1,189 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE77385D7F
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD5438AC7E
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 16:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784825387; cv=none; b=jHKUvJPnmWRloqZjWkNxpaut10mbVd4KCzCq93ICGSQq2y+4ZocbzFzN1hv0t+p2myfdgAJbyY7qFNh4Rj92AJRhEQ5ZJ4NWJ9rjBcdoDNaoIJjHtFwoOIBbJ9xdbpc4O9AQAUo6fPkpDiY2NSzCsTbV+HPRhI4n+iRDWvnN5Jg=
+	t=1784825449; cv=none; b=btrkR9PxogeVki8hhbYeKa1ott3rWJf9lBL9/4h4f1mjnDeickd8I+0e2j9GI/XkVNt/L5XpqswdyvU5i/5ZiezPo4RzK2+3CbftinwtSsEwbXwKZ3aqrEMXbfYxGZ13YwXdpRzspi+N5WKt+Oo0hMCNuPo2z2H9mGBljWOjUVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784825387; c=relaxed/simple;
-	bh=23zhtYuefAo7j5hUMEQrthPX9DGAfkpmBrwANRlYLMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCvJURbH062LqkVz/SMcHAkSyixWucDfGHOCK36pd4cdy35xPYtg7FtmOvY5OrfV/5O8ns6qwIqMKbZTUUmOw2a8YCtj0LgL6hN2pMZBNJ0l5ZImgH0sjpg3wapan4cY3UpEo99EWlKibjTmbfA/o5AzRMxoss7IVtO4MEajw1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVOd3Kkn; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784825449; c=relaxed/simple;
+	bh=HVzEoDIUOtKuu1wfn87SZ/HEqRdQyUU7D8rY8b4wr/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UeLK1nAmcnu7evik5PLzVpJtTJOfJ34cY9ZU6/Yc1A1Vdwyx/hKFvncizCE2doqG+HTGrpvcFS+GBeXAIEm64rDSMTl02hFLXiyhEdTB2HDrWdHbo4RxxZBeOtcx2dwQhO/SYm8V9L68M/oboAZPFUyX/uQkhQ3ZeucPAhheDfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjSfeZ6p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PmlQH47i; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVOd3Kkn"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cace91f112so11079575ad.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:49:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjSfeZ6p";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PmlQH47i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784825446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
+	b=TjSfeZ6pu5R8DPjQuuTY4xDpXprvKssADW8j7hARr9DqlmkCzOHyBZ55ey0Axw2CicRtGP
+	XW9+Z8D6ofDT6Wv+2wuUjdHo1gad7BUUtqI85ngb6eGT+nghtrP7JwPjaoLTZ0L4EhFz11
+	OPf31VtPVILbv9cAt40a615RnshLfh0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-rS8du3ObPfmxPBlQgU5XNA-1; Thu, 23 Jul 2026 12:50:45 -0400
+X-MC-Unique: rS8du3ObPfmxPBlQgU5XNA-1
+X-Mimecast-MFC-AGG-ID: rS8du3ObPfmxPBlQgU5XNA_1784825444
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-492714d002cso5505155e9.0
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 09:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784825385; x=1785430185; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZZG4reGgP8P0tHq2LHkHlzPckguQ757kzlwfqLOcAAY=;
-        b=bVOd3Kkny/QcL4E3F4cRE8PVEaKpNRKP4QQN48FYJQkr98NhAASFbs9Miv2zAclLDk
-         IauMJszSIhTHWz3XU5SAnxqkdr9UBEK16Bp2jPrN3aixI7Zziy0tHrtRQoTQdOCO+AHF
-         xS9M925NKsOSfnPiwHyrdMeKpk6zbMhH3Y4LkLDjm/p/uzI0Gw04w7kZ+2t+jTtPWh+B
-         viIet2CeT5NRyMN6osCWCCxAESGBOeLS3iDKIwqhsPm4xxBl3vgNCuH1oA+mowJabfnA
-         +IUlC5hzZXIiKpGjUs52+DxPp0BizTCKsxK4bspCYjGUXHay/RZLxXOxp6OatvdN3Pjc
-         ifOw==
+        d=redhat.com; s=google; t=1784825444; x=1785430244; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
+        b=PmlQH47iXzx8Dp+yvaKQPhyPR03ooN4skoNw+INVlu+jl7dP3mSWuzh+ZUyLMDqYJh
+         3WP2xFjDptuTn0Z0WctOYFtaZZvpw8iJwV8VUDDdRDMc+8W6hl0zYgGqEejQNzmsQrld
+         xw+ru70kgD9/iuzhCWGBfrmh4QxRv5icMomCc3rQh6kg1XmzLBpGUe8HtziHOXp1ozuW
+         sNU2bKf7VWN+CtEb8NkFCgxHTVI9ti2jb6LGYpZTOEe1o25+cl/TNE2RSBMfxQyijasf
+         vb96pNuBH0RfYeOrs5b2e2KfIZHr/2GHvgIZrbC7J6wHa39Cw2uW/yICfGlBVgvY2Wqa
+         vYbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784825385; x=1785430185;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZZG4reGgP8P0tHq2LHkHlzPckguQ757kzlwfqLOcAAY=;
-        b=k8nHwacByLog1/gl783T5lOmxNztqsb+2q1HHub/gXf6hxZXcbsxgy9By8qvG1GUWI
-         UiUJ6PHNY5PQ7erLCVR4RrQO0NiU5eKrA7gcp46jLtl234jqQ1gNQTHZFMBW040GjuT8
-         NgFIZ0SfigOzosUXfbSOmCL9p85f4gq95N7rAfR/U/jvGEaUgxJPGrmdbIbH+DD+LDmO
-         7T+vnU1z6C+kP2L4nBAPtcdqsTSLesDLP7SgKvyiskkBCWHXTBo57ZmTgCus0kx2/0PY
-         dQ4OVH/8s/u/4IZK/2dXF5h4tXRyW4BZzYNFvRZf2ohRpOwoqaIWNWQJIZ4hT98rcGy/
-         YKAw==
-X-Gm-Message-State: AOJu0YyplMsHcC5WVPNvGibLA06Q6dyzCHLfkw9+C3kj3hpUKKaSWh1t
-	ySnM60XIYjtw1o0SDn6R/cD60kNM0oEuU3m1TP9fwmPGZiPtBKedtHzpjWHLH42o8xw=
-X-Gm-Gg: AR+sD13iPMhNprnZTXTw+r7UAxCLtOylexE94VOZoJzxkTwp0EINSALxZQe/n0JD7ws
-	CX0gNC7NRKZqMk8NEIx6+o6Zb5it5alAIWgn5aHkMWP8WzdNBqvFn+0lGsR+xN5PDvYLIda4wLj
-	GT/pP9u5vY6rb97VKzNxRes8IJ07Ul8mNFAFSoPcGBMIgRWk681MwS8xiPugdTu2TShEA0KR6Pf
-	GQgsqdu8oOO6yyA5Wix+CFh8SelEX+2KutJ1dFL4mDymiag3ZqVAxm+nLsGhfAdPF7FIfcdkMjd
-	iIAOHGAu/4jN83gxdkRHWRoCG4xbdTwX5GeVPtSEDgfM0YqGxJbNsAJCbADQKjqPt7pOdQhgC0V
-	b/U5teVCXlzAyPlxt86o0DR91rGEDpBvhxIPQ4xM/H9Jp+x2MjWUuNAwAESVTPMBUZquflysIVm
-	q4Ov+pc4YGZ+RsFJuBuec=
-X-Received: by 2002:a17:902:f68c:b0:2c9:97a7:b1eb with SMTP id d9443c01a7336-2cfa6f963c6mr43542105ad.42.1784825385087;
-        Thu, 23 Jul 2026 09:49:45 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e088d3fsm22241096eec.25.2026.07.23.09.49.27
+        d=1e100.net; s=20251104; t=1784825444; x=1785430244;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
+        b=BTXImZeCago/LP0xD3X8REHzqQ7TEIVh7T3n71cvlSJSfDlsjcQulMRWtB1YyYV/eL
+         z0KklzsIKKylffTeAIzjwcP3pmDq0iYpflwg8tkrNhjaXa6eZgFLy0BduQfOTlaPmnV0
+         FKVTFVBPhPiCdjOnYPJ0zyqQ4TfdQgeSeDluFYGzyE1YDNM6xFSKAvkFnMJBfEqcMlVr
+         DKdpoQySxUEGWMdKGz/hgfYeHKUwXOTWShEyASJ7uQ2UqyrYWdyE0k7bfa72+J4SCeis
+         nbVXBlfbeZJoM/aEWMTb+e7DUaXMTkRWzWsHv7lqITkgAy4kS/+Bn0SlHoTyyH6Bq/dy
+         xPnA==
+X-Forwarded-Encrypted: i=1; AHgh+RoqzZSlRKi3cUQ7H+42KeysRvwaSiCQ4mLd4dDyJixFs8ir//Ythiv1KGNQ48LK5RmP0CkvSoU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAJd2KTRh3exxAHj7U8rSr8YsVw8f6aYPW/TNCP2zkEyvJT3vK
+	y7zJ2LO4JuuML6Q8QZ6ViJJRFosSgxvIjBL+/Z+8YksRzh5rf7O/BWjxJzbyxhDJEFXzaaxRDjG
+	GLdMYgoNZmAPn6G5HLRd0CXU8EWMUxgroFAZKuI80i/7SiP/U0gYVv63TGA==
+X-Gm-Gg: AR+sD13YXAgrEP9WATI95BQCzegBFzbvyX0O68awoRTrITlNHRYvbBv70fRJpMjuScf
+	KM8mZeXOKQlYEVb69Iy5uNYpSt4W14sZhROTEKr+sop+gosqMrhTtgbXeHtQ6iUAzJ7RlMrKGj8
+	1kksRTcYI0QOdVSdI/6ZcuvZCnkf8rgngDj4OtZZiO93gaO/9/dCBMXYxqer8z/qJeNM6PH315W
+	8RZXwFnRl5O2PwtojgXpAW18lLbT30OdplzgAKFWmx0lnkRgPs5v20cciardHuZ3IHOFoo6w2o5
+	LY2wGtQY0b3vKXHm7gXU39wZ52E3n+W6Ga7CAfpliCTVp5Dw8u0GqR4WwX3U5yCmXtF97UknFm2
+	sWDM0tkkQcuRDZK/imRkf/g==
+X-Received: by 2002:a05:600c:350a:b0:495:441a:39d2 with SMTP id 5b1f17b1804b1-49573cd8932mr43272005e9.21.1784825443880;
+        Thu, 23 Jul 2026 09:50:43 -0700 (PDT)
+X-Received: by 2002:a05:600c:350a:b0:495:441a:39d2 with SMTP id 5b1f17b1804b1-49573cd8932mr43270805e9.21.1784825442214;
+        Thu, 23 Jul 2026 09:50:42 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957af5d910sm6009915e9.3.2026.07.23.09.50.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 09:49:44 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Jason@zx2c4.com,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] net: ipv6: clear suppressed fib6 rule result
-Date: Fri, 24 Jul 2026 00:48:52 +0800
-Message-ID: <4b8acb7787d54e440155585dd32ebdf0bef7d122.1784710966.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784710966.git.zhilinz@nebusec.ai>
-References: <cover.1784710966.git.zhilinz@nebusec.ai>
+        Thu, 23 Jul 2026 09:50:41 -0700 (PDT)
+Date: Thu, 23 Jul 2026 12:50:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	sgarzare@redhat.com, stefanha@redhat.com, dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com, bchaney@akamai.com,
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <20260723124908-mutt-send-email-mst@kernel.org>
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <20260723111557-mutt-send-email-mst@kernel.org>
+ <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
 
-From: Zhiling Zou <zhilinz@nebusec.ai>
+On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
+> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
+> > On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+> >> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+> >> vq->worker and queues work on it.  vhost_workers_free() however clears
+> >> the vq->worker pointers and immediately frees the workers, without
+> >> waiting for a grace period.  A caller that fetched the worker right
+> >> before the pointer was cleared can therefore still be queueing work on
+> >> it while it is freed.  And even when the queueing itself wins the race,
+> >> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+> >> future attempts to queue it are silently skipped.
+> >>
+> >> None of the current callers can actually hit this: net and scsi stop
+> >> their virtqueues before the workers are freed, and vsock unhashes the
+> >> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+> >> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+> >> in vhost-vsock keeps the device hashed while its workers are freed, so
+> >> the lockless send/cancel paths become able to race with the teardown.
+> >>
+> >> Fix this by clearing the vq->worker pointers, waiting for a grace
+> >> period, and then flushing the workers so any work the last readers
+> >> queued runs before the workers are freed.
+> > 
+> > 
+> > 
+> > 
+> >> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+> >> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> >> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> >> ---
+> >>  drivers/vhost/vhost.c | 11 +++++++++++
+> >>  1 file changed, 11 insertions(+)
+> >>
+> >> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> >> index 4c525b3e16ea..d6e235c25254 100644
+> >> --- a/drivers/vhost/vhost.c
+> >> +++ b/drivers/vhost/vhost.c
+> >> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+> >>  
+> >>  	for (i = 0; i < dev->nvqs; i++)
+> >>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+> >> +
+> >> +	/*
+> >> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+> >> +	 * reader that fetched a worker before we cleared the pointers above
+> >> +	 * may still be queueing work on it.  Wait for those readers to
+> >> +	 * finish, then flush so any work they queued runs (clearing
+> >> +	 * VHOST_WORK_QUEUED) before the workers are freed.
+> >> +	 */
+> >> +	synchronize_rcu();
+> > 
+> > 
+> > 
+> > Any way not to add this for all devices that don't need it?
+> > Or preferably, even for vsock in absense of the new ioctl?
+> >
+> 
+> This code was initially local to vsock, and was moved here in v3->v4
+> after we discussed with Stefano that the issue looks more generic and
+> should probably be fixed in vhost.c (see
+> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
+> 
+> As a compromise, we can keep this code here, but only call it
+> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
+> is always false, only set it to true on RESET_OWNER, and only call this
+> code once it's set.  Clumsy, but this way no other code path would have
+> to wait the full grace period.
+> 
+> What are your thoughts on that?
+> 
+> Thanks,
+> Andrey
 
-fib6_rule_suppress() drops a suppressed route with ip6_rt_put_flags(),
-but leaves res->rt6 pointing at the released rt6_info.
+Or just thread a bool parameter to it?
 
-If no later rule supplies a replacement, fib6_rule_lookup() still sees
-res.rt6 and returns that stale dst to its caller. A suppressing rule can
-therefore leak a released route back to rt6_lookup(), and the next put
-hits rcuref_put_slowpath() from dst_release().
-
-Clear res->rt6 when suppressing the route so suppressed lookups fall
-through to the null dst instead of reusing the released one.
-
-Fixes: cdef485217d3 ("ipv6: fix memory leak in fib6_rule_suppress")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
- net/ipv6/fib6_rules.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index e1b2b4fa6e18..89ee3c969ca7 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -308,6 +308,7 @@ INDIRECT_CALLABLE_SCOPE bool fib6_rule_suppress(struct fib_rule *rule,
- 
- suppress_route:
- 	ip6_rt_put_flags(rt, flags);
-+	res->rt6 = NULL;
- 	return true;
- }
- 
--- 
-2.43.0
+> > 
+> >> +	vhost_dev_flush(dev);
+> >> +
+> >>  	/*
+> >>  	 * Free the default worker we created and cleanup workers userspace
+> >>  	 * created but couldn't clean up (it forgot or crashed).
+> >> -- 
+> >> 2.47.1
+> > 
 
