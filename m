@@ -1,390 +1,100 @@
-Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A580548C40B;
-	Thu, 23 Jul 2026 12:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784809464; cv=none; b=hONsRNBK6RYJGj0wceaGENcbUKV1+0CTVeaqLE7cd7256d4by/r73DcWKwyj4nExRn/vIWWpXw7YKZ0UgoZXP1xdU/iV9Z12BDsqKaLiv0l6Dl1mfLxDqUoL+Wrt62TK5ctNrhla99CLAjiOQcpeUGgosFflUVWqMEwz9J6Qtx4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784809464; c=relaxed/simple;
-	bh=sGsOH7IsE3R7kSvvINB3StfD8yQJt6ttriwz7WJfYlI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoM90Xzpw5Bg31WRgpKUTYVyu4poUrLkBhuhSA4mNjSMckyS+MGw+dmd7XDoR1Lv/mn0Z7do7/lgUSbD88FESYpaYExBs8CZXTTv+8+iuOvTkSw5sXg7A4roqj41dibDneE5yJit2RB+oUp/GRpL7csURDty6GgQ1jCQubgZzXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from [2001:67c:370:1998:30cb:b625:4f9:61b4] (helo=alea)
-	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wmsTJ-00000003Wpj-3TtC;
-	Thu, 23 Jul 2026 14:24:18 +0200
-Received: from equinox by alea with local (Exim 4.99.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wmsRa-00000000Q2R-3GgV;
-	Thu, 23 Jul 2026 14:22:30 +0200
-From: David 'equinox' Lamparter <equinox@diac24.net>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	David 'equinox' Lamparter <equinox@diac24.net>
-Subject: [PATCH net-next v2 09/10] selftests: net: RFC6724 rule 5.5 tests
-Date: Thu, 23 Jul 2026 14:19:35 +0200
-Message-ID: <20260723122106.99772-10-equinox@diac24.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260723122106.99772-1-equinox@diac24.net>
-References: <20260723122106.99772-1-equinox@diac24.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B452D495518
+	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 12:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784809583; cv=pass; b=euVD+UG93uD7I4RnuFh6AnzUAFgB3Qx8b9R/GgCsMlpFioHOfkKPX2ywhyqGdZ6jC/RnL7Pc1OBETMRA5yYrn4MrtlimHT5nAYBU8rW3ErpV1KBcnq1K3EhxdI4135xtZGqXbbI2NR2Wy0+iUSN0MsDmTPBcAp+fR4mMNXQX89g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784809583; c=relaxed/simple;
+	bh=bm4DvitUdfbXcw1YiUDoIAk0s2etPbKEW6IUc3kOwkc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cdrUtDx9H7tFmUQhyy27g8Ri+Q05cXNpzDq6P5u2Klu0IzAA24oXA9FRUqE0xSccggNjRycZNi9e/buophAL/qbZ45d1CbfiZs3EZB3tg7l0zUPtvBMG8VESjjYGOx5nyjb33ytKATAWEj7Le0Ix86ahnjTM+5yKaBqLEozRuW8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCtYTs4d; arc=pass smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCtYTs4d"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-81ec29f1d07so4477077b3.1
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 05:26:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784809580; cv=none;
+        d=google.com; s=arc-20260327;
+        b=tCPq2+KlgSuFUvYOsMLRV3DzFrXD2DClD+HF6AUM+wlKRU0qvdPmIXY7oM+5BR/EoG
+         //V5iPT3uWd3F24O8vWGlz2Vk1OPAa3FChkJX5sz4O8Vo6ftPGRpPN56u5LByGa0kcaq
+         fVVLQ2lVEU15mBmpy+7WSC2lliFnAFMZ+Xvuee0y+8Azi1VXrz4SYy9vsp8mHbyhSZT9
+         p/rPlNJVKJLWMbgNHpmqqb6BY+lLGoCx0mpS5aDp4M73Q6jGhbwnwzIZQb9zxdguqXbP
+         +dNGK1iSn/JCD+SQn5OCpCr7Ki0w2+OMuRAjaI1pa45FCBM3GISPmmaqFOUN8sKr9k44
+         7zOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bm4DvitUdfbXcw1YiUDoIAk0s2etPbKEW6IUc3kOwkc=;
+        fh=GtZpi5K7EmB7w9JWx6jz3B3tKIXsp2huaan16/SltXU=;
+        b=brtgEVcOd7AceVQH9LJi1ILSQ9PYGJdfytpYpO3USmkZSAKJaQqtus9XR/ulJH7PsA
+         fDE8JD3PDE4wda9+0FfbGXM2gc8Sxxn3Aphgd8Zq5xFbcbTXCmTt6gkjJt/2DuuWEGFU
+         BQxDXd5ZXgplj5QmKQJBMdhsyklYnF4ddBurtphJbR8PDOpLYe7+eOAmy6kRrR1ln71/
+         HeNEoJRnO7+59axzdFvuppVGckKfsKhmfYFscGhJbDckA4YGKtzoMcX0NwkHWbf/Z1Mk
+         8PU6hTa0BudKHUkCD5jmFULIIVuEack4iF5XrJiUotc99XrhqHCi1Ni3yNAn9rlHlUxz
+         bS7w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784809580; x=1785414380; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bm4DvitUdfbXcw1YiUDoIAk0s2etPbKEW6IUc3kOwkc=;
+        b=RCtYTs4dydqp7Ui3YGAFQ3uRrrGuWMtq9BQOysBnJXJqr73M+WR/X9WSbUi5AoVl6N
+         9jTPT7mbRumCfhaw4uPEPPDTHHgAuzmZNaf3Q04wWrDND+fscj+3pDX7aJS78K66ljAf
+         9iPZewlW006qQUuEM99/qpI0tgrtr2ywAa54hOfQunnd+noq3SUOnj4EFHo7T0Xhy/n3
+         U2JH3g8YIy5KGwcGaF9PPTSWiTQekqfvih+gw2LfI9Qn5bqOA92LeZ0PZ9w6hHMbHYsU
+         ok6wANgIufHaA8Ol16+aeHgdg6NIo3YI71Ffxdjr6XjziCgKkKLjaw3VBl2q3ArtopHM
+         uemA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784809580; x=1785414380;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bm4DvitUdfbXcw1YiUDoIAk0s2etPbKEW6IUc3kOwkc=;
+        b=b5qZyHKbclZc+pTJlqmtC5RfeJVwerWQUh6PieuTc2ryYSlR10h1crkf5xwe7ojmqh
+         DC/OQdRIOxoivs28/Ia530PBwSOqXZImbK96v2foIZUF17fGmvHk/c8TafAjLbCR4av5
+         Zan1U8rgHY42lsyRcC8i6AfnOge4/EQvNg/b27EYIPq7hfOaPGTNm0+cyketLXDkkLiM
+         iyGvcLA+i5N+PS6pRD5HvqmQ9DToQ+7S2rDizXx0ja+XKMHPyCr9hsboiLbORyuYHjnE
+         sxK6VTB6aMyGrpphskEQqExO/zpAOi/xBCM7tAkv7JfxYlbgLQucli1zW/yP4zcmVsnB
+         Vgpw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7M7t/JyyTJSR/jWCQ+SIvmfKHRS7h5NlewOhFZhtWOw3SYj4dc1SgPNu6zNdQdRuNQsZ5G44=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUQV6oMug2gC3Hi3M+k8F/O+0DARErllV6bQCV4j/YmY/9Yp+O
+	I85U9WA80D8jlPQgR1VSfRzfbfW0cXQzWptIodVWmjJdntY/VW9jl6Y7OkhV+QtEm8yP9yK+JtM
+	foQniY6xsufXpu05a4qX3XcUR8gnU34E=
+X-Gm-Gg: AR+sD11PcZFnKprXbLc35rrgvouwNN7WLpQMA04K5bbGzI3k+NZbJsqY2fxexk+xF2F
+	PsDRtE+vcVcWkseoohjOP2YJkdeyo0PjrX2eQQBjzE64hOSc1wHu4SZT4mZwTIa/1vJd1V1Y40a
+	RYbHpPSW/UpZvy2pVOLPGs78+Unf/0dwRChfQ4IEoaofbnX632RykwL8p7ZQAwB7bM/oBS3PUs2
+	0BzYjT65Fwn4ZndDlo9cGuMcu9dRzJBk9L+CLrFVegPoYH1Nf1yvoOBZBjkkd1EOuZVJOh8ug==
+X-Received: by 2002:a05:690c:c4cd:b0:81e:69fe:a58a with SMTP id
+ 00721157ae682-81f4c3b05a1mr8095877b3.67.1784809580672; Thu, 23 Jul 2026
+ 05:26:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260722041326.75199-1-blbllhy@gmail.com> <amEBJTKhUJHaAsBG@devvm7509.cco0.facebook.com>
+ <amHuIvHN1zY4wYpt@boxer> <CAB8m9WjDoHb67ixPVs=6XgFfGP2D4kqM_SSUj5as=xegF63NMQ@mail.gmail.com>
+ <amIGs3ek+0vOp5cd@boxer>
+In-Reply-To: <amIGs3ek+0vOp5cd@boxer>
+From: Cen Zhang <blbllhy@gmail.com>
+Date: Thu, 23 Jul 2026 08:26:09 -0400
+X-Gm-Features: AUfX_my9rcfIsLY_uIDVhxM2dZNQpjWSfMOA2YXk4NqsAsUSFcmPLjtGDnliEA4
+Message-ID: <CAB8m9WjVdbq4Nr4poHZ6nP761rSFS8sQ=rYe1PNyEjS_u5sNtQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] xsk: reject undersized tx_metadata at runtime validation
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Stanislav Fomichev <sdf.kernel@gmail.com>, magnus.karlsson@intel.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
+	horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
+	tgopinath@linux.microsoft.com, kys@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
 
-This throws a couple of situations at the IPv6 source address selection
-logic, primarily to check that RFC6724 rule 5.5 is applied as expected.
-
-This requires `CONFIG_IPV6_SUBTREES=y`, so that's added to
-selftests/net/config.  (The patchset also changes the default on that,
-but arguably better to be explicit.)
-
-Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
----
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/config            |   1 +
- .../net/ipv6_saddr_rfc6724rule5p5.py          | 285 ++++++++++++++++++
- 3 files changed, 287 insertions(+)
- create mode 100755 tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py
-
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index ab890e6f79dd..07872f838c50 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -55,6 +55,7 @@ TEST_PROGS := \
- 	ipv6_flowlabel.sh \
- 	ipv6_force_forwarding.sh \
- 	ipv6_route_update_soft_lockup.sh \
-+	ipv6_saddr_rfc6724rule5p5.py \
- 	ipvtap_test.sh \
- 	l2_tos_ttl_inherit.sh \
- 	l2tp.sh \
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 96fffca6547c..cc9c0f38a9d1 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -50,6 +50,7 @@ CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_RPL_LWTUNNEL=y
- CONFIG_IPV6_SEG6_LWTUNNEL=y
- CONFIG_IPV6_SIT=y
-+CONFIG_IPV6_SUBTREES=y
- CONFIG_IPV6_VTI=y
- CONFIG_IPVLAN=m
- CONFIG_IPVTAP=m
-diff --git a/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py b/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py
-new file mode 100755
-index 000000000000..21dfffc750ad
---- /dev/null
-+++ b/tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py
-@@ -0,0 +1,285 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2023-2026  David 'equinox' Lamparter
-+"""
-+RFC 6724 (IPv6 source address selection) rule 5.5 tests
-+
-+For reference:
-+
-+   Rule 5.5: Prefer addresses in a prefix advertised by the next-hop.
-+   If SA or SA's prefix is assigned by the selected next-hop that will
-+   be used to send to D and SB or SB's prefix is assigned by a different
-+   next-hop, then prefer SA.  Similarly, if SB or SB's prefix is
-+   assigned by the next-hop that will be used to send to D and SA or
-+   SA's prefix is assigned by a different next-hop, then prefer SB.
-+
-+(and since it provides the "counterpoint":)
-+
-+   Rule 8: Use longest matching prefix.
-+   If CommonPrefixLen(SA, D) > CommonPrefixLen(SB, D), then prefer SA.
-+   Similarly, if CommonPrefixLen(SB, D) > CommonPrefixLen(SA, D), then
-+   prefer SB.
-+
-+Note rule 5.5 was originally optional but made mandatory by
-+draft-ietf-6man-rfc6724-update (which at the point of creation of this test
-+was already "done" at the IETF but waiting in the RFC editor queue due to a
-+blocking dependency.)
-+"""
-+
-+from socket import socket, AF_INET6, SOCK_DGRAM
-+from functools import wraps
-+from typing import Callable
-+
-+from lib.py import ksft_run, ksft_exit, ksft_eq
-+from lib.py import NetNS, NetNSEnter
-+from lib.py import ip
-+
-+
-+def select_addr(dest):
-+    """
-+    connect() + getsockname() to figure out what was selected as source address
-+    """
-+    sock = socket(AF_INET6, SOCK_DGRAM, 0)
-+    sock.connect((dest, 12345))
-+    return sock.getsockname()[0]
-+
-+
-+def in_netns(func: Callable[[], None]) -> Callable[[], None]:
-+    """
-+    python decorator to put test function in netns
-+    """
-+
-+    @wraps(func)
-+    def wrapped() -> None:
-+        with NetNS() as testns:
-+            with NetNSEnter(str(testns)):
-+                func()
-+
-+    return wrapped
-+
-+
-+@in_netns
-+def test_basic() -> None:
-+    """
-+    Simple & most common case for RFC6724 rule 5.5: multiple default routes
-+    """
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64   dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+    ip("-6 route add default via fe80::1 dev veth0 metric 100")
-+    ip("-6 route add default via fe80::2 dev veth0 metric 200")
-+    ip("-6 route add default from 2001:db8:10::/48   via fe80::1 dev veth0")
-+    ip("-6 route add default from 2001:db8:1000::/48 via fe80::2 dev veth0")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    # rule 8 would result in the use of the :1001: address, but rule 5.5 applies before.
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "rule 5.5 > rule 8")
-+
-+    ip("-6 route del default via fe80::1 dev veth0 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:1000::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:1000::1", "rule 5.5 > rule 8")
-+
-+
-+@in_netns
-+def test_nh_obj() -> None:
-+    """
-+    Same as above, but with nexthop objects for the default route
-+
-+    NB: The kernel doesn't currently allow nexthop objects for subtree routes.
-+    """
-+
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64   dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+
-+    # distinct nexthop objects are used, because what matters is the nexthop
-+    # itself, not the nexthop object.  To cover everything, make a group.
-+    ip("nexthop add id 101 via fe80::1 dev veth0")
-+    ip("nexthop add id 201 group 101")
-+    ip("nexthop add id 102 via fe80::2 dev veth0")
-+    ip("nexthop add id 202 group 102")
-+
-+    ip("-6 route add default nhid 201 metric 100")
-+    ip("-6 route add default nhid 202 metric 200")
-+    ip("-6 route add default from 2001:db8:10::/48   via fe80::1 dev veth0")
-+    ip("-6 route add default from 2001:db8:1000::/48 via fe80::2 dev veth0")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    # rule 8 would result in the use of the :1001: address, but rule 5.5 applies before.
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "rule 5.5 > rule 8")
-+
-+    ip("-6 route del default nhid 201 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:1000::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:1000::1", "rule 5.5 > rule 8")
-+
-+
-+@in_netns
-+def test_low_metric() -> None:
-+    """
-+    Check that subtree routes take effect even if they are higher metric
-+
-+    For checking that "router advertised prefix", metric is irrelevant.  It
-+    matters for the initial unspecific lookup to find a nexthop to begin with.
-+    (The later source address check lookup doesn't change the nexthop, i.e.
-+    the effects of metrics are already done.)
-+    """
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64   dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+    ip("-6 route add default via fe80::1 dev veth0 metric 100")
-+    ip("-6 route add default via fe80::2 dev veth0 metric 200")
-+    ip("-6 route add default from 2001:db8:10::/48   via fe80::1 dev veth0")
-+    ip("-6 route add default from 2001:db8:1000::/48 via fe80::2 dev veth0 metric 1000")
-+    ip("-6 route add default from 2001:db8:1000::/48 via fe80::3 dev veth0 metric 50")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    # rule 8 would result in the use of the :1001: address, but rule 5.5 applies before.
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "rule 5.5 > rule 8")
-+
-+    ip("-6 route del default via fe80::1 dev veth0 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:1000::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:1000::1", "rule 5.5 > rule 8")
-+
-+
-+@in_netns
-+def test_no_subtree() -> None:
-+    """
-+    Ensure that matching on a non-subtree route doesn't trigger rule 5.5
-+
-+    (This was non-obviously broken in earlier versions of the implementations,
-+    a non-subtree route would still match.  Make sure it doesn't break again.)
-+    """
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64 dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+    ip("-6 route add default via fe80::1 dev veth0 metric 100")
-+    ip("-6 route add default via fe80::2 dev veth0 metric 200")
-+    ip("-6 route add default from 2001:db8:10::/48 via fe80::1 dev veth0")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    ksft_eq(
-+        select_addr("2001:db8:1001::"),
-+        "2001:db8:10::1",
-+        "rule 5.5 > rule 8, ignoring non-SADR",
-+    )
-+
-+
-+@in_netns
-+def test_longer() -> None:
-+    """
-+    Check functionality for non-default destination.
-+
-+    This is expected to be very rare in actual practice, and doesn't do
-+    backtracking (also refer to kernel docs.)
-+    """
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64 dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+    ip("-6 route add default           via fe80::1 dev veth0 metric 100")
-+    ip("-6 route add 2001:db8:500::/48 via fe80::2 dev veth0 metric 100")
-+    ip("-6 route add default           from 2001:db8:10::/48   via fe80::1 dev veth0")
-+    ip("-6 route add 2001:db8:500::/48 from 2001:db8:1000::/48 via fe80::2 dev veth0")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:500::"), "2001:db8:1000::1", "rule 5.5")
-+    ksft_eq(select_addr("2001:db8:500:aaa::"), "2001:db8:1000::1", "rule 5.5")
-+
-+    ip("-6 route add 2001:db8:500:aaa::/64 via fe80::2 dev veth0 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:500::"), "2001:db8:1000::1", "rule 5.5")
-+    ksft_eq(select_addr("2001:db8:500:aaa::"), "2001:db8:10::1", "no backtracking")
-+
-+    ip("-6 route del 2001:db8:500::/48 from 2001:db8:1000::/48 via fe80::2 dev veth0")
-+    ip("-6 route add default           from 2001:db8:1000::/48 via fe80::2 dev veth0")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    ksft_eq(select_addr("2001:db8:500::"), "2001:db8:10::1", "no backtracking")
-+    ksft_eq(select_addr("2001:db8:500:aaa::"), "2001:db8:10::1", "no backtracking")
-+
-+
-+@in_netns
-+def test_multipath() -> None:
-+    """
-+    Test with an ECMP (but non-nexthop-object) dst-src route
-+
-+    Multiple nexthops for the non-subtree route can't make a difference since
-+    the rule 5.5 code is called with a dst, not a route.  Nexthop objects on
-+    subtree routes are rejected on (attempted) install by the kernel.
-+    """
-+    ip("link add type veth")
-+    ip("link set veth0 up")
-+    ip("link set veth1 up")
-+    ip("addr add 2001:db8:10::1/64   dev veth0 nodad")
-+    ip("addr add 2001:db8:1000::1/64 dev veth0 nodad")
-+    ip("-6 route add default via fe80::1 dev veth0 metric 100")
-+    ip("-6 route add default via fe80::2 dev veth0 metric 200")
-+    ip(
-+        "-6 route add default from 2001:db8:10::/48"
-+        + " nexthop via fe80::1 dev veth0"
-+        + " nexthop via fe80::101 dev veth0"
-+    )
-+    ip(
-+        "-6 route add default from 2001:db8:1000::/48"
-+        + " nexthop via fe80::2 dev veth0"
-+        + " nexthop via fe80::102 dev veth0"
-+    )
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "baseline pass")
-+    # rule 8 would result in the use of the :1001: address, but rule 5.5 applies before.
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "rule 5.5 > rule 8")
-+
-+    # flip order
-+    ip(
-+        "-6 route replace default from 2001:db8:10::/48"
-+        + " nexthop via fe80::101 dev veth0"
-+        + " nexthop via fe80::1 dev veth0"
-+    )
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "reorder")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "reorder, 5.5 > 8")
-+
-+    # try the other one
-+    ip("-6 route replace default via fe80::101 dev veth0 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:10::1", "other NH")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:10::1", "other NH, 5.5 > 8")
-+
-+    ip("-6 route del default via fe80::101 dev veth0 metric 100")
-+
-+    ksft_eq(select_addr("2001:db8:11::"), "2001:db8:1000::1", "delete/baseline")
-+    ksft_eq(select_addr("2001:db8:1001::"), "2001:db8:1000::1", "delete/5.5 > 8")
-+
-+
-+def main() -> None:
-+    """
-+    RFC6724 rule 5.5 test driver
-+    """
-+    ksft_run(
-+        [
-+            test_basic,
-+            test_nh_obj,
-+            test_low_metric,
-+            test_no_subtree,
-+            test_longer,
-+            test_multipath,
-+        ]
-+    )
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.53.0
-
+Not at all! Thanks for both your suggestion and Stanislav's rewrite!
