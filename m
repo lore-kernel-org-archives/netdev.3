@@ -1,139 +1,269 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF8E42AFB2
-	for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 14:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AC4335091;
+	Thu, 23 Jul 2026 14:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784815980; cv=none; b=ZkYMy1+8V5GkddBTOd4IUgfxpbbAMcnrPNCeRbK3j2xfSnpW05GombVdCo0TudLxxXs6x5HrW+9NCeq3k8Ypeh6exLKdhCcNvS8aNfJ+w4Nx2rrU4NNXidBeQsXJcnb9BsMoAwzgiWJKtFQQ+IptAjexUlgi4hFVYDx44eKE4J4=
+	t=1784816135; cv=none; b=hhtrvvpTqZ0kNVuAZjZdIvHAL8IaDIw/G1lxBQWPvC+QJXSnsz4ehGsaqibVH5fxIIG5h8qyhgw4FA6tWgDHXRXZXgFSFyUnSKIzMiMl1T0sTcZIK4GL+fW8tPMpG4m+GtwBXWsuJ3ZwzTww0PFMtQdNZ6DvpxNOngaR91MzMEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784815980; c=relaxed/simple;
-	bh=RvA1+CXHpz+XeH5m2e5ys4iiJ5g2DwMHECAho1Z6Bv4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XpGEy9e7A4rPUMPyd+7kBxmHn+ECJmq6dCvmvn2jVvUug+3T5u/aE30jConaVQM1VqV6PTDpH9f2dbpQ/oCXnyP1OU258Zy/8vutCSltQbJD3oCxiRdCCokMcGM16QTexTR8NColKewXRh7aoHVLdQbme8fpd2T9/h/E1sNJyHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8F/QHVl; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784816135; c=relaxed/simple;
+	bh=YBdMOKlaxYPP3hAbNP+AKxIXv6UQLudffOjgdGMDzEM=;
+	h=Message-ID:Content-Type:Mime-Version:Subject:From:In-Reply-To:
+	 Date:Cc:References:To; b=XVOYuSR3Ck/Pn2uns/CCBzDQowuhSUTdLTDm4HRd8Vyw7XS2OfrT54Ha/HOH6HNTG+/6ST+xzCHBZKPFCHVoq0BnFRc9hmTO8z6I+Gli/pI19BQ8vSWgxvGzfLT36F9NhMpqPtTGcUW+tWrkhv+JCh7lu2GgjXr1dxn5QlVGD0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name; spf=pass smtp.mailfrom=cyyself.name; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=TBJDJT0g; arc=none smtp.client-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8F/QHVl"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7e9f1f24cbcso421924a34.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 07:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784815974; x=1785420774; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yH40SRIUlQ4Wwh60WsdpxlUjQfkhuEARTuWzh2fWHOQ=;
-        b=b8F/QHVlz3TVaCE4QYV5oec/VDXr03F6Eu1/fpcovfcsdDUwEuPt8atnQb0Xb9SffT
-         49okZx/Njg1cx0vVHOwQpqdofE3HVTjBPb16lzMb2n/EdtbtXgi5vlBuOZigAJ/1mLEh
-         AipcKhT1ZVtq39zTPRz6ExYYNrsDFUcpeg+fuWK1NjtMlCamivJsGusESDvD33yzPLl+
-         W4Rbgpcn7xk2es7MGXvSW2TKTAQeC4Q8/ZetTwBBpdH/TkudNnnHCj0tqL0Kb8FTEirO
-         5KEZDofLuti0d89PPfVJSRep28FbQhnwUn6SLRR6Jfezzup6eF537jD80ltHUq9jVSx0
-         euBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784815974; x=1785420774;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yH40SRIUlQ4Wwh60WsdpxlUjQfkhuEARTuWzh2fWHOQ=;
-        b=BAHh8SVHfJmnCmzwRb8FmBNqjAxBM6nnAW4piqZiluNcZWqRCaNmz1cGiFDi4EXu1D
-         TPawVIGG85fL/j42yGNyJz2a36Gxq7Id1uSJ0FgGtfxGvSUKQ0YkJow0D0h/sIg2DoNM
-         gDX8KIGXgbP0LcBLXuL8QIXgeZvcKw3uMmxme+0nAcoZAK+uZ90/b1bO2RCAMRCMmYFn
-         An7HhOwPVCdUonpbvgPLdAxS7WxCV+FLHWPTTGjRwKQG5isajBWtXIDbTaZ+o94+r1PQ
-         faed9E4wyprdMQR4cbP6g9p/cvELjSpCkaROlGptWGegLlsH5/ZwJLb7ZB5VLropzq6e
-         6pTQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9KtMeS4pczNq80VeKfqC0yGVuFVZ68o7p0H0JE7r7wKK9q7CQU4PCXhsaK8l/XCbQZxgZyAM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ3oylevxAcjjWfehl+INRcOFuYW8A961kTQxBE1aVgwHhDAUm
-	ORweIAjZebo3ImO1DO7oVy5aQu0BFldAoohb9iL3CjlQgdkv9dUTJ0MN
-X-Gm-Gg: AR+sD12FJFR7hM9cT8sOTPIkc6294HGSfc8gdo1DX3yaigvoWybcSQZTzqBdh6chr+f
-	kUV8y6iw+Y4YN95yDA+GKoBL2r2L5+kZglk+TMOjveXNvVUfH6zBuzPYEGiDw5onRAq0rOctnhS
-	fvMt8y2oJehd1txQa/q0sU0Gh/o2UfBrDA7K6tFHEGryK2A0/1GWWrIj9g5DTpFsB6EcPlUrv3s
-	v78kPS0vSFfNeyA6MqtsRh2fQ3/mlYIYRDXuasKAQ+gi0H2E//K5h2SzXtJasn47wo4/qX7tbrn
-	nlVYFNbVITQ4AGodFZ7gkEQS2PIxxkKbqhYjFMGctlO+NA0fnD77Cw7p1FRTMfPM2gjvj4LnpCb
-	RIs8h8EaMlhf9pAWSToWEWB2ynodmVr7x22RqTcRzNxgiITIasVEjAK0E4CZeXZbaaqRlBGzaJi
-	r1MJudaP9pfPrYzMr7S3D9KrDrZUlk08PEITeXxBcRYXyVyxuaMw==
-X-Received: by 2002:a05:6830:1e8e:b0:7e9:e288:5d45 with SMTP id 46e09a7af769-7ee471e9725mr894527a34.18.1784815973643;
-        Thu, 23 Jul 2026 07:12:53 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c085:21e1::10db? ([2620:10d:c090:400::5:1ca2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ee2a03d316sm3740471a34.15.2026.07.23.07.12.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 07:12:53 -0700 (PDT)
-Message-ID: <dfb1615c-18b3-4d05-990a-7c4db3139524@gmail.com>
-Date: Thu, 23 Jul 2026 07:12:51 -0700
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="TBJDJT0g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1784816116; bh=m1fW/c2PDUMowmUABq2xRwXNu/N/GpGaTHQUB67TifI=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=TBJDJT0gKl3VohwW8rBYsSG0cP+YmYSu75Z8EZiPo8HtQ3FX/1BzMiRY0mJHgVL7v
+	 Ns3/AEZNFAcWxD8bVYTwDMlI1vGc97YWymGFKjewZvzmIc5SSj94NVsdLT384ttv9Z
+	 WwPd6qNanQ7A4g1UgwQCZiU6zwua6oLpqtAzyc/E=
+Received: from smtpclient.apple ([2408:8207:4821:550:885e:19b:2870:12b6])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 3CD3A8D6; Thu, 23 Jul 2026 22:15:13 +0800
+X-QQ-mid: xmsmtpt1784816113tqfnul1oe
+Message-ID: <tencent_0695E317AE6D8C40C848E31E1FB420937606@qq.com>
+X-QQ-XMAILINFO: OATpkVjS499umLBCGK89N7O1z6b2nDgRBsBxG2Zlai/ohwdiVzjDtoFAtCyHys
+	 i6Pml8Thy/69RWMwELyGEY/6pBCYjebdcXc3M9451Qiq4+MjZbcGrJ2iREHUxLZgtPfsmE+3CbaJ
+	 +sWhwBKeOyTlNCdm3vOvv2pJC6U6FuPEaeHE8NWuXjNkScx37cJCGcZH+yxSSW9FY/NE73o7/8JB
+	 pAghryQj8vm+ZNioDhuk3d3L32uAqQHuNnlEoDsI6+/sHLdk22zCk8WWyBbNooMDUA1F3KwSbFNQ
+	 tTV793Dnq/9aHvELBSBLhvy1e8JGlBeCntChcVYG5lVN+IS5/5XhT/T2T6aykdXtRPrmpVzlk6oj
+	 oBSRHVY79nvzs6EGOCyRbH614gf2Hjbync9snrkSDtsw1COSWErI5pYEmPEKTqNS7JkiXGKwDvWP
+	 N0EBjiYoztuNmli318e1lVfV8Ei8Bnqd+C2lkDlv3ZOixSFKZg8ahlRxpUoBT2DZUYS0O6hskv0D
+	 QQkq7R4Dzz47PqHWHFZ4f1NjbUi0YneDOhbMxfelajIoMeY2q9XJMAm6npnE+JD9Stcnkdke0hMY
+	 9lxQEALMxVpJcEuO0Cf3nZHRFgmJHMJ2yy5wi3mK5PCTpkBIqaxMhfrS18SwPPO4vtyQKWfmRAyo
+	 G3SZh8a7/A+ZIayQE023n9DbuFgxuUQN1IUvEpxYSP7KPNFyj8K8t+NnmGr1lkyrlHNMkSLqaS+T
+	 mP/QyTH/gtGNb/IxnbarSvu9Hw4U3xTy3pNaRvuk2Y/7DnouzMZxxXSq7PU/fZ+aUu2Ip+nr70iD
+	 NF5LQGUacKxIxZoSKdhayqAwSsOXYU8NytHzfDgT3NEBQZF4bRRq9Aoe0bymaen99B0J9dWkveAQ
+	 C2odT1o9xnlG8BCKtCRGU7z14YVR+2syNLV89GGzthVGvvcVDCgOFDCBT1IX5JYzUldQJ1L1AAy2
+	 DDVMfUhfKsXQ+ttk8X2Y+ToXd8o9ssHjTyqmQrFaJ4E8RLiXbj3P8CBRBrcJGQNJ3EdFElayNVLH
+	 rG2NK755vkCi53VximoeuC7z1RYJlfg5TWfJ28gTNCFnK5oZQFA7t3SlBxadQVZOF9RyrhDoXbC8
+	 f5D0ZF7OXqt+WOGRs=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/7] hardware pacing offload
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
- Willem de Bruijn <willemb@google.com>
-References: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20260722204454.3234605-1-willemdebruijn.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net-next 1/2] net: atlantic: free stranded TX buffers on
+ ring deinit
+From: Yangyu Chen <cyy@cyyself.name>
+In-Reply-To: <CAHS8izPBvv4ENCcnSpsbcL9+TEMj9nBE6CAj4fg9_aDBdhrBaQ@mail.gmail.com>
+Date: Thu, 23 Jul 2026 22:15:02 +0800
+Cc: Sukhdeep Singh <sukhdeeps@marvell.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org,
+ bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Content-Transfer-Encoding: quoted-printable
+X-OQ-MSGID: <D1E4B33D-35C7-4F10-A04E-D56A68FA11BC@cyyself.name>
+References: <tencent_7DB01BE7F8FA056BB5F11D3570CF636C4309@qq.com>
+ <tencent_8FE30FDFA32089B69BA3112E4A4C5E886D06@qq.com>
+ <CAHS8izPBvv4ENCcnSpsbcL9+TEMj9nBE6CAj4fg9_aDBdhrBaQ@mail.gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
 
 
 
-On 7/22/26 1:43 PM, Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
-> 
-> Enable safe hardware pacing offload on a first device (idpf), plus support.
-> 
-> - Add ethtool support for admin control over the device feature
-> - Add device support to the idpf driver
-> 
-> Besides the main feature, also
-> 
-> - Small optimization to FQ offload: avoid unnecessary ktime_.._get().
-> - Expand so_txtime drv-net test with hw offload testcases.
-> - Expand pktgen with txtime feature.
-> 
-> Details in the individual patches.
+> On 23 Jul 2026, at 02:29, Mina Almasry <almasrymina@google.com> wrote:
+>=20
+> On Thu, Jul 9, 2026 at 10:41=E2=80=AFAM Yangyu Chen <cyy@cyyself.name> =
+wrote:
+>>=20
+>> aq_vec_deinit() drains the TX rings with a single aq_ring_tx_clean()
+>> call, which frees at most AQ_CFG_TX_CLEAN_BUDGET (256) descriptors =
+and
+>> stops at hw_head, which no longer moves once aq_vec_stop() has =
+stopped
+>> the hardware and NAPI. Completed descriptors beyond the budget and
+>> everything still posted in [hw_head, sw_tail) keep their skb or
+>> xdp_frame when the interface goes down: aq_vec_ring_free() then frees
+>> the buffer ring and the references are lost for good.
+>>=20
+>> Today this is a silent memory leak on every interface down under
+>> TX/XDP_TX load. With the following conversion of the RX path to
+>> page_pool it becomes much more visible: XDP_TX frames carry fragment
+>> references on the RX ring's page_pool, so a single stranded frame
+>> keeps the pool's inflight count above zero forever. =
+page_pool_destroy()
+>> then never completes, the pool is leaked together with its pages, and
+>> "page_pool_release_retry() stalled pool shutdown" is warned every 60
+>> seconds from that point on, on every ifdown, XDP detach or ring =
+resize
+>> under XDP_TX load.
+>>=20
+>> Bring back aq_ring_tx_deinit() as it was before the removal and use =
+it
+>> for teardown again, with one extension: TX rings can hold xdp_frames
+>> nowadays, so release those too. They are returned with
+>> xdp_return_frame() since this runs in process context.
+>>=20
+>> Fixes: eb36bedf28be ("net: aquantia: remove function =
+aq_ring_tx_deinit")
+>> Assisted-by: Claude:claude-fable-5
+>> Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+>=20
+> Looks fine as far as I can tell, but don't you want this sent to net =
+as a fix?
+>=20
+>> ---
+>>=20
+>> Notes:
+>>    Without this fix, converting the RX path to page_pool (next patch)
+>>    turns the stranded XDP_TX frames into leaked page_pool fragments, =
+so
+>>    page_pool_destroy() can never drain and the shutdown stalls =
+forever.
+>>=20
+>>    Reproduced on an AQC100 with this patch dropped from the series =
+(i.e.
+>>    page_pool applied without the tx-deinit fix):
+>>=20
+>>      # reflect received frames back out through XDP_TX
+>>      xdp-bench tx enp99s0                    # or any trivial XDP_TX =
+prog
+>>      # from a peer on the same link, flood RX so frames are in =
+flight, then
+>>      ip link set enp99s0 down
+>>=20
+>>    The pool is destroyed with frames still stranded on the TX ring, =
+and
+>>    page_pool_release_retry() warns every 60s with the same id and =
+inflight
+>>    count and a growing age, indefinitely:
+>>=20
+>>      [161110.753385] page_pool_release_retry() stalled pool shutdown: =
+id 361, 12 inflight 60 sec
+>>      [161171.170756] page_pool_release_retry() stalled pool shutdown: =
+id 361, 12 inflight 120 sec
+>>      [161231.588685] page_pool_release_retry() stalled pool shutdown: =
+id 361, 12 inflight 181 sec
+>>      [161292.005886] page_pool_release_retry() stalled pool shutdown: =
+id 361, 12 inflight 241 sec
+>>=20
+>>    With this patch the stranded buffers are freed at deinit, inflight
+>>    drops to zero and the pool drains cleanly.
+>>=20
+>> .../net/ethernet/aquantia/atlantic/aq_ring.c  | 30 =
++++++++++++++++++++
+>> .../net/ethernet/aquantia/atlantic/aq_ring.h  |  1 +
+>> .../net/ethernet/aquantia/atlantic/aq_vec.c   |  2 +-
+>> 3 files changed, 32 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c =
+b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+>> index 8ff07de2bd52..c59b6c0b37f1 100644
+>> --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+>> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+>> @@ -360,6 +360,36 @@ bool aq_ring_tx_clean(struct aq_ring_s *self)
+>>        return !!budget;
+>> }
+>>=20
+>> +void aq_ring_tx_deinit(struct aq_ring_s *self)
+>> +{
+>> +       if (!self)
+>> +               goto err_exit;
+>=20
+> return; here and delete label?
 
-Hi Willem,
-Thanks for this. It'll definitely be useful for other drivers with 
-native device EDT support. I left a few minor comments on the individual 
-patches.
-> 
-> v1: https://lore.kernel.org/netdev/20260706133433.3142805-1-willemdebruijn.kernel@gmail.com/
-> 
-> Willem de Bruijn (7):
->    net: ethtool: add hardware pacing offload support to rings
->    net_sched: sch_fq: clear past skb->tstamp if offloading pacing
->    idpf: support pacing offload
->    selftests: drv-net: refactor so_txtime errqueue handling
->    selftests: drv-net: in so_txtime tell apart sw from hw pacing
->    selftests: drv-net: extend so_txtime with hw offload
->    net: pktgen: add support for SO_TXTIME
-> 
->   Documentation/netlink/specs/ethtool.yaml      |   6 +
->   .../networking/net_cachelines/net_device.rst  |   3 +-
->   .../net/ethernet/intel/idpf/idpf_ethtool.c    |   3 +-
->   drivers/net/ethernet/intel/idpf/idpf_lib.c    |   5 +
->   drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  65 +++++++-
->   drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   2 +
->   include/linux/ethtool.h                       |   6 +
->   include/linux/netdevice.h                     |   6 +-
->   .../uapi/linux/ethtool_netlink_generated.h    |   2 +
->   net/core/pktgen.c                             |  93 ++++++++++-
->   net/core/rtnetlink.c                          |   2 +-
->   net/ethtool/common.c                          |   3 +
->   net/ethtool/netlink.h                         |   2 +-
->   net/ethtool/rings.c                           |  30 +++-
->   net/sched/sch_fq.c                            |  21 ++-
->   tools/testing/selftests/drivers/net/settings  |   1 +
->   .../testing/selftests/drivers/net/so_txtime.c | 147 +++++++++++++-----
->   .../selftests/drivers/net/so_txtime.py        |  72 ++++++++-
->   18 files changed, 408 insertions(+), 61 deletions(-)
->   create mode 100644 tools/testing/selftests/drivers/net/settings
-> 
+Maybe I can change it in the next revision.I would this fixes to be more =
+like a revert of commit eb36bedf28be
+("net: aquantia: remove function aq_ring_tx_deinit"), so I would
+like to keep that.
+
+Maybe I can change it in the next revision.
+
+Thanks,
+Yangyu Chen
+
+>=20
+>> +
+>> +       for (; self->sw_head !=3D self->sw_tail;
+>> +               self->sw_head =3D aq_ring_next_dx(self, =
+self->sw_head)) {
+>> +               struct aq_ring_buff_s *buff =3D =
+&self->buff_ring[self->sw_head];
+>> +               struct device *ndev =3D aq_nic_get_dev(self->aq_nic);
+>> +
+>> +               if (likely(buff->is_mapped)) {
+>> +                       if (unlikely(buff->is_sop)) {
+>> +                               dma_unmap_single(ndev, buff->pa, =
+buff->len,
+>> +                                                DMA_TO_DEVICE);
+>> +                       } else {
+>> +                               dma_unmap_page(ndev, buff->pa, =
+buff->len,
+>> +                                              DMA_TO_DEVICE);
+>> +                       }
+>=20
+> I would remove the unlikelys that seem unnecassry to me. This is a
+> reconfig path and the unlikely is probably not improving perf.
+>=20
+>> +               }
+>> +
+>> +               if (unlikely(buff->is_eop)) {
+>> +                       if (buff->skb)
+>> +                               dev_kfree_skb_any(buff->skb);
+>> +                       else if (buff->xdpf)
+>> +                               xdp_return_frame(buff->xdpf);
+>> +               }
+>> +       }
+>> +err_exit:;
+>> +}
+>> +
+>> static void aq_rx_checksum(struct aq_ring_s *self,
+>>                           struct aq_ring_buff_s *buff,
+>>                           struct sk_buff *skb)
+>> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h =
+b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+>> index a70b880ada67..6431cc62962f 100644
+>> --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+>> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+>> @@ -202,6 +202,7 @@ void aq_ring_update_queue_state(struct aq_ring_s =
+*ring);
+>> void aq_ring_queue_wake(struct aq_ring_s *ring);
+>> void aq_ring_queue_stop(struct aq_ring_s *ring);
+>> bool aq_ring_tx_clean(struct aq_ring_s *self);
+>> +void aq_ring_tx_deinit(struct aq_ring_s *self);
+>> int aq_xdp_xmit(struct net_device *dev, int num_frames,
+>>                struct xdp_frame **frames, u32 flags);
+>> int aq_ring_rx_clean(struct aq_ring_s *self,
+>> diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c =
+b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+>> index 2f9033ceed8c..05814fea0f5f 100644
+>> --- a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+>> +++ b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+>> @@ -275,7 +275,7 @@ void aq_vec_deinit(struct aq_vec_s *self)
+>>=20
+>>        for (i =3D 0U; self->tx_rings > i; ++i) {
+>>                ring =3D self->ring[i];
+>> -               aq_ring_tx_clean(&ring[AQ_VEC_TX_ID]);
+>> +               aq_ring_tx_deinit(&ring[AQ_VEC_TX_ID]);
+>>                aq_ring_rx_deinit(&ring[AQ_VEC_RX_ID]);
+>>        }
+>>=20
+>> --
+>> 2.47.3
+>>=20
+>>=20
+>=20
+>=20
+> --=20
+> Thanks,
+> Mina
+
 
