@@ -1,205 +1,146 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B3F3AF65C
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6A219E8;
+	Fri, 24 Jul 2026 09:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884301; cv=none; b=EanBobtMFwrIP/q4ej9G0HZx74p2sCC7V2nbkwdENWlLXuXAbECz+0Y99OVAbs4+SmJLdGUwL20/uBzGg3TNM3pHoTnGkosIXMq4Dw9jRnbXMsJLREQiL2/6sD9HXdgxJV5t8ezcUFCdSatR+qbb6a/glN1Cz50pZboSdnOUc44=
+	t=1784884429; cv=none; b=HJLA2OzpAyyWYAmwANZ275nyBsWHJWYu0sPp2QgrULCBAi5MnwAnzAiqQDA+OcwfCyZ7aEPCH+aDiUk5ZsL/+8atyPAkF4mL88XuDwSul6+UcFu6qFNDZh6JVmmh7goeHkxql9fsQvfJVxWx6IJ9LJLEnwFccRjTA5Yv+XJJN5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884301; c=relaxed/simple;
-	bh=n13yysFJZCNEaNkwoIHZqoISKfk+9d7PvnkHCq6VVPA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Ql5a9Im2gbzOBTeuVp9OSlAaCDwbyxhcPjiyh/qe2GWEAA7xE+kZx8cVapTN5UV30HGOPNJT3nhYxLTi0EBGdbGbZeNlM+78GLmBiYZ25LllsZ6lbWtcCg18fL+9tY7DNk1OYmw7G6xM+aOjw+BnRqHrkoRJ//3wdAgvH+pRESk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fU4KcK1W; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1784884429; c=relaxed/simple;
+	bh=xPqEUlhl5C0cCNg0yKKCZmDA5P5Yr//ZhyIW8a7sCOM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b2HaigEoyPUapi7d34W88+mS7B+udHPvl+zlP7kRu00uSQ0IbENlBKYMCNAzs2JivnWf4LKztDgywMfMLI9+2W3pJHdOS7XvvafIhlhbr5O71Js1HEJ2hVcEBj1Kjs1PXo73aqX2X/th0eEsO2GzJLdMEIktt4IjuAKxEFm2jOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Y0aDlGFr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fU4KcK1W"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93106d8affcso12540385a.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 02:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784884299; x=1785489099; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VQBmjGLGwetCcn/UWfIY4WLCBP7RfOT4Cbb4+INMfl0=;
-        b=fU4KcK1WrIMnOXLNDgCOzpChuFo+QMDd0w8jxxPETsz2G2Phlestux5kqQSBKIXkh0
-         MCtXxICNoYX75NMjZZ2s9L/woEB4WWh+J06Zk6QSmwrEhlHr7El1HAfkujSg1VAx0Ghk
-         laZLINWLi1fcrap3PU8qvrjt2Je4daAg9eyhdbk6pLi9X/TFOCTitGewkEtXe1+Gkdab
-         HfxaVeOYkTCaf/NsZitbxNZz7GaMHsP3v7iOLCbQsqwmzZrsQkBO6TL6yKJGSs+atCda
-         t2vm1e8xDvROeovIGt0AZYl8MwfgVOWYOkNmVNaTXQWf+Fh00TYsYvk+C8swjM2t0+4q
-         KYOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784884299; x=1785489099;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VQBmjGLGwetCcn/UWfIY4WLCBP7RfOT4Cbb4+INMfl0=;
-        b=iid4fL42WB6uLgz/3MHh3M1X5zyk0d++/adct/ElZDGaEcakUQuaR+l4UVOOmdls98
-         3oHKWOMXZZ5MfSzz77XqKUpU3exahTLmomtvJ821ld3GOmCesirVxmN3ndXnOdnVapl+
-         BPVWhY7LPKzQtpV0+f7T5G56QnvBiFvQ3+CgwHyagWJfQZRefC0MOpHGGLmEi4bWunpk
-         zTRIpQ0X3TXfGcByVQof8Fpp1/8wc8mLly6p3NNNXFF1Nc+z8M190xqIXMxm+XdgzSNe
-         yg2ngc9Qaa9tDyG9Cg5ZIRiDVylbxKATFmvtb6OTVFPYwrSxFu34aEnDr68s4bQjYx9E
-         jfYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq96+aoflYcYawma7CnOnZZyQGFhMavu43ScJQ3lv809ltLVEt08j0fYtVMp36ss1WTeYP28kc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUpTItekhyDB3mYffs3gckqFLkCxENeCHu7EupRfc9clSOSbsP
-	oGkLMEe1n7NjMq7R9Hd1v5goPUzp7edsPomlLLCDa4gbjI1k12fWxQrP4E5fn38WBxQa7hgK+OK
-	NL5vAXRB2bOQEMg==
-X-Received: from qknqk11.prod.google.com ([2002:a05:620a:888b:b0:92e:5f54:20e9])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:c4d:b0:92e:fd2c:6a26 with SMTP id af79cd13be357-931035f924cmr650654985a.24.1784884298250;
- Fri, 24 Jul 2026 02:11:38 -0700 (PDT)
-Date: Fri, 24 Jul 2026 09:11:37 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Y0aDlGFr"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O5Bwqu825908;
+	Fri, 24 Jul 2026 09:13:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=dcRpZN
+	ZzzQYNt7v2OyE5mClrIoIErcJsGVKfnBbyR2w=; b=Y0aDlGFrLiOfOccfB3ZNuQ
+	bZSDQZns6NlzaJBadW8b7ck4zc6Qb40bJU9DzjXHbtySgolWVTlkY4/FAvpoqhY6
+	9DmCYVCDgWnolVyU0ERkGp8jI0sN5vSJhv+15wNyjPqhRvep9AogjIFD9teHZtII
+	EVYInBaO1kC/m8YsraCLHZNs3LCbNNdxRQ8+4pSBkxD/PfCz4lDcuipl4J2gB0sJ
+	oebbNt41XXZM2ILLjGYKpLczM1M07hwTKJeTWmwT1XhVM177sxZTHiEp6UyMrzqB
+	WLK5zAhob2f6D/3RbgjcqEGebOjZM7K34+fDW8krRJUmt4qrsxnyWgajE+06oLfA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77kkasa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 09:13:39 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66O94fsg012366;
+	Fri, 24 Jul 2026 09:13:38 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahg6mp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 09:13:38 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66O9DYXW50069990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 09:13:34 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C8B73201CB;
+	Fri, 24 Jul 2026 09:13:34 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 93436201C7;
+	Fri, 24 Jul 2026 09:13:31 +0000 (GMT)
+Received: from [9.123.3.72] (unknown [9.123.3.72])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jul 2026 09:13:31 +0000 (GMT)
+Message-ID: <28831f1e-b138-42d3-8566-23e5f603567d@linux.ibm.com>
+Date: Fri, 24 Jul 2026 14:43:30 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260724091137.1792543-1-edumazet@google.com>
-Subject: [PATCH net] net: udp_tunnel: fix memory leak in udp_tunnel_nic_unregister()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+eca845fb8c18dd6b44c1@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] MAINTAINERS: Update SHARED MEMORY
+ COMMUNICATIONS (SMC) maintainer entries
+To: Wenjia Zhang <wenjia@linux.ibm.com>, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>, aswin@linux.ibm.com,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>
+References: <20260724053752.3084-1-wenjia@linux.ibm.com>
+Content-Language: en-US
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <20260724053752.3084-1-wenjia@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a632cc3 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=SRrdq9N9AAAA:8 a=VwQbUJbxAAAA:8 a=Iqf_Y9A1iTEqXqYGlk4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX2GOX7ZgOyaop
+ AIPCn4b8ed2nSxu3xXfBacX4I6sgSlpeeR16vjBjFRxmLvg2hNcHHZ/t9Bks9ufDiRiItC8R/T+
+ TAodFv00c1DdwHIyyemtU7GZf4nzEXOzW8X5VNKOnxabsZ1YYpIIyZK3QUnPZ5AalCqCb0IeyJ2
+ 4e4yT3EiWHgiVYYExfCOibSQrVndCBZWlc0HZyHSR5kfZWypIn/K0L5GQp1kU5dEcEnW5ED4kZT
+ 39KqKnHy2A59F8/gKuS3tdQ9/HBoIsqjD9LBVCphED4x7Ya1JlbLTDUmXm7bAHXYS9Q+BIWYk5s
+ iRri2EFvMCfl1EmXZ4m24TcBNdaeDlmJ5FES0fTziM6icgsDRIqlEYH6/e7genpDgOtO/KMSyJN
+ D7s5vnSmBaAXyg5uUpARHqGES9Lq9fhH+LULgl0i53P33N2aq/3EV65od9q8F0GZAKAPiU9fn83
+ 9IAIZK99tdYXADroXng==
+X-Proofpoint-ORIG-GUID: uFeaP31iR2AcoBSKxn-3kQkmR0NrItHU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX5UNdovSXBwSC
+ bQ1F96uLKI7JvMAOwL7t1+DJP22rRBHAndGrtNymoMD3CPYpkpWppD8dan5+8WY1bFMB0MlQsow
+ RAey6TVcOQ77jfAnFPYYue9KAOlTOBg=
+X-Proofpoint-GUID: _flJAMVD2a0TeQ75C9yqUoVncj5b6q0Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 clxscore=1011 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607240083
 
-syzbot reported a memory leak [1] in the UDP tunnel NIC offload code.
 
-When device registration fails (e.g. in register_netdevice()), netdev core
-unwinds by sending a single NETDEV_UNREGISTER notification. If work was queued
-during NETDEV_REGISTER (utn->work_pending is set), udp_tunnel_nic_unregister()
-returns early:
 
-	if (utn->work_pending)
-		return;
+On 24/07/26 11:07 am, Wenjia Zhang wrote:
+> Due to a change in responsibilities, I can no longer serve as an SMC
+> maintainer and need to be removed from the MAINTAINERS list.
+> 
+> To reflect these organizational changes, promote Mahanta Jambigi
+> <mjambigi@linux.ibm.com> from reviewer to maintainer.
+> 
+> Acked-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+> Signed-off-by: Wenjia Zhang <wenjia@linux.ibm.com>
+> ---
+>  MAINTAINERS | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ff93f3954fd1..031db6fa5522 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24632,8 +24632,7 @@ SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS
+>  M:	D. Wythe <alibuda@linux.alibaba.com>
+>  M:	Dust Li <dust.li@linux.alibaba.com>
+>  M:	Sidraya Jayagond <sidraya@linux.ibm.com>
+> -M:	Wenjia Zhang <wenjia@linux.ibm.com>
+> -R:	Mahanta Jambigi <mjambigi@linux.ibm.com>
+> +M:	Mahanta Jambigi <mjambigi@linux.ibm.com>
+>  R:	Tony Lu <tonylu@linux.alibaba.com>
+>  R:	Wen Gu <guwen@linux.alibaba.com>
+>  L:	linux-rdma@vger.kernel.org
 
-Because failed registrations do not enter netdev_wait_allrefs_any(), no
-subsequent NETDEV_UNREGISTER rebroadcast will ever occur. As a result, the
-struct udp_tunnel_nic allocated in udp_tunnel_nic_alloc() is leaked
-permanently.
-
-Fix this by removing the early return. Instead, synchronously cancel any
-pending work with cancel_delayed_work_sync() before freeing @utn.
-
-To be able to call cancel_delayed_work_sync() while holding RTNL (the work also
-needs RTNL), switch udp_tunnel_nic_device_sync_work() to rtnl_trylock(). If RTNL
-is contended, requeue the work with a 1 jiffy delay (via queue_delayed_work())
-to prevent high CPU contention while waiting for RTNL lock.
-
-The utn->work_pending bookkeeping is no longer needed and is removed, as
-the workqueue core already tracks the pending/running state of the work.
-
-[1]
-BUG: memory leak
-unreferenced object 0xffff888127d5f840 (size 96):
-  comm "syz-executor", pid 5806, jiffies 4294942188
-  backtrace (crc 99fdb6c8):
-    __kmalloc_noprof+0x3bf/0x550
-    udp_tunnel_nic_alloc net/ipv4/udp_tunnel_nic.c:756 [inline]
-    udp_tunnel_nic_register net/ipv4/udp_tunnel_nic.c:833 [inline]
-    udp_tunnel_nic_netdevice_event+0x804/0xab0 net/ipv4/udp_tunnel_nic.c:931
-    notifier_call_chain+0x59/0x160 kernel/notifier.c:85
-    call_netdevice_notifiers_info+0x7d/0xb0 net/core/dev.c:2250
-    register_netdevice+0xc10/0xeb0 net/core/dev.c:11478
-
-Fixes: cc4e3835eff4 ("udp_tunnel: add central NIC RX port offload infrastructure")
-Reported-by: syzbot+eca845fb8c18dd6b44c1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a632b15.dde6c935.cf6c8.0011.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/udp_tunnel_nic.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
-
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index 3b32a0afa9798d3c416d9ae570e6d529f70e6697..53a1a9c1f8bff01674481e8d88238f2af61d8bb1 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -32,13 +32,12 @@ struct udp_tunnel_nic_table_entry {
-  * @lock:	protects all fields
-  * @need_sync:	at least one port start changed
-  * @need_replay: space was freed, we need a replay of all ports
-- * @work_pending: @work is currently scheduled
-  * @n_tables:	number of tables under @entries
-  * @missed:	bitmap of tables which overflown
-  * @entries:	table of tables of ports currently offloaded
-  */
- struct udp_tunnel_nic {
--	struct work_struct work;
-+	struct delayed_work work;
- 
- 	struct net_device *dev;
- 
-@@ -46,7 +45,6 @@ struct udp_tunnel_nic {
- 
- 	u8 need_sync:1;
- 	u8 need_replay:1;
--	u8 work_pending:1;
- 
- 	unsigned int n_tables;
- 	unsigned long missed;
-@@ -301,11 +299,10 @@ __udp_tunnel_nic_device_sync(struct net_device *dev, struct udp_tunnel_nic *utn)
- static void
- udp_tunnel_nic_device_sync(struct net_device *dev, struct udp_tunnel_nic *utn)
- {
--	if (!utn->need_sync || utn->work_pending)
-+	if (!utn->need_sync)
- 		return;
- 
--	queue_work(udp_tunnel_nic_workqueue, &utn->work);
--	utn->work_pending = 1;
-+	queue_delayed_work(udp_tunnel_nic_workqueue, &utn->work, 0);
- }
- 
- static bool
-@@ -731,12 +728,17 @@ udp_tunnel_nic_replay(struct net_device *dev, struct udp_tunnel_nic *utn)
- static void udp_tunnel_nic_device_sync_work(struct work_struct *work)
- {
- 	struct udp_tunnel_nic *utn =
--		container_of(work, struct udp_tunnel_nic, work);
-+		container_of(work, struct udp_tunnel_nic, work.work);
- 
--	rtnl_lock();
-+	/* We cannot block on RTNL here, otherwise we would deadlock with
-+	 * udp_tunnel_nic_unregister() calling cancel_delayed_work_sync()
-+	 * while holding RTNL. Requeue with 1 jiffy delay if RTNL is contended.
-+	 */
-+	if (!rtnl_trylock()) {
-+		queue_delayed_work(udp_tunnel_nic_workqueue, &utn->work, 1);
-+		return;
-+	}
- 	mutex_lock(&utn->lock);
--
--	utn->work_pending = 0;
- 	__udp_tunnel_nic_device_sync(utn->dev, utn);
- 
- 	if (utn->need_replay)
-@@ -757,7 +759,7 @@ udp_tunnel_nic_alloc(const struct udp_tunnel_nic_info *info,
- 	if (!utn)
- 		return NULL;
- 	utn->n_tables = n_tables;
--	INIT_WORK(&utn->work, udp_tunnel_nic_device_sync_work);
-+	INIT_DELAYED_WORK(&utn->work, udp_tunnel_nic_device_sync_work);
- 	mutex_init(&utn->lock);
- 
- 	for (i = 0; i < n_tables; i++) {
-@@ -901,11 +903,11 @@ udp_tunnel_nic_unregister(struct net_device *dev, struct udp_tunnel_nic *utn)
- 	udp_tunnel_nic_flush(dev, utn);
- 	udp_tunnel_nic_unlock(dev);
- 
--	/* Wait for the work to be done using the state, netdev core will
--	 * retry unregister until we give up our reference on this device.
-+	/* Make sure no work is running or queued before freeing @utn.
-+	 * The work handler uses rtnl_trylock(), so it will not deadlock
-+	 * against the RTNL we are holding here.
- 	 */
--	if (utn->work_pending)
--		return;
-+	cancel_delayed_work_sync(&utn->work);
- 
- 	udp_tunnel_nic_free(utn);
- release_dev:
--- 
-2.55.0.229.g6434b31f56-goog
-
+Thank you Wenjia.
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
