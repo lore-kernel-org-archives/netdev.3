@@ -1,139 +1,169 @@
-Received: from mail-oi1-f208.google.com (mail-oi1-f208.google.com [209.85.167.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE243F2109
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893483D88F0;
+	Fri, 24 Jul 2026 09:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784883996; cv=none; b=Xf7pyjpbYWhq+Bw6QgfN6yLgYK/gCP3tS9vopGWYzEIj4OicMqdwnIfF4/MEDIj2HC1P9Kmc3tKoXXND8NHsg7H84f6sPLjrvz6XG3WRVCE7f3i8vC60atj4Ynl+WOG25DYQCdITag3SAXK+71YBSHYcnYQvGGr1Lo/oPwrIic0=
+	t=1784884123; cv=none; b=FZ6SCtzfpAvcqBnC88MxpnhZosYDJV1vjseRmSpePtlL7bLrS/pLccyWQF/TXc8ti0JlTIlPhjzG8M2CYdRxpOfkpJYkL1yuNFzd6UO32z5NzMgUhLuJuMIUp3lfLXiwKDhhjuGioPa3IknY84eby927ur2uqjtPINvZKEuBLRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784883996; c=relaxed/simple;
-	bh=q8JUQtwmBkGdzP9AVqFrRwWEEAzEdUBfHebz4tNgDZ4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=bM0ggHAvJgFMzLvfzdW/6SW6p1SyAXboK0PvyqXAXBUyfEAxuajRNMUt6twpOltyEKlyZcdrkW4hBAqmu9IS7Geu2ew4wd0lhG71Pl4N4xFybHGNMB0fQcN3py1Af/EpnoQCwEeMpdeY0qS3WMqJwv47P7RagtvN2e5iAPCGnHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f208.google.com with SMTP id 5614622812f47-4a485034d01so239978b6e.3
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 02:06:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784883989; x=1785488789;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UEEVDgpXsiLEBvWS6Q+gjpqzJEU1dEip0c1iKH1l8Tk=;
-        b=dISXB748gugNiI2h+tqewzp6TtjqjzrCYN2Ghy1EJUtZYofVQ733oenEoSSJBjMlED
-         nRcTILdYxXT3bYoACgfX/wSDpaYRIqKPqYAejzKK8sFuB37RZOlQ8bKxuzbh8NziQYwv
-         eIOpd9eHM6R8SsTfPNCkPzlal+dnr1IxFxxKQEPm8zahuD/CXjAX5JK9ugS/FaHWSD/z
-         TViL3OjFrpnahLkxpCCdoVGXt4QIZr4Bw4duHyz04rjU2Iq3XAuvy3iqFU2tMadquQeu
-         A3UFM8Q8RxVONUEvmdtmJFrpZItvHZdovjEEnHnaYNSj2ucwkHy0FBXAgo+1SmXMeu28
-         /wBw==
-X-Forwarded-Encrypted: i=1; AHgh+RqXybhuOKrDgl/3rc3tCPJUh73yOeiu9C+C4V6eewC/Yer7NiL0CdpvGIbsAx07McBFibluB2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCBfU6V9y/9FD5cCNe0CcUpltG8asrF7n11RTrGc9MrmKe/zI2
-	ZcMVkAbklkg9MDrXule0x41YRP1BMXMWgwKB4Deu4YKlwHpXPdef18+zYyntNGjbz+i/fXZ8+it
-	3tiU2sXB62BjXgfAOZByGRfAzQc7EM+strRT1iBD/cx5CnvZyjAlfe+aTj8k=
+	s=arc-20240116; t=1784884123; c=relaxed/simple;
+	bh=jf6ITHNc+XGuL6cCQcdNyTvYYHoEe4mW37doo2VbGCA=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=QnD2Qg0V2yu1Zo5QxXztpRiiUpDvEWj6ykU3q5PV7WvWVgWhTckgIJeyFuHJCqTMwdQSBizcxrPtW2oCb30EsVM4PsVqGIjRdZpKb+raMn8G/2cqCikAVuW7l5gx16jTm8X0NMiHsmvmfDCCOi1+POejGeQBWMko9nUomM4ZUzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name; spf=pass smtp.mailfrom=cyyself.name; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IqkJ73tC; arc=none smtp.client-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IqkJ73tC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1784884107; bh=GB38iLMiXeS7XXXsbSFJq++xo5Xnht0g3kWb4bzP9uo=;
+	h=From:To:Cc:Subject:Date;
+	b=IqkJ73tCRbPmjjpkOSp4ZrytgxtZ9h5l6aQ6TV96SJ/Vw4a+CykpoUe3ZLzLzUVvo
+	 T804zlCV+kMA8m84GCI8zeFK+45Rf5eeUA3K7IKuJ62j+P7LRxiHAs6m9qaxR1pCuQ
+	 5DAh0miYL8kfey0WIq2SUpKSftSj43JfxLXcawmo=
+Received: from localhost.localdomain ([240e:37c:2242:cf00:265e:beff:fe6a:4da1])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 2639C29; Fri, 24 Jul 2026 17:00:38 +0800
+X-QQ-mid: xmsmtpt1784883638t88j0c7s1
+Message-ID: <tencent_1F173E0FC1606D2AC704DC9C98AF10984607@qq.com>
+X-QQ-XMAILINFO: MFkgsonL4eTufoJiNb/imNZ+jyd22tb7bFkTSfVAOTy5G27xCh2dyYYwtceMn8
+	 rSxXHiq9DtokM9p7Rr3OH4raai6v6IGsGN46u0utllK070UhYr1oZKUiCxOzzz52HRIdyx598ZEZ
+	 QALSEupt7dleelo+4l7aFqWLlYzOjIQhXdlVQ58ey8i2C/2ofb8BUE362UGrsL8MrQ6umOKhGd2u
+	 cPbRl9JwXbEQQZhsM/+b10NnN39RaJBPwOTCfA0pT/Rk7T4YNL8MsQWJGtzCt0eHbki4cvkePckf
+	 UuZv8nm3FTSzPdYdS0/gleWhum3bp6lEcRbKn2lCxMsYYRpPRfdthvCZ93SSlf6A7BPXAiyNcjdc
+	 yEnHWRKo41Zo4c3QUdsa+lPbafVwQ500ilO95vkpuU69FdXAuKfyXRu7nVLw1+AWRX9eGu1RtfGP
+	 S4X6qkvdIm8dfzqqz1A7OYGLvY+EVDNdtUggt5hixZAVGMGZmvYTQZ81YiTW3rxU1h0rCvip6BhC
+	 c7COoIBBNhaji9DjKoQmUuCvgoEXyIQBXHlxj6v46cdsfeQisNl4JEGzGkEqHMfqy7XriABgDPs8
+	 P+UxQjU4X/9/1z8GfU7u5Iz/UYyJe21PfoJakiFzc124lSRneqrNHDoHwLO+eLn8jO8K/NWeatcH
+	 zdmcblFt3VzuiHkfAcUBXNdwEGzy6ihnvIPAIxJA7hwXew6quy2N1GwMD2ZCqCxL2iwdi0pml8OQ
+	 Ad8goJip9svOYEIYiOvv25IROc+LcIBJgew87yJ80/ivZs8PAo1KAfl7zrBtPlv6iaElAp6fjElW
+	 WZ/G0tIpwbLnqYSCCOtdOSdEgqP+SwPNhihL6jZdITI4i0e+hAirl7RbsdPV7MR1L7beszuDRn8X
+	 1dOvskPAmjJLJcPEflkFmH3uyuH3d/oxxcaMB1Zq4wQpx685sty/S7vGuDIH5aOzgF1e0jAA5cGg
+	 BqF8IsS11AcIVWh865K0Ee5cDmOak/Uvs3eUwsJa10c54qKaypVwwgOoKpm+BYcWUdBRsu056AaR
+	 41xA38jP+GFrae0bPUeYyaiB8k9J/aVtlb4uolx/keSGliihkzojZSIyEiZq3GTc2Hu8OoME1HI8
+	 2dEbJQYUAzYernqPg=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Yangyu Chen <cyy@cyyself.name>
+To: Sukhdeep Singh <sukhdeeps@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Mina Almasry <almasrymina@google.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Lino Sanfilippo <LinoSanfilippo@gmx.de>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yangyu Chen <cyy@cyyself.name>
+Subject: [PATCH net-next v2 0/3] net: atlantic: convert RX path to page_pool
+Date: Fri, 24 Jul 2026 17:00:30 +0800
+X-OQ-MSGID: <20260724090030.10273-1-cyy@cyyself.name>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4446:b0:4a4:80be:3ae9 with SMTP id
- 5614622812f47-4ab354af89amr3538908b6e.28.1784883989531; Fri, 24 Jul 2026
- 02:06:29 -0700 (PDT)
-Date: Fri, 24 Jul 2026 02:06:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a632b15.dde6c935.cf6c8.0011.GAE@google.com>
-Subject: [syzbot] [net?] memory leak in udp_tunnel_nic_netdevice_event
-From: syzbot <syzbot+eca845fb8c18dd6b44c1@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The first two patches are standalone fixes for long-standing ring
+teardown leaks and carry Cc: stable tags with their affected ranges
+(patch 1: v4.11+, patch 2: v5.2+). They apply and were build- and
+runtime-tested independently of each other and of the conversion in
+patch 3, which is net-next material only and not tagged for stable.
+Backports of patch 1 to trees without XDP support (before v5.19) only
+need the xdp_frame branch dropped.
 
-syzbot found the following issue on:
+On systems where the NIC sits behind an IOMMU, the atlantic RX path
+may not reach line rate: every RX buffer is allocated with
+dev_alloc_pages() and mapped with dma_map_page(), then unmapped and
+freed once the stack has consumed the packet. Every map/unmap is an
+IOTLB/pagetable operation, and depending on the IOMMU this can
+dominate the RX path at 10G rates. On an AMD Strix Halo system with a
+Thunderbolt-attached QNAP QNA-T310G1S (MTU 1500, TCP over IPv6,
+iperf3 -R), RX tops out at about 2.2 Gbit/s.
 
-HEAD commit:    dd3210c47e8d Merge tag 'regulator-fix-v7.2-rc2' of git://g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11b4f0b9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b80376788da8bcda
-dashboard link: https://syzkaller.appspot.com/bug?extid=eca845fb8c18dd6b44c1
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15b4f0b9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17e0d432580000
+An earlier patch [1] worked around this by making the RX page order
+tunable via a module parameter, amortizing one map/unmap over eight
+pages worth of frames. The review feedback was to convert the driver
+to the page_pool API instead of adding a knob. This series does that
+conversion.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/5fb3ad85541d/disk-dd3210c4.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/df0f959008a1/vmlinux-dd3210c4.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/383375b1d360/bzImage-dd3210c4.xz
+Patches 1 and 2 fix two long-standing teardown leaks first: TX
+buffers stranded beyond the budgeted single aq_ring_tx_clean() pass
+or past the frozen hw_head, and RX pages parked in consumed but not
+yet refilled slots that the bounded deinit walk never visited. Both
+are silent leaks today; after the conversion each stranded buffer
+would hold a page_pool fragment reference and turn every interface
+down into a permanently stalled pool shutdown (reproduction logs are
+in the notes of both patches), so they need fixing before the
+conversion lands.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+eca845fb8c18dd6b44c1@syzkaller.appspotmail.com
+Patch 3 converts the RX path to page_pool with the fragment API.
+Pages are DMA-mapped once when they enter the per-ring pool
+(PP_FLAG_DMA_MAP) and stay mapped while they recycle between the
+driver and the stack, so steady-state RX performs no IOMMU work.
+page_pool_dev_alloc_frag() takes over the sub-page splitting the
+driver's hand-rolled "page flip" scheme did based on page_ref_count(),
+buffer ownership becomes transfer-based, and the XDP memory model
+switches to MEM_TYPE_PAGE_POOL. The diff is generated with
+--histogram so the removed per-page helpers show as whole-function
+deletions and aq_get_rxpages() as an in-place rewrite.
 
-2026/07/12 04:07:42 executed programs: 5
-BUG: memory leak
-unreferenced object 0xffff888127d5f840 (size 96):
-  comm "syz-executor", pid 5806, jiffies 4294942188
-  hex dump (first 32 bytes):
-    00 00 00 01 00 00 00 00 48 f8 d5 27 81 88 ff ff  ........H..'....
-    48 f8 d5 27 81 88 ff ff 10 7d da 84 ff ff ff ff  H..'.....}......
-  backtrace (crc 99fdb6c8):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4625 [inline]
-    slab_alloc_node mm/slub.c:4945 [inline]
-    __do_kmalloc_node mm/slub.c:5361 [inline]
-    __kmalloc_noprof+0x3bf/0x550 mm/slub.c:5387
-    _kmalloc_noprof include/linux/slab.h:973 [inline]
-    _kzalloc_noprof include/linux/slab.h:1290 [inline]
-    udp_tunnel_nic_alloc net/ipv4/udp_tunnel_nic.c:756 [inline]
-    udp_tunnel_nic_register net/ipv4/udp_tunnel_nic.c:833 [inline]
-    udp_tunnel_nic_netdevice_event+0x804/0xab0 net/ipv4/udp_tunnel_nic.c:931
-    notifier_call_chain+0x59/0x160 kernel/notifier.c:85
-    call_netdevice_notifiers_info+0x7d/0xb0 net/core/dev.c:2250
-    call_netdevice_notifiers_extack net/core/dev.c:2288 [inline]
-    call_netdevice_notifiers net/core/dev.c:2302 [inline]
-    register_netdevice+0xc10/0xeb0 net/core/dev.c:11478
-    nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1070 [inline]
-    nsim_create+0x424/0x5b0 drivers/net/netdevsim/netdev.c:1152
-    __nsim_dev_port_add+0x266/0x450 drivers/net/netdevsim/dev.c:1509
-    nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1570 [inline]
-    nsim_drv_probe+0x79c/0x930 drivers/net/netdevsim/dev.c:1731
-    call_driver_probe drivers/base/dd.c:628 [inline]
-    really_probe+0x12f/0x3a0 drivers/base/dd.c:706
-    __driver_probe_device+0xe9/0x1a0 drivers/base/dd.c:868
-    driver_probe_device+0x28/0xf0 drivers/base/dd.c:898
-    __device_attach_driver+0x10f/0x170 drivers/base/dd.c:1026
-    bus_for_each_drv+0xd2/0x130 drivers/base/bus.c:500
-    __device_attach+0xf9/0x290 drivers/base/dd.c:1098
-    device_initial_probe+0x6f/0x80 drivers/base/dd.c:1153
-    bus_probe_device+0x3e/0xb0 drivers/base/bus.c:620
+Performance, QNA-T310G1S (AQC100) behind Thunderbolt/IOMMU, MTU 1500,
+TCP over IPv6, iperf3 -R:
 
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+  before:  2.24 Gbit/s
+  after:   9.14 Gbit/s
+
+matching what previously required the rxpageorder=3 workaround, but
+with order-0 pages and no tunable.
+
+Tested on the same setup: line rate with plain RX and with XDP_PASS;
+XDP_TX with a MAC-swap reflector under sustained traffic; repeated
+ifdown/ifup and module unload cycles under both plain RX and XDP_TX
+load complete without "stalled pool shutdown" warnings or other splats.
+
+Changes in v2 (thanks to Mina Almasry for the review):
+ - split the RX deinit gap leak out of the conversion into its own
+   fix (patch 2) and generate the conversion diff with --histogram so
+   it reads as whole-function removals plus an in-place
+   aq_get_rxpages() rewrite
+ - add Cc: stable tags with the affected ranges to patches 1 and 2
+ - comment the ring-before-rxq-registration ordering and its error
+   unwind in aq_vec_ring_alloc()
+ - aq_ring_tx_deinit(): return early instead of goto, drop the
+   likely()/unlikely() annotations
+ - aq_ptp_ring_alloc(): use the err_exit_xdp_rxq label instead of
+   open-coding the unregister in the memory model error path
+ - rebase on current net-next
+
+[1] https://lore.kernel.org/lkml/tencent_E71C2F71D9631843941A5DF87204D1B5B509@qq.com/
+
+v1: https://lore.kernel.org/lkml/tencent_7DB01BE7F8FA056BB5F11D3570CF636C4309@qq.com/
+
+Yangyu Chen (3):
+  net: atlantic: free stranded TX buffers on ring deinit
+  net: atlantic: free RX pages of consumed but not refilled buffers
+  net: atlantic: convert RX path to page_pool
+
+ drivers/net/ethernet/aquantia/Kconfig         |   1 +
+ .../ethernet/aquantia/atlantic/aq_ethtool.c   |   3 -
+ .../net/ethernet/aquantia/atlantic/aq_ptp.c   |  18 +-
+ .../net/ethernet/aquantia/atlantic/aq_ring.c  | 261 +++++++++---------
+ .../net/ethernet/aquantia/atlantic/aq_ring.h  |   7 +-
+ .../net/ethernet/aquantia/atlantic/aq_vec.c   |  23 +-
+ 6 files changed, 169 insertions(+), 144 deletions(-)
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: 89d8006259b81dd25c962f6cc8d7ab268d6ea426
+-- 
+2.47.3
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
