@@ -1,110 +1,166 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC232459DD
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 01:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50030175A99
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 01:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784856321; cv=none; b=KLWXpJgP22aTQEnUWSA7ikMRGqc5EL/JwsA/A7XIkQ+y9nRt0UE2gs5kE2EdoNQc/ulQk3dKwDIMmaX7h83+B1SZu/b6Os0QROMVP0XQCAnjDDbXjA7cU40ZRLm+oHiZqdvd3wo0MdPY3NLcgNgelmfH+74vKWOpzi9KLi0YhN8=
+	t=1784856472; cv=none; b=WOQ4cjVo/3D80bxAsvV8kV5JwQI4Ot1obLjPx7qyZ2IGL/ikRyamurRtO2YUC7GPvV9IroSGZ1PARhy/YH2z2TYQ7hwBZzjcFJjxeNRIdEn1dCZuqMOSO7CjnQtLK7PfGRvhR9oDvp3v/o6BIf8mfO7K082K5PlvzKpdInlsAbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784856321; c=relaxed/simple;
-	bh=+4BV34k9mjeuyi1Dnusi7nvzDv3ZQHuY7Z9Q5DQto5s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GjW5KxAG9RFC/wwsLD1zBjZhzD+NgVs/F7Y4jGHcBytTZQ8EY5OoQLzzRyPZaNigslX8sx7d1JBhFzPTmRceK6suNdg5+x01hUTl++XJijr3SdoPT2PXRSqiw5HlueJl0yS7Lf7jLEfRfZSQ1/MnqLxISmnGL6mwyvo+qkrl/qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=kp7IOkFE; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="kp7IOkFE"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-81ecf499af9so11166387b3.1
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 18:25:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1784856318; x=1785461118; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wg9jt7ilbpC+8aFBRGU7U3yonjzvRWqN31jTS78VK0I=;
-        b=kp7IOkFEC+zpXTVV5YNAgDPfOZQUediEjtvoq1E6r+VggZrRkrsE57FVvQt+Zea/WR
-         gSnVTcEpHaOVEDIpM6J3dXlI31kcKBJwLGOhmu17GpdUqxClf3aO6VrcutEz3Qqu6ZvV
-         rpxn58ibUDuKX1XybD0v02W6++cTkChYix+FHxn58LXaNhW0G7wTDJtZRlXScQfQV50o
-         JQzcidbqH1BOYOUCNs2jbrNVHzv+MTOPqq6vXUsV5dSHymUCZWkXrzVxBI8dWZCNfwwS
-         YDGwI31zxZJXZgU2JA8+rPDmvz8PC/8PWL+niww87mrA00u+Fw22XVRawnyOE0q6G8La
-         +BQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784856318; x=1785461118;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wg9jt7ilbpC+8aFBRGU7U3yonjzvRWqN31jTS78VK0I=;
-        b=GPHKtZtqF+TFGIxng47rLObJDhRBphuWNxy/JvoEIAqNdPXqIXZpEeZcZrL/BFyJi6
-         NUi5sWaqHEN+8fwMGv+7qAg9/fUjFDEyjJCNcEv7M7vw6cDJ4NGYD1AfbKZZwXQmW8/+
-         WcwH4ePjyuDQyeor7cKpNa7e9Lp4B1Trwt8Bgy4cT3qnczHscHXuA/ZRGjS1bntkzbtK
-         8ex0ikbAIVSs6ayGBtxw2F6wQKi1M/XOU3QRdHVop3brZLfPUbbmJxtAqeonDeKLULRc
-         dJ4ddlbGPFH6J9uJdxzuDqIkzzzpI/pIGxZYg3wP7v820wbgfrU3QPAPmkDKHt6+tTdm
-         VHcg==
-X-Gm-Message-State: AOJu0YzMMICi6fRbUDvxi2NLOknmHC21TrzBL5Grp3MsAqmPIYZyFXPu
-	ivx/M3dlYwK03UuzgfQJrn5utlK8KEqAGklUwI5NuqIT69/AXFNitdzlz4LHQzRmnkU3mDhOJ9K
-	QZj4eqn7mxg==
-X-Gm-Gg: AR+sD12KvXRfEelx11ltSssmjq0X22gSSE/TxM9p2gdlQW3CjMwXqUsTDMN8SGElXJ2
-	U7Yq+vw0mcrthkpVrL9l8BVWUdQomIdMIEf+NeeKbG9GJ5Svc4NOsEUPZTP/ugzlceyoNice+Fk
-	t0MPP/Ovenzpcv8SsTYRYdhOXmX8SQyGmGfrRVA8OjFYldRU02C6/vMo/KxakG1+EIrvpGg1wsY
-	I9X2ylPMQrecCOb7uXuHDsU8Ih+21N4I2R7gYFzRg7gV3VLwac2G7WB+eP9jLiw7aIDrxh9RPTI
-	TCfOacK2787JcM6w1YyaB6R9q6b5QFW+euE+61045bS5jxW24QOt8cOM2rYYTBob+YFtWsPlfLI
-	8FEqo3HBPsJNBBQhQXSd8mRM6RIV9qPxppiESu/7XZMWeDyTQSZ+U7zkyRmKnjjMNafRs5EW9Sm
-	EM3PKQXF475+tVmPdf4hvSkNZbApj7Iy5nQa9xOD9MA+hEKNS5/Gm0iuwkty9U8OLfAQ==
-X-Received: by 2002:a05:690c:4b11:b0:80e:bd63:178d with SMTP id 00721157ae682-81f4c1635a3mr16034077b3.2.1784856318104;
-        Thu, 23 Jul 2026 18:25:18 -0700 (PDT)
-Received: from [127.0.0.1] ([50.168.186.2])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f33da0546sm36428617b3.27.2026.07.23.18.25.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 18:25:17 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org, 
- =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@meta.com>
-In-Reply-To: <cover.1784726895.git.asml.silence@gmail.com>
-References: <cover.1784726895.git.asml.silence@gmail.com>
-Subject: Re: [PATCH io_uring-7.2 0/3] fix up zcrx "notification" uapi
- naming
-Message-Id: <178485631736.1078734.694232566420857860.b4-ty@b4>
-Date: Thu, 23 Jul 2026 19:25:17 -0600
+	s=arc-20240116; t=1784856472; c=relaxed/simple;
+	bh=rd1umf0VSLrHXu1Qxtjxl3cIR8b2H++AaAMoFeEpxYM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:Cc:
+	 In-Reply-To:Content-Type; b=CHrx/W4neVAW/aD5mHCH7rBY7LpFAWFzUT7W8BrYJpDgRLORxyDFIW9vCoF/wnC5zt232dHSb5o/onu16716pNegWB8tk98x6y/ugflU6aLtn/16dFRwntNhqKVWnRMXYHHxcXRDwsWl59+rgomXpjQZ5Q31W20sguwoHFNQUXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h5r1w1VhNzKHML8
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:27:00 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 60548407BA
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:27:46 +0800 (CST)
+Received: from [10.67.110.68] (unknown [10.67.110.68])
+	by APP4 (Coremail) with UTF8SMTPA id gCh0CgCn1leRv2Jqy_pcCQ--.22068S2;
+	Fri, 24 Jul 2026 09:27:46 +0800 (CST)
+Message-ID: <0655607d-9aa4-472f-b7f5-b2abf3cbfe75@huaweicloud.com>
+Date: Fri, 24 Jul 2026 09:27:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] e1000e: Fix out-of-bounds MMIO access by
+ validating BAR0 size
+Content-Language: en-US
+From: Pu Lehui <pulehui@huaweicloud.com>
+To: Andrew Lunn <andrew@lunn.ch>, sashiko-reviews@lists.linux.dev
+References: <20260722031603.1471127-1-pulehui@huaweicloud.com>
+ <20260722033703.2E5A71F000E9@smtp.kernel.org>
+ <3322e323-da9d-453d-8c41-470e4649684a@huaweicloud.com>
+Cc: Networking <netdev@vger.kernel.org>
+In-Reply-To: <3322e323-da9d-453d-8c41-470e4649684a@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgCn1leRv2Jqy_pcCQ--.22068S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxury7JF1fCFyrJF1Uuw1xKrg_yoWrJrW5pa
+	ykKas8uFW8Jrsaqa12vr48ZFyDGa13tF4UGFyYqFn0va4Y9r1xKrW2grW5u347Xw4kZryx
+	trn0y343ZF4DA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUgmb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
+	0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
+	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2
+	KfnxnUUI43ZEXa7IU1CPfJUUUUU==
+X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
 
-On Wed, 22 Jul 2026 14:42:14 +0100, Pavel Begunkov wrote:
-> There is a degree of inconsistency, nuisance and ambiguity in the naming
-> of the zcrx "notification" API. Rename it to "events" and do other small
-> adjustments while it's not released yet. The patch set only does
-> renaming, there is no functional or ABI changes.
+Gentle ping~ hope this message would not miss.
+
+And +cc netdev@vger.kernel.org as I missed it.
+
+
+On 2026/7/22 16:34, Pu Lehui wrote:
 > 
-> Pavel Begunkov (3):
->   io_uring/zcrx: drop "notif" from stats struct names
->   io_uring/zcrx: rename ZCRX_NOTIF_NO_BUFFERS
->   io_uring/zcrx: rename notif to event
+> On 2026/7/22 11:37, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential 
+>> issue(s) to consider:
+>>
+>> Pre-existing issues:
+>> - [High] The newly introduced minimum BAR0 length check 
+>> `E1000_MMIO_LEN_MIN` is too small because it fails to account for 
+>> flash registers mapped into the GbE memory space for newer MACs, 
+>> leaving the driver vulnerable to the same OOB MMIO access panics it 
+>> attempts to fix.
+>> -- 
+>>
+>> --- Patch [1]: [PATCH net v3] e1000e: Fix out-of-bounds MMIO access by 
+>> validating BAR0 size ---
+>> commit 9c24a014d2bfbd3a6822ff92be6a5c7aceb588d4
+>> Author: Pu Lehui <pulehui@huawei.com>
+>> Subject: e1000e: Fix out-of-bounds MMIO access by validating BAR0 size
+>>
+>> This patch adds a check during e1000_probe() to validate that the 
+>> device's
+>> BAR0 size is large enough to cover the highest register offset 
+>> (E1000_SYSSTMPH)
+>> accessed by the driver. This is intended to fix a kernel panic caused by
+>> out-of-bounds MMIO reads when dealing with small BAR0 allocations.
+>>
+>>> diff --git a/drivers/net/ethernet/intel/e1000e/regs.h 
+>>> b/drivers/net/ethernet/intel/e1000e/regs.h
+>>> index 6c0cd8cab3ef2..1e875227eef24 100644
+>>> --- a/drivers/net/ethernet/intel/e1000e/regs.h
+>>> +++ b/drivers/net/ethernet/intel/e1000e/regs.h
+>> [ ... ]
+>>> @@ -242,4 +242,7 @@
+>>>   /* PHY registers */
+>>>   #define I82579_DFT_CTRL    PHY_REG(769, 20)
+>>> +/* Smallest BAR0 that covers every register the driver accesses */
+>>> +#define E1000_MMIO_LEN_MIN    (E1000_SYSSTMPH + sizeof(u32))
+>>
+>> [Severity: High]
+>> This isn't a bug introduced by this patch, but does this minimum length
+>> cover all register accesses for newer MACs?
+>>
+>> For MAC types e1000_pch_spt and newer, the driver accesses flash 
+>> registers
+>> mapped at E1000_FLASH_BASE_ADDR (0xE000). For example, during flash read:
+>>
+>> drivers/net/ethernet/intel/e1000e/ich8lan.c:e1000_init_nvm_params_ich8lan() {
+>>      ...
+>>      hw->flash_address = hw->hw_addr + E1000_FLASH_BASE_ADDR;
+>>      ...
+>> }
+>>
+>> And then later accesses like:
+>>
+>> drivers/net/ethernet/intel/e1000e/ich8lan.c:e1000_read_flash_data32_ich8lan() {
+>>      ...
+>>      *data = er32flash(ICH_FLASH_FDATA0);
+>>      ...
+>> }
+>>
+>> This results in an access at offset 0xE010 (57360 bytes).
+>>
+>> Since E1000_MMIO_LEN_MIN is currently based on E1000_SYSSTMPH
+>> (0xB64C + 4 = 46672 bytes), could a malicious or mocked PCI device 
+>> expose a
+>> BAR0 size of 12 pages (49152 bytes), pass this new check, and still 
+>> trigger
+>> an out-of-bounds MMIO read panic when accessing the flash space?
+>>
 > 
-> [...]
-
-Applied, thanks!
-
-[1/3] io_uring/zcrx: drop "notif" from stats struct names
-      commit: af78c0020480aba3132fb9fa4db0fd1fb949feaa
-[2/3] io_uring/zcrx: rename ZCRX_NOTIF_NO_BUFFERS
-      commit: 201e30810223a40275f17c5e6ee410fa857b6b44
-[3/3] io_uring/zcrx: rename notif to event
-      commit: e366c15e1610ef11d0717ecd875ae63050282676
-
-Best regards,
--- 
-Jens Axboe
-
-
+> Hi Andrew,
+> 
+> Sashiko is right about this one.
+> 
+> On ich chipsets, the driver sets the flash base address like this:
+> 
+> hw->flash_address = hw->hw_addr + E1000_FLASH_BASE_ADDR; // 0xE000
+> 
+> Then it accesses flash registers up to ICH_FLASH_PR0 (0x0074), so the 
+> max offset ends up being 0xE000 + 0x0074 + sizeof(u32) — that’s about 
+> 57.1 KB. Pretty subtle, and yeah, we totally missed it in v3.
+> 
+> Since PCI BAR sizes are power-of-two aligned, the smallest standard BAR 
+> size that can cover accesses beyond 57.1 KB is 64 KB.
+> 
+> So for v4, I’d like to set E1000_MMIO_LEN_MIN to SZ_64K. That keeps us 
+> safely covering the largest register offset we use, avoids fragile 
+> hardcoded values, and should be more future-proof if other chipset flash 
+> ranges come into play.
+> 
+> wdyt? :)
+> 
+> Thanks,
+> Lehui
 
