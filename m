@@ -1,107 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5DC370AE2;
-	Fri, 24 Jul 2026 18:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C449F36F428
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784919079; cv=none; b=AdxuUSnRmhttPH9X41E4s3UDNrjABS28thSiXR1/PLc6JGcvtNGS4+fdxw3AtZuj/txlzc2NcriW6812cFu5ygA/8fFBN/cOwb/9KKeGOV8nX5llY/hyn2+P1Wpc2Y+4BCztAADF2VwTD95u5VKQ3f8qjLqBgo+wFw431LUwWnA=
+	t=1784919145; cv=none; b=aEmxkMTz7iXcIP+BxPTROZILfH2PZpJu9FdE+8J682y2el21BP9lch4jUCkT/RGkXY1052X83M42oCaaY+P5l4X7u6WI1m9FDi1tTwAA7GZbaMrtj3siePPdXn+zIRBApG1v0pEiLFt9XMnC2wWfFocFmoDl5z+XA2PyWJrIysk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784919079; c=relaxed/simple;
-	bh=lkN7hay+I1vczjrEXLkKxz1uNe2o8GE8ucy+nvWwyWo=;
+	s=arc-20240116; t=1784919145; c=relaxed/simple;
+	bh=5bTDS3v2gtgIU8TWmzXEvizeWJpVyh5UocYpnJ3tOCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HuLfWKfWa5NODdHTdszrWUWd4y85ktetXqqsoAC1AjMR/NEm47AkIVAS73uyDT2U+PHmNhCBO7kB2TBJSjcHuFbbeoDbdqdONk/SGAJBkjGN9tpKrRIMPqy6CBPsYHq7XfQZIHj6zUGNcR9kWaJvO3FhPtEVGrwEaYdj2lw3bEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kEtRoTh0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=CfONC0ZQvuhkdO+Vc4OE4y9LYr8BaUZeBRoIgyEdNTypoOsUKGlMoJKMZwMuTk/C8bVKywq/6jjFkFGiXPZWTvsnI06amx9Vmkm6RfHJ7m4KN11fMqdn0UnPFMOx/G+F1FQb9em64zHk2IaBqy7+EJJGK99SYtTy29Dc4ffB3gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eqwSRpYK; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kEtRoTh0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7E91F000E9;
-	Fri, 24 Jul 2026 18:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784919078;
-	bh=IdjD1flds5kDu/q7Lkb+yYFumSniZ7Q7IdNVS9ov+us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kEtRoTh002Qnn/EGA0uMsBjficw/FAuJukh8JO70z8iBECDpkIoZAyE2ZqwNNhvjk
-	 AxNDbnXrczxHaq6H+nQRC1Xqi0010EHOOOhbTlqEa7RYPbmeTgSsDFdgk7L9vVLrUn
-	 iEPCCfn5duv0gcg4/UxoPKTXjh4AJjuRwtZOS9g+cBRo8yCCrC504zbBwnJNfFxjsO
-	 R6XaT3DJcwJTpeNnC7TQPrkEF6BEKu4CLszJqeNTA1akHGnMuH8PxkZTMVk8UyLngc
-	 TEDC9cHrcLKDpm30y5DPYiyJuvQmg7jUNuHgwoeJaaihi6JkqCDLOR1C1IpS+5tZ/T
-	 +fY+BNArsfe4Q==
-Date: Fri, 24 Jul 2026 18:51:16 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Hendrik Donner <hd@os-cillation.de>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/2] crypto: pcrypt - Remove pcrypt
-Message-ID: <20260724185116.GB1572592@google.com>
-References: <20260713223234.24812-1-ebiggers@kernel.org>
- <20260713223234.24812-2-ebiggers@kernel.org>
- <37ecba68-947a-45ad-9ec4-361facc06a05@os-cillation.de>
- <20260721195004.GA3383223@google.com>
- <19613c3e-9756-45fc-84b6-b650ba3723a7@os-cillation.de>
- <20260722194023.GB2118@quark>
- <10430138-05b6-46b8-b9d2-7cad5c371fc4@os-cillation.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eqwSRpYK"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8485b358552so858220b3a.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 11:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784919143; x=1785523943; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=24oGoFN2zl/isqkok80/HsmColzBNer4WKN+SGnmBsI=;
+        b=eqwSRpYK7uZ2Ec36gG0REzzI9Pz7YEtRfZWY+67MOXAvZ1a3US0gurwXrXKRz6I5ZB
+         Gi3rHssse5/fD1DN5ZdfFUjVqXTDNQ5H+XN0hApHdmGEa/uWQmRs+puYDoiOW70D7Ip+
+         GHPq1RtfZ8/9AyvXu8RtnJt7gBx/UagjK7X++EiWj77vrjKk5FvjsjreanscHhKNaz1g
+         HzR3lrN/67apHJFAYXKU02VJDrGWWyhHqTPSpaqzm9a7Tp7vh0wEU9aU0z+uA7DQhUoK
+         +osiBME85xkEapvotKtjFiMFiX0D1T1Ak/SR90TQbXjTkPGpLhuVcm/49NZgwvwtTEAk
+         u3rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784919143; x=1785523943;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=24oGoFN2zl/isqkok80/HsmColzBNer4WKN+SGnmBsI=;
+        b=aA7wLnR0MPCnIO1sa+ZTCQlnjcfEDgmr5ADSCbif13/8sxY7QatQuxgF36S8HBMgdk
+         aH70Nn7WL3BNQiVIVFOruhNgKN+QKWpx0FDKV28LObhFgWdqXYimUvpuh7e5pYkkIL87
+         AIDtx8XQmS29oUyUn5GWYr2BUelsSmjAU4FocVkBQu1di8B2Oy8TzFpMumWqkKimUnoV
+         l2BRQCwMBygQ/9AopGu5Uc1PAxJVMZYXRNAzYAImYyHuZbmo0ThABW5bsZUW8m891cyO
+         cRO8gSNFkLtDzHf0n155/D82GG1tpn8/4JTndJGfxHUPTUfToOeaJhyF7m+0SiDyPH74
+         YEkQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqOXn061sgentcPuF/D9uJm7CsTIRSZlTam5doPvOfDn6+bTD6usKQ3j8XPakp3bkdqyFkiYq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyvStp6Gww4lek2Zp1ROAWbLHX58DlS67/XwwrviIqS8j9dT/R
+	+hQ9AQjHDarvGF6EJcbJ2xs510Nv5tfya5Cj9R9kqpg6BM9JvJjeKZEN
+X-Gm-Gg: AR+sD11sxJ4oPXcGEabrhWAMVUOaZbfiNiGPVAGZcagE8uNWDbJzsU2VS0bmYGSdts9
+	hXVs9t1tCAEh32ez7awXDkinGiOfZOvWgJUNdIHBNlWXhIWc0PbmBPRxIVub+evn90vkBcn1E6E
+	p8JUoBaq7N8HH3RaFWb7l14y2+gCUmW5qvW4eG+Y/mxULfKwezz+evC9XUN62yOF4pDvDncmDE2
+	Tk9iKen6Kv0PE1moT8gVmD2nXV8dPMAkc6Fdw5eroHK44WOyLbfJ108vZqmPb7ueoQq6Obi0ILj
+	Dw8+N9rIhbLlCaPjSaYNknHNpfFACTggnb+RBfCL9Hid09USo/xjjIRp+kOLaVNDL6RDLNqdS4T
+	qOptGHTpJYYYE/inqcenBQhRxNE04mjTgQ8DFU/L+rfwLfEcjVmMUkpVOW9KKccA4A59p2frnNt
+	tRBncyb/0OCfdsXImQJXVk5L+uaUi6bIdf7g==
+X-Received: by 2002:a05:6a00:1797:b0:847:968c:a0f1 with SMTP id d2e1a72fcca58-84e2c1aa5dfmr9294116b3a.43.1784919142967;
+        Fri, 24 Jul 2026 11:52:22 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4d::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5328180dsm318133b3a.23.2026.07.24.11.52.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 11:52:21 -0700 (PDT)
+Date: Fri, 24 Jul 2026 11:52:19 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: devmem: prevent net-iov / page mixing
+Message-ID: <amO0YxLANwnIYLXe@devvm29614.prn0.facebook.com>
+References: <06f0d5ce07dd8593a69239cfa56745cb9c7d957c.1784717791.git.asml.silence@gmail.com>
+ <CAHS8izPiZ_1aysWG-up6eW285+MzJN17L9QREfVWgRLkdqL5sQ@mail.gmail.com>
+ <amJOXKql1nbskGZJ@devvm29614.prn0.facebook.com>
+ <CAHS8izOAgMX4wSbyUpSLGD_uo7G01cSqnMvrXP9KDdhrYrjNCw@mail.gmail.com>
+ <amKfTT8Z28mMg+qQ@devvm29614.prn0.facebook.com>
+ <CAHS8izNtr3U2te7rOqYDyjfkFsv3aSGms4YbtuNidPUWcHYzCA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <10430138-05b6-46b8-b9d2-7cad5c371fc4@os-cillation.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izNtr3U2te7rOqYDyjfkFsv3aSGms4YbtuNidPUWcHYzCA@mail.gmail.com>
 
-On Fri, Jul 24, 2026 at 08:19:02PM +0200, Hendrik Donner wrote:
+On Fri, Jul 24, 2026 at 10:26:42AM -0700, Mina Almasry wrote:
+> On Thu, Jul 23, 2026 at 4:10 PM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
+> >
+> > On Thu, Jul 23, 2026 at 11:35:15AM -0700, Mina Almasry wrote:
+> > > On Thu, Jul 23, 2026 at 10:24 AM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
+> > > >
+> > > > On Wed, Jul 22, 2026 at 12:49:07PM -0700, Mina Almasry wrote:
+> > > > > On Wed, Jul 22, 2026 at 3:59 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+> > > > > >
+> > > > > > We should either have net_iov or page backed frags in a single skb,
+> > > > > > otherwise it blows up down the stack. Don't allow mixing in
+> > > > > > zerocopy_fill_skb_from_devmem().
+> > > > > >
+> > > > > > Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> > > > >
+> > > > > It's true that we don't support mixing niov types and doing so would
+> > > > > blow up, but this is an unnecessary defensive check imo. The calling
+> > > > > code should not (and does not, I hope) have an edge case where it
+> > > > > tries to mix and match niov types.
+> > > > >
+> > > > > Maybe a DEBUG_NET_WARN_ON check to help catch bugs in the calling code
+> > > > > may be fine?
+> > > > >
+> > > > > Also we don't really support mixing different niov sub-types in an skb
+> > > > > (like IO_URING + DMABUF) afaict, so might as well go the extra mile
+> > > > > and check that it's all devmem niovs specifically.
+> > > > >
+> > > > > And might as well put the check in skb_add_rx_frag_netmem. It's the
+> > > > > same situation on RX, we don't support mixing there (and I hope no
+> > > > > code path leads to mixing today).
+> > > >
+> > > > Hey Mina and Pavel,
+> > > >
+> > > > I was able to confirm this mixing case does exist.
+> > > >
+> > > > It looks like in tcp_sendmsg_locked() when new message is non-devmem (zc
+> > > > == 0) and tcp_write_queue_tail is devmem, the skb collapsing is allowed
+> > > > (though same-frag merge is disallowed).
+> > > >
+> > > > Adding a mode to ncdevmem that sends mixed devmem and non-devmem
+> > > > messages, it can be caught hacking this in:
+> > > >
+> > > > /* DEBUG (DROP ME): detect a TX skb that mixes devmem (net_iov, unreadable)
+> > > >  * and non-devmem (page, readable) fragments. Such an skb must never exist.
+> > > >  */
+> > > > static bool tcp_dbg_skb_frags_mixed(const struct sk_buff *skb)
+> > > > {
+> > > >         bool readable = false, unreadable = false;
+> > > >         int i;
+> > > >
+> > > >         for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+> > > >                 if (skb_frag_is_net_iov(&skb_shinfo(skb)->frags[i]))
+> > > >                         unreadable = true;
+> > > >                 else
+> > > >                         readable = true;
+> > > >         }
+> > > >         return readable && unreadable;
+> > > > }
+> > > >
+> > > > static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, ...)
+> > > > {
+> > > >         ...
+> > > >         BUG_ON(!skb || !tcp_skb_pcount(skb));
+> > > >
+> > > >         WARN_ONCE(tcp_dbg_skb_frags_mixed(skb),
+> > > >                   "DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=%u len=%u)\n",
+> > > >                   skb_shinfo(skb)->nr_frags, skb->len);
+> > > >         ...
+> > > > }
+> > > >
+> > > >
+> > > > Resulting in:
+> > > >
+> > > > [   85.908005] DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=2 len=24)
+> > > > [   85.908342] WARNING: net/ipv4/tcp_output.c:1570 at __tcp_transmit_skb+0x9bb/0x1030, CPU#2: ncdevmem/278
+> > > > [   85.910646] RIP: 0010:__tcp_transmit_skb+0x9c2/0x1030
+> > > >    ...
+> > > > [   85.915617]  tcp_write_xmit+0x47b/0x17d0
+> > > > [   85.915802]  __tcp_push_pending_frames+0x38/0x100
+> > > > [   85.916025]  tcp_sendmsg_locked+0xe51/0x1280
+> > > > [   85.916244]  tcp_sendmsg+0x2c/0x50
+> > > > [   85.916903]  do_syscall_64+0x11c/0x610
+> > > >
+> > > >
+> > > > My feeling is that we should guard against this when
+> > > > tcp_sendmsg_locked() is doing its "new segment or not" calculus.  In the
+> > > > zc == 0 case, I think we need to check if the queue tail is unreadable
+> > > > and 'goto new_segment' if it is?
+> > > >
+> > > > This is a different case than Pavel's patch addresses though, where the
+> > > > new sendmsg is devmem and write queue tail is readable.
+> > > >
+> > >
+> > > :( Yep looks like we have a couple of bugs in the TX mixing. Sorry
+> > > about that. We do indeed need to fix this ASAP.
+> > >
+> > > I don't think it's enough to check readable vs unreadable, no? Because
+> > > I think appending io_uring niovs to a devmem skb will still blow up
+> > > and vise versa, even though both are unreadable, right? Or is io_uring
+> > > saved from this somehow in both cases?
+> >
+> > I think for the above case it is okay because if the current sendmsg()
+> > is zc==0, then we don't care if the tail skb is iou or devmem as
+> > skb->unreadable tells us enough to avoid appending the non-zc sendmsg.
+> >
+> > I'm realizing this a different mixing issue than what Pavel is seeing
+> > though, probably needs a separate patch.
+> >
 > 
-> so i'm now on 7.1.4 with
-> 
->   PCI: imx6: Keep i.MX6 Root Port MSI/MSI-X Capabilities with iMSI-RX to
-> work around hardware bug
-> 
-> on top to be able to tune queue settings. And to have a working ethernet
-> in the first place, without the patch the NETDEV WATCHDOG resets the
-> card all the time due to queues stalling. But now more than 1 CPU are
-> serving IRQs.
-> 
-> With pcrypt
-> (seqiv(rfc4106(pcrypt(gcm_base(ctr-aes-neonbs,ghash-lib))))):
-> 
-> Upload:
-> [  4]   0.00-60.00  sec   901 MBytes   126 Mbits/sec
-> 
-> Download:
-> [  4]   0.00-60.00  sec  1.23 GBytes   177 Mbits/sec
-> 
-> Without pcrypt
-> (seqiv(rfc4106(gcm_base(ctr-aes-neonbs,ghash-lib)))):
-> 
-> Upload:
-> [  4]   0.00-60.00  sec   679 MBytes  94.9 Mbits/sec
-> 
-> Download:
-> [  4]   0.00-60.00  sec   674 MBytes  94.3 Mbits/sec
-> 
-> So counterintuitively pcrypt matters more again. I repeated the tests a
-> few times, those numbers are fairly representative. Every run is over a
-> 60 sec window.
+> Yes, you're reproducing a different edge case that results in mixing.
+> Do you plan to send a fix for that or should I take a look?
 
-Thanks for trying it.  Perhaps this is related to the iperf3 test using
-only a single flow?  Does that reflect the real-world case for you?
+I have a fix in the works and plan on sending it soon.
 
-I'm also curious whether you're particularly attached to AES-GCM, or
-whether you've considered switching to ChaCha20Poly1305 which would be
-much faster on that CPU.  This could be done either by switching to
-"rfc7539esp(chacha20,poly1305)" within IPsec, or by just switching to
-WireGuard.
-
-If none of those are options for you and you do want pcrypt to be kept
-around, could you confirm that you're solely using 'crconf' (run as
-root) to enable it, and in particular you're not relying on the
-misfeature of also being able to enable it as an unprivileged user using
-AF_ALG?  We can keep it around for a bit longer if really needed, but
-the unprivileged stuff definitely has to go.  We should also keep in
-mind that pcrypt does not get tested very well (as the crypto self-tests
-just test serial use) and historically has had a lot of issues.
-
-- Eric
+Best,
+Bobby
