@@ -1,161 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67664746A3;
-	Fri, 24 Jul 2026 22:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391C337D11A
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 23:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784933181; cv=none; b=HxO16wRuO/tFhEDsJd2YQllqAXS8/IJ0CgOB+d3zn73X74QxBZeX3a4XLoSw0JdFssDf4tF7XDWbtHrlzBeZhlNFsUPszcn72W5iCvi1kF5PiFLwEHqKZtK2uuskD6o8AaKSLW2bZXgIPy+MGuc2CtxQiJZSZw0NCKiWRdh+SjE=
+	t=1784934368; cv=none; b=MuhQfMWo6CS5S+PCvcgMtR1zDIg+w0MIImp7tIq0oiwBNMIZH/EOVQYR6To8WiTsyexgfEJZWEcsTJXLyj3Dx9gTFUeZltpGW+28L3ymFZPiZNveopYFC2354xDYWL+gFrPP6f9DI+3UvABHOIXLUAkEe5bN+jWqZSioYWFw/jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784933181; c=relaxed/simple;
-	bh=5h3/hVOTJiRIciAZzBSRPdsrEV/CPJS70Btcat84KYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhugCXhDuV/r1NTLFYNoIz0ujOQz+sp8Ul8Q+zhwIerGEBJ1QAxCf+WSv91KdeXI2IJ5CtmhuO1xSwXc0qI4gqWxDCFZ/CqsH4UVDxLnSfpHTvQRliAmd3Q2fHZGBUMy5aK3r8X5MdVWhsAWL81R3vFDst0VnnNdV4B+Xq/WFiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNutic3y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784934368; c=relaxed/simple;
+	bh=Sk2J6KuMqrEC54wXJzOQQo5vuletwOAu0o8nL5wSogc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IV/6nwfIThnoWWpdfRlBG1WD+JjDT9z9pAC9tujRk1OPknssmF8Zuvu14YJ6Zzl89C0Ej3hud5KPM7qRA6roHaJ5LV70u4i1xwVPQyXv5zdRZuFxzwn0yqmVEPV0cmDk3OrplFKNHbv5ZQvg5qkT9SOyIXmWjuduqnk377b+dTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VTDmOuy6; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNutic3y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7F21F00AC4;
-	Fri, 24 Jul 2026 22:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784933164;
-	bh=K125TY74W87vhbOlzJ/FpCa02u74B+oM2H9sVUMeeOo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DNutic3y4iV6+eyYcy4rwQNwLeQzrjFdAqTJiqrBOyOEWptY1tUjsPrZCB7a+2Rce
-	 7WKRN2fpfQ1BH4OSNlv8Ygz7piMxGyuqiTFOB8siO1bB/P+YFJYYg/dEVTSiGcUTE8
-	 vnkofqb9758AL8BRwmY7SqDav0yzD69GE//A7v8wrhXIdBukMFDnjNUXOlaQv8a7bg
-	 IIDvyg+zxVPf1kHcdIsUIza3Z+0MpbDf5Hv1uMxPb9oZ07wF+23iVfKnQBx42N2MsD
-	 63lPpGj83DQB5USxWPX/mQEXEEV6YfJSeeDPKCHeiIPK+rS8ur8iXo7sySJCthZoVE
-	 H0eTUUDBYX25Q==
-From: Jakub Kicinski <kuba@kernel.org>
-To: bartosz.golaszewski@oss.qualcomm.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andersson@kernel.org,
-	konradybcio@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	vkoul@kernel.org,
-	peppe.cavallaro@st.com,
-	wens@kernel.org,
-	jernej.skrabec@gmail.com,
-	neil.armstrong@linaro.org,
-	khilman@baylibre.com,
-	jbrunet@baylibre.com,
-	shawnguo@kernel.org,
-	festevam@gmail.com,
-	jan.petrous@oss.nxp.com,
-	s32@nxp.com,
-	mohd.anwar@oss.qualcomm.com,
-	romain.gantois@bootlin.com,
-	geert+renesas@glider.be,
-	magnus.damm@gmail.com,
-	mripard@kernel.org,
-	christophe.roullier@foss.st.com,
-	brgl@kernel.org,
-	radu@rendec.net,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	dfustini@tenstorrent.com,
-	linux-sunxi@lists.linux.dev,
-	linux-amlogic@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	sophgo@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	bartosz.golaszewski@linaro.org
-Subject: Re: [PATCH net-next v13 09/10] net: stmmac: qcom-ethqos: factor out linux-level setup into a separate function
-Date: Fri, 24 Jul 2026 15:46:02 -0700
-Message-ID: <20260724224602.1650002-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260713-qcom-sa8255p-emac-v13-9-119f8699ef8e@oss.qualcomm.com>
-References: <20260713-qcom-sa8255p-emac-v13-9-119f8699ef8e@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VTDmOuy6"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso1132841a91.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:06:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784934366; x=1785539166; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=m4HzP5T/bb9vCcchtoI3sk5UhcPvmVAetGanQAVZDHE=;
+        b=VTDmOuy67MofZF/2hrkpsyKz+lc+Suj/njuv+GUCKuE5PEOwW0HE9dIvBcNEM4WGJz
+         TzvUCUPj9z35w410HyjrR7EGbtl2bnQxmk6/se8kVd4eAzRqZLN05vyFE3jVN8sBdlCg
+         dBecPsQAzxXWkyfvFg1eB6YMW2WijWMCgb3lt6r7k2wE4ALPqopHl0GdO1lpj/oOL92t
+         3z0JwR+1iFeaqusyNOhfr1s/5FOycgHMJR8rLH9wWTKw+/DgiAWUkA+bp7lFkkBiQe8P
+         cmj97UZPnHH+pY3DDJO+7TjR+y+fGVaE3U+0Q0bw+9a7r1uzSQrgZMCimRUm66qPlTu7
+         e4TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784934366; x=1785539166;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m4HzP5T/bb9vCcchtoI3sk5UhcPvmVAetGanQAVZDHE=;
+        b=XOMAigv9SsZHweynaBD20wSXs5sX0uES+vi4JxX7VO0sFwdlcRV/6HNiP6vgvYoyP9
+         x+ooGYAzVeh9MV8zHayEoeb3pot9OEy0ddCQIgp920k1tJcIDlGjjyg3qOx+ShsOzxC2
+         rF4iIJ0uaiAXrZb+zc9nFDg8xgZ55DM/fu9H2DlOj1BcBhJ9XiB+gjxnhrpOPe7X0zZV
+         PX4gpWNECG8uziB938WnEm07HFLcvz4l2Y7aeK2bv7Jfaw22LylYiAB/t7nFK7BFErFB
+         YFcSvDvHPVpg2F2ZP+hnJjvBVzvxBLf9LDgd/BnNOttK+zTUEDprWCaNd9qY3aIpVeLF
+         6wUw==
+X-Forwarded-Encrypted: i=1; AHgh+Rris8wEpzyfK/gkW9eubYgFoBBdQQI/p7/RymStzFviOZk3z5bSw4MNVLd2UWWkgNSkBr2orko=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxfjqbHUL0bmFCPpIfwrKU6oOLzNjP1w+9JXFb4qEw/8irYCMe
+	eXav7gK4aiaV8nzh8yuN6et3kdsm6izQuP6jIIDCcVkQJ5hdkZO12xp8
+X-Gm-Gg: AR+sD13MxhoZA8dvYwIBywgbQSGaI7NVQs6GP9aFuDAhlAMl8bmStuQUrFhWlxUjMiU
+	o4tRBZ++NdGW/rTHiCYgy+o1y+mD4S4c8ykYSDp/enJMbryG3oY58fUBGp6ehpfNl1cytdrdgdF
+	Bhla1kUcDxIFmKYvUUU6eGirVv3NleH7lfv2n5hPV1n24lOxg/X4y5Y3uMd84RizmJESSuNQwrP
+	fL3JD0qKg5VK14aLFCUjZE3SHDVbg1inLBX4lG5wk82o8T5rqqWBn4gh81/VSyh+EKZVj6YOhpx
+	0NoJZSvj9UEUXIywpdxrWn9UlACIGsJ4lK58tGtf8LIN509Ae47mFFOJVfaVxnJXldxxikfwLKm
+	/XUGXvTMZ6eOysObSWm3Ad6Dqt+NgzIAQZNTa9B4rhdaCJsK5QExABmNfByUHWYtdjWYcT7TCpG
+	ns
+X-Received: by 2002:a17:90b:2604:b0:37f:9ce1:cda8 with SMTP id 98e67ed59e1d1-38f297802c7mr303421a91.30.1784934366563;
+        Fri, 24 Jul 2026 16:06:06 -0700 (PDT)
+Received: from john-p8 ([98.97.42.174])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f2951e62fsm121717a91.14.2026.07.24.16.06.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 16:06:05 -0700 (PDT)
+Date: Fri, 24 Jul 2026 16:06:03 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
+	"open list:BPF [L7 FRAMEWORK] (sockmap)" <bpf@vger.kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] bpf, sockmap: Fix sk_redir use-after-free in send verdict
+Message-ID: <amPvZHwUL5HlY0t0@john-p8>
+References: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260719152207.2892156-1-nicoyip.dev@gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: stmmac: qcom-ethqos: factor out linux-level setup into a separate function
+On Sun, Jul 19, 2026 at 11:22:07PM +0800, Chengfeng Ye wrote:
+>sk_psock_msg_verdict() takes a socket reference for psock->sk_redir.
+>tcp_bpf_send_verdict() copies that pointer while holding the source socket
+>lock, but does not take a reference for the local copy before dropping the
+>lock around tcp_bpf_sendmsg_redir().
+>
+>When apply_bytes keeps the cached verdict active, another sendmsg() on the
+>same source socket can consume the remaining bytes and release the cached
+>reference while the first thread still holds only the raw local pointer:
+>
+>  CPU 0                                  CPU 1
+>  sk_redir = psock->sk_redir
+>  apply_bytes remains nonzero
+>  release_sock(sk)
+>                                         lock_sock(sk)
+>                                         apply_bytes reaches zero
+>                                         psock->sk_redir = NULL
+>                                         release_sock(sk)
+>                                         tcp_bpf_sendmsg_redir(sk_redir)
+>                                         sock_put(sk_redir)
+>  tcp_bpf_sendmsg_redir(sk_redir)
+>
+>The final sock_put() can free sk_redir before CPU 0 dereferences it.
+>
+>KASAN reported:
+>
+>  BUG: KASAN: slab-use-after-free in tcp_bpf_sendmsg_redir+0xf39/0x1020
+>  Read of size 8 at addr ffff888108537090 by task poc/87
+>  Call Trace:
+>   tcp_bpf_sendmsg_redir+0xf39/0x1020
+>   tcp_bpf_sendmsg+0x977/0x1a50
+>   __sys_sendto+0x32c/0x3a0
+>   __x64_sys_sendto+0xdb/0x1b0
+>  Allocated by task 85:
+>   sk_prot_alloc+0x56/0x210
+>   sk_clone+0x6f/0x14b0
+>   inet_csk_clone_lock+0x24/0x740
+>   tcp_create_openreq_child+0x25/0x2710
+>   tcp_v4_syn_recv_sock+0x10a/0xe00
+>  Freed by task 0:
+>   __kasan_slab_free+0x43/0x70
+>   slab_free_after_rcu_debug+0xa6/0x1e0
+>   rcu_core+0x50a/0x1850
+>  Last potentially related work creation:
+>   __sk_destruct+0x3da/0x540
+>   sk_psock_destroy+0x81e/0xab0
+>   process_one_work+0x63a/0x1070
+>
+>Take a temporary socket reference while the source socket lock still
+>protects psock->sk_redir, and drop it after tcp_bpf_sendmsg_redir()
+>returns.  This keeps each unlocked use independent of cached-verdict
+>ownership.
+>
+>Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+>---
 
-This refactor extends ethqos_emac_driver_data with a setup() callback,
-implements it for the existing models, and moves operations not required
-in SCMI mode into it, in preparation for firmware-controlled EMAC
-variants.
+Nice catch.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 43384960278b..3af1608fc21c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -5,6 +5,7 @@
->  #include <linux/of.h>
->  #include <linux/of_net.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm_domain.h>
->  #include <linux/phy.h>
->  #include <linux/phy/phy.h>
-
-[Low]
-Is there a reason linux/pm_domain.h is added here?  Looking through
-this commit, no pm_domain symbols (pm_genpd_*, dev_pm_domain_*,
-PD_FLAG_*, etc.) appear to be referenced.
-
-The header seems to belong with the follow-up patch that introduces
-devm_pm_domain_attach_list() and struct dev_pm_domain_list usage.
-
-Would it be preferable to move this include into the patch that
-actually needs it, so each patch remains self-contained?
-
-[ ... ]
-
-> @@ -765,21 +815,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
->  		return dev_err_probe(dev, PTR_ERR(ethqos->serdes_phy),
->  				     "Failed to get serdes phy\n");
->  
-> -	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
-> -			       SPEED_1000);
-> -
-> -	qcom_ethqos_set_sgmii_loopback(ethqos, true);
-> -	ethqos_set_func_clk_en(ethqos);
-> -
-> -	/* The clocks are controlled by firmware, so we don't know for certain
-> -	 * what clock rate is being used. Hardware documentation mentions that
-> -	 * the AHB slave clock will be in the range of 50 to 100MHz, which
-> -	 * equates to a MDC between 1.19 and 2.38MHz.
-> -	 */
->  	plat_dat->clk_csr = STMMAC_CSR_60_100M;
->  	plat_dat->bsp_priv = ethqos;
-> -	plat_dat->set_clk_tx_rate = ethqos_set_clk_tx_rate;
-> -	plat_dat->dump_debug_regs = rgmii_dump;
->  	plat_dat->ptp_clk_freq_config = ethqos_ptp_clk_freq_config;
->  	plat_dat->core_type = DWMAC_CORE_GMAC4;
->  	if (data->has_emac_ge_3)
-
-[Low]
-Was the comment above plat_dat->clk_csr = STMMAC_CSR_60_100M; intended
-to be dropped?
-
-The assignment itself is preserved, but the rationale for choosing
-STMMAC_CSR_60_100M (firmware-controlled AHB clock in the 50-100MHz
-range yielding an MDC between 1.19 and 2.38MHz) is now gone.
-
-The commit message describes a mechanical refactor and does not
-mention removing this rationale.  Should the comment be kept next to
-the assignment, or moved into ethqos_hlos_setup() where the
-surrounding clock setup now lives?
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
