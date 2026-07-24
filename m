@@ -1,125 +1,104 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F3F3A7D6F;
-	Fri, 24 Jul 2026 07:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C14B37AA94
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784879067; cv=none; b=GVzpthZd+FdFh6qUUIy1GgfSRP1cERfn3jVSIakzCjNPwTV7SQ733p056Jr7HOptrexvCiEynf55JuvhgbZlw6pGXtXLGggQ/quzXqgP1nqWeiyDR0SU/6z5lHeRzafL1btxmjvhTOOKJ5XMX3L95MaA6TnAapiWx5hCwEimj+g=
+	t=1784879310; cv=none; b=gsFFoChMQloT3TYyrcsQUKdd+pQ9wf0UhnInBQ9pv1YdYGGGqU73ESQ/m+N5WcTb3PfaNox8vDvarodmbGPJv+GJ/kzz0U1UZeojLad3FKOPAEuyHmueHwQaDUcfzMcJzVKLcP39Vl6L0JvepztY4NZXrrZ2F9ZeLl2O8nA8HWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784879067; c=relaxed/simple;
-	bh=LDvMaaSmzaSgGhbmd1K4s8X4A9d5quPXu1ojSw/HVgc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZ7zBloLzT6S3xkEU2+3DhENGwPe9WjAWUjoJxojnCDcJlGbzljqvXAecMtaAilALHgKBi5v1PJEiQxVlG8j9QDiUEoG8mgHTAciHyaOkz9DyV+GaouTxfEsaskfkPDXib2S/S9kp2Jf4+LYLc0ayeIOaCaaMQU/ctFawCs3s10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C18662004F0;
-	Fri, 24 Jul 2026 09:44:15 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wnAZr-0011ly-2F;
-	Fri, 24 Jul 2026 09:44:15 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wnAZr-0000000H9x9-2PLD;
-	Fri, 24 Jul 2026 09:44:15 +0200
-Date: Fri, 24 Jul 2026 09:44:15 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Sander Vanheule <sander@svanheule.net>,
-	Kory Maincent <kory.maincent@bootlin.com>,
+	s=arc-20240116; t=1784879310; c=relaxed/simple;
+	bh=r42ZsyadleQTtIc94n1MjmuA+isQUHSG2kaSAj79bgc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JH0QBelo9C2t6FW42pB4e0GwC+gOR+6t4Kb7PNsZMlYF5hCYUMw4Ihxd2B+QJ/IGL1nNBD6M5UB0qV/LDxIBTBml7RLf2jkIlbQt3OBs/rOAESBRppuDmUjl33dwbbFsDZQxp3dw64vaMGuaYxNnbkbMk6LtG6EWHXzrHYjW64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpsz8t1784879228t8dc00160
+X-QQ-Originating-IP: G9t+N0wCxV8iMfiSjPRp809URlSxn8R5X+ZiOskeP40=
+Received: from w-MS-7E16.trustnetic.com ( [115.227.112.172])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 24 Jul 2026 15:47:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16318405119025710960
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH net-next v8 1/4] dt-bindings: net: pse-pd: add bindings
- for Realtek PSE MCU
-Message-ID: <amMXz_KbLyiwB0wz@pengutronix.de>
-References: <20260715075530.2491534-1-jelonek.jonas@gmail.com>
- <20260715075530.2491534-2-jelonek.jonas@gmail.com>
- <b3456b41152613ed45bcfde92aff89d0c33fa243.camel@svanheule.net>
- <3f71640b-9f22-4d0b-9c4d-dc64c397d286@gmail.com>
- <amHEgOAWYXYuZwnl@pengutronix.de>
- <beff7c47-ef14-4108-a350-fb07bd56e166@gmail.com>
- <amHq0XuK2y-mcfmD@pengutronix.de>
- <e7f50ff9-b5e3-4247-bef3-c0cc3581a50b@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net] net: libwx: fix FDIR ATR queue mismatch for software VLAN packets
+Date: Fri, 24 Jul 2026 15:46:57 +0800
+Message-ID: <0879DA38A8E32701+20260724074657.10773-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e7f50ff9-b5e3-4247-bef3-c0cc3581a50b@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NyLW0J/PDRHl1c1tuztL1JUzJrY+Kf7zextEDEJel5MD6JUDKmtWIgq1
+	QHT0mR6kPzZiufO/dde0OhrNc1jaMx83heZMku/12cD24n3P9gnRntmuFrsGSoX+SVxXxxQ
+	gDZjszQLfCf/iwV4nP5o6Un3kZgv7s0FN/kV0V0lpvuvFV8A1GlUD84IxbyqazOU/zj/JVj
+	VCtddlanx3GKUG+gs6RkLU0QePaL5Sh78xxelaltkTTvMRcVSlNkUFgsAjK6tQVB/T2jj/N
+	OEfVafD7Ey4K3HItkQw/QKm/ACXFfZIGopbsz+06NRh06B22vndbEUWdq6p7yuVLp8xPXf6
+	wms4a66LDI/Ae6DanhX5sale4dRbUzKhP2A3yGrCFKlbaTwYnQYLF6JTy2JG5to8yvWikoe
+	h70HqQ9lADiJLiEwmB+s4tFrtGmBK31Vkus2RNvL+igYcKYdyTestOaRUZcOzuEWlYtt/Jn
+	r8deg99TBkeuazJugrk291QGFwjCoZFliVdDslrAzZaLvbyeHpld8JNDxdTTtUQucwxb5yx
+	omQ8ul6MYoyGv/6654uEj4YvDgvyxi39gwwwbiT0WagGtRAoMxmXHq2hjFYZ/IFV63+02nP
+	SYav5XMx2Yn/3gR+tPTzJ3fKcliy5fWXX9hUCWGCEfx4MlAshrvsBynXmli2SOnAl+tQYY/
+	L3LcCWopEfTazqdE0UugspnYY/AHu3ehhpPDb/LZuFsBJGmUzyHJClPq9tlMv0ph73k+6CU
+	SKKXt+UDkA+DkTKfDqvNRalH9DwZJlIkadh+DPS3bedR8oSC2YkRG7KwVp/thVycRkUdKE4
+	9xcugEuZKydbpyNe0PpRkjP8vhXTOPfcOGhPrfBoKIhXUPyCGPP+rbnfKnp9x/oTc4HQ22t
+	zWaxBNv7g4SiMUM6MdJGE5ZfSuDP5hS2B5EEfJZas5EdWGw95jgf/eZzsP2cZUhRuRebVZU
+	LZbLWn6JUlJxe/rpV/eXLpppygMvGvdEHLwJKvXvDS73Ln0ghSHqpNWeyfgfsOvTFiacply
+	SdnyOC4+a9LbLw3LXFI1bjyYLXVIDSV07sRiiLuQUkmLcQ6RjmGBWEhSrjS6pl6UhEpS6nP
+	mgC2aWEMmDD
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-On Fri, Jul 24, 2026 at 09:18:45AM +0200, Jonas Jelonek wrote:
-> Hi Oleksij,
-> 
-> On 23.07.26 12:20, Oleksij Rempel wrote:
-> > On Thu, Jul 23, 2026 at 11:45:20AM +0200, Jonas Jelonek wrote:
-> >>> Since we already talk about power budgeting - all of this make sense if
-> >>> we have port priorities. For example PD692x0 firmware has default prios
-> >>> bound to port numbers. Is it the same with this firmware?
-> >> Looking at several switches, by default all ports have a priority of 0 assigned.
-> >> Thus, no pre-defined prioritisation, it's up to the user to set this.
-> > Do this switches have PSU covering all port at max load or it is over
-> > provisioning by design. 
-> 
-> In most cases it's overprovisioned by design, the PSU budget is usually lower
-> than what would be needed for all ports at max load. Even one of my switches,
-> having a PoE budget of 400W, has 8 ports with 32W and 16 ports with 60 W,
-> managed by 5 managers. Usually a manager is not overprovisioned but the
-> system PSU is.
-> 
-> > Haw it behave in reality If we attach more
-> > consumer then it is able to handle - all ports go off, or only some of
-> > them?
-> 
-> That's a good question ^^. Unfortunately, I do not have enough PoE-powered
-> devices here to test this scenario, or at least it takes a bit of time to get
-> enough devices.
-> 
-> >
-> > PD692x0 firmware has user configurable prios - but if many ports share
-> > same prios it has internal prios based on port number.
-> >
-> 
-> At least I'm not aware of that but since the firmware on the MCU is a
-> blackbox, in the end this could be the case too. But it's not an obvious
-> feature.
+When TX VLAN hardware offload is disabled, VLAN tags are embedded in
+the packet payload (software VLAN). Previously, the driver failed to
+set the WX_TX_FLAGS_SW_VLAN flag for these packets during transmission.
 
-It would be nice to have both of this answers, but they are not blocker
-for this patch set.
+This missing flag caused the txgbe FDIR ATR logic to fall through to the
+default hash calculation path. This resulted in asymmetric hash values
+for Tx and Rx flows, preventing return packets from being steered to the
+same queue as the transmit packets.
 
-> I'd like to slightly adjust the bindings, given the confusion about the naming
-> that came up with Sander.
+Fix this by detecting software VLANs via eth_type_vlan(skb->protocol)
+and setting WX_TX_FLAGS_SW_VLAN. This ensures the ATR feature selects
+the correct hashing algorithm to maintain Tx/Rx queue symmetry.
 
-Ack.
+Fixes: b501d261a5b3 ("net: txgbe: add FDIR ATR support")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Is there anything else that should be changed? Or is everything else in
-> terms of supply, budgeting, etc. fine for follow-ups?
-
-Ack, can be done in follow-ups.
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 814d88d2aee4..5d99e870de5e 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1606,6 +1606,8 @@ static netdev_tx_t wx_xmit_frame_ring(struct sk_buff *skb,
+ 	if (skb_vlan_tag_present(skb)) {
+ 		tx_flags |= skb_vlan_tag_get(skb) << WX_TX_FLAGS_VLAN_SHIFT;
+ 		tx_flags |= WX_TX_FLAGS_HW_VLAN;
++	} else if (eth_type_vlan(skb->protocol)) {
++		tx_flags |= WX_TX_FLAGS_SW_VLAN;
+ 	}
+ 
+ 	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.51.0
+
