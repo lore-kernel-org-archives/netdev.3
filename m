@@ -1,133 +1,96 @@
-Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E987834214A;
-	Fri, 24 Jul 2026 15:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202AC3F3280
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905872; cv=none; b=WLkOQb2cfhpXW3d64DFGaokj+zFdx/4cB0NdBEuHx2+ebH7HD6QQPTTo6BC4o+i6mk0sVNxvLLPp/VK4wN8rRoeLalkx/bHXghVDWpDb51aUcsz4khzKFMByWTBPJJ+h8q+3xVRTcu5Bn8H5fUTk/7OaW4RlROr/JEmN81UpRIw=
+	t=1784905922; cv=none; b=ZTrBKGd7PAXm7GE9+JRKTx1sEouSqh2UKVhZgxiLOtlASp4vcPc0Qg1iXRQuTuP+9sCqdxyqvzOyT0WhKZT4DewrSz1ntIyJNrXBu9CCsK9LQCgxuVoxl9YWNRtru8VGaPamiEVdtez+gfp+6DStj1CCgpp754TJ0KpcWptbftU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905872; c=relaxed/simple;
-	bh=FBocYxqrD3L3ICBl+vfnjqELTuyEivO13ec/XZUqkDA=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JdxzhgLisgn9xekl3NNf2SdHX9tg3M1MdQWv83Cha1pXLhmjv2qeIh8JKp03IK+i+b5BD3IGJTd5KYWJs3BgDFtIDtZO3cvHm+83SHckXXW9OE3Kr2WGGfz8y2G1QvdDX110ETw7dP5wxpAKemcEmzcVjQpbs5iRGWxYxMyQISo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from equinox by eidolon.nox.tf with local (Exim 4.98.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wnHYA-000000001F2-12IU;
-	Fri, 24 Jul 2026 17:10:58 +0200
-Date: Fri, 24 Jul 2026 17:10:58 +0200
-From: David 'equinox' Lamparter <equinox@diac24.net>
-To: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/10] RFC 6724 rule 5.5 support
-Message-ID: <amOAgsxNyqLyAu0G@eidolon.nox.tf>
-References: <20260723122106.99772-1-equinox@diac24.net>
+	s=arc-20240116; t=1784905922; c=relaxed/simple;
+	bh=pSJ/mpu9THHCxyVaJXMtHO5kIH5BdHN/qJvYfu/IK/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Rzy9mp4BD6cdn6VWjhGxriCuBlIXumVo5CZaEm85hJlAddWNeyzW6upD0+sQp+JcuMwOEL97GwC7bmQqTZ1eiUyrYcg0zh9m5SjnH6gKRYRKSyDBvqXQLOInsFJO9MkH0EanGzDRfkzHc/JIywYVu0W9d0bNNYskz2crSNSsJ7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=xDjVuS1k; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="xDjVuS1k"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so3359675e9.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:11:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1784905918; x=1785510718; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pSJ/mpu9THHCxyVaJXMtHO5kIH5BdHN/qJvYfu/IK/k=;
+        b=xDjVuS1klKAqe+1oMpP3HxJOwKBtHM44vRalT1fGYPj9l9+JNImXKtbdWffA7dLdKL
+         a5xnOKDoPFZ+UaXd1f9sbJWutffFhKjDH1mt3CYw/Ec8Bk/K2zTpj8qy3Yiq/ZZKDrgO
+         A4RmWyxZQk7hcNy5uu/fvs+AqiCoXJQ8oab+XGA+0GxSwDWRICxAbUT/71wZ6x249Va9
+         8R+BBR7h4bkFzJPXqqoCZJzMGiZdQfhE333FPN+rhjSGPPeqKyglpS3TXLEkCIBUrENX
+         0zodDXeFXxxWQV/hF45Wwrqah1qb6FYP/04OSiQYmvthOeKjReeHSYE9Yz9mk12uXnhg
+         tkPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784905918; x=1785510718;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pSJ/mpu9THHCxyVaJXMtHO5kIH5BdHN/qJvYfu/IK/k=;
+        b=KVrMlZ4dPpCbNDz99zEcgTKLo8rGFpHyoEQ8MPPPwrb+Urtah9o02hnuZDGnWFe4JV
+         rySzTguycTY7cNUcYWhsjRv3CwJyorleFSkPgonecXVrr3gUO5Vjqo5eIQstjFThIpQx
+         eIeugETuG2HHVVXJRv8BtbwRwkw4a4lvS+G+MANg19iBowaErEp3Fq3PBwH0SmFtIjpT
+         yhWSkZwOWyhnFXdt7RklTGbhSXZtLvnO0kuuebY8P+1u1DaJenkhSmY5PoYGOIN3LjzY
+         0C4qMBbPYJuqu66MqWUmYt2q+GWYbvez//IEpXTD1Zn3FokgRmLKmrWcjoikeiEpgrHh
+         WsFQ==
+X-Forwarded-Encrypted: i=1; AHgh+RojB6fyDxfJEMbMNKPQmIbdLdTITVxkvCP9owDsSEJfel78BQVuupiCF5wVXsphBI6njA8U+5k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyyn5p/SJWJpExXlyUP8X0HYO1djDT0VpUNal8fpUpFylh/zbQ
+	61KFdshobDBo4DJKY5UZzW8evKrRbNIMUUWsJxjQgyPaesSqCJKfU5LfKadYg7/HeDP7
+X-Gm-Gg: AR+sD107gQoFIaLRObn2xYbY5Q5k+7N39myjm0WmALIXMrjFUfgqxLreQ5VcGPNKjuc
+	cZFj60ELe4HK3lfSX7AjD/QvW3GPFVH07sdGQTvkvjuHfuYdMF7DmzG9TRpwMNTMfPou1THpPXv
+	rq9zcJ92C+MCQr1gwoPeUBReWrFPHXQ4GGRC0QdSLIsmLVc+KkXRLvRiZY4tgJq6xZHRdc8483m
+	ly4mgqEm48PiwF7ytr9FLL+EbLdHHbiWUWD0IC01PZkitpyAbaSE+L9RwXhDzC10snlgbBY6rpG
+	c2XKN5hv41ahyph+qMGUjAZ4ex/whASkyWI9GfcGwrgl+3DMp5A+ifBBTj2OPQ7iiekvk49y2vl
+	F9Ys5S1MDKrFw3IWE+2qIiw6b2K0QyxlX10Fa9/wR1XM/Ekpv+enfqqBi6qkQAQYylDsoud3pGb
+	N3YW43BR0IimDi/Jy0gLcVfJOGPGGHfGrjFiOnuo0utC/a+ny0disn+OnXY99AZbpmiEntPeUpi
+	g0Q1wOzY2lrXEf2FhS9ysYAIA==
+X-Received: by 2002:a05:600c:c492:b0:492:3754:15f2 with SMTP id 5b1f17b1804b1-49573ce95b2mr105427725e9.32.1784905918158;
+        Fri, 24 Jul 2026 08:11:58 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.219.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4058c21sm525885e9.1.2026.07.24.08.11.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Jul 2026 08:11:57 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Doruk Tan Ozturk <doruk@0sec.ai>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] netdev: require admin permission for the bind-tx netlink operation
+Date: Fri, 24 Jul 2026 17:11:55 +0200
+Message-ID: <20260724151155.74551-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260724150156.72816-1-doruk@0sec.ai>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723122106.99772-1-equinox@diac24.net>
+Content-Transfer-Encoding: 8bit
 
-Well, the Sashiko comment about removing ip6_route_get_saddr() feels a little bit gaslighting when the next commit is literally removing ip6_route_get_saddr() - but I'm looking at the other ones.  Also forgot to remove the MAINTAINERS line for the documentation file, which I said I'd do.
+> It's intentional that NET_ADMIN is needed for RX but not TX. Maybe add
+> that to the documentation.
 
-Will send a v3 in a bit.
+Thanks, that makes sense: the RX binding exposes other traffic on the
+queue, while a TX binding only sends the caller's own memory. Sorry for
+the noise. Please drop this patch.
 
-
--equi
-
-On Thu, Jul 23, 2026 at 02:19:26PM +0200, David 'equinox' Lamparter wrote:
-> Hi all,
-> 
-> 
-> changes relative to previous version:
-> 
-> - ipv6_saddr_rule5p5() now makes a local copy of the flowi6; I was trying
->   to avoid that but it's just an invitation for breakage.
-> - added check + WARN_ONCE on subtree routes w/ nexthop objects.  The kernel
->   doesn't allow adding such routes, this is just a safety guard.
->   (this probably fixes the false positive complaint by Sashiko, it's a
->   reasonable safety guard to have independent of that.)
-> - new commit that does adds a comment about this on the kernel reject of
->   subtree + nexthop object routes, also reword the error texts to make sense
-> - added missing _rcu on iterating nexthops
-> - added missing +x on selftest
-> - fixed a comment & 2 checkpatch nits
-> - rephrased 2 parts of the documentation a little bit, actually include it in
->   the doc build (from ipv6.rst)
-> - added a selftest that uses (non-nexthop-object) ECMP routes
-> 
-> remainder is the original cover letter:
-> 
-> 
-> this patchset implements RFC6724 rule 5.5.  For the unaquainted:
-> 
->    Rule 5.5: Prefer addresses in a prefix advertised by the next-hop.
->    If SA or SA's prefix is assigned by the selected next-hop that will
->    be used to send to D and SB or SB's prefix is assigned by a different
->    next-hop, then prefer SA.  Similarly, if SB or SB's prefix is
->    assigned by the next-hop that will be used to send to D and SA or
->    SA's prefix is assigned by a different next-hop, then prefer SB.
-> 
-> The way this is done is through IPv6 subtree routes.  If a router
-> advertises some prefix in its RA/PIOs, source specific subtree routes
-> should be created for the default route (and RIOs) installed as a result
-> of processing that RA.
-> 
-> This may initially sound like a weird way to do it, but for one RFC8028
-> requires the subtree routes anyway, and also I did try the more obvious
-> approaches (explicitly tracking it, putting it on the address, putting
-> it on the neighbor entry) and all of them break in some scenarios.
-> 
-> I've put together a selftest, there's also a rather hacky test suite
-> created for an IETF hackathon: https://github.com/eqvinox/rule5p5-tests
-> (it's not specific to this patchset.)  I've also been dogfooding these
-> patches on my personal devices for more than a year.
-> 
-> Rule 5.5 itself has extensive history at the IETF, including changing
-> from optional to mandatory in the recent 6724 update.  It is immensely
-> useful (really: required) to make multihoming, renumbering and failover
-> work.
-> 
-> @Jakub you had previously asked me to resubmit the "prep" patches since
-> it was at a poor time (cf. Fri, Jul 25, 2025 at 05:39:58PM -0700).
-> (I had tried submitting the preparation bits on its own.)
-> 
-> @Paolo you had looked at the lookup fix:
-> On Tue, Nov 11, 2025 at 11:13:30AM +0100, Paolo Abeni wrote:
-> > The patch LGTM, and I agree this should go via net-next, given that it's
-> > really a corner case and I could miss nasty side-effects.
-> >
-> > It looks like you have some testing scenario handy: it would be great to
-> > include it as a paired self-test; could you please add it?
-> 
-> Cheers,
-> 
-> 
-> equi (David)
-> 
-> 
-> 
-> diffstat:
->  Documentation/networking/ipv6-addrsel.rst                |  73 +++++++++++++++++++
->  Documentation/networking/ipv6.rst                        |   2 +
->  MAINTAINERS                                              |   1 +
->  include/net/addrconf.h                                   |   4 +
->  include/net/ip6_route.h                                  |  26 -------
->  net/ipv4/nexthop.c                                       |   5 +-
->  net/ipv6/Kconfig                                         |  18 ++++-
->  net/ipv6/addrconf.c                                      | 156 ++++++++++++++++++++++++++++++++++++---
->  net/ipv6/ip6_fib.c                                       |   5 +-
->  net/ipv6/ip6_output.c                                    |  26 +++++--
->  net/ipv6/route.c                                         |  26 +++++--
->  tools/testing/selftests/net/Makefile                     |   1 +
->  tools/testing/selftests/net/config                       |   1 +
->  tools/testing/selftests/net/ipv6_saddr_rfc6724rule5p5.py | 285 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  14 files changed, 574 insertions(+), 55 deletions(-)
-> 
+-Doruk
