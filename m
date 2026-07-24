@@ -1,172 +1,138 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AAA34D4D6;
-	Fri, 24 Jul 2026 10:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F02A3B42C1
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784889961; cv=none; b=LkazECV00jIcHmpF2qZbRCoVSriOS+D+SqUgSUmOLqiJG6pycDHKQTwhvyW6k1x/Bn8FAcSLNF7IFrFo0Kq/27Ndkz2hbdDpV7h10xcWOTH+oijtwneSn7xYK7Sa6S2b42H2d6+eTrLphuZ2VmMSC+ECBhH8fcHcLj390TzTAes=
+	t=1784890109; cv=none; b=qT0lly/7xJf8/h/iA5SeMF9RmpxDOMi/hCUS777QIA3BSPuVb/+1P2MnT000i2cPh5Zh9t/5r/5mvA/tlGisHc0ZExTD9rHkebUdUPwjTF+kHQJGqKUnAymU7pHuTITsXEDGi8l0uObd8NXVBlN3GG6ODu/yjP2vNtmhOGNyacs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784889961; c=relaxed/simple;
-	bh=BbKN3enijpNiJb9yqeYzVqq4d9JeKrBN7pN6+ZiWxnY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sHfHuaKlNYP9Q5v9+QeYP1zjVOXHNA8fYqU3g5o1XvITxFyu27lKGa+Mx/1Iogo44MxjxYMSqA65P2JbJ5EZkvmhgWIMzXDbo6cR1b7aYYTuYD62/sfuBfieuEt2Pl++9kmJco1Cl0JA7mzg7iZYxEIyP0JSGTsh5YdYoytH0ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=o0E66/MF; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1784890109; c=relaxed/simple;
+	bh=xYRxLMtZ3/BRx1I4wyTmpchAQbo3mmEcBK6PpJEipNk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Mw5N8k313Qu8HlvUirdmV+0150lRbkq/urC3QxkK/lyJ7353P6GJ2c3es+dNQs+W6/0l9TDDgUdn95XPYnE6pNvTysTxO5seoAusDpQRBDZ/26GPGRDJEGt9t6KbBC7/dZkFLGX/cHt9+r+WUVrpY7tuscFE0kp5nA1u5MoK7vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Ub2STd1Q; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="o0E66/MF"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Ub2STd1Q"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6986578d8c0so433398a12.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 03:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=ZBI3x
-	x/Xe3ZLrj5cJS0aDdCNt7VpxAvOVeXpnhz2+jc=; b=o0E66/MFE5sR9++ikxC9W
-	+LsZj/TniaCaVPX4mDWIhT7XCslR46HbZyROcWQF+jaBT+Dsr2XuVzCdcRmkduU7
-	g5mpfm3Efb0QbGTl7ZhVBV3zng9IjWEo/80Sx3ZcxADJ8F2MyqGja39XJwTfjfUv
-	SBZA/eeVai5FXyBBjLH5Mg=
-Received: from node118.platform-default.svc.cluster.local (unknown [36.102.215.18])
-	by web3 (Coremail) with SMTP id ygQGZQCHVxY8QmNq0b8wAA--.4625S2;
-	Fri, 24 Jul 2026 18:45:28 +0800 (CST)
-From: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	stable@vger.kernel.org,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	yyxroy22@gmail.com
-Subject: [PATCH net] xfrm: enforce hard byte lifetime in xfrm_input()
-Date: Fri, 24 Jul 2026 10:45:17 +0000
-Message-Id: <20260724104517.3852159-1-yangyx22@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
+        d=cloudflare.com; s=google09082023; t=1784890105; x=1785494905; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Am9/owu6l1hJG7i/wElg5Hgmsf9dZWWfn/6yJfdsk+4=;
+        b=Ub2STd1QY/Yh0G/HXKAOpIh78GfmhUVVonLK8OK1KNbpiSq0KteOC/Y1Ldnzi7LksB
+         5lUsWTyMIJ5Dw9PzXLMVM5dpltes0Yjven2jcR3ZDJgNatXb37VqNBzsvH4zy1gCxhH9
+         m/2nw8GoFnVFd2LRD8rjEDxWGbSsLf/xBBRybQ9z4vSBTHrMCINAFfn45FTz/uT1wHxp
+         P+C+6EW1J8ZKdn8YR+93xx0jWiBULkj66mEUCpDJAD2mToSLZG46y1hiB/oo7PL7ubPy
+         0ERB/uztfhJmYUilHyV0g5jXeBGbHDQiacznv3yazsZTT1vei3ZWVfZYSTILLM7bWNZK
+         6ULw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784890105; x=1785494905;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Am9/owu6l1hJG7i/wElg5Hgmsf9dZWWfn/6yJfdsk+4=;
+        b=E4ZfzqVpo8ajjfyUWmDSAiLypIhmdtypSaZ5rnWYf6BiycK/U6RA0/cbkdASDHmLMg
+         UO4YzwtVMM3WcOvLWgTxSzRonAbXOKvrDaEHxVMrPoFuUp4qBwEKpT8U8keCW+jRos1C
+         Eg7BzNYzMJ4cV3t1qpS4K5Ti7XSwOnTrVaFdtuO+SMC95JteR3wcpuqkVjsy59iJ1wpn
+         nCXiSByZ4dpzTjiByRbvDnfrIc4b1mxGbs1H3cbputMeGpxsdFni/HtH4bw2iPuEpiNT
+         MlZa/i4SC30jqC2I5PWcWzO9mWEc9vcIMF7vpBxcJ8x7D7x6Xz8CHGguRlGxRvMdreTx
+         v2EQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqJQ75N8KsBNWCqL+GwlnXDSVQHtxc3h0tqLffDSmE0lQsU0fOGulWHW8dParYUbyPJBF8u7vw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi/jLODhMqG8Dw5AMvgILxwsuTtmfoL+SiKKKFOxBcTfNKm7Wc
+	s8964GkpekOr7atDeMbcuZvlg173tf8vFlKaRn4Qvcvwr4QMhTogfkLKKDExz7TQ4Eo=
+X-Gm-Gg: AR+sD11FQUCUasKarn1cIaEyMcI28xyZHb17dqZR8AeXiT5NtORVP9iHEZD1desYHCN
+	FG6cx5XBS8xUZilYivqk6cYXON9AF/qXBrI3APouqiXwnYXCNt1NxEnpluBBjUirsQhUGYe3w2R
+	cL2mKx6y0kxljd8R3tRYRyNXKTQOHqD8RIVnqg44Hk4I2slcpQYOBD6i5mTOxyMkN1IwH/JgAWn
+	svnq0BhEMvTzbi4uHWH+jSF3iLel1AafBpwku+x8lVuOoNNmh0wYhEB1ahUGidmviydrQAkE/T/
+	41kEcKJvSrEpoJEDXFIztfH+9FlpsVa4YYfHwivCZ9Zifj5bskJj92My9HOhQ4cjZ+WYIqGsoAW
+	c7Nx7rscvRsM0pOUz+06fvpVdtf0v4HfIfpKLUhjvlFodHkU8fxnllTymRgmmC5kGm9wAIH0BSy
+	HgPJ8Q
+X-Received: by 2002:a05:6402:3513:b0:698:3b7c:7e50 with SMTP id 4fb4d7f45d1cf-69f6ab4956bmr2655292a12.38.1784890105421;
+        Fri, 24 Jul 2026 03:48:25 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69f350391d2sm2952122a12.28.2026.07.24.03.48.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 03:48:24 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: Emil Tsalapatis <emil@etsalapatis.com>,  Eric Dumazet
+ <edumazet@google.com>,  Neal Cardwell <ncardwell@google.com>,  Kuniyuki
+ Iwashima <kuniyu@google.com>,  John Fastabend <john.fastabend@gmail.com>,
+  Jiayuan Chen <jiayuan.chen@linux.dev>,  "David S. Miller"
+ <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Alexei Starovoitov
+ <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>,
+  netdev@vger.kernel.org,  bpf@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf v4] bpf, sockmap: Fix cork use-after-free in
+ tcp_bpf_sendmsg()
+In-Reply-To: <20260724103856.3399001-1-nicoyip.dev@gmail.com> (Chengfeng Ye's
+	message of "Fri, 24 Jul 2026 18:38:56 +0800")
+References: <87fr18lmzo.fsf@cloudflare.com>
+	<20260724103856.3399001-1-nicoyip.dev@gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Fri, 24 Jul 2026 12:48:22 +0200
+Message-ID: <87a4rgll3d.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQCHVxY8QmNq0b8wAA--.4625S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr4ftr1UAw1fuFyDKw1xZrb_yoWrGF4rpF
-	WakF98Kr4ku3W7CFn7tw1xZ3WrJ395Ary3CFy0kryjy3Z8ur1FgryfKa1YqF97GFZ3Za1Y
-	q34SgFZ7KF4DZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwV
-	W8twCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRN4SrUUUUU
-	=
-X-CM-SenderInfo: 51dqw5r0ssqzpdlo2hxwvl0wxkxdhvlgxou0/
+Content-Type: text/plain
 
-xfrm_input() checks an inbound state's hard lifetime before processing
-the current packet, but accounts the packet only after the transform
-succeeds. The check therefore sees only the previous byte count.
+On Fri, Jul 24, 2026 at 06:38 PM +08, Chengfeng Ye wrote:
+> tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which
+> drops and reacquires the socket lock.  Its error path tries to decide
+> whether msg_tx names the local temporary message by comparing it with
+> the current value of psock->cork.
+>
+> This comparison is unsafe when two threads send on the same socket:
+>
+>   Thread A                         Thread B
+>   msg_tx = psock->cork
+>   sk_msg_alloc() fails
+>   sk_stream_wait_memory()
+>     releases the socket lock      acquires the socket lock
+>                                   completes the cork
+>                                   psock->cork = NULL
+>                                   frees the cork
+>     reacquires the socket lock
+>   msg_tx != psock->cork
+>   sk_msg_free(msg_tx)
+>
+> The stale cork is therefore mistaken for the local temporary message
+> and freed again.  KASAN reported:
+>
+>   BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
+>   Read of size 4 at addr ffff88810c908800 by task poc/90
+>   Call Trace:
+>    sk_msg_free+0x49/0x50
+>    tcp_bpf_sendmsg+0x14f5/0x1cc0
+>    __sys_sendto+0x32c/0x3a0
+>    __x64_sys_sendto+0xdb/0x1b0
+>   Allocated by task 89:
+>    __kasan_kmalloc+0x8f/0xa0
+>    tcp_bpf_sendmsg+0x16b3/0x1cc0
+>   Freed by task 91:
+>    __kasan_slab_free+0x43/0x70
+>    kfree+0x131/0x3c0
+>    tcp_bpf_sendmsg+0xec3/0x1cc0
+>
+> msg_tx can only name the stack-local tmp or the shared cork. Check for
+> tmp directly so a changed psock->cork cannot turn a shared message into
+> an apparent local one.
+>
+> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
 
-If the current packet makes the new count exceed the hard byte limit,
-that packet is still delivered. The state is not expired until the next
-matching packet arrives. The effect is limited to the packet that crosses
-the configured limit.
+Thanks!
 
-This affects only states configured with a finite hard byte limit. The
-default XFRM_INF lifetime is unaffected. IPComp makes the issue especially
-visible because decompression can increase skb->len before it is accounted.
-
-Account the actual post-transform length, then enforce the finite hard byte
-limit before delivering the packet. Use a strict comparison so a packet
-that brings the count exactly to the limit remains accepted.
-
-Saturate the byte counter at XFRM_INF - 1 because XFRM_INF is also the
-unlimited-lifetime sentinel. Carry a separate saturation flag so a finite
-lifetime still expires if the addition overflows or reaches the sentinel.
-
-The transform and replay update have already completed when an overshooting
-packet is dropped. Checking the compressed length before the transform
-would not enforce the correct limit because IPComp can increase skb->len
-during decompression.
-
-With this change applied to net at 78f75d632f74, a local QEMU/TCG test
-dropped a 136-byte packet at a hard limit of 135 and accepted the same
-packet at limits of 136 and 100000. XfrmInStateExpired increased by 1, 0,
-and 0, respectively. A characterization-only kprobe module seeded
-curlft.bytes at U64_MAX - 100 for an unlimited lifetime; two packets were
-delivered, the counter saturated at U64_MAX - 1, and XfrmInStateExpired
-did not change.
-
-This change is limited to hard byte lifetime handling in xfrm_input().
-xfrm6_input_addr() and the output path use separate byte accounting and
-are not changed here.
-
-The faulty ordering predates the available Git development history, so
-there is no accurate introducing commit to reference with a Fixes tag.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
----
- net/xfrm/xfrm_input.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index eecab337b..6846ccb39 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -14,6 +14,7 @@
- #include <linux/slab.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
-+#include <linux/overflow.h>
- #include <linux/percpu.h>
- #include <net/dst.h>
- #include <net/ip.h>
-@@ -582,6 +583,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	daddr = (xfrm_address_t *)(skb_network_header(skb) +
- 				   XFRM_SPI_SKB_CB(skb)->daddroff);
- 	do {
-+		bool saturated;
-+		u64 bytes, len;
-+
- 		sp = skb_sec_path(skb);
- 
- 		if (sp->len == XFRM_MAX_DEPTH) {
-@@ -689,10 +693,24 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 
- 		xfrm_replay_advance(x, seq);
- 
--		x->curlft.bytes += skb->len;
-+		len = skb->len;
-+		saturated = check_add_overflow(x->curlft.bytes, len, &bytes);
-+		if (saturated || bytes == XFRM_INF) {
-+			bytes = XFRM_INF - 1;
-+			saturated = true;
-+		}
-+		x->curlft.bytes = bytes;
- 		x->curlft.packets++;
- 		x->lastused = ktime_get_real_seconds();
- 
-+		/* IPComp may expand skb->len during the input transform. */
-+		if (x->lft.hard_byte_limit != XFRM_INF &&
-+		    (saturated || bytes > x->lft.hard_byte_limit)) {
-+			xfrm_state_check_expire(x);
-+			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEEXPIRED);
-+			goto drop_unlock;
-+		}
-+
- 		spin_unlock(&x->lock);
- 
- 		XFRM_MODE_SKB_CB(skb)->protocol = nexthdr;
--- 
-2.34.1
-
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
