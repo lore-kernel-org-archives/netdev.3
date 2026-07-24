@@ -1,80 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71183F86FC;
-	Fri, 24 Jul 2026 22:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598FD3515E6;
+	Fri, 24 Jul 2026 22:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784930445; cv=none; b=bn38s/OD4aeVB8nMhLuZyaU5dvymn/v0H9b/3+Ver4BbUkL05wEDzyxvE+t5hVMxxXElxDtN9LGpvAoXEdZ0fhe2HDjpfn26om+HsS00a+MoM58ITI4+RQFQf/rkBaBKsh/6re07w44PSqcursFOV6ygK1l7PwQEid9VQXQdmtg=
+	t=1784930839; cv=none; b=D6QOBT8383JuVNU00sb4GvFKvpEO67HmMiSA74PydfLngaA51Hrv9QLWI/insoB1rig6YVLHh5kYM8r9Gf9dum/UZzZYCHq6nQfleG8MSNVwGA6gqeJUV+DvSv86V6fP4immGkzi6LAlE3UeTuYBh0Jf0j6PGySDX//iyPgCAQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784930445; c=relaxed/simple;
-	bh=/bZFpKXdW3uZVIldBX8Lk9CbAETXyW0XsAcbyQ7/uYU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YTm/kceJAp7v9ncWAhWvvSOfTR4f0dQb70N+e4ys74CaoVpwlNKHBwlCNO+HNw9+EqA+5i4n/BVjyXBjL/hYVvKMXFN8v+gQbtJL8ssFQqfelPfZd7pS8FxJ1LeXUElPU1oyF7oQpSffC+zVn4bFOV0QjbRkDeww2KaZb+AApgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZH7qrlY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784930839; c=relaxed/simple;
+	bh=8NarQ1MpEe4feA0wJx3ntvokx8L9acVWACP5iC3OC0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=prwUE+CmHDz+dmvYpDiNez1CEfbN7UcVQSjwcFLP6aEHCNfszvpb+3DWh15Js7JCTvAj6X9qCJH0w/YILzpZlePYVnIvkaIH4b/qcFkAyXR378depY33peUDrOkqruP0oNbnrHOi/sZ4nCz6DSgyF0LGNycJCTUYnryHRUvqE7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoaJDvqp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZH7qrlY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764591F000E9;
-	Fri, 24 Jul 2026 22:00:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoaJDvqp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A8B1F000E9;
+	Fri, 24 Jul 2026 22:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784930444;
-	bh=fK4Z0gN9olURrSd4tww1AtDLoB9iLbjxHxm5ZR+5Ah8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kZH7qrlYUE2PsbX8JB67n+c3JdUkWSj/kl26IBdEUmhF95mbA7K38eijubTTp/Ffx
-	 8/UoYLKpGRGjmeJQGuPn277sIcuK90IFcdzYR4O5OHwcrykdki79chWGt65P1ENZRm
-	 wbMEn9IZyi3sXuvRnd6OuDL/q38uCFtyV9Vb7tFMjhM+9YALp7kN5WTZ03tjOwxH3e
-	 ZPV2DrYdienH6r6GUPAdo0RMlhjyxFrRW8wJO4eRWNI0hOKseSNpECb2KoOEuIqV6R
-	 CoD7Eg5Pi2+/lPKbvgi/IvfrVosVcJVf+wbVC/849q86MzoxnXDsw6VSXU4tTPrAGD
-	 dtEevbRxYl2og==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BC438111D7;
-	Fri, 24 Jul 2026 22:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784930838;
+	bh=rukVo3Uuxy2j0nXqDDCCRKfJrQ9NUXslYxPOy5lqKT8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UoaJDvqpyE4e7TV8TyphVrpMyLeA1B2rGfr2vMJXNn5RvQr8plZtjmn/8Xuk7dgJx
+	 td7BXxGp57IQDa2p84G276YhTChpK56kNxS4kHm4DyQFDB6YF2ksFlwpF12thjH+DC
+	 f1pAt5qu2VAezYIvXIRtSdPI6e5/DCGepA7+DI8QY117dJRJkIuS0b2J8EbhTHBy32
+	 R6c31OyK6lPvzqmX956FMxkq5gIvjEZWTAEZIafGlqt41Q/r4/TOtxYqrV5CsvSJ3d
+	 65alkCelWPNkc9obBoclx2WKORupOLevuySIVv0mpTvVfDQIyWonKqVYQo5rRw8S40
+	 FYKlYBjVAu9mg==
+Date: Fri, 24 Jul 2026 15:07:16 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, Donald Hunter
+ <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Gerd
+ Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, Bobby Eshleman
+ <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <20260724150716.07c49ad8@kernel.org>
+In-Reply-To: <amPbqtxPdhs9QrVP@devvm7509.cco0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+	<20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
+	<20260721110903.34840531@kernel.org>
+	<amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
+	<20260724143001.5afa8631@kernel.org>
+	<amPbqtxPdhs9QrVP@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: drv-net: ncdevmem: Open /dev/udmabuf
- O_RDONLY
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178493041138.3326421.12143530294273860062.git-patchwork-notify@kernel.org>
-Date: Fri, 24 Jul 2026 22:00:11 +0000
-References: <20260722205442.1894665-1-tjmercier@google.com>
-In-Reply-To: <20260722205442.1894665-1-tjmercier@google.com>
-To: T.J. Mercier <tjmercier@google.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 22 Jul 2026 13:54:42 -0700 you wrote:
-> Write permissions on the /dev/udmabuf device file are not required to
-> issue ioctls and allocate udmabufs. Applications should be opening this
-> file as O_RDONLY. The BPF dmabuf_iter selftest already does this. [1]
+On Fri, 24 Jul 2026 14:41:47 -0700 Stanislav Fomichev wrote:
+> > > Talked to Stan and he mentioned the original idea was not necessarily
+> > > just for link down, but any test that could be considered disruptive to
+> > > other tests, with the idea to eventually introduce some scheduling
+> > > (postpone disruptive until the end).  
+> > 
+> > Perhaps have such conversations on the list? IDK what Stan has in mind.  
 > 
-> Users are pointing to these selftests as examples of how use udmabuf,
-> and encountering permission errors on systems where write permissions
-> are not available on /dev/udmabuf. Apply the principle of least
-> privilege to selftests which use udmabuf by removing the write access
-> mode from drivers/dma-buf/udmabuf.c and drivers/net/hw/ncdevmem.c.
-> 
-> [...]
+> I don't have much to add so I didn't post on the list. In my mind, disruptive
+> started as "anything that can lead to a soft reset". But since the
+> sockets tend to survive these well, I do agree that your definition
+> of "link goes down" is a better fit.
 
-Here is the summary with links:
-  - [net-next] selftests: drv-net: ncdevmem: Open /dev/udmabuf O_RDONLY
-    https://git.kernel.org/netdev/net-next/c/be6f0d0bae22
+My recollection was basically that the test is not safe to run over
+SSH (without tmux). Hence the link down concern. If we say soft reset
+that'd cover 95% of the tests so it's not very useful.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+The existing doc and README already document the link down AFAICT.
