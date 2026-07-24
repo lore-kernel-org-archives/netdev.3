@@ -1,204 +1,103 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843CC36B920;
-	Fri, 24 Jul 2026 05:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9E336B917;
+	Fri, 24 Jul 2026 05:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784870161; cv=none; b=BQwmmvf2UAT1v2UISsAzCmynw0/K9VusM/YbxdaLkS5kuPVBziSv5KbpyvEgOZxw/Rv00uibul7svgruJxvMnNC9lbq8p3I/+m9GxYHOC8QU1wUjfYIQVOtaQrDHWXqdJOFz9Aet7zWtkt62ueri7iNG3Lf4W+Cf0FdPcSuGQ/4=
+	t=1784870846; cv=none; b=CIiI8GyqJNs+aavnOTMzYqarv0UIFDDmynNEVtnrD4wPoYgzRsaU5X+YRdlY0P6Wc62jgZaL6bXsHhKP2JCt8vUdR+Jv9doGXU63K/3gzzKRICLlX4d4sa5TKnrZa1ku3GpTCzfMDOVtettJ3cHusXu0qe3Hn9Eqvz4HIqbZq1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784870161; c=relaxed/simple;
-	bh=8QNE4Jg9czPrMfSdZDBYbvsG9uLL8b402gsiedUfdDs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AwiJ0i7UTcd6RFPND5iwp1y9417JavVbSK7NEp1NHMvee/EHPA8PAHxQLjiI8A8+OpIekwfqo8pVHxgTSQjtDPHrNONxCsbNuMjzLbBF+YpFSqd/Q78UUl9m45rxOBtXPJ0RdBRf11HTMBRBtgz+XYNQ3u/IULYl8o+LWbWUE90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=e3zZ2z/Q; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1784870846; c=relaxed/simple;
+	bh=LiVNmeQsY8IEYZ/VnaLr3j82YaeAMosyppkOqeNoxSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XJVnh+qgUDwe5pijid+gycZ6ZBVAi+KyPw3jrtLu3j2BmdTrDhGwD3xIO6kzgvbryCjR40nuUkgOAZxGIz9+3qLCe2chOZbpeXQGr6HTCgj1oT7yzTTih9jFFmlZr/PdQ0qLfc1naU8NOop0Oxe9sHT/nhDLSlljLd1t78XJrtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=BwKYMlCF; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="e3zZ2z/Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1784870143;
-	bh=zQA/lAdWT1G2TPowypQluYQTGVIVqEckouEduuRgadg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=e3zZ2z/Q34zxc/tJF5dDni8+1StCmvgMr+Jf8Zg0Cw1E9fyyue6KbBPPf+HTLDPSo
-	 XS/6N2s7oahq5YUaIYiPJRGkWJyjFD/4NUeNxBf094roOAltT7Wt1W1BBJUE9d1nLT
-	 S8CXfRsks3/uqtXgd09G9KUDZzeUo3HlxiQG3jqewoDUNw10cX3aoBqbgt60CnjIra
-	 VMCTVJK8Kk3FtYwgEHsiap2FoPCMckUIQ/BnhWu+aShyBCE5k/MEK0kU23jRGphvCL
-	 I9c6tE7VSWqgj6C9akGjklg3xIj16Wos55G5vS2jQkKxHQGx05a+6Vo8+RH8tGnsNH
-	 Q2NlfOgqIKRzw==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id A5B0B66F41; Fri, 24 Jul 2026 13:15:43 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Fri, 24 Jul 2026 13:15:30 +0800
-Subject: [PATCH net-next v5 09/12] net: mctp: usblib: Implement
- transmit-side packet spanning
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="BwKYMlCF"
+Received: from LAPTOP-99KJFSET (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 47691a19d;
+	Fri, 24 Jul 2026 13:27:13 +0800 (GMT+08:00)
+From: Hongyan Xu <getshell@seu.edu.cn>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: 3chas3@gmail.com,
+	stable@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	getshell@seu.edu.cn
+Subject: [RFC PATCH 6.6.y] atm: he: kill tasklet before releasing queues
+Date: Fri, 24 Jul 2026 13:27:10 +0800
+Message-ID: <20260724052710.1126-1-getshell@seu.edu.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-dev-mctp-usb-1-1-v5-9-e66bbba0dbdc@codeconstruct.com.au>
-References: <20260724-dev-mctp-usb-1-1-v5-0-e66bbba0dbdc@codeconstruct.com.au>
-In-Reply-To: <20260724-dev-mctp-usb-1-1-v5-0-e66bbba0dbdc@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
-X-Mailer: b4 0.16-dev
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f92978a2b03a1kunmb4995d0624371
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSRpKVk5PS0sdHkgfTk1PHlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	hOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=BwKYMlCFyapMBd/y/zMpf+VVAatWbBOar7c3ddvTp17++dRXO/2Bkr206+cz/ONYURDAvZG80/g0h2aZeYcgZh2hSrTAZ8gmYCkvTnJvuGpKx04qTyLNdQXps6hUVX5RhFhrr/lbqBWPpAlY+AiH7LlKpc40YE6lmqL45ZFfvAk=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=5Mfo47OpTKg7riRmU9vv2cyhM4lOeEgh7UycReXtxWc=;
+	h=date:mime-version:subject:message-id:from;
 
-Add support for packet spanning as defined in DSP0283 v1.1.
+The interrupt handler schedules a tasklet which accesses the device queues.
+tasklet_disable() waits for a running instance, but leaves a scheduled
+instance pending while he_stop() releases those queues and the device.
 
-With the existing v1.0 implementation of multi-packet transfers, all we
-need here is to adjust the buffer sizes to suit v1.1.
+After masking device interrupts, unregister the IRQ so the handler can no
+longer schedule the tasklet, then kill the tasklet before releasing any of
+its data.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+The affected driver was removed upstream by commit 6deb53595092 ("net:
+remove unused ATM protocols and legacy ATM device drivers").  This change
+is intended for maintained stable kernels which still carry the driver.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
 ---
- drivers/net/mctp/mctp-usb.c    |  2 +-
- drivers/net/mctp/mctp-usblib.c | 28 +++++++++++++++++++---------
- include/linux/usb/mctp-usb.h   |  4 +++-
- 3 files changed, 23 insertions(+), 11 deletions(-)
+ drivers/atm/he.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index 439e92722a0a..2240c81cc6e7 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -344,7 +344,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
- 				 false);
- 	if (rc)
- 		goto err_free_netdev;
--	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev);
-+	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev, false);
- 	init_usb_anchor(&dev->tx_anchor);
+diff --git a/drivers/atm/he.c b/drivers/atm/he.c
+index 92a041d..6b2c795 100644
+--- a/drivers/atm/he.c
++++ b/drivers/atm/he.c
+@@ -1536,9 +1536,13 @@ he_stop(struct he_dev *he_dev)
+ 		pci_read_config_dword(pci_dev, GEN_CNTL_0, &gen_cntl_0);
+ 		gen_cntl_0 &= ~(INT_PROC_ENBL | INIT_ENB);
+ 		pci_write_config_dword(pci_dev, GEN_CNTL_0, gen_cntl_0);
++	}
  
- 	dev->ep_in = ep_in->bEndpointAddress;
-diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-index 2304e33193b5..816a86b26a11 100644
---- a/drivers/net/mctp/mctp-usblib.c
-+++ b/drivers/net/mctp/mctp-usblib.c
-@@ -248,7 +248,7 @@ EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
- struct mctp_usblib_tx_ctx {
- 	struct mctp_usblib_tx *tx;
- 	struct sk_buff_head skbs;
--	unsigned int len;
-+	unsigned int buf_len, len;
- 	enum mctp_usblib_tx_buf_type {
- 		TX_SINGLE,
- 		TX_FLAT,
-@@ -258,18 +258,19 @@ struct mctp_usblib_tx_ctx {
+-		tasklet_disable(&he_dev->tasklet);
++	if (he_dev->irq)
++		free_irq(he_dev->irq, he_dev);
++	tasklet_kill(&he_dev->tasklet);
  
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
- 			 const struct mctp_usblib_tx_ops *ops,
--			 void *priv)
-+			 void *priv, bool span)
- {
- 	memset(tx, 0, sizeof(*tx));
- 	tx->ops = *ops;
- 	tx->priv = priv;
-+	tx->span = span;
- 	spin_lock_init(&tx->lock);
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_init);
++	if (he_dev->membase) {
+ 		/* disable recv and transmit */
  
- static int mctp_usblib_tx_avail(struct mctp_usblib_tx_ctx *ctx)
- {
--	return ctx->buf_type == TX_SINGLE ? 0 : MCTP_USB_1_0_XFER_SIZE - ctx->len;
-+	return ctx->buf_type == TX_SINGLE ? 0 : ctx->buf_len - ctx->len;
- }
+ 		reg = he_readl_mbox(he_dev, CS_ERCTL0);
+@@ -1555,9 +1559,6 @@ he_stop(struct he_dev *he_dev)
+ 		he_dev->atm_dev->phy->stop(he_dev->atm_dev);
+ #endif /* CONFIG_ATM_HE_USE_SUNI */
  
- static bool mctp_usblib_tx_should_send(struct mctp_usblib_tx_ctx *ctx)
-@@ -358,6 +359,12 @@ void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
- 
-+/* Max size of a spanned TX. Since we allocate a separate span buffer, limit
-+ * the tx-time allocations to 4k. Larger packets will be sent as single
-+ * transfers.
-+ */
-+static const unsigned int TX_SPAN_MAX = 4096 - sizeof(struct mctp_usblib_tx_ctx);
-+
- static struct mctp_usblib_tx_ctx *
- mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 			  bool single)
-@@ -366,11 +373,11 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 	struct mctp_usblib_tx_ctx *ctx;
- 	size_t sz = 0;
- 
--	if (single) {
-+	if (single || skb->len > TX_SPAN_MAX) {
- 		type = TX_SINGLE;
- 	} else {
- 		type = TX_FLAT;
--		sz = MCTP_USB_1_0_XFER_SIZE;
-+		sz = tx->span ? TX_SPAN_MAX : MCTP_USB_1_0_XFER_SIZE;
- 	}
- 
- 	ctx = kzalloc_flex(*ctx, buf, sz, GFP_ATOMIC);
-@@ -379,6 +386,7 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 
- 	ctx->tx = tx;
- 	ctx->buf_type = type;
-+	ctx->buf_len = sz;
- 	ctx->len = skb->len;
- 	skb_queue_head_init(&ctx->skbs);
- 	__skb_queue_tail(&ctx->skbs, skb);
-@@ -443,15 +451,17 @@ EXPORT_SYMBOL_GPL(mctp_usblib_tx_send_complete);
-  *
-  * On error, populates @reason.
-  */
--static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb,
-+static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb, bool span,
- 				      enum skb_drop_reason *reason)
- {
-+	unsigned long plen, max_len;
- 	struct mctp_usb_hdr *hdr;
--	unsigned long plen;
- 	int rc;
- 
-+	max_len = span ? MCTP_USB_1_1_PKTLEN_MAX : MCTP_USB_1_0_PKTLEN_MAX;
-+
- 	plen = skb->len;
--	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX) {
-+	if (plen + sizeof(*hdr) > max_len) {
- 		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
- 		return -EMSGSIZE;
- 	}
-@@ -490,7 +500,7 @@ int mctp_usblib_tx_push(struct net_device *dev,
- 	unsigned long flags;
- 	int try = 1, rc;
- 
--	rc = mctp_usblib_tx_skb_prepare(skb, &reason);
-+	rc = mctp_usblib_tx_skb_prepare(skb, tx->span, &reason);
- 	if (rc) {
- 		mctp_usblib_tx_stats_single_drop(dev);
- 		kfree_skb_reason(skb, reason);
-diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-index 2979ddaa4dab..4bb04a371105 100644
---- a/include/linux/usb/mctp-usb.h
-+++ b/include/linux/usb/mctp-usb.h
-@@ -81,6 +81,7 @@ struct mctp_usblib_tx_ops {
- struct mctp_usblib_tx {
- 	struct mctp_usblib_tx_ops ops;
- 	void *priv;
-+	bool span;
- 	/* protects access to cur_ctx */
- 	spinlock_t lock;
- 	/* context to which we are adding packets, cleared on send */
-@@ -88,7 +89,8 @@ struct mctp_usblib_tx {
- };
- 
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
--			 const struct mctp_usblib_tx_ops *ops, void *priv);
-+			 const struct mctp_usblib_tx_ops *ops, void *priv,
-+			 bool span);
- void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx);
- 
- void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx);
-
+-	if (he_dev->irq)
+-		free_irq(he_dev->irq, he_dev);
+-
+ 	if (he_dev->irq_base)
+ 		dma_free_coherent(&he_dev->pci_dev->dev, (CONFIG_IRQ_SIZE + 1)
+ 				  * sizeof(struct he_irq), he_dev->irq_base, he_dev->irq_phys);
 -- 
-2.47.3
+2.50.1.windows.1
 
