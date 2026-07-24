@@ -1,46 +1,46 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012022.outbound.protection.outlook.com [40.93.195.22])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010042.outbound.protection.outlook.com [40.93.198.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845A128686;
-	Fri, 24 Jul 2026 04:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439BC368D4B;
+	Fri, 24 Jul 2026 04:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784867601; cv=fail; b=Y2yB3x+zFH4nYDtci8Rf+0uY1Z8HDhZ6PftYYw9xt/bLwG67mkRJ1dSB1ORVv9y85xRrz/rMioRegu0Lv1u8f5UnYbnLvaFfBF0KzjoLlh3wwNwFBrcmA27S6Ys0rIx4ZkIIBoOa3IdHn8RlN+88W0uW/MYc1Wke16BRAri2oYs=
+	t=1784867606; cv=fail; b=j/VAn/ZWbvEYMIUCWHLA9VMfh4cxVyH9ZmN+jcMx0WcrHKcAjjgjPNfiG2GgGeyukdm3ycq6ztdEJZZx1g7jaAzqP+F9jifYWqQE9vMcSCW6+fJlS4Hm9tJ6MgsULPUcNTBLqDvLzp4YdolDec3Vc0GyvcTEttjo3gVzVReP8tY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784867601; c=relaxed/simple;
-	bh=AdR/J7cw9gZcwQBWj7im9tt4obDE8YD5/BM5OUxBmb4=;
+	s=arc-20240116; t=1784867606; c=relaxed/simple;
+	bh=cmbGG/E/vzgM1G00uzU2ArL18H9E2GNZCXy0eUYg9c0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j4gJkUSqS/yfiVHH0YP/KCcdztPa4eiG3mXHhx7rrj8hZO3L0uVde4NGBFoosObHImstMAhepZxv9t2Orn7a4T+EgAX7woPcNg5wgzsN3MkLdRdvHUQd2+TigXIU+uKfwDY+Ok/6NYjZZQp25h7Xpyfwaleq9fRqXo0yET8aSR4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wq9BOgJs; arc=fail smtp.client-ip=40.93.195.22
+	 MIME-Version:Content-Type; b=mOoIZhklYiCzvj6ADgCqUP19QL71yq7rFsv7+cE3vsrdjx3ogyQp0fpI0lxuCXFgr68HKOndCu6Ev5buoQdSubCUqBvzGg0e7pxz8UH5KYdPd4P+Db2K9K2FQ04ZXydQh1zfCY/MM5BSXk8I5FiKE97UtZFcLGcmTHaw1iZJS3o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GETltqa3; arc=fail smtp.client-ip=40.93.198.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wq9BOgJs"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GETltqa3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u1yIrJG//Oe6a0HEr8EYlQls99pzmNsj9583godhyen3CFVLcPxyKphYmedlJ2iLlbHls+ktbI4oCJNOyRhkC+3Px7iAijaaVklK9rC5dm4VWjN+lmOEhyLXLSoiwgirQXIGBTuSvL1Hd1XNE5KSA0x6MMRNlboLJw7T5+9HO0WjCLEdefhnAnqZxUwofUQ7cEmfu3YRkpShye//+r6ltjawfrhnmhg0afTdMJF3tliKrPmAkGz4AAc+V/EIM3KUWTEd5DVrdrr/y4cpQ8Ln4AJ1TTJYEqT9mLLN6akW/l2fRWEJItXU+6WvsHM5gYb0psGLgBJcitPe1huhRddGzw==
+ b=kgo+DFlTdE7J4ZrxykLsrxKl9D7pIZ2H5Vayxqp/PJl4bO5dbFbvAzP0WYMm5qdjb+toyTTRHxrrfx+x/UDIpBqqoP76k4AAs7xlv9Vw/hdWT5gOFiCoK3oFcXu2IppLDJL+1fgRsBKS82e8d6iKpXQV8pHdCfQnIkvmga9JKd3zh/Go9HVYedAM61xI4Ohw/IP2cxHBaat9p0FWneTvYZKMh1scJw/2DfWjPpLgqVGCqlo+4RxBEDIJwQv9Q61wSJIz3F6/jHNsL5/HF1mEBNiWdw2gFnawzsF6PBcYjamxQrJd/+vmymKTIvT/VaVd9uZvHhOd+t+ONKK1eKcjfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0HjkCj4H8esMiD/p094pKD1+oKgRYOd8nh2HWlOaOwY=;
- b=ajW6IBNWr9hcsEuVvwiUH17nn7vQWV+jOphlQ54/CpgtBScNBtfmt22Yvnq0eyl/L9v+La+bLkCs6TUvaNtBJItcvMJCSZp5rBfjdGMul0U8sV9v9gF64DqsIUeknbE1WLC/dLpXz39kpk113PdE1V0lPF+FT1rf8Lisa85g1CExVzY0ddkfvRP3HqMM+LieZrrrwk2A08VppqwqzJ2XYTZ+cni66V7EUvFaSxjEdjFQvorpUCVHHQayt3uxVES24nONJR1oYGLSGFQT55sPhS3g8NcIJ+khzPHDrQphwH5r6s3CILvSqaVMudSLMLyUB6c+ASlzy0IXBM/FReAv+w==
+ bh=VzHjDUzlemrOktJW8sydxyt+1MzEOlNdercsAz+jJH0=;
+ b=KfppL1PSFuXceNYFbURDCOeiefrzEKhGk/cSTrgxw01XwoTzNA0zsgOqNvJr4Wqs/eGfadOhNXgrKJooiS7aXgI5isQGJ0dq4XgbJDDO9sKQUG7XH7EQ6bWI6DvuO2OCGsu46YIkdJoKXYKEUEq0Kss+jOSVqEckWL0bYs5jMb7+bxRsiqu/8/TUAxmEPy9oJ3rL+F6lhC7VqwMoymsl4ZxqAnYRAH0/8abZTBMhyxMtfhDWpUdbt+4s1K3h3iSVXAA0Kkh7I3OGHN6yf7WPqPAkaPS2WidasRnlR1Rgp7yykGmaKzOskgQ7o7Krfqt6vKLWCYH095IZDPJ6pb/wxg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0HjkCj4H8esMiD/p094pKD1+oKgRYOd8nh2HWlOaOwY=;
- b=Wq9BOgJsS4+MpzwphKAb1gzbbCI6vlrAqDolzFYqMKvTymlFlLxfJ7vwvp0K7KFEqobgrRyUZQYtj7Vr3LalWE1DSdZaIoiEB/oQ4iHBcXYec+YU3zDxxf3gGeSs1JZMF9Phoe7MCUPiXxyR4ydOXmDJ1XZbWCM2L/D3dxH9o78=
-Received: from SJ0PR03CA0050.namprd03.prod.outlook.com (2603:10b6:a03:33e::25)
- by LV8PR12MB9155.namprd12.prod.outlook.com (2603:10b6:408:183::8) with
+ bh=VzHjDUzlemrOktJW8sydxyt+1MzEOlNdercsAz+jJH0=;
+ b=GETltqa3UhaRjeciVcxBv15NCgfY8IiqG676wd22HeHb8ujbdC2zw7gJoVKnzdjmLJbvEJxSOiJlio1fgTmGOPBb7OVpRJlwJcWCkyCRs3kb8Ap9wylEWNlzBI2D/0zrKmh0cdL0sKq6x01KLPF/g25Qd5pHi1PtFsPn0kaNero=
+Received: from SJ0PR13CA0076.namprd13.prod.outlook.com (2603:10b6:a03:2c4::21)
+ by MW6PR12MB8664.namprd12.prod.outlook.com (2603:10b6:303:23c::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 04:33:16 +0000
-Received: from SJ1PEPF00002318.namprd03.prod.outlook.com
- (2603:10b6:a03:33e:cafe::2) by SJ0PR03CA0050.outlook.office365.com
- (2603:10b6:a03:33e::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Fri,
- 24 Jul 2026 04:33:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Fri, 24 Jul
+ 2026 04:33:19 +0000
+Received: from SJ1PEPF0000231E.namprd03.prod.outlook.com
+ (2603:10b6:a03:2c4:cafe::aa) by SJ0PR13CA0076.outlook.office365.com
+ (2603:10b6:a03:2c4::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.6 via Frontend Transport; Fri, 24
+ Jul 2026 04:33:18 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,29 +48,29 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002318.mail.protection.outlook.com (10.167.242.228) with Microsoft
+ SJ1PEPF0000231E.mail.protection.outlook.com (10.167.242.230) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 04:33:14 +0000
+ 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 04:33:17 +0000
 Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 23:33:11 -0500
+ 2026 23:33:14 -0500
 Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 23:33:10 -0500
+ 2026 23:33:13 -0500
 Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 23 Jul 2026 23:33:07 -0500
+ Transport; Thu, 23 Jul 2026 23:33:10 -0500
 From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>
 CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 1/2] net: macb: remove unused ENST Q0/Q1 time register defines
-Date: Fri, 24 Jul 2026 10:02:56 +0530
-Message-ID: <20260724043257.2221030-2-vineeth.karumanchi@amd.com>
+Subject: [PATCH net-next 2/2] net: macb: configure ENST registers for all queues
+Date: Fri, 24 Jul 2026 10:02:57 +0530
+Message-ID: <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
 X-Mailer: git-send-email 2.44.4
 In-Reply-To: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
 References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
@@ -84,58 +84,133 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002318:EE_|LV8PR12MB9155:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5abe074-4532-455d-8847-08dee93cad77
+X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231E:EE_|MW6PR12MB8664:EE_
+X-MS-Office365-Filtering-Correlation-Id: 338d59d2-ff9d-47f2-e1bb-08dee93caf06
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|56012099006|11063799006|10067099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|82310400026|376014|56012099006|10067099003|22082099003|18002099003|6133799003|11063799006|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	3prJjVzl2wfABNMtBa862BWDyNftGSBdOVthR/mKsz9eOaRyAlLZxHlM5m2Wgsdc078Zn0hpoXggzvc0rVsLeFEF+purFb5Pztrx6W00rbzgqpG9FHFDsvW/ttUBP08cNm8j1Fuz812wl4CTv6EbT+Rxt3AFigu3DrGdX6iuH/uV+dGELOTay7THFGcFnqPPLzkovgfqZagXFt0QhTj/4Rxb+MdPQK9Sikcd+RtcpKRPeE2eT3v91Z4nwlXMXvBoWqpTLce3RVJQDbhzUFC3P+uEHQM6RF8z2BUqTuLaSerJevJvFhC9QOfQcF4GqW64+93jox8Xp+Fs/6zMbtlb6/4HH0eRbI0AmQYmRsRACePTYPmZhTyT+8QnHUw/bdjjZ6kZYYL7f3/sFTUCvL7P+/YQq68vSY1DXqnfctgNjCcA2rHwFnwt0oxumtaU+u+aH9OfBdiYFutMI3qrSbI3aR3I39Kjtk36m3HRYjYP+VTZ09yEdl08Eo0VyBYTmjcl5H1EySqaCnqnvJy7NshwB+R5v5YVPWbfvubLDMsaUn8lNthg9YCMe8AyRiF/eN/f+dhfiOgHE+Kj+IC3zcHbi4ZcgxUT83d/7HRsTvZFSEwEJlwT4K4L9UD930UvInHFEHLhQSbkjWMlVzvYJVAs/kK82aTN09rXsZakqJm6PPzK/SCoqHLbn74Rlr7IFugK7VnyIklAz5nfC0JG77GLWA==
+	zsLXaFpryY4LO9TfUe8XpKUBz22JhdUzvtz5+GPgColcnpcptvdSBn3Y9dr9b5EuK9igjuYNRbYtmq5pOy2BxSkgucBuOTrba4bMQK6uILZQXJIyI+84fb9RshUTMQf6sozcgyfU3Vlsup1QmB6KhEWC81m0QRiWz7b2bVz9qHfYpQC8a2KImcufTEMc6OVEtO6I4GmEVO5/vAhCFGRESqMZttqr9sbS9TzJeJMjdY0KzDg2cHzRWnnfxuBgvRiknMUS+dL7O+VbbqLUaFbOaL6f8yOnSDTNiOxm2KU5eUJupqkm+ZYulFv1YksTwuGeDzg2rv86tZfa7rn30LKde+7zizp3cHNiwFKh4vfoSoRdbmjf7EvrBx9nYBzSGMnMnYuDJMekowpCSCjMNnNrfPUVsY39mHS6djuniLRhyZ2soqTe4OxQ6rTvuYQsrszvb9369XabQJ9W7dzH8fqHJOASmE2m8ADc+Lfu5b70NIja9CzWQvyG/0LTLKocUP0VUPcrJv7WuVArX4yC/JM4WHnyfVgzROoK2H4Pvd1MVWeAh9tkeOU7FUQ29YAgLuX9teqheH4WPx1UZBA9bniLhf/zQql2guHNDAqCY8DR9bjrHSBLWRwpwfabl2NvNBg3Rn3ZOM4oNDyGsrSGT7aNI7JimiAeKu//hgEFTwFv7W67pCrlLeBnoZvZqrZ8ytRxcUCwrgKIibT8bqwunsoa1A==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(82310400026)(376014)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Y+QTg8rXUVqrY9fHlx8M6qRIqJh/b/hQ6PlGVwYcxp3Drj6F19IsHeZNQnj3gdLDivbvVEOt5nvbAFGFKbp2bK0iR0Ytm6crc54HAwd5iqsV1/gVX5zQphOKLeOlt4PlT+L4HAcSfK9a89dZUegiEdc3oPdkGtI5zvBtGOhJisfzp1UcAh6Bu/s3onw+HiFQcRpibUTbskIOn0zuOJqQN40o1Gp6yw9shXwuuPELmf4IRIGTPcOG8yXIGcPbvO98f+VBXsnqV2RIO5mKW+FjZ68ZTSLV3W5ebJXs82OQcs4s3CtUYRXQQ/mSFdmQ6DKajh4dD5FmNq8j/tBjXopgdkBEADbNCtyj6wmXfN1heDgG3BwEJwun2hetOCx5VyU3NqiCopUcUkPFIIAmB9S1SPBoM6D7uZWnPOAXRGfGZhsAHqvfHJD4IyjQh0mxRRew
+	6ABojwGj3gQ6GylabUAljhWNiwFp5ZVwPr76V4y1+Tmye5QyY9XItVaJtaB/HOCMMSHfM3V3pBeY0T8ygXDvfTKOMvxMphTmxMfefWgX+j8muxZH1LVRqXPgRhA/POn8DbwBh9rIiXMspTPU+NwiXQbuUOK5PzBZZ1w4V6W4ljk43W4jUDixSPovtrd8Khvws4WfOX716lUMb3vjuKQdY+PDcRCQsOQKRnj3jUpX058SHbw7ZzEcJ43tmkDWwCX8DnrSedtmvbYwTQPDySyUdRvoEyL415B9M5pf0EndmAPbhjUqR6bt8FnbzBiTloBBozW2ZNSsF6HfqQxceSR1z+n1iuzJW4cNfcwlVkG1HeGFeiPjkm8SyVPAKci5cu/tiErPvAQKSJdmVxo6WsHxsRX68Zowt8nPeApANPfQBJDaFRrrBjKlSAdiVzt8nqz3
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:33:14.9691
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:33:17.6163
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5abe074-4532-455d-8847-08dee93cad77
+X-MS-Exchange-CrossTenant-Network-Message-Id: 338d59d2-ff9d-47f2-e1bb-08dee93caf06
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002318.namprd03.prod.outlook.com
+	SJ1PEPF0000231E.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9155
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8664
 
-The ENST start/on/off time register definitions for Q0 and Q1 are not
-referenced anywhere in the driver. The driver calculates these register
-addresses from the ENST base offset and the queue index instead of using
-fixed defines, removing the unused macros.
+The initial "tc" command was not overwriting the reset value of ENST
+registers if only a subset of queues were configured, leading to an
+invalid setup. To fix this, configure all queues unconditionally.
+Unconfigured queues are zero-initialized via kcalloc(), ensuring a
+complete and consistent configuration.
 
+The queue_id field in struct macb_queue_enst_config becomes redundant
+once the array is indexed by queue id, so drop it.
+
+Key changes:
+- Drop queue_id from struct macb_queue_enst_config
+- Allocate enst_queue[] based on bp->num_queues instead of
+  conf->num_entries
+- Index enst_queue[] directly with the queue number
+- Program ENST registers for all queues
+
+Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
 Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 ---
- drivers/net/ethernet/cadence/macb.h | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |  2 --
+ drivers/net/ethernet/cadence/macb_main.c | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 2de56017ee0d..a11052565436 100644
+index a11052565436..4cc9aa9b2f9e 100644
 --- a/drivers/net/ethernet/cadence/macb.h
 +++ b/drivers/net/ethernet/cadence/macb.h
-@@ -184,12 +184,6 @@
- #define GEM_DCFG8		0x029C /* Design Config 8 */
- #define GEM_DCFG10		0x02A4 /* Design Config 10 */
- #define GEM_DCFG12		0x02AC /* Design Config 12 */
--#define GEM_ENST_START_TIME_Q0	0x0800 /* ENST Q0 start time */
--#define GEM_ENST_START_TIME_Q1	0x0804 /* ENST Q1 start time */
--#define GEM_ENST_ON_TIME_Q0	0x0820 /* ENST Q0 on time */
--#define GEM_ENST_ON_TIME_Q1	0x0824 /* ENST Q1 on time */
--#define GEM_ENST_OFF_TIME_Q0	0x0840 /* ENST Q0 off time */
--#define GEM_ENST_OFF_TIME_Q1	0x0844 /* ENST Q1 off time */
- #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
- #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
- #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
+@@ -1490,7 +1490,6 @@ struct macb_platform_data {
+  * @start_time_mask:  Bitmask representing the start time for the queue
+  * @on_time_bytes:    "on" time nsec expressed in bytes
+  * @off_time_bytes:   "off" time nsec expressed in bytes
+- * @queue_id:         Identifier for the queue
+  *
+  * This structure holds the configuration parameters for an ENST queue,
+  * used to control time-based transmission scheduling in the MACB driver.
+@@ -1499,7 +1498,6 @@ struct macb_queue_enst_config {
+ 	u32 start_time_mask;
+ 	u32 on_time_bytes;
+ 	u32 off_time_bytes;
+-	u8 queue_id;
+ };
+ 
+ #endif /* _MACB_H */
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index d394f1f43b68..d58430fe9c41 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4329,7 +4329,7 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
+ 	struct macb_queue *queue;
+ 	u32 queue_mask;
+ 	u8 queue_id;
+-	size_t i;
++	size_t i, q;
+ 	int err;
+ 
+ 	if (conf->num_entries > bp->num_queues) {
+@@ -4357,7 +4357,7 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
+ 		return -EINVAL;
+ 	}
+ 
+-	enst_queue = kcalloc(conf->num_entries, sizeof(*enst_queue), GFP_KERNEL);
++	enst_queue = kcalloc(bp->num_queues, sizeof(*enst_queue), GFP_KERNEL);
+ 	if (unlikely(!enst_queue))
+ 		return -ENOMEM;
+ 
+@@ -4416,13 +4416,12 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
+ 			goto cleanup;
+ 		}
+ 
+-		enst_queue[i].queue_id = queue_id;
+-		enst_queue[i].start_time_mask =
++		enst_queue[queue_id].start_time_mask =
+ 			(start_time_sec << GEM_START_TIME_SEC_OFFSET) |
+ 			start_time_nsec;
+-		enst_queue[i].on_time_bytes =
++		enst_queue[queue_id].on_time_bytes =
+ 			enst_ns_to_hw_units(entry->interval, speed);
+-		enst_queue[i].off_time_bytes =
++		enst_queue[queue_id].off_time_bytes =
+ 			enst_ns_to_hw_units(conf->cycle_time - entry->interval, speed);
+ 
+ 		configured_queues |= entry->gate_mask;
+@@ -4448,15 +4447,14 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
+ 		gem_writel(bp, ENST_CONTROL,
+ 			   queue_mask << GEM_ENST_DISABLE_QUEUE_OFFSET);
+ 
+-		for (i = 0; i < conf->num_entries; i++) {
+-			queue = &bp->queues[enst_queue[i].queue_id];
++		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+ 			/* Configure queue timing registers */
+ 			queue_writel(queue, ENST_START_TIME,
+-				     enst_queue[i].start_time_mask);
++				     enst_queue[q].start_time_mask);
+ 			queue_writel(queue, ENST_ON_TIME,
+-				     enst_queue[i].on_time_bytes);
++				     enst_queue[q].on_time_bytes);
+ 			queue_writel(queue, ENST_OFF_TIME,
+-				     enst_queue[i].off_time_bytes);
++				     enst_queue[q].off_time_bytes);
+ 		}
+ 
+ 		/* Enable ENST for all configured queues in one write */
 -- 
 2.44.4
 
