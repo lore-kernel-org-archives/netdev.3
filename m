@@ -1,115 +1,112 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A2525487C;
-	Fri, 24 Jul 2026 13:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB5C4908B5
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 13:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784899936; cv=none; b=ZFBX9PR1fUHfc94rDv0ef3ysTeqJJmD/69saIYhbq7hObZ3L8Ly4tlR0Dy1KxATdXk5x8h324IF1Y0x0/dn7yh5u5EtdJLsLBAwZlxxCSgJ5rQ5OymSypmh1gnKM5Pnx484W9du/Db+iAxe21HBdjwV0h2cGiERjRqq0QnnX2b4=
+	t=1784900121; cv=none; b=Q//AckTCJzDXZI8U+cPbHD+7iHGHxXjoG26sxf62VzLEcO4X18sfRcikJVCM8hf/K1UNDATvtTbOmRYIiCRSXxxymxvUm2OO0RApwQMhpkJXiKDrMaY3O3sZ6rAnjzFY65QIoxYJ9IYM6E4VTm3quxBCG+pCbhd0J3tWIN/JeAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784899936; c=relaxed/simple;
-	bh=XTG4wZjDO7F4xbKFzO0zRgvt9Q3L5ZAseFwMIpYF+CY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rc+JbWuQljICbhpQeq8cKaMJQzlnNX2ZbI2ENIQU4ZJrcxbT2IfbokJZT948pIjH++9AYAmtvqKXJuluNZghzPL3dJdvZhfrLJ9nx1DJDpvy+qIDCNoXzLQKYIJPHOxxXFq5SgTwHZR2SvKw7w9KnWQtNWr/cMiAKkhKUUe9Z44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ht+WE01v; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784900121; c=relaxed/simple;
+	bh=DiHjClNnKvO9jZX0Ke//LfSQncDzy2hjiz3x6Y4zTls=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=h0QrNq4oUJW7hKaUJ13h4yPx5aS07GS4MEopmBYd5ym5n1de9sSiDk/U4jIjGNme6cb/IuMXtTjFw5v8VVBPYaSEGladwczFwjFtM83yWhwwOzRtpjkLDfINexS2vkXZModzJHU7YeAVZWvfEogPtPZPCAY/6RgYhjHUFo5zurQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etd+G2+H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ht+WE01v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=d5Ndja1XTEQtXNMBV9Ptqjp/+QvlljffO2q5Aq9XOIE=; b=ht+WE01vdlrS8rFoG0/88Omo8P
-	MtCxzLlCV7mw79qO0m1Amkq5Y1VR/rMwjjBzEPWb9Y8dXtyTUcXYV0NmGEvFdvgJcTTcT55Bj9Yw4
-	l+1ntmWqc8JANJl15fF4Eak8DziVlndNQDcdE2aTIFI2ZbOyUS2MCwXrQ9wgX1EbmmwI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wnG0U-00DzyS-MK; Fri, 24 Jul 2026 15:32:06 +0200
-Date: Fri, 24 Jul 2026 15:32:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 04/13] ax88179_178a: Add EEE HW configuration
- support for AX88179A
-Message-ID: <1a5a0720-5913-4935-8ae8-d3d0f54734c7@lunn.ch>
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-4-bdde4f905883@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etd+G2+H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE281F000E9;
+	Fri, 24 Jul 2026 13:35:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784900117;
+	bh=FwHug8BSH2YGvvXN2LL10M//JxYB3JNir68zjnTY/Lg=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=etd+G2+Hdf49VoPEMhPshMa/r7bcNYsN1y9VOZ5HqS9nVDUIqA2uvMq5t0ABQrJvd
+	 m0Lq9yDKma+vhvTJ+UwObsH8/4F2oU4d7YQPg4eqFvKzA2G3psjUG0adJufbJMhbmq
+	 jp1mWMFzEr++JbjtJnZ2UWS3uDpfuf3rwtuQyNx7heYA0qfi8TR25bm2P+PBJQVbr9
+	 OGRe9Fwt68COBC9tOCcvnvpA2Q5bNHBKSTIEkdDh5WT26UVgMpPBLsmWlOcquITFt/
+	 CgVQ/0EUrVqISlhKBYlvB5xafUXabTQt0aY7kcICezt5x1IzE03nYCnw+HC9ufuBIk
+	 yfe/grYFUOwdA==
+Message-ID: <ffb53ae8-5e2a-4f71-9ac2-e40cf98a173d@kernel.org>
+Date: Fri, 24 Jul 2026 15:35:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724-ax88179a-v3-4-bdde4f905883@birger-koblitz.de>
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Subject: Re: [PATCH net-next 1/2] docs: netdev: clarify handling of idle
+ patches
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1784884817.git.pabeni@redhat.com>
+ <38b75373f813354ad0ee8bfde12ae5a42e9a11b6.1784884817.git.pabeni@redhat.com>
+Content-Language: fr
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
+ YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
+ c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
+ WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
+ CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
+ nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
+ TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
+ nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
+ VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
+ 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
+ YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
+ AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
+ EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
+ /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
+ MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
+ cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
+ iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
+ jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
+ 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
+ VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
+ BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
+ ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
+ 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
+ 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
+ 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
+ mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
+ Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
+ Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
+ Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
+ x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
+ V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
+ Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
+ HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
+ 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
+ Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
+ voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
+ KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
+ UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
+ vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
+ mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
+ JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <38b75373f813354ad0ee8bfde12ae5a42e9a11b6.1784884817.git.pabeni@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 24, 2026 at 09:36:47AM +0200, Birger Koblitz wrote:
-> The AX88179A uses a much simpler HW configuration for EEE
-> via a single EEE configuration register. Add support for
-> this register and replace the EEE enable/disable functions
-> with a single EEE configuration function which enables/disables
-> EEE in the hardware.
+Hi Paolo,
 
-EEE is split between the MAC and the PHY. All the PHY parts will move
-into the PHY driver when you convert to phylink. 
+On 24/07/2026 11:24, Paolo Abeni wrote:
+> Off-list pings are very bad, but unfortunately too common. Explicitly
+> state that, so that at least LLMs could learn it.
 
-It looks like this is about the PHY?
+Good idea to clarify this!
 
-> +static void ax88179_eee_config(struct usbnet *dev, bool enable)
->  {
-> +	struct ax88179_data *priv = dev->driver_priv;
->  	u16 tmp16;
->  
-> -	tmp16 = GMII_PHY_PGSEL_PAGE3;
-> -	ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> -			  GMII_PHY_PAGE_SELECT, 2, &tmp16);
-> -
-> -	tmp16 = 0x3247;
-> -	ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> -			  MII_PHYADDR, 2, &tmp16);
-> -
-> -	tmp16 = GMII_PHY_PGSEL_PAGE5;
-> -	ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> -			  GMII_PHY_PAGE_SELECT, 2, &tmp16);
-> -
-> -	tmp16 = 0x0680;
-> -	ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> -			  MII_BMSR, 2, &tmp16);
-> +	if (priv->chip_version < AX_VERSION_AX88179A) {
-> +		tmp16 = GMII_PHY_PGSEL_PAGE3;
-> +		ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> +				  GMII_PHY_PAGE_SELECT, 2, &tmp16);
-> +
-> +		tmp16 = enable ? 0x3247 : 0x3246;
-> +		ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> +				  MII_PHYADDR, 2, &tmp16);
-> +		if (enable) {
-> +			tmp16 = GMII_PHY_PGSEL_PAGE5;
-> +			ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> +					  GMII_PHY_PAGE_SELECT, 2, &tmp16);
-> +
-> +			tmp16 = 0x0680;
-> +			ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> +					  MII_BMSR, 2, &tmp16);
-> +		}
->  
-> -	tmp16 = GMII_PHY_PGSEL_PAGE0;
-> -	ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> -			  GMII_PHY_PAGE_SELECT, 2, &tmp16);
-> +		tmp16 = GMII_PHY_PGSEL_PAGE0;
-> +		ax88179_write_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID,
-> +				  GMII_PHY_PAGE_SELECT, 2, &tmp16);
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-I would maybe put this into a helper. When this code gets moved in the
-PHY driver it is probably going to be a function per PHY.
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-    Andrew
+
