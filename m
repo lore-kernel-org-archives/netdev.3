@@ -1,47 +1,91 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2F34398F5;
-	Fri, 24 Jul 2026 16:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AB0364933
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784911081; cv=none; b=Ng30sMpGFjYKsUiTftFWdAdgYlHzPZEDbwQOQq5q2ssqAivc3/NXubuuLkH0ibj1zfEykOfwgua6izKT9GLT8Q5nweA4IfM/WjjX9/I9rijxiknWtms44pK+CnHJGbXIlmsyuU6y5vWUsQDWFCHVxzR4t6ZP9waD+FBEu2WHjBU=
+	t=1784911199; cv=none; b=dQ8lfdWpWTdmr9+kG2mHnV6GaKdxJI+Ea3PpJ2M9hHKbLe96mq7KzoWUPo5q12JbyGe1wkAGfThEU0kVV0lNJh4z/D7ou0lWmAIAs0Xmcr562cV137/ubj2nMAL7qANru4WyH/knCAbI3jL+J4hSxa8y3hgYQEcL67nbO8G8R5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784911081; c=relaxed/simple;
-	bh=ltGf1KOxXKsp0jz4oKz1OI/2uglE5T/KkAEiyAV1pUQ=;
+	s=arc-20240116; t=1784911199; c=relaxed/simple;
+	bh=rxpQc12lsUWEKrXL6hgR5Ul4ob5uHCzCMUR1TSqQtxI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z+q+r9Or+jf0seBxrvWHNkO1lAnq3Xl+9+bAUeYAn2OTXUoxZRwkDwMPZFRcB8AI8yoMFcBdskEUDSKojgtbnNCqHu7L3daEyXrKPtVAQHrfq0N9I7frNd2ZPiH5Zd25bQFiOgDnH63SfIr66EK/OCOBt2470M1D5LSXx5QDdco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OfBFddg5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z4R57yU+NoGIojtNnHS5Us7lrl8wxDelgWJE17Y038GimW+4M/gPXqwItFFQjVBsU8MpJU4EEFdASHJQnNsHaQiePJh0JnGW+2iIZAVTKHSVUasuXO7QN9ngwoluQjijYk8fckRKnY38sO0p1HF192SpLFwQ/f2jjDK9vgIwz7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=erjUYXfu; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OfBFddg5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GY6iapSH0lwmHqNW+xbZdSb5vYcsqWDKLshR4pDNby8=; b=OfBFddg5Ch2rWCMEt8SxSnm8y0
-	tNBq6lKg8HEbrgJOo7BH/iXWNLzG0Iu23ZYM1TtlSxE291XZW9zyce8oApMgHHzjw8TeWwB60AX7n
-	8l3MsTvnwggdEhGkCNwQLWJRtd6iWxowBZGRMSf08fHPiJwgQDXDfWGnTB6PFw7wEmu4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wnIuD-00E1gI-Vd; Fri, 24 Jul 2026 18:37:49 +0200
-Date: Fri, 24 Jul 2026 18:37:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="erjUYXfu"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8423f236418so540000b3a.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784911198; x=1785515998; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hhTRsMUDFAKZh60GY3lXmo5DTZVRrbo+NNX8ufmzfOc=;
+        b=erjUYXfuLYe4+SuorcxzU+FMwuXss9uxmfHrCUQYWGk3zfybKZBSf/WlWldJk7FNBC
+         tAshTeDxYSpMkZQ9oMCYrGYBYugRAZXXPjsq4MznEeiw6KuJl48JCUJza13yBdFV2Gcg
+         eK/Fch37D9EfjOo27NBD2rOiMCPvK7PfjDZVOGMTj2Gqr3EN1/bqx4+iO1p3tK63FR9e
+         xY2j42LNR8nmq2o/Ep769+R1StMlAES3JE0cEpIkmT4a/jCnRACQZes6nGcItlcZwowA
+         lTmeRyt4PKxrIxUlIpBvdf+kXc2uQLlODIuLqhydzlYxWVG8RcDroarCPvAYuoq+sGhX
+         hO3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784911198; x=1785515998;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hhTRsMUDFAKZh60GY3lXmo5DTZVRrbo+NNX8ufmzfOc=;
+        b=UWNHUYkwhlkbKleRKe/M3x84zYn6WKOT29oAprgC7EyITrb2Q4oyRy8/9tpfTct+to
+         gDrdWzy7ixflPmjrd8gT7rEz0bnioA6/IbuoJf35/qvLOst0m48AFp+5nAST2z59s9OZ
+         JqddYDfbDtEJfTMgFKOzaxVMouDzOPSgmQnCWE38ifv5JnzvO9XjzeGTcfWZ4bNEYyXh
+         vpUOcOUGynJVnsZW3ODhVkMtkG9Q6pH6z3sVCJ2U3VtGEbzmDWzAuW5WAP3vIlILYuud
+         YnwGyJ2elHbLBmEnXbW56PBrtkURX2etirOMokhpR9xJKvbpzhot4O0B5ZyU0B4hO4ML
+         Yq2A==
+X-Forwarded-Encrypted: i=1; AHgh+RrD/Xywwy+DgvMi5N6MEx2F/gpznSID//qkIgByor8+bEFTQYg4IUf/RFd3ZDU8hQhNJB5/9r4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj3NhaBY2AHGhr/VCdEGiYcd+sh9OyIJEDWGQQaSmjfBAfANWB
+	7Os1W/WapFkgFnZ0mRONL3sG+AX37o68tjfPZju/Rw3QqthSAhIh4WOR
+X-Gm-Gg: AR+sD11qBGm4xQoxh/TxAxR0oidiIzsdzqenhHzt2aPh23fH2UeFDxBF2ZYhEejtFiq
+	f55/3AF/V1LzFIBPCJo4QbMExNJ+HzSVj5ikinCxnHNhqA7AKLAjJT7YvkQrr+zn8Gw/R/jr9K1
+	NeZcf4cpN9+wePB+LI4gkVjt3U1ijAfcCwBfQOGAKqGbmz1fesAtloPCEEDoHlcW3Dwibz6xakg
+	3GvtpDT2MOHSSKuC3O9Tj4N5bwvNtTzBP9CIYC2w4VFT7KeA847XAgAEuBDvyW0gCXh3FWUaaHH
+	qVXRhHmAD+aKF2ai+RTdLSc5FKgDoUsYQ2M1s3OqD/zl4tnDnJVyWfGVEwO2idjpEGDU9jVpgSe
+	phyjyuNAg6X7L/0u7W1lBY0ZtBx7NMoM/un4kYf2jGETYzYbOOOnfkBjD/x8jKwyRrs91sNdpTs
+	Ibq82B7HNXsAon6YkG+ZSv4kQ=
+X-Received: by 2002:a05:6a00:430c:b0:848:47db:a0ac with SMTP id d2e1a72fcca58-84e2b8aa987mr8703690b3a.27.1784911197498;
+        Fri, 24 Jul 2026 09:39:57 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:70::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5341d8f0sm163841b3a.44.2026.07.24.09.39.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 09:39:56 -0700 (PDT)
+Date: Fri, 24 Jul 2026 09:39:54 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 02/13] ax88179_178a: Add HW support for
- AX179A-based chips
-Message-ID: <20384ea2-dbb4-4794-9f77-662e3b476ba2@lunn.ch>
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-2-bdde4f905883@birger-koblitz.de>
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 1/3] net: devmem: allow rx-buf-size >
+ PAGE_SIZE per dmabuf binding
+Message-ID: <amOVWgJ3BAJ8I/4+@devvm29614.prn0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+ <20260708-tcpdm-large-niovs-v5-1-34bf6fac941b@meta.com>
+ <20260721110713.325d36ba@kernel.org>
+ <amKqlqgfZipKjrii@devvm29614.prn0.facebook.com>
+ <20260724072419.62778bbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,24 +94,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724-ax88179a-v3-2-bdde4f905883@birger-koblitz.de>
+In-Reply-To: <20260724072419.62778bbe@kernel.org>
 
-> +static void ax88179a_mac_link_up(struct phylink_config *config,
-> +				 struct phy_device *phy,
-> +				 unsigned int phy_mode, phy_interface_t interface,
-> +				 int speed, int duplex,
-> +				 bool tx_pause, bool rx_pause)
-> +{
+On Fri, Jul 24, 2026 at 07:24:19AM -0700, Jakub Kicinski wrote:
+> On Thu, 23 Jul 2026 16:58:14 -0700 Bobby Eshleman wrote:
+> > > > +	if (info->attrs[NETDEV_A_DMABUF_RX_BUF_SIZE]) {
+> > > > +		u32 rx_buf_size = nla_get_u32(info->attrs[NETDEV_A_DMABUF_RX_BUF_SIZE]);
+> > > > +
+> > > > +		if (!rx_buf_size || !is_power_of_2(rx_buf_size) ||
+> > > > +		    rx_buf_size < PAGE_SIZE) {  
+> > > 
+> > > we should add a check: min: page-size in the Netlink policy?  
+> > 
+> > I played around with this adding:
+> > 
+> > Documentation/netlink/specs/netdev.yaml:
+> >  definitions:
+> >  +  -
+> >  +    type: const
+> >  +    name: page-size
+> >  +    value: 4096  # dummy value, to pass ynl_gen_c.py checks
+> >  +    header: asm/page.h
+> >  +    scope: kernel
+> > 
+> > Generating:
+> > 
+> > +static const struct netlink_range_validation
+> > netdev_a_dmabuf_rx_page_size_range = {
+> > +       .min    = PAGE_SIZE,
+> > +       .max    = U32_MAX,
+> > +};
+> > +
+> > 
+> > ... but the dummy 4096 is kind of annoying. ynl_gen_c.py can't know the
+> > value of PAGE_SIZE but needs some value for its arithmetic checks (e.g.,
+> > confirm min < max is true).
+> > 
+> > Should we stick with using a dummy value, or should we add a patch
+> > teaching ynl_gen_c.py to allow value-less consts (skip the arithmetic
+> > checks)? 
+> 
+> Let's stick to a dummy one for now, but maybe something obviously dummy
+> like 0 ?
 
+0 sounds good to me.
+
+> 
+> BTW did you add both min and max checks? Cause the only risk with using
+> a dummy value would be that the policy will be rendered inline, and
+> inline policy is u16 so 64k wouldn't fit. But your sample above has a
+> max of u32_max which forces the out-of-line policy, which is what we
+> want.
+
+Yep, u32_max:
+
++	 name: rx-page-size
 ...
++        checks:
++          min: page-size
++          max: u32-max
 
-> +}
+Sorry, probably should have just sent the whole patch instead of
+replying hunk-by-hunk.
 
-I don't see you doing anything with tx_pause and rx_pause.
+BTW, how expressive do we want these policies? For example, would
+absorbing the power_of_2 check into a policy be valid in the future? or
+is that too bespoke?
 
-This is another case where MAC drivers always got something wrong,
-pause. We solved this by moving as much code into the core as
-possible. You need to configure the hardware based on these two
-values. Nothing more. KISS for MAC drivers.
-
-	Andrew
+Best,
+Bobby
