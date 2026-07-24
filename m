@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596473B1EF2;
-	Fri, 24 Jul 2026 07:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5D13B4EB3;
+	Fri, 24 Jul 2026 07:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784878623; cv=none; b=LoB6bbt2R/Kg3dZW97BW4JXppHuP3p3YYgoiMnGSHgg5pKkermcgoXjH8vFePXbrllSaQ3GnXmwHnnOEkOusH07pzvgsfv4WMUVZuf2KUdP/h0ZNYbuyH6w6VL8VkK4o7OhkOSKmnZC9uQs5NM0VefLJ3gA2qui70u2KjEeAtWE=
+	t=1784878625; cv=none; b=U/WNasM67xPrjsh6m+itZKMxxdMquQJQK0oSw/TA6SDziTQNbC4Z9a4be3sS3QGKGxQQcGKTp3ARyrhZtWQ60Dcr7GynbVSec8YHcPkN4sl3bfV/+MLhOZwDD1jutaG9THFKwmAf+xjN+OzEQETQMNT5k1SOWXBj4S2xp9F56UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784878623; c=relaxed/simple;
-	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
+	s=arc-20240116; t=1784878625; c=relaxed/simple;
+	bh=hs6vOWcxq7NhNoT6wlrBwY/rtSOqSM4YClhCh6PJk8M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Wa+MZ5lQumNZUuQUKZ3qmIhRS7P+eQ5CKWnAh36IX0JqKdoW1m9HpUjDuflPzolZepgZtmo78sBo+a9mEiVCxDE33pFJDt48x7sm9r1LhQDuMRxTx2CTH/c74CsAF5S6IJrzVyzyJKD2yWb8TCyoMo1r8lfxrKTTmwwIkzPPKHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=qzStT0pF; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=rHot+6RZ; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=OYxlZKIP47tUNcnfftpaD61mVBfsA+KCq2vS4Jx6QLEgavujqKq+E5IvBIw3HUb1spnAGpo2AegAW8zsY+CogglPn3yDMLgUWT6dUMqPCuIbHStn0WoUZlfnd67wqcetEyY0K/sWYTo7Qn/H1tHqy0p6MMWNI71v08C6+1prVbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=E2ZBBECc; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Xvogqmj1; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="qzStT0pF";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="rHot+6RZ"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="E2ZBBECc";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Xvogqmj1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878618;
-	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
+	s=default; t=1784878622;
+	bh=hs6vOWcxq7NhNoT6wlrBwY/rtSOqSM4YClhCh6PJk8M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qzStT0pFFzaZGnTmnEyY6VHcMMxdGM4lfMsgC338YR9XVr+N7vU60MHxFFUrNejmt
-	 efu1Ndz13MPFHi6x7X+kvZWPs74le2Lvv0AWr3z3mxvYalvMgkD25iV2OZN/JaEHXA
-	 SDEMmyuwQXYHSI/QYo/azcz16IV2RsEoytanXJsWr0z1SmGYGO2dTiiW41UZCcPO6q
-	 McWY1YJJYC4Y8pKvMP1YI3UCLnIXXI4OZJWJj5K1mZDu9lhgZxF5ldX1PNA0mjdPgb
-	 bCG1zQ/K/8PRnGb+719aMlSOlCbSL87DPKZRqeEATOJAXVrRb4Yr/Bu5BzO+G0V/VC
-	 FNwN6brulPI7g==
+	b=E2ZBBECc17jpQyXjfW7AJ1jwdw8Z0K9PRIEANMA45QTVa10vZ912oHz44vT998i/2
+	 xZPlE9q0zhBbzm2+k5ItJqw8eSJZoVEiFVE6hn6GQDMdj6/Yj05COlSBMnyi2PrafF
+	 rTJLbl9E0EdCtCKETk96Zm/Wz2xoIP05l5zC1mE5gkrz2hS4UVde7RHVjGkmNJdb3n
+	 Qa++/abipzRhMrC7IyXD964s99z1PQXQ69DAImNWufG7kzXd7/Mn2ACzN3LfqAngH5
+	 D56w8PTtlf8GYbap+zhnz1mw1OYo5vzUXmez7PwFWoePBVMW2i9gdjnTufiBGnFC25
+	 dzpG6t1b4otRA==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id B4ABA493BB; Fri, 24 Jul 2026 07:36:58 +0000 (UTC)
+	id 1C37749367; Fri, 24 Jul 2026 07:37:02 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878608;
-	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
+	s=default; t=1784878610;
+	bh=hs6vOWcxq7NhNoT6wlrBwY/rtSOqSM4YClhCh6PJk8M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=rHot+6RZpixT82qp8IEvRbFh7QrDS8LPKp+OBwPBnI3t6Zah6u0hxMgLLowPlkXSq
-	 8BDOzyiWNr+3BwsSOBByUKMB21r5QoOloZDsdp9uFcrf0PpoecfhCzn+7xH/qGLSoh
-	 Lbl8LeFzfLARQtGec/j8XbjeEfq5qnMmrypGSiQKpBktLI2eHwdG81vKXaee4c6doZ
-	 M7vO+mZpsssU8GG2YEk1TmU0n/7mpwTNfgW6PzIF91wkruMXV12o1P6hZ3CWK6CDcc
-	 y+gl7F7FKDRwEVzVWYzwqcXTvvnbs1i7HgLjWvW9j8xt2eLSdUXcXtRLrF/jJvr+sb
-	 2NUQMo8vtcoIw==
+	b=Xvogqmj1L9EdzITzhlG5L1pKVbKCZ6IKmTi0nhwTWFp0F7nG7lKPK577k+GdAk8q1
+	 lcgb5tCYfLy5a7vxEcJH++ST+Og642nHd+aavlYNDn8G67FlE6vEQ85h73S6HXIrHC
+	 E0s6rRhK/u1a+YYIeBob2Fpoe5HlS3flHV9B9c8R22YpmUmNjK4FxJxhGtc5Ob/FJS
+	 FlKxLcT088g1aV36nipBOLsS9+LvS6jzuDDXVMS3udiVJUO1HBKY25TcpUp2/ETtro
+	 Q/2q1qHOepgQoqJc6TT4+AZmj/fG4w4dTf5XkQRVScAe2MzJhOYn8pIup9Kf48MViM
+	 0cpKyOVmqXXPg==
 Received: from DebianDesktop.lan (p200300c69f1c3c00ecd187824fbc6faf.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:ecd1:8782:4fbc:6faf])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8D7EA48F41;
-	Fri, 24 Jul 2026 07:36:48 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 04547492F2;
+	Fri, 24 Jul 2026 07:36:49 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Fri, 24 Jul 2026 09:36:50 +0200
-Subject: [PATCH net-next v3 07/13] ax88179_178a: Obtain speed and duplex
- from Interrupt URB
+Date: Fri, 24 Jul 2026 09:36:55 +0200
+Subject: [PATCH net-next v3 12/13] ax88179_178a: Add AX179A/AX279 multicast
+ configuration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-ax88179a-v3-7-bdde4f905883@birger-koblitz.de>
+Message-Id: <20260724-ax88179a-v3-12-bdde4f905883@birger-koblitz.de>
 References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
 In-Reply-To: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -67,38 +67,37 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-For newer AX179A/772D firmwares and the AX88279, the
-interrupt URB response also contains information on the Ethernet
-speed and duplex status. Read this in order to use it to configure
-the link.
+Add support for conditionally setting the ip_alignement flag
+AX_RX_CTL_IPE in AX_RX_CTL and make sure that AX_RX_CTL_DROPCRCERR
+is also set to be consistent with the initial configuration in
+ax88179_reset()
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 ---
- drivers/net/usb/ax88179_178a.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/ax88179_178a.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 8ea16d1231037832e12f74e2c5304ee4b7a54389..02c015847eea3dfbdfa73f3d59a7d5b0dd1bc339 100644
+index 2b3393e7a3b2221b85bfb7c7b6b7ea6d92fc1deb..1e63d40de84364559a01d1fc02a652fcb7fa57e9 100644
 --- a/drivers/net/usb/ax88179_178a.c
 +++ b/drivers/net/usb/ax88179_178a.c
-@@ -496,6 +496,7 @@ static int ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
- 
- static void ax88179_status(struct usbnet *dev, struct urb *urb)
+@@ -1319,10 +1319,14 @@ static int ax179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vid)
+ static void ax88179_set_multicast(struct net_device *net)
  {
-+	struct ax88179_data *data = dev->driver_priv;
- 	struct ax88179_int_data *event;
- 	u32 link;
+ 	struct usbnet *dev = netdev_priv(net);
+-	struct ax88179_data *data = dev->driver_priv;
+ 	u8 *m_filter = ((u8 *)dev->data);
++	struct ax88179_data *data;
++
++	data = dev->driver_priv;
  
-@@ -506,6 +507,9 @@ static void ax88179_status(struct usbnet *dev, struct urb *urb)
- 	le32_to_cpus((void *)&event->intdata1);
+-	data->rxctl = (AX_RX_CTL_START | AX_RX_CTL_AB | AX_RX_CTL_IPE);
++	data->rxctl = (AX_RX_CTL_START | AX_RX_CTL_AB | AX_RX_CTL_DROPCRCERR);
++	if (data->ip_align)
++		data->rxctl |= AX_RX_CTL_IPE;
  
- 	link = (((__force u32)event->intdata1) & AX_INT_PPLS_LINK) >> 16;
-+	data->speed = (((__force u32)event->intdata1) >> 8) & 0x7;
-+	data->full_duplex = (((__force u32)event->intdata1) >> 12) & 0x1;
-+	data->link = link;
- 
- 	if (netif_carrier_ok(dev->net) != link) {
- 		usbnet_link_change(dev, link, 1);
+ 	if (net->flags & IFF_PROMISC) {
+ 		data->rxctl |= AX_RX_CTL_PRO;
 
 -- 
 2.47.3
