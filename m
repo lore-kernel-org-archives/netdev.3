@@ -1,58 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1E53DAAD4;
-	Fri, 24 Jul 2026 21:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBD93F482D;
+	Fri, 24 Jul 2026 22:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784930325; cv=none; b=Yq3EVc1ze3MPlgdHcoL1GXwta/HbBsxE3Oh/cno2pM3be+c8nim+GzOIzMGAECkxWpEHT3tvmbwcg16L/uj1MSvKETHqIcP9Hx7HMtPB35kK81K84VGio3Vm3+jIpKwnKSLbkJPuSFTO8R47gse1Ia2UvrTAlmuXZtCEywtHPqY=
+	t=1784930441; cv=none; b=sFJRZW8TZjxmgcUGNmHsP5ZVe+SnRrR5a4u+qkqyaV/nd/6DY083IUl8tz1tc3px1eZiLWmMJq6SQe9OWTU0HHA8Ie1ebJTG2F/X5t0rGvYaZLdvED2j81tN1I74LBCCqpqvklZ1pM/Yz+sHyOJQUw63C1DeKZOSvuvZaq2IvAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784930325; c=relaxed/simple;
-	bh=o9kGb540YenJrByyQX9PxC30FbVDYnlT8RdZtkEkdsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gvyBky8PDLGuEQVdxsva3jP7qGU3Yr1i/vvS5Msm6Q5uyHWag5WM6axxHfdjFyE+4kxJeDa0gZql25L5vxZiueZFMyjagK3Qkklgi/nNn98owe98s0IesN2X4xjHWysnvgWVXMT3pcBW03NHR04KG06i5KhcWYaUGWilDEXUqu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7jXfd/Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784930441; c=relaxed/simple;
+	bh=X07jI/+qvanFnqzYWrbcYoCKu6qHnqXRLUz9I1YjOX4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Vu2PA3iAwnUowAQ9iL944NA9jgAr0pWjq2sx+nYVx8heu3OXbpDQl6croJFFj6k6kIq1MMHZHMhs5Elsk0KX8k2f4IsorurGtE61QafnHt2zdhs7b0Xz6YnNrFDSvyCCmF/oRqepeM/Txf9AgE/QT6bVmK38/RX1TiDgaITWbz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVVoSBug; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7jXfd/Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D211F000E9;
-	Fri, 24 Jul 2026 21:58:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVVoSBug"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A9D1F000E9;
+	Fri, 24 Jul 2026 22:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784930315;
-	bh=o9kGb540YenJrByyQX9PxC30FbVDYnlT8RdZtkEkdsg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S7jXfd/Z5EKxkNaOxsh5P7GgnV/QMQmwJc84c+ASOL3leovskt/e5f4oFy3g7Al5c
-	 gaPxToilAQEkU7O5h3Vl3caNC8FQlgpfxFQgTsy9nYBjhGjA2OmTxL5xw+NREytBWL
-	 uGQ+uqsSUDS129ee//2vaZrorPWx2E8iC1Hqa/kk249eTefxn3FRPOk7snbQI8X0pQ
-	 35rwVf1OKlD6pWr7dmoqRjEbKolHUgI1BkCpznGQXvdEVsW5tj7sdIWzzOsHotg5RD
-	 yBaMu54pa9XS/5e+ds2kFbpJ6cb24BNwjRSz+pySy4pT9J0Qio/QFbYC/7rzjHXXxQ
-	 SdvPw4q37Nu4w==
-Date: Fri, 24 Jul 2026 14:58:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ibrahim Hashimov <security@auditcode.ai>
-Cc: alex.aring@gmail.com, stefan@datenfreihafen.org,
- miquel.raynal@bootlin.com, horms@kernel.org, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] mac802154: lock rx_mac_cmd_list and drain it
- before freeing sdata
-Message-ID: <20260724145834.3e0485e6@kernel.org>
-In-Reply-To: <20260722101608.37744-1-security@auditcode.ai>
-References: <20260722101608.37744-1-security@auditcode.ai>
+	s=k20260515; t=1784930440;
+	bh=Fl7Pc1djCZRwzz9Bth0ewIIi6/wzJ/eiV84p8CK2bQM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=AVVoSBugieNKYjXI6FC/4mNN37hSAavbBTE8gDeYjeR+sem1995JIEngkJfUaLqyy
+	 tKoSR9+Z0RPdLSX3F5sJRTyA1dExdxzoC2cd3LMAyn5j7kLlrgCbhksybFHyftvRgV
+	 hfnaOvXVji+9O+szxP2WZx3B5hBSIxDF6Tb0Go1v+qYUjjnmseiJL63GYJ+1tNMW7z
+	 Cax6TupfOZQ2AIthEJp9OuNoRWClvWgrLSSmjAWcOYDBDpeWkIbxnvgIRmhZ6ZAb/G
+	 X9EhzkROVTtg00UCqNJudiefbsKQO7e6Qlt+bpPOLW2BxP9G86Lu+58EN6vyqEYJkO
+	 RMtW1vsHn7rIg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A4738111D7;
+	Fri, 24 Jul 2026 22:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] MAINTAINERS: Update SHARED MEMORY
+ COMMUNICATIONS
+ (SMC) maintainer entries
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178493040692.3326421.5106894914058435335.git-patchwork-notify@kernel.org>
+Date: Fri, 24 Jul 2026 22:00:06 +0000
+References: <20260724053752.3084-1-wenjia@linux.ibm.com>
+In-Reply-To: <20260724053752.3084-1-wenjia@linux.ibm.com>
+To: Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
+ aswin@linux.ibm.com, wintera@linux.ibm.com, pasic@linux.ibm.com,
+ guwen@linux.alibaba.com, alibuda@linux.alibaba.com, tonylu@linux.alibaba.com,
+ dust.li@linux.alibaba.com
 
-On Wed, 22 Jul 2026 12:16:08 +0200 Ibrahim Hashimov wrote:
-> rx_mac_cmd_list has no locking. The RX softirq producer in
-> ieee802154_subif_frame() list_add_tail()s while the mac_wq worker
-> list_del()s, and the worker dereferences mac_pkt->sdata with no
-> liveness check.
+Hello:
 
-Both sashikos complain about races:
-https://sashiko.dev/#/patchset/20260722101608.37744-1-security@auditcode.ai
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260722101608.37744-1-security@auditcode.ai
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 24 Jul 2026 07:37:52 +0200 you wrote:
+> Due to a change in responsibilities, I can no longer serve as an SMC
+> maintainer and need to be removed from the MAINTAINERS list.
+> 
+> To reflect these organizational changes, promote Mahanta Jambigi
+> <mjambigi@linux.ibm.com> from reviewer to maintainer.
+> 
+> Acked-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+> Signed-off-by: Wenjia Zhang <wenjia@linux.ibm.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v3] MAINTAINERS: Update SHARED MEMORY COMMUNICATIONS (SMC) maintainer entries
+    https://git.kernel.org/netdev/net/c/9736d2efc996
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
