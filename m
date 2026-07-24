@@ -1,110 +1,105 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C964E2931FF;
-	Fri, 24 Jul 2026 13:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E592EB10;
+	Fri, 24 Jul 2026 13:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784898685; cv=none; b=IsJoK7iVxs36yW8TULdFye/ssh1PwUMW1ywznYkew3IoMcxCNxFMnL3zHPsLuWlUPi/nhN4/16TM8yOFLnd9COgarab5ca6p5eNonIAXpviU8iyA9RcQ3L61rFP2Pe7dH5A0SIntRWZgtfKUuq7D3GesHN6P1VrQRaVyheinoxc=
+	t=1784898725; cv=none; b=ZR8nkMuIcnwcIJPlAp8O9hbT/Dp9DGW7yXiJwwv3WpoiZtE0oFIJIeA5artuZy/leiCa2ezAWS+p0WZaG2kjAuowYhnwqtaa0Mj6mBO7WIqUP6K/EmRnoFCc/J7z0w4+kbgHMzjCAghcV39968HbIETx/NjORco6KyOBmKO5B0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784898685; c=relaxed/simple;
-	bh=NUna20UvecMvvldvWQK7l6dRgL5Kg++Jc2/WPoM8vog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CmE6i2H6wfDw/dT3+vA8CzUYWybGPYCP/gIQCwOltLK0oftErJQXCv82YgsBc8r8b1UM0J+s1KXIvQKnPrtr7oIDSL6mRm9xQRFaRM4e6v9zwSUApeU4Gc07fH5krZ7ezR59T1sI6Z+Ps5WXemVtYSNNJjm1I6RpSXK9WZRqJZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eVQW4YyH; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1784898725; c=relaxed/simple;
+	bh=5TCrXdzINLrmaRzaRclbv/naPHnlc5bzoO9pd+8S1OU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=uRWo5rPJJfzwY/UzRyBOaaf5pjhNPC09f5RcKBgl6spwc20hebQTWRt9c7X9eTQKsvhd3jHdlHbkLEOaqp0EBqoWouwg8s4ydV0ZwlPhVao9J12syUqFrLV89oo1Ry1DXoPXoLJmI7w9ix8zyJff+gbzooUHl3M4/M2pi2Q2Brk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=95Oby/9i; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=KThpq6fo; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eVQW4YyH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tIGeMUsaNb0y93vr8pcc7knEo2f51EGekAs0IIpo/eY=; b=eVQW4YyHf2n+7nUYlm9j9OoqmW
-	93jEEsn1tgghZPGu21TlFvfxft/ALHG/mcJ4p2P/W/aubzHwD5nZtVcahmZaQw6D3DVgoEHKXTTrQ
-	NTVlYkiTW41de23zdPu1kvTfNTe8DuxdK4P0Uq4beMSHQ22WvPeuvI0drpbOvsZt4C8PJgXi6m/4A
-	jhZLQ13UK8c6cUqXfoFqsaW/24ALutRbfEWvhyrM4Gi3ngVRbOdVBRYP1+ZTqC7A6cYQ/KjSw7y5u
-	LfrmaxaUtxKbK5ASxHwjBB/eX2I41fzVQwewAD4AgLl/JDI6lPDDchhWsILYnKSegrrYGZtkoSzCD
-	gd+/Lzzw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnFfz-0000000GSAN-1qmn;
-	Fri, 24 Jul 2026 13:10:55 +0000
-Date: Fri, 24 Jul 2026 06:10:55 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Ulf Hansson <ulfh@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	daniel@makrotopia.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v8 5/9] block: implement NVMEM provider
-Message-ID: <amNkX6HV7c_8jRUa@infradead.org>
-References: <20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com>
- <20260703-block-as-nvmem-v8-5-98ae32bfc49a@oss.qualcomm.com>
- <amLwz6WuHYUwKKJo@infradead.org>
- <CAFEp6-1_iariDyqWj0KezHAtULSO+piPHX0F=Z46Rx4KDNLmXw@mail.gmail.com>
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="95Oby/9i";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="KThpq6fo"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 66ODB5uB026371;
+	Fri, 24 Jul 2026 15:11:10 +0200
+Received: from lubuntu-18.04 (host-82-61-152-174.retail.telecomitalia.it [82.61.152.174])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 54FC5122966;
+	Fri, 24 Jul 2026 15:11:01 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1784898661; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o/l880RV9gSkJ6HItG72E2XbASSeHX4In9eGtV7b9xI=;
+	b=95Oby/9idN7Q8e7jVHIirr6RxpP1ek5IeQmy1lpjKKiSQ6TKVVp1CMa0GWDxlNrxgqaT0a
+	vDIxilJtgNRdsxCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1784898661; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o/l880RV9gSkJ6HItG72E2XbASSeHX4In9eGtV7b9xI=;
+	b=KThpq6fo7GwJ3+6qHSZSWPanR4Nmh2j+UIqcJacU+2wpSWmBeOhejSZhiic3405ienxVUB
+	7e9oJ5UaLPG4tqkxYKBEoCplm9SoC7O6xj6Kh2M4B3gN78sJOYnJbxCBRVp6sMgKjlhu0F
+	ikcNkFvo7hl9UFDm8EzeWP11u8xRcialSVIjyeN6onLDcl1V1YQFjPnq2oTs/Z12TowHkJ
+	b/UdMB34JhJz9H9NCknoocSzWckV+GgV80Fvs6JEOpU/ntpx9Ba7/g5bUYj51EuibhicK4
+	/jkKX4/JOfVOhWNyCrt0NOt0Ed7eMtpFys1FpfGq5uHVpHr0SFwRwppG1b6UQg==
+Date: Fri, 24 Jul 2026 15:11:00 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Xiang Mei (Microsoft)" <xmei5@asu.edu>,
+        "David S . Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Pablo Neira Ayuso
+ <pablo@netfilter.org>,
+        Ryoga Saito <contact@proelbtn.com>,
+        AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+        kys@microsoft.com, stefano.salsano@uniroma2.it,
+        Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] seg6: fix NULL deref in
+ input_action_end_dx{4,6}_finish() after nf hook
+Message-Id: <20260724151100.16b60b15db7c6353b4fedf99@uniroma2.it>
+In-Reply-To: <20260723100949.4443811e@kernel.org>
+References: <20260720204430.1886091-1-xmei5@asu.edu>
+	<20260723100949.4443811e@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEp6-1_iariDyqWj0KezHAtULSO+piPHX0F=Z46Rx4KDNLmXw@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On Fri, Jul 24, 2026 at 11:10:58AM +0200, Loic Poulain wrote:
-> Right, I was planning to add partition support in a follow-up series.
-> But since this is really supposed to be a block-agnostic feature,
-> whether it's a disk or a partition, I'll include partition in v8.
+On Thu, 23 Jul 2026 10:09:49 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-Please include the partitions, as including them or not matters for
-the interfaces.  What is holding that support back now?  fwnode
-magic?
-
-> > Also once you register the whole devices as nvmem provider, we really
-> > should keep it from being used a block device, shouldn't we?
+> On Mon, 20 Jul 2026 20:44:29 +0000 Xiang Mei (Microsoft) wrote:
+> > When nf_hooks_lwtunnel is enabled, the End.DX4/End.DX6 actions dispatch
+> > the decapsulated inner packet through the NF_INET_PRE_ROUTING hook chain
+> > with input_action_end_dx{4,6}_finish() as the okfn. Both functions read
+> > the lwtunnel state via orig_dst = skb_dst(skb) and dereference
+> > orig_dst->lwtstate.
 > 
-> 
-> I'm not sure, the whole concept is block backed NVMEM, so we still
-> need to add that block as base layer, though we could discuss
-> suppressing uevent for it. Preventing block usage would make the
-> feature much more intrusive than other NVMEM providers like MTD, where
-> the underlying device stays accessible. And we may genuinely still
-> want to write the disk (e.g. for factory provisioning), updating the
-> very data the cells point to, etc. There's also the layering aspect,
-> if a disk (e.g. mmcblk0) has logical partitions on top (mmcblk0pX), we
-> still register/expose the whole disk mmcblk0 as a block device
-> regardless. So if a disk contains NVMEM cells, I think it should still
-> be exposed as a block device as well.
+> Per Sashiko's feedback - we need to validate not only that the dst 
+> is there but also that it is of the expected type, no?
+> -- 
+> pw-bot: cr
 
-So we now get two unsynchronized ways to access the same device?
-At least we need to prevent exclusive openers on the block device
-side.  And document the side channel very well.
+Right, and seg6_input_core/seg6_output_core in seg6_iptunnel.c (added by
+7a3f5b0de364) read skb_dst()->lwtstate after a NF_HOOK too, and this patch does
+not touch them. A hook can leave a valid dst whose lwtstate is NULL there
+(reproducible with SNAT and an XFRM policy), so they need fixing as well.
 
+seg6/seg6local behaviors carry their processing state in the route's
+lwtunnel_state. That state should be preserved across the hook, and after the
+hook skb_dst() may not carry it, or may point to a different instance of the
+same type.
+
+Thanks,
+Andrea
