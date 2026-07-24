@@ -1,169 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF0F43A81B;
-	Fri, 24 Jul 2026 14:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9114F41A79E
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784901770; cv=none; b=VRS5VY6BPJ7Muoa1PpZQEEFsyooKDLPDtOVQ5GmPk3mSmjXOK3Q6U5UlO0Pf65qGmxhtl8jalg081Fa/f8U2ZJqz3zqJpm9l1I0Axj4An3m52aVB3UTC7dGFK8QPah1jKouLuTu6xvVHmQ06JWcQkwf1zP2FdKlutgvboFo5mkM=
+	t=1784901949; cv=none; b=PPRIZ+Sx31KXJAQ3j7vYHf+CPQ9CEGbVwGwlU3AfBFPAEG00bFXZu5Y3hblEU9x3N8oyPH/qyLZZ2QYYmjt0GSN8rPI0qN9M9BJqiTuJBRg7kTKVeLcvYxWAbuU2nY/ry3T/HrysU21qCvD3l0232G51p87NK67MPbnUN36wnag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784901770; c=relaxed/simple;
-	bh=S3MdV3UAR+ADbXfkUpujD9LpujITJkIrZfRUogdwTOI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rG2FlA3VWKYywyOvxeV4DhhgCiNBrj15WmOAOBmZad4sYigbyt6FbmOxV61nvscg+ZqH0QawJIQkzjEDsiKowc4I7Dr9ukHXqxra5RgUpPt7TAZ+HSo8lPfn9PKYgfvT5vgPgqMGV4R9PD2fuAIJ9NElLkPiDBfmrS0MwfKGYww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYZp48Gp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784901949; c=relaxed/simple;
+	bh=eVPLDsdD89K2TGrSG8oVm3FANMh0vjCIxBt2s7PROQs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=rnUNgf0SMQ2RiB8Qi9jAKAJ2LMSEAEOhalTSq+3NZMbA4wUpVBXSkFU3l/zdt1yTrVbRfvhdOASqslc9IgUNf7+trbaZ3rTCXSNVIXik45eTq0d7RI1YtHPYoVIowyiqPypHCHqc+m+oEFbFSTYN2KkzKCcGKBlbyqzjRwT4MK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jnsZs6ff; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYZp48Gp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BA21F000E9;
-	Fri, 24 Jul 2026 14:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784901767;
-	bh=eiIkZX9UKn62Wt3UHZGy8oEPX9InDuKj5kOafRz6D3M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gYZp48Gpn8wxKY98OEwH4fJVZL/ZImbDl5uOCR75i3jG1+w6tpJjsKv9omFE/qsfg
-	 qlVXjsCaNpgE0t5Xd4bojwezYpSRi63sVzMR1PpjKeiOKwk8+q7HButPdUUtiA7gTC
-	 heLbLjBUV1btBtC08rVvq1P3olYLxdQxDBCxU4jp+UDCe8/CURCRxI5E1PW5qvxEGF
-	 XNuyvtI/cPgJxoqqMwcR6cEGxDtAil/xufYr25hqOuPIMsOMk/Rg5e/Na9TQ1RGp/+
-	 6awyAluITZNaWBu9PcOn55eSIYCcD+DOMO3ENQh6HG6MeU2Zt8Bhj1Sl0z9upjcyOL
-	 WyeIpLtgeJnvA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 24 Jul 2026 16:02:17 +0200
-Subject: [PATCH net-next 5/5] mptcp: implemented OoO queue pruning
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jnsZs6ff"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B7A9F4E40F2F;
+	Fri, 24 Jul 2026 14:05:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6C4C560395;
+	Fri, 24 Jul 2026 14:05:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16FFE11C12569;
+	Fri, 24 Jul 2026 16:05:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784901944; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=6fksmPJr9Q7kO/HBpvavDlpG72c+2uj4oIcabIgThBA=;
+	b=jnsZs6ffk7r710Tqk5ffNO85UTrPO63kNQjU5631LBRThmSRq8ZzMFvuFoTCzCh86SK85d
+	4EBd8L5z6tL9pKR1g2WvprXVk2TPdVenlHwjUMxR/sAY6Vz5KAZVQFBiRA/yCGBm2RFHY+
+	aInC6cLLpwBzK12jJ3s4tQtLWBkwn8f2PYM/7pIKt4Cg0TIEfYrEGtKDXVodNyiTcbHmw7
+	fDtDI8os0JChEY9y5g9+xCrOoaV12pXnBWgbepzm/klwawEgJcfRtJb461CXThaHm0Z84y
+	T8NKiEhHaX1FL68WzXFK4lW/GMfJWctqm5w0O+bPN8fJyG5f3DvH0fQASn9pKg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-net-next-mptcp-oooq-pruning-v1-5-5dd4dec63a54@kernel.org>
-References: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
-In-Reply-To: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3583; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=0TP0HmzvNCrhNepV2D684uiABQ8/iw2HmKqfNTiVn14=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLKSCyrLXn2vsjnL+X8Vx8zbfV+DjLU4WhbdMzs3bX0kY
- 0/l02OpHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABPRn8/wz1ak6GH+cv6mFh0H
- y6Bshheu4WzVNTHaIc3OfNsm7pWdychwo+XsVcMN/mdVOCrmRrebG8vMdfS7uSPs5LzQdWopp52
- YAQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Jul 2026 16:05:40 +0200
+Message-Id: <DK6UXJNY823U.32CIMUE9VMVKW@bootlin.com>
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Richard Cochran" <richardcochran@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Paolo Valerio" <pvalerio@redhat.com>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v4 11/15] net: macb: change function signatures
+ to take contexts
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
+ <20260717-macb-context-v4-11-0acbe7f10cdb@bootlin.com>
+ <a6ae2cec6d910378e790d52cc3fd1a00@tipi-net.de>
+In-Reply-To: <a6ae2cec6d910378e790d52cc3fd1a00@tipi-net.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Sun Jul 19, 2026 at 12:46 PM CEST, Nicolai Buchwitz wrote:
+> On 17.7.2026 21:48, Th=C3=A9o Lebrun wrote:
+>> For parallel MACB context to start become a reality, many functions=20
+>> need
+>> to stop operating on bp->ctx (the currently active context) and instead
+>> work on a context they get passed. That context might be
+>> (1) the new one that is getting allocated and initialised, or,
+>> (2) the old one to be freed.
+>>=20
+>> To reduce bug surface area, taint those functions to *only* take a
+>> context `struct macb_context *ctx` and no `struct macb *bp`. That way,
+>> no bug of using `bp->ctx` instead of `ctx` will ever occur.
+>>=20
+>> We also convert functions that take a `struct macb_queue *queue` to
+>> instead take `struct macb_context *ctx, unsigned int q`, with q
+>> indexing ctx->txq[] and ctx->rxq[].
+>>=20
+>> Full list:
+>>=20
+>>    macb_adj_dma_desc_idx()
+>>    macb_tx_ring_wrap()
+>>    macb_tx_desc()
+>>    macb_rx_ring_wrap()
+>>    macb_rx_desc()
+>>    macb_get_addr()
+>>    gem_rx_refill()
+>>    macb_init_rx_ring()
+>>    gem_free_rx_buffers()
+>>    macb_free_rx_buffers()
+>>    macb_tx_ring_size_per_queue()
+>>    macb_rx_ring_size_per_queue()
+>>    macb_free()
+>>    gem_alloc_rx_buffers()
+>>    macb_alloc_rx_buffers()
+>>    macb_alloc()
+>>    gem_init_rx_ring()
+>>    gem_init_rings()
+>>    macb_init_rings()
+>>=20
+>> Note about gem_rx_refill(): it ends with a netdev_vdbg() that prints=20
+>> the
+>> queue pointer. Change to print the queue index because we do not have
+>> access to the queue anymore.
+>>=20
+>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>> ---
+>>  drivers/net/ethernet/cadence/macb.h      |   7 +-
+>>  drivers/net/ethernet/cadence/macb_main.c | 398=20
+>> ++++++++++++++++---------------
+>>  2 files changed, 215 insertions(+), 190 deletions(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/cadence/macb.h=20
+>> b/drivers/net/ethernet/cadence/macb.h
+>> index c551d7db8ebe..ac2f2d8065d7 100644
+>> --- a/drivers/net/ethernet/cadence/macb.h
+>> +++ b/drivers/net/ethernet/cadence/macb.h
+>> @@ -1196,11 +1196,12 @@ static const struct gem_statistic=20
+>> queue_statistics[] =3D {
+>>=20
+>>  struct macb;
+>>  struct macb_queue;
+>> +struct macb_context;
+>>=20
+>>  struct macb_or_gem_ops {
+>> -	int	(*mog_alloc_rx_buffers)(struct macb *bp);
+>> -	void	(*mog_free_rx_buffers)(struct macb *bp);
+>> -	void	(*mog_init_rings)(struct macb *bp);
+>> +	int	(*mog_alloc_rx_buffers)(struct macb_context *ctx);
+>> +	void	(*mog_free_rx_buffers)(struct macb_context *ctx);
+>> +	void	(*mog_init_rings)(struct macb_context *ctx);
+>>  	int	(*mog_rx)(struct macb_queue *queue, struct napi_struct *napi,
+>>  			  int budget);
+>>  };
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
+>> b/drivers/net/ethernet/cadence/macb_main.c
+>> index 7574418d5094..d396a307310b 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>
+>> [...]
+>
+>> @@ -5083,7 +5107,7 @@ static int at91ether_start(struct macb *bp)
+>>=20
+>>  	addr =3D rxq->buffers_dma;
+>>  	for (i =3D 0; i < AT91ETHER_MAX_RX_DESCR; i++) {
+>> -		desc =3D macb_rx_desc(queue, i);
+>> +		desc =3D macb_rx_desc(bp->ctx, 0, i);
+>
+> AFAIU at91ether_open() doesn't set bp->ctx->info at this point in the
+> series, so with CONFIG_MACB_USE_HWSTAMP=3Dy this should oops on ifup:
+>
+>      macb_rx_desc()
+>        macb_adj_dma_desc_idx()
+>          macb_dma_ptp(ctx->info)   -> NULL deref
+>
+> The next patch adds the missing assignment to at91ether_open(), so
+> only bisection is affected. Maybe move that line here or into patch 9?
 
-When moving incoming skbs in the msk receive queue and the latter
-is above limits, prune it as needed quite alike what TCP is doing
-at the subflow level. The main difference relies in the stop condition:
-since MPTCP does not perform collapsing, it's better off dropping the
-bare minimum to fit the (newer) incoming packet.
+Yes, IDK why/how I landed on this.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/mib.c      |  1 +
- net/mptcp/mib.h      |  1 +
- net/mptcp/protocol.c | 46 +++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 47 insertions(+), 1 deletion(-)
+=E2=9F=A9 # This looks much more sensible.
+=E2=9F=A9 git log -L:at91ether_open:drivers/net/ethernet/cadence/macb_main.=
+c net-next/main..macb-context
 
-diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
-index ef65e2df709f..d9bd4f4afcc0 100644
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -87,6 +87,7 @@ static const struct snmp_mib mptcp_snmp_list[] = {
- 	SNMP_MIB_ITEM("WinProbe", MPTCP_MIB_WINPROBE),
- 	SNMP_MIB_ITEM("BacklogDrop", MPTCP_MIB_BACKLOGDROP),
- 	SNMP_MIB_ITEM("RcvPruned", MPTCP_MIB_RCVPRUNED),
-+	SNMP_MIB_ITEM("OfoPruned", MPTCP_MIB_OFO_PRUNED),
- };
- 
- /* mptcp_mib_alloc - allocate percpu mib counters
-diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
-index c84eb853d499..18f35f7e0a2d 100644
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -90,6 +90,7 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_WINPROBE,		/* MPTCP-level zero window probe */
- 	MPTCP_MIB_BACKLOGDROP,		/* Backlog over memory limit */
- 	MPTCP_MIB_RCVPRUNED,		/* Dropped due to memory constrains */
-+	MPTCP_MIB_OFO_PRUNED,		/* MPTCP-level OoO queue pruned */
- 	__MPTCP_MIB_MAX
- };
- 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7f257419c5ea..5cf44eab76f1 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -373,6 +373,49 @@ static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
- 	skb_dst_drop(skb);
- }
- 
-+/* "Inspired" from the TCP version; main difference: stop as soon as the MPTCP
-+ * socket is under memory limit.
-+ */
-+static bool mptcp_prune_ofo_queue(struct sock *sk, u64 seq)
-+{
-+	struct mptcp_sock *msk = mptcp_sk(sk);
-+	struct rb_node *node, *prev;
-+	bool pruned = false;
-+	u64 mem;
-+
-+	if (RB_EMPTY_ROOT(&msk->out_of_order_queue))
-+		goto out;
-+
-+	node = &msk->ooo_last_skb->rbnode;
-+
-+	do {
-+		struct sk_buff *skb = rb_to_skb(node);
-+
-+		/* Stop pruning if the incoming skb would land in OoO tail. */
-+		if (after64(seq, MPTCP_SKB_CB(skb)->map_seq))
-+			break;
-+
-+		pruned = true;
-+		prev = rb_prev(node);
-+		rb_erase(node, &msk->out_of_order_queue);
-+		mptcp_drop(sk, skb);
-+		msk->ooo_last_skb = rb_to_skb(prev);
-+
-+		mem = (unsigned int)sk_rmem_alloc_get(sk);
-+		if (mem <= sk->sk_rcvbuf)
-+			break;
-+
-+		node = prev;
-+	} while (node);
-+
-+	if (pruned)
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_OFO_PRUNED);
-+
-+out:
-+	mem = (unsigned int)sk_rmem_alloc_get(sk);
-+	return mem <= sk->sk_rcvbuf;
-+}
-+
- static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
- {
- 	u64 copy_len = MPTCP_SKB_CB(skb)->end_seq - MPTCP_SKB_CB(skb)->map_seq;
-@@ -385,7 +428,8 @@ static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
- 	 * will break.
- 	 */
- 	if (unlikely(sk_rmem_alloc_get(sk) > READ_ONCE(sk->sk_rcvbuf)) &&
--	    !__mptcp_check_fallback(msk)) {
-+	    !__mptcp_check_fallback(msk) &&
-+	    !mptcp_prune_ofo_queue(sk, MPTCP_SKB_CB(skb)->map_seq)) {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
- 		mptcp_drop(sk, skb);
- 		return false;
+net: macb: unify device pointer naming convention
+net: macb: unify variable naming convention in at91ether functions
+=3D> variable renames
 
--- 
-2.53.0
+net: macb: introduce macb_context struct for buffer management
+=3D> adds allocation with `bp->ctx =3D kzalloc_obj(...)` and cleanup on err=
+or
+
+net: macb: make `struct macb` subset reachable from macb_context struct
+=3D> adds `bp->ctx->info =3D &bp->info;` when introducing info
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
