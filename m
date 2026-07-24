@@ -1,141 +1,177 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7628A36F428
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 05:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDFF377A96;
+	Fri, 24 Jul 2026 05:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784870855; cv=none; b=P+xSD5whw470m1Qdoi0h6P9c77Vj93LL0S+hz0H/+x8DT5cGL9AyyM17h+IYpVhugUxSwEc0eUT9/gLLxqd+ziBWKOh8ZCR5AisN5lSvoAanWRuKaNaAK1DWbk61r+8hnBhjk1NSvTstMOYULTAnAQ/h0psbx23+ghgYM7oooKU=
+	t=1784870880; cv=none; b=iTPQ1wpG+2ZDEE2GcpeD7S08grRFEgGGIpVw1GAJmPLNtTq+KJz8QzpmVYVr1Tf2hiTUoRA8DDv2GZWBitVkTYgOz2JiygKsHX5kSk2AjCHHekMg9XHvKVTskOovithiJNUF+viZMpf5827hgp6cptPCcLJOzqfLbLd/eLygtas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784870855; c=relaxed/simple;
-	bh=aYAHaw6pASCZgbw+wWdFHx52iHXeg8cPWkdsGpWaqEw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G/DxjTjLahZAJxJCz/yI6FlmXK6tyv3CFpJpwwa/BxrnkvErKrNkPKbcFxn0ScEKsen4CTQv6DbuH7nundGDFRy4WXf2rp65qQzK+3FCk0i2J0JSZARKTIFUGBfr3jT/oVbOsA6CqMEV6OSLdagXBaogyaQpaBOaNEkhcoAJTOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=D5p0usVB; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1784870880; c=relaxed/simple;
+	bh=NkRAAqtSSXmk+tg5AqNmfpD3Cy5a0Kmfx7t9yag9+vA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K7pCiTkhHW8cXb1r14Wb0EGWLzwDSb5RRCzpgGOfkV12NDJyUIVoEaJ1XsnvziDKXS8aTdlcRC8WJsvkRIeC3anF5rfaU1Du3GDZZDiKyVCys2ZfLG0alxwofs/vJ4FozqrbtpT/b1YrStyFRiSVLITYsX2FinUIhEt3nx/aSiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=TH+lIse+; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="D5p0usVB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1784870847; x=1785130047;
-	bh=bK1M74oJPuOcS9IymgqF+jlYzfxQH2PmW/bCL01gSbs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=D5p0usVBpDrRUbdtwrOhUy6WFGHUOt9KljhE/xnyq8koF7aByWKyS3+Gda7K9VMgx
-	 2KDhSl7uEIceqoyQ+02wIeo/pEE6DZpN0b/0tO1H1aFFRF/ris5qcsDA/cZR2m4nB1
-	 v2YNqPxu33qr9XNuqwSekqHtZZtgAI31fY6FzYbZn5fCrRPefLTb/7S0/EtKQiVP5a
-	 mIMS/xB4uSBZHzC60WYaAxRSLjG65uQbifIzH+f12BlybxcTqtC3H1wRSSoA3gRXc1
-	 nBdCtXoGuAULI+uWGSznF4MT/usS2KgMiHRs5tXcEs+ZuGv5E3lx7k4vfpdU0hTYck
-	 roSKv4jRCsPxQ==
-Date: Fri, 24 Jul 2026 05:27:21 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: manizada <manizada@pm.me>
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
-Subject: Re: [PATCH net] tun: prevent underflow in rx headroom calculation
-Message-ID: <YzGdhAUpdIBVpl5kEwszNWBTaolCS34_1OLI3kj9BiUkrxJsgcpIlsQKi2LnuvGQy76ugEGsZvZdB2Fgbmq1_QMpAel2h--RFpYe2ZIX7aE=@pm.me>
-In-Reply-To: <20260723171437.784955-1-kuba@kernel.org>
-References: <20260721014117.2234892-1-manizada@pm.me> <20260723171437.784955-1-kuba@kernel.org>
-Feedback-ID: 37265593:user:proton
-X-Pm-Message-ID: 7f188e280008dc664fcb8126cef58cdbaddeb932
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="TH+lIse+"
+Received: from LAPTOP-99KJFSET (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 47691a1a2;
+	Fri, 24 Jul 2026 13:27:49 +0800 (GMT+08:00)
+From: Hongyan Xu <getshell@seu.edu.cn>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: 3chas3@gmail.com,
+	stable@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	getshell@seu.edu.cn
+Subject: [RFC PATCH 6.6.y] atm: suni: synchronize poll timer with device removal
+Date: Fri, 24 Jul 2026 13:27:47 +0800
+Message-ID: <20260724052747.1976-1-getshell@seu.edu.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f9298174003a1kunm7304a06f243c1
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTUkYVk1JSh9KHUoaH0MeQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	hOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=TH+lIse+Qz9XQBmvyVfVqo9agrbO/WM58EGksak400CU0dgQM8qG6QSwsy9wTHaBQ5w3/rqxhF90A5IeqcQHbw6iYUD31bBpR0fA95x3G2qtzKpi4179gIpmV+hX0OW7EilXtmZgcS4TplbWLFBIEI4JudcBB61ZuIWY2XO+vD0=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=c5Ugs+CkrYnw+UEStcu+8FqtB1MdwrqYS033j1CAzng=;
+	h=date:mime-version:subject:message-id:from;
 
+suni_hz() walks the global device list and dereferences each private
+structure without taking sunis_lock. suni_stop() can therefore unlink and
+free a device while the timer callback is still using it. The existing
+timer synchronization only runs for the last device and is performed while
+holding sunis_lock.
 
+Protect the callback traversal with sunis_lock. Serialize the first/last
+timer transitions with a mutex, unlink under the spinlock, then shut the
+timer down outside the spinlock before freeing the last device.
+timer_shutdown_sync() also prevents the running callback from rearming
+itself; a later first start reinitializes the timer with timer_setup().
+Move device initialization before list publication so an existing timer
+cannot observe a partially initialized entry.
 
+This driver was removed from mainline by commit 6deb53595092 ("net: remove
+unused ATM protocols and legacy ATM device drivers"), but is still present
+in the 6.6 LTS series.
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
+---
+ drivers/atm/suni.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-On Thursday, July 23rd, 2026 at 10:14 AM, Jakub Kicinski <kuba@kernel.org> =
-wrote:
+diff --git a/drivers/atm/suni.c b/drivers/atm/suni.c
+index 21e5acc..5fa939b 100644
+--- a/drivers/atm/suni.c
++++ b/drivers/atm/suni.c
+@@ -14,6 +14,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
++#include <linux/mutex.h>
+ #include <linux/errno.h>
+ #include <linux/atmdev.h>
+ #include <linux/sonet.h>
+@@ -46,6 +47,7 @@
+ static struct timer_list poll_timer;
+ static struct suni_priv *sunis = NULL;
+ static DEFINE_SPINLOCK(sunis_lock);
++static DEFINE_MUTEX(sunis_mutex);
+ 
+ 
+ #define ADD_LIMITED(s,v) \
+@@ -59,6 +61,7 @@ static void suni_hz(struct timer_list *timer)
+ 	struct atm_dev *dev;
+ 	struct k_sonet_stats *stats;
+ 
++	spin_lock_bh(&sunis_lock);
+ 	for (walk = sunis; walk; walk = walk->next) {
+ 		dev = walk->dev;
+ 		stats = &walk->sonet_stats;
+@@ -85,6 +88,7 @@ static void suni_hz(struct timer_list *timer)
+ 		    ((GET(TACP_TCC) & 0xff) << 8) |
+ 		    ((GET(TACP_TCCM) & 7) << 16));
+ 	}
++	spin_unlock_bh(&sunis_lock);
+ 	if (timer) mod_timer(&poll_timer,jiffies+HZ);
+ }
+ 
+@@ -306,14 +310,9 @@ static void suni_int(struct atm_dev *dev)
+ 
+ static int suni_start(struct atm_dev *dev)
+ {
+-	unsigned long flags;
+ 	int first;
+ 
+-	spin_lock_irqsave(&sunis_lock,flags);
+-	first = !sunis;
+-	PRIV(dev)->next = sunis;
+-	sunis = PRIV(dev);
+-	spin_unlock_irqrestore(&sunis_lock,flags);
++	mutex_lock(&sunis_mutex);
+ 	memset(&PRIV(dev)->sonet_stats,0,sizeof(struct k_sonet_stats));
+ 	PUT(GET(RSOP_CIE) | SUNI_RSOP_CIE_LOSE,RSOP_CIE);
+ 		/* interrupt on loss of signal */
+@@ -322,6 +321,11 @@ static int suni_start(struct atm_dev *dev)
+ 		printk(KERN_WARNING "%s(itf %d): no signal\n",dev->type,
+ 		    dev->number);
+ 	PRIV(dev)->loop_mode = ATM_LM_NONE;
++	spin_lock_bh(&sunis_lock);
++	first = !sunis;
++	PRIV(dev)->next = sunis;
++	sunis = PRIV(dev);
++	spin_unlock_bh(&sunis_lock);
+ 	suni_hz(NULL); /* clear SUNI counters */
+ 	(void) fetch_stats(dev,NULL,1); /* clear kernel counters */
+ 	if (first) {
+@@ -333,6 +337,7 @@ printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
+ #endif
+ 		add_timer(&poll_timer);
+ 	}
++	mutex_unlock(&sunis_mutex);
+ 	return 0;
+ }
+ 
+@@ -340,16 +345,20 @@ printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
+ static int suni_stop(struct atm_dev *dev)
+ {
+ 	struct suni_priv **walk;
+-	unsigned long flags;
++	bool last;
+ 
+ 	/* let SAR driver worry about stopping interrupts */
+-	spin_lock_irqsave(&sunis_lock,flags);
++	mutex_lock(&sunis_mutex);
++	spin_lock_bh(&sunis_lock);
+ 	for (walk = &sunis; *walk != PRIV(dev);
+ 	    walk = &PRIV((*walk)->dev)->next);
+ 	*walk = PRIV((*walk)->dev)->next;
+-	if (!sunis) del_timer_sync(&poll_timer);
+-	spin_unlock_irqrestore(&sunis_lock,flags);
++	last = !sunis;
++	spin_unlock_bh(&sunis_lock);
++	if (last)
++		timer_shutdown_sync(&poll_timer);
+ 	kfree(PRIV(dev));
++	mutex_unlock(&sunis_mutex);
+ 
+ 	return 0;
+ }
+-- 
+2.50.1.windows.1
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> tun: prevent underflow in rx headroom calculation
->=20
-> This patch clamps good_linear to zero in tun_get_user() so that a large
-> tun->align value coming from ndo_set_rx_headroom() does not cause
-> SKB_MAX_HEAD(align) to underflow into a huge size_t when assigned to the
-> linear variable, and later cause the skb data pointer to end up outside
-> the allocated head.
->=20
-> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> > index ffbe6f13fb1f..d3be0f2d5df8 100644
-> > --- a/drivers/net/tun.c
-> > +++ b/drivers/net/tun.c
-> > @@ -1780,6 +1780,7 @@ static ssize_t tun_get_user(struct tun_struct *tu=
-n, struct tun_file *tfile,
-> >  =09}
-> >
-> >  =09good_linear =3D SKB_MAX_HEAD(align);
-> > +=09good_linear =3D max(good_linear, 0);
->=20
-> [High]
-> Does this fully cover the IFF_TAP path when align is large enough that
-> SKB_MAX_HEAD(align) is <=3D 0?
->=20
-> With the clamp, good_linear becomes 0, and later in tun_get_user() the
-> non-zerocopy path does:
->=20
->     copylen =3D len;
->     linear =3D min(hdr_len, good_linear);
->     ...
->     if (!linear)
->         linear =3D min_t(size_t, good_linear, copylen);
->     skb =3D tun_alloc_skb(tfile, align, copylen, linear, noblock);
->=20
-> so linear ends up 0 and the resulting skb has skb_headlen(skb) =3D=3D 0.
->=20
-> For IFF_TAP without IFF_NAPI_FRAGS the code then calls:
->=20
->     skb->protocol =3D eth_type_trans(skb, tun->dev);
->=20
-> eth_type_trans() -> eth_skb_pull_mac() -> __skb_pull(skb, ETH_HLEN),
-> and __skb_pull() has:
->=20
->     if (unlikely(skb->len < skb->data_len))
->         BUG();
->=20
-> Since skb->len and skb->data_len both start at the packet length and
-> skb->len is decremented by ETH_HLEN in the pull, would this reach the
-> BUG() when a user writes to /dev/net/tun with tun->align pushed above
-> the SKB_MAX_HEAD threshold via the OVS/netkit/VXLAN stacking described
-> in the commit message?
->=20
-> The pre-existing behavior at align =3D=3D 3776 appears to hit the same
-> BUG() and align > 3776 pre-patch corrupted memory before reaching it,
-> so this change is an improvement, but would forcing linear >=3D ETH_HLEN
-> in the IFF_TAP path (or calling pskb_may_pull() before eth_type_trans()
-> regardless of the frags flag) be needed to close the remaining panic?
-
-Oh this is a good catch. But while making the TAP pskb_may_pull
-(ETH_HLEN) check unconditional would address the eth_type_trans() case,
-raw TUN with IFF_NO_PI also directly reads the first protocol byte from
-skb->data, so we'd have the same issue there.
-
-Rather than add consumer-side handling for a fully nonlinear skb state
-introduced by the repair, maybe the cleanest is preventing TUN from
-creating this state?
-
-=09#define TUN_MAX_HEADROOM 512
-
-=09tun->align =3D clamp(new_hr, NET_SKB_PAD, TUN_MAX_HEADROOM);
-
-This fixes the original SKB_MAX_HEAD() arithmetic issue, and also preserves
-linear space for both the raw-TUN protocol byte and the TAP Ethernet
-header. The 512-byte value matches the existing ceiling in
-ip_tunnel_adj_headroom(), so requests above the cap can require later
-skb expansion instead of unsafe preallocation by TUN.
-
-Does this sound reasonable? If so, I can post v2 using the TUN-side cap.
-
-
-> --
-> pw-bot: cr
-> 
