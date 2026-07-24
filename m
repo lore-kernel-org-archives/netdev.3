@@ -1,260 +1,222 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012007.outbound.protection.outlook.com [52.101.66.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589CF2D7DEA
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 06:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784873786; cv=none; b=NRhGa/FSK76iEJBOv0LV86NimPCpwE/G7gqaOTjms6Sjdcg1RewnZO+ITBW/WGX2E3M8iSaut9tbQ32h7a3i1ZBMehm11xU2bPR48n80SkigVJKKg0Nb6Uso/7miqBIeqEn0doDGmakzOG7c69rihTZHEhD+PaIPNQzG4WiTj6Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784873786; c=relaxed/simple;
-	bh=VIUW7PW/uZqfKyp+8j8eU4HQWxJISEwkAnQpF6bu2dk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gwVp/7Y+vZ89PijpACDgpG45fRcIcGu+uBac6SDkFHQvqQ0hiHtwqudlr9VcUbzIUpwg8syVIvRnjoRzd8J5kn1L+2/L8GXaP4sw+006/WtO+AsJBk0EpORB3eLzc1gJi/et90RvKPUUL+4jXwLqVZRU9fteG/mGS/P3dJie2ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=eU4Pazni; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D742E8DEB;
+	Fri, 24 Jul 2026 06:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784874243; cv=fail; b=HCXwkE75VW2jlrJo+Efpz2cVghJAjwwjtuhlMUdLxJ4yktMa5Wi3BBhGR8mhj6EId/q+w6bwrs2NpCT5zv9NBElIs2HGyK4HOMqpHuaFEAyYF+MJg7ezgE2wJcHw2f3RIebdvNl0L3+HlBbRVfyMVQnhcfpHey1qpx/NyK1zfRo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784874243; c=relaxed/simple;
+	bh=ClUuDwhdqMARQbduglsuiheOZSddmm7RKVMP3TaQGhc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pShToPZaJZHpcG2Fl62BoC+e5mt5g7qNYjPb4HzT+D9Yy6OJY73SzqIc3DBFsQiMpdEB2S8Ci9IARjRcSJy3VBCgsbwRNPmYMFsIvp4I6fGBIe6mquMBi08fIcRK6QirsKsHgJVIk4B534OrgREkO2/xH0kEPbXZgcbBNOS2kYE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=mF5m9yfG; arc=fail smtp.client-ip=52.101.66.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="eU4Pazni"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ca64c3ce5fso903155ad.3
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 23:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1784873782; x=1785478582; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FP8PQYAIkyulgqMYRvtLfZS51Oh76yCgMwm2aH1IOHc=;
-        b=eU4PaznilsqGrp7BQe5iniRtWg2rszY6iI0BHBbcujcP3XeRGjZicKgY/qrB+N+FrK
-         0XWd0qj/mhWSDz++pVSnJ+O27zLoF/SmpwVkjJU2WovMqeJME4M9QtRdyfRbRU/mpDwQ
-         GCAoxmMtc3elui0Ha3/p24x139BgXs4G9ib088JQCM75PBD4p81CGah+Syksg4fQ32uJ
-         4I5QBGDgsw/RXnRwo8pP5ISTZXDCYwy05OEk59SyR8HSgBZyyzn9gsq0rv3qVTKJf2zp
-         EHXNMXbusYb+8UDIMxjr+h5YJh+XEkzrmSeEJ9n7F0S7TzXySS8nE8d5b41slJD08Vlj
-         3mXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784873782; x=1785478582;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FP8PQYAIkyulgqMYRvtLfZS51Oh76yCgMwm2aH1IOHc=;
-        b=jllRzSiSTVYaM8TWHBbZ1hN01NWafifWSYkDIAFtr5NpwzmGP1jzjpvSUBqU7QVGJM
-         MY6TEkTHrHo0/zLga9l7QNj74sVFWeSkqbIasACuDe1y4QPuEQAzbui1uYb7APciAAC/
-         Vg4m072gNsALNLaDOTW2LHK42hauj/22Aci0wOhBTTpB0bfKmj+RMDtWDbOo0A3xPURB
-         uhdiSC1n73301Gs31Ket7PIumPsQLyuu0zfGF9haJC0DGQCjKW+2AdBSPJRqlRGXArPO
-         VyByz9JVlRwPhSV8tQGceqPIznUSFC6tFBXwEhxFW/YQMHt1+JGZjTAaNnlsUhgIQeuO
-         7a5g==
-X-Gm-Message-State: AOJu0Yx+ELpnR4aO87Ah0x+Ex9B608rH6hQavd666ku9smngFqGLsPaX
-	KNflknSYmua2wc4UEQisXMxRY13ZW5evVFSy9azlwWCm8jgV5Pdffhf5uW3j79hgCqJOcuAJTs1
-	OpC2Jie0RjA==
-X-Gm-Gg: AR+sD133ul3af949X3hclfmZqA7JLalyxaygBRRwm0tOoQU0BUwPw1QYY8PWGsi2rte
-	aLlglnXcTlBei5B/4RAquC5+ZqvVOwuG6dZQVXJl+6CunJN290Y16K4A6SZAu9D0f0aoeIuaHRw
-	AtRS4Lj6b3kLTAlssF6lKxyLDsWRB5pmv90NZdbA6tvLdUTp/AwVx3lELJVTlYOF+sEM5uMmC0r
-	qvqNTPvgMHT+KqLfKuvpD1kntfN1e3k0QCD4hgMC51BK/ABwCdvsbP+faX6uzFgrSYFB7uut42J
-	KQApmWItNEUrqhhNsOqlMgDGpVHM2fuGtkXWezoC9X/bh8q8SBD060zor8OKWayEgHPV7pCeYEA
-	hyk6Y3kXl9FbJTOKHvepU1CttVAJxNWVF14Bn5xG6lZM6Iy8RBppUfpf7FCpAteODaznmbd3JKF
-	3FioXnk9jMKg==
-X-Received: by 2002:a17:903:18b:b0:2c9:e86e:aa0a with SMTP id d9443c01a7336-2cfa6825611mr69043765ad.0.1784873782350;
-        Thu, 23 Jul 2026 23:16:22 -0700 (PDT)
-Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa4697sm45600445ad.11.2026.07.23.23.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 23:16:21 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: netdev@vger.kernel.org
-Cc: Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
-Date: Fri, 24 Jul 2026 15:16:06 +0900
-Message-ID: <20260724061606.433735-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="mF5m9yfG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VKw3V4uWnraj2w7+BDtVL2u5uJuGuPI1roDAoQvjT2SI40MH6nzGjKbMQ/Hd2jZbdCGB2ySjUG9L94YuoLfu/pfdXc+EbB49o0HFgWIkXSDKkbFQn38lNqEhh6gPwCp0dB/L7JL7ElUr2JSguYmizEMJ8/Nq8TBQ6etgNxgTX/vlqe53y1DUiD++df7FD1mUOsBNdPSG4GPQKNzA23I9yYG2fcxwWWvAifW7KWFXHUv+1gE5f6kgDgCYpHinZ12RbIz/GTd8xvwVnZdqYOl31rvUPcbL0KVr69kwTtfogX5NHWXaVclHsiGkO8RNG5LDvMoPOG6O7xY/qJRto4RtHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PLsSBXw30N4OQ4DZ8t9t5oN+wABTBQbTrdjJOnUrs20=;
+ b=rWakXzj7/Lv7crkKyZ1oPnupnC1FkIJXSrfhNomvuR90FsA5OmmbhrDyhZis1j+9LQX3QCXvK8KYacANfSVgYJq9EECejp5XXFnlh+ARwmf6Br7qCNZ8LV68ezPlxLRgQQ2URQBdgQu6Rrr9Th4lQMSDNgDX4wxaxs9Vf11scEnqzz8rCWabYSemLqut9y4wkGhk1VaiSTdOH+WQ8Bwz0Nw3OAneGw2kVjpMwb4Qgr0MowQEQ4cblCQHgH8ExUvnQry4hqdtKVSIJE3MVsL3sj5BoM/eSS7RwF50fwnpw5DmXc/Z4njLEy0QFnXW6GEknFucII8Rg627cAY3WfReHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PLsSBXw30N4OQ4DZ8t9t5oN+wABTBQbTrdjJOnUrs20=;
+ b=mF5m9yfG4IrsSro5YwbHaXFuzfsLgIwbNgRlxWH6jbk6kOYPi+n40yaPhBycJCkmzfDvLcrMSEDUtXWiTWW5XVl1dOjBw74w0UfXDzzOV29mJ44H1CUVHqLSccifMO2ECaeMe2oT2Nv1K6NRn+Zm7hwvU3JjjEwTWjaVBW+NvW2UMXQoDESzL1IMU/X4/7ii4Lfz1Cba8OM3T40FzzSmp8BBMCwvgwNNQkx5dxO6U0yOH9ImusTgfCdeMC74ZHvoy8+9DfeQG5NUPX6iS8NHGwC0VAX9qdua7l15c8YhOpY/mGHCDjoFBn4dBlB7XxCvCVrJHiqrGnthzH9j8d2cIg==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ PAVP189MB2409.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:30d::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.6; Fri, 24 Jul 2026 06:23:57 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0270.005; Fri, 24 Jul 2026
+ 06:23:57 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Sangho Lee <kudo3228@gmail.com>
+CC: "tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH net] tipc: validate Gap ACK blocks header before parsing
+Thread-Topic: [PATCH net] tipc: validate Gap ACK blocks header before parsing
+Thread-Index: AQHdGktH1R6vX2wPbE2MkTyEKJj9m7Z8MFuQ
+Date: Fri, 24 Jul 2026 06:23:57 +0000
+Message-ID:
+ <GV1P189MB19884B48694E06A42BBF26CBC6CF2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <20260723022947.1569915-1-kudo3228@gmail.com>
+In-Reply-To: <20260723022947.1569915-1-kudo3228@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|PAVP189MB2409:EE_
+x-ms-office365-filtering-correlation-id: bdc60b1c-fc08-44c5-9169-08dee94c2492
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|11063799006|56012099006|5023799004|10067099003|22082099003|18002099003|3023799007|38070700021;
+x-microsoft-antispam-message-info:
+ hQhHapRJVAcTlQrIh19HKGLk35TzEZrU+0ZIUy15cS93cT+irJemoD5fj7hVdwWFCAsG/PURSR2X/WySL6ckSQrlGluuHp8SLIWOGCkG9WylKz3t7ueB8fmhS+z/Bxwd9mKjL3KVyMsYVYUlkMYrqAYzX6gAWvFlzfdSHqTRtdx9oMUvsPVXpLw1/ZPl4TCheTYy5yUn+3K7d9RJM1D1OyrH8Gry1RZX0fOYIbHMBe5tOTSNZCMVGWq05tHj2Kdv7WOUwB8zgoBPIqdaIBBRrHOcYh/boHXwvTOKX8Yv2bTj6GLc9yBzhR3wwSwJueKUiH1xviRZDb2t4j+StwpBHq+gW0GEO2sCYgl7LMD0+t2KPkXt0zl6MvqR64m8Ye+obXxEl5ikZXkZmqkFQH0CyguKbQ4v6aW/8Cy7W5KdxIo76bBOPDGH1YlKWGh9fLc6e09YiBOO2E+JLoqxwIUNNjxfDfDsrPMJArJ08GV0BhXrsDd9pDUyjACtAo+jwEyK2bWPyYQODiQd6Jm57M6T9lyhZpT1h5c6uFnwpax96/xgoOZGdotrpoBlLTGcXdFPfKhGBypdoABcNyD8NP8Oh691wylv4gJSunIeTwTQI7eUb5iHBhL9HR9QagN8DuHfp+E1L6QsUEl5LAY7kYN4zH3x/ctP42UpYiQeX5ni+qHBZC3qfP/QpIQZhv4x8Csjklcd0Q0LBe2zfFDCUUp/Qe/3op4GjRJELZ/N60gwloE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(11063799006)(56012099006)(5023799004)(10067099003)(22082099003)(18002099003)(3023799007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ntGAiKBo7Of7uno1NQ3yinCVKGAaqRvUfSICgDyw7N77ULgZnwirUN1d5VVm?=
+ =?us-ascii?Q?aHMzmFlazjrAxbXx8LLM/eb4xPWehV3wrVLMtGiIT6Xen/M6jCWJPRnvkDvM?=
+ =?us-ascii?Q?xW1Xuhr2HZ5v3gIexpd9Uh+gG8UbSZznG1ntySrWVsN0mL9qohGOMaSYWyIH?=
+ =?us-ascii?Q?QAhzdBtthKvnWJNf01RFS0NICJxbP6TSbCnQvA9wzsTbydO5O7OVw0pRDdht?=
+ =?us-ascii?Q?s01umgjeo/iUuCo4IA7VrYlFaG9BpTQaucDiNXCJ0vseI5fVk1l+y2OJe/pM?=
+ =?us-ascii?Q?1SbfY6iUcoRRBdcvfi07KQj0gvrLMO+fAfuU9hgiSzfrN4N9oGLrrnxmoinp?=
+ =?us-ascii?Q?GElVu7nopU0NJa2pqHerVFXtg0Lgr931AUzvdRR00MYudUae/cKDBjeVqjCs?=
+ =?us-ascii?Q?W+MuNz/qoXbyhGOPq4yUGug+ajOsQYP7RYPOF+zyjBZFswDGQF6q22dzz8vn?=
+ =?us-ascii?Q?VCE26KsBEwo+RF4pOLKsV9KaOSdvoutcupkhnRqwEosDH2nwCbT9VQjqYz4k?=
+ =?us-ascii?Q?LXYnbkttPQBgJGdq4Ye5ThMmEKIaQ3HO/nN8e5f/kBakj1L2UVlcClORcs1B?=
+ =?us-ascii?Q?W7R63I1u5zvSS/HbPMjg7GAIKZDhvrwCrGuvSM/p97DbxwOcZpkha3w2wu6Z?=
+ =?us-ascii?Q?J3MNbgAPgOR8E63E6jFmO71cH472GacKgrWicwXIGNJW8ZHeSsydmh81pGub?=
+ =?us-ascii?Q?yaB3Rj1W2ZnEbbYGPDlm1cZHB+DtG7STxs8jUDVYWt16mnPooGjBILKCu6S2?=
+ =?us-ascii?Q?UxosHDqJ3Q4C3IVwNzETHKVgov2Kg2qMGNr72rvqDUrcKH4ctHHw8Onc37p2?=
+ =?us-ascii?Q?PxoxurYzV5Mnd7eEmpoNLvZcms/6xzpxTwYxA443xMxO21HCrxHzJX+t2JnR?=
+ =?us-ascii?Q?vVC/9C/xf+UMLoxhP2LZ4B7wljL0CLPhU9VUU9DotKR6BIqhVVY01k8R58xe?=
+ =?us-ascii?Q?eror9br9LAuPgxDz4f+KHkiR1SHyTnrpMLQYFX82kcwmNvbzSwmcxLfFGUYK?=
+ =?us-ascii?Q?+Aiu8h9Zctqd1jg54KI1mBRmRrSYh4ubw+51FR3pFx7gWUNR3ubVSJj162zx?=
+ =?us-ascii?Q?JY2Eb/c1Qmo7inuN/qCiY51e24Va10fyLUd9eHAOMxMPZifaQGm36XXF/2xb?=
+ =?us-ascii?Q?uLWaSDAX7oOa+CffNj0p3ydJ4/jV8rXpJVpGCkT6UO+RSuUdPo8beRpGGB8W?=
+ =?us-ascii?Q?b38q9Tkr6hMyIiuRg62Vowen9C9bubS/QNxOgB1J3ZaklPvJMWNR3BreAqij?=
+ =?us-ascii?Q?SBrWMHi674XdStWmxO5ULXXR0q7jUGm5afaF7pgmQg15TyZCvJNoKnLhhMnb?=
+ =?us-ascii?Q?ddfUw1VA55m2wdULh1p/HJoFrPc8YUNtWQDtnFLBmhlDgk4AumfR0GKLdfSv?=
+ =?us-ascii?Q?qu0ZtERZHjy8BEmkUBNC4GgCwY5iqJyUpLCpOFVtCzHsDxEH87ukR7Qr5mmo?=
+ =?us-ascii?Q?OMbeXTdO1+6urJh0ShIarZ5VItv4noze4JEz6vjZQXvwt4pqdcpbv4Hc6ReW?=
+ =?us-ascii?Q?Xx5AEO/CM3JQShMkg5AVMqYvPrw8m2KvnOX/U3zWi3L62l0JKkTUJ79ahAH7?=
+ =?us-ascii?Q?iZv9BA2JZ4nE6OTB2jlhF5JgPGG3sYdEdGS7lC6A77foMBuZn4A0JjBvDHvX?=
+ =?us-ascii?Q?jWMqLgvUW/LGm6pza8jrkQPJMPWRJ7jeGa0bzUOD3hgjpA2ykvhd6e53iHWY?=
+ =?us-ascii?Q?61dLIahWj3ZpLmArZPUkhT3E+FpAPHZQReijFFrAqWtNpOhlGM+JwuG+8aJG?=
+ =?us-ascii?Q?+eDsNWVwng=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdc60b1c-fc08-44c5-9169-08dee94c2492
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jul 2026 06:23:57.2332
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0pY5YLE7ukdvLfKjXL/4m8Ivu8PXlezgu9Y9Ok6NSduc9ohat1WpPAXO4S2DRZ1Iob4lzJErqmPyrBvW0sYaSv1VhC2fPcGZLNoxQ0qwW2E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVP189MB2409
 
-SMC-Rv2 uses two receive-buffer layouts, selected by
-smc_link_shared_v2_rxbuf() (i.e. lnk->wr_rx_sge_cnt > 1):
+>Subject: [PATCH net] tipc: validate Gap ACK blocks header before parsing
+>
+>An established TIPC peer that negotiated TIPC_GAP_ACK_BLOCK can send a
+>STATE_MSG with fewer than the four bytes required for struct
+>tipc_gap_ack_blks. Basic TIPC message validation accepts such a message,
+>including one with an empty data area, because its declared size still con=
+tains a
+>complete protocol header.
+>
+>tipc_get_gap_ack_blks() then dereferences the record to read len, ugack_cn=
+t,
+>and bgack_cnt. Both callers compare the returned record size with the decl=
+ared
+>message data length, but only after these fields have already been read. T=
+he
+>late checks therefore cannot protect the fixed record header access.
+>
+>This was reproduced on current net-next with two live TIPC nodes over a ve=
+th
+>bearer. Replaying an established peer's STATE_MSG with its message size
+>reduced from 44 to 40 bytes produced:
 
- - shared (device max_recv_sge >= 2): each receive work request posts a
-   small primary SGE plus a spillover SGE that DMAs the message body into
-   the per-link-group lgr->wr_rx_buf_v2 (SMC_WR_BUF_V2_SIZE = 8 KiB) at
-   offset SMC_WR_TX_SIZE.
+It is not recommended to use TIPC in insecure environment and create fake p=
+rotocol messages because TIPC cannot handle this.
+You need to use IPSec (UDP bearer) or Encryption (Ethernet bearer) in insec=
+ure environment. See the requirement below:
+https://datatracker.ietf.org/doc/html/draft-maloy-tipc-01.txt#section-6
 
- - non-shared (device max_recv_sge == 1): each receive work request posts
-   a single SGE of wr_rx_buflen == SMC_WR_BUF_V2_SIZE, so the whole
-   message lands in the per-WR receive buffer.
+>
+>  BUG: KMSAN: uninit-value in tipc_get_gap_ack_blks
+>   tipc_get_gap_ack_blks
+>   tipc_bcast_sync_rcv
+>   tipc_node_bc_sync_rcv
+>   tipc_rcv
+>   tipc_l2_rcv_msg
+>
+>  Uninit was created at:
+>   __alloc_skb
+>   alloc_skb_with_frags
+>   sock_alloc_send_pskb
+>   packet_sendmsg
+>
+>The uninitialized record length then reached tipc_bcast_sync_rcv(), where =
+it
+>was used to decide whether the STATE_MSG should be dropped. Supplying
+>four initialized bytes after the declared end of otherwise identical messa=
+ges
+>also changed that decision: a trailing len of zero continued processing, w=
+hile a
+>trailing len of four dropped the message. Protocol processing therefore
+>depends on bytes that are not part of the declared TIPC message.
+>
+>The KMSAN finding was reproduced for declared data lengths zero through
+>three. After adding the minimum-length check, none of those four inputs
+>reported an uninitialized value in tipc_get_gap_ack_blks() or its caller, =
+and
+>bytes after the declared message no longer affected the decision.
+>
+>Check that the fixed record header is present before parsing it. The calle=
+rs'
+>existing size checks continue to validate the complete variable-length rec=
+ord.
+>
+>Fixes: d7626b5acff9 ("tipc: introduce Gap ACK blocks for broadcast link")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Sangho Lee <kudo3228@gmail.com>
+>---
+> net/tipc/link.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/tipc/link.c b/net/tipc/link.c index 49dfc098d89b..8cc30eb=
+df575
+>100644
+>--- a/net/tipc/link.c
+>+++ b/net/tipc/link.c
+>@@ -1418,7 +1418,8 @@ u16 tipc_get_gap_ack_blks(struct tipc_gap_ack_blks
+>**ga, struct tipc_link *l,
+> 	u16 sz =3D 0;
+>
+> 	/* Does peer support the Gap ACK blocks feature? */
+>-	if (l->peer_caps & TIPC_GAP_ACK_BLOCK) {
+>+	if ((l->peer_caps & TIPC_GAP_ACK_BLOCK) &&
+>+	    msg_data_sz(hdr) >=3D sizeof(*p)) {
 
-smc_llc_rx_handler() hands the received buffer to smc_llc_enqueue(),
-which copies only sizeof(union smc_llc_msg) bytes into the fixed-size
-qentry->msg and queues the request; the LLC request is then processed
-later from the llc_event_work work item, after smc_wr_rx_process_cqes()
-has already reposted (and thus recycled) the per-WR receive buffer.
+It does not make sense to have this check because when data size can be mod=
+ified, there is no guarantee that fields in struct tipc_gap_ack_blks are co=
+rrect.
 
-For the shared layout the rkey array survives in wr_rx_buf_v2, and
-smc_llc_rmt_delete_rkey() and smc_llc_save_add_link_rkeys() read it from
-there. For the non-shared layout nothing preserves the message body: both
-functions instead read the rkey array from the truncated qentry copy
-((struct smc_llc_msg_delete_rkey_v2 *)llc, and (u8 *)add_llc +
-SMC_WR_TX_SIZE), running past the end of the ~72-byte qentry allocation.
-The loop bound num_rkeys comes straight off the wire and is only capped at
-SMC_LLC_RKEYS_PER_MSG_V2 (255), so a peer that sends a DELETE_RKEY or
-ADD_LINK message with an oversized rkey count triggers an out-of-bounds
-read of up to ~1 KiB (delete_rkey) or ~4 KiB (add_link) past a kmalloc-96
-object.
-
-  BUG: KASAN: slab-out-of-bounds in smc_llc_rmt_delete_rkey+0x6a4/0x780
-  Read of size 4 at addr ffff8880059ee748 by task kworker/0:0H/11
-  Workqueue: events_highpri smc_llc_event_work
-  Call Trace:
-   dump_stack_lvl+0x53/0x70
-   print_report+0xd0/0x630
-   kasan_report+0xce/0x100
-   smc_llc_rmt_delete_rkey+0x6a4/0x780
-   smc_llc_event_handler+0xa13/0xef0
-   smc_llc_event_work+0x189/0x260
-   process_one_work+0x633/0x1030
-   worker_thread+0x45b/0xd10
-   kthread+0x2c6/0x3b0
-   ret_from_fork+0x36e/0x5a0
-   ret_from_fork_asm+0x1a/0x30
-  Allocated by task 43:
-   __kmalloc_cache_noprof+0x158/0x370
-   smc_llc_enqueue+0x72/0x560
-   smc_wr_rx_tasklet_fn+0x474/0xa80
-   ...
-  The buggy address is located 0 bytes to the right of
-   allocated 72-byte region [ffff8880059ee700, ffff8880059ee748)
-
-Preserve the message body for the non-shared layout as well: in
-smc_llc_rx_handler() copy the bytes beyond SMC_WR_TX_SIZE into
-wr_rx_buf_v2 + SMC_WR_TX_SIZE before the receive work request is reposted,
-exactly mirroring the spillover SGE of the shared layout. The header
-(which for a message that fits in SMC_WR_TX_SIZE contains the whole rkey
-array) is not copied here; smc_llc_rmt_delete_rkey() now restores it from
-the per-qentry copy for both layouts, so a different v2 LLC message that
-reaches the shared wr_rx_buf_v2 between reception and processing cannot
-clobber it. The rkey array is then read from wr_rx_buf_v2, bounded by its
-SMC_WR_BUF_V2_SIZE size.
-
-The body copy is guarded by lgr->smc_version == SMC_V2, since
-wr_rx_buf_v2 is only allocated for v2 link groups; keying it off the
-link-group version rather than only the wire llc_version prevents a NULL
-dereference should a v2-versioned LLC message arrive on a v1 link group.
-It also removes a latent use-after-free on the SMC-R server add-link path,
-where the non-shared code dereferenced add_llc after its qentry had been
-freed by smc_llc_flow_qentry_del().
-
-The rkey count is still only capped at SMC_LLC_RKEYS_PER_MSG_V2; the reads
-now stay within the 8 KiB buffer regardless, and validating num_rkeys
-against the received message length is left as a separate hardening.
-
-Triggering the bug requires a RoCE device that advertises
-max_recv_sge == 1 (a configuration the Fixes: change added support for)
-and a peer emitting an oversized rkey count. Reproduced under KASAN with
-soft-RoCE (rdma_rxe) after forcing wr_rx_sge_cnt = 1.
-
-Fixes: 27ef6a9981fe ("net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1")
-Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
----
-
-Resent as a standalone thread per pv-bot: threaded.
-Previous posting: 20260724045310.430202-1-yhlee@isslab.korea.ac.kr
-
- net/smc/smc_llc.c | 45 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 33 insertions(+), 12 deletions(-)
-
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 954b2ff1815c..84d8d9024efa 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -1099,9 +1099,8 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- 	if (rc)
- 		goto out_clear_lnk;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
--		smc_llc_save_add_link_rkeys(link, lnk_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, lnk_new,
-+					    (u8 *)lgr->wr_rx_buf_v2);
- 	} else {
- 		rc = smc_llc_cli_rkey_exchange(link, lnk_new);
- 		if (rc) {
-@@ -1501,9 +1500,8 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	if (rc)
- 		goto out_err;
- 	if (lgr->smc_version == SMC_V2) {
--		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
--			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
--		smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
-+		smc_llc_save_add_link_rkeys(link, link_new,
-+					    (u8 *)lgr->wr_rx_buf_v2);
- 	} else {
- 		rc = smc_llc_srv_rkey_exchange(link, link_new);
- 		if (rc)
-@@ -1812,12 +1810,15 @@ static void smc_llc_rmt_delete_rkey(struct smc_link_group *lgr)
- 	if (lgr->smc_version == SMC_V2) {
- 		struct smc_llc_msg_delete_rkey_v2 *llcv2;
- 
--		if (smc_link_shared_v2_rxbuf(link)) {
--			memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
--		} else {
--			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
--		}
-+		/* Restore the header - and, for a message that fits in
-+		 * SMC_WR_TX_SIZE, the whole rkey array - from the per-qentry copy
-+		 * for both rxbuf layouts, so a v2 message that reached
-+		 * wr_rx_buf_v2 in the meantime cannot clobber it.  The body of a
-+		 * larger message is already in wr_rx_buf_v2 (shared: spillover
-+		 * DMA; non-shared: smc_llc_rx_handler()).
-+		 */
-+		memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
-+		llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
- 		llcv2->num_inval_rkeys = 0;
- 
- 		max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-@@ -2104,6 +2105,26 @@ static void smc_llc_rx_handler(struct ib_wc *wc, void *buf)
- 	} else {
- 		if (llc->raw.hdr.length_v2 < sizeof(*llc))
- 			return; /* invalid message */
-+		/* For the non-shared v2 rxbuf layout the message body beyond
-+		 * SMC_WR_TX_SIZE lives only in the per-WR receive buffer, which
-+		 * is reposted as soon as this handler returns.  The LLC event
-+		 * handlers run later from a work item and read the body from
-+		 * wr_rx_buf_v2, so copy it there now - only the body, mirroring
-+		 * the shared-rxbuf layout where the spillover SGE DMAs the body
-+		 * into wr_rx_buf_v2 + SMC_WR_TX_SIZE.  The header is left to the
-+		 * handlers, which restore it from the per-qentry copy, so a later
-+		 * message reaching wr_rx_buf_v2 cannot clobber it.  wr_rx_buf_v2
-+		 * only exists for SMC_V2 link groups, so the link-group version
-+		 * is checked (not just the wire llc_version) to avoid a NULL
-+		 * dereference on a v1 link group.
-+		 */
-+		if (link->lgr->smc_version == SMC_V2 &&
-+		    !smc_link_shared_v2_rxbuf(link) &&
-+		    wc->byte_len > SMC_WR_TX_SIZE)
-+			memcpy((u8 *)link->lgr->wr_rx_buf_v2 + SMC_WR_TX_SIZE,
-+			       (u8 *)llc + SMC_WR_TX_SIZE,
-+			       min_t(u32, wc->byte_len, SMC_WR_BUF_V2_SIZE) -
-+			       SMC_WR_TX_SIZE);
- 	}
- 
- 	smc_llc_enqueue(link, llc);
--- 
-2.43.0
+> 		p =3D (struct tipc_gap_ack_blks *)msg_data(hdr);
+> 		sz =3D ntohs(p->len);
+> 		/* Sanity check */
+>--
+>2.43.0
+>
 
