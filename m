@@ -1,146 +1,155 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6A219E8;
-	Fri, 24 Jul 2026 09:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DBB377AB3
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884429; cv=none; b=HJLA2OzpAyyWYAmwANZ275nyBsWHJWYu0sPp2QgrULCBAi5MnwAnzAiqQDA+OcwfCyZ7aEPCH+aDiUk5ZsL/+8atyPAkF4mL88XuDwSul6+UcFu6qFNDZh6JVmmh7goeHkxql9fsQvfJVxWx6IJ9LJLEnwFccRjTA5Yv+XJJN5o=
+	t=1784884772; cv=none; b=AA6fhrf8oD3u6eB1xZJFvndPahEyB3MpnGIbkFmbm0YvRCPUF7sO/DOEsfXffjfDhvq1oTQSJd5tT4DOpub3eowajP98oQW6PBv3K20DUwHz8eAI6CTSsWm6IwwIbyZMMdJWdaXbMthrlt3A5DCA9fYNxeQ/qBdr/E0id5/ESF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884429; c=relaxed/simple;
-	bh=xPqEUlhl5C0cCNg0yKKCZmDA5P5Yr//ZhyIW8a7sCOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b2HaigEoyPUapi7d34W88+mS7B+udHPvl+zlP7kRu00uSQ0IbENlBKYMCNAzs2JivnWf4LKztDgywMfMLI9+2W3pJHdOS7XvvafIhlhbr5O71Js1HEJ2hVcEBj1Kjs1PXo73aqX2X/th0eEsO2GzJLdMEIktt4IjuAKxEFm2jOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Y0aDlGFr; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784884772; c=relaxed/simple;
+	bh=PYWcOUGQI/qV+I3Sq57msatzimkkj44a6fHn4N60+/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S8yvTk6VXV7Tw1tLLEBsknRkYuWB/Wj2D5n1MTkqm9CQoRiOM5h2Z8pj8uceMDS9VmkSm4x7nd8xwaAmCyIOlIz6hMLCgJoADnO7xOYGorfAvITBhTOL1ZtW+B6Isw8Tnh9zYA5JtY2Pqt0bypxjzyXnHQlKqFAEjLQ87gMngso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fDHF0bON; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Y0aDlGFr"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O5Bwqu825908;
-	Fri, 24 Jul 2026 09:13:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dcRpZN
-	ZzzQYNt7v2OyE5mClrIoIErcJsGVKfnBbyR2w=; b=Y0aDlGFrLiOfOccfB3ZNuQ
-	bZSDQZns6NlzaJBadW8b7ck4zc6Qb40bJU9DzjXHbtySgolWVTlkY4/FAvpoqhY6
-	9DmCYVCDgWnolVyU0ERkGp8jI0sN5vSJhv+15wNyjPqhRvep9AogjIFD9teHZtII
-	EVYInBaO1kC/m8YsraCLHZNs3LCbNNdxRQ8+4pSBkxD/PfCz4lDcuipl4J2gB0sJ
-	oebbNt41XXZM2ILLjGYKpLczM1M07hwTKJeTWmwT1XhVM177sxZTHiEp6UyMrzqB
-	WLK5zAhob2f6D/3RbgjcqEGebOjZM7K34+fDW8krRJUmt4qrsxnyWgajE+06oLfA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77kkasa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 09:13:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66O94fsg012366;
-	Fri, 24 Jul 2026 09:13:38 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahg6mp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 09:13:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66O9DYXW50069990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jul 2026 09:13:34 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8B73201CB;
-	Fri, 24 Jul 2026 09:13:34 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93436201C7;
-	Fri, 24 Jul 2026 09:13:31 +0000 (GMT)
-Received: from [9.123.3.72] (unknown [9.123.3.72])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Jul 2026 09:13:31 +0000 (GMT)
-Message-ID: <28831f1e-b138-42d3-8566-23e5f603567d@linux.ibm.com>
-Date: Fri, 24 Jul 2026 14:43:30 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fDHF0bON"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784884759;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WW6AA/KhYeCHhjUnFN4/a/hB2xx19YHfi5X9x9L31wo=;
+	b=fDHF0bONqikll2sciVBU8sshwZ/8VDMIyziWnN0/H2Hschy0gNmfO2EBqOiNNDlD2l0Esd
+	KgdpOH3HTOKIN72rNGj0MOFKR/VAJHLJqRs2gu+udv0yDsmC5KzpgrmDkdQvFHzvf99cAV
+	Wh9nLZe8FSUlexO/NMyTaAAijteZKRU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-jpUzTDYtPMmpkyEuGyllxQ-1; Fri,
+ 24 Jul 2026 05:19:16 -0400
+X-MC-Unique: jpUzTDYtPMmpkyEuGyllxQ-1
+X-Mimecast-MFC-AGG-ID: jpUzTDYtPMmpkyEuGyllxQ_1784884755
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9EBD1955DC3;
+	Fri, 24 Jul 2026 09:19:14 +0000 (UTC)
+Received: from thinkpad (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E39F1954227;
+	Fri, 24 Jul 2026 09:19:12 +0000 (UTC)
+Date: Fri, 24 Jul 2026 11:19:09 +0200
+From: Felix Maurer <fmaurer@redhat.com>
+To: Aravind Krishna <aravindkrishhna@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, horms@kernel.org, davem@davemloft.net,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hsr: prp: honor master promisc mode for local delivery
+ with macvlan
+Message-ID: <amMuDYQtQ5TRUJ2d@thinkpad>
+References: <20260722041629.657330-1-aravindkrishhna@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] MAINTAINERS: Update SHARED MEMORY
- COMMUNICATIONS (SMC) maintainer entries
-To: Wenjia Zhang <wenjia@linux.ibm.com>, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>, aswin@linux.ibm.com,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Tony Lu <tonylu@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>
-References: <20260724053752.3084-1-wenjia@linux.ibm.com>
-Content-Language: en-US
-From: Sidraya Jayagond <sidraya@linux.ibm.com>
-In-Reply-To: <20260724053752.3084-1-wenjia@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a632cc3 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=SRrdq9N9AAAA:8 a=VwQbUJbxAAAA:8 a=Iqf_Y9A1iTEqXqYGlk4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX2GOX7ZgOyaop
- AIPCn4b8ed2nSxu3xXfBacX4I6sgSlpeeR16vjBjFRxmLvg2hNcHHZ/t9Bks9ufDiRiItC8R/T+
- TAodFv00c1DdwHIyyemtU7GZf4nzEXOzW8X5VNKOnxabsZ1YYpIIyZK3QUnPZ5AalCqCb0IeyJ2
- 4e4yT3EiWHgiVYYExfCOibSQrVndCBZWlc0HZyHSR5kfZWypIn/K0L5GQp1kU5dEcEnW5ED4kZT
- 39KqKnHy2A59F8/gKuS3tdQ9/HBoIsqjD9LBVCphED4x7Ya1JlbLTDUmXm7bAHXYS9Q+BIWYk5s
- iRri2EFvMCfl1EmXZ4m24TcBNdaeDlmJ5FES0fTziM6icgsDRIqlEYH6/e7genpDgOtO/KMSyJN
- D7s5vnSmBaAXyg5uUpARHqGES9Lq9fhH+LULgl0i53P33N2aq/3EV65od9q8F0GZAKAPiU9fn83
- 9IAIZK99tdYXADroXng==
-X-Proofpoint-ORIG-GUID: uFeaP31iR2AcoBSKxn-3kQkmR0NrItHU
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX5UNdovSXBwSC
- bQ1F96uLKI7JvMAOwL7t1+DJP22rRBHAndGrtNymoMD3CPYpkpWppD8dan5+8WY1bFMB0MlQsow
- RAey6TVcOQ77jfAnFPYYue9KAOlTOBg=
-X-Proofpoint-GUID: _flJAMVD2a0TeQ75C9yqUoVncj5b6q0Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 clxscore=1011 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607240083
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722041629.657330-1-aravindkrishhna@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+
+Hi Aravind,
+
+On Wed, Jul 22, 2026 at 09:46:29AM +0530, Aravind Krishna wrote:
+> When running MACVLAN over PRP, packets can be expected to be delivered
+> to the local stack when the PRP/HSR master is in promiscuous mode.
+>
+> Update local destination handling in check_local_dest() so that if the
+> master device exists and has IFF_PROMISC set, the packet is marked
+> PACKET_HOST and treated as local destination.
+>
+> This enables expected receive behavior for MACVLAN over PRP setups.
+>
+> Signed-off-by: Aravind-kris <aravindkrishhna@gmail.com>
+
+Thank you for your patch! For future submissions, please follow the
+netdev guidelines [1], in particular please:
+- add the target tree to the subject,
+- run scripts/checkpatch.pl on your patches before submission,
+- follow the kernel / netdev code style (checkpatch will catch a lot of
+  that but not necessarily everything).
+
+Now, for your patch contents: IIUC, you want to create a macvlan
+interface on top of an hsr interface in PRP mode. I am not sure if this
+is something we should support at all. At least, it is not as simple as
+forwarding all traffic to the stack. HSR and PRP both require pretty
+special handling of MAC addresses. The whole hsr code relies on knowing
+the MAC address of the local interface (and that is a single address at
+the moment). Also, an HSR/PRP node is expected to send supervision
+frames containing its address. These wouldn't be sent for the macvlan
+addresses at all at the moment.
+
+Can you go a bit into detail on what is your use case? Maybe we can make
+that possible in another way. For example, the usual way to add more
+"devices" (physical or virtual) behind a HSR/PRP node would be a RedBox.
+We already support that for HSR and there is somebody working on support
+for PRP.
+
+Thanks,
+   Felix
 
 
+[1]: https://docs.kernel.org/process/maintainer-netdev.html
 
-On 24/07/26 11:07 am, Wenjia Zhang wrote:
-> Due to a change in responsibilities, I can no longer serve as an SMC
-> maintainer and need to be removed from the MAINTAINERS list.
-> 
-> To reflect these organizational changes, promote Mahanta Jambigi
-> <mjambigi@linux.ibm.com> from reviewer to maintainer.
-> 
-> Acked-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-> Signed-off-by: Wenjia Zhang <wenjia@linux.ibm.com>
 > ---
->  MAINTAINERS | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ff93f3954fd1..031db6fa5522 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24632,8 +24632,7 @@ SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS
->  M:	D. Wythe <alibuda@linux.alibaba.com>
->  M:	Dust Li <dust.li@linux.alibaba.com>
->  M:	Sidraya Jayagond <sidraya@linux.ibm.com>
-> -M:	Wenjia Zhang <wenjia@linux.ibm.com>
-> -R:	Mahanta Jambigi <mjambigi@linux.ibm.com>
-> +M:	Mahanta Jambigi <mjambigi@linux.ibm.com>
->  R:	Tony Lu <tonylu@linux.alibaba.com>
->  R:	Wen Gu <guwen@linux.alibaba.com>
->  L:	linux-rdma@vger.kernel.org
+>  net/hsr/hsr_forward.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 0774981a65c1..38ed6b09fc4a 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
+> @@ -589,6 +589,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
+>  static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
+>  			     struct hsr_frame_info *frame)
+>  {
+> +	struct hsr_port *master;
+> +
+>  	if (hsr_addr_is_self(hsr, eth_hdr(skb)->h_dest)) {
+>  		frame->is_local_exclusive = true;
+>  		skb->pkt_type = PACKET_HOST;
+> @@ -600,8 +602,24 @@ static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
+>  	    skb->pkt_type == PACKET_MULTICAST ||
+>  	    skb->pkt_type == PACKET_BROADCAST) {
+>  		frame->is_local_dest = true;
+> -	} else {
+> -		frame->is_local_dest = false;
+> +	}
+> +	else
+> +	{
+> +		master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+> +
+> +		if (!master || !master->dev)
+> +		{
+> +        		frame->is_local_dest = false;
+> +		}
+> +		else if (master->dev->flags & IFF_PROMISC)
+> +		{
+> +        		skb->pkt_type = PACKET_HOST;
+> +        		frame->is_local_dest = true;
+> +		}
+> +		else
+> +		{
+> +			frame->is_local_dest = false;
+> +		}
+>  	}
+>  }
+>
+> --
+> 2.34.1
+>
 
-Thank you Wenjia.
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
