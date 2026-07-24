@@ -1,230 +1,246 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D684D444716
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B95C456E15
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784917362; cv=pass; b=idTZM+3Vuy249kEMHOT6qDL69XMQ3EiHquPEg4Q0FBAYGxbK+9/aUjJq3NRD79qrX5n8pD+urzmStPjkJ78tj0ZtlN0V+y3uYHg0RmrMan0st82eF3BMEKY3ux0Ws8anSCWSMEVlPbSMSO0wojpI0Ve69oLhreoTO8xM2hqQ40w=
+	t=1784918028; cv=pass; b=Dya7vD2ipdfpxOBI0x5ay4mk3XjTG4hVlQzq9DtlFy3o9tsDozHdrpBXgoidXO5D1Wrh1capSQzVwev9T30Hud2hwKj9wo4FzfPtaI+Vu9a6ph+8og2cdmY1W0Bbtty+8OI9gqL1PDNN6xK53ydmoKc6v5Sed5byimMs/EOc1HU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784917362; c=relaxed/simple;
-	bh=BaDEW4Kw0UFLMLjmpgBY9XxkSDSx5RzGKaTgky3g3HI=;
+	s=arc-20240116; t=1784918028; c=relaxed/simple;
+	bh=nyO2WQb9heSdBUPwWL1w9fhsS5DDbwSzUZIB4XErczo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I2sy66kMXmVX2oBDPfe4gIA/1G3t8Y/4yo/WHpCfm8tB4NSIyfbnLQv8zeqhy/PEt+jxb2cHj7iWIW7lqCw6LpZEuN+unas51kFsCm5fgDU5KE9z+jvQQl08AqDiliRYXTb6IsPdap2oK6KrjSJTctwuMjxSsyhkxSMAh9nkT7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=paRKfpBK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jqpc0ih9; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 To:Cc:Content-Type; b=OHhHPRMVwkqS6PIEmm/H/1/K3UUbzKACJ0SE2AcphNC0KxvrZT1SrFfgW13T0ekjCVypUn4q+sjnarEG6R9Ve/anpE0w16dYnTB7B8m6qiBqZ0/S4SjrfKYG4SgpyyW6TznkNQfx/Zh5kUKPWdLT5qBMDaKR/UbctalCRpJozJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ut9E4iMp; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="paRKfpBK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jqpc0ih9"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OGrBO63628942
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:22:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FoCXTYJ4sQumIftnxF18DxoX4FvHxTEP4RAQOXs1gBw=; b=paRKfpBKiU61VIHp
-	55luVi+n398tYthDUxfn/8/kdYWZE35fTMAXVsv4J2uwUtndNGzweHANJVkwCwnO
-	plHFi6UKo7U3sLPgSsh6Z3P+iKwLR7drfWFoqQQaev3YUusyaekFr93hf1/dnI46
-	CTvxBqm/vEXfzD0OLvc1hI1BN63OxKI0WjTYqDaiNrDZ+W0JDKmKVk7o6FUu5AKH
-	CT23TK9rzZIHInX/qYRtSQ5F2JfKyBYVTukR4lm2NtorBXgjYffy6EcGq3NDTaNr
-	+6tyTCn+CXmviLLDVNXQ6PbBVizbbUob0ZFgEbR1y8xnZtRpg4SEqBahJGer00tq
-	bag5iA==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm5yahsgh-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:22:34 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92ef31cd429so91191685a.3
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 11:22:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784917353; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ut9E4iMp"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cacef7d299so15705ad.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 11:33:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784918026; cv=none;
         d=google.com; s=arc-20260327;
-        b=hhSnmJr7TWl7Xh88z6atw372c3hQRyhaL56rDMPerfTu5kesYObo4eHI0J7DcbsnJf
-         98Yb/9kHOYLna8uzexTqVOF1d8n4HI8J25KWf7Fzr1bY0lfR/8hfpu011ladjhiZyv/G
-         7Em6PeN64qWCpm4Q6AbOLgHSPm6zaw9ldWkqE5Ac7R715uvdjzx7cZKTxOXT+xR936mL
-         AHav7Ro/dFIzXjjpMeXXIIGLjjDaRGBNuw3ir49BtAHaLAAWQTNDYwnUeZptBAeWMFjY
-         XPkEvkdhrJWlO/BE82R/fXAI+6kAy6Enc0MMgUQlnOBjQaYKpHLJn+2CCL7JN45mVV4r
-         oOHQ==
+        b=NWHr2StQ05GfMKXnCgNTWnGioZhL9BrnkWRi2dnV6POsZaZTeUfSpOrFia+ZG2sVHo
+         //xDSq/Q27ETcX+iLdy+ygaRGcpsjLp7VDUidtdvjfWiGZDsaffB9K1FLcrwgGdH+LhX
+         vxQYkAOX2jNhF5Pfijd7QQTsRvg6c8U4OjRjyxWp/MFU0Px5A9hK7fTHJm9OpxYpi1YI
+         /Df+PDWPqwPUh7L6LTCJOBxdHX1oI/PuyrnIhv8eCYnpI9PeVa+lBJWqDIghvl4FV7LT
+         eFBU/7RWhKmxRpn/QNbnkSTYK0h9vRoFgDJScOMJUnKGUXG3EWd+ipIQphwrjYalEZjy
+         M2Qg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=FoCXTYJ4sQumIftnxF18DxoX4FvHxTEP4RAQOXs1gBw=;
-        fh=LeXVFtiIaSz/zkSauafhJ0LtrGvj2rFa8/GHej02YTY=;
-        b=hlBza6X4Q5WGa6sElk4RLXAT6CyEu3a9oFMphcOm9ruoOZHfG9zZqCk9w+/XDkJCTk
-         qfzVV/5Lyw6puDVNE91iCtZOdEkiUYy4+PVCIcc70P99L4l1LMOArC3OoOlk87/n7sab
-         X1D84OAOJvtWEo60gF8q8oM7m1t3IHVlXf+HC1VCwhjStUe+rz1QTLVvYhpPtboxBJr2
-         MIXpWqe/APfV8t89ZnP19K5fI409SFL3JZEtWIzl8MlGFF0tcTxycRAyhbmvfIkXfxFb
-         8vr7nr/RRBTxURnWXot5yhC24I4a69sH5YVUjqD5XmLeb8WXx/kZL77vvDh3YNchm43H
-         11QA==;
+        bh=1SxTiikWYVO7sCnmBkQJt0xYGpkxfS6HvfLOOO5nxqU=;
+        fh=/QGL1yUqLigAAjFZGK85BAs3iS6J/StEtL/B5AosdPs=;
+        b=AB9sL80lmH3Kkv0E1EhvmxKI4p4LXhjb1DO3rYelaa16lSRTF0OWSKJIqvUEPaHFRe
+         XIBoIOvDFp8V8Hf5lz7Xx6qw3U/d4p5lvHtR8bijYp/E7jSZhE42UXfbPPscero9cTXQ
+         5uQifDJl30zbugJ+mmh0WoBiN3qrIZkKpyIWDoZjymQZEoeWjUJwxgTnj9VNL5zNs63S
+         LO3ow4WFpGGysQ/cvh/X412KdBnrfCGQjBsvqnshj1z/s1KaSBrWC5bnhvtCpuVVBrQu
+         fCAJ/X8SowXtLSyQp5DjQZFnLwkYU2KEmKWPGD4anTY08eO4JPrWURjZ/E+hZGTvym6U
+         0EFA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784917353; x=1785522153; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784918026; x=1785522826; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FoCXTYJ4sQumIftnxF18DxoX4FvHxTEP4RAQOXs1gBw=;
-        b=jqpc0ih9Jkar+p0nGo1D2t4MF0ncXumDw/L0b+Myp4vR4tzbfQ/cB9fQOpKLl4jqSK
-         +ACgXTP3Y2xhErKp3cLqiFU9AMaliQ3KQTWvnioAIwp4Mt8pldnONjvn0kidC5xaFYbB
-         eSTDWdpJp+zxFus9c+GGDEz9m4XGabLaXHG+YrnG6Q+wqiGRETLzZw0maT26XmMyJ+g2
-         T3F2L1IJqtKaNboipZPsDbWiocANHtjbWItNZZFQkGBFQ2rpF5m8rx6TGcW3fh4Y93dJ
-         wm/kTBqNIpU+3yGR+s9+a4K4s1DO7BJmIOXZE/dKkD88iLIffllSMpdjldImj8jAgdpO
-         HwZg==
+        bh=1SxTiikWYVO7sCnmBkQJt0xYGpkxfS6HvfLOOO5nxqU=;
+        b=Ut9E4iMpuUXk79SGSfXDJPFhfh98XsdjsIsE66MmyO5GobtacvpvKjrlvylWPTxKKo
+         RaUJkUER0hdUeJxhSaqv4b+7tSQoG4DSNtVx6ECbr/+zY20MTvIEq0IoO0Gdfrk/ryrC
+         BpO+FxeUDCDLWiTXGVfDOrnOwpZuRMtUhdxnHosIxgKp6ZFy4JKky/vEWwR42ZahkRk9
+         pXVrEqF8x3+RzrEgg6N6eeun5PTSHW5I61CSveVMLxWTTVpmeBwrRI03ymv1bcNnfI1+
+         K327nR4t8YeaVjI8sepByplfpz/UN+9WifHoJabvekswOIeOjrv2ca0cHJzg2BHn3ySq
+         3IUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784917353; x=1785522153;
+        d=1e100.net; s=20251104; t=1784918026; x=1785522826;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FoCXTYJ4sQumIftnxF18DxoX4FvHxTEP4RAQOXs1gBw=;
-        b=OEFKYS1YIy92c6xdGvg7F50XeT3m2RdrWiPZwHj9exPZt76xde6q408ypZx3PcD6kq
-         NPEzjb8uSRAeeYwTgv8HhOkQ/kh35spw29Aw6u1QFPibPqvU3kNWNlpKuyW7Jq9ICcBx
-         rDMNv5zWHhblix4plg5ZoYLVdajCGxEdBUKFyOqOpDQjAnr7G1lQc+xpLN0z6gNMrLXT
-         dgq0OfQ+kH6hJQjMeMKXzVc8rOR2mpzutVGLZQA3N+pwcReW/W3og7XtIrp7+EkS/jxl
-         An4YPCBhlTTTtgv2uh/wCsb16L+KkVDQ0Yx+VbkvYI/ZDh5P6uWWXkR42yqvbMjDbxoI
-         r8Lg==
-X-Forwarded-Encrypted: i=1; AHgh+RqgIZaZngsJRJ0qrkcxVHq+8R+ufcyqeE3wgFI8BnvljqggQD2YphCS1O+Cnu/Do/29X0fOiKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq1vFUGojUCIOFV40bNpZsg8roLVUS1rkKyWWzHQV6VPKbTvzr
-	Lq2CAwDXvqTon0dis0CYlA16VZdB0dh8piaVwg4v/cfoCKYm05ktF1gaTkLBoAUXGNxv6UZo0cG
-	VJmMa9lJQptFMBC1okcWxtQ6NKMMJjbkRoUG2onqZPGRFTVSYSakSrrIBk+tqWFIi8T/BjFleA8
-	9BRfvS8AE6fFBrhrqd1HHdZt/C+LmRT3Bs9arzAN59Mw==
-X-Gm-Gg: AR+sD119sT1S/hvYAuqfEugiboupUHOA5ScRwtn5LF6r8CNS3+URPj0aTe0amO705mW
-	vulIvipvQ+kM2npmU+DqaFiQUCvNJVi9cJlzesakgyeaBFWQNV4qelAbfbHg1le0g+lgZ10jVJE
-	SStit0o4ZTHdrqMHheejz3krlo+k/TWTCmk+NafWpfEKANkAr7kKu2ILPwXeEquZ2whQ/ajuHKr
-	MXhkDkhOe+CfRAGVG7u3uAbgOoB6h/DOCcGiE/zpf9e5SBhg/bg1RZ5JquDlS6IC+V0dYRuC9g=
-X-Received: by 2002:a05:620a:4706:b0:92b:6805:9197 with SMTP id af79cd13be357-93103910d40mr987775085a.63.1784917353468;
-        Fri, 24 Jul 2026 11:22:33 -0700 (PDT)
-X-Received: by 2002:a05:620a:4706:b0:92b:6805:9197 with SMTP id
- af79cd13be357-93103910d40mr987772485a.63.1784917353032; Fri, 24 Jul 2026
- 11:22:33 -0700 (PDT)
+        bh=1SxTiikWYVO7sCnmBkQJt0xYGpkxfS6HvfLOOO5nxqU=;
+        b=YgApEcn9LFohI2gkgYnzmAkmVnGBFB02a8Ew6HqFRVlGTTONmxOcG3hCByNbK5vTur
+         piDZd5Af8qErosTMRbLGoj+/wB4cL7tEVXyjFXOXsQLhz/rPkHzlppw4/Ae+dSPM/K2B
+         n4j+oXNOh8w5PjtjaJkZL8UszpWvN7Ibzm4pnKnOQJIwJHDOdtFYPDCIuiShMyoUcAUk
+         G+PLFZFEWbyoVTI7tFFpHEctHELWnI5GOd5hQpDitfnU83acmVBkISbL20gcrhoUF/FT
+         joCaXBpbh+FMRPruPR5DK07Trph7sFl1ynP8WaprheE0tTAKEnqPe9OPNuG1cD6Igjjf
+         JwCg==
+X-Forwarded-Encrypted: i=1; AHgh+RoLUK02BiRYeXsAkFPyp6XlgYlW4pFCvP6ct8ly5Ezzq6dv6Dv/k512+wpKErufQxvPaP+0g5w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNDBt5XFBTCFaJGzjpcuu7j47Lr0XHs9FLqfXzMxYm6afWQPka
+	ypTkRv4ycBlUDUiYzVA9KMgDYm0jZoIY1j9PnN+jGY2zkXwhO+s57duQ2kC5+4VgZf/juV+bwxX
+	xxTgpyg7VYUXTPxrfM0jxfRSV/RHM/aZMWiK+qMHl
+X-Gm-Gg: AR+sD117jRN89WHqvh/xue/GI8qkAgxSivwpOtQ5APDfaZpdojgG71VB/J8JP2ErHZO
+	NcP+WDaJbjr3yLBj2JwWqVdaczS7pC+aM0ewKd3nwvVQawSW9NWMyt4lqoQebug90o6X6eV7vl3
+	cfM63m/Af1pgZh8IwSeqDAG/2wm0UHLU722T/ATHwhbHT+2lLqn2Y4ww7ksPvoekKJHFmuOum9v
+	O4MDHioLiOixS2QTttOyLMGladbFae90UmXyApfD1n78C5h3jRyd61yHoqoRHapgv3OHBwedbcq
+	qAXqMyTCdtjCs0jqQd+t/xXuIQ==
+X-Received: by 2002:a17:902:c40f:b0:2c9:d89f:fd98 with SMTP id
+ d9443c01a7336-2cfdb8b9655mr917835ad.1.1784918025499; Fri, 24 Jul 2026
+ 11:33:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260724142909.3270824-1-dnlplm@gmail.com> <20260724142909.3270824-3-dnlplm@gmail.com>
-In-Reply-To: <20260724142909.3270824-3-dnlplm@gmail.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Fri, 24 Jul 2026 20:22:22 +0200
-X-Gm-Features: AUfX_mwCGyAsZagm5QhLdHjg1adHZWrNfL8ZeUXsyQFRx4srozYxezt_5pygFic
-Message-ID: <CAFEp6-3WtvrymbQvrq_oTnuFOW9AJJhxX=Kj92cEG_GxeZgeRQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/2] net: wwan: add exclusive open mode
- capability to AT and QCDM ports
-To: Daniele Palmas <dnlplm@gmail.com>
-Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        netdev@vger.kernel.org
+References: <20260724092135.414699-1-shaojijie@huawei.com>
+In-Reply-To: <20260724092135.414699-1-shaojijie@huawei.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 24 Jul 2026 11:33:29 -0700
+X-Gm-Features: AUfX_mzOBNjgkxUG2t378AeWOh7N2eFoWiWABkIjGfKQRiESjNE63Q3hNh2oMbs
+Message-ID: <CAHS8izPTQ5rOXs5rfVc3tnWcaeQ8wJ1qJqSXEfboe0OTGNkLkA@mail.gmail.com>
+Subject: Re: [PATCH net] net: page_pool: fix DMA index not cleared on
+ xa_cmpxchg race
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org, 
+	ilias.apalodimas@linaro.org, toke@redhat.com, shenjian15@huawei.com, 
+	liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDE2NSBTYWx0ZWRfX6isJ1+ghsMRL
- njCuzZF+5SGSN+DZsA/yPt4z6vrnEioymLq/Y0Abi14G+oDUF3ZK6J/wOuyi+ekKNOLJ9BpVD5y
- nbDIYXhvHZRGil+BJSWFcPgNpaUGrfk=
-X-Authority-Analysis: v=2.4 cv=Rtz16imK c=1 sm=1 tr=0 ts=6a63ad6a cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=rJkE3RaqiGZ5pbrm-msn:22 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=ai5p6xNhIYTwrweCe2kA:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-GUID: 47Rp_G2vjF1wDXeTUajV00y5Hm3wXN8v
-X-Proofpoint-ORIG-GUID: 47Rp_G2vjF1wDXeTUajV00y5Hm3wXN8v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDE2NSBTYWx0ZWRfX4VM8Qkrv9I8e
- 8zo14jKIdqVPm+BKi8xF1tbQFGvaKEZVAJXJ0TD2M9y1c0hY79g0Rjwxgk/8P4FIA7YGzvbJccO
- ITIJZqlrj0IUrLNAQUE0TPGJJhiEgyIC7ebtGeciux4qqvmLz3EyiAe/CghJ3iGW6C+wXx7OtWh
- LMCJY3E3NHDM6FXON3sjCirvpGlY/98auwxyBNsIcobdg+lX8yC/OK47PsmKCtaHg5i/fpJXSFg
- Q5WKUvJTzo3G5PCVXv8xznW3Msvi4IqBy99qXEJiMlptK3KDYf64cFegxaunW5BDkkls8KRiBZY
- C2dpqQoHaRUrUZc6UezlFCmZAdswCmGyF8ehsr7CMODaVCn8rU253+CNeEtSzqjqJ9byJmwIMMm
- KFgbuU/J22xrb+UffmPrpiGEeWRLZfGJ3SI85bT7W7szG4X8sUOOxfVZgOqIhJEMGJ9XP3iYwoH
- g5KHs/Jskb6Jvmay1HQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_04,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607240165
 
-On Fri, Jul 24, 2026 at 4:32=E2=80=AFPM Daniele Palmas <dnlplm@gmail.com> w=
+On Fri, Jul 24, 2026 at 2:22=E2=80=AFAM Jijie Shao <shaojijie@huawei.com> w=
 rote:
 >
-> Add exclusive open mode capability to AT and QCDM ports to improve
-> compatibility with user-space tools using the Qualcomm diagnostic
-> device (e.g. libqcdm).
+> page_pool_release_dma_index() uses xa_cmpxchg() to atomically remove a
+> page from pool->dma_mapped.  When the cmpxchg loses the race (the entry
+> was already removed by a concurrent release path, e.g. page_pool_scrub()
+> during page_pool_destroy()), the function returns -1 *without* clearing
+> the DMA index bits stored in pp_magic.  Its caller then skips dma_unmap
+> based on that -1, which is correct, but the stale DMA index bits left
+> in pp_magic are wrong: the xarray entry they index no longer exists.
+> A page recycled back into the pool then carries a dangling DMA index,
+> and kernels that validate pp_magic in the return path surface this as
+> a WARN.
 >
-> Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+> Move netmem_set_dma_index(netmem, 0) to execute unconditionally before
+> return, so both the winner and the loser of the xa_cmpxchg race clear
+> the DMA index bits.  The return value still distinguishes the two
+> cases (-1 loser / 0 winner), preserving the contract that exactly one
+> side performs dma_unmap.
+>
+> The race window opens when page_pool_destroy() runs concurrently with
+> late page returns from SKBs held in per-CPU defer lists, TCP receive
+> queues or GRO hashes -- e.g. a driver reconfiguring channels/ring
+> depth while traffic is flowing.
+>
+> Observed on arm64 (7.2.0-rc1) with the hns3 driver:
+>
+>   WARNING: net/core/netmem_priv.h:18 at page_pool_clear_pp_info+0x20/0x38=
+,
+>            CPU#83: iperf/3874878
+>
+> Return path (CPU_B, process context, triggering the WARN).  The page
+> was held in a per-CPU SKB defer list and is being released through
+> tcp_recvmsg():
+>
+>   page_pool_clear_pp_info+0x20/0x38
+>   page_pool_put_unrefed_netmem+0x11c/0x2e8
+>   napi_pp_put_page+0xf0/0x120
+>   skb_release_data+0x170/0x228
+>   skb_attempt_defer_free+0x7c/0x1f0
+>   tcp_recvmsg_locked+0x710/0x9a0
+>   tcp_recvmsg+0x74/0x1c8
+>   inet_recvmsg+0x2c/0xf0
+>   __sys_recvfrom+0xdc/0x198
+>   __arm64_sys_recvfrom+0x2c/0x48
+>   invoke_syscall+0x5c/0x120
+>   el0_svc_common.constprop.0+0xc8/0xf0
+>   do_el0_svc+0x24/0x38
+>   el0_svc+0x34/0x1e0
+>   el0t_64_sync_handler+0xa0/0xe8
+>   el0t_64_sync+0x1ac/0x1b0
+>
+> Scrub path (CPU_A, racing with the return path, derived from code):
+>
+>   page_pool_destroy
+>   -> page_pool_scrub
+>      -> xa_for_each(dma_mapped)
+>         -> __page_pool_release_netmem_dma
+>            -> page_pool_release_dma_index   <- race window
+>
+> Debug approach and evidence:
+> Reproduced with a stability test that repeatedly reconfigures the hns3
+> channel count and ring depth (ethtool -L/-G) while running iperf3 with
+> multiple parallel streams, then closes the iperf3 sockets to release
+> the SKBs held in TCP receive queues and per-CPU defer lists.
+>
+> On the unmodified kernel the WARN reproduces after hours to tens of
+> hours. To make the race window observable, a debugfs knob injects a
+> controlled udelay() right after the winning xa_cmpxchg() in
+> page_pool_release_dma_index(), widening the gap between the xarray
+> entry removal and the pp_magic cleanup.  With the delay injected the
+> WARN reproduces 4-5 times within about half an hour.
+>
+> Instrumentation added to page_pool_release_dma_index() logs the per-
+> page pp_magic, DMA index, refcount and dma_addr at release time.  A
+> representative log line from a WARN-triggering page:
+>
+>   PP_DMA_IDX: magic=3D0xdead0000000cbec0 idx=3D6525 refcnt=3D1 dma_addr=
+=3D0x0
+>
+>   magic=3D0xdead0000000cbec0  -> PP_SIGNATURE | (6525 << shift)
+>   idx=3D6525                  -> DMA index bits still set in pp_magic
+>   dma_addr=3D0x0              -> scrub already did dma_unmap + cleared ad=
+dr
+>   refcnt=3D1                  -> inflight page, unrefed release path
+>
+> The combination "dma_addr =3D=3D 0 but DMA index !=3D 0" is the signature=
+ of
+> the race: CPU_A (scrub) won the xa_cmpxchg, performed dma_unmap and
+> cleared dma_addr; CPU_B (return) lost the cmpxchg, returned -1 and
+> skipped netmem_set_dma_index(0), leaving the DMA index bits stale --
+> exactly the gap this fix closes.
+>
+> With this fix applied the WARN no longer triggers under the same
+> workload (verified overnight), both with and without the debugfs
+> delay knob enabled.
+>
+> Fixes: 95920c2ed02b ("page_pool: Fix PP_MAGIC_MASK to avoid crashing on s=
+ome 32-bit arches")
+> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
+en destroying the pool")
+> Assisted-by: OhMyOpenCode:GLM-5.2
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 
-This looks somewhat fragile in scenarios where a process does not
-properly release the bit, such as on a crash. That said, it appears to
-be consistent with the mechanism used by tty, so:
+If at all possible, when generating fixes via LLMs, spend time
+reviewing the patch yourself before sending to make sure the patch
+makes sense. In this case, I was taken back that this 10+, 3- fix came
+with such a huge huge commit message.
 
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+I did not review my self but my LLM - which does not tire in reading
+the long commit message - came up with this review. It looks like it
+may be correct. I think the fact that we do not touch the netmem at
+all if we lose the race is intentional, because the netmem may not be
+allocated:
 
+```
+  While this fixes the WARN_ON_ONCE, it introduces a critical
+Use-After-Free (UAF) and memory corruption bug in the scrub path.
 
-> ---
->  drivers/net/wwan/wwan_core.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-> index 8168239e52c3..ffbcf11e4e68 100644
-> --- a/drivers/net/wwan/wwan_core.c
-> +++ b/drivers/net/wwan/wwan_core.c
-> @@ -42,6 +42,7 @@ static struct dentry *wwan_debugfs_dir;
->
->  /* WWAN port flags */
->  #define WWAN_PORT_TX_OFF       0
-> +#define WWAN_PORT_EXCLUSIVE    1
->
->  /**
->   * struct wwan_device - The structure that defines a WWAN device
-> @@ -748,6 +749,12 @@ static int wwan_port_op_start(struct wwan_port *port=
-)
->                 goto out_unlock;
->         }
->
-> +       if (test_bit(WWAN_PORT_EXCLUSIVE, &port->flags) &&
-> +           !capable(CAP_SYS_ADMIN)) {
-> +               ret =3D -EBUSY;
-> +               goto out_unlock;
-> +       }
-> +
->         /* If port is already started, don't start again */
->         if (!port->start_count)
->                 ret =3D port->ops->start(port);
-> @@ -769,6 +776,7 @@ static void wwan_port_op_stop(struct wwan_port *port)
->                 if (port->ops)
->                         port->ops->stop(port);
->                 skb_queue_purge(&port->rxq);
-> +               clear_bit(WWAN_PORT_EXCLUSIVE, &port->flags);
->         }
->         mutex_unlock(&port->ops_lock);
->  }
-> @@ -1031,6 +1039,22 @@ static long wwan_port_fops_at_ioctl(struct wwan_po=
-rt *port, unsigned int cmd,
->                 break;
->         }
->
-> +       case TIOCEXCL:
-> +               set_bit(WWAN_PORT_EXCLUSIVE, &port->flags);
-> +               break;
-> +
-> +       case TIOCNXCL:
-> +               clear_bit(WWAN_PORT_EXCLUSIVE, &port->flags);
-> +               break;
-> +
-> +       case TIOCGEXCL:
-> +       {
-> +               int excl =3D test_bit(WWAN_PORT_EXCLUSIVE, &port->flags);
-> +
-> +               ret =3D put_user(excl, (int __user *)arg);
-> +               break;
-> +       }
-> +
->         default:
->                 ret =3D -ENOIOCTLCMD;
->         }
-> --
-> 2.43.0
->
+  page_pool_scrub() iterates over pool->dma_mapped without holding a
+reference to the page. If the scrub path races with the normal unref
+path and wins xa_cmpxchg(), the unref path will proceed to free the
+page.
+
+  If the scrub path is preempted immediately after xa_cmpxchg(), the
+page will be freed before the scrub path can continue. When the scrub
+path resumes, it will execute your new netmem_set_dma_index(netmem,
+0), read the dma_addr,
+  and clear it=E2=80=94all on a freed page that may now belong to another
+subsystem. This will corrupt memory and unmap garbage DMA addresses.
+
+  To safely fix this:
+
+  1. __page_pool_release_netmem_dma() must cache dma_addr to a local
+variable before calling xa_cmpxchg().
+  2. The scrub path (winner) must not touch netmem after a successful
+xa_cmpxchg().
+  3. The unref path (loser), which safely holds the page reference,
+should handle clearing the DMA index and dma_addr to satisfy the WARN,
+regardless of the race outcome.
+```
+
+--=20
+Thanks,
+Mina
