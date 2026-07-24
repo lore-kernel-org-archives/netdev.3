@@ -1,216 +1,217 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010042.outbound.protection.outlook.com [40.93.198.42])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439BC368D4B;
-	Fri, 24 Jul 2026 04:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784867606; cv=fail; b=j/VAn/ZWbvEYMIUCWHLA9VMfh4cxVyH9ZmN+jcMx0WcrHKcAjjgjPNfiG2GgGeyukdm3ycq6ztdEJZZx1g7jaAzqP+F9jifYWqQE9vMcSCW6+fJlS4Hm9tJ6MgsULPUcNTBLqDvLzp4YdolDec3Vc0GyvcTEttjo3gVzVReP8tY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784867606; c=relaxed/simple;
-	bh=cmbGG/E/vzgM1G00uzU2ArL18H9E2GNZCXy0eUYg9c0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mOoIZhklYiCzvj6ADgCqUP19QL71yq7rFsv7+cE3vsrdjx3ogyQp0fpI0lxuCXFgr68HKOndCu6Ev5buoQdSubCUqBvzGg0e7pxz8UH5KYdPd4P+Db2K9K2FQ04ZXydQh1zfCY/MM5BSXk8I5FiKE97UtZFcLGcmTHaw1iZJS3o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GETltqa3; arc=fail smtp.client-ip=40.93.198.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B445623BCF7
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784868403; cv=none; b=J+jWrylFmbdKuMAx293wbxdM6Pn/qkLY2z4Z3kanrMuSszDIJ4KctGoaC5KpOqpwUoVDPla2ZQzMKxwrgIu+09a2H0dRInXQW6APQ9dSojjHkm4ZXOyC9OPeQxWgbyYYSCf3bb4/GGj2G3U7uiwpXmzhW4NrzeAtm8wL4i3e2XY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784868403; c=relaxed/simple;
+	bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GUVvzwB7CHufMuJSzs2yzBXytGWsLW3Yp5yqiRJ66KB1LkDbysI2jRpV/UmJmkOoHhirIn3FE0NCCmdimbhi0E0CGdp9cfI9gZxhYWnplz5dsaOJdOQJ2ZfvqBEkqrYYGrGVl244ikeOqICPuLWdnU2JoDjePk0eWUa1cj6Hxy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DxMolseq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=L2hXNzhi; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GETltqa3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kgo+DFlTdE7J4ZrxykLsrxKl9D7pIZ2H5Vayxqp/PJl4bO5dbFbvAzP0WYMm5qdjb+toyTTRHxrrfx+x/UDIpBqqoP76k4AAs7xlv9Vw/hdWT5gOFiCoK3oFcXu2IppLDJL+1fgRsBKS82e8d6iKpXQV8pHdCfQnIkvmga9JKd3zh/Go9HVYedAM61xI4Ohw/IP2cxHBaat9p0FWneTvYZKMh1scJw/2DfWjPpLgqVGCqlo+4RxBEDIJwQv9Q61wSJIz3F6/jHNsL5/HF1mEBNiWdw2gFnawzsF6PBcYjamxQrJd/+vmymKTIvT/VaVd9uZvHhOd+t+ONKK1eKcjfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VzHjDUzlemrOktJW8sydxyt+1MzEOlNdercsAz+jJH0=;
- b=KfppL1PSFuXceNYFbURDCOeiefrzEKhGk/cSTrgxw01XwoTzNA0zsgOqNvJr4Wqs/eGfadOhNXgrKJooiS7aXgI5isQGJ0dq4XgbJDDO9sKQUG7XH7EQ6bWI6DvuO2OCGsu46YIkdJoKXYKEUEq0Kss+jOSVqEckWL0bYs5jMb7+bxRsiqu/8/TUAxmEPy9oJ3rL+F6lhC7VqwMoymsl4ZxqAnYRAH0/8abZTBMhyxMtfhDWpUdbt+4s1K3h3iSVXAA0Kkh7I3OGHN6yf7WPqPAkaPS2WidasRnlR1Rgp7yykGmaKzOskgQ7o7Krfqt6vKLWCYH095IZDPJ6pb/wxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VzHjDUzlemrOktJW8sydxyt+1MzEOlNdercsAz+jJH0=;
- b=GETltqa3UhaRjeciVcxBv15NCgfY8IiqG676wd22HeHb8ujbdC2zw7gJoVKnzdjmLJbvEJxSOiJlio1fgTmGOPBb7OVpRJlwJcWCkyCRs3kb8Ap9wylEWNlzBI2D/0zrKmh0cdL0sKq6x01KLPF/g25Qd5pHi1PtFsPn0kaNero=
-Received: from SJ0PR13CA0076.namprd13.prod.outlook.com (2603:10b6:a03:2c4::21)
- by MW6PR12MB8664.namprd12.prod.outlook.com (2603:10b6:303:23c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Fri, 24 Jul
- 2026 04:33:19 +0000
-Received: from SJ1PEPF0000231E.namprd03.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::aa) by SJ0PR13CA0076.outlook.office365.com
- (2603:10b6:a03:2c4::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.6 via Frontend Transport; Fri, 24
- Jul 2026 04:33:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF0000231E.mail.protection.outlook.com (10.167.242.230) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 04:33:17 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 23:33:14 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 23:33:13 -0500
-Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 23 Jul 2026 23:33:10 -0500
-From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 2/2] net: macb: configure ENST registers for all queues
-Date: Fri, 24 Jul 2026 10:02:57 +0530
-Message-ID: <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
-X-Mailer: git-send-email 2.44.4
-In-Reply-To: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
-References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DxMolseq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="L2hXNzhi"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O42WMX1893259
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=; b=DxMolseqtUPvVIbi
+	KY5fI/kXhLQj682NjL/Lz4gI2YuiXYHmk6BL8j2dB2sQtbdSW7StjzRZMziYFV8c
+	I49ECSDAVVydKKV/QlHRknQ+FkuzVKY6ExMIv7HLuGl+ax9tVb0bOsBBCjCQFuCF
+	O47ukkrmB6nx1vDoOfxNP+OxdRvQ35HNBZEUrIxJqf/tjZ0vYGhD2cimTqByEir0
+	bFXvN6Pzs3flLwqsUO3sRDtSwm5RVRzCPdCyeZlFlbsb8Y1XXfR0GfGd//AiIaiz
+	01crQ5OVNldZIZLXeK8aj4RJvBZ+tdSZKPA55SJoTLqcCflFR7Y9d6NGDRUA9Eku
+	d1LfrA==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm0p503we-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:40 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cae455cf6dso650065ad.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 21:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784868399; x=1785473199; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
+        b=L2hXNzhi3p8mQzrumToGlPqhuCYlcCAlKy4qjFyEdnDfwwelguK5hkQIjpdFrcmS6c
+         A5sfx+oc6ZGqrp9pRyCKkX6d4mPOFdJfP2LH/QtFiYrHynR6ut1sh3XP81uF9BG5mabe
+         jhshM7Tg2DS6R3g+7xeTaoaTGErTPTYGAZG72ER3Gszwcvb+WcRGuzlhrJ/MvFq4cmB6
+         +ElrqCFJjccs7NG48foZrI3uqOotoFjIEsLb/5CduFQHSACu/7tlAF36wyV5Dp/G2/0N
+         59aAQV8fr8g3L//qsfT/64ejALFrVCPedPrGgc3OQXtU/zeL5tuTGfPP3c/tb1om612C
+         Qj+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784868399; x=1785473199;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
+        b=edrANsvaz/nzqOuqtLAhgqA3lJFWl4CrR2/5+JDw+1+gmDV7qMOIiYUiBCtqdcXlmW
+         +VDNFxX2fVBO7JiBSQrQeSoiuovQL46+aUwJYWNC3ZqTR1+8TEaWiq+0nA8YUAed/nxn
+         NfExq6KbbpNqQbyyQlIad31oeQuFFkV34Y5wChGd3xv1qVRJjx3Ysh3HHbYCj2qFJ3eX
+         9gH6rPAXGJieH0brVHCYOPNs801/6Iuquw4be7LPo4XYVVl3v3BsCzIdGa/oNcgG53Fq
+         bwu8Wzr8neuYFe1Q++ijd4HTA8H80ISO/zZeesW6csVH24wLsXk4GCEVkpHVZBgnAI1m
+         LMdA==
+X-Forwarded-Encrypted: i=1; AHgh+RpJ4I9jjfukcjIV9EWKb/U9HcRBNDen10H0Ycf6NyTg2kq1j5i5snPsLgnMSCCutjBMqyR07xs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvxCNzk4xASMBePUvcolZzWUb2XIxfVQHof/Nu6Fj2SK7s/CED
+	pRkoq4Wf7hemXiVnygrTv6d5B/0g3pBMjhFHnUJKcq0WCEeykb7jBBSLIkFf9KB0yYixgJv+DcC
+	vqmLKwumy9O9u8AdGI/UCFadluhvyLOwCOANua1wB0oK7sHRcpqan7Xi2gGs=
+X-Gm-Gg: AR+sD10/OCyZtpxA8p5GHhU2yPieWvMlPFWXNkYGEzmWLPq2uHRkFPuWeoUjdeCoN6j
+	D0GdQNKirAm38r87O3QqX+6o3aDDucC8pNXZajvArNx8jHAQi7O7d6PKHJbIaYFGP9mmZR+7Mtg
+	OU9nh+fWMRSMN6jvq0qJEPhO1nnJWIlMD2mwchtV5Hce67vuFf0k35hAnzQyoPj6LnePz9V1B9s
+	qhEFORF8wtTpKDU5VKnMEG/DMGOOSfL+DF9yfITOkC9pktDmfSPCaQ3LY05G1z/hNxshxwiUyYI
+	TYidaGnbrgz4KW0z6FT5Yfeb/Gn1oXowahTrY+41oy0DJJQyGcR4hIwRxVI0hZZCRlS7LjN9H6p
+	z+KWv26RLTesrpOZva4La+HDVKbMpLdqu/A==
+X-Received: by 2002:a05:6300:2204:b0:3bf:a38b:e8ca with SMTP id adf61e73a8af0-3c44b211035mr6789573637.59.1784868399166;
+        Thu, 23 Jul 2026 21:46:39 -0700 (PDT)
+X-Received: by 2002:a05:6300:2204:b0:3bf:a38b:e8ca with SMTP id adf61e73a8af0-3c44b211035mr6789544637.59.1784868398747;
+        Thu, 23 Jul 2026 21:46:38 -0700 (PDT)
+Received: from [10.218.31.237] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147df09ac0sm22951882eec.16.2026.07.23.21.46.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 21:46:38 -0700 (PDT)
+Message-ID: <c8417ff3-db92-446a-acf8-8c73c83b85de@oss.qualcomm.com>
+Date: Fri, 24 Jul 2026 10:16:31 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231E:EE_|MW6PR12MB8664:EE_
-X-MS-Office365-Filtering-Correlation-Id: 338d59d2-ff9d-47f2-e1bb-08dee93caf06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|82310400026|376014|56012099006|10067099003|22082099003|18002099003|6133799003|11063799006|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	zsLXaFpryY4LO9TfUe8XpKUBz22JhdUzvtz5+GPgColcnpcptvdSBn3Y9dr9b5EuK9igjuYNRbYtmq5pOy2BxSkgucBuOTrba4bMQK6uILZQXJIyI+84fb9RshUTMQf6sozcgyfU3Vlsup1QmB6KhEWC81m0QRiWz7b2bVz9qHfYpQC8a2KImcufTEMc6OVEtO6I4GmEVO5/vAhCFGRESqMZttqr9sbS9TzJeJMjdY0KzDg2cHzRWnnfxuBgvRiknMUS+dL7O+VbbqLUaFbOaL6f8yOnSDTNiOxm2KU5eUJupqkm+ZYulFv1YksTwuGeDzg2rv86tZfa7rn30LKde+7zizp3cHNiwFKh4vfoSoRdbmjf7EvrBx9nYBzSGMnMnYuDJMekowpCSCjMNnNrfPUVsY39mHS6djuniLRhyZ2soqTe4OxQ6rTvuYQsrszvb9369XabQJ9W7dzH8fqHJOASmE2m8ADc+Lfu5b70NIja9CzWQvyG/0LTLKocUP0VUPcrJv7WuVArX4yC/JM4WHnyfVgzROoK2H4Pvd1MVWeAh9tkeOU7FUQ29YAgLuX9teqheH4WPx1UZBA9bniLhf/zQql2guHNDAqCY8DR9bjrHSBLWRwpwfabl2NvNBg3Rn3ZOM4oNDyGsrSGT7aNI7JimiAeKu//hgEFTwFv7W67pCrlLeBnoZvZqrZ8ytRxcUCwrgKIibT8bqwunsoa1A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(82310400026)(376014)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	6ABojwGj3gQ6GylabUAljhWNiwFp5ZVwPr76V4y1+Tmye5QyY9XItVaJtaB/HOCMMSHfM3V3pBeY0T8ygXDvfTKOMvxMphTmxMfefWgX+j8muxZH1LVRqXPgRhA/POn8DbwBh9rIiXMspTPU+NwiXQbuUOK5PzBZZ1w4V6W4ljk43W4jUDixSPovtrd8Khvws4WfOX716lUMb3vjuKQdY+PDcRCQsOQKRnj3jUpX058SHbw7ZzEcJ43tmkDWwCX8DnrSedtmvbYwTQPDySyUdRvoEyL415B9M5pf0EndmAPbhjUqR6bt8FnbzBiTloBBozW2ZNSsF6HfqQxceSR1z+n1iuzJW4cNfcwlVkG1HeGFeiPjkm8SyVPAKci5cu/tiErPvAQKSJdmVxo6WsHxsRX68Zowt8nPeApANPfQBJDaFRrrBjKlSAdiVzt8nqz3
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:33:17.6163
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 338d59d2-ff9d-47f2-e1bb-08dee93caf06
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231E.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8664
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a
+ single coherent block
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Stephan Gerhold <stephan@gerhold.net>,
+        Andrew Lunn
+ <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        chris.lew@oss.qualcomm.com,
+        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
+ <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
+ <alXm0rp3NK62G3-3@linaro.org>
+Content-Language: en-US
+From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
+In-Reply-To: <alXm0rp3NK62G3-3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=Pq6jqQM3 c=1 sm=1 tr=0 ts=6a62ee30 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=EUspDBNiAAAA:8 a=2eDN7aXksB4whfXZn5AA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: 0yl7NCpXzmYQICtZoNBt6g8M_gEyG65o
+X-Proofpoint-ORIG-GUID: 0yl7NCpXzmYQICtZoNBt6g8M_gEyG65o
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA0MCBTYWx0ZWRfXw5HQMQMTKBTR
+ lLHEUOglGMss4u1Sz7k/Lm6aX/8l13st3S4jGp1ab6/5lw3QrI9Zz0DdCbowz8WmUNk1ipD5FOd
+ oV8dZ9yG9nu9IYENhrKYTBhR2ZmOE9U=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA0MCBTYWx0ZWRfXxl9ebVQmPUg3
+ ywd5tdwjSrMs/ASx18eenDf529UGSMwMcaIunxA1pxUfJeFf/1II+8J9zzkZiJY2ZU7uVIdcpcd
+ JEc3DtsHX43g770E9kGcQ0+g/haa/SXfRevEWmwG4JaZ6cqbE7nD+5kjPAy4EQr1xRe3G2Otwee
+ C6wkIV9IfMzCMizE8vEqBhb8yqZ3SHF60WNUPU8rBqXiBfIc4s3C1zcMQfkEtIzci/9fQXHPSaz
+ j/mq1sitFRr8E/BZEsMnTRHHUlUnXSn0QJrfR3i9n5C+/MuW1lgZeSvDjb2CjzEBQqwCxd/Gbmh
+ V6U9M02afuoq0EDtb2Krrm+CTd9tVEBYcAQ24ZGtWiH5haiL9Pi4KvJVWpok9Xpn0NYmW26u2Xe
+ /LRgH8rFp0RA0you+tivtT/imhzBXN0AYJQ4WaaceO2JffsBmLijc8kon6+AZoIt212YpHpJg0T
+ P6bj1n/sdhdaaZKOiKw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_07,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240040
 
-The initial "tc" command was not overwriting the reset value of ENST
-registers if only a subset of queues were configured, leading to an
-invalid setup. To fix this, configure all queues unconditionally.
-Unconfigured queues are zero-initialized via kcalloc(), ensuring a
-complete and consistent configuration.
 
-The queue_id field in struct macb_queue_enst_config becomes redundant
-once the array is indexed by queue id, so drop it.
+On 14-07-2026 01:05 pm, Stephan Gerhold wrote:
+> On Tue, Jul 14, 2026 at 11:02:32AM +0530, Vishnu Santhosh wrote:
+>> On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
+>> NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
+>> per-region access control, each individually DMA-mapped RX buffer
+>> requires its own XPU resource group (RG). With ~16 RGs available, the
+>> 32 per-buffer dma_map_single() calls exhaust the table and the first
+>> inbound transfer faults with an XPU violation.
+>>
+>> BAM-DMUX is a singleton (exactly one instance per SoC), so the
+>> destination VMID does not need to be a DT property; it is looked up
+>> from the compatible string's match data instead. Add struct
+>> bam_dmux_data with a single vmid field, and a shikra_data instance
+>> hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
+>>
+>> When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
+>> a single contiguous dma_alloc_coherent() block and SCM-assign that
+>> block to HLOS plus the VMID once at probe. This reduces RG consumption
+>> from 32 to 1. The block is never reclaimed across a modem power cycle
+>> (bam_dmux_power_off() does not touch it), so the probe-time assignment
+>> covers every subsequent restart without re-assigning or reclaiming. It
+>> is reclaimed to HLOS only once, at remove or on a probe error, and if
+>> that reclaim fails it is leaked rather than returned to the page
+>> allocator.
+>>
+>> Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
+>> the block, so no per-buffer mapping is needed at power-on. Because the
+>> coherent block is not page-backed, received payload is copied into a
+>> regular netdev skb before handoff to the network stack; this is an
+>> unavoidable extra copy on the XPU-enforced RX path.
+>>
+>> Platforms without match data are unaffected: rx_virt stays NULL, no
+>> coherent memory is allocated, and the per-buffer dma_map_single() path
+>> is unchanged.
+>>
+>> Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+>> Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+>> Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
+> So how do you handle TX buffers? Right now, they are just passed on from
+> the net subsystem. There can be up to 32 TX buffers in progress as well.
+>
+> Overall, I have mixed feelings about this patch. It looks reasonably
+> simple, but fundamentally I don't understand why we need to go back to
+> the old days of implementing protection using a highly limited MPU (in
+> your case: the xPU).
+>
+> Why does the setup of BAM-DMUX differ e.g. from the setup for the crypto
+> engine? Crypto is also using bam-dma, but it avoids this inflexibility
+> by making use of the &apps_smmu. Is BAM-DMUX not covered by the SMMU? Or
+> did you just decide to bypass the SMMU in this case? (If so: Why?)
 
-Key changes:
-- Drop queue_id from struct macb_queue_enst_config
-- Allocate enst_queue[] based on bp->num_queues instead of
-  conf->num_entries
-- Index enst_queue[] directly with the queue number
-- Program ENST registers for all queues
+I checked with secure systems team on this. Crypto BAM is
+behind apps_smmu, so protection is enforced through the SMMU's Stage-2
+page tables.
 
-Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
-Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
----
- drivers/net/ethernet/cadence/macb.h      |  2 --
- drivers/net/ethernet/cadence/macb_main.c | 20 +++++++++-----------
- 2 files changed, 9 insertions(+), 13 deletions(-)
+A2 BAM (used by BAM-DMUX) is present in secure domain and does not
+support Stage-2 translation on this SoC, and there is no IOMMU domain
+that can be attached to it. The only protection mechanism available is
+the xPU.
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index a11052565436..4cc9aa9b2f9e 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1490,7 +1490,6 @@ struct macb_platform_data {
-  * @start_time_mask:  Bitmask representing the start time for the queue
-  * @on_time_bytes:    "on" time nsec expressed in bytes
-  * @off_time_bytes:   "off" time nsec expressed in bytes
-- * @queue_id:         Identifier for the queue
-  *
-  * This structure holds the configuration parameters for an ENST queue,
-  * used to control time-based transmission scheduling in the MACB driver.
-@@ -1499,7 +1498,6 @@ struct macb_queue_enst_config {
- 	u32 start_time_mask;
- 	u32 on_time_bytes;
- 	u32 off_time_bytes;
--	u8 queue_id;
- };
- 
- #endif /* _MACB_H */
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d394f1f43b68..d58430fe9c41 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4329,7 +4329,7 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
- 	struct macb_queue *queue;
- 	u32 queue_mask;
- 	u8 queue_id;
--	size_t i;
-+	size_t i, q;
- 	int err;
- 
- 	if (conf->num_entries > bp->num_queues) {
-@@ -4357,7 +4357,7 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
- 		return -EINVAL;
- 	}
- 
--	enst_queue = kcalloc(conf->num_entries, sizeof(*enst_queue), GFP_KERNEL);
-+	enst_queue = kcalloc(bp->num_queues, sizeof(*enst_queue), GFP_KERNEL);
- 	if (unlikely(!enst_queue))
- 		return -ENOMEM;
- 
-@@ -4416,13 +4416,12 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
- 			goto cleanup;
- 		}
- 
--		enst_queue[i].queue_id = queue_id;
--		enst_queue[i].start_time_mask =
-+		enst_queue[queue_id].start_time_mask =
- 			(start_time_sec << GEM_START_TIME_SEC_OFFSET) |
- 			start_time_nsec;
--		enst_queue[i].on_time_bytes =
-+		enst_queue[queue_id].on_time_bytes =
- 			enst_ns_to_hw_units(entry->interval, speed);
--		enst_queue[i].off_time_bytes =
-+		enst_queue[queue_id].off_time_bytes =
- 			enst_ns_to_hw_units(conf->cycle_time - entry->interval, speed);
- 
- 		configured_queues |= entry->gate_mask;
-@@ -4448,15 +4447,14 @@ static int macb_taprio_setup_replace(struct net_device *ndev,
- 		gem_writel(bp, ENST_CONTROL,
- 			   queue_mask << GEM_ENST_DISABLE_QUEUE_OFFSET);
- 
--		for (i = 0; i < conf->num_entries; i++) {
--			queue = &bp->queues[enst_queue[i].queue_id];
-+		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
- 			/* Configure queue timing registers */
- 			queue_writel(queue, ENST_START_TIME,
--				     enst_queue[i].start_time_mask);
-+				     enst_queue[q].start_time_mask);
- 			queue_writel(queue, ENST_ON_TIME,
--				     enst_queue[i].on_time_bytes);
-+				     enst_queue[q].on_time_bytes);
- 			queue_writel(queue, ENST_OFF_TIME,
--				     enst_queue[i].off_time_bytes);
-+				     enst_queue[q].off_time_bytes);
- 		}
- 
- 		/* Enable ENST for all configured queues in one write */
--- 
-2.44.4
 
+Thanks,
+Vishnu
+
+>
+> If you had BAM-DMUX mapped using the SMMU you would get all of this for
+> free. No changes would be needed in the BAM-DMUX driver ...
+>
+> Thanks,
+> Stephan
