@@ -1,38 +1,38 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9114F41A79E
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C4439012;
+	Fri, 24 Jul 2026 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784901949; cv=none; b=PPRIZ+Sx31KXJAQ3j7vYHf+CPQ9CEGbVwGwlU3AfBFPAEG00bFXZu5Y3hblEU9x3N8oyPH/qyLZZ2QYYmjt0GSN8rPI0qN9M9BJqiTuJBRg7kTKVeLcvYxWAbuU2nY/ry3T/HrysU21qCvD3l0232G51p87NK67MPbnUN36wnag=
+	t=1784902094; cv=none; b=sPnZlLgJ505w2yiW33fcke8FhMlbPJDVchD+VoFIKZnQXaZrpqcJaiCm3qCFsv98Bpsn1neiDMo2ecO3pcCJUIuGSf9jQCC+ddLdeuwIsef5FHFUB7zhO1qk6pBBPx+At5mx1lTZ/2+x3rcoOtNNqabeVbtXFtV+pT3nmxUcx40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784901949; c=relaxed/simple;
-	bh=eVPLDsdD89K2TGrSG8oVm3FANMh0vjCIxBt2s7PROQs=;
+	s=arc-20240116; t=1784902094; c=relaxed/simple;
+	bh=257OyDgYbMvkHNleTJ+0nLh5+gUlb4k+2Nt5FeeMgRs=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=rnUNgf0SMQ2RiB8Qi9jAKAJ2LMSEAEOhalTSq+3NZMbA4wUpVBXSkFU3l/zdt1yTrVbRfvhdOASqslc9IgUNf7+trbaZ3rTCXSNVIXik45eTq0d7RI1YtHPYoVIowyiqPypHCHqc+m+oEFbFSTYN2KkzKCcGKBlbyqzjRwT4MK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jnsZs6ff; arc=none smtp.client-ip=185.246.85.4
+	 References:In-Reply-To; b=W/ukouwGQJW3+BoaRYEx4hFzCGmiwp2+CI9LY4u2UqhO/f6xupHYCEvmrsTuOQ1p7YGz4QBmRrQBnV8f9hxjMHFOnYoF4Epsehol2c7vDjgXac92au2SEkB4AV2NvhsVu25u61M4a2oIbQLWWRTqdSYnOBuT9CInv34UI19mUjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IIwDcb+w; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jnsZs6ff"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IIwDcb+w"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B7A9F4E40F2F;
-	Fri, 24 Jul 2026 14:05:45 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A0F004E40F30;
+	Fri, 24 Jul 2026 14:08:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6C4C560395;
-	Fri, 24 Jul 2026 14:05:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16FFE11C12569;
-	Fri, 24 Jul 2026 16:05:40 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 63F5D6039A;
+	Fri, 24 Jul 2026 14:08:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D518411C10BEF;
+	Fri, 24 Jul 2026 16:08:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784901944; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1784902088; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6fksmPJr9Q7kO/HBpvavDlpG72c+2uj4oIcabIgThBA=;
-	b=jnsZs6ffk7r710Tqk5ffNO85UTrPO63kNQjU5631LBRThmSRq8ZzMFvuFoTCzCh86SK85d
-	4EBd8L5z6tL9pKR1g2WvprXVk2TPdVenlHwjUMxR/sAY6Vz5KAZVQFBiRA/yCGBm2RFHY+
-	aInC6cLLpwBzK12jJ3s4tQtLWBkwn8f2PYM/7pIKt4Cg0TIEfYrEGtKDXVodNyiTcbHmw7
-	fDtDI8os0JChEY9y5g9+xCrOoaV12pXnBWgbepzm/klwawEgJcfRtJb461CXThaHm0Z84y
-	T8NKiEhHaX1FL68WzXFK4lW/GMfJWctqm5w0O+bPN8fJyG5f3DvH0fQASn9pKg==
+	bh=lPgDLvp5ka4HUGXHiCTR3jQaAsbu195S+HPkPvHcRk0=;
+	b=IIwDcb+wMZ+GgNRtXL/ju8UbHIOiPytL7Oyq/x7EOHHYHLhTuyB9ARNx9YCkOV0AGJ/C7X
+	+C18AOzW96FuwJ43XTLrRm1WwKpysFprV9eNqc35Wx+kLhx+Ea1UpJ6/BvDpAL/STvOXMi
+	r84aikz3b9DI15MTMJaFW6fMgMPYrmoYBeLttFJrhCSpYKwkdYv1MvDvBtZHB/n/H08WQ3
+	EY6esQbtLrPkm+XGt8LkfZ8fjR1CnhYej3RJdEeEfSExFbwAx4QiKTaJY/ZBClASEwwb0s
+	/UhhW3PK1g4bK76jjVZSRKYTi//5VsEY3S8UfKw2YdMaYXONt00pfyOe6wiFBQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Jul 2026 16:05:40 +0200
-Message-Id: <DK6UXJNY823U.32CIMUE9VMVKW@bootlin.com>
+Date: Fri, 24 Jul 2026 16:08:04 +0200
+Message-Id: <DK6UZDTOYBC3.2E101XECYQOYG@bootlin.com>
 Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
  <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
  Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
@@ -58,130 +58,123 @@ Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
  <maxime.chevallier@bootlin.com>
 To: "Nicolai Buchwitz" <nb@tipi-net.de>
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v4 11/15] net: macb: change function signatures
- to take contexts
+Subject: Re: [PATCH net-next v4 14/15] net: macb: use context swapping in
+ .set_ringparam()
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
- <20260717-macb-context-v4-11-0acbe7f10cdb@bootlin.com>
- <a6ae2cec6d910378e790d52cc3fd1a00@tipi-net.de>
-In-Reply-To: <a6ae2cec6d910378e790d52cc3fd1a00@tipi-net.de>
+ <20260717-macb-context-v4-14-0acbe7f10cdb@bootlin.com>
+ <ca25adb833a2dc5031434ebe33c3b8eb@tipi-net.de>
+In-Reply-To: <ca25adb833a2dc5031434ebe33c3b8eb@tipi-net.de>
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun Jul 19, 2026 at 12:46 PM CEST, Nicolai Buchwitz wrote:
+On Sun Jul 19, 2026 at 12:53 PM CEST, Nicolai Buchwitz wrote:
 > On 17.7.2026 21:48, Th=C3=A9o Lebrun wrote:
->> For parallel MACB context to start become a reality, many functions=20
->> need
->> to stop operating on bp->ctx (the currently active context) and instead
->> work on a context they get passed. That context might be
->> (1) the new one that is getting allocated and initialised, or,
->> (2) the old one to be freed.
+>> ethtool_ops.set_ringparam() is implemented using the primitive close /
+>> update ring size / reopen sequence. Under memory pressure this does not
+>> fly: we free our buffers at close and cannot reallocate new ones at
+>> open. Also, it triggers a slow PHY reinit.
 >>=20
->> To reduce bug surface area, taint those functions to *only* take a
->> context `struct macb_context *ctx` and no `struct macb *bp`. That way,
->> no bug of using `bp->ctx` instead of `ctx` will ever occur.
+>> Instead, exploit the new context mechanism and improve our sequence to:
+>>  - allocate a new context (including buffers) first
+>>  - if it fails, early return without any impact to the interface
+>>  - stop interface
+>>  - update global state (bp, netdev, etc)
+>>  - pass buffer pointers to the hardware
+>>  - start interface
+>>  - free old context.
 >>=20
->> We also convert functions that take a `struct macb_queue *queue` to
->> instead take `struct macb_context *ctx, unsigned int q`, with q
->> indexing ctx->txq[] and ctx->rxq[].
+>> The HW disable sequence is inspired by macb_reset_hw() but avoids
+>> (1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
 >>=20
->> Full list:
+>> The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
+>> over register writes which would be redundant (because values have not
+>> changed).
 >>=20
->>    macb_adj_dma_desc_idx()
->>    macb_tx_ring_wrap()
->>    macb_tx_desc()
->>    macb_rx_ring_wrap()
->>    macb_rx_desc()
->>    macb_get_addr()
->>    gem_rx_refill()
->>    macb_init_rx_ring()
->>    gem_free_rx_buffers()
->>    macb_free_rx_buffers()
->>    macb_tx_ring_size_per_queue()
->>    macb_rx_ring_size_per_queue()
->>    macb_free()
->>    gem_alloc_rx_buffers()
->>    macb_alloc_rx_buffers()
->>    macb_alloc()
->>    gem_init_rx_ring()
->>    gem_init_rings()
->>    macb_init_rings()
+>> The generic context swapping parts are isolated into helper functions
+>> macb_context_swap_start|end(), reusable by other operations=20
+>> (change_mtu,
+>> set_channels, etc).
 >>=20
->> Note about gem_rx_refill(): it ends with a netdev_vdbg() that prints=20
->> the
->> queue pointer. Change to print the queue index because we do not have
->> access to the queue anymore.
+>> Introduce a new locking primitive (mac_cfg_lock mutex) to serialise=20
+>> swap
+>> with phylink MAC callbacks. Avoid stopping phylink to avoid a slow PHY
+>> retrain. Those callbacks grab phydev->lock if it exists so we could
+>> imagine grabbing that from the swap op, but phydev->lock doesn't exist
+>> in the SFP case.
 >>=20
->> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>> AT91 EMAC is handled differently as their buffer management is separate
+>> and they don't do NAPI. We refuse them (-EBUSY) to avoid implementing
+>> context swapping for them.
+>>=20
 >> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 >> ---
->>  drivers/net/ethernet/cadence/macb.h      |   7 +-
->>  drivers/net/ethernet/cadence/macb_main.c | 398=20
->> ++++++++++++++++---------------
->>  2 files changed, 215 insertions(+), 190 deletions(-)
+>>  drivers/net/ethernet/cadence/macb.h      |   5 +
+>>  drivers/net/ethernet/cadence/macb_main.c | 162=20
+>> +++++++++++++++++++++++++++++--
+>>  2 files changed, 158 insertions(+), 9 deletions(-)
 >>=20
 >> diff --git a/drivers/net/ethernet/cadence/macb.h=20
 >> b/drivers/net/ethernet/cadence/macb.h
->> index c551d7db8ebe..ac2f2d8065d7 100644
+>> index ac2f2d8065d7..93e513cf1fbb 100644
 >> --- a/drivers/net/ethernet/cadence/macb.h
 >> +++ b/drivers/net/ethernet/cadence/macb.h
->> @@ -1196,11 +1196,12 @@ static const struct gem_statistic=20
->> queue_statistics[] =3D {
+>> @@ -1361,6 +1361,8 @@ struct macb {
+>>  	struct macb_queue	queues[MACB_MAX_QUEUES];
 >>=20
->>  struct macb;
->>  struct macb_queue;
->> +struct macb_context;
+>>  	spinlock_t		lock;
+>> +	/* Serializes context swap against phylink MAC callbacks. */
+>> +	struct mutex		mac_cfg_lock;
+>>  	struct clk		*pclk;
+>>  	struct clk		*hclk;
+>>  	struct clk		*tx_clk;
+>> @@ -1421,6 +1423,9 @@ struct macb {
+>>  	struct delayed_work	tx_lpi_work;
+>>  	u32			tx_lpi_timer;
 >>=20
->>  struct macb_or_gem_ops {
->> -	int	(*mog_alloc_rx_buffers)(struct macb *bp);
->> -	void	(*mog_free_rx_buffers)(struct macb *bp);
->> -	void	(*mog_init_rings)(struct macb *bp);
->> +	int	(*mog_alloc_rx_buffers)(struct macb_context *ctx);
->> +	void	(*mog_free_rx_buffers)(struct macb_context *ctx);
->> +	void	(*mog_init_rings)(struct macb_context *ctx);
->>  	int	(*mog_rx)(struct macb_queue *queue, struct napi_struct *napi,
->>  			  int budget);
->>  };
+>> +	/* ISR must not drive NAPI & BH mechanisms. Protected by bp->lock. */
+>> +	bool			ctx_swap;
+>> +
+>>  	u32	rx_intr_mask;
+>>=20
+>>  	struct macb_pm_data pm_data;
 >> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
 >> b/drivers/net/ethernet/cadence/macb_main.c
->> index 7574418d5094..d396a307310b 100644
+>> index c832b6c1b98c..5792647eb0a6 100644
 >> --- a/drivers/net/ethernet/cadence/macb_main.c
 >> +++ b/drivers/net/ethernet/cadence/macb_main.c
 >
 >> [...]
 >
->> @@ -5083,7 +5107,7 @@ static int at91ether_start(struct macb *bp)
->>=20
->>  	addr =3D rxq->buffers_dma;
->>  	for (i =3D 0; i < AT91ETHER_MAX_RX_DESCR; i++) {
->> -		desc =3D macb_rx_desc(queue, i);
->> +		desc =3D macb_rx_desc(bp->ctx, 0, i);
+>> +
+>> +	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) =
+{
+>> +		/* Must be done before NAPI is disabled. */
+>> +		cancel_work_sync(&queue->tx_error_task);
+>> +
+>> +		napi_disable(&queue->napi_rx);
+>> +		napi_disable(&queue->napi_tx);
+>> +		netdev_tx_reset_queue(netdev_get_tx_queue(bp->netdev, q));
+>> +	}
+>> +
+>> +	/* Must be done after napi_tx is disabled. */
+>> +	cancel_delayed_work_sync(&bp->tx_lpi_work);
+>> +
+>> +	/* Can finally disable software Tx; need to wait until napi_tx and
+>> +	 * tx_error_task cannot be scheduled as either might wakeup Tx.
+>> +	 */
+>> +	netif_tx_disable(bp->netdev);
 >
-> AFAIU at91ether_open() doesn't set bp->ctx->info at this point in the
-> series, so with CONFIG_MACB_USE_HWSTAMP=3Dy this should oops on ifup:
->
->      macb_rx_desc()
->        macb_adj_dma_desc_idx()
->          macb_dma_ptp(ctx->info)   -> NULL deref
->
-> The next patch adds the missing assignment to at91ether_open(), so
-> only bisection is affected. Maybe move that line here or into patch 9?
+> Shouldn't netdev_tx_reset_queue() come after netif_tx_disable()? Tx is
+> still running here, so an xmit right after the reset adds bytes to the
+> DQL that never get completed (macb_free() frees the old skbs without
+> netdev_tx_completed_queue()). Not sure, but that could leave the queue
+> stopped by BQL forever?
 
-Yes, IDK why/how I landed on this.
+I don't see how the queue could be stopped by BQL forever, just a long
+term small drift. But it's a bug!
 
-=E2=9F=A9 # This looks much more sensible.
-=E2=9F=A9 git log -L:at91ether_open:drivers/net/ethernet/cadence/macb_main.=
-c net-next/main..macb-context
-
-net: macb: unify device pointer naming convention
-net: macb: unify variable naming convention in at91ether functions
-=3D> variable renames
-
-net: macb: introduce macb_context struct for buffer management
-=3D> adds allocation with `bp->ctx =3D kzalloc_obj(...)` and cleanup on err=
-or
-
-net: macb: make `struct macb` subset reachable from macb_context struct
-=3D> adds `bp->ctx->info =3D &bp->info;` when introducing info
+Moved netdev_tx_reset_queue() to after netif_tx_disable() and before
+TE writel.
 
 Thanks,
 
