@@ -1,99 +1,63 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153342669E
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 11:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C5D3B3BF3;
+	Fri, 24 Jul 2026 11:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784891631; cv=none; b=WbqmqunH2ODyC0BtoQTPTctr/3/XgeOj7Fcx7TcwNGFRkf2P0dfL5/WFtSn8Tkgtz96ZepvS/QmtaQTpGVgdEc9JKMTgI/v4Nu90aXwNTbb6nlL1e28atKsqsJQQwJDLfifX8vcqqzHsxp62W2Khnxq5HCmnfXLZKqZ3UmXN3e0=
+	t=1784892170; cv=none; b=pgqLB+CsCGVWM9NkY/3NMbjY6j6/HwjIYzeQN7R0YsNhB7dhWq3/0reUCzem3webal7AEDoVOjTYa2Zy+PB2KGH4U0OW3FwaYlI9fDfGZCE6QlapLzfY2Seq2iaZnW7by4Kr0mT+Q40nj2TSLMTL/C4N4b5VCXEIjr0l73a7JMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784891631; c=relaxed/simple;
-	bh=cqaHUbZRZY3l/5xbqIO2nrDdB0Zn+H/zzlajTfVUEqE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZaRUuBPhY8mqXeMLX2bfP3fBpfeNQ/bzGESWv7z668lhhH4IbCx/eSmniysIvRIUqKFbQ2qfys9aqaFEeFRj8dB9p6dtHhYSWZkFSlontguiI7x8Z5V7XDyU9JhE1mE85JWvWK4DbPjZuLyrAescWLCziiA+LwrXf8iIuP2PNF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Mp6Mwoqk; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784892170; c=relaxed/simple;
+	bh=Pjurzdn5JH+7BE0Xbiwda5DMuAy2DZXw1MsLoiY3Xv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FSlQ1rEUrlMkk5YriwzrUjo2m4X5VqbZ43Z9xdOUNp4gtu8XoXrHweedVJDhp3Ls8pL5tP0RMBBdRIi9Szb4SemYFN5TBPEzpNxoAvVgi8+N3ODTu8Glh6EBkj5/h8/T8B4JWvPpwM88C8NcZK8lUbXOjNmcbpGoa9x4EHQIC/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SplOHt4L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Mp6Mwoqk"
-Message-ID: <1dff878d-5f70-442e-9c6e-c829d51cfbf0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784890840;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aoU0Q+dQgaNPxXZy6NeJmOiYyjoEqDE37HzIbGeX3bI=;
-	b=Mp6MwoqkSQn6tQ/X3udmzWLsNSYKZHYH9ZIexBrU6sql5n9GgZq2W+1K9UVPQ0yG200g9u
-	XK91jwaP9bUlqOlONhCEha1UGA6Um1v83aWak58OKrDfTFzTS1mBcuIAa1EEHYjJqlFV7O
-	LVf3Nq+MASq+bxEjmwhJn7UBZQ4h2pQ=
-Date: Fri, 24 Jul 2026 12:00:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SplOHt4L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA57B1F01558;
+	Fri, 24 Jul 2026 11:22:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784892169;
+	bh=a6hXrve42aU+M9zjCTfhBkfLMhDJ3e6a0jynuAyz5GE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SplOHt4L55vaYRB3Aue2vh7TLFX238e7IaJTpuQjm73rsLYl1IrxcTG6i+SJbXhGZ
+	 E7TX5YP3YvQgqP/Q+Ftk7Qyr1qVr9IbSjVQeC/XZWtX/EL1AnN1IG5gkXdFU6g21wa
+	 UUL+fGWw46jNQOlcXmXk9+l5vI1H5PD428E2oW3Vfiq7YM27t2Q8H0C/CGYe4wtxSI
+	 g2JCmjWTx8DVrouUYl2kBNOKlRYiBgs+o6YvFuXr6s9W9ln5GL6GtwVXSNf9qOGrWj
+	 VIlCJLDaL0P6CEzMTORVrvV3B/JKoUkHCCGS9mhdJR8pouZa+2SxAQ7tAeM/EA6fHW
+	 ThQYdnpVqbtNw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	netdev@vger.kernel.org,
+	Brian Witte <brianwitte@mailfence.com>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Konstantin Andreev <andreev@swemel.ru>
+Subject: =?UTF-8?q?Re=3A=20=5Bbackport=20request=5D=20=E2=80=9Cnetfilter=3A=20nf=5Ftables=3A=20fix=20reset=20request=20deadlock=E2=80=9D=20to=20LTS=206=2E18=2C=206=2E12?=
+Date: Fri, 24 Jul 2026 07:22:34 -0400
+Message-ID: <20260724105500.stable-0002@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <07b303cd-03f1-4d0c-ae58-7439503247a5@swemel.ru>
+References: <07b303cd-03f1-4d0c-ae58-7439503247a5@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] ptp: netc: fix potential interrupt storm caused by
- incorrect unbind order
-To: wei.fang@oss.nxp.com, richardcochran@gmail.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com
-Cc: wei.fang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260724065116.521893-1-wei.fang@oss.nxp.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260724065116.521893-1-wei.fang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 24/07/2026 07:51, wei.fang@oss.nxp.com wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> In netc_timer_remove(), hardware interrupts are disabled by clearing
-> TMR_TEMASK before ptp_clock_unregister() is called. This may cause a
-> race condition during driver unbind that could leave hardware interrupts
-> active. For example, a concurrent PTP_CLK_REQ_EXTTS ioctl can re-enable
-> TMR_TEMASK after it has been cleared, leaving a pending hardware
-> interrupt when the driver unbinds.
-> 
-> Since the NETC Timer does not support PCIe FLR, hardware state is not
-> reset during probe. When the driver is rebound and the IRQ is registered,
-> the pending interrupt fires immediately. At that point priv->tmr_emask
-> is still zero, so netc_timer_isr() does not clear the interrupt status
-> and unconditionally returns IRQ_HANDLED, resulting in an uninterruptible
-> infinite interrupt storm.
-> 
-> Therefore, move ptp_clock_unregister() before the register writes that
-> clear NETC_TMR_TEMASK and NETC_TMR_CTRL. This guarantees that no
-> in-flight or concurrent ioctl can re-enable hardware interrupts, so no
-> pending interrupt is left when the driver unbinds.
-> 
-> Fixes: 671e266835b8 ("ptp: netc: add periodic pulse output support")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260720012508.23227-1-wei.fang%40oss.nxp.com
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->   drivers/ptp/ptp_netc.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-> index 5e381c354d74..3bab86afe8e2 100644
-> --- a/drivers/ptp/ptp_netc.c
-> +++ b/drivers/ptp/ptp_netc.c
-> @@ -1019,9 +1019,9 @@ static void netc_timer_remove(struct pci_dev *pdev)
->   {
->   	struct netc_timer *priv = pci_get_drvdata(pdev);
->   
-> +	ptp_clock_unregister(priv->clock);
->   	netc_timer_wr(priv, NETC_TMR_TEMASK, 0);
->   	netc_timer_wr(priv, NETC_TMR_CTRL, 0);
-> -	ptp_clock_unregister(priv->clock);
->   	netc_timer_free_msix_irq(priv);
->   	netc_timer_pci_remove(pdev);
->   }
+> Please consider backporting the following series to LTS 6.18, 6.12
+> (listed in the order of appearance in mainline)
+>
+> 779c60a5190c ("netfilter: nft_counter: serialize reset with spinlock")
+> 30c4d7fb59ac ("netfilter: nft_quota: use atomic64_xchg for reset")
+> 7f261bb906bf ("netfilter: nf_tables: revert commit_mutex usage in reset path")
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Queued for 6.12 and 6.18, thanks.
+
+-- 
+Thanks,
+Sasha
