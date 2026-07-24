@@ -1,41 +1,41 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38811363C45;
-	Fri, 24 Jul 2026 15:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C23B429033;
+	Fri, 24 Jul 2026 15:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905520; cv=none; b=WF10cryAUAP97HA9XkIquG2DQb++zxPxOkZoVXR/TFHb58vrWIeWGo3LD0TQ3ym8O7nkJ+MN2AwjeulJtU+56tmijwTAYsy5EumL0uujblUk/sDk1DS7X6pAwk8EqtsjVrsS80F7moOjJ3xI41ZpUfp0hrx/NrqmnFfmVLSU0CU=
+	t=1784905523; cv=none; b=hV3aCsPj3yhiGX715ncxvCXRJAV9GyRpq1/hbupTGfn5CS1S5WQRPZpwksoMvaSK7bcNGZphRfEySriucBl7mSWhYCB/LLFuZyx3gK7iKajs+cl8wnnn02MLJiXQzueVeIyg6gfWUbXNuHXOmhkMgkMh3JY687QtwOQZF78iJ5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905520; c=relaxed/simple;
-	bh=xIVIdSWc3BSexOmpReadWo0F5PUNZbkIdaCjbZ12ONw=;
+	s=arc-20240116; t=1784905523; c=relaxed/simple;
+	bh=VOPTipKWdZmNLCeCt2EtDxonf9hu30SBjbEAgCTbvDI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cp3OLyhDMMPsztK2xm7lTgtNCp/U/kuuOv0phkjIIRyZoUnwtimG6qPQmI3MFVlxhU5Hj2jbzBqfnNk5CqJleSrIEl4YhWPU9G2pS9x2zkJftWA4rPgF34CVFhwTRrnKnaw3q/gFeW5mw/ezAExtcdMmiKTAHwR5ihXFg9xXMV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=rRmIKpLj; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=hkNiPwlEFvFxONTyRz2912FTXmigtVL8dCwE8XMX/oPcbO6Mg5Yhku/n0Vbkab7Q0qbnfYxOtRz8XXQdPedBZfXlj1GmdV7HGwUjJXMoKxnul0pApsqhn9GnhG5TcnILbI2mZAcgIFXxPyVlR6Gc8C14lfhp5VNUf41wW/Vp51A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=tlDmh3oc; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="rRmIKpLj"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="tlDmh3oc"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=EecT0FwLtdnkZ4RlJ1mzXRtA09QjugI2L2Nqcry/6OM=; b=rRmIKpLje7+iROgBGpzg+j5gEG
-	UIKD+pc31IFGVDNLnKYTxbTuXmtgGdqlcmtsWEq7VVXlPOjv0IfbsEMcQ7bg3OzIsMRpOAGCyfpxS
-	DbjVjgJp55T6uNBwINeAnr2xrj7DEtaPmScGqWdJPVrCmcsF2d3o4NOqkzC/RMn7uwgXPz3nWYjyG
-	H7HBtDJgIkloXL/PAaFNoyjpJpJMWgd5Zctwzgou7tjweIs4ErFYn4crPB9BaiBUkTxBACQWab+Ts
-	95KUXZ4u5mxNaSHYE2QHCOgNYvurj0LXwYNoDN5DxHzi9lel2Hengg5BJIno2xFIwxLQze2ey47md
-	1GcXsTHw==;
+	bh=fPHxL9ALCAXwk4u1NC60Vd+u61c1JjzYmBT2Ma0qfLo=; b=tlDmh3ocVBj8YegN6Sw+4Ej5SK
+	PZWU6y3HAZno14j8cwORKXItkEvVQcUFXKJ14J8rCwbolXgn7zM7qoGhzvlBVTDBRQe99Wm0vYbGh
+	0Nlc8UoAzsqdlZVNoUDSpJAfyaujVUQZ+Cg5TB4oPYsUDm1MKPxVQZ9iXZKlsmxHIYjZYFRQy7lOQ
+	bXvDUTZc3M6vC2CfqgC3H6H+s4WVNsXCNUpy2H40GZzBQO9yrBBeAa58BycUHcLtqMGqVinfWScWn
+	mk2q5gizGSsEO/1+Mji8VrvUMs3F5k/aEXiiH6GpXvZ/Lh6KJa2ZQO3RAud+6f8mo0s59sgphbK1n
+	XLKogFfg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wnHSY-004dt4-2O;
-	Fri, 24 Jul 2026 15:05:10 +0000
+	id 1wnHSg-004dtS-2h;
+	Fri, 24 Jul 2026 15:05:19 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 24 Jul 2026 08:04:09 -0700
-Subject: [PATCH net-next 1/9] netpoll: export carrier_timeout via
- netpoll_get_carrier_timeout()
+Date: Fri, 24 Jul 2026 08:04:11 -0700
+Subject: [PATCH net-next 3/9] netconsole: take over netpoll_setup() from
+ netpoll
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-netconsole_move_more_final-v1-1-a5f7691db81c@debian.org>
+Message-Id: <20260724-netconsole_move_more_final-v1-3-a5f7691db81c@debian.org>
 References: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
 In-Reply-To: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -55,104 +55,261 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  gustavold@gmail.com, asantostc@gmail.com, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2868; i=leitao@debian.org;
- h=from:subject:message-id; bh=xIVIdSWc3BSexOmpReadWo0F5PUNZbkIdaCjbZ12ONw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqY38dI/vd0UNaqPWul/C/0DKzOH0nqzyoSZuUe
- 5K1CKlBfyqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamN/HQAKCRA1o5Of/Hh3
- bZH9EACTPA61Lgahk2wU3J8w/fWCWaL6mnMpU6xoJJmCO/Lwl0HkFXsRnN21daFVAjc6zR9UhVP
- tW/AmoK8slWf9DurdP8TqmFNc8mcORs9PtX/MKES0IOi7+vzXnzMN7DHEK6D6R3m1GLykPoTYaE
- 5x94UwQBj73xgoQ6dNWj2kPmsBFsQltdSm5El9fS5ozzPOfkipMSawU0JedcRP+EJ3bLi7ewOIT
- sZ4sAzNdjR7XP53QcFT2fZ+gWmggOiV8EwOrDy7lcmpCEQ/N5TjZZhDZy10bavT2HU8pGoYqO39
- LIG74z3vWF0c4NzmZybmIGl547wiqt78Z8HHqIDZkEz2cEaFs7MkrldbFiUSD1Ifh/ApTU8bhep
- RlLgK06shMWwC5X36CZw6W/1mAg9i4XEAqNovo0Vv8m9hgKWy+ezT7MQKbGZ/lMTqYExIsi0549
- QrxkwH19A+6mtfg2SYsIQ9wm6jYJW5k9yqllJmcfu85xjSO4kDkmHpLoNQXIFxDpgpdrjEtq6JW
- +tJaHyU3KO0JOt4+7elodhHLSIc+tCAfiH45YxZJE7WOBiYyTJtPIMG6QGnzNt0MxgTShV9j6FH
- YuG8Xqh/3ytO6Oeeq45FnHf3EGUqVgtdr1QJb+Zzw8IjXKlBekokA/3u7HNJ15Lqh1UYfQ6fTJF
- WpFnpGul5rCRRvQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6656; i=leitao@debian.org;
+ h=from:subject:message-id; bh=VOPTipKWdZmNLCeCt2EtDxonf9hu30SBjbEAgCTbvDI=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqY38dImdPpmDDVva8tFxX2WcsPlY+0JVfbPoZ7
+ bM+gbsK1/eJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamN/HQAKCRA1o5Of/Hh3
+ bY2ND/9BulVt6dSxt1UDGYOf4xb10IgUMFD/jCFx5gV4rbgKyS9vU+qJ0YoRub7LffAjHsymiGY
+ mxV2o2v39imleGOJ7gPNxE8ZVQEoWcYQOmXaKlfko40J1kQCp0bqWkWGBkjYQmoRV0BGjCZNWJL
+ EO4x0OsMf//vggMKSeTYi36HLpDnuqMn1C8lahYvFkv7vS5RR2VS/WzCHzGYdhbemZCaWu1lnOO
+ GZmFaNECDS8ipMFnHLXhUq24po1vaLnN/kawk5800VJSstOCsJbzD1/ONEPXBdgOeH56ETlmFsE
+ I80L9xtK8zdufzS2amlZ4m4bolue2QMnvPRGyOrvasbJXws/9hHlfFVcnTJPTBBzIyltMjMOJkN
+ YoTlpIyMGjJ2Ns4P+fg39WkonFsd6Ht7PcWjaxa9BJvfwD2aCkwnkGJAopWNS8VDZBD8ab9a59h
+ z8Fc8OJzEGZpJ93OFCPL/P6er7vf7eUlixOOwq4C5ICI+AJMX8hRjQvKn2JEy5y8CTnBFZX3+MM
+ b584Lsz/iAe0G0Wk1BgKKRoRZa7B0n4Zv18aRiTrjVIQM5U/2dk6V8tjAd1qQl0tSiA6HTJO9X6
+ z2QFSTxs56VFQ5EhdEa5xAgYCzhEakQKPROPrCYS5jxd9hnc3SWhDBZqBtuvMQA+Q/Fin1ys5rn
+ BUQCsy2sYH+R6hA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-netpoll_wait_carrier() is only used in netconsole, and it will move to
-netconsole.
+netpoll_setup() is only used by netconsole. All the other users use
+__netpoll_setup().
 
-The carrier_timeout module parameter has to stay in netpoll so the
-existing netpoll.carrier_timeout kernel parameter keeps working for
-current users, and we don't break user compatibility.
+Move netpoll_setup() to netconsole, and rename it to
+netcons_netpoll_setup().
 
-Add a netpoll_get_carrier_timeout() accessor and export it so netconsole
-can read the value once the carrier wait lives there. Drop the now
-redundant timeout argument from netpoll_wait_carrier() (its only caller
-passed carrier_timeout) and read the parameter directly while the helper
-still lives here.
+Pure code motion: the body is unchanged.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- include/linux/netpoll.h |  1 +
- net/core/netpoll.c      | 18 ++++++++++++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/netconsole.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/netpoll.h  |  1 -
+ net/core/netpoll.c       | 81 ---------------------------------------------
+ 3 files changed, 83 insertions(+), 85 deletions(-)
 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 79315461a7b1e..d426d1844cac7 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -72,6 +72,7 @@ void netpoll_cleanup(struct netpoll *np);
- void do_netpoll_cleanup(struct netpoll *np);
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
- void netpoll_zap_completion_queue(void);
-+unsigned int netpoll_get_carrier_timeout(void);
- 
- #ifdef CONFIG_NETPOLL
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index f8da1048ea3ab..9b9fcc307958f 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -38,9 +38,20 @@
- 
- #define USEC_PER_POLL	50
- 
-+/*
-+ * carrier_timeout is netconsole-specific and only kept here to preserve the
-+ * netpoll.carrier_timeout module-parameter ABI. Its value is exposed to
-+ * netconsole through netpoll_get_carrier_timeout().
-+ */
- static unsigned int carrier_timeout = 4;
- module_param(carrier_timeout, uint, 0644);
- 
-+unsigned int netpoll_get_carrier_timeout(void)
-+{
-+	return carrier_timeout;
-+}
-+EXPORT_SYMBOL_GPL(netpoll_get_carrier_timeout);
-+
- static netdev_tx_t netpoll_start_xmit(struct sk_buff *skb,
- 				      struct net_device *dev,
- 				      struct netdev_queue *txq)
-@@ -397,12 +408,11 @@ static char *egress_dev(struct netpoll *np, char *buf, size_t bufsz)
- 	return buf;
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 7f8851a734fcd..3a7a2cafc6276 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -351,6 +351,86 @@ static void netconsole_skb_pool_flush(struct netconsole_target *nt)
+ 	skb_queue_purge_reason(&nt->skb_pool, SKB_CONSUMED);
  }
  
--static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev,
--				 unsigned int timeout)
-+static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev)
- {
- 	unsigned long atmost;
- 
--	atmost = jiffies + timeout * HZ;
-+	atmost = jiffies + carrier_timeout * HZ;
- 	while (!netif_carrier_ok(ndev)) {
- 		if (time_after(jiffies, atmost)) {
- 			np_notice(np, "timeout waiting for carrier\n");
-@@ -539,7 +549,7 @@ int netpoll_setup(struct netpoll *np)
- 		}
- 
- 		rtnl_unlock();
--		netpoll_wait_carrier(np, ndev, carrier_timeout);
++static int netcons_netpoll_setup(struct netpoll *np)
++{
++	struct net *net = current->nsproxy->net_ns;
++	char buf[MAC_ADDR_STR_LEN + 1];
++	struct net_device *ndev = NULL;
++	bool ip_overwritten = false;
++	int err;
++
++	rtnl_lock();
++	if (np->dev_name[0])
++		ndev = __dev_get_by_name(net, np->dev_name);
++	else if (is_valid_ether_addr(np->dev_mac))
++		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
++
++	if (!ndev) {
++		np_err(np, "%s doesn't exist, aborting\n",
++		       egress_dev(np, buf, sizeof(buf)));
++		err = -ENODEV;
++		goto unlock;
++	}
++	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
++
++	if (netdev_master_upper_dev_get(ndev)) {
++		np_err(np, "%s is a slave device, aborting\n",
++		       egress_dev(np, buf, sizeof(buf)));
++		err = -EBUSY;
++		goto put;
++	}
++
++	if (!netif_running(ndev)) {
++		np_info(np, "device %s not up yet, forcing it\n",
++			egress_dev(np, buf, sizeof(buf)));
++
++		err = dev_open(ndev, NULL);
++		if (err) {
++			np_err(np, "failed to open %s\n", ndev->name);
++			goto put;
++		}
++
++		rtnl_unlock();
 +		netpoll_wait_carrier(np, ndev);
- 		rtnl_lock();
- 	}
++		rtnl_lock();
++	}
++
++	if (netpoll_local_ip_unset(np)) {
++		if (!np->ipv6) {
++			err = netpoll_take_ipv4(np, ndev);
++			if (err)
++				goto put;
++		} else {
++			err = netpoll_take_ipv6(np, ndev);
++			if (err)
++				goto put;
++		}
++		ip_overwritten = true;
++	}
++
++	err = __netpoll_setup(np, ndev);
++	if (err)
++		goto put;
++	rtnl_unlock();
++
++	/* Make sure all NAPI polls which started before dev->npinfo
++	 * was visible have exited before we start calling NAPI poll.
++	 * NAPI skips locking if dev->npinfo is NULL.
++	 */
++	synchronize_rcu();
++
++	return 0;
++
++put:
++	DEBUG_NET_WARN_ON_ONCE(np->dev);
++	if (ip_overwritten)
++		memset(&np->local_ip, 0, sizeof(np->local_ip));
++	netdev_put(ndev, &np->dev_tracker);
++unlock:
++	rtnl_unlock();
++	return err;
++}
++
+ /* Attempts to resume logging to a deactivated target. */
+ static void resume_target(struct netconsole_target *nt)
+ {
+@@ -361,7 +441,7 @@ static void resume_target(struct netconsole_target *nt)
+ 	 */
+ 	netconsole_skb_pool_init(nt);
  
+-	if (netpoll_setup(&nt->np)) {
++	if (netcons_netpoll_setup(&nt->np)) {
+ 		/* netpoll fails setup once, do not try again. */
+ 		netconsole_skb_pool_flush(nt);
+ 		nt->state = STATE_DISABLED;
+@@ -840,7 +920,7 @@ static ssize_t enabled_store(struct config_item *item,
+ 		 */
+ 		netconsole_skb_pool_init(nt);
+ 
+-		ret = netpoll_setup(&nt->np);
++		ret = netcons_netpoll_setup(&nt->np);
+ 		if (ret) {
+ 			netconsole_skb_pool_flush(nt);
+ 			goto out_unlock;
+@@ -2430,7 +2510,7 @@ static struct netconsole_target *alloc_param_target(char *target_config,
+ 	 */
+ 	netconsole_skb_pool_init(nt);
+ 
+-	err = netpoll_setup(&nt->np);
++	err = netcons_netpoll_setup(&nt->np);
+ 	if (err) {
+ 		pr_err("Not enabling netconsole for %s%d. Netpoll setup failed\n",
+ 		       NETCONSOLE_PARAM_TARGET_PREFIX, cmdline_count);
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 0877515fa7442..cd455a5a013d2 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -66,7 +66,6 @@ static inline void netpoll_poll_enable(struct net_device *dev) { return; }
+ #endif
+ 
+ int __netpoll_setup(struct netpoll *np, struct net_device *ndev);
+-int netpoll_setup(struct netpoll *np);
+ void __netpoll_free(struct netpoll *np);
+ void netpoll_cleanup(struct netpoll *np);
+ void do_netpoll_cleanup(struct netpoll *np);
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 6a545063223ba..d50d48a82def6 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -514,87 +514,6 @@ bool netpoll_local_ip_unset(const struct netpoll *np)
+ }
+ EXPORT_SYMBOL_GPL(netpoll_local_ip_unset);
+ 
+-int netpoll_setup(struct netpoll *np)
+-{
+-	struct net *net = current->nsproxy->net_ns;
+-	char buf[MAC_ADDR_STR_LEN + 1];
+-	struct net_device *ndev = NULL;
+-	bool ip_overwritten = false;
+-	int err;
+-
+-	rtnl_lock();
+-	if (np->dev_name[0])
+-		ndev = __dev_get_by_name(net, np->dev_name);
+-	else if (is_valid_ether_addr(np->dev_mac))
+-		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
+-
+-	if (!ndev) {
+-		np_err(np, "%s doesn't exist, aborting\n",
+-		       egress_dev(np, buf, sizeof(buf)));
+-		err = -ENODEV;
+-		goto unlock;
+-	}
+-	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
+-
+-	if (netdev_master_upper_dev_get(ndev)) {
+-		np_err(np, "%s is a slave device, aborting\n",
+-		       egress_dev(np, buf, sizeof(buf)));
+-		err = -EBUSY;
+-		goto put;
+-	}
+-
+-	if (!netif_running(ndev)) {
+-		np_info(np, "device %s not up yet, forcing it\n",
+-			egress_dev(np, buf, sizeof(buf)));
+-
+-		err = dev_open(ndev, NULL);
+-		if (err) {
+-			np_err(np, "failed to open %s\n", ndev->name);
+-			goto put;
+-		}
+-
+-		rtnl_unlock();
+-		netpoll_wait_carrier(np, ndev);
+-		rtnl_lock();
+-	}
+-
+-	if (netpoll_local_ip_unset(np)) {
+-		if (!np->ipv6) {
+-			err = netpoll_take_ipv4(np, ndev);
+-			if (err)
+-				goto put;
+-		} else {
+-			err = netpoll_take_ipv6(np, ndev);
+-			if (err)
+-				goto put;
+-		}
+-		ip_overwritten = true;
+-	}
+-
+-	err = __netpoll_setup(np, ndev);
+-	if (err)
+-		goto put;
+-	rtnl_unlock();
+-
+-	/* Make sure all NAPI polls which started before dev->npinfo
+-	 * was visible have exited before we start calling NAPI poll.
+-	 * NAPI skips locking if dev->npinfo is NULL.
+-	 */
+-	synchronize_rcu();
+-
+-	return 0;
+-
+-put:
+-	DEBUG_NET_WARN_ON_ONCE(np->dev);
+-	if (ip_overwritten)
+-		memset(&np->local_ip, 0, sizeof(np->local_ip));
+-	netdev_put(ndev, &np->dev_tracker);
+-unlock:
+-	rtnl_unlock();
+-	return err;
+-}
+-EXPORT_SYMBOL(netpoll_setup);
+-
+ static void rcu_cleanup_netpoll_info(struct rcu_head *rcu_head)
+ {
+ 	struct netpoll_info *npinfo =
 
 -- 
 2.53.0-Meta
