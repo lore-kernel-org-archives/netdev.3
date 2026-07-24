@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423B53B19B6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596473B1EF2;
 	Fri, 24 Jul 2026 07:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784878622; cv=none; b=V79VbWlLkHQl0F+J9vzEtDZKYMIz/xuWgjv9NVRfPfR44nh/VSkMNgHEPb8dcQUxVT/avHFrQX1yP9gc29fCtHM5CMKzfx7HnXQwtDQ/9kb282ZgXABMcKWq1TX4vkkLhsYi/NUMlUqC/U/rqZ3Dd7h6mMWUuWIYw8YIDMFU0Fk=
+	t=1784878623; cv=none; b=LoB6bbt2R/Kg3dZW97BW4JXppHuP3p3YYgoiMnGSHgg5pKkermcgoXjH8vFePXbrllSaQ3GnXmwHnnOEkOusH07pzvgsfv4WMUVZuf2KUdP/h0ZNYbuyH6w6VL8VkK4o7OhkOSKmnZC9uQs5NM0VefLJ3gA2qui70u2KjEeAtWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784878622; c=relaxed/simple;
-	bh=z0SDU9UqzCrc+NpLDY6Ok2tA8Jfx+0J76yanVklX/hs=;
+	s=arc-20240116; t=1784878623; c=relaxed/simple;
+	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i3KLMWAJD0g8uvWzcrXolfNSiCOAdSOn80lJR7uWl99FioPdnKYydg3T7aTrHRp3qDANoJnkQueMhR+8a2p8bKItHz90wELVN7GF8CMV/Bw7cPXnZwY2xzM6q3hUafKKRCHK6ZANpcX+xwKWZGsFj0agWPViL0tNwMcz2RhKDgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=yJ0cdHRr; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Tgcstv0q; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=Wa+MZ5lQumNZUuQUKZ3qmIhRS7P+eQ5CKWnAh36IX0JqKdoW1m9HpUjDuflPzolZepgZtmo78sBo+a9mEiVCxDE33pFJDt48x7sm9r1LhQDuMRxTx2CTH/c74CsAF5S6IJrzVyzyJKD2yWb8TCyoMo1r8lfxrKTTmwwIkzPPKHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=qzStT0pF; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=rHot+6RZ; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="yJ0cdHRr";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Tgcstv0q"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="qzStT0pF";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="rHot+6RZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878619;
-	bh=z0SDU9UqzCrc+NpLDY6Ok2tA8Jfx+0J76yanVklX/hs=;
+	s=default; t=1784878618;
+	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=yJ0cdHRrMUAgzGki7/gfKH2QslPzQM8CWv9DRpW3UKI1Rj8hsWilZ+geyzRJJNMeE
-	 Y9jMkrpIHser/WGYrNQcqBEPw5vcnIrzeFtpuAIYn7PKHyxGw8vwupfDUwe5eeRRxg
-	 pt6KdmyPpnLLMFCYcmlaXf0hGvubQN1OP/NvTHKecDnJVG0M0VOYdcAdo8VZwka/MB
-	 2tQYhH/iP3l2KUBZuLOvyeVBUybnsILJprs5jsLHILlWHCKVwnSJzAZJKjjpRC6sYS
-	 Ni48LwvDP+0kve7fIPsKFYXVSxEJ53UTYCOGyHGCcr8qlZMQkkanIr+QE2tbLvppT5
-	 /WLP2kvgmWX8A==
+	b=qzStT0pFFzaZGnTmnEyY6VHcMMxdGM4lfMsgC338YR9XVr+N7vU60MHxFFUrNejmt
+	 efu1Ndz13MPFHi6x7X+kvZWPs74le2Lvv0AWr3z3mxvYalvMgkD25iV2OZN/JaEHXA
+	 SDEMmyuwQXYHSI/QYo/azcz16IV2RsEoytanXJsWr0z1SmGYGO2dTiiW41UZCcPO6q
+	 McWY1YJJYC4Y8pKvMP1YI3UCLnIXXI4OZJWJj5K1mZDu9lhgZxF5ldX1PNA0mjdPgb
+	 bCG1zQ/K/8PRnGb+719aMlSOlCbSL87DPKZRqeEATOJAXVrRb4Yr/Bu5BzO+G0V/VC
+	 FNwN6brulPI7g==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 3643C493D2; Fri, 24 Jul 2026 07:36:59 +0000 (UTC)
+	id B4ABA493BB; Fri, 24 Jul 2026 07:36:58 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878609;
-	bh=z0SDU9UqzCrc+NpLDY6Ok2tA8Jfx+0J76yanVklX/hs=;
+	s=default; t=1784878608;
+	bh=A4PRVdY551Fqg4eiE/V12aNQ1S3c71xr0cmz0PhIFh4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Tgcstv0q6uE1OBXoEvgczn+SHKAncfk+OnXfIPcxkAp3vgM6FVCaa44/inha91BqE
-	 NIZX823ijm4MzAj5ePzFVcPZx0H0B5SwxEYjhI62qS89UG5AnSUYTczD2bTA5XRuB1
-	 Ma0fL8w+EDIB1tQKTXWUhL2VkVCj5WOdOPU2QS/Bh8eu3T/962azlbcipJ2zyJ214Q
-	 h15P8rVzZ11C8AKbzjf3ARv4hUTYlPlAZgzGzlfW4+JbmP26gqgig84Sb3K/ThMrhJ
-	 JHrQ6ZgQJAlRL3dSkq083I7lpyeW/UGg9hru0GiVN0/VsAPQfWO0E/iG+au0AXoQcC
-	 XBQ/oR1073pjQ==
+	b=rHot+6RZpixT82qp8IEvRbFh7QrDS8LPKp+OBwPBnI3t6Zah6u0hxMgLLowPlkXSq
+	 8BDOzyiWNr+3BwsSOBByUKMB21r5QoOloZDsdp9uFcrf0PpoecfhCzn+7xH/qGLSoh
+	 Lbl8LeFzfLARQtGec/j8XbjeEfq5qnMmrypGSiQKpBktLI2eHwdG81vKXaee4c6doZ
+	 M7vO+mZpsssU8GG2YEk1TmU0n/7mpwTNfgW6PzIF91wkruMXV12o1P6hZ3CWK6CDcc
+	 y+gl7F7FKDRwEVzVWYzwqcXTvvnbs1i7HgLjWvW9j8xt2eLSdUXcXtRLrF/jJvr+sb
+	 2NUQMo8vtcoIw==
 Received: from DebianDesktop.lan (p200300c69f1c3c00ecd187824fbc6faf.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:ecd1:8782:4fbc:6faf])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id D3F8749344;
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8D7EA48F41;
 	Fri, 24 Jul 2026 07:36:48 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Fri, 24 Jul 2026 09:36:51 +0200
-Subject: [PATCH net-next v3 08/13] ax88179_178a: Add support for ethtool
- pause parameter configuration
+Date: Fri, 24 Jul 2026 09:36:50 +0200
+Subject: [PATCH net-next v3 07/13] ax88179_178a: Obtain speed and duplex
+ from Interrupt URB
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-ax88179a-v3-8-bdde4f905883@birger-koblitz.de>
+Message-Id: <20260724-ax88179a-v3-7-bdde4f905883@birger-koblitz.de>
 References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
 In-Reply-To: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -67,67 +67,38 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-The AX179A-based chips support pause parameter configuration.
-Make it available through ethtool ops.
+For newer AX179A/772D firmwares and the AX88279, the
+interrupt URB response also contains information on the Ethernet
+speed and duplex status. Read this in order to use it to configure
+the link.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 ---
- drivers/net/usb/ax88179_178a.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 02c015847eea3dfbdfa73f3d59a7d5b0dd1bc339..cc9a3ef4fa03ac36f89f78d2909a84d9b11d336c 100644
+index 8ea16d1231037832e12f74e2c5304ee4b7a54389..02c015847eea3dfbdfa73f3d59a7d5b0dd1bc339 100644
 --- a/drivers/net/usb/ax88179_178a.c
 +++ b/drivers/net/usb/ax88179_178a.c
-@@ -314,9 +314,6 @@ struct ax88179_data {
- 	u8 link;
- 	u8 speed;
- 	u8 full_duplex;
--	bool pause_autoneg;
--	bool pause_tx;
--	bool pause_rx;
- 	u8 rx_checksum;
- 	u8 eeprom_read_cmd;
- 	u16 eeprom_block;
-@@ -1000,6 +997,29 @@ static int ax88179_set_link_ksettings(struct net_device *net,
- 	return mii_ethtool_set_link_ksettings(&dev->mii, cmd);
- }
+@@ -496,6 +496,7 @@ static int ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
  
-+static void ax88179a_get_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	struct ax88179_data *data;
-+
-+	data = dev->driver_priv;
-+
-+	phylink_ethtool_get_pauseparam(data->phylink, pause);
-+}
-+
-+static int ax88179a_set_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	struct ax88179_data *data;
-+	int ret;
-+
-+	data = dev->driver_priv;
-+
-+	ret = phylink_ethtool_set_pauseparam(data->phylink, pause);
-+
-+	return ret;
-+}
-+
- static int
- ax88179_ethtool_get_eee(struct usbnet *dev, struct ethtool_keee *data)
+ static void ax88179_status(struct usbnet *dev, struct urb *urb)
  {
-@@ -1177,6 +1197,8 @@ static const struct ethtool_ops ax88179_ethtool_ops = {
- 	.nway_reset		= usbnet_nway_reset,
- 	.get_link_ksettings	= ax88179_get_link_ksettings,
- 	.set_link_ksettings	= ax88179_set_link_ksettings,
-+	.get_pauseparam		= ax88179a_get_pauseparam,
-+	.set_pauseparam		= ax88179a_set_pauseparam,
- 	.get_ts_info		= ethtool_op_get_ts_info,
- };
++	struct ax88179_data *data = dev->driver_priv;
+ 	struct ax88179_int_data *event;
+ 	u32 link;
  
+@@ -506,6 +507,9 @@ static void ax88179_status(struct usbnet *dev, struct urb *urb)
+ 	le32_to_cpus((void *)&event->intdata1);
+ 
+ 	link = (((__force u32)event->intdata1) & AX_INT_PPLS_LINK) >> 16;
++	data->speed = (((__force u32)event->intdata1) >> 8) & 0x7;
++	data->full_duplex = (((__force u32)event->intdata1) >> 12) & 0x1;
++	data->link = link;
+ 
+ 	if (netif_carrier_ok(dev->net) != link) {
+ 		usbnet_link_change(dev, link, 1);
 
 -- 
 2.47.3
