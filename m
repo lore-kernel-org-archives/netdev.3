@@ -1,95 +1,73 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAD22DECBF
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 13:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A102EEE90;
+	Fri, 24 Jul 2026 13:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784898281; cv=none; b=Q4cYhNL75mll0tUE/JAJ/KoyiTVQUalZZRnDqZDocUSM28zSjc6AF2HXAaDGya0uCEJzQwsn7XeK92fbt0N5q0IGhVOY23GgJGkzypcPrbCPKQRrqmmMIlA0gba2Fh2BgIN6KWxSAPOulvN6q3/AJPjr3w+bor1Snr8hLvuo900=
+	t=1784898317; cv=none; b=BUxOyMSucliPHizE3ySsXlciYhHiUUMf2G87rmHc+GDgsuIBqTY3HzYw7q2IGbr3pEfrUU9D8d6DS5JrU7EzVOPb+4nL7LBSieS3ViIaUD5QSZVVPMJq2BRflsSdKKWi4GD2pDmY2gvuQtJhfWr7Dt4y3uQ2WPKLdLQArqTupA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784898281; c=relaxed/simple;
-	bh=2umajvbhajfJHtqP50OvfkaVtnrWvS/GJS1JNgL/gy0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MRUQZ+tPXNkLzQZm0gvf36Ywg5xMSuUUI6dYSaeVpjW4E3zKgCW/GBzsveZ7VnnRz6J2LSqCBouFPPVWjacRUulHUTaV70Tbpju9Wrsc+onJEBHc6qtye+XSblZMfBMU8mXw/t0kLE2w2CSRSrIYaLO6HvHPLaJ4q8SGn8OWv7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HJo4JH4n; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784898317; c=relaxed/simple;
+	bh=vAVv4qJLy813qNxBf2YdVZlLecBtQgjrjTYdfTz6+Hk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e4JAzdzohecQr9fQhNUz/+t3RsxxYDNMquq6Hy6W3yPgZvY1hLC5uwhfwC19lUPTIU2GPG5I67biPU2vzksPqaVJnux7/ni1i3Kzqxo6PY+j8g1un20SwFJPxBMF1z0mFcDSKDxa/vuuWFe71nSK/rw2VH0Hl6bHBPhqoMDHbaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=n46vKnAn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HJo4JH4n"
-Message-ID: <c597273c-4fc7-4d3c-8886-6f8be5dc72f9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784898276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a6jTiAk5PpfG/pfDy1T0fjrEXPY3y58y008DCXKo98k=;
-	b=HJo4JH4nYCH2K7sh747jWEs9uO/1aU/anywdoTmmoOBKGj0v0BvHJcCqv24iXCrT4AEgoF
-	dN+yR3rYxax4inCd0lYlanr0CowWZxPsDCygTAz7b+/taUa49+/X/LvIN3R1vhNzdINtrA
-	Q8Wwd1ggZ2sm2wuOu+OqKsVGzMmT1m0=
-Date: Fri, 24 Jul 2026 14:04:34 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="n46vKnAn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9JC5m34jALCEFafeMU7h6wca0BxlqZu9tFlZOqOnDQk=; b=n46vKnAnrJ9jg3V6k/AqX6Nsge
+	5d/kiS77xoxJVZ8MQGOFh+SExxGqKvgx29wXVgqkLZFaYPM59LMWORBIk4nhOtMonii4+cOjH764N
+	in1JjawAdvOxNuaxGL5Yen2F+b4GtFn6/FGKx3QFcAYFh5gvtKgA0VPfbvn1cIDyKG8Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wnFaQ-00Dza7-TE; Fri, 24 Jul 2026 15:05:10 +0200
+Date: Fri, 24 Jul 2026 15:05:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
+Subject: Re: [PATCH net-next] net: phylink: add phylink_pcs_loopback() method
+ for PCS loopback support
+Message-ID: <ab95d5f7-dddb-4980-91c6-5be12172534c@lunn.ch>
+References: <20260724085224.3321663-1-zxyan0222@gmail.com>
+ <42606cde-cdef-420d-adf4-b28c353d564b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] net: ethernet: ax88796: initialize all fields of
- eeprom_93cx6 struct
-To: stf_xl@wp.pl, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-References: <20260724083411.8562-1-stf_xl@wp.pl>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260724083411.8562-1-stf_xl@wp.pl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42606cde-cdef-420d-adf4-b28c353d564b@bootlin.com>
 
-On 24/07/2026 09:34, stf_xl@wp.pl wrote:
-> From: Stanislaw Gruszka <stf_xl@wp.pl>
-> 
-> Commit 7738a7ab9d12 ("misc: eeprom: eeprom_93cx6: Add quirk for extra
-> read clock cycle") added extra 'quirk' field to struct eeprom_93cx6,
-> which change how the data is read.
-> 
-> Some existing users of eeprom_93cx6, including ax88796 driver, allocate
-> the structure on the stack without initialization of all the fields.
-> As a result, the added quirk field has undefined value, what can
-> randomly cause reading wrong data from the EEPROM.
-> 
-> Fix by using designated initialization.
-> 
-> Fixes: 7738a7ab9d12 ("misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle")
-> Cc: stable@kernel.org # v6.13+
-> Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> ---
->   drivers/net/ethernet/8390/ax88796.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/8390/ax88796.c b/drivers/net/ethernet/8390/ax88796.c
-> index e1695d0fbd8b..5ee1fbafdcfc 100644
-> --- a/drivers/net/ethernet/8390/ax88796.c
-> +++ b/drivers/net/ethernet/8390/ax88796.c
-> @@ -722,12 +722,12 @@ static int ax_init_dev(struct net_device *dev)
->   #ifdef CONFIG_AX88796_93CX6
->   	if (ax->plat->flags & AXFLG_HAS_93CX6) {
->   		unsigned char mac_addr[ETH_ALEN];
-> -		struct eeprom_93cx6 eeprom;
-> -
-> -		eeprom.data = ei_local;
-> -		eeprom.register_read = ax_eeprom_register_read;
-> -		eeprom.register_write = ax_eeprom_register_write;
-> -		eeprom.width = PCI_EEPROM_WIDTH_93C56;
-> +		struct eeprom_93cx6 eeprom = {
-> +			.data = ei_local,
-> +			.register_read = ax_eeprom_register_read,
-> +			.register_write = ax_eeprom_register_write,
-> +			.width = PCI_EEPROM_WIDTH_93C56,
-> +		};
->   
->   		eeprom_93cx6_multiread(&eeprom, 0,
->   				       (__le16 __force *)mac_addr,
+> Besides that, I don't see and PCS that supports that loopback, I think
+> it would be nice to also have the PCS code for loopback as well...
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+That is pretty much required for merging. We want to see both sides of
+a new API.
+
+There has also been discussion about in which direction should it
+loopback. Towards the media or towards the host. For self test you
+want host side, but as an exposed feature for user space to enable,
+media side could also be interesting. So you should think about what
+the internal API looks like to be able to specify the loop direction.
+
+    Andrew
