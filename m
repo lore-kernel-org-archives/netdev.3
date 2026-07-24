@@ -1,84 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D53477984;
-	Fri, 24 Jul 2026 23:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D80481FCE;
+	Fri, 24 Jul 2026 23:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784936441; cv=none; b=PjzQABICcwXxPH7DjDEPi8qptmZ/+kEQtQifc90JNFGqRAWT9UedypUvS6oCOen+bB13d7U6bmXxaBdcbIyOwlzbDxCaSyccErPZfwnf6t/JwVqg5zT7+Wo7TZv+O8tBMGKpbydN2YlUIWJ7KB+bsQOsSydF9CaE2z0NhvHDnAw=
+	t=1784936943; cv=none; b=UsIwSbcqwbQvgeUd+YL04f9t+ZcGcfsIR2cKDk/DgLbdygl/Hl39su0o87R0kb0UjGlm1V+Caa4Bg/Jh5PyTKuA3vogBTns7OQZf6idkTEdtBPLFnwrd0GJYXuTcD+X8dUcE6CV0O74HS9yFwDYlrzW62fr0vSC7lkuLbPG2Dnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784936441; c=relaxed/simple;
-	bh=QAO5CVsaPtzpkwPIP2mFfEnCl8vGvPJgHNQs9kiR/b8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=urKJz9bq4N1iVo83RTZQoSYT5fGJwX5EcmWddcLCvvJm7uM+tGgpFfxrXf0T5jKrKpeJUqfnvA9BR7xhZiU31pQJYwTsceQDWrmx1cfP6yYHY0jcaa6Kq/Dr/hqNr9P/nurXlddJoL04UOr+XdS82pkMq9teFD7LNYVhbSaKCPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwkXrYzr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784936943; c=relaxed/simple;
+	bh=f36OJJDT1hLLfotiFBLNqP+ObqaF2oHvDBLUGAsLRh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RqVbVaeZhq1AwIXBUD75oA9yIVgPRT8kMBYf/D2AnopFeophjJyQnooh6owvxM8fYKqZgSUflj+xEhIQjM87VxR9193gLoJDIwqP0+IRFZtie8tYYWYa+LnIT3hmEMywhRwlvly5XW+jfHiK+kmcrWC1Ox1JlJGUMZz8YU9UTeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0ZjnZkU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwkXrYzr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB911F000E9;
-	Fri, 24 Jul 2026 23:40:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0ZjnZkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA751F00A3A;
+	Fri, 24 Jul 2026 23:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784936438;
-	bh=mPadTm1aSVriN+cH5QLoWHyB2LUiWZaVhp6cyWlogeA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VwkXrYzrpLGxKIILUSv+lUTaWU9scY9OWvyF4zLnT0QtUFXXxfIUCfi5U7NLDEn5X
-	 r8n99I4j0votdDHiy5Fn0YbemCHhHM/z5YAP8dJK5xH6us4XL/tERslVv4yjDVbEXY
-	 48BoccnmuigKjsFzyyJMLTaXzpe46JLh+Dwg3Uu4Wpbg3aLqvJye/iuprZYz5LbSwi
-	 oMFGkRzam/Mp6QTpsw5ESgAbf2fp7LOmfKLt4NLWsaqGi/BkkxlOaEEA6UENiKVv+y
-	 JaT6ZRwDPovEX/TFsn9kGR5g7W3zLmi19JOUnheAcpM0eVJZEnrtVkLJh4Akw0DKZ1
-	 VXP//D6c5iNog==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id DA07238111D8;
-	Fri, 24 Jul 2026 23:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1784936939;
+	bh=AqKuj0HwlEdDwSOzn2VjliWKxWpCEy+aNo9N9G5cUUU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=O0ZjnZkULRdiZso1sXw9HC9P90fSaJ+Kvkr3yPHqGbYptrMpdm+QqeItiZz8yAvAr
+	 SAtsX/Lt0e9dOXFzoZ0BBxfeF4GDjT3/DocW7yXc/mGYtltfYfdsOFLfl1YReTWC7f
+	 /7tW7CTGXi5pu6OahXKuMRRgajxsZ69pdmV12vkpdhRmbHRlZ+OXnNQXle8L5mmoqS
+	 qk3qqlTjThULSNzrLqb2L+rDgNC9JVUpPa78jh6wpHJzf8lt6j5Qvp1w314SzPiO3I
+	 FcIUtcd3w5EtkmLe39xjy55LLcVFz6DteuuD58AdfmcjLI0g09lql3bgRCwucC0df1
+	 impOOnRCbx+eg==
+Date: Fri, 24 Jul 2026 16:48:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Luke Howard <lukeh@padl.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, Gregory
+ CLEMENT <gregory.clement@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+ Richard Cochran <richardcochran@gmail.com>, Cedric Jehasse
+ <cedric.jehasse@gmail.com>, Kieran Tyrrell <kieran@sienda.com>, Max
+ Holtmann <mh@rme-audio.de>, Max Hunter <max@huntershome.org>, Christoph
+ Mellauner <christoph.mellauner@joyned.at>, Simon Gapp
+ <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/3] net: dsa: mv88e6xxx: embedded PTP
+ timestamp support
+Message-ID: <20260724164858.4581408e@kernel.org>
+In-Reply-To: <20260719-mv88e6xxx-ptp-fixes-v3-2-161386ac8a62@padl.com>
+References: <20260719-mv88e6xxx-ptp-fixes-v3-0-161386ac8a62@padl.com>
+	<20260719-mv88e6xxx-ptp-fixes-v3-2-161386ac8a62@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: pktgen: fix proc entry use-after-free
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178493640576.3354511.539340145815216251.git-patchwork-notify@kernel.org>
-Date: Fri, 24 Jul 2026 23:40:05 +0000
-References: <20260719145740.2888967-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260719145740.2888967-1-nicoyip.dev@gmail.com>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, thorsten.blum@linux.dev,
- akpm@linux-foundation.org, andriy.shevchenko@intel.com,
- rdunlap@infradead.org, robert.olsson@its.uu.se, stephen@networkplumber.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 19 Jul 2026 15:30:54 +1000 Luke Howard wrote:
+> +	/* APPEND means the switch appended the time stamp as a 4-byte trailer
+> +	 * (not all switches support this). Any other non-zero value is the byte
+> +	 * offset past the start of the PTP common header at which the switch
+> +	 * overwrote the time stamp in place (e.g. the reserved header bytes).
+> +	 */
+> +	if (arr_ts_mode == MV88E6XXX_PTP_ARR_TS_MODE_APPEND && skb->len >= 4) {
+> +		if (skb_linearize(skb))
+> +			return false;
+> +
+> +		*ns = (u64)get_unaligned_be32(skb_tail_pointer(skb) - 4);
+> +		if (pskb_trim_rcsum(skb, skb->len - 4))
+> +			return false;
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 19 Jul 2026 22:57:40 +0800 you wrote:
-> pktgen_change_name() replaces pkt_dev->entry while holding t->if_lock.
-> pktgen_remove_device() removes the same entry before
-> _rem_dev_from_if_list() takes that lock.
-> 
-> This allows the following interleaving:
-> 
->   CPU 0 (NETDEV_CHANGENAME)       CPU 1 (kpktgend)
->   if_lock(t)
->   proc_remove(pkt_dev->entry)
->                                   proc_remove(pkt_dev->entry)
->   pkt_dev->entry = proc_create_data(...)
->   if_unlock(t)
-> 
-> [...]
-
-Here is the summary with links:
-  - net: pktgen: fix proc entry use-after-free
-    https://git.kernel.org/netdev/net/c/817ff6efdb7f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+The append mode would extend the frame, and possibly run afoul the MTU
+on the conduit AFAIU? Since neither implemented chip uses this it's
+both dead code and questionable. Let's remove it.
