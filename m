@@ -1,146 +1,245 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FE635CB6F
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 03:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D6533B6F1
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 03:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784864194; cv=pass; b=XvixWUdp09L58tvH3JaACo9ReGGEukizWsMNg83cEg6hsx+JoJl5Ve0NtlgDx3IBrqqbAzX9CpVMARYvxuzqbud9lOLvn0S6rdzQTb4zNsJ818XwiA+R8bcsQUKCmPWQL3rbj6iFTIP1qVpvLaT3OOFIKhDMcNwJeNHFsnHDVK8=
+	t=1784864403; cv=pass; b=iaDJBxUIZk8j8Hy20ThTZcYCsTkiqhVU0EaUzPXdnPr2ojf57WknoXPHKWiWAUflu+sWL/5GkCV2iBxQFvCxELTA1nuSY+YurpRUAoapkzH39PRzE1yRozM1bIbCr3uXf7zJOb5g6jwwYBc6GG9TDpCqtbkkq/zAw+R8Pfe1pzg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784864194; c=relaxed/simple;
-	bh=8HcC/oA7PCfFjJtXkAhXIBjiaFdK3uVq2t3mipV6lmc=;
+	s=arc-20240116; t=1784864403; c=relaxed/simple;
+	bh=pB8/V3XlrG5omt7Gz5mMSVLoHIr+uYCl606AtWvg3WI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pwf2igPHAsSGj4nI/ErGOSTjXYOgFKFIkPY8iE256SdMOiicR5io3ChasutCxXC/e2kHMOXdEkFixRDwfQsuOdo7KEz//AJ1BSNGGMs6kuVfMbQmskW3VbFBDyFCHCOQMHB9gkirE5AbGkqGBJ6241dukTawU4CiGuSGfaKt/9c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lm803m7M; arc=pass smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Jokri2aFyqbho8WEYCH37zp8MQAItaNoXh41gSZCh/gXyBSBfkayUWzHsM0cJmt03/v1EhsRJ0Y2qqzOjwrTjf7dYqPPZDJyLvEPE9RnsOLg2TmgFiB9QEuUy8rpvV42uLZyLFFEj12iwUpqyYARDz+sYOFMjNJO0KDp4uq91qI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bjjrxLZ+; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lm803m7M"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84a32ff53fcso236212b3a.0
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 20:36:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784864193; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bjjrxLZ+"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b2a4359d16so1558299e87.3
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 20:40:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784864400; cv=none;
         d=google.com; s=arc-20260327;
-        b=C4Dg1W0WqpUdWWFB3m/z3yKTrD8skrt1ilzCWnaryqVxaI+Qfr8CsRLywlIRHSuf45
-         MZ+EYP9pnZ1WykjWHWaV8Pk6SX5w2Xh6ykvGvKQnf3GPKHIQS+dXXV6DsadJiY4xlTVS
-         Fp30tPGOAmnPJW0c5dLdy1stLk8wJJLnkF7UJVNztI+xZpErvZ9smvGyLD+laXLeeUh/
-         J6W0J5ow0bs+Jw5LWjaCJvxGZd4+iMEgj7f/LcuSy7Y8LSzoyUkzcgiSuEpQIS1Twx90
-         itDez6UkYKVLMvDHHi/ew3jo25ops6hv0SSQPv6CA9yutdp6m0XOpTZRdfCHeL89sibB
-         vSBQ==
+        b=JH2hR6V8ryGvRX/DQvUn/4ciK54gAqe2+KwMd13NZ5YCRRaxlAb/5hN2k3SX8HmsPw
+         UaovTstq2WfHwb17fgDFFFg8QgHRyvt9AIPUBzsz5bsJS0h/5lPRxX97Zir4NkLAuUSf
+         wSqmMqBVyfnn8uNY3/BlIUZWQcKgJRPgkN1/t03TLg12t1QsF3wyvirNvNjJ1Quy3VPX
+         W4WNa71DphpPDWC0PPchOCMgh8msyzdP7WjMAF60yi9hbrgIj+AIs8DyqFXg3hR4q212
+         V/LLBk7Kho4PUZTPmju7ylJbm473+Fx7orh7wlVzoNbs6vLAi5jukdbC/pIT2KpGsMnq
+         dSiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8HcC/oA7PCfFjJtXkAhXIBjiaFdK3uVq2t3mipV6lmc=;
-        fh=OSYFR3nrLbx+UP2qofRCvLygZjvlVUfPhyMYO5ac/oU=;
-        b=JVDePfcXMaFDDRxNMv+h2TjsXtwmkLYMxRXjrGYh2ApbFc81QlOcg77lKpozrwztSM
-         IJEL7Q34UqKh3eu6XKI95mN5b9+9QRfilqDa0RDf1cMWRqZ670RPNC5EJvxG00igN/Gh
-         ZaMteGlqn4Y6ctqE/eFSEilj3iUKAlzaTOXKduq6nnSd+K9KMqEVpYFGVewby0ugDQi0
-         Qz8eLvOVjbF8iQSx9/KLhovXjtLc+Gv1U2gJHSe4YGLruNNIlopsWxqGxZSxIPzjkDMh
-         /kEbZor5or+xUn3LQdsTVv4Fc+IaxHYvaRRRgQYxZuvAe3i6UrLvENYlHUbQzv0klG+O
-         4DHw==;
+        bh=/jUaUCz0UWiUWGL5mMfIye/RyD1iev9TqicEqDX5xhA=;
+        fh=YxWEdPGKRwJAtpXDu6LSidktygnL2ejlab4MUF1mRXM=;
+        b=R7Vvid5ixrcczUV4JGhFeHm+x+QURRLKyEfSc8uCyBnACHXkXz1b6oV9gEjRpRqs3+
+         teCAjNTlO6qIUtiliVK4PsTRBte5ZovFF67kPFf8/UaB6nHeYO8A+bpN1ZBndffhbDz0
+         8aTMUSrJX4rZvek5lVv/hV36aXHo+/VIzpjcMTL0StsyL13Wnn0IIr4gcPCsZYwxbJhS
+         6uXl+yEZFZKd9GwO025drSrPmtRaxBNGOO6qd3fVDkHO3zeBWu/LduRhXb5dWZu5E+xD
+         UG2ed9PrrxeB+g5aVS/XWUWjW5+DN/RQLJ9ibRHnEJrgwGC/u3vXfSIDVQ8tZSUK8YdG
+         oSUA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784864193; x=1785468993; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784864400; x=1785469200; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8HcC/oA7PCfFjJtXkAhXIBjiaFdK3uVq2t3mipV6lmc=;
-        b=Lm803m7MRz8oCrZj/ij+be88C9vmMlFFXVR1GnW6kMgHROfMHJXdB+hHTgay+Ay7rv
-         tiIvSYjPDLD3f0RCEmYyO5B/7G72RQ19t5PKY+Cn5Tn3FOD82VbjaVZcVDXBvnTAR1Ho
-         KTry4nZM04Se05ltRrKQENmbrXBbPsxiLD4XbUPa9ERL+8XmyQzsLlSjl7Fdrh4ohGgN
-         eCARNJysLfZQEj6Wj12WUIk47qFZQlaLKg/Xll6pbKo8yxIfaicqLt9ynNGu42B2oXHY
-         yifoGJTarjv9tMUCEOXBQT+mhHJP3t0KNKncTuubFGLBD19rEZS1FGHhc7k24bqnIH1a
-         6BpQ==
+        bh=/jUaUCz0UWiUWGL5mMfIye/RyD1iev9TqicEqDX5xhA=;
+        b=bjjrxLZ+i/gWyy5RQCwU8Vfgpz+ENMx1x/29cHdjXXaRjprqEu20bNsYRUGrzO1jdv
+         57xGK6z8HCfD/0p2h3Rh4fsoTIqPXr4iW03mu1af1pWWxCtd2yY8ueP4+vGcgll1O1gc
+         +bDfY3CTFSwDR+8idN2dOZsN0p7tWExLG6Fj2T6oQKhSKdyQ68aQ2dRWcjYVCwrZoLct
+         EKeBCcZ5ImXdhDvWFddpZPelArV8vkSlk/TbX65jo2HW5m09I4saBB27nwhZ2CdLSim7
+         IKcz2nNiXs9lHXGfqZrKPbGFy0OcvkU3IT9UX4zsr4TyKFFAVVy3drKGvCmHal87mTxF
+         inLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784864193; x=1785468993;
+        d=1e100.net; s=20251104; t=1784864400; x=1785469200;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8HcC/oA7PCfFjJtXkAhXIBjiaFdK3uVq2t3mipV6lmc=;
-        b=ZKblx98yj0G+4inqA9Mg1DEDFn9w9Ag31QmMf+ab2woYEFBFY6VmaoWLmb6JeolRDO
-         htXreUpJ5fp4vu9y2DzmvaBQwiIC2UQB/4PoMDJYcx/G0gSZ8RuDgCzEeLs7Psa8dwcX
-         0bxPAC0oG1JKA8WhsJQLVOPn2e0jkQTksz5YSwdQld7kxnZgihWoEHbI79hzyMfbCvQ3
-         zDoJTUsIE2QRi1c9E9CIweV7FGhCy729e6atp3dE8wVnXjwpxU22VysEVz4OyjK4vC5I
-         wqyO2pOev+TqlWb4tTFY+oenOmmqZLlY0VMFlJBeRn6QgQuc34z0T5QSexGZtL9a0QA9
-         qYoQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqFvWXjUD52B5hK3ZcrjfNpCkqQ44jkBM713iMOJXQh/BNCn+h1Mt2pnVao27xSAEoyduPteFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRGhBK7VF+41vY1Edjr6mN5oBQgePu28qefrSG+klBx0s+M4hh
-	tIa1NeW6/7pyuX9QyXuPzyAh/5o6xizpse61tCg7KwCQwQ32jCFiZhcBdz64EE9mYwK8N9Qpx8k
-	w5adO1JqBLWOLcN5u37LMgO3ANHjOebUlnO714Ec=
-X-Gm-Gg: AR+sD10xv5fcyCq/cHcY21xk+rkv+o10qrZHKIxQ+MM+fdvDgIfnfR/P3Mt5tjCapJ5
-	Ls3gh4Rahip6PfC5gT53QiQcT9vprDOjOuOqpydwhdpSa4a7Akv61b3RTXMGMMOdqnLp58pJ3B/
-	i8H5mrkqvJVpX3efOxa7DdyHeQXeS+3LjwVKasDW1dmOTYacABJXRR5wceJ5iOp9d/wDI7jqMwV
-	ot2pAshGUfhF1tHATidPLaF996egZ05SauDAoy/EKQuqrV9bHagj656IcCTudjDlPEeqOK370of
-	96h2fGblNOUyQUDgZw==
-X-Received: by 2002:a05:6a00:a90e:b0:842:5a18:9af0 with SMTP id
- d2e1a72fcca58-84e3ddebe70mr2100467b3a.0.1784864192764; Thu, 23 Jul 2026
- 20:36:32 -0700 (PDT)
+        bh=/jUaUCz0UWiUWGL5mMfIye/RyD1iev9TqicEqDX5xhA=;
+        b=BActdZPSizN+iioLTUF4pPt5GGsZmmvXN/j4DlSbSmUqIimnABisi4RPN4snmMgy1A
+         LJtUixt9zQWUdwbzxlg7G9WbKxXDYGw6ls2TPcrOTZyGloFcEJIW8fvAK2fe1N1wVD5g
+         +rsOacw7NKXw30DB6+o+eYLtQO2rw4aPVIPuAeU4tbGJB/pVBPLQPo2XmAZtLD5VfxcF
+         It+NjT+X7ype9lAvXhF5/CFjl8d0/yMlwYyl1aw098t9iVBX/6el/QEMo6uhA0fWfeIj
+         S1zA9YMEJR4BCufR/+jcVf1WlFjr+aBeyG/2tB4cSlg0k/lO3q2ZOZAh7pqMdIHcjV7F
+         J0rA==
+X-Gm-Message-State: AOJu0YzSrCpAUhblEZZVMdexbNqEKW37jPQVKkQpyFqM7mjqouFNBG7l
+	AssXq0LkonvNosgsjwwMy31MxEXkjWarGMR2rNUkAVFXHdzknalZGavkfYmYskIYtqZTxEqZ3Z5
+	Cgb3zL4laUiMzQfWwlIihB5RnpOqdtP2XIIAO9vUF1tKajYeNgS5v4Y9/Mmc=
+X-Gm-Gg: AR+sD124MVY3OJ3mqEcLUlH3JCGguNPa+ywZDt7nK2pWswESufEWlIeyU9oHU1YqRaI
+	IOkE+5CAVflE5gdYGVgfuSfBuk+Aqo9HKOMfxDCQtLWsQPDnzFIRo5KFQ9RMWkz2sHQ6YtYAvri
+	DOOalHPnjDzJtpcpVHFkQZfvv9jqUg4wYMunrslStwR1Qwu8WUmx2+e2S1uT5nH0Z8GrQeZ7GUs
+	9YFKSir3NHn62sAsZlzECArd6guMD6bSecDFhIIe6tky5ee3gikTJjJ9tlC1OVeS6wLGSNHDA==
+X-Received: by 2002:a05:6512:8019:20b0:5b2:a353:e4af with SMTP id
+ 2adb3069b0e04-5b2b2f7a8ecmr887529e87.56.1784864399706; Thu, 23 Jul 2026
+ 20:39:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
- <3e4b1552-57d4-42ad-a244-a91b74b8dae1@gmail.com> <willemdebruijn.kernel.3e74e4fda69b@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.3e74e4fda69b@gmail.com>
-From: Qihang <q.h.hack.winter@gmail.com>
-Date: Fri, 24 Jul 2026 11:36:21 +0800
-X-Gm-Features: AUfX_myMQCLMi8B49UslUypNDm75uADo-4b77-P1llJQTPfcQ7oEOs46vfJYVgE
-Message-ID: <CAH78Gvuoqf89L8dm-FwRBzCGm9LaB7H_vt3MsOY5QPd0o_zhrw@mail.gmail.com>
-Subject: Re: [PATCH net] packet: use a consistent hard_header_len in send paths
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Daniel Zahka <daniel.zahka@gmail.com>, netdev@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	stable@vger.kernel.org
+References: <20260722221634.186886-1-joshwash@google.com> <20260722221634.186886-2-joshwash@google.com>
+In-Reply-To: <20260722221634.186886-2-joshwash@google.com>
+From: Joshua Washington <joshwash@google.com>
+Date: Thu, 23 Jul 2026 20:39:47 -0700
+X-Gm-Features: AUfX_myiu_NuloPmeS8ZU_Op_ds7ofTLCGS4h_nAjcrnVJa1oicB1rvJdCghtG0
+Message-ID: <CALuQH+UFf2oWTnrSK6mW4+PAqPTyfwJ55Zr8hNF5MTPC9KX2wA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/2] gve: use xdp_build_skb methods for
+ XDP_PASS case
+To: netdev@vger.kernel.org
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Jordan Rhee <jordanrhee@google.com>, Tim Hostetler <thostet@google.com>, 
+	Ankit Garg <nktgrg@google.com>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Agreed. Caching hard_header_len fixes the RAW paths' inconsistent skb
-arithmetic, but not the SOCK_DGRAM race between headroom allocation and
-header_ops->create().
+On Wed, Jul 22, 2026 at 3:16=E2=80=AFPM Joshua Washington <joshwash@google.=
+com> wrote:
+>
+> Newer common methods have been introduced to construct SKBs in the
+> event of XDP_PASS because many drivers replicated very similar
+> functionality. Update GVE to use these common methods for copy mode and
+> zero-copy mode.
+>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+> Signed-off-by: Joshua Washington <joshwash@google.com>
+> ---
+> v3:
+>   - Newly introduced. Ensures that XDP metadata is passed onto SKB in
+>     XDP_PASS case.
+> ---
+>  drivers/net/ethernet/google/gve/gve_rx_dqo.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/e=
+thernet/google/gve/gve_rx_dqo.c
+> index 02cba280d81a..907a0c15bf30 100644
+> --- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+> +++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+> @@ -736,8 +736,7 @@ static int gve_rx_xsk_dqo(struct napi_struct *napi, s=
+truct gve_rx_ring *rx,
+>         }
+>
+>         /* Copy the data to skb */
+> -       rx->ctx.skb_head =3D gve_rx_copy_data(priv->dev, napi,
+> -                                           xdp->data, buf_len);
+> +       rx->ctx.skb_head =3D xdp_build_skb_from_zc(xdp);
 
-I also missed packet_sendmsg_spkt(), which needs the same RAW-path fix.
+Sashiko says:
+---
+[Severity: High]
+This isn't a bug introduced by this patch, but does this unconditionally
+overwrite the SKB head on every fragment for multi-fragment packets?
 
-Would you prefer a v2 covering the three RAW paths, with the DGRAM
-callback headroom issue handled separately, or both issues in one
-series?
+If an AF_XDP enabled interface receives a jumbo frame (e.g., 9000 bytes),
+the hardware splits the packet across multiple RX descriptors. For each
+descriptor, gve_rx_xsk_dqo() allocates a new SKB here and assigns it to
+rx->ctx.skb_head.
 
-On Wed, Jul 22, 2026 at 10:26=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
+Since this ignores whether rx->ctx.skb_head is already populated from previ=
+ous
+fragments, does it leak the SKBs of prior fragments and truncate the delive=
+red
+packet?
+---
+
+Multi-buffer XDP is not supported in GVE DQ.
+
+>         if (unlikely(!rx->ctx.skb_head)) {
+>                 xsk_buff_free(xdp);
+>                 gve_free_buf_state(rx, buf_state);
+> @@ -745,8 +744,6 @@ static int gve_rx_xsk_dqo(struct napi_struct *napi, s=
+truct gve_rx_ring *rx,
+>         }
+>         rx->ctx.skb_tail =3D rx->ctx.skb_head;
 >
-> Daniel Zahka wrote:
-> >
-> >
-> > On 7/21/26 4:49 AM, Qihang wrote:
-> > > packet_snd() and tpacket_snd() read dev->hard_header_len multiple tim=
-es
-> > > while building an skb. Device reconfiguration can change this value
-> > > concurrently, for example through bonding device type changes.
-> > >
-> > > For SOCK_RAW, packet_snd() stores the first value in reserve, later
-> > > allocates headroom using LL_RESERVED_SPACE(dev), and then subtracts
-> > > reserve from the skb headroom. If hard_header_len decreases between t=
-he
-> > > reads, the skb can be allocated with less headroom than reserve, movi=
-ng
-> > > skb->data before skb->head. The subsequent skb_copy_datagram_from_ite=
-r()
-> > > can then attempt an out-of-bounds copy. Hardened usercopy catches thi=
-s as
-> > > a kernel memory overwrite attempt.
-> > >
-> >
-> > Wouldn't there be a similar issue in the SOCK_DGRAM path with
-> > dev_hard_header() calling skb_push() after packet_alloc_skb()?
+> -       /* Free XSK buffer and Buffer state */
+> -       xsk_buff_free(xdp);
+>         gve_free_buf_state(rx, buf_state);
 >
-> Good point. this does not use hard_header_len directly, but e.g.,
-> eth_header() assumes ETH_HLEN is available to push.
+>         /* Update Stats */
+> @@ -899,9 +896,17 @@ static int gve_rx_dqo(struct napi_struct *napi, stru=
+ct gve_rx_ring *rx,
+>                         return 0;
+>                 }
 >
-> Simply caching hard_header_len won't resolve this. dev->hard_header_len
-> and dev->header_ops (incl .create) are not updated atomically.
+> +               rx->ctx.skb_head =3D xdp_build_skb_from_buff(&gve_xdp.xdp=
+);
+> +               if (unlikely(!rx->ctx.skb_head))
+> +                       goto error;
+> +               rx->ctx.skb_tail =3D rx->ctx.skb_head;
+> +
+> +               gve_reuse_buffer(rx, buf_state);
+> +
+>                 u64_stats_update_begin(&rx->statss);
+>                 rx->xdp_actions[XDP_PASS]++;
+>                 u64_stats_update_end(&rx->statss);
+> +               return 0;
+
+Sashiko says:
+---
+[Severity: High]
+Does returning 0 here bypass the copy-on-demand safety check for XDP_PASS
+packets?
+
+The gve_rx_should_trigger_copy_ondemand() check at the end of gve_rx_dqo()
+appears to be skipped. By bypassing this check, could the networking stack
+hold onto the QPL pages indefinitely?
+
+This might drive used_buf_states_cnt to num_buf_states, exhausting the buff=
+er
+pool and preventing new RX buffers from being posted to hardware, ultimatel=
+y
+starving the RX ring.
+---
+
+DQ QPL doesn't have XDP support, so QPL pages are not in use.
+
+>         }
 >
-> I missed this earlier, but besides packet_snd and tpacket_snd, the fix
-> is also needed by packet_sendmsg_spkt.
+>         if (eop && buf_len <=3D priv->rx_copybreak &&
+> --
+> 2.55.0.229.g6434b31f56-goog
 >
+
+
+Sashiko says:
+---
+> @@ -894,14 +891,22 @@ static int gve_rx_dqo(struct napi_struct *napi, str=
+uct gve_rx_ring *rx,
+>               buf_state->page_info.pad +=3D gve_xdp.xdp.data - old_data;
+>               buf_len =3D gve_xdp.xdp.data_end - gve_xdp.xdp.data;
+>               if (xdp_act !=3D XDP_PASS) {
+>                       gve_xdp_done_dqo(priv, rx, &gve_xdp.xdp, xprog, xdp=
+_act,
+>                                        buf_state);
+>                       return 0;
+>               }
+
+[Severity: High]
+This is a pre-existing issue, but if the first fragment of a multi-descript=
+or
+packet is dropped (e.g. XDP_DROP), does the driver fail to track that the r=
+est
+of the packet must be dropped?
+
+When the next descriptor containing the middle of the payload arrives,
+rx->ctx.skb_head will be NULL. Will the driver incorrectly treat this fragm=
+ent
+as a new Ethernet frame and run the XDP program on arbitrary payload data?
+---
+
+Again, GVE DQ doesn't support multi-buffer XDP. This will be addressed
+when support is added.
+
+--=20
+
+Joshua Washington | Software Engineer | joshwash@google.com | (414) 366-442=
+3
