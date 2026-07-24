@@ -1,155 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DBB377AB3
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC73E717A;
+	Fri, 24 Jul 2026 09:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884772; cv=none; b=AA6fhrf8oD3u6eB1xZJFvndPahEyB3MpnGIbkFmbm0YvRCPUF7sO/DOEsfXffjfDhvq1oTQSJd5tT4DOpub3eowajP98oQW6PBv3K20DUwHz8eAI6CTSsWm6IwwIbyZMMdJWdaXbMthrlt3A5DCA9fYNxeQ/qBdr/E0id5/ESF0=
+	t=1784884956; cv=none; b=hDcpvXcInEHbxR6wwd1b41PbV5637iCfcATn7ZeTe2rUF7akQIoccqBMeuLvpzwonyyh8n7wBdOsnbFvjPHN8yzM9jlcJ7iOLyPsem/BDjSUadnMlGbLPVnywM6XwjXfATkdxyvEKj/W7cW8gFgqMH+d8w0koqrKNYCAiBBYpgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884772; c=relaxed/simple;
-	bh=PYWcOUGQI/qV+I3Sq57msatzimkkj44a6fHn4N60+/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S8yvTk6VXV7Tw1tLLEBsknRkYuWB/Wj2D5n1MTkqm9CQoRiOM5h2Z8pj8uceMDS9VmkSm4x7nd8xwaAmCyIOlIz6hMLCgJoADnO7xOYGorfAvITBhTOL1ZtW+B6Isw8Tnh9zYA5JtY2Pqt0bypxjzyXnHQlKqFAEjLQ87gMngso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fDHF0bON; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784884956; c=relaxed/simple;
+	bh=E0jwxBHJYAbxCYS+Ax6F7jZ+bYcdSkfhurPycyPuLnU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LRlMrDRKW0cJvLoJPGJiSBaiX5Ev5B6inPjO87Gh4DgHSQI63z2v//x+cWUIpmdVbNwal5dLlS42sphoLZUKXaLQt9zUY8ZaRewLijUECkaWbYampemTYaiKUFLsvRMla22VqtxAAVThVj4jNmnaqy6IYumMEsuHFlWCcPKp9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=aHlQP0C3; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fDHF0bON"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784884759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WW6AA/KhYeCHhjUnFN4/a/hB2xx19YHfi5X9x9L31wo=;
-	b=fDHF0bONqikll2sciVBU8sshwZ/8VDMIyziWnN0/H2Hschy0gNmfO2EBqOiNNDlD2l0Esd
-	KgdpOH3HTOKIN72rNGj0MOFKR/VAJHLJqRs2gu+udv0yDsmC5KzpgrmDkdQvFHzvf99cAV
-	Wh9nLZe8FSUlexO/NMyTaAAijteZKRU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-jpUzTDYtPMmpkyEuGyllxQ-1; Fri,
- 24 Jul 2026 05:19:16 -0400
-X-MC-Unique: jpUzTDYtPMmpkyEuGyllxQ-1
-X-Mimecast-MFC-AGG-ID: jpUzTDYtPMmpkyEuGyllxQ_1784884755
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9EBD1955DC3;
-	Fri, 24 Jul 2026 09:19:14 +0000 (UTC)
-Received: from thinkpad (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E39F1954227;
-	Fri, 24 Jul 2026 09:19:12 +0000 (UTC)
-Date: Fri, 24 Jul 2026 11:19:09 +0200
-From: Felix Maurer <fmaurer@redhat.com>
-To: Aravind Krishna <aravindkrishhna@gmail.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@google.com, horms@kernel.org, davem@davemloft.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hsr: prp: honor master promisc mode for local delivery
- with macvlan
-Message-ID: <amMuDYQtQ5TRUJ2d@thinkpad>
-References: <20260722041629.657330-1-aravindkrishhna@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="aHlQP0C3"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=7+Dqu5YcOu+zYJdF4FV3fs2X2wVuYG2pj296bIH+Ud4=;
+	b=aHlQP0C3UdgmGg1gbApknMtGzRntvQ765yvNNBcztg4lrxaq2NoKzDN7KT3cItVQouoZlE9V0
+	jamchpB43+Skl4lGFp1FxwQiHA2NJNTN8osir/r+i6ejR1oyjC+2pdUGR6E+SGEp+bke8QQC0u3
+	02/wWgvypiLy42VUphtRpJw=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h62MQ1jcDzKm5m;
+	Fri, 24 Jul 2026 17:12:50 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9511040578;
+	Fri, 24 Jul 2026 17:22:16 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Fri, 24 Jul 2026 17:22:15 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
+	<toke@redhat.com>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net] net: page_pool: fix DMA index not cleared on xa_cmpxchg race
+Date: Fri, 24 Jul 2026 17:21:35 +0800
+Message-ID: <20260724092135.414699-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722041629.657330-1-aravindkrishhna@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Hi Aravind,
+page_pool_release_dma_index() uses xa_cmpxchg() to atomically remove a
+page from pool->dma_mapped.  When the cmpxchg loses the race (the entry
+was already removed by a concurrent release path, e.g. page_pool_scrub()
+during page_pool_destroy()), the function returns -1 *without* clearing
+the DMA index bits stored in pp_magic.  Its caller then skips dma_unmap
+based on that -1, which is correct, but the stale DMA index bits left
+in pp_magic are wrong: the xarray entry they index no longer exists.
+A page recycled back into the pool then carries a dangling DMA index,
+and kernels that validate pp_magic in the return path surface this as
+a WARN.
 
-On Wed, Jul 22, 2026 at 09:46:29AM +0530, Aravind Krishna wrote:
-> When running MACVLAN over PRP, packets can be expected to be delivered
-> to the local stack when the PRP/HSR master is in promiscuous mode.
->
-> Update local destination handling in check_local_dest() so that if the
-> master device exists and has IFF_PROMISC set, the packet is marked
-> PACKET_HOST and treated as local destination.
->
-> This enables expected receive behavior for MACVLAN over PRP setups.
->
-> Signed-off-by: Aravind-kris <aravindkrishhna@gmail.com>
+Move netmem_set_dma_index(netmem, 0) to execute unconditionally before
+return, so both the winner and the loser of the xa_cmpxchg race clear
+the DMA index bits.  The return value still distinguishes the two
+cases (-1 loser / 0 winner), preserving the contract that exactly one
+side performs dma_unmap.
 
-Thank you for your patch! For future submissions, please follow the
-netdev guidelines [1], in particular please:
-- add the target tree to the subject,
-- run scripts/checkpatch.pl on your patches before submission,
-- follow the kernel / netdev code style (checkpatch will catch a lot of
-  that but not necessarily everything).
+The race window opens when page_pool_destroy() runs concurrently with
+late page returns from SKBs held in per-CPU defer lists, TCP receive
+queues or GRO hashes -- e.g. a driver reconfiguring channels/ring
+depth while traffic is flowing.
 
-Now, for your patch contents: IIUC, you want to create a macvlan
-interface on top of an hsr interface in PRP mode. I am not sure if this
-is something we should support at all. At least, it is not as simple as
-forwarding all traffic to the stack. HSR and PRP both require pretty
-special handling of MAC addresses. The whole hsr code relies on knowing
-the MAC address of the local interface (and that is a single address at
-the moment). Also, an HSR/PRP node is expected to send supervision
-frames containing its address. These wouldn't be sent for the macvlan
-addresses at all at the moment.
+Observed on arm64 (7.2.0-rc1) with the hns3 driver:
 
-Can you go a bit into detail on what is your use case? Maybe we can make
-that possible in another way. For example, the usual way to add more
-"devices" (physical or virtual) behind a HSR/PRP node would be a RedBox.
-We already support that for HSR and there is somebody working on support
-for PRP.
+  WARNING: net/core/netmem_priv.h:18 at page_pool_clear_pp_info+0x20/0x38,
+           CPU#83: iperf/3874878
 
-Thanks,
-   Felix
+Return path (CPU_B, process context, triggering the WARN).  The page
+was held in a per-CPU SKB defer list and is being released through
+tcp_recvmsg():
 
+  page_pool_clear_pp_info+0x20/0x38
+  page_pool_put_unrefed_netmem+0x11c/0x2e8
+  napi_pp_put_page+0xf0/0x120
+  skb_release_data+0x170/0x228
+  skb_attempt_defer_free+0x7c/0x1f0
+  tcp_recvmsg_locked+0x710/0x9a0
+  tcp_recvmsg+0x74/0x1c8
+  inet_recvmsg+0x2c/0xf0
+  __sys_recvfrom+0xdc/0x198
+  __arm64_sys_recvfrom+0x2c/0x48
+  invoke_syscall+0x5c/0x120
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x34/0x1e0
+  el0t_64_sync_handler+0xa0/0xe8
+  el0t_64_sync+0x1ac/0x1b0
 
-[1]: https://docs.kernel.org/process/maintainer-netdev.html
+Scrub path (CPU_A, racing with the return path, derived from code):
 
-> ---
->  net/hsr/hsr_forward.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
->
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 0774981a65c1..38ed6b09fc4a 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -589,6 +589,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
->  static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
->  			     struct hsr_frame_info *frame)
->  {
-> +	struct hsr_port *master;
-> +
->  	if (hsr_addr_is_self(hsr, eth_hdr(skb)->h_dest)) {
->  		frame->is_local_exclusive = true;
->  		skb->pkt_type = PACKET_HOST;
-> @@ -600,8 +602,24 @@ static void check_local_dest(struct hsr_priv *hsr, struct sk_buff *skb,
->  	    skb->pkt_type == PACKET_MULTICAST ||
->  	    skb->pkt_type == PACKET_BROADCAST) {
->  		frame->is_local_dest = true;
-> -	} else {
-> -		frame->is_local_dest = false;
-> +	}
-> +	else
-> +	{
-> +		master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
-> +
-> +		if (!master || !master->dev)
-> +		{
-> +        		frame->is_local_dest = false;
-> +		}
-> +		else if (master->dev->flags & IFF_PROMISC)
-> +		{
-> +        		skb->pkt_type = PACKET_HOST;
-> +        		frame->is_local_dest = true;
-> +		}
-> +		else
-> +		{
-> +			frame->is_local_dest = false;
-> +		}
->  	}
->  }
->
-> --
-> 2.34.1
->
+  page_pool_destroy
+  -> page_pool_scrub
+     -> xa_for_each(dma_mapped)
+        -> __page_pool_release_netmem_dma
+           -> page_pool_release_dma_index   <- race window
+
+Debug approach and evidence:
+Reproduced with a stability test that repeatedly reconfigures the hns3
+channel count and ring depth (ethtool -L/-G) while running iperf3 with
+multiple parallel streams, then closes the iperf3 sockets to release
+the SKBs held in TCP receive queues and per-CPU defer lists.
+
+On the unmodified kernel the WARN reproduces after hours to tens of
+hours. To make the race window observable, a debugfs knob injects a
+controlled udelay() right after the winning xa_cmpxchg() in
+page_pool_release_dma_index(), widening the gap between the xarray
+entry removal and the pp_magic cleanup.  With the delay injected the
+WARN reproduces 4-5 times within about half an hour.
+
+Instrumentation added to page_pool_release_dma_index() logs the per-
+page pp_magic, DMA index, refcount and dma_addr at release time.  A
+representative log line from a WARN-triggering page:
+
+  PP_DMA_IDX: magic=0xdead0000000cbec0 idx=6525 refcnt=1 dma_addr=0x0
+
+  magic=0xdead0000000cbec0  -> PP_SIGNATURE | (6525 << shift)
+  idx=6525                  -> DMA index bits still set in pp_magic
+  dma_addr=0x0              -> scrub already did dma_unmap + cleared addr
+  refcnt=1                  -> inflight page, unrefed release path
+
+The combination "dma_addr == 0 but DMA index != 0" is the signature of
+the race: CPU_A (scrub) won the xa_cmpxchg, performed dma_unmap and
+cleared dma_addr; CPU_B (return) lost the cmpxchg, returned -1 and
+skipped netmem_set_dma_index(0), leaving the DMA index bits stale --
+exactly the gap this fix closes.
+
+With this fix applied the WARN no longer triggers under the same
+workload (verified overnight), both with and without the debugfs
+delay knob enabled.
+
+Fixes: 95920c2ed02b ("page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches")
+Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
+Assisted-by: OhMyOpenCode:GLM-5.2
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ net/core/page_pool.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 21dc4a9c8714..6f86c96650d3 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -505,6 +505,7 @@ static int page_pool_release_dma_index(struct page_pool *pool,
+ {
+ 	struct page *old, *page = netmem_to_page(netmem);
+ 	unsigned long id;
++	int ret = 0;
+ 
+ 	if (unlikely(!PP_DMA_INDEX_BITS))
+ 		return 0;
+@@ -517,12 +518,18 @@ static int page_pool_release_dma_index(struct page_pool *pool,
+ 		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
+ 	else
+ 		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
+-	if (old != page)
+-		return -1;
++	if (old != page) {
++		/* xarray entry already removed by concurrent release path
++		 * (e.g. page_pool_scrub). Still clear DMA index bits to
++		 * keep pp_magic consistent. The winner of the xa_cmpxchg
++		 * race is responsible for dma_unmap.
++		 */
++		ret = -1;
++	}
+ 
+ 	netmem_set_dma_index(netmem, 0);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
+
+base-commit: 78f75d632f74b8de0f081a128588f7c37d0d1164
+-- 
+2.33.0
 
