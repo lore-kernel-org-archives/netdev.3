@@ -1,138 +1,185 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E344746A0
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 22:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B23386C25;
+	Fri, 24 Jul 2026 22:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784933172; cv=none; b=TUXKjfS8Q5GraL4kK2CPbm1eSEVVRJxRe4eg685VOszGasx37Huqw+UnBuL/PQt9HK2oztltRejIDz6QwZVVS3bdcUe4+piuOHa9TCiVcZ6IhYxBYJWyORzVUvzR472h5Viy83zbmMYT+w9N+jYyfzh12JxBrwSkaK+AKMJM7EM=
+	t=1784933172; cv=none; b=S3I7xYQQw3oYoHDgGfsoWKnZFart3M+eXQC5We9Yb3dTypOOxqsTkps9N03P9flLgsr1C0JCp1wevXCfB6AjZ/dWVou0fk9yod3IZRztKRBcbhIx7puIupzdDUPj3uUi91WJW88+lX+ulD6FffoQmXycHqi6ej1BwmO34ColuRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784933172; c=relaxed/simple;
-	bh=bXGiriF0ZpR12CZdKrsdUosiRKo/uGaGWUfUovbd5gQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YVhGAykbTfToNRLn0YYVHoeOKDOP3l7xCM4CjJ6Gww/gpE0oKq0jkHkN4OOMmC6hgixzIWDTCdjX06naqURYWnayahTQmYyUb2d4+p62fHueb+Dka82uwvDxoTZ8NrA7XHDwYhzVo7IeZMXErJj8P4P31fzzjHG5naQcdSjo6rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=shagZRSj; arc=none smtp.client-ip=74.125.228.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=WjhVTXFgF5u0VjHDqknZctyWx108wRn4GObXi35dOUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XiDP8pk7g5WQe4Um0p89Btw6IEIw7PYO+m9o/mvlHM1ihEsspcKTxLd7ylHCfhglGxLR5ecZLuZAZmB54Hr/gsT7mLnsB8OiabEEV321FTuXsZpY/Ak/Ian2tecWEClLUGH1qFDayH1/+Dasrsv0pcZPnmq8QyeDIzcsZE/rGME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX9Zr4D/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="shagZRSj"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-c8c1ebd68a1so596677a12.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:46:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784933162; x=1785537962; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fUp0spRqE3+iwDhjOYRCe4RoHoRmEIKutFUO3Q5qoDQ=;
-        b=shagZRSj0URzxg12cqpVhAY7LpmeB9d9gsgXBjVaJHHoe0Md/5TZyo5+9hPJSq6Op0
-         HCZUcYMdtrUPpnQ2al3fcFFeU1za+Ay9sQfNXJbHGarNsVA37zKXWTjO1IU6rNdzXwz+
-         ncIMJ4pbuHBVpjbgbW4FFaviafI5Xd/zQIB3nu9qFlLf3NiiTa67mgzGGv1hd7zxzoj8
-         X7B059y+fzTDIBhBk0GClFCIEYZ+es/ATS0DXYHP4lksggfHrx1ZI1JyEghJ7aHOAicF
-         u5mg+bcLkz/EW+QYz9vfSBBZz71al8jOuLBCPfVM4S2EF3QaSwkTku26fT5TF2Sm5c45
-         bsSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784933162; x=1785537962;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fUp0spRqE3+iwDhjOYRCe4RoHoRmEIKutFUO3Q5qoDQ=;
-        b=VfMWy/kd6gW9pCtQiz02x7H6fq0DboJKkpvZIONVq4O0aLorVdJtDhxSjrjSzN6opM
-         TYRGtz/5u4kA2ZL4b8jysaOYN3fwvVx1qqkUMKdxMhkSsoO7V0px54Oo7nIpwheZgr3b
-         VBPkS2pAS2sCb5P+2C2RyLsWWFnAa8LVmqMPbiv/YxjN0Obb8hkwz/aiwGMiitAS1vv2
-         BN73NDyjISDkzQtvhsc30lmZebWxAeUuzW4B1q3sWUHCj6Ithvg+X+vBygREmdeq+Mqf
-         GZHMKYa2NMRYdswygybLjclPcv9eW53viyyuTWLaghEy/FNwVuagraSEqdISv4wp4Zw6
-         /ZOQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAAbA5AqmmamN9R0zM/cFclkGJX8NUq8vXer4hgnDcg15tvGwJfQ4XLImPOGr3JfLY5lrhQS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzje1kCwRn+04azPfwMOHr1KHhGSvPkUBvolaMCrfr0J81JCVZ
-	QoY4eBUACI9XGCMivqFOZtkCbQTovzYA5T411TJO0DIjmJinCLnWlic3
-X-Gm-Gg: AR+sD13SrQ8TrgkdVT95JkOauOtOFHmKcO/dEThMhlqhYZZteogOjvu+gBB/gMpurUQ
-	c6OYCekeCrAhWUXKLuPwKWXo8ExLB8tjFUYElaWx6/VP7nFEcQbyTKqkAqe1V1K/DSU5hWUZI+M
-	G8J5c6SmkAowSwDq2S+Puor5ygMZilgCFXBR/AwufBBdJ5PdCUYFBqXakdQq7IWmH0ljbbsNVhZ
-	wgeH1rRFMNas9yXsTGmQj052ZcLpAMx1NaNKx9L96d5G+TSwuH1xMuLD7P8u917xQqo9knuUjic
-	VHFD7MOvkATgMAl/qItebsBgFj4ifJkmmggvM+ZSPXIf/Y6SiUiNcGnA1c4M3uIuvwuH36mT+FE
-	2BCxoQ+4F2zrnEb7DdJkjOITITNhLpc/shecXMGoXwYXNOHnpPHOMDEtDTqMo5L8AthR3/dg=
-X-Received: by 2002:a05:6a00:23c3:b0:848:7475:29bd with SMTP id d2e1a72fcca58-84e5942f306mr124439b3a.7.1784933161733;
-        Fri, 24 Jul 2026 15:46:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:43::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e533ce1f7sm474895b3a.34.2026.07.24.15.46.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 15:46:01 -0700 (PDT)
-Date: Fri, 24 Jul 2026 15:45:43 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
-	sdf@fomichev.me, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] xsk: fix NULL pointer dereference in __xsk_rcv()
-Message-ID: <amPqFHJBnDEQGmOK@devvm7509.cco0.facebook.com>
-References: <20260724164719.99563-1-blbllhy@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX9Zr4D/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35881F00A3A;
+	Fri, 24 Jul 2026 22:46:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784933162;
+	bh=NMNOc/In+fWMgaFH9Omi735YDJBG/gXGBfILoP1ztBQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bX9Zr4D/LezvZIgMRUL1/Y6JZMzid0uz4HB42PhG9lZ+PJcEN99y4/pWQYi1vYEGG
+	 7m5MkBADwk+RPybApZ8J2wjXuNVd1nDRkdybcPI8tchX21wCu1VuExWAULiBRosMC7
+	 1dcMWc7XyYLftbkZw/D9sTa07UbX7rQR9hD0AVOyVcB2CNbdYw4DQsFF80yeqS8ZTY
+	 WhS3qzoX2on/sRmaOR/TO8jot7UJPz1fmqtxzvWbRYPcPnKCAHzFgrJ9e99DQmS7BU
+	 +0HCuf4xYtLNSlfZLry2sHbBTZcWk0h64W5cOSNw4jpzRn1IUFBJO51R0wSrUGpcHs
+	 bVg7A6UxVK9og==
+From: Jakub Kicinski <kuba@kernel.org>
+To: bartosz.golaszewski@oss.qualcomm.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	andersson@kernel.org,
+	konradybcio@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	vkoul@kernel.org,
+	peppe.cavallaro@st.com,
+	wens@kernel.org,
+	jernej.skrabec@gmail.com,
+	neil.armstrong@linaro.org,
+	khilman@baylibre.com,
+	jbrunet@baylibre.com,
+	shawnguo@kernel.org,
+	festevam@gmail.com,
+	jan.petrous@oss.nxp.com,
+	s32@nxp.com,
+	mohd.anwar@oss.qualcomm.com,
+	romain.gantois@bootlin.com,
+	geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	mripard@kernel.org,
+	christophe.roullier@foss.st.com,
+	brgl@kernel.org,
+	radu@rendec.net,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	dfustini@tenstorrent.com,
+	linux-sunxi@lists.linux.dev,
+	linux-amlogic@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	sophgo@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	bartosz.golaszewski@linaro.org
+Subject: Re: [PATCH net-next v13 06/10] net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
+Date: Fri, 24 Jul 2026 15:45:59 -0700
+Message-ID: <20260724224559.1649383-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260713-qcom-sa8255p-emac-v13-6-119f8699ef8e@oss.qualcomm.com>
+References: <20260713-qcom-sa8255p-emac-v13-6-119f8699ef8e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260724164719.99563-1-blbllhy@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On 07/24, Cen Zhang (Microsoft) wrote:
-> In __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
-> do-while loop without checking its return value for NULL. The pre-check
-> xsk_buff_can_alloc() only counts fill queue entries without validating
-> descriptor addresses, so it can pass while xsk_buff_alloc() rejects
-> all entries as invalid and returns NULL.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
 
-Agreed, looks like a valid issue :-( (!ok branch in _xp_alloc) ..
- 
->   Oops: general protection fault, probably for non-canonical address
->    0xdffffc0000000000
->   KASAN: null-ptr-deref in range
->    [0x0000000000000000-0x0000000000000007]
->   RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
->   Call Trace:
->    xsk_generic_rcv+0x26d/0x5f0
->    xdp_do_generic_redirect+0x3c5/0xcf0
->    do_xdp_generic+0x92f/0xe70
->    __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
-> 
-> Fixed by adding a NULL check after xsk_buff_alloc() and use
-> xskq_prod_cancel_n() to roll back any partially submitted RX ring
-> descriptors, ensuring no incomplete multi-buffer packet is delivered
-> to userspace.
-> 
-> Fixes: 804627751b42 ("xsk: add support for AF_XDP multi-buffer on Rx path")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> ---
->  net/xdp/xsk.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index b970f30ea9b9..76e0cdd43722 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -301,6 +301,7 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
->  	struct xdp_buff_xsk *xskb;
->  	struct xdp_buff *xsk_xdp;
-> +	u32 nb_submitted = 0;
->  	skb_frag_t *frag;
+This patch updates ethqos->phy_mode from the interface argument in
+ethqos_mac_finish_serdes() so that it always reflects the last resolved
+interface, avoiding a stale value being observed by later
+serdes_powerup()/serdes_powerdown() calls when the runtime interface
+differs from the DT phy-mode.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> index 47b70b5e706f..9d19203ae4bd 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> @@ -632,6 +632,12 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
+>  	struct qcom_ethqos *ethqos = priv;
+>  	int ret = 0;
 >  
->  	from_len = xdp->data_end - copy_from;
->  	meta_len = xdp->data - copy_from;
-> @@ -348,6 +349,11 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
->  		u32 copied;
+> +	/* The interface mode is only known once phylink has resolved it and
+> +	 * may change at runtime, so keep it in sync for later
+> +	 * serdes_powerup()/serdes_powerdown() calls.
+> +	 */
+> +	ethqos->phy_mode = interface;
+> +
+>  	qcom_ethqos_set_sgmii_loopback(ethqos, false);
+
+[High]
+Is the ordering here safe with respect to qcom_ethqos_set_sgmii_loopback()?
+
+That helper early-returns unless ethqos->phy_mode equals
+PHY_INTERFACE_MODE_2500BASEX:
+
+    static void
+    qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
+    {
+            if (!ethqos->needs_sgmii_loopback ||
+                ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
+                    return;
+            ...
+    }
+
+Because ethqos->phy_mode is now overwritten with the freshly resolved
+interface before the qcom_ethqos_set_sgmii_loopback(ethqos, false) call,
+does that clear-side path still fire when the interface transitions away
+from 2500BASE-X?
+
+Consider a needs_sgmii_loopback platform (for example sa8775p) with a DT
+phy-mode of 2500BASE-X. At probe time ethqos_clks_config(true) asserts
+SGMII_PHY_CNTRL1_SGMII_TX_TO_RX_LOOPBACK_EN in the wrapper while
+ethqos->phy_mode is still the DT value 2500BASE-X. If phylink later
+resolves the interface to SGMII and calls ethqos_mac_finish_serdes():
+
+    ethqos->phy_mode = interface;                   /* now SGMII */
+    qcom_ethqos_set_sgmii_loopback(ethqos, false);  /* early-return */
+
+Does the port then enter SGMII operation with the wrapper TX-to-RX
+loopback bit still asserted, which is the exact 2500BASE-X to SGMII
+runtime-transition scenario the commit message says it wants to make
+work?
+
+Would calling qcom_ethqos_set_sgmii_loopback(ethqos, false) first,
+against the old phy_mode, and only then assigning
+ethqos->phy_mode = interface avoid this?
+
+The commit message describes the change only in terms of
+serdes_powerup()/serdes_powerdown():
+
+    ethqos->phy_mode is read by serdes_powerup() and
+    qcom_ethqos_set_sgmii_loopback() to configure the SerDes and its
+    wrapper for the correct interface.
+    ...
+    Update ethqos->phy_mode from the interface argument in
+    ethqos_mac_finish_serdes() so that it always reflects the last
+    resolved interface.
+
+Should it also mention that the assignment changes what the immediately
+following qcom_ethqos_set_sgmii_loopback(ethqos, false) observes?
+
+For reference, this appears to be addressed later in the same series by
+commit 8d1efdf990fc ("net: stmmac: qcom-ethqos: fix SGMII loopback not
+set on resume after speed change"), which extends the guard in
+qcom_ethqos_set_sgmii_loopback() to also match PHY_INTERFACE_MODE_SGMII.
+That follow-up commit message frames the fix as a set-side DMA-reset
+timeout on resume, but does the same guard change also happen to unbreak
+the clear-side path introduced here? If so, would it be worth either
+reordering the two statements in this patch or folding the guard update
+in ahead of this one to avoid a bisect window where the SGMII wrapper
+loopback stays asserted after a 2500BASE-X to SGMII transition?
+
 >  
->  		xsk_xdp = xsk_buff_alloc(xs->pool);
-> +		if (!xsk_xdp) {
+>  	if (interface == PHY_INTERFACE_MODE_SGMII ||
 
-[..]
-
-> +			xskq_prod_cancel_n(xs->rx, nb_submitted);
-
-.. but I don't think doing xskq_prod_cancel_n is enough? The descriptors
-from the fill ring have been consumed, and the prog ring stuff is
-cancelled, which means they are "lost"?
+[ ... ]
