@@ -1,397 +1,228 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E07F3B6C18;
-	Fri, 24 Jul 2026 07:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1AD352034
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784879439; cv=none; b=sBNrGPROzgMnqP6JHoMXSTO+mCUxUsreEebgC12PKSnO52CeKPcxEC3BNs0CIwjO9mwoEfvpKRuXCrK7Dye6a3+6PoHrJiG31e3jtXDcsExDpurzU/NCOD312L2qNK6jsACZ5wyT+uq801+sYOsUz9nuoxVIxYzU67lgVk81yaA=
+	t=1784880802; cv=none; b=RkfKOfQ/PRE7vzYyrZYzfuPQNELeufQz7xWm4AaX3syLUDAgrLf6+nzWYw3ds9Plh4hXYqByp8otccvIvjjk44EmqweQIh4IfhTZGQasEN5p7CMS7v+jgitZYFxKGGeqDNBavUp7iJZ6PJ6TcnpUGO8Z6RZDjOJSRSbDG2DAUmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784879439; c=relaxed/simple;
-	bh=c6cUjvYYiiMCs99hHFVMkQFxBQfbTlpNFUs/IlWXu5g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cuqL1x9jwvVdjNty7jLS/zjZBSOzga2FXFzheb8fFJSIjvIg5phd3/W4rL2zdM/PmLmaQgNyDGW3AKZFK5oAa7rrcn4Pf6SL49z4G+7wTCuFNWwh1KNX/tVv62qW82Xq8+qFZtINpA1XJ4qBT1EKlXkmOzIS9qeZZufpJtnjL8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=kVnn4mAr; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1784880802; c=relaxed/simple;
+	bh=2/WQmAyq78z+aoW7mJVHkd4nYYvqNuAGeezmdDazd3E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=E/CzFZi4aGXaOpYKIIliG4YhhALHXPvpyzbiE02E5HK2XzxK0c74YJpfCUCUlJSnkH4goXsIvLM9g7o6L8+96OnITFiXqIClvNleb1CZqJK3O2wtplauRdpsg1D3VZgEvrg9Of82bBUUzhA4rEkIEuzuet8FT8jWxp9bcSUcDPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=UmAC+t4L; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kVnn4mAr"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O4mkQt922744;
-	Fri, 24 Jul 2026 00:50:22 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ORxMyvPqAbJZiWrq4bBRyM4
-	SIKos9kc0vCym20+QnCk=; b=kVnn4mAr0WGOWU7TZKFaxL9irA5guRvAdswr1bW
-	xhXXSHtrcvDyQxS5cmBQq5729qi9ZhXbL9CslpXGr4s2dNUhOOKCsMKBmDLKBMB5
-	1W5zxA0ekMoCuHb6jyMvIADvsHYXf+uKe22BEfEn/JIA6djB1yuSXU6fM+q2S6BF
-	9bNac7y2UgkzNO/UNEz+L2j2i9LhkKQLycnEinue59yclVq3OQTx1czIppiIxW+e
-	IjnPbumeYZ9xYokdB6iZ3XsMD0z6RzQ8hxpaPSUn0Y0vhaWRom7uN34ybTFGcIvL
-	lrnR5SQjs0b/eXuQM/xh3pCd7NIT/03DQGfDP32AGbZGaww==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fk7jkvpjr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 00:50:22 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="UmAC+t4L"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vfsUTvBFh7EdrMt0DG6BU6THNFQgADAOEqhxQFGlXps=;
+	b=UmAC+t4LC4F9ONNBZl6NijrKb3OmCew28GraeXaB4uYc6TvsCfjecOc2Bvcx6U3wQhUaYSCjG
+	xhGBZyQW76E56WK0meaKvnW9/mDUborIhwwv//B+7cILaZZ68DHlC7VdVr+T/yGxsAmTjLQMhBQ
+	1sRqlkTR7noAqrULWTpWoa4=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4h60ql6JTzz1prKd;
+	Fri, 24 Jul 2026 16:03:47 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id CC45E40579;
+	Fri, 24 Jul 2026 16:13:13 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 24 Jul 2026 00:50:21 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 24 Jul 2026 00:50:21 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id B7AC83F7084;
-	Fri, 24 Jul 2026 00:50:18 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH net] octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
-Date: Fri, 24 Jul 2026 13:20:10 +0530
-Message-ID: <20260724075010.2665758-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+ 15.2.1544.36; Fri, 24 Jul 2026 16:13:12 +0800
+Message-ID: <c05bb9fd-e7ac-472d-83e3-c289f81e717c@h-partners.com>
+Date: Fri, 24 Jul 2026 16:13:12 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA3MCBTYWx0ZWRfX+MxpV4079zn4
- AEU8GchQdBwwNA8mzFaBGk1BXsCKZT/ByW0Lx7J165bSkifSul7uB/K6TCawdTIKwA1dGY8w2vj
- pPLAWnbLN/sfqfgHAfzy6zU9Fx3dG6Kw2/1URYoXcI+78nOPMayMdADzQEoFielsi/IH1waauk/
- olxlXNKxe28OYDtvRHxdHIFI3JHGl+UhWysyhQmfhahPI0FagBu+Mlui1hRXTYmKMoMCgQX0XNX
- RfmrlNSjJshRCM647HtYCOEDqY/j5FfVxyla4ycqnPTcxQ5kJebX8z2cyDa+HR0qsXdez4Ei89i
- hE1qOs9us9OGBWnZAHsydlHyUW+7ClnKV0G+0u0m0bMJkR0bqzVuKXGJVDjKrOw9RTHH+D9Hbom
- dlKB32LEoYTj4NC55CEE9RjINBCymNuqs5JJwMqoz1hmENzf9J3JljkbwWw7O3pKPGa5U6i0FYM
- kFKPCpgfXi8udfTpG7g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA3MCBTYWx0ZWRfX87QmueZgcgob
- WGXnTnpPSLkmSByAvAuNhOkr50W0bPevsPiY2j0eVhl1YKUYCr5jZkie/IZBK1NKGCBrHDqOtcP
- MyUQ/Lzdvr6zrKMzehWWIv7XzJcyvKs=
-X-Proofpoint-GUID: umzr2SJMnWq1s1B7AKwHjvA74cRyHcrc
-X-Proofpoint-ORIG-GUID: umzr2SJMnWq1s1B7AKwHjvA74cRyHcrc
-X-Authority-Analysis: v=2.4 cv=Zrzd7d7G c=1 sm=1 tr=0 ts=6a63193e cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=MxPkFbUnXorYhrUldtYA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] vlan: fix skb_under_panic and races when toggling
+ HW VLAN offload
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<eric.dumazet@gmail.com>, gaoxingwang <gaoxingwang1@huawei.com>, huyizhen
+	<huyizhen2@huawei.com>
+References: <20260724035419.1473174-1-edumazet@google.com>
+Content-Language: en-US
+From: xietangxin <xietangxin@h-partners.com>
+In-Reply-To: <20260724035419.1473174-1-edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-Add TC_SETUP_QDISC_MQPRIO handling to program per-queue MDQ CIR/PIR
-shaping after mqprio channel mode setup, widen SMQ allocation when
-per-queue rate limiting is enabled, and align MDQ parents under that
-mode. Reuse otx2_convert_rate for bps-to-Mbps, fix sparse register
-writes when only one of min/max is set, and improve AF txschq map
-mismatch diagnostics.
 
-Configuration examples:
 
-1) Set up commands
+On 7/24/2026 11:54 AM, Eric Dumazet wrote:
+> Toggling hardware VLAN TX offload (NETIF_F_HW_VLAN_CTAG_TX or
+> NETIF_F_HW_VLAN_STAG_TX) on a lower device invokes vlan_transfer_features(),
+> which dynamically changed vlandev->hard_header_len.
+> 
+> This causes two issues:
+> 1. Lockless TX paths (e.g. packet_snd in af_packet.c, ip6_finish_output2)
+>    read dev->hard_header_len without holding RTNL lock. Mutating
+>    hard_header_len dynamically under RTNL creates a data race where upper
+>    layers reserve insufficient headroom based on a stale hard_header_len,
+>    resulting in skb_under_panic when vlan_dev_hard_header() is called.
+> 2. In addition, vlan_transfer_features() updated hard_header_len without
+>    updating header_ops, causing a mismatch between allocated headroom
+>    and header creation.
+> 
+> Always setting dev->hard_header_len = real_dev->hard_header_len and
+> dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN unconditionally
+> ensures:
+> - dev->hard_header_len remains 100% static and immutable at real_dev->hard_header_len,
+>   eliminating all dynamic runtime updates and data races on hard_header_len.
+> - Upper layers allocating skbs via LL_RESERVED_SPACE() will always reserve
+>   sufficient headroom for software VLAN tag insertion (real_dev->hard_header_len +
+>   real_dev->needed_headroom + VLAN_HLEN).
+> - AF_PACKET SOCK_RAW network header offsets remain correctly aligned at
+>   real_dev->hard_header_len.
+> - vlan_header_ops is used unconditionally.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
+> Closes: https://lore.kernel.org/netdev/99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> v2: apply the VLAN_HLEN provision on needed_headroom
+> v1: https://lore.kernel.org/netdev/20260723092203.5b1470f5@kernel.org/T/#t
+> 
+>  net/8021q/vlan_dev.c | 37 +++++--------------------------------
+>  1 file changed, 5 insertions(+), 32 deletions(-)
+> 
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index ec2569b3f8dac629027b4344bc89402decf026d1..aaf2051a434cfef30d52e0434a9c372142f49195 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -502,26 +502,6 @@ static const struct header_ops vlan_header_ops = {
+> 	.parse_protocol = vlan_parse_protocol,
+>  };
+> 
+> -static int vlan_passthru_hard_header(struct sk_buff *skb, struct net_device *dev,
+> -					 unsigned short type,
+> -					 const void *daddr, const void *saddr,
+> -					 unsigned int len)
+> -{
+> -	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+> -	struct net_device *real_dev = vlan->real_dev;
+> -
+> -	if (saddr == NULL)
+> -		saddr = dev->dev_addr;
+> -
+> -	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
+> -}
+> -
+> -static const struct header_ops vlan_passthru_header_ops = {
+> -	.create	 = vlan_passthru_hard_header,
+> -	.parse	 = eth_header_parse,
+> -	.parse_protocol = vlan_parse_protocol,
+> -};
+> -
+>  static const struct device_type vlan_type = {
+> 	.name	= "vlan",
+>  };
+> @@ -580,14 +560,9 @@ static int vlan_dev_init(struct net_device *dev)
+> 	dev->fcoe_ddp_xid = real_dev->fcoe_ddp_xid;
+>  #endif
+> 
+> -	dev->needed_headroom = real_dev->needed_headroom;
+> -	if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
+> -		dev->header_ops 	 = &vlan_passthru_header_ops;
+> -		dev->hard_header_len = real_dev->hard_header_len;
+> -	} else {
+> -		dev->header_ops 	 = &vlan_header_ops;
+> -		dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
+> -	}
+> +	dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN;
+> +	dev->header_ops 	 = &vlan_header_ops;
+> +	dev->hard_header_len = real_dev->hard_header_len;
+> 
+> 	dev->netdev_ops = &vlan_netdev_ops;
+> 
+> @@ -1029,10 +1004,8 @@ static void vlan_transfer_features(struct net_device *dev,
+> 
+> 	netif_inherit_tso_max(vlandev, dev);
+> 
+> -	if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
+> -		vlandev->hard_header_len = dev->hard_header_len;
+> -	else
+> -		vlandev->hard_header_len = dev->hard_header_len + VLAN_HLEN;
+> +	vlandev->needed_headroom = dev->needed_headroom + VLAN_HLEN;
+> +	vlandev->hard_header_len = dev->hard_header_len;
+> 
+>  #if IS_ENABLED(CONFIG_FCOE)
+> 	vlandev->fcoe_ddp_xid = dev->fcoe_ddp_xid;
+> --
+> 2.55.0.229.g6434b31f56-goog
+> 
+Hi Eric,
 
-a. ifconfig eth0 xx.xx.xx.xx up
-b. tc qdisc add dev eth0 parent root handle 100 mqprio num_tc 4 \
-   map 0 1 2 3  queues 1@0 1@1 1@2 1@3  hw 1 mode channel shaper \
-   bw_rlimit \
-   min_rate 100Mbit 200Mbit 300Mbit 400Mbit \
-   max_rate 150Mbit 250Mbit 350Mbit 450Mbit
+While testing this backport in our local environment, we hit a similar
+skb_under_panic issue when layering macvlan on top of a VLAN device.
 
-c. iptables -t mangle -A POSTROUTING -p udp -j CLASSIFY --set-class 0:1
+macvlan does't sync vlan's need_headroom, so skb head align to 16 bytes.
+when skb arrive vlan, call vlan_header_ops -> vlan_dev_hard_header,
+push VLAN_HLEN 4 + ETH_LEN 14 to skb, oops.
 
-This will guarantee max rate as 250Mbits for UDP traffic
+Call trace
+==========
+[  103.088286] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000d2055800 data:ffff0000d20557fe tail:0x70 end:0x6c0 dev:macvlan
+[  103.088344] ------------[ cut here ]------------
+[  103.088346] kernel BUG at net/core/skbuff.c:214!
+[  103.088350] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[  103.098003] CPU: 3 UID: 0 PID: 160 Comm: kworker/3:3 Kdump: loaded Not tainted 7.2.0-rc4+ #56 PREEMPTLAZY
+[  103.099007] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+[  103.099725] Workqueue: mld mld_ifc_work
+[  103.100169] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  103.100898] pc : skb_panic+0x58/0x68
+[  103.101310] lr : skb_panic+0x58/0x68
+[  103.101738] sp : ffff800083d1b950
+[  103.109858] Call trace:
+[  103.110161]  skb_panic+0x58/0x68 (P)
+[  103.110578]  skb_push+0x58/0x60
+[  103.110971]  eth_header+0x3c/0xe0
+[  103.111359]  vlan_dev_hard_header+0x7c/0x1a8 [8021q]
+[  103.111904]  macvlan_hard_header+0x38/0x60 [macvlan]
+[  103.112455]  neigh_resolve_output.part.0+0xa8/0x168
+[  103.113081]  neigh_resolve_output+0x4c/0x90
+[  103.113639]  ip6_finish_output2+0x2c0/0x858
+[  103.114182]  ip6_finish_output+0x23c/0x398
+[  103.114741]  ip6_output+0x90/0x250
+[  103.115211]  NF_HOOK.constprop.0+0x54/0x118
+[  103.115699]  mld_sendpack+0x1cc/0x3d0
+[  103.116202]  mld_send_cr+0x1cc/0x318
+[  103.116696]  mld_ifc_work+0x38/0x128
 
-2) Tear down mqprio
 
-a. ifconfig eth0 up
-b. tc qdisc del dev eth0 root
+Reproducer
+==========
+ip link add veth0 type veth peer name veth1
+ip link set veth0 up
+ip link set veth1 up
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   |   6 +-
- .../marvell/octeontx2/nic/otx2_common.c       |  79 ++++++++++++-
- .../marvell/octeontx2/nic/otx2_common.h       |   4 +
- .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 107 ++++++++++++++++++
- 4 files changed, 194 insertions(+), 2 deletions(-)
+ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
+ip link set vlan_test up
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 78667a0977c0..5ed6c225bd73 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -323,8 +323,12 @@ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
- 			return true;
- 	}
- 
--	if (map_func != pcifunc)
-+	if (map_func != pcifunc) {
-+		dev_err(rvu->dev,
-+			"pcifunc %x map pcifunc %x not equal, lvl=%u schq=%u\n",
-+			pcifunc, map_func, lvl, schq);
- 		return false;
-+	}
- 
- 	return true;
- }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index ca73a94db794..b0b9e273e06c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -614,6 +614,76 @@ void otx2_get_mac_from_af(struct net_device *netdev)
- }
- EXPORT_SYMBOL(otx2_get_mac_from_af);
- 
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int err, smq;
-+
-+	smq = otx2_get_smq_idx(pfvf, 0);
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+	req->num_regs = 2;
-+
-+	req->reg[0] = NIX_AF_MDQX_PIR(smq);
-+	req->regval[0] = 0;
-+
-+	req->reg[1] = NIX_AF_MDQX_CIR(smq);
-+	req->regval[1] = 0;
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf,
-+				 int txq, u64 minrate, u64 maxrate)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int err, smq, n = 0;
-+	u64 rate;
-+
-+	if (!maxrate && !minrate)
-+		return 0;
-+
-+	smq = otx2_get_smq_idx(pfvf, txq);
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+
-+	if (maxrate) {
-+		req->reg[n] = NIX_AF_MDQX_PIR(smq);
-+		rate = otx2_convert_rate(maxrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+		n++;
-+	}
-+	if (minrate) {
-+		req->reg[n] = NIX_AF_MDQX_CIR(smq);
-+		rate = otx2_convert_rate(minrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+		n++;
-+	}
-+	req->num_regs = n;
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
- int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for_pfc)
- {
- 	u16 (*schq_list)[MAX_TXSCHQ_PER_FUNC];
-@@ -650,7 +720,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 						(u64)hw->smq_link_type);
- 		req->num_regs++;
- 		/* MDQ config */
--		parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+		if (pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED)
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][0];
-+		else
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+
- 		req->reg[1] = NIX_AF_MDQX_PARENT(schq);
- 		req->regval[1] = parent << 16;
- 		req->num_regs++;
-@@ -778,6 +852,9 @@ int otx2_txsch_alloc(struct otx2_nic *pfvf)
- 		req->schq[NIX_TXSCH_LVL_TL4] = chan_cnt;
- 	}
- 
-+	if (pfvf->flags & OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED)
-+		req->schq[NIX_TXSCH_LVL_SMQ] = pfvf->hw.non_qos_queues;
-+
- 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
- 	if (rc)
- 		return rc;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index eecee612b7b2..65687840d005 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -512,6 +512,7 @@ struct otx2_nic {
- #define OTX2_FLAG_REP_MODE_ENABLED		 BIT_ULL(18)
- #define OTX2_FLAG_PORT_UP			BIT_ULL(19)
- #define OTX2_FLAG_IPSEC_OFFLOAD_ENABLED		BIT_ULL(20)
-+#define OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED	BIT_ULL(21)
- 	u64			flags;
- 	u64			*cq_op_addr;
- 
-@@ -1246,6 +1247,9 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
- 				 struct sk_buff *skb, int seg, int *len);
- void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
- int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf, int txq,
-+				 u64 minrate, u64 maxrate);
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf);
- void otx2_queue_vf_work(struct mbox *mw, struct workqueue_struct *mbox_wq,
- 			int first, int mdevs, u64 intr);
- int otx2_del_mcam_flow_entry(struct otx2_nic *nic, u16 entry,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 40162b08014d..bce8a866b495 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -16,6 +16,7 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_act/tc_vlan.h>
- #include <net/ipv6.h>
-+#include <net/pkt_sched.h>
- 
- #include "cn10k.h"
- #include "otx2_common.h"
-@@ -1595,6 +1596,110 @@ static int otx2_setup_tc_block(struct net_device *netdev,
- 					  nic, nic, ingress);
- }
- 
-+static int otx2_teardown_tc_mqprio(struct otx2_nic *pfvf,
-+				   struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct net_device *netdev = pfvf->netdev;
-+	bool if_up = netif_running(netdev);
-+
-+	if (!if_up) {
-+		netdev_err(netdev, "mqprio: clear requires interface UP\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	pfvf->flags &= ~OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED;
-+	otx2_stop(pfvf->netdev);
-+	otx2_open(pfvf->netdev);
-+
-+	otx2_nix_tm_clear_queue_shaper(pfvf);
-+
-+	qopt->hw = 0;
-+	netdev_set_num_tc(netdev, 0);
-+
-+	return 0;
-+}
-+
-+static int otx2_setup_tc_mqprio(struct net_device *netdev,
-+				struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	bool if_up = netif_running(netdev);
-+	int tc, txq, err, i;
-+
-+	if (!if_up) {
-+		netdev_err(netdev, "mqprio: setup requires interface UP\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!qopt->hw) {
-+		otx2_teardown_tc_mqprio(pfvf, mqprio);
-+		return 0;
-+	}
-+
-+	if (mqprio->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+		netdev_err(netdev, "Unsupported mqprio shaper %#x\n", mqprio->shaper);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (qopt->num_tc > pfvf->hw.non_qos_queues) {
-+		netdev_err(netdev, "Number of TCs (%u) exceeds hw queues %u\n",
-+			   qopt->num_tc, pfvf->hw.non_qos_queues);
-+		return -EINVAL;
-+	}
-+
-+	pfvf->flags |= OTX2_FLAG_PER_Q_RATE_LIMIT_ENABLED;
-+
-+	otx2_stop(pfvf->netdev);
-+	otx2_open(pfvf->netdev);
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		if (min_rate && max_rate && min_rate > max_rate) {
-+			otx2_teardown_tc_mqprio(pfvf, mqprio);
-+			netdev_err(netdev,
-+				   "min_rate %llu exceeds max_rate %llu for tc %d\n",
-+				   min_rate, max_rate, tc);
-+			return -EINVAL;
-+		}
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qopt->count[tc]; txq++) {
-+			if (txq >= netdev->real_num_tx_queues) {
-+				otx2_teardown_tc_mqprio(pfvf, mqprio);
-+				return -EINVAL;
-+			}
-+
-+			netdev_dbg(netdev,
-+				   "mqprio: tc %d txq %d min_rate %llu max_rate %llu\n",
-+				   tc, txq, min_rate, max_rate);
-+
-+			err = otx2_nix_tm_set_queue_shaper(pfvf, txq,
-+							   min_rate, max_rate);
-+			if (err)
-+				goto cleanup;
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, qopt->num_tc);
-+	for (i = 0; i < qopt->num_tc; i++)
-+		netdev_set_tc_queue(netdev, i, qopt->count[i], qopt->offset[i]);
-+
-+	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+	return 0;
-+
-+cleanup:
-+	otx2_teardown_tc_mqprio(pfvf, mqprio);
-+	return err;
-+}
-+
- int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		  void *type_data)
- {
-@@ -1603,6 +1708,8 @@ int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		return otx2_setup_tc_block(netdev, type_data);
- 	case TC_SETUP_QDISC_HTB:
- 		return otx2_setup_tc_htb(netdev, type_data);
-+	case TC_SETUP_QDISC_MQPRIO:
-+		return otx2_setup_tc_mqprio(netdev, type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
+# macvlan does't sync vlan's need_headroom,
+ip link add link vlan_test name macvlan type macvlan
+ip link set macvlan up
+
+ethtool -K veth0 tx-vlan-hw-insert off
+
+# skb_under_panic
+ip -6 addr add fe80::1/64 dev macvlan
+
 -- 
-2.43.0
+Best regards,
+Tangxin Xie
 
