@@ -1,107 +1,124 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E4E435539;
-	Fri, 24 Jul 2026 15:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649AF416879;
+	Fri, 24 Jul 2026 15:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784908437; cv=none; b=tNCHc0YrGd0Wg2FF4LsN4ZH5EL/5cJRFhuudmy7ppU6bvAFcjjucxklQOppMx9/tJWG84NSLkvN6uua0K2UoGy54dE4iABaDKD8MSwQcAYGnyqOqZBYyGka+g5SZPUE9KwSBrASRXBPJG3mHGbaPPxTkuvL7GAdJuSrg2VRE+gs=
+	t=1784908503; cv=none; b=tBsi8sw8F29pU277MJzBVc2nzsGuf2mQ3fZz2Reel3YOdv3r/U+cbaMMj+oPUOB/S0ymDbHjIsxYQmue4ya/mp+b1gB3qOS9AJDlWHDAjM1nH5TyIShmZmeYv3Q3CyCmkpMTw+2P50Zalu55ZnYZwGA9/qN/rEFB0mm+hq/q1nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784908437; c=relaxed/simple;
-	bh=pH5jR9xHzNHkt212+X3a9RpQRk4i4MFoDNNBlQ9x2Ds=;
+	s=arc-20240116; t=1784908503; c=relaxed/simple;
+	bh=+LlpLgT6kwy/yBhhVM/Uxqwvqr3VH/O/jaDZ77Jj0r8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k14NXJQLd+TLd6y/yV2baBVHuHwCnYcZJHzWoYNGSUR/bk2heeIheQVFiqTHKi954S7t5Sq2KxeiWyVZedSe27dbUeqBGtKQezOy9JT+o2cUFnAnpviwkKJb/Y5ixcmnDRnJlsdRivosDLXLxZYhzE0T5A5+iZxVUNEvHl64NpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=um1KPIIw; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=um1KPIIw; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	 In-Reply-To:Content-Type; b=AzrhJvKAzO9wjsomzuhE6ghdLgizUTkIdJNZ942vFBUp1X1nMSHj9j8F1KWPOdcCCkiVYSdtfvmSI46BPDdZJvk6r9rWdtR1czOW6tf/9/ROKbyht7fmfycddBMbwt3kZU2osgyyAn52FiwR/t5fNmOxUqxLGOARd4gnIYG17hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y4F3qYic; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="um1KPIIw";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="um1KPIIw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784908433;
-	bh=pH5jR9xHzNHkt212+X3a9RpQRk4i4MFoDNNBlQ9x2Ds=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=um1KPIIwArl2vRy9Z6rlKz2hp/4mtCr1IXjSMvrSOpcC93Ep6NAyLdAzGXo8DE3HZ
-	 Lz+Nq+6tOLlkDM7W+0SFoBQkOWZAvsy1qhRFbuzCU5wXDaS1D2TAkm1mwgHW14NSY9
-	 z0eOC1Vi4zr4bHH/dni8RIwRlzHGMowywUA7nSn34Xk4AqF+PEw18fxu13lP1gdKPK
-	 ofFHr7iV/hWRkYRL60QEagJAHNPTPO2Re0dy0r+avDdnGh0u6Qkivnu7cPvrrMdR9x
-	 qBQn0yXBtS3iI92EncoGLt7+dWty/PuWDgIqtG0dLgrrGwgeMl3gulPFO8Duq4X1Ai
-	 rEpUR6iVfIErA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id F342849441; Fri, 24 Jul 2026 15:53:53 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784908433;
-	bh=pH5jR9xHzNHkt212+X3a9RpQRk4i4MFoDNNBlQ9x2Ds=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=um1KPIIwArl2vRy9Z6rlKz2hp/4mtCr1IXjSMvrSOpcC93Ep6NAyLdAzGXo8DE3HZ
-	 Lz+Nq+6tOLlkDM7W+0SFoBQkOWZAvsy1qhRFbuzCU5wXDaS1D2TAkm1mwgHW14NSY9
-	 z0eOC1Vi4zr4bHH/dni8RIwRlzHGMowywUA7nSn34Xk4AqF+PEw18fxu13lP1gdKPK
-	 ofFHr7iV/hWRkYRL60QEagJAHNPTPO2Re0dy0r+avDdnGh0u6Qkivnu7cPvrrMdR9x
-	 qBQn0yXBtS3iI92EncoGLt7+dWty/PuWDgIqtG0dLgrrGwgeMl3gulPFO8Duq4X1Ai
-	 rEpUR6iVfIErA==
-Received: from [IPV6:2003:c6:9f1c:3c00:1112:6cca:cd9a:b258] (p200300c69f1c3c0011126ccacd9ab258.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:1112:6cca:cd9a:b258])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id E77D749369;
-	Fri, 24 Jul 2026 15:53:52 +0000 (UTC)
-Message-ID: <6a1935b9-dd81-447d-8a38-74d9c19be653@birger-koblitz.de>
-Date: Fri, 24 Jul 2026 17:53:52 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y4F3qYic"
+Message-ID: <543929db-24c4-408c-99ae-99b4eca002e6@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784908499;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1LQaNR+lU++/LsUYSodNcVYtomEsMSpCfL3MqWelMpw=;
+	b=Y4F3qYiciy9df5DUl5Ips0OECQOdiO4Ghd89lXJ/U1KXBheW+VpBQLsbcs+P+2frBJyT5q
+	H2Cz2cXIyDDQDWWhbVryIY3gO81RTWD88V3eqsIqT/UrDOYxQW7sgkri6G0gFBKa8B6gPo
+	CNpXwGoniCJbssQJ+8DmVQNkG42GqKw=
+Date: Fri, 24 Jul 2026 23:54:50 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 05/13] ax88179_178a: Use phylink in
- get/set_link_ksettings
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-5-bdde4f905883@birger-koblitz.de>
- <0327f4da-a443-4500-871e-ef561bbc9281@lunn.ch>
- <f66c5d19-fac6-459b-b3d0-354893258073@birger-koblitz.de>
- <6042ea40-376c-43d9-97ab-13243b946a50@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: Re: [PATCH bpf-next 1/2] bpf: Fix sleepable check for tracing prog
+To: Viktor Malik <vmalik@redhat.com>, bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
+ Sechang Lim <rhkrqnwk98@gmail.com>, Varun R Mallya <varunrmallya@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260724141422.10463-1-leon.hwang@linux.dev>
+ <20260724141422.10463-2-leon.hwang@linux.dev>
+ <f13939eb-d8b9-401b-aac6-6004d395a049@redhat.com>
 Content-Language: en-US
-In-Reply-To: <6042ea40-376c-43d9-97ab-13243b946a50@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <f13939eb-d8b9-401b-aac6-6004d395a049@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 7/24/26 17:35, Andrew Lunn wrote:
-> On Fri, Jul 24, 2026 at 05:06:07PM +0200, Birger Koblitz wrote:
+On 2026/7/24 23:41, Viktor Malik wrote:
+> On 7/24/26 16:14, Leon Hwang wrote:
+>> When CONFIG_FUNCTION_ERROR_INJECTION is disabled, a sleepable tracing prog
+>> is allowed to attach to '__x64_'-alike prefix symbols.
 >>
->> Thanks for reviewing the patch-series, Andrew!
->> On 7/24/26 15:38, Andrew Lunn wrote:
->>>> +	if (data->phylink)
->>>
->>> When did this appear? Am i missing a patch somewhere?
->>>
+>> It is because the verifier does not verify whether the symbol is a kernel
+>> function or a bpf prog. That said, a sleepable tracing prog is allowed to
+>> attach to a bpf prog target whose name has '__x64_'-alike prefix.
 >>
->> In [PATCH net-next v3 02/13] ax88179_178a: Add HW support for AX179A-based chips:+	struct mii_bus *mdio;
->> +	struct phy_device *phydev;
->> +	struct phylink *phylink;
->> +	struct phylink_config phylink_config;
->> But admittedly, this is a rather big patch, which I was unable to break apart
->> due to in particular int ax88179a_bind() referencing most of the rest.
+>> For example, a sleepable fentry prog attaches to a '__x64_sys_nop' XDP
+>> prog, and copies buffer from a user pointer with bpf_copy_from_user()
+>> helper. After attaching the XDP prog to lo interface, the kernel BUG
+>> could be triggered by 'ping -c 1 -W 1 127.0.0.1':
+>>
+>> [    3.460756] BUG: sleeping function called from invalid context at kernel/bpf/trampoline.c:1324
+>>
+>> Fix it by disallowing sleepable tracing prog always when its target is
+>> bpf prog.
+>>
+>> Fixes: 16d9c5660692 ("bpf: Always allow sleepable programs on syscalls")
+>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+>> ---
+>>  kernel/bpf/verifier.c | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+>> index 52be0a118cce..40d567b90d24 100644
+>> --- a/kernel/bpf/verifier.c
+>> +++ b/kernel/bpf/verifier.c
+>> @@ -18935,13 +18935,16 @@ static bool is_tracing_multi_id(const struct bpf_prog *prog, u32 btf_id)
+>>  }
+>>  
+>>  static int btf_id_allow_sleepable(u32 btf_id, unsigned long addr, const struct bpf_prog *prog,
+>> -				  const struct btf *btf)
+>> +				  const struct btf *btf, const struct bpf_prog *tgt_prog)
+>>  {
+>>  	const struct btf_type *t;
+>>  	const char *tname;
+>>  
+>>  	switch (prog->type) {
+>>  	case BPF_PROG_TYPE_TRACING:
+>> +		if (tgt_prog)
+>> +			return prog->sleepable ? -EINVAL : 0;
 > 
-> Ah, sorry. I took a quick look and assumed it was just adding new
-> devices.
-> 
-> Does it make sense to do the conversion without adding new devices?
-> That might make the patch smaller.
-Well, only the new devices use phylink, so it is not converting the existing
-chips. That is why it likely needs to stay together. My handicap is really that I do not
-have access to the older chips and from my experiences with writing the phy drivers,
-it is absolutely necessary to have access to that for converting them since one
-cannot make any assumptions about what is in the registers describing the PHY itself.
-My hope is that the older devices can be also converted at a later point and then
-remove all the MII stuff entirely.
+> The prog->sleepable check is redundant since btf_id_allow_sleepable() is
+> only called if prog->sleepable is true.
 
-Birger
+
+Good catch.
+
+Will drop the prog->sleepable check.
+
+> 
+> Other than that:
+> 
+> Acked-by: Viktor Malik <vmalik@redhat.com>
+
+Thanks for your review.
+
+Leon
+
+> [...]
+
