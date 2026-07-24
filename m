@@ -1,230 +1,214 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7BB253B73
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784901660; cv=none; b=PNcEE8mK0EDHJHj3uo0Xj9ymrxGii5xU6Rgyi8IrM+qafIjViZS/e6kuC5XDjEYOYEURaWyJKLj7QydIdoA9NKEoaQTQ9o/rkK44ykTcF17LKcWUwIO4/yEflFfvQRg/XEds9cdl+lJgZMlpA+OQduzJsTOLSBJnhzzyUrTal24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784901660; c=relaxed/simple;
-	bh=ae02kDJUi5X34KIYSffR579iWjBAySTALBq6UhL00Sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exp7ar0Tk8jqft/td9XIo6VBBb1B62bAh0N7MozVg0oEYR1DRIxwqU5Q7AAAiykEyfS8lPG9hJHhWNWoWJD628AT1hiwfUj6eHOjE1CCV2YUSVFcefAejcLcR6DkTFqBRGqRh+dH7JqDTZ9NS3UlVTEOdjYHLZILvznggRjHouY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n5OzzveE; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307024908B1
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784901710; cv=pass; b=e5NJTXZhKfte3Q1dM0a8AOy3VdQLo3FsttsStee+VYVGVRALPuN39/jsdie3SqjupJngnqqwnozdw2YwviJKXImAnW9RQEdrjm51Q91an0FP9r3eXwKzDickKqGCteD2mMbDL+CQ8m1Vti0W7XCCnqSDKTJMCwg9Cn5F+BcWku4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784901710; c=relaxed/simple;
+	bh=RNkMswzXCUbZJSjcK7ZfMRGBh2bZqSqSROVIdTNj5DY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=luxSWXqCJ4bpLiEJ6WpGNzpIfq4EdXueCjZqQQzC6d87DkMeGuOc7FBUTm1l0kU3uskh/AgEwN3W1EqDefgyJ/AQhrhueAC/RMCTEXYLiO1qjzk7h7nugTlHDt73UPxc5e4j2EIsUlTzt6fMBHe4ETJhkGFLyfvpgjlmPXGTgvg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PTn0aHmr; arc=pass smtp.client-ip=209.85.221.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n5OzzveE"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-848479c9bd5so324243b3a.3
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:00:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PTn0aHmr"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5bfa99f8ef8so1002499e0c.0
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:01:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784901708; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VqKEy9p2eF5EFQHE9QhIGDJ9AoS+XK0keOkli7alWtNz7NUw2jWDaJPM6WZEk0iy2h
+         KNp57+VR275h4gQJQQ06FTMfLmuul6v6JrVE7yOGlZbXEGopdkxh7Oz5dPP/12Yb92SE
+         inBW3v3HCfFVlHUK3dCTjcJFtHJzAIx+GToOTUSlL1X1AdwzaedT41aLQtCNsKZxrhAQ
+         +SFgJutfryYktopkPKAeR5/ixDTI1t7zKH7yR+6RQ43ZYqqL26pKruhXDBwVSZU+HB69
+         EvlGOvKBWBxAhROEOW/lO21E7hj46366b+gyzfOwXzaKybWSN5AYgrS2sUkQuZgQxkfy
+         TcgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Erx/gjJX/HGhsfdLWkM39VnnaSw2LMfwn+KeNH3C3SE=;
+        fh=91pP0r9ehyaiSu85ZB19CN+LiKMpy6so2WpPkLrPbgg=;
+        b=DnSEnhJ6uy1LYqIQf3tKp8kYUiVFsAlvGDWSHEPMQm85YBepISIK8+NWT5hEGxtmtr
+         TQaO7V2k3YXqxj9jQWzLVnfvsSPQZDUK+e07iqzpSl652TU0Q225ACtCpCsj2yBvm37n
+         KJSfM1rHEybh/90GxaP8gouS92X7VzB1Smn0b66npB3Hl0ySdxwH/dZ7nwNM2Sy3ujby
+         IttTBhMZllq/oxlCZQi74SId7drsjt+62p4Wfpy5Wipg3CVAH9ekoGrYR8P9inIpY4V4
+         GcbVBfJFXDwL+OJXD0OxLeriO2T5pGGbfX2fT/xUwB30THhV+a8w03qVQVoUJZP2dO1F
+         5Xog==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784901654; x=1785506454; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7ODrAnyB1NwavZ7GNr/hLSAQWJ7QusMhucYn8aavlns=;
-        b=n5OzzveEifSSRfZAJ4LYeROOYZ1/ADNswpVx/blRBUOtma2rwHvKP8TuBGGkU629gQ
-         dWaRGAJgjHU5ER/vcz9Yz7QtW4nLaL0bau4iZkKxFC4GoTWXZO57p1btL2JszpoNoFWc
-         t1E5d2e6pRbGcKoPIPV1lWlpN42n/1Lus9gohHsogy1z66uKns/SeIYNZostHejME4gi
-         79nlkEpWvDD5vsuVQ7dngeKlCMv3MtBz1SfSlE7qU4jUOP0aqzHSL5uqxJlUjwwMvJcj
-         92JwIVyaLak8khFYJ7GNhHvaQ4l56sHgcp927gHBrlNZk82kRFiRSJE0joz22a2ST/Et
-         yi7A==
+        d=gmail.com; s=20251104; t=1784901708; x=1785506508; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Erx/gjJX/HGhsfdLWkM39VnnaSw2LMfwn+KeNH3C3SE=;
+        b=PTn0aHmr94cN3cw1fROy402Nh2Jy69Zt4n3YUOfz6AvokhB74LnwIuYmbtLi8M51Md
+         VEqFA7gnwN0nJU5IPF9KSMNMFvrWowS9FmlyJZ7qmRIv06k06QvIg91byatgboSp28s+
+         wuyoE/A0EkrVcdu5FLcGFLb3FcAaOxr2Kqa73KXOfvh+Hyb8O+GMvuDQzXufuqmvzxsv
+         Mn5/OazA/Yg3NQAzMgjbQqEqFaMvrvrqnbTCYf6hjOLP/XY4E5G1ltobVoD6OrYpL+t0
+         5GbcL6fni5mRNFTm9dwb2uVnoPghdz38nTwlUgYoxA/Ub+E6WVRVsBz1pKxuSEE5oNgX
+         YZmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784901654; x=1785506454;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7ODrAnyB1NwavZ7GNr/hLSAQWJ7QusMhucYn8aavlns=;
-        b=SOcDjUZqSeEgtuzqCDe94gXl3bCKHTQCumwhwrjQe2DxVQemrArd5xicJpmMoDFl1g
-         cZV7lX0+F3cAEBNbY3ysk2aBZbt9LOznVNobXirypNHo3NfrKobufsXW3glWjjCwJqDm
-         5UF0xrBlU9zHHWUad7OayUEpqfgwiydQipTvzXBowjJlZTYlOamZKf0o8+ec7Q3OuJ5U
-         TZt8IX8qsOmqQHln3RdSJJm8zWjX4MuVIwsM0HUS0XDABzhQCI2AKQAqAHrBp9sG+nMc
-         RPHKYUh9T7Pss6n3NmXx70aKVPf2nhu1djv/UuL4CgjsK/RPX4IFcBJdaANT+8qbDcgm
-         SmBA==
-X-Forwarded-Encrypted: i=1; AHgh+Roq1tJhrfQP1PnXimQwcNsXGS1l5FjaqkG7GRSdUU+TO3UxuWuKwHwjNqkUThtCm0zVZegPHtY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7k8Ebc/N0zvPxXfD077uuIg8iFJk5uCMu1LTzLJauqRmEyk0u
-	+hR7Ngn2EeTIURa03vY3aKyzqSHfPcszOMgHNOI88rAcjrgAIFmXEmfA
-X-Gm-Gg: AR+sD13cbwbkRZ7jicdZNyW/e1OeJPWLXHQvP3frIW1dPYgob4PyE2Pk2SIXiN0Crtc
-	h78fXMhQbvms/i2J6sUvoCKRQpsKqrrqCo/ClnvN6q4WzJgzd0ry5Oq1ad2TL9vY6yozkKskdeW
-	xpBcjfsL2HotDit3NJJ5W4JJBWaGS57VdFRiGVkNPavbMtebJhT1WlRVPJ2Tc9z4lW6N5vHZIcQ
-	w3WYW0K/Yf1NDFChkUm79rO/Dep2njLJmqGl0Tgt4hQ2kpeoO8af8tk8II2LHH+KtfN6c307o3o
-	aJpr4VVcaSaI+qoT53wtEBho3uf4CJ6CjHB+1hAJRmrGzma4169x53lIijeXvRX8B3bMLmPYX5K
-	lrgxXH+CJ1nkDr1JEPTGVioYHLw0ZbscE4pp/P+xMp3OZJGb/hgMMD7BYt2COuT8su7TRoSY6up
-	Meu4hAlA/8
-X-Received: by 2002:a05:6a00:140e:b0:84e:24f:2667 with SMTP id d2e1a72fcca58-84e2b7fda3cmr8601199b3a.8.1784901653562;
-        Fri, 24 Jul 2026 07:00:53 -0700 (PDT)
-Received: from localhost ([2402:e280:3e0d:544:91b3:77c4:f31d:d706])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17237721sm4861336b3a.10.2026.07.24.07.00.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 07:00:52 -0700 (PDT)
-From: Vaibhav Nagare <nagarevaibhav@gmail.com>
-X-Google-Original-From: Vaibhav Nagare <vnagare@redhat.com>
-To: horms@kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com
-Cc: andrew+netdev@lunn.ch,
-	matvey.kovalev@ispras.ru,
-	Pavel.Zhigulin@kaspersky.com,
-	aelior@marvell.com,
-	manishc@marvell.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vaibhav Nagare <vnagare@redhat.com>
-Subject: [PATCH net v2] qede: Fix NULL pointer dereference in TPA fragment processing
-Date: Fri, 24 Jul 2026 19:30:44 +0530
-Message-ID: <20260724140044.1055918-1-vnagare@redhat.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260716084746.212045-1-horms@kernel.org>
-References: <20260716084746.212045-1-horms@kernel.org>
+        d=1e100.net; s=20251104; t=1784901708; x=1785506508;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Erx/gjJX/HGhsfdLWkM39VnnaSw2LMfwn+KeNH3C3SE=;
+        b=dANkvxxzGQ+krFHta8Kpz4Dsvx7Q4bdiYamID406z1Vzfw3A6MV7bSoQ+mcyuQwx3m
+         hK1oOa54bF8bFtKYLh5Y3feqjpD7ZvcqvAtNNQWLIViJUFD5HqjC6bQoib18CXPaN9wu
+         sj8fjXazOmcYBxDGLnGsthZH+9jvG43DWOfKiTX/DFq/jqcgcr4rYpjM0Uv45nj93OmF
+         3UhSQdtOOO2Kz/B5nK0tkgL1TZXdvNGyCaTL2/UbNZyQUJzvufqNAYoRldVxQg6YrGAl
+         uQO3+CuG/B83PLCmho7yZQqk9HxtxrjBT9kSi0yQZEBvwcq7quDqD+DbbVZ69oI7FpXZ
+         SjEQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpxmdMhgrV4HWjMo6La5L2yse1hsghtDSYyqaS2R+dfgqO8wXUamxm0aothsqqct1rP4/S+mXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB1RuON3W/ybufz334CKX9mmrF0tk6KEtWteZAey43G4EFo1qr
+	a3FM32X7iWCz3iOlTv4hmFRp4BZbpzdu3OL1aCnwlxg6vCV44dCRMUQHtxyG6llK0YWTd6dGhdD
+	8BGhPaQ1nINnJQIwiPGft8/bk5e7MgG9FoQ==
+X-Gm-Gg: AR+sD10DQmqnZ+ISjuR3tsDRvHgnW7ZkF61GVr3tF29nsWMHN1W1XeZKTtn2gfLglZt
+	khAuAQm3s/t/NR3sawfPGwvRqXVoRHAAjF/q90B/TNnZWD1XFtxVUVTcfmGAu+JQt6pPlHLxbBy
+	PbM1kW0PhGSwWQwuiQ41pwL2su5YTJvTg5EVTnP/4i+g4bnn9u6vjpvNXU2dGsV6hJb7x2fPlHw
+	RREvIJYWktSgjd01B7p1N/J2dEIm05KIIecwi85/y7M9oshMAkYW9IsMpU=
+X-Received: by 2002:a05:6122:180b:b0:5bd:8dd8:146e with SMTP id
+ 71dfb90a1353d-5c2fcccc3a1mr240867e0c.4.1784901707847; Fri, 24 Jul 2026
+ 07:01:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260722090931.2637025-1-dnlplm@gmail.com> <20260722090931.2637025-3-dnlplm@gmail.com>
+ <CAFEp6-2UiSja11A6nLKqRX8A1eE=P4euEs+fbpKZxPE8fTX2QQ@mail.gmail.com>
+In-Reply-To: <CAFEp6-2UiSja11A6nLKqRX8A1eE=P4euEs+fbpKZxPE8fTX2QQ@mail.gmail.com>
+From: Daniele Palmas <dnlplm@gmail.com>
+Date: Fri, 24 Jul 2026 16:01:36 +0200
+X-Gm-Features: AUfX_my960aM3h0o9ZfprZhm3t5D8G8015RZ1Pel8tYqh1ypl4DaE4SHdcMFGp8
+Message-ID: <CAGRyCJF5y4WE6OtA0HS73yZOVpi8GWe-6uQim3A9=uPz+3=veQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 2/2] net: wwan: add exclusive open mode
+ capability to AT and QCDM ports
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, David Miller <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  Under memory pressure, the qede driver encounters NULL pointer
-  dereferences when processing TPA continuation fragments because:
-  1. qede_fill_frag_skb() does not validate the page pointer before use
-  2. qede_tpa_end() checks error state AFTER calling qede_fill_frag_skb()
+Hi Loic,
 
-  The crash occurs when:
-  1. System experiences memory pressure (GFP_ATOMIC allocations fail)
-  2. qede_alloc_rx_buffer() returns -ENOMEM, leaving sw_rx_data->data NULL
-  3. qede_tpa_start() sets QEDE_AGG_STATE_ERROR on SKB allocation failure
-  4. Hardware delivers TPA_CONT and TPA_END events for this aggregation
-  5. qede_tpa_end() calls qede_fill_frag_skb() before checking error state
-  6. qede_fill_frag_skb() accesses NULL pointer in skb_fill_page_desc()
-  7. Kernel panics with NULL pointer dereference
+Il giorno mer 22 lug 2026 alle ore 11:41 Loic Poulain
+<loic.poulain@oss.qualcomm.com> ha scritto:
+>
+> On Wed, Jul 22, 2026 at 11:10=E2=80=AFAM Daniele Palmas <dnlplm@gmail.com=
+> wrote:
+> >
+> > Add exclusive open mode capability to AT and QCDM ports to improve
+> > compatibility with user-space tools using the Qualcomm diagnostic
+> > device (e.g. libqcdm).
+> >
+> > Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+> > ---
+> >  drivers/net/wwan/wwan_core.c | 30 +++++++++++++++++++++++++++++-
+> >  1 file changed, 29 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.=
+c
+> > index 8168239e52c3..8acb09dcb83a 100644
+> > --- a/drivers/net/wwan/wwan_core.c
+> > +++ b/drivers/net/wwan/wwan_core.c
+> > @@ -22,6 +22,7 @@
+> >  #include <linux/termios.h>
+> >  #include <linux/gnss.h>
+> >  #include <linux/wwan.h>
+> > +#include <linux/tty.h>
+> >  #include <net/rtnetlink.h>
+> >  #include <uapi/linux/wwan.h>
+> >
+> > @@ -79,7 +80,7 @@ struct wwan_device {
+> >   * @data_lock: Port specific data access serialization
+> >   * @headroom_len: SKB reserved headroom size
+> >   * @frag_len: Length to fragment packet
+> > - * @at_data: AT port specific data
+> > + * @at_data: AT/QCDM port specific data
+> >   * @gnss: Pointer to GNSS device associated with this port
+> >   */
+> >  struct wwan_port {
+> > @@ -98,6 +99,7 @@ struct wwan_port {
+> >                 struct {
+> >                         struct ktermios termios;
+> >                         int mdmbits;
+> > +                       unsigned long flags;
+> >                 } at_data;
+> >                 struct gnss_device *gnss;
+> >         };
+> > @@ -748,6 +750,14 @@ static int wwan_port_op_start(struct wwan_port *po=
+rt)
+> >                 goto out_unlock;
+> >         }
+> >
+> > +       /* Check exclusive open mode for AT and QCDM ports */
+> > +       if ((port->type =3D=3D WWAN_PORT_AT || port->type =3D=3D WWAN_P=
+ORT_QCDM) &&
+> > +           test_bit(TTY_EXCLUSIVE, &port->at_data.flags) &&
+> > +           !capable(CAP_SYS_ADMIN)) {
+> > +               ret =3D -EBUSY;
+> > +               goto out_unlock;
+> > +       }
+>
+> I would recommend simplifying this by relying on the already existing
+> wwan_port flag introducing a WWAN_PORT_EXCLUSIVE. This would also
+> eliminate the need to check the port type in the condition above.
+>
 
-Example crash from production system:
-  BUG: unable to handle kernel NULL pointer dereference at 0x8
-  RIP: qede_fill_frag_skb+0x96/0x430 [qede]
-  Call Trace:
-    qede_rx_int+0xb06/0x1de0
-    qede_poll+0x2f4/0x6c0
-    __napi_poll+0x2d/0x130
+Thanks for the hint, I'm following-up with a simplified version.
 
-Observed on HPE Synergy 480 Gen11 running RHEL 8.10
-(4.18.0-553.134.1.el8_10.x86_64), but the vulnerable code path
-exists in mainline.
+Regards,
+Daniele
 
-Fix by:
-1. Adding NULL page validation in qede_fill_frag_skb() before dereferencing
-2. Checking error state EARLY in qede_tpa_end() before processing fragments
-3. Checking error state in qede_tpa_cont() to skip fragment processing
-
-This allows the system to survive memory pressure by dropping packets
-instead of crashing.
-
-Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Vaibhav Nagare <vnagare@redhat.com>
-
-  v2: Addressed AI review feedback from Simon Horman:
-    - Added net_ratelimit() to prevent printk storm in NAPI fast path
-    - Fixed NULL buffer recycling: check if page is valid before recycling,
-      otherwise just consume the BD to prevent NULL from re-entering the ring
-    - Added proper cleanup in qede_tpa_end() before early exit to prevent
-      memory leaks and ring desynchronization (DMA unmap + BD recycling)
-
-  v1: https://lore.kernel.org/netdev/20260709044704.141507-1-vnagare@redhat.com/
----
- drivers/net/ethernet/qlogic/qede/qede_fp.c | 39 ++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-index 33e18bb69774..748b988cbf5d 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
-@@ -670,13 +670,23 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 							 NUM_RX_BDS_MAX];
- 	struct qede_agg_info *tpa_info = &rxq->tpa_info[tpa_agg_index];
- 	struct sk_buff *skb = tpa_info->skb;
-+	struct page *page = current_bd->data;
- 
- 	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START))
- 		goto out;
- 
-+	/* Avoid NULL pointer dereference when under severe memory pressure */
-+	if (unlikely(!page)) {
-+		if (net_ratelimit())
-+			DP_NOTICE(edev,
-+				  "Failed to allocate RX buffer for TPA agg %u\n",
-+				  tpa_agg_index);
-+		goto out;
-+	}
-+
- 	/* Add one frag and update the appropriate fields in the skb */
- 	skb_fill_page_desc(skb, tpa_info->frag_id++,
--			   current_bd->data,
-+			   page,
- 			   current_bd->page_offset + rxq->rx_headroom,
- 			   len_on_bd);
- 
-@@ -684,7 +694,7 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 		/* Incr page ref count to reuse on allocation failure
- 		 * so that it doesn't get freed while freeing SKB.
- 		 */
--		page_ref_inc(current_bd->data);
-+		page_ref_inc(page);
- 		goto out;
- 	}
- 
-@@ -698,7 +708,10 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
- 
- out:
- 	tpa_info->state = QEDE_AGG_STATE_ERROR;
--	qede_recycle_rx_bd_ring(rxq, 1);
-+	if (current_bd->data)
-+		qede_recycle_rx_bd_ring(rxq, 1);
-+	else
-+		qede_rx_bd_ring_consume(rxq);
- 
- 	return -ENOMEM;
- }
-@@ -959,8 +972,16 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
- 				 struct qede_rx_queue *rxq,
- 				 struct eth_fast_path_rx_tpa_cont_cqe *cqe)
- {
-+	struct qede_agg_info *tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
- 	int i;
- 
-+	/* Don't process fragments if TPA start failed */
-+	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START)) {
-+		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
-+			qede_recycle_rx_bd_ring(rxq, 1);
-+		return;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
- 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
- 				   le16_to_cpu(cqe->len_list[i]));
-@@ -982,6 +1003,18 @@ static int qede_tpa_end(struct qede_dev *edev,
- 	tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
- 	skb = tpa_info->skb;
- 
-+	/* Drop the packet if TPA start failed */
-+	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START || !skb)) {
-+		/* Clean up: unmap DMA if needed */
-+		if (tpa_info->buffer.page_offset == PAGE_SIZE)
-+			dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
-+				       PAGE_SIZE, rxq->data_direction);
-+		/* Recycle BDs from cqe->len_list to keep ring synchronized */
-+		for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
-+			qede_recycle_rx_bd_ring(rxq, 1);
-+		goto err;
-+	}
-+
- 	if (tpa_info->buffer.page_offset == PAGE_SIZE)
- 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
- 			       PAGE_SIZE, rxq->data_direction);
--- 
-2.54.0
-
+> > +
+> >         /* If port is already started, don't start again */
+> >         if (!port->start_count)
+> >                 ret =3D port->ops->start(port);
+> > @@ -769,6 +779,8 @@ static void wwan_port_op_stop(struct wwan_port *por=
+t)
+> >                 if (port->ops)
+> >                         port->ops->stop(port);
+> >                 skb_queue_purge(&port->rxq);
+> > +               if (port->type =3D=3D WWAN_PORT_AT || port->type =3D=3D=
+ WWAN_PORT_QCDM)
+> > +                       clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
+> >         }
+> >         mutex_unlock(&port->ops_lock);
+> >  }
+> > @@ -1031,6 +1043,22 @@ static long wwan_port_fops_at_ioctl(struct wwan_=
+port *port, unsigned int cmd,
+> >                 break;
+> >         }
+> >
+> > +       case TIOCEXCL:
+> > +               set_bit(TTY_EXCLUSIVE, &port->at_data.flags);
+> > +               break;
+> > +
+> > +       case TIOCNXCL:
+> > +               clear_bit(TTY_EXCLUSIVE, &port->at_data.flags);
+> > +               break;
+> > +
+> > +       case TIOCGEXCL:
+> > +       {
+> > +               int excl =3D test_bit(TTY_EXCLUSIVE, &port->at_data.fla=
+gs);
+> > +
+> > +               ret =3D put_user(excl, (int __user *)arg);
+> > +               break;
+> > +       }
+> > +
+> >         default:
+> >                 ret =3D -ENOIOCTLCMD;
+> >         }
+> > --
+> > 2.43.0
+> >
