@@ -1,169 +1,252 @@
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893483D88F0;
-	Fri, 24 Jul 2026 09:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884123; cv=none; b=FZ6SCtzfpAvcqBnC88MxpnhZosYDJV1vjseRmSpePtlL7bLrS/pLccyWQF/TXc8ti0JlTIlPhjzG8M2CYdRxpOfkpJYkL1yuNFzd6UO32z5NzMgUhLuJuMIUp3lfLXiwKDhhjuGioPa3IknY84eby927ur2uqjtPINvZKEuBLRE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884123; c=relaxed/simple;
-	bh=jf6ITHNc+XGuL6cCQcdNyTvYYHoEe4mW37doo2VbGCA=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=QnD2Qg0V2yu1Zo5QxXztpRiiUpDvEWj6ykU3q5PV7WvWVgWhTckgIJeyFuHJCqTMwdQSBizcxrPtW2oCb30EsVM4PsVqGIjRdZpKb+raMn8G/2cqCikAVuW7l5gx16jTm8X0NMiHsmvmfDCCOi1+POejGeQBWMko9nUomM4ZUzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name; spf=pass smtp.mailfrom=cyyself.name; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IqkJ73tC; arc=none smtp.client-ip=162.62.57.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5943F1AC6
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784884276; cv=pass; b=Kw+4s4k4yFbWdhtjr/r4bLvlfwV2+J/x7Kwp490HjmJ62osxnjPUiaT+Vg+VxZZN/CYpxQck38T2Rdzi51mRowssjaVnbAXHBnPpWh4svON+fZCau0ZxngNGCKJgrY9BqbP9k2CMQGzjX6ixidmMoxPB6DOcRklp8Iu3ScKN8Yc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784884276; c=relaxed/simple;
+	bh=7EyO1PFX7c4qnZ1MSpCu7kR9TuJqAkb7msYvLxkohB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qP8YSbCu+dLY2HqeGwanrUl5Mnb4oXzq30FEdSRHGtlLwro0K2MTODiyN2+xqTPU39CJGJGxhHj12Gh9zMdg/FS3iExwVwhLvAr0tV6cI3apc4i2T8nHiAHhEzpncvlQSXw1f9XMg/Vi1JecEUGPpkFd8ZjU0cYuey570cG5vRQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fFoOGKKO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CzbrUCas; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IqkJ73tC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1784884107; bh=GB38iLMiXeS7XXXsbSFJq++xo5Xnht0g3kWb4bzP9uo=;
-	h=From:To:Cc:Subject:Date;
-	b=IqkJ73tCRbPmjjpkOSp4ZrytgxtZ9h5l6aQ6TV96SJ/Vw4a+CykpoUe3ZLzLzUVvo
-	 T804zlCV+kMA8m84GCI8zeFK+45Rf5eeUA3K7IKuJ62j+P7LRxiHAs6m9qaxR1pCuQ
-	 5DAh0miYL8kfey0WIq2SUpKSftSj43JfxLXcawmo=
-Received: from localhost.localdomain ([240e:37c:2242:cf00:265e:beff:fe6a:4da1])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 2639C29; Fri, 24 Jul 2026 17:00:38 +0800
-X-QQ-mid: xmsmtpt1784883638t88j0c7s1
-Message-ID: <tencent_1F173E0FC1606D2AC704DC9C98AF10984607@qq.com>
-X-QQ-XMAILINFO: MFkgsonL4eTufoJiNb/imNZ+jyd22tb7bFkTSfVAOTy5G27xCh2dyYYwtceMn8
-	 rSxXHiq9DtokM9p7Rr3OH4raai6v6IGsGN46u0utllK070UhYr1oZKUiCxOzzz52HRIdyx598ZEZ
-	 QALSEupt7dleelo+4l7aFqWLlYzOjIQhXdlVQ58ey8i2C/2ofb8BUE362UGrsL8MrQ6umOKhGd2u
-	 cPbRl9JwXbEQQZhsM/+b10NnN39RaJBPwOTCfA0pT/Rk7T4YNL8MsQWJGtzCt0eHbki4cvkePckf
-	 UuZv8nm3FTSzPdYdS0/gleWhum3bp6lEcRbKn2lCxMsYYRpPRfdthvCZ93SSlf6A7BPXAiyNcjdc
-	 yEnHWRKo41Zo4c3QUdsa+lPbafVwQ500ilO95vkpuU69FdXAuKfyXRu7nVLw1+AWRX9eGu1RtfGP
-	 S4X6qkvdIm8dfzqqz1A7OYGLvY+EVDNdtUggt5hixZAVGMGZmvYTQZ81YiTW3rxU1h0rCvip6BhC
-	 c7COoIBBNhaji9DjKoQmUuCvgoEXyIQBXHlxj6v46cdsfeQisNl4JEGzGkEqHMfqy7XriABgDPs8
-	 P+UxQjU4X/9/1z8GfU7u5Iz/UYyJe21PfoJakiFzc124lSRneqrNHDoHwLO+eLn8jO8K/NWeatcH
-	 zdmcblFt3VzuiHkfAcUBXNdwEGzy6ihnvIPAIxJA7hwXew6quy2N1GwMD2ZCqCxL2iwdi0pml8OQ
-	 Ad8goJip9svOYEIYiOvv25IROc+LcIBJgew87yJ80/ivZs8PAo1KAfl7zrBtPlv6iaElAp6fjElW
-	 WZ/G0tIpwbLnqYSCCOtdOSdEgqP+SwPNhihL6jZdITI4i0e+hAirl7RbsdPV7MR1L7beszuDRn8X
-	 1dOvskPAmjJLJcPEflkFmH3uyuH3d/oxxcaMB1Zq4wQpx685sty/S7vGuDIH5aOzgF1e0jAA5cGg
-	 BqF8IsS11AcIVWh865K0Ee5cDmOak/Uvs3eUwsJa10c54qKaypVwwgOoKpm+BYcWUdBRsu056AaR
-	 41xA38jP+GFrae0bPUeYyaiB8k9J/aVtlb4uolx/keSGliihkzojZSIyEiZq3GTc2Hu8OoME1HI8
-	 2dEbJQYUAzYernqPg=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Yangyu Chen <cyy@cyyself.name>
-To: Sukhdeep Singh <sukhdeeps@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mina Almasry <almasrymina@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yangyu Chen <cyy@cyyself.name>
-Subject: [PATCH net-next v2 0/3] net: atlantic: convert RX path to page_pool
-Date: Fri, 24 Jul 2026 17:00:30 +0800
-X-OQ-MSGID: <20260724090030.10273-1-cyy@cyyself.name>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fFoOGKKO";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CzbrUCas"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O4lHS11992168
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:11:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	O5OlX/Y6fa0OuZR2iBX6/mXLJfOttN3HOhph3Z5qUHg=; b=fFoOGKKO4kuyp0nT
+	fF4He1gizvhJK/K+jNtuOmypiLe6jcOVryJajikOpMWYCWrTS20qU1uMr4+XdwJN
+	tTM0mxWFT/Od2Mrr2t5O8+Q2SdbOmkq1KLhcxc02DyHdofedHmiCoIbGVoFhg/xR
+	l5KYAG0qovNkLgmzyMcM/AtZac0ZULjkaLPLANK6D1fpZM0jLeSV5wiH7vMXdmB6
+	z5dXGDJENHc63BKY/hdm8PiZ1lKJ9fh/srkorkOtsJl6da+w4lUgzG887tC08ZQm
+	si2bm2K2ch2+CbmZj7ViAsAjYEoAlGSfqOxdtFumsP+R95kw2BTpuZKHKPnHy5e4
+	dNOL1Q==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm0p511rq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:11:13 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930edb4362dso21146085a.3
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 02:11:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784884273; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dPtW0WO/AHHmcGGz2b+sF4GLZfWOR5/w4z9Bub74KDQ4sxGR4/MBf3gT7oqwutRPXI
+         EcXMNtJK/Py1oEuXCJz5ZkZtGr9QbPLurNbXAhNd4bIi5HaW5LGzwZkAQXM2yFzgVgSs
+         DqtMbgfnbD8ItUZowq/olpELofWK52y7i1mB/dYL8l1S2U7MeR7e+gDk1y3iVWhIIJxa
+         8cW1hXCjgCqkUjFL/Te4WHPhPHVkQoqVkJDiqYOkSzC0FYr+Wstx985IsC2jCHBS8Dt+
+         FfZ4HvPcqaqXkEsE2Pk11VdGmMUYE6ZOGgJtEkDuLxAM7GK4RJ4eh15c2mSepPXWtB1+
+         +kmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O5OlX/Y6fa0OuZR2iBX6/mXLJfOttN3HOhph3Z5qUHg=;
+        fh=SQNJrS4LkR73wbXzgHzSMj5oKn/sVoFzkDU168dryxI=;
+        b=cdXn2S1SN4cylcOrCkIFTO/gUD/UgTwDXftLAxp9fUVKlJ+7JCYsHsasVZIkG/KUuL
+         XXXq522J6OKx4LL/0SKZyZ0wM/6EHk4I8TwOrNggMx+K7OJrfvLOhqbuR937QBrT9G7k
+         8PW1Qz81vdQoJoLv0XkWcktMnUDOIhsMmuPaYqZzsZddIYxzyyHslNojFpYvMzcmOXsa
+         5X6qMBI5zILZiHGz1h5suAWzRrX9Mh9VFRymxXpWHUAnk91qKd1PVLYt8Yf7/We2rpgG
+         8BB9Y3Bg16JT9qwAmFvnG7QVeghMzy7TwZQiAYCNl4dfQlXVOCNoC0nzIip75KqXsTHs
+         xHBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784884273; x=1785489073; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O5OlX/Y6fa0OuZR2iBX6/mXLJfOttN3HOhph3Z5qUHg=;
+        b=CzbrUCas+5tjv40ZdelknaMJ7RkM+1BseC7Ji54i9ySlJ8pLVsi7K1xaNCAVBXf6dt
+         6hSIW7XBjbJAp0alGW86KGmGXV0SXe8MfgJ63PpwWTKiQGUwMHjXoaC+eR9EP0yOXzgP
+         PWWceqZNuirniUPc4+rZENttk+AOxCJec92RGLKcnYv8lzFBpPxNyy3vc9y1Em8+vBhW
+         Kp5n56jYeD0O5tWn1kmP9RuRVQn9NQw9ZOu0NWhWG2LkWHkgBk8qdc+n5UEsAv7jx5gw
+         crksYiYrEboNuK4Fw9xWpJ1kyVK0LF4exIAYEC5/aoO8h4ue/zkmq2lv1ofiMOg5DqZd
+         SABw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784884273; x=1785489073;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O5OlX/Y6fa0OuZR2iBX6/mXLJfOttN3HOhph3Z5qUHg=;
+        b=WfNzeq4OGmrp4n011HwQWNeI7bEv5B2MMMJbQ7VQrUYXHdCIZFeRhfHWhFYqeF9led
+         FFm+gTKeDxSc3cMZsHb1tuA7gBKoka6+6uYI2glYD3Vvk9cDeWOyFCKAeHCUqfOCaRWS
+         etenjDE9XM5uDc+iXSk8BePPgia2qw2kvEoba0ZHg3CqMbIxrEeMf7dm/Sy/Zt0XwMYN
+         TZSXUraOCXOFgLVHhtjqhgCRrC5WJxKHlKWOOo4/YTW5Zbtj4lp0kxo1Y0Lfv8rhLR2X
+         YkPm3/tMMB7obDhQrqFla/2S9M3jV7DECYN1H69rdxT+zpV4PjeqJb3dwwoNzudzHVJN
+         vktA==
+X-Forwarded-Encrypted: i=1; AHgh+RoavcgszaZTxCk/mqYKpVzWmVNgJbVMaqk9NeO4jY3p55MFxsr74CyjyOGgiM8TjnWy3QrsMqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa0+SvY+K2D7TSPLMiV3SGehNrOjht++Xc4hMWjEyKbpC46rNV
+	3y7LdEhHxi2ceITHtmCxihhsk3pVhM9xAG+JN3bIz9520R9WI8LjoGErldj2dz2JyIRMGQJo8hn
+	2JeokS0JQG5YA/2jd9DQTVhKVvWQuZP4ihBxBIMPouKDId7I8H62F83tmwG3rdMHd3wqYvN1+hh
+	toUlMzouQJLdfd5MPFiy6vQH++1qHjd/Irkw==
+X-Gm-Gg: AR+sD13Oy9GwsDNNEkRg146Z9lvCEjxhLL8vAAYDqfsSbMrXSflft9VA0shk/Zt/0zu
+	pR9zAsw5JPCARI57KEPxItBxqL50QMkC+nMsu3jtv52oTQzZBQMZucDIr44+KP0ohY/rkH+tJOv
+	LQGHfZQh7qSYr+VDn3MCWvTEyFrWCpr5Yjouh6KD8UXRbamYNSWiu23QSOWHKAqowlEh2YC70OZ
+	KRILPszIQhe8vs97VyC/puWzUcePPRS36yjMpnKMUUY5uM/jfDfNWbwJUNTtJ4GvcFEZkihZ84=
+X-Received: by 2002:a05:620a:403:b0:930:af44:8b21 with SMTP id af79cd13be357-93103a68f31mr501110585a.79.1784884272923;
+        Fri, 24 Jul 2026 02:11:12 -0700 (PDT)
+X-Received: by 2002:a05:620a:403:b0:930:af44:8b21 with SMTP id
+ af79cd13be357-93103a68f31mr501106385a.79.1784884272380; Fri, 24 Jul 2026
+ 02:11:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com>
+ <20260703-block-as-nvmem-v8-5-98ae32bfc49a@oss.qualcomm.com> <amLwz6WuHYUwKKJo@infradead.org>
+In-Reply-To: <amLwz6WuHYUwKKJo@infradead.org>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Fri, 24 Jul 2026 11:10:58 +0200
+X-Gm-Features: AUfX_mzY-jAiHKnG4b5Pch2pLupvUwr-6r7tvUG9t9AtuCn-3Z_s2fU6zpincMM
+Message-ID: <CAFEp6-1_iariDyqWj0KezHAtULSO+piPHX0F=Z46Rx4KDNLmXw@mail.gmail.com>
+Subject: Re: [PATCH v8 5/9] block: implement NVMEM provider
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        daniel@makrotopia.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=Pq6jqQM3 c=1 sm=1 tr=0 ts=6a632c31 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=ZpdpYltYx_vBUK5n70dp:22 a=JfrnYn6hAAAA:8 a=u64WRsu7ulRtC4VldfMA:9
+ a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: BYDNGhPLP5-jVvGX2zzR30R7NW413vgU
+X-Proofpoint-ORIG-GUID: BYDNGhPLP5-jVvGX2zzR30R7NW413vgU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX/tn4EgabJsY+
+ RS5ueC5J2IbicWKedPbwLn8naFhg+wxYlO6rE2sW+isyGzcp9ytIsdeUjP83OEoy9vkeBJpZRY0
+ Y3E3v/PPXVhki39A27aP248lNpHoFpc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA4MyBTYWx0ZWRfX++nwaC22EPHs
+ 6wf+YdfzdmB769BOCsQT8ICsFX5Tc8757JkntiZLauTtgJ7l0OFGG3fIilaokQ7erhlRdbx6Uiq
+ B4T9x4P20Kq8iqpZS0Boa8w7ef40LbWNyCAzCaZs/huKBpXCtd0J9ST4E3xeqYkl4xfXErdBuF7
+ 0cPOEnsmzfnSXk2Byr5PygCITpj5xfAuRh1VOBpJFcowam4DlnqnzD63lrZh8PJm9yENAYEskUT
+ MnjGE2cKsS/E6R8TjWD/LFnz4hlxfLz2tESVZwB0pbLQ+lhksJXFixZEGLEtvXR5OKjnVDe5581
+ 5x6pPzxwMZ3abwhBdn87pbiIwSrLvy0iv64vxeculW642PCaPmW1FtaRBsuDEMiVkPWsilDAFoV
+ VgglGacxXRApE6obH3fyC+UZzixbsLqLHOKGKoNsHwdMacQPE64oM1jYU0nXufNSLvJXHcZ7E48
+ w38XM7oUHi0uYl+YMmw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240083
 
-The first two patches are standalone fixes for long-standing ring
-teardown leaks and carry Cc: stable tags with their affected ranges
-(patch 1: v4.11+, patch 2: v5.2+). They apply and were build- and
-runtime-tested independently of each other and of the conversion in
-patch 3, which is net-next material only and not tagged for stable.
-Backports of patch 1 to trees without XDP support (before v5.19) only
-need the xdp_frame branch dropped.
+Hi Christoph,
 
-On systems where the NIC sits behind an IOMMU, the atlantic RX path
-may not reach line rate: every RX buffer is allocated with
-dev_alloc_pages() and mapped with dma_map_page(), then unmapped and
-freed once the stack has consumed the packet. Every map/unmap is an
-IOTLB/pagetable operation, and depending on the IOMMU this can
-dominate the RX path at 10G rates. On an AMD Strix Halo system with a
-Thunderbolt-attached QNAP QNA-T310G1S (MTU 1500, TCP over IPv6,
-iperf3 -R), RX tops out at about 2.2 Gbit/s.
+On Fri, Jul 24, 2026 at 6:57=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
+>
+> On Fri, Jul 03, 2026 at 03:45:18PM +0200, Loic Poulain wrote:
+> > +       Allow block devices (or partitions) to act as NVMEM providers,
+>
+> Based on the code below I don't think you actually support partitions.
 
-An earlier patch [1] worked around this by making the RX page order
-tunable via a module parameter, amortizing one map/unmap over eight
-pages worth of frames. The review feedback was to convert the driver
-to the page_pool API instead of adding a knob. This series does that
-conversion.
+Right, I was planning to add partition support in a follow-up series.
+But since this is really supposed to be a block-agnostic feature,
+whether it's a disk or a partition, I'll include partition in v8.
 
-Patches 1 and 2 fix two long-standing teardown leaks first: TX
-buffers stranded beyond the budgeted single aq_ring_tx_clean() pass
-or past the frozen hw_head, and RX pages parked in consumed but not
-yet refilled slots that the bounded deinit walk never visited. Both
-are silent leaks today; after the conversion each stranded buffer
-would hold a page_pool fragment reference and turn every interface
-down into a permanently stalled pool shutdown (reproduction logs are
-in the notes of both patches), so they need fixing before the
-conversion lands.
+>
+> > +static int blk_nvmem_reg_read(void *priv, unsigned int from, void *val=
+, size_t bytes)
+>
+> Overly long line.
+>
+> > +{
+> > +     dev_t devt =3D (dev_t)(uintptr_t)priv;
+> > +     size_t bytes_left =3D bytes;
+> > +     loff_t pos =3D from;
+> > +     int ret =3D 0;
+> > +
+> > +     struct file *bdev_file __free(fput) =3D
+> > +             bdev_file_open_by_dev(devt, BLK_OPEN_READ, NULL, NULL);
+>
+> Please try to avoid all that magic autfree stuff that makes the code
+> impossible to read about.
 
-Patch 3 converts the RX path to page_pool with the fragment API.
-Pages are DMA-mapped once when they enter the per-ring pool
-(PP_FLAG_DMA_MAP) and stay mapped while they recycle between the
-driver and the stack, so steady-state RX performs no IOMMU work.
-page_pool_dev_alloc_frag() takes over the sub-page splitting the
-driver's hand-rolled "page flip" scheme did based on page_ref_count(),
-buffer ownership becomes transfer-based, and the XDP memory model
-switches to MEM_TYPE_PAGE_POOL. The diff is generated with
---histogram so the removed per-page helpers show as whole-function
-deletions and aq_get_rxpages() as an in-place rewrite.
+Ack, I've received mixed feedback on this. However, given that there
+aren't any particularly complex or numerous exit paths, I guess the
+explicit release will make the code clearer.
 
-Performance, QNA-T310G1S (AQC100) behind Thunderbolt/IOMMU, MTU 1500,
-TCP over IPv6, iperf3 -R:
+> > +     if (IS_ERR(bdev_file))
+> > +             return PTR_ERR(bdev_file);
+> > +
+> > +     while (bytes_left) {
+>
+> .. and just use __kernel_read instead of badly reimplementing it.
 
-  before:  2.24 Gbit/s
-  after:   9.14 Gbit/s
+Ack.
 
-matching what previously required the rxpageorder=3 workaround, but
-with order-0 pages and no tunable.
+>
+> > +     config.name =3D dev_name(dev);
+> > +     config.owner =3D THIS_MODULE;
+> > +     config.priv =3D (void *)(uintptr_t)dev->devt;
+>
+> Why is this storing the dev_t and not the block device itself?
 
-Tested on the same setup: line rate with plain RX and with XDP_PASS;
-XDP_TX with a MAC-swap reflector under sustained traffic; repeated
-ifdown/ifup and module unload cycles under both plain RX and XDP_TX
-load complete without "stalled pool shutdown" warnings or other splats.
+It was originally intended to avoid races with device removal, but now
+that we're synchronized with the block subsystem, that's no longer
+strictly necessary.
 
-Changes in v2 (thanks to Mina Almasry for the review):
- - split the RX deinit gap leak out of the conversion into its own
-   fix (patch 2) and generate the conversion diff with --histogram so
-   it reads as whole-function removals plus an in-place
-   aq_get_rxpages() rewrite
- - add Cc: stable tags with the affected ranges to patches 1 and 2
- - comment the ring-before-rxq-registration ordering and its error
-   unwind in aq_vec_ring_alloc()
- - aq_ring_tx_deinit(): return early instead of goto, drop the
-   likely()/unlikely() annotations
- - aq_ptp_ring_alloc(): use the err_exit_xdp_rxq label instead of
-   open-coding the unregister in the memory model error path
- - rebase on current net-next
+>
+> > +
+> > +             blk_nvmem_add(disk->part0);
+>
+> Hmm, and you're always doing it for the whole device.  So the intefaces
+> really should be based on a gendisk, not a block_device.
 
-[1] https://lore.kernel.org/lkml/tencent_E71C2F71D9631843941A5DF87204D1B5B509@qq.com/
+I will add it for partitions as well.
 
-v1: https://lore.kernel.org/lkml/tencent_7DB01BE7F8FA056BB5F11D3570CF636C4309@qq.com/
-
-Yangyu Chen (3):
-  net: atlantic: free stranded TX buffers on ring deinit
-  net: atlantic: free RX pages of consumed but not refilled buffers
-  net: atlantic: convert RX path to page_pool
-
- drivers/net/ethernet/aquantia/Kconfig         |   1 +
- .../ethernet/aquantia/atlantic/aq_ethtool.c   |   3 -
- .../net/ethernet/aquantia/atlantic/aq_ptp.c   |  18 +-
- .../net/ethernet/aquantia/atlantic/aq_ring.c  | 261 +++++++++---------
- .../net/ethernet/aquantia/atlantic/aq_ring.h  |   7 +-
- .../net/ethernet/aquantia/atlantic/aq_vec.c   |  23 +-
- 6 files changed, 169 insertions(+), 144 deletions(-)
+>
+> Also once you register the whole devices as nvmem provider, we really
+> should keep it from being used a block device, shouldn't we?
 
 
-base-commit: 89d8006259b81dd25c962f6cc8d7ab268d6ea426
--- 
-2.47.3
+I'm not sure, the whole concept is block backed NVMEM, so we still
+need to add that block as base layer, though we could discuss
+suppressing uevent for it. Preventing block usage would make the
+feature much more intrusive than other NVMEM providers like MTD, where
+the underlying device stays accessible. And we may genuinely still
+want to write the disk (e.g. for factory provisioning), updating the
+very data the cells point to, etc. There's also the layering aspect,
+if a disk (e.g. mmcblk0) has logical partitions on top (mmcblk0pX), we
+still register/expose the whole disk mmcblk0 as a block device
+regardless. So if a disk contains NVMEM cells, I think it should still
+be exposed as a block device as well.
 
+Regards,
+Loic
