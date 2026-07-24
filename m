@@ -1,168 +1,128 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97794908A5
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0B3C1400
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784928617; cv=none; b=UJfLvu4tXz8R9eBsOGByxHmbOCbJ3LPSEGUgZ8pBSnIesxXLVZ1u6GAjeQ2ejIXAUk0w1uH+S/NTzRoS1884W6l09FGduy+qHZswqu35viRwApS8F7Tp1mL+BKb7dQ1LQEeqqNlFnw0+pRmS9pU2ENY9eAKRa/Jkl62XQTCIagg=
+	t=1784929130; cv=none; b=diYy0IuKl2HxEndW2im48MM94pKYoU4wdQ5aGaCbSZKNQRtxwE9R/Gf3SjpKbs0US/N/Fds+nY1+TLKSjqgzBxmnkF6/4I4YwFGqew0d4EBQp930IDUrKkRegbz5GYZSda13zYXjUeIfwfpEL6N6207ia6lttAJqRKLpqP6kgzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784928617; c=relaxed/simple;
-	bh=4fJXDMhDePqyZd6EpKGxg+qBA/lHEr/AL/1IHNmbZvU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+PHl4Q1HLa+qFNwvoHmVmU5TnH11cIEldCenPPsiurJBYwuFczA1O5IUpJAH3ptO/dZqmIBTj7KFJ1M/aTNLrRZA2PC71vm9zIEG6Qh7JNE4dLCSE9o2W1d+STYPQbKoyz5J6ecW9H9b21aPeZfkNxHOrNQe0l/jl8nnvDKfSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqFNyWN2; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1784929130; c=relaxed/simple;
+	bh=reffKocQBTkitR5sH3HXeyiSkGKFe33s9Gp2+pOr7MI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pH23Bl703sNlCvpbrrLTbHqV2eBafVC3c/YqSvIbGVv4TL9B+F4SOsHmtB6QHQpCL9LBujDhdg1hjfz2mqoH0THvdCMwD5UgYWjzasF64s29BHBUi+u+HSR9lRJ9RdtkIiuDR1pzRa9TrZXURRr+5ZX4aCru9QWZWdYvxU8N8Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHhlBdyb; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqFNyWN2"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-494049206c6so1193735e9.2
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:30:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHhlBdyb"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3811f512167so851663a91.3
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784928614; x=1785533414; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CN4j3B2Ei9FzMjHSr8MR0rur8LVNuE/HG39uOAuMHu0=;
-        b=gqFNyWN2p6IYwVVeBk+6ICwzbkypvb87UkW8UU8dtr27IxHKwR7ZBt7C2zbwJEUU0v
-         T/ORwPxNrBWbMr+MeFwV9/kAJIY74tjGXQ2yCUhqfTSE1CgZQGqV9DPXzYlDZUfdE4Cn
-         0/upv8i8tEHgyJ+92WsKbbqP3sTYon5W4n3RVRlwH4+FCj0emFVbhGKav4yXiyl24f1+
-         0ef7H5qXAj9aqEBLZ2blBAAz56c0gJVx2fRXgx2SP1FbLG0hmiyMvRr6WJ4dssghYM67
-         KTdCV1R+n8qIvt2rIlCXgntLV3nT4n+63PpB1BjfMTA9xbXXSt1B5ZCogSpnV71QArjT
-         RTVA==
+        d=gmail.com; s=20251104; t=1784929129; x=1785533929; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qq6JMFh0gDJiS/8lUoBGQxGZpE4+LKphNkGVGqdhJ2o=;
+        b=cHhlBdyb8u9uML7p9GdcbuNl0Hd5d7hkhlI0/K6m+CrpbVxEBw4bxEyeJY348ih0s8
+         SpxjXMTc+UMnFffISf3fxkx5stI3R0DN3rrDyWrqwjRQ/H5+d+6gfs0wXlezI+xSIaIY
+         klGQLjcQcjxAd9DOPHpsxvKlvfUxdNw1tR2ATVyYtD3WCXqz+oSgbRyFZ4/P8Rmx11+B
+         OjxdKDgnGffVEoVrcGkwmGLRI9fng17P74GtgA4vM6Ik1xBIfwHRc//7UITxsxRQ3ns4
+         /GmSK4897kBMTuCf5/YMaHP94XwfZV22GApERO9ekjoEx4ZYt38zzcofbXAZdczCdzdC
+         GZNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784928614; x=1785533414;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CN4j3B2Ei9FzMjHSr8MR0rur8LVNuE/HG39uOAuMHu0=;
-        b=LdXxvWJAXsF9s9/iBckW3QibJot9NcVjG1koxfb5CHOhsDmlYB83Gx8JlnPRv6y1b1
-         H5+jFz4FdMcqSVMTJs0iUkLZbeMrHSQK+1gFxY8aaJmaMEJ39UvpvgPDdAhineVIdqWC
-         jNyEreGfAqUaeBiot9IaIvuDVuivwYQK82SbQNnY2cO306NM46xIQKNfoqddnjV1+yv1
-         gH1VigZetu8CHcsNXDmorbbzhfL+pHhoc/o8y/0sg8Cdq1SEwsVd4D/A+IrZ2GjywAYQ
-         2R2XADhveZiCmdwPEEIT+1SVFqgiBqkJv3FjdHuvQf8EJ051Y7NSsPsXVeSpoy32IewG
-         PDHA==
-X-Gm-Message-State: AOJu0YytVQyHbxt6kLgSxgtpxm8EAVngMmhSx4W1B/+MVDaL7f1RLucC
-	BxA71e7n4vVCxs0RPR6FO9g+qkGUbPMCtBqMc0h5XZj5za94XLh0x7by
-X-Gm-Gg: AR+sD10/JRLtjUmacIUGh+AUoxSx9ulvEHLEkoaP9PWknE+bcoUvUYloEr1u1XQm87B
-	WIzMd6GiKb57bAWNFs6dbqRaHVvzBqlm9xBF2WzqgKOrx/mwLJzgWfQ4ycW1Uectp7boomgE8jD
-	Gh/Wp2iMjrqQ5c3GnqyfdJZOr0tKxfk2Bl6NXpCg7bDxH0fu87iG1UyPnzBx/N7nuCIkdd3w8NH
-	jYG5ErxeZ2ZDL5VxTvIwr9QTpU4dxeJfA5aUJT4FAPzaSFy5IQOoNbY8Z6pIvFrElAqJ/R5MuA6
-	GIr7SJ4eWyjaUmIfHU1MRni+DbgdiU4RgJSb4FklpxL/OSP87bKlvMWOMafQEwmzlOWd8wDT9kl
-	WfPj/mHcIJLmJVsXDlmKuvOXjis63UHtkKY4l0LfXOnQVjkVuspI44kkWp1j51dOyG4RRZXd8ak
-	ivh4AFlkbfyreO3lLL+B/GWpjMA/1KtI0k3rbGbxzwLvLzpQuDL2CmQYk1uxw8mx6dqvu36XcoR
-	mdiB3nHvRjFIuyAATy9BH6UugGgtA==
-X-Received: by 2002:a05:600c:4f08:b0:495:4505:dad0 with SMTP id 5b1f17b1804b1-496b56efed4mr368675e9.2.1784928613754;
-        Fri, 24 Jul 2026 14:30:13 -0700 (PDT)
-Received: from [192.168.2.69] (dynamic-077-181-161-038.77.181.pool.telefonica.de. [77.181.161.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4ee4504sm12709335e9.6.2026.07.24.14.30.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2026 14:30:12 -0700 (PDT)
-Message-ID: <ef79d6c0-c232-4e02-a3f0-67c956486125@gmail.com>
-Date: Fri, 24 Jul 2026 23:30:11 +0200
+        d=1e100.net; s=20251104; t=1784929129; x=1785533929;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qq6JMFh0gDJiS/8lUoBGQxGZpE4+LKphNkGVGqdhJ2o=;
+        b=MFEyD7EcgtZQtwd9m6/AR/8aW2FxtBR/xmGwzZxXPEo4QHk/3Hd5Dq+zUBqj/AlHJJ
+         RAnHwaiYdI4fwI2214kmmm9rEYVtZonSFXwGQga2lxXj0IlTRtsjUBA2MVhiT0SPEHMp
+         wzp101aV/Fg1wueeAQl515dg0W1RylRgIKyBQt8KkVuPDIs7bxg5AI7KuyGeteQXsQQT
+         CRBpyyok3go9RgIDlRX4p71K83kV0lKgDfXwom1pcsaiiKwOrZbnNCqJtnn2g340T2Ro
+         7IV9VP+YdRXtiv2hJXHYmSGbBsVJGzQcmUidnsY3CFMkiyDeK0c+AB5bgo7mkaWqiYA4
+         4tnw==
+X-Forwarded-Encrypted: i=1; AHgh+RoGyHx65X6zLYlwWmddA013jAQxBfDvr/CSoZyTZ3wjWQbJ6NJM26fFvDbn+y8OPQWSVI2kTQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTgqm2PkQ9n4wJ1lJ46TDbhf1bYQCG/AR7qYVTTxSjQVna1+kT
+	PnH0lBO8ybhxcEAoma5ukgh9UvMr9bVbZphNGqclEBPDDXejv1BbQkDQ
+X-Gm-Gg: AR+sD13UMTNNAQWUuXd34DZWiwo8GOqOOzneFeD6Sd7/zSsetFfJWfzX/tInEGdqVPO
+	ghlaUc0mPFaMZi10ryhx44YbmyfiUwnov0+hii4HFVElh59Ai7c197a7LI04xwHBTK8AS0OGcwG
+	zNVe7Gi32rghCAbe48D9xgDM5Ic7vujE3FgtRmTpzsTSu/ERIK0NM4/LYT4ZKlCUO/NyoZ10Na3
+	AHIdt4kpE0fdck8Qm4Rlo1j0eBbEWDUeeWIsjT6w7RLcMTvYEusEgYkR9kF9j0a9DnrQZpNeFr6
+	RZtTODfGlEQEbn2sSmbi8psyf28EYQiP4o+oO8t+LQ1otJZqZRcSccuZQu5/eDlVYp2+svHjis/
+	oYF0bXNET48sjvN3w4MBMRwmqSazIWCmZLWcI9y/P/2MumZ/d5SEYm4OFhYfxNe1JAk/PMlzWUT
+	kWmLuamSIkbkoAtc7uUYA/vg==
+X-Received: by 2002:a17:90b:3bce:b0:38e:e0b:320d with SMTP id 98e67ed59e1d1-38f297812c8mr143723a91.41.1784929128727;
+        Fri, 24 Jul 2026 14:38:48 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:2::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f04175831sm2086519a91.11.2026.07.24.14.38.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 14:38:47 -0700 (PDT)
+Date: Fri, 24 Jul 2026 14:38:45 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <amPbZbpQ0jwBshsa@devvm29614.prn0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+ <20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
+ <20260721110903.34840531@kernel.org>
+ <amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
+ <20260724143001.5afa8631@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/4] net: hsr: allow PRP RedBox (interlink)
- creation
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, wsa+renesas@sang-engineering.com,
- jie.luo@oss.qualcomm.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, fmancera@suse.de, bigeasy@linutronix.de,
- fmaurer@redhat.com, luka.gejak@linux.dev
-References: <20260717201457.54-4-xiexinet@gmail.com>
- <20260724131246.679974-1-horms@kernel.org>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-In-Reply-To: <20260724131246.679974-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724143001.5afa8631@kernel.org>
 
-On Fri, 24 Jul 2026 14:12:46 +0100 Simon Horman wrote:
-> [Severity: Medium]
-> ... unconditionally increment the port's tx_packets and tx_bytes
-> ... inflate the network statistics for the physical interlink
-> device?
+On Fri, Jul 24, 2026 at 02:30:01PM -0700, Jakub Kicinski wrote:
+> On Fri, 24 Jul 2026 14:04:24 -0700 Bobby Eshleman wrote:
+> > On Tue, Jul 21, 2026 at 11:09:03AM -0700, Jakub Kicinski wrote:
+> > > On Wed, 08 Jul 2026 15:55:06 -0700 Bobby Eshleman wrote:  
+> > > > +@ksft_disruptive
+> > > > +def check_rx_large_niov(cfg) -> None:
+> > > > +    """Run the devmem RX test with rx-buf-size = 16 KiB."""
+> > > > +    run_rx_large_niov(cfg)  
+> > > 
+> > > Any idea why the devmem tests sprinkle disruptive everywhere?
+> > > Disruptive means we take the link down, I don't think this test 
+> > > does that.  
+> > 
+> > Talked to Stan and he mentioned the original idea was not necessarily
+> > just for link down, but any test that could be considered disruptive to
+> > other tests, with the idea to eventually introduce some scheduling
+> > (postpone disruptive until the end).
+> 
+> Perhaps have such conversations on the list? IDK what Stan has in mind.
 
-Confirmed against the v4 base. hsr_forward_skb() receives the
-ingress port; when that is the interlink, the interlink device's
-tx_packets/tx_bytes are incremented for a frame that arrived from a
-SAN and is forwarded towards LAN A/B - nothing is transmitted on
-that device. A deterministic accounting error, pre-existing since
-v6.11; the series does not touch any statistics code. I will send
-an independent fix for net.
+For sure.
 
-> [Severity: Medium]
-> ... err_unregister ... omits a call to hsr_del_nodes(). ...
+@Stan, can you elaborate on the intent of @ksft_disruptive?
 
-Confirmed. The earlier hsr_add_port() calls install live RX
-handlers, and RTNL does not exclude softirq RX, so dynamic nodes
-can be learned before a later hsr_add_port() fails. err_unregister
-removes the ports and the self node but never calls
-hsr_del_nodes(), and unregister_netdevice() does not invoke
-hsr_dellink(). A real leak, though a narrow one: it needs a
-partial-initialization failure after traffic has already flowed.
-Pre-existing (identical in v6.11), unchanged by this series. I will
-send an independent fix for net.
-
-> [Severity: High]
-> ... directly modify the path or LAN ID in the data buffer of the
-> original shared SKB before cloning it. Does the second
-> modification for the second slave overwrite the first ... ?
-
-This needs two separate answers.
-
-The specific sequence the review describes - tagged input on the
-interlink forwarded to both slaves - does not occur in the PRP
-control flow:
-
-* A normal SAN frame received on the interlink is untagged:
-  handle_std_frame() sets frame->skb_std, and each LAN output goes
-  through the skb_copy_expand() branch, so LAN A and LAN B receive
-  independent packet data.
-* An already PRP-tagged frame on the interlink sets frame->skb_prp,
-  but is_from_san remains false, so hsr_forward_do() consults
-  prp_register_frame_out() before any helper runs. For LAN A or
-  LAN B as destination it returns 1 and the loop continues, so
-  neither LAN reaches prp_create_tagged_frame(). (This series
-  touches that gate only to open the interlink destination, which
-  is served by get_untagged_frame(), never by the tagged-frame
-  helper.)
-* A PRP-tagged frame received from one LAN is not forwarded to the
-  other LAN either (the same gate), so it cannot produce two slave
-  calls on the same frame->skb_prp.
-
-The underlying pattern is nevertheless reachable, on the master
-transmit path: a pre-tagged frame transmitted on the master device
-(for example injected locally via AF_PACKET with a valid RCT; this
-needs CAP_NET_RAW) passes prp_fill_frame_info() with
-frame->skb_prp set. With port_rcv == MASTER the gate returns 0,
-and both slaves then run prp_set_lan_id() + skb_clone() on the
-same buffer, so the second LAN-id write can land in the first
-clone's data while it is still queued. hsr_create_tagged_frame()
-has the analogous shape for HSR.
-
-That path is pre-existing (the helper has had this shape since at
-least v6.11) and is not introduced by v4, but the concern itself
-is valid. I will fix it independently for net, together with the
-other items.
-
-To summarise: all four findings describe pre-existing code that
-this series does not modify. The interlink-ingress sequence from
-the last finding does not occur for PRP, but the same
-modify-before-clone pattern is reachable on the master transmit
-path, so that concern joins the other three: four independent
-fixes for net, each with its own verified Fixes: commit - I do not
-assume they share an originating commit. Would you like v4 to wait
-for the fixes, or may it proceed while they are reviewed
-separately?
-
---
-Xin
+> 
+> > If we can get common agreement on its meaning, maybe I could submit
+> > something into the documentation and update where its misused?
+> > 
+> > I'll drop it from this patch since it doesn't bring down the link (and
+> > seemingly no worries about check_rx_hds() tests not having it).
