@@ -1,87 +1,105 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985DA25B08C;
-	Fri, 24 Jul 2026 13:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C33090C5;
+	Fri, 24 Jul 2026 13:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784901108; cv=none; b=ZGrkNi80G+kxI3eSfL2kscS9i78ahNrwpDZkhTGam/zTn+cGq01h9KAYe2Git5jSXfDgCX8ectJ1p1GM+BvQHtmx12Ya9vzzobZexuKmF/Ogsx4uZlYqiu4NlVVRuRe+bqlOlbq8ojBOjg3wMM4St5lQRxsPdTR+83cOt8QRG2g=
+	t=1784901547; cv=none; b=e8mCecLrevFCZLexVqawK7f2UIyTtY9D/SCbUfBySsuvl8kZXXEmLQPmMugSM96xU/tMUfH7R+exnT6Zt1auQaNTyBK3JXuU7yb8arXgIW1MkZ3Mo1w/1rZ3YY5g9pJUUvDP4LCz0F+mWRhB/j/PFH4G0ch3A1wLMy3HWs+XbiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784901108; c=relaxed/simple;
-	bh=8sZEWlVt1ZJmC9Bn3o4Y7V3HHm8eSB++IT0z2FDVmpc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ptjOQHelwjDIclosOHc0r0jybVgieBN9wl3tbLK9lWX7ZTdUy/ySLWQH85GZ054qhZRQ9TBPzFXz1lzu0j7s7cxD+SmVuEUOV6QSHkM8T/QtmFe39Ula7Pl5n0wcvo41IpeLj2taMI2U0opCUP+WnbpdEyHOadyMHxIQqvLGKFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SyiNbaxK; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784901547; c=relaxed/simple;
+	bh=PH7whP+3cDdlFXDhLChtdc5VyOhH8L4lN08XxaE2zTk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=u5yMUS1M1Y2CbGvFe1HtvOyRLe6wKlqT74uTaLdeW045kc8gouKIJFw+HoKtleNrG6yoIH8CFzPHvwYoj16wjtJhC6bXJyIecEY3Lcsm9bJxhTOFvaU5m+KrIEFd8l2iut6yOqbSwN6fh+y4r53khC1VIMzycnVXf0dz7LapXg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jX9gTfIm; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SyiNbaxK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fZDbhl4UibAgTEpmyPxtbMjlPxjC0LAo/V4ng++sd+U=; b=SyiNbaxKQ74vpNdh5kG64iYz1a
-	VLCDKjvUNI2582451IfR86TG0X0aOeqzqDuI7wV7CGVuPCkzY5f2uVLPHlLI7+A8XmMBQkOKhU1Uo
-	UQT3FmAjs0ZZ1XDXs9KlUXHY8Tde9IMaLjdB3l+ca35KnWc6Ff1F3MvSC+3JvZgx81XA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wnGJO-00E0Fm-0U; Fri, 24 Jul 2026 15:51:38 +0200
-Date: Fri, 24 Jul 2026 15:51:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-Message-ID: <d3541378-6a47-4c2e-8a81-c45473a66ff7@lunn.ch>
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jX9gTfIm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ED9CC1A11E6;
+	Fri, 24 Jul 2026 13:59:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BF1A960395;
+	Fri, 24 Jul 2026 13:59:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BC1111C100E4;
+	Fri, 24 Jul 2026 15:58:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784901540; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nQbNqpY1JX0gW8HgVql2UnXFLi2aXfol29g3GSib/7Y=;
+	b=jX9gTfImJjpLbRe4HlnfNyMUUCaaB52iIjcc+wS4F/DSEVbAVNL85RJvzyGeVP4qjSdVWU
+	NUvlwMhI4ZHJPnzPDlQYjLaDSGh3nNrVWVvWMMNobydVG1mleQlf7NuU6hsXHeLHwYqEti
+	igfrZQJIQgCappMv3zubttpmCR+P5D5zSmXnhgd4K/gZIDcvzBKnNjDDVvIqhpziugJqu0
+	PzEDSyvW+l61+B6guzAf2zCqzt3ghdKBYeMTw5IF7xfjwbkZgBHQtgdCx+fXYPvYvevInL
+	hIQvgWIZ1n4XE6npuWc9ZNMt2cDNaxV+E0+52PeOmEhL2/GKLHdQGjiYijyqVw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Jul 2026 15:58:55 +0200
+Message-Id: <DK6USDMUTRL1.2HQY6Y30YS6BC@bootlin.com>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v4 02/15] net: macb: unify device pointer
+ naming convention
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Richard Cochran" <richardcochran@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Paolo Valerio" <pvalerio@redhat.com>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260717-macb-context-v4-0-0acbe7f10cdb@bootlin.com>
+ <20260717-macb-context-v4-2-0acbe7f10cdb@bootlin.com>
+ <be5764f7a984d47c4c4ea49f3e3ce288@tipi-net.de>
+In-Reply-To: <be5764f7a984d47c4c4ea49f3e3ce288@tipi-net.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-> +static int asix_ax88279_read_status(struct phy_device *phydev)
-> +{
-> +	int ret, val;
-> +
-> +	ret = genphy_update_link(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	phydev->master_slave_get = MASTER_SLAVE_CFG_UNSUPPORTED;
-> +	phydev->master_slave_state = MASTER_SLAVE_STATE_UNSUPPORTED;
-> +	phydev->speed = SPEED_UNKNOWN;
-> +	phydev->duplex = DUPLEX_UNKNOWN;
-> +	phydev->pause = 0;
-> +	phydev->asym_pause = 0;
+Hello Nicolai,
 
-Is it possible to call genphy_read_status(), and then do extra things?
-That would save some code.
+On Sun Jul 19, 2026 at 12:32 PM CEST, Nicolai Buchwitz wrote:
+> On 17.7.2026 21:48, Th=C3=A9o Lebrun wrote:
+>> diff --git a/drivers/net/ethernet/cadence/macb.h=20
+>> b/drivers/net/ethernet/cadence/macb.h
+>> index 2de56017ee0d..9857df5b57f0 100644
+>> --- a/drivers/net/ethernet/cadence/macb.h
+>> +++ b/drivers/net/ethernet/cadence/macb.h
+>> @@ -1326,7 +1326,7 @@ struct macb {
+>>  	struct clk		*tx_clk;
+>>  	struct clk		*rx_clk;
+>>  	struct clk		*tsu_clk;
+>> -	struct net_device	*dev;
+>> +	struct net_device	*netdev;
+>
+> Looks like you have missed the one in macb_free(), from commit=20
+> 27f575836cfe ("net:
+> macb: drop in-flight Tx SKBs on close"):
+>
+> 	bp->dev->stats.tx_dropped +=3D dropped;
+>
+> This breaks the build until patch 7 rewrites thatline, which breaks=20
+> bisection.
 
-> +static int asix_ax88279_config_aneg(struct phy_device *phydev)
-> +{
-> +	bool changed = false;
-> +	int ret;
-> +	u32 adv;
-> +
-> +	if (phydev->autoneg == AUTONEG_DISABLE) {
-> +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-> +		return -EINVAL;
-> +	}
+Argh. Next revision fixes it. Checked with
 
-Does the PHY say it supports autoneg? genphy_read_abilities()? If it
-does, you should clear the bit from supported.
+   git rebase --exec "make drivers/net/ethernet/cadence/"
 
-	Andrew
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
