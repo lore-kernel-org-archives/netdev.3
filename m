@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD12B3D4119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883FB3F328F
 	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784927288; cv=none; b=dBDAIeuQohEMJis5zAW/rHXp3W5PY45IpzDnM4No2jngjNk6CnbjntNE0NaFXXEWCCmH2OSIFMPrSXCDpSatCuV9cvryN/J5HL65/ChAloaQa4I7j5gFfnA/4Qrb+TN7lCJsMYD1hI3wzEgWFSXAWGthNA+84XHApPdAEu/Hyek=
+	t=1784927286; cv=none; b=dK7wHqELNNueNNKYm8n2QlqWU1ULeMxrDCTBVNcd6Hsh3y8Jow7vF3DVwzCuI681bmtRcWKSP8f3Dz7AzCnC74/Giw1yvWW1NPr2PJNCFWfAs4uHX20vpmBOmro8dulTry0rIcMMcbw4VtYUoAKI3oXsy6tmz4zKykhGnk8zr30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784927288; c=relaxed/simple;
-	bh=83wnhAdZeBtZvwOsPyzEqu7qisUhAowN1vVsyel+2qo=;
+	s=arc-20240116; t=1784927286; c=relaxed/simple;
+	bh=T3nldn4EY+Zh5g2FRSGG9zabahFL+CL1qnd8U+C3K28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruS0U4laFYmV41rFg6/4UyPYjTDkX2h6quL5r6DDqyyuh++WFq4RqGdMyvamgNC9lVh+z2gWRwZCcfHh8h9Ggbd38/aFPFHUaNy+Qas4EY9P1r7FvVpyNDmfZQLtiDAYLEKSLMmgeNNpbRexpUNgWY0SBeayokCuh6G6epPGUx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3jKbvC+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=hi8ixKXbWwODXF2wr40Xe0urSQNsvUBZOfcNmKa6ENXm8IFdZTOvAxsIxyFtIvL1qaeWaxQHqWibTSn7MQDScyLY6ALvvBe+ZqOjVuVx9lg+qbR3sA6g3av03Ibk7eKF1jADhL5idrHZFcX4K/3HxLJSL23ah6MEkJ+jln6OhxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXvaZhkU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3jKbvC+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903521F00AC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXvaZhkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95811F00A3E;
 	Fri, 24 Jul 2026 21:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784927280;
-	bh=FHIx6O670asWPym5kD1Y81Gwn4/wmnmIICRVk9zFnb0=;
+	s=k20260515; t=1784927281;
+	bh=ebkS+t7Pxl7cmYDikrimbDtdvi7qBziHb6gLH3Ncwz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U3jKbvC+zH0WoT4rscNUZ6+rFS3chh35tv5H2vr+OkGWo7yXN2uXx8trbKWklR9Ot
-	 uLAax7qdZ+i+tFCyuRvfMW7yNfd1UQZXEUEo17HWIZgBVWTtIlG2n7lEwgDAZC1ve8
-	 t4X9FYe1rQT4fhVVJPD8QDX1JqGrH4lvXMZj4YJuYd6nohtkPhOy7E3OrIe//EEoxW
-	 yOeLT+QDHHr9KQqFyp/u92BcNgo/FUnk9ACuW6C5qt2vOyfxEOwLrXKLm5kRViyiHl
-	 vAKSTrTCP5pZsRO5do4CSW2geCaAQR7RtOtiodNjA1JfurAToYwfmjiRrOGVhDMx7/
-	 wJ3kpuASoVkyg==
+	b=JXvaZhkUmXo8OFw+F6IULspWj2F+pYNDtu88IaKb3iX20Ll0i7oIG+sv+bDeb/8rC
+	 eyJTqoAceTipjAhpZu0+tr9Ie4/afEU0Ef3xbZ4jwCcMk1nDi9exNR0fPiiGMl+eHg
+	 Vi2mDRCEk5HpvEqyZRwRldHsoWtybrifWIIfKLffGEDjvJIK07rE45cTn+uCNp1VKR
+	 dgYaaRhTCHxIPiIcxfgCXVesk2UavcOQ2AtVmGl+BI5fUIGcYFGNXL6lN7/cu3wcO7
+	 g3xjSJvSm0LBKMhowxi06KP0jc+c2BYVRVtguXEPLlotgG7H+vM7IA+bF3T3TeNcV8
+	 R/JBUzpaddcSA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -34,9 +34,9 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/3] net_shaper: clarify the kernel API / comments
-Date: Fri, 24 Jul 2026 14:07:55 -0700
-Message-ID: <20260724210756.1553565-3-kuba@kernel.org>
+Subject: [PATCH net-next 3/3] net_shaper: add some notes on re-parenting
+Date: Fri, 24 Jul 2026 14:07:56 -0700
+Message-ID: <20260724210756.1553565-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260724210756.1553565-1-kuba@kernel.org>
 References: <20260724210756.1553565-1-kuba@kernel.org>
@@ -48,63 +48,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The shaper API takes some getting used to. Try to improve
-the doc on struct net_shaper_ops to help driver developers.
+Clarify the re-parenting expectations. Specifically that @delete
+on a queue removes it from the hierarchy which is a bit unusual
+in the overall API structure.
+
+IIRC the implicit delete behavior was introduced because otherwise
+it would not be possible to remove a queue from the hierarchy
+without changing at least one handle of the shapers. Normally
+"removal" is done by "adding" to the new parent, but "outside
+the hierarchy" does not have a parent we can point at.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/net/net_shaper.h | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ include/net/net_shaper.h | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/net_shaper.h b/include/net/net_shaper.h
-index 0fcca29207ac..c14eb87efe5e 100644
+index c14eb87efe5e..05cb625b0fe5 100644
 --- a/include/net/net_shaper.h
 +++ b/include/net/net_shaper.h
-@@ -68,7 +68,7 @@ struct net_shaper {
-  * The operations are serialized via a per device lock.
-  *
-  * Device not supporting any kind of nesting should not provide the
-- * group operation.
-+ * @group operation.
-  *
-  * Each shaper is uniquely identified within the device with a 'handle'
-  * comprising the shaper scope and a scope-specific id.
-@@ -84,16 +84,30 @@ struct net_shaper {
-  *    only allowed to construct groups with queues as leaves)
-  *  - @group calls may update leaf's parent if the parent is about
-  *    to be removed (re-parenting nodes explicitly is not supported in the uAPI)
-+ *
-+ * Implicit creation
-+ * -----------------
-+ * Shapers are created implicitly, meaning that @set and @group operations
-+ * are called both for existing and new shapers. The driver has to infer
-+ * whether the operation is an update or a creation by tracking the handles.
-+ * Removal of shapers is explicit and done with a @delete call.
-+ *
-+ * The @set operation implicitly creates NET_SHAPER_SCOPE_NETDEV and
-+ * NET_SHAPER_SCOPE_QUEUE shapers.
-+ * The @group operation implicitly creates NET_SHAPER_SCOPE_NETDEV and
-+ * NET_SHAPER_SCOPE_NODE shapers (the group shaper itself), as well as
-+ * NET_SHAPER_SCOPE_QUEUE shapers (leaves).
-  */
- struct net_shaper_ops {
- 	/**
--	 * @group: create the specified shapers scheduling group
-+	 * @group: create a scheduling group or add leaves
+@@ -107,7 +107,12 @@ struct net_shaper_ops {
+ 	 * The @leaves array's size is specified by @leaves_count.
  	 *
--	 * Nest the @leaves shapers identified under the * @node shaper.
-+	 * Nest the @leaves shapers identified under the @node shaper.
- 	 * All the shapers belong to the device specified by @binding.
--	 * The @leaves arrays size is specified by @leaves_count.
--	 * Create either the @leaves and the @node shaper; or if they already
--	 * exists, links them together in the desired way.
-+	 * The @leaves array's size is specified by @leaves_count.
+ 	 * @node and @leaves may or may not already exist
+-	 * (see the "Implicit creation" note).
++	 * (see the "Implicit creation" note). If @node already exists,
++	 * the @leaves should be *added* to its children. In this case,
++	 * the @leaves array only holds new/modified leaves, not the full list.
 +	 *
-+	 * @node and @leaves may or may not already exist
-+	 * (see the "Implicit creation" note).
++	 * Re-parenting @leaves is implemented by a @group call on a new parent.
++	 * There's no explicit call to remove the children from the old parent.
  	 */
  	int (*group)(struct net_shaper_binding *binding, int leaves_count,
  		     const struct net_shaper *leaves,
+@@ -128,6 +133,13 @@ struct net_shaper_ops {
+ 	 *
+ 	 * Removes the shaper configuration as identified by the given @handle
+ 	 * on the device specified by @binding, restoring the default behavior.
++	 *
++	 * Note that a @delete call on a NET_SHAPER_SCOPE_QUEUE shaper also
++	 * implicitly removes the associated queue from the scheduling
++	 * hierarchy. The driver must take care of that step.
++	 * @delete calls on NET_SHAPER_SCOPE_NODE should not require any
++	 * implicit re-parenting in the driver as core will re-parent the leaves
++	 * first, before deleting the SCOPE_NODE shaper.
+ 	 */
+ 	int (*delete)(struct net_shaper_binding *binding,
+ 		      const struct net_shaper_handle *handle,
 -- 
 2.55.0
 
