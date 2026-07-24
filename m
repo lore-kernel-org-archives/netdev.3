@@ -1,138 +1,140 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F02A3B42C1
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2663C10AE;
+	Fri, 24 Jul 2026 10:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784890109; cv=none; b=qT0lly/7xJf8/h/iA5SeMF9RmpxDOMi/hCUS777QIA3BSPuVb/+1P2MnT000i2cPh5Zh9t/5r/5mvA/tlGisHc0ZExTD9rHkebUdUPwjTF+kHQJGqKUnAymU7pHuTITsXEDGi8l0uObd8NXVBlN3GG6ODu/yjP2vNtmhOGNyacs=
+	t=1784890186; cv=none; b=RgTXMk+1kB3IsBAjOFIZx//lvnLP1z+EzBNhB3OVreaxpdQrZdBLAzMMJsybyVcXISGEityGGgSmCmkZZTYSOKNJTZsn7Q88kmqbc/1JlyI2vGOeTIsxMUdr8fBUJPoK7h/0dDi4cWfi69xVda/2dvxRTDenNQsOoBGoEY5KIRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784890109; c=relaxed/simple;
-	bh=xYRxLMtZ3/BRx1I4wyTmpchAQbo3mmEcBK6PpJEipNk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Mw5N8k313Qu8HlvUirdmV+0150lRbkq/urC3QxkK/lyJ7353P6GJ2c3es+dNQs+W6/0l9TDDgUdn95XPYnE6pNvTysTxO5seoAusDpQRBDZ/26GPGRDJEGt9t6KbBC7/dZkFLGX/cHt9+r+WUVrpY7tuscFE0kp5nA1u5MoK7vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Ub2STd1Q; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1784890186; c=relaxed/simple;
+	bh=uW2xzHOzF6Z/nrW0jmeSGNNP2cBla52TvLflycN7y/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gMcAXT8f1ZDb9SksYOl7coC/bQ0qyD/3pOdiSc7fqIvcYQkJJDhmoy4IZDCjtj7bERvYSWLaGeq+yrDXjaR1yjWeCP8N+RP+YY8bi6NKYe8TbbcEGR/PHWnNd0FKwV3owUnFGFAmeCJqO8NJeULJEIB8qWrMo5oJoB8h8GPHLiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=a0Juvjtb; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Ub2STd1Q"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6986578d8c0so433398a12.1
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 03:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1784890105; x=1785494905; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Am9/owu6l1hJG7i/wElg5Hgmsf9dZWWfn/6yJfdsk+4=;
-        b=Ub2STd1QY/Yh0G/HXKAOpIh78GfmhUVVonLK8OK1KNbpiSq0KteOC/Y1Ldnzi7LksB
-         5lUsWTyMIJ5Dw9PzXLMVM5dpltes0Yjven2jcR3ZDJgNatXb37VqNBzsvH4zy1gCxhH9
-         m/2nw8GoFnVFd2LRD8rjEDxWGbSsLf/xBBRybQ9z4vSBTHrMCINAFfn45FTz/uT1wHxp
-         P+C+6EW1J8ZKdn8YR+93xx0jWiBULkj66mEUCpDJAD2mToSLZG46y1hiB/oo7PL7ubPy
-         0ERB/uztfhJmYUilHyV0g5jXeBGbHDQiacznv3yazsZTT1vei3ZWVfZYSTILLM7bWNZK
-         6ULw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784890105; x=1785494905;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Am9/owu6l1hJG7i/wElg5Hgmsf9dZWWfn/6yJfdsk+4=;
-        b=E4ZfzqVpo8ajjfyUWmDSAiLypIhmdtypSaZ5rnWYf6BiycK/U6RA0/cbkdASDHmLMg
-         UO4YzwtVMM3WcOvLWgTxSzRonAbXOKvrDaEHxVMrPoFuUp4qBwEKpT8U8keCW+jRos1C
-         Eg7BzNYzMJ4cV3t1qpS4K5Ti7XSwOnTrVaFdtuO+SMC95JteR3wcpuqkVjsy59iJ1wpn
-         nCXiSByZ4dpzTjiByRbvDnfrIc4b1mxGbs1H3cbputMeGpxsdFni/HtH4bw2iPuEpiNT
-         MlZa/i4SC30jqC2I5PWcWzO9mWEc9vcIMF7vpBxcJ8x7D7x6Xz8CHGguRlGxRvMdreTx
-         v2EQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqJQ75N8KsBNWCqL+GwlnXDSVQHtxc3h0tqLffDSmE0lQsU0fOGulWHW8dParYUbyPJBF8u7vw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi/jLODhMqG8Dw5AMvgILxwsuTtmfoL+SiKKKFOxBcTfNKm7Wc
-	s8964GkpekOr7atDeMbcuZvlg173tf8vFlKaRn4Qvcvwr4QMhTogfkLKKDExz7TQ4Eo=
-X-Gm-Gg: AR+sD11FQUCUasKarn1cIaEyMcI28xyZHb17dqZR8AeXiT5NtORVP9iHEZD1desYHCN
-	FG6cx5XBS8xUZilYivqk6cYXON9AF/qXBrI3APouqiXwnYXCNt1NxEnpluBBjUirsQhUGYe3w2R
-	cL2mKx6y0kxljd8R3tRYRyNXKTQOHqD8RIVnqg44Hk4I2slcpQYOBD6i5mTOxyMkN1IwH/JgAWn
-	svnq0BhEMvTzbi4uHWH+jSF3iLel1AafBpwku+x8lVuOoNNmh0wYhEB1ahUGidmviydrQAkE/T/
-	41kEcKJvSrEpoJEDXFIztfH+9FlpsVa4YYfHwivCZ9Zifj5bskJj92My9HOhQ4cjZ+WYIqGsoAW
-	c7Nx7rscvRsM0pOUz+06fvpVdtf0v4HfIfpKLUhjvlFodHkU8fxnllTymRgmmC5kGm9wAIH0BSy
-	HgPJ8Q
-X-Received: by 2002:a05:6402:3513:b0:698:3b7c:7e50 with SMTP id 4fb4d7f45d1cf-69f6ab4956bmr2655292a12.38.1784890105421;
-        Fri, 24 Jul 2026 03:48:25 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69f350391d2sm2952122a12.28.2026.07.24.03.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 03:48:24 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>,  Eric Dumazet
- <edumazet@google.com>,  Neal Cardwell <ncardwell@google.com>,  Kuniyuki
- Iwashima <kuniyu@google.com>,  John Fastabend <john.fastabend@gmail.com>,
-  Jiayuan Chen <jiayuan.chen@linux.dev>,  "David S. Miller"
- <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Alexei Starovoitov
- <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>,
-  netdev@vger.kernel.org,  bpf@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf v4] bpf, sockmap: Fix cork use-after-free in
- tcp_bpf_sendmsg()
-In-Reply-To: <20260724103856.3399001-1-nicoyip.dev@gmail.com> (Chengfeng Ye's
-	message of "Fri, 24 Jul 2026 18:38:56 +0800")
-References: <87fr18lmzo.fsf@cloudflare.com>
-	<20260724103856.3399001-1-nicoyip.dev@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Fri, 24 Jul 2026 12:48:22 +0200
-Message-ID: <87a4rgll3d.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="a0Juvjtb"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 1B23D6019C;
+	Fri, 24 Jul 2026 12:49:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1784890181;
+	bh=ALT8cgcDYszf3Lu3zzBXtKjXM2UT90eG8prsUEDa6u8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a0JuvjtbBq8JduKmiap8ZTbd2lj0WCBpYC57kexOV2VlmD3FRJOWxAP1ANAtbHuR6
+	 DL2GYOkQaPSG4kKLjYVA2K7u2iUUSrJLkjw6XIMy3SxSJuViLSn+fU0+LcYaKvnKUn
+	 RBAENSWrU9PD5ky4+M7BsRqBbzXm/IEKLb/MEgNbzQOKzURug2Gjn/J1sW10KTNn4T
+	 6nMH1v+7FJSwi5YueQxa6AYiZaDm97dPoc7L7LwNY3H/jcq5Eivqz1TBZAZsgARaTR
+	 G4gX0NmR8b7JajUpKmYStENW73bvMfbTO8m3PUUqNJeC2O8DcwakwD6sk5IUxfB+Tn
+	 kBHha16nBp/og==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net-next 0/7] Netfilter/IPVS updates for net-next
+Date: Fri, 24 Jul 2026 12:49:25 +0200
+Message-ID: <20260724104932.437729-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 24, 2026 at 06:38 PM +08, Chengfeng Ye wrote:
-> tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which
-> drops and reacquires the socket lock.  Its error path tries to decide
-> whether msg_tx names the local temporary message by comparing it with
-> the current value of psock->cork.
->
-> This comparison is unsafe when two threads send on the same socket:
->
->   Thread A                         Thread B
->   msg_tx = psock->cork
->   sk_msg_alloc() fails
->   sk_stream_wait_memory()
->     releases the socket lock      acquires the socket lock
->                                   completes the cork
->                                   psock->cork = NULL
->                                   frees the cork
->     reacquires the socket lock
->   msg_tx != psock->cork
->   sk_msg_free(msg_tx)
->
-> The stale cork is therefore mistaken for the local temporary message
-> and freed again.  KASAN reported:
->
->   BUG: KASAN: slab-use-after-free in sk_msg_free+0x49/0x50
->   Read of size 4 at addr ffff88810c908800 by task poc/90
->   Call Trace:
->    sk_msg_free+0x49/0x50
->    tcp_bpf_sendmsg+0x14f5/0x1cc0
->    __sys_sendto+0x32c/0x3a0
->    __x64_sys_sendto+0xdb/0x1b0
->   Allocated by task 89:
->    __kasan_kmalloc+0x8f/0xa0
->    tcp_bpf_sendmsg+0x16b3/0x1cc0
->   Freed by task 91:
->    __kasan_slab_free+0x43/0x70
->    kfree+0x131/0x3c0
->    tcp_bpf_sendmsg+0xec3/0x1cc0
->
-> msg_tx can only name the stack-local tmp or the shared cork. Check for
-> tmp directly so a changed psock->cork cannot turn a shared message into
-> an apparent local one.
->
-> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
+Hi,
 
-Thanks!
+The following patchset contains Netfilter/IPVS updates for net-next,
+just a small batch with accumulated pending updates:
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+1) In IPVS, use system_dfl_long_wq instead of system_long_wq, from
+   Ismael Luceno.
+
+2) Add missing .checkentry in xt_tcpmss for IPv6, this is a follow up
+   to a recent harderning, from Florian Westphal.
+
+3) Address a sashiko report in the NAT SIP helper, from Florian Westphal.
+
+4) Tear down flow entries with stale routes using the GC, this is to
+   detect route updates when hardware offload is enabled.
+
+5) Pass master conntrack as parameter to functions instead of using
+   exp->master as preparation work to turn exp->master into a cookie.
+
+6) Move expectation event_mask to the nf_conntrack_expect object,
+   again as preparation work to turn exp->master into a cookie.
+
+7) In IPVS, use kzalloc_obj{s}() typesafe allocations, from Subasri S.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git nf-next-26-07-24
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit 89d8006259b81dd25c962f6cc8d7ab268d6ea426:
+
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-23 14:07:40 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git nf-next-26-07-24
+
+for you to fetch changes up to cca2780b61947fd27ec621541edd0902e193a609:
+
+  ipvs: use type-safe allocation helpers in ip_vs_rht_alloc (2026-07-24 11:45:19 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-07-24
+
+----------------------------------------------------------------
+Florian Westphal (2):
+      netfilter: xt_tcpmss: extend checkentry to ipv6
+      netfilter: nf_nat_sip: rewind offset when NAT shrinks the packet
+
+Ismael Luceno (1):
+      ipvs: Move defense_work and est_reload_work to system_dfl_long_wq
+
+Pablo Neira Ayuso (3):
+      netfilter: flowtable: tear down flow entries with stale dst from GC
+      netfilter: conntrack_helper: pass master conntrack to helper functions
+      netfilter: nf_conntrack_expect: store event cache in expectation
+
+Subasri S (1):
+      ipvs: use type-safe allocation helpers in ip_vs_rht_alloc
+
+ include/linux/netfilter/nf_conntrack_amanda.h | 1 +
+ include/linux/netfilter/nf_conntrack_ftp.h    | 1 +
+ include/linux/netfilter/nf_conntrack_irc.h    | 1 +
+ include/linux/netfilter/nf_conntrack_tftp.h   | 1 +
+ include/net/netfilter/nf_conntrack_expect.h   | 3 +++
+ include/net/netfilter/nf_flow_table.h         | 8 ++++++++
+ net/netfilter/ipvs/ip_vs_core.c               | 9 ++++-----
+ net/netfilter/ipvs/ip_vs_ctl.c                | 6 +++---
+ net/netfilter/ipvs/ip_vs_est.c                | 2 +-
+ net/netfilter/nf_conntrack_amanda.c           | 2 +-
+ net/netfilter/nf_conntrack_broadcast.c        | 6 ++++++
+ net/netfilter/nf_conntrack_ecache.c           | 7 +------
+ net/netfilter/nf_conntrack_expect.c           | 5 +++++
+ net/netfilter/nf_conntrack_ftp.c              | 2 +-
+ net/netfilter/nf_conntrack_irc.c              | 2 +-
+ net/netfilter/nf_conntrack_netlink.c          | 5 +++++
+ net/netfilter/nf_conntrack_tftp.c             | 2 +-
+ net/netfilter/nf_flow_table_core.c            | 2 ++
+ net/netfilter/nf_flow_table_ip.c              | 8 --------
+ net/netfilter/nf_nat_amanda.c                 | 7 ++++---
+ net/netfilter/nf_nat_ftp.c                    | 4 ++--
+ net/netfilter/nf_nat_irc.c                    | 2 +-
+ net/netfilter/nf_nat_sip.c                    | 5 +++++
+ net/netfilter/nf_nat_tftp.c                   | 5 ++---
+ net/netfilter/xt_tcpmss.c                     | 1 +
+ 25 files changed, 61 insertions(+), 36 deletions(-)
