@@ -1,93 +1,96 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778CC377A85
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 18:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1737C0FF;
+	Fri, 24 Jul 2026 18:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784916049; cv=none; b=Vjo53iGVXw2haJr12OYm+eVlsX8qvLG3XZ9nRDMbJtqmJMmXpUDw/EuWrSVnDcmVuYDCN7qqsaJq2Wmgj9Vdtso3ptremE1reBaMO+2aNlZ0l1gtCGtb69Y15zQ6gAhXU3pHE0mlcnegfOCvVW8PKfBiq+YU7EnI+V/Qpja4WBE=
+	t=1784916404; cv=none; b=WBtEhbMLa3Dlfvt2Xt/YHS5DCY62rnIL6KjhNC+iCuEL2gIeZonTXlHZh2/CRg0cqq191xNd+eLUkoF51GxqF+X8H+Y8t6cCo79zQoyGck0C5mwAcO5VShOX9LlD8ucG5OEuVWxRxLxhU/vIpYfXKFFxI+DVQJqcK6tiAwjhc6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784916049; c=relaxed/simple;
-	bh=H6sBLSiu7gO8EIu2O1WJwjZnqJ5rMP2PvvK2yjVRrLA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dt0mwvg/2QhSR2VmOUviSAB1MgCHyqIHMUdf31Pz60bcL0uo2/KPxQbY8DoH98BUiHw1Uu1FlqAUUs/gunEqTy/6YOMOSR7o5QOczlv/bXuNZfujh3Uy2PdKo9ML8kfSqx/LIVU4qc8EGTaA8fsOnvXyAddaCuVg0VZYoMutTSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=hlZzXWme; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1784916404; c=relaxed/simple;
+	bh=awRFZWNycu8fED9XQlY2mBrvcZBHfK/yN6xnf1PLCdE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ReERR+DgSSiwb7WAj/paSCJCpmoq0m7vqvUGUl6VIN0jcSkTHgAM9/Yp5niBmmYXQ/ah9eAG8ttTIXp7an++sZyQZMkjcCJiipLMOWed2pVlJoLj38XE3zKN+5W0zc6YVjRbmsj5fyKOutRF9q6TR7EduZftfMArDX7VFxFzWF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WirR4+4Q; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="hlZzXWme"
-Received: (wp-smtpd smtp.wp.pl 25797 invoked from network); 24 Jul 2026 20:00:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1784916037; bh=H6sBLSiu7gO8EIu2O1WJwjZnqJ5rMP2PvvK2yjVRrLA=;
-          h=Subject:To:Cc:From;
-          b=hlZzXWmewi1euvuhhVHYNRatBPVM7h5GXxwqL6Y7MaqYwUfzFxa9RunB2vizn9/Yh
-           uXZYvfvKLFk6Mvzoz7Y6jLTrXCUEz8P5kB7cX6Tqwh9h4D7YAwIxtoPA+Uxwv6HaJL
-           K9iBNaQIObS9AUpiqUw0rmCucTHrEI+ehTzpGIjIS7jEhvcoFF/pWX57wgVshqolxP
-           h1H1LA/AyNqkwqt5nd/IqfkeHNP6zIZaLFOtdKBEmrMJXq1z5v3W+5npc2OTel3clk
-           Xp6k+F/isCIbOAv2iVayrqMYbxqVioVlJdx5Ge2w5LOKmGwrr5g0s2bDdRQf/jhVvY
-           DJZiICcrBCwEw==
-Received: from 83.24.141.3.ipv4.supernova.orange.pl (HELO [192.168.3.224]) (olek2@wp.pl@[83.24.141.3])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <andrew@lunn.ch>; 24 Jul 2026 20:00:37 +0200
-Message-ID: <848f711b-a268-4d04-bf70-557d319b8da6@wp.pl>
-Date: Fri, 24 Jul 2026 20:00:40 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WirR4+4Q"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 23A971A11ED;
+	Fri, 24 Jul 2026 18:06:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E221160395;
+	Fri, 24 Jul 2026 18:06:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 489AB11C12A59;
+	Fri, 24 Jul 2026 20:06:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784916395; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=psl4QSciuxerlyl1H+sN4WIoJ2pLt48rrk/n/dEpuJQ=;
+	b=WirR4+4Q2CW3tYiDuzSXp3zRL22pphHCJE322ZYO9FjD6aPshaEACWBr4bC9pDkw7WmcIz
+	tbyxPXhPgxRLhM8SA4xTxNlWqSvIqXa8yjY1ng4HLYQ03EnGjJiL/PY8s8SIdYQzkOeyGu
+	Jp6n6a0vzdKwXhuF8FAdg5lnqhH2v5sPbfeckcsk0gf3togYqqW2hqcI2gf/xGylI3np2E
+	q+rYbiyrB9PSETOVfWhn28ofJqlmfZRG0mtat6Se4u+3rVD0OudGZtYVve+OXPDwBOi3Xz
+	Pq388t4XjGhm6oMXkwD2gQV7u5brM3QQFKugVGPqh0WXGBqj299DUNH8oK24pg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ethtool-next v3 1/3] sfpid: print all implemented options
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: danieller@nvidia.com, mkubecek@suse.cz, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jbe@pengutronix.de,
- netdev@vger.kernel.org
-References: <20260719090458.659332-1-olek2@wp.pl>
- <419c2df7-6a46-47da-b4eb-e1a2f34a43cd@lunn.ch>
- <d3665805-2084-432e-b438-4c0e5969ff80@wp.pl>
- <0fe056aa-5725-44d1-934d-c5bf3ed3001d@lunn.ch>
-Content-Language: pl
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-In-Reply-To: <0fe056aa-5725-44d1-934d-c5bf3ed3001d@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 4ae9c1cd808ddd58e7acaaeafc3d673e
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [seO8]                               
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Jul 2026 20:06:32 +0200
+Message-Id: <DK701YU8OWST.2CDXDR5SUJYJQ@bootlin.com>
+Subject: Re: [PATCH net-next 2/2] net: macb: configure ENST registers for
+ all queues
+Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
+ <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
+ <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
+In-Reply-To: <20260724043257.2221030-3-vineeth.karumanchi@amd.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Andrew,
+Hello Vineeth,
 
-On 24/07/2026 02:28, Andrew Lunn wrote:
-> On Thu, Jul 23, 2026 at 11:10:18PM +0200, Aleksander Jan Bajkowski wrote:
->> Hi Andrew,
->>
->> On 19/07/2026 17:54, Andrew Lunn wrote:
->>> On Sun, Jul 19, 2026 at 11:00:35AM +0200, Aleksander Jan Bajkowski wrote:
->>>> SFP modules implement multiple options. Before the “json” option was
->>>> introduced, all options were listed.
->>> Hi Aleksander
->>>
->>> This is a common theme here, the json option. Are the three patches
->>> for things you noticed for devices you have, or have you analysed
->>> those json patches and think you have found all the places it broke?
->> I think I’ve fixed all the broken places
-> Thanks for checking.
+On Fri Jul 24, 2026 at 6:32 AM CEST, Vineeth Karumanchi wrote:
+> The initial "tc" command was not overwriting the reset value of ENST
+> registers if only a subset of queues were configured, leading to an
+> invalid setup. To fix this, configure all queues unconditionally.
+> Unconfigured queues are zero-initialized via kcalloc(), ensuring a
+> complete and consistent configuration.
+
+But if a subset of queues are configured, the remaining queues don't
+have their ENST support enabled thanks to ENST_CONTROL and their ENST
+per-queue register values aren't read? Or HW is broken and reads ENST
+registers anyway? Or something else I misunderstood?
+
+What reset value of ENST regs you observed that caused you trouble?
+That info could make it into the commit message.
+
+> The queue_id field in struct macb_queue_enst_config becomes redundant
+> once the array is indexed by queue id, so drop it.
 >
-> This is one place a unit test would be good. It would be nice to be
-> able to read the SFP data from a file, and then compare the ASCII
-> output with a static copy. Things disappearing would then cause a test
-> failure. Also, we have had issues with the generated JSON not actually
-> being compliment to the RFC specifying JSON. So maybe trying to import
-> the generated JSON using the python parser, or feed it to jq for
-> validation would be interesting.
+> Key changes:
+> - Drop queue_id from struct macb_queue_enst_config
+> - Allocate enst_queue[] based on bp->num_queues instead of
+>   conf->num_entries
+> - Index enst_queue[] directly with the queue number
+> - Program ENST registers for all queues
 >
-> Do you have any time to work on such tests?
+> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-That sounds reasonable. Unfortunately,I have a few things queued that
-I’d like to finish. Maybe in winter I’ll have more spare time and will
-be able to add some tests.
+Thanks,
 
-Best regards,
-Aleksander
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
