@@ -1,208 +1,181 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023073.outbound.protection.outlook.com [52.101.72.73])
+Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6FD315D58;
-	Fri, 24 Jul 2026 11:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784893572; cv=fail; b=b+GtPNl3660H0oBPlwZuz55fBfXQUH0OY/971WRyvTzvCk3xeRyWmb7A34bhEFWi2XewjGbKnflgXLZP94spYqCaPIREzEApWef7uc3yAcdS2Zd6/xl0qwpCUdMHWHFGeFEnBC7F4+3LrvjqOAxL5SfBHploA6DsfZuL8MQ+3d8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784893572; c=relaxed/simple;
-	bh=Qn7GlmcEyU973Y36HRx2cSL3+zWzo2n9IzF4mzuDtTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UZDSw3RpXgdxLwqzV32I+qU4BJPMXzvlR0r890DiqnO3Krm5AD3HfjIFoSVYWzMvTV5BLhxSThM6bRwotswKPEVdlybkjCuCf8wpbs7B3xhI7RrPRrEFWrqd+wbrXfK6X8AYFnyxdZuwuIWKx/W2prxcChXgdDVaE+KdPtd2BvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=xVnRh5GI; arc=fail smtp.client-ip=52.101.72.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="xVnRh5GI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PkWld0SD+AXdAu3b14YzCR+tKP+njTbxdg8okvXqxyNtLG6+d0OXKMr7G30jts7chsgwPhqOwuH4k7H1t+LbOc1GyJ3ZLzLg22i3bpTHAS75RERt926sUuSzSoQIgCVNo5La8Z3GbS9yN33jHjdPppkS/Byve6S6UwcuYUD4AgVeRxghLmvM7bHlaFxan21CeWsNvqmduUXvF0WgSbtYqqua1BkXeAZQBN2QQXfvbK2pZ1+DZuhdA6JhM15CSwkXO3WxzQVisKS5G/QJA5DlStFDD6/yVa9puUvBxXKGsNFcrL4pxK+zKoJeowE/9owirPKokeQXCcYFFO3UR+MLGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LowirimV4TKla9sXoL1YSW9xOqXlum6OCEtXjy4h2zA=;
- b=StIQMR3k4mT9W7l66rMSgxr2gBRj0FeGdMGK7HvFDApchAjk5kSl6+MAZMMUamIFJ06QiecPICbzMK1ytNEYX4qDnBKoAbNHDSLNgRMA0KrBM2PKZZUDSWjRw3JHhTe0Kgiu21Nazl7SVleJzlmcivTdI3vaUTC+s8SiTfrY6xLFcrqRGwbSCtXOLEoKvrlZciU5wFHSocMqa+aMnj0yEaIa/zX3eZjiCNGvVwWKZRHDnUbnWaIJYmWmqrExRAQ0RxYDbWkdJcbuPUhP3N3EEKPPMEnpyJpMDwg8jgz6FTcW9Qs2st+1FgnnWmG49nCZ4Z0KO2VajrguQ9xN4wo+3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LowirimV4TKla9sXoL1YSW9xOqXlum6OCEtXjy4h2zA=;
- b=xVnRh5GIIqteUvt+p1yRAqr7oS8wAJlRSMcn1fmU2cjYzbAuWJeC+Vf7mlcxWFcTe0aEktbTYZx/WEMxsTGk60O3eM2dLJQZq3jg9Bqd18zqKi+mGKhAO7aoRpkqkD14e1ynhx6Sg/ZxQkNoRKnJuf03imVpDhqqewuIEMkqE9J2KoB1cGRAK5JYTuPNxGPXrlKEzN3zPlhmF6GX9t7oMEVvkwmPIluCadGwKcKiYx8An0/IPXfLv5SFYIsCTXz8EKtBU12B5IswOcOf3xG+AOsd2vVyhH5aJE6NWe6kmA/8NmDB6sFxuOgQroWuqXPhNaKkPqbk3ChtXPJc+ReJPg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by VI0PR08MB11775.eurprd08.prod.outlook.com
- (2603:10a6:800:311::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 11:45:55 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 11:45:55 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	stefanha@redhat.com,
-	dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com,
-	bchaney@akamai.com,
-	mark.kanda@oracle.com,
-	ptikhomirov@virtuozzo.com,
-	den@openvz.org,
-	andrey.drobyshev@virtuozzo.com
-Subject: [PATCH v6 5/5] vhost/vsock: add VHOST_RESET_OWNER ioctl
-Date: Fri, 24 Jul 2026 14:45:42 +0300
-Message-ID: <20260724114542.734623-6-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
-References: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1P190CA0001.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:802:2b::14) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34341315D58;
+	Fri, 24 Jul 2026 11:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.148
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784893599; cv=none; b=Oa47lPKVM0uaC2VTLY8sRzAUvdufs0rJ2uRnAkZannLGGb3OZvo060YRIMqw7XKmQFy/Py88vU2EVjyPpT1gRjWVHyIUZgX986zekdkWwCA9MG67tTiURLsEnLv/7LUkhF6w2+0bd5rz03xRYAhZdScHhxX+syO+E8u53OIhWDw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784893599; c=relaxed/simple;
+	bh=QEoBYZwbMR6PjHPHdT5DFom3L87/nFYJfav+a6ipctw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iv34z609JwqoVxdFQBhHZLAoSbyPlcWEsMaAPlUYrS/FkUu0MAK1qQFvOAPtJHeUTsEjGC7SGNTDeF+tVZZ7yJtRSb3FtycUynP2TplCq4bAAM1mj2Djc3Deci44uar/s4KoIi06JmfvitncubGOvAxPhc+FC/c3Xa6kJcY9EqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07437254|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0706852-0.000405561-0.928909;FP=16776813863550584971|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iU6FWiZ_1784893579;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iU6FWiZ_1784893579 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Jul 2026 19:46:22 +0800
+Message-ID: <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
+Date: Fri, 24 Jul 2026 19:46:19 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|VI0PR08MB11775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6177ca94-703c-4b1e-efe3-08dee9791eb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|52116014|1800799024|366016|56012099006|10067099003|22082099003|18002099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	CuQ5qOJ6go5/sv5/7A6CFqu+WVLAOP8iAD2gGLsdjzud8H3BdQrc1sK1/l1sDVWEsyOgUMBqPR0y9Df2fwjzmucXTIjYkLbXpMCPQW3iDkJAYgHUvf4pQpqU3PqkYEcFs+z9Og+ROZqx5A1HJqCCMxjDo1N+YC96sdNxsRQK/Zd1WekVwxVRr8eYuVKGjGx6S/FLeqbo0n4MfUutG05/DXDmcjIBDfcanRuxtSZF+69K4huLo4LK8yaa0g+iy5QF7dv5TaBDH9HBQiIKxrHzPnQXQ7aNAuv2WmJD5B+SHOkOvkeguXG9NMZpxyrcGWFyODRe5UeBa+reXluDuVaBrKPQ8VZYK544VxzuJBIDcd3Ny+FCi2w/1Ub5OMhdBRfC7vRPkPszvZGu6yfK6AkGi/XJhYSrruM/dsZmdj6VtgEotPSIw2xkVKTs8vnEEFq7ND8j0yPGHTTsz6KBr52JbIPM25Qw21taJT29niJNjn8Zsu74ZaNQhH3nYxSC5RG3p3tGLanBEXAfWv6OQ+GnKToLIsNn5Yl7Xe79GIepduPbcTBncB3zAfGbDkzM5ZXUHoiz0EEun2Y+jCTjKfQaoj8z8iKbP6JZcruAC5BHdOllmyIuOAF+vjw/VMUub0GlOdyHItQsrWELjPjozPzE0MzaBuBdFLoSaHezWuf9DKHxpjpm69VI8IDym8mztER/Lx2NrLZBz2FHvpY9WeghOsYjzsAsf5SoxAzx5U3F1dc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(52116014)(1800799024)(366016)(56012099006)(10067099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rL18LN/GK23j1g2G2mDuO0SmQSkUWZ6YCHlBxpXnkVGIdmguOMCPWO33v6xB?=
- =?us-ascii?Q?Q4Su9q3EeZH4om1GwMNhbbuS0/j9fC6ElqjhXETmzdJPO606n/mQpNiSNGHn?=
- =?us-ascii?Q?4ChL2GX7JrgDKAwJAHPyygFEMIGd9ua0iZNvK1WPvQVcrsWKQrSEjFXORoyl?=
- =?us-ascii?Q?uHC+aG3wJqnGh3xYjgXrfXx39dI//Kj7ejNYusoeDHiuk5sgN4BeGp/cLkhu?=
- =?us-ascii?Q?qNaVX1s8frgz6GQPnjjCPf/Bq7XyEczNlkm/9DS0N4l+g8gsLfWr4Fm1Vd4V?=
- =?us-ascii?Q?yoNa9zbUnc3M0lh9RjXFuvFmUl/LenBK8sh+hSnZ1V6qG2rqfjJqSzxz477/?=
- =?us-ascii?Q?e/EOoXbO92uq3WT6CUNnncOsFi+JTwqXJ28ur1Zripy4c1teFoxxmccmI6/A?=
- =?us-ascii?Q?QO9W0aaySmJAon0G6CZYN9WNRZBiL00oBNAob8eKTwKMA8hgk1+PIL7TxoaI?=
- =?us-ascii?Q?JQHTX6eFt6PEyBl5qR21QG6C7T2FiwIhpQ6qJIWgVsP4IIss9pJG+inKPkYO?=
- =?us-ascii?Q?wrJkb1oE0T6Kpto+W7ux+/4W5nFoS+Oebll/hmWRvgRXq16EJsSp/+nA1V3o?=
- =?us-ascii?Q?SdStXtzDm3EIWzrAxzZOhP5KSlOMLuJWG5q7JhONOMR/RCC8T68pNm8fp5jN?=
- =?us-ascii?Q?G6Klz321TDPFtCCR9lhj8W4iukM50mVO3vsNwQ5bEGOaYQpdrv7wGVhQP4St?=
- =?us-ascii?Q?1q4VDcrK7qZxNKBsY/3SJSdHhn/st1J6CgvD+HKrD+4pGR+2e//oHO8a9CA7?=
- =?us-ascii?Q?NasHPvagSO91LWZr6Vzk43D//tf9K+qs+oLq9Zu8aeU6kfs34aOGmzg3JGMr?=
- =?us-ascii?Q?Ee41t95MNSKfH9zIo+r6c24SLm/JXOzBWNNQbi0gsszSdiAoK8fgPbh7uWz7?=
- =?us-ascii?Q?HTJ5i9xJxQpiDY2uXhvgwXfvnebeRsoy2rpytfWjbSrrLZf/GS0J8R42KmE2?=
- =?us-ascii?Q?VELU9ODzJjArEKFFr01u0Y3tJKZRYj1QIFTPgHjpI+5AN0p/neIPcrn/mypF?=
- =?us-ascii?Q?bC0l4EmaIp/pkFu7xK/wX9GJGYPpp1iOIBx9oVfeGDy89UpvQu6R4pHVzsMH?=
- =?us-ascii?Q?500hKj4uyzfRjZoVwMyj/Ec6RCxeaj6Ljd2M4y3L8AaW8hCIA/ySn1nW2KkB?=
- =?us-ascii?Q?Yb1FJY/Fx5M3V0AcTFoFZbwfoqbQRdsNtrhY6aA9H9oufg2ajSMM4NLkEs8t?=
- =?us-ascii?Q?tPrErf+bZLg6Qc/F9EPJO6LzmFVG+Ys0bKfz+B0DB42691eiuQre2kSvY/K9?=
- =?us-ascii?Q?yD3nD7pDcpGU3PJUTZrO3gX3UjSts6HrZevRltzdxV5EBJ34ggekpWNIResq?=
- =?us-ascii?Q?YX4seI0rIswpk0bLSJC3Gl7MGJaq/fKgGTKbZp/2B7r+cRL+MQNoaJjQ4L/Z?=
- =?us-ascii?Q?lV06HnhyCKL+DknzvDKOamLkwnpKTzBeqy/qqwpcrfMjPU6tfYTK1n+Sg0OG?=
- =?us-ascii?Q?gY2lDJTZrCKYDAUGIeE1MHiuQ1BkAnIv1Vk9oRW6hh1xsBEW9EBbsoM8CYgf?=
- =?us-ascii?Q?I3F42GYmJKrtt5IU75f7qfS9LEUOZKwUjxbz8TgFbJjaZMcgznhUZ9KRIPK2?=
- =?us-ascii?Q?5O7N8R4x9uqOfw/BM+8TrD57CvksyVvMOv6c65P4L1P1U6ymifl59iP4RQDp?=
- =?us-ascii?Q?3iyosmil9C8cT9YmZEk6o2vRWFPhoO/BBQGR+oB2TR15fEY7kRm1/oTVy3nB?=
- =?us-ascii?Q?lg5dU8T7Tvrt+RpELKeDqrKehqKbm/JN0P7qcvrHS+WjhUZEvNfE9+ruSqmO?=
- =?us-ascii?Q?3Eh+k5aqLPFJz0VR9yEO49LkOnjHtOc=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6177ca94-703c-4b1e-efe3-08dee9791eb4
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 11:45:54.9958
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ndd9Kk+NdgYG/e+OOJWPmGp3sq4N+13GIICy1L+npeKyNj2yzr9cRI1k/VXXwdmqqryJnEBfUcPyz/cf4XN/ZZEFDbciAaQnO+EWRHgbKsw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11775
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
+ <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
+ <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
+ <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
+ <47d31704-e57b-4828-8c8d-0438ef43e49a@motor-comm.com>
+ <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-This ioctl is needed for QEMU's CPR (checkpoint-restore) migration of
-the guest with vhost-vsock device.  For this to work, we need to reset
-the device ownership on the source side by calling RESET_OWNER, and then
-claim it on the dest side by calling SET_OWNER.  We expect not to lose any
-AF_VSOCK connection while this happens.
 
-To that end, unlike the release path, RESET_OWNER keeps the guest CID
-hashed: established connections survive, and host sends issued while
-the device is between owners simply stay on send_pkt_queue until the
-next device start drains them.
+On 7/23/26 22:27, Andrew Lunn wrote:
+> On Thu, Jul 23, 2026 at 05:28:39PM +0800, Kyle Switch wrote:
+>>
+>>
+>> On 7/22/26 21:18, Andrew Lunn wrote:
+>>> On Wed, Jul 22, 2026 at 04:06:31PM +0800, Kyle Switch wrote:
+>>>>
+>>>>
+>>>> On 7/21/26 22:18, Andrew Lunn wrote:
+>>>>> Just checking something here....
+>>>>>
+>>>>>> +/**
+>>>>>> + * ytphy_write_top_ext() - write a PHY's top extended register for YT8824
+>>>>>> + * @phydev: a pointer to a &struct phy_device
+>>>>>> + * @regnum: register number to write
+>>>>>> + * @val: register val to write
+>>>>>> + *
+>>>>>> + * Returns: the value of regnum reg or negative error code
+>>>>>> + */
+>>>>>> +static int ytphy_write_top_ext(struct phy_device *phydev, u16 regnum,
+>>>>>> +			       u16 val)
+>>>>>> +{
+>>>>>> +	int ret;
+>>>>>> +
+>>>>>> +	lockdep_assert_held(&phydev->mdio.bus->mdio_lock);
+>>>>>> +	ret = __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, regnum);
+>>>>>> +	if (ret < 0)
+>>>>>> +		return ret;
+>>>>>> +
+>>>>>> +	return __phy_package_write(phydev, 0, YTPHY_PAGE_DATA, val);
+>>>>>
+>>>>> The _top_ registers are in a different MDIO address, and are shared by
+>>>>> all PHYs within one package. Correct?
+>>>>
+>>>> Ans: yes, the understanding is correct. The top registers is shared by
+>>>>      all PHYs.
+>>>>
+>>>>>
+>>>>>> +static int yt8824_write_page(struct phy_device *phydev, int page)
+>>>>>> +{
+>>>>>> +	int old_page;
+>>>>>> +	u16 data;
+>>>>>> +
+>>>>>> +	old_page = ytphy_read_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG);
+>>>>>> +	data = old_page & (~YT8824_RSSR_SPACE_MASK);
+>>>>>> +	data |= page;
+>>>>>> +
+>>>>>> +	return ytphy_write_top_ext(phydev, YT8521_REG_SPACE_SELECT_REG, data);
+>>>>>
+>>>>> The page register is in a top register. So when accessing a paged
+>>>>> register, all other PHYs also get swapped to that page. And so it is
+>>>>> necessary to block all other PHYs from accessing registers, until the
+>>>>> paged access if completed?
+>>>>>
+>>>>> If i have that right, that is an odd hardware design. Since this is an
+>>>>> odd design, it deserves to be documented. Locking is hard, and it is
+>>>>> made harder by not having good documentation about the design of the
+>>>>> locking scheme. 
+>>>>
+>>>> Ans: Yes, the current operation involves locking at the beginning of the phy8824 driver
+>>>>      ops and unlocking at the end of the ops function, that is why so many __function 
+>>>>      involved in this driver, but there are also some special cases that need to be reconsidered 
+>>>>      such as using  phy_read_poll_timeout().Can you give me some suggestions on the lock scheme?
+>>>
+>>> So, that is a really bad design. As a software engineer you should go
+>>> talk to your hardware engineers and tell them what is wrong with this
+>>> design. Hopefully they will then fix it for the next generation, move
+>>> the page register into the PHYs own address space, a page register per
+>>> PHY so removing this locking.
+>>>
+>>>>>> +	old_page = phy_select_page(phydev, reg_space);
+>>>>>> +	if (old_page < 0)
+>>>>>> +		goto err_restore_page;
+>>>>>> +
+>>>>>> +	if (reg_space == YT8824_RSSR_UTP_SPACE) {
+>>>>>> +		ret = __phy_read_mmd(phydev, 0x1,
+>>>>>> +				     YT8824_UTP_TEMPLATE_MODE_CTRL);
+>>>>>
+>>>>> What address spaces are paged? Every other design i've seen only has
+>>>>> pages of C22 registers, since you only have 32 of them. But looking at
+>>>>> this code, does this hardware also page C45?
+>>>>>
+>>>>
+>>>> Ans: To access the mmd register of UTP, must first select the page as UTP. I'm not sure if this is 
+>>>>      the answer you want.
+>>>
+>>> So it sounds like each MDIO address on the bus actually has two full
+>>> PHYs on it, and this page register allows you to swap the accesses
+>>> between the two. Are there two sets of MDI pins, one for each PHY?
+>>> Can both FIBER and UTP be used at the same time? Could i configure
+>>> both copper and fibre parts, see which gets link first, and then
+>>> declare that the winner? Maybe you should actually be exposing both
+>>> PHYs, with a mux between the MAC and the PHYs. This is something
+>>> Maxime has been working on.
+>>>
+>>> This whole concept of one shared register controlling page access to
+>>> all PHYs within the package sounds so wrong, i would go talk to the
+>>> hardware engineers. Maybe you are missing something, the software is
+>>> not doing what the hardware designer intended? Because this is so
+>>> ugly.
+>>>
+>>
+>> Ans: Perhaps there is indeed a misunderstanding here. The working mode 
+>>      of phy8824 is"mac <---> usxgmii ----UTP". The panel ports of 
+>>      PHY8824 is always UTP.
+> 
+> So what is all this code about YT8824_RSSR_FIBER_SPACE for?
+> 
+> I'm assuming this device can be used similar to the marvell
+> m88e1111. It can either be used with Base-T UTP, or it can be
+> connected to an SFP cage. It uses different pages to configure UTP vs
+> fibre. Your driver seems to have a similar structure.
+> 
 
-Since the device stays reachable through the CID hash, the lockless
-send/cancel paths can race with the worker teardown in
-vhost_workers_free().  The previous commit ("vhost: synchronize with
-RCU readers when freeing workers") makes that safe.
+Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
+     or combo mode. However, the PHY8824 is only used with UTPs, and 
+     its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- drivers/vhost/vsock.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+     RJ45 <----> UTP0 <------>
+     RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
+     RJ45 <----> UTP2 <------>
+     RJ45 <----> UTP3 <------>
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 87309c68af15..906cec7b5afd 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -903,6 +903,36 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 	return -EFAULT;
- }
- 
-+static long vhost_vsock_reset_owner(struct vhost_vsock *vsock)
-+{
-+	struct vhost_iotlb *umem;
-+	long err;
-+
-+	mutex_lock(&vsock->dev.mutex);
-+	err = vhost_dev_check_owner(&vsock->dev);
-+	if (err)
-+		goto done;
-+	umem = vhost_dev_reset_owner_prepare();
-+	if (!umem) {
-+		err = -ENOMEM;
-+		goto done;
-+	}
-+	vhost_vsock_drop_backends(vsock);
-+	vhost_vsock_flush(vsock);
-+	vhost_dev_stop(&vsock->dev);
-+
-+	/*
-+	 * vsock keeps the CID hashed across RESET_OWNER, so a lockless sender
-+	 * can still reach the device while its workers are freed.  Pass
-+	 * sync=true so vhost_workers_free() fences RCU readers and flushes
-+	 * before freeing them.
-+	 */
-+	vhost_dev_reset_owner(&vsock->dev, umem, true);
-+done:
-+	mutex_unlock(&vsock->dev.mutex);
-+	return err;
-+}
-+
- static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
- 				  unsigned long arg)
- {
-@@ -946,6 +976,8 @@ static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
- 			return -EOPNOTSUPP;
- 		vhost_set_backend_features(&vsock->dev, features);
- 		return 0;
-+	case VHOST_RESET_OWNER:
-+		return vhost_vsock_reset_owner(vsock);
- 	default:
- 		mutex_lock(&vsock->dev.mutex);
- 		r = vhost_dev_ioctl(&vsock->dev, ioctl, argp);
--- 
-2.47.1
+     It is similar to phy8821 driver in motorcomm.c, with the difference 
+     being that one has one UTP port and phy8824 has four UTP ports.
+     YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
+     would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
+     YT8824_RSSR_SERDES_SPACE.
 
+>        Andrew
