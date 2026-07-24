@@ -1,187 +1,207 @@
-Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441E938AC88;
-	Fri, 24 Jul 2026 19:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F3345EC0
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 19:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784920380; cv=none; b=bX+XxZ+GrIrkDT+fgcsf6bJvID0kBjmiovFUs4NWdBNXZRsw2CTT89OShGGQ1UxWj/wHwCUDvrRVv9fUyHOKgIi96yFO8uqbIX7zMGI54EDWuE0nsSkSKrqMo/BacYbczNdMnRfmr0AV78DwHLdwng2vsNVYSeYPCj+dK+RH8Lw=
+	t=1784921100; cv=none; b=Qk0sPv3Zml7lqUF0FomVvGYR7XMbiPVwHgygy1SJCsukNxA7ZZlXXsbJ+Jv9uVuTyBpRNu+6hQJlv+TnqSkIcdyHz7mH5+PWn1E9WNL4ErqQA8xOglPGI11rQTgIYEOwTPXr6wa/OZd0FU2I6QYsSiLszKBEMFjBDcEeQ6SKXcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784920380; c=relaxed/simple;
-	bh=sa9rLcmj31NVq/qF+eBU0MswrMLIolVsI2/RTadHn0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SS8gdj6CHd7ASWg4U2mSlyLgnbSMRQmKNbWBv49JWtkpws7mT10acA2RlGBgbCf/kArGdG6bGtZ7jWddrUimEbrTKYwYYcpDEgPwLPwuuB50KbUJ/UV5mZwuEmm+83Ue0teMN/BaPHPTBZNpb98pCopR2lnA5Nj/UVBqEJrMVRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=VBakHQ9S; arc=none smtp.client-ip=213.165.83.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
+	s=arc-20240116; t=1784921100; c=relaxed/simple;
+	bh=rdE3W7CmF0f18Z8ujjgPp/L0n/nuyGNjv1rF5+exiCA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uu9x+BqfCRnAEO43m6UHOXEy5XMASl9EeTQCwfCorYy9fPhYCxpL46HrNwVA4GyRxyMAUkA+FNiiebZn9JfEU9w2dbwwhb0L5fy1gpa1obme/nGcw2hmwjjmlAkuql+2WuBClglV1FOx33xQKiXcCrTXHYuDB3UshFmKpdbeaMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=R6dY8+jb; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="VBakHQ9S"
-Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
-	by os-cillation.de (Postfix) with ESMTPSA id F0FDDC0381;
-	Fri, 24 Jul 2026 21:12:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
-	s=202409; t=1784920376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Qki56/0rJqhGdoQVgC7oeD6qgG42mAGRt9AiirHKEl0=;
-	b=VBakHQ9SUtViopQofAqkzI+/Gy1OPwBotn1r6pZKO0CWOqqpMhm+F2OD317UwK2r3Ia/dU
-	2OsunUIBVpMg3BHihf42m6/LMBgTfn77iUcn/RaodS0+Zwra5d6Mcak52JkF3Y4d5RlqDT
-	cKApezkXK1Q/7jCo/U34GUbZqauH0ey8gGh5TgN9tE8vcu9LDX8xDDlvaXuMSD9cX3RjdB
-	QW+cYQNYZG+t6Sfh6ANMtRJdhytDTARWCYbhP7TXWj+f23kCGXRKYna5y7y2pjQtdL4kTY
-	9aWdlJJFJnsUoJw9ifKVuSuVmVCkid7gCptLw9EcarwyKCB4IBxTQ0NFSMbHHQ==
-Authentication-Results: os-cillation.de;
-	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
-Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
-	by core2024.osc.gmbh (Postfix) with ESMTPSA id 8B01D200952;
-	Fri, 24 Jul 2026 21:12:55 +0200 (CEST)
-Message-ID: <d3f65083-896e-4f79-87fe-95cace11c5eb@os-cillation.de>
-Date: Fri, 24 Jul 2026 21:12:55 +0200
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="R6dY8+jb"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8fcc43c48f7so10086746d6.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 12:24:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1784921097; x=1785525897; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SU106wu4bG5wZ846X/g89puUx7TATUDGTIXfzQG0eEc=;
+        b=R6dY8+jbmDEutZ5l5ACssETP9cMIJG2MDwAhRLqlnoUTXRPQpMeO4hlUD1w0lBZKAG
+         fNVfNCPqSBuX/MO4WQD8xsSY7X54fLauV09VC9Yvc5O8wNO0UOWy/CdVFnZtj7qglDik
+         LAv8QW03SMm3PY8tZhMiXyYqks2l7XGIy7M+Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784921097; x=1785525897;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SU106wu4bG5wZ846X/g89puUx7TATUDGTIXfzQG0eEc=;
+        b=o3KIIryvnHwac1tLvjR5lgYrbxs9lNfdpWHNqcFnp/oWdBaEM24vKHENRExsNwpgwz
+         ZroVvE7xrCcZ3CyRgYsgd3MtljeRxrJIuyfJDsIHIz1FtMHxA4WxpRZt7JxrQoAxvTFs
+         LeINouYA+ZqYQ5heOq2J16VqYrv+TC8ueia/Lo+/ngY6WcjpKVSNi7uwKbYQ9CHf6sOq
+         SLABnMBb85DqOeFUnU6keBZLGg/FbiWfY8psvIQXXjn102TIMNIrBvZ25Q94d/F8W9Cd
+         Tu9A3jROwnEkm6X57zQG3gIc/U/tz8NG9a/dSz+Mrt36BZoyTfXEnskj9MFkA29nL1hZ
+         l7sA==
+X-Gm-Message-State: AOJu0Yxo90km+fmQ5vcJBOXosTtXAf3lC2MhsJIVXbFY2kFBkbhU6Vqq
+	VRmCDmLuH39oLzhx4UOBauK+9qX/Dj8UmkRy1e1MU2DZzjokld4yY59Wuld96Nd670djpIBZegg
+	Be4U=
+X-Gm-Gg: AR+sD12WNziMfR13IbGAV8ibGNzL2cK6m2PLKujwXF7HKo8zf9tY6kl0xiRIHuE2bKs
+	iz+0rZWxDG88PclOXARA6CnIvRY+umqfxzPCtbaq2FTHOLe2KOcyuYcnDi7YDd4Hmv9fnUrRtaD
+	oToFy0Ii9jpeRHvNEOgEXvw9ZYuVLh5Ne9fi2yiK+6EcpVWUs7/ZAdae86nq+oCdexWpSrlWolD
+	1vbiRG24vBtT1Pjv4dIUv2RV9NaUJ3sSkbarOn1vMVPKWtRHAb6g8YUGy/2UNLrneAV0LmhY/WI
+	l5+1somnb2fKZuVcDzjpE/yAeM92cT7x+Ftb5fqgPU9dEMQI1/mwi89/qYQUFEYUixA92U0OcIJ
+	ryo3uEB7i1MdWkz7m9MMl7+fLgDNcImXWL7G486LShzHY+hV11+xBOd4nWKIyt7Wp0cPSWeI=
+X-Received: by 2002:ad4:5e8c:0:b0:8ff:650d:2b99 with SMTP id 6a1803df08f44-907ca135787mr104414936d6.0.1784921097042;
+        Fri, 24 Jul 2026 12:24:57 -0700 (PDT)
+Received: from majuu.waya ([184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907e854e3a2sm4859996d6.17.2026.07.24.12.24.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 12:24:55 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	john.fastabend@gmail.com,
+	jiri@resnulli.us,
+	zdi-disclosures@trendmicro.com,
+	santosh.kalluri129@gmail.com,
+	victor@mojatatu.com,
+	security@kernel.org,
+	stable@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: [PATCH net v2 1/1] net/sched: cls_route: fix fastmap use-after-free and preserve netns teardown ordering
+Date: Fri, 24 Jul 2026 15:24:41 -0400
+Message-Id: <20260724192441.892133-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] crypto: pcrypt - Remove pcrypt
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20260713223234.24812-1-ebiggers@kernel.org>
- <20260713223234.24812-2-ebiggers@kernel.org>
- <37ecba68-947a-45ad-9ec4-361facc06a05@os-cillation.de>
- <20260721195004.GA3383223@google.com>
- <19613c3e-9756-45fc-84b6-b650ba3723a7@os-cillation.de>
- <20260722194023.GB2118@quark>
- <10430138-05b6-46b8-b9d2-7cad5c371fc4@os-cillation.de>
- <20260724185116.GB1572592@google.com>
-Content-Language: en-US
-From: Hendrik Donner <hd@os-cillation.de>
-Autocrypt: addr=hd@os-cillation.de; keydata=
- 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 li+2
-In-Reply-To: <20260724185116.GB1572592@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The route4 classifier maintains a 16-slot fastmap cache that stores raw
+struct route4_filter pointers indexed by (id, iif). The reader
+(route4_classify) populates this cache via route4_set_fastmap() for every
+classified packet that hits a filter. The writer (route4_delete,
+route4_change) clears the cache via route4_reset_fastmap() before
+RCU-deferred kfree of the filter.
 
-On 7/24/26 20:51, Eric Biggers wrote:
-> On Fri, Jul 24, 2026 at 08:19:02PM +0200, Hendrik Donner wrote:
->>
->> so i'm now on 7.1.4 with
->>
->>    PCI: imx6: Keep i.MX6 Root Port MSI/MSI-X Capabilities with iMSI-RX to
->> work around hardware bug
->>
->> on top to be able to tune queue settings. And to have a working ethernet
->> in the first place, without the patch the NETDEV WATCHDOG resets the
->> card all the time due to queues stalling. But now more than 1 CPU are
->> serving IRQs.
->>
->> With pcrypt
->> (seqiv(rfc4106(pcrypt(gcm_base(ctr-aes-neonbs,ghash-lib))))):
->>
->> Upload:
->> [  4]   0.00-60.00  sec   901 MBytes   126 Mbits/sec
->>
->> Download:
->> [  4]   0.00-60.00  sec  1.23 GBytes   177 Mbits/sec
->>
->> Without pcrypt
->> (seqiv(rfc4106(gcm_base(ctr-aes-neonbs,ghash-lib)))):
->>
->> Upload:
->> [  4]   0.00-60.00  sec   679 MBytes  94.9 Mbits/sec
->>
->> Download:
->> [  4]   0.00-60.00  sec   674 MBytes  94.3 Mbits/sec
->>
->> So counterintuitively pcrypt matters more again. I repeated the tests a
->> few times, those numbers are fairly representative. Every run is over a
->> 60 sec window.
-> 
-> Thanks for trying it.  Perhaps this is related to the iperf3 test using
-> only a single flow?  Does that reflect the real-world case for you?
+This creates a UAF race:
+ 1. Reader walks the RCU-protected bucket chain, finds filter f
+ 2. Writer unlinks f, calls route4_reset_fastmap(), then tcf_queue_work()
+ 3. Reader calls route4_set_fastmap() and writes f into the cache
+    *after* the writer's reset, caching a pointer about to be freed
+ 4. After the RCU grace period, kfree(f) executes
+ 5. Next classified packet on the same (id, iif) tuple hits the stale
+    fastmap entry and reads f->res from freed memory
 
-probably flow related, i would need a different test setup to create
-different flows, but for example single file downloads matter to our
-userbase.
+Reproduced with an mdelay(100) accelerator in route4_set_fastmap() and a
+concurrent add/delete stress test (provided by both zdi and Santosh).
+Both triggered KASAN slab-use-after-free reports in the route4 fastmap
+paths.
 
-> 
-> I'm also curious whether you're particularly attached to AES-GCM, or
-> whether you've considered switching to ChaCha20Poly1305 which would be
-> much faster on that CPU.  This could be done either by switching to
-> "rfc7539esp(chacha20,poly1305)" within IPsec, or by just switching to
-> WireGuard.
-> 
+Fix:
+Move the fastmap flush to the writer side under RTNL, ordered after
+synchronize_rcu(). This ensures stale fastmap entries written by
+in-flight readers are visible (readers have finished) and no new readers
+can find the unlinked filter, so the subsequent route4_reset_fastmap(head)
+flushes them safely while head is valid under RTNL.
 
-Unfortunately the technical specification the system has to comply to
-says IPSec and AES-GCM and/or AES-CBC with HMAC-SHA256. CBC is on its
-way out though and barely seen in production anymore.
+In route4_destroy() the synchronous __route4_delete_filter() fallback is
+retained for the case where tcf_exts_get_net() returns false (netns is
+being torn down in cleanup_net()). The trailing synchronize_rcu() before
+kfree_rcu(head) drains any in-flight readers first, so the synchronous
+free is safe. Removing the fallback and unconditionally deferring via
+route4_queue_work() would race with tc_action_net_exit(): cleanup_net()
+does not flush the tc_filter_wq workqueue, so the deferred work could run
+after the action idrinfo has been freed, causing a use-after-free on
+idrinfo->lock in __tcf_action_put().
 
-> If none of those are options for you and you do want pcrypt to be kept
-> around, could you confirm that you're solely using 'crconf' (run as
-> root) to enable it, and in particular you're not relying on the
-> misfeature of also being able to enable it as an unprivileged user using
-> AF_ALG?  We can keep it around for a bit longer if really needed, but
-> the unprivileged stuff definitely has to go.  We should also keep in
-> mind that pcrypt does not get tested very well (as the crypto self-tests
-> just test serial use) and historically has had a lot of issues.
-> 
+Note: This fix will slow down deletes and filter add/replace, since
+synchronize_rcu() is called under RTNL in route4_delete() and
+route4_change(). An alternative fix would have been to introduce refcnt
+to the head struct but that is a much bigger patch. We justify this as
+a reasonable fix.
 
-For configuring the IPSec related templates only crconf is used in
-production. On that kernel configuration AF_ALG is completely off.
+Fixes: 1109c00547fc ("net: sched: RCU cls_route")
+Reported-by: zdi-disclosures@trendmicro.com
+Reported-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
+Suggested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+V1->V2
+1. Fix based on feedback from the Sashikos
+https://sashiko.dev/#/patchset/20260723105210.817079-1-jhs%40mojatatu.com
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260723105210.817079-1-jhs%40mojatatu.com
 
-Test environments use CONFIG_CRYPTO_USER_API_RNG only, everything else 
-concerning AF_ALG is disabled.
+Restore the "if (tcf_exts_get_net(&f->exts)) route4_queue_work(f);
+else __route4_delete_filter(f);"
+preserving the tcf_exts_get_net() contract for netns teardown.
+---
+ net/sched/cls_route.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-Regards,
-Hendrik
-
-> - Eric
-
+diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
+index bd6f945bd388..c7d0164c1e9f 100644
+--- a/net/sched/cls_route.c
++++ b/net/sched/cls_route.c
+@@ -307,6 +307,19 @@ static void route4_destroy(struct tcf_proto *tp, bool rtnl_held,
+ 			kfree_rcu(b, rcu);
+ 		}
+ 	}
++
++	/* All filters are unlinked; no new reader can find them on the
++	 * chain.  Wait for in-flight readers that may still hold a filter
++	 * pointer and have published it into the fastmap after we unlinked.
++	 * Then flush the stale entries while head is still valid under
++	 * RTNL, matching the route4_delete() pattern.  This also protects
++	 * the synchronous __route4_delete_filter() path above: when the
++	 * netns is dying, tcf_exts_get_net() returns false and the filter
++	 * is freed directly, but only after all readers have drained.
++	 */
++	synchronize_rcu();
++	route4_reset_fastmap(head);
++
+ 	kfree_rcu(head, rcu);
+ }
+ 
+@@ -334,10 +347,16 @@ static int route4_delete(struct tcf_proto *tp, void *arg, bool *last,
+ 			/* unlink it */
+ 			RCU_INIT_POINTER(*fp, rtnl_dereference(f->next));
+ 
+-			/* Remove any fastmap lookups that might ref filter
+-			 * notice we unlink'd the filter so we can't get it
+-			 * back in the fastmap.
++			/* This code path assumes we have the RTNL lock.
++			 * We wait for in-flight readers that may still hold
++			 * the filter pointer and publish it into the fastmap
++			 * after we unlinked it.
++			 * Once done, no new reader can find the filter on the
++			 * chain, so the only stale fastmap entries are the
++			 * ones those readers just wrote. Flush them now
++			 * while head is still valid.
+ 			 */
++			synchronize_rcu();
+ 			route4_reset_fastmap(head);
+ 
+ 			/* Delete it */
+@@ -558,6 +577,15 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
+ 		}
+ 	}
+ 
++	/* Assuming RTNL lock. Wait for in-flight readers that may still
++	 * hold a filter pointer and publish it into the fastmap after we
++	 * inserted the new filter (or unlinked fold when replacing).
++	 * Once they are done, flush the stale entries while head is still
++	 * valid.  Needed on both the creation and replace paths: on
++	 * creation, readers may have cached a ROUTE4_FAILURE entry for the
++	 * (id, iif) tuple that the new filter now matches.
++	 */
++	synchronize_rcu();
+ 	route4_reset_fastmap(head);
+ 	*arg = f;
+ 	if (fold) {
+-- 
+2.34.1
