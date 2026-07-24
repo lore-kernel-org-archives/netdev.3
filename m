@@ -1,125 +1,85 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60EC3B3895
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2313FFFAD;
+	Fri, 24 Jul 2026 21:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784928485; cv=none; b=SjvMp9/AyxTKX/hvldGQviytvQqiD9Uzn2Y2fR05pd7nx9kTDuYQSTl1rJJlX0qcmMINNSXx9KCxGTQ+8Bher64rU2wYTP6aQ3eV6/q5mn/2r05iW46x8S5s2RenmZdiDqJFv9cPdmKHH7A8iQ8347SOOjPyeIjanu1nYUeV07Y=
+	t=1784928606; cv=none; b=F3KFwdAwP4fu005cSFXq5nC1UyGIdWOLOzha4mzkWmTMs+/kRAdhO6hPnnzk5J6XNZt1VBObgybDR9xRxzOHEx8NZprdVC6HkZJ3rNRoaWC4IG59eT4UvvhZ3tABAUldION+MnFWvmRdvdb9sLNGHimN3dA2lKBiMQCWC6Bv/oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784928485; c=relaxed/simple;
-	bh=d7+ZA28gDUEzj5iD4x7F6ajfXyIC1ya4ecZFfAjKLJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cV9/86nxZ1gTz5kQPwjFgIgDZtARkwIlCHp5R8pBAPLb/gQVxcaCU9NSNvrfFCBnpBfxbjwkpsv5caz1bPIFrkZOzX/IlsCZxCreAiYeAollDXbPNznBXOScBJTkG4YeLG5QkymkFm2smwJtnRpnaSw3W3jnKw1XwSXZD/S0vm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTd1TKeg; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784928606; c=relaxed/simple;
+	bh=5An+9WSGx2619TSNR0iJwvJkerAuMx6A5cmJtW0LU6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UOOeTltNZNyD4HuoRfkvOrvzXalkO6GEnHGoNvpLsaLSPwvvt9hLjmoKjACXnVSmU61kYeAMJ6geRi5XbhBiePotorCNM7lg52lMK+bnXUnX2FZB8f3tbfp1fpltDhH5i5hKodwnFFk3c6jUQsdurjon+r3N/SmY7ZERyASXc0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcY1My5Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTd1TKeg"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4957799b92fso1053965e9.1
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:28:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784928482; x=1785533282; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d7+ZA28gDUEzj5iD4x7F6ajfXyIC1ya4ecZFfAjKLJk=;
-        b=mTd1TKegT1M0AevtMMqqZ5qMfpK7raCR7X3cekfKcrYxJDz8BVA4I+mWT82RTSj4kr
-         yQMdneP0QMcWhwn3yd0BXo2N5qfISYLLX8vufGV7cfc7Vwf66HJtNwN4GZ5MGukqINY5
-         MA4kV0tBEMFI050/ChuMI8yqreIKRRlRK/Ym/+Gmp61iP5cg47JYdZFQNA+Uv9+gfrKP
-         kzbQl6TbL5rvP8BULhQo4jZKMTnEKrZhq3xRIOOzGrCTAYHTSeVuD+zzqTyZqZsWzwih
-         tJyk2zK10hG61CeAd5TNMYEiKAfe+hObhMAw0cDkE5bzeSX6opBRBXLlR9IdAfUrYC5i
-         PsEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784928482; x=1785533282;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=d7+ZA28gDUEzj5iD4x7F6ajfXyIC1ya4ecZFfAjKLJk=;
-        b=RyqtN+BN/PN2eIwpprG01haxPaRDU89grWW3ktT+psrjw3ZxbQ07hE1GjdLMMhpZ28
-         eBsUorym/o5c+b+w0XaNTz3zhKhrS/iSYleKvR1Ecwyqq+scu1dUUnafZdL+Hss0E/Fw
-         D15N+SM0f9Iy9NMBqir4GP6MugCFEJxBR1M2Z7qK+BuU/ah7vpG829S6Y2xF4Sw8Lh8E
-         1aptuQ3mpXL6yx1L8Y3PcIa5CRWLFPfRO1kNWL2UKOhWRJd0WSNSxh9sZ4XtyzP7Wpct
-         xsPoC3/Ip0OWUMude3L2cL1WZCJP0iDCHoKhQq8cYIkTltcPUDRmwDmExwGgbWkAo21s
-         8hbg==
-X-Gm-Message-State: AOJu0YyUWOtfl529543pmeRO2DCFFGXxpTuneRDQLsBoEF2IGm74TbDu
-	GmVtfyVYc9IUbcpFMhX1ZdQZYykgq9b03FyX5BW5wUFHPSJDsq1Umh7v
-X-Gm-Gg: AR+sD10WjPOcXubcpzQS9WeMP8uWSZbEseA1kT3mnm+7v2i+7bgd2dj684/fSRqmDVG
-	Bjjp1SXkPH467IvnOiHdPWwcBDIKLWbQrgmKjlv9e4wY1ZiDqKtRlnnYShQnaI3YmkxPwkeUIM/
-	57f1a6w0HQQw6bYErWI1dtInAHJRne+4CQSMvbLJewz31bRkJXZjJrdBAW3Fk/cIe6GpK3CsoKL
-	LSuJYDwNrSw4glQVK5EBrBOpk558ssC8BhPYdFZsRcdyW1BdXLSptPMP+ktVTgYKu7cgqy8U4My
-	G5lpZxJ6ELhj/pjYFWA3rBFf8D36qJrAPuN+VoYbRKECYsOhpPN/xdSmjquee7jFgWYQSFNCKMZ
-	nFe+ZvUAttt4GnKY2xjo/z/c1YMo143pGY2+eHA58/9QHMSUHzusG33m4YPDlPneB4GYhGlH12a
-	RkZn3dF3tgnATu7afSEbeC1E4rkRr1RpIrRl4MnpAREfGxVdRIZ+iAFYW8OAt+dgc+HFnoTxBdy
-	SOq2GCoUmYmw3jXj/aEBMtbWAMelg==
-X-Received: by 2002:a05:600c:4eca:b0:492:1e4d:d44b with SMTP id 5b1f17b1804b1-496b5766ae7mr38005e9.8.1784928481824;
-        Fri, 24 Jul 2026 14:28:01 -0700 (PDT)
-Received: from [192.168.2.69] (dynamic-077-181-161-038.77.181.pool.telefonica.de. [77.181.161.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4858e28sm18027135e9.2.2026.07.24.14.27.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2026 14:27:59 -0700 (PDT)
-Message-ID: <cc09e554-45fa-4b75-8937-7da15432a886@gmail.com>
-Date: Fri, 24 Jul 2026 23:27:57 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcY1My5Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DAC1F000E9;
+	Fri, 24 Jul 2026 21:30:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784928603;
+	bh=gbVBUykhRTMTCv/pcLItA/njGTwSduEcLdsDQAdKLvE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dcY1My5YAnKm9lrlAe9AkBnVNoKTg+LjQZSFSEtrrsbIe4ISCe95lqbKsVi0zkprl
+	 DEOAZHkRY08fpYrwLG/fGpqxrYkWqi59hKgjRCr6GLz+rGfd0sgEz/Lm1hZrbOnbvo
+	 j3Dq3EbM3CzJlaxn0jsudSRt6k5xqfjTKkfY+LlUEFJjYoEDfVAy8Mj+yFUrGH97hb
+	 CHwYcsZPSzAQrgS3h5AnFv1TwdgmQOmqr8o242dVsq+coOLwEN4d6eYQTAwSX4s3Xa
+	 GHz251yV3RIrCjHustUJC9T2M+3sYThMBKMWbahBT0EKU82w1FbIDOcGLcRjb7vLtv
+	 DxGSY+0ClTaLA==
+Date: Fri, 24 Jul 2026 14:30:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan
+ <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, Bobby Eshleman
+ <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
+ check_rx_large_niov
+Message-ID: <20260724143001.5afa8631@kernel.org>
+In-Reply-To: <amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
+References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
+	<20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
+	<20260721110903.34840531@kernel.org>
+	<amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 1/4] net: hsr: add PRP interlink (RedBox)
- datapath and duplicate discard
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, wsa+renesas@sang-engineering.com,
- jie.luo@oss.qualcomm.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, fmancera@suse.de, bigeasy@linutronix.de,
- fmaurer@redhat.com, luka.gejak@linux.dev
-References: <20260717201457.54-2-xiexinet@gmail.com>
- <20260724131230.679892-1-horms@kernel.org>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-In-Reply-To: <20260724131230.679892-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Jul 2026 14:12:30 +0100 Simon Horman wrote:
-> [Severity: High]
-> ... does modifying the MAC header directly in hsr_xmit() corrupt
-> shared packet data? [...]
-> Should the skb be unshared before making these direct modifications?
+On Fri, 24 Jul 2026 14:04:24 -0700 Bobby Eshleman wrote:
+> On Tue, Jul 21, 2026 at 11:09:03AM -0700, Jakub Kicinski wrote:
+> > On Wed, 08 Jul 2026 15:55:06 -0700 Bobby Eshleman wrote:  
+> > > +@ksft_disruptive
+> > > +def check_rx_large_niov(cfg) -> None:
+> > > +    """Run the devmem RX test with rx-buf-size = 16 KiB."""
+> > > +    run_rx_large_niov(cfg)  
+> > 
+> > Any idea why the devmem tests sprinkle disruptive everywhere?
+> > Disruptive means we take the link down, I don't think this test 
+> > does that.  
+> 
+> Talked to Stan and he mentioned the original idea was not necessarily
+> just for link down, but any test that could be considered disruptive to
+> other tests, with the idea to eventually introduce some scheduling
+> (postpone disruptive until the end).
 
-I checked this against the v4 base and the series diff.
+Perhaps have such conversations on the list? IDK what Stan has in mind.
 
-The shared-data write is real. hsr_xmit() writes
-eth_hdr(skb)->h_source in place - the slave-address substitution
-for master-originated frames, and the macaddress_redbox
-substitution for the interlink port - on skbs that can be clones.
-Multiple consumers can share the same packet data while needing
-different source addresses: a PRP LAN broadcast or multicast can be
-delivered to the master (source rewritten via
-hsr_addr_subst_source()) and forwarded to the interlink (rewritten
-to macaddress_redbox) from the same underlying buffer.
-
-Two scope facts. This is pre-existing HSR RedBox code, present
-since v6.11: hsr_xmit() itself is untouched by the series (patch
-1/4's hsr_forward.c changes sit below it and do not modify its
-body), and the series' only h_source-adjacent change moves an
-existing ether_addr_copy() a few lines earlier in
-hsr_dev_finalize(), where no skb is involved. But the series does
-make the existing interlink path reachable for PRP.
-
-I will handle this as an independent fix for the existing HSR/PRP
-code, posted separately for net with its own Fixes: tag - not
-folded into this feature series.
-
-Would you like the feature series to wait for that fix, or may v4
-proceed while it is reviewed separately?
-
-(The hsr_create_tagged_frame() side question overlaps the third
-finding in your 3/4 mail; it is answered there.)
-
---
-Xin
+> If we can get common agreement on its meaning, maybe I could submit
+> something into the documentation and update where its misused?
+> 
+> I'll drop it from this patch since it doesn't bring down the link (and
+> seemingly no worries about check_rx_hds() tests not having it).
