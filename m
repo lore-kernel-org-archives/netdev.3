@@ -1,108 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAAC3218BA;
-	Fri, 24 Jul 2026 17:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8F44156D1
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 17:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784913531; cv=none; b=kHnW8vjzkKANzbs4kgrmM6aVQB6cm8BuUfbMB1hNwJAYFnaMHY/Tge1hAUqCPLbMUQgCiIUym9WNS2poeG0cP9BkeEARsmVFQVhzHpPwa/R//5h0LskPAPSmNucvv/01b3LFW4/7b4tSXSeM6a+n01plasWdL2jRRj/kxEdKYqU=
+	t=1784913673; cv=none; b=fOrqXcC4YT8wGywglmad7Oyb8fhwWWg6z1aDE9DeraeE2SE2ghFtCQVHyUDhz9vnloJ0zW13Xtm/Wm7mPJGh9alBKrZ6S9XsvPfH8iLh+ZU1N+95zWJCZtCU+3Ia/nRW4muF6OKqqVpw5xjGpCiPvhSB1pw/r/nlkdONFMGq4SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784913531; c=relaxed/simple;
-	bh=qhFVvkIfcKnj6tkYt9iQhzHCpzV6aeY+HB04tlCILTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6ai0qjSvZ/83mssJdZzludqEW7D+S6a1O4yMz4NIXXqqukpKrs2sX4VtUIsxJxdUm9takGdSF2vGBvGvvJa0hv61Mpyd+0qFcZtbKTP01SaVPsd0PedBa6XzlH68NpIYG8/UTu8vJABVDiG5icPkp9sDGIkv3CMhnvPOJ6M+Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=k+/vMRgj; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1784913673; c=relaxed/simple;
+	bh=qa6wpGjFP9WeSlXBpjHlwN1JQgVBXHAXD1d+y65qczU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G3Gu7CBpHbiEgh4nBUihipSbP7+GHrKirMHIv6EsVc86/P1a8v0XtI5GvJfUI4EDj7XhwX98NmbunBeki2eWXgiFczLI1tdb9LB8/6LMfpBSb8+X23E1WhRgAjRV3vppT4Ifpp4b+a86u0BoiZD9H4DsKirFNIUi72N9OiQc5LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ojKkINV3; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="k+/vMRgj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=AkRiKMXzjkNXosCCd/qaEIDtrpg1y9MyrKkiTtEowTs=; b=k+/vMRgjhr4sWfmzAWvE74nTtx
-	mZEhaM+VoP0RQgOsLTHEopf+K4z/ZBYgBJh8y6unxM8V5N7w5t0KLpAfXeb5XQafEP5OrNbOM2wA/
-	yVGad9jRqo/OhMqK68P5PfE9RRjgzAqyFg1zolxTH0BBmyAx+XWlFSnwGM1RWA48+cy0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wnJXl-00E1uf-Fl; Fri, 24 Jul 2026 19:18:41 +0200
-Date: Fri, 24 Jul 2026 19:18:41 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ojKkINV3"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38e69bdb0fcso493850a91.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784913669; x=1785518469; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OTgp6kjWgEDWWxpibus58Be09s4GYwLwxPakbsp/HLQ=;
+        b=ojKkINV3fiV0E7L6IIaOkeRBuMQdppy0BExs5UxLfALeCDO4IzjTNulGGCHZgDCE1M
+         VG07mynx7fw6c1YFynWxELNncobmR8q7ziGXlNnBj6XnWkk9iBF2uNxPtt0whi9WYki1
+         tUP9kG1x7q0gUoipJP6Dz7Hq8KCmHPInwoez6eTlrNVW0xnEAknx2wsE/e9Vg/Oa/uez
+         n+Kxxbl/D7jhD6Gmwcb0ILtVmuljvsY5fXJKaISBy3U0ZmeGVGRFOaabTZsLObYF+gWH
+         I50XwhKdHZnA2GfB4dgg1oydeGMEgHP+gp0QJM4/uGr16//DVfTs9AH/ipP9+0tW1Cti
+         8k0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784913669; x=1785518469;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OTgp6kjWgEDWWxpibus58Be09s4GYwLwxPakbsp/HLQ=;
+        b=pJO6pJCQtFz1EKSkbnEhbsq2k2CWcpzIfXwVAXKT2ZVgTGTgBMxzmyRMxFgXJt1s9t
+         v+Oj65uExcEDpmOvEWsBNCzTbwJtmhhS6yhR+KcEbu0s/1mPbwg8KQSg2Z7zO5OB9Pa/
+         Kzu3hb1osxMZOewXQhrRBaSeA26GH+U2U7WGXxODE8oMVCnE+HKZqDUQyiwr7lO0SUDO
+         8+qdUjuPs4xZfIFAnZtc0/G6GxY4J6yWkcg6AjZxzHipX362hNcS9EmC3r1+fdZ40rPT
+         0lL3tam4V/jIzvVkugwZQDo4vEeJpEAOy2ZXzzTNeJsJ74pRKjMYhls90ndm7wQsD0MF
+         Z49A==
+X-Forwarded-Encrypted: i=1; AHgh+RrEXBybpo9oCSj3BtZVdWjgkHoixPr/7tutn4+CnDjdAevkMGNNIR/9rQ5e8iR0wDbemt6l0rk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ5PSOofCqA2syDUkMYXO1yJsQjorDlXmLrplmmBJ9zflfjPpS
+	B1hF49YsGikhWXAga1z3fHlNTEN9sbgu6RDqOIXOkOQsnl+ux51dsod7WDATdgiR
+X-Gm-Gg: AR+sD117qjazbkbokxc0+LLdAYBsPzCA+zWilAjpCs1B4v5ut+g7fd0fVfRlNaQk+Ey
+	xItmvlxSze8nksKvrBPov7KWnJrZi2DUVDbcNT2R7tgYIFHOAcxfo3tvxGPdxxh4Gi/TF46k6wO
+	fMGJIPcXqJB18DFbBTdU1m1QlB8IRIh183K9w9Dhd6EBxK5kRXLrd1EyaBuHXCQKqh0ycD4rA+s
+	fzznNLC1pTYTpugW80gEjr8YzCu16amsp+s2WFyi3FqaLqmntBODQ+YLE528KSg3HZoFnhZrXH3
+	WDr3LKwm2bw6AmNgfQ8QCceRj8BxrSztJ40w4GQXaK0MKzm3O3rSZTUU+zL/0CjADR7Hix8RcJ2
+	snYy/c5bj594kvAxMFrTbPpj0cAvsMdtxEga99Tg3iFoeBwbC6Jo9yag56p76C6mStCbwNyc3Bm
+	5Wh44XECJgXWB6j3LRqT1glLW8nBDYhspPeeHC5FMqD34=
+X-Received: by 2002:a17:90b:4c:b0:38d:c74d:29c5 with SMTP id 98e67ed59e1d1-38ec69a9a7amr8004002a91.19.1784913669362;
+        Fri, 24 Jul 2026 10:21:09 -0700 (PDT)
+Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f041d5f78sm1789907a91.17.2026.07.24.10.21.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 10:21:08 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-Message-ID: <d4f745df-715a-45c9-88a7-337b1dffd2ac@lunn.ch>
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sujuan Chen <sujuan.chen@mediatek.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Zhi-Jun You <hujy652@gmail.com>
+Subject: [PATCH net v3 1/2] net: ethernet: mtk_wed: skip ring reset in wdma_tx_ring_setup for WED v3
+Date: Sat, 25 Jul 2026 01:20:39 +0800
+Message-ID: <20260724172040.1653-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724-ax88179a-v3-13-bdde4f905883@birger-koblitz.de>
+Content-Transfer-Encoding: 8bit
 
-> +static int asix_ax88279_read_status(struct phy_device *phydev)
-> +{
+Currently WED v3 tx wdma ring, ring reset happens in a separate code
+block unconditionally.
 
-> +	val = phy_read(phydev, MII_ADVERTISE);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-> +			 phydev->advertising, val & AX_ADVERTISE_2500);
+Moreover, v3 has double the size of wdma_desc and has different init
+values. mtk_wed_ring_reset doens't deal with that and would corrupt the
+wdma_desc.
 
-This looks wrong. A PHY driver should configure the hardware to
-advertise what is in phydev->advertising. The PHY driver itself should
-never change this value, especially in _read_status(). It is up to
-user space to decide on what is advertised, and the phylib core will
-sanitise the value to ensure it is within the PHYs capabilities.
+Fix this by skipping mtk_wed_ring_reset in mtk_wdma_tx_ring_setup for
+WED v3.
 
-> +static int asix_ax88279_config_aneg(struct phy_device *phydev)
-> +{
-> +	bool changed = false;
-> +	int ret;
-> +	u32 adv;
-> +
-> +	if (phydev->autoneg == AUTONEG_DISABLE) {
-> +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	adv = linkmode_adv_to_mii_10gbt_adv_t(phydev->advertising);
-> +
-> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
-> +				     MDIO_AN_10GBT_CTRL_ADV2_5G, adv);
+Fixes: e2f64db13aa1 ("net: ethernet: mtk_wed: introduce WED support for MT7988")
+Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
+---
+Changes in v3:
+- new patch addressing WED v3 ring reset issue raised by Sashiko
+- Link to the review: https://lore.kernel.org/netdev/20260630144831.1109-1-hujy652@gmail.com/
+---
+ drivers/net/ethernet/mediatek/mtk_wed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can genphy_c45_an_config_aneg() be used here?
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 10d9beaae372..7d2775a97fa0 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -1938,7 +1938,7 @@ mtk_wed_wdma_tx_ring_setup(struct mtk_wed_device *dev, int idx, int size,
+ 	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_CPU_IDX, 0);
+ 	wdma_w32(dev, MTK_WDMA_RING_TX(idx) + MTK_WED_RING_OFS_DMA_IDX, 0);
+ 
+-	if (reset)
++	if (!mtk_wed_is_v3_or_greater(dev->hw) && reset)
+ 		mtk_wed_ring_reset(wdma, MTK_WED_WDMA_RING_SIZE, true);
+ 
+ 	if (!idx)  {
+-- 
+2.47.3
 
-> +static int asix_ax88279_get_features(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
-> +
-> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-
-I would do this in probe. If you do this early, phylib might be able
-to call genphy_c45_pma_read_abilities() on its own. Maybe, i don't
-know.
-
-> +	/* AX88279 does not support reported 100baseT-half duplex mode */
-> +	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, mask);
-> +	linkmode_andnot(phydev->supported, phydev->supported, mask);
-
-If you are only changing one bit, it is simpler to use
-linkmode_set_bit()/linkmode_clear_bit()
-
-	Andrew
