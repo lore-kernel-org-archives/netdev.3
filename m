@@ -1,117 +1,113 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48249413783
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCBC392803;
+	Fri, 24 Jul 2026 21:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784929316; cv=none; b=Ux9IeI2JOgwotFx2y3nYGVW3ksTpLvsL53RqRujFKHIqSLRUHW/wGBLLwekj7+0ccsNOXhzeP/2qiJODpqRnGnRt9ay4P0hS6pX+HXQ75vWQa2Zr4g4eyQ3d58+JFWyrnV/03L1PDJ3B7hjq3BCzkjrfMf7DiYt3I3rPEUWu3YQ=
+	t=1784929717; cv=none; b=lmE59OT/cc2rq/lI2LdfzBtVYT4hzbls+hc/puzRBhJuGm5j3xEmP2kIvVItV5pC2Rbi4lxgGHbhKrDYEeTMrCN1eC8XOcA3xGjJrP+l+yZU9CCMN/DkacPClBgHbF7NqUdmEDbAb+4Nfiq1T1e5DIcnUFOO5ofjo7aK41epYhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784929316; c=relaxed/simple;
-	bh=77AdLZwSlzRXNVmZcPS3aPRWxbdbniwiZ14tXP/9uvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYiuSti2j++N/AnSGOBGI3hSaFmI0ma0fi5AR2knteFbOE3s250/pgs+6+wzMk/r7o3DIZoYvFFbfzrigVWdpDDWylP4WUdbXGOViXzDDlaRA0TINB5NFZEgWbnpsx7OdLYtXOPip2mg8uafYNF9iKNuZkzw2ZU41bp6BkQ5MmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F98VlwXt; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784929717; c=relaxed/simple;
+	bh=GTdZSgSwBlfAlIxva5M6ZU/kD9VYoe26BBxVBJ5WdPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f0dWPJXuJkkHlQ5NLOuD9Ax5Gho1OuqyiVb7t0nd5oWleu8UvKWZ0I9ZwliB4KZE49TmmB6QFpuZUZCvhsdQzWUJFHk39L78Jrb5jzWdYLl7N97uSjvi3jiv7Dfm4rIqq0HGBt3VlUk4FDbtEfdYIBkLNyeZ2WbbL7Xj7V2F1Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bhpTuvSZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F98VlwXt"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cabf1f1051so3077495ad.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784929314; x=1785534114; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v4ixN669MPx0d/t5228Qef0MeDlKadYsw/AtAwtoW40=;
-        b=F98VlwXtHLSvNA3/J8PgB0MtXpYptRA4vJH+f1BbNkuyk7hnC/OYI+WiQKXZnBk94b
-         48IzlLfGoW+ntnapKOSLlRmJxhyxm4p0/OQiE2/HoqsJueRc2EZUtgNIKH5WNZKwZ9NJ
-         V9SjcIkLRgTxAzJSK/G8hKcAH17/kftrEXMXyDlaaZxMHvxsfw46byRuXY0L3WQNI5yX
-         FCIFIDRlnv4YD1mPpQu7DaM/h9Om8xe9KeOsycJSqb+4YjdUo+8AnOvxDUUepR4d5EG5
-         58ykwH+HNkITEHRkxOU0oxFwq/39bwF+kWIFU8iw17iaHmRLgtpky/fURR72dge5RQ/A
-         Eidw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784929314; x=1785534114;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v4ixN669MPx0d/t5228Qef0MeDlKadYsw/AtAwtoW40=;
-        b=B2kCvURZx8eTA4VF8zdy6sTlVRsHOBmuFZl8+SJtrDC44FWHqlnZubWs7YZZ2IOH+A
-         ZTzpQ7jPjLadRryysVeGgkS2PEPzyFR6fmiISwmael3deAGOt4bj+s71PdXBaLs8tqMy
-         f+Kq6uxHDTqs+Wt1LCQr/99OOioTQSSwxNkE3cgV/zSuIgUHcIJuF9TSHZBug7POYE1H
-         KXiehp+YANDoxZfv9qROosMgsIdGfgymWJgVpVe9abPib5wq4PgFBiPuDvLNkOOxgido
-         w+RXjbwVH5TzFwR9LCeH3+DXs4auYSn5shnmrCry+nVBlzPArFS6qCM/Xkm4THJrOMbm
-         FGyA==
-X-Forwarded-Encrypted: i=1; AHgh+RoFaVchvTSNluMUGvekxPCEyxldU8kPAAMZBFrJxSDdi1B1FsBZhn3JyHv/LrysevOpc2xWHP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLCmahE/n/3Z6w+SUhRynPJnX5TCpt/oSOCfTfMlFDqLSb4LrW
-	+SdnygeOm5S+5lIHXXPTE5r1mjVSTFMBciFanzgOIRFATioW79BnwN6t
-X-Gm-Gg: AR+sD1191hvBcmGfo3kBxMvk4mc+TM9NAuQ+RisrSZ7aY351C9K4eF7pD4CirtBCvhz
-	SoeflyGTStoX2FbqyZdEZYlzbRyEP2VA9e0C+nr5yz+y7Cd0WxXnq4nb1tyvwsDU6qLNqO/hes9
-	oitZXGvM+8ynunr4w8LX8fDGnjSpFnkw8YPerH0PK2cRXJMxFsV4om6f/fBoHFutiUFlvI/O3Ut
-	Hqitk9xFqMFRLTDP/b9eCL0ZjAwrmw6JV+eEdbzia1hzNNV+n/kEA9vieUR9q5fczZREynksH+k
-	aMU62LdjKrWIXa2UMFNupRBkde2xZJuPkJIQAUJNNU8/Ws4Vf1Hq/aBN5spoKYz5qv3lNh+C+t4
-	q2N8x+XTPOwo5eT3lSFxmHgNwy69+MLjISgzpsmyjaqzPx/Vb/Wy14Xc4EYzdOJOtosPvDgxTmP
-	fZvz7Zkg==
-X-Received: by 2002:a17:902:c943:b0:2ca:281:27f9 with SMTP id d9443c01a7336-2cfde8459edmr1610395ad.27.1784929313662;
-        Fri, 24 Jul 2026 14:41:53 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:43::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde81d81csm504415ad.80.2026.07.24.14.41.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 14:41:53 -0700 (PDT)
-Date: Fri, 24 Jul 2026 14:41:47 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, sdf@fomichev.me, 
-	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com, matttbe@kernel.org, 
-	skhawaja@google.com, dw@davidwei.uk, Joe Damato <joe@dama.to>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
- check_rx_large_niov
-Message-ID: <amPbqtxPdhs9QrVP@devvm7509.cco0.facebook.com>
-References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
- <20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
- <20260721110903.34840531@kernel.org>
- <amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
- <20260724143001.5afa8631@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bhpTuvSZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6FC1F000E9;
+	Fri, 24 Jul 2026 21:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784929705;
+	bh=GTdZSgSwBlfAlIxva5M6ZU/kD9VYoe26BBxVBJ5WdPE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bhpTuvSZWBV7iq9keKc8+pixk18qLEuyMz3ZTlqKcB81KF/CnyeLGI6JSyvHGt9tA
+	 E+SxQVBXcXsXsZgtn3HAr+6nPULrU5HRAYu13tTfnL5ffRJr3w0sXxS3y6FSy3SRlS
+	 Qe3XQkADPgbjY9nioQHCBPR4pvKP4dL5d3HxM/ORX/63JYStNE+wqJy61XHcdbEpWF
+	 xaZAuoqTpynwYjXBJP4BY73AhLP471MMWjcWFGi91teQEabAfmboMZJJ2AI9mVl919
+	 5Vj52Ap+SYxCLa6sCvz56w/tCisRBng0kD6I+yiTKpyHAoJV1VexiywmsHK9mBuUsB
+	 8QLvkwcrgPftA==
+Date: Fri, 24 Jul 2026 14:48:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Andrew
+ Morton <akpm@linux-foundation.org>, Arkadiusz Kubalewski
+ <arkadiusz.kubalewski@intel.com>, Borislav Petkov <bp@alien8.de>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, David Airlie <airlied@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede
+ <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, "Joerg Roedel
+ (AMD)" <joro@8bytes.org>, Johan Hovold <johan@kernel.org>, Jonathan Cameron
+ <jic23@kernel.org>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown
+ <broonie@kernel.org>, "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Matthew Sakai <msakai@redhat.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Mike Rapoport <rppt@kernel.org>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ping-Ke Shih <pkshih@realtek.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Sebastian Reichel <sre@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Simona Vetter <simona@ffwll.ch>, Simon
+ Horman <horms@verge.net.au>, Stephen Boyd <sboyd@kernel.org>, Steve French
+ <sfrench@samba.org>, Takashi Iwai <tiwai@suse.com>, Thomas Renninger
+ <trenn@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>, Tony Luck
+ <tony.luck@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, Vinod Koul <vkoul@kernel.org>, Will
+ Deacon <will@kernel.org>, Yazen Ghannam <Yazen.Ghannam@amd.com>,
+ cocci@inria.fr, amd-gfx@lists.freedesktop.org, dmaengine@vger.kernel.org,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+ iommu@lists.linux.dev, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+ lvs-devel@vger.kernel.org, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 00/36] treewide: remove conditional returns with no
+ effect
+Message-ID: <20260724144822.6af8213f@kernel.org>
+In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260724143001.5afa8631@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 07/24, Jakub Kicinski wrote:
-> On Fri, 24 Jul 2026 14:04:24 -0700 Bobby Eshleman wrote:
-> > On Tue, Jul 21, 2026 at 11:09:03AM -0700, Jakub Kicinski wrote:
-> > > On Wed, 08 Jul 2026 15:55:06 -0700 Bobby Eshleman wrote:  
-> > > > +@ksft_disruptive
-> > > > +def check_rx_large_niov(cfg) -> None:
-> > > > +    """Run the devmem RX test with rx-buf-size = 16 KiB."""
-> > > > +    run_rx_large_niov(cfg)  
-> > > 
-> > > Any idea why the devmem tests sprinkle disruptive everywhere?
-> > > Disruptive means we take the link down, I don't think this test 
-> > > does that.  
-> > 
-> > Talked to Stan and he mentioned the original idea was not necessarily
-> > just for link down, but any test that could be considered disruptive to
-> > other tests, with the idea to eventually introduce some scheduling
-> > (postpone disruptive until the end).
-> 
-> Perhaps have such conversations on the list? IDK what Stan has in mind.
+On Fri, 24 Jul 2026 03:45:02 +0900 Sang-Heon Jeon wrote:
+> Patch 1 adds a Coccinelle script that matches the pattern, including
+> negation and constant-comparison variants. Where a local variable is
+> assigned right before the check, the assignment and the two returns
+> turn into a single return of the assigned expression.
 
-I don't have much to add so I didn't post on the list. In my mind, disruptive
-started as "anything that can lead to a soft reset". But since the
-sockets tend to survive these well, I do agree that your definition
-of "link goes down" is a better fit.
+Huh, I thought we already had such script. Various script children have
+been sending such "cleanups" in the past.
+
+> Patches 2-36 are generated by the script, with hand fixes to restore
+> unexpectedly removed comments and to fix the formatting checkpatch.pl
+> complained about.
+
+Please post patches 4,7,8,9 as a separate series. Since you only CCed
+netdev on subset of the series patchwork thinks there are patches
+missing and doesn't kick off any CI.
