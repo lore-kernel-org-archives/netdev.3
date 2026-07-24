@@ -1,195 +1,257 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC73E717A;
-	Fri, 24 Jul 2026 09:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FBA40BCAB
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784884956; cv=none; b=hDcpvXcInEHbxR6wwd1b41PbV5637iCfcATn7ZeTe2rUF7akQIoccqBMeuLvpzwonyyh8n7wBdOsnbFvjPHN8yzM9jlcJ7iOLyPsem/BDjSUadnMlGbLPVnywM6XwjXfATkdxyvEKj/W7cW8gFgqMH+d8w0koqrKNYCAiBBYpgA=
+	t=1784885177; cv=none; b=TR1c2I0CRo0UjELvasmwsGIPy1Y5c9LsDhLF7yFzzUxc6Zp6GwxDCqrK4dH/9Kdt38rXFbbhsG9iYMPFqyqIsFMnIEv40UulQVzmFyB6+IvL+2Iu3vXXgYCoejFwJ4bUUJ3btE4jPxlrKekgwoxzFkEIX7YhGGkyeCnyM760m/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784884956; c=relaxed/simple;
-	bh=E0jwxBHJYAbxCYS+Ax6F7jZ+bYcdSkfhurPycyPuLnU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LRlMrDRKW0cJvLoJPGJiSBaiX5Ev5B6inPjO87Gh4DgHSQI63z2v//x+cWUIpmdVbNwal5dLlS42sphoLZUKXaLQt9zUY8ZaRewLijUECkaWbYampemTYaiKUFLsvRMla22VqtxAAVThVj4jNmnaqy6IYumMEsuHFlWCcPKp9SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=aHlQP0C3; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1784885177; c=relaxed/simple;
+	bh=QNkJHlCaQFV5X+qUi4bTFiSoizzSOppa56bN8ST+cWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oHrYJVfktlNzexUmrHKLHNajs3Z0USBdZwyHcamOx4MKhBub49PTqW/IAvhPGCABrJw81X1sBcAFr5KPuelNfr3Du9nTGdxpHvZD2thczBEDivOfuD6CenRsjlNWGF1jK4O5IfTR/zSg5vdtJlar5iAf2QUXwbyQH0Xy5bDaS6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iI9p4ykV; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="aHlQP0C3"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=7+Dqu5YcOu+zYJdF4FV3fs2X2wVuYG2pj296bIH+Ud4=;
-	b=aHlQP0C3UdgmGg1gbApknMtGzRntvQ765yvNNBcztg4lrxaq2NoKzDN7KT3cItVQouoZlE9V0
-	jamchpB43+Skl4lGFp1FxwQiHA2NJNTN8osir/r+i6ejR1oyjC+2pdUGR6E+SGEp+bke8QQC0u3
-	02/wWgvypiLy42VUphtRpJw=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h62MQ1jcDzKm5m;
-	Fri, 24 Jul 2026 17:12:50 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9511040578;
-	Fri, 24 Jul 2026 17:22:16 +0800 (CST)
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 24 Jul 2026 17:22:15 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<hawk@kernel.org>, <ilias.apalodimas@linaro.org>, <almasrymina@google.com>,
-	<toke@redhat.com>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH net] net: page_pool: fix DMA index not cleared on xa_cmpxchg race
-Date: Fri, 24 Jul 2026 17:21:35 +0800
-Message-ID: <20260724092135.414699-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iI9p4ykV"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 870E11A11DF;
+	Fri, 24 Jul 2026 09:26:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 57A1B60395;
+	Fri, 24 Jul 2026 09:26:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 770BD11C11D97;
+	Fri, 24 Jul 2026 11:25:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1784885166; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=yetknAueSEQa5IWYCXNWlQQ9a9BsRpLD7imRrh5Tv40=;
+	b=iI9p4ykVkqk/LJ5fHfkcjwMlNolCWTPQiznmWtPm4WW6TZz43FcFeB8pwiHwmhF9oLWc8f
+	KmQ/fibI/OKx/Ez0o7N20PKaIioHR4Huu2bRPNCC7PYsBZx1wi4YKx0FmT/OmShdPTzkdc
+	vtEnqcKTIxlET9SBT5tz/ljyq3e60bKPy4hv/tXng6OK287KdLxo2v/a0Lk9fPH2xa3sVN
+	LvGKrd9cZ8n8jjTvKrn7YjIPAx6FFb0VVu1gPS8fpK9Xu+NXDipZDUJ4mzRMbJjn0h3Tuj
+	pon7yJjPmkJ9UOs/zP/fPlGjzEt0wt5ID+CG4SDswgbulY9r345TT3NZRHWtsQ==
+Message-ID: <42606cde-cdef-420d-adf4-b28c353d564b@bootlin.com>
+Date: Fri, 24 Jul 2026 11:25:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: phylink: add phylink_pcs_loopback() method
+ for PCS loopback support
+To: Zxyan Zhu <zxyan0222@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+References: <20260724085224.3321663-1-zxyan0222@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260724085224.3321663-1-zxyan0222@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+X-Last-TLS-Session-Version: TLSv1.3
 
-page_pool_release_dma_index() uses xa_cmpxchg() to atomically remove a
-page from pool->dma_mapped.  When the cmpxchg loses the race (the entry
-was already removed by a concurrent release path, e.g. page_pool_scrub()
-during page_pool_destroy()), the function returns -1 *without* clearing
-the DMA index bits stored in pp_magic.  Its caller then skips dma_unmap
-based on that -1, which is correct, but the stale DMA index bits left
-in pp_magic are wrong: the xarray entry they index no longer exists.
-A page recycled back into the pool then carries a dangling DMA index,
-and kernels that validate pp_magic in the return path surface this as
-a WARN.
+Hi,
 
-Move netmem_set_dma_index(netmem, 0) to execute unconditionally before
-return, so both the winner and the loser of the xa_cmpxchg race clear
-the DMA index bits.  The return value still distinguishes the two
-cases (-1 loser / 0 winner), preserving the contract that exactly one
-side performs dma_unmap.
++Björn
 
-The race window opens when page_pool_destroy() runs concurrently with
-late page returns from SKBs held in per-CPU defer lists, TCP receive
-queues or GRO hashes -- e.g. a driver reconfiguring channels/ring
-depth while traffic is flowing.
+On 7/24/26 10:52, Zxyan Zhu wrote:
+> Add a pcs_loopback callback to struct phylink_pcs_ops to allow PCS
+> devices to expose loopback capability. This is useful for MAC drivers
+> running selftests on interfaces that use in-band signalling and have
+> no external PHY device.
+> 
+> The phylink_pcs_loopback() helper calls the PCS ops callback if
+> available, and returns -EOPNOTSUPP for PCS devices that do not
+> support loopback.
+> 
+> In stmmac, use phylink_pcs_loopback() in stmmac_test_phy_loopback()
+> and stmmac_selftest_run() when no phydev is present but a PCS with
+> loopback support exists. This enables PHY loopback selftests on
+> interfaces without an external PHY.
 
-Observed on arm64 (7.2.0-rc1) with the hns3 driver:
+There have been talks about making a userspace API for loopback :
 
-  WARNING: net/core/netmem_priv.h:18 at page_pool_clear_pp_info+0x20/0x38,
-           CPU#83: iperf/3874878
+https://lore.kernel.org/netdev/20260325145022.2607545-4-bjorn@kernel.org/
 
-Return path (CPU_B, process context, triggering the WARN).  The page
-was held in a per-CPU SKB defer list and is being released through
-tcp_recvmsg():
+Even if your patch is a pure internal feature with no uAPI parts, I wonder
+if this is the correct API to have.
 
-  page_pool_clear_pp_info+0x20/0x38
-  page_pool_put_unrefed_netmem+0x11c/0x2e8
-  napi_pp_put_page+0xf0/0x120
-  skb_release_data+0x170/0x228
-  skb_attempt_defer_free+0x7c/0x1f0
-  tcp_recvmsg_locked+0x710/0x9a0
-  tcp_recvmsg+0x74/0x1c8
-  inet_recvmsg+0x2c/0xf0
-  __sys_recvfrom+0xdc/0x198
-  __arm64_sys_recvfrom+0x2c/0x48
-  invoke_syscall+0x5c/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x34/0x1e0
-  el0t_64_sync_handler+0xa0/0xe8
-  el0t_64_sync+0x1ac/0x1b0
+Maybe the right move would be to ask phylink to configure the loopback,
+and let it figure-out where to do so (in the PHY ? in the PCS ? Somewhere
+else ?)
 
-Scrub path (CPU_A, racing with the return path, derived from code):
+With Björn's work we may end-up with an phylink api that may look like:
 
-  page_pool_destroy
-  -> page_pool_scrub
-     -> xa_for_each(dma_mapped)
-        -> __page_pool_release_netmem_dma
-           -> page_pool_release_dma_index   <- race window
+phylink_set_loopback(struct phylink *pl, bool enable, enum loopback_location loc)
 
-Debug approach and evidence:
-Reproduced with a stability test that repeatedly reconfigures the hns3
-channel count and ring depth (ethtool -L/-G) while running iperf3 with
-multiple parallel streams, then closes the iperf3 sockets to release
-the SKBs held in TCP receive queues and per-CPU defer lists.
+and for cases like this one where we don't care about where the loopback
+is set, we may have an enum value 'LOOPBACK_LOC_ANY' ?
 
-On the unmodified kernel the WARN reproduces after hours to tens of
-hours. To make the race window observable, a debugfs knob injects a
-controlled udelay() right after the winning xa_cmpxchg() in
-page_pool_release_dma_index(), widening the gap between the xarray
-entry removal and the pp_magic cleanup.  With the delay injected the
-WARN reproduces 4-5 times within about half an hour.
+Besides that, I don't see and PCS that supports that loopback, I think
+it would be nice to also have the PCS code for loopback as well...
 
-Instrumentation added to page_pool_release_dma_index() logs the per-
-page pp_magic, DMA index, refcount and dma_addr at release time.  A
-representative log line from a WARN-triggering page:
-
-  PP_DMA_IDX: magic=0xdead0000000cbec0 idx=6525 refcnt=1 dma_addr=0x0
-
-  magic=0xdead0000000cbec0  -> PP_SIGNATURE | (6525 << shift)
-  idx=6525                  -> DMA index bits still set in pp_magic
-  dma_addr=0x0              -> scrub already did dma_unmap + cleared addr
-  refcnt=1                  -> inflight page, unrefed release path
-
-The combination "dma_addr == 0 but DMA index != 0" is the signature of
-the race: CPU_A (scrub) won the xa_cmpxchg, performed dma_unmap and
-cleared dma_addr; CPU_B (return) lost the cmpxchg, returned -1 and
-skipped netmem_set_dma_index(0), leaving the DMA index bits stale --
-exactly the gap this fix closes.
-
-With this fix applied the WARN no longer triggers under the same
-workload (verified overnight), both with and without the debugfs
-delay knob enabled.
-
-Fixes: 95920c2ed02b ("page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches")
-Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
-Assisted-by: OhMyOpenCode:GLM-5.2
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- net/core/page_pool.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 21dc4a9c8714..6f86c96650d3 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -505,6 +505,7 @@ static int page_pool_release_dma_index(struct page_pool *pool,
- {
- 	struct page *old, *page = netmem_to_page(netmem);
- 	unsigned long id;
-+	int ret = 0;
- 
- 	if (unlikely(!PP_DMA_INDEX_BITS))
- 		return 0;
-@@ -517,12 +518,18 @@ static int page_pool_release_dma_index(struct page_pool *pool,
- 		old = xa_cmpxchg(&pool->dma_mapped, id, page, NULL, 0);
- 	else
- 		old = xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
--	if (old != page)
--		return -1;
-+	if (old != page) {
-+		/* xarray entry already removed by concurrent release path
-+		 * (e.g. page_pool_scrub). Still clear DMA index bits to
-+		 * keep pp_magic consistent. The winner of the xa_cmpxchg
-+		 * race is responsible for dma_unmap.
-+		 */
-+		ret = -1;
-+	}
- 
- 	netmem_set_dma_index(netmem, 0);
- 
--	return 0;
-+	return ret;
- }
- 
- static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t gfp)
-
-base-commit: 78f75d632f74b8de0f081a128588f7c37d0d1164
--- 
-2.33.0
+Maxime
+> 
+> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+> ---
+>  .../stmicro/stmmac/stmmac_selftests.c         | 36 ++++++++++++++-----
+>  drivers/net/phy/phylink.c                     | 19 ++++++++++
+>  include/linux/phylink.h                       | 16 +++++++++
+>  3 files changed, 63 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> index 29e824bd90ca..e6ac51018a65 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> @@ -377,20 +377,36 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
+>  static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
+>  {
+>  	struct stmmac_packet_attrs attr = { };
+> +	struct phylink_pcs *pcs;
+>  	int ret;
+>  
+> -	if (!priv->dev->phydev)
+> -		return -EOPNOTSUPP;
+> +	if (priv->dev->phydev) {
+> +		ret = phy_loopback(priv->dev->phydev, true, 0);
+> +		if (ret)
+> +			return ret;
+>  
+> -	ret = phy_loopback(priv->dev->phydev, true, 0);
+> -	if (ret)
+> +		attr.dst = priv->dev->dev_addr;
+> +		ret = __stmmac_test_loopback(priv, &attr);
+> +
+> +		phy_loopback(priv->dev->phydev, false, 0);
+>  		return ret;
+> +	}
+>  
+> -	attr.dst = priv->dev->dev_addr;
+> -	ret = __stmmac_test_loopback(priv, &attr);
+> +	/* Use PCS loopback for interfaces without an external PHY. */
+> +	pcs = priv->hw->phylink_pcs;
+> +	if (pcs) {
+> +		ret = phylink_pcs_loopback(pcs, true);
+> +		if (ret)
+> +			return ret;
+>  
+> -	phy_loopback(priv->dev->phydev, false, 0);
+> -	return ret;
+> +		attr.dst = priv->dev->dev_addr;
+> +		ret = __stmmac_test_loopback(priv, &attr);
+> +
+> +		phylink_pcs_loopback(pcs, false);
+> +		return ret;
+> +	}
+> +
+> +	return -EOPNOTSUPP;
+>  }
+>  
+>  static int stmmac_test_mmc(struct stmmac_priv *priv)
+> @@ -1986,6 +2002,8 @@ void stmmac_selftest_run(struct net_device *dev,
+>  			ret = -EOPNOTSUPP;
+>  			if (dev->phydev)
+>  				ret = phy_loopback(dev->phydev, true, 0);
+> +			else if (priv->hw->phylink_pcs)
+> +				ret = phylink_pcs_loopback(priv->hw->phylink_pcs, true);
+>  			if (!ret)
+>  				break;
+>  			fallthrough;
+> @@ -2019,6 +2037,8 @@ void stmmac_selftest_run(struct net_device *dev,
+>  			ret = -EOPNOTSUPP;
+>  			if (dev->phydev)
+>  				ret = phy_loopback(dev->phydev, false, 0);
+> +			else if (priv->hw->phylink_pcs)
+> +				ret = phylink_pcs_loopback(priv->hw->phylink_pcs, false);
+>  			if (!ret)
+>  				break;
+>  			fallthrough;
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index 59dfe35afa54..a7f78c82913a 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -997,6 +997,25 @@ int phylink_pcs_pre_init(struct phylink *pl, struct phylink_pcs *pcs)
+>  }
+>  EXPORT_SYMBOL_GPL(phylink_pcs_pre_init);
+>  
+> +/**
+> + * phylink_pcs_loopback() - Enable or disable loopback at the PCS
+> + * @pcs: a pointer to a &struct phylink_pcs.
+> + * @enable: true to enable loopback, false to disable
+> + *
+> + * Enable or disable loopback mode at the PCS level. This is used by MAC
+> + * drivers for selftest purposes when no external PHY is present.
+> + *
+> + * Returns 0 on success, negative error code on failure.
+> + */
+> +int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable)
+> +{
+> +	if (pcs->ops->pcs_loopback)
+> +		return pcs->ops->pcs_loopback(pcs, enable);
+> +
+> +	return -EOPNOTSUPP;
+> +}
+> +EXPORT_SYMBOL_GPL(phylink_pcs_loopback);
+> +
+>  static void phylink_mac_config(struct phylink *pl,
+>  			       const struct phylink_link_state *state)
+>  {
+> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+> index 2bc0db3d52ac..66c7016d4acd 100644
+> --- a/include/linux/phylink.h
+> +++ b/include/linux/phylink.h
+> @@ -518,6 +518,7 @@ struct phylink_pcs {
+>   *		    the MAC.
+>   * @pcs_pre_init: configure PCS components necessary for MAC hardware
+>   *                initialization e.g. RX clock for stmmac.
+> + * @pcs_loopback: enable/disable loopback mode at the PCS.
+>   */
+>  struct phylink_pcs_ops {
+>  	int (*pcs_validate)(struct phylink_pcs *pcs, unsigned long *supported,
+> @@ -542,6 +543,7 @@ struct phylink_pcs_ops {
+>  	void (*pcs_disable_eee)(struct phylink_pcs *pcs);
+>  	void (*pcs_enable_eee)(struct phylink_pcs *pcs);
+>  	int (*pcs_pre_init)(struct phylink_pcs *pcs);
+> +	int (*pcs_loopback)(struct phylink_pcs *pcs, bool enable);
+>  };
+>  
+>  #if 0 /* For kernel-doc purposes only. */
+> @@ -717,8 +719,22 @@ void pcs_enable_eee(struct phylink_pcs *pcs);
+>   */
+>  int pcs_pre_init(struct phylink_pcs *pcs);
+>  
+> +/**
+> + * pcs_loopback() - Enable or disable loopback at the PCS
+> + * @pcs: a pointer to a &struct phylink_pcs.
+> + * @enable: true to enable loopback, false to disable
+> + *
+> + * Enable or disable loopback mode at the PCS level. This is used by MAC
+> + * drivers for selftest purposes when no external PHY is present.
+> + *
+> + * Returns 0 on success, or a negative error code on failure.
+> + */
+> +int pcs_loopback(struct phylink_pcs *pcs, bool enable);
+> +
+>  #endif
+>  
+> +int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable);
+> +
+>  struct phylink *phylink_create(struct phylink_config *,
+>  			       const struct fwnode_handle *,
+>  			       phy_interface_t,
+> 
+> base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
 
