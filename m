@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C8C41378A;
-	Fri, 24 Jul 2026 22:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7181E23909C;
+	Fri, 24 Jul 2026 22:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784931047; cv=none; b=AReBDl7Mc1p+c7sW8QN0eizjj6CP3oO+P+wVr+5dLmYA4eYRJSUGlLMcSPPHnAESVQRIXRCCntiuRdf6AjDeCwJ59PcEdjelTJtEfrem0UuXudTp/rXsMps2a8l5uOGibEjA5LegKRdwHL1YHAH3cdMp0+YL4x92/GoGF1QYEb8=
+	t=1784931056; cv=none; b=Bb6jzhLsnMoIVVaFaj6EjsESiE5kOYV7gRYiou/XXKHtBABJQfk6nep1stdy9n+5ioGLeFSZDqRAguHV+tpMz9NbfdjzJK8r8BF8IfcMNH+DXiMnmUKokcpuUvVBnoHKn/b40xZXDUCxIV2NMNp56rJHe8ASF23nLayvJR+Vsb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784931047; c=relaxed/simple;
-	bh=yUGqR8d+w7J9S/tOLZRyEEhqfl7wrkbb7hFP6l+Vy8c=;
+	s=arc-20240116; t=1784931056; c=relaxed/simple;
+	bh=a2zl0n4ZcN2YeNrbtt8cfsk6uluDRrlvMPGk1EXXn0A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GP7Vq0Ud6iC19ISViIE/0JxR+kdPwcWC0Y9we7o8ilf5HuLBbsNk9TKmwZvSZYxQoyfU+md0XdAu9E05MlFHhoNhKLYaUC0x3Hts/b9JUDQ3uy7t2FGFzjBu6u4XvTEDzsNSITPWenIRRUUhoHwMYqqR3hrA5fRoaT/V5UpIPBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n01KEyKG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=lVJQsHYP+qV2DYqEaMmeYvE5GCn+VhRiWMLbJlozFYW4GXLLuhX92ujVMjpYA1vIJEBsDuqOlDicewdN3ZYLs0LimkPqJb1sL1Rx0dztjYOL+gzwKrQySsn/mnmqIXAECFGQlP9SjP4Wz89C3CgkeuFD4rTJXXtiq2bYdJmO5JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV8iBz8u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n01KEyKG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65FC1F000E9;
-	Fri, 24 Jul 2026 22:10:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV8iBz8u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20851F000E9;
+	Fri, 24 Jul 2026 22:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784931045;
-	bh=8uFQEOw6L0JAgFeR5Qb6WsRh3rOhAI5RJb9ONA74SSE=;
+	s=k20260515; t=1784931055;
+	bh=mT+gjYgzMIInIebQz6S/F5SqdTOcOcDVDgaACywLw+k=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=n01KEyKGdBWcLPcIE1Q/pLSe0VwjQeHpagS05ftRFPeMtF3JYMAoD4NTgC8efE2D4
-	 d7VsRwhPmorHWj0cFB8yxK7CN0QiiBiNVjGPxs65zagcFEzXEc8JBriE/xS9ko3Qxh
-	 OhxZzM9fVDyFwVz+2XjfHXRZrOtpsaDa3LerpvC6KwbcllTYVGQL5C15FodwAZruTz
-	 sSd8DWAXgTZn/21orJgJNRgwtCQKAxUbMIFh8mRPJkMTofWxTqgO8//QPEJBeoIh2y
-	 fqSrgEEdgSxejbW9+zy+EDVyacsN+9W74ociQFPW74lhHxRPkLu8m1j/ZzBjeD1FaN
-	 TTl92b8J140YQ==
+	b=mV8iBz8uVQ09EtCWfm0L7BJNAthojeK2NX4d+iY6As6P2n1RyY/XEWim7nD0ZPugb
+	 xz4aZ5pM4jYolggew62Pc+CB0pZOhSMWr9kJW6c5frUuTSHkstEgJW9dO7fIiiqJ/V
+	 bgGegLWMQImlS3iaOuZvxWM6g7COuXT7AobdkvbaKuRtLZZcwv1LjwyXwWlt0delPp
+	 xr57YFA4xce1ahL6l0Rw5O2QeITyPssKiiuY3yZO0EdPgLZB3Y83e4MoZ+SITQhJPM
+	 iCtN0MM1sran/TEKwx5GvjjEUN5JNc15qlTcVDYg7ypVqwJdPiMOnSg15JeRGOcGmd
+	 mSbtyQ+2nVQTw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1987638111D7;
-	Fri, 24 Jul 2026 22:10:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56ABB38111D7;
+	Fri, 24 Jul 2026 22:10:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v4] bpf,
- sockmap: Fix cork use-after-free in tcp_bpf_sendmsg()
+Subject: Re: [PATCH net 1/2] nexthop: take nh->lock for f6i_list walks in
+ replace
+ check and notify
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178493101265.3330129.14153213405975087302.git-patchwork-notify@kernel.org>
-Date: Fri, 24 Jul 2026 22:10:12 +0000
-References: <20260724103856.3399001-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260724103856.3399001-1-nicoyip.dev@gmail.com>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: emil@etsalapatis.com, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, john.fastabend@gmail.com, jakub@cloudflare.com,
- jiayuan.chen@linux.dev, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178493102203.3330129.7311134539620710020.git-patchwork-notify@kernel.org>
+Date: Fri, 24 Jul 2026 22:10:22 +0000
+References: <20260722002951.2614721-1-xmei5@asu.edu>
+In-Reply-To: <20260722002951.2614721-1-xmei5@asu.edu>
+To: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+ kys@microsoft.com
 
 Hello:
 
-This patch was applied to bpf/bpf.git (master)
-by Eduard Zingerman <eddyz87@gmail.com>:
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 24 Jul 2026 18:38:56 +0800 you wrote:
-> tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which
-> drops and reacquires the socket lock.  Its error path tries to decide
-> whether msg_tx names the local temporary message by comparing it with
-> the current value of psock->cork.
+On Wed, 22 Jul 2026 00:29:50 +0000 you wrote:
+> fib6_check_nh_list() and __nexthop_replace_notify() walk nh->f6i_list
+> during an RTNL-serialized nexthop replace without holding nh->lock. IPv6
+> RTM_NEWROUTE/RTM_DELROUTE run without RTNL and mutate that list under
+> nh->lock (fib6_add_rt2node_nh(), fib6_purge_rt()), so both walks race a
+> concurrent route delete that unlinks and frees a fib6_info:
 > 
-> This comparison is unsafe when two threads send on the same socket:
+>   BUG: KASAN: slab-use-after-free in rt6_fill_node.isra.0 (net/ipv6/route.c:5799)
+>   Read of size 4 at addr ffff888014607e64 by task exploit/143
+>    rt6_fill_node.isra.0 (net/ipv6/route.c:5799)
+>    fib6_rt_update (net/ipv6/route.c:6412)
+>    __nexthop_replace_notify (net/ipv4/nexthop.c:2542)
+>    rtm_new_nexthop (net/ipv4/nexthop.c:2554)
+>    rtnetlink_rcv_msg (net/core/rtnetlink.c:7076)
 > 
 > [...]
 
 Here is the summary with links:
-  - [bpf,v4] bpf, sockmap: Fix cork use-after-free in tcp_bpf_sendmsg()
-    https://git.kernel.org/bpf/bpf/c/2d66a033864e
+  - [net,1/2] nexthop: take nh->lock for f6i_list walks in replace check and notify
+    https://git.kernel.org/netdev/net/c/072cd1f21819
+  - [net,2/2] nexthop: avoid unlocked f6i_list walk in nh_rt_cache_flush
+    https://git.kernel.org/netdev/net/c/4787a6d2629b
 
 You are awesome, thank you!
 -- 
