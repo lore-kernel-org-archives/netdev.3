@@ -1,66 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EA339CD13;
-	Fri, 24 Jul 2026 22:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C8C41378A;
+	Fri, 24 Jul 2026 22:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784930951; cv=none; b=qU+wdjb7zB5yXlkz4R/ntL5r2cpKNetsaxYkRidceL6jfAeU0zjKXyEfEpsziAt3k2L4pDXa2u+6d7maeFBbN9RC3AY6bBY/4+SsfK6pnAC0AERHDwOz7oZMA5dDIvZsyu68qIy4f9utfyTwwt5d3T/KwMRe5FIFmh+N9G1mm5U=
+	t=1784931047; cv=none; b=AReBDl7Mc1p+c7sW8QN0eizjj6CP3oO+P+wVr+5dLmYA4eYRJSUGlLMcSPPHnAESVQRIXRCCntiuRdf6AjDeCwJ59PcEdjelTJtEfrem0UuXudTp/rXsMps2a8l5uOGibEjA5LegKRdwHL1YHAH3cdMp0+YL4x92/GoGF1QYEb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784930951; c=relaxed/simple;
-	bh=W/Xax4YdnTaYindT7skaeKHkrDYt8TkwdjnQVq4tIQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LPKjOHIz7rp842Fnr7dZQofazD3nDUpXgEpIfKgRkgoPqE9NUYktQAkYlAXJ9t40ZeeyLv50qBUyl5kL0FLqrLV7Yz4AVK7SIYbHKd+mzN6n/trNAPKWxfRkQQzkYwltYZzg0/AL3W4dZM04HZgR5nKqx1uOzVDUWrGjmq5Mzl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3nYRgcl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784931047; c=relaxed/simple;
+	bh=yUGqR8d+w7J9S/tOLZRyEEhqfl7wrkbb7hFP6l+Vy8c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GP7Vq0Ud6iC19ISViIE/0JxR+kdPwcWC0Y9we7o8ilf5HuLBbsNk9TKmwZvSZYxQoyfU+md0XdAu9E05MlFHhoNhKLYaUC0x3Hts/b9JUDQ3uy7t2FGFzjBu6u4XvTEDzsNSITPWenIRRUUhoHwMYqqR3hrA5fRoaT/V5UpIPBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n01KEyKG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3nYRgcl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0C41F000E9;
-	Fri, 24 Jul 2026 22:09:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n01KEyKG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65FC1F000E9;
+	Fri, 24 Jul 2026 22:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784930950;
-	bh=r3rKYcDY3e+ceZrDHcSvFv8KJQEpIyzzAkMdzmsK0PM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=f3nYRgclXL69xqzC1JjMoANHoASIsDSuXEkuECqQ/+E8TAuCsGvaDwMn9QEAs3c3l
-	 fOP0akwqLDI00ya2/yNn+qRuJKnzcjLNQ/d2etzDljKejziXzTWZs9zs65HVA+lUmn
-	 N4v6VSBzuRTzc6BxzGXckG9PwcUOddHcRpCUOQ+iRosidQ6VPxiUfJFUEIWkyO2SUo
-	 P7S+ncqMbYJbdxkMmYnkMhXLbS124WkMAvz2XndD+Jm9Ep864ksbqvKBXs7gVm5iJP
-	 GCqPsbtb780zZRaK3rMIvq+CwRJp0MV9juqCmnjgqexOELkldAriqob9OjT56unK8U
-	 jXdyXVzuj5xyQ==
-Date: Fri, 24 Jul 2026 15:09:09 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "John Ericson" <mail@johnericson.me>
-Cc: "John Ericson" <John.Ericson@obsidian.systems>, "Kuniyuki Iwashima"
- <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- "David Rheinsberg" <david@readahead.eu>, "Cong Wang"
- <cwang@multikernel.io>, "Sergei Zimmerman" <sergei@zimmerman.foo>, "network
- dev" <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v3 1/2] af_unix: fix listen() succeeding on sockets
- in the wrong state
-Message-ID: <20260724150909.130726ef@kernel.org>
-In-Reply-To: <acb8cc56-6473-4910-9367-8c3c0d75be78@app.fastmail.com>
-References: <20260718182903.2295560-1-John.Ericson@Obsidian.Systems>
-	<20260723091248.6acaa173@kernel.org>
-	<acb8cc56-6473-4910-9367-8c3c0d75be78@app.fastmail.com>
+	s=k20260515; t=1784931045;
+	bh=8uFQEOw6L0JAgFeR5Qb6WsRh3rOhAI5RJb9ONA74SSE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=n01KEyKGdBWcLPcIE1Q/pLSe0VwjQeHpagS05ftRFPeMtF3JYMAoD4NTgC8efE2D4
+	 d7VsRwhPmorHWj0cFB8yxK7CN0QiiBiNVjGPxs65zagcFEzXEc8JBriE/xS9ko3Qxh
+	 OhxZzM9fVDyFwVz+2XjfHXRZrOtpsaDa3LerpvC6KwbcllTYVGQL5C15FodwAZruTz
+	 sSd8DWAXgTZn/21orJgJNRgwtCQKAxUbMIFh8mRPJkMTofWxTqgO8//QPEJBeoIh2y
+	 fqSrgEEdgSxejbW9+zy+EDVyacsN+9W74ociQFPW74lhHxRPkLu8m1j/ZzBjeD1FaN
+	 TTl92b8J140YQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1987638111D7;
+	Fri, 24 Jul 2026 22:10:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf v4] bpf,
+ sockmap: Fix cork use-after-free in tcp_bpf_sendmsg()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178493101265.3330129.14153213405975087302.git-patchwork-notify@kernel.org>
+Date: Fri, 24 Jul 2026 22:10:12 +0000
+References: <20260724103856.3399001-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260724103856.3399001-1-nicoyip.dev@gmail.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: emil@etsalapatis.com, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, john.fastabend@gmail.com, jakub@cloudflare.com,
+ jiayuan.chen@linux.dev, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Thu, 23 Jul 2026 16:58:16 -0400 John Ericson wrote:
-> Ahahaha. I had the exact same thought!
-> 
-> The original revision of this [1] indeed had the error handling reworked
-> like that, but Kuniyuki Iwashima asked me to submit the simple 1-line
-> patch to "net" first, and only submit the cleanup to "net-next" later,
-> so that is what I was doing.
-> 
-> Is that OK with you, too, I hope?
+Hello:
 
-Oh, you should probably mention the net-next follow up under the ---
-separator or in the cover letter next time.
+This patch was applied to bpf/bpf.git (master)
+by Eduard Zingerman <eddyz87@gmail.com>:
+
+On Fri, 24 Jul 2026 18:38:56 +0800 you wrote:
+> tcp_bpf_sendmsg() keeps msg_tx across sk_stream_wait_memory(), which
+> drops and reacquires the socket lock.  Its error path tries to decide
+> whether msg_tx names the local temporary message by comparing it with
+> the current value of psock->cork.
+> 
+> This comparison is unsafe when two threads send on the same socket:
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf,v4] bpf, sockmap: Fix cork use-after-free in tcp_bpf_sendmsg()
+    https://git.kernel.org/bpf/bpf/c/2d66a033864e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
