@@ -1,136 +1,187 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1B3CFF4F
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229AF3CF212
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 21:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784927472; cv=none; b=mASH08lYfm7f3MWougSzgJswIcg2iXfc5NurS0sLcRN2/ijyny8QljlTUUBntNBmLRDLNn275vn6NhEbTuf++RouTEcB15XWMzAFo0jXdh230Engg9lXejHmVL0HG6/2KCRb5zl5Oj50q7zjUHJv6BPgpN6Yp3UuNRSrh5Hs64o=
+	t=1784928106; cv=none; b=PaQlYzZfuYA2MQT+tHjB9GeaTcbZkyPu2YE7I1xzoIOoj6o2rXvOlhjOPOa0fpu2JUNt3KOC8IXQHQoGZKjA4MWIHN+J4lcnDDDi9/u69b5OL7bVAGUWKqit+3zdw61F4y1w3/pXaOc2QWJIqMsQVLtgCBdVh4DXcoUCluNBKQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784927472; c=relaxed/simple;
-	bh=RirywIIvCMGl+AmhsxILpmh/0g1v2KM8NX5F8TG1gsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q2r/VtAwtaD5hp0GLxpPHZlr23G5Bqg2S0rLEiT6AudXu3uEZ6XdtfDOy9s1JCWpebh6eR4NbS8Zp2mRL1F5nwYQcyqPrfE8sJgd/rSnbfVU10E4wJ5lYc0JLTbyryCscs4TPpiyvsMD4yc8F5UC9ba6NUU0CR9OHgBKm3JmnSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=esC3Tvda; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1784928106; c=relaxed/simple;
+	bh=/zOqAC4+Ompelo1IUkmo5yf1nOh1ERPexeypHOA/Xdo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=stekLKoI0ojDpMjS3JKdNvBvmLvx4CM6QgFRo+P/FpDwEqVeQ9bUhADBiBmd+HO++H4giH9ywjug2aq/XOGX8J9aTObsdwWcwUTwSVBCdVi7jzeqjeg5LwsfWcMp+/nkq6dIpHOBplZtEY5yViQUAVVP4Dt6cTjHwdTtrfSBj2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iji/ohKT; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="esC3Tvda"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2caced6038eso12497335ad.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:11:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iji/ohKT"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84847482584so696405b3a.0
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784927470; x=1785532270; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bWQIrK7yeLWM4ZB3OW1av571sFujM5GYrF90hFF5FZs=;
-        b=esC3TvdaGQ5JtUReZ++og6DtbrdHuKcXJhZmz4iBdZhnEAQ9k608wM5RKPHsc7/opv
-         5Fw4SMz3FQQVDLYW1cjKS07dT1TnnJmU6o1cfPkVPAcMQRiqAy36+jZYcT4rpeSiOgTR
-         2mi27NPqvefFxR54y3zfs+qVzU0ZH6mC8ZLhYg/hV9tiwuzQOV5oZV1WvpRATqz2syJn
-         g98ZCUBPy7bxidFYTmyjtCZhqhN4w2tEoaeA0Y3OSPUfUCWWDMubcptsxytC1r0x6zeY
-         3PDM7svt3VRn9rz5NlKO39QmLGcMzf/5XDbkDrX9c3wms+p/eaa0ntDtP0ZuFTQ1/I0d
-         mkJw==
+        d=gmail.com; s=20251104; t=1784928103; x=1785532903; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FQ2nZV4mae9urUpcNtLvt+1onS2Wo4KozDXQHkgV0sw=;
+        b=iji/ohKT0XeNR9LLi8SoEHdUJhLewki3GTVE/crz1pfwcOqK/eEkhRS9p7kepnnPMX
+         dpncnF46Ir1otSG5LqIzET0R3CBrNqTUQmpyovFE/iT4324Tg1nHRWvYo5zFjqQ6++W4
+         QBO+I0sUrNbC2Wbonz37c3GFpHq2SZEN9ffuu2lPCqCVcdDhfnYr1Nwf7MZz0caOyta5
+         m928ffmqxi0+jCGWAO6o4HT4ceFsHrl37YHtl3phHe9hgYZDpx2BB9HmthOiTo9gwMZb
+         cBX9OBytjGZWg1O3HZMaL+S9U2t+X3D8QNtw+3DG/8hj3XCizvK7GqKU+wz4Yr2f7dAZ
+         yQHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784927470; x=1785532270;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bWQIrK7yeLWM4ZB3OW1av571sFujM5GYrF90hFF5FZs=;
-        b=fkdDUC1B5BYEuYa/FzMdvsJ3uDe6kkwbw1rkmrBCkV22oCbOS8/hautETZRGjUV6kZ
-         L+PbtyPgeJ6160ioHhX4CRYy6auOFc7zcNBqj2RA+Sk+VNkgcIfYo0MkpT015gpBpIAt
-         4fVG0ZHysL50CKKf2yAboUi4DgLjn5UxF3i+BvaJejQytcqJM+llJ9CF2T7vvKtvLfRm
-         P7D1FiG6sNZvJ+3VEHVDdHbmaMcP+GeVXSkFajeNguri1WY37dCmhKxDprBfV8DwDEop
-         VMhj9PGj0KuNi8c4TlYoLroYnmpbeySTEPQRt/Xjb8BBGkZvk2Jqm4KHhRNY3VSx/Imt
-         yTqA==
-X-Forwarded-Encrypted: i=1; AHgh+Roj/6ffMAgdsfyV17Et9lVGhk5t+uKqvay7R2HimLnk7E8zUMHRWHA2F2lpim00Nps9V+NXGN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxanMj35nosdefrrBaXZaQyLvVyV/sZa+V9efYiiFEsJbaT1QpY
-	hGPBRJfO6iwyIQmkoyb0iismWYfC860JUAadbAkK8ms/XQa4kalbg4IU
-X-Gm-Gg: AR+sD10cB8R5065Qk3TEi6fYHDNebV5mdWOPZgk068/GxAY9hi7rpU0fSmwcQ+HQGYi
-	sHgax7Jt7BgdGbY6NMLtNPLujfxWprHOTohR0cKPZEZXGXtVHw7Hw/i/1tQhnIB60P/eeGZifyh
-	rMWcHYMJzH3V5FwjL64ScbeTfwHL/iG+IHgJ3zUHx9wvjppzFnzqubCT/pDrwBiUG0xczrmmNLr
-	196gHJRGpQmDslPxscOnUC9kCkc/e34C4tbrwpFb8Lvmww1JgCm1PALQM4rIriumk1OrpxVYGTc
-	FiSPQcUPql86dbvm3j9P41++4R7tqZDOnLC9zKuD8Ss7rvodf7J8f61652ail1iHl78Mf0UOBIB
-	u9hQNqE9lZYcXCqMjIyx17221jH1nOUtRXp24nuUL+jWrO/EreouCZI8xaNjWea+RfdBy6EVJEH
-	Dhxqcga4/+DWUtgi/UgiONDQ==
-X-Received: by 2002:a17:903:1c2:b0:2bc:e299:4b3f with SMTP id d9443c01a7336-2cfd7953a96mr18549685ad.10.1784927470019;
-        Fri, 24 Jul 2026 14:11:10 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:9::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7f48f8sm242665ad.70.2026.07.24.14.11.08
+        d=1e100.net; s=20251104; t=1784928103; x=1785532903;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=FQ2nZV4mae9urUpcNtLvt+1onS2Wo4KozDXQHkgV0sw=;
+        b=ffe97xJa+hXj+24MNrPapUw/O38sQnYos9vG3tqVtkPgaUY8Ymr5d8qEYHCR4yoSvr
+         dAS8wcMQtjyf9wYK2R5wNFYrOnW1P3/4Rw+onZVV0ZObd/Xi+YaSKGUYtIxVsRma7pvN
+         shRFnJUTXa8hNG2SratpL9noQeNT2L9zTAuBFc8oj5murotSyNnsY0i0r+gcpiK3QOnk
+         pZQyWxMdzivJXUj79ic/ndLP5WykbF2w/COplNruLpci4IORUXmumgDS/DqZok3j3miG
+         jV4XdpI7gCFBZVgnEDX0/VMJiEutPRRjnLSlcnui/ruaKpzYAGo9gZc2TMCduxz8LVNY
+         wFaQ==
+X-Gm-Message-State: AOJu0Yyn79b09o2f8K8NFXc6kE4SPMeCKyiEfDGDGwCz/WSDLq9hpnmD
+	4g/r6qTaF/CwpjvbZX7Qc1kDjYxNBGqA2+HB46U6qEoqFIMbI4HOh0IN
+X-Gm-Gg: AR+sD12SEX4MpgLcgR3cAR1gTQ9wv7OQ9rSJZA46UrYSu/XGaG8zoqzNxSgoP6cGXA+
+	MB7qkCnUgqNsLz21T1JCNceEnO9HQ8/ncsw+V7SpTPpHzdRHk8ZgsJ+TVCn7YjD5IZXj4PHXFvv
+	5GzwqKL7E2JImcg8aH8c54pgSShC51/gqp7eDqkUA6pqaQ6fOsUPSoESIghVDBly8iFsq2eWfo3
+	hkrdrUq2oaC2Ky0IDSp+r4yLJTIubItGRf19R8B7wQ26saEsKeu+PNc1RU5i1r8H0KGN/BafKNc
+	fXtDMFs4Em8vmZNyTxgxxl/IkgjYjvpHav+mkS0OW+k2/T8FOjiqcWPauK0c0wQiNz6b+Rz1zR8
+	iYKDqNHopLpBqvpbZyqPRCz8GYsqR8L8jdTtv4oGQkM0RIQYuz02L74R2LCiRfe3Vkm0ez4W7WJ
+	Gbvw+Jh7o5BAiqEAsmjpFnCvoG1gPaSDs6Nyi+F9XwkscuMy3XaDFiK1Q=
+X-Received: by 2002:a05:6a00:4213:b0:84c:241e:9070 with SMTP id d2e1a72fcca58-84e4e915478mr1649451b3a.17.1784928103363;
+        Fri, 24 Jul 2026 14:21:43 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5327f7cesm453963b3a.18.2026.07.24.14.21.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 14:11:09 -0700 (PDT)
-Date: Fri, 24 Jul 2026 14:11:07 -0700
+        Fri, 24 Jul 2026 14:21:41 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
-	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
-	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
-	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v5 1/3] net: devmem: allow rx-buf-size >
- PAGE_SIZE per dmabuf binding
-Message-ID: <amPU683HyCt3TJNG@devvm29614.prn0.facebook.com>
-References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
- <20260708-tcpdm-large-niovs-v5-1-34bf6fac941b@meta.com>
- <20260721110713.325d36ba@kernel.org>
- <amKqlqgfZipKjrii@devvm29614.prn0.facebook.com>
- <20260724072419.62778bbe@kernel.org>
- <amOVWgJ3BAJ8I/4+@devvm29614.prn0.facebook.com>
- <20260724125817.4495a7d4@kernel.org>
+Subject: [PATCH net-next v6 0/3] net: devmem: allow rx-buf-size > PAGE_SIZE
+ per binding
+Date: Fri, 24 Jul 2026 14:21:14 -0700
+Message-Id: <20260724-tcpdm-large-niovs-v6-0-7975f62cdfbb@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724125817.4495a7d4@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAErXY2oC/23PzWrDMBAE4FcRe/aWlVY/jU99j9KDrKwSQW0H2
+ 4iU4HcvmEKN8Xngm5kXzDIVmaFVL5iklrmMA7TKNwrSPQ43wXKFVoEh48mTwSU9rj1+x+kmOJS
+ xzui8Mxw5agoBGgWPSXJ5buYnDLLgIM8FvhoF9zIv4/SzlVW95X8un7hVI2HmEG1MPhifPnpZ4
+ lsa+w2rZgdofQYYJBQxXdZOgjN8AHgPnD2rjISRO39hCT6n7gDYfyDQ6QKLhCla72zm4AIdALc
+ H3s8Ah4Rsu+xzTBer9wvWdf0F0DtiCr8BAAA=
+X-Change-ID: 20260602-tcpdm-large-niovs-56523a3a1077
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, 
+ sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net, 
+ almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com, 
+ dw@davidwei.uk, Joe Damato <joe@dama.to>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
 
-On Fri, Jul 24, 2026 at 12:58:17PM -0700, Jakub Kicinski wrote:
-> On Fri, 24 Jul 2026 09:39:54 -0700 Bobby Eshleman wrote:
-> > > BTW did you add both min and max checks? Cause the only risk with using
-> > > a dummy value would be that the policy will be rendered inline, and
-> > > inline policy is u16 so 64k wouldn't fit. But your sample above has a
-> > > max of u32_max which forces the out-of-line policy, which is what we
-> > > want.  
-> > 
-> > Yep, u32_max:
-> > 
-> > +	 name: rx-page-size
-> > ...
-> > +        checks:
-> > +          min: page-size
-> > +          max: u32-max
-> > 
-> > Sorry, probably should have just sent the whole patch instead of
-> > replying hunk-by-hunk.
-> 
-> Ack, LG, just double checking.
-> 
-> > BTW, how expressive do we want these policies? For example, would
-> > absorbing the power_of_2 check into a policy be valid in the future? or
-> > is that too bespoke?
-> 
-> Power-of-2 could be useful (it's implicitly one bit set, which is also
-> potentially useful for validating one-hot flags). The trickiness is
-> combining power-of-2 and the min check :S We have one validation per
-> field. I was wondering if we would be better off defining the field
-> as a shift instead, then we only have to check min. But I thought
-> that it'd be a little unusual for uAPI and possibly maybe one day
-> we will want the non-power of 2? So I figured checking min using
-> the existing facilities and open coding power of two check is good
-> enough for now.
+Every devmem dmabuf binding hands the page_pool PAGE_SIZE niovs today.
+On NICs that consume one descriptor per netmem, this caps a single RX
+descriptor at PAGE_SIZE and burns CPU on buffer churn.
 
-SGTM.
+In this series, we add a bind-time netlink attribute,
+NETDEV_A_DMABUF_RX_BUF_SIZE, that lets userspace request a larger niov
+size (power of two >= PAGE_SIZE). Drivers must opt in via
+queue_mgmt_ops.QCFG_RX_PAGE_SIZE.
+
+Measurements:
+
+Setup: kperf devmem RX/TX cuda, 4 flows, 64 MB messages, 60s, dctcp,
+num-rx-queues=4, dmabuf-rx/tx-size-mb=2048, 10 runs per niov size,
+mlx5.
+
+   niov       RX dev Gbps   RX flow avg Gbps         app sys %
+  -----  ----------------  -----------------  ----------------
+     4K  300.63 +/- 53.21    75.16 +/- 13.30   54.15 +/- 10.23
+    16K  321.35 +/- 28.20    80.34 +/-  7.05   41.05 +/-  8.87
+    32K  347.63 +/-  2.20    86.91 +/-  0.55   44.54 +/-  3.51
+    64K  332.11 +/- 14.26    83.03 +/-  3.56   35.47 +/-  3.11
+
+RX app sys % drops ~19% from 4K to 64K.
+
+kperf support (not yet merged):
+https://github.com/facebookexperimental/kperf/commit/8837577f920876bce6986ec18869ac04439ebcd2
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+---
+Changes in v6:
+- Rename rx-buf-size to rx-page-size (Jakub)
+- Move the >= PAGE_SIZE check into the netlink policy; doit only checks
+  is_power_of_2() (Jakub)
+- Drop @ksft_disruptive from check_rx_large_niov() (Jakub)
+- Link to v5: https://lore.kernel.org/r/20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com
+
+Changes in v5:
+- removed unnecessary change from ssize_t to size_t (Mina)
+- removed '--------' lines in the commit message (Paolo)
+- removed commit msg about CONFIG_HUGETLB since that change was already
+  merged
+- Link to v4: https://lore.kernel.org/r/20260701-tcpdm-large-niovs-v4-0-ca4654f37570@meta.com
+
+Changes in v4:
+- ncdevmem: fix the possible overflow in ncdevmem (Sashiko)
+- drop the udmabuf patch because the fix is now already in net-next
+- silenced two pylint complaints in devmem_lib.py
+- Link to v3: https://lore.kernel.org/r/20260612-tcpdm-large-niovs-v3-0-a3b693e76fcb@meta.com
+
+Changes in v3:
+- fix a bunch of non-reverse christmas tree declarations (Stan)
+- remove extra uint32 cast for getpagesize() (Stan)
+- remove overzealous strtoul checking (Stan)
+- remove value checks that the kernel already performs on rx_buf_size
+  (Stan)
+- Link to v2: https://lore.kernel.org/r/20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com
+
+Changes in v2:
+- Use NL_SET_ERR_MSG_FMT for sg alignment failure details (Stan)
+- Keep -E2BIG (not a direct ask, but seemed preferred, Stan)
+- Update udmabuf commit message and comments explaining why
+  "one sg ent per folio" is useful (Christian)
+- Set/restore nr_hugepages in py harness (Stan)
+- Link to v1: https://lore.kernel.org/r/20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com
+
+---
+Bobby Eshleman (3):
+      net: devmem: allow rx-page-size > PAGE_SIZE per dmabuf binding
+      selftests/net: ncdevmem: add -b option to set rx-page-size on bind
+      selftests/net: devmem.py: add check_rx_large_niov
+
+ Documentation/netlink/specs/netdev.yaml            | 17 +++++++
+ include/uapi/linux/netdev.h                        |  1 +
+ net/core/devmem.c                                  | 49 ++++++++++--------
+ net/core/devmem.h                                  | 13 +++--
+ net/core/netdev-genl-gen.c                         | 11 +++-
+ net/core/netdev-genl-gen.h                         |  1 +
+ net/core/netdev-genl.c                             | 18 ++++++-
+ tools/include/uapi/linux/netdev.h                  |  1 +
+ tools/testing/selftests/drivers/net/hw/devmem.py   | 11 +++-
+ .../testing/selftests/drivers/net/hw/devmem_lib.py | 59 +++++++++++++++++++++-
+ tools/testing/selftests/drivers/net/hw/ncdevmem.c  | 36 +++++++++++--
+ .../testing/selftests/drivers/net/hw/nk_devmem.py  | 10 +++-
+ 12 files changed, 190 insertions(+), 37 deletions(-)
+---
+base-commit: 89d8006259b81dd25c962f6cc8d7ab268d6ea426
+change-id: 20260602-tcpdm-large-niovs-56523a3a1077
+
+Best regards,
+-- 
+Bobby Eshleman <bobbyeshleman@meta.com>
+
