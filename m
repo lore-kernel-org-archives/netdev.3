@@ -1,94 +1,195 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0983347514;
-	Fri, 24 Jul 2026 09:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E575A145B3F
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784885738; cv=none; b=kOZmm+twXT7bc3mpjQYVox2rkwrBaB5g2/W6pUhUNg+mTlAUH8awZLyeNf4EOlFSrQYKu4PuJwkRyMZpTFs8WJFHjFQ8cmZzJLgz6l53bQtwnk2vkYyS1Fi9PTnS2P2dNGHylR4i0C6mDPiBjFgN0duG5hrnAx0+PcloUKOqcL0=
+	t=1784885770; cv=none; b=JOkZRSerH9TnLyG7QWCF47ubeS46sDTtnsntilwJATW++YkW5F5sK8QpluynDcR3pAwRe4RLiUzcrzJCpwxNC9ZiHd+vPDUusov8mTa/o6LxOBzPb3sVHb+cR7g4sRKHAl/4rzxzvdtAnsB/mNRnUxMnnK3tz07h283q41E+Z3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784885738; c=relaxed/simple;
-	bh=Ep818I0KWL25+VYHP/+29O7T4BxioGN4GlzQBJcaPbs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d8rSAS2mJXHVmmV262sODoiZIFGV3RiMMEobiQY8x2KQE9PkUiWWK33pS7id9Vq9knMcLpyVHqayymYHgEpaj4nMHs/aZhkPBwfWlYTmROpkIzYSy00T7pHcOmDiJAt74S7B6wqFjpfzJVUqxvPJRvQD/gZxZCyImiqFZl1krqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Z81uxgQf; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1784885770; c=relaxed/simple;
+	bh=f6U6oJJ5FClN6dQxymmyCvZ+wSAWQyE4JnOlmQ3V3nA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t+hensiIl4UIyQoe6PbFH9Yv/ogy+xZ1xUdAfZsS3P5xXMW+BceejLELvZI79215kMm9N55H8qS82h9HRSXTeXv/a5WT+YjiXqipseEZsMLbhzAdodeMcjIFQFwrnlz899eczE5N03+2mnUwmv7Zx+Kdm76AHnMCL7rhOPY3mao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O8AgvNUO; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Z81uxgQf"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O4mIpr907239;
-	Fri, 24 Jul 2026 02:35:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=Ep818I0KWL25+VYHP/+29O7T4
-	BxioGN4GlzQBJcaPbs=; b=Z81uxgQfTxz/0MvK2EEBRpzMpLQgSFvjGm8OhxtwM
-	3eL9fgu6rJPFmMqJxj/fURcjDj520i8X9P9jEgascq4hMmPLwHLvXRjWyRARnCmT
-	bOG03AJuA3ZfXEv0wa/QzuXRzzqVOCOOlt3CboIZ3J1ApIlJ5QaoyDVJqxkSL9eI
-	Cav3Z/Gyvi9UzEMfX1wkUkBeZAtdVJ1Jy/K1bwp2ybfXeQJ7q8IUQDZe62IvnkHe
-	Mw3MuzzZ9U3NwV8JIu4o6GL3w1Isr9RRAWl07AH77okXA5PCv7woDCIW088fO3F5
-	ganHFX7quFwW04KAqIli621PKlS6/9lWauy8DjZ4zvWGg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fka6kckvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 02:35:16 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 24 Jul 2026 02:35:15 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 24 Jul 2026 02:35:15 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 57AF63F7076;
-	Fri, 24 Jul 2026 02:35:12 -0700 (PDT)
-Date: Fri, 24 Jul 2026 15:05:11 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v4 net-next 0/9] Switch support
-Message-ID: <amMxz_5CqCJfk9xH@rkannoth-OptiPlex-7090>
-References: <20260721081824.1430607-1-rkannoth@marvell.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O8AgvNUO"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784885765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Ivn5Gk6yE8DxTWuC/EZlIOFn8HhK0+HKO/FrtWqoBWA=;
+	b=O8AgvNUOx/WX+OWHPpXPAXxRf4p/GeXtHh8se90E6t4x/wZiFC9mh9OigkIjqtTW5kTBhw
+	8t8G6M2S9xIX4wiNAA+MgrN0tgpga8Wkv0J732rpaqdbqnTwmgtgUzBKLTXgYVKStddKqC
+	/A3EMcQJ7XaUTUiy39RO0Xkp/oW1JcQ=
+From: xuanqiang.luo@linux.dev
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	richardcochran@gmail.com,
+	piotr.kwapulinski@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH iwl-net v1] i40e: fix races in PTP external timestamp work handling
+Date: Fri, 24 Jul 2026 17:34:48 +0800
+Message-ID: <20260724093448.63154-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260721081824.1430607-1-rkannoth@marvell.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA4NyBTYWx0ZWRfXwYUWzaQC1wPH
- LBkL7EqriES8G6I4lJHhC0+IMTB6wffw5XF9NGJHGUr15tTk7OuXQI4v3MDu9hcER1W0Qvad0S4
- /f5TAI6EBUywfJRYyY4HMiXZwXro9U8=
-X-Proofpoint-GUID: PCjx04BE8WsWXXQRo9-4tNADwfu8QpOc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA4NyBTYWx0ZWRfX9+jC4LWX/vef
- LimYDRWW5yNyE0iR/cbLIVvTSyTiCk+xcXlrm4StlePT8DbRE4kDmgoy3ptR0EQbiMN/P7Ddox2
- oKvF3/ou2iMZJLG4CZE7xAd03gSwT3xOyf2oQWf/LtQEvYXScvw/2Q4z4bVg8gdmn+lSrhDr8mt
- o4cK8zdHkKOJiKVQk6VgdWI4xNHC1GKYMfzMaKY9J4SigVHFRc+VSTjeEzI8CMLUE5XourK6+gu
- vK7cpsu1CuTxKfqAkSvG6hS1q+p5BtPAN09gGm65wBOwOz4oiisWyEuCJIZN9JTonAwU5rCFJ4L
- 7O19ThM6/MqzUbzHSTdiOFGwWTMaACJIPJZyqe5tDLzOVY8cBQWw5JsA66TJo6uD08wqRgEjafV
- IWeG9GdHr2I8GdnkfjkOVbE2w6k6x0Yn6nGiOYlrnR5rYJBBDekTgp+0Y3sj+gWUBx5x5GRoh5M
- EInXkEhhoSPHvbsCK+g==
-X-Proofpoint-ORIG-GUID: PCjx04BE8WsWXXQRo9-4tNADwfu8QpOc
-X-Authority-Analysis: v=2.4 cv=Ccs4Irrl c=1 sm=1 tr=0 ts=6a6331d4 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=c92rfblmAAAA:8
- a=M5GUcnROAAAA:8 a=ioiO9UdyrTe4zMvWdpoA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2026-07-21 at 13:48:15, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Marvell OcteonTX2 switch hardware is capable of accelerating L2, L3, and
-> flow. When representors are enabled through devlink, a logical port is
-> created in switch hardware for each representor device.
->
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-https://sashiko.dev/#/patchset/20260721081824.1430607-1-rkannoth%40marvell.com reports
-critical bugs. will address them in v5.
+The time sync interrupt queues ptp_extts0_work, which reads device
+registers and reports events through pf->ptp_clock.
 
-pw-bot: changes-requested
+i40e_ptp_stop() unregisters the PHC without first disabling the event
+source or draining the work. The worker can therefore access the clock or
+PF after either has been freed, causing a use-after-free. Disable external
+timestamp events and call disable_work_sync() before unregistering the PHC.
+Disabling the work also prevents an interrupt already in progress from
+queuing it after the drain.
+
+INIT_WORK() is called from i40e_ptp_set_timestamp_mode(), which runs on
+reset and whenever timestamping is reconfigured. Reinitializing pending or
+running work can corrupt its workqueue state. Initialize the work once from
+i40e_sw_init() instead.
+
+Also exclude reset recovery before stopping PTP so a concurrent rebuild
+cannot re-enable timestamp events or recreate the PHC during removal.
+
+Fixes: 1050713026a0 ("i40e: add support for PTP external synchronization clock")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ drivers/net/ethernet/intel/i40e/i40e.h      |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 17 +++++++-------
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 25 +++++++++++++++------
+ 3 files changed, 28 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 83e780919ac97..e2ae61bc38786 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -1315,6 +1315,7 @@ int i40e_ptp_hwtstamp_set(struct net_device *netdev,
+ 			  struct netlink_ext_ack *extack);
+ void i40e_ptp_save_hw_time(struct i40e_pf *pf);
+ void i40e_ptp_restore_hw_time(struct i40e_pf *pf);
++void i40e_ptp_init_work(struct i40e_pf *pf);
+ void i40e_ptp_init(struct i40e_pf *pf);
+ void i40e_ptp_stop(struct i40e_pf *pf);
+ int i40e_ptp_alloc_pins(struct i40e_pf *pf);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index a04683004a567..2909a58d57562 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -12819,6 +12819,7 @@ static int i40e_sw_init(struct i40e_pf *pf)
+ 			 "total-port-shutdown was enabled, link-down-on-close is forced on\n");
+ 	}
+ 	mutex_init(&pf->switch_mutex);
++	i40e_ptp_init_work(pf);
+ 
+ sw_init_done:
+ 	return err;
+@@ -16157,14 +16158,6 @@ static void i40e_remove(struct pci_dev *pdev)
+ 
+ 	i40e_devlink_unregister(pf);
+ 
+-	i40e_dbg_pf_exit(pf);
+-
+-	i40e_ptp_stop(pf);
+-
+-	/* Disable RSS in hw */
+-	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(0), 0);
+-	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(1), 0);
+-
+ 	/* Grab __I40E_RESET_RECOVERY_PENDING and set __I40E_IN_REMOVE
+ 	 * flags, once they are set, i40e_rebuild should not be called as
+ 	 * i40e_prep_for_reset always returns early.
+@@ -16173,6 +16166,14 @@ static void i40e_remove(struct pci_dev *pdev)
+ 		usleep_range(1000, 2000);
+ 	set_bit(__I40E_IN_REMOVE, pf->state);
+ 
++	i40e_dbg_pf_exit(pf);
++
++	i40e_ptp_stop(pf);
++
++	/* Disable RSS in hw */
++	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(0), 0);
++	i40e_write_rx_ctl(hw, I40E_PFQF_HENA(1), 0);
++
+ 	if (test_bit(I40E_FLAG_SRIOV_ENA, pf->flags)) {
+ 		set_bit(__I40E_VF_RESETS_DISABLED, pf->state);
+ 		i40e_free_vfs(pf);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index ff62b5f2c8150..fd51ab8c10c20 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -169,6 +169,17 @@ static void i40e_ptp_extts0_work(struct work_struct *work)
+ 	ptp_clock_event(pf->ptp_clock, &event);
+ }
+ 
++/**
++ * i40e_ptp_init_work - Initialize PTP work for a PF
++ * @pf: Board private structure
++ *
++ * Initialize work which must remain valid for the lifetime of the PF.
++ */
++void i40e_ptp_init_work(struct i40e_pf *pf)
++{
++	INIT_WORK(&pf->ptp_extts0_work, i40e_ptp_extts0_work);
++}
++
+ /**
+  * i40e_is_ptp_pin_dev - check if device supports PTP pins
+  * @hw: pointer to the hardware structure
+@@ -1186,8 +1197,6 @@ static int i40e_ptp_set_timestamp_mode(struct i40e_pf *pf,
+ 	regval |= 1 << I40E_PRTTSYN_CTL0_EVENT_INT_ENA_SHIFT;
+ 	wr32(hw, I40E_PRTTSYN_CTL0, regval);
+ 
+-	INIT_WORK(&pf->ptp_extts0_work, i40e_ptp_extts0_work);
+-
+ 	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		pf->ptp_tx = false;
+@@ -1541,6 +1550,13 @@ void i40e_ptp_stop(struct i40e_pf *pf)
+ 	struct i40e_hw *hw = &pf->hw;
+ 	u32 regval;
+ 
++	/* Stop external timestamp events before unregistering the clock. */
++	regval = rd32(hw, I40E_PRTTSYN_CTL0);
++	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
++	wr32(hw, I40E_PRTTSYN_CTL0, regval);
++
++	disable_work_sync(&pf->ptp_extts0_work);
++
+ 	clear_bit(I40E_FLAG_PTP_ENA, pf->flags);
+ 	pf->ptp_tx = false;
+ 	pf->ptp_rx = false;
+@@ -1570,10 +1586,5 @@ void i40e_ptp_stop(struct i40e_pf *pf)
+ 	regval &= ~I40E_PRTTSYN_AUX_0_PTPFLAG_MASK;
+ 	wr32(hw, I40E_PRTTSYN_AUX_0(0), regval);
+ 
+-	/* Disable interrupts */
+-	regval = rd32(hw, I40E_PRTTSYN_CTL0);
+-	regval &= ~I40E_PRTTSYN_CTL0_EVENT_INT_ENA_MASK;
+-	wr32(hw, I40E_PRTTSYN_CTL0, regval);
+-
+ 	i40e_ptp_free_pins(pf);
+ }
+-- 
+2.43.0
+
