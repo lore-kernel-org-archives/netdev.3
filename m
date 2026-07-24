@@ -1,95 +1,52 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D7C3F482D
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 22:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB512355F49;
+	Fri, 24 Jul 2026 22:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784931223; cv=none; b=RmkNfyOjAO+jsYUQfx5Avn0qvGpPWZpBq9sGRvLBZaSGrDVYR7GHjBM6awoyWVTJD/zDSXf/IxBn4MECINasAfJ710CaOU1jRqVtm60Dl8E+8np72TiFp7VuFB4Mc2rvKj3ePwDuIKxfXqR40KXi1+0XTeDqwFpwAmTbHQ5BWs8=
+	t=1784931534; cv=none; b=C46gFwJUFWkKx372HJTD28gQhDs//kUeDC9YV5eQ+NXa/G10oWTubgLT53hA9jA+Tzn+lBkEHOg+PioX1NV/g/jS2i3tO5OQXeiSwpp13UnfURky1f9P1x35E0ejP/rhJoh9iWuWRW/n5nLsyx+f2ZopY3Ih5G9YOW49X8xNlT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784931223; c=relaxed/simple;
-	bh=pMKpKubFx9kEgDbednVOQ47WZM90zaPgp5ftx3GTfMU=;
+	s=arc-20240116; t=1784931534; c=relaxed/simple;
+	bh=Y11PVPIi9dbraozvH1GPzaZXd7sJK1alrVCmI2dr5e4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QIx7ou78pdie0IpI/es0Jw9Vd8T+nj82oGqSGawzMWxYfUk20mi+T6pX170YYWiAdV6eD4rUIct6oajX+vaN8aqHS+Y+BAiX/0gMTW7eKzaC6cs93Wd+cMRXSQFEinozRCZtjrnolFD6jUQPSzUr8mZhsczfEG2GqtKEramd8ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/uu45oP; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MGVNfUefCjVqnn07Tvuh00V2vIj0gTIt5rvtdPC+aU1DvMN+2/QssiFFUaoBSTIS4eEM5ZAB34GHVu3iqO5eRNeGFb6yqImW+d1Qhr8iX9RAHuLPUOZFIvv1ZfwAa6f/ggfmaMxsUa+CCp3NrziJGyd/orQEmle9aCVsRPg6q1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NYP8WEwm; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/uu45oP"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8486672f03cso909409b3a.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:13:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784931222; x=1785536022; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=z2sozbBNB86MDdVFB0IAFAWmkqaPuc9KNZQmr6UjhYE=;
-        b=N/uu45oPkIawysFLAkQk6ltaKaCSqLTnkBhZBgm/UfB4EtlWngLPRwQbPVc4UdH6QS
-         NW4ozGhV1D1K2ggsNsXTCSQ9NLjWIhQXIh0uyGoSVuHWS76jTo8jWsTug5As4xCxuJ07
-         lFjT1j5tKoaIr9Iasx5scXnqPuDFkqjDVB/2o642YFIEPDjV/HDjnMKjHD52WxXIBxIP
-         owgmo1iBP+NHHWXAVrvKMzVGDxW1IRwHWKyjginBqM4FESBmSV5JmEYdVkNfDN11hCUN
-         fiy1QQeaT+5hlnweTVfEtxiMERK54bc9gz+Kymb2EQ1LSwRjp4L83nxkUn4q9VlgTXcB
-         s3Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784931222; x=1785536022;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z2sozbBNB86MDdVFB0IAFAWmkqaPuc9KNZQmr6UjhYE=;
-        b=AYEzd2QhJS046TVb6YQMol3yZ8+EfFAhgBHr7VbwJ56bOuiG/Ef0eq8WBL++kNpBh1
-         UNvP1NiX2zazOx7tbRk3FMvD1MvvUJXDsom4D/WIT8X2zIj8wvRt9hfq+rVcj8O4qvg2
-         FDXETMjv8PTf6Eq9PIv8NVAqiChAgdqdKmCCigAp7iFicyf2nxozEG4Q8krsOIW4uJlV
-         5N2zU78XBXDTIEkXZOqzt6lT01Sua5z/I1ENmOD9VhVRX9Qra283IUvjYTMlWcMfAXLF
-         UQY6nGtYD4/gjg1QmyZHU/DNSbxktqY25EqSGfYNTiksBdn3eyM2ClYFd+caK7B+iCJH
-         T2dA==
-X-Forwarded-Encrypted: i=1; AHgh+RrcTk32h0lRyVrqNgIqiTp/eGszhAhK4co++lzcqveAVNdg8XsrFdesOUaMT59rFXc8jIB0ELA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXjLGF72s7M2nIqxoE7yjmhjEqLBxS84a4BA5oUzQqVnXC/Yc4
-	Ex0jwS3yC+Ft2H/co3QhBWak+RQiNAvLd6ehSGMe6PkjATtgRHxdND5P
-X-Gm-Gg: AR+sD13OAN6AisweKHWaAW2c5/rsvEe9M0CMXDKxJnSD+tkbs9ajP0ZntpItU3pt7va
-	ZMj9QMGxqteBK9FDmXmnEVnWblZmV4Y/rp84XKZr4IqCxwUk5rGQtzL08v4pd/rY+6fi/UXrTQ7
-	hNVbgl5xfA/Xk9l1CYimkZAxs9maHssHfoSOiq6S0bB5EPSElmNUXEH0XCDdMpesgFdNDNFfMaD
-	r3Jc6UjRQ/we9XlL1iY1Y+7Z9vDe1Is+BrsSfPfRrmMQqKm0O0053gWZtk3LXhPUDtq9JCbKJnt
-	3/F65L6bzb3wI3B5eKDS1yoeBAnN3fUIQQ3Pv+RGfszKEw1tBMV7e6DdqP4cRkwl32hzuo30Tzg
-	4ES1YVJOOMLEyKJ6YCu72RxUhVk4cPR+N0b+I0nyvC0Eymp6Hq/XjWkP5vtRHAlwSUX8sJB6V91
-	XBO7OUvfY7WotXGwA74E/DzkPdBWLZW1AcPX8MDKrRyR73Q+97CZcgxEIDT5ioPujisfuuhFqZ3
-	9tBpMpX038=
-X-Received: by 2002:a05:6a00:982:b0:848:6720:6fee with SMTP id d2e1a72fcca58-84e59544f08mr53110b3a.40.1784931221615;
-        Fri, 24 Jul 2026 15:13:41 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:48::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5344e577sm443138b3a.58.2026.07.24.15.13.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 15:13:40 -0700 (PDT)
-Date: Fri, 24 Jul 2026 15:13:37 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
-	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
-	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
-	Joe Damato <joe@dama.to>, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v5 3/3] selftests/net: devmem.py: add
- check_rx_large_niov
-Message-ID: <amPjkerd2duU2DH4@devvm29614.prn0.facebook.com>
-References: <20260708-tcpdm-large-niovs-v5-0-34bf6fac941b@meta.com>
- <20260708-tcpdm-large-niovs-v5-3-34bf6fac941b@meta.com>
- <20260721110903.34840531@kernel.org>
- <amPTWGX/3LHepYR3@devvm29614.prn0.facebook.com>
- <20260724143001.5afa8631@kernel.org>
- <amPbqtxPdhs9QrVP@devvm7509.cco0.facebook.com>
- <20260724150716.07c49ad8@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NYP8WEwm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=fpZHFhZ7AV0ysdP3+epd7U73VM4EBKyc+IjCyQ2ofyE=; b=NYP8WEwmCDKvMEfHlew12GIR1E
+	tFzJrI3eDixy5tVTbHhLZ2LZoh5VyCU3U1MllKLKxuw8s/bOerVHC38hT/fVHq+taTfA9oqbTbteT
+	AoLOQTSpSQwpauYtAux36XnxKw48gule5A9H8JK6PwE5RBBvdN3uwUa1D8BwbGSfIVnI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wnOE3-00E3Yz-5h; Sat, 25 Jul 2026 00:18:39 +0200
+Date: Sat, 25 Jul 2026 00:18:39 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+Message-ID: <0d789c95-5ca1-42d0-9ff5-27392cc65057@lunn.ch>
+References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
+ <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
+ <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
+ <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
+ <47d31704-e57b-4828-8c8d-0438ef43e49a@motor-comm.com>
+ <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
+ <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
+ <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -98,28 +55,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724150716.07c49ad8@kernel.org>
+In-Reply-To: <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
 
-On Fri, Jul 24, 2026 at 03:07:16PM -0700, Jakub Kicinski wrote:
-> On Fri, 24 Jul 2026 14:41:47 -0700 Stanislav Fomichev wrote:
-> > > > Talked to Stan and he mentioned the original idea was not necessarily
-> > > > just for link down, but any test that could be considered disruptive to
-> > > > other tests, with the idea to eventually introduce some scheduling
-> > > > (postpone disruptive until the end).  
-> > > 
-> > > Perhaps have such conversations on the list? IDK what Stan has in mind.  
+On Fri, Jul 24, 2026 at 03:18:47PM +0200, Andrew Lunn wrote:
+1;4000;47c> > Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
+> >      or combo mode. However, the PHY8824 is only used with UTPs, and 
+> >      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
 > > 
-> > I don't have much to add so I didn't post on the list. In my mind, disruptive
-> > started as "anything that can lead to a soft reset". But since the
-> > sockets tend to survive these well, I do agree that your definition
-> > of "link goes down" is a better fit.
+> >      RJ45 <----> UTP0 <------>
+> >      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
+> >      RJ45 <----> UTP2 <------>
+> >      RJ45 <----> UTP3 <------>
+> > 
+> >      It is similar to phy8821 driver in motorcomm.c, with the difference 
+> >      being that one has one UTP port and phy8824 has four UTP ports.
+> >      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
+> >      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
+> >      YT8824_RSSR_SERDES_SPACE.
 > 
-> My recollection was basically that the test is not safe to run over
-> SSH (without tmux). Hence the link down concern. If we say soft reset
-> that'd cover 95% of the tests so it's not very useful.
+> O.K, that completely changes my understanding of this device. Yes,
+> YT8824_RSSR_FIBER_SPACE should change name. And i would include this
+> diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
+> this.
 > 
-> The existing doc and README already document the link down AFAICT.
+> For the locking, look thought all the code which is touching the
+> USXGMII side and see if it can be moved into probe().
 
-Indeed, so I'll just test and confirm if devmem's existing
-ksft_disruptive tests do or can cause link down, and submit a patch
-removing for those that don't.
+So thinking about locking:
+
++static int yt8824_config_aneg(struct phy_device *phydev)
++{
++	int phy_ctrl = 0;
++	int ret = 0;
++
++	ret = phy8824_page_write_lock(phydev, YT8824_RSSR_UTP_SPACE);
++	if (ret < 0)
++		return ret;
++
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
++			      phydev->advertising))
++		phy_ctrl = MDIO_AN_10GBT_CTRL_ADV2_5G;
++
++	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN,
++				     MDIO_AN_10GBT_CTRL,
++				     MDIO_AN_10GBT_CTRL_ADV2_5G,
++				     phy_ctrl);
++	if (ret)
++		return ret;
++
++	return genphy_config_aneg(phydev);
++
+
+This is only touching the UTP side of things. What a PHY advertises
+should not affect the USXGMII side. Why does it need
+YT8824_RSSR_UTP_SPACE? What would happen if YT8824_RSSR_USXGMII_SPACE
+has selected?
+
+    Andrew
