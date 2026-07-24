@@ -1,137 +1,239 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466B3101D0
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 17:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784913678; cv=none; b=dKeXCenk28h/3KKNbFjBap8b/MNozbj0lE8Q5o4OrbW0HnAAhc3afq2fnzUC25erYjaEfkJHURPCK2JaCmzYUaWcNk4jzRia6GAg5HjzodYcb9gKu3lkv4bra14m+UJ278ryRfgGOj0V6fCqhs4kN/7I34CJcLzmZ9fqTbgHTD4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784913678; c=relaxed/simple;
-	bh=7BDbAKtoQ7RrxeWP/mB6HB+l68yj4ywnLE1Pz644nHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFJ0oHwPJDb+ZkP2QT7G6UKqO2Hq7bgxc1UDCZFyfSndzRQdjRECvmhJo5wudGdr/d552HOZ9Rt1P8OgRAU/JgsiNIILgW4WQW02eacO40FzCCPagkjAfMzRjDND+qjdCUKSsukQUyO3r/J8j6a8H3pc57rLXk7mkehMN9grhqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nS2gFTuW; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FAD43BDAC
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 17:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784913980; cv=pass; b=M6YSa7CW6jWTYd2gR1sD1KslExMCjiFjhvL7LBN2l3ETPGd52Eb+bPSwFPKzzQgARxyYom3IZO+NR1kiHOu/GU4t/svLQ625VoWM0m5e0tiB8ogRtsrv9YeIoNaPUoEA0vgpxu50KlWHQwkcLwImKmi5CgFrf0UftOxDw9jsAt8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784913980; c=relaxed/simple;
+	bh=aHYPbE/oBZ0kVltV3okhiPgNedRE9DhC6wGTTZk1z80=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RaJbPXl77PlL6Xw5o4kLdn8bMu2jr4ZXY1ezHAbhuzQL6BAup2lgyV5ju39QI2bw1lXwlv9QJQz00yPq0c43TJTv67I9Vfl4cz1gSCjCvK5R6k+iyMR9TtgF0Ae8328WCFuipk3lxkL1CMFvZ3p7RT3YYMPn7hvSyI/Uzn1cJMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rfrbd80C; arc=pass smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nS2gFTuW"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso665930a91.1
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:21:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rfrbd80C"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ccdf36f63dso7745ad.0
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:26:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784913971; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Eo87sDu1niaPsYtN5YnUs9K59HNqW8p+a9+wtBO8Wfj/K+2JA2U5n7DqZ44VL+opVv
+         LYD9EzRBzII4VnncR1sc9yOzCspBS5EaMUebBp544C7JHXKcETrnzbTK7PCHcA5v/IOe
+         HT1VOS0m+sI76xRre6YzjLnkuYsSeiU7HTXAALW1rTad4r/s/K4xhB99RNABNll9oKX2
+         XH616P+rD6r5snYXDi+qrmApRwz4TJs46jxsXECaThOYXPTqD3Ze1ICblJRsZTArylMQ
+         PD+aUh+4am13ujvUbxit7RTeMeg98ooysXGcxejI82SR6FiYaoz9N+VSNVdo2959zlyF
+         hF1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Jxn3tGMGaHXd7qz9sNqVHuvHKSZJQEuwSe+HgOlTgII=;
+        fh=PPLu39qsVdUKQDuNXwORK2LkXe63zs1IclJjnAEFTfU=;
+        b=n8lsOPc/UwIpjcZQb6s5QQRekzXBaVu9E7I0YMaSDsnIrOcQzVwHkUOmPWKL553dCf
+         03f+D4uGD2jDcZ3rz240vNfq9heDckktdmJXcMX1NjRj6hgIR3A2xBYwnkGnMYFVQYQt
+         SFjg81T9Wov5m9/55wjfMtWv4YZpGuRES65ANk1e4JriXYrR57dc1rxPtivcJA1WPLTE
+         feVCZ40z5+gJk+XQl3/54r3UbyKF015ZbhCGsxrGOmHk5JQ9ZwXHGz82TgXhs05mEaMC
+         bD2y8Miw8LZYEO89OQYkyjdP5LWqD2B7t5gCgYoAPQq2nb8V//7wnYXT9F/9ErvXZ1ox
+         G7KQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784913674; x=1785518474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8CxrX6ndLjkzVoOvx8ReLw2F27C6sP51HDWvrcv3raA=;
-        b=nS2gFTuWK+3MdzdNNwfBi1oqu+AtxrXhJgBHuqNWphT58jcau/BskAU+hQdN785qk+
-         0Z8ZJssaljU4KQPp8iX0DkW3/cx6VInu3dpnYqHayx5eLtbI6Ja+zU7JSgrZgrC5qYO2
-         ojSrAwUO9O6Cce6iXfGJckYwl5ukHxKMjQAxA8jxnVmYRQLh82Q+E8AhtJurTIYeIctk
-         WEIRAHyhURF0O/G/TXpLEYU4CPMDAyZMxTD/7yUDBPdcDjFs5eurxXbWy7tnL4LUzW9m
-         sU1tdCc1nDS65M8vUOvS6Ts/sVCK16yV69/g2wL9I7yUyfRvlP7idZZBNJ6KkY4dm//t
-         09SQ==
+        d=google.com; s=20251104; t=1784913971; x=1785518771; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Jxn3tGMGaHXd7qz9sNqVHuvHKSZJQEuwSe+HgOlTgII=;
+        b=Rfrbd80C74V/LbQeRKaRbL/uYng2piPgsh47zE32uJMbSItPERJFyZw/99Yayx4ZGK
+         iRqN3FGw3dlulTbUuLt1+pak2ZtK4JgqVTNVX57b8K8VerlNZ94XNdSxcFkVx+rCWHsJ
+         ng9SFqUZinjII+YUHXPg8arOk9rUFgNIR7KTDq1x0WcAZC5yalEA2vMRfRmJOas1poxz
+         MJ0kwqR95PLx/PEQtGC/fkkfT4txDkDyiX/xaP+XQmzGiq86eEGNoWmkVlwNUajhy8C6
+         hKpcmi0WPIKLb/NXmkUIDV8elfZty3mhBGBfvQMSxoMIZkPeSAqfHk9bmzlSYGXWYTcM
+         5J/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784913674; x=1785518474;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8CxrX6ndLjkzVoOvx8ReLw2F27C6sP51HDWvrcv3raA=;
-        b=tSLyFGGACICKl7ag73NoYgM1ZNO0eFXFjm+AQeQ/TCyEoo2cxBq/YFg3v2eDeVgLCU
-         K+iK0ajuX52qKOWnA/6OZuGo+JU6LAZAZydVcx4gCYjUSImfLXOD3Y0UjmachOx/GoOc
-         1yBs1HdZ0ZZ33JATtQ1XpkOJ5nC5Np3vTm2UydUkC8cwfYfdY4nsNey9o4+KTAPlaajV
-         ptdO5k92i+KWUDg3MowU81ZBjfF929cAU83d3EbVs6f7k0tdeIlkM5TFsopcNKxbIgok
-         WWQL6XjA+e7Ho/2WEsAs/LfkK0IylxL4K4K/fZFjkdZ1Jly5eLkG8oDJb5VSIiGHk9Tm
-         C/AQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoksZ6NpROj2SAQFz2J4sF8yzYfZmNjz14YLwomLNAK0GJUmXntOrTPyW1NjQY20Jb7xt0XSCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC+MZLYTi2i2G4HB0sP+QH/yWA8kqbzs5NAQjzTglT6uuY5P9m
-	xn1oL+FbRGh3cbSLfOkX1+/gPJQ2+tsFa7B0Cjs4Ow6PPTG8heyuZCbX
-X-Gm-Gg: AR+sD13ajot2vWYbeheSdL0I7taue1vyuU9PQYXoefqF95Y03B7CFnD9az9XPnolwZ6
-	2S5LprhQ0D//jyvr+3RgxJskcQ6J2JLGj2oiaqbOsMtekEN0g0CDOXx/6fkgeeqVN71czlr3Ih9
-	alNl2IZqRJ4IzpsrVNe+0OYHVA3gQFGlhLLPS/Q5fbyR3jxMpAm66OfGoPNBBq+205ohyJ6Xv1k
-	A+1gitjItE+zIHcdAZq5cA7wZ18FyzHmycjAZrua/indEWCdbroMpJz96TiBZrjbCcxPmWmbnQC
-	/qsucw5+Cb+MCKAcgTp4pUIpQmbcaL02KC1glDVySJG8KHQFrDmvqhlB+tQ+fu2ZVP1PuonOBmY
-	hJWPtzpOieVmISvRB3xOaTx3s/DqssO8RH+Ig2GWFdVVuAyI4svVzsmb9yiLhFrfpstkspY1nb8
-	XKHezgLgDug+psUmcgv4k1USentHSm5eZHgrf30jsvUwU=
-X-Received: by 2002:a17:90b:55c7:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-38f1f9406damr954371a91.2.1784913673756;
-        Fri, 24 Jul 2026 10:21:13 -0700 (PDT)
-Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f041d5f78sm1789907a91.17.2026.07.24.10.21.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 10:21:13 -0700 (PDT)
-From: Zhi-Jun You <hujy652@gmail.com>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sujuan Chen <sujuan.chen@mediatek.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Zhi-Jun You <hujy652@gmail.com>
-Subject: [PATCH net v3 2/2] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
-Date: Sat, 25 Jul 2026 01:20:40 +0800
-Message-ID: <20260724172040.1653-2-hujy652@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260724172040.1653-1-hujy652@gmail.com>
-References: <20260724172040.1653-1-hujy652@gmail.com>
+        d=1e100.net; s=20251104; t=1784913971; x=1785518771;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Jxn3tGMGaHXd7qz9sNqVHuvHKSZJQEuwSe+HgOlTgII=;
+        b=rYV64aul/kJ9g9qvxGKvrqh3xJLy6hcYKyofH1ef98pPNMajiqgcAyZSlTA6V4cILB
+         OtZgcP/ugCCD11qW94adRvqXPXNdTjvPuW94eXk8R5ixF3Toj+4/wdEVTcrsjAbkshvK
+         Z3ptq3yMfglmbN3pCKnLGLk9m6rBX6vVi5LO9KOp1+hVuXC5JxAKpUz+ulmsot4LqijJ
+         ajf0JOI+Or3P3gh0GsbwyI1XhpQWyD04fdU6P4kbmBcRJD/VI+Tx9KB0I7ud2WKKvBxS
+         EdOpPpXYlFJgXtvm1/B3xHIixGi6l9SdIKjuhIz8CdNMob3L53a8LP1iYQKZxmzJj2w1
+         o6JQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roec1Ezu3Veaxso1vH/7uqJ05hilMiJ+diWdzBfOLZ5o2d5qBS1oq1/Uiahl9THMeDh4YU5ALU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqkcr1at2Kzl2u/HckPaYs/ytfCJnQ18xi9Ldclml9QgN0Dfss
+	avcXMupcrFvw2Y1Ojglmtb7wLnZG6PnpH0vHTASBUJZtfK849ODu1W7VMkNXJVyg1qxGli7QcoI
+	/cDJTJSdlmD/0wu6+TO1ZzJQ3C0QHJrCAQKx/SzH2
+X-Gm-Gg: AR+sD11eXazKaLzirq/xjTB+JAEuk873jhK7brHZuMM9Pa2ofB6nwUFt6uCTzGLMuQW
+	yGR1UmQXCaoOo55wOe3s4Ni9+vgjqEaI+OKOjfAJjskLSAAxT04kKXyk51Qij3+UlUDtt+p+coV
+	aazQymieQOW/F5IMGlG/7YM07buSUKGMPTmerOHpXKBZmvKlBinULpTRgFp5bJ7vkFb2H1gjNAk
+	OS0iKPloMOXFah2/T+T8G0Em3nHBzkmGRDMq+7udr6Jqrv55IrtVSsIAQJoVO7vdMs5p7dLxRnZ
+	heQ1QXh2/vi2Q/s=
+X-Received: by 2002:a17:902:f1d3:b0:2c7:9e6a:1a8d with SMTP id
+ d9443c01a7336-2cfdb75acb4mr172415ad.12.1784913970689; Fri, 24 Jul 2026
+ 10:26:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <06f0d5ce07dd8593a69239cfa56745cb9c7d957c.1784717791.git.asml.silence@gmail.com>
+ <CAHS8izPiZ_1aysWG-up6eW285+MzJN17L9QREfVWgRLkdqL5sQ@mail.gmail.com>
+ <amJOXKql1nbskGZJ@devvm29614.prn0.facebook.com> <CAHS8izOAgMX4wSbyUpSLGD_uo7G01cSqnMvrXP9KDdhrYrjNCw@mail.gmail.com>
+In-Reply-To: <CAHS8izOAgMX4wSbyUpSLGD_uo7G01cSqnMvrXP9KDdhrYrjNCw@mail.gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 24 Jul 2026 10:25:58 -0700
+X-Gm-Features: AUfX_mw1qF044Nu5R0DF9LFJaOk4sD-GU2uFvOMxN7Z4oR-fkQDzkOTcut-_8bk
+Message-ID: <CAHS8izOS9C63UMvVN=Z+enWkwFhPr9Aa69UZE4dkUOL_JyGUGQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] net: devmem: prevent net-iov / page mixing
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-WDMA_RING_TX(0) is required to set MTK_WED_WDMA_RING_TX for WED RX
-but on a non-DBDC MT7986 it is never setup because idx is 1.
+On Thu, Jul 23, 2026 at 11:35=E2=80=AFAM Mina Almasry <almasrymina@google.c=
+om> wrote:
+>
+> On Thu, Jul 23, 2026 at 10:24=E2=80=AFAM Bobby Eshleman <bobbyeshleman@gm=
+ail.com> wrote:
+> >
+> > On Wed, Jul 22, 2026 at 12:49:07PM -0700, Mina Almasry wrote:
+> > > On Wed, Jul 22, 2026 at 3:59=E2=80=AFAM Pavel Begunkov <asml.silence@=
+gmail.com> wrote:
+> > > >
+> > > > We should either have net_iov or page backed frags in a single skb,
+> > > > otherwise it blows up down the stack. Don't allow mixing in
+> > > > zerocopy_fill_skb_from_devmem().
+> > > >
+> > > > Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> > >
+> > > It's true that we don't support mixing niov types and doing so would
+> > > blow up, but this is an unnecessary defensive check imo. The calling
+> > > code should not (and does not, I hope) have an edge case where it
+> > > tries to mix and match niov types.
+> > >
+> > > Maybe a DEBUG_NET_WARN_ON check to help catch bugs in the calling cod=
+e
+> > > may be fine?
+> > >
+> > > Also we don't really support mixing different niov sub-types in an sk=
+b
+> > > (like IO_URING + DMABUF) afaict, so might as well go the extra mile
+> > > and check that it's all devmem niovs specifically.
+> > >
+> > > And might as well put the check in skb_add_rx_frag_netmem. It's the
+> > > same situation on RX, we don't support mixing there (and I hope no
+> > > code path leads to mixing today).
+> >
+> > Hey Mina and Pavel,
+> >
+> > I was able to confirm this mixing case does exist.
+> >
+> > It looks like in tcp_sendmsg_locked() when new message is non-devmem (z=
+c
+> > =3D=3D 0) and tcp_write_queue_tail is devmem, the skb collapsing is all=
+owed
+> > (though same-frag merge is disallowed).
+> >
+> > Adding a mode to ncdevmem that sends mixed devmem and non-devmem
+> > messages, it can be caught hacking this in:
+> >
+> > /* DEBUG (DROP ME): detect a TX skb that mixes devmem (net_iov, unreada=
+ble)
+> >  * and non-devmem (page, readable) fragments. Such an skb must never ex=
+ist.
+> >  */
+> > static bool tcp_dbg_skb_frags_mixed(const struct sk_buff *skb)
+> > {
+> >         bool readable =3D false, unreadable =3D false;
+> >         int i;
+> >
+> >         for (i =3D 0; i < skb_shinfo(skb)->nr_frags; i++) {
+> >                 if (skb_frag_is_net_iov(&skb_shinfo(skb)->frags[i]))
+> >                         unreadable =3D true;
+> >                 else
+> >                         readable =3D true;
+> >         }
+> >         return readable && unreadable;
+> > }
+> >
+> > static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, ...=
+)
+> > {
+> >         ...
+> >         BUG_ON(!skb || !tcp_skb_pcount(skb));
+> >
+> >         WARN_ONCE(tcp_dbg_skb_frags_mixed(skb),
+> >                   "DEBUG: TX skb mixes devmem+non-devmem frags (nr_frag=
+s=3D%u len=3D%u)\n",
+> >                   skb_shinfo(skb)->nr_frags, skb->len);
+> >         ...
+> > }
+> >
+> >
+> > Resulting in:
+> >
+> > [   85.908005] DEBUG: TX skb mixes devmem+non-devmem frags (nr_frags=3D=
+2 len=3D24)
+> > [   85.908342] WARNING: net/ipv4/tcp_output.c:1570 at __tcp_transmit_sk=
+b+0x9bb/0x1030, CPU#2: ncdevmem/278
+> > [   85.910646] RIP: 0010:__tcp_transmit_skb+0x9c2/0x1030
+> >    ...
+> > [   85.915617]  tcp_write_xmit+0x47b/0x17d0
+> > [   85.915802]  __tcp_push_pending_frames+0x38/0x100
+> > [   85.916025]  tcp_sendmsg_locked+0xe51/0x1280
+> > [   85.916244]  tcp_sendmsg+0x2c/0x50
+> > [   85.916903]  do_syscall_64+0x11c/0x610
+> >
+> >
+> > My feeling is that we should guard against this when
+> > tcp_sendmsg_locked() is doing its "new segment or not" calculus.  In th=
+e
+> > zc =3D=3D 0 case, I think we need to check if the queue tail is unreada=
+ble
+> > and 'goto new_segment' if it is?
+> >
+> > This is a different case than Pavel's patch addresses though, where the
+> > new sendmsg is devmem and write queue tail is readable.
+> >
+>
+> :( Yep looks like we have a couple of bugs in the TX mixing. Sorry
+> about that. We do indeed need to fix this ASAP.
+>
+> I don't think it's enough to check readable vs unreadable, no? Because
+> I think appending io_uring niovs to a devmem skb will still blow up
+> and vise versa, even though both are unreadable, right? Or is io_uring
+> saved from this somehow in both cases?
+>
+> If io_uring is vulnerable to this as well, then fixing this becomes a
+> bit more hairy because this is a TCP fast path. We don't have bits in
+> the skb header telling us exactly what the skb memtype is (only
+> readable vs not), so we'll have to check skb_frag_is_net_iov(frags[0])
+> and netmem_to_net_iov(frags[0]->netmem)->niov_type to check the exact
+> type of the skb memtype, and that may be a lot of cachelines to fetch
+> in the fast path. :(
+>
+>
 
-Setting MTK_WED_WDMA_RING_TX with WDMA_RING_TX(1) is not feasible because
-WED still tries to send through WDMA_RING_TX(0). This is verified with
-register dump.
+Responding to my question here:
 
-Fix this by calling mtk_wed_wdma_tx_ring_setup if wed is v2 and
-rx_ring[0] is not allocated and reset tx_wdma[0] if it's already
-allocated.
+So AFAICT we can't actually have io_uring net_iovs in this path.
+IO_uring ZC deos not support TX, and (the LLM) thinks that if we
+receive an io_uring zc rx packet and forward it, it's still not going
+to hit the tcp_sendmsg_locked path.
 
-Fixes: 4c5de09eb0d0 ("net: ethernet: mtk_wed: add configure wed wo support")
-Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
----
-Changes in v3:
-- no change
-- Link to v2: https://lore.kernel.org/r/20260711112128.971-1-hujy652@gmail.com
-Changes in v2:
-- Address warm reset concern raised by AI review.
-- Return value concern is skipped until further comment from reviewers.
-- Added a comment to explain this special case.
-- Link to v1: https://lore.kernel.org/r/20260630144831.1109-1-hujy652@gmail.com
----
- drivers/net/ethernet/mediatek/mtk_wed.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+So this seems sufficient to me, Reviewed-by: Mina Almasry
+<almasrymina@google.com>
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index 7d2775a97fa0..b48abad995d7 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2334,6 +2334,13 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
- 		if (!dev->rx_wdma[i].desc)
- 			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
- 
-+	/*
-+	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
-+	 * but tx_wdma[0] is also needed for WED to function.
-+	 */
-+	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
-+		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
-+
- 	if (dev->wlan.hw_rro) {
- 		for (i = 0; i < MTK_WED_RX_PAGE_QUEUES; i++) {
- 			u32 addr = MTK_WED_RRO_MSDU_PG_CTRL0(i) +
--- 
-2.47.3
-
+--=20
+Thanks,
+Mina
