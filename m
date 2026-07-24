@@ -1,547 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010015.outbound.protection.outlook.com [52.101.46.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F9819DF6A
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E11428686;
+	Fri, 24 Jul 2026 04:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784866710; cv=fail; b=Dllwx872jq9FTVNYEx2LqN/DY4a0en+qOSyoge10lbx9nQeNZQmGQX0Rgtk2PjbM9NjJ9lb0Y/znvbsFxttgi5kErb7zXMJtly36FY39E6frr8EMqm5QxV0HV62q098XmC3UGMv5870Lv3kOcU4vhv6f/wn27+138TGRCC369As=
+	t=1784867596; cv=fail; b=Z4yQtLMucXncYs3fICB8grUmZyvI03YZS0T5gmOA1/F7xmSKxMbP5Pc/KOZFFbOff5CiNibHAnXBHIK+AoWdUaOz5Ya+EkjNLL3MwAr06ChBTpoCeYrpsT1Y7DGshVzXIO+hf3udBGLUmdv9VCL8iAMtAIlRzxpKfcr4aVS4WP8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784866710; c=relaxed/simple;
-	bh=1LtI6cwOwwaYMGy0dm/iotjFnhi1Aaz+b2aYD9Rz4MQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AFr0C8f3USfRXv7/H/sGzwngW6Gub8sPZwHsCkr+uBxA19jiNqvRN8fFpZGst75V7np1JWxw+/l7wnDRNnx9ROmEvWUwVD/zgDicZe1EZcHoNOu0geelBV4OFaqHVE5fwpEAzoSQMoS6CnJ8LXQ5yNg+nj8VZRlVZ01AzJAkmi8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YWv+tNqY; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784867596; c=relaxed/simple;
+	bh=AzfomZOeEtbNRxEuaMcWHp9Z/VVhexxiUWgxzt6C7Do=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fEcABSOHTQKLE+o9L1NYH1vFhGHX/Cg8H2Ya48uljjltcsEA40qO2nCme9/KWXduJUB5Bwr5aotl9exyTMnEYeeVWj2aAtmGIpIuCRxo0qB6oaqBE42FY0qag7PD1FPljmN6EfGDAKO+QLlGYOopaKhgrnc70fwW0+LfW2HklVk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=a0KErEhg; arc=fail smtp.client-ip=52.101.46.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YWv+tNqY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784866708; x=1816402708;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1LtI6cwOwwaYMGy0dm/iotjFnhi1Aaz+b2aYD9Rz4MQ=;
-  b=YWv+tNqYSe2w1LQH+SmgiZ2HpRZ483l0TZ8r+7Thw+Bqw6f8wD9Eot0H
-   KYBjOj4xzL0JuHO//1Lc0wliCOUwUSw9LRn/lTziQ/cyRTIXE6GlpXCLB
-   3D5N9jhY2Kt7fQ5pTTBGof05clVSq75ztuwf4J8qJrBiR3gM3Ds21W/2q
-   Tf5E3q1+V6QLliv+fDQ1yg9eQYj1uherBIZbUulxDb0X9qRoAa8gw1Agp
-   aUXi8gM7Zs1aNHhJ4p+tbYU2PpWEDAmiVci2YrzHUb2mipMiNyXwqo0Zu
-   NEbRfQ7O7D5pz1R2ZPhUcsvrvqe0UNE1D3EhAdzE/dCEgbBHlHtO/pY1w
-   g==;
-X-CSE-ConnectionGUID: aZdQCDzQSXWJqKspstfvbQ==
-X-CSE-MsgGUID: lNIt1OoGRWyPjykcVAwzvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="84509367"
-X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
-   d="scan'208";a="84509367"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 21:18:27 -0700
-X-CSE-ConnectionGUID: KPj4NgPwSsKof9eCTEz0aQ==
-X-CSE-MsgGUID: 5aNxbmpSQICD0ZfCdsNlpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
-   d="scan'208";a="262915616"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 21:18:26 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 21:18:26 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 23 Jul 2026 21:18:26 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.14) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 23 Jul 2026 21:18:25 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="a0KErEhg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dXuBTGtcX+u76qvCNNqHCwGZKrxJdljDfIxVGMp02SrFJNTzOCVtS9rAKgQD6NhoyZthmRSiSktXmFTguawBzusfvnQzeyGaZdGeHsRatsp4iokXVRISvthnonglK4myab+gSViwTsWmdqX2F+wog1C7QquDBdlWit+rW3uEq/moMQTbCqCFZzcezPTcMb5wplzlAPATMfEmRvTJt4fwAj6PQh77Knvsmb5WUs68HHM2DVBYhEC1BXMQXCvSdIlStdzqafQGGdiTfTB1AA7chS/CHNlX7rM7tnoy8u7F6rtEIn6ZX+dbpBmOltXFh5AEdf1qMyCIcuDDzwvDP+W4hA==
+ b=tril95kspwlRV7+pZKaVq/1bKh5K8MiwsAccnVBq239NYpN7rQGbM40fxW6zJpKYv3uUl7glCIYQhN4gWJn8qYzlcIjY7ldYCgXRPP5bf32GEMUr4t2luI5CP+7Yv1aSevsZ0hbSwaPZzsSvQGc4invciIKleOE1RUJNiTbBFc5LgLmzdLEZxAssVxFkr76mRpXbP61gWjd1Wt8StzUcDvrfO9kkQwJx0qy93h4IxoszUAFGvHNqRYQUL+l30AFw6/0rjRXAbptXsoEnnYpgBgL/WBXwLzw8OYChvLo0XNd9gkE6FneTOtI9L9pSQ/xjDxUNKfBj1UNxxRu2SQ8YTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iaju38gkwO1b3Z7Cu6xCoAHUb6cnUwzJ+iO0kZahRAs=;
- b=GDzaYTMGVGM1g3croSkj/2YcEqBj9fzkphg21UoS+2AkcOpx1s6usuNpBCvK63LEzY7hvHS9Qa44w/B5/OA0ouiAKvgiPoT5MwJoRDT+GcQ+UxqQbhLdWqaY7QNVQnQqQneDtGYjVFsHzt1Hzk2W6/kDNBJZgBUBmeTfCQwTqaO0tc3lJxMITjWcHxLANhZrQtxyzbk7PNqSqyHqHZW/Mj9GklV/H9cSv9kOzBzNjWOvUmBfaJdvQtkbMh7CrRQLN+bP2AxQHwdQgglZQZn0TsCafh+r79HFGaL/g49VZ0Rhee97XAFmmU5LbLljSslTOo+x1Jt/W3IkpAtZfJgS5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- DS0PR11MB8018.namprd11.prod.outlook.com (2603:10b6:8:116::12) with Microsoft
+ bh=02kj7zXFkiG4wEQfyuppn7t2c5AncRc9N7W95hM7k5o=;
+ b=G/MaL0QOhfzVEC1nFd11lTFnIpq2U6x44s4nYIKP7IRhtZzwK5yy62BnT/J56TuPhCVOHXbNfBbTBf2bf8OaMZsyIpWlihwRr19BDolA9qg+YCxPV5/BMN03x8AnPK/2FpkyMYAKCf372B04bO0MNz+SErg9XTcxagfOFQ/LUQtucuNleJkxLWUrrYKnfTOb7JRWKc71nSCjkpbg3ryca8tbwoKHO2y0EMg8fA+L4Umkjg7skLMYprUspt6ZFBOCHxvPk31TttZAkoTpvlierTD54PMPRgVXPVfZqzoLv/YLGW1GbWWGiSr/WJ/Fdr9eJMRI9tdfR9BTTit9O7Zwbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=bootlin.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=02kj7zXFkiG4wEQfyuppn7t2c5AncRc9N7W95hM7k5o=;
+ b=a0KErEhg9Jsn4+SCc3TinJuymRCzfr2Hb18x1f5cX2B1s+dCAOUEl35OMim5YYnoAtFGIC6voWR5YKolwqUS4d4pU2LWinrhGdtMDg/4qabBu98oBgmlS+H861zzpYkx2lEf7yMXLgAKBd5yp1fdj2CHE7Py3milS+ARingR6gw=
+Received: from BY1P220CA0014.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::9)
+ by PH7PR12MB7913.namprd12.prod.outlook.com (2603:10b6:510:27b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 04:33:12 +0000
+Received: from SJ1PEPF0000231B.namprd03.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::18) by BY1P220CA0014.outlook.office365.com
+ (2603:10b6:a03:59d::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Fri,
+ 24 Jul 2026 04:33:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF0000231B.mail.protection.outlook.com (10.167.242.232) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.10; Fri, 24 Jul 2026 04:18:16 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 04:18:16 +0000
-Message-ID: <0b60e943-6890-4cb4-a64e-147890d75b9b@intel.com>
-Date: Fri, 24 Jul 2026 09:48:04 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] drm/drm_ras: Add drm_ras netlink error event
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>, <raag.jadav@intel.com>
-CC: <aravind.iddamsetty@linux.intel.com>, <anshuman.gupta@intel.com>,
-	<joonas.lahtinen@linux.intel.com>, <simona.vetter@ffwll.ch>,
-	<airlied@gmail.com>, <pratik.bari@intel.com>,
-	<joshua.santosh.ranjan@intel.com>, <ashwin.kumar.kulkarni@intel.com>,
-	<shubham.kumar@intel.com>, <ravi.kishore.koppuravuri@intel.com>,
-	<maarten.lankhorst@linux.intel.com>, <mallesh.koujalagi@intel.com>,
-	<soham.purkait@intel.com>, Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
-	Lijo Lazar <lijo.lazar@amd.com>, Hawking Zhang <Hawking.Zhang@amd.com>,
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>, <dri-devel@lists.freedesktop.org>,
-	<netdev@vger.kernel.org>, <intel-xe@lists.freedesktop.org>, <kuba@kernel.org>
-References: <20260722094134.3036087-4-riana.tauro@intel.com>
- <20260722094134.3036087-5-riana.tauro@intel.com>
- <a5eb582c-f063-4730-8015-da59079a258e@intel.com> <amJCnyvuxcMtXxYL@intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <amJCnyvuxcMtXxYL@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0343.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:21f::17) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+ 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 04:33:10 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
+ 2026 23:33:07 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
+ 2026 23:33:06 -0500
+Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Thu, 23 Jul 2026 23:33:03 -0500
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+To: <theo.lebrun@bootlin.com>, <conor.dooley@microchip.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <vineeth.karumanchi@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next 0/2] net: macb: fix ENST configuration for all queues
+Date: Fri, 24 Jul 2026 10:02:55 +0530
+Message-ID: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
+X-Mailer: git-send-email 2.44.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|DS0PR11MB8018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98edfc02-94ca-47e0-4460-08dee93a95a5
+X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231B:EE_|PH7PR12MB7913:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dfa2ed6-077e-4a27-1d98-08dee93caaf0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|22082099003|18002099003|3023799007|10067099003|11063799006|56012099006|4143699003|6133799003;
-X-Microsoft-Antispam-Message-Info: rEuh1NOYS1uIEIJkfb7YGbah4nLHw8+tDpES7LJDGtMOCQP9mOU/WuSfBauTItHNBST0RtuPohorJ6OmdjNToEi/a1OfSywfFaWMb1XvVRj1Pe6CdsPtbidl9sNHZwjCh21xMbok4J3RUR8464cC9C4BpDb4VkOZyNplLMAGBQqEmbUoVWj6JQCKz4+FH47VJAoHgpBc2xXJkhkxlxlUS/PyoyPSOkZA7o3zXNnzVPJNeNOG9wZVDV+9YGoS/AVAOarqum0esoGjfmeLW6rvS83MvHvEGEgxyRrweol8qVIgkkNwkOj6gvdUi4PtwcUpY0HHlks4xuYvTOx068iD1r0G4Yrmb+eGJnoyGfOmpo6nloADYwsihkFjfjHPCkHtvlUNNG0NTZBHPYxEiml9AjsVyks5r1qAQRvsY9z2IKeN8JYTqDSzhkrD+vf3Er7nV52upG/WDtRiAPrYBwkqmz3A5wYJ7Lyw0cjz+4I5evZzrB0T9i4cTMQeEYMqQ6pqrapdjAS2YSRH5c0lPStyARiu7Fxl2y2X5oEqT4BldZZPvu9swWnfG4wJBLQ4aydcyU/mMBzm3Zllcr9OkVgwYJ5uEy+h84RnXvmTX+daKfYzULESCdiAdlxRE85wVSDdH31mqX7gVFXppBkxjxpSVqJg6qWWOpZH3B4AR1yR3xU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(22082099003)(18002099003)(3023799007)(10067099003)(11063799006)(56012099006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|23010399003|36860700016|11063799006|18002099003|56012099006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	CDXZLnB5aIIDa4pp+V+l8rAIuES5piFqSBIfO9sRKpDYMG3N0ujnHtg/4Guo27gbInb6K5+EB21v/1JyLjdQHTFEBLHi4C7nMiJIfLPoBjGpbcsLiUeNVi8xC56a0nlRkIecUxyWQ1F+rOrgHuOg5Fj1Uk4YsBLJ67O8BSBue6ZFH6hlH7KFs53rG1mJ+cMup7hWNIAcD2KLpbKTzrKZklcFZwsIGHLg0d3w11RyCEj9r+e/23jeiiJO4uFrVuJQPYON/QyPwE7oIV7YDVnb0OV3YnHZSuDhgRS7nAecv6A0sKTovZKfyG7KAhvlMAD2sXHrwP7L02IvCzswZINQoPwE8CP2yHRW5C7lTXmoiuhAvJI4+JobiIC+nh/QSmeCgfX4TgNW1mH1Yz1UnxQ5X7Z6EwHEKhsmmTzAZ9XDG+mXNVIzmUwc6s7UVpf2gr26Dc2zeWpmDoGlLtPGx2zt0f7qoErDXi9x2nEhLD5SHlTpZ2Gjm52kB+u8tBEYutdrw6hkDtT+uxa+kT5V4X9EX6/IOJ2778EfqITBMoyPTvXFB6EcVGkQFzZWeEZOJOFA/GVspS5js4ooQkehKudHelssoD9nDBLtoIjJ8jT0Mu4FhffjNKqEwFS2uRaBhDF7evfU7Jkx/mSxwZpY29doV4vm5c7EZMbkxUlu5t+kOLluRcKhkrN/sPZbr8ORpSRM2++bAS35foQTMK8N/wu1DA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(23010399003)(36860700016)(11063799006)(18002099003)(56012099006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?alRadW81SU53ekxQTmpBNmFERWVmTVVVMy9laE9aN2NIVVNkSk1UL3R5ME55?=
- =?utf-8?B?Uy9ZNFhPY2FyYjNRdmZnU0ZuQlNRSW5ZelovZEg5cHJ3N1ltaHJXcytmRFNN?=
- =?utf-8?B?UlNiWThzNVppQzhXUXd6K3k5bHE1ZGxlY0UvZnBwVnd3aUZIUW5LdXpyZjZN?=
- =?utf-8?B?WFg5Y0dnbFFJQzMvYUNUdmNIUGtiaFI1d2xIaWZTaHhOekorcFFtWG91ZitZ?=
- =?utf-8?B?ekVPdFBKR0FnL2lpOUNZRURWZ3BlZCtYajVKKzFqSS9sZEYxamRqd2Fxc3Fp?=
- =?utf-8?B?M1M0SVZEVTFvKzVaZHpFNmllUURvK3dXZDd2dlRRcEtvaDM0UFAxeFM2NTRt?=
- =?utf-8?B?a3RLK05DSjh4cThJUTVUUXVSN2dFMVhsR1NrMUtoTXFWZVIxOVJzZ1YvdmVU?=
- =?utf-8?B?MkFkcXJHRCtuNkFwLzhtanVxRm9mVTh2Tmx4Sk1PTkY4aStRaSsrY1dNMVlT?=
- =?utf-8?B?akVna2NKNHprYklZcjB3OG9hM2tIcVN3bldXRmkzem9uY1BuVkU5cVN4K1BT?=
- =?utf-8?B?U3RPMitEQlAyYUx6eEFXM1pJMU91TjJtVEVSV2xFcnFpbmFFdVJwQzdlcGw5?=
- =?utf-8?B?V2M1dXZtTFNDMENidmx6NmdEcTBodlZ3YW5HamZkYStJS2p0MUxyaVdZaDRa?=
- =?utf-8?B?QjJoQkY5WFIzc2hoNThnQXl1UFU5ZGlSR3I4ZHlqSmV6dm5OYk9EZmJuRDBq?=
- =?utf-8?B?KzJWbTNyblV2cjRic0xucWt5dE9mZWNTdTErU1BHOVhGU2dDZnZSQUVBWHBw?=
- =?utf-8?B?Zkt5VXo3bW01QXJWeW9uYnN2WUlMUzRJM2czRHhsNStkU2V6MGp1REFPR1VW?=
- =?utf-8?B?SG43L2Vqcy8wd1VCNWkzeEtoQjlsVm5DUXNoL3MwbHkxNEZrcThBamNRazM5?=
- =?utf-8?B?dmI0bk5tdm45NkFEMklaNG5LclUraEhSd3cySXVzT01mcVVVcWxnUFczQWV1?=
- =?utf-8?B?Rm1rMWpyeHJtUmh6V3VKdDNZd20yTWtiRG43aGkraXM4Q3dpUlMzbERUL1Vk?=
- =?utf-8?B?U2ZXNEQyNFFBSy9TelZVL3kwdW91Znh6RURGeUNVb3lCSzdXd0doVmVhaWU4?=
- =?utf-8?B?YmoxTEVQdzNraml0Zk95VGUrZCs5Znhxbm95YXpZcVMyVTBPRUxOWVRxZEx3?=
- =?utf-8?B?QVlaMW1qQ2hDaEVjTzgxNFoxUVljclRFWDNRNGpDdW14Ymd3WkNXQzBReEVO?=
- =?utf-8?B?SnJZVlBqbmpaMDg1a29wRGFBVCtadXpUSG10REdOK1BieS9oWER2c05ua04y?=
- =?utf-8?B?OFRLcDBiNm5OSzF1QlpNWkl1SWhvK1ZHalFJSjFRKzA0eGhvMHd5MnU0dmZk?=
- =?utf-8?B?SkVZd25vLy8wbjJGZFYvRWpTdUJqQ1A5M1FnQzJYMTMyckFlSUtTdkZVWHRJ?=
- =?utf-8?B?Uy9rTWloNitidkwybHhGUkZVaXR3ZUcvc05IRm14NStFd2djLzJ3Q250eWtw?=
- =?utf-8?B?Q2FmTVdpNUxTTWtyZnVjM1cvL3ZiblM2SHJONnlQazNTdXNROUlJa2RJemdC?=
- =?utf-8?B?TnFwb0ZPVEVMT1JSREZDaWRyQzY3cDFvOGxiTFlYdmdBRjJjcCtwaUhObjZI?=
- =?utf-8?B?bHBFTk9vY0VkbEs1RVZUbTNURC8wbWptQUU4R3FrVDhsVWNGYkQ0VW8zZWZK?=
- =?utf-8?B?UTJGYVQxR3drYmszNFVRbFZzT3RkZDFCcHk4a1VrbUNjZVlNcGlla2loc2dv?=
- =?utf-8?B?RXV6NUxCZGN6WkJwbCtRc3ZuLzFXMW5GSHU1N3Q0MkpQcmV2Z1FwbWhhMWFN?=
- =?utf-8?B?Z3ZPd2N0MWhPcEwwWFVLcG9XRjFTdi9tT0gwakY2cGtBVFo1Y0pHVTkvbWlC?=
- =?utf-8?B?ZU90MURKcWNqNnhXbXh0RW5LT3BWNUViclNYN25kR216ekJrM08wdmcraUM1?=
- =?utf-8?B?aGx6alZHZW5FMUsxbEFaZFdaTW9oZUVSOERVK3BGRlV6Nm9aVDJQSWI1cjlJ?=
- =?utf-8?B?R0pNNUs0b2w2K040Q3R3V3B1aGgxeFBUSEZqTHJxMU1LbHdzYndlckFQOENM?=
- =?utf-8?B?eXRaK0JSUUFTVmkrR2NEd2doNmM5RnBxUlZGT3NSRVU0M0RWVDlicjgwRkxz?=
- =?utf-8?B?T2dTaFZnVEk2MXpvZ0ZXWXR5aG9zdlFWdC96aHNtbFAxY3J6SEtmZ0NQZWxa?=
- =?utf-8?B?YWZDb3Jra2tRNjhsOTEvNzFvK0FuSi9UeG85MGo3Vk1oUzdrWDl1SjYxbE5I?=
- =?utf-8?B?ZDJaQ3NJejRma1ZPdEdITXh0UWZnZnJ4QzNINjJ0N3gzUTJGaW5qaDMwL2Ey?=
- =?utf-8?B?RGxYUjJUalBUZzgzVllmTW9xZHA4TG5qUVFwVGdwSWxMVWNXeUJ2MkVGSzlQ?=
- =?utf-8?B?dDJKbU50dzZTQzNQVmVnUFhEakhyRDZDQ1lsODBQZWFwKzFXTWZJdz09?=
-X-Exchange-RoutingPolicyChecked: jCv+V+GX/g/9Shy3qFpCeKvb6H2ZpcT1SWzp3Wse9x4sxdT1whfNJtFbDQul2LOnUR6FUZrk9zt9O0W9S2nf+yQohHpJAZ6Hi6Di55+Yfi86dZPEJeoe39s6UdqpYdO1iP3zAGINVsCXpcOQJKGdHiHY7zLaSLHjK8i3kXN8snL7fv9/2/F1Cwyc8DnuvwE0YacdxTDgiieLzlXesnIko1Y5WUHl0gPvvAsCvj6zr9WCHLtLLD0svml6JXnI706sKwODkJqYokOly5Y7K3seooSCIrD1rUKYuDqLncEPOJ0AfsmkD8Mq2MxxiDQ52YwwY/gm3JEQwdL2YEWQauIjNg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98edfc02-94ca-47e0-4460-08dee93a95a5
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:18:16.5582
+X-MS-Exchange-AntiSpam-MessageData-0:
+	grXfPX39ojJZHwUHGkHKPVKcFbqhYCEH+k32b4CmTgkXPuGiFLvVIUKUe/qMMq8fmWQRYkxW0gXVXzdtuiz+bWQbEEYuIo5wqNfbldGj40Zp2u2l/w29PdpUDknkoqEvCTYI28zrT66aAGK/ramLPPRVSIG8AuK0o8gAt4noDYA8uWIkG5Wm0UGIpwd5iVGZo3Wumk6QMCkLJ3KMDBREXo1Saas9j3Pfos65v73PTPs7PKo386UhiKwyQ/gHTnd0FCbTxWe1uw/59DuRmVodkDdbVoLTLutpQ7+3O2ySExq7n4zj8jxukcyCnVgWiUWQFAQ6HT2PI5zUJMTQXOYwxkQU2TTSRF5kFQkUqUsL37uU2eC93s5GI6QzFq+kOql5VemhJxim8HCMH05k07f62XW071hZJGorjtD8Wc16dJcw9Qr67EoAfGqaEASSKuch
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 04:33:10.7669
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rn/IY6vcbXVs8w4UIKHvMFFifmeRtNkxOAXmvuCNPhG4KZ+xmIOKUuIcXjkuirGvCZYRPcy8X6ndPbKgZtX3NQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8018
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dfa2ed6-077e-4a27-1d98-08dee93caaf0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF0000231B.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7913
 
+This series fixes the ENST (Enhanced Scheduled Traffic) queue
+configuration in the macb driver and removes leftover dead defines.
 
-On 23-07-2026 22:04, Rodrigo Vivi wrote:
-> On Thu, Jul 23, 2026 at 08:06:22PM +0530, Tauro, Riana wrote:
->> @Rodrigo The sashiko comments are resolved and has been tested with multiple
->> namespaces using docker.
->> Sashiko review is now clear with a pre-existing issue that is being fixed in
->> another patch
->> [PATCH v5 1/5] drm/ras: Cancel and free message on get counter failure -
->> Raag Jadav
->>
->> <https://lore.kernel.org/intel-xe/20260722034228.662746-2-raag.jadav@intel.com/>Let
->> me know if this looks good
-> Yeap, this is okay. On this one I just had the feeling that Raag had changed
-> his mind and asked further changes after the put the rv-b.
->
-> Perhaps we should resend a clean history and then we use that to ask
-> for the appropriate acks
+When a TAPRIO schedule configured only a subset of queues, the driver
+left the ENST timing registers of the unconfigured queues at their
+reset values, resulting in an invalid setup. Patch 2 configures all
+queues unconditionally, zero-initializing the unconfigured ones, and
+derives the queue index directly from the gate mask instead of storing
+a redundant queue_id.
 
-Raag's comments were on the xe patch (mostly nits) not the drm-ras event 
-patch.
-Sure will clean up the revision history and resend it
+Patch 1 removes the fixed per-queue ENST time register defines that are
+no longer referenced, since the driver computes these addresses from the
+ENST base offset and the queue index.
 
-Thanks
-Riana
+Vineeth Karumanchi (2):
+  net: macb: remove unused ENST Q0/Q1 time register defines
+  net: macb: configure ENST registers for all queues
 
->> Thanks
->> Riana
->>
->> On 22-07-2026 15:11, Riana Tauro wrote:
->>> Define a new netlink event 'error-event' and a new multicast group
->>> 'error-report' in drm_ras. Each event contains device name, node and
->>> error information to identify the error triggering the event.
->>>
->>> Add drm_ras_nl_error_event() to trigger an event from the driver.
->>> Userspace must subscribe to 'error-report' to receive 'error-event'
->>> notifications.
->>>
->>> Usage:
->>>
->>> $ sudo ynl --family drm_ras --subscribe error-report
->>>
->>> Cc: Jakub Kicinski <kuba@kernel.org>
->>> Cc: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
->>> Cc: Lijo Lazar <lijo.lazar@amd.com>
->>> Cc: Hawking Zhang <Hawking.Zhang@amd.com>
->>> Cc: David S. Miller <davem@davemloft.net>
->>> Cc: Paolo Abeni <pabeni@redhat.com>
->>> Cc: Eric Dumazet <edumazet@google.com>
->>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->>> Reviewed-by: Raag Jadav <raag.jadav@intel.com>
->>> ---
->>> v2: remove redundant initialization
->>>       remove unnecessary space
->>>       use ynl in commit message and doc (Raag)
->>>       simplify doc for error-event attrs
->>>
->>> v3: rename error-notify to error-report
->>>       Replace notify with report across the file (Raag)
->>>
->>> v4: send event to all network namespaces (Sashiko)
->>>       remove has_listeners check
->>>
->>> v5: add context in function for choosing GFP_KERNEL (Sashiko)
->>>       add additional checks for node registration, range checks (Raag)
->>> ---
->>>    Documentation/gpu/drm-ras.rst            |  21 +++++
->>>    Documentation/netlink/specs/drm_ras.yaml |  48 +++++++++++
->>>    drivers/gpu/drm/drm_ras.c                | 101 +++++++++++++++++++++++
->>>    drivers/gpu/drm/drm_ras_nl.c             |   6 ++
->>>    drivers/gpu/drm/drm_ras_nl.h             |   4 +
->>>    include/drm/drm_ras.h                    |   5 ++
->>>    include/uapi/drm/drm_ras.h               |  15 ++++
->>>    7 files changed, 200 insertions(+)
->>>
->>> diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
->>> index 83c21853b74b..406e4c49bac1 100644
->>> --- a/Documentation/gpu/drm-ras.rst
->>> +++ b/Documentation/gpu/drm-ras.rst
->>> @@ -56,6 +56,7 @@ User space tools can:
->>>      ``node-id`` and ``error-id`` as parameters.
->>>    * Clear specific error counters with the ``clear-error-counter`` command, using both
->>>      ``node-id`` and ``error-id`` as parameters.
->>> +* Subscribe to the ``error-report`` multicast group to receive ``error-event``.
->>>    YAML-based Interface
->>>    --------------------
->>> @@ -111,3 +112,23 @@ Example: Clear an error counter for a given node
->>>        sudo ynl --family drm_ras --do clear-error-counter --json '{"node-id":0, "error-id":1}'
->>>        None
->>> +
->>> +Example: Subscribe to ``error-report`` multicast group
->>> +
->>> +.. code-block:: bash
->>> +
->>> +    sudo ynl --family drm_ras --output-json --subscribe error-report
->>> +
->>> +.. code-block:: json
->>> +
->>> +    {
->>> +        "name": "error-event",
->>> +        "msg": {
->>> +            "device-name": "0000:03:00.0",
->>> +            "node-id": 1,
->>> +            "node-name": "uncorrectable-errors",
->>> +            "error-id": 1,
->>> +            "error-name": "error_name1",
->>> +            "error-value": 1
->>> +        }
->>> +    }
->>> diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
->>> index e113056f8c01..8aed3d4515e5 100644
->>> --- a/Documentation/netlink/specs/drm_ras.yaml
->>> +++ b/Documentation/netlink/specs/drm_ras.yaml
->>> @@ -69,6 +69,33 @@ attribute-sets:
->>>            name: error-value
->>>            type: u32
->>>            doc: Current value of the requested error counter.
->>> +  -
->>> +    name: error-event-attrs
->>> +    attributes:
->>> +      -
->>> +        name: device-name
->>> +        type: string
->>> +        doc: Device (PCI BDF, UUID) that reported the error.
->>> +      -
->>> +        name: node-id
->>> +        type: u32
->>> +        doc: ID of the node that reported the error.
->>> +      -
->>> +        name: node-name
->>> +        type: string
->>> +        doc: Name of the node that reported the error.
->>> +      -
->>> +        name: error-id
->>> +        type: u32
->>> +        doc: ID of the error counter.
->>> +      -
->>> +        name: error-name
->>> +        type: string
->>> +        doc: Name of the error.
->>> +      -
->>> +        name: error-value
->>> +        type: u32
->>> +        doc: Current value of the error counter.
->>>    operations:
->>>      list:
->>> @@ -124,3 +151,24 @@ operations:
->>>          do:
->>>            request:
->>>              attributes: *id-attrs
->>> +    -
->>> +      name: error-event
->>> +      doc: >-
->>> +           Report an error event to userspace.
->>> +           The event includes the device, node and error information
->>> +           of the error that triggered the event.
->>> +      attribute-set: error-event-attrs
->>> +      mcgrp: error-report
->>> +      event:
->>> +        attributes:
->>> +          - device-name
->>> +          - node-id
->>> +          - node-name
->>> +          - error-id
->>> +          - error-name
->>> +          - error-value
->>> +
->>> +mcast-groups:
->>> +  list:
->>> +    -
->>> +      name: error-report
->>> diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
->>> index d6eab29a1394..39155fb514de 100644
->>> --- a/drivers/gpu/drm/drm_ras.c
->>> +++ b/drivers/gpu/drm/drm_ras.c
->>> @@ -41,6 +41,11 @@
->>>     *    Userspace must provide Node ID, Error ID.
->>>     *    Clears specific error counter of a node if supported.
->>>     *
->>> + * 4. ERROR_REPORT: Subscribe to this multicast group to receive error events
->>> + *
->>> + * 5. ERROR_EVENT: Report an error event to userspace. The event contains device, node
->>> + *    and error information that triggered the event.
->>> + *
->>>     * Node registration:
->>>     *
->>>     * - drm_ras_node_register(): Registers a new node and assigns
->>> @@ -186,6 +191,34 @@ static int msg_reply_value(struct sk_buff *msg, u32 error_id,
->>>    			   value);
->>>    }
->>> +static int msg_put_error_event_attrs(struct sk_buff *msg, struct drm_ras_node *node,
->>> +				     u32 error_id, const char *error_name, u32 value)
->>> +{
->>> +	int ret;
->>> +
->>> +	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME, node->device_name);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID, node->id);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME, node->node_name);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID, error_id);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	ret = nla_put_string(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME, error_name);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	return nla_put_u32(msg, DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE, value);
->>> +}
->>> +
->>>    static int doit_reply_value(struct genl_info *info, u32 node_id,
->>>    			    u32 error_id)
->>>    {
->>> @@ -222,6 +255,74 @@ static int doit_reply_value(struct genl_info *info, u32 node_id,
->>>    	return genlmsg_reply(msg, info);
->>>    }
->>> +/**
->>> + * drm_ras_nl_error_event() - Report an error event
->>> + * @node: Node structure
->>> + * @error_id: ID of the error
->>> + * @error_name: Name of the error
->>> + * @value: Value of the error counter
->>> + *
->>> + * Report an error-event to userspace using the error-report multicast group.
->>> + *
->>> + * Context: Process context only. Uses %GFP_KERNEL and multicasts to all
->>> + *          netns, which is unbounded work; callers in interrupt handlers
->>> + *          or other atomic context must defer event.
->>> + *
->>> + * Return: 0 on success, or negative errno on failure.
->>> + */
->>> +int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
->>> +			   u32 value)
->>> +{
->>> +	struct genl_info info;
->>> +	struct sk_buff *msg;
->>> +	struct nlattr *hdr;
->>> +	int ret;
->>> +
->>> +	if (!node || !error_name)
->>> +		return -EINVAL;
->>> +
->>> +	/* Check the node is currently registered */
->>> +	if (xa_load(&drm_ras_xa, node->id) != node)
->>> +		return -ENOENT;
->>> +
->>> +	/* Currently only Error Counter events are supported */
->>> +	if (node->type != DRM_RAS_NODE_TYPE_ERROR_COUNTER)
->>> +		return -EOPNOTSUPP;
->>> +
->>> +	/* Check the error ID is within the valid range */
->>> +	if (error_id < node->error_counter_range.first ||
->>> +	    error_id > node->error_counter_range.last)
->>> +		return -EINVAL;
->>> +
->>> +	genl_info_init_ntf(&info, &drm_ras_nl_family, DRM_RAS_CMD_ERROR_EVENT);
->>> +
->>> +	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
->>> +	if (!msg)
->>> +		return -ENOMEM;
->>> +
->>> +	hdr = genlmsg_iput(msg, &info);
->>> +	if (!hdr) {
->>> +		ret = -EMSGSIZE;
->>> +		goto free_msg;
->>> +	}
->>> +
->>> +	ret = msg_put_error_event_attrs(msg, node, error_id, error_name, value);
->>> +	if (ret)
->>> +		goto cancel_msg;
->>> +
->>> +	genlmsg_end(msg, hdr);
->>> +	genlmsg_multicast_allns(&drm_ras_nl_family, msg, 0, DRM_RAS_NLGRP_ERROR_REPORT);
->>> +
->>> +	return 0;
->>> +
->>> +cancel_msg:
->>> +	genlmsg_cancel(msg, hdr);
->>> +free_msg:
->>> +	nlmsg_free(msg);
->>> +	return ret;
->>> +}
->>> +EXPORT_SYMBOL(drm_ras_nl_error_event);
->>> +
->>>    /**
->>>     * drm_ras_nl_get_error_counter_dumpit() - Dump all Error Counters
->>>     * @skb: Netlink message buffer
->>> diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
->>> index dea1c1b2494e..9d3123cc9f9c 100644
->>> --- a/drivers/gpu/drm/drm_ras_nl.c
->>> +++ b/drivers/gpu/drm/drm_ras_nl.c
->>> @@ -58,6 +58,10 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
->>>    	},
->>>    };
->>> +static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
->>> +	[DRM_RAS_NLGRP_ERROR_REPORT] = { "error-report", },
->>> +};
->>> +
->>>    struct genl_family drm_ras_nl_family __ro_after_init = {
->>>    	.name		= DRM_RAS_FAMILY_NAME,
->>>    	.version	= DRM_RAS_FAMILY_VERSION,
->>> @@ -66,4 +70,6 @@ struct genl_family drm_ras_nl_family __ro_after_init = {
->>>    	.module		= THIS_MODULE,
->>>    	.split_ops	= drm_ras_nl_ops,
->>>    	.n_split_ops	= ARRAY_SIZE(drm_ras_nl_ops),
->>> +	.mcgrps		= drm_ras_nl_mcgrps,
->>> +	.n_mcgrps	= ARRAY_SIZE(drm_ras_nl_mcgrps),
->>>    };
->>> diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
->>> index a398643572a5..03ec275aca92 100644
->>> --- a/drivers/gpu/drm/drm_ras_nl.h
->>> +++ b/drivers/gpu/drm/drm_ras_nl.h
->>> @@ -21,6 +21,10 @@ int drm_ras_nl_get_error_counter_dumpit(struct sk_buff *skb,
->>>    int drm_ras_nl_clear_error_counter_doit(struct sk_buff *skb,
->>>    					struct genl_info *info);
->>> +enum {
->>> +	DRM_RAS_NLGRP_ERROR_REPORT,
->>> +};
->>> +
->>>    extern struct genl_family drm_ras_nl_family;
->>>    #endif /* _LINUX_DRM_RAS_GEN_H */
->>> diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
->>> index 0beede3ddc4e..ee2caa0edc6f 100644
->>> --- a/include/drm/drm_ras.h
->>> +++ b/include/drm/drm_ras.h
->>> @@ -80,9 +80,14 @@ struct drm_device;
->>>    #if IS_ENABLED(CONFIG_DRM_RAS)
->>>    int drm_ras_node_register(struct drm_ras_node *node);
->>>    void drm_ras_node_unregister(struct drm_ras_node *node);
->>> +int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id, const char *error_name,
->>> +			   u32 value);
->>>    #else
->>>    static inline int drm_ras_node_register(struct drm_ras_node *node) { return 0; }
->>>    static inline void drm_ras_node_unregister(struct drm_ras_node *node) { }
->>> +static inline int drm_ras_nl_error_event(struct drm_ras_node *node, u32 error_id,
->>> +					 const char *error_name, u32 value)
->>> +{ return 0; }
->>>    #endif
->>>    #endif
->>> diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
->>> index 218a3ee86805..eab8231aa87c 100644
->>> --- a/include/uapi/drm/drm_ras.h
->>> +++ b/include/uapi/drm/drm_ras.h
->>> @@ -38,13 +38,28 @@ enum {
->>>    	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
->>>    };
->>> +enum {
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME = 1,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE,
->>> +
->>> +	__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX,
->>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
->>> +};
->>> +
->>>    enum {
->>>    	DRM_RAS_CMD_LIST_NODES = 1,
->>>    	DRM_RAS_CMD_GET_ERROR_COUNTER,
->>>    	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
->>> +	DRM_RAS_CMD_ERROR_EVENT,
->>>    	__DRM_RAS_CMD_MAX,
->>>    	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
->>>    };
->>> +#define DRM_RAS_MCGRP_ERROR_REPORT	"error-report"
->>> +
->>>    #endif /* _UAPI_LINUX_DRM_RAS_H */
+ drivers/net/ethernet/cadence/macb.h      |  8 --------
+ drivers/net/ethernet/cadence/macb_main.c | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 19 deletions(-)
+
+-- 
+2.44.4
+
