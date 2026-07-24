@@ -1,120 +1,87 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63B431A40
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC95D433033
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 10:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784888557; cv=none; b=V4x0cEKec3lBEJAkTWc9WLMiclhf/nFgx8wygpe8f2Jh23TRR54TMHCOyl7d3rNJFIgBG2n+fP9oT7E9Gms9zsn0dYPDh8mLYhQAl3PGEPjtIEC9fIAGOPaVaYh1pE1vAXn/2ATUBjkKa8i7CYq8M2MVGvQ6gaPDreGjGwgUqjs=
+	t=1784888572; cv=none; b=E9EvOP/jOoSxVlh2s957tDF03wPiQPzaos4n5mqKrnM9qqBZ+nSMD1qcNAVjWyQHckOTf07xGGVHDeskPVxY6BjUKSMqDXX3MBV6NR3A0bZk89XV7XgFTZcfSiv6zueXtzY/0y4tjkSbjZX2bPhd78UvGJcwY4J3QafZavXY2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784888557; c=relaxed/simple;
-	bh=SyvagFmvZ5lnOm9Rwsl0MKMPhbRx/RdmElepEdAaKRQ=;
+	s=arc-20240116; t=1784888572; c=relaxed/simple;
+	bh=Xp/gRKXyt7/mIRcpTUFZxAcYW7W7CWF1cmp6RtTiLIk=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=g4dCeZQm30pMF3Icv0Y5L6rL/wFlc1S2CoGAwVQSVa43C7wtBmL9iwXqr+4lU0KSJrI5hzHKUpXBzu4ZjFHEv6PgU/9EMTw7n33Ceryd/H+i6wjcdA/GU+40NEVjmLEQOSQUd2sHcA86yd3S4wf5rkRH0yXFciyk8lWlvoT1nrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YjDMqpXk; arc=none smtp.client-ip=194.13.80.246
+	 Message-ID:Content-Type; b=F4S6YTIJlYhn2PU5FsOGJiPqqw5l5D5IWBv4zIpepIfiuDAul4L1r5vc9ry62yZcmNWh1XYrj4qPSwye0ob1+iTFTQ8uuCEJZEjxopAQYnvRtqqHgr2a4c2TAQ1d4Rta4bVsj+3gyiFpcct1A3cFnnluHNxM0ukRNllXB/kQzJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=3wVL9vRT; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YjDMqpXk"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 46704A6935;
-	Fri, 24 Jul 2026 12:22:21 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="3wVL9vRT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75D54A38CF;
+	Fri, 24 Jul 2026 12:22:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1784888543; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1784888567; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LNmmfCd+qbXRdBRb70IPu5Qh54v0j2foyeCy+tiKJqg=;
-	b=YjDMqpXkHlOhM9H2nduabFX9VzxQrz9tGlbaHRod8OV0uZrBGKATCcR03UwGvLv0isE3v7
-	7jAM9zLdob5lbUd4LgN8XLM8bVaZCCEIsK2M5gpNSHyoFYbvKfnU5iYbNL9XFeWmX4INfj
-	ZgJoJ2cKPZTaelxuolk/bXyyIeJ3rNaUatJ6fWU2oPIqn985rNGIiMt0hpEWvzsf7tam3y
-	DB8+RnWIxIOtX/IV7i89dmxPEo1vDRdz21BJ06UB+o8YsqTI5/YDyqZP3fB2F3L1VF15s6
-	HyMEUzThLNLxGP3grS3XY1qJt/5haR6Qo6iajQlEvoMduId25+ZuXHgUj5a5cQ==
+	bh=81PvFk0hfFBRVnH5okMYqtPAGB+87iSQe6tZ1Io90zs=;
+	b=3wVL9vRTjPCMWG12yDhJNUTAMVOe1TyXsBgP97sBSptIKprbxyaUzNGlLMzhVU4SygnHjg
+	wak0tAGJUFSlY8ct4wnEkVXjn4M2PprB9Z7cprW7IkMUsRQ/3lMzm0NFfrAJ3gobjEWcOz
+	vonSwhEfVWKRaHURdlTYjaKpf7fJw6OwiD9Vch85x2a1P+d9kA5b/EouNunhNLJsoc5HYH
+	JpzDKrcpD8v44v3crxXqBMHsbil3CqmpuxIjil+DP5j6yQpAOYLuJNsXoXgE81Hu/F/y9E
+	JsLUMbKLn04wAbK7cR+VsvrBd1RbMzRqiPi+VpXOLjI8CGtmj7LABCo3Q9vz5w==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 24 Jul 2026 12:22:21 +0200
+Date: Fri, 24 Jul 2026 12:22:47 +0200
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
  Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Simon
  Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
  <skhan@linuxfoundation.org>
-Subject: Re: [PATCH net-next 2/2] docs: netdev: clarify expected interactions
- with LLMs
-In-Reply-To: <83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com>
+Subject: Re: [PATCH net-next 1/2] docs: netdev: clarify handling of idle
+ patches
+In-Reply-To: <38b75373f813354ad0ee8bfde12ae5a42e9a11b6.1784884817.git.pabeni@redhat.com>
 References: <cover.1784884817.git.pabeni@redhat.com>
- <83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com>
-Message-ID: <4ac691b42bd2a8568014d680e21ca90c@tipi-net.de>
+ <38b75373f813354ad0ee8bfde12ae5a42e9a11b6.1784884817.git.pabeni@redhat.com>
+Message-ID: <d9f57f7676bb223438298cf349359f49@tipi-net.de>
 X-Sender: nb@tipi-net.de
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Paolo
-
 On 24.7.2026 11:24, Paolo Abeni wrote:
-> The official documentation has not captured yet the current impact of
-> AI-generated reviews on the patch process.
-> 
-> Explicitly state the status quo and expectations.
+> Off-list pings are very bad, but unfortunately too common. Explicitly
+> state that, so that at least LLMs could learn it.
 > 
 > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 > ---
->  Documentation/process/maintainer-netdev.rst | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  Documentation/process/maintainer-netdev.rst | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 > diff --git a/Documentation/process/maintainer-netdev.rst 
 > b/Documentation/process/maintainer-netdev.rst
-> index e58f541c29e0..1739d9f856c3 100644
+> index ec7b9aa2877f..e58f541c29e0 100644
 > --- a/Documentation/process/maintainer-netdev.rst
 > +++ b/Documentation/process/maintainer-netdev.rst
-> @@ -203,6 +203,22 @@ For RFC postings specifically, if nobody responded 
-> in a week - reviewers
->  either missed the posting or have no strong opinions. If the code is 
-> ready,
->  repost as a PATCH.
+> @@ -210,6 +210,10 @@ landed - describe your best guess and ask if it's 
+> correct. For example::
+>    I don't understand what the next steps are. Person X seems to be 
+> unhappy
+>    with A, should I do B and repost the patches?
 > 
-> +There are 2 services actively providing LLM-generated review on posted 
-> patches:
+> +Don't reach out to maintainers or reviewers via private email and/or 
+> other
+> +communications channels: all the discussion must remain public, and
+> +requesting special attention is unfair towards the community, at best.
 > +
-> +- https://sashiko.dev/
-> +- https://netdev-ai.bots.linux.dev/sashiko/
-> +
-> +both use the Sashiko infrastructure on top of different models. 
-> Reviews are
-> +available after 24h. Patch authors are expected to proactively look 
-> into the
-> +AI-generated reviews and handle such feedback as any other kind of 
-> review:
-> +either debate it or address it. In both cases a reply on the mailing 
-> list is
-> +expected.
-> +
-> +Authors are strongly encouraged to run LLM reviews on the posted 
-> patches in
-> +advance of the actual post. Large series triggering a significant 
-> amount of
-> +AI-generated feedback will likely get little attention from 
-> maintainers and
-> +reviewers.
-
-Is it worth to mention Chris Mason's kernel prompts [1] as an explicit 
-example here?
-
-[1] https://github.com/masoncl/review-prompts
-
-> +
->  Emails saying just "ping" or "bump" are considered rude. If you can't 
-> figure
->  out the status of the patch from patchwork or where the discussion has
->  landed - describe your best guess and ask if it's correct. For 
-> example::
-
-Anyway:
+>  .. _Changes requested:
+> 
+>  Changes requested
 
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Thanks,
+Thanks
 Nicolai
