@@ -1,50 +1,86 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDFF3AD50D;
-	Fri, 24 Jul 2026 07:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5A126738B
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784878763; cv=none; b=ahEZXIX8VRu4sW+1FVIlEUMTBoWlvk7ORqh6qcAhymi2XOlmxlV5oaLtO/Vle6oURpuvgignpO5ZdeSxMHJvrOFL2OhNGGhtnutJdyUl+s2muV0cis5PEfYuZxqGQMIUEpjbyPFp/OtqnepQe6YJzbjwy2Go2IgEwzpkSkoiuv4=
+	t=1784878840; cv=none; b=kchTlOxr9uqNuywyqdskifHdQenHJu3gf7cCXUqfDezUiDBvgbqQAGFsu76An2NHe4rNnQN9GZ9mIdudpAZigixqQkBtu4NagbI0mkXNFKhWIax5Olei0GhP+z565RgA4QZHohm09zi/BDhVvNgodafxfLnJzuL8Oaz/6f4hzf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784878763; c=relaxed/simple;
-	bh=YQ6Sbu58GLHEk412iXQ5TrU2ee0c9JrXPDHJA2PNTps=;
+	s=arc-20240116; t=1784878840; c=relaxed/simple;
+	bh=qNUPS+a3BrFb3/Kp7YfjMtsVYSxnvEkGQM52t/E7DfM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cl8nKEZx3xdZojZ7C0lNqhyOjc/smz7LHaMdUl7iLV58j55hIHA2ZfHYrDalWr4D+jzGNHwNt+/1l4EXmIjCl/PN6HMzVggljOQFMtGc55SHO0eDvtSq8HVvYOOjQaZrlX3IQyGIFiPSkZ/zjYvvmUvKb3Az9tejXgx26qdGzeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=WqDzSEbK; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=fstjeH78; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	 In-Reply-To:Content-Type; b=CX2U5KBh0UzvqZV6DaXlNCerqasO20VtkpDBQe10DnLMs5i6Yvr/wxSDGF6zmaIm26nIG8ZD5WL1K0g6wzimOazw0cmYko2NE5FgauEvKdtcivGCHYsWfP4b9pS2k4PpPXoSi9p4EAAwBb/Y4aWrFsmnk+G1gsf7/hMgyKn9xCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J0fyett/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oNYV2syZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="WqDzSEbK";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="fstjeH78"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878392;
-	bh=YQ6Sbu58GLHEk412iXQ5TrU2ee0c9JrXPDHJA2PNTps=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WqDzSEbKp6BpOX6/g5TX9UgymgjUuMv6jjYrBFGTzqwGpsXME+tB7ZXVzjnHa2/kj
-	 4h8ndSaT5fLt9I108DCxZThWARFChLX8Ls1iCeale3eXn85zM87uZgEEbhy1cy0lPf
-	 MP5uoLoT3iArspPeak47fJ3lMVkPFtUxlnY21KJXysToBL4v74MPq+D852mBYc9glE
-	 wNa+wegh9UVQvORSAoITYCAqPCM2mBYx8NunYW2AdLL+AoX/qz244j8ZTxd+4zaYEO
-	 DvYYQuRnh0NnSOCWtdI17mtlUY+TWo76Aa5kt6eFd31o7x0HGY1QTfPlvGVHFQJDQJ
-	 SXzXY5j4NIHVw==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 0F6DE492B0; Fri, 24 Jul 2026 07:33:12 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784878391;
-	bh=YQ6Sbu58GLHEk412iXQ5TrU2ee0c9JrXPDHJA2PNTps=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fstjeH78kCG3qzuaMw1IPImMCBIkQ1TMRchyJLvsJGMs00YsHsfY98bzTtZmjfOOM
-	 c7fwtXNmZRfh4uyIVYLw20HmnUMrp7Ogp+ta/0oROcQOZHjdOsMZK98NcrJWC3V3Qd
-	 TN0BZmtUkQUEgmELCL5DCpWvd9l4mOTPyCuscDTivzNYLFUZdb0CK8Fny3cx57fBgY
-	 7HzPW+S7kT83DRryk6m0djPDSje+m1tSxtD/3JQW9o8Sxi8EqF8RhHtC8YslJ/wdaW
-	 PQ2Iz3qscHIdfT86RNwj4NIRHwcN80nzZfZGObipImfm8Xl/6FOaQz9IQqDh7PHKPQ
-	 Jiht1XbXG+Oxg==
-Received: from [IPV6:2003:c6:9f1c:3c00:ecd1:8782:4fbc:6faf] (p200300c69f1c3c00ecd187824fbc6faf.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:ecd1:8782:4fbc:6faf])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 0FB8048EDF;
-	Fri, 24 Jul 2026 07:33:11 +0000 (UTC)
-Message-ID: <b09ee224-db0b-4f44-80fa-eb350e4baba2@birger-koblitz.de>
-Date: Fri, 24 Jul 2026 09:33:10 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J0fyett/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oNYV2syZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784878838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RU3UY4EQSRuskKiXSUK7GU88ZgZpccmu35eGION+JXU=;
+	b=J0fyett/FfOIcNJASJP+3llTUtxw81m8Ch8FENrhZ8GlwISvCvE4hQs0k98dmvYr6WqUXv
+	BA0wNnoz+CB2qDqo+5aAJK6IYKOw8RorhJOVHJSYcxfGwSly8GZL7F9sjtNAcGPMLka2AV
+	+cBYd9AqhKQJDccGIsVFq+Kp1RvmtKk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-DPtTc2_pP8OqkEtoFwUszw-1; Fri, 24 Jul 2026 03:40:36 -0400
+X-MC-Unique: DPtTc2_pP8OqkEtoFwUszw-1
+X-Mimecast-MFC-AGG-ID: DPtTc2_pP8OqkEtoFwUszw_1784878836
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f7700ffdeso68894f8f.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 00:40:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784878835; x=1785483635; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RU3UY4EQSRuskKiXSUK7GU88ZgZpccmu35eGION+JXU=;
+        b=oNYV2syZ3s7JqQdUZQ0RE1+/9DA7KcVBix541SOctt6ZoDJQh82R7wEubeFvtaQGON
+         Y9pUI6Tm4v5E3bIZ09RK0GNAN2fyu0G/FaRZpndo/yCB+b0Tx7XugH76l/f1ijZ8yGRd
+         t1svGvA6xWEgZuQaSAvdTEC3YVOsOZzMiYgrzVRnrl6pGL03QO6HVy/3QIpHUyW40qZz
+         N9buNDJF+UirTR7JjBc+ajY/CpXWMZty4iqCIsvBh38mr0On5GMNi+TLvzh5pRDIMCwO
+         kAXlm1SlwHYIMp/WXyUMVM9JplTLhu7p3KDfJRCHoAp/EwnhsHFBwqH8XW518AMQXZrx
+         3Y1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784878835; x=1785483635;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RU3UY4EQSRuskKiXSUK7GU88ZgZpccmu35eGION+JXU=;
+        b=FXdG6kNYqEe9K37alYD0HSa9jyTsTfpSP/i4vhO95QJd0aU387qUVr4L+PgsjaCdMw
+         3MgxlWlpR7foVwR13dNA9huyEDPrcPh0kNmEPb23zC7mhGiNP/NqV36lkxnD2JzTzLTp
+         VM8uLOHo+qI95Is5C36AwV52n9D6BkgQ5305j6K+/Ob2blfiQ/4bT21UxLOASllF9T3V
+         wc1CX0Xz4enSrzmhPw6KzBzk3SeNXuR32IANU9OkF3UKCS69G7M9uclQPnC7UXezjGTr
+         Lw3EyQa7LtEAQZegjq7p0qsMnAEdAmqrS1wbZVDFN5zhmWMNubdkkopBecyijA5haHkI
+         XheQ==
+X-Forwarded-Encrypted: i=1; AHgh+RptcG93rX7XSKr0yynn1edzro/u0Ernrf16KddudTo+rL9t8TQjJ36vtFo515Nkc2m/gl4T/U0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQkHwqHUcYI5RAbvkpb9Nus/w0BRFZyl6K2gzUFxYKdzhuh8oY
+	yfECBPrEiGRgr+UOOkCtCF144D5ytwLkfVHhdGIkrtyMU65jfZCyax1n/4n2OrXAv+a/PFsHFRe
+	+FOPZL4Xr4/JWLZPWv5s84x0OLw6hWA1EpPkYWUshqFWQRwySrcULWHYgnQ==
+X-Gm-Gg: AR+sD13H67KJBgaBfz6ZYCbknmw6QHqiwPVzBWz+X1vDXaYynESnREt1Vn1DdyTykkg
+	HzSS6MhmsSnERxED74QKrKQDnGey7nY9UiFMf61KhUtHRMw38lNaISe7F6n4nk+/VClm8iZB1KR
+	LggEvG2oShf8fanH+BLz37UjHqYWmHBgfJpbLHgV1n/oBOc/1OvBmoZG1PHXes5Vsqvbis7f7CF
+	bv1bR4oy5QSzt2KhRPQpGtVzV7ZysND8mgqzL4cNCWv0s1NMfFCBTAOHECXeevburkhwbVl7lih
+	gCZvGmxVMIseVnJtskCLoz5vjlj/zm+J0Qc77pyJrdRF48Tx+Eldm7oXoEhsicsKLtv9FfjNZKb
+	NGVCpPech0Moq2Vyv9r62KtI9YjKgjxCUToXItDcrDfn3vuxZpDamgmPW/Oed6ln1au8YNaZ+5g
+	eMog==
+X-Received: by 2002:a5d:5e93:0:b0:47f:80d1:be0a with SMTP id ffacd0b85a97d-47f8da69f5bmr8371513f8f.14.1784878835512;
+        Fri, 24 Jul 2026 00:40:35 -0700 (PDT)
+X-Received: by 2002:a5d:5e93:0:b0:47f:80d1:be0a with SMTP id ffacd0b85a97d-47f8da69f5bmr8371475f8f.14.1784878835063;
+        Fri, 24 Jul 2026 00:40:35 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c63678sm20232925f8f.29.2026.07.24.00.40.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Jul 2026 00:40:34 -0700 (PDT)
+Message-ID: <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
+Date: Fri, 24 Jul 2026 09:40:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,102 +88,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 02/12] ax88179_178a: Add HW support for
- AX179A-based chips
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
- <20260708-ax88179a-v2-2-0800fedb2e16@birger-koblitz.de>
- <1f858852-8e8e-4cff-bbdc-eb6751f44ca5@lunn.ch>
- <de0bfcdc-01d4-4683-97e1-16c0466023ef@birger-koblitz.de>
- <713954ed-6d7f-4de2-9d2e-3d0af0f2db1c@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
+ sends
+To: Jakub Kicinski <kuba@kernel.org>,
+ Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, bcodding@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com,
+ brueckner@linux.ibm.com
+References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+ <20260723092630.1a1c9b4e@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-In-Reply-To: <713954ed-6d7f-4de2-9d2e-3d0af0f2db1c@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260723092630.1a1c9b4e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/16/26 17:42, Andrew Lunn wrote:
->> A comment on phylink and USB-Ethernet NICs, though. Grepping for phylink
->> in drivers/net/usb shows only 2 drivers that use phylink: asix_devices (the
->> antiquated one using the 772A-PHYs) and lan789xx, which is also rather old.
->> There are more than 30 drivers there, so that makes < 7% phylink usage vs 93% mii.
+On 7/23/26 6:26 PM, Jakub Kicinski wrote:
+> On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner wrote:
+>> When a signal interrupts a blocking send, tls_tx_records() treats the
+>> resulting -ERESTARTSYS as a transmission failure and marks the socket
+>> errored via tls_err_abort() with the raw error code. Later syscalls
+>> return the kernel-internal errno 512 (ERESTARTSYS) to userspace, as the
+>> signal it stems from is no longer pending during syscall exit and thus
+>> never translated.
 > 
-> Most USB dongles are old. There might be new variant, but generally,
-> that only means adding new VID:PID to a table and they work.
-> 
-> phylink becomes interesting is with speeds > 1G and enabling more
-> features of the PHY, like EEE. Because mii is so old, it only supports
-> speeds up to 1G. It also requires that PHY stick to the 802.3 C22
-> registers, and don't really have an vendor registers. There is no
-> concept of a PHY driver for mii, so there is nowhere to put per PHY
-> code.
-> 
-> For a totally new USB-ethernet driver, i would strongly push back on
-> mii and want to see phylink. For the existing drivers, there is little
-> i can do, i don't have the hardware. Converting to phylink would
-> however be a good project for a newbie, if they have the hardware, and
-> what to really learn something, rather than all the AI driven
-> theoretical bug fix patches we are getting at the moment.
-> 
-> You are in the space in between. It is not a fully new driver, but you
-> are doing speeds > 1G. And you are looking at lots of features and
-> need vendor registers, so per PHY code.
-I will submit a new set of patches as v3, which will be based on using
-phylink. I added the phy drivers to ax88796b.c, which already has the drivers
-for the older chips such as the AX88772A, keeping the tradition that the
-ASIX PHYs are called like the controllers they are included in (the ax88796b
-like the 772A is actually an Ethernet controller according to the datasheet).
+> Can we just add ERESTARTSYS handling? I never heard of the other codes
+> you're checking TBH, can they actually surface?
 
-Using phylink makes the separation between MAC and PHY much cleaner, but
-I have to say that it was not that easy to switch to phylink, as many things
-no longer are done directly but rely on configuration magic that often fails,
-for example when MMD devices are not correctly reported to be present by the PHY.
-I have trouble to understand why an RTLN-lock needs to be held over many ms
-to send the half a dozen configuration URBs to configure EEE, but maybe I am
-just frustrated because I had to debug locking issues that froze my development
-machine...
+FTR, I think only EAGAIN and ERESTARTSYS can be observed in the network
+stack, and the latter only after sock_intr_errno() translation, i.e. on
+sendmsg()/recvmsg() return path.
 
-One thing I was not able to figure out is whether it is possible to make phylink
-listen to callbacks when the link-change interrupt URBs arrive. The solution now
-relies on phylink polling the controller for the link status, which prevents the
-USB bus from going to sleep. This solution is also used by the other USB-Ethernet
-drivers using phylink.
+I would not add additional error code handling, until we have some proof
+that it's needed.
 
-> 
-> I have another idea to throw out there, and it might be a bad idea. I
-> will let you think about it. Split the current driver into two. Make a
-> library out of all the code handling packets. Leave the mii code in
-> the actual driver. Then add a new driver, making use of the library
-> for moving packets around, but using phylink for PHY management. You
-> can add the new VID:PID to this new driver. This has the advantage of
-> reducing the risk of regressing the old devices you don't have. Also,
-> we can put out a request for test, see if anybody has the older
-> hardware, and ask them to try testing with the VID:PID added to the
-> new driver. We might be able to slowly migrate them to the phylink
-> driver.
-> 
-I looked into that. ASIX changes the format of their RX and TX packets basically
-with every major firmware release. The older 179 chips use 32 bit values in the
-packet headers, the 179A use 64 bit, so those fixup routines cannot be re-used and
-put into a library. What is being re-used is the framework of of how the
-controllers are configured and react to events, so I would like to keep the code
-together in the hope that the 179 hardware can also be convert like the rest of
-to use phylink.
+/P
 
->> Looking into the Realtek PHY driver code, what is done there appears to duplicate
->> the code in r8152.
-> 
-> And other reason to use the Linux PHY driver, no code duplication. And
-> there might be some freebies, like cable testing just works, it is
-> possible to control the LEDs, etc.
-
-Personally, I think it would be great to push these drivers to use phylink and also
-use usbnet. But for that one needs to figure out how to make phylink also react
-to USB-linkchange URBs and usbnet also needs support for multiple RX/TX queues.
-
-Birger
