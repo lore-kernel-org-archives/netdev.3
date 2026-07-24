@@ -1,116 +1,134 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5413019DC;
-	Fri, 24 Jul 2026 07:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981DB197A7D
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784878140; cv=none; b=CfTwqtXOokac8m170agudLYVCzzPGdFZE5dIjB05K7LIcjkX4WqDImB+3v8/kJgKmzUeNkzevPDhr1mL7+nAEfIv11Eb9VB3eLwDrolNOFbNJZ+g1JCHplxlTIPPymuJdGJ/dZRH50m8HHjwImf2Nl2b1DV7rDC+KBJXDToV7PQ=
+	t=1784878146; cv=none; b=N2fV8psGwBGvZe6yqIJMQ8nLRYcSbAWT+ZLOgSWNLMVlZVc32k/QNgCPxjPCDBD3BZtsCa/N+pF4/QF/KIxCj+uXDmRpAg2206p/c8fshgD6tU4eEhrRquZDfF2R+7n0rrt18fEh8xzC3w90VpY45i1OIzrZCsPdheD/RHzPCl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784878140; c=relaxed/simple;
-	bh=02sXgYXmpnhBT7Uwii62dJlpg40mMMRXPOSCNXRuvB8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hourwA7OWHdbucZI4KfF++g8m87GeL7oUqxdelDmubmA8ivdO3VrsoAuFhwMrcEATOYYEjkGmdnjyT1sTrlRSdMZXGrgvsRDJ8JooqNx7YZ33kNSnEiRcneAlPEft8xao2M5v/iMyI+IYnvIZPGv7I48uljs2CF6Npfj0zuA7+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=SGNTtGIh; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1784878146; c=relaxed/simple;
+	bh=PVmqEV8OoLJRE3torQb3j7ZZiw9tfu4My95xIXEc/6w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ABDADabvmE/sMDPCvtvxFSbk7L7W96cvVlocOCzJVOqHxfbImUjPYkNLzZ9Wmance73Z/RTGun/4dGpDs9/GKKieZGWjVXkZDZbsXAIU/17rP6rEHGNK3Mh11nlWsZMEFufl4gUk+z+IndDbs8mw2vRXe+ujNbRC9x7r+XGGhGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aRXWsZvj; arc=none smtp.client-ip=209.85.219.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="SGNTtGIh"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O4lSlb3162828;
-	Fri, 24 Jul 2026 00:28:38 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=zu9M/0L0f8ieNMC739C/zjJ
-	giOEDhw/24KAl/qCK+ds=; b=SGNTtGIhDESiD1nClgSrKPnuGkZk3w8/j8nmlI5
-	tr6af4UFcZa6z9lBGiS23BMohyYdjVTbGJ6XJ8axerQacw9bwxGGoyOiMfO9dT00
-	nv+4arkOzDTB1dYU4SlDDUKK20ebX5FFJFlhn3n2k3UZsXhsULhCoA107AXkLS2R
-	GBWtpVzUus4ZBaldVvmrrFQUaGGYHVmMlWCPfPkpbT++z4CXj+xVGsaufUgi85mV
-	/+kOgAHh6PX2PEtCL4NDFBwhRI7Igk7hHpX6meDkXbN16sdHi8geRRxEv9xvnOBR
-	mHYnKMYezn2vw29Ss4owYs+cyxGHRUmQJDVFpuFmTrt2Ndg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4fkvmu0wgx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 00:28:37 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 24 Jul 2026 00:28:37 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 24 Jul 2026 00:28:37 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 419123F7077;
-	Fri, 24 Jul 2026 00:28:34 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <davem@davemloft.net>, <lcherian@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <sgoutham@marvell.com>, <tduszynski@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, Suman Ghosh <sumang@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>
-Subject: [PATCH net] octeontx2-pf: Set correct sequence for carrier off and tx queue stop
-Date: Fri, 24 Jul 2026 12:58:31 +0530
-Message-ID: <20260724072831.2415281-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aRXWsZvj"
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-907c59bd65aso1709466d6.0
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 00:29:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784878143; x=1785482943; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7iJXdq+DSuXbUdJyWoUr65+HbSNotKNdPkajkEQh/N8=;
+        b=aRXWsZvjlT6QBQGHbV3YcKvPjSpo7CunWYbqJnADixBKr7CxirZ6a5rHVCJJqeSyMb
+         Sa8Bdy+CQzKgJdVxsCfi16hCg1d3ATZOBB5+LC2ZBqO1zYE7fFNsyjgt/ha19YI8Xmlz
+         zVBgo6wl1YFp1aoRIyr5iEI4m5VGBLWQa8vMCrKu3S2RdsmAburEsS2gS1Nbd8wOC5ld
+         70xgq76k41yUgkCb9OhD+9zHri7LSvZNEqP278v9RZ9sH+AC500y4xrTSCQyBsN3YFno
+         IR2NB/MTH0edpGPHiO9wVBS+dYzw5RxPjk8yITDwwzh2xrUO+jMrXBe0hcogKWuQSguk
+         sa2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784878143; x=1785482943;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7iJXdq+DSuXbUdJyWoUr65+HbSNotKNdPkajkEQh/N8=;
+        b=p1ioSFxg+988IBlEyPAzEDAGVxAp6Mo3ANYU9B+D3kO9ucwcuK6FWs4Y2yc5V0VHLV
+         KUCtkQrqEOomPIMw6h36qSWJhhEOLPr2k6d8I11Y9BN8mcVR/k6Hd4RvyCbB5o4dgXh+
+         uwJIbsExP3u8tmmpXR9k+DgGOj2ZrPsm+15oOT0hs+p3fYRRZIePhffTpaQTbA7O+AY7
+         1Hm+Vv1CI7s1Tc/st3wVs1rm+YrisVF+h8HJ2rRTVt3YTve+5tiMVn8IxkD+8+UgcFji
+         KRawh011iddA5lcx6NiwTJJD36sD6uqh0dQIAQLSOczthT72OIIome84aIsa14wMFozL
+         Mjcg==
+X-Forwarded-Encrypted: i=1; AHgh+RoUeUWDoQmO6FzWWAXy2hZBWu19VzFn3Jg51JifRJ1UavoIYZzOES9O83MWp0gOU00CuG/5Dpg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj6itwmctEaTgvpNX3uMRmxRKNDBndQkdT9s6xFu8ZOeBkwGSI
+	WABAsCnXX0Yc5Bi9VguDQoAT0CiD/wBuV/iwB2Xjli/KMjCqyQbxkZelQN7QL5VqI2j7bkWQE4I
+	63zBbuhb8TBArEA==
+X-Received: from qvbkl23.prod.google.com ([2002:a05:6214:5197:b0:8dd:56be:3c59])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:2f8c:b0:8ef:a9ed:5e9b with SMTP id 6a1803df08f44-907ca6686e7mr65046336d6.55.1784878143145;
+ Fri, 24 Jul 2026 00:29:03 -0700 (PDT)
+Date: Fri, 24 Jul 2026 07:29:01 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: QfQ9NMkOpLFu9B5Z054k9bXFj65b3OUm
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA2NiBTYWx0ZWRfXysgG4EUJJAMu
- tSfq2MX/zb8Rci5mBG3l8Xd9QdwxVboWIdA0v7mbSFqvDnM/N79BiARvWfFXybtOkLnS1rr3x9y
- EeJEu0cTKa0MDY42STIVdMnhQvN4BKs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA2NiBTYWx0ZWRfX8pheCG1Oufci
- BMmrklvGCzNRflAMgYjjseYQfF2vywXNXJygq6rP2zWB2rWI0BO7kV7deyYq5wxvNlaIq4gVhI2
- 6PZciMwJsefPr3qs3l0JxTMiytEodvRRtNdAM2XsZWUKBDGvlVTai0/2gQecUUqYqxq6PegeVsT
- hGWFq4ZnFiImTBUlk7XKLTuKHyj7/Tlw5w7GdSKZvw7vJNOBLUszvZyBjzkRwEg2YpfXZpQ+beL
- LLO7QkJKjtPJII4JhQuhfoXEXFFQOpHCeitCSZGzncODp4TY4CdFcnDwLJRB6ZKifj5gqjWDv6l
- otr5YbOrPFHGwiUf0xyhC4wn4ZadoUj6REHI9hQrAccLK+Zn+wS2eOAzH6s1qaRhWFz8vvlFmrS
- iOQLRW872db7uM/nc5R0EElz8rjltR7GdMTM+2+g6wymbTYtq4g9FX+SBOUFjKMKLQM7+Eh/AxX
- v+CqItAuMcsuZOkfhfQ==
-X-Proofpoint-ORIG-GUID: QfQ9NMkOpLFu9B5Z054k9bXFj65b3OUm
-X-Authority-Analysis: v=2.4 cv=GLg41ONK c=1 sm=1 tr=0 ts=6a631426 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=_n3OG_2dr_0ZU0fReHMA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260724072901.1633601-1-edumazet@google.com>
+Subject: [PATCH net] net: do not send ICMP/NDISC Redirects when peer
+ allocation fails
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Suman Ghosh <sumang@marvell.com>
+When inet_getpeer_v4() or inet_getpeer_v6() fails to allocate a peer entry
+under memory pressure or tree size caps, redirect handlers previously fell
+back to sending un-rate-limited ICMP/NDISC Redirect messages.
 
-During link down event, we were doing netif_tx_stop_all_queues() first
-and then netif_carrier_off(). This can cause a potential race since
-carrier is still on during down event. This patch reverse the calling
-order to fix the issue.
+In IPv4, ip_rt_send_redirect() called icmp_send() directly when peer == NULL.
+In IPv6, ip6_forward() and ndisc_send_redirect() passed a NULL peer into
+inet_peer_xrlim_allow(), which returned true when peer == NULL.
 
-Fixes: 50fe6c02e5ad ("octeontx2-pf: Register and handle link notifications")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Because ICMP/NDISC Redirects are not part of the default global rate limit
+mask (sysctl_icmp_ratemask), sending redirects when peer == NULL creates
+an un-rate-limited ICMP packet storm.
+
+Fix this by failing closed in ip_rt_send_redirect(), ip6_forward(), and
+ndisc_send_redirect() when peer is NULL.
+
+Fixes: 92d868292634 ("inetpeer: Move ICMP rate limiting state into inet_peer entries.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/route.c      | 2 --
+ net/ipv6/ip6_output.c | 2 +-
+ net/ipv6/ndisc.c      | 2 ++
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 2e33b33ec993..c995f2900859 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -889,8 +889,8 @@ static void otx2_handle_link_event(struct otx2_nic *pf)
- 		netif_carrier_on(netdev);
- 		netif_tx_start_all_queues(netdev);
- 	} else {
--		netif_tx_stop_all_queues(netdev);
- 		netif_carrier_off(netdev);
-+		netif_tx_stop_all_queues(netdev);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3f3de5164d6e5854cae3ebe6fcecbac10fb63418..152d8cb28f65aacee378521e16885c9cf1a4870e 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -892,8 +892,6 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 	peer = inet_getpeer_v4(net->ipv4.peers, ip_hdr(skb)->saddr, vif);
+ 	if (!peer) {
+ 		rcu_read_unlock();
+-		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST,
+-			  rt_nexthop(rt, ip_hdr(skb)->daddr));
+ 		return;
  	}
- }
  
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 368e4fa3b43ca2a96f53fa4f3bc14fd6832c346f..2c44e5ed617167ce060c265052cd40449fdab69f 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -641,7 +641,7 @@ int ip6_forward(struct sk_buff *skb)
+ 		/* Limit redirects both by destination (here)
+ 		   and by source (inside ndisc_send_redirect)
+ 		 */
+-		if (inet_peer_xrlim_allow(peer, 1*HZ))
++		if (peer && inet_peer_xrlim_allow(peer, 1*HZ))
+ 			ndisc_send_redirect(skb, target);
+ 		rcu_read_unlock();
+ 	} else {
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index f867ec8d3d90510c1ed92012c3b34ab8b49c9ac7..fe36b3f512850369e138b6a99ae7a9391494c2f1 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1707,6 +1707,8 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	}
+ 
+ 	peer = inet_getpeer_v6(net->ipv6.peers, &ipv6_hdr(skb)->saddr);
++	if (!peer)
++		goto release;
+ 	ret = inet_peer_xrlim_allow(peer, 1*HZ);
+ 
+ 	if (!ret)
 -- 
-2.43.0
+2.55.0.229.g6434b31f56-goog
 
