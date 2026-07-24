@@ -1,217 +1,268 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B445623BCF7
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D532F5A0E
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784868403; cv=none; b=J+jWrylFmbdKuMAx293wbxdM6Pn/qkLY2z4Z3kanrMuSszDIJ4KctGoaC5KpOqpwUoVDPla2ZQzMKxwrgIu+09a2H0dRInXQW6APQ9dSojjHkm4ZXOyC9OPeQxWgbyYYSCf3bb4/GGj2G3U7uiwpXmzhW4NrzeAtm8wL4i3e2XY=
+	t=1784868816; cv=none; b=aOYO9cD86q8ADwDBu4oMKy4vMvQXCMeBdRpvZJ4taRgfgX9tidVBppBPQ4XGegk7buDmppp31M7CkbxTWEEcZ/Z91NQq1nqcEtYUMnrUBpfSUY37VAnS6IMTzeKBYeEZ3aGZuFgaU85z2A7SxBrOihapENn2LYm4JXi6+Je3z6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784868403; c=relaxed/simple;
-	bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GUVvzwB7CHufMuJSzs2yzBXytGWsLW3Yp5yqiRJ66KB1LkDbysI2jRpV/UmJmkOoHhirIn3FE0NCCmdimbhi0E0CGdp9cfI9gZxhYWnplz5dsaOJdOQJ2ZfvqBEkqrYYGrGVl244ikeOqICPuLWdnU2JoDjePk0eWUa1cj6Hxy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DxMolseq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=L2hXNzhi; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784868816; c=relaxed/simple;
+	bh=8hhpCauV9B0XHh+Hnm3eGrqfqRl5IvZHE11IcXpKxqg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dWXiKaLiu+jEY0rBHhnQTrrZodzKLGo98nFurFfAHF17Yl5HXg5BrDtXqbAiROvWn2c29JYyZC09IWfkycCcO4/aAOOjiwwZ4Zw72JxeOmDfv824x8LvU1gEiYVoOhyJhAuQwLPOvlTIsAgw4sFkiiRmbZSy+xiTi4j0NBRu8GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=d0ombMaa; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DxMolseq";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="L2hXNzhi"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O42WMX1893259
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=; b=DxMolseqtUPvVIbi
-	KY5fI/kXhLQj682NjL/Lz4gI2YuiXYHmk6BL8j2dB2sQtbdSW7StjzRZMziYFV8c
-	I49ECSDAVVydKKV/QlHRknQ+FkuzVKY6ExMIv7HLuGl+ax9tVb0bOsBBCjCQFuCF
-	O47ukkrmB6nx1vDoOfxNP+OxdRvQ35HNBZEUrIxJqf/tjZ0vYGhD2cimTqByEir0
-	bFXvN6Pzs3flLwqsUO3sRDtSwm5RVRzCPdCyeZlFlbsb8Y1XXfR0GfGd//AiIaiz
-	01crQ5OVNldZIZLXeK8aj4RJvBZ+tdSZKPA55SJoTLqcCflFR7Y9d6NGDRUA9Eku
-	d1LfrA==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm0p503we-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 04:46:40 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cae455cf6dso650065ad.2
-        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 21:46:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="d0ombMaa"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cf27856f9cso522135ad.2
+        for <netdev@vger.kernel.org>; Thu, 23 Jul 2026 21:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784868399; x=1785473199; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
-        b=L2hXNzhi3p8mQzrumToGlPqhuCYlcCAlKy4qjFyEdnDfwwelguK5hkQIjpdFrcmS6c
-         A5sfx+oc6ZGqrp9pRyCKkX6d4mPOFdJfP2LH/QtFiYrHynR6ut1sh3XP81uF9BG5mabe
-         jhshM7Tg2DS6R3g+7xeTaoaTGErTPTYGAZG72ER3Gszwcvb+WcRGuzlhrJ/MvFq4cmB6
-         +ElrqCFJjccs7NG48foZrI3uqOotoFjIEsLb/5CduFQHSACu/7tlAF36wyV5Dp/G2/0N
-         59aAQV8fr8g3L//qsfT/64ejALFrVCPedPrGgc3OQXtU/zeL5tuTGfPP3c/tb1om612C
-         Qj+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784868399; x=1785473199;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1784868812; x=1785473612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rVkZOr71z6ecc/lXHb+MqO277rJQGUcX9YfkfACG+Qo=;
-        b=edrANsvaz/nzqOuqtLAhgqA3lJFWl4CrR2/5+JDw+1+gmDV7qMOIiYUiBCtqdcXlmW
-         +VDNFxX2fVBO7JiBSQrQeSoiuovQL46+aUwJYWNC3ZqTR1+8TEaWiq+0nA8YUAed/nxn
-         NfExq6KbbpNqQbyyQlIad31oeQuFFkV34Y5wChGd3xv1qVRJjx3Ysh3HHbYCj2qFJ3eX
-         9gH6rPAXGJieH0brVHCYOPNs801/6Iuquw4be7LPo4XYVVl3v3BsCzIdGa/oNcgG53Fq
-         bwu8Wzr8neuYFe1Q++ijd4HTA8H80ISO/zZeesW6csVH24wLsXk4GCEVkpHVZBgnAI1m
-         LMdA==
-X-Forwarded-Encrypted: i=1; AHgh+RpJ4I9jjfukcjIV9EWKb/U9HcRBNDen10H0Ycf6NyTg2kq1j5i5snPsLgnMSCCutjBMqyR07xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvxCNzk4xASMBePUvcolZzWUb2XIxfVQHof/Nu6Fj2SK7s/CED
-	pRkoq4Wf7hemXiVnygrTv6d5B/0g3pBMjhFHnUJKcq0WCEeykb7jBBSLIkFf9KB0yYixgJv+DcC
-	vqmLKwumy9O9u8AdGI/UCFadluhvyLOwCOANua1wB0oK7sHRcpqan7Xi2gGs=
-X-Gm-Gg: AR+sD10/OCyZtpxA8p5GHhU2yPieWvMlPFWXNkYGEzmWLPq2uHRkFPuWeoUjdeCoN6j
-	D0GdQNKirAm38r87O3QqX+6o3aDDucC8pNXZajvArNx8jHAQi7O7d6PKHJbIaYFGP9mmZR+7Mtg
-	OU9nh+fWMRSMN6jvq0qJEPhO1nnJWIlMD2mwchtV5Hce67vuFf0k35hAnzQyoPj6LnePz9V1B9s
-	qhEFORF8wtTpKDU5VKnMEG/DMGOOSfL+DF9yfITOkC9pktDmfSPCaQ3LY05G1z/hNxshxwiUyYI
-	TYidaGnbrgz4KW0z6FT5Yfeb/Gn1oXowahTrY+41oy0DJJQyGcR4hIwRxVI0hZZCRlS7LjN9H6p
-	z+KWv26RLTesrpOZva4La+HDVKbMpLdqu/A==
-X-Received: by 2002:a05:6300:2204:b0:3bf:a38b:e8ca with SMTP id adf61e73a8af0-3c44b211035mr6789573637.59.1784868399166;
-        Thu, 23 Jul 2026 21:46:39 -0700 (PDT)
-X-Received: by 2002:a05:6300:2204:b0:3bf:a38b:e8ca with SMTP id adf61e73a8af0-3c44b211035mr6789544637.59.1784868398747;
-        Thu, 23 Jul 2026 21:46:38 -0700 (PDT)
-Received: from [10.218.31.237] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147df09ac0sm22951882eec.16.2026.07.23.21.46.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 21:46:38 -0700 (PDT)
-Message-ID: <c8417ff3-db92-446a-acf8-8c73c83b85de@oss.qualcomm.com>
-Date: Fri, 24 Jul 2026 10:16:31 +0530
+        bh=nBkOpq5Bp+PFLFXuwAdTIe/08W+WYHTKlNo6ov8KKew=;
+        b=d0ombMaaKvh4gZvTGEOcIJoUgZ/9xMdXbBl3m/0oSEZWLujjUV/2VM0SsbhFBjxJug
+         UvHur5t74dFHdj33kRJwVKp85uDEH9iQVJqZUTr1Z0nMI6cloHQ1M3NUuqodE62TLUzJ
+         KYwQ2o8zXq46TmGantuWxnvWm8nUH6iV/kBUpA3igqVCPEzadVFc2C8MATyGEB+G1+Y6
+         +66EjRB4mZ7iC95jr8BxBKfgcuLErdr5/esWHMMdaNEgHzgNDmom0GunQUIe0qWVzL2W
+         oeBv5Oq4QYNa1yzgib+Ef4F/fPgzUtMDwKmt22FgHOf5JyLKbwD3RyL0wnZ2yJ/Cytg7
+         flbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784868812; x=1785473612;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nBkOpq5Bp+PFLFXuwAdTIe/08W+WYHTKlNo6ov8KKew=;
+        b=DpEyf4R+lOmMvziP8PvfOIWIWNp5SZTa1JmGHKAMH40JRDecYRcdgIBcDYPhs8YzK+
+         +98hNUdqc2ANwDmXKAFUl4Br4Wq83SC+/HR/tSbc+CvWBXVFNPcQ1bZKcHzw1c/huY7e
+         OMkA4iObhJOILw90QNYFU1ZK+XT5xZWPdDG1JoRpbTrJukSjwsMGn+ZJwmEKsNx2pNkQ
+         BAaKdiBNzrb2WW9RflF6UnD4ekH3OzyLMvNe1VDAeLXDSHvLyRDvJ/0zH/RhZ6iaUWHf
+         D9fQBAB7gKtJXj4D63ns5JmAh80sbu3YETDJlp1mZPLUj4ANV02ONvlE9DtLorY6no+u
+         WgQw==
+X-Forwarded-Encrypted: i=1; AHgh+RqPbWU3kjrNxyLHqXJleHoXrPdF8642Qpua0kvNjJ43gKkcReOu1/po49mwlrCutsIGmhzYIuI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlQw8xxuWuOThMiVs7V83FqEUDIxeAyUt9KNXECxW9UZJicjs4
+	NF7/0nl+u+MQSsrv1mtc5NdPf9xXCRcdLcqZpREvsAN6FwqDyJ/1qqqXDjTyic5NKSM=
+X-Gm-Gg: AR+sD13tHSHHotGmMrH/hIvrpJWPjO0MNx2nF7pffw6XbcA8QgGh1WGWwOrv0LUKKgZ
+	loFjreX9Le/I1HLPNQ129mnEyPzrof0O4OoAHQtEPkjy4AfTvHNIB1/HbNCOMMwM+JfqZv03uuh
+	7kNfXM9Z4DpDodi6V2pLkSLi6kx2iLp3IkgUFbecX7Ijfczy7bCIoZsDDUcVsWoCdkW9cnriYvY
+	vPqsUB2hPyC4ZoXdkVlEvQh+mwf754MvERJ/U2kdDsdsVLKKf1XdYRCZBeB0KTtM+7Jq4l0ewr6
+	MLRYOooW3oQrJwkY83rVrdmb7wWD6eoQ3qC5UF2I0ZcwFg40PLL8YOpI/EyS/A8OQSBiXQyDpD3
+	O4fs4UdhanhDAH1ZMSc+QkXnqyZE0CJ1TOyvwzxUfJcMiMIlfKniC5cAM4BfK4KEG6u1tOaDYmE
+	sbNYMa7GL90Q==
+X-Received: by 2002:a17:902:ec8e:b0:2c9:de53:f84f with SMTP id d9443c01a7336-2cfa6b7394fmr70538245ad.19.1784868812290;
+        Thu, 23 Jul 2026 21:53:32 -0700 (PDT)
+Received: from yhlee-960QFG.. ([125.131.91.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2e6247sm44281975ad.54.2026.07.23.21.53.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 21:53:31 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Subject: [PATCH net v2] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
+Date: Fri, 24 Jul 2026 13:53:10 +0900
+Message-ID: <20260724045310.430202-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260723094027.391199-1-yhlee@isslab.korea.ac.kr>
+References: <20260723094027.391199-1-yhlee@isslab.korea.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a
- single coherent block
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-        Andrew Lunn
- <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        chris.lew@oss.qualcomm.com,
-        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
- <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
- <alXm0rp3NK62G3-3@linaro.org>
-Content-Language: en-US
-From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-In-Reply-To: <alXm0rp3NK62G3-3@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=Pq6jqQM3 c=1 sm=1 tr=0 ts=6a62ee30 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=EUspDBNiAAAA:8 a=2eDN7aXksB4whfXZn5AA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-GUID: 0yl7NCpXzmYQICtZoNBt6g8M_gEyG65o
-X-Proofpoint-ORIG-GUID: 0yl7NCpXzmYQICtZoNBt6g8M_gEyG65o
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA0MCBTYWx0ZWRfXw5HQMQMTKBTR
- lLHEUOglGMss4u1Sz7k/Lm6aX/8l13st3S4jGp1ab6/5lw3QrI9Zz0DdCbowz8WmUNk1ipD5FOd
- oV8dZ9yG9nu9IYENhrKYTBhR2ZmOE9U=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA0MCBTYWx0ZWRfXxl9ebVQmPUg3
- ywd5tdwjSrMs/ASx18eenDf529UGSMwMcaIunxA1pxUfJeFf/1II+8J9zzkZiJY2ZU7uVIdcpcd
- JEc3DtsHX43g770E9kGcQ0+g/haa/SXfRevEWmwG4JaZ6cqbE7nD+5kjPAy4EQr1xRe3G2Otwee
- C6wkIV9IfMzCMizE8vEqBhb8yqZ3SHF60WNUPU8rBqXiBfIc4s3C1zcMQfkEtIzci/9fQXHPSaz
- j/mq1sitFRr8E/BZEsMnTRHHUlUnXSn0QJrfR3i9n5C+/MuW1lgZeSvDjb2CjzEBQqwCxd/Gbmh
- V6U9M02afuoq0EDtb2Krrm+CTd9tVEBYcAQ24ZGtWiH5haiL9Pi4KvJVWpok9Xpn0NYmW26u2Xe
- /LRgH8rFp0RA0you+tivtT/imhzBXN0AYJQ4WaaceO2JffsBmLijc8kon6+AZoIt212YpHpJg0T
- P6bj1n/sdhdaaZKOiKw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_07,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240040
+Content-Transfer-Encoding: 8bit
 
+SMC-Rv2 uses two receive-buffer layouts, selected by
+smc_link_shared_v2_rxbuf() (i.e. lnk->wr_rx_sge_cnt > 1):
 
-On 14-07-2026 01:05 pm, Stephan Gerhold wrote:
-> On Tue, Jul 14, 2026 at 11:02:32AM +0530, Vishnu Santhosh wrote:
->> On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
->> NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
->> per-region access control, each individually DMA-mapped RX buffer
->> requires its own XPU resource group (RG). With ~16 RGs available, the
->> 32 per-buffer dma_map_single() calls exhaust the table and the first
->> inbound transfer faults with an XPU violation.
->>
->> BAM-DMUX is a singleton (exactly one instance per SoC), so the
->> destination VMID does not need to be a DT property; it is looked up
->> from the compatible string's match data instead. Add struct
->> bam_dmux_data with a single vmid field, and a shikra_data instance
->> hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
->>
->> When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
->> a single contiguous dma_alloc_coherent() block and SCM-assign that
->> block to HLOS plus the VMID once at probe. This reduces RG consumption
->> from 32 to 1. The block is never reclaimed across a modem power cycle
->> (bam_dmux_power_off() does not touch it), so the probe-time assignment
->> covers every subsequent restart without re-assigning or reclaiming. It
->> is reclaimed to HLOS only once, at remove or on a probe error, and if
->> that reclaim fails it is leaked rather than returned to the page
->> allocator.
->>
->> Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
->> the block, so no per-buffer mapping is needed at power-on. Because the
->> coherent block is not page-backed, received payload is copied into a
->> regular netdev skb before handoff to the network stack; this is an
->> unavoidable extra copy on the XPU-enforced RX path.
->>
->> Platforms without match data are unaffected: rx_virt stays NULL, no
->> coherent memory is allocated, and the per-buffer dma_map_single() path
->> is unchanged.
->>
->> Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
->> Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
->> Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-> So how do you handle TX buffers? Right now, they are just passed on from
-> the net subsystem. There can be up to 32 TX buffers in progress as well.
->
-> Overall, I have mixed feelings about this patch. It looks reasonably
-> simple, but fundamentally I don't understand why we need to go back to
-> the old days of implementing protection using a highly limited MPU (in
-> your case: the xPU).
->
-> Why does the setup of BAM-DMUX differ e.g. from the setup for the crypto
-> engine? Crypto is also using bam-dma, but it avoids this inflexibility
-> by making use of the &apps_smmu. Is BAM-DMUX not covered by the SMMU? Or
-> did you just decide to bypass the SMMU in this case? (If so: Why?)
+ - shared (device max_recv_sge >= 2): each receive work request posts a
+   small primary SGE plus a spillover SGE that DMAs the message body into
+   the per-link-group lgr->wr_rx_buf_v2 (SMC_WR_BUF_V2_SIZE = 8 KiB) at
+   offset SMC_WR_TX_SIZE.
 
-I checked with secure systems team on this. Crypto BAM is
-behind apps_smmu, so protection is enforced through the SMMU's Stage-2
-page tables.
+ - non-shared (device max_recv_sge == 1): each receive work request posts
+   a single SGE of wr_rx_buflen == SMC_WR_BUF_V2_SIZE, so the whole
+   message lands in the per-WR receive buffer.
 
-A2 BAM (used by BAM-DMUX) is present in secure domain and does not
-support Stage-2 translation on this SoC, and there is no IOMMU domain
-that can be attached to it. The only protection mechanism available is
-the xPU.
+smc_llc_rx_handler() hands the received buffer to smc_llc_enqueue(),
+which copies only sizeof(union smc_llc_msg) bytes into the fixed-size
+qentry->msg and queues the request; the LLC request is then processed
+later from the llc_event_work work item, after smc_wr_rx_process_cqes()
+has already reposted (and thus recycled) the per-WR receive buffer.
 
+For the shared layout the rkey array survives in wr_rx_buf_v2, and
+smc_llc_rmt_delete_rkey() and smc_llc_save_add_link_rkeys() read it from
+there. For the non-shared layout nothing preserves the message body: both
+functions instead read the rkey array from the truncated qentry copy
+((struct smc_llc_msg_delete_rkey_v2 *)llc, and (u8 *)add_llc +
+SMC_WR_TX_SIZE), running past the end of the ~72-byte qentry allocation.
+The loop bound num_rkeys comes straight off the wire and is only capped at
+SMC_LLC_RKEYS_PER_MSG_V2 (255), so a peer that sends a DELETE_RKEY or
+ADD_LINK message with an oversized rkey count triggers an out-of-bounds
+read of up to ~1 KiB (delete_rkey) or ~4 KiB (add_link) past a kmalloc-96
+object.
 
-Thanks,
-Vishnu
+  BUG: KASAN: slab-out-of-bounds in smc_llc_rmt_delete_rkey+0x6a4/0x780
+  Read of size 4 at addr ffff8880059ee748 by task kworker/0:0H/11
+  Workqueue: events_highpri smc_llc_event_work
+  Call Trace:
+   dump_stack_lvl+0x53/0x70
+   print_report+0xd0/0x630
+   kasan_report+0xce/0x100
+   smc_llc_rmt_delete_rkey+0x6a4/0x780
+   smc_llc_event_handler+0xa13/0xef0
+   smc_llc_event_work+0x189/0x260
+   process_one_work+0x633/0x1030
+   worker_thread+0x45b/0xd10
+   kthread+0x2c6/0x3b0
+   ret_from_fork+0x36e/0x5a0
+   ret_from_fork_asm+0x1a/0x30
+  Allocated by task 43:
+   __kmalloc_cache_noprof+0x158/0x370
+   smc_llc_enqueue+0x72/0x560
+   smc_wr_rx_tasklet_fn+0x474/0xa80
+   ...
+  The buggy address is located 0 bytes to the right of
+   allocated 72-byte region [ffff8880059ee700, ffff8880059ee748)
 
->
-> If you had BAM-DMUX mapped using the SMMU you would get all of this for
-> free. No changes would be needed in the BAM-DMUX driver ...
->
-> Thanks,
-> Stephan
+Preserve the message body for the non-shared layout as well: in
+smc_llc_rx_handler() copy the bytes beyond SMC_WR_TX_SIZE into
+wr_rx_buf_v2 + SMC_WR_TX_SIZE before the receive work request is reposted,
+exactly mirroring the spillover SGE of the shared layout. The header
+(which for a message that fits in SMC_WR_TX_SIZE contains the whole rkey
+array) is not copied here; smc_llc_rmt_delete_rkey() now restores it from
+the per-qentry copy for both layouts, so a different v2 LLC message that
+reaches the shared wr_rx_buf_v2 between reception and processing cannot
+clobber it. The rkey array is then read from wr_rx_buf_v2, bounded by its
+SMC_WR_BUF_V2_SIZE size.
+
+The body copy is guarded by lgr->smc_version == SMC_V2, since
+wr_rx_buf_v2 is only allocated for v2 link groups; keying it off the
+link-group version rather than only the wire llc_version prevents a NULL
+dereference should a v2-versioned LLC message arrive on a v1 link group.
+It also removes a latent use-after-free on the SMC-R server add-link path,
+where the non-shared code dereferenced add_llc after its qentry had been
+freed by smc_llc_flow_qentry_del().
+
+The rkey count is still only capped at SMC_LLC_RKEYS_PER_MSG_V2; the reads
+now stay within the 8 KiB buffer regardless, and validating num_rkeys
+against the received message length is left as a separate hardening.
+
+Triggering the bug requires a RoCE device that advertises
+max_recv_sge == 1 (a configuration the Fixes: change added support for)
+and a peer emitting an oversized rkey count. Reproduced under KASAN with
+soft-RoCE (rdma_rxe) after forcing wr_rx_sge_cnt = 1.
+
+Fixes: 27ef6a9981fe ("net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1")
+Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+---
+v2: guard the wr_rx_buf_v2 copy with lgr->smc_version == SMC_V2 (v1 keyed
+    the copy off the wire llc_version only, so a v2-versioned LLC message
+    received on a v1 link group could dereference the NULL wr_rx_buf_v2);
+    copy only the message body and restore the header from the per-qentry
+    copy in smc_llc_rmt_delete_rkey(), so a later v2 message reaching
+    wr_rx_buf_v2 cannot clobber it; note num_rkeys is not validated
+    against the message length.
+    v1: https://lore.kernel.org/netdev/20260723094027.391199-1-yhlee@isslab.korea.ac.kr
+ net/smc/smc_llc.c | 45 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 33 insertions(+), 12 deletions(-)
+
+diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+index 954b2ff1815c..84d8d9024efa 100644
+--- a/net/smc/smc_llc.c
++++ b/net/smc/smc_llc.c
+@@ -1099,9 +1099,8 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
+ 	if (rc)
+ 		goto out_clear_lnk;
+ 	if (lgr->smc_version == SMC_V2) {
+-		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
+-			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
+-		smc_llc_save_add_link_rkeys(link, lnk_new, llc_msg);
++		smc_llc_save_add_link_rkeys(link, lnk_new,
++					    (u8 *)lgr->wr_rx_buf_v2);
+ 	} else {
+ 		rc = smc_llc_cli_rkey_exchange(link, lnk_new);
+ 		if (rc) {
+@@ -1501,9 +1500,8 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 	if (rc)
+ 		goto out_err;
+ 	if (lgr->smc_version == SMC_V2) {
+-		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
+-			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
+-		smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
++		smc_llc_save_add_link_rkeys(link, link_new,
++					    (u8 *)lgr->wr_rx_buf_v2);
+ 	} else {
+ 		rc = smc_llc_srv_rkey_exchange(link, link_new);
+ 		if (rc)
+@@ -1812,12 +1810,15 @@ static void smc_llc_rmt_delete_rkey(struct smc_link_group *lgr)
+ 	if (lgr->smc_version == SMC_V2) {
+ 		struct smc_llc_msg_delete_rkey_v2 *llcv2;
+ 
+-		if (smc_link_shared_v2_rxbuf(link)) {
+-			memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
+-			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
+-		} else {
+-			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
+-		}
++		/* Restore the header - and, for a message that fits in
++		 * SMC_WR_TX_SIZE, the whole rkey array - from the per-qentry copy
++		 * for both rxbuf layouts, so a v2 message that reached
++		 * wr_rx_buf_v2 in the meantime cannot clobber it.  The body of a
++		 * larger message is already in wr_rx_buf_v2 (shared: spillover
++		 * DMA; non-shared: smc_llc_rx_handler()).
++		 */
++		memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
++		llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
+ 		llcv2->num_inval_rkeys = 0;
+ 
+ 		max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
+@@ -2104,6 +2105,26 @@ static void smc_llc_rx_handler(struct ib_wc *wc, void *buf)
+ 	} else {
+ 		if (llc->raw.hdr.length_v2 < sizeof(*llc))
+ 			return; /* invalid message */
++		/* For the non-shared v2 rxbuf layout the message body beyond
++		 * SMC_WR_TX_SIZE lives only in the per-WR receive buffer, which
++		 * is reposted as soon as this handler returns.  The LLC event
++		 * handlers run later from a work item and read the body from
++		 * wr_rx_buf_v2, so copy it there now - only the body, mirroring
++		 * the shared-rxbuf layout where the spillover SGE DMAs the body
++		 * into wr_rx_buf_v2 + SMC_WR_TX_SIZE.  The header is left to the
++		 * handlers, which restore it from the per-qentry copy, so a later
++		 * message reaching wr_rx_buf_v2 cannot clobber it.  wr_rx_buf_v2
++		 * only exists for SMC_V2 link groups, so the link-group version
++		 * is checked (not just the wire llc_version) to avoid a NULL
++		 * dereference on a v1 link group.
++		 */
++		if (link->lgr->smc_version == SMC_V2 &&
++		    !smc_link_shared_v2_rxbuf(link) &&
++		    wc->byte_len > SMC_WR_TX_SIZE)
++			memcpy((u8 *)link->lgr->wr_rx_buf_v2 + SMC_WR_TX_SIZE,
++			       (u8 *)llc + SMC_WR_TX_SIZE,
++			       min_t(u32, wc->byte_len, SMC_WR_BUF_V2_SIZE) -
++			       SMC_WR_TX_SIZE);
+ 	}
+ 
+ 	smc_llc_enqueue(link, llc);
+-- 
+2.43.0
+
