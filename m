@@ -1,118 +1,148 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0EA39021C
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBCB35C69F;
+	Fri, 24 Jul 2026 07:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784878469; cv=none; b=GcUsNSCqjYDnIKy0GhFxy4WiKEGnXLawcYzKElb48/FNLF1vqy7QJptm2Gudvq7MBO3l+vgckt2ChBekPzl2k7Mvr8TnrGZsQwNxyDWXalojsWJcnJoLGU7SiadnsWH1fPx8b0grBnYO3KHBOe0s5K9N5ue0y6ijW5DY8c6bFBg=
+	t=1784878611; cv=none; b=Fl5a+ktD2hvmSlBE9ubqj89v4ZoYVXmlJ602cRANtIKKPp7cwLAiMYsk8hc1xnnOt87JucwthB1NXH0fBBScWDIMEnhvXYJiJ4OuR+NG6dmzFKAc+tODJLI37Chx2YRpmpTGIEb0cRtCHhSdBSeD7hsBydDjrQjT8x95m4sbjfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784878469; c=relaxed/simple;
-	bh=vXpRSWi/oVCMquWL7cTrWQgG+Q6PVnMDhgoEilSgEXU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TDWHnVAfLb3ArmSzqn4LmdxHgZUIODAxxPKhmQ8o62c0GNlXWQ3dtgBTLU0+HRRs2yANpbkqpG24hsq+f3KI62UL9w+2WomhHV9cBE+8rjEKDKXROIorzKjiuPG7ENtbozfGzkNtv9EwVjzmcMbvkzJBt62XKlx2MgnKQjFp6D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dn83Ve3r; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784878611; c=relaxed/simple;
+	bh=0diy6qlRXuxFGZ27mChpVFYPLzDkwrnmHPicVhg7ai4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P6j6uUuAKrcC5dZaHSny5uFE3KTCSu/5QOjNyS7bT5oAcgcj0UUc5nnfIsC7HEmthg6PJMKRPES+YRGkywhhSLdcGcVxvWAaferMQ8dpT/PZn03S0aZgCRPiLryybY+Djg267/QUifzXF9eZCfFrDUjbSw/MH/J9OIhS3Fh2s94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=DyNqk5is; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=FCk1B2cQ; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dn83Ve3r"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cedda2ce6fso1222785ad.1
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 00:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784878467; x=1785483267; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3LzKJmUsJl3t+t7LREmJa3ZK6twh8h3ZLCQyYGIQu7w=;
-        b=Dn83Ve3r97W4wC0W+r41vBC/v9UQgyUnxNOU0JchMsc7G9ahtILugIzT8PHus6syKf
-         OqWH7Kx0tnNNyhslbXfFyBPcLXG6TmGduyX7a2qDp3gdEW89jtuxRI/RWQ64dLH6OjPY
-         h4G45Sgs973/xlhJIPN1zro/fc2qjOm9X//l67w0YU/Rwvyq4Y8Stg2QX1tuVAvAV3D8
-         Xytzc/2nNlQvUkbMFeAKmdC2ivIMXbWOMIZl05QncGbb5fANX1SyBBwW4tIF0tloqqZU
-         3UIijQ6Xyg4XNNYfQSIzo3EoWolZqbnpI8JNbWAcIdB/DarK165o4XxykQEu9/WaNYJr
-         J7MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784878467; x=1785483267;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3LzKJmUsJl3t+t7LREmJa3ZK6twh8h3ZLCQyYGIQu7w=;
-        b=RF2pZSHK7FMAiP8xs2dAmbZ3ZrXHkH18R+Y58RfkFA84g/UL6/AZjf3oLbYnjNYKX6
-         c1PCaZ0Sgd1FVU4iRVlGmC54qEoGRK5+x+wiv4oP2CYaUHY7q+Cia4qIEnRIM3ZnkJ19
-         A64FnG6M9OgLxOgiUgz2KRq8jumd9agkOOmFN3zFXaGeJ2TSW99RLhyjoEwR90A485Mx
-         tyNWgWxxbSXtz+OMwWwv8n7tf6vXBE+qUaDmXFkc7afB7GEXwM/L/yzi3aRlW41SVd+3
-         k5LfAM/TBS2zN2Guo1EpE0Q1iISOPvZBPQS7hzqAz2+JhW8Qm/8Jzask8kfb47j2Iv4D
-         3hRQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpJXO4SrXJfK43k0QOdFmWkcieQUD1ZjfLsDF2bzSo4Tq2GgZZi+tO4D0gsBGMUn1BWcJt06rE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy82F4lOtVi003uDH4Z5Fgfz6epryGsV/AeiRHnTt8PhLgrJ3nG
-	ULHEtaMi3ytmgiiZlN/YajJhJAbZZk9EpVEwOnoEuPwqDKf/Rb4hg/O1
-X-Gm-Gg: AR+sD11GGd8bE2fLO10DZlnbW6htfQK2ZVAnvveW+ZpG/1/pqh4+adrUaFjVYEgHs+X
-	gMS68alxNW5mg0lx1ucz+sny3AdDUptFa1w7UOh7hPgwFtH+HN0mLrADBTI1qxC5fhLDBM4U/Zo
-	DlGmG6xg1hQRoaVw/kGbu7DbzaxZhBss05PQVQoOGmAoGcJP55BLz8zakqNAsgUFEzGAPAPfzzI
-	hb9p/U5d52KJrvuwLB6gWBy4F7s3DpOTisYoZ01fuJSrgAhSMRtImGzzNvWqV3nwTzT7jk+Bh8F
-	YLyGNs4mfVHg8UmMCse0quuf3gy5R75yv/SnaW/Ddj4Xt7DW4Gct4PnbawR8pthId0KLc0pc8Yo
-	pDYi9XxBzYGJ18Ro1ocaw3JoyDsoET5N/u2pZD+WHjM0BgG0aqS2OFuCgDdmm91ZxaxGKbtewsI
-	UvnKT+/0vaX5FjUvukDpE=
-X-Received: by 2002:a17:903:468e:b0:2c9:fbde:ab66 with SMTP id d9443c01a7336-2cfa6c72079mr71784215ad.37.1784878467184;
-        Fri, 24 Jul 2026 00:34:27 -0700 (PDT)
-Received: from [10.22.76.22] ([111.223.92.222])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa39ddsm46944805ad.17.2026.07.24.00.34.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2026 00:34:26 -0700 (PDT)
-Message-ID: <6b684c2f-1f98-43ea-84c9-9b6f162d5e9f@gmail.com>
-Date: Fri, 24 Jul 2026 15:34:23 +0800
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="DyNqk5is";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="FCk1B2cQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1784878607;
+	bh=0diy6qlRXuxFGZ27mChpVFYPLzDkwrnmHPicVhg7ai4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=DyNqk5istaG8XQtZGQchgw6nrbbeJZju7Eg8EzYsp0gqEtoA5TYkq2jQ7RobmwJI3
+	 /PABQyYkcTx4CPTSudAs4GcVa9QAnH7lBC1FLd9RiMF+1P9nl1AM6r/kysmXMTttz0
+	 2mYUC3gaE9Td4ncrCJwf8Dn4xUkPp7fPbUfyQkKD6mwomwXv3taX1xk9JkRgZYS5sc
+	 tIuBf/e19Vr4NXnuJJYExjH/2/T9C2txtLI+l/OLpV7mRedHuf2pzAKF7eBiB7XHBR
+	 65T8RKfwfiVqzVMFyajs50qZoO4j4MoaXfnHMjNWvBJlbKxm93ea9QYbsx8oGtA341
+	 fJVScttpmgSNw==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id B280D49369; Fri, 24 Jul 2026 07:36:47 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1784878606;
+	bh=0diy6qlRXuxFGZ27mChpVFYPLzDkwrnmHPicVhg7ai4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=FCk1B2cQClfM4nDfvDdKVX3xrL00CkRx5Mui7O/CmPiwO/enItvwVGnFpR/WfN7nU
+	 /ffkLBfL01f7j2u7poF79y8xAnD+WNx+F59FoQp00jVTxiwcj9XQF4IKoPmcmRnMss
+	 kROOK4Gz+rNcKPa7gURxi5RFQHb/W3KF95rzNL6vM8TkjhluduVtNxeB4ARlobPXGS
+	 08g4Pes2yEKPm/GmIUcj8pVMsJ2pnU4NI6kZBN/hX5McZtEyZD0reMv6ksv+rZxrCj
+	 p8w4qlrtucc03mM03G6+xOyMI/cLlgh3clkIZikkuJvapEG5P5PaPqVPXEXpuRtetI
+	 sOWfgwXrmOoEA==
+Received: from DebianDesktop.lan (p200300c69f1c3c00ecd187824fbc6faf.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:ecd1:8782:4fbc:6faf])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 7DEA448EFC;
+	Fri, 24 Jul 2026 07:36:46 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next v3 00/13] ax88179_178a: Add support for
+ AX88179A-based chips
+Date: Fri, 24 Jul 2026 09:36:43 +0200
+Message-Id: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vsock: use sock_error() to consume sk_err after connect
- timeout
-Content-Language: en-GB
-To: Michal Luczaj <mhal@rbox.co>, Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260719220103.684489-1-phind.uet@gmail.com>
- <al3UuvBhfxp82krV@sgarzare-redhat>
- <78225425-1ca7-45fb-85cb-9e04f489e68f@gmail.com>
- <amB15TdzPAEk9A9C@sgarzare-redhat>
- <b81bfea4-6b19-4cc8-95c0-dcd4ad42476e@gmail.com>
- <95cd0d4e-58c9-44ab-b94f-fcf57b88583b@rbox.co>
- <amHN9mOGj7oMak4-@sgarzare-redhat>
- <27412e44-ab4b-4dd3-9685-481875683860@gmail.com>
- <a6cb1b8f-d8cf-412a-a204-3a26e4db0bd0@rbox.co>
-From: "Nguyen Dinh Phi [SG]" <phind.uet@gmail.com>
-In-Reply-To: <a6cb1b8f-d8cf-412a-a204-3a26e4db0bd0@rbox.co>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAsWY2oC/23NwQ6CMBAE0F8he7Zmtw1t9eR/GA9gt9BoiimEo
+ IR/t+lFDh4nM3mzwsgp8AjnaoXEcxjDEHNQhwrufRM7FsHlDBKlRq1QNIu1ZE6NaMjZk2dJRiH
+ k+SuxD0uhrhB5EpGXCW656cM4DeldPmYqfeEM0o+bSaAgpW3tvDY11Zc2pI6TeAztM0yfo+OCz
+ XIP2B0gM4AW0bNrJZP+B2zb9gUdZ7nO8wAAAA==
+X-Change-ID: 20260630-ax88179a-a1d89fe21730
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
+X-Mailer: b4 0.14.2
 
-On 24/7/26 05:43, Michal Luczaj wrote:
-> On 7/23/26 12:26, Nguyen Dinh Phi [SG] wrote:
->>>>>> ...
->>>>>> Yeah, we need to handle that part better, I think it's a leftover when
->>>>>> we generalized AF_VSOCK to support more transport than vmci.
->>>>
->>>> Speaking of leftovers, I have trouble understanding where does vsock set
->>>> sk_err on listener sockets anyway. If it doesn't, why vsock_accept()
->>>> checks for it?
->>>
->>> I can't also see where it can be set TBH. Should we remove it ?
->>
->> I couldn't find it for listener side too.
-> 
-> Removing sk_err handling from vsock_accept() solves the problem, right?
-> 
-> thanks,
-> Michal
+This adds support for the current generation of ASIX network adapter chips,
+which are based on the AX88179A. This includes the AX88179A/B (1GBit-PHY),
+AX88772D/E (100MBit) and AX88279 (2.5GBit).
 
-Yes, confirmed, removing sk_err checks from vsock_accept() does solve 
-the problem.
+The AX179A-based chips all provide both a CDC-NCM compatible USB interface,
+and a proprietary vendor interface with more features. By default, the
+proprietary vendor interface is not active and Linux will load the CDC-NCM
+driver to support the devices. If the ax88179_178a module is configured by
+the OS to have precedence over CDC-NCM, then this driver will switch the
+device to use the vendor interface, and the device will be controlled by
+the ax88179_178a driver when the device is probed again after an automatic
+reset of the device bringing up the vendor interface.
 
-Thanks,
-Phi
+The following hardware was tested:
+Delock 66046 2.5GBit adapter (AX88279, FW: 1.2.0.0)
+TP-Link UE306 1GBit adapter (AX88179B, FW: 1.3.0.0)
+Renkforce RF-4708614 1GBit adapter (AX88179A, FW: 1.0.4.0)
+UGREEN CR110 100MBit adapter (AX88722E, FW: 1.3.0.0)
+
+The driver supports the following features
+- EEE
+- TCP segmentation offload
+- VLAN filtering/tagging offload 
+  (NETIF_F_HW_VLAN_CTAG_FILTER, NETIF_F_HW_VLAN_CTAG_RX/TX)
+- RX/TX checksum offload
+- FC/Pause configuration
+- EEPROM read access
+
+The code is based on the ASIX 4.1.0 out-of-tree driver published under
+the GPL,, the aqc111 driver which provides support for the AX88279A,
+and some tracing of USB-transfers of the Windows-driver.
+
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+---
+Changes in v3:
+- Add PHY drivers for the PHYs of the AX88179A-based controllers
+- Use phylink for the AX88179A-based chips
+- Link to v2: https://lore.kernel.org/r/20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de
+
+Changes in v2:
+- Correctly use net-next prefix
+- Fix compilation issue in HW support patch
+- Split MMD support patch into patches for EEE/new chip support
+- Do not use ADVERTISE_RESV but private flag definition
+- Fix pause configuration to keep track of settings when autoneg disabled
+- Fix issue with unitialized variable reported by kernel test robot <lkp@intel.com>
+- Avoid white-space changes
+
+- Link to v1: https://lore.kernel.org/r/20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de
+
+---
+Birger Koblitz (13):
+      ax88179_178a: Fix endianness of pause watermark register
+      ax88179_178a: Add HW support for AX179A-based chips
+      ax88179_178a: Use MMD accessor functions for AX88179A
+      ax88179_178a: Add EEE HW configuration support for AX88179A
+      ax88179_178a: Use phylink in get/set_link_ksettings
+      ax88179_178a: EEE setup for AX88179A-based chips
+      ax88179_178a: Obtain speed and duplex from Interrupt URB
+      ax88179_178a: Add support for ethtool pause parameter configuration
+      ax88179_178a: Add VLAN offload support for AX88179A
+      ax88179_178a: Add ethtool get_drvinfo
+      ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
+      ax88179_178a: Add AX179A/AX279 multicast configuration
+      ax88796b: Add support for AX88772D, AX88179A and AX88279
+
+ drivers/net/phy/ax88796b.c     |  194 +++++
+ drivers/net/usb/ax88179_178a.c | 1596 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 1630 insertions(+), 160 deletions(-)
+---
+base-commit: 1a9edf8be190decb17227e3cba540513d93ebb85
+change-id: 20260630-ax88179a-a1d89fe21730
+
+Best regards,
+-- 
+Birger Koblitz <mail@birger-koblitz.de>
+
