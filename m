@@ -1,37 +1,75 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDFF377A96;
-	Fri, 24 Jul 2026 05:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0596E24336D;
+	Fri, 24 Jul 2026 05:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784870880; cv=none; b=iTPQ1wpG+2ZDEE2GcpeD7S08grRFEgGGIpVw1GAJmPLNtTq+KJz8QzpmVYVr1Tf2hiTUoRA8DDv2GZWBitVkTYgOz2JiygKsHX5kSk2AjCHHekMg9XHvKVTskOovithiJNUF+viZMpf5827hgp6cptPCcLJOzqfLbLd/eLygtas=
+	t=1784871500; cv=none; b=a6lDBLZvNFpy5r+vndsaTCAyDorICp4GDe+e8iN3zJzzwBY9r9W3xLUe27YiQvAtlihaSzVASfKh8Uhtct+2rPeNA+V7CevtH9YYOl+PJSJ4I8V/McOdEDzlMAb9FRUlJw2Ov+bsJ5Nwtd4VBLdbYxraueDdpOS8qSuhCJvao1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784870880; c=relaxed/simple;
-	bh=NkRAAqtSSXmk+tg5AqNmfpD3Cy5a0Kmfx7t9yag9+vA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K7pCiTkhHW8cXb1r14Wb0EGWLzwDSb5RRCzpgGOfkV12NDJyUIVoEaJ1XsnvziDKXS8aTdlcRC8WJsvkRIeC3anF5rfaU1Du3GDZZDiKyVCys2ZfLG0alxwofs/vJ4FozqrbtpT/b1YrStyFRiSVLITYsX2FinUIhEt3nx/aSiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=TH+lIse+; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1784871500; c=relaxed/simple;
+	bh=6nhvuYf8tDtra3dJk99mncdqcY5qPnfdTYaWbf1kGxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WEwOqS987immTZPYfLKbQ6IsQzafB58fg3wd6D7AKElK0Nwf7amI5hBYjwwC5NhC0WmY4rbuPX9I5yO1FCgs6UAnk5RRGH1iCEhlicvMcTggXqgeYyXgmPWF3RWaYKOJjqwfEnl6Jdd9vggWqSIMudGx+EMAgJ2Qu7tRxyFIlng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kPoo+OfH; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="TH+lIse+"
-Received: from LAPTOP-99KJFSET (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 47691a1a2;
-	Fri, 24 Jul 2026 13:27:49 +0800 (GMT+08:00)
-From: Hongyan Xu <getshell@seu.edu.cn>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: 3chas3@gmail.com,
-	stable@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	getshell@seu.edu.cn
-Subject: [RFC PATCH 6.6.y] atm: suni: synchronize poll timer with device removal
-Date: Fri, 24 Jul 2026 13:27:47 +0800
-Message-ID: <20260724052747.1976-1-getshell@seu.edu.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kPoo+OfH"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O5C9kY914853;
+	Fri, 24 Jul 2026 05:38:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=0SbQfHxCGUwVM+wRZWUxosP9y42p9D+v1GY0hgpW+
+	EY=; b=kPoo+OfHstL7jdizCGP8pun257AwKZKiuffO8ZEy/hftm4M5byXYG473S
+	+CYqZgTn5TtIppfWJO82Y4z3RGdjvO+CoU4aCAX0saPP5BfOR72amTvIW9GIisF9
+	r68tG7QYcbm8V6WNJ2XawMGQNf716hoOFmj3qV1rQkhtiCUY5aBR8o/Rb/84/wPB
+	QTUr4AH16zQV44crVYxE3MUL3KNXY1J+IJpFTfFeMLtQrHuKBSoJnS76MTYKF4rG
+	AFSB7RLcO9mXOR7dWCW6qQWuCHCZNztsdn0KPxtaaGY4d4zNJOAa3pjE/MFkAxTu
+	tMR6/vDRQCBunv7bkczTb/Mz1D0Mw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ahjhqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 05:38:09 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66O5YciI000575;
+	Fri, 24 Jul 2026 05:38:08 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqfs2b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 05:38:08 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66O5c4ut11796970
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 05:38:04 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8DA98200CA;
+	Fri, 24 Jul 2026 05:38:04 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C5684200CE;
+	Fri, 24 Jul 2026 05:38:00 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.111.143.111])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jul 2026 05:38:00 +0000 (GMT)
+From: Wenjia Zhang <wenjia@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>, aswin@linux.ibm.com,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Wenjia Zhang <wenjia@linux.ibm.com>,
+        Wen Gu <guwen@linux.alibaba.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v3] MAINTAINERS: Update SHARED MEMORY COMMUNICATIONS (SMC) maintainer entries
+Date: Fri, 24 Jul 2026 07:37:52 +0200
+Message-ID: <20260724053752.3084-1-wenjia@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,139 +77,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f9298174003a1kunm7304a06f243c1
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTUkYVk1JSh9KHUoaH0MeQlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSU
-	hOQ0NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=TH+lIse+Qz9XQBmvyVfVqo9agrbO/WM58EGksak400CU0dgQM8qG6QSwsy9wTHaBQ5w3/rqxhF90A5IeqcQHbw6iYUD31bBpR0fA95x3G2qtzKpi4179gIpmV+hX0OW7EilXtmZgcS4TplbWLFBIEI4JudcBB61ZuIWY2XO+vD0=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=c5Ugs+CkrYnw+UEStcu+8FqtB1MdwrqYS033j1CAzng=;
-	h=date:mime-version:subject:message-id:from;
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: uS2Mm8HCJxFNbjbxvK5pbwCMGe6vuXPs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA0NSBTYWx0ZWRfX+ZTkzKM0wEAX
+ wLTcT7u+MrOwKLkWzu+DN/6Fp0eLlvQgqP7ICPCOByXsptNSAsEmWL/9NiWakzcg91YXL3EzwRv
+ sNw5bTfk3G68+DhOq1ijwTrPOJK46+VDJ2g+6MgKL3K5hx3Yrck5BCtP0WP27y/JPjeNavVORdP
+ OM1bDTTM7lR9aof1c1l3/RDiVhhj4zqT/11hPpcorL7ztwNq7SsQTc1PTAyQihCMTLhbZU8OcKG
+ vinAXqlkb6ytXbsRMMtWJUF4+iXuhNDdumFQ1yoFJ+pSUhc2zKaKOFwKNDzgO4N3qmB1FOuhqLz
+ sFystHSNd/TjRp8lzfcNy/GK6vn4jI5vAMqcUCMGDg5jpmysgFOZUh101lYbs+WcUs2VihzdSjj
+ wPGp/GcWCCzz8i/tufkf4vik4aLQxw8O0ghbh/ZgdFzazVb5RHeHpWEVyBKhvVi1N5kRTXz2Vj7
+ kraA/ojrlr2vPpI+QCA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA0NSBTYWx0ZWRfXyU5tmcTsITMy
+ v6gPhP72EdcoX7NVLdzgzubXvcXIStrmFOSxin4fGVjyRblOV8meJKgJ9szuA/cOHFOcJRr4qQC
+ c5iSnsPsMSbKitnLo/MMp/I1I11/G/0=
+X-Proofpoint-GUID: c5nJ6oBNBNBnA37WjMIgqUP2quwE47F5
+X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a62fa41 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=SRrdq9N9AAAA:8 a=VwQbUJbxAAAA:8
+ a=Ccpp6hyrmyWRenCNi6kA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240045
 
-suni_hz() walks the global device list and dereferences each private
-structure without taking sunis_lock. suni_stop() can therefore unlink and
-free a device while the timer callback is still using it. The existing
-timer synchronization only runs for the last device and is performed while
-holding sunis_lock.
+Due to a change in responsibilities, I can no longer serve as an SMC
+maintainer and need to be removed from the MAINTAINERS list.
 
-Protect the callback traversal with sunis_lock. Serialize the first/last
-timer transitions with a mutex, unlink under the spinlock, then shut the
-timer down outside the spinlock before freeing the last device.
-timer_shutdown_sync() also prevents the running callback from rearming
-itself; a later first start reinitializes the timer with timer_setup().
-Move device initialization before list publication so an existing timer
-cannot observe a partially initialized entry.
+To reflect these organizational changes, promote Mahanta Jambigi
+<mjambigi@linux.ibm.com> from reviewer to maintainer.
 
-This driver was removed from mainline by commit 6deb53595092 ("net: remove
-unused ATM protocols and legacy ATM device drivers"), but is still present
-in the 6.6 LTS series.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
+Acked-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Signed-off-by: Wenjia Zhang <wenjia@linux.ibm.com>
 ---
- drivers/atm/suni.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ MAINTAINERS | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/atm/suni.c b/drivers/atm/suni.c
-index 21e5acc..5fa939b 100644
---- a/drivers/atm/suni.c
-+++ b/drivers/atm/suni.c
-@@ -14,6 +14,7 @@
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/mm.h>
-+#include <linux/mutex.h>
- #include <linux/errno.h>
- #include <linux/atmdev.h>
- #include <linux/sonet.h>
-@@ -46,6 +47,7 @@
- static struct timer_list poll_timer;
- static struct suni_priv *sunis = NULL;
- static DEFINE_SPINLOCK(sunis_lock);
-+static DEFINE_MUTEX(sunis_mutex);
- 
- 
- #define ADD_LIMITED(s,v) \
-@@ -59,6 +61,7 @@ static void suni_hz(struct timer_list *timer)
- 	struct atm_dev *dev;
- 	struct k_sonet_stats *stats;
- 
-+	spin_lock_bh(&sunis_lock);
- 	for (walk = sunis; walk; walk = walk->next) {
- 		dev = walk->dev;
- 		stats = &walk->sonet_stats;
-@@ -85,6 +88,7 @@ static void suni_hz(struct timer_list *timer)
- 		    ((GET(TACP_TCC) & 0xff) << 8) |
- 		    ((GET(TACP_TCCM) & 7) << 16));
- 	}
-+	spin_unlock_bh(&sunis_lock);
- 	if (timer) mod_timer(&poll_timer,jiffies+HZ);
- }
- 
-@@ -306,14 +310,9 @@ static void suni_int(struct atm_dev *dev)
- 
- static int suni_start(struct atm_dev *dev)
- {
--	unsigned long flags;
- 	int first;
- 
--	spin_lock_irqsave(&sunis_lock,flags);
--	first = !sunis;
--	PRIV(dev)->next = sunis;
--	sunis = PRIV(dev);
--	spin_unlock_irqrestore(&sunis_lock,flags);
-+	mutex_lock(&sunis_mutex);
- 	memset(&PRIV(dev)->sonet_stats,0,sizeof(struct k_sonet_stats));
- 	PUT(GET(RSOP_CIE) | SUNI_RSOP_CIE_LOSE,RSOP_CIE);
- 		/* interrupt on loss of signal */
-@@ -322,6 +321,11 @@ static int suni_start(struct atm_dev *dev)
- 		printk(KERN_WARNING "%s(itf %d): no signal\n",dev->type,
- 		    dev->number);
- 	PRIV(dev)->loop_mode = ATM_LM_NONE;
-+	spin_lock_bh(&sunis_lock);
-+	first = !sunis;
-+	PRIV(dev)->next = sunis;
-+	sunis = PRIV(dev);
-+	spin_unlock_bh(&sunis_lock);
- 	suni_hz(NULL); /* clear SUNI counters */
- 	(void) fetch_stats(dev,NULL,1); /* clear kernel counters */
- 	if (first) {
-@@ -333,6 +337,7 @@ printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
- #endif
- 		add_timer(&poll_timer);
- 	}
-+	mutex_unlock(&sunis_mutex);
- 	return 0;
- }
- 
-@@ -340,16 +345,20 @@ printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
- static int suni_stop(struct atm_dev *dev)
- {
- 	struct suni_priv **walk;
--	unsigned long flags;
-+	bool last;
- 
- 	/* let SAR driver worry about stopping interrupts */
--	spin_lock_irqsave(&sunis_lock,flags);
-+	mutex_lock(&sunis_mutex);
-+	spin_lock_bh(&sunis_lock);
- 	for (walk = &sunis; *walk != PRIV(dev);
- 	    walk = &PRIV((*walk)->dev)->next);
- 	*walk = PRIV((*walk)->dev)->next;
--	if (!sunis) del_timer_sync(&poll_timer);
--	spin_unlock_irqrestore(&sunis_lock,flags);
-+	last = !sunis;
-+	spin_unlock_bh(&sunis_lock);
-+	if (last)
-+		timer_shutdown_sync(&poll_timer);
- 	kfree(PRIV(dev));
-+	mutex_unlock(&sunis_mutex);
- 
- 	return 0;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ff93f3954fd1..031db6fa5522 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24632,8 +24632,7 @@ SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS
+ M:	D. Wythe <alibuda@linux.alibaba.com>
+ M:	Dust Li <dust.li@linux.alibaba.com>
+ M:	Sidraya Jayagond <sidraya@linux.ibm.com>
+-M:	Wenjia Zhang <wenjia@linux.ibm.com>
+-R:	Mahanta Jambigi <mjambigi@linux.ibm.com>
++M:	Mahanta Jambigi <mjambigi@linux.ibm.com>
+ R:	Tony Lu <tonylu@linux.alibaba.com>
+ R:	Wen Gu <guwen@linux.alibaba.com>
+ L:	linux-rdma@vger.kernel.org
 -- 
-2.50.1.windows.1
+2.50.1 (Apple Git-155)
 
