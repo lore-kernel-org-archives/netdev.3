@@ -1,137 +1,93 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F5042BE8F
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F25341BA7A
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905322; cv=none; b=dyVl5r7x6csupO1CsBP7Afur23y76IGSDfmdQeyELeyOsnmUod/amKiaL1tgnkx4TIHLFKhvpPWo1I4Zn58G/Ec235zsz0iXoAH7gPt9rFpyAsfm91/65cNpCnYS6HwYPf2ek4a/kyM2Z9XA4AA+omgV8zojYJ5ShZSfbmyArQQ=
+	t=1784905456; cv=none; b=odBiVmBdPYgploQWG8bMc3Jxa3Y/wfW177uNE8KUWwdwETM/h3a/WocDWffiXA2kn/JWlqJScyZXDeviHZeU74xC14NFQCOyTaNEAHIrMjPvNWxREfiK0t+Fkz7ajhPkvxippDHr9sXo6jWf6W4aHSs4yJnH3Km4TE5/NlEz/7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905322; c=relaxed/simple;
-	bh=jZpVQiApvdoqvkyfzNh9Co7zgPfj9iF84tqhjQfwS8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y/oQpVYXJ2l9yxqA6JHCIzn2OvPkF4rVVWUPoDBti5GfHfcKvoUHGABKxhvRmZ5vy5noueXUEzVd4bz1nmTxsP5Pol21FyM3Cnsmr5xXbfzxEWbQTiqCQDvkdNMr4BO2a/8rqp0Ix6fEOhdplqSauw/X1ZbWBo2PwwAr0s1cPlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=B5tJocyJ; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+	s=arc-20240116; t=1784905456; c=relaxed/simple;
+	bh=IQx3n36lT0J9s0y5N7HUjwaEKyy7Mlxg2gsI4no63Fc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nr1I1VNN0Y/0vk883TjCIcckYrM1cpyjaUeBwXXXXLUg2dxa1ORb0J/r9xO5jlY52rhz6B+rUvsh3KY4aa2wyTbYyC86bhbXgCm40kGn1rMqRYhcr69YsuG38rjfGAh4wGKbtqD7YP++EczVrPo5lRGcGH5XySdYubMnDwlW85w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=onJwjuNe; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="B5tJocyJ"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso4018815e9.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:02:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1784905319; x=1785510119; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u0loH1J+uUio9ZCxWuBC03S9xXhTz3T9vC/rVTNKMNg=;
-        b=B5tJocyJgQDBYw+bSBtEA86+A9F4Ei36MUHySwtNJAz4lS4H4zaXTthL5CX9f6hRqI
-         xDDEOlQH3VAVNROw9OoXJuQD+ael4xiXSXf1HZ/j4wdZqCJzBiYhTW9OzRYREkXrat/h
-         qzuxjj8gwKUCX/j+YsSvXSWvnrR6PmLQPgKFTN2nT6wZKMyYsdulvvyi+9FpET/y5ju9
-         p9HVNMonZvf4C3/B7ZbSrck1tFG2j/OBwR/aQAESUfmD0W6KE4ygMcZO8tzTzI3N+cSM
-         fa6HDrP1nH+WkYnI5Dnoq/5HM9HWxaeLnKvEsmdoIHm3rjckSMRVMYlq2tNzLOxTSLqk
-         Nx+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784905319; x=1785510119;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=u0loH1J+uUio9ZCxWuBC03S9xXhTz3T9vC/rVTNKMNg=;
-        b=W4BOV5P3G4j3IntXjbQ9bU/hdFlcV0iUM2F1gjKPjfTgbAUb0LCy5yco31DGlpHBXm
-         FrAFNo6a6uym96pL4D2NXulHf8SvNYyi8DP+BcYASkPOnBtqBus4C4wHREOkGQNfalvl
-         V7hKKGOjV3+V9kpSCF5OymdCumIQ952BJWzDeqHKr0zniTbbHo5HNAK/MAu9fsDEpy1I
-         fjdvpYzuzIrwYAqpRzQAqhfNL+x4iwI979glgaY00CDzt3cJq+fXO49z8gFJmZsjtnRm
-         tGSQqNjVr5Iv/tSigGNCEx5SeUl5442XlYDP84GpVA6Y+7bX7xT2igq2uneQtOAzncvV
-         VlsA==
-X-Forwarded-Encrypted: i=1; AHgh+RpWOg4SeZz1KAYeTeJhk8W8WFjnChDOT4/IzwXL0FapP5eSpeE2YqS/oPvIQF5zGuJU0pSzDao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGPqYRbLZHTeKLnVnE+CZK1Buo1KA9zgwbx5+x4mAytyX504df
-	UORVqLI9zxQ1O8iWN9heSgGYmSmvQFO5uLWlLEA0b9ykw+GYj9UDrFrOIz/eoJDXP5kj
-X-Gm-Gg: AR+sD10k2pzfzdJVSQDnQyy92+uLsGGVcYc2GrbDvEMwGbf7Ro1SOhqea+hrN9GOOIh
-	TRu6vjMmQfzc2iaca9OvbIIPGabF8t7dniOlH7Oaf0a8SiSgMNXCtbiLrGVkg/MmNNqzFKp+zSl
-	sNBT1zSsbgw2DliFt3evaYegFvRWNKBRDnJY6n6atazlIKIRdIJ2AUnejbtBeoWgwMaR4ZQOj61
-	HVcx1mJQTeTU8NcXheAuiXPrc3aLhU8Zm0RxSBUU69QKHwSZ3H1v1Ho8HirUUuEadPOU33xLXyp
-	/8U3Sai+JhMFRWMWa1+7k/1qXxs49/6oDYpNczEAE+e8XPq3Y/zToHR6+8S5Ob8RfmhUXe9gNvF
-	9KYgak/zNC8Cu718XgVTEsRDwPDD+ctp6ZUlaSCQ7uPHo9yt0xoL/PN/aPmZpFPa8840+GaA333
-	ampt7FmggBvJHDTbdq1mpelpBBO0B6LpPLag1RVehJgUcCvvhBNaeoUtak5fAK55os56XTD2338
-	xfliW5P5Aw6V9Xlw2aiJ5uOTg==
-X-Received: by 2002:a05:600c:a0a:b0:495:4dea:f7f5 with SMTP id 5b1f17b1804b1-49573ce968emr104411685e9.29.1784905318808;
-        Fri, 24 Jul 2026 08:01:58 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.219.241])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5c4sm24123528f8f.8.2026.07.24.08.01.57
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 24 Jul 2026 08:01:58 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>
-Subject: [PATCH net] netdev: require admin permission for the bind-tx netlink operation
-Date: Fri, 24 Jul 2026 17:01:56 +0200
-Message-ID: <20260724150156.72816-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="onJwjuNe"
+Received: (wp-smtpd smtp.wp.pl 35612 invoked from network); 24 Jul 2026 17:04:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1784905445; bh=0XvJsW1Ont2cluGeW6F50Ej8GaxjA6JVCJYbQisOd1U=;
+          h=From:To:Cc:Subject;
+          b=onJwjuNeDQIEWrNl7rzMVekE9oAL6IXhTevWGYOOyem8/i1QHQu6pKl6G3yC9zwE7
+           kkZj0dYX691cd3g6LQsvoeI7k6gEIet4ykr0R6DoKPS3MR/watNidTenziIZHin2Go
+           rXTss7J15Zhzma4rhaXOQ2zAfHtKyRqz56oTSNjWDYTR3QS4a2v7z+PTgezV8DDMc9
+           1wyPkaorZamr+nLBZWgdRBlSLw5MC4e7yO8EcoeocL/1rlfvx1o3xDldlrlo/XRAhn
+           vNaRLKSpsaHEG/e2YL+cObb9EhgmbDd4jt+xSGmlHQZqla7ZrakHZkamti75rT3O81
+           fWen164XVYKhw==
+Received: from 77-236-11-167.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.11.167])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <andrew@lunn.ch>; 24 Jul 2026 17:04:05 +0200
+Date: Fri, 24 Jul 2026 17:04:03 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: ax88796: initialize all fields of
+ eeprom_93cx6 struct
+Message-ID: <20260724150403.GA56515@wp.pl>
+References: <20260724083411.8562-1-stf_xl@wp.pl>
+ <5df6efd5-ebc2-4049-9501-e013bf68c51a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5df6efd5-ebc2-4049-9501-e013bf68c51a@lunn.ch>
+X-WP-MailID: 165eea24b07df514c6f227e01b6abfde
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000001 [caLh]                               
 
-The netdev generic-netlink bind-rx operation (NETDEV_CMD_BIND_RX) is
-flagged uns-admin-perm, so binding a dmabuf into a device RX datapath
-requires CAP_NET_ADMIN. The symmetric bind-tx operation
-(NETDEV_CMD_BIND_TX), added later, was given no permission flag. The
-netdev family sets netnsok and has no pre_doit, and
-netdev_nl_bind_tx_doit() performs no capability check, so any
-unprivileged process can bind a dmabuf into a netmem-TX-capable device
-TX datapath.
+On Fri, Jul 24, 2026 at 02:57:33PM +0200, Andrew Lunn wrote:
+> On Fri, Jul 24, 2026 at 10:34:11AM +0200, stf_xl@wp.pl wrote:
+> > From: Stanislaw Gruszka <stf_xl@wp.pl>
+> > 
+> > Commit 7738a7ab9d12 ("misc: eeprom: eeprom_93cx6: Add quirk for extra
+> > read clock cycle") added extra 'quirk' field to struct eeprom_93cx6,
+> > which change how the data is read.
+> > 
+> > Some existing users of eeprom_93cx6, including ax88796 driver, allocate
+> > the structure on the stack without initialization of all the fields.
+> > As a result, the added quirk field has undefined value, what can
+> > randomly cause reading wrong data from the EEPROM.
+> > 
+> > Fix by using designated initialization.
+> 
+> The problem with this solution is that the next time another member is
+> added, it breaks again.
 
-net_devmem_bind_dmabuf() attaches and DMA-maps the caller-supplied
-dmabuf to the device and installs TX device-memory state, the same
-class of privileged device operation that bind-rx restricts. Gate
-bind-tx behind uns-admin-perm to match bind-rx.
+I did not initialized 'quirks' explicitly in the patch.
 
-Found by 0sec (https://0sec.ai).
+> struct eeprom_93cx6 eeprom = {0};
+> 
+> Will initialise all fields to 0, and then you can use the existing
+> code to set those fields as needed.
 
-Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
-Cc: stable@vger.kernel.org
-Assisted-by: 0sec:multi-model
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- Documentation/netlink/specs/netdev.yaml | 1 +
- net/core/netdev-genl-gen.c              | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+This form:
+		struct eeprom_93cx6 eeprom = {
+			.data = ei_local,
+			.register_read = ax_eeprom_register_read,
+			.register_write = ax_eeprom_register_write,
+			.width = PCI_EEPROM_WIDTH_93C56,
+		};
 
-diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-index 5f143da7458c..6c374aca3d27 100644
---- a/Documentation/netlink/specs/netdev.yaml
-+++ b/Documentation/netlink/specs/netdev.yaml
-@@ -832,6 +832,7 @@ operations:
-       name: bind-tx
-       doc: Bind dmabuf to netdev for TX
-       attribute-set: dmabuf
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
-index d18c89b5a6c7..07d87445eb22 100644
---- a/net/core/netdev-genl-gen.c
-+++ b/net/core/netdev-genl-gen.c
-@@ -234,7 +234,7 @@ static const struct genl_split_ops netdev_nl_ops[] = {
- 		.doit		= netdev_nl_bind_tx_doit,
- 		.policy		= netdev_bind_tx_nl_policy,
- 		.maxattr	= NETDEV_A_DMABUF_FD,
--		.flags		= GENL_CMD_CAP_DO,
-+		.flags		= GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
- 		.cmd		= NETDEV_CMD_QUEUE_CREATE,
--- 
-2.43.0
+will also initialize _all_ remaining fields to zero.
 
+I believe it is guaranteed by C standard.
+
+Regards
+Stanislaw
