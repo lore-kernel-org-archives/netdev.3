@@ -1,587 +1,218 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C77F44470F
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784909594; cv=none; b=ig9FUBGwqKAM8IY9o9jCe75tsNAqQ9UnipHg3Kd5XQTVffJ9B1GaFK5m3eo6iUxEQO0t5W+elNW3tSgXMVqMJdBWRz1KIg13eg2+wZIObyGSxgo+WOhf7rDgiOvmRSe7FKR5eew4D/MxNy+hzf8c3tcWcDkb9Lsf6lj2p2BKdFg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784909594; c=relaxed/simple;
-	bh=YhffjiTwHNnsDaIV0MpIXslfWw13P8PP5NtdMFnhPJQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1wpkdZwvmOOZ6hOZxF1Vrey2DFCAKHaeGmBAoyJo+pyM2fALk8tDnVfEnFksDyKcMKvlIwawnBVit8hgrbExaClmlqTLRTyYvU6MnWq69VI0VgjSuqeasZlU0Xzt/FpwsLvfsXlied2777on+RBwt6u3ttXmPwMWhiys5w0LQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5ykbDd7; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE09D44C661
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784909964; cv=pass; b=U/BidtAByhFRaMr0ataAkIS66V5esdz5+MFrt6+hI165JemiMFdR3S+ILI6SyvFF9AB0mgazMOWgr7UOJnLt4nAbD0nbtZN8qXSycmchKvU+qtu/UwKHlz2GTmKFhXJCwRTvsAJpPgul5MyWSMWuArLtRFAoQcNSs3RmGuopWqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784909964; c=relaxed/simple;
+	bh=2Pz7yi8VnRHhiqlQrvwuFgDpKz5CVC4Q8lP2Pw68SCw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tzxsUu9uZD5wXUY/QPpM2YGJk7dJicOt6ZOo0ABJmfHDY91i+i5yqk1+9XfovCLyyPsdC+rD3IYBfg84sSaKf4Q7U2H7unyoP/CXrqGQHxXOlN0DoXhFKITvhOQN/l9uUECX5Tt8o8TEjGTocN+DF5B5luzmlOh7OMKGH6mJgO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nbVcHouG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QBnWBs8p; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5ykbDd7"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4957799b92fso784695e9.1
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:13:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nbVcHouG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QBnWBs8p"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66ODbYVI3196972
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:19:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	FuTrxtmptBklBXvMb0kKcU77gZb2KY5onwBT7j6J+nk=; b=nbVcHouGe6Z+VeOs
+	h7qeGBArJI327t86C+PrctOZsyltv748m/ScDV0HsPpenC1z3jFTg4LyiV6J/FyZ
+	owGOr/4SL9LTo2UqQvKh0uDL88gNcHr0uVKuOvntU6WpM2VT9F00DWYccU7reCNf
+	3W+Shr4Az7Cj3bgZwWT10I5+AfeG1ieAsn6FNNauwF6wH+zK8KT/3uOxiM0PKJA5
+	g5hCgpfIWj021uazh1SKvG5t/yYiUeiG3mZT3crN8cA/gFB3Nd8A8h8MQQObHNWx
+	CXusUmB8HAJeYd6rra2az3epDYLosYNDbtF7F4WrLTpOgjM4yHXPbGflsMaEgVX3
+	My6sdw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fm0p52kay-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 16:19:17 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92ec91dc265so51945885a.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:19:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784909956; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lKkjak5y9wT1CMGJLCkGozMrajLwT4lW9rTqbi/VfrKIaSoMYgZSRxmagvIB2Kz3IO
+         XU2clrDjj27nDbAZOjQsbQTeLJeb3zstdDP4/lcNIrL3XC/qmBNMxQsfJSZ7Jj9hygFW
+         Zx89+q6qu0jPNwA5fkihDpHK6Xf1/naKWTmfao7cwSC+WKQvDNq/i3DqloVd6FAXq+fM
+         8CPIFcK7oS2MJ9O+BFEBoPxkb5WZgnhVJGvqvJGO3IheDmHLHOV63AQS1VS5H9IAM2+n
+         6G0JMHMYoLm+PjA0oQO8iVbhjSaMNNZqXkNhDrxUyBPzIEbDLaksN4NYFU8iBoQxBLtj
+         gnzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FuTrxtmptBklBXvMb0kKcU77gZb2KY5onwBT7j6J+nk=;
+        fh=0H4V9PK+ObWhFzY/3kKveRR+1vEFIliefxP0sLsiBC0=;
+        b=o3ELrYxQt1gygNrx+/Ln5Zyzv5xyOXlUnw3ecsr/Fvfbgvhl3D5HYT6iTb8K94czmS
+         fRPp3hJ0u1mU8JpZjQnfYTu2pwohvr8Z+4QCmliiPLYbDn5o/CeJoNQd0LGdBmsWvUTU
+         d7F4MiRLjW+Nx/3TdUli+kBOvThPFpgxUUna2Y8WbzCWjtDv/de6xn43Y5sT3lgdS+Vp
+         roNGbW87DOTcxRFsr4fTH5ObEDX1njYTiBAPXZzZQo2E9M8aNB9b8f4xQQ8BDqory+eF
+         c49jn0yuICG2gHfF3QRwuSkbxfYs21j43GL8jQxAzihpfBOS0imaSaTXFxAxvbm+1yCL
+         msLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784909581; x=1785514381; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=oss.qualcomm.com; s=google; t=1784909956; x=1785514756; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=yqLAYmpkh+P1dlY0H6sXFdrX0pxDVL4N33QHbpBIrEk=;
-        b=h5ykbDd70yNH17FxKEDzGFbT50Q1nytqv3TVH5hSnW/m/qW5PH7qZGm0lPhmh3aho1
-         /3w1xgWamCswuS16W4oZWNtkiVtpYvZSNUDiWM0w4+HZsyBrINi3eUTinKVMd9WVliEB
-         10ptenxzK9Kf9oJcli1EvSD/jjwSrTB0gbLU1LYJckWdPSmn1PMH2xQ81w1n1rrGHrL2
-         f3ymQFf9OWbos17naO/+sU725a3whGN/XFrDuy00jk35pmx/ARlaOk3SQ43SbmzuYuXY
-         zTazqKeua4mIvJY3iOanbM+Xy1tiMa9YrjtIRJU/VD2dh5F8bGQzVyyPx7yHIVVyJmoq
-         GSWA==
+        bh=FuTrxtmptBklBXvMb0kKcU77gZb2KY5onwBT7j6J+nk=;
+        b=QBnWBs8pQw5wzNA8WwdaOkxUQQF7Ena/XK3A2pUYAMvQPPyb581gO2Mi/SAXt4VDxb
+         pJNJe7B3v2OfgFRxwFEEBcaCxpmAOIGWUzmyQuttmynAImfQD73xIZdZl4l0P0rERPJP
+         /lpeco0LGrc68SVmmkfXDi/Aiw6UgwokLKaftWKsyA4eseUOQuApP6mrpcFDoGn1Wdp2
+         XzAotZjdfQ0eU3U+C+NtkPomPdCRd4j8kHoXIpQM7ncqY9xHNmrgaWVaQoVZS3puy+79
+         pPlDzrHQ7WmKBGJy7BPyjCLZwlU5rtEpJaNSb/4DoSuZoS5RoR+vhvY0bbEDi+a4G8IK
+         uohg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784909581; x=1785514381;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1784909956; x=1785514756;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yqLAYmpkh+P1dlY0H6sXFdrX0pxDVL4N33QHbpBIrEk=;
-        b=omA8ekXgN1C2BvXFevzTJmj8yces0VNq5j3lmg7SOpXU7VJofiHWLp7J0GHjkPwFFY
-         LZWBIG+/SvbjdgRw4Qj8zWwmrS5RePEbiLmshMMmtG0UZfn6C6jskXNchCcaln/lZGbC
-         xUED5fuDGjeZlFbdqlCX4JNH6fdXZ/kk71mey7i0EIfJuwJ5dlvZssU9UnnYzVQSvfBD
-         rhoVCnBcQBbD/GrxqT86NwgX2aqBfXMjszP6lQW5eCJU+JkvjEs9I7qVB3ule/uj6AS1
-         h8AK8USHj55UJNSxq0h3lLEnH0a7JfYrTLhDyBsRB1pEKWeavNqxzS3GGjMDcOOBUheO
-         XvCQ==
-X-Gm-Message-State: AOJu0YyMfTXa7IEo09eFHt1J4tYoudl56kqfmugkreYc7kj+WfotBB/n
-	1RPsQa1jaDDjfBS7T22xfrEuWqeitZwidLJIZcUZ3cIylTLgnX266rBnwD24q0adagE=
-X-Gm-Gg: AR+sD10yRIOmXGRLaHefIXDehGMR1H1vZy7MfJJmFhYKWOHcFXfZW5jHYmg3viBaSIo
-	63iYDbOTxvtgZinA5Q+MRWGhwnbWkvB1kE9Kk9hX8S0ZHI5nrzyCKd4hxnY6x0jF1RrHmrJQh48
-	uo4Z0cPbgcdF4mdjtBbUvWF4YGRJJk40ZfVS0nefPsSJVIEpj/Y3Cy3vO4jKqNra1sIYBIGF10J
-	E9SMaN/7jlsIO+IfJoC2ZFf4UVDwQ4P3CUCOSmOz0mKADLT324PpN/dAw+6Is2OYPCC4fXZORr6
-	iuKas62x30xt5t+b2ta6njU1Bm/4pBjRy4ygQw29o6RAs9kj2KWW79fo/bzCOiMYgdGJGRG9GRA
-	RJP/iCV45yZnGjTG4byzlVQU+CRfLYPhuyS+Xrv77RvV7bYHUNKXiq7YKS+XCWXC1cFjK6jRqwt
-	cm/qOsBr+86ALzGb9lHZPGQSeXCDUyD10BFmYdlXWeVSygkK33hW0kKfys/gKhTFc0pNNsfbBS5
-	0hU4w+EUyGAYEdxhYc9AXSdn11lwtehXY/k66U=
-X-Received: by 2002:a05:600c:2e56:b0:495:6274:56bd with SMTP id 5b1f17b1804b1-4957ac0ed8amr19094855e9.4.1784909580824;
-        Fri, 24 Jul 2026 09:13:00 -0700 (PDT)
-Received: from L-022584.energy.envision.com (dynamic-077-181-161-038.77.181.pool.telefonica.de. [77.181.161.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957f9928fdsm40969655e9.1.2026.07.24.09.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 09:13:00 -0700 (PDT)
-From: Xin Xie <xiexinet@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	shuah@kernel.org,
-	kees@kernel.org,
-	petr.wozniak@gmail.com,
-	qingfang.deng@linux.dev,
-	fmaurer@redhat.com,
-	luka.gejak@linux.dev,
-	bigeasy@linutronix.de,
-	xiaoliang.yang_1@nxp.com,
-	skhawaja@google.com,
-	Xin Xie <xiexinet@gmail.com>
-Subject: [PATCH net v2 4/4] selftests: net: hsr: add GRO super-packet forwarding test
-Date: Fri, 24 Jul 2026 18:12:53 +0200
-Message-ID: <20260724161253.79-5-xiexinet@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260724161253.79-1-xiexinet@gmail.com>
-References: <20260724161253.79-1-xiexinet@gmail.com>
+        bh=FuTrxtmptBklBXvMb0kKcU77gZb2KY5onwBT7j6J+nk=;
+        b=dcWSSOQzcgpH9y1sQL8CCxaOtiimzj2BgAM6c0cf32hv4zaQHG1W4Ridq0XGxoTXUN
+         EiAQRV36iWHVD81Otii+Owj9P5rFwEYUUInOhH6c/AkL2Gc0YA7jilNtk3kX3+q6g8bF
+         +kH6n9XFQWxHddVWrVrUeNvmc+ai3W43Ey1cIp0B7pk2DPtmwfGDwf84XRc1zDMfCq9p
+         0HrXO+Om8O0WVvNCfEPJinTA8b4o3gpZoF8ZKMy/V+IbhelclJVHXlfiZl0ecz10vime
+         VuuT5KbCWyq7PJZRJDe2wCjTPllNOyv6Yp7j1OdvB906qNGE+Zt7mestWiz9v51+A6BG
+         yH6w==
+X-Forwarded-Encrypted: i=1; AHgh+Rpi4Ihe9S89GKoOeJrcc/LbQyuTrF/wcfH2HdDI7/6eLYHrYi6E2ylyzYnz5T6hyXQK7vm/k5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF214HNTbSRBei9DjvbKwqEB9Do/D25Mo0OAbycKAbpcOenljV
+	HWvr5Z4K5wBq7eUPGK52Zl61uTvtpyWbA5NCKBvcwEwe6knQrtRlfwObNu0vcHelR6CF0AgX3Ft
+	/wfjMNlvgbfPIman02wVi4XPpOzPmGgkHSpADykQRGZqCL2JlLNCUsQuzt0PCoYuskFtiuBMQ0G
+	jZtKmxp9UnvlQB/bNiRL62zWyVpoVXXsWzSQ==
+X-Gm-Gg: AR+sD11HchXok0Zlikgn4dW/mCtUUHcDpq/Tzo43XqiZkStzZAp6xxQy1n3UOPHiYS0
+	5xGPEusTCiUyYy5rbnYxqRTbxOBZG4KGu4NYDyoEM59maXZmcrHDnRIf+5Jf8ljra7/a5rf4l5H
+	rwi52O0Gkd6JH4k2bzt5/HHiJxBhVMu89S2RhGj5NFW9WIl+Uz9cSKHrAuFLVHEkYg33kX7vLHH
+	0f4MtZ9DoXdlfbtdYzAHl+s3fEer9fAKvsXr1twZbmQyLxOAcQTanICzZ7mlgZ7+6Tw1GfTdHw=
+X-Received: by 2002:a05:620a:a29b:10b0:928:f440:2dc7 with SMTP id af79cd13be357-93103608240mr655010085a.35.1784909956442;
+        Fri, 24 Jul 2026 09:19:16 -0700 (PDT)
+X-Received: by 2002:a05:620a:a29b:10b0:928:f440:2dc7 with SMTP id
+ af79cd13be357-93103608240mr655005485a.35.1784909955860; Fri, 24 Jul 2026
+ 09:19:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com>
+ <20260703-block-as-nvmem-v8-5-98ae32bfc49a@oss.qualcomm.com>
+ <amLwz6WuHYUwKKJo@infradead.org> <CAFEp6-1_iariDyqWj0KezHAtULSO+piPHX0F=Z46Rx4KDNLmXw@mail.gmail.com>
+ <amNkX6HV7c_8jRUa@infradead.org>
+In-Reply-To: <amNkX6HV7c_8jRUa@infradead.org>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Fri, 24 Jul 2026 18:19:04 +0200
+X-Gm-Features: AUfX_my698y_ctqeRF24VMWwW_1w27mTDvVkuG8C8ZhXfnEBEfynx8DYsYuY-cE
+Message-ID: <CAFEp6-2sZTBba4isNDmykh1X0HCxoeWQb5_bJp7AGQHU1E+MLQ@mail.gmail.com>
+Subject: Re: [PATCH v8 5/9] block: implement NVMEM provider
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        daniel@makrotopia.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=Pq6jqQM3 c=1 sm=1 tr=0 ts=6a639085 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=ZpdpYltYx_vBUK5n70dp:22 a=JfrnYn6hAAAA:8 a=-e8Xlw_gh5nxI56MKtwA:9
+ a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: XGtk0iGwpdoeb1hU11tysJ6A194zh7eR
+X-Proofpoint-ORIG-GUID: XGtk0iGwpdoeb1hU11tysJ6A194zh7eR
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDE0NiBTYWx0ZWRfX2GCl5HN6avuN
+ PHRMXkjZVxkgvOeslpRKasYZd4t2ml2QyjWmWERLQMQnk0ncoTcpmAWx3JD3q3ZHQjEJeFsgMrG
+ 3yecJwjH1OiHH4XH/eaqwMXG5cX63S4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDE0NiBTYWx0ZWRfX99TYDkfrxMUs
+ ST+CRilMk1LDeW4LiR/1TMdqNsJ7TSnIey0ErRnjgyD0HN+DCWs3xXcAXciqrqunu1Wqgn9pKcr
+ Z8jp3OU2+yRz+UnGook/bU41V/2e8jN4mwVFi3sM58GjH/AiVwqH4N8LaLh7VXkoKGc3SXwQ0r9
+ GFNH4RCJ62KK2XQ3v1kAxnB6e1cmadSXhzGNEpV2WullbI48qsLDs1FeB6ttim5RvFrpy6EjU2p
+ BDgt5gWQrQHKGsxtAXtqSS5lFzTERz4mhPtl8oS+gJJEqaA3kRK/aH+dYgyWyNs5HAWTjmWmd7N
+ Ot3gpSR2u87DB3IM60WlHu75saFOH4VhR31b2sLn6EEQpVod89/HOdwAxEuKF0yiiSQN9AP2/pq
+ CDiM12Av60/Uwo15ww7ps5pmsALtdghz2wLFlxAWTIv4Gxcr9+Tsb7SIsf17Ox2PsD5LDq9JRje
+ 56E/mNWoI/P6Qymd4XQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240146
 
-Add a test exercising the HSR forward path with GSO super-packets:
-a TSO-enabled SAN behind the interlink streams TCP through an HSR
-DUT to a peer node. The test verifies that:
+On Fri, Jul 24, 2026 at 3:11=E2=80=AFPM Christoph Hellwig <hch@infradead.or=
+g> wrote:
+>
+> On Fri, Jul 24, 2026 at 11:10:58AM +0200, Loic Poulain wrote:
+> > Right, I was planning to add partition support in a follow-up series.
+> > But since this is really supposed to be a block-agnostic feature,
+> > whether it's a disk or a partition, I'll include partition in v8.
+>
+> Please include the partitions, as including them or not matters for
+> the interfaces.  What is holding that support back now?  fwnode
+> magic?
 
-* enslaved devices have GRO and HW-GRO disabled automatically,
-* the HSR master does not advertise GSO/TSO features (including
-  tx-tcp6/udp/gso-list, to catch future hw_features leaks),
-* super-packets really leave the SAN (TX average frame size above a
-  fixed threshold) while bulk output on the DUT's LAN legs stays at
-  per-frame size — aggregate counter evidence that GSO enters the
-  forward path and is unfolded at the forward entry. Zero TCP
-  retransmits is reported as a secondary health signal.
+Yes, there is a bit of fwnode magic involved in partitions of/core,
+but adding it is fairly straightforward.
 
-The one-shot iperf3 server lives in a private mktemp -d workdir
-(mode 0700): its exact PID is retained only after numeric, alive,
-comm==iperf3 and netns-membership checks, its real exit status is
-propagated through an rc file, and cleanup kills by exact PID with a
-bounded wrapper reap plus a namespace-scoped iperf3 sweep. Server
-startup failure, client failure and a never-published PID are all
-bounded exits with no process or directory leaks. Environments whose
-iproute2 lacks the HSR interlink syntax are skipped with ksft_skip.
+>
+> > > Also once you register the whole devices as nvmem provider, we really
+> > > should keep it from being used a block device, shouldn't we?
+> >
+> >
+> > I'm not sure, the whole concept is block backed NVMEM, so we still
+> > need to add that block as base layer, though we could discuss
+> > suppressing uevent for it. Preventing block usage would make the
+> > feature much more intrusive than other NVMEM providers like MTD, where
+> > the underlying device stays accessible. And we may genuinely still
+> > want to write the disk (e.g. for factory provisioning), updating the
+> > very data the cells point to, etc. There's also the layering aspect,
+> > if a disk (e.g. mmcblk0) has logical partitions on top (mmcblk0pX), we
+> > still register/expose the whole disk mmcblk0 as a block device
+> > regardless. So if a disk contains NVMEM cells, I think it should still
+> > be exposed as a block device as well.
+>
+> So we now get two unsynchronized ways to access the same device?
+> At least we need to prevent exclusive openers on the block device
+> side.  And document the side channel very well.
 
-Without this series the feature checks fail, and on drivers that hand
-GRO super-packets to the HSR receive path the stream degrades or
-stalls.
+Yes, effectively, so the simpler is to open it exclusively per read
+in reg_read with a holder (exclusive). This gives us proper exclusion
+against other holders, but only transiently for the duration of the read.
+It's the simpler solution if acceptable.
 
-Signed-off-by: Xin Xie <xiexinet@gmail.com>
----
- tools/testing/selftests/net/hsr/Makefile      |   1 +
- .../selftests/net/hsr/hsr_gro_superpacket.sh  | 437 ++++++++++++++++++
- 2 files changed, 438 insertions(+)
- create mode 100755 tools/testing/selftests/net/hsr/hsr_gro_superpacket.sh
+Another option would be to claim the device for the whole NVMEM
+lifetime, but currently we can't bdev/open the block device from
+nvmem_register(). That path runs early, while the disk/partition setup
+already holds disk->open_mutex. So that would require a larger change.
 
-diff --git a/tools/testing/selftests/net/hsr/Makefile b/tools/testing/selftests/net/hsr/Makefile
-index 31fb9326cf5..0d105476e7c 100644
---- a/tools/testing/selftests/net/hsr/Makefile
-+++ b/tools/testing/selftests/net/hsr/Makefile
-@@ -3,6 +3,7 @@
- top_srcdir = ../../../../..
- 
- TEST_PROGS := \
-+	hsr_gro_superpacket.sh \
- 	hsr_ping.sh \
- 	hsr_redbox.sh \
- 	link_faults.sh \
-diff --git a/tools/testing/selftests/net/hsr/hsr_gro_superpacket.sh b/tools/testing/selftests/net/hsr/hsr_gro_superpacket.sh
-new file mode 100755
-index 00000000000..4ca2a7f395e
---- /dev/null
-+++ b/tools/testing/selftests/net/hsr/hsr_gro_superpacket.sh
-@@ -0,0 +1,437 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Test HSR handling of GRO/GSO super-packets:
-+#
-+#  1. Enslaving a device to an HSR master disables GRO on it
-+#     (dev_disable_gro()).
-+#  2. The HSR master does not advertise GSO/TSO features.
-+#  3. A TCP stream from a TSO-enabled SAN (which therefore emits GSO
-+#     super-packets) is unfolded at the HSR forward entry. Evidence:
-+#     interface-counter deltas show super-packet-sized frames leaving
-+#     the SAN and per-frame-sized traffic leaving the DUT's LAN ports.
-+#
-+# Topology (100.64.0.0/24):
-+#
-+#   ns_san                    ns_dut                      ns_peer
-+#  +-----------+  interlink  +---------------+  LAN A/B  +-----------+
-+#  | s0 [0.1]  |-------------| d_il   hsr0   |-----------| hsr1 [0.3]|
-+#  +-----------+             | d_a / d_b     |           | p_a / p_b |
-+#                            +---------------+           +-----------+
-+#
-+# SAN traffic reaches ns_peer only through hsr0's forward path
-+# (interlink RX -> LAN A/B TX), so every SAN frame is tagged and
-+# forwarded by the DUT.
-+
-+source ./hsr_common.sh
-+
-+ns_dut="hsr-gro-dut"
-+ns_san="hsr-gro-san"
-+ns_peer="hsr-gro-peer"
-+san_ip="100.64.0.1"
-+peer_ip="100.64.0.3"
-+
-+# Aggregate counter thresholds for the stream test (bytes/packets):
-+# SAN_AVG_MIN proves GSO super-packets left the SAN; LAN_AVG_MAX is a
-+# guard with margin, not the protocol maximum (see do_tso_stream_test).
-+SAN_AVG_MIN=2048
-+LAN_AVG_MAX=1514
-+
-+iperf_pid=""
-+server_wrapper=""
-+workdir=""
-+pidfile=""
-+rcfile=""
-+
-+cleanup()
-+{
-+	# exact-PID kill only after RE-validating identity (guards against
-+	# PID reuse between publication and cleanup)
-+	if [ -n "${iperf_pid}" ] && valid_server_pid "${iperf_pid}"; then
-+		kill "${iperf_pid}" 2>/dev/null
-+	fi
-+	iperf_pid=""
-+	if [ -n "${server_wrapper}" ]; then
-+		# the wrapper waits on the server; reap it with a 5s bound so a
-+		# live-but-unpublished server can never hang cleanup
-+		for _ in $(seq 1 50); do
-+			kill -0 "${server_wrapper}" 2>/dev/null || break
-+			sleep 0.1
-+		done
-+		kill "${server_wrapper}" 2>/dev/null
-+		wait "${server_wrapper}" 2>/dev/null
-+		server_wrapper=""
-+	fi
-+	# last resort, namespace-scoped only: TERM the iperf3 processes that
-+	# actually live in the peer netns, poll for bounded exit, then
-+	# SIGKILL any survivor before touching the namespace name. A blind
-+	# pkill would scan the host PID space and hit unrelated tests.
-+	local _p _still
-+	for _p in $(ip netns pids "$ns_peer" 2>/dev/null); do
-+		if [ "$(cat /proc/"$_p"/comm 2>/dev/null)" = "iperf3" ]; then
-+			kill "$_p" 2>/dev/null
-+		fi
-+	done
-+	for _ in $(seq 1 50); do
-+		_still=0
-+		for _p in $(ip netns pids "$ns_peer" 2>/dev/null); do
-+			if [ "$(cat /proc/"$_p"/comm 2>/dev/null)" = "iperf3" ]; then
-+				_still=1
-+				break
-+			fi
-+		done
-+		[ "$_still" -eq 0 ] && break
-+		sleep 0.1
-+	done
-+	for _p in $(ip netns pids "$ns_peer" 2>/dev/null); do
-+		if [ "$(cat /proc/"$_p"/comm 2>/dev/null)" = "iperf3" ]; then
-+			kill -9 "$_p" 2>/dev/null
-+		fi
-+	done
-+	# remove only the known non-empty private directory
-+	if [ -n "${workdir}" ] && [ -d "${workdir}" ]; then
-+		rm -rf "${workdir}"
-+	fi
-+	workdir=""
-+	pidfile=""
-+	rcfile=""
-+	ip netns del "$ns_dut" 2>/dev/null
-+	ip netns del "$ns_san" 2>/dev/null
-+	ip netns del "$ns_peer" 2>/dev/null
-+}
-+
-+trap cleanup EXIT
-+
-+check_tool()
-+{
-+	if ! command -v "$1" > /dev/null 2>&1; then
-+		echo "SKIP: Could not run test without $1"
-+		exit $ksft_skip
-+	fi
-+}
-+
-+nsx()
-+{
-+	ip netns exec "$1" bash -c "$2"
-+}
-+
-+setup_topo()
-+{
-+	local ns
-+
-+	cleanup
-+	for ns in "$ns_dut" "$ns_san" "$ns_peer"; do
-+		ip netns add "$ns"
-+	done
-+
-+	ip link add d_a netns "$ns_dut" type veth peer name p_a netns "$ns_peer"
-+	ip link add d_b netns "$ns_dut" type veth peer name p_b netns "$ns_peer"
-+	ip link add d_il netns "$ns_dut" type veth peer name s0 netns "$ns_san"
-+
-+	# HSR tags add 6 bytes per frame; give the LAN legs headroom.
-+	for iface in d_a d_b; do
-+		nsx "$ns_dut" "ip link set $iface mtu 1600; ip link set $iface up"
-+	done
-+	for iface in p_a p_b; do
-+		nsx "$ns_peer" "ip link set $iface mtu 1600; ip link set $iface up"
-+	done
-+
-+	nsx "$ns_dut" "ip link set d_il up"
-+	nsx "$ns_san" "ip link set s0 up; ip addr add $san_ip/24 dev s0"
-+
-+	nsx "$ns_dut" "ip link add hsr0 type hsr \
-+		slave1 d_a slave2 d_b interlink d_il proto 0; \
-+		ip link set hsr0 up"
-+	nsx "$ns_peer" "ip link add hsr1 type hsr \
-+		slave1 p_a slave2 p_b proto 0; \
-+		ip link set hsr1 up; ip addr add $peer_ip/24 dev hsr1"
-+
-+	# Let the nodes see each other's supervision frames.
-+	sleep 2
-+}
-+
-+check_feature()
-+{
-+	local ns="$1"
-+	local iface="$2"
-+	local feature="$3"
-+	local want="$4"
-+
-+	if nsx "$ns" "ethtool -k $iface" | grep -q "^$feature: $want"; then
-+		echo "INFO: $ns/$iface $feature is $want [ OK ]"
-+	else
-+		echo "FAIL: $ns/$iface $feature is not $want" 1>&2
-+		ret=1
-+	fi
-+}
-+
-+# Off-or-absent variant: fails only when the feature is present AND on,
-+# so devices that simply do not list the feature do not fail it.
-+check_feature_not_on()
-+{
-+	local ns="$1"
-+	local iface="$2"
-+	local feature="$3"
-+
-+	if nsx "$ns" "ethtool -k $iface" | grep -q "^$feature: on"; then
-+		echo "FAIL: $ns/$iface $feature is on" 1>&2
-+		ret=1
-+	else
-+		echo "INFO: $ns/$iface $feature not on [ OK ]"
-+	fi
-+}
-+
-+do_gro_feature_checks()
-+{
-+	echo "INFO: Checking that enslavement disabled GRO."
-+	check_feature "$ns_dut" d_a generic-receive-offload off
-+	check_feature "$ns_dut" d_b generic-receive-offload off
-+	check_feature "$ns_dut" d_il generic-receive-offload off
-+	stop_if_error "GRO not disabled on enslaved devices."
-+
-+	echo "INFO: Checking that enslavement disabled HW-GRO."
-+	check_feature "$ns_dut" d_a rx-gro-hw off
-+	check_feature "$ns_dut" d_b rx-gro-hw off
-+	check_feature "$ns_dut" d_il rx-gro-hw off
-+	stop_if_error "HW-GRO not disabled on enslaved devices."
-+
-+	echo "INFO: Checking that the HSR master does not advertise GSO/TSO."
-+	check_feature "$ns_dut" hsr0 generic-segmentation-offload off
-+	check_feature "$ns_dut" hsr0 tcp-segmentation-offload off
-+	check_feature_not_on "$ns_dut" hsr0 tx-tcp6-segmentation
-+	check_feature_not_on "$ns_dut" hsr0 tx-udp-segmentation
-+	check_feature_not_on "$ns_dut" hsr0 tx-gso-list
-+	stop_if_error "HSR master still advertises GSO-family features."
-+}
-+
-+alloc_workdir()
-+{
-+	# Allocated only here, long after the initial topology cleanup, so
-+	# cleanup() at setup_topo() time can never remove it. mktemp failure
-+	# is a hard test failure.
-+	workdir=$(mktemp -d /tmp/hsr_gro_test.XXXXXX) || {
-+		echo "FAIL: mktemp -d failed" 1>&2
-+		exit 1
-+	}
-+	chmod 700 "${workdir}"
-+	pidfile="${workdir}/iperf.pid"
-+	rcfile="${workdir}/iperf.rc"
-+}
-+
-+# Numeric, alive, comm == iperf3, and really owned by the peer netns.
-+valid_server_pid()
-+{
-+	local p="$1"
-+
-+	[[ "$p" =~ ^[0-9]+$ ]] || return 1
-+	kill -0 "$p" 2>/dev/null || return 1
-+	[ "$(cat /proc/"$p"/comm 2>/dev/null)" = "iperf3" ] || return 1
-+	ip netns pids "$ns_peer" 2>/dev/null | grep -qx "$p"
-+}
-+
-+start_iperf_server()
-+{
-+	local candidate_pid
-+
-+	# One-shot server, no -D: the wrapper records its exact PID and its
-+	# real exit status (netns shares the PID namespace and the host fs).
-+	alloc_workdir
-+	( nsx "$ns_peer" "iperf3 -s -1 > /dev/null 2>&1 & \
-+		echo \$! > ${pidfile}; \
-+		wait \$!; \
-+		echo \$? > ${rcfile}" ) &
-+	server_wrapper=$!
-+	# the wrapper writes the pidfile asynchronously; wait for it to
-+	# appear instead of racing the read
-+	for _ in $(seq 1 50); do
-+		[ -s "${pidfile}" ] && break
-+		sleep 0.1
-+	done
-+	if [ ! -s "${pidfile}" ]; then
-+		echo "FAIL: iperf3 server did not publish a pid (no pidfile)" 1>&2
-+		ret=1
-+		return 1
-+	fi
-+	candidate_pid=$(<"${pidfile}")
-+	if ! valid_server_pid "${candidate_pid}"; then
-+		echo "FAIL: iperf3 server pid '${candidate_pid}' failed validation" 1>&2
-+		ret=1
-+		return 1
-+	fi
-+	# publish only after full validation
-+	iperf_pid="${candidate_pid}"
-+	sleep 1
-+	return 0
-+}
-+
-+# Print "<bytes> <packets>" for exactly one TX record of ns/dev; anything
-+# else (missing, duplicated, non-numeric) is a hard FAIL.
-+read_tx_counters()
-+{
-+	local ns="$1" dev="$2"
-+	local out cnt
-+
-+	out=$(nsx "$ns" "ip -s link show $dev" | \
-+		awk '/^ +TX:/{getline; print $1, $2}')
-+	cnt=$(echo "$out" | grep -c '^[0-9]* [0-9]*$')
-+	if [ "$cnt" -ne 1 ]; then
-+		echo "FAIL: cannot parse TX counters of $ns/$dev (records=$cnt)" 1>&2
-+		ret=1
-+		return 1
-+	fi
-+	echo "$out"
-+	return 0
-+}
-+
-+eval_counter_delta()
-+{
-+	local name="$1" b0="$2" p0="$3" b1="$4" p1="$5" op="$6" limit="$7"
-+	local bd pd
-+
-+	if ! [[ "$b0" =~ ^[0-9]+$ && "$b1" =~ ^[0-9]+$ && \
-+		"$p0" =~ ^[0-9]+$ && "$p1" =~ ^[0-9]+$ ]]; then
-+		echo "FAIL: non-numeric counter input for $name" 1>&2
-+		ret=1
-+		return 1
-+	fi
-+	bd=$((b1 - b0))
-+	pd=$((p1 - p0))
-+	if [ "$bd" -lt 0 ] || [ "$pd" -le 0 ]; then
-+		echo "FAIL: counter delta invalid for $name (bytes=$bd pkts=$pd)" 1>&2
-+		ret=1
-+		return 1
-+	fi
-+	if [ "$op" = "gt" ]; then
-+		if [ "$bd" -le $((pd * limit)) ]; then
-+			echo "FAIL: $name bytes/packets $bd/$pd <= $limit" 1>&2
-+			ret=1
-+			return 1
-+		fi
-+	else
-+		if [ "$bd" -gt $((pd * limit)) ]; then
-+			echo "FAIL: $name bytes/packets $bd/$pd > $limit" 1>&2
-+			ret=1
-+			return 1
-+		fi
-+	fi
-+	echo "INFO: $name counter delta bytes=$bd packets=$pd" \
-+		"(op $op limit $limit) [ OK ]"
-+	return 0
-+}
-+
-+do_tso_stream_test()
-+{
-+	local out sender_retr server_rc
-+	local san_b0 san_p0 san_b1 san_p1
-+	local a_b0 a_p0 a_b1 a_p1 b_b0 b_p0 b_b1 b_p1
-+
-+	echo "INFO: Enabling TSO/GSO on the SAN interface."
-+	nsx "$ns_san" "ethtool -K s0 tso on gso on"
-+	check_feature "$ns_san" s0 tcp-segmentation-offload on
-+	stop_if_error "Could not enable TSO on the SAN interface."
-+
-+	echo "INFO: Running 10s TCP stream SAN -> peer through the HSR DUT."
-+	start_iperf_server || return
-+
-+	# Counter snapshots around the stream window. The SAN-side average
-+	# must exceed SAN_AVG_MIN (aggregate proof that GSO super-packets
-+	# really left the SAN); each DUT LAN leg must stay under LAN_AVG_MAX
-+	# (aggregate proof that bulk output was segmented per-frame). These
-+	# are aggregate discriminators, not a per-frame maximum proof.
-+	san_b0=0; san_p0=0; a_b0=0; a_p0=0; b_b0=0; b_p0=0
-+	read -r san_b0 san_p0 <<EOF
-+$(read_tx_counters "$ns_san" s0)
-+EOF
-+	read -r a_b0 a_p0 <<EOF
-+$(read_tx_counters "$ns_dut" d_a)
-+EOF
-+	read -r b_b0 b_p0 <<EOF
-+$(read_tx_counters "$ns_dut" d_b)
-+EOF
-+	[ "${ret:-0}" -eq 0 ] || return
-+
-+	# rate-capped: the PRIMARY discriminator is the counter inequality
-+	# above, not max throughput; retransmits are informational only.
-+	# Uncapped runs flap at VM/CI edge rates without indicating a
-+	# functional problem.
-+	if ! out=$(nsx "$ns_san" "timeout 60 iperf3 -c $peer_ip -M 1446 \
-+		-b 2G -t 10" 2>&1); then
-+		echo "FAIL: iperf3 client failed:" 1>&2
-+		echo "$out" 1>&2
-+		ret=1
-+		return
-+	fi
-+
-+	read -r san_b1 san_p1 <<EOF
-+$(read_tx_counters "$ns_san" s0)
-+EOF
-+	read -r a_b1 a_p1 <<EOF
-+$(read_tx_counters "$ns_dut" d_a)
-+EOF
-+	read -r b_b1 b_p1 <<EOF
-+$(read_tx_counters "$ns_dut" d_b)
-+EOF
-+
-+	eval_counter_delta "SAN s0 TX" "$san_b0" "$san_p0" "$san_b1" "$san_p1" \
-+		gt "$SAN_AVG_MIN"
-+	eval_counter_delta "DUT d_a TX" "$a_b0" "$a_p0" "$a_b1" "$a_p1" \
-+		le "$LAN_AVG_MAX"
-+	eval_counter_delta "DUT d_b TX" "$b_b0" "$b_p0" "$b_b1" "$b_p1" \
-+		le "$LAN_AVG_MAX"
-+	[ "${ret:-0}" -eq 0 ] || return
-+
-+	# success path: the one-shot server exits by itself; reap the
-+	# wrapper, then REQUIRE the rcfile with the server's real status
-+	wait "${server_wrapper}"
-+	server_wrapper=""
-+	if [ ! -s "${rcfile}" ]; then
-+		echo "FAIL: iperf3 server status file missing (${rcfile})" 1>&2
-+		ret=1
-+		return
-+	fi
-+	server_rc=$(cat "${rcfile}")
-+	if ! [[ "$server_rc" =~ ^[0-9]+$ ]] || [ "$server_rc" -ne 0 ]; then
-+		echo "FAIL: iperf3 server exited with rc='${server_rc}'" 1>&2
-+		ret=1
-+		return
-+	fi
-+	iperf_pid=""
-+
-+	# secondary health signal only: anchored, single-match, numeric —
-+	# any parse anomaly is a loud FAIL, but the value itself no longer
-+	# gates (the counter inequalities above are the primary evidence).
-+	sender_retr=$(echo "$out" | awk '/sec .* sender$/ {print $(NF-1)}')
-+	if [ "$(echo "$sender_retr" | grep -Ec '^[0-9]+$')" -ne 1 ]; then
-+		echo "FAIL: cannot parse sender retransmits reliably" 1>&2
-+		echo "$out" 1>&2
-+		ret=1
-+		return
-+	fi
-+	echo "INFO: TCP stream done;" \
-+		"sender retransmits=$sender_retr (secondary signal)"
-+	echo "$out" | grep -E "sender|receiver"
-+}
-+
-+check_prerequisites
-+check_tool ethtool
-+check_tool iperf3
-+check_tool timeout
-+
-+# iproute2 must know the HSR interlink syntax.
-+if ! ip link help hsr 2>&1 | grep -qi interlink; then
-+	echo "SKIP: iproute2 has no HSR interlink support"
-+	exit $ksft_skip
-+fi
-+
-+setup_topo
-+
-+echo "INFO: Initial validation ping (SAN -> peer through the DUT)."
-+do_ping "$ns_san" "$peer_ip"
-+stop_if_error "Initial validation failed."
-+
-+do_gro_feature_checks
-+do_tso_stream_test
-+stop_if_error "GSO super-packet stream test failed."
-+
-+echo "INFO: All good."
-+exit $ret
--- 
-2.43.0
-
+Regards,
+Loic
