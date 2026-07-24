@@ -1,55 +1,79 @@
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5063C870E;
-	Fri, 24 Jul 2026 08:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59363C870E
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784882874; cv=none; b=P2Clr+FnmRdviJOewuaKieqkLC465ZavzAgLCaf99B+oAZXnh+jTAtEsrAhlRdaOhYq8weTjuK6NY+e721sxpVnOWr9QcZBdpNOpT+SV55iGACdKFgRYd19eHa6eeoTYabl1+nIy/No7XpHfRre4d9gFLfhVq1fiOW8iBmHarg8=
+	t=1784883160; cv=none; b=mFGkGNypAGpS6hdQWx60FM0LSsarSEbBXf9d0XkhJlW7Ga+yjt0kLiqheDt+qbA4vxC8px1+HdQLLmvALoQRMnDho1tddZcwX/esi3dbmrl0hPgZ6arNsgFt3FHStfeP/l/Vdwcxip5GtpaBgFO5zO/tyZbxupKzoQzYTAnIauQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784882874; c=relaxed/simple;
-	bh=h3NDiqX+rGNiXkzjGF9eTlJaijNZG4QBavzJjFgAaZc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pUxVCU4MlH4d7Bvi1BGU6yNxVyGsdlZp0o1ip+Jh0EWj8f69nyPq61UhOuuf5igslc4IRGmmY7BZSL3AzdHjWsOg+78pVPyo+vYnjaaP5LITNF0I5j8o2Bz0/sYDKr7Vw5KD6khTqZ6rm+0VbAhdctzJxL1ae0pu35//Det+1Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=fail smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=D36sMkOD; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=windriver.com
+	s=arc-20240116; t=1784883160; c=relaxed/simple;
+	bh=TU2t+F0qMmilXXr9rDzcSLSoWHAU5V1hcfpKM1PF7II=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QlfSahzAU/BCTBVDeykZD0C3F07Zb4tiXrBYp7HF7eG+1mBn5pjeM/KCuvgIWVHnBAJkeXX86jGdGOdkDmjQeTKcaikF8BQ/nD2E+pYLCqq0m/9s7TMmb9zyFujRTDQFxkpmLN0UgOpXy88bNNZ4OtsfmW5LNV7qOZ95Wxn8M58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrnTcI4z; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="D36sMkOD"
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O6oJfv1326143;
-	Fri, 24 Jul 2026 08:46:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=bFjm9iSZE
-	fLquS44SuJeUnoXzQySb3+Is/c2MrJyP2w=; b=D36sMkODn1BW5Dd+9gR0+WGz7
-	kqT+zhLnkTZ7z8Haq0+m72EZYlrjQ8jUMP4gi/A9zp1L9oYXnE9hq+GSl220rL2U
-	qwmhqyN5crkSGVJZNs0Kityh9Lk7EqLIAwk3O7Mx1eNwyvQzfhp4y0ToXdjGSv6R
-	Hi49ZFcl8DkOcjsdUAghRGUaspujDKetadVcfj7+ioWLPwj002sxNum+1PwJsar4
-	Um7/iXXcIfXkMxhNw1IxZWVssmfV87HwqNFHHNTAbJH/auma+sDpFiM4s7Q4dU0H
-	no4qIMrvEs1w52l+wRPHqHf66u2QeNwWg5pymDRvynZSiUtGydOG7BRZZJb9Q==
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [128.224.246.37])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4fkdfsaabv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 24 Jul 2026 08:46:54 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.61; Fri, 24 Jul 2026 01:46:52 -0700
-Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
- 15.1.2507.61 via Frontend Transport; Fri, 24 Jul 2026 01:46:49 -0700
-From: Yun Zhou <yun.zhou@windriver.com>
-To: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-        <socketcan@hartkopp.net>
-CC: <linux-serial@vger.kernel.org>, <mkl@pengutronix.de>,
-        <linux-can@vger.kernel.org>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <horms@kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <yun.zhou@windriver.com>
-Subject: [PATCH v3] tty: ldisc: fix deadlock between ldisc_sem and rtnl_mutex
-Date: Fri, 24 Jul 2026 16:46:48 +0800
-Message-ID: <20260724084648.3879356-1-yun.zhou@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrnTcI4z"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-845b6d9bf39so188906b3a.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 01:52:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784883158; x=1785487958; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RXEn6DnJlp+z/3iwtjtL7o5DVxbThA9UIOkFBH/Ojxs=;
+        b=TrnTcI4zeHwv54WQ7ColIFczDbxAvOtjzdND9+1BEI7QCnfgIjphCqhFmqoMq+6jxZ
+         k3sk02TUSGRUiy5RkiK3k/vR1c5p1rgkolj6CSxoVCXur29D7V6dfI926Haov6R7gf+H
+         j2sDlsNnuskGF1Q8o+v2vQzdYDJ0ZN1H8pm+/Mni9IXF430J2AdHU4siGwNUkO6Ov4pB
+         dVklTptdvOBt4jBHo/RcVGb3J4l1BuI9FcwNjhhDR+j3HVTBvbciXfd2Q1HXFr1E2f/7
+         03r9fTzgzqDk5h9fhaQ2LboLCMNaoDMMvdqJudvp6C0ZFGrIF1qPq18jOIhntPcjOPrD
+         2XXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784883158; x=1785487958;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RXEn6DnJlp+z/3iwtjtL7o5DVxbThA9UIOkFBH/Ojxs=;
+        b=SuBlE1jB6fOp9+beyCqUrn5DXq38Ey++B7nHTiFTRfKerYOY2evJOWARTAa5M0sqQm
+         rE/WvNmJtzfbaMyvayoa+bfGSldPw0wHG5iDTFsMlL6EDnDkeSFJi57KUdH3/jh4la6a
+         ytRoGtVv2oOIIioDrKPRpCxGBaK9cXBENQyFlNfxc7M0T0xLZOOnEs6M1UaPLaCJYXrV
+         xULfe82/LnzUXh7CirBuY5JveXzGpby8aFO55QfkzHgbzq+kVANMaF8xqRmmBQYipOgQ
+         BzbY4EehBk8t+skhKvBTVWHxgoeZb5F3OwIabCXJobGvUUHri6sBNKZP2/V/MYxR14OK
+         8luA==
+X-Gm-Message-State: AOJu0YxXUsJRjwB3E92A3XgJMP9Q/7k5n8Q9qyj34MoEmkBkbwdclJwA
+	GQe0UhhjutIZIkj/0W8FF8L0O/i51lyFA+x7qww9cYj5ExVlmcuXCNCLcDWXPtAX
+X-Gm-Gg: AR+sD123vYjiPZ0sejuoes4od3JeiD5tF2tSszHX7ksyTJiuUbr4mW9xWwcGGWwCXnj
+	4e1GmYyChqW6HYGWFZghzvjjG2D+rfB2R2EQrWfAWg4DarzHyr2JeGgmeCgm503zqVDLIaED4tJ
+	CPwsUW2tqg21wCKOVao8qI1E+xWA5BimE6Un98JXmA/uZIWDAtFOJfWyG/5BfCK/tEXADwciFyA
+	0tYIWM+Y8tT5X7W8I46UI18xZlZ5jOFqmykb8KEiYbL6xc7mjXPLGGenirxNLV8WWPeuyQyWcMi
+	yqWaCykta/+7rNUXe07+HoCF5nS3IiwMDWURdwFN2hVDci7ujZN8+4FQ5J9Tw22dUX5Ya78XHT9
+	su77rtWrgx/uePV9ka5l+n4z25/m5nd96wZpqqpOWo2xLkOBt1c7Wh3dLOpC0qGKLFQBZ7JfdBE
+	zC
+X-Received: by 2002:a05:6a00:e89:b0:848:420a:9ce0 with SMTP id d2e1a72fcca58-84e2e8094aemr6572103b3a.6.1784883158018;
+        Fri, 24 Jul 2026 01:52:38 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17262e33sm4416793b3a.14.2026.07.24.01.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 01:52:37 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next] net: phylink: add phylink_pcs_loopback() method for PCS loopback support
+Date: Fri, 24 Jul 2026 16:52:24 +0800
+Message-Id: <20260724085224.3321663-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,164 +81,170 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA3OSBTYWx0ZWRfX/hsjabw3FN3L
- FI7UtUV+iDaklPsF3ADXhodYWwPNqSTDVIO/N8x5bGuILOIabmFV/gJEPQRYhGtPbYNIqhI2nyT
- gi1OkQ3tbNkcse0Jz0GiJN64f3l7B8yvrH1dKpT0WB3dzQcuUQdF
-X-Authority-Analysis: v=2.4 cv=EKE2FVZC c=1 sm=1 tr=0 ts=6a63267e cx=c_pps
- a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
- a=klDOsUkWDRETUCZYPvoE:22 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
- a=Hu20QylcDlXMs8uSXQcA:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: RP-VCYcV9A6QGH1hvMP68CROYlIKbXM5
-X-Proofpoint-GUID: RP-VCYcV9A6QGH1hvMP68CROYlIKbXM5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA3OSBTYWx0ZWRfX1rYkdmNupDAz
- sl2N09jtM8A234nJFJS68kGD0SRtvqjKVFo0dIm2ePwRHp5zM7Mh7jI78/qLo3RlJkA6aXKTe9o
- QFRCSb3JO74S9RwDIPHvKpxyDMxOKwE86+BtZ6MYRV24MoQsHw6vcv15bcOp5B57RV5QX0GVSkG
- O/ZqfYmq0X+JoupnZhrlANsECB2m2McV/+lxZZWO3CqtlPwMoIHFpq11MnogXtErTP13ZVasdf7
- 7Hm4m7QKOXvwbiHEeIX9pAi9OD/EkKTTHNQ5P3qBPOCoUnEeR+FtzzAIjDhnUgZDkhLiiI4wUZh
- xUhZNRw31P3EGXE47YFbYCg87Ahz5vU5KYeVQJySvd4jl8LVREX0+r2OOFQf0YBPyXjPqr8e80I
- tnj1eZvYb6kjL0ISST3dOSqIjWgb5i6iz3v7xJxseSJFZddJd/f2YNBygpU/CZNNu85rNHsvVy7
- 5u15XrODOKt+HJ9cpbw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 phishscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607240079
 
-syzbot reported a circular lock dependency involving tty ldisc_sem and
-the networking rtnl_mutex. The full chain is:
+Add a pcs_loopback callback to struct phylink_pcs_ops to allow PCS
+devices to expose loopback capability. This is useful for MAC drivers
+running selftests on interfaces that use in-band signalling and have
+no external PHY device.
 
-  rtnl_mutex --> nft_commit_mutex --> ... --> ep->mtx --> ldisc_sem --> rtnl_mutex
+The phylink_pcs_loopback() helper calls the PCS ops callback if
+available, and returns -EOPNOTSUPP for PCS devices that do not
+support loopback.
 
-The last edge (ldisc_sem -> rtnl_mutex) is created because tty line
-discipline .open() callbacks (slcan, slip) call register_netdev() which
-acquires rtnl_mutex, and .open() runs under ldisc_sem write lock in
-tty_set_ldisc().
+In stmmac, use phylink_pcs_loopback() in stmmac_test_phy_loopback()
+and stmmac_selftest_run() when no phydev is present but a PCS with
+loopback support exists. This enables PHY loopback selftests on
+interfaces without an external PHY.
 
-Fix by moving the .open() call outside the ldisc_sem write lock. The
-ldisc .open() is initialization of the NEW discipline after the old one
-has been closed - there is no need for ldisc_sem protection at this
-point since:
-
- - tty_lock is held throughout, preventing concurrent tty_set_ldisc,
-   hangup, or close
- - tty->ldisc is set to NULL during the window. tty_ldisc_ref_wait()
-   waits for the transition to complete. tty_ldisc_ref() returns NULL
-   which callers already handle.
- - tty buffer data stays queued until the ldisc is installed
-
-The sequence becomes:
-  1. Hold ldisc_sem(write): close old ldisc, set tty->ldisc = NULL
-  2. Release ldisc_sem(write)
-  3. Call new_ldisc->ops->open() without ldisc_sem
-  4. Re-acquire ldisc_sem(write): install new ldisc (or restore old)
-  5. Release ldisc_sem(write)
-
-Reported-by: syzbot+de610eeef174bd59a8a3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=de610eeef174bd59a8a3
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
 ---
-v3:
- - Use a while loop in tty_ldisc_ref_wait() to handle consecutive ldisc
-   switches where a reader could see NULL again after being woken up.
-v2:
- - Keep user-visible behavior unchanged: tty_ldisc_ref_wait() now waits
-   for the ldisc transition to complete instead of returning NULL (which
-   would cause spurious EOF/-EIO to concurrent readers).
- - Fix a race between tty_ldisc_ref_wait() and __tty_hangup() where a
-   reader could block forever if it observed ldisc==NULL before
-   TTY_HUPPED was set. Add wake_up() after set_bit(TTY_HUPPED).
+ .../stmicro/stmmac/stmmac_selftests.c         | 36 ++++++++++++++-----
+ drivers/net/phy/phylink.c                     | 19 ++++++++++
+ include/linux/phylink.h                       | 16 +++++++++
+ 3 files changed, 63 insertions(+), 8 deletions(-)
 
- drivers/tty/tty_io.c    |  7 +++++++
- drivers/tty/tty_ldisc.c | 30 ++++++++++++++++++++++++++++--
- 2 files changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 6b283fd03ff8..e2f82e80f397 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -649,6 +649,13 @@ static void __tty_hangup(struct tty_struct *tty, int exit_session)
- 	 */
- 	set_bit(TTY_HUPPED, &tty->flags);
- 	clear_bit(TTY_HUPPING, &tty->flags);
-+
-+	/*
-+	 * Wake up readers blocked in tty_ldisc_ref_wait() that may have
-+	 * seen ldisc == NULL but not yet TTY_HUPPED.
-+	 */
-+	wake_up(&tty->read_wait);
-+
- 	tty_unlock(tty);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index 29e824bd90ca..e6ac51018a65 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -377,20 +377,36 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
+ static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
+ {
+ 	struct stmmac_packet_attrs attr = { };
++	struct phylink_pcs *pcs;
+ 	int ret;
  
- 	if (f)
-diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
-index 27fe8236f662..6ec93e6b8498 100644
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -242,6 +242,16 @@ struct tty_ldisc *tty_ldisc_ref_wait(struct tty_struct *tty)
+-	if (!priv->dev->phydev)
+-		return -EOPNOTSUPP;
++	if (priv->dev->phydev) {
++		ret = phy_loopback(priv->dev->phydev, true, 0);
++		if (ret)
++			return ret;
  
- 	ldsem_down_read(&tty->ldisc_sem, MAX_SCHEDULE_TIMEOUT);
- 	ld = tty->ldisc;
-+	while (!ld && !test_bit(TTY_HUPPED, &tty->flags)) {
-+		ldsem_up_read(&tty->ldisc_sem);
+-	ret = phy_loopback(priv->dev->phydev, true, 0);
+-	if (ret)
++		attr.dst = priv->dev->dev_addr;
++		ret = __stmmac_test_loopback(priv, &attr);
 +
-+		/* ldisc may be NULL during a discipline switch; wait and retry */
-+		wait_event(tty->read_wait,
-+			   READ_ONCE(tty->ldisc) != NULL ||
-+			   test_bit(TTY_HUPPED, &tty->flags));
-+		ldsem_down_read(&tty->ldisc_sem, MAX_SCHEDULE_TIMEOUT);
-+		ld = tty->ldisc;
++		phy_loopback(priv->dev->phydev, false, 0);
+ 		return ret;
 +	}
- 	if (!ld)
- 		ldsem_up_read(&tty->ldisc_sem);
- 	return ld;
-@@ -556,15 +566,28 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- 	/* Shutdown the old discipline. */
- 	tty_ldisc_close(tty, old_ldisc);
  
--	/* Now set up the new line discipline. */
--	tty->ldisc = new_ldisc;
-+	/* Clear tty->ldisc so concurrent readers back off during transition */
-+	tty->ldisc = NULL;
- 	tty_set_termios_ldisc(tty, disc);
-+	tty_ldisc_unlock(tty);
+-	attr.dst = priv->dev->dev_addr;
+-	ret = __stmmac_test_loopback(priv, &attr);
++	/* Use PCS loopback for interfaces without an external PHY. */
++	pcs = priv->hw->phylink_pcs;
++	if (pcs) {
++		ret = phylink_pcs_loopback(pcs, true);
++		if (ret)
++			return ret;
  
-+	/*
-+	 * Open the new discipline outside ldisc_sem. The ldisc .open()
-+	 * may acquire locks (e.g., rtnl_mutex) that would create circular
-+	 * dependencies if taken under ldisc_sem. tty_lock is still held,
-+	 * preventing concurrent ldisc changes and hangup.
-+	 */
- 	retval = tty_ldisc_open(tty, new_ldisc);
+-	phy_loopback(priv->dev->phydev, false, 0);
+-	return ret;
++		attr.dst = priv->dev->dev_addr;
++		ret = __stmmac_test_loopback(priv, &attr);
 +
-+	tty_ldisc_lock(tty, MAX_SCHEDULE_TIMEOUT);
++		phylink_pcs_loopback(pcs, false);
++		return ret;
++	}
 +
- 	if (retval < 0) {
- 		/* Back to the old one or N_TTY if we can't */
- 		tty_ldisc_put(new_ldisc);
- 		tty_ldisc_restore(tty, old_ldisc);
-+	} else {
-+		/* Success - install new ldisc */
-+		tty->ldisc = new_ldisc;
- 	}
++	return -EOPNOTSUPP;
+ }
  
- 	if (tty->ldisc->ops->num != old_ldisc->ops->num && tty->ops->set_ldisc) {
-@@ -584,6 +607,9 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- out:
- 	tty_ldisc_unlock(tty);
+ static int stmmac_test_mmc(struct stmmac_priv *priv)
+@@ -1986,6 +2002,8 @@ void stmmac_selftest_run(struct net_device *dev,
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+ 				ret = phy_loopback(dev->phydev, true, 0);
++			else if (priv->hw->phylink_pcs)
++				ret = phylink_pcs_loopback(priv->hw->phylink_pcs, true);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+@@ -2019,6 +2037,8 @@ void stmmac_selftest_run(struct net_device *dev,
+ 			ret = -EOPNOTSUPP;
+ 			if (dev->phydev)
+ 				ret = phy_loopback(dev->phydev, false, 0);
++			else if (priv->hw->phylink_pcs)
++				ret = phylink_pcs_loopback(priv->hw->phylink_pcs, false);
+ 			if (!ret)
+ 				break;
+ 			fallthrough;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 59dfe35afa54..a7f78c82913a 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -997,6 +997,25 @@ int phylink_pcs_pre_init(struct phylink *pl, struct phylink_pcs *pcs)
+ }
+ EXPORT_SYMBOL_GPL(phylink_pcs_pre_init);
  
-+	/* Wake up readers waiting for the ldisc transition to complete */
-+	wake_up(&tty->read_wait);
++/**
++ * phylink_pcs_loopback() - Enable or disable loopback at the PCS
++ * @pcs: a pointer to a &struct phylink_pcs.
++ * @enable: true to enable loopback, false to disable
++ *
++ * Enable or disable loopback mode at the PCS level. This is used by MAC
++ * drivers for selftest purposes when no external PHY is present.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable)
++{
++	if (pcs->ops->pcs_loopback)
++		return pcs->ops->pcs_loopback(pcs, enable);
 +
- 	/*
- 	 * Restart the work queue in case no characters kick it off. Safe if
- 	 * already running
++	return -EOPNOTSUPP;
++}
++EXPORT_SYMBOL_GPL(phylink_pcs_loopback);
++
+ static void phylink_mac_config(struct phylink *pl,
+ 			       const struct phylink_link_state *state)
+ {
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 2bc0db3d52ac..66c7016d4acd 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -518,6 +518,7 @@ struct phylink_pcs {
+  *		    the MAC.
+  * @pcs_pre_init: configure PCS components necessary for MAC hardware
+  *                initialization e.g. RX clock for stmmac.
++ * @pcs_loopback: enable/disable loopback mode at the PCS.
+  */
+ struct phylink_pcs_ops {
+ 	int (*pcs_validate)(struct phylink_pcs *pcs, unsigned long *supported,
+@@ -542,6 +543,7 @@ struct phylink_pcs_ops {
+ 	void (*pcs_disable_eee)(struct phylink_pcs *pcs);
+ 	void (*pcs_enable_eee)(struct phylink_pcs *pcs);
+ 	int (*pcs_pre_init)(struct phylink_pcs *pcs);
++	int (*pcs_loopback)(struct phylink_pcs *pcs, bool enable);
+ };
+ 
+ #if 0 /* For kernel-doc purposes only. */
+@@ -717,8 +719,22 @@ void pcs_enable_eee(struct phylink_pcs *pcs);
+  */
+ int pcs_pre_init(struct phylink_pcs *pcs);
+ 
++/**
++ * pcs_loopback() - Enable or disable loopback at the PCS
++ * @pcs: a pointer to a &struct phylink_pcs.
++ * @enable: true to enable loopback, false to disable
++ *
++ * Enable or disable loopback mode at the PCS level. This is used by MAC
++ * drivers for selftest purposes when no external PHY is present.
++ *
++ * Returns 0 on success, or a negative error code on failure.
++ */
++int pcs_loopback(struct phylink_pcs *pcs, bool enable);
++
+ #endif
+ 
++int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable);
++
+ struct phylink *phylink_create(struct phylink_config *,
+ 			       const struct fwnode_handle *,
+ 			       phy_interface_t,
+
+base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
 -- 
-2.43.0
+2.34.1
 
