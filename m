@@ -1,175 +1,136 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8940F3FF8BD;
-	Fri, 24 Jul 2026 15:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905548; cv=none; b=caisosJ1nuR0PFpMsAFIukrHDvPXBf0M9CDTwPU5ZBMKeC1yqXmOGQObo/f3Egct2nunLOR4bXIC4Q0a9SC/sVi4bj4YwGyCze5ZFHNsXb/9xkfsqWJWgcvUC7jIiSBRF+2d5CVrPOZEmB599IKIS4hVoRFbfUizNPn1rCjA4bA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905548; c=relaxed/simple;
-	bh=+A8B0JPSmD/xUyC+pYs2LiOcJ/XUtyBFB0JYHXAm1MQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qqj3kdHyUZG3L0Ujzcl4zUuHq6VPe134JhszKC0wwa8FtDRXMeV3Rv11x68CV04qv4zFWm9lfr+cUm5EQh03Uy9HJiGd87uLZY7JpRPYBK6P6r5SrnaeQ1Hv6sopwbQFcjewtQOWHELYtgaYvNk7Fk01B3TY/U8kOJ/+1LyOL0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=T3cVR16e; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C71444719
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784905568; cv=pass; b=locDAfnCK0006lQsXP6phM/KXjV4VZCuTjFUl2Wo9H1jjb4NiyZyXPLWlucTTSexixRu+zMwTFiA2DK51legjWVjPqy7m0+R03zk69+toHQCNbe7S31Xf3arZFnmmnll6IKJnP6egBNZRfPpqdA5sh5eVwTHqPJUJ5O8wS/YJ4s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784905568; c=relaxed/simple;
+	bh=I2AhTyeN3QRdL8SRsF8YtEzSAzEn5+ptNy7HN5yACgQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VS46mvZdoa4nGm5fAV8Uxdg4Zl+2cKfkV5dFs7gs2ij0edFvIZwtColSf9W6DmWztHIJbFHJyo0q3XeWvj0TU219HSG+ya3nKM3Lf+3mBz/Mmnxq0j5vL1LyzBbczrVTIlAezPxxxtgMs8+tupQVowVFL0jAe5TMTOWbugUWrGQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QmcEQY5m; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="T3cVR16e"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=lv/c+QRGRLtWRpVznQafej5v9W18F2xyE1OZZGHaCVg=; b=T3cVR16e1Gru5GfYXPU98uH7Yw
-	eeygEj8Wj0xF2dSkfBkXUHMgXP0oSF1a97ZJGRt6EDWN1PTY49eV2Jo/mVRIeTPQFtzFOpPXr9DXW
-	v/AHk1Q3F+ADJzquM4wMGjMfJ2BEkdG9mQo+aIGyP+NlyYbjhLuz/P23rlkSvrjnvYsqMwzEYuc/4
-	dMMfTyN03bGlB1hFehkBAvAHM3IsnS763vfavgIT75l/gc27Wqre96ppVEL8cavTo9249BA288Y6g
-	7KZRQs8/Ks8WLxgC0f6AqWmNMFNYNC8Z78TEZXccKH9GVHxRZ0GQv91UATsCvsk1sykxpHH9+BBbw
-	BEKPkOxA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wnHT6-004dvE-1x;
-	Fri, 24 Jul 2026 15:05:44 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 24 Jul 2026 08:04:17 -0700
-Subject: [PATCH net-next 9/9] netconsole: move netpoll_wait_carrier() as
- netcons_wait_carrier()
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QmcEQY5m"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cede6375caso73825ad.0
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:06:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784905565; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UfK6vCsH1mgmzv1nQAhoOH5/aQKcT06vyJxKVS4Rm7iZbmxgW243W5a5OKTv5WE5PE
+         Cc2uJJmrUn2dH+6LMVdjHGeZCnJEeUFH8BgJ2gcH27QeY+6iT+nU0p/lweHWXE6sWOeP
+         O90K8cJg2GVHJ24Dl7zxpwoORPhOZepfPjsTFaoceEDaxkL97/iY5NMb116x6tlbWeYq
+         pyWAHVqaS8ooTL4vhlBKW0sccucefDwyEMh+67iCLuwxfTQca5yILxr6ZVBNJiCcm8Uh
+         1Xi18vHcdpB5/b7P2eurqCrSVA3QiYCHodAT3jHhpBcrQ8WXL8Yge+I8o0C/Q4+ekbHk
+         IvYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=I2AhTyeN3QRdL8SRsF8YtEzSAzEn5+ptNy7HN5yACgQ=;
+        fh=0WtAV0v/cjY2FoyngvHd7nfvfMgyNYfDm5Dy87Ws3vg=;
+        b=hGFSmqyfJ7bLsI3EKiQ0BchuQYCjSMAY6C9M3m4i/HyD3qfeG4CBLohT2hbHvm7STq
+         V0zDD4L18iu2Offud84GBpI/PeOs0CeYRiXydLhj/c/KdSuhfeGL7lD9BntAhz3yjLuE
+         urAkyV5X6u0IRb4jiFNK6Z7zq2xx9Xl6nyrNN5lcJEGPO4Iyb69epiz4TLLnQI3mEzSD
+         +Dz3GsGiUebBTc2vMyyazQyDGQuFlhJXJfoxQE5ifEcgj1267xSD7LtubHmTgIKurk02
+         3TRdq+avrQXPYYxqvkrwA42ePQeTIPALKsW9gGdcSgPLpVDJF/rc0Y3TalRTK7JdHQWH
+         4ygQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784905565; x=1785510365; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=I2AhTyeN3QRdL8SRsF8YtEzSAzEn5+ptNy7HN5yACgQ=;
+        b=QmcEQY5mzSsOHqpAYuQdLkTt3hXzp6ENcX3MU+pcHpUaFux9hmDAiBrkujOWmSy212
+         GSRbwwgTHBq3oKRdgRdsEevFPh/TtzOnmICS2ssYvVaxXb4Exer+C2SNVIqjRWmV7sE6
+         uCM+6SPDBRGqHN3jOSSHC8Pl5CMBjajsu6pmYuB7VrdDGCfVczsO+t5r5NyCMBNwMAqf
+         8FLbAqC/JD2l0KspXY5LxD/HYogZKWrTvKHGDNIXqUXZ5/oBjUbdN/ZP6ubocSFv3hKk
+         Pdn6+71YBFBpVXO+DIQ1HkAwobhbsSVpchLZGRGpWUh0ipYWVbSCUxu1Y9lJe15RzebL
+         VUXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784905565; x=1785510365;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I2AhTyeN3QRdL8SRsF8YtEzSAzEn5+ptNy7HN5yACgQ=;
+        b=iVccpMdTM9B0ooB82JeXB6NIZtqwPYxRvg1y2yyTFfeXTtwgnxHtztTmeILV9c8ttC
+         7ESwQThzvMAsRMCmFk6PPgLaXulKDsYf34MXtqwYv4FrDDX0fGv70aYy/8lVB8mag+pz
+         PDVdM1flY7Eo7rLA3NgUhVKa6YajAU6nB6AyDslDL5r674750TYAO6pJafweDETJnkKw
+         aOH0NqksejCwJSdIyU7fCLm0PJKMXpqTOSNT7SJvChhRlbPgQY9LTqDXgFlqDA4hin6+
+         iJeUHoXGsIxjdxWUrKYxzSf8h3h9W6s7FbQzYmqtOsMNKcjtErcDXIieUHoOHrYr4N0u
+         odJA==
+X-Forwarded-Encrypted: i=1; AHgh+RoZP0vvXbPjwuBVR4w61LMSqVEWZ9pFgpeIg4nNZPOc61jAkCbvfniyEFbKgr2ZROUk6+HKsBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7q1SWeXX+nuLvkgBgPxCi02chh5WjK7UszkSgP7o550WxwX0I
+	soOuRbUjrPWXyOeqyGXZvE/cm56c+B4IxWimcSUFwDdWlg7ok/+cacmkg5s+Yr7ATzV+XdYUW2Z
+	3/eUdNteHMzcnlTAMYkognSaKts6Ci82q8GXnXfDI
+X-Gm-Gg: AR+sD13QN0mF75oLbLVLzLemJH1oP/YQ90zSEurGx1ycJHD/FBp6EqLYFAz30jf+rtu
+	STE4kBkezLDom+/f5XXzxbZN3xGUNMcejR1UshOZuC//u/5kTPcMkMLIy/LiemE1wrWFCxYmGWu
+	ZD4ZToOe3HUQPB0Zc1ZfZWonc6q5+6i/FPcTb8PhC9me8p5G++2+cSjSn9FkbQVJcSPBV2M9mDF
+	a2JFMzGzUAnV8jEely4MI2aJiCECswUcuClHYcOZNxfztmiqGrgxikSBakz1Q==
+X-Received: by 2002:a17:903:41c3:b0:2c6:a078:bfb7 with SMTP id
+ d9443c01a7336-2cfd0fb3585mr3755725ad.7.1784905564254; Fri, 24 Jul 2026
+ 08:06:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-netconsole_move_more_final-v1-9-a5f7691db81c@debian.org>
-References: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
-In-Reply-To: <20260724-netconsole_move_more_final-v1-0-a5f7691db81c@debian.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- gustavold@gmail.com, asantostc@gmail.com, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3360; i=leitao@debian.org;
- h=from:subject:message-id; bh=+A8B0JPSmD/xUyC+pYs2LiOcJ/XUtyBFB0JYHXAm1MQ=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqY38evC/p7PSLCmKg+KA8GeI40lbdTs3SyQCcO
- tzwUg9d5iuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamN/HgAKCRA1o5Of/Hh3
- bWWWD/0f837U/WtUTf+1lifEKya6uv/6rvbOlgxHyN89bxp5aGjVRT+Qr4nO+UW1it235G9muFl
- ZtC1BbLPmJ84lBcxWllGf5pafDhG4qgklm8nbnyv/Ww11JJnDIXvVG4dK1Y5TA5ADCIyPWYUD4a
- 5XzS62MDANo0S4Uz+f8cPcEDZvvYODP0QDLXZPaCy33L3kvyBceIBGjBb/07w8B8tn2LdbETQuJ
- uZv+m2BWmgA54OAi85V22wfslfuqMp4ufOc4bBzrlJZFsW9V6QUhz+hwkwex6tlR6CMf0/qte54
- CMJisqDW0BiazmMhloBIaDOExnXaoSPQB9uQaP3NcRL1fKE32konzkY2rjrVUMad7v5IKbNTdV4
- oGvfxl50liP/h+TK0gEekV8jA0e/jwNogCep5r7hf5oTEwX1QmHr6ks8IsJOTkXPUIqB4K/lSOO
- TrnTQxcSPME7IdOzLJqpTuFizjNpA0y3VPyHRLkRPQeq7SmxikEoVnZfbCIpBLWj4zBjunUUtGg
- Jls0BaNRnsxQN00ZZtfF2yEcr+EXng7lkAGlVjK0Uk/6gvK1UozljIv/OmWkGytKwCquUKMs2O3
- OF9Vt3GT4tNadcrzbn+P+1km/SYLvjZ5jQjtnZYXrbQeKT6gjqrd8v5aMZVtGos34R7ba0Kcuej
- EU5tVcgzZjqZVKw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+References: <20260724150156.72816-1-doruk@0sec.ai>
+In-Reply-To: <20260724150156.72816-1-doruk@0sec.ai>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 24 Jul 2026 08:05:51 -0700
+X-Gm-Features: AUfX_mwLgnAT3LWQNCfXsdDgeg6v8reQG-fWkKN1sEa9xceCtFPXGiiL_UvIO_E
+Message-ID: <CAHS8izPJK1wm0a2FQA7L-fjKc9pLiqYBDyf_GEb_AvnBL49gOw@mail.gmail.com>
+Subject: Re: [PATCH net] netdev: require admin permission for the bind-tx
+ netlink operation
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Donald Hunter <donald.hunter@gmail.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-netpoll_wait_carrier() waits for the egress device carrier during
-netconsole setup. Its only caller, netcons_netpoll_setup(), already
-lives in netconsole. Move the function into drivers/net/netconsole.c,
-drop EXPORT_SYMBOL_GPL() and remove the prototype from <linux/netpoll.h>.
+On Fri, Jul 24, 2026 at 8:01=E2=80=AFAM Doruk Tan Ozturk <doruk@0sec.ai> wr=
+ote:
+>
+> The netdev generic-netlink bind-rx operation (NETDEV_CMD_BIND_RX) is
+> flagged uns-admin-perm, so binding a dmabuf into a device RX datapath
+> requires CAP_NET_ADMIN. The symmetric bind-tx operation
+> (NETDEV_CMD_BIND_TX), added later, was given no permission flag. The
+> netdev family sets netnsok and has no pre_doit, and
+> netdev_nl_bind_tx_doit() performs no capability check, so any
+> unprivileged process can bind a dmabuf into a netmem-TX-capable device
+> TX datapath.
+>
+> net_devmem_bind_dmabuf() attaches and DMA-maps the caller-supplied
+> dmabuf to the device and installs TX device-memory state, the same
+> class of privileged device operation that bind-rx restricts. Gate
+> bind-tx behind uns-admin-perm to match bind-rx.
+>
+> Found by 0sec (https://0sec.ai).
+>
+> Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
+> Cc: stable@vger.kernel.org
+> Assisted-by: 0sec:multi-model
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 
-Rename it to netcons_wait_carrier() for the netcons_ prefix. It now reads
-the timeout through netpoll_get_carrier_timeout(), since carrier_timeout
-stays in netpoll to keep the netpoll.carrier_timeout parameter.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 17 ++++++++++++++++-
- include/linux/netpoll.h  |  1 -
- net/core/netpoll.c       | 15 ---------------
- 3 files changed, 16 insertions(+), 17 deletions(-)
+It's intentional that NET_ADMIN is needed for RX but not TX. Maybe add
+that to the documentation.
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 199d0e1ac17b2..03913302328cc 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -48,6 +48,7 @@
- #include <linux/utsname.h>
- #include <linux/rtnetlink.h>
- #include <linux/workqueue.h>
-+#include <linux/delay.h>
- 
- MODULE_AUTHOR("Matt Mackall <mpm@selenic.com>");
- MODULE_DESCRIPTION("Console driver for network interfaces");
-@@ -356,6 +357,20 @@ static void netconsole_skb_pool_flush(struct netconsole_target *nt)
- 	skb_queue_purge_reason(&nt->skb_pool, SKB_CONSUMED);
- }
- 
-+static void netcons_wait_carrier(struct netpoll *np, struct net_device *ndev)
-+{
-+	unsigned long atmost;
-+
-+	atmost = jiffies + netpoll_get_carrier_timeout() * HZ;
-+	while (!netif_carrier_ok(ndev)) {
-+		if (time_after(jiffies, atmost)) {
-+			np_notice(np, "timeout waiting for carrier\n");
-+			break;
-+		}
-+		msleep(1);
-+	}
-+}
-+
- /*
-  * Returns a pointer to a string representation of the identifier used
-  * to select the egress interface for the given netpoll instance. buf
-@@ -504,7 +519,7 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
- 		}
- 
- 		rtnl_unlock();
--		netpoll_wait_carrier(np, ndev);
-+		netcons_wait_carrier(np, ndev);
- 		rtnl_lock();
- 	}
- 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index ef88a30b11f40..1c6b1eec5efd6 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -69,7 +69,6 @@ void do_netpoll_cleanup(struct netpoll *np);
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
- void netpoll_zap_completion_queue(void);
- unsigned int netpoll_get_carrier_timeout(void);
--void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev);
- 
- #ifdef CONFIG_NETPOLL
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index f385ae4b70f5c..fe1e0cda5d6bf 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -392,21 +392,6 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- }
- EXPORT_SYMBOL_GPL(__netpoll_setup);
- 
--void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev)
--{
--	unsigned long atmost;
--
--	atmost = jiffies + carrier_timeout * HZ;
--	while (!netif_carrier_ok(ndev)) {
--		if (time_after(jiffies, atmost)) {
--			np_notice(np, "timeout waiting for carrier\n");
--			break;
--		}
--		msleep(1);
--	}
--}
--EXPORT_SYMBOL_GPL(netpoll_wait_carrier);
--
- static void rcu_cleanup_netpoll_info(struct rcu_head *rcu_head)
- {
- 	struct netpoll_info *npinfo =
+On RX you'll see any received packets on the RX queue, so binding
+memory there is sensitive. However binding a dmabuf to a netdev for TX
+is not really sensitive. It's the same as sendmsg with zerocopy more
+or less.
 
--- 
-2.53.0-Meta
-
+--=20
+Thanks,
+Mina
