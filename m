@@ -1,166 +1,127 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50030175A99
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 01:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1219718DB2A;
+	Fri, 24 Jul 2026 01:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784856472; cv=none; b=WOQ4cjVo/3D80bxAsvV8kV5JwQI4Ot1obLjPx7qyZ2IGL/ikRyamurRtO2YUC7GPvV9IroSGZ1PARhy/YH2z2TYQ7hwBZzjcFJjxeNRIdEn1dCZuqMOSO7CjnQtLK7PfGRvhR9oDvp3v/o6BIf8mfO7K082K5PlvzKpdInlsAbk=
+	t=1784857572; cv=none; b=l+LSB/KEmjgJo1sfsS72tiK7PS+hkjGQOL3KmxGQsWhEyJzP5xCpReZ/ncc5dLwTF71Dl0QB/aA2kcg8zS++7Lt3VMwScOsTFRIU+6hJ5yaErxFUgTyPi9LTyHHnkh7GPu49S+2BC8qIegEQ46eVs8dgYeYDlues2VVTLSgXBxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784856472; c=relaxed/simple;
-	bh=rd1umf0VSLrHXu1Qxtjxl3cIR8b2H++AaAMoFeEpxYM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:Cc:
-	 In-Reply-To:Content-Type; b=CHrx/W4neVAW/aD5mHCH7rBY7LpFAWFzUT7W8BrYJpDgRLORxyDFIW9vCoF/wnC5zt232dHSb5o/onu16716pNegWB8tk98x6y/ugflU6aLtn/16dFRwntNhqKVWnRMXYHHxcXRDwsWl59+rgomXpjQZ5Q31W20sguwoHFNQUXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h5r1w1VhNzKHML8
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:27:00 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 60548407BA
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 09:27:46 +0800 (CST)
-Received: from [10.67.110.68] (unknown [10.67.110.68])
-	by APP4 (Coremail) with UTF8SMTPA id gCh0CgCn1leRv2Jqy_pcCQ--.22068S2;
-	Fri, 24 Jul 2026 09:27:46 +0800 (CST)
-Message-ID: <0655607d-9aa4-472f-b7f5-b2abf3cbfe75@huaweicloud.com>
-Date: Fri, 24 Jul 2026 09:27:44 +0800
+	s=arc-20240116; t=1784857572; c=relaxed/simple;
+	bh=K3R9dXT1oqN7EZDFgiVlSqQzPhDVmSwIdKLD2Cba840=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=P68sVowon9JbHj/Gb/B/vD/nRAgcUmEWUml4tEZs0CiBKTCw/Reo6v7++0ZEsUadiqt/wYfh0JXFC9aQSagrVZKzN58rCAdjDjJBCy2F1N4jiyKEsq9HkB/4qW+kYOOIoG8fW4OauVStQski+BOmFAGQfh2wK2wMMDGaCEKlU5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=NG1acsBG; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="NG1acsBG"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66O1iiAP3900934, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1784857485;
+	bh=Junt9qVEf0yP8lCaArQWTGl6/obCrfXpWF8vs+jDRmA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=NG1acsBGCW44GK4mT21Q22Gmy2nRvYc1hNRMYiDC71Xzex5tGwDvRKMT4CCCdcqU+
+	 o9XDpkkX7pjwwp/kJ9ldyYByo5qW9r7p9uh5vNP4I4VbkxtW4oR3mc+sDb4ij5Pydh
+	 r3LUX4o2D3Tqe9H7NLWKLps4NDz1CEqlw3re7WvWoNs7E/HM2h0WQoVjrh2TpN4uMG
+	 Z32xL1YqAxBTQgUTcvkh7RQKnsm9gEOIBn8EoyinjGCefIHPjBt0fLfaQuPR2Fy/g5
+	 Tpien4UmcBnJpD5gVjl+rdPhRSJKJc2xCbEQreo/MeqGE+MgawDmjbaUijBgzbyIg5
+	 izxTg1Dp2YMwA==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66O1iiAP3900934
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 24 Jul 2026 09:44:45 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 24 Jul 2026 09:44:44 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Fri,
+ 24 Jul 2026 09:44:44 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
+	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: RE: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Topic: [PATCH net-next v7 4/7] r8169: add support for RTL8116af
+Thread-Index: AQHdGYHgECGgdwHRfk+In15lMVg2/7Z5x7IAgAClguCAAB6GgIABXLaQ
+Date: Fri, 24 Jul 2026 01:44:44 +0000
+Message-ID: <75521d902ba24ed0b97d14b8002ace85@realsil.com.cn>
+References: <20260722022906.271-1-javen_xu@realsil.com.cn>
+ <20260722022906.271-5-javen_xu@realsil.com.cn>
+ <ff90f295-31df-490b-aad3-1bba6ef0ab5d@lunn.ch>
+ <90aea677b62e44f3a705caa900b3af95@realsil.com.cn>
+ <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
+In-Reply-To: <b01e69e8-3c8a-4af5-9de2-19d73713cff3@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] e1000e: Fix out-of-bounds MMIO access by
- validating BAR0 size
-Content-Language: en-US
-From: Pu Lehui <pulehui@huaweicloud.com>
-To: Andrew Lunn <andrew@lunn.ch>, sashiko-reviews@lists.linux.dev
-References: <20260722031603.1471127-1-pulehui@huaweicloud.com>
- <20260722033703.2E5A71F000E9@smtp.kernel.org>
- <3322e323-da9d-453d-8c41-470e4649684a@huaweicloud.com>
-Cc: Networking <netdev@vger.kernel.org>
-In-Reply-To: <3322e323-da9d-453d-8c41-470e4649684a@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCn1leRv2Jqy_pcCQ--.22068S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxury7JF1fCFyrJF1Uuw1xKrg_yoWrJrW5pa
-	ykKas8uFW8Jrsaqa12vr48ZFyDGa13tF4UGFyYqFn0va4Y9r1xKrW2grW5u347Xw4kZryx
-	trn0y343ZF4DA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUgmb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
-	0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
-	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
-	AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
-	42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
-	IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2
-	KfnxnUUI43ZEXa7IU1CPfJUUUUU==
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
+>
+>On Thu, Jul 23, 2026 at 03:21:26AM +0000, Javen wrote:
+>> >
+>> >>  static void rtl8169_init_phy(struct rtl8169_private *tp)  {
+>> >> +     phy_init_hw(tp->phydev);
+>> >> +     phy_resume(tp->phydev);
+>> >>       r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
+>> >>
+>> >>       if (tp->mac_version <=3D RTL_GIGA_MAC_VER_06) { @@ -2562,7
+>> >> +2607,7 @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
+>> >>           tp->pci_dev->subsystem_device =3D=3D 0xe000)
+>> >>               phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
+>> >>
+>> >> -     if (tp->sfp_mode)
+>> >> +     if (tp->sfp_mode =3D=3D RTL_SFP_8127_ATF)
+>> >>               rtl_sfp_init(tp);
+>> >
+>> >This could be diff getting me confused....
+>> >
+>> >You unconditionally call phy_init_hw() and phy_resume(). And then if
+>> >this device should have an SFP you do something else. How can a
+>> >device with an SFP also have a PHY?
+>>
+>> I totally agree that the SFP initialization logic does not belong in a f=
+unction
+>meant for PHYs. But rtl_sfp_init() call was already located inside
+>rtl8169_init_phy() before my series. And it works well. This mainly becaus=
+e the
+>patch which add support for RTL8127atf(commit id: fef0f545511f72223)
+>assume that RTL8127atf has a dummy phy. So tp->phydev will not be NULL.
+>
+>[Goes and looks at what rtl_sfp_init() actually does]
+>
+>So it does not touch phydev making this function at least safe.
+>
+>> And in patch 5/7 of this series which add phylink support for RTL8127atf=
+, I
+>remove it.
+>
+>Yes, i did notice the dummy PHY getting deleted. I will look at that patch=
+ in
+>more detail.
+>
 
-Gentle ping~ hope this message would not miss.
+Thanks for checking that. Looking forward to your feedback on patch 5/7.
 
-And +cc netdev@vger.kernel.org as I missed it.
+BRs,
+Javen
 
-
-On 2026/7/22 16:34, Pu Lehui wrote:
-> 
-> On 2026/7/22 11:37, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 1 potential 
->> issue(s) to consider:
->>
->> Pre-existing issues:
->> - [High] The newly introduced minimum BAR0 length check 
->> `E1000_MMIO_LEN_MIN` is too small because it fails to account for 
->> flash registers mapped into the GbE memory space for newer MACs, 
->> leaving the driver vulnerable to the same OOB MMIO access panics it 
->> attempts to fix.
->> -- 
->>
->> --- Patch [1]: [PATCH net v3] e1000e: Fix out-of-bounds MMIO access by 
->> validating BAR0 size ---
->> commit 9c24a014d2bfbd3a6822ff92be6a5c7aceb588d4
->> Author: Pu Lehui <pulehui@huawei.com>
->> Subject: e1000e: Fix out-of-bounds MMIO access by validating BAR0 size
->>
->> This patch adds a check during e1000_probe() to validate that the 
->> device's
->> BAR0 size is large enough to cover the highest register offset 
->> (E1000_SYSSTMPH)
->> accessed by the driver. This is intended to fix a kernel panic caused by
->> out-of-bounds MMIO reads when dealing with small BAR0 allocations.
->>
->>> diff --git a/drivers/net/ethernet/intel/e1000e/regs.h 
->>> b/drivers/net/ethernet/intel/e1000e/regs.h
->>> index 6c0cd8cab3ef2..1e875227eef24 100644
->>> --- a/drivers/net/ethernet/intel/e1000e/regs.h
->>> +++ b/drivers/net/ethernet/intel/e1000e/regs.h
->> [ ... ]
->>> @@ -242,4 +242,7 @@
->>>   /* PHY registers */
->>>   #define I82579_DFT_CTRL    PHY_REG(769, 20)
->>> +/* Smallest BAR0 that covers every register the driver accesses */
->>> +#define E1000_MMIO_LEN_MIN    (E1000_SYSSTMPH + sizeof(u32))
->>
->> [Severity: High]
->> This isn't a bug introduced by this patch, but does this minimum length
->> cover all register accesses for newer MACs?
->>
->> For MAC types e1000_pch_spt and newer, the driver accesses flash 
->> registers
->> mapped at E1000_FLASH_BASE_ADDR (0xE000). For example, during flash read:
->>
->> drivers/net/ethernet/intel/e1000e/ich8lan.c:e1000_init_nvm_params_ich8lan() {
->>      ...
->>      hw->flash_address = hw->hw_addr + E1000_FLASH_BASE_ADDR;
->>      ...
->> }
->>
->> And then later accesses like:
->>
->> drivers/net/ethernet/intel/e1000e/ich8lan.c:e1000_read_flash_data32_ich8lan() {
->>      ...
->>      *data = er32flash(ICH_FLASH_FDATA0);
->>      ...
->> }
->>
->> This results in an access at offset 0xE010 (57360 bytes).
->>
->> Since E1000_MMIO_LEN_MIN is currently based on E1000_SYSSTMPH
->> (0xB64C + 4 = 46672 bytes), could a malicious or mocked PCI device 
->> expose a
->> BAR0 size of 12 pages (49152 bytes), pass this new check, and still 
->> trigger
->> an out-of-bounds MMIO read panic when accessing the flash space?
->>
-> 
-> Hi Andrew,
-> 
-> Sashiko is right about this one.
-> 
-> On ich chipsets, the driver sets the flash base address like this:
-> 
-> hw->flash_address = hw->hw_addr + E1000_FLASH_BASE_ADDR; // 0xE000
-> 
-> Then it accesses flash registers up to ICH_FLASH_PR0 (0x0074), so the 
-> max offset ends up being 0xE000 + 0x0074 + sizeof(u32) — that’s about 
-> 57.1 KB. Pretty subtle, and yeah, we totally missed it in v3.
-> 
-> Since PCI BAR sizes are power-of-two aligned, the smallest standard BAR 
-> size that can cover accesses beyond 57.1 KB is 64 KB.
-> 
-> So for v4, I’d like to set E1000_MMIO_LEN_MIN to SZ_64K. That keeps us 
-> safely covering the largest register offset we use, avoids fragile 
-> hardcoded values, and should be more future-proof if other chipset flash 
-> ranges come into play.
-> 
-> wdyt? :)
-> 
-> Thanks,
-> Lehui
-
+>      Thanks
+>        Andrew
