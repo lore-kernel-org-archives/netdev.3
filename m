@@ -1,60 +1,62 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671FA43C067
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607EA3090C5
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 14:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784903509; cv=none; b=dkOLLaHBqGoddf5jp1ciZOFwnN7qwhx1iflMN8PVCKjuZ01LHCpGW9U7ze8oC7lC6QT9FGeG6laggQ0Zo8UOkqM1yGvKxYwXMSgAiAx4vikiPIsVgl4hiAqMycgF3Cm9cgKJt/DvWcBZuTdnNCOZUiTVspiN0vdiPPNy/FZkHqo=
+	t=1784903517; cv=none; b=PPLcWmR/i4q9QI9iMhll6OJRce/ygJ/KyN+QCJH6poETEvcY5nOyl2OhPkJ+SZCrMKmKnkk3RucAM1xWFIz7teJMnqPz9oDgbjGxOE3yEjhvYMB4nXo6rS0zremCiVXNCYrddH4GCyVK7d0SLSiKVHXNVX5a3m99wo09RL/xM8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784903509; c=relaxed/simple;
-	bh=GzVx9YiqdDdcYfoWaGXRQFddGcC6d0JJsO8fI1gajBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f1IPZsHBu2WfR9IR3lxOafZPKiNuI6cHhHhcBP+GptZ4Sal6Udtf4HB8BaofmAcEBtq/l8B5B58VtIGXp1POg4edL3nbsq/wcGLDTKf63DQqpu/YtKkz3bf2FmDD8xpBcBYcxZoazzw5HJxtL+IIsoe5LxEkeGtDaXvc5RX2P70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZtiF1ow; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1784903517; c=relaxed/simple;
+	bh=fy/6VXrca6cTArIkcwgbzqSy4nb88fvBRtyEt2AiW6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DJ0SPPSbr/CuNJRAdgeL8xPzwSAoW/umrhw4ypw/BukCdjpnnun8G5cTLRxouzRlNtPOFgyIeKseDA45gZ68TwSDYcB6/E7ODWNlOTHU9MgYgpLkeBn5V+KHUu2lCfgufAgUvn6h57iRGm9g0e/R4UD30cvdgKXB9dtfsJV2gRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h4BeGEeD; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZtiF1ow"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4758bd3731bso448524f8f.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:31:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h4BeGEeD"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47640541585so360352f8f.1
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 07:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784903507; x=1785508307; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9IqVF2cJIKIMbhzyT3GSr2FYGdQegDZUwKZVuJLzwZk=;
-        b=mZtiF1owkE3YTR6Eto5ZsRw3vhFjBCF7r9TRVhMxKj2vVogqTThTXrtjMlt/ZhhKAb
-         9mVdDEQoUjtwS1uw5wP8cFswuGGgAs9oV9Oc5SzlGt8BeV1D8tshoovT6wYROBcEPVv+
-         vvSqttYqZ7ls24ChvNgqq4qFmrIqJG4iXlQsVdg28d7elnQFUqBCz8Olcf9PVShFMPZx
-         SckR9ADycjCspoStyUPTZTgZ4cVjyV1vwnUm3CAGnr4CdPp/BO5RpHvfrnrcZH5JD4+s
-         8rtmT4eTCtaELkZfAXcG/XBiGagBz+3iNbDIeBrNZ5wVnCAmj9YhXoaI3Q2tDAlEOfxN
-         FAVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784903507; x=1785508307;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784903515; x=1785508315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9IqVF2cJIKIMbhzyT3GSr2FYGdQegDZUwKZVuJLzwZk=;
-        b=GpAeo1n5ajGjQfkLIl8Kvr/q78eOkkcvI82lSd9QmSffzeLCFt3zZsIYS2qIfYDyQD
-         tSg14V649IMRO6O+jIGhHaM4IpVaTz9eizz9y11mPeslWYdfDU1Pu6jzb7XbpAigxItD
-         6jCP5y7d+WJcuPFcuLOy2NbK/0TiEsXVpRRY2T3sSw8op+ZQ6gpJYEaUJoSFPAMIWxAk
-         LvG5gA4PcaVQkHK03rQEldmg3JTTSzESsQ9qfOH9Oxp7Zw8LdK9+Xqg1x0sp7p5E/p+Z
-         W+NN6/ML8KGRbU5rh1xnCi96S6+ZW9kJWc9jpwhg4kk2oZye6ihihp6dbR/l9q37lCdX
-         Y1ew==
-X-Gm-Message-State: AOJu0YwExu4A9zfelFuYhLKC1M9fQ8Q6yj19uQj1kUrKA/EXwSU0PthW
-	HFLgDNQ5tIOWRcYYPnAgT71Vfz7kOw6LODQAbDJ/7kDy5bC5bjR+eF43
-X-Gm-Gg: AR+sD119MYlBD1xColJeFwx6tXjFl5bdvEDXphslMEDvQB5/PHr5joKEvSypRKGcCbQ
-	cQoIi8NtG2PPhZ15C6AFv1QKG6PZVNbjPlvVu3mLQaIP7tDWB8CcGGGqSNYjwxHVTUAYjp+EpCx
-	J/AclfPCdPGZD4ZMVh92JB/LA9MVLKNPioJo9GJtfQQk1OPbrczGQw4Mk0Are5SSqzQLDBfYxMy
-	yoYNrtmWhiruUkAkpjWnhcJBlbOgI8fbNr9NA6Jn3HqWGiX5OQFjFcAQEBOXSgnibyA6udNZemM
-	KePtLsivAH/nK6eZhzxjjEiw6B1e8eWve/9EzzTZEe24+9ErJnnWpKHp08ShE2E0na8Tv2TYviB
-	NP2gq74BoqKASE7XyQBiv3lnOU5tpIENAi4EwvueC3h1YX1aTAoCTlQLVBPVq16XCVvNxEmtYOK
-	ow5xNdb2fKGaDGeCRZjVuuKwpf4XK/lJqibChs/Eei/i+Lr6fUquDoAl73Ws+64v99d1IoOfs=
-X-Received: by 2002:a05:6000:2483:b0:47f:90f1:68c8 with SMTP id ffacd0b85a97d-47f9cdaf542mr1184583f8f.1.1784903506416;
-        Fri, 24 Jul 2026 07:31:46 -0700 (PDT)
+        bh=9bzX/z7WuI+n+yzpnjbF3izMPRsb1Ain1wBuMaT5GFg=;
+        b=h4BeGEeDhwVvQoJv0CBnlMkRB1vBTEsXbdOuOuxnPXley2c3jXm6e+UFPjDVmz6+mB
+         CI94tRJciQqE1c01mLBhdLuWSwk2NXyZxWJrR4z5VXSeBU5izSKGZ7YhDAyyrXDh2Mtk
+         6uRsYvJsJhi+ydXqTzkm3GDMt/uqffvBU6HTJY7Oov2DqJUgLzWEAMMh6G6ITv4teiaW
+         SHmlgGgsMJkIA87KSM+AjBjr7TN1U3o8YU6rGqdidU+xs4pMyUld1XaJKOgPjiOoffOG
+         bJzqL6F1GhtWTi2B7JO0ph7Kq8R9GS/YfZbqf/FxEyuUxquADguj753xB+T+eKGwVh5L
+         qnig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784903515; x=1785508315;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9bzX/z7WuI+n+yzpnjbF3izMPRsb1Ain1wBuMaT5GFg=;
+        b=jXOrDjs0jQmM4wUtatjsEnTKAxkIPbpi7gx5jcwusSPT5vzj8eUyoQPFM1w260hitc
+         dgXidZDdP/UoGQ+hlLHXz/tc/MVElvhUa8ChHKP6EYHEVGAklCUxU0hY2Ws4BFOeyJzE
+         uvhmZCpzImBLgvLiJ3wPo4URduzgdGV5DLnaibMsneE6xTffCdcDi26lbJfkTV2rRfqt
+         JU/tI5nnfYMt2svdVX1TQRSe2sYna5iGuOBKmtwAStuoeJ0U2xrhcNbz+lpq0eobaXfS
+         ijdiwqDvjvkF7kllxV5nNbhN6wdJA/qmoIbYeo9n5IfnangH+/0wkyWNAHzGxnMB8Ach
+         5B9Q==
+X-Gm-Message-State: AOJu0Yyx629e0bsXzY0I+e5UdccM9q/s6A6JntoPqIOeLItDh8smlaW7
+	gldoX8jDHpFbKjEb08jx/uVB3XbL9TrL+8JHwH/8MYy/NQpLJAMxKvoU
+X-Gm-Gg: AR+sD13yYdJ5GHwl0JP2QjW6/WIoF6qn6EMtHPmlDTcs9FvTl65sz1D1KF5Oop1U9PW
+	sURs5am9MxWdfTEWhC9dEDQRALWCqu4iRbxTtt0pmk9XU+SuzjV9IKsL3DAznyB8pW5Ix33Iapr
+	00yRd8zZo/KFwsaApkCc4IViYAhrJ9CN7bqIbSUWyIiEotGoIJVILigs714teaDBpF3WGRGiNyQ
+	GLEMG5Gj5eQwrkpB9GiW2ipYGecnJ2hjlJOsliqT84WOjdBJymPgXd8/n4yDuuRmdFKO8IugYrH
+	m+Mjzf9lz2A5W5Y9YyVsqtIyoA4zyrye72TfniiiLBDPLgiVMErFi2pOEV420VzlCGIUapIE6Ir
+	sg595ODUSvve6hKW3E/4MbDXLd64nWnGc1dN2jjZsBJCPplt8we/MxwgJtCa+lGDtA/dwW5ET4O
+	HlYTgoWdaAQ4sGU7bPzhjLTgOAB5b1NyaKJmECnekRjeXaWdkd3VQnz64mUdFqxHGfbjUjXz8=
+X-Received: by 2002:a05:6000:4717:b0:47f:9254:d45c with SMTP id ffacd0b85a97d-47f9254d53dmr7788718f8f.31.1784903514458;
+        Fri, 24 Jul 2026 07:31:54 -0700 (PDT)
 Received: from labdl-itc-sw10.tmt.telital.com (static-82-85-31-68.clienti.tiscali.it. [82.85.31.68])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f864305f5sm23898298f8f.17.2026.07.24.07.31.43
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f864305f5sm23898298f8f.17.2026.07.24.07.31.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 07:31:44 -0700 (PDT)
+        Fri, 24 Jul 2026 07:31:54 -0700 (PDT)
 From: Daniele Palmas <dnlplm@gmail.com>
 To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
 	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
@@ -66,10 +68,12 @@ To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org,
 	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH net-next v3 0/2] Improve wwan qcdm compatibility with user-space tools
-Date: Fri, 24 Jul 2026 16:28:16 +0200
-Message-ID: <20260724142909.3270824-1-dnlplm@gmail.com>
+Subject: [PATCH net-next v3 1/2] net: wwan: add minimalistic IOCTls support also to QCDM port
+Date: Fri, 24 Jul 2026 16:28:17 +0200
+Message-ID: <20260724142909.3270824-2-dnlplm@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260724142909.3270824-1-dnlplm@gmail.com>
+References: <20260724142909.3270824-1-dnlplm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,35 +82,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Historically, Qualcomm diagnostic port was a serial device, so user-space
-tools were developed using tty specific features. One of the most common
-tool is, for example, ModemManager libqcdm, available at
-https://gitlab.freedesktop.org/mobile-broadband/ModemManager
-which requires tcgetattr/tcsetattr and the possibility to get exclusive
-device access to properly work.
+Upstream libqcdm requires IOCTLs support to work, so add the current
+AT minimalistic support also to the QCDM port.
 
-The wwan qcdm is not really a tty device, but, besides the lack of tty
-functions, it behaves as a standard serial Qualcomm diagnostic port, so,
-as c230035c2f2f ("net: wwan: core: implement terminal ioctls for AT port"),
-this series add support for terminal ioctls also for qcdm ports and
-implement the exclusive open mode feature to improve compatibility with
-user-space tools.
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+---
+ drivers/net/wwan/wwan_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This is an incremental change which should not affect the existing tools
-using wwan which do not rely on the implemented features.
-
-V2: fixed race condition highlighted by Sashiko at
-https://sashiko.dev/#/patchset/20260717081935.2071083-1-dnlplm%40gmail.com
-V3: simplified patch 2 according to Loic's comment at
-https://lore.kernel.org/netdev/CAFEp6-2UiSja11A6nLKqRX8A1eE=P4euEs+fbpKZxPE8fTX2QQ@mail.gmail.com/#t
-
-Daniele Palmas (2):
-  net: wwan: add minimalistic IOCTls support also to QCDM port
-  net: wwan: add exclusive open mode capability to AT and QCDM ports
-
- drivers/net/wwan/wwan_core.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index ccce2ad74128..8168239e52c3 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -1046,7 +1046,8 @@ static long wwan_port_fops_ioctl(struct file *filp, unsigned int cmd,
+ 	struct wwan_port *port = filp->private_data;
+ 	int res;
+ 
+-	if (port->type == WWAN_PORT_AT) {	/* AT port specific IOCTLs */
++	if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) {
++		/* AT and QCDM port specific IOCTLs */
+ 		res = wwan_port_fops_at_ioctl(port, cmd, arg);
+ 		if (res != -ENOIOCTLCMD)
+ 			return res;
 -- 
 2.43.0
 
