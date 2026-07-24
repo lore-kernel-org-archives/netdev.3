@@ -1,177 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1B83644B3
-	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 13:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E002DC79A;
+	Fri, 24 Jul 2026 13:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784898883; cv=none; b=JhwbtDaKHiPYeYtT8Iv3XABNpD9anUhAcj302Nsnw1ZTnkKF/ikrrHB2KPYF3p+MlQLcyoLk80DbmfncgfVTDZNX5/P1kW8nnDjrL2RR1bFcQ0n3wCIlZ9qUA0nKyc1X8E3+h07+6JJYezKwFQYRHYAfXCLKxXWkPBA60LD1cGg=
+	t=1784899013; cv=none; b=HZQIKUyMUrI+EZBae5GrBX6p7RBKl1CWGFBMMsE7iRZBMNPZgZ9zDKQm7V2BcrkKOFrATcw02mbYb2TZrRxWlZbtrdGVCtbN0TMHT56QEvBMR2DdoFPawJ67OzMhfsXdGeNshg7fY5mOitIxRuwcldUxnk/K4rtXKdechHhyy+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784898883; c=relaxed/simple;
-	bh=X+OSwKLxw19UACGtcZFl9PFw/R20yL9m3DxjNbaqvAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuIoEu2IDzj2Ao04aSzyc5ipVIv4wXYBTHTqPW+Oaw48cplH963KNK8kOyfK9ryWfh5YpUeuIl9BlIK5V37AuSim2RmuiQKVOw0wSYdxh6Pom0un5kHWYTLMTtoiGrZhYZO5sOwoacMzETNRuoUwytBzjHNsSiimNakM6viMcRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8GTXkda; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784899013; c=relaxed/simple;
+	bh=5fg70FATkdTPlB+r5sELlMsftIy9haRZRX0/8GePUIo=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=SCAqStDwYrLDJS+AQQ3FYRR+gn4F4W7Y+2bl2i7I1zwvYd9pdWrxzXMzfBR328c5ubmOJjmlo3uUr87pcGr45tlCyrhx+KbrLoLZ/+w7Cqq+laVgAcvuUB3g+PVzL3yb9uH7F1kp/R3kOWCsPtdOXQyAdtk8gSSbBrQVKdYnJZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfT2mN54; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8GTXkda"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243721F000E9;
-	Fri, 24 Jul 2026 13:14:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfT2mN54"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5311F000E9;
+	Fri, 24 Jul 2026 13:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784898881;
-	bh=TPIBLMkyqCCRU9BiXFydTEUTOZadVywM+LAhxWqzrUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=a8GTXkdaCG6aamySV2K94kqMSRvGlz2FGy5pds62TNBmEnmnkbM+GRZuA9Xh2YbGS
-	 ihOm7ba4ONO8ML9BXyNEYUn4RgQAFtVFBq5NK8CUTf9DhibNQGltyOXzT66cQoXyHn
-	 sUJ/9usKWAutf+EY9e/bhXm1s5i+D/Kb1xj9u8cz+8jBvAouG6AATEm18/E6SRWzp6
-	 zXw3A3VRLS0CI7dHhK9lmG2nWc90HUj5uSvE4/gWvi8A3fTs/f7fCYQR1kT4GpWFzp
-	 k1V6qJqtHE3KNWJdetgOsfYlScOvOo+pbA0aefj7fw02kX0hJPQ5JZu2odjkG5bZdo
-	 f/kn/1q+idv2g==
-Date: Fri, 24 Jul 2026 15:14:39 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Madhur Agrawal <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v10 0/3] airoha: add the capability to configure
- GDM3/GDM4 as WAN/LAN on demand
-Message-ID: <amNlP37tMJYp-Hdp@lore-desk>
-References: <20260722-airoha-ethtool-priv_flags-v10-0-d2562c5dd942@kernel.org>
+	s=k20260515; t=1784899011;
+	bh=J5CUcwtybRsnP7K85MNqacwjWecyslUsjby8+ZC9UXw=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=SfT2mN54HZxMmsREoVtswZlYPLgI8qEJG1+7Hxsj1WWftapWz00QtYB9irMeStjSm
+	 XqMvusvqJsssC6KlCh5TzZIuf+44vryFOMpoU/Bo4ebqVSpEHbdUaSR3YrH/Ep7bRW
+	 rvh1LIp8AkVxRnJJhIbDEJkNF3IumU4S/3G//pZWHyGIAUffaoPla2XCV4fzI/uhOs
+	 S/RawXOOiOwtaew7SnE5ee65HwVkei5jlf8foS8aTrQG3Cg0mDSA6r4VmsdmH8G+1y
+	 4Hu8BmSqKlS3/kpN3tSgEFwgcyHCG9ymFbUjvQuHtFxL6fohbeCYYlo+VXNR742ZTR
+	 0GTFxZKgNBFXA==
+Date: Fri, 24 Jul 2026 08:16:49 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KEhLaGquhBZth/a3"
-Content-Disposition: inline
-In-Reply-To: <20260722-airoha-ethtool-priv_flags-v10-0-d2562c5dd942@kernel.org>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J . Wysocki" <rafael@kernel.org>, driver-core@lists.linux.dev, 
+ netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Eric Dumazet <edumazet@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Michal Simek <michal.simek@amd.com>, Jonathan Corbet <corbet@lwn.net>, 
+ linux-clk@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Shyam Pandey <radhey.shyam.pandey@xilinx.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Conor Dooley <conor+dt@kernel.org>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S . Miller" <davem@davemloft.net>, linux-doc@vger.kernel.org, 
+ Brian Masney <bmasney@redhat.com>, harini.katakam@amd.com, 
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Suraj Gupta <suraj.gupta2@amd.com>
+In-Reply-To: <20260723123838.125145-4-suraj.gupta2@amd.com>
+References: <20260723123838.125145-1-suraj.gupta2@amd.com>
+ <20260723123838.125145-4-suraj.gupta2@amd.com>
+Message-Id: <178489900988.2774291.12161691819404985580.robh@kernel.org>
+Subject: Re: [PATCH net-next 3/7] dt-bindings: net: xlnx,axi-ethernet: Add
+ 10G/25G (XXV) ethernet
 
---KEhLaGquhBZth/a3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-> Add the capability to configure GDM3/GDM4 as WAN/LAN on demand when QoS
-> offload is created or destroyed.
-> Make dev->qdma an RCU pointer so the TX path can safely dereference it
-> without holding RTNL.
-> Introduce airoha_qdma_start() and airoha_qdma_stop() helpers.
-
-please drop this series, I will post a new one to address sashiko's comment=
-s.
-
-Regards,
-Lorenzo
-
->=20
+On Thu, 23 Jul 2026 18:08:34 +0530, Suraj Gupta wrote:
+> The XXV Ethernet IP integrates a 10G/25G Ethernet MAC with an in-core
+> PCS/PMA driving a high-speed serial transceiver. Extend the existing
+> xlnx,axi-ethernet binding to describe it.
+> 
+> Add the "xlnx,xxv-ethernet-1.0" compatible and make the resource
+> requirements conditional based on the XXV compatible string:
+> 
+>   - "dmas", "dma-names", and "phy-mode" are required.
+>   - Interrupt properties are not required as it does not have a dedicated
+>     Ethernet core interrupt.
+>   - "phy-handle" is not required as it has internal PCS and PMA.
+>   - Add the 10gbase-r and 25gbase-r phy-mode values used by XXV.
+> Annotate the existing compatibles, generalise the title to cover both
+> variants, and add an example node for XXV.
+> 
+> Define properties at top level per binding style and use if/then to
+> constrain requirements and phy-mode per compatible. Forbid 1G-only and
+> unused ethernet-controller properties on XXV nodes.
+> 
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 > ---
-> Changes in v10:
-> - Fix a theoretical race condition between tx completion NAPIs moving the
->   net_device between different QDMA.
-> - Rebase on top of next-next main branch
-> - Link to v9: https://lore.kernel.org/r/20260721-airoha-ethtool-priv_flag=
-s-v9-0-9c15d8b71a56@kernel.org
->=20
-> Changes in v9:
-> - Rebase on top of next-next main branch
-> - Link to v8: https://lore.kernel.org/r/20260703-airoha-ethtool-priv_flag=
-s-v8-0-015ba5ac89ee@kernel.org
->=20
-> Changes in v8:
-> - Rebase on top of next-next to fix conflicts.
-> - Link to v7: https://lore.kernel.org/r/20260701-airoha-ethtool-priv_flag=
-s-v7-0-b4153bd44428@kernel.org
->=20
-> Changes in v7:
-> - Fix ETS stats accounting in patch 2/3
-> - Reset ETS stats accounting in airoha_dev_set_qdma().
-> - Link to v6: https://lore.kernel.org/r/20260629-airoha-ethtool-priv_flag=
-s-v6-0-86bc600d31bc@kernel.org
->=20
-> Changes in v6:
-> - Rebase on top of next-next
-> - Add patch 1/3: "rename airoha_priv_flags to airoha_dev_flags"
-> - Drop patch 2/3: "refactor QDMA start/stop into reusable helpers"
-> - Link to v5: https://lore.kernel.org/r/20260611-airoha-ethtool-priv_flag=
-s-v5-0-c11de08486d1@kernel.org
->=20
-> Changes in v5:
-> - Add patch 1/3: use int instead of atomic_t for qdma users counter
-> - Protect dev->flags with flow_offload_mutex mutex.
-> - Introduce AIROHA_PRIV_F_QOS in order to handle better WAN/LAN
->   switching.
-> - Link to v4: https://lore.kernel.org/r/20260610-airoha-ethtool-priv_flag=
-s-v4-0-60e89cf28fea@kernel.org
->=20
-> Changes in v4:
-> - Move back QDMA TX/RX DMA enable to airoha_dev_open()/airoha_dev_stop().
-> - Configure GDM3/4 as WAN if GDM2 is not available in ndo_init()
->   callback.
-> - Protect qdma pointer in airoha_gdm_dev struct using RCU.
-> - Rely on rtnl_dereference() to access qdma pointer in the control path.
-> - Add airoha_qdma_start() and airoha_qdma_stop() utility routines in
->   patch 1/2
-> - Link to v3: https://lore.kernel.org/r/20260608-airoha-ethtool-priv_flag=
-s-v3-1-3e8e3dc3f715@kernel.org
->=20
-> Changes in v3:
-> - Do not introduce ethtool private flags support to configure LAN/WAN
->   for GDM3/4 and rely on tc qdisc offload for it instead.
-> - Set GDM3/4 ports as LAN by default.
-> - Move QDMA TX/RX DMA enable from airoha_dev_open() to airoha_probe()
->   and the corresponding disable from airoha_dev_stop() to airoha_qdma_cle=
-anup().
-> - Link to v2: https://lore.kernel.org/r/20260607-airoha-ethtool-priv_flag=
-s-v2-1-742c7aa1e182@kernel.org
->=20
-> Changes in v2:
-> - Rework airoha_dev_set_wan_flag routine
-> - Enable GDM_STRIP_CRC_MASK in airoha_disable_gdm2_loopback()
-> - Do not always reset REG_SRC_PORT_FC_MAP6 in
->   airoha_disable_gdm2_loopback() but use the same condition used in
->   airoha_enable_gdm2_loopback().
-> - Link to v1: https://lore.kernel.org/r/20260606-airoha-ethtool-priv_flag=
-s-v1-1-401b2c9fe9f1@kernel.org
->=20
-> ---
-> Lorenzo Bianconi (3):
->       net: airoha: rename airoha_priv_flags to airoha_dev_flags
->       net: airoha: fix ETS QoS stats counter underflow and cross-channel =
-corruption
->       net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loopback to QoS offl=
-oad
->=20
->  drivers/net/ethernet/airoha/airoha_eth.c  | 268 ++++++++++++++++++++++++=
-++----
->  drivers/net/ethernet/airoha/airoha_eth.h  |  26 ++-
->  drivers/net/ethernet/airoha/airoha_ppe.c  |   9 +-
->  drivers/net/ethernet/airoha/airoha_regs.h |   1 +
->  4 files changed, 261 insertions(+), 43 deletions(-)
-> ---
-> base-commit: 88f380ef2304db4c68bc4bf14fc6c1604f6dd15c
-> change-id: 20260606-airoha-ethtool-priv_flags-b6aa70caa780
->=20
-> Best regards,
-> --=20
-> Lorenzo Bianconi <lorenzo@kernel.org>
->=20
+>  .../bindings/net/xlnx,axi-ethernet.yaml       | 144 ++++++++++++++----
+>  1 file changed, 117 insertions(+), 27 deletions(-)
+> 
 
---KEhLaGquhBZth/a3
-Content-Type: application/pgp-signature; name=signature.asc
+My bot found errors running 'make dt_binding_check' on your patch:
 
------BEGIN PGP SIGNATURE-----
+yamllint warnings/errors:
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCamNlPwAKCRA6cBh0uS2t
-rEbXAP9TBPic+WUY6BAE3Sm9oho1WMIYlT3puIgnWd3RElBQ/gD+Jdf77Dl8gaTl
-VrsmBh/aVrCEQ668SmmVAkE08mphpwo=
-=+Bwn
------END PGP SIGNATURE-----
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml: allOf:2:then:properties:clocks: {'maxItems': 3, 'items': [{'description': 'RX AXI4-Stream clock (rx_core_clk).'}, {'description': 'GT DRP clock (dclk).'}, {'description': 'AXI4-Lite register clock (s_axi_aclk).'}]} should not be valid under {'required': ['maxItems']}
+	hint: "maxItems" is not needed with an "items" list
+	from schema $id: http://devicetree.org/meta-schemas/items.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml: allOf:2:then:properties:clock-names: {'maxItems': 3, 'items': [{'const': 'rx_core_clk'}, {'const': 'dclk'}, {'const': 's_axi_aclk'}]} should not be valid under {'required': ['maxItems']}
+	hint: "maxItems" is not needed with an "items" list
+	from schema $id: http://devicetree.org/meta-schemas/items.yaml
 
---KEhLaGquhBZth/a3--
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260723123838.125145-4-suraj.gupta2@amd.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
