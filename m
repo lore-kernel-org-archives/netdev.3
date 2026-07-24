@@ -1,88 +1,128 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8E43C045;
-	Fri, 24 Jul 2026 15:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A524477EC
+	for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 15:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784905575; cv=none; b=KmE2FzoC304L6xmvFWhxoabCeV/6sq6guaUll+cEVRu1uUAcujufidXRdcmsDDtRIpXOpY1MH50i/2GDdUcm7wB/XWE5bPvvnjJ+IVEjZdMp09cuBQvNArUMPDVWj16rK/uBkWVRXkIImLtoOSHj95CIVy4/FEMXlDsODPhMo6E=
+	t=1784905598; cv=none; b=ZD/eguIo0GwH0Oe71Fra9Q/xQlRBdvy65hIH9MwoX2gMtY4+r7o4XyZsPBhl04xXdYKV5SSTN9cWXWLkZChop+UUvBMOhrH1XUduLVwAE45eLgKCjL1zucWBGh4paROfXH1L5esORtsSO/yf/Gzvh2OgfdO6NhDR6I6FnV4EsIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784905575; c=relaxed/simple;
-	bh=lOhKWl3vaCvNrTXzv/BPCXUTZ7yCtZDJM3Ldey4Cruo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AF2ZSVABns8wN75NOvnj0Gybv8c0nyP91i440xKl7X0lEdCXAYrfnxvXmYW4fzS6fzXcP/SVLOMVCAZnyetlE2ehNR0ZE/uv8nOiDdy5gX6Y6bhtK3YkvAK9gKrlF0x74ER/5QeEvbkD6m+Yd7N0ll/wGaOYUicvLZAdveI/qhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=o+dO10Yd; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=BwBiQSWd; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1784905598; c=relaxed/simple;
+	bh=k2IZxo+RQvcI6PXmn2CgQ7Kxmkd9qEBrLBFwu9yl9ww=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MYNlMoHg6b9I/6RvurhorqXWTmnGuR98ZlBMHfGSRsIk+EC+JMnCLpcNhUgFPJDrRkgb/kDy23UfKpGLeHPK8s8yKxK+b9cSLnUaJ+u+93zzajrFdYQ1tx15JjeNhJUMpiSDks8oqZ8PEFJRP24iaTcI27ywJ+jjL2ZqIhB63lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAy2kBcL; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="o+dO10Yd";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="BwBiQSWd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784905571;
-	bh=lOhKWl3vaCvNrTXzv/BPCXUTZ7yCtZDJM3Ldey4Cruo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o+dO10YdH8oi/IFrg8T7/GmRiBW5mEPgriH3A3mZRhOmS0lQFAx4ctxnnEebVwweJ
-	 GDpWdOgHYNnPAail2jnR9ZzF4R9KOdW7S0GBWTVOTbmRWes1KpW6MabvPtCrF3G2nA
-	 6yPO/hFaocrVIojqxce+I9c1GoshdSMwlTydFmY6sr02xJ05zkvZ7jzUjHxUsflIMo
-	 FCf35fOE2wneDTiuarK6G6oCwpsX6II6VDbbYHY4TenWwcdy8GBDOqgdW05cSi/fk+
-	 29U0DJjK1O+7+CAeHrU/+0fWk5JuXgak/3w93SazmeK+jklRVglCRttwAciigNMOfL
-	 7G1yjAyltCggQ==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 02F5B493DE; Fri, 24 Jul 2026 15:06:11 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1784905568;
-	bh=lOhKWl3vaCvNrTXzv/BPCXUTZ7yCtZDJM3Ldey4Cruo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BwBiQSWdbuQDUA0apwpv+YfoV0um7eERZI0zNj767ytdZvivpL+N1gp0CM47EZDt1
-	 lmTVfEY6KgWT09RunLN2rBxH2d3Azz2+kNuETWyLJ7zpFJab43TVvY49yuLkPhRhjL
-	 OzEKIUsHXuXKSwmA9HMT8PqkHPO38xGUKlwTvBZ1+chrYLEMQS5Vj6/iJiLQ3uE72I
-	 SMTpALlcbKJHgArxxNYBVyz1UQSxku+f+edkSTyv3NvjPQt1vPBSS9HUisQwelU7yM
-	 rMay6wU6qN62Mkff5nw8k+cGieYNhICxXxCTELjw/rMGfUXI6oW8i/ajSRVNW1FC3M
-	 bJ4IGFlBQUTNA==
-Received: from [IPV6:2003:c6:9f1c:3c00:1112:6cca:cd9a:b258] (p200300c69f1c3c0011126ccacd9ab258.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:1112:6cca:cd9a:b258])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 947D648EAF;
-	Fri, 24 Jul 2026 15:06:08 +0000 (UTC)
-Message-ID: <f66c5d19-fac6-459b-b3d0-354893258073@birger-koblitz.de>
-Date: Fri, 24 Jul 2026 17:06:07 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAy2kBcL"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-74d55dac06eso238418137.3
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 08:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784905593; x=1785510393; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x2AhQYo9R5DmlVUQgPw/1HHJB2ak8KRQjAhLOo34IsY=;
+        b=dAy2kBcLmXLdDu2gBN7QfotWbwUU/7SVmzQDcoNZdMomTBo222gI6Ut/iFJxYpbnTO
+         FXJmDugqEi9v2MMls/p7dBZfC3+0WNGegpy2HnH46AO6H7QHFRBvYKZOa2vmAdK7JKf7
+         +H/8P++HFVAMAv7ED28tKpQ9V7qJZv3AQwdhiUq0EAzRX+lZAuDEu6KHN7uBN95yNUFl
+         5ehJwcERw2vdHsPk/3bWuTBvSFYxY3NG5Z8JUAaXZ7wTXPiNUOeSdOIP8Y1ZKJPJ4noB
+         KDURnFnN9EQ5+k1cW3ZfmbUcb1ZwV64jildulqUxHDnNGJJwn0m3QpQQ/gmg3ef1PCGj
+         6vmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784905593; x=1785510393;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x2AhQYo9R5DmlVUQgPw/1HHJB2ak8KRQjAhLOo34IsY=;
+        b=okjUgeD9R7Z5501jGEmgTwdvPWqRSaaC7jp/+vF8mkVFQs4Cf5sFD0YvuqcBLocNrm
+         Q5MlmqkzExYvRhFcVHrRPq7hHVnliLxuEWPnb/xiF4Wi0ymMV+DO7luzHhuQov2oxx1A
+         g69oRxpMVDMUC4qPRptExGPXR4UbImQySt8fMy25rEqzBlxTTFYwoVqNuZppXamZ0BJx
+         Yd8mpb5UgjU0z17xhIGyjFrhlgurogH0SY3Gew8Ya3jPdOXYVrw8TkeLOS2RgamVJG0P
+         STpuOPvs/0nS3c26mIihwW4pK0Jn6Kpky03OwhBJVQI9Ws2CWiHeUb3jvSlFLgOlxHan
+         B3eg==
+X-Gm-Message-State: AOJu0YweHZCzHP6HNYQZsjukSpwv5X7+40ZVrt3c3aUn84GhvilfGj+N
+	lYbh4dC6UJrQSgGo5sJ0GxQBa/KnDAwkeyRTKjiiE5E6ymqpOHNjMyFK0FPuTuJc244=
+X-Gm-Gg: AR+sD13VZxlai3f8D2cBcBQ7V0s9Yd6tlA2I1hKFWoiyJTD5B9Gka0PMMWyE+c2QSLD
+	zqoVz9s3qFiOXdKWZMrKtcek+cfx57HYZtFklqEjq1wzVb0T0WWm69OxISdPdTOjLXfMA/bZ2mJ
+	2dZEgee6ywBz3zCIe+PIexMOy3ALS2FK0oy+vzZYQl6kmPo1bWAbi+MWYhFQ9hoKJVUXluWYU/J
+	BanIjOaWroMNRFxzSslrQYn9JGu/cY1noJqBgrCvzshQ+hWP9ZzH4AMiKgLj8FBQkdxYqJ/9eZb
+	1oNQ1/sIOjv8H+T0RDpVh9hTd9rBVtPb2Pz9h+C0pwH7nb7/z8dB5FrCI0HVJa1UJpfj+uCfOED
+	L/+dnyCZ8WUz6eDzhnk7qPfSoxwBKncqvmsjFqyhOdlLHca7c6NCYJ3cioYQrI4nGiMsiIw==
+X-Received: by 2002:a05:6102:390e:b0:739:a2d:9621 with SMTP id ada2fe7eead31-74d5fbd5eebmr4372851137.13.1784905592834;
+        Fri, 24 Jul 2026 08:06:32 -0700 (PDT)
+Received: from houminxi ([72.244.37.221])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-74ad32165f4sm7744810137.6.2026.07.24.08.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 08:06:32 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	i.maximets@redhat.com,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v6 0/2] selftests/net/openvswitch: add SCTP flow key test
+Date: Fri, 24 Jul 2026 11:06:22 -0400
+Message-ID: <20260724150624.3457427-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 05/13] ax88179_178a: Use phylink in
- get/set_link_ksettings
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de>
- <20260724-ax88179a-v3-5-bdde4f905883@birger-koblitz.de>
- <0327f4da-a443-4500-871e-ef561bbc9281@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <0327f4da-a443-4500-871e-ef561bbc9281@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+v5 failed in NIPA: the kernel rejected the SCTP-keyed flow with
+EINVAL(22) in add_flow. Root cause: v5 installed flows containing
+sctp() via ovs-dpctl.py without registering OVS_KEY_ATTR_SCTP in its
+flow-string parse table, so the parser silently dropped the L4 key;
+the kernel mandates the SCTP key when ipv4.proto == IPPROTO_SCTP
+(match_validate() in flow_netlink.c) and returns -EINVAL.
 
-Thanks for reviewing the patch-series, Andrew!
-On 7/24/26 15:38, Andrew Lunn wrote:
->> +	if (data->phylink)
-> 
-> When did this appear? Am i missing a patch somewhere?
-> 
+The parse-table entry was present in v1-v4 and was accidentally
+dropped in the v4->v5 respin. v6 splits the fix from the test so each
+patch stands on its own: patch 1 restores SCTP parsing in ovs-dpctl.py
+(the NIPA fix) with unit tests, patch 2 adds the SCTP flow key test
+(same goal as v5).
 
-In [PATCH net-next v3 02/13] ax88179_178a: Add HW support for AX179A-based chips:+	struct mii_bus *mdio;
-+	struct phy_device *phydev;
-+	struct phylink *phylink;
-+	struct phylink_config phylink_config;
-But admittedly, this is a rather big patch, which I was unable to break apart
-due to in particular int ax88179a_bind() referencing most of the rest.
+Tested with vng on x86_64: all OVS selftests pass, including the new
+sctp_connect_v4.
 
-Birger
+v6:
+  - split into 2 patches: ovs-dpctl.py parse fix + shell test
+  - restore OVS_KEY_ATTR_SCTP parse-table entry + unit tests (NIPA fix)
+  - listener readiness via /proc/net/sctp/eps (ss needs sctp_diag)
+  - add timeout 3 to socat clients (unidirectional connect hangs)
+  - restart listeners with kill -TERM + kill -0 poll (wait can hang)
+v5: https://lore.kernel.org/netdev/20260723084203.3483560-1-houminxi@gmail.com/
+  - switch to socat per Kicinski; NIPA FAIL: EINVAL in add_flow
+    (parse entry accidentally dropped in this respin)
+v4: https://lore.kernel.org/netdev/20260719162657.3263089-1-houminxi@gmail.com/
+  - rebase after ICMPv6 test merged; nc --sctp detection nit
+v3: https://lore.kernel.org/netdev/20260715015446.530018-1-houminxi@gmail.com/
+  - switch ncat -> nc with skip if nc lacks SCTP support
+v2: https://lore.kernel.org/netdev/20260707034718.2717982-1-houminxi@gmail.com/
+  - replace sleep after spawn with ovs_wait on listener stderr
+v1: https://lore.kernel.org/netdev/20260702090908.1253688-1-houminxi@gmail.com/
+
+Minxi Hou (2):
+  selftests/net/openvswitch: add SCTP flow key parsing to ovs-dpctl.py
+  selftests/net/openvswitch: add SCTP flow key test
+
+ .../selftests/net/openvswitch/openvswitch.sh  | 121 ++++++++++++++++
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 129 ++++++++++++++++++
+ 2 files changed, 250 insertions(+)
+
+-- 
+2.55.0
+
