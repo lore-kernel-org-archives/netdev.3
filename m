@@ -1,108 +1,89 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858E38AC88;
-	Fri, 24 Jul 2026 19:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D5044AB9A;
+	Fri, 24 Jul 2026 19:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784921925; cv=none; b=IsqsxpXcWdmBKF3S1KsGDCAWsbVfUjtixnban9iz6NXI5itK1czz2l5evo8YgWQzLNUjU0pGB+wos8kkWpLWk+BzV85kD3fJd1aBOSfYh4/JhgUAo9GGyezY4A/HZUZMnc/wVUPFNvZ07A01UYlAmUyPzBpWG1llgv5SeDNbaz8=
+	t=1784922063; cv=none; b=MQMDPc2l+UIon7Z6Xwo2EJRKQl2SR5d8gige87dLjOyb/iko7aDKKK4Uy/d+tGkNgXddOvb94qnYGC05da6d80A0xf9uLw5+jTv/50l8WqZ3LpL41YA3McPQ0/UJhG914F5cHwq5PsdDFfxCpOCl0afjjcIL59nbhic8sAvtHo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784921925; c=relaxed/simple;
-	bh=IK/gubsrkTl9f26OmUApjm8X3dZtSFv74y9wmmU5LJY=;
+	s=arc-20240116; t=1784922063; c=relaxed/simple;
+	bh=LpU4ykZ8R0oqq343zSEpvE6Cc/2y7GH0eV2ZmCKD9Go=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=l9ga0EmaHDl/HuIccbh0SUQYObkPTAG7qN318DHkRFCrPHTi3+Xaj5jsDha5IC9O7f9gXYNcbB7tVPJs4KtI3Bc5JEw2AvoLiUSE/xOV+etp1ji1dij5BxzzzLrRhMdHu7Pj+IdnYuL/9LDYPyrzH0jpGQ3buGLARlBBwWtDXkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=eTf1cyBU; arc=none smtp.client-ip=194.13.80.246
+	 Message-ID:Content-Type; b=u60Ajje5qlIxfVV8bwPmKYmp14lr7F0PJK28PYozuXpwcch3ldarZz+9iBXW3npetaLwmHaSIg4DPa3dvdlcwKaO8+mrcfZvpE279WNM/HwDPue/adChc+jMV61vaoV03iVya+eCC5tpA7d8ILCIM9xFmOzHr3NHo3dLfThOWRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=AlazS7/T; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="eTf1cyBU"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 74403A0291;
-	Fri, 24 Jul 2026 21:38:38 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="AlazS7/T"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB2C3A4DC3;
+	Fri, 24 Jul 2026 21:40:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1784921919; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1784922059; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=zX9IqcnSTirOprj0aekNnHHoXry4vULMBvCiZUQOkG4=;
-	b=eTf1cyBU1XZtb57bMDNOv+zqoeaPY5Cu47YAUVR2IkpDrpK1/ZPw5mZQjfWpiN4C6OwTQU
-	dqd35qDsuHQ/TYbR0KZcszFpWGr7uAoeEyeZicfQX4VAjZ/HFvcuXF4a98eLlpyttZlvpJ
-	vz4pAfRYttSsySgtcWopFJ4tCnehndpQoZrHRgBWFifPA/uR2TOjiZpvw7LCZs2CE2gbui
-	yqewmMbh3YP63kIITXX/SY2+IBDtJUmjHBG/+g3DHEQVCGSmU0W9IeQXmANyjOtjzqz0I+
-	VBqol2huiZPxmnw88E2ZRNHKwI+FQJvyyCE1psP3hkmHDY4Smt02/465j4x66g==
+	bh=zgtrZs5kuGCjXtf5pIj1oU3wREM7qS1iuWTueRL7k2Q=;
+	b=AlazS7/TgeHhh2dwcsa/WoSwnVDmCQZmQpJw/LwIo4WhZ0DnYfCVIXCYyJIy4kdUQpWWF+
+	4d5RB4xcAx/G8yVYG/3fUHKXDsMROGSajMrRG/Uu2wTmc63ju++45kMXOuFmLnnEXiaAIA
+	3DrtC1wbrUe3JmR6x2L9041sp8ujSM4EgpjPPnF6q2soJ5kWMBlW4j1L0rJ9pq0mP+ubu9
+	v0+sTLZhg0ppzStE6BkXI7n/iwd5ATcrC52Cpxko0aM3DqBnmbwFGM5XQY2jCSTydznXo4
+	qiQ19ou6JUOKWBdBxrTn79BInhqpViiLw+KjsIJ8Ets/FqFxK9vnwqZtiCOJUA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 24 Jul 2026 21:38:38 +0200
+Date: Fri, 24 Jul 2026 21:40:57 +0200
 From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
- King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Paolo Valerio
- <pvalerio@redhat.com>, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v5 14/15] net: macb: use context swapping in
- .set_ringparam()
-In-Reply-To: <20260724-macb-context-v5-14-569b1852bc7f@bootlin.com>
-References: <20260724-macb-context-v5-0-569b1852bc7f@bootlin.com>
- <20260724-macb-context-v5-14-569b1852bc7f@bootlin.com>
-Message-ID: <31f655fd86080b11680196301bc4f6c0@tipi-net.de>
+To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] net: macb: remove unused ENST Q0/Q1 time
+ register defines
+In-Reply-To: <20260724043257.2221030-2-vineeth.karumanchi@amd.com>
+References: <20260724043257.2221030-1-vineeth.karumanchi@amd.com>
+ <20260724043257.2221030-2-vineeth.karumanchi@amd.com>
+Message-ID: <c3ad1ae49245a7bea85075d3b6a8ff31@tipi-net.de>
 X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
+Content-Type: text/plain; charset=US-ASCII;
  format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 24.7.2026 17:29, Théo Lebrun wrote:
-> ethtool_ops.set_ringparam() is implemented using the primitive close /
-> update ring size / reopen sequence. Under memory pressure this does not
-> fly: we free our buffers at close and cannot reallocate new ones at
-> open. Also, it triggers a slow PHY reinit.
-> 
-> Instead, exploit the new context mechanism and improve our sequence to:
->  - allocate a new context (including buffers) first
->  - if it fails, early return without any impact to the interface
->  - stop interface
->  - update global state (bp, netdev, etc)
->  - pass buffer pointers to the hardware
->  - start interface
->  - free old context.
-> 
-> The HW disable sequence is inspired by macb_reset_hw() but avoids
-> (1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
-> 
-> The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
-> over register writes which would be redundant (because values have not
-> changed).
-> 
-> The generic context swapping parts are isolated into helper functions
-> macb_context_swap_start|end(), reusable by other operations 
-> (change_mtu,
-> set_channels, etc).
-> 
-> Introduce a new locking primitive (mac_cfg_lock mutex) to serialise 
-> swap
-> with phylink MAC callbacks. Avoid stopping phylink to avoid a slow PHY
-> retrain. Those callbacks grab phydev->lock if it exists so we could
-> imagine grabbing that from the swap op, but phydev->lock doesn't exist
-> in the SFP case.
-> 
-> AT91 EMAC is handled differently as their buffer management is separate
-> and they don't do NAPI. We refuse them (-EBUSY) to avoid implementing
-> context swapping for them.
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
+Hi Vineeth
 
-> [...]
+On 24.7.2026 06:32, Vineeth Karumanchi wrote:
+> The ENST start/on/off time register definitions for Q0 and Q1 are not
+> referenced anywhere in the driver. The driver calculates these register
+> addresses from the ENST base offset and the queue index instead of 
+> using
+> fixed defines, removing the unused macros.
+> 
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> ---
+>  drivers/net/ethernet/cadence/macb.h | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h 
+> b/drivers/net/ethernet/cadence/macb.h
+> index 2de56017ee0d..a11052565436 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -184,12 +184,6 @@
+>  #define GEM_DCFG8		0x029C /* Design Config 8 */
+>  #define GEM_DCFG10		0x02A4 /* Design Config 10 */
+>  #define GEM_DCFG12		0x02AC /* Design Config 12 */
+> -#define GEM_ENST_START_TIME_Q0	0x0800 /* ENST Q0 start time */
+> -#define GEM_ENST_START_TIME_Q1	0x0804 /* ENST Q1 start time */
+> -#define GEM_ENST_ON_TIME_Q0	0x0820 /* ENST Q0 on time */
+> -#define GEM_ENST_ON_TIME_Q1	0x0824 /* ENST Q1 on time */
+> -#define GEM_ENST_OFF_TIME_Q0	0x0840 /* ENST Q0 off time */
+> -#define GEM_ENST_OFF_TIME_Q1	0x0844 /* ENST Q1 off time */
+>  #define GEM_ENST_CONTROL	0x0880 /* ENST control register */
+>  #define GEM_USX_CONTROL		0x0A80 /* High speed PCS control register */
+>  #define GEM_USX_STATUS		0x0A88 /* High speed PCS status register */
 
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
