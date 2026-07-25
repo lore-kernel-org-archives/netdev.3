@@ -1,258 +1,706 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986092F532C;
-	Sat, 25 Jul 2026 02:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784947700; cv=none; b=Hib+AiAZIjvJRagWrGhP2uvRNVXlKDGNXeEoM8uqRKTXl82h9QJSfrgwKBAAs/9O3K4Xj0elDlhzDGOSrD0VMCRKNVzzwqO4nAibYjOB87hnCJshKeMfn8oufjkozwPT60tm3Ox9IWZC+XZ4gdVgnvQORGQZRqOOIhophDOiDnE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784947700; c=relaxed/simple;
-	bh=guOsYibO7QMNNX7lkIMvcUY1u8vTrX4+NoNiYHL0rRY=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=nj2WqAMVeo+EqwHkUnginwtlKxfY4JY0FByVbXSnM+zwqTEmYFvYJY7dR18hMfpRtzNX29zx8TDJcs5OEgitsB1JeS6fYSh0Z64EAX2YjgVvkkc6seJnGNZUGJfW4aG530YULvIWgrbQ9iejblnRaz3xuGQTdjDpFOtL0s35eLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qzOIjR46; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD84F3033F5
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 02:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784947722; cv=pass; b=IEdUN8tSX7T+LbZSOVuuh/t9dEqcWWgvx6vOde4Thki5eBc8JjnbS9CGCQuHSiHxxAt/TmZsaNCoxv3dR5fqeN0uGDfyQMQRKF7seUQ0rG0iMkhya0gWdEuorcs7K1m8x7d6b5yvzvLaCPUkMFjA1XRM1AsK+EvdLXGtHlLwcRE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784947722; c=relaxed/simple;
+	bh=ZsZ5RhL6Pxi2O/Ji94WC7wH2eSbisV2u7eSo0rbOB68=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ff/6dt4jQOYsNE1H+9aix7L7v2TTyNsZWIqzwxR1vn+E3P4bUJLq6usyB2wPRly5yTSAcCzx4mX7aftGXXtchcmfDJjsp1QYXl3oEqyuJivVAPm089vHIJmTg87YHvffcTJaiwWI/sPnocTpqdXRb9kzjYMHfykDIiP9qgAUmlo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4FyhrS6; arc=pass smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="qzOIjR46"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=sC8U7OUmzzrKPJM/6GjCTj61i7RT1qLaPD1QDJZ5GVo=;
-	b=qzOIjR46i33fZMihMGGdg9npfX01OhTOBYCUZx9HrLvEhoNcE2zf1U1xavctHQbMRrJDhbebV
-	mGrRIdf8yZPulUZXTQzARX7S4diJKSdPb8WI3sxJCkwNbkdjBJhS2Tx7YkumHU8yBeCxTI6G1am
-	t4TCJVCpiAC3g6pwB144Ytw=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4h6TZ86Zc5zLlTV;
-	Sat, 25 Jul 2026 10:38:40 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 436C34057C;
-	Sat, 25 Jul 2026 10:48:05 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 25 Jul 2026 10:48:04 +0800
-Message-ID: <f708da1d-3ce1-469d-b63a-ae2d6f331a24@huawei.com>
-Date: Sat, 25 Jul 2026 10:48:03 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4FyhrS6"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b2aab18795so1023397e87.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 19:48:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784947718; cv=none;
+        d=google.com; s=arc-20260327;
+        b=h5cEeXGBOn14ywNHaDjDK7uHdGJqf9LlB5hZ0LL4BeKeTMZ06Duhks3CGTPpgYAkKL
+         sBdt0wb8f3Cq38x65AEKRPROxSKd/N+s4LF/wZknbl3mvAyT9IDP2umV1CXOVQyejaGk
+         2ryc59sSDet7LqXy7YL4tCwxJTmR0fBCkijjChJfuu0+8d3XYKZ3cZIeEX1uMB/IvREd
+         1ubZHxzK6bJbzRqN5pmjRN5LEtbdnjevKS1UMNVBcL0p/E+fMfeqzV9rQHiiITU1jXFL
+         r8C96ouj0aQkWEiEBHrpUJIGEyrK4yZlP52x2m773ScSD3rbJRoEauDTVt9gfvqgIm2Y
+         b9vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F63BcNcA1MgA28eVZUuyD7PObe4MiI/SFy8haAO5wh4=;
+        fh=ReotHspWha9U5JjGQqKjP5Q4NtjOaHCd/1tLscZPBUA=;
+        b=jxD2DGFZOKHPJzdZEDdUnYNnObXrxVr9n9P1cTA/Rf/TxR3sPBnX/3hXg0UrAk4b4/
+         5gTyQzdKszaTj+dWGL+79UXQtfEXasKrrSOk4MYAXeYEPeq7JFZMUzilom9zrVRwtOPe
+         9ZqQtllXHdXXO0tiQcWXJGjQM4mLVVsNFzZnFZOG7epg5ezY5q5IRzwk+xtj4CDTpzUs
+         tuBijQDsCkdAm6vEEgKBk53CxVvsi1IHdgAYgfs6pzYwH1OLlSOF/2sG4nMyE975x2iW
+         PoltOdDSQl0sWhU4i07a+JFHfq908JB/dj5weuD0RFlj5Q97R1HMGvTdJHwCjIbDUgzZ
+         L4qg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784947718; x=1785552518; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F63BcNcA1MgA28eVZUuyD7PObe4MiI/SFy8haAO5wh4=;
+        b=R4FyhrS6ybVWaPW0kPv7mM2LEFdnznc7mX9yMIrfOXn/0+Q6595IGPSWt+MjVAaqSu
+         JvJT5PIgd3oGeG6iNGoNnFu52MdynnLiWRljDvygrM4Ti1qtjH8Y1dAJcXzGhmNNnEdB
+         6WHXSxyFGzHZmHJcpBcV0EfwvFhpewA0ihCUDW1fLYhrH41OSnxg777GaiMa2CpDk8LO
+         W6JbgD6zPbcrtxrLa/wToTqdrLEWUMFmmBooliIZWMlj2l1PkulUqJHKhRs/WYr1AYlx
+         UQbPdklH9LRXy4/qL6cktIeY++PSh+d6ofpBJiObb3dGlCBm0j3EScmL/YWpp2k8ReIg
+         cXKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784947718; x=1785552518;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F63BcNcA1MgA28eVZUuyD7PObe4MiI/SFy8haAO5wh4=;
+        b=SQ89TaEyWJ0zO9yv+GETKsWXaP1KC32ctjHsKFWATjRKhGhOqttNWbzO2w/229VbZY
+         taDgoJOMmod0BFxKtDz1uBz6JD2BS0Ssj/67O6V5agUHHuR6jHdA1XhwQfs8cChGwhTg
+         Pv8yS2YXDq3c7t90YCn9na19TKZji6qsnkwRAa+Mx6vqJoy2VQrmkWDjbEOIzCmn2PpC
+         wYSFSBKkauOjV2gmQPkqwTgx1tAcpdszzJpLlZ/JHV1jlF6f7s6NjFpoPZhoYevW+87R
+         vgxEW0xlueTZkygJ2EJRsZMxx18gm7MaCxOH4jzz0Xbq5KUXQSe71u4xBSGpYTb3HNE8
+         tkFA==
+X-Forwarded-Encrypted: i=1; AHgh+RoNTmZR0i3/X4VzAgGQs2ZTrtja8M1WYdKHCpSRYF1pNywxqxZljt60/2zIZbIMUYvZiScv6jY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA9fFZ5JYBG9nRQX61IBcNI9MMkoUMF4ZEhGv3tumlShGFeVvL
+	Q0woQ+t4fizvoZlPNj61x8Y10Vs/r0phAFbtVDpc1fmgJFUukih53/KCH20wyBgfLjzxjxhStEj
+	nVtGsd8dmGJTnh9UNm8Z0thyG0L1UhfM=
+X-Gm-Gg: AR+sD10cexJO3FPQiIEiXxu4h73tS9zSrzDE+QYbnHDOV2nIDVRHoLjzmdrMy4Fn5Bn
+	66nX4ivo2hA+T45WyE4b3836+KNgO3TxVLady3V6KgmOvtLt2n/qrywcKysiUIjAMQsKvzkI9+1
+	75PYX9mvzrZVTP6MUrI51yNLw1bEudm63qiHVRHEokDVCL8Ngda3kla8IzgU9Tqagpwl39bz9Pd
+	1gN9NzNv7FbivtWd1EjbHoPRiI/q4LeAN1Iwo0Ae+nTdpu8+BTVIdLfYVvS2TsT9LlzjIQ4AaRV
+	wTy1S4BylNZRBoIR4h+fWv0Q2Dr00MuaZAikIHt7b7jhm2q+yYG15W9/RJkPmg==
+X-Received: by 2002:a05:6512:b89:b0:5b2:c159:ac9a with SMTP id
+ 2adb3069b0e04-5b2c1b2980bmr87783e87.40.1784947717468; Fri, 24 Jul 2026
+ 19:48:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<horms@kernel.org>, <hawk@kernel.org>, <ilias.apalodimas@linaro.org>,
-	<toke@redhat.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: page_pool: fix DMA index not cleared on
- xa_cmpxchg race
-To: Mina Almasry <almasrymina@google.com>
-References: <20260724092135.414699-1-shaojijie@huawei.com>
- <CAHS8izPTQ5rOXs5rfVc3tnWcaeQ8wJ1qJqSXEfboe0OTGNkLkA@mail.gmail.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <CAHS8izPTQ5rOXs5rfVc3tnWcaeQ8wJ1qJqSXEfboe0OTGNkLkA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+References: <20260723104403.7970-1-sigefriedhyy@gmail.com> <20260723104403.7970-2-sigefriedhyy@gmail.com>
+In-Reply-To: <20260723104403.7970-2-sigefriedhyy@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Sat, 25 Jul 2026 11:48:25 +0900
+X-Gm-Features: AUfX_mzfOlNMdfVfNBfTERYtAPwykHjsyDIy_kX21bk6WdUhgdeEIvFQcwrWjVw
+Message-ID: <CA+7S2vJzi=QkOcnw5ThoMe+W6SeseC_XApcX1H9HZ=TrHKAGzA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] ipv6: report why a route was deleted in RTM_DELROUTE
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Chris J Arges <carges@cloudflare.com>, Daniel Zahka <daniel.zahka@gmail.com>, 
+	David Ahern <dsahern@kernel.org>, David Wei <dw@davidwei.uk>, 
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+review feedback from sashiko is correct
 
-on 2026/7/25 2:33, Mina Almasry wrote:
-> On Fri, Jul 24, 2026 at 2:22 AM Jijie Shao <shaojijie@huawei.com> wrote:
->> page_pool_release_dma_index() uses xa_cmpxchg() to atomically remove a
->> page from pool->dma_mapped.  When the cmpxchg loses the race (the entry
->> was already removed by a concurrent release path, e.g. page_pool_scrub()
->> during page_pool_destroy()), the function returns -1 *without* clearing
->> the DMA index bits stored in pp_magic.  Its caller then skips dma_unmap
->> based on that -1, which is correct, but the stale DMA index bits left
->> in pp_magic are wrong: the xarray entry they index no longer exists.
->> A page recycled back into the pool then carries a dangling DMA index,
->> and kernels that validate pp_magic in the return path surface this as
->> a WARN.
->>
->> Move netmem_set_dma_index(netmem, 0) to execute unconditionally before
->> return, so both the winner and the loser of the xa_cmpxchg race clear
->> the DMA index bits.  The return value still distinguishes the two
->> cases (-1 loser / 0 winner), preserving the contract that exactly one
->> side performs dma_unmap.
->>
->> The race window opens when page_pool_destroy() runs concurrently with
->> late page returns from SKBs held in per-CPU defer lists, TCP receive
->> queues or GRO hashes -- e.g. a driver reconfiguring channels/ring
->> depth while traffic is flowing.
->>
->> Observed on arm64 (7.2.0-rc1) with the hns3 driver:
->>
->>    WARNING: net/core/netmem_priv.h:18 at page_pool_clear_pp_info+0x20/0x38,
->>             CPU#83: iperf/3874878
->>
->> Return path (CPU_B, process context, triggering the WARN).  The page
->> was held in a per-CPU SKB defer list and is being released through
->> tcp_recvmsg():
->>
->>    page_pool_clear_pp_info+0x20/0x38
->>    page_pool_put_unrefed_netmem+0x11c/0x2e8
->>    napi_pp_put_page+0xf0/0x120
->>    skb_release_data+0x170/0x228
->>    skb_attempt_defer_free+0x7c/0x1f0
->>    tcp_recvmsg_locked+0x710/0x9a0
->>    tcp_recvmsg+0x74/0x1c8
->>    inet_recvmsg+0x2c/0xf0
->>    __sys_recvfrom+0xdc/0x198
->>    __arm64_sys_recvfrom+0x2c/0x48
->>    invoke_syscall+0x5c/0x120
->>    el0_svc_common.constprop.0+0xc8/0xf0
->>    do_el0_svc+0x24/0x38
->>    el0_svc+0x34/0x1e0
->>    el0t_64_sync_handler+0xa0/0xe8
->>    el0t_64_sync+0x1ac/0x1b0
->>
->> Scrub path (CPU_A, racing with the return path, derived from code):
->>
->>    page_pool_destroy
->>    -> page_pool_scrub
->>       -> xa_for_each(dma_mapped)
->>          -> __page_pool_release_netmem_dma
->>             -> page_pool_release_dma_index   <- race window
->>
->> Debug approach and evidence:
->> Reproduced with a stability test that repeatedly reconfigures the hns3
->> channel count and ring depth (ethtool -L/-G) while running iperf3 with
->> multiple parallel streams, then closes the iperf3 sockets to release
->> the SKBs held in TCP receive queues and per-CPU defer lists.
->>
->> On the unmodified kernel the WARN reproduces after hours to tens of
->> hours. To make the race window observable, a debugfs knob injects a
->> controlled udelay() right after the winning xa_cmpxchg() in
->> page_pool_release_dma_index(), widening the gap between the xarray
->> entry removal and the pp_magic cleanup.  With the delay injected the
->> WARN reproduces 4-5 times within about half an hour.
->>
->> Instrumentation added to page_pool_release_dma_index() logs the per-
->> page pp_magic, DMA index, refcount and dma_addr at release time.  A
->> representative log line from a WARN-triggering page:
->>
->>    PP_DMA_IDX: magic=0xdead0000000cbec0 idx=6525 refcnt=1 dma_addr=0x0
->>
->>    magic=0xdead0000000cbec0  -> PP_SIGNATURE | (6525 << shift)
->>    idx=6525                  -> DMA index bits still set in pp_magic
->>    dma_addr=0x0              -> scrub already did dma_unmap + cleared addr
->>    refcnt=1                  -> inflight page, unrefed release path
->>
->> The combination "dma_addr == 0 but DMA index != 0" is the signature of
->> the race: CPU_A (scrub) won the xa_cmpxchg, performed dma_unmap and
->> cleared dma_addr; CPU_B (return) lost the cmpxchg, returned -1 and
->> skipped netmem_set_dma_index(0), leaving the DMA index bits stale --
->> exactly the gap this fix closes.
->>
->> With this fix applied the WARN no longer triggers under the same
->> workload (verified overnight), both with and without the debugfs
->> delay knob enabled.
->>
->> Fixes: 95920c2ed02b ("page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches")
->> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
->> Assisted-by: OhMyOpenCode:GLM-5.2
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> If at all possible, when generating fixes via LLMs, spend time
-> reviewing the patch yourself before sending to make sure the patch
-> makes sense. In this case, I was taken back that this 10+, 3- fix came
-> with such a huge huge commit message.
+https://sashiko.dev/#/patchset/20260723104403.7970-1-sigefriedhyy%40gmail.c=
+om
 
+I will send another revision to fix them.
 
-Thanks for the review, Mina. Fair point on the commit message length — this
-was my first time digging into page_pool internals and the message ended up
-documenting the whole investigation path. I first saw the call trace on
-6.17-rc4 and spent a long time chasing the hns3 driver before realizing the
-issue was in page_pool itself. The fix was LLM-suggested and I did run it,
-but only under iperf — which, as you note, is not enough to surface the
-UAF (the freed page isn't reused fast enough for the stale write to land on
-a different subsystem's memory, so "no crash / no WARN" lulled me into
-thinking the fix was safe). I should have reasoned about the refcount
-contract from the code rather than relying on workload symptoms. I'll trim
-the commit message heavily in v2.
-
-
+On Thu, Jul 23, 2026 at 7:44=E2=80=AFPM Yuyang Huang <sigefriedhyy@gmail.co=
+m> wrote:
 >
-> I did not review my self but my LLM - which does not tire in reading
-> the long commit message - came up with this review. It looks like it
-> may be correct. I think the fact that we do not touch the netmem at
-> all if we lose the race is intentional, because the netmem may not be
-> allocated:
+> Add RTA_DEL_REASON (u8) to RTM_DELROUTE notifications to report the
+> cause of kernel-initiated IPv6 route deletions, so user space can tell
+> routes that expired from routes explicitly withdrawn by Router
+> Advertisements.
 >
-> ```
->    While this fixes the WARN_ON_ONCE, it introduces a critical
-> Use-After-Free (UAF) and memory corruption bug in the scrub path.
+> The two causes call for different treatment in user space. An expired
+> RA route means the router failed to refresh it before its lifetime ran
+> out, which points at a misconfigured or unreliable router; user space
+> may want to react, for example by disabling IPv6 on that network
+> entirely. An RA withdrawal (zero lifetime) is valid, RFC-compliant
+> operation and needs no such recovery. Today both surface as an
+> identical RTM_DELROUTE.
 >
->    page_pool_scrub() iterates over pool->dma_mapped without holding a
-> reference to the page. If the scrub path races with the normal unref
-> path and wins xa_cmpxchg(), the unref path will proceed to free the
-> page.
+> Plumb the deletion reason through the IPv6 FIB and notification paths:
+> - Update `fib6_del`, `fib6_del_route`, and `inet6_rt_notify` signatures
+>   to explicitly pass the `del_reason` (u8) down the call chain.
+> - Update `rt6_fill_node()` to emit `RTA_DEL_REASON` attribute when the
+>   reason is not UNSPEC.
+> - Record the cause in the kernel-initiated IPv6 deletion paths:
+>   - RTA_DEL_REASON_EXPIRED: for routes cleaned up by the FIB6 garbage
+>     collector.
+>   - RTA_DEL_REASON_RA_WITHDRAWN: for default routes, prefix routes, or
+>     route information option routes withdrawn by Router Advertisements.
+> - Update the `rt-route` Netlink YAML spec to define the new attribute,
+>   notifications, and multicast groups.
 >
->    If the scrub path is preempted immediately after xa_cmpxchg(), the
-> page will be freed before the scrub path can continue. When the scrub
-> path resumes, it will execute your new netmem_set_dma_index(netmem,
-> 0), read the dma_addr,
->    and clear it—all on a freed page that may now belong to another
-> subsystem. This will corrupt memory and unmap garbage DMA addresses.
-
-
-You're right. I verified in the source:
-
-     - page_pool_scrub() walks pool->dma_mapped via xa_for_each() with no
-       get_page on the entries (net/core/page_pool.c:1178).
-     - page_pool_return_netmem() calls put_page() after
-       __page_pool_release_netmem_dma() returns (net/core/page_pool.c:778),
-       so the unref path can free the page once refcount hits 0.
-
-So "loser doesn't touch netmem" is indeed the intended contract, and v1
-breaking it on the scrub-loser path is a real UAF.
-
-One clarification on the scope of the LLM review's UAF claim: the scrub
-**winner** UAF it describes is pre-existing, not introduced by v1. In
-__page_pool_release_netmem_dma() (unchanged by v1), the winner path does:
-
-       if (page_pool_release_dma_index(pool, netmem))   // cmpxchg
-           return;
-       dma = page_pool_get_dma_addr_netmem(netmem);      // READ netmem->dma_addr
-       dma_unmap_page_attrs(..., dma, ...);
-       page_pool_set_dma_addr_netmem(netmem, 0);          // WRITE netmem->dma_addr
-       
-These three netmem dereferences happen after the cmpxchg wins, with no page
-ref held. If the unref loser races to put_page() in between, the scrub winner
-reads/writes a freed page. v1 doesn't change the winner path; it only adds a
-new netmem_set_dma_index() write on the **loser** path, which is the new UAF
-v1 introduces.
-
-
+> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+> ---
+>  Documentation/netlink/specs/rt-route.yaml | 33 ++++++++++++
+>  include/net/ip6_fib.h                     |  4 +-
+>  include/net/ip6_route.h                   |  2 +
+>  include/uapi/linux/rtnetlink.h            | 17 ++++++
+>  net/ipv6/addrconf.c                       |  3 +-
+>  net/ipv6/ip6_fib.c                        | 19 ++++---
+>  net/ipv6/ndisc.c                          |  7 ++-
+>  net/ipv6/route.c                          | 66 +++++++++++++++--------
+>  8 files changed, 116 insertions(+), 35 deletions(-)
 >
->    To safely fix this:
+> diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/ne=
+tlink/specs/rt-route.yaml
+> index 33195db96746..234f502fb35d 100644
+> --- a/Documentation/netlink/specs/rt-route.yaml
+> +++ b/Documentation/netlink/specs/rt-route.yaml
+> @@ -78,6 +78,15 @@ definitions:
+>        -
+>          name: rta-used
+>          type: u32
+> +  -
+> +    name: del-reason
+> +    type: enum
+> +    name-prefix: rta-del-reason-
+> +    enum-name: rta-del-reason
+> +    entries:
+> +      - unspec
+> +      - expired
+> +      - ra-withdrawn
 >
->    1. __page_pool_release_netmem_dma() must cache dma_addr to a local
-> variable before calling xa_cmpxchg().
->    2. The scrub path (winner) must not touch netmem after a successful
-> xa_cmpxchg().
->    3. The unref path (loser), which safely holds the page reference,
-> should handle clearing the DMA index and dma_addr to satisfy the WARN,
-> regardless of the race outcome.
-
-For v2 I'll follow your direction:
-
-     1. Cache dma_addr to a local variable before xa_cmpxchg() in
-        __page_pool_release_netmem_dma().
-     2. Scrub path (winner or loser) does not touch netmem fields after
-        cmpxchg; it only does dma_unmap on the cached address.
-     3. Unref path, which holds the page ref, clears dma_addr and DMA index
-        bits regardless of the cmpxchg outcome.
-
-This fixes both the v1-introduced loser UAF and the pre-existing winner UAF.
-
-Will send v2 soon.
-
-Thanks,
-Jijie Shao
-
-
+>  attribute-sets:
+>    -
+> @@ -185,6 +194,10 @@ attribute-sets:
+>          type: u32
+>          byte-order: big-endian
+>          display-hint: hex
+> +      -
+> +        name: del-reason
+> +        type: u32
+> +        enum: del-reason
+>    -
+>      name: metrics
+>      name-prefix: rtax-
+> @@ -299,6 +312,7 @@ operations:
+>              - dport
+>              - nh-id
+>              - flowlabel
+> +            - del-reason
+>        dump:
+>          request:
+>            value: 26
+> @@ -322,3 +336,22 @@ operations:
+>          request:
+>            value: 25
+>            attributes: *all-route-attrs
+> +    -
+> +      name: newroute-ntf
+> +      doc: Notification about a created route.
+> +      value: 24
+> +      notify: getroute
+> +    -
+> +      name: delroute-ntf
+> +      doc: Notification about a deleted route.
+> +      value: 25
+> +      notify: getroute
+> +
+> +mcast-groups:
+> +  list:
+> +    -
+> +      name: rtnlgrp-ipv4-route
+> +      value: 7
+> +    -
+> +      name: rtnlgrp-ipv6-route
+> +      value: 11
+> diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
+> index 9cd27e1b9b69..7ca0e2124e79 100644
+> --- a/include/net/ip6_fib.h
+> +++ b/include/net/ip6_fib.h
+> @@ -468,7 +468,7 @@ void fib6_clean_all_skip_notify(struct net *net,
+>
+>  int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+>              struct nl_info *info, struct netlink_ext_ack *extack);
+> -int fib6_del(struct fib6_info *rt, struct nl_info *info);
+> +int fib6_del(struct fib6_info *rt, struct nl_info *info, u32 del_reason)=
+;
+>
+>  static inline
+>  void rt6_get_prefsrc(const struct rt6_info *rt, struct in6_addr *addr)
+> @@ -531,7 +531,7 @@ static inline void fib6_rt_update(struct net *net, st=
+ruct fib6_info *rt,
+>  }
+>  #endif
+>  void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *in=
+fo,
+> -                    unsigned int flags);
+> +                    unsigned int flags, u32 del_reason);
+>
+>  void fib6_age_exceptions(struct fib6_info *rt, struct fib6_gc_args *gc_a=
+rgs,
+>                          unsigned long now);
+> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+> index 09ffe0f13ce7..98f1684fe378 100644
+> --- a/include/net/ip6_route.h
+> +++ b/include/net/ip6_route.h
+> @@ -128,6 +128,8 @@ int ip6_route_add(struct fib6_config *cfg, gfp_t gfp_=
+flags,
+>  int ip6_ins_rt(struct net *net, struct fib6_info *f6i);
+>  #if IS_ENABLED(CONFIG_IPV6)
+>  int ip6_del_rt(struct net *net, struct fib6_info *f6i, bool skip_notify)=
+;
+> +int ip6_del_rt_reason(struct net *net, struct fib6_info *f6i, bool skip_=
+notify,
+> +                     u32 del_reason);
+>  #else
+>  static inline int ip6_del_rt(struct net *net, struct fib6_info *f6i,
+>                              bool skip_notify)
+> diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlin=
+k.h
+> index 27265fd31e5f..fe00e624f3c3 100644
+> --- a/include/uapi/linux/rtnetlink.h
+> +++ b/include/uapi/linux/rtnetlink.h
+> @@ -399,6 +399,7 @@ enum rtattr_type_t {
+>         RTA_DPORT,
+>         RTA_NH_ID,
+>         RTA_FLOWLABEL,
+> +       RTA_DEL_REASON,
+>         __RTA_MAX
+>  };
+>
+> @@ -407,6 +408,22 @@ enum rtattr_type_t {
+>  #define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(=
+struct rtmsg))))
+>  #define RTM_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct rtmsg))
+>
+> +/* RTA_DEL_REASON: why the kernel deleted the route. u32.
+> + * Emitted only on RTM_DELROUTE notifications, and only when the deletio=
+n
+> + * path records a cause. Absence means either an older kernel or a
+> + * deletion path that does not (yet) record its cause - consumers must
+> + * treat "absent" and "unspec" identically. New causes may be appended.
+> + * Currently only IPv6 deletion paths record a cause.
+> + */
+> +enum rta_del_reason {
+> +       RTA_DEL_REASON_UNSPEC,          /* cause not recorded */
+> +       RTA_DEL_REASON_EXPIRED,         /* RTF_EXPIRES lifetime ran out (=
+GC) */
+> +       RTA_DEL_REASON_RA_WITHDRAWN,    /* zero-lifetime RA / PIO / RIO *=
+/
+> +       __RTA_DEL_REASON_MAX
+> +};
+> +
+> +#define RTA_DEL_REASON_MAX (__RTA_DEL_REASON_MAX - 1)
+> +
+>  /* RTM_MULTIPATH --- array of struct rtnexthop.
+>   *
+>   * "struct rtnexthop" describes all necessary nexthop information,
+> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> index f1fe9ede1edb..1ca9d82b5721 100644
+> --- a/net/ipv6/addrconf.c
+> +++ b/net/ipv6/addrconf.c
+> @@ -2874,7 +2874,8 @@ void addrconf_prefix_rcv(struct net_device *dev, u8=
+ *opt, int len, bool sllao)
+>                 if (rt) {
+>                         /* Autoconf prefix route */
+>                         if (valid_lft =3D=3D 0) {
+> -                               ip6_del_rt(net, rt, false);
+> +                               ip6_del_rt_reason(net, rt, false,
+> +                                                 RTA_DEL_REASON_RA_WITHD=
+RAWN);
+>                                 rt =3D NULL;
+>                         } else {
+>                                 table =3D rt->fib6_table;
+> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+> index a130cdfaebfb..32b9a00956a0 100644
+> --- a/net/ipv6/ip6_fib.c
+> +++ b/net/ipv6/ip6_fib.c
+> @@ -1286,7 +1286,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, s=
+truct fib6_info *rt,
+>                 rcu_assign_pointer(rt->fib6_node, fn);
+>                 rcu_assign_pointer(*ins, rt);
+>                 if (!info->skip_notify)
+> -                       inet6_rt_notify(RTM_NEWROUTE, rt, info, nlflags);
+> +                       inet6_rt_notify(RTM_NEWROUTE, rt, info, nlflags,
+> +                                       RTA_DEL_REASON_UNSPEC);
+>                 info->nl_net->ipv6.rt6_stats->fib_rt_entries++;
+>
+>                 if (!(fn->fn_flags & RTN_RTINFO)) {
+> @@ -1317,7 +1318,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, s=
+truct fib6_info *rt,
+>                 rt->fib6_next =3D iter->fib6_next;
+>                 rcu_assign_pointer(*ins, rt);
+>                 if (!info->skip_notify)
+> -                       inet6_rt_notify(RTM_NEWROUTE, rt, info, NLM_F_REP=
+LACE);
+> +                       inet6_rt_notify(RTM_NEWROUTE, rt, info, NLM_F_REP=
+LACE,
+> +                                       RTA_DEL_REASON_UNSPEC);
+>                 if (!(fn->fn_flags & RTN_RTINFO)) {
+>                         info->nl_net->ipv6.rt6_stats->fib_route_nodes++;
+>                         fn->fn_flags |=3D RTN_RTINFO;
+> @@ -1966,7 +1968,8 @@ static struct fib6_node *fib6_repair_tree(struct ne=
+t *net,
+>  }
+>
+>  static void fib6_del_route(struct fib6_table *table, struct fib6_node *f=
+n,
+> -                          struct fib6_info __rcu **rtp, struct nl_info *=
+info)
+> +                          struct fib6_info __rcu **rtp, struct nl_info *=
+info,
+> +                          u32 del_reason)
+>  {
+>         struct fib6_info *leaf, *replace_rt =3D NULL;
+>         struct fib6_walker *w;
+> @@ -2055,13 +2058,13 @@ static void fib6_del_route(struct fib6_table *tab=
+le, struct fib6_node *fn,
+>                         call_fib6_entry_notifiers_replace(net, replace_rt=
+);
+>         }
+>         if (!info->skip_notify)
+> -               inet6_rt_notify(RTM_DELROUTE, rt, info, 0);
+> +               inet6_rt_notify(RTM_DELROUTE, rt, info, 0, del_reason);
+>
+>         fib6_info_release(rt);
+>  }
+>
+>  /* Need to own table->tb6_lock */
+> -int fib6_del(struct fib6_info *rt, struct nl_info *info)
+> +int fib6_del(struct fib6_info *rt, struct nl_info *info, u32 del_reason)
+>  {
+>         struct net *net =3D info->nl_net;
+>         struct fib6_info __rcu **rtp;
+> @@ -2090,7 +2093,7 @@ int fib6_del(struct fib6_info *rt, struct nl_info *=
+info)
+>                 if (rt =3D=3D cur) {
+>                         if (fib6_requires_src(cur))
+>                                 fib6_routes_require_src_dec(info->nl_net)=
+;
+> -                       fib6_del_route(table, fn, rtp, info);
+> +                       fib6_del_route(table, fn, rtp, info, del_reason);
+>                         return 0;
+>                 }
+>                 rtp_next =3D &cur->fib6_next;
+> @@ -2252,7 +2255,7 @@ static int fib6_clean_node(struct fib6_walker *w)
+>                 res =3D c->func(rt, c->arg);
+>                 if (res =3D=3D -1) {
+>                         w->leaf =3D rt;
+> -                       res =3D fib6_del(rt, &info);
+> +                       res =3D fib6_del(rt, &info, RTA_DEL_REASON_UNSPEC=
+);
+>                         if (res) {
+>  #if RT6_DEBUG >=3D 2
+>                                 pr_debug("%s: del failed: rt=3D%p@%p err=
+=3D%d\n",
+> @@ -2400,7 +2403,7 @@ static void fib6_gc_table(struct net *net,
+>
+>         hlist_for_each_entry_safe(rt, n, &tb6->tb6_gc_hlist, gc_link)
+>                 if (fib6_age(rt, gc_args) =3D=3D -1)
+> -                       fib6_del(rt, &info);
+> +                       fib6_del(rt, &info, RTA_DEL_REASON_EXPIRED);
+>  }
+>
+>  static void fib6_gc_all(struct net *net, struct fib6_gc_args *gc_args)
+> diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> index f867ec8d3d90..c3537fc0ec63 100644
+> --- a/net/ipv6/ndisc.c
+> +++ b/net/ipv6/ndisc.c
+> @@ -1361,7 +1361,9 @@ static enum skb_drop_reason ndisc_router_discovery(=
+struct sk_buff *skb)
+>         defrtr_usr_metric =3D in6_dev->cnf.ra_defrtr_metric;
+>         /* delete the route if lifetime is 0 or if metric needs change */
+>         if (rt && (lifetime =3D=3D 0 || rt->fib6_metric !=3D defrtr_usr_m=
+etric)) {
+> -               ip6_del_rt(net, rt, false);
+> +               ip6_del_rt_reason(net, rt, false,
+> +                                 lifetime =3D=3D 0 ? RTA_DEL_REASON_RA_W=
+ITHDRAWN :
+> +                                                 RTA_DEL_REASON_UNSPEC);
+>                 rt =3D NULL;
+>         }
+>
+> @@ -1396,7 +1398,8 @@ static enum skb_drop_reason ndisc_router_discovery(=
+struct sk_buff *skb)
+>                         .nl_net =3D net,
+>                 };
+>                 rt->fib6_flags =3D (rt->fib6_flags & ~RTF_PREF_MASK) | RT=
+F_PREF(pref);
+> -               inet6_rt_notify(RTM_NEWROUTE, rt, &nlinfo, NLM_F_REPLACE)=
+;
+> +               inet6_rt_notify(RTM_NEWROUTE, rt, &nlinfo, NLM_F_REPLACE,
+> +                               RTA_DEL_REASON_UNSPEC);
+>         }
+>
+>         if (rt) {
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index a1301334da48..e8ed95dc5665 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -111,7 +111,7 @@ static int rt6_fill_node(struct net *net, struct sk_b=
+uff *skb,
+>                          struct fib6_info *rt, struct dst_entry *dst,
+>                          struct in6_addr *dest, struct in6_addr *src,
+>                          int iif, int type, u32 portid, u32 seq,
+> -                        unsigned int flags);
+> +                        unsigned int flags, u32 del_reason);
+>  static struct rt6_info *rt6_find_cached_rt(const struct fib6_result *res=
+,
+>                                            const struct in6_addr *daddr,
+>                                            const struct in6_addr *saddr);
+> @@ -1020,7 +1020,7 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, =
+int len,
+>                                         gwaddr, dev);
+>
+>         if (rt && !lifetime) {
+> -               ip6_del_rt(net, rt, false);
+> +               ip6_del_rt_reason(net, rt, false, RTA_DEL_REASON_RA_WITHD=
+RAWN);
+>                 rt =3D NULL;
+>         }
+>
+> @@ -3973,7 +3973,8 @@ int ip6_route_add(struct fib6_config *cfg, gfp_t gf=
+p_flags,
+>         return err;
+>  }
+>
+> -static int __ip6_del_rt(struct fib6_info *rt, struct nl_info *info)
+> +static int __ip6_del_rt(struct fib6_info *rt, struct nl_info *info,
+> +                       u32 del_reason)
+>  {
+>         struct net *net =3D info->nl_net;
+>         struct fib6_table *table;
+> @@ -3986,7 +3987,7 @@ static int __ip6_del_rt(struct fib6_info *rt, struc=
+t nl_info *info)
+>
+>         table =3D rt->fib6_table;
+>         spin_lock_bh(&table->tb6_lock);
+> -       err =3D fib6_del(rt, info);
+> +       err =3D fib6_del(rt, info, del_reason);
+>         spin_unlock_bh(&table->tb6_lock);
+>
+>  out:
+> @@ -3994,14 +3995,20 @@ static int __ip6_del_rt(struct fib6_info *rt, str=
+uct nl_info *info)
+>         return err;
+>  }
+>
+> -int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+> +int ip6_del_rt_reason(struct net *net, struct fib6_info *rt, bool skip_n=
+otify,
+> +                     u32 del_reason)
+>  {
+>         struct nl_info info =3D {
+>                 .nl_net =3D net,
+> -               .skip_notify =3D skip_notify
+> +               .skip_notify =3D skip_notify,
+>         };
+>
+> -       return __ip6_del_rt(rt, &info);
+> +       return __ip6_del_rt(rt, &info, del_reason);
+> +}
+> +
+> +int ip6_del_rt(struct net *net, struct fib6_info *rt, bool skip_notify)
+> +{
+> +       return ip6_del_rt_reason(net, rt, skip_notify, RTA_DEL_REASON_UNS=
+PEC);
+>  }
+>
+>  static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_confi=
+g *cfg)
+> @@ -4028,7 +4035,8 @@ static int __ip6_del_rt_siblings(struct fib6_info *=
+rt, struct fib6_config *cfg)
+>
+>                         if (rt6_fill_node(net, skb, rt, NULL,
+>                                           NULL, NULL, 0, RTM_DELROUTE,
+> -                                         info->portid, seq, 0) < 0) {
+> +                                         info->portid, seq, 0,
+> +                                         RTA_DEL_REASON_UNSPEC) < 0) {
+>                                 kfree_skb(skb);
+>                                 skb =3D NULL;
+>                         } else
+> @@ -4064,13 +4072,13 @@ static int __ip6_del_rt_siblings(struct fib6_info=
+ *rt, struct fib6_config *cfg)
+>                 list_for_each_entry_safe(sibling, next_sibling,
+>                                          &rt->fib6_siblings,
+>                                          fib6_siblings) {
+> -                       err =3D fib6_del(sibling, info);
+> +                       err =3D fib6_del(sibling, info, RTA_DEL_REASON_UN=
+SPEC);
+>                         if (err)
+>                                 goto out_unlock;
+>                 }
+>         }
+>
+> -       err =3D fib6_del(rt, info);
+> +       err =3D fib6_del(rt, info, RTA_DEL_REASON_UNSPEC);
+>  out_unlock:
+>         spin_unlock_bh(&table->tb6_lock);
+>  out_put:
+> @@ -4196,7 +4204,8 @@ static int ip6_route_del(struct fib6_config *cfg,
+>                                 if (!fib6_info_hold_safe(rt))
+>                                         continue;
+>
+> -                               err =3D  __ip6_del_rt(rt, &cfg->fc_nlinfo=
+);
+> +                               err =3D __ip6_del_rt(rt, &cfg->fc_nlinfo,
+> +                                                  RTA_DEL_REASON_UNSPEC)=
+;
+>                                 break;
+>                         }
+>                         if (cfg->fc_nh_id)
+> @@ -4215,7 +4224,8 @@ static int ip6_route_del(struct fib6_config *cfg,
+>
+>                         /* if gateway was specified only delete the one h=
+op */
+>                         if (cfg->fc_flags & RTF_GATEWAY)
+> -                               err =3D __ip6_del_rt(rt, &cfg->fc_nlinfo)=
+;
+> +                               err =3D __ip6_del_rt(rt, &cfg->fc_nlinfo,
+> +                                                  RTA_DEL_REASON_UNSPEC)=
+;
+>                         else
+>                                 err =3D __ip6_del_rt_siblings(rt, cfg);
+>                         break;
+> @@ -5381,7 +5391,8 @@ static void ip6_route_mpath_notify(struct fib6_info=
+ *rt,
+>         }
+>
+>         if (rt)
+> -               inet6_rt_notify(RTM_NEWROUTE, rt, info, nlflags);
+> +               inet6_rt_notify(RTM_NEWROUTE, rt, info, nlflags,
+> +                               RTA_DEL_REASON_UNSPEC);
+>
+>         rcu_read_unlock();
+>  }
+> @@ -5739,6 +5750,7 @@ static size_t rt6_nlmsg_size(struct fib6_info *f6i)
+>                + nla_total_size(sizeof(struct rta_cacheinfo))
+>                + nla_total_size(TCP_CA_NAME_MAX) /* RTAX_CC_ALGO */
+>                + nla_total_size(1) /* RTA_PREF */
+> +              + nla_total_size(4) /* RTA_DEL_REASON */
+>                + nexthop_len;
+>  }
+>
+> @@ -5775,7 +5787,7 @@ static int rt6_fill_node(struct net *net, struct sk=
+_buff *skb,
+>                          struct fib6_info *rt, struct dst_entry *dst,
+>                          struct in6_addr *dest, struct in6_addr *src,
+>                          int iif, int type, u32 portid, u32 seq,
+> -                        unsigned int flags)
+> +                        unsigned int flags, u32 del_reason)
+>  {
+>         struct rt6_info *rt6 =3D dst_rt6_info(dst);
+>         struct rt6key *rt6_dst, *rt6_src;
+> @@ -5954,6 +5966,10 @@ static int rt6_fill_node(struct net *net, struct s=
+k_buff *skb,
+>         if (rtnl_put_cacheinfo(skb, dst, 0, expires, dst ? dst->error : 0=
+) < 0)
+>                 goto nla_put_failure;
+>
+> +       if (type =3D=3D RTM_DELROUTE && del_reason !=3D RTA_DEL_REASON_UN=
+SPEC &&
+> +           nla_put_u32(skb, RTA_DEL_REASON, del_reason))
+> +               goto nla_put_failure;
+> +
+>         if (nla_put_u8(skb, RTA_PREF, IPV6_EXTRACT_PREF(rt6_flags)))
+>                 goto nla_put_failure;
+>
+> @@ -6055,7 +6071,8 @@ static int rt6_nh_dump_exceptions(struct fib6_nh *n=
+h, void *arg)
+>                                             &rt6_ex->rt6i->dst, NULL, NUL=
+L, 0,
+>                                             RTM_NEWROUTE,
+>                                             NETLINK_CB(dump->cb->skb).por=
+tid,
+> -                                           dump->cb->nlh->nlmsg_seq, w->=
+flags);
+> +                                           dump->cb->nlh->nlmsg_seq, w->=
+flags,
+> +                                           RTA_DEL_REASON_UNSPEC);
+>                         if (err)
+>                                 return err;
+>
+> @@ -6103,7 +6120,8 @@ int rt6_dump_route(struct fib6_info *rt, void *p_ar=
+g, unsigned int skip)
+>                         if (rt6_fill_node(net, arg->skb, rt, NULL, NULL, =
+NULL,
+>                                           0, RTM_NEWROUTE,
+>                                           NETLINK_CB(arg->cb->skb).portid=
+,
+> -                                         arg->cb->nlh->nlmsg_seq, flags)=
+) {
+> +                                         arg->cb->nlh->nlmsg_seq, flags,
+> +                                         RTA_DEL_REASON_UNSPEC)) {
+>                                 return 0;
+>                         }
+>                         count++;
+> @@ -6336,12 +6354,14 @@ static int inet6_rtm_getroute(struct sk_buff *in_=
+skb, struct nlmsghdr *nlh,
+>                         err =3D rt6_fill_node(net, skb, from, NULL, NULL,=
+ NULL,
+>                                             iif, RTM_NEWROUTE,
+>                                             NETLINK_CB(in_skb).portid,
+> -                                           nlh->nlmsg_seq, 0);
+> +                                           nlh->nlmsg_seq, 0,
+> +                                           RTA_DEL_REASON_UNSPEC);
+>                 else
+>                         err =3D rt6_fill_node(net, skb, from, dst, &fl6.d=
+addr,
+>                                             &fl6.saddr, iif, RTM_NEWROUTE=
+,
+>                                             NETLINK_CB(in_skb).portid,
+> -                                           nlh->nlmsg_seq, 0);
+> +                                           nlh->nlmsg_seq, 0,
+> +                                           RTA_DEL_REASON_UNSPEC);
+>         } else {
+>                 err =3D -ENETUNREACH;
+>         }
+> @@ -6358,7 +6378,7 @@ static int inet6_rtm_getroute(struct sk_buff *in_sk=
+b, struct nlmsghdr *nlh,
+>  }
+>
+>  void inet6_rt_notify(int event, struct fib6_info *rt, struct nl_info *in=
+fo,
+> -                    unsigned int nlm_flags)
+> +                    unsigned int nlm_flags, u32 del_reason)
+>  {
+>         struct net *net =3D info->nl_net;
+>         struct sk_buff *skb;
+> @@ -6377,7 +6397,8 @@ void inet6_rt_notify(int event, struct fib6_info *r=
+t, struct nl_info *info,
+>                 goto errout;
+>
+>         err =3D rt6_fill_node(net, skb, rt, NULL, NULL, NULL, 0,
+> -                           event, info->portid, seq, nlm_flags);
+> +                           event, info->portid, seq, nlm_flags,
+> +                           del_reason);
+>         if (err < 0) {
+>                 kfree_skb(skb);
+>                 /* -EMSGSIZE implies needed space grew under us. */
+> @@ -6410,7 +6431,8 @@ void fib6_rt_update(struct net *net, struct fib6_in=
+fo *rt,
+>                 goto errout;
+>
+>         err =3D rt6_fill_node(net, skb, rt, NULL, NULL, NULL, 0,
+> -                           RTM_NEWROUTE, info->portid, seq, NLM_F_REPLAC=
+E);
+> +                           RTM_NEWROUTE, info->portid, seq, NLM_F_REPLAC=
+E,
+> +                           RTA_DEL_REASON_UNSPEC);
+>         if (err < 0) {
+>                 /* -EMSGSIZE implies BUG in rt6_nlmsg_size() */
+>                 WARN_ON(err =3D=3D -EMSGSIZE);
+> @@ -6463,7 +6485,7 @@ void fib6_info_hw_flags_set(struct net *net, struct=
+ fib6_info *f6i,
+>         }
+>
+>         err =3D rt6_fill_node(net, skb, f6i, NULL, NULL, NULL, 0, RTM_NEW=
+ROUTE, 0,
+> -                           0, 0);
+> +                           0, 0, RTA_DEL_REASON_UNSPEC);
+>         if (err < 0) {
+>                 /* -EMSGSIZE implies BUG in rt6_nlmsg_size() */
+>                 WARN_ON(err =3D=3D -EMSGSIZE);
+> --
+> 2.43.0
+>
