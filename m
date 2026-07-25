@@ -1,51 +1,100 @@
-Received: from out01-fra1-mx.uberspace.de (out01-fra1-mx.uberspace.de [185.139.157.44])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E6F1A682E;
-	Sat, 25 Jul 2026 15:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931242D12F3
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 15:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784991750; cv=none; b=Qt8WpWlMOCaif1QUdv+eA0omFZ9PZLY2fzoy9Xsuk6CQD6y4hcqmVtCPNjt6kaBg6HnNruLqYL7CGdb5E55+oKQr1+V5cyvw/DTY0BHecMtubY5l+6iCZKnUKFg43Un9oaJCqFYOVK80P4BxDXeBhA0ic9kZTllkf9uucHGWwL4=
+	t=1784992268; cv=none; b=R502W0ApDFzmlxpPDOxX0ZaM62PwCoZxUiY3Dl8Lnj24E0pGo9+ETrdN0b1VuznKtiNM0m3H217EbXAgtS/0sGT5qbbPPNwD2/2573Lk+DFkiCTOkGAlkVyo1UdtWtmZ4TiZFFPwu9DBDEYae/jQ+X5WwkUY2oRVrIebttq5jW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784991750; c=relaxed/simple;
-	bh=L7NNS97L5lFBRlRqpMWkpL+t083DwAT108jf0cGLBnk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cmyv5QKPIdrQHNypO2no7LiFzKdw8j1U+HpAPJBXvvsbWtPAU3er+ncitc0NY0fM3VlnjZgZzDFtzHUT+Jq/nuEUSTiBO1eieSNdwLQ9pMJdTArRgCSqL74tZGzEW9Uj4w0uIRiEEElBE7Vso+owx1pv02BbFr4FomJc7vtJXNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=qlB7lJgp; arc=none smtp.client-ip=185.139.157.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
+	s=arc-20240116; t=1784992268; c=relaxed/simple;
+	bh=1ypKcIZETNEITGeMh/DBgTjLBGiZ2y/Q0iD9vHffUSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cvc/TPTJR19BH6oxZDHRk9FaQf2kyyZicD9+sT7vcjPawswFLmpjI1/jJdlt4G13FuMnVKojor73tYaqzic4wjKsrU8RcX/zebYcgQDxdykRet3Up3j/kLcdTlj0SIpGWSjL0Jt852/nMHUtiGTSeazhCMSu1CVfvgroSVm9phU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oURwklN9; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="qlB7lJgp"
-Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
-	by out01-fra1-mx.uberspace.de (Postfix) with ESMTPS id A46B3400F7;
-	Sat, 25 Jul 2026 17:02:12 +0200 (CEST)
-From: Simon Dietz <simon.dietz@plantwatch.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
-	s=uberspace1; t=1784991732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fZv9q0PX/ACqvH8vFCmvIkNrg2wZVDIkdqqYX2bPamo=;
-	b=qlB7lJgppp1GhDHQb+wEVOIq7RrbcbxcjRnsfy2YjAgJYSqldKbvq0G2Dtb1BOLBCT3fVj
-	o0prZpZ7YjAYa0MbsS+6nKTOWZVz57UdtwssT0DEn5CHkoXrvz5mEEPJUdY7AcJk12PG/y
-	cpCnJ8xVxoXTurjOTCgeTZ8b+JDcI6WiDI9jx7vHvOXpnYrgrOQ+SGGRcl5D0baqBhZ/S7
-	eHkN+BpfYsRTXxAp7bbJsWl9nuuYww6oKc4MTSNE7jzGQHg7kXr5l7WT3bhAXQhWHMYeU+
-	2MCalkjUEWPjQHZCiicOo7rVO/Mg0hUddZrY4iH8lD5zaSMSsU2YpONGdysSSg==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
-To: johannes@sipsolutions.net
-Cc: andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oURwklN9"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso1422681a91.2
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 08:11:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784992267; x=1785597067; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SL7hBFcGY09oOgMOCy23V3evuH2qRKq0H2TcKBdPEAk=;
+        b=oURwklN90/3jZlgPlnvtFMTkH5+ATLcTdF/P5yPFgvbAq/lWOEP6ICnA9SNdORUWnk
+         /UJ4uBJ/zcSpmb4a8KdRcI/i48AUDTpzYkmaXhM2AsHyg/vXly1dvY5XTy8iX47oFy4a
+         OxkNkYAQxhcBtj4qHUwk2OqF7vZp3zZImLEo2gHZ6tFGUee1vH8k0a2z7K6T54PPWm7x
+         5KfXcQ+z8jBfU3A6CnwYPLWuH1TNxzbZYasGrhk5rStfzk6kRvxcrR2ATA8MW45A3hUv
+         ONnnNViXMkBtRwSEGSQjMZbqZGrIp7er6Wn2E2iQRfdAsHpo4xskFmWeR8kAWgPzKFmU
+         UIag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784992267; x=1785597067;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SL7hBFcGY09oOgMOCy23V3evuH2qRKq0H2TcKBdPEAk=;
+        b=is/Qld3Fc9i4Jc3OyveQTw0vHIduhcH0Bnhx2t2gqr+88Wi5krQ8El8AlMAR9RJDc0
+         6FH8Vnp96U7PakZeXHsllO2qhUbo2qB600MNMbiSCIbBmM7dwcL3SM68TFfXAaR6PMLR
+         +oxu3uA31BdV68fm1gA5qbqxRvXONrrngv1fvjB1qRQsYktdChBiVP+i6K+PzAvLnl5M
+         HJOPoo2NUPxia5TH6tNCJ3AndarYWSHYONlsS+znRsOVLyfmh/MRRE6Dq2scfORL0e0x
+         gBSs7uvZgvtzdzh1/2m2T6CkuZWimEUlX/ZRE9YHaBssAXaJLOUjkOtD0rJvW95qd/Hv
+         Gr/Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rqso4Doyg1KpYQeqYEZi4f8Id8Y2t5DI6ZFRuivv1t+LiugqO2wyJn9xMZxl+iWVqbsvBRoMdg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz8GfpuB//pfv1LTOKX5r7RZklWy2DtZbw3DZANqNpu2GRHOiK
+	ntWAbj0BUG6ht3UEQjCNAQNWLPgVgn1TLzfhigHSYONvWHynYltbbXHD
+X-Gm-Gg: AR+sD10POdanicCl28Iozfj4xyLDwtVAQ1gJm+zdeYib5HeKJ75pDgQLPBhQ929QgyY
+	Ez5gbptzNb1OA13rsTJP3HKITN9q2q/XA/25AFuTvLX+JIHWTi3QcgD4x0KWNYZZRer9fXoswF6
+	J70nDQxxzXxOK7xFL7Dhr7JQyvhAa8fYhKAZBSxs4s08Hyy8rSRXOlF5tn15mE1XjL6DLtCmQws
+	LtrGuAKT+nhMQLFUd+mjBTuybr6nrFHrgRHGvbQehy+HuyNRWR+quSX+JTX8Yr0iIBHfn2dOwAr
+	dRP8EJVFd9XriJzFONSTkTXHofH+c/jBfMZ6/Z66KRNUBj9xcq1LkMDhfunMdxWy3KKiEamFAUP
+	Ynfkx10dffyGcKAXXMpEamAYWI6Kb2y1IizKsM0jM+2vPGCJdEQotUtgt0KomAl7HgrqMutsB
+X-Received: by 2002:a17:90b:580c:b0:38e:7f1b:f01 with SMTP id 98e67ed59e1d1-38f2977c3b9mr2576061a91.36.1784992266734;
+        Sat, 25 Jul 2026 08:11:06 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f031d1d6csm2907665a91.0.2026.07.25.08.10.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 08:11:05 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: kuba@kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	David Arinzon <darinzon@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Manish Chopra <manishc@marvell.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rahul Verma <rahulv@marvell.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Shahed Shaikh <shshaikh@marvell.com>,
+	Sukhdeep Singh <sukhdeeps@marvell.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: GR-Linux-NIC-Dev@marvell.com,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	dietz23838@hs-ansbach.de,
-	simon.dietz@plantwatch.de
-Subject: Re: short description of GeoNetworking
-Date: Sat, 25 Jul 2026 17:00:08 +0200
-Message-ID: <20260725150009.183155-1-simon.dietz@plantwatch.de>
-In-Reply-To: <127c720f9ceeaac6ec3872bfc7732ab27d968dfc.camel@sipsolutions.net>
-References: <127c720f9ceeaac6ec3872bfc7732ab27d968dfc.camel@sipsolutions.net>
+	Russell King <linux@armlinux.org.uk>,
+	UNGLinuxDriver@microchip.com
+Subject: [PATCH net-next v2 0/4] net: remove conditional returns with no effect
+Date: Sun, 26 Jul 2026 00:08:48 +0900
+Message-ID: <20260725150852.859188-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,77 +103,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.26 / 999.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	BAYES_HAM(-1.14)[88.63%];
-	MID_CONTAINS_FROM(1.00)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
-	FROM_HAS_DN(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
-	FROM_EQ_ENVFROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	LOCAL_OUTBOUND(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MIME_TRACE(0.00)[0:+]
 
-Hi Johannes,
+Hello,
 
-> Or put another way: for each packet, you need to know _where_ (as in
-> physical location) it's going to go, so you can pick which peer to
-> send it to, no? Is this really a *per-packet* property? If not, then
-> I don't think the shape calculations etc. would really need to be in
-> the kernel?
+This series removes conditional returns where both branches return
+the same value, so the check has no effect. As suggested by Jakub, the
+netdev patches of the treewide v1 series [1] are posted separately.
 
-For GeoBroadcast the destination area & shape is a per-packet property.
-For GeoUnicast and topologically scoped broadcast there is no such area
-and/or shape. So the shape calculations need to stay in the kernel to
-support GeoBroadcast packets, I think.
+All patches are generated by the Coccinelle script, which you can
+find in v1.
 
-> A bigger issue with this might be that it's clearly a small piece of
-> a large overall puzzle - Simon, you mentioned a modified driver
-> somewhere I think (can't find that mention right now), which may be
-> using the OCB support in the stack, perhaps, but also isn't upstream.
+The patch grouping is unchanged from v1. If you would rather split,
+merge or drop any of the patches, just let me know and I will address
+it in the next version.
 
-To unfold the puzzle a bit, for handling GeoNetworking packets in a
-standard conform manner, the following things would have to be done:
-* The wifi device has to be switched into ocb mode (included in
-  upstream linux kernel and iw)
-* The wifi device has to radio in the 5.9 Ghz spektrum, in particular
-  between 5.875 and 5.925 GHz[1], therefore ath9k must be patched.
-  These patches are not upstream, but rather short.
-* wireless-db and CRDA must be patched to support the spektrum
-  mentioned above, too.
-* The linux kernel must support GeoNetworking, either natively like
-  with the proposed patch series or (maybe?) via raw sockets. I am not
-  sure, if the support is needed to recieve GeoNetworking packets and
-  to record them with a tool like wireshark or if not, though. For
-  sending GeoNetworking packets it is necessary.
-* There has to be some kind of routing table interface to the kernel
-  and userspace tooling to support routing and sending of GeoBroadcast
-  and GeoUnicast packets.
+---
+Changes from v1 [1]
+- Collect Reviewed-by tags
+- Change base to net-next/main
+- Filter only netdev patches
 
-> That's a far smaller patch than I expected 🙂
+[1] https://lore.kernel.org/all/20260723184538.3888637-1-ekffu200098@gmail.com/
+---
 
-To be accepted upstream, the patch for wireless-db would have to add
-these 802.11p list entries to all EU countries, so it would be larger.
-Letting them reside in the world domain - which is the current
-implementation - may not be acceptable. But the ath9k part is indeed
-rather small.
+Sang-Heon Jeon (4):
+  dpll: zl3073x: remove conditional return with no effect
+  net: ethernet: remove conditional return with no effect
+  net: remove conditional return with no effect
+  net: intel: remove conditional return with no effect
 
-> how do we get anything useful out of a socket family without them?
+ drivers/dpll/zl3073x/dpll.c                           | 6 +-----
+ drivers/dpll/zl3073x/out.c                            | 8 ++------
+ drivers/net/ethernet/amazon/ena/ena_netdev.c          | 6 +-----
+ drivers/net/ethernet/aquantia/atlantic/aq_macsec.c    | 6 +-----
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c   | 6 +-----
+ drivers/net/ethernet/freescale/gianfar.c              | 6 +-----
+ drivers/net/ethernet/intel/i40e/i40e_main.c           | 8 +-------
+ drivers/net/ethernet/intel/igb/e1000_i210.c           | 6 +-----
+ drivers/net/ethernet/intel/igc/igc_phy.c              | 6 +-----
+ drivers/net/ethernet/qlogic/netxen/netxen_nic_hw.c    | 7 +------
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_init.c | 6 +-----
+ drivers/net/ethernet/renesas/rtsn.c                   | 7 +------
+ drivers/net/phy/microchip_t1.c                        | 6 +-----
+ drivers/net/pse-pd/tps23881.c                         | 6 +-----
+ 14 files changed, 15 insertions(+), 75 deletions(-)
 
-Valid point. GeoNetworking support in the linux kernel may possibly
-increase its adoption in cases where linux is used (already). I may
-write to their mailing list and ask, if such an open source 802.11p
-implementation exists within the Automotive Grade Linux project.
+-- 
+2.43.0
 
-Simon
-
-[1] according to EU 2020/1426
