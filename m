@@ -1,136 +1,140 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC72931E848
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 00:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855CF20ED
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 00:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784937610; cv=none; b=Y7dCK+Ryc6VQ2PlWd19xiZf0kKTUjNjpMZ2jfucE1Ic8knS7Sf+geKCtUoMIN1KUaMJ2C/V2Iv01rb/rJSSgZhYTWwPvOQDwK2FjqvFmU4lY02qfTo5ehUbjradmP+JOJEzAlwMUUmSY7JDi0inAXiPt0+nk5ahM5VoiD7BQ5vY=
+	t=1784937920; cv=none; b=iFNA7hRVGRo0Jmc8IqcEDgRGGjPpiMTQmeZw7+8/dxbnsSQCT1LhsrUzTATaWhnqg4SBm+7R8PMX9GLdHg5Nhl9+6+4xQMp2tZGBnujIJnASLT/SrSw3vj9LAKeqGd+OI2Jl6NBgaj8+PW37f55edyAfEyNpYgD+eOWMUfk2pRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784937610; c=relaxed/simple;
-	bh=wqzcR2Vb3YK2LAiR+yOwfa+Qq5E5XeCpf8ZN6x3EZZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XALzwBO4nnYbIdfy0AQiqFqqFkYSuTD3GiKCN/5ZhWORzJbE6ktDz1RTf3ubPNAAYerTqe3tIMcLVdHoh5TQyRnO7Yq/r3fJgjypjUzbd+emrQjROmjKpT6yO4tdhE7FRkHY/nU9suWRBgsMj+gxkCaA6tOb7FJJNL/n4+O6xpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SqvmOCDB; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784937920; c=relaxed/simple;
+	bh=xRuyJvOECs/hkV6rG1fdSmxQzWOOMMk+74zg70/tK/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=vGeYaQhsQS24MjmoXL2KS4IcKhw2XdnO7JwxYBa4XLMTk8L2P/mgDfAcUExYFsQFF/sL38K2fVJVAPpJG945qLTFPuj9L/hQyyARVWGDf1J//skByORhYgwwBPDTPamftY5/2T4NZDrd37cMI/fyxz9GPiyxPnuoVVF36ydsm+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bufLQoeK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SqvmOCDB"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8485b358552so1056343b3a.2
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 17:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784937608; x=1785542408; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RcfP1cCpEbGNIQWuA4I35j/s62A27Am7wlHhwJwCgdA=;
-        b=SqvmOCDBUFNxIXmlz55nKwKkV8F7azt4a2KqNZyFDCJCxz4Vm3yalP4T/tLmah9Fqr
-         xNjmRhUE52Ri50JePHkkHqKGEKFpdrX+RT0BHje6e0gN3WviacvC7Q5WLMrqSsVhIcow
-         o0+097TyCt+/0D5iAmvCSgpy+TSS8CUEc4HBxwtUFHlXm8OLdjzVHQoxlTtqYr0R0HlC
-         34vRbCtsWNDf8ratET2IjRPziFNNXN5HEsLiz90NKIjmBKHmjF9s/qJ0wZwTTW0XqaB5
-         kdms7R07w8MmZ2+RWPAdWPFU9fioxVNW2oWvqjoG5hPQRbUg1hkPVrOAItd5wlXWETdF
-         nRyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784937608; x=1785542408;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RcfP1cCpEbGNIQWuA4I35j/s62A27Am7wlHhwJwCgdA=;
-        b=iEg/R2RYhz7AZpuIUFQsejbEyc3BMcYX1ipWEX+JQhMux9gN1goDhog+hBMhbGT6HY
-         cROoii7H/6V+WNAhF7v5uI771hG6vgvgtFmOwR07XpbCYAJClbH0uNg5qqyBAyWBf95t
-         RV7W3b99kCSpRrgueChBTxwD/ICyRKgagZDOQ/99/TCJpU22q7uziw4eLkoWQCkUBhdH
-         d3s/GSo9R/J/aZ4LTrb3JwkMdcfti1xSNv5cyp0ySEBDssUymTSAe1Ny3ePnJ2v6odAp
-         P8VI1koJ1KeoDjKGzbunlnbPzSt53N+gr5OOv1QamWHczmzmav1rCHyPUax5IrPVw1+E
-         z99w==
-X-Forwarded-Encrypted: i=1; AHgh+RrHZuvPAHXO5EYLyMsZfaNhHsw8bmmBR4KeZyUvcU4QWxMciUSBtvK7q64/YI+cpTZkvJY3zpk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAWEwLCVAQoZq1Ko9e81sIcMN9ai8RQvZhowml8LSgw11KvEsL
-	789khcdzcE2MiSCWk1vnigxJUONcUzhwCkZx13tINZVzKJszXrElA07g
-X-Gm-Gg: AR+sD13TPhaG74TVIpIxxrJZShcQnlAtJ9AqRJPP0UuqUOIJ0hqtty/ElW/AQ9eAzV/
-	qSQ2hTaQXK6KrB+8qqJC3/qpF1OlInxN0hH4tHz6PdztRpZHSIfrAkKmE4ikYQhLMPgrVoA/7vB
-	DYDG0LtRGRNHy8o666wutzlJqvgu7t4x4uUHA+KPLvqhYh5qYij5vRdqffemrqxZfHRLs9D7L1w
-	gX4eUx1opmyc03XbJgjz0OvQFkiHVNmeZ9zTG2iXd6pZXhJCulu5KnKemctOHYd/tNZxqZqro1N
-	TntQr+i8QfGOG2AL+CIXJ+JNCftlOrOU0HLTGArGHdRyvoChHMtNIkPEg/yp/t+VgahXKw7LfuX
-	oh4mcGFT2B6TBoWr14cHaTiw/vaDQLwpuzJfnfZSedSe3x8LV9KkUayy1ZqbFupyGJuGZynIYC/
-	Ct
-X-Received: by 2002:aa7:8896:0:b0:847:9745:2f83 with SMTP id d2e1a72fcca58-84e59435becmr296556b3a.18.1784937608025;
-        Fri, 24 Jul 2026 17:00:08 -0700 (PDT)
-Received: from john-p8 ([98.97.42.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5327f22fsm535936b3a.13.2026.07.24.17.00.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 17:00:07 -0700 (PDT)
-Date: Fri, 24 Jul 2026 17:00:05 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Eric Dumazet <edumazet@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
-	Jiayuan Chen <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Joe Stringer <joe@wand.net.nz>, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf 1/3] bpf, sockmap: Use sock_hold() instead of
- refcount_inc_not_zero() in lookup
-Message-ID: <amP8aYwtxo5qJUEb@john-p8>
-References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
- <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bufLQoeK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF60D1F000E9;
+	Sat, 25 Jul 2026 00:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784937919;
+	bh=XQRXvft88VzlGF21ZOVVLk9TY/HsDIXr0NIeagvR3Xo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bufLQoeKn+K5gzTg99/ckWgJoHHi7SCQkgAqA2w2rce91/p2VHxR1dYZYYhaxwWXG
+	 xpjzcMdAzhabVVGgHnq6mZlhxso4QJvqTDKS95LyPgvpx4eXqPzn+gJI+ZOSxV2FBR
+	 9npbxEtyeZKSAqkfB6vo4KnNC0w4zlF/A7NQCyPcQ8JHVslXKQkhUa3HTca9e8FDsm
+	 vVZfxtfBLIkijaGCMmbenm7Nh+oFH2tv+6KPJvRVq07MZxr7+gq+z7Mf7gWaeKvXPl
+	 8wgEp7sgrg4gMftSDDHmPnTSyyFcxUnVdxjr1uFrV/0vbADiOREQN9no/22ibGHm8s
+	 xzElBQ3RHvM3w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: linusw@kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	alsi@bang-olufsen.dk,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: dsa: realtek: rtl8366rb: Fix up port isolation
+Date: Fri, 24 Jul 2026 17:05:17 -0700
+Message-ID: <20260725000517.1733195-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org>
+References: <20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 23, 2026 at 01:33:27PM +0200, Michal Luczaj wrote:
->psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
->queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
->entry is unlinked and an RCU grace period elapses. Since the lookup runs
->under RCU, a non-NULL result guarantees sk_refcnt >= 1:
->refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
->
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: dsa: realtek: rtl8366rb: Fix up port isolation
 
-Should bpf-next right? this is an optimization not a fix?
+The patch changes the initial port isolation setup in rtl8366rb_setup()
+from passing 0 to passing RTL8366RB_PORT_ISO_PORTS_MASK, and also
+tidies up two comments.
 
-> net/core/sock_map.c | 8 ++++----
-> 1 file changed, 4 insertions(+), 4 deletions(-)
->
->diff --git a/net/core/sock_map.c b/net/core/sock_map.c
->index 9efbd8ca7db8..ca49bc7f8687 100644
->--- a/net/core/sock_map.c
->+++ b/net/core/sock_map.c
->@@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, void *key)
-> 	sk = __sock_map_lookup_elem(map, *(u32 *)key);
-> 	if (!sk)
-> 		return NULL;
->-	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
->-		return NULL;
->+	if (sk_is_refcounted(sk))
->+		sock_hold(sk);
-> 	return sk;
-> }
->
->@@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
-> 	sk = __sock_hash_lookup_elem(map, key);
-> 	if (!sk)
-> 		return NULL;
->-	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
->-		return NULL;
->+	if (sk_is_refcounted(sk))
->+		sock_hold(sk);
-> 	return sk;
-> }
->
->
->-- 
->2.55.0
->
+Link: https://sashiko.dev/#/patchset/20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5%40kernel.org
+
+> diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+> index d2fa8ff6a5d0..6d5a6e7bc5f1 100644
+> --- a/drivers/net/dsa/realtek/rtl8366rb.c
+> +++ b/drivers/net/dsa/realtek/rtl8366rb.c
+> @@ -794,8 +794,8 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
+>  static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int port,
+>  					u32 mask)
+>  {
+> -	/* Bit 0 enables isolation so set this if we enable isolation
+> -	 * any of the ports an clear it if we disable on all of them.
+> +	/* Bit 0 enables isolation so set this if we enable isolation on
+> +	 * any of the ports and clear it if we disable on all of them.
+>  	 */
+>  	if (mask)
+>  		mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
+
+[Medium]
+Should the mask argument to rtl8366rb_port_set_isolation() be treated as
+a port-index bitmap (bit N == port N) rather than a register-layout mask?
+
+The helper unconditionally shifts its argument left by one via
+RTL8366RB_PORT_ISO_PORTS():
+
+    #define RTL8366RB_PORT_ISO_EN           BIT(0)
+    #define RTL8366RB_PORT_ISO_PORTS_MASK   GENMASK(7, 1)
+    #define RTL8366RB_PORT_ISO_PORTS(pmask) ((pmask) << 1)
+
+    if (mask)
+            mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
+
+All other callers construct mask as a port-index bitmap, e.g.:
+
+    upports_mask |= BIT(dp->index);
+    downports_mask |= BIT(dp->index);
+    ret = rtl8366rb_port_set_isolation(priv, dp->index, upports_mask);
+
+so port 0 is expected to be encoded as BIT(0) in the argument, and
+RTL8366RB_PORT_ISO_PORTS() places it at the correct register bit 1.
+
+> @@ -951,7 +951,8 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
+>  		rtl8366rb_port_stp_state_set(ds, dp->index, BR_STATE_DISABLED);
+>  
+>  		/* Start with all ports completely isolated */
+> -		ret = rtl8366rb_port_set_isolation(priv, dp->index, 0);
+> +		ret = rtl8366rb_port_set_isolation(priv, dp->index,
+> +						   RTL8366RB_PORT_ISO_PORTS_MASK);
+>  		if (ret)
+>  			return ret;
+
+[Medium]
+Given the port-index vs register-layout convention above, does passing
+RTL8366RB_PORT_ISO_PORTS_MASK (GENMASK(7, 1) == 0xFE, an
+already-shifted register-layout value) here double-shift the mask?
+
+Following the helper:
+
+    mask = (0xFE << 1) | BIT(0)
+         = 0x1FC | 0x1
+         = 0x1FD
+
+which is then written to RTL8366RB_PORT_ISO(port). Two observations:
+
+Bit 1 of the register (the isolation slot for port 0) ends up cleared,
+so port 0 does not appear to be isolated in the initial setup, which
+seems to contradict the "Start with all ports completely isolated"
+comment and the commit log's "setting all isolation bits in the
+isolation mask".
+
+Bit 8 lies outside RTL8366RB_PORT_ISO_PORTS_MASK (GENMASK(7, 1)) and is
+written as 1, touching a reserved bit in that register.
+
+Would a port-index bitmap covering all ports, for example
+GENMASK(RTL8366RB_NUM_PORTS - 1, 0), match the convention used by the
+other callers and produce the intended 0xFF register value (bits 1..7
+set plus the enable bit)?
+-- 
+pw-bot: cr
