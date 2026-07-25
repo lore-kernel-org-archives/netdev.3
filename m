@@ -1,47 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855CF20ED
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 00:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689162771E;
+	Sat, 25 Jul 2026 00:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784937920; cv=none; b=iFNA7hRVGRo0Jmc8IqcEDgRGGjPpiMTQmeZw7+8/dxbnsSQCT1LhsrUzTATaWhnqg4SBm+7R8PMX9GLdHg5Nhl9+6+4xQMp2tZGBnujIJnASLT/SrSw3vj9LAKeqGd+OI2Jl6NBgaj8+PW37f55edyAfEyNpYgD+eOWMUfk2pRE=
+	t=1784938240; cv=none; b=XkZKeYO5BBP6i/3PP4txxuvV9RiOFoh0RRKwE6aDlJzH//q1DbIImzqThG7aTsYua93T5/Ma3FXUOPun70KGJW0/k7tGu77yF5SqZKfRuYyaAJMZTXjwGxJaZ604enkllMsreV/EIZsQ1X0UrMkLHEuMGI2MG4THkzrumh1vm8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784937920; c=relaxed/simple;
-	bh=xRuyJvOECs/hkV6rG1fdSmxQzWOOMMk+74zg70/tK/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGeYaQhsQS24MjmoXL2KS4IcKhw2XdnO7JwxYBa4XLMTk8L2P/mgDfAcUExYFsQFF/sL38K2fVJVAPpJG945qLTFPuj9L/hQyyARVWGDf1J//skByORhYgwwBPDTPamftY5/2T4NZDrd37cMI/fyxz9GPiyxPnuoVVF36ydsm+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bufLQoeK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784938240; c=relaxed/simple;
+	bh=Zko8iDNBnxDt13+skpFnanyO6gyoFDmgNvvuIcCcWg0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=t2duprsVhxtW3Z3TCKx6yw+G+jlSDZd//Eg7nptSvblUAKvhz3vIRerDjFwPHU8YPPOBG5bCboMVQVVSrwLFZZScvq+ORoTZz8Jp4AiEVY+Lt3JDVALR7yXnSODA4pMpfCRydRmgRV5owfobF+6ehvj7c0R0zdTD0dgg7FY29Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKOVTljO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bufLQoeK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF60D1F000E9;
-	Sat, 25 Jul 2026 00:05:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKOVTljO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB821F000E9;
+	Sat, 25 Jul 2026 00:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784937919;
-	bh=XQRXvft88VzlGF21ZOVVLk9TY/HsDIXr0NIeagvR3Xo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bufLQoeKn+K5gzTg99/ckWgJoHHi7SCQkgAqA2w2rce91/p2VHxR1dYZYYhaxwWXG
-	 xpjzcMdAzhabVVGgHnq6mZlhxso4QJvqTDKS95LyPgvpx4eXqPzn+gJI+ZOSxV2FBR
-	 9npbxEtyeZKSAqkfB6vo4KnNC0w4zlF/A7NQCyPcQ8JHVslXKQkhUa3HTca9e8FDsm
-	 vVZfxtfBLIkijaGCMmbenm7Nh+oFH2tv+6KPJvRVq07MZxr7+gq+z7Mf7gWaeKvXPl
-	 8wgEp7sgrg4gMftSDDHmPnTSyyFcxUnVdxjr1uFrV/0vbADiOREQN9no/22ibGHm8s
-	 xzElBQ3RHvM3w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: linusw@kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	alsi@bang-olufsen.dk,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: dsa: realtek: rtl8366rb: Fix up port isolation
-Date: Fri, 24 Jul 2026 17:05:17 -0700
-Message-ID: <20260725000517.1733195-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org>
-References: <20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org>
+	s=k20260515; t=1784938239;
+	bh=ZLivT9kGA2BtbGDfTpkvWXnyqkH2d5UL361k1IF+lcg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=JKOVTljOINggi64Md2mcWKenmnoqYGN8tq9plVzJts7PzAscKKzbYpcs7Wl8piZKX
+	 DMoFoo1WFWV+pS23RNNsbcgHhPGCp2sdCzYrUSCFJNnfSzTExeZOJP1yrweI+Xq4Bh
+	 WnDOMvLwGqgudpTQxG98ILu8vHtNXXmolfYWTwMzrHdSRc6F+d/53kazNOl5PYl+qn
+	 64qZSuoW4EDmJ66PD09EsrGf90lFOaBplnABrsUccHlRMD8B/0nCzg9T+9LdIW+jjI
+	 lp0WcdmNRegvGIrZhpUOY8rOiL++gns6ebSShyhMRJ65zrxMLWUBt0fp5UO+g1OPLo
+	 unkzsRHeIm1Mw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56ABF38111D8;
+	Sat, 25 Jul 2026 00:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,92 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] veth: convert frag_list skbs before running XDP
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178493820590.3361200.16785920221578022952.git-patchwork-notify@kernel.org>
+Date: Sat, 25 Jul 2026 00:10:05 +0000
+References: <20260722191925.2192070-1-matt@readmodwrite.com>
+In-Reply-To: <20260722191925.2192070-1-matt@readmodwrite.com>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, lorenzo@kernel.org, toke@toke.dk, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, kernel-team@cloudflare.com,
+ mfleming@cloudflare.com
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: dsa: realtek: rtl8366rb: Fix up port isolation
+Hello:
 
-The patch changes the initial port isolation setup in rtl8366rb_setup()
-from passing 0 to passing RTL8366RB_PORT_ISO_PORTS_MASK, and also
-tidies up two comments.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Link: https://sashiko.dev/#/patchset/20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5%40kernel.org
+On Wed, 22 Jul 2026 20:19:25 +0100 you wrote:
+> From: Matt Fleming <mfleming@cloudflare.com>
+> 
+> A frag_list skb can reach veth with data_len set but nr_frags zero.
+> veth_convert_skb_to_xdp_buff() only converts skbs that are shared,
+> locked, have frags[], or do not have enough headroom. It later uses
+> skb_is_nonlinear() to decide whether to set XDP_FLAGS_HAS_FRAGS and
+> xdp_frags_size.
+> 
+> [...]
 
-> diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
-> index d2fa8ff6a5d0..6d5a6e7bc5f1 100644
-> --- a/drivers/net/dsa/realtek/rtl8366rb.c
-> +++ b/drivers/net/dsa/realtek/rtl8366rb.c
-> @@ -794,8 +794,8 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
->  static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int port,
->  					u32 mask)
->  {
-> -	/* Bit 0 enables isolation so set this if we enable isolation
-> -	 * any of the ports an clear it if we disable on all of them.
-> +	/* Bit 0 enables isolation so set this if we enable isolation on
-> +	 * any of the ports and clear it if we disable on all of them.
->  	 */
->  	if (mask)
->  		mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
+Here is the summary with links:
+  - [net,v3] veth: convert frag_list skbs before running XDP
+    https://git.kernel.org/netdev/net/c/d0d641596304
 
-[Medium]
-Should the mask argument to rtl8366rb_port_set_isolation() be treated as
-a port-index bitmap (bit N == port N) rather than a register-layout mask?
-
-The helper unconditionally shifts its argument left by one via
-RTL8366RB_PORT_ISO_PORTS():
-
-    #define RTL8366RB_PORT_ISO_EN           BIT(0)
-    #define RTL8366RB_PORT_ISO_PORTS_MASK   GENMASK(7, 1)
-    #define RTL8366RB_PORT_ISO_PORTS(pmask) ((pmask) << 1)
-
-    if (mask)
-            mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
-
-All other callers construct mask as a port-index bitmap, e.g.:
-
-    upports_mask |= BIT(dp->index);
-    downports_mask |= BIT(dp->index);
-    ret = rtl8366rb_port_set_isolation(priv, dp->index, upports_mask);
-
-so port 0 is expected to be encoded as BIT(0) in the argument, and
-RTL8366RB_PORT_ISO_PORTS() places it at the correct register bit 1.
-
-> @@ -951,7 +951,8 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
->  		rtl8366rb_port_stp_state_set(ds, dp->index, BR_STATE_DISABLED);
->  
->  		/* Start with all ports completely isolated */
-> -		ret = rtl8366rb_port_set_isolation(priv, dp->index, 0);
-> +		ret = rtl8366rb_port_set_isolation(priv, dp->index,
-> +						   RTL8366RB_PORT_ISO_PORTS_MASK);
->  		if (ret)
->  			return ret;
-
-[Medium]
-Given the port-index vs register-layout convention above, does passing
-RTL8366RB_PORT_ISO_PORTS_MASK (GENMASK(7, 1) == 0xFE, an
-already-shifted register-layout value) here double-shift the mask?
-
-Following the helper:
-
-    mask = (0xFE << 1) | BIT(0)
-         = 0x1FC | 0x1
-         = 0x1FD
-
-which is then written to RTL8366RB_PORT_ISO(port). Two observations:
-
-Bit 1 of the register (the isolation slot for port 0) ends up cleared,
-so port 0 does not appear to be isolated in the initial setup, which
-seems to contradict the "Start with all ports completely isolated"
-comment and the commit log's "setting all isolation bits in the
-isolation mask".
-
-Bit 8 lies outside RTL8366RB_PORT_ISO_PORTS_MASK (GENMASK(7, 1)) and is
-written as 1, touching a reserved bit in that register.
-
-Would a port-index bitmap covering all ports, for example
-GENMASK(RTL8366RB_NUM_PORTS - 1, 0), match the convention used by the
-other callers and produce the intended 0xFF register value (bits 1..7
-set plus the enable bit)?
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
