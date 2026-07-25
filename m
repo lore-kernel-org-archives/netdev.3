@@ -1,265 +1,199 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E75333688C
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 01:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A238F2F532C;
+	Sat, 25 Jul 2026 02:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784943738; cv=none; b=Ik6fNhYXMBqXZiH6w4fPaivnaU7JvIPOOl2jO2k7zL0wcQPKGlc62Lt99r8hXZHfdU1ZR7hHALnu5KcbYclPt+wgZemuwXHNuMaXtV2ohPY516jYbQIPupJNknCuuEZcFlrpnOf03KdQFZW82Az39M9UmsWc7ZhNNfccWichx30=
+	t=1784945701; cv=none; b=BMXPn1X8k9R9ePsEjJlLvU3gVKYnj+V4liNYfZBNHJjzd86BaT6vDaCtPVFQHcSpO0zR6PuvdpXXENwhD6rZcILEtWVOXk1lQSLV1UPcSegiH6ldk81BiNLNziB8RnuU6HM4WbBBfy3WLXESbxRxSivDV/seF+Bq90pPEE6rhWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784943738; c=relaxed/simple;
-	bh=19XGmO15zF6usEn28WPHzig700N3WmR00YQb7QL22jk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VBnuCujhO3GNdQwLAbOtadz3yWJgAM9piJ4t2p2RqnuxwtlD3TpwXtAk9CBwOBke5/jfFQ2IBixgmneyJLBh71ivsosYa4kmIDn/V9TI3EZO6QHEoPL5hrAU430j6bZKd6Ze45vCS8lb99AojVRnCeAzkHdXqhf42IjQIz0mCIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=DLrif1Hm; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="DLrif1Hm"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YiDKPnH/OtVa0PvJKe0RMBDsgnZKx4Oc1GcCu6aJrB0=;
-	b=DLrif1HmXfMFNoaMQdsAOY9mFIcoefEDdF+kQeyE5jTYtC1hevdG7RT2l+AtCqjBaM8sbEyay
-	VW1K21godx27kOdSMFFzWfvtjysgstr0i2lUPpCZ8b8F1t1EaKusTLOcS/WjPv3w5hSw1b0MFDp
-	O6kHfEQ5nOrhG8t8WruA2oI=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4h6S6P4q0KzpStj;
-	Sat, 25 Jul 2026 09:33:01 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4D53140561;
-	Sat, 25 Jul 2026 09:42:11 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 25 Jul 2026 09:42:10 +0800
-Message-ID: <e857b453-3fda-4457-9c93-9eae376157d5@h-partners.com>
-Date: Sat, 25 Jul 2026 09:42:09 +0800
+	s=arc-20240116; t=1784945701; c=relaxed/simple;
+	bh=g4gbawJQKxnvroDirn/BHfpzRTYDpAAzp+ZvLgBlqUI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dpCeROVpTupThhNmWM7YoR+1wVvHNf0OJolOrWdKKJtray3dnTG9zpO9zyUYCr+tTga6lW6/az1o6zHBNRbzfVs69/6Ndjzs5bmL1mra7l4toGY92kWT2QsX9uG9WgmPwaJ3fdGddy1DvqIDlMHPob+vIYUD2M6PGFjKtBJ8pSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wnRuT-000000002ig-31zP;
+	Sat, 25 Jul 2026 02:14:41 +0000
+Date: Sat, 25 Jul 2026 03:14:38 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 0/5] net: dsa: mxl862xx: support firmware update
+Message-ID: <cover.1784945329.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] vlan: fix skb_under_panic and races when toggling
- HW VLAN offload
-To: Eric Dumazet <edumazet@google.com>
-CC: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>, <eric.dumazet@gmail.com>,
-	gaoxingwang <gaoxingwang1@huawei.com>, huyizhen <huyizhen2@huawei.com>
-References: <20260724035419.1473174-1-edumazet@google.com>
- <c05bb9fd-e7ac-472d-83e3-c289f81e717c@h-partners.com>
- <CANn89iKtaD6-ABj5-FnKGpHcRAtAOkiYUn1yzNa4GHTrpH28hw@mail.gmail.com>
- <f9136972-bc6a-4156-9a74-265c204fb1dc@h-partners.com>
- <CANn89iLO_STTESJwU-shGJGZ7BbrFaePb64ePfr=J7bffV4WXA@mail.gmail.com>
- <b00519e7-9c43-4867-baeb-f7ed1303424a@h-partners.com>
- <CANn89iJWJD_KXpeDOne2ujeznOADV8O=rU5+jdqQF6YMEkNkJg@mail.gmail.com>
-Content-Language: en-US
-From: xietangxin <xietangxin@h-partners.com>
-In-Reply-To: <CANn89iJWJD_KXpeDOne2ujeznOADV8O=rU5+jdqQF6YMEkNkJg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+The firmware of MxL862xx managed Ethernet switches can be updated
+in-system via the same MDIO bus which is also used to manage the
+switch. Wire up the devlink flash_update operation for DSA drivers
+and implement firmware update and version reporting in the mxl862xx
+driver.
+
+Changes since v4:
+ - report the numeric chip part number and version read from the
+   static CHIP ID registers as the "asic.id" and "asic.rev" fixed
+   versions instead of a model-name string, which does not belong in
+   a devlink version identifier (Jakub Kicinski)
+ - report the running firmware version as the "stored" version too,
+   since the switch boots it from its own flash, so userspace can
+   distinguish a flash-backed part from a flashless one by the
+   presence of "stored" without a future API change
+ - run the post-flash reprobe from a self-contained work item again
+   instead of the v4 kernel thread, which tripped the hung-task
+   watchdog while parked across the flash and returned -EINTR from
+   kthread_create() when the devlink command was interrupted
+ - re-read the new firmware version through the reprobe's fresh probe
+   and drop the SYS_MISC_FW_VERSION exemption from the host block
+ - raise the firmware command poll timeout so the FW_UPDATE command
+   that reboots into MCUboot is not cut short
+ - detect the switch state from the value MCUboot publishes in the SB
+   PDI STAT register (loader ready, wedged download, or running
+   firmware), confirming a live console loader with a register-read
+   challenge, instead of trusting a bare SMDIO scratch write
+ - fail probe with -ENODEV over SB PDI when the switch does not respond
+   at all (absent, unpowered, or misdescribed in the device tree)
+   instead of letting the clause-45 API flood the log with CRC errors
+ - drain a wedged interrupted download back to a clean ready state
+   from a background work item so the multi-minute recovery never
+   holds the devlink instance lock, reporting no firmware version and
+   refusing flash with -EBUSY until it completes
+ - report the rescue-mode null firmware version "0.0.0" as both the
+   running and stored version, matching the running/stored reporting
+   above
+ - add devlink documentation (patch 5/5) adding
+   Documentation/networking/devlink/mxl862xx.rst describing the info
+   versions and the flash update behaviour (Jakub Kicinski)
+ - include example "devlink dev info" outputs in the commit messages
+   of patches 3 and 4 (Jakub Kicinski)
+
+Changes since v3:
+ - only install the flash_update devlink op for switches whose
+   driver implements it, so the devlink core rejects unsupported
+   requests before fetching the firmware file from userspace
+ - run the deferred reprobe from a kernel thread which ends in
+   module_put_and_kthread_exit() instead of a work item that
+   dropped its module reference while still executing module code
+ - fail firmware API read commands with -ENODEV after the update
+   has finished instead of faking success with an unfilled buffer,
+   which could send port_fdb_dump() into an endless loop
+ - keep the host block in place across the post-update version
+   query by exempting SYS_MISC_FW_VERSION from block_host instead
+   of briefly lifting the block, and write all blocking flags under
+   the MDIO bus lock
+ - check the return value of all SB PDI control writes; a failed
+   address write during the half-bank switch could otherwise place
+   the second half of the payload at the wrong flash offset
+ - initialise the progress notification deadline from jiffies so
+   notifications are not suppressed on 32-bit systems shortly
+   after boot
+ - log a distinct diagnostic when rescue mode detection fails on an
+   SMDIO bus error instead of silently treating it as not being in
+   rescue mode
+ - flush the switchdev deferred queue after closing the ports so
+   the bridge's deferred STP DISABLED transitions reach the
+   firmware while it is still running instead of failing against
+   the host block with "failed to set STP state" errors
+ - treat -ENODEV as successful deletion in port_mdb_del() so the
+   post-update teardown no longer leaves host MDB entries behind
+   for the DSA core to report when the tree is torn down
+
+Changes since v2:
+ - validate the firmware image, including both CRCs, before taking
+   down any ports, so that a malformed file is rejected without
+   disturbing the running switch and without the needless flash and
+   reprobe cycle it previously triggered
+ - reject images whose declared payload sizes overflow when summed
+   (check_add_overflow) or sum up to zero; the latter previously
+   erased the flash without writing anything back
+ - allocate the reprobe work item and take the module and device
+   references before starting the update, so scheduling the reprobe
+   can no longer fail after the switch has been pushed into MCUboot
+ - prevent the stats poll work from being re-armed and cancel the
+   CRC error work before starting the transfer
+ - check the host-blocking flags in mxl862xx_api_wrap() under the
+   MDIO bus lock to close the race window where an API command
+   which had already passed the check could reach the bus after the
+   switch rebooted into MCUboot
+ - check the return value of SB PDI data word writes so a failed
+   MDIO transaction aborts the transfer instead of being noticed
+   only through a corrupted image
+ - report a per-model chip name (e.g. "MaxLinear MxL86252") as the
+   devlink "asic.id" fixed version instead of the devicetree
+   compatible string, whose comma is awkward for userspace
+   consumers such as fwupd (see discussion on v2 patch 3)
+ - report the canonical null version "0.0.0" instead of
+   "mcuboot-rescue" as the running firmware version in rescue mode,
+   so that version-comparing update tools like fwupd treat every
+   available release as an upgrade and offer it for recovery
+
+Changes since RFC [1]:
+ - detect a switch stuck in MCUboot rescue mode at probe, register
+   the switch without any ports and report "mcuboot-rescue" as the
+   running firmware version, so devlink flash can recover from a
+   failed or interrupted update (Andrew Lunn)
+ - clarify in the commit message of patch 2 that the per-transaction
+   MDIO bus locking is about other, non-switch devices on the same
+   MDIO bus (Andrew Lunn)
+ - mention in the commit message of patch 3 that closing the ports
+   also stops phylib from polling the switch-internal PHYs during
+   the transfer (Andrew Lunn)
+ - split up run-on sentence and explain the dynamically allocated
+   reprobe work item instead of just pointing at iwlwifi in the
+   commit message of patch 3 (Manuel Ebner)
+ - use kzalloc_obj() (Manuel Ebner)
+ - state the actual duration of a complete flash and reprobe cycle
+   (just under a minute) in comments and the commit message, and
+   clarify that the timeout values are generous upper bounds
+   (Manuel Ebner)
+
+[1] https://lore.kernel.org/all/ak0J-HgzMRea53om@makrotopia.org/
+Daniel Golle (5):
+  net: dsa: wire flash_update devlink callback to drivers
+  net: dsa: mxl862xx: add SMDIO clause-22 register access
+  net: dsa: mxl862xx: add devlink flash_update and info_get
+  net: dsa: mxl862xx: recover switch stuck in MCUboot rescue mode
+  net: dsa: mxl862xx: document devlink flash and info support
+
+ Documentation/networking/devlink/index.rst    |   1 +
+ Documentation/networking/devlink/mxl862xx.rst |  63 ++
+ MAINTAINERS                                   |   1 +
+ drivers/net/dsa/mxl862xx/Makefile             |   2 +-
+ drivers/net/dsa/mxl862xx/mxl862xx-api.h       |  10 +
+ drivers/net/dsa/mxl862xx/mxl862xx-cmd.h       |   2 +
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.c        | 884 ++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.h        |  20 +
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c      |  54 ++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h      |   2 +
+ drivers/net/dsa/mxl862xx/mxl862xx-phylink.c   |   2 +
+ drivers/net/dsa/mxl862xx/mxl862xx.c           | 116 ++-
+ drivers/net/dsa/mxl862xx/mxl862xx.h           |  24 +
+ include/net/dsa.h                             |   3 +
+ net/dsa/devlink.c                             |  50 +-
+ 15 files changed, 1214 insertions(+), 20 deletions(-)
+ create mode 100644 Documentation/networking/devlink/mxl862xx.rst
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.h
 
 
-
-On 7/24/2026 6:43 PM, Eric Dumazet wrote:
-> On Fri, Jul 24, 2026 at 12:24 PM xietangxin <xietangxin@h-partners.com> wrote:
->>
->>
->>
->> On 7/24/2026 5:39 PM, Eric Dumazet wrote:
->>> On Fri, Jul 24, 2026 at 11:29 AM xietangxin <xietangxin@h-partners.com> wrote:
->>>>
->>>>
->>>>
->>>> On 7/24/2026 4:40 PM, Eric Dumazet wrote:
->>>>> On Fri, Jul 24, 2026 at 10:13 AM xietangxin <xietangxin@h-partners.com> wrote:
->>>>>>
->>>>>>
->>>>>> Hi Eric,
->>>>>>
->>>>>> While testing this backport in our local environment, we hit a similar
->>>>>> skb_under_panic issue when layering macvlan on top of a VLAN device.
->>>>>>
->>>>>> macvlan does't sync vlan's need_headroom, so skb head align to 16 bytes.
->>>>>> when skb arrive vlan, call vlan_header_ops -> vlan_dev_hard_header,
->>>>>> push VLAN_HLEN 4 + ETH_LEN 14 to skb, oops.
->>>>>>
->>>>>> Call trace
->>>>>> ==========
->>>>>> [  103.088286] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000d2055800 data:ffff0000d20557fe tail:0x70 end:0x6c0 dev:macvlan
->>>>>> [  103.088344] ------------[ cut here ]------------
->>>>>> [  103.088346] kernel BUG at net/core/skbuff.c:214!
->>>>>> [  103.088350] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>>>>> [  103.098003] CPU: 3 UID: 0 PID: 160 Comm: kworker/3:3 Kdump: loaded Not tainted 7.2.0-rc4+ #56 PREEMPTLAZY
->>>>>> [  103.099007] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->>>>>> [  103.099725] Workqueue: mld mld_ifc_work
->>>>>> [  103.100169] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>>>> [  103.100898] pc : skb_panic+0x58/0x68
->>>>>> [  103.101310] lr : skb_panic+0x58/0x68
->>>>>> [  103.101738] sp : ffff800083d1b950
->>>>>> [  103.109858] Call trace:
->>>>>> [  103.110161]  skb_panic+0x58/0x68 (P)
->>>>>> [  103.110578]  skb_push+0x58/0x60
->>>>>> [  103.110971]  eth_header+0x3c/0xe0
->>>>>> [  103.111359]  vlan_dev_hard_header+0x7c/0x1a8 [8021q]
->>>>>> [  103.111904]  macvlan_hard_header+0x38/0x60 [macvlan]
->>>>>> [  103.112455]  neigh_resolve_output.part.0+0xa8/0x168
->>>>>> [  103.113081]  neigh_resolve_output+0x4c/0x90
->>>>>> [  103.113639]  ip6_finish_output2+0x2c0/0x858
->>>>>> [  103.114182]  ip6_finish_output+0x23c/0x398
->>>>>> [  103.114741]  ip6_output+0x90/0x250
->>>>>> [  103.115211]  NF_HOOK.constprop.0+0x54/0x118
->>>>>> [  103.115699]  mld_sendpack+0x1cc/0x3d0
->>>>>> [  103.116202]  mld_send_cr+0x1cc/0x318
->>>>>> [  103.116696]  mld_ifc_work+0x38/0x128
->>>>>>
->>>>>>
->>>>>> Reproducer
->>>>>> ==========
->>>>>> ip link add veth0 type veth peer name veth1
->>>>>> ip link set veth0 up
->>>>>> ip link set veth1 up
->>>>>>
->>>>>> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
->>>>>> ip link set vlan_test up
->>>>>>
->>>>>> # macvlan does't sync vlan's need_headroom,
->>>>>> ip link add link vlan_test name macvlan type macvlan
->>>>>> ip link set macvlan up
->>>>>>
->>>>>> ethtool -K veth0 tx-vlan-hw-insert off
->>>>>>
->>>>>> # skb_under_panic
->>>>>> ip -6 addr add fe80::1/64 dev macvlan
->>>>>
->>>>> Thanks for testing and for providing a clean repro.
->>>>>
->>>>> This definitely is a bug in macvlan :/, I am pretty sure it can be
->>>>> stacked on top of devices that have a non zero needed_headroom.
->>>>>
->>>>> Maybe the bug was hidden because skb->head was properly reallocated
->>>>> for such lower devices incurring an expensive kmalloc()/kfree().
->>>>>
->>>>>
->>>>> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
->>>>> index c40fa331836bb2395267914807542ae5094e1a3c..0fb619413d94c89e472efed4a6a9f0dd7fb69940
->>>>> 100644
->>>>> --- a/drivers/net/macvlan.c
->>>>> +++ b/drivers/net/macvlan.c
->>>>> @@ -950,6 +950,7 @@ static int macvlan_init(struct net_device *dev)
->>>>>         dev->lltx               = true;
->>>>>         netif_inherit_tso_max(dev, lowerdev);
->>>>>         dev->hard_header_len    = lowerdev->hard_header_len;
->>>>> +       dev->needed_headroom    = lowerdev->needed_headroom;
->>>>>         macvlan_set_lockdep_class(dev);
->>>>>
->>>>>         vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
->>>>> @@ -1824,6 +1825,7 @@ static int macvlan_device_event(struct
->>>>> notifier_block *unused,
->>>>>         case NETDEV_FEAT_CHANGE:
->>>>>                 list_for_each_entry(vlan, &port->vlans, list) {
->>>>>                         netif_inherit_tso_max(vlan->dev, dev);
->>>>> +                       vlan->dev->needed_headroom = dev->needed_headroom;
->>>>>                         netdev_update_features(vlan->dev);
->>>>>                 }
->>>>>                 break;
->>>> Hi Eric,
->>>>
->>>> I tested this patch with two reproducers, and it indeed fixes.
->>>> However, are there other similar issues where devices on vlan?
->>>
->>> Tell me :)
->>>
->>> At least our selftests passed.
->>>
->>> Note that many devices have belts and suspenders. They use
->>> skb_cow(skb, min_headroom) or pskb_expand_head(), because we have
->>> numerous bugs yet to be fixed.
->> Hi Eric,
->>
->> I ran few tests on other devices over vlan,
->> and ipvlan triggers the exact same skb_under_panic issue.
->> I haven't tested many devices, and there might be others.
->>
->> Call trace
->> ==========
->> [  113.414244] skbuff: skb_under_panic: text:ffff800080d2159c len:114 put:14 head:ffff0000c716d000 data:ffff0000c716cffe tail:0x70 end:0x6c0 dev:ipvlan_test
->> [  113.414286] ------------[ cut here ]------------
->> [  113.414288] kernel BUG at net/core/skbuff.c:214!
->> [  113.414290] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->> [  113.424840] CPU: 1 UID: 0 PID: 315 Comm: kworker/1:4 Kdump: loaded Not tainted 7.2.0-rc4+ #59 PREEMPTLAZY
->> [  113.425832] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->> [  113.426573] Workqueue: mld mld_ifc_work
->> [  113.427039] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->> [  113.427788] pc : skb_panic+0x58/0x68
->> [  113.428224] lr : skb_panic+0x58/0x68
->> [  113.428638] sp : ffff800083d1b950
->> [  113.437079]  skb_panic+0x58/0x68 (P)
->> [  113.437558]  skb_push+0x58/0x60
->> [  113.437949]  eth_header+0x3c/0xe0
->> [  113.438344]  vlan_dev_hard_header+0xa0/0x1d0 [8021q]
->> [  113.438913]  ipvlan_hard_header+0x34/0x58 [ipvlan]
->> [  113.439491]  neigh_resolve_output.part.0+0xa8/0x168
->> [  113.440027]  neigh_resolve_output+0x4c/0x90
->> [  113.440505]  ip6_finish_output2+0x2c0/0x858
->> [  113.440976]  ip6_finish_output+0x23c/0x398
->> [  113.441442]  ip6_output+0x90/0x250
->> [  113.441835]  NF_HOOK.constprop.0+0x54/0x118
->> [  113.442305]  mld_sendpack+0x1cc/0x3d0
->> [  113.442726]  mld_send_cr+0x1cc/0x318
->> [  113.443157]  mld_ifc_work+0x38/0x128
->>
->> Reproducer
->> ==========
->> ip link add veth0 type veth peer name veth1
->> ip link set veth0 up
->> ip link set veth1 up
->>
->> ip link add link veth0 name vlan_test type vlan id 10 reorder_hdr off
->> ip link set vlan_test up
->>
->> ip link add link vlan_test name ipvlan_test type ipvlan mode l2
->> ip link set ipvlan_test up
->>
->> ethtool -K veth0 tx-vlan-hw-insert off
->>
->> ip -6 addr add fe80::1/64 dev ipvlan_test
-> 
-> I am not surprised, ipvlan has been copy/pasted from macvlan :)
-> 
-> diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-> index ed46439a9f4eb1dd8bfaf6c83476ba4f2aff31bc..7513c005a5121676d3f8edb0898492ad434a9fab
-> 100644
-> --- a/drivers/net/ipvlan/ipvlan_main.c
-> +++ b/drivers/net/ipvlan/ipvlan_main.c
-> @@ -146,6 +146,7 @@ static int ipvlan_init(struct net_device *dev)
->         dev->lltx = true;
->         netif_inherit_tso_max(dev, phy_dev);
->         dev->hard_header_len = phy_dev->hard_header_len;
-> +       dev->needed_headroom = phy_dev->needed_headroom;
-> 
->         netdev_lockdep_set_classes(dev);
-> 
-> @@ -773,6 +774,7 @@ static int ipvlan_device_event(struct
-> notifier_block *unused,
->         case NETDEV_FEAT_CHANGE:
->                 list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
->                         netif_inherit_tso_max(ipvlan->dev, dev);
-> +                       ipvlan->dev->needed_headroom = dev->needed_headroom;
->                         netdev_update_features(ipvlan->dev);
->                 }
->                 break;
-Hi Eric,
-
-It works fine.
-Thanks for the quick fix!
+base-commit: 89d8006259b81dd25c962f6cc8d7ab268d6ea426
+prerequisite-patch-id: 0000000000000000000000000000000000000000
 -- 
-Best regards,
-Tangxin Xie
-
+2.55.0
