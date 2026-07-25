@@ -1,121 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAE14908B1
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A781F3B85
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784987188; cv=none; b=AtgyWwwX9bCHhQ7RWBxcK2dyeoQprxZbZXiT2d/kBZqPVM3RJAZSIdkeUWTu1ILvrHlwjsUtz4a3hIWN0N4ytN1G3J+iYoKnJ/dGBocDqTPmgGFu9GK4lccNzISztCIUU3a8EmFWkRvnZG37m4yo+vxfsygi24O6Z2L9RvEFP6g=
+	t=1784987565; cv=none; b=KnYeiFt+fF9gfjC99uLGPXqrYeW1sm2DWSYrr1pgx24ZRslPilijAP2OsuPiXk/xX5vezXNV5FQ3T/JHrs7Vv3CXZ/O/fyFT2hDJ2zw3hmKeTRRnUjxhrelQb340RqzKlk8DjRtay6PLNXVwSkA6b71jKkhOC6Ey/qoz3hXzOPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784987188; c=relaxed/simple;
-	bh=56KPPErOAZzICwpNGPxiNV+FjVyrTrel6EQh1LucW9M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pR/lpCnQNBJyjBebHzgt2XGZaXu++LnR5o8FbEJ2ArtK7eL3W3TxiARvZeM6MonHvdZAyoRHWgC7Qkdue4Z883/4n/xsufzfL4Ek6wEtpvj+k/EZLN7rtzcCJ5dS8UyDX2LvQggtsqKlIYOnN3M8fx/TDh6weFhGgeudMCt2dVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDIUIkjx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784987565; c=relaxed/simple;
+	bh=g5LygCgcH4XVoC4r7EilVVIaM9bbzUJaXaHV85t5jD0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sl5akJSGUzVsAzkO2R22r9xP2Au0pRwmOm+rSP2vF9LxnsSEWJc9RdaoFMqADfkia3P/37gbquJsviYABHmWDLCagLwwru02lmifCO2iOGmw2nyC19ZJBBeOVYkHlhKXqtdUR/mEGrG7V51ObVnW9x+0tr4y/FPBBWAa4iRPq5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=yIuY1/5G; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDIUIkjx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00B91F000E9;
-	Sat, 25 Jul 2026 13:46:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784987186;
-	bh=sNMSN7jUAdSH9uPg1mWxmSSUoAJ+glyp27jMF3XKnlk=;
-	h=From:Date:Subject:To:Cc;
-	b=KDIUIkjxX4ojKhgEkSXmIMxwB+nYG68w5oGJT1TBlVPjXUvbxhaiIfxw8xvz7zE0c
-	 qAs3YSsV/eEYULD0DrwnzcOdWET5IXwctzi9NxiBWcWq3FuZaEJn12hqXImVWPvi9g
-	 F6fkSUI0kQwz3yfhVOmjDqubVYdTMjtm6CUAPaptaItjrynFC9wcrz9N97nxKZXBVu
-	 ctX/TiqQUHZGzv7sPRTklGPUYBLjbi9e0+WQ2BmfNTDs3T35vZSC2auLjTL8K0G1A7
-	 Lm0zeG+/pp/BzdPZz26hEb+5CVRlEFKaAPY/hss5ZLgLz88pFp7C06xv8IX87vVfhX
-	 rVF68JawfEfrQ==
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 25 Jul 2026 15:46:21 +0200
-Subject: [PATCH net-next v3] net: dsa: realtek: rtl8366rb: Fix up port
- isolation
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="yIuY1/5G"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493f75f7172so11383765e9.1
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 06:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1784987562; x=1785592362; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g5LygCgcH4XVoC4r7EilVVIaM9bbzUJaXaHV85t5jD0=;
+        b=yIuY1/5GWFl/8VQxQz9E0WGGe+Sp20VIxAHJhKedsldOErC3c9SN1w7qmHFbiAeyLk
+         ban3HOXz0eIkqNc/54jDftwZhUnychSqna3jiyug/6xPjVSy/UPzMTEvS78leyAtNw6F
+         uMAJ7WhFs3DIRQRWv6bj79j4O4HopOYgXQUZAoTunPzpFq3u7EqBAwQoV3/CbYMOZuPW
+         9ykm7u2Ux5xeRYH7dvtn2+HCQYRgQbIiEWIJ9pmwqQ2AFbU+FGiiIqFSOvfUA1cTa+Mj
+         MEmAPGzZITTYaBSf2CTPDGVUwmDJZDZ5H+q+na67n6g28x6bZd9c55z1UfKqi364qs+q
+         BVTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784987562; x=1785592362;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g5LygCgcH4XVoC4r7EilVVIaM9bbzUJaXaHV85t5jD0=;
+        b=kVee6jZA7awOcVuOawJqNbU9h9l6/Jbzbjc+PCZT9XyVwHLYF6aK8DCCGfxitV7tHV
+         dYlgPu6Uwj0yyCKKSavvPv382d5fBBXuHvqIkuAmmwvoNEmA4+6hGiI8RvQ/q7d/gFgM
+         z9KQRfDXMnIqqNJlKbAnMt3LKH1cxAzKXXn4AR2gicWpzu35KiBdI05GSmpAR7LsMYmM
+         1Ug6ydhsznYO40aIc4cc/av9k3sggnZLdmq0AVd9U3wC01KinrTJEyj21QzME2D9Hk90
+         xbAOm0Fpwsexp04ka8vqGjTzCUzaqvFHOKPktr3W+14T82d5xFJ0iqDE0VXLk/kHANTW
+         jS6w==
+X-Forwarded-Encrypted: i=1; AHgh+RoYyUIJPHxwONj+8l27KlXafZzKv2+jUQ7yPUezxya360+SL8vIUuyGMU6SEZ2+vwpDj2P90Wc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH5ZJmNBs9PWxo17gcoxFlIr+zbrzFmk6NCDf7z6DDIzLPC0RH
+	y6RJ7pa7h6AXpi2Q/fjYpU6NLLeNIV9U+tT3U+Wx0WHzU2m1S9U5pYXsXn4hY30UfYDH
+X-Gm-Gg: AR+sD103e4pASvSwgehngSiLCbYP3egn0mCfdPN9PYuBd7jnweoUZwVZ0W17FDvoFku
+	5JsTsvaVyMxlghZnl9wUpif5v5a1E0zjeiZ6Rbz9Vu6rgCWxjwrMq/5IVfnDsElPkqUfxu1azjd
+	Q+tdYmM0yCO2Rtw0PJx6ZHEZ3NiRWzEDD1RXczIArlDBLFnGkrWwx9R7eKQmlrYgbHI4msaDoFy
+	3jOHNVvwkVypsuaLotxzNGVrdI8bJbl2sl+PeooYWwqEFitGgtwbNRUSadOf/w2OYg/lU+fKNfA
+	G31/gkevD4Bf+OSofTQaV/ZzOd5KOouPhJA/ZgIQICk1fqh/ZnTmXPY2PNH1par/qVfchbtrTqW
+	ZCsYbNoTbx0lltvhP6i4YNtLni6D5qC1IPGKohlM528giiT58sXR0lS0b7CYgDCF3cLEJJm0Zmk
+	i4qSBrqjhGPQCjQALqSfeZTLt6zsj9Ab3rXQQqxTGQI9Wx/da0pq36B5Nt4XsySB6/hwaJzu4ZC
+	0/hlHlBVfTQz5//lTsigA6Vow==
+X-Received: by 2002:a05:600c:6d83:b0:495:7d78:7fb2 with SMTP id 5b1f17b1804b1-496b570027amr17998615e9.27.1784987561680;
+        Sat, 25 Jul 2026 06:52:41 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.219.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4ee1d31sm74193595e9.5.2026.07.25.06.52.40
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 25 Jul 2026 06:52:41 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: Thomas Karlsson <thomas.karlsson@paneda.se>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: Re: [PATCH net] macvlan: cap IFLA_MACVLAN_BC_QUEUE_LEN to bound broadcast backlog
+Date: Sat, 25 Jul 2026 15:52:39 +0200
+Message-ID: <20260725135239.30427-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <OS4P279MB04037D97A6ECD2021F1675C9EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
+References: <20260706212556.3199234-1-xmei5@asu.edu> <OS4P279MB0403BDB88C2B7F4D4939DCC4EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM> <CAPpSM+QjiZxUOqK6Aor6gLehVj=xGQ0uAcuPm089EuSNRFeynA@mail.gmail.com> <OS4P279MB04037D97A6ECD2021F1675C9EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ7CIBBFr9KwFgMDqa0r72FcAJ22qKEGsKlpe
- ncp3Wg0s/r589+bSUBvMZBjMROPow12cCmIXUFMr1yH1DYpE2BQsgMD6uO9EmXpNW3thIGqWrS
- V4GhASZJWD4+5SKMzcRipwymSy9aEp76iiStw/e1tiIN/ZfnI82LzcP7jGTlNB7oGzjQzBk839
- A7v+8F3GT/CBwD+ACABQMpS6oZjq+QXYFmWN0ybyBkMAQAA
-X-Change-ID: 20260702-rtl8366rb-fixes-a93f831ec2a4
-To: =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Sashiko reports that we incorrectly disable isolation in the setup
-loop while what we want to do is to enable it.
+> Like I said, we use 100k today and are currently running our
+> workload extremely stable with that.
 
-Enable it by setting all isolation bits in the isolation mask
-for all ports in the switch.
+I independently looked at this path, and I think checking authority
+over the lower device may avoid needing an arbitrary queue limit.
 
-Fix up the comments so it is clear what is going on, including a
-missing word in the helper function.
+A macvlan moved into a child user and network namespace can change
+BC_QUEUE_LEN and BC_CUTOFF even though both affect the shared
+macvlan_port attached to the lower device. The child can also create a
+nested macvlan that resolves back to the same lower device.
 
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Closes: https://sashiko.dev/#/patchset/20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
-Changes in v3:
-- Fixup the erroneous shifted bitmask (I did not have my coffee...)
-- Use GENMASK(ds->num_ports - 1, 0) top properly create a bitmask of
-  all the ports, and isolate every port from every port.
-- Link to v2: https://patch.msgid.link/20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org
+I reproduced both paths. Changing BC_QUEUE_LEN from the child changed
+the value reported on a host sibling from 1000 to 65535. Creating a
+nested macvlan changed it to 131072.
 
-Changes in v2:
-- Properly fix the issue by setting all isolation bits to 1.
-- Link to v1: https://patch.msgid.link/20260711-rtl8366rb-fixes-v1-1-12b9210b0cce@kernel.org
----
- drivers/net/dsa/realtek/rtl8366rb.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+IPvlan handles the same namespace arrangement by requiring
+CAP_NET_ADMIN in the physical device's namespace for changelink and
+nested newlink operations. I have a small patch applying the analogous
+check to macvlan, while leaving queue lengths unrestricted for callers
+that administer the lower device.
 
-diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
-index d2fa8ff6a5d0..61c30d2c6802 100644
---- a/drivers/net/dsa/realtek/rtl8366rb.c
-+++ b/drivers/net/dsa/realtek/rtl8366rb.c
-@@ -794,8 +794,8 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
- static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int port,
- 					u32 mask)
- {
--	/* Bit 0 enables isolation so set this if we enable isolation
--	 * any of the ports an clear it if we disable on all of them.
-+	/* Bit 0 enables isolation so set this if we enable isolation on
-+	 * any of the ports and clear it if we disable on all of them.
- 	 */
- 	if (mask)
- 		mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
-@@ -951,7 +951,8 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
- 		rtl8366rb_port_stp_state_set(ds, dp->index, BR_STATE_DISABLED);
- 
- 		/* Start with all ports completely isolated */
--		ret = rtl8366rb_port_set_isolation(priv, dp->index, 0);
-+		ret = rtl8366rb_port_set_isolation(priv, dp->index,
-+						   GENMASK(ds->num_ports - 1, 0));
- 		if (ret)
- 			return ret;
- 
-@@ -974,7 +975,7 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
- 		if (!dsa_port_is_user(dp))
- 			continue;
- 
--		/* Forward only to the CPU */
-+		/* Forward only to the CPU, isolate from all other ports */
- 		ret = rtl8366rb_port_set_isolation(priv, dp->index, upports_mask);
- 		if (ret)
- 			return ret;
+Xiang, I am happy to send the patch or pass it to you for a v2,
+whichever you prefer. I would preserve the report credit from your
+original patch.
 
----
-base-commit: 23dad2d088dfc82cae1f5a936f8ff7ffebb38dd9
-change-id: 20260702-rtl8366rb-fixes-a93f831ec2a4
-
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
-
+-Doruk
