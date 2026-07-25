@@ -1,173 +1,102 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from freeshell.de (freeshell.de [116.202.128.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741F62F1FE3
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 07:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D08737A83B;
+	Sat, 25 Jul 2026 08:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.128.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784965574; cv=none; b=E0DD82MJxr144jXu0XKnoXvFfG3T/TkBxSMjzVEOiKLjcmUyYT+zicavab66NwasPxXsMEEo5ehARyXb+osMJzo6+f6lTYev0QK2y+v40GG+0NlbA35HwM5X7jhclk2Iq88/GMjxxzWBE7i1uzPOZivLfVji23/klgasTgOjuF4=
+	t=1784967262; cv=none; b=GHvduxTUz0GuRVLhTwhwPtzQNOp4LAWuC7BP1ne30GRxsSRsm8OubjmXuM9mmWSqmuJtyKH03eUYMU1l6ky5qTxIIb5KiOwgAJC1YkVVnuIkWGM4gLbVNgIv+rswqLl0TK6OgDDhk4Ao3caD3dYBxC85YIiYy9kVHE6DzR85U6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784965574; c=relaxed/simple;
-	bh=5OVQlVYe2jv+wEYK1liAv5L/mkNj8Al5Qnr2AyBTr+I=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=h6x3bO/0XLfAHUQmCniyo4eNZSAT2vJaeixX+YapkUGRzg5wBL5WZzAPH/G2nZiBBlMc5SuBVtByjVnFq7K9DlDEqQq8XkW85G8dlMqF9BIX9HRM9IEaTRCaLSVHn/acA6VrOLVqxPcLlh4v36OBF6xoPVsfbHoCXebH7Y7vQN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEBReZ8g; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784967262; c=relaxed/simple;
+	bh=UNioxEkaO8EJAWuBo1DYcEOj9l7/qEHDoucEsmStjFs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N75Go4VmjY4GkYa0+2CJIdcNJzxipt6JNHoZoy/EG2ZIAFLtZX/BXVrHNwUgkN23CQzxvlbhqP+0pGLZ+gvYQJ+uliz7i0IsheBaexjTpAfZjnPguhMdhptv22QU28EJctYYUiGUj0dYYnKdJ5/bRsTw1AJ7nkcdTVB5CIqTHJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=freeshell.de; spf=pass smtp.mailfrom=freeshell.de; dkim=pass (2048-bit key) header.d=freeshell.de header.i=@freeshell.de header.b=OnV+l0Wo; arc=none smtp.client-ip=116.202.128.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=freeshell.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freeshell.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEBReZ8g"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66843304cbaso1345140d50.2
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 00:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784965572; x=1785570372; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=K5kSd1k8vO99vMXYvgUXMROeYIo+K1uhrvqwiQkFcJ4=;
-        b=KEBReZ8gejgJ0vUOp6rKdrn8OYTZLicKJnyraak560maouyN5LqcjS5v4429Ift6L2
-         gkGE0KiYNIs8joWlma2R2HhgFwm1LKIZiwathEAxCpHWY7bw6QZlMwLN1rvIx2vQ3ZvW
-         Ihu8akQGQBxinsSAUlQT9J8Otjo86KWRQOWtIKxIjAGcSbc1yAVciIr8+LJP1Zol4bEY
-         sT12pZGShkGdx3GT/sEbluhBIbwlwjPrWIfO8d7KfZ7RLp0Mot9NF4A+NTFHwRsW5u00
-         y9voFSTgOJ9SmBBEeIhzWa8eHVYPrSD/WWPzLMyNOvN94bfxugA+ljL+jIPUFS0bQF8p
-         aBWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784965572; x=1785570372;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K5kSd1k8vO99vMXYvgUXMROeYIo+K1uhrvqwiQkFcJ4=;
-        b=ih1kR0pufsQVGE/75803goVypFX7/VN+NqT1RqlGhKTfQ46k7Mzbpg1/8DbfHHY+8r
-         g7j4D4QvpKDA/lMTpoCEuk53Yuec5R/XBvBlL+8CZ/EgP0q6t7MqH025yZhQesXNuUQk
-         7zw4VInmFZhLoikYcVb0evvuv7MmplqjQGfUQJiEafZUm8j3wkdRBDD012XqDI0LDr6p
-         +1abpbBNBiiFcL0mG64DNLWUF2jpnoHC9VEpB2CfUU0ExU4pZpWa0f+GL96l/JyngeL4
-         fQBNoCqUN1MUCjOG5nyX8dt3QNmMjmcejlJXp08BTRS7Fy/CowjYqIO+pDwh4RxCkEsz
-         bUPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrRr6F0QgHDe93s36tVQ7qs8P3/wrEv+N2qKhdk8Cwd4LdOtSETlJZm+E9H+kGQ/VVg182B96E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwE66TGGDXlqa9joiAvQXA2NxqbvvD4aniXYTlyfCv+6xztVA/y
-	X+9Q2lZRhbZlgwKtcZKyVoS7teTyRRwvJaH/RYvXFjjgwdUl7Umhsar+
-X-Gm-Gg: AR+sD13w99Za8xuFxzY+F7MFSlwz1t8AeSq0Xrr9vVLldA7090M8s0sAnUd2DsxH/MA
-	EJxxvxvIAJO9rg3c8oNEKqQh4Bn9t/ktnOK8FsRhhbMy5rotvoxNV0J3o+g6bq7cIM4AEHYlU3A
-	HbCb9lU3Dj+PyD9JLg19QLf0wW8G67Yd1WYpPHINVBQztBu5VlZhWPqdDi6uFJABj7atGKv32gw
-	/Dq6QJ/dzR4cqo7R4HiU5mbEaeBpoMs+ICZjDlXaYXWzT9lMQQvE5bE1egPPVKV/gBjRS62Rl6c
-	Am+5dcw3E8IK1Xt75qcS1UXSw6xLcJ8IOGe0M3PdoKqD5MUjFmn61c6zFgHeEofRnbkWFdLsLaK
-	a8WcS6jiRpnG+MlZcQCceSqxYjQuManClzMuygiZ73K2j2uR+yPe3n+shZd51FivyVd4Vj7bkyg
-	bEUGWZ6IV77hxEaNcZBZJywjAf0+uhrLLgF3baZRbNe0QOM0Chk04WGaGYQOlT5tYs2Q==
-X-Received: by 2002:a53:d045:0:10b0:668:311a:d444 with SMTP id 956f58d0204a3-668c7c31410mr275480d50.106.1784965572388;
-        Sat, 25 Jul 2026 00:46:12 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-668c70698b7sm535928d50.20.2026.07.25.00.46.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 00:46:11 -0700 (PDT)
-Date: Sat, 25 Jul 2026 03:46:11 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Doruk Tan Ozturk <doruk@0sec.ai>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, 
- sd@queasysnail.net, 
- Vladimir Oltean <olteanv@gmail.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.d5ba4e62d4d2@gmail.com>
-In-Reply-To: <20260724144015.63219-1-doruk@0sec.ai>
-References: <20260724144015.63219-1-doruk@0sec.ai>
-Subject: Re: [PATCH net v2] net/packet: reset the MAC header on the
- packet-socket transmit path
+	dkim=pass (2048-bit key) header.d=freeshell.de header.i=@freeshell.de header.b="OnV+l0Wo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freeshell.de;
+	s=s2025; t=1784967180;
+	bh=Q1wNwR7tIvEW59tXnUAq4uObdZlbHctBQ2RgzD/ZM+U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OnV+l0WoJv/sdyIlExO4Gq+PhEkYP7GycUj9fdFV+6B+X9lmoUo2HdVM465G4NDmp
+	 jSPSjOP0LHhtUg0wjigtySnOYMnYwSnh/qZU68PbFEQGRZ9VquOnmzubejei6WVtSm
+	 al5IOoSka+a8eFZYsL8HAyxWVHMTK6XJ4V9fRPQj76UHF0o97ia+HnXhnuSOj9GTNj
+	 IJln88Xh4R5+xdRyCtrfiz/FL1h3w3MaQ6Ab+DtLUjAjJfC4eIW0e2ASMlTztvJP/z
+	 Fmxt7yNYLbW6psc9gNctMhp7KpFzNelIWFneA4Akg/plsstQDkFrnNG6nrOAdqYiHL
+	 tJNrTkBVQl1AA==
+Received: from [IPV6:2605:59ca:364f:d400:1b91:6b30:22c2:fffc] (unknown [IPv6:2605:59ca:364f:d400:1b91:6b30:22c2:fffc])
+	(Authenticated sender: e)
+	by freeshell.de (Postfix) with ESMTPSA id 9F302B2200E0;
+	Sat, 25 Jul 2026 10:12:55 +0200 (CEST)
+Message-ID: <9545227f-77ef-480d-bb55-6caf1124627c@freeshell.de>
+Date: Sat, 25 Jul 2026 01:12:46 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] riscv: dts: spacemit: Fix phy id check for the phy on
+ pico-itx board
+To: Inochi Amaoto <inochiama@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Yixun Lan <dlan@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Yixun Lan <dlan@gentoo.org>,
+ Longbin Li <looong.bin@gmail.com>
+References: <20260725005804.373698-1-inochiama@gmail.com>
+ <20260725005804.373698-2-inochiama@gmail.com>
+Content-Language: en-US
+From: E Shattow <e@freeshell.de>
+In-Reply-To: <20260725005804.373698-2-inochiama@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Doruk Tan Ozturk wrote:
-> packet_parse_headers() resets the MAC header only for a SOCK_RAW frame
-> whose socket did not bind a protocol. A protocol-bound SOCK_RAW socket,
-> any SOCK_DGRAM frame, and the legacy SOCK_PACKET path therefore leave
-> skb->mac_header unset here.
+Hi Inochi,
+
+On 7/24/26 17:58, Inochi Amaoto wrote:
+> Current phy framework can not reinit the phy correctly, as it will
+> assert the phy reset GPIO so the phy id can not be readed. Setting
+> the phy id of board pico-itx manually so the phy id dectection can
+> be skipped.
 > 
-> For frames sent via __dev_queue_xmit() this is harmless: it resets the
-> MAC header unconditionally. But the packet-socket PACKET_QDISC_BYPASS
-> path uses dev_direct_xmit(), which does not, so the frame reaches
-> ndo_start_xmit() with the MAC header unset. A driver that reads
-> eth_hdr(skb) on transmit then dereferences skb->head + (u16)~0, an
-> out-of-bounds access ~64 KiB past the head -- the same class fixed for
-> one consumer in commit f5089008f90c ("macsec: do not read an unset MAC
-> header in macsec_encrypt()").
-> 
-> packet_parse_headers() runs only on the transmit path, where skb->data
-> points at the start of the L2 header for every packet-socket type
-> regardless of its length: SOCK_RAW and SOCK_PACKET carry a user-supplied
-> header and SOCK_DGRAM has one built by dev_hard_header(). Reset the MAC
-> header unconditionally, mirroring __dev_queue_xmit(), so the frame is
-> anchored on the bypass path too.
-> 
-> Found by 0sec (https://0sec.ai) using automated source analysis;
-> verified against source and matched to the macsec KASAN report in
-> f5089008f90c. Compile-tested.
-> 
-> Fixes: 75c65772c3d1 ("net/packet: Ask driver for protocol if not provided by user")
-
-Link: https://lore.kernel.org/netdev/20260723020337.19040-1-doruk@0sec.ai/
-
-and perhaps also
-
-Link: https://lore.kernel.org/netdev/20260713194010.54642-1-doruk@0sec.ai/
-
-> Cc: stable@vger.kernel.org
-> Assisted-by: 0sec:multi-model
-> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-My slight caveat about variable length protocols remain (though
-perhaps not, with the recent removal of ax25). But evidently this did
-not matter for __dev_queue_xmit either. Probably because drivers for
-such protocols did not incorrectly assume that mac hdr was set, unlike
-the three drivers identified as vulnerable. In any case, fine to have
-equivalence between dev_direct_xmit and __dev_queue_xmit. Over time,
-these changes chip away at the whole point of a "fast path", but
-that's a separate discussion.
-
+> Fixes: 74657a376960 ("riscv: dts: spacemit: Add ethernet device for K3")
+> Reported-by: E Shattow <e@freeshell.de>
+> Reported-by: Inochi Amaoto <inochiama@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260712045233.800748-1-inochiama@gmail.com
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> Tested-by: E Shattow <e@freeshell.de>
 > ---
-> v2: address Willem de Bruijn's review -- clarify that __dev_queue_xmit()
->     already resets so only the dev_direct_xmit()/PACKET_QDISC_BYPASS path
->     is affected; note skb->data is the L2 start for all packet-socket TX
->     types regardless of L2 length; move the explanatory comment out of the
->     code into the commit log (kept one terse line).
->  net/packet/af_packet.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index e75d2932475a..5ae0511e89e3 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1924,11 +1924,12 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
->  {
->  	int depth;
+> diff --git a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> index b2a7d2d0d3a8..b9d2de878f38 100644
+> --- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> +++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> @@ -196,7 +196,8 @@ &eth0 {
 >  
-> +	/* On TX skb->data is the L2 header; anchor it for all socket types. */
-> +	skb_reset_mac_header(skb);
-> +
->  	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
-> -	    sock->type == SOCK_RAW) {
-> -		skb_reset_mac_header(skb);
-> +	    sock->type == SOCK_RAW)
->  		skb->protocol = dev_parse_header_protocol(skb);
-> -	}
->  
->  	/* Move network header to the right position for VLAN tagged packets */
->  	if (likely(skb->dev->type == ARPHRD_ETHER) &&
-> -- 
-> 2.43.0
-> 
+>  	mdio {
+>  		phy0: phy@1 {
+> -			compatible = "ethernet-phy-ieee802.3-c22";
+> +			compatible = "ethernet-phy-id001c.c916",
+> +				     "ethernet-phy-ieee802.3-c22";
+>  			reg = <1>;
+>  			reset-gpios = <&gpio 0 15 GPIO_ACTIVE_LOW>;
+>  			reset-assert-us = <10000>;
 
+Looks good to me, aside from commit message spelling and grammar nits
+("re-initialize", "read", "detection"). Yixun may just fix in-flight, my
+R-by and T-by tags can stay.
 
+Thanks! -E
