@@ -1,53 +1,53 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ACD36AB46;
-	Sat, 25 Jul 2026 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5516386C3D;
+	Sat, 25 Jul 2026 15:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784994919; cv=none; b=Xe6vScHtlFQught96IGwAvOODjRaB5lB3HlQlFd8vdQdM7VvAKLaPxMJd5sczpvCdG4F6oKi4u29QXhtAmEP/V/h+WdHJTeUfcRQNVbEgmEOIfVxX+eYlvvFN0DLl/nifk1YQeFVzD/i0/AxKLaMkcUOS1WVMXbX+IYAA1RLG5M=
+	t=1784995080; cv=none; b=ajI9EhPrdaldyEL+VzqcZZYEB3rFCXvPSrCq85a8IYS510MOsUDzzcyWBaUb4CchPYofF70KxLjqck5Kx2v+P2DCMfsFwTRnjZUWV3KjpO2v4uVVjOIqadWyeq0sPba5A4bx00Lqw+/ByKVP8o0XZ8VU/htgmV2zD+0Qbmx8BHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784994919; c=relaxed/simple;
-	bh=yP10mmGUzrg/48obhb3r+1+xGk7SMUGXjV+yYmGclSk=;
+	s=arc-20240116; t=1784995080; c=relaxed/simple;
+	bh=8v4akMFID5xsxgiJnCDCF/p/7xIBw54PZPOaiynEh3M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rQxf6UMq+lrgnXjEou+Ypb8VocGi7o8RKekwSQPmv8mgP+Ybuxth8RFdaTLSCYjvX4ziHBTLZFgPpjUsTGlDTxNG2YGOHqXDInaBM9NGvhpwuMaWFcmC4/saHlzgcF0SN4mM2TKf/XC/GTEpPCVZ0i4KvI/Z48QiwWlEAzpaugs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Q3ZcSQOE; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=tS2chY1iXYw+Lm6Gz/t7da3IInICh+olH30hyNGXW1W44XF+5FWfhqaeH++Nf1mcr9xr5y4iPoRfyJPzrl1ewS/t8Bo532A7lc88kcjVM57wLSMEdQ1UMbumuaA2rBhUKCMsquzEtqAaEUg2t7N2wb0f6nDswz6GAsomvr27LmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aXXlbmLd; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Q3ZcSQOE"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aXXlbmLd"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=I/ImIEgfG79EqguJb0BUA/LECi0DJfTpT1YcXuMgOAQ=; b=Q3ZcSQOEtgB1Zd7o4V2PvQplNJ
-	gmEXEMKQxYhfa78o4yEPbGkbI5YV1n/aDQj+8g8oZ+1S0b0rIsFcn5eVZKn/W32a9t2asxo2lPMli
-	1DJTQK8BQuveN5pU7PId/NEFax28JpstDDuI8ETjJ/CgPTinqmBPTuSHO59ARMSESUVg=;
+	bh=jgtuDnxQHEcklSeiDd1KgmBuuv8iaStyhrluO90ziCo=; b=aXXlbmLdbUaQPC3cjZ4BdXrF6i
+	kqFuWuGky72WVRw8gdnecWTFVPorfj/UXuSshZda+KE3VOXB1ngc/y/ZwyG08337V0V7oYJGAas2X
+	28kh/uP3z8AVwibMp+3/W1UbOcui9FcXds/vMJhbSiJqy1xRKyy9fC11DileQTMQlGQo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wneiD-00E9uH-Io; Sat, 25 Jul 2026 17:54:53 +0200
-Date: Sat, 25 Jul 2026 17:54:53 +0200
+	id 1wnekw-00E9wW-NK; Sat, 25 Jul 2026 17:57:42 +0200
+Date: Sat, 25 Jul 2026 17:57:42 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Luke Howard <lukeh@padl.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Yixun Lan <dlan@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Cedric Jehasse <cedric.jehasse@gmail.com>,
-	Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>,
-	Max Hunter <max@huntershome.org>,
-	Christoph Mellauner <christoph.mellauner@joyned.at>,
-	Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/3] net: dsa: mv88e6xxx: various hwstamp
- fixes
-Message-ID: <d46fcc62-b032-4bf4-9397-a11f1b523125@lunn.ch>
-References: <20260719-mv88e6xxx-ptp-fixes-v3-0-161386ac8a62@padl.com>
- <20260724165207.6a03c9db@kernel.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Yixun Lan <dlan@gentoo.org>,
+	Longbin Li <looong.bin@gmail.com>, E Shattow <e@freeshell.de>
+Subject: Re: [PATCH 1/2] riscv: dts: spacemit: Fix phy id check for the phy
+ on pico-itx board
+Message-ID: <0d11de51-546a-42b6-80cb-8ca258389a17@lunn.ch>
+References: <20260725005804.373698-1-inochiama@gmail.com>
+ <20260725005804.373698-2-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,24 +56,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724165207.6a03c9db@kernel.org>
+In-Reply-To: <20260725005804.373698-2-inochiama@gmail.com>
 
-On Fri, Jul 24, 2026 at 04:52:07PM -0700, Jakub Kicinski wrote:
-> On Sun, 19 Jul 2026 15:30:52 +1000 Luke Howard wrote:
-> > Three fixes for improving the reliably of hardware timestamp acquisition
-> > on Marvell switches. In our tests this eliminated missed timestamps in
-> > ptp4l, whilst also preserving PTP event and general message ordering on
-> > switches that support embedded timestamps.
+On Sat, Jul 25, 2026 at 08:58:02AM +0800, Inochi Amaoto wrote:
+> Current phy framework can not reinit the phy correctly, as it will
+> assert the phy reset GPIO so the phy id can not be readed. Setting
+> the phy id of board pico-itx manually so the phy id dectection can
+> be skipped.
 > 
-> Do you know if there's any precedent in the existing upstream drivers
-> for overriding the reserved bytes? It's not normal for devices to modify
-> the ingress frames. Perhaps there's some precedent, but if not I think
-> we should gate this (eg with a devlink param?)
+> Fixes: 74657a376960 ("riscv: dts: spacemit: Add ethernet device for K3")
+> Reported-by: E Shattow <e@freeshell.de>
+> Reported-by: Inochi Amaoto <inochiama@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260712045233.800748-1-inochiama@gmail.com
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> Tested-by: E Shattow <e@freeshell.de>
+> ---
+>  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Andrew, do you have any opinion? Or perhaps Richard?
+> diff --git a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> index b2a7d2d0d3a8..b9d2de878f38 100644
+> --- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> +++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> @@ -196,7 +196,8 @@ &eth0 {
+>  
+>  	mdio {
+>  		phy0: phy@1 {
+> -			compatible = "ethernet-phy-ieee802.3-c22";
+> +			compatible = "ethernet-phy-id001c.c916",
+> +				     "ethernet-phy-ieee802.3-c22";
 
-I have a dim memory of PHYs who change the packet by adding time
-stamps. There are definitely DSA switches which can put the stamps in
-the DSA header/trailer.
+There was a patch recently from one of the DT Maintainers removing the
+-c22 compatible when there was a specific PHY ID. I did not look into
+why. Does this pass all the binding tool checks?
 
-    Andrew
+     Andrew
