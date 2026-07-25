@@ -1,115 +1,107 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90192F5487;
-	Sat, 25 Jul 2026 18:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0BC625;
+	Sat, 25 Jul 2026 20:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785002914; cv=none; b=r6U4SQGzVnSqyQJqTxjolCWTzdTOZwJHgCUsEiVvoJ/yskKerOFuWTWg9PFK0OaO3N3DcnqJOR2dii6SDE6DFxVW1rUdqSIC5VFOK7vsR1Jd8+8wbU5l2afklt/wCH4snU31YC/V7zWqyrpMge8843DbjVQJJAcMYp8V1kIxQIs=
+	t=1785011472; cv=none; b=aTgBjb9cj0tsiNCIRNgwNLQgX0d4hZvqBukP+Rg2l7tWTaje0908uRIqsphDDLpNn90NS7itft0NcPZn0kT/lLzw0lkWg+AGJ+lbKUrBFyLPInQnST1u4p1GrXrFF2jSYORyEQQo4xyOyaRpTavkuvEMlc1C2OJHvum7JLtMtJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785002914; c=relaxed/simple;
-	bh=tEpU/DEvJ/ntQWXqWHulhY16XAu7Ry70hjLxZVNAOe8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MgRpBmpNL2eA8IwLeHID8T6VTnyirAgXHLl8eAq6KFfMGJuMoK1EwMGz6sSrBZdUCZc8ZzLTklynhn/UZ3pvUDvRd5lmGHIdP0hHaWy6AnJGvGQCAI0c+M/UqQwe0LP1NsA841qYD9oR/q4I0zqruA1TekagQnlR0g4tLwEz2s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=UDM4GUPt; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1785011472; c=relaxed/simple;
+	bh=e6KMoD3bd5/q6p3xQeg23qgiuejFXySUo/aGZ6esyCc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JKAGydDvVpvukxAV9Q1NF4vPSEA0b15yWfsrQ+p8Z/gHAJTBkG3dE+5eiVca8cKXSa3+Noh0ZRnip2j1grPveDwhnKx5JBqbrqP+cZ/zdtyC9p92rmeO423HfMKXTQCZvNPA2mBE33TwVY9FNnKOF7f2Gxtd/dBn9DwNGDP2Zzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAfTn9kP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="UDM4GUPt"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wngnD-00CMSP-Mt; Sat, 25 Jul 2026 20:08:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=2KYNlDtl58Qgh8rb02AfLzOu/UAS72qPiNqld44YtQs=; b=UDM4GUPt7z0xyznrVXZMinYjte
-	uxcC8spvTs9WQiUXWmTAI196TkbgzaLR+UEMmUD2IqBXhcuZIKaY45eS3pNjjb+hFRhH94aBE7lUI
-	4MBRKnilsMlAVyXwVzru7GV9Cg5VgcMMBRMRnym76t2NeSNtd3WLZ5jkX0NnIx2ut+GGyQzER7Vq3
-	a6GobRv0f2WlTJ4Tuc3sDrE3U9aN+IJOuyzor6qpEAprFoocBRp2ha1CrYoHcfAPNqh436y9qSNve
-	s7lND1H0N3c86QFprZdeQF2/8xwLIbtD5LXfz6OGsjY4u2+eHKGT9zZ7L+USaWXT+wpMqMlancKX/
-	CMqAZVDg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wngnB-0004kH-Sv; Sat, 25 Jul 2026 20:08:10 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wngn0-00AXvH-1Y;
-	Sat, 25 Jul 2026 20:07:58 +0200
-Message-ID: <1b224fd7-0d3e-4baa-8426-4df370b3bc64@rbox.co>
-Date: Sat, 25 Jul 2026 20:07:56 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAfTn9kP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA01F000E9;
+	Sat, 25 Jul 2026 20:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785011470;
+	bh=e6KMoD3bd5/q6p3xQeg23qgiuejFXySUo/aGZ6esyCc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=hAfTn9kP3ZABFKIwidJBkzkwUEnV03/r5N7p8kmUos3uDtUKUWtEJzQPpdypzC87s
+	 s8zXrjsDbl2M4eM1W7J86H4KiLLuZnMtxMMILtEw98qiQcngdzhm3Z933lwVaUuZ1u
+	 NLkyUWEUlaRXQiJD2BrV3+doGFNu5m2sLbsSq0EGZklaA6R4wtvLOLLa2OnPQe5qNl
+	 qRc/eqpUyUDjcyObmg1ruSpXH9PI078U1i4aarlF7k3SAVuPPwJdBfCiYHUHqv1JgK
+	 gHSHbd+Pb+4KEwvFVr0Xj05kVhoMd7+HPlRE8f80fEhbz02ckPWPFwbzdqixw/v4UL
+	 pVfAw00n8dMXA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Petr Pavlu <petr.pavlu@suse.com>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Philipp Reisner <philipp.reisner@linbit.com>, Lars
+ Ellenberg <lars.ellenberg@linbit.com>, Christoph =?utf-8?Q?B=C3=B6hmwalde?=
+ =?utf-8?Q?r?=
+ <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>, Johan
+ Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Michal Januszewski <spock@gentoo.org>, Helge Deller
+ <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Trond Myklebust
+ <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever
+ <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown
+ <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Mark Fasheh
+ <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+ Luis Chamberlain
+ <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez
+ <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Aaron
+ Tomlin <atomlin@atomlin.com>, Pavel Machek <pavel@kernel.org>, Len Brown
+ <lenb@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Danilo
+ Krummrich <dakr@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David
+ Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, Paul
+ Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+ drbd-dev@lists.linux.dev, linux-block@vger.kernel.org,
+ greybus-dev@lists.linaro.org, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ cgroups@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-pm@vger.kernel.org, driver-core@lists.linux.dev,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] time/jiffies: Include linux/sysctl.h for
+ proc_int_u2k_conv_uop(), ...
+In-Reply-To: <20260721131207.803760-3-petr.pavlu@suse.com>
+References: <20260721131207.803760-1-petr.pavlu@suse.com>
+ <20260721131207.803760-3-petr.pavlu@suse.com>
+Date: Sat, 25 Jul 2026 22:31:07 +0200
+Message-ID: <874ihmke0k.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf 1/3] bpf, sockmap: Use sock_hold() instead of
- refcount_inc_not_zero() in lookup
-To: John Fastabend <john.fastabend@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, Jakub Sitnicki
- <jakub@cloudflare.com>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Stanislav Fomichev <sdf@fomichev.me>, Martin KaFai Lau
- <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, Joe Stringer <joe@wand.net.nz>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
- <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
- <amP8aYwtxo5qJUEb@john-p8>
-From: Michal Luczaj <mhal@rbox.co>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <amP8aYwtxo5qJUEb@john-p8>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 7/25/26 02:00, John Fastabend wrote:
-> On Thu, Jul 23, 2026 at 01:33:27PM +0200, Michal Luczaj wrote:
->> psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
->> queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
->> entry is unlinked and an RCU grace period elapses. Since the lookup runs
->> under RCU, a non-NULL result guarantees sk_refcnt >= 1:
->> refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
->>
->> Signed-off-by: Michal Luczaj <mhal@rbox.co>
->> ---
-> 
-> Should bpf-next right? this is an optimization not a fix?
+On Tue, Jul 21 2026 at 15:11, Petr Pavlu wrote:
 
-Right. Would you rather have it squashed with patch 3 or should I save it
-for bpf-next?
+> The kernel/time/jiffies.c file uses proc_int_u2k_conv_uop(),
 
->> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
->> index 9efbd8ca7db8..ca49bc7f8687 100644
->> --- a/net/core/sock_map.c
->> +++ b/net/core/sock_map.c
->> @@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, void *key)
->> 	sk = __sock_map_lookup_elem(map, *(u32 *)key);
->> 	if (!sk)
->> 		return NULL;
->> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
->> -		return NULL;
->> +	if (sk_is_refcounted(sk))
->> +		sock_hold(sk);
->> 	return sk;
->> }
->>
->> @@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
->> 	sk = __sock_hash_lookup_elem(map, key);
->> 	if (!sk)
->> 		return NULL;
->> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
->> -		return NULL;
->> +	if (sk_is_refcounted(sk))
->> +		sock_hold(sk);
->> 	return sk;
->> }
+jiffies.c uses ...
+
+> proc_int_k2u_conv_kop(), proc_int_conv(), proc_dointvec_conv() and
+> proc_doulongvec_minmax_conv(), which are declared in linux/sysctl.h. It
+> currently relies on this header being included indirectly through
+> linux/module.h -> linux/kmod.h. Add the missing include in preparation for
+> removing the linux/sysctl.h include from linux/kmod.h.
+
+Can you please split that spaghetti sentence into paragraphs?
+
+https://docs.kernel.org/process/maintainer-tip.html#changelog
+
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+
+Other than that.
+
+Acked-by: Thomas Gleixner <tglx@kernel.org>
