@@ -1,87 +1,62 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769C33890F7
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 03:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3F35DA4C;
+	Sat, 25 Jul 2026 03:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784948439; cv=none; b=oej8ucLdeh8t/851o7K2m0z3omLNXuSb5PBV9vCwsZqrwmFy76jTYDwySq42aR3WHb7qwASzI0KoNwigrUU0sQz2aaf22CuZKhLPehg3X9p5t//ZVYOPfoeyzjpRrWYje05IMIzzU0hbMNIBvikX3IfFtSIKqJJkWvuqAEyOaK8=
+	t=1784948951; cv=none; b=O89ZCz7QFhNnaggiKyMCdGCsSGy09ImFgQFVbnMNluDQkI7P6vMsju48NSRUi6wOZifhhWYn3IczAAYQFkxJhx3ZL1YJiHPLKJiryh40aRg7Y8y9V/pIAPNLNhFYiWKukFWTUhvSQwucLSh5QGM+sZTxj0ujDFNy0MQM+pjB+jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784948439; c=relaxed/simple;
-	bh=YqF8uXn973kV70BvwYjv8iv0rJOPusygYoAgrJ8qSW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpZ9lVxiB29wpGDYl9h7/0ATYY7RtUpq5fmp/JddhrjktLMlRzA/2zKl6Leos7NUgqi4frIOiy90nylI7PCWHUT+14BEUVDu2RQaEWH7liKBHeUGyIqWtZcuIpK/AEzi2b7i0PUzBsT3/rzWfcW9+ev465Hobu1hww8T5F+ejw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPjqOh94; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784948951; c=relaxed/simple;
+	bh=EdecioZBQGgjiicpcDV9vkEmtfCiqCmSCjU/N80BjBE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kxrF39bs+W2at9kaDfZEFdyuB4PyRu3Zqhs+HHvlvUMmf64javm2T65rIQLYoju4HbkzmJg3zxrk7QTjOHMAXM4h2zyqkzutLyWtukNJ7HFWh0qzkRIkQeOfGQYrlG3VsShcRgyLIGeREOrOHiy1nP1fL5W9JkegBD5pnoT9uGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=mEIX6csg; arc=none smtp.client-ip=44.245.243.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPjqOh94"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8111c0c7561so8271947b3.3
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 20:00:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="mEIX6csg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784948427; x=1785553227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e/c6yCrQuwkxtDBKJryWHPTZlmuJWG49aqIdtTn1MT0=;
-        b=nPjqOh94kE5pFXoybmk1JhPScrx7zFrxFev+E9YeCW74B+9USuei3f8NgJtPG3EXmd
-         MLhVHiXwxx1kyNDfKqhw/cGJApFy0vWY863XiRyTatwsw2c7QBPco847CCd+4H1VpFKA
-         Ht+PDYR6vmKZnYQIHsV4ZseVnjLIU20Cldb8yXpIGavCbotZsFiE3YgiSAPIG4DkJT/t
-         OQ1ojFUkBpIxtcGtnhZFhXzqBq/weFBAmtXSxxwNpy9MV85qb9J67cj+XqG2MqEVzfMn
-         oFagF9n16Fdb5wSaZzLOD1jcWe8OTK9mn0ycEzR4QY2R1J6QXS3b/kTVEBBGyCvWqnrK
-         J9tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784948427; x=1785553227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e/c6yCrQuwkxtDBKJryWHPTZlmuJWG49aqIdtTn1MT0=;
-        b=NH7+mfaevOZWhQH5rGwN8dtQGvu+NFcbxkARNbcZQKODkP61wGVQlb51ztVNKYWYIZ
-         9U8MdhF6gMhlHfuG+DM1i3MahtKAxTLmPHdQjIhF67sf8vdfboPyrnMv//sVbuI/4dny
-         GFKAo4EzOYjDfTp33gs7AdZUt1PhIXjQSIduEchrW5TViFhBriiLXLFINL5fnOyz8LYV
-         d7JL0H9Q8Kgr7tLrzfi8C+5K6/hVpYX9AlkRSZ3N8bmaHa/SWB7Latsfd7cE85jX/7Dj
-         Bup0Xw3cvDJucf8d76MoBbJM9y7dIYZKfxqFQb9l5/NO3q0XaiCa4bCXWrVX7GrSKlhW
-         ypew==
-X-Forwarded-Encrypted: i=1; AHgh+RrOVY1MTqZjjsbZ71SLAN4d2ed2+i6P4mmiZB3ZAU/y7em1Srp8ho+vGF4vWyyzZluviM/8dc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyezQY/H2U6OTWyhTghRBX6+FAxWzjQ6hDLIPoAteZdaQWHpWyJ
-	fa8cDdZ8XCCxLVz12NbXfuGiwT563k8w4U9SK7THHX8RAQmrDHjKUeQO
-X-Gm-Gg: AR+sD131zcZU0xPrjvc+WC1d/sW8az0FwVzj2lYeel1gvzZ4X39mpuYHKMugPcFXqSn
-	OO2csTZ6mXaDyEbfIy7/WNkngiHVbVn01DsKgVyesdRvS217PXoqddwWGIoHzl4jFrLiVbMMzCk
-	V2F22v1Z2d032/aayXjtvdDvlNSHWI/7ukWjD5v9GiWrOLBrgL3q+wRcalw/+7XbR7mTZYMCdKJ
-	BXtQeXCTNq3mCTsaZ/8PbaKCwVW2OTqm8fuPFXlm5cMZQOQFhzzn8I2QGoFFEb8HeUxq7TVyl7v
-	G1n4FOyWSNIw4HATyAufJ6PYsWmp7gakYX6iwFqv85usXvUwqpIPqttUF12OyIdTjk3x+NLxFAj
-	CZ0Rme809xstHzOMHB5TxyT1oBhnfXkWRdaIafGeDSyDx0opA7wrCvamHCUrLwKrWXTx9K1lziR
-	6Sk9tYzvdC8gF4E3OSBbCx7nFIHcWsp2aL36dqC2DnkKxSv5AcQoqsUOHaloRy2WcZeGLR+klA9
-	Rdxe2RpmL0AGg==
-X-Received: by 2002:a05:690c:64c2:b0:81e:9ba9:d36b with SMTP id 00721157ae682-81f69e9bd7amr3122207b3.63.1784948426585;
-        Fri, 24 Jul 2026 20:00:26 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f658d32b6sm8270777b3.26.2026.07.24.20.00.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 20:00:26 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: sdf.kernel@gmail.com
-Cc: AutonomousCodeSecurity@microsoft.com,
-	blbllhy@gmail.com,
-	bpf@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	tgopinath@linux.microsoft.com
-Subject: Re: [PATCH net] xsk: fix NULL pointer dereference in __xsk_rcv()
-Date: Fri, 24 Jul 2026 23:00:26 -0400
-Message-ID: <20260725030026.191412-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <amPqFHJBnDEQGmOK@devvm7509.cco0.facebook.com>
-References: <amPqFHJBnDEQGmOK@devvm7509.cco0.facebook.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1784948942; x=1816484942;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4SHthpA2VdGO5hxR117d4YC51wSw6nerJD53gKA0yd4=;
+  b=mEIX6csgEashErKiHbuMKv02eS/de4K02Qo0e0w/Huyojdn0joJLRhwJ
+   x5Ot/gM3/542KkB59ZDM4BNLf6LF9iXyJx6fgnzwKzOAT8mQSVskyv2T4
+   Gd7XVZvR1nrGntRHlBhjDo/1n0NXS6T/ruGFwkC3mVWkwIo3Du9uLdOr3
+   KpOwMnq/8DxoOyCTtcPtNcjpImk3NcRtzcv0CgKNJ341hvm/XtZTGBg4O
+   ICUJWAJxhQ4n/6Ywn4aVpIx8taWZVYoIKEIAnYtymDcy4OAWd6eB5F1SD
+   fjtrNW4wA/g59HLgToVrdLUXK/4Wy0C7sOn8F2ziGN28Qw38Ds3eQCA4I
+   Q==;
+X-CSE-ConnectionGUID: /Fc253PlSLmh0b6EAfUudA==
+X-CSE-MsgGUID: G/Fj5uZtQDOhIZPwzpBstw==
+X-IronPort-AV: E=Sophos;i="6.25,183,1779148800"; 
+   d="scan'208";a="23831622"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2026 03:09:00 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:5970]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.115:2525] with esmtp (Farcaster)
+ id f004b53f-6603-4e90-aa5c-797f02c0926a; Sat, 25 Jul 2026 03:08:59 +0000 (UTC)
+X-Farcaster-Flow-ID: f004b53f-6603-4e90-aa5c-797f02c0926a
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Sat, 25 Jul 2026 03:08:59 +0000
+Received: from 6c7e67c92ceb.amazon.com (10.106.101.50) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Sat, 25 Jul 2026 03:08:58 +0000
+From: Nathan Gao <zcgao@amazon.com>
+To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>
+CC: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nathan Gao
+	<zcgao@amazon.com>
+Subject: [PATCH net] tcp: do not change rcv_ssthresh in tcp_measure_rcv_mss()
+Date: Fri, 24 Jul 2026 20:08:06 -0700
+Message-ID: <20260725030806.28135-1-zcgao@amazon.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,17 +64,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-> ... which means they are "lost"?
+Commit f5da7c45188e ("tcp: adjust rcvq_space after updating scaling
+ratio") replaced the direct window_clamp update in tcp_measure_rcv_mss()
+with a call to tcp_set_window_clamp(), a helper that implements the
+TCP_WINDOW_CLAMP setsockopt. As a side effect, the helper also shrinks
+rcv_ssthresh via __tcp_adjust_rcv_ssthresh().
 
-You are right. The UMEM frames already consumed from the Fill Ring must
-be recycled into free_list when the packet cannot be completed. 
+As a result, each scaling_ratio decrease detected by
+tcp_measure_rcv_mss() also cuts rcv_ssthresh. Elsewhere in TCP,
+rcv_ssthresh is usually cut under memory pressure and grows via
+tcp_grow_window().
 
-Since the current loop calls __xsk_rcv_zc_safe(), and therefore
-xp_release(), after every allocation, they cannot simply be recycled
-after a later failure. I will rework v2 as a two-stage transaction:
-first allocate and stage all required buffers, recycling all staged
-buffers if any allocation fails; then run the error-free
-copy/submit/release loop only after the allocation stage succeeds.
+Flows whose segment sizes vary keep scaling_ratio oscillating, which
+leads to an unstable rcv_ssthresh: a dip of rcv_ssthresh only recovers
+via tcp_grow_window(), keeping the advertised window at a relatively
+low level even after the ratio itself has recovered, and can even stall
+the sender.
 
-Thanks.
+Observed on a customer's proxy gateway after upgrading from kernel 6.1
+to 6.12: in the worst case, rcv_ssthresh was cut in half by a
+scaling_ratio dip. P99 latency jumped from <10ms on 6.1 to ~100ms on
+6.12, and almost returned to the 6.1 level with this patch applied.
+
+Restore the plain WRITE_ONCE() update of window_clamp, as introduced
+in commit a2cbb1603943 ("tcp: Update window clamping condition"), and
+keep the rcvq_space.space adjustment. Now rcv_ssthresh is decoupled from
+scaling_ratio changes in tcp_measure_rcv_mss().
+
+Fixes: f5da7c45188e ("tcp: adjust rcvq_space after updating scaling ratio")
+Signed-off-by: Nathan Gao <zcgao@amazon.com>
+---
+ net/ipv4/tcp_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index daff93d513428..5b6378b94701e 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -252,7 +252,7 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
+ 				struct tcp_sock *tp = tcp_sk(sk);
+ 
+ 				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
+-				tcp_set_window_clamp(sk, val);
++				WRITE_ONCE(tp->window_clamp, val);
+ 
+ 				if (tp->window_clamp < tp->rcvq_space.space)
+ 					tp->rcvq_space.space = tp->window_clamp;
+
+base-commit: 78f75d632f74b8de0f081a128588f7c37d0d1164
+-- 
+2.47.3
+
