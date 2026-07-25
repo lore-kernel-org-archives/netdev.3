@@ -1,159 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B3B21CC44;
-	Sat, 25 Jul 2026 17:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90192F5487;
+	Sat, 25 Jul 2026 18:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785001751; cv=none; b=ZN46YRGm91Lfy3ok6XDcXSYrj+QYgIIVALzFAIcCSVDWtIO//3+zjBk1hfJVbkDDF/1kfj/ejeLshm7oooJh3T4p1X3/adDK0hOihx6FIw4ddHw2kFecmlx2yXf8bywmAMB4q4hYq0lWXKJt9ptbI3IWTHSxvc7nNbdheD15VeI=
+	t=1785002914; cv=none; b=r6U4SQGzVnSqyQJqTxjolCWTzdTOZwJHgCUsEiVvoJ/yskKerOFuWTWg9PFK0OaO3N3DcnqJOR2dii6SDE6DFxVW1rUdqSIC5VFOK7vsR1Jd8+8wbU5l2afklt/wCH4snU31YC/V7zWqyrpMge8843DbjVQJJAcMYp8V1kIxQIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785001751; c=relaxed/simple;
-	bh=g2zxBVtQ/1sgGgGkuKKbs+j8xl+qgJFofasBkoJyQdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYsk2Iu/g0/VJfGkKlMva/phmU1eyeZx+lKTHE5jI6Cv4cNziV0TOcgeGDZGWxiGJrdLjnJ8IjvPvK61u/XB5uh4w6xpXwunB8a44VkSS3dBTvqIAFX1nVX8W0XKNdHWpXvVR4/jcWYJZmaQbDvZ1aklkzoCUaUNJjBEGNPXGzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8I4b6Er; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785002914; c=relaxed/simple;
+	bh=tEpU/DEvJ/ntQWXqWHulhY16XAu7Ry70hjLxZVNAOe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MgRpBmpNL2eA8IwLeHID8T6VTnyirAgXHLl8eAq6KFfMGJuMoK1EwMGz6sSrBZdUCZc8ZzLTklynhn/UZ3pvUDvRd5lmGHIdP0hHaWy6AnJGvGQCAI0c+M/UqQwe0LP1NsA841qYD9oR/q4I0zqruA1TekagQnlR0g4tLwEz2s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=UDM4GUPt; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8I4b6Er"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3AB1F000E9;
-	Sat, 25 Jul 2026 17:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785001749;
-	bh=2Qn9qcCPN9f2sZGtQb6IdvTnxe98CDptH48FCRNf8CI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T8I4b6ErvUpV1fJcGr95aRhtKGwcAGm33JK8yv3kzyeh2eywbuQary097solhxPqj
-	 BWcpYQGvljvKnhl4Q6xilhAsdV1tSoxLZ2a+TMtvFWBIWFrn75NcKX5Mc9XS6lUemG
-	 I2XBkoQq/gugRTVC+ZM/NqgH/90a/8Y32UhFy5tuAffFGFkT6IRdH3qN0K4qIChJFi
-	 cFUw/tO0HvrF/tp9W3/RjMqQa/ioPw8BeJS2WoTN1MHXP7A1/TvYJvrJkeD6+EDzzf
-	 bIrN/gtAm9HJ7bSkZeDAqe29NrUTatOMAPdAIt0Q5Pvqtkna6t2dV6qHkEnU3Szs9O
-	 eXRFSuGFBXUQA==
-Date: Sat, 25 Jul 2026 10:49:03 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Demi Marie Obenour <demiobenour@gmail.com>,
-	Harald Freudenberger <freude@linux.ibm.com>, acme@kernel.org,
-	adrian.hunter@intel.com, alexander.shishkin@linux.intel.com,
-	ardb@kernel.org, axboe@kernel.dk, corbet@lwn.net,
-	davem@davemloft.net, edumazet@google.com,
-	herbert@gondor.apana.org.au, horms@kernel.org,
-	io-uring@vger.kernel.org, irogers@google.com,
-	james.clark@linaro.org, jolsa@kernel.org, kuba@kernel.org,
-	kuniyu@google.com, linux-crypto@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, mark.rutland@arm.com,
-	mingo@redhat.com, namhyung@kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, peterz@infradead.org, skhan@linuxfoundation.org,
-	willemb@google.com, linux-s390@vger.kernel.org
-Subject: Re: [PATCH 2/3] AF_ALG: Drop support for off-CPU cryptography
-Message-ID: <20260725174903.GA150173@quark>
-References: <0ccda05f-077c-4661-b852-e6bf9bf40be3@gmail.com>
- <20260724180951.GA1572592@google.com>
- <amRntEmCUK-8wXcw@codewreck.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="UDM4GUPt"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wngnD-00CMSP-Mt; Sat, 25 Jul 2026 20:08:11 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=2KYNlDtl58Qgh8rb02AfLzOu/UAS72qPiNqld44YtQs=; b=UDM4GUPt7z0xyznrVXZMinYjte
+	uxcC8spvTs9WQiUXWmTAI196TkbgzaLR+UEMmUD2IqBXhcuZIKaY45eS3pNjjb+hFRhH94aBE7lUI
+	4MBRKnilsMlAVyXwVzru7GV9Cg5VgcMMBRMRnym76t2NeSNtd3WLZ5jkX0NnIx2ut+GGyQzER7Vq3
+	a6GobRv0f2WlTJ4Tuc3sDrE3U9aN+IJOuyzor6qpEAprFoocBRp2ha1CrYoHcfAPNqh436y9qSNve
+	s7lND1H0N3c86QFprZdeQF2/8xwLIbtD5LXfz6OGsjY4u2+eHKGT9zZ7L+USaWXT+wpMqMlancKX/
+	CMqAZVDg==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wngnB-0004kH-Sv; Sat, 25 Jul 2026 20:08:10 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wngn0-00AXvH-1Y;
+	Sat, 25 Jul 2026 20:07:58 +0200
+Message-ID: <1b224fd7-0d3e-4baa-8426-4df370b3bc64@rbox.co>
+Date: Sat, 25 Jul 2026 20:07:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amRntEmCUK-8wXcw@codewreck.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf 1/3] bpf, sockmap: Use sock_hold() instead of
+ refcount_inc_not_zero() in lookup
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, Jakub Sitnicki
+ <jakub@cloudflare.com>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Stanislav Fomichev <sdf@fomichev.me>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, Joe Stringer <joe@wand.net.nz>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
+ <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
+ <amP8aYwtxo5qJUEb@john-p8>
+From: Michal Luczaj <mhal@rbox.co>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <amP8aYwtxo5qJUEb@john-p8>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jul 25, 2026 at 04:37:24PM +0900, Dominique Martinet wrote:
-> Thank you both for your time replying
+On 7/25/26 02:00, John Fastabend wrote:
+> On Thu, Jul 23, 2026 at 01:33:27PM +0200, Michal Luczaj wrote:
+>> psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
+>> queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
+>> entry is unlinked and an RCU grace period elapses. Since the lookup runs
+>> under RCU, a non-NULL result guarantees sk_refcnt >= 1:
+>> refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
+>>
+>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>> ---
 > 
-> Eric Biggers wrote on Fri, Jul 24, 2026 at 06:09:51PM +0000:
-> > On Sat, Jul 25, 2026 at 01:32:12AM +0900, Dominique Martinet wrote:
-> > > There's not much I can do about the vendor's kernel I'm stuck with, but
-> > > that doesn't make having encryption material not accessible to userspace
-> > > useless as a concept;
-> > > forgetting about the sysctl for now, what are the alternatives API this
-> > > kind of implementations could be based on?
-> > > 
-> > > I guess I should start looking at how tpm backed encryption works,
-> > > some other day, it's getting late here...
-> > 
-> > First, we should remember that implementing hardware-bound keys via a
-> > standalone crypto engine is a dated approach.  Inline crypto engines and
-> > CPUs, which work much better than and are much easier to use than legacy
-> > standalone crypto engines, can support hardware-bound keys as well.  The
-> > former is already supported, and is already being widely used, in the
-> > kernel via the hardware-wrapped inline crypto keys feature.  For the
-> > latter, see e.g. RISC-V High Assurance Cryptography.  In the CPU case no
-> > UAPI is even needed; userspace can just use it directly.
-> 
-> Thank you, this is exactly what I was asking about - my background isn't
-> crypto and ultimately whatever direction is implemented will depend on
-> $vendor and I'll just be following along, but I'll read up on this.
-> 
-> "Inline crypto engine" seems to be a qualcomm marketing term, but from
-> looking at their doc the API seems to be PKCS#11 smart card?
-> Having worked on these for some other hardware I can't say I find it
-> easier to use than af alg, but it's definitely something that can be
-> worked out.
+> Should bpf-next right? this is an optimization not a fix?
 
-I guess I should have written "inline encryption hardware", which is the
-vendor-independent term we've been using in the kernel, just in case
-anyone thinks "inline crypto engine" means the "Qualcomm Inline Crypto
-Engine" specifically (but really, IMO they are just descriptive phrases
-that mean the same thing).  There are many different hardware vendors
-that have inline encryption hardware for UFS and/or eMMC.
+Right. Would you rather have it squashed with patch 3 or should I save it
+for bpf-next?
 
-Their interface is quite simple and doesn't use PKCS#11 at all.  I don't
-know where you're seeing anything about PKCS#11.
-
-See also the documentation in Documentation/block/inline-encryption.rst
-
-> "The CPU case" (looking at the RISC-V High Assurance Cryptography) would
-> be some CPU instructions (ISA) reserved for crypto ops?
-> That's interesting, I had never seen this but I can see this would
-> likely provide the best performance.. And if the ISA gain enough
-> traction having them supported out of the box by OpenSSL or whatsnot
-> might actually be possible, that'd be a great step forward.
-
-Yes, and similar developments are also occurring on other CPU
-architectures, like Intel's Key Locker.
-
-> Right, sorry for asking about an out-of-tree driver, I hadn't realized
-> since caam itself has been upstream for a while.
-> 
-> I was just curious about the double-take approach taken with these two patches:
->  crypto: af_alg - Drop support for off-CPU cryptography (this)
->  crypto: af_alg - Add af_alg_restrict sysctl, defaulting to 1 ([4])
-> [4] https://lore.kernel.org/linux-crypto/20260622234803.6982-1-ebiggers@kernel.org/T/#u
-> 
-> I assume part of it was just that the whitelist wasn't ready yet when
-> this patch was merged, but as far as I understand if the whitelist
-> sysctl is implemented this is basically noop?
-> (Well, I guess it'll allow code simplification over time, but these
-> hopefully won't be backported to stable kernels too aggressively.. While
-> I fully expect to see this "Drop support for off-CPU crypto" patch to
-> show up in a couple of weeks in older stable trees; and for practical
-> purposes I don't see much way around just reverting it for now)
-> 
-> Thanks for putting up with me.
-
-Neither of these patches is tagged with 'Cc stable', and I don't expect
-them to be backported to stable kernels soon.  That being said, it seems
-the people using LLMs to find vulnerabilities haven't focused much on
-drivers/crypto/ yet.  Once they do, well, they will of course find
-vulnerabilities everywhere (accessible from unprivileged userspace via
-AF_ALG), and when that happens there may be little choice.
-
-The addition of the af_alg_restrict sysctl (and the possibility of
-userspace explicitly choosing to disable restrictions by setting
-af_alg_restrict=0) doesn't necessarily mean that problematic
-functionality should be, or should have been, moved under
-af_alg_restrict=0 rather than removed outright.  It's just an option
-that can be used if needed for compatibility reasons, if actual user
-reports come in.  If something is not needed at all it can just be
-dropped right away.  This actually happens way more often than people
-might think, due to the immense amount of unnecessary functionality that
-AF_ALG has: *many* crypto algorithms have been removed from AF_ALG over
-the years without any complaints, since they were never used.
-
-I'll also note that hardware crypto "decelerator" driver authors are
-actually now *depending* on the drivers no longer being usable from
-AF_ALG in mainline in order to argue for more relaxed driver inclusion
-criteria.  I don't think they can have it both ways!
-
-- Eric
+>> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+>> index 9efbd8ca7db8..ca49bc7f8687 100644
+>> --- a/net/core/sock_map.c
+>> +++ b/net/core/sock_map.c
+>> @@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, void *key)
+>> 	sk = __sock_map_lookup_elem(map, *(u32 *)key);
+>> 	if (!sk)
+>> 		return NULL;
+>> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
+>> -		return NULL;
+>> +	if (sk_is_refcounted(sk))
+>> +		sock_hold(sk);
+>> 	return sk;
+>> }
+>>
+>> @@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
+>> 	sk = __sock_hash_lookup_elem(map, key);
+>> 	if (!sk)
+>> 		return NULL;
+>> -	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
+>> -		return NULL;
+>> +	if (sk_is_refcounted(sk))
+>> +		sock_hold(sk);
+>> 	return sk;
+>> }
