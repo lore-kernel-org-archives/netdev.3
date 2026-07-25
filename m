@@ -1,146 +1,132 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FE137CD32
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785017156; cv=pass; b=BLdDfHotodmrMV0FLVJGJ1la4dQapRNIlUyapMPOqPucLSNOvYmEAre09OOn0EFeyVImgZ5ibHWQPa7elB6Ph4UkSQfqelWv6fz0OkDf2udevvxFQzPv02IwtTAjC++EQWHtm1Yz6164XaUHL6mue0ioRmDMkduN+rbqJtSXJQU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785017156; c=relaxed/simple;
-	bh=/glHZqWRbLjboTflmjVi2Jb0FjvvGY5sjwDLILzbZQ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DLUJvxCZdg7cADT4ZZQ8oj2A252dEDkZmnw83vtTFA2mOx0rnNj/6pcYWwpzYAhlOJj891QgU3Mo1aRKl40tGbIVv/40dhZVn/McW2Fn+55K/Zda00jVvH5ea/nbGldKwtLSx6QEg88V+dxTOxV1Kmyso2VA+XTYhMe4rqWsLAc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=TjBEa10s; arc=pass smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B250A17A303
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785019897; cv=none; b=b9hOd61yQObTQHg86DeNwdfR1Ffnv6OsUPr7sbYu+TNyqkDF0ywOFjhcYkHl0B2CeHDN6JIpB9DZ4qYL+GhI4xqpOcymcO5pthYjVtcH4vdQqILobayBiIvHDPb5brCbUuEOfS6sMcM8wW0SVm/2/6bIUSVESxfIyvIsGiGCpYM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785019897; c=relaxed/simple;
+	bh=OTMLoaXNmc0daefahm7Ve/Ya1YVd+Uzup/9wVhoFs/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RKg/VrHXNW7bYZvFyxV95ueu6+Pugpa3eLsOI7K4w/0sfy6NQb86aVTIWOxWLFYc1y6FK7mnTRtbj/Usl6Gg8N7sw+XlzcYATKYLZRJGunXqMBYWFLXt9D0hzu6AREFBTIpHHFu0FbWsNkOypKAcNFZDZxoPuj4EqbjZQPXNBlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ugm1IM1g; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="TjBEa10s"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso14448255ad.3
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 15:05:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785017151; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X2B1y+VvGsundOsrCniBB56eiMbgKn/bXH+m2nKdhiqGAmtSsEQM8rdAgL8cAuyLcI
-         mttt38sIb48Sfi9mF/qYqvoJlTP++14xzyIQfK0Oz1gOagHn3OZGJli4pyKUM9JqYFR0
-         xmX/lv2YVhvyCKeqvhHcUYFV0R11AZHLK1msN614uhOU/DTXkGq/fmBMEA918nHZJYKJ
-         VxKI3tcnW/ft9TNunh8EWXP9a2jaKYrDcxvxdupJjNZRjJLWrfRuRS+w2IGHDfnBkrX6
-         eBGSUpYdel1BGX4TbEbSy36U1LwdnhysSx2501wijygB2i6obDaB2tmLMxTJDb5Ziu1J
-         yV7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/glHZqWRbLjboTflmjVi2Jb0FjvvGY5sjwDLILzbZQ0=;
-        fh=QrTJJQT8vXewTmt+lUHUi1JEvIanxKl5oaIRhg9P6BU=;
-        b=dToppYAEisdYdelfKlUS/6KrJzewhNFN8z0Np5QvL6CB+p0tToKUIPcrtcqNFdzyf5
-         jq9fP7ihKpy8q25JM1sQlxxtM8E/b94Mr125A2CdQVrYZFZKPdWpIR9Jl0socQ4Y0Mnw
-         StyMGOIMv8fKqATWRBCnqEhugZDT8SUxb64PUTG0SLvBFJvMW43zaSiYavXDimIKpsQE
-         KSVX/KBUN2Lks1w5Y9RoOVEY2Ad23eADF0V55QnHTGlXWydqtnfUL4pDBpwtN19zaVWV
-         c3YKGrdHGpG71ocmyLrxkZGw3ZUZN0V1jb82EYZRTvctbPaNH8EEFKQxKLmBMfC2EOLj
-         OkYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ugm1IM1g"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38deea72eebso1760038a91.1
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 15:51:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1785017151; x=1785621951; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1785019895; x=1785624695; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/glHZqWRbLjboTflmjVi2Jb0FjvvGY5sjwDLILzbZQ0=;
-        b=TjBEa10sg0sluPTM+zEeyjwQ6jJIhpqP+wOAfpJQNUz6RqH35CjQSQcLhFSclmIh85
-         gZTi86bVIBqgzFmI2QhLK8adFcWr9SuYIQ4myfSbaIYOCcxjsYiC2sy77rwR52x6jSDt
-         bgIhxuAk0wRpP8xMJkQGiHIUFbUoUcDjuQBGIHlYHz/TpT2XxDWVI1go0nIZPJpjsjRz
-         yc+4/g40ls3GAGs6cz4GOU+lZ0kfm/nnKUTrU1EmzbMDZVMDebKPqAGjG0pCg5ecmHzr
-         HoBF1yFz2z/dQ9pi9n304DvWK5WzM8DG0mEdiDWta1PWzu4CwLXCNtZCO332vfgz+9AJ
-         gfdw==
+        bh=e597SzF5n/PM9EkMnGuBBQh4XkUddaPspXC7fYxFtHE=;
+        b=Ugm1IM1g3IdKVSV76YGowyNU5KXZU7ZFTU+lQhnVIQXSw7EF35SrRC5MudtxWAoJc+
+         Cw0JDVe5342OIOYuaWnEyczcucP1a6R1GsJu3kHbYfebgbLGkgF+Fs9rxsEI3j1+Q2Xv
+         BP9xkpI1ZVvfE9lvRHV7zuBv0+nUgWnNIgc/FZhUfNKj5EUylcGi6IRCa0lZxT2m0aIc
+         xWzA8OfJ6O5beLcEHmlLTAqYyS+71aA4pFIeWL0viP5bD3/I+MOUIGD9S3aqxwUti2tK
+         RXYXX0UwetLRTgXdeBDnPnYL6qwsLt9kiKg6FyL5HWjHOW3YOglNxptIohnims3JANrQ
+         w12A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785017151; x=1785621951;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785019895; x=1785624695;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/glHZqWRbLjboTflmjVi2Jb0FjvvGY5sjwDLILzbZQ0=;
-        b=jj7qtGuqPrJZYD+3eE/gRNrhreKF82vBljzHKBl2BTWYU+TsGNQbP+XT2cS6STOGDc
-         vqZDkS9L+gXFMqdQq1ZruvmymRatH5MxTEvwzwY+Ad87AKSSRxsXBilEtMwtibuyGq1R
-         UbvGR4UCmdwEFtNHcLHE1VL1AOSNyDnBsxI7gNk+ZqZLi82HWmrDDW2RBpZ/bEIdZsIP
-         brc1PpHGGSuYWPGjoRXTgQG4vVSQ4rYwpK+e78f2rFktAQs3HsNnB9cvn+Xd1IhlbkNf
-         7eHPH4MDL0votiARAGA1W9J15/IanHc3m3JH2oU2UTqYO4bw0adZ/nS4ccvByxEdbQmK
-         OLgQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roa1coUr5NfcOgzKP09f8Q1qDGd7tvhDJOVxBjqIycwPS+4eab2KO+B/5Hy3AeRabJmLjT4vU8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKeINyGmoWAfkez5KMqCDJU9xhZlZ8lciGfH1xRoXmr3az0nOi
-	d+H2ZS17H1HV5Ky+dfPXQ1AFX9yETkw9eakkIWixBSIAK1IgVBqju4/tbotEAiopoP5dlCxAYll
-	fpAadQLvw0PiGUEPFC7Qyi1YZ3m1AIK4SOm58P5Ma
-X-Gm-Gg: AR+sD11eGbeXEWSNBViCEx+KEwqvtxZEhKM7dbaKzPMnBNvWiM0w0DhZl9vKNLaTCRd
-	PY4JQUCCMAf3DEWnPCAi0uWe8c9qGh+mTJVG44BduMy8IzJuY+CB/MPpq0i6gWMrqQwrk8C2hrI
-	OOXvC1W8pXMlzWDrsFkdnRTGV8o1iMedcioSYe+FDKipeXPrhuiwRA5uJebQv4n4M0WIyazYphV
-	qwnl/VNas1BjZjESTS4CBKV1KG38qXl4bXhOrZFXlb4jCDyilSLmQ09xIdQP5wHFXUDYZkn9dUh
-	8PHPv2RkhIEcYQuRXQ==
-X-Received: by 2002:a17:90b:3f0c:b0:38e:485c:ebd3 with SMTP id
- 98e67ed59e1d1-38f294ea2e2mr3687429a91.15.1785017151516; Sat, 25 Jul 2026
- 15:05:51 -0700 (PDT)
+        bh=e597SzF5n/PM9EkMnGuBBQh4XkUddaPspXC7fYxFtHE=;
+        b=RpK7GbH+68rNA7hN27/DI9Lt4bekNtPf7yxM4LecJDl+Gm4ew7GwWIiKQB2vtHR68Q
+         hzqge3lk2CYjBoJQxPUg3r9vt6tTUKN26QwCUFIzYHpz80zsPvdcganuUqq1a0U2FR6K
+         u0oYwrV33GBbtG6OgmeyWG6icgOBWHatVQyIU3q1YIREOQD1qzt+OUDPzsXL0ucGGtbo
+         WrCAs4N9TqQMEyCGk13s46l0dgxYf1tVTF2dbocb7MTtv/82q4QjOwO4g8OCvQkDOg0O
+         M0aeeq5EX4itH6/vDoKrGyWP2um4bowWOS9fO37lm+4tkKkcZD+/LJqy5FB9FqRdgaxU
+         PrgQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqz83AshoOuPFXkeqOKw1gTem/c19dtDViTW1NqBgyp80GyU28JWLRw/sIJQAGPvzVfNqV1s/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCZBnP2B52B9m/EW1EMRyTvTKWKoUCyTPEiExunX6vp4HZbXCj
+	PB8nCBMcE8EQJ+m4q7mxk3PvptNL483WaSZ4uKOOruDpR8AxY2bbB+Xa
+X-Gm-Gg: AR+sD11odR6wPRRd+Xze80t3VjjjppPwOOlTERAHx/jCBUR/soerwt2jGb4LBOA0vEH
+	+tUpkzBf+mkRBawcE/6K9ssLk79r9d7+5p9txRzBzIoOIecGedO1rJ8KGk3vRc68Ju5riOGzM0R
+	5rSm00cpRG1E2QDlH2arj8m0je+8UkJJ5B9iMbLToXLJkuejEKVKyuzsxoxzHgvpImJB+RyQJQ2
+	yiNp9PHD07c+7BdYhmDZ0sy5HDehedUZBesN8k4C5r2A/epwpKtUZPTa5k0JOuiQpqFfK1OH2XV
+	bkUi6W0KjwQG2eyKCKTWXDZDDiwlz7AqOHyJQQUMIOZpHXclBSsEB3Hk2xlTjyoeoEEbhrPUByW
+	cUk0XYltrQiYZ6dCCnvrSocg7zdgBtTRTJsqg4mKURkwdmZIfic2S8oFQ3FprSFgDbQJzfqD1/w
+	YP
+X-Received: by 2002:a17:90b:268f:b0:387:df8f:1408 with SMTP id 98e67ed59e1d1-38f2978b966mr3637050a91.41.1785019895045;
+        Sat, 25 Jul 2026 15:51:35 -0700 (PDT)
+Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f03b0eaa8sm3263879a91.8.2026.07.25.15.51.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 15:51:34 -0700 (PDT)
+Date: Sun, 26 Jul 2026 06:51:28 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Yixun Lan <dlan@kernel.org>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
+	E Shattow <e@freeshell.de>
+Subject: Re: [PATCH 1/2] riscv: dts: spacemit: Fix phy id check for the phy
+ on pico-itx board
+Message-ID: <amU94BeIJT39DRRL@inochi.infowork>
+References: <20260725005804.373698-1-inochiama@gmail.com>
+ <20260725005804.373698-2-inochiama@gmail.com>
+ <0d11de51-546a-42b6-80cb-8ca258389a17@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706212556.3199234-1-xmei5@asu.edu> <OS4P279MB0403BDB88C2B7F4D4939DCC4EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
- <CAPpSM+QjiZxUOqK6Aor6gLehVj=xGQ0uAcuPm089EuSNRFeynA@mail.gmail.com>
- <OS4P279MB04037D97A6ECD2021F1675C9EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
- <20260725135239.30427-1-doruk@0sec.ai>
-In-Reply-To: <20260725135239.30427-1-doruk@0sec.ai>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Sat, 25 Jul 2026 15:05:40 -0700
-X-Gm-Features: AUfX_mxWSEabtVTBlq9zxaL6-yN6-fKXVFfXl36XY4ST95-C8XzK4FYaza4pI4w
-Message-ID: <CAPpSM+Q3cEAds6x5QcJU6xGEC08rgveZthyvyN-1Ts+G5UsQJw@mail.gmail.com>
-Subject: Re: [PATCH net] macvlan: cap IFLA_MACVLAN_BC_QUEUE_LEN to bound
- broadcast backlog
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-Cc: Thomas Karlsson <thomas.karlsson@paneda.se>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d11de51-546a-42b6-80cb-8ca258389a17@lunn.ch>
 
-On Sat, Jul 25, 2026 at 6:52=E2=80=AFAM Doruk Tan Ozturk <doruk@0sec.ai> wr=
-ote:
->
-> > Like I said, we use 100k today and are currently running our
-> > workload extremely stable with that.
->
-> I independently looked at this path, and I think checking authority
-> over the lower device may avoid needing an arbitrary queue limit.
->
-> A macvlan moved into a child user and network namespace can change
-> BC_QUEUE_LEN and BC_CUTOFF even though both affect the shared
-> macvlan_port attached to the lower device. The child can also create a
-> nested macvlan that resolves back to the same lower device.
->
-> I reproduced both paths. Changing BC_QUEUE_LEN from the child changed
-> the value reported on a host sibling from 1000 to 65535. Creating a
-> nested macvlan changed it to 131072.
->
-> IPvlan handles the same namespace arrangement by requiring
-> CAP_NET_ADMIN in the physical device's namespace for changelink and
-> nested newlink operations. I have a small patch applying the analogous
-> check to macvlan, while leaving queue lengths unrestricted for callers
-> that administer the lower device.
->
-> Xiang, I am happy to send the patch or pass it to you for a v2,
-> whichever you prefer. I would preserve the report credit from your
-> original patch.
->
-> -Doruk
+On Sat, Jul 25, 2026 at 05:57:42PM +0200, Andrew Lunn wrote:
+> On Sat, Jul 25, 2026 at 08:58:02AM +0800, Inochi Amaoto wrote:
+> > Current phy framework can not reinit the phy correctly, as it will
+> > assert the phy reset GPIO so the phy id can not be readed. Setting
+> > the phy id of board pico-itx manually so the phy id dectection can
+> > be skipped.
+> > 
+> > Fixes: 74657a376960 ("riscv: dts: spacemit: Add ethernet device for K3")
+> > Reported-by: E Shattow <e@freeshell.de>
+> > Reported-by: Inochi Amaoto <inochiama@gmail.com>
+> > Closes: https://lore.kernel.org/netdev/20260712045233.800748-1-inochiama@gmail.com
+> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> > Tested-by: E Shattow <e@freeshell.de>
+> > ---
+> >  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> > index b2a7d2d0d3a8..b9d2de878f38 100644
+> > --- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> > +++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> > @@ -196,7 +196,8 @@ &eth0 {
+> >  
+> >  	mdio {
+> >  		phy0: phy@1 {
+> > -			compatible = "ethernet-phy-ieee802.3-c22";
+> > +			compatible = "ethernet-phy-id001c.c916",
+> > +				     "ethernet-phy-ieee802.3-c22";
+> 
+> There was a patch recently from one of the DT Maintainers removing the
+> -c22 compatible when there was a specific PHY ID. I did not look into
+> why. Does this pass all the binding tool checks?
+> 
 
-Hi Doruk,
+Thanks for this mention, I have found the patch link.
+https://lore.kernel.org/netdev/20260323194803.GA1241974-robh@kernel.org/
 
-Good catch, and this is entirely your finding, so please send it as your
-own patch. It stands on its own and deserves its own authorship and its
-own Fixes: tag rather than being folded into my v2.
+It seems like this patch is not merge at now, but I am fine to
+send a new version for the incoming change.
 
-I am still testing a valid configure uplimit to ensure the
-functionality and avoid OOM.
-Please let me know if you find a way that makes my v2 unnecessary.
-
-Thanks,
-Xiang
+Regards,
+Inochi
