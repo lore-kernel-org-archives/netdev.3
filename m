@@ -1,144 +1,117 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B225346E67
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 20:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785012919; cv=pass; b=UtY0i8Hn2aItDHVMVDI0YPie0zsp+sYFf7rav86fsjLE/a+wNvaXfF6NOGSfCZk7VeYeA7TvvlurgW0M8t3PJn/1B29nsXYYmJH8KJUPnyvy3i4cGgZZzOz4VG9pn9OBHH/mg1sfQnzmfyGn/gTwx9IS/7CLx4EKcLptTfFNgow=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785012919; c=relaxed/simple;
-	bh=zw51gC5xIPlAb+ehmicqnY9g7AruYRjvzVknaMunE54=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ijN8PG5zPyg5YI2+GUlcwHxXq7cRtNQff40mjO2wXj122Q/1zSB+2W/JgD2k5MHjIEAuz9mp9/M2XIrJoZNn852B5y+Ze7v0GtupBSiiyE7hu40uMD3AY+ELVRXeRsHQcGo3C8Z4YL+1A7U3IKE7FcTd7K+KahxQE+Sl582G0e4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCfA16sJ; arc=pass smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A6372EC0;
+	Sat, 25 Jul 2026 21:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785013971; cv=none; b=exJ55mOVBZm633N7gPCVc7Q3OT4RPlDzNA2ERkv7RT5Yi5SVMHc0H5U1jM8D3hJov8dh22uOgd2ABS6dzaNRcmwtFKZS1VYvhN88/lY32pdLAGKCkK4Lxcjb4NrNjGoHk+gHIxz5xscogB85sHKYSGhsm7w9etGo/A822tsRV1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785013971; c=relaxed/simple;
+	bh=FX9NIm5YWBXiDktf7ywFAIUCm3xYG7hpaumCyaghDJA=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ah7OnOr1/TJCpCCHmL+NHUOSnBEF1Cyp2rAqKIaK7vWt/NumIJPkpmS8CUmZdE2HGYSTbOHpH82WfOua+n2E1lysfkZjLVzv85iEmWijLZablWNl7/Hcugx+2TiRFyRAMZmE9oCXSEeGKEOCc87mPLKALtP/kBfUebMnkBuZUok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me; spf=pass smtp.mailfrom=johnericson.me; dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b=EEXBi9bM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=rbk1azpl; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnericson.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCfA16sJ"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-848479c9bd5so1094174b3a.3
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:55:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785012917; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mtcxffk/bu2CiqyT64TWoodL6LQRMgmVVX5FqUL2eEucelkTGnNdYmKcpYXN1vHy4D
-         qeZIHuMLEd31v6TLBL5jQwpLacRYyslTez931kwWS+wzpcc/oTKZTlVCQ1WutaKbZDo8
-         pcGwzz0h4KMXNe95aoSc92F3eHhMw2/QRjRcUpfOiB7zfB2Ep0W1M3XJw+1zU96u7jI8
-         bb/hlClT3jgdMupxd3KmXAJspqWnRcH/WnmGNV6fewwDkh5pmxYBiU0u3Fl2a+oESiWK
-         SX5XyMtaHSdVt71zdN1KG5jLJycASR6uyym/QbyFbAkiFDsF1C9ae4lAqa8dKqmn7BLb
-         e35A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8WOQSahUV2FdjC/IM2f0n66+R/EWHlwNnk6q/oqvWX0=;
-        fh=ioQb7YfKkJ9e/pTzOzFbhmF2hGOtqdXgmoXS/K6DiKg=;
-        b=SYoIwEj2Ysx0wGk5Cmx7uJ1Fva/BJhYUQODvVFOktxCSgJGD4B/WvmxdGKt52FskV2
-         Y7ttFavtUcWF8TQvIqLhAWwq+ajea7fWLxegIfn/cCSk8rxS5yLqU75H/Az+gq56nEkU
-         dnHlc87fMcyG7D/7S30tLaDTYnxdIbOxmfjrBa8UV/Fb+jhQCiA8FKlR+4m6SM0qbC8D
-         LzjA9p5C5oxtFCPHCBeXhCisBoKu01WnB6sHYvDWoghYTc4aJ+kQH88yAhDUmSJgKT0V
-         RNu0XtbmFjPS+qpHplV5ZCzdzGOLUlp3MC1R5cpxc/n/hb+etuByEvRQEdFMAjnbTpJL
-         bMjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785012917; x=1785617717; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8WOQSahUV2FdjC/IM2f0n66+R/EWHlwNnk6q/oqvWX0=;
-        b=CCfA16sJBtgz8hldzWHYxUcyEjDqG0Y36DO6tVDS/ExmfNKDZzPZL53IiAy2HXqw2O
-         KGAlALuZKD65GL9IxDdiAKuHMignZ6WXOsZx1samvNlbskdHpyC7TijOlka7b7Ab7JlX
-         9DOirbvc9OUcRek2FGlvwCYNbjCSoGUKFnIS+mB249msG4ov5+/MS9llmMgoi6gXo4wR
-         SQnOgz2SA+68IAreR4Ru1Uk0nfis315U2LA9sR0U72Iezp+sgkabMYRYXpfdgB4JiNMS
-         jEuo3pZ0GvvmCxcqlnHbjxszgy/btfDRvWGt+aeO2Q/am25HTFd9D96Xz6Fy0N7YIeZO
-         Yw5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785012917; x=1785617717;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8WOQSahUV2FdjC/IM2f0n66+R/EWHlwNnk6q/oqvWX0=;
-        b=k1tlAVm+YG5v0+Zoioa7txX9geaGKOpKOS+/bjVrql2j3XtRpRfnWsOrkRcXLZQNc1
-         19/hvWUiJp389aypeDP4crPjBUrY26IZabnKutkQS/SPSlKVMbSmPgiGU8HxiOVlyAg4
-         RdwI/pRT78g3H7QarjFSeRFwT24SL3T8eliNtkIFkhuHS3WKIgnQPd7+W3HsnnmiFw5S
-         G1K7O559kYV5NtZhFNsMXbrjSG0HYxR0dXMrp6p6fJikV3+2VlhWNoHeUAbyhEq9xJgd
-         bRNPmMwd0+BKksjQEPF6z5emOLRJIEBno1edsUNwypzb5z0MFC3rpu3juY27hShAe0y9
-         KbaQ==
-X-Forwarded-Encrypted: i=1; AHgh+RonBgIj3RE7WfqkdPaCWDOgctkczSdvaP9HQ8D6XbhjB4L544tpDK9RSyi5zMr/Lz6zzn9oJK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytGoZJluyt7c7wRnlsAN1WutZfVLPaTNM5T1gntIj1nxEU4Rfc
-	3lT5QaDdNU8avzzME+7fv2ZO35/50lX0gmLH5idWlupnEjLm87+9D6KZIn7GJfz5+3Nnu0cd7qK
-	f2wkXuW5JcBPKhm05NtiaGQIwRkp+Kw8=
-X-Gm-Gg: AR+sD13GeBdjag6U51oZXmip1khlE5Ob0p+/XKomYMQqzd18f2YSkxe886DcA5aJYof
-	6uamHPvdFYnyP1oMqVy5bSNdmA8ZB9PatcuYqnAgTfPORf2dwcSwlTKUYcJODYdC1LYK0wrS1V1
-	NYG7K0wvgyacM6XMl5jHs4T+BRyEjf/Yx6CcD9bXg++nTzrpdf7li7NJ2KyGS/XWnhtrw/ItWyb
-	tE94mn1c7WM34rRQ1Ql5ii8SgTFUlphJy2NiE6aXGFAM8xPkMKX4YXTVwzFRg==
-X-Received: by 2002:a05:6a21:4784:b0:3c3:990b:2292 with SMTP id
- adf61e73a8af0-3c67dfe6723mr2903792637.57.1785012916705; Sat, 25 Jul 2026
- 13:55:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b="EEXBi9bM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="rbk1azpl"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id DB76B7A0077;
+	Sat, 25 Jul 2026 17:12:47 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Sat, 25 Jul 2026 17:12:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1785013967; x=1785100367; bh=FX9NIm5YWBXiDktf7ywFAIUCm3xYG7hp
+	aumCyaghDJA=; b=EEXBi9bMqkthUBpEGzHmTIR6GecjIVfGNbocJ2ekmxtF1QrJ
+	YCk0K8HC/bfnw7Hjp65zsi9Z9bkSeHJskp4vD1MfjaHk2tWrLABJ29/U5oaZmWYa
+	ML6F9ZoonA2ruJ9DU6sQpPl5MFe+n7+DC2on4SbK2qDUSB1hKRenGOhOEf0hcisL
+	ulIzDOoQgwe3SS2VnY6xk/9xwTy/NgKjS6eYMzQqQYUXIAcB4eTJT8DIylHoaTLV
+	aojvo4Q4XUGv2+boaLUmfj5CpkHSc8d8VcVMuU19a9O6oSLlFracF5B+jteT5MRh
+	EqvSKjOFa+DDmD9D8O3t/fdSQ6+6GG3xvwGpCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785013967; x=
+	1785100367; bh=FX9NIm5YWBXiDktf7ywFAIUCm3xYG7hpaumCyaghDJA=; b=r
+	bk1azpl6CZJghpcxYqf0LLFRKUBAaIG/MbqJ1wATkU/5himw5hSh8vZk6o7pPl/W
+	NQA5YNDf8A7FP5BuPVD00MCIov60NUsPVld5ua+iRmtAhDFtJKjHnagq7Im+Wv3x
+	hq+UU+fN28WSlvUH6D34jbeelZeGTBqjOyWBIAYvcpFlpJwRhnkUgZJXgfit33FU
+	OdiPdCPyz1Q/kBMnzGmo3xClQOAyekEKDKFSdXgRPUbCI6wdyvQuFNtzVGKGMQhO
+	QdBgRYLdPrB0ToYpscGk/GJ+g8Gv95hyQTt3G9Sw2TfmrT8w6dJSMJZVincqvezT
+	W56lnpQpHZcFnEWLKbRcg==
+X-ME-Sender: <xms:ziZlamc8ksJf0mUjkT87P9o_fjWI1ST11spb-QdyRfnkaaxLE2NlLg>
+    <xme:ziZlarAVCxezuxPxStNmLSFbKe8GCpg7-V3FdCPe3KCHmfTN2nwI688WkMUQkC59g
+    PrsD27HBvSx8iJ7zFgEqF3xogod_j_Dttwn6RO4l2-YSUwV3vgaxYQ>
+X-ME-Proxy-Cause: dmFkZTEpCyMsZEWpSsNFPF+kgizHT3Re0ugMYizZncrH6bNs1IjphdUfSIBtpaK3OANKFh
+    GenQ3lBh8VlYMkMQ+/KutfWFsTEvwrugIHFcQdNOQw6ChL6qEzY8Q7cSrCYxnPmJoGeeUA
+    UH7nolEaNvDFm6aUjpFKxizpbEM54JA2IueZDFDxdZ0Ke3bKi+H7zAJQ6hnriEZlMN5+yH
+    j2OBqSAtoW3w7NM+SyEXH7sGVABY09lI70Jk/hwSXiC2KaVmFU627Vn0Bm6PIutLFPmFo0
+    NbYUNImnER8BWhB+ld5BOQI+aJ1K9EIbGVh7CeJxH2LsmENlN+/KaxamgTBRtobhftBEfg
+    CTuV3Vk3UD5mC1h7Mann7zjf7xVzdKxxTuSko3LJyWe65TDGaxwtpuKWOPxx/EIO0XQHwt
+    9hmlPcW9s5Oe0GELlR5N1akzJ91u60IOc/7J68C3najfBvsGpcaNfn9qUdd1bsnNwqNL0j
+    Gi6n27oOWg/oez69DDWO7G+9mdXb8HteiEh+Yu3YEZ3tOC55AIZWe0NNiyhNaSFCC+ro9Q
+    IURSrNjK3fBfJbhkAKGVctvpFoMHAtaG21FVEfMOLEHsZNbNyNT8dV40n0eJZ7M7QCDXRb
+    xs+IASVIVj5m63ihMgjD7Jws3hrPuDYEFr5ylyYRAbCcDyfL8tdEa+ssi3xA
+X-ME-Proxy: <xmx:ziZlaqTIen1jgDrs0NORZukHkfwdNi7K3tKNjWmDxFFM9g-F_hbqpA>
+    <xmx:ziZlascRZfreF2QlZzp3xHTPFm0paFFMXTyd64b3pKQamQe9KxJ7_g>
+    <xmx:ziZlars-Y9qIGzc2w9haPzuA0wxgO5Dtxp5sD8sQV7fYzmKZF2Z6xw>
+    <xmx:ziZlagKrx8KFFXdAhLJwOXXUpx1G_wSMFWX0WmE0-JtrGpbb24KgIw>
+    <xmx:zyZlapr53DXWK2g98wzAN61_VOZdlSL1vSCUtouGoe0wQfghQrW2UEvv>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A3C802CC0086; Sat, 25 Jul 2026 17:12:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260523-af-alg-harden-v1-2-c76755c3a5c5@gmail.com>
- <20260603133312.12848-1-freude@linux.ibm.com> <amOGWwdjnJqyxH5L@codewreck.org>
- <20260724160034.GB2032@sol> <amOTjPW__CNZui3_@codewreck.org>
-In-Reply-To: <amOTjPW__CNZui3_@codewreck.org>
-From: Richard Weinberger <richard.weinberger@gmail.com>
-Date: Sat, 25 Jul 2026 22:55:03 +0200
-X-Gm-Features: AUfX_myV9AV5bwxaPxDCds8CpJSSwUUfrEfnR7d5D_zQ_thbtzqC3K-k805u5U8
-Message-ID: <CAFLxGvy+ec3nQLrQtwFZgGELhT2pKBDnHdD0pMvEGh-Mf3rjgQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] AF_ALG: Drop support for off-CPU cryptography
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Eric Biggers <ebiggers@kernel.org>, demiobenour@gmail.com, 
-	Harald Freudenberger <freude@linux.ibm.com>, acme@kernel.org, adrian.hunter@intel.com, 
-	alexander.shishkin@linux.intel.com, ardb@kernel.org, axboe@kernel.dk, 
-	corbet@lwn.net, davem@davemloft.net, edumazet@google.com, 
-	herbert@gondor.apana.org.au, horms@kernel.org, io-uring@vger.kernel.org, 
-	irogers@google.com, james.clark@linaro.org, jolsa@kernel.org, kuba@kernel.org, 
-	kuniyu@google.com, linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, peterz@infradead.org, 
-	skhan@linuxfoundation.org, willemb@google.com, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AaLgTCfSr8ho
+Date: Sat, 25 Jul 2026 17:11:54 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "John Ericson" <John.Ericson@obsidian.systems>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Simon Horman" <horms@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
+ "David Rheinsberg" <david@readahead.eu>, "Cong Wang" <cwang@multikernel.io>,
+ "Sergei Zimmerman" <sergei@zimmerman.foo>,
+ "network dev" <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Message-Id: <879b72ff-581b-49b9-8c7e-de94c42257a9@app.fastmail.com>
+In-Reply-To: <20260724150909.130726ef@kernel.org>
+References: <20260718182903.2295560-1-John.Ericson@Obsidian.Systems>
+ <20260723091248.6acaa173@kernel.org>
+ <acb8cc56-6473-4910-9367-8c3c0d75be78@app.fastmail.com>
+ <20260724150909.130726ef@kernel.org>
+Subject: Re: [PATCH net v3 1/2] af_unix: fix listen() succeeding on sockets in the
+ wrong state
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 24, 2026 at 6:41=E2=80=AFPM Dominique Martinet
-<asmadeus@codewreck.org> wrote:
-> > There's no "tk(cbc(aes))" algorithm in the upstream kernel.  So, it's
-> > not possible that this ever worked with upstream.  Given that, there's
-> > no regression in upstream for this program, and it wouldn't be
-> > appropriate to consider a sysctl knob in upstream at this time.
->
-> Bleh, you are correct, it's an NXP patch in
-> drivers/crypto/caam/caamalg.c that they've been carrying in their
-> tree(s) since 2018[1] and has apparently never been upstreamed...
-> [1] https://github.com/nxp-imx/linux-imx/commit/6868c9e49c1854028fb46022d=
-aac3b1b10ca2c70
->
-> Sorry for not having checked, I was hoping for better.
-> (I should be used to it by now...)
+Yay! I think these are my first kernel contributions to land.
+Thanks so much!
 
-Sorry for joining the party so late, you're killing AF_ALG faster than
-I can follow all the mails.
-Speaking of CAAM, there is a legit usecase which exists mainline. No
-vendor patches needed.
+On Fri, Jul 24, 2026, at 6:09 PM, Jakub Kicinski wrote:
+> Oh, you should probably mention the net-next follow up under the ---
+> separator or in the cover letter next time.
 
-You can create a CAAM BLOB (a generated and sealed key) using the
-trusted keys subsystem and use this BLOB
-later in AF_ALG to perform AES with a key invisible to userspace.
+Ah OK, yes that makes total sense, happy to do that.
 
-e.g.
-kid=3D$(keyctl add trusted mykey "new 32 pk" @s)
-keyctl print $kid | xxd -r -p > blob.bin
-Then just create a caam_pkey_info in userspace and feed it into AF_ALG
-and perform AES with it.
+I see that the two patches have now landed in net --- yay! Apologies for
+being a novice with these workflows, but should I submit the follow-up
+to net-next right away, or should I first wait for some sort of periodic
+process to occur where net-next gets synced with the latest changes in
+net?
 
-So, pretty please,  if you kill AF_ALG and all this, offer some way to
-achieve the same in userspace.
+Cheers,
 
--
-Thanks,
-//richard
+John
