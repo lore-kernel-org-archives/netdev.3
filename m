@@ -1,147 +1,188 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219383368B7;
-	Sat, 25 Jul 2026 03:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535D330C165
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 03:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784948995; cv=none; b=e7MnjAg7eicNRC1dOnh+hZLv5bmVG9SQJsza5IqKx7FkAcq5jU+X/pJWCLIfcuAylQAI7B6ewLqJnxZUvJJoGg01N/REUFR/KhnYVNyE/xTRGpKQZ937R9Zb9ZYMY1G9PiVSyfjqx13o/ITLT8AtW088lho/os4kGgOnqUGZHFY=
+	t=1784949148; cv=none; b=Jwm8t4seSIVu9gb73vfuaavaRAviFeaKTjST+dhwPDXc//CXprw3y9nF2QTLiJt9KtXfC7mwU2gb/uqaQs964SOguWJoiutQkNISjnUpP7byfV91FV8HfkVVAMI/31xU6OCuQUei4bAAHQ947fd1U7TlYzl9lQJ5+IWAP7B6YbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784948995; c=relaxed/simple;
-	bh=BDDFOcUYxwSMc37yI7GVwZrjYaS3Sui+0k0tQMuEjQU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pE/sOX0mRFffnDtArgomA1ugNGhYG6SDtUkEeiiHFQEQciWWdUo/xaPiB0OnjH6uRy6E/Pnwcj3JGU5XoDWwzREB8NssSgGzMsdQ0q412ZCHVPNHPqhJXART2mjJGPOG3tPahGoIDfTFC/KVsFvqj7Tkbz/RWIkHmTtB8vPQT1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e163ivBa; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784949148; c=relaxed/simple;
+	bh=vsYifGke6lnY4KN8BmHH/Raq4kUbLLKlKIiC4+ggoeU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FfrEbgnm/FTvtClmUIRhQFVey8BrHoUMQfnQsgzNDX6xrau6M4KqUolNn119Dj3+mYc1K74MOlqsqcQnLAwf+MAsTUaeTW7vth21IXcatQ4W3A4AiOrNN1iS2+dNuF5Mczxoufl0khi9B7kSIeCjsFoaR3vkGtrhuUy2LIQeeOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAFKYY1I; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e163ivBa"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66P2wd6e1784493;
-	Sat, 25 Jul 2026 03:09:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BDDFOc
-	UYxwSMc37yI7GVwZrjYaS3Sui+0k0tQMuEjQU=; b=e163ivBa48KtiiSoJa0Mh6
-	jg++P2bBjJyY4442zJcUV6WajiiFMQg1SGjFtebdRhqELU7HuxcursNDR1vUU7MM
-	HwUmiEfkA6lCLf2TpZInw+jEYyKvaVflHJJccSpjaRbtajLntdfKLVAOHaRnNiYI
-	b3fKXZS3tV0CzAEjSgIyXxeclquMYDomEN4kj0vengFbsJ/supAKFFeIxTyDV4QH
-	Jy4eL9WzSoDeesaCBNP4zHhM7qAXFZGDu9w8LyOQ3PNsOMLCr6X//gpVLTLpSdFa
-	WG41F68GjYdFPyCpV+Hf+nvjsFuBGf4Vt9Nr/q0was+alkSBrbDZOcU0qMnUo7wg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmmtq00yh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jul 2026 03:09:33 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66P36oXw018259;
-	Sat, 25 Jul 2026 03:09:32 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6wkpjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jul 2026 03:09:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66P39Shu38535676
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 25 Jul 2026 03:09:28 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 48D85200F2;
-	Sat, 25 Jul 2026 03:09:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9205200ED;
-	Sat, 25 Jul 2026 03:09:27 +0000 (GMT)
-Received: from li-fa2166e9-1f7d-4f1a-8ca5-7ccf0f022c25.ibm.com (unknown [9.111.80.37])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 25 Jul 2026 03:09:27 +0000 (GMT)
-Message-ID: <ab01a87d17e491de68684f7116d55ed1a70b7522.camel@linux.ibm.com>
-Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
- sends
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
-        edumazet@google.com, horms@kernel.org, bcodding@redhat.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        svens@linux.ibm.com, brueckner@linux.ibm.com
-Date: Sat, 25 Jul 2026 05:09:27 +0200
-In-Reply-To: <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
-References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
-	 <20260723092630.1a1c9b4e@kernel.org>
-	 <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAFKYY1I"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ce7d2adef4so13639615ad.3
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 20:12:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784949141; x=1785553941; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LMDNaLVs/3tHgNJc8HBi+uc/gjyAWEQ4BpGD5ItSc8c=;
+        b=GAFKYY1IZm8M8XQKU+32CGsNuAaWgBXt3l/Y4iO0fMzuEbnODJu8O8nvBBkb8puxTv
+         PdWZPutbtELHh0DBclBbZtH8XAj5v4RArnjACfL1EvlmMff8MYZhBj33cYfhn4ZiFg6+
+         iAAKKGyHsIHaKAVtWF8ngGrCeCU3GgXal9Y0L3i15545pzJ4heTUdMwNjsc+TiWPVm+o
+         JlOzkAIjn2rW7JVhOwhNf/gEzk7ANu9LYc3OQK53xpXGTn8Pg+lNYiDMyL6c6Cn8FHB2
+         avZoRX6e9l4BGnBKuMWLD2DiWPZzdsZw70oJ+SVPzGGjhXfR4yDA2j6bc59ZopOgP2s9
+         76vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784949141; x=1785553941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LMDNaLVs/3tHgNJc8HBi+uc/gjyAWEQ4BpGD5ItSc8c=;
+        b=b0OdeqHc+ptwy5IiO7eYsqZQi8cGFTDiznHX0RR0NziEVJrnNZgf/4DR1HHzKtY+h9
+         XbZA6IoKEtOSmfcOQeJEE/fqzrTJitcZTMXxbwaEINhz7Be3ur6vPOaPQUovCGeqz2bQ
+         8w5mpqyQuwPhpkBvicsubzz1LpYeu69Ub4b7IYk6YTdcdl2lto6m38FT3OrELs3jXmOi
+         t107ef6+M9SpZp/Ek7neq+NEJEkNJ+o9BcB+it5tNATU7UsgiFdCNRIlz/rWFbRt26YV
+         Z0hs5nYsJ6vmpbYHVSAY3rOW4iqKEAGqxfHEN+uI8h52tR2vIKd6pIIP9fShVBhRYfkx
+         ijHQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+ZRyE3sTnuYIr0CeLw7rV1yb6eWWx/J/ame1Pe4FV0LPH8KrEJi3U8hobL3xipnB4u+Iuw7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk5m6ifW/qj29ZgfGuSa9lGqgm1hFlWapfpl7d1PKQsCckktRh
+	T1V+3ob2xPk2qVLoKhhPbZu1GvmwHXppSNlA5sTVXYSpGb2rNABA3r0h
+X-Gm-Gg: AR+sD12cOYvMI9P8K597spcI22j4eU8r+VRMLhW7WX7fiEGUMBM48UuPjDLTcws+yQp
+	CONW4uVXhQUMR3ySwG5liD2cIYg/+xJlX+M2jTtqtlGnzL+Uc9+uWqEJpFobBLdLp+znUczevFu
+	OeCqmN/HvKFVP/3Sesx+AqN6U7nEHinQYV46OsjI94jy25TKrIsiOC9/MKW0y3wz70GQacDuzPN
+	XSN7biFtDJL6TVl4ciqvtgRx03mYoB0UknDq77NF3G3Hj0uMIkX85TPdx40RM7Vdgcx5CxOkiYD
+	qUGZ7WG+zNgCk8NQpjshRIsmXNdLQ2YnqN/36XdhqLwzVQU/+UvLFMyOJXJPn/bYZ8h9axNWI1H
+	+n9RW/JeZX44VForiTRotkYo+D7gte9LOAoHelwARx5WkV0ZHluuVgkPqrdFfuwGAK6Xk72k6yI
+	an9622qziElrOxXaGZcgY7JcS1fJ6BS1KHeT2Xr9eTUIzMxKTvn2WkKNoF3Vx/pYPg
+X-Received: by 2002:a17:902:f608:b0:2ca:6d87:cda0 with SMTP id d9443c01a7336-2cfde795552mr9149185ad.6.1784949140575;
+        Fri, 24 Jul 2026 20:12:20 -0700 (PDT)
+Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:a005:2f41:ab3d:c011])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e26e9sm3610265ad.23.2026.07.24.20.12.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 20:12:19 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Chris J Arges <carges@cloudflare.com>,
+	David Ahern <dsahern@kernel.org>,
+	David Wei <dw@davidwei.uk>,
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Willem de Bruijn <willemb@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v3 0/2] ipv6: report why a route was deleted in RTM_DELROUTE
+Date: Sat, 25 Jul 2026 12:12:12 +0900
+Message-ID: <20260725031214.43059-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=JcWMa0KV c=1 sm=1 tr=0 ts=6a6428ee cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=BCt8zh-F8LzyvZBcyEsA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI1MDAyMyBTYWx0ZWRfX1d5xEmEuIU4e
- OxEXKezp4Dm97RvH10c4mz0kfsqKCLC2k/ZyFn2HY8WXXqpzVdqIWkyRvfRi4PiKeaXTFOKKJKG
- 8GN10NreI6YieFxYGfm1spVBiIiCAbwgfscRMEwod9ZGK4H1yT8+ofAx3oDBgiO3CLtrHihPqM5
- 6dXPsKBkW7n96Q8lg07xxDthJR9ymuhn725YzfEzYW2W5TLBZ3uMWuklDiUYqT7NT0CHit3pKf/
- qpdO7hKc0nma+ZTwkQh5x3IB23+v6RLamNcIPsYsrq7/Pfv1EvbFPoWBRi2wJBKdetCWoWxnrGV
- rAUS32fzWLA9JrPspouMSF5LXlr+nBP4tX3ls2gZT29nEF7trtkBt3I5ORarcjWoNvui2Wrjhhg
- vLqnb+vJ3iATYSdimBrm9Nr/EN02ejpEnGrtn8nsfgtYphoDXuyrtic07405bYWI8LWvtNAiIWV
- 0ARiuZ1jgHnsjaxUBUQ==
-X-Proofpoint-GUID: KfyuTl908j9966IT22hlMWz7q_tJizBQ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI1MDAyMyBTYWx0ZWRfX8wQDOU9KcT1v
- Y3HoSLJ08COPAkxej1ukkc0ljXyIjQojOg8AeThOPXi/jq3ZOgW072OVdAPjJN1YWRocc2sj8tq
- guWQkg889MB7xPnAHpMQphN42V5l49g=
-X-Proofpoint-ORIG-GUID: UYulYLrY0HcqT81XMVYjhNEGAtSMmHMk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-25_01,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 bulkscore=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607250023
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2026-07-24 at 09:40 +0200, Paolo Abeni wrote:
-> On 7/23/26 6:26 PM, Jakub Kicinski wrote:
-> > On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner
-> > wrote:
-> > > When a signal interrupts a blocking send, tls_tx_records() treats
-> > > the
-> > > resulting -ERESTARTSYS as a transmission failure and marks the
-> > > socket
-> > > errored via tls_err_abort() with the raw error code. Later
-> > > syscalls
-> > > return the kernel-internal errno 512 (ERESTARTSYS) to userspace,
-> > > as the
-> > > signal it stems from is no longer pending during syscall exit and
-> > > thus
-> > > never translated.
-> >=20
-> > Can we just add ERESTARTSYS handling? I never heard of the other
-> > codes
-> > you're checking TBH, can they actually surface?
->=20
-> FTR, I think only EAGAIN and ERESTARTSYS can be observed in the
-> network
-> stack, and the latter only after sock_intr_errno() translation, i.e.
-> on
-> sendmsg()/recvmsg() return path.
->=20
-> I would not add additional error code handling, until we have some
-> proof
-> that it's needed.
->=20
-> /P
+When the kernel deletes an IPv6 route on its own, the RTM_DELROUTE
+notification does not say why. User space cannot tell a route that
+expired from one the router explicitly withdrew, yet the two call for
+different reactions: an expired RA route means the router failed to
+refresh it in time, which points at a misconfigured or unreliable
+router and may warrant action such as disabling IPv6 on that network,
+while a zero-lifetime withdrawal is normal, RFC-compliant operation.
 
-Is this an explicit requirement in the subsystem or just a practical
-observation. Because if this is only fixed for ERESTARTSYS and some
-part of the networking subsystem later introduces code that might
-return these other restart error codes the same problem could occur
-again. By my lights, it's better to err on the side of caution, but if
-we can be certain that this assumption won't be broken in the future
-I'd be fine with dropping the other restart error codes.
+This is a general problem for any consumer device running Linux,
+especially on Wi-Fi networks, where multicast delivery is not
+guaranteed (e.g. frames can be lost around DTIM for clients in power
+save mode). The motivating case is Android: the userspace NetworkStack
+process listens on RTMGRP_IPV6_ROUTE and today treats any loss of the
+IPv6 default route as "router lost". To avoid the device repeatedly
+gaining and losing IPv6 connectivity on a badly configured network,
+when it detects the device is on a dual-stack network with working
+IPv4 connectivity, it defensively clears accept_ra_defrtr and restarts
+IPv6, so user space apps stop using broken global IPv6 connectivity
+while link-local IPv6 keeps working. That reaction is wrong if the
+route was withdrawn by a zero-lifetime RA (some ISPs do this
+intentionally for reconfiguration) - with accept_ra_defrtr off, IPv6
+never recovers once the router advertises again. It is the right
+reaction if the route genuinely expired, since the router failed to
+refresh it in time.
+
+Fixing this in user space is not practical: RTM_NEWROUTE carries the
+initial route lifetime (in rta_cacheinfo), but the kernel does not
+resend it when a later RA refreshes the lifetime. So distinguishing
+the cause of an RTM_DELROUTE from user space would mean opening a raw
+socket, listening to RAs, and tracking lifetimes independently,
+duplicating logic the kernel already has. Sending RTM_NEWROUTE on
+every RA lifetime refresh was also considered, but that would be
+spammy and is technically wrong, since a lifetime update does not add
+a new route.
+
+This series proposes RTA_DEL_REASON instead: it tells user space why
+the route was deleted so it can react accordingly. In the Android
+case, NetworkStack would defensively disable global IPv6 only on
+RTA_DEL_REASON_EXPIRED, and take no action on
+RTA_DEL_REASON_RA_WITHDRAWN, since that is RFC-compliant behavior.
+
+Patch 1 adds RTA_DEL_REASON (u32) to RTM_DELROUTE notifications and
+records the cause in the kernel-initiated IPv6 deletion paths:
+RTA_DEL_REASON_EXPIRED for routes garbage collected after their
+RTF_EXPIRES lifetime ran out, and RTA_DEL_REASON_RA_WITHDRAWN for
+default routes, prefix routes and RFC 4191 route information routes
+withdrawn by Router Advertisements. The rt-route Netlink spec is
+extended with the attribute, the route notifications and their
+multicast groups.
+
+Only kernel-initiated deletions that user space cannot otherwise
+explain are attributed. User-requested deletions are self-explanatory
+to the requester, so they carry no reason; the UAPI documents that
+absence and RTA_DEL_REASON_UNSPEC must be treated identically, which
+keeps the door open for attributing more paths (nexthop removal
+cascades, device removal) later.
+
+Patch 2 adds selftests covering all three producer paths: a GC-expired
+route, and a default route + PIO prefix route + RIO route advertised
+and then withdrawn by hand-crafted RAs over a raw ICMPv6 socket (no
+external RA tool needed), plus a check that user-requested deletions
+carry no attribute. The notifications are decoded with YNL, which also
+exercises the rt-route spec additions.
+
+Changes since v2:
+- Fix the patch 1 commit message, which still said u8.
+- Keep del-reason out of the newroute and delroute request attribute
+  lists in the rt-route spec, since the kernel rejects it in requests.
+
+Changes since v1:
+- Expand the motivation with the Android use case, per review request.
+- Widen RTA_DEL_REASON from u8 to u32, per Netlink uAPI convention.
+- Convert dict_keys to a set before the set difference in the
+  selftest, for clarity.
+
+Yuyang Huang (2):
+  ipv6: report why a route was deleted in RTM_DELROUTE
+  selftests: net: verify RTA_DEL_REASON on route deletion
+
+ Documentation/netlink/specs/rt-route.yaml     |  67 ++++++-
+ include/net/ip6_fib.h                         |   4 +-
+ include/net/ip6_route.h                       |   2 +
+ include/uapi/linux/rtnetlink.h                |  17 ++
+ net/ipv6/addrconf.c                           |   3 +-
+ net/ipv6/ip6_fib.c                            |  19 +-
+ net/ipv6/ndisc.c                              |   7 +-
+ net/ipv6/route.c                              |  66 ++++---
+ .../testing/selftests/net/lib/py/__init__.py  |   4 +-
+ tools/testing/selftests/net/lib/py/ynl.py     |   7 +-
+ tools/testing/selftests/net/rtnetlink.py      | 181 +++++++++++++++++-
+ 11 files changed, 335 insertions(+), 42 deletions(-)
+
+--
+2.43.0
+
