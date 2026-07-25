@@ -1,75 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88323484243;
-	Fri, 24 Jul 2026 23:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC72931E848
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 00:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784937583; cv=none; b=blqFKUjzFz8TWgQ6MXqw3hNuNhgqS75BpHkGe9d8gR3Ynrg1rweCYz6cZH/XrpRVOceByScoyB9bFAtiNMjoxWFuiHa3OTH7zxW0wA7Jld4E391Mzhs18Qtk3G6jwxk4AZO5asb31o2VOHXptjcqMZ6dDzqO+BOGcn5rh9hXkZI=
+	t=1784937610; cv=none; b=Y7dCK+Ryc6VQ2PlWd19xiZf0kKTUjNjpMZ2jfucE1Ic8knS7Sf+geKCtUoMIN1KUaMJ2C/V2Iv01rb/rJSSgZhYTWwPvOQDwK2FjqvFmU4lY02qfTo5ehUbjradmP+JOJEzAlwMUUmSY7JDi0inAXiPt0+nk5ahM5VoiD7BQ5vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784937583; c=relaxed/simple;
-	bh=wHC1ldsrNkfapDk20vdeXeLt0/v6MTMD6tEy1BZYV7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bLanj3DLo3H9YaiscBK1CRi5jh+BEUXUn9oSiTgMuD7C7Hb5AeypUBMPtZ4dX157PWrApD/AqIntWVPrwGMUcfCcXy6DsP4ZvygyIxVVPtJ8OHpqdDZrYhp/JuBSROJAJn9nSvekw98TdRna0byaphXsXoQ/8On0TWei7Ppiix4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQmZLomC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784937610; c=relaxed/simple;
+	bh=wqzcR2Vb3YK2LAiR+yOwfa+Qq5E5XeCpf8ZN6x3EZZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XALzwBO4nnYbIdfy0AQiqFqqFkYSuTD3GiKCN/5ZhWORzJbE6ktDz1RTf3ubPNAAYerTqe3tIMcLVdHoh5TQyRnO7Yq/r3fJgjypjUzbd+emrQjROmjKpT6yO4tdhE7FRkHY/nU9suWRBgsMj+gxkCaA6tOb7FJJNL/n4+O6xpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SqvmOCDB; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQmZLomC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2481F000E9;
-	Fri, 24 Jul 2026 23:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784937581;
-	bh=UbFgowPbazdNSotuwixcNtQVi/Kc+8tZrKv2YdXLOc4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZQmZLomCh+9rG1lTUA8hn/qeSVdoZ39hcrWlM2e+lOE8wIhLbaCDTtHWmGhRfKHgm
-	 +mmxNF0EiLpDcvzsL77UvcK2wRaYuMM6ZQMkd1g4Ud3H1Z5sEYT6elmtBv1pBJMbJ0
-	 H/eG+tLPuKma0HUdVvsxwJbTOWKEV/u5Q/tKoPlKpRq/Fuh4rIwK+yaubQaUKUuZhv
-	 FMZhYqz1FOQcboLU21Bq90IEMuigiFRiylb0Nbc1Ys9WY8O62dH8JSSktZ/HZtawox
-	 7VN3saps8x4Bvrq//jCwFv5gGimAx4krKRefyJghTwlBSyAG4LKlVW5K67Ejdfd9Gk
-	 p9t0bDj6J18lw==
-Date: Fri, 24 Jul 2026 16:59:39 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Kuniyuki Iwashima <kuniyu@google.com>, Marc
- Kleine-Budde <mkl@pengutronix.de>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Neal Cardwell <ncardwell@google.com>, Oliver
- Hartkopp <socketcan@hartkopp.net>, Paolo Abeni <pabeni@redhat.com>, Remi
- Denis-Courmont <courmisch@gmail.com>, Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Xin Long <lucien.xin@gmail.com>, Petr
- Mladek <pmladek@suse.com>, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <thomas.weissschuh@linutronix.de>, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH net-next v2] net: Replace %pK output with 0
-Message-ID: <20260724165939.2d30f0d3@kernel.org>
-In-Reply-To: <20260720144031.oU6azheV@linutronix.de>
-References: <20260720144031.oU6azheV@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SqvmOCDB"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8485b358552so1056343b3a.2
+        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 17:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784937608; x=1785542408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RcfP1cCpEbGNIQWuA4I35j/s62A27Am7wlHhwJwCgdA=;
+        b=SqvmOCDBUFNxIXmlz55nKwKkV8F7azt4a2KqNZyFDCJCxz4Vm3yalP4T/tLmah9Fqr
+         xNjmRhUE52Ri50JePHkkHqKGEKFpdrX+RT0BHje6e0gN3WviacvC7Q5WLMrqSsVhIcow
+         o0+097TyCt+/0D5iAmvCSgpy+TSS8CUEc4HBxwtUFHlXm8OLdjzVHQoxlTtqYr0R0HlC
+         34vRbCtsWNDf8ratET2IjRPziFNNXN5HEsLiz90NKIjmBKHmjF9s/qJ0wZwTTW0XqaB5
+         kdms7R07w8MmZ2+RWPAdWPFU9fioxVNW2oWvqjoG5hPQRbUg1hkPVrOAItd5wlXWETdF
+         nRyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784937608; x=1785542408;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RcfP1cCpEbGNIQWuA4I35j/s62A27Am7wlHhwJwCgdA=;
+        b=iEg/R2RYhz7AZpuIUFQsejbEyc3BMcYX1ipWEX+JQhMux9gN1goDhog+hBMhbGT6HY
+         cROoii7H/6V+WNAhF7v5uI771hG6vgvgtFmOwR07XpbCYAJClbH0uNg5qqyBAyWBf95t
+         RV7W3b99kCSpRrgueChBTxwD/ICyRKgagZDOQ/99/TCJpU22q7uziw4eLkoWQCkUBhdH
+         d3s/GSo9R/J/aZ4LTrb3JwkMdcfti1xSNv5cyp0ySEBDssUymTSAe1Ny3ePnJ2v6odAp
+         P8VI1koJ1KeoDjKGzbunlnbPzSt53N+gr5OOv1QamWHczmzmav1rCHyPUax5IrPVw1+E
+         z99w==
+X-Forwarded-Encrypted: i=1; AHgh+RrHZuvPAHXO5EYLyMsZfaNhHsw8bmmBR4KeZyUvcU4QWxMciUSBtvK7q64/YI+cpTZkvJY3zpk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAWEwLCVAQoZq1Ko9e81sIcMN9ai8RQvZhowml8LSgw11KvEsL
+	789khcdzcE2MiSCWk1vnigxJUONcUzhwCkZx13tINZVzKJszXrElA07g
+X-Gm-Gg: AR+sD13TPhaG74TVIpIxxrJZShcQnlAtJ9AqRJPP0UuqUOIJ0hqtty/ElW/AQ9eAzV/
+	qSQ2hTaQXK6KrB+8qqJC3/qpF1OlInxN0hH4tHz6PdztRpZHSIfrAkKmE4ikYQhLMPgrVoA/7vB
+	DYDG0LtRGRNHy8o666wutzlJqvgu7t4x4uUHA+KPLvqhYh5qYij5vRdqffemrqxZfHRLs9D7L1w
+	gX4eUx1opmyc03XbJgjz0OvQFkiHVNmeZ9zTG2iXd6pZXhJCulu5KnKemctOHYd/tNZxqZqro1N
+	TntQr+i8QfGOG2AL+CIXJ+JNCftlOrOU0HLTGArGHdRyvoChHMtNIkPEg/yp/t+VgahXKw7LfuX
+	oh4mcGFT2B6TBoWr14cHaTiw/vaDQLwpuzJfnfZSedSe3x8LV9KkUayy1ZqbFupyGJuGZynIYC/
+	Ct
+X-Received: by 2002:aa7:8896:0:b0:847:9745:2f83 with SMTP id d2e1a72fcca58-84e59435becmr296556b3a.18.1784937608025;
+        Fri, 24 Jul 2026 17:00:08 -0700 (PDT)
+Received: from john-p8 ([98.97.42.174])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5327f22fsm535936b3a.13.2026.07.24.17.00.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 17:00:07 -0700 (PDT)
+Date: Fri, 24 Jul 2026 17:00:05 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Joe Stringer <joe@wand.net.nz>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf 1/3] bpf, sockmap: Use sock_hold() instead of
+ refcount_inc_not_zero() in lookup
+Message-ID: <amP8aYwtxo5qJUEb@john-p8>
+References: <20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co>
+ <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260723-sockmap-lookup-tcp-leak-v1-1-1bbdc58ce514@rbox.co>
 
-On Mon, 20 Jul 2026 16:40:31 +0200 Sebastian Andrzej Siewior wrote:
-> @@ -2209,7 +2209,7 @@ static void get_timewait6_sock(struct seq_file *seq,
->  
->  	seq_printf(seq,
->  		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
-> -		   "%02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d %pK\n",
-> +		   "%02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d\n",
+On Thu, Jul 23, 2026 at 01:33:27PM +0200, Michal Luczaj wrote:
+>psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
+>queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
+>entry is unlinked and an RCU grace period elapses. Since the lookup runs
+>under RCU, a non-NULL result guarantees sk_refcnt >= 1:
+>refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
+>
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
 
-You ate one here?
+Should bpf-next right? this is an optimization not a fix?
 
->  		   i,
->  		   src->s6_addr32[0], src->s6_addr32[1],
->  		   src->s6_addr32[2], src->s6_addr32[3], srcp,
-> @@ -2217,7 +2217,7 @@ static void get_timewait6_sock(struct seq_file *seq,
->  		   dest->s6_addr32[2], dest->s6_addr32[3], destp,
->  		   READ_ONCE(tw->tw_substate), 0, 0,
->  		   3, jiffies_delta_to_clock_t(delta), 0, 0, 0, 0,
-> -		   refcount_read(&tw->tw_refcnt), tw);
-> +		   refcount_read(&tw->tw_refcnt));
+> net/core/sock_map.c | 8 ++++----
+> 1 file changed, 4 insertions(+), 4 deletions(-)
+>
+>diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+>index 9efbd8ca7db8..ca49bc7f8687 100644
+>--- a/net/core/sock_map.c
+>+++ b/net/core/sock_map.c
+>@@ -392,8 +392,8 @@ static void *sock_map_lookup(struct bpf_map *map, void *key)
+> 	sk = __sock_map_lookup_elem(map, *(u32 *)key);
+> 	if (!sk)
+> 		return NULL;
+>-	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
+>-		return NULL;
+>+	if (sk_is_refcounted(sk))
+>+		sock_hold(sk);
+> 	return sk;
+> }
+>
+>@@ -1218,8 +1218,8 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
+> 	sk = __sock_hash_lookup_elem(map, key);
+> 	if (!sk)
+> 		return NULL;
+>-	if (sk_is_refcounted(sk) && !refcount_inc_not_zero(&sk->sk_refcnt))
+>-		return NULL;
+>+	if (sk_is_refcounted(sk))
+>+		sock_hold(sk);
+> 	return sk;
+> }
+>
+>
+>-- 
+>2.55.0
+>
