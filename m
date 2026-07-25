@@ -1,193 +1,162 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C189B3016FB
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527BB2FDC5E
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784985576; cv=none; b=fCyMRFq9V6jruOmXE5wPPkWiviKdj5K6YQvALrNQFjW+fy3bTKMiMtLIJV/isC7vioGTfMnh+iRwBdDbsAQwhDzXOSyVPQl1fVZMcpwEXZ+br+iWgXoC+eM2mpwYqxdWvjdrbX0kTTcNqWmAZFeXe7ubtULzft8wfJApe/aFe2k=
+	t=1784985783; cv=none; b=N0hKmCTV9VhbCdWYqRVIuhjJHki8zPLnnvRCQS97GVdnJbUs9WLlxZeQAVdGS9daTPbu6D1SxRBM2TGtPU33mz9ESv9cYj5xqCYfFKtm4GI8uClgC0MD19fFu3r/3z1SuXwt1WqDqb6CXG3FAuBu0Dt5ce+0SQC17TGKuxNs/TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784985576; c=relaxed/simple;
-	bh=/GHvEU4DvR8iU5S2Wkxo8LoV5+oBHvjw8A06xPVmWcw=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=JiYYURoAIUf+DZ0Sub8wgvXfRd5SkZh9Y7GGWwqlEyIgiUDZZwykonvMeTkPFKmdjKhJysNhmup727DAG4NkuFgei+6BQ5MGYABRhxHURNAZBKQIPllK+hAMu5OwOM+Zi85/qgCECtBmpFDOevgQzZVqePcFU8FCjXmqZvQlxQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4ab4ca7ce3fso1304246b6e.0
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 06:19:34 -0700 (PDT)
+	s=arc-20240116; t=1784985783; c=relaxed/simple;
+	bh=97xEWqQxd3MflF43LClPkOQcYakWonr25YhX/9+k8g4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=efd+2N8u6KKm55OnYj9CwaM8NOXH0qsT56a6kEsMhV3Ex5udW72s0N/5j9xV6AkqsQo52/xU22xDqE3QZbV+W46RM1SflIDz6UrSnRbbp3K3BSxOsWW7uPM9acq/Z7VrKf3QnmcRVKH32NnvAosJk6H2uz6cEpgbpg4h43JMajw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dy+PbgFA; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dy+PbgFA"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b0231a3e86so1167115e87.0
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 06:23:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784985780; x=1785590580; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sIDqT1SiBF4RoBKhu5UCLRHokUDL3DRTBfD3SKYOjqE=;
+        b=Dy+PbgFAmDMpHkfXRRemm/zrDSlmVMf1SPDrDfFX5S8ku2zIBVIlb5PQFyeQEKmhfy
+         FifyCR0gAaXFmoWJF/yX+DE5XJNkkQQ9nhbHXcncLzg28z7RYR1tHe+khNJ5OkbKgBgi
+         Q+H9bC3sVR014gTxqH6iu0eGJUZZh6DPiSUx+kS1nqGGnI7mde37lg5k18TJw9TiO/Qw
+         g8OtGddk4L0fNAglc9Z48GVOwuZgudrZqaM3s5Ot5RmUZ8D/Ybxbm/GxMOTYp5fnubyd
+         wYSKMpvRpO7WTd4829PK2E7OzqsUTtqNfu6TmuYQPCBq8tiFmCR8GNawERfaroESaCDY
+         Q2yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784985573; x=1785590373;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7Tt2zqDo8gV42JanURGdhRm83gbjP10nXNsRPce+zbc=;
-        b=snKHNzKJhZ14PXuaOamCtP6Iiyrpu+vGTq8V3iYJcqGKaRqKpGonJzGgTsTNNnM0YE
-         9FP12pTxusrz39xA5gLnXnG4GoJcevwYVXYN2yjHsLQayiVm9BI+Im1vcQflGDIryI1W
-         /52ueJrP9CX+oZRZ4lrrPcUgn4R9DddcblV79HwuFviOvoPZcvszh84mogaNPuFxXBpz
-         y2FlQBhhRFIHaJELWTgciQSNN5mIf6uDNIpOaxb9VRN9pi3aajWn+cwFztbaMMfe1BjK
-         PlPjOWlCLwUhjxVTt1xTOcBh1I0GLguCyzgj7Az3iufUSyFgwLFnYZd+EG8s7hzKZ9wB
-         UhTw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0UAbZKYUzHwM2bpjCQ1cxrkA25yBB0nsufceS0xw64k1MWffpyAo4OoOhEeaI+bAgTfT0qrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQWlzoCQwGSa4vmZv+reTZtH0/AUQZJecqlVn7osnbPKFYQhdm
-	xj3geZzito5zVy+SKE+2giR3wWpJopKJTk00L0j9oIhbsxSsH9ZqEMa6awZ7Nk7OG0AQS9hdCQI
-	/sQ8ftU+ksl623No5XR0MkOY0FYgLPxGMr/1WjzUh3c0qLuc7Pr4qqgDfdgU=
+        d=1e100.net; s=20251104; t=1784985780; x=1785590580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sIDqT1SiBF4RoBKhu5UCLRHokUDL3DRTBfD3SKYOjqE=;
+        b=FVCFTPUVUQviQQW6Te1yhRquGEEhHU1PcRX3T4z6euUHpAe+Soc4M/vYnc0nUGs3oy
+         zU5JdReEXV9uaKrlJ9x07y9j0/mvFmzKH1KH1i6zyZzcUJbPY9kxg4VIR8EtpmFY8D5O
+         ofZfhpvEkSQmeyT/uoSixKG2dWEwq9Lbax1uIhBa7x9b0o2F0s9+N9NUa8Pon0CSsuUj
+         NV/JuD2KLP9cXwfoVrN9O1upk3Ar0vHOdAOSjA7l5HxmYZYRUWkmnrMltjVhjyBPivRK
+         Nz1cSw+F0iRHY4y0FlW5sWo9JZLW02lw6SH83HXbG9lev3gQTZBbkjPj5hTeZnfb38o7
+         LVRQ==
+X-Gm-Message-State: AOJu0YwdG46jVv7kr1bwXBJKecajsUBEfc/Wi8Iz+mleJfetL8JhDc22
+	Z2mJRzXzlyxQjYjnPm7RpSK+Xtmv56hmOefEJ0d2kKpV8N33ifmp5/+4qxZilwWLoJE=
+X-Gm-Gg: AR+sD10w0UX52oZHh05ht+lvSm310vf7+Q54TDlE7wl6ATXfLHse9DuzTDZIBHENKsr
+	E/NJnlOedVHxcL0BkWoIzFSp2C9tVLsiygwvnqv0sB/DjAG6BIF5P1WCRGp9EP/+YIHHy4bESgq
+	WeA6IYVR3pEXUFDUCQZk1JYjGLas5PbIDZ4G207lAhsu5yaFUVX7H13rZNxku0AAcAgj1pYUO6J
+	UK8505Vd2anwTYWaQouY+nBJkvzEJV2s1rui0lKyVq1svsWF8Yws1ZnYWDlcEIRFgz3JcjRDCeX
+	OOsUOMausoI8dXPKMaqtKn+YkgmIuopgnjtj/0Gp6W5SNMGl5a9rMKNncikyDqOhoWiYjO9QCYb
+	phkKAcO4/oh1Cdn6LVbKyb7EeYE9JcmMM3tuitIuMxYrmRmGprdwFQVWfhTA/jLuA97ZSSReq8T
+	HJHVwUsfM9XmzA6DOk+SdLtWDMd9dZcJN1pFH27ZLC/Hc2/yLS4C4zMIbVGNAelO528t4hOqrNf
+	HWlCs7VqjqfIyk=
+X-Received: by 2002:a05:6512:2303:b0:5b0:215b:5de8 with SMTP id 2adb3069b0e04-5b2c1b532f4mr365011e87.64.1784985780219;
+        Sat, 25 Jul 2026 06:23:00 -0700 (PDT)
+Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2be083db1sm434092e87.25.2026.07.25.06.22.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 06:22:59 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	chrisw@sous-sol.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] rtnetlink: truncate IFLA_VFINFO_LIST instead of overflowing its length
+Date: Sat, 25 Jul 2026 16:22:36 +0300
+Message-ID: <20260725132236.88318-1-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1b21:b0:495:adee:29e9 with SMTP id
- 5614622812f47-4ab6a3e85b9mr2031099b6e.41.1784985573428; Sat, 25 Jul 2026
- 06:19:33 -0700 (PDT)
-Date: Sat, 25 Jul 2026 06:19:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a64b7e5.70955b6c.323240.001d.GAE@google.com>
-Subject: [syzbot] [net?] [fs?] possible deadlock in rht_lock
-From: syzbot <syzbot+ef8d17bae14efb960935@syzkaller.appspotmail.com>
-To: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+rtnl_fill_vf() closes the IFLA_VFINFO_LIST nest with nla_nest_end(),
+which stores the accumulated length into nla_len. That field is a u16,
+so a nest larger than 65535 bytes is written truncated modulo 65536.
 
-syzbot found the following issue on:
+The skb is sized by if_nlmsg_size(), which adds rtnl_vfinfo_size() for
+every VF, so the buffer really is large enough for the whole list and
+none of the nla_put() calls in rtnl_fill_vfinfo() fails. The overflow is
+therefore silent. Userspace then walks the message with RTA_NEXT(),
+which advances by the stored length, so parsing resumes inside VF
+payload and the top-level attributes that follow the nest are read out
+of VF data. Those are IFLA_VF_PORTS, IFLA_XDP, IFLA_LINKINFO,
+IFLA_PERM_ADDRESS and IFLA_PROP_LIST. iproute2 prints "!!!Deficit", and
+strictly validating parsers reject the message outright.
 
-HEAD commit:    94515f3a7d42 Merge tag 'bpf-fixes' of git://git.kernel.org..
-git tree:       bpf
-console output: https://syzkaller.appspot.com/x/log.txt?x=119bf789580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
-dashboard link: https://syzkaller.appspot.com/bug?extid=ef8d17bae14efb960935
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=148d72b9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=105a1746580000
+rtnl_fill_vfinfo() emits 296 bytes per VF on a 64-bit kernel with
+efficient unaligned access, so the nest wraps at 222 VFs; without
+CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS it is 328 bytes and 200 VFs, and
+with ndo_get_vf_guid 336 bytes and 196 VFs. ice supports up to 256 VFs
+per PF (ICE_MAX_SRIOV_VFS), so this is reachable on shipping hardware.
+Requests that set RTEXT_FILTER_SKIP_STATS need 335 VFs, which the 256-VF
+limit puts out of reach, so plain "ip link show" is fine today while
+"ip -s link show" is not.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f43aa5dbbaea/disk-94515f3a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d34e80893dbb/vmlinux-94515f3a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/62b4a6d766f6/bzImage-94515f3a.xz
+On CONFIG_DEBUG_NET kernels nla_nest_end() now also splats via
+DEBUG_NET_WARN_ON_ONCE(), added along with nla_nest_end_safe() in commit
+1346586a9ac9 ("netlink: add a nla_nest_end_safe() helper").
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ef8d17bae14efb960935@syzkaller.appspotmail.com
+Using nla_nest_end_safe() here would not help: a nest that does not fit
+in a u16 will not fit in a retried skb either, so returning -EMSGSIZE
+would turn "ip link show" on such a device into a hard failure. Bound
+the nest in the writer instead, as suggested when this was last
+discussed: drop the VF that would push it past U16_MAX and end the list
+there. Userspace sees IFLA_NUM_VF unchanged and a shorter
+IFLA_VFINFO_LIST, and everything after the nest stays parsable. An empty
+nest is already emitted for a PF with no VFs, so a list shorter than
+IFLA_NUM_VF is not a new encoding.
 
-============================================
-WARNING: possible recursive locking detected
-syzkaller #0 Not tainted
---------------------------------------------
-syz-executor/5768 is trying to acquire lock:
-ffff88807d7f7038 (rhashtable_bucket){-.-.}-{0:0}, at: rht_lock+0x8b/0x180 include/linux/rhashtable.h:331
+The other large nests in rtnl_fill_ifinfo() were audited and cannot
+overflow: IFLA_AF_SPEC is bounded by a handful of address families at
+about a kilobyte each, and IFLA_VF_PORTS would need more than 560 VFs.
 
-but task is already holding lock:
-ffff88802cc48038 (rhashtable_bucket){-.-.}-{0:0}, at: rht_lock+0x8b/0x180 include/linux/rhashtable.h:331
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(rhashtable_bucket);
-  lock(rhashtable_bucket);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-5 locks held by syz-executor/5768:
- #0: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: __rhashtable_insert_fast include/linux/rhashtable.h:774 [inline]
- #0: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rhashtable_insert_fast include/linux/rhashtable.h:887 [inline]
- #0: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: pidfs_add_pid+0x169/0xc50 fs/pidfs.c:178
- #1: ffff88802cc48038 (rhashtable_bucket){-.-.}-{0:0}, at: rht_lock+0x8b/0x180 include/linux/rhashtable.h:331
- #2: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #2: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #2: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: trace_call_bpf+0xb6/0xb80 kernel/trace/bpf_trace.c:-1
- #3: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #3: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #3: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: class_rcu_constructor include/linux/rcupdate.h:1183 [inline]
- #3: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rhtab_map_delete_elem+0x21/0x190 kernel/bpf/hashtab.c:2979
- #4: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #4: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #4: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: __rhashtable_remove_fast include/linux/rhashtable.h:1137 [inline]
- #4: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rhashtable_remove_fast include/linux/rhashtable.h:1175 [inline]
- #4: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rhtab_delete_elem+0x15c/0x1b30 kernel/bpf/hashtab.c:-1
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5768 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
- check_deadlock kernel/locking/lockdep.c:3093 [inline]
- validate_chain kernel/locking/lockdep.c:3895 [inline]
- __lock_acquire+0x24df/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
- rht_lock+0xa3/0x180 include/linux/rhashtable.h:331
- __rhashtable_remove_fast_one include/linux/rhashtable.h:1065 [inline]
- __rhashtable_remove_fast include/linux/rhashtable.h:1146 [inline]
- rhashtable_remove_fast include/linux/rhashtable.h:1175 [inline]
- rhtab_delete_elem+0x404/0x1b30 kernel/bpf/hashtab.c:2954
- rhtab_map_delete_elem+0xe2/0x190 kernel/bpf/hashtab.c:2985
- bpf_prog_a4f1e23443ac9f8e+0x4e/0x56
- bpf_dispatcher_nop_func include/linux/bpf.h:1454 [inline]
- __bpf_prog_run include/linux/filter.h:724 [inline]
- bpf_prog_run include/linux/filter.h:731 [inline]
- bpf_prog_run_array include/linux/bpf.h:2597 [inline]
- trace_call_bpf+0x3f0/0xb80 kernel/trace/bpf_trace.c:147
- perf_trace_run_bpf_submit+0x78/0x170 kernel/events/core.c:11398
- do_perf_trace_lock include/trace/events/lock.h:49 [inline]
- perf_trace_lock+0x32d/0x410 include/trace/events/lock.h:49
- __do_trace_lock_release include/trace/events/lock.h:68 [inline]
- trace_lock_release include/trace/events/lock.h:68 [inline]
- lock_release+0x38e/0x3c0 kernel/locking/lockdep.c:5879
- rht_assign_unlock include/linux/rhashtable.h:431 [inline]
- __rhashtable_insert_fast include/linux/rhashtable.h:850 [inline]
- rhashtable_insert_fast include/linux/rhashtable.h:887 [inline]
- pidfs_add_pid+0x650/0xc50 fs/pidfs.c:178
- alloc_pid+0xe7a/0x1310 kernel/pid.c:338
- copy_process+0x20ea/0x4390 kernel/fork.c:2305
- kernel_clone+0x2d7/0x940 kernel/fork.c:2748
- __do_sys_clone kernel/fork.c:2889 [inline]
- __se_sys_clone kernel/fork.c:2873 [inline]
- __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2873
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f703d7c6912
-Code: 89 e7 e8 71 8b f7 ff 45 31 c0 31 d2 31 f6 64 48 8b 04 25 10 00 00 00 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 66 89 c5 85 c0 75 3b 64 48 8b 04 25 10 00 00
-RSP: 002b:00007ffe5db74e40 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-RAX: ffffffffffffffda RBX: 00007ffe5db74e40 RCX: 00007f703d7c6912
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-RBP: 00007ffe5db74fcc R08: 0000000000000000 R09: 0000000000000000
-R10: 000055556f65e7d0 R11: 0000000000000246 R12: 0000000000000001
-R13: 00000000000927c0 R14: 0000000000025e7d R15: 00007ffe5db75020
- </TASK>
-
-
+Fixes: c02db8c6290b ("rtnetlink: make SR-IOV VF interface symmetric")
+Reported-by: Jacob Keller <jacob.e.keller@intel.com>
+Closes: https://lore.kernel.org/netdev/16b289f6-b025-5dd3-443d-92d4c167e79c@intel.com/
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/core/rtnetlink.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 12aa3aa1688b1..bd1d65dcf42fd 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1687,10 +1687,22 @@ static noinline_for_stack int rtnl_fill_vf(struct sk_buff *skb,
+ 		return -EMSGSIZE;
+ 
+ 	for (i = 0; i < num_vfs; i++) {
++		unsigned char *mark = skb_tail_pointer(skb);
++
+ 		if (rtnl_fill_vfinfo(skb, dev, i, ext_filter_mask)) {
+ 			nla_nest_cancel(skb, vfinfo);
+ 			return -EMSGSIZE;
+ 		}
++
++		/* An attribute length is a u16, so the nest cannot describe
++		 * more than U16_MAX bytes. Drop the VF that would overflow it
++		 * and stop: a truncated list keeps the rest of the message
++		 * parsable, whereas a wrapped nest length does not.
++		 */
++		if (skb_tail_pointer(skb) - (unsigned char *)vfinfo > U16_MAX) {
++			nlmsg_trim(skb, mark);
++			break;
++		}
+ 	}
+ 
+ 	nla_nest_end(skb, vfinfo);
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+base-commit: 248951ddc14de84de3910f9b13f51491a8cd91df
+-- 
+2.43.0
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
