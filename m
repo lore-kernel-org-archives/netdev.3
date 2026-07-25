@@ -1,204 +1,121 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B48630C35C
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAE14908B1
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784986046; cv=none; b=llMpzyx3lagT1Qdo5XyagERZhYUGkVWBfZOqjk5KLBhyerBm8wxkx+CvMuAonytH0jyusVorjHzZPtM3x37ytxDnOL2iCGth9OwtektE4d4Zbzvaq2ql/h1Qq0yWtPfYQqmiMWJ4RfhlJGOdI7wgiQEdb/V7cB/iEikNq4GCNSQ=
+	t=1784987188; cv=none; b=AtgyWwwX9bCHhQ7RWBxcK2dyeoQprxZbZXiT2d/kBZqPVM3RJAZSIdkeUWTu1ILvrHlwjsUtz4a3hIWN0N4ytN1G3J+iYoKnJ/dGBocDqTPmgGFu9GK4lccNzISztCIUU3a8EmFWkRvnZG37m4yo+vxfsygi24O6Z2L9RvEFP6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784986046; c=relaxed/simple;
-	bh=ka//KcHbyYQUh2bSJY7Nt4kXw73ZHvokyQ/vwGI/Sds=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6v65XfPhLEz4uOatsMVaksKYy72Uq6YBnwXYQPEEA2MvoULPQvcjbdWnxuLU7zmwM+DXESGN8RITuma1Q3wd4wmQ7DuanOKAJgBgsVbwgOpwok0GYuwhXginv5vXEdNF+zbR//EpNIbRK3gCi+39XZ0Ib0lLjODlBPgeFPwK9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tYYqys1H; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784987188; c=relaxed/simple;
+	bh=56KPPErOAZzICwpNGPxiNV+FjVyrTrel6EQh1LucW9M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pR/lpCnQNBJyjBebHzgt2XGZaXu++LnR5o8FbEJ2ArtK7eL3W3TxiARvZeM6MonHvdZAyoRHWgC7Qkdue4Z883/4n/xsufzfL4Ek6wEtpvj+k/EZLN7rtzcCJ5dS8UyDX2LvQggtsqKlIYOnN3M8fx/TDh6weFhGgeudMCt2dVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDIUIkjx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tYYqys1H"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784986039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=20vkqGm/nP+8NBvcX1R/kUQUl8YlGe7JJv6AylUO3fo=;
-	b=tYYqys1HyBifdzgMfzBqTDSlqd/fVN/6LimaQ4PtG46Aiw2ouwwb8coWadxbpCOFSeXHPx
-	ibvLvN5nGPnEHJZBFWMeGxbidYGuNcDFB593tNpCyJgWaeuafjWA0gsAhhE/PzKwESUJge
-	TSaNgk/HiAh0y6uBLokxfwai3DXu+RM=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Varun R Mallya <varunrmallya@gmail.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Viktor Malik <vmalik@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH bpf-next v2 2/2] selftests/bpf: Verify rejection of sleepable tracing prog
-Date: Sat, 25 Jul 2026 21:26:24 +0800
-Message-ID: <20260725132624.78373-3-leon.hwang@linux.dev>
-In-Reply-To: <20260725132624.78373-1-leon.hwang@linux.dev>
-References: <20260725132624.78373-1-leon.hwang@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDIUIkjx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00B91F000E9;
+	Sat, 25 Jul 2026 13:46:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784987186;
+	bh=sNMSN7jUAdSH9uPg1mWxmSSUoAJ+glyp27jMF3XKnlk=;
+	h=From:Date:Subject:To:Cc;
+	b=KDIUIkjxX4ojKhgEkSXmIMxwB+nYG68w5oGJT1TBlVPjXUvbxhaiIfxw8xvz7zE0c
+	 qAs3YSsV/eEYULD0DrwnzcOdWET5IXwctzi9NxiBWcWq3FuZaEJn12hqXImVWPvi9g
+	 F6fkSUI0kQwz3yfhVOmjDqubVYdTMjtm6CUAPaptaItjrynFC9wcrz9N97nxKZXBVu
+	 ctX/TiqQUHZGzv7sPRTklGPUYBLjbi9e0+WQ2BmfNTDs3T35vZSC2auLjTL8K0G1A7
+	 Lm0zeG+/pp/BzdPZz26hEb+5CVRlEFKaAPY/hss5ZLgLz88pFp7C06xv8IX87vVfhX
+	 rVF68JawfEfrQ==
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 25 Jul 2026 15:46:21 +0200
+Subject: [PATCH net-next v3] net: dsa: realtek: rtl8366rb: Fix up port
+ isolation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260725-rtl8366rb-fixes-v3-1-57557b39aaa5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ7CIBBFr9KwFgMDqa0r72FcAJ22qKEGsKlpe
+ ncp3Wg0s/r589+bSUBvMZBjMROPow12cCmIXUFMr1yH1DYpE2BQsgMD6uO9EmXpNW3thIGqWrS
+ V4GhASZJWD4+5SKMzcRipwymSy9aEp76iiStw/e1tiIN/ZfnI82LzcP7jGTlNB7oGzjQzBk839
+ A7v+8F3GT/CBwD+ACABQMpS6oZjq+QXYFmWN0ybyBkMAQAA
+X-Change-ID: 20260702-rtl8366rb-fixes-a93f831ec2a4
+To: =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.15.2
 
-Add a test to verify that the sleepable tracing prog cannot attach to a
-'__x64_sys' prefix prog target.
+Sashiko reports that we incorrectly disable isolation in the setup
+loop while what we want to do is to enable it.
 
-When CONFIG_FUNCTION_ERROR_INJECTION is disabled, without the fix, the
-test would trigger the BUG:
+Enable it by setting all isolation bits in the isolation mask
+for all ports in the switch.
 
-[    3.460756] BUG: sleeping function called from invalid context at kernel/bpf/trampoline.c:1324
+Fix up the comments so it is clear what is going on, including a
+missing word in the helper function.
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://sashiko.dev/#/patchset/20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5%40kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- .../selftests/bpf/prog_tests/fexit_bpf2bpf.c  | 57 +++++++++++++++++++
- .../selftests/bpf/progs/fentry_sleepable.c    | 19 +++++++
- tools/testing/selftests/bpf/progs/xdp_dummy.c |  6 ++
- 3 files changed, 82 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/progs/fentry_sleepable.c
+Changes in v3:
+- Fixup the erroneous shifted bitmask (I did not have my coffee...)
+- Use GENMASK(ds->num_ports - 1, 0) top properly create a bitmask of
+  all the ports, and isolate every port from every port.
+- Link to v2: https://patch.msgid.link/20260721-rtl8366rb-fixes-v2-1-24464bd1efa4@kernel.org
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fexit_bpf2bpf.c b/tools/testing/selftests/bpf/prog_tests/fexit_bpf2bpf.c
-index 4a87d7163c8c..2523c07a16c6 100644
---- a/tools/testing/selftests/bpf/prog_tests/fexit_bpf2bpf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fexit_bpf2bpf.c
-@@ -5,6 +5,7 @@
- #include <bpf/btf.h>
- #include "bind4_prog.skel.h"
- #include "freplace_progmap.skel.h"
-+#include "fentry_sleepable.skel.h"
- #include "xdp_dummy.skel.h"
- 
- typedef int (*test_cb)(struct bpf_object *obj);
-@@ -576,6 +577,60 @@ static void test_func_replace_progmap(void)
- 	freplace_progmap__destroy(skel);
- }
- 
-+static void test_sleepable_fentry_to_xdp(void)
-+{
-+	struct fentry_sleepable *skel = NULL;
-+	struct xdp_dummy *skel_xdp = NULL;
-+	int ifindex, prog_fd, err;
-+	char buff[64] = {};
-+
-+#ifndef __x86_64__
-+	test__skip();
-+	return;
-+#endif
-+
-+	ifindex = if_nametoindex("lo");
-+	if (!ASSERT_GT(ifindex, 0, "if_nametoindex"))
-+		return;
-+
-+	skel_xdp = xdp_dummy__open_and_load();
-+	if (!ASSERT_OK_PTR(skel_xdp, "xdp_dummy__open_and_load"))
-+		return;
-+
-+	skel = fentry_sleepable__open();
-+	if (!ASSERT_OK_PTR(skel, "fentry_sleepable__open"))
-+		goto out;
-+
-+	skel->bss->user_ptr = buff;
-+
-+	prog_fd = bpf_program__fd(skel_xdp->progs.__x64_sys_nop);
-+	err = bpf_program__set_attach_target(skel->progs.fentry_xdp, prog_fd, "__x64_sys_nop");
-+	if (!ASSERT_OK(err, "bpf_program__set_attach_target"))
-+		goto out;
-+
-+	err = fentry_sleepable__load(skel);
-+	ASSERT_ERR(err, "fentry_sleepable__load");
-+	if (err)
-+		goto out;
-+
-+	skel->links.fentry_xdp = bpf_program__attach_trace(skel->progs.fentry_xdp);
-+	if (!ASSERT_OK_PTR(skel->links.fentry_xdp, "bpf_program__attach_trace"))
-+		goto out;
-+
-+	skel_xdp->links.__x64_sys_nop = bpf_program__attach_xdp(skel_xdp->progs.__x64_sys_nop,
-+								ifindex);
-+	if (!ASSERT_OK_PTR(skel_xdp->links.__x64_sys_nop, "bpf_program__attach_xdp"))
-+		goto out;
-+
-+	err = system("ping -q -c 1 -W 1 127.0.0.1 > /dev/null");
-+	ASSERT_OK(err, "ping");
-+	ASSERT_ERR(skel->bss->retval, "retval");
-+
-+out:
-+	fentry_sleepable__destroy(skel);
-+	xdp_dummy__destroy(skel_xdp);
-+}
-+
- /* NOTE: affect other tests, must run in serial mode */
- void serial_test_fexit_bpf2bpf(void)
+Changes in v2:
+- Properly fix the issue by setting all isolation bits to 1.
+- Link to v1: https://patch.msgid.link/20260711-rtl8366rb-fixes-v1-1-12b9210b0cce@kernel.org
+---
+ drivers/net/dsa/realtek/rtl8366rb.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+index d2fa8ff6a5d0..61c30d2c6802 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb.c
++++ b/drivers/net/dsa/realtek/rtl8366rb.c
+@@ -794,8 +794,8 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
+ static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int port,
+ 					u32 mask)
  {
-@@ -607,4 +662,6 @@ void serial_test_fexit_bpf2bpf(void)
- 		test_func_replace_int_with_void();
- 	if (test__start_subtest("freplace_void"))
- 		test_func_replace_void();
-+	if (test__start_subtest("sleepable_fentry_to_xdp"))
-+		test_sleepable_fentry_to_xdp();
- }
-diff --git a/tools/testing/selftests/bpf/progs/fentry_sleepable.c b/tools/testing/selftests/bpf/progs/fentry_sleepable.c
-new file mode 100644
-index 000000000000..44b938f485e2
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/fentry_sleepable.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char LICENSE[] SEC("license") = "GPL";
-+
-+void *user_ptr;
-+int retval;
-+
-+SEC("fentry.s")
-+int BPF_PROG(fentry_xdp)
-+{
-+	char buff[64];
-+
-+	retval = bpf_copy_from_user(buff, sizeof(buff), user_ptr);
-+	return 0;
-+}
-+
-diff --git a/tools/testing/selftests/bpf/progs/xdp_dummy.c b/tools/testing/selftests/bpf/progs/xdp_dummy.c
-index d988b2e0cee8..5f1e0771021d 100644
---- a/tools/testing/selftests/bpf/progs/xdp_dummy.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_dummy.c
-@@ -10,4 +10,10 @@ int xdp_dummy_prog(struct xdp_md *ctx)
- 	return XDP_PASS;
- }
+-	/* Bit 0 enables isolation so set this if we enable isolation
+-	 * any of the ports an clear it if we disable on all of them.
++	/* Bit 0 enables isolation so set this if we enable isolation on
++	 * any of the ports and clear it if we disable on all of them.
+ 	 */
+ 	if (mask)
+ 		mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
+@@ -951,7 +951,8 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
+ 		rtl8366rb_port_stp_state_set(ds, dp->index, BR_STATE_DISABLED);
  
-+SEC("xdp")
-+int __x64_sys_nop(struct xdp_md *ctx)
-+{
-+	return XDP_PASS;
-+}
-+
- char _license[] SEC("license") = "GPL";
--- 
-2.55.0
+ 		/* Start with all ports completely isolated */
+-		ret = rtl8366rb_port_set_isolation(priv, dp->index, 0);
++		ret = rtl8366rb_port_set_isolation(priv, dp->index,
++						   GENMASK(ds->num_ports - 1, 0));
+ 		if (ret)
+ 			return ret;
+ 
+@@ -974,7 +975,7 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
+ 		if (!dsa_port_is_user(dp))
+ 			continue;
+ 
+-		/* Forward only to the CPU */
++		/* Forward only to the CPU, isolate from all other ports */
+ 		ret = rtl8366rb_port_set_isolation(priv, dp->index, upports_mask);
+ 		if (ret)
+ 			return ret;
+
+---
+base-commit: 23dad2d088dfc82cae1f5a936f8ff7ffebb38dd9
+change-id: 20260702-rtl8366rb-fixes-a93f831ec2a4
+
+Best regards,
+--  
+Linus Walleij <linusw@kernel.org>
 
