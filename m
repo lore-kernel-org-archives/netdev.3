@@ -1,189 +1,143 @@
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDFC1E32D6
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 03:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4143D38F926;
+	Sat, 25 Jul 2026 03:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784950972; cv=none; b=lEXZwK6R+SCiVKPvEuIMeFRNM4XGEY6Y1zflydFwohtRBCrKplSzNQFWIvhnvoYGzEBowxiaje3si6MIWxbI8HOk3ElcikB/A8ZqirCJRFHJk5bIYFtHctbdUHRJHKl+ofOcMJuNQUN9yLyQeugdZMutKYqMFRuQxR5VgTrwoyM=
+	t=1784951931; cv=none; b=nxGMELjGZQH2TOwY1JvkeloUUtgxpBjZjeOaTHwNSyYwn6/eSYFwAFMg5YWDNIejDnyamj7iVX5Yxh3ob3efdNiZ33Lga3w+X7td/2VDaBpxOZL59IHKO4f9lfK8SMCEzcgiI8z4Px3VfyMouZiVx+MYrDFJQweNuBW+wavu0uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784950972; c=relaxed/simple;
-	bh=qdCRc3nJ771x3VQVRjLBimIKuM3JuBDSq8fvXhd8+lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juNt0PC+JIF6XEKkQ4T4MmT7SFtup2MJfvgvGlfLW+VQozOFfIUq0Y4kSRIv1m6C/Hfzhd4NygFz2NHoiZ6cZ9ut1KzqRNWyoubDs4Wre8dAShR1L0qHMtwUZutvCzKlh2MOKvl5lZuzaf4jdG1wa/0RgVYio8oGzxhTqxcnQbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MggFcivc; arc=none smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784951931; c=relaxed/simple;
+	bh=BkweISXzWt/XR0ZRCwhwzNasN3vVRWoEUdtl0g5e9lo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JE082PTZiJ3YfpQLlB2DjTS9R20T8WzOlZDmCZr2R9x7GV4JV4bJHGfIGEgbLT3jU5Ioqji0kIGxPub4YtQQksKvC8biQfc/tHxSxrs9WU+uA5WZYhfuH/2NbJHMYZuiGdAK+Ta0VUvyINJlPpTbhLqKujxwBTRPBxE878K9eIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NN76u4n3; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MggFcivc"
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-668296d0ff3so1070561d50.0
-        for <netdev@vger.kernel.org>; Fri, 24 Jul 2026 20:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784950969; x=1785555769; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1D+KDOADjt6pawjgxVvSFGUpDqaxbR+onKq6lqxxAIs=;
-        b=MggFcivcs7UIMn2oCbsyBCnkC/3LvLjriyxTo/aSy3epy75U+FKbEN7YxJ4TpxymSm
-         G0enEL6dOAB6VHX4Jytt+OnlKnACYWERlZArBNRlms3EpIxw/XryRl+/24xlxWPYLjmN
-         Mn4wQ3c83hvNu2deF0PhQ0MCcYBe+Mp3+8ypJ4YY2GEqj4n6XjbGQhHITgwf9Ybbdq9J
-         xotbWH1ctVpJdDYnpK1baCOC4jVf9fzyCdhp9BpJGJCuaS7wHDPjwt+z+6mztzTQBSBS
-         +fxHLZOe4MKHH3PaUB3ZZV6NRyyJGwG4RoqXXVI4j7Q+KuKrFtNUtfaBmq7hlVGHrBfA
-         CF4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784950969; x=1785555769;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1D+KDOADjt6pawjgxVvSFGUpDqaxbR+onKq6lqxxAIs=;
-        b=CdE9B8dzFEjQhpbDUZlfxM1nDT4y64okaCHfRPPmdE4jlDv4kG2nXr8rDQo2H4AX9b
-         YdJgAvL01aziOOI4DIJysKuaFFVtFcFOjHM6qGAWwXH9Mc2U26aDnMzmP1poBUqAIi2Y
-         Bv1uffLBkEc9Sy7zva+qY/aJHLFIku9sNNpGMFogX5lLJipWKq/XRcC/pseLolLN9ifW
-         bDueMhUxrsYOVKzVhx0SbLooBNG1DYmbtav5dG0RwcBBBGgm1L34PMJP9F08iaUL1xRA
-         DjZVzmUH4K63UReLzJzfdJPNZVmUO38WFRMW6+rJQbKVEZnmyessY9LTHapKt5MWcNgL
-         HzOg==
-X-Gm-Message-State: AOJu0YwDaPdGMxQkIfysutYL8Ou/HFjUlcTP86m2YGNb4yNcWqqi0OqP
-	amDT6HjWR4X1azZU9wRkEW5l/ZKdoBnRPv7UxXUuiT+mKwPevNb15Vwo
-X-Gm-Gg: AR+sD11CVMLDhOxd6kK+GC5knBwqNkiYuhJowCx2UA+J/5A6Ec7sBMCqGjKgE+O+ChE
-	dr1R1dcSCFdvdKE3PJlbdFcyZyuKOfntATry9om2VUb2bekgrZDTCdg572sv4ZEef95FaPhXobe
-	HliF08ibXy690KNyDkh7SkLvOFbO5Q9kh9JAb4E6lPR3pVdtrYUj3PjW+7kkoqvCXHMj9njJz72
-	EHf/JMEmwRfYdz0B/Ju5t2JqVrUQm/enLQuS+v+GRuSKyW9KpVbWG48fcT3ZxG+Z6ZQojUeSduO
-	FzIXDwcSyC2I72Uvce6ioYU14HwSbOZ+O+DMDsbwh41Ik/Muw0IME2lw3bHxOnT2oxGqMYjzx8g
-	/r9otXGOIEWqAnrquXkPWuiZgrTnVSn+4w/zVQLKx2nPcmhQqOZpczE9fErAunxlqNHoiNrvyhw
-	/UfrKh8um07fNtPo5s+nHbhgW7e3HOwDNUFBBmTCv12DxCN9CXOdXLSGJF4N201M2F1S3IMbKCz
-	eLubR9++N09cg==
-X-Received: by 2002:a53:ca8c:0:b0:667:9481:5b37 with SMTP id 956f58d0204a3-668c7a3c507mr214817d50.2.1784950968851;
-        Fri, 24 Jul 2026 20:42:48 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.f7a5e5c3-cab1-4810-bdbb-207cdd06de9e.globalsecureaccess.local ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f65770059sm8525917b3.7.2026.07.24.20.42.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 20:42:48 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	sdf@fomichev.me,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net v2] xsk: fix NULL pointer dereference in __xsk_rcv()
-Date: Fri, 24 Jul 2026 23:42:46 -0400
-Message-ID: <20260725034246.192091-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NN76u4n3"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66P2v1ep3680027;
+	Sat, 25 Jul 2026 03:58:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BkweIS
+	XzWt/XR0ZRCwhwzNasN3vVRWoEUdtl0g5e9lo=; b=NN76u4n3iQ2MxlYHM3mtNJ
+	4X1V1L6m2/T5j5Go7t01ldM8ce7olWNDO2pUMFSqZC9AhsmyQcCYQNfvNFkPDsn2
+	rvd2bEPwcnrVoDwZYKcaxhpPziul8ZbC1qZhTLZj15PwyYgwz2fEKnC/puw3G84G
+	23OjsaMSzjWckuaTcJOX1c9jpMtiYstZL51H+YMQGAcOMFVxyKgWwcgCq8DIJ3GZ
+	E6+UtIWMWwbII9MgIB7ESzNDHml8KpgY1eayabQ7QfYqi7bOoyCorJLC0ps4hbQX
+	x9FIf6sXPSzvd5RFLSZvtNtM0uOw7/J8eys27Z94KJWaVULEq3DQULOSY26bju/Q
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmmst04tj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 03:58:42 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66P3uWZn008817;
+	Sat, 25 Jul 2026 03:58:42 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fmn1u03gf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 03:58:41 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66P3wbHR32964898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 25 Jul 2026 03:58:37 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0FC7A2019C;
+	Sat, 25 Jul 2026 03:39:14 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 979E620196;
+	Sat, 25 Jul 2026 03:39:13 +0000 (GMT)
+Received: from li-fa2166e9-1f7d-4f1a-8ca5-7ccf0f022c25.ibm.com (unknown [9.111.80.37])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 25 Jul 2026 03:39:13 +0000 (GMT)
+Message-ID: <43db5fe53663619d199b3adf0fc025e7526cf819.camel@linux.ibm.com>
+Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
+ sends
+From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
+        edumazet@google.com, horms@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, svens@linux.ibm.com,
+        brueckner@linux.ibm.com
+Date: Sat, 25 Jul 2026 05:39:13 +0200
+In-Reply-To: <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
+References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+	 <20260723092630.1a1c9b4e@kernel.org>
+	 <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=COgamxrD c=1 sm=1 tr=0 ts=6a643473 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=BCt8zh-F8LzyvZBcyEsA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI1MDAzMSBTYWx0ZWRfXyQlSldB32CKZ
+ phrBJjdnfZg+rQ5njd7vUosq+g4kuA0mYR4LhmPDnhwY9PoEMfQ1ftn+34yF01kZTL/AX942VEA
+ NomoFwzWPLPpjvSgWHNLNwp4gRVeI1E=
+X-Proofpoint-ORIG-GUID: E5JfK3lFNsSFJENtoVsdd6aYLhe4Hgbp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI1MDAzMSBTYWx0ZWRfX1TGv0i/1tW0k
+ eRroz+Sh6XvI35zx7Pgfs/bTpWMAyetG3bPBMSnT6kGjNlZnPMaiqNERQ10TKwaF0cQrO4mlQ4y
+ 6WGP34MdvTd/IVhtu6dFalAEgTL2yEhfjVhNTTwEoR2aGmzEgxaMveeXDtlgtRJv2eLDS6WJj9n
+ 2KgSxjePncmSWXPq4wLrzOJFFfy6k8KRoDWDYxBsOyA36O5W07QKSeUdEvpQOAISEBe5a+as0sB
+ 1KwE3c6ko86pUyuu+oEXjqaMy3WJDNUPYUcX6JjPNnxJW5g4R0dSeJ0l7vuegbpB9yjJ0vOCNLf
+ iUcwUCUYvvSZKY2V7DzRkknj17okNep455SHodLbvaCFUWQhJ8yXgFz+iv74t5N4ePPN/3Azs5V
+ /G3VOtSJq0y4Lc8/Lb+JoYRZe95YCKEaV3NE9xHBSDBQPqeMJ1lD2egXQYDPA151E5l+y2qR+2Z
+ wxQW8UBdMKlbJxzTmjQ==
+X-Proofpoint-GUID: NmNdKdF6eVaTm3s0xNKpW-os8Htt9Vn1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-25_01,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 malwarescore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607250031
 
-In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
-loop without checking its return value. xsk_buff_can_alloc() only
-counts fill queue entries without validating their addresses, so it
-can succeed while xsk_buff_alloc() rejects all remaining entries and
-returns NULL.
+On Fri, 2026-07-24 at 09:40 +0200, Paolo Abeni wrote:
+> On 7/23/26 6:26 PM, Jakub Kicinski wrote:
+> > On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner
+> > wrote:
+> > > When a signal interrupts a blocking send, tls_tx_records() treats
+> > > the
+> > > resulting -ERESTARTSYS as a transmission failure and marks the
+> > > socket
+> > > errored via tls_err_abort() with the raw error code. Later
+> > > syscalls
+> > > return the kernel-internal errno 512 (ERESTARTSYS) to userspace,
+> > > as the
+> > > signal it stems from is no longer pending during syscall exit and
+> > > thus
+> > > never translated.
+> >=20
+> > Can we just add ERESTARTSYS handling? I never heard of the other
+> > codes
+> > you're checking TBH, can they actually surface?
+>=20
+> FTR, I think only EAGAIN and ERESTARTSYS can be observed in the
+> network
+> stack, and the latter only after sock_intr_errno() translation, i.e.
+> on
+> sendmsg()/recvmsg() return path.
+>=20
+> I would not add additional error code handling, until we have somee
+> proof
+> that it's needed.
+>=20
+> /P
+>=20
 
-  Oops: general protection fault, probably for non-canonical address
-   0xdffffc0000000000
-  KASAN: null-ptr-deref in range
-   [0x0000000000000000-0x0000000000000007]
-  RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
-  Call Trace:
-   xsk_generic_rcv+0x26d/0x5f0
-   xdp_do_generic_redirect+0x3c5/0xcf0
-   do_xdp_generic+0x92f/0xe70
-   __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
-
-Fix this with a two-stage transaction. First allocate and stage all
-buffers required for the packet, recycling all staged buffers with
-xsk_buff_free() if any allocation fails. Only after this stage
-succeeds, copy the data, reserve the RX descriptors, and release the
-buffers in an error-free loop.
-
-Fixes: 804627751b42 ("xsk: add support for AF_XDP multi-buffer on Rx path")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
----
-v2:
- - Allocate all packet buffers before reserving RX descriptors.
- - Recycle partially allocated buffers instead of only cancelling the
-  RX producer reservations.
-Link: https://lore.kernel.org/netdev/20260724164719.99563-1-blbllhy@gmail.com
-
- net/xdp/xsk.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
-
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index f906d51b6699..383fc2b1de48 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -298,9 +298,11 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
- 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
- 	u32 from_len, meta_len, rem, num_desc;
--	struct xdp_buff_xsk *xskb;
-+	struct xdp_buff_xsk *xskb, *tmp;
- 	struct xdp_buff *xsk_xdp;
-+	LIST_HEAD(xsk_buffs);
- 	skb_frag_t *frag;
-+	u32 i;
- 
- 	from_len = xdp->data_end - copy_from;
- 	meta_len = xdp->data - copy_from;
-@@ -343,23 +345,44 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 		frag =  &sinfo->frags[0];
- 	}
- 
-+	for (i = 0; i < num_desc; i++) {
-+		xsk_xdp = xsk_buff_alloc(xs->pool);
-+		if (!xsk_xdp)
-+			goto err_alloc;
-+
-+		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
-+		if (unlikely(!list_empty(&xskb->list_node)))
-+			goto err_alloc;
-+		list_add_tail(&xskb->list_node, &xsk_buffs);
-+	}
-+
- 	do {
- 		u32 to_len = frame_size + meta_len;
- 		u32 copied;
- 
--		xsk_xdp = xsk_buff_alloc(xs->pool);
-+		xskb = list_first_entry(&xsk_buffs, struct xdp_buff_xsk,
-+					list_node);
-+		list_del_init(&xskb->list_node);
-+		xsk_xdp = &xskb->xdp;
- 		copy_to = xsk_xdp->data - meta_len;
- 
- 		copied = xsk_copy_xdp(copy_to, &copy_from, to_len, &from_len, &frag, rem);
- 		rem -= copied;
- 
--		xskb = container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
- 		__xsk_rcv_zc_safe(xs, xskb, copied - meta_len,
- 				  rem ? XDP_PKT_CONTD : 0);
- 		meta_len = 0;
- 	} while (rem);
- 
- 	return 0;
-+
-+err_alloc:
-+	list_for_each_entry_safe(xskb, tmp, &xsk_buffs, list_node) {
-+		list_del_init(&xskb->list_node);
-+		xsk_buff_free(&xskb->xdp);
-+	}
-+	xs->rx_dropped++;
-+	return -ENOMEM;
- }
- 
- static bool xsk_tx_writeable(struct xdp_sock *xs)
--- 
-2.53.0
-
+Also you may just have forgotten to mention it, but EINTR can also be
+returned from sock_intr_errno(), so at the very least the error codes
+EAGAIN, EINTR, ERESTARTSYS should be treated as non-fatal.
