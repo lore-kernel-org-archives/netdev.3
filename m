@@ -1,111 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816D626F29B;
-	Sat, 25 Jul 2026 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B243F54B7;
+	Sat, 25 Jul 2026 16:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784996724; cv=none; b=UJuKxnMiYd54siuOYteFuLO1Z4CxoQO6tsSVVtkKbQR2uYUA/6FK7pSW6omkgfmSG4xsiAEvqXDaPYM+uwWZgEe/2f7StQt6weigjbGbpd/BA3XSCyxEij08b7bQoMR9BtmEjiFpu8cMZoN+ZEDWt5qgxvx+cHCyydf4GcIgYac=
+	t=1784997181; cv=none; b=bGIoUUf1ia1u6mo6r94AOtxwvR5JP02y0qMeZWotwn03bh5my5k36mr1e5jWypmI9CvnB4wPfAMia8LIfrWUeLh8jb7Acym9e2NwcbpC1QNxa859VDqVJIkj4IYH+EDqQhR/6dFO6EJ/9JuNA338y8GmWP5VCSlKtS2ACFluktM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784996724; c=relaxed/simple;
-	bh=VjnbyLl6+mCNptBEq1pLvH0PL6yVvhLMD6ZF6rr3xNw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nBcB+sNdkL3CAD1HFWnEhgoW55zmHo2S32Id1MAmxMDbFHZgAiPK1swjODSSdL64yy6YLtRBMsCphcxw0KTkPWALI+RVHQ5TpvcAHHFywHAeyuqrR3Y4Eaff8ptej+zvHtCSTdmT9QTWdkzfJOoU8YOJXjMPx3UYzl6VKPVk3gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKLk3CQc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784997181; c=relaxed/simple;
+	bh=TWGrXgrwvlkEikw+RycgLEeLkPUqHX1YZtcAc4K7mcU=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=bw/jXymG6RmpQyouOEBD/kgxprtStodXRFJ7AQytRaeoXRZGmW/GMxEun/xTqVEctfNDppx3qfWCneX9Cl749ZOLOk0NcCtf3n5giC7tfwGrkhKwRrSWSC2LWoCpAJcMNPudkK3WUrH7u1F7Uyk6hIm/PrhuNxlhXUseZNcLKk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmZV48FP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKLk3CQc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54181F000E9;
-	Sat, 25 Jul 2026 16:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmZV48FP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B7B1F000E9;
+	Sat, 25 Jul 2026 16:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784996723;
-	bh=/p3nfC6w4BBk5XxtPOrk4Cuk2W7sbr/zK6K4VD82zg8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aKLk3CQcc9Demj3dJnyNVE1pEU5Pkvg7x+I9T4DjZzSwrnBdoFUYmOflHG5gJCq/7
-	 F6f9p51jC1bRJ/4UPXsc1bD8DLcm8QEQx9NuD90LTquKE1iLookHx81xsSehLKshKY
-	 pn/nIml5mwUU6tegbIRV2BS1WYUJfIaf8elmLxpdMBMOWcqbku9PSZL+MuA0b+CYZe
-	 YNA1XZQu5Fm3Z7NnfgOa5lMr5Nj+EL/uCn4xMFIjTygubHEI6RzqyC5NIRYsHG8Wwv
-	 csLo2pU33l/Rrm/mpMLCoVMY0KQGo/waA6v41vCg9P53c3mvnJgKaYMO7Qgnt3Lb8V
-	 pYCPac2PRTDJw==
-Message-ID: <e770554d9ca05784abb3c9d1ccd378295f46fa08.camel@kernel.org>
-Subject: Re: [PATCH net-next 0/3] net/rds: Bug fix ports
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Cc: jhubbard@nvidia.com, leon@kernel.org
-Date: Sat, 25 Jul 2026 09:25:21 -0700
-In-Reply-To: <20260725082939.2546624-1-achender@kernel.org>
-References: <20260725082939.2546624-1-achender@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=k20260515; t=1784997178;
+	bh=MlnyT94NQQfH6vjbnVjWKHI4vG283Xpjos0OX9j3D3g=;
+	h=From:To:In-Reply-To:References:Subject:Date;
+	b=RmZV48FPRaYK0eXae5LCxMXNUQHdbJBZowsePekD34TEQULLVT3CZuT+M//TVAyqV
+	 PvedvjJqypK4uL0WSqY+anrHHGtI61IJZCudZLZDTZJ1ggAU3MDXNRQTMVlgpFRd9B
+	 r92y/rxXLRNHzu7z1DkndK1U63HUPIrAsr0w9bC6S1Fq4a09yp2+r6ueI+h4MgOdlT
+	 2qb3S3IyADk4d2+eKE8vfQl1DAAvIM5YKwmHfk24KpFVrRKmn1dkk2l2PN5Ws6fw8+
+	 eGf7Uh8yMRrM92GayqP6N8DMPoYFNN+a3HM4JhNudFXxjEIWrI0x+rSxfKy7SLlqG9
+	 gwv+ze1sNnNRQ==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
+ Tom Lendacky <thomas.lendacky@amd.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Raju Rangoju <Raju.Rangoju@amd.com>, 
+ Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>, 
+ Richard Cochran <richardcochran@gmail.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH 1/2] arm64: dts: amd: seattle: Remove useless clocks
+ DTSI include
+Message-Id: <178499717460.107055.6539795697868368851.b4-ty@b4>
+Date: Sat, 25 Jul 2026 18:32:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 
-On Sat, 2026-07-25 at 01:29 -0700, Allison Henderson wrote:
-> Hi all,
->=20
 
-Apologies, this should have been a v2.  Let me know if folks want the resen=
-d for the book keeping or would rather forgo
-the spam.
+On Mon, 06 Jul 2026 11:35:24 +0200, Krzysztof Kozlowski wrote:
+> The "amd-seattle-clks.dtsi" file is included exactly once, so paste the
+> contents directly in proper DTSI.  No functional impact.
 
-Thank you,
-Allison
+Applied, thanks!
 
-> This is a small set of net/rds bug fixes ported from uek to upstream
-> rds.  I've been working on extending the rds selftest case, but need to
-> stabilize a few more bugs and the first few fall into net with Fixes
-> tags. I decided to leverage fable for this set and I thought the ports we
-> clean and well explained.
->=20
-> [PATCH net 1/3] net/rds: don't use unpin_user_pages_dirty_lock() from ato=
-mic context
->    Avoids potentially sleeping in an atomic context by queueing page dirt=
-ying in a work
->    item, which is then completed in a process context.
->=20
-> [PATCH net 2/3] net/rds: hold the socket while an rds_mr references it
->    Port: commit c4d69e511f3b ("rds: Add proper refcnt when an RDS MR refe=
-rences an RDS Socket")
->    https://github.com/oracle/linux-uek/commit/94549e4732d8
->=20
-> [PATCH net-next 3/3] net/rds: fix rds_message leak in the rds_send_xmit()=
- drop path
->   Port: commit 94549e4732d8 ("net/rds: fix rds_message memleak in rds_sen=
-d_xmit")
->   https://github.com/oracle/linux-uek/commit/94549e4732d8
->=20
-> These were carved out of a larger porting effort, but I'll follow up with=
- a few more
-> targeted for net-net after these land in net.
->=20
-> Question and comments appreciated!=20
->=20
-> Thanks,
-> Allison
->=20
-> Changes since v1:
->   - Patch 1/3: re-written to delay ditying through queued work items
->   - Patch 3/3: fixed check patch nits
->=20
-> Allison Henderson (1):
->   net/rds: don't use unpin_user_pages_dirty_lock() from atomic context
->=20
-> H=C3=A5kon Bugge (1):
->   net/rds: hold the socket while an rds_mr references it
->=20
-> Sharath Srinivasan (1):
->   net/rds: fix rds_message leak in the rds_send_xmit() drop path
->=20
->  net/rds/ib.c      |  7 +++++++
->  net/rds/message.c | 34 ++++++++++++++++++++++++++++++++++
->  net/rds/rdma.c    | 18 ++++++++++++++++--
->  net/rds/rds.h     |  6 ++++++
->  net/rds/send.c    | 18 +++++++++++++++---
->  5 files changed, 78 insertions(+), 5 deletions(-)
->=20
+[1/2] arm64: dts: amd: seattle: Remove useless clocks DTSI include
+      https://git.kernel.org/krzk/linux-dt/c/26b8eb8a98c18b2ee4ea76d99fa2b2a5ccbc1b6c
+[2/2] arm64: dts: amd: seattle: Remove useless xgbe DTSI include
+      https://git.kernel.org/krzk/linux-dt/c/8461050861aeea29138dd25d5fb78c6f643c708c
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzk@kernel.org>
 
