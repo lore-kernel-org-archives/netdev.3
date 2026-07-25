@@ -1,83 +1,57 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B250A17A303
-	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2EB2D23BC;
+	Sat, 25 Jul 2026 23:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785019897; cv=none; b=b9hOd61yQObTQHg86DeNwdfR1Ffnv6OsUPr7sbYu+TNyqkDF0ywOFjhcYkHl0B2CeHDN6JIpB9DZ4qYL+GhI4xqpOcymcO5pthYjVtcH4vdQqILobayBiIvHDPb5brCbUuEOfS6sMcM8wW0SVm/2/6bIUSVESxfIyvIsGiGCpYM=
+	t=1785020967; cv=none; b=rmtOsRHPvJVgX0BCP7mNas72b8oTchAYOsdvV5UrX9VfkJoQxeW4nFvRUEQhR06WqxRHXDmSbq5VSFSoxQx8OSe3d0I6GgjBkpKivNgonS4EjlPS73ixEzlON56p/zMEJng+AKNlRjzbgLnnyAk4U5rQJaRJplFSGUda/2iBc8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785019897; c=relaxed/simple;
-	bh=OTMLoaXNmc0daefahm7Ve/Ya1YVd+Uzup/9wVhoFs/M=;
+	s=arc-20240116; t=1785020967; c=relaxed/simple;
+	bh=RwQMAfhKNwgAo9MbnInWBus6Iltd0UewoV2ojaJ321o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RKg/VrHXNW7bYZvFyxV95ueu6+Pugpa3eLsOI7K4w/0sfy6NQb86aVTIWOxWLFYc1y6FK7mnTRtbj/Usl6Gg8N7sw+XlzcYATKYLZRJGunXqMBYWFLXt9D0hzu6AREFBTIpHHFu0FbWsNkOypKAcNFZDZxoPuj4EqbjZQPXNBlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ugm1IM1g; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cgupUwAIvvZSFPKCWdENnWwAtuTkhBGrUwHwzUMBM8nPCQUO6/otRsp7ByioVukLTQPRPRQY1uTxjY18zQ/p726PIOV+huGqwxbGwhp7C701AJQpd1nangxMRrfsKbNoJZUhQTD+CsDq7y4TIXk67MruHqO1s2DsPlXR0uPTnYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahz92pZj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ugm1IM1g"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38deea72eebso1760038a91.1
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 15:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785019895; x=1785624695; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=e597SzF5n/PM9EkMnGuBBQh4XkUddaPspXC7fYxFtHE=;
-        b=Ugm1IM1g3IdKVSV76YGowyNU5KXZU7ZFTU+lQhnVIQXSw7EF35SrRC5MudtxWAoJc+
-         Cw0JDVe5342OIOYuaWnEyczcucP1a6R1GsJu3kHbYfebgbLGkgF+Fs9rxsEI3j1+Q2Xv
-         BP9xkpI1ZVvfE9lvRHV7zuBv0+nUgWnNIgc/FZhUfNKj5EUylcGi6IRCa0lZxT2m0aIc
-         xWzA8OfJ6O5beLcEHmlLTAqYyS+71aA4pFIeWL0viP5bD3/I+MOUIGD9S3aqxwUti2tK
-         RXYXX0UwetLRTgXdeBDnPnYL6qwsLt9kiKg6FyL5HWjHOW3YOglNxptIohnims3JANrQ
-         w12A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785019895; x=1785624695;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e597SzF5n/PM9EkMnGuBBQh4XkUddaPspXC7fYxFtHE=;
-        b=RpK7GbH+68rNA7hN27/DI9Lt4bekNtPf7yxM4LecJDl+Gm4ew7GwWIiKQB2vtHR68Q
-         hzqge3lk2CYjBoJQxPUg3r9vt6tTUKN26QwCUFIzYHpz80zsPvdcganuUqq1a0U2FR6K
-         u0oYwrV33GBbtG6OgmeyWG6icgOBWHatVQyIU3q1YIREOQD1qzt+OUDPzsXL0ucGGtbo
-         WrCAs4N9TqQMEyCGk13s46l0dgxYf1tVTF2dbocb7MTtv/82q4QjOwO4g8OCvQkDOg0O
-         M0aeeq5EX4itH6/vDoKrGyWP2um4bowWOS9fO37lm+4tkKkcZD+/LJqy5FB9FqRdgaxU
-         PrgQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqz83AshoOuPFXkeqOKw1gTem/c19dtDViTW1NqBgyp80GyU28JWLRw/sIJQAGPvzVfNqV1s/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCZBnP2B52B9m/EW1EMRyTvTKWKoUCyTPEiExunX6vp4HZbXCj
-	PB8nCBMcE8EQJ+m4q7mxk3PvptNL483WaSZ4uKOOruDpR8AxY2bbB+Xa
-X-Gm-Gg: AR+sD11odR6wPRRd+Xze80t3VjjjppPwOOlTERAHx/jCBUR/soerwt2jGb4LBOA0vEH
-	+tUpkzBf+mkRBawcE/6K9ssLk79r9d7+5p9txRzBzIoOIecGedO1rJ8KGk3vRc68Ju5riOGzM0R
-	5rSm00cpRG1E2QDlH2arj8m0je+8UkJJ5B9iMbLToXLJkuejEKVKyuzsxoxzHgvpImJB+RyQJQ2
-	yiNp9PHD07c+7BdYhmDZ0sy5HDehedUZBesN8k4C5r2A/epwpKtUZPTa5k0JOuiQpqFfK1OH2XV
-	bkUi6W0KjwQG2eyKCKTWXDZDDiwlz7AqOHyJQQUMIOZpHXclBSsEB3Hk2xlTjyoeoEEbhrPUByW
-	cUk0XYltrQiYZ6dCCnvrSocg7zdgBtTRTJsqg4mKURkwdmZIfic2S8oFQ3FprSFgDbQJzfqD1/w
-	YP
-X-Received: by 2002:a17:90b:268f:b0:387:df8f:1408 with SMTP id 98e67ed59e1d1-38f2978b966mr3637050a91.41.1785019895045;
-        Sat, 25 Jul 2026 15:51:35 -0700 (PDT)
-Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f03b0eaa8sm3263879a91.8.2026.07.25.15.51.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 15:51:34 -0700 (PDT)
-Date: Sun, 26 Jul 2026 06:51:28 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Yixun Lan <dlan@kernel.org>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
-	E Shattow <e@freeshell.de>
-Subject: Re: [PATCH 1/2] riscv: dts: spacemit: Fix phy id check for the phy
- on pico-itx board
-Message-ID: <amU94BeIJT39DRRL@inochi.infowork>
-References: <20260725005804.373698-1-inochiama@gmail.com>
- <20260725005804.373698-2-inochiama@gmail.com>
- <0d11de51-546a-42b6-80cb-8ca258389a17@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahz92pZj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952E21F000E9;
+	Sat, 25 Jul 2026 23:09:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785020965;
+	bh=d0ATcTOoIS9vcu5+PZnxo8woG8OIu/ppqkM6rmR5w50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ahz92pZjHp9nDIjldrNDRNpm+gfhyeVyLKKWQvLAEuA+QeXHud4mvvhS8GqN1e6Hw
+	 avTDmp+kmKWcEyCgwVlULgONzw250svj5WbJnjv0BRQlP+Pcmnat4QJbFAhRkECl/d
+	 H/BELVRDDPjs7As205qbTvUtxAYT243hnhCEPov9hj6/q//5Hn12ePmw9bzCbO1nDP
+	 Re/BukIWRT/7H/1C1O547AoaE6HpqsFu7Mgow+1Y0U3h6zSNZe8VOunucV165bLG6p
+	 93W1Rbj0KiAw/Of+iRemWhrZ781RuaKBoMrZhuo3keLQ11s5YqURumcvByiJB6CUKZ
+	 J7DlvAHkneTxA==
+Date: Sat, 25 Jul 2026 16:09:22 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Richard Weinberger <richard.weinberger@gmail.com>
+Cc: Dominique Martinet <asmadeus@codewreck.org>, demiobenour@gmail.com,
+	Harald Freudenberger <freude@linux.ibm.com>, acme@kernel.org,
+	adrian.hunter@intel.com, alexander.shishkin@linux.intel.com,
+	ardb@kernel.org, axboe@kernel.dk, corbet@lwn.net,
+	davem@davemloft.net, edumazet@google.com,
+	herbert@gondor.apana.org.au, horms@kernel.org,
+	io-uring@vger.kernel.org, irogers@google.com,
+	james.clark@linaro.org, jolsa@kernel.org, kuba@kernel.org,
+	kuniyu@google.com, linux-crypto@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, mark.rutland@arm.com,
+	mingo@redhat.com, namhyung@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, peterz@infradead.org, skhan@linuxfoundation.org,
+	willemb@google.com, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 2/3] AF_ALG: Drop support for off-CPU cryptography
+Message-ID: <20260725230922.GB41199@quark>
+References: <20260523-af-alg-harden-v1-2-c76755c3a5c5@gmail.com>
+ <20260603133312.12848-1-freude@linux.ibm.com>
+ <amOGWwdjnJqyxH5L@codewreck.org>
+ <20260724160034.GB2032@sol>
+ <amOTjPW__CNZui3_@codewreck.org>
+ <CAFLxGvy+ec3nQLrQtwFZgGELhT2pKBDnHdD0pMvEGh-Mf3rjgQ@mail.gmail.com>
+ <20260725220443.GA41199@quark>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,47 +60,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0d11de51-546a-42b6-80cb-8ca258389a17@lunn.ch>
+In-Reply-To: <20260725220443.GA41199@quark>
 
-On Sat, Jul 25, 2026 at 05:57:42PM +0200, Andrew Lunn wrote:
-> On Sat, Jul 25, 2026 at 08:58:02AM +0800, Inochi Amaoto wrote:
-> > Current phy framework can not reinit the phy correctly, as it will
-> > assert the phy reset GPIO so the phy id can not be readed. Setting
-> > the phy id of board pico-itx manually so the phy id dectection can
-> > be skipped.
-> > 
-> > Fixes: 74657a376960 ("riscv: dts: spacemit: Add ethernet device for K3")
-> > Reported-by: E Shattow <e@freeshell.de>
-> > Reported-by: Inochi Amaoto <inochiama@gmail.com>
-> > Closes: https://lore.kernel.org/netdev/20260712045233.800748-1-inochiama@gmail.com
-> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> > Tested-by: E Shattow <e@freeshell.de>
-> > ---
-> >  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
-> > index b2a7d2d0d3a8..b9d2de878f38 100644
-> > --- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
-> > +++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
-> > @@ -196,7 +196,8 @@ &eth0 {
-> >  
-> >  	mdio {
-> >  		phy0: phy@1 {
-> > -			compatible = "ethernet-phy-ieee802.3-c22";
-> > +			compatible = "ethernet-phy-id001c.c916",
-> > +				     "ethernet-phy-ieee802.3-c22";
+On Sat, Jul 25, 2026 at 03:04:43PM -0700, Eric Biggers wrote:
+> If needed, "cbc(paes)" and/or "cbc-paes-caam" (whichever name it is
+> being accessed as) can be allowed as a special case, as a stop-gap.
 > 
-> There was a patch recently from one of the DT Maintainers removing the
-> -c22 compatible when there was a specific PHY ID. I did not look into
-> why. Does this pass all the binding tool checks?
+> This would need confirmed use of that specific algorithm with upstream,
+> which we don't quite have yet.  Dominique had a confirmed use of
+> "tk(cbc(aes))", but that has never existed upstream in the first place,
+> so it's not something that could be allowlisted upstream.
 > 
+> You've only mentioned that it "can" be used in this way in upstream.
+> Can you confirm that it *is* used, and with an actual upstream algorithm
+> name, and if so which one(s)?  And if so, would you also be able to
+> share whether this is for dm-crypt or not?  We should remember that
+> dm-crypt accepts keys directly and AF_ALG is not needed to use it.
 
-Thanks for this mention, I have found the patch link.
-https://lore.kernel.org/netdev/20260323194803.GA1241974-robh@kernel.org/
+We'd also need to know whether the user (if there is one) requires
+unprivileged use.
 
-It seems like this patch is not merge at now, but I am fine to
-send a new version for the incoming change.
+Hopefully not: these sorts of hardware crypto drivers have lots of bugs.
+Indeed, the CAAM "cbc(paes)" doesn't validate the key length correctly,
+leaks DMA mappings, concurrent requests race with each other, etc...
 
-Regards,
-Inochi
+- Eric
