@@ -1,121 +1,147 @@
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3F35DA4C;
-	Sat, 25 Jul 2026 03:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219383368B7;
+	Sat, 25 Jul 2026 03:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784948951; cv=none; b=O89ZCz7QFhNnaggiKyMCdGCsSGy09ImFgQFVbnMNluDQkI7P6vMsju48NSRUi6wOZifhhWYn3IczAAYQFkxJhx3ZL1YJiHPLKJiryh40aRg7Y8y9V/pIAPNLNhFYiWKukFWTUhvSQwucLSh5QGM+sZTxj0ujDFNy0MQM+pjB+jA=
+	t=1784948995; cv=none; b=e7MnjAg7eicNRC1dOnh+hZLv5bmVG9SQJsza5IqKx7FkAcq5jU+X/pJWCLIfcuAylQAI7B6ewLqJnxZUvJJoGg01N/REUFR/KhnYVNyE/xTRGpKQZ937R9Zb9ZYMY1G9PiVSyfjqx13o/ITLT8AtW088lho/os4kGgOnqUGZHFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784948951; c=relaxed/simple;
-	bh=EdecioZBQGgjiicpcDV9vkEmtfCiqCmSCjU/N80BjBE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kxrF39bs+W2at9kaDfZEFdyuB4PyRu3Zqhs+HHvlvUMmf64javm2T65rIQLYoju4HbkzmJg3zxrk7QTjOHMAXM4h2zyqkzutLyWtukNJ7HFWh0qzkRIkQeOfGQYrlG3VsShcRgyLIGeREOrOHiy1nP1fL5W9JkegBD5pnoT9uGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=mEIX6csg; arc=none smtp.client-ip=44.245.243.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1784948995; c=relaxed/simple;
+	bh=BDDFOcUYxwSMc37yI7GVwZrjYaS3Sui+0k0tQMuEjQU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pE/sOX0mRFffnDtArgomA1ugNGhYG6SDtUkEeiiHFQEQciWWdUo/xaPiB0OnjH6uRy6E/Pnwcj3JGU5XoDWwzREB8NssSgGzMsdQ0q412ZCHVPNHPqhJXART2mjJGPOG3tPahGoIDfTFC/KVsFvqj7Tkbz/RWIkHmTtB8vPQT1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e163ivBa; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="mEIX6csg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1784948942; x=1816484942;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4SHthpA2VdGO5hxR117d4YC51wSw6nerJD53gKA0yd4=;
-  b=mEIX6csgEashErKiHbuMKv02eS/de4K02Qo0e0w/Huyojdn0joJLRhwJ
-   x5Ot/gM3/542KkB59ZDM4BNLf6LF9iXyJx6fgnzwKzOAT8mQSVskyv2T4
-   Gd7XVZvR1nrGntRHlBhjDo/1n0NXS6T/ruGFwkC3mVWkwIo3Du9uLdOr3
-   KpOwMnq/8DxoOyCTtcPtNcjpImk3NcRtzcv0CgKNJ341hvm/XtZTGBg4O
-   ICUJWAJxhQ4n/6Ywn4aVpIx8taWZVYoIKEIAnYtymDcy4OAWd6eB5F1SD
-   fjtrNW4wA/g59HLgToVrdLUXK/4Wy0C7sOn8F2ziGN28Qw38Ds3eQCA4I
-   Q==;
-X-CSE-ConnectionGUID: /Fc253PlSLmh0b6EAfUudA==
-X-CSE-MsgGUID: G/Fj5uZtQDOhIZPwzpBstw==
-X-IronPort-AV: E=Sophos;i="6.25,183,1779148800"; 
-   d="scan'208";a="23831622"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2026 03:09:00 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:5970]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.115:2525] with esmtp (Farcaster)
- id f004b53f-6603-4e90-aa5c-797f02c0926a; Sat, 25 Jul 2026 03:08:59 +0000 (UTC)
-X-Farcaster-Flow-ID: f004b53f-6603-4e90-aa5c-797f02c0926a
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Sat, 25 Jul 2026 03:08:59 +0000
-Received: from 6c7e67c92ceb.amazon.com (10.106.101.50) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Sat, 25 Jul 2026 03:08:58 +0000
-From: Nathan Gao <zcgao@amazon.com>
-To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>
-CC: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller"
-	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nathan Gao
-	<zcgao@amazon.com>
-Subject: [PATCH net] tcp: do not change rcv_ssthresh in tcp_measure_rcv_mss()
-Date: Fri, 24 Jul 2026 20:08:06 -0700
-Message-ID: <20260725030806.28135-1-zcgao@amazon.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e163ivBa"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66P2wd6e1784493;
+	Sat, 25 Jul 2026 03:09:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BDDFOc
+	UYxwSMc37yI7GVwZrjYaS3Sui+0k0tQMuEjQU=; b=e163ivBa48KtiiSoJa0Mh6
+	jg++P2bBjJyY4442zJcUV6WajiiFMQg1SGjFtebdRhqELU7HuxcursNDR1vUU7MM
+	HwUmiEfkA6lCLf2TpZInw+jEYyKvaVflHJJccSpjaRbtajLntdfKLVAOHaRnNiYI
+	b3fKXZS3tV0CzAEjSgIyXxeclquMYDomEN4kj0vengFbsJ/supAKFFeIxTyDV4QH
+	Jy4eL9WzSoDeesaCBNP4zHhM7qAXFZGDu9w8LyOQ3PNsOMLCr6X//gpVLTLpSdFa
+	WG41F68GjYdFPyCpV+Hf+nvjsFuBGf4Vt9Nr/q0was+alkSBrbDZOcU0qMnUo7wg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmmtq00yh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 03:09:33 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66P36oXw018259;
+	Sat, 25 Jul 2026 03:09:32 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6wkpjd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 03:09:32 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66P39Shu38535676
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 25 Jul 2026 03:09:28 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 48D85200F2;
+	Sat, 25 Jul 2026 03:09:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C9205200ED;
+	Sat, 25 Jul 2026 03:09:27 +0000 (GMT)
+Received: from li-fa2166e9-1f7d-4f1a-8ca5-7ccf0f022c25.ibm.com (unknown [9.111.80.37])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 25 Jul 2026 03:09:27 +0000 (GMT)
+Message-ID: <ab01a87d17e491de68684f7116d55ed1a70b7522.camel@linux.ibm.com>
+Subject: Re: [PATCH] tls: don't abort the connection on signal-interrupted
+ sends
+From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: john.fastabend@gmail.com, sd@queasysnail.net, davem@davemloft.net,
+        edumazet@google.com, horms@kernel.org, bcodding@redhat.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        svens@linux.ibm.com, brueckner@linux.ibm.com
+Date: Sat, 25 Jul 2026 05:09:27 +0200
+In-Reply-To: <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
+References: <20260720090940.1334523-1-maxbr@linux.ibm.com>
+	 <20260723092630.1a1c9b4e@kernel.org>
+	 <fa33ce0b-d040-4c4f-9bcf-4ccddb127b92@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=JcWMa0KV c=1 sm=1 tr=0 ts=6a6428ee cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=BCt8zh-F8LzyvZBcyEsA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI1MDAyMyBTYWx0ZWRfX1d5xEmEuIU4e
+ OxEXKezp4Dm97RvH10c4mz0kfsqKCLC2k/ZyFn2HY8WXXqpzVdqIWkyRvfRi4PiKeaXTFOKKJKG
+ 8GN10NreI6YieFxYGfm1spVBiIiCAbwgfscRMEwod9ZGK4H1yT8+ofAx3oDBgiO3CLtrHihPqM5
+ 6dXPsKBkW7n96Q8lg07xxDthJR9ymuhn725YzfEzYW2W5TLBZ3uMWuklDiUYqT7NT0CHit3pKf/
+ qpdO7hKc0nma+ZTwkQh5x3IB23+v6RLamNcIPsYsrq7/Pfv1EvbFPoWBRi2wJBKdetCWoWxnrGV
+ rAUS32fzWLA9JrPspouMSF5LXlr+nBP4tX3ls2gZT29nEF7trtkBt3I5ORarcjWoNvui2Wrjhhg
+ vLqnb+vJ3iATYSdimBrm9Nr/EN02ejpEnGrtn8nsfgtYphoDXuyrtic07405bYWI8LWvtNAiIWV
+ 0ARiuZ1jgHnsjaxUBUQ==
+X-Proofpoint-GUID: KfyuTl908j9966IT22hlMWz7q_tJizBQ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI1MDAyMyBTYWx0ZWRfX8wQDOU9KcT1v
+ Y3HoSLJ08COPAkxej1ukkc0ljXyIjQojOg8AeThOPXi/jq3ZOgW072OVdAPjJN1YWRocc2sj8tq
+ guWQkg889MB7xPnAHpMQphN42V5l49g=
+X-Proofpoint-ORIG-GUID: UYulYLrY0HcqT81XMVYjhNEGAtSMmHMk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-25_01,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607250023
 
-Commit f5da7c45188e ("tcp: adjust rcvq_space after updating scaling
-ratio") replaced the direct window_clamp update in tcp_measure_rcv_mss()
-with a call to tcp_set_window_clamp(), a helper that implements the
-TCP_WINDOW_CLAMP setsockopt. As a side effect, the helper also shrinks
-rcv_ssthresh via __tcp_adjust_rcv_ssthresh().
+On Fri, 2026-07-24 at 09:40 +0200, Paolo Abeni wrote:
+> On 7/23/26 6:26 PM, Jakub Kicinski wrote:
+> > On Mon, 20 Jul 2026 11:08:47 +0200 Maximilian Immanuel Brandtner
+> > wrote:
+> > > When a signal interrupts a blocking send, tls_tx_records() treats
+> > > the
+> > > resulting -ERESTARTSYS as a transmission failure and marks the
+> > > socket
+> > > errored via tls_err_abort() with the raw error code. Later
+> > > syscalls
+> > > return the kernel-internal errno 512 (ERESTARTSYS) to userspace,
+> > > as the
+> > > signal it stems from is no longer pending during syscall exit and
+> > > thus
+> > > never translated.
+> >=20
+> > Can we just add ERESTARTSYS handling? I never heard of the other
+> > codes
+> > you're checking TBH, can they actually surface?
+>=20
+> FTR, I think only EAGAIN and ERESTARTSYS can be observed in the
+> network
+> stack, and the latter only after sock_intr_errno() translation, i.e.
+> on
+> sendmsg()/recvmsg() return path.
+>=20
+> I would not add additional error code handling, until we have some
+> proof
+> that it's needed.
+>=20
+> /P
 
-As a result, each scaling_ratio decrease detected by
-tcp_measure_rcv_mss() also cuts rcv_ssthresh. Elsewhere in TCP,
-rcv_ssthresh is usually cut under memory pressure and grows via
-tcp_grow_window().
-
-Flows whose segment sizes vary keep scaling_ratio oscillating, which
-leads to an unstable rcv_ssthresh: a dip of rcv_ssthresh only recovers
-via tcp_grow_window(), keeping the advertised window at a relatively
-low level even after the ratio itself has recovered, and can even stall
-the sender.
-
-Observed on a customer's proxy gateway after upgrading from kernel 6.1
-to 6.12: in the worst case, rcv_ssthresh was cut in half by a
-scaling_ratio dip. P99 latency jumped from <10ms on 6.1 to ~100ms on
-6.12, and almost returned to the 6.1 level with this patch applied.
-
-Restore the plain WRITE_ONCE() update of window_clamp, as introduced
-in commit a2cbb1603943 ("tcp: Update window clamping condition"), and
-keep the rcvq_space.space adjustment. Now rcv_ssthresh is decoupled from
-scaling_ratio changes in tcp_measure_rcv_mss().
-
-Fixes: f5da7c45188e ("tcp: adjust rcvq_space after updating scaling ratio")
-Signed-off-by: Nathan Gao <zcgao@amazon.com>
----
- net/ipv4/tcp_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index daff93d513428..5b6378b94701e 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -252,7 +252,7 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 				struct tcp_sock *tp = tcp_sk(sk);
- 
- 				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
--				tcp_set_window_clamp(sk, val);
-+				WRITE_ONCE(tp->window_clamp, val);
- 
- 				if (tp->window_clamp < tp->rcvq_space.space)
- 					tp->rcvq_space.space = tp->window_clamp;
-
-base-commit: 78f75d632f74b8de0f081a128588f7c37d0d1164
--- 
-2.47.3
-
+Is this an explicit requirement in the subsystem or just a practical
+observation. Because if this is only fixed for ERESTARTSYS and some
+part of the networking subsystem later introduces code that might
+return these other restart error codes the same problem could occur
+again. By my lights, it's better to err on the side of caution, but if
+we can be certain that this assumption won't be broken in the future
+I'd be fine with dropping the other restart error codes.
