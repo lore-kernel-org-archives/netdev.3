@@ -1,104 +1,160 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E168B18BBAE;
-	Sat, 25 Jul 2026 05:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5D2D8DBB;
+	Sat, 25 Jul 2026 06:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784957282; cv=none; b=biuV2WU/CDOSNI+e0zv9sKiaViJsJRROzgOXFRxK09ijHHJf7UQ2cpOvS4g3aJLadtTSZ7VzT0J+R8J3GqJPas8hFBYNL71Ntcf6eseZz6ozBj16ISTDO2qlDPOcUW07GQ7+iFIyqddL0m3NmpgTKNNSOL4bU4pQ+8SXns/+/xU=
+	t=1784959754; cv=none; b=EhaVPWKkeMxMjp8w8H65RkCqAaFqxm09708/rSxe6cfd5gvsIlFEIbsqWqq1et+LeJ4vSA9XyBzh1+Ln5AhypB94+TzrOaY5MXGKXPg2GZ9Xh3q+vWzUpgTjCQ56N9WjPNetDRbRoNWyknADnpujje8HVhkiJLf1ksqOtliBq7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784957282; c=relaxed/simple;
-	bh=WbXVHduCuDrs2y1sGvPjYKTLP1W/0GdYZZI3+mhHJBc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=PmFjdEWa5dWIAkiSA/6RKSRrtY1YsFQS2GOKkjCG1TKXFocDwYnjRQleDL5qdO3f6uHVN1s8eIyf45hk1i9Nv9fRJ8Ps2+2vj/xELDvwXXLNocovi9JjVQpiKjPutgK4hY1xOjR9TGaADwL1gQcBor59NeLiwZ+WXTGJI9+odQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=1zw4qVor; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1784959754; c=relaxed/simple;
+	bh=C0cYxrITXcn/H448tLJH7tlW63Htb/xQhKKBpitRExU=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=sceobz7kGOi+qh0bn2SPLB710l6DZW625wwSQ3wZcTKu8Bxz6kPUy1yKSnZTTO4ZFG6DYD875L/CutFVlGn0xEl0mJyncEtuk5FxplbmQfCh920O13BqDJE3hsiJLpqBbc1XkcEXgcLffwCMXzP/MnhdYxcen9J/XdSiO1IQnJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhCWfux0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="1zw4qVor"
-Received: from smtpclient.apple (unknown [119.17.43.2])
-	by us.padl.com (Postfix) with ESMTPSA id B1FDF60C2D;
-	Sat, 25 Jul 2026 01:27:48 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1784957272; bh=WbXVHduCuDrs2y1sGvPjYKTLP1W/0GdYZZI3+mhHJBc=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=1zw4qVorQ/w6Sbp8ZSOn3FBPCi/n7QJ7oDEibuYGxQwbibJgcD4sFgXB5hiCZOqO0
-	 xF2ZXa1vATZb8nFqB/yrgSvy7pIny0ZlcwAIzn2NzCRXsOSPyeZ7Xkj0kKYFa0SjaO
-	 TsVsulzGQ3TtaWKB6yX3ceWLtHywe0EmnVCSP3tLzksK9qLEkPdLGcGBvMfJmKU8L6
-	 ot5g0diZ+7qhyr/N6wnYMR98Z3Vu1IsYTu66J3zDaSg6kXgNG3g6KBy1LHti6X80e8
-	 GRQ6vl36Czpt/NhSPGJL/AvkJq0XMG73OSGBDKfvbfEEE48iHHwIXbB9pHSiHXjhLk
-	 QI3Ea5QOHXv9A==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhCWfux0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DB31F000E9;
+	Sat, 25 Jul 2026 06:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784959752;
+	bh=vl9av0su70QDbnSyvpjOuNyucyKSdvo8XYRSG+4fbSg=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=BhCWfux07qWs+GRyYGHTSjdj1psv4QW+pesi8eLe8vWEnGpt52sV3iPdMo+RYVMse
+	 PtTokGMcZJ3sz8nBSEgMBl+6icrsRU71F56jXujKjTtxvtyECWu8ZMgIEa5wyH+Qbx
+	 3BxcmvKwBCBlysRS17Z4R6NHXUYRizndAyTzjp0A24n1K27nQnQ33nbcbiyWFzau0I
+	 vTQ832TCUuBh13ifOmno+obmU8Mw9AF1KaVla39gvsQ4h4qychNVyzZZ2VZWXsmgDY
+	 It5yCQiIgo743KhKNnMWThuBoIn9cVXHH3n5hay/vjAmzRLGtwI1CQXLN8/0lVhGUB
+	 Kqe+i7OWbAtEg==
+Content-Type: multipart/mixed; boundary="===============0332709161616845450=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: Re: [PATCH net-next v3 0/3] net: dsa: mv88e6xxx: various hwstamp
- fixes
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <20260724165207.6a03c9db@kernel.org>
-Date: Sat, 25 Jul 2026 15:27:23 +1000
-Cc: Andrew Lunn <andrew@lunn.ch>,
- Richard Cochran <richardcochran@gmail.com>,
- Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Gregory CLEMENT <gregory.clement@bootlin.com>,
- Cedric Jehasse <cedric.jehasse@gmail.com>,
- Kieran Tyrrell <kieran@sienda.com>,
- Max Holtmann <mh@rme-audio.de>,
- Max Hunter <max@huntershome.org>,
- Christoph Mellauner <christoph.mellauner@joyned.at>,
- Simon Gapp <simon.gapp@gapp-audio.com>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5CBF2EA4-E550-4763-A6BD-56484278E81F@padl.com>
-References: <20260719-mv88e6xxx-ptp-fixes-v3-0-161386ac8a62@padl.com>
- <20260724165207.6a03c9db@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Message-Id: <6bf45c1a019d55ff4558d946fd4ab478536f670d804ff9e1b3613556dc441f0a@mail.kernel.org>
+In-Reply-To: <20260723162602.3275661-1-nicoyip.dev@gmail.com>
+References: <20260723162602.3275661-1-nicoyip.dev@gmail.com>
+Subject: Re: [PATCH v3] bpf, sockmap: Fix cork ownership in tcp_bpf_sendmsg()
+From: bot+bpf-ci@kernel.org
+To: nicoyip.dev@gmail.com,emil@etsalapatis.com,edumazet@google.com,ncardwell@google.com,kuniyu@google.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net
+Cc: netdev@vger.kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,nicoyip.dev@gmail.com,stable@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sat, 25 Jul 2026 06:09:10 +0000 (UTC)
+
+--===============0332709161616845450==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index cc0bd73f36b6..fcf535b7a754 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+> @@ -401,7 +401,9 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+>  }
+>
+>  static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+> -				struct sk_msg *msg, int *copied, int flags)
+> +				struct sk_msg *msg, int *copied,
+> +				u32 msg_copied, bool *corked,
+> +				int flags)
+>  {
+>  	bool cork = false, enospc = sk_msg_full(msg), redir_ingress;
+>  	struct sock *sk_redir;
+> @@ -428,12 +430,18 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+>  			psock->cork = kzalloc_obj(*psock->cork,
+>  						  GFP_ATOMIC | __GFP_NOWARN);
+>  			if (!psock->cork) {
+> -				sk_msg_free(sk, msg);
+> -				*copied = 0;
+> +				int free;
+> +
+> +				psock->cork_bytes = 0;
+> +				free = sk_msg_free(sk, msg);
+> +				*copied -= min_t(u32, msg_copied, free);
+>  				return -ENOMEM;
+>  			}
+>  		}
+> -		memcpy(psock->cork, msg, sizeof(*msg));
+> +		if (psock->cork != msg) {
+> +			sk_msg_xfer_full(psock->cork, msg);
+> +			*corked = true;
+> +		}
+>  		return 0;
+>  	}
+>
+> @@ -480,14 +488,15 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+>  		if (unlikely(ret < 0)) {
+>  			int free = sk_msg_free(sk, msg);
+>
+> -			if (!cork)
+> +			if (cork)
+> +				*copied -= min_t(u32, msg_copied, free);
+> +			else
+>  				*copied -= free;
+>  		}
+>  		if (cork) {
+>  			sk_msg_free(sk, msg);
+>  			kfree(msg);
+>  			msg = NULL;
+> -			ret = 0;
+>  		}
+>  		break;
+>  	case __SK_DROP:
+> @@ -519,6 +528,7 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+>  	struct sk_msg tmp, *msg_tx = NULL;
+>  	int copied = 0, err = 0, ret = 0;
+>  	struct sk_psock *psock;
+> +	u32 msg_copied = 0;
+>  	long timeo;
+>  	int flags;
+>
+> @@ -545,9 +555,12 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+>  		if (!sk_stream_memory_free(sk))
+>  			goto wait_for_sndbuf;
+>  		if (psock->cork) {
+> +			if (msg_tx != psock->cork)
+> +				msg_copied = 0;
+>  			msg_tx = psock->cork;
+>  		} else {
+>  			msg_tx = &tmp;
+> +			msg_copied = 0;
+>  			sk_msg_init(msg_tx);
+>  		}
+>
+> @@ -580,21 +595,23 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+>  			psock->cork_bytes = 0;
+>  		}
+>
+> -		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied, flags);
+> +		err = tcp_bpf_send_verdict(sk, psock, msg_tx, &copied,
+> +					   msg_copied, &corked, flags);
+>  		if (unlikely(err < 0))
+>  			goto out_err;
+> +		if (corked)
+> +			msg_tx = psock->cork;
+>  		continue;
+
+This patch folds several distinct changes into one: the stale-cork
+use-after-free fix at the common exit, a cork_bytes reset on the cork
+allocation failure path, the new msg_copied accounting for the failure
+paths, the switch from memcpy() to sk_msg_xfer_full() for the cork
+transfer, and iterator error propagation via err = ret.
+
+The upstream discussion suggested fixing one issue at a time rather than
+combining several fixes in a single patch:
+
+  https://lore.kernel.org/bpf/87ldb0lo8t.fsf@cloudflare.com/
+
+Would it be clearer to split these into separate patches?  A minimal
+single-fix version addressing just the use-after-free was posted afterwards
+and was the form that landed (commit 2d66a033864e).
 
 
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-> On 25 Jul 2026, at 09:52, Jakub Kicinski <kuba@kernel.org> wrote:
->=20
-> On Sun, 19 Jul 2026 15:30:52 +1000 Luke Howard wrote:
->> Three fixes for improving the reliably of hardware timestamp =
-acquisition
->> on Marvell switches. In our tests this eliminated missed timestamps =
-in
->> ptp4l, whilst also preserving PTP event and general message ordering =
-on
->> switches that support embedded timestamps.
->=20
-> Do you know if there's any precedent in the existing upstream drivers
-> for overriding the reserved bytes? It's not normal for devices to =
-modify
-> the ingress frames. Perhaps there's some precedent, but if not I think
-> we should gate this (eg with a devlink param?)
->=20
-> Andrew, do you have any opinion? Or perhaps Richard?
-
-See hellcreek_get_rxts() in =
-drivers/net/dsa/hirschmann/hellcreek_hwtstamp.c.
-
-In any case, Vladimir proposes to gate with a new DSA tag protocol (I =
-haven=E2=80=99t heard any objections to this). I will include this in =
-the next revision, I just have not had an opportunity to test.
-=20
->> Note: squashing the two embedded timestamp patches into a single =
-commit
->> may be desirable.
->=20
-> I think it would be great to invert the order. Revamp the locking as
-> patch 2 then add the new feature as patch 3.
-
-Can do.
-
-Luke=
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30145850605
+--===============0332709161616845450==--
