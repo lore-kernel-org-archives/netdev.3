@@ -1,428 +1,225 @@
-Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456D30C150;
-	Sat, 25 Jul 2026 13:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968F02EAD1C
+	for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 13:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784987573; cv=pass; b=q+e0U5fnwH3N47ip633rzO3SGWSBLR9yId5qEAUGZriJEoiWFAF1m6G7HRp2cKdTk+XCReAjLRPEoyvAnPxIK3ShizQU2HlWutDNcZbc5JkSts5nBz0J/mpazLmp6TxoDlYv3Dfh3l3dJL6prg5VtUZ9hqUalg/VZ8sDhr2F4oY=
+	t=1784987738; cv=pass; b=aMu8ccrIXfp4epkFWJ/cQabyqhIoXcPK+l1cNr6NorTueplrpJUnn+w/b9hZNOI4aVk48ffKahJtDYV4Pj8TxCnLPnFyXt+ekV3rppvyH89/gjK74IYOVl0rz2qk7a7axZUpndaPLsNyr6YnhroTD3b9o4Snj7plt4rTfD6Gqmc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784987573; c=relaxed/simple;
-	bh=z44Pb1crQFD03JqAKCMy1w7fKEex8Z93gaQhL33xbXc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XhrF/RTUghuycB9P1BHNzqfiMHvhdChOEx1VAP85+X/uKNPmDO6J5+5Jeegkl0y4MWlOfMWDsYz971JUxW1Kcd9APCHj2ZgHpISYXFmlhATgJXjx912SDCi0vmQLFNlrr/xms2thw9itxjqQXAaaf5oTIyt8eV0dcUBWev5RZes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai; spf=pass smtp.mailfrom=auditcode.ai; dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b=QC+sagcM; arc=pass smtp.client-ip=136.143.169.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=auditcode.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auditcode.ai
+	s=arc-20240116; t=1784987738; c=relaxed/simple;
+	bh=IRdykYTlkN5ap1y5hYJQTLrsRJiNxzFb2o/eGNkPuOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HN5gWys6fWtWqZGwcmloup4UmJy4pjTLJyozyhF0yLteR/fIE3JtCJvoosTMpzWozGY2o0d8j6BH1kC2mJCXZsoesrEmcUdsSA4skOkRw4+D54UygXvYZciiUtRAjc2M8lhpQA9HgN8M0cUGG17D62mcXBCpGpWrMG0t9mQdpNI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ggJlzG6x; arc=pass smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=auditcode.ai header.i=security@auditcode.ai header.b="QC+sagcM"
-ARC-Seal: i=1; a=rsa-sha256; t=1784987519; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=kCdOLHzyqntwcE1Bp4tLsPd9iwZszhRzir3VM4mr9cTmV7/j4l700ojVG6Q2xdGjDPGZUyejO0X+eOQwbWkt2Jrpo8tBQtFLkAihV1Jp+AB683u1ArorR787eNh3ePJf5d8oSH3wxMvT06d7vfAlDbtcXVpWj2CVR6LW2IhHmnI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1784987519; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IhyTpGoxDFbY+RWbyKeiv8Dc+d1t6oiztG0rAsNFj6I=; 
-	b=bAsAIJEJVkXu+lMioOIrs0ZQ7Py7MZ3eaI5lNan2L1sJEDr1qravmFQ1lwe09dLDVwwLOWDi1og6BlCTZIhYZ3bIz9a0JrFFBtG4P0OLvDZhVY2mCCBRiUaPfpUR5WHVwlJpQIi+6z6aCAgmL7zUqkfTFDPaa1ET436EClzcHOw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=auditcode.ai;
-	spf=pass  smtp.mailfrom=security@auditcode.ai;
-	dmarc=pass header.from=<security@auditcode.ai>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784987519;
-	s=zmail; d=auditcode.ai; i=security@auditcode.ai;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=IhyTpGoxDFbY+RWbyKeiv8Dc+d1t6oiztG0rAsNFj6I=;
-	b=QC+sagcM9feDvzRU7U76BrVZEF37LGvZMEevNVRMd9RYshSNNjFjcpcLpsTM/jZT
-	yIoYVRAATqgoBaOWO+HjRfLMFUH/GnC8J6+ROJBNnw05LbVEzGHw6RpjvFR0uHDBwxA
-	7foq5hHy6UWw/Sp+EXZYemL2cpDS8T6+FPJuNnf4=
-Received: by mx.zoho.eu with SMTPS id 1784987517461687.1993605818986;
-	Sat, 25 Jul 2026 15:51:57 +0200 (CEST)
-From: Ibrahim Hashimov <security@auditcode.ai>
-To: miquel.raynal@bootlin.com,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	david.girault@qorvo.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH wpan v3] mac802154: fix use-after-free of sdata via queued RX frames
-Date: Sat, 25 Jul 2026 15:51:54 +0200
-Message-ID: <20260725135154.99876-1-security@auditcode.ai>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ggJlzG6x"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c1740c36c5cso176883766b.2
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 06:55:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784987735; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZUQs/GrOLsfTKqDiFXnGslYWGiwkuePu3Ps2iXFxEIaDZ08wVj8X1BZ1S5aLhN48Z6
+         nP/YPzczwuB7L9yQefCjjdR5/FcpgtAFpy/qIbFyOrNPDom6C/aR2xXWhCMUbn9KmP6M
+         9hN6OdEq2EjZH7EccHqPjAqSgrnbXApBDlnnaGcn5c5eG/JtPY8Fo+b8wpCsHQOCtL1l
+         o/cIDqVotVGpQSzCxqmHf2VMwKKByGnEoqkOUn9bMdGZRTT9nN/7em1ssDWqDJwdjw8U
+         e0jPRMKrvBw5iFXYfNxN6hGCsDzxITBSBqZMGkQ5PyEg2OwHm2wocBeYaO1ZbLSdL2us
+         oWtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/puKwbTTWP9a8ngnv5J1npAvEdozJh9Yntg5eX+y3+I=;
+        fh=Cz0wks26zw70d79MuVX21KW/a/otPA5cc/gOBQN7nVQ=;
+        b=FVbnHJ7tOeT1C/gCrZa4cQtgD6/bgYoqeA4WsSrupx9y2GhDIQJPN76y0oAnPZOTuf
+         UcZ2gnHzXTshAAI88il5joMK2xFq4jNxr897Kmkw8xV5L6Ift7Nmvtzl1qGi07P0q9J2
+         wfa/Vp5GZ+vWNU2Pi8r2Hqpq5JioGxP6C0Ei6nCYliXLUhBK45hiy3hXDLOZ7pfVNu7n
+         RTk8Yc+c5MQGdXlZ3LkBpetQexsYnC4n/m3Rbd3wOvFIksSSRgeJGcTAXOfesAynyC7e
+         tvvUJmvbEEDfKuLcEKvNSdX3ww0kPVhBBFvPlOhhplcYTfVJ3fp62wDeom2z8rC8H2ps
+         c26w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784987735; x=1785592535; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/puKwbTTWP9a8ngnv5J1npAvEdozJh9Yntg5eX+y3+I=;
+        b=ggJlzG6x1d2HSA5i7OFipj9IgDDitkvvHAmmSuelA4cUuGm4Wh08OVZQvqQzvWQMNP
+         8ZKR58Y5FNrKGFKQxjn7sFic+6nAjzOMayPxt5SF/UlnGSTjsIZUHEfkzWePA3sP3Y9W
+         MaG9js+zcqzQpNxICDN01z7VbnPwle8iubiuoLEvXClRI7QwZsvVJDPMWZZ4z7dNfJo9
+         +iBD0DO4/shNFENMdBUWf5OtgxFRQ8lcUaNrrifA0TsD1P7Ca/xjzfQtgQLxks7g5nOG
+         ghc+sG0T7EDITrSRgUrmbJOoCnwpLWbujbclAAA40faUrsC/mtSFWFFK2FGboTZUsjEV
+         p2Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784987735; x=1785592535;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/puKwbTTWP9a8ngnv5J1npAvEdozJh9Yntg5eX+y3+I=;
+        b=ajfxKZ3CmiI9FPt3tkbQ2s4CyPGCcJ78UOHjFOaA8LrxAlvZQ7zrDRJxrseRf4VKB7
+         V0BLDBbpia3Uu0eFOJuzQ+NlTCoqvFJP8+M8EREMgeANkJ3ftfq+hUK/5xdrGCDLDqBs
+         mhtVX4IQKH+mc5i2RhRX6Kdz2oTny9+votpDu1Do8J2daw1Nk37CNylTVqYRgIsYZaEN
+         Sq8gSZ8X7PvnTBCmYGdiBBTf9omFhTNBliqcLjJrxdj+vqjBN1xM17SDD0UdTBgaCsUw
+         TH4UFZRaKKUo2IWewyUq11Tgq3Wk9B5ZAfV/sktDS6wxZIeml/dEBcXzTPhCp/2LTifo
+         5GoA==
+X-Forwarded-Encrypted: i=1; AHgh+RqZRyTz+9RqsuvvWR74n5YR4gfJ6gCZLEU6zYKooEmV+G346jgdXjcW7RssszCyVMRdAQlmZQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzK8t1Yzf/zJiQpq71E0xawi1tw/zwMREpR1Ie5UbrP1YlITAk
+	b46u4Bm6LK3qQ81/ZonjVct+TnwEAvLMiAC7q8GZocHtpJozwfy85Qcv+2MmUI9cHX+wBUMMD77
+	KBnqEkd5XnFnoYkxkhBcbsmXSpN0xBQ==
+X-Gm-Gg: AR+sD135u0MDKXeofaKLQvsgDW4kbcn+X2bO8Rp/vCTBlpiFA0B9Zxuzt4aveDSspx/
+	QaPAi4VfjaYOE4iMxCG+1O6/xrgP4Q76DO7EUa8xW5YbE7KZCAwyNcg35RHO3ZhTY5VLeGcYblJ
+	EmtaqjvhkfhxkB48lw4s3KdHZaHqoYU1YJwcBBp69x7Mx95slcHOjtjHloM0TT5hSfefQJ/jNrm
+	INjuFqmniRDgMR8tFGLsKG4NpoPObZB0K1805X5B2t3e6S0gjeLAUMUJsJ6BPMqv5mPYyJFd5ve
+	bSr1S9cUgdEsTiBtKouTM0RZ2sZZKizpk5QCaH1jASV4Ccgcf8l8g6dbEC+HmVYN00NlpgE=
+X-Received: by 2002:a17:907:983:b0:c15:f376:9642 with SMTP id
+ a640c23a62f3a-c1f1f119245mr92930166b.65.1784987734642; Sat, 25 Jul 2026
+ 06:55:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+References: <20260720143511.43408-1-mhun512@gmail.com> <IA3PR11MB8986986280690863E016ACA0E5C02@IA3PR11MB8986.namprd11.prod.outlook.com>
+In-Reply-To: <IA3PR11MB8986986280690863E016ACA0E5C02@IA3PR11MB8986.namprd11.prod.outlook.com>
+From: Myeonghun Pak <mhun512@gmail.com>
+Date: Sat, 25 Jul 2026 22:55:22 +0900
+X-Gm-Features: AUfX_myEDpHU_7CZdJZCAMYsX-P6rIRFrfbnz5EzBgeFs4qgEBEIgk406Eww6Uc
+Message-ID: <CAGEsz8HNGUXsiZ_4Eg6atPjzWnTbWoxDwGVybgks3DmGhyH-=w@mail.gmail.com>
+Subject: Re: [Intel-wired-lan] [PATCH v3 net] idpf: disable PTM on probe
+ failure and on remove
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+Cc: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, 
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, 
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "Olech, Milena" <milena.olech@intel.com>, 
+	"Tantilov, Emil S" <emil.s.tantilov@intel.com>, Mina Almasry <almasrymina@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ijae Kim <ae878000@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The RX softirq producer ieee802154_subif_frame() queues received beacon
-and MAC-command frames onto local->rx_beacon_list / rx_mac_cmd_list and
-schedules a process-context worker, storing a raw mac_pkt->sdata (and
-skb->dev == sdata->dev) with neither a reference nor any locking:
+Understood. I won=E2=80=99t repost it unless I receive concrete feedback.
 
- - the lists have no lock: the softirq producer list_add_tail()s while the
-   mac_wq worker list_del()s, so sibling interfaces on the same phy corrupt
-   the list;
+Thanks for the clarification.
 
- - the workers dereference the interface after it may have been freed.
-   mac802154_rx_mac_cmd_worker() touches mac_pkt->sdata directly, and
-   mac802154_rx_beacon_worker() -> mac802154_process_beacon() dereferences
-   skb->dev (== sdata->dev). Removing an interface frees its sdata
-   (netdev_priv) while a queued frame still points at it, so a later worker
-   run is a use-after-free.
+Best regards,
+Myeonghun Park
 
-Reproduced under KASAN by flooding a victim interface with MAC command
-frames and removing it (the beacon path is the same class via skb->dev):
-
-  BUG: KASAN: slab-use-after-free in mac802154_rx_mac_cmd_worker+0x463/0x630 [mac802154]
-  Read of size 4 at addr ffff888002f9ea18 by task kworker/u8:1/31
-  Workqueue: phy0-mac-cmds mac802154_rx_mac_cmd_worker [mac802154]
-  Call Trace:
-   mac802154_rx_mac_cmd_worker+0x463/0x630 [mac802154]
-   process_one_work+0x611/0xe80
-   worker_thread+0x52e/0xdc0
-   kthread+0x30c/0x630
-   ret_from_fork+0x2fd/0x3e0
-
-Fix both lists together:
-
- - add local->rx_lock and take it around every list access: the softirq
-   producer (plain spin_lock, softirq context) and the workers and flush
-   (spin_lock_bh, process context);
-
- - pin the interface for the lifetime of a queued frame with
-   netdev_hold()/netdev_put(), so the worker can safely dereference sdata /
-   skb->dev even while the interface is being removed;
-
- - dequeue under the lock at the head and loop-drain the whole list in the
-   workers (they previously processed one frame per run and relied on a
-   later enqueue to drain the rest);
-
- - drop not-yet-started frames of an interface before it is unregistered,
-   from ieee802154_if_remove() (after the RCU grace period) and from the
-   ieee802154_remove_interfaces() loop -- the latter is the whole-phy
-   teardown path, which does not go through ieee802154_if_remove().
-
-An in-flight worker that already dequeued a frame keeps its own netdev
-reference; unregister_netdevice() then waits it out in netdev_run_todo(),
-which runs at rtnl_unlock() (rtnl released) and after the interface has
-been closed, so it does not pin rtnl. A worker blocked in an association
-TX only delays that one interface's unregister (the usual "waiting for %s
-to become free"), it does not hold rtnl. netdev_hold() is used for this
-reason instead of a cancel_work_sync() under rtnl, which would block on
-the worker's unbounded MLME TX wait via ieee802154_sync_queue().
-
-The mac-command worker additionally skips processing for a stopped
-interface (ieee802154_sdata_running()), avoiding a needless association
-response during teardown.
-
-Fixes: 57588c71177f ("mac802154: Handle passive scanning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ibrahim Hashimov <security@auditcode.ai>
-Assisted-by: AuditCode-AI:2026.07
----
-v3:
- - Cover rx_beacon_list too: its worker dereferences the interface via
-   skb->dev in mac802154_process_beacon(), so it has the same UAF. v2
-   wrongly stated the beacon worker never touches the interface
-   (raised by Miquel Raynal and by automated race analysis on the list).
- - Use per-frame netdev_hold() instead of drain + cancel_work_sync(). The
-   cancel_work_sync() ran under rtnl in ieee802154_if_remove() and could
-   pin rtnl for the length of an in-flight association TX
-   (ieee802154_sync_queue(), unbounded). The netdev reference is instead
-   waited on in netdev_run_todo(), after rtnl is dropped (raised by
-   Jakub Kicinski and by automated race analysis).
- - Fix whole-phy teardown: v2 drained in ieee802154_unregister_hw() before
-   the interfaces were stopped, so a frame could still be queued after the
-   drain and run against freed sdata. Drain per-interface in the
-   ieee802154_remove_interfaces() loop instead.
- - Loop-drain the workers (also fixes a pre-existing one-frame-per-run
-   stranding); required so queued netdev references cannot be left pending.
- - Include the KASAN splat.
-
-v2: https://lore.kernel.org/all/20260722101608.37744-1-security@auditcode.ai/
-v1: https://lore.kernel.org/all/20260710111353.12138-1-security@auditcode.ai/
-
- include/net/cfg802154.h      |   1 +
- net/mac802154/ieee802154_i.h |   8 +++
- net/mac802154/iface.c        |   6 ++
- net/mac802154/main.c         |   1 +
- net/mac802154/rx.c           | 120 ++++++++++++++++++++++++++++-------
- net/mac802154/scan.c         |  10 +--
- 6 files changed, 117 insertions(+), 29 deletions(-)
-
-diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
-index 76d2cd2e2b30..2e960441ea49 100644
---- a/include/net/cfg802154.h
-+++ b/include/net/cfg802154.h
-@@ -376,6 +376,7 @@ struct cfg802154_mac_pkt {
- 	struct list_head node;
- 	struct sk_buff *skb;
- 	struct ieee802154_sub_if_data *sdata;
-+	netdevice_tracker dev_tracker;
- 	u8 page;
- 	u8 channel;
- };
-diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
-index 8f2bff268392..279ff4e9b11e 100644
---- a/net/mac802154/ieee802154_i.h
-+++ b/net/mac802154/ieee802154_i.h
-@@ -74,6 +74,10 @@ struct ieee802154_local {
- 	struct work_struct rx_beacon_work;
- 	struct list_head rx_mac_cmd_list;
- 	struct work_struct rx_mac_cmd_work;
-+	/* Serializes rx_beacon_list and rx_mac_cmd_list against the RX
-+	 * softirq producer, the mac_wq workers and the teardown flush.
-+	 */
-+	spinlock_t rx_lock;
- 
- 	/* Association */
- 	struct ieee802154_pan_device *assoc_dev;
-@@ -300,6 +304,10 @@ static inline bool mac802154_is_beaconing(struct ieee802154_local *local)
- }
- 
- void mac802154_rx_mac_cmd_worker(struct work_struct *work);
-+void mac802154_flush_list(struct list_head *list,
-+			  struct ieee802154_sub_if_data *sdata);
-+void mac802154_flush_queued_pkts(struct ieee802154_local *local,
-+				 struct ieee802154_sub_if_data *sdata);
- 
- int mac802154_perform_association(struct ieee802154_sub_if_data *sdata,
- 				  struct ieee802154_pan_device *coord,
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index b823720630e7..31353795fa24 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -694,6 +694,7 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->iflist_mtx);
- 
- 	synchronize_rcu();
-+	mac802154_flush_queued_pkts(sdata->local, sdata);
- 	unregister_netdevice(sdata->dev);
- }
- 
-@@ -705,6 +706,11 @@ void ieee802154_remove_interfaces(struct ieee802154_local *local)
- 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
- 		list_del_rcu(&sdata->list);
- 
-+		/* Best-effort: a frame the RX softirq queues for this sdata
-+		 * after the flush still pins the netdev, so the
-+		 * unregister_netdevice() below waits it out.
-+		 */
-+		mac802154_flush_queued_pkts(local, sdata);
- 		unregister_netdevice(sdata->dev);
- 	}
- 	mutex_unlock(&local->iflist_mtx);
-diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-index ea1efef3572a..386c086c79d1 100644
---- a/net/mac802154/main.c
-+++ b/net/mac802154/main.c
-@@ -91,6 +91,7 @@ ieee802154_alloc_hw(size_t priv_data_len, const struct ieee802154_ops *ops)
- 	INIT_LIST_HEAD(&local->interfaces);
- 	INIT_LIST_HEAD(&local->rx_beacon_list);
- 	INIT_LIST_HEAD(&local->rx_mac_cmd_list);
-+	spin_lock_init(&local->rx_lock);
- 	mutex_init(&local->iflist_mtx);
- 
- 	tasklet_setup(&local->tasklet, ieee802154_tasklet_handler);
-diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
-index cd8f2a11920d..19b5382e85a8 100644
---- a/net/mac802154/rx.c
-+++ b/net/mac802154/rx.c
-@@ -35,16 +35,23 @@ void mac802154_rx_beacon_worker(struct work_struct *work)
- 		container_of(work, struct ieee802154_local, rx_beacon_work);
- 	struct cfg802154_mac_pkt *mac_pkt;
- 
--	mac_pkt = list_first_entry_or_null(&local->rx_beacon_list,
--					   struct cfg802154_mac_pkt, node);
--	if (!mac_pkt)
--		return;
-+	for (;;) {
-+		spin_lock_bh(&local->rx_lock);
-+		mac_pkt = list_first_entry_or_null(&local->rx_beacon_list,
-+						   struct cfg802154_mac_pkt, node);
-+		if (mac_pkt)
-+			list_del(&mac_pkt->node);
-+		spin_unlock_bh(&local->rx_lock);
-+		if (!mac_pkt)
-+			break;
- 
--	mac802154_process_beacon(local, mac_pkt->skb, mac_pkt->page, mac_pkt->channel);
-+		mac802154_process_beacon(local, mac_pkt->skb,
-+					 mac_pkt->page, mac_pkt->channel);
- 
--	list_del(&mac_pkt->node);
--	kfree_skb(mac_pkt->skb);
--	kfree(mac_pkt);
-+		netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
-+		kfree_skb(mac_pkt->skb);
-+		kfree(mac_pkt);
-+	}
- }
- 
- static bool mac802154_should_answer_beacon_req(struct ieee802154_local *local)
-@@ -68,22 +75,15 @@ static bool mac802154_should_answer_beacon_req(struct ieee802154_local *local)
- 	return interval == IEEE802154_ACTIVE_SCAN_DURATION;
- }
- 
--void mac802154_rx_mac_cmd_worker(struct work_struct *work)
-+static void mac802154_rx_mac_cmd(struct ieee802154_local *local,
-+				 struct cfg802154_mac_pkt *mac_pkt)
- {
--	struct ieee802154_local *local =
--		container_of(work, struct ieee802154_local, rx_mac_cmd_work);
--	struct cfg802154_mac_pkt *mac_pkt;
- 	u8 mac_cmd;
- 	int rc;
- 
--	mac_pkt = list_first_entry_or_null(&local->rx_mac_cmd_list,
--					   struct cfg802154_mac_pkt, node);
--	if (!mac_pkt)
--		return;
--
- 	rc = ieee802154_get_mac_cmd(mac_pkt->skb, &mac_cmd);
- 	if (rc)
--		goto out;
-+		return;
- 
- 	switch (mac_cmd) {
- 	case IEEE802154_CMD_BEACON_REQ:
-@@ -121,11 +121,81 @@ void mac802154_rx_mac_cmd_worker(struct work_struct *work)
- 	default:
- 		break;
- 	}
-+}
- 
--out:
--	list_del(&mac_pkt->node);
--	kfree_skb(mac_pkt->skb);
--	kfree(mac_pkt);
-+void mac802154_rx_mac_cmd_worker(struct work_struct *work)
-+{
-+	struct ieee802154_local *local =
-+		container_of(work, struct ieee802154_local, rx_mac_cmd_work);
-+	struct cfg802154_mac_pkt *mac_pkt;
-+
-+	for (;;) {
-+		spin_lock_bh(&local->rx_lock);
-+		mac_pkt = list_first_entry_or_null(&local->rx_mac_cmd_list,
-+						   struct cfg802154_mac_pkt, node);
-+		if (mac_pkt)
-+			list_del(&mac_pkt->node);
-+		spin_unlock_bh(&local->rx_lock);
-+		if (!mac_pkt)
-+			break;
-+
-+		/* A stopped interface cannot transmit; skipping avoids a
-+		 * needless association response (and the !netif_running()
-+		 * warning it would trip) during teardown. The beacon worker
-+		 * needs no such check as it never transmits.
-+		 */
-+		if (ieee802154_sdata_running(mac_pkt->sdata))
-+			mac802154_rx_mac_cmd(local, mac_pkt);
-+
-+		netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
-+		kfree_skb(mac_pkt->skb);
-+		kfree(mac_pkt);
-+	}
-+}
-+
-+/**
-+ * mac802154_flush_list - free queued RX frames on @list
-+ * @list: rx_beacon_list or rx_mac_cmd_list
-+ * @sdata: only free frames received on this interface, or %NULL for all
-+ *
-+ * Each frame pins the net_device it was received on (via netdev_hold()),
-+ * so release that reference as the frame is dropped. Caller must hold
-+ * local->rx_lock.
-+ */
-+void mac802154_flush_list(struct list_head *list,
-+			  struct ieee802154_sub_if_data *sdata)
-+{
-+	struct cfg802154_mac_pkt *mac_pkt, *tmp;
-+
-+	list_for_each_entry_safe(mac_pkt, tmp, list, node) {
-+		if (sdata && mac_pkt->sdata != sdata)
-+			continue;
-+		list_del(&mac_pkt->node);
-+		netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
-+		kfree_skb(mac_pkt->skb);
-+		kfree(mac_pkt);
-+	}
-+}
-+
-+/**
-+ * mac802154_flush_queued_pkts - drop queued RX work referencing @sdata
-+ * @local: the mac802154 device
-+ * @sdata: interface being removed
-+ *
-+ * The workers dereference the queued frame's interface directly
-+ * (mac_pkt->sdata) or through skb->dev in mac802154_process_beacon(). Drop
-+ * the not-yet-started entries belonging to @sdata before it is unregistered
-+ * so their netdev reference is released; an entry already dequeued by a
-+ * running worker keeps its own reference until the worker completes, which
-+ * unregister_netdevice() then waits out.
-+ */
-+void mac802154_flush_queued_pkts(struct ieee802154_local *local,
-+				 struct ieee802154_sub_if_data *sdata)
-+{
-+	spin_lock_bh(&local->rx_lock);
-+	mac802154_flush_list(&local->rx_beacon_list, sdata);
-+	mac802154_flush_list(&local->rx_mac_cmd_list, sdata);
-+	spin_unlock_bh(&local->rx_lock);
- }
- 
- static int
-@@ -221,7 +291,10 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 		mac_pkt->sdata = sdata;
- 		mac_pkt->page = sdata->local->scan_page;
- 		mac_pkt->channel = sdata->local->scan_channel;
-+		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
-+		spin_lock(&sdata->local->rx_lock);
- 		list_add_tail(&mac_pkt->node, &sdata->local->rx_beacon_list);
-+		spin_unlock(&sdata->local->rx_lock);
- 		queue_work(sdata->local->mac_wq, &sdata->local->rx_beacon_work);
- 		return NET_RX_SUCCESS;
- 
-@@ -233,7 +306,10 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 
- 		mac_pkt->skb = skb_get(skb);
- 		mac_pkt->sdata = sdata;
-+		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
-+		spin_lock(&sdata->local->rx_lock);
- 		list_add_tail(&mac_pkt->node, &sdata->local->rx_mac_cmd_list);
-+		spin_unlock(&sdata->local->rx_lock);
- 		queue_work(sdata->local->mac_wq, &sdata->local->rx_mac_cmd_work);
- 		return NET_RX_SUCCESS;
- 
-diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
-index 300d4584533e..245e32970c05 100644
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -104,13 +104,9 @@ static unsigned int mac802154_scan_get_channel_time(u8 duration_order,
- 
- static void mac802154_flush_queued_beacons(struct ieee802154_local *local)
- {
--	struct cfg802154_mac_pkt *mac_pkt, *tmp;
--
--	list_for_each_entry_safe(mac_pkt, tmp, &local->rx_beacon_list, node) {
--		list_del(&mac_pkt->node);
--		kfree_skb(mac_pkt->skb);
--		kfree(mac_pkt);
--	}
-+	spin_lock_bh(&local->rx_lock);
-+	mac802154_flush_list(&local->rx_beacon_list, NULL);
-+	spin_unlock_bh(&local->rx_lock);
- }
- 
- static void
--- 
-2.50.1 (Apple Git-155)
-
+2026=EB=85=84 7=EC=9B=94 23=EC=9D=BC (=EB=AA=A9) =EC=98=A4=ED=9B=84 6:17, L=
+oktionov, Aleksandr
+<aleksandr.loktionov@intel.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+>
+>
+> > -----Original Message-----
+> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> > Of Myeonghun Pak
+> > Sent: Monday, July 20, 2026 4:35 PM
+> > To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> > Przemyslaw <przemyslaw.kitszel@intel.com>; intel-wired-
+> > lan@lists.osuosl.org
+> > Cc: Olech, Milena <milena.olech@intel.com>; Tantilov, Emil S
+> > <emil.s.tantilov@intel.com>; Mina Almasry <almasrymina@google.com>;
+> > Andrew Lunn <andrew+netdev@lunn.ch>; David S . Miller
+> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> > Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>;
+> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Myeonghun Pak
+> > <mhun512@gmail.com>; Ijae Kim <ae878000@gmail.com>
+> > Subject: [Intel-wired-lan] [PATCH v3 net] idpf: disable PTM on probe
+> > failure and on remove
+> >
+> > idpf_probe() enables PCIe Precision Time Measurement with
+> > pci_enable_ptm(), which takes a reference on the device and on every
+> > PTM-capable device up the path to the PTM Root.
+> >
+> > Neither the probe error path nor idpf_remove() drops that reference,
+> > so the PTM enable counts of this device and of its upstream path stay
+> > elevated with no bound driver, and the device's PTM control bits
+> > remain set.  pcim_enable_device() only arranges for
+> > pci_disable_device() and does not undo the PTM enable.
+> >
+> > Add the matching pci_disable_ptm() to the common probe unwind and to
+> > idpf_remove().  pci_enable_ptm() failure is not fatal here, so guard
+> > both calls with pcie_ptm_enabled(): pci_disable_ptm() decrements
+> > dev->ptm_enable_cnt unconditionally and then recurses upstream, so
+> > calling it after a failed enable would drive this device's count
+> > negative and wrongly decrement parents shared with other endpoints.
+> >
+> > This issue was identified during our ongoing static-analysis research
+> > while reviewing kernel code.
+> >
+> > Fixes: 8d5e12c5921c ("idpf: add initial PTP support")
+> > Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> > ---
+> > Changes in v3:
+> > - Rebased; aa8671af0c38 ("PCI/PTM: Drop pci_enable_ptm() granularity
+> >   parameter") changed the call signature, so v2 no longer applied.
+> > - Guard both pci_disable_ptm() calls with pcie_ptm_enabled(), as
+> >   pci_disable_ptm() is refcounted and recurses upstream since
+> >   e1092d5e15e6 ("PCI/PTM: Do not enable PTM automatically for Root and
+> >   Switch Upstream Ports").  Raised by Tony Nguyen.
+> > - Dropped the v2 claim that pci_disable_ptm() is a no-op when PTM was
+> > not
+> >   enabled; that is no longer true.
+> >
+> > Changes in v2:
+> > - Disable PTM in the probe error path, as requested by Emil Tantilov.
+> >
+> >  drivers/net/ethernet/intel/idpf/idpf_main.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > index ab3c409..97bafeb 100644
+> > --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> > @@ -159,6 +159,8 @@ destroy_wqs:
+> >       mutex_destroy(&adapter->queue_lock);
+> >       mutex_destroy(&adapter->vc_buf_lock);
+> >
+> > +     if (pcie_ptm_enabled(pdev))
+> > +             pci_disable_ptm(pdev);
+> >       pci_set_drvdata(pdev, NULL);
+> >       kfree(adapter);
+> >  }
+> > @@ -266,7 +268,7 @@ static int idpf_probe(struct pci_dev *pdev, const
+> > struct pci_device_id *ent)
+> >       if (err) {
+> >               pci_err(pdev, "DMA configuration failed: %pe\n",
+> > ERR_PTR(err));
+> >
+> > -             goto err_free;
+> > +             goto err_disable_ptm;
+> >       }
+> >
+> >       pci_set_master(pdev);
+> > @@ -279,7 +281,7 @@ static int idpf_probe(struct pci_dev *pdev, const
+> > struct pci_device_id *ent)
+> >       if (!adapter->init_wq) {
+> >               dev_err(dev, "Failed to allocate init workqueue\n");
+> >               err =3D -ENOMEM;
+> > -             goto err_free;
+> > +             goto err_disable_ptm;
+> >       }
+> >
+> >       adapter->serv_wq =3D alloc_workqueue("%s-%s-service", @@ -366,6
+> > +368,9 @@ err_mbx_wq_alloc:
+> >       destroy_workqueue(adapter->serv_wq);
+> >  err_serv_wq_alloc:
+> >       destroy_workqueue(adapter->init_wq);
+> > +err_disable_ptm:
+> > +     if (pcie_ptm_enabled(pdev))
+> > +             pci_disable_ptm(pdev);
+> >  err_free:
+> >       kfree(adapter);
+> >       return err;
+> > --
+> > 2.47.1
+>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
