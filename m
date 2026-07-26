@@ -1,196 +1,302 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011005.outbound.protection.outlook.com [52.101.62.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1378D377AAC;
-	Sun, 26 Jul 2026 09:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785057001; cv=fail; b=LQdmtDEELSm2QaXV4B7hr1Mb+PbY/VaFlfWk3VHfo1LdA3GDWjnCCv2bvcLZ1+c0gk6wLJM+k0QwYB04yZfZw8NHEKRNcDlHHQ/GEm+XKRTo8MZ58nm3fu761pe6ZFalAtmj4g93vZx5iWZagSmtctMLtMMn609FbzbKcXkIGVQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785057001; c=relaxed/simple;
-	bh=IEIquP7m/KvqmmajHmFsYp2lTx1b9u25nLAs57DDiY4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=N+sVsoIKMMRoYrSjn/uaCjJZkGVkT5Pnf2A5Fsx0SnB7atuKaaxdHT3aQkhlasWZo0CjJy8M6C0d4mQPCh/DV8iFsfH4Njju+2arf2VX7SEZ5EjQUM1TB81cBN1l6bclCs0VKxec+Lqn0Q1nxsQirbgCpNLkCdZicz8FG5fgNR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tlXhXt21; arc=fail smtp.client-ip=52.101.62.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5589C288C2D
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785057692; cv=none; b=CQ3ilz5w7XwE/jo6DitHCLJMUsLuWN7kB7SNGI5Ylo6ktfu4byDZE7uZ3k5oHGNfedJlJWvqp1nbQ+tJcXbNYB1udbWzwTJX8N5gLsr7275V3MP9pNhpV9x2A/OZxG4wuHenYnyxFjjSwdESA9tVH2y+Lt06pXljnFiuhMzOSPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785057692; c=relaxed/simple;
+	bh=lafd3XEcaNeaMaLenplXzbLxjLUVzRQKpK5icSzVVTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MJmYqswuTpC4jYNN/mgDB1CepY9qdkthJGF5rqGAaW/AtddN2Np8+ngRP5PfMTHmQRgi03XJjwguNHPEbWSPwRWdd4RlOJJkZf0a436qQ+aglROzNJP9Os7QgnmBAqfxCYnX7uu8G+D2v5ZyEdi7iX9wSdPK6NLhMHcNAwbn5bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JPB07ovy; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tlXhXt21"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ihn0cl0inTH54rkt5mieQmt+a3/VG6hy8NiblxACGyHodGWhjSBZBMP2CACGN4kntwGjaOPqmhKAEA+0wzHJgcaSwkpVH19tpsu04hYTlYvcGzKelzvyyl3R7z8L16x7W+NmZLgzgIYGB0vnwqMWAMIw7ZHB4bg32jFE0jJvS23yTNiMM4HLiOnR843WukBJj6TzcSA241Tae6fk7iPo0F3noyMvKQf5uVOkQLrZ1qe5hQW3NskHkYRoMQ93cMHp4HIalajWXpRfi3Y3DxHbdiroY6Q7nO6S/GnVL7KOr3qtPzWYzNCErwQ+/WeNGqIa/NCx+EB0ygAWeH2+/jQvgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7GTH7aDIOzwn2FDoFWtVs999P0wcjSAbC4YQKRKzq8w=;
- b=qVdvyWvOP2MxR0IOucVOVuJcp/PzHTs1e5+Q42MoD6jwQfQ5kvqlpSZXsxi8KqHCTr7NeYXXMEY7yTRfK0xsp2VXbM81W4VCNDD1aBf5ULU8fYq4IdKv+mrzKKa56SDWPsabF8BG2Rz42c53fikkoQoeykMZTB36QW1ZpGN6NMF2tlrs7A5g/kEiQGyTH5r0MfxWSscs/AMopL+RXQGS/7ptzXyfIcVhQvtgNTHnaXjeDdsE39l6PqQA39nagsOH389YSPAJzImXxMIJqq/5F/kzsX74XIpZrokHlaYXHKn5d70sEoj6dUZ6ytrqSdqwm/PHeAfBZCZK1D7RnGJUdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7GTH7aDIOzwn2FDoFWtVs999P0wcjSAbC4YQKRKzq8w=;
- b=tlXhXt21biEHthdrEgG077cvdwtSvgyRCULqtkZPsELrJpOPEn+uVD5+QO6Z7rOQjCsqMiP6r0iGixqNNjlJDG05VMy4AV9vaV3QLKgMQd07SMvCsmJCs8/7iJz2wb9gf6W8KniaC7qQ8R/HEBekFHYqHT6xdqBPGIPFAlzu/uk/ndpOH+x2/oFCCNdLqJBq+2/0NpGeSZbE24XNWms4N23CRRb5J+nVnfIo3OoEzaAJZFE5FzU5vwZennD21u1QJaBnWruIVT6imAPb7rFiOH4jMx+9ztnMv1HuI4EyIJyU6Kb1M8rf7SZhs41LcvbBTJzR07i62dk1nhMF3Hab8A==
-Received: from BY3PR05CA0026.namprd05.prod.outlook.com (2603:10b6:a03:254::31)
- by SJ5PPFDF5E260D0.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Sun, 26 Jul
- 2026 09:09:54 +0000
-Received: from SJ1PEPF00001CE6.namprd03.prod.outlook.com
- (2603:10b6:a03:254:cafe::f) by BY3PR05CA0026.outlook.office365.com
- (2603:10b6:a03:254::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.8 via Frontend Transport; Sun, 26
- Jul 2026 09:09:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SJ1PEPF00001CE6.mail.protection.outlook.com (10.167.242.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Sun, 26 Jul 2026 09:09:54 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 26 Jul
- 2026 02:09:53 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Sun, 26 Jul 2026 02:09:53 -0700
-Received: from [10.135.59.1] (10.127.8.10) by mail.nvidia.com (10.126.190.181)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Sun, 26
- Jul 2026 02:09:50 -0700
-From: Edward Srouji <edwards@nvidia.com>
-Date: Sun, 26 Jul 2026 12:09:41 +0300
-Subject: [PATCH rdma-next v2 2/2] RDMA/mlx5: Deprecate latency-sensitive
- QPs feature
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JPB07ovy"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8485ab7c382so227834b3a.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 02:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785057691; x=1785662491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+s/4/9g/DhYkPtUyAU+bTxPmdaVZeyponCpbYYiuK/k=;
+        b=JPB07ovy3Llk7wLaLSLuN+P1Chj4oZVGuc89ECHZKFmLKhKJgFrSQcjOkBmKLyMKOh
+         NeMsdutDG1B1uvZ299xVXfpk98EohPKdohGv7mNyvYD9ibRR64P8pMYzhKBNP4eUrfZB
+         MQ9+9ElJyT41bQQlJG7o9rVtXhwlfmLm4ilUJppw4uULZZ3bIuY1Vk/KYcDChXc8GqIg
+         yvnWXRy16OAeh049iiDqILayCZ3QABMGyv7L4mIKaSOmgaO8i4ZcWVQPYbjUO+QFvFSb
+         EbuKmsNT5qVGeo6i1BoQLYJwZSCyzfqRtEhyoYaJU5mP7r1BenuBAlbrTNDWFZx76Osi
+         cpmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785057691; x=1785662491;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+s/4/9g/DhYkPtUyAU+bTxPmdaVZeyponCpbYYiuK/k=;
+        b=SYcOdhGWJt79wZ7KWgceMVAJtlrNRj5kM2jevAO8UOboxmf4uI1eka1X1Cbb/6tyY4
+         /K8s4tirB7E7ssHwZy0TT26n+SiRenwpZpzYvY9h0fu5/frHRYIOzD/koX6fBCdRc0dk
+         7+bDNN6js152z0oX9OZ767zaHewa/4hhXmkw4XMg7zxh4s7vmZOANOCv4o29IEEoEtQY
+         Kziio0kZQ1hb9diFQNI+ks22wiBBIhhCE4GM59aBKdwVxJE59wm+UqiJTCRwAvwMwjAr
+         SOnrbiNCEUVrjXBWmMKgWNDlpxbGHvJCoHMxy+zoCc1y2vHna7IbOCdKps0z3eOi0plD
+         PsEw==
+X-Gm-Message-State: AOJu0YzMMjSFOwd2YXbAzBOzRBiTW5hdRCxk7ie9vpK6ZVxD3eUseHiW
+	QVE5seiAxAv7BG8zF+MF8jS3/ryxYQElmo6wnW0W8LF178vf7OYAbrMbDpww5J619Oi6pw==
+X-Gm-Gg: AR+sD13ylPF8OBrkzRMVePG48YUbEbfNm7GtzVzhfGTfDc8YpieskQWDW5k/dy4KMga
+	Ndq1unrr1V4PHcEH5ATGWikpycDiDZ/lyzAgz1Dfq/metv2LhbIOF+G9OTvac3hd9kcj0DEiCkx
+	VraNRKA28dSGJkMtCj6UoAKA+uvCXlbGa00SUnSg/5U1u+dw0A9MOLlnNIEjZYy2KnjRYFb9Yic
+	5SGy/StQc5dHocE1SsMmupGtN3gecvEN281YvT1OmZMOL0Ep8xlwop9rISx6hLSaSoZpqsyuamJ
+	cp9noy59HRseKQkf324xT+40c8+IPDpvCYZWsMi3yQpiI1J09z4Nw2trE/Ys7maUqLLyjcTl9j2
+	F6/zldi5/Jgmfa4rJD5wS/UqiAb7X+NHbnWaGa19mf23BpXnGcvSPUBlqCWQr5JQDcVEwHqXDSw
+	DaBMMkwXs4/I32N/v2Psk2+bFaI0XoKoCX8bYTi0cZuEngEux3ULSbDM3k+o4Y8AMA7MQ9
+X-Received: by 2002:a17:903:468d:b0:2c9:99be:f011 with SMTP id d9443c01a7336-2cfde8941b5mr36180245ad.6.1785057690388;
+        Sun, 26 Jul 2026 02:21:30 -0700 (PDT)
+Received: from localhost.localdomain ([183.46.220.31])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e2b44sm18158465ad.27.2026.07.26.02.21.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 26 Jul 2026 02:21:30 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>
+Subject: [PATCH net v2] packet: use consistent header lengths in raw send paths
+Date: Sun, 26 Jul 2026 17:21:10 +0800
+Message-ID: <20260726092110.80185-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
+References: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260726-deprecate-lat-qps-v2-2-5e0c2ee55046@nvidia.com>
-References: <20260726-deprecate-lat-qps-v2-0-5e0c2ee55046@nvidia.com>
-In-Reply-To: <20260726-deprecate-lat-qps-v2-0-5e0c2ee55046@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>
-CC: <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, Edward Srouji <edwards@nvidia.com>, "Michael
- Guralnik" <michaelgur@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785056984; l=2722;
- i=edwards@nvidia.com; s=20251029; h=from:subject:message-id;
- bh=6AECL2w0c+zmx7KwsDI1jqwovell6TlNq9owtV4P6xQ=;
- b=QRacklWuyTSIYtT/QQAjFpiJCUU099GZsJfF68vALs3LIaHodFbKLtUWgqcUuGJQRf3PqkP4O
- BUXzxCGylJ1DTIBkvyXU1XuyzaQonHiVe5BqfxKjk6CC7aRix8SdMX9
-X-Developer-Key: i=edwards@nvidia.com; a=ed25519;
- pk=VME+d2WbMZT5AY+AolKh2XIdrnXWUwwzz/XLQ3jXgDM=
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE6:EE_|SJ5PPFDF5E260D0:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d7767ac-087e-4c19-ce7a-08deeaf5a813
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|23010399003|376014|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	KjtCIfFkqzfiFcoNIuiPTXlzF13QssZ3CrrwUiSgK+99vqgtmAiBZ70szuPkpC/hs9l49FacxZpjtcTRhLga1vw3EFqx+HaG6B+F5MUkMCwLyu4v9gkjoCViWQyyiG2Rb63QXfxlxtpbcbRSb0wOIuJyFXk39BJYf81R7Efp3vQPPoxODwX3nevVXcVx50E0KOXfvID09AprgNsMBG8VmmlxidB7qNbNtT5UFgBtEvyRi0EoIaUEGzv7zF/bF2+L0U14g6UqInebs1ulwLBwZ5U7uVv09M6rehhejy2kOZciVo9Tol0s3KSpDRrhLXR/cmqylPkOMkE1omvdRMdDuAzkEmdHmmIVFFMRGoh1DqrdKi1VWIcs3jhNm2VcveGT0M0KJyqCiMJlPJ7xiMq4MTBqKWcgGiVGpy1kh8MFSH9JeeI4RW27+hxV2EAxDXJ+PUuqcdZE9slLR8tCdTAe0G4RzAhjX7o9dMtfvSGXkog6rLsOr6R5QIG07fss0SimfVhi54WhM7geGiM1w2X7J8NN7Bse9FL8EPSaplbMVxHgVaKwcW5wYxE6tAxm04lLPSY7eQ6wJtZeDdWfurxiGdTh6SnYzBji+WZRGbwTsfvuc/Dbifp5xspHimLx1tXmKnzXn/K2QGGnICP5lKLDcr9iR98sYBWmokWyFvZm4L7ZG/Bc2LGV4xy3BHYWt3d496Jf5E9KZBTf1w75t6SRTw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(23010399003)(376014)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4e2jXCPHasJGq2dEutyo2WctiKhzP+wQQ/mQj5mZIRQ7AzOYP2g3iAE08/nwKkFHXtPM9MGmtJ2DzTzYJcGkqC03KGGGD+JGG+EjMKMkeU8TTAullMLjsaeDHIbBn1gfS73q5IxCVKOMwSXbxsexcCk0hm/2PqOUUH1ckp3BYJAPy5KmGBHO6/AZXxQGy9pHfnq3oMk/R+MosnTWqR61VqThEDTUOtCQRo8Is8qDKGd7LvCcDeDSW5P6TNSTtDbGDKE6qBI7VXek/DDyHBpq+SUWqXR/A1E3u+RVQSOPc9pKtFelnl0MHpG5kI3Snri18xbkp+4sPIRyzzQWmh3ZVUzMptyXJp2lPPysGMKzJYLFlc++H32ZWCpQzxeEPz7qkvazMuC6dS6Nq/qJAS4SvB/87tHIEmDnij6buou+JQcN0DLOhm0nv70k7FvmFyKu
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 09:09:54.0770
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d7767ac-087e-4c19-ce7a-08deeaf5a813
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE6.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFDF5E260D0
+Content-Transfer-Encoding: 8bit
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+packet_snd(), tpacket_snd(), and packet_sendmsg_spkt() read
+dev->hard_header_len multiple times while allocating and constructing an
+skb. Device reconfiguration can change this value concurrently, for
+example through bonding device type changes.
 
-New HW no longer implements a separate class for latency-sensitive QPs and
-advertises this by a new cap bit.
-REG_UMR is the only QP that used this feature, so gate its usage of the
-feature on this cap.
+For SOCK_RAW, packet_snd() can save a larger value in reserve and later
+allocate headroom using a smaller value. Moving skb->data back by reserve
+then places it before skb->head, and the following copy from userspace can
+attempt an out-of-bounds write.
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
+tpacket_snd() similarly uses independent values for allocation and for
+the skb_push()/skb_put() operations in tpacket_fill_skb(). The legacy
+packet_sendmsg_spkt() path also calculates its reservation and header
+offset from separate reads before dropping the RCU read lock to allocate
+the skb. A larger offset than reservation can move skb->data before
+skb->head, while mixed TX-ring values can also make
+copylen - hard_header_len negative.
+
+Read hard_header_len once for each send operation and use that value for
+RAW allocation and construction. The trigger requires racing an
+AF_PACKET sender with privileged netdevice reconfiguration.
+
+The separate SOCK_DGRAM consistency problem between hard_header_len and
+header_ops->create is not addressed here.
+
+Fixes: b84bbaf7a6c8 ("packet: in packet_snd start writing at link layer allocation")
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
- drivers/infiniband/hw/mlx5/main.c |  6 +++++-
- drivers/infiniband/hw/mlx5/qp.c   | 12 +++++++-----
- 2 files changed, 12 insertions(+), 6 deletions(-)
+v2:
+- Cover packet_sendmsg_spkt().
+- Limit snapshot-based calculations to RAW construction; leave DGRAM
+  unchanged for a separate fix.
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index d65ebdef28234fe91ad4c24a5ded2d3af8bc646e..a0f5341f40ff1c0414939dba50301f0255825065 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -4950,6 +4950,9 @@ static int mlx5_ib_stage_bfrag_init(struct mlx5_ib_dev *dev)
- 	if (err)
- 		return err;
- 
-+	if (MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
-+		return 0;
-+
- 	err = mlx5_alloc_bfreg(dev->mdev, &dev->fp_bfreg, false, true);
- 	if (err)
- 		mlx5_free_bfreg(dev->mdev, &dev->bfreg);
-@@ -4959,7 +4962,8 @@ static int mlx5_ib_stage_bfrag_init(struct mlx5_ib_dev *dev)
- 
- static void mlx5_ib_stage_bfrag_cleanup(struct mlx5_ib_dev *dev)
- {
--	mlx5_free_bfreg(dev->mdev, &dev->fp_bfreg);
-+	if (!MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
-+		mlx5_free_bfreg(dev->mdev, &dev->fp_bfreg);
- 	mlx5_free_bfreg(dev->mdev, &dev->bfreg);
- }
- 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 7ff02d89c31d5b4db4c94453efafc0fce212acea..9253402ed645c9985eed098d3b21bea638028218 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -1123,7 +1123,8 @@ static int _create_kernel_qp(struct mlx5_ib_dev *dev,
- 	void *qpc;
+Link to v1: https://lore.kernel.org/netdev/20260721084935.12312-1-q.h.hack.winter@gmail.com/
+---
+ net/packet/af_packet.c | 64 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 18 deletions(-)
+
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index e75d2932475a..d23898f24641 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1953,6 +1953,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 	struct net_device *dev;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto = 0;
++	unsigned int hard_header_len = 0;
  	int err;
+ 	int extra_len = 0;
  
--	if (init_attr->qp_type == MLX5_IB_QPT_REG_UMR)
-+	if (init_attr->qp_type == MLX5_IB_QPT_REG_UMR &&
-+	    !MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
- 		qp->bf.bfreg = &dev->fp_bfreg;
- 	else
- 		qp->bf.bfreg = &dev->bfreg;
-@@ -2509,11 +2510,12 @@ static int create_kernel_qp(struct mlx5_ib_dev *dev, struct ib_pd *pd,
- 	MLX5_SET(qpc, qpc, st, mlx5_st);
- 	MLX5_SET(qpc, qpc, pm_state, MLX5_QP_PM_MIGRATED);
+@@ -1996,15 +1997,21 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
+ 		}
+ 		extra_len = 4; /* We're doing our own CRC */
+ 	}
++	if (!skb)
++		hard_header_len = READ_ONCE(dev->hard_header_len);
  
--	if (attr->qp_type != MLX5_IB_QPT_REG_UMR)
-+	if (attr->qp_type == MLX5_IB_QPT_REG_UMR) {
-+		if (!MLX5_CAP_GEN(dev->mdev, qp_latency_sensitive_disable))
-+			MLX5_SET(qpc, qpc, latency_sensitive, 1);
-+	} else {
- 		MLX5_SET(qpc, qpc, pd, to_mpd(pd ? pd : devr->p0)->pdn);
--	else
--		MLX5_SET(qpc, qpc, latency_sensitive, 1);
--
+ 	err = -EMSGSIZE;
+-	if (len > dev->mtu + dev->hard_header_len + VLAN_HLEN + extra_len)
++	if (len > dev->mtu + hard_header_len + VLAN_HLEN + extra_len)
+ 		goto out_unlock;
+ 
+ 	if (!skb) {
+-		size_t reserved = LL_RESERVED_SPACE(dev);
++		size_t reserved;
+ 		int tlen = dev->needed_tailroom;
+-		unsigned int hhlen = dev->header_ops ? dev->hard_header_len : 0;
++		unsigned int hhlen = READ_ONCE(dev->header_ops) ?
++				     hard_header_len : 0;
++
++		reserved = ((hard_header_len + READ_ONCE(dev->needed_headroom)) &
++			    ~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
+ 
+ 		rcu_read_unlock();
+ 		skb = sock_wmalloc(sk, len + reserved + tlen, 0, GFP_KERNEL);
+@@ -2569,6 +2576,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
+ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 		void *frame, struct net_device *dev, void *data, int tp_len,
+ 		__be16 proto, unsigned char *addr, int hlen, int copylen,
++		int hard_header_len,
+ 		const struct sockcm_cookie *sockc)
+ {
+ 	union tpacket_uhdr ph;
+@@ -2600,8 +2608,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	} else if (copylen) {
+ 		int hdrlen = min_t(int, copylen, tp_len);
+ 
+-		skb_push(skb, dev->hard_header_len);
+-		skb_put(skb, copylen - dev->hard_header_len);
++		skb_push(skb, hard_header_len);
++		skb_put(skb, copylen - hard_header_len);
+ 		err = skb_store_bits(skb, 0, data, hdrlen);
+ 		if (unlikely(err))
+ 			return err;
+@@ -2732,7 +2740,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	void *data;
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+-	int hlen, tlen, copylen = 0;
++	int hard_header_len = 0, hlen, tlen, copylen = 0;
+ 	long timeo;
+ 
+ 	mutex_lock(&po->pg_vec_lock);
+@@ -2779,8 +2787,10 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_put;
+ 	}
+ 
+-	if (po->sk.sk_socket->type == SOCK_RAW)
+-		reserve = dev->hard_header_len;
++	if (po->sk.sk_socket->type == SOCK_RAW) {
++		hard_header_len = READ_ONCE(dev->hard_header_len);
++		reserve = hard_header_len;
 +	}
+ 	size_max = po->tx_ring.frame_size
+ 		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
  
- 	if (qp->flags & IB_QP_CREATE_BLOCK_MULTICAST_LOOPBACK)
- 		MLX5_SET(qpc, qpc, block_lb_mc, 1);
-
+@@ -2817,7 +2827,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto tpacket_error;
+ 
+ 		status = TP_STATUS_SEND_REQUEST;
+-		hlen = LL_RESERVED_SPACE(dev);
++		if (po->sk.sk_socket->type == SOCK_RAW)
++			hlen = ((hard_header_len +
++				 READ_ONCE(dev->needed_headroom)) &
++				~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
++		else
++			hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (vnet_hdr_sz) {
+ 			data += vnet_hdr_sz;
+@@ -2835,10 +2850,14 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 						    vnet_hdr.hdr_len);
+ 			has_vnet_hdr = true;
+ 		}
+-		copylen = max_t(int, copylen, dev->hard_header_len);
++		if (po->sk.sk_socket->type == SOCK_RAW)
++			copylen = max_t(int, copylen, hard_header_len);
++		else
++			copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+ 				hlen + tlen + sizeof(struct sockaddr_ll) +
+-				(copylen - dev->hard_header_len),
++				(copylen - (po->sk.sk_socket->type == SOCK_RAW ?
++				 hard_header_len : dev->hard_header_len)),
+ 				!need_wait, &err);
+ 
+ 		if (unlikely(skb == NULL)) {
+@@ -2848,7 +2867,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			goto out_status;
+ 		}
+ 		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
+-					  addr, hlen, copylen, &sockc);
++					  addr, hlen, copylen, hard_header_len,
++					  &sockc);
+ 		if (likely(tp_len >= 0) &&
+ 		    tp_len > dev->mtu + reserve &&
+ 		    !vnet_hdr_sz &&
+@@ -2956,7 +2976,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	int offset = 0;
+ 	struct packet_sock *po = pkt_sk(sk);
+ 	int vnet_hdr_sz = READ_ONCE(po->vnet_hdr_sz);
+-	int hlen, tlen, linear;
++	int hard_header_len = 0, hlen, tlen, linear;
+ 	int extra_len = 0;
+ 
+ 	/*
+@@ -2996,14 +3016,17 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 			goto out_unlock;
+ 	}
+ 
+-	if (sock->type == SOCK_RAW)
+-		reserve = dev->hard_header_len;
+ 	if (vnet_hdr_sz) {
+ 		err = packet_snd_vnet_parse(msg, &len, &vnet_hdr, vnet_hdr_sz);
+ 		if (err)
+ 			goto out_unlock;
+ 	}
+ 
++	if (sock->type == SOCK_RAW) {
++		hard_header_len = READ_ONCE(dev->hard_header_len);
++		reserve = hard_header_len;
++	}
++
+ 	if (unlikely(sock_flag(sk, SOCK_NOFCS))) {
+ 		if (!netif_supports_nofcs(dev)) {
+ 			err = -EPROTONOSUPPORT;
+@@ -3018,10 +3041,15 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		goto out_unlock;
+ 
+ 	err = -ENOBUFS;
+-	hlen = LL_RESERVED_SPACE(dev);
++	if (sock->type == SOCK_RAW)
++		hlen = ((hard_header_len + READ_ONCE(dev->needed_headroom)) &
++			~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
++	else
++		hlen = LL_RESERVED_SPACE(dev);
+ 	tlen = dev->needed_tailroom;
+ 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
+-	linear = max(linear, min_t(int, len, dev->hard_header_len));
++	linear = max(linear, min_t(int, len, sock->type == SOCK_RAW ?
++					 hard_header_len : dev->hard_header_len));
+ 	skb = packet_alloc_skb(sk, hlen + tlen, hlen, len, linear,
+ 			       msg->msg_flags & MSG_DONTWAIT, &err);
+ 	if (skb == NULL)
+@@ -3037,7 +3065,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	} else if (reserve) {
+ 		skb_reserve(skb, -reserve);
+ 		if (len < reserve + sizeof(struct ipv6hdr) &&
+-		    dev->min_header_len != dev->hard_header_len)
++		    dev->min_header_len != hard_header_len)
+ 			skb_reset_network_header(skb);
+ 	}
+ 
 -- 
-2.49.0
+2.50.1 (Apple Git-155)
 
