@@ -1,25 +1,25 @@
-Received: from out28-76.mail.aliyun.com (out28-76.mail.aliyun.com [115.124.28.76])
+Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14152DECC2;
-	Sun, 26 Jul 2026 03:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387B5145A1F;
+	Sun, 26 Jul 2026 04:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785037144; cv=none; b=FpVZqCkkLUBphCeJjoTHcBiiN/9HybK8WdygnkVcGJX0r+qsn1XqZHQAQXSahm2xYgX0wa/FeR2qDrJ+3Pl3EsIJHuLRgf1l3xpYkB0iZXzPtClWJ+eQ95l3voNQPtgNuv/E+KIIuqtN+yqWdXdqGbjiWyi4AbQ8HqHEnYLXa/8=
+	t=1785039902; cv=none; b=BQkBKvWOFgqy6UyfyjLfusZpdYEMhzhrgxGTz9OE45SaGOktOegyoLVEqtTMbjfAnZpzjrgoX4u+BMUfbeI7QtYsDregS3k5CiVIUbPd01nmbcXjNMxHPDkMgjSNWSIV137AibRCO08XAJtTxYhdKnEJyOtdo1Uvx8JZF4Bc7Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785037144; c=relaxed/simple;
-	bh=AKpmIiQ4iccJxRD6HKk5WnyquH17NEcMmgFceiW2Lk4=;
+	s=arc-20240116; t=1785039902; c=relaxed/simple;
+	bh=e+lsiu01C/Fy2ec8G3wRPD6nIDi2uKxukqIj3lh7piU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rXyR5rDsmTVSvzS2rulEv5nG9nqKl4EoooqvefyZRcZN1Eaco++3DNZ8zNF4jYzZdSAA38AvngPFMmPABPUhjFjlQWxatocgYVmwXRuKMEypobiaJGPcFaUMbPt9ujamrF3TNxPrXYqJjBoWfsJX0m/3A8SX/Q3MoxgNmYenBMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.76
+	 In-Reply-To:Content-Type; b=oPJaAlz7UxA176EJrsUrN0jSGLCNxZS1oAUw4KwX/lcGdzhJPWyDOanfRN83huSc6u03Zy5tu4EhT8fv027aJez+mxi0yOE5doW592bWFwI9rA9stxa17MMPgGR55l7mH9CK7m/muLAKnRP3JLZBsrc40sRfPYw/Z61svFQBmiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07541294|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.263698-0.00342386-0.732878;FP=14437360192616700034|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iVOucSP_1785037128;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iVOucSP_1785037128 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.071998|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.279964-0.00767902-0.712357;FP=17156393074478994592|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iVPHz7x_1785039892;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iVPHz7x_1785039892 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Sun, 26 Jul 2026 11:38:50 +0800
-Message-ID: <3398745a-d443-4882-9196-dd280b8ba982@motor-comm.com>
-Date: Sun, 26 Jul 2026 11:38:48 +0800
+          Sun, 26 Jul 2026 12:24:54 +0800
+Message-ID: <2f1f6891-8ae8-4e39-a5be-a2c8a59b562b@motor-comm.com>
+Date: Sun, 26 Jul 2026 12:24:52 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,14 +108,12 @@ On 7/25/26 06:18, Andrew Lunn wrote:
 > has selected?
 > 
 
-Ans: yes, this place only involves the operation of UTP. The addition of 
-     the operation to swap address spaces is solely to ensure that the 
-     current operation is conducted on the UTP side, without affecting 
-     the switching to the USXGMII side through other APIs.If the current 
-     operation is performed on the USXGMII size, it cannot access the 
-     standard MMD register of UTP, and all operations are configured and 
-     the status obtained is the status of the UXGMII side, that is not what
-     we want. That is why an operation to swap reg space has been added at 
-     the beginning of each APIs.
-
+Ans: i have updated PATCH v6 in 
+https://patchwork.kernel.org/project/netdevbpf/patch/20260723102112.1155723-1-kyle.switch@motor-comm.com/.
+     The log of this patch failure is as "Patch does not apply to net-next-0". 
+     The patch v7 will be rebased and updated. Could you provide some comments based on patch v6 included
+     refactor the usage of USXGMII, add helper in phy-c45? The definition of YT8824_RSSR_FIBER_SPACE was 
+     modified in patch v7.
+     
+  
 >     Andrew
