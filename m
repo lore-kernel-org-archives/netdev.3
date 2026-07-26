@@ -1,119 +1,184 @@
-Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387B5145A1F;
-	Sun, 26 Jul 2026 04:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C86A2DC782
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 05:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785039902; cv=none; b=BQkBKvWOFgqy6UyfyjLfusZpdYEMhzhrgxGTz9OE45SaGOktOegyoLVEqtTMbjfAnZpzjrgoX4u+BMUfbeI7QtYsDregS3k5CiVIUbPd01nmbcXjNMxHPDkMgjSNWSIV137AibRCO08XAJtTxYhdKnEJyOtdo1Uvx8JZF4Bc7Eg=
+	t=1785043511; cv=none; b=bXljwPSScfEf+G/g87uloSg7XMCARxbbOcJnuuVSIx3MfWcMX9Zq8K+GfKWr/164wwu0yYjDmcobZTc7sJmsO43p1OUH/MriNrOu2uoqKfmn2VuJS30eK7W14FbqNLpTacPYkc8hpeZfZR/Q7eGsZ2zfRLA70yOFFQi/+Ut1k6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785039902; c=relaxed/simple;
-	bh=e+lsiu01C/Fy2ec8G3wRPD6nIDi2uKxukqIj3lh7piU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oPJaAlz7UxA176EJrsUrN0jSGLCNxZS1oAUw4KwX/lcGdzhJPWyDOanfRN83huSc6u03Zy5tu4EhT8fv027aJez+mxi0yOE5doW592bWFwI9rA9stxa17MMPgGR55l7mH9CK7m/muLAKnRP3JLZBsrc40sRfPYw/Z61svFQBmiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.071998|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.279964-0.00767902-0.712357;FP=17156393074478994592|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iVPHz7x_1785039892;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iVPHz7x_1785039892 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 26 Jul 2026 12:24:54 +0800
-Message-ID: <2f1f6891-8ae8-4e39-a5be-a2c8a59b562b@motor-comm.com>
-Date: Sun, 26 Jul 2026 12:24:52 +0800
+	s=arc-20240116; t=1785043511; c=relaxed/simple;
+	bh=I6Fu0+DNr7LT4DtiL5EfzHWIUsnAEk+xip2XdPhClZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t0z5fXSxp7vejmlMGggyZ6FrtViFKddDREUphBa4poOPpIg2bPouWTtcHBwFaF/XibRUYEzjwfsA/quitgbPpox3uXSbOT/Ikik+BBP5gq+1gPvDZeO4BYFjCz00jfRE430l3XdrzREh68XtywROCmG9vT/mFNP0LmUW1GKHnds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hdUCnmG/; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hdUCnmG/"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8486672f03cso1664192b3a.0
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785043510; x=1785648310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=u8wfTYxHZK0x/PfVX6/DZH7+LGApngF9lOfO/2V5Zp8=;
+        b=hdUCnmG/xxKp9iqiKNUDs5dNrUKYeS5u9pkLdLL0wq4Z799UrZFxpLhUsIeCuknIDa
+         m5nlPTxtRmsy9A0tEawg4cKScUqgm4LcZtwv1Xcd8AhZ6E+iIFyv7G5wAel7svfdzgas
+         MEcBVbx+rjPYGQMOxJhCXjNmQZ+6rSDPVvladYPZsCymNffZgnQ02gZV9HDrMPJnWYqY
+         +6gm5tUqdXeGhC2FU8nF3uMwFgQzC/xy10NUen5oSQwR06SFtttswWJ0gRkyOfcEUU9t
+         urKZKf174Pshz6WDvWjPXBJbxiu2Crfk0Mej8g0bsALGovRW83nQygEwAV9scf36J59a
+         g1tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785043510; x=1785648310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=u8wfTYxHZK0x/PfVX6/DZH7+LGApngF9lOfO/2V5Zp8=;
+        b=Uv4+006TlHdKZ3BCWu03q5ATTce9hLg1yt8mrYYDej3uKBwjW5Aw3BBPTOiUvWklW+
+         avvcCxAY57fgco9/30J+f75L6dSYcrX0/kEcz2Keueq4/jn4BQneLeRerOsT525xO8ms
+         FiDKsahYGcqy9B3Oj9Xfl5ECpaia6IBneO5sEQxkSqVi2kHW30rOUIUAUZ7+5gVOfDOr
+         6qzFwgs/OgkBR5/yZMtycYEdAfZ1pVd8Xj4xI0/eE7TLi83O5oHwdS2UCCUO1cc3h6qF
+         RGdj30s/WfJyktwNM12ovYwQLvFYQcI/ttH2sefdgPum0jB70luAG3+6CzuJa5KcIEQV
+         nMJA==
+X-Forwarded-Encrypted: i=1; AHgh+RoS5sWfe/fTfPkR/MwTNljKA5fnx3QNohC70xuoYVVQONZQt5XpaydMoNI7i9ZHumOFG3SYgas=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHusKwtmCnHnXsGA+ff5AHkstk0SDSXCKQSAE2NuK7WF+sbXTk
+	tfqioDobtipGeJa6cCsjj7rcl4Fv21awFqlByd0z+3UqDwnmsD0Q46tD
+X-Gm-Gg: AR+sD10sDuP78U5YvzKyJGmVNl+61rpq9z4RQulNB+eKD48vb7axMMaeS0sDyzlEeFb
+	yV1I8HDBodaHLYCeDbx7+NqGjyrqMu0LLuo6IgIi25PBPvvHZuYDV5mK8UOfRZ6FkTgLjdh0OyD
+	GgewAb2vSgfUgqlSA5S5ZgTiS+1WAn6bKtfaLUw/ehhqkJ6e6hr5yd5eXPoB4pdNxLhBEOGUAgm
+	NJtolhwtfD0dLFBTpXhrzIcMrlZg1JDQ/Uj1hlwIgLBShrhDWM33nhoO1lYoJzem+887hvyUepk
+	fYDMWKie1SArDzp9l0OcuNtFEofamCnhGmQWtkxRPcjnnKfA/8Fy9uC3sWVZyPzAH6L9LFMA+8j
+	HuhTnGrXcZVviBaZqZYyC7qi/pHzCAnTVHXYHCZJFv1b1BNmmaSKjqsjrJjooF5evMbU5dAHmsu
+	chFqcpxAIy1nPAXX60IBl/PRdJXNnu9cY=
+X-Received: by 2002:a05:6a00:988:b0:84a:29a7:f650 with SMTP id d2e1a72fcca58-84e5925e2a3mr3164991b3a.0.1785043509591;
+        Sat, 25 Jul 2026 22:25:09 -0700 (PDT)
+Received: from acer-nitro-anv15-41.entro.com ([118.34.230.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e530079f1sm1574772b3a.0.2026.07.25.22.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 22:25:08 -0700 (PDT)
+From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
+To: Frank <Frank.Sae@motor-comm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Linux Team <linux-imx@nxp.com>,
+	Christophe Roullier <christophe.roullier@foss.st.com>
+Cc: Frank Sae <frank.sae@motor-comm.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH net-next] dt-bindings: net: fix spelling errors
+Date: Sun, 26 Jul 2026 10:54:29 +0530
+Message-ID: <20260726052429.16807-1-shaikhkamal2012@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
- <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
- <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
- <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
- <47d31704-e57b-4828-8c8d-0438ef43e49a@motor-comm.com>
- <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
- <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
- <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
- <0d789c95-5ca1-42d0-9ff5-27392cc65057@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <0d789c95-5ca1-42d0-9ff5-27392cc65057@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Fix spelling errors reported by codespell:
 
+  encompases -> encompasses (stm32-dwmac, sti-dwmac, nxp,dwmac-imx)
+  curren     -> current     (motorcomm,yt8xxx)
 
-On 7/25/26 06:18, Andrew Lunn wrote:
-> On Fri, Jul 24, 2026 at 03:18:47PM +0200, Andrew Lunn wrote:
-> 1;4000;47c> > Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
->>>      or combo mode. However, the PHY8824 is only used with UTPs, and 
->>>      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
->>>
->>>      RJ45 <----> UTP0 <------>
->>>      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
->>>      RJ45 <----> UTP2 <------>
->>>      RJ45 <----> UTP3 <------>
->>>
->>>      It is similar to phy8821 driver in motorcomm.c, with the difference 
->>>      being that one has one UTP port and phy8824 has four UTP ports.
->>>      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
->>>      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
->>>      YT8824_RSSR_SERDES_SPACE.
->>
->> O.K, that completely changes my understanding of this device. Yes,
->> YT8824_RSSR_FIBER_SPACE should change name. And i would include this
->> diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
->> this.
->>
->> For the locking, look thought all the code which is touching the
->> USXGMII side and see if it can be moved into probe().
-> 
-> So thinking about locking:
-> 
-> +static int yt8824_config_aneg(struct phy_device *phydev)
-> +{
-> +	int phy_ctrl = 0;
-> +	int ret = 0;
-> +
-> +	ret = phy8824_page_write_lock(phydev, YT8824_RSSR_UTP_SPACE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-> +			      phydev->advertising))
-> +		phy_ctrl = MDIO_AN_10GBT_CTRL_ADV2_5G;
-> +
-> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN,
-> +				     MDIO_AN_10GBT_CTRL,
-> +				     MDIO_AN_10GBT_CTRL_ADV2_5G,
-> +				     phy_ctrl);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return genphy_config_aneg(phydev);
-> +
-> 
-> This is only touching the UTP side of things. What a PHY advertises
-> should not affect the USXGMII side. Why does it need
-> YT8824_RSSR_UTP_SPACE? What would happen if YT8824_RSSR_USXGMII_SPACE
-> has selected?
-> 
+No functional change.
 
-Ans: i have updated PATCH v6 in 
-https://patchwork.kernel.org/project/netdevbpf/patch/20260723102112.1155723-1-kyle.switch@motor-comm.com/.
-     The log of this patch failure is as "Patch does not apply to net-next-0". 
-     The patch v7 will be rebased and updated. Could you provide some comments based on patch v6 included
-     refactor the usage of USXGMII, add helper in phy-c45? The definition of YT8824_RSSR_FIBER_SPACE was 
-     modified in patch v7.
-     
-  
->     Andrew
+Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+---
+ Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml | 4 ++--
+ Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml    | 2 +-
+ Documentation/devicetree/bindings/net/sti-dwmac.txt         | 2 +-
+ Documentation/devicetree/bindings/net/stm32-dwmac.yaml      | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
+index 26688e2302ea..e8108cde0f59 100644
+--- a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
++++ b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
+@@ -59,7 +59,7 @@ properties:
+       be configured with hardware pull-up resistors to match the SOC voltage
+       (usually 1.8V).
+       The software can read the registers to obtain the LDO voltage and configure
+-      the legal drive strength(curren).
++      the legal drive strength(current).
+       =====================================================
+       | voltage |        current Available (uA)           |
+       |   1.8v  | 1200 2100 2700 2910 3110 3600 3970 4350 |
+@@ -76,7 +76,7 @@ properties:
+       be configured with hardware pull-up resistors to match the SOC voltage
+       (usually 1.8V).
+       The software can read the registers to obtain the LDO voltage and configure
+-      the legal drive strength(curren).
++      the legal drive strength(current).
+       =====================================================
+       | voltage |        current Available (uA)           |
+       |   1.8v  | 1200 2100 2700 2910 3110 3600 3970 4350 |
+diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+index e5db346beca9..75c9820ee60b 100644
+--- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
+@@ -72,7 +72,7 @@ properties:
+           - description: the offset of the GPR register
+     description:
+       Should be phandle/offset pair. The phandle to the syscon node which
+-      encompases the GPR register, and the offset of the GPR register.
++      encompasses the GPR register, and the offset of the GPR register.
+ 
+   nvmem-cells: true
+ 
+diff --git a/Documentation/devicetree/bindings/net/sti-dwmac.txt b/Documentation/devicetree/bindings/net/sti-dwmac.txt
+index e16287c06e5e..6e7e77da49bc 100644
+--- a/Documentation/devicetree/bindings/net/sti-dwmac.txt
++++ b/Documentation/devicetree/bindings/net/sti-dwmac.txt
+@@ -9,7 +9,7 @@ The device node has following properties.
+ Required properties:
+  - compatible	: "st,stih407-dwmac"
+  - st,syscon : Should be phandle/offset pair. The phandle to the syscon node which
+-   encompases the glue register, and the offset of the control register.
++   encompasses the glue register, and the offset of the control register.
+  - st,gmac_en: this is to enable the gmac into a dedicated sysctl control
+    register available on STiH407 SoC.
+  - pinctrl-0: pin-control for all the MII mode supported.
+diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+index 987254900d0d..fac882198a46 100644
+--- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+@@ -91,12 +91,12 @@ properties:
+     items:
+       - minItems: 2
+         items:
+-          - description: phandle to the syscon node which encompases the glue register
++          - description: phandle to the syscon node which encompasses the glue register
+           - description: offset of the control register
+           - description: field to set mask in register
+     description:
+       Should be phandle/offset pair. The phandle to the syscon node which
+-      encompases the glue register, the offset of the control register and
++      encompasses the glue register, the offset of the control register and
+       the mask to set bitfield in control register
+ 
+   st,ext-phyclk:
+
+base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f
+-- 
+2.43.0
+
