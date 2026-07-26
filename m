@@ -1,213 +1,309 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011047.outbound.protection.outlook.com [52.101.52.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5B01C84DC;
-	Sun, 26 Jul 2026 11:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785063841; cv=fail; b=JFcfM6UBga2xZMj+sZd/DjyPPde+yOIE6rQkHxPM80TYoybc1U9uJIl0ge4+CIsrMM4H15dlSoC8Tl3AGPXSkqZyPAEpOoMyFMR+TpQp5Zh5GJndbGgD2oIGvrFjSk3OT9qNgL/wzLo8Xwx0RwHIIbjx0tNMUOxSlBzM82Xvmx8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785063841; c=relaxed/simple;
-	bh=GQ7X2GduOLLq+YJDAozca+4YwOzCqqx5FG53M5cPYeU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IZ7OZfTSnCphXaEQcwRl4VSY6Nu2Z1G/TbErUAso4VcV2J1td75BrH/V+yw3eFvma/wiYmjPejR/hteK+I2C338ZwxovvP9jtH1mKNaaAeHck0sum9KxvL3Tpbk07LlMgSoRn7zHAnXNJLjWIHWW3H1Axj9hINpwRNRxHaNrhVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=azt//vOv; arc=fail smtp.client-ip=52.101.52.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F453859F4
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 11:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785064971; cv=none; b=PS1LFLZnm3ryeo2XNpty/lxuZBlfAZ9YQYtEZcXgeK0taFLd5dQ7e/yuditU5PnCez5vku8KNmX+RbQm698nEyq6JT/pojCUDBaHmisfKVzr0q0pQLubb293gq+v7wy4Nz1ctmOVte50KKQRJ7QeLAu1qMP/DYuLp3abaOtTuVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785064971; c=relaxed/simple;
+	bh=+fJaezT5Qyk92yI3mtzGQ/jLmHG16HU2ENzynzriwoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gHzhSYQljwwXyr63wth9JlRx3BhYn9ZPDQqrJu6wMsynkkxJJL+ZaYgMMCE9d27lZem7wceF2V8yDqK8Z/P8vqoZ2cmkAVjyDPP2Fq5Y+IjkY+TDCgbF+HiBH+xB1u7tdba9KdOl4vf0bP3AHPSKiM54t9FT0bBv+cT5DCMigqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=miMD6Z9r; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="azt//vOv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=COAAPUWg32PIScKXSDA7m/O/AjTD68NwSBiZLe0zE6zDnkTShvRt+tIG+0g7pJ0ZWxoZnVxHZlC24rNZExFPhULdxAa5vK0yzB/Omne2bYklP8PW4GMaqEt7te59i7E3lO9iPziX2VoJi4kkieDDWMqBL07lX/EM0oXdOztmJ/njzHYahNAYwdh3krWMPXdKZdkK4EbYr444N6U0/R5L9Dtbgvk0O9cWIJ/3OPovVdtyiU364n3Cs0ogpz0ahFUUFagwbEa5j8T5c9zGvv9/mdBBknDQTCfAYbMrcX903iQRGp/CJ9/JE/gY0NE7doPOpbLYvt1FOuhaLHTFZRKDcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GQ7X2GduOLLq+YJDAozca+4YwOzCqqx5FG53M5cPYeU=;
- b=FRXJLugMhGqeFI444vh3kMgxv+ov8YvAURiQ4p88Fh61STa+Ih4Tm7cXDRTuvmjQCQS22qAt7RMeKrdJctWvmsJBYhdhWgu+mbqJJlUuOg58lXUpV+Mc+sAfA946yL8J5I5rhZUIFRZgvwZs2VoDp71o4wvrz9zZ8xSJwAQXLEeCjtCLKCsUO1QZ/7HF0ohVJjN32m9FBfjLtOAP8Ped2AjSEujakJwBiQelM1wwhEXyO9Gv3xVcrhnUy9ewCqmSBbaHAE9BHa7QKkI1972qAukrK4W/u/LHbM6RwqPuqfVWjz1ub8nQn+jK2Sz02QdT6KHheCa0oisfkYaPfip0zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GQ7X2GduOLLq+YJDAozca+4YwOzCqqx5FG53M5cPYeU=;
- b=azt//vOvb31Uis10GKd6aoTKkTHvdUTkgmaWi51j+mrjBTO/TzY+0fRFQqqyjQMpmdnPGgdY8gAhjQqATR5D6Tmx1RIX1TCaJvSwjN+YyBi+1XOGXvhTh8LxgB5LkW6PRBU4ER+iU50Vvql6/zXtkj1qyFXVPO2h2W+Dn98Y7CAXCPLLS+L9S0LKeKvsLuzE7c0nLZLgVxnXH1ywVGUqcoLz07pZUQXUz8rw8kPEX54IrW5ccjZbB6yM74VWU6y06nckShZ+UhwiE9Px5TSPEHhiAy7bTNa1hOESrLizwWHcISnfYr8MQ3a93gVPhHAy0E9RoGh37oYWZT7OvbiLZQ==
-Received: from SJ2PR12MB9008.namprd12.prod.outlook.com (2603:10b6:a03:543::19)
- by LV2PR12MB5848.namprd12.prod.outlook.com (2603:10b6:408:173::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Sun, 26 Jul
- 2026 11:03:54 +0000
-Received: from SJ2PR12MB9008.namprd12.prod.outlook.com
- ([fe80::e25c:9cce:637a:3dfd]) by SJ2PR12MB9008.namprd12.prod.outlook.com
- ([fe80::e25c:9cce:637a:3dfd%3]) with mapi id 15.21.0245.012; Sun, 26 Jul 2026
- 11:03:54 +0000
-From: Danielle Ratson <danieller@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "dsahern@kernel.org" <dsahern@kernel.org>, Ido Schimmel
-	<idosch@nvidia.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "ja@ssi.bg" <ja@ssi.bg>, Petr Machata
-	<petrm@nvidia.com>, "fw@strlen.de" <fw@strlen.de>, "kuniyu@google.com"
-	<kuniyu@google.com>, "bridge@lists.linux.dev" <bridge@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net-next 4/5] bridge: Linearize skb once the ND message
- type is validated
-Thread-Topic: [PATCH net-next 4/5] bridge: Linearize skb once the ND message
- type is validated
-Thread-Index: AQHdF4OCWWSQypZIO0WqcdfI7Ctq6bZ2JIyAgASJUqA=
-Date: Sun, 26 Jul 2026 11:03:54 +0000
-Message-ID:
- <SJ2PR12MB9008AD38B9DA4AE6CF0A3998D8CD2@SJ2PR12MB9008.namprd12.prod.outlook.com>
-References: <cover.1784463131.git.danieller@nvidia.com>
- <c431f129eb438c12ef1e48d91039e09489a8f862.1784463131.git.danieller@nvidia.com>
- <27d8e26e-3498-4741-949a-742d057bbcde@blackwall.org>
-In-Reply-To: <27d8e26e-3498-4741-949a-742d057bbcde@blackwall.org>
-Accept-Language: en-US, he-IL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ2PR12MB9008:EE_|LV2PR12MB5848:EE_
-x-ms-office365-filtering-correlation-id: 94f93f80-0636-481c-7f51-08deeb05952f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|38070700021|4143699003|56012099006|10067099003|11063799006|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- DrEK5xRWJY+ExPagFk8OhshzAi0jF3TP1/u6OHlfOnYa4HqaTt5oErRWw77gZbcbuzQCzATQ678PweYpkvw1yHgbfX5NPLBMADEG+zpw7+rjexNCHnJYtNllT1kwnhx+BOmqqDHJ0kS/6GlQ+8GgaNYTACtkBl7ziO54pD0NunbK7JKsyTMJfcn+4N2na3iyR4S9C6BTQNevD4kUMpwnExYnb91d8y9zL4LdqM0visUH1nANWZ2T2K9a20TRV90g158O1dOceV19LL9oMJfuYCxzB01LjKEo8VKRgULYpaSaWLZ1ZinNSf9Q/aYMBEs455mdjFFpVUHfmjtLKgW7vZoffceRi8Lbz3bsF+6yEmP5DYjB5T1CGjPsmi7nN/xYdKO6It0ghTAOurjwjId2Ye0eXm5FEydCWmH+2fXiAEjuirmD4NHI2A+wuGAU3xa47j6Ml+eUmuzFX+AMHSUtJ0Xx8wIYRMyD7e0mblW85Z8MTEQKcBDuD4Gu8gE8jDHDfnaw82zp2PO4dmyjBnexGQZROsg0W8p7nRtfPbjP90BbtsOq3QKfmYIEOR+A1yP7aV6tZghQGbZsTcUzTz7ndsRM5qqZxOJ+i/LUPO/fYSSX1S6RsgXqSC8R2Li5GE7tBMvlumSObx2r/UiOJQ4ZEuxJu3lXRoVjx1B3zCNxcLc298sV/SVIogdfqHMHkwqOZUhjf6oZjxfHI53fPLB9iYYqIhNS7M0/wCCWoHvqS3k=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB9008.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(38070700021)(4143699003)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NEVRZTh4Zkh3ZWVvMGd3WFV1Njd0L1Ezc1F2b25peFBxYWtWT085bHV3emJT?=
- =?utf-8?B?MlgrNXovMGRJNnBCcElYVitBOGZxU1RINE5RbDRTamdwV0ZVM3M0b0d2VUU0?=
- =?utf-8?B?N2IyM1NuTkRBY3FMbGF1SjVnSTdWRFVDK09SVVBSY1NnTExtU29yWmRHc2Vy?=
- =?utf-8?B?R1JiZGV1N0RKaHdUdG5kcE5TdWVtY2NneXVzUllFUVprc2E4UjBrL2c3cENZ?=
- =?utf-8?B?bVNXWGU4UW5ycVBKUzI3ZStHUU41c3FCeDBFRFlYbXZkeU54QVh5QklFSW9l?=
- =?utf-8?B?UURKSTUzNDBvZDlYR2ZPbFVaN0RyTWhxdUhHUmxVWmMyUlNnL1QzZnQ1NE85?=
- =?utf-8?B?aHFFMi9PcjBkY3E5VjBwb2tMZG5KQ2xXRFFEK1ZiY1FwTi9tcUNNdDliM0Ns?=
- =?utf-8?B?aFpISnFTRVJ0dVlhc2M1b1M3L0xtSC9QaVpmbW5ZK3ZBMVhGTHZOTUhBcE94?=
- =?utf-8?B?cHV4cHBPaTcyNGlhRzZQRm5VKzhEUUdlSWNZam1vTXdnVDZZQjNWdVM4ckJU?=
- =?utf-8?B?VlhUNTZhMVFsUmN5MzVrajhhbDUvZmFZSzNvdEtTRU1YVmJHaVBER3huWnVS?=
- =?utf-8?B?TlBrYXlqVU16QzJkM1kvZ0pRSEQ5T2hjaDlINHVvdDgxT3ljb2twVHNjZEFO?=
- =?utf-8?B?QnFjRm9uT0Nrb3dLem1yNGhTOUV2WEU1SXBySyt6Rm5pRDMvY2h4RVpnQnBE?=
- =?utf-8?B?WHduYXlvUXdyNGpDQkhIeW4yL3pmY0Y4Mkd4OTI3ZktEeGdTb1lHWWo5cmR6?=
- =?utf-8?B?QXliOUJLOFFtdUk0WXNpQkxqLysxWkg0MUNmeHdDd1BVRkFOck4zY0ZFRXpv?=
- =?utf-8?B?WjBXM3ZPdk9lYW1qNjNyRThNb3EvUXROWUdsL1ZCTitOK1lDcU0rUnBxaDJn?=
- =?utf-8?B?WTBmZTVRTW85YUJDcWxOSFBoQlNFaDkwZVFzK0FSbU1uQzNxZ3c1d2N6SGV4?=
- =?utf-8?B?VEZOWWJuTERoc3lDYVQraWJuYURIcW9UbXdUdngrR0VKMHMrS3ZGbmttZUxK?=
- =?utf-8?B?UC9RTDREem9EdmV2TDQyWE1iNmtNSkNPV1c1N0J3OGU1WGI3UXcrcGRWUFFU?=
- =?utf-8?B?Y1l0ZEY5cHczSWVEMEtDV0lRcmFSUS93STJFcWZVQi9UalQzT1BFSkVTT0lE?=
- =?utf-8?B?MmFUZGNoQ0JFUWpFOWtieXN4KzRFRFBFSzhWVTJqdTgxSGwvcGNsY2FkMzEz?=
- =?utf-8?B?TW9OVUpoeXRVVzlPWXdoeWh0U052ZWQ3NFh3c283UFh1Y3IvbDgrcnNUd00v?=
- =?utf-8?B?ZVllM1F5MXZVLzVlRUFCVGRNNncxTFc5Qk01T3pBSnB0c2FGNGR6SE83MEVp?=
- =?utf-8?B?RWcwTjNObE9oMW9jVmlNOFVOc2VkUmFVZk5lNnllSmNDS2RpZ3Y4RFRlRURV?=
- =?utf-8?B?ZnVuc0ROWTRFNXNCRUJNYlBoRE56QmdXZ0lNcFF1enVnMTlkeW9kckozdmpE?=
- =?utf-8?B?OE9rcUhlVkQxS3hkemduMGFIYkVNbCtBTGlPeWNUMzRudFhwUDRQSUl3MWY1?=
- =?utf-8?B?dXVNYSs1dGlweWZWbnNrZEpFdzB4ZjVIVUQ2bTBrTk53OXYvVHpiTTluTjVR?=
- =?utf-8?B?SVNmbkx2Y2FXQmVETHlMMWFjVm81YkNuV3llbWxnNUx6SkJPakZmT0NBeDdH?=
- =?utf-8?B?bjFOaEt3ZVVNQTI4RERBQ3QxZit2L1RQQXZadE4yd0Z3aGttNm1PNGpuY2h0?=
- =?utf-8?B?bDQ2NmFmNk55NjRrakVSNGRvN3VzbUQwT2tVZ3hSWlkxRGJoTFEwT2RzQ2I4?=
- =?utf-8?B?Z01hbFY1MmxUL2JIVnhNcWtBL3RhL0dnV1dlNUQ0ZUFhN3lwb251bEs4RnRJ?=
- =?utf-8?B?NnNqZDF4ajNjaHBZVXVwYmJwTW11VW5wWnRTWjdya0JXa2RDQ3IyN1Zkd205?=
- =?utf-8?B?Q0hYcm1kYk9FYWtvZFV0ZHhVcTRIcGNnYlRhWmF4M3pZSlJiQzA5ZDE4TnlK?=
- =?utf-8?B?TENNVGFRNFJSbVpjVEFsdUZJamtqbWxFY3R5SzkzckZHYUxjbE9TVXpJNHRD?=
- =?utf-8?B?THdCS3A5WC8rRFp1U3QyNXN3ZHAveFp0Ri91SmdwSjJGamgxVHVwZmN1em41?=
- =?utf-8?B?dk5JWXR3KzliN3NIT1ZZZXFYalFHVGpPWTJWN3R2V1FmYXJkekxKLzgyYnZL?=
- =?utf-8?B?cS9UTnRrNVhqbFhUemlxUnV1NW1YeHhWUHRHTDFGbFVoUTFVeDFpODFhTGZD?=
- =?utf-8?B?WExLdDVUU3ppMzBtWGFMNElmQzh1eUpHT095dURFbENFemlhdTh2L0xkbVBn?=
- =?utf-8?B?UXhldXVCSTJXNDJGUUVrdk85eWFmY0tlblZmbS9HRC9RL3FEQ2RiS1FtT09p?=
- =?utf-8?Q?oWKGiAM0o+Pb+v0JLV?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="miMD6Z9r"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-476a130c138so1812355f8f.0
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 04:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785064966; x=1785669766; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W/d+2Ao1HRBsuACqk7R2z8Jr73fTQFf2BR9t/cEB5dM=;
+        b=miMD6Z9rU8X3/De0eJUeGdAjI9WaPs/xAqeQa/uusq8krsaQIgc5HIC8CbPicire9X
+         vo19L80Yos1iKkCbSNl1ItcbDoDsn0qmwf8T+97YaybuOJaOp+kKgNCy1FtTqxts8ZQi
+         tHyc93+HewKiorFECfpOohmO1sI1Uj0RNVLe2gwYz6Dh4wY4NnXmQ+ACs5K5Y3hop/iU
+         +jmOn3MN+e4WwBo2y/Pf/fHh0+icr8Mq/h1D3iIiBMWGNcIXa8Q4CFnhHfDyG/0eqNpf
+         Fx853DzofhY6lv6ZaR2pjj6GLwAH4RpzjrUMvRHvOPZ8XQXJRY5PTDsyuO83RuPvRO08
+         JBVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785064966; x=1785669766;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W/d+2Ao1HRBsuACqk7R2z8Jr73fTQFf2BR9t/cEB5dM=;
+        b=bpUeLwloZswbLh4P+izdXxKlBVNH0YQpdUASNpk5lgFHi7zQ0PPFtlYm3aiB4TNU0P
+         SHJKuMrYIo7oCOu4yJNEEuIXoA5N0HLFq1dNcSjyrwseyfYyVwYtPpALj1Bdf8wXeZrK
+         xXdB9P76vn36g15aBszM8vXaao9xoySnmZkYJfXvJpCM9VqPX+eOwHLVoX5+dWkqcQNA
+         xC/7NI2kgq7no7QmsJbarqYTP2SnfHKP0olaSYq8HY78zqI59Oza0SvyKG5pHOrIx8cz
+         NJ9+4ifTJWI0GtHhyXpAOKvamGmO515HnhoMBYtn1TkCJOXaOQDPAklLqT3wMIhEqTL1
+         7zxw==
+X-Gm-Message-State: AOJu0Yxpn3tLHYwBMeWFde27/0Oc0TbPRqXFE4lQjfnWpeP9wPTuQQr9
+	sUBRLrEbA+U7A2Gx7AYomQ1cWon/smZ5x+3PQ8/vD8kyv2j7NbcfPXCE
+X-Gm-Gg: AR+sD131Gvvxneg2ds5FzRgnvknJh2FKo9cxBBh1majYc8AM42GKk7Pb29HpNMSanqm
+	ajsiF3fNwozt6TT9BOe3v7RbQpDZKyLG+WFsLFViB07LB7u6V46OoVKTPkcj5jBI/tzp6Kuk2b6
+	vwU0ElwnjI8uE6vutnHHtmf7npNKRwsV5spY4n26gXF6/BDncBXNFJjp5ndlYt9xdwHcaXWVJux
+	9qJVbjWt2zVw+MYm5MRisyhi8N0LCXLGNDGf3yY6Q9vQPeqW6+oRFqLY5O9J3m0DbIwUyeByCaY
+	DCcjttgcFCPCGnoNwWXzs5wXiXg+MCChEZ11ReMttlu0M5LO4Z0PgewJSVb+0McQESdAgjkMRww
+	9OHJxg0CveR/lVQ62M4Ps2u+H+btc405ecBhA93W83Q2a4N6z1j/1ZzupGUaCmQKqqlDsJt/yKA
+	CisZXKPKOvqHEx6Jo=
+X-Received: by 2002:adf:e19b:0:b0:47f:8183:e9b8 with SMTP id ffacd0b85a97d-47f9fc8dce3mr6024682f8f.22.1785064965623;
+        Sun, 26 Jul 2026 04:22:45 -0700 (PDT)
+Received: from builder ([2001:9e8:f12e:8416:be24:11ff:fe30:5d85])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f939c1465sm24902981f8f.26.2026.07.26.04.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 04:22:45 -0700 (PDT)
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>
+Subject: [PATCH net-next v9 1/4] dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
+Date: Sun, 26 Jul 2026 11:22:19 +0000
+Message-ID: <20260726112223.1286074-2-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260726112223.1286074-1-jelonek.jonas@gmail.com>
+References: <20260726112223.1286074-1-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB9008.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94f93f80-0636-481c-7f51-08deeb05952f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2026 11:03:54.3353
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: X5FOSUcY75BFnuL6cdxts++4Xp8+xBU+Y8p6J+PWj/wp675/+13HYnd/q36+rspw+atSeWJWme3y2qOK4/j9yA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5848
+Content-Transfer-Encoding: 8bit
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBOaWtvbGF5IEFsZWtzYW5kcm92
-IDxyYXpvckBibGFja3dhbGwub3JnPg0KPiBTZW50OiBNb25kYXksIDIwIEp1bHkgMjAyNiAxMjoy
-Ng0KPiBUbzogRGFuaWVsbGUgUmF0c29uIDxkYW5pZWxsZXJAbnZpZGlhLmNvbT47IG5ldGRldkB2
-Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGRzYWhlcm5Aa2VybmVsLm9yZzsgSWRvIFNjaGltbWVsIDxp
-ZG9zY2hAbnZpZGlhLmNvbT47DQo+IGRhdmVtQGRhdmVtbG9mdC5uZXQ7IGVkdW1hemV0QGdvb2ds
-ZS5jb207IGt1YmFAa2VybmVsLm9yZzsNCj4gcGFiZW5pQHJlZGhhdC5jb207IGhvcm1zQGtlcm5l
-bC5vcmc7IGphQHNzaS5iZzsgUGV0ciBNYWNoYXRhDQo+IDxwZXRybUBudmlkaWEuY29tPjsgZndA
-c3RybGVuLmRlOyBrdW5peXVAZ29vZ2xlLmNvbTsNCj4gYnJpZGdlQGxpc3RzLmxpbnV4LmRldjsg
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIG5ldC1u
-ZXh0IDQvNV0gYnJpZGdlOiBMaW5lYXJpemUgc2tiIG9uY2UgdGhlIE5EIG1lc3NhZ2UNCj4gdHlw
-ZSBpcyB2YWxpZGF0ZWQNCj4gDQo+IE9uIDE5LzA3LzIwMjYgMTY6MzQsIERhbmllbGxlIFJhdHNv
-biB3cm90ZToNCj4gPiBicl9uZF9zZW5kKCkgcGFyc2VzIE5EIG9wdGlvbnMgZnJvbSBucy0+b3B0
-W10gYW5kIHRoZXJlZm9yZSBuZWVkcyB0aGUNCj4gPiBza2IgdG8gYmUgbGluZWFyLiBDb21taXQg
-YTAxYWVlN2NhZmM1ICgiYnJpZGdlOiBicl9uZF9zZW5kOiBsaW5lYXJpemUNCj4gPiBza2IgYmVm
-b3JlIHBhcnNpbmcgTkQgb3B0aW9ucyIpIGVuc3VyZWQgdGhhdCBieSBsaW5lYXJpemluZyBpbnNp
-ZGUNCj4gPiBicl9uZF9zZW5kKCkgaXRzZWxmLg0KPiA+DQo+ID4gTW92ZSB0aGUgbGluZWFyaXph
-dGlvbiB1cCBpbnRvIGJyX2lzX25kX25laWdoX21zZygpLCByaWdodCBhZnRlcg0KPiA+IG5kaXNj
-X2NoZWNrX25zX25hKCkgaGFzIHZhbGlkYXRlZCB0aGUgbWVzc2FnZSBhcyBhbiBOUy9OQS4gVGhp
-cyBtYWtlcw0KPiA+IGEgbGluZWFyIGJ1ZmZlciBhIHByb3BlcnR5IG9mIGV2ZXJ5IHJlY29nbml6
-ZWQgTkQgbWVzc2FnZSwgc28gdGhhdA0KPiA+IHRoaXMgYW5kIGFueSBmdXR1cmUgTkQgbWVzc2Fn
-ZSBoYW5kbGluZyBvcGVyYXRlIG9uIGEgbGluZWFyIHNrYiBhbmQNCj4gPiBjYW5ub3QgcmVpbnRy
-b2R1Y2UgdGhhdCBjbGFzcyBvZiBidWcgYnkgZm9yZ2V0dGluZyB0byBsaW5lYXJpemUuDQo+ID4N
-Cj4gPiBTaW5jZSB0aGUgc2tiIGlzIG5vdyBsaW5lYXIgYnkgdGhlIHRpbWUgYnJfbmRfc2VuZCgp
-IHJ1bnMsIGRyb3AgdGhlDQo+ID4gbGluZWFyaXphdGlvbiB0aGVyZSBhbmQgZGVyaXZlIG5zIGZy
-b20gdGhlIHRyYW5zcG9ydCBoZWFkZXIgc2V0IGJ5DQo+ID4gbmRpc2NfY2hlY2tfbnNfbmEoKSwg
-aW5zdGVhZCBvZiByZWNvbXB1dGluZyBpdCBmcm9tIHRoZSBuZXR3b3JrIGhlYWRlci4NCj4gPg0K
-PiA+IElmIGxpbmVhcml6YXRpb24gZmFpbHMgdW5kZXIgbWVtb3J5IHByZXNzdXJlLCBicl9pc19u
-ZF9uZWlnaF9tc2coKQ0KPiA+IHJldHVybnMgTlVMTCBhbmQgdGhlIHBhY2tldCBmYWxscyBiYWNr
-IHRvIG5vcm1hbCBmb3J3YXJkaW5nIHJhdGhlcg0KPiA+IHRoYW4gYmVpbmcgc3VwcHJlc3NlZC4N
-Cj4gPg0KPiA+IFJldmlld2VkLWJ5OiBQZXRyIE1hY2hhdGEgPHBldHJtQG52aWRpYS5jb20+DQo+
-ID4gU2lnbmVkLW9mZi1ieTogRGFuaWVsbGUgUmF0c29uIDxkYW5pZWxsZXJAbnZpZGlhLmNvbT4N
-Cj4gPiAtLS0NCj4gPiAgIG5ldC9icmlkZ2UvYnJfYXJwX25kX3Byb3h5LmMgfCA4ICsrKysrLS0t
-DQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0K
-PiA+DQo+ID4gZGlmZiAtLWdpdCBhL25ldC9icmlkZ2UvYnJfYXJwX25kX3Byb3h5LmMNCj4gPiBi
-L25ldC9icmlkZ2UvYnJfYXJwX25kX3Byb3h5LmMgaW5kZXggNDQ1YzkzMGVkNTliLi40Njc3OWQ5
-ZmFkNjENCj4gMTAwNjQ0DQo+ID4gLS0tIGEvbmV0L2JyaWRnZS9icl9hcnBfbmRfcHJveHkuYw0K
-PiA+ICsrKyBiL25ldC9icmlkZ2UvYnJfYXJwX25kX3Byb3h5LmMNCj4gPiBAQCAtMjQwLDYgKzI0
-MCw5IEBAIHN0cnVjdCBuZF9tc2cgKmJyX2lzX25kX25laWdoX21zZyhzdHJ1Y3Qgc2tfYnVmZg0K
-PiAqc2tiKQ0KPiA+ICAgCWlmIChuZGlzY19jaGVja19uc19uYShza2IpKQ0KPiA+ICAgCQlyZXR1
-cm4gTlVMTDsNCj4gPg0KPiA+ICsJaWYgKHNrYl9saW5lYXJpemUoc2tiKSkNCj4gPiArCQlyZXR1
-cm4gTlVMTDsNCj4gPiArDQo+ID4gICAJcmV0dXJuIChzdHJ1Y3QgbmRfbXNnICopc2tiX3RyYW5z
-cG9ydF9oZWFkZXIoc2tiKTsNCj4gPiAgIH0NCj4gDQo+IFRoaXMgb25lIGlzIGEgYml0IHdlaXJk
-IC0gSSB3b3VsZG4ndCBleHBlY3QgdGhlIGNoZWNrIGFuZCB2YWxpZGF0aW9uIHRvIGFsc28NCj4g
-bGluZWFyaXplIHRoZSBza2IuIEknZCByZW5hbWUgdGhpcyBoZWxwZXIgdG8gc2hvdyB0aGF0IGl0
-IGFsc28gbGluZWFyaXplcyB0aGUgc2tiLg0KPiBPdGhlciB0aGFuIHRoYXQgdGhlIHBhdGNoIGxv
-b2tzIGdvb2QuDQoNCkkgYWdyZWUgaXQncyBub3Qgb2J2aW91cyBmcm9tIHRoZSBuYW1lLiBCdXQs
-IEkgdGhpbmsgaXQgbWlnaHQgYmUgYmV0dGVyIHRvIGFkZCBhIHNob3J0IGNvbW1lbnQgdGhhbiBy
-ZW5hbWUuDQpUaGUgbmFtZSBjYXB0dXJlcyB0aGUgaW50ZW50LCB3aGlsZSBsaW5lYXJpemluZyBp
-cyBqdXN0IHByZXAgZm9yIHRoZSBvcHRpb24gcGFyc2luZyBpbiBicl9uZF9zZW5kKCkuDQpUaGlz
-IGFsc28gZm9sbG93cyBpcHY2X21jX2NoZWNrX21sZCgpLCB3aGljaCBpcyBhbHNvIGEgImNoZWNr
-IiB0aGF0IHNldHMgdGhlIHRyYW5zcG9ydCBoZWFkZXIgYW5kIGRvY3VtZW50cyBpdHMgc2tiIHNp
-ZGUgZWZmZWN0cyBpbiB0ZXh0IHJhdGhlciB0aGFuIHRoZSBuYW1lLg0KDQpObyBvdGhlciBmdW5j
-dGlvbiBoZXJlIGhhcyBhIGtkb2MsIHNvIEknZCBrZWVwIGl0IGEgcGxhaW4gY29tbWVudDoNCg0K
-LyogVmFsaWRhdGUgc2tiIGFzIGFuIE5TL05BIGFuZCBsaW5lYXJpemUgaXQgZm9yIGJyX25kX3Nl
-bmQoKSdzIE5EDQogICogb3B0aW9uIHBhcnNpbmc7IHJldHVybnMgdGhlIG5kX21zZywgb3IgTlVM
-TCBvbiBmYWlsdXJlLg0KICAqLw0KICANCldvdWxkIHRoYXQgd29yaywgb3IgZG8geW91IGZlZWwg
-c3Ryb25nbHkgYWJvdXQgdGhlIHJlbmFtZT8NCg0KPiANCj4gPg0KPiA+IEBAIC0yNTksNyArMjYy
-LDcgQEAgc3RhdGljIHZvaWQgYnJfbmRfc2VuZChzdHJ1Y3QgbmV0X2JyaWRnZSAqYnIsIHN0cnVj
-dA0KPiBuZXRfYnJpZGdlX3BvcnQgKnAsDQo+ID4gICAJYm9vbCBkYWQ7DQo+ID4gICAJdTE2IHB2
-aWQ7DQo+ID4NCj4gPiAtCWlmICghZGV2IHx8IHNrYl9saW5lYXJpemUocmVxdWVzdCkpDQo+ID4g
-KwlpZiAoIWRldikNCj4gPiAgIAkJcmV0dXJuOw0KPiA+DQo+ID4gICAJbGVuID0gTExfUkVTRVJW
-RURfU1BBQ0UoZGV2KSArIHNpemVvZihzdHJ1Y3QgaXB2NmhkcikgKyBAQCAtMjc2LDgNCj4gPiAr
-Mjc5LDcgQEAgc3RhdGljIHZvaWQgYnJfbmRfc2VuZChzdHJ1Y3QgbmV0X2JyaWRnZSAqYnIsIHN0
-cnVjdA0KPiBuZXRfYnJpZGdlX3BvcnQgKnAsDQo+ID4gICAJc2tiX3NldF9tYWNfaGVhZGVyKHJl
-cGx5LCAwKTsNCj4gPg0KPiA+ICAgCWRhZGRyID0gZXRoX2hkcihyZXF1ZXN0KS0+aF9zb3VyY2U7
-DQo+ID4gLQlucyA9IChzdHJ1Y3QgbmRfbXNnICopKHNrYl9uZXR3b3JrX2hlYWRlcihyZXF1ZXN0
-KSArDQo+ID4gLQkJCSAgICAgICBzaXplb2Yoc3RydWN0IGlwdjZoZHIpKTsNCj4gPiArCW5zID0g
-KHN0cnVjdCBuZF9tc2cgKilza2JfdHJhbnNwb3J0X2hlYWRlcihyZXF1ZXN0KTsNCj4gPg0KPiA+
-ICAgCS8qIERvIHdlIG5lZWQgb3B0aW9uIHByb2Nlc3NpbmcgPyAqLw0KPiA+ICAgCW5zX29sZW4g
-PSByZXF1ZXN0LT5sZW4gLSAoc2tiX25ldHdvcmtfb2Zmc2V0KHJlcXVlc3QpICsNCg0K
+Add a binding for the microcontroller (MCU) that fronts the PSE silicon
+on a range of managed Realtek-based switches. The host talks only to the
+MCU, over I2C/SMBus or UART, using a fixed message-based protocol; the
+PSE chips behind it never appear on the bus.
+
+The device is the MCU together with its Realtek firmware: the firmware
+and its host protocol are what the binding describes, not the
+general-purpose microcontroller they run on. The PSE silicon behind the
+MCU (Realtek or Broadcom) is reported by the MCU and detected at runtime,
+so it is not described here - hence the 'realtek' vendor prefix.
+
+Two protocol generations exist, both Realtek's, selected by the
+compatible: gen1 on older boards (fronting Broadcom PSE silicon) and gen2,
+the altered protocol used with Realtek's own PSE silicon. On an I2C
+attachment the framing the MCU firmware expects is part of the compatible
+as well - '-smbus' or raw '-i2c'; a UART attachment carries no framing
+suffix, as the transport is given by the parent serial node.
+
+Each board additionally carries a device-specific compatible that falls
+back to one of the protocol compatibles above. Drivers bind on the
+protocol compatible; the device-specific string identifies the board and
+reserves a place for a future per-board quirk without having to retrofit
+device trees already in the field.
+
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+---
+ .../net/pse-pd/realtek,pse-mcu-gen1.yaml      | 180 ++++++++++++++++++
+ 1 file changed, 180 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+new file mode 100644
+index 000000000000..0f1a819db49b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
+@@ -0,0 +1,180 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/pse-pd/realtek,pse-mcu-gen1.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Realtek PSE MCU
++
++maintainers:
++  - Jonas Jelonek <jelonek.jonas@gmail.com>
++
++description: |
++  A microcontroller (MCU) that manages the PSE (Power Sourcing Equipment)
++  hardware on a range of managed PoE switches. The host CPU talks only to
++  this MCU - over I2C/SMBus or UART - using a small message-based protocol;
++  the PSE silicon it drives sits behind the MCU and is never accessed
++  directly. For example, on the Zyxel GS1900-10HP the SoC reaches the MCU
++  over UART, and the MCU manages the on-board PSE chip.
++
++  This binding describes the MCU together with its Realtek firmware: the
++  firmware and its host protocol, which are stable across boards. The
++  microcontroller silicon is a general-purpose part that varies, and the
++  PSE silicon behind the MCU (Realtek RTL823x/RTL8239* or Broadcom
++  BCM59xxx) is reported by the MCU and detected at runtime - neither is
++  named here.
++
++  Two protocol generations exist, both Realtek's:
++    gen1  older boards, where the MCU fronts Broadcom PSE silicon
++    gen2  the altered protocol used with Realtek's own PSE silicon
++
++  On an I2C attachment the framing the MCU firmware expects is part of the
++  compatible: '-smbus' (reads carry a leading command byte and a repeated
++  start) or '-i2c' (bare block writes and reads). A UART attachment carries
++  no framing suffix; the transport is given by the parent 'serial' node.
++
++  Each board additionally carries a device-specific compatible that falls
++  back to one of the protocol compatibles above. Drivers bind on the
++  protocol compatible; the device-specific string identifies the board and
++  reserves a place for a future per-board quirk without having to retrofit
++  device trees already in the field.
++
++properties:
++  compatible:
++    oneOf:
++      # UART
++      - items:
++          - enum:
++              - zyxel,gs1900-10hp-a1-pse
++          - const: realtek,pse-mcu-gen1
++
++      # I2C, SMBus framing
++      - items:
++          - enum:
++              - zyxel,gs1920-24hp-v2-pse
++          - const: realtek,pse-mcu-gen1-smbus
++
++      # UART
++      - items:
++          - enum:
++              - zyxel,gs1900-10hp-b1-pse
++              - zyxel,xmg1915-10ep-pse
++          - const: realtek,pse-mcu-gen2
++
++      # I2C, SMBus framing
++      - items:
++          - enum:
++              - zyxel,xs1930-12hp-pse
++          - const: realtek,pse-mcu-gen2-smbus
++
++      # I2C, raw framing
++      - items:
++          - enum:
++              - linksys,lgs328mpc-v2-pse
++          - const: realtek,pse-mcu-gen2-i2c
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    description: Reset line of the MCU.
++    maxItems: 1
++
++  disable-ports-gpios:
++    description:
++      Hardware gate that forces all ports into admin-disabled state while
++      asserted.
++    maxItems: 1
++
++required:
++  - compatible
++
++allOf:
++  - $ref: pse-controller.yaml#
++  - $ref: /schemas/serial/serial-peripheral-props.yaml#
++  # A '-smbus'/'-i2c' compatible is an I2C attachment: it has 'reg' and
++  # cannot carry serial bus properties. A bare gen compatible is a UART
++  # attachment: no 'reg', the transport comes from the parent serial node.
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - realtek,pse-mcu-gen1-smbus
++              - realtek,pse-mcu-gen2-smbus
++              - realtek,pse-mcu-gen2-i2c
++    then:
++      required:
++        - reg
++      properties:
++        current-speed: false
++        max-speed: false
++    else:
++      properties:
++        reg: false
++
++unevaluatedProperties: false
++
++examples:
++  # SMBus-framed I2C attachment
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-pse@20 {
++            compatible = "zyxel,xs1930-12hp-pse", "realtek,pse-mcu-gen2-smbus";
++            reg = <0x20>;
++
++            pse-pis {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                pse-pi@0 {
++                    reg = <0>;
++                    #pse-cells = <0>;
++                };
++            };
++        };
++    };
++
++  # Raw-I2C-framed attachment
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-pse@20 {
++            compatible = "linksys,lgs328mpc-v2-pse", "realtek,pse-mcu-gen2-i2c";
++            reg = <0x20>;
++
++            pse-pis {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                pse-pi@0 {
++                    reg = <0>;
++                    #pse-cells = <0>;
++                };
++            };
++        };
++    };
++
++  # UART attachment
++  - |
++    serial {
++        ethernet-pse {
++            compatible = "zyxel,gs1900-10hp-a1-pse", "realtek,pse-mcu-gen1";
++            current-speed = <19200>;
++
++            pse-pis {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                pse-pi@0 {
++                    reg = <0>;
++                    #pse-cells = <0>;
++                };
++            };
++        };
++    };
+-- 
+2.53.0
+
