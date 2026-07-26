@@ -1,67 +1,67 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE94331EBE
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 06:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47F31064B
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 06:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785045903; cv=none; b=JmoG0NRbQ9GxgMdgvGM43KkKWecbCZ5BSER3/tyH5iZws0To5D9/C+mCbt/PP0bMq6vI/W1DTDV7bRvziO9NAI3bJ5pjZlgk78U87HWv/nXzS5id33/OIRR982x+vGm4gCRtirxE+nIOgwwAhTfBkIQrD3kdrYEqG7pezCY6HmA=
+	t=1785047127; cv=none; b=E8OzNJH0OmCQsTOx5iFcg2hLgmH/tWiG3QGaBqGtmi0qjzOGgwR+2w3zdetBlcOtOztpIcP+7RDeb37S3LHVOZpWDYVj9i/Ur2BEnAAq+9MKeo5IM6YIIS2mphlo3LR/av+QHTbwGZ48Q0qdhEhRrgyJacyG1JVtD4gWgNlG8xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785045903; c=relaxed/simple;
-	bh=c5XNKNHTZbrHkPw/Z+1eXictyOLeMAlNLdg3abaiNhE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qKHxVruyYkTkl191fAbVhobHkm9gLED8YplkLLR0xRqk7zmf26iS0HEkY3WAFUnKQNvMgyZxyoNx0tlpkNVIOF9X3C2RZtNzJ3Jw0Gb9jeLwv3HfjzqdKiT0vlF868GbyyCGlE/hygpt29RwNcU1mvxypseqjxsNgL7OTUfGPuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=MAFghmyb; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1785047127; c=relaxed/simple;
+	bh=dP3h+hLKsGm5KC/K2M0ypRB2Gy3z0jV1Y4qouUEoGl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRBCIZlXv7QuUrDEoJB8NDK3lI3845pAD9DZ3nvpQadYf2p0kyYFd0g6Y6Ngi+EnvguHKTC1feB9PkzUDAdYe/1sQ0df2P1WgTWZaXRlCqP1OozJbjBW2JFBuHLHcrfOlELI8wMbb4QSnaRCL0yJ9wFX4wSFX//75l9kAXj8QOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=DC8ydt89; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="MAFghmyb"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cab973140bso23707455ad.3
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 23:05:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="DC8ydt89"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cace91f112so18405405ad.0
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 23:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1785045902; x=1785650702; darn=vger.kernel.org;
+        d=xbow.com; s=google; t=1785047125; x=1785651925; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J5QJoU4w/3scQb+Fz57sP6CBWEGcVzv5XgFT6cYtEy4=;
-        b=MAFghmybkKJrchl8Nn1pNIEUig8qlesLsrUZjTflHGzehgdXx9Bvp2AbTbLUHWm3e1
-         MnEVdJOeTbIGUBoPkNh63ZO5wHwq5vrt8pQdjqRZIUSyTuJpXVO+hyc8Bhsiul9p5ycr
-         xbngiMi6J87zpyUmaJuGBHG6I4Ru6WBIzO6hf+gs6IHIXKAlIFwLdYupg0JX+LCZHbyy
-         HyhLI6atnOGJuqOsZSmbvoXJQzCwuDY3Twq5pF0/cUWH752JJVTQNMaB+edRs04SNler
-         LNQstZU7Q0xm7DPIaY7GuvEaLenVeQEF+8tlvrxV8WrKMiBlgeYUV5z23hcJQKsazV3n
-         gpTg==
+        bh=P8zGbl4R2Ffos3phLd71l7Q80RIBm+fS5r/cqYD6HXU=;
+        b=DC8ydt89KOZEagcMMu3d4p3qXlpjtNzUqC6SBtDRfRRn6IA4UBcJb4vvxeU1S6ongN
+         1ocJuhDlGZl4swBGSH26xfWmqGaD45xEZBcvgZPD1OJWRF4r5YPHs13IL5unD+NjrQYR
+         6Q3v0SBrClUqt2QfC4jSU3PO/SGza66hq27Z5/1Cpy40Iw4uRBpjpIStNAkju4CHObHN
+         ZiKT3PTpvzSAldfxgb8NH4sXuz9luEvKTMSdZH72vYDkqt5ANkT4FTOjvLwv9U9egwoJ
+         xKxpHO7qWutYuBH5+4C3gqEPFbunnvZ6bg8aqLgWfGfOwanGdlqM6Lu4ac/YH+HnI+gU
+         5JXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785045902; x=1785650702;
+        d=1e100.net; s=20251104; t=1785047125; x=1785651925;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J5QJoU4w/3scQb+Fz57sP6CBWEGcVzv5XgFT6cYtEy4=;
-        b=B2HtqwFWScSenlMCyfysqpJkYN3/HCJ6/zniKwgReP38DJEP6I/Nx+3kV0oma1+9PO
-         vgauJ1fkrqFyGpQhX6KALL0N/pdG/neEC38FqPmtaLaAD9mUxRpKYXD4MOmcxS5kRMBi
-         cTD79yjpsk7FVsR8WuDG/EO0ewySpqQodapHTAJOy5qKsVMd/A0qjxziqwm3D+QRE6B2
-         33ZUGI9Uq9xlaUuyKPHA8xWQ3EogkbeUM41gmKFEV/Pwq7zxT4A0NrfXhoPnaZ9fxAvE
-         aC6taF/tYLcaIEC9IKFF12GCWta0lOOAXzaGVxeHOYaYrBrwVXkjKYeDanUB+MeBhex4
-         a1Ug==
-X-Gm-Message-State: AOJu0YyivcVJuaHx3oobBD4Ypr/AezxlmUFObhI3EMZ5J6U9XONXGQ0W
-	4QwSm6C5GAyi1jmooYXZuWHANAMiIkKkTwGFfjpuuO1ubtLHl3qS4KmgJ1d4Et4R2JrEhqbsaTT
-	goFzbnvE=
-X-Gm-Gg: AR+sD13GFfRhosQh9fWCAT0DZfdXFASl+qlZy6vNUfT3gpCE2eJlNJeOsB91xicNJw/
-	G848aI93R0aLXmXv8ofA7guZjCXjZ6BGcXgkEI1MLvn9+TQoK01s5p2SptiwNN2Y1HoWUktgmka
-	a/qVpJ28AR7emJZQapnXE2AVbSFuJsTkY8bKhW/6JkaOFRzxcR4xBaYeFBBsWSWmpcY2DQikCqc
-	WEV1Fo7Th6Mk7LWpL9JJEi2ajxKxq/paBBwMNntraCzZHe111jKBgRg3JwCE7Rl0prXaMI16kaJ
-	H9CGTjFONmUPlaWFlU9mpwBwuiiyC0WdnFD1vA3DBsW+TP6tsZcZA7lJxdVWkPFYsMEJ5hhOHw+
-	hMcE6bddfGkcntYggdDV1u7rQrRC9+uvlSXPbyZtZrpb4NABvIPLpZVK8NKztDOU3HeZ6bXbKUR
-	vOUY2EB9ROTqK/quRY2UkSpvFNk9K4YAZnCUsVcvXpxYmgPfJ2EwhO/Maxlhola1cOVeG5ewE=
-X-Received: by 2002:a17:902:ef49:b0:2c9:97a7:3276 with SMTP id d9443c01a7336-2cfde89b889mr40088285ad.39.1785045901839;
-        Sat, 25 Jul 2026 23:05:01 -0700 (PDT)
+        bh=P8zGbl4R2Ffos3phLd71l7Q80RIBm+fS5r/cqYD6HXU=;
+        b=L6ZN86YA4A4sjV93nyXSizHrSSU13GEnP787N8i9d6c3x6aYNYjBcu1Tm0iNxJ60r5
+         dPrVpUN+ps8vkkGklHSSpHXooU1JOMe3kh5w/XqZIrb3QFilW2lCVHxpF8oM+MxMhaUk
+         gu1+iY66hoJt9bF4Eo+QbtX5HYU2tmd6/ZNBmYU+7I+wBpHz968EsXIPRcqAO9Lx3Afl
+         x1eLhOsH8zHVyntWxijvP6+xWV5m9ERKfEVK+oT+uSuZ+vsSzloydgUQF2KzlUoy2rgO
+         wwbVUUeRwqYTFDhF05r61mbxm6LNFrdEfKUgF15/J9+asPaPT9+bmycFO4jtd2hmLK05
+         E4vg==
+X-Gm-Message-State: AOJu0YyR1Rdps0NDb9+MXxIj6OBH686DET18WyyvVYCcckgDoRWqY9Jp
+	jaielGOPAP4NV+1Y81ZhK7bYkxSpQUyenNXcB0yQV6TSIvsCWms5x6ulzkieILLT4/xMeB8kSHQ
+	ccJFMjSI=
+X-Gm-Gg: AR+sD109TXwKX/+Of3+WzvvRIpz4gi05swzdZspY8yuLDjgAM6+i+nYTk9fu9duN6sC
+	9HzGh5jt+6UPvUwM9+qGoW6Ci29a6OTne9zKcIy5b080pqhdkHxeM4A+BMrCsz9/0vCWcqsxUKC
+	FIhPTxnbw8138MEjNqfuWFpuXEesUKr0CteysW2dMYfXgyZWq+JhPkbid9uXlHTwgNT73DW25Wr
+	s5t706LafQGKhvHzQgz4bF+svNfjMHY4u44HdneJKFg0DXZ43ISfGoTfaO09JfQH/kQUkAwHDLF
+	s6nA82O8qCBj7Kv8bbmwbcAGZbx/3CqfpCqqifh96x297dvZVm42Wgk0xtQoshZieumuymqFlPp
+	y9kZtLDsywNla8L6dRKxmkNouO2iXnjFOU1lv0DSROrvbY7WFiw9nGfI5Cmv/F5D0/WwXVJM6iE
+	kIHXOItiQyUngO3qxEuon5Nq4gqIdxCCGAlWh+pcY0mSHjHZvSLlw8KtD2dEib
+X-Received: by 2002:a17:903:2310:b0:2c8:1f56:9fc5 with SMTP id d9443c01a7336-2cfde868609mr35863255ad.35.1785047124945;
+        Sat, 25 Jul 2026 23:25:24 -0700 (PDT)
 Received: from localhost.localdomain ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde80ee56sm16774265ad.76.2026.07.25.23.04.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7bc413sm16689195ad.44.2026.07.25.23.25.22
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 25 Jul 2026 23:05:00 -0700 (PDT)
+        Sat, 25 Jul 2026 23:25:24 -0700 (PDT)
 From: Baul Lee <baul.lee@xbow.com>
 To: netdev@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
+	bridge@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Cc: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
+Cc: razor@blackwall.org,
+	idosch@nvidia.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
@@ -70,9 +70,9 @@ Cc: marcelo.leitner@gmail.com,
 	federico.kirschbaum@xbow.com,
 	Baul Lee <baul.lee@xbow.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] sctp: fix transport UAF via the retransmit queue
-Date: Sun, 26 Jul 2026 15:04:53 +0900
-Message-ID: <20260726060453.42730-1-baul.lee@xbow.com>
+Subject: [PATCH net] net: bridge: mrp: fix uninitialised bytes on the wire
+Date: Sun, 26 Jul 2026 15:25:18 +0900
+Message-ID: <20260726062518.43774-1-baul.lee@xbow.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,72 +82,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-sctp_assoc_rm_peer() clears the cached chunk->transport back-pointer on
-only two of the output queue's chunk lists before freeing the transport:
-peer->transmitted and asoc->outqueue.out_chunk_list.  A DATA chunk parked
-on asoc->outqueue.retransmit keeps pointing at the transport, so once
-sctp_transport_free() drops the last reference and the object is
-RCU-freed, that chunk is left with a dangling pointer.
+br_mrp_alloc_test_skb() builds MRP test frames on an skb from
+dev_alloc_skb(), which does not zero the linear data area.  On the MRA
+ring-role branch the sub-option TLV header is appended with
 
-While the chunk sits on the retransmit queue the dangling pointer is not
-followed: sctp_check_transmitted() skips the flight-size accounting both
-for transmitted_queue == &q->retransmit and for gap-acked chunks.  Two
-steps remove that cover.  First, sctp_outq_flush_rtx() moves a gap-acked
-chunk onto a live transport's transmitted list without reassigning
-chunk->transport, unlike the ordinary resend path, which rebinds it in
-__sctp_packet_append_chunk().  Second, a later SACK that reneges on the
-TSN clears tsn_gap_acked.  The chunk now sits on a transmitted list with
-tsn_gap_acked == 0, so the next SACK reaches
+	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
+	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
 
-	tchunk->transport->flight_size -= sctp_data_size(tchunk);
+leaving sub_tlv->length unwritten, and the two trailing alignment bytes
+are appended with a bare skb_put() that neither writes nor clears them.
+The surrounding oui and sub_opt regions are explicitly memset(0), which
+bounds the exposure to exactly these three bytes.
 
-a read-modify-write inside the freed sctp_transport.
+Every MRA MRP_Test frame therefore carries three bytes of stale
+page-allocator memory, at frame offsets 65 to 67, to any observer of the
+MRP control traffic.  A capture on a kernel without
+CONFIG_INIT_ON_ALLOC_DEFAULT_ON shows those bytes varying frame to frame
+and, after a page-allocator spray, carrying the sprayed pattern; the
+same reproducer on an otherwise identical CONFIG_INIT_ON_ALLOC_DEFAULT_ON
+kernel leaks nothing, confirming the source is uninitialised allocation
+memory.  Reaching it needs CAP_NET_ADMIN, which is self-satisfiable on a
+stock kernel through unprivileged user and network namespaces.
 
-The transport is freed by an ASCONF Delete-IP and the faulting accesses
-are driven by ordinary SACKs, both coming from the association peer, so
-an application that speaks SCTP and accepts multihoming is enough to
-reach this.  KASAN reports a slab-use-after-free read of 4 bytes at
-offset 216 of a freed kmalloc-1k sctp_transport in
-sctp_check_transmitted(), the object having been freed from
-sctp_assoc_rm_peer() via sctp_process_asconf().
-
-Clear ->transport for chunks on the retransmit queue as well, mirroring
-the existing out_chunk_list handling.  The sink already guards with
-if (tchunk->transport), so a cleared back-pointer is skipped exactly like
-an already-acked chunk.  The sacked and abandoned queues do not need the
-same treatment: chunks there never have ->transport dereferenced and are
-never migrated onto the retransmit queue or onto a transport's
-transmitted list.
+Assign the sub-option TLV length explicitly, which is 0 as the AUTO_MGR
+sub-TLV carries no payload, and append the alignment padding with
+skb_put_zero().
 
 Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
-Reported privately to the maintainers on 2026-07-10 with root-cause
-analysis, a PoC, a KASAN log and this fix; posting to the list was
-requested as the follow-up.
 
-Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list chunks in sctp_assoc_rm_peer")
+Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
 Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
 Reported-by: Baul Lee <baul.lee@xbow.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Baul Lee <baul.lee@xbow.com>
 ---
- net/sctp/associola.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bridge/br_mrp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index 62d3cc155809..c95f68d21670 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -569,6 +569,10 @@ void sctp_assoc_rm_peer(struct sctp_association *asoc,
- 				sctp_transport_hold(active);
+diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
+index 3f7126a7d720..a5548f475604 100644
+--- a/net/bridge/br_mrp.c
++++ b/net/bridge/br_mrp.c
+@@ -226,9 +226,10 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
+ 
+ 		sub_tlv = skb_put(skb, sizeof(*sub_tlv));
+ 		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
++		sub_tlv->length = 0x0;
+ 
+ 		/* 32 bit alligment shall be ensured therefore add 2 bytes */
+-		skb_put(skb, MRP_OPT_PADDING);
++		skb_put_zero(skb, MRP_OPT_PADDING);
  	}
  
-+	list_for_each_entry(ch, &asoc->outqueue.retransmit, transmitted_list)
-+		if (ch->transport == peer)
-+			ch->transport = NULL;
-+
- 	list_for_each_entry(ch, &asoc->outqueue.out_chunk_list, list)
- 		if (ch->transport == peer)
- 			ch->transport = NULL;
+ 	br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_END, 0x0);
 -- 
 2.50.1 (Apple Git-155)
 
