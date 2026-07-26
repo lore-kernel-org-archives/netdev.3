@@ -1,75 +1,76 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34CC33F36D
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AE4311969
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785059689; cv=none; b=MsqpXV/EQsEX8Ts0VPsT06PjmvT1WNqVhUWiz+aSv9Q3zHj9n8vRSQSTDSDnb1Ndyfbvcr/fwUThsdTmrfQz/OYn941dWYQ66xOHgMoKs3lLZRRafG8sr1kfTVPtsjGNFkWA/lk9lDzKZIb1bQuvqvzhPKCb/rNSlZNRsS57Vs4=
+	t=1785060848; cv=none; b=MxrxZISablDRdIwCdTHUAgkcy9pmv66SQRXB7wkO6TWqhXYba3bKpptI2V40Ty5+CCgSrktw7p2PUYWZE3a3gujq3bLhVdnURErbmLjzkK8x1NXe/pT8swXeysj70fDCz2QPWBMH4l7LXMsm+j9mwpxnLbUEMEof7aLXvjBXNxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785059689; c=relaxed/simple;
-	bh=rbcHdK/P3OVF8/eh2vybnSEQTpy+kF+U44z15ar3am8=;
+	s=arc-20240116; t=1785060848; c=relaxed/simple;
+	bh=h1P5btjzqqAMj2JC/X8BiIMgvZUoT0u7grKnwIzMGNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=svrsoBNnoyMPiGAKlSHwNt2wYcYxYqL6eEPmY5wBGjapfKiGLN9LaotVoi2Rtt8X5Nosisj9OrH0ZcmPIp+j8hkcvFJEW2lDiw38u49uxFLNBYrDb+j8emuHmj7oXhS5EatmrVNM+K3nlKUlCjz+R9C4Vx4j1RJ/DHALzCnR4gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=GGLD9mJy; arc=none smtp.client-ip=209.85.221.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=hEs7uLznaXDr5UDysSEx1bjT+46CQmaVf+blklFlGVOZsAGft6671RwRUqhghuSER9/PFCzx0AB/ZOp5jOB2TwlMggv+ubhmgv5azFNelgjPL44xoFTU9UltLFX5pY+dPrVELGmV9hML1IRxUgRy/I7N9L3WH8qwqk/nu1wdm44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=DsAYRiII; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="GGLD9mJy"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47de008b020so968721f8f.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 02:54:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="DsAYRiII"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493b966dd74so11256615e9.3
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1785059686; x=1785664486; darn=vger.kernel.org;
+        d=blackwall.org; s=google; t=1785060845; x=1785665645; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=k3FTfklkwW0zKHdhTF5lWXpeNHyu2Or6DzvCzVVGGAM=;
-        b=GGLD9mJy6CvS8rzkDUZzogEQtN0DNWU0y/hAIrqqa5wuNt1RPahBd4xkcjThAXaDti
-         rFjv3UmbKayeN8RnJ6kGnSsvpdzAFmqPjw+hB8fmgy1R42B0PN4kxX6qBmTwXh3wSczM
-         nUGr7lDpDgdzl0fZd7wQxWTeyHWSr9LbJeLdk35g9SY2cl1OtQzGPMHlwiVAmyaFDBFV
-         MXArUUkabmBaUS5rr2MEde9Z9Yjp9C8k561i5doV7qV4GMxAJUQwoKBA7t9SSSsCx6fh
-         Of05WiK4+4JX2IzBUnXTfEybG6r5MoC3UUdWJTEiLt6n5CxxPN3qZRaD78VECc4T3SXQ
-         x2Mg==
+        bh=xDxc0+6iV2GZQ0LIsObeEGPpkXqQEjGEB1+96GPkh0w=;
+        b=DsAYRiII0z46xLMODLhdXX6FTdSWsC2IH1WKUXn1ajSMLETkWe8NRDXRbEGImqZMTK
+         a8KMcZLcU/g2QQabFfa+Gs31/4xiqiSDSTS9i/xn4qoy4m6otZroS+yB/1e1xpStFkQU
+         3HGHb2mHOaueTALdzayGcNN83/N6MlIOaHcfr/132hd3IPlmbdEKTPBeEr8+YK+Z6jCi
+         IuZ4cynlBtGMEmS9fT77yCsM1XSJHYq3zzTbT8tdCzl18QD1/nuLf1XM/hqlyyxWoHwy
+         b94nfFq4Ce5lW2MYAOmeGK9o4mJGB7TC0BduductCmisk65yKWg9o5M25JHLjQ/5/65F
+         E3Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785059686; x=1785664486;
+        d=1e100.net; s=20251104; t=1785060845; x=1785665645;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=k3FTfklkwW0zKHdhTF5lWXpeNHyu2Or6DzvCzVVGGAM=;
-        b=J7cQ8LBusf/qFUAdnRFUCz2/b4CMMa1HokcqmlXmT3rZXTukbe7/neizZa2SyjGzS3
-         QOg25gVtuJ57KXVTh/sy1pezdmIq/FUvaboUfCjn4fnXzxlHhNAOGg8CzA4qUd7KO7Vw
-         iqqHCCGP97p6lodZxDYlT0PAMCwgMiAb5AIJ9EV1Y6D9reCWQaQ9bn9gBs9G2roIcb1D
-         MJFLQj7phjjJcWuoOs2eg/Zg2FSCPL7q1bzdFPnfqQTZdZCQOuZurr0DRBbi60yaDP84
-         jjLcziuFg0bSWJCUsT6AocGOTNdRZ7GAyVjmyEX3x3yQ/bZoh1yikOftNXCRdwVPgyoY
-         VjOQ==
-X-Gm-Message-State: AOJu0YwsDbVj+ZB3HQ3PI58b43WEKM+CB6Zkzo9nE14TSLbpl5TfHPca
-	rDrPzrLlcLOahER/o+FAs6YOB7JwRhBMpGiXrg8YtCMHpPzTAT8s4CgajRmPr8dg2LFIjJhhODL
-	qGXoC
-X-Gm-Gg: AR+sD10DHADu7s1kpLcNwkscqve1NeVJVUxQrcGsZsLb61HAaaYLG5uvNFQ6IGVG+yZ
-	RCMxTg7Vh3WE3OQSgqRHi8f721bpCtCkRdFcGK8xI+ZBpHEaCfdlhQ6FxwdDlkQTBFTCpHzUhe7
-	EG++hrnTjWlPkImnhYrgX+49bBi3GKZGPQDqVmsy/AeqG61yVvuh3xtdBtbMK6l/xyxt6K+Y7Xv
-	82hYpd+sZV1Pgf+o25DEi+utJO3fPzg9nLYNqYnD5O+RC1zrqNEZ51EY0ItVDedXMwiP49FvloH
-	lHcHf6lWiStLHgSYVFgkFaA7UyXYxvxpN9x4Oq7PZxYEgXiUipTe7kQb8P8bglppr8d9vTfE/l8
-	EiozJgpMlUgStyJQIaJMcV5o0b5EjvlFsuFtj5+LAuF4G8bRa8rzCK6hn5IRJkPi4wlDSNtzLsA
-	==
-X-Received: by 2002:a5d:588e:0:b0:47f:8eb0:c825 with SMTP id ffacd0b85a97d-47f9febcb6cmr5567797f8f.24.1785059685740;
-        Sun, 26 Jul 2026 02:54:45 -0700 (PDT)
+        bh=xDxc0+6iV2GZQ0LIsObeEGPpkXqQEjGEB1+96GPkh0w=;
+        b=JWEe4I0lpXH3ZZVxr8kajQ5jYxNlAWpRKjLYI8b4cfc4QSEzqtZQoXXKcXC7S7Qw0B
+         6WgJDmd5vDXQaG+fmZ46nzPAjDcxICGTWVe5fEAYv5NTSZ3qhv9B3QXkyIMWILC+TqPy
+         si0bj2+xyTsKpoaLeKhStlID3LQeivK9BoTD+/sGwhes7e1tJBD4+txpA5xY207BXXXl
+         YvgTbq2w6/rcUxcJHGGIGS2JDLy9VMF6ppO/JZOnndPu+t4j6NIhLudjHjerCydpKIVc
+         w+qgN5poU+B+1Nt9MX7aXOiqYp1f02sK/+5P6ECird5PyUZrXGjJtBzPNFF+b6rHv2O/
+         tMmQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoE5Fxk1ydhy2kogFZihyOezPN9C89uovh1fCZ9G0ts6lWWMx1OZX9Q4Bwo4fFL7SsGi/nDh1M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylHf+oxu8qm0Fv71e7jwEsGZj31ZyOCCz/xi4uSyGAv/xbEPJ4
+	cy3oXRMkwM0//2eyqo4b2SnXOc7QiaQ/9IKrnL40uY1nX50E94ji+q+LdIkGoRr/XO4=
+X-Gm-Gg: AR+sD10KKnzPcr/dlqeK/ZVPnJYRCzOHENuDaJMZdNLUD9HYL3UKmzF1WSVnZkXKjvJ
+	5URNl4fSQVd7jcYw3jsa54HS/fUUO5QhxCAq97cCRpQK7LbyJ5RYNUvypx3mLJjZ3Mg9FElyykl
+	u3DzXkVTgW1w+vDDDi6Cj5g7KH6rz/40e5vpVnm+ES/YrF5ko3iIHFJxP70diJi5v4e8yS48q8O
+	Gl+QmgZx1QZljGX3N/qMADEkUlsonr303m+cUCR3+7PUllte/mrHfDEkqzqYbko3OZTnjBGwCTM
+	gdPXwF6nqMyMIGNCvUG1E++rA0U9JZU1YdZ4Ioj1DaaoVuYk6dvAgMHbAgMqmWDT0rlxQllTxhA
+	4jXagdsrpV5taS5IRov46Z5UmeHwIshQt0tcInx1qGIjTz/zo4wBuyI+fPD+o5MS1VowP8nIBvM
+	hzg/UJLKnY
+X-Received: by 2002:a05:600c:3e10:b0:495:6134:6d61 with SMTP id 5b1f17b1804b1-496b57160e7mr53193435e9.19.1785060845317;
+        Sun, 26 Jul 2026 03:14:05 -0700 (PDT)
 Received: from localhost ([109.160.73.171])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5c4sm38834155f8f.8.2026.07.26.02.54.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957f9928fdsm162079695e9.1.2026.07.26.03.14.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 02:54:44 -0700 (PDT)
-Date: Sun, 26 Jul 2026 12:54:33 +0300
+        Sun, 26 Jul 2026 03:14:04 -0700 (PDT)
+Date: Sun, 26 Jul 2026 13:13:53 +0300
 From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Baul Lee <baul.lee@xbow.com>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org, idosch@nvidia.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, federico.kirschbaum@xbow.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: bridge: mrp: fix uninitialised bytes on the wire
-Message-ID: <amXZWTkZK7EYVwbh@penguin>
-References: <20260726062518.43774-1-baul.lee@xbow.com>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: bridge@lists.linux.dev, netdev@vger.kernel.org, idosch@nvidia.com,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, nbd@nbd.name, linus.luessing@c0d3.blue,
+	vega@nebusec.ai, zhilinz@nebusec.ai
+Subject: Re: [PATCH net 1/1] net: bridge: stop fast-leave after deleting a
+ port group
+Message-ID: <amXd4UTdaREoxTpG@penguin>
+References: <cover.1784707712.git.zhilinz@nebusec.ai>
+ <1cf0898872ef7c72d5f4c0304414a192c6dac591.1784707712.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,74 +79,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260726062518.43774-1-baul.lee@xbow.com>
+In-Reply-To: <1cf0898872ef7c72d5f4c0304414a192c6dac591.1784707712.git.zhilinz@nebusec.ai>
 
-On Sun, Jul 26, 2026 at 03:25:18PM +0900, Baul Lee wrote:
-> br_mrp_alloc_test_skb() builds MRP test frames on an skb from
-> dev_alloc_skb(), which does not zero the linear data area.  On the MRA
-> ring-role branch the sub-option TLV header is appended with
+On Fri, Jul 24, 2026 at 12:52:48AM +0800, Ren Wei wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
 > 
-> 	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
-> 	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
+> br_multicast_leave_group() iterates mp->ports with pp = &p->next in
+> its fast-leave path. After br_multicast_del_pg() removes p,
+> continuing the loop advances pp through the deleted entry.
 > 
-> leaving sub_tlv->length unwritten, and the two trailing alignment bytes
-> are appended with a bare skb_put() that neither writes nor clears them.
-> The surrounding oui and sub_opt regions are explicitly memset(0), which
-> bounds the exposure to exactly these three bytes.
+> If multicast-to-unicast was enabled, the bridge can hold multiple port
+> groups for the same port and group with different source MAC
+> addresses. Once multicast-to-unicast is disabled,
+> br_port_group_equal() matches those entries by port only. A fast leave
+> can then delete one entry and continue from its stale next pointer,
+> leaving mp->ports pointing at a deleted port group.
 > 
-> Every MRA MRP_Test frame therefore carries three bytes of stale
-> page-allocator memory, at frame offsets 65 to 67, to any observer of the
-> MRP control traffic.  A capture on a kernel without
-> CONFIG_INIT_ON_ALLOC_DEFAULT_ON shows those bytes varying frame to frame
-> and, after a page-allocator spray, carrying the sprayed pattern; the
-> same reproducer on an otherwise identical CONFIG_INIT_ON_ALLOC_DEFAULT_ON
-> kernel leaks nothing, confirming the source is uninitialised allocation
-> memory.  Reaching it needs CAP_NET_ADMIN, which is self-satisfiable on a
-> stock kernel through unprivileged user and network namespaces.
-
-Drop this entire unnecessary paragraph (slop).
-
+> Fast leave only needs to remove one matching port group. Break after
+> br_multicast_del_pg() so the loop stops before dereferencing the
+> removed entry.
 > 
-> Assign the sub-option TLV length explicitly, which is 0 as the AUTO_MGR
-> sub-TLV carries no payload, and append the alignment padding with
-> skb_put_zero().
-> 
-> Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
-> 
-> Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
-> Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
-> Reported-by: Baul Lee <baul.lee@xbow.com>
-
-You don't need a reported-by tag since you've already signed off
-the patch.
-
+> Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Baul Lee <baul.lee@xbow.com>
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
 > ---
->  net/bridge/br_mrp.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  net/bridge/br_multicast.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-> index 3f7126a7d720..a5548f475604 100644
-> --- a/net/bridge/br_mrp.c
-> +++ b/net/bridge/br_mrp.c
-> @@ -226,9 +226,10 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
+> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+> index 6b3ac473fd22..00aa9b2879d6 100644
+> --- a/net/bridge/br_multicast.c
+> +++ b/net/bridge/br_multicast.c
+> @@ -3687,6 +3687,7 @@ br_multicast_leave_group(struct net_bridge_mcast *brmctx,
 >  
->  		sub_tlv = skb_put(skb, sizeof(*sub_tlv));
-
-if you use skb_put_zero here, you can drop the explicit zeroing below,
-in fact you can add the MRP_OPT_PADDING as well and move the comment
-above it then drop the second skb_put_zero entirely
-
->  		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
-> +		sub_tlv->length = 0x0;
->  
->  		/* 32 bit alligment shall be ensured therefore add 2 bytes */
-> -		skb_put(skb, MRP_OPT_PADDING);
-> +		skb_put_zero(skb, MRP_OPT_PADDING);
+>  			p->flags |= MDB_PG_FLAGS_FAST_LEAVE;
+>  			br_multicast_del_pg(mp, p, pp);
+> +			break;
+>  		}
+>  		goto out;
 >  	}
->  
->  	br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_END, 0x0);
 > -- 
-> 2.50.1 (Apple Git-155)
+> 2.43.0
 > 
+
+Yeah, all other places which use br_port_group_equal do exactly that
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+
