@@ -1,117 +1,160 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA41288C0E;
-	Sun, 26 Jul 2026 14:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AD637D10E
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 15:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785077526; cv=none; b=upo62inMwFq8IPjbZx5+GanrtvU+Bx+JL2jinkgN/HZcGBwiV8Kxx3tKwU7NdC4FhoVw/6zUoYw+m20h851rN6+YBbpsOiXUCx2mokaysvmikpGh81MgkmJxg2yKg9EBSSA2b3FqJN2NnoGg2Vx4vFVlBCFWOdtPkfQWZdPnMR4=
+	t=1785078506; cv=none; b=M//zIMbHwVgc3W+zM9BE9rGgVXBjPEBy7iWO25f9TxuzdtGodQi+OetBh685qCIKuXbjG6xWSXVb95rU9fHZljNXXv35KvtY1VcBYvEFYkZUhG+k2H0aqfAEmmk3IU7FM8jKmGB3oduHza+kURF0S35oo8F9WJ07PT74lhNeczA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785077526; c=relaxed/simple;
-	bh=wNDxlKfBMkNYHNmCd509rghz2fZpgybsHvPHuEJCo+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6tpBX7vOOesrjk26RMayB5o1jc93EZQiUHaUw9CV/X9xGexGFAubMkZrrCybHRQCGpMjwkByr7rDbpsqBLNCP5eyDayDpEDDq6CxUkQw7P2r6ZhUfCr2OtUrmbrmFe72GXuzCslBqSDUNNIYNlkYHUb/5UUeIl7HsnOKGz9rUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pCSx1kr4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785078506; c=relaxed/simple;
+	bh=0B4u1eyhoxlUI94b50Ih1wtB/9Q8UezhyMJY/waYykk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BgLz4f6UBMCp7mas6EeVvcOUc+vsBBXsCeg6XsY7JniQGkPmb3zDIRRtVs28A85VqiZLA4fD2z0iTteBLL6k2n27RuPqaocLJiibR58kzp1nHMgB6XJBcAEO8UVTQouU2XKQaOGafMAHurxn1f2EyfxViXh+J6RM0TJX4WR38hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iv92bgUL; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pCSx1kr4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SS4ef3j0ebZLsZFKqWIf/cQ9BXjSq9uD/G8+mr2rA8g=; b=pCSx1kr4eJZkiGe01PMVVF7z1S
-	kErocFY+Liq9eWS+Q9THpKsnOk+VPaSu/CLuXj6gT12vMQ/wVgUhbMEj6uweQhR1u/TGEo82/I8hb
-	zFHaJ7fQ7v71K3PMVmACGB8PCde3WN35xC7MotQ9mohdM3oSjNTDnzJqog8pcXkqei0s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wo0Ci-00EIZi-GE; Sun, 26 Jul 2026 16:51:48 +0200
-Date: Sun, 26 Jul 2026 16:51:48 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <b1f54c52-5719-414b-9bdd-3a0b0bc06252@lunn.ch>
-References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
- <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
- <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
- <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
- <47d31704-e57b-4828-8c8d-0438ef43e49a@motor-comm.com>
- <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
- <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
- <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
- <638fda5b-ee2c-4f3c-94b6-37d689d48721@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iv92bgUL"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so4406405e9.2
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 08:08:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785078503; x=1785683303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L4vPQLIFIU+PH7XILzDD9oxog/yFBBjc7oRz0GykxrM=;
+        b=iv92bgUL/9imxF5nBruERK2D6aS1M0WyGPJzin/alf2+uu3PdTQpze6+uTT3BOjbxl
+         W29F42kyl8KpE82IBHFR4qmlwZI+aOqBQlc/VK9UoDHaXk4Uu4o+Nhvxxp8sT6+umnaO
+         eGr5Zuy982N3/ZTCuY+1nLOpGBo+i3pxJtYwYTvWDnLFdLBB4M/Lj9vjFDnVHfljTj6+
+         JfFniKgXQXIpwDFAXXH1P2BgSHkuFLT7gs0Z0iwATTNgE6xYOBOyx2oVLlOIMmuhZRy8
+         j/RoVXRKSmwRF8IlT6a8UjVScI4goAJw+d/szGxlv18FhAjS6vL6JgmAhNQZwxyJPe51
+         oS2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785078503; x=1785683303;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L4vPQLIFIU+PH7XILzDD9oxog/yFBBjc7oRz0GykxrM=;
+        b=nzKB5SFJ9mOvSO2J9ar5L7sfVzOS97csBDZnsO6rQVCNr8SvI57Amb8ZfKS+bxHWrI
+         Y9tE1Tov3uG+856zFlG7mkq4NyqEO3MbojKyNeTDxpWgFA5PSImzWVK3JUSq7L1E+GUE
+         3G/wtZHWWOTJ4rTFt+MoJR4gBOjlDjl/CI1h42rACu4pZwxcVtEajTbeSzjO3DAQGLTq
+         h7bhoFLN8z5cB4iaN5In7tJPyBwfXSXj2pPYupzsiOPh95vhDMJc+YB4/0AVUsuJgQF6
+         yzAYxBh3zS4iRhHAfdJvHnvoZ70GK4TLcPDQvNjkHz5dup/WwCLlLD5AtyCdTSfm3EwZ
+         sE+Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9q3IrjoULLQ3/2JW3efT3z9+z79b4hrEguU1aaRhE17yD6LJatH3YRp/yxNUDpD+Fw1+1EZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOSjgw4Osai3msGdilS4RlXoAG8NXRjSIcY+slLU3EfkYIJd5C
+	lTo8C4YGusgjjFlOHH0SXSStfj9UJ038lO5/7p8tk7WyNaJUMUaWDx7G
+X-Gm-Gg: AR+sD115hbM+Q4gA5Of4Yi/ffWXoEXaePjLuMBhDozcV8TJ6oaS8kSFfom9jrbihHdV
+	Oc0JVqVmKty5yF7yaWzSXvhArJgYf9uRWvaobYd3BVImsEV7DPPG9nPYYc55tgk2uAnCpHTNbYP
+	aco/abSqdBJ7I+B2ppSbe+dwj6oSq3D5PrmhLla9eqScf2rcTcEl8YirGpLQWpIY/PTb9XClVTe
+	bfmgpiYIIj9oT8jtbIocLdIEPN7o0Lk+tWC+Uu5ercnxEzrfH69+OKQkpjL/mH2L5dyu4LRLq60
+	XiSkPRwuPfuFwfTdccsWgHwUsMt+FD90xVcw5G5DNYjFCjsSJy6fMD+qYqwQGMjKl2wM4ndAbvz
+	8zTy03cdxaMUIF5kFOl2bnxK3qVQKeUTSvUcHEraEvDfDtQQaRr2vbF2KhZe96Ia5561yhpsbTq
+	qsmJrVwfuT1UzE0lBa7s6nHYtP1gQ0UulYiU3353L16NTnREwjBipXjKmErbf8Bw==
+X-Received: by 2002:a05:600c:45d5:b0:495:6396:8b67 with SMTP id 5b1f17b1804b1-496b56bbe92mr63228665e9.4.1785078503412;
+        Sun, 26 Jul 2026 08:08:23 -0700 (PDT)
+Received: from Ansuel-XPS24.localdomain (host-87-0-193-91.retail.telecomitalia.it. [87.0.193.91])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4957bfc2ff2sm166262005e9.4.2026.07.26.08.08.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 08:08:23 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>
+Subject: [PATCH net] net: phylink: put link_gpio if phylink_create fails
+Date: Sun, 26 Jul 2026 17:08:05 +0200
+Message-ID: <20260726150806.2437-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <638fda5b-ee2c-4f3c-94b6-37d689d48721@motor-comm.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 26, 2026 at 11:24:16AM +0800, Kyle Switch wrote:
-> 
-> 
-> On 7/24/26 21:18, Andrew Lunn wrote:
-> >> Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
-> >>      or combo mode. However, the PHY8824 is only used with UTPs, and 
-> >>      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
-> >>
-> >>      RJ45 <----> UTP0 <------>
-> >>      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
-> >>      RJ45 <----> UTP2 <------>
-> >>      RJ45 <----> UTP3 <------>
-> >>
-> >>      It is similar to phy8821 driver in motorcomm.c, with the difference 
-> >>      being that one has one UTP port and phy8824 has four UTP ports.
-> >>      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
-> >>      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
-> >>      YT8824_RSSR_SERDES_SPACE.
-> > 
-> > O.K, that completely changes my understanding of this device. Yes,
-> > YT8824_RSSR_FIBER_SPACE should change name. And i would include this
-> > diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
-> > this.
-> > 
-> > For the locking, look thought all the code which is touching the
-> > USXGMII side and see if it can be moved into probe().
-> > 
-> 
-> Ans: It may not be possible to completely move the code which touch the USXGMII side
->      into the probe() function. The initialization configuration aimed at optimizing 
->      the performance of the USXGMII side may be moved into the probe(). However, for the 
->      soft reset of UTP, it is necessary to configure MII_BMCR registers in USXGMII side.
+In phylink_create() if phylink_register_sfp() returns an error, link_gpio
+obtained by phylink_parse_fixedlink() is never released. While this is a
+very unlikely scenario, it's worth to fix/handle this.
 
-I'm beginning to think you need to add an extra lock.
+This was present from the very first implementation of phylink but got
+relevant only with the introduction of ce0aa27ff3f6 ("sfp: add sfp-bus to
+bridge between network devices and sfp cages") where additional function
+were added after phylink_parse_fixedlink() making the release of link_gpio
+needed if such additional function errored out.
 
-The idea with the mdio lock for accessing pages was that is existed,
-and it would protect against accesses which don't come through phylib,
-like hwmon. Because it is a low level lock, it really only works
-within one PHY, when there are operations going on above it. The
-assumption is that PHYs operate independently.
+While at it, restructure the exit condition of phylink_create() with the
+goto pattern to reduce code duplication on handling error conditions.
 
-You are attempting to use it differently. Because of the poor hardware
-design, you need to protect one PHY from another PHY. Your PHYs don't
-operate independently. So i think you need to add a high level lock,
-shared across the package. All the entry points via struct phy_driver
-need to lock the package as a whole. The PHY can then do what it needs
-to do without having to worry about another PHY being operated on in
-parallel. You can make use of the phylib helpers, since the MDIO level
-lock is not taken. phylibs concept of pages registers will work. Once
-everything is done, release the package lock.
+Fixes: ce0aa27ff3f6 ("sfp: add sfp-bus to bridge between network devices and sfp cages")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/phy/phylink.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-So, please look at adding phy_package_lock() and
-phy_package_unlock(). Maybe it is possible to make use of struct
-mii_bus shared_lock? Please look at how that is currently used and
-check to see if there might be deadlocks.
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 59dfe35afa54..f40acc0d4133 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1874,8 +1874,8 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 	} else if (config->type == PHYLINK_DEV) {
+ 		pl->dev = config->dev;
+ 	} else {
+-		kfree(pl);
+-		return ERR_PTR(-EINVAL);
++		ret = -EINVAL;
++		goto free_pl;
+ 	}
+ 
+ 	pl->mac_supports_eee_ops = phylink_mac_implements_lpi(mac_ops);
+@@ -1908,28 +1908,29 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 	phylink_validate(pl, pl->supported, &pl->link_config);
+ 
+ 	ret = phylink_parse_mode(pl, fwnode);
+-	if (ret < 0) {
+-		kfree(pl);
+-		return ERR_PTR(ret);
+-	}
++	if (ret < 0)
++		goto free_pl;
+ 
+ 	if (pl->cfg_link_an_mode == MLO_AN_FIXED) {
+ 		ret = phylink_parse_fixedlink(pl, fwnode);
+-		if (ret < 0) {
+-			kfree(pl);
+-			return ERR_PTR(ret);
+-		}
++		if (ret < 0)
++			goto release_link_gpio;
+ 	}
+ 
+ 	pl->req_link_an_mode = pl->cfg_link_an_mode;
+ 
+ 	ret = phylink_register_sfp(pl, fwnode);
+-	if (ret < 0) {
+-		kfree(pl);
+-		return ERR_PTR(ret);
+-	}
++	if (ret < 0)
++		goto release_link_gpio;
+ 
+ 	return pl;
++
++release_link_gpio:
++	if (pl->link_gpio)
++		gpiod_put(pl->link_gpio);
++free_pl:
++	kfree(pl);
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(phylink_create);
+ 
+-- 
+2.53.0
 
-      Andrew
