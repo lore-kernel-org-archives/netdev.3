@@ -1,124 +1,125 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855B3603E0
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785063268; cv=pass; b=gncu7WQXBJVeWbbalTLCsTjSizHLX7sJE4nG1afYFEPSys5UdVXux7UX0HkhU5gA3AzO6tMZWLxa+S7KdmFF2AsCHqxpw2bBfUotcUu3yKSMEEStXeKHlo4+sq59RmfcykaC0KJ/LQGLjveOnK/qzT5EN2FAPao1JcrIT8F+QwA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785063268; c=relaxed/simple;
-	bh=Iw88qdhbLeJWjjRsO5YQ58HvJ0RtCrw2s4pHsHM+gn0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NKEGb2Xz/eANkpBgkQEWwR0qKjJoW1rZ9UbfCyBO52SZmWVbGWQMScKLXBvWOIqi0mPjECJVX8B5F8ABrfdpbXf8bDSGGhsOYIWcd4nxXi8/83GEivrvHZux0ZXahHtoSOPwLbM39bNQozKaFsW/BxLerc06zXGpkS3UQwlqUdM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dvpv2ol3; arc=pass smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CFA2E22B5
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785063401; cv=none; b=OuP2HNblIA48NIoLAQb/y18LV7+0sz0JUcelUDDsjqmiC5/eO868wk9foVMswjQkhFQ3TluOsJQMNbNTaJ7gjDjmOho5lBzBrDNLlvWSsSCUFutFrh5BlN7+Ke9xdmXAB1EgwpDPOARimxeqq4As84FkofIaP/BxDqM6kza1o+w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785063401; c=relaxed/simple;
+	bh=FegCKW9FMF1/MnKnXvt8KmJF/dfU+PKJUGTgC6peWLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sQbsRrfBhRHMpsedazAGWYIk9WlHkqyxiq9V6zKCS9Rdj+9hdHKSnbAh4Slq5sp42qUZdMfSj70POpPB5rJ+EtnCwEsIyJ2C2ylSuKZD+QvG7fY9XSm3JRQbbwb0sJc90GFA2jMd1i8qCdPWT4NxwGQ6wmGVz1aSWG/miaWtN4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPwoYxKL; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dvpv2ol3"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9ef3e1337fso1290151a12.2
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:54:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785063266; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GxLyQbXiv21nbTcrEpRJ+eUmSQD2hDiJgQ5g1vn096QwZNAjegio3GgtwTrz7maGAe
-         qC29IZLS577VKWQ/EfaqbfZ6G4dgIUF/53zvmNWZqXrqKgfpiWlHnnpCfysUAjYzk1ZU
-         M9UpAkU/Qq8XVcVCiH1rKle8UWJsxQ/7fmHuOo/ZVuUqBp6x71MWmJ4Fs9P6OgZlWaEK
-         88eS/JQ+C5/qd/7nc/AVxsdGdEWrs5A+W7UC2GktxU9Zl80H7ri2f4OLXnpPVwpuSow7
-         d72UHEOXOSBz3xUhD0Usn0mJechoQSl5YcMfzOLegY/kfWHe5QabKgq1X9XiRkkUaJFO
-         B4Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Iw88qdhbLeJWjjRsO5YQ58HvJ0RtCrw2s4pHsHM+gn0=;
-        fh=GAGiFCws7atibRTPjwvcdSw7+/YKHr9oq1oAClnXSMs=;
-        b=kEIQEVVJCbUtZTWcz+2FUxuKW/xk02soAfazT2ueWUpvPMk4s9ySMsB1RO5JsEiWI0
-         S/BMfzQ3KlCMTjyKXhaJ1r4B+UFErwJlFq4dRSpssJVbxKRhvDpBP1bRGWIutwXMIMJ3
-         51FW10Jefy3DfJ6dg1eKpeaUq0Z/pUCnbM9qIxdKuA+bRy2laA9c2IP/SxAWsyAwqQm6
-         sMw6rydloznFDgpX6cmTMCPuguPW5h4qvA0M53g/JL+yoXKpNBf/NCLE0RMWykBD9/wc
-         C59auH5TDYdU4H5t5Eex6wDvfhMhl8++xCDglVy1pgoTmdxfsH/caO2m3PXz9COWfCJS
-         uYyw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPwoYxKL"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc97653887so20999685ad.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785063266; x=1785668066; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Iw88qdhbLeJWjjRsO5YQ58HvJ0RtCrw2s4pHsHM+gn0=;
-        b=Dvpv2ol3gARkoIB9UcQeTblO9C1suXXD5K6j2neVIym/I5hSAZlqwQL5v2vjOD4O2M
-         9NG6JlGieKWNZyTtPpSWqLT4v0xdA4egzED+rPp8omqS1McUmXTfJZEY3U0WTEbTVfmt
-         MP53Lf3RrzMlMlm76Y3ya0RXlJSRQnwvi3oegwzmjx1uU6XXsu0mm7hVs+t/h4M/BVAx
-         EuY9B17ZQlYQUrS0Sm3a6ErwpxkZIKSa/+6e4VI4lWbSdiXArkeiv11Pj+QZN8TAPhaS
-         6Uf642mGc9VUzor3mcI2nOPnXxkVA8iGytd3v19AvBPm2fi+6HdqNq6FwRU4Z7Cx1yYJ
-         6SjQ==
+        d=gmail.com; s=20251104; t=1785063400; x=1785668200; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6SnhdOfwsu7KEbWY+O+8re8x+bMH7YPIZLb0qYgvEHU=;
+        b=TPwoYxKLSUiDbtlIPk66be8MBSy3nzhJ4Y66lLDzJD9utaiVPoGzoiCBVgn9yIBmDp
+         vfBtgM5VyJutQvEpGWECSw7juWMZPNQ3AOXRkU0tGEA5ejfERIFDedjNJg43HrXkjIqD
+         KQaZ3O9MyCzqe3+iQmktkazKZeULT2r2RlG+dtmh41EEImcBiXZQky0hoKsYwf18pogC
+         kk61onX8jBrQvJH/ASdjXVnUuwGUXlVKvltcr46x2+OxVGb0kgSmEdEnMUuekIe3yvGd
+         IE14acCWxWeZM57nXPF15/jSrx6JufDtqMAf98TL9KHW39lnwncaNZS6EROylF9C/4mO
+         7veg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785063266; x=1785668066;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Iw88qdhbLeJWjjRsO5YQ58HvJ0RtCrw2s4pHsHM+gn0=;
-        b=IiN2UXtRhSfW33oK8NbJq3gVuCC28lyqpQMm2dbwBWRONPRBcd7GoJCODkXZefc3sh
-         JRPbV6Z2IF9fdD6P0PUyFi5ziTR7oC85ethjWHgmS/oR9l8duqUBUruob5drG0zikPzv
-         yc6tHZole3+xI6YlLkoO/uwTvH1sPHkBdKUJZysbZPPRyeM0xXqjCikgsCuVXPpplT7u
-         Qf7PeWgZPwDzZEOizcY7NzCbjeIt8iR4Sgd073OkwmUtuX0MIRsvC9ih2gw4QWHx4UqL
-         RMLPdXBzOlVuBbrqjpbKTbWF8s48EINBvf9OqP+ewZo/T9cKKymM/CkH7fk1dOCspUtm
-         ue7w==
-X-Forwarded-Encrypted: i=1; AHgh+RpPPZoHSo5VX/uHKYaUbV/koI2kqDz9vp3ICDTBgc4N6KITfo9nvUsSpVSX1/Lz/+mLljd/b9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIbj0q3ZUUGyGqEOIq3sUrmIPzHT1h8sawGv7FGqiTRk79HzjT
-	stnCddvMsj8yibI0UbDcPjpmfVhFR68plFm/ks8oiJGXpJWi8bkVybJqAmw7js9VoZQbShuI3Xi
-	/S7GJUCJfIoQpylVw+PlUByCMphP//b8=
-X-Gm-Gg: AR+sD12Bse7cy9PZgBlyJIp/x5n7+Gw8i1ShEHnW0uYedqpIFhV5+y3SqNEFsFrxlpl
-	2fvOI97ICpoiS6Xtp13xYl5u+JDtU6GFiIsMUwADqFJWZ8y/XucR2plfT64uqzROClU17Dg0sQV
-	3OjH1/Qgd3JedXtPR140qQLBE6u3LYD2BtCoVPuQ9HF84j093fM/uKeKe0eQ/9j0YBYQfJNI/e6
-	03paHmejjXGMRk8Ozig7oQWCHtYcz1SRVpM3DxwTPoFl4Avqy9SzKZigo+LSBhX
-X-Received: by 2002:a05:6a20:918e:b0:3c3:68a5:50c8 with SMTP id
- adf61e73a8af0-3c67e166966mr4554741637.71.1785063266062; Sun, 26 Jul 2026
- 03:54:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785063400; x=1785668200;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6SnhdOfwsu7KEbWY+O+8re8x+bMH7YPIZLb0qYgvEHU=;
+        b=BckCMG9KSxl/e/IaMDSMCiIrMIl2jlLlmqcBJVF67baNr9x9HMB5X/VH+ChO42HGUn
+         3Q+o6S2CwkzJzv9I0SbHnN55fx8N0K/9el3h6VL2zKRDBSCCHgRvPNSUQeJC9vmITTd+
+         TGsRX0EpXBUc/CMT9/M1zgGhfEwZCwDvx4dXCkUKe5FjkBXCKuQ6ph4WWSBwsSHtMzee
+         ahbgEBm+7FJzJWdbAmJ3tju34hA6UFgyIo6UTIEINve1Uli06JqcnKnFvVmuSp0U2V4x
+         YCbShJ+4XCxy8eqjGCL+XFa9q6LXr04gObIJIqSLxQiC3xnEhuYLoPKMT2w0Qch24i7M
+         MDOg==
+X-Gm-Message-State: AOJu0Yx6TJAOUkigFB4zt42HidZb8JEajRFfabGMbBK3le76jX1IXRc5
+	sd4VNj59vnrYySdxSRkRo7vpb95dJdDBziqVIpPzSf+aKdB+i38omN2ArZxZqZgv
+X-Gm-Gg: AR+sD12c7ACwKZ1eknf3ljdH68tJ6Lz5gbyadqz4KInds2S+yA+J55JhembBKspzPE3
+	M7F+PDgOGHI3vSWF0p5Ie4eoAYYYgUhRt1ddd5+Va8hcYU9puim313STL6wFBTSXg3M+Qed1XCM
+	XKEWRrU8CazLLVJ2wzihrkkQnrtE6feAb24qkraHZ0DzieCymXZbLPzGyz2MegMi6zY2K3KIOuL
+	G2G94cu/opsJKs5yG58pxUZ1Opk7flFIvs0YmwbzUD6E76Eu+Li9jiWvA8n+DYW2NBYYs3BHxpK
+	c/rOZG/O8s4kUqa/PTARDa10uynsI9QLKKDgZkRh0RrWgdqMwPwEWuqVBiXHgCf+hKh0lCDvr2f
+	Glxzci38qC/X0PCanO6iUv0HdaoTgLOXmyqINb7OMzvcBNSjxHVyZ1+qlr5h1K1GQmwM8e/f2vR
+	JAvBY2xJaRIeSM7T7wKB9DWRRwXs0TqrPYsLXRNKET8fffkdk=
+X-Received: by 2002:a17:90b:1e47:b0:38e:b3fd:d582 with SMTP id 98e67ed59e1d1-38f29885079mr4486728a91.39.1785063399873;
+        Sun, 26 Jul 2026 03:56:39 -0700 (PDT)
+Received: from anna.. ([114.70.9.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f04175c1asm3645559a91.12.2026.07.26.03.56.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 03:56:37 -0700 (PDT)
+From: chanyoung <ppoo1220@gmail.com>
+To: netdev@vger.kernel.org
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Howells <dhowells@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	chanyoung <ppoo1220@gmail.com>
+Subject: [PATCH net 0/2] tls: fix plaintext sk_msg ring over-fill in tls_sw_sendmsg_splice()
+Date: Sun, 26 Jul 2026 19:55:54 +0900
+Message-ID: <20260726105556.2719227-1-ppoo1220@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260719-usb-ptr_err_patchset-v1-0-85f7f2e4fefb@gmail.com>
- <20260719-usb-ptr_err_patchset-v1-1-85f7f2e4fefb@gmail.com> <al4zFG3zCD5FJ7eB@SMW015318>
-In-Reply-To: <al4zFG3zCD5FJ7eB@SMW015318>
-From: Subasri S <subasris1210@gmail.com>
-Date: Sun, 26 Jul 2026 16:24:14 +0530
-X-Gm-Features: AUfX_myX_j6xmvi1eW61hYxH97YPNgwMZ6bNH_j9w9hal-EVFSbaRcZHMpkAmFA
-Message-ID: <CABfayGP4XpfqrfQ3qWz97yLTfjqwn8xXwW9WS2g1_vceS0srXg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] usb: chipidea: Use %pe to print error pointers
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Peter Chen <peter.chen@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Duncan Sands <duncan.sands@free.fr>, Chas Williams <3chas3@gmail.com>, 
-	Minas Harutyunyan <hminas@synopsys.com>, Hans de Goede <hansg@kernel.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Badhri Jagan Sridharan <badhri@google.com>, linux-usb@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 20, 2026 at 8:09=E2=80=AFPM Frank Li <Frank.li@oss.nxp.com> wro=
-te:
->
-> Avoid use words "This patch", just
->
-> Fix coccinelle reported warnings:
->
+An unprivileged local user can oops the kernel by splicing into a kTLS
+socket whose open record already has a full plaintext scatterlist ring.
 
-Sure, will follow the same in all my patches.
+sk_msg_page_add() has no fullness check of its own and
+tls_sw_sendmsg_splice() only tests sk_msg_full() at the bottom of its
+do-while loop, so a page is always added before the ring is checked.  That
+first add writes the reserved slot and wraps sg.end onto sg.start;
+sk_msg_iter_dist() then returns 0, sk_msg_full() reports the full ring as
+empty, and the loop keeps overwriting live entries while sg.size grows.
+Pushing the resulting record drives the AEAD with a cryptlen larger than
+the walkable scatterlist, so the walk runs past the end-marked entry and
+dereferences the NULL returned by sg_next().
 
->
-> keep one is enough
->
+The ring is left full and unpushed across a syscall by the copy path,
+which does not set full_record when the fragment it adds is the one that
+exactly fills the ring.
 
-Got it, will do.
-Thanks for the review. Will incorporate your review comments in the v2 patc=
-h.
+No capabilities, namespaces, io_uring, nftables or BPF are involved; a
+plain loopback TCP socket with the "tls" ULP attached is enough.
+Reproduced as an ordinary user (uid 1000) on stock production configs --
+CONFIG_TLS=y, no KASAN, no LOCKDEP, no fault injection -- on 7.2.0-rc4 and
+on 6.12.96.  Present since v6.5.
 
-Best,
-Subasri
+Patch 1 evaluates the loop condition before the first sk_msg_page_add()
+instead of after it.  Patch 2 adds a regression test: it oopses an
+unpatched kernel and passes with patch 1 applied (924/924 for the whole
+tls suite, with CONFIG_CRYPTO_CHACHA20POLY1305, CONFIG_CRYPTO_SM4 and
+CONFIG_CRYPTO_ARIA enabled so every cipher variant runs).
+
+I found this with AI assistance, so per
+Documentation/process/security-bugs.rst I am treating it as public and
+posting here rather than sending it to security@kernel.org.  For the same
+reason I am not posting the standalone reproducer; I can send it privately
+if that would be useful.
+
+chanyoung (2):
+  tls: don't over-fill the plaintext sk_msg ring in
+    tls_sw_sendmsg_splice()
+  selftests: tls: add a test for splicing onto a full plaintext record
+
+ net/tls/tls_sw.c                  |  4 +--
+ tools/testing/selftests/net/tls.c | 52 +++++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
+
