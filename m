@@ -1,25 +1,25 @@
-Received: from out198-17.us.a.mail.aliyun.com (out198-17.us.a.mail.aliyun.com [47.90.198.17])
+Received: from out28-76.mail.aliyun.com (out28-76.mail.aliyun.com [115.124.28.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0611FF1B5;
-	Sun, 26 Jul 2026 03:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14152DECC2;
+	Sun, 26 Jul 2026 03:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785036284; cv=none; b=LPEdcNENfwipoE98cgQd9k4hydN3xfHIpu5WkIcRB0JD7w0IjX4FY/EOyC0j9H+oLYB2krTKcofdn1vScU/1LD2xBVOQiDUu6p6rofZd2jm45RDqtl8caUealG75/JEoe23igNAGmVptP/bBkQgdEsQsbCANakxMrNGAhNRs1/Q=
+	t=1785037144; cv=none; b=FpVZqCkkLUBphCeJjoTHcBiiN/9HybK8WdygnkVcGJX0r+qsn1XqZHQAQXSahm2xYgX0wa/FeR2qDrJ+3Pl3EsIJHuLRgf1l3xpYkB0iZXzPtClWJ+eQ95l3voNQPtgNuv/E+KIIuqtN+yqWdXdqGbjiWyi4AbQ8HqHEnYLXa/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785036284; c=relaxed/simple;
-	bh=atBVWkixzHctNx6p2JfDsYHkgTibKRLnHg7sSvX7AsY=;
+	s=arc-20240116; t=1785037144; c=relaxed/simple;
+	bh=AKpmIiQ4iccJxRD6HKk5WnyquH17NEcMmgFceiW2Lk4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q1sULCBiorDNNxmdeVbmpmc7ZLGj6W1IQHjaT8SNVu1i3ZAeDWxhq1F4VyTQBoL4Alc5rUf6wfq8qDu9OXxPPmUCSTaMWUd/Z+YlqFCcWTss936ncwG54Fhcy/wceYZ1KxGkZ0ewUsR263UHC2gWMsr1eLHfy9F7lNv57mwUNss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.17
+	 In-Reply-To:Content-Type; b=rXyR5rDsmTVSvzS2rulEv5nG9nqKl4EoooqvefyZRcZN1Eaco++3DNZ8zNF4jYzZdSAA38AvngPFMmPABPUhjFjlQWxatocgYVmwXRuKMEypobiaJGPcFaUMbPt9ujamrF3TNxPrXYqJjBoWfsJX0m/3A8SX/Q3MoxgNmYenBMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=PASS;BC=0.1509772|-1;BR=01201311R681ee;CH=green;DM=|CONTINUE|false|;DS=SPAM|spam_education_ad|0.901916-0.00468777-0.0933958;FP=16995275296565988992|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iVPgVvc_1785036256;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iVPgVvc_1785036256 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07541294|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.263698-0.00342386-0.732878;FP=14437360192616700034|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iVOucSP_1785037128;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iVOucSP_1785037128 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Sun, 26 Jul 2026 11:24:20 +0800
-Message-ID: <638fda5b-ee2c-4f3c-94b6-37d689d48721@motor-comm.com>
-Date: Sun, 26 Jul 2026 11:24:16 +0800
+          Sun, 26 Jul 2026 11:38:50 +0800
+Message-ID: <3398745a-d443-4882-9196-dd280b8ba982@motor-comm.com>
+Date: Sun, 26 Jul 2026 11:38:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,42 +43,79 @@ References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
  <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
  <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
  <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
+ <0d789c95-5ca1-42d0-9ff5-27392cc65057@lunn.ch>
 Content-Language: en-US
 From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
+In-Reply-To: <0d789c95-5ca1-42d0-9ff5-27392cc65057@lunn.ch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 7/24/26 21:18, Andrew Lunn wrote:
->> Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
->>      or combo mode. However, the PHY8824 is only used with UTPs, and 
->>      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
+On 7/25/26 06:18, Andrew Lunn wrote:
+> On Fri, Jul 24, 2026 at 03:18:47PM +0200, Andrew Lunn wrote:
+> 1;4000;47c> > Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
+>>>      or combo mode. However, the PHY8824 is only used with UTPs, and 
+>>>      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
+>>>
+>>>      RJ45 <----> UTP0 <------>
+>>>      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
+>>>      RJ45 <----> UTP2 <------>
+>>>      RJ45 <----> UTP3 <------>
+>>>
+>>>      It is similar to phy8821 driver in motorcomm.c, with the difference 
+>>>      being that one has one UTP port and phy8824 has four UTP ports.
+>>>      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
+>>>      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
+>>>      YT8824_RSSR_SERDES_SPACE.
 >>
->>      RJ45 <----> UTP0 <------>
->>      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
->>      RJ45 <----> UTP2 <------>
->>      RJ45 <----> UTP3 <------>
+>> O.K, that completely changes my understanding of this device. Yes,
+>> YT8824_RSSR_FIBER_SPACE should change name. And i would include this
+>> diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
+>> this.
 >>
->>      It is similar to phy8821 driver in motorcomm.c, with the difference 
->>      being that one has one UTP port and phy8824 has four UTP ports.
->>      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
->>      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
->>      YT8824_RSSR_SERDES_SPACE.
+>> For the locking, look thought all the code which is touching the
+>> USXGMII side and see if it can be moved into probe().
 > 
-> O.K, that completely changes my understanding of this device. Yes,
-> YT8824_RSSR_FIBER_SPACE should change name. And i would include this
-> diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
-> this.
+> So thinking about locking:
 > 
-> For the locking, look thought all the code which is touching the
-> USXGMII side and see if it can be moved into probe().
+> +static int yt8824_config_aneg(struct phy_device *phydev)
+> +{
+> +	int phy_ctrl = 0;
+> +	int ret = 0;
+> +
+> +	ret = phy8824_page_write_lock(phydev, YT8824_RSSR_UTP_SPACE);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
+> +			      phydev->advertising))
+> +		phy_ctrl = MDIO_AN_10GBT_CTRL_ADV2_5G;
+> +
+> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN,
+> +				     MDIO_AN_10GBT_CTRL,
+> +				     MDIO_AN_10GBT_CTRL_ADV2_5G,
+> +				     phy_ctrl);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return genphy_config_aneg(phydev);
+> +
+> 
+> This is only touching the UTP side of things. What a PHY advertises
+> should not affect the USXGMII side. Why does it need
+> YT8824_RSSR_UTP_SPACE? What would happen if YT8824_RSSR_USXGMII_SPACE
+> has selected?
 > 
 
-Ans: It may not be possible to completely move the code which touch the USXGMII side
-     into the probe() function. The initialization configuration aimed at optimizing 
-     the performance of the USXGMII side may be moved into the probe(). However, for the 
-     soft reset of UTP, it is necessary to configure MII_BMCR registers in USXGMII side.
+Ans: yes, this place only involves the operation of UTP. The addition of 
+     the operation to swap address spaces is solely to ensure that the 
+     current operation is conducted on the UTP side, without affecting 
+     the switching to the USXGMII side through other APIs.If the current 
+     operation is performed on the USXGMII size, it cannot access the 
+     standard MMD register of UTP, and all operations are configured and 
+     the status obtained is the status of the UXGMII side, that is not what
+     we want. That is why an operation to swap reg space has been added at 
+     the beginning of each APIs.
 
-> 	Andrew
+>     Andrew
