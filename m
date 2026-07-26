@@ -1,302 +1,200 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013026.outbound.protection.outlook.com [40.93.196.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5589C288C2D
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785057692; cv=none; b=CQ3ilz5w7XwE/jo6DitHCLJMUsLuWN7kB7SNGI5Ylo6ktfu4byDZE7uZ3k5oHGNfedJlJWvqp1nbQ+tJcXbNYB1udbWzwTJX8N5gLsr7275V3MP9pNhpV9x2A/OZxG4wuHenYnyxFjjSwdESA9tVH2y+Lt06pXljnFiuhMzOSPk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785057692; c=relaxed/simple;
-	bh=lafd3XEcaNeaMaLenplXzbLxjLUVzRQKpK5icSzVVTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJmYqswuTpC4jYNN/mgDB1CepY9qdkthJGF5rqGAaW/AtddN2Np8+ngRP5PfMTHmQRgi03XJjwguNHPEbWSPwRWdd4RlOJJkZf0a436qQ+aglROzNJP9Os7QgnmBAqfxCYnX7uu8G+D2v5ZyEdi7iX9wSdPK6NLhMHcNAwbn5bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JPB07ovy; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123E35DA75;
+	Sun, 26 Jul 2026 09:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785058192; cv=fail; b=uZjZ/sNejddvzdFO4hN2WQRVJf1hHC8WR3UWfbW0N0u7AvRPQ7VggALyKRWEOdKTycjm+mlrLRAz/+Zouy30mttMQp1DruvXmF1ba3dmPKffnx0q6Fu79C+enN50BOY5Rwbm9A5M+CCXYLA18IdYY1bPhGuLQsVVLhgbxVQZj+4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785058192; c=relaxed/simple;
+	bh=WTUQ0q/tq3y1QxOzv/MHyUDp0sMFkCnidSYBUsX2AKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HDVN6zJQGSGtpqci6vIajFobamxD9hIgMOyVh6o9p1t8Ip6Nqtx8qsUAk7DzO4ZFyD+yOatvr9hoqE01jSwrSyJEmLyHePtYmPJvDSg2RxK+sG6WS2a8HY9OULEeGN8ya7w0wBteqW7ISOao5L00Fq2H361gC/C8udfsxUHzyMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=P3LxUWGB; arc=fail smtp.client-ip=40.93.196.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JPB07ovy"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8485ab7c382so227834b3a.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 02:21:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785057691; x=1785662491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+s/4/9g/DhYkPtUyAU+bTxPmdaVZeyponCpbYYiuK/k=;
-        b=JPB07ovy3Llk7wLaLSLuN+P1Chj4oZVGuc89ECHZKFmLKhKJgFrSQcjOkBmKLyMKOh
-         NeMsdutDG1B1uvZ299xVXfpk98EohPKdohGv7mNyvYD9ibRR64P8pMYzhKBNP4eUrfZB
-         MQ9+9ElJyT41bQQlJG7o9rVtXhwlfmLm4ilUJppw4uULZZ3bIuY1Vk/KYcDChXc8GqIg
-         yvnWXRy16OAeh049iiDqILayCZ3QABMGyv7L4mIKaSOmgaO8i4ZcWVQPYbjUO+QFvFSb
-         EbuKmsNT5qVGeo6i1BoQLYJwZSCyzfqRtEhyoYaJU5mP7r1BenuBAlbrTNDWFZx76Osi
-         cpmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785057691; x=1785662491;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+s/4/9g/DhYkPtUyAU+bTxPmdaVZeyponCpbYYiuK/k=;
-        b=SYcOdhGWJt79wZ7KWgceMVAJtlrNRj5kM2jevAO8UOboxmf4uI1eka1X1Cbb/6tyY4
-         /K8s4tirB7E7ssHwZy0TT26n+SiRenwpZpzYvY9h0fu5/frHRYIOzD/koX6fBCdRc0dk
-         7+bDNN6js152z0oX9OZ767zaHewa/4hhXmkw4XMg7zxh4s7vmZOANOCv4o29IEEoEtQY
-         Kziio0kZQ1hb9diFQNI+ks22wiBBIhhCE4GM59aBKdwVxJE59wm+UqiJTCRwAvwMwjAr
-         SOnrbiNCEUVrjXBWmMKgWNDlpxbGHvJCoHMxy+zoCc1y2vHna7IbOCdKps0z3eOi0plD
-         PsEw==
-X-Gm-Message-State: AOJu0YzMMjSFOwd2YXbAzBOzRBiTW5hdRCxk7ie9vpK6ZVxD3eUseHiW
-	QVE5seiAxAv7BG8zF+MF8jS3/ryxYQElmo6wnW0W8LF178vf7OYAbrMbDpww5J619Oi6pw==
-X-Gm-Gg: AR+sD13ylPF8OBrkzRMVePG48YUbEbfNm7GtzVzhfGTfDc8YpieskQWDW5k/dy4KMga
-	Ndq1unrr1V4PHcEH5ATGWikpycDiDZ/lyzAgz1Dfq/metv2LhbIOF+G9OTvac3hd9kcj0DEiCkx
-	VraNRKA28dSGJkMtCj6UoAKA+uvCXlbGa00SUnSg/5U1u+dw0A9MOLlnNIEjZYy2KnjRYFb9Yic
-	5SGy/StQc5dHocE1SsMmupGtN3gecvEN281YvT1OmZMOL0Ep8xlwop9rISx6hLSaSoZpqsyuamJ
-	cp9noy59HRseKQkf324xT+40c8+IPDpvCYZWsMi3yQpiI1J09z4Nw2trE/Ys7maUqLLyjcTl9j2
-	F6/zldi5/Jgmfa4rJD5wS/UqiAb7X+NHbnWaGa19mf23BpXnGcvSPUBlqCWQr5JQDcVEwHqXDSw
-	DaBMMkwXs4/I32N/v2Psk2+bFaI0XoKoCX8bYTi0cZuEngEux3ULSbDM3k+o4Y8AMA7MQ9
-X-Received: by 2002:a17:903:468d:b0:2c9:99be:f011 with SMTP id d9443c01a7336-2cfde8941b5mr36180245ad.6.1785057690388;
-        Sun, 26 Jul 2026 02:21:30 -0700 (PDT)
-Received: from localhost.localdomain ([183.46.220.31])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e2b44sm18158465ad.27.2026.07.26.02.21.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Jul 2026 02:21:30 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	daniel.zahka@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	Qihang <q.h.hack.winter@gmail.com>
-Subject: [PATCH net v2] packet: use consistent header lengths in raw send paths
-Date: Sun, 26 Jul 2026 17:21:10 +0800
-Message-ID: <20260726092110.80185-1-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
-References: <20260721084935.12312-1-q.h.hack.winter@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="P3LxUWGB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q65cWAjC9DYdCQyu/tizxhAW/S0qXspcDcsQIV7GZ/N8mZ146j9+WLlSSe6DLtMzp/QXnSUpSPGL6vmlpQLU20HOgw70A24n0FR6B2kQIeD6I3hpytptcjaoEWhcUnqvmgYjlZQmPtMmb7p7Gf8KK7o+e7+KJ/8gjGPjKVRVrfu9R/+EiyFG+lIT7vsp26vJcX/kMflhpJsy9CVxaF4E3Ly5edx1sqXTKThPVYLHcsO4qYGw29VFja5TmCDeU6aV3e5Nk180NldzMmHQN9hxkH3s1uTDPJFg2DQ8Rk7Y4/8ZecpxVWCeHUK/Os3ywxFXnYm1ydob80BW90C0/6m6RQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oXs8emVZgpjuX5WfO6zuwZzgmtCWI4fARV91aq6vTs8=;
+ b=K8BSDT6p+7KsSW26EYnQB7WimMUtx3S3CZr3RyM3qlcCf58zL6FsPvXo3pQMl6GHm+TsDZODb3nKIBYeplZ6hkQ/4e1cK7BqTHOOQljATwcoqwok3668vBz8b0+V4yUynlJt9aUcqBo8AyioQos6G2vs/53VpvcTl+LppYsLonzOoIoNsgur7faDSfYxS89nVhzh0wCnZRzOKpxiS2ZXigmwiNk4T5G23sdsELe0mfu3MfAS2Jxj1iuNXNBbD9+qGDDXdFcpigzpoZQLLOKvgz0gE1mr2D17uR5JPaUKihIw3c0ZOcbfFxHgxht3olm/YKMT3MAiLPX99UPeyv8n+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oXs8emVZgpjuX5WfO6zuwZzgmtCWI4fARV91aq6vTs8=;
+ b=P3LxUWGBiUmlJp2JmF6H0Rj1DEVxHrA74N2lGsa3e0PpWnWXwjgUWz9M73yEGcqGkJUqORJe+hqg0QpJswzaXzQx0bNBFMvFtQFBT1/go6bpteBo5U/AVmtlx/EsAKHWp1U6rd8qeAlN1O58PVE//xpITg10vuAigedvwxronLSxRcE4LGwItECs0OAS85YPII7yJ51A1oOd1LnQl2HfIBujX+J7VkSUBK66RjW6m+yKm+KPnuXcIWwLVys/yjfPjed2T/NEYnrRbQFBBiH3QsZSfHjCCttr6+gXfwtATGHELWHfcoxWTBPZEDvRscvyCrFZTSq3zIKs2scpq8a71w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9715.namprd12.prod.outlook.com (2603:10b6:408:2a0::7)
+ by CY8PR12MB7611.namprd12.prod.outlook.com (2603:10b6:930:9b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Sun, 26 Jul
+ 2026 09:29:47 +0000
+Received: from LV8PR12MB9715.namprd12.prod.outlook.com
+ ([fe80::e74f:2cf8:cf2c:142]) by LV8PR12MB9715.namprd12.prod.outlook.com
+ ([fe80::e74f:2cf8:cf2c:142%6]) with mapi id 15.21.0245.012; Sun, 26 Jul 2026
+ 09:29:47 +0000
+From: Michael Gur <michaelgur@nvidia.com>
+To: jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Edward Srouji <edwards@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Michael Gur <michaelgur@nvidia.com>
+Subject: [PATCH rdma-next 00/15] RDMA: Support HW requiring relaxed ordering and add Unordered access flag
+Date: Sun, 26 Jul 2026 12:29:14 +0300
+Message-ID: <20260726092943.2880176-1-michaelgur@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0376.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f7::19) To LV8PR12MB9715.namprd12.prod.outlook.com
+ (2603:10b6:408:2a0::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9715:EE_|CY8PR12MB7611:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0b4ad02-9b0c-48e4-521a-08deeaf86f4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|10067099003|18002099003|56012099006|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	fYQbqGg+4s24xdecI1bMlifqN132g57SwrT6fH+C12Xe3gwCdH4CWYwYWQla56RgaNflbD5B4mbWT71G8N4E7GN/LUz1wY9tOJM3H9Ei+dkoNeMxNqp73aOb5oI5FejZENzOv8NlwUs/M/tZDucIMN9ntqhS5rxNBnN+YdGYEo8IkuzNoSTclD185QeDyUR9IxyWEvCm8lmm9hB1cakczLw3k4gODFwpeUPuiRgllmN3lRUrRoMsCrd6nfg60rZ6wHm2/CNPxVsA5KF80ciJn9DQawQj/o4WsJkdHh166dmMcsaUK/sy4OeMgi3IV/l17hGP2pDmgKICr7eoM6GwQ7cVl22pOPiCmkaaXTfrFxd7kbEqfX/wXVBtuEkBL8pNuX8L6FE9SKQgXXLFzyehgnyeFQpD5f9tyvFyJddyj70U23TsMevT6GsNFRM+igk+p3sSr+DxnjJiH9im8QukknBQk3syYR1BgvI6qidvjrdaS+uWO6fxRJtuUt5iVvc2kkoCPIkyr6KSa2gyYGtCQwAR09jlTPfM20m6A4CHQ/0VGz/KrFp1HFzjQowm7ZAraRkn0jkzgVC25whFx2wNAFsqSe4HkkDQd2b5KIewhwflwQzu943G5tyCxvW0INPvocqIbSp+IAlPqVKvCuMoW+Nab+pYRi2a8owLrKoF8y0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9715.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(10067099003)(18002099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eV9la4DrIbyEZhlBdVcid2AQgvzmLl9e0wdbd+acpnJ0a8ASlL7AOac093Mx?=
+ =?us-ascii?Q?wIzyEWDBE3eNil3QGGAfFsXaWseFzEGM4VmliOGr78hdcn/gRXS0d5ChFMSa?=
+ =?us-ascii?Q?Za/v1LT6xyGxF9tK0HxtP5NyRYdVdqk30hWEr6y6c9LgaUjE8VqVNlFNcR3J?=
+ =?us-ascii?Q?JGlX3ezISm4KLqXlck90ZiLOFnYVKuGjhQ+WV8kqYcP7EXImm+/ayPMCGUhA?=
+ =?us-ascii?Q?QY4jgQXKopheOFBBVJNueIC3pwsqSKNe9hlNIzxiHIZD8hnZj6iMHF+hlKvq?=
+ =?us-ascii?Q?n61i8tCWm3avrX4f37PXGS0y6G8B5802o96z04ND1QpKcZBEthfxCcqvMXyE?=
+ =?us-ascii?Q?swcIhrLxpccc5Mote0RG6IiioSJkGpg8DdEt3/vC1AIJEeUpPGymh7SeR0/U?=
+ =?us-ascii?Q?WvreETBo65uFCarj1G0TW068zXVdf0s0ygSo4SXMtYMEu9gg3tAZ0yl6VskB?=
+ =?us-ascii?Q?Mv7kJuiJ4mOV2BJh8qRXpODTQ566A6nzyhixrotyBh9MS+7Aqhblk6LjV05o?=
+ =?us-ascii?Q?1CGztskeBRURUO7wjf/4eZO8XlckfxOl18c5GmjT6h24XUbu0YO65+46GU2R?=
+ =?us-ascii?Q?CWUQWtGJ81vO2PBmfDZFYBA5nTd32Xm2tL62JHzgQf/C4vmPBZtb0KiWeFdY?=
+ =?us-ascii?Q?VoK2SgZjoPeFJxEw6IItN5svpM3q3er7tBw7QQh3d9WbqL6ST8ukGfgaJ7jo?=
+ =?us-ascii?Q?VoHk9LOxSyjGmV2xKJrlCIBLGNc9eblUHTfqyvneUcCvBLIvto98eg6CtRwr?=
+ =?us-ascii?Q?WByrF8HZ69w5sHpyi5D8mqrPxNz96Rl+aQdaEXgsE7lFmge+wsu//WaO8v55?=
+ =?us-ascii?Q?RxISN8XI/2LdoJFtfUZMWLUW9xmbGZ7lZpvmEkO2bvSMyCSdQC1nMQhfUl66?=
+ =?us-ascii?Q?PVm4Tt5XrBk7lOn1lYC61sCTHhDPFqCC/Ev7B3iyjDbTt3WBDA2vVFyPQio7?=
+ =?us-ascii?Q?vFnQznlnInrGhuawquhTP3LtLYllXe81tHU949zeodQjPXXelUDIFNA94OLK?=
+ =?us-ascii?Q?h3a8Ch4yxjtiGIrO5lEWrHUJEFfBYv7g48VcXuY4npWZYkSOT2P0PE4WFga+?=
+ =?us-ascii?Q?qiFyrXdGwGvm7hjHHsI6VxJMn1n7vjo4MAmNdERCb94THRly0Q+0yHRevX6G?=
+ =?us-ascii?Q?Ah860Lviu3DykWH0nXkUsPM3VKTFH0mQO/l5uUVxALS4Cb52sJgVjIVFCu/D?=
+ =?us-ascii?Q?dzy4OW1YpOIwDwuH9J/dkcCbgbf6zd9rWFrVrLsuDOD+UfCziaJOLKUircQY?=
+ =?us-ascii?Q?NwPXPzKO5pTKP7amhNpW4CILhjg1zFA8l9Rmgkt8vVeWeCjqrJCVfBJ0X3gZ?=
+ =?us-ascii?Q?vnKJnkmTMkCTfT9itYaCBh62rqnbj1EklivOKOYgqregHIbIacebgT1bM4t2?=
+ =?us-ascii?Q?c48lbp8cLX/OdHs65i1CT0h0mUX8vbvEs1ZPNTcnaBafcS+VTbvTYdhH9evf?=
+ =?us-ascii?Q?91yeauaEoBe9NCxxTW0dBj/5zBTb9QkU+JwQImkojSKZTlfi1lBVMfp51fcH?=
+ =?us-ascii?Q?5U1YPleqVjw1SCFK0S9ZBtcyUmMT6ZyZoc57pxDH4hRRgL3NoK0lNKg/aJML?=
+ =?us-ascii?Q?4Hz6Mq82A0S9qYr3Tgpb1Oe9RFEnreIZifb7R32XlGr3cGSZCn7QS28SO1vo?=
+ =?us-ascii?Q?MGf6xY4qOKYgpqJLF5sv/EF+mfRJd825ebgoOesgg72fdBdn8DS7bUfABhWi?=
+ =?us-ascii?Q?ae6LjdZEytiLHyF1OcrhXw98dgL5BWTvgvN9/n07PEx8kd/kcU0twc6tWyi+?=
+ =?us-ascii?Q?YJH6YnflrQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0b4ad02-9b0c-48e4-521a-08deeaf86f4f
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9715.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 09:29:47.4854
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oDrdgmXfBiZsQKSB1beySPsyOcH+t0mndbqKUJUM6mlgHFFZ5jBoiSkECF+5Ml2LOFKVeMCTO6iwYyxYV1jiyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7611
 
-packet_snd(), tpacket_snd(), and packet_sendmsg_spkt() read
-dev->hard_header_len multiple times while allocating and constructing an
-skb. Device reconfiguration can change this value concurrently, for
-example through bonding device type changes.
+This series prepares the mlx5 stack for hardware that restricts strong-
+ordered memory accesses, i.e. HW whose fabric doesn't guarantee memory
+operation ordering. The HW may choose to reject creation of an mkey that
+doesn't request relaxed ordering, so every mkey the driver creates -
+internal and user-facing - has to be handled accordingly.
 
-For SOCK_RAW, packet_snd() can save a larger value in reserve and later
-allocate headroom using a smaller value. Moving skb->data back by reserve
-then places it before skb->head, and the following copy from userspace can
-attempt an out-of-bounds write.
+The previously added 'ConnectX-10 NVLink-C2C' PCI device is such a device,
+as will be any future PCIe Gen7 UIO devices. 
 
-tpacket_snd() similarly uses independent values for allocation and for
-the skb_push()/skb_put() operations in tpacket_fill_skb(). The legacy
-packet_sendmsg_spkt() path also calculates its reservation and header
-offset from separate reads before dropping the RCU read lock to allocate
-the skb. A larger offset than reservation can move skb->data before
-skb->head, while mixed TX-ring values can also make
-copylen - hard_header_len negative.
+The series does four things:
 
-Read hard_header_len once for each send operation and use that value for
-RAW allocation and construction. The trigger requires racing an
-AF_PACKET sender with privileged netdevice reconfiguration.
+1. Allow optional access flags on all memory registration
+   The uverbs ABI defines the optional access flags range as best-effort:
+   drivers must accept any flag in this range and treat support as
+   opportunistic, never failing registration. Several registration paths
+   (DM, DEVX UMEM, dmabuf ioctl, reg_mr ioctl) did not allow this range
+   and would reject such requests. These are fixed to allow newly added
+   optional access flag added later in the series and any future optional
+   access flag.
 
-The separate SOCK_DGRAM consistency problem between hard_header_len and
-header_ops->create is not addressed here.
+2. Groundwork and internal mkeys
+   Rename the relaxed-ordering IFC fields to the new naming, add the new
+   ordering capability and mkey-context bits, and consolidate RO-setting
+   to a single helper in mlx5_core so all consumers share one cap-gated
+   implementation. Then enable relaxed ordering on the internal mkeys that
+   don't require strong ordering (resource dump, vfio live-migration data,
+   ODP null mkey, memory window mkey), so they keep working on strict-RO
+   HW.
 
-Fixes: b84bbaf7a6c8 ("packet: in packet_snd start writing at link layer allocation")
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
-v2:
-- Cover packet_sendmsg_spkt().
-- Limit snapshot-based calculations to RAW construction; leave DGRAM
-  unchanged for a separate fix.
+3. New Unordered access flag and enforcement
+   Add IB_ACCESS_UNORDERED, an optional access flag that additionally
+   allows read-after-write reordering, and wire up mlx5 support for it.
 
-Link to v1: https://lore.kernel.org/netdev/20260721084935.12312-1-q.h.hack.winter@gmail.com/
----
- net/packet/af_packet.c | 64 ++++++++++++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 18 deletions(-)
+4. Enforce no-strong-ordering in user MR registration on HW that requires
+   it.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index e75d2932475a..d23898f24641 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1953,6 +1953,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 	struct net_device *dev;
- 	struct sockcm_cookie sockc;
- 	__be16 proto = 0;
-+	unsigned int hard_header_len = 0;
- 	int err;
- 	int extra_len = 0;
- 
-@@ -1996,15 +1997,21 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		}
- 		extra_len = 4; /* We're doing our own CRC */
- 	}
-+	if (!skb)
-+		hard_header_len = READ_ONCE(dev->hard_header_len);
- 
- 	err = -EMSGSIZE;
--	if (len > dev->mtu + dev->hard_header_len + VLAN_HLEN + extra_len)
-+	if (len > dev->mtu + hard_header_len + VLAN_HLEN + extra_len)
- 		goto out_unlock;
- 
- 	if (!skb) {
--		size_t reserved = LL_RESERVED_SPACE(dev);
-+		size_t reserved;
- 		int tlen = dev->needed_tailroom;
--		unsigned int hhlen = dev->header_ops ? dev->hard_header_len : 0;
-+		unsigned int hhlen = READ_ONCE(dev->header_ops) ?
-+				     hard_header_len : 0;
-+
-+		reserved = ((hard_header_len + READ_ONCE(dev->needed_headroom)) &
-+			    ~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
- 
- 		rcu_read_unlock();
- 		skb = sock_wmalloc(sk, len + reserved + tlen, 0, GFP_KERNEL);
-@@ -2569,6 +2576,7 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
- static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 		void *frame, struct net_device *dev, void *data, int tp_len,
- 		__be16 proto, unsigned char *addr, int hlen, int copylen,
-+		int hard_header_len,
- 		const struct sockcm_cookie *sockc)
- {
- 	union tpacket_uhdr ph;
-@@ -2600,8 +2608,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	} else if (copylen) {
- 		int hdrlen = min_t(int, copylen, tp_len);
- 
--		skb_push(skb, dev->hard_header_len);
--		skb_put(skb, copylen - dev->hard_header_len);
-+		skb_push(skb, hard_header_len);
-+		skb_put(skb, copylen - hard_header_len);
- 		err = skb_store_bits(skb, 0, data, hdrlen);
- 		if (unlikely(err))
- 			return err;
-@@ -2732,7 +2740,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 	void *data;
- 	int len_sum = 0;
- 	int status = TP_STATUS_AVAILABLE;
--	int hlen, tlen, copylen = 0;
-+	int hard_header_len = 0, hlen, tlen, copylen = 0;
- 	long timeo;
- 
- 	mutex_lock(&po->pg_vec_lock);
-@@ -2779,8 +2787,10 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto out_put;
- 	}
- 
--	if (po->sk.sk_socket->type == SOCK_RAW)
--		reserve = dev->hard_header_len;
-+	if (po->sk.sk_socket->type == SOCK_RAW) {
-+		hard_header_len = READ_ONCE(dev->hard_header_len);
-+		reserve = hard_header_len;
-+	}
- 	size_max = po->tx_ring.frame_size
- 		- (po->tp_hdrlen - sizeof(struct sockaddr_ll));
- 
-@@ -2817,7 +2827,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto tpacket_error;
- 
- 		status = TP_STATUS_SEND_REQUEST;
--		hlen = LL_RESERVED_SPACE(dev);
-+		if (po->sk.sk_socket->type == SOCK_RAW)
-+			hlen = ((hard_header_len +
-+				 READ_ONCE(dev->needed_headroom)) &
-+				~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
-+		else
-+			hlen = LL_RESERVED_SPACE(dev);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
- 			data += vnet_hdr_sz;
-@@ -2835,10 +2850,14 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 						    vnet_hdr.hdr_len);
- 			has_vnet_hdr = true;
- 		}
--		copylen = max_t(int, copylen, dev->hard_header_len);
-+		if (po->sk.sk_socket->type == SOCK_RAW)
-+			copylen = max_t(int, copylen, hard_header_len);
-+		else
-+			copylen = max_t(int, copylen, dev->hard_header_len);
- 		skb = sock_alloc_send_skb(&po->sk,
- 				hlen + tlen + sizeof(struct sockaddr_ll) +
--				(copylen - dev->hard_header_len),
-+				(copylen - (po->sk.sk_socket->type == SOCK_RAW ?
-+				 hard_header_len : dev->hard_header_len)),
- 				!need_wait, &err);
- 
- 		if (unlikely(skb == NULL)) {
-@@ -2848,7 +2867,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto out_status;
- 		}
- 		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
--					  addr, hlen, copylen, &sockc);
-+					  addr, hlen, copylen, hard_header_len,
-+					  &sockc);
- 		if (likely(tp_len >= 0) &&
- 		    tp_len > dev->mtu + reserve &&
- 		    !vnet_hdr_sz &&
-@@ -2956,7 +2976,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 	int offset = 0;
- 	struct packet_sock *po = pkt_sk(sk);
- 	int vnet_hdr_sz = READ_ONCE(po->vnet_hdr_sz);
--	int hlen, tlen, linear;
-+	int hard_header_len = 0, hlen, tlen, linear;
- 	int extra_len = 0;
- 
- 	/*
-@@ -2996,14 +3016,17 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 			goto out_unlock;
- 	}
- 
--	if (sock->type == SOCK_RAW)
--		reserve = dev->hard_header_len;
- 	if (vnet_hdr_sz) {
- 		err = packet_snd_vnet_parse(msg, &len, &vnet_hdr, vnet_hdr_sz);
- 		if (err)
- 			goto out_unlock;
- 	}
- 
-+	if (sock->type == SOCK_RAW) {
-+		hard_header_len = READ_ONCE(dev->hard_header_len);
-+		reserve = hard_header_len;
-+	}
-+
- 	if (unlikely(sock_flag(sk, SOCK_NOFCS))) {
- 		if (!netif_supports_nofcs(dev)) {
- 			err = -EPROTONOSUPPORT;
-@@ -3018,10 +3041,15 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_unlock;
- 
- 	err = -ENOBUFS;
--	hlen = LL_RESERVED_SPACE(dev);
-+	if (sock->type == SOCK_RAW)
-+		hlen = ((hard_header_len + READ_ONCE(dev->needed_headroom)) &
-+			~(HH_DATA_MOD - 1)) + HH_DATA_MOD;
-+	else
-+		hlen = LL_RESERVED_SPACE(dev);
- 	tlen = dev->needed_tailroom;
- 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
--	linear = max(linear, min_t(int, len, dev->hard_header_len));
-+	linear = max(linear, min_t(int, len, sock->type == SOCK_RAW ?
-+					 hard_header_len : dev->hard_header_len));
- 	skb = packet_alloc_skb(sk, hlen + tlen, hlen, len, linear,
- 			       msg->msg_flags & MSG_DONTWAIT, &err);
- 	if (skb == NULL)
-@@ -3037,7 +3065,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 	} else if (reserve) {
- 		skb_reserve(skb, -reserve);
- 		if (len < reserve + sizeof(struct ipv6hdr) &&
--		    dev->min_header_len != dev->hard_header_len)
-+		    dev->min_header_len != hard_header_len)
- 			skb_reset_network_header(skb);
- 	}
- 
+Michael Gur (15):
+  RDMA/mlx5: Allow optional access flags in DM registration
+  RDMA/mlx5: Allow optional access flags in DEVX UMEM registration
+  RDMA/core: Allow optional access flags in dmabuf reg ioctl
+  RDMA/core: Allow optional access flags in reg mr ioctl
+  mlx5: Rename IFC bits of relaxed ordering fields
+  net/mlx5: Add IFC bits for new ordering caps
+  mlx5: Move RO setting helper to core and consolidate mlx5 consumers
+  net/mlx5: Enable relaxed ordering on resource dump mkey
+  vfio/mlx5: Enable relaxed ordering on the live migration data mkey
+  RDMA/mlx5: Enable relaxed ordering on ODP null mkey
+  RDMA/mlx5: Enable relaxed ordering on Memory Window mkey on strict-RO
+    HW
+  RDMA/mlx5: Converge UMR access-flag cap checks
+  RDMA/uverbs: Add new Unordered MR access flag
+  RDMA/mlx5: Support new Unordered access flag
+  RDMA/mlx5: Enforce relaxed ordering when HW requires it
+
+ drivers/infiniband/core/umem.c                |  2 +-
+ drivers/infiniband/core/uverbs_std_types_mr.c |  4 +-
+ drivers/infiniband/hw/mlx5/devx.c             |  2 +-
+ drivers/infiniband/hw/mlx5/main.c             |  8 +-
+ drivers/infiniband/hw/mlx5/mlx5_ib.h          |  4 +-
+ drivers/infiniband/hw/mlx5/mr.c               | 79 ++++++++++---------
+ drivers/infiniband/hw/mlx5/odp.c              |  1 +
+ drivers/infiniband/hw/mlx5/umr.c              | 18 ++---
+ drivers/infiniband/hw/mlx5/umr.h              | 45 ++++++-----
+ .../mellanox/mlx5/core/diag/rsc_dump.c        |  1 +
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  |  1 -
+ .../ethernet/mellanox/mlx5/core/en/params.c   |  2 +-
+ .../ethernet/mellanox/mlx5/core/en_common.c   | 13 +--
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  4 +-
+ drivers/net/ethernet/mellanox/mlx5/core/mr.c  | 21 +++++
+ drivers/vfio/pci/mlx5/cmd.c                   |  7 +-
+ include/linux/mlx5/driver.h                   |  1 +
+ include/linux/mlx5/mlx5_ifc.h                 | 24 ++++--
+ include/rdma/ib_verbs.h                       |  1 +
+ include/uapi/rdma/ib_user_ioctl_verbs.h       |  1 +
+ 20 files changed, 134 insertions(+), 105 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.52.0
 
