@@ -1,211 +1,155 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010002.outbound.protection.outlook.com [52.101.46.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB53815CE;
-	Sun, 26 Jul 2026 09:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785058283; cv=fail; b=DAT5TBuTPEBWRa31ykqNiJ8yc1qsZT33ifYsGhBpB3Vlnp98+isa2gtSi427TglMm5QasmlOU9e+A99mIZ/L8Gz2kaB1Nkcy/J9dD65USDBDWwGs6UCX0YvKa/9Nu7F58P9YA5e+HK187ZUUIQXrur1p3ci7/Wh88A1V226UUWc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785058283; c=relaxed/simple;
-	bh=ZM2EAxE5tAggjyEJp3BfQoDh6jvRYRoeiYoWMUfdTlc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Br0u5UYKl59FoxrYuHpG/NDFAX9sEur31RDkZPqAL64g5ZPnuR3qyptEXZkKvhD3DcfmH7EBh2rmoGlkoG1LSkSi7nR2y6Yq5P8ZHVMrWgYRaZikR1mumoCZP+iLz41/l76uQel+XiBfLOMWtox1h+0FaTxYn5DQ1bfFQHeJPR8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AZxKwpyX; arc=fail smtp.client-ip=52.101.46.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6847F36896D
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785058644; cv=none; b=OoPbWNTrixKuYNZRTc/YCa72sdNnlrAINKNQ4pBUs7jSy41uBUmteW5EbYDeBvi9bEyzOFBFMNTIEhfB+4vQN4Kwsdzkq7zSNn1pKllaM0Z3c2aYYMQvbjUHZTCSpFoEgfYEQ7/gEZv9vKVJczR6Uvg+o5F2ppuyBcvn7LY59tc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785058644; c=relaxed/simple;
+	bh=pOkihfaSnSHKFjIH2jYWLyfC/YVUUltkKQn6KvurBZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W82OPQOxO6CVU3H2WL5WRleaY2nRHM2WoLMX7iSGyisLYbL7rwXuxgML2++EeuefRdPhqLw8A/VhyxRK8t82e9RwjSlPFfO6Z723M6vbISu7H5EV18tBLp//QPJn623kPYQDSlcAnwbtDT1JaEtW+uLXP83H1JQbWTbK+FXn+mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=fcpAg5dW; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AZxKwpyX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OgsA8ADMSszLv5Efs9YJA+F+N9LUzW7+LzvNSwRZlhmNeeVFhEINNolXdLFLofMYzQb9BahrImfCpAyjDYNI96Am/cyAEsO77z+a+BbSGja5J+gESNe6GTY+M/DdPDaiaztoc7ZHGYaWydyVWNOw/zv7UqA3CV7K48Vv6LAE5+l76Ri0anGk6Z9kWqwoWclizKQ4p0azNousoQZW4z5u0Rp0F5zpVK7uGZCdsye1+ywO/r/4wrtL8elJugxsOuaZwbQv2VBiG5+5unVwBUW1+kNAmZwYYScvyy5UdkWIANMtyROq2C+tIY5kqhTQzXT8CDdHx7xXGRPNd8droBEUlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1uDImLbutbMauoEFyeMLsingHSc7vgmM0YKNHmvh524=;
- b=VmWzxHh5HaTI8PygpQRwLpFc5PM8L/Seqjzn+zzBmJpDkn5c0Rle7uM/MbC1MYpgTpzNj/OYrFZO60Gq+4qIdnTWFYurY6mRYMKWkbMOg6h0HvIAvZJ3h0dSpQpVWtN714Ka40f1VGj8YttX/Uzlus1i2PXIkhjVqqv2jL5b3zTYDezcZcpis+A4hSolTl566FCRXOrikDvgDvYyLPpBdJLRn1PDBoBVdVBn7LmSu1nGtuR6WPsNkq2D9nIh1il3+UpUeWdum5iqKmcde1BGyRKqwIhRmPOlzCGAgI6lC1RkXiLPLLVHX3L4gKyJozv8FpZToXtdziZRso2n6TgWtA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1uDImLbutbMauoEFyeMLsingHSc7vgmM0YKNHmvh524=;
- b=AZxKwpyXe+0Wg/TqVVsV1dVsl8+pjRDYMQqzj2ytCJUtFnp336yTI/FqizKx9Ba3nMFu8EwfF2f6/GyfxLLUOFPtElQi75o7t8xVgJucYhO783goiDm6QWL2ZCd2pqk+12r4yDSkCM+JqVk7CzA5bGuU6pek7b8ufuM6fMuhvMXoTLZ7pI325mZNUda7jcqFKYLS4WDm4gdN1TUFkSfUtQT9Iz9aGQ8f54sTlqn7LkucmqONaAPo77unMzHQDsyRXntCQBmlNVs2eeEkK+gjBgkg98u+rMgZ11pgMj9q2yIPWWRqo0mlGguf+MAHbyNIJBZOGaHvR3Vez9JsSQJC/A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9715.namprd12.prod.outlook.com (2603:10b6:408:2a0::7)
- by CY8PR12MB7611.namprd12.prod.outlook.com (2603:10b6:930:9b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Sun, 26 Jul
- 2026 09:31:17 +0000
-Received: from LV8PR12MB9715.namprd12.prod.outlook.com
- ([fe80::e74f:2cf8:cf2c:142]) by LV8PR12MB9715.namprd12.prod.outlook.com
- ([fe80::e74f:2cf8:cf2c:142%6]) with mapi id 15.21.0245.012; Sun, 26 Jul 2026
- 09:31:17 +0000
-From: Michael Gur <michaelgur@nvidia.com>
-To: jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Edward Srouji <edwards@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Michael Gur <michaelgur@nvidia.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH rdma-next 15/15] RDMA/mlx5: Enforce relaxed ordering when HW requires it
-Date: Sun, 26 Jul 2026 12:29:29 +0300
-Message-ID: <20260726092943.2880176-16-michaelgur@nvidia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260726092943.2880176-1-michaelgur@nvidia.com>
-References: <20260726092943.2880176-1-michaelgur@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0400.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cf::20) To LV8PR12MB9715.namprd12.prod.outlook.com
- (2603:10b6:408:2a0::7)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="fcpAg5dW"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-495590dde14so18692335e9.0
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 02:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1785058640; x=1785663440; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hV1QsjkSL3s3fZmRDM2JjQpq2lLGidA+2yjlX1i2gxM=;
+        b=fcpAg5dWIIkkuAT8bZDTipUx1whNk5hhFft3wOsNLdty5v8AIaifGaBaDe1vBTugoi
+         c78bBiE5WvMSdCIWSyRgO10+Ynh4Pty9ycSMRqajo79zyFLAMWRZsRMtuSutI6wVSStN
+         hN7jmShD4JMjB+k70SekOUwF2++anwMO9nS88G4ijheQ7oGUaq/rqiu5KANP9H0T89QJ
+         yV+rkkjEZxt3rb6GwhUmFGL0iNmYsioBVa917pFWZ1GWIZPXxNiqK8HiA0kkZOI5vUgt
+         e5j2NkiJmle16DAM1SPj2B8BO4tVTaAUvKs3c3CL6WOZYgjFsfWXJHNanaUjITke5Jzp
+         1s/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785058640; x=1785663440;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hV1QsjkSL3s3fZmRDM2JjQpq2lLGidA+2yjlX1i2gxM=;
+        b=cldq5KGMbIvwQSZZGwnaNz2zcAO1Ve4d/YS/9DxAtIcsU/zkobp0kh3LAllYFPdVig
+         wHflBNPSk1JV/R6gAVDyVU7300c2SWS5lPSqYvRgQSaYrqyD9sPMkwAtc6eVCWChDNZA
+         66i1mGDer7X1D5yS3OC/xnNbaT+4uJ8hC7P4d6rKGhP8SCGMhAs9ufgJPTr6uZaG9f1B
+         Li6F/n3X/GSjKtby+u/6tQialzJjx9v2WvGhiWSCLwiCiH1MiePHtiAv7zW+PN3mVv9s
+         dK1PCs2BxLN+n6Jq6f7y5ppU3nWZkgUX8z3FwIatfYFXXMp/OXp2DUvsPeeVU4kbB7Ar
+         GZDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqlWOXjZgWCsP0ziw6StGeLHcgCmxN62Y34GV0CnzuPNNJ0CqJ3XUqqoMNA7Xo3w8n/cnGLdKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7hfrL8dEbie8lFT1QiyQYHrB4wtTJvWg7jS0aMn4FAAPoJacy
+	c7K2ZU4n5/GevHgFtJJIJ4cq67IgO7XZMzQlarwByOs9uvKGtuzFE8mdcpNq2g40mss=
+X-Gm-Gg: AR+sD11CGzTSRr6LwwdUKao8okYPFCrBxRxxMFZbAxC3kCfXKyksgebwKOuY9OIMAVC
+	9JgZLF5XWj8IB+LP2caP8vsBuwsQIBoreA+SManZYyCSOviWmqtXvoD1FH6pyAd5X57dJ4RwSqQ
+	Qnt43iMwXZTMSnC/KVtfiMzWbwREed/GGnUgZR8NcXOzqIa0Bt5BlvHXKwjhuR4oliYUq7Ibxol
+	j1q05ld3GbmU1CGRRbb6PxfAE2inXd9QeWERlSXcovphyjKuLSE7davQAVdRXJ5yzjW2dYCKpSR
+	QbHXnhu53pcBgGoJOYciCZ8LBqohoqLxumPaSfUwEB44OUUOjYSgmV85HrhAYj0LbjuyPGrIgGN
+	wKm6sGQdjGCfrSYv1MgbveNgvzilR0W4vgjpaojg98q9TTw1wxq5p1FRIqEuYVvaKX7YbNnrKLw
+	==
+X-Received: by 2002:a05:600c:190a:b0:495:7a5a:d96c with SMTP id 5b1f17b1804b1-496b5719f68mr52364865e9.18.1785058640096;
+        Sun, 26 Jul 2026 02:37:20 -0700 (PDT)
+Received: from localhost ([109.160.73.171])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4866813sm150689605e9.8.2026.07.26.02.37.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 02:37:19 -0700 (PDT)
+Date: Sun, 26 Jul 2026 12:37:17 +0300
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: Re: [PATCH net v2] bonding: alb: re-check primary_is_promisc under
+ RTNL in bond_alb_monitor
+Message-ID: <amXVDy4aEa84He3S@penguin>
+References: <20260725233930.2957317-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9715:EE_|CY8PR12MB7611:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed2f330c-41af-4af7-a8d5-08deeaf8a4d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|10067099003|18002099003|22082099003|56012099006|5023799004|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	XYBHzJpoV1t8TzBYgdRM40IM7uy2DJzIncRA2yOBSqxeuKVeCmuFoAUt1eA0SalNB28N2d0GjQkyGXID8W492kFirP4azi+xX75oAM+rYtTVlETiYJ0UOtqTFvkt6fVeJ+l8ufSCDrMTJbW9iAjh8EtLrPZ63xtEsevXxFRtzQAft8kirtCi+J+0HE+e+GJQ7pc+Cmsrubdw1s4TjCddYK2L04plN78eXl1NuASXoO4txU71l2gVM1ETWdx91T6fGHFqsXTv6bG+Lm9aHlqtwXogeYzF9JTRReATsJO7Rxp3Z4umaSX6ls8vlhCS8LteB2OpkYz8AqzBo7J6C8pf8I5fgsv81+ADcNsXcJGTL0dkapLmpxOFzdVtyrfh+KQHSB7kBunQKLnh8Npk1bg+y4aAKP8cFpqSWprSkw33uCvLAuUPw35VT0trWIyIb1hLqXo/sN3ett8N8CD4KOC2H6Sktck7NSnNw8QjTSx2s/3Cb373lCjTQ12GvSE1TVqHtYOL7XcnNjQvoahkS6dZnWoP6boYKfyzBVosmerfRjIV2yZaX9vLPou8CZr8PgYw4be0fhMWexZgKzb/Wd46MEVy37Lk81EsQL5TDg2TljseRF8C4cvwJr60zgxBJ6rUDO2Mvi1AlDrGICRVpAjxek8LY1pJS02w1Jr6kvWgSfY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9715.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(10067099003)(18002099003)(22082099003)(56012099006)(5023799004)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?euF7A7UEzxABKFl/nZzFr9YZtNbp4P35X45pXkGlGl09XRloGZHeMhF1LR/Y?=
- =?us-ascii?Q?dOKlda38EFSU5MtDIzsyCxHk0Hey69eHuw2ZX6UmOCOVfKCe6h+s8PhCD6jY?=
- =?us-ascii?Q?2dwoG567/otPGInrQxDfYZQOVe0jAGg9p4KpzGMUTaLuq9RudVeOC3Weqw3r?=
- =?us-ascii?Q?uyL3lts54kwoHuZAXncBncVJoHWRcc1WzNCyk42kVfcISOju5JmCuqRKngs4?=
- =?us-ascii?Q?gQWmrLXBY6VAGxNF5mzCrD9TA5DFPFpMdyNTs6YWrB31vM3qJCX5b1iBi8re?=
- =?us-ascii?Q?WzuHsMgAWTzA0tP3gya0qQq2LG3lTH8PCGH98aRcGuHCiSG+EwZ12Lrzk0q9?=
- =?us-ascii?Q?OPqdrZVBcUevys0gUpqRlEfkPQYFQaB6BHAsycB1DYm+Y6KZQykRCdkI7qhi?=
- =?us-ascii?Q?onomvKA7a0pGehqP8hGfjyG4cqDMf6BpO1aBRtU4TtnWYKqBlTVO/K7Lr6iU?=
- =?us-ascii?Q?4A9Le55XhD6AgMq+LF64Beli7Kqxarwup5kRcdL4/bXhuhZcYyQnviv3T43+?=
- =?us-ascii?Q?Ighyv0cHyAKDAJbMgPXR6+q4EnjbOoWVexlp0yn61sEY8SZ8/x63FciZ0kvJ?=
- =?us-ascii?Q?O4bcIrvvMaFSRac8U0uF+DYQ5Mt7bmdOJH50o0i5MbIZTQLU/V7HliXw8aH5?=
- =?us-ascii?Q?Y8OQuL7X0eygEihL9e8pgYKP/4e53XC1fvdOhCTK6mTSDvuMnzZ/P4VsTv5x?=
- =?us-ascii?Q?3vrJg7cmdEZIB367FPyk0Ix/ufQvz3JKlgoMDNmkZ2HVhnanOT/RhO+mxxMY?=
- =?us-ascii?Q?M92J+Eik6Q26Z4qDht0agXlNju52qTqDsYMTe70TGUrs3oOwIDRd6ieGunhz?=
- =?us-ascii?Q?oA6TclfBbFcmdKvT9FS8pD+oZiptRI+NsaIT0+liSdCd8xVbolT0oBF4fcgo?=
- =?us-ascii?Q?ySy3UaawKtmG3VVyIyC/4+s2CFebLOWNYneLTHf0Z1dcECx2wzaX+TPNb1XM?=
- =?us-ascii?Q?tDYktitZrZCUJoiydGcADgPnzwp9Yx1/8VeUxItcChjMIhdb+O11Jb9L+qI7?=
- =?us-ascii?Q?ygdLdnnijHYIkUaI7QRCS1IPwcsU0ffyOjpx2fMxJnrtLU4wwVko7Z3O9lh+?=
- =?us-ascii?Q?l7XyPhzJ/zARNSiqhZ8kVAeP1MFVrnuI10ZlMA9GNShaRSjl/82Hy8WF8Vft?=
- =?us-ascii?Q?C09vUYJYY8hWKXF09OqO3P/GbM3IRVD4dGxbH4nxxmXn6XqYh/MFKf7zaryy?=
- =?us-ascii?Q?Hmk+Xi/TZjP3et9CPm6DidfekuxmiA1VJQEl1dCZ/+X3vBeV5jRlrJ25saNh?=
- =?us-ascii?Q?nz4NAjInrkY2yaykP6gKgdyQGTYUt9JTEBQzXIEDqFSwq+Yx0kpjp20OlIZm?=
- =?us-ascii?Q?dn/QpecYnPHPv7QxDQG/EEg/FXtc35IbDpCyLkBvJRv6SP9d9qy9OE9vY6HA?=
- =?us-ascii?Q?akI8dKQuQrBFrEgrO+l/LwAp16nr52JfzdiGQY6L4c66m29IP+/6gLx2SdhU?=
- =?us-ascii?Q?aVzmJ/6pvdyDLeXS49IaW1KPeHgzn0fENueYaTPg2wTmhGrTQOC6pvxSjk8g?=
- =?us-ascii?Q?510ZKHZgIf+cxbhtur28pqPROpcDcDK43ecqiwBT9bSa6D9s9py+5/8UUH+i?=
- =?us-ascii?Q?FREEJ6D3CwNYkPi6jAyl8NZ4nxODIpf8/Q/Fc1zITW0r1JdrZeNQDiJOmHmy?=
- =?us-ascii?Q?BqpF+H6k9EbQEgNdaHY9xxUH8sGhyQPEwc7zPNWPbZJ+OvCh+HI+CNZCIxCz?=
- =?us-ascii?Q?N8RfmSCebkbRs2WnvciDeJThCIzjtKqP5PjJg8oUY5XlJ9+2CCZC36bMheDD?=
- =?us-ascii?Q?vIXy6M5+UQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed2f330c-41af-4af7-a8d5-08deeaf8a4d9
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9715.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 09:31:17.2453
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZRPF0A55RLVgi6++EE9pKkByjD9H37kgLc/Zt3uj6ftWl8r2oWfTdeqvCJrhbp/bGLjuM3+dtxa4fj/1ul+h2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7611
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260725233930.2957317-1-xmei5@asu.edu>
 
-Add relaxed ordering validation (relaxed or unordered) to enforce no
-strong ordered mkeys are created when the HW disallows it.
-Reject MR registrations that do not request IB_ACCESS_RELAXED_ORDERING
-or IB_ACCESS_UNORDERED.
+On Sat, Jul 25, 2026 at 11:39:30PM +0000, Xiang Mei (Microsoft) wrote:
+> bond_alb_monitor() reads primary_is_promisc under RCU, then drops RCU and
+> takes RTNL via rtnl_trylock() before undoing the promiscuity it set on the
+> active slave. In that window the active slave can change under RTNL
+> (RTM_DELLINK -> __bond_release_one() -> bond_alb_handle_active_change()),
+> which already drops the promiscuity and clears primary_is_promisc. The
+> monitor still acts on the stale decision: if the slave was removed with no
+> failover, curr_active_slave is now NULL and the deref faults; if it failed
+> over, the stale dev_set_promiscuity(-1) underflows the new slave's
+> promiscuity counter and pins it in IFF_PROMISC.
+> 
+>   Oops: general protection fault, probably for non-canonical address ...
+>   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>   Workqueue: b42 bond_alb_monitor
+>   RIP: 0010:bond_alb_monitor (drivers/net/bonding/bond_alb.c:1600)
+>    process_one_work (kernel/workqueue.c:3322)
+>    worker_thread (kernel/workqueue.c:3486)
+>    kthread (kernel/kthread.c:436)
+>    ret_from_fork (arch/x86/kernel/process.c:158)
+>   Kernel panic - not syncing: Fatal exception
+> 
+> Re-check primary_is_promisc (and curr_active_slave) after taking RTNL so
+> the monitor only undoes an increment it still owns. The other bonding
+> monitors already re-read state under RTNL in their commit phase
+> (bond_miimon_commit/bond_ab_arp_commit); bond_alb_monitor() was the only
+> one acting on the pre-trylock decision.
+> 
+> Fixes: d0e81b7e2246 ("bonding: Acquire correct locks in alb for promisc change")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> ---
+> v2: keep vars' rev-x-mas tree order
+> 
+>  drivers/net/bonding/bond_alb.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+> index 2d37b07c8215..839f7482dc18 100644
+> --- a/drivers/net/bonding/bond_alb.c
+> +++ b/drivers/net/bonding/bond_alb.c
+> @@ -1534,8 +1534,8 @@ void bond_alb_monitor(struct work_struct *work)
+>  	struct bonding *bond = container_of(work, struct bonding,
+>  					    alb_work.work);
+>  	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
+> +	struct slave *slave, *curr;
+>  	struct list_head *iter;
+> -	struct slave *slave;
+>  
+>  	if (!bond_has_slaves(bond)) {
+>  		atomic_set(&bond_info->tx_rebalance_counter, 0);
+> @@ -1597,9 +1597,11 @@ void bond_alb_monitor(struct work_struct *work)
+>  			 * because a slave was disabled then
+>  			 * it can now leave promiscuous mode.
+>  			 */
+> -			dev_set_promiscuity(rtnl_dereference(bond->curr_active_slave)->dev,
+> -					    -1);
+> -			bond_info->primary_is_promisc = 0;
+> +			curr = rtnl_dereference(bond->curr_active_slave);
+> +			if (bond_info->primary_is_promisc && curr) {
+> +				dev_set_promiscuity(curr->dev, -1);
+> +				bond_info->primary_is_promisc = 0;
+> +			}
+>  
+>  			rtnl_unlock();
+>  			rcu_read_lock();
+> -- 
+> 2.43.0
+> 
 
-Invoke the validator from all user-facing MR registration paths,
-including the Device Memory path (mlx5_ib_reg_dm_mr).
-
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Signed-off-by: Michael Gur <michaelgur@nvidia.com>
----
- drivers/infiniband/hw/mlx5/mr.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 31879c0ecfb3..5a7bec0d7edd 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -84,6 +84,16 @@ static void set_mkc_access_pd_addr_fields(void *mkc, int acc, u64 start_addr,
- 	MLX5_SET64(mkc, mkc, start_addr, start_addr);
- }
- 
-+static int validate_ordering_access(struct mlx5_ib_dev *dev, int acc)
-+{
-+	/* If HW disallows Strong Ordered writes, RO/UNORDERED must be set */
-+	if (MLX5_CAP_GEN(dev->mdev, mkc_order_write_after_write_ro_only)) {
-+		if (!(acc & (IB_ACCESS_RELAXED_ORDERING | IB_ACCESS_UNORDERED)))
-+			return -EOPNOTSUPP;
-+	}
-+	return 0;
-+}
-+
- static void assign_mkey_variant(struct mlx5_ib_dev *dev, u32 *mkey, u32 *in)
- {
- 	u8 key = atomic_inc_return(&dev->mkey_var);
-@@ -679,8 +689,13 @@ struct ib_mr *mlx5_ib_reg_dm_mr(struct ib_pd *pd, struct ib_dm *dm,
- {
- 	struct mlx5_ib_dm *mdm = to_mdm(dm);
- 	struct mlx5_core_dev *dev = to_mdev(dm->device)->mdev;
-+	struct mlx5_ib_dev *ib_dev = to_mdev(dm->device);
- 	u64 start_addr = mdm->dev_addr + attr->offset;
--	int mode;
-+	int mode, err;
-+
-+	err = validate_ordering_access(ib_dev, attr->access_flags);
-+	if (err)
-+		return ERR_PTR(err);
- 
- 	switch (mdm->type) {
- 	case MLX5_IB_UAPI_DM_TYPE_MEMIC:
-@@ -843,6 +858,10 @@ struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
- 	mlx5_ib_dbg(dev, "start 0x%llx, iova 0x%llx, length 0x%llx, access_flags 0x%x\n",
- 		    start, iova, length, access_flags);
- 
-+	err = validate_ordering_access(dev, access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	err = mlx5r_umr_resource_init(dev);
- 	if (err)
- 		return ERR_PTR(err);
-@@ -1034,6 +1053,10 @@ struct ib_mr *mlx5_ib_reg_user_mr_dmabuf(struct ib_pd *pd, u64 offset,
- 		    "offset 0x%llx, virt_addr 0x%llx, length 0x%llx, fd %d, access_flags 0x%x, mlx5_access_flags 0x%x\n",
- 		    offset, virt_addr, length, fd, access_flags, mlx5_access_flags);
- 
-+	err = validate_ordering_access(dev, access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	/* dmabuf requires xlt update via umr to work. */
- 	if (!mlx5r_umr_can_load_pas(dev, length))
- 		return ERR_PTR(-EINVAL);
-@@ -1167,6 +1190,10 @@ struct ib_mr *mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
- 	if (!(flags & IB_MR_REREG_PD))
- 		new_pd = ib_mr->pd;
- 
-+	err = validate_ordering_access(dev, new_access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	if (mr->is_odp_implicit && !(flags & IB_MR_REREG_TRANS)) {
- 		if (!(new_access_flags & IB_ACCESS_ON_DEMAND))
- 			return ERR_PTR(-EOPNOTSUPP);
--- 
-2.52.0
-
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
