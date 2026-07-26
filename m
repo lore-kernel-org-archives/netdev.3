@@ -1,62 +1,63 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED4F37DAA3
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 20:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78243BCD34
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 20:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785097757; cv=none; b=bDXWr2SE1qDVEaobAsYZ8KWtFxnw2U+vm6K3ggkF5aCoHz1RAR/R0ji3SjsrDY8udwTrkMdOp57/rEZppW30qPYwg+95yNI9/vjgZMGQJKPbhZM9rW495MP5UzecT42qEIw4sXeH+58h+GSx2M0BYnM1Ih63n4ke/dyRlzvuT5A=
+	t=1785097768; cv=none; b=Btadc1ap3i7oXR8UJlkcLgWOuE+dB62TO0v8JoRyd6zassJzsBE7Wnwk8PNQNVdIuk4KZPOaaUuorq1dtl6jyQXs9wihxZOVtxPMJgF+rlBhamqikgc8L0FTsWwPWuEOPrhkgIWeAKeXptOHX3jEAb2sv77OhYpckYJtGo6CcWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785097757; c=relaxed/simple;
-	bh=Bk17R38etkPhfJ64gDXhvBXjKJl18uksKPx479D4sFA=;
+	s=arc-20240116; t=1785097768; c=relaxed/simple;
+	bh=+s3Be2SAguQ7U/7sLekFSBzUDzNXkRRmRN9wvmEZ3P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H92iS7+7QLxq1Okgc/Nl2jjyoSUf28haiJHlcRqNizF1mBVev5tW7TT2Q/xPSbGpIZzjGYfSOzdpcCYSTHnKO2u1phi/nWxoFWu7bAj+BPUDbvXKGMEHesGtriX9jUrq1NmwqQE/FxMCJ2cahj7k1Bryp/WoB+qI50A4vjk9Sg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+j9bGDR; arc=none smtp.client-ip=209.85.128.181
+	 MIME-Version; b=a6JAWJ5uJq58VegxV8I5YdrD353oZVpdN9eQjQ93trgmQfywYSvxAUWK89miGkf84AQOZiYpMO3S183vrav1WJPZkEvvz4T55TVI7YX4kuDlCz/ndGFceyGLow0Ms9G3uTGJUBgIZoRdq1HZaDq5kFeJ+4ojMuKaAsdZPQgqOkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pYOwkMDv; arc=none smtp.client-ip=209.85.128.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+j9bGDR"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8114a4542b2so27808417b3.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 13:29:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pYOwkMDv"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-81ed2a06b9eso15202997b3.3
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 13:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785097755; x=1785702555; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785097756; x=1785702556; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Zxw4bTsqng7AjzrrhUYRjlXcqe4KZ+mwg+4z5C/5CBY=;
-        b=M+j9bGDR0OIzJArdENx9ZlLS8Q5c/0IG8JMlEW8fOuAU9UmJtP6RHJTHVdvl2YvLTd
-         i8uH3HXWwILsqCbSP2BUS4y16TtuW5Ls5GQefRus/9vV69sbBU8rA0CAbEOLhWi4qviz
-         ijoAAKb0+oXOysXHO2JFl2Tq/N4WlGh0iFFB0UcHoFyi2SS59cQUCw5xvGxfL8MiVJS2
-         fkMjzSESpC4jcrxoFX6+ZZXZJdlK5Hgiy15bE+8XjXuwe+lKsXHpB6Su7AGPlADAqjbk
-         EYvvydfn85R2CpWBMLOX2wGlAU/BioWiylCwhmwP/G2ynTI9VVIMqrytD95cjUBYl69u
-         +lXQ==
+        bh=KfMs2PsJkuXBuNdefbYmI+UYUVlyWWZwc3YoVTl0+bY=;
+        b=pYOwkMDvLpwyPu41qipusstoaui9YDPh4GDlyAEs+q5TJRU9B309Yx7FVlAAjErRvp
+         lH87nP/zE1XHF2PQOBEBU70tuKfqvidhzuhpEy6/Zrz58jLdRx45t3TMislDQITc6BQc
+         xqrd2eKLxZjrn0Idwa4mCoh5aWXClOMfbCdTPe1cWs/P/FgZie0RynQY88otShdZic/B
+         3zr/Kds4oE7k4m1An2qbIirV/VuFU8uicMIjeQ6I8GrB8OQmyCQ9wGWhHIMjG6yp3DLT
+         0UJHnb0iMY1kcSwhMD9vxFvjDKsHegAbpNqd9Dc87LAdeOCFnJlNduG1XGEwZWMDuvnS
+         JN7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785097755; x=1785702555;
+        d=1e100.net; s=20251104; t=1785097756; x=1785702556;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zxw4bTsqng7AjzrrhUYRjlXcqe4KZ+mwg+4z5C/5CBY=;
-        b=DzqI1N9r9lzj00wXyf8V4XDysJIsbbglZkbRQjSHX1LBKY8OSsV6FiRc1ibB+mU8+7
-         /+fFfyUmuYy8rRCk+seF070PKB06ZUHT9XUulRjl0vD0HVf45rlWS+L3O1QwCMkZxGpT
-         9N7rOJkbK6MoZbhvAZLqGZ6CW5nK1jk2Ui+Hxr6UOrH1M5Ma0y4AvdepgOrngx3tpVmK
-         O/MgZkum67YUjS9EyiJNeiWKQ0muWWe0u3hZr5dsomqjouXrqmLjiz6IFsKsHxDo5bxT
-         lvt/BxZWxZt4Kj8C8CnaIfxmQliFNWxanXsh5FHGyi9uHC6yiqa5biZAdtsrF9mYahMH
-         +PSQ==
-X-Gm-Message-State: AOJu0Yyjp/lIz5qJFQ3YsYzQbhYLdAwkczZnHursh6Hk1gGv93CgRTji
-	pKzeqL8VYknMEX+vaINMdhSd37VTeY5U1ODR7P5fIXUknwd2BgTGMKf+e6UrQ+G7
-X-Gm-Gg: AR+sD115VMqf7SfPxnvd8bkWFENjta0JkO4pgbQv4mx3DAx0DNFQVGsKYB3r0uXrj31
-	j20kL912hbJh+b2flMVCcxEW9Bv9PmBmqt3DqG4JvGJe16l24Ku6XX7kNJoHPJRCTltcFAGcGkq
-	SrgBWSDETbaLL2VstOSK6XtcvkJxokuaNM/GO4SP9VmI3nF/RdAOIRxA2jeI7llNuW4UTxLFZKM
-	R1aZiQWvw0+k+M1dFbl0gkr2W7/wKGGGUaFlL01ffnx6DIF1wyRwylrV/30nksiorSko24WdNZd
-	2ZQ6DSCy2e7iE8R4g3mK/PZ49E2TniJM7//TJCITIYIJqLo+Ew46IT+yTsfaLPaawZb4Cn76Cxy
-	6nJS1MPWwP6Du2snqLX2SqGXpT2rhUDMJbu+nmKk1yBmEMJSQrJyE1T7uE2pLq0g5WCnOlC38dC
-	IvqJfM8OEAfQe6ym2MRhH5s9cHcoC5QJedewRgkRgtcKpJEn2Y5tvy1gvOLRm9Rhpv3wTvEQIZ
-X-Received: by 2002:a05:690c:6e0c:b0:81e:c95e:2bfd with SMTP id 00721157ae682-81f69e6a577mr19536117b3.56.1785097754960;
-        Sun, 26 Jul 2026 13:29:14 -0700 (PDT)
+        bh=KfMs2PsJkuXBuNdefbYmI+UYUVlyWWZwc3YoVTl0+bY=;
+        b=NefP4AVfI8xUOO1n0zw7SRE/Dp2hog3lJoH2xOkMhWRQTj5L3JZHYgcS3Y80v3HD1E
+         9YLE5z/SpuQ+/CiWf7xGCm4XQk7ys3BO3j3hpagXwimX07HHLGknE3dy46KZpnyxgigv
+         m26d8KyLjth7dyXaSUG1JgIPus4kigwX3ZHf9LMZOyXYjTq5rKGfZvI0kYEQRgBMF0Gn
+         jGhvHbq+b/DPc4hxgebDu7hk2+owxS7jLplDn/aeEx4JNLuYdifkzgIwjUeANTE6b2Ki
+         2FobuKnUhHj89FpMSIRzjOwAVJjphZYLdHjXoDE5MR/dGqwzhJ5zkRjYCgUXzu93HWmp
+         FpGA==
+X-Gm-Message-State: AOJu0YxtfHkXKAwD3US+WotM2zoGhaYdLfibWwCdSsbz1W2mLJaBSw9z
+	RFBwlqMIWV8T+ci5Ysn9+7UnYmXIJ0az2F1DpUA2xnSiZiQntdCooqZC2wyB6gSG
+X-Gm-Gg: AR+sD13WizGOq+mWqKyh8fajWv+HFPGPBUNm/NDf3GTA6+hFYhpJsnUZrsqKCxnf7Kk
+	i8CO2ujYHK6l7yPiuGuI8VyEXx7hEyEqat31sZwP8GzGUnv4EptOw0QsgEXzFLgyd2181McT2P8
+	Cnbl6McA9/nKwAoLsiJ9I83T2DrUt3j1y8m0hIENgOhnaoss++Halx1aLlgOXfehW3GWjmV4nru
+	oHSgmeoy9C0M+pI49PzOrq54XNaRpZRg+vPK9GTYyMgkJAuEvOPllpHn1A7PuIOHwmkk56zzO0R
+	K6ihXyWzTfzwxSL7eADBRziGTtEbePS0R+wqMyENhoD11RPknhU1FuVGf9eQmRCIUug1GgO3kvM
+	TtGSo5W3pMCpMGTeeIW2TsryYBpTut0vM9EVhdI7wP1bAj4zKXuFimVG0gML5Ty7txm0wSmBjwq
+	CZMAen/FfG7Fp2W/0LppZAYbTSl3u7hXH1/Y2LbL40y/V1Krjm3Y93JM8EFktdQOQsIz3mnaf1t
+	/PwZIJIgFw=
+X-Received: by 2002:a05:690c:c4e7:b0:81e:a471:e893 with SMTP id 00721157ae682-81f69d25f04mr18989347b3.24.1785097755826;
+        Sun, 26 Jul 2026 13:29:15 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f657a14d9sm23339467b3.13.2026.07.26.13.29.14
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81f657a14d9sm23339467b3.13.2026.07.26.13.29.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 13:29:14 -0700 (PDT)
+        Sun, 26 Jul 2026 13:29:15 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -67,9 +68,9 @@ Cc: davem@davemloft.net,
 	andrew@lunn.ch,
 	mohsin.bashr@gmail.com,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v3 6/7] selftests: drv-net: extend so_txtime with hw offload
-Date: Sun, 26 Jul 2026 16:28:50 -0400
-Message-ID: <20260726202902.760552-7-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next v3 7/7] net: pktgen: add support for SO_TXTIME
+Date: Sun, 26 Jul 2026 16:28:51 -0400
+Message-ID: <20260726202902.760552-8-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260726202902.760552-1-willemdebruijn.kernel@gmail.com>
 References: <20260726202902.760552-1-willemdebruijn.kernel@gmail.com>
@@ -83,181 +84,206 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-Add two pacing hardware offload variants
+Introduce support for setting the SO_TXTIME delivery txtime on
+generated packets. This allows testing pacing and scheduling features
+in the network stack (e.g., sch_fq, sch_taprio) and drivers.
 
-1. one that uses FQ to safely offload when within bounds.
-2. one that uses pfifo_fast and thus forwards all packets.
+Add a new flag 'TXTIME' to enable this feature.
 
-Verify that the packets are paced in hardware with new flag '-h'.
+Add two new configuration parameters:
 
-Also move the ip version check to the main test_so_txtime callee,
-rather than having to add checks to the new variants.
+- txtime_delay: offset from now in ns
+- txtime_clockid: clock to use (monotonic, realtime, tai)
 
-Also increase rcvtimeout significantly to reduce flakiness.
-
-Hardware pacing offload can complete packets out of order. So the
-reverse_order test is expected to pass with pfifo_fast too.
+The queue_xmit mode can clear skb->tstamp in-flight, so this must be
+used without clone_skb.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 
 ---
 
-Changes
-  v2 -> v3
-    - remove drivers/net/settings timeout change: superseded by recent commit
-    - add reverse_order comment
-  v2: https://lore.kernel.org/netdev/20260722204454.3234605-8-willemdebruijn.kernel@gmail.com/
-  v1 -> v2
-    - re-raise NlError from e (patchwork pylint)
-    - simplify expect_pass test (patchwork pylint)
-  v1: https://lore.kernel.org/netdev/20260706133433.3142805-7-willemdebruijn.kernel@gmail.com/
----
- .../testing/selftests/drivers/net/so_txtime.c |  2 +-
- .../selftests/drivers/net/so_txtime.py        | 72 +++++++++++++++++--
- 2 files changed, 69 insertions(+), 5 deletions(-)
+Sashiko: ignore data races in the control fields. Pktgen requires
+superuser privileges, has many such races already, which are benign.
 
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
-index 5900ca97957c..6e64baa4c60d 100644
---- a/tools/testing/selftests/drivers/net/so_txtime.c
-+++ b/tools/testing/selftests/drivers/net/so_txtime.c
-@@ -375,7 +375,7 @@ static int setup_tx(struct sockaddr *addr, socklen_t alen)
+Changes
+  v1 -> v2
+    - avoid data race on txtime_delay
+    - same on flags
+    - (minor) style: avoid two >80 column warnings (checkpatch)
+  v1: https://lore.kernel.org/netdev/20260706133433.3142805-8-willemdebruijn.kernel@gmail.com/
+
+fixup pktgen: txtime_delay READ_ONCE
+---
+ net/core/pktgen.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 92 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 5b4dd04d6124..7897e4220513 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -201,6 +201,7 @@
+ 	pf(SVID_RND)		/* Random SVLAN ID */			\
+ 	pf(NODE)		/* Node memory alloc*/			\
+ 	pf(SHARED)		/* Shared SKB */			\
++	pf(TXTIME)		/* SO_TXTIME support */			\
  
- static int setup_rx(struct sockaddr *addr, socklen_t alen)
+ #define pf(flag)		flag##_SHIFT,
+ enum pkt_flags {
+@@ -291,6 +292,10 @@ struct pktgen_dev {
+ 	struct page *page;
+ 	u64 delay;		/* nano-seconds */
+ 
++	/* TXTIME support */
++	u64 txtime_delay;	/* transmit time delay in ns */
++	clockid_t txtime_clockid; /* clockid for SO_TXTIME */
++
+ 	__u64 count;		/* Default No packets to send */
+ 	__u64 sofar;		/* How many pkts we've sent so far */
+ 	__u64 tx_bytes;		/* How many bytes we've transmitted */
+@@ -666,6 +671,17 @@ static int pktgen_if_show(struct seq_file *seq, void *v)
+ 	if (pkt_dev->node >= 0)
+ 		seq_printf(seq, "     node: %d\n", pkt_dev->node);
+ 
++	if (pkt_dev->flags & F_TXTIME) {
++		clockid_t clockid = READ_ONCE(pkt_dev->txtime_clockid);
++
++		seq_printf(seq, "     txtime_delay: %llu\n",
++			   (unsigned long long)pkt_dev->txtime_delay);
++		seq_printf(seq, "     txtime_clockid: %s\n",
++			   clockid == CLOCK_MONOTONIC ? "monotonic" :
++			   clockid == CLOCK_REALTIME ? "realtime" :
++			   clockid == CLOCK_TAI ? "tai" : "unknown");
++	}
++
+ 	if (pkt_dev->xmit_mode == M_NETIF_RECEIVE)
+ 		seq_puts(seq, "     xmit_mode: netif_receive\n");
+ 	else if (pkt_dev->xmit_mode == M_QUEUE_XMIT)
+@@ -1141,6 +1157,50 @@ static ssize_t pktgen_if_write(struct file *file,
+ 			(unsigned long long) pkt_dev->delay);
+ 		return count;
+ 	}
++	if (!strcmp(name, "txtime_delay")) {
++		max = min(10, count - i);
++		len = num_arg(&user_buffer[i], max, &value);
++		if (len < 0)
++			return len;
++
++		/* in queue_xmit mode fq may clear tstamp, do not reuse skb */
++		if (value > 0 && pkt_dev->clone_skb > 0)
++			return -EINVAL;
++
++		WRITE_ONCE(pkt_dev->txtime_delay, (u64)value);
++		sprintf(pg_result, "OK: txtime_delay=%llu",
++			(unsigned long long)value);
++		return count;
++	}
++	if (!strcmp(name, "txtime_clockid")) {
++		char clockstr[32];
++		clockid_t clk;
++
++		memset(clockstr, 0, sizeof(clockstr));
++		max = min(sizeof(clockstr) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
++		if (len < 0)
++			return len;
++
++		if (copy_from_user(clockstr, &user_buffer[i], len))
++			return -EFAULT;
++
++		if (!strcmp(clockstr, "monotonic")) {
++			clk = CLOCK_MONOTONIC;
++		} else if (!strcmp(clockstr, "realtime")) {
++			clk = CLOCK_REALTIME;
++		} else if (!strcmp(clockstr, "tai")) {
++			clk = CLOCK_TAI;
++		} else {
++			sprintf(pg_result, "ERROR: unknown clockid '%s'",
++				clockstr);
++			return -EINVAL;
++		}
++
++		sprintf(pg_result, "OK: txtime_clockid=%s", clockstr);
++		WRITE_ONCE(pkt_dev->txtime_clockid, clk);
++		return count;
++	}
+ 	if (!strcmp(name, "rate")) {
+ 		max = min(10, count - i);
+ 		len = num_arg(&user_buffer[i], max, &value);
+@@ -1238,6 +1298,8 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		if (value > 0 && (pkt_dev->n_imix_entries > 0 ||
+ 				  !(pkt_dev->flags & F_SHARED)))
+ 			return -EINVAL;
++		if (value > 0 && READ_ONCE(pkt_dev->txtime_delay))
++			return -EINVAL;
+ 
+ 		pkt_dev->clone_skb = value;
+ 
+@@ -2321,6 +2383,21 @@ static void pktgen_setup_inject(struct pktgen_dev *pkt_dev)
+ }
+ 
+ 
++static ktime_t ktime_get_clock(clockid_t clockid)
++{
++	switch (clockid) {
++	case CLOCK_REALTIME:
++		return ktime_get_real();
++	case CLOCK_MONOTONIC:
++		return ktime_get();
++	case CLOCK_TAI:
++		return ktime_get_clocktai();
++	default:
++		WARN_ON_ONCE(1);
++		return ktime_get();
++	}
++}
++
+ static void spin(struct pktgen_dev *pkt_dev, ktime_t spin_until)
  {
--	struct timeval tv = { .tv_usec = 100 * 1000 };
-+	struct timeval tv = { .tv_usec = 600 * 1000 };
- 	int fd;
+ 	ktime_t start_time, end_time;
+@@ -3510,7 +3587,8 @@ static void pktgen_wait_for_skb(struct pktgen_dev *pkt_dev)
  
- 	fd = socket(addr->sa_family, SOCK_DGRAM, 0);
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
-index adf6c848d6d8..7b75a33f5c43 100755
---- a/tools/testing/selftests/drivers/net/so_txtime.py
-+++ b/tools/testing/selftests/drivers/net/so_txtime.py
-@@ -12,10 +12,13 @@ import time
- from lib.py import ksft_exit, ksft_run, ksft_variants
- from lib.py import KsftNamedVariant, KsftSkipEx
- from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
-+from lib.py import EthtoolFamily, NlError
+ static void pktgen_xmit(struct pktgen_dev *pkt_dev)
+ {
+-	bool skb_shared = !!(READ_ONCE(pkt_dev->flags) & F_SHARED);
++	u32 flags = READ_ONCE(pkt_dev->flags);
++	bool skb_shared = !!(flags & F_SHARED);
+ 	struct net_device *odev = pkt_dev->odev;
+ 	struct netdev_queue *txq;
+ 	unsigned int burst = 1;
+@@ -3545,6 +3623,8 @@ static void pktgen_xmit(struct pktgen_dev *pkt_dev)
+ 	/* If no skb or clone count exhausted then get new one */
+ 	if (!pkt_dev->skb || (pkt_dev->last_ok &&
+ 			      ++pkt_dev->clone_count >= clone_skb)) {
++		u64 txtime_delay;
++
+ 		/* build a new pkt */
+ 		kfree_skb(pkt_dev->skb);
  
+@@ -3557,6 +3637,16 @@ static void pktgen_xmit(struct pktgen_dev *pkt_dev)
+ 		}
+ 		pkt_dev->last_pkt_size = pkt_dev->skb->len;
+ 		pkt_dev->clone_count = 0;	/* reset counter */
++
++		txtime_delay = READ_ONCE(pkt_dev->txtime_delay);
++		if (flags & F_TXTIME && txtime_delay) {
++			clockid_t clk = READ_ONCE(pkt_dev->txtime_clockid);
++			ktime_t txtime = ktime_add_ns(ktime_get_clock(clk),
++						      txtime_delay);
++
++			skb_set_delivery_type_by_clockid(pkt_dev->skb, txtime,
++							 clk);
++		}
+ 	}
  
- def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
-     """Main function. Run so_txtime as sender and receiver."""
-+    cfg.require_ipver(ipver)
-+
-     slow_machine = os.environ.get('KSFT_MACHINE_SLOW')
+ 	if (pkt_dev->delay && pkt_dev->last_ok)
+@@ -3869,6 +3959,7 @@ static int pktgen_add_device(struct pktgen_thread *t, const char *ifname)
+ 	pkt_dev->burst = 1;
+ 	pkt_dev->node = NUMA_NO_NODE;
+ 	pkt_dev->flags = F_SHARED;	/* SKB shared by default */
++	pkt_dev->txtime_clockid = CLOCK_MONOTONIC;
  
-     if not hasattr(cfg, "bin_remote"):
-@@ -38,6 +41,34 @@ def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
-         cmd(cmd_tx)
- 
- 
-+def _dev_setup_pacing_offload(cfg):
-+    """Configure pacing-offload-horizon."""
-+    ethnl = EthtoolFamily()
-+
-+    try:
-+        rings = ethnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    except NlError as e:
-+        raise KsftSkipEx('ring-get not supported by device') from e
-+
-+    if 'pacing-offload-horizon' not in rings or \
-+       'pacing-offload-horizon-max' not in rings:
-+        raise KsftSkipEx('pacing offload horizon not supported by device')
-+
-+    if rings['pacing-offload-horizon-max'] < 50_000:
-+        raise KsftSkipEx('pacing offload max horizon too small')
-+
-+    cur_horizon = rings['pacing-offload-horizon']
-+    new_horizon = 50_000
-+    ethnl.rings_set({
-+        'header': {'dev-index': cfg.ifindex},
-+        'pacing-offload-horizon': new_horizon,
-+    })
-+    defer(ethnl.rings_set, {
-+        'header': {'dev-index': cfg.ifindex},
-+        'pacing-offload-horizon': cur_horizon
-+    })
-+
-+
- def _qdisc_setup(ifname, qdisc, optargs=""):
-     """Replace root qdisc. Restore the original after the test.
- 
-@@ -56,6 +87,7 @@ def _test_variants_fq():
-             ["one_pkt", "a,10", "a,10"],
-             ["in_order", "a,10,b,20", "a,10,b,20"],
-             ["reverse_order", "a,20,b,10", "b,10,a,20"],
-+            ["beyond_hw_horizon", "a,70", "a,70"],
-         ]:
-             name = f"v{ipver}_{testcase[0]}"
-             yield KsftNamedVariant(name, ipver, testcase[1], testcase[2])
-@@ -64,15 +96,42 @@ def _test_variants_fq():
- @ksft_variants(_test_variants_fq())
- def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
-     """Run all variants of monotonic (fq) tests."""
--    cfg.require_ipver(ipver)
-     _qdisc_setup(cfg.ifname, "fq")
-     test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
- 
- 
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_fq_mono_hw(cfg, ipver, args_tx, args_rx):
-+    """Run all variants of monotonic fq tests, with offload horizon."""
-+    cfg.require_nsim(nsim_test=False)
-+
-+    _dev_setup_pacing_offload(cfg)
-+    try:
-+        _qdisc_setup(cfg.ifname, "fq", "offload_horizon 50ms")
-+    except Exception as e:
-+        raise KsftSkipEx("netdev does not support offload. skipping") from e
-+
-+    # Expect all tests to use only hw pacing, except beyond_hw_horizon.
-+    hw_only = "-h" if args_tx != "a,70" else ""
-+    test_so_txtime(cfg, "mono", ipver, f"{hw_only} {args_tx}", args_rx, True)
-+
-+
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
-+    """Run all variants of monotonic tests, without fq pacing sw backup."""
-+    cfg.require_nsim(nsim_test=False)
-+
-+    _dev_setup_pacing_offload(cfg)
-+    _qdisc_setup(cfg.ifname, "pfifo_fast")
-+
-+    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
-+    expect_pass = not args_tx == "a,70"
-+    test_so_txtime(cfg, "mono", ipver, f"-h {args_tx}", args_rx, expect_pass)
-+
-+
- @ksft_variants(_test_variants_fq())
- def test_so_txtime_fq_tai(cfg, ipver, args_tx, args_rx):
-     """Run all variants of fq tests, but pass CLOCK_TAI to test conversion."""
--    cfg.require_ipver(ipver)
-     _qdisc_setup(cfg.ifname, "fq")
-     test_so_txtime(cfg, "tai", ipver, args_tx, args_rx, True)
- 
-@@ -95,7 +154,6 @@ def _test_variants_etf():
- @ksft_variants(_test_variants_etf())
- def test_so_txtime_etf(cfg, ipver, args_tx, args_rx, expect_fail):
-     """Run all variants of etf tests."""
--    cfg.require_ipver(ipver)
-     try:
-         _qdisc_setup(cfg.ifname, "etf", "clockid CLOCK_TAI delta 400000")
-     except Exception as e:
-@@ -108,7 +166,13 @@ def main() -> None:
-     """Boilerplate ksft main."""
-     with NetDrvEpEnv(__file__) as cfg:
-         ksft_run(
--            [test_so_txtime_fq_mono, test_so_txtime_fq_tai, test_so_txtime_etf],
-+            [
-+                test_so_txtime_fq_mono,
-+                test_so_txtime_fq_mono_hw,
-+                test_so_txtime_pfifofast_mono_hw,
-+                test_so_txtime_fq_tai,
-+                test_so_txtime_etf,
-+            ],
-             args=(cfg,),
-         )
-     ksft_exit()
+ 	err = pktgen_setup_dev(t->net, pkt_dev, ifname);
+ 	if (err)
 -- 
 2.55.0.229.g6434b31f56-goog
 
