@@ -1,79 +1,76 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47F31064B
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 06:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196532DB79F
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 06:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785047127; cv=none; b=E8OzNJH0OmCQsTOx5iFcg2hLgmH/tWiG3QGaBqGtmi0qjzOGgwR+2w3zdetBlcOtOztpIcP+7RDeb37S3LHVOZpWDYVj9i/Ur2BEnAAq+9MKeo5IM6YIIS2mphlo3LR/av+QHTbwGZ48Q0qdhEhRrgyJacyG1JVtD4gWgNlG8xY=
+	t=1785047183; cv=none; b=u/6XXEbZ4SAs6CX0CK2V2GIjAevzQywByjVrHA5rO2ntfgKCD43uuqkhchTcPkTAQZN62uZop+c14ItNcuUmgJjh5E+5KPfhMXcoa/gjiY0R43YjMiGl4COg/r3KVv4gdYXeK5fsVU0brluhSzLODRG6kSp+TXyRcOFm5DfyIAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785047127; c=relaxed/simple;
-	bh=dP3h+hLKsGm5KC/K2M0ypRB2Gy3z0jV1Y4qouUEoGl8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRBCIZlXv7QuUrDEoJB8NDK3lI3845pAD9DZ3nvpQadYf2p0kyYFd0g6Y6Ngi+EnvguHKTC1feB9PkzUDAdYe/1sQ0df2P1WgTWZaXRlCqP1OozJbjBW2JFBuHLHcrfOlELI8wMbb4QSnaRCL0yJ9wFX4wSFX//75l9kAXj8QOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=DC8ydt89; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
+	s=arc-20240116; t=1785047183; c=relaxed/simple;
+	bh=U6rtLcsMd+bW6cgkNVoXqC0rvV2EUY2DJnWwFEigjMQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ehEuMWQYgfMnT+GBuTYezJbFPeZseMlJEIppGlVqGat4Wx+jrIKaIXZQH2WN7f8jMWiuUHbyP7kVFIDZ3YhozltoC9g3H56K9x4+7bRxixsiuuNhnP8vLSoLY7t5CFUgzwfTCR+qK9PdTd+o+uH2d6R16mjhY+vqgHS+98YkVxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corvaglia.dev; spf=pass smtp.mailfrom=corvaglia.dev; dkim=pass (2048-bit key) header.d=corvaglia.dev header.i=@corvaglia.dev header.b=o8QBoOMC; arc=none smtp.client-ip=74.125.231.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corvaglia.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corvaglia.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="DC8ydt89"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cace91f112so18405405ad.0
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 23:25:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=corvaglia.dev header.i=@corvaglia.dev header.b="o8QBoOMC"
+Received: by mail-oo2-f6.google.com with SMTP id 006d021491bc7-6aaf69d55ccso385559eaf.0
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 23:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1785047125; x=1785651925; darn=vger.kernel.org;
+        d=corvaglia.dev; s=google; t=1785047181; x=1785651981; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P8zGbl4R2Ffos3phLd71l7Q80RIBm+fS5r/cqYD6HXU=;
-        b=DC8ydt89KOZEagcMMu3d4p3qXlpjtNzUqC6SBtDRfRRn6IA4UBcJb4vvxeU1S6ongN
-         1ocJuhDlGZl4swBGSH26xfWmqGaD45xEZBcvgZPD1OJWRF4r5YPHs13IL5unD+NjrQYR
-         6Q3v0SBrClUqt2QfC4jSU3PO/SGza66hq27Z5/1Cpy40Iw4uRBpjpIStNAkju4CHObHN
-         ZiKT3PTpvzSAldfxgb8NH4sXuz9luEvKTMSdZH72vYDkqt5ANkT4FTOjvLwv9U9egwoJ
-         xKxpHO7qWutYuBH5+4C3gqEPFbunnvZ6bg8aqLgWfGfOwanGdlqM6Lu4ac/YH+HnI+gU
-         5JXg==
+        bh=8BWHXjMiQy9uqWLmDCLbC9R8ot89mFYPDtLgVnTx4Nc=;
+        b=o8QBoOMCyuczCMkXOv0oIt8ZgtVFCd/t2BNokYIQk5A59mFzdHH6PIzjMWuMWVHWtf
+         RtFSYfCWc8KxH1jpe/uv1P1ezhY+Sq8gpLvQzY/lTUTIqd7mLuKvr20lWPWAvfX6zCUy
+         4Wa24WGj2WVukscjhL0UAzdNNzH/O3Z9vB2wTyLdm3oUrlh1JDiHRd6wVai9J08j0uyl
+         CpFaDWU2NaZAkVo/icvuxF7vdvJGqRNQrjvhzRdLskH68EBzmm2Piwv7XpPp1hALk1Dm
+         shnH8fI+fw9wy3EEmXs22D5ODqKEU4q4gyPqUNprNV4xYea+oIhV+/Abnrc5DPy1vBUw
+         83gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785047125; x=1785651925;
+        d=1e100.net; s=20251104; t=1785047181; x=1785651981;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=P8zGbl4R2Ffos3phLd71l7Q80RIBm+fS5r/cqYD6HXU=;
-        b=L6ZN86YA4A4sjV93nyXSizHrSSU13GEnP787N8i9d6c3x6aYNYjBcu1Tm0iNxJ60r5
-         dPrVpUN+ps8vkkGklHSSpHXooU1JOMe3kh5w/XqZIrb3QFilW2lCVHxpF8oM+MxMhaUk
-         gu1+iY66hoJt9bF4Eo+QbtX5HYU2tmd6/ZNBmYU+7I+wBpHz968EsXIPRcqAO9Lx3Afl
-         x1eLhOsH8zHVyntWxijvP6+xWV5m9ERKfEVK+oT+uSuZ+vsSzloydgUQF2KzlUoy2rgO
-         wwbVUUeRwqYTFDhF05r61mbxm6LNFrdEfKUgF15/J9+asPaPT9+bmycFO4jtd2hmLK05
-         E4vg==
-X-Gm-Message-State: AOJu0YyR1Rdps0NDb9+MXxIj6OBH686DET18WyyvVYCcckgDoRWqY9Jp
-	jaielGOPAP4NV+1Y81ZhK7bYkxSpQUyenNXcB0yQV6TSIvsCWms5x6ulzkieILLT4/xMeB8kSHQ
-	ccJFMjSI=
-X-Gm-Gg: AR+sD109TXwKX/+Of3+WzvvRIpz4gi05swzdZspY8yuLDjgAM6+i+nYTk9fu9duN6sC
-	9HzGh5jt+6UPvUwM9+qGoW6Ci29a6OTne9zKcIy5b080pqhdkHxeM4A+BMrCsz9/0vCWcqsxUKC
-	FIhPTxnbw8138MEjNqfuWFpuXEesUKr0CteysW2dMYfXgyZWq+JhPkbid9uXlHTwgNT73DW25Wr
-	s5t706LafQGKhvHzQgz4bF+svNfjMHY4u44HdneJKFg0DXZ43ISfGoTfaO09JfQH/kQUkAwHDLF
-	s6nA82O8qCBj7Kv8bbmwbcAGZbx/3CqfpCqqifh96x297dvZVm42Wgk0xtQoshZieumuymqFlPp
-	y9kZtLDsywNla8L6dRKxmkNouO2iXnjFOU1lv0DSROrvbY7WFiw9nGfI5Cmv/F5D0/WwXVJM6iE
-	kIHXOItiQyUngO3qxEuon5Nq4gqIdxCCGAlWh+pcY0mSHjHZvSLlw8KtD2dEib
-X-Received: by 2002:a17:903:2310:b0:2c8:1f56:9fc5 with SMTP id d9443c01a7336-2cfde868609mr35863255ad.35.1785047124945;
-        Sat, 25 Jul 2026 23:25:24 -0700 (PDT)
-Received: from localhost.localdomain ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7bc413sm16689195ad.44.2026.07.25.23.25.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 25 Jul 2026 23:25:24 -0700 (PDT)
-From: Baul Lee <baul.lee@xbow.com>
-To: netdev@vger.kernel.org,
+        bh=8BWHXjMiQy9uqWLmDCLbC9R8ot89mFYPDtLgVnTx4Nc=;
+        b=INqlxGgURpcBHqETRjRveFoXzxlW6X+obAPT/m2GG55WOIPc4W88UmX6ZBM3Xj+KeS
+         Che64P4X5/R8QH9eMgBA5oU9T7gen3iYmEIHLEa++fJyqwW1Hf/kghyTC8Zzr5bZ82M3
+         gP3Rzza99B88pmfWv8tjNEOlgiri3V3+6P9LlYeV6OUxWzulN5PEqnVZHbjbBVxOA7rG
+         e/32TDG+GwcacpsLok0Bewq7zrm88KqiiaSJyI0EbWbMPw8ZVyn90TcA6JbfjU5t0XNQ
+         NBqqxMdeWx4H5IF6RbrJAYm0Iw/yVl6BgiXRDovQHEnsYNZY78Jd7v+i9Reu2z+g/nbc
+         r91Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpbvlPWnBxvTlZ5tKNb0F9fb6+JDlcsD3qcSL/RrHnkgCHwb2eJ07O6KyMkBAWJZA7ac4r0EWM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqUj7ZB4CH059xhTloi03lSRSsBroXe8Ta3iSLEwWo6I/0IaVC
+	K2CcmJnmPxJ1PE4zfU1o5ainK8XqSNufN3a+zv53cguELfuw0U6BDGjMsPhG9k0yQHO3
+X-Gm-Gg: AR+sD13rQ8vDPf9bx3+f2ahsm8Qm+oMIf3haiABS3Bgqb6iWVyNoOXlTafy+Wx3DqMU
+	MGHXvdhq/9y5hpu8xcLpM104kFbfED5lnksmh5MYuvys/Xhq5aTgiVLJy7AIoPfAG4/sEp9tjIZ
+	GZAAGpBvlXbs3Qnj3Fe3aolJLvsnvqN7e/fW5IcP3WwhCqT4bG4G4GnJTHyOsC/e7byyKDuFUNo
+	AIm5x7qUzWJg4+T6nfbrG5uj9ADjrEmWRefuz7Kne/2ssLO/ZbwJt7DGdJXAhFqh2aoUwfaOuIA
+	Mg33edF8CCtzgd+lf5+tCDHeJraF448WYmZuarLKW5lh9eR8BZRKUABSmnkShsChiJJXXoICn1q
+	9hRHlEmLPCU9TiMFFIWD65g5QNay+QYiTOMGV8BQEjvB0ojynzGZdkiY5xPTI6+V9
+X-Received: by 2002:a05:6820:4dc7:b0:6a1:9a59:5c5f with SMTP id 006d021491bc7-6aaff9a5a80mr3020723eaf.46.1785047180881;
+        Sat, 25 Jul 2026 23:26:20 -0700 (PDT)
+Received: from dev ([47.160.132.81])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6aaf92d0109sm3073215eaf.3.2026.07.25.23.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 23:26:19 -0700 (PDT)
+From: David Corvaglia <david@corvaglia.dev>
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
 	bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: razor@blackwall.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	federico.kirschbaum@xbow.com,
-	Baul Lee <baul.lee@xbow.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: bridge: mrp: fix uninitialised bytes on the wire
-Date: Sun, 26 Jul 2026 15:25:18 +0900
-Message-ID: <20260726062518.43774-1-baul.lee@xbow.com>
-X-Mailer: git-send-email 2.50.1
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Corvaglia <david@corvaglia.dev>
+Subject: [PATCH net v2] net: bridge: mrp: fix Option TLV length in MRP_Test frames
+Date: Sun, 26 Jul 2026 06:26:05 +0000
+Message-ID: <20260726062605.2746-1-david@corvaglia.dev>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,59 +79,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-br_mrp_alloc_test_skb() builds MRP test frames on an skb from
-dev_alloc_skb(), which does not zero the linear data area.  On the MRA
-ring-role branch the sub-option TLV header is appended with
-
-	sub_tlv = skb_put(skb, sizeof(*sub_tlv));
-	sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
-
-leaving sub_tlv->length unwritten, and the two trailing alignment bytes
-are appended with a bare skb_put() that neither writes nor clears them.
-The surrounding oui and sub_opt regions are explicitly memset(0), which
-bounds the exposure to exactly these three bytes.
-
-Every MRA MRP_Test frame therefore carries three bytes of stale
-page-allocator memory, at frame offsets 65 to 67, to any observer of the
-MRP control traffic.  A capture on a kernel without
-CONFIG_INIT_ON_ALLOC_DEFAULT_ON shows those bytes varying frame to frame
-and, after a page-allocator spray, carrying the sprayed pattern; the
-same reproducer on an otherwise identical CONFIG_INIT_ON_ALLOC_DEFAULT_ON
-kernel leaks nothing, confirming the source is uninitialised allocation
-memory.  Reaching it needs CAP_NET_ADMIN, which is self-satisfiable on a
-stock kernel through unprivileged user and network namespaces.
-
-Assign the sub-option TLV length explicitly, which is 0 as the AUTO_MGR
-sub-TLV carries no payload, and append the alignment padding with
-skb_put_zero().
-
-Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+oui is a pointer, so sizeof(oui) is the pointer size. The MRA
+Option TLV thus advertises a wrong length (15 vs 10 on x86_64),
+causing misparsing of the frame on peers. Fix is to replace
+with sizeof(*oui).
 
 Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
-Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
-Reported-by: Baul Lee <baul.lee@xbow.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Baul Lee <baul.lee@xbow.com>
+Signed-off-by: David Corvaglia <david@corvaglia.dev>
 ---
- net/bridge/br_mrp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v2: target net and add Fixes header
+v1: https://lore.kernel.org/bridge/20260724051202.61946-1-david@corvaglia.dev/
+---
+ net/bridge/br_mrp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-index 3f7126a7d720..a5548f475604 100644
+index 3f7126a7d720..179d2470b724 100644
 --- a/net/bridge/br_mrp.c
 +++ b/net/bridge/br_mrp.c
-@@ -226,9 +226,10 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
+@@ -215,7 +215,7 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
+ 		struct br_mrp_oui_hdr *oui = NULL;
+ 		u8 length;
  
- 		sub_tlv = skb_put(skb, sizeof(*sub_tlv));
- 		sub_tlv->type = BR_MRP_SUB_TLV_HEADER_TEST_AUTO_MGR;
-+		sub_tlv->length = 0x0;
+-		length = sizeof(*sub_opt) + sizeof(*sub_tlv) + sizeof(oui) +
++		length = sizeof(*sub_opt) + sizeof(*sub_tlv) + sizeof(*oui) +
+ 			MRP_OPT_PADDING;
+ 		br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_OPTION, length);
  
- 		/* 32 bit alligment shall be ensured therefore add 2 bytes */
--		skb_put(skb, MRP_OPT_PADDING);
-+		skb_put_zero(skb, MRP_OPT_PADDING);
- 	}
- 
- 	br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_END, 0x0);
 -- 
-2.50.1 (Apple Git-155)
+2.55.0
 
