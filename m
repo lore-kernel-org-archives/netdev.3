@@ -1,76 +1,75 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A36280018
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 05:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B3833CEA5
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 05:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785044021; cv=none; b=DLUFGbV4t35/LiJ9RF3cf2AUgCAcszfiKVYPkvHxRyW8ixIUs1xi4/EmBIFX/a3s2D8E/DQOqpe642wVF8vvip1uY8fAXt2y1J963uJ4ulgrJ23VdAMkdsXwI8664dfZd32bevTstkxqJ48P8M6QqfJ0zZsNT/wJ8s+0sbwnPck=
+	t=1785045060; cv=none; b=O7yca0u6t+ssPpsPy+0+EMdsbyV9XjcEmoJ1umLt5bjWWk3zoHuWOVDPLwac0KNBwPjus8Gt0qgZy9JyxUjY2vL4kzF7K2G/e1GTW3n2ZZwGyPl4RvFnxfUhEqmeZRZllBzOdywFF+/oBpyGWuVw7nXLwzdVmCB1DKCd48UIOzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785044021; c=relaxed/simple;
-	bh=47i/YXfixIt7e5t5Gu6byp5P4Erdmj27ukrh+PELRgE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2MVm5lzfJYST4/OdEi5eDXrK4XknxviZcHtSxb5IaesP1B2u7G2ydCR/nwS+pnlIGcoP0XE6oBT+VlCucHWN10KiL/0l04R6oox4kiUMPis9HMXmXIc57UCtQTVeIGx+Kk9sFqKYAaWCbR9EAz2GnGmFNkgLWRj913ciNcdQ3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=Z76QKIgA; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
+	s=arc-20240116; t=1785045060; c=relaxed/simple;
+	bh=JfcgKY1bxODc/MFqL+UtQTpvigjYvJWWyNJn1RyJk5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YgPRt6oUyeHNI5CIbotsA86VUTFIZC2cQqu6v654rqWEEf3lWAcBLvcgambJU9zpWI24v1vz3NMAFnthm/YbJNkjGzinkAyz7+mzy3eJx3Qn0MjvE+DELZmZKXvoq4Ki0gHjeeVaMwvDMUVFiaOhfcIUPpi1Qzof1Pm0LV/aJ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BuxwOdqt; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="Z76QKIgA"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cbb662575d3so978402a12.0
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:33:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BuxwOdqt"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce98cb8165so19681565ad.1
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:50:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1785044018; x=1785648818; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785045058; x=1785649858; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l0FA1kd0s14T0zTfOo2W1mWfRhLmW66jk1mDOW/wW+k=;
-        b=Z76QKIgA/3IQ7HqQIWiW4cqgSw5gRhmVSii5njgmmoOGd3s940gamvQ4IhRbLcqzSW
-         p9FqyA3/Q4fP5M/kccC3S20lli8TOKFNOAXS6D8tq3iX7LyvUEjbBpzwDtjrMMvgLFPa
-         5VBG2AeAFrQgo7/jUf+AgcxkJKR324D4kALqZ+733XXTddki6A+VNjR+KQPf8JEAC0Vt
-         0GixLe5eOvdWrH7iVBMdd6bp8jpySdvATHdY6XSSHWfV9qzavcDGO4p2Oo0aY7xx7z6b
-         0mGa1dfTNygGqIFyUngR/TuvO3DLCf1FNMwRxsV6tJCdQvMTMebrVoEiqJORnrlZuZlj
-         1y5g==
+        bh=pMkc8d/oqMSOvNnpXsJe10kMIEvPzFEPmZNw8V9kaIc=;
+        b=BuxwOdqtzsDOq9bwgx9OmEG5XJuzCVZQ/VbS4u3yTVEiA2754mlhM25naZ5Ax3Hf9R
+         kb1cR1uA621Tu5xG9tBsGFypIcGSasox8k9UWtbyNQxCEKgukPptOZloIIvFh7Hxl7En
+         04RoJf0A+nqaHeL2ukiWUeR3iE5cO7sTqn5IDm3ZwK2kxt8igS+68KbruVVG1hizrr5W
+         2DAV/1eG1eABVhmkBKwxwhqFGaTDkBVrMfcUE4FNQpnxsxKSyR1U00sKnY7jUqoFAMZ0
+         rB5mYJZc3T/n0hK4mvJctZfIukXhpnQS91wrPltdj0Jv0aCwsNSFHAHnTCAsUWoGoquZ
+         vY+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785044018; x=1785648818;
+        d=1e100.net; s=20251104; t=1785045058; x=1785649858;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l0FA1kd0s14T0zTfOo2W1mWfRhLmW66jk1mDOW/wW+k=;
-        b=oZVAxH4qat5VGLQjOCXwr2ju7kLmHL3wfapz5BmDvKgKOFQn7eWAT1+qzbI38Ofnjz
-         /I5FR8s/KAPLziGaL4ZGayTADC+Fn7J2kskVwHMV6m4G6tpUc4yH82QgC6mVcB2NXYnO
-         HGUcns2VsorYVInIAbEHFi2vYAdhMFymptp4xBAXbdV7dqvSMFFTNozvUyiz3DT1X1IC
-         cn/iJeSP4NXvL5hnIvkskE1mTAp7vlFeLXzBUHqeaGlirBDvg6VaFZK87gdGBAo8xV1v
-         EO/SjSzrxtIWgNLSRcS4+NlQjkwXdGMMdNjWs82g53kz6iD+fFaa3mpCvcc7iM9yrtw3
-         eg5A==
-X-Gm-Message-State: AOJu0Ywz/jqT8KHsxQh/euOzhXlQ4CJvVkZeeqSo2ON6mt16RZcBlKf5
-	fMPkIaZ5qAfdJnehLONDQox1hU1IgQGi5aUpxkeKc8mkS+wLPA1LTxNLdbr9fMCnzjHv8v9oUk5
-	1S+x8dOU=
-X-Gm-Gg: AR+sD11QdOGDPzPK0L0EX4zUD17sZrS1KDZ7ByB6MdPbPW9/AZyQnO773wyu/BsSWq0
-	FOSkw7ZECFS0fKI0dIX34WdfYS0fxGN3trpLmnK1SGDUHZ4hxizedD/bhmTCedqtbhThNcpYRTK
-	f/4q2TFARx4a+8wll+mRANWun3fawd5stNuQaGCm7OUAvCqcgB3c2rkX2fhVrPtyCA205EHsVwc
-	vAPEbAg96WR9EXJaftuWZPqFg3Jblfzb57G0SNuDkPeON6Im2vXvjaD6xHZPQZ8BnV1/Vtd6Yiq
-	c1/R1Tz3KHxp3STkDgjJKYfcqXDBeEvFjMuvD20ZhhhJAPD4uAXHw5FKrEDBRHkeSoF5K/hOqaE
-	I2UqqlveOOG4rbL69clWVTwE4kVxouquHblfRePfCbHDTEeDozfobptDcYXnxzOsTP9+9ysjnyf
-	9wk5GGTnt1F6d5z9b3fLHF3HYS2Fotqa20IB308wqJr18wc5YW18iXvyiTcNioKyZGfh66kPE=
-X-Received: by 2002:a05:6a21:a347:b0:3c3:bee9:8eec with SMTP id adf61e73a8af0-3c67da2e421mr3837000637.19.1785044017923;
-        Sat, 25 Jul 2026 22:33:37 -0700 (PDT)
-Received: from localhost.localdomain ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66c9dd2sm1785092a12.27.2026.07.25.22.33.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 25 Jul 2026 22:33:36 -0700 (PDT)
-From: Baul Lee <baul.lee@xbow.com>
-To: netdev@vger.kernel.org
-Cc: ms@dev.tdt.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	federico.kirschbaum@xbow.com,
-	Baul Lee <baul.lee@xbow.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/x25: fix use-after-free in x25_kill_by_neigh()
-Date: Sun, 26 Jul 2026 14:33:30 +0900
-Message-ID: <20260726053330.41736-1-baul.lee@xbow.com>
-X-Mailer: git-send-email 2.50.1
+        bh=pMkc8d/oqMSOvNnpXsJe10kMIEvPzFEPmZNw8V9kaIc=;
+        b=O0X3s2pGHMy5zqIIwVx0XMKusxZ9CL6KL2MKdJlReg98i7hRQgAwGCM1RApxc3e5jV
+         NVVuSkeSVQS+wm+OaftE6HfMpptgYhsBi0Qe6hQNY+AQe8Im9oy+1FwQCEs4zlKQWTBW
+         P54fZk9OQTJ/6LIlnIIs7Th0ZdLrL6saLfB4LgpBfhptN+LJO5xJQwtbE+IDj/QFC+9I
+         1MNcHuGNm3VJp4liX5Z27RZiR+HiOZeYyhfqMzzPG9vgjpBwx1+AGYY18uPKA/0aK9r6
+         attErknv+9V1fleNL+w1dLVBQMrDChIZjEw1kLT/hQF0nfJBsAN3srPKhJ8aA1oW2+OM
+         BKTg==
+X-Gm-Message-State: AOJu0YxDlgkYQQtV+Q0jA5oPHjhZ5PC+uwUmfBW5l0/nsmRIwzpDkua5
+	ffeZPK0ucFMuSgpU+d0RLkoHpu3u7bQio0aQ3K1O/c/BcTVCj2loknpI
+X-Gm-Gg: AR+sD10Jow/hKjnKgth0SbX/k4OApM2K5nKWdydoq6tq3kNe8j6fGRVLp7NDmqoHO62
+	I1yEjNO0FWl9ajirz7hC2FU1t/USHPSpwew9lwnCjRmTx943ixH8aDXr+i1vbzE07pHfQg1A0O0
+	rPT8oaZWskvB6FET+xqvahCYEgchTIPihN4XlcoQWDaMUNC7YoGoq7PZNBZTMsjiK/fFlJ98K8J
+	kofDl/Ett4BsaTA3o//TD7sciIjyP55ScYNz94Ulowk6typXHvryQQHnTtdCUoS0FhVFJ4++JuX
+	SD50DZdZuFrPRx/t7xGpHLk14i8GbsrXlTv2Ehi6a2Pk4drbCrJDoSOWkoGhcZyxYxvfXhIgMnk
+	Shk3UY7MKL7N9VcoSmsX7BJKZcDMuqawFl8myre1AFE/Cqmbfou5H79/2qX4S7NeZgVaMbYKWmo
+	6KZ1Nyt7ILyGSEKdou/xZzEMnEzlG2ttU=
+X-Received: by 2002:a17:903:b88:b0:2cf:8aa7:7810 with SMTP id d9443c01a7336-2cfdf337686mr34097145ad.2.1785045058448;
+        Sat, 25 Jul 2026 22:50:58 -0700 (PDT)
+Received: from acer-nitro-anv15-41.entro.com ([118.34.230.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e2b44sm16735795ad.27.2026.07.25.22.50.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 22:50:57 -0700 (PDT)
+From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
+To: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] netlink: specs: nl80211: fix TOOD -> TODO
+Date: Sun, 26 Jul 2026 11:20:46 +0530
+Message-ID: <20260726055046.18029-1-shaikhkamal2012@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,63 +78,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-x25_kill_by_neigh() walks x25_list under x25_list_lock and, for every
-socket bound to the dying neighbour, drops the lock to call lock_sock() /
-x25_disconnect() / release_sock() before re-acquiring it and continuing
-the iteration.  It holds no reference on the socket across this window.
+Fix spelling error reported by codespell in description strings:
+TOOD -> TODO. Attribute names are untouched. No functional change.
 
-A concurrent x25_release() on the same socket can therefore
-sk_del_node() and free it while the lock is dropped, so the following
-lock_sock(s) operates on freed memory; the sk_for_each() cursor can also
-be advanced through the freed node once the lock is re-acquired.  Either
-way an X.25 device going down races a socket close into a slab
-use-after-free.
-
-Take a reference with sock_hold() before dropping the lock so the socket
-stays alive across lock_sock()/x25_disconnect()/release_sock(), and drop
-it with sock_put() after the lock is re-acquired.  Because the socket may
-have been unlinked from x25_list during the window, restart the walk from
-the head instead of advancing from the (possibly unlinked) cursor;
-x25_disconnect() clears x25_sk(s)->neighbour, so an already-handled
-socket no longer matches and the walk terminates.  This mirrors the
-reference-holding list walkers already used elsewhere in this file.
-
-Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
-Reported privately to the maintainers on 2026-07-09 with root-cause
-analysis, a PoC, a KASAN log and this fix; posting to the list was
-requested as the follow-up.
-
-Fixes: 7781607938c8 ("net/x25: Fix null-ptr-deref caused by x25_disconnect")
-Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
-Reported-by: Baul Lee <baul.lee@xbow.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Baul Lee <baul.lee@xbow.com>
+Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
 ---
- net/x25/af_x25.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/netlink/specs/nl80211.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-index c31d2af5dd22..68c396dc4307 100644
---- a/net/x25/af_x25.c
-+++ b/net/x25/af_x25.c
-@@ -1770,13 +1770,17 @@ void x25_kill_by_neigh(struct x25_neigh *nb)
- 
- 	write_lock_bh(&x25_list_lock);
- 
-+restart:
- 	sk_for_each(s, &x25_list) {
- 		if (x25_sk(s)->neighbour == nb) {
-+			sock_hold(s);
- 			write_unlock_bh(&x25_list_lock);
- 			lock_sock(s);
- 			x25_disconnect(s, ENETUNREACH, 0, 0);
- 			release_sock(s);
- 			write_lock_bh(&x25_list_lock);
-+			sock_put(s);
-+			goto restart;
- 		}
- 	}
- 	write_unlock_bh(&x25_list_lock);
+diff --git a/Documentation/netlink/specs/nl80211.yaml b/Documentation/netlink/specs/nl80211.yaml
+index 802097128bda..d9fdd66b497e 100644
+--- a/Documentation/netlink/specs/nl80211.yaml
++++ b/Documentation/netlink/specs/nl80211.yaml
+@@ -1139,10 +1139,10 @@ attribute-sets:
+         type: binary
+       -
+         name: fils-discovery
+-        type: binary  # TOOD: nest
++        type: binary  # TODO: nest
+       -
+         name: unsol-bcast-probe-resp
+-        type: binary  # TOOD: nest
++        type: binary  # TODO: nest
+       -
+         name: s1g-capability
+         type: binary
+
+base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f
+prerequisite-patch-id: 912014811782d33538ddb17f00b64c15b364425e
+prerequisite-patch-id: ccd9499245f9528a029f13653f6a670c70796caa
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
