@@ -1,62 +1,62 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C354334C1D
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9B33603E0
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785063410; cv=none; b=Yhts84hvu0QmHzFJWpNm6J+TQZl2Bn0TV6HOt9FckjJqECE1W5ratGk1/urGQlsD+uw5RqGPeJOJkJ9A8qajKu1YzfyE+p25sqbUvGfZ+WG/gNJMcE+PDR8XbHdJx3qaBuKkVrTDap+INJxYtU+GCAjZeZUN4t/5idNmSCjvEM8=
+	t=1785063417; cv=none; b=fVXcm+CtI/T989BS89I9eitppJCZajuq7aMy9i1XBNPQ8XQOMljXV0Xw6Ld7g+vblPcaRwTeQqBfvkI4GAsKhj+BGim+n6pmumfjcLE0fSGHeOpPwp9/cYz+tHFqr7zTXV/LUqj1kVq8dBdywmklGT4U2x/1ODz7oDvkqLtCR80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785063410; c=relaxed/simple;
-	bh=qsqc/l2RryQSAHWzcvmAp9NMndtk8Now670864hGYe8=;
+	s=arc-20240116; t=1785063417; c=relaxed/simple;
+	bh=Lu5byszqUlnGfnfigbQHSkOtoVaUePJpDeishqMwxpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3mLSDyAtB8MFeoI/gf4Tm17Si8dZ2QCPUPw/4xJFR690KAJrJ4eKvzagCkdhf7DU8G1Ao5caOjEw4mbhkByuiBWYqvUdmmuI8f27Q1cudqgrz8Wo/O8ScbGfqTU0OLZQIyTkwQSfcrJf0MFvCV6XLOe2/KpabUQT8kKZzkYQH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QGr9BDCZ; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=B8Bvgq9gBeIxR7Sy/8e9a2/sCj7UMitAAHFSp0JwLR9fnPj0iD1886++IEUJAiUW1mmCv0xkc0qImw93KUsRgMbsni5UJEOxrWl1RfEA1hZnYHiJiswhG8H5oTdG1lge+mUVLV2NO8bnCK9jaiJWK/Bc98lVVj635/QsLEFjOGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxRL0+se; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QGr9BDCZ"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso1663729a91.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:56:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxRL0+se"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e08baf860so1842006a91.2
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785063409; x=1785668209; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785063416; x=1785668216; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IowqVsVdtNzRJldRPu5bExQR120Cy8p5ka39+y0OVCY=;
-        b=QGr9BDCZXvPQyvpS5uM9+xq5GzwZ+DaKxDZ2t5ED3Q81h2lKQmyUCMFI7rc6ohOC8F
-         lgpMbR0rMyzGhz6tZvzgIthdu+JYI8oJt7VDw/ckH3DDQi5oEQS4gbkv5YPuAuJfOXjw
-         LBR/SxU34yj3M6Fe0Ge3twoRjuDNzKzlhmw9YgKaA1uk7R080AQL50h1i9KarQHo866l
-         3uchbcW13QAaV7zb2WnYMaMJYZMCHhWLGKMXdyQ96NLOnlCQTd0N/wEbmC2xl2QDc2k3
-         SW5rC84iESGGkLVvMvLUeYwbttndl08USleAcTP3oxOBW96gNx+nBF0IHtm1bzPzyEa3
-         4EYw==
+        bh=fJsViFdITFUa0GcW8Cpp/CcYnvssYDAfSDQp/+OuXPI=;
+        b=fxRL0+seP9OgSm+FGj3qp4oBjELOzUqBF/TSnuK8SF0MmB7KRlDg84isnKyzxgsYlg
+         l+UaSsBW0JSgZajs4D2nB73DbHrUWnpelOvikFQlid3pXe3Ks6WOvBleiVX7Z1oDW/hG
+         R3Ah1XCbUASjAhoG1/dMI+QxKpNDTXO3tm9gArFiVQGAjvHHN7Dwds7T1z/EqrB0ZFpg
+         BLLr36xvC4xb+jJlPy3deVy5MoJplB4lIYoO8V4xA89nE23NKMP/BuCpfiDGmlYcWiKu
+         yv9rks1ZLTdsh/xfqVQsvvSJWOGXTE2FGyG7iMVaxLVpZ37SB9KKvhhTg54eWghHgkOh
+         PYSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785063409; x=1785668209;
+        d=1e100.net; s=20251104; t=1785063416; x=1785668216;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IowqVsVdtNzRJldRPu5bExQR120Cy8p5ka39+y0OVCY=;
-        b=eYOKGk14dCHtWB804YRQxGZVSpUWsmNMV0q1PPTohGEA0EFwycW2Q7WkPqTcA2UHy/
-         x6qM2ZCZzsyYkK+SSlUQXqStVanMf7GfYMiP2+MBbtLsFZUOicLBFFOZl+axvL4Ln4iv
-         8UnoxIEas4VhoJ4KyWhazBKOY5Fs4SkfXoVXdQJr5pRqOX+7cTEGwSGeqz1YMQUNtXKp
-         gZV3QZUjqsniIJTf++CklGc/aQ5B/h86YJ2kdRsESKw72tQjAzk/dZg9uavpd0h66d+V
-         DtB3SjDhqoidI8Xl/okOBqYrRKb3uYZYGsRoCAf3deYOBlYdW0fjQtVl+LA8UJpBp2X9
-         LsfQ==
-X-Gm-Message-State: AOJu0YzBXu0qXlqfmz9xm5jXEC09xEO7tym1h5q02dNfdH0OqwM9RZ2N
-	gNvrDLAc4d1MH/6qC0Uz++S5hfdwD8NqmrEH9sS99mf7ZsnZKKq371veAArVrWLr
-X-Gm-Gg: AR+sD11nou3Sgu3vKdnCM5WKBITftKcnolkpLItrZNi5GMUrwG+z7JBchiBd63JPgWI
-	+28A5HAUNekqedafDxP2tDeScqjoI6qKvL1O68gZlmb19tM5a6vuq0Te6iMrvEdORcE9LaSoEFS
-	ecIhOXmjlIgdfELyMAfVLR1gp8ARk1u9UDmk7NxegEo5Lsp2vWiA2yNiNBQJ3eY5eQPbBx9yHjX
-	XnRCSJ5TZYWD6RGFgPWZCu1kHwPVHgFITX/q+X032MxltDIYA3yiIRXoO7JXHkKjR190Acc1R8c
-	pVwtiTXGKgO/De8GlYxv8BQIORF3xRVRrWUWd7AFr/Ebtjahxca3ENbInhtQBD+dIiNiNa3konP
-	LBGVHpFQqYFY/hNifpMBaaYJ6gXrEQVbnz4U4wAJtiTYSaYfZv/UjeVCwj+EPv0xygqw/nBFfXI
-	ca/r03bzZ6OfTUdR35Bwvu5hKsYY7s7UEpPZNRMTQe1XFjGno=
-X-Received: by 2002:a17:90b:58e3:b0:37f:d265:18d2 with SMTP id 98e67ed59e1d1-38f2a958ecemr3247866a91.7.1785063408848;
-        Sun, 26 Jul 2026 03:56:48 -0700 (PDT)
+        bh=fJsViFdITFUa0GcW8Cpp/CcYnvssYDAfSDQp/+OuXPI=;
+        b=TGvJZG8W8EMYFunriZ+GS3iMmB3AjYI4EPCD0vTnS0IvPHDcKlO4UNy/GA6DrjUVKu
+         1FruvP5qq01n9/FYZxUPmjknIAs71BuF5EJqIN+7sZwQtHMqey2kl45sJs9ih1toYhCY
+         B8b05KwByfP2pw/Pl2XC9Uv6mA6pCeNdNycRSFBoxzBnk2dHrOG3PetIUDzNfO/7zHXs
+         g31W3m3qjtbzXp69102cZTTCm4/Uyucha3mpf1rArteSVFYHOMZeTdXQq5OsNAFwXB1f
+         piHS4hD5tKTxwub+ZCGkBsTo2vc/x9bH4psY4KI39fG9VB/VX4WxQxLsAUhrVxA5JFyn
+         vD4A==
+X-Gm-Message-State: AOJu0YwaiGJt50fvyTWsu3PUU4Cvun5IRT5gjohS40GR/KhYKdoGRgW3
+	UGJsWutsV+wKXYNLWVwInznYN3nfm5ntQ56fgesD5scAEw6RZ9PeZTxkDWNNtXiX
+X-Gm-Gg: AR+sD13E5nRjejpjNQRfhmDQOat97qKJoxKZldz+tsO8krRNsX9L8Hhy2xcuvA9Wkg8
+	XPNL+C+UMAn33nMEN/8vm7WtQoKQTSvY4DeXVxtKryZ6GlZKCTrdgbJuNen54j59UIZf8jF7LKf
+	48kBD9Y31o1QlJH0PlTdYWyh7gDt04BAnAQ8h4x/unVagwkVSq38cqqcyHw4bXZljRApvO8HP03
+	ctL8BXwuWEZuS+rhsSlDRdkV9RERiJtMfnmOY3MQ+aLZeRBbBAYekraKxmG8g6tVA2CHTJBoZ7Q
+	a9n8ds+zO/WPnlgfTvPtxeRQ/oguY///f/HS7lNZ62QZ19Y4PXSsxYHz6M5Qf1UkrjEDaf9halJ
+	Tc/ljWaJbLDwAIKeLk4Q3iHleLpQOGMAnhNxfAPidkzeKNu2FNXwwXzWx0TBHBF9KjMB7OksCNM
+	6W1EotINNYosFXYJCB+pOjWxXf7quEUILW0mP4NCT3wrQ/x+k=
+X-Received: by 2002:a17:90b:4f8b:b0:38e:7eb:d07b with SMTP id 98e67ed59e1d1-38f2975c750mr4543248a91.34.1785063415829;
+        Sun, 26 Jul 2026 03:56:55 -0700 (PDT)
 Received: from anna.. ([114.70.9.168])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f04175c1asm3645559a91.12.2026.07.26.03.56.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f04175c1asm3645559a91.12.2026.07.26.03.56.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 03:56:48 -0700 (PDT)
+        Sun, 26 Jul 2026 03:56:53 -0700 (PDT)
 From: chanyoung <ppoo1220@gmail.com>
 To: netdev@vger.kernel.org
 Cc: John Fastabend <john.fastabend@gmail.com>,
@@ -65,11 +65,10 @@ Cc: John Fastabend <john.fastabend@gmail.com>,
 	David Howells <dhowells@redhat.com>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kselftest@vger.kernel.org,
-	chanyoung <ppoo1220@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/2] tls: don't over-fill the plaintext sk_msg ring in tls_sw_sendmsg_splice()
-Date: Sun, 26 Jul 2026 19:55:55 +0900
-Message-ID: <20260726105556.2719227-2-ppoo1220@gmail.com>
+	chanyoung <ppoo1220@gmail.com>
+Subject: [PATCH net 2/2] selftests: tls: add a test for splicing onto a full plaintext record
+Date: Sun, 26 Jul 2026 19:55:56 +0900
+Message-ID: <20260726105556.2719227-3-ppoo1220@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260726105556.2719227-1-ppoo1220@gmail.com>
 References: <20260726105556.2719227-1-ppoo1220@gmail.com>
@@ -81,85 +80,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tls_sw_sendmsg_splice() appends pages to the open record's plaintext
-sk_msg ring with sk_msg_page_add(), which performs no fullness check of
-its own, and the loop only tests sk_msg_full() at the bottom of its
-do-while.
+Splicing into an open record whose plaintext scatterlist ring was already
+full used to wrap the ring's end index onto its start.  sk_msg_full() then
+reported the full ring as empty, so the loop kept overwriting live entries
+while sg.size grew, and pushing the record ran the AEAD scatterwalk off the
+end of the scatterlist.
 
-If the ring is already full when the function is entered, the first
-sk_msg_page_add() writes the reserved slot and sk_msg_iter_next() wraps
-sg.end around to sg.start.  sk_msg_iter_dist() then returns 0, so
-sk_msg_full() reports the ring as empty, the loop keeps running, and each
-further add overwrites a live entry without putting its page reference
-while sg.size keeps growing.  sg.size is then larger than the data
-reachable by walking the logical [sg.start, sg.end) ring.
+Reaching that state needs the ring to be left full and unpushed across a
+syscall, which the copy path does when the fragment it adds is the one that
+fills the ring.  The test therefore fills the ring with splices, adds one
+byte with MSG_MORE, splices some more, and only then pushes the record.
 
-tls_push_record() marks the end of the scatterlist at the logical last
-entry but passes the inflated msg_pl->sg.size to tls_do_encryption() as
-cryptlen, so the AEAD scatterwalk runs past the end-marked entry and
-dereferences the NULL returned by sg_next():
+MAX_SKB_FRAGS is configurable, so rather than hardcoding the number of
+fragments needed to fill the ring, sweep it over the plausible range so the
+one-byte send lands exactly on a full ring whatever the kernel was built
+with.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000008
-  CPU: 1 UID: 1000 PID: 204 Comm: exploit Not tainted 7.2.0-rc4+ #1 PREEMPTLAZY
-  RIP: 0010:memcpy_from_scatterwalk+0x32/0xc0
-  Call Trace:
-   <TASK>
-   skcipher_walk_next+0x1d1/0x2c0
-   gcm_encrypt_aesni_avx+0x1e9/0x220
-   bpf_exec_tx_verdict+0x3bb/0x860
-   tls_sw_sendmsg+0xa1a/0xca0
-   __sys_sendto+0x1da/0x1f0
-   do_syscall_64+0xdc/0x520
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+On an unpatched kernel this oopses in the AEAD walk; with the preceding
+patch applied the whole tls selftest suite passes.
 
-An unprivileged user can reach this on a plain loopback TCP socket with
-the "tls" ULP attached.  A full but unpushed plaintext ring survives
-across a syscall through the copy path: sk_msg_clone() returns 0 rather
-than -ENOSPC for the frag that makes the ring exactly full, because its
-guard is "if (i == src->sg.end && len)" and len reaches 0 as that frag is
-added, so full_record is never set and MSG_MORE keeps eor clear.  Since
-record_room is a byte count, a frag-exhausted ring that holds only a few
-hundred bytes still admits the next splice(), which then re-enters
-tls_sw_sendmsg_splice() on a full ring.
-
-The caller already handles a ring that becomes full during the splice by
-testing sk_msg_full() afterwards and setting full_record to push the
-record, so the loop condition only needs to be evaluated before the first
-sk_msg_page_add() rather than after it.  Turn the do-while into a while
-loop: when the ring is full on entry the function returns without adding
-anything, the caller pushes the record, and the next iteration of the
-caller's loop starts from a fresh, empty ring.
-
-Cc: stable@vger.kernel.org
-Fixes: fe1e81d4f73b ("tls/sw: Support MSG_SPLICE_PAGES")
 Signed-off-by: Chanyoung Park <ppoo1220@gmail.com>
 ---
- net/tls/tls_sw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/tls.c | 52 +++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index d4afc90fd79..0c413d05bb1 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -738,7 +738,7 @@ static int tls_sw_sendmsg_splice(struct sock *sk, struct msghdr *msg,
- {
- 	struct page *page = NULL, **pages = &page;
- 
--	do {
-+	while (try_to_copy && !sk_msg_full(msg_pl)) {
- 		ssize_t part;
- 		size_t off;
- 
-@@ -758,7 +758,7 @@ static int tls_sw_sendmsg_splice(struct sock *sk, struct msghdr *msg,
- 		sk_mem_charge(sk, part);
- 		*copied += part;
- 		try_to_copy -= part;
--	} while (try_to_copy && !sk_msg_full(msg_pl));
-+	}
- 
- 	return 0;
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index cbdd3ea28b9..d2666884ea8 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -835,6 +835,58 @@ TEST_F(tls, send_and_splice)
+ 	EXPECT_EQ(memcmp(mem_send, mem_recv, send_len), 0);
  }
+ 
++/* Splicing into an open record whose plaintext scatterlist ring is already
++ * full used to wrap the ring's end index onto its start, after which
++ * sk_msg_full() reported the full ring as empty: further pages overwrote
++ * live entries and sg.size desynced from the walkable scatterlist, which
++ * oopsed in the AEAD walk once the record was pushed.  The ring is left
++ * full and unpushed by the copy path, which does not push the record when
++ * the fragment it adds is the one that fills the ring.
++ */
++TEST_F(tls, splice_onto_full_record)
++{
++	int frag_len = 100, extra = 4;
++	char mem_send[5000];
++	char mem_recv[5000];
++	int nfrags, i, total;
++	int p[2];
++
++	memrnd(mem_send, sizeof(mem_send));
++
++	/* MAX_SKB_FRAGS is configurable (17 by default), so sweep the
++	 * plausible range to land the one-byte send exactly on a full ring
++	 * whatever this kernel was built with.
++	 */
++	for (nfrags = 12; nfrags <= 45; nfrags++) {
++		total = (nfrags + extra) * frag_len + 2;
++
++		for (i = 0; i < nfrags; i++) {
++			ASSERT_GE(pipe(p), 0);
++			EXPECT_EQ(write(p[1], mem_send, frag_len), frag_len);
++			EXPECT_EQ(splice(p[0], NULL, self->fd, NULL, frag_len,
++					 SPLICE_F_MORE), frag_len);
++			close(p[0]);
++			close(p[1]);
++		}
++
++		EXPECT_EQ(send(self->fd, mem_send, 1, MSG_MORE), 1);
++
++		for (i = 0; i < extra; i++) {
++			ASSERT_GE(pipe(p), 0);
++			EXPECT_EQ(write(p[1], mem_send, frag_len), frag_len);
++			EXPECT_EQ(splice(p[0], NULL, self->fd, NULL, frag_len,
++					 SPLICE_F_MORE), frag_len);
++			close(p[0]);
++			close(p[1]);
++		}
++
++		EXPECT_EQ(send(self->fd, mem_send, 1, 0), 1);
++
++		EXPECT_EQ(recv(self->cfd, mem_recv, total, MSG_WAITALL), total);
++		EXPECT_EQ(memcmp(mem_send, mem_recv, frag_len), 0);
++	}
++}
++
+ TEST_F(tls, splice_to_pipe)
+ {
+ 	int send_len = TLS_PAYLOAD_MAX_LEN;
 -- 
 2.43.0
 
