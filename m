@@ -1,61 +1,62 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA6E386423
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 11:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADC3385D96
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 11:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785064971; cv=none; b=kZjstBv8UDjan1Eb8jIjpc0B/lnZSdtlaDyxKYKhd/8lrXsfiOE1bKuppL1+l4V8vLIyUAxMIAic1WVpAnHoaYtJ2ppnnsrg8v4eTbDf5vCwKvFyLtnNHgNRHLBBaN258DswFcJ9uPmmBm8Toj5DecResd3qjzWIKA4MZdysB5M=
+	t=1785064974; cv=none; b=UHN280n01HjkaZt0Pe1fOxjpW3XFM+wMNFHM2uLcrbURk9kmGThGR7Bnybyqj3orQOhMwbWDWO7AXxJMan0g729bHXyGOZ8/fBbWlElzCmgewURo79KzOzoKyen9nd/5CyNnqgoKwWuv3ZWCGhPJoSGecpZNFXirrrC2J0fWONg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785064971; c=relaxed/simple;
-	bh=IwBzdBJ//xwZWLI7KZStMVXJE/9y/MmR4dZQhm4wLtM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oAp+wmSBvUeU38buwakBggnq3Em3A7fwbU4fz8rA3M+Ys4OtXDVuETYjPffeV7+habwzgbLi0h32vY1xUWCGXsvGiTEiR1rE8P88sumhqWZUOO6Z/mAGnvVVmK15+9IG+hUJtr3NWdJO4qj2FPWFojqHAHyXMjAmdTSVU0OVV+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DysU14tz; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1785064974; c=relaxed/simple;
+	bh=05FD9Q8MiGxbmhMqb3xelmGLNDiAwBg44gqAs0Q5qYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mfs/iVdhOIsjjeavNVGNS14eOzgVN4O/RVboIhz3Im0SyyQgt2hTnS4zi5faqEyNX+sVuJu5rEVixuwh+Qy6OHY3Ud86mse0OkKsOUK6L3p/8UljMma/Ze0sz8j9ntpPq0L5qhpbxaHX5aQ9wmaC0SkoCyNygAUeChB6hd7Kpyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jcP64eny; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DysU14tz"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493f75f7172so16058205e9.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 04:22:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jcP64eny"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f9ab7ee38so757955f8f.2
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 04:22:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785064965; x=1785669765; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p4ZFNFzgGP3XHnDQ47XMksDu8gs5ExU/2SWYifD6dsM=;
-        b=DysU14tz0CDHZ9KRiw3qaL1hFVLdnF9uPHcPdRACYoyUU7AtB1i8amRygyjNFUvWL0
-         KGCvBjDIpEOe5rvX2+gjyq+fahcn/1xvpBavofaQhUL2rr+CXsPFDZn/ix20lwhj2KBQ
-         67uiit7pbGJ5kac1wFJV7kpPLilk9ytCoGnxKJWHVPGk7jfRJzWPxIdg+1KttCNmCg6c
-         Njt7YIB9pU3qP3x2mfCGiIQrm4RqbnjBcsYcslxsJHQaK0mQgTCFx9IwBJ9/d5ctf3qK
-         ICqOyYcWYHric87R8pi2cFUBH+1D6PaPsyjcy4ajz+rsauXbqt4T5FKn8DAce0hzVrzY
-         kigA==
+        d=gmail.com; s=20251104; t=1785064968; x=1785669768; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mVaU5aBNCpHteSlHa9KIXjavIsGZ1Ok+bRtNiOCJLQ4=;
+        b=jcP64enykVSAhEbvKwgvUQkyG/zATkNHmq7G7HIdclQ52ml7UnB2ZZno9rI6kfxI4M
+         yEHVgzotiuYbI133d4f5KPvct29svIajIU+q1Ue3ShZehg9aUf5okoz39i6654bbHf3I
+         xX3+KmueY7MzGcuOS4yjOjqhQ+Aj7sqIjVcTUvxQ8LdT0Qiv5T8S5VYw3yNFCskjD/UV
+         a5qMot7ijfmLgLEB3Av4jE8enptIabyc0UDOLLIOZ9ZCZbNmsNRQ8jwZFPDkXGGfOh5R
+         kJrVjkEmFOsyPdpF8s9raRH5Se1usgwEX/YRfL2EsixrvZAVtCsFGKjka4yrMbE0+ulT
+         SwtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785064965; x=1785669765;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p4ZFNFzgGP3XHnDQ47XMksDu8gs5ExU/2SWYifD6dsM=;
-        b=irUacuZVut4XPDXJIeWFAP67pW1z9QbHZvWBjE+vh6iTtZZn5yI6yolAxl2Op7b94u
-         MXta00hu5zNipF06Fij1uJsdFe+RytKEW2/uyLjoY4yIpE+1Yr5Rg3cUhyIHivMekAkS
-         HvJqOLR/JNjBTUZMBOegLK+dOvirX3fgnof7AwTrcXXFACPkCy0aej9X8YM1z888zxj0
-         qo6QJdjLLV+W/fE28HzN5orKuXEdlAFnT4t60Nz7fELKlIqSDPDq1HOrdzuM/fyOeL7b
-         iR2F+UIy9Dy5CvEj8j1yzh5xQK29umfUnwdKI0q2AQXLg68+MSG66u7W5VX8o33bSW4K
-         WUMw==
-X-Gm-Message-State: AOJu0YxeRyjt2b8Nkxd6OtJvo/4eNE0grLQPt3u/jNQ9gxwAoACjzark
-	oAn2q7mIdBQ9TJSMaacaGoErPLk7PTA9myI3ted6Gc3gUmUMRLAnnnMS
-X-Gm-Gg: AR+sD13OkRGT/TXwz/JXwACnKqyyVNtDkroo2dKwkUx+7sAcDxGfZc/FCJdzXPodGrF
-	FPBMuDsbPPp+d/dq+MFzF74KwYa06K8WOnGh3x0tA6cSyUx/2UjtmTns+fggWiqpbjb3NlMXCav
-	5vCgMiQLGYZHE7roQbXjJXeovmn3+CGtekyWFlnExF6+smXvI34kVpeekmmfdaAcfpov5rVXHWm
-	aJE+mdNf4+7U4KygzsFWJhY+EyOgXcrKIOXn0stDdlw5sfTxZWV8x/urhA4e8jqsVuW+yG8qxUy
-	OpJXPzLECvku/AxKKqYxKCREIPpoFxYQgjtfTEiroiDVP9hpldGHJYF4yB12NYYoAtM52PxT6DO
-	zh10ESpxxlnnQBYYj8Et6DkVedYty0on5/Zbuf761cwMq6GQoBwbPUCenDOK8vuQuAIQ5L578K5
-	K50ZA0
-X-Received: by 2002:a05:600c:a4f:b0:493:d741:5d72 with SMTP id 5b1f17b1804b1-496b57116e2mr73344415e9.38.1785064964644;
-        Sun, 26 Jul 2026 04:22:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785064968; x=1785669768;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mVaU5aBNCpHteSlHa9KIXjavIsGZ1Ok+bRtNiOCJLQ4=;
+        b=tDyMoQR4nuCFX6+1cSaSuj+mp+XFPzuttCt6MbKr/VbuA+vxpH+yAPsoEWfelHa6fp
+         c7APtl8B73fZIc7LF8BE04HSx/lcXq3PfTjtGCY55KQGwye45b8bbUFf6ZWarWJcoFGK
+         PJhSFFx3ycbtnLHLWPOtl4OU76tY8V9sr0F8Z8qW2Gprmqz1eLmOVE2tWM/CU/iDQHva
+         FpiUMLd0sCpW7WoDxTaNIk2dY+uPh11KiQJeqI+ufSIbZNUElolfg44A1tTjgWbFEC05
+         dzDTRQS+8PinEDKTUAo5XzBaE8sNMF/dKEJ/T3W2m+JibWOTGapv4KFAGy2wu7+VMtxc
+         dt+w==
+X-Gm-Message-State: AOJu0YzkmlpFwl6CabZI/VblepCbOxhO+tUDi7aNEQMqGrU7M0RK6w3M
+	ouxvU8rf+P4s1EdvlAQ+HxKz7+peym/2JBrUWc1ezvm6c60Gy+P5hANA
+X-Gm-Gg: AR+sD13vInaXrZrOGzWcedmGSstOgGFy1fwoLgGaStGpQHm9A9nr3FBEIC1ELyJlGLi
+	H5pHotsqYZHe+vPaSVMsl7zMuoKG1YgFUtHDggFdEGFigvGCl1BdP3xuNXaRevB0tYbDuheUmOy
+	8MOsvey+gTHTkonrh8IlK2hZroueZFOHIY4tjt2Vkgp63hDmsiZ2qABjcBWrTJEMk6o2UpXUieR
+	0zOP6nPl+tMVMJ+wE3LYtRfrQewH1gHY0hxBxlYgQgRujjYFlWTc9hSS/GLuDhT4WN0FXTGirpU
+	fsH2vD+hHxEqKd0qgvCXhi4UjLaS+UkVMJ7EclwJWpqmjBN7xPOixhOaH44HanTixQC9T2MOylR
+	01B7PVUhJWeo6ftQKClVrKc1BSL88LlYH1CLeZ3DAYJrjR7F+rafgukas5GB9oV4T2ZUTZN7SUE
+	VJspTTtmIuZSshKsU=
+X-Received: by 2002:a05:6000:25c3:b0:47f:4e42:669 with SMTP id ffacd0b85a97d-47f9fe94c5fmr5622582f8f.22.1785064967508;
+        Sun, 26 Jul 2026 04:22:47 -0700 (PDT)
 Received: from builder ([2001:9e8:f12e:8416:be24:11ff:fe30:5d85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f939c1465sm24902981f8f.26.2026.07.26.04.22.43
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f939c1465sm24902981f8f.26.2026.07.26.04.22.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 04:22:44 -0700 (PDT)
+        Sun, 26 Jul 2026 04:22:47 -0700 (PDT)
 From: Jonas Jelonek <jelonek.jonas@gmail.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -73,254 +74,254 @@ Cc: netdev@vger.kernel.org,
 	Daniel Golle <daniel@makrotopia.org>,
 	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH net-next v9 0/4] net: pse-pd: add Realtek PSE MCU support
-Date: Sun, 26 Jul 2026 11:22:18 +0000
-Message-ID: <20260726112223.1286074-1-jelonek.jonas@gmail.com>
+Subject: [PATCH net-next v9 3/4] net: pse-pd: realtek-pse-mcu: add I2C transport
+Date: Sun, 26 Jul 2026 11:22:21 +0000
+Message-ID: <20260726112223.1286074-4-jelonek.jonas@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260726112223.1286074-1-jelonek.jonas@gmail.com>
+References: <20260726112223.1286074-1-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series adds a PSE-PD driver for the microcontroller (MCU) that
-fronts the PSE silicon on a range of managed switches, together with its
-DT binding.
+Add the I2C/SMBus transport for the Realtek PSE MCU core. It registers
+the MCU on an I2C bus and provides the send/recv callbacks the core
+uses to exchange the 12-byte frames.
 
-Hardware model
-==============
+The MCU firmware expects one of two framings on the I2C bus, and which one
+is part of the compatible: '-smbus' (reads carry a leading command byte
+and a repeated start) or raw '-i2c' (bare block writes and reads). The
+match data flags the raw-I2C case; SMBus is the default because that's
+what the majority of devices uses.
 
-These boards do not expose the PSE chips to the host directly. A small
-microcontroller sits on an I2C/SMBus or UART bus and manages one or more
-PSE chips behind it; the host CPU only ever talks to that MCU, using a
-fixed 12-byte request/response protocol with a trailing checksum. The
-PSE silicon never appears on the bus.
+Because i2c_master_send()/i2c_master_recv() may DMA, the raw-I2C path
+bounces each frame through a heap buffer rather than the core's stack
+buffers; the SMBus path is unaffected.
 
-Two generations of the protocol exist, both Realtek's: an older one on
-boards with Broadcom PSE silicon (BCM59111, BCM59121) and a newer one
-used with Realtek's own PSE silicon (RTL8238B, RTL8239, RTL8239C). They
-diverge in opcode numbering and a few response layouts; the driver
-abstracts that behind a per-dialect opcode table and parser hooks,
-selected by the compatible. The specific PSE chip behind the MCU is
-detected at runtime and only influences per-chip constants (power scaling
-and the per-port cap).
-
-The compatibles
-===============
-
-The protocol compatibles name two generations of the Realtek protocol,
-with the I2C framing folded in:
-
-  realtek,pse-mcu-gen1        gen1, UART
-  realtek,pse-mcu-gen1-smbus  gen1, I2C/SMBus
-  realtek,pse-mcu-gen2        gen2, UART
-  realtek,pse-mcu-gen2-smbus  gen2, I2C/SMBus
-  realtek,pse-mcu-gen2-i2c    gen2, raw I2C
-
-and each board carries a device-specific compatible that falls back to one
-of these, e.g.
-
-  compatible = "zyxel,xs1930-12hp-pse", "realtek,pse-mcu-gen2-smbus";
-
-The naming is the part most likely to raise questions, so the reasoning up
-front (the binding documents it too):
-
-  - The node describes the MCU together with its Realtek firmware, not a
-    PSE chip and not the microcontroller silicon. The PSE chips sit behind
-    the MCU, never appear on the bus, and are reported by the MCU and
-    detected at runtime; the microcontroller itself is a general-purpose
-    part (GigaDevice, Nuvoton, ...) that varies across boards. What is
-    fixed and Realtek's is the firmware and its host protocol - hence the
-    'realtek' prefix.
-
-  - gen1 and gen2 are two generations of that protocol, both Realtek's:
-    gen1 on older boards fronting Broadcom PSE silicon, gen2 the altered
-    protocol used once Realtek shipped their own PSE silicon. The
-    generation is fixed per board and is all the driver needs at DT-parse
-    time, so the compatible encodes it.
-
-  - On I2C the MCU firmware expects one of two framings - SMBus or raw
-    I2C - which is a genuine programming-model difference, so it is part
-    of the compatible ('-smbus' / '-i2c'). A UART attachment carries no
-    framing suffix; the transport is given structurally by the parent
-    'serial' node.
-
-  - Each board additionally carries a device-specific compatible that
-    falls back to the protocol one. The driver only ever binds on the
-    protocol compatible; the device-specific string keeps the binding
-    specific and reserves a place for a future per-board quirk without
-    having to retrofit device trees already deployed in the field.
-
-Testing
-=======
-
- - Linksys LGS328MPCv2     (RTL8238B, I2C)
- - Zyxel GS1900-10HP A1    (BCM59121, UART)
- - Zyxel GS1900-10HP B1    (RTL8238B, UART)
- - Zyxel GS1920-24HPv2     (BCM59121, SMBus)
- - Zyxel XMG1915-10EP      (RTL8239C, UART)
- - Zyxel XS1930-12HP       (RTL8239, SMBus)
-
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-v8 -> v9:
- - dt-bindings: renamed enable-gpios -> reset-gpios, verified on boards
-   that the GPIO which is used with this is connected to the MCU's
-   nRESET.
- - dt-bindings: added disable-ports-gpios for GPIO that gates all ports
-   (previously incorrectly assumed to be a rail gate, thus being wired
-   via 'power-supply')
- - dt-bindings: dropped 'power-supply', not used anymore and confusing,
-   easy to confuse with PI's vpwr-supply (Sander)
- - core: adjusted to match bindings, handling reset/disable-ports-gpio
-   correctly and dropping 'power-supply' regulator stuff
- - patch 1,2: dropped Reviewed-by/Acked-by tags due to changes.
- - patch 3,4: added Reviewed-by from Kory
-
-v7 -> v8:
- - dt-bindings: added Reviewed-by of Oleksij
- - uart: check and warn-on-error for serdev_* operations (Oleksij)
- - core, i2c, uart: added Acked-by of Oleksij
-v7: https://lore.kernel.org/netdev/20260712192251.1413279-1-jelonek.jonas@gmail.com/
-
-v6 -> v7:
- - dt-bindings: rename file to 'realtek,pse-mcu-gen1.yml', using
-   specific compatible as file name (Conor)
- - dt-bindings: added Conor's Reviewed-by
- - core: replaced some leftover 'BCM/RTK' dialect framing in comments
- - core: use rolling sequence number instead of always hardcoded 0xff,
-   adressing the issue that stale data might be accepted for new
-   requests (Sashiko)
- - core: reordered MODULE_ calls to keep consistent across all driver
-   parts
- - i2c: replaced some leftover 'BCM/RTK' dialect framing in comments
- - slight commit message adjustments
-v6: https://lore.kernel.org/netdev/20260709194125.2784507-1-jelonek.jonas@gmail.com/
-
-v5 -> v6:
- - dt-bindings: reworked the compatibles per DT-maintainer feedback
-    - name the two protocol generations -gen1 / -gen2 (both Realtek's)
-      instead of the -rtk / -brcm dialect suffix (Conor)
-    - encode the I2C framing in the compatible (-smbus / raw -i2c) and
-      drop the realtek,i2c-protocol property (Rob)
-    - add device-specific (switch) compatibles that fall back to the
-      protocol compatibles, with the board↔protocol pairing enforced in
-      the schema (Conor)
-    - rewrite the description accordingly
- - driver: track the binding rework
-    - match on realtek,pse-mcu-gen{1,2}[-smbus|-i2c]; the I2C transport
-      selects SMBus-vs-raw framing from a native_i2c match-data flag
-      instead of reading the property (drops rtpse_mcu_needs_i2c_proto)
-    - rename the internal dialect and parser symbols rtk/brcm → gen1/gen2
-      (chip identifiers like RTL8238B/BCM59121 kept)
- - i2c: DMA-safe raw-I2C path — bounce each frame through a heap buffer,
-   since i2c_master_send()/i2c_master_recv() may DMA and the core's
-   frame buffers are on the stack (SMBus and UART paths unaffected)
-   (sashiko-nipa)
- - includes: drop unused linux/mod_devicetable.h (core) (Uwe)
- - includes: drop unused linux/delay.h (uart); add
-   linux/regulator/consumer.h (core) and linux/slab.h + linux/string.h
-   (i2c)
- - commit messages — update the binding, core, and I2C messages to
-   match (generations, framing-in-compatible, DMA note)
-v5: https://lore.kernel.org/netdev/20260706112425.3149226-1-jelonek.jonas@gmail.com/
-
-v4 -> v5:
- - split the single driver patch into three — core / I2C transport / UART
-   transport. Binding stays patch 1, unchanged in shape. (Paolo)
-   Please give guidance on how to if I should split more.
- - core: set_pw_limit: guard divide-by-zero on pw_set_lsb_mW; cap the
-   programmed value with U8_MAX instead of a bare 0xff; prg_val is now u8.
-   (Oleksij, Sashiko)
- - core: discover: also retry transient boot-time frames (-EBADMSG / -EBADE)
-   within the bounded window, not just silence/NAK/not-ready (Sashiko).
- - core: pw_status: report Broadcom 0x3 → TEST and 0x5 → OTHERFAULT
-   (new STS_TEST/STS_OTHER_FAULT); pw_class comment corrected (0x3/0x5
-   aren't "other fault" on RTL; class-0-vs-fault note). (Sashiko)
- - core: dropped unused decoded fields — function_mode, cls_type,
-   disconnect_type, pair_type, inrush_mode, limit_type, chip_addr,
-   channel. (Oleksij)
- - core: removed forward declarations by moving the response structs above
-   the dialect struct. (Oleksij)
- - core: get_pw_limit_ranges: reverse-Christmas-tree local ordering.
-   (Oleksij)
- - core: dialect comment clarified (only divergent responses are hooked);
-   commit message "parser hooks" tightened to "…for the responses that
-   differ." (Sashiko)
- - core: made parse_system_info hook void, both implementations return
-   hardcoded 0. (Paolo)
- - core: dropped GFP_KERNEL from kzalloc_obj. (Paolo)
- - core: dropped unneeded u32 cast
- - kept probe dev_info() for now deliberately, due to different opinions
-   on whether a probe might print or not
- - NOT included Acked-by from Oleksij, due to several changes
-v4: https://lore.kernel.org/netdev/20260630105651.756058-1-jelonek.jonas@gmail.com/
-
-v3 -> v4:
- - move owner setting from core to transport, mitigating possible
-   use-after-free (Sashiko)
- - resend because net-next was still closed
-v3: https://lore.kernel.org/netdev/20260628222705.4052815-1-jelonek.jonas@gmail.com/
-
-v2 -> v3:
- - dt-bindings: using brcm instead of bcm for Broadcom
- - rename the driver files and Kconfig symbols to realtek-pse-mcu-* /
-   PSE_REALTEK_MCU* for consistency with the realtek,pse-mcu-* compatibles
- - rename driver-internal prefix from 'rtpse_' to 'rtpse_mcu' to
-   emphasize this targets the MCU-centric setup (and leaves room open
-   for eventual directly addressable PSE chips)
- - rework the vendor-prefix rationale (binding + commit message): the
-   prefix names the protocol/firmware owner (Realtek documents the protocol
-   and supplies the firmware), and -rtk/-brcm select the Realtek or Broadcom
-   protocol dialect
- - core: reject zeroed/echo-mismatched responses via the echoed seq_num
-   (a BCM PORT_ENABLE on port 0 was otherwise accepted from an all-zero
-   frame)
- - core: enable the PoE supply before global-enabling the MCU, and roll
-   back the global enable on probe failure or driver removal
- - core: drop inline from helpers (flagged by automated check)
- - uart: update the completion under rx_lock too, so a late frame can no
-   longer make the next transaction fail spuriously with -EIO
-v2: https://lore.kernel.org/netdev/20260612132944.460646-1-jelonek.jonas@gmail.com/
-
-v1 -> v2:
- - all points flagged by Sashiko addressed:
- - uart: drop frame overflow (return count, not the stored length) so
-   serdev retains no leftover bytes that would misalign the next response
- - uart: guard rx_buf/rx_len with a spinlock to close a data race between
-   the async receive_buf callback and send/recv
- - i2c: return terminal MCU error opcodes (0xfd/0xfe) to the core
-   immediately instead of polling to the 1 s timeout
- - core: cap BCM59121 at 30 W (802.3at) — the basic 8-bit set command
-   can't program the advertised 60 W (it silently clamped to 51 W)
-v1: https://lore.kernel.org/netdev/20260608205758.1830521-1-jelonek.jonas@gmail.com/
-
----
-Jonas Jelonek (4):
-  dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
-  net: pse-pd: add Realtek PSE MCU core
-  net: pse-pd: realtek-pse-mcu: add I2C transport
-  net: pse-pd: realtek-pse-mcu: add UART transport
-
- .../net/pse-pd/realtek,pse-mcu-gen1.yaml      | 180 ++++
- MAINTAINERS                                   |   7 +
- drivers/net/pse-pd/Kconfig                    |  28 +
- drivers/net/pse-pd/Makefile                   |   3 +
- drivers/net/pse-pd/realtek-pse-mcu-core.c     | 989 ++++++++++++++++++
- drivers/net/pse-pd/realtek-pse-mcu-i2c.c      | 170 +++
- drivers/net/pse-pd/realtek-pse-mcu-uart.c     | 164 +++
- drivers/net/pse-pd/realtek-pse-mcu.h          |  89 ++
- 8 files changed, 1630 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
- create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-core.c
+ drivers/net/pse-pd/Kconfig               |  11 ++
+ drivers/net/pse-pd/Makefile              |   1 +
+ drivers/net/pse-pd/realtek-pse-mcu-i2c.c | 170 +++++++++++++++++++++++
+ 3 files changed, 182 insertions(+)
  create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-i2c.c
- create mode 100644 drivers/net/pse-pd/realtek-pse-mcu-uart.c
- create mode 100644 drivers/net/pse-pd/realtek-pse-mcu.h
 
-
-base-commit: 04026c998c24ac47eb76886b9790c5710b603eb4
+diff --git a/drivers/net/pse-pd/Kconfig b/drivers/net/pse-pd/Kconfig
+index 3b0c245a2bc7..6d14c8832e8b 100644
+--- a/drivers/net/pse-pd/Kconfig
++++ b/drivers/net/pse-pd/Kconfig
+@@ -19,6 +19,17 @@ config PSE_REALTEK_MCU
+ 	  Shared core for the Realtek PSE MCU driver. This is selected
+ 	  automatically by the transport options below.
+ 
++config PSE_REALTEK_MCU_I2C
++	tristate "Realtek PSE MCU driver (I2C transport)"
++	depends on I2C
++	select PSE_REALTEK_MCU
++	help
++	  Driver for the microcontroller (MCU) that fronts the PSE
++	  hardware on various Realtek-based managed switches, attached
++	  via I2C/SMBus. The MCU exposes a message-based protocol; the actual
++	  PSE silicon is not accessed directly. To compile this driver as a
++	  module, choose M here: the module will be called realtek-pse-mcu-i2c.
++
+ config PSE_REGULATOR
+ 	tristate "Regulator based PSE controller"
+ 	help
+diff --git a/drivers/net/pse-pd/Makefile b/drivers/net/pse-pd/Makefile
+index bf35e2a5b110..ef869bba5ed9 100644
+--- a/drivers/net/pse-pd/Makefile
++++ b/drivers/net/pse-pd/Makefile
+@@ -4,6 +4,7 @@
+ obj-$(CONFIG_PSE_CONTROLLER) += pse_core.o
+ 
+ obj-$(CONFIG_PSE_REALTEK_MCU) += realtek-pse-mcu-core.o
++obj-$(CONFIG_PSE_REALTEK_MCU_I2C) += realtek-pse-mcu-i2c.o
+ obj-$(CONFIG_PSE_REGULATOR) += pse_regulator.o
+ obj-$(CONFIG_PSE_PD692X0) += pd692x0.o
+ obj-$(CONFIG_PSE_SI3474) += si3474.o
+diff --git a/drivers/net/pse-pd/realtek-pse-mcu-i2c.c b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+new file mode 100644
+index 000000000000..e10f8c633b68
+--- /dev/null
++++ b/drivers/net/pse-pd/realtek-pse-mcu-i2c.c
+@@ -0,0 +1,170 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <linux/delay.h>
++#include <linux/i2c.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/pse-pd/pse.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++
++#include "realtek-pse-mcu.h"
++
++/*
++ * The core has already waited RTPSE_MCU_RESPONSE_MS before calling us, so
++ * the response is normally ready on the very first read. For commands the
++ * MCU produces more slowly, keep polling at the typical response cadence
++ * up to the worst-case ceiling.
++ */
++#define RTPSE_MCU_I2C_RETRY_MS	RTPSE_MCU_RESPONSE_MS
++#define RTPSE_MCU_I2C_MAX_TRIES	(RTPSE_MCU_RESPONSE_MAX_MS / RTPSE_MCU_I2C_RETRY_MS)
++
++static int rtpse_mcu_i2c_smbus_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
++{
++	struct i2c_client *client = to_i2c_client(pse->dev);
++
++	/* Send opcode as SMBus command byte; remaining 11 bytes as block data */
++	return i2c_smbus_write_i2c_block_data(client, req->opcode, RTPSE_MCU_MSG_SIZE - 1,
++					      (u8 *)req + 1);
++}
++
++static int rtpse_mcu_i2c_smbus_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
++				    struct rtpse_mcu_msg *resp)
++{
++	struct i2c_client *client = to_i2c_client(pse->dev);
++	int tries, ret;
++
++	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
++		if (tries > 0)
++			msleep(RTPSE_MCU_I2C_RETRY_MS);
++
++		/* MCU needs 0x00 as command byte for read */
++		ret = i2c_smbus_read_i2c_block_data(client, 0x00,
++						    RTPSE_MCU_MSG_SIZE,
++						    (u8 *)resp);
++		if (ret < 0)
++			return ret;
++		if (ret == RTPSE_MCU_MSG_SIZE && rtpse_mcu_resp_is_final(req, resp))
++			return 0;
++	}
++
++	return -ETIMEDOUT;
++}
++
++static const struct rtpse_mcu_transport_ops rtpse_mcu_i2c_smbus_ops = {
++	.send = rtpse_mcu_i2c_smbus_send,
++	.recv = rtpse_mcu_i2c_smbus_recv,
++};
++
++static int rtpse_mcu_i2c_native_send(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req)
++{
++	struct i2c_client *client = to_i2c_client(pse->dev);
++	void *buf;
++	int ret;
++
++	/* i2c_master_send() may DMA, so the buffer must not be on the stack. */
++	buf = kmemdup(req, RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	ret = i2c_master_send(client, buf, RTPSE_MCU_MSG_SIZE);
++	kfree(buf);
++	if (ret < 0)
++		return ret;
++	return ret == RTPSE_MCU_MSG_SIZE ? 0 : -EIO;
++}
++
++static int rtpse_mcu_i2c_native_recv(struct rtpse_mcu_ctrl *pse, const struct rtpse_mcu_msg *req,
++				     struct rtpse_mcu_msg *resp)
++{
++	struct i2c_client *client = to_i2c_client(pse->dev);
++	int tries, ret;
++	u8 *buf;
++
++	/* i2c_master_recv() may DMA, so read into an off-stack buffer. */
++	buf = kmalloc(RTPSE_MCU_MSG_SIZE, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	for (tries = 0; tries < RTPSE_MCU_I2C_MAX_TRIES; tries++) {
++		if (tries > 0)
++			msleep(RTPSE_MCU_I2C_RETRY_MS);
++
++		ret = i2c_master_recv(client, buf, RTPSE_MCU_MSG_SIZE);
++		if (ret < 0)
++			goto out;
++		if (ret == RTPSE_MCU_MSG_SIZE) {
++			memcpy(resp, buf, RTPSE_MCU_MSG_SIZE);
++			if (rtpse_mcu_resp_is_final(req, resp)) {
++				ret = 0;
++				goto out;
++			}
++		}
++	}
++	ret = -ETIMEDOUT;
++out:
++	kfree(buf);
++	return ret;
++}
++
++static const struct rtpse_mcu_transport_ops rtpse_mcu_i2c_native_ops = {
++	.send = rtpse_mcu_i2c_native_send,
++	.recv = rtpse_mcu_i2c_native_recv,
++};
++
++static int rtpse_mcu_i2c_probe(struct i2c_client *client)
++{
++	struct device *dev = &client->dev;
++	const struct rtpse_mcu_match_data *match;
++	struct rtpse_mcu_ctrl *pse;
++	bool use_native;
++
++	match = device_get_match_data(dev);
++	if (!match)
++		return dev_err_probe(dev, -ENODEV, "missing match data\n");
++
++	/* The framing (raw I2C vs SMBus) is carried by the match data. */
++	use_native = match->native_i2c;
++	if (use_native) {
++		if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
++			return dev_err_probe(dev, -EOPNOTSUPP,
++				"plain-I2C MCU protocol requires I2C-capable adapter\n");
++	} else {
++		if (!i2c_check_functionality(client->adapter,
++					     I2C_FUNC_SMBUS_WRITE_I2C_BLOCK |
++					     I2C_FUNC_SMBUS_READ_I2C_BLOCK))
++			return dev_err_probe(dev, -EOPNOTSUPP,
++				"SMBus MCU protocol requires SMBus I2C-block support\n");
++	}
++
++	pse = devm_kzalloc(dev, sizeof(*pse), GFP_KERNEL);
++	if (!pse)
++		return -ENOMEM;
++
++	pse->dev = dev;
++	pse->pcdev.owner = THIS_MODULE;
++	pse->transport = use_native ? &rtpse_mcu_i2c_native_ops : &rtpse_mcu_i2c_smbus_ops;
++
++	return rtpse_mcu_register(pse);
++}
++
++static const struct of_device_id rtpse_mcu_i2c_of_match[] = {
++	{ .compatible = "realtek,pse-mcu-gen1-smbus", .data = &rtpse_mcu_gen1_data },
++	{ .compatible = "realtek,pse-mcu-gen2-smbus", .data = &rtpse_mcu_gen2_data },
++	{ .compatible = "realtek,pse-mcu-gen2-i2c", .data = &rtpse_mcu_gen2_i2c_data },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, rtpse_mcu_i2c_of_match);
++
++static struct i2c_driver rtpse_mcu_i2c_driver = {
++	.driver = {
++		.name		= "realtek-pse-mcu-i2c",
++		.of_match_table	= rtpse_mcu_i2c_of_match,
++	},
++	.probe		= rtpse_mcu_i2c_probe,
++};
++module_i2c_driver(rtpse_mcu_i2c_driver);
++
++MODULE_AUTHOR("Jonas Jelonek <jelonek.jonas@gmail.com>");
++MODULE_DESCRIPTION("Realtek PSE MCU driver (I2C transport)");
++MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
