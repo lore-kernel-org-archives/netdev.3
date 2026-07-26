@@ -1,78 +1,44 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MTA-15-3.privateemail.com (mta-15-3.privateemail.com [198.54.122.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7F532C937
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 22:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044F3E317C;
+	Sun, 26 Jul 2026 22:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.122.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785103431; cv=none; b=euTz5rXJZDLv7IISGidBJsB2cclImE16f8UoCpG7Gy7dQCOtUIIF8NhBUL7QL1hNNrXizLoDB00XuuRpChL30X6zuRbQYtUgVBqVKzaAOE0lOaEQ4XQX+M0N+VJq1YYp1H3VbIcz7DjUznfQG9lrlceoReSY8+lwNLUn14Y6LsE=
+	t=1785104674; cv=none; b=aA63T/W6mp1o/aNORIN83UInzoxtWrFs/e6roYPbUfWTlOV/KAw57L6urhOxIniJNySXvXKH5KCp2lDIJws/mjPD8B5wpzMcL3pqQ5L+LbcU9ZFZinHziW/DGbUxeCuRDrC6B082sMpW6QVbByiW65ICv4hEpbFsgAlAhqw53lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785103431; c=relaxed/simple;
-	bh=6amu4EHUVZbdF0ec7sOzgmE7XQm5ok1KlRoMrdsQnzE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKw83uLhPNz9Jv4lHMlEyS+jJd/GxctUny/W8fM9O+Sp3pmwl5HuNRwnOd60BuqUPG8hsWsYxweKcgOdqQcavteXv9/n3QxNzTkEqt+5Q6EYmIJC32zoQRscOKzGhCHMtTzN2BT26MNlbG2pazHBWirGwJVk8dC0/jU0WEU9EIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=LjXL58Zy; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="LjXL58Zy"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38dcbade417so2176633a91.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 15:03:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1785103429; x=1785708229; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fP/H9WRFqoVAFscWOAfedK5w+pV55M+V8lAJJkylO30=;
-        b=LjXL58ZyZ3LGdPZJqqLryh1RRPLQU4FqULR9gjxnTscFOL435rI/6Z1Ae8FBJNhTFE
-         OuI4LMG6CyHLetPrvgrbAhXDAwaE6DtFDKX45bwyv9MWHtewx1k5ZHxaQc2TuTF1nGFV
-         xBMeyXEe6v4STlfTn24V0ayEAhyF9dAd6y4olGfUzMtpz5kDuak4umWOEAUx5XONBRep
-         QQwd3Oqa0LqPWddsdUG+unoLSrNQxj/jIpCKWuPXz/QGTHvelnUT1YYjK908S7tc/zPz
-         Otlr8aL4xCOFr0MWRpuWYnX2hSeiAR0sJLLI3SciTaXJLiap8yptgE5lUYr/GEXi74d+
-         ijVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785103429; x=1785708229;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fP/H9WRFqoVAFscWOAfedK5w+pV55M+V8lAJJkylO30=;
-        b=gHgWvyDHjRMEqnFvv+brQj/Y9TnsmXO1938VhX/eoGsjS0iTX6gQLd8ag5V5ifPhY5
-         UAzmV4/vnehj0WVAz40K9qWpFGeOjMsXVS19STv9ViBvnh3f1hMuLAw4cjo+8icVp10w
-         AnVob6O6uTu93TXxPbu7oE5n0OokhIuP1cTdzswm/UpwI4dn4k+ncqariQE7lA0IDdiK
-         xMsc/tEXYRXSYP/2H1QzaYlqgVChQFU4yi9Vy5rPiOvxzpgulMlNzcMCY6y0x5z7E20w
-         btAm2FZaX6MiqOvD5oNuRAkSjRMl1OgMc9pWqQCAi202NIhJl2VBHBt38Mz95DV8V8uK
-         fwXQ==
-X-Gm-Message-State: AOJu0YzX6mixb3Wk6jBgWvkBcZvw3wW9SlRpvFsBsaUCUJdQaS0fiVWB
-	iFCZp5EXCH3sG8Q+cf8qwZ2TP9ptUj3egGaAUGm6BOO1HnIkkY/21Vu231X25D1i7EeQE+xbjLQ
-	4BQtZ2is=
-X-Gm-Gg: AR+sD13h/GnEFbze1Hdv98/1afINSLDLdiIu/XyRkiajxX9LXmc5yhDXe7HMlkDCc8O
-	xjhQr6wJVnzbL+8XdndrGKqMhLwq9MarXySNfQV1tdD2lY0FFtE/kjgHbms/o4eCae95OfcgKjz
-	uYCJJGbtC5lFJ0qSzFCvA8OfS8wxweN7/LOmQ7dHlAvAYupk/IWf+czxVjcmDK3KRjZagoV7J/T
-	wNw8E/deAHMQTpKV94U+RIRPqelu36q7aOiXb10xqcKSnTmKqZhJi8J+F4OdQPIP8oL35J+Hol/
-	aj+iPpJNrUScG8cOwldGi+GT5Uq3p0ZUy98gQIFl4ImJdHNaS5AorDjftymyQGw9guw6xS6cXUF
-	PyCUh6AR0e1djdsUYulL7FyRnouKLH9HUlF5qIfnrSZVHMnTuoBo7GE5CMdgy7B0DDgHHgRJh04
-	kymOxjrcHbzkaMoiPnifELxfHgxZLWuxQljNjf9vBZG1hc5gQHcGdHU9mSWAonW/p8eJaMuH8=
-X-Received: by 2002:a17:90b:53c8:b0:380:71eb:4014 with SMTP id 98e67ed59e1d1-38f294ec506mr6198184a91.15.1785103428989;
-        Sun, 26 Jul 2026 15:03:48 -0700 (PDT)
-Received: from localhost.localdomain ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f2951eb8dsm2112310a91.13.2026.07.26.15.03.45
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Jul 2026 15:03:48 -0700 (PDT)
-From: Baul Lee <baul.lee@xbow.com>
-To: netdev@vger.kernel.org
-Cc: ms@dev.tdt.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew@lunn.ch,
-	linux-x25@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Baul Lee <baul.lee@xbow.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/x25: fix use-after-free of the socket by its timers
-Date: Mon, 27 Jul 2026 07:03:42 +0900
-Message-ID: <20260726220342.47245-1-baul.lee@xbow.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1785104674; c=relaxed/simple;
+	bh=/iQPJn3NQLLdPAX5ZuZSkiPiN+/IQGbQg5FhX6r96GU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PEO9XRDQ7HdxIcT0x96tpfaSoGGjEFxaGjYOY7ZNqiJSU0yMCk3dIFv8ri0hsjJVS2uvkZML+lANOWQcrEIphdLccWfHq7Y4y6GC3xETWmdUKv8LNk0FziG+clQpFVahS0cLxOsTvX145KFnrpmiWWmfEK4Fy/Ni8yxibyFqWcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=198.54.122.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
+Received: from mail.privateemail.com (K8S-PROD-WORKER-10 [87.215.145.39])
+	by mta-15.privateemail.com (Postfix) with ESMTPA id 4h7bqb4dDRz3hhTF;
+	Sun, 26 Jul 2026 18:24:11 -0400 (EDT)
+From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+To: David Heidelberg <david@ixit.cz>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/5] nfc: s3fwrn5: support the S3NRN4V variant
+Date: Mon, 27 Jul 2026 00:24:00 +0200
+Message-ID: <20260726222405.153008-1-jorijnvdgraaf@catcrafts.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,161 +47,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The x25 timers are armed with mod_timer() and cancelled with
-timer_delete(), so a pending timer holds no reference on the socket and a
-cancel does not wait for a callback already running on another CPU.
+This adds support for the Samsung S3NRN4V, a later part in the Samsung
+NCI NFC controller line the s3fwrn5 driver covers, found e.g. on the
+Fairphone 6 (SM7635).
 
-x25_heartbeat_expiry() also rearms unconditionally, so it can reinstall
-sk->sk_timer after __x25_destroy_socket() has passed its cancel point.
-The following __sock_put() frees the socket while the timer is still
-queued, and the next expiry uses freed memory.  KASAN reports a
-slab-use-after-free on the kmalloc-2k object freed by close().
+The S3NRN4V differs from the already-supported parts in three ways: it
+ships with working firmware behind a bootloader protocol the driver
+does not implement (so firmware download is skipped), it loads its RF
+calibration data through a different proprietary command (DUAL_OPTION),
+and it gates its reference clock through a CLK_REQ line that the driver
+must service for the chip to be able to generate the 13.56 MHz poll
+carrier.
 
-timer_delete_sync() cannot be used here: x25_heartbeat_expiry() and
-x25_timer_expiry() both reach the cancels from inside the timer they
-would wait on, through __x25_destroy_socket() and x25_disconnect().
+Patches 1-2 are preparatory cleanups from the v2 review; patch 3 adds
+the compatible and the clk-req-gpios property to the binding; patch 4
+implements the variant in the driver; patch 5 adds the Fairphone 6
+board nodes (it depends on patch 3 and can equally go through the qcom
+tree once the binding has landed).
 
-Arm the timers with sk_reset_timer() and cancel them with sk_stop_timer()
-so that an armed timer owns a reference, and release it in both expiry
-handlers.  Rearm the heartbeat only while sk_hashed(sk) is still true,
-since __x25_destroy_socket() unlinks the socket before dropping it.  Arm
-the deferred destroy timer the same way and drop its reference in
-x25_destroy_timer().
+Tested on a Fairphone 6 running a milos-mainline kernel: reader mode
+polls and reads ISO 14443-4 tags reliably, from a fresh boot and across
+driver reloads, with the calibration files present at their new path
+(load success verified in the log) and also absent (the chip falls back
+to its flash defaults and still reads).
 
-Reproduced on net with KASAN, with the heartbeat period shortened so the
-window recurs.  With this patch the reproducer no longer triggers a
-report and /proc/net/x25 drains.
+Luca, the two questions from the v2 thread (revision/SKU variance of
+the calibration tables, linux-firmware submission) are still open;
+nothing in this series depends on the answers now that the variant
+property is deferred.
 
-Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+The series is based on the nfc tree's for-next.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Baul Lee <baul.lee@xbow.com>
----
-v2:
- - shorten the commit message (Andrew Lunn)
- - drop the Reported-by tags; there is no public report to credit
-   (Andrew Lunn)
- - retest on net instead of v7.2-rc4; the bug is still present there as of
-   53658c6f3682 (Andrew Lunn)
+Changes in v3:
+ - Call the DUAL_OPTION payload what it is -- RF calibration data --
+   in the driver commit message, comments and log strings (David).
+ - Load the calibration files from a chip-scoped directory,
+   samsung/s3nrn4v/{hwreg,swreg}.bin, instead of flat
+   sec_s3nrn4v_*.bin names (David). The samsung,calibration-variant
+   property discussed in the v2 thread is deferred until a device
+   actually needs a second set of tables; it can be added compatibly
+   on top.
+ - Request the calibration files with firmware_request_nowarn(): they
+   are optional by design and the driver logs its own warning, the way
+   ath10k requests its calibration files.
+ - Reword "S3FWRN5-family" in the binding and driver commit messages
+   to "a later part in the Samsung (NCI) NFC controller line" (David).
+   The binding change is commit-message-only, its content is unchanged
+   from v2, so Conor's Acked-by is retained.
+ - New patch 1: drop of_match_ptr() so the OF table is referenced in
+   every configuration (its __maybe_unused half is already in the nfc
+   tree as commit 9739e07fdb29 ("nfc: Drop __maybe_unused from
+   of_device_id tables")).
+ - New patch 2: spell out the "s3fwrn5_i2c" driver-name string
+   (Suggested by David).
+ - New patch 5: the Fairphone 6 board nodes, including the
+   pvdd-supply the binding marks required for the S3NRN4V.
+ - Rebase onto the nfc tree's for-next; the new of_device_id entries
+   follow the style of commit 179851e63fde ("nfc: Unify style of
+   of_device_id arrays").
 
-Link to v1: https://lore.kernel.org/netdev/20260726071808.47781-1-baul.lee@xbow.com/
+Changes in v2:
+ - Drop the -i2c bus suffix from the new compatible: it is now plain
+   samsung,s3nrn4v (Requested by: Conor Dooley).
+ - Close a race in the probe-time CLK_REQ seeding by reading the GPIO
+   level under clk_lock, so a stale level can never overwrite a fresher
+   state applied by the irq thread (found by the Sashiko AI review of
+   v1).
+ - Binding completeness: document the PVDD supply (required for the
+   S3NRN4V), add an S3NRN4V example exercising the new properties, make
+   clk-req-gpios depend on clocks, and describe the CLK_REQ pin in
+   hardware terms.
+ - Rework the binding commit message: justify the GPIO modelling in
+   hardware terms and explain why no fallback compatible applies.
+ - Add an s3nrn4v i2c_device_id entry carrying the variant so both
+   match paths agree, and describe the of_match_ptr() removal in the
+   driver commit message.
+ - Reject malformed calibration blobs (word alignment, single-byte
+   section index bound) up front instead of failing at STOP_UPDATE.
+ - Handle gpiod_get_value_cansleep() failure in the CLK_REQ sync
+   instead of treating an error as "clock off".
 
- net/x25/af_x25.c    |  4 ++--
- net/x25/x25_timer.c | 25 ++++++++++++++++---------
- 2 files changed, 18 insertions(+), 11 deletions(-)
+v2: https://lore.kernel.org/20260705190621.128257-1-jorijnvdgraaf@catcrafts.net
+v1: https://lore.kernel.org/20260703202601.78563-1-jorijnvdgraaf@catcrafts.net
 
-diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-index 8aae9273b..033e7d059 100644
---- a/net/x25/af_x25.c
-+++ b/net/x25/af_x25.c
-@@ -363,6 +363,7 @@ static void x25_destroy_timer(struct timer_list *t)
- 	struct sock *sk = timer_container_of(sk, t, sk_timer);
- 
- 	x25_destroy_socket_from_timer(sk);
-+	sock_put(sk);
- }
- 
- /*
-@@ -398,9 +399,8 @@ static void __x25_destroy_socket(struct sock *sk)
- 
- 	if (sk_has_allocations(sk)) {
- 		/* Defer: outstanding buffers */
--		sk->sk_timer.expires  = jiffies + 10 * HZ;
- 		sk->sk_timer.function = x25_destroy_timer;
--		add_timer(&sk->sk_timer);
-+		sk_reset_timer(sk, &sk->sk_timer, jiffies + 10 * HZ);
- 	} else {
- 		/* drop last reference so sock_put will free */
- 		__sock_put(sk);
-diff --git a/net/x25/x25_timer.c b/net/x25/x25_timer.c
-index 2ec63a1f4..7896cd43f 100644
---- a/net/x25/x25_timer.c
-+++ b/net/x25/x25_timer.c
-@@ -36,45 +36,45 @@ void x25_init_timers(struct sock *sk)
- 
- void x25_start_heartbeat(struct sock *sk)
- {
--	mod_timer(&sk->sk_timer, jiffies + 5 * HZ);
-+	sk_reset_timer(sk, &sk->sk_timer, jiffies + 5 * HZ);
- }
- 
- void x25_stop_heartbeat(struct sock *sk)
- {
--	timer_delete(&sk->sk_timer);
-+	sk_stop_timer(sk, &sk->sk_timer);
- }
- 
- void x25_start_t2timer(struct sock *sk)
- {
- 	struct x25_sock *x25 = x25_sk(sk);
- 
--	mod_timer(&x25->timer, jiffies + x25->t2);
-+	sk_reset_timer(sk, &x25->timer, jiffies + x25->t2);
- }
- 
- void x25_start_t21timer(struct sock *sk)
- {
- 	struct x25_sock *x25 = x25_sk(sk);
- 
--	mod_timer(&x25->timer, jiffies + x25->t21);
-+	sk_reset_timer(sk, &x25->timer, jiffies + x25->t21);
- }
- 
- void x25_start_t22timer(struct sock *sk)
- {
- 	struct x25_sock *x25 = x25_sk(sk);
- 
--	mod_timer(&x25->timer, jiffies + x25->t22);
-+	sk_reset_timer(sk, &x25->timer, jiffies + x25->t22);
- }
- 
- void x25_start_t23timer(struct sock *sk)
- {
- 	struct x25_sock *x25 = x25_sk(sk);
- 
--	mod_timer(&x25->timer, jiffies + x25->t23);
-+	sk_reset_timer(sk, &x25->timer, jiffies + x25->t23);
- }
- 
- void x25_stop_timer(struct sock *sk)
- {
--	timer_delete(&x25_sk(sk)->timer);
-+	sk_stop_timer(sk, &x25_sk(sk)->timer);
- }
- 
- unsigned long x25_display_timer(struct sock *sk)
-@@ -108,7 +108,7 @@ static void x25_heartbeat_expiry(struct timer_list *t)
- 			     sock_flag(sk, SOCK_DEAD))) {
- 				bh_unlock_sock(sk);
- 				x25_destroy_socket_from_timer(sk);
--				return;
-+				goto out;
- 			}
- 			break;
- 
-@@ -120,8 +120,14 @@ static void x25_heartbeat_expiry(struct timer_list *t)
- 			break;
- 	}
- restart_heartbeat:
--	x25_start_heartbeat(sk);
-+	/* Do not rearm once __x25_destroy_socket() has unlinked the socket:
-+	 * it is past its cancel point and owns the teardown from there on.
-+	 */
-+	if (sk_hashed(sk))
-+		x25_start_heartbeat(sk);
- 	bh_unlock_sock(sk);
-+out:
-+	sock_put(sk);
- }
- 
- /*
-@@ -166,4 +172,5 @@ static void x25_timer_expiry(struct timer_list *t)
- 	} else
- 		x25_do_timer_expiry(sk);
- 	bh_unlock_sock(sk);
-+	sock_put(sk);
- }
+Jorijn van der Graaf (5):
+  nfc: s3fwrn5: drop of_match_ptr() from the I2C driver
+  nfc: s3fwrn5: use the "s3fwrn5_i2c" string literal directly
+  dt-bindings: net: nfc: samsung,s3fwrn5: add S3NRN4V and clk-req-gpios
+  nfc: s3fwrn5: support the S3NRN4V variant
+  arm64: dts: qcom: milos-fairphone-fp6: Add NFC
+
+ .../bindings/net/nfc/samsung,s3fwrn5.yaml     |  65 +++++++-
+ .../boot/dts/qcom/milos-fairphone-fp6.dts     |  49 +++++-
+ drivers/nfc/s3fwrn5/core.c                    |  41 ++++-
+ drivers/nfc/s3fwrn5/i2c.c                     | 142 ++++++++++++++++--
+ drivers/nfc/s3fwrn5/nci.c                     | 121 ++++++++++++++-
+ drivers/nfc/s3fwrn5/nci.h                     |  32 +++-
+ drivers/nfc/s3fwrn5/s3fwrn5.h                 |  15 ++-
+ drivers/nfc/s3fwrn5/uart.c                    |   2 +-
+ 8 files changed, 446 insertions(+), 21 deletions(-)
+
+
+base-commit: f0054d864e6e734add71e29961f5ae15211ad24d
 -- 
-2.53.0
+2.55.0
 
