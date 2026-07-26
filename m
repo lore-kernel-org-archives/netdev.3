@@ -1,92 +1,76 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C86A2DC782
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 05:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A36280018
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 05:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785043511; cv=none; b=bXljwPSScfEf+G/g87uloSg7XMCARxbbOcJnuuVSIx3MfWcMX9Zq8K+GfKWr/164wwu0yYjDmcobZTc7sJmsO43p1OUH/MriNrOu2uoqKfmn2VuJS30eK7W14FbqNLpTacPYkc8hpeZfZR/Q7eGsZ2zfRLA70yOFFQi/+Ut1k6o=
+	t=1785044021; cv=none; b=DLUFGbV4t35/LiJ9RF3cf2AUgCAcszfiKVYPkvHxRyW8ixIUs1xi4/EmBIFX/a3s2D8E/DQOqpe642wVF8vvip1uY8fAXt2y1J963uJ4ulgrJ23VdAMkdsXwI8664dfZd32bevTstkxqJ48P8M6QqfJ0zZsNT/wJ8s+0sbwnPck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785043511; c=relaxed/simple;
-	bh=I6Fu0+DNr7LT4DtiL5EfzHWIUsnAEk+xip2XdPhClZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t0z5fXSxp7vejmlMGggyZ6FrtViFKddDREUphBa4poOPpIg2bPouWTtcHBwFaF/XibRUYEzjwfsA/quitgbPpox3uXSbOT/Ikik+BBP5gq+1gPvDZeO4BYFjCz00jfRE430l3XdrzREh68XtywROCmG9vT/mFNP0LmUW1GKHnds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hdUCnmG/; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785044021; c=relaxed/simple;
+	bh=47i/YXfixIt7e5t5Gu6byp5P4Erdmj27ukrh+PELRgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2MVm5lzfJYST4/OdEi5eDXrK4XknxviZcHtSxb5IaesP1B2u7G2ydCR/nwS+pnlIGcoP0XE6oBT+VlCucHWN10KiL/0l04R6oox4kiUMPis9HMXmXIc57UCtQTVeIGx+Kk9sFqKYAaWCbR9EAz2GnGmFNkgLWRj913ciNcdQ3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=Z76QKIgA; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hdUCnmG/"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8486672f03cso1664192b3a.0
-        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:25:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="Z76QKIgA"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cbb662575d3so978402a12.0
+        for <netdev@vger.kernel.org>; Sat, 25 Jul 2026 22:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785043510; x=1785648310; darn=vger.kernel.org;
+        d=xbow.com; s=google; t=1785044018; x=1785648818; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u8wfTYxHZK0x/PfVX6/DZH7+LGApngF9lOfO/2V5Zp8=;
-        b=hdUCnmG/xxKp9iqiKNUDs5dNrUKYeS5u9pkLdLL0wq4Z799UrZFxpLhUsIeCuknIDa
-         m5nlPTxtRmsy9A0tEawg4cKScUqgm4LcZtwv1Xcd8AhZ6E+iIFyv7G5wAel7svfdzgas
-         MEcBVbx+rjPYGQMOxJhCXjNmQZ+6rSDPVvladYPZsCymNffZgnQ02gZV9HDrMPJnWYqY
-         +6gm5tUqdXeGhC2FU8nF3uMwFgQzC/xy10NUen5oSQwR06SFtttswWJ0gRkyOfcEUU9t
-         urKZKf174Pshz6WDvWjPXBJbxiu2Crfk0Mej8g0bsALGovRW83nQygEwAV9scf36J59a
-         g1tw==
+        bh=l0FA1kd0s14T0zTfOo2W1mWfRhLmW66jk1mDOW/wW+k=;
+        b=Z76QKIgA/3IQ7HqQIWiW4cqgSw5gRhmVSii5njgmmoOGd3s940gamvQ4IhRbLcqzSW
+         p9FqyA3/Q4fP5M/kccC3S20lli8TOKFNOAXS6D8tq3iX7LyvUEjbBpzwDtjrMMvgLFPa
+         5VBG2AeAFrQgo7/jUf+AgcxkJKR324D4kALqZ+733XXTddki6A+VNjR+KQPf8JEAC0Vt
+         0GixLe5eOvdWrH7iVBMdd6bp8jpySdvATHdY6XSSHWfV9qzavcDGO4p2Oo0aY7xx7z6b
+         0mGa1dfTNygGqIFyUngR/TuvO3DLCf1FNMwRxsV6tJCdQvMTMebrVoEiqJORnrlZuZlj
+         1y5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785043510; x=1785648310;
+        d=1e100.net; s=20251104; t=1785044018; x=1785648818;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=u8wfTYxHZK0x/PfVX6/DZH7+LGApngF9lOfO/2V5Zp8=;
-        b=Uv4+006TlHdKZ3BCWu03q5ATTce9hLg1yt8mrYYDej3uKBwjW5Aw3BBPTOiUvWklW+
-         avvcCxAY57fgco9/30J+f75L6dSYcrX0/kEcz2Keueq4/jn4BQneLeRerOsT525xO8ms
-         FiDKsahYGcqy9B3Oj9Xfl5ECpaia6IBneO5sEQxkSqVi2kHW30rOUIUAUZ7+5gVOfDOr
-         6qzFwgs/OgkBR5/yZMtycYEdAfZ1pVd8Xj4xI0/eE7TLi83O5oHwdS2UCCUO1cc3h6qF
-         RGdj30s/WfJyktwNM12ovYwQLvFYQcI/ttH2sefdgPum0jB70luAG3+6CzuJa5KcIEQV
-         nMJA==
-X-Forwarded-Encrypted: i=1; AHgh+RoS5sWfe/fTfPkR/MwTNljKA5fnx3QNohC70xuoYVVQONZQt5XpaydMoNI7i9ZHumOFG3SYgas=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHusKwtmCnHnXsGA+ff5AHkstk0SDSXCKQSAE2NuK7WF+sbXTk
-	tfqioDobtipGeJa6cCsjj7rcl4Fv21awFqlByd0z+3UqDwnmsD0Q46tD
-X-Gm-Gg: AR+sD10sDuP78U5YvzKyJGmVNl+61rpq9z4RQulNB+eKD48vb7axMMaeS0sDyzlEeFb
-	yV1I8HDBodaHLYCeDbx7+NqGjyrqMu0LLuo6IgIi25PBPvvHZuYDV5mK8UOfRZ6FkTgLjdh0OyD
-	GgewAb2vSgfUgqlSA5S5ZgTiS+1WAn6bKtfaLUw/ehhqkJ6e6hr5yd5eXPoB4pdNxLhBEOGUAgm
-	NJtolhwtfD0dLFBTpXhrzIcMrlZg1JDQ/Uj1hlwIgLBShrhDWM33nhoO1lYoJzem+887hvyUepk
-	fYDMWKie1SArDzp9l0OcuNtFEofamCnhGmQWtkxRPcjnnKfA/8Fy9uC3sWVZyPzAH6L9LFMA+8j
-	HuhTnGrXcZVviBaZqZYyC7qi/pHzCAnTVHXYHCZJFv1b1BNmmaSKjqsjrJjooF5evMbU5dAHmsu
-	chFqcpxAIy1nPAXX60IBl/PRdJXNnu9cY=
-X-Received: by 2002:a05:6a00:988:b0:84a:29a7:f650 with SMTP id d2e1a72fcca58-84e5925e2a3mr3164991b3a.0.1785043509591;
-        Sat, 25 Jul 2026 22:25:09 -0700 (PDT)
-Received: from acer-nitro-anv15-41.entro.com ([118.34.230.2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e530079f1sm1574772b3a.0.2026.07.25.22.25.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 22:25:08 -0700 (PDT)
-From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
-To: Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Linux Team <linux-imx@nxp.com>,
-	Christophe Roullier <christophe.roullier@foss.st.com>
-Cc: Frank Sae <frank.sae@motor-comm.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next] dt-bindings: net: fix spelling errors
-Date: Sun, 26 Jul 2026 10:54:29 +0530
-Message-ID: <20260726052429.16807-1-shaikhkamal2012@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=l0FA1kd0s14T0zTfOo2W1mWfRhLmW66jk1mDOW/wW+k=;
+        b=oZVAxH4qat5VGLQjOCXwr2ju7kLmHL3wfapz5BmDvKgKOFQn7eWAT1+qzbI38Ofnjz
+         /I5FR8s/KAPLziGaL4ZGayTADC+Fn7J2kskVwHMV6m4G6tpUc4yH82QgC6mVcB2NXYnO
+         HGUcns2VsorYVInIAbEHFi2vYAdhMFymptp4xBAXbdV7dqvSMFFTNozvUyiz3DT1X1IC
+         cn/iJeSP4NXvL5hnIvkskE1mTAp7vlFeLXzBUHqeaGlirBDvg6VaFZK87gdGBAo8xV1v
+         EO/SjSzrxtIWgNLSRcS4+NlQjkwXdGMMdNjWs82g53kz6iD+fFaa3mpCvcc7iM9yrtw3
+         eg5A==
+X-Gm-Message-State: AOJu0Ywz/jqT8KHsxQh/euOzhXlQ4CJvVkZeeqSo2ON6mt16RZcBlKf5
+	fMPkIaZ5qAfdJnehLONDQox1hU1IgQGi5aUpxkeKc8mkS+wLPA1LTxNLdbr9fMCnzjHv8v9oUk5
+	1S+x8dOU=
+X-Gm-Gg: AR+sD11QdOGDPzPK0L0EX4zUD17sZrS1KDZ7ByB6MdPbPW9/AZyQnO773wyu/BsSWq0
+	FOSkw7ZECFS0fKI0dIX34WdfYS0fxGN3trpLmnK1SGDUHZ4hxizedD/bhmTCedqtbhThNcpYRTK
+	f/4q2TFARx4a+8wll+mRANWun3fawd5stNuQaGCm7OUAvCqcgB3c2rkX2fhVrPtyCA205EHsVwc
+	vAPEbAg96WR9EXJaftuWZPqFg3Jblfzb57G0SNuDkPeON6Im2vXvjaD6xHZPQZ8BnV1/Vtd6Yiq
+	c1/R1Tz3KHxp3STkDgjJKYfcqXDBeEvFjMuvD20ZhhhJAPD4uAXHw5FKrEDBRHkeSoF5K/hOqaE
+	I2UqqlveOOG4rbL69clWVTwE4kVxouquHblfRePfCbHDTEeDozfobptDcYXnxzOsTP9+9ysjnyf
+	9wk5GGTnt1F6d5z9b3fLHF3HYS2Fotqa20IB308wqJr18wc5YW18iXvyiTcNioKyZGfh66kPE=
+X-Received: by 2002:a05:6a21:a347:b0:3c3:bee9:8eec with SMTP id adf61e73a8af0-3c67da2e421mr3837000637.19.1785044017923;
+        Sat, 25 Jul 2026 22:33:37 -0700 (PDT)
+Received: from localhost.localdomain ([125.128.148.126])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66c9dd2sm1785092a12.27.2026.07.25.22.33.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 25 Jul 2026 22:33:36 -0700 (PDT)
+From: Baul Lee <baul.lee@xbow.com>
+To: netdev@vger.kernel.org
+Cc: ms@dev.tdt.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	federico.kirschbaum@xbow.com,
+	Baul Lee <baul.lee@xbow.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/x25: fix use-after-free in x25_kill_by_neigh()
+Date: Sun, 26 Jul 2026 14:33:30 +0900
+Message-ID: <20260726053330.41736-1-baul.lee@xbow.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,90 +79,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix spelling errors reported by codespell:
+x25_kill_by_neigh() walks x25_list under x25_list_lock and, for every
+socket bound to the dying neighbour, drops the lock to call lock_sock() /
+x25_disconnect() / release_sock() before re-acquiring it and continuing
+the iteration.  It holds no reference on the socket across this window.
 
-  encompases -> encompasses (stm32-dwmac, sti-dwmac, nxp,dwmac-imx)
-  curren     -> current     (motorcomm,yt8xxx)
+A concurrent x25_release() on the same socket can therefore
+sk_del_node() and free it while the lock is dropped, so the following
+lock_sock(s) operates on freed memory; the sk_for_each() cursor can also
+be advanced through the freed node once the lock is re-acquired.  Either
+way an X.25 device going down races a socket close into a slab
+use-after-free.
 
-No functional change.
+Take a reference with sock_hold() before dropping the lock so the socket
+stays alive across lock_sock()/x25_disconnect()/release_sock(), and drop
+it with sock_put() after the lock is re-acquired.  Because the socket may
+have been unlinked from x25_list during the window, restart the walk from
+the head instead of advancing from the (possibly unlinked) cursor;
+x25_disconnect() clears x25_sk(s)->neighbour, so an already-handled
+socket no longer matches and the walk terminates.  This mirrors the
+reference-holding list walkers already used elsewhere in this file.
 
-Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+Reported privately to the maintainers on 2026-07-09 with root-cause
+analysis, a PoC, a KASAN log and this fix; posting to the list was
+requested as the follow-up.
+
+Fixes: 7781607938c8 ("net/x25: Fix null-ptr-deref caused by x25_disconnect")
+Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
+Reported-by: Baul Lee <baul.lee@xbow.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Baul Lee <baul.lee@xbow.com>
 ---
- Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml | 4 ++--
- Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml    | 2 +-
- Documentation/devicetree/bindings/net/sti-dwmac.txt         | 2 +-
- Documentation/devicetree/bindings/net/stm32-dwmac.yaml      | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ net/x25/af_x25.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-index 26688e2302ea..e8108cde0f59 100644
---- a/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-+++ b/Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
-@@ -59,7 +59,7 @@ properties:
-       be configured with hardware pull-up resistors to match the SOC voltage
-       (usually 1.8V).
-       The software can read the registers to obtain the LDO voltage and configure
--      the legal drive strength(curren).
-+      the legal drive strength(current).
-       =====================================================
-       | voltage |        current Available (uA)           |
-       |   1.8v  | 1200 2100 2700 2910 3110 3600 3970 4350 |
-@@ -76,7 +76,7 @@ properties:
-       be configured with hardware pull-up resistors to match the SOC voltage
-       (usually 1.8V).
-       The software can read the registers to obtain the LDO voltage and configure
--      the legal drive strength(curren).
-+      the legal drive strength(current).
-       =====================================================
-       | voltage |        current Available (uA)           |
-       |   1.8v  | 1200 2100 2700 2910 3110 3600 3970 4350 |
-diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-index e5db346beca9..75c9820ee60b 100644
---- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-+++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-@@ -72,7 +72,7 @@ properties:
-           - description: the offset of the GPR register
-     description:
-       Should be phandle/offset pair. The phandle to the syscon node which
--      encompases the GPR register, and the offset of the GPR register.
-+      encompasses the GPR register, and the offset of the GPR register.
+diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
+index c31d2af5dd22..68c396dc4307 100644
+--- a/net/x25/af_x25.c
++++ b/net/x25/af_x25.c
+@@ -1770,13 +1770,17 @@ void x25_kill_by_neigh(struct x25_neigh *nb)
  
-   nvmem-cells: true
+ 	write_lock_bh(&x25_list_lock);
  
-diff --git a/Documentation/devicetree/bindings/net/sti-dwmac.txt b/Documentation/devicetree/bindings/net/sti-dwmac.txt
-index e16287c06e5e..6e7e77da49bc 100644
---- a/Documentation/devicetree/bindings/net/sti-dwmac.txt
-+++ b/Documentation/devicetree/bindings/net/sti-dwmac.txt
-@@ -9,7 +9,7 @@ The device node has following properties.
- Required properties:
-  - compatible	: "st,stih407-dwmac"
-  - st,syscon : Should be phandle/offset pair. The phandle to the syscon node which
--   encompases the glue register, and the offset of the control register.
-+   encompasses the glue register, and the offset of the control register.
-  - st,gmac_en: this is to enable the gmac into a dedicated sysctl control
-    register available on STiH407 SoC.
-  - pinctrl-0: pin-control for all the MII mode supported.
-diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-index 987254900d0d..fac882198a46 100644
---- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-@@ -91,12 +91,12 @@ properties:
-     items:
-       - minItems: 2
-         items:
--          - description: phandle to the syscon node which encompases the glue register
-+          - description: phandle to the syscon node which encompasses the glue register
-           - description: offset of the control register
-           - description: field to set mask in register
-     description:
-       Should be phandle/offset pair. The phandle to the syscon node which
--      encompases the glue register, the offset of the control register and
-+      encompasses the glue register, the offset of the control register and
-       the mask to set bitfield in control register
- 
-   st,ext-phyclk:
-
-base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f
++restart:
+ 	sk_for_each(s, &x25_list) {
+ 		if (x25_sk(s)->neighbour == nb) {
++			sock_hold(s);
+ 			write_unlock_bh(&x25_list_lock);
+ 			lock_sock(s);
+ 			x25_disconnect(s, ENETUNREACH, 0, 0);
+ 			release_sock(s);
+ 			write_lock_bh(&x25_list_lock);
++			sock_put(s);
++			goto restart;
+ 		}
+ 	}
+ 	write_unlock_bh(&x25_list_lock);
 -- 
-2.43.0
+2.50.1 (Apple Git-155)
 
