@@ -1,143 +1,217 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010010.outbound.protection.outlook.com [52.101.201.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075441DE3B7
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 08:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE28537204A
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 08:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785052858; cv=fail; b=YpNpUwNqobQUJB5nageZrrznQ3aWYCyXON0L3i86oHgTjQXS/5Y9ZCtCXCyvvuVmK3h01VGEDVnIHgyXZEZoWKGMnJHBEWKR7TQweHTsO/3ATf+mAAv6Q8Fvd6gr4Z5vx+FcodbyQj0I1BOkTiaceOMzeAEy7GyGFVUv3N+jTp8=
+	t=1785054434; cv=pass; b=QEkzJjne0UHEf93758XBPDLwOJhNP7IGdYwz5TEZrylePP0mqCErLpXO+yTYmoQd9jIOoR3GjNfbdjjU0aZHgXlJHog4VHJnTrMOI3dXtcq2BYWUiH3lmFHeyEt+NeINzP8NiZBK5kdm8G0Vj8Z4fWecARAx+1JH1QbU+niIeBE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785052858; c=relaxed/simple;
-	bh=2rzdmxXpaRaUdiTKWNWzwzYbxmT22BfLPPM5U6jDmns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IZreDr9uejQDMMyvBmRYW5V0YliKk1NwuQJdwLUdJ6W5/sGNnJZsc4RkH90IazIxqros6YPtZuq/UmyiAQNF8k3QvZ0GQ27wKbJjKEHKId4Vr2b8qbtq7JC9dcLZYFyqSnvv8s6BweHQxccPic+jU1myw4gO5cPHax0q6e9s7ZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kqI1ZEOE; arc=fail smtp.client-ip=52.101.201.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1785054434; c=relaxed/simple;
+	bh=8xJpMQdm3mK3+eLmyzRJS2c6sWbRz2JRigIWjuGEeSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BwgfeLP4GS8KKF0SV4WOQDAK7PIzIXOredHYpYb1W4g1p51XWZ8vynUv0LYJUEMI2k+hXJ1XaT4Ehg9f62GXeGDmLvRFuAukjxyFSLkJHw9FROVeKP+Z9vC1hkbEWX71B8VKRLywzvkgWkd8uHjrZiWcDyxveT5D39lg/w4kT54=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Frg/fICc; arc=pass smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kqI1ZEOE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lCqIsXsLUIwKh+5L1Kg6gzwfub5fIjxwO3mGg5c3JXKOsrpM4/FVfOHfPQEOtZ/GygAqrH2DS+zKWZaroZ4I5L3ab9OPPjq4RXhxKQQah0wDN02nX0Lls7ljJxQ+7braVhsrwqK8Unppj4nevw6GcpDtIkQLg3LhxRk19AQRKsshZ/Yjsq2de12936ThxAJUvKCPhqyvlx4sZvB5Tycgmb/augCImH2ZnJNebdoIdXg62xyim15soH9CtFsJ90bbOVhW25azyIVGl5YksfCdZxtisbd2QrLv6RSltv49/7b6EMf1FLyrLlF+cv+3AaaY1b68+V8YqQrF5k30oEK74g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AIEJOckp4IyJouaG8ZFXBAQzXt/2x9LRVyGv4pw0WSs=;
- b=qfIAEGPy1KWLMUfE5nkg14AejDgKSQh3wUYe9H8Okh2bXu4+vA6T/4oxF11HjNVdhsT6ewnxj/T4iWVgsJsmwSKFRnuUVlFMJFqe+sC82j5G4idu49beotoqxOWK0iYJMc+TDWlwApD1JtGv0KbuHVwhitF77mDTs94ArdM/Jzd/q6c9Qh6pFO5Zd73o97VFtaSQZwwTrc95P1EdDRRYLSAfN9kB9CRCfwQh/BQeYjo1T3Pe2m7M6P75Apf+kEB1OuebumMbNLUyJJMsy629N7th+qp0cWnhLdL1fCe1CDOK4eAEgcYjExraCO+DiuU1VaarCg2T0PLjbIBs+2N/vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AIEJOckp4IyJouaG8ZFXBAQzXt/2x9LRVyGv4pw0WSs=;
- b=kqI1ZEOERBg2zWmGHA9zbj/VJ+YrvTRreqbXMU+zJkHdXlA4MycgGDHA7Q84L8q68549M+q4PHaq2g+SbOf9Mu+eSMButrtDAnBkNdWBEXdb1zGlXgAgWapLdUcffb/EcvirVj1xhQ7pDoYfR1LwXfakelEfI0lMzspMQYY4nQ166KyWTSzn2vPTu3RiohO4eQjCo+VuM5x8510rQV3XMLXFtI4yS/1Sw2OKNHPzHeEbGjlQY3V/H1B7vncEzqNn5NXWkcG+DWuxn/l0g51HRTZYGqNyyRuHhQ54h0CXcF4E91VqtcTubkC40+yL/BBSNYPwi1M9RbzmqoUZuUjCfQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SA1PR12MB6896.namprd12.prod.outlook.com (2603:10b6:806:24f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Sun, 26 Jul
- 2026 08:00:53 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0245.012; Sun, 26 Jul 2026
- 08:00:53 +0000
-Date: Sun, 26 Jul 2026 11:00:44 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: John Haxby <john.haxby@gmail.com>
-Cc: John Haxby <jch@thehaxbys.co.uk>, dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 1/1] net/ipv4: discard icmp timestamp requests
-Message-ID: <20260726080044.GA201128@shredder>
-References: <20260722102441.8762-1-jch@thehaxbys.co.uk>
- <20260722102441.8762-2-jch@thehaxbys.co.uk>
- <20260723090858.GA3224213@shredder>
- <B4BAD3B3-D795-4863-B20A-F457BE24CB77@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B4BAD3B3-D795-4863-B20A-F457BE24CB77@gmail.com>
-X-ClientProxiedBy: FR4P281CA0351.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::14) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Frg/fICc"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c15cf78d1a2so190304066b.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 01:27:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785054431; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rEzQLh/txNwO8TlEE6tEfjUS4xxAwQOBYpqPzM7knTxWCJREw+6OtXwqDBMMvNVtiP
+         uDV5dYjzPbeTsFrTxPzrdFsUrlUMkU+Q/AfZuRTEY8Xmps5yeiQYVLgADF1/C5Qa37bP
+         /v0yrX8AUf4ft6xTKOxD/QpGZ0DWL0B7VeyVC2M++0/+qwwvkn+AJwZC3TCtgqAqCu5R
+         a23fAhiu5/4EQBZ3Ut6XlvK6yF6M7EjOfQYiF5w10chWOis8e+LuNJTqI+kFZQSY02n7
+         bB09XqeIws1RSmDEpN06tOCgm4ZeCT9+hP5/smHnoZHUSgJiXT7mhdoQK9e7fubVITbK
+         INzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sF4WDvoDIvwYUO+wREyt677f++mr+wkgCWiGvStBw8U=;
+        fh=zMeBJHqyXxhO2mVAfIyQhWDpKMPH4bnDvVlMVJ/ZXVc=;
+        b=lpiXWQ02Bl5Oa0LMgrRFV23z96UXYdCLe4st010mU030xRt5mIHOrsXecqlguyRIwy
+         tJ/Og+qs5IBM5/99j5P8NBmjEIMEB8LS+SVgjVxgn8hwTWJYsQLa1ZH8OcI9Q07brEr2
+         xHGrjYAJdi7xEBb41fZFD1jY32izxfkzJY7arGS07kHWQlFGRY9+bPvvFEGjTmHBFagX
+         gsNYGTvIX2QW8MR7i3h/N35DahIKJGVU/iWLAvcbU31YBzouq3zfGBcLPPxakT8H5xYj
+         9afsFm0anj62pEB0cM/gPX+xdjrVtDArr9Fjud4dJaWNN3IuksAhOklJjFh9kVsl9UOl
+         HGTA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785054431; x=1785659231; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sF4WDvoDIvwYUO+wREyt677f++mr+wkgCWiGvStBw8U=;
+        b=Frg/fICcSEPoD7YAXtB8GVutRMJ6prJ2gpuNJ9KRodn+A6ySssjPWhXTZR/3P+qF8L
+         sV6yXCmPasbiF7+Qplpn1EMHBQ6DcBYFUz2pagIe4Nw1X9fhDqEPuIddYPK1OIDMxuor
+         ERP++pA3Q8GN054urkPSZPI1xUreCWXyicNNjJXw6wA4RJBEQCrcwRl2mchi3GLYr/C3
+         IYQ6zVqStWp2zlp8scKfJgBbntF+f4aHKjrggMu0E5wF56A6CiI156t0XypOQykpkaRW
+         0M33vTRjaBJcWjzgAWo8lgUICuAa6lDKMsKiVFRXFkJRXzI4bMu8nXGtvfwnbvW/YZQ2
+         AHdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785054431; x=1785659231;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sF4WDvoDIvwYUO+wREyt677f++mr+wkgCWiGvStBw8U=;
+        b=pW01YMYJYDw5ifyelsj7Y+NOikYmtoqwxR+4onFdyxveayXEZut+vFsiSegYuMg9E+
+         yfenQAn+6wEzwnEfxTd+wjquTY3glNTDjm6wQ3WV+tSc+nndyL4DFDFfasw4QkdRPgDV
+         OBeiUjromrbjfyd2FJNkVziXbmx5SQtdX2hChZljAS9q7FqUHUDKnHqQmpAQd5LTbrCD
+         7vTEeIJP4G9Z6gIJwXVsskr0wsOiDxQrVJh2aALFNpvFnIpH9xvdeytYq5mW3oSPkS6+
+         RYOtV4A9jjs+ZZvEO3DOR7pOeNu+5CHhq7KJ8pWHod1GK2S5jtVMIAOj2C8fVOi7/Iv4
+         P10g==
+X-Forwarded-Encrypted: i=1; AHgh+RppP3g9vFGSnmyF4exn+0oyhrAdns75VTOB84Og3Ko0E/VZseEMLuu4APX5CIkfFIKjU34SkaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlpgkwHGIQ1VI+GL92yNicTSPpUSNaErK1uY2/1FSkCs7yy4D8
+	WyEw+SoBnuz9UPQssncJ/zuQq992fHiuk148b3Q6XQO5C8/H8kM/P0OW6dcllmRKEijYWOL2wBk
+	aaIQ7bl5UojfoH2VSKZ62u4RMmn/6gp0=
+X-Gm-Gg: AR+sD13p5dGV5tLNG1ak2wbnvVlinC9SQt8plx3OmQRlMxU4jFRjGBXaoF/rMW4UuHk
+	I86c0mmHqUAEM/nrogVCSJqve+6WDccPw/RfUKfUSZiVGGG0yKMlZeoBVcM0zpFhQbGIo4ypljp
+	BEzlHZgocCmKQ5QTO/XyBaiVAHZYdFNO12DvpmBSijYtHzsh75jy0daTUX92GqsALMQI46CTuLv
+	+6bFx4hgkybkYIjFp5I7cilepvwGDL/+E7cR14ZJ9Bw9lKJQuM+vSok0NgqAlffRElSW8rdTXW7
+	XY97kmafGrkgKkXtKNA=
+X-Received: by 2002:a17:906:9fca:b0:c16:5dbd:8210 with SMTP id
+ a640c23a62f3a-c1f1f044371mr201495166b.44.1785054430944; Sun, 26 Jul 2026
+ 01:27:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA1PR12MB6896:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59e43548-6ce7-489f-b8e5-08deeaec03b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	PxHTG2aV1kZSYO9kih+LME9MkX6LAEU4OwKIbQns7w+pzakL3t3k1Zz1wNdQKblMkKnXCLmNd6asSGFMd4DLRUOYSjCB2FJK4lqq5V4eS5ohGd1uYDI7UXRizBUlW8ke22aupu6e2zh8W71UyKV+4o/9OnvMbcLVOc/lcleaka8LRsCTG6EkmnzgxNXZZm0K7us/nrOSU2ICA4qIvfbQcMBxC7kpgQhUv8edE1AWmm9BdliaWFWsRueYwuDw4IhPPbwXZ2FgcjLJ1RHavUmEspdgexDJkpEVzAvAV6b5dyk5m/QPbnbFWBFNw3JSHeFQmfzErWlCODDc6Znflgul6xciRM/b9+cAmI6F//sb2bj/zLvbbxFIV3d8Fuf5RXlBTbv6ePWeiBXP+u73nq+eRcyWuRR/Nq+GT8sreKbhv2bTRsR3+mEPpQoSdefDXOwAXCpHE8APVGXAYMXJpl18xyyGIEiUmMflWCFoB1DRdT7BAI56pfP215t1w9CaQgs8DVFixydn38M2TEUsOVhTaoDdwKV7YxFRmyPB0ThQs7r8MZnYu7tujL4PI+TOsH79yXbOFsy1eKO0gBMZ51MzHRBhU9rlPleV6O+0VKTDjZpzjWejZqcf8sbJyJV8bh+vvQjIVjdbTNyJjfUH1hM034cl2EoziyVTwyJSI/KdZwo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7XS7fsXKBYVXj0VEhaDahdn/b0Acg9T8bQn9Tze8B8BsbE2910n3m24EVQZx?=
- =?us-ascii?Q?BqzSi/D3eNZM1btJFWzVDjNPPNGbzqOjK9F25m1qHjpOQMsIMeCYPiYtzjzB?=
- =?us-ascii?Q?2UqysqYpUc1TitTfWQdSPM1C3jB+NmLHlAMWUksOF809W2lnCPm95Ipw8mhH?=
- =?us-ascii?Q?QCXqzpgJo1+Hwxt7yXnmmiwEyVHRPFr8Ta5ItjbcQHV85WxU+Je4QTaipMez?=
- =?us-ascii?Q?kvbjjHC9HiVVrCogeRjW2vov6I88F+rM8c5a2xow77cBI9c4/zqI3tHz4clC?=
- =?us-ascii?Q?hvGy4L4z4xCt7xIKXtZPZ+ob39wq20mkTVYVU78cSXt1WcjlQ7huPBJifBj5?=
- =?us-ascii?Q?UNQeZebe3A73KB4rekQg1qddRKbh7tj9YLzZYO/y1pJMW9W5yyQpP9nY0lu0?=
- =?us-ascii?Q?vZ2EiFET4HAybJq2x1KIltQhtIfT+CPKNvNbdarWoSBx8ir2UJ8jxaeLpBga?=
- =?us-ascii?Q?Jq6zs4IYqaCXW54z3IZyeyJF6V8pdC7a3oLBZzUNSDfI6/p+VntVfEXy3bfV?=
- =?us-ascii?Q?RE3ZbkPTQlMLgqtiQ44LG25lVmuuLIZXrMZZ6IOQFxoWQ0UDYeBB8lt9KFKz?=
- =?us-ascii?Q?4NE5JEsNF2bCBHgiLPuM/2tcQIcMVe53VBuieJF4tIdVZL0HiOkfw+JKoRP6?=
- =?us-ascii?Q?BKYdx4s8tEqatfvgkmcKx1BHIOJW36nHac+vS2Nr3ZOQbDyUub3ILeETptiQ?=
- =?us-ascii?Q?8Q1gpYAeZPcWA9wXhUn9DtzYh/OTPLGXCqEjGweF81QPwksvJlnMT7KhSiN5?=
- =?us-ascii?Q?1dCjwqsgJ/jwPkoKCCBk3QDpqktg3Fj8na2EA1q3LVLWPNF69ePhUbHvpLSB?=
- =?us-ascii?Q?uWQxS2CzQwe6mL1d+ITuhdoSpEuwjtGhTnSkAF/cli8EH6agdoBoilYoecNl?=
- =?us-ascii?Q?MRLIJWxni97AsFrc5fMRWV19eGG7BUWF27HQTgdNdDZn1Q9bXa8YFaxB6LEl?=
- =?us-ascii?Q?fAxbTEvAT460iDSTywbqRkQivbr00EQGJDGSL/hGPO7YFo/VglzXsgs9sPMh?=
- =?us-ascii?Q?dRFjPatcqePWrsHPs0V3LxrUU5rNT9DJk3HFs7jMBk91zDpQJM9K15ESuIMM?=
- =?us-ascii?Q?FW9XdTd/ZXO45DgWa/buRMCWPyk+AhvDFiMr9D4llo6kFb6dSoSciYlq3Rtz?=
- =?us-ascii?Q?/uX++YC9+utBW7f2eUD2qi2cvLIwbNbkLGjIiXxYUP+JmfCHm4cUXHfFzREW?=
- =?us-ascii?Q?bg8skjeDKgwiPI9VOpFQiTiXA+N4eGzEbYawq2NKMUlI9eOAdBH999+8neNA?=
- =?us-ascii?Q?0vxVATuCJ5aO4Rf4w8pKMZH6qUlwjur7NNm1XdY5B5Pghodt/VmhjnxJ1Aw+?=
- =?us-ascii?Q?rkD6gn5vTCuqlrO85hmUJ0Moly0kNcGbuObtl4JRQDqkJQEQ7TT40cLHfTWd?=
- =?us-ascii?Q?KsqtWj91Q+zr/yVWLM6MHxvNIJuard5zUGxM1szcYSaR8MATmGrBUOgYS+3o?=
- =?us-ascii?Q?AIitzKKSY0PcGZBWswxDXGYjGcV46ZLuITKbVrgV4xHgtXdVgdRrsMWBKN8a?=
- =?us-ascii?Q?EnuWKQqqDFp3458j2nHDyR+b9YIKEogMVRwVJphFAFzQpaNmrhAkrPrbvz31?=
- =?us-ascii?Q?L5t8QAqCjx9NzX/C0XLJpXP2Zd/KG+V9uSTxTMETfM1bhb5MKCxEDNBM3CEG?=
- =?us-ascii?Q?59SV91BvlObwWNeiijP0zM3B35B0MGgusuMDkl5ie3ekipgAkwoMQcVakYcq?=
- =?us-ascii?Q?0kaCKl32weDX1qTRB4LkSK4QTg4FKSWykeV6jME/Nzji1jBX?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59e43548-6ce7-489f-b8e5-08deeaec03b9
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 08:00:53.1109
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x7QemXf7oY26MAamMO4CTursDcJD5TNezjfmlTfc+4fRB49qiCnhrPD5VKZgcXfkZUSdo+7b6inNWod/6RCuyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6896
+References: <20260719175028.988301-2-bestswngs@gmail.com> <20260724142321.GL418547@horms.kernel.org>
+In-Reply-To: <20260724142321.GL418547@horms.kernel.org>
+From: Weiming Shi <bestswngs@gmail.com>
+Date: Sun, 26 Jul 2026 16:26:33 +0800
+X-Gm-Features: AUfX_myLG6i4U1IzbrHsuQ-A43Tundwiu5UTIXpzXAkoffn5gurXuFt2WvlYFmw
+Message-ID: <CANgPUi0sCh6gtBMywQMTnudMLdVXFySp6LD7Vz-1Rh3trSd=eQ@mail.gmail.com>
+Subject: Re: [PATCH net] netdevsim: tc: serialize access to nsim_block_cb_list
+To: Simon Horman <horms@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 23, 2026 at 05:37:50PM +0100, John Haxby wrote:
-> In fact, there is a reason to revisit this.  CVE-1999-0524 went from having a CVSS score of 0.0 (ie not a vulnerability) to CVSS2 score 2.1 in 2022 and today it has a CVSS3.x score of 4.0.   Those first two links are messages in 2019, well before there was a non-zero score.  The last link is, admittedly, 2024 but rather than completely removing ICMP timestamp (as was done with ICMP address, the other part of CVE-1999-0524) is provides a sysctl to turn it off.   I wasn't aware of that possible patch, but it assumes that there's a use-case for ICMP timestamp and in the few years I've been aware of this as an issue (in my previous job) I haven't found one.
+Simon Horman <horms@kernel.org> =E4=BA=8E2026=E5=B9=B47=E6=9C=8824=E6=97=A5=
+=E5=91=A8=E4=BA=94 22:23=E5=86=99=E9=81=93=EF=BC=9A
+>
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev/#/patchset/20260719175028.988301-2-be=
+stswngs@gmail.com?part=3D1
+> ---
+> --- Patch [1]: [PATCH net] netdevsim: tc: serialize access to nsim_block_=
+cb_list ---
+> commit 27d18d348023b46d852b44b24e6f4ca81ab39bf3
+> Author: Weiming Shi <bestswngs@gmail.com>
+>
+> netdevsim: tc: serialize access to nsim_block_cb_list
+>
+> This commit attempts to fix a list corruption and slab-use-after-free rac=
+e
+> condition between the nftables hardware offload path and the TC control
+> path. It adds a local mutex to netdevsim to serialize access to the globa=
+l
+> nsim_block_cb_list during flow_block_cb_setup_simple().
+>
+> > diff --git a/drivers/net/netdevsim/tc.c b/drivers/net/netdevsim/tc.c
+> > index a415e02a6df1e..30dd7f924b716 100644
+> > --- a/drivers/net/netdevsim/tc.c
+> > +++ b/drivers/net/netdevsim/tc.c
+> > @@ -72,11 +72,13 @@ static int nsim_setup_tc_ets(struct net_device *dev=
+,
+> >  }
+> >
+> >  static LIST_HEAD(nsim_block_cb_list);
+> > +static DEFINE_MUTEX(nsim_block_cb_lock);
+> >
+> >  int
+> >  nsim_setup_tc(struct net_device *dev, enum tc_setup_type type, void *t=
+ype_data)
+> >  {
+> >       struct netdevsim *ns =3D netdev_priv(dev);
+> > +     int err;
+> >
+> >       switch (type) {
+> >       case TC_SETUP_QDISC_TAPRIO:
+> [ ... ]
+> > @@ -84,10 +86,13 @@ nsim_setup_tc(struct net_device *dev, enum tc_setup=
+_type type, void *type_data)
+> >       case TC_SETUP_QDISC_ETS:
+> >               return nsim_setup_tc_ets(dev, type_data);
+> >       case TC_SETUP_BLOCK:
+> > -             return flow_block_cb_setup_simple(type_data,
+> > -                                               &nsim_block_cb_list,
+> > -                                               nsim_setup_tc_block_cb,
+> > -                                               ns, ns, true);
+> > +             mutex_lock(&nsim_block_cb_lock);
+>
+> Simon says: I'm wondering if you could take a look at the issue flagged
+>             below as it seems to undermine the fix proposed by this
+>             patch.
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but will the new nsim_block_cb=
+_lock
+> actually fully serialize access to the list?
+>
+> If tcf_block_bind() fails in the core TC stack, its error unroll path
+> directly executes list_del(&block_cb->driver_list) while holding only
+> rtnl_lock.
+>
+> If this error unroll happens concurrently with an nftables transaction th=
+at
+> holds the commit_mutex and the newly introduced nsim_block_cb_lock, the c=
+ore
+> TC stack will modify nsim_block_cb_list completely bypassing the driver's
+> local lock.
+>
+> Could this still lead to list corruption and slab-use-after-free bugs whe=
+n the
+> concurrent nftables transaction walks the mutating list?
+>
+> > +             err =3D flow_block_cb_setup_simple(type_data,
+>
+> Simon says: I think the problem flagged below can be considered
+>             in the context of possible follow-up.
+>
+> [Severity: High]
+> This is a pre-existing issue, but does adding a local lock in netdevsim m=
+ask
+> the underlying systemic race?
+>
+> flow_block_cb_setup_simple() modifies driver-provided lists directly with=
+out
+> internal locking. Since the nftables hardware offload path runs without
+> rtnl_lock, unprivileged users can configure nftables concurrently and tri=
+gger
+> list corruption.
+>
+> While this patch addresses the issue for netdevsim locally, won't this sa=
+me
+> vulnerability persist across other hardware drivers (e.g., cxgb4, prester=
+a,
+> i40e) that use TC_SETUP_BLOCK with statically allocated global lists?
+>
+> > +                                              &nsim_block_cb_list,
+> > +                                              nsim_setup_tc_block_cb,
+> > +                                              ns, ns, true);
+> > +             mutex_unlock(&nsim_block_cb_lock);
+> > +             return err;
+> >       case TC_SETUP_FT:
+> >               return 0;
+> >       default:
 
-You didn't provide any new technical arguments that weren't already
-discussed in the past and rejected. The premise that the time of day is
-sensitive information was rejected there. Re-scoring of the CVE is not a
-good enough argument to drop this functionality from the kernel and
-potentially introduce a regression for some users.
+Hi Simon,
 
-> 
-> Admittedly, it's easy to just disable the timestamp in a firewall (eg firewall-cmd --add-icmp-block=timestamp-request) but people have to discover that after a scanner has screamed warnings about unfixed vulnerabilities.  So now I have actual time on my hands not dealing with the daily firefight of kernel CVEs, I had time to actually do something about this that's been annoying me and quite a lot of other people -- I mentioned googling for "CVE-1999-0524 fix".
+Thanks for the feedback. That makes sense, and I agree with the
+concern. I'll work on a v2 patch to address this.
 
-There is even less of a reason to remove this functionality when the
-"fix" is widely known and easy to implement. Not everything needs to be
-solved in the kernel, even if it's easier for some users.
-
-> 
-> If there's a genuine use-case for ICMP timestamp, then yes, it should stay and we'll just add to the documentation from Cisco, f5, Dell, Oracle, etc to explain how to disable it if you don't have that use case.  But lacking a use-case, I still think ICMP timestamp should simply be consigned to the bin.
-
-We have no way of knowing who is using this feature and I don't think we
-should remove it when the reason is effectively reduced to "pleasing
-some scanners".
+Thanks,
+Weiming
