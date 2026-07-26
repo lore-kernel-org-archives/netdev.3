@@ -1,178 +1,138 @@
-Received: from sonic312-24.consmr.mail.ne1.yahoo.com (sonic312-24.consmr.mail.ne1.yahoo.com [66.163.191.205])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5A1379981
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.191.205
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785095418; cv=none; b=kQLjb1xXRGqdR1PrX7mzWU2skNVD76iTdp8VSomy8NIVkxj5uMKOqW0qQ6MomMEc9mNrBbTISMJGmtRa50t2DBkPOyopZ4/1P6W0M2rZiMZI422+o1F7bGtFSDZxfCF2wkGG4/LoL7fLBDtUCEAIQAo0lXfyt5FSlA130Pg4H/4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785095418; c=relaxed/simple;
-	bh=TpF9WgLebJYCuyLXpfcMFXCb5PMqUSoNgdvwYs1bzrg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FcA+Dl0Znu2xLSbPbDyIG6yuWAlQPoYxMBM8IBkNP/ZW2xujWT3vwW9IiL294Ad1eqEXjPbKxuxVsVT+E502bvY/xHzru7YTbwHxkY0ontQm3fDOdoU3IKYRg/49hm01SDY2sFJL5+jMiTrBByATQX5MBB07Ce0EgE43VWuQZJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=VY5HKdwE; arc=none smtp.client-ip=66.163.191.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E5B524F
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 20:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785096663; cv=pass; b=ksQgVMKHBWNsxxOZHBj9TKqqDFzSgvn7IkmFtvI+DG3CJa2krmT+ZZrqPQZ7Xr7ugx1oHR7ywJPQn3HqutyYttiwiL+oaHNx85KByZmcicgpSbeJKOjqiic3ReR5undkL5ioB0wB2Yc8vgEpzK/Dmnn7HcZQh+5KN0DBfcfwACo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785096663; c=relaxed/simple;
+	bh=kWd2ZlnaGIqOzhBDtr6CPo+wqxbzhTWntedFRzAihME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pdLDemwrQuW51osbEC1x06+3PXYYcdg6LBcMB2kS29MkB0poGEXdbo6dGWYSaRKi0DCdK5g7vQNkY+F3R9TneWPy9tBxuM9z6xaEjcvANcLx29+9juk1BHFXtOmCGYBCgV93fFbzGPqnNKdy3PnsdI5BnaJj0QtOTDlNxbmDR2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bWjNmrzf; arc=pass smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="VY5HKdwE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1785095416; bh=FPPAU4Jx4M9kRoEGk5rhdz0gEfdLS5c+oPJz5cZ8ECU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=VY5HKdwESNRmBolzb3+GXRKsMSMd1ZbW3C3j/sbbM1Vx7Il1HdshjNpQOlQTfA3hCHDucQOZ/pH2BDT8uZXbQ2Y1youa2eNm1kPo3HwwrH9rlpvopyqBt6Kw2osqJblOS/SbsGr224LfiCItKnPCvFu0VVoAhNr5TWP6ZmafM6y3VC0Jm+JsSv5OkORE1LU7uMni/Hc6TwULEdKuSy+dWJ9YiwYQD+1nF8Ql/3iPTp6Hjj+e2SLqOlwpgbnpgPt5+GNsor/WC6fWrf9Mv2rbZ0snWRSpbuBM7URM4/UeXaoHFcXnsWT+YVkpUtv4VNoy07HOaWQXYIRPdPOxmxXhBQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1785095416; bh=+qWwXDeX6AY5g9HJfe5Xv7p7tQrGWPrNIFczsfJcPJy=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=FArcMLpT271id8xo3vgCCAzGYanYM4Xsu/l4zuk+1KmOvHhZMXfOsyzlAmh09S5OKWXTAOlTjCxXuOQytYIKvab7i0AvQM6zTVDLK4joDv2vKPgt0agxQw5s2zyMWnGpBV+pIGty4F/beFzx+liSB2OtKpCMwhgy1UYtEfl3HvLG5uRFnzea30MbPvcOpSJsRLIFjcFbRg4FYs5a5Rqh9MppZ3dazaZGwKvzXljztOjEGllpNatDtiqW0ucUS/6yHr/2zAemmkyq0ecarS648Yztz+cBvp81OQq5obiAiKixtq86j7+kuogOdSHY0Ae8UZMRPHy3T7xQUjwPXH8dLg==
-X-YMail-OSG: gDKsKe4VM1lr58QEc_kKyV.bP9l3VC6r_ISTcjezoLVAjQP7xZgZpZhUV23YPLV
- 7T6g9uqjmpkJk79E8BKiBrBVxklBXAfmHgbhtgteryo7Wvst1Kj2QkNtdZjAYWXe2HcDdfMwgJmu
- HwD5Klbjd0e3oUysXzL5.DP5NAkPIkmk9o5XSRiJ8NrdhlN.oVOV1RnqWqTyqpqmkwrT.PNMBA9P
- sujbgjbqlnoaDQK7sWq8hxkmSABiN6g1I.Wc5aOCIvxdCoHAHpHbvempgfWXR.bXwBMny0gcbwro
- SZDAXvpWZEo92VGz0MYqaf75KeAIugZm2j01zLPv.s2wWcJ08stE9jE9ht0WhRdS2v2y5M40lA1z
- mVR6uMh6_9Xcn4VpIBlAfr59fX24kH2.8oqiz4o_hSGvwdj7xpCo01_bAySlFVCwBXeiBomy8jPn
- VatApaNwlBTJ1ijGkJs9zG8B1928dIB6VW4fwTMwdlpK1bEhTYT10Z0kqlEb6MQK1wD4ansoBZoc
- am7TH3A3IiXYYK7B.bXzX_UPSWXEdu8f2RVFOIjcIawz_.wZhdbZdfvoSuGVY6HjIbIqlyhQvmOQ
- lKB.2n32ht31eY21RA_QS5YziLsTRcMLne8h3vNkitr7gTUjlHuRaJGu.gakbAkcDWWkCtGDsyrb
- 8wqfV.pWizRpwAZ21PGRKXRZbJ4mOvE0887G6N57wYAXOi0FXfLsQP2otzfXwK8GNT_9MU5ddN5A
- IcqM1M1CVK8uFuFoxfmryoS4oOZQrJRSL0okuTVHP_lrhA6gmfNqLDclrFbtawAt9gzeb1Hnk7Lu
- fnQgaTA0Vfs5Tzow028je3Bv5wXhe6GB7fJEg.ZhJtPS9h_fXmrMmzO3uep8h1DGfBxUKDsRd81T
- g0Dd1iDOenWvuq4isLNCeyNi8byuh2dVEgBJ4CjF.Tqu9Ko2L979z8.XzSff3o3BVhRKmo4LbhWk
- R3ZTlqYybUdArPgxzr_AE7F0aiWkr1NHLJPWvAaSbMpELQa4r31_AZ1iS6IrJQPGgG3JsAL9pOqG
- 0d4d7lr0mPpmyql1T83MriRqYvdRw7mSzKOBj3_UDy.6A.xjIyeY7yy4cDxiToFd5iDD.RZXN6PE
- jldtpvjp97EufMk9.n26ICDRbqxst5ojCizEMj52g1cayIv5Uc0WbWRmjqV43HI47mXm_LRoLA0N
- jzzqq_504XHIeziBsECjggPnZZEzXaefC6NsaTALRlEVYfuZ2KPS2YS7yraVfqOLDEw1b91qUWBV
- hXmz_AJ6byq.e9_Uj1X9XUAQzVglIttJkmZ5bmbnV_BU2.kba2N6ZTcalhNwLIaNzuQtUpF191M6
- Knc37Oe23w4JkIt6VL1Pd1jG1Kiv.WSUgo.o8.hOF6zd4pfActxr3idjrj1pUWVRtbzvx_z025QI
- QwhTrPKzU4dwlKPaMkgtoIia088y5gzAbLoFCPG7CpxKqi7PP83jjn7H3loQkJYwXLgINgJ9Hgsc
- H5iT_0fS8GBiyV1eZ6HnulOU2At33khhpc_NeMKk05m6J0K14ISZJmX9Q3PM4ucgc_ETlQceM9uq
- p.8IH2qud5NA0Cr4HtkMy7tLdMglU6.Hb0rF3f4zhCni.1IczLedCG5ZIp2kLgyzp.DtUPrwFfqW
- dlQzSM2VR6bgQOrqvdqUbpl.fNLeH4IR_kDVyqsDEeAdmKkxn0raLYZxa8qZvYSH4rr6RRS8HTRm
- WyqwbUj1hLdo_3CSwI_YByQjVQR___Vow0RRhZP34NRzivMkfKC5wi_TmqxVZASBQ8sZQfwdy7m_
- AhKgMpvVMvXdugQxEcXPMYvvq3B1oCG7kaLmjPW67Df69xXKjX7LW7mPqoXRvfFRQA4w6_UnkiA3
- 7UY5slef6Dmqhi8aLB657nNOVh8axxg.Ku6Q4EEDR5cPRg3ngno4q44w2cgU35CalWlmunk1O2xJ
- sEi2Ex6L3XQDYIC98KPefJD2jwYtXLWK68Gvy53jTUxtLiiUB0VZCggRN77nMqvY1ReZHaDb0tBq
- rsMPAD1JEgexpp8N4t_wdlMJbanIlTfrkeJb5m0erbCy5wFoI1M2sumv0Ka2leXNpLQgNWmzJZNK
- qJAD3heFRR4hyfk8NxRGDOXOGphAPzW_G2N_jkqEVe9JDi2udZlzeQVHfGfr16gAFLpr8oBVzcbe
- iPAszg8CJjq72DAb4UGu8ypjURFUMyHB8HB5YrYqXjWez6Yg7abSVwgbjpi7coZEVjhDe.DjFIP0
- SRwqGcyshreT9LdiPtkf6e8_JQuoVpBYZfT2G3.0PWpoE6I9Hb8OLAanMWv0HLh6CybMRg9vMaUy
- GqpPYOhxcpbEq3oFKIz1ypgGldmWjOj1Y7rle71pMcRtA579JIGO_Dac-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 912cacaa-7b94-4262-9727-0b7723a8fd63
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Sun, 26 Jul 2026 19:50:16 +0000
-Received: by hermes--production-ir2-676cb4d88b-5gr6s (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 15052f7426db3f48268ff2a6d7865799;
-          Sun, 26 Jul 2026 19:18:51 +0000 (UTC)
-Message-ID: <2263dec9-67fe-4f0c-ad0a-82ab2a2661c1@yahoo.com>
-Date: Sun, 26 Jul 2026 21:18:44 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bWjNmrzf"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso2892274a91.1
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 13:11:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785096661; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YyQzw3ax8DkkXZ1dTQTL4eQ1OTGfIMAhyXUKey6lMIdaRV/+r59H/3QYongJPLiHqO
+         e1FCY5QHpqfqhk2mxFtBNzA2AESw5tqquo3xPQ8wFlEwpX64n4i47ipNxgqdRwHqCny6
+         4cu3y1in0BiYOM//o0f+isOiDRIHpzMxXk3rHzRfFSdwJbNRAqCCp6Ue0a9e4LsdJPGU
+         NUGkUe+56D2005qTyqLJKLqnWd9914KMN9c24KuFGYQRYCzoCZW4WPyXdHp6ptzkWyGt
+         j2omHICFWyT/nTTX/EpVR35SS7FEPe12ZZgDuZ3PTKgpdWmU7ab/dTja+nadRMoNusOF
+         05Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2+Bo0viCEB2m22FDhwGjICfsYsQ1DUFzTfnhxFo1SU0=;
+        fh=aXDfrw8Dt6LmnavW99XW81NZ7Z3AefLkG2MYAWcPMqY=;
+        b=Tk6K4pSNKXczhmsOrvJpL25k6M/fhmVLbAsuzdiMzY0wGE1hylUZxY5iE0jP2KEAZP
+         QCCpE2cdtwawQR8xuKnOsDaHF5nSreoU3X9gk4aEFVQMgfXUFTgDa+8YP7wBZvE2M8Ap
+         08GunL7UzmGMP8TbC30JKN2zAFS8/ZglG0Fft9kSafMng4kEjFsN9tqIHRGqdVkyKFIm
+         rDPMRd4jcvAiNNlBMS7Jiph9Rg72ngcJ+f2bKYg3Seng7AZN55G2xxW3ifqP2UWV8Sfi
+         tDDAaKasPucaUUjT02May2/tabDr7i1fZDH8vR4mw0zT7LZuPMH2f5EPy7fnBAX1zKVP
+         bGyw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785096661; x=1785701461; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2+Bo0viCEB2m22FDhwGjICfsYsQ1DUFzTfnhxFo1SU0=;
+        b=bWjNmrzfOcznBPitgGj/HS0xLXFm9c9EvME+U9Y38WewNosDqzxcptmAggNl6jtEYm
+         THi8L8kT7chED9bWcXg7+qUv/N7TMowQCnPZL3LwK7fkr6tym+6FhlhoxdYN4k1BD/Uf
+         9qaSxmxHi4Sjq3UYpbzBwI0DQFesqVWoJqU2jiPsnBPApLeCtmNo0OUMuH18+2f9+5LA
+         oo9hGHabcykOJDdvexQexzB4IBppCw9JBRQRZdnqM2zqJLAfzdlDvLn0nywYK8qtiGOj
+         x9pUhyT/uAItjv0TDjAWjuOVo5/1tolIctW/xUEQ+wdpDz9bPsJdIrkZuxbm8Nu+sMBL
+         pOOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785096661; x=1785701461;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2+Bo0viCEB2m22FDhwGjICfsYsQ1DUFzTfnhxFo1SU0=;
+        b=VMrHhoTNKy8eyotUL1fA97wXLqD6GFlfiajruM9JQunBIAunlDAorNzAqA3mx9mJaN
+         JSYAHEaLIzgsjkmOGA2xSn9DTa9d6ilJCiRMwlPz2u2YsvxJDjdeewYy4XBIGzML+rdF
+         LXM0N5Muim1bxKLIGy4qA4qp/iCcbEKV+rgYMUQMVy8kZ5VbKE6XQJ1AM4yW9nBT+LH5
+         pKwwRfLMiOecXIfHQHCDKSk69cbFpfnFSkFwZljUjeHKzXe6p3av4fIpD8W+FTwyngKr
+         aAlYLx9SSWByFku8uCdVNqVU/Cdvvo/c9SMPmyEY9XuNMtp2O8TJJdi1dlejtM3xMRnw
+         AtIg==
+X-Forwarded-Encrypted: i=1; AHgh+RqrJD0Qj61yQMQV0phljDhiCAphKlw7Byb7rGgMnmpD9zGAgOefU9th0LhFOKIykaqjjFRfoKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjV5kFnFXaQ4LLLPOSYJmmzOaAkTnh+m+XF7if5WfiryXHXMrr
+	FdQyIIo6ZxmNZnFMN6sq0uj1bdA8Kjr22+i3O3TBM/hkNccIScx7zkxEkNvCi6PrdUlKH98/TI3
+	GF4epc28ru5nW2NyjNtPNNcbKzXxMipk=
+X-Gm-Gg: AR+sD136hfmhzpQmyi5jdNj3PIWvxHBe2bsYwTw+JP8LOfFG5rO+AdBRgNt5MlA88Vj
+	L/TG+NRMz6IBeCu/0IE4FOtmEzaQXzeFCdwNkk61VFrzGg1h5YBmb8If5q/Pw6MG7aP5kQ6Sy4w
+	Hn//y5HjJp6p8oFjz72caLSXOCcM+2lzoq4Gc+ewrUA4R9sYUSeLa+EK5He6dpIRkk2M07UT3T3
+	N/gOzIA8uguAX/etZHnfeTAHLCXQMk/hzC7WxHDFHCbxxnSsVV98J5lSWrrsTmjov9CjOWv
+X-Received: by 2002:a17:90b:384b:b0:38d:ef48:b04 with SMTP id
+ 98e67ed59e1d1-38f294ea3c5mr6088330a91.10.1785096661118; Sun, 26 Jul 2026
+ 13:11:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: dsa: realtek: rtl8365mb: use
- devm_mutex_init
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- Linus Walleij <linusw@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26180 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+References: <20260523-af-alg-harden-v1-2-c76755c3a5c5@gmail.com>
+ <20260603133312.12848-1-freude@linux.ibm.com> <amOGWwdjnJqyxH5L@codewreck.org>
+ <20260724160034.GB2032@sol> <amOTjPW__CNZui3_@codewreck.org>
+ <CAFLxGvy+ec3nQLrQtwFZgGELhT2pKBDnHdD0pMvEGh-Mf3rjgQ@mail.gmail.com>
+ <20260725220443.GA41199@quark> <CAFLxGvyBGzfwh61F5YkYqctNPCQJCpFOwTtKfDs4L+iK8WJZpQ@mail.gmail.com>
+ <20260726155024.GB1673@sol>
+In-Reply-To: <20260726155024.GB1673@sol>
+From: Richard Weinberger <richard.weinberger@gmail.com>
+Date: Sun, 26 Jul 2026 22:10:48 +0200
+X-Gm-Features: AUfX_mwZurnXooec2A3FqadK1K8O_igYrMZGYhDFbqwtbTaFK-ATjGnI_bmWgHQ
+Message-ID: <CAFLxGvzaAH+ZGr-OFo=Li1aOxgwBjjR76T7m1CjFaL-6w3KPPQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] AF_ALG: Drop support for off-CPU cryptography
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Dominique Martinet <asmadeus@codewreck.org>, demiobenour@gmail.com, 
+	Harald Freudenberger <freude@linux.ibm.com>, acme@kernel.org, adrian.hunter@intel.com, 
+	alexander.shishkin@linux.intel.com, ardb@kernel.org, axboe@kernel.dk, 
+	corbet@lwn.net, davem@davemloft.net, edumazet@google.com, 
+	herbert@gondor.apana.org.au, horms@kernel.org, io-uring@vger.kernel.org, 
+	irogers@google.com, james.clark@linaro.org, jolsa@kernel.org, kuba@kernel.org, 
+	kuniyu@google.com, linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, peterz@infradead.org, 
+	skhan@linuxfoundation.org, willemb@google.com, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/18/2026 7:59 AM, Luiz Angelo Daros de Luca wrote:
-> mutex_destroy() is needed while debugging mutex. Instead of calling it
-> directly on driver .remove(), just use devm.
-> 
-> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-> ---
->  drivers/net/dsa/realtek/rtl8365mb_main.c | 15 ++++++++++++---
->  drivers/net/dsa/realtek/rtl83xx.c        | 14 +++++++++++---
->  2 files changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 5ac091bf93c9..c787fdb75413 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> @@ -1988,16 +1988,19 @@ static void rtl8365mb_get_stats64(struct dsa_switch *ds, int port,
->  	spin_unlock(&p->stats_lock);
->  }
->  
-> -static void rtl8365mb_stats_setup(struct realtek_priv *priv)
-> +static int rtl8365mb_stats_setup(struct realtek_priv *priv)
->  {
->  	struct rtl8365mb *mb = priv->chip_data;
->  	struct dsa_switch *ds = &priv->ds;
->  	struct dsa_port *dp;
-> +	int ret;
->  
->  	/* Per-chip global mutex to protect MIB counter access, since doing
->  	 * so requires accessing a series of registers in a particular order.
->  	 */
-> -	mutex_init(&mb->mib_lock);
-> +	ret = devm_mutex_init(priv->dev, &mb->mib_lock);
-> +	if (ret)
-> +		return ret;
->  
->  	dsa_switch_for_each_available_port(dp, ds) {
->  		struct rtl8365mb_port *p = &mb->ports[dp->index];
-> @@ -2010,6 +2013,8 @@ static void rtl8365mb_stats_setup(struct realtek_priv *priv)
->  		 */
->  		INIT_DELAYED_WORK(&p->mib_work, rtl8365mb_stats_poll);
->  	}
-> +
-> +	return 0;
->  }
->  
->  static void rtl8365mb_stats_teardown(struct realtek_priv *priv)
-> @@ -2567,7 +2572,11 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
->  	}
->  
->  	/* Start statistics counter polling */
-> -	rtl8365mb_stats_setup(priv);
-> +	ret = rtl8365mb_stats_setup(priv);
-> +	if (ret) {
-> +		dev_err(priv->dev, "failed to setup stats\n");
-> +		goto out_teardown_irq;
-> +	}
->  
->  	return 0;
->  
-> diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-> index 90843d52c5a8..35df809a5951 100644
-> --- a/drivers/net/dsa/realtek/rtl83xx.c
-> +++ b/drivers/net/dsa/realtek/rtl83xx.c
-> @@ -156,9 +156,17 @@ rtl83xx_probe(struct device *dev,
->  	if (!priv)
->  		return ERR_PTR(-ENOMEM);
->  
-> -	mutex_init(&priv->map_lock);
-> -	mutex_init(&priv->vlan_lock);
-> -	mutex_init(&priv->l2_lock);
-> +	ret = devm_mutex_init(dev, &priv->map_lock);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	ret = devm_mutex_init(dev, &priv->vlan_lock);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	ret = devm_mutex_init(dev, &priv->l2_lock);
-> +	if (ret)
-> +		return ERR_PTR(ret);
->  
->  	rc.lock_arg = priv;
->  	priv->map = devm_regmap_init(dev, NULL, priv, &rc);
-> 
-> ---
-> base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
-> change-id: 20260718-realtek_mutext-41a072e5cd24
-> 
-> Best regards,
-> --  
-> Luiz Angelo Daros de Luca <luizluca@gmail.com>
-> 
-> 
+On Sun, Jul 26, 2026 at 5:52=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> =
+wrote:
+> Then I would suggest that skcipher_bind() should check if the name is
+> "cbc(paes)", and if so use 0 instead of AF_ALG_CRYPTOAPI_MASK.  Please
+> go ahead and send a patch against mainline (for v7.2-rc6) if you're
+> interested.
 
-Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Patch sent.
+
+> On cryptodev/master (future 7.3) it should get an entry in the new
+> skcipher_allowlist as well: { "cbc(paes)", true }.  That would be a
+> separate patch.
+
+Do you mind a new field in struct af_alg_allowlist_entry which indicates
+that  AF_ALG_CRYPTOAPI_MASK should get bypassed?
+
+bool bypass_apimask;?
+
+> With those it will keep working as root.  (And you mentioned in your
+> other email it's used only as root anyway.)
+
+Agreed. While I don't know whether others out there using it in
+non-privileged mode,
+let's be conservative. If something breaks, users will speak up, I hope.
+
+--=20
+Thanks,
+//richard
