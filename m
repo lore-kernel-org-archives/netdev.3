@@ -1,213 +1,178 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic312-24.consmr.mail.ne1.yahoo.com (sonic312-24.consmr.mail.ne1.yahoo.com [66.163.191.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA0D35E1B7;
-	Sun, 26 Jul 2026 19:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785094693; cv=fail; b=N52n3r+3r6EREbKsoD3lk4lu7TQi+/0YzOSIXZ9gSxdcnoC2Bgi5dvGWTNwr1v+k6/0PBKHvMpQ25u+uxTHMj2jNV2V9LSX6ome4CSXuhvU0AhnP2aMBMx4qdVVCRRxYvZp0j5kmV70KAGFYL8XSTmKQFCCoWWWevVLy0lkw+Kg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785094693; c=relaxed/simple;
-	bh=pGjhNCD013GUgdrUvaN4OHJY4AbmbSUqJjTbh+yRk2Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gfAYvEY1IvOfDZoqNk0rlF/krnQ4LuoGBAEQb/vgSHI8V0swouuisV7036XCg2LSlMTVONIdQKufOxzqPSnbJBVPfBx6xudlw7wnP7GqVy+hAxFy3gs7tvu/UY6nlujokEjEKCm0CkwpD0I0d9ferU3Zh+63ZwheL+DbtxDZdko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=LGZw2njp; arc=fail smtp.client-ip=40.107.159.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5A1379981
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.191.205
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785095418; cv=none; b=kQLjb1xXRGqdR1PrX7mzWU2skNVD76iTdp8VSomy8NIVkxj5uMKOqW0qQ6MomMEc9mNrBbTISMJGmtRa50t2DBkPOyopZ4/1P6W0M2rZiMZI422+o1F7bGtFSDZxfCF2wkGG4/LoL7fLBDtUCEAIQAo0lXfyt5FSlA130Pg4H/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785095418; c=relaxed/simple;
+	bh=TpF9WgLebJYCuyLXpfcMFXCb5PMqUSoNgdvwYs1bzrg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FcA+Dl0Znu2xLSbPbDyIG6yuWAlQPoYxMBM8IBkNP/ZW2xujWT3vwW9IiL294Ad1eqEXjPbKxuxVsVT+E502bvY/xHzru7YTbwHxkY0ontQm3fDOdoU3IKYRg/49hm01SDY2sFJL5+jMiTrBByATQX5MBB07Ce0EgE43VWuQZJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=VY5HKdwE; arc=none smtp.client-ip=66.163.191.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="LGZw2njp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JQyBPYs8Ypf4zbLqZ1ArjUDXUKkF+yHIWt+zu1Km1fWiPAC9jjdtYNHxEHRoef50IVYr2VbNHQoHvcJXwqJjj+NPkhEwYHNFOjjJh6zjwTNQL6I7wfvovGQnei2Fj+cimmuxeLtnTppQxR9ZwyTXy+kmfrldaIIshMDr4yhWXfJ8B92u1EBkFnTvL0N4bz7ncWTmf+JJHPt5VNyVZeg9tJn7hE/6xj8xfnin0n8++RWAArpynaclUCepEh/1GUrIP4dnHMAtwzwY1GhmjZz/TCkzmaG/JFZRP/+2RqtmABTUIdytcfa9GDPJy8Onaii4pPAJcy0KbavzDghHOq3hXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6jl5SuJYD1y41ZvM0TXJQ9JJ48s9LeRLmilIb5EDsNw=;
- b=Qp6lON04KZD/9l+gqhzTtckiCfuUqk94IddJT94lni+yOZ/ct2ouKmLrcEvxQYTwpNsZ2pntXe6n5uh95JjXlQ/Sqffcl59zCH7qD3Znft/ZZ/l+it0Ge/bDy74zUiCWXW14RValOoJnj+iDJkilMVxk+aelow20K/FdiD2+2Mj2JqWuUk/NZ7uA3soGIw5lGoXGTmSRD5uCMbXfWJnlaLMR0WBGW0FEwvPJF65jf87arASn+lufh0nVw9NztusTfqb7s5G+b0+AQu5TfnrGkMKj9Mml/tB4HEoeT2mLBbK+GwptEMbvAbL/r2zC9uBMtQ2CV4IJp5AEj7l2ezuTtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.84) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6jl5SuJYD1y41ZvM0TXJQ9JJ48s9LeRLmilIb5EDsNw=;
- b=LGZw2njpwro+L0CQIBap62qj4YEjezBgmN4WrZ1oYo3o3xJnhG/6+vRPPjtbL/QIGTguYEI5I8Jlv/AkeZiHmt9FdQNyFk/qLvblci897RqKSInLWwNjc8V69a1i2Od0EwJb87RDF6kLL1zFYsGq8qpl7WRSso9G68l9WgYIOHsjp6dXPgIuqK+u2G8ObJW46XM6S0hzyZAjJ47jhfqK8luSD2xfuFiwJw16mhi+HAFAFuwX0Ex4XRMt3JluZehNbU+kEkhyYQyQ3/kqyGr49jljibObA5rL5u8nfubvhR3ROTfu4+XCbPz6zU/stZ+/5QRY80upLnZnK2YIoryucw==
-Received: from AS4P195CA0014.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:5e2::10)
- by PA1PR07MB10414.eurprd07.prod.outlook.com (2603:10a6:102:4f4::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.9; Sun, 26 Jul
- 2026 19:38:06 +0000
-Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:20b:5e2:cafe::86) by AS4P195CA0014.outlook.office365.com
- (2603:10a6:20b:5e2::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.13 via Frontend Transport; Sun,
- 26 Jul 2026 19:38:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.84)
- smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.84 as permitted sender) receiver=protection.outlook.com;
- client-ip=131.228.2.84; helo=fihe01smtplvp01.emea.nsn-net.net; pr=C
-Received: from fihe01smtplvp01.emea.nsn-net.net (131.228.2.84) by
- AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
- via Frontend Transport; Sun, 26 Jul 2026 19:38:06 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe01smtplvp01.emea.nsn-net.net (Postfix) with ESMTP id DA6688000096;
-	Sun, 26 Jul 2026 22:38:04 +0300 (EEST)
-From: chia-yu.chang@nokia-bell-labs.com
-To: horms@kernel.org,
-	dsahern@kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	kuba@kernel.org,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	donald.hunter@gmail.com,
-	kuniyu@google.com,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen.de_schepper@nokia-bell-labs.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH v4 net-next 1/1] tcp: allow congestion controls to override TSO autosizing
-Date: Sun, 26 Jul 2026 21:38:02 +0200
-Message-Id: <20260726193802.397321-1-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="VY5HKdwE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1785095416; bh=FPPAU4Jx4M9kRoEGk5rhdz0gEfdLS5c+oPJz5cZ8ECU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=VY5HKdwESNRmBolzb3+GXRKsMSMd1ZbW3C3j/sbbM1Vx7Il1HdshjNpQOlQTfA3hCHDucQOZ/pH2BDT8uZXbQ2Y1youa2eNm1kPo3HwwrH9rlpvopyqBt6Kw2osqJblOS/SbsGr224LfiCItKnPCvFu0VVoAhNr5TWP6ZmafM6y3VC0Jm+JsSv5OkORE1LU7uMni/Hc6TwULEdKuSy+dWJ9YiwYQD+1nF8Ql/3iPTp6Hjj+e2SLqOlwpgbnpgPt5+GNsor/WC6fWrf9Mv2rbZ0snWRSpbuBM7URM4/UeXaoHFcXnsWT+YVkpUtv4VNoy07HOaWQXYIRPdPOxmxXhBQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1785095416; bh=+qWwXDeX6AY5g9HJfe5Xv7p7tQrGWPrNIFczsfJcPJy=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=FArcMLpT271id8xo3vgCCAzGYanYM4Xsu/l4zuk+1KmOvHhZMXfOsyzlAmh09S5OKWXTAOlTjCxXuOQytYIKvab7i0AvQM6zTVDLK4joDv2vKPgt0agxQw5s2zyMWnGpBV+pIGty4F/beFzx+liSB2OtKpCMwhgy1UYtEfl3HvLG5uRFnzea30MbPvcOpSJsRLIFjcFbRg4FYs5a5Rqh9MppZ3dazaZGwKvzXljztOjEGllpNatDtiqW0ucUS/6yHr/2zAemmkyq0ecarS648Yztz+cBvp81OQq5obiAiKixtq86j7+kuogOdSHY0Ae8UZMRPHy3T7xQUjwPXH8dLg==
+X-YMail-OSG: gDKsKe4VM1lr58QEc_kKyV.bP9l3VC6r_ISTcjezoLVAjQP7xZgZpZhUV23YPLV
+ 7T6g9uqjmpkJk79E8BKiBrBVxklBXAfmHgbhtgteryo7Wvst1Kj2QkNtdZjAYWXe2HcDdfMwgJmu
+ HwD5Klbjd0e3oUysXzL5.DP5NAkPIkmk9o5XSRiJ8NrdhlN.oVOV1RnqWqTyqpqmkwrT.PNMBA9P
+ sujbgjbqlnoaDQK7sWq8hxkmSABiN6g1I.Wc5aOCIvxdCoHAHpHbvempgfWXR.bXwBMny0gcbwro
+ SZDAXvpWZEo92VGz0MYqaf75KeAIugZm2j01zLPv.s2wWcJ08stE9jE9ht0WhRdS2v2y5M40lA1z
+ mVR6uMh6_9Xcn4VpIBlAfr59fX24kH2.8oqiz4o_hSGvwdj7xpCo01_bAySlFVCwBXeiBomy8jPn
+ VatApaNwlBTJ1ijGkJs9zG8B1928dIB6VW4fwTMwdlpK1bEhTYT10Z0kqlEb6MQK1wD4ansoBZoc
+ am7TH3A3IiXYYK7B.bXzX_UPSWXEdu8f2RVFOIjcIawz_.wZhdbZdfvoSuGVY6HjIbIqlyhQvmOQ
+ lKB.2n32ht31eY21RA_QS5YziLsTRcMLne8h3vNkitr7gTUjlHuRaJGu.gakbAkcDWWkCtGDsyrb
+ 8wqfV.pWizRpwAZ21PGRKXRZbJ4mOvE0887G6N57wYAXOi0FXfLsQP2otzfXwK8GNT_9MU5ddN5A
+ IcqM1M1CVK8uFuFoxfmryoS4oOZQrJRSL0okuTVHP_lrhA6gmfNqLDclrFbtawAt9gzeb1Hnk7Lu
+ fnQgaTA0Vfs5Tzow028je3Bv5wXhe6GB7fJEg.ZhJtPS9h_fXmrMmzO3uep8h1DGfBxUKDsRd81T
+ g0Dd1iDOenWvuq4isLNCeyNi8byuh2dVEgBJ4CjF.Tqu9Ko2L979z8.XzSff3o3BVhRKmo4LbhWk
+ R3ZTlqYybUdArPgxzr_AE7F0aiWkr1NHLJPWvAaSbMpELQa4r31_AZ1iS6IrJQPGgG3JsAL9pOqG
+ 0d4d7lr0mPpmyql1T83MriRqYvdRw7mSzKOBj3_UDy.6A.xjIyeY7yy4cDxiToFd5iDD.RZXN6PE
+ jldtpvjp97EufMk9.n26ICDRbqxst5ojCizEMj52g1cayIv5Uc0WbWRmjqV43HI47mXm_LRoLA0N
+ jzzqq_504XHIeziBsECjggPnZZEzXaefC6NsaTALRlEVYfuZ2KPS2YS7yraVfqOLDEw1b91qUWBV
+ hXmz_AJ6byq.e9_Uj1X9XUAQzVglIttJkmZ5bmbnV_BU2.kba2N6ZTcalhNwLIaNzuQtUpF191M6
+ Knc37Oe23w4JkIt6VL1Pd1jG1Kiv.WSUgo.o8.hOF6zd4pfActxr3idjrj1pUWVRtbzvx_z025QI
+ QwhTrPKzU4dwlKPaMkgtoIia088y5gzAbLoFCPG7CpxKqi7PP83jjn7H3loQkJYwXLgINgJ9Hgsc
+ H5iT_0fS8GBiyV1eZ6HnulOU2At33khhpc_NeMKk05m6J0K14ISZJmX9Q3PM4ucgc_ETlQceM9uq
+ p.8IH2qud5NA0Cr4HtkMy7tLdMglU6.Hb0rF3f4zhCni.1IczLedCG5ZIp2kLgyzp.DtUPrwFfqW
+ dlQzSM2VR6bgQOrqvdqUbpl.fNLeH4IR_kDVyqsDEeAdmKkxn0raLYZxa8qZvYSH4rr6RRS8HTRm
+ WyqwbUj1hLdo_3CSwI_YByQjVQR___Vow0RRhZP34NRzivMkfKC5wi_TmqxVZASBQ8sZQfwdy7m_
+ AhKgMpvVMvXdugQxEcXPMYvvq3B1oCG7kaLmjPW67Df69xXKjX7LW7mPqoXRvfFRQA4w6_UnkiA3
+ 7UY5slef6Dmqhi8aLB657nNOVh8axxg.Ku6Q4EEDR5cPRg3ngno4q44w2cgU35CalWlmunk1O2xJ
+ sEi2Ex6L3XQDYIC98KPefJD2jwYtXLWK68Gvy53jTUxtLiiUB0VZCggRN77nMqvY1ReZHaDb0tBq
+ rsMPAD1JEgexpp8N4t_wdlMJbanIlTfrkeJb5m0erbCy5wFoI1M2sumv0Ka2leXNpLQgNWmzJZNK
+ qJAD3heFRR4hyfk8NxRGDOXOGphAPzW_G2N_jkqEVe9JDi2udZlzeQVHfGfr16gAFLpr8oBVzcbe
+ iPAszg8CJjq72DAb4UGu8ypjURFUMyHB8HB5YrYqXjWez6Yg7abSVwgbjpi7coZEVjhDe.DjFIP0
+ SRwqGcyshreT9LdiPtkf6e8_JQuoVpBYZfT2G3.0PWpoE6I9Hb8OLAanMWv0HLh6CybMRg9vMaUy
+ GqpPYOhxcpbEq3oFKIz1ypgGldmWjOj1Y7rle71pMcRtA579JIGO_Dac-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 912cacaa-7b94-4262-9727-0b7723a8fd63
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Sun, 26 Jul 2026 19:50:16 +0000
+Received: by hermes--production-ir2-676cb4d88b-5gr6s (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 15052f7426db3f48268ff2a6d7865799;
+          Sun, 26 Jul 2026 19:18:51 +0000 (UTC)
+Message-ID: <2263dec9-67fe-4f0c-ad0a-82ab2a2661c1@yahoo.com>
+Date: Sun, 26 Jul 2026 21:18:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: dsa: realtek: rtl8365mb: use
+ devm_mutex_init
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Linus Walleij <linusw@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
+ <alsi@bang-olufsen.dk>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <20260718-realtek_mutext-v1-1-1cd7beb20ae6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|PA1PR07MB10414:EE_
-X-MS-Office365-Filtering-Correlation-Id: 154753d0-fd88-4f89-aef5-08deeb4d6a4d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|23010399003|1800799024|921020|11063799006|10067099003|18002099003|56012099006|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	fEbO9hQBEsjEPos8ilJVvMEyBUxuVXL7cy9l8eFQfsRjSVJsFv5Kmcxox03XmRsRq2RZnbdT8N/X3Ud67ATy1IhQ/ZFBTCkX3sIYXlf2/kyDrh0qs3+NAl8GHpWdSY0woa32DYvLH0xa2QtX0vtiD3dEp7uC1Bwhj82xuZW+DALtshqgagUrP8oxzFBJINuvzrMAMRDxnE7ixtkvidvgXXk/kD8Z9yd59myD8G5wbYz13pkhbKJnUQHSRhYHKzZl49PwXFI7Jl/Jdx6VnzCah672WFNCr77v8tgjihvhDkQEGspaU16mTkMPrvlpkOFNHXvRdDjVbExWGRmWnz6/bKU+h2H8wwT/XLt3cwsUhkKcTPwxU+1SwINzFcIBk7H+snYPT6hEcjb0Q2YLWFLvpYgM9y50PE8ID5FEwl63dQOX+Mi9znHwzLp9gmvmA8OQvaq7VDTJGAj6h/+Ws5lBxnj2ScscBvE4vegsLtUBUA75a2PFaB0fVZm7lyzHIg2v+65Fio5KUu0MgpJKy8yCpr/vFt7P3lGgbpkZgmdcxS8k/v7FmRNaCLEH5Jz9ILtbN8B0T8B+grrYAHC2WV0fG1etWRC0bl8uBuwB/gzT0pgnlbFKa6C9cJ6Ob1Y6nVSZ5bXqft93zi/sofvMyBbl957ntAK00FHOTNhZ1xKMvwvFXnqhbkey9pZJFQ3h+BGsRn0SMlLCX7259Vlm5eATUl9CXp9YTERO7iZueIW+GxkPkzoz/dCQL0KEXoDZfonM
-X-Forefront-Antispam-Report:
-	CIP:131.228.2.84;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe01smtplvp01.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(23010399003)(1800799024)(921020)(11063799006)(10067099003)(18002099003)(56012099006)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	lKIJZcvkOrQtA9XrkdRukI2fTT3PWb/tIdkZEuSdIMqoygP/WVvu1rp4da/gjjCHo8HDuMh+YgGKuF0t9+gkQJgywYrU5Wtu0NQv9TTS2byq1WGIGhr6oX/XRkxauQ7QjiSKRgnX7DaYES3BmC4nmXA7e8HtMhlCcG5UE8JJsxII84UlPjb8tymFasXUUgQDXjJT1SGK3LLtUxas+RoSxQyimkt82soD4nC74Z8zK21Lyl42ZNLau1WOD8hem64uTScPM4LbCHJwB6GoOFBK4chEFkZ33MgilHW0djjl3cpDmAcPd2NwjEtzsQ5Z4ILtSxeeFLDYQQGWrPG/wdoukWoQVockJiUnaHrNHl9F9kg5zg+dlN2/UudFT0InAcCh3VHwsdWllbAOGnnnw8br/yF/8uyucsRZTHqZCvrZJcA/tdOFTpNSPYHu4ZT3HdW0
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 19:38:06.0703
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 154753d0-fd88-4f89-aef5-08deeb4d6a4d
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.84];Helo=[fihe01smtplvp01.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-AMS0EPF00000199.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR07MB10414
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26180 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+On 7/18/2026 7:59 AM, Luiz Angelo Daros de Luca wrote:
+> mutex_destroy() is needed while debugging mutex. Instead of calling it
+> directly on driver .remove(), just use devm.
+> 
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+> ---
+>  drivers/net/dsa/realtek/rtl8365mb_main.c | 15 ++++++++++++---
+>  drivers/net/dsa/realtek/rtl83xx.c        | 14 +++++++++++---
+>  2 files changed, 23 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index 5ac091bf93c9..c787fdb75413 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> @@ -1988,16 +1988,19 @@ static void rtl8365mb_get_stats64(struct dsa_switch *ds, int port,
+>  	spin_unlock(&p->stats_lock);
+>  }
+>  
+> -static void rtl8365mb_stats_setup(struct realtek_priv *priv)
+> +static int rtl8365mb_stats_setup(struct realtek_priv *priv)
+>  {
+>  	struct rtl8365mb *mb = priv->chip_data;
+>  	struct dsa_switch *ds = &priv->ds;
+>  	struct dsa_port *dp;
+> +	int ret;
+>  
+>  	/* Per-chip global mutex to protect MIB counter access, since doing
+>  	 * so requires accessing a series of registers in a particular order.
+>  	 */
+> -	mutex_init(&mb->mib_lock);
+> +	ret = devm_mutex_init(priv->dev, &mb->mib_lock);
+> +	if (ret)
+> +		return ret;
+>  
+>  	dsa_switch_for_each_available_port(dp, ds) {
+>  		struct rtl8365mb_port *p = &mb->ports[dp->index];
+> @@ -2010,6 +2013,8 @@ static void rtl8365mb_stats_setup(struct realtek_priv *priv)
+>  		 */
+>  		INIT_DELAYED_WORK(&p->mib_work, rtl8365mb_stats_poll);
+>  	}
+> +
+> +	return 0;
+>  }
+>  
+>  static void rtl8365mb_stats_teardown(struct realtek_priv *priv)
+> @@ -2567,7 +2572,11 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
+>  	}
+>  
+>  	/* Start statistics counter polling */
+> -	rtl8365mb_stats_setup(priv);
+> +	ret = rtl8365mb_stats_setup(priv);
+> +	if (ret) {
+> +		dev_err(priv->dev, "failed to setup stats\n");
+> +		goto out_teardown_irq;
+> +	}
+>  
+>  	return 0;
+>  
+> diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
+> index 90843d52c5a8..35df809a5951 100644
+> --- a/drivers/net/dsa/realtek/rtl83xx.c
+> +++ b/drivers/net/dsa/realtek/rtl83xx.c
+> @@ -156,9 +156,17 @@ rtl83xx_probe(struct device *dev,
+>  	if (!priv)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> -	mutex_init(&priv->map_lock);
+> -	mutex_init(&priv->vlan_lock);
+> -	mutex_init(&priv->l2_lock);
+> +	ret = devm_mutex_init(dev, &priv->map_lock);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	ret = devm_mutex_init(dev, &priv->vlan_lock);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	ret = devm_mutex_init(dev, &priv->l2_lock);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+>  
+>  	rc.lock_arg = priv;
+>  	priv->map = devm_regmap_init(dev, NULL, priv, &rc);
+> 
+> ---
+> base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
+> change-id: 20260718-realtek_mutext-41a072e5cd24
+> 
+> Best regards,
+> --  
+> Luiz Angelo Daros de Luca <luizluca@gmail.com>
+> 
+> 
 
-Today, congestion control algorithms influence TSO sizing through the
-min_tso_segs() callback, which provides the minimum number of segments
-used by tcp_tso_autosize(). However, Prague congestion control requires
-finer control and needs to determine the final TSO segment count
-directly rather than only providing a minimum bound.
- 
-This patch introduces TCP_CONG_EXACT_TSO_SEGS flag and extends
-tcp_congestion_ops with an alternative tso_segs() callback. When the
-flag is set, the congestion control algorithm supplies the final TSO
-segment count directly and bypasses tcp_tso_autosize(). Otherwise, the
-existing min_tso_segs() callback continues to provide the minimum
-segment count used by tcp_tso_autosize().
-
-This preserves the existing behavior of current congestion control
-algorithms without introducing additional callbacks while enabling
-future algorithms to implement custom TSO sizing policies.
-
-Signed-off-by: Ilpo Järvinen <ij@kernel.org>
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
----
- include/net/tcp.h     | 16 +++++++++++++---
- net/ipv4/tcp_output.c | 17 +++++++++++++----
- 2 files changed, 26 insertions(+), 7 deletions(-)
-
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 2c5b889530b5..82cd82a19ff9 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1283,9 +1283,11 @@ enum tcp_ca_ack_event_flags {
- #define TCP_CONG_ECT_1_NEGOTIATION	BIT(3)
- /* Cannot fallback to RFC3168 during AccECN negotiation */
- #define TCP_CONG_NO_FALLBACK_RFC3168	BIT(4)
-+/* Congestion cotnrol provides the exact TSO segment numbers  */
-+#define TCP_CONG_EXACT_TSO_SEGS		BIT(5)
- #define TCP_CONG_MASK  (TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN | \
- 			TCP_CONG_NEEDS_ACCECN | TCP_CONG_ECT_1_NEGOTIATION | \
--			TCP_CONG_NO_FALLBACK_RFC3168)
-+			TCP_CONG_NO_FALLBACK_RFC3168 | TCP_CONG_EXACT_TSO_SEGS)
- 
- union tcp_cc_info;
- 
-@@ -1361,8 +1363,16 @@ struct tcp_congestion_ops {
- 	/* hook for packet ack accounting (optional) */
- 	void (*pkts_acked)(struct sock *sk, const struct ack_sample *sample);
- 
--	/* override sysctl_tcp_min_tso_segs (optional) */
--	u32 (*min_tso_segs)(struct sock *sk);
-+	union {
-+		/* Used when TCP_CONG_EXACT_TSO_SEGS is not set,
-+		 * override sysctl_tcp_min_tso_segs (optional)
-+		 */
-+		u32 (*min_tso_segs)(struct sock *sk);
-+		/* Used when TCP_CONG_EXACT_TSO_SEGS is set,
-+		 * override tcp_tso_autosize (optional)
-+		 */
-+		u32 (*tso_segs)(struct sock *sk, u32 mss_now);
-+	};
- 
- 	/* new value of cwnd after loss (required) */
- 	u32  (*undo_cwnd)(struct sock *sk);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index d7c1444b5e30..0de27a87c39e 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2278,11 +2278,20 @@ static u32 tcp_tso_segs(struct sock *sk, unsigned int mss_now)
- 	const struct tcp_congestion_ops *ca_ops = inet_csk(sk)->icsk_ca_ops;
- 	u32 min_tso, tso_segs;
- 
--	min_tso = ca_ops->min_tso_segs ?
--			ca_ops->min_tso_segs(sk) :
--			READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_min_tso_segs);
-+	min_tso = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_min_tso_segs);
-+
-+	if (ca_ops->flags & TCP_CONG_EXACT_TSO_SEGS) {
-+		if (WARN_ON_ONCE(!ca_ops->tso_segs))
-+			tso_segs = tcp_tso_autosize(sk, mss_now, min_tso);
-+		else
-+			tso_segs = ca_ops->tso_segs(sk, mss_now);
-+	} else {
-+		if (ca_ops->min_tso_segs)
-+			min_tso = ca_ops->min_tso_segs(sk);
-+
-+		tso_segs = tcp_tso_autosize(sk, mss_now, min_tso);
-+	}
- 
--	tso_segs = tcp_tso_autosize(sk, mss_now, min_tso);
- 	return min_t(u32, tso_segs, sk->sk_gso_max_segs);
- }
- 
--- 
-2.34.1
-
+Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
