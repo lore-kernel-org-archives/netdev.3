@@ -1,73 +1,43 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E3A34B682
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 10:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A54908B1;
+	Sun, 26 Jul 2026 10:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785062598; cv=none; b=BVS/IbbJ3IlwOkrTIKh/Zk2+kgPZgdIypD69zVv/yOEbC1C+9SGdZYzXrQHJSbt2MVB+mWHmF2a87F3lpAXy8jEwl0J+/HAcFCPKlOcvJthJPGWdUqjWhyRhvyX7IZhH/HhDwUZ4zjAC8CFqYnQChiTIicgBPo7NsC8GC56xjz8=
+	t=1785063135; cv=none; b=L3yBPofESaHRLs6+2u+msAe2Sb/9OzO4gjHEacfC4Lv4Id5YceuUgo/3sjH1PV63JHxW5pUEral8Cip8dqNBJLk3wXThkl9jyOBuc6v2eSaVvMdF9rb8AlvdvXfW19tPboPLckjblIfzJ6lY9N/AuoVuKFmLv4GGjzlKZse+tKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785062598; c=relaxed/simple;
-	bh=oaSgVKV9ncFjBqihKduiLJz1tSTFNFSOynfsh1SPsOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZzphD06v67I5/UqbS3BUbpEFB958RL6ibkvf34329Ypc5gpK0/pw16JDRpQrPPGSqtkAeeuCLN8X91PI+92/kqWYi0GH8Ti+SI49zZeH2LPb/bmzgo9Vdxp+xe2AMmNAjJB0h5xNpD+kFAV1iLhuwXytx2cz6hkrPycrrQqY/aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org; spf=pass smtp.mailfrom=openvz.org; dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b=c0vUjQ0t; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvz.org
+	s=arc-20240116; t=1785063135; c=relaxed/simple;
+	bh=GuEZie4FOWa1wGGJod3OZZ93EE8C1pGCM0yUDfee8Vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U+gTFV+f/t1quzDTvN15PuOB3tSZNa9VyQ3V9euVyGzm6dRtr4ufyCuyprPIsCimrmuCJaRa1DijtDpJWtCGN+SjA9TT3xo5YOd+vCMrAs2diQ85oZJxFjgEwBg6mkaWOi6lPVwR4zEBtvKPS4iOcKctQ/JCAl+KIuljAlniXw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=q9wZ7k25; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b="c0vUjQ0t"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69c20ba892eso4322141a12.1
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 03:43:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvz.org; s=google; t=1785062595; x=1785667395; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3rQnhT50p6yjZujzGtzsuREMMxUVoqKZSjoa9Muf3VQ=;
-        b=c0vUjQ0tMDJWCLtAr/VD6a3qWX2RwjF5Xnkngatbx894TfNMwItqmuvFsAKkMmHO58
-         fHMv1ZG60qx1kMPyxzcAYuXTVkUgZdd2z6CGJNxoRzk5iiJEKrmJfKCkP6d9WqdfKf7S
-         7pfx8V6nROZu/hRN75x9ByVss6amLtCxI0fRZ/NK1UuVOmFBLi4XP8WvaCic4hCZTy+7
-         e9sW4sTjfN5gRmDFT20aSl2AnDKAiRb22wpKM2FPlWe1caREViUwye90d0QIpwAKURjH
-         jtAu2qeOkMu7CZhDxoT/bZsA273sNlLY5aNV3UNyDDhPjxKqh1PAQ7l/mXysFL3AxPQn
-         BADw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785062595; x=1785667395;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3rQnhT50p6yjZujzGtzsuREMMxUVoqKZSjoa9Muf3VQ=;
-        b=tVbcFniEqZBJg6MxKxYWPwGsK1mCirvHv9q3nDN0ytMf4+kIx3EcNL+l20rx0IJ+84
-         /QHmv6Gi6E9pn0Ui9EDQAlGgFK1XESXiAiN1vttDOC9v/aw/o1t3nT/QunhhNBOvkWlh
-         IKU8kYbR4qAmg4gk3tyvT8RggOBDBByiTbG2SupphD7RYkwHRdm/gghnA9iPeRbC8qE5
-         yg0PP8kk+dSz0EBrnw5N5WCo2p1GDnyUAbSoqN8CV6YIQ05NhMeSY7udLcKraodLC4eA
-         mGvMMyuRwB/P9OqUP9dKq4114IW5uM97hRjN1Amd5XRCyRMqo3YXklD0Ci6Ts/sUDvd+
-         SwKg==
-X-Gm-Message-State: AOJu0Yz6GMtbFN33QvS7SknguMsOwGQ1or1ZnLIuM2ELJ9WwSWoiW4i0
-	98mgmPxDlH0K9yfxozD5tkxkQm/3dDPtbVUtQgDxn0o9f/Kg44Ch5065bo0qrO/Nb5AWdkq7SJL
-	XxxQX
-X-Gm-Gg: AR+sD10PwfutO8/oZKy2AozLdRHoy1HnofMKRGtUy06Vo+wZO7JZX29Llh499BEYUQS
-	sGULX9342Pfh/A20qryGD6Ph2MZxyZzmKo6RH7QmkJEkawgi8dvrtDwOZDZZjT1aI9FCsSG52A+
-	NZmAsRluAqjCVEOVA/MSbCQ2wxBcloyeF5BkMy7WNUMk5W6b8iRkZwzvTyYffN6HRxgPm5p5Xrw
-	NDkLsQAiVGZVr1M9Ql5KiX58scxC8Q4+7CHh/w6FpWnMT0iKebW6KDZIq+/xpDvmWdl6MzNQco/
-	TB/0NhXrhTsDOvW0HqLNl47lxq6m1zefWNn0UAI8kHSNrt726Rz/sUaYsJ3z6x77q3vThmsSB3z
-	wWiRVa8xppxCIdfOqpRCn3UI/QWl8uEGJjp9w8G8aKygA2SrEtsF4an7HVjEBdhjICrdz/c6oJM
-	jArw==
-X-Received: by 2002:a17:906:8317:b0:c1f:e5f:4d2d with SMTP id a640c23a62f3a-c1f13557742mr204925666b.19.1785062595194;
-        Sun, 26 Jul 2026 03:43:15 -0700 (PDT)
-Received: from athena ([2a06:5b06:b600:300:5de5:23d5:d37f:a3e8])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32c90b58sm517750966b.39.2026.07.26.03.43.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 03:43:14 -0700 (PDT)
-From: "Denis V. Lunev" <den@openvz.org>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="q9wZ7k25"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=afdKsJDhgGf2XHOgftXRj0l6HvTZvjbQurnhHGOG8kE=; t=1785063132; x=1786272732; 
+	b=q9wZ7k25UltEUPrkhOKwyprAL4PseZ4n31xOxTevOe0IELU5Zw6b/7QjP4b/XFO4uHhSpbNw3Gj
+	zXvPk8THpuUhaIGb/cTb/2K+V05yjPi3oGzH5akvD3Iw6LWFl2O2i65yEQhD3S2axW9EY2FlQeB78
+	+V2ADDHgcQofIt2yHmAfKnDAMVq+4TgMlMGnzAUWp272WL2WYVZkox9nfY2pf8pm9Kzl7tmUs1mON
+	P9HO9t2PLie1mRDpo0fjJkLa2Aq9lGhroejXr3Hmq/TRy+QhXKfX6t1Vv5M1YZ1VK9v9caxvUe8wf
+	pEzXeF9pGRjpNQd/XnuoExGp05lkKJA/5RRQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wnwSo-0000000Aa66-0Uky;
+	Sun, 26 Jul 2026 12:52:10 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
 To: netdev@vger.kernel.org
-Cc: den@openvz.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 1/1] qede: sync udp_tunnel ports outside qede_lock in the recovery path
-Date: Sun, 26 Jul 2026 12:43:11 +0200
-Message-ID: <20260726104311.1782900-1-den@openvz.org>
-X-Mailer: git-send-email 2.53.0
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-next-2026-07-26
+Date: Sun, 26 Jul 2026 12:44:42 +0200
+Message-ID: <20260726105205.942922-60-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,159 +46,502 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A TX timeout on a qede NIC that has VXLAN/GENEVE tunnel ports
-configured wedges the rtnetlink control plane of the whole machine:
+Hi,
 
-  NETDEV WATCHDOG: ens6f1 (qede): transmit queue 2 timed out 10226 ms
-  [qede_tx_timeout:586(ens6f1)]TX timeout on queue 2!
-  [qede_recovery_handler:2665(ens6f0)]Starting a recovery process
+Here's a new pull request, big simply because there are two new drivers,
+otherwise nothing exciting is going on (yet, I have plenty WiFi8 work
+in the pipeline, and so does Qualcomm, I believe).
 
-The recovery path deadlocks on the driver's own mutex:
+Two things to note:
 
-  qede_sp_task
-   rtnl_lock()
-   mutex_lock(&edev->qede_lock)        <- taken
-   qede_recovery_handler
-    qede_load
-    udp_tunnel_nic_reset_ntf
-     __udp_tunnel_nic_device_sync
-      info->sync_table == qede_udp_tunnel_sync
-       mutex_lock(&edev->qede_lock)    <- same task: deadlock
+1) There's a merge confict, I've done a test merge of this into net-next
+   and pushed the result to the merge-wireless-next-2026-07-26 tag. Doing
+   only the actual conflict resolution will leave it not building. We've
+   discussed which way it should be resolved in this thread:
+   https://lore.kernel.org/all/b99e4a1428546030b61883063b9542dd953a69f2.camel@sipsolutions.net/
+   and I think for now the "notify_driver" is the better resolution, even
+   if that differs from the original way of handling this failure from
+   035ed430ce6a ("wifi: mac80211: avoid non-S1G AID fallback for S1G assoc")
 
-The mutex is not recursive, so the kworker blocks on itself with
-rtnl_lock held, and neither lock is ever released. Every task that
-calls rtnl_lock() afterwards (ip, ovs-vswitchd, lldpad, IPv6
-addrconf, sshd) blocks forever while the node still answers ping.
-In a vmcore from an affected production node rtnl_mutex.owner
-decodes to the very kworker blocked at the innermost mutex_lock()
-above.
+2) 0-day reported an internal compiler error reported on csky (!) in the new
+   nxpwifi driver:
+   https://lore.kernel.org/linux-wireless/202607251212.6TdnMBFC-lkp@intel.com/
+   I've asked Jeff to take a look, and that function probably wants some
+   cleanup anyway, but for now I don't think I'm going to worry about it,
+   I doubt anyone really cares about csky and this driver. Though if we
+   can't figure it out maybe we should just disable it there later.
 
-Re-sync the tunnel ports from qede_sp_task() after the internal lock
-is dropped, still under rtnl_lock as the udp_tunnel API requires.
-This mirrors qede_open(), which calls udp_tunnel_nic_reset_ntf()
-under rtnl without the internal lock.
+Please pull and let us know if there's any problem.
 
-qede_recovery_handler() now returns whether it has successfully
-reloaded an open device, and the caller re-syncs the ports only in
-that case. This keeps the old gating exactly: a device that was down
-or a failed recovery returns false, as those paths never reached the
-udp_tunnel_nic_reset_ntf() call before either.
+Thanks,
+johannes
 
-This was the only user of the qede_lock()/qede_unlock() helpers, so
-remove them.
 
-Fixes: 8cd160a29415 ("qede: convert to new udp_tunnel_nic infra")
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Eric Dumazet <edumazet@google.com>
-CC: Jakub Kicinski <kuba@kernel.org>
-CC: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ethernet/qlogic/qede/qede_main.c | 44 ++++++++++----------
- 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
-index cb0ae0650905..7ed17faced54 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -107,7 +107,7 @@ static void qede_remove(struct pci_dev *pdev);
- static void qede_shutdown(struct pci_dev *pdev);
- static void qede_link_update(void *dev, struct qed_link_output *link);
- static void qede_schedule_recovery_handler(void *dev);
--static void qede_recovery_handler(struct qede_dev *edev);
-+static bool qede_recovery_handler(struct qede_dev *edev);
- static void qede_schedule_hw_err_handler(void *dev,
- 					 enum qed_hw_err_type err_type);
- static void qede_get_eth_tlv_data(void *edev, void *data);
-@@ -1043,21 +1043,6 @@ void __qede_unlock(struct qede_dev *edev)
- 	mutex_unlock(&edev->qede_lock);
- }
- 
--/* This version of the lock should be used when acquiring the RTNL lock is also
-- * needed in addition to the internal qede lock.
-- */
--static void qede_lock(struct qede_dev *edev)
--{
--	rtnl_lock();
--	__qede_lock(edev);
--}
--
--static void qede_unlock(struct qede_dev *edev)
--{
--	__qede_unlock(edev);
--	rtnl_unlock();
--}
--
- static void qede_periodic_task(struct work_struct *work)
- {
- 	struct qede_dev *edev = container_of(work, struct qede_dev,
-@@ -1094,6 +1079,8 @@ static void qede_sp_task(struct work_struct *work)
- 	 */
- 
- 	if (test_and_clear_bit(QEDE_SP_RECOVERY, &edev->sp_flags)) {
-+		bool reloaded;
-+
- 		cancel_delayed_work_sync(&edev->periodic_task);
- #ifdef CONFIG_QED_SRIOV
- 		/* SRIOV must be disabled outside the lock to avoid a deadlock.
-@@ -1102,9 +1089,17 @@ static void qede_sp_task(struct work_struct *work)
- 		if (pci_num_vf(edev->pdev))
- 			qede_sriov_configure(edev->pdev, 0);
- #endif
--		qede_lock(edev);
--		qede_recovery_handler(edev);
--		qede_unlock(edev);
-+		rtnl_lock();
-+		__qede_lock(edev);
-+		reloaded = qede_recovery_handler(edev);
-+		__qede_unlock(edev);
-+
-+		/* The udp_tunnel core synchronously calls back into
-+		 * qede_udp_tunnel_sync(), which takes the qede lock.
-+		 */
-+		if (reloaded)
-+			udp_tunnel_nic_reset_ntf(edev->ndev);
-+		rtnl_unlock();
- 	}
- 
- 	__qede_lock(edev);
-@@ -2645,9 +2640,13 @@ static void qede_recovery_failed(struct qede_dev *edev)
- 		edev->ops->common->set_power_state(edev->cdev, PCI_D3hot);
- }
- 
--static void qede_recovery_handler(struct qede_dev *edev)
-+/* Returns true if an open device was successfully reloaded and its
-+ * udp_tunnel ports need to be re-synced by the caller.
-+ */
-+static bool qede_recovery_handler(struct qede_dev *edev)
- {
- 	u32 curr_state = edev->state;
-+	bool reloaded = false;
- 	int rc;
- 
- 	DP_NOTICE(edev, "Starting a recovery process\n");
-@@ -2677,17 +2676,18 @@ static void qede_recovery_handler(struct qede_dev *edev)
- 			goto err;
- 
- 		qede_config_rx_mode(edev->ndev);
--		udp_tunnel_nic_reset_ntf(edev->ndev);
-+		reloaded = true;
- 	}
- 
- 	edev->state = curr_state;
- 
- 	DP_NOTICE(edev, "Recovery handling is done\n");
- 
--	return;
-+	return reloaded;
- 
- err:
- 	qede_recovery_failed(edev);
-+	return false;
- }
- 
- static void qede_atomic_hw_err_handler(struct qede_dev *edev)
--- 
-2.53.0
+The following changes since commit 2bb62a85aff6d4c14a62a476dfabaada3c1cc014:
 
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-07-03 07:46:27 +0200)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2026-07-26
+
+for you to fetch changes up to 90883c513ca01e77c56b8d94be7de11420c1dacf:
+
+  Merge tag 'ath-next-20260722' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath (2026-07-22 18:37:59 +0200)
+
+----------------------------------------------------------------
+Mostly driver changes this time:
+ - new driver mm81x for an S1G device
+ - new driver nxpwifi for NXP devices
+   (mostly forked off from mwifiex)
+ - ath12k: much kernel infrastructure integration work
+ - brcmfmac: DPP support, some Cypress part update
+ - nl80211: per-link statistics support
+
+----------------------------------------------------------------
+Aaradhana Sahu (8):
+      wifi: ath12k: remove unused QMI definitions
+      wifi: ath12k: expand UserPD ID mask to support up to 8 PDs
+      wifi: ath12k: correct monitor destination ring size
+      wifi: ath12k: add QMI capability negotiation for dynamic memory mode
+      wifi: ath12k: update IPQ5332 BDF address offset
+      wifi: ath12k: switch to name-based reserved memory lookup
+      wifi: ath12k: refactor QMI memory assignment
+      wifi: ath12k: allocate HOST_DDR and BDF regions after Q6 RO region
+
+Aishwarya R (1):
+      wifi: ath12k: reset REOQ LUT addresses before firmware stop
+
+Alexander Wilhelm (1):
+      wifi: ath12k: fix scan command endianness on big endian
+
+Anas Khan (1):
+      wifi: p54: update stale wireless wiki URLs
+
+Baochen Qiang (3):
+      wifi: ath12k: fix dp_link_peer dangling references on AP vdev rollback
+      wifi: ath12k: fix MLO peer delete race
+      wifi: ath11k: cap out-of-range rx MCS instead of leaving bogus rate
+
+Cen Zhang (2):
+      wifi: mac80211_hwsim: clean up radio rhashtable on free
+      wifi: mac80211_hwsim: avoid NULL skb in stop queue drain
+
+Christophe JAILLET (2):
+      wifi: ath12k: Constify struct ath12k_dp_arch_ops
+      wifi: ath6kl: Constify struct cfg80211_ops
+
+Daizhuang Bai (1):
+      wifi: ath12k: Set DTIM policy to stick mode for station interface
+
+Deepanshu Kartikey (1):
+      wifi: mac80211: don't encrypt pre-auth (ETH_P_PREAUTH) frames
+
+Dhanavandhana Kannan (1):
+      wifi: cfg80211: Avoid UNPROT_BEACON on AP interfaces
+
+Hangtian Zhu (2):
+      genirq: export irq_can_set_affinity() for module drivers
+      wifi: ath12k: enable threaded NAPI when DP IRQ affinity is unavailable
+
+Ilan Peer (1):
+      wifi: mac80211: Route (Re)association req/response to per-STA queue
+
+Jason Huang (1):
+      wifi: brcmfmac: add DPP support
+
+Jeff Chen (2):
+      mmc: core: add NXP IW61x base ID and block size quirk
+      wifi: nxp: add nxpwifi driver for IW61x
+
+Jeff Johnson (7):
+      Merge qcom PAS TZ service series (20260702115835.167602-2-sumit.garg@kernel.org)
+      wifi: ath12k: Fix ath12k_wifi7_mac_op_tx() style issues
+      wifi: ath6kl: avoid buffer overreads in WMI event handlers
+      wifi: ath12k: Correctly copy the hint BSSID in WMI scan request
+      wifi: ath11k: Correctly copy the hint BSSID in WMI scan request
+      wifi: ath12k: Avoid buffer overread in ath12k_wmi_op_rx()
+      wifi: ath11k: Avoid buffer overread in ath11k_wmi_tlv_op_rx()
+
+Jiajia Liu (1):
+      wifi: cfg80211: reg: add a newline in DFS debug message
+
+Johannes Berg (13):
+      wifi: radiotap: add definitions for the new UHR TLVs
+      wifi: nl80211: clarify NL80211_BAND_IFTYPE_ATTR_HE_6GHZ_CAPA content
+      wifi: cfg80211: remove WIPHY_FLAG_DISABLE_WEXT
+      Merge tag 'mm81x-driver-08-07-2026' of https://github.com/MorseMicro/linux
+      wifi: mac80211: always send regulatory connectivity element
+      wifi: use UHR operation field presence bits
+      wifi: cfg80211: improve multi-BSSID profile continuation parser
+      wifi: cfg80211: clarify and tighten key checks
+      wifi: mac80211: fix monitor min_def bandwidth
+      wifi: mac80211: refactor multi-link assoc response parsing
+      wifi: mac80211: parse enhanced critical updates field
+      Merge tag 'nxpwifi-2026-07-15' of https://github.com/jeffchen71/nxpwifi
+      Merge tag 'ath-next-20260722' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+
+Krzysztof Kozlowski (1):
+      wifi: ath10k: Drop redundant NULL check on devm_clk_get()
+
+Lachlan Hodges (5):
+      wifi: cfg80211: introduce helper to get S1G primary width
+      wifi: ieee80211: introduce generic KHZ_TO_HZ helper
+      mmc: sdio: add Morse Micro vendor ids
+      wifi: mm81x: add mm81x Wi-Fi HaLow driver
+      wifi: cfg80211: include cf1 offset when sending chandef
+
+Louis Kotze (2):
+      wifi: cfg80211: say why the auth/assoc BSS lookup failed
+      wifi: cfg80211: tests: check BSS lookup failure reasons
+
+Manikanta Pubbisetty (1):
+      wifi: ath10k: trigger hardware recovery upon rx failures
+
+Manish Dharanenthiran (1):
+      wifi: ath12k: advertise ieee_link_id in vdev start MLO params
+
+Masi Osmani (3):
+      wifi: carl9170: mac80211: document spatial multiplexing power save handler
+      wifi: carl9170: rx: track PHY errors via debugfs
+      wifi: carl9170: cmd: downgrade transient register I/O errors to wiphy_dbg
+
+Matthew Leach (1):
+      wifi: ath12k: fix survey indexing across bands
+
+Miaoqing Pan (7):
+      wifi: ath12k: fix TLV32 length mask
+      wifi: ath12k: refactor HAL TLV32/64 decode helpers
+      wifi: ath12k: add HAL ops for monitor TLV header decode and alignment
+      wifi: ath12k: add dp_mon support 32-bit TLV headers
+      wifi: ath12k: tighten RX monitor TLV bounds check
+      wifi: ath12k: fix ML-STA authentication timeout on QCC2072
+      wifi: ath11k: add purwa-iot-evk and qcs6490-rb3gen2 to usecase firmware table
+
+Mike Rapoport (Microsoft) (4):
+      wifi: b43, b43legacy: debugfs: use kzalloc() to allocate formatting buffers
+      wifi: libertas: debugfs: use kzalloc() to allocate formatting buffers
+      wifi: mwifiex: debugfs: use kzalloc() to allocate formatting buffers
+      wifi: wlcore: allocate aggregation and firmware log buffers with kzalloc()
+
+Nicolas Escande (1):
+      wifi: ath12k: avoid setting 320MHz support on non 6GHz band
+
+P Praneesh (5):
+      wifi: cfg80211: Drop unused link stats handling in nl80211_send_station()
+      wifi: cfg80211: Add helper to pack station-level STA_INFO
+      wifi: cfg80211: Refactor nl80211_dump_station() to prepare for per-link stats
+      wifi: cfg80211: Fragment per-link station stats in nl80211_dump_station()
+      wifi: cfg80211: support MAC address filtering in station dump for link stats
+
+Pagadala Yesu Anjaneyulu (1):
+      wifi: mac80211: notify driver before destroying assoc link
+
+Pengpeng Hou (1):
+      wifi: ath11k: validate regulatory capability phy_id
+
+Phil Elwell (1):
+      wifi: brcmfmac: 43430 and 43455 are CYW parts
+
+Priyansha Tiwari (4):
+      wifi: nl80211/cfg80211: rename probe_client to probe_peer
+      wifi: cfg80211/nl80211: add STA-mode peer probing
+      wifi: mac80211: implement STA-mode peer probing
+      wifi: mac80211_hwsim: report TX status link_id
+
+Raj Kumar Bhagat (2):
+      wifi: ath12k: Fix inconsistencies in struct qmi_elem_info initializers
+      wifi: ath12k: use %u for unsigned variables in QMI debug logs
+
+Shahar Tzarfati (1):
+      wifi: mac80211: ibss: read deauth reason_code after frame length check
+
+Sreeramya Soratkal (3):
+      wifi: ath12k: Use runtime device count in dp stats display
+      wifi: ath12k: Add timestamp to dp stats display
+      wifi: ath12k: Show per-radio center freq in dp stats
+
+Sumit Garg (5):
+      firmware: qcom: Add a generic PAS service
+      firmware: qcom_scm: Migrate to generic PAS service
+      firmware: qcom: Add a PAS TEE service
+      MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
+      wifi: ath12k: Switch to generic PAS TZ APIs
+
+Sushant Butta (2):
+      wifi: ath12k: Skip setting RX_FLAG_8023 for Ethernet-II (DIX) frames in monitor mode
+      wifi: ath12k: Skip peer link info update in rx_status for monitor MSDUs
+
+Tamizh Chelvam Raja (2):
+      wifi: ath12k: Advertise multicast Ethernet encapsulation offload support
+      wifi: ath12k: Set IEEE80211_OFFLOAD_ENCAP_4ADDR after tx_encap_type vdev param
+
+Thiraviyam Mariyappan (2):
+      wifi: ath12k: Reduce RX SRNG interrupt timer threshold to 200us
+      wifi: ath12k: Set congestion control max MSDU count
+
+Wei Zhang (1):
+      wifi: ath12k: fix rx_mpdu_start layout for QCC2072
+
+Yingying Tang (1):
+      wifi: ath12k: change MAC buffer ring size to 4096
+
+Zhao Li (2):
+      wifi: mac80211_hwsim: authenticate PMSR report senders
+      wifi: mac80211_hwsim: clear PMSR request state on abort
+
+ MAINTAINERS                                        |   24 +
+ drivers/firmware/qcom/Kconfig                      |   22 +-
+ drivers/firmware/qcom/Makefile                     |    2 +
+ drivers/firmware/qcom/qcom_pas.c                   |  298 ++
+ drivers/firmware/qcom/qcom_pas.h                   |   50 +
+ drivers/firmware/qcom/qcom_pas_tee.c               |  479 +++
+ drivers/firmware/qcom/qcom_scm.c                   |  335 +-
+ drivers/mmc/core/quirks.h                          |    3 +
+ drivers/net/wireless/Kconfig                       |    2 +
+ drivers/net/wireless/Makefile                      |    2 +
+ drivers/net/wireless/ath/ath10k/ahb.c              |   12 +-
+ drivers/net/wireless/ath/ath10k/htt_rx.c           |    6 +-
+ drivers/net/wireless/ath/ath11k/core.c             |    4 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c            |   32 +-
+ drivers/net/wireless/ath/ath11k/wmi.c              |   16 +-
+ drivers/net/wireless/ath/ath12k/Kconfig            |    2 +-
+ drivers/net/wireless/ath/ath12k/ahb.c              |   29 +-
+ drivers/net/wireless/ath/ath12k/ahb.h              |    2 +-
+ drivers/net/wireless/ath/ath12k/core.c             |   34 +-
+ drivers/net/wireless/ath/ath12k/core.h             |   13 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c          |   14 +-
+ drivers/net/wireless/ath/ath12k/dp.c               |   14 +-
+ drivers/net/wireless/ath/ath12k/dp.h               |    5 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.c           |   70 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.h           |    4 +-
+ drivers/net/wireless/ath/ath12k/hal.c              |   42 +-
+ drivers/net/wireless/ath/ath12k/hal.h              |   15 +-
+ drivers/net/wireless/ath/ath12k/hw.h               |    1 +
+ drivers/net/wireless/ath/ath12k/mac.c              |  102 +-
+ drivers/net/wireless/ath/ath12k/pci.c              |   12 +-
+ drivers/net/wireless/ath/ath12k/peer.c             |  132 +-
+ drivers/net/wireless/ath/ath12k/peer.h             |   14 +-
+ drivers/net/wireless/ath/ath12k/qmi.c              |  429 ++-
+ drivers/net/wireless/ath/ath12k/qmi.h              |   34 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp.c         |    2 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c     |   66 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.c    |    4 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.c    |   13 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_rx_desc.h    |   34 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.c    |   13 +-
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c         |   73 +-
+ drivers/net/wireless/ath/ath12k/wmi.c              |  165 +-
+ drivers/net/wireless/ath/ath12k/wmi.h              |   26 +
+ drivers/net/wireless/ath/ath6kl/cfg80211.c         |    2 +-
+ drivers/net/wireless/ath/ath6kl/wmi.c              |   17 +-
+ drivers/net/wireless/ath/carl9170/carl9170.h       |    1 +
+ drivers/net/wireless/ath/carl9170/cmd.c            |    4 +-
+ drivers/net/wireless/ath/carl9170/debug.c          |    2 +
+ drivers/net/wireless/ath/carl9170/main.c           |    8 +-
+ drivers/net/wireless/ath/carl9170/rx.c             |    4 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c        |   10 +-
+ drivers/net/wireless/broadcom/b43/debugfs.c        |   12 +-
+ drivers/net/wireless/broadcom/b43legacy/debugfs.c  |   12 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |    6 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |  149 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c |   54 +-
+ .../broadcom/brcm80211/include/brcmu_wifi.h        |    2 +
+ drivers/net/wireless/intersil/p54/Kconfig          |    6 +-
+ drivers/net/wireless/intersil/p54/fwio.c           |    4 +-
+ drivers/net/wireless/intersil/p54/p54usb.c         |    2 +-
+ drivers/net/wireless/marvell/libertas/debugfs.c    |   39 +-
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c    |    8 +-
+ drivers/net/wireless/marvell/mwifiex/debugfs.c     |   62 +-
+ drivers/net/wireless/morsemicro/Kconfig            |   15 +
+ drivers/net/wireless/morsemicro/Makefile           |    2 +
+ drivers/net/wireless/morsemicro/mm81x/Kconfig      |   24 +
+ drivers/net/wireless/morsemicro/mm81x/Makefile     |   21 +
+ drivers/net/wireless/morsemicro/mm81x/bus.h        |   99 +
+ drivers/net/wireless/morsemicro/mm81x/command.c    |  563 +++
+ drivers/net/wireless/morsemicro/mm81x/command.h    |   85 +
+ .../net/wireless/morsemicro/mm81x/command_defs.h   | 1658 +++++++++
+ drivers/net/wireless/morsemicro/mm81x/core.c       |  138 +
+ drivers/net/wireless/morsemicro/mm81x/core.h       |  456 +++
+ drivers/net/wireless/morsemicro/mm81x/fw.c         |  752 ++++
+ drivers/net/wireless/morsemicro/mm81x/fw.h         |  143 +
+ drivers/net/wireless/morsemicro/mm81x/hif.h        |  117 +
+ drivers/net/wireless/morsemicro/mm81x/hw.c         |  367 ++
+ drivers/net/wireless/morsemicro/mm81x/hw.h         |  159 +
+ drivers/net/wireless/morsemicro/mm81x/mac.c        | 2443 ++++++++++++
+ drivers/net/wireless/morsemicro/mm81x/mac.h        |   63 +
+ drivers/net/wireless/morsemicro/mm81x/mmrc.c       | 1354 +++++++
+ drivers/net/wireless/morsemicro/mm81x/mmrc.h       |  193 +
+ drivers/net/wireless/morsemicro/mm81x/ps.c         |  120 +
+ drivers/net/wireless/morsemicro/mm81x/ps.h         |   22 +
+ drivers/net/wireless/morsemicro/mm81x/rate_code.h  |  177 +
+ drivers/net/wireless/morsemicro/mm81x/rc.c         |  494 +++
+ drivers/net/wireless/morsemicro/mm81x/rc.h         |   51 +
+ drivers/net/wireless/morsemicro/mm81x/sdio.c       |  613 +++
+ drivers/net/wireless/morsemicro/mm81x/skbq.c       | 1064 ++++++
+ drivers/net/wireless/morsemicro/mm81x/skbq.h       |  218 ++
+ drivers/net/wireless/morsemicro/mm81x/usb.c        |  943 +++++
+ drivers/net/wireless/morsemicro/mm81x/yaps.c       |  704 ++++
+ drivers/net/wireless/morsemicro/mm81x/yaps.h       |   77 +
+ drivers/net/wireless/morsemicro/mm81x/yaps_hw.c    |  702 ++++
+ drivers/net/wireless/morsemicro/mm81x/yaps_hw.h    |   52 +
+ drivers/net/wireless/nxp/Kconfig                   |   17 +
+ drivers/net/wireless/nxp/Makefile                  |    3 +
+ drivers/net/wireless/nxp/nxpwifi/11ac.c            |  280 ++
+ drivers/net/wireless/nxp/nxpwifi/11ac.h            |   33 +
+ drivers/net/wireless/nxp/nxpwifi/11ax.c            |  594 +++
+ drivers/net/wireless/nxp/nxpwifi/11ax.h            |   73 +
+ drivers/net/wireless/nxp/nxpwifi/11h.c             |  339 ++
+ drivers/net/wireless/nxp/nxpwifi/11n.c             |  837 +++++
+ drivers/net/wireless/nxp/nxpwifi/11n.h             |  158 +
+ drivers/net/wireless/nxp/nxpwifi/11n_aggr.c        |  251 ++
+ drivers/net/wireless/nxp/nxpwifi/11n_aggr.h        |   21 +
+ drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c   |  826 ++++
+ drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h   |   71 +
+ drivers/net/wireless/nxp/nxpwifi/Kconfig           |   22 +
+ drivers/net/wireless/nxp/nxpwifi/Makefile          |   39 +
+ drivers/net/wireless/nxp/nxpwifi/cfg.h             | 1019 +++++
+ drivers/net/wireless/nxp/nxpwifi/cfg80211.c        | 3931 ++++++++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/cfg80211.h        |   18 +
+ drivers/net/wireless/nxp/nxpwifi/cfp.c             |  478 +++
+ drivers/net/wireless/nxp/nxpwifi/cmdevt.c          | 1310 +++++++
+ drivers/net/wireless/nxp/nxpwifi/cmdevt.h          |  122 +
+ drivers/net/wireless/nxp/nxpwifi/debugfs.c         | 1094 ++++++
+ drivers/net/wireless/nxp/nxpwifi/ethtool.c         |   58 +
+ drivers/net/wireless/nxp/nxpwifi/fw.h              | 2475 ++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/ie.c              |  480 +++
+ drivers/net/wireless/nxp/nxpwifi/init.c            |  607 +++
+ drivers/net/wireless/nxp/nxpwifi/join.c            |  787 ++++
+ drivers/net/wireless/nxp/nxpwifi/main.c            | 1673 +++++++++
+ drivers/net/wireless/nxp/nxpwifi/main.h            | 1429 +++++++
+ drivers/net/wireless/nxp/nxpwifi/scan.c            | 2695 ++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sdio.c            | 2327 ++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sdio.h            |  340 ++
+ drivers/net/wireless/nxp/nxpwifi/sta_cfg.c         | 1165 ++++++
+ drivers/net/wireless/nxp/nxpwifi/sta_cmd.c         | 3383 +++++++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/sta_event.c       |  862 +++++
+ drivers/net/wireless/nxp/nxpwifi/sta_rx.c          |  242 ++
+ drivers/net/wireless/nxp/nxpwifi/sta_tx.c          |  190 +
+ drivers/net/wireless/nxp/nxpwifi/txrx.c            |  352 ++
+ drivers/net/wireless/nxp/nxpwifi/uap_cmd.c         | 1256 +++++++
+ drivers/net/wireless/nxp/nxpwifi/uap_event.c       |  488 +++
+ drivers/net/wireless/nxp/nxpwifi/uap_txrx.c        |  478 +++
+ drivers/net/wireless/nxp/nxpwifi/util.c            | 1381 +++++++
+ drivers/net/wireless/nxp/nxpwifi/util.h            |  155 +
+ drivers/net/wireless/nxp/nxpwifi/wmm.c             | 1318 +++++++
+ drivers/net/wireless/nxp/nxpwifi/wmm.h             |   77 +
+ drivers/net/wireless/realtek/rtw89/core.c          |    3 -
+ drivers/net/wireless/ti/wlcore/main.c              |   14 +-
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c |   69 +-
+ include/linux/firmware/qcom/qcom_pas.h             |   43 +
+ include/linux/ieee80211-eht.h                      |   92 +
+ include/linux/ieee80211-uhr.h                      |   44 +-
+ include/linux/ieee80211.h                          |   12 +
+ include/linux/mmc/sdio_ids.h                       |    4 +
+ include/net/cfg80211.h                             |   48 +-
+ include/net/ieee80211_radiotap.h                   |  190 +
+ include/net/mac80211.h                             |   13 +-
+ include/uapi/linux/nl80211.h                       |   46 +-
+ kernel/irq/manage.c                                |    1 +
+ net/mac80211/cfg.c                                 |  123 +-
+ net/mac80211/chan.c                                |    6 +-
+ net/mac80211/ibss.c                                |    4 +-
+ net/mac80211/ieee80211_i.h                         |    8 +-
+ net/mac80211/mlme.c                                |  178 +-
+ net/mac80211/parse.c                               |    4 +-
+ net/mac80211/status.c                              |    5 +-
+ net/mac80211/tx.c                                  |   10 +
+ net/mac80211/util.c                                |   24 +-
+ net/wireless/core.h                                |    5 +-
+ net/wireless/nl80211.c                             |  520 ++-
+ net/wireless/rdev-ops.h                            |   10 +-
+ net/wireless/reg.c                                 |    3 +-
+ net/wireless/scan.c                                |   93 +-
+ net/wireless/tests/scan.c                          |  121 +-
+ net/wireless/trace.h                               |    2 +-
+ net/wireless/util.c                                |  107 +-
+ net/wireless/wext-compat.c                         |    3 +-
+ net/wireless/wext-core.c                           |    6 +-
+ 172 files changed, 53107 insertions(+), 1402 deletions(-)
+ create mode 100644 drivers/firmware/qcom/qcom_pas.c
+ create mode 100644 drivers/firmware/qcom/qcom_pas.h
+ create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
+ create mode 100644 drivers/net/wireless/morsemicro/Kconfig
+ create mode 100644 drivers/net/wireless/morsemicro/Makefile
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/Kconfig
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/Makefile
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/bus.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/command_defs.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/fw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/fw.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hif.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hw.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mac.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mac.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/ps.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/ps.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rate_code.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/rc.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/sdio.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/usb.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps.h
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps_hw.c
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/yaps_hw.h
+ create mode 100644 drivers/net/wireless/nxp/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/Makefile
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11h.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfp.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/ethtool.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/fw.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/ie.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/init.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/join.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/scan.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cfg.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cmd.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_event.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/txrx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_cmd.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_event.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.h
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.c
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.h
+ create mode 100644 include/linux/firmware/qcom/qcom_pas.h
