@@ -1,22 +1,22 @@
-Received: from MTA-15-3.privateemail.com (mta-15-3.privateemail.com [198.54.122.111])
+Received: from MTA-15-3.privateemail.com (MTA-15-3.privateemail.com [198.54.122.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B3D3DBD43;
-	Sun, 26 Jul 2026 22:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A783E5567;
+	Sun, 26 Jul 2026 22:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.122.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785104719; cv=none; b=FV1modWcFXK4DUHMNre+m4Cbriib1YmQPK7ig/IdNeeOsLd2QHEXaFZCVTri+zZV95quzFSFeeBFLRoAs4eyGHIdv+nNT474cbyJDM8DWxOCCKlk6FGfvSW//1MWb4psBxKMOKP2VWbzs7wo2VC28madypa+FvrucK1HmtChIFQ=
+	t=1785104740; cv=none; b=tU1sFCyknsRNXEgSNqnPZgFOtzZ6wY8JgcdEkBhW422oiovyLaSyv873za07yfQrzScyHGXLfLorkFOY4FZ58vn4k5nzp1d2xVh+NIHuWLOuY0MEahrNijzO+UEzv791hNVVQxmgIwGC/Bw6Ml7k1x+NJrxbdwAoMxnygFZkJ48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785104719; c=relaxed/simple;
-	bh=p+SS7vZxOAXOrGGtNcEayjNQLffbukPNwaC7Z8qdp9A=;
+	s=arc-20240116; t=1785104740; c=relaxed/simple;
+	bh=xOiXQg7+13RYg0tC70yy9vkhDW5u0fhDIaPlzzVPN/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhgzaMdfotZNR8ROUJinm4PV9WGwZMrC7U1/Mghw0nfedX9DcXERx59haaidb/gUCNIEx3xDmHf7q8rCcQiMdNVwQ/TipPSbBKPcQ7QTfUMTRzuYhEQDAd5kHwrfSFfvosZA+iQdIIuLn2zSlPLBbpfqxN+i1zUftCIDt1Rx9d8=
+	 MIME-Version; b=Pa+CwZvI1u7pE4/zP8sD9FJ7hnCAUmfvmFbOXzwbV0kwzvwFGS1U0PDiRZKIKYgytG8KROkRzOWOgcRxdgwwjSSPOKJmWpNDC5h/rD0VqXVKuhFMCfUaKB33y/B6sx5MrrAP4H8CkOqUzhTTJV/P/7lKjGkFfK6w32bz2/ymgfw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=198.54.122.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
 Received: from mail.privateemail.com (K8S-PROD-WORKER-10 [87.215.145.39])
-	by mta-15.privateemail.com (Postfix) with ESMTPA id 4h7brR2cPBz3hhTG;
-	Sun, 26 Jul 2026 18:24:54 -0400 (EDT)
+	by mta-15.privateemail.com (Postfix) with ESMTPA id 4h7brs1Bvbz3hhTF;
+	Sun, 26 Jul 2026 18:25:15 -0400 (EDT)
 From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
 To: David Heidelberg <david@ixit.cz>,
 	Krzysztof Kozlowski <krzk@kernel.org>
@@ -35,10 +35,11 @@ Cc: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/5] nfc: s3fwrn5: use the "s3fwrn5_i2c" string literal directly
-Date: Mon, 27 Jul 2026 00:24:02 +0200
-Message-ID: <20260726222405.153008-3-jorijnvdgraaf@catcrafts.net>
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v3 3/5] dt-bindings: net: nfc: samsung,s3fwrn5: add S3NRN4V and clk-req-gpios
+Date: Mon, 27 Jul 2026 00:24:03 +0200
+Message-ID: <20260726222405.153008-4-jorijnvdgraaf@catcrafts.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260726222405.153008-1-jorijnvdgraaf@catcrafts.net>
 References: <20260726222405.153008-1-jorijnvdgraaf@catcrafts.net>
@@ -50,57 +51,146 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The S3FWRN5_I2C_DRIVER_NAME define is an indirection for a string that
-is fixed ABI (the driver name) and only used within this file. Spell
-the string out at its three users and drop the define.
+The S3NRN4V is a later part in the Samsung NCI NFC controller line
+this binding documents, found e.g. on the Fairphone 6 (SM7635). Its
+host interface is NCI over I2C like the S3FWRN5, but it is not
+compatible with any of the existing parts, so no fallback compatible
+applies: its bootloader speaks a different protocol and its RF
+configuration is loaded through a different proprietary command set.
 
-Suggested-by: David Heidelberg <david@ixit.cz>
+Document the optional clk-req-gpios property: the controller's CLK_REQ
+output is asserted for as long as the chip needs its external reference
+clock, notably while generating the 13.56 MHz poll carrier. The pin is
+a level signal reflecting the chip's current clock demand, not a
+one-shot event, so it is modelled as a GPIO. No user of the handshake
+is known on the already-supported parts, so the property is restricted
+to the S3NRN4V (easily relaxed should one appear), and it depends on
+clocks, as its purpose is gating an external clock.
+
+Also document the PVDD supply, the externally switched rail powering
+the controller (boards feed it from a PMIC LDO). It is required for the
+new device; deployed DTs for the existing parts never described a
+supply, so for those it stays optional. Add an example for the new
+device exercising the new properties.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Assisted-by: Claude:claude-opus-4-8
 Assisted-by: Claude:claude-fable-5
 Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
 ---
- drivers/nfc/s3fwrn5/i2c.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ .../bindings/net/nfc/samsung,s3fwrn5.yaml     | 65 ++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
-index cb73993446e0..c528c085b43e 100644
---- a/drivers/nfc/s3fwrn5/i2c.c
-+++ b/drivers/nfc/s3fwrn5/i2c.c
-@@ -16,8 +16,6 @@
+diff --git a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+index 12baee45752c..1e784a90d015 100644
+--- a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+@@ -14,12 +14,20 @@ properties:
+     enum:
+       - samsung,s3fwrn5-i2c
+       - samsung,s3fwrn82
++      - samsung,s3nrn4v
  
- #include "phy_common.h"
+   en-gpios:
+     maxItems: 1
+     description:
+       Output GPIO pin used for enabling/disabling the chip
  
--#define S3FWRN5_I2C_DRIVER_NAME "s3fwrn5_i2c"
--
- struct s3fwrn5_i2c_phy {
- 	struct phy_common common;
- 	struct i2c_client *i2c_dev;
-@@ -186,7 +184,7 @@ static int s3fwrn5_i2c_probe(struct i2c_client *client)
++  clk-req-gpios:
++    maxItems: 1
++    description:
++      Input GPIO pin connected to the controller's CLK_REQ output, which the
++      controller asserts for as long as it requires its external reference
++      clock.
++
+   interrupts:
+     maxItems: 1
  
- 	ret = devm_request_threaded_irq(&client->dev, phy->i2c_dev->irq, NULL,
- 		s3fwrn5_i2c_irq_thread_fn, IRQF_ONESHOT,
--		S3FWRN5_I2C_DRIVER_NAME, phy);
-+		"s3fwrn5_i2c", phy);
- 	if (ret)
- 		goto s3fwrn5_remove;
+@@ -29,6 +37,9 @@ properties:
+   clocks:
+     maxItems: 1
  
-@@ -205,7 +203,7 @@ static void s3fwrn5_i2c_remove(struct i2c_client *client)
- }
++  pvdd-supply:
++    description: PVDD power supply
++
+   wake-gpios:
+     maxItems: 1
+     description:
+@@ -53,17 +64,45 @@ required:
+   - en-gpios
+   - wake-gpios
  
- static const struct i2c_device_id s3fwrn5_i2c_id_table[] = {
--	{ .name = S3FWRN5_I2C_DRIVER_NAME },
-+	{ .name = "s3fwrn5_i2c" },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, s3fwrn5_i2c_id_table);
-@@ -218,7 +216,7 @@ MODULE_DEVICE_TABLE(of, of_s3fwrn5_i2c_match);
++# The clock-request handshake gates an external clock, so it needs one.
++dependencies:
++  clk-req-gpios: [ clocks ]
++
+ allOf:
+   - if:
+       properties:
+         compatible:
+           contains:
+-            const: samsung,s3fwrn5-i2c
++            enum:
++              - samsung,s3fwrn5-i2c
++              - samsung,s3nrn4v
+     then:
+       required:
+         - interrupts
+         - reg
  
- static struct i2c_driver s3fwrn5_i2c_driver = {
- 	.driver = {
--		.name = S3FWRN5_I2C_DRIVER_NAME,
-+		.name = "s3fwrn5_i2c",
- 		.of_match_table = of_s3fwrn5_i2c_match,
- 	},
- 	.probe = s3fwrn5_i2c_probe,
++  # No user of the clock-request handshake is known on the other parts.
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              const: samsung,s3nrn4v
++    then:
++      properties:
++        clk-req-gpios: false
++
++  # Deployed DTs for the older parts never described a supply, so PVDD is
++  # only required for the new device.
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: samsung,s3nrn4v
++    then:
++      required:
++        - pvdd-supply
++
+ examples:
+   - |
+     #include <dt-bindings/gpio/gpio.h>
+@@ -97,3 +136,27 @@ examples:
+ 
+         };
+     };
++  # S3NRN4V with a clock-request gated external clock
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        nfc@27 {
++            compatible = "samsung,s3nrn4v";
++            reg = <0x27>;
++
++            interrupt-parent = <&tlmm>;
++            interrupts = <31 IRQ_TYPE_EDGE_RISING>;
++
++            en-gpios = <&tlmm 56 GPIO_ACTIVE_HIGH>;
++            wake-gpios = <&tlmm 7 GPIO_ACTIVE_HIGH>;
++            clk-req-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
++
++            clocks = <&rpmhcc 4>;
++            pvdd-supply = <&nfc_pvdd>;
++        };
++    };
 -- 
 2.55.0
 
