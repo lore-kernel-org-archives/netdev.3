@@ -1,96 +1,99 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out01-fra1-mx.uberspace.de (out01-fra1-mx.uberspace.de [185.139.157.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D412EEE8D;
-	Sun, 26 Jul 2026 18:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD9617B50A
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.139.157.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785089722; cv=none; b=fEogl1ZmEDp+LqDbE925B7yEB8+uzSLxm+B/FrBj3YPp0Ii8/KbC06Z1VFBQL5g7z/j8dsYtahoA7Z4Qpx6sxeYm/NNn+hMSKsD30xbR6kKMeTTZJCx1PAgVc1+hrjs6W2Bde85tVSVbPTrP+j3N+TKjT2PdV+8w+MSZaOMgs+Q=
+	t=1785093098; cv=none; b=No6eQ1jsnkmFqygL22YhKakNs2w0X8Cd4k1yvbOcUJf7Zn4c1f/SXrxJAno5AxhgxFz+8ZnnnXLI6ziEsuY5xAbBz0o3y/T772aCF6dBhvtPrph/tYPLnvcuM1u/cfb/61ZwuJisCS9ph4XD9zkXUP4ZzMYd3XcaXO0uoXT960M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785089722; c=relaxed/simple;
-	bh=oghlc+c3I2qloSZrij5YUM7gHVK6z/tEhKJVgTPETs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HDbUaQnAV2qtKI+Yf24Fqk/EQH/8mqnJbZ8wFMHH2mBYiNHCeNTwbAa4h/bl6TB3pzePKWqPb1wHQfgPbNUtuUrYqHa4II0TyljYKjVszklgIDbGhJ0TAEHTCbNtTlvgAoXrJYkirTR0bzAdKtUzXa4OsvURhqfI8HC0xiRZ1k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IvDW9TsU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1785093098; c=relaxed/simple;
+	bh=+tkTV2VPyukxsF99FoGNVvo4KDYJWn4/8olNzT2h76c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U0zvcN32jOndfvQapM2EW2ap/y1+wN35lzLNkPVaOGfrDpUPfOLne4eZx0BNC8ZgAC5fD8FK3wIMKcaKBtOybQe7LOOX/ge0Y6+kO0ztn4NMHF1WVKmGkpxNLlO34nnqMLUmMxKXMsmfPIGEaU5lDrkyO8SJVfFLan3VRtiBNuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de; spf=pass smtp.mailfrom=plantwatch.de; dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b=iuFcX0f+; arc=none smtp.client-ip=185.139.157.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=plantwatch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=plantwatch.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IvDW9TsU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MaEQKMeEjvfpA5VB/sHKsrGgnnBG0BlVfrQAWBNdC64=; b=IvDW9TsUa3rEoKYK2ssfe1XfcZ
-	Z81q9POuAvYV/TeQHVOGEVPdZdB8vCujEEQPoTA+E3+pLsyfLLyJOT8y4vo1rLnCnsxtT+BhMQuKe
-	7OEqGaULT9viDXcyNr/DK9AMFE7B3LARmTUHTk5kMWFCztjVErfXyW071tBM4+HeLC1M=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wo3NT-00EK83-Na; Sun, 26 Jul 2026 20:15:07 +0200
-Date: Sun, 26 Jul 2026 20:15:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: dev.taqnialabs@gmail.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: stmmac: enable MAC rx/tx after DMA start
-Message-ID: <ee639271-60dd-49f7-9e77-0ae47841754d@lunn.ch>
-References: <20260726-stmmac-rx-fifo-block-v1-1-45ab094b6c02@gmail.com>
+	dkim=pass (2048-bit key) header.d=plantwatch.de header.i=@plantwatch.de header.b="iuFcX0f+"
+Received: from janus.uberspace.de (janus.uberspace.de [IPv6:2a0b:20c0:2000:62:be24:11ff:fe50:5107])
+	by out01-fra1-mx.uberspace.de (Postfix) with ESMTPS id CD44B4010D;
+	Sun, 26 Jul 2026 21:11:26 +0200 (CEST)
+From: Simon Dietz <simon.dietz@plantwatch.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=plantwatch.de;
+	s=uberspace1; t=1785093085;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+tkTV2VPyukxsF99FoGNVvo4KDYJWn4/8olNzT2h76c=;
+	b=iuFcX0f+kuFU55o1gkh7+K9y/bcpLzmmTxoQ7Jxgxi4B4z+03kZGzmB8ISjjyoMTjtk53O
+	WbF3z5z2LeB3ZZy4GGVsPwG77VfISyVoC7WzggqwN1BQv1tj7ppiPLHE7fCqNTIFuVMmrW
+	5WFYfkduOT69cfR3NhV5lp47haQKeRL0wu2nhww47Y+4nPVTuRQPVgbNCeXbDkBfMCAvO8
+	VpHE+/CcPsIkEx9s1Zn/uKNVSZdtl+Ku1I2iS8DpKGRuh3VETCTv94EnsVCAWFBy81VGYB
+	U/QBlWEKYJ+8Ru+xsoQN5f7uMOobBJZRlJ3scmu0jDEuU8gBC8BcXbu4k8/hvA==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=simon.dietz@plantwatch.de smtp.mailfrom=simon.dietz@plantwatch.de
+To: andrew@lunn.ch
+Cc: andrew+netdev@lunn.ch,
+	dietz23838@hs-ansbach.de,
+	netdev@vger.kernel.org,
+	simon.dietz@plantwatch.de
+Subject: Re: [RFC PATCH net-next v0.1 1/1] net: add GeoNetworking protocol
+Date: Sun, 26 Jul 2026 21:09:20 +0200
+Message-ID: <20260726190920.744842-1-simon.dietz@plantwatch.de>
+In-Reply-To: <4e09a943-d116-452f-93f3-93fb363b09f5@lunn.ch>
+References: <4e09a943-d116-452f-93f3-93fb363b09f5@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726-stmmac-rx-fifo-block-v1-1-45ab094b6c02@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.63 / 999.00];
+	BAYES_HAM(-2.27)[96.60%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	LOCAL_OUTBOUND(0.00)[];
+	ARC_NA(0.00)[];
+	TAGGED_RCPT(0.00)[netdev];
+	ASN(0.00)[asn:3320, ipnet:2003::/19, country:DE];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[plantwatch.de:s=uberspace1];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_HAS_DN(0.00)[]
 
-> @@ -3692,9 +3692,6 @@ static int stmmac_hw_setup(struct net_device *dev)
->  		priv->hw->rx_csum = 0;
->  	}
->  
-> -	/* Enable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, true);
-> -
->  	/* Set the HW DMA mode and the COE */
->  	stmmac_dma_operation_mode(priv);
->  
-> @@ -3750,6 +3747,9 @@ static int stmmac_hw_setup(struct net_device *dev)
->  	/* Start the ball rolling... */
->  	stmmac_start_all_dma(priv);
->  
-> +	/* Enable the MAC Rx/Tx */
-> +	stmmac_mac_set(priv, priv->ioaddr, true);
-> +
+> This then leads me to thinking about having two nodes, one on each
+> end, with an Ethernet link between them. Ethernet, or any cable based
+> medium, has different semantics. A broadcast is received by all.
+> There is no point rebroadcasting on the same interface.
 
-There should be a function which is the opposite of stmmac_hw_setup(),
-which tears it down. What order are things done there? tear down is
-generally done in the opposite order to setup, so does the "Disable
-the MAC Rx/Tx" also need to move?
+That's a good point.
 
-> @@ -7189,12 +7189,12 @@ int stmmac_xdp_open(struct net_device *dev)
->  		hrtimer_setup(&tx_q->txtimer, stmmac_tx_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
->  	}
->  
-> -	/* Enable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, true);
-> -
->  	/* Start Rx & Tx DMA Channels */
->  	stmmac_start_all_dma(priv);
->  
-> +	/* Enable the MAC Rx/Tx */
-> +	stmmac_mac_set(priv, priv->ioaddr, true);
-> +
->  	ret = stmmac_request_irq(dev);
->  	if (ret)
->  		goto irq_error;
+> But what about the fixed infrastructure? How often do you see nodes
+> along some sort of linear structure, connected together by cable?
 
-Same comment for the opposite of stmmac_xdp_open().
+I think there is a use case for fixed infrastructure, e.g. to advertise
+road works or closed lanes. I can't remember that there is a use case,
+where nodes of a linear structure are connected together by cable.
 
-     Andrew
+> Or a row of blind corners which is known for accidents, you
+> could put fixed infrastructure along the way and cable them together,
+> so the vehicles can "see" around the corners?
+
+I think the most canonical way to implement this would be to use
+'repeater' nodes (e.g. traffic lights, electronical highway signs),
+which forward these warnings via topologically scoped broadcast wide
+enough. But I do not see anything in the standard(s) that would forbid
+such a connected by cable bunch of nodes approach.
+
+Simon
