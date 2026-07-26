@@ -1,117 +1,130 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0240A30F938
-	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B1B72630
+	for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 09:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785058804; cv=none; b=YomwDQIPo2Zsrc9K7SRxSfC9HBIpa015sUKfD4lKw4tWy8U/Q0FJ9X0qUYXCRFJIQa9E35ld30iAr6TeQgvYXuC1S5s+e25TOqxHZvEcy/eLISNiWM9Wse06oeWEkiLKVP3sviLKOB0wez2gUtE9IO92WQETm8QpEJZV73clv9w=
+	t=1785059175; cv=none; b=cqmdnmL/L5SgZygA2UYmG5BvtKd3xk4fmzMQe8KI3IZfDCJ9XHDWcDJG8RY1qk8qa4DEQne2gq7bLVDn1FwZ0PmxA6rEeIHKwsg09pIJ0EGtix2CfcbqOCkUPo+TfxwPuNQ+BH6jJNNdz/VDkSP/48hRD+eR3ARKI9e3Yu3mD4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785058804; c=relaxed/simple;
-	bh=3OwFQ5mBOcOXXMKcgunF0FyB50swdeCOl1+H3ELbnJA=;
+	s=arc-20240116; t=1785059175; c=relaxed/simple;
+	bh=TwerJkFHdT++LOIJgv9PISLSBG94I00IzJAq6hZLJtQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3dEpo9RBqi3F3K6Ymhf3VgUmUeoh9RHcxrN9c5G8NeXgCZ5P8z0wQMFFYDCPJV+hjkEKvOQFWiDAPkouWMd3dvhylv6RGYTFmaxhbgqki9ath5K7ELEzPGv4Uf9+mbwWMW5X6FCl23gnRm+i3wtBPejqTT+EiWxlSOzu1i/xWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=kPlnC8/X; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=SI9Kz9agNfvAccKkH649Q83TG86zvxt+BhlQkF+ipozr/IXUJsduzz+7/YdBvDogv/H8xZ9Kra/0D42CCBivwy4b+OzSUY2croUdMM6ReVBvXXEbIgzmFGtaBkfdlfVckJs7nQMgKUfooGcX9CiEXrhvPVwsqXNB3MTehn0cmrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqkWkC34; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="kPlnC8/X"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4954afac04bso19852015e9.0
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 02:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1785058801; x=1785663601; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W9EbBcFAYSv/DDp1rQAfTtxvwF2ptTiblYa9/W6HiBI=;
-        b=kPlnC8/XWrL8jfrtzZQI5pXpaUKUq0jxvFG0PQ+utOAvOAyxoE+swM9SUHu2CSRzcm
-         MUfnN13B9xlrrRChSJ5p+4MvTXNA7EtWW3kT1SfM0HD2jrSr+U1RkEgNEjg5dT1qIt6R
-         nGBCaegflk2B3ALRw+pcQIXlGwrtHsE9nzoe4AbmYC//y4pjbGMn8Brl1ATEYW/weZHy
-         pe9mPMMmt1yEG0FTxAALL3GQ4ttMUhR4QQtDJgp4bgDs/WVYWwFld4tXGhPj6Bm1ZZQ5
-         qYJBagiJZV+GBBLM+l6bdpkN0KQ7aJSIX94FwiQmdKHlcr6M1pF3SdSbYmlgZrusZcB/
-         oEvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785058801; x=1785663601;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W9EbBcFAYSv/DDp1rQAfTtxvwF2ptTiblYa9/W6HiBI=;
-        b=L+KFrvw5Nlf+Ux5GQaRnwFyPXKetz156/IoAuoGUlflJAU1qRj93Gyuw1YoAYbwZ46
-         UtTfr1/ETWDEmgnqGwd5yPGTxvCv67l4I0iHHFEam+EeXzpZ/mMQ1KLlTmqZ/eqY2WbA
-         h0En0NArSgJ6JBk+kcTglvvHnw2Rp20BjQ+D2vVgegXFhrGpYdK6kGOro4hn0D2g8U0r
-         KQ5QgmxI+st7HT5n+QrJXp6vQ9KhbRR8RLADSpGrXPYUg6g2fH5u6peE4PVpKz33Mrfm
-         R6oPtfZylmdH5vEqiBIpu+ORovwhR/vT9G98pEjYjiQoBk69tr+dLQIothINeVXIfNbp
-         pfaw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqr+MTnPES3XwMm+1d10yjLiXQzYHDyRxX0O6WDysZc+vIqRckF4r3HTlWAjZhoQ2Coao7E6hM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGKOJzj0JAjiBtXqgq2lochsx8+w+p2vcLE2ol+COk2cLkp1MO
-	z5esekt6eTjDAGTQMs+TurbsYYjUjxPlChm0E75kMWgQZ57Ryq5YZBprCWXcSzfdI0A=
-X-Gm-Gg: AR+sD13QiPKWmqcea7Fgr9MN/xgemt+Rn077op1fLEuXQ4I8vayFSgX/E7jnjkbWCYG
-	sakA3tl51WQWDqJ7fJvY9K25juQ6hm3EWdC6NiQxfy7odOV8B2qMh+7HN4sCN8VuBIvsgSnMqTE
-	cGhCF0gFoVCGv9GYxN/72ewVQN4Ugqn6ByYSrYwrxKuf8/ju2RRWYxGo8BrLavGGLXWXXToYS/n
-	LhJhf0w2oKYXECoYcdOA6NiobjXSNH0jsJyrfEblUa+fu/ec1XOnfzxn0DsxcpmLSzfIpiaUuBh
-	H2Tf7q40KYUAfPDqp7Zt18aKbPg0kfiFplO8Q1e6IR/RqQ77AZkKD4zhtpVLMLjTdItztqpo9Ug
-	XIuab4QCWGfVhRGFRmaEJGzG+daffH1ujW7k00tg7eTZEh9zUmFNwPM8jFNwj4Of1tYDFFPu3Ug
-	==
-X-Received: by 2002:a05:600c:1d0d:b0:493:f0f5:f2d7 with SMTP id 5b1f17b1804b1-496b56b1b23mr60004835e9.7.1785058801109;
-        Sun, 26 Jul 2026 02:40:01 -0700 (PDT)
-Received: from localhost ([109.160.73.171])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957bffc501sm137035665e9.4.2026.07.26.02.39.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 02:39:59 -0700 (PDT)
-Date: Sun, 26 Jul 2026 12:39:58 +0300
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: David Corvaglia <david@corvaglia.dev>
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqkWkC34"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1891F000E9;
+	Sun, 26 Jul 2026 09:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785059174;
+	bh=Vqp2BixdCXUQZaBs8MDk+t4jlUBuZygrQzHv2Kz2JrM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iqkWkC34dZcOVmUM4hhoTsUjz7mj3YkeQ6GMpUBnA1S6TUKg55x7Tk43/mxBrElGU
+	 mmgIg/Gs7DUSSxRqlHFhOVytsmsZsSpjSyFMrmSoml9VmLNz/Q/Is95bNuuzwsVKmE
+	 mu264MEecua0eiO+mrrWYR3Tp1H+g+fjNoDkEco4oqUEwa0Hc6V0k3ka8C9Lyf1T/V
+	 Wp/98joQ57jMkC7HzKwLNPRCPXl3cHObyfg8kFTNqeA38tHyFv0JzvB3KT43Gic2vQ
+	 8Bvl4jlfxZ7ee3K5yinLcF3WnkI6rNhUuPtKidfSJfPOeseyl31AaZeQ9bCmJSoSuI
+	 mVzSkpNGnfRQw==
+Date: Sun, 26 Jul 2026 11:46:11 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: bridge: mrp: fix Option TLV length in
- MRP_Test frames
-Message-ID: <amXV7nnXDWaaH68a@penguin>
-References: <20260726062605.2746-1-david@corvaglia.dev>
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] ipip: reject unsupported configurations in
+ fill_forward_path
+Message-ID: <amXXY1_oi-TdPfzs@lore-desk>
+References: <20260725-ipip-fill-forward-path-fix-v1-1-bc69fd3127d5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="H1Fnms9KoUY9mpQy"
+Content-Disposition: inline
+In-Reply-To: <20260725-ipip-fill-forward-path-fix-v1-1-bc69fd3127d5@kernel.org>
+
+--H1Fnms9KoUY9mpQy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260726062605.2746-1-david@corvaglia.dev>
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 26, 2026 at 06:26:05AM +0000, David Corvaglia wrote:
-> oui is a pointer, so sizeof(oui) is the pointer size. The MRA
-> Option TLV thus advertises a wrong length (15 vs 10 on x86_64),
-> causing misparsing of the frame on peers. Fix is to replace
-> with sizeof(*oui).
-> 
-> Fixes: f7458934b079 ("net: bridge: mrp: Update the Test frames for MRA")
-> Signed-off-by: David Corvaglia <david@corvaglia.dev>
+> The ipip fill_forward_path callback currently does not check for
+> configurations that cannot be offloaded to hardware:
+>=20
+> - Collect metadata (flow-based) tunnels have no fixed destination
+>   and rely on per-packet tunnel metadata, so the forward path
+>   cannot be pre-computed.
+>=20
+> - TOS inheritance (parms.iph.tos & 0x1) requires copying the outer
+>   TOS from the inner packet at encapsulation time, which is not
+>   known during forward path resolution.
+>=20
+> Return -EOPNOTSUPP for both cases to fall back to the software
+> forwarding path.
+>=20
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
-> v2: target net and add Fixes header
-> v1: https://lore.kernel.org/bridge/20260724051202.61946-1-david@corvaglia.dev/
-> ---
->  net/bridge/br_mrp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-> index 3f7126a7d720..179d2470b724 100644
-> --- a/net/bridge/br_mrp.c
-> +++ b/net/bridge/br_mrp.c
-> @@ -215,7 +215,7 @@ static struct sk_buff *br_mrp_alloc_test_skb(struct br_mrp *mrp,
->  		struct br_mrp_oui_hdr *oui = NULL;
->  		u8 length;
->  
-> -		length = sizeof(*sub_opt) + sizeof(*sub_tlv) + sizeof(oui) +
-> +		length = sizeof(*sub_opt) + sizeof(*sub_tlv) + sizeof(*oui) +
->  			MRP_OPT_PADDING;
->  		br_mrp_skb_tlv(skb, BR_MRP_TLV_HEADER_OPTION, length);
->  
-> -- 
-> 2.55.0
-> 
+>  net/ipv4/ipip.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>=20
+> diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+> index d1aa048a6099..0831f6b81717 100644
+> --- a/net/ipv4/ipip.c
+> +++ b/net/ipv4/ipip.c
+> @@ -360,6 +360,12 @@ static int ipip_fill_forward_path(struct net_device_=
+path_ctx *ctx,
+>  	const struct iphdr *tiph =3D &tunnel->parms.iph;
+>  	struct rtable *rt;
+> =20
+> +	if (tunnel->collect_md)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (tunnel->parms.iph.tos & 0x1)
+> +		return -EOPNOTSUPP;
+> +
+>  	rt =3D ip_route_output(dev_net(ctx->dev), tiph->daddr, tiph->saddr,
+>  			     inet_dsfield_to_dscp(tiph->tos),
+>  			     tunnel->parms.link, RT_SCOPE_UNIVERSE);
+>=20
 
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+commenting on sashiko's report:
+https://sashiko.dev/#/patchset/20260725-ipip-fill-forward-path-fix-v1-1-bc6=
+9fd3127d5%40kernel.org
+
+- This is a pre-existing issue, but should the IPv6 equivalent callback,
+  ip6_tnl_fill_forward_path() in net/ipv6/ip6_tunnel.c, also receive similar
+  checks?
+  - already fixed in the following patch:
+    https://lore.kernel.org/netdev/20260724-ip6ip6-route-lookup-fill_forwar=
+d_path-v3-1-7b7991538614@kernel.org/
+
+Regards,
+Lorenzo
+
+> ---
+> base-commit: 04026c998c24ac47eb76886b9790c5710b603eb4
+> change-id: 20260725-ipip-fill-forward-path-fix-543c41000a57
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+
+--H1Fnms9KoUY9mpQy
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCamXXYwAKCRA6cBh0uS2t
+rP5ZAQDr/3s0FzbIxcLeQUUhn26PxMz5DlHKk/s1807RDp89FgEAtjcno1RpePY6
+VRKeYPSkjeLW84Uv1gDifHGhvhIsngY=
+=F4f3
+-----END PGP SIGNATURE-----
+
+--H1Fnms9KoUY9mpQy--
