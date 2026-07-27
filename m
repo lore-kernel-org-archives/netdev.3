@@ -1,216 +1,233 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3924E2F872;
-	Mon, 27 Jul 2026 09:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE783E866B
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785143166; cv=none; b=RkBxwYdPst/Y8bd7YVH3oSoQpeFI6GuiQZVQhrTLjLWPSna5799WmFOOM8yvNKxsl2MhUzGI1XLQP9oQm7AcObxq/S7MrpCNdW4t8Ty7Guo/b5dczVDfh7j3G82/5838g+GyPYgHs1ahw/Sn9AYbFHI1tsbHrMlJ1N7+ORHkpOY=
+	t=1785143269; cv=none; b=jCQEnmk+7cKJdTEW6S3fll1WcxraX8fpV3dvnsnYIsrIZ3Z0XxdDEXy4YF2QYjFP77pIcGvutJhq6hJY4+omkA3i2zfWUh7bb9dON7ziGhxVOkUsVbu6kLKhICtAbZfPOvtvRkaf7l5/xkLfgMWi0xcNE7iaU71J7fst+ItwNww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785143166; c=relaxed/simple;
-	bh=/ZnqnXyOxANA+LYla0CVjrDHZ2thN65L9Xd+XL5RBPw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=gTfbD4Y/HZxfTCrBUtmhxx8q0GMY9414Nl9EFc6YM3BnNdZtXTd8Fjxge5UUXFCFtYsKUDAfXxWjDhU0LUOtDyUFmhVLCMXA7kjzRIOTVTfPNsTRptsH676iKeUZSfOCjbPcf6Z71ktopiPXCjmNFSuZPsJh3qpTFTZFz/qw81w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tS87TVNs; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1785143269; c=relaxed/simple;
+	bh=LHTwQzb1gcagsKYDCbh4Uu3tI3NgNUQJ4rSjFOX1KyA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DXDBlbJ8MS4RHSmbdV7V7C0IYGAcT91yv05CKXtcvxiDpf4HTj7HgDehTU9KpME1YL2ol8YRbT+tqgmmmmG6cry05n8T+HKSpouJL5wSPSC6iBHAsCM7OqevNyU6AWYK7OEN+4wzla/lpymIHlV6YdwSuPE/exP+0KEO55kFfhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O78KpHQl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjlsMZDC; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tS87TVNs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=h9H6us2rtkkFP/PoI2Oxgky5SX0+J92bCdkRSgxYNDQ=; b=tS87TVNs4MbHe92LtQvv8ZE80f
-	8bdGX5OPoZ5NmG4Nncm6aJ5fmdUXsx16W/hdnEOGjn42cLQ/ZCJu213OiR2EMTY88ZBmkrqzW3D8z
-	2kwjkpoZWGftODRnZOCbvNRzFDSVX/YbHYqs/lJK0YYqVhnOIqOSA/IE8Ds14Fu+CSVuAFjbHcjI9
-	OvMQftE9rbodttxIYLo8ub5VOPCyeRcmS3h4Ur08drXNRx7J243ddU9ckBBT08nb8r0TGwu8TcznK
-	7ENSxlx2xoJM85sYtujusbjnVftmSUI1WesGEoCicalptnYryZJoJBHUA89e7769e+hDyC4vwYkEc
-	CrEsvx6g==;
-Received: from [2001:8b0:10b:5:45df:678b:e980:5dcd] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woHHd-0000000AKzt-23CT;
-	Mon, 27 Jul 2026 09:06:01 +0000
-Message-ID: <80832e01d537e6f847013ec4525b0a11b04096a7.camel@infradead.org>
-Subject: Re: [PATCH v5 net-next 3/7] selftests/ptp: Add testptp support for
- attributes ioctls
-From: David Woodhouse <dwmw2@infradead.org>
-To: Arthur Kiyanovski <akiyano@amazon.com>, David Miller
- <davem@davemloft.net>,  Jakub Kicinski	 <kuba@kernel.org>,
- netdev@vger.kernel.org
-Cc: Arthur Kiyanovski <akiyano@amazon.com>, Richard Cochran	
- <richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	 <pabeni@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Miroslav
- Lichvar	 <mlichvar@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Wen Gu
-	 <guwen@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Yonatan
- Sarna <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, Alexander
- Matushevsky	 <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt
- Wilson <msw@amazon.com>,  Anthony Liguori <aliguori@amazon.com>, Nafea
- Bshara <nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>,  Netanel
- Belgazal <netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Benjamin
- Herrenschmidt <benh@amazon.com>,  Noam Dagan <ndagan@amazon.com>, David
- Arinzon <darinzon@amazon.com>, Evgeny Ostrovsky	 <evostrov@amazon.com>,
- Ofir Tabachnik <ofirt@amazon.com>, Amit Bernstein	 <amitbern@amazon.com>,
- linux-kselftest@vger.kernel.org, 	linux-doc@vger.kernel.org,
- shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
- <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Bjorn Helgaas
-	 <bhelgaas@google.com>, vadim.fedorenko@linux.dev
-Date: Mon, 27 Jul 2026 10:06:00 +0100
-In-Reply-To: <20260717065924.2556-4-akiyano@amazon.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-w2T9kD1PQTWxJ2j6d9Ye"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O78KpHQl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjlsMZDC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785143267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
+	b=O78KpHQlDPeWp/ksmOnpkgT6ODOAN+3DSZT3T5f/zq92qOXse5YnKVyZzIWPceUW5UV9kU
+	unUpOdxVqC9KsubOY4AWhKj7+ODSi/xcNFepk8LMHKNk6HPu+wTV5GJmVwBE+0l5EwBO1M
+	yH01Cto8YWNhR1fPj5JASSsx/Ux/cGM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-Emy3XFQjNUaT-5eDkQd7mg-1; Mon, 27 Jul 2026 05:07:45 -0400
+X-MC-Unique: Emy3XFQjNUaT-5eDkQd7mg-1
+X-Mimecast-MFC-AGG-ID: Emy3XFQjNUaT-5eDkQd7mg_1785143265
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15ceb17a28so200565966b.3
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:07:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785143264; x=1785748064; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
+        b=VjlsMZDCcJ06n83HYuTDlHPEpDthZUQp33Y8iijioaWy4pIFR75Q9lVGI+Dk/LoF2h
+         M+KhyEG20GgmKYTp8FqdFINC5SpYaJYZNrqk3k9Xb3oMg87YuJl2oy6mKGnqBC1MwIL0
+         DsxM6BGvkWHP/SDFp55TSSNO0tdKWHHpVLOliMdpZPJBYRzMkyMKApmOYkTB5ScIgtrh
+         PNb4tK879NMUu+3Zf+aDhMnkKJ2TXs+QKRZ8nETBcd8ZjRbWsuVQI7TB0O0jYC0YiLcM
+         5RZ5jwIINeXnnXrrrSFxTg56ixPYBTKUYm7ZYv3CVxjcOLKXOmtRUByIi7VHac62WB/r
+         se0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785143264; x=1785748064;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
+        b=rN4AONsLePSElyDclvTQoIW4fVwgqo7yC4srwuNdZzCxsh1LqsgPCyTpN+gNzhKjPw
+         vvPXD0PAiyrAYOBhSDDleN6v8JEzj6tz6Grm2j38TXLVY7ZCZz6frqTAB32nyBsNdeS4
+         U/sKNIgsztKoncr49Jlb+NtvwfkKYS5eWUSQlQDJ0wuQuAaZxjkcTiuZfBBSIrhM+KvG
+         mjbTd9ar/V5T0ywzIQB0L7t/FdeW2QX3wlCejvbhw/LRF3Tve68ySZWWcFvs0CfjuCfc
+         7+25s0eMgvpB0zx3GTptgXPegnB/LCYylV34wiC3YQASvMIFDqx3qKucoNxW03kutgBP
+         7SnA==
+X-Gm-Message-State: AOJu0YwOTAPiMVEw8moDixsn0+FyALNuHsVivMnsUbJhKFvgUXo2ji9g
+	Os+cuISXINDzWs5OeiFj7NMjJ847Ae6lZek0mvueqtZwC9jkTFGvmLsGFr07IRDu6JtzsUddgR+
+	95LLL25vlKhwZ8aOXDfnOb6095pSQUl4YMxEPxHFwjmDBLeYnjw45ZVVsvw==
+X-Gm-Gg: AR+sD10sQr4hfTmspILCR9r7LPpGYVat5EyP4KQIiKfhSVj7nU7vdIZyKojzHZw+/uu
+	yJmKwITfhB8x8Zws4WpyjT09J5RvqUums5MVHnMd99OOttX2L42PIeUAU2S7SF8iZ6VIbalN8+T
+	Eh9HWbrikub5L9aFDWx+PQt+4x4cljal0+rUdFwP3xvPsY/zlra9BaP7FWo8och9mCDP5kLRjMA
+	4VFMF6KcEqurMgM+d6cL0+7Bkc4ojkBxnPrIQKpFBkxpC5So9QtDPbbJsxDF3ZCH8j9oBBXxQHR
+	QrpHKziwVvUXlc98Z74oa4p3a/JyYnIigwyznMlIGB4kW2r5RVbxsSUEj2aJrgssHhb63h/C4sV
+	F6kqe8L8wGlmHqbqdRjDgcwELmisQtLe4zjhKmwTMUlWZFgdf48MHls9xUwVEqpBOy6oBSFbWjb
+	I75A==
+X-Received: by 2002:a17:906:9f85:b0:c15:a1e8:c141 with SMTP id a640c23a62f3a-c1f1f032c7amr381694366b.30.1785143264450;
+        Mon, 27 Jul 2026 02:07:44 -0700 (PDT)
+X-Received: by 2002:a17:906:9f85:b0:c15:a1e8:c141 with SMTP id a640c23a62f3a-c1f1f032c7amr381693566b.30.1785143263925;
+        Mon, 27 Jul 2026 02:07:43 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32a78260sm601879866b.6.2026.07.27.02.07.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 02:07:43 -0700 (PDT)
+Message-ID: <90370236-b773-4419-b42e-eab6a3a9385b@redhat.com>
+Date: Mon, 27 Jul 2026 11:07:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/5] mptcp: explicitly drop over memory limits
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
+ <20260724-net-next-mptcp-oooq-pruning-v1-3-5dd4dec63a54@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260724-net-next-mptcp-oooq-pruning-v1-3-5dd4dec63a54@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 7/24/26 4:02 PM, Matthieu Baerts (NGI0) wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
+> 
+> Currently the enforcement of the rcvbuf constraint is implemented
+> when moving the skbs into the msk receive or OoO queue, keeping the
+> incoming skbs in the subflow queue when over limits.
+> 
+> Under significant memory pressure the above can cause permanent data
+> transfer stalls, as the skb needed to make forward progress can be
+> stuck in a subflow queue.
+> 
+> Over memory limits, drop the incoming skb, relying on MPTCP-level
+> retransmissions.
+> 
+> Note that fallback socket must perform the limit before the skb reaches
+> the subflow-level queue, as dropping an in-sequence already acked skb
+> would break the stream.
+> 
+> This is not a complete fix for the stall issue, as the drop strategy
+> needs refinements that will come in the next patches.
+> 
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+>  net/mptcp/mib.c      |  2 ++
+>  net/mptcp/mib.h      |  2 ++
+>  net/mptcp/options.c  | 28 +++++++++++++++++++++++++---
+>  net/mptcp/protocol.c | 31 +++++++++++++++++++++++--------
+>  4 files changed, 52 insertions(+), 11 deletions(-)
+> 
+> diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
+> index f23fda0c55a7..ef65e2df709f 100644
+> --- a/net/mptcp/mib.c
+> +++ b/net/mptcp/mib.c
+> @@ -85,6 +85,8 @@ static const struct snmp_mib mptcp_snmp_list[] = {
+>  	SNMP_MIB_ITEM("SimultConnectFallback", MPTCP_MIB_SIMULTCONNFALLBACK),
+>  	SNMP_MIB_ITEM("FallbackFailed", MPTCP_MIB_FALLBACKFAILED),
+>  	SNMP_MIB_ITEM("WinProbe", MPTCP_MIB_WINPROBE),
+> +	SNMP_MIB_ITEM("BacklogDrop", MPTCP_MIB_BACKLOGDROP),
+> +	SNMP_MIB_ITEM("RcvPruned", MPTCP_MIB_RCVPRUNED),
+>  };
+>  
+>  /* mptcp_mib_alloc - allocate percpu mib counters
+> diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
+> index 812218b5ed2b..c84eb853d499 100644
+> --- a/net/mptcp/mib.h
+> +++ b/net/mptcp/mib.h
+> @@ -88,6 +88,8 @@ enum linux_mptcp_mib_field {
+>  	MPTCP_MIB_SIMULTCONNFALLBACK,	/* Simultaneous connect */
+>  	MPTCP_MIB_FALLBACKFAILED,	/* Can't fallback due to msk status */
+>  	MPTCP_MIB_WINPROBE,		/* MPTCP-level zero window probe */
+> +	MPTCP_MIB_BACKLOGDROP,		/* Backlog over memory limit */
+> +	MPTCP_MIB_RCVPRUNED,		/* Dropped due to memory constrains */
+>  	__MPTCP_MIB_MAX
+>  };
+>  
+> diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+> index c664023d37ba..7b954ef78672 100644
+> --- a/net/mptcp/options.c
+> +++ b/net/mptcp/options.c
+> @@ -1127,8 +1127,30 @@ static bool add_addr_hmac_valid(struct mptcp_sock *msk,
+>  	return hmac == mp_opt->ahmac;
+>  }
+>  
+> -/* Return false in case of error (or subflow has been reset),
+> - * else return true.
+> +static bool mptcp_over_limit(struct sock *sk, struct sock *ssk,
+> +			     const struct sk_buff *skb)
+> +{
+> +	struct mptcp_sock *msk = mptcp_sk(sk);
+> +	u64 mem = sk_rmem_alloc_get(sk);
+> +
+> +	mem += READ_ONCE(msk->backlog_len);
+> +	if (likely(mem <= READ_ONCE(sk->sk_rcvbuf)))
+> +		return false;
+> +
+> +	/* Avoid silently dropping pure acks, fin or zero win probes. */
+> +	if (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq ||
+> +	    TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN ||
+> +	    !after(TCP_SKB_CB(skb)->end_seq, tcp_sk(ssk)->rcv_nxt))
+> +		return false;
+> +
+> +	/* Dropped due to memory constraints, schedule an ack. */
+> +	inet_csk(ssk)->icsk_ack.pending |= ICSK_ACK_NOMEM | ICSK_ACK_NOW;
+> +	inet_csk_schedule_ack(ssk);
+> +	return true;
+> +}
+> +
+> +/* Return false when the caller must drop the packet, i.e. in case of error,
+> + * subflow has been reset, or over memory limits.
+>   */
+>  bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+>  {
+> @@ -1154,7 +1176,7 @@ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+>  
+>  		__mptcp_data_acked(subflow->conn);
+>  		mptcp_data_unlock(subflow->conn);
+> -		return true;
+> +		return !mptcp_over_limit(subflow->conn, sk, skb);
+>  	}
+>  
+>  	mptcp_get_options(skb, &mp_opt);
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 72b1fa3ca71c..5f7d8340a3d9 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -381,6 +381,16 @@ static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
+>  
+>  	mptcp_borrow_fwdmem(sk, skb);
+>  
+> +	/* Can't drop packets for fallback socket this late, or the stream
+> +	 * will break.
+> +	 */
+> +	if (unlikely(sk_rmem_alloc_get(sk) > READ_ONCE(sk->sk_rcvbuf)) &&
+> +	    !__mptcp_check_fallback(msk)) {
+> +		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+> +		mptcp_drop(sk, skb);
 
---=-w2T9kD1PQTWxJ2j6d9Ye
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Here sashiko fears a possible forward-allocated memory leak. That is
+sort of antinomy, as forward-allocated memory will be used for the next
+skb(s) and excess fwd allocated memory will be still freed after the
+next skb(s) processing or at sk close time. There is no real permanent leak.
 
-On Fri, 2026-07-17 at 06:59 +0000, Arthur Kiyanovski wrote:
-> Add support for testing the new PTP_SYS_OFFSET_EXTENDED_ATTRS and
-> PTP_SYS_OFFSET_PRECISE_ATTRS ioctls in the testptp utility.
->
-> Add a "-a" modifier that requests clock quality attributes
-> (error_bound, status, timescale) alongside the existing extended (-x)
-> and precise (-X) offset requests:
->   -x N -a: extended offset with attributes (N samples)
->   -X -a:   precise cross-timestamp with attributes
->
-> When the device does not report a given attribute, print an explicit
-> "not reported" line so all attributes are always accounted for.
->
-> These options allow testing and validation of PHC devices that provide
-> clock quality information alongside timestamps.
->
-> Also display the new clock_attrs capability in the -c output, and
-> update print_system_timestamp to print unrecognized clock types instead
-> of silently dropping them.
->
-> Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+We could release additionally allocated fwd memory in the error path as
+a follow-up.
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+/P
 
---=-w2T9kD1PQTWxJ2j6d9Ye
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-Uhw3jmnp0zVwNDW2Hh5CRF4AAAAAAAA=
-
-
---=-w2T9kD1PQTWxJ2j6d9Ye--
