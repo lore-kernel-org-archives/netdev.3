@@ -1,139 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-124.mail.aliyun.com (out28-124.mail.aliyun.com [115.124.28.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86A1361974;
-	Mon, 27 Jul 2026 08:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C863E5EC3;
+	Mon, 27 Jul 2026 08:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785141534; cv=none; b=ZPHi1UVKIKErB0mL3L2cljzd1BXH7MCSyIA+FleeUIAamM6nL/escFAvAJMdX1PCiSXl6JOPaiQNJQt/kNdqqBdZxxU6KfBCIEsresBo9akvtHOxFEGEgLQ6MMGArVuzIJb9LK3/YXZ80Fl4iqwmo0prO5+kWIyAZuMcdMbymTM=
+	t=1785142093; cv=none; b=T+tEydsGqWwbLHN3vwXyCukZ4qsn/jS9mMXhL0OPu6PC20SriIeEmVz6RwtvmjfawEQj1UkHDRC106kvZQSNXyFn9Uo0BhNMRDEQ6+2KFAD61Ne4r4HAyR42S+Lpw6kqkB5byxn6EOHolQE28FeeiMsFx52fs+AjRBvE93D/8+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785141534; c=relaxed/simple;
-	bh=PXt+8MjJEqVoNZSSj5nMMvqwhGPbt8q2Ius9SofHVqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6FZQ5h7AMGsZCnjPN5EK754GrB9dSadjW3ZYLuhtEunootonPc16JYLoimbZsThqKbBYKiHQFJTuW8Rnmh2pxfU/8v9/R31fWGBzlUIkNdGInttEU0wiDI3kC7XQUltxOC0G3DmdNc97GVUyulDIxU2ISgMZS/z6zHzXRoEqJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K96snuGr; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K96snuGr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B461F000E9;
-	Mon, 27 Jul 2026 08:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785141533;
-	bh=214qHaKsK4amtX062wCoq/SQE3RaV1Z8rBCxzjwLx+c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K96snuGrpqffihOEGZUS5yzjUyKH9GmWp9evaEgxeaLeCSUleoqBLXk1Ij0CSPSJw
-	 EWPFa3Og1OroO+K8JAFdwMNYKEfPO9e0UfgpkWqPvt0d1AE4HBogVDAt/xUOBILO3k
-	 6gCyKg/duQKQQl+4lq7vlYAxDpneGaVy4L+792/dHUurSHYi2J5ko0qXWKF/gVZD+X
-	 GktxKqXjpGcMFXDEjZyC/ls956VE9zHP8+xxqSKymex0rcfcP5F+HrOjC1zh0uOIOs
-	 f1VRjGH4HqJOQN44PSrinHQ3NTX0AOXX+YWtpMvquggQ/1Ay2AYIhcyaoOOszjJPSW
-	 XYJa1JU+2SGZQ==
-From: Simon Horman <horms@kernel.org>
-To: shuangpeng.kernel@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	david@ixit.cz,
-	oe-linux-nfc@lists.linux.dev,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] nfc: llcp: Fix nfc_dev refcount leak in connect
-Date: Mon, 27 Jul 2026 09:38:38 +0100
-Message-ID: <20260727083838.710246-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260720193759.1773705-1-shuangpeng.kernel@gmail.com>
-References: <20260720193759.1773705-1-shuangpeng.kernel@gmail.com>
+	s=arc-20240116; t=1785142093; c=relaxed/simple;
+	bh=VKIEp+KB9SltXns1dRwYtir0OY9UTCqRxLNLy2BqsKA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AJIvCa5ijjJglUuRlhTKAJ45kIBVqTMBywgb6FQurhx4jgsfAjBfu9GPuvlK8igTSJQqlNDF6ie1rBh6vruEFEAeyXFfbO86Ny6YOVN/eyEKHxDonE/pz/88vR3fTHC4vaZPDjNpWA/y5T24KX937KsFsUHJHqNeBODJpKjOVL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07450157|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0419407-0.000422469-0.957637;FP=17008814682599360514|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iWJ1fKu_1785142077;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iWJ1fKu_1785142077 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 27 Jul 2026 16:47:59 +0800
+Message-ID: <42910a0b-52ee-401f-b8f1-69eb0e0858ce@motor-comm.com>
+Date: Mon, 27 Jul 2026 16:47:56 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260721114810.660718-1-kyle.switch@motor-comm.com>
+ <d394347a-4162-49ea-b65a-c2e2bd3769aa@lunn.ch>
+ <59cc79d4-cccb-4cc8-94d9-60c56e86b598@motor-comm.com>
+ <c591a9b0-7fea-4953-93db-23f0f591e6ae@lunn.ch>
+ <47d31704-e57b-4828-8c8d-0438ef43e49a@motor-comm.com>
+ <ec6fb144-9b38-418c-ab6f-a02d5fb47b2b@lunn.ch>
+ <4c4b9a41-cc54-4aa5-b302-631369e3c700@motor-comm.com>
+ <87a4548f-ef0d-4ddc-9e87-155786cd5e31@lunn.ch>
+ <638fda5b-ee2c-4f3c-94b6-37d689d48721@motor-comm.com>
+ <b1f54c52-5719-414b-9bdd-3a0b0bc06252@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <b1f54c52-5719-414b-9bdd-3a0b0bc06252@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260720193759.1773705-1-shuangpeng.kernel@gmail.com?part=1
----
-Now I have all the information needed to write the report.
 
-commit 01a1553c1a8c5e891087997a8fe9ee0913eb3c57
-Author: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
 
-nfc: llcp: Fix nfc_dev refcount leak in connect
+On 7/26/26 22:51, Andrew Lunn wrote:
+> On Sun, Jul 26, 2026 at 11:24:16AM +0800, Kyle Switch wrote:
+>>
+>>
+>> On 7/24/26 21:18, Andrew Lunn wrote:
+>>>> Ans: It is different from the m88e1111 PHY, which may support UTP, fiber, 
+>>>>      or combo mode. However, the PHY8824 is only used with UTPs, and 
+>>>>      its structure is as follows, which includes UTP0, UTP1,UTP2,UTP3 and USXGMII.
+>>>>
+>>>>      RJ45 <----> UTP0 <------>
+>>>>      RJ45 <----> UTP1 <------>   USXGMII  <----->  USXGMII(the side of MAC)
+>>>>      RJ45 <----> UTP2 <------>
+>>>>      RJ45 <----> UTP3 <------>
+>>>>
+>>>>      It is similar to phy8821 driver in motorcomm.c, with the difference 
+>>>>      being that one has one UTP port and phy8824 has four UTP ports.
+>>>>      YT8824_RSSR_FIBER_SPACE is used to access USXGMII reg space, Perhaps it 
+>>>>      would be more accurate to call it YT8824_RSSR_USXGMII_SPACE or 
+>>>>      YT8824_RSSR_SERDES_SPACE.
+>>>
+>>> O.K, that completely changes my understanding of this device. Yes,
+>>> YT8824_RSSR_FIBER_SPACE should change name. And i would include this
+>>> diagram in the driver, and indicate how YT8824_RSSR_*_SPACE map to
+>>> this.
+>>>
+>>> For the locking, look thought all the code which is touching the
+>>> USXGMII side and see if it can be moved into probe().
+>>>
+>>
+>> Ans: It may not be possible to completely move the code which touch the USXGMII side
+>>      into the probe() function. The initialization configuration aimed at optimizing 
+>>      the performance of the USXGMII side may be moved into the probe(). However, for the 
+>>      soft reset of UTP, it is necessary to configure MII_BMCR registers in USXGMII side.
+> 
+> I'm beginning to think you need to add an extra lock.
+> 
+> The idea with the mdio lock for accessing pages was that is existed,
+> and it would protect against accesses which don't come through phylib,
+> like hwmon. Because it is a low level lock, it really only works
+> within one PHY, when there are operations going on above it. The
+> assumption is that PHYs operate independently.
+> 
+> You are attempting to use it differently. Because of the poor hardware
+> design, you need to protect one PHY from another PHY. Your PHYs don't
+> operate independently. So i think you need to add a high level lock,
+> shared across the package. All the entry points via struct phy_driver
+> need to lock the package as a whole. The PHY can then do what it needs
+> to do without having to worry about another PHY being operated on in
+> parallel. You can make use of the phylib helpers, since the MDIO level
+> lock is not taken. phylibs concept of pages registers will work. Once
+> everything is done, release the package lock.
+> 
+> So, please look at adding phy_package_lock() and
+> phy_package_unlock(). Maybe it is possible to make use of struct
+> mii_bus shared_lock? Please look at how that is currently used and
+> check to see if there might be deadlocks.
+> 
 
-This patch drops the nfc_dev reference in llcp_sock_release() when the
-socket is still in LLCP_CONNECTING, addressing the leak path where
-llcp_sock_destruct() only puts the device on LLCP_CONNECTED. The gate
-is keyed on sk_state at release time.
+Ans: From my perspective, although a phy8824 has four UTPs, it uses the same mdio bus. 
+     Wouldn't it be possible to achieve the desired effect without using an extra lock.
 
-Link: https://lore.kernel.org/r/20260707183518.1888697-1-shuangpeng.kernel@gmail.com
+     There are only two scenarios for phy8824 to swap to USXGMII reg space.
+     1. init configuration 
+     2. soft reset and isolate done in USXGMII side during UTP soft reset.
 
-> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-> index feab29fc62f4..0a3d87c2c9b3 100644
-> --- a/net/nfc/llcp_sock.c
-> +++ b/net/nfc/llcp_sock.c
-> @@ -633,10 +633,12 @@ static int llcp_sock_release(struct socket *sock)
->
->  	if (sock->type == SOCK_RAW)
->  		nfc_llcp_sock_unlink(&local->raw_sockets, sk);
-> -	else if (sk->sk_state == LLCP_CONNECTING)
-> +	else if (sk->sk_state == LLCP_CONNECTING) {
->  		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-> -	else
-> +		nfc_put_device(llcp_sock->dev);
-> +	} else {
->  		nfc_llcp_sock_unlink(&local->sockets, sk);
-> +	}
+     for scenario 1:
+     It will lock the MDIO bus throughout the entire process, and upon completion, 
+     it will swap to the UTP register space and unlock the MDIO bus.
 
-[High]
-Can the leak still occur when the peer answers the outstanding CONNECT
-with a DM before userspace closes the socket?
-
-After llcp_sock_connect() returns -EINPROGRESS, the sk sits on
-local->connecting_sockets with sk_state == LLCP_CONNECTING and holds a
-device reference. If a DM with LLCP_DM_NOBOUND or LLCP_DM_REJ arrives,
-nfc_llcp_recv_dm() looks up the sk via nfc_llcp_connecting_sock_get()
-and does:
-
-    sk->sk_err = ENXIO;
-    sk->sk_state = LLCP_CLOSED;
-    sk->sk_state_change(sk);
-
-It does not unlink the sk from connecting_sockets and does not drop the
-device reference.
-
-When llcp_sock_release() then runs, sk_state is LLCP_CLOSED, so this
-new branch is skipped:
-
-    else if (sk->sk_state == LLCP_CONNECTING) {
-        nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-        nfc_put_device(llcp_sock->dev);
-    } else {
-        nfc_llcp_sock_unlink(&local->sockets, sk);
-    }
-
-Two things fall out of the else branch:
-
-1. nfc_llcp_sock_unlink() is called against &local->sockets, but the sk
-   is actually hashed on &local->connecting_sockets. sk_del_node_init()
-   still removes it, but the wrong rwlock is taken, racing with
-   read-side walkers of connecting_sockets such as
-   nfc_llcp_connecting_sock_get() and nfc_llcp_recv_cc().
-
-2. The device reference taken by llcp_sock_connect() is not dropped.
-   llcp_sock_destruct() only puts it on LLCP_CONNECTED:
-
-     if (sk->sk_state == LLCP_CONNECTED)
-             nfc_put_device(llcp_sock->dev);
-
-Is gating on sk_state at release time sufficient, or does the release
-path need to track connecting_sockets membership (for example a
-per-sock flag set at nfc_llcp_sock_link(&local->connecting_sockets, ...)
-and cleared on transitions out of that list) so both the unlink target
-and the nfc_put_device() are chosen based on where the sk actually
-lives rather than its current state?
-
-The DM-driven variant of this leak predates b4011239a08e, but the Fixes:
-tag and the subject scope this patch as the fix for the connect-time
-nfc_dev leak, so it seems worth handling in the same change.
+     For scenario 2:
+     If PHY1 works on its own UTP reg space, at this point, PHY2 swap the reg space to USXGMII side.
+     In this case, PHY2 will hold this lock until the operation of PHY2 is completed, 
+     and swap back to UTP reg space, unlock the bus. It will not affect the operation of PHY1
+     works on its own UTP reg space.
+>       Andrew
