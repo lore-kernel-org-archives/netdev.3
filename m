@@ -1,57 +1,96 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f98.google.com (mail-qv1-f98.google.com [209.85.219.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36BC3F39C8;
-	Mon, 27 Jul 2026 10:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED86C346E7D
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785147392; cv=none; b=sRfkv7c2GO7nGbHgrtYAJmFHfjsSp77eLkeE/YI5nAmbznSlA3c6SoDCdgl91UtuRRjP6Meu/bMfVFCTDC8XINbp4NP7zedtHYKzHh+tF1OP3Bd98/ifF6M4z6q600cpzANeI4XRHeS4/tiY3FqCqhCdXl80taq3dTcEZiw61eI=
+	t=1785147403; cv=none; b=hHFmXzKkVPVhf5Mo8Jm0m70wygv3/G+W0tlHz4Bgk/1J2QI58B2MAMMscFQzIEEQN5Z5cY0KNF7ooTcr/F67G0nNOGccc4n0EIbux3ac0kxaMGcjma4MuBRF9uH58EjT5Lcl85MqMWqGc33WeJLVi83edl+0zW1Sc+jbNMzToc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785147392; c=relaxed/simple;
-	bh=o7FyTBbL3mhtNnJmIsKYs4Lu4DCXqHhAH5v7njg2+jE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dyl2e76EADDAvd6tG3tL51YhbNvQsRnzsSXNtbvgdVA020ot2sZqXdpxo60/xNOEr+UTxgNEsGFpj6S40l2RNLq/bQMwOFBEF506byCQR0co5a1sM8nrE5NKAnOGVBojW6pK5UklFcXnAgx3g/jf4N7pc9X6Zpv+wxJY2IZszoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=JUVpXSsz; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1785147403; c=relaxed/simple;
+	bh=xg416wZWycPdqeh1Em1LGsWC/Ld+2UysN2Am1AH6zxU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lXTuxqjHsYcvB2uEApc66s/c7OgHWpGFVo8OkWBfxBxiSC6wKSYQyF94EIWxGbhExupThsNGzoCb0kuS7P4F63bnMitzk+Q+txWWXxPWzOdhtvHCmjdAsDdR/+vQnpK9lhBSaC/IPtI6vOtgHmBoXoTFpEjZYwsXkCQ3DtT5PAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=B7Wdd3HT; arc=none smtp.client-ip=209.85.219.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="JUVpXSsz"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R7UVCN596548;
-	Mon, 27 Jul 2026 03:16:22 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=FY/F3H1n8oGrT7UH/gUu4hm
-	cIZwHreoC3DkT7Bu2Or4=; b=JUVpXSszJIc2DGcEsVuJ7yFRPxw6TGr/o5M1+Is
-	95RDsXuD4N47RCszr4OMvpsWZ2wgMiazrAufSaC4T69Wnzr0JTI4S+3wgq8n9LQy
-	nCNq/wpVUAVc6sQenoaDfvii6HnT112+FBe4EZmNBY0Mnko5qcfMKF19ElWdtltx
-	+zLg3DlRQ3Etm+SeMZ5Oux/eoA9Thz5Jix9dqfdwWfi1l+zTLHYwnXiiGQ+jyDqX
-	eV49zegWCyNXJ4iJHctWCOrJvLQx+Pdkb9DJC7kS6iEZ45Jmth1KCtqANMgMkp1m
-	LcLMhOZzIbQGD/nIxDInoXkNkOtVtPW8/wuwqqwAMEdgIpw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4fmvnekj2e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 03:16:21 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 27 Jul 2026 03:16:21 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 27 Jul 2026 03:16:21 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 5CEC93F703F;
-	Mon, 27 Jul 2026 03:16:18 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        Satha Rao
-	<skoteshwar@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH v3 net-next] octeontx2-af: add new mbox to support sync cycle on rx path
-Date: Mon, 27 Jul 2026 15:46:08 +0530
-Message-ID: <20260727101608.300290-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="B7Wdd3HT"
+Received: by mail-qv1-f98.google.com with SMTP id 6a1803df08f44-8ee88fce572so25678436d6.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 03:16:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785147401; x=1785752201;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=EXnlR8dRlG9FnR4UHV3rtVsyPMP4PaYSGN0799YN8n4=;
+        b=YWj+LA8bb5t1OXoT7goeYkG3Cc1zMTRTLqHoaPepCSnJt91o6hzR8sVM034/5YUUe1
+         JxXmItW4pcPvMB5IIr/32ym6gqZ4UfM82rj276v3YaVbgOsCIKXO/1ufaX5oAAkXQYmt
+         ScCM+Ic2uc16JjFYP3BYAeu4WBQxPgh7jpTrhWCLBLErOx1B6hgIsXRujUlSo1xlvWQb
+         QADcgRO1LWWJsoCe9Y9gydVjmgKgRokFmu32hv4/bp5sXOiZE94BVQ8ZPxXkHOphfz7j
+         td0YvGtxZzuiHdjO1JFPDGestz34CAgDOk31g5wruOZ00SEU55oLv0omzf77ZaczTmsu
+         Uh7A==
+X-Forwarded-Encrypted: i=1; AHgh+RohmvjJFiX1JWdrs6LHf2ZO/zGG8xuksCZs+GEcc/ph0PlS+qmpweKNtbFVR/fIQiCg2QMPfKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweZXFf19DkG7H0sxxIHsnNF2DoZN4axLLUOzfve1sqfk02y5af
+	7IMKMWt0aZ35p92G4qSF2ZHlt3j/XNZQOqFA27MyhqszGYe1Jf50k0D2c+W5WFofoddG03i40jy
+	UZRhTCBqXEUI7K8i346RuHTEhvuWfMpzcit38s3L1kmHQDAHLHRlXwPPxjq+qKEn4mk4Mb1tKhC
+	VPjZHWi0LO6qmvq/AAWiJANrgwUK0OMUc9I86x5VbTtL8K+8dgolrlCxkMlwO8Cv+AoKXFqBX+J
+	Aa9ZKTk42/J
+X-Gm-Gg: AR+sD123hnHUHFw/j1Nwu40URVcdEEM3J5LXzdmUY1ZfUFaLd08XErQCcpSW1rRDXZW
+	4dD6FRMx0pFAtPl+YPeHB3+o/T48wZVfl8lbIfkfILQezagMLiF2cI5TsU46Y7xpP3uhcnDCLvP
+	bM9AuD4kWwPG39JKNyjGyrZSo+HsA4/qpZKdYxkRb6cTI6lYHh2OBhFQCPlGOBNDqpCdowRpsnV
+	6EfnInHgWicDHWE9/QDHlpRY+R6GaOPZooMdiQ/CZsFIC1NavvtPw/jQTzFwITDRyXw8Nz+OYR8
+	0XE70B7KyJK8l/Vj7fQLAdyRQhsddDf5DUSzUdsiaQHWHdCMAN3DEmn4YHlMpbh8X3egc8VPyMA
+	rPuUmc4ypFrWmUM8uZ0o3q3ie48514XEMb+2XwoIyWPwsGics0nvefb8XyIPjjDZyAOqvHlCBwE
+	6oxUjtks+VoQj7Xk1bNp33JbFb7tOYvlZ/bw==
+X-Received: by 2002:a05:6214:2b92:b0:907:94e6:f8bc with SMTP id 6a1803df08f44-907ec76ac52mr102226726d6.15.1785147400766;
+        Mon, 27 Jul 2026 03:16:40 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-73.dlp.protect.broadcom.com. [144.49.247.73])
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-907e851aadasm4292616d6.6.2026.07.27.03.16.40
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Jul 2026 03:16:40 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92e9a2b95b5so446333485a.2
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 03:16:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785147400; x=1785752200; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EXnlR8dRlG9FnR4UHV3rtVsyPMP4PaYSGN0799YN8n4=;
+        b=B7Wdd3HTuNPjjKpxxV5x2L3WoQMwMgjFF2SUiZMnueqR5rQzmHgjiwXMOO8tV3KqNH
+         9bfq4UvxODR/BRIVx/X2iVcIkGVwzua3LjA8hr0WqDAL8wY2XrJd/E5TMVaAiE75wFn7
+         U0M77NzcMArMp3oyQb6UgF6N7K+2XDLP20iTg=
+X-Forwarded-Encrypted: i=1; AHgh+RqqqKY9WnTv+iKPHZN48bDb8SWBiUdRcXszlTM/czu5XUFveV839AxL+THkQhiF+pIIdMHKFno=@vger.kernel.org
+X-Received: by 2002:a05:620a:2a09:b0:932:d9c4:3bec with SMTP id af79cd13be357-932df6bbcfbmr775938685a.38.1785147400047;
+        Mon, 27 Jul 2026 03:16:40 -0700 (PDT)
+X-Received: by 2002:a05:620a:2a09:b0:932:d9c4:3bec with SMTP id af79cd13be357-932df6bbcfbmr775935285a.38.1785147399559;
+        Mon, 27 Jul 2026 03:16:39 -0700 (PDT)
+Received: from lvnvda4076.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-932de51a7cbsm587994185a.8.2026.07.27.03.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 03:16:39 -0700 (PDT)
+From: Kiran Kella <kiran.kella@broadcom.com>
+To: daniel.zahka@gmail.com,
+	kuba@kernel.org,
+	willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	weibunny@fb.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jayakrishnan.udayavarma@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	akhilesh.samineni@broadcom.com,
+	Kiran Kella <kiran.kella@broadcom.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [PATCH net v4] psp: fix NULL genl_sock deref race with concurrent netns teardown
+Date: Mon, 27 Jul 2026 03:16:28 -0700
+Message-ID: <20260727101628.502042-1-kiran.kella@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,134 +98,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDEwMCBTYWx0ZWRfX4kDE2Ur1ZMmS
- aWKwg1d52LSdVGjBZ+muzxBmg3DPPsqSy7By9V2E9yBTYhfmLYhxShCv7XSFO/q4Ls/8XYO2YnH
- 0BSo/DAHmBWu7RyQnnL2RVVj9dfcDvc=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDEwMCBTYWx0ZWRfX52BkXlsiqMQr
- 9lmdVEVEsRRU4zvtB1LcOMyfxUGTs8BY1NjOR/4F4BYZH2gQvpV9cTlnXHO+ccFIrAE6WGhgw+0
- ZFn1mC/K4o7JAfdz5z8PcGc9pvoEKnkBsEZwynRnO7hJJuxmUa68FxQKiJGmscBO4KxzeEPIzIK
- tHihwyqgOlSnOFiqFkemdYmC5810bL6x3fWPgDgQAT2bDOdOxfXtKPiS37DStv4V7jxlxE44KXC
- QkyBXtpD/y36tECcYcsHBST5zNuMqyTlFGbVVMtVdOxuUzL8DVp01pQ1PnRc3K9dZyGxG7zbBss
- UkEr+nf0wU0fK0GtgB6EAonq11C6yliC/HLdd9SkQp4ibFOCRmhceFjvy7nRc6JbtEF5BUPMJIl
- P8/biuPmY7PLC+7AFGsu9nu3+nCXqpnooeUZWzbiGDhlNKgzT9f5gdUym9O3rCkV+YvqvRCGC8+
- PvIzEYWSv6XOM5uRUGg==
-X-Authority-Analysis: v=2.4 cv=e5A2j6p/ c=1 sm=1 tr=0 ts=6a672ff5 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=0iagpPcjLyzhSgOJ4cUA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: RYrW5TlxpTp7YHUYC7qGhfNCRujHC84V
-X-Proofpoint-ORIG-GUID: RYrW5TlxpTp7YHUYC7qGhfNCRujHC84V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Satha Rao <skoteshwar@marvell.com>
+The race occurs between network namespace removal and PSP device
+unregistration.  When a netns is deleted while a PSP device associated
+with that netns is concurrently being removed, psp_dev_unregister()
+triggers psp_nl_notify_dev() to send a device change notification.
+Concurrently, cleanup_net() running in the netns workqueue calls
+genl_pernet_exit(), which sets net->genl_sock to NULL. If
+genl_pernet_exit() wins the race, two sites in psp_nl_multicast_per_ns()
+then dereference the NULL socket and crash:
 
-sync ensures that all packets that were in flight are flushed out to
-memory. This can be used to assist in the tearing down of an active RQ.
+CPU 0 (netns teardown)       CPU 1 (PSP device unregister)
+======================       =============================
+cleanup_net [workqueue]
+  genl_pernet_exit()         psp_dev_unregister()
+    net->genl_sock = NULL      psp_nl_notify_dev()
+                                 psp_nl_multicast_per_ns()
+                                   build_ntf()
+                                     -> netlink_has_listeners(NULL)
+                                     /* crash */
+                                   genlmsg_multicast_netns()
+                                     -> nlmsg_multicast_filtered(NULL)
+                                     /* crash */
 
-To complete disabling RQs or disabling SMQ and its SQs, LF software
-send mbox to AF to complete RX_SW_SYNC.
+Fix by replacing the bare dev_net() calls with maybe_get_net().
+maybe_get_net() returns NULL if the namespace is already dying.
+Holding the reference ensures genl_sock remains valid across both the
+build_ntf() and genlmsg_multicast_netns() calls.
 
-Both VF and PF and invoke this mbox.
-
-Signed-off-by: Satha Rao <skoteshwar@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
+Fixes: 00c94ca2b99e ("psp: base PSP device support")
+Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disassoc")
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Reviewed-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
+Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
 ---
-v2 -> v3: Addressed Simon comments
-	https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
-v1 -> v2: https://lore.kernel.org/netdev/20260715041239.2052888-1-rkannoth@marvell.com/
----
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  2 ++
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 31 +++++++++++++++++--
- 2 files changed, 31 insertions(+), 2 deletions(-)
+v4:
+  Fixes done based on feedback from Jakub Kicinski
+   - maybe_get_net() logic removed for assoc_dev_list
+   - Added RCU protection on main netns before invoking maybe_get_net()
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 10552e9cf519..73f743e4a83d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -362,6 +362,7 @@ M(NIX_CPT_BP_ENABLE,    0x8020, nix_cpt_bp_enable, nix_bp_cfg_req,	    \
- 				nix_bp_cfg_rsp)				    \
- M(NIX_CPT_BP_DISABLE,   0x8021, nix_cpt_bp_disable, nix_bp_cfg_req,	    \
- 				msg_rsp)				\
-+M(NIX_RX_SW_SYNC,	0x8022, nix_rx_sw_sync, msg_req, msg_rsp)		\
- M(NIX_READ_INLINE_IPSEC_CFG, 0x8023, nix_read_inline_ipsec_cfg,		\
- 				msg_req, nix_inline_ipsec_cfg)		\
- M(NIX_MCAST_GRP_CREATE,	0x802b, nix_mcast_grp_create, nix_mcast_grp_create_req,	\
-@@ -952,6 +953,7 @@ enum nix_af_status {
- 	NIX_AF_ERR_INVALID_MCAST_GRP	= -436,
- 	NIX_AF_ERR_INVALID_MCAST_DEL_REQ = -437,
- 	NIX_AF_ERR_NON_CONTIG_MCE_LIST = -438,
-+	NIX_AF_ERR_RX_SW_SYNC_FAIL	= -439,
- };
+v3:
+  Fixed typo in the commit log
+  https://lore.kernel.org/all/20260715110701.3775026-1-kiran.kella@broadcom.com/
+
+v2:
+  get rid of the extra struct net *net, by doing
+  (!maybe_get_net(assoc_net)) directly (as suggested by Daniel Zahka)
+  https://lore.kernel.org/all/20260707185937.3177211-1-kiran.kella@broadcom.com/
+
+v1: https://lore.kernel.org/all/20260703112431.2860506-1-kiran.kella@broadcom.com/
+
+ net/psp/psp_nl.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 9610d8c456ff..43b066353c65 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -62,7 +62,14 @@ psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
+ 	struct net *main_net;
+ 	struct sk_buff *ntf;
  
- /* For NIX RX vtag action  */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index dade7bb6deb7..e397c8cedbc7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -269,15 +269,19 @@ u32 convert_bytes_to_dwrr_mtu(u32 bytes)
- 	return 0;
+-	main_net = dev_net(psd->main_netdev);
++	/* device may be changing netns in parallel */
++	rcu_read_lock();
++	main_net = maybe_get_net(dev_net_rcu(psd->main_netdev));
++	rcu_read_unlock();
++
++	if (!main_net)
++		return;
++
+ 	xa_init(&sent_nets);
+ 
+ 	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
+@@ -88,10 +95,10 @@ psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
+ 
+ 	/* Send to main device netns */
+ 	ntf = build_ntf(psd, main_net, ctx);
+-	if (!ntf)
+-		return;
+-	genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
+-				GFP_KERNEL);
++	if (ntf)
++		genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
++					GFP_KERNEL);
++	put_net(main_net);
  }
  
--static void nix_rx_sync(struct rvu *rvu, int blkaddr)
-+static int nix_rx_sync(struct rvu *rvu, int blkaddr)
- {
- 	int err;
- 
-+	mutex_lock(&rvu->rsrc_lock);
-+
- 	/* Sync all in flight RX packets to LLC/DRAM */
- 	rvu_write64(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0));
- 	err = rvu_poll_reg(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0), true);
--	if (err)
-+	if (err) {
- 		dev_err(rvu->dev, "SYNC1: NIX RX software sync failed\n");
-+		goto unlock;
-+	}
- 
- 	/* SW_SYNC ensures all existing transactions are finished and pkts
- 	 * are written to LLC/DRAM, queues should be teared down after
-@@ -289,6 +293,10 @@ static void nix_rx_sync(struct rvu *rvu, int blkaddr)
- 	err = rvu_poll_reg(rvu, blkaddr, NIX_AF_RX_SW_SYNC, BIT_ULL(0), true);
- 	if (err)
- 		dev_err(rvu->dev, "SYNC2: NIX RX software sync failed\n");
-+
-+unlock:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return err;
- }
- 
- static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
-@@ -6336,6 +6344,25 @@ int rvu_mbox_handler_nix_bandprof_get_hwinfo(struct rvu *rvu, struct msg_req *re
- 	return 0;
- }
- 
-+int rvu_mbox_handler_nix_rx_sw_sync(struct rvu *rvu, struct msg_req *req,
-+				    struct msg_rsp *rsp)
-+{
-+	int blkaddr, nixlf, err;
-+
-+	/* NIX_AF_RX_SW_SYNC is global per NIX block; nix_rx_sync() serializes
-+	 * access under rvu->rsrc_lock across mbox and teardown paths.
-+	 */
-+	err = nix_get_nixlf(rvu, req->hdr.pcifunc, &nixlf, &blkaddr);
-+	if (err)
-+		return err;
-+
-+	err = nix_rx_sync(rvu, blkaddr);
-+	if (err)
-+		return NIX_AF_ERR_RX_SW_SYNC_FAIL;
-+
-+	return 0;
-+}
-+
- static struct nix_mcast_grp_elem *rvu_nix_mcast_find_grp_elem(struct nix_mcast_grp *mcast_grp,
- 							      u32 mcast_grp_idx)
- {
+ static struct sk_buff *psp_nl_clone_ntf(struct psp_dev *psd, struct net *net,
 -- 
-2.43.0
+2.54.0
 
