@@ -1,143 +1,119 @@
-Received: from mailhub16-fb.kaspersky-labs.com (mailhub16-fb.kaspersky-labs.com [5.79.125.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA6D323416
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.79.125.29
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785153404; cv=none; b=So7KCCgruBXX+2P5/X43sSOyB9F3y8/hMH6eFWrDNK/3Rs+tvaVHkOt+L2jweAogAbX7T5ENFimhMbQsmKFL5iV4y38RrjIWjREdD2B6kO72/ci0dWrFsle+8Ncb27SYoimSJSADc3mwUSy68ersSN7qEgHFAmTpoVmdtp4a1/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785153404; c=relaxed/simple;
-	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VRqUHbiQdngiaBQR2PVcbbXmgUDsY7cVzb33rPCE3LflHNe6yNxwqNCUc1TD6e997j4YWGUjXhgKeN1xybqAl3zuzIDmsxNHM7sO9VRu5B1eJ/+5ypqJbI+CLdvdZSm67VFTqtI9DNbWCvL3vZVLQpWbnBheI3B3fd/M3MaCMss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=mCfDjYXO; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=OAlV1WKa; arc=none smtp.client-ip=5.79.125.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F70366057
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 11:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785153461; cv=pass; b=aI+iKAnLChh0KxnkpooDj7xwo2yytVHzNYYQ5TgGlVLAq8GriWJJtoQQ8Olu9431gzbPCyad8hhGcSVPevEJKsIJJTLE2zR3dv3EXoGjXvM1uslmvEQW6JYZqCrXNJJee/xWXcEaB/x3r+1PZyvnTKdOCZQHBjysDZ4KiNCL4hY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785153461; c=relaxed/simple;
+	bh=2k5B3idJmT6bC8h+ilrKx0XVLWjKGNXuCUQ2oqNbk3I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S881Q98/JmrfvMUiPOuSXWM6EaBfxbZpxgPk+cmdsRlkc8peMpXlI42M1bNha+3TWqeHbnI9J1EllpGq0asues7BUPzq8oFv/kausW8XLZME0Na+aTTLAPctUbs98Mjt/i+N6a1dCmatem8JqQQMry4RtOgaMNZDxzjLTC8py6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZtIpfPX; arc=pass smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="mCfDjYXO";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="OAlV1WKa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1785152794;
-	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-	b=mCfDjYXOwHM5KE36i2DhLWZWpY04D/z0nQx6yWfam0jVO2kya03kgKNffPBxjjN2I
-	 gVd3FD5RUiYtLFYmMbUXzP1K7imteHOkZgEMJA+bB7KL/fEnrtHGMPlDxcPl6/buge
-	 LzMjkCacdLMGDXaEnulzLBuC8xJmvavUAS3Ym8+xIsjuhTDBqJsDCDqRQT4211IN33
-	 SKG8A8JZpVCs+0YPaV9QVTmB+VS+KygJq5HQDBhj0cU/Sxieg93BkOiMZfmBZqCqwW
-	 KmYbzDr5Z39FhEg6IgVlRXZISCBMvJQUTEE0K6On+3hr/VVkvdROxiZAH65gAi07JZ
-	 QEUUqWtKcwVmw==
-Received: from mailhub16-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub16-fb.kaspersky-labs.com (Postfix) with ESMTP id DDF9FC08F15
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:46:34 +0300 (MSK)
-Received: from mx16.kaspersky-labs.com (mx16.kaspersky-labs.com [5.79.125.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx16.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub16-fb.kaspersky-labs.com (Postfix) with ESMTPS id BAE42C08DC6
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:46:34 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1785152786;
-	bh=aCRjKsoUvhAH8ed2G/SDT/uPX5xKPyyUIenUtluJ/bk=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-	b=OAlV1WKaLxIDng7F1OKTDY3xhM858IuigJJynaE/njgQV/bcHsbMZNdJVySGzYSXm
-	 FGumyKUvQbzym7EEYCoT67U1YAhAtT0RVuZY8+d5y2bphLuiZ7wE+YXSvC6Z4MWD9D
-	 7tyi8fpR/6yOmsLxvdn12X6Ig1DESlEeqweexxrXJKIS1AKyiTRc5k/I8fy3NKT+z/
-	 0AWoXA8zilztQMzwyO/26rjvaou9rO+3PRyHQl6SC7S3otBbB+L2p9kZMqvmsM8U/U
-	 YWMM4e0v+b/8qI+pEcUH1C5lj7aWYU2YXj0W0dh/21R0dMd26+7ZaBy1dp2cA6M1zL
-	 SFlP3IBtnUCtQ==
-Received: from relay16.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay16.kaspersky-labs.com (Postfix) with ESMTP id BD386C07A8A;
-	Mon, 27 Jul 2026 14:46:26 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub16.kaspersky-labs.com (Postfix) with ESMTPS id 9711BC078CF;
-	Mon, 27 Jul 2026 14:46:25 +0300 (MSK)
-Received: from HQMAILSRV1.avp.ru (10.64.57.51) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 27 Jul
- 2026 14:46:24 +0300
-Received: from HQMAILSRV1.avp.ru ([fe80::487c:531c:bded:f724]) by
- HQMAILSRV1.avp.ru ([fe80::487c:531c:bded:f724%2]) with mapi id
- 15.02.2562.045; Mon, 27 Jul 2026 14:46:24 +0300
-From: "Sergey V. Frolov" <Sergey.V.Frolov@kaspersky.com>
-To: "rkannoth@marvell.com" <rkannoth@marvell.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "sbhatta@marvell.com"
-	<sbhatta@marvell.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"bbhushan2@marvell.com" <bbhushan2@marvell.com>, "gakula@marvell.com"
-	<gakula@marvell.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"sgoutham@marvell.com" <sgoutham@marvell.com>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net] net: octeontx2-pf: Fix UB in shift operation
-Thread-Topic: [PATCH net] net: octeontx2-pf: Fix UB in shift operation
-Thread-Index: AQHdG2cbGfNQf8WH/02d6/mTYwc6LraAhrYAgACLSgA=
-Date: Mon, 27 Jul 2026 11:46:24 +0000
-Message-ID: <159a6806dd1ea12bbd559f664ce30d306cdf1178.camel@kaspersky.com>
-References: <20260724121941.2637908-1-Sergey.V.Frolov@kaspersky.com>
-	 <ambQOBLp5yYDbRSr@rkannoth-OptiPlex-7090>
-In-Reply-To: <ambQOBLp5yYDbRSr@rkannoth-OptiPlex-7090>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-kse-serverinfo: HQMAILSRV2.avp.ru, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 7/27/2026 9:10:00 AM
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EE71A4BF6ABC7C45BFA31E83F6811E9E@kaspersky.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZtIpfPX"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15dd4b9132so385296166b.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:57:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785153458; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WVqoptX0oTUz2kHSIpMVNsKYMuYDDaszJPpfQjYRty9qEpX3Go6KSeNECcL/5GCFNF
+         rxwYKQfjVA9iaLsiWrY0WlDie6vux33Cj2iqgHIb2eabv2TUZrtlnozCqJiOtBdANWQg
+         IZMRJ9A+mX/AqgxmanlIEyo4mMPi55BHB0eCxhYSuya64KXk0lA189qH1hZ1grbY3Qc9
+         cmTc9c7WysX1KXrgaa6kpMzWGXe195A24wpQaeWj8/Lmd+yJgSbXpug2h0q3CLEySHkO
+         7rLY+aCsx6jpzuT2taEyNEAy5Rg18zIT/U24SG/Qfo/7y931U//0mGcG6fyW0ZZsLvEH
+         yx/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=2k5B3idJmT6bC8h+ilrKx0XVLWjKGNXuCUQ2oqNbk3I=;
+        fh=g0XIUMVkV9SYaGLF3VkKlxwcYauthLDIva0rLkuLJxE=;
+        b=Ergj9VrCvLfyl5QYVosv3ypYrI/HImESRb97bQGX/tVI2z+EJ5q/8phZh3ZprPk263
+         et4v/rF5cb65oftBLZvj+RvN2kYuAqQXG26J1WgWl81nx/ky2mwJGxql4LaABGfUhqub
+         JdIenZXpKVI7zMEaJkiqcUhyu+gUhLAgWL8aRnhfvCGb2sXACTnyNPUs9V3NCQjo0oRa
+         ryYg+GWxIlvm81iYsf8FznzjfWQj7bbRit8arfzqXLmz8miIy3ZTvEhFmmmB2WrtSRax
+         H9W9B3hbMWdlI97DhDjpHwYTzK3/atzW67HYRDAoD49NczNTN67u1Spf8O/Ue6sC49ZH
+         IcaQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785153458; x=1785758258; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2k5B3idJmT6bC8h+ilrKx0XVLWjKGNXuCUQ2oqNbk3I=;
+        b=OZtIpfPXTTcaHnGhkDxSZFynofniA5nD8GoqxxI9N6LieHRLhnYkhl1h+62wg1zYXO
+         1CNEhOdxBBsIpFaGd+cQxgm+7attBl0knRJ0a6IoNWcmP9tpy7Lh5UWy8i8CVT4iqhoJ
+         2VadF7Ww1aMJK0JPQ0dUuRkru5DGuldDq4VwDsgOKMtgQ+HqHw/8lIRevyi5w4nZKa58
+         a+CPrKZujkAykRFbCyYjM/N17g8Tzqu1UzMQNqmCqMP2zgncjLH32tidtuP7hMYJxTNk
+         goeswJLhtRWJC2rVTcSEVT2RfRhjSG5BMcUz2s8g1Vh32q4Ki62TdriB3gdm7bpu3Gjt
+         zOng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785153458; x=1785758258;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2k5B3idJmT6bC8h+ilrKx0XVLWjKGNXuCUQ2oqNbk3I=;
+        b=WW+I72pGW8mpYgIfja6ZDeRmt4gJJ001iZVm38w3eng4/FxPMsTwkvMdfYM2Gq96Wh
+         lYyXMIT9Ducm3zlhfAdE9oF5ZG9brCIanBsh4kKZePU4dOHWvAWckaHNLj3hpqxjAIdt
+         jn9uSxxwS0xJAVwXfwtUoA09Fc+p2+Ou/q4GBIw3b6hjgRIA9nrtEKRVwXWLhcbaIphl
+         iafqwwhUESb047ojCo7OiV+YnFePXHQS1kOQLlx009xoo93xavRd2xvtP0/LwZiRyDLN
+         WJ+UFbu3+m0ooF1JyNNAbmsmPz/1T0+vE62P45qm8lfx8bsWt+AvivI1FBP8SOud3hDd
+         JrTQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqbZZpO2CPFzzijhgsmPos221N5KJuJSCJtL5ay/YhvQYT8XU//KbyEt3WMcJ7UtnwbPbqElKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHcusc6jTJOCipY/1TMjD4MAX6Ln1+JqV1W1T+SiY+oNTIkJNt
+	PyTSn1aYVZ0T9i5AVlMxA//miGakrXRVQBHhYyDf8v/CpFx5bO91konwCrstRPDhq5rpDmRbXsV
+	kaqAMYDD/yjKBzn4ijnKY2hWhtM68NAQ=
+X-Gm-Gg: AR+sD10qvETV/NXgyftUUV0yf4a2Yb6mNKJ5O17JXq0Lb4qbSQJy6PQY68Fwhf87RX2
+	cMM7MmHHQ/zPbnY4W/4VyoHc229byI+gBDP9Cg7qml83cjG5366O1SCs8sLpdDt/02GoZwruWZX
+	7PhtVRQCzD31c5cLbHalrsdeSTcaS+PTbrCWG2/VET1A5KxAoc48NutqP0+Z/5c7mFnebFhICWE
+	BdsNrz4IzLOgaL49WQrSENQ038j6IWQH/FgM7aj/lqBvSeYUgqYkwUu9h/B
+X-Received: by 2002:a17:907:d641:b0:c15:ca27:5818 with SMTP id
+ a640c23a62f3a-c1f1eeaa320mr395955766b.28.1785153458189; Mon, 27 Jul 2026
+ 04:57:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/07/27 01:08:00 #28548458
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+References: <2026070925-delay-gauntlet-bc7c@gregkh> <CAE2MWk=mm8_bkd54Gv1mdox6rfvx85Dd3AjOCxPz0fPAfyuWYA@mail.gmail.com>
+ <2026070954-activist-left-8303@gregkh> <CAE2MWkmcQdhGp3LTMtpgAse3AFcfKcAcpQe89+iijfP5e0w_QQ@mail.gmail.com>
+ <2026070948-lively-exchange-a458@gregkh> <CAE2MWkn3L7V3x8i0F-soGLxsBBo_Umgs1pJ3FwCw1OW7=U55zg@mail.gmail.com>
+ <14350a31-ffc7-41fd-84d3-6cfb2cb96841@lunn.ch> <CAE2MWknt86W6yCtuS_RupiuwiDqXT8wZqENM2DjiW1R=eY8qdg@mail.gmail.com>
+ <797773e2-b155-451b-ae97-e8a005fd2d86@lunn.ch> <CAE2MWkmbdDrCw1HUKm17QG7dyihuxg_1VGTUNeBq9v8NVwJV3Q@mail.gmail.com>
+ <20260719082223.GA1899043@shredder>
+In-Reply-To: <20260719082223.GA1899043@shredder>
+From: Ujjal Roy <royujjal@gmail.com>
+Date: Mon, 27 Jul 2026 17:27:22 +0530
+X-Gm-Features: AUfX_myN8vMPcj0vJcxFKIYLNoX74G7CTQydU2TzsiEAmJ7bTFLP5Hg7T5Y7VYE
+Message-ID: <CAE2MWkmE3N6q=_bOv7AaMFS15+SizkzVQV-SCMumc-D1rWcv3A@mail.gmail.com>
+Subject: Re: Please backport bridge multicast exponential field encoding fix
+ series to 6.1.y/6.6.y/6.12.y/6.18.y/7.0.y
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg KH <gregkh@linuxfoundation.org>, 
+	Linux Stable <stable@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, David Ahern <dsahern@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Andy Roulin <aroulin@nvidia.com>, Yong Wang <yongwang@nvidia.com>, 
+	Petr Machata <petrm@nvidia.com>, Ujjal Roy <ujjal@alumnux.com>, bridge@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-T24gTW9uLCAyMDI2LTA3LTI3IGF0IDA4OjU3ICswNTMwLCBSYXRoZWVzaCBLYW5ub3RoIHdyb3Rl
-Og0KPiANCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBTZXJnZXkuVi5Gcm9sb3YgPFNlcmdleS5W
-LkZyb2xvdkBrYXNwZXJza3kuY29tPg0KPiA+IC0tLQ0KPiA+IMKgZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvbWFydmVsbC9vY3Rlb250eDIvbmljL290eDJfdGMuYyB8IDExDQo+ID4gKysrKysrKystLS0N
-Cj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+
-ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9u
-dHgyL25pYy9vdHgyX3RjLmMNCj4gPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0
-ZW9udHgyL25pYy9vdHgyX3RjLmMNCj4gPiBpbmRleCA0MDE2MmIwODAxNGQuLjM5YmQ3M2EyMTRh
-ZiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9tYXJ2ZWxsL29jdGVvbnR4
-Mi9uaWMvb3R4Ml90Yy5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9v
-Y3Rlb250eDIvbmljL290eDJfdGMuYw0KPiA+IEBAIC01MywxMCArNTMsMTUgQEAgc3RhdGljIHZv
-aWQgb3R4Ml9nZXRfZWdyZXNzX2J1cnN0X2NmZyhzdHJ1Y3QNCj4gPiBvdHgyX25pYyAqbmljLCB1
-MzIgYnVyc3QsDQo+ID4gwqDCoMKgwqDCoCBpZiAoYnVyc3QpIHsNCj4gPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAqYnVyc3RfZXhwID0gaWxvZzIoYnVyc3QpID8gaWxvZzIoYnVyc3QpIC0g
-MSA6IDA7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdG1wID0gYnVyc3QgLSByb3Vu
-ZGRvd25fcG93X29mX3R3byhidXJzdCk7DQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBp
-ZiAoYnVyc3QgPCBtYXhfbWFudGlzc2EpDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBp
-ZiAoYnVyc3QgPD0gbWF4X21hbnRpc3NhKSB7DQo+IA0KPiBUaGFua3MuDQo+IGNhbiB3ZSBoYW5k
-bGUgMjU1IGNhc2Ugd2l0aCA8PSA/IGl0IGxvb2tzIHNpbXBsZSB0byBtZS4NCg0KVGhhbmsgeW91
-IGZvciByZXZpZXdpbmcgdGhlIHBhdGNoLiBJIHNlZSB0aGF0IHlvdXIgc2ltcGxpZmljYXRpb24g
-d29ya3MNCndpdGggdGhlIGN1cnJlbnQgdmFsdWUgb2YgbWF4X21hbnRpc3NhICh3aGljaCBpcyAy
-NTUpLg0KDQpIb3dldmVyLCBteSBjb25jZXJuIGlzIHRoYXQgdGhpcyBhcHByb2FjaCBpbnRyb2R1
-Y2VzIGFuIGltcGxpY2l0DQpkZXBlbmRlbmN5IG9uIHRoZSBmYWN0IHRoYXQgbWF4X21hbnRpc3Nh
-IG5ldmVyIGJlaW5nIGNoYW5nZWQuIElmIGluIHRoZQ0KZnV0dXJlIHNvbWVvbmUgdXBkYXRlcyB0
-aGlzIGNvbnN0YW50IChlLmcuIHRvIHN1cHBvcnQgbmV3IGhhcmR3YXJlKSwNCnRoZSBzaGlmdCBv
-cGVyYXRpb24gY291bGQgYmVjb21lIGludmFsaWQgYWdhaW4sIGFuZCB0aGUgVUIgd291bGQNCnJl
-dHVybi4gaWYgbWF4X21hbnRpc3NhIGJlY29tZXMgMTI3LCB0aGVuIFVCIHdvdWxkIHJlYXBwZWFy
-IGZvciBidXJzdA0KdmFsdWVzIGluIHRoZSByYW5nZSAxMjgtMjU1ICh3aGVyZSBidXJzdF9leHAg
-d291bGQgYmUgNiwgbWFraW5nDQoqYnVyc3RfZXhwIC0gNyA9IC0xKS4NCg0KTXkgb3JpZ2luYWwg
-cGF0Y2ggZXhwbGljaXRseSBoYW5kbGVzIGJvdGggY2FzZXMgKCpidXJzdF9leHAgPj0gNyBhbmQg
-PA0KNyksIHNvIGl0J3Mgcm9idXN0IHJlZ2FyZGxlc3Mgb2YgbWF4X21hbnRpc3NhIHZhbHVlLiBJ
-J2QgcHJlZmVyIHRvIGtlZXANCnRoZSBleHBsaWNpdCBjaGVjayB0byBhdm9pZCBpbnRyb2R1Y2lu
-ZyBhIGhpZGRlbiBkZXBlbmRlbmN5IHRoYXQgbWlnaHQNCmFmZmVjdCBmdXR1cmUgbWFpbnRhaW5h
-YmlsaXR5Lg0KDQpXaGF0IGRvIHlvdSB0aGluaz8NCg==
+> We asked to target these patches at net-next because they don't fix a
+> regression (the encoding never worked correctly), so they are not
+> relevant for stable. Users that require this functionality should
+> upgrade to a new kernel that contains the patches.
+>
+Hmm, understood!
+
+> Regarding the stable-specific patch, in my experience, stable
+> maintainers don't accept such patches and prefer to backport patches
+> from upstream, even if it results in more changes.
+
+Then I feel we can skip the changes for stable now. Hi Greg, skip this
+thread and the changes from it. Will be in touch!
