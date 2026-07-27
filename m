@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA9E3D5229;
-	Mon, 27 Jul 2026 20:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC62F376BD9;
+	Mon, 27 Jul 2026 21:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785185462; cv=none; b=R87T0v2FFF2XkkpWOhj7Wk7sK4/y6PGWUcNClhbCMP5rLJl4lmZHNil4ncnH3r9sRN+u56bbcEvUTUWtSwTqDVLxYIBOEicsxXoYaMacCrF8Gmb7Gp80zAa+R8cg2FG6TbEJ5FEcg4pRtY2lj/4Eh6IMWrPXY4jvcwEA2LQMvIo=
+	t=1785186202; cv=none; b=aggQgUvmYSSLbKMmJe0LIBj/V4blyMVyA9iwAZzS3/aWz2ZV4T3rq1FhsYr4oebNDlenUP3FTz26NMAGo1OMHYCYzk8fu3xdmM3uEDHm1MsRoxxVSuTvXv44ngmIVaIiHSWfb6MIAOjGUvJXWOat8OQHoK4KJ94t2QfwnkHJsi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785185462; c=relaxed/simple;
-	bh=BEtd8tI/B+02NFzySetBurIzSXANv/LEuVqd6CxkaQU=;
+	s=arc-20240116; t=1785186202; c=relaxed/simple;
+	bh=WUyvuxN/QNNZRhlm9podEWh9pL0UMmDY77NwxqF32PU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R43JRIDkGq0Qrfq93E0HMmMgtmi4HolnACGL43+1+LShdzQiAi05TySR7M2Al3xZ1ZRn1L0FvMdWpxeTH5TwoyaS8Qo5mlK0JcDgRcgAqqt9S8RZeAQE2Ne9FegvYbsXeoSq3u9qC7efYgFmSFVENWSyhzUuy2eepNzSigQVJtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q45GIBkl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=V2dXFqK3f6ZhqIhuHZ0SP+lJVgIoPLn94BoqemPkvPBX0mzbFx6rXRmwVhdmmSi0S26B3zLrpa/kGSjC/ZiTsq7XlgnNzpbW1NCsFRBopMn8xveZ/s1lUbnYKn32tvKMDI8eVlIBcz4ZEa7ofzXwZ2e0vIuDmyPRT06c32iWWdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFuyWC9g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q45GIBkl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEB61F000E9;
-	Mon, 27 Jul 2026 20:51:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFuyWC9g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA771F000E9;
+	Mon, 27 Jul 2026 21:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785185461;
-	bh=WVUyXHVvjF3fipEBjzQ6spYODkj4/QiY+rhq80/D0gc=;
+	s=k20260515; t=1785186201;
+	bh=/hvDCLN9yaanqanw3N57Y1lgkunH0X8W61CfDT4KCXE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Q45GIBkl58PjfGhvKZSSU4mpJ2Gy36UEB9Ylu+7h9njyDsUxo5NeA4uM3oPQ5FtCw
-	 ll96JkyU5FxUt2bP8JsVG/FRuWzhuCjQHgHFZviS0BfcjnPQNUJceQUEy+Z94VfVMD
-	 OffAwUhnExk2xZmDqoe8wdZliSr7nksCeyO1QaBn6y4zoIlLX8px8U92lpfwqP1vGv
-	 6nRf+qHfn4epmY/KxhJC0qO8QnaBkHNz+9Gcfazr+PErYyV4YkWWHN8AZ4hTZfUBgB
-	 44kBvsKtxRFo7O4Qqwh5ctDCmfDsk3w4AttfIwe63M87Izgk5xHEzbuiEi/gG+e2Bv
-	 nPxbjvbp0TBFA==
-Date: Mon, 27 Jul 2026 13:50:59 -0700
+	b=EFuyWC9gqpsAVGaHbTB3fs3+GAXnIRTz1PMv3HmQTo3s8VahQl/lnjJClAlmH8huU
+	 PrMiG4XsZR0zoAf7JctUxGenhLzAEmUdeIWaJ5SRbLk3uYjU6lkAXeU1lw5wR3oyVG
+	 I0J97N6EXUUuIQndZS1xq4hUrs/vWlMjxgyvdFgWNGyTXSTn2V8KIb0g6M5dCdXqRT
+	 IdVBmIcjBmdYzPQ1nxmXiJLsO+uK7bArrqkKaOY2CPra/jGjSMzFT0pdbIgLPXMnDG
+	 SJq6vrNBX98FThLCJISXg4wxNfN2U77JwSZBy8jmITB+9I6mmj3ONy+LX8Ug1hv397
+	 ZUpSJG9ERpfXA==
+Date: Mon, 27 Jul 2026 14:03:20 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v5 net-next 9/9] octeontx2: switch: add TC flow offload
- path for switch flows
-Message-ID: <20260727135059.6e0c8fdd@kernel.org>
-In-Reply-To: <20260724094018.3213907-10-rkannoth@marvell.com>
-References: <20260724094018.3213907-1-rkannoth@marvell.com>
-	<20260724094018.3213907-10-rkannoth@marvell.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v6] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
+Message-ID: <20260727140320.54185eb8@kernel.org>
+In-Reply-To: <118da808-b9e0-4e5a-9094-9c6dc3740ff4@linux.dev>
+References: <20260723143908.4019-1-maimon.sagi@gmail.com>
+	<118da808-b9e0-4e5a-9094-9c6dc3740ff4@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,16 +47,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Jul 2026 15:10:18 +0530 Ratheesh Kannoth wrote:
-> Register an ingress flow-table offload callback that translates TC
-> flower rules into fl_tuple state, resolves ingress and egress
-> pcifunc via FIB for accelerated ports, and notifies the RVU AF over
-> the PF mailbox.  The AF forwards flow updates to switchdev and
-> keeps per-cookie packet counters in sync using NPC MCAM multi-stats
-> when the switch requests SWDEV2AF refresh.
+On Mon, 27 Jul 2026 12:02:53 +0100 Vadim Fedorenko wrote:
+> I don't like the idea of having a buffer in a global structure. And it
+> doesn't look like you can actually serialize access. Imaging 2 processes
+> manipulating this i2c bus. I can be that mutex will put them like:
+> 
+> 1. process1 -> write cmd
+> 2. process2 -> write cmd
+> 3. process1 -> read result
+> 
+> That means the data will be a mess.
+> 
+> That's why it is a really bad thing to allow direct access from the user
+> space. Is it possible to add a property per command?
 
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:682:35: warning: incorrect type in argument 1 (different address spaces)
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:682:35:    expected void volatile [noderef] __iomem *addr
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:682:35:    got void *hwbase
--- 
-pw-bot: cr
+At a glance - adding I2C support via 2 magic files in sysfs is rather
+odd. Either expose a real i2c bus or make the driver sends the
+appropriate commands. We are opposed to raw device write interfaces in
+netdev.
