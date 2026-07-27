@@ -1,50 +1,41 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C17F3F411A;
-	Mon, 27 Jul 2026 09:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE5A3F5BD6
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785145400; cv=none; b=NhjL6NWvSbcRxkbMs/1pKHi4vqdSYJw8PAhCSmpPI1u/T7NXTKfsBMTng8biPfLWft+/jc8dgII2k7abE+UFZ9daHHfeGo68h/6ZMX0ZSp79OXWM0TnU0MG2gJ9VXBBpCRuiUn3Sb5jinqh/cKcYT56IaVUHd5jDzcgj77b3rXc=
+	t=1785145430; cv=none; b=ddUXawOtJvjiy61gVrhemXz9XEnLe4VnTtxR6XkyT8DFLF+ulid8zTlJtA4IrfZxpdklzczx0oGXRBcqUv7cI6OMj8GQV9YYCvHNg+WeLUKoIKVLV84PmEsNJ06NK7TmqcGeo1O1LuZPz3gfMjRoz+pdRVU/dg+ziHO7Ucjy9FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785145400; c=relaxed/simple;
-	bh=cn4UlB5bjIwDOkP1Lm0hlsqdtyxE3etQfrjCSSczwo4=;
+	s=arc-20240116; t=1785145430; c=relaxed/simple;
+	bh=r7m5U/SjnCTKInl38gniCDb4WxBfa1b5uBHwKwKnnlI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X65wkTRfOYW9CwBrgk95WAGjmjtQYIAiFEvE1drGMfGVjgbJJ1kCp1rodvt/PlTmhp84k/a9yzuSxUr8S8/Mlnp9LMtHBLBZO39Yrt6KsaD4mXS62GXSCr3BpTUKX/nHQj3QgEm1ZsNaZmHD48YSREnwgWRBYlyiWL9LR0JwSIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=SN/JwiV0; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=fl6sATR+WmI1AfedvNHSHtaZlB9FMGCgVwA/Q2s9NhsKTd/BHrSTpvrQKeVwL3URWH+zrv3DEkn9rqUZ0/hdPwsvuT0uXG5kXgy/Zyu0L/ITEJrgs6fN9vLxqnDtLNz16GOU6kuCw0pijv+Lb0y633m/CV5V5Tiya5dWhMzdzCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hmd+m8Rs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="SN/JwiV0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=y5ZYwJ8WMhJlvn6YuT4NTCYDvgCoMsIiQZxEsn87oKU=; b=SN/JwiV09SuqNaskAyMNiAHz+8
-	7VsW0ZbLZSEsE4UDbZDTY9xxdZO3PpQxCCPn+cWkNGRAsKM4jSYwQE7aZ+tueV1KzZVLyQcQ2Ejyx
-	lj35Vg0tg7Fe+2GUh+YpzAh6jIboKAIAQ7JMbpiIxCmbbR7kyuwExWJlj/DDbE5yRwC5SGc2o0UX3
-	C/RDjQY/P2kO66LuP9JDeCU996iO6/NBTKydYW2OncT2jvWGxfxVbRlIFj9CIG4uOEvq3jbedGYpw
-	NiSdBPri/y0Owfv7cc8/adrd/PizgBmk811Xyu7EBXrxX16IcGd07dZmmauxXR8UHyRIwbd4y/f6L
-	Tzs5Azmw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1woHr4-006nvd-2B;
-	Mon, 27 Jul 2026 09:42:38 +0000
-Date: Mon, 27 Jul 2026 02:42:33 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Pu Lehui <pulehui@huaweicloud.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jeff Garzik <jeff@garzik.org>, 
-	Auke Kok <auke-jan.h.kok@intel.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Pu Lehui <pulehui@huawei.com>
-Subject: Re: [PATCH net v4] e1000e: Fix out-of-bounds MMIO access by
- validating BAR0 size
-Message-ID: <amcn2lVGnmxwvsVr@gmail.com>
-References: <20260727025645.2600363-1-pulehui@huaweicloud.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hmd+m8Rs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2421F000E9;
+	Mon, 27 Jul 2026 09:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785145428;
+	bh=7eWFhnBwz+WLNI3BQpCVuNiZR4waikiopqgd9ePffBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Hmd+m8RsGxNygiNyFObh5f2ryV7M6Rwps56ITWRI6XjslC2aViIgsyApQ70T/qa+n
+	 jNP6KZZJKHGtyUygrx9o/g7l5eot7yzEQW7Hc8vDjm9hOTptObgisUQEzRcBaKPW5Q
+	 4GL6uYzMG8d0rKjIbtG8qD7+sy3wkNDetdDhllO6NgiT9aXSypHrQq/6+EVsXrFCPS
+	 dnw2Lb6uu0JnBklRC3wuX0sHj5urGuWX3E2laD3RujFzA5JnOhmlabVKmbggim85Xq
+	 WhE7/fcwujrxx4pofB5KsJ/QzNkQl1j1TqzSOsqabFaSG0FzRP4vp0DiO3GUVtS7uw
+	 cxBNfrNi/kUsA==
+Date: Mon, 27 Jul 2026 10:43:44 +0100
+From: Simon Horman <horms@kernel.org>
+To: Maciek Machnikowski <maciek@machnikowski.net>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com,
+	milena.olech@intel.com, willemdebruijn.kernel@gmail.com,
+	andrew@lunn.ch, vadim.fedorenko@linux.dev
+Subject: Re: [PATCH v7 net-next 2/3] netdevsim: Implement basic ptp support
+Message-ID: <20260727094344.GM418547@horms.kernel.org>
+References: <20260720181113.3293-1-maciek@machnikowski.net>
+ <20260720181113.3293-3-maciek@machnikowski.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,68 +44,207 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260727025645.2600363-1-pulehui@huaweicloud.com>
-X-Debian-User: leitao
+In-Reply-To: <20260720181113.3293-3-maciek@machnikowski.net>
 
-On Mon, Jul 27, 2026 at 02:56:45AM +0000, Pu Lehui wrote:
-> From: Pu Lehui <pulehui@huawei.com>
-> 
-> Syzkaller reported a kernel panic caused by an out-of-bounds MMIO
-> access in the e1000e driver.
-> 
-> [   82.868719][  T404] e1000e 0000:00:02.0: The NVM Checksum Is Not Valid
-> [   82.872328][  T404] Unable to handle kernel paging request at virtual address ffff80008894e090
-> [   83.085218][  T404] CPU: 2 UID: 0 PID: 404 Comm: bash Not tainted 7.2.0-rc2-g3f1f75536668 #1 PREEMPTLAZY
-> [   83.129013][  T404] pc : e1000_get_cfg_done_82571+0x70/0x158
-> [   83.140092][  T404] lr : e1000_get_cfg_done_82571+0x68/0x158
-> [   83.151196][  T404] sp : ffff80008ac37410
-> [   83.158922][  T404] x29: ffff80008ac37410 x28: ffff0000cd6a11b8 x27: ffff0000c58190d0
-> [   83.173919][  T404] x26: ffff0000cd6a11b8 x25: ffff0000cd6a0bc0 x24: ffff0000cd6a0000
-> [   83.189417][  T404] x23: 0000000000001010 x22: ffff0000cd6a11c0 x21: ffff0000cd6a11b8
-> [   83.205195][  T404] x20: 0000000000000064 x19: ffff80008894e090 x18: 0000000000000000
-> [   83.220545][  T404] x17: ffff800081c1a3f4 x16: ffff800081c19c10 x15: ffff800081e86510
-> [   83.235764][  T404] x14: 0000000000000001 x13: 0000000000000001 x12: ffff60001bc8a8b3
-> [   83.251301][  T404] x11: 1fffe0001bc8a8b2 x10: ffff60001bc8a8b2 x9 : ffff800081eae25c
-> [   83.266705][  T404] x8 : 00009fffe437574e x7 : ffff0000de454593 x6 : 0000000000000001
-> [   83.281919][  T404] x5 : ffff0000cf2b9640 x4 : 0000000000000000 x3 : dfff800000000000
-> [   83.297317][  T404] x2 : 0000000000000007 x1 : ffff0000cd6a11c0 x0 : 0000000000000000
-> [   83.312601][  T404] Call trace:
-> [   83.318662][  T404]  e1000_get_cfg_done_82571+0x70/0x158 (P)
-> [   83.329748][  T404]  e1000e_phy_hw_reset_generic+0x17c/0x1a8
-> [   83.341541][  T404]  e1000_probe+0xbd8/0x1988
-> [   83.350334][  T404]  local_pci_probe+0x84/0x130
-> 
-> Repetition steps:
-> 1. Find PCI device which BAR0 size <= 4K. If it's:
->    Device Addr: 0000:00:02.0   BAR0 SIZE: 4K
->    Vendor/Device ID: 0x1af4 0x1004
-> 2. Unbind the above PCI device
->    echo '0000:00:02.0' > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
-> 3. Set the above device to e1000e new_id
->    echo '1af4 1004' > /sys/bus/pci/drivers/e1000e/new_id
-> 
-> During e1000_probe(), the driver maps the device's BAR0 memory region.
-> If the device has a 4K BAR0, ioremap() maps only 4K of space. Later in
-> the probe process, when the NVM checksum validation fails, the driver
-> attempts to perform a hardware reset and falls back to the err_eeprom
-> cleanup path.
-> 
-> This cleanup path will trigger an OOB access kernel panic:
-> e1000_phy_hw_reset
->   e1000e_phy_hw_reset_generic
->     e1000_get_cfg_done_82571
->       er32(EEMNGCTL)
->         readl(hw->hw_addr + EEMNGCTL); <-- EEMNGCTL(0x1010) > 4K, OOB access
-> 
-> Fix this by verifying that the MMIO length (pci_resource_len(pdev, 0))
-> is at least SZ_64K before calling ioremap(). This accounts not only for
-> standard registers up to E1000_SYSSTMPH, but also for flash registers
-> mapped on ICH/PCH chipsets (up to offset 0xE074 / ~57.1 KB). Since PCI
-> BAR sizes are power-of-two aligned, SZ_64K is the minimum valid BAR0
-> size required to ensure all subsequent MMIO accesses remain strictly
-> within the mapped boundary.
-> 
-> Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-> Signed-off-by: Pu Lehui <pulehui@huawei.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260720181113.3293-2-maciek@machnikowski.net?part=2
+---
+netdevsim: Implement basic ptp support
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+This change adds virtual TX/RX hardware timestamping to netdevsim using
+two attached ptp_mock clocks, wires up ndo_hwtstamp_get / ndo_hwtstamp_set,
+and updates ethtool ts_info to advertise HW timestamping capabilities.
+
+> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+> index 4e9d7e10b527..2e31c04adf78 100644
+> --- a/drivers/net/netdevsim/netdev.c
+> +++ b/drivers/net/netdevsim/netdev.c
+
+[ ... ]
+
+> @@ -164,6 +171,36 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		skb_linearize(skb);
+>  
+>  	skb_tx_timestamp(skb);
+> +
+> +	if (peer_ns->tstamp_config.rx_filter != HWTSTAMP_FILTER_NONE)
+> +		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
+> +
+> +	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
+> +	    ns->tstamp_config.tx_type == HWTSTAMP_TX_ON)
+> +		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
+
+[Medium]
+The tstamp_config fields consulted here (peer_ns->tstamp_config.rx_filter
+and ns->tstamp_config.tx_type) are read from the xmit path under only
+rcu_read_lock().
+
+The writer side, nsim_set_ts_config(), runs from the ndo_hwtstamp_set
+path under rtnl_lock and modifies these fields as plain stores with no
+matching READ_ONCE()/WRITE_ONCE() and no shared lock or RCU protection:
+
+	ns->tstamp_config.tx_type = HWTSTAMP_TX_ON;
+	...
+	ns->tstamp_config.rx_filter = HWTSTAMP_FILTER_ALL;
+
+Is this pairing intentional?  KCSAN would flag this as a data race, and
+because tx_type and rx_filter are updated in two separate unlocked
+stores, a concurrent xmit can observe a new tx_type combined with the
+old rx_filter (or vice versa) for a single packet.
+
+Would READ_ONCE()/WRITE_ONCE() on these fields, or making tstamp_config
+RCU-managed, be more appropriate here?
+
+> +
+> +	/* If TX hardware timestamping is enabled, sample our PHC and report
+> +	 * the TX timestamp back.
+> +	 */
+> +	if (ptp_info_tx) {
+> +		ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
+> +		if (likely(ptp_info_rx))
+> +			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
+
+[Low]
+Is the likely() here justified?  ptp_info_rx being non-NULL means the
+peer port has an rx_filter other than HWTSTAMP_FILTER_NONE, and
+ptp_info_tx being non-NULL means the local port has tx_type ==
+HWTSTAMP_TX_ON.
+
+These are two independent user configurations on two independent
+netdevsim ports; one does not imply the other, so the branch hint does
+not seem to reflect an actual statistical bias.
+
+> +		shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
+> +		skb_tstamp_tx(skb_orig, &shhwtstamps);
+> +
+> +		skb = skb_copy(skb_orig, GFP_ATOMIC);
+> +		if (skb)
+> +			consume_skb(skb_orig);
+> +		else
+> +			skb = skb_orig;
+> +	} else if (ptp_info_rx) {
+> +		ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
+> +	}
+> +
+> +	if (ptp_info_rx)
+> +		skb_hwtstamps(skb)->hwtstamp = timespec64_to_ktime(rx_ts);
+
+[High]
+When skb_copy() fails under memory pressure and the code falls back to
+skb = skb_orig, does the following skb_hwtstamps(skb)->hwtstamp write
+corrupt the TX timestamp already reported to userspace?
+
+skb_tstamp_tx() -> __skb_tstamp_tx() clones skb_orig via skb_clone(),
+which shares the underlying skb_shared_info with the original.  In the
+common non-TSONLY path __skb_tstamp_tx() writes the tx timestamp into
+that shared shinfo before queueing the clone on the socket error queue:
+
+	*skb_hwtstamps(clone) = *hwtstamps;
+	__skb_complete_tx_timestamp(clone, sk, tstype, opt_stats);
+
+If skb_copy(skb_orig, GFP_ATOMIC) then fails and skb is set back to
+skb_orig, the subsequent
+
+	skb_hwtstamps(skb)->hwtstamp = timespec64_to_ktime(rx_ts);
+
+overwrites the same shinfo that the queued TX-timestamp clone points
+at.  Userspace reading SCM_TSTAMP_SND via MSG_ERRQUEUE would then see
+rx_ts instead of tx_ts.
+
+Would it be safer to skip the shinfo write on skb_copy() failure, or to
+drop the packet on that path, rather than silently corrupting the
+reported TX timestamp?
+
+Simon says: I believe the issue raised below has already been discussed.
+
+[Low]
+Relatedly, could the skb_copy(GFP_ATOMIC) approach be avoided
+altogether?  The copy exists purely so the later rx_ts store lands on a
+private shinfo that is not shared with the TX-report clone, but this
+dependency on __skb_tstamp_tx() cloning semantics is not documented at
+the call site.
+
+Writing rx_ts into skb_hwtstamps(skb) before invoking skb_tstamp_tx()
+(and passing only the local shhwtstamps to skb_tstamp_tx()) would avoid
+the atomic allocation in the hot path and would also make the previous
+fallback question moot.  If the copy stays, would a comment explaining
+why it is necessary help future readers?
+
+> +
+>  	if (unlikely(nsim_forward_skb(dev, peer_dev,
+>  				      skb, rq, psp_ext) == NET_RX_DROP))
+>  		goto out_drop_cnt;
+> @@ -185,6 +222,61 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	return NETDEV_TX_OK;
+>  }
+>  
+> +static int nsim_set_ts_config(struct net_device *netdev,
+> +			      struct kernel_hwtstamp_config *config,
+> +			      struct netlink_ext_ack *extack)
+> +{
+> +	struct netdevsim *ns = netdev_priv(netdev);
+> +
+> +	if (!ns->phc)
+> +		return -EOPNOTSUPP;
+> +
+> +	switch (config->tx_type) {
+> +	case HWTSTAMP_TX_OFF:
+> +		ns->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+> +		break;
+> +	case HWTSTAMP_TX_ON:
+> +		ns->tstamp_config.tx_type = HWTSTAMP_TX_ON;
+> +		break;
+> +	default:
+> +		return -ERANGE;
+> +	}
+
+[Low, Low]
+Two questions about this switch.
+
+First, is it intentional that ns->tstamp_config.tx_type has already
+been committed here before config->rx_filter has been validated?  If
+the caller passes a valid tx_type paired with an unsupported rx_filter,
+the function returns -ERANGE via the second switch's default, but
+ns->tstamp_config.tx_type has silently been updated to the new value.
+Userspace sees an error while the device is left in a partially-applied
+state.
+
+Would validating both fields up front (or using a scratch
+kernel_hwtstamp_config that is copied into ns->tstamp_config only on
+success) match the pattern used by most in-tree drivers?
+
+Second, on the default: return -ERANGE, would -EOPNOTSUPP be more in
+line with kernel convention here?  Drivers such as igb, i40e, and mlx5
+reserve -ERANGE for values that are outside the enum's numeric range
+and return -EOPNOTSUPP for values that are within range but unsupported
+by the driver.  Since netdevsim is often used as a reference target for
+ptp4l, hwstamp_ctl, and ethtool selftests, the errno value tends to
+propagate into test expectations.
+
+> +
+> +	switch (config->rx_filter) {
+> +	case HWTSTAMP_FILTER_NONE:
+> +		ns->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+> +		break;
+> +	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+> +	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+> +	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+> +	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+> +	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
+> +	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+> +	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
+> +	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+> +	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+> +	case HWTSTAMP_FILTER_NTP_ALL:
+> +	case HWTSTAMP_FILTER_ALL:
+> +		ns->tstamp_config.rx_filter = HWTSTAMP_FILTER_ALL;
+> +		break;
+> +	default:
+> +		return -ERANGE;
+> +	}
+> +
+> +	config->rx_filter = ns->tstamp_config.rx_filter;
+> +
+> +	return 0;
+> +}
