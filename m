@@ -1,340 +1,77 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D383EC687
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686B524BBF4;
+	Mon, 27 Jul 2026 09:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785145129; cv=none; b=lAIpCr39eW0ECOnU5PA0G6IGV8awk0V94t3YepPiavzKkWHhp7wG+RdgykykY5jp37xAfpYqnit0rQyKHUURMyDRGw+9FW3U829v1YPNZ8UYLKu/DICjY2ltzfhwu0kP8GZJlYYGoDUotdU4kcfdAT1nF+UNrCtQxiajOEmEPu4=
+	t=1785145206; cv=none; b=rHhxU8T3fqMWL1K6Tty6YUjVIM16PEWyrKZfB1nvrn88CgEAkShpgfAdXuVl+DzJGqbEfwKgDldzPY5mm2F9K5zAlpx4S0VyUN7UdBr7Psrk2YTQoCi9izpcV0YfE3UqtzSZGTTx7i1jRDhFtyLic1H+SZObq73khY69pAH1Y1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785145129; c=relaxed/simple;
-	bh=+0yJ4I0gxabguzF8Rguw9ulXIZ3IsjgHi5CUS7s0U9o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LJOOgiauOJbpRLIsm1RK4XemHKKGfmmtZoSLh64toTqWRKbqx6EsqMr4QT0ksdBcS2POoSh1jguMzO9BcB97ho32Yxh8KYTIJkgzzVbz++sShtOfkwB/ehY0UGixbzPxkW4hr35Sn6feyUW0oOqqkgetifVgHC/W85D7ZySwx9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sPjvsxfz; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785145206; c=relaxed/simple;
+	bh=yLR30xNyj9Hv7o8iF05JuEgF0Gm1WRh7tVbCDwaZYHs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=YrSkOdGFi+TinMDTpriqTDpkJcsSXTX+SYf4t9rxCAwdDgxEyXc1oqw+fuo9Jwh2cCdVK/pCKc76d9789YPbF6iNPxfA4n5Z4XOuJb88zUO3EnGOES7XbiNV+56hFrbyg7Ws0e9znozzYMMP13qIzR3jvzS71WMCLm5mVZ7C7E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNmY5K4Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sPjvsxfz"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cf27856f9cso31020285ad.2
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:38:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785145127; x=1785749927; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Z16dJnLnSv95Qpq+A/raImdSjBDYDMk7y4iTWRylGiE=;
-        b=sPjvsxfzCIGhen9Vbt5/V1YKBbmfKWUg8tcXw0y0MGuyjenjqEVQggvMbLpDFXV9cM
-         ic5SbHeXrUfSOzktBGXZvENxrCucaw7ryc5hosIB3YR3xgMWQ6S5Vai9cEvDX1QF7g56
-         pKoOJEoUTvvR8acfg8+5Bmtai3MmHBBmoSYDO8QPTy8y/9txm/RSsvkOCgJqz1iZkEV1
-         Esv5yK/pMoXOn4hcbZ4sa85dpmSxe+ICv4wexCy7NT67lHBq6Q9TmLD0y70Pc6PLtVW8
-         UfrGimWgbCsbqwivM98CC9A1hgif23oie+Whj4B9T0DwO/6Zh9LRDmKUQMa859tqjrwf
-         wrJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785145127; x=1785749927;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Z16dJnLnSv95Qpq+A/raImdSjBDYDMk7y4iTWRylGiE=;
-        b=Y9/k7QzdyNKIyNlOaer7VlDjTy7eIQ+HRoHOQb+ZZ3F0ZtYC/aW6HOqkpo/namivNb
-         HQqvBVHJvQ6cYbrPKYnXh8/YO038Mte3qGOYHrtk5tRWzFXSUa3FJIKGfb/Ww/4Rz4c9
-         E8Ysai3GAsJYyqmwMjuWXDofGrkNQH4dstRq2qU7W8modhnmY3elrFISRUtNLVSTa7pM
-         qpiqA2MqMJziyEIM4UJFQ0bwiktQbiuwOQWo64JZWKu1L5WQsy2PPbCGEkEjpAzT75nR
-         f6vpl+keHs2l01zQLPDn3YUtgMuLfD76cslMcOiRhikKfxAETVpvSrjQ5x7GDBhzzALL
-         Pb1Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rob6SDuxsmuiF5gnjoE4+PybAeFkCRJ9HbUciW6ORbyYXCW4SeepU+M0crL/+8yJc4RKajQO+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8qIq6B8bcaBnKKv7c6MhPPkyvojUmP5F5Z98PNooNKy2Q5g/j
-	ZmESIkG40sWM+M+2tGBTr56ww+RQQRZsmLr9l6r13O6ThVj0fTmOrbFK
-X-Gm-Gg: AR+sD10uiH87MrBds+JtLJ8t1I5FxIKoK6sEjqgIk7nA2NaemhNV2NxxUljDEoRPBUY
-	jC+5NEdllTjrZHnFTho2dF0Vp2IFmxCQ+t/mQd4XV1IcKdBLV2R29aULT8037vQQCrSqqMCXAWs
-	jpUCE/zWUcwCZ8MOc38O2K6aN6TjtGCeJp5b72uPneh81FrMOuvPjrJha6qqHaaYSvpbU4oHsPy
-	IxdobiXRYlwgfL42uZnqOcyEOlDURjeNYxDY3d8/QVaHwfAFLE/zxrsq55ZqkAo5L/1fK/dKk56
-	hwQtqFC3cluoomXAHyTnEXUt+iifP09nDC+0eryR133GCdnm6ppWULh5pqC1xp/cDVnk2OvjJAC
-	7wyEOCRqNINCB/2w786q5frqXIkbTXN/iZt4IxFTAOc4Q1YxC0Rj6e52mFfPjOoCyYwhVWjvK2A
-	U/
-X-Received: by 2002:a17:903:1c7:b0:2cc:6329:b7ba with SMTP id d9443c01a7336-2cfde7a9a93mr78616115ad.16.1785145126625;
-        Mon, 27 Jul 2026 02:38:46 -0700 (PDT)
-Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e8a44sm32574905ad.35.2026.07.27.02.38.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 02:38:46 -0700 (PDT)
-From: Zxyan Zhu <zxyan0222@gmail.com>
-To: andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	linux@armlinux.org.uk,
-	hkallweit1@gmail.com,
-	rmk+kernel@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	bjorn@kernel.org,
-	Zxyan Zhu <zxyan0222@gmail.com>
-Subject: [PATCH net-next v2] net: phylink: add phylink_pcs_loopback() method for PCS loopback support
-Date: Mon, 27 Jul 2026 17:38:35 +0800
-Message-Id: <20260727093835.1708262-1-zxyan0222@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260724085224.3321663-1-zxyan0222@gmail.com>
-References: <20260724085224.3321663-1-zxyan0222@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNmY5K4Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6F31F000E9;
+	Mon, 27 Jul 2026 09:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785145205;
+	bh=nG12GJ94xzHWxWBMtZWxcNxF3f5tGCSvJArKXucHFi4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=JNmY5K4YDAGEKeYFBRIXvu1fPTAb9TbXLsDzp8N906OEfAXjXZv77zlL+L95sJclw
+	 QEiU2In08FaPZqOFUBmh+UH3zLjpETR5Lszz77SDFrvGoVDPDbiX0stRvyA6+o84D1
+	 b9KN01cFrMIcItfYZxeh2rAOShFi2oszB2NyHAkp8u2rAmophahbmxGAU4p2A8Ibdw
+	 gD+lY0KkVBZqj5vMVs8KaWwgRKvgVs+Jku3dieGydFV7QvPz9cgAl7IAj3q5cwoJXm
+	 orIFXwffyRH5SqmRVskx1h6y2q/hJVNbxZknuP2GnLsY54x/7+qkuxgu1QcT5hnv/h
+	 7JL5nhWZzQOFg==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org
+In-Reply-To: <20260724031021.814599-1-rdunlap@infradead.org>
+References: <20260724031021.814599-1-rdunlap@infradead.org>
+Subject: Re: [PATCH] nstree: add/fix struct ns_id_req kernel-doc member
+ fields
+Message-Id: <20260727-vakant-faxnummer-spaten-9fd08c8e94bf@brauner>
+Date: Mon, 27 Jul 2026 11:39:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev-09492
+X-Developer-Signature: v=1; a=openpgp-sha256; l=899; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=yLR30xNyj9Hv7o8iF05JuEgF0Gm1WRh7tVbCDwaZYHs=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSlqxfPvXZiXqb5haOFy14sN/dMTbWYwnS9YHGJ9fqpU
+ dNfz1ui3lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRvZcY/tlazP/0Puy/xbSr
+ K/7d49336cjP5g1na5fGr3wTmDA//FQhwx+e7s0yBvU2PoeLQmeVVgupzD2+cdpG5ekWp188Vn3
+ NX8kCAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Some Ethernet MAC drivers (such as stmmac) need to perform PCS-level
-loopback for selftest purposes when no external PHY is present. Add a
-new phylink_pcs_loopback() method that allows MAC drivers to request
-PCS loopback mode through the phylink framework.
+On Thu, 23 Jul 2026 20:10:21 -0700, Randy Dunlap wrote:
+> nstree: add/fix struct ns_id_req kernel-doc member fields
 
-Implement the pcs_loopback callback in the stmmac integrated PCS
-using the GMAC_AN_CTRL_ELE register bit. Add a helper function
-stmmac_selftest_get_pcs() in stmmac selftests to unify PCS lookup
-across glue driver PCS and integrated PCS. Update the selftest
-enable/disable paths to use the new helper.
+Applied to the vfs-7.3.misc branch of the vfs/vfs.git tree.
+Patches in the vfs-7.3.misc branch should appear in linux-next soon.
 
-Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
----
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 17 +++++++
- .../stmicro/stmmac/stmmac_selftests.c         | 51 ++++++++++++++++---
- drivers/net/phy/phylink.c                     | 19 +++++++
- include/linux/phylink.h                       | 16 ++++++
- 4 files changed, 95 insertions(+), 8 deletions(-)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Changes in v2:
-- Implement pcs_loopback callback in stmmac integrated PCS using
-  GMAC_AN_CTRL_ELE register bit.
-- Add stmmac_selftest_get_pcs() helper to unify PCS lookup across glue
-  driver PCS and integrated PCS.
-- Add NULL check in phylink_pcs_loopback() wrapper.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Note on loopback direction:
-The pcs_loopback callback uses a simple enable/disable boolean, matching
-the existing phy_loopback() API. Direction is not needed at this level:
-selftest loopback is always host-side (TX looped back to RX). The
-future ethtool user-space loopback API can handle direction selection
-at a higher layer.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Note on phylink_set_loopback() vs phylink_pcs_loopback():
-This patch follows the same pattern as phy_loopback() - a direct
-callback on the PCS object. Keeping the API minimal avoids introducing
-a new phylink-level loopback abstraction with location enumeration
-before Björn's ethtool loopback series lands upstream. Once that
-series is merged, phylink_pcs_loopback() can serve as a building block
-for a higher-level phylink_set_loopback() if needed.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.3.misc
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-index df37af5ab837..90a21a2f7e87 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-@@ -168,6 +168,22 @@ static void dwmac_integrated_pcs_an_restart(struct phylink_pcs *pcs)
- 	}
- }
- 
-+static int dwmac_integrated_pcs_loopback(struct phylink_pcs *pcs, bool enable)
-+{
-+	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
-+	void __iomem *an_control = spcs->base + GMAC_AN_CTRL(0);
-+	u32 ctrl;
-+
-+	ctrl = readl(an_control);
-+	if (enable)
-+		ctrl |= GMAC_AN_CTRL_ELE;
-+	else
-+		ctrl &= ~GMAC_AN_CTRL_ELE;
-+	writel(ctrl, an_control);
-+
-+	return 0;
-+}
-+
- static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
- 	.pcs_inband_caps = dwmac_integrated_pcs_inband_caps,
- 	.pcs_enable = dwmac_integrated_pcs_enable,
-@@ -175,6 +191,7 @@ static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
- 	.pcs_get_state = dwmac_integrated_pcs_get_state,
- 	.pcs_config = dwmac_integrated_pcs_config,
- 	.pcs_an_restart = dwmac_integrated_pcs_an_restart,
-+	.pcs_loopback = dwmac_integrated_pcs_loopback,
- };
- 
- void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-index 29e824bd90ca..77a457b2fa5c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-@@ -19,6 +19,7 @@
- #include <net/udp.h>
- #include <net/tc_act/tc_gact.h>
- #include "stmmac.h"
-+#include "stmmac_pcs.h"
- 
- struct stmmachdr {
- 	__be32 version;
-@@ -374,23 +375,51 @@ static int stmmac_test_mac_loopback(struct stmmac_priv *priv)
- 	return __stmmac_test_loopback(priv, &attr);
- }
- 
-+static struct phylink_pcs *stmmac_selftest_get_pcs(struct stmmac_priv *priv)
-+{
-+	/* Try glue driver's PCS first, then the integrated PCS. */
-+	if (priv->hw->phylink_pcs)
-+		return priv->hw->phylink_pcs;
-+
-+	if (priv->integrated_pcs)
-+		return &priv->integrated_pcs->pcs;
-+
-+	return NULL;
-+}
-+
- static int stmmac_test_phy_loopback(struct stmmac_priv *priv)
- {
- 	struct stmmac_packet_attrs attr = { };
-+	struct phylink_pcs *pcs;
- 	int ret;
- 
--	if (!priv->dev->phydev)
--		return -EOPNOTSUPP;
-+	if (priv->dev->phydev) {
-+		ret = phy_loopback(priv->dev->phydev, true, 0);
-+		if (ret)
-+			return ret;
- 
--	ret = phy_loopback(priv->dev->phydev, true, 0);
--	if (ret)
-+		attr.dst = priv->dev->dev_addr;
-+		ret = __stmmac_test_loopback(priv, &attr);
-+
-+		phy_loopback(priv->dev->phydev, false, 0);
- 		return ret;
-+	}
- 
--	attr.dst = priv->dev->dev_addr;
--	ret = __stmmac_test_loopback(priv, &attr);
-+	/* Use PCS loopback for interfaces without an external PHY. */
-+	pcs = stmmac_selftest_get_pcs(priv);
-+	if (pcs) {
-+		ret = phylink_pcs_loopback(pcs, true);
-+		if (ret)
-+			return ret;
- 
--	phy_loopback(priv->dev->phydev, false, 0);
--	return ret;
-+		attr.dst = priv->dev->dev_addr;
-+		ret = __stmmac_test_loopback(priv, &attr);
-+
-+		phylink_pcs_loopback(pcs, false);
-+		return ret;
-+	}
-+
-+	return -EOPNOTSUPP;
- }
- 
- static int stmmac_test_mmc(struct stmmac_priv *priv)
-@@ -1986,6 +2015,9 @@ void stmmac_selftest_run(struct net_device *dev,
- 			ret = -EOPNOTSUPP;
- 			if (dev->phydev)
- 				ret = phy_loopback(dev->phydev, true, 0);
-+			else
-+				ret = phylink_pcs_loopback(stmmac_selftest_get_pcs(priv),
-+							   true);
- 			if (!ret)
- 				break;
- 			fallthrough;
-@@ -2019,6 +2051,9 @@ void stmmac_selftest_run(struct net_device *dev,
- 			ret = -EOPNOTSUPP;
- 			if (dev->phydev)
- 				ret = phy_loopback(dev->phydev, false, 0);
-+			else
-+				ret = phylink_pcs_loopback(stmmac_selftest_get_pcs(priv),
-+							   false);
- 			if (!ret)
- 				break;
- 			fallthrough;
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 59dfe35afa54..69242caffaef 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -997,6 +997,25 @@ int phylink_pcs_pre_init(struct phylink *pl, struct phylink_pcs *pcs)
- }
- EXPORT_SYMBOL_GPL(phylink_pcs_pre_init);
- 
-+/**
-+ * phylink_pcs_loopback() - Enable or disable loopback at the PCS
-+ * @pcs: a pointer to a &struct phylink_pcs.
-+ * @enable: true to enable loopback, false to disable
-+ *
-+ * Enable or disable loopback mode at the PCS level. This is used by MAC
-+ * drivers for selftest purposes when no external PHY is present.
-+ *
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable)
-+{
-+	if (pcs && pcs->ops->pcs_loopback)
-+		return pcs->ops->pcs_loopback(pcs, enable);
-+
-+	return -EOPNOTSUPP;
-+}
-+EXPORT_SYMBOL_GPL(phylink_pcs_loopback);
-+
- static void phylink_mac_config(struct phylink *pl,
- 			       const struct phylink_link_state *state)
- {
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 2bc0db3d52ac..66c7016d4acd 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -518,6 +518,7 @@ struct phylink_pcs {
-  *		    the MAC.
-  * @pcs_pre_init: configure PCS components necessary for MAC hardware
-  *                initialization e.g. RX clock for stmmac.
-+ * @pcs_loopback: enable/disable loopback mode at the PCS.
-  */
- struct phylink_pcs_ops {
- 	int (*pcs_validate)(struct phylink_pcs *pcs, unsigned long *supported,
-@@ -542,6 +543,7 @@ struct phylink_pcs_ops {
- 	void (*pcs_disable_eee)(struct phylink_pcs *pcs);
- 	void (*pcs_enable_eee)(struct phylink_pcs *pcs);
- 	int (*pcs_pre_init)(struct phylink_pcs *pcs);
-+	int (*pcs_loopback)(struct phylink_pcs *pcs, bool enable);
- };
- 
- #if 0 /* For kernel-doc purposes only. */
-@@ -717,8 +719,22 @@ void pcs_enable_eee(struct phylink_pcs *pcs);
-  */
- int pcs_pre_init(struct phylink_pcs *pcs);
- 
-+/**
-+ * pcs_loopback() - Enable or disable loopback at the PCS
-+ * @pcs: a pointer to a &struct phylink_pcs.
-+ * @enable: true to enable loopback, false to disable
-+ *
-+ * Enable or disable loopback mode at the PCS level. This is used by MAC
-+ * drivers for selftest purposes when no external PHY is present.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int pcs_loopback(struct phylink_pcs *pcs, bool enable);
-+
- #endif
- 
-+int phylink_pcs_loopback(struct phylink_pcs *pcs, bool enable);
-+
- struct phylink *phylink_create(struct phylink_config *,
- 			       const struct fwnode_handle *,
- 			       phy_interface_t,
-
-base-commit: 1df10cef2d1e7f9f2fb7eddb67fc70d3abf101f9
--- 
-2.34.1
+[1/1] nstree: add/fix struct ns_id_req kernel-doc member fields
+      https://git.kernel.org/vfs/vfs/c/ce639e4c9f8c
 
