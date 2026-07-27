@@ -1,63 +1,63 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AF33515D9
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD6134F27F
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785118278; cv=none; b=qNkpa7AeWzozEqTpxB2nSftqUESpW8D+gH8mAlYGxYnXKHM1pXq0aDyjQpDh2deINmG9caO59AkAZiKX8KPJR/qn+k0LaRANyDBMruTG8fBLhgNCtRPWly++QIN9h2X2hn6MqaSQPatrdNZeQs+IFl5JUqa28yNkZEUcrwRfMnY=
+	t=1785118287; cv=none; b=ZMZFJZsO2HW9rBFtNbAV7q/eQ086rE9rdJdeHI7B+mIfGh8XrhoOGoB9hfks25nzaXCmscMgeCwKhJ/KsqV9zj35zXtg6U/g4RTIMNB4NMfJNj9hr3bYHR3FGWe3CSF7SmfbYLrcx120GY9QiPLSr175Tgurdx9MfFO7o5DjzGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785118278; c=relaxed/simple;
-	bh=idqaJ1zW0f6pRD3+LKzzW42z3MhH+7aIMsIbm9yfVyo=;
+	s=arc-20240116; t=1785118287; c=relaxed/simple;
+	bh=ulcn1ONX1LKOvS48LR+Zlazfgeceskv/+G7RTNzpweE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQjmXJ+a1KBwO+yitNsQe/60HD7cGYhoT0qKHGgInfcTQv72RFW7kRqBD/6Ygt7UYt8XpwLW6qBv7uvc1g89snbZNkYv3L1ztxuU27cu4yUGs9hPLNFJarPSmUfwl8QRrhBPOVR/Et5DB9OCg2Q2RUdjevgtKTKBiSeMhWJHGOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FreEkvKx; arc=none smtp.client-ip=209.85.210.178
+	 MIME-Version; b=KLukkETfMbF7dHbuQ1+rPcdfX5K+aMVEGp/Kp0PWcd6gATeCj2s3cIdrX3MuQGiomVDiAPvk/pfxVbouWySAdGD4cO5WgJ9SmCX1uC6cj4oA4B+YLe7VNNK8xjz8W0AnrCcyKgapq08r9r6frht3KfuuDooOFkpHcTFsv2/Xx90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m5qVb9CS; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FreEkvKx"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8485bd28dd0so2247627b3a.2
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:11:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m5qVb9CS"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso2557345a91.2
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 19:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785118277; x=1785723077; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785118286; x=1785723086; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JN7LEuMudq1mUi6BCPF5860crqnrJNZXCJN217lSS6A=;
-        b=FreEkvKxYyBSh24XgGQnTaPeCALufyAFCQoQMpWWPEv7o8Ln4DNDfoPB+rVNAKnNwZ
-         JrKEH3N0smbDvqcvs8zA9yddLjLxXneTNfz/smnkvAT9SKQW3M1knNSLeh6GvmaMRK+l
-         yXNbzwfenBBBl8B0puqF/K8cbPY6GDOlTuUsHmZky1703G2MUKPCZf62GmP53gh+/6vQ
-         OW5CTUAvEnqTH2MQE/5zSiAiELSnkTJ1nGZaDdzm8hDWhc2NFqAsQA/gmKVZdnAyMHmv
-         w+KEDumEfdT5VUAOIpfepwS9ikmDStqTxkmVuur2YayPLesN2LzGVtlUJ60c6kUPX0Ps
-         cxeQ==
+        bh=dPr6vbLu8PqQb1lWRy/QmQ4lRtcpmb3vtoKOeXxnr9U=;
+        b=m5qVb9CSXLqkGb+r586ipZ4RfoX2a6yv1o+y+AcS0hKlGmjTRD5XTKy6GARfB+dsAt
+         PoOX8B7re2fc8F3Pw5U/HoLy+LtGvOW1cB9VqSrAlrdXC5f79F0+RmnQlY3KVZcuA+UW
+         OABYqTJEWLXMaRJNBkgUCYDO7A51pMRcuW3h7rxJ//6ev7dI3o/TK5VZk+8hTQVMm9gN
+         mdQPRvacvw3pNjlSl44GIH6gmQMa5zB2zwQne1K4p+KYyjOKgyI0yjsfn73t4YnfDumK
+         E/Kf0iABfkFQa+a9ivfquIeuaTUM6Nh+qoRfMSamzB60giNxePt6xi4aQ2dXYjmY7eUY
+         1Wnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785118277; x=1785723077;
+        d=1e100.net; s=20251104; t=1785118286; x=1785723086;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JN7LEuMudq1mUi6BCPF5860crqnrJNZXCJN217lSS6A=;
-        b=CsfYLbDqeHwQJ3QGMTHPeptmce2+x7+M3cs554nUM2Ef8WEgCLQVDT8/XVUcbS2ApF
-         cq5OFLIHZ+wS/pnMY65NShEXWpMDd3f2dM5o8SW81G++TmtAbxFarbN8NXRljgbeEYeI
-         gBpiNegQe/5MxhusurKmbOf2DwB79LqWUweAXqBzBYLSSjM56NQBB0y7cDmd0t9cpl3X
-         3W2GJtdXL27CkxvLyD51pMEZo769uu+W7Kk1kM+imhATL3uu90UaHkSnfRVroLpwmE8t
-         1i2yxfI+ZOvOZfdbvJMn6FZvLc9BWU+T/uMiOMxBNiBr1KEvLLJwR7z7+wx91rlHqfOv
-         9zfw==
-X-Forwarded-Encrypted: i=1; AHgh+RqrqWsipyQvpq/9be1deQj9auMV80i0Clp5DNaxLC7KYbnURf3BwSiGbyntrL4lJZzZJhBCDiU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLd4AifY7F2QKPmm1VUyh6gHP/YOUcH+0adECzWQpj5SQ9yRNC
-	wjfKKSko/x53OLoKhu0NqliMT+whv/0Vj68knSLdLjCSzbHRg1O3wA5V
-X-Gm-Gg: AR+sD1326f7COc/IdySAY1QrAQAVpZMdrEs6BY41wm1drDoCV1tB1+ku7XZn8p8PxM2
-	p+gye3wmYpgEnPBTY+M3CF59YgnYUPPc/pdVNjqS1BdyfykyvqzW2t4xDvHio3LGRUllS62BfhO
-	vf074Ab2gyK2nWk4SfQBFFNko+CPDr+XeqC5oo/C+7ZWHRok/HIPDYbM6sB9YMOY5nS2PRlxx4F
-	p9Jf7RV8Um4x3Mopu6GkEOWY4SFB0iMVU6OqY+dEGmwggOtiytPQJIdVl2qWCPfMoiQFn48JMKQ
-	d4kIfo1DMdjbJp9ijLULJARvA2AuMJmB6i9z60jQOb82Iqoh+CgjeRHWlB+yEBiUB8iGAxIS6IU
-	h82qhe4jwMaF5jbdVW3oNA+xXkHz28kV0LxJxJQQ5Stl/xXskf+zUesRQ+sUBP/UKFQoDVSpeNe
-	OkY6aL8VEo6igQJXSSi0hY7+w=
-X-Received: by 2002:a05:6a21:8282:b0:3c0:9c1a:8936 with SMTP id adf61e73a8af0-3c67e131180mr5856351637.62.1785118276966;
-        Sun, 26 Jul 2026 19:11:16 -0700 (PDT)
+        bh=dPr6vbLu8PqQb1lWRy/QmQ4lRtcpmb3vtoKOeXxnr9U=;
+        b=eWV/+fWPu2s9mHmd5LOEveMQtdcf3G7NlqTnm8JShkl5xOWsB5kBKmL3jSNcrCno5t
+         H48BL/hTRzA6kKPXYiL8SaHBHRKdFbk9qEiqLS1EATG5a8BFf2PKiwV0qGamIOcxlP6c
+         Zqc3RjzVl7afLZ53rH6Xddq16XC2Q7iEEB9VYml1i17TSlEPDL1tUMs2B2A3lPkQAaqz
+         rFqqoHhaGnvLIcLlqMmrsFwLO0khnFUTuWgBpfP/xiCQwLMYrekK+nuNM3DKaEITcHmx
+         UJc2bm2GwrltZfL7evM+NqBA5LdedEdvQRYBxmBbSeYi7RC17H4di7UeZwLeq/5jdo2n
+         vSnQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqJ3Tagx/r3Sr4+sdmLdhxP9HF5J1tite47WNaCqB1nIRtt06FfPU2KqOObloAxom5IDqaYEnY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpnR41F8l4bQieDAWr2Mb9qSfGvIlCawzzpWaaNFSnlJoa/Le+
+	TvZaAEOydj8SUiWzh/P7irNjEktRz2zcw0kG/mXWSTYGVcT/8ceWFj40
+X-Gm-Gg: AR+sD10VQWl/RVaEFemYtzcSlHLn83fXmSuAFOcJgMjnEia/JnH9S8DnkPb/09Qu+PI
+	T+3RjyX2odx5tLiXES/JUvB06dxQJ9OCbsl6IXu5/sD/yfErd7659cBnExmTVPF7wHegAAk6oWP
+	NxAvwIcxyZwnZKnefm4j9+0n608IwzB9hOwyfAHL8vbQ0kABytgmTtNFk8GCEdQA5qW6qMg8G6S
+	9CbVir8TYCDzzg++VX6tyyFcvTPfr4z2OmJYGugfHoTnWt7iPYAa1NBrmubpaq9JwpUPQwy1+bv
+	D/b2whjBn98+JfZDCMpgQwLW9cRV1Dngwik7MVphtzoPbN5AuHxHj3SXizII2B29HL8j2xfWRaN
+	1qqPx45BWnYRgNVDh/lomlwd6DXmvhs2L8ylRWYsUqeWwViOzPgt5JHfrAl++Ky2Ae+o2oPWxJl
+	Cfg3WSP1frKadWHb8yfUH+poY=
+X-Received: by 2002:a17:90b:584f:b0:38e:79f:76c6 with SMTP id 98e67ed59e1d1-38f29641ae1mr5689783a91.24.1785118285724;
+        Sun, 26 Jul 2026 19:11:25 -0700 (PDT)
 Received: from attina.synaptics-inc.local ([199.33.119.15])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e53094d65sm19162200c88.13.2026.07.26.19.11.08
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e53094d65sm19162200c88.13.2026.07.26.19.11.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 19:11:16 -0700 (PDT)
+        Sun, 26 Jul 2026 19:11:25 -0700 (PDT)
 From: Gavin Gao <attinagaoxu@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -88,9 +88,9 @@ Cc: robh@kernel.org,
 	linux-rockchip@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next 2/3] arm64: dts: rockchip: Add RK3576 GMAC 25M refout clocks
-Date: Mon, 27 Jul 2026 10:10:46 +0800
-Message-ID: <20260727021048.3375444-3-attinagaoxu@gmail.com>
+Subject: [PATCH net-next 3/3] net: stmmac: dwmac-rk: Enable RGMII 25M refout clock
+Date: Mon, 27 Jul 2026 10:10:47 +0800
+Message-ID: <20260727021048.3375444-4-attinagaoxu@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260727021048.3375444-1-attinagaoxu@gmail.com>
 References: <20260727021048.3375444-1-attinagaoxu@gmail.com>
@@ -102,47 +102,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RK3576 provides REFCLKO25M_GMAC0_OUT and REFCLKO25M_GMAC1_OUT clocks
-for the two GMAC instances.
+Boards can set clock_in_out = "output" to request a MAC-provided clock,
+but dwmac-rk currently does not enable the optional 25 MHz RGMII
+reference output clock. The common clock framework may therefore disable
+the clock as unused.
 
-Describe these clocks with the clk_mac_25m_refout clock name so boards
-using RGMII output clock mode can let the MAC driver manage the 25 MHz
-reference output.
+Request the optional clk_mac_25m_refout clock in RGMII output mode, set
+it to 25 MHz, and keep it enabled while the MAC clocks are enabled.
 
 Signed-off-by: Gavin Gao <attinagaoxu@gmail.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3576.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 33 ++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-index 70e67d4dccb8..f1125c2f88ab 100644
---- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-@@ -1692,10 +1692,10 @@ gmac0: ethernet@2a220000 {
- 			reg = <0x0 0x2a220000 0x0 0x10000>;
- 			clocks = <&cru CLK_GMAC0_125M_SRC>, <&cru CLK_GMAC0_RMII_CRU>,
- 				 <&cru PCLK_GMAC0>, <&cru ACLK_GMAC0>,
--				 <&cru CLK_GMAC0_PTP_REF>;
-+				 <&cru CLK_GMAC0_PTP_REF>, <&cru REFCLKO25M_GMAC0_OUT>;
- 			clock-names = "stmmaceth", "clk_mac_ref",
- 				      "pclk_mac", "aclk_mac",
--				      "ptp_ref";
-+				      "ptp_ref", "clk_mac_25m_refout";
- 			interrupts = <GIC_SPI 293 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq", "eth_wake_irq";
-@@ -1739,10 +1739,10 @@ gmac1: ethernet@2a230000 {
- 			reg = <0x0 0x2a230000 0x0 0x10000>;
- 			clocks = <&cru CLK_GMAC1_125M_SRC>, <&cru CLK_GMAC1_RMII_CRU>,
- 				 <&cru PCLK_GMAC1>, <&cru ACLK_GMAC1>,
--				 <&cru CLK_GMAC1_PTP_REF>;
-+				 <&cru CLK_GMAC1_PTP_REF>, <&cru REFCLKO25M_GMAC1_OUT>;
- 			clock-names = "stmmaceth", "clk_mac_ref",
- 				      "pclk_mac", "aclk_mac",
--				      "ptp_ref";
-+				      "ptp_ref", "clk_mac_25m_refout";
- 			interrupts = <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq", "eth_wake_irq";
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 643578266dfc..5e7e5e8f8d62 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -81,6 +81,7 @@ struct rk_priv_data {
+ 	struct clk_bulk_data *clks;
+ 	int num_clks;
+ 	struct clk *clk_phy;
++	struct clk *clk_mac_25m_refout;
+ 
+ 	struct reset_control *phy_reset;
+ 
+@@ -1419,6 +1420,24 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
+ 		clk_set_rate(bsp_priv->clk_phy, 50000000);
+ 	}
+ 
++	if (!bsp_priv->clock_input && phy_interface_mode_is_rgmii(phy_iface)) {
++		bsp_priv->clk_mac_25m_refout =
++			devm_clk_get_optional(dev, "clk_mac_25m_refout");
++		if (IS_ERR(bsp_priv->clk_mac_25m_refout)) {
++			ret = PTR_ERR(bsp_priv->clk_mac_25m_refout);
++			return dev_err_probe(dev, ret,
++					     "Cannot get 25M refout clock\n");
++		}
++
++		if (bsp_priv->clk_mac_25m_refout) {
++			ret = clk_set_rate(bsp_priv->clk_mac_25m_refout,
++					   25000000);
++			if (ret)
++				return dev_err_probe(dev, ret,
++						     "Cannot set 25M refout clock rate\n");
++		}
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1433,9 +1452,13 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
+ 			if (ret)
+ 				return ret;
+ 
++			ret = clk_prepare_enable(bsp_priv->clk_mac_25m_refout);
++			if (ret)
++				goto err_disable_clks;
++
+ 			ret = clk_prepare_enable(bsp_priv->clk_phy);
+ 			if (ret)
+-				return ret;
++				goto err_disable_25m_refout;
+ 
+ 			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
+ 				bsp_priv->ops->set_clock_selection(bsp_priv,
+@@ -1454,12 +1477,20 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
+ 			clk_bulk_disable_unprepare(bsp_priv->num_clks,
+ 						   bsp_priv->clks);
+ 			clk_disable_unprepare(bsp_priv->clk_phy);
++			clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
+ 
+ 			bsp_priv->clk_enabled = false;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_disable_25m_refout:
++	clk_disable_unprepare(bsp_priv->clk_mac_25m_refout);
++err_disable_clks:
++	clk_bulk_disable_unprepare(bsp_priv->num_clks, bsp_priv->clks);
++
++	return ret;
+ }
+ 
+ static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
 -- 
 2.55.0
