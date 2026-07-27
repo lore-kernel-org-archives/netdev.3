@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B331B3EE1F8;
-	Mon, 27 Jul 2026 22:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E283D5C0B
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 22:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785192044; cv=none; b=qesJ60UFMFfLXC3O29FlODx/q+EBNEiXfDHFyJJeuX/DWcW6k3BjGqlAWWamiER0XqZgeMqsRb54F/Lw2REIuEDq2tbgNu23eOO6/uJwNSbJ+iiihdfrFv2/wuaYpHTNf7+TWwjDDt+GZA+ByAqFf3vxI/qj9rAG33QkH0UDeb4=
+	t=1785192053; cv=none; b=g9XbuxBb8LxSL0vFr+GS8XaPOXlrZTm43Wtpju5kjIcyNk00aiU6iY10aa0kYvZEuYwSS8TtwG8fHFfVZEsptvfoXiLmTlO0UB49cGvcpsNqoFZx2IlFMb0bhzLbAgrba7bGU4vGH3t9nHPnH+ufPBw7kB5zXHgye352/W9x++g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785192044; c=relaxed/simple;
-	bh=wHxk9+3mVjXUsQGeKWKLwcGfT+SfuqwGHf3DiMG54rk=;
+	s=arc-20240116; t=1785192053; c=relaxed/simple;
+	bh=O/uqWVNjYMDpVycWX+NIU7f4/AuNgFqmgT9CheMY6jc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cEbz0FckddEFBoqJmXgqDfTdI5lRjbvGUubXpeJp/JDHFh+Tx+gQbYAvn/OZb0wHA6swgYuqYng0kKhWSxAI8sXPzsxnilwrcbUmAGDdIh/Yold+2CpyyxUUb+REX2jbG4KQGMl7TK63OCq+behaRJDYB5bw6adn0/NPvTyruRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbqRtiFr; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=E7dPVl+0IfDQ7XcLZzT4T9LbR/pb8GFsml8Pxg4zVFE9j3J2SpeRADrERTdBxW+SsC9+2RZO+d/bc5htiGaTuEfLLDfSw/b7B5TGkwvmMKDTblenyhEqBUBmOFRO9EWXRlqrhcsH9GKszCB91Iv5UGPbePu/GlDUr2p7wEbOqWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POcqbK8s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbqRtiFr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589EF1F000E9;
-	Mon, 27 Jul 2026 22:40:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POcqbK8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1241F000E9;
+	Mon, 27 Jul 2026 22:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785192043;
-	bh=SchebKOkKO65O4I6Bs5M1xrcEz7y9QbfXV31y7ljMcQ=;
+	s=k20260515; t=1785192052;
+	bh=xlQxt+OoT9YoxCHAvGuAJGjC/gKqb/PPj3bKyGF4TlY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CbqRtiFr/ig6zhlRCfD9lf+Uuhogz+3ATZ3gyPK5DmCswCMDVZ2il2O7k9REhIcYr
-	 xAxQmKljJKmfMP6a1DZpbm2T0yXqVtU105atw8tHLrURMeV1cRBre035W797alzwyo
-	 eM+fuiBxzSFM9m8vAg25/kBftffl3xz81p1uIuxJCmRX+XMqPzbpm05O1B3M8+wwKP
-	 Xonlgl61Qmst4ESLhmFqZ4eSxV3l8nLGo+DdoBtr4b+tjhCDfkFUwWo3+BVM/MaBNf
-	 IiLKDxnps3ThNHUK+V5AVhFm6h96HTOrhoDoCA+bm0CA67I3lfuPuECoAJQbJeSZjY
-	 KiEAYnaXpyJwg==
+	b=POcqbK8sYiHT81wvyGUtGoupP37CI1e5vrEIyThYp6WrkLkaMsRhncQqHo1mHlj4D
+	 JigQOuSJMwqe2C14NczZgefpFmg6FrpVdrZndw5A8kMjZWzBr36OyJXWELermlyvNX
+	 4AXOv+67Ixl0NpxQsMhYu3CF8LRT+uxYl2+tsvTgRZMS6V7LM2fO++7oUsYPPLdkGJ
+	 c4GtD9sN/4lV5bzVU/cFLFat7T7Rh+V9SxvLOlQWJn/4uAuATj+v0QYyEW5F630qFM
+	 VtG4a/1YdQdQ0NCUDvC147RwswV0OhlQ2IDFDOShjjKN8/hHeP9mn10ISaSn2XrQRj
+	 fwjWl0WeUyUwg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D089C380CECF;
-	Mon, 27 Jul 2026 22:40:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93905380CECF;
+	Mon, 27 Jul 2026 22:40:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,33 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] tcp: use kvmalloc_array() for BPF iterator batches
+Subject: Re: [PATCH net 0/1] net: ipv6: clear suppressed fib6 rule result
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178519200839.1443317.15594197813514802308.git-patchwork-notify@kernel.org>
-Date: Mon, 27 Jul 2026 22:40:08 +0000
-References: <20260716025102.118174-1-xiongwm2026@163.com>
-In-Reply-To: <20260716025102.118174-1-xiongwm2026@163.com>
-To: Weimin Xiong <xiongwm2026@163.com>
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+ <178519201713.1443317.6562373845919608591.git-patchwork-notify@kernel.org>
+Date: Mon, 27 Jul 2026 22:40:17 +0000
+References: <cover.1784710966.git.zhilinz@nebusec.ai>
+In-Reply-To: <cover.1784710966.git.zhilinz@nebusec.ai>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, Jason@zx2c4.com, vega@nebusec.ai, zhilinz@nebusec.ai
 
 Hello:
 
-This patch was applied to bpf/bpf-next.git (master)
-by Andrii Nakryiko <andrii@kernel.org>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 16 Jul 2026 10:51:02 +0800 you wrote:
-> Use kvmalloc_array() instead of open-coding the element-size
-> multiplication when allocating the TCP BPF iterator batch.
+On Fri, 24 Jul 2026 00:48:51 +0800 you wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
 > 
-> Signed-off-by: Weimin Xiong <xiongwm2026@163.com>
-> ---
+> Hi Linux kernel maintainers,
+> 
+> We found and validated a issue in net/ipv6/fib6_rules.c. The bug is
+> reachable by a non-root user via user and net namespace.
+> We've tested it, and it should not affect any other functionality.
+> 
+> [...]
 
 Here is the summary with links:
-  - tcp: use kvmalloc_array() for BPF iterator batches
-    https://git.kernel.org/bpf/bpf-next/c/fcf741584a56
+  - [net,1/1] net: ipv6: clear suppressed fib6 rule result
+    https://git.kernel.org/netdev/net/c/6aea62e433fe
 
 You are awesome, thank you!
 -- 
