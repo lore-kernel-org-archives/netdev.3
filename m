@@ -1,102 +1,154 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FC73845CF
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957BC37D10A
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785162230; cv=none; b=URajJ8hJJJJVOBbG0Zpwv6/laGagqayLi3/SEK1o7C+Bd/sZlLLkuXCnr6Lss6ZCg66v8HVtGzXQx39OQjhX2Y1aaJwGADvq3U0wZZxXXFDtrffQBJ7HFHur8AHuMUoSlw5PJ/0Jubyg8eW0wy9jjyLTiJye5XH+QPtFsSoSnD4=
+	t=1785162537; cv=none; b=bGr2rwI4Q+DWld0Kfj89XoMDcttE/IefQXfMoyPXJoelfh0CUubjUtO1uajUaivwLB3fELhpb+5X96VaK9Lf1q4DpPc52gmJKegiytBq/OWT2X1t2DbyiUhXhGy+ORNS9OUETTISEo/9iwt6g0Ye8/5y5UhLmT13q8qD4wQFrIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785162230; c=relaxed/simple;
-	bh=zWNmRw0tdrfgtF8saqtc0jjAxfPd6fmLK6erat3inE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=htgQcfTL/0QbTa5Xgk1jso5ysweUzSpiOufTLiIlM4i/KfVeG4o9kagD/GHDFZBhpA8gOEHn6934DrfoJE9qjwD32i4DIkIArr6wtzHGCSmBJf0OVI152CXOfRZ2DH4sB3fnke/wul5aUrjsVJGB/Lxej8djinwOLY1jAEl5uEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=eHFArjdR; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1785162537; c=relaxed/simple;
+	bh=1F2E0F8oWdzcK8owdnuCkCeBAUkTA6kxmehpUYOfQYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qahn2dG2hN7Naia0fLwIPFyk+N05kJ8xlin3qXnUT+/wweAKSzJ1KiQE/Sv4Y80AWCy1uRjvXbZm5R3twYq4BKJhEOeLeBXbPjmPNzIRuz2062i6nsME7K5bfUAgYcijvMJU/UvSrTqY5gYVG8TeQFzucCdg9rV1vwZvakm6kw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YTQR4u7z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LcVPLYe5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="eHFArjdR"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id C99C66018F;
-	Mon, 27 Jul 2026 16:23:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1785162225;
-	bh=b8PqiTTkmEl9nyriMpFyyfj2wkHdNtBSiU5R8ZC/vCA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eHFArjdRAa5gKAHJJ9pFCF2bJtk8+0ZA54w9gzNHLkbvSzATTR4o8v5j2x9wT5A57
-	 aAF1cYCs1N9m4cmVFVLHeXU4dP3jkACb6DgoTdJimPAPaFHJGZyT6kYfNC5rrTeyKw
-	 xDBX5LPjRl5XSrbE1GFazl4+DC1Pz4E8W8IWInmYqUu557iYNZdr6O5WVWlcDbu6fi
-	 L+Z8ZZeAnWTcB2XbyXD5xg1JWHlKsmUFtUc+vW0lmk03hJ5JgQHS433Stxq3+PBsZa
-	 fzoDqRG/2hPTLUqBneYqb/lUkaQcV4jpuNQP4Xgc+4Aj/g7vIHzg/gELKkhC4du0g+
-	 ph+9KD3CGN5oA==
-Date: Mon, 27 Jul 2026 16:23:42 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: devel@lists.linux-ipsec.org, netdev@vger.kernel.org,
-	tobias@strongswan.org, eyal.birger@gmail.com, antony@phenome.org
-Subject: Re: [PATCH net-next,v3] xfrm: allow to enable udp encapsulation
- without userspace socket
-Message-ID: <amdp7nY5kjatDzVx@chamomile>
-References: <20260717110118.251866-1-pablo@netfilter.org>
- <amdJCg3QqOrO_4Bx@secunet.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YTQR4u7z";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LcVPLYe5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785162533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
+	b=YTQR4u7zc0Q9kmugq1mbA2LxjrGmGAF8ok3stZKrLx0WvCONFA/jW15MwNM1j8upsvIX5U
+	37KSfd9CJcWihWlOzh/NF93MycytW2PBTW1oy2ob2mkZMNuYx/GAR9q87Nq0fC9I5/6MIx
+	AiAwTFUBduD2xxNm2t9s8vfq/LBIMwk=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-600-05SX9AyNP4GihUb5pSNfeA-1; Mon, 27 Jul 2026 10:28:51 -0400
+X-MC-Unique: 05SX9AyNP4GihUb5pSNfeA-1
+X-Mimecast-MFC-AGG-ID: 05SX9AyNP4GihUb5pSNfeA_1785162530
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69afb1d30f5so4087829a12.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785162530; x=1785767330; darn=vger.kernel.org;
+        h=content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
+        b=LcVPLYe5T4gZ+qM03YZPW3uwZu4kay6mOYFhf9mDuUSAwieHUI1vfD6xs97UtxVexB
+         Phtmrt7nltPi14CWKepGdX5YDZPdUWGgMxZleTR1j8hOjnLBf4KTeCG4uhTuFwccSvJj
+         EM0GSIoFG5dyOmMPLaw+Zx7tU+rfHrJnLUgZ9spG43uKCq2mA1zjIU+JlNaSBc4nybdT
+         6yRY2MS4XrzqJ/3IXPQTGd5Jn4RqWjQ4FH2p32lmXNd2Tj6KhEerK41dTTb7Z1k56SUx
+         nAjpypPTejebcaFnyqitJbNi8rLx65WOMoa401bcUZLmdc8tosIcEcMe9lDYA7gyQz3i
+         kciQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785162530; x=1785767330;
+        h=content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
+        b=QqUHLrT/aOH12EpeB+XFJKRl6iGpd5aBwHEbSlHiiyNPoZhGJU8LnvcqX24mPX71Bx
+         yJ2ZqToda5BJvdQYDkH09DLmS/Zg3dltAt/Muts0f6NHPptmyRpRix5G7WDS0alxfpfq
+         KwGs4l2O0QB17Vw6l+SiVwF4gw53uuMK59i28dMU2uugUD/waZU7EElu6YJ9ihpVdDF9
+         M9BksUAxggl+8MjbuNGfE2+g0dmnEpI9taaQ/QYK6ngtsm+RHpF/Uk/rGkTxrFgs245i
+         hH5P49nauHW7aiBG5FXp6kB3GVPPJQZZvrF1JiJ6YSK+t9qARklp4/oMz4tx6hsScOYr
+         EMUA==
+X-Gm-Message-State: AOJu0YywfWEnCrn/NQIjoJJKIV122+j3YnYUYOI2SOo8XYtcrqWVK0VA
+	GD3MYyUgrgmnJzidhMifGnF1rTAKEeTxSY4+32IfLENUR5qvXJW0gC8GD0isJXuBlxN2OTUHIaX
+	VwGC58hTjhhYAk2/ozhEL1MK/0jA1AJ/yjnOsOiMgddLlQX+TWhi6KTSLXQ==
+X-Gm-Gg: AR+sD118rRvaglzDD5AXv8bupJg9tlDBSAFNhiHu+/YuCYv3u5WLxtNLtV9BpecQ6hu
+	WtYMhL8b5Ei6FKfjyCnTSvyAxh24SZwT6Zi8g+FwIyF70KxcPr2138kYSgMSats02f4emsK9hNV
+	eHthY72lwlsdiSMZ8spE0UzrC9+KMBxD3qCZGhjT2xVplsyn6y1/Qpgve8c67sj4PaauHTMWZP9
+	TJEfi70Y6qigXaoa/rNaQJTryXo5oylcRF6DbRP5DL5nf+X6EZYJKMhnJkfStv5pG0dGwg0pZ+w
+	Jq0lDQQX0VbeAxNlnVynIU1TXJhXaRmzts33Y7s22XephXLd7Zx5GebQgBFScz+rEysMM/1qhTV
+	Oc9JKaParuM6YgYh4/Tn0UUMiRDlkWeXdqN1KsSBm2XNpLBBCaQ==
+X-Received: by 2002:a05:6402:358b:b0:698:9450:92b0 with SMTP id 4fb4d7f45d1cf-69fc1007196mr3646742a12.1.1785162530114;
+        Mon, 27 Jul 2026 07:28:50 -0700 (PDT)
+X-Received: by 2002:a05:6402:358b:b0:698:9450:92b0 with SMTP id 4fb4d7f45d1cf-69fc1007196mr3646728a12.1.1785162529675;
+        Mon, 27 Jul 2026 07:28:49 -0700 (PDT)
+Received: from [10.44.33.167] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69fb50bd183sm2838839a12.4.2026.07.27.07.28.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Jul 2026 07:28:48 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Tonghao Zhang <xiangxia.m.yue@gmail.com>,
+ Aaron Conole <aconole@redhat.com>, dev@openvswitch.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: openvswitch: fix potential UAF on meter attach
+ failure
+Date: Mon, 27 Jul 2026 16:28:46 +0200
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <5EB5E9EA-2E4F-4226-993A-142C79A6DF00@redhat.com>
+In-Reply-To: <20260727121022.198461-1-i.maximets@ovn.org>
+References: <20260727121022.198461-1-i.maximets@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <amdJCg3QqOrO_4Bx@secunet.com>
+Content-Type: text/plain
 
-On Mon, Jul 27, 2026 at 02:03:22PM +0200, Steffen Klassert wrote:
-> On Fri, Jul 17, 2026 at 01:01:17PM +0200, Pablo Neira Ayuso wrote:
-> > It is currently not possible to enable UDP encapsulation in xfrm without
-> > a userspace process that listens on the specified UDP listener port in
-> > the SA.
-> > 
-> > People have work around this by creating dummy userspace daemons such as
-> > the one in the smallish perl program (see the script at the bottom of
-> > this link):
-> > 
-> > http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
-> > 
-> > This patch adds XFRM_SA_XFLAG_UDP_ENCAP_SOCK to create the UDP socket
-> > from the kernel.
-> > 
-> > Use a hole in net->xfrm to place the new encap_socket list.
-> > 
-> > The following example shows how to enable the standalone UDP
-> > encapsulation:
-> > 
-> >     ip xfrm state add src 192.168.10.10 dst 192.168.10.11 proto esp spi 1 \
-> >             encap espinudp 9999 9999 0.0.0.0 \
-> >             if_id 0x1 reqid 1 replay-window 0 mode tunnel aead 'rfc4106(gcm(aes))' \
-> >             0x1111111111111111111111111111111111111111 96 \
-> >             sel src 10.141.10.0/24 dst 10.141.11.0/24 dir out
-> > 
-> > and the receiving side uses 'extra-flag udp-encap-sock':
-> > 
-> >     ip xfrm state add src 192.168.10.11 dst 192.168.10.10 proto esp spi 2 \
-> >             encap espinudp 9999 0 0.0.0.0 extra-flag udp-encap-sock \
-> >             if_id 0x1 reqid 2 replay-window 10 mode tunnel aead 'rfc4106(gcm(aes))' \
-> >             0x2222222222222222222222222222222222222222 96 dir in
-> > 
-> > This allows for multiple SAs using the same listener udp port.
-> > 
-> > This is useful for testing scenarios where UDP encapsulation is
-> > required.
-> > 
-> > Note this patch exports xfrm6_udp_encap_rcv() just like
-> > xfrm4_udp_encap_rcv() otherwise linker complains due to unreachable
-> > symbol.
-> > 
-> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> 
-> Sashiko found some issues that look valid, can you please check this:
-> 
-> https://patchwork.kernel.org/project/netdevbpf/patch/20260717110118.251866-1-pablo@netfilter.org/
 
-Yes, I will follow up with v4.
 
-Thanks!
+On 27 Jul 2026, at 14:10, Ilya Maximets wrote:
+
+> While attaching a newly created meter attach_meter() function makes
+> the new meter visible to other CPUs but can still fail afterwards.
+> On failure, it detaches the meter back and returns an error.
+>
+> However, this is an unexpected behavior for the ovs_meter_cmd_set()
+> that uses a plain kfree(meter) on attach failure without waiting for
+> RCU readers to stop using it, assuming it was never visible.
+>
+> This is never a problem for ovs-vswitchd as it always creates meters
+> before creating any flows that use them.  But the UAF can be triggered
+> with a custom application using uAPI:
+>
+>  BUG: KASAN: slab-use-after-free in ovs_meter_execute (net/openvswitch/meter.c:653)
+>  Read of size 8 at addr ffff88810d152650 by task meter/2508
+>
+>  Call Trace:
+>   ovs_meter_execute (net/openvswitch/meter.c:653)
+>   do_execute_actions (net/openvswitch/actions.c:1407)
+>   ovs_execute_actions (net/openvswitch/actions.c:1584)
+>   ovs_packet_cmd_execute (net/openvswitch/datapath.c:703)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+>
+>  Allocated by task 2519:
+>   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+>   ovs_meter_cmd_set (net/openvswitch/meter.c:422)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+>
+>  Freed by task 2519:
+>   kfree (mm/slub.c:2705 mm/slub.c:6405 mm/slub.c:6720)
+>   ovs_meter_cmd_set (net/openvswitch/meter.c:479)
+>   ...
+>   netlink_sendmsg (af_netlink.c:1900)
+>
+> Fix that by making sure attach_meter() doesn't make the meter visible
+> until all the checks are done and the function can't fail anymore.
+>
+> This also makes sure the "hash" value is calculated after the potential
+> re-sizing of the table.
+>
+> Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-31642.
+>
+> Fixes: c7c4c44c9a95 ("net: openvswitch: expand the meters supported number")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+
+Thanks, Ilya, for looking into this. The patch looks good to me.
+
+Reviewed-by:  Eelco Chaudron <echaudro@redhat.com>
+
