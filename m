@@ -1,233 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE783E866B
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE803DDDDD;
+	Mon, 27 Jul 2026 09:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785143269; cv=none; b=jCQEnmk+7cKJdTEW6S3fll1WcxraX8fpV3dvnsnYIsrIZ3Z0XxdDEXy4YF2QYjFP77pIcGvutJhq6hJY4+omkA3i2zfWUh7bb9dON7ziGhxVOkUsVbu6kLKhICtAbZfPOvtvRkaf7l5/xkLfgMWi0xcNE7iaU71J7fst+ItwNww=
+	t=1785143399; cv=none; b=dZXepAwrEXe3OxCL/7/1A4Heyi9Nv5UG93jiClN2OL2aruuV1cLFHRaUdiu7qltEY7XthfhAhsjTv+PljfrPkHroApuawaKGyMIJ6TVN2azbMA8Vvla6DRiMbb0FSckzLvBAHBC1cAdw3AXcgQhgdEPpaZ5k7o7kEq2SL/jsljg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785143269; c=relaxed/simple;
-	bh=LHTwQzb1gcagsKYDCbh4Uu3tI3NgNUQJ4rSjFOX1KyA=;
+	s=arc-20240116; t=1785143399; c=relaxed/simple;
+	bh=NyFhEHrCf230tV8xaj3hsgRGcUtWn7YhOa58x0li6T4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DXDBlbJ8MS4RHSmbdV7V7C0IYGAcT91yv05CKXtcvxiDpf4HTj7HgDehTU9KpME1YL2ol8YRbT+tqgmmmmG6cry05n8T+HKSpouJL5wSPSC6iBHAsCM7OqevNyU6AWYK7OEN+4wzla/lpymIHlV6YdwSuPE/exP+0KEO55kFfhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O78KpHQl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjlsMZDC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=WehSZ4zrkwCmViN4WeZl5g24zVebTrohEX7ce3WdPGbpV8E9V0OtpAsMSrVA4XqfurYU7rFVeSNYSOBxyHFMgqpfMMIOtE1A9qGz7TZR77UUucpwNSFST3FNqHXvyNOWitht50OHNbJ61zHyHdGizmGtOXCqCD377qGNeDttioU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsrLJ6I7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O78KpHQl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjlsMZDC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785143267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
-	b=O78KpHQlDPeWp/ksmOnpkgT6ODOAN+3DSZT3T5f/zq92qOXse5YnKVyZzIWPceUW5UV9kU
-	unUpOdxVqC9KsubOY4AWhKj7+ODSi/xcNFepk8LMHKNk6HPu+wTV5GJmVwBE+0l5EwBO1M
-	yH01Cto8YWNhR1fPj5JASSsx/Ux/cGM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-Emy3XFQjNUaT-5eDkQd7mg-1; Mon, 27 Jul 2026 05:07:45 -0400
-X-MC-Unique: Emy3XFQjNUaT-5eDkQd7mg-1
-X-Mimecast-MFC-AGG-ID: Emy3XFQjNUaT-5eDkQd7mg_1785143265
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15ceb17a28so200565966b.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785143264; x=1785748064; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
-        b=VjlsMZDCcJ06n83HYuTDlHPEpDthZUQp33Y8iijioaWy4pIFR75Q9lVGI+Dk/LoF2h
-         M+KhyEG20GgmKYTp8FqdFINC5SpYaJYZNrqk3k9Xb3oMg87YuJl2oy6mKGnqBC1MwIL0
-         DsxM6BGvkWHP/SDFp55TSSNO0tdKWHHpVLOliMdpZPJBYRzMkyMKApmOYkTB5ScIgtrh
-         PNb4tK879NMUu+3Zf+aDhMnkKJ2TXs+QKRZ8nETBcd8ZjRbWsuVQI7TB0O0jYC0YiLcM
-         5RZ5jwIINeXnnXrrrSFxTg56ixPYBTKUYm7ZYv3CVxjcOLKXOmtRUByIi7VHac62WB/r
-         se0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785143264; x=1785748064;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rApJhbpK/b0CVV5ov/9vIdRIrElFvcSvZqbKQTS4MB8=;
-        b=rN4AONsLePSElyDclvTQoIW4fVwgqo7yC4srwuNdZzCxsh1LqsgPCyTpN+gNzhKjPw
-         vvPXD0PAiyrAYOBhSDDleN6v8JEzj6tz6Grm2j38TXLVY7ZCZz6frqTAB32nyBsNdeS4
-         U/sKNIgsztKoncr49Jlb+NtvwfkKYS5eWUSQlQDJ0wuQuAaZxjkcTiuZfBBSIrhM+KvG
-         mjbTd9ar/V5T0ywzIQB0L7t/FdeW2QX3wlCejvbhw/LRF3Tve68ySZWWcFvs0CfjuCfc
-         7+25s0eMgvpB0zx3GTptgXPegnB/LCYylV34wiC3YQASvMIFDqx3qKucoNxW03kutgBP
-         7SnA==
-X-Gm-Message-State: AOJu0YwOTAPiMVEw8moDixsn0+FyALNuHsVivMnsUbJhKFvgUXo2ji9g
-	Os+cuISXINDzWs5OeiFj7NMjJ847Ae6lZek0mvueqtZwC9jkTFGvmLsGFr07IRDu6JtzsUddgR+
-	95LLL25vlKhwZ8aOXDfnOb6095pSQUl4YMxEPxHFwjmDBLeYnjw45ZVVsvw==
-X-Gm-Gg: AR+sD10sQr4hfTmspILCR9r7LPpGYVat5EyP4KQIiKfhSVj7nU7vdIZyKojzHZw+/uu
-	yJmKwITfhB8x8Zws4WpyjT09J5RvqUums5MVHnMd99OOttX2L42PIeUAU2S7SF8iZ6VIbalN8+T
-	Eh9HWbrikub5L9aFDWx+PQt+4x4cljal0+rUdFwP3xvPsY/zlra9BaP7FWo8och9mCDP5kLRjMA
-	4VFMF6KcEqurMgM+d6cL0+7Bkc4ojkBxnPrIQKpFBkxpC5So9QtDPbbJsxDF3ZCH8j9oBBXxQHR
-	QrpHKziwVvUXlc98Z74oa4p3a/JyYnIigwyznMlIGB4kW2r5RVbxsSUEj2aJrgssHhb63h/C4sV
-	F6kqe8L8wGlmHqbqdRjDgcwELmisQtLe4zjhKmwTMUlWZFgdf48MHls9xUwVEqpBOy6oBSFbWjb
-	I75A==
-X-Received: by 2002:a17:906:9f85:b0:c15:a1e8:c141 with SMTP id a640c23a62f3a-c1f1f032c7amr381694366b.30.1785143264450;
-        Mon, 27 Jul 2026 02:07:44 -0700 (PDT)
-X-Received: by 2002:a17:906:9f85:b0:c15:a1e8:c141 with SMTP id a640c23a62f3a-c1f1f032c7amr381693566b.30.1785143263925;
-        Mon, 27 Jul 2026 02:07:43 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32a78260sm601879866b.6.2026.07.27.02.07.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 02:07:43 -0700 (PDT)
-Message-ID: <90370236-b773-4419-b42e-eab6a3a9385b@redhat.com>
-Date: Mon, 27 Jul 2026 11:07:41 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsrLJ6I7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA8C1F000E9;
+	Mon, 27 Jul 2026 09:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785143397;
+	bh=hkY1+4poWhpK8MpN80/m5aj2RbQsRyjmQoss9WKczqY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jsrLJ6I7ezGvOjY4f919D8V+yGKhjye/jZGZgFcvQFbczDOqoVgmA1Pi2D3Mw2zsu
+	 rR0fg+JjTH5ky/bbXSd7d9sH2ro4Fzh7ZNSBnNyMLfXSl3zOAp9kUV4tzjWpZ77awf
+	 8C2UXZDP/oiUrqzf9EvX5nBifPudMqTloC8NhOW1A/1/abHkkM7TdqlyrfWfeAQIEb
+	 tSggn/r4yU4zmv7Dc/rNjvp8ioWK3PwOXjC7Ag3c/Q7AggY0SJUCjQqOtKAdO2oWyN
+	 IYQXKiMVtY51ZFpvjlMbNthMOF5u6sDKtyASuSdEXHcgHRn0Rnl3q/Ac5R1k2DyZCj
+	 YUAsL6xvD/lYA==
+Message-ID: <47b580de-9d11-46c9-91c5-55eb13c00bc4@kernel.org>
+Date: Mon, 27 Jul 2026 11:09:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/5] mptcp: explicitly drop over memory limits
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260724-net-next-mptcp-oooq-pruning-v1-0-5dd4dec63a54@kernel.org>
- <20260724-net-next-mptcp-oooq-pruning-v1-3-5dd4dec63a54@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260724-net-next-mptcp-oooq-pruning-v1-3-5dd4dec63a54@kernel.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next] selftests: net: Add a missing config option
+Content-Language: fr
+To: Alice Mikityanska <alice.kernel@fastmail.im>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Alice Mikityanska <alice@isovalent.com>
+References: <20260723140241.132120-1-alice.kernel@fastmail.im>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260723140241.132120-1-alice.kernel@fastmail.im>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/24/26 4:02 PM, Matthieu Baerts (NGI0) wrote:
-> From: Paolo Abeni <pabeni@redhat.com>
-> 
-> Currently the enforcement of the rcvbuf constraint is implemented
-> when moving the skbs into the msk receive or OoO queue, keeping the
-> incoming skbs in the subflow queue when over limits.
-> 
-> Under significant memory pressure the above can cause permanent data
-> transfer stalls, as the skb needed to make forward progress can be
-> stuck in a subflow queue.
-> 
-> Over memory limits, drop the incoming skb, relying on MPTCP-level
-> retransmissions.
-> 
-> Note that fallback socket must perform the limit before the skb reaches
-> the subflow-level queue, as dropping an in-sequence already acked skb
-> would break the stream.
-> 
-> This is not a complete fix for the stall issue, as the drop strategy
-> needs refinements that will come in the next patches.
-> 
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> ---
->  net/mptcp/mib.c      |  2 ++
->  net/mptcp/mib.h      |  2 ++
->  net/mptcp/options.c  | 28 +++++++++++++++++++++++++---
->  net/mptcp/protocol.c | 31 +++++++++++++++++++++++--------
->  4 files changed, 52 insertions(+), 11 deletions(-)
-> 
-> diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
-> index f23fda0c55a7..ef65e2df709f 100644
-> --- a/net/mptcp/mib.c
-> +++ b/net/mptcp/mib.c
-> @@ -85,6 +85,8 @@ static const struct snmp_mib mptcp_snmp_list[] = {
->  	SNMP_MIB_ITEM("SimultConnectFallback", MPTCP_MIB_SIMULTCONNFALLBACK),
->  	SNMP_MIB_ITEM("FallbackFailed", MPTCP_MIB_FALLBACKFAILED),
->  	SNMP_MIB_ITEM("WinProbe", MPTCP_MIB_WINPROBE),
-> +	SNMP_MIB_ITEM("BacklogDrop", MPTCP_MIB_BACKLOGDROP),
-> +	SNMP_MIB_ITEM("RcvPruned", MPTCP_MIB_RCVPRUNED),
->  };
->  
->  /* mptcp_mib_alloc - allocate percpu mib counters
-> diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
-> index 812218b5ed2b..c84eb853d499 100644
-> --- a/net/mptcp/mib.h
-> +++ b/net/mptcp/mib.h
-> @@ -88,6 +88,8 @@ enum linux_mptcp_mib_field {
->  	MPTCP_MIB_SIMULTCONNFALLBACK,	/* Simultaneous connect */
->  	MPTCP_MIB_FALLBACKFAILED,	/* Can't fallback due to msk status */
->  	MPTCP_MIB_WINPROBE,		/* MPTCP-level zero window probe */
-> +	MPTCP_MIB_BACKLOGDROP,		/* Backlog over memory limit */
-> +	MPTCP_MIB_RCVPRUNED,		/* Dropped due to memory constrains */
->  	__MPTCP_MIB_MAX
->  };
->  
-> diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-> index c664023d37ba..7b954ef78672 100644
-> --- a/net/mptcp/options.c
-> +++ b/net/mptcp/options.c
-> @@ -1127,8 +1127,30 @@ static bool add_addr_hmac_valid(struct mptcp_sock *msk,
->  	return hmac == mp_opt->ahmac;
->  }
->  
-> -/* Return false in case of error (or subflow has been reset),
-> - * else return true.
-> +static bool mptcp_over_limit(struct sock *sk, struct sock *ssk,
-> +			     const struct sk_buff *skb)
-> +{
-> +	struct mptcp_sock *msk = mptcp_sk(sk);
-> +	u64 mem = sk_rmem_alloc_get(sk);
-> +
-> +	mem += READ_ONCE(msk->backlog_len);
-> +	if (likely(mem <= READ_ONCE(sk->sk_rcvbuf)))
-> +		return false;
-> +
-> +	/* Avoid silently dropping pure acks, fin or zero win probes. */
-> +	if (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq ||
-> +	    TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN ||
-> +	    !after(TCP_SKB_CB(skb)->end_seq, tcp_sk(ssk)->rcv_nxt))
-> +		return false;
-> +
-> +	/* Dropped due to memory constraints, schedule an ack. */
-> +	inet_csk(ssk)->icsk_ack.pending |= ICSK_ACK_NOMEM | ICSK_ACK_NOW;
-> +	inet_csk_schedule_ack(ssk);
-> +	return true;
-> +}
-> +
-> +/* Return false when the caller must drop the packet, i.e. in case of error,
-> + * subflow has been reset, or over memory limits.
->   */
->  bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
->  {
-> @@ -1154,7 +1176,7 @@ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
->  
->  		__mptcp_data_acked(subflow->conn);
->  		mptcp_data_unlock(subflow->conn);
-> -		return true;
-> +		return !mptcp_over_limit(subflow->conn, sk, skb);
->  	}
->  
->  	mptcp_get_options(skb, &mp_opt);
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index 72b1fa3ca71c..5f7d8340a3d9 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -381,6 +381,16 @@ static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
->  
->  	mptcp_borrow_fwdmem(sk, skb);
->  
-> +	/* Can't drop packets for fallback socket this late, or the stream
-> +	 * will break.
-> +	 */
-> +	if (unlikely(sk_rmem_alloc_get(sk) > READ_ONCE(sk->sk_rcvbuf)) &&
-> +	    !__mptcp_check_fallback(msk)) {
-> +		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-> +		mptcp_drop(sk, skb);
+Hi Alice,
 
-Here sashiko fears a possible forward-allocated memory leak. That is
-sort of antinomy, as forward-allocated memory will be used for the next
-skb(s) and excess fwd allocated memory will be still freed after the
-next skb(s) processing or at sk close time. There is no real permanent leak.
+On 23/07/2026 16:02, Alice Mikityanska wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
+> 
+> Commit 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP
+> tunnels") used iptables match comment, which was missed from the CI
+> kernel config. Add the missing config option.
 
-We could release additionally allocated fwd memory in the error path as
-a follow-up.
+It helps, the CI can now run this test!
 
-/P
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+
+
+But I think another follow-up patch is required, because this test is
+flaky when using a debug kernel config:
+
+
+https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=big-tcp-tunnels-sh
+
+Maybe because wait_local_port_listen() is required after having called
+netserver?
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
