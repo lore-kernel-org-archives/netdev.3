@@ -1,39 +1,39 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9963B3C3F4B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72A13C4B68;
 	Mon, 27 Jul 2026 19:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785179790; cv=none; b=TfHe9pvhOb9xr/7Ea1Kz9hSD+kr9dSXl12AhdkOW7SJF7FCSim86TlLk6g7yEg0UArq1XEsiKcUptCFv3lPMixqoaGJfIxpKU48eInyEtxP7jDNkMhVa2xQMBtZs9nEDCgnHFKamZr9QUIVUWPFKuDIZG2PVXaJO1sIox7zDXks=
+	t=1785179790; cv=none; b=HFOoehAVBeSFfx120UlrxkJxyxt+JKqp7HfIgp+1Ghb0gwAEvAdES161lLpjznkPE7s0UOKVo3JKe3xbwRUlcNylwVHZjUnVoooMSwhO3aJbeffBZcbmeoLmrdl5Uy4YVSBy5XeYegXzTU6aY6VtoUsxnCoiJKOYsxOnP7qrJV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785179790; c=relaxed/simple;
-	bh=5mVaAuyLprgob4IjCHVRROZ1+4QsFW7lguncshMrJag=;
+	bh=OYjl+hBb8YBf7OJwpPXz3L7vcRYDIP9+BH5voLpjG9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIkLWucAdnooxK+iwKzE7UEr2rN+fLhOC+43YNzNHwNE4OSVbiQ992VlczQXTKcCWyJlRbwTjoLwyXPpzQD5q2RoVnLK3hNTnm5P8fPMYRPnSgbTAXcnROxIGN5ionSXq08XE7JsL5gfWJNYxL86QFGN+fjpcsR/AI/Jr9vVDtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=gy9yHaY/; arc=none smtp.client-ip=212.227.15.18
+	 MIME-Version; b=JqTCrq91bklwhHLuPsl593FIgH41DBgTNx4ibvaRPeY6PQWJCv1N61x9P6N1hqG3pwgaf0bhbsWUbFFsbvZqfdkdmJOUoy7tGoNgx/8/YFVkJhvgAP7uuFUN22Sat8Gi1EHUt5sOOj+iNgUuRTo4zmYFl3FUXPMK/RCbIIw63GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=eIjjDph/; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="gy9yHaY/"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="eIjjDph/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1785179774; x=1785784574;
+	s=s31663417; t=1785179773; x=1785784573;
 	i=markus.stockhausen@gmx.de;
-	bh=qO1P5tDT6rfX9FnO2cmUDtQb1EcwRyW++fmLmdzAeAw=;
+	bh=eEvkSkfsAmKcie4IwQhUor4c+KrLVJxhnMNxehEcHB4=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=gy9yHaY/v3Gu6m0n1si2RrHlVlWdTb4PzsGaHtkIkCRlVCJ2zQELzSs5dk+DqlPU
-	 PKzwgeJRYyEqVUS084R2/wDK4xfK2VUqKEBOpQ3QuEErutU3G18K0IZGRd6VnbUF7
-	 rZ+5RuloJWL8TA02vR3ulBoKBRT2Hgkv0lQMZMhm3madN9CfISVQuXrZYxnnKbDw0
-	 Dh6QmPURHGOVW3VCnpfqR1JoM16QzcxTJ3S/KvVj76dYBKUCkSiFWpJO7dfkD+0b9
-	 kiE2yBcRF8zfnDHFG0/LCuOhezLqmy6MGw+iNyis//4dh1nNMU30G+LtxNQBqcFCW
-	 MjAUykPIuRrD/cAzxA==
+	b=eIjjDph/kbVNKhRb+HjSb39bh+dzZy00P5k5tN8mPTq1TmEEWmUGeuObsAvkz4ao
+	 GghJiyLM7HfofvEg/iOfEgWo5jLMc1DHN1+We1ccLsSIUwB1SSpbHvLMILSBarknw
+	 s9Mk5pxUWM79np0k9Dmm16UH4DscfbiK+s6QrCXmUq01S8FlKQAUKtZKh9Vg/JCyM
+	 16LKUkXkx8ZGhfGE9lpc9n0BWeAOWTgk9skxdbsihRwQlikaSaThKqbVaHlm7fOKo
+	 pWhs/ovqX2sUHXc3dxgNHo8VZL6mnbaC8VGJQGxSOZMnydpZ5zo/Hvrvg9RLV8wYi
+	 D5yATyWnr/bnA4RoUg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MGhyS-1wjSiS1YqQ-0016FZ; Mon, 27
- Jul 2026 21:16:14 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N1OXZ-1wyUdC0K6d-00z0GK; Mon, 27
+ Jul 2026 21:16:13 +0200
 From: Markus Stockhausen <markus.stockhausen@gmx.de>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -50,9 +50,9 @@ To: andrew@lunn.ch,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org
 Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v8 7/9] net: mdio: realtek-rtl9300: Increase MDIO timeout
-Date: Mon, 27 Jul 2026 21:15:57 +0200
-Message-ID: <20260727191559.19617-8-markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v8 3/9] net: phy: add (*notify_phy_attach/detach)() hooks to struct mii_bus
+Date: Mon, 27 Jul 2026 21:15:53 +0200
+Message-ID: <20260727191559.19617-4-markus.stockhausen@gmx.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260727191559.19617-1-markus.stockhausen@gmx.de>
 References: <20260727191559.19617-1-markus.stockhausen@gmx.de>
@@ -63,156 +63,387 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:psQTjGRC8nafsi6eGHwZWtihZCdKOKF5COsHzf5256WaqWACfB3
- +utLRExC4kH+9erb9butO3aqfV5PG0+tHMiX6+dU0JhAtCCo/rOY9S531yAPlAVou74wKwD
- xgcT+p6ejPzhatc2iZFJU1o70u8JOemOO6GQwjqRdZ0/rIdQtaFMAlNi3yaC3u4iZpC8+zp
- QOFmGmvOihiDCE/wEEaDw==
+X-Provags-ID: V03:K1:Y+uvDWTLiNuWIFn89KJV42Bl2B7bY/oXAQvkS5Kry+Y8AYTeCzJ
+ tlapnAfX0mG1adxq/mrQcO8PTci+3yL/FRhiUfM9P4hAR8EpywnaY+w/eHgtXRDMqtvWyeb
+ eyTdJav0j7IsOBhtVBWlql2ll3HAiDbXJeW/ooHjQfcLrnKisSrhyWV746DvmGSnPTSZfcr
+ HhEleHqoVHyOAIKB6WRfw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:nLkJ5HyAZZ0=;wiuLGZWRtARRs0nfyGXUEuMYJTJ
- 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
- /iZwAtPCbAI/nt2Oaj8E7
+UI-OutboundReport: notjunk:1;M01:P0:kQbcjdzoM6s=;pZyqTj42E5NCdT925WUulKwVwmj
+ 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
 
-RTL838x devices with 28 ports produce PHY access timeout errors during
-one of three boots while waiting for MDIO command completion. This is
-currently set to 1ms.
+From: Daniel Golle <daniel@makrotopia.org>
 
-Background: Access to the Realtek Otto ethernet MDIO bus must wait for
-a free slot between two hardware polls. The polling sequence consists
-of at least 17 commands on the RTL838x devices. This delay can be nicely
-seen when disabling polling completely. The following times are measured
-on a bus running on the default 2.5MHz. Time measured is from the last
-register write that sets the command-start-bit until the hardware
-responds with the command-finished-bit set.
+Some MDIO buses require programiming PHY polling registers depending
+on the PHY type. RealTek switch SoCs are the most prominent example
+of a DSA switch which doesn't allow to program MAC speed, duplex and
+flow-control settings without using PHY polling to do so [1].
 
-- average c22 read with polling enabled on all ports: ~380us
-- average c22 read with polling enabled on one port: ~380us
-- average c22 read with polling completely disabled: ~180us
+Avoid a half-baked solution in the MDIO bus driver because
 
-For this bus frequency the bare hardware runtime for a single command
-(32 bit preamble + 32 bit data) is ~25us. So the hardware adds quite
-some overhead. On top of this comes the fact that the RTL838x devices
-are low on resources (500Mhz 4Kec core with 16K cache).
+- it must reinvent the bus scanning to determine the PHYs and
+- it must anticipate the right point in time (e.g. deferred PHYs).
 
-Increase the timeout to 10ms to be on the safe side.
+Hence there is a need to inform the MDIO bus driver that a PHY is
+being attached or detached. Provide two hooks in struct mii_bus
 
-Remark! In a future patch the bus clock frequency will be made
-configurable with a minimum frequency of 1.25MHz. Setting this
-(e.g. for debugging purposes) doubles the command run times but
-will safely stay below 10ms.
+- notify_phy_attach(): called in phy_attach_direct() after PHY
+  hardware has been initialized and just before PHY is resumed.
+- notify_phy_detach(): called in phy_detach() right after PHY
+  has been suspended.
 
+Worth to notice: As of now phy_detach() is not 100% LIFO symmetric
+to phy_attach_direct(). E.g. sysfs links are teared down before
+suspend while being created before resume. Without reordering of the
+detach function the above mentioned notifier placement is the best
+possible symmetric implementation. For this
+
+- Relocate code from phy_detach() into a new helper __phy_detach()
+- The helper takes an additional parameter notify_bus that decides
+  if the bus notification should be sent or not.
+- Call the helper with notification from slimmed down version of
+  phy_detach() and without notification from phy_attach_direct()
+  error path.
+
+Remark! A slightly different version of this patch was part of a
+former series [2]. The discussion already showed that an initialization
+hook should be placed somewhere late during the whole setup. This
+commit implants it right after phy_init_hw() as suggested. On top of
+this it adds the detach hook.
+
+[1] https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
+[2] https://lore.kernel.org/netdev/cover.1769053496.git.daniel@makrotopia.=
+org/
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 =2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/phy_device.c | 180 +++++++++++++++++++----------------
+ include/linux/phy.h          |  14 +++
+ 2 files changed, 112 insertions(+), 82 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
-io-realtek-rtl9300.c
-index 6986bed5258a..ef4fa8e8274f 100644
-=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -273,9 +273,9 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u32=
- cmd,
- 	u32 cmdstate;
- 	int ret;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..233622e9ba61 100644
+=2D-- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1734,6 +1734,96 @@ static bool phy_drv_supports_irq(const struct phy_d=
+river *phydrv)
+ 	return phydrv->config_intr && phydrv->handle_interrupt;
+ }
 =20
--	/* Defensive pre check just in case something goes horrible wrong */
-+	/* Defensive pre check just in case something goes horribly wrong */
- 	ret =3D regmap_read_poll_timeout(priv->regmap, info->cmd_regs.c22_data,
--				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 1000);
-+				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 10000);
- 	if (ret)
- 		return ret;
++static void __phy_detach(struct phy_device *phydev, bool notify_bus)
++{
++	struct net_device *dev =3D phydev->attached_dev;
++	struct module *ndev_owner =3D NULL;
++	struct mii_bus *bus;
++
++	if (phydev->devlink) {
++		device_link_del(phydev->devlink);
++		phydev->devlink =3D NULL;
++	}
++
++	if (phydev->sysfs_links) {
++		if (dev)
++			sysfs_remove_link(&dev->dev.kobj, "phydev");
++		sysfs_remove_link(&phydev->mdio.dev.kobj, "attached_dev");
++	}
++
++	if (!phydev->attached_dev)
++		sysfs_remove_file(&phydev->mdio.dev.kobj,
++				  &dev_attr_phy_standalone.attr);
++
++	phy_suspend(phydev);
++
++	if (notify_bus && phydev->mdio.bus->notify_phy_detach)
++		phydev->mdio.bus->notify_phy_detach(phydev);
++
++	if (dev) {
++		struct hwtstamp_provider *hwprov;
++
++		/* hwprov may technically be protected by ops lock but
++		 * not for devices with a phydev, see phy_link_topo_add_phy()
++		 */
++		hwprov =3D rtnl_dereference(dev->hwprov);
++		/* Disable timestamp if it is the one selected */
++		if (hwprov && hwprov->phydev =3D=3D phydev) {
++			rcu_assign_pointer(dev->hwprov, NULL);
++			kfree_rcu(hwprov, rcu_head);
++		}
++
++		phydev->attached_dev->phydev =3D NULL;
++		phydev->attached_dev =3D NULL;
++		phy_link_topo_del_phy(dev, phydev);
++	}
++
++	phydev->phy_link_change =3D NULL;
++	phydev->phylink =3D NULL;
++
++	if (phydev->mdio.dev.driver)
++		module_put(phydev->mdio.dev.driver->owner);
++
++	/* If the device had no specific driver before (i.e. - it
++	 * was using the generic driver), we unbind the device
++	 * from the generic driver so that there's a chance a
++	 * real driver could be loaded
++	 */
++	if (phydev->is_genphy_driven) {
++		device_release_driver(&phydev->mdio.dev);
++		phydev->is_genphy_driven =3D 0;
++	}
++
++	/* Assert the reset signal */
++	phy_device_reset(phydev, 1);
++
++	/*
++	 * The phydev might go away on the put_device() below, so avoid
++	 * a use-after-free bug by reading the underlying bus first.
++	 */
++	bus =3D phydev->mdio.bus;
++
++	put_device(&phydev->mdio.dev);
++	if (dev)
++		ndev_owner =3D dev->dev.parent->driver->owner;
++	if (ndev_owner !=3D bus->owner)
++		module_put(bus->owner);
++}
++
++/**
++ * phy_detach - detach a PHY device from its network device
++ * @phydev: target phy_device struct
++ *
++ * This detaches the phy device from its network device and the phy
++ * driver, and drops the reference count taken in phy_attach_direct().
++ */
++void phy_detach(struct phy_device *phydev)
++{
++	/* cleanup including bus notification */
++	__phy_detach(phydev, true);
++}
++EXPORT_SYMBOL(phy_detach);
++
+ /**
+  * phy_attach_direct - attach a network device to a given PHY device poin=
+ter
+  * @dev: network device to attach
+@@ -1876,6 +1966,12 @@ int phy_attach_direct(struct net_device *dev, struc=
+t phy_device *phydev,
+ 	if (err)
+ 		goto error;
 =20
-@@ -315,7 +315,7 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u32=
- cmd,
- 		return ret;
++	if (phydev->mdio.bus->notify_phy_attach) {
++		err =3D phydev->mdio.bus->notify_phy_attach(phydev);
++		if (err)
++			goto error;
++	}
++
+ 	phy_resume(phydev);
 =20
- 	ret =3D regmap_read_poll_timeout(priv->regmap, info->cmd_regs.c22_data,
--				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 1000);
-+				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 10000);
- 	if (ret)
- 		return ret;
+ 	/**
+@@ -1890,8 +1986,8 @@ int phy_attach_direct(struct net_device *dev, struct=
+ phy_device *phydev,
+ 	return err;
 =20
+ error:
+-	/* phy_detach() does all of the cleanup below */
+-	phy_detach(phydev);
++	/* cleanup without bus notification */
++	__phy_detach(phydev, false);
+ 	return err;
+=20
+ error_module_put:
+@@ -1906,86 +2002,6 @@ int phy_attach_direct(struct net_device *dev, struc=
+t phy_device *phydev,
+ }
+ EXPORT_SYMBOL(phy_attach_direct);
+=20
+-/**
+- * phy_detach - detach a PHY device from its network device
+- * @phydev: target phy_device struct
+- *
+- * This detaches the phy device from its network device and the phy
+- * driver, and drops the reference count taken in phy_attach_direct().
+- */
+-void phy_detach(struct phy_device *phydev)
+-{
+-	struct net_device *dev =3D phydev->attached_dev;
+-	struct module *ndev_owner =3D NULL;
+-	struct mii_bus *bus;
+-
+-	if (phydev->devlink) {
+-		device_link_del(phydev->devlink);
+-		phydev->devlink =3D NULL;
+-	}
+-
+-	if (phydev->sysfs_links) {
+-		if (dev)
+-			sysfs_remove_link(&dev->dev.kobj, "phydev");
+-		sysfs_remove_link(&phydev->mdio.dev.kobj, "attached_dev");
+-	}
+-
+-	if (!phydev->attached_dev)
+-		sysfs_remove_file(&phydev->mdio.dev.kobj,
+-				  &dev_attr_phy_standalone.attr);
+-
+-	phy_suspend(phydev);
+-	if (dev) {
+-		struct hwtstamp_provider *hwprov;
+-
+-		/* hwprov may technically be protected by ops lock but
+-		 * not for devices with a phydev, see phy_link_topo_add_phy()
+-		 */
+-		hwprov =3D rtnl_dereference(dev->hwprov);
+-		/* Disable timestamp if it is the one selected */
+-		if (hwprov && hwprov->phydev =3D=3D phydev) {
+-			rcu_assign_pointer(dev->hwprov, NULL);
+-			kfree_rcu(hwprov, rcu_head);
+-		}
+-
+-		phydev->attached_dev->phydev =3D NULL;
+-		phydev->attached_dev =3D NULL;
+-		phy_link_topo_del_phy(dev, phydev);
+-	}
+-
+-	phydev->phy_link_change =3D NULL;
+-	phydev->phylink =3D NULL;
+-
+-	if (phydev->mdio.dev.driver)
+-		module_put(phydev->mdio.dev.driver->owner);
+-
+-	/* If the device had no specific driver before (i.e. - it
+-	 * was using the generic driver), we unbind the device
+-	 * from the generic driver so that there's a chance a
+-	 * real driver could be loaded
+-	 */
+-	if (phydev->is_genphy_driven) {
+-		device_release_driver(&phydev->mdio.dev);
+-		phydev->is_genphy_driven =3D 0;
+-	}
+-
+-	/* Assert the reset signal */
+-	phy_device_reset(phydev, 1);
+-
+-	/*
+-	 * The phydev might go away on the put_device() below, so avoid
+-	 * a use-after-free bug by reading the underlying bus first.
+-	 */
+-	bus =3D phydev->mdio.bus;
+-
+-	put_device(&phydev->mdio.dev);
+-	if (dev)
+-		ndev_owner =3D dev->dev.parent->driver->owner;
+-	if (ndev_owner !=3D bus->owner)
+-		module_put(bus->owner);
+-}
+-EXPORT_SYMBOL(phy_detach);
+-
+ int phy_suspend(struct phy_device *phydev)
+ {
+ 	struct net_device *netdev =3D phydev->attached_dev;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 11092c3175b3..71405283bc6e 100644
+=2D-- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -376,6 +376,20 @@ struct mii_bus {
+ 			 int regnum, u16 val);
+ 	/** @reset: Perform a reset of the bus */
+ 	int (*reset)(struct mii_bus *bus);
++	/**
++	 * @notify_phy_attach: Perform post-attach handling for MDIO bus
++	 *   drivers. Called in phy_attach_direct() right before phy_resume().
++	 *   Runs in process context and may sleep. Return 0 on success or a
++	 *   negative errno on failure (which aborts the attach sequence).
++	 */
++	int (*notify_phy_attach)(struct phy_device *phydev);
++	/**
++	 * @notify_phy_detach: Perform pre-detach handling for MDIO bus
++	 *   drivers. Called in phy_detach() right after phy_suspend().
++	 *   Runs in process context and may sleep. Only invoked if
++	 *   @notify_phy_attach was previously called and succeeded.
++	 */
++	void (*notify_phy_detach)(struct phy_device *phydev);
+=20
+ 	/** @stats: Statistic counters per device on the bus */
+ 	struct mdio_bus_stats stats[PHY_MAX_ADDR];
 =2D-=20
 2.55.0
 
