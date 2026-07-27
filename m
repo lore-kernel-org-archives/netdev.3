@@ -1,119 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194733F8EAB
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 22:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D476323BD17;
+	Mon, 27 Jul 2026 22:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785193077; cv=none; b=szLg7rMNA8EHQAAeyCsxMrfjBvdyTbo4jy1BtlURfe0QYXfoYxbmhHqM73uRuWrxo6feXf46gEze+nY/Rno2AM70xHm/W4dtTNuY0VVvy76pggzvQLf5+T4pjXTFSf8AejzwoeLYnHe4XJCerQxSMAK4gEV37kgDpQO9U21YeDU=
+	t=1785193130; cv=none; b=nSP2If4u0ne23sselOdHGDRfIAZHxqnH5i+8Vc8Ib6pUjyCbEApumxSYfLnJcK5J5LXfR0fkrTw+zXj8fm/K6M1kYzZnl0HEFB1vMC3hAVedoy50FiGBFq1Ls3iJAV42rxToQyswC4c09Lkg2OSyF4XZ7QDcg22wpJYwRVo6DSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785193077; c=relaxed/simple;
-	bh=kzyWPv/hp3S8PU5Rn9lNwBnknhfersTVkI2IzpEKj1E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yg6+NyGytTTrFpDZrR15UrNCsj7RZz5yVHoH1gaQ2tkdI6Q8X7kJsvbrdBCdZ/zt1j9nv2eDD+9bUXNBcmxfiRufJi1ynoLbNuWSH6QA4tWQobiQE5M0tYZLOWc93zLhYjJdAzTKUSnEz+fNhlb/2H/aqec/4fRns16NAYHpdng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X1jRVBnT; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785193130; c=relaxed/simple;
+	bh=3ARINi7/8/8jq7By+QNG+0e1/qT1Qidv9621l7v3IGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eUi6zzMfPm3CovyC84zmP+oXaFYapagkfSgT9SIkZeU0v/J/BMK1PG0m8bU9Wj8kkWiWt+CdcMNh221Hxo7v4WbgFYFQejNLnFGceoBiIFApeWEq6crjqp2i0ELDE52RPz19L/eXqvq/7aI6PD7IH5gvmEGq+nO7d/fbKSZuDSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a33mjbGp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X1jRVBnT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785193076; x=1816729076;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kzyWPv/hp3S8PU5Rn9lNwBnknhfersTVkI2IzpEKj1E=;
-  b=X1jRVBnTIsNga22M37zbti161SS4eARslT6dUEYynzA/LR7WNhWdsdJl
-   kpglsX6REp7ljYqaNkg/TgwDgfDazz1OfZ0ycM17vj35GKGW9PLuETN2W
-   6cCCkoRDXiqatTiX92c/QgaTpejZf0a7uFgDetnozse7LhvlzNlgDe0Mh
-   yozUU2yjE8+mjFZq1Xfr1wfPhO1ZDK6ZDPAg8GGUZ0gM6CgstDxjjKoRC
-   1sfR3IqNQtDxkb7wnWrSodU0Fq7gRqOcgv/Zfnffr9zhMrxD+R2jc5RVv
-   kIq8OVW1drdQ4ckITm6Z0fIjXauuMGEQb6ftfoih4aPgRBmbfUxunyR54
-   A==;
-X-CSE-ConnectionGUID: 5MfboR4bQHakBDeHiQJjuA==
-X-CSE-MsgGUID: Cbl3Zn+1TsiQR7SD6vTU/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="84748870"
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="84748870"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 15:57:55 -0700
-X-CSE-ConnectionGUID: uMBtnQtwTD+sp4H48NcDDg==
-X-CSE-MsgGUID: pVfpCCTWQFCcUIhAVVwrJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="263027552"
-Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
-  by orviesa003.jf.intel.com with ESMTP; 27 Jul 2026 15:57:55 -0700
-From: Joshua Hay <joshua.a.hay@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [Intel-wired-lan][PATCH iwl-net] idpf: account for VLAN header when parsing RSC packet header
-Date: Mon, 27 Jul 2026 16:08:48 -0700
-Message-Id: <20260727230848.1557452-1-joshua.a.hay@intel.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a33mjbGp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458861F000E9;
+	Mon, 27 Jul 2026 22:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785193129;
+	bh=QoM27bDr3vhO5Be7WeU/fTyHXRw3cVZ6el78HEIouw0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=a33mjbGp0+df3ExF1WLMlDZ+91dm7dWzNwUvDD/4X/wU0z25KJcefgybt48cOmXLA
+	 SzX4pfKa26aXdpauNEH3+QjqnSCjCRd06xUIA1ILtftw3+oy2i0RvHuyUtp37wBqBF
+	 WL+bNevAgtF8PP3xQlHeXGnqgYXhd1Xc9Wi0S8C8Xqc0D5XMnD7X++LVSB2BwZJ59t
+	 prUxYdsRxWmGUATU9bwK76pLz4zjmRlVFIdl9A7hI09avbRhD+ki3chxbmiC40Ebie
+	 NNKH6Xc2pAXuobQlJADaoyArZ6eRhG/2/rsQOxHxwfvU5lwNWoPP38rYbDouJf0ll3
+	 IJ5X9gH6P5IRA==
+Date: Mon, 27 Jul 2026 15:58:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jiawen Liu <1298662399@qq.com>
+Cc: Jian Shen <shenjian15@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: hisilicon: hix5hd2_gmac: fix NAPI teardown order
+Message-ID: <20260727155848.387245f6@kernel.org>
+In-Reply-To: <tencent_3C891D50F517A212AE7EAA88051244B7C005@qq.com>
+References: <tencent_3C891D50F517A212AE7EAA88051244B7C005@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-While parsing the header of a Receive Side Coalesced (RSC) packet, check
-if a VLAN tag is present and adjust the header parsing accordingly.
-Otherwise, Rx TCP traffic is completely broken for any VLAN interface
-whose underlying interface has RSC (rx-gro-hw) enabled.
+On Sun, 26 Jul 2026 10:35:55 +0400 Jiawen Liu wrote:
+> hix5hd2_dev_remove() deletes the NAPI instance before unregistering the
+> netdev.
+> 
+> The netdev should be unregistered first so the networking core can stop the
+> device while its NAPI instance is still present.  Delete the NAPI instance
+> after unregister_netdev() has completed, matching the usual teardown order
+> for drivers that call netif_napi_add() during probe.
 
-We only need to worry about one VLAN header since Rx packets with
-multiple VLAN headers are not candidates for RSC.
-
-Fixes: 3a8845af66edb ("idpf: add RX splitq napi poll support")
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index c724d429a7aa..70553f64f770 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3299,6 +3299,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 		       struct libeth_rx_pt decoded)
- {
- 	u16 rsc_segments, rsc_seg_len;
-+	u16 l3_start = 0;
- 	bool ipv4, ipv6;
- 	int len;
- 
-@@ -3321,7 +3322,10 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 	NAPI_GRO_CB(skb)->count = rsc_segments;
- 	skb_shinfo(skb)->gso_size = rsc_seg_len;
- 
--	skb_reset_network_header(skb);
-+	if (unlikely(eth_type_vlan(skb->protocol)))
-+		l3_start = VLAN_HLEN;
-+
-+	skb_set_network_header(skb, l3_start);
- 
- 	if (ipv4) {
- 		struct iphdr *ipv4h = ip_hdr(skb);
-@@ -3329,7 +3333,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV4;
- 
- 		/* Reset and set transport header offset in skb */
--		skb_set_transport_header(skb, sizeof(struct iphdr));
-+		skb_set_transport_header(skb, l3_start + sizeof(struct iphdr));
- 		len = skb->len - skb_transport_offset(skb);
- 
- 		/* Compute the TCP pseudo header checksum*/
-@@ -3339,7 +3343,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 		struct ipv6hdr *ipv6h = ipv6_hdr(skb);
- 
- 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV6;
--		skb_set_transport_header(skb, sizeof(struct ipv6hdr));
-+		skb_set_transport_header(skb, l3_start + sizeof(struct ipv6hdr));
- 		len = skb->len - skb_transport_offset(skb);
- 		tcp_hdr(skb)->check =
- 			~tcp_v6_check(len, &ipv6h->saddr, &ipv6h->daddr, 0);
+Just delete that call. Unregistering deletes all the NAPIs
+automatically. Also you're missing a Fixes tag
 -- 
-2.39.2
-
+pw-bot: cr
