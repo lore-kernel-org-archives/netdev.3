@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7655380FF2;
-	Mon, 27 Jul 2026 15:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2123B27DE;
+	Mon, 27 Jul 2026 15:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785167614; cv=none; b=FQrIxrYk5k1wRyE1r6QHb4jOaAgcFwM0scdcdVqiZiIsQvFqNfHV//DztduVw4B4s08/3dhVdRZoJGXd2JdGq3zbPqKy2UGysesFkhV4zN5blmm7mCHzpX8e2OiM1zj2bhICKJPtYrn6l7Zeq/S2zjIngJAs6IdvPgzsx5AZyU0=
+	t=1785167667; cv=none; b=bR5w7h+XZqYmItEXHw3ruonIAybKzUoAEiQT4L9E8hABFMfujc6LfbCxXnHRU/naYWclnPr9+CPL3oajl8qcHLHuviSUG+4vY6Vy3D5YkxbmscGIaRq3Cs6hdT8wIrN7VMAXopzhns5nEUtIrc5gColtoQLULf86heXQ6GLpSZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785167614; c=relaxed/simple;
-	bh=BcCPkK4hTFThjU3Ze6VDhi9hazq6jntcPlRoHkyB83Q=;
+	s=arc-20240116; t=1785167667; c=relaxed/simple;
+	bh=ZmuzDetjzu/gYiRic9CDVjEi/g2XkaVeRjMsxe6ocqU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UA04gfLv6yRWtXXC5V6vEhoBOJyslbMJJduOO7jK6LyasQIu02qgqhFQ06dz5ENfq3XYSZu3lEt1HWn/r4d29YwNK2DlJECl3iygse7wORYnKq6rW6d430Jb5Ugg2GvWjQFtFMxIECkx8LssJ1sIIH/mMiiRVEVxRKGqQsxRiR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNpv1/Rm; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Qt2/VNJvrb6GSswkA1lpdNoQGwpSxmhtcPWuXaOxcHW+cSgsrYLv3fVkhSlNbRXVRJ6UggNkihtKMV39Ddad08XW6IVhY1AHwl+GpsaUDkC6xM+J2ayiIQ4y4gtec5N2FaRyg9HBrLs/eCzasJndjmW1YCZz2qmwD7BjH4jhxnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7veqaCa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNpv1/Rm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7597C1F000E9;
-	Mon, 27 Jul 2026 15:53:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7veqaCa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3691F000E9;
+	Mon, 27 Jul 2026 15:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785167613;
-	bh=vooLpsP6WqWmrXibOxTMRGe2i7VSYPphSqzRAhGlhks=;
+	s=k20260515; t=1785167666;
+	bh=gM7+j4l6vJ60lL3EfYYVlwEUF2Y4JeMSDSPY5baeFEw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WNpv1/Rmlpg2ONZR50hrsDLPFaFi32HPhkDmFrPlaXRjo99YCPokBXDh/+kWgaZPW
-	 iqw1QoawoL4sqcrk9SEYN3+O5Q7a+tU5u2WUsL45u2y7yYiPCbc2YZrCmWCNVwi9fA
-	 3HhkDHkE2D5zRoVmHDpWiGD1RTaSCdwMWf8qRxwOU4G/8kj21LWzo5evu70g+8Arus
-	 qo3JLRshI6JNxbs+qhcKgbKHbv3TvO9vQ+6VT6CAX6zaLNts4h7z7znu+SqIcNm4iJ
-	 BI1afGZb5fP/xBCtPBqg3GGw86D30Ia0nAI9SXvWMjzrUAB45H/YUtO57lIfwluNgy
-	 IRBx35SUAIcQA==
-Message-ID: <c2a7c6fe-60bb-49b7-b877-20fbf948b5de@kernel.org>
-Date: Mon, 27 Jul 2026 17:53:22 +0200
+	b=I7veqaCaeyJfd1YEGV10XZohqaDJAn8M+w9BD7Y5gcAha67uqhRfhKtiFk5n7450A
+	 TAzMMXhcmdnS0bnXU6NBaRbCvFYRnXfThM4Pg/69gHs+TCtqWy1NlNOur/o+0Jv8Cu
+	 dDf8KjiHA2MwnoS/yHGAcbphl7Rm0utJbENlqm6W4fEFYfTAY7cijnc/eoaQNUa7Pd
+	 9sURRu3Skpw6MT/F9cB9XeUZPhoFUWVW8JLjaHJ1fAMRZUInpoimYVNpwsGpC5cpH9
+	 PYzn/YuUMOI2fYjhWwZqjFyhSW5eANqGKYqB1KrJmkUkdYJIn9TSRteQsFJ95ucr/2
+	 tzqKoB/trN88w==
+Message-ID: <f9009b8e-1ea1-446f-b38e-074ea511b31d@kernel.org>
+Date: Mon, 27 Jul 2026 17:54:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] ptp: qcom: Add PTP driver for the Qualcomm TSC
- hardware
+Subject: Re: [PATCH 6/6] arm64: dts: qcom: qdu1000: Add support for TSCSS node
 To: Imran Shaik <imran.shaik@oss.qualcomm.com>, Rob Herring
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
@@ -52,7 +51,7 @@ Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
- <20260727-tscss-v1-3-beed14e72510@oss.qualcomm.com>
+ <20260727-tscss-v1-6-beed14e72510@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,149 +97,35 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260727-tscss-v1-3-beed14e72510@oss.qualcomm.com>
+In-Reply-To: <20260727-tscss-v1-6-beed14e72510@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 27/07/2026 16:10, Imran Shaik wrote:
-> Add a PTP Hardware Clock driver for the Qualcomm Timestamp Counter (TSC)
-> hardware found on Qualcomm Lemans and QDU1000 SoCs. The TSC is a free
-> running hardware counter used for time synchronization, clocked by an AHB
-> configuration clock and a global counter clock, with the counter resolution
-> varying across SoCs.
+On 27/07/2026 16:11, Imran Shaik wrote:
+> Add Timestamp Counter Subsystem (TSCSS) node support on Qualcomm QDU1000
+> SoCs.
 > 
-> Co-developed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-> Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
 > Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
 > ---
->  drivers/ptp/Kconfig        |  10 ++
->  drivers/ptp/Makefile       |   1 +
->  drivers/ptp/ptp_qcom_tsc.c | 413 +++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 424 insertions(+)
+>  arch/arm64/boot/dts/qcom/qdu1000.dtsi | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
-> index b93640ca08b7286fd4298519a17d1daf19056498..d3ceb1ee01a505cdd0bd056649d245308fc9f140 100644
-> --- a/drivers/ptp/Kconfig
-> +++ b/drivers/ptp/Kconfig
-> @@ -263,4 +263,14 @@ config PTP_NETC_V4_TIMER
->  	  synchronization. It also supports periodic output signal (e.g. PPS)
->  	  and external trigger timestamping.
+> diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+> index 26cc86d12f725682ebbbb9be22829bb7c6be7fd4..8979c18225184a318284131639f24c698e59f166 100644
+> --- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+> @@ -876,6 +876,17 @@ system_noc: interconnect@1640000 {
+>  			#interconnect-cells = <2>;
+>  		};
 >  
-> +config PTP_QCOM_TSC
-> +	tristate "Qualcomm TSC as PTP clock"
+> +		tscss@1da0000 {
 
-Missing depensd on ARCH_QCOM
-
-> +	depends on COMMON_CLK && PTP_1588_CLOCK
-> +	help
-> +	  This driver adds support for using the Qualcomm Timestamp Counter
-> +	  Subsystem (TSCSS) as a PTP clock.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called ptp_qcom_tsc.
-> +
->  endmenu
-
-...
-
-> +
-> +static const struct of_device_id qcom_tsc_of_match[] = {
-> +	{ .compatible = "qcom,lemans-tscss", .data = &qcom_tsc_lemans },
-> +	{ .compatible = "qcom,qdu1000-tscss", .data = &qcom_tsc_qdu1000 },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, qcom_tsc_of_match);
-> +
-> +static void qcom_ptp_tsc_remove(struct platform_device *pdev)
-
-Completely broken order of ID table, remove() and probe(). Remove ALWAYS
-follows probe. Table is next to them. Please look at other drivers.
-
-> +{
-> +	struct qcom_tsc *tsc = platform_get_drvdata(pdev);
-> +
-> +	if (tsc && tsc->ptp) {
-> +		ptp_clock_unregister(tsc->ptp);
-> +		tsc->ptp = NULL;
-> +	}
-> +}
-> +
-> +static int qcom_ptp_tsc_probe(struct platform_device *pdev)
-> +{
-> +	const struct qcom_tsc_soc_data *soc;
-> +	struct qcom_tsc *tsc;
-> +	struct resource *r_mem;
-> +	int ret;
-> +
-> +	soc = of_device_get_match_data(&pdev->dev);
-> +	if (!soc)
-> +		return -ENODEV;
-> +
-> +	tsc = devm_kzalloc(&pdev->dev, sizeof(*tsc), GFP_KERNEL);
-> +	if (!tsc)
-> +		return -ENOMEM;
-> +
-> +	tsc->dev = &pdev->dev;
-> +	tsc->soc = soc;
-> +
-> +	ret = devm_mutex_init(&pdev->dev, &tsc->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	r_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "tsc");
-> +	if (!r_mem) {
-> +		dev_err(&pdev->dev, "no IO resource defined\n");
-> +		return -ENXIO;
-> +	}
-> +
-> +	tsc->base = devm_ioremap_resource(&pdev->dev, r_mem);
-> +	if (IS_ERR(tsc->base))
-> +		return PTR_ERR(tsc->base);
-> +
-> +	tsc->ahb_clk = devm_clk_get_enabled(&pdev->dev, "ahb");
-> +	if (IS_ERR(tsc->ahb_clk))
-> +		return PTR_ERR(tsc->ahb_clk);
-> +
-> +	tsc->cntr_clk = devm_clk_get_enabled(&pdev->dev, "cntr");
-> +	if (IS_ERR(tsc->cntr_clk))
-> +		return PTR_ERR(tsc->cntr_clk);
-> +
-> +	/* ETU clock is optional, only required when the ETU block is used */
-> +	tsc->etu_clk = devm_clk_get_optional_enabled(&pdev->dev, "etu");
-> +	if (IS_ERR(tsc->etu_clk))
-> +		return PTR_ERR(tsc->etu_clk);
-> +
-> +	tsc->ptp_info = qcom_ptp_info;
-> +
-> +	tsc->ptp = ptp_clock_register(&tsc->ptp_info, &pdev->dev);
-> +	if (IS_ERR(tsc->ptp)) {
-> +		ret = PTR_ERR(tsc->ptp);
-> +		dev_err(&pdev->dev, "Failed to register ptp clock\n");
-> +		return ret;
-
-Why aren't you using dev_err_probe?
-
-> +	}
-> +
-> +	platform_set_drvdata(pdev, tsc);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver qcom_ptp_tsc_driver = {
-> +	.probe  = qcom_ptp_tsc_probe,
-> +	.remove = qcom_ptp_tsc_remove,
-> +	.driver = {
-> +		.name = "qcom_ptp_tsc",
-> +		.of_match_table = qcom_tsc_of_match,
-> +	},
-> +};
-> +module_platform_driver(qcom_ptp_tsc_driver);
-> +
-> +MODULE_DESCRIPTION("PTP QCOM TSC driver");
-> +MODULE_LICENSE("GPL");
-> 
-
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+If you cannot find a name matching your device, please check in kernel
+sources for similar cases or you can grow the spec (via pull request to
+DT spec repo).
 
 Best regards,
 Krzysztof
