@@ -1,154 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957BC37D10A
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4301E1DE5;
+	Mon, 27 Jul 2026 14:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785162537; cv=none; b=bGr2rwI4Q+DWld0Kfj89XoMDcttE/IefQXfMoyPXJoelfh0CUubjUtO1uajUaivwLB3fELhpb+5X96VaK9Lf1q4DpPc52gmJKegiytBq/OWT2X1t2DbyiUhXhGy+ORNS9OUETTISEo/9iwt6g0Ye8/5y5UhLmT13q8qD4wQFrIM=
+	t=1785163349; cv=none; b=D+c6dBPjGKUhU1eHU2FZkG7Kg7TAh6iuxAO+b9SpT7EHSuZxfgdO24u35hWfcZ5JKPYzDl/3SPlwE/Hv/O+4ltn9pku41xYimurjioF+HWoEZXK0inJerH9cIEeBu2kR5crFeohzvcIonG85Hc/iSMs5ir3t0cQ9Li170QTW1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785162537; c=relaxed/simple;
-	bh=1F2E0F8oWdzcK8owdnuCkCeBAUkTA6kxmehpUYOfQYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qahn2dG2hN7Naia0fLwIPFyk+N05kJ8xlin3qXnUT+/wweAKSzJ1KiQE/Sv4Y80AWCy1uRjvXbZm5R3twYq4BKJhEOeLeBXbPjmPNzIRuz2062i6nsME7K5bfUAgYcijvMJU/UvSrTqY5gYVG8TeQFzucCdg9rV1vwZvakm6kw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YTQR4u7z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LcVPLYe5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785163349; c=relaxed/simple;
+	bh=HMh+F3nPUq6HwxDQ+GhoBXq4JZZnF/6l++dectVR2w4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RO7m+l8u0knGXoQBL88GujQifyTKwijvsJlBjQIFwtAa/TQPUsw8da/ucFQmcaJmIWb6ziN6Zg0hQOPwu4XzMgp6x6ezwNDs0SwNW7m5/IDORQSSWS0QHlsbpdQ2X8SplguLnq/okG7rZswbL3JrDFViuaCILRAXEp+TK8OctNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=N5nAtw4H; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YTQR4u7z";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LcVPLYe5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785162533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
-	b=YTQR4u7zc0Q9kmugq1mbA2LxjrGmGAF8ok3stZKrLx0WvCONFA/jW15MwNM1j8upsvIX5U
-	37KSfd9CJcWihWlOzh/NF93MycytW2PBTW1oy2ob2mkZMNuYx/GAR9q87Nq0fC9I5/6MIx
-	AiAwTFUBduD2xxNm2t9s8vfq/LBIMwk=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-05SX9AyNP4GihUb5pSNfeA-1; Mon, 27 Jul 2026 10:28:51 -0400
-X-MC-Unique: 05SX9AyNP4GihUb5pSNfeA-1
-X-Mimecast-MFC-AGG-ID: 05SX9AyNP4GihUb5pSNfeA_1785162530
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69afb1d30f5so4087829a12.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 07:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785162530; x=1785767330; darn=vger.kernel.org;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
-        b=LcVPLYe5T4gZ+qM03YZPW3uwZu4kay6mOYFhf9mDuUSAwieHUI1vfD6xs97UtxVexB
-         Phtmrt7nltPi14CWKepGdX5YDZPdUWGgMxZleTR1j8hOjnLBf4KTeCG4uhTuFwccSvJj
-         EM0GSIoFG5dyOmMPLaw+Zx7tU+rfHrJnLUgZ9spG43uKCq2mA1zjIU+JlNaSBc4nybdT
-         6yRY2MS4XrzqJ/3IXPQTGd5Jn4RqWjQ4FH2p32lmXNd2Tj6KhEerK41dTTb7Z1k56SUx
-         nAjpypPTejebcaFnyqitJbNi8rLx65WOMoa401bcUZLmdc8tosIcEcMe9lDYA7gyQz3i
-         kciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785162530; x=1785767330;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CgFmd6qXGD/1u/B/qklK0gxra4znkvRNbgLq4PG6yjo=;
-        b=QqUHLrT/aOH12EpeB+XFJKRl6iGpd5aBwHEbSlHiiyNPoZhGJU8LnvcqX24mPX71Bx
-         yJ2ZqToda5BJvdQYDkH09DLmS/Zg3dltAt/Muts0f6NHPptmyRpRix5G7WDS0alxfpfq
-         KwGs4l2O0QB17Vw6l+SiVwF4gw53uuMK59i28dMU2uugUD/waZU7EElu6YJ9ihpVdDF9
-         M9BksUAxggl+8MjbuNGfE2+g0dmnEpI9taaQ/QYK6ngtsm+RHpF/Uk/rGkTxrFgs245i
-         hH5P49nauHW7aiBG5FXp6kB3GVPPJQZZvrF1JiJ6YSK+t9qARklp4/oMz4tx6hsScOYr
-         EMUA==
-X-Gm-Message-State: AOJu0YywfWEnCrn/NQIjoJJKIV122+j3YnYUYOI2SOo8XYtcrqWVK0VA
-	GD3MYyUgrgmnJzidhMifGnF1rTAKEeTxSY4+32IfLENUR5qvXJW0gC8GD0isJXuBlxN2OTUHIaX
-	VwGC58hTjhhYAk2/ozhEL1MK/0jA1AJ/yjnOsOiMgddLlQX+TWhi6KTSLXQ==
-X-Gm-Gg: AR+sD118rRvaglzDD5AXv8bupJg9tlDBSAFNhiHu+/YuCYv3u5WLxtNLtV9BpecQ6hu
-	WtYMhL8b5Ei6FKfjyCnTSvyAxh24SZwT6Zi8g+FwIyF70KxcPr2138kYSgMSats02f4emsK9hNV
-	eHthY72lwlsdiSMZ8spE0UzrC9+KMBxD3qCZGhjT2xVplsyn6y1/Qpgve8c67sj4PaauHTMWZP9
-	TJEfi70Y6qigXaoa/rNaQJTryXo5oylcRF6DbRP5DL5nf+X6EZYJKMhnJkfStv5pG0dGwg0pZ+w
-	Jq0lDQQX0VbeAxNlnVynIU1TXJhXaRmzts33Y7s22XephXLd7Zx5GebQgBFScz+rEysMM/1qhTV
-	Oc9JKaParuM6YgYh4/Tn0UUMiRDlkWeXdqN1KsSBm2XNpLBBCaQ==
-X-Received: by 2002:a05:6402:358b:b0:698:9450:92b0 with SMTP id 4fb4d7f45d1cf-69fc1007196mr3646742a12.1.1785162530114;
-        Mon, 27 Jul 2026 07:28:50 -0700 (PDT)
-X-Received: by 2002:a05:6402:358b:b0:698:9450:92b0 with SMTP id 4fb4d7f45d1cf-69fc1007196mr3646728a12.1.1785162529675;
-        Mon, 27 Jul 2026 07:28:49 -0700 (PDT)
-Received: from [10.44.33.167] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69fb50bd183sm2838839a12.4.2026.07.27.07.28.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Jul 2026 07:28:48 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Tonghao Zhang <xiangxia.m.yue@gmail.com>,
- Aaron Conole <aconole@redhat.com>, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: openvswitch: fix potential UAF on meter attach
- failure
-Date: Mon, 27 Jul 2026 16:28:46 +0200
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <5EB5E9EA-2E4F-4226-993A-142C79A6DF00@redhat.com>
-In-Reply-To: <20260727121022.198461-1-i.maximets@ovn.org>
-References: <20260727121022.198461-1-i.maximets@ovn.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="N5nAtw4H"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=49DCf6xkbdU2FC6tupY1A21cMRMTvs+tEMbewY0Dk4c=; b=N5nAtw4HJWK9QBragfitp6iVfS
+	//8mTHg9rvsvMM58B+8LkQtaDnGspvBIP8q0/6czDsUPUiTQq4LX9k5gZ/hJSf5C8Y/vlMhiDUWtm
+	++X7g5QFCUKbU/sgYiS08smVWy/xUDeqtev8ji6q7wz4jzWaFmuStqAsaEzBq4jdKwHw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1woMXA-00ERVe-KZ; Mon, 27 Jul 2026 16:42:24 +0200
+Date: Mon, 27 Jul 2026 16:42:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ashwin Gundarapu <linuxuser509@zohomail.in>
+Cc: netdev <netdev@vger.kernel.org>, linux-usb <linux-usb@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: usb: net1080: add error handling to
+ nc_vendor_write()
+Message-ID: <54bf0103-6ed1-46db-921a-fc09a6cc0555@lunn.ch>
+References: <19fa3e79cfe.894831784405.7828961255432177577@zohomail.in>
+ <19fa3f028d9.fe65e7a4540.8296440890414077743@zohomail.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19fa3f028d9.fe65e7a4540.8296440890414077743@zohomail.in>
 
+On Mon, Jul 27, 2026 at 07:47:33PM +0530, Ashwin Gundarapu wrote:
+> >From 70278069430a8b7d71728bc3c24400dc2bdffb63 Mon Sep 17 00:00:00 2001
+> From: Ashwin Gundarapu <linuxuser509@zohomail.in>
+> Date: Mon, 27 Jul 2026 19:34:16 +0530
+> Subject: [PATCH] net: usb: net1080: add error handling to nc_vendor_write()
+> 
+> The nc_vendor_write() function currently ignores the return value of
+> usbnet_write_cmd(). This can lead to silent failures when USB
+> communication fails.
+> 
+> Change nc_vendor_write() and nc_register_write() to return int
+> instead of void, and propagate the error from usbnet_write_cmd()
+> back to the caller.
 
+The caller being:
 
-On 27 Jul 2026, at 14:10, Ilya Maximets wrote:
+static int net1080_reset(struct usbnet *dev)
+{
+	u16		usbctl, status, ttl;
+	u16		vp;
+	int		retval;
 
-> While attaching a newly created meter attach_meter() function makes
-> the new meter visible to other CPUs but can still fail afterwards.
-> On failure, it detaches the meter back and returns an error.
->
-> However, this is an unexpected behavior for the ovs_meter_cmd_set()
-> that uses a plain kfree(meter) on attach failure without waiting for
-> RCU readers to stop using it, assuming it was never visible.
->
-> This is never a problem for ovs-vswitchd as it always creates meters
-> before creating any flows that use them.  But the UAF can be triggered
-> with a custom application using uAPI:
->
->  BUG: KASAN: slab-use-after-free in ovs_meter_execute (net/openvswitch/meter.c:653)
->  Read of size 8 at addr ffff88810d152650 by task meter/2508
->
->  Call Trace:
->   ovs_meter_execute (net/openvswitch/meter.c:653)
->   do_execute_actions (net/openvswitch/actions.c:1407)
->   ovs_execute_actions (net/openvswitch/actions.c:1584)
->   ovs_packet_cmd_execute (net/openvswitch/datapath.c:703)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
->
->  Allocated by task 2519:
->   __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
->   ovs_meter_cmd_set (net/openvswitch/meter.c:422)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
->
->  Freed by task 2519:
->   kfree (mm/slub.c:2705 mm/slub.c:6405 mm/slub.c:6720)
->   ovs_meter_cmd_set (net/openvswitch/meter.c:479)
->   ...
->   netlink_sendmsg (af_netlink.c:1900)
->
-> Fix that by making sure attach_meter() doesn't make the meter visible
-> until all the checks are done and the function can't fail anymore.
->
-> This also makes sure the "hash" value is calculated after the potential
-> re-sizing of the table.
->
-> Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-31642.
->
-> Fixes: c7c4c44c9a95 ("net: openvswitch: expand the meters supported number")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+	// nc_dump_registers(dev);
 
-Thanks, Ilya, for looking into this. The patch looks good to me.
+	if ((retval = nc_register_read(dev, REG_STATUS, &vp)) < 0) {
+		netdev_dbg(dev->net, "can't read %s-%s status: %d\n",
+			   dev->udev->bus->bus_name, dev->udev->devpath, retval);
+		goto done;
+	}
+	status = vp;
+	nc_dump_status(dev, status);
 
-Reviewed-by:  Eelco Chaudron <echaudro@redhat.com>
+	if ((retval = nc_register_read(dev, REG_USBCTL, &vp)) < 0) {
+		netdev_dbg(dev->net, "can't read USBCTL, %d\n", retval);
+		goto done;
+	}
+	usbctl = vp;
+	nc_dump_usbctl(dev, usbctl);
 
+	nc_register_write(dev, REG_USBCTL,
+			USBCTL_FLUSH_THIS | USBCTL_FLUSH_OTHER);
+
+which just ignores the return value. How is this better?
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+    Andrew
+
+---
+pw-bot: cr
