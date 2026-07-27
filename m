@@ -1,208 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6043A3E556D
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 08:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2613DDDC0
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 08:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785141412; cv=none; b=XLoT68Au0HDON4vzMQi+lYGW28wpAvsEjMkHu6sshFiotn+wt459Rs8v4s1qOxNLfky560aSbaLVSZKOKn1fsQR61KoL2/McwoXDS7p46xZVIcnvEgRr5TfvsemuotUBwyHR0vBWUMqlqKSE3f3grNIO3HykIhabu6dJE9KFa6Y=
+	t=1785141530; cv=none; b=bP3mmhQ0LrTKHqVSMB1mbkZmrvV/u1nd1KYeeVpxvbl3fOOD/0RBrsWxyRHcDzugyQXvmRCsLQF7w0wbUhLgzDxHOSQpD89SyS/Za8m64Z7FHROzaOx913Z2zO9MLv864mfPgrnT+/QFHEvrPSqif+mJQ7ZVwaSZqIMSM76hRX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785141412; c=relaxed/simple;
-	bh=Yf7/+dKt8M+bpZW9CQCMFZb9p5k0MWHwBjcjM990fAo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=qtqvrVY98uiBIyaDsm1y6eCLny68/kSqOn3pAYQY76PTr//c7K+1Gp3ZwoUwXs3YMkh2HgiK+LK3nfxJzOdKRGt4yWlhQRpp18aQGAN9HowfEpu0XS3JX9BslhBakdCm06qXG4GgrawrRoHOugavSbK8+H7clPjlvNpspyMcfmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNZO5DvA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gJ1VtWb+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785141530; c=relaxed/simple;
+	bh=W6FrXsh9s/8l/JhhIJScPW4N6ImngJ8og0oYLvuLR1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NQHGHnr0QbVtG2jSjuJa8J2jVZIeJIIuqVl7Tqc+6EPpNC7EeSZdnf3nwO46rT1UBbfuz6rW3tspluUBhyZvwje59QPpTdlXTfyelokf5imqBDc3rnvRbd+Tsk+jFfyUqUjryNDt0tJB7pY6rj+oXnLcAPCuogIlFtSDwPFy3R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eID9RiKR; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNZO5DvA";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gJ1VtWb+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785141408;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BZdiZBoqFn/hxpWjCyLxrSstC8LKbjuTaY79saxzxis=;
-	b=KNZO5DvAFCRxFLTW92N7IDY7g06iHCQJrZwEGSNeE3wZC5wu59EAtaJHGJyuWTE7rCwP48
-	jIXoR5pTP4bfv3UcC3wEpYORbZdZbnwESHhamCqPQcR1AxAyorSzu8L9ZzQ52+2ok2EeSQ
-	+IOuptwK6lUqZwU+J2FKSXhbc8zTqhs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-iUyFE3a_M26zWWzUB090yg-1; Mon, 27 Jul 2026 04:36:46 -0400
-X-MC-Unique: iUyFE3a_M26zWWzUB090yg-1
-X-Mimecast-MFC-AGG-ID: iUyFE3a_M26zWWzUB090yg_1785141406
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f8f8fde2dso1944283f8f.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:36:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eID9RiKR"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84861fc51f5so1752846b3a.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 01:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785141405; x=1785746205; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=BZdiZBoqFn/hxpWjCyLxrSstC8LKbjuTaY79saxzxis=;
-        b=gJ1VtWb+nadk9TDA0iv/SCnxadaJ9XRaldWek/ToPRaa/Mp/pKydZUBdjurssC/QpB
-         Uxu2vy4yl6NCsR4doqyz1vRRzZab+G4e3Dth/j4erQ0DgHVc8CSnyLxFZC0FyYU+MaKk
-         vqEOZWMprID5TbHCf8HpMNV2hXxpc8e5NBr7nbbhID9x5sBodj+mf3nPEMOScoj6c35S
-         XfsXDvKFPW5/G3hRK6zRPmSzWgJDN8r4YsMSsqu1uX0wl1sYKZhgwBHoNTZWCCuc7IkD
-         /rXXQQ9VGaTG2mploIZeUJ6wudJzYNRaldC7KX2WUPCluuD2tovcs3wDzwr5GdOy7fTd
-         hXmw==
+        d=gmail.com; s=20251104; t=1785141527; x=1785746327; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rq//a2+g1++ptwBRb4eMsVp2qBHE3j2AbugIHLKYR+E=;
+        b=eID9RiKRds5VwGhrv+rygZITRjEjlcYp9JCKm6U/MS6aKREsB8/JqGVngCLBsHgO3a
+         3IjWN2J+aOhMetuxHYQx4Cl3adqw4Q086tSGKQBzIgfwloh1bFP3Vdw8JAg3z66/zBHZ
+         VmfwNVeOtBmnwwB1Q3ww3DkWQX74eUZ0l3BFcDkEjjM11KhnV9DPnh1BGk2OxyRTpbKu
+         dctvcb2UW/71W6CzvKsNGI1vzXDuAy7Vup4SPY1ng9KjMa85+HuPLeRhYGoulaOEQoeZ
+         HNPFdMwZyJd1ohr71sH0EmP+pS75TbU6hRPWy88VU12SaStNEVvd20SU72bUKWJ4g83o
+         tZdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785141405; x=1785746205;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BZdiZBoqFn/hxpWjCyLxrSstC8LKbjuTaY79saxzxis=;
-        b=pE/EoqFN76HPHT+kOqlNhgXGflRvobtbv1rhxsDBYFyTYi1qhGOyXssHW7CpdWR1N2
-         lGZXnqbPGAisQjXU4KaOVVJ9GoTL6pKbRK22vLVzNkPY0b4kdbFwIUFLBRUm59maYCyW
-         o2/8LflHhcQTLkryFVFSJyK+40Sl1JHJEkQbLnysMPDVSnQ3ZJfEgWaNIy8QPlapmP5r
-         1m/r0FGvg8Y7q3aqQBBI5tRtC8Q6ThenpzWJ1lCkVq+IFxfwV9asabTTRi2ahyTYJRx3
-         1lYl3Jl73iER6J7y5br8qhM/InW1WPYSLmykkm6iY2FAAX3pd6e2UH3/cPWoUEAGRQN3
-         01CQ==
-X-Gm-Message-State: AOJu0Yz8o3gAJXYkpWHml14M92Oc62lBWnYHNP+lki8X29qesFVM5l59
-	+e4RVLj163e5/oTPDXOKQ9s74tuResXfWlHrWP/Vu8qaO+MXupuijHnBzxDz47ijm6LN9gcLQG2
-	ALJxqqwSmz3La/bEym165/9OH/QzKw8fPYUFL2NuN7TfLsZ8HIvp0GGpN2Q==
-X-Gm-Gg: AR+sD10OTZ7nvn+TdYkC6Hb5eYEefMaH4xdWKSRQYFhD+wtzzN6WNCzBqZGwnXkvyUs
-	dt51RukKOLUAEOn0flhUEFUnw/XcR+2rhX+PP1HuX9BLGCKMn6iM1iHkhsLLxKzb4n24fr4BHsc
-	73ytcoeXMbEV2HV57i9HN0rf6rmuMUZqN6fkiSJhNFvJU94mvawxnjcjC+HECGh6nFFRSnfRHTx
-	Xid4n+esD7uUmi4tqkZqxvm48oDCFTMQwSygqgmFyvq0TMZlG4Kb7C9zKGtM5WkLqRJmzfmgh1A
-	/oO+cTbjzwq3zm+iXJaXjelnO4aHndNM0ic1A4nOnrR4z89mEw+tdIaQCmuYMhnrDuPEFMnZUUr
-	dygr8BZpyGbx0xCs4V7XteeFpcyEYKVZMuSIeVKlPdsvWVUNIiTm2GeixRO7OKHVdWLccQVG9I+
-	89jlvPaw==
-X-Received: by 2002:a05:6000:2503:b0:47f:947f:9311 with SMTP id ffacd0b85a97d-47f9fc901bamr9518102f8f.21.1785141405583;
-        Mon, 27 Jul 2026 01:36:45 -0700 (PDT)
-X-Received: by 2002:a05:6000:2503:b0:47f:947f:9311 with SMTP id ffacd0b85a97d-47f9fc901bamr9518061f8f.21.1785141405104;
-        Mon, 27 Jul 2026 01:36:45 -0700 (PDT)
-Received: from ehlo.thunderbird.net (host-87-6-90-116.retail.telecomitalia.it. [87.6.90.116])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6dc25sm45984768f8f.33.2026.07.27.01.36.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 01:36:44 -0700 (PDT)
-Date: Mon, 27 Jul 2026 10:36:42 +0200
-From: Ivan Vecera <ivecera@redhat.com>
-To: vjardin@free.fr,
- Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>
-CC: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Vincent Jardin <vjardin@free.fr>
-Subject: Re: [PATCH 2/2] dpll: zl3073x: add ZL30643 chip support
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260724-for-upstream-zl30643-v1-2-ea93ba4d85c8@free.fr>
-References: <20260724-for-upstream-zl30643-v1-0-ea93ba4d85c8@free.fr> <20260724-for-upstream-zl30643-v1-2-ea93ba4d85c8@free.fr>
-Message-ID: <4CCA3CCC-C687-4658-8ACD-BC0CB3294A39@redhat.com>
+        d=1e100.net; s=20251104; t=1785141527; x=1785746327;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rq//a2+g1++ptwBRb4eMsVp2qBHE3j2AbugIHLKYR+E=;
+        b=OlIdPNphD2oTGUDI+hvigsPOcQ+a7c+PJpIUQfEKTYTqUqzHYchl/LNYT7wLv623Fv
+         OTmgzNoQp4jaL2bLr8CKB4eCj69kxcikicNTGgFE+oio747Fl3fKcY1riqSKl37qNzo/
+         q1yEaL6T78UXqtsQELGOHKXhKWVauLvxOhfKqNIqvevE6Qlyb4+eFTPSNxr1HLL8uojb
+         lDHgd5J8h0PXjyPQwh9mA8oUpSbDKJvgUqMt3hiGVkTO+wfAyHjskGKYsm8G/jgF2U/S
+         TNKCaSJSvXkLfiUFbUCdXG24TQOtQwGhpjIZxoIebxtyIaOLbt2zfE2if49rFPgInOj6
+         3Xbg==
+X-Forwarded-Encrypted: i=1; AHgh+RrJmcuykDbBguU790ygqPaI+eCoTeq4z1EafVu86WTuD1PWd4ZOlmgco0yW13KDgU6pafkI1TI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm9PJgRNXAUN0xVbKezIQJjQ4rtOvcrQ1UbGF2s8jKmBfOuqqo
+	chAZ4+WDWjyWKUaoZmLvqVUSSOMlbk5/CW+iAZ8mbIAGv8qNgOhouespwtiv4bnN
+X-Gm-Gg: AR+sD11vsAq31E5OjZm8GECVzsFnSt3xWeDspgWqQ6sBarhg0KfUmsg288ormZf7sLG
+	u3kkQvsa6w6KQYdTbfnS7r4pFB2qT9nJDqKBblIVDLXSy4/8LrUvgkJJw75FJwtuOQpNsrMNu61
+	KesvfDgh/dQ+TEFirPM2hSQCGkyZG2MCIGzmYa7BbO4viWYUbiU214N5zw6BxjobZuaTdmpAQcG
+	mZXfh66qfEL3tpi67vJCkyovuOdSfXvm20jGBuOEL0LxihRn90EnKHm5FwCTrw64CoNr15pRlwf
+	9AFvj9auPK0j2uT8MRolTglhHXgdah/MOPUEGgFp5oHPKy9UYQ5Oe7BeCOq0I9QBBfPfwCq6U0s
+	0U6aMKnDo+tCWD32N9PLejOukFKXj704k7LlF9SvXbcrOatHrMniGrJFp0qdbw/w9tu6iynCSsV
+	k7qDYa
+X-Received: by 2002:a05:6a00:981:b0:847:5ec4:9a1d with SMTP id d2e1a72fcca58-84e5958371cmr5655774b3a.62.1785141527264;
+        Mon, 27 Jul 2026 01:38:47 -0700 (PDT)
+Received: from kali ([42.112.41.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5327f54esm2644997b3a.20.2026.07.27.01.38.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 01:38:46 -0700 (PDT)
+From: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+To: Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+Subject: [PATCH net] can: bcm: add missing synchronize_rcu() in bcm_delete_rx_op()
+Date: Mon, 27 Jul 2026 04:37:50 -0400
+Message-ID: <20260727083750.2057304-1-nguyenlethanhtung555@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+bcm_delete_rx_op(), reachable from an unprivileged user via an RX_DELETE
+bcm_msg_head, unregisters the CAN rx handler and then immediately calls
+bcm_remove_op(), which cancels op->timer and frees the op via call_rcu():
 
+	can_rx_unregister(..., bcm_rx_handler, op);
+	list_del_rcu(&op->list);
+	bcm_remove_op(op);		/* hrtimer_cancel() + call_rcu() */
 
-24=2E =C4=8Dervence 2026 1:09:13 SEL=C4=8C, Vincent Jardin via B4 Relay <d=
-evnull+vjardin=2Efree=2Efr@kernel=2Eorg> napsal:
->From: Vincent Jardin <vjardin@free=2Efr>
->
->Register the Microchip ZL30643 (chip ID 0x0E3B), it is a 3 DPLL channel
->of the ZL3073x family=2E
->
->Once register, for instance, we get:
->
->  devlink dev param set spi/spi0=2E0 name clock_id value 3733 cmode drive=
-rinit
->  devlink dev reload spi/spi0=2E0
->  devlink dev param set spi/spi2=2E1 name clock_id value 3643 cmode drive=
-rinit
->  devlink dev reload spi/spi2=2E1
->
->  dpll device show | grep clock-id
->    clock-id: 3733
->    clock-id: 3733
->    clock-id: 3733
->    clock-id: 3643
->    clock-id: 3643
->    clock-id: 3643
->
->Signed-off-by: Vincent Jardin <vjardin@free=2Efr>
->---
-> drivers/dpll/zl3073x/core=2Ec | 1 +
-> drivers/dpll/zl3073x/i2c=2Ec  | 2 ++
-> drivers/dpll/zl3073x/spi=2Ec  | 2 ++
-> 3 files changed, 5 insertions(+)
->
+bcm_rx_handler() runs in an RCU read-side critical section and re-arms
+op->timer on frame reception via bcm_rx_starttimer(). A handler that is
+already in flight on another CPU when RX_DELETE is processed can be past
+its RX_NO_AUTOTIMER check -- a plain, unordered u32 store set a few lines
+earlier in bcm_delete_rx_op() -- and re-arm the timer after bcm_remove_op()
+has cancelled it. The op is then freed after the grace period with its
+hrtimer still enqueued, so the timer fires on freed memory in the timer
+softirq: an out-of-bounds access that can crash the machine or disclose
+adjacent kernel memory. AF_CAN BCM sockets are reachable in a user +
+network namespace (e.g. over a vcan interface), so this is triggerable
+by an unprivileged local user.
 
-Hi Vincent,
-I'm not sure that all driver's functionality is supported by ZL3064x=2E Di=
-d you test everything?
+commit d5f9023fa61e ("can: bcm: delay release of struct bcm_op after
+synchronize_rcu()") fixed exactly this race for the socket teardown path
+in bcm_release(), by draining in-flight handlers with synchronize_rcu()
+between can_rx_unregister() and bcm_remove_op(), but the RX_DELETE path in
+bcm_delete_rx_op() was left unchanged and still has the race.
 
-I need to check datasheets for this chip models, maybe some device flags w=
-ill be needed=2E
+Add the same synchronize_rcu() to bcm_delete_rx_op() so that no
+bcm_rx_handler() can be running -- and thus re-arm the timer -- once
+bcm_remove_op() cancels it and frees the op. bcm_delete_rx_op() is only
+called from bcm_sendmsg() under lock_sock() in process context, so
+sleeping in synchronize_rcu() is safe here, exactly as it already is in
+bcm_release().
 
-Thanks
-Ivan
+Fixes: d5f9023fa61e ("can: bcm: delay release of struct bcm_op after synchronize_rcu()")
+Signed-off-by: Nguyen Le Thanh Tung <nguyenlethanhtung555@gmail.com>
+---
+ net/can/bcm.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
->diff --git a/drivers/dpll/zl3073x/core=2Ec b/drivers/dpll/zl3073x/core=2E=
-c
->index 8e6416a4741d=2E=2E4d07f69efb44 100644
->--- a/drivers/dpll/zl3073x/core=2Ec
->+++ b/drivers/dpll/zl3073x/core=2Ec
->@@ -25,6 +25,7 @@
->=20
-> static const struct zl3073x_chip_info zl3073x_chip_ids[] =3D {
-> 	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
->+	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
-> 	ZL_CHIP_INFO(0x0E93, 1, ZL3073X_FLAG_REF_PHASE_COMP_32),
-> 	ZL_CHIP_INFO(0x0E94, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
-> 	ZL_CHIP_INFO(0x0E95, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
->diff --git a/drivers/dpll/zl3073x/i2c=2Ec b/drivers/dpll/zl3073x/i2c=2Ec
->index 4a23340e29d0=2E=2Ef12c6306a85b 100644
->--- a/drivers/dpll/zl3073x/i2c=2Ec
->+++ b/drivers/dpll/zl3073x/i2c=2Ec
->@@ -26,6 +26,7 @@ static int zl3073x_i2c_probe(struct i2c_client *client)
-> }
->=20
-> static const struct i2c_device_id zl3073x_i2c_id[] =3D {
->+	{ =2Ename =3D "zl30643" },
-> 	{ =2Ename =3D "zl30731" },
-> 	{ =2Ename =3D "zl30732" },
-> 	{ =2Ename =3D "zl30733" },
->@@ -36,6 +37,7 @@ static const struct i2c_device_id zl3073x_i2c_id[] =3D =
-{
-> MODULE_DEVICE_TABLE(i2c, zl3073x_i2c_id);
->=20
-> static const struct of_device_id zl3073x_i2c_of_match[] =3D {
->+	{ =2Ecompatible =3D "microchip,zl30643" },
-> 	{ =2Ecompatible =3D "microchip,zl30731" },
-> 	{ =2Ecompatible =3D "microchip,zl30732" },
-> 	{ =2Ecompatible =3D "microchip,zl30733" },
->diff --git a/drivers/dpll/zl3073x/spi=2Ec b/drivers/dpll/zl3073x/spi=2Ec
->index f024f42b78d0=2E=2Ed56c8d8ecc28 100644
->--- a/drivers/dpll/zl3073x/spi=2Ec
->+++ b/drivers/dpll/zl3073x/spi=2Ec
->@@ -26,6 +26,7 @@ static int zl3073x_spi_probe(struct spi_device *spi)
-> }
->=20
-> static const struct spi_device_id zl3073x_spi_id[] =3D {
->+	{ "zl30643" },
-> 	{ "zl30731" },
-> 	{ "zl30732" },
-> 	{ "zl30733" },
->@@ -36,6 +37,7 @@ static const struct spi_device_id zl3073x_spi_id[] =3D =
-{
-> MODULE_DEVICE_TABLE(spi, zl3073x_spi_id);
->=20
-> static const struct of_device_id zl3073x_spi_of_match[] =3D {
->+	{ =2Ecompatible =3D "microchip,zl30643" },
-> 	{ =2Ecompatible =3D "microchip,zl30731" },
-> 	{ =2Ecompatible =3D "microchip,zl30732" },
-> 	{ =2Ecompatible =3D "microchip,zl30733" },
->
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 75653584f..25f868530 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -822,6 +822,14 @@ static int bcm_delete_rx_op(struct list_head *ops, struct bcm_msg_head *mh,
+ 						  bcm_rx_handler, op);
+ 
+ 			list_del_rcu(&op->list);
++
++			/* wait for any in-flight bcm_rx_handler() to finish so a
++			 * concurrent frame reception cannot re-arm op->timer after
++			 * bcm_remove_op() has cancelled it and the op is freed
++			 * (same drain as the bcm_release() teardown path).
++			 */
++			synchronize_rcu();
++
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+-- 
+2.34.1
 
