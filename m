@@ -1,217 +1,128 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0250242253D
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6160426437
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785169883; cv=none; b=JYu1y0KIkFmaRnuTdkReb9T2lUj9M6CzMFnS1YLHKuAmX+Crbf9fse0N6ycJqGrCAZtVY6LGQv++8P7D3TfiEb72ZIaCVYmIkUgC/vrnmwxLq4YjxHkPS0PsCDPlmlPigIBzPreYX3rLlLK0jTAEm2wpb7v9dD1p20LNF+Bce3k=
+	t=1785170256; cv=none; b=iqUu9y7obL1QNDsMJrUf9O46+Q0812rwQjY9TrJ4auBRGk+zOJGCXyG1oAiOi/QbcaQSIqS4wgUHXcEvkV2/pRD++Q4Sye/Qm382QA1TIdfVgvsa9D6+Hp+r7vDfl6nYx4PzKqEBZURpsnX/vG06DS9+4nPsDuQ7rDMcWqONTRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785169883; c=relaxed/simple;
-	bh=MRH62yJJB/w81UQkfk3ix41pDrJvXV9I+5bYyi7lLkk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqD9zGHpPs4WqrkupQ2OAGzRbWwcCFo/5LQ7MKPkHfaxS965RUia+hPwrp/DILDnqt05B8Famab3srxOchnaZfUSQk0YTaoSrk1aUj22PzMKYHP3ZR5TdpesS+UxqOobMTSWwJ2FTGoziKnYFsnjjy7Iby5Q9X5JXnSvKCHpndI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdfDzYmg; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1785170256; c=relaxed/simple;
+	bh=Je5rToflP6HDFUwILHyTwGD80qHDZtt3u766+IEEhbU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DaPTBD3W7C0kw7ueR7czc1XRkW3WBhu8Z8DPT/ae60ioQMpSKD3Sq9nHswVEwZ6g/ciLJPXjzphIoRlUOsv9CTs+IABU60CEtcZreFS8p5Ug/W6osx9EVoz0j73Uk90W5x5JAtaeKUNJTjLUlM99yBfwYwSrXC5n/OwsMV16nXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/mzTCgG; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdfDzYmg"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cf27856f9cso37977765ad.2
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:31:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/mzTCgG"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so2992825a91.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785169881; x=1785774681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YoBA3FIDH8AULssFQ6ZZvKIUPXBaltR7llfhh0/h1O4=;
-        b=EdfDzYmg+Kd0eBMYOWiSRTxMXegWReIRVNvTn7wWw7/v/cYi0FK1Z7jgVuL4efX6F9
-         j/6tLIh84Wf4G+zDDzgdMuhjJJB3Oq8GxsGUHEVcUQPQKkH7NeyG3Yyq2ikhoYzcQ/aV
-         UwxyRC7LaqIH28KdZmJ76Jcq8FVush10gpk5476D2/nvEFSvHE/thXIjIEzRYB5meSVM
-         hRsGxGCX/CzggUSB4aI12r1tQD8CJIlnPz0qFqB/1k8nCBthz9Nrbmr7QAUai4s6usdx
-         WJ3I2eehXoLMcEzCGh/gW5oDwUkfpeynfNJmUTKP7Jvdzd5OAXh1v4khSJ0MsYpYLcBR
-         Avug==
+        d=gmail.com; s=20251104; t=1785170251; x=1785775051; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RNfPUvmh9SATlz6mHMfXelOb20yzwkWrtvzrS+ab4jI=;
+        b=l/mzTCgGLY9QQPJuLopMuGDUmXew7tTcMj+24iIXk1wWoDJZrl9X57G6yDXO6apXeq
+         oh+lvvK5PNpayIw53/1RJCgb/+UFoyJ2M0aKlDoLPK+kt7Wg63e8v10zAHmZiEWYKSAr
+         B4WiRe1GxcX/os/aKRHKCtZihbiDBcijWtsVdtv3/YuZd1iX5sbg8Xbn2+ztAr3oxG8y
+         wm8P6VUjPWB1avjRzdm9eT4lN/Idd08l1bcm6ig3sKadkNgEDFTbN+C357vtsvmQo8DD
+         O+wg3mAmINtvw2Rqx6mfLY1poMt9MKNkTLLLXdj4IhLjHxfEvIF9OtU2/CawqN8SD+GC
+         MSOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785169881; x=1785774681;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YoBA3FIDH8AULssFQ6ZZvKIUPXBaltR7llfhh0/h1O4=;
-        b=Tw4jnicXCqBebAm7c9H2CyqVHNZuhTY/x1yLyGh2YAABVMqXhSnyxEEsnqq3gBbiiN
-         eYND2O0CXXVgWnz5Z6MGW6wZ4TYiy8mdwA0kW74RISwRYk6lWFc0jgxQsZtSwFVPXGFO
-         96qrwedN2TqFd2widBcgEIapB1LJpexVnqFISc3Zoq5izwaz5yl1CC2lAudl1lRnP/qM
-         LbrXts0FbpEWj2GA+N3ns8tq6iuNAyE0Coqlj9HTJZj6G87qtICI1Pjr7IupayACyEz6
-         0LRIw3RhidVzTiZCHNrs0BEs7D+B4a9747vCgT8PC9nQXd9THUS6PgxN1DCaue6C9dYO
-         f4Bg==
-X-Gm-Message-State: AOJu0YzmvLVpK+QlGI+CqpVzZAepTKwE7yIHw3LjdLeJJ+JT6QMTOOWQ
-	rjX4whIN3j9CEtZ3la3XOROvrGD1AAGEEqrbDKkd2AMLPmJWpTDGNNAAZ8KBtl9lXlo=
-X-Gm-Gg: AR+sD10s4L+NBpTKJWsx5xRWHDbKPZidGK0TeUV1idvM69FVCTzGjeATMXmJTv2If51
-	g+MM8vV2RFWF3GSCyJ/9mpuzd8dOs7voqcRgIQS8vRz9sZYCGJD4N8TuCX1toySgFLPrG/8dAWm
-	KXczdpXGQ2IAIH9KmPNYY8p9+ZpwCssB7fqOcvaqX6XEEtIOLDbeIzeVYkTwY/1Vcme09KDSINW
-	UvmXFEsIjuxjotZ71o/jqWEk/U6JUZzGdpNH0TzAtqC0zStXoGqwIF1ntt4g5oolRSSq7p4TeGo
-	BzvMREseM4oIfwyiPvtD0O9y5tHyvQollXdvBkXPTgTOmkGJd0BprSe7UeeulQBoRp/QV1w39JH
-	BjWxIzgR/R7+9IsMQpnuWdTr9U3dT7UmvQrH8q+TTX/xYnZUHqVGVVOjhxBsip+ayDI52Qa1Jr2
-	cEhXCnhCgdneVLN1K4kY6s
-X-Received: by 2002:a17:903:4688:b0:2ce:9b49:d4a0 with SMTP id d9443c01a7336-2cfde866f8cmr85832535ad.35.1785169881086;
-        Mon, 27 Jul 2026 09:31:21 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([219.141.235.82])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde5e3e0asm37733635ad.29.2026.07.27.09.31.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 09:31:20 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai,
-	enjou1224z@gmail.com
-Subject: [PATCH net v4 resend 1/1] tcp: bound SYN-ACK timers to reqsk timeout range
-Date: Tue, 28 Jul 2026 00:31:10 +0800
-Message-ID: <891a220c362e3266efdf6b1aa9dc3e52f6825c00.1784735392.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784735392.git.zhilinz@nebusec.ai>
-References: <cover.1784735392.git.zhilinz@nebusec.ai>
+        d=1e100.net; s=20251104; t=1785170251; x=1785775051;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RNfPUvmh9SATlz6mHMfXelOb20yzwkWrtvzrS+ab4jI=;
+        b=C2YvWhtRtUX5l2iIJmT0u7d5Nn4ygaFn2xGCK1qMDhOCq8gMZVFgZmdWseFaZWq4dE
+         AoeShpKYZ0Iwh0aYAPtDqpanCyKXC7N15G5XqU0B2zLdgPBzQvTQkUxP8B2BpYdLNzaH
+         uxaI3jOheHlz9imRb+F8pgriiTqGQg13hEMzfPVBRg9t9YSAoo5vYnVPd+VlnPc3sanD
+         Kjvi62lGMltlUfUl+HPU+ZNA4U+TzQMeQ9qxBT9WgbckSclKam+268huHd7CSdH2fuo9
+         o0I48rzGamw5AGmAEH1/8qBv4zypd7SpiezlFegtFc4OZCOOIsNT1HxNu4ez1Av7CzeG
+         5T+g==
+X-Forwarded-Encrypted: i=1; AHgh+RpR74B1xF9MO1542AHD5Ub6iHd5SEqOYcu2Am8fRa4BN/5BwfwJtEonqC0ixPoC5kG+vvVAc8Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGMpF6A/Oela+Y8h79sWOllmEeulB5fps+1FL39NjoG3CBSCWG
+	nJPk0pxf1f9/U6q10atJQU8nFkpN2OhRXRDvfLLUnIW93g+aT+VeJRYj
+X-Gm-Gg: AR+sD12P0Q9SKBfeRT4yXusW70qIS0LDA+6m688CsSBrhFBHEyty5hp2vOEhSRAyc+M
+	0u6eNjeGv4IIBNySp0iI5TnD8LfvYMXr7WyLqBCU+rA+c37PH6EM40E+qI4DANMtIhWRLRBfWSX
+	u/Zn+C8o5g+SqsIt+/RIMG9i66VdMuDPi198rEQbGunsBBAGIgLSTA2bLC9cDAtWXAGxELaxH8o
+	UMpr0CKS2xD+ii05Ttc+z5B7/uG5DJYuyL7dOCv6f3ybiWGdrJq+fiIL4/8qr5Rvtc5aJs4Qerc
+	BqyJcJgU5YKMITgg/nZBHm/XdC8X+8FxcusDuXf2bi0pjp3bGOO63B7OSu1E1kvd+obfgn03yTD
+	/pYpqhdo+3JdnN3F3CV+X0AJmHMw96exGQ+zVI0CrUSZK/JsI5aNXV9YcfVl93tYTNaSiqoI+MY
+	z0pzj5eBhKl8EQwaDTZ1+wdJ4FO630
+X-Received: by 2002:a17:90b:1fc8:b0:36a:5d1f:7b6 with SMTP id 98e67ed59e1d1-38f293cd148mr7722475a91.2.1785170251220;
+        Mon, 27 Jul 2026 09:37:31 -0700 (PDT)
+Received: from [172.24.233.249] ([163.114.132.133])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e6054598asm14951111c88.1.2026.07.27.09.37.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 09:37:30 -0700 (PDT)
+Message-ID: <13ebe4e4-d744-4473-bc6e-2742ac0af492@gmail.com>
+Date: Mon, 27 Jul 2026 09:37:27 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v12 2/8] hinic3: Fix loose success check in rx
+ buffer filling
+To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>,
+ Teng Peisen <tengpeisen@huawei.com>, netdev@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Ioana Ciornei <ioana.ciornei@nxp.com>,
+ Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Chen Anwen <chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>,
+ luosifu <luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>,
+ Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
+ Shi Jing <shijing34@huawei.com>, Zheng Jiezhen
+ <zhengjiezhen@h-partners.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+References: <cover.1785120952.git.root@localhost.localdomain>
+ <9463522667ee175211c12e8ecd7c81a0a55256b6.1785120952.git.root@localhost.localdomain>
+Content-Language: en-US
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+In-Reply-To: <9463522667ee175211c12e8ecd7c81a0a55256b6.1785120952.git.root@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Zhiling Zou <zhilinz@nebusec.ai>
 
-tcp_synack_retries supplies the SYN-ACK retry limit used by request
-socket timers. The same effective limit can also come from TCP_SYNCNT
-through icsk_syn_retries, while TCP_DEFER_ACCEPT can keep an ACKed
-request alive until rskq_defer_accept is reached.
 
-The request socket timeout counter is incremented before it is used to
-compute the next timeout. tcp_reqsk_timeout() and the Fast Open SYN-ACK
-timer shift req->timeout by req->num_timeout. Excessive retry or
-defer-accept limits can therefore drive these timer paths into invalid
-shift counts before the request expires.
+On 7/26/26 11:54 PM, Fan Gong wrote:
+>    Tightens the success criterion for hinic3_rx_fill_buffers() in
+> hinic3_configure_rxqs().
+> 
+> Co-developed-by: Wu Di <wudi234@huawei.com>
+> Signed-off-by: Wu Di <wudi234@huawei.com>
+> Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+> Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+> Signed-off-by: Fan Gong <gongfan1@huawei.com>
+> ---
+>   drivers/net/ethernet/huawei/hinic3/hinic3_rx.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+> index 309ab5901379..389b1c2158be 100644
+> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+> @@ -541,7 +541,7 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
+>   		rq_associate_cqes(rxq);
+>   
+>   		pkts = hinic3_rx_fill_buffers(rxq);
+> -		if (!pkts) {
+> +		if (pkts < rxq->q_mask) {
+>   			netdev_err(netdev, "Failed to fill Rx buffer\n");
+>   			return -ENOMEM;
+>   		}
 
-Clamp the effective retry and defer-accept limits in the regular
-request socket timer path, clamp the Fast Open retry limit, and make
-the request socket timeout helper saturate before shifting. This keeps
-sysctl writes unchanged while bounding the timer calculations.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
-Changes in v4:
-  - Drop the tcp_synack_retries sysctl maximum to preserve existing
-    user-space behavior, and keep the runtime clamps at the timer usage
-    sites.
-  - v3 Link: https://lore.kernel.org/all/20260702095324.2995243-1-n05ec@lzu.edu.cn/
-
-Changes in v3:
-  - Order local variables in tcp_reqsk_timeout_sk() by reverse Christmas
-    tree.
-  - v2 Link: https://lore.kernel.org/all/20260630035009.55201-1-n05ec@lzu.edu.cn/
-
-Changes in v2:
-  - Keep the existing max_retries calculation in
-    tcp_fastopen_synack_timer() and only add the clamp, avoiding code
-    churn.
-  - v1 Link: https://lore.kernel.org/all/02e24eb83639e9d7ecc623f000c60254bb5c40a5.1782643946.git.roxy520tt@gmail.com/
-
- include/net/tcp.h               | 19 +++++++++++++++----
- net/ipv4/inet_connection_sock.c |  6 +++++-
- net/ipv4/tcp_timer.c            |  3 ++-
- 3 files changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 6d376ea4d1c0..ee78436b8964 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -183,6 +183,7 @@ static_assert((1 << ATO_BITS) > TCP_DELACK_MAX);
- #define MAX_TCP_KEEPINTVL	32767
- #define MAX_TCP_KEEPCNT		127
- #define MAX_TCP_SYNCNT		127
-+#define MAX_TCP_SYNACK_RETRIES	63
- 
- /* Ensure that TCP PAWS checks are relaxed after ~2147 seconds
-  * to avoid overflows. This assumes a clock smaller than 1 Mhz.
-@@ -882,12 +883,22 @@ static inline u32 __tcp_set_rto(const struct tcp_sock *tp)
- 	return usecs_to_jiffies((tp->srtt_us >> 3) + tp->rttvar_us);
- }
- 
--static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
-+static inline unsigned long tcp_reqsk_timeout_sk(const struct sock *sk,
-+						 struct request_sock *req)
- {
--	u64 timeout = (u64)req->timeout << req->num_timeout;
-+	u32 rto_max = tcp_rto_max(sk);
-+	u64 timeout = req->timeout;
-+
-+	if (req->num_timeout >= BITS_PER_TYPE(u64) ||
-+	    timeout > U64_MAX >> req->num_timeout)
-+		return rto_max;
-+
-+	return (unsigned long)min_t(u64, timeout << req->num_timeout, rto_max);
-+}
- 
--	return (unsigned long)min_t(u64, timeout,
--				    tcp_rto_max(req->rsk_listener));
-+static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
-+{
-+	return tcp_reqsk_timeout_sk(req->rsk_listener, req);
- }
- 
- u32 tcp_delack_max(const struct sock *sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 56902bba5483..b74212bae3dd 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1056,6 +1056,8 @@ static void reqsk_timer_handler(struct timer_list *t)
- 	net = sock_net(sk_listener);
- 	max_syn_ack_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
- 		READ_ONCE(net->ipv4.sysctl_tcp_synack_retries);
-+	max_syn_ack_retries = min_t(int, max_syn_ack_retries,
-+				    MAX_TCP_SYNACK_RETRIES);
- 	/* Normally all the openreqs are young and become mature
- 	 * (i.e. converted to established socket) for first timeout.
- 	 * If synack was not acknowledged for 1 second, it means
-@@ -1086,7 +1088,9 @@ static void reqsk_timer_handler(struct timer_list *t)
- 		}
- 	}
- 
--	syn_ack_recalc(req, max_syn_ack_retries, READ_ONCE(queue->rskq_defer_accept),
-+	syn_ack_recalc(req, max_syn_ack_retries,
-+		       min_t(u8, READ_ONCE(queue->rskq_defer_accept),
-+			     MAX_TCP_SYNACK_RETRIES),
- 		       &expire, &resend);
- 	tcp_syn_ack_timeout(req);
- 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index bf171b5e1eb3..bbedf2b9e1bc 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -467,6 +467,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
- 	 */
- 	max_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
- 		READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_synack_retries) + 1;
-+	max_retries = min_t(int, max_retries, MAX_TCP_SYNACK_RETRIES);
- 
- 	if (req->num_timeout >= max_retries) {
- 		tcp_write_err(sk);
-@@ -488,7 +489,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
- 	if (!tp->retrans_stamp)
- 		tp->retrans_stamp = tcp_time_stamp_ts(tp);
- 	tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
--			  req->timeout << req->num_timeout, false);
-+			     tcp_reqsk_timeout_sk(sk, req), false);
- }
- 
- static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
--- 
-2.43.0
+Given the subject, curious if a partially populated ring result in any 
+functional failure? if so, then perhaps failure mode can be explained 
+and this specific change be sent to net tree?
