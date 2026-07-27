@@ -1,67 +1,69 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6160426437
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8D282F0A
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785170256; cv=none; b=iqUu9y7obL1QNDsMJrUf9O46+Q0812rwQjY9TrJ4auBRGk+zOJGCXyG1oAiOi/QbcaQSIqS4wgUHXcEvkV2/pRD++Q4Sye/Qm382QA1TIdfVgvsa9D6+Hp+r7vDfl6nYx4PzKqEBZURpsnX/vG06DS9+4nPsDuQ7rDMcWqONTRA=
+	t=1785170362; cv=none; b=ni8EMzgdybMu0Zeo0lmb7yOZaFGuf1XfujqVypf4ndyke2RMiuLCLBKtMCHSX2vkKdG/XhDebhd56++/moqJggONnv8e224hqtUQWDFosOfdgTMrhqmHf/UOX5DoX393VWTD+e+CWi7fKduNWu0YlBOJmIGaJhArZ0TpI7BGEc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785170256; c=relaxed/simple;
-	bh=Je5rToflP6HDFUwILHyTwGD80qHDZtt3u766+IEEhbU=;
+	s=arc-20240116; t=1785170362; c=relaxed/simple;
+	bh=WplzDdnCS+71PsXKDF4b0oNPugOrz3tfVe/1z5xRtk0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DaPTBD3W7C0kw7ueR7czc1XRkW3WBhu8Z8DPT/ae60ioQMpSKD3Sq9nHswVEwZ6g/ciLJPXjzphIoRlUOsv9CTs+IABU60CEtcZreFS8p5Ug/W6osx9EVoz0j73Uk90W5x5JAtaeKUNJTjLUlM99yBfwYwSrXC5n/OwsMV16nXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/mzTCgG; arc=none smtp.client-ip=209.85.216.50
+	 In-Reply-To:Content-Type; b=S7YzQiUL6UQ6dPPyL34h/pfS1+vPVBtu5M5JQIvSFfVvI7Z4d2MCTRC5DBriqAmIajawkBltqgtFIky8bdJbqLsc/JoJZec0CeYPFeeBJ5T/xl/WxuEq91vqejE2g4HMz1pKC+oqZqSMua8Vc+VCmDJ8DSCQ+I5LzIFT5qT/4OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFJLaVzt; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/mzTCgG"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so2992825a91.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:37:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFJLaVzt"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso19589165e9.0
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785170251; x=1785775051; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785170359; x=1785775159; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RNfPUvmh9SATlz6mHMfXelOb20yzwkWrtvzrS+ab4jI=;
-        b=l/mzTCgGLY9QQPJuLopMuGDUmXew7tTcMj+24iIXk1wWoDJZrl9X57G6yDXO6apXeq
-         oh+lvvK5PNpayIw53/1RJCgb/+UFoyJ2M0aKlDoLPK+kt7Wg63e8v10zAHmZiEWYKSAr
-         B4WiRe1GxcX/os/aKRHKCtZihbiDBcijWtsVdtv3/YuZd1iX5sbg8Xbn2+ztAr3oxG8y
-         wm8P6VUjPWB1avjRzdm9eT4lN/Idd08l1bcm6ig3sKadkNgEDFTbN+C357vtsvmQo8DD
-         O+wg3mAmINtvw2Rqx6mfLY1poMt9MKNkTLLLXdj4IhLjHxfEvIF9OtU2/CawqN8SD+GC
-         MSOQ==
+        bh=malQCOcVTnhvlSglj8xagyh6DGO/pkvzAAjITzKDfKw=;
+        b=OFJLaVzt078Z0Th8RehwLMMgcWijwwRq1v5DTbpe5y3QtKDWbHZCShp21PUZnKNgyO
+         EZrdmMR2/QmSYFZmjUgQE6p+76FNuSX7b2TdRBMG2oTq9Y9Lwiog49ypEr1DrK+twJ/S
+         Pt2coQLY2p6ctYD8TNVbubrmQz5WXR361eMxEUciz7/iTHgNg/6zt3Dg0p8ATr/R6qnJ
+         oTrr9Wa1/hqKa8dn515KCNs6q2nAlPP3mg2ImLJ462a8hceqs7kN/l3Q6B0L0kGPZe8i
+         08gw7yhb5SaTJuOj/NdYzDAqRKc4YTsO4LXfb28Eeo624ZQwszf8jWGD9+n/75kTb2L9
+         r4tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785170251; x=1785775051;
+        d=1e100.net; s=20251104; t=1785170359; x=1785775159;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RNfPUvmh9SATlz6mHMfXelOb20yzwkWrtvzrS+ab4jI=;
-        b=C2YvWhtRtUX5l2iIJmT0u7d5Nn4ygaFn2xGCK1qMDhOCq8gMZVFgZmdWseFaZWq4dE
-         AoeShpKYZ0Iwh0aYAPtDqpanCyKXC7N15G5XqU0B2zLdgPBzQvTQkUxP8B2BpYdLNzaH
-         uxaI3jOheHlz9imRb+F8pgriiTqGQg13hEMzfPVBRg9t9YSAoo5vYnVPd+VlnPc3sanD
-         Kjvi62lGMltlUfUl+HPU+ZNA4U+TzQMeQ9qxBT9WgbckSclKam+268huHd7CSdH2fuo9
-         o0I48rzGamw5AGmAEH1/8qBv4zypd7SpiezlFegtFc4OZCOOIsNT1HxNu4ez1Av7CzeG
-         5T+g==
-X-Forwarded-Encrypted: i=1; AHgh+RpR74B1xF9MO1542AHD5Ub6iHd5SEqOYcu2Am8fRa4BN/5BwfwJtEonqC0ixPoC5kG+vvVAc8Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGMpF6A/Oela+Y8h79sWOllmEeulB5fps+1FL39NjoG3CBSCWG
-	nJPk0pxf1f9/U6q10atJQU8nFkpN2OhRXRDvfLLUnIW93g+aT+VeJRYj
-X-Gm-Gg: AR+sD12P0Q9SKBfeRT4yXusW70qIS0LDA+6m688CsSBrhFBHEyty5hp2vOEhSRAyc+M
-	0u6eNjeGv4IIBNySp0iI5TnD8LfvYMXr7WyLqBCU+rA+c37PH6EM40E+qI4DANMtIhWRLRBfWSX
-	u/Zn+C8o5g+SqsIt+/RIMG9i66VdMuDPi198rEQbGunsBBAGIgLSTA2bLC9cDAtWXAGxELaxH8o
-	UMpr0CKS2xD+ii05Ttc+z5B7/uG5DJYuyL7dOCv6f3ybiWGdrJq+fiIL4/8qr5Rvtc5aJs4Qerc
-	BqyJcJgU5YKMITgg/nZBHm/XdC8X+8FxcusDuXf2bi0pjp3bGOO63B7OSu1E1kvd+obfgn03yTD
-	/pYpqhdo+3JdnN3F3CV+X0AJmHMw96exGQ+zVI0CrUSZK/JsI5aNXV9YcfVl93tYTNaSiqoI+MY
-	z0pzj5eBhKl8EQwaDTZ1+wdJ4FO630
-X-Received: by 2002:a17:90b:1fc8:b0:36a:5d1f:7b6 with SMTP id 98e67ed59e1d1-38f293cd148mr7722475a91.2.1785170251220;
-        Mon, 27 Jul 2026 09:37:31 -0700 (PDT)
-Received: from [172.24.233.249] ([163.114.132.133])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e6054598asm14951111c88.1.2026.07.27.09.37.30
+        bh=malQCOcVTnhvlSglj8xagyh6DGO/pkvzAAjITzKDfKw=;
+        b=V4zwtWCGNgkbtwDG/AnRVzwRgMc+sE41DReZyWsLpMNhhv9gwk/mRme2xsWJirxW32
+         ZmMcyHnY6KlV1vKXaYSw4+Nif4dJ9+ZPbqU4NT3Db3bQEKf9UN+TTJulfD+/KDUnGPkg
+         osScdpYO81BMVywsz+fKo/dCFIzEvKnFp2QRGAGjG+XFAWAhxRDpC50qXBktygvWkALv
+         Rl2f4a5om8h3P0+m8rArd/D9AwJ2GNKDso2u34WSdXPsKNVdDnXjGQwo9+O8CJhNrhU4
+         Vu0dIAp+rI4jLOjjdlceT77MZvWvI+mrOOw9oghNb5SDneRAXGlGkKIAFttU0oEY15ls
+         qUfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqQFHtyeP/rdQ72koataJ7qnBqKEpUVdYZkLnnz0mNIhAiVb+1vZJPCGL3l3w0/4E0vNkGyDkk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytuD61NCx1STQR3W1Pd32LWVcCfZ4Jr4cKzyV5NgWnJ4pXZk3u
+	RYamDZ+GJ2NfXpfhF5AWIdpUe2GGjRxcHRKaDyMmPziYd1l2qUOPtQ2A
+X-Gm-Gg: AR+sD13fOhCSKnMJGrjc+abufDyPBU+YyUENMiHupuWED6hxBDeN1mQ+xMmYr9pGMqI
+	x80wTviwtCJ7UynOqk/DBrVMqUwuMQ4dgDQhtWwL83a/mEwYVkS+v6xUfsHqY0+EqhLYh7WlTsl
+	V+0beuxtPgJnyM39KZNC1s/zIc0+h1+hePm+Gi/ZmBocV4ieb47kSQQK1UUsceedZFlZG8fQmOB
+	G2M6xCWh/SgCaDeqdF0SMGl1PAGvyvcEuKcG9Va4Iq5rpFqdHNgXASQmFQw0LyJpCcloUV28m0J
+	N5EsBexwSdafXCQ/4gwNaWVRAeXdLY8A9FUl6Uxq1FWluo5wkWpfCM+vxOpbnaQql4OVlITR9YY
+	XBxl+6ZbmOokXkcz8Zf96pJnJcNRdgmj18pF/dwfMrhom1rb7egkBhhkUpuax4H2TwuKrDeqFKJ
+	9Yrozo+7kynlKtmNLwMXxdoLgwyha9q46NL/jFZibApL8cCnpmGrmzMl/YJyvoUd1yDWTYARNG2
+	QpJB+Ar8+Z7amB+hGY4yPb+w+fMXobMevqRykRdYudZ7f8weY1VJHcwXNAWtwa6Nx5F7R0GaBCU
+	G3f1tRcCAnYEk1P/hwpi
+X-Received: by 2002:a05:600c:46ca:b0:496:c0f6:78d6 with SMTP id 5b1f17b1804b1-496c0f6ae6amr40332635e9.2.1785170359284;
+        Mon, 27 Jul 2026 09:39:19 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:4f63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c45b1c76sm4492315e9.6.2026.07.27.09.39.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 09:37:30 -0700 (PDT)
-Message-ID: <13ebe4e4-d744-4473-bc6e-2742ac0af492@gmail.com>
-Date: Mon, 27 Jul 2026 09:37:27 -0700
+        Mon, 27 Jul 2026 09:39:18 -0700 (PDT)
+Message-ID: <9d8eaf93-9d2d-46aa-8f12-ecfde1a906f2@gmail.com>
+Date: Mon, 27 Jul 2026 17:39:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,60 +71,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 2/8] hinic3: Fix loose success check in rx
- buffer filling
-To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>,
- Teng Peisen <tengpeisen@huawei.com>, netdev@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Ioana Ciornei <ioana.ciornei@nxp.com>,
- Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Chen Anwen <chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>,
- luosifu <luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>,
- Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
- Shi Jing <shijing34@huawei.com>, Zheng Jiezhen
- <zhengjiezhen@h-partners.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-References: <cover.1785120952.git.root@localhost.localdomain>
- <9463522667ee175211c12e8ecd7c81a0a55256b6.1785120952.git.root@localhost.localdomain>
+Subject: Re: [PATCH net v2] net: devmem: prevent net-iov / page mixing
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, Mina Almasry <almasrymina@google.com>
+References: <e3199788c4732545627a4721097ebb71ad737bab.1785150502.git.asml.silence@gmail.com>
+ <ameCMuhluA6j21mL@devvm29614.prn0.facebook.com>
 Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <9463522667ee175211c12e8ecd7c81a0a55256b6.1785120952.git.root@localhost.localdomain>
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <ameCMuhluA6j21mL@devvm29614.prn0.facebook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 7/26/26 11:54 PM, Fan Gong wrote:
->    Tightens the success criterion for hinic3_rx_fill_buffers() in
-> hinic3_configure_rxqs().
+On 7/27/26 17:07, Bobby Eshleman wrote:
+> On Mon, Jul 27, 2026 at 12:19:37PM +0100, Pavel Begunkov wrote:
+>> We should either have net_iov or page backed frags in a single skb,
+>> otherwise it blows up down the stack. Don't allow mixing in
+>> zerocopy_fill_skb_from_devmem().
+>>
+>> Fixes: bd61848900bff ("net: devmem: Implement TX path")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+>> ---
+>>
+>> v2: EEXIST -> EFAULT, as skb_zerocopy_iter_stream() doesn't handle
+>>      the former + for consistency.
+>>
+>>   net/core/datagram.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/net/core/datagram.c b/net/core/datagram.c
+>> index c285c6465923..173b5d97bd40 100644
+>> --- a/net/core/datagram.c
+>> +++ b/net/core/datagram.c
+>> @@ -712,6 +712,9 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+>>   	size_t virt_addr, size, off;
+>>   	struct net_iov *niov;
+>>   
+>> +	if (i && skb_frags_readable(skb))
+>> +		return -EFAULT;
+>> +
 > 
-> Co-developed-by: Wu Di <wudi234@huawei.com>
-> Signed-off-by: Wu Di <wudi234@huawei.com>
-> Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-> Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-> Signed-off-by: Fan Gong <gongfan1@huawei.com>
-> ---
->   drivers/net/ethernet/huawei/hinic3/hinic3_rx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> index 309ab5901379..389b1c2158be 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-> @@ -541,7 +541,7 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
->   		rq_associate_cqes(rxq);
->   
->   		pkts = hinic3_rx_fill_buffers(rxq);
-> -		if (!pkts) {
-> +		if (pkts < rxq->q_mask) {
->   			netdev_err(netdev, "Failed to fill Rx buffer\n");
->   			return -ENOMEM;
->   		}
+> Doesn't this still break the allowed scenario where the user does
+> sendmsg(not devmem) before sendmsg(devmem), and tcp tries to append to
+> the write tail skb?
+Considering that it crashes the kernel, no, it doesn't.
 
-Given the subject, curious if a partially populated ring result in any 
-functional failure? if so, then perhaps failure mode can be explained 
-and this specific change be sent to net tree?
+-- 
+Pavel Begunkov
+
