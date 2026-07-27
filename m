@@ -1,149 +1,201 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7561C37E5E6
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B408D3BED7D;
+	Mon, 27 Jul 2026 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785148245; cv=none; b=Pm4IBz2XD9CALzs+FQ1Lytfpi1qZwvaa/Kg+MwIJhzxEo2bXOODzATghXmksRg0NgN7ooAntjTf90NVSfy++qKlnkENXlFhasHYqoFZqEBcQAgLnLSOAeO1Gdl5j0j8Lu2PmiBhX6NIB0ce0RmiROY3EWsQC/b5wSRjppXE/iXk=
+	t=1785148263; cv=none; b=O4xqdwgtfuDibQTOijeGk2uAg/bt7sHyGUlEXo4idz3qp8/U2d9+t8ziuY6WGEbT3NjA7MGf5+QoCxP4tm86BBSnXBMco8QCa6x1cxsGIZURD2fJ3RLVoQEQJqyEbdSmJIp2mWYUGib8tQ+p5gGbBbOw+TRCrhDOXp8Rjt72bRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785148245; c=relaxed/simple;
-	bh=37Co+XwP9uWZp5tfMpf5fcEYp8chfhoFKZKhxZtxJ2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SNqXc0D2XqruNaYHdLbV7Abu5hqFMy0Cys0COXZZgAcgcxZgUQoCjZVusO5YGLKqHHnpsGlfH0iXtacl8cmC9sUxYVdxgugb4Uz6PuohbCdIb9JzRRFQRg9EcEAmX05fel2sqTRpZAJTPjeBNz7vOfavDFVfmF9tiBIsY7yy0S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mfxaVYGl; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785148263; c=relaxed/simple;
+	bh=to9PBPAgqzQtwrj/xu9pXDPVNpLlo723lWlyCRiy2SM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AXg7aBX3PyvueyTGnX1kon0bOqstBYzgiU82Cv3cTgPBJPErKYX/MGRq0qQgj1TfcX0rKsaoFbWSDfdNhXiO+HVpgzRdGlGGhxzlGcMMiFLI/ApniF3GZO+yUJmKybPzWljlxygTyZflKP8V5vDk96zGD6EKnax4zYmJvizmNuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=m+PApdSW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jeu31dwr; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mfxaVYGl"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84a2dcede83so3296589b3a.3
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 03:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785148228; x=1785753028; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ezCW4lm9mYFN6PTDfYpk3rq7ZibyjvVjQyvO71TAYU4=;
-        b=mfxaVYGlGxaXr0Lm8nh9V23Uuq39BxX4w/YJt6xEWuE3ik8GL1rMeBiX2gW1m1YmVx
-         mSiSeUAPkA7h9so1J2uqS1nfhHWYqkWZeOKzQQm9EwVh6Pk6HZ5JEkka4gHSQ+A7uZuq
-         UxTRKye7tO4X/Mqs+89zEroWqrFMDfqBbPdAJ3fhRoOOZdujJVOZWX9MTM1Ttcvq67vL
-         rKZHxYnys96pYuiTlgnmVgze0AjiJkCDMQjYgUNXp7ZaXtYIYSUbmCNCnQ+tddVibK3I
-         jZLoqn2R43DWgZdbm3wn3LCpULPXX4wz6vtnhtaCFnY3l4xnY6hEV7wDhxn4IEqrv5Ff
-         c4EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785148228; x=1785753028;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ezCW4lm9mYFN6PTDfYpk3rq7ZibyjvVjQyvO71TAYU4=;
-        b=QyG+eIu4X21DNUoTmmf9kpih0BfDy5AWN94AfloeEpCDb1DU1c5cNtT7SGxqtwXDYG
-         XI/o1VXRY5w0I2w8yXDW2DGEvb1g0K+DxmLBrpZdK1m/ywRTtFSybaNjBxTfJ+9WrJWK
-         ++GwTaQqRtu7Ly581hiADsrCTQsMT0mHZPHLKZBfBnAviHbYZF6zv1DsfVADkveR+GdP
-         eomeGT2xpDIY0Dx+1VfVG4wWxQpCcWTcITXvvrakJCLz0UzVubxsoA5H07AJA0iYv/aa
-         /ZXrnX5uN83n4pFwydtbgu0duK3WnVZSSN+lrkO5sqHYgcoDEQC4tuV4KZO94arnW8rq
-         a6Qw==
-X-Forwarded-Encrypted: i=1; AHgh+RoYVLKHe7oc7LtzOYwlyT8iwfSIYyvKKK8qM5oM6YBoVWcHWYh8nz8xv17sfD6yRduHbC0XBsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzhFHibA6NAm1GtmAezAfzw9550evMMFC1TONMafS57D+GDvah
-	WcyrkDaBqIgxDX03EXOmFLmUAy0Z4REJc5CfQ8Jt/LYnT4DiJyTXZngB
-X-Gm-Gg: AR+sD13OSa8c/PtulGSfHKxLkQTH5b/1ST2Re0UVZGSw/xxMTrD74WhyuFyRcMM73az
-	ViCahYerqgwrr98yuUZ7uJuxb1hKfcWONzvmukOK4NoUVH714KTRLobas7pIfssoCSQ+Qf2oV1v
-	kKe6a6tPXGIuwlcUo9VQXqMzAE2u3HWyMwvMdt7iuQtGMmhfh2JJy5Q0rTqIg7HxsU5+6WKuv2q
-	q2+TGmc9YzSMsjcO53nhK14y2H9cEItNSXc2p/c8AZp41C1dSgo0+/XXK6IYWAqNHTP9zKd5TVY
-	u3xkyw9zYP7TUeoaN5fTcTyiGKv7TTL92bkZdMY5thI1k8yU5AsZYMQRAyTqUQIEATKid/7WN+8
-	1Mn25qT+7DIqAVjVdfQI+p3nZbweaCrmTyn1kOPv2NMU7efoQgFqrW+o/LPM7CgZ3RPnFysap
-X-Received: by 2002:a05:6a00:4fd3:b0:842:55b6:f5a1 with SMTP id d2e1a72fcca58-84e5943132cmr6671649b3a.6.1785148227986;
-        Mon, 27 Jul 2026 03:30:27 -0700 (PDT)
-Received: from omen-arch ([147.46.174.207])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e533cb54dsm2823860b3a.31.2026.07.27.03.30.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 03:30:26 -0700 (PDT)
-From: Junseo Lim <zirajs7@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="m+PApdSW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jeu31dwr"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1012EEC01E8;
+	Mon, 27 Jul 2026 06:30:51 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 27 Jul 2026 06:30:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1785148251; x=
+	1785234651; bh=62xXIsLKNu0RPA+OUccAzZfHaVO7nDCero1BquD50C8=; b=m
+	+PApdSWqysOgu0iS1S5+9zEyx0owxUtkY9/SGrgAuy7PvTw0bnxThH4Fa1GdiIhw
+	ZXDvQxAm+MohztNvtdvG1zRUf+smGQO73PcYO4HAA/K4c7YRjwhaujg4oAbL0VFl
+	Z4/HzJNErdqOO3r0cJYyL41mpZb6WVknde8z7AbmhdgNcmCbiqPk70cQIEn96bfk
+	3q4/9QVVTTxIlwOeOZQfrsP+aCOHlqUgt92y7Eg7dAEIiEt4oKCU6fDHY8g8K4ch
+	/yQPGOHxSWnbGaEajNnBMngwhgA0LVcOGA8q3Pd2lDtSfhrKOyuHjNqr19bBOdhN
+	PCwhK+zxmgFXHh2C2EHAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1785148251; x=1785234651; bh=62xXIsLKNu0RPA+OUccAzZfHaVO7nDCero1
+	BquD50C8=; b=jeu31dwrlzqW0ndrMqWlT236sl0v7xlwJG2VsXr25GDqoQwA+LX
+	PXJWsIHVLvPFUddhKNot1eaOyWdpWy0crVllwqqjWaRq25uqHP+x56oU0zB33aLh
+	JhVJ4Lr0hU8j93QMysfRvd/ZX9UQDYvJVCFdhe0VuSug4idjJz48CPyvzZ+g2XJn
+	MA1f81P42Ml7d16INF8C2pR1UoBZlfovR03JxeGr2sg9S2dMsweTHMs1wq97O6Jk
+	zQyYZm7rmbZXEhikoKJGb65gvipDGxbduYZ98NN3biW4uukgLixt3pahi/ZDgyVS
+	wCqujqq3gKgis/P4KhMF2Sko9pVa/Xiy7qQ==
+X-ME-Sender: <xms:WjNnaiMVY-MBLUT0eZxL9r2fkH5FAsmUyaxkEofF7NnLRPf70q8WKw>
+    <xme:WjNnas9vKY3ZpAeoOyHYnH_OExLYLYrS1Peps5xObmGgnQ7JQFtUwXoKHzkUmBDR3
+    d5g2qx6B3bvKp0tDQ3KFs_Ns4SOq4_WV92siF_uBV8WL62rZhyzhSa1>
+X-ME-Received: <xmr:WjNnarflr2xdwCbROEZoflJbwjXnt-su2ZWU7Y33WhFwWh8wGDQwSEbf9o4>
+X-ME-Proxy-Cause: dmFkZTE8P/0KHEclaEnL8ilGwpIhu7np1u9ll2evolM0JR24lfdg/rWshD4GHU53TdtySf
+    GIZpJbK4fwqAAgDVJeFPn3hJ490pWFRY2nhxntohUgjHUf89909l12nqdDYJ1dqVNID1vo
+    D8Gya9jCCJALykCrsugs4PghN4a//7fu6D7tNGSc4b7RbUqqAORbL71uy3QcquLx8LExdm
+    GF/2L2+2V6bgeBmbPso761Q8GUH8s9zMkxmgg+hy4QKxxxOU/ZUfQeUAYp821pXEtJVqKw
+    qmXgwLpLbu0dH7j7ZhtUkJQ8H0uA+yI2tG9hhRTXFFSUto1FMB261mEyZ0YRYCkZIOEveL
+    aOt9F/+siaJ7wjCYf1NvcWYiLrfukku/qeHjxPu4lq+ljM788N59xtxR/MpSYPKpFRFPo7
+    5kLQ4viBZu9mSQGD4HNSvSgzQAdyHHiBv6t98Xvo7zDt/ojWuwR6UtuHwf9vcnesGOrrYt
+    b1tDmylXu6RLnNTLPLNUpHJy0BH0JdVl86HA3jeKMsqKn8TodNeJx7nVCXeuwDqsUGQ+fd
+    SjYjPL3IXfJR7Vf7jmwWxUwW0ABQfCyGNVBP4u8EQuG+2RwL1V9lOJIeJoqXr25m+iCen0
+    OP7/aQLd1Bq/d+9GfrTD00TJDaskgRoT3c4DTFeQiNP9cSW5On7EfOjtQI7Q
+X-ME-Proxy: <xmx:WjNnajwZr_jL-ekli7Zy0zll5AKpknOjOlfdzvPCIP6fdosu2Qa5_A>
+    <xmx:WjNnaoJ7pwVe9UgwYePXCM1NWOy45mH0DcJkI3zuEy3xX8BrL2holQ>
+    <xmx:WjNnatEXq4ZrwwLz40N-NUOuQPPqGpG38KldXR1rTfEaflVEOQEYRQ>
+    <xmx:WjNnas8Za8KCiKP85T7zwlZYuJ6q-x8axAodSVQ19UgqUX_1i_bT8w>
+    <xmx:WzNnavl6M5YE0k7Ec3DB3tH4g3h5uI1t7CSYd5SOIlOa96qXLQglbQrX>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Jul 2026 06:30:50 -0400 (EDT)
+Date: Mon, 27 Jul 2026 12:30:48 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: chanyoung <ppoo1220@gmail.com>
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Graf <tgraf@suug.ch>,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Junseo Lim <zirajs7@gmail.com>
-Subject: [PATCH bpf] lwt_bpf: account for aligned neigh header length
-Date: Mon, 27 Jul 2026 19:30:05 +0900
-Message-ID: <20260727103005.897983-1-zirajs7@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] tls: don't over-fill the plaintext sk_msg ring
+ in tls_sw_sendmsg_splice()
+Message-ID: <amczWCEaLMVQWZp8@krikkit>
+References: <20260726105556.2719227-1-ppoo1220@gmail.com>
+ <20260726105556.2719227-2-ppoo1220@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260726105556.2719227-2-ppoo1220@gmail.com>
 
-ip_finish_output2() expands an skb to LL_RESERVED_SPACE(dev) before LWT
-xmit. An LWT_XMIT BPF program can then modify the skb head and still
-return BPF_OK, so bpf_xmit() rechecks the remaining headroom before the
-skb continues to neighbour output.
+2026-07-26, 19:55:55 +0900, chanyoung wrote:
+> tls_sw_sendmsg_splice() appends pages to the open record's plaintext
+> sk_msg ring with sk_msg_page_add(), which performs no fullness check of
+> its own, and the loop only tests sk_msg_full() at the bottom of its
+> do-while.
+> 
+> If the ring is already full when the function is entered, the first
 
-That recheck uses dst->dev->hard_header_len. This is not enough for the
-neighbour cached-header path: neigh_hh_output() copies the cached hardware
-header using the aligned hh_cache size, HH_DATA_MOD for short headers or
-HH_DATA_ALIGN(hh_len) otherwise.
+This should never happen. We need to fix whatever path leads to that
+invalid condition.
 
-On Ethernet, hard_header_len is 14 but the cached copy needs 16 bytes. If
-an LWT_XMIT BPF program calls bpf_skb_change_head(skb, 1, 0), the skb can
-still have 15 bytes of headroom after the program. xmit_check_hhlen()
-accepts that, after which neigh_hh_output() hits its headroom warning and
-drops the skb.
+As you write in the cover letter:
 
-Compare against the aligned hardware header length in xmit_check_hhlen()
-so the BPF_OK path leaves enough headroom for neigh_hh_output()'s cached
-header copy.
+    The ring is left full and unpushed across a syscall by the copy path,
+    which does not set full_record when the fragment it adds is the one that
+    exactly fills the ring.
 
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Signed-off-by: Junseo Lim <zirajs7@gmail.com>
----
-Tested on a veth pair with an LWT_XMIT program calling
-bpf_skb_change_head(skb, 1, 0). Before the patch, a UDP packet sent by
-the reproducer triggers the neigh_hh_output() warning and is dropped.
-With the patch, the packet is delivered without the warning.
+That's what we should fix.
 
-Below is an excerpt of the warning before the patch:
+Which I think would be:
 
-    WARNING: ./include/net/neighbour.h:538 at ip_finish_output2+0x19f0/0x1f80, CPU#0: lwt_xmit_headro/55
-    Call Trace:
-     __ip_finish_output+0x59b/0x8b0
-     ip_finish_output+0x67/0x390
-     ip_output+0x1db/0x700
-     ip_send_skb+0x1f6/0x270
-     udp_send_skb+0x8d2/0xe00
-     udp_sendmsg+0x1717/0x2620
-     __sys_sendto+0x443/0x4e0
 
- net/core/lwt_bpf.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-index bf588f508b79..2890aa59a3a0 100644
---- a/net/core/lwt_bpf.c
-+++ b/net/core/lwt_bpf.c
-@@ -169,8 +169,10 @@ static int bpf_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index d4afc90fd796..d2e399be8ef6 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -832,6 +832,14 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 		if (!sk_stream_memory_free(sk))
+ 			goto wait_for_sndbuf;
  
- static int xmit_check_hhlen(struct sk_buff *skb, int hh_len)
- {
--	if (skb_headroom(skb) < hh_len) {
--		int nhead = HH_DATA_ALIGN(hh_len - skb_headroom(skb));
-+	int hh_alen = HH_DATA_ALIGN(hh_len);
++		/* open record may be full if we couldn't push it in the last sendmsg call */
++		if (sk_msg_full(msg_pl)) {
++			full_record = true;
++			sk_msg_trim(sk, msg_en,
++				    msg_pl->sg.size + prot->overhead_size);
++			goto copied;
++		}
 +
-+	if (skb_headroom(skb) < hh_alen) {
-+		int nhead = HH_DATA_ALIGN(hh_alen - skb_headroom(skb));
+ alloc_encrypted:
+ 		ret = tls_alloc_encrypted_msg(sk, required_size);
+ 		if (ret) {
+@@ -921,6 +929,12 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 						       msg_pl, try_to_copy);
+ 			if (ret < 0)
+ 				goto trim_sgl;
++
++			if (sk_msg_full(msg_pl)) {
++				full_record = true;
++				sk_msg_trim(sk, msg_en,
++					    msg_pl->sg.size + prot->overhead_size);
++			}
+ 		}
  
- 		if (pskb_expand_head(skb, nhead, 0, GFP_ATOMIC))
- 			return -ENOMEM;
+ 		/* Open records defined only if successfully copied, otherwise
+
+
+
+> sk_msg_page_add() writes the reserved slot and sk_msg_iter_next() wraps
+> sg.end around to sg.start.  sk_msg_iter_dist() then returns 0, so
+> sk_msg_full() reports the ring as empty, the loop keeps running, and each
+> further add overwrites a live entry without putting its page reference
+> while sg.size keeps growing.  sg.size is then larger than the data
+> reachable by walking the logical [sg.start, sg.end) ring.
+> 
+> tls_push_record() marks the end of the scatterlist at the logical last
+> entry but passes the inflated msg_pl->sg.size to tls_do_encryption() as
+> cryptlen, so the AEAD scatterwalk runs past the end-marked entry and
+> dereferences the NULL returned by sg_next():
+
+TBH that also seems a bit dumb on the scatterwalk/crypto side. Users
+of the crypto library shouldn't pass data with inconsistent sg and
+data size, but I don't think this should crash the kernel.
+
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000008
+>   CPU: 1 UID: 1000 PID: 204 Comm: exploit Not tainted 7.2.0-rc4+ #1 PREEMPTLAZY
+>   RIP: 0010:memcpy_from_scatterwalk+0x32/0xc0
+>   Call Trace:
+>    <TASK>
+>    skcipher_walk_next+0x1d1/0x2c0
+>    gcm_encrypt_aesni_avx+0x1e9/0x220
+>    bpf_exec_tx_verdict+0x3bb/0x860
+>    tls_sw_sendmsg+0xa1a/0xca0
+>    __sys_sendto+0x1da/0x1f0
+>    do_syscall_64+0xdc/0x520
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
+> 
+> An unprivileged user can reach this on a plain loopback TCP socket with
+> the "tls" ULP attached.  A full but unpushed plaintext ring survives
+> across a syscall through the copy path: sk_msg_clone() returns 0 rather
+> than -ENOSPC for the frag that makes the ring exactly full, because its
+> guard is "if (i == src->sg.end && len)" and len reaches 0 as that frag is
+> added, so full_record is never set and MSG_MORE keeps eor clear.  Since
+> record_room is a byte count, a frag-exhausted ring that holds only a few
+> hundred bytes still admits the next splice(), which then re-enters
+> tls_sw_sendmsg_splice() on a full ring.
+> 
+> The caller already handles a ring that becomes full during the splice by
+> testing sk_msg_full() afterwards and setting full_record to push the
+> record, so the loop condition only needs to be evaluated before the first
+> sk_msg_page_add() rather than after it.  Turn the do-while into a while
+> loop: when the ring is full on entry the function returns without adding
+> anything, the caller pushes the record, and the next iteration of the
+> caller's loop starts from a fresh, empty ring.
+
+Please make your LLM (much) less verbose.
+
 -- 
-2.55.0
+Sabrina
