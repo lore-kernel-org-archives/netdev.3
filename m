@@ -1,122 +1,183 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169CD42D749
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 21:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029DB3DA7E3;
+	Mon, 27 Jul 2026 21:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785188262; cv=none; b=Gvz1p/L4TCH9yFo57BBz0YjtRwrYKc57YNfebfU0Ker+QUlfS9Gn1FigWGfqeHyPUDEYlDCQWE5vxNaJ+OKQuLvCf/C2GTrxUbPNsVocTU3w9ypw5F888zdA4fRDuwReZMzxz8jpQoGlA4CKtEl3xjcuY4SjAER5NRCUk3xOqfg=
+	t=1785188471; cv=none; b=FRmPi5NZpuY5O91kEAxnAbWkq5fvqRjjL2m1tf44UBRj02X6jRqVE+KheYhmE0zx0zM/9f/Is4eVRntN0yOtV6jgom2pJi+RJWLyfTkXQJZq2Sk8BRaVeu1AYSrSRs8sWgDgkisU4jqzf7ME+JVdJpgC/okCqCfrTpNmfcI8ZbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785188262; c=relaxed/simple;
-	bh=VT3w60Mkjil2Wc4Pq3E6EvCD5TzpTh7mRqxGBdrIl1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LrT0fpOuu4i3MGeZ5I16KT1+BKd0Dfc8wgx0vfEJSCmyrL5iyYtbL6p3WqMptdfnRr59bKe3u4QeAeZIvNS49XHJgFhH2c2IS6axTkDLJld1x1ZRhXvcXNqyM+nl3a5XRRZul5QdMxMC0WTb467E5dZGGqVEUrkB7R5eHx7wM9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rNYNX+Mc; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785188471; c=relaxed/simple;
+	bh=mQ4vQLAOFxbeyoyTwRA/MR/ccdNV3Kwh/GgSKubAMrY=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=TZO5w0a76zd5toxv67tA9vjAbNrx75RYLuaq56cejj/mi+M5SnIuCvE1A3XvSRw/fXW8CHzwvxezz1m6r7VIBPvD3jdyVps1LVtaRoz6m5agOK8+F43vGzIxHLBAGfuifj/CzhQjOwMW/cQh7T/niz6Qbi0cItfZ8I+LwnlUfuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=UUsep2aj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z/9axUSf; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rNYNX+Mc"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cabfb70501so11780355ad.1
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 14:37:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785188259; x=1785793059; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mE4JsLVC3nYgbiekjLfPqZ7EyBmWBffBbsxHDCfCkB0=;
-        b=rNYNX+McRwA7KsvyDQIP94VmZNm3SRQCqVfecyQwHDkl2XUEX3EmnndLG2suJ4+QK3
-         RbHyXI20S5LfFMUdDkuba+ZQS39u6SVTW8+DIrK2f58nZf3hfJ2yPr6gizCDPnAAU6cE
-         bREr5GWd4w5Ih+chZLhnNHRdQQo31b2Ex5jJTJODlzRaoB4hkPF3LLkJaO4okGAcTMkN
-         z5UQASLZl+IZSFErAX5xxHc2GDYOL/37Jy5rc3pnmxPcanT/4PjTNpeagPnXsDhiIV9Z
-         I5Iyy9E0fKwTwqy9JXNjQL4Trbs+OfvZ110cx+GfQ8fQ7hGtqZy5fQz9CIPyTL98e9/y
-         sI/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785188259; x=1785793059;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mE4JsLVC3nYgbiekjLfPqZ7EyBmWBffBbsxHDCfCkB0=;
-        b=G5YlFfAaJoRzhiDs/7ynvl4H2R9jcVk8HFWvluLjJjpY2mB7FTy8X+5q3Rk1FnVSBU
-         1xojQGcrMtHY005jNSK6LuJ5EpShlDykkOhSqKCjAFgxQ1tOw+Na06b0aEGmLd7sJy8j
-         4PEFtwHq5pG8irbq5YJVxeUxQkV8loZvevKvUzSHuYyhcg/63YrbmrsWGndq0xB2JvbC
-         cOhFuAtUdPDpQFE6VeuCe1w62ROr+DpYHpsXrreS31SMgBLldeDssOGk8pgpgz+CU6G0
-         VnKWQZglaRqpvyAZIGQnP2WvctrsWRH/inRsUXEQQ860yN432GeOptjts/5AcwV727fo
-         URnA==
-X-Forwarded-Encrypted: i=1; AHgh+RrJoaV5vc/239ymQyu+65xOSAfzb+BMdEyrsmU5N/Jyeie6g8gyJEzPHqunB5FzvRMBcYb+OAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy930OiHSaXt8jFVHxTsIwJ4UWOSoQEaC9uJ+hOikiq9wdJWC8Z
-	XfOMSAW8gHN8qZShk2YWV4JidZNNo5piQkjYzO6dvC43liBagOMsLuoH
-X-Gm-Gg: AR+sD12VjWpDSMTPDDUb9HBQ/a57chpCfU7v69wGmo8MvaytvkjDUwJ/N3qyg8Z/M1Z
-	n+yHKyi5hi2YHINB4RPgv3+h7QaG/X2OVZqkY3M+VN+pmjKaXxItuQqRt4DexfYBkVlr9gEz5Ly
-	1u3WBbIGXsyoTd9U0wIB6TRmDTXaK7BeDiXSlLLocl2tl2DpDA5rmsx/fcmvs3I+L1FoDsdlNNZ
-	1hlD7VcaktBZUEtjvTeTO/EsMimHcyRr4J8n5oNXS3Nbzoe2mf//ZQLNBSeQ/07wqEFVC9yTIv4
-	CHbG96LdtqtasqcLPq291osEPVN+e6lXeQiEcOeK72EuqMqti3dc8VHgDDMC6G101bwQ4GWPPen
-	y4JYXB1oqyROBJHxyEBqXSodVLY3K5q+ZRUeYWr7ZMUBimrldKHn0sX/JjUNQ2iIS8Te+hws=
-X-Received: by 2002:a17:902:da86:b0:2ca:bf68:2a54 with SMTP id d9443c01a7336-2d00f3e3878mr9392345ad.22.1785188259222;
-        Mon, 27 Jul 2026 14:37:39 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:40::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7fdfb0sm41136595ad.74.2026.07.27.14.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 14:37:38 -0700 (PDT)
-Date: Mon, 27 Jul 2026 14:37:20 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Mina Almasry <almasrymina@google.com>, Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net v2] net: devmem: prevent net-iov / page mixing
-Message-ID: <amfPgf3N9qBYcSUb@devvm7509.cco0.facebook.com>
-References: <e3199788c4732545627a4721097ebb71ad737bab.1785150502.git.asml.silence@gmail.com>
- <ameLB_goNrMbscXO@devvm7509.cco0.facebook.com>
- <7e424782-2852-449a-9e47-62c299e0236f@gmail.com>
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="UUsep2aj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z/9axUSf"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F15CB1400091;
+	Mon, 27 Jul 2026 17:41:07 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 27 Jul 2026 17:41:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm1; t=1785188467; x=1785274867; bh=gsD5bjOX4IhqWNPGOUH+t
+	xLoQTndmPaH68mO358Y+TQ=; b=UUsep2ajtbeYNPbvYdP5JtIJvP+ugYIpX7VIk
+	y/CgUrnWKXcYYxJ5kFWzZGgtRl+4fs+drUHAJJybQccIqFB+6C1LL94Xh1k2SxxN
+	hzPHpIeSIu6/QdKNHGQn8AxSy8bJd+5jUuI9SPYj3bqK+yWsUS0ncYvBwUlVYfv7
+	CWRkTxrJU8sGCmDhS4fu9zfmsZQtVb2Iu32yf4LwtNhR6gw4+pnifWZRAWuQuLK/
+	DA7qujgk1dEPPXh/AH3Loe3KplrqrFLbW/pk1sR5HxZRiQmvEstRl4n4pTYHLpxW
+	m2pYn0nEC7b6rveHjAVNIzWoXPaWYYSMeKxyyzJ9g9XTemCGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1785188467; x=1785274867; bh=gsD5bjOX4IhqWNPGOUH+txLoQTndmPaH68m
+	O358Y+TQ=; b=Z/9axUSfk4W3y2g0e9/tci6E68sE4Xf+oEnjj1nmJcsFKT7UBEm
+	YbUUknPHd6/sHG6hsGCMzIKSw8XfZhhk1dvuCu21gMAZFW8+FlYzJXECqKqBb1BK
+	DWOoB3ljilyz8aUztNPRonc+A8KTEZlkHQh9QIxCSXg9gF+bmJ6KNIXCWn8CLi8m
+	r8UYp2Qlx+Ch0NCwDs5xY2mGBViHvLqIbWUdcdY+JngcjPdFYNvBflMYaqie4KbL
+	r53uBlp9QWU1wAJfKHPfETS9D0Ve1Pqmj+757OnrRLesS6CqYV/tNW2FgluLav8g
+	r1IAMOyqSMMkfkJHOWmZe39LamfQJ8XTb2Q==
+X-ME-Sender: <xms:c9Bnap4Px62JjVgty0BuW8dICatLKfW2t2W7h8tjv8pw_dFb90y5GA>
+    <xme:c9BnavBrcGpeigNoetFaSLJ8Lgw1J29s5h7EEa1cfD_Xn-4RuYZlXBqcgqlqWBJTB
+    nFwUPIO3lQjhGdutgJkg1Syhye5W6JC7ucqeoqKEo2PBoYuzcowpyk>
+X-ME-Received: <xmr:c9Bnav-isL3OUAOc9NrRIysyEserdAxa8VkXv2GDTMWk3a35Nfxr0kVFxNAxVaUOVQts_g>
+X-ME-Proxy-Cause: dmFkZTEDquLLGSDwi2v3Qtx1KbQMLVWmZaZU03naY8Oyk8pI4//OxU55qeI3FJyHYt95Ku
+    eQX7dsg7SJAnodcxQJ006dfKqpxAHQC9a8sqWR8fenydtnVsBYR/IAqwTMnojfhNN62Chn
+    /myIRPOevQhcAFyWwRg0Oj58alNBAwJj9oMfDwnKP6wKt8iv53jZ253WBjYbVXf/ezh140
+    ZpQlrnYCLf7OGmzr59na7UJJdkZ22Qjy1FLwHHshjb0M/RF0ix4ljw86snHDNdYYsxivZi
+    JxuPabAe0aImd2hE/SUjJs9qGMEwZO9tx03OEePiQvPcHrVWb4d4ANNRzMPEomGcA6l0fK
+    +LrPr5fTLXQVWSo4zb49lJ900dP2A6+OeA5cTn8WpPvUIWxPjk92BQSKIzijvobP26bJD8
+    epJuSWsdWMmY8LFynQPQRUpHiGVNEurpLQdP/IGa1Xq1hNSVtQC3YqPgMs+mI39oS9ksF7
+    nIRD9AJ13YxrH7BrptAAWs/KGEbps2lL1FdNPEPoxfUDZHX6CaqnDzoF2/cz+Uv0UL3V6w
+    PD4D0o6xkAvxn75/lV0O1n5z9f4OjkezXHssLWaZ1V0r8VxBjHccT+4rfkBhtxscgubbKB
+    ZzlBpOF9wsmmAyMdN09onj1EwYdX4oJ2ixTMemdelUR3+MPwWiJP3vrlte0w
+X-ME-Proxy: <xmx:c9BnaiH_JC7Um_dxsQtJYaU1xcB-XUIfRrode4AdP72o9DgfRv8MGg>
+    <xmx:c9BnapRoVDApc1ZByISqR_HCMRy4A8CSFuGiNwBlpTi5Mn6txUORxA>
+    <xmx:c9BnapQew49Nj7rnLl3-LFTffNmcaxDPIAaLOc1yqgp-sZ291zLMzA>
+    <xmx:c9Bnas0H56TSkbWWmgzw-EnLR48VkzsMuAidjw0E6INv7DuyBDqK2g>
+    <xmx:c9Bnaj57kshILX5RPNGXq2rx0Cm85fk9UAPKUPWVeICnsYjtiOyfv_0o>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Jul 2026 17:41:07 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id F38B99FC6C; Mon, 27 Jul 2026 14:41:05 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id F25DF9FC3F;
+	Mon, 27 Jul 2026 14:41:05 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+cc: razor@blackwall.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S . Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
+    tgopinath@linux.microsoft.com, kys@microsoft.com
+Subject: Re: [PATCH net v2] bonding: alb: re-check primary_is_promisc under
+ RTNL in bond_alb_monitor
+In-reply-to: <20260725233930.2957317-1-xmei5@asu.edu>
+References: <20260725233930.2957317-1-xmei5@asu.edu>
+Comments: In-reply-to "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+   message dated "Sat, 25 Jul 2026 23:39:30 -0000."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7e424782-2852-449a-9e47-62c299e0236f@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3097459.1785188465.1@famine>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 27 Jul 2026 14:41:05 -0700
+Message-ID: <3097460.1785188465@famine>
 
-On 07/27, Pavel Begunkov wrote:
-> On 7/27/26 17:46, Stanislav Fomichev wrote:
-> > On 07/27, Pavel Begunkov wrote:
-> > > We should either have net_iov or page backed frags in a single skb,
-> > > otherwise it blows up down the stack. Don't allow mixing in
-> > > zerocopy_fill_skb_from_devmem().
-> > > 
-> > > Fixes: bd61848900bff ("net: devmem: Implement TX path")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> > > ---
-> > > 
-> > > v2: EEXIST -> EFAULT, as skb_zerocopy_iter_stream() doesn't handle
-> > >      the former + for consistency.
-> > > 
-> > >   net/core/datagram.c | 3 +++
-> > >   1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/net/core/datagram.c b/net/core/datagram.c
-> > > index c285c6465923..173b5d97bd40 100644
-> > > --- a/net/core/datagram.c
-> > > +++ b/net/core/datagram.c
-> > > @@ -712,6 +712,9 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
-> > >   	size_t virt_addr, size, off;
-> > >   	struct net_iov *niov;
-> > > +	if (i && skb_frags_readable(skb))
-> > > +		return -EFAULT;
-> > > +
-> > 
-> > Maybe we should do -EMSGSIZE? It is already properly plumbed via
-> > skb_zerocopy_iter_stream (and you'll hit 'skb->len == orig_len')
-> > and it hits 'new_segment' in tcp_sendmsg_locked?
-> 
-> I made it consistent with zerocopy_fill_skb_from_iter(), don't see
-> the point of making it behaving differently from combination to
-> combination. Do you have some use case for that?
+Xiang Mei (Microsoft) <xmei5@asu.edu> wrote:
 
-Ah, ok, yeah, that makes sense, let's go with that!
+>bond_alb_monitor() reads primary_is_promisc under RCU, then drops RCU and
+>takes RTNL via rtnl_trylock() before undoing the promiscuity it set on th=
+e
+>active slave. In that window the active slave can change under RTNL
+>(RTM_DELLINK -> __bond_release_one() -> bond_alb_handle_active_change()),
+>which already drops the promiscuity and clears primary_is_promisc. The
+>monitor still acts on the stale decision: if the slave was removed with n=
+o
+>failover, curr_active_slave is now NULL and the deref faults; if it faile=
+d
+>over, the stale dev_set_promiscuity(-1) underflows the new slave's
+>promiscuity counter and pins it in IFF_PROMISC.
+>
+>  Oops: general protection fault, probably for non-canonical address ...
+>  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>  Workqueue: b42 bond_alb_monitor
+>  RIP: 0010:bond_alb_monitor (drivers/net/bonding/bond_alb.c:1600)
+>   process_one_work (kernel/workqueue.c:3322)
+>   worker_thread (kernel/workqueue.c:3486)
+>   kthread (kernel/kthread.c:436)
+>   ret_from_fork (arch/x86/kernel/process.c:158)
+>  Kernel panic - not syncing: Fatal exception
+>
+>Re-check primary_is_promisc (and curr_active_slave) after taking RTNL so
+>the monitor only undoes an increment it still owns. The other bonding
+>monitors already re-read state under RTNL in their commit phase
+>(bond_miimon_commit/bond_ab_arp_commit); bond_alb_monitor() was the only
+>one acting on the pre-trylock decision.
+>
+>Fixes: d0e81b7e2246 ("bonding: Acquire correct locks in alb for promisc c=
+hange")
+>Reported-by: AutonomousCodeSecurity@microsoft.com
+>Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+
+
+>---
+>v2: keep vars' rev-x-mas tree order
+>
+> drivers/net/bonding/bond_alb.c | 10 ++++++----
+> 1 file changed, 6 insertions(+), 4 deletions(-)
+>
+>diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_al=
+b.c
+>index 2d37b07c8215..839f7482dc18 100644
+>--- a/drivers/net/bonding/bond_alb.c
+>+++ b/drivers/net/bonding/bond_alb.c
+>@@ -1534,8 +1534,8 @@ void bond_alb_monitor(struct work_struct *work)
+> 	struct bonding *bond =3D container_of(work, struct bonding,
+> 					    alb_work.work);
+> 	struct alb_bond_info *bond_info =3D &(BOND_ALB_INFO(bond));
+>+	struct slave *slave, *curr;
+> 	struct list_head *iter;
+>-	struct slave *slave;
+> =
+
+> 	if (!bond_has_slaves(bond)) {
+> 		atomic_set(&bond_info->tx_rebalance_counter, 0);
+>@@ -1597,9 +1597,11 @@ void bond_alb_monitor(struct work_struct *work)
+> 			 * because a slave was disabled then
+> 			 * it can now leave promiscuous mode.
+> 			 */
+>-			dev_set_promiscuity(rtnl_dereference(bond->curr_active_slave)->dev,
+>-					    -1);
+>-			bond_info->primary_is_promisc =3D 0;
+>+			curr =3D rtnl_dereference(bond->curr_active_slave);
+>+			if (bond_info->primary_is_promisc && curr) {
+>+				dev_set_promiscuity(curr->dev, -1);
+>+				bond_info->primary_is_promisc =3D 0;
+>+			}
+> =
+
+> 			rtnl_unlock();
+> 			rcu_read_lock();
+>-- =
+
+>2.43.0
+>
