@@ -1,124 +1,122 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8D282F0A
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C67311C35
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 16:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785170362; cv=none; b=ni8EMzgdybMu0Zeo0lmb7yOZaFGuf1XfujqVypf4ndyke2RMiuLCLBKtMCHSX2vkKdG/XhDebhd56++/moqJggONnv8e224hqtUQWDFosOfdgTMrhqmHf/UOX5DoX393VWTD+e+CWi7fKduNWu0YlBOJmIGaJhArZ0TpI7BGEc8=
+	t=1785170484; cv=none; b=V5xq0JDQoKSH1FHo23/XpD+TssMnVZvYqlI5FDVN20c7ej+EPq/lMnEQVmRKqecpXrxZzduBikFV/M1CZcHXL0tuSdRCdjIGuL+EYYtNvXOAm0+KNUgSAcMbxsYVWJjMdP71YuBKZco9uyK+RpQmYmpF6iIurz11B24GDhlW7GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785170362; c=relaxed/simple;
-	bh=WplzDdnCS+71PsXKDF4b0oNPugOrz3tfVe/1z5xRtk0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S7YzQiUL6UQ6dPPyL34h/pfS1+vPVBtu5M5JQIvSFfVvI7Z4d2MCTRC5DBriqAmIajawkBltqgtFIky8bdJbqLsc/JoJZec0CeYPFeeBJ5T/xl/WxuEq91vqejE2g4HMz1pKC+oqZqSMua8Vc+VCmDJ8DSCQ+I5LzIFT5qT/4OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFJLaVzt; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1785170484; c=relaxed/simple;
+	bh=vp7w8YsoF0pZgEq2PM2CYLvSQSsrkXdmwudp69HLuak=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eVwjNIaPjjMssCGABsK0FxkxFO6j8bht6y1+BayMJZT1etL7q3iFqnjIyiSTr+7eB/ZBv+b/pT5AM5JGGlIfuArcPmqQ1uaKE2A+4vwld7aeioJZmFQCdMFxvXdR1IuroE38C9fpw1hqnzdguIxyupMay8mLVaeqn41LsTJ6lH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCkW8lqn; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFJLaVzt"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso19589165e9.0
-        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:39:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCkW8lqn"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dcbade417so3110456a91.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785170359; x=1785775159; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=malQCOcVTnhvlSglj8xagyh6DGO/pkvzAAjITzKDfKw=;
-        b=OFJLaVzt078Z0Th8RehwLMMgcWijwwRq1v5DTbpe5y3QtKDWbHZCShp21PUZnKNgyO
-         EZrdmMR2/QmSYFZmjUgQE6p+76FNuSX7b2TdRBMG2oTq9Y9Lwiog49ypEr1DrK+twJ/S
-         Pt2coQLY2p6ctYD8TNVbubrmQz5WXR361eMxEUciz7/iTHgNg/6zt3Dg0p8ATr/R6qnJ
-         oTrr9Wa1/hqKa8dn515KCNs6q2nAlPP3mg2ImLJ462a8hceqs7kN/l3Q6B0L0kGPZe8i
-         08gw7yhb5SaTJuOj/NdYzDAqRKc4YTsO4LXfb28Eeo624ZQwszf8jWGD9+n/75kTb2L9
-         r4tw==
+        d=gmail.com; s=20251104; t=1785170481; x=1785775281; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wAMIqKsMECjuh866za4d81qNl0b4qOpAK+fZ7nIiqyA=;
+        b=TCkW8lqnONIyFNU6LoHRRKkAGNEGzLX1DIoGX1iBBI/LCnJOV+jvgwyFVZ8nzblva5
+         C8c9nOlrdkuXF82mmGcig54ynCwoIauhxfoJfT5qrkyPHTkuV5BuMzRQ2NN3Hlv6ZSdu
+         RAHBGUwymoXDtR294wI39srI5U5MtfnIQPH+ZhPKeOosPuZqJLAmRbptiaLnwPCR3HUB
+         ti4GzQJGJnCkI3+NIDYpKWH61H2402XFZ2fWM3GUujE6aT0FXatp67Cd1gAbLDda4hkN
+         T4pV7a8OBmd1nVpwebekx39p0ZeDImBmrgTBYnY7QcBVWzdFqNvkumhyKzmnm3KkD07i
+         dtLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785170359; x=1785775159;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785170481; x=1785775281;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=malQCOcVTnhvlSglj8xagyh6DGO/pkvzAAjITzKDfKw=;
-        b=V4zwtWCGNgkbtwDG/AnRVzwRgMc+sE41DReZyWsLpMNhhv9gwk/mRme2xsWJirxW32
-         ZmMcyHnY6KlV1vKXaYSw4+Nif4dJ9+ZPbqU4NT3Db3bQEKf9UN+TTJulfD+/KDUnGPkg
-         osScdpYO81BMVywsz+fKo/dCFIzEvKnFp2QRGAGjG+XFAWAhxRDpC50qXBktygvWkALv
-         Rl2f4a5om8h3P0+m8rArd/D9AwJ2GNKDso2u34WSdXPsKNVdDnXjGQwo9+O8CJhNrhU4
-         Vu0dIAp+rI4jLOjjdlceT77MZvWvI+mrOOw9oghNb5SDneRAXGlGkKIAFttU0oEY15ls
-         qUfQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqQFHtyeP/rdQ72koataJ7qnBqKEpUVdYZkLnnz0mNIhAiVb+1vZJPCGL3l3w0/4E0vNkGyDkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytuD61NCx1STQR3W1Pd32LWVcCfZ4Jr4cKzyV5NgWnJ4pXZk3u
-	RYamDZ+GJ2NfXpfhF5AWIdpUe2GGjRxcHRKaDyMmPziYd1l2qUOPtQ2A
-X-Gm-Gg: AR+sD13fOhCSKnMJGrjc+abufDyPBU+YyUENMiHupuWED6hxBDeN1mQ+xMmYr9pGMqI
-	x80wTviwtCJ7UynOqk/DBrVMqUwuMQ4dgDQhtWwL83a/mEwYVkS+v6xUfsHqY0+EqhLYh7WlTsl
-	V+0beuxtPgJnyM39KZNC1s/zIc0+h1+hePm+Gi/ZmBocV4ieb47kSQQK1UUsceedZFlZG8fQmOB
-	G2M6xCWh/SgCaDeqdF0SMGl1PAGvyvcEuKcG9Va4Iq5rpFqdHNgXASQmFQw0LyJpCcloUV28m0J
-	N5EsBexwSdafXCQ/4gwNaWVRAeXdLY8A9FUl6Uxq1FWluo5wkWpfCM+vxOpbnaQql4OVlITR9YY
-	XBxl+6ZbmOokXkcz8Zf96pJnJcNRdgmj18pF/dwfMrhom1rb7egkBhhkUpuax4H2TwuKrDeqFKJ
-	9Yrozo+7kynlKtmNLwMXxdoLgwyha9q46NL/jFZibApL8cCnpmGrmzMl/YJyvoUd1yDWTYARNG2
-	QpJB+Ar8+Z7amB+hGY4yPb+w+fMXobMevqRykRdYudZ7f8weY1VJHcwXNAWtwa6Nx5F7R0GaBCU
-	G3f1tRcCAnYEk1P/hwpi
-X-Received: by 2002:a05:600c:46ca:b0:496:c0f6:78d6 with SMTP id 5b1f17b1804b1-496c0f6ae6amr40332635e9.2.1785170359284;
-        Mon, 27 Jul 2026 09:39:19 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:4f63])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c45b1c76sm4492315e9.6.2026.07.27.09.39.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jul 2026 09:39:18 -0700 (PDT)
-Message-ID: <9d8eaf93-9d2d-46aa-8f12-ecfde1a906f2@gmail.com>
-Date: Mon, 27 Jul 2026 17:39:11 +0100
+        bh=wAMIqKsMECjuh866za4d81qNl0b4qOpAK+fZ7nIiqyA=;
+        b=FNQV765LbdJV6PUGDISKg0nEhyLziCjy4egmVIdpvAY8ehmhgfGjKAA+aDlqS0Vrc4
+         TyCgR8vsiK6lxIFQ01zgK2M3vUeZgbaPamzz9rB4oz9RLk0rA1X4dedlO/7PAVfoD742
+         3+Z+S+cjHPbMl8Juldhuz0T6EhBqEOVWAvmcdPgtRFwQWWmmxqIZhJ+1uPA++NjH14ap
+         qk/fzMceZNKBwhuUNCtJ/lSnKfwklWnketHjqIR0wuYQOxklhoEDMOM2wRnO7iAOXKBi
+         5XLd7ThCApRqr/ExNqAfRyEUg2355WhYowAHFusKlqYEwLE7tsfW0OyCPGJAbN4wBg/v
+         fgOg==
+X-Gm-Message-State: AOJu0YwAsaN3ZfJxwxZTWzfZmSQ8c0S5opoZ8Dhfepbu4SS46tpI5ilY
+	SMn5Py8FC+Vv3aQsjpayw3K8bEv1uBeRCdyaZ5Stud1IvP2Vvm2SXkqkmXYHahFk
+X-Gm-Gg: AR+sD11hUkqfmV2oscHRmDFgNaNRyYeO+mAFAqcLQ3aCe67ANXac/1e9p46puQYUXDi
+	Dei5daVFUlNUgUmwd0zKuGsh66saOJz0kv2g8273gvOpP5LDD1qwAh8JXj28zSAStbnoslTpIjl
+	yLUSBuqCqfEkj8m5HsgCW2Qpon5oaXHuauY74AhI+fuNsIQlrFisJ46le1B2KJP8eqI0P75OWl6
+	cJ4/TgWr1Tuq2fbDLeerzTadI2Se1ywp88jsQZEaiKWamUMrKCU7Uciqcd/YE6mFewZN8J5qPPK
+	7b7rITOIP7fQ8RRhq6GLiOxNPTfL3Isu/qn1HQR/TkG0LfM7Mksj7JKcoCAvpA12jHnkBORMpq/
+	mqQbEl04BkGquxzEa3W7KtFwJmYmUFnNpUDm4NBpEl917w0KgOejwdIQtKY+pFUG9USpcEnOOdp
+	5CBDl8VDXkLTsmXWlt7RwuBoVv4puWgArJA9fdN7zR5U+ALsbcYq+jltc+vrgQf6CX7S01jzPBy
+	DxSgDQ=
+X-Received: by 2002:a05:6a20:244b:b0:3b4:669c:ee32 with SMTP id adf61e73a8af0-3c6c7fe54f4mr290098637.37.1785170481199;
+        Mon, 27 Jul 2026 09:41:21 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:8b84:a60e:2cad:e760])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc59cfb4sm33227566eec.26.2026.07.27.09.41.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 09:41:20 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	jhs@mojatatu.com,
+	shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	vishy0777@gmail.com,
+	tahiliani@nitk.edu.in,
+	"Hemendra M. Naik" <hemendranaik@gmail.com>
+Subject: [PATCH net-next v4 0/3] net/sched: sch_fq_pie: add per-flow class statistics
+Date: Mon, 27 Jul 2026 22:10:53 +0530
+Message-Id: <20260727164056.106203-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: devmem: prevent net-iov / page mixing
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, Mina Almasry <almasrymina@google.com>
-References: <e3199788c4732545627a4721097ebb71ad737bab.1785150502.git.asml.silence@gmail.com>
- <ameCMuhluA6j21mL@devvm29614.prn0.facebook.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <ameCMuhluA6j21mL@devvm29614.prn0.facebook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/27/26 17:07, Bobby Eshleman wrote:
-> On Mon, Jul 27, 2026 at 12:19:37PM +0100, Pavel Begunkov wrote:
->> We should either have net_iov or page backed frags in a single skb,
->> otherwise it blows up down the stack. Don't allow mixing in
->> zerocopy_fill_skb_from_devmem().
->>
->> Fixes: bd61848900bff ("net: devmem: Implement TX path")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->> ---
->>
->> v2: EEXIST -> EFAULT, as skb_zerocopy_iter_stream() doesn't handle
->>      the former + for consistency.
->>
->>   net/core/datagram.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/net/core/datagram.c b/net/core/datagram.c
->> index c285c6465923..173b5d97bd40 100644
->> --- a/net/core/datagram.c
->> +++ b/net/core/datagram.c
->> @@ -712,6 +712,9 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
->>   	size_t virt_addr, size, off;
->>   	struct net_iov *niov;
->>   
->> +	if (i && skb_frags_readable(skb))
->> +		return -EFAULT;
->> +
-> 
-> Doesn't this still break the allowed scenario where the user does
-> sendmsg(not devmem) before sendmsg(devmem), and tcp tries to append to
-> the write tail skb?
-Considering that it crashes the kernel, no, it doesn't.
+FQ-PIE runs an independent PIE controller per flow but exposes no
+per-flow statistics. This series wires up fq_pie_class_ops to expose
+per-flow AQM state (prob, delay, deficit, avg_dq_rate)
+via 'tc -s class show', following a similar pattern as FQ-CoDel.
+---
+Changelog:
 
--- 
-Pavel Begunkov
+v4:
+- Fixed unaligned commit message; moved typo fixes to another patch.
+
+v3: https://lore.kernel.org/netdev/20260630183702.170798-1-hemendranaik@gmail.com/
+- No changes since v2.
+- Resent after the previous submission was deferred due to the
+  net-next tree closing during review.
+- Updated corresponding iproute2 patch in response to review comments;
+  kernel patches unchanged.
+
+v2: https://lore.kernel.org/netdev/20260614125000.6058-1-hemendranaik@gmail.com/
+- Addressed ABI backward compatibility issue for tc_fq_pie_xstats.
+
+v1: https://lore.kernel.org/netdev/20260531125314.22492-1-hemendranaik@gmail.com/
+- Initial submission
+
+Hemendra M. Naik (3):
+  net/sched: sch_fq_pie: add per-flow statistics via class ops
+  selftests: tc-testing: add fq_pie per-flow class stats test
+  net/sched: pie: correct tc_pie_xstats field documentation
+
+ include/uapi/linux/pkt_sched.h                |  29 ++++-
+ net/sched/sch_fq_pie.c                        | 109 +++++++++++++++++-
+ tools/include/uapi/linux/pkt_sched.h          |   4 +-
+ .../tc-testing/tc-tests/qdiscs/fq_pie.json    |  22 ++++
+ 4 files changed, 159 insertions(+), 5 deletions(-)
+
+--
+2.34.1
 
