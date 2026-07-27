@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3093FB060
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 10:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4FF3FBEAF;
+	Mon, 27 Jul 2026 10:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785147668; cv=none; b=luaqr+Kq6bYGZETT9+iKzz3JJjaNe2RE9jGa5JEcnEieLDtGFMu0Z1c+Q8CzvBtUJjXbnaIuIdjiyuLTEBNP8Rvyxlqa4SXpkwZrv9Pc2Y4T1s2y3Kylat0dGd1CGramxJIrCAPGk5q61QwRBCG7jm1mzXNZgyLoPwE2Uy2hSgg=
+	t=1785147670; cv=none; b=pQT9fathFemE7Ay4Y2x1e5/fBvQbrWlQFDaE3UcdnKp8SVqZJOggLWZSxQEEl9tVvPUU6uP6LEtbUYyv+oM3HrMGYXEFMYqzHTheLB90FeujBCwXjLRT6vYp2aPgGdQs9Y7hfeKAjQa5eQLL6CBlMrHqHx8GJ30k28RPtWMyP6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785147668; c=relaxed/simple;
-	bh=71frPa5vo+c1+kn5UAQq7n0o4JrqcV/M9g0Ol6QsP8M=;
+	s=arc-20240116; t=1785147670; c=relaxed/simple;
+	bh=u1wfUO8P2ZlixceoGoXXjhAZj/jPz1cTFc2a+aFelvc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bAq1GZjcSUlE6+hrQ0fHIp6WSEAiRllN4+ZWKh1u37zz1hmZjSCxb96L5YOwBNJrpkEmNKypgYrGE7/c5+77bmBu0R+Fq8dtYui9yOxK6eiYqtJDu7HC62NZIS7gzcuF/UiMjfXooQ1EEZJ7Slt1ijzmJpz/wstCLXgYrRbULGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bzJCaIjh; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=ZZH5RB9Gtb+/3K0mKvY+GJ7TeeVZzOFAm15rRLsbeBIyc3pnSilflan4hjDk8DITWUKWwR1V6379vtwUsrM0u2FChssvO6TYIinfIwBV1kELO752ZY94oz7Mg3xt1S/AkCS1XM8N5CDRYnNarfCvMk0YjhYhaQohiKYla1Vbz3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n3gb9oU5; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bzJCaIjh"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n3gb9oU5"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 29C454E40F96;
-	Mon, 27 Jul 2026 10:21:05 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CFCA31A128C;
+	Mon, 27 Jul 2026 10:21:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EB9CD601BE;
-	Mon, 27 Jul 2026 10:21:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8210111C131B3;
-	Mon, 27 Jul 2026 12:21:02 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9B98B601BE;
+	Mon, 27 Jul 2026 10:21:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3141311C131B5;
+	Mon, 27 Jul 2026 12:21:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785147663; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785147665; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lWkqPQTqr7Q76aoNlV5VoQCTuOeI+VEKF/VU32rgTmY=;
-	b=bzJCaIjhW2d1AIPRNPM27HcuwxiHjJsH8crccv7r+kq8nXshjWWv1JFUYFQVOX45qZ6bBL
-	3XVuvoARKyA5qiq2342QUfNpDc81H3kPNpVAgJh13+xE7OIhEOSpkQV66XlVAJq7OIJ2Db
-	xIOLToU2vbIdoTL7eMMWPqblMgl0/A09IaOQ8trBcLGEOKWe8joPrV1vnwUvB0uRvdbogX
-	GevWQrzD0jh2neCk3V9VHDKrXeG3v3hEMak4HJpwOgKxtwGpLhiDK3UEjMMsYIp0gXEfyV
-	a7dfmik4Kb8dt450zQ71s5J09BCDrJ0goLYyu0BLOVLiRa0vdWQMmpsjXOQBZw==
+	bh=6LNXqBsn5PlT8qaz3Q1ne3dfPpge90upKA0ukcSSJwE=;
+	b=n3gb9oU5VoMHntROhgrkFQxL2IwQQ35lGE3DSK6LpXhw6YBYTHoY9mkBamZRVRFIcEoxFN
+	TS0SAAU4rvotEMpE5P+Vxg4fhmCfAg/Mvz0fNscw9n6XPGZStIu2CwRfovW3IX7vBo1IKd
+	U7DZgLpHwPrJ4e7gp6m0R++O2e7Lotf9vb5nIW2FaCP2C6ZeGI8whiQwrptLRuz4VGZKVX
+	FYi5+emyGm+MptKypapiOs7VnlDgcaVAmD2rLJwFCBq+NwqPcqB07gH11U8nQi068Wi2Bm
+	FT79cxAVpaT3HBFMe1mqOIgZmEEP+cRTtR9sXbFNU4im8Kw4EfTB0JR/F7iTWQ==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 27 Jul 2026 12:20:47 +0200
-Subject: [PATCH net-next v3 05/10] net: dsa: microchip: adapt port offset
- for KSZ8463's PTP register
+Date: Mon, 27 Jul 2026 12:20:48 +0200
+Subject: [PATCH net-next v3 06/10] net: dsa: tag_ksz: move the KSZ8795 tag
+ handling below ksz_xmit_timestamp()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-ksz-new-ptp-v3-5-caba39e680e3@bootlin.com>
+Message-Id: <20260727-ksz-new-ptp-v3-6-caba39e680e3@bootlin.com>
 References: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 In-Reply-To: <20260727-ksz-new-ptp-v3-0-caba39e680e3@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -63,33 +63,168 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-In KSZ8463 register's layout, the offset between port 1 and port 2
-registers isn't the same in the generic control register area than in
-the PTP register area. The get_port_addr() always uses the same offset
-so it doesn't work when it's used to access PTP registers.
+Upcoming patch reduces code duplication between KSZ8795 and KSZ9893 by
+introducing a common xmit() function. This rework needs the KSZ8795
+handlers to be implemented below ksz_defer_xmit().
 
-Adapt the port offset in get_port_addr() when the accessed register is
-in the PTP area.
+Do the move now to reduce the noise in next patch.
+No functionnal change is intended in this patch.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/dsa/tag_ksz.c | 132 +++++++++++++++++++++++++++---------------------------
+ 1 file changed, 66 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index c099a7005808..5e5bfc5cae2d 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -2831,6 +2831,9 @@ static u32 ksz8_get_port_addr(int port, int offset)
- 
- static u32 ksz8463_get_port_addr(int port, int offset)
- {
-+	if (offset >= KSZ8463_PTP_CLK_CTRL)
-+		return offset + 0x20 * port;
-+
- 	return offset + 0x18 * port;
+diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+index 67fa89f102e0..f58ce0f0e9e4 100644
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -103,72 +103,6 @@ static struct sk_buff *ksz_common_rcv(struct sk_buff *skb,
+ 	return skb;
  }
  
+-/*
+- * For Ingress (Host -> KSZ8795), 1 byte is added before FCS.
+- * ---------------------------------------------------------------------------
+- * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag(1byte)|FCS(4bytes)
+- * ---------------------------------------------------------------------------
+- * tag : each bit represents port (eg, 0x01=port1, 0x02=port2, 0x10=port5)
+- *
+- * For Egress (KSZ8795 -> Host), 1 byte is added before FCS.
+- * ---------------------------------------------------------------------------
+- * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag0(1byte)|FCS(4bytes)
+- * ---------------------------------------------------------------------------
+- * tag0 : zero-based value represents port
+- *	  (eg, 0x0=port1, 0x2=port3, 0x3=port4)
+- */
+-
+-#define KSZ8795_TAIL_TAG_EG_PORT_M	GENMASK(1, 0)
+-#define KSZ8795_TAIL_TAG_OVERRIDE	BIT(6)
+-#define KSZ8795_TAIL_TAG_LOOKUP		BIT(7)
+-
+-static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
+-{
+-	struct ethhdr *hdr;
+-	u8 *tag;
+-
+-	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	/* Tag encoding */
+-	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+-	hdr = skb_eth_hdr(skb);
+-
+-	*tag = dsa_xmit_port_mask(skb, dev);
+-	if (is_link_local_ether_addr(hdr->h_dest))
+-		*tag |= KSZ8795_TAIL_TAG_OVERRIDE;
+-
+-	return skb;
+-}
+-
+-static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
+-{
+-	u8 *tag;
+-
+-	if (skb_linearize(skb)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-
+-	return ksz_common_rcv(skb, dev, tag[0] & KSZ8795_TAIL_TAG_EG_PORT_M,
+-			      KSZ_EGRESS_TAG_LEN);
+-}
+-
+-static const struct dsa_device_ops ksz8795_netdev_ops = {
+-	.name	= KSZ8795_NAME,
+-	.proto	= DSA_TAG_PROTO_KSZ8795,
+-	.xmit	= ksz8795_xmit,
+-	.rcv	= ksz8795_rcv,
+-	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
+-};
+-
+-DSA_TAG_DRIVER(ksz8795_netdev_ops);
+-MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795, KSZ8795_NAME);
+-
+ /*
+  * For Ingress (Host -> KSZ9477), 2/6 bytes are added before FCS.
+  * ---------------------------------------------------------------------------
+@@ -353,6 +287,72 @@ static const struct dsa_device_ops ksz9477_netdev_ops = {
+ DSA_TAG_DRIVER(ksz9477_netdev_ops);
+ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9477, KSZ9477_NAME);
+ 
++/*
++ * For Ingress (Host -> KSZ8795), 1 byte is added before FCS.
++ * ---------------------------------------------------------------------------
++ * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag(1byte)|FCS(4bytes)
++ * ---------------------------------------------------------------------------
++ * tag : each bit represents port (eg, 0x01=port1, 0x02=port2, 0x10=port5)
++ *
++ * For Egress (KSZ8795 -> Host), 1 byte is added before FCS.
++ * ---------------------------------------------------------------------------
++ * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag0(1byte)|FCS(4bytes)
++ * ---------------------------------------------------------------------------
++ * tag0 : zero-based value represents port
++ *	  (eg, 0x0=port1, 0x2=port3, 0x3=port4)
++ */
++
++#define KSZ8795_TAIL_TAG_EG_PORT_M	GENMASK(1, 0)
++#define KSZ8795_TAIL_TAG_OVERRIDE	BIT(6)
++#define KSZ8795_TAIL_TAG_LOOKUP		BIT(7)
++
++static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
++{
++	struct ethhdr *hdr;
++	u8 *tag;
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* Tag encoding */
++	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
++	hdr = skb_eth_hdr(skb);
++
++	*tag = dsa_xmit_port_mask(skb, dev);
++	if (is_link_local_ether_addr(hdr->h_dest))
++		*tag |= KSZ8795_TAIL_TAG_OVERRIDE;
++
++	return skb;
++}
++
++static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
++{
++	u8 *tag;
++
++	if (skb_linearize(skb)) {
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++
++	return ksz_common_rcv(skb, dev, tag[0] & KSZ8795_TAIL_TAG_EG_PORT_M,
++			      KSZ_EGRESS_TAG_LEN);
++}
++
++static const struct dsa_device_ops ksz8795_netdev_ops = {
++	.name	= KSZ8795_NAME,
++	.proto	= DSA_TAG_PROTO_KSZ8795,
++	.xmit	= ksz8795_xmit,
++	.rcv	= ksz8795_rcv,
++	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
++};
++
++DSA_TAG_DRIVER(ksz8795_netdev_ops);
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795, KSZ8795_NAME);
++
+ #define KSZ9893_TAIL_TAG_PRIO		GENMASK(4, 3)
+ #define KSZ9893_TAIL_TAG_OVERRIDE	BIT(5)
+ #define KSZ9893_TAIL_TAG_LOOKUP		BIT(6)
 
 -- 
 2.55.0
