@@ -1,69 +1,73 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A44A38A71F
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2F8239567
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 04:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785127022; cv=none; b=GJPZi0zb+Db4HzedMSqTORyEMrfWe2tYdybTNk9nyQKNt+MZVh49kHGBtZGXxjUSlG73L3rKpt1q92ysnjdGuc7gdooAkoBWHLl05eQ1sonFCo7Ne+FeHmv91u8njmmsxhVET98x03Rf+pm7QLBqR1kzMyHTU1ETe2E5tfsraXA=
+	t=1785127027; cv=none; b=Guzkze2vUYf+tPH0zbN4UYT0NeooWP89oPcaVWg3n4qJRSgJFim+5YwpZ5OK8dHdOqaCnAaA/AZjOA8Q0m0FYduhEHdMnJsWjQz4o4HuIwEWj2qLS6DFDOf76gh7y5y0khn0RqMvclXdZ6PYngEkxsDk6F4Eg6zIPGnqSIyHoPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785127022; c=relaxed/simple;
-	bh=x3CMmikYyScJCif71CpM74tv4qZCOikvVwnqpqw8/TQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUVt/FNUpn+tjaK9k9aEY0PRbrKgjFuOOf5MZ2uBqAo7i7oQ9csyIhfa+mWAHICYyyaChhbDThZq/Qbd1ffVD7KPX78dhWmsV6u6hj1morIiVMq7Kl8M+fPZJEeVOXkjpcHLKRPYo7JYaYv41o+43AFIPeALLbyNN6G0TpTr0O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CsAjs16M; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1785127027; c=relaxed/simple;
+	bh=o2L55v358rIT3INtYNxYhyQawGIIA8Ywa04Obix1ZjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=geZhLNVbXRPXvokZEskYHcNGamVbkKqhRsdSxzvsJaEtDPdTUjoMaWzA8Z73Kl7Lpo+1XL1T0qFErKbr5OXxO1wwtIZ1lavOYci1Vh382PxWnQEBbrCPiNF9Has4/pGLtSTByRVAg3YH5Q5P6AoUlMdGh3PlY2qpKO1dyoXAWbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UU+OpDm8; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CsAjs16M"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cf52d15d88so21203355ad.2
-        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 21:37:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UU+OpDm8"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccf2360620so20064855ad.3
+        for <netdev@vger.kernel.org>; Sun, 26 Jul 2026 21:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785127020; x=1785731820; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D72PoV+31aRv0SZZwCv/46Mi1LQWMPnWSHyMaofDuXg=;
-        b=CsAjs16MdpiOubyNc0VKgEqyjbP6WOLxWSYvUhefgU6tWAmdpHLpIDtGa8W0nE3erI
-         qTOjbEckXZ1t0ybtYP8L/GsJeWUycP+NlKyJAe+xXqEsmVvdFwXcAYwP0yhKd816dwoo
-         nROhoaBy44r3y33M+oC/v+f3REYP5MPhCGeK2FPF/8WL7zDMacLFCfKN0U2dReJf1Pt5
-         6gUnHkw3KJ4avLTlgiNKw1srtFF7eaDVPJYMXL/v8i8furW7VpD2dIj0J1wyWG3Xd+aW
-         5txCRZKcswJR+FfR23LnBcwsWMubOzdgoj+F+mvDquEPLARDTCIZ/WuuC7HirkutdtS7
-         MqeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785127020; x=1785731820;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1785127025; x=1785731825; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D72PoV+31aRv0SZZwCv/46Mi1LQWMPnWSHyMaofDuXg=;
-        b=oKCT8rsUujGxhCf8nonqfT0RO9O9OKsxYR5rlVejXH3iufcSGncZkVm2iYGM3GM7mt
-         5jVruMmrGDe8/c4CJ+j01//fuh1BWU2vlilMOsNSJ/gAbvBYsAso0XcgC/QVQ+EqMApi
-         C+oFxPGr0A/kD8CEY5uTb0l0C0HF3RsqWz4p20Us1wazn/2rsMo/iv9+ULKus1K36dcR
-         c9JFI3SREuazhTE/neyeL6gLSKR7OXWgSlLzl/ZwQjvv9zAW5+U1NQBv4aZP7Obg/IkN
-         FZfZQFqRPNnVzjcLBgPxpJTTbssrrr/cU2trbbvGLbnbVeT1//5yTjFC9+iOeET/F3dh
-         YTWQ==
-X-Gm-Message-State: AOJu0YxY1T5avmESvmsd4Q60ld4R2jHy7y2IhSSTsCvtX+fxg4+NXU09
-	FcKDDTNg7t82H1ukyOmLk39h9lsAJjGOtkRDOEYRMr2hlzEAR6+fDp/dC9Yijg==
-X-Gm-Gg: AR+sD12w0NHF/TEKHqJQH1Xj1jEnHBEsV1FUJOv0Gn4Awp/p5jKtEsz95eOsP3CK0OO
-	TQFyoyeNbfbPNDyUYsFpjn1iYl2B7u+zKvYxvvPZv/lK8HXAt0jVXz/NS+e7l00ZOQl2f9VYZnh
-	paVFcRxLmRuENCd+qmy0BEAOPl6ZAm50xXrIsdmfPrqTRjSFesXBsOgXh+ZukYjoa4I+IxIP9fv
-	dfnX8O7CHlUam9tQ8Sh7/993G1BEFJw10zIpu137asGI11pYlgEfKWYLBe/py929WBIp+dMrH16
-	EVa1jfnS1REswicn6J98ca8PGpuv7iBDOpjSz8hZPa+86pv0SZR1fYq2bLAFQFiL6XUenIS2oYt
-	EVS7qsSFB+Mdl7Tg1RCr/uKF2f+yCHhhC6tXwlMGP5LlezwlU16GazF1MfvB96pdEGc9IeZx6q4
-	KRaIY=
-X-Received: by 2002:a17:902:d2d2:b0:2c9:aae1:a61c with SMTP id d9443c01a7336-2cfde7af8b3mr63097895ad.20.1785127019581;
-        Sun, 26 Jul 2026 21:36:59 -0700 (PDT)
+        bh=uNY/fNs+wPIg22L+p1H1+k7UHMNsxwsajJR2lgOhHzU=;
+        b=UU+OpDm8TWpys0gHLRHEINMsv6VtWDc9U7KUeygsg6qjyfm7bmQtpP2FNNReIZq1Rl
+         9kGggcTFckhYociScMuo4xeXCInZKLYsFTSj7jSAW+6Sf3YBZhBwuJSIpLEeo6JsK5Fv
+         Tzykpain459REGywh2Zr2v2EkZ1adJOix4EsLShKkxi+iiiprzvR7wKmLWfX9O1joAvp
+         FuxI79Pvhg6qwrz3XQfdpClNl4aQu0rqqUhLwFX3s7Fo7tSBmEzspzBdwGA6ysycSthq
+         KriF0sVkKecirPFiUqMxolbDy31mK0G0gChOItMDy9brCGFNTGdUoQG88FUTJg7e4G4s
+         u5QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785127025; x=1785731825;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uNY/fNs+wPIg22L+p1H1+k7UHMNsxwsajJR2lgOhHzU=;
+        b=agKFCgGMjCUjBcKxG1L4G2AnJIjNfDFWXwf+J3FNYt3huJZ5CKf7FRjz05BJ5+AWtV
+         K8AU/rhnAoJgCLZhv4zQTf08lC77b31ZcNFCokH83PdQkcYwynQx31+HtWmUqzxHWUQZ
+         Oe6wWZW2jeOvKPDpQ5Bg8z+vWf9NNP1k24adpq8iijQQahe6HcAoIHdIdlcK0BykP5+G
+         uE76rYhPPKp/z+F40SgoyUJOjXDrxXCXdRG7ThcvtVTw5URPXQlEwRrKHkgTGd/w9wgX
+         VOyHGqAV0S+UQ5zSJE9nojHcMkxZDS9rTlXVa5oxEOB6qbx9SrZTNLgxGszLcfS1NLA3
+         R1WA==
+X-Gm-Message-State: AOJu0Yz/D/8IjqzC0Vldv3CAt2M/3nHCMV1QNgCl/zmqJkGWgzsEBPzo
+	ENIomL4Xt7TabQyO9XzTpYaCVPUPQnGfX5ye5otGbC5BCbWfKch3sRJoCN8IZQ==
+X-Gm-Gg: AR+sD13PHF8y94azC1a6SQow22osHmftQNDDnrWAA3cFHDO31rTGLzazoA4+jdF4cZ9
+	LlpfdN98IUGWr0gX9PRjAZHJwXBUtPOo3K8UUivjKjaXX8o+ZngY/QBiJZBjir3DgTkhwkhSK3v
+	35U+RqS+CRrPHDatf35wwuJWfXJt6NCHnVITz5eFVyAmDoCcYGqFwYenJeCRqbqxmSxOrWMW46w
+	zRN75/myjtD9tZBvWss59PPOD/xTNN5ws3Kx5un5CVGmVQcAFV9AFfJzQnTTZ08FWQq1UF1LmVG
+	WlexUKryuHVnQOkrw8aMm1vUjFg6XaZqEUfjxGthDVXk1bEuT6m6LsayhDxcn4s0ExCHaTFQPmr
+	kQT8R/4Enw2I8gyDpfnTXx1WkQfFw//g3teGqyniN++oL2gQiceUspWAwnso/e3JnRklQCrbcIJ
+	C2Mc6119ZGiIjjZg==
+X-Received: by 2002:a05:6a21:1f8d:b0:3b3:fc6:622d with SMTP id adf61e73a8af0-3c67df10c33mr7008207637.38.1785127025195;
+        Sun, 26 Jul 2026 21:37:05 -0700 (PDT)
 Received: from marceloPC ([2804:1b3:a8c2:99cf:6381:2414:ebe3:a179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc4164ddsm26249985eec.9.2026.07.26.21.36.58
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc4164ddsm26249985eec.9.2026.07.26.21.37.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 21:36:59 -0700 (PDT)
+        Sun, 26 Jul 2026 21:37:04 -0700 (PDT)
 From: Marcelo Mendes Spessoto Junior <marcelomspessoto@gmail.com>
 X-Google-Original-From: Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
 To: netdev@vger.kernel.org
 Cc: linux-kselftest@vger.kernel.org,
 	Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
-Subject: [PATCH net-next 0/4] net: selftests: adjustments to ipv6_flowlabel_mgr
-Date: Mon, 27 Jul 2026 01:25:06 -0300
-Message-ID: <20260727043516.93101-1-marcelospe@proton.me>
+Subject: [PATCH net-next 1/4] selftests: net: test IPV6_FL_A_RENEW
+Date: Mon, 27 Jul 2026 01:25:07 -0300
+Message-ID: <20260727043516.93101-2-marcelospe@proton.me>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260727043516.93101-1-marcelospe@proton.me>
+References: <20260727043516.93101-1-marcelospe@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,23 +76,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ipv6_flowlabel_mgr test file was lacking coverage for the IPV6_FL_A_RENEW
-action, and the IPV6_FL_F_REMOTE and IPV6_FL_F_REFLECT flags. The first
-three patches from this set aim to add a proper test case for each.
+RENEW was the only flow label action without selftests coverage.
 
-The fourth patch proposes the adoption of "kselftest_harness.h" helpers,
-improving code readability and conforming to the implementation of the most
-recent selftests.
+Based on the previously implemented EXCL share test, that demonstrates
+that a new flow label with same label can be created after the linger
+period, use renew to show that the flow label can last longer and
+block a new flow label creation after the previous linger time.
 
-Marcelo Mendes Spessoto Junior (4):
-  selftests: net: test IPV6_FL_A_RENEW
-  selftests: net: test IPV6_FL_F_REMOTE
-  selftests: net: test IPV6_FL_F_REFLECT
-  selftests: net: adopt harness for flow label mgr
+Signed-off-by: Marcelo Mendes Spessoto Junior <marcelospe@proton.me>
+---
+ .../selftests/net/ipv6_flowlabel_mgr.c        | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
- .../selftests/net/ipv6_flowlabel_mgr.c        | 450 +++++++++++++-----
- 1 file changed, 330 insertions(+), 120 deletions(-)
-
+diff --git a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
+index af95b48acea9..cfa7e6270994 100644
+--- a/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
++++ b/tools/testing/selftests/net/ipv6_flowlabel_mgr.c
+@@ -71,6 +71,17 @@ static int flowlabel_put(int fd, uint32_t label)
+ 	return setsockopt(fd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &req, sizeof(req));
+ }
+ 
++static int flowlabel_renew(int fd, uint32_t label, uint16_t linger)
++{
++	struct in6_flowlabel_req req = {
++		.flr_action = IPV6_FL_A_RENEW,
++		.flr_label = htonl(label),
++		.flr_linger = linger,
++	};
++
++	return setsockopt(fd, SOL_IPV6, IPV6_FLOWLABEL_MGR, &req, sizeof(req));
++}
++
+ static void run_tests(int fd)
+ {
+ 	int wstatus;
+@@ -160,6 +171,18 @@ static void run_tests(int fd)
+ 		error(1, errno, "wait");
+ 	if (!WIFEXITED(wstatus) || WEXITSTATUS(wstatus) != 0)
+ 		error(1, errno, "wait: unexpected child result");
++
++	if (cfg_long_running) {
++		explain("create a new label with FL_MIN_LINGER linger time");
++		expect_pass(flowlabel_get(fd, 5, IPV6_FL_S_EXCL, IPV6_FL_F_CREATE));
++		explain("renew the label to increase its linger time and put it");
++		expect_pass(flowlabel_renew(fd, 5, 2 * (FL_MIN_LINGER * 2 + 1)));
++		expect_pass(flowlabel_put(fd, 5));
++		sleep(FL_MIN_LINGER * 2 + 1);
++		explain("The label cannot be created because the new linger time is not over yet");
++		expect_fail(flowlabel_get(fd, 5, IPV6_FL_S_ANY, IPV6_FL_F_CREATE));
++	}
++
+ }
+ 
+ static void parse_opts(int argc, char **argv)
 -- 
 2.55.0
 
