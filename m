@@ -1,110 +1,196 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EBA3F4822
-	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022E2353A8A
+	for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 09:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785145781; cv=none; b=BDScEoIZ7uR7Rhqum+uHbv/Isdd0nerOGK3VjEAXGHN7Ab6ARNmRdDJgrrnKUdFBZYV4Pgb8JTohUcwls+JTmgIFLMakPc+JbyQUgnshfu02oMSyfF65Lzfl7Zx6WrABrp8gtvBk3RZ0UkWfq2RiYTmcoiFgbFc+5BqjWd1fLjM=
+	t=1785146217; cv=none; b=HCnrKJ6l5KhOB2nLbav0P2uqf2vBdFlEmwOvI16gncnWHqRN/e+zrZb5GH76YTZQGvvEuBfE3pk3Spl+k0ToBZPTYp1G6Qb8HlM1JMfvPFHZ3FJB5dI9xjH3cFIJEImTIySDj7Ji0F8bXITzYhapHCoeStNZkoqY38mJ2paqrnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785145781; c=relaxed/simple;
-	bh=h8G1pIiq6VtLyvV+aP4EmHx/rxiH5Izdxm0Ddpq8ezc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RBJljbqWtCyavjbJoS82Za57hfycxswvvRik2sRdKhZjG4qoXz9TXuDw5O0fBx8MbEjkdStEN9oCOJIiGN9H2LTr1pF0jTin9Cfc2eboR8P/peZ5fftZjSUNDNJUTbD5Rt8Thr4jbAQJwyxF3SGSTz7U08JEJYM/Ux1q+UmeZBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=M0b0omDY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1785146217; c=relaxed/simple;
+	bh=13GOSqAdgrF0dIuUjy81pMTDfGbzXmq8V5DyscCG2H8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hBZ1cuer8woheJj9Cp0AyQxx3pwoWr+rn7kDl+Zjl7oO25bZMMa2MfxPt0eWXpr4Z8D7Z5Q/HWXUo9k/Zhb/H5IlDzPLSrjfCNzfIDPKinI3qpjnitepgOPuUPe2st1BC4m45Rn6CXWHLO3miFPFJzOnE2n5kVlVWKarzBuHl9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=ZV0eGQN4; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="M0b0omDY"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 66R9n2oO52998920, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1785145742; bh=VSrDA5sHK2XxKNKLSfglzXLrclg/P7nADasOUc3337U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=M0b0omDYLa/a4qG+BUiZ5dys3vWKyGW8IiLkjfx2PszQUEpVpJF+FQWmb7+lEcgwb
-	 gFt6xYlxlL8+lXdt1h0aySHvRUO6UbeQ5VmG48rrRu65EaLMJDDaV5CKVp2sELLMH3
-	 hASPfrjjxUyB7BG90f+WshP+wX44oArin+Q5PtJ6GjBTJqN4rnQ3fgUvo6vWdmf+9T
-	 gpjIJ7XKNBNzjVXoDUPMlFuYsY4j62ejBjrCZdFpPV2D+ztpe/PiHN6XKp9ShFoZHN
-	 tM6KeRQnbYZW/7NbdmdyE+EgaVvABdGU6YX5EO/VPM9iFtQ/TL7uRVew+ed3BTJ5QG
-	 ABdw5P2bgDkfg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 66R9n2oO52998920
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 27 Jul 2026 17:49:02 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 27 Jul 2026 17:49:03 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 27 Jul 2026 17:49:02 +0800
-Received: from RTKEXHMBS04.realtek.com.tw ([::1]) by
- RTKEXHMBS04.realtek.com.tw ([fe80::552f:8b32:656c:c395%6]) with mapi id
- 15.02.2562.017; Mon, 27 Jul 2026 17:49:02 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Yun Lu <luyun_611@163.com>, Larry Chiu <larry.chiu@realtek.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH] rtase: fix double free of multi-frag skb on DMA map
- failure
-Thread-Topic: [PATCH] rtase: fix double free of multi-frag skb on DMA map
- failure
-Thread-Index: AQHdGLos1Xhxq8chuUmhFuHTG7BuR7Z62NiAgAZK04A=
-Date: Mon, 27 Jul 2026 09:49:02 +0000
-Message-ID: <ecc03cdfd2c44df0b23927491c581349@realtek.com>
-References: <20260721023836.6691-1-luyun_611@163.com>
- <20260723102507.35b4246b@kernel.org>
-In-Reply-To: <20260723102507.35b4246b@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="ZV0eGQN4"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso2324081a91.1
+        for <netdev@vger.kernel.org>; Mon, 27 Jul 2026 02:56:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1785146214; x=1785751014; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=sYEClUMgtlxTRfHjpZUCI6IfQ0ehz2GfsZPhfUC/e30=;
+        b=ZV0eGQN4W4QZ87w72QXoir4QKNpCaoPNJuqfdTxjcgFOiNMIAjIqVYw9oyEewSH7yW
+         n+6bTD4gU2hBaHOcUPQT/mheBv8uswF/pC6gMlRG8Q40AFz4uI14vhWQJ5D71ZT/4xu0
+         CHAsnGAy0i6ahkFpmvO+ZU/PGa8NpmrEctph6d0xO2gUtWTVe+rK2fiGrfvwsMplfGKV
+         99oPKzLLqpNjV2pHNkiEWyDa3eRu6CEHOpX2L7vCYZJrkxZjteSPds0VXQC9dcpJtxgG
+         h1AZzmI9TSeuKY/+3XVAEPQstdauEy+ncE2+wsTQQYn3SeEQc0jDZusBhZaLWR9blPaG
+         u2Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785146214; x=1785751014;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=sYEClUMgtlxTRfHjpZUCI6IfQ0ehz2GfsZPhfUC/e30=;
+        b=NbqbPZs9hzibnU7iVMNLQuMnSA8jsa5pN2i+E2lsGLAvny/EYUD8d449NqouCMXpUF
+         NtVS40M0B7Gx++RattF1Xzd/bo9oHHCoc8Tn4v0shymY1ZWRFbV2tKw89+BHE33YkcJG
+         COz272h2BnGjvRH3lpVIN96+Zs73nGJGnsit7BdOV1JPwrUByEWCnO/Q1KjK5yaU221I
+         MalwXiuSUllpz54bI/eNHX+2hwEAcK6Q1WYOINOsvVh6FqWWeL3mvrUaq9eYZpEZkf/+
+         ZRFT2SaOIbXOk3hLGn1rmC5S36NGztZ8Vpp9+BKgKlTBmNkD3wqJibtnz68rtIlraRjr
+         mMsg==
+X-Forwarded-Encrypted: i=1; AHgh+RprknQvd2KignBe5xsC+/TDkUG30U8NNTTXh7pCVX9V+3mcrllQcb/2p0aEHzsFztD6EEYIbrA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1I+0QhkoprenrWPu1b76j6xqos3lnIyXKXsj/vB0VOB1vS3iF
+	QLslruVO1RXRKS6cuz8kHkqRrlrh8pcJDD28GViiwjA3TC5JDbAgcOsr4pXlPqA1Pt0=
+X-Gm-Gg: AR+sD13Ejt9uG6XxIX1gdhZQ6bTr1xLGxinPgyn54qZ+eoy0w7pPGICVvkqamsHcSdG
+	GxI46Y8I0kEmNV3e6vRPseXoecSA42dcPZborvQJnCBvpKAqxeWK3AM4NADvA6HpT1Mb23YSfWh
+	Chrojx/XnIv1kVFLtQxMLd2FLHWokvdMbl5CFJBRFjbOq5exyf8ziNh7dqJwUvq58pdD5KkZNJJ
+	vuoYqRndmtr/fxlIH1nzfGY5U+Stm4wa4IT3G7dcQiyc/d/45ylreLV5DjjHhMv8GA+L7OpT2lR
+	IENh+qOw5EYXcgfko7/ZA/5ulximMPdC+tPtnewevh4AKXtgWsNak7mf5W6Fg0oZdFops9r9r2D
+	c9JFwdLJFS4Om6PaoHD1mCl33aJFGcpnz042U27HgmsD8X1ipprVby4pkX/9KWtUoEI7ntmGnam
+	FbKre07e+Hycl2vCZObEkHF1Go
+X-Received: by 2002:a17:90b:398d:b0:38f:657:6823 with SMTP id 98e67ed59e1d1-38f2a97aa1emr5126778a91.8.1785146214078;
+        Mon, 27 Jul 2026 02:56:54 -0700 (PDT)
+Received: from localhost.localdomain ([2406:5900:1044:110c:fc36:f2a9:533e:766d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f090619f4sm2806808a91.3.2026.07.27.02.56.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 02:56:53 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net/smc: fix out-of-bounds read of rkey array in SMC-Rv2 LLC processing
+Date: Mon, 27 Jul 2026 18:56:34 +0900
+Message-ID: <20260727095634.1079605-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260727021511.GA95674@j66a10360.sqa.eu95>
+References: <20260727021511.GA95674@j66a10360.sqa.eu95>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski <kuba@kernel.org> wrote:
->=20
-> On Tue, 21 Jul 2026 10:38:36 +0800 Yun Lu wrote:
-> > From: Yun Lu <luyun@kylinos.cn>
-> >
-> > In rtase_start_xmit(), when the head buffer DMA mapping fails after
-> > rtase_xmit_frags() has mapped all fragments, the error path clears the
-> > fragment descriptors with rtase_tx_clear_range(), which frees the skb
-> > through the last-frag slot and accounts tx_dropped. Control then falls
-> > through to the common error label, which frees the same skb a second
-> > time and counts it again.
-> >
-> > Return right after clearing the fragments when the skb owns frags; the
-> > no-frag case still drops through and frees the head skb once.
-> >
-> > Fixes: d6e882b89fdf ("rtase: Implement .ndo_start_xmit function")
-> > Signed-off-by: Yun Lu <luyun@kylinos.cn>
->=20
-> Justin, please review.
->=20
-> > diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> > b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> > index 255667775f0e..67f7fdada119 100644
-> > --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> > +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> > @@ -1426,6 +1426,9 @@ static netdev_tx_t rtase_start_xmit(struct
-> > sk_buff *skb,
-> >  err_dma_1:
-> >       ring->skbuff[entry] =3D NULL;
-> >       rtase_tx_clear_range(ring, ring->cur_idx + 1, frags);
-> > +     if (frags)
-> > +             /* the frags were cleared above, along with the skb */
-> > +             return NETDEV_TX_OK;
-> >
-> >  err_dma_0:
-> >       tp->stats.tx_dropped++;
+On Mon, Jul 27, 2026 at 10:15:11AM +0800, D. Wythe wrote:
+> Could we consider attaching a full copy of the message body directly to
+> the qentry (e.g. kmalloc(wc->byte_len, GFP_ATOMIC)) for V2 messages that
+> exceed the 44-byte inline union smc_llc_msg? The only V2 types that grow
+> beyond the header are DELETE_RKEY_V2 (batch-delete, rare),
+> ADD_LINK_RESP_V2 with ext (link setup, rare), and REQ_ADD_LINK_V2
+> (~hundreds of bytes). Memory pressure should be acceptable, and this
+> also unifies the shared/non-shared paths.
 
-Reviewed-by: Justin Lai <justinlai0215@realtek.com>
+Yes, I agree, and I will send a v3 that does this.
+
+It is better than what I posted for a reason I underweighted. In my v2
+the body still lives in the per-link-group lgr->wr_rx_buf_v2, which
+every LLC message on that link group shares, so a later v2 message can
+overwrite it between reception and the llc_event_work item that consumes
+it. My v2 protects the header from exactly that by restoring it from the
+per-qentry copy, and the commit message says so - but it leaves the body
+exposed and I did not state that plainly. Copying the body onto the
+qentry removes the exposure rather than bounding it: the buffer then has
+the same lifetime as the request that owns it.
+
+One refinement. Since union smc_llc_msg is the last member of struct
+smc_llc_qentry, the body does not need a second allocation and a pointer
+to free; it can travel in the same allocation as a trailing flexible
+array:
+
+        struct smc_llc_qentry {
+                struct list_head list;
+                struct smc_link *link;
+                u16 body_len;
+                union smc_llc_msg msg;
+                u8 body[] __counted_by(body_len);
+        };
+
+I measured the layout rather than assuming it: msg sits at offset 28 and
+ends at 72, which is where body[] begins, so header and body stay
+contiguous and the existing v2 casts become correct instead of out of
+bounds - the non-shared line
+
+        llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
+
+stands as it is today, and the shared/non-shared branch in
+smc_llc_rmt_delete_rkey() and the two ternaries at the
+smc_llc_save_add_link_rkeys() call sites are deleted rather than
+rewritten. smc_llc.c already asserts the invariant this relies on:
+
+        BUILD_BUG_ON_MSG(sizeof(union smc_llc_msg) != SMC_WR_TX_SIZE,
+
+Every existing kfree(qentry) site also stays correct unchanged, since
+there is still exactly one allocation, so the flexible array adds no
+paired-free surface. One lifetime question does surface, though it is
+not created by this change: smc_llc_srv_add_link() calls
+smc_llc_flow_qentry_del() before the v2 rkeys are read, so the
+non-shared path already dereferences add_llc after the qentry has been
+freed. My v2 hid that by reading wr_rx_buf_v2 instead; reading from the
+qentry makes it load-bearing, so v3 keeps the qentry alive until the
+rkeys have been consumed.
+
+One consequence is worth stating, because it changes what the patch has
+to contain. Once the body lives on the qentry, the backing allocation is
+exactly as large as what arrived, so the loop bound has to come from
+what arrived as well. Today the count is capped only by
+SMC_LLC_RKEYS_PER_MSG_V2:
+
+        max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
+
+In my v2 that was sufficient for memory safety only by accident of the
+destination: the reads always landed in the 8 KiB wr_rx_buf_v2, and
+num_rkeys = 255 reaches offset 1028. With a per-qentry body, a 44-byte
+DELETE_RKEY_V2 declaring num_rkeys = 255 gives body_len = 0 and the loop
+walks off the allocation again. The same applies to ext->num_rkeys on
+the ADD_LINK path, where even reading the count needs 28 bytes of body.
+
+So v3 bounds both counts by the received length instead of only by
+SMC_LLC_RKEYS_PER_MSG_V2. That is the validation I deferred as separate
+hardening in the v2 commit message; under this design it stops being
+hardening and becomes part of the fix, which I take as an argument for
+the design rather than against it.
+
+To be precise about unifying the two layouts: every consumer unifies,
+but smc_llc_enqueue() still needs one branch, because in the shared
+layout the body was DMA'd to lgr->wr_rx_buf_v2 + SMC_WR_TX_SIZE by the
+spillover SGE and is not contiguous with the header it copies from,
+while in the non-shared layout it is. That is one if/else at the single
+copy site instead of a branch in each consumer.
+
+Two things I would like your view on:
+
+- smc_llc_enqueue() already returns without queueing when the qentry
+  allocation fails, so the LLC request is dropped and the flow times
+  out. I plan to keep exactly that behaviour for the larger allocation
+  rather than adding a fallback.
+
+- The allocation grows from 72 bytes to at most SMC_WR_BUF_V2_SIZE per
+  queued request. Those three message types are rare, as you say, but
+  they are peer-driven. Is the llc_event_q depth bounded anywhere, or is
+  LLC flow control what limits it?
+
+I will keep the Fixes: tag and target net, since the out-of-bounds read
+is still what the patch fixes. Tell me if you would rather see the
+restructuring go to net-next with a minimal fix for net.
+
+Best regards,
+Yehyeong Lee
